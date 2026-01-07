@@ -1,10 +1,11 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import ReactDOM from 'react-dom';
 import Hamburger from "./Hamburger";
 import MobileSideBarMenuContents from './Content';
 import styles from './styles.module.scss';
 import { useLocation, useHistory } from '@docusaurus/router';
 
-const MobileSideBarMenu = ({sidebar, menu}) => {
+const MobileSideBarMenu = ({ sidebar, menu }) => {
     const [currentMenuState, setMenuState] = useState(() => {
         // Only access sessionStorage if we're in the browser
         if (typeof window !== 'undefined' && window.sessionStorage) {
@@ -197,27 +198,32 @@ const MobileSideBarMenu = ({sidebar, menu}) => {
         }
     };
 
-    return(
+    return (
         <>
             <Hamburger
                 onClick={() => setMenuState(!currentMenuState)}
             />
-            <div className={currentMenuState ? styles.docsMobileMenuBackdropActive : styles.docsMobileMenuBackdropInactive}/>
-            <MobileSideBarMenuContents
-                onClick={(item) => {
-                    if (!item.collapsible) {
-                        setMenuState(!currentMenuState)
-                    }
-                }}
-                onClose={handleMenuClose}
-                onLanguageChange={handleLanguageChange}
-                sidebar={sidebar} // Left sidebar items
-                menu={menu} // Top level menu items
-                isVisible={currentMenuState} // Pass menu visibility state
-                className={currentMenuState
-                    ? styles.docsMobileMenuActive
-                    : styles.docsMobileMenuHidden}
-            />
+            {typeof window !== 'undefined' && ReactDOM.createPortal(
+                <>
+                    <div className={currentMenuState ? styles.docsMobileMenuBackdropActive : styles.docsMobileMenuBackdropInactive} />
+                    <MobileSideBarMenuContents
+                        onClick={(item) => {
+                            if (!item.collapsible) {
+                                setMenuState(!currentMenuState)
+                            }
+                        }}
+                        onClose={handleMenuClose}
+                        onLanguageChange={handleLanguageChange}
+                        sidebar={sidebar} // Left sidebar items
+                        menu={menu} // Top level menu items
+                        isVisible={currentMenuState} // Pass menu visibility state
+                        className={currentMenuState
+                            ? styles.docsMobileMenuActive
+                            : styles.docsMobileMenuHidden}
+                    />
+                </>,
+                document.body
+            )}
         </>
     );
 

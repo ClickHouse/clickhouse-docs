@@ -50,27 +50,47 @@ Changing this in the PlanetScale console WILL trigger a restart.
 
 ## Creating a user with permissions and publication {#creating-a-user-with-permissions-and-publication}
 
-Let's create a new user for ClickPipes with the necessary permissions suitable for CDC,
-and also create a publication that we'll use for replication.
+Connect to your PlanetScale Postgres instance using the default `postgres.<...>` user and run the following commands:
 
-For this, you can connect to your PlanetScale Postgres instance using the default `postgres.<...>` user and run the following SQL commands:
-```sql
-  CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
-  GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
--- You may need to grant these permissions on more schemas depending on the tables you're moving
-  GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-  ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+1. Create a dedicated user for ClickPipes:
 
--- Give replication permission to the USER
-  ALTER USER clickpipes_user REPLICATION;
+    ```sql
+    CREATE USER clickpipes_user PASSWORD 'some-password';
+    ```
 
--- Create a publication. We will use this when creating the pipe
--- When adding new tables to the ClickPipe, you'll need to manually add them to the publication as well. 
-  CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>, <...>;
-```
-:::note
-Make sure to replace `clickpipes_user` and `clickpipes_password` with your desired username and password.
-:::
+2. Grant schema-level, read-only access to the user you created in the previous step. The following example shows permissions for the `public` schema. Repeat these commands for each schema containing tables you want to replicate:
+
+    ```sql
+    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+    ```
+
+3. Grant replication privileges to the user:
+
+    ```sql
+    GRANT rds_replication TO clickpipes_user;
+    ```
+
+4. Create a [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) with the tables you want to replicate. We strongly recommend only including the tables you need in the publication to avoid performance overhead.
+
+   :::warning
+   Any table included in the publication must either have a **primary key** defined _or_ have its **replica identity** configured to `FULL`. See the [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) for guidance on scoping.
+   :::
+
+   - To create a publication for specific tables:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - To create a publication for all tables in a specific schema:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   The `clickpipes` publication will contain the set of change events generated from the specified tables, and will later be used to ingest the replication stream.
 
 ## Caveats {#caveats}
 1. To connect to PlanetScale Postgres, the current branch needs to be appended to the username created above. For example, if the created user was named `clickpipes_user`, the actual user provided during the ClickPipe creation needs to be `clickpipes_user`.`branch` where `branch` refers to the "id" of the current PlanetScale Postgres [branch](https://planetscale.com/docs/postgres/branching). To quickly determine this, you can refer to the username of the `postgres` user you used to create the user earlier, the part after the period would be the branch id.

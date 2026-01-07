@@ -67,40 +67,45 @@ but this requires additional steps.
 If you'd like to only perform a one-time load of your data (`Initial Load Only`), please skip steps 2 onward.
 :::
 
-1. Create a Postgres user for the pipe and grant it permissions to `SELECT` the tables you wish to replicate.
+1. Create a dedicated user for ClickPipes:
 
-```sql
-  CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
-  GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-  -- If desired, you can refine these GRANTs to individual tables alone, instead of the entire schema
-  -- But when adding new tables to the ClickPipe, you'll need to add them to the user as well.
-  GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-  ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
-```
+    ```sql
+    CREATE USER clickpipes_user PASSWORD 'some-password';
+    ```
 
-:::note
-Make sure to replace `clickpipes_user` and `clickpipes_password` with your desired username and password.
-:::
+2. Grant schema-level, read-only access to the user you created in the previous step. The following example shows permissions for the `public` schema. Repeat these commands for each schema containing tables you want to replicate:
 
-2. As a Postgres superuser/admin user, create a publication on the source instance that has the tables and hypertables 
-   you want to replicate and **also includes the entire `_timescaledb_internal` schema**. While creating the ClickPipe, you need to select this publication.
+    ```sql
+    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+    ```
 
-```sql
--- When adding new tables to the ClickPipe, you'll need to add them to the publication as well manually. 
-  CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>, TABLES IN SCHEMA _timescaledb_internal;
-```
+3. Grant replication privileges to the user:
 
-:::tip
-We don't recommend creating a publication `FOR ALL TABLES`, this leads to more traffic from Postgres to ClickPipes (to sending changes for other tables not in the pipe) and reduces overall efficiency.
+    ```sql
+    GRANT rds_replication TO clickpipes_user;
+    ```
 
-For manually created publications, please add any tables you want to the publication before adding them to the pipe.
-::: 
+4. Create a [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) with the tables you want to replicate. We strongly recommend only including the tables you need in the publication to avoid performance overhead.
 
-:::info
-Some managed services don't give their admin users the required permissions to create a publication for an entire schema.
-If this is the case, please raise a support ticket with your provider. Alternatively, you can skip this step and the following 
-steps and perform a one-time load of your data.
-:::
+   :::warning
+   Any table included in the publication must either have a **primary key** defined _or_ have its **replica identity** configured to `FULL`. See the [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) for guidance on scoping.
+   :::
+
+   - To create a publication for specific tables:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - To create a publication for all tables in a specific schema:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   The `clickpipes` publication will contain the set of change events generated from the specified tables, and will later be used to ingest the replication stream.
 
 3. Grant replication permissions to the user created earlier.
 

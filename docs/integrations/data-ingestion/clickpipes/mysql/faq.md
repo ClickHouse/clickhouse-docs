@@ -53,4 +53,4 @@ PeerDB has a limitation currently where dots in source table identifiers - aka e
 Effort is being made to support input of schema and table separately to get around this limitation.
 
 ### Can I include columns I initially excluded from replication? {#include-excluded-columns}
-This is not yet supported and is in our roadmap, an alternative would be to [resync the table](./table_resync.md) whose columns you want to include.
+This is not yet supported, an alternative would be to [resync the table](./table_resync.md) whose columns you want to include.
