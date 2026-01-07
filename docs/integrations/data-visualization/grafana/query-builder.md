@@ -6,6 +6,9 @@ description: 'Using the Query Builder in the ClickHouse Grafana plugin'
 title: 'Query Builder'
 doc_type: 'guide'
 keywords: ['grafana', 'query builder', 'visualization', 'dashboards', 'plugin']
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
 ---
 
 import Image from '@theme/IdealImage';
