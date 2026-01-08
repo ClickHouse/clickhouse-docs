@@ -1,5 +1,5 @@
 ---
-slug: /use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud
+slug: /use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud
 title: 'ClickHouse Cloud'
 pagination_prev: null
 pagination_next: null
@@ -12,8 +12,8 @@ keywords: ['clickstack', 'deployment', 'setup', 'configuration', 'observability'
 import Image from '@theme/IdealImage';
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import BetaBadge from '@theme/badges/BetaBadge';
-import cloud_connect from '@site/static/images/use-cases/observability/clickhouse_cloud_connection.png';
-import hyperdx_cloud from '@site/static/images/use-cases/observability/hyperdx_cloud.png';
+import cloud_connect from '@site/static/images/use-cases/observability/clickstack-cloud-connect.png';
+import clickstack_cloud from '@site/static/images/use-cases/observability/clickstack-cloud.png';
 import hyperdx_cloud_landing from '@site/static/images/use-cases/observability/hyperdx_cloud_landing.png';
 import hyperdx_cloud_datasource from '@site/static/images/use-cases/observability/hyperdx_cloud_datasource.png';
 import hyperdx_create_new_source from '@site/static/images/use-cases/observability/hyperdx_create_new_source.png';
@@ -276,11 +276,11 @@ docker run --rm -it \
 In production, we recommend creating a dedicated user for ingestion, restricting access permissions to the database and tables needed. See ["Database and ingestion user"](/use-cases/observability/clickstack/production#database-ingestion-user) for further details.
 :::
 
-### Connect to HyperDX {#connect-to-hyperdx}
+### Connect to ClickStack {#connect-to-clickstack}
 
-Select your service, then select `HyperDX` from the left menu.
+Select your service, then select `ClickStack` from the left menu.
 
-<Image img={hyperdx_cloud} alt="ClickHouse Cloud HyperDX" size="lg"/>
+<Image img={clickstack_cloud} alt="ClickHouse Cloud ClickStack" size="lg"/>
 
 You will not need to create a user and will be automatically authenticated, before being prompted to create a datasource.
 

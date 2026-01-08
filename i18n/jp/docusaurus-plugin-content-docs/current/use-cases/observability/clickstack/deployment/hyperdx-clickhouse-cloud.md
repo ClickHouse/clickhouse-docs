@@ -1,5 +1,5 @@
 ---
-slug: /use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud
+slug: /use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud
 title: 'ClickHouse Cloud'
 pagination_prev: null
 pagination_next: null
