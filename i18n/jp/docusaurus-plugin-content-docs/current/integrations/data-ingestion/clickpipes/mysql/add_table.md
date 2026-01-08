@@ -6,6 +6,9 @@ slug: /integrations/clickpipes/mysql/add_table
 show_title: false
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'CDC（変更データキャプチャ）', 'データインジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import Image from '@theme/IdealImage';
@@ -18,11 +21,14 @@ ClickPipe に特定のテーブルを追加できると便利なケースがあ�
 ## ClickPipe に特定のテーブルを追加する手順 {#add-tables-steps}
 
 次の手順で実行します。
+
 1. パイプを[一時停止](./pause_and_resume.md)します。
 2. `Edit Table settings` をクリックします。
 3. 検索バーでテーブル名を検索して対象のテーブルを見つけます。
 4. チェックボックスをクリックしてテーブルを選択します。
+
 <br/>
+
 <Image img={add_table} border size="md"/>
 
 5. `Update` をクリックします。

@@ -5,6 +5,9 @@ keywords: ['clickhouse', 'dot', 'ai', 'chatbot', 'mysql', 'integrate', 'ui', 'vi
 description: 'AI 聊天机器人 | Dot 是一款智能虚拟数据助手，能够回答业务数据问题、检索定义和相关数据资产，并且在 ClickHouse 的支持下，甚至还能协助进行数据建模。'
 title: 'Dot'
 doc_type: 'guide'
+integration:
+   - support_level: 'community'
+   - category: 'data_visualization'
 ---
 
 import Image from '@theme/IdealImage';
@@ -21,13 +24,14 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## 前提条件 {#pre-requisites}
 
-- 一个 ClickHouse 数据库，可以是自托管的，也可以是在 [ClickHouse Cloud](https://clickhouse.com/cloud) 上  
+- 一个 ClickHouse 数据库，可以是自托管的，也可以托管在 [ClickHouse Cloud](https://clickhouse.com/cloud) 上  
 - 一个 [Dot](https://www.getdot.ai/) 账户  
 - 一个 [Hashboard](https://www.hashboard.com/) 账户和项目
 
 ## 将 Dot 连接到 ClickHouse {#connecting-dot-to-clickhouse}
 
 <Image size="md" img={dot_01} alt="在 Dot（浅色模式）中配置 ClickHouse 连接" border />
+
 <br/>
 
 1. 在 Dot UI 中，进入 **Settings → Connections**。  

@@ -5,6 +5,9 @@ title: 'Kinesis 基于角色的访问'
 description: '本文演示 ClickPipes 客户如何利用基于角色的访问与 Amazon Kinesis 进行身份验证，并安全地访问其数据流。'
 doc_type: 'guide'
 keywords: ['Amazon Kinesis']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import secure_kinesis from '@site/static/images/integrations/data-ingestion/clickpipes/securekinesis.jpg';
@@ -16,6 +19,7 @@ import Image from '@theme/IdealImage';
 ## 前提条件 {#prerequisite}
 
 要按照本指南操作，你需要：
+
 - 一个已开通的 ClickHouse Cloud 服务
 - 一个 AWS 账户
 
@@ -29,7 +33,7 @@ import Image from '@theme/IdealImage';
 
 ## 设置 {#setup}
 
-<VerticalStepper headerLevel="h3">
+<VerticalStepper headerLevel="h3"/>
 
 ### 获取 ClickHouse 服务 IAM 角色 Arn {#obtaining-the-clickhouse-service-iam-role-arn}
 
@@ -115,6 +119,4 @@ import Image from '@theme/IdealImage';
    }
    ```
 
-- 4. 创建完成后，复制新的 **IAM Role Arn**。这是访问您的 Kinesis 流所需的角色 ARN。
-
-</VerticalStepper>
+- 4. 创建完成后，复制新的 **IAM Role ARN**。这是访问您的 Kinesis 流所需的角色 ARN。

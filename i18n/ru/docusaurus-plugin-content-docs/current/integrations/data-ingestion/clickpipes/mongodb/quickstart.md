@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mongodb/quickstart
 description: 'Распространённые подходы к работе с JSON-данными, реплицируемыми из MongoDB в ClickHouse через ClickPipes'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # Работа с JSON в ClickHouse {#working-with-json-in-clickhouse}
@@ -50,6 +53,7 @@ _peerdb_is_deleted: 0
 _peerdb_version:    0
 ```
 
+
 ## Схема таблицы {#table-schema}
 
 Реплицируемые таблицы используют эту стандартную схему:
@@ -70,15 +74,17 @@ _peerdb_version:    0
 * `_peerdb_version`: Отслеживает версию строки; увеличивается при обновлении или удалении строки
 * `_peerdb_is_deleted`: Показывает, удалена ли строка
 
+
 ### Движок таблицы ReplacingMergeTree {#replacingmergetree-table-engine}
 
 ClickPipes сопоставляет коллекции MongoDB с ClickHouse, используя семейство движков таблиц `ReplacingMergeTree`. В этом движке обновления моделируются как вставки с более новой версией (`_peerdb_version`) документа для заданного первичного ключа (`_id`), что обеспечивает эффективную обработку обновлений, замен и удалений как версионных вставок.
 
-`ReplacingMergeTree` асинхронно очищает дубликаты в фоновом режиме. Чтобы гарантировать отсутствие дубликатов для одной и той же строки, используйте [модификатор `FINAL`](/sql-reference/statements/select/from#final-modifier). Например:
+`ReplacingMergeTree` асинхронно удаляет дубликаты в фоновом режиме. Чтобы гарантировать отсутствие дубликатов для одной и той же строки, используйте [модификатор `FINAL`](/sql-reference/statements/select/from#final-modifier). Например:
 
 ```sql
 SELECT * FROM t1 FINAL;
 ```
+
 
 ### Обработка удалений {#handling-deletes}
 
@@ -94,6 +100,7 @@ SELECT * FROM t1 FINAL WHERE _peerdb_is_deleted = 0;
 CREATE ROW POLICY policy_name ON t1
 FOR SELECT USING _peerdb_is_deleted = 0;
 ```
+
 
 ## Выполнение запросов к данным JSON {#querying-json-data}
 
@@ -112,7 +119,7 @@ FROM t1;
 └───────────────┴─────────────────────┘
 ```
 
-При выполнении запросов к *вложенным полям объекта* с использованием точечной нотации не забудьте добавить оператор [`^`](https://clickhouse.com/docs/sql-reference/data-types/newjson#reading-json-sub-objects-as-sub-columns):
+При выполнении запросов к *вложенным полям объекта* с использованием точечной нотации необходимо добавить оператор [`^`](https://clickhouse.com/docs/sql-reference/data-types/newjson#reading-json-sub-objects-as-sub-columns):
 
 ```sql title="Query"
 SELECT doc.^shipping as shipping_info FROM t1;
@@ -123,6 +130,7 @@ SELECT doc.^shipping as shipping_info FROM t1;
 │ {"city":"Seattle","cost":19.99,"method":"express"} │
 └────────────────────────────────────────────────────┘
 ```
+
 
 ### Динамический тип {#dynamic-type}
 
@@ -138,7 +146,7 @@ SELECT toTypeName(doc.customer_id) AS type FROM t1;
 └─────────┘
 ```
 
-Чтобы изучить исходный тип (или типы) данных для поля, вы можете воспользоваться функцией `dynamicType`. Обратите внимание, что для одного и того же имени поля в разных строках могут быть разные типы данных:
+Чтобы изучить базовый тип (или типы) данных для поля, вы можете воспользоваться функцией `dynamicType`. Обратите внимание, что для одного и того же имени поля в разных строках могут быть разные типы данных:
 
 ```sql title="Query"
 SELECT dynamicType(doc.customer_id) AS type FROM t1;
@@ -192,6 +200,7 @@ SELECT length(doc.items) AS item_count FROM t1;
 └────────────┘
 ```
 
+
 ### Приведение типов полей {#field-casting}
 
 [Агрегатные функции](https://clickhouse.com/docs/sql-reference/aggregate-functions/combinators) в ClickHouse не работают напрямую с типом `dynamic`. Например, если вы попытаетесь напрямую использовать функцию `sum` для типа `dynamic`, вы получите следующую ошибку:
@@ -214,8 +223,9 @@ SELECT sum(doc.shipping.cost::Float32) AS shipping_cost FROM t1;
 ```
 
 :::note
-Приведение значения из динамического типа к его базовому типу данных (определяется `dynamicType`) обладает высокой производительностью, так как ClickHouse уже хранит значение во внутреннем представлении этого базового типа.
+Приведение значения из динамического типа к его базовому типу данных (определяется `dynamicType`) очень эффективно с точки зрения производительности, так как ClickHouse уже хранит значение во внутреннем представлении этого типа.
 :::
+
 
 ## Уплощение JSON {#flattening-json}
 
@@ -253,7 +263,7 @@ WHERE _peerdb_is_deleted = 0;
 └─────────────────┴────────────────┘
 ```
 
-Теперь вы можете выполнять запросы к этому представлению так же, как к денормализованной («расплющенной») таблице:
+Теперь вы можете выполнять запросы к этому представлению так же, как и к денормализованной («расплющенной») таблице:
 
 ```sql
 SELECT
@@ -265,6 +275,7 @@ GROUP BY customer_id
 ORDER BY customer_id DESC
 LIMIT 10;
 ```
+
 
 ### Обновляемое материализованное представление {#refreshable-materialized-view}
 
@@ -303,7 +314,7 @@ FROM t1 FINAL
 WHERE _peerdb_is_deleted = 0;
 ```
 
-Теперь вы можете напрямую выполнять запросы к таблице `flattened_t1`, не используя модификатор `FINAL`:
+Теперь вы можете выполнять запросы к таблице `flattened_t1` напрямую, без использования модификатора `FINAL`:
 
 ```sql
 SELECT
@@ -316,9 +327,10 @@ ORDER BY customer_id DESC
 LIMIT 10;
 ```
 
-### Инкрементальное материализованное представление {#incremental-materialized-view}
 
-Если вам нужно получать доступ к плоским (flattened) столбцам в режиме реального времени, вы можете создать [инкрементальное материализованное представление](https://clickhouse.com/docs/materialized-view/incremental-materialized-view). Если в вашей таблице часто происходят обновления, не рекомендуется использовать модификатор `FINAL` в материализованном представлении, так как каждое обновление будет запускать операцию слияния. Вместо этого вы можете выполнять дедупликацию данных на этапе выполнения запроса, построив обычное представление поверх материализованного представления.
+### Incremental materialized view {#incremental-materialized-view}
+
+Если вы хотите получать доступ к развёрнутым столбцам в режиме реального времени, вы можете создать [Incremental Materialized Views](https://clickhouse.com/docs/materialized-view/incremental-materialized-view). Если в вашей таблице часто происходят обновления, не рекомендуется использовать модификатор `FINAL` в materialized view, так как каждое обновление будет приводить к слиянию. Вместо этого вы можете устранять дубликаты данных на этапе выполнения запроса, построив обычное представление поверх materialized view.
 
 ```sql
 CREATE TABLE flattened_t1 (

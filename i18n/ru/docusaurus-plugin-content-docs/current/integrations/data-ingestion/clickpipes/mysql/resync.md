@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/resync
 sidebar_label: 'Ресинхронизация ClickPipe'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
+integration:
+  - support_level: 'основной'
+  - category: 'clickpipes'
 ---
 
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
@@ -14,7 +17,7 @@ import Image from '@theme/IdealImage';
 
 Resync выполняет следующие операции в указанном порядке:
 
-1. Существующий ClickPipe удаляется, и запускается новый ClickPipe с режимом &quot;resync&quot;. Таким образом, изменения в структурах исходных таблиц будут подхвачены при выполнении resync.
+1. Существующий ClickPipe удаляется, и запускается новый ClickPipe с режимом "resync". Таким образом, изменения в структурах исходных таблиц будут подхвачены при выполнении resync.
 2. Resync ClickPipe создаёт (или заменяет) новый набор целевых таблиц с теми же именами, что и исходные, но с суффиксом `_resync`.
 3. Выполняется начальная загрузка в таблицы `_resync`.
 4. Затем таблицы `_resync` атомарно меняются местами с исходными таблицами. Логически удалённые строки переносятся из исходных таблиц в таблицы `_resync` перед обменом.

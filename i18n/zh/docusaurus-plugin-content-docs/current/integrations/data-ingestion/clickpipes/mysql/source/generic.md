@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/source/generic
 title: '通用 MySQL 源设置指南'
 doc_type: 'guide'
 keywords: ['通用 MySQL', 'ClickPipes', '二进制日志', 'SSL/TLS', 'MySQL 8.x']
+integration:
+   - support_level: '核心'
+   - category: 'clickpipes'
 ---
 
 # 通用 MySQL 数据源配置指南 {#generic-mysql-source-setup-guide}
@@ -31,7 +34,7 @@ binlog_row_metadata = FULL
 binlog_expire_logs_seconds = 86400  -- 1 day or higher; default is 30 days
 ```
 
-要检查这些设置，请运行以下 SQL 命令：
+若要检查这些设置，请运行以下 SQL 命令：
 
 ```sql
 SHOW VARIABLES LIKE 'log_bin';
@@ -41,7 +44,7 @@ SHOW VARIABLES LIKE 'binlog_row_metadata';
 SHOW VARIABLES LIKE 'binlog_expire_logs_seconds';
 ```
 
-如果这些值不一致，你可以运行以下 SQL 命令进行设置：
+如果这些值不一致，可以运行以下 SQL 命令进行设置：
 
 ```sql
 SET PERSIST log_bin = ON;
@@ -55,6 +58,7 @@ SET PERSIST binlog_expire_logs_seconds = 86400;
 
 更改设置后，继续[配置数据库用户](#configure-database-user)。
 
+
 ### MySQL 5.7 {#binlog-v5-x}
 
 要在 MySQL 5.7 实例上启用二进制日志，请确保已配置以下设置：
@@ -67,7 +71,7 @@ binlog_row_image = FULL  -- default value
 expire_logs_days = 1     -- or higher; 0 would mean logs are preserved forever
 ```
 
-若要检查这些设置，请运行以下 SQL 命令：
+要检查这些设置，请运行以下 SQL 命令：
 
 ```sql
 SHOW VARIABLES LIKE 'server_id';
@@ -91,10 +95,9 @@ expire_logs_days = 1
 你必须重启 MySQL 实例才能使更改生效。
 
 :::note
-
 对于 MySQL 5.7，不支持列排除功能，因为当时还没有引入 `binlog_row_metadata` 设置。
-
 :::
+
 
 ## 配置数据库用户 {#configure-database-user}
 

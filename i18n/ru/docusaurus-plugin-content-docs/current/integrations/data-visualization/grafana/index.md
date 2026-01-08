@@ -7,7 +7,7 @@ title: 'Плагин источника данных ClickHouse для Grafana'
 show_related_blogs: true
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'core'
   - category: 'data_visualization'
   - website: 'https://grafana.com/grafana/plugins/grafana-clickhouse-datasource/'
 keywords: ['Grafana', 'визуализация данных', 'дашборд', 'плагин', 'источник данных']

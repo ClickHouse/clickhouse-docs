@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/source/aurora
 title: 'Aurora Postgres ソース設定ガイド'
 doc_type: 'guide'
 keywords: ['Amazon Aurora', 'PostgreSQL', 'ClickPipes', 'AWS データベース', '論理レプリケーションのセットアップ']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
@@ -65,17 +68,18 @@ postgres=> SHOW wal_sender_timeout ;
 
 <Image img={reboot_rds} alt="Aurora PostgreSQL の再起動" size="lg" border />
 
+
 ## データベースユーザーの設定 {#configure-database-user}
 
-Aurora PostgreSQL のライターインスタンスに管理者ユーザーとして接続し、次のコマンドを実行します。
+Aurora PostgreSQL の writer インスタンスに管理者ユーザーで接続し、次のコマンドを実行します。
 
-1. ClickPipes 用の専用ユーザーを作成します：
+1. ClickPipes 専用のユーザーを作成します:
 
     ```sql
     CREATE USER clickpipes_user PASSWORD 'some-password';
     ```
 
-2. スキーマの権限を付与します。次の例では、`public` スキーマに対する権限を示しています。レプリケーション対象とする各スキーマごとに、同様のコマンドを実行してください。
+2. 前の手順で作成したユーザーに、スキーマレベルの読み取り専用アクセス権を付与します。次の例では `public` スキーマに対する権限を示しています。レプリケーションしたいテーブルを含む各スキーマに対して、これらのコマンドを繰り返してください:
 
     ```sql
     GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -83,17 +87,31 @@ Aurora PostgreSQL のライターインスタンスに管理者ユーザーと�
     ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
     ```
 
-3. レプリケーション権限を付与します：
+3. ユーザーにレプリケーション権限を付与します:
 
     ```sql
     GRANT rds_replication TO clickpipes_user;
     ```
 
-4. レプリケーション用のパブリケーションを作成します：
+4. レプリケーションしたいテーブルを含む [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) を作成します。パフォーマンスへのオーバーヘッドを避けるため、publication には必要なテーブルのみを含めることを強く推奨します。
 
-    ```sql
-    CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-    ```
+   :::warning
+   publication に含まれるすべてのテーブルは、**primary key** が定義されているか、**replica identity** が `FULL` に設定されている必要があります。publication のスコープ設定に関するガイダンスについては、[Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) を参照してください。
+   :::
+
+   - 特定のテーブル用の publication を作成するには:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - 特定のスキーマ内のすべてのテーブル用の publication を作成するには:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   `clickpipes` publication には、指定したテーブルから生成される変更イベントの集合が含まれ、後でレプリケーションストリームを取り込むために使用されます。
 
 ## ネットワークアクセスの設定 {#configure-network-access}
 

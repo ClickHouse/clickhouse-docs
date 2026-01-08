@@ -4,13 +4,15 @@ description: '关于 ClickPipes for Postgres 的常见问题。'
 slug: /integrations/clickpipes/postgres/faq
 sidebar_position: 2
 title: 'ClickPipes for Postgres 常见问题解答'
-keywords: ['postgres 常见问题', 'clickpipes', 'toast 列', '复制槽', '发布']
+keywords: ['postgres 常见问题', 'clickpipes', 'TOAST 列', '复制槽', '发布']
 doc_type: 'reference'
+integration:
+  - support_level: '核心'
+  - category: 'clickpipes'
 ---
 
 import failover_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/failover_slot.png'
 import Image from '@theme/IdealImage';
-
 
 # ClickPipes for Postgres 常见问题解答（FAQ） {#clickpipes-for-postgres-faq}
 
@@ -379,4 +381,4 @@ Postgres 以消息的形式发送变更信息，这些消息遵循固定协议�
 
 ### 我可以将最初从复制中排除的列重新纳入复制吗？ {#include-excluded-columns}
 
-目前尚不支持此操作，但已在我们的规划中。替代方案是[重新同步表](./table_resync.md)，以包含你想要加入的列。
+目前尚不支持此操作，替代方案是[重新同步表](./table_resync.md)，以包含你想要加入的列。

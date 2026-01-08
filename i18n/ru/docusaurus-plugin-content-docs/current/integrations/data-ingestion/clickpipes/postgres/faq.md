@@ -6,11 +6,13 @@ sidebar_position: 2
 title: 'FAQ по ClickPipes для Postgres'
 keywords: ['postgres faq', 'clickpipes', 'toast columns', 'replication slot', 'publications']
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import failover_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/failover_slot.png'
 import Image from '@theme/IdealImage';
-
 
 # FAQ по ClickPipes для Postgres {#clickpipes-for-postgres-faq}
 
@@ -379,4 +381,4 @@ Postgres отправляет информацию об изменениях в 
 
 ### Могу ли я включить столбцы, которые изначально исключил из репликации? {#include-excluded-columns}
 
-Это пока не поддерживается и находится в нашем плане работ. В качестве альтернативы можно [повторно синхронизировать таблицу](./table_resync.md), столбцы которой вы хотите включить.
+Это пока не поддерживается. В качестве альтернативы можно [повторно синхронизировать таблицу](./table_resync.md), столбцы которой вы хотите включить.

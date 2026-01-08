@@ -6,6 +6,9 @@ keywords: ['clickhouse', 'Hashboard', 'connect', 'integrate', 'ui', 'analytics']
 description: 'Hashboard は、ClickHouse と容易に統合でき、リアルタイムでのデータ分析を行える堅牢なアナリティクスプラットフォームです。'
 title: 'ClickHouse を Hashboard に接続する'
 doc_type: 'guide'
+integration:
+  - support_level: 'community'
+  - category: 'data_visualization'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';

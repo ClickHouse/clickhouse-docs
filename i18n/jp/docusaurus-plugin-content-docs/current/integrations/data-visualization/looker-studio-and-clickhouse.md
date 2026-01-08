@@ -6,7 +6,7 @@ description: 'Looker Studio（旧称 Google Data Studio）は、データをカ�
 title: 'Looker Studio'
 doc_type: 'guide'
 integration:
-  - support_level: 'core'
+  - support_level: 'partner'
   - category: 'data_visualization'
 ---
 
@@ -30,9 +30,11 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 Looker Studio は、公式の Google MySQL データソースを使用して、MySQL インターフェース経由で ClickHouse に接続できます。
 
 ## ClickHouse Cloud のセットアップ {#clickhouse-cloud-setup}
+
 <MySQLCloudSetup />
 
 ## オンプレミス環境での ClickHouse サーバーのセットアップ {#on-premise-clickhouse-server-setup}
+
 <MySQLOnPremiseSetup />
 
 ## Looker Studio を ClickHouse に接続する {#connecting-looker-studio-to-clickhouse}
@@ -40,32 +42,38 @@ Looker Studio は、公式の Google MySQL データソースを使用して、M
 まず、Google アカウントで https://lookerstudio.google.com にログインし、新しい Data Source を作成します:
 
 <Image size="md" img={looker_studio_01} alt="Looker Studio インターフェースで新しいデータソースを作成する" border />
+
 <br/>
 
 Google が提供する公式の MySQL コネクタ（名前は **MySQL**）を検索します:
 
 <Image size="md" img={looker_studio_02} alt="Looker Studio のコネクタ一覧で MySQL コネクタを検索する" border />
+
 <br/>
 
 接続情報を入力します。MySQL インターフェースのポートはデフォルトで 9004 ですが、
 サーバー構成によっては異なる場合がある点に注意してください。
 
 <Image size="md" img={looker_studio_03} alt="Looker Studio で ClickHouse MySQL 接続情報を指定する" border />
+
 <br/>
 
 次に、ClickHouse からデータを取得する方法として 2 つの方法があります。1 つ目は、Table Browser 機能を使用する方法です:
 
 <Image size="md" img={looker_studio_04} alt="Looker Studio で Table Browser を使用して ClickHouse テーブルを選択する" border />
+
 <br/>
 
 もう 1 つは、カスタム SQL クエリを指定してデータを取得する方法です:
 
 <Image size="md" img={looker_studio_05} alt="Looker Studio でカスタム SQL クエリを使用して ClickHouse からデータを取得する" border />
+
 <br/>
 
 最後に、自動解析されたテーブル構造を確認し、必要に応じてデータ型を調整できます。
 
 <Image size="md" img={looker_studio_06} alt="Looker Studio で自動解析された ClickHouse テーブル構造を表示する" border />
+
 <br/>
 
 これで、データの探索や新しいレポートの作成に進むことができます。

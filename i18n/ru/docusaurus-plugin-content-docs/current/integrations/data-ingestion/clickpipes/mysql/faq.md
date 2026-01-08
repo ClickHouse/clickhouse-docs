@@ -6,6 +6,9 @@ sidebar_position: 2
 title: 'FAQ по ClickPipes для MySQL'
 doc_type: 'reference'
 keywords: ['FAQ по MySQL ClickPipes', 'Устранение неполадок ClickPipes для MySQL', 'Репликация MySQL в ClickHouse', 'Поддержка ClickPipes для MySQL', 'MySQL CDC в ClickHouse']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # ClickPipes для MySQL: ответы на часто задаваемые вопросы (FAQ) {#clickpipes-for-mysql-faq}
@@ -54,4 +57,4 @@ keywords: ['FAQ по MySQL ClickPipes', 'Устранение неполадок
 
 ### Могу ли я включить столбцы, которые изначально были исключены из репликации? {#include-excluded-columns}
 
-Эта возможность пока не поддерживается, но есть в нашем плане развития. В качестве альтернативы вы можете [пересинхронизировать таблицу](./table_resync.md), столбцы которой хотите включить.
+Эта возможность пока не поддерживается. В качестве альтернативы вы можете [пересинхронизировать таблицу](./table_resync.md), столбцы которой хотите включить.

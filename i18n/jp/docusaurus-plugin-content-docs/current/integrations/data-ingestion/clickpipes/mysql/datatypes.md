@@ -4,6 +4,9 @@ slug: /integrations/clickpipes/mysql/datatypes
 description: 'MySQL ClickPipe における MySQL から ClickHouse へのデータ型マッピングを説明したページ'
 doc_type: 'reference'
 keywords: ['MySQL ClickPipe データ型', 'MySQL から ClickHouse へのデータ型', 'ClickPipe データ型マッピング', 'MySQL ClickHouse 型変換', 'データベース型の互換性']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 MySQL ClickPipe でサポートされているデータ型マッピングは次のとおりです。
