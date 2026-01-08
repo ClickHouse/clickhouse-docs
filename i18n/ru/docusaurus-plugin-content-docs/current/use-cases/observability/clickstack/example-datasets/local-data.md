@@ -20,7 +20,7 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 **Этот пример работает только в системах OSX и Linux**
 
 :::note HyperDX in ClickHouse Cloud
-Этот пример набора данных также может использоваться с HyperDX в ClickHouse Cloud, с лишь незначительными изменениями конвейера, указанными в тексте. При использовании HyperDX в ClickHouse Cloud вам потребуется локально запущенный коллектор OpenTelemetry, как описано в [руководстве по началу работы для этой модели развертывания](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud).
+Этот пример набора данных также может использоваться с HyperDX в ClickHouse Cloud, с лишь незначительными изменениями конвейера, указанными в тексте. При использовании HyperDX в ClickHouse Cloud вам потребуется локально запущенный коллектор OpenTelemetry, как описано в [руководстве по началу работы для этой модели развертывания](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud).
 :::
 
 <VerticalStepper>

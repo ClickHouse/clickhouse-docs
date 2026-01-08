@@ -20,7 +20,7 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 **このサンプルは OSX および Linux システムでのみ動作します**
 
 :::note ClickHouse Cloud 上の HyperDX
-このサンプルデータセットは、記載されているとおり手順にわずかな調整を加えるだけで、ClickHouse Cloud 上の HyperDX でも使用できます。ClickHouse Cloud で HyperDX を使用する場合は、[このデプロイメントモデル向けの入門ガイド](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)で説明されているように、ローカルで実行される OpenTelemetry collector が必要です。
+このサンプルデータセットは、記載されているとおり手順にわずかな調整を加えるだけで、ClickHouse Cloud 上の HyperDX でも使用できます。ClickHouse Cloud で HyperDX を使用する場合は、[このデプロイメントモデル向けの入門ガイド](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud)で説明されているように、ローカルで実行される OpenTelemetry collector が必要です。
 :::
 
 <VerticalStepper>
