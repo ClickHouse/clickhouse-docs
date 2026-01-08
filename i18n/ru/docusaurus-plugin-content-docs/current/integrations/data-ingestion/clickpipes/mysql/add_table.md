@@ -6,6 +6,9 @@ slug: /integrations/clickpipes/mysql/add_table
 show_title: false
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import Image from '@theme/IdealImage';
@@ -18,11 +21,14 @@ import add_table from '@site/static/images/integrations/data-ingestion/clickpipe
 ## Шаги по добавлению отдельных таблиц в ClickPipe {#add-tables-steps}
 
 Это можно сделать следующим образом:
+
 1. [Приостановите](./pause_and_resume.md) конвейер.
 2. Нажмите **Edit Table settings**.
-3. Найдите нужную таблицу — вы можете воспользоваться строкой поиска.
+3. Найдите нужную таблицу — это можно сделать через строку поиска.
 4. Выберите таблицу, установив флажок.
+
 <br/>
+
 <Image img={add_table} border size="md"/>
 
 5. Нажмите **Update**.

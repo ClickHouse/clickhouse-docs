@@ -8,7 +8,7 @@ title: 'Подключение Metabase к ClickHouse'
 show_related_blogs: true
 doc_type: 'guide'
 integration:
-  - support_level: 'core'
+  - support_level: 'partner'
   - category: 'data_visualization'
   - website: 'https://github.com/clickhouse/metabase-clickhouse-driver'
 ---
@@ -28,13 +28,14 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-Metabase — это простой в использовании UI-инструмент с открытым исходным кодом для формирования запросов к вашим данным. Metabase — это Java-приложение, которое можно запустить, просто <a href="https://www.metabase.com/start/oss/jar" target="_blank">скачав JAR‑файл</a> и выполнив его командой `java -jar metabase.jar`. Metabase подключается к ClickHouse с помощью JDBC‑драйвера, который вы скачиваете и помещаете в папку `plugins`:
+Metabase — это простой в использовании UI-инструмент с открытым исходным кодом для формирования запросов к вашим данным. Metabase — это Java-приложение, которое можно запустить, просто <a href="https://www.metabase.com/start/oss/jar" target="_blank">скачав JAR‑файл</a> и выполнив его командой `java -jar metabase.jar`. Metabase подключается к ClickHouse с помощью JDBC‑драйвера, который нужно загрузить и поместить в папку `plugins`:
 
 ## Цель {#goal}
 
 В этом руководстве вы зададите ряд вопросов к данным в ClickHouse с помощью Metabase и визуализируете полученные ответы. Один из результатов будет выглядеть так:
 
-  <Image size="md" img={metabase_08} alt="Визуализация круговой диаграммы Metabase, показывающая данные из ClickHouse" border />
+<Image size="md" img={metabase_08} alt="Визуализация круговой диаграммы Metabase, показывающая данные из ClickHouse" border />
+
 <p/>
 
 :::tip Добавьте немного данных
@@ -42,6 +43,7 @@ Metabase — это простой в использовании UI-инстру
 :::
 
 ## 1. Соберите параметры подключения {#1-gather-your-connection-details}
+
 <ConnectionDetails />
 
 ## 2.  Загрузка плагина ClickHouse для Metabase {#2--download-the-clickhouse-plugin-for-metabase}
@@ -60,11 +62,11 @@ Metabase — это простой в использовании UI-инстру
 
 1. Нажмите на значок шестерёнки в правом верхнем углу и выберите **Admin Settings**, чтобы открыть <a href="http://localhost:3000/admin/settings/setup" target="_blank">административную страницу Metabase</a>.
 
-2. Нажмите **Add a database**. Либо перейдите на вкладку **Databases** и нажмите кнопку **Add database**.
+2. Нажмите **Add a database**. Или перейдите на вкладку **Databases** и нажмите кнопку **Add database**.
 
 3. Если установка драйвера прошла успешно, вы увидите **ClickHouse** в раскрывающемся списке в поле **Database type**:
 
-    <Image size="md" img={metabase_01} alt="Выбор базы данных в Metabase, показывающий ClickHouse в качестве опции" border />
+    <Image size="md" img={metabase_01} alt="Выбор базы данных в Metabase с ClickHouse в качестве варианта" border />
 
 4. Задайте для своей базы данных **Display name** — это настройка Metabase, поэтому можете использовать любое удобное вам имя.
 
@@ -72,7 +74,7 @@ Metabase — это простой в использовании UI-инстру
 
     <Image size="md" img={metabase_02} alt="Форма параметров подключения Metabase к базе данных ClickHouse" border />
 
-6. Нажмите кнопку **Save**, и Metabase просканирует вашу базу данных и обнаружит таблицы.
+6. Нажмите кнопку **Save**, и Metabase просканирует вашу базу данных на наличие таблиц.
 
 ## 4. Выполните SQL-запрос {#4-run-a-sql-query}
 
@@ -82,7 +84,7 @@ Metabase — это простой в использовании UI-инстру
 
     <Image size="sm" img={metabase_03} alt="Меню Metabase New с вариантами создания вопросов, SQL-запросов и дашбордов" border />
 
-3. Например, ниже показан SQL-запрос к таблице `uk_price_paid`, который возвращает среднюю уплаченную цену по годам с 1995 по 2022 год:
+3. Например, ниже показан SQL-запрос к таблице `uk_price_paid`, который возвращает среднюю цену покупки по годам с 1995 по 2022 год:
 
     <Image size="md" img={metabase_04} alt="Редактор SQL Metabase, показывающий запрос к данным UK price paid" border />
 

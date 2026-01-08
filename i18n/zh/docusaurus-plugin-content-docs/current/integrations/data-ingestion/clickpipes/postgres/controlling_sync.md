@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/sync_control
 sidebar_label: '控制同步'
 keywords: ['同步控制', 'Postgres', 'ClickPipes', '批处理大小', '同步间隔']
 doc_type: 'guide'
+integration:
+  - support_level: '核心'
+  - category: 'clickpipes'
 ---
 
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'
@@ -14,7 +17,6 @@ import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipe
 import Image from '@theme/IdealImage';
 
 本文档介绍在 ClickPipe 处于 **CDC（运行中）模式** 时如何控制 Postgres ClickPipe 的同步。
-
 
 ## 概览 {#overview}
 

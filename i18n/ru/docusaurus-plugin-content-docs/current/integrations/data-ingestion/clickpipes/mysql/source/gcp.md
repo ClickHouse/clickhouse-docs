@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/source/gcp
 title: 'Руководство по настройке источника Cloud SQL для MySQL'
 keywords: ['google cloud sql', 'mysql', 'clickpipes', 'pitr', 'root ca certificate']
 doc_type: 'guide'
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import gcp_pitr from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/gcp/gcp-mysql-pitr.png';
@@ -17,12 +20,14 @@ import Image from '@theme/IdealImage';
 
 # Руководство по настройке источника Cloud SQL for MySQL {#cloud-sql-for-mysql-source-setup-guide}
 
-Это пошаговое руководство по настройке экземпляра Cloud SQL for MySQL для репликации данных через MySQL ClickPipe.
+Это пошаговое руководство по настройке экземпляра Cloud SQL for MySQL для репликации его данных с помощью MySQL ClickPipe.
 
 ## Включение хранения бинарного лога {#enable-binlog-retention-gcp}
+
 Бинарный лог — это набор файлов журнала, которые содержат информацию об изменениях данных, произведённых в экземпляре сервера MySQL. Файлы бинарного лога необходимы для репликации.
 
 ### Включение бинарного логирования через PITR{#enable-binlog-logging-gcp}
+
 Функция PITR определяет, включено или выключено бинарное логирование для MySQL в Google Cloud. Она настраивается в консоли Cloud Console при редактировании экземпляра Cloud SQL и прокрутке до следующего раздела.
 
 <Image img={gcp_pitr} alt="Включение PITR в Cloud SQL" size="lg" border/>
@@ -30,11 +35,13 @@ import Image from '@theme/IdealImage';
 Рекомендуется установить достаточно длительный период хранения в зависимости от сценария использования репликации.
 
 Если это ещё не настроено, убедитесь, что в разделе флагов базы данных при редактировании Cloud SQL заданы следующие параметры:
+
 1. `binlog_expire_logs_seconds` со значением >= `86400` (1 день).
 2. `binlog_row_metadata` со значением `FULL`
 3. `binlog_row_image` со значением `FULL`
 
 Чтобы сделать это, нажмите кнопку `Edit` в правом верхнем углу страницы обзора экземпляра.
+
 <Image img={gcp_mysql_edit_button} alt="Кнопка Edit в GCP MySQL" size="lg" border/>
 
 Затем прокрутите вниз до раздела `Flags` и добавьте указанные выше флаги.
@@ -72,6 +79,7 @@ import Image from '@theme/IdealImage';
 <Image img={gcp_mysql_ip} alt="Добавление IP-адресов в allowlist в GCP MySQL" size="lg" border/>
 
 ## Загрузка и использование корневого сертификата ЦС {#download-root-ca-certificate-gcp-mysql}
+
 Чтобы подключиться к экземпляру Cloud SQL, необходимо скачать корневой сертификат центра сертификации (ЦС).
 
 1. Перейдите на страницу экземпляра Cloud SQL в Cloud Console.

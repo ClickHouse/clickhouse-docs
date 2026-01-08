@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/source/aurora
 title: 'Руководство по настройке источника Aurora MySQL'
 doc_type: 'guide'
 keywords: ['aurora mysql', 'clickpipes', 'binlog retention', 'gtid mode', 'aws']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
@@ -29,9 +32,9 @@ import Image from '@theme/IdealImage';
 
 ### 1. Включите двоичное логирование с помощью автоматического резервного копирования {#enable-binlog-logging}
 
-Функция автоматического резервного копирования определяет, включено или отключено двоичное логирование для MySQL. Автоматическое резервное копирование можно настроить для вашего экземпляра в RDS Console, перейдя в **Modify** &gt; **Additional configuration** &gt; **Backup** и установив флажок **Enable automated backups** (если он ещё не установлен).
+Функция автоматического резервного копирования определяет, включено или отключено двоичное логирование для MySQL. Автоматическое резервное копирование можно настроить для вашего экземпляра в RDS Console, перейдя в **Modify** > **Additional configuration** > **Backup** и установив флажок **Enable automated backups** (если он ещё не установлен).
 
-<Image img={rds_backups} alt="Включение автоматического резервного копирования в Aurora" size="lg" border />
+<Image img={rds_backups} alt="Включение автоматического резервного копирования в Aurora" size="lg" border/>
 
 Рекомендуется задать для параметра **Backup retention period** достаточно большое значение в зависимости от сценария репликации.
 
@@ -49,7 +52,8 @@ import Image from '@theme/IdealImage';
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 ```
 
-Если эта настройка не задана или установлен слишком короткий интервал, это может привести к разрывам в двоичных логах и не позволит ClickPipes корректно возобновлять репликацию.
+Если эта настройка не задана или для неё установлен слишком короткий интервал, это может привести к пропускам в двоичных журналах и не позволит ClickPipes корректно возобновлять репликацию.
+
 
 ## Настройка параметров binlog {#binlog-settings}
 

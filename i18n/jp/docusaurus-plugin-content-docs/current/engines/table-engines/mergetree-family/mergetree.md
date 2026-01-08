@@ -402,7 +402,7 @@ bloom_filter([false_positive_rate])
 * `Map`
 
 :::note Map データ型: キーまたは値に対する索引作成の指定
-`Map` データ型では、クライアントは [`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapkeys) または [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapvalues) 関数を使用して、索引をキーに対して作成するか、値に対して作成するかを指定できます。
+`Map` データ型では、クライアントは [`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapKeys) または [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapValues) 関数を使用して、索引をキーに対して作成するか、値に対して作成するかを指定できます。
 :::
 
 
@@ -522,7 +522,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 | [less（`<`）](/sql-reference/functions/comparison-functions.md/#less)                                                       | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
 | [greater（`>`）](/sql-reference/functions/comparison-functions.md/#greater)                                                 | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
 | [lessOrEquals（`<=`）](/sql-reference/functions/comparison-functions.md/#lessOrEquals)                                      | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
-| [以上 (`>=`)](/sql-reference/functions/comparison-functions.md/#greaterOrEquals)                                            | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [greaterOrEquals（`>=`)](/sql-reference/functions/comparison-functions.md/#greaterOrEquals)                                | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
 | [empty](/sql-reference/functions/array-functions/#empty)                                                                  | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
 | [notEmpty](/sql-reference/functions/array-functions/#notEmpty)                                                            | ✗   | ✔      | ✗              | ✗              | ✗                | ✔                | ✗    |
 | [has](/sql-reference/functions/array-functions#has)                                                                       | ✔   | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
@@ -534,7 +534,10 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 | [hasTokenCaseInsensitiveOrNull (`*`)](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitiveOrNull) | ✗   | ✗      | ✗              | ✔              | ✗                | ✗                | ✗    |
 | [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens)                                         | ✗   | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
 | [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)                                         | ✗   | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
-| [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains)                                                   | ✗   | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| [mapContains (mapContainsKey)](/sql-reference/functions/tuple-map-functions#mapContainsKey)                               | ✗   | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| [mapContainsKeyLike](/sql-reference/functions/tuple-map-functions#mapContainsKeyLike)                                     | ✗   | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapContainsValue)                                         | ✗   | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| [mapContainsValueLike](/sql-reference/functions/tuple-map-functions#mapContainsValueLike)                                 | ✗   | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
 
 `ngrambf_v1` によるクエリ最適化では、定数引数の値が ngram サイズより小さい関数は使用できません。
 

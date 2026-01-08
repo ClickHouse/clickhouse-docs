@@ -6,6 +6,9 @@ slug: /integrations/sql-clients/sql-console
 description: '了解 SQL 控制台'
 doc_type: 'guide'
 keywords: ['sql 控制台', '查询界面', 'Web UI', 'SQL 编辑器', 'Cloud 控制台']
+integration:
+   - support_level: 'community'
+   - category: 'sql_client'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
@@ -46,7 +49,6 @@ import update_subtitle_etc from '@site/static/images/cloud/sqlconsole/update-sub
 import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-scale.png';
 import give_a_query_a_name from '@site/static/images/cloud/sqlconsole/give-a-query-a-name.png'
 import save_the_query from '@site/static/images/cloud/sqlconsole/save-the-query.png'
-
 
 # SQL 控制台 {#sql-console}
 

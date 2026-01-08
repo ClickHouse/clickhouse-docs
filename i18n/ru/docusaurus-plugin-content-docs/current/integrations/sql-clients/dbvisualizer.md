@@ -6,7 +6,7 @@ title: 'Подключение DbVisualizer к ClickHouse'
 keywords: ['DbVisualizer', 'визуализация баз данных', 'SQL-клиент', 'JDBC-драйвер', 'инструмент для работы с базами данных']
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'sql_client'
 ---
 

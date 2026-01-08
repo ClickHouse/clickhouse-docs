@@ -5,9 +5,10 @@ slug: /integrations/clickpipes/mysql/table_resync
 sidebar_label: 'テーブルの再同期'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', 'データインジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
-
-
 
 # 特定テーブルの再同期 {#resync-tables}
 
@@ -21,9 +22,9 @@ keywords: ['clickpipes', 'mysql', 'cdc', 'データインジェスト', 'リア�
 
 ### 2. ClickHouse 上のテーブルを TRUNCATE または DROP する {#truncate-drop-table}
 
-このステップは、次のステップでテーブルを再度追加した際にデータが重複するのを防ぐためのものです。ClickHouse Cloud の **SQL Console** タブを開き、クエリを実行してください。
-すでに ClickHouse 上にテーブルが存在し、かつ空でない場合はテーブル追加をブロックする検証が入っている点に注意してください。
+この手順は、次のステップでテーブルを再度追加した際にデータが重複するのを防ぐためのものです。ClickHouse Cloud の **SQL Console** タブを開き、クエリを実行してください。
+すでに ClickHouse 上にテーブルが存在し、かつ空でない場合はテーブル追加をブロックする検証が行われる点に注意してください。
 
 ### 3. テーブルを再度 ClickPipe に追加する {#add-table-again}
 
-[テーブル追加ガイド](./add_table) に従ってテーブルを再追加してください。
+[テーブル追加ガイド](./add_table) に従って実施してください。

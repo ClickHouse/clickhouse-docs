@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/deduplication
 title: 'Стратегии дедупликации (на основе CDC)'
 keywords: ['deduplication', 'postgres', 'clickpipes', 'replacingmergetree', 'final']
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import clickpipes_initial_load from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-cdc-initial-load.png';
@@ -50,11 +53,12 @@ PRIMARY KEY id
 ORDER BY id;
 ```
 
+
 ### Показательный пример {#illustrative-example}
 
 Ниже приведена иллюстрация базового примера синхронизации таблицы `users` между PostgreSQL и ClickHouse с использованием ClickPipes.
 
-<Image img={clickpipes_initial_load} alt="ClickPipes initial load" size="lg" />
+<Image img={clickpipes_initial_load} alt="ClickPipes initial load" size="lg"/>
 
 **Шаг 1** показывает начальный снимок с 2 строками в PostgreSQL и то, как ClickPipes выполняет их начальную загрузку в ClickHouse. Как видно, обе строки копируются в ClickHouse без изменений.
 
@@ -122,6 +126,7 @@ ORDER BY viewcount DESC
 LIMIT 10
 ```
 
+
 #### Настройка FINAL {#final-setting}
 
 Вместо того чтобы добавлять модификатор FINAL к каждой таблице в запросе, вы можете использовать [настройку FINAL](/operations/settings/settings#final), чтобы применять его автоматически ко всем таблицам в запросе.
@@ -137,6 +142,7 @@ SET final = 1;
 SELECT count(*) FROM posts; 
 ```
 
+
 #### Политика строк (ROW policy) {#row-policy}
 
 Простой способ скрыть избыточный фильтр `_peerdb_is_deleted = 0` — использовать [политику строк (ROW policy).](/docs/operations/access-rights#row-policy-management) Ниже приведён пример, который создаёт политику строк для исключения удалённых строк из всех запросов к таблице votes.
@@ -146,11 +152,12 @@ SELECT count(*) FROM posts;
 CREATE ROW POLICY cdc_policy ON votes FOR SELECT USING _peerdb_is_deleted = 0 TO ALL;
 ```
 
-> Политики на уровне строк применяются к списку пользователей и ролей. В этом примере они применяются ко всем пользователям и ролям. Это можно настроить так, чтобы они применялись только к конкретным пользователям или ролям.
+> Политики строк применяются к определённому списку пользователей и ролей. В этом примере политика применяется ко всем пользователям и ролям. Это можно настроить так, чтобы она применялась только к конкретным пользователям или ролям.
+
 
 ### Запросы в стиле Postgres {#query-like-with-postgres}
 
-Миграция аналитического набора данных из PostgreSQL в ClickHouse часто требует модификации запросов приложения с учётом различий в обработке данных и выполнении запросов.
+Миграция аналитического набора данных из PostgreSQL в ClickHouse часто требует модификации запросов приложения с учётом различий в обработке данных и выполнении запросов. 
 
 В этом разделе будут рассмотрены методы дедупликации данных при сохранении исходных запросов без изменений.
 
@@ -167,7 +174,7 @@ CREATE VIEW votes_view AS SELECT * FROM votes FINAL WHERE _peerdb_is_deleted=0;
 CREATE VIEW comments_view AS SELECT * FROM comments FINAL WHERE _peerdb_is_deleted=0;
 ```
 
-Затем мы можем обращаться к представлениям тем же запросом, который использовали бы в PostgreSQL.
+Затем мы можем обращаться к представлениям тем же запросом, что и в PostgreSQL.
 
 ```sql
 -- Most viewed posts
@@ -180,6 +187,7 @@ GROUP BY owneruserid
 ORDER BY viewcount DESC
 LIMIT 10
 ```
+
 
 #### Обновляемое материализованное представление {#refreshable-material-view}
 
@@ -198,7 +206,7 @@ CREATE MATERIALIZED VIEW deduplicated_posts_mv REFRESH EVERY 1 HOUR TO deduplica
 SELECT * FROM posts FINAL WHERE _peerdb_is_deleted=0 
 ```
 
-После этого вы можете как обычно выполнять запросы к таблице `deduplicated_posts`.
+После этого вы можете выполнять запросы к таблице `deduplicated_posts` как обычно.
 
 ```sql
 SELECT

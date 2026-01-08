@@ -5,12 +5,15 @@ slug: /integrations/clickpipes/postgres/deduplication
 title: '去重策略（使用 CDC）'
 keywords: ['deduplication', 'postgres', 'clickpipes', 'replacingmergetree', 'final']
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import clickpipes_initial_load from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-cdc-initial-load.png';
 import Image from '@theme/IdealImage';
 
-从 Postgres 复制到 ClickHouse 的更新和删除操作，会由于 ClickHouse 的数据存储结构和复制过程而在 ClickHouse 中产生重复行。本页介绍这一现象产生的原因，以及在 ClickHouse 中处理重复数据的策略。
+从 Postgres 复制到 ClickHouse 的更新和删除操作，会由于 ClickHouse 的数据存储结构和复制过程而在 ClickHouse 中产生重复行。本页说明为何会出现这种情况，以及在 ClickHouse 中用于处理重复数据的策略。
 
 ## 数据是如何复制的？ {#how-does-data-get-replicated}
 
@@ -49,6 +52,7 @@ ENGINE = ReplacingMergeTree(_peerdb_version)
 PRIMARY KEY id
 ORDER BY id;
 ```
+
 
 ### 示例说明 {#illustrative-example}
 
@@ -122,6 +126,7 @@ ORDER BY viewcount DESC
 LIMIT 10
 ```
 
+
 #### FINAL 设置 {#final-setting}
 
 与其在查询中为每个表名都添加 FINAL 修饰符，不如使用 [FINAL 设置](/operations/settings/settings#final)，将其自动应用到查询中的所有表。
@@ -137,6 +142,7 @@ SET final = 1;
 SELECT count(*) FROM posts; 
 ```
 
+
 #### 行策略（ROW policy） {#row-policy}
 
 隐藏多余的 `_peerdb_is_deleted = 0` 过滤条件的一种简便方法是使用[行策略](/docs/operations/access-rights#row-policy-management)。下面是一个示例，演示如何创建行策略，使对 votes 表的所有查询自动排除已删除的行。
@@ -146,7 +152,8 @@ SELECT count(*) FROM posts;
 CREATE ROW POLICY cdc_policy ON votes FOR SELECT USING _peerdb_is_deleted = 0 TO ALL;
 ```
 
-> 行级策略会应用于一组用户和角色。在本例中，它被应用到所有用户和角色。可以将其调整为仅应用于特定用户或角色。
+> 行策略会应用到一组用户和角色。在本例中，它应用于所有用户和角色。也可以将其调整为仅应用于特定用户或角色。
+
 
 ### 使用类似 Postgres 的查询 {#query-like-with-postgres}
 
@@ -167,7 +174,7 @@ CREATE VIEW votes_view AS SELECT * FROM votes FINAL WHERE _peerdb_is_deleted=0;
 CREATE VIEW comments_view AS SELECT * FROM comments FINAL WHERE _peerdb_is_deleted=0;
 ```
 
-然后，我们可以使用与在 PostgreSQL 中相同的查询来查询这些视图。
+然后，我们可以像在 PostgreSQL 中那样，使用相同的查询来查询这些视图。
 
 ```sql
 -- Most viewed posts
@@ -180,6 +187,7 @@ GROUP BY owneruserid
 ORDER BY viewcount DESC
 LIMIT 10
 ```
+
 
 #### 可刷新的物化视图 {#refreshable-material-view}
 

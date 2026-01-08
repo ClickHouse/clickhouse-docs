@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/source/generic
 title: '通用 Postgres 源配置指南'
 doc_type: 'guide'
 keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal level']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 # 通用 Postgres 源设置指南 {#generic-postgres-source-setup-guide}
@@ -52,31 +55,49 @@ ClickPipes 支持 Postgres 12 及更高版本。
     ```
 3. 如果你对上述配置做了任何更改，必须重启 Postgres 实例，更改才会生效。
 
-## 创建具备权限的用户和发布 {#creating-a-user-with-permissions-and-publication}
+## 创建具有权限和 publication 的用户 {#creating-a-user-with-permissions-and-publication}
 
-让我们为 ClickPipes 创建一个具备 CDC 所需权限的新用户，
-并创建一个我们将用于复制的发布。
+以管理员用户身份连接到你的 Postgres 实例，并执行以下命令：
 
-为此，可以连接到你的 Postgres 实例并运行以下 SQL 命令：
+1. 为 ClickPipes 创建一个专用用户：
 
-```sql
-  CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
-  GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-  GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-  ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+   ```sql
+   CREATE USER clickpipes_user PASSWORD 'some-password';
+   ```
 
--- Give replication permission to the USER
-  ALTER USER clickpipes_user REPLICATION;
+2. 为你在上一步中创建的用户授予模式级只读访问权限。以下示例展示了对 `public` 模式的权限授予方式。对于每个包含你希望复制的表的模式，请重复执行这些命令：
+   
+    ```sql
+    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+    ```
 
--- Create a publication. We will use this when creating the pipe
-  CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-```
+3. 为该用户授予复制权限：
 
-:::note
+   ```sql
+   ALTER ROLE clickpipes_user REPLICATION;
+   ```
 
-请务必将 `clickpipes_user` 和 `clickpipes_password` 替换为你希望使用的用户名和密码。
+4. 使用你希望复制的表创建一个 [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html)。我们强烈建议仅在 publication 中包含所需的表，以避免额外的性能开销。
 
-:::
+   :::warning
+   任何包含在 publication 中的表必须要么定义了**主键（primary key）**，要么将其 **replica identity** 配置为 `FULL`。有关作用域设置的指导，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
+   :::
+
+   - 为特定表创建 publication：
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - 为特定模式中的所有表创建 publication：
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   `clickpipes` publication 将包含由指定表生成的一组变更事件，并将在后续用于摄取复制数据流。
 
 ## 在 pg_hba.conf 中为 ClickPipes 用户启用连接 {#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user}
 
@@ -113,6 +134,7 @@ SELECT pg_reload_conf();
 如需获取该数值的更佳配置建议，请联系 ClickPipes 团队。
 
 :::
+
 
 ## 接下来是什么？ {#whats-next}
 
