@@ -6,6 +6,9 @@ description: 'Grafana 中 ClickHouse 数据源插件的配置选项'
 title: '在 Grafana 中配置 ClickHouse 数据源'
 doc_type: 'guide'
 keywords: ['Grafana 插件配置', '数据源设置', '连接参数', '身份验证配置', '插件选项']
+integration:
+  - support_level: '核心'
+  - category: 'data_visualization'
 ---
 
 import Image from '@theme/IdealImage';

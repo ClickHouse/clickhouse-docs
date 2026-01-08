@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mongodb
 title: 'Приём данных из MongoDB в ClickHouse (с использованием CDC)'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

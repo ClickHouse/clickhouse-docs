@@ -7,7 +7,7 @@ description: 'Explo は、データに関する疑問に簡単に答えるため
 title: 'Explo を ClickHouse に接続する'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
 ---
 
@@ -35,11 +35,12 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-あらゆるプラットフォームで利用できる顧客向けアナリティクス。美しい可視化のために設計され、シンプルさを追求して実装されています。
+あらゆるプラットフォームに組み込める顧客向けアナリティクス。美しい可視化を実現するためにデザインされ、シンプルさを追求して設計されています。
 
 ## 目標 {#goal}
 
 このガイドでは、ClickHouse のデータを Explo に接続して結果を可視化します。チャートは次のようになります。
+
 <Image img={explo_15} size="md" alt="Explo ダッシュボード" />
 
 <p/>
@@ -49,6 +50,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 :::
 
 ## 1. 接続情報を取得する {#1-gather-your-connection-details}
+
 <ConnectionDetails />
 
 ## 2.  Explo を ClickHouse に接続する {#2--connect-explo-to-clickhouse}
@@ -100,7 +102,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## 4. SQL クエリを実行する {#4-run-a-sql-query}
 
-1. 右側のサイドバーで、スキーマ名の下に表示されているテーブル名を確認します。その後、データセットエディタに次のコマンドを入力します:
+1. 右側のサイドバーで、スキーマ名の下に表示されているテーブル名を取得します。その後、データセットエディタに次のコマンドを入力します：
 `
 SELECT * FROM YOUR_TABLE_NAME
 LIMIT 100

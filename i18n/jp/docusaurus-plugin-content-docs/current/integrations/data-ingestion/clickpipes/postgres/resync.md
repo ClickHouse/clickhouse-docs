@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/resync
 sidebar_label: 'ClickPipe の再同期'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'データインジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'

@@ -19,11 +19,11 @@ import dbeaver_test_connection from '@site/static/images/integrations/sql-client
 import dbeaver_download_driver from '@site/static/images/integrations/sql-clients/dbeaver-download-driver.png';
 import dbeaver_sql_editor from '@site/static/images/integrations/sql-clients/dbeaver-sql-editor.png';
 import dbeaver_query_log_select from '@site/static/images/integrations/sql-clients/dbeaver-query-log-select.png';
-import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
 # Подключение DBeaver к ClickHouse {#connect-dbeaver-to-clickhouse}
 
-<ClickHouseSupportedBadge/>
+<PartnerBadge/>
 
 DBeaver доступен в нескольких редакциях. В этом руководстве используется [DBeaver Community](https://dbeaver.io/). С различными редакциями и их возможностями можно ознакомиться [здесь](https://dbeaver.com/edition/). DBeaver подключается к ClickHouse с помощью JDBC.
 

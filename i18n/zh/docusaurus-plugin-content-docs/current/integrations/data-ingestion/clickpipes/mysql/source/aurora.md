@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/source/aurora
 title: 'Aurora MySQL 数据源配置指南'
 doc_type: 'guide'
 keywords: ['aurora mysql', 'clickpipes', 'binlog retention', 'gtid mode', 'aws']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
@@ -49,7 +52,8 @@ import Image from '@theme/IdealImage';
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 ```
 
-如果未设置该配置，或将其设置为过短的间隔，可能会导致二进制日志中出现间隙，从而削弱 ClickPipes 恢复复制的能力。
+如果未设置该配置，或将其设置为过短的间隔，可能会导致二进制日志中出现间隙，从而影响 ClickPipes 恢复复制的能力。
+
 
 ## 配置 binlog 设置 {#binlog-settings}
 

@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/resync
 sidebar_label: '重新同步 ClickPipe'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
@@ -27,10 +30,10 @@ Resync 会按以下顺序执行操作：
 
 1. 你可能需要在源表上执行重大 schema 变更，这会导致现有 ClickPipe 出错，需要重新启动。这种情况下，只需在完成变更后点击 Resync 即可。
 2. 尤其是对于 ClickHouse，你可能需要更改目标表上的 ORDER BY 键。你可以通过 Resync 将数据重新填充到带有正确排序键的新表中。
-3. ClickPipe 的 replication slot 失效：Resync 会在源数据库上创建一个新的 ClickPipe 和一个新的 slot。
+3. ClickPipe 的 replication slot 失效：Resync 会在源数据库上创建一个新的 ClickPipe 和一个新的 replication slot。
 
 :::note
-你可以执行多次 resync，但在 resync 时请考虑对源数据库的负载，
+你可以多次执行 Resync 操作，但每次 Resync 时请考虑对源数据库的负载，
 因为每次都会涉及使用并行线程的初始加载。
 :::
 

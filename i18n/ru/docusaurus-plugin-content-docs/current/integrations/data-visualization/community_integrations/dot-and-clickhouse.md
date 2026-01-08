@@ -5,6 +5,9 @@ keywords: ['clickhouse', 'dot', 'ai', 'chatbot', 'mysql', 'integrate', 'ui', 'vi
 description: 'AI-чатбот | Dot — это интеллектуальный виртуальный помощник по данным, который отвечает на вопросы о бизнес-данных, находит определения и релевантные объекты данных, а также может помогать с моделированием данных, работая на базе ClickHouse.'
 title: 'Dot'
 doc_type: 'guide'
+integration:
+   - support_level: 'community'
+   - category: 'data_visualization'
 ---
 
 import Image from '@theme/IdealImage';
@@ -17,7 +20,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 <CommunityMaintainedBadge/>
 
 [Dot](https://www.getdot.ai/) — ваш **аналитик данных на базе ИИ**.
-Он подключается напрямую к ClickHouse, чтобы вы могли задавать вопросы о данных на естественном языке, исследовать их, проверять гипотезы и находить ответы на вопросы «почему» — прямо в Slack, Microsoft Teams, ChatGPT или во встроенном веб‑интерфейсе.
+Он подключается напрямую к ClickHouse, чтобы вы могли задавать вопросы о данных на естественном языке, исследовать их, проверять гипотезы и находить ответы на вопросы «почему» — прямо в Slack, Microsoft Teams, ChatGPT или в собственной веб‑панели.
 
 ## Предварительные требования {#pre-requisites}
 
@@ -28,6 +31,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 ## Подключение Dot к ClickHouse {#connecting-dot-to-clickhouse}
 
 <Image size="md" img={dot_01} alt="Настройка подключения к ClickHouse в Dot (светлая тема)" border />
+
 <br/>
 
 1. В интерфейсе Dot перейдите в **Settings → Connections**.  

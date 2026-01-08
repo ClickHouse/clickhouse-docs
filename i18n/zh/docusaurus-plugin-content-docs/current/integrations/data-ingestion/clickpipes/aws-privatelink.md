@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/aws-privatelink
 title: '适用于 ClickPipes 的 AWS PrivateLink'
 doc_type: 'guide'
 keywords: ['AWS PrivateLink', 'ClickPipes 安全性', 'VPC 终端节点', '私有连接', 'VPC 资源']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
@@ -20,7 +23,7 @@ import Image from '@theme/IdealImage';
 
 # 面向 ClickPipes 的 AWS PrivateLink {#aws-privatelink-for-clickpipes}
 
-您可以使用 [AWS PrivateLink](https://aws.amazon.com/privatelink/) 在 VPC、AWS 服务、本地系统与 ClickHouse Cloud 之间建立安全连接，而无需将流量暴露在公共互联网中。
+您可以使用 [AWS PrivateLink](https://aws.amazon.com/privatelink/) 在 VPC、AWS 服务、本地部署系统与 ClickHouse Cloud 之间建立安全连接，而无需将流量暴露到公共互联网。
 
 本文档介绍了 ClickPipes 的反向私有终端节点功能，
 该功能允许您配置 AWS PrivateLink VPC 终端节点。
@@ -28,6 +31,7 @@ import Image from '@theme/IdealImage';
 ## 支持的 ClickPipes 数据源 {#supported-sources}
 
 ClickPipes 反向私有端点功能目前仅适用于以下类型的数据源：
+
 - Kafka
 - Postgres
 - MySQL
@@ -85,7 +89,7 @@ aws vpc-lattice create-resource-gateway \
 
 命令输出中会包含资源网关 ID，你在下一步中将用到它。
 
-在继续之前，你需要等待资源网关进入 `Active` 状态。你可以通过运行以下命令检查其状态：
+在继续之前，你需要等待资源网关进入 `Active` 状态。你可以通过运行以下命令来检查其状态：
 
 ```bash
 aws vpc-lattice get-resource-gateway \
@@ -94,7 +98,7 @@ aws vpc-lattice get-resource-gateway \
 
 #### 创建 VPC Resource-Configuration {#create-resource-configuration}
 
-Resource-Configuration 会与资源网关关联，使你的资源可以被访问。
+Resource-Configuration 会与资源网关关联，以便访问你的资源。
 
 你可以在 [AWS 控制台](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-configuration.html) 中创建 Resource-Configuration，或者使用以下命令创建：
 
@@ -106,7 +110,7 @@ aws vpc-lattice create-resource-configuration \
     --name <RESOURCE_CONFIGURATION_NAME>
 ```
 
-最简单的[资源配置类型](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types)是单个 Resource-Configuration。你可以直接使用 ARN 进行配置，或者共享一个 IP 地址，或一个能在公网上解析的域名。
+最简单的[资源配置类型](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types)是单个 Resource-Configuration。你可以直接使用 ARN 进行配置，也可以通过共享一个 IP 地址或一个可在公网上解析的域名进行配置。
 
 例如，要使用某个 RDS 集群的 ARN 进行配置：
 
@@ -131,7 +135,7 @@ aws vpc-lattice create-resource-configuration \
 
 要共享你的资源，需要创建一个 Resource-Share。这是通过 Resource Access Manager（RAM）来实现的。
 
-您可以通过 [AWS 控制台](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html) 将 Resource-Configuration 添加到 Resource-Share，或者使用 ClickPipes 账户 ID `072088201116`（arn:aws:iam::072088201116:root）运行以下命令来完成：
+你可以在 [AWS 控制台](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html) 中将 Resource-Configuration 放入 Resource-Share，或者使用以下命令（使用 ClickPipes 账户 ID `072088201116`，arn:aws:iam::072088201116:root）执行：
 
 ```bash
 aws ram create-resource-share \
@@ -140,17 +144,18 @@ aws ram create-resource-share \
     --name <RESOURCE_SHARE_NAME>
 ```
 
-命令输出中会包含一个 Resource-Share 的 ARN，您需要使用该 ARN 通过 VPC 资源建立 ClickPipe 连接。
+命令输出中会包含一个 Resource-Share 的 ARN，你在使用 VPC 资源配置 ClickPipe 连接时需要使用该 ARN。
 
-现在，您已经可以使用 VPC 资源来[创建带有反向私有终端节点的 ClickPipe](#creating-clickpipe)。您需要：
+现在，你已经可以使用 VPC 资源[创建带有反向私有端点的 ClickPipe](#creating-clickpipe)。你需要：
 
-- 将 `VPC endpoint type` 设置为 `VPC Resource`。
-- 将 `Resource configuration ID` 设置为第 2 步中创建的 Resource-Configuration 的 ID。
-- 将 `Resource share ARN` 设置为第 3 步中创建的 Resource-Share 的 ARN。
+* 将 `VPC endpoint type` 设置为 `VPC Resource`。
+* 将 `Resource configuration ID` 设置为在步骤 2 中创建的 Resource-Configuration 的 ID。
+* 将 `Resource share ARN` 设置为在步骤 3 中创建的 Resource-Share 的 ARN。
 
-有关在 VPC 资源中使用 PrivateLink 的更多信息，请参阅 [AWS 文档](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html)。
+关于使用 VPC 资源配置 PrivateLink 的更多详细信息，请参见 [AWS 文档](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html)。
 
 </VerticalStepper>
+
 
 ### MSK 多 VPC 连通性 {#msk-multi-vpc}
 
@@ -227,15 +232,17 @@ VPC 终端节点服务可以[配置为使用 Private DNS](https://docs.aws.amazo
 
 <Image img={cp_rpe_step2} alt="选择反向私有终端节点" size="lg" border/>
 
-    - 对于 VPC resource，请提供 configuration share ARN 和 configuration ID。
-    - 对于 MSK multi-VPC，请提供集群 ARN 以及在创建终端节点时使用的认证方法。
-    - 对于 VPC endpoint service，请提供 service name（服务名称）。
+```
+- For VPC resource, provide the configuration share ARN and configuration ID.
+- For MSK multi-VPC, provide the cluster ARN and authentication method used with a created endpoint.
+- For VPC endpoint service, provide the service name.
+```
 
 7. 单击 `Create` 并等待反向私有终端节点就绪。
 
-   如果你正在创建一个新的终端节点，完成该终端节点的设置将需要一段时间。
-   终端节点就绪后，页面会自动刷新。
-   VPC endpoint service 可能需要你在 AWS 控制台中接受连接请求。
+如果你正在创建一个新的终端节点，完成该终端节点的设置将需要一段时间。
+终端节点就绪后，页面会自动刷新。
+VPC endpoint service 可能需要你在 AWS 控制台中接受连接请求。
 
 <Image img={cp_rpe_step3} alt="选择反向私有终端节点" size="lg" border/>
 
@@ -243,14 +250,14 @@ VPC 终端节点服务可以[配置为使用 Private DNS](https://docs.aws.amazo
 
    在终端节点列表中，你可以看到可用终端节点的 DNS 名称。
    它可以是 ClickPipes 内部预配的 DNS 名称，也可以是由 PrivateLink 服务提供的私有 DNS 名称。
-   DNS 名称不是完整的网络地址，
-   需要根据数据源添加端口。
+   DNS 名称不是完整的网络地址，需要根据数据源添加端口。
 
    MSK 连接字符串可以在 AWS 控制台中查看。
 
    如需查看完整的 DNS 名称列表，请在云服务设置中查看。
 
 </VerticalStepper>
+
 
 ## 管理现有的反向私有端点 {#managing-existing-endpoints}
 
@@ -281,9 +288,9 @@ VPC 终端节点服务可以[配置为使用 Private DNS](https://docs.aws.amazo
 
 ## 限制 {#limitations}
 
-在 ClickHouse Cloud 中为 ClickPipes 创建的 AWS PrivateLink 端点不保证会位于与 ClickHouse Cloud 服务相同的 AWS 区域。
+在 ClickHouse Cloud 中为 ClickPipes 创建的 AWS PrivateLink 终端节点不能保证与 ClickHouse Cloud 服务位于同一 AWS 区域。
 
 目前，只有 VPC 终端节点服务（VPC endpoint service）支持跨区域连接。
 
-私有端点会关联到特定的 ClickHouse 服务，无法在服务之间复用或迁移。
-针对单个 ClickHouse 服务的多个 ClickPipes 可以复用同一个端点。
+私有终端节点会关联到特定的 ClickHouse 服务，无法在服务之间转移。
+针对单个 ClickHouse 服务的多个 ClickPipes 可以复用同一个终端节点。

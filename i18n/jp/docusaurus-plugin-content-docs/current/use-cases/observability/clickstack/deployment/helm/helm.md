@@ -18,7 +18,7 @@ import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/us
 現在 `hdx-oss-v2` チャートを使用している場合は、`clickstack` チャートへ移行してください。`hdx-oss-v2` チャートはメンテナンスモードとなっており、新機能は今後追加されません。新規開発はすべて `clickstack` チャートに集約されており、同等の機能を提供しつつ、名称と構成が改善されています。
 :::
 
-HyperDX 用の Helm チャートは [こちら](https://github.com/hyperdxio/helm-charts) で公開されており、本番環境へのデプロイにはこの方法を**推奨**します。
+ClickStack 用の Helm チャートは [こちら](https://github.com/ClickHouse/ClickStack-helm-charts) で公開されており、本番環境へのデプロイにはこの方法を**推奨**します。
 
 デフォルトでは、この Helm チャートは次のコアコンポーネントをすべてプロビジョニングします:
 
@@ -35,6 +35,7 @@ HyperDX 用の Helm チャートは [こちら](https://github.com/hyperdxio/hel
 * リソース制限およびポッド単位のスケーリング
 * TLS およびイングレスの設定
 * シークレット管理および認証設定
+
 
 ### 適した用途 {#suitable-for}
 
@@ -57,7 +58,7 @@ HyperDX 用の Helm チャートは [こちら](https://github.com/hyperdxio/hel
   ClickStack Helmリポジトリを追加します：
 
   ```shell
-  helm repo add clickstack https://hyperdxio.github.io/helm-charts
+  helm repo add clickstack https://clickhouse.github.io/ClickStack-helm-charts
   helm repo update
   ```
 
@@ -71,7 +72,7 @@ HyperDX 用の Helm チャートは [こちら](https://github.com/hyperdxio/hel
 
   ### インストールの確認
 
-  インストールを確認してください:
+  インストールを確認します:
 
   ```shell
   kubectl get pods -l "app.kubernetes.io/name=clickstack"
@@ -155,7 +156,7 @@ HyperDX 用の Helm チャートは [こちら](https://github.com/hyperdxio/hel
 
   #### 事前設定されたシークレットの使用
 
-  Helm チャートには、[`charts/clickstack/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/clickstack/templates/secrets.yaml) に配置されたデフォルトのシークレットテンプレートが含まれています。このファイルは、シークレットを管理するための基本構造を提供します。
+  Helm チャートには、[`charts/clickstack/templates/secrets.yaml`](https://github.com/ClickHouse/ClickStack-helm-charts/blob/main/charts/clickstack/templates/secrets.yaml) に配置されたデフォルトのシークレットテンプレートが含まれています。このファイルは、シークレットを管理するための基本構造を提供します。
 
   シークレットを手動で適用する必要がある場合は、提供されている `secrets.yaml` テンプレートを修正して適用します:
 
@@ -384,6 +385,6 @@ helm install my-clickstack clickstack/clickstack \
 ### 追加リソース {#additional-resources}
 
 - [ClickStack 入門ガイド](/docs/use-cases/observability/clickstack/getting-started) - ClickStack の概要
-- [ClickStack Helm charts リポジトリ](https://github.com/hyperdxio/helm-charts) - Helm チャートのソースコードおよび values のリファレンス
+- [ClickStack Helm charts リポジトリ](https://github.com/ClickHouse/ClickStack-helm-charts) - Helm チャートのソースコードおよび values のリファレンス
 - [Kubernetes ドキュメント](https://kubernetes.io/docs/) - Kubernetes リファレンス
 - [Helm ドキュメント](https://helm.sh/docs/) - Helm リファレンス

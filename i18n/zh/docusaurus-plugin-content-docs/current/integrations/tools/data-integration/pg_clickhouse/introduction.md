@@ -296,46 +296,46 @@ CREATE EXTENSION pg_clickhouse SCHEMA env;
 
 [TPC-H]: https://www.tpc.org/tpch/
 
-[查询 1]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/1.sql
+[Query 1]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/1.sql
 
-[查询 2]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/2.sql
+[Query 2]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/2.sql
 
-[查询 3]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/3.sql
+[Query 3]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/3.sql
 
-[查询 4]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/4.sql
+[Query 4]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/4.sql
 
-[查询 5]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/5.sql
+[Query 5]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/5.sql
 
-[查询 6]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/6.sql
+[Query 6]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/6.sql
 
-[查询 7]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/7.sql
+[Query 7]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/7.sql
 
-[查询 8]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/8.sql
+[Query 8]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/8.sql
 
-[查询 9]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/9.sql
+[Query 9]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/9.sql
 
-[查询 10]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/10.sql
+[Query 10]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/10.sql
 
-[查询 11]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/11.sql
+[Query 11]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/11.sql
 
-[查询 12]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/12.sql
+[Query 12]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/12.sql
 
-[查询 13]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/13.sql
+[Query 13]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/13.sql
 
-[查询 14]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/14.sql
+[Query 14]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/14.sql
 
-[查询 15]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/15.sql
+[Query 15]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/15.sql
 
-[查询 16]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/16.sql
+[Query 16]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/16.sql
 
-[查询 17]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/17.sql
+[Query 17]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/17.sql
 
-[查询 18]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/18.sql
+[Query 18]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/18.sql
 
-[查询 19]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/19.sql
+[Query 19]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/19.sql
 
-[查询 20]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/20.sql
+[Query 20]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/20.sql
 
-[查询 21]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/21.sql
+[Query 21]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/21.sql
 
-[查询 22]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/22.sql
+[Query 22]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/22.sql

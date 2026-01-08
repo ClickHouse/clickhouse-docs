@@ -5,6 +5,9 @@ sidebar_label: 'テーブルの一時停止'
 slug: /integrations/clickpipes/mongodb/pause_and_resume
 doc_type: 'guide'
 keywords: ['ClickPipes', 'MongoDB', 'CDC', 'データのインジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import Image from '@theme/IdealImage';
@@ -15,7 +18,6 @@ import resume_button from '@site/static/images/integrations/data-ingestion/click
 import resume_dialog from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resume_dialog.png'
 
 MongoDB ClickPipe を一時停止できると便利な状況がいくつかあります。たとえば、既存データを静的な状態のままで分析したい場合があります。また、MongoDB のアップグレード作業を行っている場合もあるでしょう。ここでは、MongoDB ClickPipe を一時停止および再開する方法を説明します。
-
 
 ## MongoDB ClickPipe を一時停止する手順 {#pause-clickpipe-steps}
 
@@ -34,9 +36,8 @@ MongoDB ClickPipe を一時停止できると便利な状況がいくつかあ�
 
 <Image img={pause_status} border size="md"/>
 
-
-
 ## MongoDB ClickPipe を再開する手順 {#resume-clickpipe-steps}
+
 1. **Data Sources** タブで、再開したい MongoDB ClickPipe をクリックします。ミラーのステータスは最初は **Paused** になっています。
 2. **Settings** タブに移動します。
 3. **Resume** ボタンをクリックします。

@@ -7,7 +7,7 @@ description: 'Astrato предоставляет компаниям и дата�
 title: 'Подключение Astrato к ClickHouse'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
 ---
 
