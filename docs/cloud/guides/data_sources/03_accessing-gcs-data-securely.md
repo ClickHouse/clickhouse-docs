@@ -21,13 +21,8 @@ This guide demonstrates how to securely authenticate with Google Cloud Storage (
 
 ## Introduction {#introduction}
 
-Currently, ClickHouse Cloud connects to GCS using HMAC (Hash-based Message Authentication Code) keys associated with a Google Cloud service account.
+ClickHouse Cloud connects to GCS using HMAC (Hash-based Message Authentication Code) keys associated with a Google Cloud service account.
 This approach provides secure access to your GCS buckets without embedding credentials directly in your queries.
-
-:::note Workload Identity Federation
-ClickHouse Cloud currently only supports HMAC key authentication for GCS access.
-Support for Workload Identity Federation (the GCP equivalent of AWS IAM role assumption) is planned for a future release.
-:::
 
 How it works:
 
