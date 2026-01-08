@@ -6,6 +6,9 @@ keywords: ['Splunk', 'integration', 'data visualization']
 description: 'Подключите дашборды Splunk к ClickHouse'
 title: 'Подключение Splunk к ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
 ---
 
 import Image from '@theme/IdealImage';
@@ -29,7 +32,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 Хотите сохранять журналы аудита ClickHouse в Splunk? См. руководство ["Storing ClickHouse Cloud Audit logs into Splunk"](/integrations/audit-splunk).
 :::
 
-Splunk — популярная платформа для обеспечения безопасности и наблюдаемости. Это также мощный движок для поиска и построения дашбордов. Существуют сотни приложений Splunk для решения различных задач.
+Splunk — популярная платформа для обеспечения безопасности и обсервабилити. Это также мощный движок для поиска и построения дашбордов. Существуют сотни приложений Splunk для решения различных задач.
 
 Специально для ClickHouse мы используем [Splunk DB Connect App](https://splunkbase.splunk.com/app/2686), который обеспечивает простую интеграцию с высокопроизводительным JDBC-драйвером ClickHouse для прямого выполнения запросов к таблицам в ClickHouse.
 
@@ -50,6 +53,7 @@ Splunk — популярная платформа для обеспечения
 ## Предварительные требования {#prerequisites}
 
 Перед началом работы вам потребуется:
+
 - Splunk Enterprise для использования функций поискового узла (search head)
 - Установленный в вашей ОС или контейнере [Java Runtime Environment (JRE)](https://docs.splunk.com/Documentation/DBX/3.16.0/DeployDBX/Prerequisites), удовлетворяющий требованиям
 - [Splunk DB Connect](https://splunkbase.splunk.com/app/2686)
@@ -101,6 +105,7 @@ ui_default_catalog = $database$
 Вернитесь в приложение DB Connect и перейдите в Configuration &gt; Settings &gt; Drivers. Рядом с ClickHouse вы должны увидеть зелёную галочку:
 
 <Image img={splunk_3} size="lg" border alt="Страница драйверов Splunk DB Connect, на которой показано, что драйвер ClickHouse успешно установлен" />
+
 
 ## Подключение поиска Splunk к ClickHouse {#connect-splunk-search-to-clickhouse}
 
@@ -180,6 +185,7 @@ ORDER BY year, count(*) DESC; " connection="chc"
 
 <Image img={splunk_10} size="lg" border alt="Final Splunk dashboard with multiple visualizations of NYC taxi data" />
 
+
 ## Данные временных рядов {#time-series-data}
 
 В Splunk есть сотни встроенных функций, которые дашборды могут использовать для визуализации и представления данных временных рядов. В этом примере будут объединены SQL и SPL для создания запроса, который может работать с данными временных рядов в Splunk.
@@ -194,6 +200,7 @@ FROM "demo"."conn" WHERE time >= now() - interval 1 HOURS" connection="chc"
 | sort - duration:
 ```
 
+
 ## Дополнительные материалы {#learn-more}
 
-Если вы хотите получить больше информации о Splunk DB Connect и создании дашбордов, перейдите к [документации Splunk](https://docs.splunk.com/Documentation).
+Если вы хотите получить больше информации о Splunk DB Connect и создании дашбордов, обратитесь к [документации Splunk](https://docs.splunk.com/Documentation).

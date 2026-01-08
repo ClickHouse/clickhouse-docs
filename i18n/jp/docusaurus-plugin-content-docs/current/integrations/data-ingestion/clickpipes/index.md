@@ -5,6 +5,9 @@ slug: /integrations/clickpipes
 title: 'ClickHouse Cloud との連携'
 doc_type: 'guide'
 keywords: ['ClickPipes', 'データインジェストプラットフォーム', 'ストリーミングデータ', '統合プラットフォーム', 'ClickHouse Cloud']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';
@@ -25,7 +28,6 @@ import clickpipes_stack from '@site/static/images/integrations/data-ingestion/cl
 import cp_custom_role from '@site/static/images/integrations/data-ingestion/clickpipes/cp_custom_role.png';
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
-
 
 # ClickHouse Cloud との連携 {#integrating-with-clickhouse-cloud}
 

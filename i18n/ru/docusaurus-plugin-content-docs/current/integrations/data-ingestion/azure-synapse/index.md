@@ -5,6 +5,9 @@ description: 'Введение в Azure Synapse с ClickHouse'
 keywords: ['clickhouse', 'azure synapse', 'azure', 'synapse', 'microsoft', 'azure spark', 'data']
 title: 'Интеграция Azure Synapse с ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import TOCInline from '@theme/TOCInline';
@@ -12,7 +15,6 @@ import Image from '@theme/IdealImage';
 import sparkConfigViaNotebook from '@site/static/images/integrations/data-ingestion/azure-synapse/spark_notebook_conf.png';
 import sparkUICHSettings from '@site/static/images/integrations/data-ingestion/azure-synapse/spark_ui_ch_settings.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
-
 
 # Интеграция Azure Synapse с ClickHouse {#integrating-azure-synapse-with-clickhouse}
 

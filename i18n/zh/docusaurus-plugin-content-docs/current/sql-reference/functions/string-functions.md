@@ -1517,7 +1517,7 @@ SELECT initcapUTF8('не тормозит')
 
 自 v25.9 起引入
 
-如果输入的 String 或 FixedString 仅包含 ASCII 字节（0x00–0x7F），则返回 1，否则返回 0。
+如果输入的 String 或 FixedString 仅包含 ASCII 字节（0x00–0x7F），则返回 1，否则返回 0。针对正向结果（即输入 *是* 有效 ASCII 的情况）进行了优化。
 
 **语法**
 
@@ -1542,6 +1542,7 @@ SELECT isValidASCII('hello') AS is_ascii, isValidASCII('你好') AS is_not_ascii
 
 ```response title=Response
 ```
+
 
 ## isValidUTF8 {#isValidUTF8}
 

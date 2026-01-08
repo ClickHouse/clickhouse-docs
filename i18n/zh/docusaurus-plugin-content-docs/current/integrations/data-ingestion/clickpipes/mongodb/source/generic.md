@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mongodb/source/generic
 title: '通用 MongoDB 源设置指南'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # 通用 MongoDB 数据源配置指南 {#generic-mongodb-source-setup-guide}
@@ -36,6 +39,7 @@ db.adminCommand({
 
 有关 `replSetResizeOplog` 命令及 oplog 保留的更多详情，请参阅 [MongoDB 文档](https://www.mongodb.com/docs/manual/reference/command/replSetResizeOplog/)。
 
+
 ## 配置数据库用户 {#configure-database-user}
 
 以管理员用户身份连接到您的 MongoDB 实例，并执行以下命令，为 MongoDB CDC ClickPipes 创建一个用户：
@@ -49,10 +53,9 @@ db.getSiblingDB("admin").createUser({
 ```
 
 :::note
-
 请务必将 `clickpipes_user` 和 `some_secure_password` 替换为您计划使用的用户名和密码。
-
 :::
+
 
 ## 接下来 {#whats-next}
 

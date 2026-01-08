@@ -4,10 +4,10 @@ slug: /integrations/tablumio
 description: 'TABLUM.IO は、ClickHouse を標準でサポートするデータ管理 SaaS です。'
 title: 'TABLUM.IO を ClickHouse に接続する'
 doc_type: 'guide'
-integration:
-  - support_level: 'partner'
-  - category: 'sql_client'
 keywords: ['tablum', 'sql client', 'database tool', 'query tool', 'desktop app']
+integration:
+  - support_level: 'community'
+  - category: 'sql_client'
 ---
 
 import Image from '@theme/IdealImage';
@@ -29,7 +29,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## 1. サービスにサインアップまたはログインする {#1-sign-up-or-sign-in-to-the-service}
 
-  まず、メールアドレスで TABLUM.IO にサインアップするか、Google または Facebook アカウントを使ったクイックログインを行ってください。
+まず、メールアドレスで TABLUM.IO にサインアップするか、Google または Facebook アカウントを使ったクイックログインを行ってください。
 
 <Image img={tablum_ch_0} size="md" border alt="TABLUM.IO ログインページ" />
 
@@ -65,6 +65,7 @@ SQL Console にクエリを入力し、**Run Query** をクリックします。
 
 :::note
 TABLUM.IO を使用すると、次のことができます。
+
 * TABLUM.IO アカウント内で複数の ClickHouse コネクタを作成および利用する
 * データソースに関係なく、読み込まれた任意のデータに対してクエリを実行する
 * 結果を新しい ClickHouse データベースとして共有する

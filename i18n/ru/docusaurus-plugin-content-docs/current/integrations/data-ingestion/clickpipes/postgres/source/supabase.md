@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/source/supabase
 title: 'Руководство по настройке источника Supabase'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import supabase_commands from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-commands.jpg'
@@ -21,38 +24,49 @@ ClickPipes нативно поддерживает Supabase через IPv6 дл
 
 :::
 
-## Создание пользователя с правами доступа и слотом репликации {#creating-a-user-with-permissions-and-replication-slot}
+## Создание пользователя с правами и слотом репликации {#creating-a-user-with-permissions-and-replication-slot}
 
-Давайте создадим нового пользователя для ClickPipes с необходимыми правами, подходящими для CDC,
-а также создадим публикацию, которую мы будем использовать для репликации.
+Подключитесь к вашему инстансу Supabase от имени пользователя с правами администратора и выполните следующие команды:
 
-Для этого перейдите в **SQL Editor** вашего проекта Supabase.
-Здесь мы можем выполнить следующие SQL-команды:
+1. Создайте отдельного пользователя для ClickPipes:
 
-```sql
-  CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
-  GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-  GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-  ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+   ```sql
+   CREATE USER clickpipes_user PASSWORD 'some-password';
+   ```
 
--- Give replication permission to the USER
-  ALTER USER clickpipes_user REPLICATION;
+2. Предоставьте пользователю, созданному на предыдущем шаге, права только на чтение на уровне схемы. В следующем примере показаны права для схемы `public`. Повторите эти команды для каждой схемы, содержащей таблицы, которые вы хотите реплицировать:
+   
+    ```sql
+    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+    ```
 
--- Create a publication. We will use this when creating the mirror
-  CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-```
+3. Предоставьте пользователю привилегии на репликацию:
 
-<Image img={supabase_commands} alt="Команды для пользователя и публикации" size="large" border />
+   ```sql
+   ALTER ROLE clickpipes_user REPLICATION;
+   ```
 
-Нажмите **Run**, чтобы создать публикацию и пользователя.
+4. Создайте [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) с таблицами, которые вы хотите реплицировать. Настоятельно рекомендуется включать в publication только те таблицы, которые вам действительно нужны, чтобы избежать лишних накладных расходов на производительность.
 
-:::note
+   :::warning
+   Каждая таблица, включённая в publication, должна либо иметь определённый **primary key**, _либо_ её **replica identity** должна быть настроена в значение `FULL`. См. раздел [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) для получения рекомендаций по выбору области действия publication.
+   :::
 
-Обязательно замените `clickpipes_user` и `clickpipes_password` на нужные вам имя пользователя и пароль.
+   - Чтобы создать publication для конкретных таблиц:
 
-Также не забудьте использовать то же имя публикации при создании зеркала в ClickPipes.
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
 
-:::
+   - Чтобы создать publication для всех таблиц в определённой схеме:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   Publication `clickpipes` будет содержать набор событий изменений, сгенерированных из указанных таблиц, и позже будет использоваться для приёма потока репликации.
 
 ## Увеличение `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
 
@@ -87,6 +101,7 @@ ClickPipes нативно поддерживает Supabase через IPv6 дл
 ```sql
 ALTER USER clickpipes_user BYPASSRLS;
 ```
+
 
 ## Что дальше? {#whats-next}
 

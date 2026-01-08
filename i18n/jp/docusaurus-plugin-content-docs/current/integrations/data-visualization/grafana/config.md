@@ -6,6 +6,9 @@ description: 'Grafana における ClickHouse データソースプラグイン�
 title: 'Grafana における ClickHouse データソースの設定'
 doc_type: 'guide'
 keywords: ['Grafana プラグイン設定', 'データソース設定', '接続パラメータ', '認証設定', 'プラグインオプション']
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
 ---
 
 import Image from '@theme/IdealImage';

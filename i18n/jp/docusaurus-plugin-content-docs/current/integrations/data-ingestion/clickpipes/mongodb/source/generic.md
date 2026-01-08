@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mongodb/source/generic
 title: '汎用 MongoDB ソース設定ガイド'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'データインジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # 汎用的な MongoDB ソースセットアップガイド {#generic-mongodb-source-setup-guide}
@@ -36,6 +39,7 @@ db.adminCommand({
 
 `replSetResizeOplog` コマンドおよび oplog の保持に関する詳細は、[MongoDB ドキュメント](https://www.mongodb.com/docs/manual/reference/command/replSetResizeOplog/)を参照してください。
 
+
 ## データベースユーザーを設定する {#configure-database-user}
 
 管理者ユーザーとして MongoDB インスタンスに接続し、MongoDB CDC ClickPipes 用のユーザーを作成するために次のコマンドを実行します：
@@ -49,10 +53,9 @@ db.getSiblingDB("admin").createUser({
 ```
 
 :::note
-
 必ず `clickpipes_user` と `some_secure_password` を、ご希望のユーザー名とパスワードに置き換えてください。
-
 :::
+
 
 ## 次のステップ {#whats-next}
 

@@ -4,10 +4,10 @@ slug: /integrations/tablumio
 description: 'TABLUM.IO — это SaaS-сервис для управления данными с поддержкой ClickHouse «из коробки».'
 title: 'Подключение TABLUM.IO к ClickHouse'
 doc_type: 'guide'
-integration:
-  - support_level: 'partner'
-  - category: 'sql_client'
 keywords: ['tablum', 'SQL-клиент', 'инструмент для работы с базами данных', 'инструмент для выполнения запросов', 'настольное приложение']
+integration:
+  - support_level: 'community'
+  - category: 'sql_client'
 ---
 
 import Image from '@theme/IdealImage';
@@ -29,7 +29,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## 1. Зарегистрируйтесь или войдите в сервис {#1-sign-up-or-sign-in-to-the-service}
 
-  Сначала зарегистрируйтесь в TABLUM.IO, используя свою электронную почту, или выполните быстрый вход через учетную запись Google или Facebook.
+Сначала зарегистрируйтесь в TABLUM.IO, используя свою электронную почту, или выполните быстрый вход через учетную запись Google или Facebook.
 
 <Image img={tablum_ch_0} size="md" border alt="Страница входа в TABLUM.IO" />
 
@@ -65,6 +65,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 :::note
 С TABLUM.IO вы можете
+
 * создавать и использовать несколько коннекторов ClickHouse в рамках своего аккаунта TABLUM.IO,
 * выполнять запросы к любым загруженным данным независимо от источника данных,
 * делиться результатами в виде новой базы данных ClickHouse.

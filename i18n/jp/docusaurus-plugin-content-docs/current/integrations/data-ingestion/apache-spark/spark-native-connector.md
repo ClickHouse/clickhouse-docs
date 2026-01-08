@@ -6,13 +6,19 @@ description: 'ClickHouse と連携する Apache Spark の概要'
 keywords: ['clickhouse', 'Apache Spark', '移行', 'データ']
 title: 'Spark コネクタ'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Spark コネクタ {#spark-connector}
+
+<ClickHouseSupportedBadge/>
 
 このコネクタは、高度なパーティショニングや述語プッシュダウンなど、ClickHouse 固有の最適化機能を活用して、
 クエリのパフォーマンスとデータ処理を向上させます。
@@ -26,6 +32,20 @@ Hive Metastore や AWS Glue などの外部カタログシステムに依存し�
 
 Spark のデフォルトのカタログは `spark_catalog` であり、テーブルは `{catalog name}.{database}.{table}` という形式で識別されます。
 新しいカタログ機能により、1 つの Spark アプリケーション内で複数のカタログを追加して利用できるようになりました。
+
+## Catalog API と TableProvider API の選択 {#choosing-between-apis}
+
+ClickHouse Spark コネクタは、**Catalog API** と **TableProvider API**（フォーマットベースのアクセス）の 2 種類のアクセスパターンをサポートしています。両者の違いを理解することで、ユースケースに適したアプローチを選択できます。
+
+### Catalog API と TableProvider API の比較 {#catalog-vs-tableprovider-comparison}
+
+| 機能 | Catalog API | TableProvider API |
+|---------|-------------|-------------------|
+| **設定** | Spark の設定による集中管理 | オプションによる操作ごとの設定 |
+| **テーブル検出** | カタログによる自動検出 | 手動でのテーブル指定 |
+| **DDL 操作** | 完全対応（CREATE、DROP、ALTER） | 制限あり（自動テーブル作成のみ） |
+| **Spark SQL 統合** | ネイティブ（`clickhouse.database.table`） | フォーマットの指定が必要 |
+| **ユースケース** | 集中管理された設定による長期的で安定した接続 | アドホック、動的、一時的なアクセス |
 
 <TOCInline toc={toc}></TOCInline>
 
@@ -221,6 +241,425 @@ spark.sql.catalog.clickhouse2.option.ssl     true
 
 :::
 
+## TableProvider API の使用（フォーマットベースのアクセス） {#using-the-tableprovider-api}
+
+カタログベースのアプローチに加えて、ClickHouse Spark コネクタは TableProvider API を介した**フォーマットベースのアクセスパターン**をサポートしています。
+
+### フォーマットベースの読み込み例 {#format-based-read}
+
+<Tabs groupId="spark_apis">
+<TabItem value="Python" label="Python" default>
+
+```python
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.getOrCreate()
+
+# Read from ClickHouse using format API
+df = spark.read \
+    .format("clickhouse") \
+    .option("host", "your-clickhouse-host") \
+    .option("protocol", "https") \
+    .option("http_port", "8443") \
+    .option("database", "default") \
+    .option("table", "your_table") \
+    .option("user", "default") \
+    .option("password", "your_password") \
+    .option("ssl", "true") \
+    .load()
+
+df.show()
+```
+
+</TabItem>
+<TabItem value="Scala" label="Scala">
+
+```scala
+val df = spark.read
+  .format("clickhouse")
+  .option("host", "your-clickhouse-host")
+  .option("protocol", "https")
+  .option("http_port", "8443")
+  .option("database", "default")
+  .option("table", "your_table")
+  .option("user", "default")
+  .option("password", "your_password")
+  .option("ssl", "true")
+  .load()
+
+df.show()
+```
+
+</TabItem>
+<TabItem value="Java" label="Java">
+
+```java
+Dataset<Row> df = spark.read()
+    .format("clickhouse")
+    .option("host", "your-clickhouse-host")
+    .option("protocol", "https")
+    .option("http_port", "8443")
+    .option("database", "default")
+    .option("table", "your_table")
+    .option("user", "default")
+    .option("password", "your_password")
+    .option("ssl", "true")
+    .load();
+
+df.show();
+```
+
+</TabItem>
+</Tabs>
+
+
+### フォーマットベースの書き込み例 {#format-based-write}
+
+<Tabs groupId="spark_apis">
+<TabItem value="Python" label="Python" default>
+
+```python
+# Write to ClickHouse using format API
+df.write \
+    .format("clickhouse") \
+    .option("host", "your-clickhouse-host") \
+    .option("protocol", "https") \
+    .option("http_port", "8443") \
+    .option("database", "default") \
+    .option("table", "your_table") \
+    .option("user", "default") \
+    .option("password", "your_password") \
+    .option("ssl", "true") \
+    .mode("append") \
+    .save()
+```
+
+</TabItem>
+<TabItem value="Scala" label="Scala">
+
+```scala
+df.write
+  .format("clickhouse")
+  .option("host", "your-clickhouse-host")
+  .option("protocol", "https")
+  .option("http_port", "8443")
+  .option("database", "default")
+  .option("table", "your_table")
+  .option("user", "default")
+  .option("password", "your_password")
+  .option("ssl", "true")
+  .mode("append")
+  .save()
+```
+
+</TabItem>
+<TabItem value="Java" label="Java">
+
+```java
+df.write()
+    .format("clickhouse")
+    .option("host", "your-clickhouse-host")
+    .option("protocol", "https")
+    .option("http_port", "8443")
+    .option("database", "default")
+    .option("table", "your_table")
+    .option("user", "default")
+    .option("password", "your_password")
+    .option("ssl", "true")
+    .mode("append")
+    .save();
+```
+
+</TabItem>
+</Tabs>
+
+
+### TableProvider の機能 {#tableprovider-features}
+
+TableProvider API には、強力な機能がいくつかあります。
+
+#### 自動テーブル作成 {#automatic-table-creation}
+
+存在しないテーブルに書き込もうとすると、コネクタは適切なスキーマでテーブルを自動作成します。コネクタはいくつかのインテリジェントなデフォルト値を提供します:
+
+* **Engine**: 指定がない場合はデフォルトで `MergeTree()` を使用します。`engine` オプションを使用して別のエンジンを指定できます（例: `ReplacingMergeTree()`, `SummingMergeTree()` など）。
+* **ORDER BY**: **必須** - 新しいテーブルを作成する際には `order_by` オプションを明示的に指定する必要があります。コネクタは、指定されたすべてのカラムがスキーマに存在することを検証します。
+* **Nullable キーのサポート**: ORDER BY に Nullable なカラムが含まれている場合、自動的に `settings.allow_nullable_key=1` を追加します。
+
+<Tabs groupId="spark_apis">
+<TabItem value="Python" label="Python" default>
+
+```python
+# Table will be created automatically with explicit ORDER BY (required)
+df.write \
+    .format("clickhouse") \
+    .option("host", "your-host") \
+    .option("database", "default") \
+    .option("table", "new_table") \
+    .option("order_by", "id") \
+    .mode("append") \
+    .save()
+
+# Specify table creation options with custom engine
+df.write \
+    .format("clickhouse") \
+    .option("host", "your-host") \
+    .option("database", "default") \
+    .option("table", "new_table") \
+    .option("order_by", "id, timestamp") \
+    .option("engine", "ReplacingMergeTree()") \
+    .option("settings.allow_nullable_key", "1") \
+    .mode("append") \
+    .save()
+```
+
+</TabItem>
+<TabItem value="Scala" label="Scala">
+
+```scala
+// Table will be created automatically with explicit ORDER BY (required)
+df.write
+  .format("clickhouse")
+  .option("host", "your-host")
+  .option("database", "default")
+  .option("table", "new_table")
+  .option("order_by", "id")
+  .mode("append")
+  .save()
+
+// With explicit table creation options and custom engine
+df.write
+  .format("clickhouse")
+  .option("host", "your-host")
+  .option("database", "default")
+  .option("table", "new_table")
+  .option("order_by", "id, timestamp")
+  .option("engine", "ReplacingMergeTree()")
+  .option("settings.allow_nullable_key", "1")
+  .mode("append")
+  .save()
+```
+
+</TabItem>
+<TabItem value="Java" label="Java">
+
+```java
+// Table will be created automatically with explicit ORDER BY (required)
+df.write()
+    .format("clickhouse")
+    .option("host", "your-host")
+    .option("database", "default")
+    .option("table", "new_table")
+    .option("order_by", "id")
+    .mode("append")
+    .save();
+
+// With explicit table creation options and custom engine
+df.write()
+    .format("clickhouse")
+    .option("host", "your-host")
+    .option("database", "default")
+    .option("table", "new_table")
+    .option("order_by", "id, timestamp")
+    .option("engine", "ReplacingMergeTree()")
+    .option("settings.allow_nullable_key", "1")
+    .mode("append")
+    .save();
+```
+
+</TabItem>
+</Tabs>
+
+:::important
+**ORDER BY が必須**: TableProvider API を使用して新しいテーブルを作成する場合、`order_by` オプションは**必須**です。ORDER BY 句に使用するカラムを明示的に指定する必要があります。コネクタは、指定されたすべてのカラムがスキーマ内に存在することを検証し、いずれかのカラムが不足している場合はエラーを送出します。
+
+**エンジンの選択**: デフォルトのエンジンは `MergeTree()` ですが、`engine` オプションを使用して任意の ClickHouse テーブルエンジンを指定できます（例: `ReplacingMergeTree()`, `SummingMergeTree()`, `AggregatingMergeTree()` など）。
+:::
+
+
+### TableProvider 接続オプション {#tableprovider-connection-options}
+
+フォーマットベースの API を使用する場合、次の接続オプションが利用できます。
+
+#### 接続オプション {#connection-options}
+
+| Option       | 説明                                              | デフォルト値    | 必須     |
+|--------------|--------------------------------------------------|----------------|----------|
+| `host`       | ClickHouse サーバーのホスト名                    | `localhost`    | はい     |
+| `protocol`   | 接続プロトコル（`http` または `https`）          | `http`         | いいえ   |
+| `http_port`  | HTTP/HTTPS ポート番号                            | `8123`         | いいえ   |
+| `database`   | データベース名                                   | `default`      | はい     |
+| `table`      | テーブル名                                       | N/A            | はい     |
+| `user`       | 認証用ユーザー名                                 | `default`      | いいえ   |
+| `password`   | 認証用パスワード                                 | （空文字列）   | いいえ   |
+| `ssl`        | SSL 接続を有効にする                             | `false`        | いいえ   |
+| `ssl_mode`   | SSL モード（`NONE`、`STRICT` など）              | `STRICT`       | いいえ   |
+| `timezone`   | 日付/時刻処理に使用するタイムゾーン              | `server`       | いいえ   |
+
+#### テーブル作成オプション {#table-creation-options}
+
+これらのオプションは、テーブルが存在せず、新規作成する必要がある場合に使用します。
+
+| オプション                  | 説明                                                                      | デフォルト値      | 必須     |
+|-----------------------------|-----------------------------------------------------------------------------|-------------------|----------|
+| `order_by`                  | ORDER BY 句に使用するカラム。複数カラムの場合はカンマ区切り               | N/A               | **はい** |
+| `engine`                    | ClickHouse のテーブルエンジン（例: `MergeTree()`, `ReplacingMergeTree()`, `SummingMergeTree()` など） | `MergeTree()`     | いいえ   |
+| `settings.allow_nullable_key` | ORDER BY で Nullable なキーを有効化（ClickHouse Cloud 用）                | 自動検出**        | いいえ   |
+| `settings.<key>`            | 任意の ClickHouse テーブルの設定                                          | N/A               | いいえ   |
+| `cluster`                   | 分散テーブル用のクラスタ名                                                 | N/A               | いいえ   |
+| `clickhouse.column.<name>.variant_types` | Variant カラムに対する ClickHouse 型のカンマ区切りリスト（例: `String, Int64, Bool, JSON`）。型名は大文字小文字を区別します。カンマの後のスペースは任意です。 | N/A | いいえ |
+
+\* 新しいテーブルを作成する場合、`order_by` オプションは必須です。指定されたすべてのカラムはスキーマ内に存在している必要があります。  
+\** ORDER BY に Nullable なカラムが含まれており、かつ明示的に指定されていない場合は、自動的に `1` に設定されます。
+
+:::tip
+**ベストプラクティス**: ClickHouse Cloud では、ORDER BY のカラムが Nullable になる可能性がある場合、`settings.allow_nullable_key=1` を明示的に設定してください。ClickHouse Cloud ではこの設定が必須です。
+:::
+
+#### 書き込みモード {#writing-modes}
+
+Spark コネクタ（TableProvider API および Catalog API の両方）は、次の Spark の書き込みモードをサポートします。
+
+* **`append`**: 既存テーブルにデータを追加
+* **`overwrite`**: テーブル内のすべてのデータを置き換え（テーブルを空にする）
+
+:::important
+**パーティション単位の上書きは未サポート**: このコネクタは現在、パーティション単位での上書き操作（例: `partitionBy` と組み合わせた `overwrite` モード）をサポートしていません。この機能は開発中です。この機能の進捗は [GitHub issue #34](https://github.com/ClickHouse/spark-clickhouse-connector/issues/34) を参照してください。
+:::
+
+<Tabs groupId="spark_apis">
+<TabItem value="Python" label="Python" default>
+
+```python
+# Overwrite mode (truncates table first)
+df.write \
+    .format("clickhouse") \
+    .option("host", "your-host") \
+    .option("database", "default") \
+    .option("table", "my_table") \
+    .mode("overwrite") \
+    .save()
+```
+
+</TabItem>
+<TabItem value="Scala" label="Scala">
+
+```scala
+// Overwrite mode (truncates table first)
+df.write
+  .format("clickhouse")
+  .option("host", "your-host")
+  .option("database", "default")
+  .option("table", "my_table")
+  .mode("overwrite")
+  .save()
+```
+
+</TabItem>
+<TabItem value="Java" label="Java">
+
+```java
+// Overwrite mode (truncates table first)
+df.write()
+    .format("clickhouse")
+    .option("host", "your-host")
+    .option("database", "default")
+    .option("table", "my_table")
+    .mode("overwrite")
+    .save();
+```
+
+</TabItem>
+</Tabs>
+
+
+## ClickHouse オプションの設定 {#configuring-clickhouse-options}
+
+Catalog API と TableProvider API の両方で、ClickHouse 固有のオプション（コネクタのオプションではありません）を設定できます。これらはテーブル作成時やクエリ実行時に、そのまま ClickHouse に渡されます。
+
+ClickHouse オプションでは、`allow_nullable_key` や `index_granularity` などの ClickHouse 固有の設定、およびその他のテーブルレベルまたはクエリレベルの設定を構成できます。これらは、ClickHouse への接続方法を制御するコネクタオプション（`host`、`database`、`table` など）とは異なります。
+
+### TableProvider API の使用 {#using-tableprovider-api-options}
+
+TableProvider API を使用する場合は、`settings.<key>` 形式のオプションを指定します。
+
+<Tabs groupId="spark_apis">
+<TabItem value="Python" label="Python" default>
+
+```python
+df.write \
+    .format("clickhouse") \
+    .option("host", "your-host") \
+    .option("database", "default") \
+    .option("table", "my_table") \
+    .option("order_by", "id") \
+    .option("settings.allow_nullable_key", "1") \
+    .option("settings.index_granularity", "8192") \
+    .mode("append") \
+    .save()
+```
+
+</TabItem>
+<TabItem value="Scala" label="Scala">
+
+```scala
+df.write
+  .format("clickhouse")
+  .option("host", "your-host")
+  .option("database", "default")
+  .option("table", "my_table")
+  .option("order_by", "id")
+  .option("settings.allow_nullable_key", "1")
+  .option("settings.index_granularity", "8192")
+  .mode("append")
+  .save()
+```
+
+</TabItem>
+<TabItem value="Java" label="Java">
+
+```java
+df.write()
+    .format("clickhouse")
+    .option("host", "your-host")
+    .option("database", "default")
+    .option("table", "my_table")
+    .option("order_by", "id")
+    .option("settings.allow_nullable_key", "1")
+    .option("settings.index_granularity", "8192")
+    .mode("append")
+    .save();
+```
+
+</TabItem>
+</Tabs>
+
+
+### Catalog API の使用 {#using-catalog-api-options}
+
+Catalog API を使用する場合は、Spark 設定で `spark.sql.catalog.<catalog_name>.option.<key>` 形式を指定します。
+
+```text
+spark.sql.catalog.clickhouse.option.allow_nullable_key 1
+spark.sql.catalog.clickhouse.option.index_granularity 8192
+```
+
+または、Spark SQL でテーブルを作成するときに設定することもできます。
+
+```sql
+CREATE TABLE clickhouse.default.my_table (
+  id INT,
+  name STRING
+) USING ClickHouse
+TBLPROPERTIES (
+  engine = 'MergeTree()',
+  order_by = 'id',
+  'settings.allow_nullable_key' = '1',
+  'settings.index_granularity' = '8192'
+)
+```
+
+
 ## ClickHouse Cloud の設定 {#clickhouse-cloud-settings}
 
 [ClickHouse Cloud](https://clickhouse.com) に接続する際は、SSL を有効にし、適切な SSL モードを設定してください。例えば、次のように指定します。
@@ -337,7 +776,11 @@ df.show()
 </TabItem>
 </Tabs>
 
-## データを書き込む {#write-data}
+## データの書き込み {#write-data}
+
+:::important
+**パーティションの上書きはサポートされていません**: Catalog API は現時点では、パーティション単位の上書き操作（例: `partitionBy` と併用した `overwrite` モード）をサポートしていません。この機能は現在開発中です。この機能の進捗については [GitHub issue #34](https://github.com/ClickHouse/spark-clickhouse-connector/issues/34) を参照してください。
+:::
 
 <Tabs groupId="spark_apis">
   <TabItem value="Java" label="Java" default>
@@ -496,9 +939,553 @@ TBLPROPERTIES (
 
 上記の例は Spark SQL クエリを示しており、Java や Scala、PySpark、シェルなどの任意の API からアプリケーション内で実行できます。
 
-## 設定 {#configurations}
+## VariantType の利用 {#working-with-varianttype}
 
-コネクタで変更可能な設定項目は次のとおりです。
+:::note
+VariantType のサポートは Spark 4.0 以降で利用可能であり、実験的な JSON / Variant 型を有効化した ClickHouse 25.3 以降が必要です。
+:::
+
+このコネクタは、半構造化データを扱うために Spark の `VariantType` をサポートします。VariantType は ClickHouse の `JSON` および `Variant` 型にマッピングされ、柔軟なスキーマを持つデータを効率的に保存し、クエリを実行できます。
+
+:::note
+このセクションでは、VariantType のマッピングと使用方法に焦点を当てて説明します。サポートされているすべてのデータ型の概要については、[サポートされているデータ型](#supported-data-types) セクションを参照してください。
+:::
+
+### ClickHouse 型マッピング {#clickhouse-type-mapping}
+
+| ClickHouse 型 | Spark 型 | 説明 |
+|----------------|------------|-------------|
+| `JSON` | `VariantType` | JSON オブジェクトのみを格納できる（`{` で始まる必要がある） |
+| `Variant(T1, T2, ...)` | `VariantType` | プリミティブ、配列、JSON を含む複数の型を格納できる |
+
+### VariantType データの読み取り {#reading-varianttype-data}
+
+ClickHouse からデータを読み込む際、`JSON` および `Variant` カラムは自動的に Spark の `VariantType` にマッピングされます:
+
+<Tabs groupId="spark_apis">
+<TabItem value="Scala" label="Scala" default>
+
+```scala
+// Read JSON column as VariantType
+val df = spark.sql("SELECT id, data FROM clickhouse.default.json_table")
+
+// Access variant data
+df.show()
+
+// Convert variant to JSON string for inspection
+import org.apache.spark.sql.functions._
+df.select(
+  col("id"),
+  to_json(col("data")).as("data_json")
+).show()
+```
+
+</TabItem>
+<TabItem value="Python" label="Python">
+
+```python
+# Read JSON column as VariantType
+df = spark.sql("SELECT id, data FROM clickhouse.default.json_table")
+
+# Access variant data
+df.show()
+
+# Convert variant to JSON string for inspection
+from pyspark.sql.functions import to_json
+df.select(
+    "id",
+    to_json("data").alias("data_json")
+).show()
+```
+
+</TabItem>
+<TabItem value="Java" label="Java">
+
+```java
+// Read JSON column as VariantType
+Dataset<Row> df = spark.sql("SELECT id, data FROM clickhouse.default.json_table");
+
+// Access variant data
+df.show();
+
+// Convert variant to JSON string for inspection
+import static org.apache.spark.sql.functions.*;
+df.select(
+    col("id"),
+    to_json(col("data")).as("data_json")
+).show();
+```
+
+</TabItem>
+</Tabs>
+
+
+### VariantType データの書き込み {#writing-varianttype-data}
+
+VariantType データは、JSON 型または Variant カラム型のいずれかを使用して ClickHouse に書き込むことができます。
+
+<Tabs groupId="spark_apis">
+<TabItem value="Scala" label="Scala" default>
+
+```scala
+import org.apache.spark.sql.functions._
+
+// Create DataFrame with JSON data
+val jsonData = Seq(
+  (1, """{"name": "Alice", "age": 30}"""),
+  (2, """{"name": "Bob", "age": 25}"""),
+  (3, """{"name": "Charlie", "city": "NYC"}""")
+).toDF("id", "json_string")
+
+// Parse JSON strings to VariantType
+val variantDF = jsonData.select(
+  col("id"),
+  parse_json(col("json_string")).as("data")
+)
+
+// Write to ClickHouse with JSON type (JSON objects only)
+variantDF.writeTo("clickhouse.default.user_data").create()
+
+// Or specify Variant with multiple types
+spark.sql("""
+  CREATE TABLE clickhouse.default.mixed_data (
+    id INT,
+    data VARIANT
+  ) USING clickhouse
+  TBLPROPERTIES (
+    'clickhouse.column.data.variant_types' = 'String, Int64, Bool, JSON',
+    'engine' = 'MergeTree()',
+    'order_by' = 'id'
+  )
+""")
+```
+
+</TabItem>
+<TabItem value="Python" label="Python">
+
+```python
+from pyspark.sql.functions import parse_json
+
+# Create DataFrame with JSON data
+json_data = [
+    (1, '{"name": "Alice", "age": 30}'),
+    (2, '{"name": "Bob", "age": 25}'),
+    (3, '{"name": "Charlie", "city": "NYC"}')
+]
+df = spark.createDataFrame(json_data, ["id", "json_string"])
+
+# Parse JSON strings to VariantType
+variant_df = df.select(
+    "id",
+    parse_json("json_string").alias("data")
+)
+
+# Write to ClickHouse with JSON type
+variant_df.writeTo("clickhouse.default.user_data").create()
+
+# Or specify Variant with multiple types
+spark.sql("""
+  CREATE TABLE clickhouse.default.mixed_data (
+    id INT,
+    data VARIANT
+  ) USING clickhouse
+  TBLPROPERTIES (
+    'clickhouse.column.data.variant_types' = 'String, Int64, Bool, JSON',
+    'engine' = 'MergeTree()',
+    'order_by' = 'id'
+  )
+""")
+```
+
+</TabItem>
+<TabItem value="Java" label="Java">
+
+```java
+import static org.apache.spark.sql.functions.*;
+
+// Create DataFrame with JSON data
+List<Row> jsonData = Arrays.asList(
+    RowFactory.create(1, "{\"name\": \"Alice\", \"age\": 30}"),
+    RowFactory.create(2, "{\"name\": \"Bob\", \"age\": 25}"),
+    RowFactory.create(3, "{\"name\": \"Charlie\", \"city\": \"NYC\"}")
+);
+StructType schema = new StructType(new StructField[]{
+    DataTypes.createStructField("id", DataTypes.IntegerType, false),
+    DataTypes.createStructField("json_string", DataTypes.StringType, false)
+});
+Dataset<Row> jsonDF = spark.createDataFrame(jsonData, schema);
+
+// Parse JSON strings to VariantType
+Dataset<Row> variantDF = jsonDF.select(
+    col("id"),
+    parse_json(col("json_string")).as("data")
+);
+
+// Write to ClickHouse with JSON type (JSON objects only)
+variantDF.writeTo("clickhouse.default.user_data").create();
+
+// Or specify Variant with multiple types
+spark.sql("CREATE TABLE clickhouse.default.mixed_data (" +
+    "id INT, " +
+    "data VARIANT" +
+    ") USING clickhouse " +
+    "TBLPROPERTIES (" +
+    "'clickhouse.column.data.variant_types' = 'String, Int64, Bool, JSON', " +
+    "'engine' = 'MergeTree()', " +
+    "'order_by' = 'id'" +
+    ")");
+```
+
+</TabItem>
+</Tabs>
+
+
+### Spark SQL で VariantType テーブルを作成する {#creating-varianttype-tables-spark-sql}
+
+Spark SQL の DDL 文を使用して VariantType テーブルを作成できます。
+
+```sql
+-- Create table with JSON type (default)
+CREATE TABLE clickhouse.default.json_table (
+  id INT,
+  data VARIANT
+) USING clickhouse
+TBLPROPERTIES (
+  'engine' = 'MergeTree()',
+  'order_by' = 'id'
+)
+```
+
+```sql
+-- Create table with Variant type supporting multiple types
+CREATE TABLE clickhouse.default.flexible_data (
+  id INT,
+  data VARIANT
+) USING clickhouse
+TBLPROPERTIES (
+  'clickhouse.column.data.variant_types' = 'String, Int64, Float64, Bool, Array(String), JSON',
+  'engine' = 'MergeTree()',
+  'order_by' = 'id'
+)
+```
+
+
+### VariantType 型の設定 {#configuring-variant-types}
+
+VariantType のカラムを持つテーブルを作成する際、使用する ClickHouse のデータ型を指定できます。
+
+#### JSON 型 (デフォルト) {#json-type-default}
+
+`variant_types` プロパティが指定されていない場合、カラムのデフォルトの型は ClickHouse の `JSON` 型となり、JSON オブジェクトのみを受け付けます。
+
+```sql
+CREATE TABLE clickhouse.default.json_table (
+  id INT,
+  data VARIANT
+) USING clickhouse
+TBLPROPERTIES (
+  'engine' = 'MergeTree()',
+  'order_by' = 'id'
+)
+```
+
+これにより、次のような ClickHouse クエリが生成されます。
+
+```sql
+CREATE TABLE json_table (id Int32, data JSON) ENGINE = MergeTree() ORDER BY id
+```
+
+
+#### 複数の型を持つ VariantType {#variant-type-multiple-types}
+
+プリミティブ、配列、および JSONオブジェクトをサポートするには、`variant_types` プロパティで型を指定します。
+
+```sql
+CREATE TABLE clickhouse.default.flexible_data (
+  id INT,
+  data VARIANT
+) USING clickhouse
+TBLPROPERTIES (
+  'clickhouse.column.data.variant_types' = 'String, Int64, Float64, Bool, Array(String), JSON',
+  'engine' = 'MergeTree()',
+  'order_by' = 'id'
+)
+```
+
+これにより、次の ClickHouse クエリが生成されます。
+
+```sql
+CREATE TABLE flexible_data (
+  id Int32, 
+  data Variant(String, Int64, Float64, Bool, Array(String), JSON)
+) ENGINE = MergeTree() ORDER BY id
+```
+
+
+### サポートされている Variant 型 {#supported-variant-types}
+
+`Variant()` で使用できる ClickHouse 型は次のとおりです。
+
+- **プリミティブ型**: `String`, `Int8`, `Int16`, `Int32`, `Int64`, `UInt8`, `UInt16`, `UInt32`, `UInt64`, `Float32`, `Float64`, `Bool`
+- **配列**: `Array(T)`。ここで T は、ネストされた配列を含む任意のサポート対象型です
+- **JSON**: JSON オブジェクトを格納するための `JSON`
+
+### 読み取りフォーマットの設定 {#read-format-configuration}
+
+デフォルトでは、JSON および Variant のカラムは `VariantType` として読み取られます。設定を変更して、これらを文字列として読み取るようにできます。
+
+<Tabs groupId="spark_apis">
+<TabItem value="Scala" label="Scala" default>
+
+```scala
+// Read JSON/Variant as strings instead of VariantType
+spark.conf.set("spark.clickhouse.read.jsonAs", "string")
+
+val df = spark.sql("SELECT id, data FROM clickhouse.default.json_table")
+// data column will be StringType containing JSON strings
+```
+
+</TabItem>
+<TabItem value="Python" label="Python">
+
+```python
+# Read JSON/Variant as strings instead of VariantType
+spark.conf.set("spark.clickhouse.read.jsonAs", "string")
+
+df = spark.sql("SELECT id, data FROM clickhouse.default.json_table")
+# data column will be StringType containing JSON strings
+```
+
+</TabItem>
+<TabItem value="Java" label="Java">
+
+```java
+// Read JSON/Variant as strings instead of VariantType
+spark.conf().set("spark.clickhouse.read.jsonAs", "string");
+
+Dataset<Row> df = spark.sql("SELECT id, data FROM clickhouse.default.json_table");
+// data column will be StringType containing JSON strings
+```
+
+</TabItem>
+</Tabs>
+
+
+### 書き込みフォーマットのサポート {#write-format-support}
+
+VariantType の書き込みサポート状況はフォーマットごとに異なります:
+
+| Format | Support    | Notes                                                                                                                                          |
+| ------ | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| JSON   | ✅ Full     | `JSON` 型と `Variant` 型の両方をサポートします。VariantType データにはこのフォーマットの利用を推奨します                                                                            |
+| Arrow  | ⚠️ Partial | ClickHouse の `JSON` 型への書き込みをサポートします。ClickHouse の `Variant` 型はサポートしません。完全なサポートは <https://github.com/ClickHouse/ClickHouse/issues/92752> の解決待ちです |
+
+書き込みフォーマットを設定します:
+
+```scala
+spark.conf.set("spark.clickhouse.write.format", "json")  // Recommended for Variant types
+```
+
+:::tip
+ClickHouse の `Variant` 型にデータを書き込む必要がある場合は、JSON フォーマットを使用してください。Arrow フォーマットで書き込み可能なのは `JSON` 型のみです。
+:::
+
+
+### ベストプラクティス {#varianttype-best-practices}
+
+1. **JSON のみのデータには JSON 型を使用する**: JSON オブジェクトのみを保存する場合は、デフォルトの JSON 型（`variant_types` プロパティなし）を使用します。
+2. **型を明示的に指定する**: `Variant()` を使用する場合、保存する予定のすべての型を明示的に列挙します。
+3. **実験的機能を有効化する**: ClickHouse で `allow_experimental_json_type = 1` が有効になっていることを確認します。
+4. **書き込みには JSON 形式を使用する**: 互換性を高めるため、VariantType データには JSON 形式での書き込みを推奨します。
+5. **クエリパターンを考慮する**: JSON/Variant 型は、効率的なフィルタリングのために ClickHouse の JSON パス クエリをサポートします。
+6. **パフォーマンス向上のためのカラムヒント**: ClickHouse で JSON フィールドを使用する場合、カラムヒントを追加するとクエリパフォーマンスが向上します。現在、Spark 経由でのカラムヒントの追加はサポートされていません。この機能の追跡については [GitHub issue #497](https://github.com/ClickHouse/spark-clickhouse-connector/issues/497) を参照してください。
+
+### 例：完全なワークフローの例 {#varianttype-example-workflow}
+
+<Tabs groupId="spark_apis">
+<TabItem value="Scala" label="Scala" default>
+
+```scala
+import org.apache.spark.sql.functions._
+
+// Enable experimental JSON type in ClickHouse
+spark.sql("SET allow_experimental_json_type = 1")
+
+// Create table with Variant column
+spark.sql("""
+  CREATE TABLE clickhouse.default.events (
+    event_id BIGINT,
+    event_time TIMESTAMP,
+    event_data VARIANT
+  ) USING clickhouse
+  TBLPROPERTIES (
+    'clickhouse.column.event_data.variant_types' = 'String, Int64, Bool, JSON',
+    'engine' = 'MergeTree()',
+    'order_by' = 'event_time'
+  )
+""")
+
+// Prepare data with mixed types
+val events = Seq(
+  (1L, "2024-01-01 10:00:00", """{"action": "login", "user_id": 123}"""),
+  (2L, "2024-01-01 10:05:00", """{"action": "purchase", "amount": 99.99}"""),
+  (3L, "2024-01-01 10:10:00", """{"action": "logout", "duration": 600}""")
+).toDF("event_id", "event_time", "json_data")
+
+// Convert to VariantType and write
+val variantEvents = events.select(
+  col("event_id"),
+  to_timestamp(col("event_time")).as("event_time"),
+  parse_json(col("json_data")).as("event_data")
+)
+
+variantEvents.writeTo("clickhouse.default.events").append()
+
+// Read and query
+val result = spark.sql("""
+  SELECT event_id, event_time, event_data
+  FROM clickhouse.default.events
+  WHERE event_time >= '2024-01-01'
+  ORDER BY event_time
+""")
+
+result.show(false)
+```
+
+</TabItem>
+<TabItem value="Python" label="Python">
+
+```python
+from pyspark.sql.functions import parse_json, to_timestamp
+
+# Enable experimental JSON type in ClickHouse
+spark.sql("SET allow_experimental_json_type = 1")
+
+# Create table with Variant column
+spark.sql("""
+  CREATE TABLE clickhouse.default.events (
+    event_id BIGINT,
+    event_time TIMESTAMP,
+    event_data VARIANT
+  ) USING clickhouse
+  TBLPROPERTIES (
+    'clickhouse.column.event_data.variant_types' = 'String, Int64, Bool, JSON',
+    'engine' = 'MergeTree()',
+    'order_by' = 'event_time'
+  )
+""")
+
+# Prepare data with mixed types
+events = [
+    (1, "2024-01-01 10:00:00", '{"action": "login", "user_id": 123}'),
+    (2, "2024-01-01 10:05:00", '{"action": "purchase", "amount": 99.99}'),
+    (3, "2024-01-01 10:10:00", '{"action": "logout", "duration": 600}')
+]
+df = spark.createDataFrame(events, ["event_id", "event_time", "json_data"])
+
+# Convert to VariantType and write
+variant_events = df.select(
+    "event_id",
+    to_timestamp("event_time").alias("event_time"),
+    parse_json("json_data").alias("event_data")
+)
+
+variant_events.writeTo("clickhouse.default.events").append()
+
+# Read and query
+result = spark.sql("""
+  SELECT event_id, event_time, event_data
+  FROM clickhouse.default.events
+  WHERE event_time >= '2024-01-01'
+  ORDER BY event_time
+""")
+
+result.show(truncate=False)
+```
+
+</TabItem>
+<TabItem value="Java" label="Java">
+
+```java
+import static org.apache.spark.sql.functions.*;
+
+// Enable experimental JSON type in ClickHouse
+spark.sql("SET allow_experimental_json_type = 1");
+
+// Create table with Variant column
+spark.sql("CREATE TABLE clickhouse.default.events (" +
+    "event_id BIGINT, " +
+    "event_time TIMESTAMP, " +
+    "event_data VARIANT" +
+    ") USING clickhouse " +
+    "TBLPROPERTIES (" +
+    "'clickhouse.column.event_data.variant_types' = 'String, Int64, Bool, JSON', " +
+    "'engine' = 'MergeTree()', " +
+    "'order_by' = 'event_time'" +
+    ")");
+
+// Prepare data with mixed types
+List<Row> events = Arrays.asList(
+    RowFactory.create(1L, "2024-01-01 10:00:00", "{\"action\": \"login\", \"user_id\": 123}"),
+    RowFactory.create(2L, "2024-01-01 10:05:00", "{\"action\": \"purchase\", \"amount\": 99.99}"),
+    RowFactory.create(3L, "2024-01-01 10:10:00", "{\"action\": \"logout\", \"duration\": 600}")
+);
+StructType eventSchema = new StructType(new StructField[]{
+    DataTypes.createStructField("event_id", DataTypes.LongType, false),
+    DataTypes.createStructField("event_time", DataTypes.StringType, false),
+    DataTypes.createStructField("json_data", DataTypes.StringType, false)
+});
+Dataset<Row> eventsDF = spark.createDataFrame(events, eventSchema);
+
+// Convert to VariantType and write
+Dataset<Row> variantEvents = eventsDF.select(
+    col("event_id"),
+    to_timestamp(col("event_time")).as("event_time"),
+    parse_json(col("json_data")).as("event_data")
+);
+
+variantEvents.writeTo("clickhouse.default.events").append();
+
+// Read and query
+Dataset<Row> result = spark.sql("SELECT event_id, event_time, event_data " +
+    "FROM clickhouse.default.events " +
+    "WHERE event_time >= '2024-01-01' " +
+    "ORDER BY event_time");
+
+result.show(false);
+```
+
+</TabItem>
+</Tabs>
+
+## Configurations {#configurations}
+
+以下は、コネクタで利用可能な調整可能な設定項目です。
+
+:::note
+**設定の利用方法**: これらは Catalog API と TableProvider API の両方に適用される Spark レベルの設定オプションです。次の 2 通りの方法で設定できます。
+
+1. **グローバルな Spark 設定**（すべての操作に適用）:
+   ```python
+   spark.conf.set("spark.clickhouse.write.batchSize", "20000")
+   spark.conf.set("spark.clickhouse.write.compression.codec", "lz4")
+   ```
+
+2. **操作ごとの上書き**（TableProvider API のみ - グローバル設定を上書き可能）:
+   ```python
+   df.write \
+       .format("clickhouse") \
+       .option("host", "your-host") \
+       .option("database", "default") \
+       .option("table", "my_table") \
+       .option("spark.clickhouse.write.batchSize", "20000") \
+       .option("spark.clickhouse.write.compression.codec", "lz4") \
+       .mode("append") \
+       .save()
+   ```
+
+あるいは、`spark-defaults.conf` や Spark セッションの作成時に設定することもできます。
+:::
 
 <br/>
 
@@ -543,7 +1530,7 @@ TBLPROPERTIES (
 | `Int128`,`UInt128`, `Int256`, `UInt256`                           | `DecimalType(38, 0)`           | ✅         | はい          |                                                    |
 | `Float32`                                                         | `FloatType`                    | ✅         | はい          |                                                    |
 | `Float64`                                                         | `DoubleType`                   | ✅         | はい          |                                                    |
-| `String`, `JSON`, `UUID`, `Enum8`, `Enum16`, `IPv4`, `IPv6`       | `StringType`                   | ✅         | はい          |                                                    |
+| `String`, `UUID`, `Enum8`, `Enum16`, `IPv4`, `IPv6`              | `StringType`                   | ✅         | はい          |                                                    |
 | `FixedString`                                                     | `BinaryType`, `StringType`     | ✅         | はい          | 設定 `READ_FIXED_STRING_AS` によって制御されます |
 | `Decimal`                                                         | `DecimalType`                  | ✅         | はい          | `Decimal128` までの精度とスケール                 |
 | `Decimal32`                                                       | `DecimalType(9, scale)`        | ✅         | はい          |                                                    |
@@ -556,6 +1543,7 @@ TBLPROPERTIES (
 | `IntervalYear`                                                    | `YearMonthIntervalType(Year)`  | ✅         | はい          |                                                    |
 | `IntervalMonth`                                                   | `YearMonthIntervalType(Month)` | ✅         | はい          |                                                    |
 | `IntervalDay`, `IntervalHour`, `IntervalMinute`, `IntervalSecond` | `DayTimeIntervalType`          | ✅         | いいえ        | 対応する Interval 型が使用されます                |
+| `JSON`, `Variant`                                                 | `VariantType`                  | ✅         | いいえ        | Spark 4.0 以降および ClickHouse 25.3 以降が必要です。`spark.clickhouse.read.jsonAs=string` を設定すると `StringType` として読み取ることができます |
 | `Object`                                                          |                                | ❌         |              |                                                    |
 | `Nested`                                                          |                                | ❌         |              |                                                    |
 | `Tuple`                                                           | `StructType`                   | ✅         | いいえ        | 名前付きおよび名前なしのタプルをサポートします。名前付きタプルは構造体フィールドに名前で対応付けられ、名前なしタプルは `_1`、`_2` などを使用します。入れ子の構造体および Nullable フィールドをサポートします |
@@ -589,7 +1577,7 @@ TBLPROPERTIES (
 | `ArrayType` (list, tuple, or array) | `Array`              | ✅          | いいえ           | 配列要素の型も変換されます             |
 | `MapType`                           | `Map`                | ✅          | いいえ           | キーは `StringType` に制限されます     |
 | `StructType`                        | `Tuple`              | ✅          | いいえ           | フィールド名付きの Tuple に変換されます |
-| `VariantType`                       | `VariantType`        | ❌          | いいえ           |                                        |
+| `VariantType`                       | `JSON` or `Variant`  | ✅          | いいえ           | Spark 4.0 以降および ClickHouse 25.3 以降が必要です。デフォルトでは `JSON` 型になります。複数の型を持つ `Variant` を指定するには `clickhouse.column.&lt;name&gt;.variant_types` プロパティを使用します。 |
 | `Object`                            |                      | ❌          |                  |                                        |
 | `Nested`                            |                      | ❌          |                  |                                        |
 

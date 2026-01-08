@@ -6,6 +6,9 @@ sidebar_position: 2
 title: 'ClickPipes for MongoDB 常见问题解答'
 doc_type: 'reference'
 keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # ClickPipes for MongoDB 常见问题解答 {#clickpipes-for-mongodb-faq}
@@ -32,13 +35,14 @@ SELECT sum(doc.shipping.cost::Float32) AS total_shipping_cost FROM t1;
 
 要了解更多关于处理 JSON 的信息，请参阅我们的 [JSON 使用指南](./quickstart)。
 
+
 ### 如何在 ClickHouse 中展平嵌套的 MongoDB 文档？ {#how-do-i-flatten-the-nested-mongodb-documents-in-clickhouse}
 
-MongoDB 文档在 ClickHouse 中默认作为 JSON 类型进行复制，并保留其嵌套结构。你有多种方式可以对这些数据进行展平。如果你希望将数据展平成列，可以使用普通视图、物化视图，或者在查询时进行访问。
+MongoDB 文档在 ClickHouse 中默认被复制为 JSON 类型，并保留其嵌套结构。你有多种方式可以对这些数据进行展平。如果你希望将数据展平成列，可以使用普通视图、物化视图，或者在查询时直接访问。
 
 1. **普通视图（Normal Views）**：使用普通视图封装展平逻辑。
 2. **物化视图（Materialized Views）**：对于小规模数据集，可以使用可刷新的物化视图并结合 [`FINAL` 修饰符](/sql-reference/statements/select/from#final-modifier)，定期对数据进行展平和去重。对于大规模数据集，我们建议使用不带 `FINAL` 的增量物化视图以实时展平数据，然后在查询时进行数据去重。
-3. **查询时访问（Query-time Access）**：无需展平，直接在查询中使用点号（dot）语法访问嵌套字段。
+3. **查询时访问（Query-time Access）**：无需展平，直接在查询中使用点号语法（dot notation）访问嵌套字段。
 
 有关详细示例，请参阅我们的 [JSON 使用指南](./quickstart)。
 
@@ -48,7 +52,7 @@ MongoDB 文档在 ClickHouse 中默认作为 JSON 类型进行复制，并保留
 
 ### 如果我从 MongoDB 中删除数据库/表，会发生什么？ {#what-happens-if-i-delete-a-database-table-from-my-mongodb-database}
 
-当你从 MongoDB 中删除数据库/表时，ClickPipes 将继续运行，但已删除的数据库/表将停止复制变更。ClickHouse 中对应的表将被保留。
+当你从 MongoDB 中删除数据库/表时，ClickPipes 将继续运行，但已删除的数据库/表将不再同步变更。ClickHouse 中对应的表将被保留。
 
 ### MongoDB CDC Connector 如何处理事务？ {#how-does-mongodb-cdc-connector-handle-transactions}
 
@@ -58,11 +62,11 @@ MongoDB 文档在 ClickHouse 中默认作为 JSON 类型进行复制，并保留
 
 ### 如何处理 `resume of change stream was not possible, as the resume point may no longer be in the oplog.` 错误？ {#resume-point-may-no-longer-be-in-the-oplog-error}
 
-当 oplog 被截断且 ClickPipe 无法在预期位置恢复变更流时，通常会出现此错误。要解决此问题，请[重新同步 ClickPipe](./resync.md)。为避免此问题再次发生，我们建议增加 oplog 的保留时间。参见 [MongoDB Atlas](./source/atlas#enable-oplog-retention)、[自托管 MongoDB](./source/generic#enable-oplog-retention) 或 [Amazon DocumentDB](./source/documentdb#configure-change-stream-log-retention) 的相关说明。
+当 oplog 被截断且 ClickPipe 无法在预期位置恢复变更流时，通常会出现此错误。要解决此问题，请[重新同步 ClickPipe](./resync.md)。为避免此问题再次发生，我们建议延长 oplog 的保留时间。参见 [MongoDB Atlas](./source/atlas#enable-oplog-retention)、[自托管 MongoDB](./source/generic#enable-oplog-retention) 或 [Amazon DocumentDB](./source/documentdb#configure-change-stream-log-retention) 的相关说明。
 
 ### 复制是如何管理的？ {#how-is-replication-managed}
 
-我们使用 MongoDB 原生的 Change Streams API 来跟踪数据库中的变更。Change Streams API 通过利用 MongoDB 的 oplog（操作日志）提供可恢复的数据库变更流。ClickPipe 使用 MongoDB 的恢复令牌（resume tokens）来跟踪在 oplog 中的位置，并确保每一次变更都被复制到 ClickHouse。
+我们使用 MongoDB 原生的 Change Streams API 来跟踪数据库中的变更。Change Streams API 通过使用 MongoDB 的 oplog（操作日志）提供可恢复的数据库变更流。ClickPipe 使用 MongoDB 的恢复令牌（resume tokens）来跟踪在 oplog 中的位置，并确保每一条变更都被复制到 ClickHouse。
 
 ### 我应该使用哪种 read preference？ {#which-read-preference-should-i-use}
 

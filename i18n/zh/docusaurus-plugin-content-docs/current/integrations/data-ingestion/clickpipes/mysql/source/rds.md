@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/source/rds
 title: 'RDS MySQL 数据源配置指南'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', '数据摄取', '实时同步']
+integration:
+   - support_level: '核心'
+   - category: 'clickpipes'
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
@@ -29,9 +32,9 @@ import Image from '@theme/IdealImage';
 
 ### 1. 通过自动备份启用二进制日志记录 {#enable-binlog-logging}
 
-自动备份功能决定是否为 MySQL 启用二进制日志记录。您可以在 RDS 控制台中通过导航到 **Modify** &gt; **Additional configuration** &gt; **Backup**，并勾选 **Enable automated backups** 复选框（如果尚未选中）来为实例配置自动备份。
+自动备份功能决定是否为 MySQL 启用二进制日志记录。您可以在 RDS 控制台中通过导航到 **Modify** > **Additional configuration** > **Backup**，并勾选 **Enable automated backups** 复选框（如果尚未选中）来为实例配置自动备份。
 
-<Image img={rds_backups} alt="在 RDS 中启用自动备份" size="lg" border />
+<Image img={rds_backups} alt="在 RDS 中启用自动备份" size="lg" border/>
 
 我们建议根据具体的复制场景，将 **Backup retention period** 设置为相对较长的值。
 
@@ -49,7 +52,8 @@ import Image from '@theme/IdealImage';
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 ```
 
-如果未配置此项，或将其间隔设置得过短，可能会导致二进制日志中出现间断，从而影响 ClickPipes 恢复复制的能力。
+如果未配置此项，或将其间隔设置得过短，可能会导致二进制日志中出现缺口，影响 ClickPipes 恢复复制的能力。
+
 
 ## 配置 binlog 设置 {#binlog-settings}
 
@@ -105,6 +109,7 @@ MySQL ClickPipe 也支持在未启用 GTID 模式的情况下进行复制。但�
 <Image img={enable_gtid} alt="已启用 GTID" size="lg" border/>
 
 <br/>
+
 :::tip
 MySQL ClickPipe 也支持在未启用 GTID 模式的情况下进行复制。但为了获得更好的性能并简化故障排查，建议启用 GTID 模式。
 :::

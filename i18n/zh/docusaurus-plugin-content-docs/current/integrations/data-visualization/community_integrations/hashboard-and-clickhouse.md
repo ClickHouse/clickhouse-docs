@@ -6,6 +6,9 @@ keywords: ['clickhouse', 'Hashboard', '连接', '集成', 'ui', '分析']
 description: 'Hashboard 是一个功能强大的分析平台，可以轻松与 ClickHouse 集成，用于实时数据分析。'
 title: '连接 ClickHouse 与 Hashboard'
 doc_type: 'guide'
+integration:
+  - support_level: 'community'
+  - category: 'data_visualization'
 ---
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
@@ -50,4 +53,4 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## 了解更多 {#learn-more}
 
-如需了解更多高级功能和故障排除方法，请访问 [Hashboard 文档](https://docs.hashboard.com/)。
+如需了解更多高级功能和故障排查内容，请访问 [Hashboard 文档](https://docs.hashboard.com/)。

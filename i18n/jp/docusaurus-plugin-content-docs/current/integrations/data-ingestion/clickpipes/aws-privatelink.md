@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/aws-privatelink
 title: 'ClickPipes 用 AWS PrivateLink'
 doc_type: 'guide'
 keywords: ['aws privatelink', 'ClickPipes セキュリティ', 'VPC エンドポイント', 'プライベート接続', 'VPC リソース']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
@@ -28,6 +31,7 @@ import Image from '@theme/IdealImage';
 
 ClickPipes のリバースプライベートエンドポイント機能は、以下の
 データソースタイプでのみ利用できます:
+
 - Kafka
 - Postgres
 - MySQL
@@ -83,9 +87,9 @@ aws vpc-lattice create-resource-gateway \
     --name <RESOURCE_GATEWAY_NAME>
 ```
 
-出力にはリソースゲートウェイIDが含まれます。これは次のステップで必要になります。
+出力にはリソースゲートウェイIDが含まれます。これは次のステップで使用します。
 
-続行する前に、リソースゲートウェイが`Active`状態になるまで待つ必要があります。以下のコマンドを実行して状態を確認できます：
+続行する前に、リソースゲートウェイが`Active`状態になるまで待つ必要があります。以下のコマンドを実行して状態を確認できます。
 
 ```bash
 aws vpc-lattice get-resource-gateway \
@@ -106,7 +110,7 @@ aws vpc-lattice create-resource-configuration \
     --name <RESOURCE_CONFIGURATION_NAME>
 ```
 
-最もシンプルな[リソース構成タイプ](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types)は、単一のリソース構成です。ARNを直接指定して構成するか、公開解決可能なIPアドレスまたはドメイン名を共有できます。
+最もシンプルな[リソース構成タイプ](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types)は、単一のリソース構成を指定するタイプです。ARNを直接指定して構成するか、パブリックに名前解決可能なIPアドレスまたはドメイン名を指定して共有できます。
 
 例えば、RDSクラスターのARNで構成するには：
 
@@ -131,7 +135,7 @@ aws vpc-lattice create-resource-configuration \
 
 リソースを共有するには、リソース共有が必要です。これはResource Access Manager（RAM）を通じて実現されます。
 
-Resource-ConfigurationをResource-Shareに配置するには、[AWSコンソール](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html)を使用するか、ClickPipesアカウントID `072088201116`（arn:aws:iam::072088201116:root）を指定して以下のコマンドを実行します。
+リソース構成は、[AWSコンソール](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html)からリソース共有に追加するか、ClickPipesアカウントID `072088201116`（arn:aws:iam::072088201116:root）を指定して次のコマンドを実行することで追加できます。
 
 ```bash
 aws ram create-resource-share \
@@ -140,17 +144,18 @@ aws ram create-resource-share \
     --name <RESOURCE_SHARE_NAME>
 ```
 
-出力にはResource-Share ARNが含まれます。これはVPCリソースを使用したClickPipe接続のセットアップに必要となります。
+出力にはリソース共有ARNが含まれます。これは、VPCリソースでClickPipe接続を設定する際に必要になります。
 
-VPCリソースを使用して[リバースプライベートエンドポイントを持つClickPipeを作成](#creating-clickpipe)する準備が整いました。以下の設定が必要です。
+これで、VPCリソースを使用して[リバースプライベートエンドポイント付きのClickPipeを作成](#creating-clickpipe)する準備ができました。以下を設定する必要があります：
 
-- `VPC endpoint type`を`VPC Resource`に設定します。
-- `Resource configuration ID`をステップ2で作成したResource-ConfigurationのIDに設定します。
-- `Resource share ARN`をステップ3で作成したResource-ShareのARNに設定します。
+* `VPC endpoint type` を `VPC Resource` に設定します。
+* `Resource configuration ID` を、ステップ2で作成したリソース構成のIDに設定します。
+* `Resource share ARN` を、ステップ3で作成したリソース共有のARNに設定します。
 
-VPCリソースを使用したPrivateLinkの詳細については、[AWSドキュメント](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html)を参照してください。
+VPCリソースでのPrivateLinkの詳細については、[AWSドキュメント](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html)を参照してください。
 
 </VerticalStepper>
+
 
 ### MSKマルチVPC接続 {#msk-multi-vpc}
 
@@ -228,9 +233,11 @@ RDS でリージョンをまたいだアクセスが必要な場合は、VPC エ
 
 <Image img={cp_rpe_step2} alt="リバースプライベートエンドポイントの選択" size="lg" border/>
 
-    - VPC resource の場合は、configuration share ARN と configuration ID を指定します。
-    - MSK multi-VPC の場合は、作成済みエンドポイントで使用する cluster ARN と認証方法を指定します。
-    - VPC endpoint service の場合は、service name を指定します。
+```
+- For VPC resource, provide the configuration share ARN and configuration ID.
+- For MSK multi-VPC, provide the cluster ARN and authentication method used with a created endpoint.
+- For VPC endpoint service, provide the service name.
+```
 
 7. `Create` をクリックし、リバースプライベートエンドポイントの準備が完了するまで待ちます。
 
@@ -252,6 +259,7 @@ RDS でリージョンをまたいだアクセスが必要な場合は、VPC エ
    すべての DNS 名の一覧は、クラウドサービスの設定から参照できます。
 
 </VerticalStepper>
+
 
 ## 既存のリバースプライベートエンドポイントの管理 {#managing-existing-endpoints}
 

@@ -5,6 +5,9 @@ description: 'QStudio — это бесплатный SQL-инструмент.'
 title: 'Подключите QStudio к ClickHouse'
 doc_type: 'guide'
 keywords: ['qstudio', 'sql-клиент', 'инструмент для работы с базами данных', 'инструмент для выполнения запросов', 'ide']
+integration:
+  - support_level: 'community'
+  - category: 'sql_client'
 ---
 
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
@@ -65,4 +68,4 @@ QStudio доступен для скачивания по адресу https://w
 
 ## Следующие шаги {#next-steps}
 
-Ознакомьтесь с [QStudio](https://www.timestored.com/qstudio), чтобы узнать о возможностях QStudio, и с [документацией ClickHouse](https://clickhouse.com/docs), чтобы узнать о возможностях ClickHouse.
+Ознакомьтесь с [QStudio](https://www.timestored.com/qstudio), чтобы узнать о возможностях QStudio, а также с [документацией ClickHouse](https://clickhouse.com/docs), чтобы подробнее узнать о возможностях ClickHouse.

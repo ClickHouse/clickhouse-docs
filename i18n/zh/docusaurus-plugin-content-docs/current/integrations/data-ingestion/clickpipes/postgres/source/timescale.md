@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/source/timescale
 title: 'Postgres 搭配 TimescaleDB 的源端配置指南'
 keywords: ['TimescaleDB']
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
@@ -57,40 +60,47 @@ Timescale 超表本身并不存储插入到其中的任何数据。相反，数�
 如果你只希望执行一次性数据加载（`Initial Load Only`），请从第 2 步起跳过后续步骤。
 :::
 
-1. 为该 ClickPipe 创建一个 Postgres 用户，并授予其对你希望复制的表执行 `SELECT` 的权限。
+1. 为 ClickPipes 创建一个专用用户：
 
-```sql
-  CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
-  GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-  -- If desired, you can refine these GRANTs to individual tables alone, instead of the entire schema
-  -- But when adding new tables to the ClickPipe, you'll need to add them to the user as well.
-  GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-  ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
-```
+   ```sql
+   CREATE USER clickpipes_user PASSWORD 'some-password';
+   ```
 
-:::note
-请务必将 `clickpipes_user` 和 `clickpipes_password` 替换为所需的用户名和密码。
-:::
+2. 为上一步创建的用户授予 schema 级只读访问权限。下面的示例展示了对 `public` schema 的权限设置。对于每个包含你希望复制的表的 schema，请重复执行这些命令：
 
-2. 以 Postgres 超级用户或管理员用户身份，在源实例上创建一个 publication，其中包含你想要复制的表和 hypertable，**并且还必须包含整个 `_timescaledb_internal` schema**。创建 ClickPipe 时，你需要选择这个 publication。
+   ```sql
+   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+   ```
 
-```sql
--- When adding new tables to the ClickPipe, you'll need to add them to the publication as well manually. 
-  CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>, TABLES IN SCHEMA _timescaledb_internal;
-```
+3. 为该用户授予复制相关的权限：
 
-:::tip
-我们不建议创建 `FOR ALL TABLES` 的 publication。这样会导致从 Postgres 到 ClickPipes 的流量增加（会发送该 pipe 中未包含的其他表的变更），从而降低整体效率。
+   ```sql
+   GRANT rds_replication TO clickpipes_user;
+   ```
 
-对于手动创建的 publication，请在将表添加到 pipe 之前，先将需要的表添加到该 publication 中。
-:::
+4. 使用你想要复制的表创建一个 [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html)。我们强烈建议仅在 publication 中包含你真正需要的表，以避免额外的性能开销。
 
-:::info
-某些托管服务不会为其管理员用户授予在整个 schema 上创建 publication 所需的权限。
-如果是这种情况，请向服务提供商提交支持工单。或者，你也可以跳过此步骤和后续步骤，改为对数据执行一次性加载。
-:::
+   :::warning
+   任何包含在 publication 中的表都必须定义 **主键（primary key）**，*或者* 将其 **replica identity** 配置为 `FULL`。如何合理限定 publication 的范围，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
+   :::
 
-3. 为之前创建的用户授予复制权限。
+   * 为特定表创建 publication：
+
+     ```sql
+     CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+     ```
+
+   * 为特定 schema 中的所有表创建 publication：
+
+     ```sql
+     CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+     ```
+
+   `clickpipes` publication 将包含由这些指定表生成的一组变更事件，后续会用于摄取复制流。
+
+5. 为之前创建的用户授予复制权限。
 
 ```sql
 -- Give replication permission to the USER
@@ -98,6 +108,7 @@ Timescale 超表本身并不存储插入到其中的任何数据。相反，数�
 ```
 
 完成以上步骤后，即可[创建 ClickPipe](../index.md)。
+
 
 ## 配置网络访问 {#configure-network-access}
 

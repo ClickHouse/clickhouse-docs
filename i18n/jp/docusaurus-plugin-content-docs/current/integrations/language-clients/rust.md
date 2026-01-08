@@ -6,6 +6,9 @@ slug: /integrations/rust
 description: 'ClickHouse 用公式 Rust クライアント。'
 title: 'ClickHouse Rust クライアント'
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
 ---
 
 # ClickHouse Rust クライアント {#clickhouse-rust-client}

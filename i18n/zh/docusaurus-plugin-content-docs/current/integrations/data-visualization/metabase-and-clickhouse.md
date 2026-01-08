@@ -8,7 +8,7 @@ title: '将 Metabase 连接到 ClickHouse'
 show_related_blogs: true
 doc_type: 'guide'
 integration:
-  - support_level: 'core'
+  - support_level: 'partner'
   - category: 'data_visualization'
   - website: 'https://github.com/clickhouse/metabase-clickhouse-driver'
 ---
@@ -34,7 +34,8 @@ Metabase 是一个易于使用的开源 UI 工具，可用于对你的数据进�
 
 在本指南中，您将使用 Metabase 针对 ClickHouse 数据提出一些问题，并将答案进行可视化展示。其中一个结果如下所示：
 
-  <Image size="md" img={metabase_08} alt="Metabase 饼图可视化展示来自 ClickHouse 的数据" border />
+<Image size="md" img={metabase_08} alt="Metabase 饼图可视化展示来自 ClickHouse 的数据" border />
+
 <p/>
 
 :::tip 添加一些数据
@@ -42,6 +43,7 @@ Metabase 是一个易于使用的开源 UI 工具，可用于对你的数据进�
 :::
 
 ## 1. 收集连接详细信息 {#1-gather-your-connection-details}
+
 <ConnectionDetails />
 
 ## 2.  下载用于 Metabase 的 ClickHouse 插件 {#2--download-the-clickhouse-plugin-for-metabase}

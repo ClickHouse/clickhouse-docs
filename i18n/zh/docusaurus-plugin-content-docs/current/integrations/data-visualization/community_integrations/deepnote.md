@@ -7,7 +7,7 @@ description: '在熟悉的 notebook 环境中高效查询超大规模数据集�
 title: '将 ClickHouse 连接到 Deepnote'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
   - website: 'https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote'
 ---
@@ -28,6 +28,7 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 本指南假定您已经拥有 Deepnote 账户，并且已有一个正在运行的 ClickHouse 实例。
 
 ## 交互式示例 {#interactive-example}
+
 如果您希望在 Deepnote 数据笔记本中探索从 ClickHouse 查询数据的交互式示例，请点击下方按钮，启动一个已连接到 [ClickHouse Playground](../../../getting-started/playground.md) 的模板项目。
 
 [<Image size="logo" img="https://deepnote.com/buttons/launch-in-deepnote.svg" alt="在 Deepnote 中启动" />](https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote)
@@ -39,11 +40,12 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 <Image size="lg" img={deepnote_01} alt="ClickHouse 集成卡片" border />
 
 2. 填写 ClickHouse 实例的连接详细信息：
+
 <ConnectionDetails />
 
-   <Image size="md" img={deepnote_02} alt="ClickHouse 详情对话框" border />
+<Image size="md" img={deepnote_02} alt="ClickHouse 详情对话框" border />
 
-   **_注意：_** 如果您通过 IP 访问列表限制对 ClickHouse 的访问，则可能需要将 Deepnote 的 IP 地址加入允许列表。详细信息请参阅 [Deepnote 的文档](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses)。
+**_注意：_** 如果您通过 IP 访问列表限制对 ClickHouse 的访问，则可能需要将 Deepnote 的 IP 地址加入允许列表。详细信息请参阅 [Deepnote 的文档](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses)。
 
 3. 恭喜！您已在 Deepnote 中成功集成 ClickHouse。
 

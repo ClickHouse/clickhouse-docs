@@ -39,7 +39,7 @@ doc_type: 'reference'
 SELECT * FROM test_fetch ORDER BY a OFFSET 1 ROW FETCH FIRST 3 ROWS ONLY;
 ```
 
-次のクエリと同じです
+次のクエリと同一です
 
 ```sql
 SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
