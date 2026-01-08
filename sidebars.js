@@ -967,6 +967,7 @@ const sidebars = {
           items: [
             'integrations/data-ingestion/apache-spark/index',
             'integrations/data-ingestion/apache-spark/spark-native-connector',
+            'integrations/data-ingestion/apache-spark/databricks',
             'integrations/data-ingestion/apache-spark/spark-jdbc',
           ],
         },
