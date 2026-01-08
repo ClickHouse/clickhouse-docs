@@ -56,9 +56,9 @@ If you do not have a dataset to work with you can add one of the examples. This 
     pip install clickhouse-connect
     ```
 
-:::note Docker Compose Setup
-For Docker-based installations, see the [Superset database configuration guide](https://superset.apache.org/docs/configuration/databases/#clickhouse) for instructions on adding `clickhouse-connect` to your container.
-:::
+    :::note Docker Compose Setup
+    For Docker-based installations, see the [Superset database configuration guide](https://superset.apache.org/docs/configuration/databases/#clickhouse) for instructions on adding `clickhouse-connect` to your container.
+    :::
 
 2. Start (or restart) Superset.
 
