@@ -5,7 +5,10 @@ sidebar_label: 'テーブルを追加'
 slug: /integrations/clickpipes/mongodb/add_table
 show_title: false
 doc_type: 'ガイド'
-keywords: ['clickpipes', 'mongodb', 'CDC', 'データのインジェスト', 'リアルタイム同期']
+keywords: ['clickpipes', 'mongodb', 'cdc', 'データのインジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import Image from '@theme/IdealImage';
@@ -13,16 +16,19 @@ import add_table from '@site/static/images/integrations/data-ingestion/clickpipe
 
 # 特定のテーブルを ClickPipe に追加する {#adding-specific-tables-to-a-clickpipe}
 
-ClickPipe に特定のテーブルを追加できると便利な場面があります。トランザクション処理や分析ワークロードがスケールするにつれて、こうしたニーズは一般的になっていきます。
+ClickPipe に特定のテーブルを追加できると便利な場面があります。トランザクション処理や分析ワークロードがスケールするにつれて、こうしたニーズは一般的な要件となっていきます。
 
 ## 特定のテーブルを ClickPipe に追加する手順 {#add-tables-steps}
 
 次の手順で行います。
+
 1. パイプを[一時停止](./pause_and_resume.md)します。
 2. **Edit Table settings** をクリックします。
 3. 対象のテーブルを検索バーで検索して見つけます。
 4. チェックボックスをクリックしてテーブルを選択します。
+
 <br/>
+
 <Image img={add_table} border size="md"/>
 
 5. **update** をクリックします。

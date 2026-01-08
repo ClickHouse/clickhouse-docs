@@ -5,6 +5,9 @@ keywords: ['clickhouse', 'Omni', 'connect', 'integrate', 'ui']
 description: 'Omni 是一个企业级 BI、数据应用和嵌入式分析平台，可帮助你实时探索和分享洞察。'
 title: 'Omni'
 doc_type: 'guide'
+integration:
+  - support_level: 'partner'
+  - category: 'data_visualization'
 ---
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
@@ -28,11 +31,13 @@ Omni 可以通过官方 ClickHouse 数据源连接到 ClickHouse Cloud 或本地
 进入 Admin -> Connections，然后点击右上角的“Add Connection”按钮。
 
 <Image size="lg" img={omni_01} alt="Omni 管理界面在 Connections 部分中显示 Add Connection 按钮" border />
+
 <br/>
 
 选择 `ClickHouse`，并在表单中输入你的认证信息。
 
 <Image size="lg" img={omni_02} alt="Omni 中用于 ClickHouse 的连接配置界面，显示认证信息表单字段" border />
+
 <br/>
 
 现在你就可以在 Omni 中查询和可视化 ClickHouse 中的数据了。

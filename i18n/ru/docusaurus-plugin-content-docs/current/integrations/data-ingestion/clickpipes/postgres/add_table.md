@@ -6,6 +6,9 @@ slug: /integrations/clickpipes/postgres/add_table
 show_title: false
 keywords: ['clickpipes postgres', 'add table', 'table configuration', 'initial load', 'snapshot']
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import Image from '@theme/IdealImage';

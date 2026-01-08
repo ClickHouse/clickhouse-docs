@@ -5,6 +5,9 @@ slug: /integrations/clickpipes
 title: '与 ClickHouse Cloud 集成'
 doc_type: 'guide'
 keywords: ['ClickPipes', '数据摄取平台', '流式数据', '集成平台', 'ClickHouse Cloud']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';
@@ -25,7 +28,6 @@ import clickpipes_stack from '@site/static/images/integrations/data-ingestion/cl
 import cp_custom_role from '@site/static/images/integrations/data-ingestion/clickpipes/cp_custom_role.png';
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
-
 
 # 与 ClickHouse Cloud 集成 {#integrating-with-clickhouse-cloud}
 

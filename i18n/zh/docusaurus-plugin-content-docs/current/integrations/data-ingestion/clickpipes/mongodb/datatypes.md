@@ -4,6 +4,9 @@ slug: /integrations/clickpipes/mongodb/datatypes
 description: '介绍 MongoDB ClickPipe 中从 MongoDB 到 ClickHouse 的数据类型映射的页面'
 doc_type: 'reference'
 keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 MongoDB 将数据记录存储为 BSON 文档。在 ClickPipes 中，可以配置将 BSON 文档以 JSON 或 JSON String 的形式摄取到 ClickHouse。下表展示了支持的 BSON 到 JSON 字段类型映射：

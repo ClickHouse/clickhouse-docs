@@ -38,7 +38,7 @@ PROFILE](https://clickhouse.com/docs/sql-reference/statements/system#instrument-
 [system.symbols](https://clickhouse.com/docs/operations/system-tables/symbols) システムテーブルから取得できます。たとえば、実行にどれくらい時間がかかるかを確認するのに便利な `sleepForNanoseconds` 関数をプロファイリングしたいとします。
 
 ```sql
-SYSTEM INSTRUMENT ADD `sleepForNanoseconds` PROFILE
+SYSTEM INSTRUMENT ADD 'sleepForNanoseconds' PROFILE
 ```
 
 その後、プロファイリングしたい時間のあいだ動かしてから、停止します。

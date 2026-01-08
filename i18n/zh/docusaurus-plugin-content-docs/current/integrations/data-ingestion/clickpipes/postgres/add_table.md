@@ -1,11 +1,14 @@
 ---
 title: '向 ClickPipe 添加特定表'
-description: '描述将特定表添加到 ClickPipe 的步骤。'
+description: '描述向 ClickPipe 添加特定表的步骤。'
 sidebar_label: '添加表'
 slug: /integrations/clickpipes/postgres/add_table
 show_title: false
 keywords: ['clickpipes postgres', 'add table', 'table configuration', 'initial load', 'snapshot']
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import Image from '@theme/IdealImage';
@@ -18,11 +21,14 @@ import add_table from '@site/static/images/integrations/data-ingestion/clickpipe
 ## 将特定表添加到 ClickPipe 的步骤 {#add-tables-steps}
 
 可以按照以下步骤操作：
+
 1. [暂停](./pause_and_resume.md)该 pipe。
 2. 点击 Edit Table settings。
 3. 找到你的表 —— 可以在搜索栏中搜索该表。
 4. 勾选复选框选择该表。
+
 <br/>
+
 <Image img={add_table} border size="md"/>
 
 5. 点击 update。

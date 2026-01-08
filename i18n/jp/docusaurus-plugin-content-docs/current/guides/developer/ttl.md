@@ -11,23 +11,24 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+
 # TTL（time-to-live）でデータを管理する {#manage-data-with-ttl-time-to-live}
 
 ## TTLの概要 {#overview-of-ttl}
 
-TTL（time-to-live）は、一定の時間が経過した後に行または列を移動、削除、またはロールアップする機能を指します。「time-to-live」という表現は古いデータの削除にのみ適用されるように聞こえますが、TTLにはいくつかの使用例があります：
+TTL（有効期限, time-to-live）は、一定の時間が経過した後に行またはカラムを移動、削除、またはロールアップする機能を指します。「time-to-live」という表現は古いデータの削除にのみ適用されるように聞こえますが、TTLにはいくつかのユースケースがあります：
 
-- 古いデータの削除：驚くことではありませんが、指定された時間間隔の後に行または列を削除できます
+- 古いデータの削除：驚くことではありませんが、指定された時間間隔の後に行またはカラムを削除できます
 - ディスク間でのデータ移動：一定の時間が経過した後、ストレージボリューム間でデータを移動できます - ホット/ウォーム/コールドアーキテクチャのデプロイに便利です
 - データのロールアップ：削除する前に、古いデータをさまざまな有用な集計と計算にロールアップします
 
 :::note
-TTLはテーブル全体または特定の列に適用できます。
+TTLはテーブル全体または特定のカラムに適用できます。
 :::
 
 ## TTL構文 {#ttl-syntax}
 
-`TTL`句は列定義の後またはテーブル定義の最後に表示できます。`INTERVAL`句を使用して時間の長さを定義します（`Date`または`DateTime`データ型である必要があります）。たとえば、次のテーブルには`TTL`句を持つ2つの列があります：
+`TTL`句はカラム定義の後、またはテーブル定義の最後に指定できます。`INTERVAL`句を使用して期間を定義します（`Date`または`DateTime`データ型である必要があります）。たとえば、次のテーブルには `TTL` 句を持つ 2 つのカラムがあります：
 
 ```sql
 CREATE TABLE example1 (
@@ -40,20 +41,33 @@ ENGINE = MergeTree
 ORDER BY tuple()
 ```
 
-- x列にはtimestamp列から1か月のtime to liveがあります
-- y列にはtimestamp列から1日のtime to liveがあります
-- 間隔が経過すると、列は期限切れになります。ClickHouseは列の値をそのデータ型のデフォルト値で置き換えます。データパート内のすべての列値が期限切れになると、ClickHouseはファイルシステム内のデータパートからこの列を削除します。
+* x列にはtimestamp列から1か月のtime to liveがあります
+* y列にはtimestamp列から1日のtime to liveがあります
+* 間隔が経過すると、列は期限切れになります。ClickHouseは列の値をそのデータ型のデフォルト値で置き換えます。データパート内のすべての列値が期限切れになると、ClickHouseはファイルシステム内のデータパートからこの列を削除します。
 
 :::note
 TTLルールは変更または削除できます。詳細については、[テーブルTTLの操作](/sql-reference/statements/alter/ttl.md)ページを参照してください。
 :::
 
+:::tip ベストプラクティス
+テーブルレベルのTTLを使用して古い行を削除する場合、TTL式で使用しているのと同じ時間フィールドの**日付または月でテーブルをパーティション分割すること**を推奨します。
+
+ClickHouseは個々の行を削除するよりも、パーティション全体を削除する方がはるかに効率的です。
+パーティションキーがTTL式と整合していると、ClickHouseは期限切れの行を削除するためにデータパーツを書き換えるのではなく、期限切れになったときにパーティション全体を一度に削除できます。
+
+TTLの期間に基づいてパーティションの粒度を選択します:
+
+* 日/週単位のTTLの場合: `toYYYYMMDD(date_field)` を使用して日ごとにパーティション分割する
+* 月/年単位のTTLの場合: `toYYYYMM(date_field)` または `toStartOfMonth(date_field)` を使用して月ごとにパーティション分割する
+  :::
+
+
 ## TTLイベントのトリガー {#triggering-ttl-events}
 
 期限切れの行の削除または集計は即座には行われません - テーブルのマージ中にのみ発生します。何らかの理由で積極的にマージされていないテーブルがある場合、TTLイベントをトリガーする2つの設定があります：
 
-- `merge_with_ttl_timeout`：削除TTLを使用したマージを繰り返す前の最小遅延（秒単位）。デフォルトは14400秒（4時間）です。
-- `merge_with_recompression_ttl_timeout`：再圧縮TTL（削除前にデータをロールアップするルール）を使用したマージを繰り返す前の最小遅延（秒単位）。デフォルト値：14400秒（4時間）。
+* `merge_with_ttl_timeout`：削除TTLを使用したマージを繰り返す前の最小遅延（秒単位）。デフォルトは14400秒（4時間）です。
+* `merge_with_recompression_ttl_timeout`：再圧縮TTL（削除前にデータをロールアップするルール）を使用したマージを繰り返す前の最小遅延（秒単位）。デフォルト値：14400秒（4時間）。
 
 したがって、デフォルトでは、TTLルールは少なくとも4時間ごとにテーブルに適用されます。TTLルールをより頻繁に適用する必要がある場合は、上記の設定を変更するだけです。
 
@@ -64,8 +78,9 @@ TTLルールは変更または削除できます。詳細については、[テ�
 OPTIMIZE TABLE example1 FINAL
 ```
 
-`OPTIMIZE`はテーブルのパートの予定外のマージを初期化し、`FINAL`はテーブルがすでに単一のパートである場合に再最適化を強制します。
+`OPTIMIZE`はテーブル内のパーツのスケジュールされていないマージを開始し、`FINAL`はテーブルがすでに単一のパーツである場合に再最適化を強制します。
 :::
+
 
 ## 行の削除 {#removing-rows}
 
@@ -100,9 +115,10 @@ TTL time + INTERVAL 1 MONTH DELETE WHERE event != 'error',
     time + INTERVAL 6 MONTH DELETE WHERE event = 'error'
 ```
 
-## 列の削除 {#removing-columns}
 
-行全体を削除する代わりに、balanceとaddress列だけを期限切れにしたいとします。`customers`テーブルを変更して、両方の列に2時間のTTLを追加しましょう：
+## カラムの削除 {#removing-columns}
+
+行全体を削除する代わりに、balanceとaddressカラムだけを期限切れにしたいとします。`customers`テーブルを変更して、両方のカラムに2時間のTTLを追加しましょう：
 
 ```sql
 ALTER TABLE customers
@@ -110,7 +126,9 @@ MODIFY COLUMN balance Int32 TTL timestamp + INTERVAL 2 HOUR,
 MODIFY COLUMN address String TTL timestamp + INTERVAL 2 HOUR
 ```
 
+
 ## ロールアップの実装 {#implementing-a-rollup}
+
 一定時間後に行を削除したいが、レポート目的でデータの一部を保持したいとします。すべての詳細は必要ありません - 履歴データのいくつかの集計結果だけです。これは、`TTL`式に`GROUP BY`句を追加し、集計結果を格納するためにテーブルにいくつかの列を追加することで実装できます。
 
 次の`hits`テーブルでは、古い行を削除したいが、行を削除する前に`hits`列の合計と最大値を保持したいとします。これらの値を格納するフィールドが必要で、合計と最大値をロールアップする`GROUP BY`句を`TTL`句に追加する必要があります：
@@ -134,13 +152,14 @@ TTL timestamp + INTERVAL 1 DAY
 
 `hits`テーブルに関するいくつかの注意点：
 
-- `TTL`句の`GROUP BY`列は`PRIMARY KEY`のプレフィックスである必要があり、結果を日の開始時刻でグループ化したいので、`toStartOfDay(timestamp)`がプライマリキーに追加されました
-- 集計結果を格納するために2つのフィールドを追加しました：`max_hits`と`sum_hits`
-- `max_hits`と`sum_hits`のデフォルト値を`hits`に設定することは、`SET`句の定義方法に基づいて、ロジックが機能するために必要です
+* `TTL`句の`GROUP BY`列は`PRIMARY KEY`のプレフィックスである必要があり、結果を日の開始時刻でグループ化したいので、`toStartOfDay(timestamp)`がプライマリキーに追加されました
+* 集計結果を格納するために2つのフィールドを追加しました：`max_hits`と`sum_hits`
+* `max_hits`と`sum_hits`のデフォルト値を`hits`に設定することは、`SET`句の定義方法に基づいて、ロジックが機能するために必要です
+
 
 ## ホット/ウォーム/コールドアーキテクチャの実装 {#implementing-a-hotwarmcold-architecture}
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
 :::note
 ClickHouse Cloudを使用している場合、このレッスンの手順は適用されません。ClickHouse Cloudで古いデータを移動することを心配する必要はありません。
@@ -188,7 +207,7 @@ ClickHouse Cloudを使用している場合、このレッスンの手順は適�
 </clickhouse>
 ```
 
-2. 上記の構成は、ClickHouseが読み書きできるフォルダを指す3つのディスクを参照します。ボリュームには1つ以上のディスクを含めることができます - 3つのディスクそれぞれにボリュームを定義しました。ディスクを表示してみましょう：
+2. 上記の構成では、ClickHouseが読み書きできるフォルダに対応する3つのディスクを定義しています。ボリュームには1つ以上のディスクを含めることができるため、3つのディスクそれぞれにボリュームを定義しました。ディスクを表示してみましょう：
 
 ```sql
 SELECT name, path, free_space, total_space
@@ -204,7 +223,7 @@ FROM system.disks
 └─────────────┴────────────────┴──────────────┴──────────────┘
 ```
 
-3. そして...ボリュームを確認しましょう：
+3. では、ボリュームも確認してみましょう：
 
 ```sql
 SELECT
@@ -222,7 +241,7 @@ FROM system.storage_policies
 └─────────────┴───────────────┘
 ```
 
-4. 次に、ホット、ウォーム、コールドのボリューム間でデータを移動する`TTL`ルールを追加します：
+4. 次に、ホット、ウォーム、コールドの各ボリューム間でデータを移動させる`TTL`ルールを追加します：
 
 ```sql
 ALTER TABLE my_table
@@ -232,17 +251,17 @@ ALTER TABLE my_table
       trade_date + INTERVAL 4 YEAR TO VOLUME 'cold_volume';
 ```
 
-5. 新しい`TTL`ルールは実体化されるはずですが、確実にするために強制できます：
+5. 新しい`TTL`ルールはマテリアライズされるはずですが、確実を期すために強制的に実行することもできます：
 
 ```sql
 ALTER TABLE my_table
     MATERIALIZE TTL
 ```
 
-6. `system.parts`テーブルを使用して、データが期待されるディスクに移動したことを確認します：
+6. `system.parts`テーブルを使用して、データが想定どおりのディスクに移動したことを確認します：
 
 ```sql
-system.partsテーブルを使用して、crypto_pricesテーブルのパーツがどのディスク上にあるかを表示します：
+Using the system.parts table, view which disks the parts are on for the crypto_prices table:
 
 SELECT
     name,

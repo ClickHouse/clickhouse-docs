@@ -2772,6 +2772,12 @@ ClickHouse はクエリを処理するためにグローバルスレッドプー
 
 メモリトラッカーによるメモリ使用量を補正し、メモリ使用量が高い場合に未使用ページをクリーンアップするバックグラウンドメモリワーカーのティック間隔を指定します。0 に設定すると、メモリ使用元に応じてデフォルト値が使用されます。
 
+## memory_worker_purge_dirty_pages_threshold_ratio {#memory_worker_purge_dirty_pages_threshold_ratio} 
+
+<SettingsInfoBlock type="Double" default_value="0.2" />
+
+ClickHouse サーバーで利用可能なメモリに対する、jemalloc の dirty pages のしきい値となる比率です。dirty pages のサイズがこの比率を超えると、バックグラウンドのメモリワーカーが dirty pages のパージを強制的に実行します。0 に設定すると、強制パージは無効になります。
+
 ## memory_worker_use_cgroup {#memory_worker_use_cgroup} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />現在の cgroup におけるメモリ使用量の情報を使用して、メモリトラッキングを補正します。

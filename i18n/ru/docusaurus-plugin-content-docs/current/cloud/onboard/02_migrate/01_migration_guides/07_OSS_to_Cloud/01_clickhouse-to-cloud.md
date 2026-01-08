@@ -15,6 +15,7 @@ import self_managed_03 from '@site/static/images/integrations/migration/self-man
 import self_managed_04 from '@site/static/images/integrations/migration/self-managed-04.png';
 import self_managed_05 from '@site/static/images/integrations/migration/self-managed-05.png';
 import self_managed_06 from '@site/static/images/integrations/migration/self-managed-06.png';
+import CompatibilityNote from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/compatibility.mdx'
 
 # Миграция между самоуправляемым ClickHouse и ClickHouse Cloud {#migrating-between-self-managed-clickhouse-and-clickhouse-cloud}
 
@@ -26,10 +27,9 @@ import self_managed_06 from '@site/static/images/integrations/migration/self-man
 
 <Image img={self_managed_02} size='lg' alt='Миграция с самоуправляемого ClickHouse'  />
 
-:::note
-Независимо от того, сегментирована и/или реплицирована ли ваша исходная таблица, в ClickHouse Cloud вы просто создаёте целевую таблицу (для этой таблицы можно опустить параметр Engine — она автоматически будет таблицей ReplicatedMergeTree),
-и ClickHouse Cloud автоматически позаботится о вертикальном и горизонтальном масштабировании. Вам не нужно думать о том, как реплицировать и сегментировать таблицу.
-:::
+Независимо от того, сегментирована и/или реплицирована ли ваша исходная таблица, в ClickHouse Cloud вам достаточно создать целевую таблицу (для этой таблицы можно опустить параметр Engine — в качестве движка таблицы автоматически будет выбран `SharedMergeTree`),
+и ClickHouse Cloud автоматически позаботится о вертикальном и горизонтальном масштабировании.
+Вам не нужно заботиться о том, как реплицировать и сегментировать таблицу.
 
 В этом примере самоуправляемый сервер ClickHouse является *источником*, а сервис ClickHouse Cloud — *приёмником*.
 
@@ -46,6 +46,8 @@ import self_managed_06 from '@site/static/images/integrations/migration/self-man
 ### Миграция таблиц из одной системы в другую: {#migration-of-tables-from-one-system-to-another}
 
 В этом примере переносится одна таблица с самоуправляемого сервера ClickHouse в ClickHouse Cloud.
+
+<CompatibilityNote/>
 
 ### На исходной системе ClickHouse (системе, на которой сейчас находятся данные) {#on-the-source-clickhouse-system-the-system-that-currently-hosts-the-data}
 

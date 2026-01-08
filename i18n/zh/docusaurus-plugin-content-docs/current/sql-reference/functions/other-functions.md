@@ -1543,7 +1543,11 @@ FROM numbers(5);
 
 自 v25.10 版本引入
 
-对 Point、Ring、Polygon 或 MultiPolygon 的坐标进行翻转。对于 Point，会交换其坐标值。对于数组，会对每个坐标对递归应用相同的变换。
+对几何对象的 x 和 y 坐标进行翻转。该操作会交换纬度和经度，这对于在不同坐标系之间转换或纠正坐标顺序非常有用。
+
+对于 Point，会交换其 x 和 y 坐标。对于复杂几何对象（LineString、Polygon、MultiPolygon、Ring、MultiLineString），会对每个坐标对递归应用该变换。
+
+该函数同时支持单一几何类型（Point、Ring、Polygon、MultiPolygon、LineString、MultiLineString）以及 Geometry 变体类型。
 
 **语法**
 
@@ -1553,11 +1557,11 @@ flipCoordinates(geometry)
 
 **参数**
 
-* `geometry` — 要转换的几何对象。支持的类型：Point (Tuple(Float64, Float64))、Ring (Array(Point))、Polygon (Array(Ring))、MultiPolygon (Array(Polygon))。
+* `geometry` — 要转换的几何对象。支持的类型：Point (Tuple(Float64, Float64))、Ring (Array(Point))、Polygon (Array(Ring))、MultiPolygon (Array(Polygon))、LineString (Array(Point))、MultiLineString (Array(LineString))，或 Geometry（包含上述任意类型的变体）。
 
 **返回值**
 
-坐标被翻转后的几何对象。类型与输入相同。[`Point`](/sql-reference/data-types/geo#point) 或 [`Ring`](/sql-reference/data-types/geo#ring) 或 [`Polygon`](/sql-reference/data-types/geo#polygon) 或 [`MultiPolygon`](/sql-reference/data-types/geo#multipolygon)
+坐标被翻转后的几何对象。返回类型与输入类型一致。[`Point`](/sql-reference/data-types/geo#point) 或 [`Ring`](/sql-reference/data-types/geo#ring) 或 [`Polygon`](/sql-reference/data-types/geo#polygon) 或 [`MultiPolygon`](/sql-reference/data-types/geo#multipolygon) 或 [`LineString`](/sql-reference/data-types/geo#linestring) 或 [`MultiLineString`](/sql-reference/data-types/geo#multilinestring) 或 [`Geometry`](/sql-reference/data-types/geo)
 
 **示例**
 
@@ -1590,6 +1594,27 @@ SELECT flipCoordinates([[(1.0, 2.0), (3.0, 4.0)], [(5.0, 6.0), (7.0, 8.0)]]);
 ```response title=Response
 [[(2.0, 1.0), (4.0, 3.0)], [(6.0, 5.0), (8.0, 7.0)]]
 ```
+
+**geometry&#95;wkt**
+
+```sql title=Query
+SELECT flipCoordinates(readWkt('POINT(10 20)'));
+```
+
+```response title=Response
+(20, 10)
+```
+
+**geometry&#95;polygon&#95;wkt**
+
+```sql title=Query
+SELECT flipCoordinates(readWkt('POLYGON((0 0, 5 0, 5 5, 0 5, 0 0))'));
+```
+
+```response title=Response
+[[(0, 0), (0, 5), (5, 5), (5, 0), (0, 0)]]
+```
+
 
 ## formatQuery {#formatQuery}
 

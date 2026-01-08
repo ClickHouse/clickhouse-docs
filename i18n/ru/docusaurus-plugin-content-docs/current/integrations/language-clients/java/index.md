@@ -5,13 +5,16 @@ keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
 description: 'Варианты подключения к ClickHouse из Java-приложений'
 slug: /integrations/java
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-# Обзор Java-клиентов {#java-clients-overview}
+# Обзор Java‑клиентов {#java-clients-overview}
 
 - [Клиент 0.8+](./client/client.mdx)
 - [JDBC 0.8+](./jdbc/jdbc.mdx)
@@ -156,7 +159,7 @@ JDBC-драйвер наследует те же возможности, что 
 
 #### Настройка логирования {#configuring-logging}
 
-Настройка будет зависеть от того, какой фреймворк для логирования вы используете. Например, если вы используете `Logback`, вы можете настроить логирование в файле `logback.xml`:
+Это зависит от используемого фреймворка логирования. Например, если вы используете `Logback`, вы можете настроить логирование в файле `logback.xml`:
 
 ```xml title="logback.xml"
 <configuration>

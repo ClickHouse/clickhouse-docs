@@ -7,7 +7,7 @@ description: 'Draxlr はデータ可視化と分析機能を備えたビジネ�
 title: 'Draxlr を ClickHouse に接続する'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
 ---
 
@@ -28,6 +28,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 Draxlr は、ClickHouse データベースに接続するための直感的なインターフェースを提供し、チームが数分でデータの探索、可視化、インサイトの公開を行えるようにします。本ガイドでは、問題なく接続を確立するための手順を順を追って説明します。
 
 ## 1. ClickHouse の認証情報を取得する {#1-get-your-clickhouse-credentials}
+
 <ConnectionDetails />
 
 ## 2.  Draxlr を ClickHouse に接続する {#2--connect-draxlr-to-clickhouse}
@@ -42,7 +43,7 @@ Draxlr は、ClickHouse データベースに接続するための直感的な�
 
 5. フォームに接続情報を入力します。
 
-  <Image size="md" img={draxlr_01} alt="ClickHouse データベースの設定オプションを表示している Draxlr の接続フォーム" border />
+<Image size="md" img={draxlr_01} alt="ClickHouse データベースの設定オプションを表示している Draxlr の接続フォーム" border />
 
 6. **Next** ボタンをクリックし、接続が確立されるまで待ちます。接続に成功すると、テーブル一覧ページが表示されます。
 
@@ -54,11 +55,11 @@ Draxlr は、ClickHouse データベースに接続するための直感的な�
 
 3. フィルターを追加したり、テーブル同士を結合したり、データの並び替えを行ったりできます。
 
-  <Image size="md" img={draxlr_02} alt="フィルターとソートオプションを表示している Draxlr のデータ探索インターフェイス" border />
+<Image size="md" img={draxlr_02} alt="フィルターとソートオプションを表示している Draxlr のデータ探索インターフェイス" border />
 
 4. **Graph** ボタンをクリックして、グラフの種類を選択し、データを可視化することもできます。
 
-  <Image size="md" img={draxlr_05} alt="ClickHouse データ向けの Draxlr のグラフ可視化オプション" border />
+<Image size="md" img={draxlr_05} alt="ClickHouse データ向けの Draxlr のグラフ可視化オプション" border />
 
 ## 4. SQL クエリの使用 {#4-using-sql-queries}
 
@@ -66,7 +67,7 @@ Draxlr は、ClickHouse データベースに接続するための直感的な�
 
 2. 「**Raw Query**」ボタンをクリックし、テキストエリアにクエリを入力します。
 
-  <Image size="md" img={draxlr_03} alt="ClickHouse 用 Draxlr SQL クエリインターフェイス" border />
+<Image size="md" img={draxlr_03} alt="ClickHouse 用 Draxlr SQL クエリインターフェイス" border />
 
 3. 「**Execute Query**」ボタンをクリックして結果を表示します。
 
@@ -74,7 +75,7 @@ Draxlr は、ClickHouse データベースに接続するための直感的な�
 
 1. クエリを実行した後、**Save Query** ボタンをクリックします。
 
-  <Image size="md" img={draxlr_04} alt="ダッシュボードオプションを含む Draxlr のクエリ保存ダイアログ" border />
+<Image size="md" img={draxlr_04} alt="ダッシュボードオプションを含む Draxlr のクエリ保存ダイアログ" border />
 
 2. **Query Name** テキストボックスでクエリに名前を付け、分類用のフォルダーを選択します。
 
@@ -86,7 +87,7 @@ Draxlr は、ClickHouse データベースに接続するための直感的な�
 
 1. ナビゲーションバーの **Dashboards** ボタンをクリックします。
 
-  <Image size="md" img={draxlr_06} alt="Draxlr dashboard management interface" border />
+<Image size="md" img={draxlr_06} alt="Draxlr dashboard management interface" border />
 
 2. 左サイドバーの **Add +** ボタンをクリックして、新しいダッシュボードを追加します。
 
@@ -95,4 +96,5 @@ Draxlr は、ClickHouse データベースに接続するための直感的な�
 4. 保存済みクエリの一覧からクエリを選択し、可視化の種類を選んでから **Add Dashboard Item** ボタンをクリックします。
 
 ## 詳細はこちら {#learn-more}
+
 Draxlr についてさらに詳しく知るには、[Draxlr ドキュメント](https://draxlr.notion.site/draxlr/Draxlr-Docs-d228b23383f64d00a70836ff9643a928) サイトを参照してください。

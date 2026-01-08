@@ -40,14 +40,25 @@ Enterprise ティアのサービスでは、すべてのリリースチャネル
 
 <ReleaseSchedule releases={[
    {
-    changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
-    version: '25.10',
-    fast_date: '2025-12-11（2025-12-15 に完了）',
-    regular_date: '2026-01-07',
-    slow_date: 'TBD',
+     changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
+     version: '25.10',
+     fast_date: '2025-12-11（2025-12-15 に完了）',
+     regular_date: '2026-01-13',
+     slow_date: 'TBD',
+     fast_progress: 'green',
+     regular_progress: 'green',
+     slow_progress: 'green',
+     fast_delay_note: 'アップグレードウィンドウが設定されているサービスは、1月12日の週に予定されているウィンドウ内で 25.10 にアップグレードされます',
+   },
+   {
+    changelog_link: 'https://clickhouse.com/docs/changelogs/25.8',
+    version: '25.8',
+    fast_date: '完了',
+    regular_date: '完了（2025-12-19）',
+    slow_date: '2026-01-15',
     fast_progress: 'green',
     regular_progress: 'green',
     slow_progress: 'green',
-    fast_delay_note: 'アップグレードウィンドウが設定されているサービスは、1月5日の週に予定されているウィンドウ内で 25.10 にアップグレードされます',
+    regular_delay_note: 'アップグレードウィンドウが設定されているサービスは、1月13日から順次アップグレードされます',
   }
 ]} />

@@ -6,6 +6,9 @@ slug: /integrations/chartbrew-and-clickhouse
 keywords: ['ClickHouse', 'Chartbrew', 'connect', 'integrate', 'visualization']
 description: 'Chartbrew を ClickHouse に接続して、リアルタイムのダッシュボードやクライアント向けレポートを作成します。'
 doc_type: 'guide'
+integration:
+   - support_level: 'community'
+   - category: 'data_visualization'
 ---
 
 import chartbrew_01 from '@site/static/images/integrations/data-visualization/chartbrew_01.png';
@@ -21,7 +24,6 @@ import chartbrew_09 from '@site/static/images/integrations/data-visualization/ch
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import Image from '@theme/IdealImage';
-
 
 # Chartbrew を ClickHouse に接続する {#connecting-chartbrew-to-clickhouse}
 

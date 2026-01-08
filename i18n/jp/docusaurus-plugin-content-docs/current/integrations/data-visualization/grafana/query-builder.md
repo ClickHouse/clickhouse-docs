@@ -6,6 +6,9 @@ description: 'ClickHouse Grafana プラグインにおける Query Builder の�
 title: 'クエリビルダー'
 doc_type: 'guide'
 keywords: ['grafana', 'query builder', 'visualization', 'dashboards', 'plugin']
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
 ---
 
 import Image from '@theme/IdealImage';
@@ -30,6 +33,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 クエリビルダー内のすべてのクエリには[クエリ種別](#query-types)があり、少なくとも 1 つのカラムを選択する必要があります。
 
 利用可能なクエリ種別は次のとおりです:
+
 - [Table](#table): データをテーブル形式で表示する最も単純なクエリ種別です。集約関数を含むシンプルおよび複雑なクエリの両方に対応できる汎用的なオプションです。
 - [Logs](#logs): ログ向けクエリの構築に最適化されています。[デフォルトを設定](./config.md#logs)した Explore ビューで使用すると最も効果的です。
 - [Time Series](#time-series): 時系列クエリの構築に最適です。専用の時刻カラムを選択し、集約関数を追加できます。
@@ -91,20 +95,21 @@ OpenTelemetry を有効にすると、スキーマバージョンに応じてカ
 クエリで選択された追加カラムは、展開表示したログ行で確認できます:
 <Image size="md" img={demo_logs_query_fields} alt="ログクエリでの追加フィールドの例" border />
 
-### 時系列 {#time-series}
+### Time series {#time-series}
 
-時系列クエリタイプは [table](#table) に似ていますが、時系列データに特化しています。
+Time series クエリタイプは [table](#table) と似ていますが、時系列データの扱いに特化しています。
 
-2つのビューはほぼ同じですが、次のような主な違いがあります:
-- 専用の *Time* フィールド。
-- Aggregate モードでは、Time フィールドに対する Group By と一緒に、時間間隔マクロが自動的に適用されます。
+2 つのビューはほぼ同じですが、主な違いは次のとおりです。
+
+- 専用の *Time* フィールドがあること。
+- Aggregate モードでは、Time フィールドに対する Group By とともに、時間間隔マクロが自動的に適用されます。
 - Aggregate モードでは、"Columns" フィールドが非表示になります。
 - **Time** フィールドに対して、時間範囲フィルターと Order By が自動的に追加されます。
 
 :::important 可視化でデータが欠けていませんか？
-一部のケースでは、デフォルトの limit が `1000` であるため、時系列パネルが途中で切れているように見えることがあります。
+場合によっては、LIMIT のデフォルト値が `1000` であるため、time series パネルが途中で切れているように見えることがあります。
 
-（データセットが許容する場合は）`LIMIT` 句を `0` に設定して削除してみてください。
+データセットが許す場合は、`LIMIT` 句を `0` に設定して削除してみてください。
 :::
 
 | Field | Description |
@@ -243,6 +248,7 @@ WHERE log_time >= toDateTime(1415792726) AND log_time <= toDateTime(1447328726)
 この例では、Grafana ダッシュボードの時間範囲が `log_time` 列に適用されます。
 
 プラグインは、波括弧 `{}` を用いた記法にも対応しています。[パラメーター](/sql-reference/syntax.md#defining-and-using-query-parameters) 内でクエリが必要な場合は、この記法を使用します。
+
 
 ### マクロ一覧 {#list-of-macros}
 

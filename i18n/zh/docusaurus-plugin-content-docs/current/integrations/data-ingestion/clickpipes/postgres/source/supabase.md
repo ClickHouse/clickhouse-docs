@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/source/supabase
 title: 'Supabase 数据源配置指南'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import supabase_commands from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-commands.jpg'
@@ -23,36 +26,47 @@ ClickPipes 原生通过 IPv6 支持 Supabase，可实现无缝复制。
 
 ## 创建具有权限和复制槽的用户 {#creating-a-user-with-permissions-and-replication-slot}
 
-让我们为 ClickPipes 创建一个新用户，授予适用于 CDC 的必要权限，
-并创建一个用于复制的发布（publication）。
+以管理员用户身份连接到你的 Supabase 实例，并执行以下命令：
 
-为此，你可以打开 Supabase 项目的 **SQL 编辑器**。
-在这里，我们可以运行以下 SQL 命令：
+1. 为 ClickPipes 创建一个专用用户：
 
-```sql
-  CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
-  GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-  GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-  ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+   ```sql
+   CREATE USER clickpipes_user PASSWORD 'some-password';
+   ```
 
--- Give replication permission to the USER
-  ALTER USER clickpipes_user REPLICATION;
+2. 为你在上一步创建的用户授予模式级的只读访问权限。以下示例展示了对 `public` 模式的权限。对于每个包含你希望复制的表的模式，都需要重复执行这些命令：
+   
+    ```sql
+    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+    ```
 
--- Create a publication. We will use this when creating the mirror
-  CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-```
+3. 为该用户授予复制权限：
 
-<Image img={supabase_commands} alt="用户和 publication 命令" size="large" border />
+   ```sql
+   ALTER ROLE clickpipes_user REPLICATION;
+   ```
 
-点击 **Run** 以创建一个 publication 和一个用户。
+4. 使用你想要复制的表创建一个 [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html)。强烈建议只在 publication 中包含必要的表，以避免额外的性能开销。
 
-:::note
+   :::warning
+   任何包含在 publication 中的表必须要么定义了**主键（primary key）**，要么将其 **replica identity** 配置为 `FULL`。有关如何限定 publication 范围的指导，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
+   :::
 
-请务必将 `clickpipes_user` 和 `clickpipes_password` 替换为你想要的用户名和密码。
+   - 为特定表创建 publication：
 
-另外，在 ClickPipes 中创建镜像（mirror）时，请记得使用相同的 publication 名称。
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
 
-:::
+   - 为特定模式中的所有表创建 publication：
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   `clickpipes` publication 将包含由这些指定表生成的一组变更事件，并将在后续用于摄取复制流。
 
 ## 增加 `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
 
@@ -87,6 +101,7 @@ ClickPipes 使用的 Postgres 用户不能受到 RLS 策略的限制，否则可
 ```sql
 ALTER USER clickpipes_user BYPASSRLS;
 ```
+
 
 ## 下一步？ {#whats-next}
 

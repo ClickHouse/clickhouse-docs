@@ -5,7 +5,7 @@ description: 'DataGrip 是一款原生支持 ClickHouse 的数据库 IDE。'
 title: '将 DataGrip 连接到 ClickHouse'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'sql_client'
   - website: 'https://www.jetbrains.com/datagrip/'
 keywords: ['DataGrip', '数据库 IDE', 'JetBrains', 'SQL 客户端', '集成开发环境']
@@ -28,6 +28,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 DataGrip 可从 https://www.jetbrains.com/datagrip/ 获取
 
 ## 1. 收集连接信息 {#1-gather-your-connection-details}
+
 <ConnectionDetails />
 
 ## 2. 加载 ClickHouse 驱动程序 {#2-load-the-clickhouse-driver}
@@ -36,9 +37,9 @@ DataGrip 可从 https://www.jetbrains.com/datagrip/ 获取
 
 <Image img={datagrip_5} size="lg" border alt="在 DataGrip 的 Data Sources 选项卡中，高亮显示的 + 图标" />
 
-  选择 **ClickHouse**
+选择 **ClickHouse**
 
-  :::tip
+:::tip
   随着你创建更多连接，列表顺序会发生变化，ClickHouse 可能暂时还不会排在列表顶部。
   :::
 
