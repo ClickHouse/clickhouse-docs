@@ -58,6 +58,6 @@ The release dates given below are an estimate and may be subject to change.
     fast_progress: 'green',
     regular_progress: 'green',
     slow_progress: 'green',
-    regular_delay_note: 'Services with upgrade window will be upgraded starting Jan 07.',
+    regular_delay_note: 'Services with upgrade window will be upgraded starting Jan 13.',
   }
 ]} />
