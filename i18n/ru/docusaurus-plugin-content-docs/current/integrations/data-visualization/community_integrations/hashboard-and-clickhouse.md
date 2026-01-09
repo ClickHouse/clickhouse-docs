@@ -6,6 +6,9 @@ keywords: ['clickhouse', 'Hashboard', 'connect', 'integrate', 'ui', 'analytics']
 description: 'Hashboard — это надёжная аналитическая платформа, которую можно легко интегрировать с ClickHouse для анализа данных в режиме реального времени.'
 title: 'Подключение ClickHouse к Hashboard'
 doc_type: 'guide'
+integration:
+  - support_level: 'community'
+  - category: 'data_visualization'
 ---
 
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
@@ -28,9 +31,9 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 ## Предварительные требования {#pre-requisites}
 
 - База данных ClickHouse, развернутая в вашей собственной инфраструктуре или в [ClickHouse Cloud](https://clickhouse.com/).
-- [Учетная запись Hashboard](https://hashboard.com/getAccess) и проект.
+- [Учётная запись Hashboard](https://hashboard.com/getAccess) и проект.
 
-## Шаги по подключению Hashboard к ClickHouse {#steps-to-connect-hashboard-to-clickhouse}
+## Порядок подключения Hashboard к ClickHouse {#steps-to-connect-hashboard-to-clickhouse}
 
 ### 1. Соберите сведения о подключении {#1-gather-your-connection-details}
 

@@ -6,6 +6,9 @@ slug: /integrations/chartbrew-and-clickhouse
 keywords: ['ClickHouse', 'Chartbrew', 'connect', 'integrate', 'visualization']
 description: 'Подключите Chartbrew к ClickHouse для создания дашбордов и клиентских отчётов в реальном времени.'
 doc_type: 'guide'
+integration:
+   - support_level: 'community'
+   - category: 'data_visualization'
 ---
 
 import chartbrew_01 from '@site/static/images/integrations/data-visualization/chartbrew_01.png';
@@ -21,7 +24,6 @@ import chartbrew_09 from '@site/static/images/integrations/data-visualization/ch
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import Image from '@theme/IdealImage';
-
 
 # Подключение Chartbrew к ClickHouse {#connecting-chartbrew-to-clickhouse}
 

@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/source/generic
 title: '汎用 MySQL ソースセットアップガイド'
 doc_type: 'guide'
 keywords: ['汎用 mysql', 'clickpipes', 'バイナリログ', 'ssl/tls', 'mysql 8.x']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 # 汎用 MySQL ソース設定ガイド {#generic-mysql-source-setup-guide}
@@ -41,7 +44,7 @@ SHOW VARIABLES LIKE 'binlog_row_metadata';
 SHOW VARIABLES LIKE 'binlog_expire_logs_seconds';
 ```
 
-値が一致しない場合は、次の SQL コマンドを実行して値を設定できます。
+値が一致しない場合は、次の SQL コマンドを実行して設定を変更できます。
 
 ```sql
 SET PERSIST log_bin = ON;
@@ -55,6 +58,7 @@ SET PERSIST binlog_expire_logs_seconds = 86400;
 
 設定を変更したら、続いて[データベースユーザーの設定](#configure-database-user)に進んでください。
 
+
 ### MySQL 5.7 {#binlog-v5-x}
 
 MySQL 5.7 インスタンスでバイナリログを有効にするには、次の設定が行われていることを確認してください。
@@ -67,7 +71,7 @@ binlog_row_image = FULL  -- default value
 expire_logs_days = 1     -- or higher; 0 would mean logs are preserved forever
 ```
 
-これらの設定を確認するには、次の SQL コマンドを実行します。
+これらの設定を確認するには、次の SQL コマンドを実行してください。
 
 ```sql
 SHOW VARIABLES LIKE 'server_id';
@@ -91,10 +95,9 @@ expire_logs_days = 1
 変更を反映させるには、MySQL インスタンスを必ず再起動する必要があります。
 
 :::note
-
 `binlog_row_metadata` 設定がまだ導入されていないため、MySQL 5.7 では列の除外はサポートされていません。
-
 :::
+
 
 ## データベースユーザーの設定 {#configure-database-user}
 

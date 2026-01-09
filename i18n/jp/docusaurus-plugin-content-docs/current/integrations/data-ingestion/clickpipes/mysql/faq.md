@@ -6,6 +6,9 @@ sidebar_position: 2
 title: 'ClickPipes for MySQL FAQ（よくある質問）'
 doc_type: 'reference'
 keywords: ['MySQL ClickPipes FAQ', 'ClickPipes MySQL のトラブルシューティング', 'MySQL から ClickHouse へのレプリケーション', 'ClickPipes MySQL のサポート', 'MySQL CDC ClickHouse']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # MySQL 向け ClickPipes FAQ {#clickpipes-for-mysql-faq}
@@ -55,4 +58,4 @@ PeerDB には現在、ソーステーブル識別子（スキーマ名または�
 
 ### レプリケーションから最初に除外したカラムを後から含めることはできますか？ {#include-excluded-columns}
 
-これはまだサポートされておらず、今後のロードマップに含まれています。代替手段としては、対象のカラムを含めたい[テーブルを再同期する](./table_resync.md)方法があります。
+これはまだサポートされていません。代替手段としては、対象のカラムを含めたい[テーブルを再同期する](./table_resync.md)方法があります。

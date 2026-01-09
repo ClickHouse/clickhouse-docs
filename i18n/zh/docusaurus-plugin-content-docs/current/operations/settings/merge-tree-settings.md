@@ -476,9 +476,9 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 ## dynamic_serialization_version {#dynamic_serialization_version} 
 
-<SettingsInfoBlock type="MergeTreeDynamicSerializationVersion" default_value="v2" />
+<SettingsInfoBlock type="MergeTreeDynamicSerializationVersion" default_value="v3" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "v2"},{"label": "Add a setting to control Dynamic serialization versions"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "v2"},{"label": "Add a setting to control Dynamic serialization versions"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "v3"},{"label": "Enable v3 serialization version for Dynamic by default for better serialization/deserialization"}]}]}/>
 
 Dynamic 数据类型的序列化版本，为兼容性所必需。
 
@@ -510,7 +510,7 @@ Dynamic 数据类型的序列化版本，为兼容性所必需。
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "添加了新的设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "添加了新的设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}]}/>
 
 用于控制 `min_age_to_force_merge_seconds` 和
 `min_age_to_force_merge_on_partition_only` 是否遵循
@@ -810,6 +810,16 @@ slower than inserts" exception."
 或[在执行 INSERT 时](/operations/settings/settings.md/#materialize_skip_indexes_on_insert)创建/存储。
 
 另请参阅 [exclude_materialize_skip_indexes_on_merge](#exclude_materialize_skip_indexes_on_merge) 以进行更细粒度的控制。
+
+## materialize_statistics_on_merge {#materialize_statistics_on_merge} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+启用后，合并操作会为新的分区片段构建并存储统计信息。
+否则，可以通过显式执行 [MATERIALIZE STATISTICS](/sql-reference/statements/alter/statistics.md)
+或[在 INSERT 时](/operations/settings/settings.md#materialize_statistics_on_insert) 来创建和存储这些统计信息。
 
 ## materialize_ttl_recalculate_only {#materialize_ttl_recalculate_only} 
 
@@ -1744,9 +1754,9 @@ Otherwise, ClickHouse throws an exception。
 
 ## object_serialization_version {#object_serialization_version} 
 
-<SettingsInfoBlock type="MergeTreeObjectSerializationVersion" default_value="v2" />
+<SettingsInfoBlock type="MergeTreeObjectSerializationVersion" default_value="v3" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "v2"},{"label": "Add a setting to control JSON serialization versions"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "v2"},{"label": "Add a setting to control JSON serialization versions"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "v3"},{"label": "Enable v3 serialization version for JSON by default to use advanced shared data serialization"}]}]}/>
 
 JSON 数据类型的序列化版本。用于兼容性目的。
 
@@ -1776,9 +1786,9 @@ JSON 数据类型的序列化版本。用于兼容性目的。
 
 ## object_shared_data_serialization_version {#object_shared_data_serialization_version} 
 
-<SettingsInfoBlock type="MergeTreeObjectSharedDataSerializationVersion" default_value="map" />
+<SettingsInfoBlock type="MergeTreeObjectSharedDataSerializationVersion" default_value="advanced" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "map"},{"label": "Add a setting to control JSON serialization versions"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "map"},{"label": "Add a setting to control JSON serialization versions"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "advanced"},{"label": "Enable advanced shared data serialization version by default"}]}]}/>
 
 JSON 数据类型中共享数据的序列化版本。
 
@@ -1794,9 +1804,9 @@ JSON 数据类型中共享数据的序列化版本。
 
 ## object_shared_data_serialization_version_for_zero_level_parts {#object_shared_data_serialization_version_for_zero_level_parts} 
 
-<SettingsInfoBlock type="MergeTreeObjectSharedDataSerializationVersion" default_value="map" />
+<SettingsInfoBlock type="MergeTreeObjectSharedDataSerializationVersion" default_value="map_with_buckets" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "map"},{"label": "添加一个设置，用于控制零级分区片段的 JSON 序列化版本"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "map"},{"label": "添加一个设置，用于控制零级分区片段的 JSON 序列化版本"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "map_with_buckets"},{"label": "默认启用用于零级分区片段的 map_with_buckets 共享数据序列化版本"}]}]}/>
 
 此设置允许为在插入过程中创建的零级分区片段，指定 JSON 类型中共享数据的不同序列化版本。
 不建议对零级分区片段使用 `advanced` 共享数据序列化方式，因为这可能会显著增加插入时间。

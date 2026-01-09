@@ -19,11 +19,11 @@ import dbeaver_test_connection from '@site/static/images/integrations/sql-client
 import dbeaver_download_driver from '@site/static/images/integrations/sql-clients/dbeaver-download-driver.png';
 import dbeaver_sql_editor from '@site/static/images/integrations/sql-clients/dbeaver-sql-editor.png';
 import dbeaver_query_log_select from '@site/static/images/integrations/sql-clients/dbeaver-query-log-select.png';
-import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
 # 将 DBeaver 连接到 ClickHouse {#connect-dbeaver-to-clickhouse}
 
-<ClickHouseSupportedBadge/>
+<PartnerBadge/>
 
 DBeaver 提供多个版本。在本指南中，我们使用的是 [DBeaver Community](https://dbeaver.io/)。请在[此处](https://dbeaver.com/edition/)查看不同版本及其功能。DBeaver 通过 JDBC 连接到 ClickHouse。
 

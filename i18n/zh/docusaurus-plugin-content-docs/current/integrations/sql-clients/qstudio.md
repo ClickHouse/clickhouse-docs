@@ -5,6 +5,9 @@ description: 'QStudio 是一款免费的 SQL 工具。'
 title: '将 QStudio 连接到 ClickHouse'
 doc_type: 'guide'
 keywords: ['qstudio', 'sql 客户端', '数据库工具', '查询工具', 'IDE']
+integration:
+  - support_level: 'community'
+  - category: 'sql_client'
 ---
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
@@ -17,7 +20,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-QStudio 是一款免费的 SQL 图形界面工具，可用于运行 SQL 脚本、便捷浏览数据表、绘制图表并导出结果。它适用于任何操作系统，且可以连接任意数据库。
+QStudio 是一款免费的 SQL 图形界面工具，可用于运行 SQL 脚本、便捷浏览数据表、绘制图表并导出结果。它适用于任何操作系统，并可连接到任意数据库。
 
 QStudio 通过 JDBC 连接到 ClickHouse。
 
@@ -61,7 +64,7 @@ QStudio 可从 https://www.timestored.com/qstudio/download/ 下载。
 
 - 示例查询：
 
-<Image img={qstudio_running_query} size="lg" border alt="QStudio 界面展示针对 ClickHouse 数据库执行示例 SQL 查询的画面" />
+<Image img={qstudio_running_query} size="lg" border alt="QStudio 界面展示在 ClickHouse 数据库上执行示例 SQL 查询的画面" />
 
 ## 下一步 {#next-steps}
 

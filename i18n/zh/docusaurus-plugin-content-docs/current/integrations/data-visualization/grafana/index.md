@@ -7,7 +7,7 @@ title: '适用于 Grafana 的 ClickHouse 数据源插件'
 show_related_blogs: true
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'core'
   - category: 'data_visualization'
   - website: 'https://grafana.com/grafana/plugins/grafana-clickhouse-datasource/'
 keywords: ['Grafana', '数据可视化', '仪表盘', '插件', '数据源']

@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/source/generic_maria
 title: '汎用 MariaDB ソース設定ガイド'
 doc_type: 'guide'
 keywords: ['汎用 mariadb', 'clickpipes', 'バイナリログ', 'SSL/TLS', 'セルフホスト型']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 # 汎用 MariaDB ソース設定ガイド {#generic-mariadb-source-setup-guide}
@@ -58,10 +61,9 @@ expire_logs_days = 1
 変更を反映させるには、MariaDB インスタンスを必ず再起動する必要があります。
 
 :::note
-
 `binlog_row_metadata` 設定がまだ導入されていないため、MariaDB &lt;= 10.4 ではカラム除外はサポートされていません。
-
 :::
+
 
 ## データベースユーザーを構成する {#configure-database-user}
 

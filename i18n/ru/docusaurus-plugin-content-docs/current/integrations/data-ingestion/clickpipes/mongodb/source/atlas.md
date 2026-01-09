@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mongodb/source/atlas
 title: 'Руководство по настройке источника MongoDB Atlas'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'ингестия данных', 'синхронизация в режиме реального времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import mongo_atlas_configuration from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/mongo-atlas-cluster-overview-configuration.png'
@@ -22,12 +25,15 @@ import Image from '@theme/IdealImage';
 Для репликации требуется минимальное время хранения oplog не менее 24 часов. Рекомендуется установить время хранения oplog на 72 часа или дольше, чтобы гарантировать, что он не будет усечён до завершения начального снимка. Чтобы настроить хранение oplog через интерфейс:
 
 1. Перейдите на вкладку `Overview` вашего кластера в консоли MongoDB Atlas и нажмите на вкладку `Configuration`.
+
 <Image img={mongo_atlas_configuration} alt="Перейдите к конфигурации кластера" size="lg" border/>
 
 2. Нажмите `Additional Settings` и прокрутите вниз до `More Configuration Options`.
+
 <Image img={mngo_atlas_additional_settings} alt="Раскройте дополнительные настройки" size="lg" border/>
 
 3. Нажмите `More Configuration Options` и установите минимальное окно oplog равным `72 hours` или больше.
+
 <Image img={mongo_atlas_retention_hours} alt="Установите количество часов хранения oplog" size="lg" border/>
 
 4. Нажмите `Review Changes` для проверки, затем `Apply Changes` для применения изменений.

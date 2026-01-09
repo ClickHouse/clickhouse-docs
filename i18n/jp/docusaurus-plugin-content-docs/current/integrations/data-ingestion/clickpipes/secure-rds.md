@@ -5,6 +5,9 @@ title: 'AWS IAM DB 認証 (RDS/Aurora)'
 description: 'このガイドでは、ClickPipes のお客様がロールベースのアクセス制御を利用して Amazon RDS/Aurora に対して認証を行い、データベースへ安全にアクセスする方法を説明します。'
 doc_type: 'guide'
 keywords: ['clickpipes', 'rds', 'セキュリティ', 'aws', 'プライベート接続']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import secures3_arn from '@site/static/images/cloud/security/secures3_arn.png';
@@ -32,7 +35,7 @@ MySQL および MariaDB ではこの制約は適用されず、`Initial Load Onl
 
 5 - 下図のように、そのサービスに対応する **Service role ID (IAM)** の値をコピーします。
 
-<Image img={secures3_arn} alt="Secure S3 ARN" size="lg" border />
+<Image img={secures3_arn} alt="Secure S3 ARN" size="lg" border/>
 
 この値を `{ClickHouse_IAM_ARN}` と呼ぶことにします。これは、RDS/Aurora インスタンスへアクセスするために使用する IAM ロールです。
 
@@ -51,7 +54,7 @@ MySQL および MariaDB ではこの制約は適用されず、`Initial Load Onl
 
 1. AWS アカウントにログインし、設定したい RDS インスタンス / Aurora クラスターに移動します。
 2. **Configuration** タブをクリックします。
-3. **Resource ID** の値を確認します。RDS の場合は `db-xxxxxxxxxxxxxx`、Aurora クラスターの場合は `cluster-xxxxxxxxxxxxxx` のような形式です。この値を `{RDS_RESOURCE_ID}` と呼ぶことにします。これは、RDS インスタンスへのアクセスを許可する IAM ポリシー内で使用する Resource ID です。
+3. **Resource ID** の値を確認します。RDS の場合は `db-xxxxxxxxxxxxxx`、Aurora クラスターの場合は `cluster-xxxxxxxxxxxxxx` のような形式です。この値を `{RDS_RESOURCE_ID}` と呼ぶことにします。これは、RDS インスタンスへのアクセスを許可する IAM ポリシー内で使用するリソース ID です。
 
 #### データベースユーザーの設定 {#setting-up-the-database-user}
 
