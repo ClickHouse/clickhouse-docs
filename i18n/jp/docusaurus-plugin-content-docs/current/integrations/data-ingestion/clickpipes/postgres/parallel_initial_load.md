@@ -5,13 +5,15 @@ slug: /integrations/clickpipes/postgres/parallel_initial_load
 sidebar_label: '並列スナップショットの仕組み'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'インジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import snapshot_params from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/snapshot_params.png'
 import Image from '@theme/IdealImage';
 
 このドキュメントでは、Postgres ClickPipe におけるスナップショット／初期ロードの並列化の仕組みを説明し、それを制御するために使用できるスナップショットパラメータについて解説します。
-
 
 ## 概要 {#overview-pg-snapshot}
 

@@ -5,9 +5,10 @@ slug: /integrations/clickpipes/mongodb/table_resync
 sidebar_label: '重新同步表'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
-
-
 
 # 重新同步特定表 {#resync-tables}
 

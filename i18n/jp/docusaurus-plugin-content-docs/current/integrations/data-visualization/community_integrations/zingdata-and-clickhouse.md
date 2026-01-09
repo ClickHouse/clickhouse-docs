@@ -7,6 +7,9 @@ description: 'Zing Data は ClickHouse 向けのシンプルなソーシャル�
 title: 'Zing Data を ClickHouse と接続する'
 show_related_blogs: true
 doc_type: 'guide'
+integration:
+   - support_level: 'community'
+   - category: 'data_visualization'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
@@ -29,7 +32,9 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 <a href="https://www.zingdata.com/" target="_blank">Zing Data</a> は、データ探索および可視化のためのプラットフォームです。Zing Data は、ClickHouse が提供する JS ドライバーを使用して ClickHouse に接続します。
 
 ## 接続方法 {#how-to-connect}
+
 1. 接続情報を収集します。
+
 <ConnectionDetails />
 
 2. Zing Data をダウンロードまたは利用します

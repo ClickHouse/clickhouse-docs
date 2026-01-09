@@ -4,6 +4,9 @@ description: 'PostgreSQL から ClickHouse へデータをレプリケートす�
 slug: /integrations/clickpipes/postgres/toast
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 PostgreSQL から ClickHouse へデータをレプリケートする場合、TOAST（The Oversized-Attribute Storage Technique）列に関する制限事項および特有の考慮事項を理解しておくことが重要です。本ガイドでは、レプリケーション処理において TOAST 列を特定し、適切に扱う方法を解説します。
@@ -34,6 +37,7 @@ WHERE c.relname = 'your_table_name'
 
 このクエリは、TOAST 化される可能性のある列の名前とデータ型を返します。ただし、このクエリはデータ型とストレージ属性に基づいて、TOAST ストレージの対象となりうる列だけを特定している点に注意が必要です。これらの列に実際に TOAST 化されたデータが含まれているかどうかを判断するには、これらの列の値が所定のサイズを超えているかどうかを確認する必要があります。実際にデータが TOAST 化されるかどうかは、これらの列に保存されている具体的な内容に依存します。
 
+
 ## TOAST 列が正しく処理されるようにする {#ensuring-proper-handling-of-toast-columns}
 
 レプリケーション中に TOAST 列が正しく処理されるようにするには、テーブルの `REPLICA IDENTITY` を `FULL` に設定する必要があります。これにより、PostgreSQL は UPDATE および DELETE 操作の際に古い行全体を WAL に含めるようになり、すべての列の値（TOAST 列を含む）がレプリケーションで利用可能であることが保証されます。
@@ -45,6 +49,7 @@ ALTER TABLE your_table_name REPLICA IDENTITY FULL;
 ```
 
 `REPLICA IDENTITY FULL` を設定する際のパフォーマンス上の考慮点については、[このブログ記事](https://xata.io/blog/replica-identity-full-performance)を参照してください。
+
 
 ## REPLICA IDENTITY FULL が設定されていない場合のレプリケーション動作 {#replication-behavior-when-replica-identity-full-is-not-set}
 
@@ -62,4 +67,4 @@ TOAST カラムを持つテーブルに対して `REPLICA IDENTITY FULL` が設�
 
 ## まとめ {#conclusion}
 
-PostgreSQL から ClickHouse へのレプリケーション時にデータの整合性を維持するには、TOAST 列を適切に扱うことが不可欠です。TOAST 列を特定し、適切な `REPLICA IDENTITY` を設定することで、データを正確かつ完全にレプリケーションできるようになります。
+PostgreSQL から ClickHouse へのレプリケーション時にデータの整合性を維持するには、TOAST カラムを適切に扱うことが不可欠です。TOAST カラムを特定し、適切な `REPLICA IDENTITY` を設定することで、データを正確かつ完全にレプリケートできるようになります。

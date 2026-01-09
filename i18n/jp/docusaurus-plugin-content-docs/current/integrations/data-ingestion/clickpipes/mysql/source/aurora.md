@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/source/aurora
 title: 'Aurora MySQL ソースのセットアップガイド'
 doc_type: 'guide'
 keywords: ['aurora mysql', 'clickpipes', 'binlog 保持期間', 'gtid モード', 'aws']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
@@ -49,7 +52,8 @@ ClickPipes がレプリケーションの再開を試みた際に、設定され
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 ```
 
-この設定が行われていない場合、または間隔が短すぎる場合、バイナリログに欠落が生じ、ClickPipes がレプリケーションを再開できなくなるおそれがあります。
+この設定が行われていないか、または保持期間が短すぎる場合、バイナリログに欠損が生じ、ClickPipes がレプリケーションを再開できなくなるおそれがあります。
+
 
 ## binlog 設定の構成 {#binlog-settings}
 
@@ -62,11 +66,13 @@ MySQL クラスターを使用している場合、以下のパラメーター�
 <Image img={aurora_config} alt="Aurora でパラメーターグループを確認できる場所" size="lg" border/>
 
 <br/>
+
 パラメーターグループのリンクをクリックすると、その専用ページに移動します。右上に **Edit** ボタンが表示されているはずです。
 
 <Image img={edit_button} alt="パラメーターグループの編集" size="lg" border/>
 
 <br/>
+
 次のパラメーターを、以下の値に設定します。
 
 1. `binlog_format` を `ROW` に設定します。
@@ -82,6 +88,7 @@ MySQL クラスターを使用している場合、以下のパラメーター�
 <Image img={binlog_row_image} alt="Binlog row image" size="lg" border/>
 
 <br/>
+
 設定後、右上の **Save Changes** をクリックします。変更を反映するためにインスタンスの再起動が必要になる場合があります。Aurora インスタンスの **Configuration** タブで、パラメーターグループのリンクの横に `Pending reboot` と表示されているかどうかを確認すると判断できます。
 
 ## GTID モードを有効化する（推奨） {#gtid-mode}

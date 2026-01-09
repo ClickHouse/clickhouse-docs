@@ -6,6 +6,9 @@ sidebar_position: 2
 title: 'ClickPipes for MySQL 常见问题解答'
 doc_type: 'reference'
 keywords: ['MySQL ClickPipes 常见问题', 'ClickPipes MySQL 故障排查', 'MySQL ClickHouse 复制', 'ClickPipes MySQL 支持', 'MySQL CDC ClickHouse']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # ClickPipes for MySQL 常见问题 {#clickpipes-for-mysql-faq}
@@ -55,4 +58,4 @@ PeerDB 目前存在一个限制：源表标识符（即 schema 名称或表名�
 
 ### 我可以将最初在复制中排除的列重新纳入复制吗？ {#include-excluded-columns}
 
-目前尚不支持此操作，但已在我们的开发计划中。替代方案是对包含这些列的表进行[重新同步](./table_resync.md)。
+目前尚不支持此操作，替代方案是对包含这些列的表进行[重新同步](./table_resync.md)。

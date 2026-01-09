@@ -4,6 +4,9 @@ description: 'Azure データを ClickHouse に取り込む'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data']
 title: 'Azure データを ClickHouse に取り込む'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 | Page                                                                              | Description                                                                                                                                                                 |

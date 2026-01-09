@@ -6,6 +6,9 @@ sidebar_position: 1
 title: '参考'
 doc_type: 'reference'
 keywords: ['Kafka 参考', 'ClickPipes', '数据源', 'Avro', '虚拟列']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';

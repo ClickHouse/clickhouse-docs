@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/ordering_keys
 title: 'Ключи упорядочивания'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 Ключи упорядочивания (также называемые ключами сортировки) определяют, как данные упорядочиваются на диске и индексируются в таблице ClickHouse. При репликации из Postgres ClickPipes по умолчанию использует первичный ключ таблицы в Postgres в качестве ключа упорядочивания для соответствующей таблицы в ClickHouse. В большинстве случаев первичный ключ Postgres является достаточным ключом упорядочивания, так как ClickHouse уже оптимизирован для быстрого сканирования данных, и пользовательские ключи упорядочивания часто не требуются.
@@ -27,6 +30,7 @@ AS
 SELECT * FROM posts FINAL 
 WHERE _peerdb_is_deleted = 0; -- this does the deduplication
 ```
+
 
 ## Пользовательские ключи сортировки без обновляемых материализованных представлений {#custom-ordering-keys-without-refreshable-materialized-views}
 

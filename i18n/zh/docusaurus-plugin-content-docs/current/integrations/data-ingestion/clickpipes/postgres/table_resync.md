@@ -5,9 +5,10 @@ slug: /integrations/clickpipes/postgres/table_resync
 sidebar_label: '重新同步表'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
-
-
 
 # 重新同步特定数据表 {#resync-tables}
 

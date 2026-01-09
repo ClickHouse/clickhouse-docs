@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mongodb/source/atlas
 title: 'MongoDB Atlas 源设置指南'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
+integration:
+  - support_level: '核心'
+  - category: 'clickpipes'
 ---
 
 import mongo_atlas_configuration from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/mongo-atlas-cluster-overview-configuration.png'
@@ -22,12 +25,15 @@ import Image from '@theme/IdealImage';
 复制至少需要 24 小时的 oplog 保留时间。我们建议将 oplog 保留时间设置为 72 小时或更长，以确保在完成初始快照之前不会截断 oplog。通过 UI 设置 oplog 保留时间的步骤如下：
 
 1. 在 MongoDB Atlas 控制台中进入集群的 `Overview` 选项卡，然后单击 `Configuration` 选项卡。
+
 <Image img={mongo_atlas_configuration} alt="导航到集群配置" size="lg" border/>
 
 2. 单击 `Additional Settings`，然后向下滚动到 `More Configuration Options`。
+
 <Image img={mngo_atlas_additional_settings} alt="展开更多设置" size="lg" border/>
 
 3. 单击 `More Configuration Options`，并将最小 oplog 窗口设置为 `72 hours` 或更长。
+
 <Image img={mongo_atlas_retention_hours} alt="设置 oplog 保留时长（小时）" size="lg" border/>
 
 4. 单击 `Review Changes` 进行检查，然后单击 `Apply Changes` 来部署这些更改。

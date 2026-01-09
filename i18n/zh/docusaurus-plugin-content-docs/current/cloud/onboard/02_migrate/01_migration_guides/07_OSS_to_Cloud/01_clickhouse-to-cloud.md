@@ -15,21 +15,22 @@ import self_managed_03 from '@site/static/images/integrations/migration/self-man
 import self_managed_04 from '@site/static/images/integrations/migration/self-managed-04.png';
 import self_managed_05 from '@site/static/images/integrations/migration/self-managed-05.png';
 import self_managed_06 from '@site/static/images/integrations/migration/self-managed-06.png';
+import CompatibilityNote from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/compatibility.mdx'
 
 # 在自管理 ClickHouse 与 ClickHouse Cloud 之间迁移 {#migrating-between-self-managed-clickhouse-and-clickhouse-cloud}
 
-<Image img={self_managed_01} size='lg' alt="迁移自管理 ClickHouse"/>
+<Image img={self_managed_01} size='lg' alt='迁移自管理 ClickHouse'/>
 
-本指南将说明如何从自管理 ClickHouse 服务器迁移到 ClickHouse Cloud，以及如何在不同的 ClickHouse Cloud 服务之间进行迁移。[`remoteSecure`](/sql-reference/table-functions/remote) 函数可在 `SELECT` 和 `INSERT` 查询中使用，以访问远程 ClickHouse 服务器，从而使迁移表变得像编写一条包含内联 `SELECT` 的 `INSERT INTO` 查询一样简单。
+本指南将说明如何从自管理 ClickHouse 服务器迁移到 ClickHouse Cloud，以及如何在不同的 ClickHouse Cloud 服务之间进行迁移。
+[`remoteSecure`](/sql-reference/table-functions/remote) 函数可在 `SELECT` 和 `INSERT` 查询中使用，以访问远程 ClickHouse 服务器，从而使迁移表变得像编写一条包含内联 `SELECT` 的 `INSERT INTO` 查询一样简单。
 
 ## 从自管理 ClickHouse 迁移到 ClickHouse Cloud {#migrating-from-self-managed-clickhouse-to-clickhouse-cloud}
 
 <Image img={self_managed_02} size='lg' alt='迁移自管理 ClickHouse'  />
 
-:::note
-无论源表是否进行了分片和/或复制，在 ClickHouse Cloud 中，你只需创建一个目标表（可以省略该表的 Engine 参数，它会自动成为一个 ReplicatedMergeTree 表），
-ClickHouse Cloud 会自动处理纵向和横向扩展。你无需操心如何对表进行复制和分片。
-:::
+无论源表是否进行了分片和/或复制，在 ClickHouse Cloud 中，你只需创建一个目标表（可以省略该表的 Engine 参数，`SharedMergeTree` 将会自动被选为表引擎），
+ClickHouse Cloud 会自动处理纵向和横向扩展。
+你无需操心如何对表进行复制和分片。
 
 在本示例中，自管理 ClickHouse 服务器是*源端*，而 ClickHouse Cloud 服务是*目标端*。
 
@@ -46,6 +47,8 @@ ClickHouse Cloud 会自动处理纵向和横向扩展。你无需操心如何对
 ### 将表从一个系统迁移到另一个系统：{#migration-of-tables-from-one-system-to-another}
 
 本示例将单个表从自管理 ClickHouse 服务器迁移到 ClickHouse Cloud。
+
+<CompatibilityNote/>
 
 ### 在源 ClickHouse 系统上（当前承载数据的系统） {#on-the-source-clickhouse-system-the-system-that-currently-hosts-the-data}
 

@@ -5,6 +5,9 @@ keywords: ['clickhouse', 'Embeddable', 'connect', 'integrate', 'ui']
 description: 'Embeddable 是一个开发工具包，用于将快速、交互式、完全自定义的分析体验直接构建到您的应用程序中。'
 title: '将 Embeddable 连接到 ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'community'
+  - category: 'data_visualization'
 ---
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
@@ -21,11 +24,12 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 内置的行级安全机制确保每个用户只会看到其被允许查看的精确数据。而两级、完全可配置的缓存机制则意味着你可以在大规模场景下提供快速的实时分析能力。
 
 ## 1. 收集连接参数 {#1-gather-your-connection-details}
+
 <ConnectionDetails />
 
 ## 2. 创建 ClickHouse 连接类型 {#2-create-a-clickhouse-connection-type}
 
-您可以使用 Embeddable API 添加数据库连接。该连接用于连接到您的 ClickHouse 服务。您可以使用以下 API 调用来添加连接：
+您可以使用 Embeddable API 添加数据库连接。该连接用于访问您的 ClickHouse 服务。您可以使用以下 API 调用来添加连接：
 
 ```javascript
 // for security reasons, this must *never* be called from your client-side
@@ -54,11 +58,11 @@ Status 201 { errorMessage: null }
 
 以上示例表示一个 `CREATE` 操作，但所有 `CRUD` 操作都可用。
 
-可以通过在任一 Embeddable 仪表板上点击 &quot;**Publish**&quot; 来找到 `apiKey`。
+可以通过在任一 Embeddable 仪表板上点击“**Publish**”来找到 `apiKey`。
 
 `name` 是用于标识此连接的唯一名称。
 
-* 默认情况下，数据模型会查找名为 &quot;default&quot; 的连接，但你可以为模型提供不同的 `data_source` 名称，从而将不同的数据模型连接到不同的连接（只需在模型中指定 `data_source` 名称）。
+* 默认情况下，数据模型会查找名为 “default” 的连接，但你可以为模型提供不同的 `data_source` 名称，从而将不同的数据模型连接到不同的连接（只需在模型中指定 `data_source` 名称）。
 
 `type` 用于告诉 Embeddable 应该使用哪个驱动程序。
 

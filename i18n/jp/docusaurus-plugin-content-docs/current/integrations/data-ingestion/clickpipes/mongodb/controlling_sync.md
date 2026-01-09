@@ -1,10 +1,13 @@
 ---
 title: 'MongoDB ClickPipe の同期を制御する'
-description: 'MongoDB ClickPipe の同期を制御する方法を説明するドキュメント'
+description: 'MongoDB ClickPipe の同期制御方法について説明するドキュメント'
 slug: /integrations/clickpipes/mongodb/sync_control
 sidebar_label: '同期の制御'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'データインジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'
@@ -13,8 +16,7 @@ import edit_sync_settings from '@site/static/images/integrations/data-ingestion/
 import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/cdc_syncs.png'
 import Image from '@theme/IdealImage';
 
-このドキュメントでは、MongoDB ClickPipe が **CDC（Running）モード** のときに、その同期を制御する方法について説明します。
-
+このドキュメントでは、MongoDB ClickPipe が **CDC（Running）モード** のときに、同期を制御する方法について説明します。
 
 ## 概要 {#overview}
 

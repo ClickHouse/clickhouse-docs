@@ -28,7 +28,7 @@ ClickHouse 中的文本索引（也称为["倒排索引"](https://en.wikipedia.o
 SET enable_full_text_index = true;
 ```
 
-可以使用以下语法在 [String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md) 以及 [Map](/sql-reference/data-types/map.md)（通过 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapkeys) 和 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapvalues) map 函数）列上定义文本索引：
+可以使用以下语法在 [String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md) 以及 [Map](/sql-reference/data-types/map.md)（通过 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 和 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) map 函数）列上定义文本索引：
 
 ```sql
 CREATE TABLE tab
@@ -323,7 +323,7 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 
 #### `mapContains` {#functions-example-mapcontains}
 
-函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains)（是 `mapContainsKey` 的别名）用于在 map 的键中匹配单个词元。
+函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey)（是 `mapContainsKey` 的别名）用于在 map 的键中匹配单个词元。
 
 示例：
 
@@ -331,6 +331,18 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 SELECT count() FROM tab WHERE mapContainsKey(map, 'clickhouse');
 -- OR
 SELECT count() FROM tab WHERE mapContains(map, 'clickhouse');
+```
+
+
+#### `mapContainsKeyLike` 和 `mapContainsValueLike` {#functions-example-mapcontainslike}
+
+函数 [mapContainsKeyLike](/sql-reference/functions/tuple-map-functions#mapContainsKeyLike) 和 [mapContainsValueLike](/sql-reference/functions/tuple-map-functions#mapContainsValueLike) 会针对 map 的所有键或所有值（分别）进行模式匹配。
+
+示例：
+
+```sql
+SELECT count() FROM tab WHERE mapContainsKeyLike(map, '% clickhouse %');
+SELECT count() FROM tab WHERE mapContainsValueLike(map, '% clickhouse %');
 ```
 
 
@@ -414,14 +426,14 @@ SELECT count() FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- slo
 随着日志量增加，这些查询会变慢。
 
 可以通过为 [Map](/sql-reference/data-types/map.md) 的键和值创建文本索引来解决。
-当需要按字段名或属性类型查找日志时，可使用 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapkeys) 来创建文本索引：
+当需要按字段名或属性类型查找日志时，可使用 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 来创建文本索引：
 
 ```sql
 ALTER TABLE logs ADD INDEX attributes_keys_idx mapKeys(attributes) TYPE text(tokenizer = array);
 ALTER TABLE posts MATERIALIZE INDEX attributes_keys_idx;
 ```
 
-在需要在属性的实际内容中执行搜索时，使用 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapvalues) 来创建文本索引：
+当需要在属性值的实际内容中进行搜索时，可以使用 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 来创建文本索引：
 
 ```sql
 ALTER TABLE logs ADD INDEX attributes_vals_idx mapValues(attributes) TYPE text(tokenizer = array);
@@ -436,6 +448,9 @@ SELECT * FROM logs WHERE mapContainsKey(attributes, 'rate_limit'); -- fast
 
 -- Finds all logs from a specific IP:
 SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- fast
+
+-- Finds all logs where any attribute includes an error:
+SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 ```
 
 
@@ -526,6 +541,7 @@ EXPLAIN PLAN 的第二个输出包含一个虚拟列 `__text_index_<index_name>_
 当前提供针对文本索引的反序列化字典块、头部和倒排列表的缓存，以减少 I/O。
 可以通过设置 [use_text_index_dictionary_cache](/operations/settings/settings#use_text_index_dictionary_cache)、[use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache) 和 [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache) 来启用这些缓存。
 默认情况下，所有缓存均处于禁用状态。
+若要清除这些缓存，请使用语句 [SYSTEM DROP TEXT INDEX CACHES](../../../sql-reference/statements/system#drop-text-index-caches)。
 
 请参考以下服务器设置来配置这些缓存。
 

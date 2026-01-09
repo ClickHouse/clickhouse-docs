@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/source/rds_maria
 title: 'Руководство по настройке Amazon RDS MariaDB как источника данных'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
@@ -20,7 +23,9 @@ import Image from '@theme/IdealImage';
 # Руководство по настройке источника RDS MariaDB {#rds-mariadb-source-setup-guide}
 
 Это пошаговое руководство по настройке экземпляра RDS MariaDB для репликации его данных с помощью MySQL ClickPipe.
+
 <br/>
+
 :::info
 Рекомендуем также ознакомиться с разделом часто задаваемых вопросов по MySQL [здесь](/integrations/data-ingestion/clickpipes/mysql/faq.md). Страница с вопросами и ответами активно обновляется.
 :::
@@ -39,13 +44,14 @@ import Image from '@theme/IdealImage';
 
 ### 2. Срок хранения binlog (в часах) {#binlog-retention-hours-rds}
 
-Amazon RDS for MariaDB использует иной способ задания длительности хранения binlog, то есть времени, в течение которого файл binlog с изменениями сохраняется. Если некоторые изменения не будут прочитаны до удаления файла binlog, репликация не сможет продолжиться. Значение по умолчанию для срока хранения binlog — NULL, что означает отсутствие хранения двоичных логов.
+Amazon RDS for MariaDB использует иной способ задания длительности хранения binlog, то есть времени, в течение которого файл binlog с изменениями сохраняется. Если некоторые изменения не будут прочитаны до удаления файла binlog, репликация не сможет продолжиться. Значение по умолчанию для срока хранения binlog — NULL, что означает, что двоичные логи не сохраняются.
 
 Чтобы указать количество часов хранения двоичных логов на экземпляре БД, используйте функцию mysql.rds&#95;set&#95;configuration с периодом хранения binlog, достаточно длинным для выполнения репликации. Рекомендуемый минимум — `24 часа`.
 
 ```text
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 ```
+
 
 ## Настройка параметров binlog в группе параметров {#binlog-parameter-group-rds}
 
@@ -74,12 +80,14 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 Затем нажмите `Save Changes` в правом верхнем углу. Возможно, вам потребуется перезагрузить экземпляр, чтобы изменения вступили в силу. Если вы видите статус `Pending reboot` рядом со ссылкой на группу параметров на вкладке Configurations экземпляра RDS, это означает, что требуется перезагрузка экземпляра.
 
 <br/>
+
 :::tip
 Если у вас кластер MariaDB, указанные выше параметры будут находиться в группе параметров [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html), а не в группе параметров экземпляра БД.
 :::
 
 ## Включение режима GTID {#gtid-mode-rds}
-Global Transaction Identifiers (GTID) — это уникальные идентификаторы, назначаемые каждой зафиксированной транзакции в MySQL/MariaDB. Они упрощают репликацию с использованием бинарных логов (binlog) и делают устранение неполадок более простым. В MariaDB режим GTID включён по умолчанию, поэтому от пользователя не требуется никаких дополнительных действий для его использования.
+
+Global Transaction Identifiers (GTID) — это уникальные идентификаторы, назначаемые каждой зафиксированной транзакции в MySQL/MariaDB. Они упрощают репликацию по бинарным логам (binlog) и облегчают устранение неполадок. В MariaDB режим GTID включён по умолчанию, поэтому от пользователя не требуется никаких действий для его использования.
 
 ## Настройка пользователя базы данных {#configure-database-user-rds}
 
@@ -102,6 +110,7 @@ Global Transaction Identifiers (GTID) — это уникальные идент
     ```sql
     GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
     GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
+
 
 ## Настройка сетевого доступа {#configure-network-access}
 

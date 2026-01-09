@@ -5,6 +5,9 @@ description: 'ClickHouse の HTTP インターフェイスを使用して Azure 
 keywords: ['Azure Data Factory', 'Azure', 'Microsoft', 'データ', 'HTTP インターフェイス']
 title: 'ClickHouse HTTP インターフェイスを使用して Azure のデータを ClickHouse に取り込む'
 doc_type: 'guide'
+integration:
+   - support_level: 'core'
+   - category: 'data_ingestion'
 ---
 
 import Image from '@theme/IdealImage';
@@ -76,7 +79,7 @@ SETTINGS
 FORMAT JSONEachRow
 ```
 
-このクエリを HTTP リクエストの一部として送信するには、単に URL エンコードした文字列として ClickHouse エンドポイントの `query` パラメータに渡します。
+このクエリを HTTP リクエストの一部として送信するには、URL エンコードした文字列として ClickHouse エンドポイントの `query` パラメータに渡すだけです。
 
 ```text
 https://your-clickhouse-url.com?query=INSERT%20INTO%20my_table%20SETTINGS%20date_time_input_format%3D%27best_effort%27%2C%20input_format_json_read_objects_as_strings%3D1%20FORMAT%20JSONEachRow%0A
@@ -103,6 +106,7 @@ ClickHouse を REST エンドポイントのように動作させられたので
 次のステップでは、Azure Data Factory インスタンスを作成し、ClickHouse インスタンスへの Linked Service を設定し、
 [REST sink](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest) 用の Dataset を定義し、
 Azure から ClickHouse へデータを送信する Copy Data アクティビティを作成します。
+
 
 ## Azure Data Factory インスタンスの作成 {#create-an-azure-data-factory-instance}
 
@@ -288,6 +292,7 @@ Azure Data Factory がサポートしている別のファイル形式などで�
 6. 完了したら、**Publish all** をクリックして、パイプラインおよびデータセットの変更を保存します。
 
 ## 追加リソース {#additional-resources-1}
+
 - [HTTP インターフェイス](https://clickhouse.com/docs/interfaces/http)
 - [Azure Data Factory を使用して REST エンドポイントとの間でデータをコピーおよび変換する](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest?tabs=data-factory)
 - [挿入戦略の選択](https://clickhouse.com/docs/best-practices/selecting-an-insert-strategy)

@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/scaling
 sidebar_label: 'Масштабирование'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 :::caution Большинству пользователей этот API не понадобится
