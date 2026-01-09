@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mongodb
 title: 'MongoDB から ClickHouse へデータをインジェスト（CDC を使用）'
 doc_type: 'ガイド'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'データインジェスト', 'リアルタイム同期']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
@@ -29,7 +32,7 @@ ClickPipes を使用して MongoDB から ClickHouse Cloud へデータを取り
 ClickHouse Cloud のコンソールおよびドキュメントでは、MongoDB に対して「table」と「collection」は同義語として使用されます。
 :::
 
-ClickPipes を使用すると、MongoDB データベースから ClickHouse Cloud にデータを取り込むことができます。ソースの MongoDB データベースは、オンプレミス環境にホストすることも、MongoDB Atlas のようなサービスを利用してクラウド上にホストすることもできます。
+ClickPipes を使用すると、MongoDB データベースから ClickHouse Cloud にデータを取り込むことができます。ソースとなる MongoDB データベースは、オンプレミス環境でホストすることも、MongoDB Atlas のようなサービスを利用してクラウド上にホストすることもできます。
 
 ## 前提条件 {#prerequisites}
 

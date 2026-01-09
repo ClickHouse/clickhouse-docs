@@ -5,6 +5,9 @@ description: 'marimo はデータと対話するための次世代型 Python ノ
 title: 'ClickHouse での marimo の利用'
 doc_type: 'guide'
 keywords: ['marimo', 'notebook', 'データ分析', 'python', '可視化']
+integration:
+  - support_level: 'community'
+  - category: 'sql_client'
 ---
 
 import Image from '@theme/IdealImage';
@@ -33,7 +36,8 @@ pip install "marimo[sql]" clickhouse_connect
 marimo edit clickhouse_demo.py
 ```
 
-これにより、localhost を開いた Web ブラウザが起動します。
+これにより、localhost を表示する Web ブラウザが開きます。
+
 
 ## 2. ClickHouse への接続 {#connect-to-clickhouse}
 

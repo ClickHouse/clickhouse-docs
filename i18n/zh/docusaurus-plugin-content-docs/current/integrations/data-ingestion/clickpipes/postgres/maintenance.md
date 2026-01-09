@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/maintenance
 title: 'ClickPipes for Postgres 的维护时段'
 doc_type: 'reference'
 keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # 针对 Postgres 的 ClickPipes 维护窗口 {#maintenance-windows-for-clickpipes-for-postgres}

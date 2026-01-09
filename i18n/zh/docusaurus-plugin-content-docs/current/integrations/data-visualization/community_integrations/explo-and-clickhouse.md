@@ -7,7 +7,7 @@ description: 'Explo 是一个易于使用的开源 UI 工具，可帮助你就�
 title: '将 Explo 连接到 ClickHouse'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
 ---
 
@@ -35,7 +35,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-适用于任何平台的面向客户分析功能。为精美可视化而设计，为极致简洁而打造。
+适用于任何平台的面向客户分析方案。为精美可视化而设计，为极致简洁而打造。
 
 ## 目标 {#goal}
 
@@ -49,6 +49,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 :::
 
 ## 1. 收集连接参数 {#1-gather-your-connection-details}
+
 <ConnectionDetails />
 
 ## 2.  将 Explo 连接到 ClickHouse {#2--connect-explo-to-clickhouse}

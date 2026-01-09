@@ -5,13 +5,16 @@ slug: /integrations/clickpipes/postgres/ordering_keys
 title: 'オーダリングキー'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'データインジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 Ordering Key（別名 sorting key）は、ClickHouse のテーブルにおいて、データがディスク上でどのようにソートされ、どのようにインデックス付けされるかを定義します。Postgres からレプリケーションする際、ClickPipes はデフォルトで、Postgres のテーブルのプライマリキーを、対応する ClickHouse テーブルのオーダリングキーとして使用します。多くの場合、ClickHouse はすでに高速スキャン向けに最適化されているため、Postgres のプライマリキーだけで十分なオーダリングキーとなり、独自のオーダリングキーを定義する必要はありません。
 
 [移行ガイド](/migrations/postgresql/data-modeling-techniques)に記載されているとおり、より大規模なユースケースでは、クエリを最適化するために、ClickHouse のオーダリングキーに Postgres のプライマリキーに加えて追加の列を含めることを推奨します。
 
-CDC をデフォルト設定で使用する場合、Postgres のプライマリキーとは異なるオーダリングキーを選択すると、ClickHouse でデータ重複排除に関する問題が発生する可能性があります。これは、ClickHouse のオーダリングキーが二重の役割を持っているためです。すなわち、データのインデックス作成とソートを制御すると同時に、重複排除キーとしても機能します。この問題に対処する最も簡単な方法は、リフレッシュ可能なマテリアライズドビューを定義することです。
+CDC をデフォルト設定で使用する場合、Postgres のプライマリキーとは異なるオーダリングキーを選択すると、ClickHouse でデータ重複排除に関する問題が発生する可能性があります。これは、ClickHouse のオーダリングキーが二重の役割を持っているためです。すなわち、データのインデックス作成とソートを制御すると同時に、重複排除キーとしても機能します。この問題に対処する最も簡単な方法は、リフレッシャブルmaterialized view を定義することです。
 
 ## 更新可能なマテリアライズドビューを使用する {#use-refreshable-materialized-views}
 
@@ -27,6 +30,7 @@ AS
 SELECT * FROM posts FINAL 
 WHERE _peerdb_is_deleted = 0; -- this does the deduplication
 ```
+
 
 ## リフレッシュ可能なマテリアライズドビューを使わないカスタムオーダリングキー {#custom-ordering-keys-without-refreshable-materialized-views}
 

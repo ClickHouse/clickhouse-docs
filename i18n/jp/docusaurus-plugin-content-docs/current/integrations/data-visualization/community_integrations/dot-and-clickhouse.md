@@ -5,6 +5,9 @@ keywords: ['clickhouse', 'dot', 'ai', 'chatbot', 'mysql', 'integrate', 'ui', 'vi
 description: 'AI チャットボット | Dot は、ClickHouse を活用して、ビジネスデータに関する質問に答え、定義や関連するデータ資産を取得し、さらにはデータモデリングも支援できるインテリジェントな仮想データアシスタントです。'
 title: 'Dot'
 doc_type: 'guide'
+integration:
+   - support_level: 'community'
+   - category: 'data_visualization'
 ---
 
 import Image from '@theme/IdealImage';
@@ -28,6 +31,7 @@ ClickHouse に直接接続し、自然言語でデータに関する質問をし
 ## Dot を ClickHouse に接続する {#connecting-dot-to-clickhouse}
 
 <Image size="md" img={dot_01} alt="Dot での ClickHouse 接続設定（ライトモード）" border />
+
 <br/>
 
 1. Dot の UI で **Settings → Connections** を開きます。  

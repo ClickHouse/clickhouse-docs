@@ -5,6 +5,9 @@ keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
 description: '使用 Java 连接 ClickHouse 的选项'
 slug: /integrations/java
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -13,7 +16,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 # Java 客户端概览 {#java-clients-overview}
 
-- [Client 0.8+](./client/client.mdx)
+- [客户端 0.8+](./client/client.mdx)
 - [JDBC 0.8+](./jdbc/jdbc.mdx)
 - [R2DBC 驱动](./r2dbc.md)
 
@@ -154,9 +157,9 @@ JDBC 驱动继承其底层客户端实现所具备的相同功能。其他 JDBC 
 </dependencies>
 ```
 
-#### 配置日志记录 {#configuring-logging}
+#### 配置日志 {#configuring-logging}
 
-具体配置方式取决于你所使用的日志框架。例如，如果你使用的是 `Logback`，可以在名为 `logback.xml` 的文件中进行配置：
+这取决于您使用的日志框架。例如，如果您使用 `Logback`，可以在名为 `logback.xml` 的文件中进行日志配置：
 
 ```xml title="logback.xml"
 <configuration>

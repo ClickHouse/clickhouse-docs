@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/sync_control
 sidebar_label: 'Управление синхронизацией'
 keywords: ['MySQL ClickPipe', 'управление синхронизацией ClickPipe', 'CDC-репликация MySQL', 'коннектор ClickHouse для MySQL', 'синхронизация базы данных с ClickHouse']
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'
@@ -14,7 +17,6 @@ import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipe
 import Image from '@theme/IdealImage';
 
 В этом документе описывается, как управлять синхронизацией MySQL ClickPipe, когда ClickPipe находится в режиме **CDC (Running)**.
-
 
 ## Обзор {#overview}
 
@@ -27,7 +29,7 @@ import Image from '@theme/IdealImage';
 Интервал синхронизации конвейера — это промежуток времени (в секундах), в течение которого ClickPipe будет забирать записи из исходной базы данных. В этот интервал не входит время, необходимое для записи данных в ClickHouse.
 
 Значение по умолчанию — **1 минута**.
-Интервал синхронизации может быть установлен в любое положительное целое значение, но рекомендуется устанавливать его более чем в 10 секунд.
+Интервал синхронизации может быть установлен в любое положительное целое значение, но рекомендуется устанавливать его выше 10 секунд.
 
 ### Размер батча чтения {#batch-size}
 
