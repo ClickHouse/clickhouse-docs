@@ -483,6 +483,22 @@ select a,b,c from {{ source('raw', 'table_2') }}
 > you will encounter the following warning:
 `Warning - Table <previous table name> was detected with the same pattern as model name <your model name> but was not found in this run. In case it is a renamed mv that was previously part of this model, drop it manually (!!!) `
 
+#### How to iterate the target table schema {#how-to-iterate-the-target-table-schema}
+Starting with dbt-clickhouse version 1.9.8, you can control how the target table schema is iterated when `dbt run` encounters different columns in the MV's SQL.
+
+By default, dbt will not apply any changes to the target table (`ignore` setting value), but you can change this setting to follow the same behavior as the `on_schema_change` config [in incremental models](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change).
+
+Also, you can use this settin as a safety mechanism. If you set it to `fail`, the build will fail if the columns in the MV's SQL differ from the target table that was created by the first `dbt run`.
+
+```jinja2
+{{config(
+    materialized='materialized_view',
+    engine='MergeTree()',
+    order_by='(id)',
+    on_schema_change='fail'
+)}}
+```
+
 #### Data catch-up {#data-catch-up}
 
 Currently, when creating a materialized view (MV), the target table is first populated with historical data before the MV itself is created.
