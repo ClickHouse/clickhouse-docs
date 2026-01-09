@@ -31,35 +31,34 @@ docker exec -it pg_clickhouse psql -U postgres -c 'CREATE EXTENSION pg_clickhous
 
 ## 测试用例：TPC-H {#test-case-tpc-h}
 
-下表比较了在规模因子 1 数据集上，[TPC-H] 查询在常规 PostgreSQL
-表与通过 pg_clickhouse 连接到 ClickHouse 时的性能；✅ 表示查询完全下推，
-而短横线表示查询在 1 分钟后被取消。所有测试均在配备 36 GB 内存的
-MacBook Pro M4 Max 上运行。
+下表对比了在缩放因子为 1 时，[TPC-H] 查询在常规 PostgreSQL 表与通过 pg_clickhouse 连接到 ClickHouse 的表上的性能表现；✔︎ 表示查询实现了完全下推，而短横线表示查询在 1 分钟后被取消。所有测试均在一台配备 36 GB 内存的 MacBook Pro M4 Max 上运行。
 
-| Query      | Pushdown | pg_clickhouse | PostgreSQL |
-| ---------: | :------: | ------------: | ---------: |
-|  [Query 1] |     ✅    |         73ms  |     4478ms |
-|  [Query 2] |          |             - |      560ms |
-|  [Query 3] |     ✅    |          74ms |     1454ms |
-|  [Query 4] |     ✅    |          67ms |      650ms |
-|  [Query 5] |     ✅    |         104ms |      452ms |
-|  [Query 6] |     ✅    |          42ms |      740ms |
-|  [Query 7] |     ✅    |          83ms |      633ms |
-|  [Query 8] |     ✅    |         114ms |      320ms |
-|  [Query 9] |     ✅    |         136ms |     3028ms |
-| [Query 10] |     ✅    |          10ms |        6ms |
-| [Query 11] |     ✅    |          78ms |      213ms |
-| [Query 12] |     ✅    |          37ms |     1101ms |
-| [Query 13] |          |        1242ms |      967ms |
-| [Query 14] |     ✅    |          51ms |      193ms |
-| [Query 15] |          |         522ms |     1095ms |
-| [Query 16] |          |        1797ms |      492ms |
-| [Query 17] |          |           9ms |     1802ms |
-| [Query 18] |          |          10ms |     6185ms |
-| [Query 19] |          |         532ms |       64ms |
-| [Query 20] |          |        4595ms |      473ms |
-| [Query 21] |          |        1702ms |     1334ms |
-| [Query 22] |          |         268ms |      257ms |
+<!-- cd dev/tpch && make ch && make pg && make run -->
+
+|    查询    | PostgreSQL | pg_clickhouse |  下推情况  |
+| ----------:| ----------:| -------------:|:--------:|
+|  [查询 1]  |    4693 ms |        268 ms |     ✔︎    |
+|  [查询 2]  |     458 ms |       3446 ms |          |
+|  [查询 3]  |     742 ms |        111 ms |     ✔︎    |
+|  [查询 4]  |     270 ms |        130 ms |     ✔︎    |
+|  [查询 5]  |     337 ms |       1460 ms |     ✔︎    |
+|  [查询 6]  |     764 ms |         53 ms |     ✔︎    |
+|  [查询 7]  |     619 ms |         96 ms |     ✔︎    |
+|  [查询 8]  |     342 ms |        156 ms |     ✔︎    |
+|  [查询 9]  |    3094 ms |        298 ms |     ✔︎    |
+| [查询 10]  |     581 ms |        197 ms |     ✔︎    |
+| [查询 11]  |     212 ms |         24 ms |     ✔︎    |
+| [查询 12]  |    1116 ms |         84 ms |     ✔︎    |
+| [查询 13]  |     958 ms |       1368 ms |          |
+| [查询 14]  |     181 ms |         73 ms |     ✔︎    |
+| [查询 15]  |    1118 ms |        557 ms |          |
+| [查询 16]  |     497 ms |       1714 ms |          |
+| [查询 17]  |    1846 ms |      32709 ms |          |
+| [查询 18]  |    5823 ms |      10649 ms |          |
+| [查询 19]  |      53 ms |        206 ms |     ✔︎    |
+| [查询 20]  |     421 ms |             - |          |
+| [查询 21]  |    1349 ms |       4434 ms |          |
+| [查询 22]  |     258 ms |       1415 ms |          |
 
 ### 从源代码编译 {#compile-from-source}
 
@@ -67,7 +66,8 @@ MacBook Pro M4 Max 上运行。
 
 PostgreSQL 和 curl 的开发包会将 `pg_config` 和
 `curl-config` 安装到 PATH 中，因此你只需运行 `make`（或
-`gmake`），然后运行 `make install`，接着在数据库中执行 `CREATE EXTENSION http` 即可。
+`gmake`），然后运行 `make install`，接着在数据库中执行
+`CREATE EXTENSION pg_clickhouse` 即可。
 
 #### Debian / Ubuntu / APT {#debian--ubuntu--apt}
 
@@ -296,46 +296,25 @@ CREATE EXTENSION pg_clickhouse SCHEMA env;
 
 [TPC-H]: https://www.tpc.org/tpch/
 
-[Query 1]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/1.sql
-
-[Query 2]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/2.sql
-
-[Query 3]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/3.sql
-
-[Query 4]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/4.sql
-
-[Query 5]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/5.sql
-
-[Query 6]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/6.sql
-
-[Query 7]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/7.sql
-
-[Query 8]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/8.sql
-
-[Query 9]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/9.sql
-
-[Query 10]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/10.sql
-
-[Query 11]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/11.sql
-
-[Query 12]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/12.sql
-
-[Query 13]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/13.sql
-
-[Query 14]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/14.sql
-
-[Query 15]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/15.sql
-
-[Query 16]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/16.sql
-
-[Query 17]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/17.sql
-
-[Query 18]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/18.sql
-
-[Query 19]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/19.sql
-
-[Query 20]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/20.sql
-
-[Query 21]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/21.sql
-
-[Query 22]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/22.sql
+[查询 1] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/1.sql
+  [查询 2] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/2.sql
+  [查询 3] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/3.sql
+  [查询 4] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/4.sql
+  [查询 5] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/5.sql
+  [查询 6] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/6.sql
+  [查询 7] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/7.sql
+  [查询 8] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/8.sql
+  [查询 9] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/9.sql
+  [查询 10] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/10.sql
+  [查询 11] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/11.sql
+  [查询 12] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/12.sql
+  [查询 13] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/13.sql
+  [查询 14] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/14.sql
+  [查询 15] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/15.sql
+  [查询 16] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/16.sql
+  [查询 17] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/17.sql
+  [查询 18] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/18.sql
+  [查询 19] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/19.sql
+  [查询 20] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/20.sql
+  [查询 21] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/21.sql
+  [查询 22] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/22.sql

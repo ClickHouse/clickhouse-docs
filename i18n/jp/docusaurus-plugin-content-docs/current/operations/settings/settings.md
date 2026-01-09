@@ -1801,7 +1801,7 @@ Cloud 上で許可されるエンジンファミリー。
 - 1 - DDL を *ReplicatedMergeTree を使用するように書き換える
 - 2 - DDL を SharedMergeTree を使用するように書き換える
 - 3 - 明示的に指定された remote disk がある場合を除き、DDL を SharedMergeTree を使用するように書き換える
-- 4 - 3 と同じだが、さらに Distributed の代わりに Alias を使用する
+- 4 - 3 と同じだが、さらに Distributed の代わりに Alias を使用する（Alias テーブルは Distributed テーブルの宛先テーブルを指すため、対応するローカルテーブルが使用される）
 
 公開される部分を最小限に抑えるための UInt64
 
