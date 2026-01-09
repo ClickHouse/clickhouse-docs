@@ -1798,7 +1798,7 @@ Cloud 模式
 - 1 - 将 DDL 语句重写为使用 *ReplicatedMergeTree
 - 2 - 将 DDL 语句重写为使用 SharedMergeTree
 - 3 - 将 DDL 语句重写为使用 SharedMergeTree，但在显式指定远程磁盘时除外
-- 4 - 与 3 相同，并且额外使用 Alias 代替 Distributed
+- 4 - 与 3 相同，并且额外使用 Alias 代替 Distributed（Alias 表将指向 Distributed 表的目标表，因此会使用相应的本地表）
 
 使用 UInt64 以尽量缩小对外公开部分
 
