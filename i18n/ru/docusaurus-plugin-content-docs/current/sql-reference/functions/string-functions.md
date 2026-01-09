@@ -1517,7 +1517,7 @@ SELECT initcapUTF8('не тормозит')
 
 Добавлено в: v25.9
 
-Возвращает 1, если входной String или FixedString содержит только ASCII-байты (0x00–0x7F), иначе 0.
+Возвращает 1, если входной String или FixedString содержит только ASCII-байты (0x00–0x7F), иначе 0. Функция оптимизирована для положительного случая (когда входное значение *является* корректным ASCII).
 
 **Синтаксис**
 
@@ -1542,6 +1542,7 @@ SELECT isValidASCII('hello') AS is_ascii, isValidASCII('你好') AS is_not_ascii
 
 ```response title=Response
 ```
+
 
 ## isValidUTF8 {#isValidUTF8}
 

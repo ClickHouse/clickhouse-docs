@@ -19,11 +19,11 @@ import dbeaver_test_connection from '@site/static/images/integrations/sql-client
 import dbeaver_download_driver from '@site/static/images/integrations/sql-clients/dbeaver-download-driver.png';
 import dbeaver_sql_editor from '@site/static/images/integrations/sql-clients/dbeaver-sql-editor.png';
 import dbeaver_query_log_select from '@site/static/images/integrations/sql-clients/dbeaver-query-log-select.png';
-import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
 # DBeaver を ClickHouse に接続する {#connect-dbeaver-to-clickhouse}
 
-<ClickHouseSupportedBadge/>
+<PartnerBadge/>
 
 DBeaver には複数のエディションがあります。このガイドでは [DBeaver Community](https://dbeaver.io/) を使用します。さまざまなエディションと機能については [こちら](https://dbeaver.com/edition/) を参照してください。DBeaver は JDBC を使用して ClickHouse に接続します。
 
@@ -64,7 +64,7 @@ DBeaver は https://dbeaver.io/download/ からダウンロードできます。
 
 <Image img={dbeaver_test_connection} size="md" border alt="接続をテストする" />
 
-DBeaver が ClickHouse ドライバーがインストールされていないことを検出した場合、ドライバーのダウンロードを求められます。
+DBeaver が ClickHouse ドライバーがインストールされていないことを検出した場合、ドライバーをダウンロードするよう促されます。
 
 <Image img={dbeaver_download_driver} size="md" border alt="ClickHouse ドライバーをダウンロードする" />
 

@@ -5,13 +5,15 @@ slug: /integrations/clickpipes/postgres/parallel_initial_load
 sidebar_label: 'Как работает параллельный снимок'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import snapshot_params from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/snapshot_params.png'
 import Image from '@theme/IdealImage';
 
 В этом документе объясняется, как работает параллельное создание снимка и начальная загрузка в Postgres ClickPipe, а также рассматриваются параметры снимка, которые можно использовать для управления этим процессом.
-
 
 ## Обзор {#overview-pg-snapshot}
 

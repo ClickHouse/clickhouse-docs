@@ -6,6 +6,9 @@ sidebar_position: 1
 title: '最佳实践'
 doc_type: 'guide'
 keywords: ['kafka 最佳实践', 'clickpipes', '压缩', '身份验证', '扩展性']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # 最佳实践 {#best-practices}
@@ -17,9 +20,10 @@ keywords: ['kafka 最佳实践', 'clickpipes', '压缩', '身份验证', '扩展
 
 ## 限制 {#limitations}
 
-- 不支持使用 [`DEFAULT`](/sql-reference/statements/create/table#default)。
+- 不支持 [`DEFAULT`](/sql-reference/statements/create/table#default)。
 
 ## 投递语义 {#delivery-semantics}
+
 用于 Kafka 的 ClickPipes 提供 `at-least-once` 投递语义（这是最常用的方法之一）。欢迎您通过[联系表单](https://clickhouse.com/company/contact?loc=clickpipes)就投递语义向我们反馈意见。如果您需要 `exactly-once` 语义，建议使用我们的官方 [`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse) sink 连接器。
 
 ## 身份验证 {#authentication}
@@ -77,9 +81,10 @@ ClickPipes 支持以下 AWS MSK 身份验证方式：
 }
 ```
 
+
 #### 配置信任关系 {#configuring-a-trusted-relationship}
 
-如果您使用 IAM 角色 ARN 对 MSK 进行身份验证，则需要为您的 ClickHouse Cloud 实例配置一条信任关系，以便该角色可以被该实例扮演（assume）。
+如果您使用 IAM 角色 ARN 对 MSK 进行身份验证，则需要为您的 ClickHouse Cloud 实例配置一条信任关系，以便该实例可以承担该角色（assume）。
 
 :::note
 基于角色的访问仅适用于部署在 AWS 上的 ClickHouse Cloud 实例。
@@ -101,10 +106,11 @@ ClickPipes 支持以下 AWS MSK 身份验证方式：
 }
 ```
 
+
 ### 自定义证书 {#custom-certificates}
 
 用于 Kafka 的 ClickPipes 支持为使用非公开服务器证书的 Kafka broker 上传自定义证书。
-同样也支持上传客户端证书和密钥，以用于基于双向 TLS（mTLS）的身份验证。
+也支持上传客户端证书和密钥，以用于基于双向 TLS（mTLS）的身份验证。
 
 ## 性能 {#performance}
 

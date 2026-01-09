@@ -6,6 +6,9 @@ keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', '
 description: 'Tableau Online 让数据的力量触手可及，使人们无论身在何处都能更快速、更自信地做出决策。'
 title: 'Tableau Online'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
 ---
 
 import MySQLCloudSetup from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_cloud_setup.mdx';
@@ -26,9 +29,11 @@ import tableau_desktop_05 from '@site/static/images/integrations/data-visualizat
 Tableau Online 可以通过官方 MySQL 数据源，使用 MySQL 接口连接到 ClickHouse Cloud 或本地部署的 ClickHouse 环境。
 
 ## ClickHouse Cloud 配置 {#clickhouse-cloud-setup}
+
 <MySQLCloudSetup />
 
 ## 本地部署 ClickHouse 服务器安装与配置 {#on-premise-clickhouse-server-setup}
+
 <MySQLOnPremiseSetup />
 
 ## 将 Tableau Online 连接到 ClickHouse（本地部署且不使用 SSL） {#connecting-tableau-online-to-clickhouse-on-premise-without-ssl}
@@ -36,21 +41,25 @@ Tableau Online 可以通过官方 MySQL 数据源，使用 MySQL 接口连接到
 登录您的 Tableau Cloud 站点并添加一个新的 Published Data Source（已发布数据源）。
 
 <Image size="md" img={tableau_online_01} alt="Tableau Online 界面显示用于创建已发布数据源的 “New” 按钮" border />
+
 <br/>
 
 从可用连接器列表中选择 “MySQL”。
 
 <Image size="md" img={tableau_online_02} alt="Tableau Online 连接器选择界面，其中 MySQL 选项被高亮显示" border />
+
 <br/>
 
 填写在 ClickHouse 部署/配置过程中获取的连接信息。
 
 <Image size="md" img={tableau_online_03} alt="Tableau Online MySQL 连接配置界面，包含服务器、端口、数据库和凭证字段" border />
+
 <br/>
 
 Tableau Online 会自动扫描数据库并提供可用表的列表。将所需的表拖动到右侧画布上。此外，您可以点击 “Update Now” 预览数据，并根据需要微调自动识别出的字段类型或名称。
 
 <Image size="md" img={tableau_online_04} alt="Tableau Online 数据源页面，左侧显示数据库表，右侧是具有拖放功能的画布" border />
+
 <br/>
 
 完成后，只需点击右上角的 “Publish As”，即可像往常一样在 Tableau Online 中使用新创建的数据集。

@@ -5,6 +5,9 @@ title: 'Kinesis ロールベースアクセス'
 description: 'この記事では、ClickPipes のユーザーがロールベースアクセスを活用して Amazon Kinesis で認証を行い、データストリームに安全にアクセスする方法を説明します。'
 doc_type: 'guide'
 keywords: ['Amazon Kinesis']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import secure_kinesis from '@site/static/images/integrations/data-ingestion/clickpipes/securekinesis.jpg';
@@ -16,6 +19,7 @@ import Image from '@theme/IdealImage';
 ## 前提条件 {#prerequisite}
 
 このガイドに従うには、次のものが必要です：
+
 - アクティブな ClickHouse Cloud サービス
 - AWS アカウント
 
@@ -29,7 +33,7 @@ Kinesis へのセキュアなアクセス設定の説明に入る前に、その
 
 ## セットアップ {#setup}
 
-<VerticalStepper headerLevel="h3">
+<VerticalStepper headerLevel="h3"/>
 
 ### ClickHouse サービスの IAM ロール ARN の取得 {#obtaining-the-clickhouse-service-iam-role-arn}
 
@@ -116,5 +120,3 @@ Kinesis へのセキュアなアクセス設定の説明に入る前に、その
    ```
 
 - 4. 作成後、新しい **IAM Role ARN** をコピーします。これは Kinesis ストリームへアクセスするために必要となる ARN です。
-
-</VerticalStepper>

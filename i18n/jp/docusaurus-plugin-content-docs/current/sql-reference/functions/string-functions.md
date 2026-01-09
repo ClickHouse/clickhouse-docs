@@ -1517,7 +1517,7 @@ SELECT initcapUTF8('не тормозит')
 
 導入バージョン: v25.9
 
-入力の String または FixedString が ASCII バイト (0x00–0x7F) のみを含む場合は 1、それ以外の場合は 0 を返します。
+入力の String または FixedString が ASCII バイト (0x00–0x7F) のみを含む場合は 1、それ以外の場合は 0 を返します。正のケース（入力が有効な ASCII である場合）に最適化されています。
 
 **構文**
 
@@ -1542,6 +1542,7 @@ SELECT isValidASCII('hello') AS is_ascii, isValidASCII('你好') AS is_not_ascii
 
 ```response title=Response
 ```
+
 
 ## isValidUTF8 {#isValidUTF8}
 

@@ -1,5 +1,5 @@
 ---
-description: 'DataLakeCatalog データベースエンジンを使用すると、ClickHouse を外部のデータカタログに接続し、オープンテーブルフォーマットのデータをクエリできます'
+description: 'DataLakeCatalog データベースエンジンを使用すると、ClickHouse を外部のデータカタログに接続し、オープンなテーブル形式のデータをクエリできます'
 sidebar_label: 'DataLakeCatalog'
 slug: /engines/database-engines/datalakecatalog
 title: 'DataLakeCatalog'
@@ -31,6 +31,7 @@ SET allow_experimental_database_iceberg = 1;
 SET allow_experimental_database_unity_catalog = 1;
 SET allow_experimental_database_glue_catalog = 1;
 SET allow_experimental_database_hms_catalog = 1;
+SET allow_experimental_database_paimon_rest_catalog = 1;
 ```
 
 `DataLakeCatalog` エンジンを利用するデータベースは、次の構文で作成できます。
@@ -58,6 +59,9 @@ catalog_type,
 | `aws_access_key_id`     | S3/Glue へのアクセス用 AWS アクセスキー ID（vended credentials を使用しない場合）                      |
 | `aws_secret_access_key` | S3/Glue へのアクセス用 AWS シークレットアクセスキー（vended credentials を使用しない場合）                   |
 | `region`                | サービスの AWS リージョン（例: `us-east-1`）                                                 |
+| `dlf_access_key_id`     | DLF へのアクセス用アクセスキー ID                                                            |
+| `dlf_access_key_secret` | DLF へのアクセス用アクセスキーシークレット                                                         |
+
 
 ## 例 {#examples}
 
@@ -65,7 +69,7 @@ catalog_type,
 
 * [Unity Catalog](/use-cases/data-lake/unity-catalog)
 * [Glue Catalog](/use-cases/data-lake/glue-catalog)
-* OneLake Catalog\
+* OneLake Catalog
   `allow_experimental_database_iceberg` または `allow_database_iceberg` を有効化することで利用できます。
 
 ```sql

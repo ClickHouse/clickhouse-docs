@@ -5,6 +5,9 @@ description: 'marimo — это Python-ноутбук нового поколе�
 title: 'Использование marimo с ClickHouse'
 doc_type: 'guide'
 keywords: ['marimo', 'ноутбук', 'анализ данных', 'Python', 'визуализация']
+integration:
+  - support_level: 'community'
+  - category: 'sql_client'
 ---
 
 import Image from '@theme/IdealImage';
@@ -34,6 +37,7 @@ marimo edit clickhouse_demo.py
 ```
 
 Должен открыться веб‑браузер с адресом localhost.
+
 
 ## 2. Подключение к ClickHouse. {#connect-to-clickhouse}
 

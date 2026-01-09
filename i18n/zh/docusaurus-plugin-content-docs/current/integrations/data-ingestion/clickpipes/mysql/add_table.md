@@ -6,6 +6,9 @@ slug: /integrations/clickpipes/mysql/add_table
 show_title: false
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', '数据摄取', '实时同步']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import Image from '@theme/IdealImage';

@@ -6,6 +6,9 @@ sidebar_position: 1
 title: 'Справочник'
 doc_type: 'reference'
 keywords: ['справочник по Kafka', 'clickpipes', 'источники данных', 'avro', 'виртуальные столбцы']
+integration:
+  - support_level: 'основной'
+  - category: 'clickpipes'
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';
