@@ -21,7 +21,7 @@ This allows to implement very efficient encoding and decoding.
 
 :::
 
-### [Integers](/sql-reference/data-types/int) {#integers}
+### [Integers](/sql-reference/data-types/int-uint) {#integers}
 
 String of Int and UInt of 8, 16, 32, 64, 128 or 256 bits, in little endian.
 
@@ -37,11 +37,14 @@ Just an array of String, i.e. (len, value).
 
 An array of N-byte sequences.
 
-## [IP](/sql-reference/data-types/ip-address) {#ip}
+## IP {#ip}
 
-IPv4 is alias of `UInt32` numeric type and represented as UInt32.
+### [IPv4](/sql-reference/data-types/ipv4) {#ipv4}
 
-IPv6 is alias of `FixedString(16)` and represented as binary directly.
+Alias of `UInt32` numeric type and represented as UInt32.
+
+### [IPv6](/sql-reference/data-types/ipv6) {#ipv6}
+Alias of `FixedString(16)` and represented as binary directly.
 
 ## [Tuple](/sql-reference/data-types/tuple) {#tuple}
 
