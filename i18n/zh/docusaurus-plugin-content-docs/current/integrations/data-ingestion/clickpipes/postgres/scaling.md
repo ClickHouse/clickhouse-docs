@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/scaling
 sidebar_label: '扩展'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 :::caution 大多数用户不需要使用此 API

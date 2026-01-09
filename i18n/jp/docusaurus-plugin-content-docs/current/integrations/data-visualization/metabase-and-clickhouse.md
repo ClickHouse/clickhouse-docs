@@ -8,7 +8,7 @@ title: 'Metabase と ClickHouse を接続する'
 show_related_blogs: true
 doc_type: 'guide'
 integration:
-  - support_level: 'core'
+  - support_level: 'partner'
   - category: 'data_visualization'
   - website: 'https://github.com/clickhouse/metabase-clickhouse-driver'
 ---
@@ -28,13 +28,14 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-Metabase は、データに関する疑問を解消するための、使いやすいオープンソースの UI ツールです。Metabase は Java アプリケーションであり、<a href="https://www.metabase.com/start/oss/jar" target="_blank">JAR ファイルをダウンロード</a>して `java -jar metabase.jar` で実行するだけで起動できます。Metabase は、JDBC ドライバーを使用して ClickHouse に接続します。このドライバーをダウンロードして `plugins` フォルダに配置します。
+Metabase は、データに関する疑問を解消するための、使いやすいオープンソースの UI ツールです。Metabase は Java アプリケーションであり、<a href="https://www.metabase.com/start/oss/jar" target="_blank">JAR ファイルをダウンロード</a>して `java -jar metabase.jar` で実行するだけで起動できます。Metabase は、JDBC ドライバーを使用して ClickHouse に接続します。このドライバーをダウンロードして `plugins` フォルダに配置します：
 
 ## 目標 {#goal}
 
 このガイドでは、Metabase を使って ClickHouse のデータに対していくつかクエリを実行し、その結果を可視化します。可視化結果の 1 つは次のようになります：
 
-  <Image size="md" img={metabase_08} alt="ClickHouse のデータを表示している Metabase の円グラフ可視化" border />
+<Image size="md" img={metabase_08} alt="ClickHouse のデータを表示している Metabase の円グラフ可視化" border />
+
 <p/>
 
 :::tip データを追加する
@@ -42,6 +43,7 @@ Metabase は、データに関する疑問を解消するための、使いや�
 :::
 
 ## 1. 接続情報を確認する {#1-gather-your-connection-details}
+
 <ConnectionDetails />
 
 ## 2.  Metabase 用の ClickHouse プラグインをダウンロードする {#2--download-the-clickhouse-plugin-for-metabase}

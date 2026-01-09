@@ -7,7 +7,7 @@ title: 'Luzmo と ClickHouse の連携'
 sidebar: 'integrations'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
 ---
 

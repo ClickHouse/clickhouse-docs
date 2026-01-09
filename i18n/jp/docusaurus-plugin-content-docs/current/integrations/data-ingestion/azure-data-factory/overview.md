@@ -5,6 +5,9 @@ description: 'Azure のデータを ClickHouse に取り込む ― 概要'
 keywords: ['Azure Data Factory', 'Azure', 'Microsoft', 'データ']
 title: 'Azure のデータを ClickHouse に取り込む'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';

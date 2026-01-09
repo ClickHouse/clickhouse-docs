@@ -15,21 +15,22 @@ import self_managed_03 from '@site/static/images/integrations/migration/self-man
 import self_managed_04 from '@site/static/images/integrations/migration/self-managed-04.png';
 import self_managed_05 from '@site/static/images/integrations/migration/self-managed-05.png';
 import self_managed_06 from '@site/static/images/integrations/migration/self-managed-06.png';
+import CompatibilityNote from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/compatibility.mdx'
 
 # セルフマネージド ClickHouse と ClickHouse Cloud 間の移行 {#migrating-between-self-managed-clickhouse-and-clickhouse-cloud}
 
 <Image img={self_managed_01} size='lg' alt='セルフマネージド ClickHouse の移行'/>
 
-このガイドでは、セルフマネージドの ClickHouse サーバーから ClickHouse Cloud への移行方法と、ClickHouse Cloud サービス間での移行方法について説明します。[`remoteSecure`](/sql-reference/table-functions/remote) 関数は、リモートの ClickHouse サーバーへのアクセスを可能にするために `SELECT` および `INSERT` クエリ内で使用されます。これにより、テーブルの移行は、`SELECT` を埋め込んだ `INSERT INTO` クエリを書くだけで行えるようになります。
+このガイドでは、セルフマネージドの ClickHouse サーバーから ClickHouse Cloud への移行方法と、ClickHouse Cloud サービス間での移行方法について説明します。
+[`remoteSecure`](/sql-reference/table-functions/remote) 関数は、リモートの ClickHouse サーバーへのアクセスを可能にするために `SELECT` および `INSERT` クエリ内で使用されます。これにより、テーブルの移行は、`SELECT` を埋め込んだ `INSERT INTO` クエリを書くだけで行えるようになります。
 
 ## セルフマネージド ClickHouse から ClickHouse Cloud への移行 {#migrating-from-self-managed-clickhouse-to-clickhouse-cloud}
 
 <Image img={self_managed_02} size='lg' alt='セルフマネージド ClickHouse の移行'  />
 
-:::note
-ソーステーブルが分片されているか、レプリカ構成になっているか、あるいはその両方であるかに関わらず、ClickHouse Cloud では宛先テーブルを作成するだけで済みます（このテーブルでは Engine パラメータを省略できます。自動的に ReplicatedMergeTree テーブルになります）。
-ClickHouse Cloud が垂直方向および水平方向のスケーリングを自動的に処理します。テーブルをどのようにレプリケーションや分片を行うかを、利用者側で検討する必要はありません。
-:::
+ソーステーブルが分片されているか、レプリカ構成になっているか、あるいはその両方であるかに関わらず、ClickHouse Cloud では宛先テーブルを作成するだけで済みます（このテーブルでは Engine パラメータを省略できます。テーブルエンジンとしては自動的に `SharedMergeTree` が選択されます）。
+ClickHouse Cloud が垂直方向および水平方向のスケーリングを自動的に処理します。
+テーブルをどのようにレプリケートし分片化するかを、利用者側で検討する必要はありません。
 
 この例では、セルフマネージドの ClickHouse サーバーが*ソース*であり、ClickHouse Cloud サービスが*宛先*となります。
 
@@ -46,6 +47,8 @@ ClickHouse Cloud が垂直方向および水平方向のスケーリングを自
 ### あるシステムから別のシステムへのテーブルの移行: {#migration-of-tables-from-one-system-to-another}
 
 この例では、セルフマネージドの ClickHouse サーバーから ClickHouse Cloud にテーブルを 1 つ移行します。
+
+<CompatibilityNote/>
 
 ### ソース側の ClickHouse システム（現在データをホストしているシステム） {#on-the-source-clickhouse-system-the-system-that-currently-hosts-the-data}
 

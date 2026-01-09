@@ -7,7 +7,7 @@ title: 'Grafana 用 ClickHouse データソースプラグイン'
 show_related_blogs: true
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'core'
   - category: 'data_visualization'
   - website: 'https://grafana.com/grafana/plugins/grafana-clickhouse-datasource/'
 keywords: ['Grafana', 'データ可視化', 'ダッシュボード', 'プラグイン', 'データソース']

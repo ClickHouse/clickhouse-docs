@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/source/azure-flexible-server-postgres
 title: 'Azure Flexible Server for Postgres 源设置指南'
 keywords: ['azure', 'flexible server', 'postgres', 'clickpipes', 'wal level']
 doc_type: 'guide'
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import server_parameters from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/server_parameters.png';
@@ -35,15 +38,15 @@ ClickPipes 支持 Postgres 12 及更高版本。
 
 ## 创建 ClickPipes 用户并授予权限 {#creating-clickpipes-user-and-granting-permissions}
 
-通过管理员用户连接到 Azure Flexible Server PostgreSQL，并运行以下命令：
+使用管理员用户连接到 Azure Flexible Server Postgres，并运行以下命令：
 
-1. 创建一个专用于 ClickPipes 的 PostgreSQL 用户。
+1. 为 ClickPipes 创建一个专用用户。
 
    ```sql
    CREATE USER clickpipes_user PASSWORD 'some-password';
    ```
 
-2. 为 `clickpipes_user` 提供对要进行表复制的模式（schema）的只读访问权限。下面的示例展示了如何为 `public` 模式设置权限。如果您想为多个模式授权，可以针对每个模式分别运行这三条命令。
+2. 为你在上一步创建的用户授予架构级只读访问权限。以下示例展示了对 `public` 架构的权限授予。对于每个包含你希望复制的表的架构，都需要重复这些命令：
 
    ```sql
    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -57,13 +60,27 @@ ClickPipes 支持 Postgres 12 及更高版本。
    ALTER ROLE clickpipes_user REPLICATION;
    ```
 
-4. 创建一个 publication，将在后续用于创建 MIRROR（镜像复制）。
+4. 使用你想要复制的表创建一个 [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html)（发布）。强烈建议仅在 publication 中包含你实际需要的表，以避免不必要的性能开销。
 
-   ```sql
-   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-   ```
+   :::warning
+   任何包含在 publication 中的表必须要么定义了 **主键（primary key）**，要么将其 **replica identity** 配置为 `FULL`。有关作用域设置的指导，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
+   :::
 
-5. 将 `clickpipes_user` 的 `wal_sender_timeout` 设置为 0。
+   - 为特定表创建 publication：
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - 为特定架构中的所有表创建 publication：
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   `clickpipes` publication 将包含由指定表生成的一组变更事件，并将在后续用于摄取复制流。
+
+5. 将 `wal_sender_timeout` 为 `clickpipes_user` 设置为 0。
 
    ```sql
    ALTER ROLE clickpipes_user SET wal_sender_timeout to 0;

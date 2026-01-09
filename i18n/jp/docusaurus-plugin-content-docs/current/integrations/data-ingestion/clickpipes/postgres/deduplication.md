@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/deduplication
 title: '重複排除戦略（CDC の利用）'
 keywords: ['重複排除', 'postgres', 'clickpipes', 'replacingmergetree', 'final']
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import clickpipes_initial_load from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-cdc-initial-load.png';
@@ -22,7 +25,7 @@ ClickPipes は、Postgres で発生した変更を取り込むために [Postgre
 
 ClickPipes は、[ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) エンジンを使用して Postgres のテーブルを ClickHouse にマッピングします。ClickHouse は追記専用（append-only）のワークロードで最も高いパフォーマンスを発揮し、頻繁な UPDATE を推奨していません。この点で ReplacingMergeTree は特に強力です。
 
-ReplacingMergeTree では、UPDATE は、その行の新しいバージョン（`_peerdb_version`）を持つ INSERT としてモデル化され、DELETE は、`_peerdb_is_deleted` が true に設定された、さらに新しいバージョンの INSERT としてモデル化されます。ReplacingMergeTree エンジンはバックグラウンドでデータの重複排除とマージを行い、指定されたプライマリキー（id）ごとに最新バージョンの行のみを保持します。これにより、UPDATE と DELETE をバージョン付き INSERT として効率的に処理できます。
+ReplacingMergeTree では、UPDATE は、その行の新しいバージョン（`_peerdb_version`）を持つ INSERT として表現され、DELETE は、さらに新しいバージョンで `_peerdb_is_deleted` が true に設定された INSERT として表現されます。ReplacingMergeTree エンジンはバックグラウンドでデータの重複排除とマージを行い、指定されたプライマリキー（id）ごとに最新バージョンの行のみを保持します。これにより、UPDATE と DELETE をバージョン付き INSERT として効率的に処理できます。
 
 以下は、ClickPipes が ClickHouse にテーブルを作成する際に実行する CREATE TABLE ステートメントの例です。
 
@@ -49,6 +52,7 @@ ENGINE = ReplacingMergeTree(_peerdb_version)
 PRIMARY KEY id
 ORDER BY id;
 ```
+
 
 ### 説明用の例 {#illustrative-example}
 
@@ -122,11 +126,12 @@ ORDER BY viewcount DESC
 LIMIT 10
 ```
 
+
 #### FINAL 設定 {#final-setting}
 
-クエリ内の各テーブル名に FINAL 修飾子を付ける代わりに、[FINAL 設定](/operations/settings/settings#final) を使用して、クエリ内のすべてのテーブルに自動的に適用できます。
+クエリ内の各テーブル名に FINAL 修飾子を付ける代わりに、[FINAL 設定](/operations/settings/settings#final) を使用すると、クエリ内のすべてのテーブルに FINAL を自動的に適用できます。
 
-この設定は、クエリ単位、またはセッション全体に対して適用できます。
+この設定は、クエリごと、またはセッション全体に対して設定できます。
 
 ```sql
 -- Per query FINAL setting
@@ -137,6 +142,7 @@ SET final = 1;
 SELECT count(*) FROM posts; 
 ```
 
+
 #### ROW ポリシー {#row-policy}
 
 冗長な `_peerdb_is_deleted = 0` フィルターを明示的に記述しなくて済むようにする簡単な方法は、[ROW ポリシー](/docs/operations/access-rights#row-policy-management) を使用することです。以下は、votes テーブルに対するすべてのクエリから削除済み行を除外する ROW ポリシーを作成する例です。
@@ -146,7 +152,8 @@ SELECT count(*) FROM posts;
 CREATE ROW POLICY cdc_policy ON votes FOR SELECT USING _peerdb_is_deleted = 0 TO ALL;
 ```
 
-> 行ポリシーは、ユーザーおよびロールの一覧に対して適用されます。この例では、すべてのユーザーおよびロールに適用されています。必要に応じて、特定のユーザーまたはロールのみに絞り込むこともできます。
+> ROW ポリシーは、ユーザーおよびロールのリストに対して適用されます。この例では、すべてのユーザーおよびロールが対象です。必要に応じて、特定のユーザーやロールのみに適用するよう調整できます。
+
 
 ### Postgres と同じようにクエリする {#query-like-with-postgres}
 
@@ -167,7 +174,7 @@ CREATE VIEW votes_view AS SELECT * FROM votes FINAL WHERE _peerdb_is_deleted=0;
 CREATE VIEW comments_view AS SELECT * FROM comments FINAL WHERE _peerdb_is_deleted=0;
 ```
 
-次に、PostgreSQL で使用するのと同じクエリをビューに対して実行できます。
+次に、PostgreSQL で使用していたのと同じクエリをビューに対して実行できます。
 
 ```sql
 -- Most viewed posts
@@ -180,6 +187,7 @@ GROUP BY owneruserid
 ORDER BY viewcount DESC
 LIMIT 10
 ```
+
 
 #### リフレッシュ可能なマテリアライズドビュー {#refreshable-material-view}
 
@@ -198,7 +206,7 @@ CREATE MATERIALIZED VIEW deduplicated_posts_mv REFRESH EVERY 1 HOUR TO deduplica
 SELECT * FROM posts FINAL WHERE _peerdb_is_deleted=0 
 ```
 
-その後は、`deduplicated_posts` テーブルに対して通常どおりクエリを実行できます。
+その後、`deduplicated_posts` テーブルに対して通常どおりクエリを実行できます。
 
 ```sql
 SELECT

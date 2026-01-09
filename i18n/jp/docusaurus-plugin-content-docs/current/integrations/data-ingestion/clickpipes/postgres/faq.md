@@ -6,11 +6,13 @@ sidebar_position: 2
 title: 'ClickPipes for Postgres に関する FAQ'
 keywords: ['postgres faq', 'clickpipes', 'TOAST 列', 'レプリケーションスロット', 'パブリケーション']
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import failover_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/failover_slot.png'
 import Image from '@theme/IdealImage';
-
 
 # ClickPipes for Postgres に関する FAQ {#clickpipes-for-postgres-faq}
 
@@ -379,4 +381,4 @@ Postgres は、あらかじめ定められたプロトコルに従ったメッ�
 
 ### 最初にレプリケーションから除外したカラムを後から含めることはできますか？ {#include-excluded-columns}
 
-これはまだサポートされておらず、今後の対応予定に含まれています。代替手段としては、含めたいカラムを持つテーブルを[再同期する](./table_resync.md)ことができます。
+これはまだサポートされていません。代替手段としては、含めたいカラムを持つテーブルを[再同期する](./table_resync.md)ことができます。

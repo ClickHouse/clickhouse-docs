@@ -5,6 +5,9 @@ description: 'QStudio は無料の SQL ツールです。'
 title: 'QStudio を ClickHouse に接続する'
 doc_type: 'guide'
 keywords: ['qstudio', 'SQL クライアント', 'データベースツール', 'クエリツール', 'IDE']
+integration:
+  - support_level: 'コミュニティ'
+  - category: 'sql_client'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';

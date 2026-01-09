@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/scaling
 sidebar_label: 'スケーリング'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'データインジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 :::caution ほとんどのユーザーはこの API を必要としません

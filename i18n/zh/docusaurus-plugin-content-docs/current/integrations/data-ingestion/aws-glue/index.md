@@ -6,6 +6,9 @@ description: '集成 ClickHouse 和 Amazon Glue'
 keywords: ['clickhouse', 'amazon', 'aws', 'glue', '数据迁移', '数据', 'spark']
 title: '集成 Amazon Glue、ClickHouse 和 Spark'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import Image from '@theme/IdealImage';

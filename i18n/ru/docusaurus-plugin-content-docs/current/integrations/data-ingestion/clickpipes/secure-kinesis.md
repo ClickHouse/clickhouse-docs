@@ -5,6 +5,9 @@ title: 'Ролевой доступ Kinesis'
 description: 'В этой статье показано, как клиенты ClickPipes могут использовать ролевой доступ для аутентификации в Amazon Kinesis и обеспечения безопасного доступа к своим потокам данных.'
 doc_type: 'guide'
 keywords: ['Amazon Kinesis']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import secure_kinesis from '@site/static/images/integrations/data-ingestion/clickpipes/securekinesis.jpg';
@@ -29,7 +32,7 @@ import Image from '@theme/IdealImage';
 
 ## Настройка {#setup}
 
-<VerticalStepper headerLevel="h3">
+<VerticalStepper headerLevel="h3"/>
 
 ### Получение ARN роли IAM сервиса ClickHouse {#obtaining-the-clickhouse-service-iam-role-arn}
 
@@ -116,5 +119,3 @@ import Image from '@theme/IdealImage';
    ```
 
 - 4. После создания скопируйте новый **ARN роли IAM**. Он понадобится для доступа к вашему потоку Kinesis.
-
-</VerticalStepper>
