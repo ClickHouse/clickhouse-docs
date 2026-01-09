@@ -64,13 +64,13 @@ from `v0.1.0` to `v0.1.1`, benefits all databases that have loaded `v0.1` and
 do not need to run `ALTER EXTENSION` to benefit from the upgrade.
 
 A release that increments the minor or major versions, on the other hand, will
-be accompanied by SQL upgrade scrips, and all existing database that contain
+be accompanied by SQL upgrade scripts, and all existing database that contain
 the extension must run `ALTER EXTENSION pg_clickhouse UPDATE` to benefit from
 the upgrade.
 
-## SQL Reference {#sql-reference}
+## DDL SQL Reference {#ddl-sql-reference}
 
-The following SQL expressions use pg_clickhouse.
+The following SQL [DDL] expressions use pg_clickhouse.
 
 ### CREATE EXTENSION {#create-extension}
 
@@ -232,9 +232,51 @@ the foreign tables. Columns will be defined using the [supported data
 types](#data-types) and, were detectible, the options supported by [CREATE
 FOREIGN TABLE](#create-foreign-table).
 
+:::tip Imported Identifier Case Preservation
+
+ `IMPORT FOREIGN SCHEMA` runs `quote_identifier()` on the table and column
+ names it imports, which double-quotes identifiers with uppercase characters
+ or blank spaces. Such table and column names thus must be double-quoted in
+ PostgreSQL queries. Names with all lowercase and no blank space characters
+ do not need to be quoted.
+
+ For example, given this ClickHouse table:
+
+ ```sql
+ CREATE OR REPLACE TABLE test
+ (
+     id UInt64,
+     Name TEXT,
+     updatedAt DateTime DEFAULT now()
+ )
+ ENGINE = MergeTree
+ ORDER BY id;
+ ```
+
+ `IMPORT FOREIGN SCHEMA` creates this foreign table:
+
+ ```sql
+ CREATE TABLE test
+ (
+     id          BIGINT      NOT NULL,
+     "Name"      TEXT        NOT NULL,
+     "updatedAt" TIMESTAMPTZ NOT NULL
+ );
+ ```
+
+ Queries therefore must quote appropriately, e.g.,
+
+ ```sql
+ SELECT id, "Name", "updatedAt" FROM test;
+ ```
+
+ To create objects with different names or all lowercase (and therefore
+ case-insensitive) names, use [CREATE FOREIGN TABLE](#create-foreign-table).
+:::
+
 ### CREATE FOREIGN TABLE {#create-foreign-table}
 
-Use [IMPORT FOREIGN SCHEMA] to create a foreign table that can query data from
+Use [CREATE FOREIGN TABLE] to create a foreign table that can query data from
 a ClickHouse database:
 
 ```sql
@@ -312,6 +354,425 @@ Use the `CASCADE` clause to drop them, too:
 DROP FOREIGN TABLE uact CASCADE;
 ```
 
+## DML SQL Reference {#dml-sql-reference}
+
+The SQL [DML] expressions below may use pg_clickhouse. Examples depend on
+these ClickHouse tables, created by [make-logs.sql]:
+
+```sql
+CREATE TABLE logs (
+    req_id    Int64 NOT NULL,
+    start_at   DateTime64(6, 'UTC') NOT NULL,
+    duration  Int32 NOT NULL,
+    resource  Text  NOT NULL,
+    method    Enum8('GET' = 1, 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH', 'QUERY') NOT NULL,
+    node_id   Int64 NOT NULL,
+    response  Int32 NOT NULL
+) ENGINE = MergeTree
+  ORDER BY start_at;
+
+CREATE TABLE nodes (
+    node_id Int64 NOT NULL,
+    name    Text  NOT NULL,
+    region  Text  NOT NULL,
+    arch    Text  NOT NULL,
+    os      Text  NOT NULL
+) ENGINE = MergeTree
+  PRIMARY KEY node_id;
+```
+
+### EXPLAIN {#explain}
+
+The [EXPLAIN] command works as expected, but the `VERBOSE` option triggers the
+ClickHouse "Remote SQL" query to be emitted:
+
+```pgsql
+try=# EXPLAIN (VERBOSE)
+       SELECT resource, avg(duration) AS average_duration
+         FROM logs
+        GROUP BY resource;
+                                     QUERY PLAN
+------------------------------------------------------------------------------------
+ Foreign Scan  (cost=1.00..5.10 rows=1000 width=64)
+   Output: resource, (avg(duration))
+   Relations: Aggregate on (logs)
+   Remote SQL: SELECT resource, avg(duration) FROM "default".logs GROUP BY resource
+(4 rows)
+```
+
+This query pushes down to ClickHouse via a "Foreign Scan" plan node, the
+remote SQL.
+
+### SELECT {#select}
+
+Use the [SELECT] statement to execute queries on pg_clickhouse tables just
+like any other tables:
+
+```pgsql
+try=# SELECT start_at, duration, resource FROM logs WHERE req_id = 4117909262;
+          start_at          | duration |    resource
+----------------------------+----------+----------------
+ 2025-12-05 15:07:32.944188 |      175 | /widgets/totam
+(1 row)
+```
+
+pg_clickhouse works to push query execution down to ClickHouse as much as
+possible, including aggregate functions. Use [EXPLAIN](#explain) to determine
+the pushdown extent. For the above query, for example, all execution is pushed
+down to ClickHouse
+
+```pgsql
+try=# EXPLAIN (VERBOSE, COSTS OFF)
+       SELECT start_at, duration, resource FROM logs WHERE req_id = 4117909262;
+                                             QUERY PLAN
+-----------------------------------------------------------------------------------------------------
+ Foreign Scan on public.logs
+   Output: start_at, duration, resource
+   Remote SQL: SELECT start_at, duration, resource FROM "default".logs WHERE ((req_id = 4117909262))
+(3 rows)
+```
+
+pg_clickhouse also pushes down JOINs to tables that are from the same remote
+server:
+
+```pgsql
+try=# EXPLAIN (ANALYZE, VERBOSE)
+       SELECT name, count(*), round(avg(duration))
+         FROM logs
+         LEFT JOIN nodes on logs.node_id = nodes.node_id
+        GROUP BY name;
+                                                                                  QUERY PLAN
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Foreign Scan  (cost=1.00..5.10 rows=1000 width=72) (actual time=3.201..3.221 rows=8.00 loops=1)
+   Output: nodes.name, (count(*)), (round(avg(logs.duration), 0))
+   Relations: Aggregate on ((logs) LEFT JOIN (nodes))
+   Remote SQL: SELECT r2.name, count(*), round(avg(r1.duration), 0) FROM  "default".logs r1 ALL LEFT JOIN "default".nodes r2 ON (((r1.node_id = r2.node_id))) GROUP BY r2.name
+   FDW Time: 0.086 ms
+ Planning Time: 0.335 ms
+ Execution Time: 3.261 ms
+(7 rows)
+```
+
+Joining with a local table will generate less efficient queries without
+careful tuning. In this example, we make a local copy of the
+`nodes` table and join to it instead of the remote table:
+
+```pgsql
+try=# CREATE TABLE local_nodes AS SELECT * FROM nodes;
+SELECT 8
+
+try=# EXPLAIN (ANALYZE, VERBOSE)
+       SELECT name, count(*), round(avg(duration))
+         FROM logs
+         LEFT JOIN local_nodes on logs.node_id = local_nodes.node_id
+        GROUP BY name;
+                                                             QUERY PLAN
+-------------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=147.65..150.65 rows=200 width=72) (actual time=6.215..6.235 rows=8.00 loops=1)
+   Output: local_nodes.name, count(*), round(avg(logs.duration), 0)
+   Group Key: local_nodes.name
+   Batches: 1  Memory Usage: 32kB
+   Buffers: shared hit=1
+   ->  Hash Left Join  (cost=31.02..129.28 rows=2450 width=36) (actual time=2.202..5.125 rows=1000.00 loops=1)
+         Output: local_nodes.name, logs.duration
+         Hash Cond: (logs.node_id = local_nodes.node_id)
+         Buffers: shared hit=1
+         ->  Foreign Scan on public.logs  (cost=10.00..20.00 rows=1000 width=12) (actual time=2.089..3.779 rows=1000.00 loops=1)
+               Output: logs.req_id, logs.start_at, logs.duration, logs.resource, logs.method, logs.node_id, logs.response
+               Remote SQL: SELECT duration, node_id FROM "default".logs
+               FDW Time: 1.447 ms
+         ->  Hash  (cost=14.90..14.90 rows=490 width=40) (actual time=0.090..0.091 rows=8.00 loops=1)
+               Output: local_nodes.name, local_nodes.node_id
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               Buffers: shared hit=1
+               ->  Seq Scan on public.local_nodes  (cost=0.00..14.90 rows=490 width=40) (actual time=0.069..0.073 rows=8.00 loops=1)
+                     Output: local_nodes.name, local_nodes.node_id
+                     Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=14
+ Planning Time: 0.551 ms
+ Execution Time: 6.589 ms
+```
+
+In this case, we can push more of the aggregation down to ClickHouse by
+grouping on `node_id` instead of the local column, and then join
+to the lookup table later:
+
+```sql
+try=# EXPLAIN (ANALYZE, VERBOSE)
+       WITH remote AS (
+           SELECT node_id, count(*), round(avg(duration))
+             FROM logs
+            GROUP BY node_id
+       )
+       SELECT name, remote.count, remote.round
+         FROM remote
+         JOIN local_nodes
+           ON remote.node_id = local_nodes.node_id
+        ORDER BY name;
+                                                          QUERY PLAN
+-------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=65.68..66.91 rows=490 width=72) (actual time=4.480..4.484 rows=8.00 loops=1)
+   Output: local_nodes.name, remote.count, remote.round
+   Sort Key: local_nodes.name
+   Sort Method: quicksort  Memory: 25kB
+   Buffers: shared hit=4
+   ->  Hash Join  (cost=27.60..43.79 rows=490 width=72) (actual time=4.406..4.422 rows=8.00 loops=1)
+         Output: local_nodes.name, remote.count, remote.round
+         Inner Unique: true
+         Hash Cond: (local_nodes.node_id = remote.node_id)
+         Buffers: shared hit=1
+         ->  Seq Scan on public.local_nodes  (cost=0.00..14.90 rows=490 width=40) (actual time=0.010..0.016 rows=8.00 loops=1)
+               Output: local_nodes.node_id, local_nodes.name, local_nodes.region, local_nodes.arch, local_nodes.os
+               Buffers: shared hit=1
+         ->  Hash  (cost=15.10..15.10 rows=1000 width=48) (actual time=4.379..4.381 rows=8.00 loops=1)
+               Output: remote.count, remote.round, remote.node_id
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               ->  Subquery Scan on remote  (cost=1.00..15.10 rows=1000 width=48) (actual time=4.337..4.360 rows=8.00 loops=1)
+                     Output: remote.count, remote.round, remote.node_id
+                     ->  Foreign Scan  (cost=1.00..5.10 rows=1000 width=48) (actual time=4.330..4.349 rows=8.00 loops=1)
+                           Output: logs.node_id, (count(*)), (round(avg(logs.duration), 0))
+                           Relations: Aggregate on (logs)
+                           Remote SQL: SELECT node_id, count(*), round(avg(duration), 0) FROM "default".logs GROUP BY node_id
+                           FDW Time: 0.055 ms
+ Planning:
+   Buffers: shared hit=5
+ Planning Time: 0.319 ms
+ Execution Time: 4.562 ms
+ ```
+
+ The "Foreign Scan" node now pushes down aggregation by `node_id`, reducing
+ the number of rows that must be pulled back into Postgres from 1000 (all of
+ them) to just 8, one for each node.
+
+### PREPARE, EXECUTE, DEALLOCATE {#prepare-execute-deallocate}
+
+ As of v0.1.2, pg_clickhouse supports parameterized queries, mainly created
+ by the [PREPARE] command:
+
+```pgsql
+try=# PREPARE avg_durations_between_dates(date, date) AS
+       SELECT date(start_at), round(avg(duration)) AS average_duration
+         FROM logs
+        WHERE date(start_at) BETWEEN $1 AND $2
+        GROUP BY date(start_at)
+        ORDER BY date(start_at);
+PREPARE
+```
+
+Use [EXECUTE] as usual to execute a prepared statement:
+
+```pgsql
+try=# EXECUTE avg_durations_between_dates('2025-12-09', '2025-12-13');
+    date    | average_duration
+------------+------------------
+ 2025-12-09 |              190
+ 2025-12-10 |              194
+ 2025-12-11 |              197
+ 2025-12-12 |              190
+ 2025-12-13 |              195
+(5 rows)
+```
+
+pg_clickhouse pushes down the aggregations, as usual, as seen in the
+[EXPLAIN](#explain) verbose output:
+
+```pgsql
+try=# EXPLAIN (VERBOSE) EXECUTE avg_durations_between_dates('2025-12-09', '2025-12-13');
+                                                                                                            QUERY PLAN
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Foreign Scan  (cost=1.00..5.10 rows=1000 width=36)
+   Output: (date(start_at)), (round(avg(duration), 0))
+   Relations: Aggregate on (logs)
+   Remote SQL: SELECT date(start_at), round(avg(duration), 0) FROM "default".logs WHERE ((date(start_at) >= '2025-12-09')) AND ((date(start_at) <= '2025-12-13')) GROUP BY (date(start_at)) ORDER BY date(start_at) ASC NULLS LAST
+(4 rows)
+```
+
+Note that it has sent the full date values, not the parameter placeholders.
+This holds for the first five requests, as described in the PostgreSQL
+[PREPARE notes]. On the sixth execution, it sends ClickHouse
+`{param:type}`-style [query parameters]:
+parameters:
+
+```pgsql
+                                                                                                         QUERY PLAN
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Foreign Scan  (cost=1.00..5.10 rows=1000 width=36)
+   Output: (date(start_at)), (round(avg(duration), 0))
+   Relations: Aggregate on (logs)
+   Remote SQL: SELECT date(start_at), round(avg(duration), 0) FROM "default".logs WHERE ((date(start_at) >= {p1:Date})) AND ((date(start_at) <= {p2:Date})) GROUP BY (date(start_at)) ORDER BY date(start_at) ASC NULLS LAST
+(4 rows)
+```
+
+Use [DEALLOCATE] to deallocate a prepared statement:
+
+```pgsql
+try=# DEALLOCATE avg_durations_between_dates;
+DEALLOCATE
+```
+
+### INSERT {#insert}
+
+Use the [INSERT] command to insert values into a remote ClickHouse table:
+
+```pgsql
+try=# INSERT INTO nodes(node_id, name, region, arch, os)
+VALUES (9,  'Augustin Gamarra', 'us-west-2', 'amd64', 'Linux')
+     , (10, 'Cerisier', 'us-east-2', 'amd64', 'Linux')
+     , (11, 'Dewalt', 'use-central-1', 'arm64', 'macOS')
+;
+INSERT 0 3
+```
+
+### COPY {#copy}
+
+Use the [COPY] command to insert a batch of rows into a remote ClickHouse
+table:
+
+```pgsql
+try=# COPY logs FROM stdin CSV;
+4285871863,2025-12-05 11:13:58.360760,206,/widgets,POST,8,401
+4020882978,2025-12-05 11:33:48.248450,199,/users/1321945,HEAD,3,200
+3231273177,2025-12-05 12:20:42.158575,220,/search,GET,2,201
+\.
+>> COPY 3
+```
+
+> **⚠️ Batch API Limitations**
+>
+> pg_clickhouse has not yet implemented support for the PostgreSQL FDW batch
+> insert API. Thus [COPY] currently uses [INSERT](#insert) statements to
+> insert records. This will be improved in a future release.
+
+### LOAD {#load}
+
+Use [LOAD] to load the pg_clickhouse shared library:
+
+```pgsql
+try=# LOAD 'pg_clickhouse';
+LOAD
+```
+
+It's not normally necessary to use [LOAD], as Postgres will automatically load
+pg_clickhouse the first time any of of its features (functions, foreign
+tables, etc.) are used.
+
+The one time it may be useful to [LOAD] pg_clickhouse is to [SET](#set)
+pg_clickhouse parameters before executing queries that depend on them.
+
+### SET {#set}
+
+Use [SET] to set the the `pg_clickhouse.session_settings` runtime parameter.
+This parameter configures [ClickHouse settings] to be set on subsequent
+queries. Example:
+
+```sql
+SET pg_clickhouse.session_settings = 'join_use_nulls 1, final 1';
+```
+
+The default is `join_use_nulls 1`. Set it to an empty string to fall back on
+the ClickHouse server's settings.
+
+```sql
+SET pg_clickhouse.session_settings = '';
+```
+
+The syntax is a comma-delimited list of key/value pairs separated by one or
+more spaces. Keys must correspond to [ClickHouse settings]. Escape spaces,
+commas, and backslashes in values with a backslash:
+
+```sql
+SET pg_clickhouse.session_settings = 'join_algorithm grace_hash\,hash';
+```
+
+Or use single quoted values to avoid escaping spaces and commas; consider
+using [dollar quoting] to avoid the need to double-quote:
+
+```sql
+SET pg_clickhouse.session_settings = $$join_algorithm 'grace_hash,hash'$$;
+```
+
+If you care about legibility and need to set many settings, use multiple
+lines, for example:
+
+```sql
+SET pg_clickhouse.session_settings TO $$
+    connect_timeout 2,
+    count_distinct_implementation uniq,
+    final 1,
+    group_by_use_nulls 1,
+    join_algorithm 'prefer_partial_merge',
+    join_use_nulls 1,
+    log_queries_min_type QUERY_FINISH,
+    max_block_size 32768,
+    max_execution_time 45,
+    max_result_rows 1024,
+    metrics_perf_events_list 'this,that',
+    network_compression_method ZSTD,
+    poll_interval 5,
+    totals_mode after_having_auto
+$$;
+```
+
+pg_clickhouse does not validate the settings, but passes them on to ClickHouse
+for every query. It thus supports all settings for each ClickHouse version.
+
+Note that pg_clickhouse must be loaded before setting
+`pg_clickhouse.session_settings`; either use [shared library preloading] or
+simply use one of the objects in the extension to ensure it loads.
+
+### ALTER ROLE {#alter-role}
+
+Use [ALTER ROLE]'s `SET` command to [preload](#preloading) pg_clickhouse
+and/or [SET](#set) its parameters for specific roles:
+
+```pgsql
+try=# ALTER ROLE CURRENT_USER SET session_preload_libraries = pg_clickhouse;
+ALTER ROLE
+
+try=# ALTER ROLE CURRENT_USER SET pg_clickhouse.session_settings = 'final 1';
+ALTER ROLE
+```
+
+Use the [ALTER ROLE]'s `RESET` command to reset pg_clickhouse preloading
+and/or parameters:
+
+```pgsql
+try=# ALTER ROLE CURRENT_USER RESET session_preload_libraries;
+ALTER ROLE
+
+try=# ALTER ROLE CURRENT_USER RESET pg_clickhouse.session_settings;
+ALTER ROLE
+```
+
+## Preloading {#preloading}
+
+If every or nearly every Postgres connection needs to use pg_clickhouse,
+consider using [shared library preloading] to automatically load it:
+
+### `session_preload_libraries` {#session_preload_libraries}
+
+Loads the shared library for every new connection to PostgreSQL:
+
+```ini
+session_preload_libraries = pg_clickhouse
+```
+
+Useful to take advantage of updates without restarting the server: just
+reconnect. May also be set for specific users or roles via [ALTER
+ROLE](#alter-role).
+
+### `shared_preload_libraries` {#shared_preload_libraries}
+
+Loads the shared library into the PostgreSQL parent process at startup time:
+
+```ini
+shared_preload_libraries = pg_clickhouse
+```
+
+Useful to save memory and load overhead for every session, but requires the
+cluster to be restart when the library is updated.
+
 ## Function and Operator Reference {#function-and-operator-reference}
 
 ### Data Types {#data-types}
@@ -323,6 +784,7 @@ types:
 | -----------|------------------|-------------------------------|
 | Bool       | boolean          |                               |
 | Date       | date             |                               |
+| Date32     | date             |                               |
 | DateTime   | timestamp        |                               |
 | Decimal    | numeric          |                               |
 | Float32    | real             |                               |
@@ -376,14 +838,14 @@ SELECT clickhouse_raw_query(
 );
 ```
 ```sql
-      clickhouse_raw_query       
+      clickhouse_raw_query
 ---------------------------------
  INFORMATION_SCHEMA      default+
  default default                +
  git     default                +
  information_schema      default+
  system  default                +
- 
+
 (1 row)
 ```
 
@@ -450,7 +912,11 @@ pushed down.
 
 These PostgreSQL aggregate functions pushdown to ClickHouse.
 
+* [array_agg](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/grouparray)
+* [avg](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/avg)
 * [count](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/count)
+* [min](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/min)
+* [max](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/max)
 
 ### Custom Aggregates {#custom-aggregates}
 
@@ -493,78 +959,13 @@ are not supported and will raise an error.
 * `quantile(double)`: [quantile](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantile)
 * `quantileExact(double)`: [quantileExact](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantileexact)
 
-### Session Settings {#session-settings}
-
-Set the `pg_clickhouse.session_settings` runtime parameter to configure
-[ClickHouse settings] to be set on subsequent queries. Example:
-
-```sql
-SET pg_clickhouse.session_settings = 'join_use_nulls 1, final 1';
-```
-
-The default is `join_use_nulls 1`. Set it to an empty string to fall back on
-the ClickHouse server's settings.
-
-```sql
-SET pg_clickhouse.session_settings = '';
-```
-
-The syntax is a comma-delimited list of key/value pairs separated by one or
-more spaces. Keys must correspond to [ClickHouse settings]. Escape spaces,
-commas, and backslashes in values with a backslash:
-
-```sql
-SET pg_clickhouse.session_settings = 'join_algorithm grace_hash\,hash';
-```
-
-Or use single quoted values to avoid escaping spaces and commas; consider
-using [dollar quoting] to avoid the need to double-quote:
-
-```sql
-SET pg_clickhouse.session_settings = $$join_algorithm 'grace_hash,hash'$$;
-```
-
-If you care about legibility and need to set many settings, use multiple
-lines, for example:
-
-```sql
-SET pg_clickhouse.session_settings TO $$
-    connect_timeout 2,
-    count_distinct_implementation uniq,
-    final 1,
-    group_by_use_nulls 1,
-    join_algorithm 'prefer_partial_merge',
-    join_use_nulls 1,
-    log_queries_min_type QUERY_FINISH,
-    max_block_size 32768,
-    max_execution_time 45,
-    max_result_rows 1024,
-    metrics_perf_events_list 'this,that',
-    network_compression_method ZSTD,
-    poll_interval 5,
-    totals_mode after_having_auto
-$$;
-```
-
-pg_clickhouse does not validate the settings, but passes them on to ClickHouse
-for every query. It thus supports all settings for each ClickHouse version.
-
-Note that pg_clickhouse must be loaded before setting
-`pg_clickhouse.session_settings`; either use [library preloading] or simply
-use one of the objects in the extension to ensure it loads.
-
 ## Authors {#authors}
 
-* [David E. Wheeler](https://justatheory.com/)
-* [Ildus Kurbangaliev](https://github.com/ildus)
-* [Ibrar Ahmed](https://github.com/ibrarahmad)
+[David E. Wheeler](https://justatheory.com/)
 
 ## Copyright {#copyright}
 
-* Copyright (c) 2025-2026, ClickHouse
-* Portions Copyright (c) 2023-2025, Ildus Kurbangaliev
-* Portions Copyright (c) 2019-2023, Adjust GmbH
-* Portions Copyright (c) 2012-2019, PostgreSQL Global Development Group
+Copyright (c) 2025-2026, ClickHouse
 
   [foreign data wrapper]: https://www.postgresql.org/docs/current/fdwhandler.html
     "PostgreSQL Docs: Writing a Foreign Data Wrapper"
@@ -573,6 +974,8 @@ use one of the objects in the extension to ensure it loads.
   [ClickHouse]: https://clickhouse.com/clickhouse
   [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
     "Semantic Versioning 2.0.0"
+  [DDL]: https://en.wikipedia.org/wiki/Data_definition_language
+    "Wikipedia: Data definition language"
   [CREATE EXTENSION]: https://www.postgresql.org/docs/current/sql-createextension.html
     "PostgreSQL Docs: CREATE EXTENSION"
   [ALTER EXTENSION]: https://www.postgresql.org/docs/current/sql-alterextension.html
@@ -593,12 +996,43 @@ use one of the objects in the extension to ensure it loads.
     "PostgreSQL Docs: DROP USER MAPPING"
   [IMPORT FOREIGN SCHEMA]: https://www.postgresql.org/docs/current/sql-importforeignschema.html
     "PostgreSQL Docs: IMPORT FOREIGN SCHEMA"
+  [CREATE FOREIGN TABLE]: https://www.postgresql.org/docs/current/sql-createforeigntable.html
+    "PostgreSQL Docs: CREATE FOREIGN TABLE"
   [table engine]: https://clickhouse.com/docs/engines/table-engines
     "ClickHouse Docs: Table engines"
   [AggregateFunction Type]: https://clickhouse.com/docs/sql-reference/data-types/aggregatefunction
     "ClickHouse Docs: AggregateFunction Type"
   [SimpleAggregateFunction Type]: https://clickhouse.com/docs/sql-reference/data-types/simpleaggregatefunction
     "ClickHouse Docs: SimpleAggregateFunction Type"
+  [ALTER FOREIGN TABLE]: https://www.postgresql.org/docs/current/sql-alterforeigntable.html
+    "PostgreSQL Docs: ALTER FOREIGN TABLE"
+  [DROP FOREIGN TABLE]: https://www.postgresql.org/docs/current/sql-dropforeigntable.html
+    "PostgreSQL Docs: DROP FOREIGN TABLE"
+  [DML]: https://en.wikipedia.org/wiki/Data_manipulation_language
+    "Wikipedia: Data manipulation language"
+  [make-logs.sql]: https://github.com/ClickHouse/pg_clickhouse/blob/main/doc/make-logs.sql
+  [EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html
+    "PostgreSQL Docs: EXPLAIN"
+  [SELECT]: https://www.postgresql.org/docs/current/sql-select.html
+    "PostgreSQL Docs: SELECT"
+  [PREPARE]: https://www.postgresql.org/docs/current/sql-prepare.html
+    "PostgreSQL Docs: PREPARE"
+  [EXECUTE]: https://www.postgresql.org/docs/current/sql-execute.html
+    "PostgreSQL Docs: EXECUTE"
+  [DEALLOCATE]: https://www.postgresql.org/docs/current/sql-deallocate.html
+    "PostgreSQL Docs: DEALLOCATE"
+  [PREPARE]: https://www.postgresql.org/docs/current/sql-prepare.html
+    "PostgreSQL Docs: PREPARE"
+  [INSERT]: https://www.postgresql.org/docs/current/sql-insert.html
+    "PostgreSQL Docs: INSERT"
+  [COPY]: https://www.postgresql.org/docs/current/sql-copy.html
+    "PostgreSQL Docs: COPY"
+  [LOAD]: https://www.postgresql.org/docs/current/sql-load.html
+    "PostgreSQL Docs: LOAD"
+  [SET]: https://www.postgresql.org/docs/current/sql-set.html
+    "PostgreSQL Docs: SET"
+  [ALTER ROLE]: https://www.postgresql.org/docs/current/sql-alterrole.html
+    "PostgreSQL Docs: ALTER ROLE"
   [ordered-set aggregate functions]: https://www.postgresql.org/docs/current/functions-aggregate.html#FUNCTIONS-ORDEREDSET-TABLE
   [Parametric aggregate functions]: https://clickhouse.com/docs/sql-reference/aggregate-functions/parametric-functions
   [ClickHouse settings]: https://clickhouse.com/docs/operations/settings/settings
@@ -607,3 +1041,7 @@ use one of the objects in the extension to ensure it loads.
     "PostgreSQL Docs: Dollar-Quoted String Constants"
   [library preloading]: https://www.postgresql.org/docs/18/runtime-config-client.html#RUNTIME-CONFIG-CLIENT-PRELOAD
     "PostgreSQL Docs: Shared Library Preloading
+  [PREPARE notes]: https://www.postgresql.org/docs/current/sql-prepare.html#SQL-PREPARE-NOTES
+    "PostgreSQL Docs: PREPARE notes"
+  [query parameters]: https://clickhouse.com/docs/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse
+    "ClickHouse Docs: Alternatives to prepared statements in ClickHouse"
