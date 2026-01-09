@@ -21,46 +21,46 @@ This allows to implement very efficient encoding and decoding.
 
 :::
 
-### Integers {#integers}
+### [Integers](/sql-reference/data-types/int) {#integers}
 
 String of Int and UInt of 8, 16, 32, 64, 128 or 256 bits, in little endian.
 
-### Floats {#floats}
+### [Floats](/sql-reference/data-types/float) {#floats}
 
 Float32 and Float64 in IEEE 754 binary representation.
 
-## String {#string}
+## [String](/sql-reference/data-types/string) {#string}
 
 Just an array of String, i.e. (len, value).
 
-## FixedString(N) {#fixedstringn}
+## [FixedString(N)](/sql-reference/data-types/fixedstring) {#fixedstringn}
 
 An array of N-byte sequences.
 
-## IP {#ip}
+## [IP](/sql-reference/data-types/ip-address) {#ip}
 
 IPv4 is alias of `UInt32` numeric type and represented as UInt32.
 
 IPv6 is alias of `FixedString(16)` and represented as binary directly.
 
-## Tuple {#tuple}
+## [Tuple](/sql-reference/data-types/tuple) {#tuple}
 
 Tuple is just an array of columns. For example, Tuple(String, UInt8) is just two columns
 encoded continuously.
 
-## Map {#map}
+## [Map](/sql-reference/data-types/map) {#map}
 
 `Map(K, V)` consists of three columns: `Offsets ColUInt64, Keys K, Values V`.
 
 Rows count in `Keys` and `Values` column is last value from `Offsets`.
 
-## Array {#array}
+## [Array](/sql-reference/data-types/array) {#array}
 
 `Array(T)` consists of two columns: `Offsets ColUInt64, Data T`.
 
 Rows count in `Data` is last value from `Offsets`.
 
-## Nullable {#nullable}
+## [Nullable](/sql-reference/data-types/nullable) {#nullable}
 
 `Nullable(T)` consists of `Nulls ColUInt8, Values T` with same rows count.
 
@@ -71,15 +71,15 @@ Rows count in `Data` is last value from `Offsets`.
 //      Nulls:  [ 1,  0,       0,  1,       0] (len: 5)
 ```
 
-## UUID {#uuid}
+## [UUID](/sql-reference/data-types/uuid) {#uuid}
 
 Alias of `FixedString(16)`, UUID value represented as binary.
 
-## Enum {#enum}
+## [Enum](/sql-reference/data-types/enum) {#enum}
 
 Alias of `Int8` or `Int16`, but each integer is mapped to some `String` value.
 
-## `LowCardinality` type {#low-cardinality}
+## [`LowCardinality` type](/sql-reference/data-types/lowcardinality) {#low-cardinality}
 
 `LowCardinality(T)` consists of `Index T, Keys K`,
 where `K` is one of (UInt8, UInt16, UInt32, UInt64) depending on size of `Index`.
@@ -97,6 +97,6 @@ where `K` is one of (UInt8, UInt16, UInt32, UInt64) depending on size of `Index`
 // of chosen type should be able to represent any index of Index element.
 ```
 
-## Bool {#bool}
+## [Bool](/sql-reference/data-types/boolean) {#bool}
 
 Alias of `UInt8`, where `0` is false and `1` is true.
