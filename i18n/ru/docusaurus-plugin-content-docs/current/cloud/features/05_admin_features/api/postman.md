@@ -12,6 +12,7 @@ import postman1 from '@site/static/images/cloud/manage/postman/postman1.png';
 import postman2 from '@site/static/images/cloud/manage/postman/postman2.png';
 import postman3 from '@site/static/images/cloud/manage/postman/postman3.png';
 import postman4 from '@site/static/images/cloud/manage/postman/postman4.png';
+import postman5 from '@site/static/images/cloud/manage/postman/postman5.png';
 import postman6 from '@site/static/images/cloud/manage/postman/postman6.png';
 import postman7 from '@site/static/images/cloud/manage/postman/postman7.png';
 import postman8 from '@site/static/images/cloud/manage/postman/postman8.png';
@@ -27,7 +28,6 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 
 Это руководство поможет вам протестировать ClickHouse Cloud API с помощью [Postman](https://www.postman.com/product/what-is-postman/).
 Приложение Postman доступно в веб-браузере или его можно загрузить на рабочий компьютер.
-
 
 ### Создайте учетную запись {#create-an-account}
 
