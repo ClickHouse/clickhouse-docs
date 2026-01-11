@@ -12,12 +12,15 @@ import Image from '@theme/IdealImage';
 import artie_signup from '@site/static/images/integrations/data-ingestion/etl-tools/artie/artie_signup.png';
 import artie_clickhouse_credentials from '@site/static/images/integrations/data-ingestion/etl-tools/artie/artie_clickhouse_credentials.png';
 import artie_edit_pipeline from '@site/static/images/integrations/data-ingestion/etl-tools/artie/artie_edit_pipeline.png';
+import analytics from '@site/static/images/integrations/data-ingestion/etl-tools/artie/analytics.png';
+import monitor from '@site/static/images/integrations/data-ingestion/etl-tools/artie/monitor.png';
+import schema_notification from '@site/static/images/integrations/data-ingestion/etl-tools/artie/schema_notification.png';
 
 # Connect Artie to ClickHouse
 
 <a href="https://www.artie.com/" target="_blank">Artie</a> is a fully managed CDC streaming platform that replicates production data into ClickHouse in real time, enabling low-latency analytics and downstream applications at scale.
 
-## Overview
+## Overview {#overview}
 
 Artie is the modern data infrastructure layer for the AI era — a fully managed CDC streaming platform that keeps production data continuously in sync with your warehouse.
 
@@ -49,18 +52,24 @@ After creating a service in ClickHouse Cloud, find the following required settin
 If you have lost your password, you can reset it from the ClickHouse Cloud console.
 :::
 
-## Create a new deployment in Artie {#3-create-a-new-deployment-in-artie}
+## Create a new pipeline in Artie {#3-create-a-new-pipeline-in-artie}
 
-Head over to Artie with the information you have gathered from Step #2 and create a new deployment by following a 3 step process:
+Head over to Artie with the information you have gathered from Step #2 and create a new pipeline by following a 3 step process:
 
-1. **Connect your source** - Configure your source database (PostgreSQL, MySQL, MongoDB, etc.)
+1. **Connect your source** - Configure your source database (Postgres, MySQL, Events API, etc)
 2. **Choose the tables you want to replicate** - Select which tables to sync to ClickHouse
-3. **Connect your destination** - Enter your ClickHouse credentials from Step #2
+3. **Connect your destination** - Enter your ClickHouse credentials
 
 <Image img={artie_edit_pipeline} size="lg" border alt="Artie Edit Pipeline interface" />
 
 </VerticalStepper>
 
-## Contact Us
+## Contact Us {#contact-us}
 
 If you have any questions, please refer to <a href="https://docs.artie.com/" target="_blank">Artie docs</a> or reach out to the team at <a href="mailto:hi@artie.com">hi@artie.com</a>.
+
+## Product Screenshots {#product-screenshots}
+
+<Image img={analytics} size="md" border alt="Analytics Portal"/>
+<Image img={monitor} size="md" border alt="Built-in monitoring"/>
+<Image img={schema_notification} size="md" border alt="Schema notification"/>
