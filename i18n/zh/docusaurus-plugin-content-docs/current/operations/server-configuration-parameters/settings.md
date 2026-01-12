@@ -1101,7 +1101,13 @@ GitLab 也是同样的处理方式，即使其前面带有一个点。`gitlab.co
 
 ## dns_max_consecutive_failures {#dns_max_consecutive_failures} 
 
-<SettingsInfoBlock type="UInt32" default_value="10" />在将主机名从 ClickHouse 的 DNS 缓存中移除之前，允许的该主机名连续 DNS 解析失败的最大次数。
+<SettingsInfoBlock type="UInt32" default_value="5" />
+
+在连续失败次数达到此值后，停止进一步尝试更新某个主机名的 DNS 缓存。该主机名的信息仍会保留在 DNS 缓存中。0 表示无限制。
+
+**另请参阅**
+
+- [`SYSTEM DROP DNS CACHE`](../../sql-reference/statements/system#drop-dns-cache)
 
 ## drop_distributed_cache_pool_size {#drop_distributed_cache_pool_size} 
 

@@ -21,45 +21,49 @@ doc_type: 'reference'
 
 :::
 
-### 整数 {#integers}
+### [整数](/sql-reference/data-types/int-uint) {#integers}
 
 8, 16, 32, 64, 128 または 256 ビットの Int および UInt 型の列で、リトルエンディアンです。
 
-### 浮動小数 {#floats}
+### [浮動小数](/sql-reference/data-types/float) {#floats}
 
 IEEE 754 のバイナリ表現による Float32 および Float64 型です。
 
-## String {#string}
+## [String](/sql-reference/data-types/string) {#string}
 
 単なる `String` の配列であり、各要素は (len, value) です。
 
-## FixedString(N) {#fixedstringn}
+## [FixedString(N)](/sql-reference/data-types/fixedstring) {#fixedstringn}
 
 長さ N バイトのバイト列の配列。
 
 ## IP {#ip}
 
-IPv4 は `UInt32` 数値型のエイリアスであり、`UInt32` として表現されます。
+### [IPv4](/sql-reference/data-types/ipv4) {#ipv4}
 
-IPv6 は `FixedString(16)` のエイリアスであり、バイナリ形式で直接表現されます。
+`UInt32` 数値型のエイリアスであり、`UInt32` として表現されます。
 
-## Tuple {#tuple}
+### [IPv6](/sql-reference/data-types/ipv6) {#ipv6}
+
+`FixedString(16)` のエイリアスであり、バイナリ形式で直接表現されます。
+
+## [Tuple](/sql-reference/data-types/tuple) {#tuple}
 
 Tuple は単にカラムの配列です。たとえば、Tuple(String, UInt8) は、連続してエンコードされた 2 つのカラムにすぎません。
 
-## Map {#map}
+## [Map](/sql-reference/data-types/map) {#map}
 
 `Map(K, V)` は 3 つの列で構成されます: `Offsets ColUInt64, Keys K, Values V`。
 
 `Keys` および `Values` 列の行数は、`Offsets` の末尾の値と同じになります。
 
-## Array {#array}
+## [Array](/sql-reference/data-types/array) {#array}
 
 `Array(T)` は、`Offsets ColUInt64` と `Data T` の 2 列から構成されます。
 
 `Data` 内の行数は、`Offsets` の最後の値になります。
 
-## Nullable {#nullable}
+## [Nullable](/sql-reference/data-types/nullable) {#nullable}
 
 `Nullable(T)` は、行数が同じ `Nulls`（型は `ColUInt8`）列と `Values`（型は `T`）列で構成されます。
 
@@ -70,15 +74,16 @@ Tuple は単にカラムの配列です。たとえば、Tuple(String, UInt8) �
 //      Nulls:  [ 1,  0,       0,  1,       0] (len: 5)
 ```
 
-## UUID {#uuid}
+
+## [UUID](/sql-reference/data-types/uuid) {#uuid}
 
 `FixedString(16)` の別名であり、UUID 値をバイナリ形式で表現します。
 
-## Enum {#enum}
+## [Enum](/sql-reference/data-types/enum) {#enum}
 
 `Int8` または `Int16` の別名ですが、それぞれの整数は特定の `String` 値にマッピングされます。
 
-## `LowCardinality` 型 {#low-cardinality}
+## [`LowCardinality` 型](/sql-reference/data-types/lowcardinality) {#low-cardinality}
 
 `LowCardinality(T)` は、`Index T` および `Keys K` から構成されます。
 ここで `K` は、`Index` のサイズに応じて (UInt8, UInt16, UInt32, UInt64) のいずれかの型です。
@@ -96,6 +101,7 @@ Tuple は単にカラムの配列です。たとえば、Tuple(String, UInt8) �
 // of chosen type should be able to represent any index of Index element.
 ```
 
-## Bool {#bool}
+
+## [Bool](/sql-reference/data-types/boolean) {#bool}
 
 `UInt8` の別名で、`0` は `false`、`1` は `true` を表します。

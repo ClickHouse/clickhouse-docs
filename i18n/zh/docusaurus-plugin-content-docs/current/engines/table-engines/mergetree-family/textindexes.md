@@ -22,7 +22,7 @@ ClickHouse 中的文本索引（也称为["倒排索引"](https://en.wikipedia.o
 
 ## 创建文本索引 {#creating-a-text-index}
 
-要创建文本索引，首先启用对应的实验性设置：
+要创建文本索引，首先启用相应的实验性设置：
 
 ```sql
 SET enable_full_text_index = true;
@@ -67,9 +67,9 @@ ORDER BY key
   如果未显式指定（例如 `tokenizer = ngrams`），默认的 ngram 长度为 3。
 * `sparseGrams(min_length, max_length, min_cutoff_length)` 将字符串切分为长度在 `min_length` 至 `max_length`（含）之间的可变长度 n-gram（参见函数 [sparseGrams](/sql-reference/functions/string-functions#sparseGrams)）。
   如果未显式指定，`min_length` 和 `max_length` 的默认值分别为 3 和 100。
-  如果提供了参数 `min_cutoff_length`，则只有长度大于或等于 `min_cutoff_length` 的 n-gram 会存储到索引中。
+  如果提供了参数 `min_cutoff_length`，则只会返回长度大于或等于 `min_cutoff_length` 的 n-gram。
   与 `ngrams(N)` 相比，`sparseGrams` 分词器会生成可变长度的 N-gram，从而可以更灵活地表示原始文本。
-  例如，`tokenizer = sparseGrams(3, 5, 4)` 在内部会从输入字符串生成 3、4、5-gram，但只有 4-gram 和 5-gram 会存储到索引中。
+  例如，`tokenizer = sparseGrams(3, 5, 4)` 在内部会从输入字符串生成 3、4、5-gram，但只会返回 4-gram 和 5-gram。
 * `array` 不执行任何分词操作，即每一行的值本身就是一个 token（参见函数 [array](/sql-reference/functions/array-functions.md/#array)）。
 
 :::note

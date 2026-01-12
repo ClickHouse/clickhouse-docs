@@ -11712,6 +11712,14 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 ```
 
 
+## use_variant_default_implementation_for_comparisons {#use_variant_default_implementation_for_comparisons} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Включить реализацию по умолчанию типа Variant в функциях сравнения"}]}]}/>
+
+Включает или отключает реализацию по умолчанию типа Variant в функциях сравнения.
+
 ## use_with_fill_by_sorting_prefix {#use_with_fill_by_sorting_prefix} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
