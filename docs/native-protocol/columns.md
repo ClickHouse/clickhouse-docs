@@ -32,14 +32,16 @@ Numeric types encoding matches memory layout of little endian CPUs like AMD64 or
 | [Bool](/sql-reference/data-types/boolean) | Alias of `UInt8`: 0=false, 1=true |
 
 **Example: Nullable encoding**
-```
+
+```text
 To encode [null, "", "hello", null, "world"]:
   Values: ["", "", "hello", "", "world"] (len: 5)
   Nulls:  [ 1,  0,       0,  1,       0] (len: 5)
 ```
 
 **Example: LowCardinality encoding**
-```
+
+```text
 To encode ["Eko", "Eko", "Amadela", "Amadela", "Amadela", "Amadela"]:
   Index: ["Eko", "Amadela"] (String)
   Keys:  [0, 0, 1, 1, 1, 1] (UInt8)
