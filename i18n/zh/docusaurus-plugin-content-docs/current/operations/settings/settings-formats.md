@@ -12,10 +12,9 @@ import BetaBadge from '@theme/badges/BetaBadge';
 import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
 import VersionHistory from '@theme/VersionHistory/VersionHistory';
 
-{/* 自动生成 */ }
+<!-- 自动生成 -->
 
 这些设置是从[源文件](https://github.com/ClickHouse/ClickHouse/blob/master/src/Core/FormatFactorySettings.h)自动生成的。
-
 
 ## allow_special_bool_values_inside_variant {#allow_special_bool_values_inside_variant}   
 
@@ -253,6 +252,8 @@ Cloud 默认值：`'best_effort'`。
 
 ## format_json_object_each_row_column_for_object_name {#format_json_object_each_row_column_for_object_name}   
 
+
+
 在 [JSONObjectEachRow](/interfaces/formats/JSONObjectEachRow) 格式中，用于存储/写入对象名的列名。
 列类型应为 String。如果该值为空，将为对象名使用默认名称 `row_{i}`。
 
@@ -284,7 +285,7 @@ Cloud 默认值：`'best_effort'`。
 
 ## format_schema_message_name {#format_schema_message_name}   
 
-在 `format_schema` 指定的 schema 中定义所需 message 的名称。  
+在 `format_schema` 指定的 schema 中定义所需 message 的名称。
 为了与旧版 format_schema 格式（`file_name:message_name`）保持兼容性：
 
 - 如果未指定 `format_schema_message_name`，则会从旧版 `format_schema` 值中的 `message_name` 部分推断出 message 名称。
@@ -669,7 +670,7 @@ Hive 文本文件中 map 键值对之间的分隔符
 
 忽略不必要的字段并且不对其进行解析。启用此选项后，对于格式无效或包含重复字段的 JSON 字符串，可能不会抛出异常。
 
-## input&#95;format&#95;json&#95;infer&#95;array&#95;of&#95;dynamic&#95;from&#95;array&#95;of&#95;different&#95;types {#input_format_json_infer_array_of_dynamic_from_array_of_different_types}
+## input&#95;format&#95;json&#95;infer&#95;array&#95;of&#95;dynamic&#95;from&#95;array&#95;of&#95;different&#95;types {#input&#95;format&#95;json&#95;infer&#95;array&#95;of&#95;different&#95;types}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -702,7 +703,7 @@ DESC format(JSONEachRow, '{"a" : [42, "hello", [1, 2, 3]]}');
 默认启用。
 
 
-## input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings {#input_format_json_infer_incomplete_types_as_strings}
+## input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings {#input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -754,7 +755,7 @@ JSON 中字段的最大嵌套深度。这不是严格意义上的限制，不必
 
 默认启用。
 
-## input&#95;format&#95;json&#95;read&#95;arrays&#95;as&#95;strings {#input_format_json_read_arrays_as_strings}
+## input&#95;format&#95;json&#95;read&#95;arrays&#95;as&#95;strings {#input&#95;format&#95;json&#95;read&#95;arrays&#95;as&#95;strings}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -802,7 +803,7 @@ SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow
 
 默认启用。
 
-## input&#95;format&#95;json&#95;read&#95;objects&#95;as&#95;strings {#input_format_json_read_objects_as_strings}
+## input&#95;format&#95;json&#95;read&#95;objects&#95;as&#95;strings {#input&#95;format&#95;json&#95;read&#95;objects&#95;as&#95;strings}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -836,7 +837,7 @@ SELECT * FROM test;
 
 默认启用。
 
-## input&#95;format&#95;json&#95;try&#95;infer&#95;named&#95;tuples&#95;from&#95;objects {#input_format_json_try_infer_named_tuples_from_objects}
+## input&#95;format&#95;json&#95;try&#95;infer&#95;named&#95;tuples&#95;from&#95;objects {#input&#95;format&#95;json&#95;try&#95;infer&#95;named&#95;tuples&#95;from&#95;objects}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1454,7 +1455,7 @@ Parquet 读取器输出的数据块平均大小（字节）
 
 默认禁用。
 
-## output&#95;format&#95;json&#95;array&#95;of&#95;rows {#output_format_json_array_of_rows}
+## output&#95;format&#95;json&#95;array&#95;of&#95;rows {#output&#95;format&#95;json&#95;array&#95;of&#95;rows}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1526,7 +1527,7 @@ SELECT number FROM numbers(3) FORMAT JSONEachRow;
 
 默认情况下启用。
 
-## output&#95;format&#95;json&#95;pretty&#95;print {#output_format_json_pretty_print}
+## output&#95;format&#95;json&#95;pretty&#95;print {#output&#95;format&#95;json&#95;pretty&#95;print}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1601,7 +1602,7 @@ SELECT number FROM numbers(3) FORMAT JSONEachRow;
 
 默认禁用。
 
-## output&#95;format&#95;json&#95;quote&#95;denormals {#output_format_json_quote_denormals}
+## output&#95;format&#95;json&#95;quote&#95;denormals {#output&#95;format&#95;json&#95;quote&#95;denormals}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1715,13 +1716,13 @@ SELECT area/period FROM account_orders FORMAT JSON;
 
 默认情况下禁用。
 
-## output&#95;format&#95;markdown&#95;escape&#95;special&#95;characters {#output_format_markdown_escape_special_characters}
+## output&#95;format&#95;markdown&#95;escape&#95;special&#95;characters {#output&#95;format&#95;markdown&#95;escape&#95;special&#95;characters}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 启用后，将对 Markdown 中的特殊字符进行转义。
 
-[CommonMark](https://spec.commonmark.org/0.30/#example-12) 定义了以下可进行转义的特殊字符：
+[Common Mark](https://spec.commonmark.org/0.30/#example-12) 定义了以下可进行转义的特殊字符：
 
 ```
 ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
@@ -1935,7 +1936,7 @@ Parquet 输出格式的版本。支持的版本：1.0、2.4、2.6 和 2.latest�
 
 在 Pretty 输出格式中使用 ANSI 转义序列。0 - 禁用，1 - 启用，'auto' - 在终端中自动启用。
 
-## output&#95;format&#95;pretty&#95;display&#95;footer&#95;column&#95;names {#output_format_pretty_display_footer_column_names}
+## output&#95;format&#95;pretty&#95;display&#95;footer&#95;column&#95;names {#output&#95;format&#95;pretty&#95;display&#95;footer&#95;column&#95;names}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
@@ -2075,7 +2076,7 @@ Pretty 格式中单个值的最大显示宽度。如果超过该值，超出部�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-控制是否将 Pretty 格式中的具名元组以格式良好的 JSON 对象输出。
+控制在 Pretty 格式中是否将具名元组输出为格式化的 JSON 对象。
 
 ## output_format_pretty_row_numbers {#output_format_pretty_row_numbers}   
 
@@ -2192,7 +2193,7 @@ Pretty 格式中单个值的最大显示宽度。如果超过该值，超出部�
 
 启用后，ClickHouse 将为 rows_before_aggregation 统计指标提供精确值，该值表示聚合前读取的行数。
 
-## schema&#95;inference&#95;hints {#schema_inference_hints}
+## schema&#95;inference&#95;hints {#schema&#95;inference&#95;hints}
 
 在对不含 schema 的格式进行 schema 推断时，用作提示的列名和类型列表。
 
@@ -2213,7 +2214,7 @@ z   IPv4
 ```
 
 :::note
-如果 `schema_inference_hints` 的格式不正确，或者其中存在拼写错误、数据类型错误等问题，整个 `schema_inference_hints` 都会被忽略。
+如果 `schema_inference_hints` 的格式不正确，或者其中存在拼写错误、数据类型错误等问题，整个 schema&#95;inference&#95;hints 都会被忽略。
 :::
 
 
@@ -2223,11 +2224,10 @@ z   IPv4
 
 用于控制在 schema 推断时是否将推断出的类型设为 `Nullable`。
 可能的取值：
-
-* 0 - 推断出的类型永远不会是 `Nullable`（在这种情况下使用 input_format_null_as_default 控制如何处理 NULL 值），
-* 1 - 所有推断出的类型都将是 `Nullable`，
-* 2 或 `auto` - 只有当在 schema 推断期间解析的样本数据中该列包含 `NULL`，或者文件元数据包含关于列可空性的信息时，推断出的类型才会是 `Nullable`，
-* 3 - 如果格式具有相关元数据（例如 Parquet），则推断出的类型可空性将与文件元数据一致，否则（例如 CSV）则始终为 `Nullable`。
+ * 0 - 推断出的类型永远不会是 `Nullable`（在这种情况下使用 input_format_null_as_default 控制如何处理 NULL 值），
+ * 1 - 所有推断出的类型都将是 `Nullable`，
+ * 2 或 `auto` - 只有当在 schema 推断期间解析的样本数据中该列包含 `NULL`，或者文件元数据包含关于列可空性的信息时，推断出的类型才会是 `Nullable`，
+ * 3 - 如果格式具有相关元数据（例如 Parquet），则推断出的类型可空性将与文件元数据一致，否则（例如 CSV）则始终为 `Nullable`。
 
 ## schema_inference_make_json_columns_nullable {#schema_inference_make_json_columns_nullable}   
 
@@ -2253,6 +2253,12 @@ z   IPv4
 <SettingsInfoBlock type="IdentifierQuotingStyle" default_value="Backticks" />
 
 设置 `SHOW CREATE` 查询中标识符的引用风格
+
+## type_json_allow_duplicated_key_with_literal_and_nested_object {#type_json_allow_duplicated_key_with_literal_and_nested_object}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+启用后，像 `{"a" : 42, "a" : {"b" : 42}}` 这样某个键被重复使用，但其中一个值为嵌套对象的 JSON，将被允许被解析。
 
 ## type_json_skip_duplicated_paths {#type_json_skip_duplicated_paths}   
 
