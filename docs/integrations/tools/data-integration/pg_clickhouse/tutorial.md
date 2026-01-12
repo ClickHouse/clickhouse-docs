@@ -165,13 +165,19 @@ Docker container using the [pg_clickhouse image], which simply adds
 pg_clickhouse to the Docker [Postgres image]:
 
 ```sh
-docker run --network host --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
-       -d ghcr.io/clickhouse/pg_clickhouse:18 -U postgres
+docker run -d --network host --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
+       -d ghcr.io/clickhouse/pg_clickhouse:18
 ```
 
 ### Connect pg_clickhouse {#connect-pg_clickhouse}
 
-Now connect to Postgres and create pg_clickhouse:
+Now connect to Postgres:
+
+```sh
+docker exec -it pg_clickhouse psql -U postgres
+```
+
+And create pg_clickhouse:
 
 ```sql
 CREATE EXTENSION pg_clickhouse;
@@ -212,7 +218,7 @@ And now the table should be imported: In [psql], use `\det+` to see it:
 ```pgsql
 taxi=# \det+ taxi.*
                                        List of foreign tables
- Schema | Table |  Server  |                        FDW options                        | Description 
+ Schema | Table |  Server  |                        FDW options                        | Description
 --------+-------+----------+-----------------------------------------------------------+-------------
  taxi   | trips | taxi_srv | (database 'taxi', table_name 'trips', engine 'MergeTree') | [null]
 (1 row)
@@ -223,53 +229,53 @@ Success! Use `\d` to show all the columns:
 ```pgsql
 taxi=# \d taxi.trips
                                      Foreign table "taxi.trips"
-        Column         |            Type             | Collation | Nullable | Default | FDW options 
+        Column         |            Type             | Collation | Nullable | Default | FDW options
 -----------------------+-----------------------------+-----------+----------+---------+-------------
- trip_id               | bigint                      |           | not null |         | 
- vendor_id             | text                        |           | not null |         | 
- pickup_date           | date                        |           | not null |         | 
- pickup_datetime       | timestamp without time zone |           | not null |         | 
- dropoff_date          | date                        |           | not null |         | 
- dropoff_datetime      | timestamp without time zone |           | not null |         | 
- store_and_fwd_flag    | smallint                    |           | not null |         | 
- rate_code_id          | smallint                    |           | not null |         | 
- pickup_longitude      | double precision            |           | not null |         | 
- pickup_latitude       | double precision            |           | not null |         | 
- dropoff_longitude     | double precision            |           | not null |         | 
- dropoff_latitude      | double precision            |           | not null |         | 
- passenger_count       | smallint                    |           | not null |         | 
- trip_distance         | double precision            |           | not null |         | 
- fare_amount           | numeric(10,2)               |           | not null |         | 
- extra                 | numeric(10,2)               |           | not null |         | 
- mta_tax               | numeric(10,2)               |           | not null |         | 
- tip_amount            | numeric(10,2)               |           | not null |         | 
- tolls_amount          | numeric(10,2)               |           | not null |         | 
- ehail_fee             | numeric(10,2)               |           | not null |         | 
- improvement_surcharge | numeric(10,2)               |           | not null |         | 
- total_amount          | numeric(10,2)               |           | not null |         | 
- payment_type          | text                        |           | not null |         | 
- trip_type             | smallint                    |           | not null |         | 
- pickup                | character varying(25)       |           | not null |         | 
- dropoff               | character varying(25)       |           | not null |         | 
- cab_type              | text                        |           | not null |         | 
- pickup_nyct2010_gid   | smallint                    |           | not null |         | 
- pickup_ctlabel        | real                        |           | not null |         | 
- pickup_borocode       | smallint                    |           | not null |         | 
- pickup_ct2010         | text                        |           | not null |         | 
- pickup_boroct2010     | text                        |           | not null |         | 
- pickup_cdeligibil     | text                        |           | not null |         | 
- pickup_ntacode        | character varying(4)        |           | not null |         | 
- pickup_ntaname        | text                        |           | not null |         | 
- pickup_puma           | integer                     |           | not null |         | 
- dropoff_nyct2010_gid  | smallint                    |           | not null |         | 
- dropoff_ctlabel       | real                        |           | not null |         | 
- dropoff_borocode      | smallint                    |           | not null |         | 
- dropoff_ct2010        | text                        |           | not null |         | 
- dropoff_boroct2010    | text                        |           | not null |         | 
- dropoff_cdeligibil    | text                        |           | not null |         | 
- dropoff_ntacode       | character varying(4)        |           | not null |         | 
- dropoff_ntaname       | text                        |           | not null |         | 
- dropoff_puma          | integer                     |           | not null |         | 
+ trip_id               | bigint                      |           | not null |         |
+ vendor_id             | text                        |           | not null |         |
+ pickup_date           | date                        |           | not null |         |
+ pickup_datetime       | timestamp without time zone |           | not null |         |
+ dropoff_date          | date                        |           | not null |         |
+ dropoff_datetime      | timestamp without time zone |           | not null |         |
+ store_and_fwd_flag    | smallint                    |           | not null |         |
+ rate_code_id          | smallint                    |           | not null |         |
+ pickup_longitude      | double precision            |           | not null |         |
+ pickup_latitude       | double precision            |           | not null |         |
+ dropoff_longitude     | double precision            |           | not null |         |
+ dropoff_latitude      | double precision            |           | not null |         |
+ passenger_count       | smallint                    |           | not null |         |
+ trip_distance         | double precision            |           | not null |         |
+ fare_amount           | numeric(10,2)               |           | not null |         |
+ extra                 | numeric(10,2)               |           | not null |         |
+ mta_tax               | numeric(10,2)               |           | not null |         |
+ tip_amount            | numeric(10,2)               |           | not null |         |
+ tolls_amount          | numeric(10,2)               |           | not null |         |
+ ehail_fee             | numeric(10,2)               |           | not null |         |
+ improvement_surcharge | numeric(10,2)               |           | not null |         |
+ total_amount          | numeric(10,2)               |           | not null |         |
+ payment_type          | text                        |           | not null |         |
+ trip_type             | smallint                    |           | not null |         |
+ pickup                | character varying(25)       |           | not null |         |
+ dropoff               | character varying(25)       |           | not null |         |
+ cab_type              | text                        |           | not null |         |
+ pickup_nyct2010_gid   | smallint                    |           | not null |         |
+ pickup_ctlabel        | real                        |           | not null |         |
+ pickup_borocode       | smallint                    |           | not null |         |
+ pickup_ct2010         | text                        |           | not null |         |
+ pickup_boroct2010     | text                        |           | not null |         |
+ pickup_cdeligibil     | text                        |           | not null |         |
+ pickup_ntacode        | character varying(4)        |           | not null |         |
+ pickup_ntaname        | text                        |           | not null |         |
+ pickup_puma           | integer                     |           | not null |         |
+ dropoff_nyct2010_gid  | smallint                    |           | not null |         |
+ dropoff_ctlabel       | real                        |           | not null |         |
+ dropoff_borocode      | smallint                    |           | not null |         |
+ dropoff_ct2010        | text                        |           | not null |         |
+ dropoff_boroct2010    | text                        |           | not null |         |
+ dropoff_cdeligibil    | text                        |           | not null |         |
+ dropoff_ntacode       | character varying(4)        |           | not null |         |
+ dropoff_ntaname       | text                        |           | not null |         |
+ dropoff_puma          | integer                     |           | not null |         |
 Server: taxi_srv
 FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 ```
@@ -278,7 +284,7 @@ Now query the table:
 
  ```pgsql
  SELECT count(*) FROM taxi.trips;
-   count  
+   count
  ---------
   1999657
  (1 row)
@@ -287,16 +293,16 @@ Now query the table:
  Note how quickly the query executed. pg_clickhouse pushes down the entire
  query, including the `COUNT()` aggregate, so it runs on ClickHouse and only
  returns the single row to Postgres. Use [EXPLAIN] to see it:
- 
+
  ```pgsql
  EXPLAIN select count(*) from taxi.trips;
-                    QUERY PLAN                    
+                    QUERY PLAN
  -------------------------------------------------
   Foreign Scan  (cost=1.00..-0.90 rows=1 width=8)
     Relations: Aggregate on (trips)
  (2 rows)
  ```
- 
+
  Note that "Foreign Scan" appears at the root of the plan, meaning that the
  entire query was pushed down to ClickHouse.
 
@@ -311,7 +317,7 @@ your own SQL query.
     taxi=# \timing
     Timing is on.
     taxi=# SELECT round(avg(tip_amount), 2) FROM taxi.trips;
-     round 
+     round
     -------
       1.68
     (1 row)
@@ -327,7 +333,7 @@ your own SQL query.
             avg(total_amount)::NUMERIC(10, 2) AS average_total_amount
         FROM taxi.trips
         GROUP BY passenger_count;
-     passenger_count | average_total_amount 
+     passenger_count | average_total_amount
     -----------------+----------------------
                    0 |                22.68
                    1 |                15.96
@@ -340,7 +346,7 @@ your own SQL query.
                    8 |                36.40
                    9 |                 9.79
     (10 rows)
-    
+
     Time: 27.266 ms
     ```
 
@@ -354,7 +360,7 @@ your own SQL query.
     FROM taxi.trips
     GROUP BY pickup_date, pickup_ntaname
     ORDER BY pickup_date ASC LIMIT 10;
-     pickup_date |         pickup_ntaname         | number_of_trips 
+     pickup_date |         pickup_ntaname         | number_of_trips
     -------------+--------------------------------+-----------------
      2015-07-01  | Williamsburg                   |               1
      2015-07-01  | park-cemetery-etc-Queens       |               6
@@ -367,7 +373,7 @@ your own SQL query.
      2015-07-01  | Airport                        |             550
      2015-07-01  | East Harlem North              |              32
     (10 rows)
-    
+
     Time: 30.978 ms
     ```
 
@@ -386,7 +392,7 @@ your own SQL query.
     GROUP BY trip_minutes
     ORDER BY trip_minutes DESC
     LIMIT 5;
-          avg_tip      |     avg_fare     |  avg_passenger   | count | trip_minutes 
+          avg_tip      |     avg_fare     |  avg_passenger   | count | trip_minutes
     -------------------+------------------+------------------+-------+--------------
                   1.96 |                8 |                1 |     1 |        27512
                      0 |               12 |                2 |     1 |        27500
@@ -394,7 +400,7 @@ your own SQL query.
      0.716564885496183 | 14.2786259541985 | 1.94656488549618 |   131 |         1439
       1.00945205479452 | 12.8787671232877 | 1.98630136986301 |   146 |         1438
     (5 rows)
-    
+
     Time: 45.477 ms
     ```
 
@@ -410,7 +416,7 @@ your own SQL query.
     GROUP BY pickup_ntaname, pickup_hour
     ORDER BY pickup_ntaname, date_part('hour', pickup_datetime)
     LIMIT 5;
-     pickup_ntaname | pickup_hour | pickups 
+     pickup_ntaname | pickup_hour | pickups
     ----------------+-------------+---------
      Airport        |           0 |    3509
      Airport        |           1 |    1184
@@ -418,7 +424,7 @@ your own SQL query.
      Airport        |           3 |     152
      Airport        |           4 |     213
     (5 rows)
-    
+
     Time: 36.895 ms
     ```
 
@@ -442,7 +448,7 @@ your own SQL query.
     WHERE dropoff_nyct2010_gid IN (132, 138)
     ORDER BY pickup_datetime
     LIMIT 5;
-       pickup_datetime   |  dropoff_datetime   | total_amount | pickup_nyct2010_gid | dropoff_nyct2010_gid | airport_code | year | day | hour 
+       pickup_datetime   |  dropoff_datetime   | total_amount | pickup_nyct2010_gid | dropoff_nyct2010_gid | airport_code | year | day | hour
     ---------------------+---------------------+--------------+---------------------+----------------------+--------------+------+-----+------
      2015-07-01 00:04:14 | 2015-07-01 00:15:29 |        13.30 |                 -34 |                  132 | JFK          | 2015 |   1 |    0
      2015-07-01 00:09:42 | 2015-07-01 00:12:55 |         6.80 |                  50 |                  138 | LGA          | 2015 |   1 |    0
@@ -450,7 +456,7 @@ your own SQL query.
      2015-07-01 00:27:51 | 2015-07-01 00:39:02 |        14.72 |                -101 |                  138 | LGA          | 2015 |   1 |    0
      2015-07-01 00:32:03 | 2015-07-01 00:55:39 |        39.34 |                  48 |                  138 | LGA          | 2015 |   1 |    0
     (5 rows)
-    
+
     Time: 17.450 ms
     ```
 
@@ -494,7 +500,7 @@ Here's an excerpt from the CSV file you're using in table format. The
         LAYOUT(HASHED_ARRAY())
     $$, 'host=localhost dbname=taxi');
     ```
-    
+
     :::note
     Setting `LIFETIME` to 0 disables automatic updates to avoid unnecessary
     traffic to our S3 bucket. In other cases, you might configure it
@@ -503,28 +509,28 @@ Here's an excerpt from the CSV file you're using in table format. The
     :::
 
     2.  Now import it:
-    
+
     ```sql
     IMPORT FOREIGN SCHEMA taxi LIMIT TO (taxi_zone_dictionary)
     FROM SERVER taxi_srv INTO taxi;
     ```
-    
+
     3.  Confirm we can query it:
-    
+
     ```pgsql
     taxi=# SELECT * FROM taxi.taxi_zone_dictionary limit 3;
-     LocationID |  Borough  |                     Zone                      | service_zone 
+     LocationID |  Borough  |                     Zone                      | service_zone
     ------------+-----------+-----------------------------------------------+--------------
              77 | Brooklyn  | East New York/Pennsylvania Avenue             | Boro Zone
             106 | Brooklyn  | Gowanus                                       | Boro Zone
             103 | Manhattan | Governor's Island/Ellis Island/Liberty Island | Yellow Zone
     (3 rows)
     ```
-    
+
     4.  Excellent. Now use the `dictGet` function unction to retrieve a
         borough's name in a query. For this query sums up the number of taxi
         rides per borough that end at either the LaGuardia or JFK airport:
-    
+
     ```pgsql
     taxi=# SELECT
             count(1) AS total,
@@ -536,7 +542,7 @@ Here's an excerpt from the CSV file you're using in table format. The
         WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
         GROUP BY borough_name
         ORDER BY total DESC;
-     total | borough_name  
+     total | borough_name
     -------+---------------
      23683 | Unknown
       7053 | Manhattan
@@ -546,7 +552,7 @@ Here's an excerpt from the CSV file you're using in table format. The
        554 | Staten Island
         53 | EWR
     (7 rows)
-    
+
     Time: 66.245 ms
     ```
 
@@ -562,7 +568,7 @@ table.
 1.  Start with a simple `JOIN` that acts similarly to the previous airport
     query above:
 
-    ```sql
+    ```pgsql
     taxi=# SELECT
         count(1) AS total,
         "Borough"
@@ -573,7 +579,7 @@ table.
       AND dropoff_nyct2010_gid IN (132, 138)
     GROUP BY "Borough"
     ORDER BY total DESC;
-     total | borough_name  
+     total | borough_name
     -------+---------------
       7053 | Manhattan
       6828 | Brooklyn
@@ -605,7 +611,7 @@ table.
           AND dropoff_nyct2010_gid IN (132, 138)
         GROUP BY "Borough"
         ORDER BY total DESC;
-                                  QUERY PLAN                               
+                                  QUERY PLAN
     -----------------------------------------------------------------------
      Foreign Scan  (cost=1.00..5.10 rows=1000 width=40)
        Relations: Aggregate on ((trips) INNER JOIN (taxi_zone_dictionary))

@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/resync
 sidebar_label: '重新同步 ClickPipe'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', '数据摄取', '实时同步']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'

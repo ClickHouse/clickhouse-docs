@@ -6,6 +6,9 @@ description: 'ClickHouse R2DBC 驱动程序'
 slug: /integrations/java/r2dbc
 title: 'R2DBC 驱动'
 doc_type: 'reference'
+integration:
+  - support_level: '核心'
+  - category: '语言客户端'
 ---
 
 import Tabs from '@theme/Tabs';

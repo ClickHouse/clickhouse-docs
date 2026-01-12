@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mongodb
 title: 'Ingesting data from MongoDB to ClickHouse (using CDC)'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

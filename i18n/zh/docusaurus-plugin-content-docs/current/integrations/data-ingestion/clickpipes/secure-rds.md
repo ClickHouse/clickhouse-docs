@@ -5,6 +5,9 @@ title: 'AWS IAM 数据库身份验证（RDS/Aurora）'
 description: '本文演示 ClickPipes 客户如何利用基于角色的访问，与 Amazon RDS/Aurora 进行身份验证并安全访问其数据库。'
 doc_type: 'guide'
 keywords: ['clickpipes', 'rds', 'security', 'aws', 'private connection']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import secures3_arn from '@site/static/images/cloud/security/secures3_arn.png';
@@ -121,6 +124,6 @@ IAM 策略（请将 `{RDS_RESOURCE_ID}` 替换为你的 RDS 实例的资源 ID�
 }
 ```
 
-4 - 在创建完成后复制新的 **IAM Role Arn**。这是让 ClickPipes 能够安全访问你的 AWS 数据库所需要的。我们将其称为 `{RDS_ACCESS_IAM_ROLE_ARN}`。
+4 - 在创建完成后复制新的 **IAM Role Arn**。这是 ClickPipes 安全访问你的 AWS 数据库所需的 IAM 角色 ARN。我们将其称为 `{RDS_ACCESS_IAM_ROLE_ARN}`。
 
-现在你可以在 ClickPipes 中使用这个 IAM 角色对你的 RDS/Aurora 实例进行身份验证并访问它。
+现在你可以在 ClickPipes 中使用这个 IAM 角色对你的 RDS/Aurora 实例进行身份验证。

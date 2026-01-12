@@ -4,10 +4,10 @@ description: '将您的 Amazon Kinesis 数据源无缝连接到 ClickHouse Cloud
 slug: /integrations/clickpipes/kinesis
 title: '将 Amazon Kinesis 与 ClickHouse Cloud 集成'
 doc_type: 'guide'
+keywords: ['clickpipes', 'kinesis', 'streaming', 'aws', 'data ingestion']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
-keywords: ['clickpipes', 'kinesis', 'streaming', 'aws', 'data ingestion']
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
@@ -26,7 +26,9 @@ import cp_overview from '@site/static/images/integrations/data-ingestion/clickpi
 import Image from '@theme/IdealImage';
 
 # 将 Amazon Kinesis 集成到 ClickHouse Cloud {#integrating-amazon-kinesis-with-clickhouse-cloud}
+
 ## 前置条件 {#prerequisite}
+
 你已经熟悉了 [ClickPipes 介绍](./index.md)，并已配置好 [IAM 凭证](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) 或 [IAM 角色](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)。请按照 [Kinesis 基于角色的访问控制指南](./secure-kinesis.md) 中的说明，设置可与 ClickHouse Cloud 协同工作的角色。
 
 ## 创建你的第一个 ClickPipe {#creating-your-first-clickpipe}
@@ -55,7 +57,7 @@ import Image from '@theme/IdealImage';
 
 <Image img={cp_step4a} alt="设置表、schema 和设置" size="lg" border/>
 
-  你还可以使用提供的控件自定义高级设置。
+你还可以使用提供的控件自定义高级设置。
 
 <Image img={cp_step4a3} alt="设置高级控件" size="lg" border/>
 
@@ -65,9 +67,10 @@ import Image from '@theme/IdealImage';
 
 8. 最后，你可以为内部 ClickPipes 用户配置权限。
 
-  **权限：** ClickPipes 会创建一个专用用户，用于向目标表写入数据。你可以为该内部用户选择角色，使用自定义角色或预定义角色之一：
-    - `Full access`：对集群拥有完全访问权限。如果你在目标表上使用物化视图或 Dictionary，这可能会很有用。
-    - `Only destination table`：仅对目标表授予 `INSERT` 权限。
+**权限：** ClickPipes 会创建一个专用用户，用于向目标表写入数据。你可以为该内部用户选择角色，使用自定义角色或预定义角色之一：
+
+- `Full access`：对集群拥有完全访问权限。如果你在目标表上使用物化视图或 Dictionary，这可能会很有用。
+- `Only destination table`：仅对目标表授予 `INSERT` 权限。
 
 <Image img={cp_step5} alt="权限" border/>
 
@@ -75,26 +78,30 @@ import Image from '@theme/IdealImage';
 
 <Image img={cp_success} alt="成功通知" size="sm" border/>
 
+10. 你可以从汇总表查看 ClickPipe 的状态和操作选项。
+
 <Image img={cp_remove} alt="移除通知" size="lg" border/>
 
-  汇总表提供控件，用于显示 ClickHouse 中来源或目标表的示例数据。
+11. 汇总表提供控件，用于显示 ClickHouse 中来源或目标表的示例数据。
 
 <Image img={cp_destination} alt="查看目标" size="lg" border/>
 
-  以及用于移除 ClickPipe 并显示摄取作业概览的控件。
+12. 以及用于移除 ClickPipe 并显示摄取作业概览的控件。
 
 <Image img={cp_overview} alt="查看概览" size="lg" border/>
 
-10. **恭喜！**你已成功完成第一个 ClickPipe 的设置。如果这是一个流式 ClickPipe，它会持续运行，从远程数据源实时摄取数据。否则，它会完成批量摄取后终止。
+13. **恭喜！**你已成功完成第一个 ClickPipe 的设置。如果这是一个流式 ClickPipe，它会持续运行，从远程数据源实时摄取数据。否则，它会完成批量摄取后终止。
 
 ## 支持的数据格式 {#supported-data-formats}
 
 支持的格式包括：
+
 - [JSON](/interfaces/formats/JSON)
 
 ## 支持的数据类型 {#supported-data-types}
 
 ### 标准类型支持 {#standard-types-support}
+
 当前 ClickPipes 支持以下 ClickHouse 数据类型：
 
 - 基础数值类型 - \[U\]Int8/16/32/64、Float32/64 和 BFloat16
@@ -115,9 +122,11 @@ import Image from '@theme/IdealImage';
 - SimpleAggregateFunction 类型（用于 AggregatingMergeTree 或 SummingMergeTree 目标表）
 
 ### Variant 类型支持 {#variant-type-support}
+
 您可以为源数据流中的任意 JSON 字段手动指定 Variant 类型（例如 `Variant(String, Int64, DateTime)`）。由于 ClickPipes 判定应使用的具体 Variant 子类型的方式所限，在 Variant 定义中只能使用一种整数类型或一种 datetime 类型，例如，`Variant(Int64, UInt32)` 不支持。
 
 ### JSON 类型支持 {#json-type-support}
+
 始终为 JSON 对象的 JSON 字段可以映射到 JSON 目标列。您需要手动将目标列修改为所需的 JSON 类型，包括任何固定或跳过的路径。 
 
 ## Kinesis 虚拟列 {#kinesis-virtual-columns}
@@ -141,9 +150,11 @@ import Image from '@theme/IdealImage';
 ## 性能 {#performance}
 
 ### 批处理 {#batching}
-ClickPipes 以批处理的方式向 ClickHouse 插入数据。这样可以避免在数据库中创建过多的数据分片（parts），从而防止集群出现性能问题。
+
+ClickPipes 以批处理的方式向 ClickHouse 插入数据。这样可以避免在数据库中创建过多的分区片段，从而防止集群出现性能问题。
 
 在满足以下任一条件时会插入一个批次：
+
 - 批次大小达到最大值（每 1GB 副本内存最多 100,000 行或 32MB）
 - 批次已打开的时间达到上限（5 秒）
 
@@ -166,4 +177,4 @@ ClickPipe 会自动重启该 consumer 并继续处理消息。
 
 ## 身份验证 {#authentication}
 
-要访问 Amazon Kinesis 流，你可以使用 [IAM 凭证](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) 或 [IAM 角色](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)。有关如何配置 IAM 角色的更多信息，你可以[参考本指南](./secure-kinesis.md)，了解如何配置可与 ClickHouse Cloud 配合使用的角色。
+要访问 Amazon Kinesis 流，你可以使用 [IAM 凭证](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) 或 [IAM 角色](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)。有关如何配置 IAM 角色的更多信息，请[参考本指南](./secure-kinesis.md)，了解如何配置可与 ClickHouse Cloud 配合使用的角色。

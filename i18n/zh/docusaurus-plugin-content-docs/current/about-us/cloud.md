@@ -48,8 +48,8 @@ ClickHouse Cloud 是由广受欢迎的开源 OLAP 数据库 ClickHouse 的原始
 
 ## ClickHouse Cloud 使用的是哪个版本的 ClickHouse？ {#what-version-of-clickhouse-does-clickhouse-cloud-use}
 
-ClickHouse Cloud 会持续将您的服务升级到更新的版本。在开源社区发布一个核心数据库版本之后，我们会在云端预发布环境中进行额外验证，这通常需要 6–8 周时间，然后才会推送到生产环境。版本发布会按云服务提供商、服务类型和区域分阶段逐步进行。
+ClickHouse Cloud 会定期将您的服务升级到包含修复、新特性和性能改进的较新版本。在开源社区发布一个核心数据库版本之后，我们会在云端预发布环境中进行额外验证，这通常需要 6–8 周时间，然后才会推送到生产环境。版本发布会按云服务提供商、服务类型和区域分阶段逐步进行。
 
-我们提供一个 “Fast” 发布通道，允许您在常规发布节奏之前订阅更新。更多详情，请参阅 ["Fast Release Channel"](/manage/updates#fast-release-channel-early-upgrades)。
+您可以通过订阅特定发布通道来指定 ClickHouse Cloud 服务的升级节奏。例如，我们提供 [“Fast” 发布通道](/manage/updates#fast-release-channel-early-upgrades)，允许您在常规发布节奏之前订阅更新，同时还提供 [“Slow” 发布通道](/manage/updates#slow-release-channel-deferred-upgrades) 以及其他更细粒度的延迟升级调度选项。
 
-如果您依赖于早期版本中的某些功能，在某些情况下，可以通过服务的兼容性设置恢复到之前的行为。
+有关 ClickHouse Cloud 升级流程（包括向后兼容性保证）的概览，请参阅 [Upgrades](/manage/updates) 参考文档。

@@ -6,7 +6,7 @@ title: '将 DbVisualizer 连接到 ClickHouse'
 keywords: ['DbVisualizer', '数据库可视化', 'SQL 客户端', 'JDBC 驱动', '数据库工具']
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'sql_client'
 ---
 
@@ -29,7 +29,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## 2. 内置 JDBC 驱动管理 {#2-built-in-jdbc-driver-management}
 
-DbVisualizer 内置了最新的 ClickHouse JDBC 驱动程序。它提供完整的 JDBC 驱动管理功能，可使用驱动程序的最新发行版本以及历史版本。
+DbVisualizer 自带最新的 ClickHouse JDBC 驱动程序，并内置完整的 JDBC 驱动管理功能，可指向驱动程序的最新发布版本以及历史版本。
 
 <Image img={dbvisualizer_driver_manager} size="lg" border alt="DbVisualizer 驱动管理器界面，显示 ClickHouse JDBC 驱动配置" />
 

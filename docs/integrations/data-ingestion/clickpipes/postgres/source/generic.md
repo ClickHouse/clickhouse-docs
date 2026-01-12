@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/source/generic
 title: 'Generic Postgres Source Setup Guide'
 doc_type: 'guide'
 keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal level']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 # Generic Postgres source setup guide

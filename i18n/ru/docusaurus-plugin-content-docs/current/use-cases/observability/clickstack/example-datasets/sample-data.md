@@ -37,7 +37,7 @@ import copy_api_key from '@site/static/images/use-cases/observability/copy_api_k
 В следующем примере предполагается, что вы запустили ClickStack, используя [инструкции для образа «всё-в-одном»](/use-cases/observability/clickstack/getting-started) и подключились к [локальному экземпляру ClickHouse](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) или экземпляру [ClickHouse Cloud](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection). 
 
 :::note HyperDX в ClickHouse Cloud
-Этот демонстрационный набор данных также может использоваться с HyperDX в ClickHouse Cloud, с незначительными изменениями в последовательности действий, отмеченными ниже. При использовании HyperDX в ClickHouse Cloud вам потребуется локально запущенный коллектор OpenTelemetry, как описано в [руководстве по началу работы для этой модели развертывания](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud).
+Этот демонстрационный набор данных также может использоваться с HyperDX в ClickHouse Cloud, с незначительными изменениями в последовательности действий, отмеченными ниже. При использовании HyperDX в ClickHouse Cloud вам потребуется локально запущенный коллектор OpenTelemetry, как описано в [руководстве по началу работы для этой модели развертывания](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud).
 :::
 
 <VerticalStepper>

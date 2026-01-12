@@ -42,12 +42,12 @@ The release dates given below are an estimate and may be subject to change.
      changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
      version: '25.10',
      fast_date: '2025-12-11 (completed 2025-12-15)',
-     regular_date: '2026-01-07',
+     regular_date: '2026-01-13',
      slow_date: 'TBD',
      fast_progress: 'green',
      regular_progress: 'green',
      slow_progress: 'green',
-     fast_delay_note: 'Services with an upgrade window will receive 25.10 during their scheduled window in the week of Jan 05',
+     fast_delay_note: 'Services with an upgrade window will receive 25.10 during their scheduled window in the week of Jan 12',
    },
    {
     changelog_link: 'https://clickhouse.com/docs/changelogs/25.8',
@@ -58,6 +58,6 @@ The release dates given below are an estimate and may be subject to change.
     fast_progress: 'green',
     regular_progress: 'green',
     slow_progress: 'green',
-    regular_delay_note: 'Services with upgrade window will be upgraded starting Jan 07.',
+    regular_delay_note: 'Services with upgrade window will be upgraded starting Jan 13.',
   }
 ]} />

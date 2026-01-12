@@ -6,6 +6,9 @@ sidebar_position: 1
 title: 'リファレンス'
 doc_type: 'reference'
 keywords: ['kafka リファレンス', 'clickpipes', 'データソース', 'avro', '仮想カラム']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';

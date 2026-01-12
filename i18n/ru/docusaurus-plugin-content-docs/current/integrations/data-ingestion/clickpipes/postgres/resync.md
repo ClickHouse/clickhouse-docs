@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/resync
 sidebar_label: 'Повторная синхронизация ClickPipe'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'ингестия данных', 'синхронизация в режиме реального времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
@@ -40,7 +43,7 @@ Resync выполняет следующие операции по порядк�
 2. Перейдите на вкладку **Settings**.
 3. Нажмите кнопку **Resync**.
 
-<Image img={resync_button} border size="md" />
+<Image img={resync_button} border size="md"/>
 
 4. Появится диалоговое окно для подтверждения. Нажмите Resync еще раз.
 5. Перейдите на вкладку **Metrics**.

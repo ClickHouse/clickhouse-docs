@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mongodb/source/generic
 title: 'Руководство по настройке произвольного источника MongoDB'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'ингестия данных', 'синхронизация в режиме реального времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # Общее руководство по настройке источника данных MongoDB {#generic-mongodb-source-setup-guide}
@@ -36,9 +39,10 @@ db.adminCommand({
 
 Подробнее о команде `replSetResizeOplog` и хранении журнала операций (oplog) см. [документацию MongoDB](https://www.mongodb.com/docs/manual/reference/command/replSetResizeOplog/).
 
+
 ## Настройте пользователя базы данных {#configure-database-user}
 
-Подключитесь к экземпляру MongoDB как пользователь с правами администратора и выполните следующую команду, чтобы создать пользователя для MongoDB CDC в ClickPipes:
+Подключитесь к экземпляру MongoDB как пользователь с правами администратора и выполните следующую команду, чтобы создать пользователя для MongoDB CDC ClickPipes:
 
 ```javascript
 db.getSiblingDB("admin").createUser({
@@ -49,10 +53,9 @@ db.getSiblingDB("admin").createUser({
 ```
 
 :::note
-
 Обязательно замените `clickpipes_user` и `some_secure_password` на выбранные вами имя пользователя и пароль.
-
 :::
+
 
 ## Что дальше? {#whats-next}
 

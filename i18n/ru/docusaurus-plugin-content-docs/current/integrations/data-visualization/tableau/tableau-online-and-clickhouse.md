@@ -6,6 +6,9 @@ keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', '
 description: 'Tableau Online помогает максимально эффективно использовать данные, чтобы люди могли быстрее и увереннее принимать решения, где бы они ни находились.'
 title: 'Tableau Online'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
 ---
 
 import MySQLCloudSetup from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_clickhouse_mysql_cloud_setup.mdx';
@@ -26,9 +29,11 @@ import tableau_desktop_05 from '@site/static/images/integrations/data-visualizat
 Tableau Online может подключаться к ClickHouse Cloud или локальному развертыванию ClickHouse через интерфейс MySQL, используя официальный источник данных MySQL.
 
 ## Настройка ClickHouse Cloud {#clickhouse-cloud-setup}
+
 <MySQLCloudSetup />
 
 ## Настройка сервера ClickHouse в локальной инфраструктуре {#on-premise-clickhouse-server-setup}
+
 <MySQLOnPremiseSetup />
 
 ## Подключение Tableau Online к ClickHouse (on-premise, без SSL) {#connecting-tableau-online-to-clickhouse-on-premise-without-ssl}
@@ -36,21 +41,25 @@ Tableau Online может подключаться к ClickHouse Cloud или л
 Войдите в свою учетную запись Tableau Cloud и добавьте новый источник данных (Published Data Source).
 
 <Image size="md" img={tableau_online_01} alt="Интерфейс Tableau Online с кнопкой «New» для создания опубликованного источника данных" border />
+
 <br/>
 
 Выберите «MySQL» из списка доступных коннекторов.
 
 <Image size="md" img={tableau_online_02} alt="Экран выбора коннектора Tableau Online с выделенной опцией MySQL" border />
+
 <br/>
 
 Укажите параметры подключения, собранные при настройке ClickHouse.
 
 <Image size="md" img={tableau_online_03} alt="Экран настройки подключения MySQL в Tableau Online с полями для сервера, порта, базы данных и учетных данных" border />
+
 <br/>
 
 Tableau Online проанализирует базу данных и предоставит список доступных таблиц. Перетащите нужную таблицу на рабочую область справа. Дополнительно вы можете нажать «Update Now», чтобы просмотреть данные, а также при необходимости скорректировать определенные при анализе типы полей или их имена.
 
 <Image size="md" img={tableau_online_04} alt="Страница источника данных Tableau Online с таблицами базы данных слева и рабочей областью справа с поддержкой перетаскивания" border />
+
 <br/>
 
 После этого останется лишь нажать «Publish As» в правом верхнем углу, и вы сможете использовать созданный набор данных в Tableau Online как обычно.
@@ -101,4 +110,4 @@ SSL-сертификат ClickHouse Cloud подписан центром сер
 
 ## Известные ограничения (ClickHouse 23.11) {#known-limitations-clickhouse-2311}
 
-Все известные ограничения были устранены в ClickHouse `23.11`. Если вы столкнётесь с другими проблемами совместимости, пожалуйста, [свяжитесь с нами](https://clickhouse.com/company/contact) или создайте [новый issue](https://github.com/ClickHouse/ClickHouse/issues).
+Все известные ограничения были исправлены в ClickHouse `23.11`. Если вы столкнётесь с другими проблемами совместимости, [свяжитесь с нами](https://clickhouse.com/company/contact) или создайте [новый запрос](https://github.com/ClickHouse/ClickHouse/issues).

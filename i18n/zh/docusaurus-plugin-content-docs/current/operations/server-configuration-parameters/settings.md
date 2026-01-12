@@ -2772,6 +2772,12 @@ ClickHouse 使用全局线程池（Global Thread Pool）中的线程来处理查
 
 后台内存 worker 的执行周期，用于在较高内存使用期间校正 memory tracker 的内存用量，并清理未使用的页面。如果设置为 0，则会根据内存使用来源使用默认值。
 
+## memory_worker_purge_dirty_pages_threshold_ratio {#memory_worker_purge_dirty_pages_threshold_ratio} 
+
+<SettingsInfoBlock type="Double" default_value="0.2" />
+
+jemalloc 脏页相对于 ClickHouse 服务器可用内存的阈值比例。当脏页大小超过该比例时，后台内存 worker 会强制回收脏页。若设置为 0，则禁用强制回收。
+
 ## memory_worker_use_cgroup {#memory_worker_use_cgroup} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />利用当前 cgroup 的内存使用信息校正内存跟踪。

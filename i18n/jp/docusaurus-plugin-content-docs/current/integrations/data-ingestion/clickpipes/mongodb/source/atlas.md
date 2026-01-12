@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mongodb/source/atlas
 title: 'MongoDB Atlas ソース設定ガイド'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import mongo_atlas_configuration from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/mongo-atlas-cluster-overview-configuration.png'
@@ -22,12 +25,15 @@ import Image from '@theme/IdealImage';
 レプリケーションには、最小 24 時間の oplog 保持期間が必要です。初回スナップショットが完了する前に oplog が削除されないようにするため、oplog の保持期間は 72 時間以上に設定することを推奨します。UI から oplog の保持期間を設定するには、次の手順を実行します。
 
 1. MongoDB Atlas コンソールで対象クラスターの `Overview` タブを開き、`Configuration` タブをクリックします。
+
 <Image img={mongo_atlas_configuration} alt="クラスター構成画面へ移動" size="lg" border/>
 
 2. `Additional Settings` をクリックし、`More Configuration Options` までスクロールします。
+
 <Image img={mngo_atlas_additional_settings} alt="追加設定を展開" size="lg" border/>
 
 3. `More Configuration Options` をクリックし、最小 oplog ウィンドウを `72 hours` 以上に設定します。
+
 <Image img={mongo_atlas_retention_hours} alt="oplog の保持期間を設定" size="lg" border/>
 
 4. `Review Changes` をクリックして内容を確認し、その後 `Apply Changes` をクリックして変更を反映します。

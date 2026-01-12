@@ -6,6 +6,9 @@ sidebar_position: 1
 title: 'Kafka ClickPipes FAQ'
 doc_type: 'guide'
 keywords: ['kafka faq', 'clickpipes', 'upstash', 'azure event hubs', 'private link']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 ## Kafka ClickPipes FAQ {#faq}

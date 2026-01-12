@@ -6,6 +6,9 @@ description: 'ClickHouse と Amazon Glue を統合する'
 keywords: ['clickhouse', 'amazon', 'aws', 'glue', 'migrating', 'data', 'spark']
 title: 'Amazon Glue を ClickHouse および Spark と連携させる'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import Image from '@theme/IdealImage';

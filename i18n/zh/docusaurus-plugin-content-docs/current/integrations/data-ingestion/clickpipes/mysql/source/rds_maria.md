@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/source/rds_maria
 title: 'RDS MariaDB 数据源设置指南'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', '数据摄取', '实时同步']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
@@ -37,15 +40,16 @@ import Image from '@theme/IdealImage';
 
 建议根据复制的具体使用场景，将备份保留期设置为相对较长且合理的值。
 
-### 2. Binlog 保留时间（小时） {#binlog-retention-hours-rds}
+### 2. Binlog 保留时间（小时）{#binlog-retention-hours-rds}
 
 Amazon RDS for MariaDB 采用不同的方法来设置 binlog 的保留时长，即包含变更的 binlog 文件被保留的时间。如果在 binlog 文件被删除之前，某些变更尚未被读取，复制将无法继续。binlog 保留时间的默认值为 NULL，这意味着不会保留二进制日志。
 
-要指定在 DB 实例上保留二进制日志的小时数，请使用 mysql.rds&#95;set&#95;configuration 函数，并将 binlog 保留时间设置得足够长，以确保复制可以完成。推荐的最小值为 `24 hours`。
+要指定在 DB 实例上保留二进制日志的小时数，请使用 mysql.rds&#95;set&#95;configuration 函数，并将 binlog 保留时间设置得足够长，以确保复制可以完成。推荐的最小值为 `24 小时`。
 
 ```text
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 ```
+
 
 ## 在参数组中配置 binlog 设置 {#binlog-parameter-group-rds}
 
@@ -74,11 +78,13 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 接下来，点击右上角的 `Save Changes`。您可能需要重启实例以使更改生效。如果在 RDS 实例的 Configurations 选项卡中，您在参数组链接旁看到 `Pending reboot`，这通常表示需要重启实例。
 
 <br/>
+
 :::tip
 如果您使用的是 MariaDB 集群，上述参数会在 [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) 参数组中，而不是 DB 实例参数组中。
 :::
 
 ## 启用 GTID 模式 {#gtid-mode-rds}
+
 全局事务标识（GTID，Global Transaction Identifiers）是在 MySQL/MariaDB 中为每个已提交事务分配的唯一 ID。它可以简化二进制日志（binlog）复制，并让故障排查更加简单。MariaDB 默认启用 GTID 模式，因此用户无需执行任何操作即可使用它。
 
 ## 配置数据库用户 {#configure-database-user-rds}
@@ -102,6 +108,7 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
     ```sql
     GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
     GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
+
 
 ## 配置网络访问 {#configure-network-access}
 

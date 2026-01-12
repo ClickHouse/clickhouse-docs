@@ -6,7 +6,7 @@ description: 'Mitzu はノーコードで利用できるデータウェアハウ
 title: 'Mitzu を ClickHouse に接続する'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
 ---
 
@@ -132,9 +132,11 @@ SQL を 1 行も書かずに、コンバージョン率に関するインサイ�
 :::
 
 ## 7. ジャーニークエリを実行する {#7-run-journey-queries}
+
 ファネルのステップを最大 9 個まで選択します。ユーザーがジャーニーを完了できる時間ウィンドウを選択します。Mitzu のジャーニーチャートは、選択したイベント間でユーザーがたどるすべてのパスを可視化してマッピングします。
 
 <Image size="lg" img={mitzu_09} alt="イベント間のユーザーパスフローを示す Mitzu のジャーニー可視化" border />
+
 <br/>
 
 :::tip ステップを分解する
@@ -144,7 +146,8 @@ SQL を 1 行も書かずに、コンバージョン率に関するインサイ�
 <br/>
 
 ## 8. 収益クエリを実行する {#8-run-revenue-queries}
-収益設定を行っている場合、Mitzu は支払いイベントに基づいて合計 MRR とサブスクリプション数を算出できます。
+
+収益設定が構成されている場合、Mitzu は支払いイベントに基づいて合計MRRとサブスクリプション数を算出できます。
 
 <Image size="lg" img={mitzu_10} alt="MRR 指標を表示している Mitzu の収益分析ダッシュボード" border />
 

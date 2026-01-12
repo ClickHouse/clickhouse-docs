@@ -4,6 +4,9 @@ description: 'Загрузка данных из Azure в ClickHouse'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data']
 title: 'Загрузка данных из Azure в ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 | Page                                                                              | Description                                                                                                                                                                 |

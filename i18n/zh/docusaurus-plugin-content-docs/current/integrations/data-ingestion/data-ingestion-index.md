@@ -23,6 +23,7 @@ ClickHouse 集成了多种用于数据集成和转换的解决方案。
 | [BladePipe](/integrations/bladepipe)                         | 一款端到端实时数据集成工具，具备亚秒级延迟，可在各个平台之间实现无缝数据流转。                                                                                                                  |
 | [dbt](/integrations/dbt)                                         | 使分析工程师能够仅通过编写 select 语句来对数据仓库中的数据进行转换。                                                                                                                            |
 | [dlt](/integrations/data-ingestion/etl-tools/dlt-and-clickhouse) | 一个开源库，您可以将其添加到 Python 脚本中，将来自各种、且往往较为杂乱的数据源的数据加载为结构良好、实时更新的数据集。                                                                           |
+| [Estuary](/integrations/estuary)                                 | 一款实时数据平台，可实现毫秒级延迟的 ETL 管道，并提供灵活的部署选项。                                    |
 | [Fivetran](/integrations/fivetran)                               | 一个自动化数据移动平台，用于在云数据平台之间以及进出云数据平台移动数据。                                                                                                                        |
 | [NiFi](/integrations/nifi)                                       | 一款开源工作流管理软件，用于自动化软件系统之间的数据流。                                                                                                                                       |
 | [Vector](/integrations/vector)                                   | 一条高性能的可观测性数据管道，使组织能够掌控其可观测性数据。                                                                                                                                    |

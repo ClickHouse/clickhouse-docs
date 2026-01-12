@@ -27,6 +27,6 @@ ClickHouse Cloud 中的 HyperDX 目前处于私有预览阶段，需在组织级
 
 <Image img={hyperdx_cloud} alt="ClickHouse Cloud HyperDX" size="lg"/>
 
-若要开始在 ClickHouse Cloud 中使用 HyperDX，建议参考我们的专门[快速入门指南](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)。
+若要开始在 ClickHouse Cloud 中使用 HyperDX，建议参考我们的专门[快速入门指南](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud)。
 
 有关 ClickStack 的更多详细信息，请参阅[完整文档](/use-cases/observability/clickstack)。 

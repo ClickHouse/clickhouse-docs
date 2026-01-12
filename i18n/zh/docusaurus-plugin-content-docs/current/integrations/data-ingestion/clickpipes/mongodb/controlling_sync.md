@@ -1,10 +1,13 @@
 ---
 title: '控制 MongoDB ClickPipe 的同步'
-description: 'MongoDB ClickPipe 同步控制文档'
+description: '用于控制 MongoDB ClickPipe 同步的文档'
 slug: /integrations/clickpipes/mongodb/sync_control
 sidebar_label: '控制同步'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
+integration:
+  - support_level: '核心'
+  - category: 'clickpipes'
 ---
 
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'
@@ -14,7 +17,6 @@ import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipe
 import Image from '@theme/IdealImage';
 
 本文档介绍当 ClickPipe 处于 **CDC（Running）模式** 时如何控制 MongoDB ClickPipe 的同步。
-
 
 ## 概览 {#overview}
 

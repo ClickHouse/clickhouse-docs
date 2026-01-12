@@ -1,5 +1,5 @@
 ---
-description: 'Движок базы данных DataLakeCatalog позволяет подключать ClickHouse к внешним каталогам данных и выполнять запросы к данным в открытых форматах таблиц'
+description: 'Движок базы данных DataLakeCatalog позволяет подключать ClickHouse к внешним каталогам данных и выполнять запросы к данным в открытых табличных форматах'
 sidebar_label: 'DataLakeCatalog'
 slug: /engines/database-engines/datalakecatalog
 title: 'DataLakeCatalog'
@@ -20,7 +20,7 @@ doc_type: 'reference'
 - **AWS Glue Catalog** — для таблиц Iceberg в средах AWS
 - **Databricks Unity Catalog** — для таблиц Delta Lake и Iceberg
 - **Hive Metastore** — традиционный каталог экосистемы Hadoop
-- **REST Catalogs** — любой каталог, поддерживающий спецификацию REST для Iceberg
+- **REST Catalogs** — любой каталог, поддерживающий спецификацию Iceberg REST
 
 ## Создание базы данных {#creating-a-database}
 
@@ -31,6 +31,7 @@ SET allow_experimental_database_iceberg = 1;
 SET allow_experimental_database_unity_catalog = 1;
 SET allow_experimental_database_glue_catalog = 1;
 SET allow_experimental_database_hms_catalog = 1;
+SET allow_experimental_database_paimon_rest_catalog = 1;
 ```
 
 Базы данных с движком `DataLakeCatalog` можно создавать с помощью следующего синтаксиса:
@@ -58,6 +59,9 @@ catalog_type,
 | `aws_access_key_id`     | Идентификатор ключа доступа AWS для доступа к S3/Glue (если не используются выдаваемые учетные данные) |
 | `aws_secret_access_key` | Секретный ключ доступа AWS для доступа к S3/Glue (если не используются выдаваемые учетные данные)      |
 | `region`                | Регион AWS для сервиса (например, `us-east-1`)                                                         |
+| `dlf_access_key_id`     | Идентификатор ключа доступа для DLF                                                                    |
+| `dlf_access_key_secret` | Секретный ключ доступа для DLF                                                                         |
+
 
 ## Примеры {#examples}
 
@@ -65,7 +69,7 @@ catalog_type,
 
 * [Unity Catalog](/use-cases/data-lake/unity-catalog)
 * [Glue Catalog](/use-cases/data-lake/glue-catalog)
-* OneLake Catalog\
+* OneLake Catalog
   может использоваться при включении `allow_experimental_database_iceberg` или `allow_database_iceberg`.
 
 ```sql
