@@ -1101,7 +1101,13 @@ GitLab についても同様で、先頭にドットが付いていても同じ�
 
 ## dns_max_consecutive_failures {#dns_max_consecutive_failures} 
 
-<SettingsInfoBlock type="UInt32" default_value="10" />ホスト名を ClickHouse の DNS キャッシュから削除する前に許容される、そのホスト名に対する DNS 解決の最大連続失敗回数。
+<SettingsInfoBlock type="UInt32" default_value="5" />
+
+この回数連続して失敗すると、そのホスト名の DNS キャッシュを更新しようとする試行をそれ以上行いません。情報自体は DNS キャッシュ内に残ります。0 を指定すると無制限になります。
+
+**関連項目**
+
+- [`SYSTEM DROP DNS CACHE`](../../sql-reference/statements/system#drop-dns-cache)
 
 ## drop_distributed_cache_pool_size {#drop_distributed_cache_pool_size} 
 

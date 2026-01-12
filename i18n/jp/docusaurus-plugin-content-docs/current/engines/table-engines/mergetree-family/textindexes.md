@@ -67,9 +67,9 @@ ORDER BY key
   n-gram のデフォルトサイズは、明示的に指定されていない場合（例えば `tokenizer = ngrams`）、3 です。
 * `sparseGrams(min_length, max_length, min_cutoff_length)` は、`min_length` 文字以上 `max_length` 文字以下（両端を含む）の可変長 n-gram に文字列を分割します（関数 [sparseGrams](/sql-reference/functions/string-functions#sparseGrams) も参照してください）。
   明示的に指定されていない場合、`min_length` と `max_length` のデフォルトはそれぞれ 3 と 100 です。
-  パラメーター `min_cutoff_length` が指定されている場合、その長さ以上の n-gram のみが索引に保存されます。
+  パラメーター `min_cutoff_length` が指定されている場合、その長さ以上の n-gram のみが返されます。
   `ngrams(N)` と比較して、`sparseGrams` トークナイザーは可変長の N-gram を生成し、元のテキストをより柔軟に表現できます。
-  例えば、`tokenizer = sparseGrams(3, 5, 4)` は内部的には入力文字列から 3-, 4-, 5-gram を生成しますが、索引には 4-gram と 5-gram のみが保存されます。
+  例えば、`tokenizer = sparseGrams(3, 5, 4)` は内部的には入力文字列から 3-, 4-, 5-gram を生成しますが、4-gram と 5-gram のみが返されます。
 * `array` はトークナイズを行わず、各行の値全体を 1 つのトークンとして扱います（関数 [array](/sql-reference/functions/array-functions.md/#array) も参照してください）。
 
 :::note

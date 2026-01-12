@@ -50,39 +50,54 @@ doc_type: 'reference'
 
 | Имя | По умолчанию |
 |------|--------|
-| [shared_merge_tree_activate_coordinated_merges_tasks](/operations/settings/merge-tree-settings#shared_merge_tree_activate_coordinated_merges_tasks) | `0` |
-| [shared_merge_tree_enable_coordinated_merges](/operations/settings/merge-tree-settings#shared_merge_tree_enable_coordinated_merges) | `0` |
-| [shared_merge_tree_enable_keeper_parts_extra_data](/operations/settings/merge-tree-settings#shared_merge_tree_enable_keeper_parts_extra_data) | `0` |
-| [shared_merge_tree_merge_coordinator_election_check_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_election_check_period_ms) | `30000` |
-| [shared_merge_tree_merge_coordinator_factor](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_factor) | `1.1` |
-| [shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms) | `10000` |
-| [shared_merge_tree_merge_coordinator_max_merge_request_size](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_merge_request_size) | `20` |
-| [shared_merge_tree_merge_coordinator_max_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_period_ms) | `10000` |
-| [shared_merge_tree_merge_coordinator_merges_prepare_count](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_merges_prepare_count) | `100` |
-| [shared_merge_tree_merge_coordinator_min_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_min_period_ms) | `1` |
-| [shared_merge_tree_merge_worker_fast_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_fast_timeout_ms) | `100` |
-| [shared_merge_tree_merge_worker_regular_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_regular_timeout_ms) | `10000` |
-| [geotoh3_argument_order](/operations/settings/settings#geotoh3_argument_order) | `lat_lon` |
-| [enable_lightweight_update](/operations/settings/settings#enable_lightweight_update) | `1` |
-| [allow_experimental_correlated_subqueries](/operations/settings/settings#allow_experimental_correlated_subqueries) | `1` |
-| [parallel_replicas_count](/operations/settings/settings#parallel_replicas_count) | `0` |
-| [parallel_replica_offset](/operations/settings/settings#parallel_replica_offset) | `0` |
-| [parallel_replicas_custom_key](/operations/settings/settings#parallel_replicas_custom_key) | `` |
-| [parallel_replicas_custom_key_range_lower](/operations/settings/settings#parallel_replicas_custom_key_range_lower) | `0` |
-| [parallel_replicas_custom_key_range_upper](/operations/settings/settings#parallel_replicas_custom_key_range_upper) | `0` |
-| [allow_experimental_database_iceberg](/operations/settings/settings#allow_experimental_database_iceberg) | `0` |
-| [allow_experimental_database_unity_catalog](/operations/settings/settings#allow_experimental_database_unity_catalog) | `0` |
-| [allow_experimental_database_glue_catalog](/operations/settings/settings#allow_experimental_database_glue_catalog) | `0` |
-| [session_timezone](/operations/settings/settings#session_timezone) | `` |
-| [low_priority_query_wait_time_ms](/operations/settings/settings#low_priority_query_wait_time_ms) | `1000` |
-| [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize) | `1` |
-| [enable_full_text_index](/operations/settings/settings#enable_full_text_index) | `0` |
-| [allow_experimental_delta_kernel_rs](/operations/settings/settings#allow_experimental_delta_kernel_rs) | `1` |
+| [geotoh3&#95;argument&#95;order](/operations/settings/settings#geotoh3_argument_order) | `lat_lon` |
+| [enable&#95;lightweight&#95;update](/operations/settings/settings#enable_lightweight_update) | `1` |
+| [allow&#95;experimental&#95;correlated&#95;subqueries](/operations/settings/settings#allow_experimental_correlated_subqueries) | `1` |
+| [parallel&#95;replicas&#95;count](/operations/settings/settings#parallel_replicas_count) | `0` |
+| [parallel&#95;replica&#95;offset](/operations/settings/settings#parallel_replica_offset) | `0` |
+| [parallel&#95;replicas&#95;custom&#95;key](/operations/settings/settings#parallel_replicas_custom_key) | `` |
+| [parallel&#95;replicas&#95;custom&#95;key&#95;range&#95;lower](/operations/settings/settings#parallel_replicas_custom_key_range_lower) | `0` |
+| [parallel&#95;replicas&#95;custom&#95;key&#95;range&#95;upper](/operations/settings/settings#parallel_replicas_custom_key_range_upper) | `0` |
+| [allow&#95;experimental&#95;database&#95;iceberg](/operations/settings/settings#allow_experimental_database_iceberg) | `0` |
+| [allow&#95;experimental&#95;database&#95;unity&#95;catalog](/operations/settings/settings#allow_experimental_database_unity_catalog) | `0` |
+| [allow&#95;experimental&#95;database&#95;glue&#95;catalog](/operations/settings/settings#allow_experimental_database_glue_catalog) | `0` |
+| [session&#95;timezone](/operations/settings/settings#session_timezone) | `` |
+| [low&#95;priority&#95;query&#95;wait&#95;time&#95;ms](/operations/settings/settings#low_priority_query_wait_time_ms) | `1000` |
+| [allow&#95;statistics&#95;optimize](/operations/settings/settings#allow_statistics_optimize) | `1` |
+| [enable&#95;full&#95;text&#95;index](/operations/settings/settings#enable_full_text_index) | `0` |
+| [allow&#95;experimental&#95;delta&#95;kernel&#95;rs](/operations/settings/settings#allow_experimental_delta_kernel_rs) | `1` |
+| [shared&#95;merge&#95;tree&#95;activate&#95;coordinated&#95;merges&#95;tasks](/operations/settings/merge-tree-settings#shared_merge_tree_activate_coordinated_merges_tasks) | `0` |
+| [shared&#95;merge&#95;tree&#95;enable&#95;coordinated&#95;merges](/operations/settings/merge-tree-settings#shared_merge_tree_enable_coordinated_merges) | `0` |
+| [shared&#95;merge&#95;tree&#95;enable&#95;keeper&#95;parts&#95;extra&#95;data](/operations/settings/merge-tree-settings#shared_merge_tree_enable_keeper_parts_extra_data) | `0` |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;election&#95;check&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_election_check_period_ms) | `30000` |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;factor](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_factor) | `1.1` |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;fetch&#95;fresh&#95;metadata&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms) | `10000` |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;max&#95;merge&#95;request&#95;size](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_merge_request_size) | `20` |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;max&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_period_ms) | `10000` |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;merges&#95;prepare&#95;count](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_merges_prepare_count) | `100` |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;min&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_min_period_ms) | `1` |
+| [shared&#95;merge&#95;tree&#95;merge&#95;worker&#95;fast&#95;timeout&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_fast_timeout_ms) | `100` |
+| [shared&#95;merge&#95;tree&#95;merge&#95;worker&#95;regular&#95;timeout&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_regular_timeout_ms) | `10000` |
 
 ## Экспериментальные настройки {#experimental-settings}
 
 | Имя                                                                                                                                                                                                                                 | По умолчанию            |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| [allow&#95;experimental&#95;replacing&#95;merge&#95;with&#95;cleanup](/operations/settings/merge-tree-settings#allow_experimental_replacing_merge_with_cleanup)                                                                     | `0`                     |
+| [allow&#95;experimental&#95;reverse&#95;key](/operations/settings/merge-tree-settings#allow_experimental_reverse_key)                                                                                                               | `0`                     |
+| [allow&#95;remote&#95;fs&#95;zero&#95;copy&#95;replication](/operations/settings/merge-tree-settings#allow_remote_fs_zero_copy_replication)                                                                                         | `0`                     |
+| [enable&#95;replacing&#95;merge&#95;with&#95;cleanup&#95;for&#95;min&#95;age&#95;to&#95;force&#95;merge](/operations/settings/merge-tree-settings#enable_replacing_merge_with_cleanup_for_min_age_to_force_merge)                   | `0`                     |
+| [force&#95;read&#95;through&#95;cache&#95;for&#95;merges](/operations/settings/merge-tree-settings#force_read_through_cache_for_merges)                                                                                             | `0`                     |
+| [merge&#95;selector&#95;algorithm](/operations/settings/merge-tree-settings#merge_selector_algorithm)                                                                                                                               | `Simple`                |
+| [merge&#95;selector&#95;enable&#95;heuristic&#95;to&#95;lower&#95;max&#95;parts&#95;to&#95;merge&#95;at&#95;once](/operations/settings/merge-tree-settings#merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once)     | `0`                     |
+| [merge&#95;selector&#95;heuristic&#95;to&#95;lower&#95;max&#95;parts&#95;to&#95;merge&#95;at&#95;once&#95;exponent](/operations/settings/merge-tree-settings#merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent) | `5`                     |
+| [notify&#95;newest&#95;block&#95;number](/operations/settings/merge-tree-settings#notify_newest_block_number)                                                                                                                       | `0`                     |
+| [part&#95;moves&#95;between&#95;shards&#95;delay&#95;seconds](/operations/settings/merge-tree-settings#part_moves_between_shards_delay_seconds)                                                                                     | `30`                    |
+| [part&#95;moves&#95;between&#95;shards&#95;enable](/operations/settings/merge-tree-settings#part_moves_between_shards_enable)                                                                                                       | `0`                     |
+| [remote&#95;fs&#95;zero&#95;copy&#95;path&#95;compatible&#95;mode](/operations/settings/merge-tree-settings#remote_fs_zero_copy_path_compatible_mode)                                                                               | `0`                     |
+| [remote&#95;fs&#95;zero&#95;copy&#95;zookeeper&#95;path](/operations/settings/merge-tree-settings#remote_fs_zero_copy_zookeeper_path)                                                                                               | `/clickhouse/zero_copy` |
+| [remove&#95;rolled&#95;back&#95;parts&#95;immediately](/operations/settings/merge-tree-settings#remove_rolled_back_parts_immediately)                                                                                               | `1`                     |
+| [shared&#95;merge&#95;tree&#95;virtual&#95;parts&#95;discovery&#95;batch](/operations/settings/merge-tree-settings#shared_merge_tree_virtual_parts_discovery_batch)                                                                 | `1`                     |
 | [allow&#95;experimental&#95;kafka&#95;offsets&#95;storage&#95;in&#95;keeper](/operations/settings/settings#allow_experimental_kafka_offsets_storage_in_keeper)                                                                      | `0`                     |
 | [allow&#95;experimental&#95;delta&#95;lake&#95;writes](/operations/settings/settings#allow_experimental_delta_lake_writes)                                                                                                          | `0`                     |
 | [automatic&#95;parallel&#95;replicas&#95;mode](/operations/settings/settings#automatic_parallel_replicas_mode)                                                                                                                      | `0`                     |
@@ -146,20 +161,5 @@ doc_type: 'reference'
 | [allow&#95;experimental&#95;object&#95;storage&#95;queue&#95;hive&#95;partitioning](/operations/settings/settings#allow_experimental_object_storage_queue_hive_partitioning)                                                        | `0`                     |
 | [query&#95;plan&#95;optimize&#95;join&#95;order&#95;algorithm](/operations/settings/settings#query_plan_optimize_join_order_algorithm)                                                                                              | `greedy`                |
 | [allow&#95;experimental&#95;database&#95;paimon&#95;rest&#95;catalog](/operations/settings/settings#allow_experimental_database_paimon_rest_catalog)                                                                                | `0`                     |
-| [allow&#95;experimental&#95;replacing&#95;merge&#95;with&#95;cleanup](/operations/settings/merge-tree-settings#allow_experimental_replacing_merge_with_cleanup)                                                                     | `0`                     |
-| [allow&#95;experimental&#95;reverse&#95;key](/operations/settings/merge-tree-settings#allow_experimental_reverse_key)                                                                                                               | `0`                     |
-| [allow&#95;remote&#95;fs&#95;zero&#95;copy&#95;replication](/operations/settings/merge-tree-settings#allow_remote_fs_zero_copy_replication)                                                                                         | `0`                     |
-| [enable&#95;replacing&#95;merge&#95;with&#95;cleanup&#95;for&#95;min&#95;age&#95;to&#95;force&#95;merge](/operations/settings/merge-tree-settings#enable_replacing_merge_with_cleanup_for_min_age_to_force_merge)                   | `0`                     |
-| [force&#95;read&#95;through&#95;cache&#95;for&#95;merges](/operations/settings/merge-tree-settings#force_read_through_cache_for_merges)                                                                                             | `0`                     |
-| [merge&#95;selector&#95;algorithm](/operations/settings/merge-tree-settings#merge_selector_algorithm)                                                                                                                               | `Simple`                |
-| [merge&#95;selector&#95;enable&#95;heuristic&#95;to&#95;lower&#95;max&#95;parts&#95;to&#95;merge&#95;at&#95;once](/operations/settings/merge-tree-settings#merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once)     | `0`                     |
-| [merge&#95;selector&#95;heuristic&#95;to&#95;lower&#95;max&#95;parts&#95;to&#95;merge&#95;at&#95;once&#95;exponent](/operations/settings/merge-tree-settings#merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent) | `5`                     |
-| [notify&#95;newest&#95;block&#95;number](/operations/settings/merge-tree-settings#notify_newest_block_number)                                                                                                                       | `0`                     |
-| [part&#95;moves&#95;between&#95;shards&#95;delay&#95;seconds](/operations/settings/merge-tree-settings#part_moves_between_shards_delay_seconds)                                                                                     | `30`                    |
-| [part&#95;moves&#95;between&#95;shards&#95;enable](/operations/settings/merge-tree-settings#part_moves_between_shards_enable)                                                                                                       | `0`                     |
-| [remote&#95;fs&#95;zero&#95;copy&#95;path&#95;compatible&#95;mode](/operations/settings/merge-tree-settings#remote_fs_zero_copy_path_compatible_mode)                                                                               | `0`                     |
-| [remote&#95;fs&#95;zero&#95;copy&#95;zookeeper&#95;path](/operations/settings/merge-tree-settings#remote_fs_zero_copy_zookeeper_path)                                                                                               | `/clickhouse/zero_copy` |
-| [remove&#95;rolled&#95;back&#95;parts&#95;immediately](/operations/settings/merge-tree-settings#remove_rolled_back_parts_immediately)                                                                                               | `1`                     |
-| [shared&#95;merge&#95;tree&#95;virtual&#95;parts&#95;discovery&#95;batch](/operations/settings/merge-tree-settings#shared_merge_tree_virtual_parts_discovery_batch)                                                                 | `1`                     |
 
 {/*AUTOGENERATED_END*/ }
