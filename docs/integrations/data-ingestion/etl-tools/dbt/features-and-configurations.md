@@ -488,7 +488,7 @@ Starting with dbt-clickhouse version 1.9.8, you can control how the target table
 
 By default, dbt will not apply any changes to the target table (`ignore` setting value), but you can change this setting to follow the same behavior as the `on_schema_change` config [in incremental models](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change).
 
-Also, you can use this settin as a safety mechanism. If you set it to `fail`, the build will fail if the columns in the MV's SQL differ from the target table that was created by the first `dbt run`.
+Also, you can use this setting as a safety mechanism. If you set it to `fail`, the build will fail if the columns in the MV's SQL differ from the target table that was created by the first `dbt run`.
 
 ```jinja2
 {{config(
