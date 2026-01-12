@@ -12,7 +12,7 @@ import dfBench from '@site/static/images/chdb/df_bench.png';
 
 # chDB {#chdb}
 
-chDB は、[ClickHouse](https://github.com/clickhouse/clickhouse) を基盤とした、高速なインプロセス SQL OLAP エンジンです。
+chDB は、[ClickHouse](https://github.com/clickhouse/clickhouse) v25.8.2.1 を基盤とした、高速なインプロセス SQL OLAP エンジンです。
 ClickHouse サーバーに接続することなく、任意のプログラミング言語から ClickHouse のパワーを利用したい場合に使用できます。
 
 ## 主な機能 {#key-features}
