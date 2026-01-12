@@ -8,9 +8,9 @@ title: 'Тип данных QBit'
 doc_type: 'reference'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+import ExperimentalBadge from &#39;@theme/badges/ExperimentalBadge&#39;;
 
-<ExperimentalBadge />
+<ExperimentalBadge/>
 
 Тип данных `QBit` реорганизует хранение векторов для более быстрого приближённого поиска. Вместо того чтобы хранить элементы каждого вектора вместе, он группирует одинаковые позиции двоичных разрядов по всем векторам.
 Это позволяет хранить векторы с полной точностью и выбирать степень детальной квантизации во время поиска: считывать меньше бит для уменьшения объёма I/O и ускорения вычислений или больше бит для повышения точности. Вы получаете преимущества по скорости за счёт сокращения передачи данных и объёма вычислений благодаря квантизации, при этом все исходные данные остаются доступными при необходимости.
@@ -30,6 +30,7 @@ column_name QBit(element_type, dimension)
 * `element_type` – тип каждого элемента вектора. Допустимые типы: `BFloat16`, `Float32` и `Float64`
 * `dimension` – число элементов в каждом векторе
 
+
 ## Создание QBit {#creating-qbit}
 
 Использование типа `QBit` в определении столбца таблицы:
@@ -46,6 +47,7 @@ SELECT vec FROM test ORDER BY id;
 │ [9,10,11,12,13,14,15,16] │
 └──────────────────────────┘
 ```
+
 
 ## Подстолбцы QBit {#qbit-subcolumns}
 
@@ -71,8 +73,10 @@ SELECT bin(vec.1) FROM test;
 * `Float32`: 32 подстолбца (1–32)
 * `Float64`: 64 подстолбца (1–64)
 
+
 ## Функции векторного поиска {#vector-search-functions}
 
 Это функции вычисления расстояния для поиска похожих векторов, которые используют тип данных `QBit`:
 
 * [`L2DistanceTransposed`](../functions/distance-functions.md#L2DistanceTransposed)
+* [`cosineDistanceTransposed`](../functions/distance-functions.md#cosineDistanceTransposed)

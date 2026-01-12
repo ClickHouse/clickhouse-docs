@@ -8,9 +8,9 @@ title: 'QBit データ型'
 doc_type: 'reference'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+import ExperimentalBadge from &#39;@theme/badges/ExperimentalBadge&#39;;
 
-<ExperimentalBadge />
+<ExperimentalBadge/>
 
 `QBit` データ型は、近似検索を高速化するためにベクトルの格納方式を再構成します。各ベクトルの要素をまとめて保存する代わりに、すべてのベクトルにわたって同じビット位置をグループ化して格納します。
 これにより、ベクトルはフル精度のまま保持しつつ、検索時にきめ細かな量子化レベルを選択できます。読み込むビット数を少なくすれば I/O が減って計算が高速になり、多く読めば精度が向上します。量子化によるデータ転送量および計算量削減の高速化メリットを得ながら、必要に応じて元のデータをすべて参照できます。
@@ -30,6 +30,7 @@ column_name QBit(element_type, dimension)
 * `element_type` – 各ベクトル要素の型。利用可能な型は `BFloat16`、`Float32`、`Float64` です
 * `dimension` – 各ベクトル内の要素数。
 
+
 ## QBit の作成 {#creating-qbit}
 
 テーブルの列を定義する際に `QBit` 型を使用します：
@@ -46,6 +47,7 @@ SELECT vec FROM test ORDER BY id;
 │ [9,10,11,12,13,14,15,16] │
 └──────────────────────────┘
 ```
+
 
 ## QBit サブカラム {#qbit-subcolumns}
 
@@ -71,8 +73,10 @@ SELECT bin(vec.1) FROM test;
 * `Float32`: サブカラム 32 個 (1〜32)
 * `Float64`: サブカラム 64 個 (1〜64)
 
+
 ## ベクトル検索関数 {#vector-search-functions}
 
 `QBit` データ型を使用するベクトル類似度検索向けの距離関数は次のとおりです。
 
 * [`L2DistanceTransposed`](../functions/distance-functions.md#L2DistanceTransposed)
+* [`cosineDistanceTransposed`](../functions/distance-functions.md#cosineDistanceTransposed)
