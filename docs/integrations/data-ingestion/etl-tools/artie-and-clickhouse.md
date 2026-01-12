@@ -14,6 +14,7 @@ import artie_edit_pipeline from '@site/static/images/integrations/data-ingestion
 import analytics from '@site/static/images/integrations/data-ingestion/etl-tools/artie/analytics.png';
 import monitor from '@site/static/images/integrations/data-ingestion/etl-tools/artie/monitor.png';
 import schema_notification from '@site/static/images/integrations/data-ingestion/etl-tools/artie/schema_notification.png';
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
 # Connect Artie to ClickHouse
 
@@ -41,9 +42,7 @@ Visit <a href="https://www.artie.com/contact" target="_blank">artie.com/contact<
 
 After creating a service in ClickHouse Cloud, find the following required settings:
 
-- **Warehouse Address**: For "Connect with:", select "Go", then copy the address highlighted in the image below
-- **Service account username**
-- **Service account password**
+<ConnectionDetails />
 
 ## Create a new pipeline in Artie {#3-create-a-new-pipeline-in-artie}
 
