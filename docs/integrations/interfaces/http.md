@@ -815,7 +815,7 @@ max_final_threads    2
 max_threads    1
 ```
 
-#### Virtual parameter `_request_body`
+#### Virtual parameter `_request_body` {#virtual-param-request-body}
 
 In addition to URL parameters, headers, and query parameters, `predefined_query_handler` supports a special virtual parameter `_request_body`.
 It contains the raw HTTP request body as a string.
