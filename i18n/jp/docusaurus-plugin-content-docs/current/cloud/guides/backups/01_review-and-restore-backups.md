@@ -22,6 +22,10 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 このガイドでは、ClickHouse Cloud におけるバックアップの仕組み、サービスのバックアップ設定に利用できるオプション、およびバックアップからの復元方法について説明します。
 
+**前提条件**
+
+- 「[ClickHouse Cloud におけるバックアップの仕組み](/cloud/features/backups#how-backups-work-in-clickhouse-cloud)」（機能の概要ページ）を読んでいること
+
 ## バックアップステータス一覧 {#backup-status-list}
 
 サービスは、デフォルトの毎日スケジュールまたは選択した[カスタムスケジュール](/cloud/manage/backups/configurable-backups)に従ってバックアップされます。利用可能なすべてのバックアップは、サービスの **Backups** タブから確認できます。ここでは、バックアップのステータス、所要時間、およびバックアップサイズを確認できます。また、**Actions** 列から特定のバックアップを復元することも可能です。

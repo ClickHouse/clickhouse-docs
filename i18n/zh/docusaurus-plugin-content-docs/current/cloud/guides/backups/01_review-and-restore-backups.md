@@ -22,6 +22,10 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 本指南介绍 ClickHouse Cloud 中备份的工作机制、可用于为你的服务配置备份的选项，以及如何从备份中恢复数据。
 
+**先决条件**
+
+- 你已阅读[“ClickHouse Cloud 中备份的工作机制”](/cloud/features/backups#how-backups-work-in-clickhouse-cloud)（功能概览页面）
+
 ## 备份状态列表 {#backup-status-list}
 
 无论是默认的每日计划，还是你选择的[自定义计划](/cloud/manage/backups/configurable-backups)，你的服务都会按照设定的计划自动备份。所有可用的备份都可以在服务的 **Backups** 选项卡中查看。在这里，你可以看到备份的状态、耗时以及备份大小。你也可以通过 **Actions** 列来恢复特定的备份。
