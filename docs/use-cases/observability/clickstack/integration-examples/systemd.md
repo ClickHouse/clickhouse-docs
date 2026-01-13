@@ -8,10 +8,15 @@ description: 'Monitoring Systemd and Journald Logs with ClickStack'
 doc_type: 'guide'
 keywords: ['systemd', 'journald', 'journal', 'OTEL', 'ClickStack', 'system logs', 'systemctl']
 ---
+
 import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
+import finish_import from '@site/static/images/clickstack/systemd/finish-import-systemd.png';
+import example_dashboard from '@site/static/images/clickstack/systemd/systemd-logs-dashboard.png';
+import search_view from '@site/static/images/clickstack/systemd/systemd-search-view.png';
+import log_view from '@site/static/images/clickstack/systemd/systemd-log-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 # Monitoring Systemd Logs with ClickStack {#systemd-logs-clickstack}
@@ -35,8 +40,7 @@ If you want to test this integration first without modifying your existing setup
 
 ##### Prerequisites {#prerequisites}
 - ClickStack instance running
-- Linux system with systemd (Ubuntu 16.04+, CentOS 7+, Debian 8+, etc.)
-- Network access between ClickStack and the system being monitored
+- Linux system with systemd (Ubuntu 16.04+, CentOS 7+, Debian 8+)
 - Docker or Docker Compose installed on the monitored system
 
 <VerticalStepper headerLevel="h4">
@@ -76,13 +80,9 @@ journalctl --disk-usage
 If journal storage is in memory only, enable persistent storage:
 
 ```bash
-# Create journal directory for persistent storage
 sudo mkdir -p /var/log/journal
 sudo systemd-tmpfiles --create --prefix /var/log/journal
 sudo systemctl restart systemd-journald
-
-# Verify persistent storage
-journalctl --verify
 ```
 
 #### Create OpenTelemetry Collector configuration {#create-otel-config}
@@ -140,23 +140,15 @@ service:
 EOF
 ```
 
-**Configuration breakdown:**
-
-| Section | Parameter | Description |
-|---------|-----------|-------------|
-| `receivers.journald` | `directory` | Path to journal files (default: `/var/log/journal`) |
-| | `units` | Specific systemd units to collect (empty = all units) |
-| | `priority` | Minimum log priority: emerg, alert, crit, err, warning, notice, info, debug |
-| `processors.resource` | `service.name` | Logical service name for grouping logs |
-| | `host.name` | Hostname extracted from journal metadata |
-| `processors.attributes` | `unit` | Systemd unit name (service, timer, etc.) |
-| | `priority` | Syslog priority level |
-| `exporters.otlphttp` | `endpoint` | ClickStack OTLP endpoint |
-| | `authorization` | API key for authentication |
-
 #### Deploy with Docker Compose {#deploy-docker-compose}
 
-This example shows deploying the OTel Collector alongside ClickStack. Adjust service names and endpoints to match your existing deployment:
+:::note
+The `journald` receiver requires the `journalctl` binary to read journal files. The official `otel/opentelemetry-collector-contrib` image does not include `journalctl` by default.
+
+For containerized deployments, you can either install the collector directly on the host or build a custom image with systemd utilities. See the [troubleshooting section](#journalctl-not-found) for details.
+:::
+
+This example shows deploying the OTel Collector alongside ClickStack:
 
 ```yaml
 services:
@@ -190,43 +182,11 @@ networks:
     driver: bridge
 ```
 
-**Key configuration points:**
-- `otel/opentelemetry-collector-contrib:0.115.1` - Official image includes `journalctl` binary
-- `/var/log/journal:/var/log/journal:ro` - Persistent journal storage
-- `/run/log/journal:/run/log/journal:ro` - Volatile journal storage
-- `/etc/machine-id:/etc/machine-id:ro` - Required for journal identification
-- `http://clickstack:4318` - OTLP HTTP endpoint (use your ClickStack hostname)
-
 Start the services:
 
 ```bash
 docker compose up -d
 ```
-
-#### Alternative: Docker Run {#docker-run}
-
-If not using Docker Compose, run the collector directly:
-
-```bash
-docker run -d --name otel-collector \
-  --network host \
-  -e CLICKSTACK_API_KEY=${CLICKSTACK_API_KEY} \
-  -e CLICKSTACK_ENDPOINT=http://localhost:4318 \
-  -v "$(pwd)/otel-config.yaml:/etc/otelcol/config.yaml:ro" \
-  -v /var/log/journal:/var/log/journal:ro \
-  -v /run/log/journal:/run/log/journal:ro \
-  -v /etc/machine-id:/etc/machine-id:ro \
-  otel/opentelemetry-collector-contrib:0.115.1 \
-  --config=/etc/otelcol/config.yaml
-```
-
-:::note
-The collector container requires:
-- Access to `/var/log/journal` (persistent journal storage)
-- Access to `/run/log/journal` (volatile journal storage)
-- Access to `/etc/machine-id` for journal identification
-- The `journalctl` command is available in the official OpenTelemetry Collector Contrib image
-:::
 
 #### Verify logs in HyperDX {#verifying-logs}
 
@@ -234,74 +194,28 @@ Once configured, log into HyperDX and verify logs are flowing:
 
 1. Navigate to the Search view
 2. Set source to Logs
-3. Filter by `service.name:systemd-logs` to see systemd-specific logs
-4. You should see structured log entries with fields like `unit`, `priority`, `MESSAGE`, `_HOSTNAME`, etc.
+3. Filter by `service.name:systemd-logs`
+4. You should see structured log entries with fields like `unit`, `priority`, `MESSAGE`, `_HOSTNAME`
 
-To generate test logs:
+<Image img={search_view} alt="Log search view"/>
 
-```bash
-# Generate test log entries
-logger -t test-app "Testing systemd logs integration"
-
-# Restart services to generate logs
-sudo systemctl restart ssh
-sudo systemctl restart cron
-
-# View the logs
-journalctl -t test-app -n 5
-journalctl -u ssh -n 10
-```
+<Image img={log_view} alt="Log view"/>
 
 </VerticalStepper>
 
 ## Demo dataset {#demo-dataset}
 
-For users who want to test the systemd logs integration before configuring their production systems, we provide a sample dataset of pre-generated systemd journal logs with realistic patterns.
+For users who want to test the systemd logs integration before configuring their production systems, we provide a sample dataset of pre-generated systemd logs with realistic patterns.
 
 <VerticalStepper headerLevel="h4">
 
 #### Download the sample dataset {#download-sample}
 
-Download the binary journal file:
+Download the sample log file:
 
 ```bash
-curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/systemd/system.journal
+curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/systemd/systemd-demo.log
 ```
-
-The dataset includes:
-- Service start/stop events (nginx, docker, sshd)
-- Failed SSH login attempts (brute force attack pattern)
-- Systemd unit failures and restarts
-- Kernel messages
-- User session activity
-- Cron job executions
-
-#### Prepare the journal directory {#prepare-journal}
-
-Create the directory structure required by the journald receiver:
-
-```bash
-# Create directory with the machine ID from the demo data
-mkdir -p demo-journal/a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6
-mv system.journal demo-journal/a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6/
-```
-
-#### Build ClickStack image with journalctl {#build-image}
-
-The journald receiver requires the `journalctl` binary. Create a custom image:
-
-```bash
-cat > Dockerfile << 'EOF'
-FROM clickhouse/clickstack-all-in-one:latest
-RUN apk add --no-cache systemd
-EOF
-
-docker build -t clickstack-with-journalctl .
-```
-
-:::note
-This adds the `systemd` package (which includes `journalctl`) to the ClickStack image. This is only needed for the demo - production deployments use the separate OTel Collector which already has journalctl.
-:::
 
 #### Create demo collector configuration {#demo-config}
 
@@ -310,14 +224,26 @@ Create a configuration file for the demo:
 ```bash
 cat > systemd-demo.yaml << 'EOF'
 receivers:
-  journald:
-    directory: /var/log/journal
-    priority: info
+  filelog:
+    include:
+      - /tmp/systemd-demo/systemd-demo.log
+    start_at: beginning
+    operators:
+      - type: regex_parser
+        regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+        parse_from: body
+        parse_to: attributes
+      - type: time_parser
+        parse_from: attributes.timestamp
+        layout: '%Y-%m-%dT%H:%M:%S%z'
+      - type: add
+        field: attributes.source
+        value: "systemd-demo"
 
 service:
   pipelines:
     logs/systemd-demo:
-      receivers: [journald]
+      receivers: [filelog]
       processors:
         - memory_limiter
         - transform
@@ -329,27 +255,35 @@ EOF
 
 #### Run ClickStack with demo data {#run-demo}
 
-Start ClickStack with the demo journal:
+Start ClickStack with the demo logs:
 
 ```bash
 docker run -d --name clickstack-demo \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/systemd-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  -v "$(pwd)/demo-journal:/var/log/journal:ro" \
-  clickstack-with-journalctl
+  -v "$(pwd)/systemd-demo.log:/tmp/systemd-demo/systemd-demo.log:ro" \
+  clickhouse/clickstack-all-in-one:latest
 ```
+
+:::note
+The demo uses the `filelog` receiver with text logs instead of `journald` to avoid requiring `journalctl` in the container.
+:::
 
 #### Verify logs in HyperDX {#verify-demo-logs}
 
 Once ClickStack is running:
 
-1. Open [HyperDX](http://localhost:8080/) and log in to your account (you may need to create an account first)
+1. Open [HyperDX](http://localhost:8080/) and log in to your account
 2. Navigate to the Search view and set the source to `Logs`
 3. Set the time range to **2025-11-14 00:00:00 - 2025-11-17 00:00:00**
 
+<Image img={search_view} alt="Log search view"/>
+
+<Image img={log_view} alt="Log view"/>
+
 :::note[Timezone Display]
-HyperDX displays timestamps in your browser's local timezone. The demo data spans **2025-11-15 00:00:00 - 2025-11-16 00:00:00 (UTC)**. The wide time range ensures you'll see the demo logs regardless of your location. Once you see the logs, you can narrow the range to a 24-hour period for clearer visualizations.
+HyperDX displays timestamps in your browser's local timezone. The demo data spans **2025-11-15 00:00:00 - 2025-11-16 00:00:00 (UTC)**. The wide time range ensures you'll see the demo logs regardless of your location.
 :::
 
 </VerticalStepper>
@@ -371,20 +305,21 @@ To help you get started monitoring systemd logs with ClickStack, we provide esse
 
 3. Upload the `systemd-logs-dashboard.json` file and click **Finish Import**
 
+<Image img={finish_import} alt="Finish import"/>
+
 #### View the dashboard {#created-dashboard}
 
-The dashboard will be created with all visualizations pre-configured:
+The dashboard includes visualizations for:
+- Log volume over time
+- Top systemd units by log count
+- SSH authentication events
+- Service failures
+- Error rates
 
-Key visualizations include:
-- Log volume over time by priority
-- Top systemd units generating logs
-- Service failures and restarts
-- SSH authentication attempts
-- Error and warning trends
-- Unit status changes
+<Image img={example_dashboard} alt="Example dashboard"/>
 
 :::note
-For the demo dataset, set the time range to **2025-11-15 00:00:00 - 2025-11-16 00:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard will not have a time range specified by default.
+For the demo dataset, set the time range to **2025-11-15 00:00:00 - 2025-11-16 00:00:00 (UTC)** (adjust based on your local timezone).
 :::
 
 </VerticalStepper>
@@ -393,24 +328,7 @@ For the demo dataset, set the time range to **2025-11-15 00:00:00 - 2025-11-16 0
 
 ### No logs appearing in HyperDX {#no-logs}
 
-**Verify API key is set and passed to the container:**
-
-```bash
-# Check environment variable
-echo $CLICKSTACK_API_KEY
-
-# Verify it's in the container (for separate collector)
-docker exec otel-collector env | grep CLICKSTACK_API_KEY
-```
-
-If missing, set it and restart:
-
-```bash
-export CLICKSTACK_API_KEY=your-api-key-here
-docker compose up -d otel-collector
-```
-
-**Check if logs are reaching ClickHouse:**
+Check if logs are reaching ClickHouse:
 
 ```bash
 docker exec clickstack clickhouse-client --query "
@@ -420,82 +338,27 @@ WHERE ServiceName = 'systemd-logs'
 "
 ```
 
-If you don't see any results, check the collector logs:
+If no results, check the collector logs:
 
 ```bash
 docker logs otel-collector | grep -i "error\|journald" | tail -20
 ```
 
-**Verify journal access from container:**
+### journalctl not found error {#journalctl-not-found}
 
+If you see `exec: "journalctl": executable file not found in $PATH`:
+
+The `otel/opentelemetry-collector-contrib` image does not include `journalctl`. You can either:
+
+1. **Install the collector on the host**:
 ```bash
-# Check journal directory is mounted
-docker exec otel-collector ls -la /var/log/journal
-
-# Check machine-id is mounted
-docker exec otel-collector cat /etc/machine-id
+wget https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.115.0/otelcol-contrib_0.115.0_linux_amd64.tar.gz
+tar -xzf otelcol-contrib_0.115.0_linux_amd64.tar.gz
+sudo mv otelcol-contrib /usr/local/bin/
+otelcol-contrib --config=otel-config.yaml
 ```
 
-### Authentication errors {#auth-errors}
-
-If you see `Authorization failed` or `401 Unauthorized` in the collector logs:
-
-1. Verify the API key in HyperDX UI (Settings → API Keys → Ingestion API Key)
-2. Re-export and restart:
-
-```bash
-export CLICKSTACK_API_KEY=your-correct-api-key
-docker compose down
-docker compose up -d
-```
-
-### Permission denied errors {#permission-denied}
-
-If the collector logs show permission errors when accessing the journal:
-
-```bash
-# Option 1: Run container as root (add to docker-compose.yaml)
-otel-collector:
-  user: root
-  # ... rest of config
-
-# Option 2: Add systemd-journal group (more complex, requires matching GID)
-```
-
-### Journal files not found {#journal-not-found}
-
-If the collector can't find journal files:
-
-```bash
-# Check if systemd is using persistent storage
-journalctl --disk-usage
-
-# If using volatile storage only, enable persistent:
-sudo mkdir -p /var/log/journal
-sudo systemd-tmpfiles --create --prefix /var/log/journal
-sudo systemctl restart systemd-journald
-
-# Verify persistent storage exists
-ls -la /var/log/journal/
-```
-
-### Network connectivity issues {#network-issues}
-
-If the collector logs show `Connection refused`:
-
-Verify all containers are on the same Docker network:
-
-```bash
-docker compose ps
-docker network inspect <network-name>
-```
-
-Test connectivity:
-
-```bash
-# From collector to ClickStack
-docker exec otel-collector sh -c "timeout 2 sh -c 'cat < /dev/null > /dev/tcp/clickstack/4318' && echo 'Connected' || echo 'Failed'"
-```
+2. **Use the text export approach** (like the demo) with the `filelog` receiver reading journald exports
 
 ## Going to production {#going-to-production}
 
@@ -504,7 +367,6 @@ This guide uses a separate OpenTelemetry Collector to read systemd logs and send
 For production environments with multiple hosts, consider:
 - Deploying the collector as a DaemonSet in Kubernetes
 - Running the collector as a systemd service on each host
-- Centralizing configuration management via OpAMP
 - Using the OpenTelemetry Operator for automated deployment
 
-See [Ingesting with OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/opentelemetry) for production deployment patterns and collector configuration examples.
+See [Ingesting with OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/opentelemetry) for production deployment patterns.
