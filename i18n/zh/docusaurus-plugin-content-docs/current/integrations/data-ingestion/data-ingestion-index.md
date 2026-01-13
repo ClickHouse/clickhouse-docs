@@ -17,6 +17,7 @@ ClickHouse 集成了多种用于数据集成和转换的解决方案。
 | [Apache Spark](/integrations/apache-spark)                       | 一个多语言引擎，可在单机或集群上执行数据工程、数据科学和机器学习任务。                                                                                                                         |
 | [Apache Flink](https://github.com/ClickHouse/flink-connector-clickhouse)                       | 通过 Flink 的 DataStream API 实现向 ClickHouse 的实时数据摄取和处理，并支持批量写入。                                                                                                           |
 | [Amazon Glue](/integrations/glue)                                | 由 Amazon Web Services (AWS) 提供的全托管、无服务器数据集成服务，可简化为分析、机器学习和应用程序开发进行数据发现、准备和转换的过程。                                                          |
+| [Artie](/integrations/artie)                                     | 一款全托管的实时数据流平台，可将生产环境数据复制到 ClickHouse，从而在生产环境中解锁客户分析、业务运营工作流以及 Agentic AI 能力。                                                              |
 | [Azure Synapse](/integrations/azure-synapse)                     | 由 Microsoft Azure 提供的全托管云端分析服务，将大数据与数据仓库相结合，通过 SQL、Apache Spark 和数据管道，简化大规模的数据集成、转换和分析。                                                   |
 | [Azure Data Factory](/integrations/azure-data-factory)           | 一项基于云的数据集成服务，使您能够在大规模环境中创建、调度和编排数据工作流。 |
 | [Apache Beam](/integrations/apache-beam)                         | 一个开源的统一编程模型，使开发者可以定义并执行批处理和流式（持续）数据处理管道。                                                                                                               |

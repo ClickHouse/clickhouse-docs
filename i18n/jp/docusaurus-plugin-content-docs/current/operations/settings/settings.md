@@ -521,16 +521,6 @@ SELECT クエリの実行時に、各分片につき最大 `max_parallel_replica
 
 SQL の代替言語である PRQL を有効にします。
 
-## allow_experimental_qbit_type {#allow_experimental_qbit_type} 
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "新しい実験的な設定"}]}]}/>
-
-[QBit](../../sql-reference/data-types/qbit.md) データ型を作成できるようにします。
-
 ## allow_experimental_query_deduplication {#allow_experimental_query_deduplication} 
 
 <ExperimentalBadge/>
@@ -1097,6 +1087,14 @@ ROW POLICY の式が ORDER BY のカラムのみに依存している場合、�
 通常、この設定はユーザープロファイル（users.xml や `ALTER USER` のようなクエリ）で設定し、クライアント側（クライアントのコマンドライン引数、`SET` クエリ、`SELECT` クエリの `SETTINGS` セクション）からは設定しないことを推奨します。クライアント側からは、この値を false に変更することはできますが、true に変更することはできません（ユーザープロファイルで `apply_settings_from_server = false` が設定されている場合、サーバーは設定を送信しないため）。
 
 当初（24.12）にはサーバー側の設定（`send_settings_to_client`）が存在していましたが、その後、利便性向上のためにこのクライアント側設定に置き換えられました。
+
+## archive_adaptive_buffer_max_size_bytes {#archive_adaptive_buffer_max_size_bytes} 
+
+<SettingsInfoBlock type="UInt64" default_value="8388608" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "8388608"},{"label": "New setting"}]}]}/>
+
+アーカイブファイル（たとえば tar アーカイブ）への書き込み時に使用されるアダプティブバッファの最大サイズを制限します。
 
 ## arrow_flight_request_descriptor_type {#arrow_flight_request_descriptor_type} 
 
@@ -2237,6 +2235,21 @@ Replicated\* テーブルからデータを受け取る materialized view に対
 **関連項目**
 
 - [IN 演算子における NULL の処理](/guides/developer/deduplicating-inserts-on-retries#insert-deduplication-with-materialized-views)
+
+## deduplicate_insert_select {#deduplicate_insert_select} 
+
+<SettingsInfoBlock type="DeduplicateInsertSelectMode" default_value="enable_when_possible" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "change the default behavior of deduplicate_insert_select to ENABLE_WHEN_PROSSIBLE"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "New setting, replace insert_select_deduplicate"}]}]}/>
+
+`INSERT SELECT`（Replicated\* テーブル向け）のブロック単位の重複排除を有効または無効にします。
+この設定は、`INSERT SELECT` クエリに対して `insert_deduplicate` より優先されます。
+この設定には次の値があります:
+
+- disable — `INSERT SELECT` クエリに対する重複排除を無効にします。
+- force_enable — `INSERT SELECT` クエリに対する重複排除を有効にします。SELECT 結果が安定していない場合は例外がスローされます。
+- enable_when_possible — `insert_deduplicate` が有効で、かつ SELECT 結果が安定している場合に重複排除を有効にし、それ以外の場合は無効にします。
+- enable_even_for_bad_queries - `insert_deduplicate` が有効な場合に重複排除を有効にします。SELECT 結果が安定していない場合は警告がログに出力されますが、クエリは重複排除付きで実行されます。このオプションは後方互換性のためのものです。予期しない結果を招く可能性があるため、代わりに他のオプションの使用を検討してください。
 
 ## default_materialized_view_sql_security {#default_materialized_view_sql_security} 
 
@@ -3493,6 +3506,18 @@ Possible values:
 メモリ効率の良い集約（`distributed_aggregation_memory_efficient` を参照）が、バケットを順不同で生成できるようにします。
 集約バケットのサイズ分布が偏っている場合、より低い id の重いバケットをまだ処理している間に、レプリカがより高い id のバケットをイニシエータに送信できるようにすることで、パフォーマンスが向上する可能性があります。
 欠点として、メモリ使用量が増加する可能性があります。
+
+## enable_qbit_type {#enable_qbit_type} 
+
+<BetaBadge/>
+
+**エイリアス**: `allow_experimental_qbit_type`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "QBit が Beta 段階に移行しました。設定 'allow_experimental_qbit_type' のエイリアスが追加されました。"}]}]}/>
+
+[QBit](../../sql-reference/data-types/qbit.md) データ型を作成できるようにします。
 
 ## enable_reads_from_query_cache {#enable_reads_from_query_cache} 
 
@@ -5149,20 +5174,6 @@ ClickHouse は次の状況で例外をスローします:
 - [insert_quorum](#insert_quorum)
 - [insert_quorum_parallel](#insert_quorum_parallel)
 - [select_sequential_consistency](#select_sequential_consistency)
-
-## insert_select_deduplicate {#insert_select_deduplicate} 
-
-<SettingsInfoBlock type="BoolAuto" default_value="auto" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "auto"},{"label": "New setting"}]}]}/>
-
-`INSERT SELECT`（Replicated\* テーブル向け）のブロック重複排除を有効または無効にします。
-この設定は、`INSERT SELECT` クエリに対して `insert_deduplicate` を上書きします。
-この設定には次の 3 つの値を指定できます。
-
-- 0 — `INSERT SELECT` クエリに対する重複排除を無効にします。
-- 1 — `INSERT SELECT` クエリに対する重複排除を有効にします。`SELECT` の結果が安定（決定的）でない場合は、例外がスローされます。
-- auto — `insert_deduplicate` が有効で、かつ `SELECT` の結果が安定（決定的）している場合に重複排除を有効にし、それ以外の場合は無効にします。
 
 ## insert&#95;shard&#95;id {#insert_shard_id}
 
