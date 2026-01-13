@@ -7,8 +7,7 @@ title: '精确和近似向量搜索'
 doc_type: 'guide'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
-
+import BetaBadge from '@theme/badges/BetaBadge';
 
 # 精确与近似向量搜索 {#exact-and-approximate-vector-search}
 
@@ -621,7 +620,7 @@ LIMIT 3;
 
 ### 量化比特（QBit） {#approximate-nearest-neighbor-search-qbit}
 
-<ExperimentalBadge />
+<BetaBadge/>
 
 加速精确向量搜索的一种常见方法是使用更低精度的 [浮点数数据类型](../../../sql-reference/data-types/float.md)。
 例如，如果向量存储为 `Array(BFloat16)` 而不是 `Array(Float32)`，数据大小会减半，并且查询运行时间预计会按比例缩短。
@@ -637,7 +636,7 @@ ClickHouse 提供了 Quantized Bit（`QBit`）数据类型，通过以下方式�
 这是通过以按位分组（bit-grouped）的格式存储数据（即所有向量的第 i 个比特位被存储在一起）来实现的，从而仅按请求的精度级别进行读取。这样既可以通过量化减少 I/O 和计算量以获得速度优势，又能在需要时保留所有原始数据可用。当选择最大精度时，搜索将变为精确搜索。
 
 :::note
-`QBit` 数据类型及其相关距离函数目前为实验特性。要启用它们，请运行 `SET allow_experimental_qbit_type = 1`。
+`QBit` 数据类型及其相关距离函数目前为 Beta 特性。要启用它们，请运行 `SET enable_qbit_type = 1`。
 如果遇到问题，请在 [ClickHouse 仓库](https://github.com/clickhouse/clickhouse/issues) 中提交 issue。
 :::
 
@@ -699,7 +698,7 @@ ORDER BY distance;
    └────────┴─────────────────────┘
 ```
 
-**降精度搜索：**
+**低精度搜索：**
 
 ```sql
 SELECT
@@ -722,10 +721,6 @@ ORDER BY distance;
 
 请注意，在使用 12 位量化时，我们能够以更快的查询执行速度获得较为准确的距离近似结果。相对排序基本保持一致，`apple` 仍然是最接近的匹配项。
 
-:::note
-在当前实现中，加速效果来自于 I/O 的减少，因为我们读取的数据更少。如果原始数据是较宽的类型，比如 `Float64`，即使选择了更低的精度，距离计算仍然会在相同宽度的数据上进行——只是精度有所降低。
-:::
-
 
 #### 性能考量 {#qbit-performance}
 
@@ -740,3 +735,4 @@ ORDER BY distance;
 
 - [Vector Search with ClickHouse - Part 1](https://clickhouse.com/blog/vector-search-clickhouse-p1)
 - [Vector Search with ClickHouse - Part 2](https://clickhouse.com/blog/vector-search-clickhouse-p2)
+- [We built a vector search engine that lets you choose precision at query time](https://clickhouse.com/blog/qbit-vector-search)

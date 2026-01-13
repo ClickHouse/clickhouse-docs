@@ -32,6 +32,7 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 | `file_path`    | [String](../../sql-reference/data-types/string.md)    | ルートメタデータ JSON ファイル、Avro マニフェストリスト、またはマニフェストファイルへのパス。 |
 | `content`      | [String](../../sql-reference/data-types/string.md)    | JSON 形式のコンテンツ（.json からの生メタデータ、Avro メタデータ、または Avro エントリ）。   |
 | `row_in_file`  | [Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md)) | ファイル内の行番号（該当する場合）。`ManifestListEntry` および `ManifestFileEntry` のコンテンツタイプに対してのみ設定されます。 |
+| `pruning_status`  | [Nullable](../../sql-reference/data-types/nullable.md)([Enum8](../../sql-reference/data-types/enum.md)) | エントリのプルーニングステータス。'NotPruned'、'PartitionPruned'、'MinMaxIndexPruned' のいずれかの値を取ります。パーティションプルーニングは minmax プルーニングより先に行われるため、'PartitionPruned' は、そのエントリがパーティションフィルターによってプルーニングされ、minmax プルーニングは試行すらされなかったことを意味します。`ManifestFileEntry` のコンテンツタイプに対してのみ設定されます。 |
 
 ## `content_type` の値 {#content-type-values}
 
@@ -72,16 +73,19 @@ FROM system.iceberg_metadata_log
 WHERE query_id = '{previous_query_id}';
 ```
 
-[`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level) 設定の説明に、より詳しい情報があります。
+詳細については、[`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level) 設定の説明を参照してください。
+
 
 ### 補足事項 {#good-to-know}
 
 * Iceberg テーブルを詳細に調査する必要がある場合にのみ、クエリ単位で `iceberg_metadata_log_level` を使用してください。そうしないと、ログテーブルに不要なメタデータが大量に蓄積され、パフォーマンス低下を招く可能性があります。
-* このテーブルは主にデバッグ目的であり、エンティティごとの一意性は保証されないため、重複したエントリが含まれている場合があります。
+* このテーブルは主にデバッグ目的で使用され、エンティティごとの一意性は保証されないため、重複したエントリが含まれています。プログラム内で収集されるタイミングが異なるため、コンテンツとプルーニングステータスは別々の行に格納されます。メタデータが読み取られたときにコンテンツが収集され、メタデータがプルーニング対象かどうかチェックされたときにプルーニングステータスが収集されます。**重複排除の目的で、このテーブル自体に依存しないでください。**
 * `ManifestListMetadata` より冗長な `content_type` を使用すると、マニフェストリストに対する Iceberg メタデータキャッシュは無効化されます。
 * 同様に、`ManifestFileMetadata` より冗長な `content_type` を使用すると、マニフェストファイルに対する Iceberg メタデータキャッシュは無効化されます。
+* SELECT クエリがキャンセルまたは失敗した場合でも、失敗前に処理されたメタデータについてはログテーブルにエントリが残る可能性がありますが、処理されなかったメタデータエンティティに関する情報は含まれません。
 
 ## 関連項目 {#see-also}
+
 - [Iceberg テーブルエンジン](../../engines/table-engines/integrations/iceberg.md)
 - [Iceberg テーブル関数](../../sql-reference/table-functions/iceberg.md)
 - [system.iceberg_history](./iceberg_history.md)
