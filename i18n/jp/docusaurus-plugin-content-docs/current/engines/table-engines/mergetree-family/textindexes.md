@@ -22,7 +22,7 @@ ClickHouse のテキストインデックス（["inverted indexes"](https://en.w
 
 ## テキスト索引の作成 {#creating-a-text-index}
 
-テキスト索引を作成するには、まず対応する実験的なSETTINGを有効化します。
+テキスト索引を作成するには、まず対応する実験的な設定を有効化します。
 
 ```sql
 SET enable_full_text_index = true;
@@ -47,9 +47,8 @@ CREATE TABLE tab
                                 -- Optional advanced parameters:
                                 [, dictionary_block_size = D]
                                 [, dictionary_block_frontcoding_compression = B]
-                                [, max_cardinality_for_embedded_postings = M]
-                                [, bloom_filter_false_positive_rate = R]
-                            ) [GRANULARITY 64]
+                                [, posting_list_block_size = C]
+                            )
 )
 ENGINE = MergeTree
 ORDER BY key
@@ -81,12 +80,12 @@ ORDER BY key
 セパレーター文字列が [prefix code](https://en.wikipedia.org/wiki/Prefix_code) を構成している場合は、任意の順序で渡すことができます。
 :::
 
-
 :::warning
-現時点では、中国語などの非西洋言語のテキストに対してテキスト索引を構築することは推奨されません。
-現在サポートされているトークナイザーでは、索引サイズの肥大化やクエリ時間の増大を引き起こす可能性があります。
-今後、これらのケースをより適切に処理する言語固有の専用トークナイザーを追加する予定です。
+現時点では、中国語などの非西欧言語のテキストに対してテキスト索引を構築することは推奨されません。
+現在サポートされているトークナイザーでは、索引サイズが非常に大きくなり、クエリ時間も長くなる可能性があります。
+将来的には、これらのケースをより適切に処理できる、言語ごとに特化したトークナイザーを追加する予定です。
 :::
+
 
 トークナイザーが入力文字列をどのように分割するかをテストするには、ClickHouseの[tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens)関数を使用します:
 
@@ -154,26 +153,26 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
 ```
 
 **その他の引数(オプション)**。ClickHouseのテキスト索引は[セカンダリ索引](/engines/table-engines/mergetree-family/mergetree.md/#skip-index-types)として実装されています。
-ただし、他のスキップ索引とは異なり、テキスト索引のデフォルトのINDEX GRANULARITYは64です。
+ただし、他のスキップ索引とは異なり、テキスト索引は無限の粒度を持っています。つまり、テキスト索引はパーツ全体に対して作成され、明示的に指定した索引粒度は無視されます。
 この値は経験的に選択されており、ほとんどのユースケースにおいて速度と索引サイズの適切なトレードオフを提供します。
 上級ユーザーは異なる索引粒度を指定できますが、推奨しません。
 
 <details markdown="1">
-  <summary>オプションの高度なパラメータ</summary>
 
-  以下の高度なパラメータのデフォルト値は、ほぼすべての状況で適切に動作します。
-  これらを変更することは推奨しません。
+<summary>オプションの高度なパラメータ</summary>
 
-  オプションのパラメータ `dictionary_block_size`（デフォルト: 128）は、Dictionary ブロックのサイズ（行数）を指定します。
+以下の高度なパラメータのデフォルト値は、ほぼすべての状況で適切に動作します。
+これらを変更することは推奨しません。
 
-  オプションのパラメータ `dictionary_block_frontcoding_compression`（デフォルト: 1）は、Dictionary ブロックが圧縮方式としてフロントコーディングを使用するかどうかを指定します。
+オプションのパラメータ `dictionary_block_size`（デフォルト: 512）は、Dictionary ブロックのサイズ（行数）を指定します。
 
-  オプションのパラメータ `max_cardinality_for_embedded_postings`（デフォルト: 16）は、ポスティングリストを Dictionary ブロック内に埋め込むかどうかを決めるカーディナリティのしきい値を指定します。
+オプションのパラメータ `dictionary_block_frontcoding_compression`（デフォルト: 1）は、Dictionary ブロックが圧縮方式としてフロントコーディングを使用するかどうかを指定します。
 
-  オプションのパラメータ `bloom_filter_false_positive_rate`（デフォルト: 0.1）は、Dictionary の Bloom フィルタにおける偽陽性率を指定します。
+オプションのパラメータ `posting_list_block_size`（デフォルト: 1048576）は、ポスティングリストブロックのサイズ（行数）を指定します。
+
 </details>
 
-テーブル作成後でも、カラムに対してテキスト索引を追加・削除できます。
+テキスト索引は、テーブル作成後でもカラムに追加したり削除したりできます。
 
 ```sql
 ALTER TABLE tab DROP INDEX text_idx;
@@ -188,7 +187,7 @@ SELECT クエリでテキスト索引を利用するのは容易で、一般的�
 
 ### サポートされている関数 {#functions-support}
 
-テキストインデックスは、SELECT クエリの `WHERE` 句でテキスト関数が使用されている場合に使用できます。
+テキストインデックスは、`WHERE` 句または `PREWHERE` 句でテキスト関数が使用されている場合に使用できます。
 
 ```sql
 SELECT [...]
@@ -226,12 +225,13 @@ SELECT * from tab WHERE str IN ('Hello', 'World');
 #### `LIKE`、`NOT LIKE`、`match` {#functions-example-like-notlike-match}
 
 :::note
-これらの関数がフィルタリング時にテキスト索引を利用できるのは、索引トークナイザが `splitByNonAlpha` または `ngrams` の場合のみです。
+これらの関数がフィルタリング時にテキスト索引を利用できるのは、索引トークナイザが `splitByNonAlpha`、`ngrams`、または `sparseGrams` の場合のみです。
 :::
 
 `LIKE`（[like](/sql-reference/functions/string-search-functions.md/#like)）、`NOT LIKE`（[notLike](/sql-reference/functions/string-search-functions.md/#notLike)）、および [match](/sql-reference/functions/string-search-functions.md/#match) 関数をテキスト索引と併用するには、ClickHouse が検索語句から完全なトークンを抽出できる必要があります。
+`ngrams` トークナイザを用いた索引では、特殊文字で区切られた検索文字列の長さが ngram の長さ以上である場合に、この条件を満たします。
 
-例：
+`splitByNonAlpha` トークナイザを用いたテキスト索引の例：
 
 ```sql
 SELECT count() FROM tab WHERE comment LIKE 'support%';
@@ -252,8 +252,9 @@ SELECT count() FROM tab WHERE comment LIKE ' support %'; -- or `% support %`
 #### `startsWith` と `endsWith` {#functions-example-startswith-endswith}
 
 `LIKE` と同様に、[startsWith](/sql-reference/functions/string-functions.md/#startsWith) 関数と [endsWith](/sql-reference/functions/string-functions.md/#endsWith) 関数は、検索語句から完全なトークンを抽出できる場合に限り、テキストインデックスを利用できます。
+`ngrams` トークナイザーを用いるテキストインデックスの場合、検索する接頭辞または接尾辞の長さが ngram の長さ以上であれば、この条件を満たします。
 
-例：
+`splitByNonAlpha` トークナイザーを用いるテキストインデックスの例：
 
 ```sql
 SELECT count() FROM tab WHERE startsWith(comment, 'clickhouse support');
@@ -323,7 +324,7 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 
 #### `mapContains` {#functions-example-mapcontains}
 
-[mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey) 関数（`mapContainsKey` のエイリアス）は、マップのキーに含まれる単一のトークンにマッチします。
+[mapContains](/sql-reference/functions/tuple-map-functions#mapcontains) 関数（`mapContainsKey` のエイリアス）は、検索文字列から抽出されたトークンを、マップのキーに含まれるトークンと照合してマッチさせます。挙動は、`String` カラムに対する `equals` 関数と似ています。テキストインデックスは、`mapKeys(map)` 式に対して作成されている場合にのみ使用されます。
 
 例:
 
@@ -331,6 +332,17 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 SELECT count() FROM tab WHERE mapContainsKey(map, 'clickhouse');
 -- OR
 SELECT count() FROM tab WHERE mapContains(map, 'clickhouse');
+```
+
+
+#### `mapContainsValue` {#functions-example-mapcontainsvalue}
+
+[mapContainsValue](/sql-reference/functions/tuple-map-functions#mapcontainsvalue) 関数は、検索対象とする文字列から抽出されたトークンに対して、マップの値の中から一致を検索します。この動作は、`String` カラムに対する `equals` 関数と同様です。テキストインデックスは、`mapValues(map)` 式上に作成されている場合にのみ使用されます。
+
+例:
+
+```sql
+SELECT count() FROM tab WHERE mapContainsValue(map, 'clickhouse');
 ```
 
 
@@ -348,7 +360,7 @@ SELECT count() FROM tab WHERE mapContainsValueLike(map, '% clickhouse %');
 
 #### `operator[]` {#functions-example-access-operator}
 
-アクセス演算子 [operator[]](/sql-reference/operators#access-operators) をテキスト索引と組み合わせて使用し、キーと値をフィルタリングできます。
+アクセス演算子 [operator[]](/sql-reference/operators#access-operators) をテキスト索引と組み合わせて使用し、キーと値をフィルタリングできます。テキスト索引は、`mapKeys(map)` または `mapValues(map)` の式、あるいはその両方に対して作成されている場合にのみ使用されます。
 
 例:
 
@@ -369,7 +381,8 @@ SELECT count() FROM tab WHERE map['engine'] = 'clickhouse';
 次のテーブル定義を考えてみます。
 
 ```sql
-CREATE TABLE posts (
+CREATE TABLE posts
+(
     post_id UInt64,
     title String,
     content String,
@@ -403,7 +416,8 @@ ALTER TABLE posts MATERIALIZE INDEX keywords_idx; -- Don't forget to rebuild the
 次のような logs テーブルを考えてみましょう:
 
 ```sql
-CREATE TABLE logs (
+CREATE TABLE logs
+(
     id UInt64,
     timestamp DateTime,
     message String,
@@ -459,12 +473,11 @@ SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 ### ダイレクトリード {#direct-read}
 
 特定の種類のテキストクエリは、「ダイレクトリード」と呼ばれる最適化によって大幅に高速化されます。
-より具体的には、`SELECT` クエリがテキストカラムを *投影していない* 場合に、この最適化を適用できます。
 
 例:
 
 ```sql
-SELECT column_a, column_b, ... -- not: column_with_text_index
+SELECT column_a, column_b, ...
 FROM [...]
 WHERE string_search_function(column_with_text_index)
 ```
@@ -480,9 +493,11 @@ ClickHouse のダイレクトリード最適化は、基盤となるテキスト
 また、ダイレクトリードを使用するにはテキストインデックスが完全にマテリアライズされている必要があります（そのためには `ALTER TABLE ... MATERIALIZE INDEX` を使用します）。
 
 **サポートされている関数**
+
 ダイレクトリード最適化は `hasToken`、`hasAllTokens`、`hasAnyTokens` 関数をサポートします。
+テキストインデックスが `array` トークナイザーで作成されている場合、`equals`、`has`、`mapContainsKey`、`mapContainsValue` 関数に対してもダイレクトリードがサポートされます。
 これらの関数は AND、OR、NOT 演算子で組み合わせることもできます。
-WHERE 句には、（テキストカラムやその他のカラムに対する）追加の非テキスト検索関数によるフィルタも含めることができます。この場合でもダイレクトリード最適化は使用されますが、その効果は小さくなります（サポートされているテキスト検索関数にのみ適用されるためです）。
+`WHERE` または `PREWHERE` 句には、（テキストカラムやその他のカラムに対する）追加の非テキスト検索関数によるフィルタも含めることができます。この場合でもダイレクトリード最適化は使用されますが、その効果は小さくなります（サポートされているテキスト検索関数にのみ適用されるためです）。
 
 クエリがダイレクトリードを利用しているかを確認するには、`EXPLAIN PLAN actions = 1` を付けてクエリを実行します。
 例として、ダイレクトリードを無効にしたクエリは次のようになります。
@@ -508,7 +523,7 @@ Actions: INPUT : 0 -> col String : 0
 [...]
 ```
 
-一方、`query_plan_direct_read_from_text_index = 1` に設定して同じクエリを実行した場合
+一方、`query_plan_direct_read_from_text_index = 1` を指定して同じクエリを実行した場合
 
 ```sql
 EXPLAIN PLAN actions = 1
@@ -533,6 +548,58 @@ Positions:
 
 2つ目の EXPLAIN PLAN の出力には、仮想カラム `__text_index_<index_name>_<function_name>_<id>` が含まれています。
 このカラムが存在する場合、直接読み取りが使用されます。
+
+ダイレクトリード最適化のパフォーマンス向上効果は、テキストカラムがテキスト検索関数内でのみ使用されている場合に最大になります。この場合、クエリはカラムデータをまったく読み取らずに済みます。ただし、テキストカラムがクエリ内の他の箇所で参照されて読み取りが必要な場合でも、ダイレクトリード最適化は依然としてパフォーマンス向上に寄与します。
+
+**ヒントとしてのダイレクトリード**
+
+ヒントとしてのダイレクトリードは、通常のダイレクトリードと同じ原理に基づきますが、基盤となるテキストカラムを削除せずに、テキストインデックスデータから構築された追加のフィルタを付加する点が異なります。これは、テキストインデックスのみへのアクセスでは偽陽性が発生しうる関数に対して使用されます。
+
+サポートされている関数は `like`、`startsWith`、`endsWith`、`equals`、`has`、`mapContainsKey`、`mapContainsValue` です。
+
+ヒントフィルタは、他のフィルタと組み合わせて結果セットをさらに絞り込むための追加の選択性を提供し、他のカラムから読み取るデータ量を減らすのに役立ちます。
+
+
+ダイレクトリードをヒントとして使用するかどうかは、[query&#95;plan&#95;text&#95;index&#95;add&#95;hint](../../../operations/settings/settings#query_plan_text_index_add_hint) の設定で制御されます（既定で有効です）。
+
+ヒントを指定しないクエリの例：
+
+```sql
+EXPLAIN actions = 1
+SELECT count()
+FROM tab
+WHERE (col LIKE '%some-token%') AND (d >= today())
+SETTINGS use_skip_indexes_on_data_read = 1, query_plan_text_index_add_hint = 0
+FORMAT TSV
+```
+
+戻り値
+
+```text
+[...]
+Prewhere filter column: and(like(__table1.col, \'%some-token%\'_String), greaterOrEquals(__table1.d, _CAST(20440_Date, \'Date\'_String))) (removed)
+[...]
+```
+
+一方、`query_plan_text_index_add_hint = 1` を指定して同じクエリを実行した場合には
+
+```sql
+EXPLAIN actions = 1
+SELECT count()
+FROM tab
+WHERE col LIKE '%some-token%'
+SETTINGS use_skip_indexes_on_data_read = 1, query_plan_text_index_add_hint = 1
+```
+
+戻り値
+
+```text
+[...]
+Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb7a3f74, like(__table1.col, \'%some-token%\'_String), greaterOrEquals(__table1.d, _CAST(20440_Date, \'Date\'_String))) (removed)
+[...]
+```
+
+2 つ目の `EXPLAIN PLAN` の出力では、フィルター条件に追加の条件（`__text_index_...`）が加えられていることが分かります。[`PREWHERE`](docs/sql-reference/statements/select/prewhere) 最適化により、フィルター条件は 3 つの個別の条件（論理積の各節）に分解され、計算コストが小さいものから順に適用されます。このクエリでは、適用順序は `__text_index_...`、次に `greaterOrEquals(...)`、最後に `like(...)` です。この順序付けにより、テキストインデックスと元のフィルターだけでスキップされるグラニュールよりもさらに多くのデータグラニュールをスキップし、そのうえで `WHERE` 句以降のクエリで使用される重いカラムを読み込む前に、読み取るデータ量を一層削減できます。
 
 
 ### キャッシュ {#caching}
@@ -574,31 +641,35 @@ Positions:
 
 ## 実装の詳細 {#implementation}
 
-各テキストインデックスは 2 つの（抽象的な）データ構造から構成されます。
+各テキスト索引は、2つの（抽象的な）データ構造から構成されます。
 
-- 各トークンをポスティングリストに対応付ける dictionary と、
-- 行番号の集合を表す各ポスティングリストの集合。
+- 各トークンをポスティングリストに対応付ける dictionary
+- 行番号の集合を表す複数のポスティングリストの集合
 
-テキストインデックスはスキップインデックスであるため、これらのデータ構造は論理的にはインデックスグラニュールごとに存在します。
+テキスト索引はパーツ全体に対して構築されます。他のスキップ索引と異なり、テキスト索引はデータパーツのマージ時に再構築するのではなく、マージによって統合できます。
 
-インデックス作成時には、3 つのファイルが（パートごとに）作成されます。
+索引の作成時には、3つのファイルが（パーツごとに）作成されます。
 
 **Dictionary blocks ファイル (.dct)**
 
-インデックスグラニュール内のトークンはソートされ、128 トークンずつの dictionary ブロック（ブロックサイズはパラメータ `dictionary_block_size` で設定可能）に保存されます。
-Dictionary blocks ファイル (.dct) は、あるパート内のすべてのインデックスグラニュールに含まれる dictionary ブロックをすべてまとめたものです。
+テキスト索引内のトークンはソートされ、各 512 トークン（ブロックサイズはパラメータ `dictionary_block_size` で設定可能）ごとの dictionary block に格納されます。
+Dictionary blocks ファイル (.dct) は、1 つのパーツ内にあるすべての索引グラニュールに対応するすべての dictionary block から構成されます。
 
-**Index granules ファイル (.idx)**
+**Index header ファイル (.idx)**
 
-Index granules ファイルには、各 dictionary ブロックについて、そのブロックの最初のトークン、dictionary blocks ファイル内での相対オフセット、およびブロック内のすべてのトークンに対する Bloom フィルターが格納されます。
-このスパースな索引構造は、ClickHouse の [sparse primary key index](https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes) に似ています。
-Bloom フィルターにより、検索対象のトークンが dictionary ブロックに含まれていない場合には、その dictionary ブロックを早期にスキップできます。
+Index header ファイルには、各 dictionary block について、そのブロックの最初のトークンと、dictionary blocks ファイル内での相対オフセットが格納されます。
+
+このスパースな索引構造は、ClickHouse の [sparse primary key index](https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes)) と同様です。
 
 **Postings lists ファイル (.pst)**
 
 すべてのトークンに対するポスティングリストは、postings lists ファイル内に連続して配置されます。
-ストレージ効率を保ちつつ、共通部分や和集合の高速な演算を可能にするため、ポスティングリストは [roaring bitmaps](https://roaringbitmap.org/) として保存されます。
-ポスティングリストの基数が 16 未満（パラメータ `max_cardinality_for_embedded_postings` で設定可能）の場合、そのリストは dictionary 内に埋め込まれます。
+領域を節約しつつ、高速な積集合および和集合の演算を可能にするために、ポスティングリストは [roaring bitmaps](https://roaringbitmap.org/) として格納されます。
+ポスティングリストが `posting_list_block_size` より大きい場合は、複数のブロックに分割され、postings lists ファイル内に連続して格納されます。
+
+**テキスト索引のマージ**
+
+データパーツがマージされる際、テキスト索引を最初から再構築する必要はなく、マージ処理の別ステップで効率的にマージできます。このステップでは、各パーツからソート済みの dictionary を読み込み、それらを結合して新しい統合 dictionary を作成します。ポスティングリスト内の行番号も、初期マージフェーズで作成された旧行番号から新行番号へのマッピングを用いて、マージ後のデータパーツ内での新しい位置を反映するように再計算されます。このテキスト索引のマージ方法は、`_part_offset` カラムを持つ [projections](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field) がマージされる方法と類似しています。索引がソースパーツ内でマテリアライズされていない場合は、その索引を構築して一時ファイルに書き出し、その後、他のパーツの索引や他の一時索引ファイルと一緒にマージします。
 
 ## 例：Hackernews データセット {#hacker-news-dataset}
 

@@ -1,107 +1,49 @@
 ---
 slug: /native-protocol/columns
 sidebar_position: 4
-title: '列型'
+title: 'ネイティブプロトコルの列型'
 description: 'ネイティブプロトコルの列型'
 keywords: ['ネイティブプロトコル 列型', '列型', 'データ型', 'プロトコル データ型', 'バイナリ エンコーディング']
 doc_type: 'reference'
 ---
 
-# 列の型 {#column-types}
+# ネイティブプロトコルのカラム型 {#native-protocol-column-types}
 
-データ型の一般的な説明については、[データ型](/sql-reference/data-types/) を参照してください。
-
-## 数値型 {#numeric-types}
+一般的な事項については [Data Types](/sql-reference/data-types/) を参照してください。
 
 :::tip
-
-数値型のエンコーディングは、AMD64 や ARM64 のようなリトルエンディアン CPU のメモリレイアウトと一致します。
-
-これにより、非常に効率的なエンコードおよびデコードの実装が可能になります。
-
+数値型のエンコーディングは、AMD64 や ARM64 のようなリトルエンディアン CPU のメモリレイアウトと一致しており、非常に効率的にエンコードおよびデコードできます。
 :::
 
-### [整数](/sql-reference/data-types/int-uint) {#integers}
+| Type                                                            | Encoding                                                                                                       |
+| --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| **Integers** ([Int/UInt](/sql-reference/data-types/int-uint))   | リトルエンディアンで表現される 8、16、32、64、128 または 256 ビット                                                                     |
+| **Floats** ([Float32/Float64](/sql-reference/data-types/float)) | IEEE 754 のバイナリ表現                                                                                               |
+| [String](/sql-reference/data-types/string)                      | (len, value) 形式の文字列配列                                                                                          |
+| [FixedString(N)](/sql-reference/data-types/fixedstring)         | N バイトシーケンスの配列                                                                                                  |
+| [IPv4](/sql-reference/data-types/ipv4)                          | `UInt32` のエイリアスで、UInt32 として表現される                                                                               |
+| [IPv6](/sql-reference/data-types/ipv6)                          | `FixedString(16)` のエイリアスで、バイナリとして表現される                                                                         |
+| [Tuple](/sql-reference/data-types/tuple)                        | 連続してエンコードされたカラム配列。例: `Tuple(String, UInt8)` = 連続した 2 つのカラム                                                     |
+| [Map](/sql-reference/data-types/map)                            | `Map(K, V)` = 3 つのカラム: `Offsets ColUInt64, Keys K, Values V`。Keys/Values の行数 = Offsets の最後の値                   |
+| [Array](/sql-reference/data-types/array)                        | `Array(T)` = 2 つのカラム: `Offsets ColUInt64, Data T`。Data の行数 = Offsets の最後の値                                     |
+| [Nullable](/sql-reference/data-types/nullable)                  | `Nullable(T)` = 2 つのカラム: 同じ行数を持つ `Nulls ColUInt8, Values T`。Nulls はマスクで、1=null、0=value を表す                     |
+| [UUID](/sql-reference/data-types/uuid)                          | `FixedString(16)` のエイリアスで、バイナリとして表現される                                                                         |
+| [Enum](/sql-reference/data-types/enum)                          | `Int8` または `Int16` のエイリアスで、各整数は String 値にマッピングされる                                                              |
+| [LowCardinality](/sql-reference/data-types/lowcardinality)      | `LowCardinality(T)` = 2 つのカラム: `Index T, Keys K`（K は UInt8/16/32/64）。Index はユニーク値を保持し、Keys は Index へのインデックスを保持 |
+| [Bool](/sql-reference/data-types/boolean)                       | `UInt8` のエイリアス: 0=false、1=true                                                                                 |
 
-8, 16, 32, 64, 128 または 256 ビットの Int および UInt 型の列で、リトルエンディアンです。
+**例: Nullable のエンコーディング**
 
-### [浮動小数](/sql-reference/data-types/float) {#floats}
-
-IEEE 754 のバイナリ表現による Float32 および Float64 型です。
-
-## [String](/sql-reference/data-types/string) {#string}
-
-単なる `String` の配列であり、各要素は (len, value) です。
-
-## [FixedString(N)](/sql-reference/data-types/fixedstring) {#fixedstringn}
-
-長さ N バイトのバイト列の配列。
-
-## IP {#ip}
-
-### [IPv4](/sql-reference/data-types/ipv4) {#ipv4}
-
-`UInt32` 数値型のエイリアスであり、`UInt32` として表現されます。
-
-### [IPv6](/sql-reference/data-types/ipv6) {#ipv6}
-
-`FixedString(16)` のエイリアスであり、バイナリ形式で直接表現されます。
-
-## [Tuple](/sql-reference/data-types/tuple) {#tuple}
-
-Tuple は単にカラムの配列です。たとえば、Tuple(String, UInt8) は、連続してエンコードされた 2 つのカラムにすぎません。
-
-## [Map](/sql-reference/data-types/map) {#map}
-
-`Map(K, V)` は 3 つの列で構成されます: `Offsets ColUInt64, Keys K, Values V`。
-
-`Keys` および `Values` 列の行数は、`Offsets` の末尾の値と同じになります。
-
-## [Array](/sql-reference/data-types/array) {#array}
-
-`Array(T)` は、`Offsets ColUInt64` と `Data T` の 2 列から構成されます。
-
-`Data` 内の行数は、`Offsets` の最後の値になります。
-
-## [Nullable](/sql-reference/data-types/nullable) {#nullable}
-
-`Nullable(T)` は、行数が同じ `Nulls`（型は `ColUInt8`）列と `Values`（型は `T`）列で構成されます。
-
-```go
-// Nulls is nullable "mask" on Values column.
-// For example, to encode [null, "", "hello", null, "world"]
-//      Values: ["", "", "hello", "", "world"] (len: 5)
-//      Nulls:  [ 1,  0,       0,  1,       0] (len: 5)
+```text
+To encode [null, "", "hello", null, "world"]:
+  Values: ["", "", "hello", "", "world"] (len: 5)
+  Nulls:  [ 1,  0,       0,  1,       0] (len: 5)
 ```
 
+**例: LowCardinality エンコード**
 
-## [UUID](/sql-reference/data-types/uuid) {#uuid}
-
-`FixedString(16)` の別名であり、UUID 値をバイナリ形式で表現します。
-
-## [Enum](/sql-reference/data-types/enum) {#enum}
-
-`Int8` または `Int16` の別名ですが、それぞれの整数は特定の `String` 値にマッピングされます。
-
-## [`LowCardinality` 型](/sql-reference/data-types/lowcardinality) {#low-cardinality}
-
-`LowCardinality(T)` は、`Index T` および `Keys K` から構成されます。
-ここで `K` は、`Index` のサイズに応じて (UInt8, UInt16, UInt32, UInt64) のいずれかの型です。
-
-```go
-// Index (i.e. dictionary) column contains unique values, Keys column contains
-// sequence of indexes in Index column that represent actual values.
-//
-// For example, ["Eko", "Eko", "Amadela", "Amadela", "Amadela", "Amadela"] can
-// be encoded as:
-//      Index: ["Eko", "Amadela"] (String)
-//      Keys:  [0, 0, 1, 1, 1, 1] (UInt8)
-//
-// The CardinalityKey is chosen depending on Index size, i.e. maximum value
-// of chosen type should be able to represent any index of Index element.
+```text
+To encode ["Eko", "Eko", "Amadela", "Amadela", "Amadela", "Amadela"]:
+  Index: ["Eko", "Amadela"] (String)
+  Keys:  [0, 0, 1, 1, 1, 1] (UInt8)
 ```
-
-
-## [Bool](/sql-reference/data-types/boolean) {#bool}
-
-`UInt8` の別名で、`0` は `false`、`1` は `true` を表します。
