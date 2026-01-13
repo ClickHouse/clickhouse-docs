@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-<ExperimentalBadge />
+<ExperimentalBadge/>
 
 `QBit` 数据类型通过重新组织向量的存储方式来加速近似搜索。它不是将每个向量的所有元素存放在一起，而是把所有向量中相同二进制位的位置分组存储。
 这种方式在保持向量以全精度存储的同时，允许你在查询时选择细粒度的量化级别：读取更少的比特位可减少 I/O 并加快计算，读取更多比特位则可提高精度。你既能获得量化带来的数据传输和计算开销降低的速度优势，又能在需要时访问所有原始数据。
@@ -76,3 +76,4 @@ SELECT bin(vec.1) FROM test;
 以下是使用 `QBit` 数据类型进行向量相似度搜索的距离函数：
 
 * [`L2DistanceTransposed`](../functions/distance-functions.md#L2DistanceTransposed)
+* [`cosineDistanceTransposed`](../functions/distance-functions.md#cosineDistanceTransposed)
