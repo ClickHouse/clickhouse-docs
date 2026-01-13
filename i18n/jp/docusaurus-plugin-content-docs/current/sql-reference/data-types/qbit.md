@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-<ExperimentalBadge />
+<ExperimentalBadge/>
 
 `QBit` データ型は、近似検索を高速化するためにベクトルの格納方式を再構成します。各ベクトルの要素をまとめて保存する代わりに、すべてのベクトルにわたって同じビット位置をグループ化して格納します。
 これにより、ベクトルはフル精度のまま保持しつつ、検索時にきめ細かな量子化レベルを選択できます。読み込むビット数を少なくすれば I/O が減って計算が高速になり、多く読めば精度が向上します。量子化によるデータ転送量および計算量削減の高速化メリットを得ながら、必要に応じて元のデータをすべて参照できます。
@@ -76,3 +76,4 @@ SELECT bin(vec.1) FROM test;
 `QBit` データ型を使用するベクトル類似度検索向けの距離関数は次のとおりです。
 
 * [`L2DistanceTransposed`](../functions/distance-functions.md#L2DistanceTransposed)
+* [`cosineDistanceTransposed`](../functions/distance-functions.md#cosineDistanceTransposed)
