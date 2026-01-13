@@ -796,7 +796,7 @@ $ curl -v 'http://localhost:8123/predefined_query'
 
 Способы конфигурирования для разных значений `type` рассматриваются далее.
 
-### predefined&#95;query&#95;handler {#predefined_query_handler}
+### predefined&#95;query&#95;handler {#predefined&#95;query&#95;handler}
 
 `predefined_query_handler` поддерживает установку значений параметров `Settings` и `query_params`. В типе `predefined_query_handler` можно задать параметр `query`.
 
@@ -837,8 +837,42 @@ max_final_threads    2
 max_threads    1
 ```
 
+
+#### Виртуальный параметр `_request_body` {#virtual-param-request-body}
+
+Кроме параметров URL, заголовков и параметров запроса `predefined_query_handler` поддерживает специальный виртуальный параметр `_request_body`.
+Он содержит исходное тело HTTP-запроса в виде строки.
+Это позволяет создавать гибкие REST API, которые могут принимать произвольные форматы данных и обрабатывать их внутри ваших запросов.
+
+Например, вы можете использовать `_request_body` для реализации REST-эндпоинта, который принимает данные в формате JSON в POST-запросе и вставляет их в таблицу:
+
+```yaml
+<http_handlers>
+    <rule>
+        <methods>POST</methods>
+        <url>/api/events</url>
+        <handler>
+            <type>predefined_query_handler</type>
+            <query>
+                INSERT INTO events (id, data)
+                SELECT {id:UInt32}, {_request_body:String}
+            </query>
+        </handler>
+    </rule>
+    <defaults/>
+</http_handlers>
+```
+
+После этого вы можете отправлять данные на этот endpoint:
+
+```bash
+curl -X POST 'http://localhost:8123/api/events?id=123' \
+  -H 'Content-Type: application/json' \
+  -d '{"user": "john", "action": "login", "timestamp": "2024-01-01T10:00:00Z"}'
+```
+
 :::note
-В одном `predefined_query_handler` может использоваться только один `query`.
+Для одного `predefined_query_handler` может быть задан только один `query`.
 :::
 
 
