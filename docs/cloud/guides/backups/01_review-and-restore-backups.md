@@ -21,6 +21,9 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 This guide covers how backups work in ClickHouse Cloud, what options you have to configure backups for your service, and how to restore from a backup.
 
+**Prerequisites**
+- You have read ["How backups work in ClickHouse Cloud"](/cloud/features/backups#how-backups-work-in-clickhouse-cloud) (Feature overview page)
+
 ## Backup status list {#backup-status-list}
 
 Your service will be backed up based on the set schedule, whether it is the default daily schedule or a [custom schedule](/cloud/manage/backups/configurable-backups) picked by you. All available backups can be viewed from the **Backups** tab of the service. From here, you can see the status of the backup, the duration, as well as the size of the backup. You can also restore a specific backup using the **Actions** column.

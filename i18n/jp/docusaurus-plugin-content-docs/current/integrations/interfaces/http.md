@@ -794,7 +794,7 @@ $ curl -v 'http://localhost:8123/predefined_query'
 
 異なる `type` ごとの設定方法については、次で説明します。
 
-### predefined&#95;query&#95;handler {#predefined_query_handler}
+### predefined&#95;query&#95;handler {#predefined&#95;query&#95;handler}
 
 `predefined_query_handler` は、`Settings` および `query_params` の値の設定をサポートします。`predefined_query_handler` タイプでは `query` を設定できます。
 
@@ -835,8 +835,42 @@ max_final_threads    2
 max_threads    1
 ```
 
+
+#### 仮想パラメータ `_request_body` {#virtual-param-request-body}
+
+URL パラメータ、ヘッダー、クエリパラメータに加えて、`predefined_query_handler` は特別な仮想パラメータ `_request_body` をサポートします。
+これは生の HTTP リクエストボディを文字列として含みます。
+これにより、任意のデータ形式を受け取り、それをクエリ内で処理できる柔軟な REST API を作成できます。
+
+たとえば、`_request_body` を使用して、POST リクエストで JSON データを受け取り、テーブルに挿入する REST エンドポイントを実装できます。
+
+```yaml
+<http_handlers>
+    <rule>
+        <methods>POST</methods>
+        <url>/api/events</url>
+        <handler>
+            <type>predefined_query_handler</type>
+            <query>
+                INSERT INTO events (id, data)
+                SELECT {id:UInt32}, {_request_body:String}
+            </query>
+        </handler>
+    </rule>
+    <defaults/>
+</http_handlers>
+```
+
+次に、このエンドポイントにデータを送信します：
+
+```bash
+curl -X POST 'http://localhost:8123/api/events?id=123' \
+  -H 'Content-Type: application/json' \
+  -d '{"user": "john", "action": "login", "timestamp": "2024-01-01T10:00:00Z"}'
+```
+
 :::note
-1 つの `predefined_query_handler` では、1 つの `query` のみ対応しています。
+1 つの `predefined_query_handler` につき、サポートされる `query` は 1 つだけです。
 :::
 
 

@@ -56,12 +56,9 @@ CurrentMetric_DistributedFilesToInsert:                          0
 ```
 
 **模式**
-
 可以使用 XML 标签 `<schema_type>` 将此表配置为不同的模式类型。默认模式类型为 `wide`，在该模式下，每个指标或 profile 事件都会作为单独的一列存储。此模式在仅读取单个列的场景下具有最高性能和效率。
 
 `transposed` 模式以类似于 `system.asynchronous_metric_log` 的格式存储数据，其中指标和事件以行的形式存储。该模式适用于资源受限的环境，因为它在数据合并期间可以减少资源消耗。
-
-还提供一种兼容性模式 `transposed_with_wide_view`，它使用 transposed 模式（`system.transposed_metric_log`）的表来存储实际数据，并在其之上基于 wide 模式创建一个视图。该视图会查询 transposed 表，因此在从 `wide` 模式迁移到 `transposed` 模式时非常有用。
 
 **另请参阅**
 

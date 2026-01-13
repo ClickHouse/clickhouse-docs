@@ -794,7 +794,7 @@ $ curl -v 'http://localhost:8123/predefined_query'
 
 不同 `type` 的配置方式将在下文进行介绍。
 
-### predefined&#95;query&#95;handler {#predefined_query_handler}
+### predefined&#95;query&#95;handler {#predefined&#95;query&#95;handler}
 
 `predefined_query_handler` 支持设置 `Settings` 和 `query_params` 的值。你可以在 `predefined_query_handler` 类型中配置 `query`。
 
@@ -835,8 +835,42 @@ max_final_threads    2
 max_threads    1
 ```
 
+
+#### 虚拟参数 `_request_body` {#virtual-param-request-body}
+
+除了 URL 参数、请求头和查询参数之外，`predefined_query_handler` 还支持一个特殊的虚拟参数 `_request_body`。
+它包含原始的 HTTP 请求体（字符串形式）。
+这使你可以创建灵活的 REST API，在查询中接收任意数据格式并进行处理。
+
+例如，你可以使用 `_request_body` 实现一个 REST 端点，在 POST 请求中接收 JSON 数据并将其插入到表中：
+
+```yaml
+<http_handlers>
+    <rule>
+        <methods>POST</methods>
+        <url>/api/events</url>
+        <handler>
+            <type>predefined_query_handler</type>
+            <query>
+                INSERT INTO events (id, data)
+                SELECT {id:UInt32}, {_request_body:String}
+            </query>
+        </handler>
+    </rule>
+    <defaults/>
+</http_handlers>
+```
+
+之后即可向此端点发送数据：
+
+```bash
+curl -X POST 'http://localhost:8123/api/events?id=123' \
+  -H 'Content-Type: application/json' \
+  -d '{"user": "john", "action": "login", "timestamp": "2024-01-01T10:00:00Z"}'
+```
+
 :::note
-每个 `predefined_query_handler` 只支持单个 `query`。
+每个 `predefined_query_handler` 仅支持一个 `query`。
 :::
 
 

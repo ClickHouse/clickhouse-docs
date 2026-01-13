@@ -60,8 +60,6 @@ CurrentMetric_DistributedFilesToInsert:                          0
 
 `transposed` スキーマは、メトリクスやイベントが行として保存される `system.asynchronous_metric_log` と類似した形式でデータを保存します。このスキーマは、マージ時のリソース消費を削減するため、リソースの限られた環境での利用に有効です。
 
-互換性のためのスキーマとして `transposed_with_wide_view` も存在します。これは、転置スキーマ（`system.transposed_metric_log`）を持つテーブルに実データを保存し、その上に wide スキーマを使用したビューを作成します。このビューは転置テーブルをクエリするため、`wide` スキーマから `transposed` スキーマへの移行に役立ちます。
-
 **関連項目**
 
 * [metric&#95;log 設定](../../operations/server-configuration-parameters/settings.md#metric_log) — 設定の有効化と無効化。

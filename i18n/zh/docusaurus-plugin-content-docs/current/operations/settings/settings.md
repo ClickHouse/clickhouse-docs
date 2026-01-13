@@ -11665,6 +11665,14 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 ```
 
 
+## use_variant_default_implementation_for_comparisons {#use_variant_default_implementation_for_comparisons} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "在比较函数中为 Variant 类型启用默认实现"}]}]}/>
+
+启用或禁用在比较函数中对 Variant 类型的默认实现。
+
 ## use_with_fill_by_sorting_prefix {#use_with_fill_by_sorting_prefix} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
