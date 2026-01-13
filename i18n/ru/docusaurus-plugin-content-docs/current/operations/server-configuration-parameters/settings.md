@@ -1104,7 +1104,13 @@ ClickHouse перезагружает встроенные словари каж
 
 ## dns_max_consecutive_failures {#dns_max_consecutive_failures} 
 
-<SettingsInfoBlock type="UInt32" default_value="10" />Максимальное количество последовательных ошибок DNS‑разрешения имени хоста перед его удалением из DNS‑кэша ClickHouse.
+<SettingsInfoBlock type="UInt32" default_value="5" />
+
+Прекратить дальнейшие попытки обновить DNS‑кэш имени хоста после указанного числа последовательных ошибок. Информация при этом остаётся в DNS‑кэше. Ноль означает отсутствие ограничения.
+
+**См. также**
+
+- [`SYSTEM DROP DNS CACHE`](../../sql-reference/statements/system#drop-dns-cache)
 
 ## drop_distributed_cache_pool_size {#drop_distributed_cache_pool_size} 
 

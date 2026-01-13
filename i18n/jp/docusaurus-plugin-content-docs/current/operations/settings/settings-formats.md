@@ -12,10 +12,9 @@ import BetaBadge from '@theme/badges/BetaBadge';
 import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
 import VersionHistory from '@theme/VersionHistory/VersionHistory';
 
-{/* 自動生成 */ }
+<!-- 自動生成 -->
 
 これらの設定は [source](https://github.com/ClickHouse/ClickHouse/blob/master/src/Core/FormatFactorySettings.h) から自動的に生成されています。
-
 
 ## allow_special_bool_values_inside_variant {#allow_special_bool_values_inside_variant}   
 
@@ -670,7 +669,7 @@ JSONCompact/JSONCompactEachRow 入力フォーマットで、行内のカラム�
 
 不要なフィールドを無視し、解析しません。これを有効にすると、形式が不正であったりフィールドが重複している JSON 文字列に対しても、例外がスローされない場合があります。
 
-## input&#95;format&#95;json&#95;infer&#95;array&#95;of&#95;dynamic&#95;from&#95;array&#95;of&#95;different&#95;types {#input_format_json_infer_array_of_dynamic_from_array_of_different_types}
+## input&#95;format&#95;json&#95;infer&#95;array&#95;of&#95;dynamic&#95;from&#95;array&#95;of&#95;different&#95;types {#input&#95;format&#95;json&#95;infer&#95;array&#95;of&#95;different&#95;types}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -703,7 +702,7 @@ DESC format(JSONEachRow, '{"a" : [42, "hello", [1, 2, 3]]}');
 既定で有効です。
 
 
-## input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings {#input_format_json_infer_incomplete_types_as_strings}
+## input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings {#input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -756,13 +755,13 @@ JSON 内のフィールドの最大深度です。これは厳密な上限では
 
 デフォルトで有効になっています。
 
-## input&#95;format&#95;json&#95;read&#95;arrays&#95;as&#95;strings {#input_format_json_read_arrays_as_strings}
+## input&#95;format&#95;json&#95;read&#95;arrays&#95;as&#95;strings {#input&#95;format&#95;json&#95;read&#95;arrays&#95;as&#95;strings}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 JSON 入力フォーマットで、JSON 配列を文字列として解析できるようにします。
 
-例:
+例：
 
 ```sql
 SET input_format_json_read_arrays_as_strings = 1;
@@ -804,7 +803,7 @@ JSON入力フォーマットで、数値を文字列として解析できるよ�
 
 デフォルトで有効です。
 
-## input&#95;format&#95;json&#95;read&#95;objects&#95;as&#95;strings {#input_format_json_read_objects_as_strings}
+## input&#95;format&#95;json&#95;read&#95;objects&#95;as&#95;strings {#input&#95;format&#95;json&#95;read&#95;objects&#95;as&#95;strings}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -838,7 +837,7 @@ JSON入力フォーマットで、JSON文字列に不正なエスケープシー
 
 デフォルトで有効です。
 
-## input&#95;format&#95;json&#95;try&#95;infer&#95;named&#95;tuples&#95;from&#95;objects {#input_format_json_try_infer_named_tuples_from_objects}
+## input&#95;format&#95;json&#95;try&#95;infer&#95;named&#95;tuples&#95;from&#95;objects {#input&#95;format&#95;json&#95;try&#95;infer&#95;named&#95;tuples&#95;from&#95;objects}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1456,7 +1455,7 @@ Decimal 型の値を出力する際に、末尾のゼロも出力します。例
 
 デフォルトでは無効です。
 
-## output&#95;format&#95;json&#95;array&#95;of&#95;rows {#output_format_json_array_of_rows}
+## output&#95;format&#95;json&#95;array&#95;of&#95;rows {#output&#95;format&#95;json&#95;array&#95;of&#95;rows}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1495,7 +1494,7 @@ SET output_format_json_array_of_rows = 0;
 SELECT number FROM numbers(3) FORMAT JSONEachRow;
 ```
 
-結果:
+結果：
 
 ```text
 {"number":"0"}
@@ -1528,7 +1527,7 @@ map 型カラムをタプルの JSON 配列としてシリアライズします�
 
 デフォルトで有効です。
 
-## output&#95;format&#95;json&#95;pretty&#95;print {#output_format_json_pretty_print}
+## output&#95;format&#95;json&#95;pretty&#95;print {#output&#95;format&#95;json&#95;pretty&#95;print}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1547,7 +1546,7 @@ map 型カラムをタプルの JSON 配列としてシリアライズします�
 ],
 ```
 
-出力は次のような形式になります：
+出力は次のように整形されます：
 
 ```json
 "data":
@@ -1603,7 +1602,7 @@ JSON 出力フォーマットにおける Decimal 型の値のクォートを制
 
 デフォルトでは無効です。
 
-## output&#95;format&#95;json&#95;quote&#95;denormals {#output_format_json_quote_denormals}
+## output&#95;format&#95;json&#95;quote&#95;denormals {#output&#95;format&#95;json&#95;quote&#95;denormals}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1626,7 +1625,7 @@ JSON 出力フォーマットにおける Decimal 型の値のクォートを制
 └────┴────────┴──────────┴────────┴──────┘
 ```
 
-`output_format_json_quote_denormals = 0` の場合、クエリは出力として `null` 値を返します。
+`output_format_json_quote_denormals = 0` の場合、クエリの出力では `null` 値が返されます。
 
 ```sql
 SELECT area/period FROM account_orders FORMAT JSON;
@@ -1717,13 +1716,13 @@ JSON 出力フォーマットでの UTF-8 シーケンスの検証を制御し�
 
 デフォルトでは無効です。
 
-## output&#95;format&#95;markdown&#95;escape&#95;special&#95;characters {#output_format_markdown_escape_special_characters}
+## output&#95;format&#95;markdown&#95;escape&#95;special&#95;characters {#output&#95;format&#95;markdown&#95;escape&#95;special&#95;characters}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 有効にすると、Markdown 内の特殊文字をエスケープします。
 
-[CommonMark](https://spec.commonmark.org/0.30/#example-12) では、次の特殊文字がエスケープできる文字として定義されています。
+[Common Mark](https://spec.commonmark.org/0.30/#example-12) では、次の特殊文字がエスケープできる文字として定義されています。
 
 ```
 ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
@@ -1937,7 +1936,7 @@ Parquet ファイルに、カラムインデックスおよびオフセットイ
 
 Pretty フォーマットで ANSI エスケープシーケンスを使用します。0 - 無効、1 - 有効、'auto' - 端末上で実行されている場合に有効。
 
-## output&#95;format&#95;pretty&#95;display&#95;footer&#95;column&#95;names {#output_format_pretty_display_footer_column_names}
+## output&#95;format&#95;pretty&#95;display&#95;footer&#95;column&#95;names {#output&#95;format&#95;pretty&#95;display&#95;footer&#95;column&#95;names}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
@@ -2073,11 +2072,11 @@ Pretty 形式で表示する値の最大幅。これを超えた部分は切り�
 有効にすると、Pretty フォーマットは複数行のフィールドをテーブルセル内に整形して表示し、テーブルの枠組みが保持されます。
 無効にすると、それらはそのまま表示されるためテーブルのレイアウトが崩れる可能性がありますが、その代わり複数行の値をコピー＆ペーストしやすくなるという利点があります。
 
-## output_format_pretty_named_tuples_as_json {#output_format_pretty_named_tuples_as_json}   
+## output_format_pretty_named_tuples_as_json {#output_format_pretty_named_tuples_as_json}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-Pretty フォーマットで、名前付きタプルを整形済みの JSON オブジェクトとして出力するかどうかを制御します。
+Pretty フォーマット内の名前付きタプルを整形済みの JSON オブジェクトとして出力するかどうかを制御します。
 
 ## output_format_pretty_row_numbers {#output_format_pretty_row_numbers}   
 
@@ -2194,7 +2193,7 @@ regexp_tree Dictionary において、'.' を改行文字にもマッチさせ�
 
 有効にすると、ClickHouse は rows_before_aggregation 統計値の正確な値を提供します。これは、集約処理の前に読み取られた行数を表します。
 
-## schema&#95;inference&#95;hints {#schema_inference_hints}
+## schema&#95;inference&#95;hints {#schema&#95;inference&#95;hints}
 
 スキーマを持たないフォーマットのスキーマ推論で、ヒントとして使用するカラム名とデータ型のリスト。
 
@@ -2255,6 +2254,12 @@ SHOW CREATE クエリにおける識別子の引用ルールを設定します
 <SettingsInfoBlock type="IdentifierQuotingStyle" default_value="Backticks" />
 
 SHOW CREATE クエリで使用する識別子のクオートスタイルを設定します
+
+## type_json_allow_duplicated_key_with_literal_and_nested_object {#type_json_allow_duplicated_key_with_literal_and_nested_object}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+有効にすると、`{"a" : 42, "a" : {"b" : 42}}` のように、同じキーが重複しており、そのうち一方がネストされたオブジェクトであるような JSON も解析できるようになります。
 
 ## type_json_skip_duplicated_paths {#type_json_skip_duplicated_paths}   
 
