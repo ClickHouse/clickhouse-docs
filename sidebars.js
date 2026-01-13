@@ -988,6 +988,7 @@ const sidebars = {
         },
         'integrations/data-ingestion/azure-synapse/index',
         'integrations/data-ingestion/etl-tools/apache-beam',
+        'integrations/data-ingestion/etl-tools/artie-and-clickhouse',
         {
           type: 'category',
           label: 'Google Dataflow',
