@@ -521,16 +521,6 @@ File/S3 引擎和表函数在归档文件扩展名正确时，会将包含 `::` 
 
 启用 PRQL——一种 SQL 的替代方案。
 
-## allow_experimental_qbit_type {#allow_experimental_qbit_type} 
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "新的实验性设置"}]}]}/>
-
-允许创建 [QBit](../../sql-reference/data-types/qbit.md) 数据类型。
-
 ## allow_experimental_query_deduplication {#allow_experimental_query_deduplication} 
 
 <ExperimentalBadge/>
@@ -1094,6 +1084,14 @@ Cloud 默认值：`1`。
 通常应在用户配置文件（users.xml 或使用 `ALTER USER` 之类的查询）中设置此配置，而不是通过客户端（客户端命令行参数、`SET` 查询或 `SELECT` 查询的 `SETTINGS` 部分）。可以在客户端将其改为 false，但不能将其改为 true（因为如果用户配置文件中 `apply_settings_from_server = false`，服务器将不会向客户端发送设置）。
 
 请注意，最初（24.12）存在一个服务器设置（`send_settings_to_client`），但后来为了更好的可用性，被此客户端设置所取代。
+
+## archive_adaptive_buffer_max_size_bytes {#archive_adaptive_buffer_max_size_bytes} 
+
+<SettingsInfoBlock type="UInt64" default_value="8388608" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "8388608"},{"label": "New setting"}]}]}/>
+
+限制写入归档文件（例如 tar 归档）时所使用的自适应缓冲区的最大尺寸。
 
 ## arrow_flight_request_descriptor_type {#arrow_flight_request_descriptor_type} 
 
@@ -3489,6 +3487,18 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 允许内存高效聚合（参见 `distributed_aggregation_memory_efficient`）以乱序生成 bucket。
 当聚合 bucket 的大小分布不均时，这可以通过允许副本在仍在处理一些较重的低 ID bucket 的同时，先将较高 ID 的 bucket 发送给发起方，从而提升性能。
 其缺点是可能会增加内存使用量。
+
+## enable_qbit_type {#enable_qbit_type} 
+
+<BetaBadge/>
+
+**别名**: `allow_experimental_qbit_type`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "QBit 已迁移到 Beta 阶段。为设置 `allow_experimental_qbit_type` 添加了别名。"}]}]}/>
+
+允许创建 [QBit](../../sql-reference/data-types/qbit.md) 数据类型。
 
 ## enable_reads_from_query_cache {#enable_reads_from_query_cache} 
 

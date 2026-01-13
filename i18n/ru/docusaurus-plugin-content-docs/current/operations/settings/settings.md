@@ -523,16 +523,6 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включить PRQL — альтернативу SQL.
 
-## allow_experimental_qbit_type {#allow_experimental_qbit_type} 
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "New experimental setting"}]}]}/>
-
-Позволяет создавать тип данных [QBit](../../sql-reference/data-types/qbit.md).
-
 ## allow_experimental_query_deduplication {#allow_experimental_query_deduplication} 
 
 <ExperimentalBadge/>
@@ -1099,6 +1089,14 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 Обычно этот параметр следует задавать в профиле пользователя (users.xml или запросы типа `ALTER USER`), а не через клиент (аргументы командной строки клиента, запрос `SET` или секция `SETTINGS` запроса `SELECT`). Через клиент его можно изменить на `false`, но нельзя изменить на `true` (потому что сервер не будет отправлять настройки, если в профиле пользователя указано `apply_settings_from_server = false`).
 
 Обратите внимание, что изначально (24.12) существовал серверный параметр (`send_settings_to_client`), но позже он был заменён этим клиентским параметром для повышения удобства использования.
+
+## archive_adaptive_buffer_max_size_bytes {#archive_adaptive_buffer_max_size_bytes} 
+
+<SettingsInfoBlock type="UInt64" default_value="8388608" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "8388608"},{"label": "New setting"}]}]}/>
+
+Ограничивает максимально допустимый размер адаптивного буфера, используемого при записи в архивные файлы (например, tar-архивы).
 
 ## arrow_flight_request_descriptor_type {#arrow_flight_request_descriptor_type} 
 
@@ -3494,6 +3492,18 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 Разрешает памяти-эффективной агрегации (см. `distributed_aggregation_memory_efficient`) выдавать бакеты в произвольном порядке.
 Это может улучшить производительность, когда размеры бакетов агрегирования сильно различаются, позволяя реплике отправлять инициатору бакеты с более высокими идентификаторами, пока она всё ещё обрабатывает тяжёлые бакеты с более низкими идентификаторами.
 Недостатком является потенциально более высокое потребление памяти.
+
+## enable_qbit_type {#enable_qbit_type} 
+
+<BetaBadge/>
+
+**Псевдонимы**: `allow_experimental_qbit_type`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "QBit был переведен в бета-статус. Добавлен псевдоним для настройки 'allow_experimental_qbit_type'."}]}]}/>
+
+Позволяет создавать тип данных [QBit](../../sql-reference/data-types/qbit.md).
 
 ## enable_reads_from_query_cache {#enable_reads_from_query_cache} 
 

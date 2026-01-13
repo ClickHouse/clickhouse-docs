@@ -32,6 +32,7 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 | `file_path`    | [String](../../sql-reference/data-types/string.md)    | 根元数据 JSON 文件、Avro 清单列表或清单文件的路径。                   |
 | `content`      | [String](../../sql-reference/data-types/string.md)    | JSON 格式的内容（来自 .json 的原始元数据、Avro 元数据或 Avro 条目）。              |
 | `row_in_file`  | [Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md)) | 文件中的行号（如适用）。对于 `ManifestListEntry` 和 `ManifestFileEntry` 类型的内容，该列存在。 |
+| `pruning_status`  | [Nullable](../../sql-reference/data-types/nullable.md)([Enum8](../../sql-reference/data-types/enum.md)) | 条目的剪枝状态：`NotPruned`、`PartitionPruned`、`MinMaxIndexPruned`。请注意，分区剪枝在 minmax 剪枝之前执行，因此 `PartitionPruned` 表示该条目已被分区过滤剪枝，且不会再尝试进行 minmax 剪枝。对于 `ManifestFileEntry` 类型的内容，该列存在。 |
 
 ## `content_type` 值 {#content-type-values}
 
@@ -74,14 +75,17 @@ WHERE query_id = '{previous_query_id}';
 
 有关更多信息，请参阅 [`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level) 设置的说明。
 
+
 ### 注意事项 {#good-to-know}
 
 * 仅在需要对 Iceberg 表进行深入排查时才在查询级别使用 `iceberg_metadata_log_level`。否则，可能会在日志表中填充过多元数据，从而导致性能下降。
-* 该表可能包含重复条目，因为它主要用于调试，并不保证每个实体的唯一性。
+* 该表包含重复条目，因为它主要用于调试，并不保证每个实体的唯一性。不同的行分别存储内容和裁剪状态，这是因为它们在程序中的收集时机不同：内容是在读取元数据时收集的，而裁剪状态是在检查元数据是否需要裁剪时收集的。**切勿依赖此表本身进行去重。**
 * 如果使用的 `content_type` 比 `ManifestListMetadata` 更为详尽，则会对 manifest 列表禁用 Iceberg 元数据缓存。
 * 同样地，如果使用的 `content_type` 比 `ManifestFileMetadata` 更为详尽，则会对 manifest 文件禁用 Iceberg 元数据缓存。
+* 如果 SELECT 查询被取消或失败，日志表中可能仍然包含在失败之前已处理元数据的条目，但不会包含尚未处理的元数据实体的信息。
 
 ## 另请参阅 {#see-also}
+
 - [Iceberg 表引擎](../../engines/table-engines/integrations/iceberg.md)
 - [Iceberg 表函数](../../sql-reference/table-functions/iceberg.md)
 - [system.iceberg_history](./iceberg_history.md)
