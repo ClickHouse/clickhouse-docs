@@ -364,13 +364,6 @@ const config = {
     // 	{
     // 	},
     // ],
-    [
-      "vercel-analytics",
-      {
-        debug: false,
-        mode: "auto",
-      },
-    ],
     chHeader,
     [
       '@docusaurus/plugin-ideal-image',
