@@ -73,6 +73,8 @@ For scenarios where you need to store time-of-day values without date components
 
 :::note
 Using `Time` and `Time64` requires enabling the setting: `SET enable_time_time64_type = 1;`
+
+These types were introduced in version 25.6
 :::
 
 The `Time` type stores hours, minutes, and seconds with second precision. Internally stored as a signed 32-bit integer, it supports a range of `[-999:59:59, 999:59:59]`, allowing for values that exceed 24 hours. This can be useful when tracking elapsed time or performing arithmetic operations that result in values outside a single day.
