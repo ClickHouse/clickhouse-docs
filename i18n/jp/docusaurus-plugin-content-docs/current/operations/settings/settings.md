@@ -521,16 +521,6 @@ SELECT クエリの実行時に、各分片につき最大 `max_parallel_replica
 
 SQL の代替言語である PRQL を有効にします。
 
-## allow_experimental_qbit_type {#allow_experimental_qbit_type} 
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "新しい実験的な設定"}]}]}/>
-
-[QBit](../../sql-reference/data-types/qbit.md) データ型を作成できるようにします。
-
 ## allow_experimental_query_deduplication {#allow_experimental_query_deduplication} 
 
 <ExperimentalBadge/>
@@ -1097,6 +1087,14 @@ ROW POLICY の式が ORDER BY のカラムのみに依存している場合、�
 通常、この設定はユーザープロファイル（users.xml や `ALTER USER` のようなクエリ）で設定し、クライアント側（クライアントのコマンドライン引数、`SET` クエリ、`SELECT` クエリの `SETTINGS` セクション）からは設定しないことを推奨します。クライアント側からは、この値を false に変更することはできますが、true に変更することはできません（ユーザープロファイルで `apply_settings_from_server = false` が設定されている場合、サーバーは設定を送信しないため）。
 
 当初（24.12）にはサーバー側の設定（`send_settings_to_client`）が存在していましたが、その後、利便性向上のためにこのクライアント側設定に置き換えられました。
+
+## archive_adaptive_buffer_max_size_bytes {#archive_adaptive_buffer_max_size_bytes} 
+
+<SettingsInfoBlock type="UInt64" default_value="8388608" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "8388608"},{"label": "New setting"}]}]}/>
+
+アーカイブファイル（たとえば tar アーカイブ）への書き込み時に使用されるアダプティブバッファの最大サイズを制限します。
 
 ## arrow_flight_request_descriptor_type {#arrow_flight_request_descriptor_type} 
 
@@ -2131,6 +2129,14 @@ CROSS JOIN において圧縮を行うブロックの最小サイズ。0 を指�
 
 CROSS JOIN でブロックを圧縮するための最小行数。値が 0 の場合、このしきい値は無効化されます。ブロックは、行数またはバイト数の 2 つのしきい値のいずれかに達した時点で圧縮されます。
 
+## cross_to_inner_join_rewrite {#cross_to_inner_join_rewrite} 
+
+<SettingsInfoBlock type="UInt64" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "22.7"},{"label": "2"},{"label": "カンマ結合を INNER JOIN に強制的に書き換え"}]}]}/>
+
+`WHERE` 句に結合式がある場合、カンマ結合 / CROSS JOIN の代わりに INNER JOIN を使用します。値: 0 - 書き換えなし、1 - 可能な場合にカンマ結合 / CROSS JOIN を INNER JOIN に書き換え、2 - すべてのカンマ結合を強制的に書き換え、cross - 可能な場合に書き換え
+
 ## data_type_default_nullable {#data_type_default_nullable} 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2237,6 +2243,21 @@ Replicated\* テーブルからデータを受け取る materialized view に対
 **関連項目**
 
 - [IN 演算子における NULL の処理](/guides/developer/deduplicating-inserts-on-retries#insert-deduplication-with-materialized-views)
+
+## deduplicate_insert_select {#deduplicate_insert_select} 
+
+<SettingsInfoBlock type="DeduplicateInsertSelectMode" default_value="enable_when_possible" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "change the default behavior of deduplicate_insert_select to ENABLE_WHEN_PROSSIBLE"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "New setting, replace insert_select_deduplicate"}]}]}/>
+
+`INSERT SELECT`（Replicated\* テーブル向け）のブロック単位の重複排除を有効または無効にします。
+この設定は、`INSERT SELECT` クエリに対して `insert_deduplicate` より優先されます。
+この設定には次の値があります:
+
+- disable — `INSERT SELECT` クエリに対する重複排除を無効にします。
+- force_enable — `INSERT SELECT` クエリに対する重複排除を有効にします。SELECT 結果が安定していない場合は例外がスローされます。
+- enable_when_possible — `insert_deduplicate` が有効で、かつ SELECT 結果が安定している場合に重複排除を有効にし、それ以外の場合は無効にします。
+- enable_even_for_bad_queries - `insert_deduplicate` が有効な場合に重複排除を有効にします。SELECT 結果が安定していない場合は警告がログに出力されますが、クエリは重複排除付きで実行されます。このオプションは後方互換性のためのものです。予期しない結果を招く可能性があるため、代わりに他のオプションの使用を検討してください。
 
 ## default_materialized_view_sql_security {#default_materialized_view_sql_security} 
 
@@ -2472,6 +2493,12 @@ true に設定すると、テーブルの仮想カラムが DESCRIBE クエリ�
 <SettingsInfoBlock type="Dialect" default_value="clickhouse" />
 
 クエリの解析に使用する dialect
+
+## dictionary_use_async_executor {#dictionary_use_async_executor} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+Dictionary のソースを複数スレッドで読み取るパイプラインを実行します。ローカルの CLICKHOUSE ソースを使用する Dictionary でのみサポートされます。
 
 ## dictionary_validate_primary_key_type {#dictionary_validate_primary_key_type} 
 
@@ -3494,6 +3521,18 @@ Possible values:
 集約バケットのサイズ分布が偏っている場合、より低い id の重いバケットをまだ処理している間に、レプリカがより高い id のバケットをイニシエータに送信できるようにすることで、パフォーマンスが向上する可能性があります。
 欠点として、メモリ使用量が増加する可能性があります。
 
+## enable_qbit_type {#enable_qbit_type} 
+
+<BetaBadge/>
+
+**エイリアス**: `allow_experimental_qbit_type`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "QBit が Beta 段階に移行しました。設定 'allow_experimental_qbit_type' のエイリアスが追加されました。"}]}]}/>
+
+[QBit](../../sql-reference/data-types/qbit.md) データ型を作成できるようにします。
+
 ## enable_reads_from_query_cache {#enable_reads_from_query_cache} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3687,6 +3726,12 @@ WHERE (_part, _part_offset) IN (
 
 - 0 — 空のファイルが要求された形式と互換性がない場合、`SELECT` は例外をスローします。
 - 1 — 空のファイルに対して、`SELECT` は空の結果を返します。
+
+## exact_rows_before_limit {#exact_rows_before_limit} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+有効にすると、ClickHouse は `rows_before_limit_at_least` 統計値を正確な値で提供しますが、その代償として、LIMIT に達するまでのデータをすべて読み取る必要があります。
 
 ## except_default_mode {#except_default_mode} 
 
@@ -4928,17 +4973,6 @@ UNION、INTERSECT、EXCEPT チェーンのトップレベルの SELECT は、一
 トップレベルの構造が UNION の場合、`ORDER BY rand()` はすべての子クエリに対して個別に挿入されます。
 テストおよび開発用途にのみ有用です（ORDER BY を指定しないことは、クエリ結果が非決定的になる原因となります）。
 
-## input_format_parallel_parsing {#input_format_parallel_parsing} 
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-データフォーマットの順序を保持した並列解析を有効または無効にします。 [TabSeparated (TSV)](/interfaces/formats/TabSeparated)、[TSKV](/interfaces/formats/TSKV)、[CSV](/interfaces/formats/CSV)、[JSONEachRow](/interfaces/formats/JSONEachRow) フォーマットでのみサポートされます。
-
-指定可能な値:
-
-- 1 — 有効。
-- 0 — 無効。
-
 ## insert_allow_materialized_columns {#insert_allow_materialized_columns} 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -5149,20 +5183,6 @@ ClickHouse は次の状況で例外をスローします:
 - [insert_quorum](#insert_quorum)
 - [insert_quorum_parallel](#insert_quorum_parallel)
 - [select_sequential_consistency](#select_sequential_consistency)
-
-## insert_select_deduplicate {#insert_select_deduplicate} 
-
-<SettingsInfoBlock type="BoolAuto" default_value="auto" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "auto"},{"label": "New setting"}]}]}/>
-
-`INSERT SELECT`（Replicated\* テーブル向け）のブロック重複排除を有効または無効にします。
-この設定は、`INSERT SELECT` クエリに対して `insert_deduplicate` を上書きします。
-この設定には次の 3 つの値を指定できます。
-
-- 0 — `INSERT SELECT` クエリに対する重複排除を無効にします。
-- 1 — `INSERT SELECT` クエリに対する重複排除を有効にします。`SELECT` の結果が安定（決定的）でない場合は、例外がスローされます。
-- auto — `insert_deduplicate` が有効で、かつ `SELECT` の結果が安定（決定的）している場合に重複排除を有効にし、それ以外の場合は無効にします。
 
 ## insert&#95;shard&#95;id {#insert_shard_id}
 
@@ -8612,37 +8632,6 @@ CAP_SYS_NICE ケーパビリティが必要で、ない場合は何も行われ�
 
 設定可能な値: -20 から 19。
 
-## output_format_compression_level {#output_format_compression_level} 
-
-<SettingsInfoBlock type="UInt64" default_value="3" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "3"},{"label": "クエリ出力の圧縮レベルを変更可能にする"}]}]}/>
-
-クエリの出力が圧縮される場合のデフォルトの圧縮レベルです。`SELECT` クエリで `INTO OUTFILE` 句が指定されている場合、またはテーブル関数 `file`、`url`、`hdfs`、`s3`、`azureBlobStorage` へ書き込む場合に適用されます。
-
-設定可能な値: `1` から `22` まで
-
-## output_format_compression_zstd_window_log {#output_format_compression_zstd_window_log} 
-
-<SettingsInfoBlock type="UInt64" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "zstd 圧縮が使用されている場合に、クエリ出力で zstd window log を変更できるようにする"}]}]}/>
-
-出力圧縮方式が `zstd` の場合に使用できます。`0` より大きい値を指定すると、この設定は圧縮ウィンドウサイズ（`2` の累乗）を明示的に設定し、zstd 圧縮のロングレンジモードを有効にします。これにより、より高い圧縮率を達成できる場合があります。
-
-指定可能な値: 0 以上の非負整数。値が小さすぎる、または大きすぎる場合は、`zstdlib` が例外をスローします。典型的な値は `20`（ウィンドウサイズ = `1MB`）から `30`（ウィンドウサイズ = `1GB`）の範囲です。
-
-## output_format_parallel_formatting {#output_format_parallel_formatting} 
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-データ出力フォーマットの並列フォーマット処理を有効または無効にします。[TSV](/interfaces/formats/TabSeparated)、[TSKV](/interfaces/formats/TSKV)、[CSV](/interfaces/formats/CSV)、[JSONEachRow](/interfaces/formats/JSONEachRow) フォーマットでのみサポートされています。
-
-設定可能な値:
-
-- 1 — 有効。
-- 0 — 無効。
-
 ## page_cache_block_size {#page_cache_block_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
@@ -9963,6 +9952,24 @@ ClickHouse Cloud でのみ有効です。分散キャッシュからの読み取
 
 ネットワークからデータを受信するためのタイムアウト時間（秒）です。この時間内に1バイトもデータを受信しなかった場合、例外がスローされます。クライアント側でこの SETTING を設定すると、対応するサーバー側接続のソケットに対しても `send_timeout` が設定されます。
 
+## regexp_dict_allow_hyperscan {#regexp_dict_allow_hyperscan} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+Hyperscan ライブラリを使用する `regexp_tree` Dictionary の使用を許可します。
+
+## regexp_dict_flag_case_insensitive {#regexp_dict_flag_case_insensitive} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+regexp_tree Dictionary に対して大文字小文字を無視したマッチングを行います。個々の正規表現では `(?i)` および `(?-i)` を使用してこの動作を上書きできます。
+
+## regexp_dict_flag_dotall {#regexp_dict_flag_dotall} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+`regexp_tree` Dictionary において、`.` が改行文字にもマッチすることを許可します。
+
 ## regexp_max_matches_per_row {#regexp_max_matches_per_row} 
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
@@ -10163,6 +10170,14 @@ FORMAT Null;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "New experimental setting"}]}]}/>
 
 「x IN subquery」のような式を JOIN に書き換えます。これにより、JOIN の並べ替えによってクエリ全体を最適化できる場合があります。
+
+## rows_before_aggregation {#rows_before_aggregation} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.8"},{"label": "0"},{"label": "rows_before_aggregation 統計に対して正確な値を提供し、集約前に読み取られた行数を表します"}]}]}/>
+
+有効化すると、ClickHouse は rows_before_aggregation 統計に対して正確な値を提供し、集約前に読み取られた行数を表します。
 
 ## s3_allow_multipart_copy {#s3_allow_multipart_copy} 
 

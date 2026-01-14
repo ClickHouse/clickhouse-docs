@@ -9,23 +9,11 @@ show_related_blogs: true
 doc_type: 'reference'
 ---
 
+import WhenToUseJson from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_when-to-use-json.md';
+
 ClickHouse には、半構造化データや動的なデータ向けに設計されたネイティブな JSON カラム型が用意されています。**これはカラム型であり、データ形式ではない**ことを明確にしておくことが重要です。JSON は文字列として、あるいは [JSONEachRow](/interfaces/formats/JSONEachRow) のようなサポートされているフォーマット経由で ClickHouse に挿入できますが、それは必ずしも JSON カラム型を使用していることを意味しません。JSON 型は、データの構造が動的な場合にのみ使用し、単に JSON を保存したいだけの場合には使用しないでください。
 
-## JSON 型をいつ使うべきか {#when-to-use-the-json-type}
-
-次のようなデータには JSON 型を使用します:
-
-* 時間の経過とともに変化し得る **予測できないキー** を持っている。
-* **さまざまな型の値を含む**（例: 同じパスに、あるときは文字列、別のときは数値が入る）。
-* 厳密な型付けが現実的でないような、スキーマの柔軟性が必要である。
-
-データ構造が既知で一貫している場合は、データが JSON 形式であっても JSON 型を使う必要はほとんどありません。具体的には、データが次のような場合です:
-
-* **既知のキーを持つフラットな構造**: String などの標準的なカラム型を使用します。
-* **予測可能なネスト構造**: これらの構造には Tuple、Array、Nested 型を使用します。
-* **構造は予測可能だが値の型が変わり得る場合**: 代わりに Dynamic 型や Variant 型の利用を検討します。
-
-アプローチを組み合わせることもできます。たとえば、予測可能なトップレベルフィールドには静的なカラムを使用し、ペイロード内の動的な部分だけを 1 つの JSON カラムに格納することができます。
+<WhenToUseJson />
 
 ## JSON を使用する際の考慮事項とヒント {#considerations-and-tips-for-using-json}
 

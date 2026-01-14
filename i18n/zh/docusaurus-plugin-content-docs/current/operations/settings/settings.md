@@ -521,16 +521,6 @@ File/S3 引擎和表函数在归档文件扩展名正确时，会将包含 `::` 
 
 启用 PRQL——一种 SQL 的替代方案。
 
-## allow_experimental_qbit_type {#allow_experimental_qbit_type} 
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "新的实验性设置"}]}]}/>
-
-允许创建 [QBit](../../sql-reference/data-types/qbit.md) 数据类型。
-
 ## allow_experimental_query_deduplication {#allow_experimental_query_deduplication} 
 
 <ExperimentalBadge/>
@@ -1094,6 +1084,14 @@ Cloud 默认值：`1`。
 通常应在用户配置文件（users.xml 或使用 `ALTER USER` 之类的查询）中设置此配置，而不是通过客户端（客户端命令行参数、`SET` 查询或 `SELECT` 查询的 `SETTINGS` 部分）。可以在客户端将其改为 false，但不能将其改为 true（因为如果用户配置文件中 `apply_settings_from_server = false`，服务器将不会向客户端发送设置）。
 
 请注意，最初（24.12）存在一个服务器设置（`send_settings_to_client`），但后来为了更好的可用性，被此客户端设置所取代。
+
+## archive_adaptive_buffer_max_size_bytes {#archive_adaptive_buffer_max_size_bytes} 
+
+<SettingsInfoBlock type="UInt64" default_value="8388608" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "8388608"},{"label": "New setting"}]}]}/>
+
+限制写入归档文件（例如 tar 归档）时所使用的自适应缓冲区的最大尺寸。
 
 ## arrow_flight_request_descriptor_type {#arrow_flight_request_descriptor_type} 
 
@@ -2128,6 +2126,14 @@ SETTINGS convert_query_to_cnf = true;
 
 在 CROSS JOIN 中对数据块进行压缩所需的最小行数。值为 0 表示禁用此阈值。当任一阈值（按行数或按字节数）达到时，将压缩该数据块。
 
+## cross_to_inner_join_rewrite {#cross_to_inner_join_rewrite} 
+
+<SettingsInfoBlock type="UInt64" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "22.7"},{"label": "2"},{"label": "Force rewrite comma join to inner"}]}]}/>
+
+如果在 WHERE 子句中存在连接条件，则使用 inner join 替代 comma/cross join。取值：0 - 不重写，1 - 在可能的情况下重写 comma/cross join，2 - 强制重写所有 comma join，对 cross join 则在可能时重写。
+
 ## data_type_default_nullable {#data_type_default_nullable} 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2234,6 +2240,21 @@ SETTINGS convert_query_to_cnf = true;
 **另请参阅**
 
 - [IN 运算符中的 NULL 处理](/guides/developer/deduplicating-inserts-on-retries#insert-deduplication-with-materialized-views)
+
+## deduplicate_insert_select {#deduplicate_insert_select} 
+
+<SettingsInfoBlock type="DeduplicateInsertSelectMode" default_value="enable_when_possible" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "change the default behavior of deduplicate_insert_select to ENABLE_WHEN_PROSSIBLE"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "New setting, replace insert_select_deduplicate"}]}]}/>
+
+启用或禁用对 `INSERT SELECT` 的数据块去重（适用于 Replicated\* 表）。
+该设置会覆盖 `INSERT SELECT` 查询中的 `insert_deduplicate` 行为。
+此设置有以下可选值：
+
+- disable — 对 `INSERT SELECT` 查询禁用去重。
+- force_enable — 对 `INSERT SELECT` 查询启用去重。如果 `SELECT` 结果不稳定，将抛出异常。
+- enable_when_possible — 当 `insert_deduplicate` 启用且 `SELECT` 结果稳定时启用去重，否则禁用。
+- enable_even_for_bad_queries — 当 `insert_deduplicate` 启用时启用去重。如果 `SELECT` 结果不稳定，则记录警告，但查询仍会在启用去重的情况下执行。此选项用于向后兼容，建议优先使用其他选项，因为该选项可能导致意外结果。
 
 ## default_materialized_view_sql_security {#default_materialized_view_sql_security} 
 
@@ -2469,6 +2490,12 @@ ENGINE = Log
 <SettingsInfoBlock type="Dialect" default_value="clickhouse" />
 
 将使用哪种 SQL 方言来解析查询
+
+## dictionary_use_async_executor {#dictionary_use_async_executor} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+在多个线程中执行用于从字典源读取数据的管道。仅适用于以本地 ClickHouse 为数据源的字典。
 
 ## dictionary_validate_primary_key_type {#dictionary_validate_primary_key_type} 
 
@@ -3490,6 +3517,18 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 当聚合 bucket 的大小分布不均时，这可以通过允许副本在仍在处理一些较重的低 ID bucket 的同时，先将较高 ID 的 bucket 发送给发起方，从而提升性能。
 其缺点是可能会增加内存使用量。
 
+## enable_qbit_type {#enable_qbit_type} 
+
+<BetaBadge/>
+
+**别名**: `allow_experimental_qbit_type`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "QBit 已迁移到 Beta 阶段。为设置 `allow_experimental_qbit_type` 添加了别名。"}]}]}/>
+
+允许创建 [QBit](../../sql-reference/data-types/qbit.md) 数据类型。
+
 ## enable_reads_from_query_cache {#enable_reads_from_query_cache} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3683,6 +3722,12 @@ WHERE (_part, _part_offset) IN (
 
 - 0 — 如果空文件与请求的格式不兼容，`SELECT` 会抛出异常。
 - 1 — 对于空文件，`SELECT` 返回空结果集。
+
+## exact_rows_before_limit {#exact_rows_before_limit} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+启用该设置后，ClickHouse 会为 rows_before_limit_at_least 统计信息提供精确数值，但代价是必须完整读取 LIMIT 之前的所有数据。
 
 ## except_default_mode {#except_default_mode} 
 
@@ -4923,17 +4968,6 @@ database 和表名都必须是不带引号的——只允许使用简单标识�
 如果 UNION 是顶层结构，则会分别向其所有子项注入 `ORDER BY rand()`。
 仅适用于测试和开发场景（缺少 ORDER BY 会导致查询结果具有非确定性）。
 
-## input_format_parallel_parsing {#input_format_parallel_parsing} 
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-启用或禁用对数据格式进行保序并行解析。仅支持 [TabSeparated (TSV)](/interfaces/formats/TabSeparated)、[TSKV](/interfaces/formats/TSKV)、[CSV](/interfaces/formats/CSV) 和 [JSONEachRow](/interfaces/formats/JSONEachRow) 格式。
-
-可能的取值：
-
-- 1 — 启用。
-- 0 — 禁用。
-
 ## insert_allow_materialized_columns {#insert_allow_materialized_columns} 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -5143,20 +5177,6 @@ timeout = min(insert_keeper_retry_max_backoff_ms, latest_timeout * 2)
 - [insert_quorum](#insert_quorum)
 - [insert_quorum_parallel](#insert_quorum_parallel)
 - [select_sequential_consistency](#select_sequential_consistency)
-
-## insert_select_deduplicate {#insert_select_deduplicate} 
-
-<SettingsInfoBlock type="BoolAuto" default_value="auto" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "auto"},{"label": "New setting"}]}]}/>
-
-启用或禁用针对 `INSERT SELECT` 的数据块去重（适用于 Replicated\* 表）。
-该设置会在 `INSERT SELECT` 查询中覆盖 `insert_deduplicate` 的行为。
-此设置有三种可能的取值：
-
-- 0 — 对 `INSERT SELECT` 查询禁用去重。
-- 1 — 对 `INSERT SELECT` 查询启用去重。如果 SELECT 结果不稳定，将抛出异常。
-- auto — 当 `insert_deduplicate` 启用且 SELECT 结果稳定时启用去重，否则禁用去重。
 
 ## insert&#95;shard&#95;id {#insert_shard_id}
 
@@ -8601,37 +8621,6 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 
 可能的取值范围：-20 到 19。
 
-## output_format_compression_level {#output_format_compression_level} 
-
-<SettingsInfoBlock type="UInt64" default_value="3" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "3"},{"label": "允许在查询输出中更改压缩级别"}]}]}/>
-
-当查询输出被压缩时使用的默认压缩级别。该设置在带有 `INTO OUTFILE` 的 `SELECT` 查询中，或在写入表函数 `file`、`url`、`hdfs`、`s3` 或 `azureBlobStorage` 时生效。
-
-可选值：从 `1` 到 `22`
-
-## output_format_compression_zstd_window_log {#output_format_compression_zstd_window_log} 
-
-<SettingsInfoBlock type="UInt64" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "允许在使用 zstd 压缩时更改查询输出中的 zstd window log"}]}]}/>
-
-当输出压缩算法为 `zstd` 时可用。如果值大于 `0`，该设置会显式指定压缩窗口大小（`2` 的幂），并为 zstd 压缩启用长距离模式（long-range mode），从而有助于获得更好的压缩比。
-
-可能的取值：非负数。请注意，如果该值过小或过大，`zstdlib` 将抛出异常。典型取值范围为 `20`（窗口大小 = `1MB`）到 `30`（窗口大小 = `1GB`）。
-
-## output_format_parallel_formatting {#output_format_parallel_formatting} 
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-启用或禁用对数据的并行格式化输出。仅支持 [TSV](/interfaces/formats/TabSeparated)、[TSKV](/interfaces/formats/TSKV)、[CSV](/interfaces/formats/CSV) 和 [JSONEachRow](/interfaces/formats/JSONEachRow) 格式。
-
-可选值：
-
-- 1 — 启用。
-- 0 — 禁用。
-
 ## page_cache_block_size {#page_cache_block_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
@@ -9954,6 +9943,24 @@ EXPLAIN PLAN 中步骤描述的最大长度。
 
 从网络接收数据的超时时间，以秒为单位。如果在该时间间隔内未收到任何字节，将抛出异常。如果在客户端设置此 SETTING，则会在服务器端对应的连接上也为套接字设置 `send_timeout`。
 
+## regexp_dict_allow_hyperscan {#regexp_dict_allow_hyperscan} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+允许在 regexp_tree 字典中使用 Hyperscan 库。
+
+## regexp_dict_flag_case_insensitive {#regexp_dict_flag_case_insensitive} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+对 `regexp_tree` 字典使用不区分大小写的匹配。可以在单个表达式中使用 `(?i)` 和 `(?-i)` 对该设置进行覆盖。
+
+## regexp_dict_flag_dotall {#regexp_dict_flag_dotall} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+允许 `.` 在 `regexp_tree` 字典的正则表达式中匹配换行符。
+
 ## regexp_max_matches_per_row {#regexp_max_matches_per_row} 
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
@@ -10155,6 +10162,14 @@ FORMAT Null;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "New experimental setting"}]}]}/>
 
 将形如“x IN 子查询”的表达式重写为 JOIN。这样可以通过 JOIN 重排序来优化整个查询。
+
+## rows_before_aggregation {#rows_before_aggregation} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.8"},{"label": "0"},{"label": "为 rows_before_aggregation 统计指标提供精确数值，表示聚合前读取的行数"}]}]}/>
+
+启用该设置后，ClickHouse 会为 rows_before_aggregation 统计指标提供精确数值，表示在聚合之前读取的行数。
 
 ## s3_allow_multipart_copy {#s3_allow_multipart_copy} 
 

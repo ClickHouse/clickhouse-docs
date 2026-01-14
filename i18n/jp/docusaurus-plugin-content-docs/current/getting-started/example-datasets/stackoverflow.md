@@ -93,7 +93,7 @@ INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation
 0 rows in set. Elapsed: 21.605 sec. Processed 238.98 million rows, 2.13 GB (11.06 million rows/s., 98.46 MB/s.)
 ```
 
-投票データも年別に利用できます。例えば、[https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
+投票データも年別に利用できます。例えば、<https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet>
 
 
 ### コメント {#comments}
@@ -117,7 +117,7 @@ INSERT INTO stackoverflow.comments SELECT * FROM s3('https://datasets-documentat
 0 rows in set. Elapsed: 56.593 sec. Processed 90.38 million rows, 11.14 GB (1.60 million rows/s., 196.78 MB/s.)
 ```
 
-コメントデータは年単位のファイルとしても提供されています。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
+コメントデータは年単位のファイルとしても提供されています。例: <https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet>
 
 
 ### ユーザー {#users}

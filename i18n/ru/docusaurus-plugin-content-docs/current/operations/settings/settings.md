@@ -523,16 +523,6 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включить PRQL — альтернативу SQL.
 
-## allow_experimental_qbit_type {#allow_experimental_qbit_type} 
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "New experimental setting"}]}]}/>
-
-Позволяет создавать тип данных [QBit](../../sql-reference/data-types/qbit.md).
-
 ## allow_experimental_query_deduplication {#allow_experimental_query_deduplication} 
 
 <ExperimentalBadge/>
@@ -1099,6 +1089,14 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 Обычно этот параметр следует задавать в профиле пользователя (users.xml или запросы типа `ALTER USER`), а не через клиент (аргументы командной строки клиента, запрос `SET` или секция `SETTINGS` запроса `SELECT`). Через клиент его можно изменить на `false`, но нельзя изменить на `true` (потому что сервер не будет отправлять настройки, если в профиле пользователя указано `apply_settings_from_server = false`).
 
 Обратите внимание, что изначально (24.12) существовал серверный параметр (`send_settings_to_client`), но позже он был заменён этим клиентским параметром для повышения удобства использования.
+
+## archive_adaptive_buffer_max_size_bytes {#archive_adaptive_buffer_max_size_bytes} 
+
+<SettingsInfoBlock type="UInt64" default_value="8388608" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "8388608"},{"label": "New setting"}]}]}/>
+
+Ограничивает максимально допустимый размер адаптивного буфера, используемого при записи в архивные файлы (например, tar-архивы).
 
 ## arrow_flight_request_descriptor_type {#arrow_flight_request_descriptor_type} 
 
@@ -2133,6 +2131,14 @@ SETTINGS convert_query_to_cnf = true;
 
 Минимальное количество строк для сжатия блока в CROSS JOIN. Нулевое значение означает отключение этого порога. Блок сжимается, как только достигается один из двух порогов (по строкам или по байтам).
 
+## cross_to_inner_join_rewrite {#cross_to_inner_join_rewrite} 
+
+<SettingsInfoBlock type="UInt64" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "22.7"},{"label": "2"},{"label": "Принудительное преобразование соединений через запятую во внутренние"}]}]}/>
+
+Использовать inner join вместо comma/cross join, если в секции WHERE присутствуют выражения соединения. Значения: 0 — не преобразовывать, 1 — применять, если возможно, для comma/cross join, 2 — принудительно преобразовывать все соединения через запятую, cross join — если возможно.
+
 ## data_type_default_nullable {#data_type_default_nullable} 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2239,6 +2245,21 @@ SETTINGS convert_query_to_cnf = true;
 **См. также**
 
 - [Обработка NULL в операторах IN](/guides/developer/deduplicating-inserts-on-retries#insert-deduplication-with-materialized-views)
+
+## deduplicate_insert_select {#deduplicate_insert_select} 
+
+<SettingsInfoBlock type="DeduplicateInsertSelectMode" default_value="enable_when_possible" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "change the default behavior of deduplicate_insert_select to ENABLE_WHEN_PROSSIBLE"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "New setting, replace insert_select_deduplicate"}]}]}/>
+
+Включает или отключает дедупликацию блоков для `INSERT SELECT` (для таблиц Replicated\*).
+Этот параметр переопределяет `insert_deduplicate` для запросов `INSERT SELECT`.
+У этого параметра есть четыре возможных значения:
+
+- disable — дедупликация отключена для запроса `INSERT SELECT`.
+- force_enable — дедупликация включена для запроса `INSERT SELECT`. Если результат SELECT нестабилен, выбрасывается исключение.
+- enable_when_possible — дедупликация включена, если `insert_deduplicate` включён и результат SELECT стабилен, иначе отключена.
+- enable_even_for_bad_queries — дедупликация включена, если `insert_deduplicate` включён. Если результат SELECT нестабилен, в лог записывается предупреждение, но запрос выполняется с дедупликацией. Эта опция предназначена для обратной совместимости. Рекомендуется использовать другие опции, так как она может приводить к непредсказуемым результатам.
 
 ## default_materialized_view_sql_security {#default_materialized_view_sql_security} 
 
@@ -2474,6 +2495,12 @@ ENGINE = Log
 <SettingsInfoBlock type="Dialect" default_value="clickhouse" />
 
 Какой диалект будет использоваться для парсинга запроса
+
+## dictionary_use_async_executor {#dictionary_use_async_executor} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+Выполняет конвейер чтения источника словаря параллельно в нескольких потоках. Поддерживается только для словарей с локальным источником ClickHouse.
 
 ## dictionary_validate_primary_key_type {#dictionary_validate_primary_key_type} 
 
@@ -3495,6 +3522,18 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 Это может улучшить производительность, когда размеры бакетов агрегирования сильно различаются, позволяя реплике отправлять инициатору бакеты с более высокими идентификаторами, пока она всё ещё обрабатывает тяжёлые бакеты с более низкими идентификаторами.
 Недостатком является потенциально более высокое потребление памяти.
 
+## enable_qbit_type {#enable_qbit_type} 
+
+<BetaBadge/>
+
+**Псевдонимы**: `allow_experimental_qbit_type`
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "QBit был переведен в бета-статус. Добавлен псевдоним для настройки 'allow_experimental_qbit_type'."}]}]}/>
+
+Позволяет создавать тип данных [QBit](../../sql-reference/data-types/qbit.md).
+
 ## enable_reads_from_query_cache {#enable_reads_from_query_cache} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3688,6 +3727,12 @@ WHERE (_part, _part_offset) IN (
 
 - 0 — `SELECT` выбрасывает исключение, если пустой файл не совместим с запрошенным форматом.
 - 1 — `SELECT` возвращает пустой результат для пустого файла.
+
+## exact_rows_before_limit {#exact_rows_before_limit} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+Когда параметр включён, ClickHouse будет возвращать точное значение статистики rows_before_limit_at_least, но ценой того, что все данные до достижения limit придётся прочитать полностью.
 
 ## except_default_mode {#except_default_mode} 
 
@@ -4928,17 +4973,6 @@ SELECT на верхнем уровне цепочек UNION, INTERSECT, EXCEPT 
 Если верхнеуровневая конструкция — UNION, 'ORDER BY rand()' добавляется к каждому дочернему запросу независимо.
 Полезно только для тестирования и разработки (отсутствие ORDER BY приводит к недетерминированным результатам запросов).
 
-## input_format_parallel_parsing {#input_format_parallel_parsing} 
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-Включает или отключает параллельный парсинг данных с сохранением порядка. Поддерживается только для форматов [TabSeparated (TSV)](/interfaces/formats/TabSeparated), [TSKV](/interfaces/formats/TSKV), [CSV](/interfaces/formats/CSV) и [JSONEachRow](/interfaces/formats/JSONEachRow).
-
-Возможные значения:
-
-- 1 — включено.
-- 0 — отключено.
-
 ## insert_allow_materialized_columns {#insert_allow_materialized_columns} 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -5148,20 +5182,6 @@ ClickHouse генерирует исключение:
 - [insert_quorum](#insert_quorum)
 - [insert_quorum_parallel](#insert_quorum_parallel)
 - [select_sequential_consistency](#select_sequential_consistency)
-
-## insert_select_deduplicate {#insert_select_deduplicate} 
-
-<SettingsInfoBlock type="BoolAuto" default_value="auto" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "auto"},{"label": "New setting"}]}]}/>
-
-Включает или отключает дедупликацию блоков для `INSERT SELECT` (для таблиц с движком Replicated\*).
-Эта настройка переопределяет `insert_deduplicate` для запросов `INSERT SELECT`.
-У этой настройки есть три возможных значения:
-
-- 0 — дедупликация отключена для запроса `INSERT SELECT`.
-- 1 — дедупликация включена для запроса `INSERT SELECT`. Если результат запроса SELECT нестабилен, генерируется исключение.
-- auto — дедупликация включена, если `insert_deduplicate` включена и результат запроса SELECT стабилен, в противном случае — отключена.
 
 ## insert&#95;shard&#95;id {#insert_shard_id}
 
@@ -8644,37 +8664,6 @@ FROM fuse_tbl
 
 Возможные значения: от -20 до 19.
 
-## output_format_compression_level {#output_format_compression_level} 
-
-<SettingsInfoBlock type="UInt64" default_value="3" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "3"},{"label": "Позволяет изменять уровень сжатия выходных данных запроса"}]}]}/>
-
-Уровень сжатия по умолчанию, если выходные данные запроса сжимаются. Настройка применяется, когда запрос `SELECT` содержит `INTO OUTFILE` или при записи в табличные функции `file`, `url`, `hdfs`, `s3` или `azureBlobStorage`.
-
-Возможные значения: от `1` до `22`
-
-## output_format_compression_zstd_window_log {#output_format_compression_zstd_window_log} 
-
-<SettingsInfoBlock type="UInt64" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "Позволяет изменять параметр window log алгоритма zstd в выводе запроса при использовании сжатия zstd"}]}]}/>
-
-Может использоваться, когда метод сжатия выходных данных — `zstd`. Если значение больше `0`, этот параметр явно задаёт размер окна сжатия (степень числа 2) и включает режим long-range для сжатия zstd. Это может помочь достичь лучшего коэффициента сжатия.
-
-Возможные значения: неотрицательные числа. Обратите внимание, что если значение слишком маленькое или слишком большое, `zstdlib` выбросит исключение. Типичные значения — от `20` (размер окна = `1 МБ`) до `30` (размер окна = `1 ГБ`).
-
-## output_format_parallel_formatting {#output_format_parallel_formatting} 
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-Включает или отключает параллельное форматирование данных. Поддерживается только для форматов [TSV](/interfaces/formats/TabSeparated), [TSKV](/interfaces/formats/TSKV), [CSV](/interfaces/formats/CSV) и [JSONEachRow](/interfaces/formats/JSONEachRow).
-
-Возможные значения:
-
-- 1 — включено.
-- 0 — отключено.
-
 ## page_cache_block_size {#page_cache_block_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
@@ -9996,6 +9985,24 @@ a   Tuple(
 
 Тайм-аут получения данных из сети, в секундах. Если за этот интервал не было получено ни одного байта, генерируется исключение. Если вы задаёте этот параметр на клиенте, то `send_timeout` для сокета также будет установлен на серверной стороне соединения.
 
+## regexp_dict_allow_hyperscan {#regexp_dict_allow_hyperscan} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+Разрешает использовать словарь regexp_tree с библиотекой Hyperscan.
+
+## regexp_dict_flag_case_insensitive {#regexp_dict_flag_case_insensitive} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+Включает регистронезависимое сопоставление для словаря `regexp_tree`. Может быть переопределён в отдельных выражениях с помощью `(?i)` и `(?-i)`.
+
+## regexp_dict_flag_dotall {#regexp_dict_flag_dotall} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+Разрешает символу `.` совпадать с символами новой строки в словаре `regexp_tree`.
+
 ## regexp_max_matches_per_row {#regexp_max_matches_per_row} 
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
@@ -10197,6 +10204,14 @@ FORMAT Null;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "New experimental setting"}]}]}/>
 
 Преобразует выражения вида 'x IN subquery' в JOIN. Это может быть полезно для оптимизации всего запроса за счёт перестановки соединений (JOIN).
+
+## rows_before_aggregation {#rows_before_aggregation} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.8"},{"label": "0"},{"label": "Предоставляет точное значение статистики rows_before_aggregation, отражающей количество строк, прочитанных до агрегации"}]}]}/>
+
+Если настройка включена, ClickHouse будет предоставлять точное значение статистики rows_before_aggregation, отражающей количество строк, прочитанных до агрегации.
 
 ## s3_allow_multipart_copy {#s3_allow_multipart_copy} 
 
