@@ -69,7 +69,7 @@ very_precise_datetime: 2025-03-12 11:39:07.196724000
 
 ## Time and Time64 types {#time-series-time-types}
 
-For scenarios where you need to store time-of-day values without date components, ClickHouse provides the [`Time`](/sql-reference/data-types/time) and [`Time64`](/sql-reference/data-types/time64) types. These are useful for representing recurring schedules, daily patterns, or situations where separating date and time components makes sense.
+For scenarios where you need to store time-of-day values without date components, ClickHouse provides the [`Time`](/sql-reference/data-types/time) and [`Time64`](/sql-reference/data-types/time64) types, which was introduced in version 25.6. These are useful for representing recurring schedules, daily patterns, or situations where separating date and time components makes sense.
 
 :::note
 Using `Time` and `Time64` requires enabling the setting: `SET enable_time_time64_type = 1;`
