@@ -5,7 +5,7 @@ title: 'first_value'
 doc_type: 'reference'
 ---
 
-# first&#95;value {#first&#95;value}
+# first_value {#first_value}
 
 Это псевдоним для [`any`](../../../sql-reference/aggregate-functions/reference/any.md), но он был добавлен для совместимости с [оконными функциями](../../window-functions/index.md), где иногда требуется обрабатывать значения `NULL` (по умолчанию все агрегатные функции ClickHouse игнорируют значения `NULL`).
 

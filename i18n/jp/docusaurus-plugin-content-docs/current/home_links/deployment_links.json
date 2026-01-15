@@ -1,14 +1,14 @@
 [
   {
     "title": "クイックスタート",
-    "description": "数分で ClickHouse を立ち上げて利用を開始し、サンプルデータを探索して、ソリューションの構築を始めましょう",
+    "description": "数分で ClickHouse を立ち上げて稼働させ、サンプルデータを探索し、自分のソリューションを構築しましょう",
     "url": "/docs/quick-start/",
-    "background": "クラウド"
+    "background": "Cloud"
   },
   {
     "title": "チュートリアルとサンプルデータセット",
-    "description": "タクシー乗車履歴から不動産価格までのデータをClickHouseに取り込み、クエリ性能を高めるためにモデリングする方法を学びます",
+    "description": "タクシー乗車データから不動産価格まで、ClickHouse へのデータの取り込み方法と、高速なクエリ処理のためのモデリング手法を学びます",
     "url": "/docs/getting-started/example-datasets/",
-    "background": "クラウド"
+    "background": "Cloud"
   }
 ]

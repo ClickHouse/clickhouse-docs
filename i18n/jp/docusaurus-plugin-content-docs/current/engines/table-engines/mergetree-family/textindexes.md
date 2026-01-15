@@ -229,9 +229,20 @@ SELECT * from tab WHERE str IN ('Hello', 'World');
 :::
 
 `LIKE`（[like](/sql-reference/functions/string-search-functions.md/#like)）、`NOT LIKE`（[notLike](/sql-reference/functions/string-search-functions.md/#notLike)）、および [match](/sql-reference/functions/string-search-functions.md/#match) 関数をテキスト索引と併用するには、ClickHouse が検索語句から完全なトークンを抽出できる必要があります。
-`ngrams` トークナイザを用いた索引では、特殊文字で区切られた検索文字列の長さが ngram の長さ以上である場合に、この条件を満たします。
+`ngrams` トークナイザを用いた索引では、ワイルドカードの間にある検索文字列の長さが ngram の長さ以上である場合に、この条件を満たします。
 
-`splitByNonAlpha` トークナイザを用いたテキスト索引の例：
+例：`splitByNonAlpha` トークナイザを用いたテキスト索引
+
+SELECT count() FROM tab WHERE comment LIKE &#39;support%&#39;;
+
+この例の `support` は、`support`、`supports`、`supporting` などにマッチします。
+この種のクエリは部分一致クエリであり、テキストインデックスによって高速化することはできません。
+
+LIKE クエリでテキストインデックスを活用するには、LIKE パターンを次のように書き換える必要があります。
+
+SELECT count() FROM tab WHERE comment LIKE &#39; support %&#39;; -- or `% support %`
+
+`support` の左右に空白を入れておくことで、その語をトークンとして抽出できるようにしています。
 
 ```sql
 SELECT count() FROM tab WHERE comment LIKE 'support%';
@@ -252,7 +263,7 @@ SELECT count() FROM tab WHERE comment LIKE ' support %'; -- or `% support %`
 #### `startsWith` と `endsWith` {#functions-example-startswith-endswith}
 
 `LIKE` と同様に、[startsWith](/sql-reference/functions/string-functions.md/#startsWith) 関数と [endsWith](/sql-reference/functions/string-functions.md/#endsWith) 関数は、検索語句から完全なトークンを抽出できる場合に限り、テキストインデックスを利用できます。
-`ngrams` トークナイザーを用いるテキストインデックスの場合、検索する接頭辞または接尾辞の長さが ngram の長さ以上であれば、この条件を満たします。
+`ngrams` トークナイザーを用いるインデックスの場合、ワイルドカードの間で検索される文字列の長さが ngram の長さ以上であれば、この条件を満たします。
 
 `splitByNonAlpha` トークナイザーを用いるテキストインデックスの例：
 
@@ -324,7 +335,7 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 
 #### `mapContains` {#functions-example-mapcontains}
 
-[mapContains](/sql-reference/functions/tuple-map-functions#mapcontains) 関数（`mapContainsKey` のエイリアス）は、検索文字列から抽出されたトークンを、マップのキーに含まれるトークンと照合してマッチさせます。挙動は、`String` カラムに対する `equals` 関数と似ています。テキストインデックスは、`mapKeys(map)` 式に対して作成されている場合にのみ使用されます。
+[mapContains](/sql-reference/functions/tuple-map-functions#mapcontains) 関数（`mapContainsKey` のエイリアス）は、検索文字列から抽出されたトークンを、マップのキーに含まれるトークンと照合してマッチさせます。挙動は、`String` カラムに対する `equals` 関数と似ています。テキストインデックスは、`mapKeys(map)` 式に対して作成された場合にのみ使用されます。
 
 例:
 
@@ -337,7 +348,9 @@ SELECT count() FROM tab WHERE mapContains(map, 'clickhouse');
 
 #### `mapContainsValue` {#functions-example-mapcontainsvalue}
 
-[mapContainsValue](/sql-reference/functions/tuple-map-functions#mapcontainsvalue) 関数は、検索対象とする文字列から抽出されたトークンに対して、マップの値の中から一致を検索します。この動作は、`String` カラムに対する `equals` 関数と同様です。テキストインデックスは、`mapValues(map)` 式上に作成されている場合にのみ使用されます。
+[mapContainsValue](/sql-reference/functions/tuple-map-functions#mapcontainsvalue) 関数は、検索対象とする文字列から抽出されたトークンに対して、マップの値の中から一致を検索します。
+この動作は、`String` カラムに対する `equals` 関数と同様です。
+テキストインデックスは、`mapValues(map)` 式上に作成されている場合にのみ使用されます。
 
 例:
 
@@ -495,8 +508,8 @@ ClickHouse のダイレクトリード最適化は、基盤となるテキスト
 **サポートされている関数**
 
 ダイレクトリード最適化は `hasToken`、`hasAllTokens`、`hasAnyTokens` 関数をサポートします。
-テキストインデックスが `array` トークナイザーで作成されている場合、`equals`、`has`、`mapContainsKey`、`mapContainsValue` 関数に対してもダイレクトリードがサポートされます。
-これらの関数は AND、OR、NOT 演算子で組み合わせることもできます。
+テキストインデックスが `array` トークナイザーで定義されている場合、`equals`、`has`、`mapContainsKey`、`mapContainsValue` 関数に対してもダイレクトリードがサポートされます。
+これらの関数は `AND`、`OR`、`NOT` 演算子で組み合わせることもできます。
 `WHERE` または `PREWHERE` 句には、（テキストカラムやその他のカラムに対する）追加の非テキスト検索関数によるフィルタも含めることができます。この場合でもダイレクトリード最適化は使用されますが、その効果は小さくなります（サポートされているテキスト検索関数にのみ適用されるためです）。
 
 クエリがダイレクトリードを利用しているかを確認するには、`EXPLAIN PLAN actions = 1` を付けてクエリを実行します。
@@ -534,7 +547,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, -- enable direct read
          use_skip_indexes_on_data_read = 1;
 ```
 
-戻り値
+次のような結果が返されます。
 
 ```text
 [...]
@@ -549,15 +562,17 @@ Positions:
 2つ目の EXPLAIN PLAN の出力には、仮想カラム `__text_index_<index_name>_<function_name>_<id>` が含まれています。
 このカラムが存在する場合、直接読み取りが使用されます。
 
-ダイレクトリード最適化のパフォーマンス向上効果は、テキストカラムがテキスト検索関数内でのみ使用されている場合に最大になります。この場合、クエリはカラムデータをまったく読み取らずに済みます。ただし、テキストカラムがクエリ内の他の箇所で参照されて読み取りが必要な場合でも、ダイレクトリード最適化は依然としてパフォーマンス向上に寄与します。
+WHERE フィルタ句にテキスト検索関数のみが含まれている場合、クエリはカラムデータを一切読み取らずに済み、ダイレクトリードによるパフォーマンス向上効果が最大になります。
+ただし、テキストカラムがクエリ内の他の箇所で参照されて読み取りが行われる場合でも、ダイレクトリードは依然としてパフォーマンス向上に寄与します。
 
 **ヒントとしてのダイレクトリード**
 
-ヒントとしてのダイレクトリードは、通常のダイレクトリードと同じ原理に基づきますが、基盤となるテキストカラムを削除せずに、テキストインデックスデータから構築された追加のフィルタを付加する点が異なります。これは、テキストインデックスのみへのアクセスでは偽陽性が発生しうる関数に対して使用されます。
+ヒントとしてのダイレクトリードは、通常のダイレクトリードと同じ原理に基づきますが、基盤となるテキストカラムを削除せずに、テキストインデックスデータから構築された追加のフィルタを付加する点が異なります。
+これは、テキストインデックスのみへのアクセスでは偽陽性が発生しうる関数に対して使用されます。
 
 サポートされている関数は `like`、`startsWith`、`endsWith`、`equals`、`has`、`mapContainsKey`、`mapContainsValue` です。
 
-ヒントフィルタは、他のフィルタと組み合わせて結果セットをさらに絞り込むための追加の選択性を提供し、他のカラムから読み取るデータ量を減らすのに役立ちます。
+この追加フィルタは、他のフィルタと組み合わせて結果セットをさらに絞り込むための追加の選択性を提供し、他のカラムから読み取るデータ量を減らすのに役立ちます。
 
 
 ダイレクトリードをヒントとして使用するかどうかは、[query&#95;plan&#95;text&#95;index&#95;add&#95;hint](../../../operations/settings/settings#query_plan_text_index_add_hint) の設定で制御されます（既定で有効です）。
@@ -646,7 +661,8 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 - 各トークンをポスティングリストに対応付ける dictionary
 - 行番号の集合を表す複数のポスティングリストの集合
 
-テキスト索引はパーツ全体に対して構築されます。他のスキップ索引と異なり、テキスト索引はデータパーツのマージ時に再構築するのではなく、マージによって統合できます。
+テキスト索引はパーツ全体に対して構築されます。
+他のスキップ索引と異なり、テキスト索引はデータパーツのマージ時に再構築するのではなく、マージによって統合できます（後述）。
 
 索引の作成時には、3つのファイルが（パーツごとに）作成されます。
 
@@ -669,7 +685,11 @@ Index header ファイルには、各 dictionary block について、そのブ�
 
 **テキスト索引のマージ**
 
-データパーツがマージされる際、テキスト索引を最初から再構築する必要はなく、マージ処理の別ステップで効率的にマージできます。このステップでは、各パーツからソート済みの dictionary を読み込み、それらを結合して新しい統合 dictionary を作成します。ポスティングリスト内の行番号も、初期マージフェーズで作成された旧行番号から新行番号へのマッピングを用いて、マージ後のデータパーツ内での新しい位置を反映するように再計算されます。このテキスト索引のマージ方法は、`_part_offset` カラムを持つ [projections](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field) がマージされる方法と類似しています。索引がソースパーツ内でマテリアライズされていない場合は、その索引を構築して一時ファイルに書き出し、その後、他のパーツの索引や他の一時索引ファイルと一緒にマージします。
+データパーツがマージされる際、テキスト索引を最初から再構築する必要はなく、マージ処理の別ステップで効率的にマージできます。
+このステップでは、各入力パーツのテキスト索引のソート済み dictionary を読み込み、それらを結合して新しい統合 dictionary を作成します。
+ポスティングリスト内の行番号も、初期マージフェーズで作成された旧行番号から新行番号へのマッピングを用いて、マージ後のデータパーツ内での新しい位置を反映するように再計算されます。
+このテキスト索引のマージ方法は、`_part_offset` カラムを持つ [projections](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field) がマージされる方法と類似しています。
+索引がソースパーツ内でマテリアライズされていない場合は、その索引を構築して一時ファイルに書き出し、その後、他のパーツの索引や他の一時索引ファイルと一緒にマージします。
 
 ## 例：Hackernews データセット {#hacker-news-dataset}
 

@@ -10,7 +10,7 @@ import CloudOnlyBadge from '@theme/badges/CloudOnlyBadge';
 
 <CloudOnlyBadge />
 
-# system.masking&#95;policies {#systemmasking&#95;policies}
+# system.masking_policies {#systemmasking_policies}
 
 Содержит информацию обо всех политиках маскирования, определённых в системе.
 

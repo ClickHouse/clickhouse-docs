@@ -3,7 +3,7 @@ title: '日期和时间数据类型 - 时间序列'
 sidebar_label: '日期和时间数据类型'
 description: 'ClickHouse 中的时间序列数据类型。'
 slug: /use-cases/time-series/date-time-data-types
-keywords: ['时间序列', 'DateTime', 'DateTime64', 'Date', '数据类型', '时序数据', '时间戳']
+keywords: ['时间序列', 'DateTime', 'DateTime64', 'Date', 'Time', 'Time64', '数据类型', '时序数据', '时间戳']
 show_related_blogs: true
 doc_type: 'reference'
 ---
@@ -67,6 +67,64 @@ precise_datetime:      2025-03-12 11:39:07.196
 very_precise_datetime: 2025-03-12 11:39:07.196724000
 ```
 
+
+## Time 和 Time64 类型 {#time-series-time-types}
+
+对于需要存储不带日期组件的“时间（time-of-day）”值的场景，ClickHouse 提供了 [`Time`](/sql-reference/data-types/time) 和 [`Time64`](/sql-reference/data-types/time64) 类型，它们是在 25.6 版本中引入的。它们适用于表示重复日程、每日模式，或在逻辑上需要将日期与时间组件分离的情况。
+
+:::note
+使用 `Time` 和 `Time64` 需要启用以下设置：`SET enable_time_time64_type = 1;`
+
+这些类型是在 25.6 版本中引入的。
+:::
+
+`Time` 类型以秒级精度存储小时、分钟和秒。其在内部以有符号 32 位整数存储，支持范围为 `[-999:59:59, 999:59:59]`，允许超过 24 小时的值。这在跟踪耗时或执行导致结果超出单日范围的算术运算时会很有用。
+
+对于亚秒级精度，`Time64` 使用有符号 Decimal64 值存储时间，并提供可配置的小数秒精度。它接受一个精度参数（0–9），用于定义小数位数。常见的精度值包括 3（毫秒）、6（微秒）和 9（纳秒）。
+
+`Time` 和 `Time64` 都不支持时区——它们表示的是纯粹的“一天中的时间（time-of-day）”值，不带任何区域上下文。
+
+让我们创建一个带有时间列的表：
+
+```sql
+SET enable_time_time64_type = 1;
+
+CREATE TABLE time_examples
+(
+    `event_id` UInt8,
+    `basic_time` Time,
+    `precise_time` Time64(3)
+)
+ENGINE = MergeTree
+ORDER BY event_id;
+```
+
+我们可以使用字符串字面量或数值来插入时间值。对于 `Time`，数值被解释为自 00:00:00 起经过的秒数。对于 `Time64`，数值被解释为自 00:00:00 起经过的秒数，其中小数部分会根据该列的精度进行解析：
+
+```sql
+INSERT INTO time_examples VALUES 
+    (1, '14:30:25', '14:30:25.123'),
+    (2, 52225, 52225.456),
+    (3, '26:11:10', '26:11:10.789');  -- Values normalize beyond 24 hours
+
+SELECT * FROM time_examples ORDER BY event_id;
+```
+
+```text
+┌─event_id─┬─basic_time─┬─precise_time─┐
+│        1 │ 14:30:25   │ 14:30:25.123 │
+│        2 │ 14:30:25   │ 14:30:25.456 │
+│        3 │ 26:11:10   │ 26:11:10.789 │
+└──────────┴────────────┴──────────────┘
+```
+
+时间值可以直接用于筛选：
+
+```sql
+SELECT * FROM time_examples WHERE basic_time = '14:30:25';
+```
+
+
 ## 时区 {#time-series-timezones}
 
 许多使用场景需要同时存储时区信息。我们可以将时区设置为 `DateTime` 或 `DateTime64` 类型的最后一个参数：
@@ -78,7 +136,7 @@ CREATE TABLE dtz
     `dt_1` DateTime('Europe/Berlin'),
     `dt_2` DateTime,
     `dt64_1` DateTime64(9, 'Europe/Berlin'),
-    `dt64_2` DateTime64(9),
+    `dt64_2` DateTime64(9)
 )
 ENGINE = MergeTree
 ORDER BY id;
@@ -101,7 +159,7 @@ SELECT 2,
        toDateTime64('2022-12-12 12:13:15.123456789', 9);
 ```
 
-现在来看一下表中的数据：
+现在来看一下表中的内容：
 
 ```sql
 SELECT dt_1, dt64_1, dt_2, dt64_2
@@ -132,6 +190,7 @@ dt64_2: 2022-12-12 12:13:15.123456789
 
 第二行中，我们在未指定时区的情况下插入了所有值，因此使用了服务器的本地时区。
 与第一行相同，`dt_1` 和 `dt64_1` 被转换为 `Europe/Berlin`，而 `dt_2` 和 `dt64_2` 使用服务器的本地时区。
+
 
 ## 日期和时间函数 {#time-series-date-time-functions}
 

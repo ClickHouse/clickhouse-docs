@@ -36,13 +36,13 @@ import optimize_read from "@site/static/images/knowledgebase/optimize_read.png";
 
 请注意，还可以使用 [max&#95;streams&#95;to&#95;max&#95;threads&#95;ratio](https://github.com/ClickHouse/ClickHouse/pull/43260) 设置来配置读取线程（streams）数量与查询执行流水线其余部分线程数量之间的比例。但是，在基准测试中，它的效果不如 `max_streams_for_merge_tree_reading` 设置明显。
 
-### 那么 optimize&#95;read&#95;in&#95;order 呢？ \{#what-about-optimize&#95;read&#95;in&#95;order\}
+### 那么 optimize_read_in_order 呢？ \{#what-about-optimize_read_in_order\}
 
 借助 [optimize&#95;read&#95;in&#95;order 优化](https://clickhouse.com/docs/sql-reference/statements/select/order-by/#optimization-of-data-reading)，如果查询的排序顺序与磁盘上数据的物理顺序一致，ClickHouse 可以[跳过](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes)在内存中对数据进行重新排序，**但前提是必须按顺序读取数据（而不是异步读取）**：
 
 <Image img={optimize_read} size="md" alt="顺序读取优化示意图" />
 
-### optimize&#95;read&#95;in&#95;order 优先于异步读取 \{#optimize&#95;read&#95;in&#95;order-has-precedence-over-asynchronous-reading\}
+### optimize_read_in_order 优先于异步读取 \{#optimize_read_in_order-has-precedence-over-asynchronous-reading\}
 
 当 ClickHouse 判断可以应用 `optimize_read_in_order` 优化时，`allow_asynchronous_read_from_io_pool_for_merge_tree` 设置将被忽略或禁用。
 

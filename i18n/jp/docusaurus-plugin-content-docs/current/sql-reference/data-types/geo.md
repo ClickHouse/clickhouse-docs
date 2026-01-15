@@ -153,7 +153,7 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 
 ## Geometry {#geometry}
 
-`Geometry` は、上記のすべての型に共通する型です。これらの型を要素とする `Variant` と同等です。Geometry 型を使用する場合は、次の設定を有効化する必要があります: `SET allow_suspicious_variant_types = 1`
+`Geometry` は、上記のすべての型に共通する型です。これらの型を要素とする `Variant` と同等です。
 
 **例**
 

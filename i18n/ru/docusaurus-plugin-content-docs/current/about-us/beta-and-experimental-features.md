@@ -75,6 +75,7 @@ doc_type: 'reference'
 | [allow_experimental_database_glue_catalog](/operations/settings/settings#allow_experimental_database_glue_catalog) | `0` |
 | [session_timezone](/operations/settings/settings#session_timezone) | `` |
 | [low_priority_query_wait_time_ms](/operations/settings/settings#low_priority_query_wait_time_ms) | `1000` |
+| [enable_qbit_type](/operations/settings/settings#enable_qbit_type) | `1` |
 | [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize) | `1` |
 | [enable_full_text_index](/operations/settings/settings#enable_full_text_index) | `0` |
 | [allow_experimental_delta_kernel_rs](/operations/settings/settings#allow_experimental_delta_kernel_rs) | `1` |
@@ -124,7 +125,6 @@ doc_type: 'reference'
 | [wait&#95;for&#95;window&#95;view&#95;fire&#95;signal&#95;timeout](/operations/settings/settings#wait_for_window_view_fire_signal_timeout)                                                                                          | `10`                    |
 | [stop&#95;refreshable&#95;materialized&#95;views&#95;on&#95;startup](/operations/settings/settings#stop_refreshable_materialized_views_on_startup)                                                                                  | `0`                     |
 | [allow&#95;experimental&#95;database&#95;materialized&#95;postgresql](/operations/settings/settings#allow_experimental_database_materialized_postgresql)                                                                            | `0`                     |
-| [allow&#95;experimental&#95;qbit&#95;type](/operations/settings/settings#allow_experimental_qbit_type)                                                                                                                              | `0`                     |
 | [allow&#95;experimental&#95;query&#95;deduplication](/operations/settings/settings#allow_experimental_query_deduplication)                                                                                                          | `0`                     |
 | [allow&#95;experimental&#95;database&#95;hms&#95;catalog](/operations/settings/settings#allow_experimental_database_hms_catalog)                                                                                                    | `0`                     |
 | [allow&#95;experimental&#95;kusto&#95;dialect](/operations/settings/settings#allow_experimental_kusto_dialect)                                                                                                                      | `0`                     |

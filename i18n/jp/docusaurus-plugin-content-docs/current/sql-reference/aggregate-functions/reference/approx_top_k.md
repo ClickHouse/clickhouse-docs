@@ -5,7 +5,7 @@ title: 'approx_top_k'
 doc_type: 'reference'
 ---
 
-# approx&#95;top&#95;k {#approx&#95;top&#95;k}
+# approx_top_k {#approx_top_k}
 
 指定されたカラム内で、近似的に最も頻出している値とその出現回数を含む配列を返します。結果の配列は、値そのものではなく、値の近似的な頻度の降順でソートされます。
 
@@ -44,7 +44,7 @@ FROM VALUES('k Char, w UInt64', ('y', 1), ('y', 1), ('x', 5), ('y', 1), ('z', 10
 └───────────────────────┘
 ```
 
-# approx&#95;top&#95;count {#approx&#95;top&#95;count}
+# approx_top_count {#approx_top_count}
 
 `approx_top_k` 関数へのエイリアスです。
 

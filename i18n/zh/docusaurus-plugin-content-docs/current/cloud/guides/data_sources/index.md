@@ -7,8 +7,6 @@ doc_type: 'landing-page'
 keywords: ['云指南', '文档', '操作指南', '云功能', '教程']
 ---
 
-
-
 ## 云集成 {#cloud-integrations}
 
 本节包含将 ClickHouse Cloud 与需要额外配置的外部数据源集成的指南和参考文档。
@@ -17,8 +15,7 @@ keywords: ['云指南', '文档', '操作指南', '云功能', '教程']
 |-----------------------------------------------------------------|---------------------------------------------------------------------------|
 | [Cloud IP 地址](/manage/data-sources/cloud-endpoints-api)       | 某些表函数和连接所需的网络配置信息                                        |
 | [安全访问 S3 数据](/cloud/data-sources/secure-s3)               | 使用基于角色的访问方式访问 AWS S3 中的外部数据源                          |
-
-
+| [安全访问 GCS 数据](/cloud/data-sources/secure-gcs)             | 使用 HMAC 密钥安全地访问 GCS 中的外部数据源                               |
 
 ## 外部数据源的其他连接方式 {#additional-connections-for-external-data-sources}
 

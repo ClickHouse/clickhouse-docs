@@ -34,15 +34,17 @@ import VersionHistory from '@theme/VersionHistory/VersionHistory';
 
 Текстовое представление логического значения `true` в форматах TSV/CSV/Vertical/Pretty.
 
+## check_conversion_from_numbers_to_enum {#check_conversion_from_numbers_to_enum}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+Генерирует исключение при преобразовании числовых значений в Enum, если значение отсутствует в Enum.
+
+По умолчанию отключено.
+
 ## column_names_for_schema_inference {#column_names_for_schema_inference}   
 
 Список названий столбцов, используемых при определении схемы для форматов без названий столбцов. Формат: 'column1,column2,column3,...'
-
-## cross_to_inner_join_rewrite {#cross_to_inner_join_rewrite}   
-
-<SettingsInfoBlock type="UInt64" default_value="1" />
-
-Использовать inner join вместо comma/cross join, если в разделе WHERE есть выражения соединения. Значения: 0 — не переписывать; 1 — применять при возможности для comma/cross join; 2 — принудительно переписывать все comma join (а cross join — если возможно).
 
 ## date_time_64_output_format_cut_trailing_zeros_align_to_groups_of_thousands {#date_time_64_output_format_cut_trailing_zeros_align_to_groups_of_thousands}   
 
@@ -116,23 +118,11 @@ import VersionHistory from '@theme/VersionHistory/VersionHistory';
 
 Значение по умолчанию: `ignore`.
 
-## dictionary_use_async_executor {#dictionary_use_async_executor}   
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-Выполняет конвейер чтения данных из источника словаря в нескольких потоках. Поддерживается только для словарей с локальным источником CLICKHOUSE.
-
 ## errors_output_format {#errors_output_format}   
 
 <SettingsInfoBlock type="String" default_value="CSV" />
 
 Метод вывода ошибок в текстовом формате.
-
-## exact_rows_before_limit {#exact_rows_before_limit}   
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-Если параметр включён, ClickHouse будет возвращать точное значение статистики rows_before_limit_at_least, но за счёт того, что данные до применения limit придётся полностью прочитать
 
 ## format_avro_schema_registry_url {#format_avro_schema_registry_url}   
 
@@ -997,6 +987,17 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 
 Использовать более быструю реализацию декодера ORC.
 
+## input_format_parallel_parsing {#input_format_parallel_parsing}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+Включает или отключает параллельный парсинг форматов данных с сохранением порядка. Поддерживается только для форматов [TabSeparated (TSV)](/interfaces/formats/TabSeparated), [TSKV](/interfaces/formats/TSKV), [CSV](/interfaces/formats/CSV) и [JSONEachRow](/interfaces/formats/JSONEachRow).
+
+Возможные значения:
+
+- 1 — включено.
+- 0 — отключено.
+
 ## input_format_parquet_allow_geoparquet_parser {#input_format_parquet_allow_geoparquet_parser}   
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -1435,6 +1436,22 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 
 Использовать тип BSON String вместо типа Binary для столбцов типа String.
 
+## output_format_compression_level {#output_format_compression_level}   
+
+<SettingsInfoBlock type="UInt64" default_value="3" />
+
+Уровень сжатия по умолчанию при сжатии вывода запроса. Настройка применяется, когда запрос `SELECT` использует `INTO OUTFILE` или при записи через табличные функции `file`, `url`, `hdfs`, `s3` или `azureBlobStorage`.
+
+Возможные значения: от `1` до `22`
+
+## output_format_compression_zstd_window_log {#output_format_compression_zstd_window_log}   
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+Может использоваться, когда метод сжатия выходных данных — `zstd`. Если значение больше `0`, данный параметр явно задаёт размер окна сжатия (степень двойки) и включает режим long-range для сжатия zstd. Это может помочь добиться более высокого коэффициента сжатия.
+
+Возможные значения: неотрицательные числа. Обратите внимание, что если значение слишком маленькое или слишком большое, `zstdlib` выбросит исключение. Типичные значения лежат в диапазоне от `20` (размер окна = `1MB`) до `30` (размер окна = `1GB`).
+
 ## output_format_csv_crlf_end_of_line {#output_format_csv_crlf_end_of_line}   
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -1793,6 +1810,17 @@ SELECT area/period FROM account_orders FORMAT JSON;
 <SettingsInfoBlock type="String" default_value="GMT" />
 
 Имя часового пояса для модуля записи ORC; по умолчанию используется часовой пояс GMT.
+
+## output_format_parallel_formatting {#output_format_parallel_formatting}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+Включает или отключает параллельное форматирование данных. Поддерживается только для форматов [TSV](/interfaces/formats/TabSeparated), [TSKV](/interfaces/formats/TSKV), [CSV](/interfaces/formats/CSV) и [JSONEachRow](/interfaces/formats/JSONEachRow).
+
+Возможные значения:
+
+- 1 — включено.
+- 0 — отключено.
 
 ## output_format_parquet_batch_size {#output_format_parquet_batch_size}   
 
@@ -2168,30 +2196,6 @@ SELECT *, toTypeName(*) FROM (SELECT * FROM system.numbers LIMIT 1000);
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Использовать более точный (но более медленный) алгоритм разбора чисел с плавающей запятой
-
-## regexp_dict_allow_hyperscan {#regexp_dict_allow_hyperscan}   
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-Разрешает словарю regexp_tree использовать библиотеку Hyperscan.
-
-## regexp_dict_flag_case_insensitive {#regexp_dict_flag_case_insensitive}   
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-Использовать сопоставление без учета регистра для словаря regexp_tree. Может быть переопределено в отдельных выражениях с помощью (?i) и (?-i).
-
-## regexp_dict_flag_dotall {#regexp_dict_flag_dotall}   
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-Разрешает символу «.» соответствовать символам перевода строки в словаре regexp_tree.
-
-## rows_before_aggregation {#rows_before_aggregation}   
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-Если параметр включён, ClickHouse будет предоставлять точное значение статистики rows_before_aggregation — количества строк, прочитанных до выполнения агрегации.
 
 ## schema&#95;inference&#95;hints {#schema&#95;inference&#95;hints}
 

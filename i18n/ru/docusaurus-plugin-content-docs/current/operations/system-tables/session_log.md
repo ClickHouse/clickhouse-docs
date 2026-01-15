@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.session&#95;log {#systemsession&#95;log}
+# system.session_log {#systemsession_log}
 
 <SystemTableCloud />
 

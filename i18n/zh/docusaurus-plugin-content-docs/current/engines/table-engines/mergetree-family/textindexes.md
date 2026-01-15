@@ -229,7 +229,7 @@ SELECT * from tab WHERE str IN ('Hello', 'World');
 :::
 
 要在文本索引中使用 `LIKE`（[like](/sql-reference/functions/string-search-functions.md/#like)）、`NOT LIKE`（[notLike](/sql-reference/functions/string-search-functions.md/#notLike)）以及 [match](/sql-reference/functions/string-search-functions.md/#match) 函数，ClickHouse 必须能够从搜索词中提取完整的 token（词元）。
-对于使用 `ngrams` tokenizer 的索引，如果在特殊字符之间的待搜索字符串长度大于或等于 ngram 的长度，则可以满足这一条件。
+对于使用 `ngrams` tokenizer 的索引，如果在通配符之间的待搜索字符串长度大于或等于 ngram 的长度，则可以满足这一条件。
 
 使用 `splitByNonAlpha` tokenizer 的文本索引示例：
 
@@ -252,7 +252,7 @@ SELECT count() FROM tab WHERE comment LIKE ' support %'; -- or `% support %`
 #### `startsWith` 和 `endsWith` {#functions-example-startswith-endswith}
 
 与 `LIKE` 类似，当且仅当可以从搜索词中提取出完整的 token 时，函数 [startsWith](/sql-reference/functions/string-functions.md/#startsWith) 和 [endsWith](/sql-reference/functions/string-functions.md/#endsWith) 才能使用文本索引。
-对于使用 `ngrams` 分词器的文本索引，如果被搜索的前缀或后缀长度大于或等于 ngram 长度，则满足上述条件。
+对于使用 `ngrams` 分词器的索引，如果通配符之间被搜索的字符串长度大于或等于 ngram 长度，则满足上述条件。
 
 使用 `splitByNonAlpha` 分词器的文本索引示例：
 
@@ -324,7 +324,9 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 
 #### `mapContains` {#functions-example-mapcontains}
 
-函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains)（是 `mapContainsKey` 的别名）用于将从待搜索字符串中提取出的词元与 map 的键进行匹配。其行为类似于在 `String` 列上使用 `equals` 函数。只有在基于 `mapKeys(map)` 表达式创建了文本索引时，才会使用文本索引。
+函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains)（是 `mapContainsKey` 的别名）用于将从待搜索字符串中提取出的词元与 map 的键进行匹配。
+其行为类似于在 `String` 列上使用 `equals` 函数。
+只有在基于 `mapKeys(map)` 表达式创建了文本索引时，才会使用文本索引。
 
 示例：
 
@@ -337,7 +339,9 @@ SELECT count() FROM tab WHERE mapContains(map, 'clickhouse');
 
 #### `mapContainsValue` {#functions-example-mapcontainsvalue}
 
-函数 [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapcontainsvalue) 会将从被搜索字符串中提取出的 token 与 `map` 的值进行匹配。其行为类似于在 `String` 列上使用 `equals` 函数。只有在针对 `mapValues(map)` 表达式创建了文本索引时，才会使用文本索引。
+函数 [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapcontainsvalue) 会将从被搜索字符串中提取出的 token 与 `map` 的值进行匹配。
+其行为类似于在 `String` 列上使用 `equals` 函数。
+只有在针对 `mapValues(map)` 表达式创建了文本索引时，才会使用文本索引。
 
 示例：
 
@@ -496,7 +500,7 @@ ClickHouse 中的直接读取优化仅使用文本索引（即基于文本索引
 
 直接读取优化支持函数 `hasToken`、`hasAllTokens` 和 `hasAnyTokens`。
 如果文本索引是使用 `array` tokenizer 创建的，则直接读取同样支持函数 `equals`、`has`、`mapContainsKey` 和 `mapContainsValue`。
-这些函数也可以通过 AND、OR 和 NOT 运算符进行组合。
+这些函数也可以通过 `AND`、`OR` 和 `NOT` 运算符进行组合。
 `WHERE` 或 `PREWHERE` 子句还可以包含额外的非文本搜索函数过滤条件（针对文本列或其他列）——在这种情况下，仍然会使用直接读取优化，但效果会弱一些（它只作用于受支持的文本搜索函数）。
 
 要判断查询是否使用了直接读取，请使用 `EXPLAIN PLAN actions = 1` 来运行查询。
@@ -511,7 +515,7 @@ SETTINGS query_plan_direct_read_from_text_index = 0, -- disable direct read
          use_skip_indexes_on_data_read = 1;
 ```
 
-返回值
+返回结果
 
 ```text
 [...]
@@ -549,17 +553,17 @@ Positions:
 EXPLAIN PLAN 的第二个输出包含一个虚拟列 `__text_index_<index_name>_<function_name>_<id>`。
 如果该列存在，则使用直接读取。
 
-当文本列仅在文本搜索函数中被使用时，直接读取优化的性能收益最大，因为这允许查询完全避免读取该列的数据。
-但是，即使在查询的其他位置也访问了文本列并且必须读取它，直接读取优化仍然会带来性能提升。
+如果 WHERE 子句中的过滤条件仅包含文本搜索函数，查询可以完全避免读取该文本列的数据，此时直接读取带来的性能收益最大。
+但是，即使在查询的其他位置也访问了文本列并且必须读取它，直接读取仍然会带来性能提升。
 
 **作为提示的直接读取**
 
 作为提示的直接读取遵循与普通直接读取相同的原理，但它是在不移除底层文本列的情况下，基于文本索引数据额外构建并添加一个过滤条件。
-当仅访问文本索引可能产生误报时，会在这些函数中使用该机制。
+当仅从文本索引读取会产生误报时，会在这些函数中使用该机制。
 
 支持的函数包括：`like`、`startsWith`、`endsWith`、`equals`、`has`、`mapContainsKey` 和 `mapContainsValue`。
 
-提示过滤器可以在结合其他过滤条件时提供额外的选择性，以进一步缩小结果集，从而帮助减少从其他列读取的数据量。
+这个额外的过滤条件可以在结合其他过滤条件时提供更多的选择性，进一步缩小结果集，从而帮助减少从其他列读取的数据量。
 
 
 是否使用直接读取作为提示由设置 [query&#95;plan&#95;text&#95;index&#95;add&#95;hint](../../../operations/settings/settings#query_plan_text_index_add_hint) 控制（默认启用）。
@@ -648,7 +652,8 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 - 一个字典，用于将每个 token 映射到一个倒排列表（postings list），以及
 - 一组倒排列表，每个倒排列表表示一组行号。
 
-文本索引是为整个分区片段构建的。与其他跳过索引不同，文本索引在数据分区片段合并时可以通过合并的方式更新，而不需要在合并数据分区片段时重新构建。
+文本索引是为整个分区片段构建的。
+与其他跳过索引不同，文本索引在数据分区片段合并时可以通过合并的方式更新，而不需要在合并数据分区片段时重新构建（见下文）。
 
 在创建索引期间，会为每个分区片段创建三个文件：
 
@@ -671,7 +676,11 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 
 **文本索引的合并**
 
-当数据分区片段被合并时，文本索引不需要从头重建，而是可以在合并过程的单独步骤中高效合并。在此步骤中，会读取并合并每个分区片段中已排序的字典，生成新的统一字典。倒排列表中的行号也会被重新计算，以反映它们在合并后数据分区片段中的新位置，这通过在初始合并阶段创建的旧行号到新行号的映射来完成。这种合并文本索引的方法类似于带有 `_part_offset` 列的 [projections](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field) 的合并方式。如果源分区片段中索引尚未物化，则会先构建该索引，写入临时文件，然后与来自其他分区片段和其他临时索引文件的索引一起进行合并。
+当数据分区片段被合并时，文本索引不需要从头重建，而是可以在合并过程的单独步骤中高效合并。
+在此步骤中，会读取并合并每个输入分区片段中文本索引的已排序字典，生成新的统一字典。
+倒排列表中的行号也会被重新计算，以反映它们在合并后数据分区片段中的新位置，这通过在初始合并阶段创建的旧行号到新行号的映射来完成。
+这种合并文本索引的方法类似于带有 `_part_offset` 列的 [projections](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field) 的合并方式。
+如果源分区片段中索引尚未物化，则会先构建该索引，写入临时文件，然后与来自其他分区片段和其他临时索引文件的索引一起进行合并。
 
 ## 示例：Hacker News 数据集 {#hacker-news-dataset}
 

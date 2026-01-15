@@ -229,7 +229,7 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL 
 
 また、ローカルテーブルがリクエスト元サーバーにのみ存在し、そのデータをリモートサーバーでも使用したい場合には、`GLOBAL IN` 句でローカルテーブルを指定するのも理にかなっています。
 
-### Distributed Subqueries と max&#95;rows&#95;in&#95;set {#distributed-subqueries-and-max&#95;rows&#95;in&#95;set}
+### Distributed Subqueries と max_rows_in_set {#distributed-subqueries-and-max_rows_in_set}
 
 分散クエリで転送されるデータ量を制御するために、[`max_rows_in_set`](/operations/settings/settings#max_rows_in_set) と [`max_bytes_in_set`](/operations/settings/settings#max_bytes_in_set) を使用できます。
 
@@ -241,7 +241,7 @@ SELECT * FROM table1 WHERE col1 GLOBAL IN (SELECT col1 FROM table2 WHERE <some_p
 
 `some_predicate` の選択度が十分に高くない場合、大量のデータが返され、パフォーマンスの問題を引き起こします。このような場合、ネットワーク上のデータ転送量を制限するのが望ましいです。また、[`set_overflow_mode`](/operations/settings/settings#set_overflow_mode) は（デフォルトで）`throw` に設定されており、これらのしきい値を超えたときに例外がスローされることに注意してください。
 
-### Distributed Subqueries と max&#95;parallel&#95;replicas {#distributed-subqueries-and-max&#95;parallel&#95;replicas}
+### Distributed Subqueries と max_parallel_replicas {#distributed-subqueries-and-max_parallel_replicas}
 
 [max&#95;parallel&#95;replicas](#distributed-subqueries-and-max_parallel_replicas) が 1 より大きい場合、分散クエリにはさらに変換が行われます。
 

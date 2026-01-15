@@ -9,6 +9,7 @@ doc_type: 'reference'
 ---
 
 import {CardSecondary} from '@clickhouse/click-ui/bundled';
+import WhenToUseJson from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_when-to-use-json.md';
 import Link from '@docusaurus/Link'
 
 <Link to="/docs/best-practices/use-json-where-appropriate" style={{display: 'flex', textDecoration: 'none', width: 'fit-content'}}>
@@ -46,8 +47,10 @@ ClickHouse オープンソース版では、バージョン 25.3 で JSON デー
 | `SKIP path.to.skip`         | JSON パース時にスキップすべき特定のパスを指定するオプションのヒントです。そのようなパスは JSON カラム内に保存されることはありません。指定されたパスがネストされた JSON オブジェクトである場合、そのネストされたオブジェクト全体がスキップされます。                                                          |               |
 | `SKIP REGEXP 'path_regexp'` | JSON パース中にパスをスキップするために使用される正規表現を指定するオプションのヒントです。この正規表現にマッチするすべてのパスは、JSON カラム内に保存されることはありません。                                                                                                |               |
 
+<WhenToUseJson />
 
-## JSON の生成 {#creating-json}
+
+## `JSON` の生成 {#creating-json}
 
 このセクションでは、`JSON` を生成するさまざまな方法を確認します。
 

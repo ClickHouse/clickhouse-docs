@@ -5,7 +5,7 @@ title: 'approx_top_k'
 doc_type: 'reference'
 ---
 
-# approx&#95;top&#95;k {#approx&#95;top&#95;k}
+# approx_top_k {#approx_top_k}
 
 返回一个数组，其中包含指定列中近似最常出现的值及其出现次数。结果数组按照这些值的近似出现频率降序排序（而不是按值本身排序）。
 
@@ -44,7 +44,7 @@ FROM VALUES('k Char, w UInt64', ('y', 1), ('y', 1), ('x', 5), ('y', 1), ('z', 10
 └───────────────────────┘
 ```
 
-# approx&#95;top&#95;count {#approx&#95;top&#95;count}
+# approx_top_count {#approx_top_count}
 
 是 `approx_top_k` 函数的别名。
 

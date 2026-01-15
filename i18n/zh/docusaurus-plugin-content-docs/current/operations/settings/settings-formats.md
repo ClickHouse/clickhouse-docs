@@ -34,15 +34,17 @@ import VersionHistory from '@theme/VersionHistory/VersionHistory';
 
 用于在 TSV/CSV/Vertical/Pretty 格式中表示布尔值 true 的字符串。
 
+## check_conversion_from_numbers_to_enum {#check_conversion_from_numbers_to_enum}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+在将 Numbers 转换为 Enum 类型时，如果该值在 Enum 中未定义，则抛出异常。
+
+默认禁用。
+
 ## column_names_for_schema_inference {#column_names_for_schema_inference}   
 
 用于对不包含列名的格式进行模式推断时指定的列名列表。格式：'column1,column2,column3,...'
-
-## cross_to_inner_join_rewrite {#cross_to_inner_join_rewrite}   
-
-<SettingsInfoBlock type="UInt64" default_value="1" />
-
-如果在 WHERE 子句中存在连接条件，则使用 inner join 替代逗号/cross join。取值：0 - 不改写，1 - 在可能的情况下对逗号/cross join 进行改写，2 - 强制改写所有逗号 join，cross - 在可能的情况下改写
 
 ## date_time_64_output_format_cut_trailing_zeros_align_to_groups_of_thousands {#date_time_64_output_format_cut_trailing_zeros_align_to_groups_of_thousands}   
 
@@ -117,23 +119,11 @@ Cloud 默认值：`'best_effort'`。
 
 默认值：`ignore`。
 
-## dictionary_use_async_executor {#dictionary_use_async_executor}   
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-在多个线程中执行读取字典源的数据流水线。仅支持使用本地 CLICKHOUSE 源的字典。
-
 ## errors_output_format {#errors_output_format}   
 
 <SettingsInfoBlock type="String" default_value="CSV" />
 
 将错误写入文本输出的方式。
-
-## exact_rows_before_limit {#exact_rows_before_limit}   
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-启用后，ClickHouse 会为 `rows_before_limit_at_least` 统计指标提供精确值，但代价是必须完整读取 LIMIT 之前的所有数据。
 
 ## format_avro_schema_registry_url {#format_avro_schema_registry_url}   
 
@@ -997,6 +987,17 @@ ORC 行读取器使用的时区名称，默认值为 GMT。
 
 使用更快的 ORC 解码器实现。
 
+## input_format_parallel_parsing {#input_format_parallel_parsing}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+启用或禁用对数据格式的保序并行解析。仅支持 [TabSeparated (TSV)](/interfaces/formats/TabSeparated)、[TSKV](/interfaces/formats/TSKV)、[CSV](/interfaces/formats/CSV) 和 [JSONEachRow](/interfaces/formats/JSONEachRow) 格式。
+
+可选值：
+
+- 1 — 启用。
+- 0 — 禁用。
+
 ## input_format_parquet_allow_geoparquet_parser {#input_format_parquet_allow_geoparquet_parser}   
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -1435,6 +1436,22 @@ Parquet 读取器输出的数据块平均大小（字节）
 
 对 String 类型列使用 BSON String 类型，而不是 Binary 类型。
 
+## output_format_compression_level {#output_format_compression_level}   
+
+<SettingsInfoBlock type="UInt64" default_value="3" />
+
+当查询结果被压缩时使用的默认压缩级别。该设置在 `SELECT` 查询包含 `INTO OUTFILE` 时，或写入表函数 `file`、`url`、`hdfs`、`s3` 或 `azureBlobStorage` 时生效。
+
+可选值：从 `1` 到 `22`
+
+## output_format_compression_zstd_window_log {#output_format_compression_zstd_window_log}   
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+当输出压缩方法为 `zstd` 时可以使用此设置。若值大于 `0`，则该设置会显式指定压缩窗口大小（`2` 的幂），并为 zstd 压缩启用长距离模式，从而有助于获得更好的压缩率。
+
+可选值：非负数。注意，如果数值过小或过大，`zstdlib` 会抛出异常。典型取值范围为 `20`（窗口大小 = `1MB`）到 `30`（窗口大小 = `1GB`）。
+
 ## output_format_csv_crlf_end_of_line {#output_format_csv_crlf_end_of_line}   
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -1793,6 +1810,17 @@ ORC 输出格式中目标行索引的步长
 <SettingsInfoBlock type="String" default_value="GMT" />
 
 ORC writer 使用的时区名称；ORC writer 的默认时区为 GMT。
+
+## output_format_parallel_formatting {#output_format_parallel_formatting}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+启用或禁用数据格式的并行格式化。仅支持 [TSV](/interfaces/formats/TabSeparated)、[TSKV](/interfaces/formats/TSKV)、[CSV](/interfaces/formats/CSV) 和 [JSONEachRow](/interfaces/formats/JSONEachRow) 格式。
+
+可选值：
+
+- 1 — 启用。
+- 0 — 禁用。
 
 ## output_format_parquet_batch_size {#output_format_parquet_batch_size}   
 
@@ -2168,30 +2196,6 @@ Pretty 格式中单个值的最大显示宽度。如果超过该值，超出部�
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 优先使用更精确（但更慢）的浮点数解析算法
-
-## regexp_dict_allow_hyperscan {#regexp_dict_allow_hyperscan}   
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-允许 `regexp_tree` 字典使用 Hyperscan 库。
-
-## regexp_dict_flag_case_insensitive {#regexp_dict_flag_case_insensitive}   
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-对 `regexp_tree` 字典使用不区分大小写的匹配。可在单个表达式中通过 `(?i)` 和 `(?-i)` 重写该设置。
-
-## regexp_dict_flag_dotall {#regexp_dict_flag_dotall}   
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-允许在 regexp_tree 字典中使用 '.' 匹配换行字符。
-
-## rows_before_aggregation {#rows_before_aggregation}   
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-启用后，ClickHouse 将为 rows_before_aggregation 统计指标提供精确值，该值表示聚合前读取的行数。
 
 ## schema&#95;inference&#95;hints {#schema&#95;inference&#95;hints}
 
