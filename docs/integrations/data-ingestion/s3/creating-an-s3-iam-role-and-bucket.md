@@ -149,6 +149,10 @@ The bucket name must be unique across AWS, not just the organization, or it will
 }
 ```
 
+:::note
+The policy above makes it possible to perform all actions on the bucket
+:::
+
 |Parameter | Description | Example Value |
 |----------|-------------|----------------|
 |Version | Version of the policy interpreter, leave as-is | 2012-10-17 |

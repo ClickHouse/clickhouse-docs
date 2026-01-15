@@ -37,7 +37,7 @@ In the following steps you'll be creating a service account user (not a login us
 
 <Image size="md" img={s3_2} alt="Setting user name and access type for IAM user" border force/>
 
-4. Do not add the user to any group; select `Next: Tags`
+4. Don't add the user to any group; select `Next: Tags`
 
 <Image size="md" img={s3_3} alt="Skipping group assignment for IAM user" border force/>
 

@@ -22,7 +22,7 @@ import backup_s3_bucket from '@site/static/images/cloud/onboard/migrate/oss_to_c
 
 ## Overview {#overview-migration-approaches}
 
-There are two primary methods to migrate from self-managed ClickHouse (OSS) to ClickHouse Cloud:
+There are two primary methods to migrate data from self-managed ClickHouse (OSS) to ClickHouse Cloud:
 
 - Using the [`remoteSecure()`](/cloud/migration/clickhouse-to-cloud) function in which data is directly pulled/pushed.
 - Using `BACKUP`/`RESTORE` commands via cloud object storage
@@ -44,6 +44,9 @@ If you're running a single instance, follow the steps in ["Migrating between sel
 :::
 
 ## OSS preparation {#oss-setup}
+
+We'll first spin up a ClickHouse cluster using a Docker Compose configuration from our examples repository.
+You can ignore spinning up the ClickHouse cluster if you already have one running.
 
 1. Clone the [examples repository](https://github.com/ClickHouse/examples) to your local machine
 2. From your terminal, `cd` into `examples/docker-compose-recipes/recipes/cluster_2S_2R`
@@ -74,8 +77,15 @@ docker exec -it clickhouse-01 clickhouse-client
 
 ### Create sample data {#create-sample-data}
 
-For this guide, we'll use the New York taxi dataset as sample data.
-Follow the first two steps of the [New York taxi data guide](/getting-started/example-datasets/nyc-taxi) to create the table and load data.
+ClickHouse Cloud works with [`SharedMergeTree`](/cloud/reference/shared-merge-tree).
+When restoring a backup, ClickHouse automatically converts tables with `ReplicatedMergeTree` to `SharedMergeTree` tables.
+
+It's likely your tables are already using the `ReplciatedMergeTree` engine if you are running a cluster.
+If not, you will need to convert any `MergeTree` tables to `ReplicatedMergeTree` before backing them up.
+
+For the sake of demonstration of how to convert `MergeTree` tables to `ReplicatedMergeTree`, we will begin with a `MergeTree` table and convert it to `ReplicatedMergeTree` after wards.
+We're going to follow the first two steps of the [New York taxi data guide](/getting-started/example-datasets/nyc-taxi) to create a sample table and load data into it.
+Those steps are included below for your convenience.
 
 Run the following commands to create a new database and insert data from an S3 bucket into a new table:
 
@@ -130,10 +140,6 @@ FROM s3(
     'TabSeparatedWithNames'
 );
 ```
-
-In the `CREATE TABLE` DDL statement we specified the table engine type as `MergeTree`, however
-ClickHouse Cloud works with [`SharedMergeTree`](/cloud/reference/shared-merge-tree). When restoring a backup, ClickHouse automatically converts `ReplicatedMergeTree` to `SharedMergeTree`.
-However, you'll need to convert any `MergeTree` tables to `ReplicatedMergeTree` before backing them up.
 
 Run the following command to `DETACH` the table.
 
@@ -300,7 +306,7 @@ The command above backups up:
 - Quotas
 - User-defined functions
 
-If you're using a different CSP, you can use the `TO S3()` (for both AWS and GCP) and `TO AzureBlobStorage()` syntax.
+If you're using a different Cloud Service Provider (CSP), you can use the `TO S3()` (for both AWS and GCP) and `TO AzureBlobStorage()` syntax.
 
 For very large databases, consider using `ASYNC` to run the backup in the background:
 

@@ -13,7 +13,7 @@ import s3_info from '@site/static/images/cloud/security/secures3_arn.png';
 import s3_output from '@site/static/images/cloud/security/secures3_output.png';
 
 This guide demonstrates how ClickHouse Cloud customers can leverage role-based access to authenticate with Amazon Simple Storage Service (S3) and access their data securely.
-Before diving into the setup for secure S3 access, it is important to understand how this works. Below is an overview of how ClickHouse services can access private S3 buckets by assuming into a role within customers' AWS account.
+Before diving into the setup for secure S3 access, it is important to understand how this works. Below is an overview of how ClickHouse services can access private S3 buckets by assuming a role within customers' AWS account.
 
 <Image img={secure_s3} size="lg" alt="Overview of Secure S3 Access with ClickHouse"/>
 <br/>
@@ -86,9 +86,7 @@ Do not put the full bucket ARN but instead just the bucket name only.
 
 2. Browse to the IAM Service Console
 
-3. Create a new IAM role with the following IAM & Trust policy
-
-Trust policy (Please replace `{ClickHouse_IAM_ARN}` with the IAM Role arn belong to your ClickHouse instance):
+3. Create a new IAM role with the following IAM & Trust policy. Replace `{ClickHouse_IAM_ARN}` with the IAM Role arn belong to your ClickHouse instance.
 
 ```json
 {
@@ -135,7 +133,7 @@ Trust policy (Please replace `{ClickHouse_IAM_ARN}` with the IAM Role arn belong
 }
 ```
 
-4. Copy the new **IAM Role Arn** after creation, which is what is needed to access your S3 bucket.
+4. Copy the new **IAM Role Arn** after creation, which is what's needed to access your S3 bucket.
 
 ## Access your S3 bucket with the ClickHouseAccess role {#access-your-s3-bucket-with-the-clickhouseaccess-role}
 
