@@ -186,7 +186,7 @@ When [setting up a GCS ClickPipe](/integrations/clickpipes/object-storage/gcs/ge
 
 :::note
 Service account authentication is not currently supported - you must use HMAC keys
-The GCS bucket URL must use the format: https://storage.googleapis.com/<bucket>/<path> (not gs://
+The GCS bucket URL must use the format: `https://storage.googleapis.com/<bucket>/<path>` (not `gs://`)
 :::
 
 The HMAC keys must be associated with a service account that has the `roles/storage.objectViewer` role, which includes:
