@@ -16,6 +16,7 @@ import note_service_account_email from '@site/static/images/cloud/guides/accessi
 import cloud_storage_settings from '@site/static/images/cloud/guides/accessing-data/GCS/cloud_storage_settings.png';
 import create_key_for_service_account from '@site/static/images/cloud/guides/accessing-data/GCS/create_key_for_service_account.png';
 import create_key from '@site/static/images/cloud/guides/accessing-data/GCS/create_a_key.png';
+import clickpipes_hmac_key from '@site/static/images/cloud/guides/accessing-data/GCS/clickpipes_hmac_key.png';
 
 This guide demonstrates how to securely authenticate with Google Cloud Storage (GCS) and access your data from ClickHouse Cloud.
 
@@ -171,6 +172,26 @@ FROM gcs(
 'Parquet'
 );
 ```
+
+## HMAC authentication in ClickPipes for GCS {#hmac-authentication-clickpipes-for-gcs}
+
+ClickPipes uses HMAC (Hash-based Message Authentication Code) keys to authenticate with Google Cloud Storage.
+
+When setting up a GCS ClickPipe:
+
+1. Select `Credentials` under `Authentication method` during ClickPipe setup
+2. Provide HMAC credentials obtained in the previous steps
+
+<Image img={clickpipes_hmac_key} size="md" alt=""/>
+
+:::note
+Service account authentication is not currently supported - you must use HMAC keys
+The GCS bucket URL must use the format: https://storage.googleapis.com/<bucket>/<path> (not gs://
+:::
+
+The HMAC keys must be associated with a service account that has the `roles/storage.objectViewer` role, which includes:
+- `storage.objects.list`: to list objects in the bucket
+- `storage.objects.get`: to fetch/read objects
 
 </VerticalStepper>
 
