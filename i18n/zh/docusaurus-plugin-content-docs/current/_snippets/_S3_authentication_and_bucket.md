@@ -23,7 +23,7 @@ import s3_h from '@site/static/images/_snippets/s3/s3-h.png';
   本文演示了如何配置 AWS IAM 用户、创建 S3 存储桶以及配置 ClickHouse 使用该存储桶作为 S3 磁盘的基础知识。
   您应该与安全团队协作确定要使用的权限,可将这些作为起点。
 
-  ### 创建 AWS IAM 用户 {#create-an-aws-iam-user}
+  ### 创建 AWS IAM 用户
 
   在以下步骤中,您将创建一个服务账户用户(而非登录用户)。
 
