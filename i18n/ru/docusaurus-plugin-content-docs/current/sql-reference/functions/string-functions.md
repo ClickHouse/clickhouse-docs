@@ -1517,7 +1517,7 @@ SELECT initcapUTF8('не тормозит')
 
 Добавлено в: v25.9
 
-Возвращает 1, если входной String или FixedString содержит только ASCII-байты (0x00–0x7F), иначе 0.
+Возвращает 1, если входной String или FixedString содержит только ASCII-байты (0x00–0x7F), иначе 0. Функция оптимизирована для положительного случая (когда входное значение *является* корректным ASCII).
 
 **Синтаксис**
 
@@ -1542,6 +1542,7 @@ SELECT isValidASCII('hello') AS is_ascii, isValidASCII('你好') AS is_not_ascii
 
 ```response title=Response
 ```
+
 
 ## isValidUTF8 {#isValidUTF8}
 
@@ -2512,6 +2513,7 @@ sparseGrams(s[, min_ngram_length, max_ngram_length])
 * `s` — входная строка. [`String`](/sql-reference/data-types/string)
 * `min_ngram_length` — необязательный параметр. Минимальная длина извлекаемой n-граммы. Значение по умолчанию и минимальное значение — 3. [`UInt*`](/sql-reference/data-types/int-uint)
 * `max_ngram_length` — необязательный параметр. Максимальная длина извлекаемой n-граммы. Значение по умолчанию — 100. Должно быть не меньше `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `min_cutoff_length` — необязательный параметр. Если задан, возвращаются только n-граммы длиной не меньше `min_cutoff_length`. Значение по умолчанию такое же, как у `min_ngram_length`. Должно быть не меньше `min_ngram_length` и не больше `max_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
 
 **Возвращаемое значение**
 
@@ -2530,6 +2532,7 @@ SELECT sparseGrams('alice', 3)
 │ ['ali','lic','lice','ice']         │
 └────────────────────────────────────┘
 ```
+
 
 ## sparseGramsHashes {#sparseGramsHashes}
 
@@ -2551,6 +2554,7 @@ sparseGramsHashes(s[, min_ngram_length, max_ngram_length])
 * `s` — входная строка. [`String`](/sql-reference/data-types/string)
 * `min_ngram_length` — необязательный параметр. Минимальная длина извлекаемой n-граммы. Значение по умолчанию и минимальное значение — 3. [`UInt*`](/sql-reference/data-types/int-uint)
 * `max_ngram_length` — необязательный параметр. Максимальная длина извлекаемой n-граммы. Значение по умолчанию — 100. Не должно быть меньше `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `min_cutoff_length` — необязательный параметр. Если указан, возвращаются только n-граммы длиной не меньше `min_cutoff_length`. Значение по умолчанию совпадает с `min_ngram_length`. Не должно быть меньше `min_ngram_length` и не больше `max_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
 
 **Возвращаемое значение**
 
@@ -2569,6 +2573,7 @@ SELECT sparseGramsHashes('alice', 3)
 │ [1481062250,2450405249,4012725991,1918774096]      │
 └────────────────────────────────────────────────────┘
 ```
+
 
 ## sparseGramsHashesUTF8 {#sparseGramsHashesUTF8}
 
@@ -2589,6 +2594,7 @@ sparseGramsHashesUTF8(s[, min_ngram_length, max_ngram_length])
 * `s` — Входная строка. [`String`](/sql-reference/data-types/string)
 * `min_ngram_length` — Необязательный параметр. Минимальная длина извлекаемых n-грамм. Значение по умолчанию и минимальное значение — 3. [`UInt*`](/sql-reference/data-types/int-uint)
 * `max_ngram_length` — Необязательный параметр. Максимальная длина извлекаемых n-грамм. Значение по умолчанию — 100. Не должно быть меньше `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `min_cutoff_length` — Необязательный параметр. Если указан, возвращаются только n-граммы длиной не менее `min_cutoff_length`. Значение по умолчанию совпадает с `min_ngram_length`. Не должно быть меньше `min_ngram_length` и не больше `max_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
 
 **Возвращаемое значение**
 
@@ -2607,6 +2613,7 @@ SELECT sparseGramsHashesUTF8('алиса', 3)
 │ [4178533925,3855635300,561830861] │
 └───────────────────────────────────┘
 ```
+
 
 ## sparseGramsUTF8 {#sparseGramsUTF8}
 
@@ -2627,6 +2634,7 @@ sparseGramsUTF8(s[, min_ngram_length, max_ngram_length])
 * `s` — Входная строка. [`String`](/sql-reference/data-types/string)
 * `min_ngram_length` — Необязательный аргумент. Минимальная длина извлекаемой n-граммы. Значение по умолчанию и минимальное значение — 3. [`UInt*`](/sql-reference/data-types/int-uint)
 * `max_ngram_length` — Необязательный аргумент. Максимальная длина извлекаемой n-граммы. Значение по умолчанию — 100. Не должно быть меньше `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `min_cutoff_length` — Необязательный аргумент. Если задано, возвращаются только n-граммы длиной не меньше `min_cutoff_length`. Значение по умолчанию совпадает с `min_ngram_length`. Не должно быть меньше `min_ngram_length` и не должно быть больше `max_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
 
 **Возвращаемое значение**
 
@@ -2645,6 +2653,7 @@ SELECT sparseGramsUTF8('алиса', 3)
 │ ['али','лис','иса']         │
 └─────────────────────────────┘
 ```
+
 
 ## startsWith {#startsWith}
 

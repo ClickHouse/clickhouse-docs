@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mongodb/resync
 sidebar_label: '重新同步 ClickPipe'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
@@ -34,7 +37,7 @@ Resync 按如下顺序执行以下操作：
 2. 转到 **Settings** 选项卡。
 3. 点击 **Resync** 按钮。
 
-<Image img={resync_button} border size="md" />
+<Image img={resync_button} border size="md"/>
 
 4. 会弹出一个确认对话框。再次点击 Resync。
 5. 前往 **Metrics** 选项卡。

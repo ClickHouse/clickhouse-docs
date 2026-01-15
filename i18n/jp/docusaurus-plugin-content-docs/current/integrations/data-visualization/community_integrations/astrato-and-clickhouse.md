@@ -7,7 +7,7 @@ description: 'Astrato は、あらゆるユーザーの手にアナリティク�
 title: 'Astrato を ClickHouse に接続する'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
 ---
 
@@ -29,7 +29,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-Astrato は Pushdown SQL を使用して、ClickHouse Cloud またはオンプレミスの ClickHouse 環境に直接クエリを実行します。つまり、業界をリードする ClickHouse のパフォーマンスによって支えられた、必要なすべてのデータにアクセスできます。
+Astrato は Pushdown SQL を使用して、ClickHouse Cloud またはオンプレミスの ClickHouse 環境に直接クエリを実行します。つまり、業界をリードする ClickHouse のパフォーマンスを活用して、必要なすべてのデータにアクセスできます。
 
 ## 接続に必要な情報 {#connection-data-required}
 

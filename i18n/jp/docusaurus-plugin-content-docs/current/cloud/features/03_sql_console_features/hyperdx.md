@@ -27,6 +27,6 @@ ClickHouse Cloud における HyperDX は現在プライベートプレビュー
 
 <Image img={hyperdx_cloud} alt="ClickHouse Cloud の HyperDX" size="lg"/>
 
-ClickHouse Cloud で HyperDX を使い始めるには、専用の[クイックスタートガイド](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)を参照することを推奨します。
+ClickHouse Cloud で HyperDX を使い始めるには、専用の[クイックスタートガイド](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud)を参照することを推奨します。
 
 ClickStack の詳細については、[ドキュメント全体](/use-cases/observability/clickstack)を参照してください。 

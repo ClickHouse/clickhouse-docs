@@ -1,0 +1,100 @@
+---
+title: 查找宽或紧凑分区片段的数量和大小
+description: '本知识库文章介绍如何根据分区片段类型（宽或紧凑）统计分区片段数量。'
+date: 2026-01-12
+tags: ['故障排除']
+keywords: ['紧凑分区片段', '宽分区片段']
+---
+
+{frontMatter.description}
+
+{/* 以下内容省略 */}
+
+<br />
+
+可以使用以下查询统计不同类型的分区片段数量：
+
+```sql
+SELECT
+    table,
+    part_type,
+    count(*)
+FROM system.parts
+WHERE active
+GROUP BY
+    table,
+    part_type
+ORDER BY
+    table ASC,
+    part_type ASC
+```
+
+下面是一个示例响应：
+
+```response
+┌─table───────────────────┬─part_type─┬─count()─┐
+│ asynchronous_metric_log │ Compact   │       6 │
+│ metric_log              │ Compact   │       1 │
+│ otel_logs               │ Compact   │       5 │
+│ otel_logs               │ Wide      │       2 │
+│ part_log                │ Compact   │       2 │
+│ query_log               │ Compact   │       5 │
+│ session_log             │ Compact   │       2 │
+│ text_log                │ Compact   │       7 │
+│ trace_log               │ Compact   │       6 │
+└─────────────────────────┴───────────┴─────────┘
+```
+
+运行下面的查询，以获取宽格式和紧凑格式分区片段的大小：
+
+```sql
+SELECT
+    table,
+    column,
+    part_type,
+    sum(rows),
+    sum(column_data_compressed_bytes),
+    sum(column_data_uncompressed_bytes)
+FROM system.parts_columns
+WHERE active
+GROUP BY
+    table,
+    column,
+    part_type
+ORDER BY
+    table ASC,
+    column ASC,
+    part_type ASC
+```
+
+下面是一个示例响应：
+
+
+```response
+┌─table─────┬─column─────────────┬─part_type─┬─sum(rows)─┬─sum(column_data_compressed_bytes)─┬─sum(column_data_uncompressed_bytes)─┐
+│ otel_logs │ Body               │ Compact   │   1564357 │                                 0 │                                   0 │
+│ otel_logs │ Body               │ Wide      │  18900157 │                         316784170 │                          2807508947 │
+│ otel_logs │ LogAttributes      │ Compact   │   1564357 │                                 0 │                                   0 │
+│ otel_logs │ LogAttributes      │ Wide      │  18900157 │                         215812392 │                          3173566494 │
+│ otel_logs │ ResourceAttributes │ Compact   │   1564357 │                                 0 │                                   0 │
+│ otel_logs │ ResourceAttributes │ Wide      │  18900157 │                          94428129 │                          2258154988 │
+│ otel_logs │ ServiceName        │ Compact   │   1564357 │                                 0 │                                   0 │
+│ otel_logs │ ServiceName        │ Wide      │  18900157 │                             24726 │                            18973727 │
+│ otel_logs │ SeverityNumber     │ Compact   │   1564357 │                                 0 │                                   0 │
+│ otel_logs │ SeverityNumber     │ Wide      │  18900157 │                             51973 │                            75600628 │
+│ otel_logs │ SeverityText       │ Compact   │   1564357 │                                 0 │                                   0 │
+│ otel_logs │ SeverityText       │ Wide      │  18900157 │                             24726 │                            18973727 │
+│ otel_logs │ SpanId             │ Compact   │   1564357 │                                 0 │                                   0 │
+│ otel_logs │ SpanId             │ Wide      │  18900157 │                             13048 │                            18900157 │
+│ otel_logs │ Timestamp          │ Compact   │   1564357 │                                 0 │                                   0 │
+│ otel_logs │ Timestamp          │ Wide      │  18900157 │                          61225801 │                           151201256 │
+│ otel_logs │ TraceFlags         │ Compact   │   1564357 │                                 0 │                                   0 │
+│ otel_logs │ TraceFlags         │ Wide      │  18900157 │                             51973 │                            75600628 │
+│ otel_logs │ TraceId            │ Compact   │   1564357 │                                 0 │                                   0 │
+│ otel_logs │ TraceId            │ Wide      │  18900157 │                             13048 │                            18900157 │
+└───────────┴────────────────────┴───────────┴───────────┴───────────────────────────────────┴─────────────────────────────────────┘
+```
+
+:::note 紧凑分区片段大小显示为零
+请注意，在紧凑分区片段中不会计算列的大小，因此它们的大小会显示为 `0`。
+:::

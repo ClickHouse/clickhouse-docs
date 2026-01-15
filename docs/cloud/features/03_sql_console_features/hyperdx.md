@@ -26,6 +26,6 @@ HyperDX in ClickHouse Cloud is currently in private preview and must be enabled 
 
 <Image img={hyperdx_cloud} alt="ClickHouse Cloud HyperDX" size="lg"/>
 
-To get started with HyperDX in ClickHouse Cloud, we recommend our dedicated [getting started guide](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud).
+To get started with HyperDX in ClickHouse Cloud, we recommend our dedicated [getting started guide](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud).
 
 For further details on ClickStack, see the [full documentation](/use-cases/observability/clickstack). 

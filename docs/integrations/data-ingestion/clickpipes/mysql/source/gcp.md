@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/source/gcp
 title: 'Cloud SQL for MySQL source setup guide'
 keywords: ['google cloud sql', 'mysql', 'clickpipes', 'pitr', 'root ca certificate']
 doc_type: 'guide'
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import gcp_pitr from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/gcp/gcp-mysql-pitr.png';

@@ -6,9 +6,13 @@ keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', '
 description: 'Tableau analysis tips when using ClickHouse official connector.'
 title: 'Analysis tips'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
 ---
 
 # Analysis tips
+
 ## MEDIAN() and PERCENTILE() functions {#median-and-percentile-functions}
 - In Live mode the MEDIAN() and PERCENTILE() functions (since connector v0.1.3 release) use the [ClickHouse quantile()() function](/sql-reference/aggregate-functions/reference/quantile/), which significantly speeds up the calculation, but uses sampling. If you want to get accurate calculation results, then use functions `MEDIAN_EXACT()` and `PERCENTILE_EXACT()` (based on [quantileExact()()](/sql-reference/aggregate-functions/reference/quantileexact/)).
 - In Extract mode you can't use MEDIAN_EXACT() and PERCENTILE_EXACT() because MEDIAN() and PERCENTILE() are always accurate (and slow).

@@ -58,9 +58,9 @@ pg_clickhouse は公開リリースに対して [Semantic Versioning] に従い�
 
 一方で、マイナーまたはメジャーバージョンがインクリメントされるリリースには SQL アップグレードスクリプトが伴い、その拡張機能を含む既存のすべてのデータベースは、アップグレードの恩恵を受けるために `ALTER EXTENSION pg_clickhouse UPDATE` を実行する必要があります。
 
-## SQL リファレンス {#sql-reference}
+## DDL SQL リファレンス {#ddl-sql-reference}
 
-以下の SQL 文は pg_clickhouse を利用します。
+以下の SQL [DDL] 文は pg_clickhouse を利用します。
 
 ### CREATE EXTENSION {#create-extension}
 
@@ -220,10 +220,47 @@ IMPORT FOREIGN SCHEMA demo EXCEPT (users) FROM SERVER taxi_srv INTO taxi;
 
 pg&#95;clickhouse は、指定された ClickHouse データベース（上記の例では &quot;demo&quot;）内のすべてのテーブルの一覧を取得し、各テーブルのカラム定義を取得したうえで、外部テーブルを作成するために [CREATE FOREIGN TABLE](#create-foreign-table) コマンドを実行します。カラムは、[サポートされているデータ型](#data-types) と、検出可能な場合には [CREATE FOREIGN TABLE](#create-foreign-table) でサポートされているオプションを使用して定義されます。
 
+:::tip Imported Identifier Case Preservation
+
+`IMPORT FOREIGN SCHEMA` は、インポートするテーブル名およびカラム名に対して `quote_identifier()` を実行し、大文字や空白を含む識別子を二重引用符で囲みます。このようなテーブル名およびカラム名は、PostgreSQL のクエリ内でも二重引用符で囲む必要があります。すべて小文字で空白文字を含まない名前であれば、引用符で囲む必要はありません。
+
+例えば、次の ClickHouse テーブルがあるとします。
+
+```sql
+ CREATE OR REPLACE TABLE test
+ (
+     id UInt64,
+     Name TEXT,
+     updatedAt DateTime DEFAULT now()
+ )
+ ENGINE = MergeTree
+ ORDER BY id;
+```
+
+`IMPORT FOREIGN SCHEMA` によって、次の外部テーブルが作成されます。
+
+```sql
+ CREATE TABLE test
+ (
+     id          BIGINT      NOT NULL,
+     "Name"      TEXT        NOT NULL,
+     "updatedAt" TIMESTAMPTZ NOT NULL
+ );
+```
+
+したがって、クエリでは適切に引用符で囲む必要があります。たとえば、
+
+```sql
+ SELECT id, "Name", "updatedAt" FROM test;
+```
+
+異なる名前やすべて小文字の名前（つまり大文字小文字を区別しない）でオブジェクトを作成するには、[CREATE FOREIGN TABLE](#create-foreign-table) を使用します。
+:::
+
 
 ### CREATE FOREIGN TABLE {#create-foreign-table}
 
-[IMPORT FOREIGN SCHEMA] を使用して、ClickHouse データベース内のデータを参照する外部テーブルを作成します。
+[CREATE FOREIGN TABLE] を使用して、ClickHouse データベース内のデータを参照する外部テーブルを作成します。
 
 ```sql
 CREATE FOREIGN TABLE uact (
@@ -260,7 +297,7 @@ CREATE FOREIGN TABLE test (
 ) SERVER clickhouse_srv;
 ```
 
-`AggregateFunction` 関数を持つカラムに対しては、pg&#95;clickhouse がそのカラムを評価する集約関数に自動的に `Merge` を付与します。
+`AggregateFunction` 関数を持つカラムに対しては、pg&#95;clickhouse がそのカラムを評価する集約関数の末尾に自動的に `Merge` を付加します。
 
 
 ### ALTER FOREIGN TABLE {#alter-foreign-table}
@@ -290,6 +327,412 @@ DROP FOREIGN TABLE uact CASCADE;
 ```
 
 
+## DML SQL リファレンス {#dml-sql-reference}
+
+以下の SQL [DML] ステートメントでは、pg&#95;clickhouse を使用する場合があります。例は、
+[make-logs.sql] によって作成されたこれらの ClickHouse テーブルに依存します。
+
+```sql
+CREATE TABLE logs (
+    req_id    Int64 NOT NULL,
+    start_at   DateTime64(6, 'UTC') NOT NULL,
+    duration  Int32 NOT NULL,
+    resource  Text  NOT NULL,
+    method    Enum8('GET' = 1, 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH', 'QUERY') NOT NULL,
+    node_id   Int64 NOT NULL,
+    response  Int32 NOT NULL
+) ENGINE = MergeTree
+  ORDER BY start_at;
+
+CREATE TABLE nodes (
+    node_id Int64 NOT NULL,
+    name    Text  NOT NULL,
+    region  Text  NOT NULL,
+    arch    Text  NOT NULL,
+    os      Text  NOT NULL
+) ENGINE = MergeTree
+  PRIMARY KEY node_id;
+```
+
+
+### EXPLAIN {#explain}
+
+[EXPLAIN] コマンドは期待どおりに動作しますが、`VERBOSE` オプションを指定すると、
+ClickHouse の「Remote SQL」クエリが発行されます。
+
+```pgsql
+try=# EXPLAIN (VERBOSE)
+       SELECT resource, avg(duration) AS average_duration
+         FROM logs
+        GROUP BY resource;
+                                     QUERY PLAN
+------------------------------------------------------------------------------------
+ Foreign Scan  (cost=1.00..5.10 rows=1000 width=64)
+   Output: resource, (avg(duration))
+   Relations: Aggregate on (logs)
+   Remote SQL: SELECT resource, avg(duration) FROM "default".logs GROUP BY resource
+(4 rows)
+```
+
+このクエリは「Foreign Scan」プランノードを通じて、リモート SQL が ClickHouse にプッシュダウンされます。
+
+
+### SELECT {#select}
+
+[SELECT] 文を使用して、他のテーブルと同様に pg&#95;clickhouse テーブルに対してクエリを実行できます。
+
+```pgsql
+try=# SELECT start_at, duration, resource FROM logs WHERE req_id = 4117909262;
+          start_at          | duration |    resource
+----------------------------+----------+----------------
+ 2025-12-05 15:07:32.944188 |      175 | /widgets/totam
+(1 row)
+```
+
+pg&#95;clickhouse は、集約関数を含め、クエリの実行を可能な限り ClickHouse にプッシュダウンします。[EXPLAIN](#explain) を使用して、どの程度プッシュダウンされるかを確認してください。たとえば上記のクエリでは、すべての処理が ClickHouse 側で実行されます。
+
+```pgsql
+try=# EXPLAIN (VERBOSE, COSTS OFF)
+       SELECT start_at, duration, resource FROM logs WHERE req_id = 4117909262;
+                                             QUERY PLAN
+-----------------------------------------------------------------------------------------------------
+ Foreign Scan on public.logs
+   Output: start_at, duration, resource
+   Remote SQL: SELECT start_at, duration, resource FROM "default".logs WHERE ((req_id = 4117909262))
+(3 rows)
+```
+
+pg&#95;clickhouse は、同一のリモートサーバー上のテーブル同士の JOIN もプッシュダウンします。
+
+```pgsql
+try=# EXPLAIN (ANALYZE, VERBOSE)
+       SELECT name, count(*), round(avg(duration))
+         FROM logs
+         LEFT JOIN nodes on logs.node_id = nodes.node_id
+        GROUP BY name;
+                                                                                  QUERY PLAN
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Foreign Scan  (cost=1.00..5.10 rows=1000 width=72) (actual time=3.201..3.221 rows=8.00 loops=1)
+   Output: nodes.name, (count(*)), (round(avg(logs.duration), 0))
+   Relations: Aggregate on ((logs) LEFT JOIN (nodes))
+   Remote SQL: SELECT r2.name, count(*), round(avg(r1.duration), 0) FROM  "default".logs r1 ALL LEFT JOIN "default".nodes r2 ON (((r1.node_id = r2.node_id))) GROUP BY r2.name
+   FDW Time: 0.086 ms
+ Planning Time: 0.335 ms
+ Execution Time: 3.261 ms
+(7 rows)
+```
+
+ローカルテーブルに対して結合すると、慎重にチューニングしない限り、効率の悪いクエリになってしまいます。次の例では、`nodes` テーブルのローカルコピーを作成し、リモートテーブルではなくそのローカルテーブルに結合します。
+
+
+```pgsql
+try=# CREATE TABLE local_nodes AS SELECT * FROM nodes;
+SELECT 8
+
+try=# EXPLAIN (ANALYZE, VERBOSE)
+       SELECT name, count(*), round(avg(duration))
+         FROM logs
+         LEFT JOIN local_nodes on logs.node_id = local_nodes.node_id
+        GROUP BY name;
+                                                             QUERY PLAN
+-------------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=147.65..150.65 rows=200 width=72) (actual time=6.215..6.235 rows=8.00 loops=1)
+   Output: local_nodes.name, count(*), round(avg(logs.duration), 0)
+   Group Key: local_nodes.name
+   Batches: 1  Memory Usage: 32kB
+   Buffers: shared hit=1
+   ->  Hash Left Join  (cost=31.02..129.28 rows=2450 width=36) (actual time=2.202..5.125 rows=1000.00 loops=1)
+         Output: local_nodes.name, logs.duration
+         Hash Cond: (logs.node_id = local_nodes.node_id)
+         Buffers: shared hit=1
+         ->  Foreign Scan on public.logs  (cost=10.00..20.00 rows=1000 width=12) (actual time=2.089..3.779 rows=1000.00 loops=1)
+               Output: logs.req_id, logs.start_at, logs.duration, logs.resource, logs.method, logs.node_id, logs.response
+               Remote SQL: SELECT duration, node_id FROM "default".logs
+               FDW Time: 1.447 ms
+         ->  Hash  (cost=14.90..14.90 rows=490 width=40) (actual time=0.090..0.091 rows=8.00 loops=1)
+               Output: local_nodes.name, local_nodes.node_id
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               Buffers: shared hit=1
+               ->  Seq Scan on public.local_nodes  (cost=0.00..14.90 rows=490 width=40) (actual time=0.069..0.073 rows=8.00 loops=1)
+                     Output: local_nodes.name, local_nodes.node_id
+                     Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=14
+ Planning Time: 0.551 ms
+ Execution Time: 6.589 ms
+```
+
+この場合、ローカルのカラムではなく `node_id` でグループ化することで、
+より多くの集約処理を ClickHouse 側に任せ、後でルックアップテーブルと
+JOIN することができます。
+
+
+```sql
+try=# EXPLAIN (ANALYZE, VERBOSE)
+       WITH remote AS (
+           SELECT node_id, count(*), round(avg(duration))
+             FROM logs
+            GROUP BY node_id
+       )
+       SELECT name, remote.count, remote.round
+         FROM remote
+         JOIN local_nodes
+           ON remote.node_id = local_nodes.node_id
+        ORDER BY name;
+                                                          QUERY PLAN
+-------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=65.68..66.91 rows=490 width=72) (actual time=4.480..4.484 rows=8.00 loops=1)
+   Output: local_nodes.name, remote.count, remote.round
+   Sort Key: local_nodes.name
+   Sort Method: quicksort  Memory: 25kB
+   Buffers: shared hit=4
+   ->  Hash Join  (cost=27.60..43.79 rows=490 width=72) (actual time=4.406..4.422 rows=8.00 loops=1)
+         Output: local_nodes.name, remote.count, remote.round
+         Inner Unique: true
+         Hash Cond: (local_nodes.node_id = remote.node_id)
+         Buffers: shared hit=1
+         ->  Seq Scan on public.local_nodes  (cost=0.00..14.90 rows=490 width=40) (actual time=0.010..0.016 rows=8.00 loops=1)
+               Output: local_nodes.node_id, local_nodes.name, local_nodes.region, local_nodes.arch, local_nodes.os
+               Buffers: shared hit=1
+         ->  Hash  (cost=15.10..15.10 rows=1000 width=48) (actual time=4.379..4.381 rows=8.00 loops=1)
+               Output: remote.count, remote.round, remote.node_id
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               ->  Subquery Scan on remote  (cost=1.00..15.10 rows=1000 width=48) (actual time=4.337..4.360 rows=8.00 loops=1)
+                     Output: remote.count, remote.round, remote.node_id
+                     ->  Foreign Scan  (cost=1.00..5.10 rows=1000 width=48) (actual time=4.330..4.349 rows=8.00 loops=1)
+                           Output: logs.node_id, (count(*)), (round(avg(logs.duration), 0))
+                           Relations: Aggregate on (logs)
+                           Remote SQL: SELECT node_id, count(*), round(avg(duration), 0) FROM "default".logs GROUP BY node_id
+                           FDW Time: 0.055 ms
+ Planning:
+   Buffers: shared hit=5
+ Planning Time: 0.319 ms
+ Execution Time: 4.562 ms
+```
+
+「Foreign Scan」ノードは現在、`node_id` による集約をプッシュダウンするようになり、
+Postgres に引き戻す必要がある行数は、1000 行（全行）から 8 行だけ（各ノードにつき 1 行）にまで削減されます。
+
+
+### PREPARE, EXECUTE, DEALLOCATE {#prepare-execute-deallocate}
+
+v0.1.2 以降の pg&#95;clickhouse ではパラメータ化されたクエリがサポートされており、主に
+[PREPARE] コマンドで作成します。
+
+```pgsql
+try=# PREPARE avg_durations_between_dates(date, date) AS
+       SELECT date(start_at), round(avg(duration)) AS average_duration
+         FROM logs
+        WHERE date(start_at) BETWEEN $1 AND $2
+        GROUP BY date(start_at)
+        ORDER BY date(start_at);
+PREPARE
+```
+
+準備済みステートメントは、通常どおり [EXECUTE] を使って実行します。
+
+```pgsql
+try=# EXECUTE avg_durations_between_dates('2025-12-09', '2025-12-13');
+    date    | average_duration
+------------+------------------
+ 2025-12-09 |              190
+ 2025-12-10 |              194
+ 2025-12-11 |              197
+ 2025-12-12 |              190
+ 2025-12-13 |              195
+(5 rows)
+```
+
+集約処理は通常どおりプッシュダウンされ、その様子は [EXPLAIN](#explain) の verbose 出力で確認できます。
+
+```pgsql
+try=# EXPLAIN (VERBOSE) EXECUTE avg_durations_between_dates('2025-12-09', '2025-12-13');
+                                                                                                            QUERY PLAN
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Foreign Scan  (cost=1.00..5.10 rows=1000 width=36)
+   Output: (date(start_at)), (round(avg(duration), 0))
+   Relations: Aggregate on (logs)
+   Remote SQL: SELECT date(start_at), round(avg(duration), 0) FROM "default".logs WHERE ((date(start_at) >= '2025-12-09')) AND ((date(start_at) <= '2025-12-13')) GROUP BY (date(start_at)) ORDER BY date(start_at) ASC NULLS LAST
+(4 rows)
+```
+
+パラメータプレースホルダーではなく、完全な日付値が送信されていることに注意してください。
+これは、PostgreSQL の [PREPARE notes] に記載されているとおり、最初の 5 回のリクエストについても同様です。6 回目の実行時には、ClickHouse の
+`{param:type}` 形式の [query parameters] を送信します。
+パラメータ:
+
+```pgsql
+                                                                                                         QUERY PLAN
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Foreign Scan  (cost=1.00..5.10 rows=1000 width=36)
+   Output: (date(start_at)), (round(avg(duration), 0))
+   Relations: Aggregate on (logs)
+   Remote SQL: SELECT date(start_at), round(avg(duration), 0) FROM "default".logs WHERE ((date(start_at) >= {p1:Date})) AND ((date(start_at) <= {p2:Date})) GROUP BY (date(start_at)) ORDER BY date(start_at) ASC NULLS LAST
+(4 rows)
+```
+
+プリペアドステートメントを解放するには、[DEALLOCATE] を使用します。
+
+```pgsql
+try=# DEALLOCATE avg_durations_between_dates;
+DEALLOCATE
+```
+
+
+### INSERT {#insert}
+
+[INSERT] コマンドを使用して、リモート側の ClickHouse テーブルに値を挿入します。
+
+```pgsql
+try=# INSERT INTO nodes(node_id, name, region, arch, os)
+VALUES (9,  'Augustin Gamarra', 'us-west-2', 'amd64', 'Linux')
+     , (10, 'Cerisier', 'us-east-2', 'amd64', 'Linux')
+     , (11, 'Dewalt', 'use-central-1', 'arm64', 'macOS')
+;
+INSERT 0 3
+```
+
+
+### COPY {#copy}
+
+[COPY] コマンドを使用して、複数行をリモート ClickHouse
+テーブルに一括挿入します。
+
+```pgsql
+try=# COPY logs FROM stdin CSV;
+4285871863,2025-12-05 11:13:58.360760,206,/widgets,POST,8,401
+4020882978,2025-12-05 11:33:48.248450,199,/users/1321945,HEAD,3,200
+3231273177,2025-12-05 12:20:42.158575,220,/search,GET,2,201
+\.
+>> COPY 3
+```
+
+> **⚠️ Batch API の制限事項**
+>
+> pg&#95;clickhouse は、PostgreSQL FDW の batch insert API を現時点ではまだ実装していません。
+> そのため、現在 [COPY] はレコードを挿入するために [INSERT](#insert) 文を使用しています。
+> これは今後のリリースで改善される予定です。
+
+
+### LOAD {#load}
+
+[LOAD] を使用して、pg&#95;clickhouse の共有ライブラリをロードします。
+
+```pgsql
+try=# LOAD 'pg_clickhouse';
+LOAD
+```
+
+通常は [LOAD] を使用する必要はありません。Postgres は、pg&#95;clickhouse の機能（関数、外部テーブルなど）のいずれかが初めて使用されたときに、自動的に pg&#95;clickhouse をロードします。
+
+pg&#95;clickhouse を [LOAD] しておくことが有用なのは、それに依存するクエリを実行する前に、[SET](#set) で pg&#95;clickhouse のパラメータを設定しておきたい場合だけです。
+
+
+### SET {#set}
+
+[SET] を使用して `pg_clickhouse.session_settings` ランタイムパラメーターを設定します。
+このパラメーターで、後続のクエリに適用される [ClickHouse settings] を指定します。例:
+
+```sql
+SET pg_clickhouse.session_settings = 'join_use_nulls 1, final 1';
+```
+
+デフォルトは `join_use_nulls 1` です。空文字列に設定すると、
+ClickHouse サーバー側の設定が使用されます。
+
+```sql
+SET pg_clickhouse.session_settings = '';
+```
+
+この構文は、カンマ区切りのキーと値のペアのリストで、1つ以上のスペースで区切られます。キーは [ClickHouse settings] に対応している必要があります。値中の空白、カンマ、およびバックスラッシュは、バックスラッシュでエスケープします:
+
+```sql
+SET pg_clickhouse.session_settings = 'join_algorithm grace_hash\,hash';
+```
+
+スペースやカンマをエスケープせずに済むように値をシングルクォートで囲むか、二重引用符で囲む必要がないように [dollar quoting] の利用を検討してください：
+
+```sql
+SET pg_clickhouse.session_settings = $$join_algorithm 'grace_hash,hash'$$;
+```
+
+可読性を重視し、設定項目が多い場合は、たとえば次のように複数行に分けて記述してください。
+
+```sql
+SET pg_clickhouse.session_settings TO $$
+    connect_timeout 2,
+    count_distinct_implementation uniq,
+    final 1,
+    group_by_use_nulls 1,
+    join_algorithm 'prefer_partial_merge',
+    join_use_nulls 1,
+    log_queries_min_type QUERY_FINISH,
+    max_block_size 32768,
+    max_execution_time 45,
+    max_result_rows 1024,
+    metrics_perf_events_list 'this,that',
+    network_compression_method ZSTD,
+    poll_interval 5,
+    totals_mode after_having_auto
+$$;
+```
+
+pg&#95;clickhouse は設定を検証せず、すべてのクエリについて設定をそのまま ClickHouse に渡します。そのため、各 ClickHouse バージョンのすべての設定をサポートします。
+
+なお、`pg_clickhouse.session_settings` を設定する前に pg&#95;clickhouse をロードしておく必要があります。[shared library preloading] を使用するか、拡張機能内のいずれかのオブジェクトを利用してロードされるようにしてください。
+
+
+### ALTER ROLE {#alter-role}
+
+[ALTER ROLE] の `SET` コマンドを使用すると、特定のロールに対して pg&#95;clickhouse を[プリロード](#preloading)したり、そのパラメータを [SET](#set) したりできます。
+
+```pgsql
+try=# ALTER ROLE CURRENT_USER SET session_preload_libraries = pg_clickhouse;
+ALTER ROLE
+
+try=# ALTER ROLE CURRENT_USER SET pg_clickhouse.session_settings = 'final 1';
+ALTER ROLE
+```
+
+[ALTER ROLE] の `RESET` コマンドを使用して、pg&#95;clickhouse のプリロードおよび／またはパラメータをリセットします。
+
+```pgsql
+try=# ALTER ROLE CURRENT_USER RESET session_preload_libraries;
+ALTER ROLE
+
+try=# ALTER ROLE CURRENT_USER RESET pg_clickhouse.session_settings;
+ALTER ROLE
+```
+
+
+## 事前読み込み {#preloading}
+
+ほとんどすべて、あるいは大半の Postgres 接続で pg_clickhouse を使用する必要がある場合は、
+[共有ライブラリの事前読み込み] を利用して自動的にロードされるようにすることを検討してください。
+
+### `session_preload_libraries` {#session&#95;preload&#95;libraries}
+
+PostgreSQL への新しい接続ごとに、共有ライブラリをロードします。
+
+```ini
+session_preload_libraries = pg_clickhouse
+```
+
+サーバーを再起動せずに更新内容を反映できるため便利です。再接続するだけで済みます。[ALTER
+ROLE](#alter-role) を使用して、特定のユーザーまたはロールに対して設定することもできます。
+
+
+### `shared_preload_libraries` {#shared&#95;preload&#95;libraries}
+
+PostgreSQL の親プロセスの起動時に共有ライブラリをロードします。
+
+```ini
+shared_preload_libraries = pg_clickhouse
+```
+
+各セッションのメモリ使用量とロードのオーバーヘッドを削減するのに有効ですが、ライブラリを更新した場合はクラスターを再起動する必要があります。
+
+
 ## 関数と演算子のリファレンス {#function-and-operator-reference}
 
 ### データ型 {#data-types}
@@ -300,6 +743,7 @@ pg_clickhouse は、次の ClickHouse データ型を PostgreSQL データ型に
 | -----------|------------------|--------------------------------------|
 | Bool       | boolean          |                                      |
 | Date       | date             |                                      |
+| Date32     | date             |                                      |
 | DateTime   | timestamp        |                                      |
 | Decimal    | numeric          |                                      |
 | Float32    | real             |                                      |
@@ -322,7 +766,7 @@ pg_clickhouse は、次の ClickHouse データ型を PostgreSQL データ型に
 
 これらの関数は、ClickHouse データベースに対してクエリを実行するためのインターフェースを提供します。
 
-#### `clickhouse_raw_query` {#clickhouse_raw_query}
+#### `clickhouse_raw_query` {#clickhouse&#95;raw&#95;query}
 
 ```sql
 SELECT clickhouse_raw_query(
@@ -349,14 +793,14 @@ SELECT clickhouse_raw_query(
 ```
 
 ```sql
-      clickhouse_raw_query       
+      clickhouse_raw_query
 ---------------------------------
  INFORMATION_SCHEMA      default+
  default default                +
  git     default                +
  information_schema      default+
  system  default                +
- 
+
 (1 row)
 ```
 
@@ -414,7 +858,11 @@ pg_clickhouse は、互換性のあるデータ型に対して `CAST(x AS bigint
 
 これらの PostgreSQL 集約関数は ClickHouse へプッシュダウンされます。
 
+* [array_agg](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/grouparray)
+* [avg](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/avg)
 * [count](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/count)
+* [min](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/min)
+* [max](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/max)
 
 ### カスタム集約関数 {#custom-aggregates}
 
@@ -453,111 +901,96 @@ SELECT quantile(0.25)(a) FROM t1;
 * `quantileExact(double)`: [quantileExact](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantileexact)
 
 
-### セッション設定 {#session-settings}
-
-`pg_clickhouse.session_settings` ランタイムパラメーターを設定して、
-以降のクエリに適用される [ClickHouse settings] を構成します。例:
-
-```sql
-SET pg_clickhouse.session_settings = 'join_use_nulls 1, final 1';
-```
-
-デフォルトは `join_use_nulls 1` です。空文字列に設定すると、
-ClickHouse サーバー側の設定が使用されます。
-
-```sql
-SET pg_clickhouse.session_settings = '';
-```
-
-この構文は、カンマ区切りのキーと値のペアのリストで、1つ以上のスペースで区切られます。キーは [ClickHouse settings] に対応している必要があります。値中の空白、カンマ、およびバックスラッシュは、バックスラッシュでエスケープします:
-
-```sql
-SET pg_clickhouse.session_settings = 'join_algorithm grace_hash\,hash';
-```
-
-スペースやカンマをエスケープせずに済むように値をシングルクォートで囲むか、二重引用符を重ねて書く必要がないように [dollar quoting] の利用を検討してください：
-
-```sql
-SET pg_clickhouse.session_settings = $$join_algorithm 'grace_hash,hash'$$;
-```
-
-可読性を重視し、設定項目が多い場合は、たとえば次のように複数行に分けて記述してください。
-
-```sql
-SET pg_clickhouse.session_settings TO $$
-    connect_timeout 2,
-    count_distinct_implementation uniq,
-    final 1,
-    group_by_use_nulls 1,
-    join_algorithm 'prefer_partial_merge',
-    join_use_nulls 1,
-    log_queries_min_type QUERY_FINISH,
-    max_block_size 32768,
-    max_execution_time 45,
-    max_result_rows 1024,
-    metrics_perf_events_list 'this,that',
-    network_compression_method ZSTD,
-    poll_interval 5,
-    totals_mode after_having_auto
-$$;
-```
-
-pg&#95;clickhouse は設定を検証せず、すべてのクエリについて設定をそのまま ClickHouse に渡します。そのため、各 ClickHouse バージョンのすべての設定をサポートします。
-
-なお、`pg_clickhouse.session_settings` を設定する前に pg&#95;clickhouse をロードしておく必要があります。[library preloading] を使用するか、拡張機能内のいずれかのオブジェクトを利用してロードされるようにしてください。
-
-
 ## 著者 {#authors}
 
-* [David E. Wheeler](https://justatheory.com/)
-* [Ildus Kurbangaliev](https://github.com/ildus)
-* [Ibrar Ahmed](https://github.com/ibrarahmad)
+[David E. Wheeler](https://justatheory.com/)
 
 ## 著作権 {#copyright}
 
-* Copyright (c) 2025-2026, ClickHouse
-* Portions Copyright (c) 2023-2025, Ildus Kurbangaliev
-* Portions Copyright (c) 2019-2023, Adjust GmbH
-* Portions Copyright (c) 2012-2019, PostgreSQL Global Development Group
+Copyright (c) 2025-2026, ClickHouse
 
-  [foreign data wrapper]: https://www.postgresql.org/docs/current/fdwhandler.html
-    "PostgreSQL ドキュメント: Foreign Data Wrapper の作成"
-  [Docker image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse
-    "Docker Hub 上の最新バージョン"
-  [ClickHouse]: https://clickhouse.com/clickhouse
-  [Semantic Versioning]: https://semver.org/spec/v2.0.0.html
-    "セマンティック バージョニング 2.0.0"
-  [CREATE EXTENSION]: https://www.postgresql.org/docs/current/sql-createextension.html
-    "PostgreSQL ドキュメント: CREATE EXTENSION"
-  [ALTER EXTENSION]: https://www.postgresql.org/docs/current/sql-alterextension.html
-    "PostgreSQL ドキュメント: ALTER EXTENSION"
-  [DROP EXTENSION]: https://www.postgresql.org/docs/current/sql-dropextension.html
-    "PostgreSQL ドキュメント: DROP EXTENSION"
-  [CREATE SERVER]: https://www.postgresql.org/docs/current/sql-createserver.html
-    "PostgreSQL ドキュメント: CREATE SERVER"
-  [ALTER SERVER]: https://www.postgresql.org/docs/current/sql-alterserver.html
-    "PostgreSQL ドキュメント: ALTER SERVER"
-  [DROP SERVER]: https://www.postgresql.org/docs/current/sql-dropserver.html
-    "PostgreSQL ドキュメント: DROP SERVER"
-  [CREATE USER MAPPING]: https://www.postgresql.org/docs/current/sql-createusermapping.html
-    "PostgreSQL ドキュメント: CREATE USER MAPPING"
-  [ALTER USER MAPPING]: https://www.postgresql.org/docs/current/sql-alterusermapping.html
-    "PostgreSQL ドキュメント: ALTER USER MAPPING"
-  [DROP USER MAPPING]: https://www.postgresql.org/docs/current/sql-dropusermapping.html
-    "PostgreSQL ドキュメント: DROP USER MAPPING"
-  [IMPORT FOREIGN SCHEMA]: https://www.postgresql.org/docs/current/sql-importforeignschema.html
-    "PostgreSQL ドキュメント: IMPORT FOREIGN SCHEMA"
-  [table engine]: https://clickhouse.com/docs/engines/table-engines
-    "ClickHouse ドキュメント: テーブルエンジン"
-  [AggregateFunction Type]: https://clickhouse.com/docs/sql-reference/data-types/aggregatefunction
-    "ClickHouse ドキュメント: AggregateFunction 型"
-  [SimpleAggregateFunction Type]: https://clickhouse.com/docs/sql-reference/data-types/simpleaggregatefunction
-    "ClickHouse ドキュメント: SimpleAggregateFunction 型"
-  [ordered-set aggregate functions]: https://www.postgresql.org/docs/current/functions-aggregate.html#FUNCTIONS-ORDEREDSET-TABLE
-  [Parametric aggregate functions]: https://clickhouse.com/docs/sql-reference/aggregate-functions/parametric-functions
-  [ClickHouse settings]: https://clickhouse.com/docs/operations/settings/settings
-    "ClickHouse ドキュメント: セッション設定"
-  [dollar quoting]: https://www.postgresql.org/docs/current/sql-syntax-lexical.html#SQL-SYNTAX-DOLLAR-QUOTING
+[foreign data wrapper]: https://www.postgresql.org/docs/current/fdwhandler.html "PostgreSQL ドキュメント: Foreign Data Wrapper の作成"
+
+[Docker image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse "Docker Hub 上の最新バージョン"
+
+[ClickHouse]: https://clickhouse.com/clickhouse
+
+[Semantic Versioning]: https://semver.org/spec/v2.0.0.html "セマンティック バージョニング 2.0.0"
+
+[DDL]: https://en.wikipedia.org/wiki/Data_definition_language "Wikipedia: データ定義言語"
+
+[CREATE EXTENSION]: https://www.postgresql.org/docs/current/sql-createextension.html "PostgreSQL ドキュメント: CREATE EXTENSION"
+
+[ALTER EXTENSION]: https://www.postgresql.org/docs/current/sql-alterextension.html "PostgreSQL ドキュメント: ALTER EXTENSION"
+
+[DROP EXTENSION]: https://www.postgresql.org/docs/current/sql-dropextension.html "PostgreSQL ドキュメント: DROP EXTENSION"
+
+[CREATE SERVER]: https://www.postgresql.org/docs/current/sql-createserver.html "PostgreSQL ドキュメント: CREATE SERVER"
+
+[ALTER SERVER]: https://www.postgresql.org/docs/current/sql-alterserver.html "PostgreSQL ドキュメント: ALTER SERVER"
+
+[DROP SERVER]: https://www.postgresql.org/docs/current/sql-dropserver.html "PostgreSQL ドキュメント: DROP SERVER"
+
+[CREATE USER MAPPING]: https://www.postgresql.org/docs/current/sql-createusermapping.html "PostgreSQL ドキュメント: CREATE USER MAPPING"
+
+[ALTER USER MAPPING]: https://www.postgresql.org/docs/current/sql-alterusermapping.html "PostgreSQL ドキュメント: ALTER USER MAPPING"
+
+[DROP USER MAPPING]: https://www.postgresql.org/docs/current/sql-dropusermapping.html "PostgreSQL ドキュメント: DROP USER MAPPING"
+
+[IMPORT FOREIGN SCHEMA]: https://www.postgresql.org/docs/current/sql-importforeignschema.html "PostgreSQL ドキュメント: IMPORT FOREIGN SCHEMA"
+
+[CREATE FOREIGN TABLE]: https://www.postgresql.org/docs/current/sql-createforeigntable.html "PostgreSQL ドキュメント: CREATE FOREIGN TABLE"
+
+[table engine]: https://clickhouse.com/docs/engines/table-engines "ClickHouse ドキュメント: テーブルエンジン"
+
+[AggregateFunction Type]: https://clickhouse.com/docs/sql-reference/data-types/aggregatefunction "ClickHouse ドキュメント: AggregateFunction 型"
+
+[SimpleAggregateFunction Type]: https://clickhouse.com/docs/sql-reference/data-types/simpleaggregatefunction "ClickHouse ドキュメント: SimpleAggregateFunction 型"
+
+[ALTER FOREIGN TABLE]: https://www.postgresql.org/docs/current/sql-alterforeigntable.html "PostgreSQL ドキュメント: ALTER FOREIGN TABLE"
+
+[DROP FOREIGN TABLE]: https://www.postgresql.org/docs/current/sql-dropforeigntable.html "PostgreSQL ドキュメント: DROP FOREIGN TABLE"
+
+[DML]: https://en.wikipedia.org/wiki/Data_manipulation_language "Wikipedia: データ操作言語"
+
+[make-logs.sql]: https://github.com/ClickHouse/pg_clickhouse/blob/main/doc/make-logs.sql
+
+[EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html "PostgreSQL ドキュメント: EXPLAIN"
+
+[SELECT]: https://www.postgresql.org/docs/current/sql-select.html "PostgreSQL ドキュメント: SELECT"
+
+[PREPARE]: https://www.postgresql.org/docs/current/sql-prepare.html "PostgreSQL ドキュメント: PREPARE"
+
+[EXECUTE]: https://www.postgresql.org/docs/current/sql-execute.html "PostgreSQL ドキュメント: EXECUTE"
+
+[DEALLOCATE]: https://www.postgresql.org/docs/current/sql-deallocate.html "PostgreSQL ドキュメント: DEALLOCATE"
+
+[PREPARE]: https://www.postgresql.org/docs/current/sql-prepare.html "PostgreSQL ドキュメント: PREPARE"
+
+[INSERT]: https://www.postgresql.org/docs/current/sql-insert.html "PostgreSQL ドキュメント: INSERT"
+
+[COPY]: https://www.postgresql.org/docs/current/sql-copy.html "PostgreSQL ドキュメント: COPY"
+
+[LOAD]: https://www.postgresql.org/docs/current/sql-load.html "PostgreSQL ドキュメント: LOAD"
+
+[SET]: https://www.postgresql.org/docs/current/sql-set.html "PostgreSQL ドキュメント: SET"
+
+[ALTER ROLE]: https://www.postgresql.org/docs/current/sql-alterrole.html "PostgreSQL ドキュメント: ALTER ROLE"
+
+[ordered-set aggregate functions]: https://www.postgresql.org/docs/current/functions-aggregate.html#FUNCTIONS-ORDEREDSET-TABLE
+
+[Parametric aggregate functions]: https://clickhouse.com/docs/sql-reference/aggregate-functions/parametric-functions
+
+[ClickHouse settings]: https://clickhouse.com/docs/operations/settings/settings
+    "ClickHouse Docs: Session Settings"
+
+[dollar quoting]: https://www.postgresql.org/docs/current/sql-syntax-lexical.html#SQL-SYNTAX-DOLLAR-QUOTING
     "PostgreSQL ドキュメント: ドル記号で囲まれた文字列定数"
-  [library preloading]: https://www.postgresql.org/docs/18/runtime-config-client.html#RUNTIME-CONFIG-CLIENT-PRELOAD
-    "PostgreSQL ドキュメント: 共有ライブラリのプリロード"
+
+[library preloading]: https://www.postgresql.org/docs/18/runtime-config-client.html#RUNTIME-CONFIG-CLIENT-PRELOAD
+
+"PostgreSQL ドキュメント: 共有ライブラリのプリロード
+  [PREPARE notes]: https://www.postgresql.org/docs/current/sql-prepare.html#SQL-PREPARE-NOTES
+    "PostgreSQL ドキュメント: PREPARE の注意事項"
+  [query parameters]: https://clickhouse.com/docs/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse
+    "ClickHouse ドキュメント: ClickHouse におけるプリペアドステートメントの代替手段"

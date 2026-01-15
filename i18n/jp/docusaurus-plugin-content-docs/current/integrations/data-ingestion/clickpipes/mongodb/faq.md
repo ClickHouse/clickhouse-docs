@@ -6,6 +6,9 @@ sidebar_position: 2
 title: 'ClickPipes for MongoDB FAQ'
 doc_type: 'reference'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'インジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # MongoDB 向け ClickPipes よくある質問 (FAQ) {#clickpipes-for-mongodb-faq}
@@ -32,12 +35,13 @@ SELECT sum(doc.shipping.cost::Float32) AS total_shipping_cost FROM t1;
 
 JSON の扱いについて詳しくは、[JSON の利用ガイド](./quickstart) を参照してください。
 
+
 ### ClickHouse でネストされた MongoDB ドキュメントをフラット化するにはどうすればよいですか？ {#how-do-i-flatten-the-nested-mongodb-documents-in-clickhouse}
 
-MongoDB ドキュメントは、デフォルトでは ClickHouse では JSON 型としてレプリケートされ、ネストされた構造が保持されます。このデータをフラット化する方法はいくつかあります。データをカラムにフラット化したい場合は、通常のビュー、マテリアライズドビュー、またはクエリ時のアクセスを使用できます。
+MongoDB ドキュメントは、デフォルトでは ClickHouse に JSON 型としてレプリケートされ、ネストされた構造が保持されます。このデータをフラット化する方法はいくつかあります。データをカラムにフラット化したい場合は、通常のビュー、マテリアライズドビュー、またはクエリ時のアクセスを使用できます。
 
 1. **通常のビュー**: フラット化ロジックをカプセル化するために通常のビューを使用します。
-2. **マテリアライズドビュー**: 小規模なデータセットの場合は、[`FINAL` 修飾子](/sql-reference/statements/select/from#final-modifier) を使用したリフレッシュ可能なマテリアライズドビューを利用して、定期的にデータをフラット化し重複排除できます。大規模なデータセットでは、`FINAL` なしの増分マテリアライズドビューを使用してリアルタイムにデータをフラット化し、重複排除はクエリ時に行うことを推奨します。
+2. **マテリアライズドビュー**: 小規模なデータセットの場合は、[`FINAL` 修飾子](/sql-reference/statements/select/from#final-modifier) を使用したリフレッシュ可能なマテリアライズドビューを利用して、定期的にデータをフラット化し重複排除できます。大規模なデータセットでは、`FINAL` なしのインクリメンタルmaterialized view を使用してリアルタイムにデータをフラット化し、重複排除はクエリ時に行うことを推奨します。
 3. **クエリ時のアクセス**: フラット化の代わりに、ドット記法を使ってクエリ内でネストされたフィールドに直接アクセスします。
 
 詳細なサンプルについては、[JSON の利用ガイド](./quickstart) を参照してください。
@@ -48,7 +52,7 @@ MongoDB ドキュメントは、デフォルトでは ClickHouse では JSON 型
 
 ### MongoDB データベースからデータベースやテーブルを削除した場合はどうなりますか？ {#what-happens-if-i-delete-a-database-table-from-my-mongodb-database}
 
-MongoDB からデータベース／テーブルを削除しても、ClickPipes 自体は動作を継続しますが、削除されたデータベース／テーブルは変更のレプリケーションを停止します。ClickHouse 側の対応するテーブルは保持されます。
+MongoDB からデータベース／テーブルを削除しても、ClickPipes 自体は動作を継続しますが、削除されたデータベース／テーブルについては変更のレプリケーションが行われなくなります。ClickHouse 側の対応するテーブルは保持されます。
 
 ### MongoDB CDC Connector はトランザクションをどのように処理しますか？ {#how-does-mongodb-cdc-connector-handle-transactions}
 
@@ -62,11 +66,11 @@ MongoDB からデータベース／テーブルを削除しても、ClickPipes �
 
 ### レプリケーションはどのように管理されていますか？ {#how-is-replication-managed}
 
-データベース内の変更を追跡するために、MongoDB のネイティブな Change Streams API を使用しています。Change Streams API は、MongoDB の oplog（operations log）を利用して、データベース変更の再開可能なストリームを提供します。ClickPipe は MongoDB の resume token を使用して oplog 内での位置を追跡し、すべての変更が ClickHouse にレプリケートされることを保証します。
+データベース内の変更を追跡するために、MongoDB のネイティブな Change Streams API を使用しています。Change Streams API は、MongoDB の oplog（オペレーションログ）を利用して、データベース変更の再開可能なストリームを提供します。ClickPipe は MongoDB の resume token を使用して oplog 内での位置を追跡し、すべての変更が ClickHouse にレプリケートされることを保証します。
 
 ### どの read preference を使用すべきですか？ {#which-read-preference-should-i-use}
 
-使用する read preference は、特定のユースケースによって異なります。プライマリノードへの負荷を最小化したい場合は、`secondaryPreferred` read preference の使用を推奨します。インジェスト遅延を最適化したい場合は、`primaryPreferred` read preference の使用を推奨します。詳細については、[MongoDB ドキュメント](https://www.mongodb.com/docs/manual/core/read-preference/#read-preference-modes-1) を参照してください。
+どの read preference を使用するかは、特定のユースケースによって異なります。プライマリノードへの負荷を最小化したい場合は、`secondaryPreferred` read preference の使用を推奨します。インジェスト遅延を最適化したい場合は、`primaryPreferred` read preference の使用を推奨します。詳細については、[MongoDB ドキュメント](https://www.mongodb.com/docs/manual/core/read-preference/#read-preference-modes-1) を参照してください。
 
 ### MongoDB ClickPipe はシャードクラスタをサポートしていますか？ {#does-the-mongodb-clickpipe-support-sharded-cluster}
 

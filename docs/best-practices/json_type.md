@@ -9,23 +9,11 @@ show_related_blogs: true
 doc_type: 'reference'
 ---
 
+import WhenToUseJson from '@site/docs/best-practices/_snippets/_when-to-use-json.md';
+
 ClickHouse now offers a native JSON column type designed for semi-structured and dynamic data. It's important to clarify that **this is a column type, not a data format**—you can insert JSON into ClickHouse as a string or via supported formats like [JSONEachRow](/interfaces/formats/JSONEachRow), but that doesn't imply using the JSON column type. You should only use the JSON type when the structure of your data is dynamic, not when you simply happen to store JSON.
 
-## When to use the JSON type {#when-to-use-the-json-type}
-
-Use the JSON type when your data:
-
-* Has **unpredictable keys** that can change over time.
-* Contains **values with varying types** (e.g., a path might sometimes contain a string, sometimes a number).
-* Requires schema flexibility where strict typing isn't viable.
-
-If your data structure is known and consistent, there is rarely a need for the JSON type, even if your data is in JSON format. Specifically, if your data has:
-
-* **A flat structure with known keys**: use standard column types e.g. String.
-* **Predictable nesting**: use Tuple, Array, or Nested types for these structures.
-* **Predictable structure with varying types**: consider Dynamic or Variant types instead.
-
-You can also mix approaches—for example, use static columns for predictable top-level fields and a single JSON column for a dynamic section of the payload.
+<WhenToUseJson />
 
 ## Considerations and tips for using JSON {#considerations-and-tips-for-using-json}
 

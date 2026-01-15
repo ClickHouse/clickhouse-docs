@@ -5,6 +5,9 @@ keywords: ['clickhouse', 'Fabi.ai', 'connect', 'integrate', 'notebook', 'ui', 'a
 description: 'Fabi.ai 是一体化的协作式数据分析平台。你可以借助 SQL、Python、AI 和无代码，比以往更快速地构建仪表盘和数据工作流'
 title: '将 ClickHouse 连接到 Fabi.ai'
 doc_type: 'guide'
+integration:
+   - support_level: 'community'
+   - category: 'data_visualization'
 ---
 
 import fabi_01 from '@site/static/images/integrations/data-visualization/fabi_01.png';
@@ -51,4 +54,4 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 
 [Fabi.ai](https://www.fabi.ai) 文档：https://docs.fabi.ai/introduction
 
-[Fabi.ai](https://www.fabi.ai) 入门教学视频：https://www.youtube.com/playlist?list=PLjxPRVnyBCQXxxByw2CLC0q7c-Aw6t2nl
+[Fabi.ai](https://www.fabi.ai) 入门教程视频：https://www.youtube.com/playlist?list=PLjxPRVnyBCQXxxByw2CLC0q7c-Aw6t2nl

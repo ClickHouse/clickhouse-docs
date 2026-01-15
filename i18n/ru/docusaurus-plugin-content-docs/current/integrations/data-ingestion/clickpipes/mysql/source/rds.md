@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/source/rds
 title: 'Руководство по настройке источника данных RDS MySQL'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', 'ингестия данных', 'синхронизация в режиме реального времени']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
@@ -29,9 +32,9 @@ import Image from '@theme/IdealImage';
 
 ### 1. Включите бинарное логирование через автоматическое резервное копирование {#enable-binlog-logging}
 
-Функция автоматического резервного копирования определяет, включено или отключено бинарное логирование для MySQL. Автоматическое резервное копирование можно настроить для вашего экземпляра в консоли RDS, перейдя в **Modify** &gt; **Additional configuration** &gt; **Backup** и установив флажок **Enable automated backups** (если он ещё не установлен).
+Функция автоматического резервного копирования определяет, включено или отключено бинарное логирование для MySQL. Автоматическое резервное копирование можно настроить для вашего экземпляра в консоли RDS, перейдя в **Modify** > **Additional configuration** > **Backup** и установив флажок **Enable automated backups** (если он ещё не установлен).
 
-<Image img={rds_backups} alt="Включение автоматических резервных копий в RDS" size="lg" border />
+<Image img={rds_backups} alt="Включение автоматических резервных копий в RDS" size="lg" border/>
 
 Рекомендуется задать для параметра **Backup retention period** достаточно большое значение в зависимости от сценария использования репликации.
 
@@ -49,7 +52,8 @@ import Image from '@theme/IdealImage';
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 ```
 
-Если эта конфигурация не задана или для неё установлен слишком малый интервал, это может привести к пропускам в бинарных логах, что нарушит возможность ClickPipes возобновлять репликацию.
+Если эта конфигурация не задана или для неё установлен слишком малый интервал, это может привести к пропускам в бинарных логах, что ухудшит способность ClickPipes возобновлять репликацию.
+
 
 ## Настройка параметров binlog {#binlog-settings}
 
@@ -105,6 +109,7 @@ MySQL ClickPipe также поддерживает репликацию без 
 <Image img={enable_gtid} alt="GTID включён" size="lg" border/>
 
 <br/>
+
 :::tip
 MySQL ClickPipe также поддерживает репликацию без режима GTID. Однако включение режима GTID рекомендуется для повышения производительности и упрощения устранения неполадок.
 :::

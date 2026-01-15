@@ -6,15 +6,14 @@ sidebar_position: 1
 title: 'Реестры схем для Kafka ClickPipe'
 doc_type: 'guide'
 keywords: ['реестры схем', 'Kafka', 'ClickPipes', 'Avro', 'Confluent']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
-
-
 
 # Реестры схем {#schema-registries}
 
 ClickPipes поддерживает работу с реестрами схем для потоков данных в формате Avro.
-
-
 
 ## Поддерживаемые реестры для Kafka ClickPipes {#supported-schema-registries}
 
@@ -25,8 +24,6 @@ ClickPipes поддерживает работу с реестрами схем 
 
 ClickPipes пока не поддерживает AWS Glue Schema Registry или Azure Schema Registry. Если вам требуется поддержка этих реестров схем, [свяжитесь с нашей командой](https://clickhouse.com/company/contact?loc=clickpipes).
 
-
-
 ## Конфигурация {#schema-registry-configuration}
 
 ClickPipes с данными в формате Avro требуют реестр схем. Его можно настроить одним из трёх способов:
@@ -36,8 +33,6 @@ ClickPipes с данными в формате Avro требуют реестр 
 2. Указать полный путь к идентификатору схемы (например, `https://registry.example.com/schemas/ids/1000`)
 3. Указать корневой URL реестра схем (например, `https://registry.example.com`)
 
-
-
 ## Как это работает {#how-schema-registries-work}
 
 ClickPipes динамически запрашивает и применяет Avro-схему из настроенного реестра схем.
@@ -45,8 +40,6 @@ ClickPipes динамически запрашивает и применяет A
 - Если в сообщении нет встроенного идентификатора схемы, для получения схемы используется идентификатор схемы или имя субъекта (subject name), указанные в конфигурации ClickPipe.
 - Если сообщение записано без встроенного идентификатора схемы и в конфигурации ClickPipe не указан ни идентификатор схемы, ни имя субъекта, схема не запрашивается, а сообщение пропускается; в таблицу ошибок ClickPipes записывается `SOURCE_SCHEMA_ERROR`.
 - Если сообщение не соответствует схеме, оно пропускается; в таблицу ошибок ClickPipes записывается `DATA_PARSING_ERROR`.
-
-
 
 ## Сопоставление схем {#schema-mapping}
 

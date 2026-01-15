@@ -6,6 +6,9 @@ sidebar_position: 2
 title: 'ClickPipes for MongoDB FAQ'
 doc_type: 'reference'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # ClickPipes for MongoDB FAQ

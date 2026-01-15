@@ -36,32 +36,34 @@ ClickHouse テーブルのインポートやクエリのプッシュダウンを
 
 ## テストケース: TPC-H {#test-case-tpc-h}
 
-この表は、スケーリングファクター 1 でロードした通常の PostgreSQL テーブルと、ClickHouse に接続した pg_clickhouse の間で、[TPC-H] クエリ実行性能を比較したものです。✅ はクエリ全体がプッシュダウンされたことを示し、ダッシュは 1 分時点でクエリをキャンセルしたことを示します。すべてのテストはメモリ 36 GB 搭載の MacBook Pro M4 Max 上で実行しました。
+この表は、スケールファクター 1 でロードした通常の PostgreSQL テーブルと、ClickHouse に接続した pg_clickhouse 間の [TPC-H] クエリ性能を比較したものです。✔︎ は完全なプッシュダウンを示し、ダッシュはクエリを 1 分後にキャンセルしたことを示します。すべてのテストは、メモリ 36 GB を搭載した MacBook Pro M4 Max 上で実行しました。
 
-| クエリ      | プッシュダウン | pg_clickhouse | PostgreSQL |
-| ---------: | :------: | ------------: | ---------: |
-|  [Query 1] |     ✅    |         73ms  |     4478ms |
-|  [Query 2] |          |             - |      560ms |
-|  [Query 3] |     ✅    |          74ms |     1454ms |
-|  [Query 4] |     ✅    |          67ms |      650ms |
-|  [Query 5] |     ✅    |         104ms |      452ms |
-|  [Query 6] |     ✅    |          42ms |      740ms |
-|  [Query 7] |     ✅    |          83ms |      633ms |
-|  [Query 8] |     ✅    |         114ms |      320ms |
-|  [Query 9] |     ✅    |         136ms |     3028ms |
-| [Query 10] |     ✅    |          10ms |        6ms |
-| [Query 11] |     ✅    |          78ms |      213ms |
-| [Query 12] |     ✅    |          37ms |     1101ms |
-| [Query 13] |          |        1242ms |      967ms |
-| [Query 14] |     ✅    |          51ms |      193ms |
-| [Query 15] |          |         522ms |     1095ms |
-| [Query 16] |          |        1797ms |      492ms |
-| [Query 17] |          |           9ms |     1802ms |
-| [Query 18] |          |          10ms |     6185ms |
-| [Query 19] |          |         532ms |       64ms |
-| [Query 20] |          |        4595ms |      473ms |
-| [Query 21] |          |        1702ms |     1334ms |
-| [Query 22] |          |         268ms |      257ms |
+<!-- cd dev/tpch && make ch && make pg && make run -->
+
+|    Query   | PostgreSQL | pg_clickhouse | プッシュダウン |
+| ----------:| ----------:| -------------:|:--------------:|
+|  [Query 1] |    4693 ms |        268 ms |       ✔︎        |
+|  [Query 2] |     458 ms |       3446 ms |                |
+|  [Query 3] |     742 ms |        111 ms |       ✔︎        |
+|  [Query 4] |     270 ms |        130 ms |       ✔︎        |
+|  [Query 5] |     337 ms |       1460 ms |       ✔︎        |
+|  [Query 6] |     764 ms |         53 ms |       ✔︎        |
+|  [Query 7] |     619 ms |         96 ms |       ✔︎        |
+|  [Query 8] |     342 ms |        156 ms |       ✔︎        |
+|  [Query 9] |    3094 ms |        298 ms |       ✔︎        |
+| [Query 10] |     581 ms |        197 ms |       ✔︎        |
+| [Query 11] |     212 ms |         24 ms |       ✔︎        |
+| [Query 12] |    1116 ms |         84 ms |       ✔︎        |
+| [Query 13] |     958 ms |       1368 ms |                |
+| [Query 14] |     181 ms |         73 ms |       ✔︎        |
+| [Query 15] |    1118 ms |        557 ms |                |
+| [Query 16] |     497 ms |       1714 ms |                |
+| [Query 17] |    1846 ms |      32709 ms |                |
+| [Query 18] |    5823 ms |      10649 ms |                |
+| [Query 19] |      53 ms |        206 ms |       ✔︎        |
+| [Query 20] |     421 ms |             - |                |
+| [Query 21] |    1349 ms |       4434 ms |                |
+| [Query 22] |     258 ms |       1415 ms |                |
 
 ### ソースからビルドする {#compile-from-source}
 
@@ -69,7 +71,7 @@ ClickHouse テーブルのインポートやクエリのプッシュダウンを
 
 PostgreSQL と curl の開発用パッケージにはパス内に `pg_config` と
 `curl-config` が含まれているため、そのまま `make`（または
-`gmake`）を実行し、続けて `make install` を実行し、最後にデータベース上で `CREATE EXTENSION http` を実行すれば十分です。
+`gmake`）を実行し、続けて `make install` を実行し、最後にデータベース上で `CREATE EXTENSION pg_clickhouse` を実行すれば十分です。
 
 #### Debian / Ubuntu / APT {#debian--ubuntu--apt}
 
@@ -299,46 +301,25 @@ CREATE EXTENSION pg_clickhouse SCHEMA env;
 
 [TPC-H]: https://www.tpc.org/tpch/
 
-[Query 1]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/1.sql
-
-[Query 2]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/2.sql
-
-[Query 3]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/3.sql
-
-[Query 4]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/4.sql
-
-[Query 5]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/5.sql
-
-[Query 6]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/6.sql
-
-[Query 7]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/7.sql
-
-[Query 8]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/8.sql
-
-[Query 9]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/9.sql
-
-[Query 10]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/10.sql
-
-[Query 11]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/11.sql
-
-[Query 12]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/12.sql
-
-[Query 13]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/13.sql
-
-[Query 14]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/14.sql
-
-[Query 15]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/15.sql
-
-[Query 16]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/16.sql
-
-[Query 17]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/17.sql
-
-[Query 18]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/18.sql
-
-[Query 19]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/19.sql
-
-[Query 20]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/20.sql
-
-[Query 21]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/21.sql
-
-[Query 22]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/22.sql
+[クエリ 1] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/1.sql
+  [クエリ 2] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/2.sql
+  [クエリ 3] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/3.sql
+  [クエリ 4] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/4.sql
+  [クエリ 5] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/5.sql
+  [クエリ 6] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/6.sql
+  [クエリ 7] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/7.sql
+  [クエリ 8] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/8.sql
+  [クエリ 9] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/9.sql
+  [クエリ 10] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/10.sql
+  [クエリ 11] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/11.sql
+  [クエリ 12] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/12.sql
+  [クエリ 13] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/13.sql
+  [クエリ 14] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/14.sql
+  [クエリ 15] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/15.sql
+  [クエリ 16] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/16.sql
+  [クエリ 17] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/17.sql
+  [クエリ 18] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/18.sql
+  [クエリ 19] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/19.sql
+  [クエリ 20] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/20.sql
+  [クエリ 21] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/21.sql
+  [クエリ 22] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/22.sql

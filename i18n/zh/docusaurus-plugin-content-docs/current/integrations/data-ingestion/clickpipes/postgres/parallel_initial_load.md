@@ -5,13 +5,15 @@ slug: /integrations/clickpipes/postgres/parallel_initial_load
 sidebar_label: '并行快照的工作原理'
 doc_type: 'guide'
 keywords: ['ClickPipes', 'PostgreSQL', 'CDC', '数据摄取', '实时同步']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import snapshot_params from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/snapshot_params.png'
 import Image from '@theme/IdealImage';
 
-本文介绍了 Postgres ClickPipe 中并行快照／初始加载的工作原理，并说明了可用于控制该过程的快照参数。
-
+本文介绍了 Postgres ClickPipe 中并行快照和初始加载的工作原理，并说明了可用于控制该过程的快照参数。
 
 ## 概览 {#overview-pg-snapshot}
 

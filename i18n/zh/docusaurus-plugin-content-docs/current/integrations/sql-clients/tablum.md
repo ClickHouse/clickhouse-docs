@@ -1,13 +1,13 @@
 ---
 sidebar_label: 'TABLUM.IO'
 slug: /integrations/tablumio
-description: 'TABLUM.IO 是一款开箱即用、支持 ClickHouse 的数据管理 SaaS。'
+description: 'TABLUM.IO 是一款原生支持 ClickHouse 的数据管理 SaaS。'
 title: '将 TABLUM.IO 连接到 ClickHouse'
 doc_type: 'guide'
-integration:
-  - support_level: 'partner'
-  - category: 'sql_client'
 keywords: ['tablum', 'SQL 客户端', '数据库工具', '查询工具', '桌面应用']
+integration:
+  - support_level: 'community'
+  - category: 'sql_client'
 ---
 
 import Image from '@theme/IdealImage';
@@ -29,7 +29,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## 1. 注册或登录服务 {#1-sign-up-or-sign-in-to-the-service}
 
-  首先，使用您的邮箱在 TABLUM.IO 注册，或者通过 Google 或 Facebook 账号快速登录。
+首先，使用您的邮箱在 TABLUM.IO 注册，或者通过 Google 或 Facebook 账号快速登录。
 
 <Image img={tablum_ch_0} size="md" border alt="TABLUM.IO 登录页面" />
 

@@ -4,6 +4,9 @@ slug: /integrations/clickpipes/mysql/datatypes
 description: 'Страница, описывающая соответствие типов данных MySQL ClickPipe при загрузке из MySQL в ClickHouse'
 doc_type: 'reference'
 keywords: ['типы данных MySQL ClickPipe', 'типы данных MySQL в ClickHouse', 'сопоставление типов данных ClickPipe', 'преобразование типов MySQL ClickHouse', 'совместимость типов баз данных']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 Ниже приведено поддерживаемое соответствие типов данных для MySQL ClickPipe:

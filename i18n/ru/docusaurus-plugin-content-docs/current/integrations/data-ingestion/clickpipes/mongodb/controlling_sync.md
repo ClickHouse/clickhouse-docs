@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mongodb/sync_control
 sidebar_label: 'Управление синхронизацией'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'ингестия данных', 'синхронизация в режиме реального времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'
@@ -13,8 +16,7 @@ import edit_sync_settings from '@site/static/images/integrations/data-ingestion/
 import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/cdc_syncs.png'
 import Image from '@theme/IdealImage';
 
-В этом документе описывается, как управлять синхронизацией MongoDB ClickPipe, когда ClickPipe находится в режиме **CDC (Running)**.
-
+В этом документе описывается, как управлять синхронизацией ClickPipe для MongoDB, когда ClickPipe работает в режиме **CDC (Running)**.
 
 ## Обзор {#overview}
 
@@ -27,14 +29,14 @@ import Image from '@theme/IdealImage';
 Интервал синхронизации пайплайна — это промежуток времени (в секундах), в течение которого ClickPipe будет извлекать записи из исходной базы данных. В это время не входит время, необходимое для записи уже извлечённых данных в ClickHouse.
 
 Значение по умолчанию — **1 минута**.
-Интервал синхронизации может быть установлен в любое положительное целое значение, но рекомендуется задавать его более 10 секунд.
+Интервал синхронизации может быть установлен в любое положительное целое число, но рекомендуется устанавливать его больше 10 секунд.
 
 ### Размер батча извлечения {#batch-size}
 
 Размер батча извлечения — это количество записей, которые ClickPipe будет извлекать из исходной базы данных за один батч. Под записями понимаются операции вставки, обновления и удаления, выполненные над коллекциями, входящими в пайплайн.
 
 По умолчанию — **100 000** записей.
-Безопасный максимум — **10 миллионов** записей.
+Безопасный максимум — 10 миллионов.
 
 ### Настройка параметров синхронизации {#configuring}
 

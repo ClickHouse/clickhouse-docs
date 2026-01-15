@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/source/supabase
 title: 'Supabase Source Setup Guide'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import supabase_commands from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-commands.jpg'

@@ -26,6 +26,6 @@ HyperDX в ClickHouse Cloud в настоящее время находится 
 
 <Image img={hyperdx_cloud} alt="HyperDX в ClickHouse Cloud" size="lg"/>
 
-Чтобы начать работу с HyperDX в ClickHouse Cloud, мы рекомендуем воспользоваться нашим отдельным [руководством по началу работы](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud).
+Чтобы начать работу с HyperDX в ClickHouse Cloud, мы рекомендуем воспользоваться нашим отдельным [руководством по началу работы](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud).
 
 Для получения дополнительной информации о ClickStack см. [полную документацию](/use-cases/observability/clickstack). 

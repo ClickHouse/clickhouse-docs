@@ -1101,7 +1101,13 @@ GitLab についても同様で、先頭にドットが付いていても同じ�
 
 ## dns_max_consecutive_failures {#dns_max_consecutive_failures} 
 
-<SettingsInfoBlock type="UInt32" default_value="10" />ホスト名を ClickHouse の DNS キャッシュから削除する前に許容される、そのホスト名に対する DNS 解決の最大連続失敗回数。
+<SettingsInfoBlock type="UInt32" default_value="5" />
+
+この回数連続して失敗すると、そのホスト名の DNS キャッシュを更新しようとする試行をそれ以上行いません。情報自体は DNS キャッシュ内に残ります。0 を指定すると無制限になります。
+
+**関連項目**
+
+- [`SYSTEM DROP DNS CACHE`](../../sql-reference/statements/system#drop-dns-cache)
 
 ## drop_distributed_cache_pool_size {#drop_distributed_cache_pool_size} 
 
@@ -2771,6 +2777,12 @@ ClickHouse はクエリを処理するためにグローバルスレッドプー
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 メモリトラッカーによるメモリ使用量を補正し、メモリ使用量が高い場合に未使用ページをクリーンアップするバックグラウンドメモリワーカーのティック間隔を指定します。0 に設定すると、メモリ使用元に応じてデフォルト値が使用されます。
+
+## memory_worker_purge_dirty_pages_threshold_ratio {#memory_worker_purge_dirty_pages_threshold_ratio} 
+
+<SettingsInfoBlock type="Double" default_value="0.2" />
+
+ClickHouse サーバーで利用可能なメモリに対する、jemalloc の dirty pages のしきい値となる比率です。dirty pages のサイズがこの比率を超えると、バックグラウンドのメモリワーカーが dirty pages のパージを強制的に実行します。0 に設定すると、強制パージは無効になります。
 
 ## memory_worker_use_cgroup {#memory_worker_use_cgroup} 
 

@@ -5,6 +5,9 @@ description: 'Использование HTTP-интерфейса ClickHouse д
 keywords: ['azure data factory', 'azure', 'microsoft', 'данные', 'http-интерфейс']
 title: 'Использование HTTP-интерфейса ClickHouse для загрузки данных Azure в ClickHouse'
 doc_type: 'guide'
+integration:
+   - support_level: 'core'
+   - category: 'data_ingestion'
 ---
 
 import Image from '@theme/IdealImage';
@@ -90,7 +93,7 @@ https://your-clickhouse-url.com?query=INSERT%20INTO%20my_table%20SETTINGS%20date
 ```
 
 :::info
-Azure Data Factory может автоматически обрабатывать это кодирование с помощью
+Azure Data Factory может автоматически выполнять это кодирование с помощью
 встроенной функции `encodeUriComponent`, поэтому вам не нужно делать это вручную.
 :::
 
@@ -119,6 +122,7 @@ ClickHouse. HTTP-интерфейс уже предоставляет всё н�
 Service к вашему экземпляру ClickHouse, определим Dataset для
 [REST sink](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest)
 и создадим действие Copy Data для отправки данных из Azure в ClickHouse.
+
 
 ## Создание экземпляра Azure Data Factory {#create-an-azure-data-factory-instance}
 
@@ -322,6 +326,7 @@ Resources**. Создайте новый набор данных, указыва
 6. По завершении нажмите **Publish all**, чтобы сохранить изменения конвейера и наборов данных.
 
 ## Дополнительные ресурсы {#additional-resources-1}
+
 - [HTTP-интерфейс](https://clickhouse.com/docs/interfaces/http)
 - [Копирование и преобразование данных в и из конечной точки REST с помощью Azure Data Factory](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest?tabs=data-factory)
 - [Выбор стратегии вставки](https://clickhouse.com/docs/best-practices/selecting-an-insert-strategy)

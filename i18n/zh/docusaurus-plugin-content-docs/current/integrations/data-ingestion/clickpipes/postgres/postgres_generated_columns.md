@@ -4,6 +4,9 @@ slug: /integrations/clickpipes/postgres/generated_columns
 description: '在复制包含 PostgreSQL 生成列的表时需要重点关注的重要注意事项'
 doc_type: '指南'
 keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 在复制包含 PostgreSQL 生成列的表时，有一些重要注意事项需要牢记。这些“坑”可能会影响复制过程以及目标系统中的数据一致性。

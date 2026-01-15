@@ -12,10 +12,9 @@ import BetaBadge from '@theme/badges/BetaBadge';
 import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
 import VersionHistory from '@theme/VersionHistory/VersionHistory';
 
-{/* Автоматически сгенерировано */ }
+<!-- Автоматически сгенерировано -->
 
 Эти настройки автоматически генерируются из исходного файла [source](https://github.com/ClickHouse/ClickHouse/blob/master/src/Core/FormatFactorySettings.h).
-
 
 ## allow_special_bool_values_inside_variant {#allow_special_bool_values_inside_variant}   
 
@@ -669,7 +668,7 @@ import VersionHistory from '@theme/VersionHistory/VersionHistory';
 
 Игнорировать ненужные поля и не разбирать их. Включение этой настройки может привести к тому, что при разборе JSON-строк с некорректным форматом или с дублирующимися полями исключения не будут выбрасываться.
 
-## input&#95;format&#95;json&#95;infer&#95;array&#95;of&#95;dynamic&#95;from&#95;array&#95;of&#95;different&#95;types {#input_format_json_infer_array_of_dynamic_from_array_of_different_types}
+## input&#95;format&#95;json&#95;infer&#95;array&#95;of&#95;dynamic&#95;from&#95;array&#95;of&#95;different&#95;types {#input&#95;format&#95;json&#95;infer&#95;array&#95;of&#95;dynamic&#95;from&#95;array&#95;of&#95;different&#95;types}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -702,7 +701,7 @@ DESC format(JSONEachRow, '{"a" : [42, "hello", [1, 2, 3]]}');
 По умолчанию включено.
 
 
-## input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings {#input_format_json_infer_incomplete_types_as_strings}
+## input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings {#input&#95;format&#95;json&#95;infer&#95;incomplete&#95;types&#95;as&#95;strings}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -756,7 +755,7 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" :
 
 Включено по умолчанию.
 
-## input&#95;format&#95;json&#95;read&#95;arrays&#95;as&#95;strings {#input_format_json_read_arrays_as_strings}
+## input&#95;format&#95;json&#95;read&#95;arrays&#95;as&#95;strings {#input&#95;format&#95;json&#95;read&#95;arrays&#95;as&#95;strings}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -804,7 +803,7 @@ SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow
 
 Включено по умолчанию.
 
-## input&#95;format&#95;json&#95;read&#95;objects&#95;as&#95;strings {#input_format_json_read_objects_as_strings}
+## input&#95;format&#95;json&#95;read&#95;objects&#95;as&#95;strings {#input&#95;format&#95;json&#95;read&#95;objects&#95;as&#95;strings}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -838,7 +837,7 @@ SELECT * FROM test;
 
 По умолчанию включено.
 
-## input&#95;format&#95;json&#95;try&#95;infer&#95;named&#95;tuples&#95;from&#95;objects {#input_format_json_try_infer_named_tuples_from_objects}
+## input&#95;format&#95;json&#95;try&#95;infer&#95;named&#95;tuples&#95;from&#95;objects {#input&#95;format&#95;json&#95;try&#95;infer&#95;named&#95;tuples&#95;from&#95;objects}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1456,7 +1455,7 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 
 По умолчанию параметр отключён.
 
-## output&#95;format&#95;json&#95;array&#95;of&#95;rows {#output_format_json_array_of_rows}
+## output&#95;format&#95;json&#95;array&#95;of&#95;rows {#output&#95;format&#95;json&#95;array&#95;of&#95;rows}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1528,7 +1527,7 @@ SELECT number FROM numbers(3) FORMAT JSONEachRow;
 
 Включено по умолчанию.
 
-## output&#95;format&#95;json&#95;pretty&#95;print {#output_format_json_pretty_print}
+## output&#95;format&#95;json&#95;pretty&#95;print {#output&#95;format&#95;json&#95;pretty&#95;print}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1603,7 +1602,7 @@ SELECT number FROM numbers(3) FORMAT JSONEachRow;
 
 По умолчанию отключено.
 
-## output&#95;format&#95;json&#95;quote&#95;denormals {#output_format_json_quote_denormals}
+## output&#95;format&#95;json&#95;quote&#95;denormals {#output&#95;format&#95;json&#95;quote&#95;denormals}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1717,7 +1716,7 @@ SELECT area/period FROM account_orders FORMAT JSON;
 
 По умолчанию отключён.
 
-## output&#95;format&#95;markdown&#95;escape&#95;special&#95;characters {#output_format_markdown_escape_special_characters}
+## output&#95;format&#95;markdown&#95;escape&#95;special&#95;characters {#output&#95;format&#95;markdown&#95;escape&#95;special&#95;characters}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1937,7 +1936,7 @@ SELECT area/period FROM account_orders FORMAT JSON;
 
 Использовать escape-последовательности ANSI в форматах Pretty. 0 — отключено, 1 — включено, `auto` — включено, если вывод идёт в терминал.
 
-## output&#95;format&#95;pretty&#95;display&#95;footer&#95;column&#95;names {#output_format_pretty_display_footer_column_names}
+## output&#95;format&#95;pretty&#95;display&#95;footer&#95;column&#95;names {#output&#95;format&#95;pretty&#95;display&#95;footer&#95;column&#95;names}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
@@ -2073,11 +2072,11 @@ SELECT *, toTypeName(*) FROM (SELECT * FROM system.numbers LIMIT 1000);
 Если включено, форматы Pretty будут отображать многострочные поля в пределах одной ячейки таблицы, так что границы таблицы будут сохранены.
 Если выключено, многострочные значения будут отображаться как есть, что потенциально может деформировать таблицу (одно из преимуществ отключения — более простое копирование и вставка многострочных значений).
 
-## output_format_pretty_named_tuples_as_json {#output_format_pretty_named_tuples_as_json}   
+## output_format_pretty_named_tuples_as_json {#output_format_pretty_named_tuples_as_json}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-Определяет, будут ли именованные кортежи в формате Pretty выводиться как красиво отформатированные объекты JSON.
+Определяет, следует ли выводить именованные кортежи в формате Pretty в виде красиво отформатированных объектов JSON.
 
 ## output_format_pretty_row_numbers {#output_format_pretty_row_numbers}   
 
@@ -2194,7 +2193,7 @@ SELECT *, toTypeName(*) FROM (SELECT * FROM system.numbers LIMIT 1000);
 
 Если параметр включён, ClickHouse будет предоставлять точное значение статистики rows_before_aggregation — количества строк, прочитанных до выполнения агрегации.
 
-## schema&#95;inference&#95;hints {#schema_inference_hints}
+## schema&#95;inference&#95;hints {#schema&#95;inference&#95;hints}
 
 Список имён столбцов и их типов, используемых в качестве подсказок при выводе схемы для форматов без схемы.
 
@@ -2256,6 +2255,12 @@ z   IPv4
 
 Определяет стиль кавычек для идентификаторов в запросе SHOW CREATE
 
+## type_json_allow_duplicated_key_with_literal_and_nested_object {#type_json_allow_duplicated_key_with_literal_and_nested_object}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+Если параметр включён, JSON-объекты вида `{"a" : 42, "a" : {"b" : 42}}`, в которых ключ дублируется, но одно из значений является вложенным объектом, могут быть разобраны.
+
 ## type_json_skip_duplicated_paths {#type_json_skip_duplicated_paths}   
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2274,6 +2279,12 @@ z   IPv4
 
 + 0 — Отключить (выдавать ошибку при несоответствии типов).
 + 1 — Включить (пропускать поле при несоответствии типов).
+
+## type_json_use_partial_match_to_skip_paths_by_regexp {#type_json_use_partial_match_to_skip_paths_by_regexp}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+Когда этот параметр включён, при разборе JSON-объекта в тип JSON для пропуска пути по регулярному выражению, заданному с помощью SKIP REGEXP, будет достаточно частичного совпадения. Когда параметр выключен, будет требоваться полное совпадение.
 
 ## validate_experimental_and_suspicious_types_inside_nested_types {#validate_experimental_and_suspicious_types_inside_nested_types}   
 

@@ -1,9 +1,12 @@
 ---
 title: 'Поддерживаемые типы данных'
 slug: /integrations/clickpipes/mongodb/datatypes
-description: 'Страница, описывающая сопоставление типов данных MongoDB ClickPipes из MongoDB в ClickHouse'
+description: 'Страница, описывающая сопоставление типов данных MongoDB ClickPipe при переносе данных из MongoDB в ClickHouse'
 doc_type: 'reference'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 MongoDB хранит записи как BSON-документы. В ClickPipes вы можете настроить приём BSON-документов в ClickHouse в виде JSON или JSON-строки. В следующей таблице показано поддерживаемое сопоставление типов полей BSON в JSON:

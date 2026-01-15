@@ -6,7 +6,7 @@ description: 'Looker Studio，前身为 Google Data Studio，是一款在线工�
 title: 'Looker Studio'
 doc_type: 'guide'
 integration:
-  - support_level: 'core'
+  - support_level: 'partner'
   - category: 'data_visualization'
 ---
 
@@ -30,9 +30,11 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 Looker Studio 可以通过 MySQL 接口，使用 Google 官方提供的 MySQL 数据源连接到 ClickHouse。
 
 ## ClickHouse Cloud 配置 {#clickhouse-cloud-setup}
+
 <MySQLCloudSetup />
 
 ## 本地部署 ClickHouse 服务器的设置 {#on-premise-clickhouse-server-setup}
+
 <MySQLOnPremiseSetup />
 
 ## 将 Looker Studio 连接到 ClickHouse {#connecting-looker-studio-to-clickhouse}
@@ -75,11 +77,13 @@ Looker Studio 可以通过 MySQL 接口，使用 Google 官方提供的 MySQL �
 使用 ClickHouse Cloud 时，需要先启用 MySQL 接口。可以在连接对话框的 “MySQL” 选项卡中完成此操作。
 
 <Image size="md" img={looker_studio_enable_mysql} alt="在 ClickHouse Cloud 设置中启用 MySQL 接口" border />
+
 <br/>
 
 在 Looker Studio 界面中，选择 “Enable SSL” 选项。ClickHouse Cloud 的 SSL 证书由 [Let's Encrypt](https://letsencrypt.org/certificates/) 签发。可以在[这里](https://letsencrypt.org/certs/isrgrootx1.pem)下载该根证书。
 
 <Image size="md" img={looker_studio_mysql_cloud} alt="配置带有 ClickHouse Cloud SSL 设置的 Looker Studio 连接" border />
+
 <br/>
 
 其余步骤与上一节中列出的步骤相同。

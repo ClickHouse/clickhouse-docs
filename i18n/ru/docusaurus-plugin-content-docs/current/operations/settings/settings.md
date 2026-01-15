@@ -371,6 +371,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает создание базы данных с движком Engine=MaterializedPostgreSQL(...).
 
+## allow_experimental_database_paimon_rest_catalog {#allow_experimental_database_paimon_rest_catalog} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
+
+Разрешает использовать экспериментальный движок базы данных DataLakeCatalog с catalog_type = 'paimon_rest'
+
 ## allow_experimental_database_unity_catalog {#allow_experimental_database_unity_catalog} 
 
 <BetaBadge/>
@@ -484,6 +494,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Включает экспериментальные функции для обработки естественного языка.
+
+## allow_experimental_object_storage_queue_hive_partitioning {#allow_experimental_object_storage_queue_hive_partitioning} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "Новый параметр."}]}]}/>
+
+Разрешает использовать партиционирование Hive с движками S3Queue/AzureQueue
 
 ## allow_experimental_parallel_reading_from_replicas {#allow_experimental_parallel_reading_from_replicas} 
 
@@ -1783,7 +1803,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 - 1 - переписывать DDL-запросы на использование *ReplicatedMergeTree
 - 2 - переписывать DDL-запросы на использование SharedMergeTree
 - 3 - переписывать DDL-запросы на использование SharedMergeTree, за исключением случаев, когда явно указан переданный remote-диск
-- 4 - то же, что в 3, плюс дополнительно использовать Alias вместо Distributed
+- 4 - то же, что в 3, плюс дополнительно использовать Alias вместо Distributed (таблица Alias будет указывать на целевую таблицу, используемую таблицей Distributed, поэтому она будет использовать соответствующую локальную таблицу)
 
 UInt64, чтобы минимизировать публичную часть
 
@@ -2032,6 +2052,14 @@ SETTINGS convert_query_to_cnf = true;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.7"},{"label": "1"},{"label": "Новая настройка для оптимизации планирования коррелированных подзапросов."}]}]}/>
 
 Используйте фильтрующие выражения для вывода эквивалентных выражений и их подстановки вместо создания CROSS JOIN.
+
+## correlated_subqueries_use_in_memory_buffer {#correlated_subqueries_use_in_memory_buffer} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "По умолчанию использовать буфер в оперативной памяти для входных данных коррелированных подзапросов."}]}]}/>
+
+Использовать буфер в оперативной памяти для входных данных коррелированных подзапросов, чтобы избежать их повторного вычисления.
 
 ## count_distinct_implementation {#count_distinct_implementation} 
 
@@ -6476,15 +6504,40 @@ SELECT multiMatchAny('abcd', ['ab','bc','c','d']) SETTINGS max_hyperscan_regexp_
 
 ## max_insert_block_size {#max_insert_block_size} 
 
+**Псевдонимы**: `max_insert_block_size_rows`
+
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1048449" />
 
-Размер блоков (в количестве строк), формируемых для вставки в таблицу.
-Этот параметр применяется только в случаях, когда блоки формирует сервер.
-Например, при выполнении INSERT через HTTP-интерфейс сервер разбирает формат данных и формирует блоки указанного размера.
-Но при использовании clickhouse-client клиент разбирает данные самостоятельно, и настройка `max_insert_block_size` на сервере не влияет на размер вставляемых блоков.
-Настройка также не применяется при использовании INSERT SELECT, поскольку данные вставляются теми же блоками, которые формируются после SELECT.
+Максимальный размер блоков (в количестве строк), формируемых для вставки в таблицу.
 
-Значение по умолчанию немного больше, чем `max_block_size`. Причина в том, что некоторые движки таблиц (`*MergeTree`) формируют на диске часть данных (data part) для каждого вставленного блока, и это довольно крупная сущность. Аналогично, таблицы `*MergeTree` сортируют данные во время вставки, и достаточно большой размер блока позволяет отсортировать больше данных в оперативной памяти.
+Этот параметр управляет формированием блоков при разборе форматов. Когда сервер разбирает строчно-ориентированные форматы ввода (CSV, TSV, JSONEachRow и т. д.) или формат Values из любого интерфейса (HTTP, clickhouse-client с inline‑данными, gRPC, протокол PostgreSQL wire), он использует это значение, чтобы определить момент выдачи блока.
+Примечание: при использовании clickhouse-client или clickhouse-local для чтения из файла сам клиент разбирает данные, и эта настройка применяется на стороне клиента.
+
+Блок выдаётся, когда выполнено одно из условий:
+
+- Минимальные пороги (И): одновременно достигнуты и `min_insert_block_size_rows`, и `min_insert_block_size_bytes`
+- Максимальные пороги (ИЛИ): достигнут либо `max_insert_block_size`, либо `max_insert_block_size_bytes`
+
+Значение по умолчанию немного больше, чем max_block_size. Причина в том, что некоторые движки таблиц (`*MergeTree`) формируют на диске часть данных (data part) для каждого вставленного блока, и это довольно крупная сущность. Аналогично, таблицы `*MergeTree` сортируют данные во время вставки, и достаточно большой размер блока позволяет отсортировать больше данных в оперативной памяти.
+
+Возможные значения:
+
+- Положительное целое число.
+
+## max_insert_block_size_bytes {#max_insert_block_size_bytes} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "Новая настройка, которая позволяет контролировать размер блоков в байтах при разборе данных в Row Input Format."}]}]}/>
+
+Максимальный размер блоков (в байтах), формируемых при вставке в таблицу.
+
+Эта настройка работает совместно с max_insert_block_size_rows и управляет формированием блоков в том же контексте. См. max_insert_block_size_rows для подробной информации о том, когда и как применяются эти настройки.
+
+Возможные значения:
+
+- Положительное целое число.
+- 0 — настройка не участвует в формировании блоков.
 
 ## max_insert_delayed_streams_for_parallel_write {#max_insert_delayed_streams_for_parallel_write} 
 
@@ -7593,12 +7646,14 @@ ClickHouse использует этот параметр при чтении д
 
 <SettingsInfoBlock type="UInt64" default_value="268402944" />
 
-Устанавливает минимальный размер блока в байтах, который может быть вставлен в таблицу с помощью запроса `INSERT`. Блоки меньшего размера объединяются в более крупные.
+Минимальный размер блока (в байтах), формируемого для вставки в таблицу.
+
+Этот параметр работает совместно с min_insert_block_size_rows и управляет формированием блоков в тех же контекстах (разбор формата и операции `INSERT`). Подробную информацию о том, когда и как применяются эти параметры, см. в описании min_insert_block_size_rows.
 
 Возможные значения:
 
 - Положительное целое число.
-- 0 — объединение отключено.
+- 0 — параметр не участвует в формировании блоков.
 
 ## min_insert_block_size_bytes_for_materialized_views {#min_insert_block_size_bytes_for_materialized_views} 
 
@@ -7619,12 +7674,25 @@ ClickHouse использует этот параметр при чтении д
 
 <SettingsInfoBlock type="UInt64" default_value="1048449" />
 
-Устанавливает минимальное количество строк в блоке, которое может быть вставлено в таблицу при выполнении запроса `INSERT`. Блоки меньшего размера объединяются в более крупные.
+Минимальный размер блоков (в строках), формируемых для вставки в таблицу.
+
+Этот параметр управляет формированием блоков в двух контекстах:
+
+1. Разбор форматов: когда сервер разбирает построчные форматы ввода (CSV, TSV, JSONEachRow и т. д.) из любого интерфейса (HTTP, clickhouse-client со встроенными данными, gRPC, протокол PostgreSQL wire), он использует этот параметр, чтобы определить момент формирования блока.
+Примечание: при использовании clickhouse-client или clickhouse-local для чтения из файла разбор данных выполняет сам клиент, и этот параметр применяется на стороне клиента.
+2. Операции INSERT: во время запросов INSERT...SELECT и когда данные проходят через materialized views, блоки объединяются на основе этого параметра перед записью в хранилище.
+
+Блок при разборе формата формируется, когда выполняется одно из условий:
+
+- Минимальные пороги (И): достигнуты оба параметра min_insert_block_size_rows И min_insert_block_size_bytes
+- Максимальные пороги (ИЛИ): достигнут один из параметров max_insert_block_size ИЛИ max_insert_block_size_bytes
+
+Блоки меньшего размера для операций вставки объединяются в более крупные и формируются, когда достигается одно из значений min_insert_block_size_rows или min_insert_block_size_bytes.
 
 Возможные значения:
 
 - Положительное целое число.
-- 0 — объединение отключено.
+- 0 — параметр не участвует в формировании блоков.
 
 ## min_insert_block_size_rows_for_materialized_views {#min_insert_block_size_rows_for_materialized_views} 
 
@@ -8085,8 +8153,8 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - [isNull](/sql-reference/functions/functions-for-nulls#isNull) для чтения подстолбца [null](../../sql-reference/data-types/nullable.md/#finding-null).
 - [isNotNull](/sql-reference/functions/functions-for-nulls#isNotNull) для чтения подстолбца [null](../../sql-reference/data-types/nullable.md/#finding-null).
 - [count](/sql-reference/aggregate-functions/reference/count) для чтения подстолбца [null](../../sql-reference/data-types/nullable.md/#finding-null).
-- [mapKeys](/sql-reference/functions/tuple-map-functions#mapkeys) для чтения подстолбца [keys](/sql-reference/data-types/map#reading-subcolumns-of-map).
-- [mapValues](/sql-reference/functions/tuple-map-functions#mapvalues) для чтения подстолбца [values](/sql-reference/data-types/map#reading-subcolumns-of-map).
+- [mapKeys](/sql-reference/functions/tuple-map-functions#mapKeys) для чтения подстолбца [keys](/sql-reference/data-types/map#reading-subcolumns-of-map).
+- [mapValues](/sql-reference/functions/tuple-map-functions#mapValues) для чтения подстолбца [values](/sql-reference/data-types/map#reading-subcolumns-of-map).
 
 Возможные значения:
 
@@ -11314,9 +11382,9 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 ## use_join_disjunctions_push_down {#use_join_disjunctions_push_down} 
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "Новая настройка."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Эта оптимизация включена."}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": "0"},{"label": "Новая настройка."}]}]}/>
 
 Включает проталкивание (pushdown) частей условий JOIN, соединённых оператором OR, на соответствующие входы («частичный pushdown»).
 Это позволяет движкам хранилища выполнять фильтрацию раньше, что может уменьшить объём считываемых данных.
@@ -11357,6 +11425,19 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка."}]}]}/>
 
 Включает использование отсечения партиций Paimon для табличных функций Paimon
+
+## use_primary_key {#use_primary_key} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Новая настройка, определяющая, используется ли первичный ключ в MergeTree для отсечения на уровне гранул."}]}]}/>
+
+Использовать первичный ключ для отсечения гранул во время выполнения запросов для таблиц семейства MergeTree.
+
+Возможные значения:
+
+- 0 — Отключено.
+- 1 — Включено.
 
 ## use_query_cache {#use_query_cache} 
 
@@ -11630,6 +11711,14 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 └───────────────────────────────┘
 ```
 
+
+## use_variant_default_implementation_for_comparisons {#use_variant_default_implementation_for_comparisons} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Включить реализацию по умолчанию типа Variant в функциях сравнения"}]}]}/>
+
+Включает или отключает реализацию по умолчанию типа Variant в функциях сравнения.
 
 ## use_with_fill_by_sorting_prefix {#use_with_fill_by_sorting_prefix} 
 

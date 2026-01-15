@@ -6,6 +6,9 @@ slug: /integrations/chartbrew-and-clickhouse
 keywords: ['ClickHouse', 'Chartbrew', '连接', '集成', '可视化']
 description: '将 Chartbrew 连接到 ClickHouse，以创建实时看板和客户报告。'
 doc_type: 'guide'
+integration:
+   - support_level: 'community'
+   - category: 'data_visualization'
 ---
 
 import chartbrew_01 from '@site/static/images/integrations/data-visualization/chartbrew_01.png';
@@ -21,7 +24,6 @@ import chartbrew_09 from '@site/static/images/integrations/data-visualization/ch
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import Image from '@theme/IdealImage';
-
 
 # 将 Chartbrew 连接到 ClickHouse {#connecting-chartbrew-to-clickhouse}
 

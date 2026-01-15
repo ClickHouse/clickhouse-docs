@@ -1517,7 +1517,7 @@ SELECT initcapUTF8('не тормозит')
 
 導入バージョン: v25.9
 
-入力の String または FixedString が ASCII バイト (0x00–0x7F) のみを含む場合は 1、それ以外の場合は 0 を返します。
+入力の String または FixedString が ASCII バイト (0x00–0x7F) のみを含む場合は 1、それ以外の場合は 0 を返します。正のケース（入力が有効な ASCII である場合）に最適化されています。
 
 **構文**
 
@@ -1542,6 +1542,7 @@ SELECT isValidASCII('hello') AS is_ascii, isValidASCII('你好') AS is_not_ascii
 
 ```response title=Response
 ```
+
 
 ## isValidUTF8 {#isValidUTF8}
 
@@ -2512,6 +2513,7 @@ sparseGrams(s[, min_ngram_length, max_ngram_length])
 * `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
 * `min_ngram_length` — 省略可能。抽出される n-gram の最小長。デフォルトかつ最小値は 3。[`UInt*`](/sql-reference/data-types/int-uint)
 * `max_ngram_length` — 省略可能。抽出される n-gram の最大長。デフォルト値は 100。`min_ngram_length` 以上である必要があります。[`UInt*`](/sql-reference/data-types/int-uint)
+* `min_cutoff_length` — 省略可能。指定された場合、長さが `min_cutoff_length` 以上の n-gram だけが返されます。デフォルト値は `min_ngram_length` と同じです。`min_ngram_length` 以上かつ `max_ngram_length` 以下である必要があります。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **返り値**
 
@@ -2530,6 +2532,7 @@ SELECT sparseGrams('alice', 3)
 │ ['ali','lic','lice','ice']         │
 └────────────────────────────────────┘
 ```
+
 
 ## sparseGramsHashes {#sparseGramsHashes}
 
@@ -2551,6 +2554,7 @@ sparseGramsHashes(s[, min_ngram_length, max_ngram_length])
 * `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
 * `min_ngram_length` — 省略可。抽出される n-gram の最小長さ。デフォルトかつ最小の値は 3。[`UInt*`](/sql-reference/data-types/int-uint)
 * `max_ngram_length` — 省略可。抽出される n-gram の最大長さ。デフォルト値は 100。`min_ngram_length` 以上でなければならない。[`UInt*`](/sql-reference/data-types/int-uint)
+* `min_cutoff_length` — 省略可。指定された場合、長さが `min_cutoff_length` 以上の n-gram だけが返されます。デフォルト値は `min_ngram_length` と同じです。`min_ngram_length` 以上かつ `max_ngram_length` 以下でなければなりません。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 
@@ -2569,6 +2573,7 @@ SELECT sparseGramsHashes('alice', 3)
 │ [1481062250,2450405249,4012725991,1918774096]      │
 └────────────────────────────────────────────────────┘
 ```
+
 
 ## sparseGramsHashesUTF8 {#sparseGramsHashesUTF8}
 
@@ -2589,6 +2594,7 @@ sparseGramsHashesUTF8(s[, min_ngram_length, max_ngram_length])
 * `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
 * `min_ngram_length` — 省略可能。抽出される n-gram の長さの最小値。デフォルトかつ最小値は 3。[`UInt*`](/sql-reference/data-types/int-uint)
 * `max_ngram_length` — 省略可能。抽出される n-gram の長さの最大値。デフォルト値は 100。`min_ngram_length` 以上でなければなりません。[`UInt*`](/sql-reference/data-types/int-uint)
+* `min_cutoff_length` — 省略可能。指定された場合、長さが `min_cutoff_length` 以上の n-gram のみが返されます。デフォルト値は `min_ngram_length` と同じです。`min_ngram_length` 以上かつ `max_ngram_length` 以下でなければなりません。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 
@@ -2607,6 +2613,7 @@ SELECT sparseGramsHashesUTF8('алиса', 3)
 │ [4178533925,3855635300,561830861] │
 └───────────────────────────────────┘
 ```
+
 
 ## sparseGramsUTF8 {#sparseGramsUTF8}
 
@@ -2627,6 +2634,7 @@ sparseGramsUTF8(s[, min_ngram_length, max_ngram_length])
 * `s` — 入力文字列。[`String`](/sql-reference/data-types/string)
 * `min_ngram_length` — 省略可能。抽出される n-gram の最小長さ。既定かつ最小の値は 3。[`UInt*`](/sql-reference/data-types/int-uint)
 * `max_ngram_length` — 省略可能。抽出される n-gram の最大長さ。既定値は 100。`min_ngram_length` 以上である必要がある。[`UInt*`](/sql-reference/data-types/int-uint)
+* `min_cutoff_length` — 省略可能。指定された場合、長さが `min_cutoff_length` 以上の n-gram のみが返される。既定値は `min_ngram_length` と同じ。`min_ngram_length` 以上かつ `max_ngram_length` 以下である必要がある。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 
@@ -2645,6 +2653,7 @@ SELECT sparseGramsUTF8('алиса', 3)
 │ ['али','лис','иса']         │
 └─────────────────────────────┘
 ```
+
 
 ## startsWith {#startsWith}
 

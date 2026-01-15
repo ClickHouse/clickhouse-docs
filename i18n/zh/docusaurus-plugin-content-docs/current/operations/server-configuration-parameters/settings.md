@@ -1101,7 +1101,13 @@ GitLab 也是同样的处理方式，即使其前面带有一个点。`gitlab.co
 
 ## dns_max_consecutive_failures {#dns_max_consecutive_failures} 
 
-<SettingsInfoBlock type="UInt32" default_value="10" />在将主机名从 ClickHouse 的 DNS 缓存中移除之前，允许的该主机名连续 DNS 解析失败的最大次数。
+<SettingsInfoBlock type="UInt32" default_value="5" />
+
+在连续失败次数达到此值后，停止进一步尝试更新某个主机名的 DNS 缓存。该主机名的信息仍会保留在 DNS 缓存中。0 表示无限制。
+
+**另请参阅**
+
+- [`SYSTEM DROP DNS CACHE`](../../sql-reference/statements/system#drop-dns-cache)
 
 ## drop_distributed_cache_pool_size {#drop_distributed_cache_pool_size} 
 
@@ -2771,6 +2777,12 @@ ClickHouse 使用全局线程池（Global Thread Pool）中的线程来处理查
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 后台内存 worker 的执行周期，用于在较高内存使用期间校正 memory tracker 的内存用量，并清理未使用的页面。如果设置为 0，则会根据内存使用来源使用默认值。
+
+## memory_worker_purge_dirty_pages_threshold_ratio {#memory_worker_purge_dirty_pages_threshold_ratio} 
+
+<SettingsInfoBlock type="Double" default_value="0.2" />
+
+jemalloc 脏页相对于 ClickHouse 服务器可用内存的阈值比例。当脏页大小超过该比例时，后台内存 worker 会强制回收脏页。若设置为 0，则禁用强制回收。
 
 ## memory_worker_use_cgroup {#memory_worker_use_cgroup} 
 

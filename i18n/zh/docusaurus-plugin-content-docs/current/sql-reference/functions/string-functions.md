@@ -1517,7 +1517,7 @@ SELECT initcapUTF8('не тормозит')
 
 自 v25.9 起引入
 
-如果输入的 String 或 FixedString 仅包含 ASCII 字节（0x00–0x7F），则返回 1，否则返回 0。
+如果输入的 String 或 FixedString 仅包含 ASCII 字节（0x00–0x7F），则返回 1，否则返回 0。针对正向结果（即输入 *是* 有效 ASCII 的情况）进行了优化。
 
 **语法**
 
@@ -1542,6 +1542,7 @@ SELECT isValidASCII('hello') AS is_ascii, isValidASCII('你好') AS is_not_ascii
 
 ```response title=Response
 ```
+
 
 ## isValidUTF8 {#isValidUTF8}
 
@@ -2512,6 +2513,7 @@ sparseGrams(s[, min_ngram_length, max_ngram_length])
 * `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
 * `min_ngram_length` — 可选。提取的 n-gram 的最小长度。默认值和最小值为 3。[`UInt*`](/sql-reference/data-types/int-uint)
 * `max_ngram_length` — 可选。提取的 n-gram 的最大长度。默认值为 100。值不得小于 `min_ngram_length`。[`UInt*`](/sql-reference/data-types/int-uint)
+* `min_cutoff_length` — 可选。如果指定，则仅返回长度大于或等于 `min_cutoff_length` 的 n-gram。默认值与 `min_ngram_length` 相同。值不得小于 `min_ngram_length` 且不得大于 `max_ngram_length`。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -2530,6 +2532,7 @@ SELECT sparseGrams('alice', 3)
 │ ['ali','lic','lice','ice']         │
 └────────────────────────────────────┘
 ```
+
 
 ## sparseGramsHashes {#sparseGramsHashes}
 
@@ -2551,6 +2554,7 @@ sparseGramsHashes(s[, min_ngram_length, max_ngram_length])
 * `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
 * `min_ngram_length` — 可选。提取的 ngram 的最小长度。默认值和最小值为 3。[`UInt*`](/sql-reference/data-types/int-uint)
 * `max_ngram_length` — 可选。提取的 ngram 的最大长度。默认值为 100。应不小于 `min_ngram_length`。[`UInt*`](/sql-reference/data-types/int-uint)
+* `min_cutoff_length` — 可选。如果指定，则只返回长度大于或等于 `min_cutoff_length` 的 ngram。默认值与 `min_ngram_length` 相同。应不小于 `min_ngram_length` 且不大于 `max_ngram_length`。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -2569,6 +2573,7 @@ SELECT sparseGramsHashes('alice', 3)
 │ [1481062250,2450405249,4012725991,1918774096]      │
 └────────────────────────────────────────────────────┘
 ```
+
 
 ## sparseGramsHashesUTF8 {#sparseGramsHashesUTF8}
 
@@ -2589,6 +2594,7 @@ sparseGramsHashesUTF8(s[, min_ngram_length, max_ngram_length])
 * `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
 * `min_ngram_length` — 可选。提取的 ngram 的最小长度。默认值和最小值为 3。[`UInt*`](/sql-reference/data-types/int-uint)
 * `max_ngram_length` — 可选。提取的 ngram 的最大长度。默认值为 100。其值不得小于 `min_ngram_length`。[`UInt*`](/sql-reference/data-types/int-uint)
+* `min_cutoff_length` — 可选。如果指定，则仅返回长度大于或等于 `min_cutoff_length` 的 n-gram。默认值与 `min_ngram_length` 相同。其值不得小于 `min_ngram_length`，且不得大于 `max_ngram_length`。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -2607,6 +2613,7 @@ SELECT sparseGramsHashesUTF8('алиса', 3)
 │ [4178533925,3855635300,561830861] │
 └───────────────────────────────────┘
 ```
+
 
 ## sparseGramsUTF8 {#sparseGramsUTF8}
 
@@ -2627,6 +2634,7 @@ sparseGramsUTF8(s[, min_ngram_length, max_ngram_length])
 * `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
 * `min_ngram_length` — 可选。要提取的 ngram 的最小长度。默认值和最小值为 3。[`UInt*`](/sql-reference/data-types/int-uint)
 * `max_ngram_length` — 可选。要提取的 ngram 的最大长度。默认值为 100，且不得小于 `min_ngram_length`。[`UInt*`](/sql-reference/data-types/int-uint)
+* `min_cutoff_length` — 可选。如果指定，则只返回长度大于或等于 `min_cutoff_length` 的 ngram。默认值与 `min_ngram_length` 相同。其值不得小于 `min_ngram_length` 且不得大于 `max_ngram_length`。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -2645,6 +2653,7 @@ SELECT sparseGramsUTF8('алиса', 3)
 │ ['али','лис','иса']         │
 └─────────────────────────────┘
 ```
+
 
 ## startsWith {#startsWith}
 

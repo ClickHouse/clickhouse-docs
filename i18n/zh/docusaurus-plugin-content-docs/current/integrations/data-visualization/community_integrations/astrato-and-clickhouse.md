@@ -7,7 +7,7 @@ description: 'Astrato 将真正的自助式商务智能（BI）带入企业和�
 title: '将 Astrato 连接到 ClickHouse'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
 ---
 

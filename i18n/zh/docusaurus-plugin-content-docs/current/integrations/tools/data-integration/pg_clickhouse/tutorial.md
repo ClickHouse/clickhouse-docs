@@ -158,20 +158,26 @@ quit
 ```
 
 
-### 安装 pg&#95;clickhouse {#install-pg_clickhouse}
+### 安装 pg&#95;clickhouse {#install-pg&#95;clickhouse}
 
 从 [PGXN] 或 [GitHub] 构建并安装 pg&#95;clickhouse。或者使用 [pg&#95;clickhouse image] 启动一个
 Docker 容器，该镜像只是将 pg&#95;clickhouse 添加到 Docker 的 [Postgres image] 中：
 
 ```sh
-docker run --network host --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
-       -d ghcr.io/clickhouse/pg_clickhouse:18 -U postgres
+docker run -d --network host --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
+       -d ghcr.io/clickhouse/pg_clickhouse:18
 ```
 
 
-### 连接 pg&#95;clickhouse {#connect-pg_clickhouse}
+### 连接 pg&#95;clickhouse {#connect-pg&#95;clickhouse}
 
-现在连接到 Postgres，并创建 pg&#95;clickhouse：
+现在连接到 Postgres：
+
+```sh
+docker exec -it pg_clickhouse psql -U postgres
+```
+
+并创建 pg&#95;clickhouse：
 
 ```sql
 CREATE EXTENSION pg_clickhouse;
@@ -207,7 +213,7 @@ IMPORT FOREIGN SCHEMA taxi FROM SERVER taxi_srv INTO taxi;
 ```pgsql
 taxi=# \det+ taxi.*
                                        List of foreign tables
- Schema | Table |  Server  |                        FDW options                        | Description 
+ Schema | Table |  Server  |                        FDW options                        | Description
 --------+-------+----------+-----------------------------------------------------------+-------------
  taxi   | trips | taxi_srv | (database 'taxi', table_name 'trips', engine 'MergeTree') | [null]
 (1 row)
@@ -219,62 +225,62 @@ taxi=# \det+ taxi.*
 ```pgsql
 taxi=# \d taxi.trips
                                      Foreign table "taxi.trips"
-        Column         |            Type             | Collation | Nullable | Default | FDW options 
+        Column         |            Type             | Collation | Nullable | Default | FDW options
 -----------------------+-----------------------------+-----------+----------+---------+-------------
- trip_id               | bigint                      |           | not null |         | 
- vendor_id             | text                        |           | not null |         | 
- pickup_date           | date                        |           | not null |         | 
- pickup_datetime       | timestamp without time zone |           | not null |         | 
- dropoff_date          | date                        |           | not null |         | 
- dropoff_datetime      | timestamp without time zone |           | not null |         | 
- store_and_fwd_flag    | smallint                    |           | not null |         | 
- rate_code_id          | smallint                    |           | not null |         | 
- pickup_longitude      | double precision            |           | not null |         | 
- pickup_latitude       | double precision            |           | not null |         | 
- dropoff_longitude     | double precision            |           | not null |         | 
- dropoff_latitude      | double precision            |           | not null |         | 
- passenger_count       | smallint                    |           | not null |         | 
- trip_distance         | double precision            |           | not null |         | 
- fare_amount           | numeric(10,2)               |           | not null |         | 
- extra                 | numeric(10,2)               |           | not null |         | 
- mta_tax               | numeric(10,2)               |           | not null |         | 
- tip_amount            | numeric(10,2)               |           | not null |         | 
- tolls_amount          | numeric(10,2)               |           | not null |         | 
- ehail_fee             | numeric(10,2)               |           | not null |         | 
- improvement_surcharge | numeric(10,2)               |           | not null |         | 
- total_amount          | numeric(10,2)               |           | not null |         | 
- payment_type          | text                        |           | not null |         | 
- trip_type             | smallint                    |           | not null |         | 
- pickup                | character varying(25)       |           | not null |         | 
- dropoff               | character varying(25)       |           | not null |         | 
- cab_type              | text                        |           | not null |         | 
- pickup_nyct2010_gid   | smallint                    |           | not null |         | 
- pickup_ctlabel        | real                        |           | not null |         | 
- pickup_borocode       | smallint                    |           | not null |         | 
- pickup_ct2010         | text                        |           | not null |         | 
- pickup_boroct2010     | text                        |           | not null |         | 
- pickup_cdeligibil     | text                        |           | not null |         | 
- pickup_ntacode        | character varying(4)        |           | not null |         | 
- pickup_ntaname        | text                        |           | not null |         | 
- pickup_puma           | integer                     |           | not null |         | 
- dropoff_nyct2010_gid  | smallint                    |           | not null |         | 
- dropoff_ctlabel       | real                        |           | not null |         | 
- dropoff_borocode      | smallint                    |           | not null |         | 
- dropoff_ct2010        | text                        |           | not null |         | 
- dropoff_boroct2010    | text                        |           | not null |         | 
- dropoff_cdeligibil    | text                        |           | not null |         | 
- dropoff_ntacode       | character varying(4)        |           | not null |         | 
- dropoff_ntaname       | text                        |           | not null |         | 
- dropoff_puma          | integer                     |           | not null |         | 
+ trip_id               | bigint                      |           | not null |         |
+ vendor_id             | text                        |           | not null |         |
+ pickup_date           | date                        |           | not null |         |
+ pickup_datetime       | timestamp without time zone |           | not null |         |
+ dropoff_date          | date                        |           | not null |         |
+ dropoff_datetime      | timestamp without time zone |           | not null |         |
+ store_and_fwd_flag    | smallint                    |           | not null |         |
+ rate_code_id          | smallint                    |           | not null |         |
+ pickup_longitude      | double precision            |           | not null |         |
+ pickup_latitude       | double precision            |           | not null |         |
+ dropoff_longitude     | double precision            |           | not null |         |
+ dropoff_latitude      | double precision            |           | not null |         |
+ passenger_count       | smallint                    |           | not null |         |
+ trip_distance         | double precision            |           | not null |         |
+ fare_amount           | numeric(10,2)               |           | not null |         |
+ extra                 | numeric(10,2)               |           | not null |         |
+ mta_tax               | numeric(10,2)               |           | not null |         |
+ tip_amount            | numeric(10,2)               |           | not null |         |
+ tolls_amount          | numeric(10,2)               |           | not null |         |
+ ehail_fee             | numeric(10,2)               |           | not null |         |
+ improvement_surcharge | numeric(10,2)               |           | not null |         |
+ total_amount          | numeric(10,2)               |           | not null |         |
+ payment_type          | text                        |           | not null |         |
+ trip_type             | smallint                    |           | not null |         |
+ pickup                | character varying(25)       |           | not null |         |
+ dropoff               | character varying(25)       |           | not null |         |
+ cab_type              | text                        |           | not null |         |
+ pickup_nyct2010_gid   | smallint                    |           | not null |         |
+ pickup_ctlabel        | real                        |           | not null |         |
+ pickup_borocode       | smallint                    |           | not null |         |
+ pickup_ct2010         | text                        |           | not null |         |
+ pickup_boroct2010     | text                        |           | not null |         |
+ pickup_cdeligibil     | text                        |           | not null |         |
+ pickup_ntacode        | character varying(4)        |           | not null |         |
+ pickup_ntaname        | text                        |           | not null |         |
+ pickup_puma           | integer                     |           | not null |         |
+ dropoff_nyct2010_gid  | smallint                    |           | not null |         |
+ dropoff_ctlabel       | real                        |           | not null |         |
+ dropoff_borocode      | smallint                    |           | not null |         |
+ dropoff_ct2010        | text                        |           | not null |         |
+ dropoff_boroct2010    | text                        |           | not null |         |
+ dropoff_cdeligibil    | text                        |           | not null |         |
+ dropoff_ntacode       | character varying(4)        |           | not null |         |
+ dropoff_ntaname       | text                        |           | not null |         |
+ dropoff_puma          | integer                     |           | not null |         |
 Server: taxi_srv
 FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 ```
 
-现在查询该表：
+现在对该表执行查询：
 
 ```pgsql
  SELECT count(*) FROM taxi.trips;
-   count  
+   count
  ---------
   1999657
  (1 row)
@@ -284,17 +290,16 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 查询，包括 `COUNT()` 聚合，这样查询就在 ClickHouse 上运行，只
 向 Postgres 返回单行数据。使用 [EXPLAIN] 查看执行计划：
 
-
 ```pgsql
  EXPLAIN select count(*) from taxi.trips;
-                    QUERY PLAN                    
+                    QUERY PLAN
  -------------------------------------------------
   Foreign Scan  (cost=1.00..-0.90 rows=1 width=8)
     Relations: Aggregate on (trips)
  (2 rows)
 ```
 
-请注意，在执行计划的根节点中出现了 &quot;Foreign Scan&quot;，这意味着整个查询都被下推到 ClickHouse 执行。
+请注意，执行计划的根节点中出现了 “Foreign Scan”，这意味着整个查询都被下推到了 ClickHouse。
 
 
 ## 分析数据 {#analyze-the-data}
@@ -307,7 +312,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   taxi=# \timing
   Timing is on.
   taxi=# SELECT round(avg(tip_amount), 2) FROM taxi.trips;
-   round 
+   round
   -------
     1.68
   (1 row)
@@ -323,7 +328,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
           avg(total_amount)::NUMERIC(10, 2) AS average_total_amount
       FROM taxi.trips
       GROUP BY passenger_count;
-   passenger_count | average_total_amount 
+   passenger_count | average_total_amount
   -----------------+----------------------
                  0 |                22.68
                  1 |                15.96
@@ -350,7 +355,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   FROM taxi.trips
   GROUP BY pickup_date, pickup_ntaname
   ORDER BY pickup_date ASC LIMIT 10;
-   pickup_date |         pickup_ntaname         | number_of_trips 
+   pickup_date |         pickup_ntaname         | number_of_trips
   -------------+--------------------------------+-----------------
    2015-07-01  | Williamsburg                   |               1
    2015-07-01  | park-cemetery-etc-Queens       |               6
@@ -381,7 +386,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   GROUP BY trip_minutes
   ORDER BY trip_minutes DESC
   LIMIT 5;
-        avg_tip      |     avg_fare     |  avg_passenger   | count | trip_minutes 
+        avg_tip      |     avg_fare     |  avg_passenger   | count | trip_minutes
   -------------------+------------------+------------------+-------+--------------
                 1.96 |                8 |                1 |     1 |        27512
                    0 |               12 |                2 |     1 |        27500
@@ -393,7 +398,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 45.477 ms
   ```
 
-* 按一天中的小时，展示各个街区的接载次数：
+* 按小时展示各个街区在一天中各时段的上车次数：
 
   ```pgsql
   taxi=# SELECT
@@ -405,7 +410,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   GROUP BY pickup_ntaname, pickup_hour
   ORDER BY pickup_ntaname, date_part('hour', pickup_datetime)
   LIMIT 5;
-   pickup_ntaname | pickup_hour | pickups 
+   pickup_ntaname | pickup_hour | pickups
   ----------------+-------------+---------
    Airport        |           0 |    3509
    Airport        |           1 |    1184
@@ -437,7 +442,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   WHERE dropoff_nyct2010_gid IN (132, 138)
   ORDER BY pickup_datetime
   LIMIT 5;
-     pickup_datetime   |  dropoff_datetime   | total_amount | pickup_nyct2010_gid | dropoff_nyct2010_gid | airport_code | year | day | hour 
+     pickup_datetime   |  dropoff_datetime   | total_amount | pickup_nyct2010_gid | dropoff_nyct2010_gid | airport_code | year | day | hour
   ---------------------+---------------------+--------------+---------------------+----------------------+--------------+------+-----+------
    2015-07-01 00:04:14 | 2015-07-01 00:15:29 |        13.30 |                 -34 |                  132 | JFK          | 2015 |   1 |    0
    2015-07-01 00:09:42 | 2015-07-01 00:12:55 |         6.80 |                  50 |                  138 | LGA          | 2015 |   1 |    0
@@ -483,33 +488,33 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
         LAYOUT(HASHED_ARRAY())
     $$, 'host=localhost dbname=taxi');
     ```
-    
+
     :::note
     将 `LIFETIME` 设置为 0 会禁用自动更新，以避免对我们的 S3 存储桶产生不必要的流量。在其他场景中，你可能会采用不同的配置。详情参见 [Refreshing dictionary data using
     LIFETIME](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)。
     :::
-    
+
     2.  现在导入它：
-    
+
     ```sql
     IMPORT FOREIGN SCHEMA taxi LIMIT TO (taxi_zone_dictionary)
     FROM SERVER taxi_srv INTO taxi;
     ```
-    
+
     3.  确认我们可以对它进行查询：
-    
+
     ```pgsql
     taxi=# SELECT * FROM taxi.taxi_zone_dictionary limit 3;
-     LocationID |  Borough  |                     Zone                      | service_zone 
+     LocationID |  Borough  |                     Zone                      | service_zone
     ------------+-----------+-----------------------------------------------+--------------
              77 | Brooklyn  | East New York/Pennsylvania Avenue             | Boro Zone
             106 | Brooklyn  | Gowanus                                       | Boro Zone
             103 | Manhattan | Governor's Island/Ellis Island/Liberty Island | Yellow Zone
     (3 rows)
     ```
-    
+
     4.  很好。现在使用 `dictGet` 函数在查询中获取行政区名称。该查询会汇总所有在 LaGuardia 或 JFK 机场结束的出租车行程，并按行政区统计数量：
-    
+
     ```pgsql
     taxi=# SELECT
             count(1) AS total,
@@ -521,7 +526,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
         WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
         GROUP BY borough_name
         ORDER BY total DESC;
-     total | borough_name  
+     total | borough_name
     -------+---------------
      23683 | Unknown
       7053 | Manhattan
@@ -531,7 +536,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
        554 | Staten Island
         53 | EWR
     (7 rows)
-    
+
     Time: 66.245 ms
     ```
 
@@ -543,7 +548,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 
 1.  从一个与上面机场查询类似的简单 `JOIN` 开始：
 
-    ```sql
+    ```pgsql
     taxi=# SELECT
         count(1) AS total,
         "Borough"
@@ -554,7 +559,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
       AND dropoff_nyct2010_gid IN (132, 138)
     GROUP BY "Borough"
     ORDER BY total DESC;
-     total | borough_name  
+     total | borough_name
     -------+---------------
       7053 | Manhattan
       6828 | Brooklyn
@@ -582,7 +587,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
           AND dropoff_nyct2010_gid IN (132, 138)
         GROUP BY "Borough"
         ORDER BY total DESC;
-                                  QUERY PLAN                               
+                                  QUERY PLAN
     -----------------------------------------------------------------------
      Foreign Scan  (cost=1.00..5.10 rows=1000 width=40)
        Relations: Aggregate on ((trips) INNER JOIN (taxi_zone_dictionary))
