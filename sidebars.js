@@ -808,8 +808,9 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
-            'integrations/data-ingestion/s3/index',
-            'integrations/data-ingestion/s3/performance',
+            "integrations/data-ingestion/s3/index",
+            "integrations/data-ingestion/s3/performance",
+            "integrations/data-ingestion/s3/creating-an-s3-iam-role-and-bucket"
           ],
         },
         'integrations/data-sources/postgres',
