@@ -323,7 +323,6 @@ docker run --name clickstack-demo \
   clickhouse/clickstack-all-in-one:latest
 ```
 
-
 #### Verify logs in HyperDX {#verify-demo-logs}
 
 Once ClickStack is running:
