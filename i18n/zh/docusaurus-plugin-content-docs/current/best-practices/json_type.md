@@ -9,23 +9,11 @@ show_related_blogs: true
 doc_type: 'reference'
 ---
 
+import WhenToUseJson from '@site/i18n/zh/docusaurus-plugin-content-docs/current/best-practices/_snippets/_when-to-use-json.md';
+
 ClickHouse 现在提供了适用于半结构化和动态数据的原生 JSON 列类型。需要特别说明的是，**这是一种列类型，而不是一种数据格式**——可以以字符串形式将 JSON 插入 ClickHouse，或者通过 [JSONEachRow](/interfaces/formats/JSONEachRow) 等受支持的格式进行插入，但这并不意味着就在使用 JSON 列类型。只有在数据结构本身是动态的情况下，才应该选择 JSON 类型，而不是因为“刚好”以 JSON 形式存储数据就使用它。
 
-## 何时使用 JSON 类型 {#when-to-use-the-json-type}
-
-在以下情况下使用 JSON 类型：
-
-* 存在**不可预测的键**，并且这些键会随时间变化。
-* 包含**类型各异的值**（例如，同一路径有时是字符串，有时是数字）。
-* 需要更灵活的 schema，而严格类型不可行。
-
-如果你的数据结构是已知且稳定的，即使数据本身是 JSON 格式，通常也不需要使用 JSON 类型。特别是在以下情况下，你的数据具有：
-
-* **扁平结构且键是已知的**：使用标准列类型，例如 String。
-* **可预测的嵌套结构**：对这些结构使用 Tuple、Array 或 Nested 类型。
-* **结构可预测但值类型变化**：可以考虑使用 Dynamic 或 Variant 类型。
-
-你也可以混合使用多种方式——例如，对可预测的顶层字段使用固定列，对有效负载中动态部分使用单独的 JSON 列。
+<WhenToUseJson />
 
 ## 使用 JSON 的注意事项和技巧 {#considerations-and-tips-for-using-json}
 

@@ -704,9 +704,7 @@ ALTER TABLE trips_s3 MODIFY SETTING storage_policy='s3_tiered'
 
 ## 将 S3 对象存储用作 ClickHouse 磁盘 {#configuring-s3-for-clickhouse-use}
 
-如果你需要关于创建 bucket 和 IAM 角色的分步指南，请展开 **Create S3 buckets and an IAM role** 并按照说明操作：
-
-<BucketDetails />
+如果你需要关于创建 bucket 和 IAM 角色的分步指南，请参阅[《如何创建 AWS IAM 用户和 S3 bucket》](/integrations/s3/creating-iam-user-and-s3-bucket)。
 
 ### 配置 ClickHouse 使用 S3 bucket 作为磁盘 {#configure-clickhouse-to-use-the-s3-bucket-as-a-disk}
 

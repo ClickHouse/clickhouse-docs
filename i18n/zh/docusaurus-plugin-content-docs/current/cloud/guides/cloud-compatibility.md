@@ -28,15 +28,6 @@ ClickHouse Cloud 大幅简化了运维开销，并降低了大规模运行 Click
 
 ClickHouse Cloud 提供对开源版 ClickHouse 中一组精心筛选功能的访问。下文列出了当前在 ClickHouse Cloud 中被禁用的部分特性。
 
-### DDL 语法 {#ddl-syntax}
-
-在大多数情况下，ClickHouse Cloud 的 DDL 语法应与自管安装中可用的语法一致。少数几个值得注意的例外如下：
-
-- 对 `CREATE AS SELECT` 的支持当前不可用。作为替代方案，建议使用 `CREATE ... EMPTY ... AS SELECT`，然后向该表插入数据（示例参见[这篇博客](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1)）。
-- 某些实验性语法可能被禁用，例如 `ALTER TABLE ... MODIFY QUERY` 语句。
-- 出于安全目的，部分自省功能可能被禁用，例如 `addressToLine` SQL 函数。
-- 不要在 ClickHouse Cloud 中使用 `ON CLUSTER` 参数——这些参数是不需要的。尽管这些大多是空操作，但在尝试使用[宏](/operations/server-configuration-parameters/settings#macros)时，它们仍可能导致错误。宏在 ClickHouse Cloud 中通常不起作用，也并不需要。
-
 ### 数据库和表引擎 {#database-and-table-engines}
 
 ClickHouse Cloud 默认提供高可用、带副本的服务。因此，所有数据库和表引擎都是 “Replicated” 的。无需显式指定 “Replicated”——例如，在 ClickHouse Cloud 中，`ReplicatedMergeTree` 和 `MergeTree` 的使用效果是相同的。
@@ -70,6 +61,7 @@ ClickHouse Cloud 默认提供高可用、带副本的服务。因此，所有数
 - RabbitMQ
 - PostgreSQL
 - S3
+- Kafka
 
 ### 接口 {#interfaces}
 
@@ -94,7 +86,7 @@ ClickHouse Cloud 支持 HTTPS、原生接口以及 [MySQL wire protocol](/interf
 
 ### 用户自定义函数 {#user-defined-functions}
 
-用户自定义函数是 ClickHouse 中的一个较新特性。ClickHouse Cloud 当前仅支持 SQL UDF。
+ClickHouse Cloud 中的用户自定义函数目前处于 [私有预览](https://clickhouse.com/docs/sql-reference/functions/udf) 阶段。
 
 #### 设置行为 {#udf-settings-behavior}
 
@@ -111,10 +103,6 @@ ClickHouse Cloud 中的 UDF **不会继承用户级别的设置**。它们在默
 ### 实验性功能 {#experimental-features}
 
 为确保服务部署的稳定性，ClickHouse Cloud 服务中禁用了实验性功能。
-
-### Kafka {#kafka}
-
-[Kafka Table Engine](/integrations/data-ingestion/kafka/index.md) 在 ClickHouse Cloud 中尚未普遍可用。相应地，我们建议采用将 Kafka 连接组件与 ClickHouse 服务解耦的架构，以实现关注点分离。我们推荐使用 [ClickPipes](https://clickhouse.com/cloud/clickpipes) 从 Kafka 流中拉取数据。或者，可以考虑 [Kafka 用户指南](/integrations/data-ingestion/kafka/index.md) 中列出的基于推送的替代方案。
 
 ### 命名集合 {#named-collections}
 
@@ -149,4 +137,4 @@ ClickHouse Cloud 针对变化的工作负载进行了调优，因此目前大多
 
 ## 路线图 {#roadmap}
 
-我们正在为 ClickHouse Cloud 引入对可执行 UDF 的支持，并评估对更多功能的需求。如果您有任何反馈或希望请求某个特定功能，请[在此提交](https://console.clickhouse.cloud/support)。
+我们正在评估 ClickHouse Cloud 中更多功能的需求。如果您有任何反馈或希望请求某个特定功能，请[在此提交](https://console.clickhouse.cloud/support)。

@@ -7,8 +7,7 @@ title: '厳密および近似ベクトル検索'
 doc_type: 'guide'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
-
+import BetaBadge from '@theme/badges/BetaBadge';
 
 # 厳密ベクトル検索と近似ベクトル検索 {#exact-and-approximate-vector-search}
 
@@ -622,7 +621,7 @@ LIMIT 3;
 
 ### Quantized Bit (QBit) {#approximate-nearest-neighbor-search-qbit}
 
-<ExperimentalBadge />
+<BetaBadge/>
 
 厳密なベクトル検索を高速化する一般的な方法の 1 つは、低精度の [浮動小数点数型 (float data type)](../../../sql-reference/data-types/float.md) を使用することです。
 例えば、ベクトルを `Array(Float32)` ではなく `Array(BFloat16)` として保存すると、データサイズは半分になり、クエリ実行時間もそれに比例して短くなることが期待されます。
@@ -638,7 +637,7 @@ ClickHouse は、これらの制約を解決する Quantized Bit (`QBit`) デー
 これは、データをビット単位にグループ化した形式（すべてのベクトルについて i 番目のビットをまとめて保存する形式）で格納することで実現されており、要求された精度レベルだけを読み取ることができます。これにより、量子化による I/O と計算の削減による高速化の恩恵を受けつつ、必要に応じて元のすべてのデータを利用できます。最大精度が選択された場合、検索は厳密なものになります。
 
 :::note
-`QBit` データ型とそれに関連する距離関数は現在実験的な機能です。有効化するには、`SET allow_experimental_qbit_type = 1` を実行してください。
+`QBit` データ型とそれに関連する距離関数は Beta 機能です。有効化するには、`SET enable_qbit_type = 1` を実行してください。
 問題が発生した場合は、[ClickHouse リポジトリ](https://github.com/clickhouse/clickhouse/issues) に issue を作成してください。
 :::
 
@@ -700,7 +699,7 @@ ORDER BY distance;
    └────────┴─────────────────────┘
 ```
 
-**低精度検索:**
+**精度を落とした検索:**
 
 ```sql
 SELECT
@@ -723,10 +722,6 @@ ORDER BY distance;
 
 12 ビット量子化では、クエリ実行を高速化しつつ、距離を良好に近似できていることに注目してください。相対的な順位付けは概ね維持されており、依然として &#39;apple&#39; が最も近い一致となっています。
 
-:::note
-現時点では、高速化は読み取るデータ量が減ることによる I/O 削減のおかげです。元のデータが `Float64` のような幅の広い型だった場合でも、より低い精度を選択すると、同じビット幅のデータに対して距離計算が行われますが、数値の精度だけが低くなります。
-:::
-
 
 #### パフォーマンス上の考慮事項 {#qbit-performance}
 
@@ -741,3 +736,4 @@ ORDER BY distance;
 
 - [Vector Search with ClickHouse - Part 1](https://clickhouse.com/blog/vector-search-clickhouse-p1)
 - [Vector Search with ClickHouse - Part 2](https://clickhouse.com/blog/vector-search-clickhouse-p2)
+- [We built a vector search engine that lets you choose precision at query time](https://clickhouse.com/blog/qbit-vector-search)

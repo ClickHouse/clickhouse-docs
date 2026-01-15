@@ -46,21 +46,21 @@ catalog_type,
 
 サポートされている設定は次のとおりです:
 
-| Setting                 | Description                                                                     |
-| ----------------------- | ------------------------------------------------------------------------------- |
-| `catalog_type`          | カタログの種類: `glue`, `unity` (Delta), `rest` (Iceberg), `hive`, `onelake` (Iceberg) |
-| `warehouse`             | カタログ内で使用する warehouse / データベース名                                                  |
-| `catalog_credential`    | カタログの認証情報（例: API キーまたはトークン）                                                     |
-| `auth_header`           | カタログサービスとの認証に使用するカスタム HTTP ヘッダー                                                 |
-| `auth_scope`            | 認証用の OAuth2 スコープ（OAuth を使用する場合）                                                 |
-| `storage_endpoint`      | バックエンドストレージのエンドポイント URL                                                         |
-| `oauth_server_uri`      | 認証に使用する OAuth2 認可サーバーの URI                                                      |
-| `vended_credentials`    | vended credentials（AWS 固有）を使用するかどうかを示す真偽値                                       |
-| `aws_access_key_id`     | S3/Glue へのアクセス用 AWS アクセスキー ID（vended credentials を使用しない場合）                      |
-| `aws_secret_access_key` | S3/Glue へのアクセス用 AWS シークレットアクセスキー（vended credentials を使用しない場合）                   |
-| `region`                | サービスの AWS リージョン（例: `us-east-1`）                                                 |
-| `dlf_access_key_id`     | DLF へのアクセス用アクセスキー ID                                                            |
-| `dlf_access_key_secret` | DLF へのアクセス用アクセスキーシークレット                                                         |
+| Setting                 | Description                                                                      |
+| ----------------------- | -------------------------------------------------------------------------------- |
+| `catalog_type`          | カタログの種類: `glue`, `unity` (Delta), `rest` (Iceberg), `hive`, `onelake` (Iceberg)  |
+| `warehouse`             | カタログ内で使用する warehouse / データベース名                                                   |
+| `catalog_credential`    | カタログの認証情報（例: API キーまたはトークン）                                                      |
+| `auth_header`           | カタログサービスとの認証に使用するカスタム HTTP ヘッダー                                                  |
+| `auth_scope`            | 認証用の OAuth2 スコープ（OAuth を使用する場合）                                                  |
+| `storage_endpoint`      | バックエンドストレージのエンドポイント URL                                                          |
+| `oauth_server_uri`      | 認証に使用する OAuth2 認可サーバーの URI                                                       |
+| `vended_credentials`    | カタログから提供される vended credentials を使用するかどうかを示す真偽値（AWS S3 および Azure ADLS Gen2 をサポート） |
+| `aws_access_key_id`     | S3/Glue へのアクセス用 AWS アクセスキー ID（vended credentials を使用しない場合）                       |
+| `aws_secret_access_key` | S3/Glue へのアクセス用 AWS シークレットアクセスキー（vended credentials を使用しない場合）                    |
+| `region`                | サービスの AWS リージョン（例: `us-east-1`）                                                  |
+| `dlf_access_key_id`     | DLF へのアクセス用アクセスキー ID                                                             |
+| `dlf_access_key_secret` | DLF へのアクセス用アクセスキーシークレット                                                          |
 
 
 ## 例 {#examples}

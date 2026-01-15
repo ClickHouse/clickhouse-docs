@@ -50,18 +50,6 @@ ClickHouse はオープンソースであるため、ClickHouse の従業員だ�
 
 | 名前 | デフォルト |
 |------|--------|
-| [shared&#95;merge&#95;tree&#95;activate&#95;coordinated&#95;merges&#95;tasks](/operations/settings/merge-tree-settings#shared_merge_tree_activate_coordinated_merges_tasks) | `0` |
-| [shared&#95;merge&#95;tree&#95;enable&#95;coordinated&#95;merges](/operations/settings/merge-tree-settings#shared_merge_tree_enable_coordinated_merges) | `0` |
-| [shared&#95;merge&#95;tree&#95;enable&#95;keeper&#95;parts&#95;extra&#95;data](/operations/settings/merge-tree-settings#shared_merge_tree_enable_keeper_parts_extra_data) | `0` |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;election&#95;check&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_election_check_period_ms) | `30000` |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;factor](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_factor) | `1.1` |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;fetch&#95;fresh&#95;metadata&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms) | `10000` |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;max&#95;merge&#95;request&#95;size](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_merge_request_size) | `20` |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;max&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_period_ms) | `10000` |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;merges&#95;prepare&#95;count](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_merges_prepare_count) | `100` |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;min&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_min_period_ms) | `1` |
-| [shared&#95;merge&#95;tree&#95;merge&#95;worker&#95;fast&#95;timeout&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_fast_timeout_ms) | `100` |
-| [shared&#95;merge&#95;tree&#95;merge&#95;worker&#95;regular&#95;timeout&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_regular_timeout_ms) | `10000` |
 | [geotoh3&#95;argument&#95;order](/operations/settings/settings#geotoh3_argument_order) | `lat_lon` |
 | [enable&#95;lightweight&#95;update](/operations/settings/settings#enable_lightweight_update) | `1` |
 | [allow&#95;experimental&#95;correlated&#95;subqueries](/operations/settings/settings#allow_experimental_correlated_subqueries) | `1` |
@@ -75,9 +63,22 @@ ClickHouse はオープンソースであるため、ClickHouse の従業員だ�
 | [allow&#95;experimental&#95;database&#95;glue&#95;catalog](/operations/settings/settings#allow_experimental_database_glue_catalog) | `0` |
 | [session&#95;timezone](/operations/settings/settings#session_timezone) | `` |
 | [low&#95;priority&#95;query&#95;wait&#95;time&#95;ms](/operations/settings/settings#low_priority_query_wait_time_ms) | `1000` |
+| [enable_qbit_type](/operations/settings/settings#enable_qbit_type) | `1` |
 | [allow&#95;statistics&#95;optimize](/operations/settings/settings#allow_statistics_optimize) | `1` |
 | [enable&#95;full&#95;text&#95;index](/operations/settings/settings#enable_full_text_index) | `0` |
 | [allow&#95;experimental&#95;delta&#95;kernel&#95;rs](/operations/settings/settings#allow_experimental_delta_kernel_rs) | `1` |
+| [shared&#95;merge&#95;tree&#95;activate&#95;coordinated&#95;merges&#95;tasks](/operations/settings/merge-tree-settings#shared_merge_tree_activate_coordinated_merges_tasks) | `0` |
+| [shared&#95;merge&#95;tree&#95;enable&#95;coordinated&#95;merges](/operations/settings/merge-tree-settings#shared_merge_tree_enable_coordinated_merges) | `0` |
+| [shared&#95;merge&#95;tree&#95;enable&#95;keeper&#95;parts&#95;extra&#95;data](/operations/settings/merge-tree-settings#shared_merge_tree_enable_keeper_parts_extra_data) | `0` |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;election&#95;check&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_election_check_period_ms) | `30000` |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;factor](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_factor) | `1.1` |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;fetch&#95;fresh&#95;metadata&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms) | `10000` |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;max&#95;merge&#95;request&#95;size](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_merge_request_size) | `20` |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;max&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_period_ms) | `10000` |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;merges&#95;prepare&#95;count](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_merges_prepare_count) | `100` |
+| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;min&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_min_period_ms) | `1` |
+| [shared&#95;merge&#95;tree&#95;merge&#95;worker&#95;fast&#95;timeout&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_fast_timeout_ms) | `100` |
+| [shared&#95;merge&#95;tree&#95;merge&#95;worker&#95;regular&#95;timeout&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_regular_timeout_ms) | `10000` |
 
 ## 実験的設定 {#experimental-settings}
 
@@ -124,7 +125,6 @@ ClickHouse はオープンソースであるため、ClickHouse の従業員だ�
 | [wait&#95;for&#95;window&#95;view&#95;fire&#95;signal&#95;timeout](/operations/settings/settings#wait_for_window_view_fire_signal_timeout)                                                                                          | `10`                    |
 | [stop&#95;refreshable&#95;materialized&#95;views&#95;on&#95;startup](/operations/settings/settings#stop_refreshable_materialized_views_on_startup)                                                                                  | `0`                     |
 | [allow&#95;experimental&#95;database&#95;materialized&#95;postgresql](/operations/settings/settings#allow_experimental_database_materialized_postgresql)                                                                            | `0`                     |
-| [allow&#95;experimental&#95;qbit&#95;type](/operations/settings/settings#allow_experimental_qbit_type)                                                                                                                              | `0`                     |
 | [allow&#95;experimental&#95;query&#95;deduplication](/operations/settings/settings#allow_experimental_query_deduplication)                                                                                                          | `0`                     |
 | [allow&#95;experimental&#95;database&#95;hms&#95;catalog](/operations/settings/settings#allow_experimental_database_hms_catalog)                                                                                                    | `0`                     |
 | [allow&#95;experimental&#95;kusto&#95;dialect](/operations/settings/settings#allow_experimental_kusto_dialect)                                                                                                                      | `0`                     |

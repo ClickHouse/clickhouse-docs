@@ -5,7 +5,7 @@ title: 'first_value'
 doc_type: 'reference'
 ---
 
-# first&#95;value {#first&#95;value}
+# first_value {#first_value}
 
 它是 [`any`](../../../sql-reference/aggregate-functions/reference/any.md) 的别名，但之所以引入它，是为了兼容 [窗口函数](../../window-functions/index.md)，在这些场景下有时需要处理 `NULL` 值（默认情况下，所有 ClickHouse 聚合函数都会忽略 NULL 值）。
 

@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.background&#95;schedule&#95;pool&#95;log {#systembackground&#95;schedule&#95;pool&#95;log}
+# system.background_schedule_pool_log {#systembackground_schedule_pool_log}
 
 <SystemTableCloud />
 

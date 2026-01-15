@@ -26,15 +26,6 @@ ClickHouse Cloud は、運用負荷を大幅に軽減し、大規模な ClickHou
 
 ClickHouse Cloud は、オープンソース版 ClickHouse に含まれる機能のうち厳選されたものへのアクセスを提供します。以下では、現時点で ClickHouse Cloud では無効化されている一部の機能について説明します。
 
-### DDL 構文 {#ddl-syntax}
-
-ほとんどの場合、ClickHouse Cloud の DDL 構文はセルフマネージドインストールで利用可能なものと一致します。主な例外は次のとおりです。
-
-- 現在サポートされていない `CREATE AS SELECT`。回避策として、`CREATE ... EMPTY ... AS SELECT` を使用し、そのテーブルに対して INSERT を行うことを推奨します（例については [このブログ](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1) を参照してください）。
-- 一部の実験的な構文は無効化されている場合があります。例えば、`ALTER TABLE ... MODIFY QUERY` ステートメントなどです。
-- セキュリティ上の理由から、一部のイントロスペクション機能は無効化されている場合があります。例えば、`addressToLine` SQL 関数などです。
-- ClickHouse Cloud では `ON CLUSTER` パラメータを使用しないでください。これは不要です。ほとんどは no-op ですが、[macros](/operations/server-configuration-parameters/settings#macros) を使用しようとした場合にエラーになることがあります。マクロは多くの場合正しく動作せず、ClickHouse Cloud では不要です。
-
 ### データベースおよびテーブルエンジン {#database-and-table-engines}
 
 ClickHouse Cloud は、デフォルトで高可用かつレプリケーションされたサービスを提供します。その結果、すべてのデータベースおよびテーブルエンジンは「Replicated」となります。"Replicated" を明示的に指定する必要はありません。例えば、ClickHouse Cloud では `ReplicatedMergeTree` と `MergeTree` は同一として扱われます。
@@ -68,6 +59,7 @@ ClickHouse Cloud は、デフォルトで高可用かつレプリケーション
 - RabbitMQ
 - PostgreSQL
 - S3
+- Kafka
 
 ### インターフェース {#interfaces}
 
@@ -93,7 +85,7 @@ SQLite、ODBC、JDBC、Redis、HDFS、Hive など一部の外部データベー�
 
 ### ユーザー定義関数 {#user-defined-functions}
 
-ユーザー定義関数は、ClickHouse における比較的新しい機能です。ClickHouse Cloud は現在、SQL UDF のみをサポートしています。
+ClickHouse Cloud におけるユーザー定義関数は現在、[プライベートプレビュー](https://clickhouse.com/docs/sql-reference/functions/udf)段階にあります。
 
 #### Settings の動作 {#udf-settings-behavior}
 
@@ -110,10 +102,6 @@ ClickHouse Cloud の UDF は **ユーザーレベルの Settings を継承しま
 ### 実験的機能 {#experimental-features}
 
 サービスデプロイメントの安定性を確保するため、ClickHouse Cloud サービスでは実験的機能は無効化されています。
-
-### Kafka {#kafka}
-
-[Kafka Table Engine](/integrations/data-ingestion/kafka/index.md) は ClickHouse Cloud では一般提供されていません。代わりに、関心の分離を実現するため、Kafka 接続コンポーネントを ClickHouse サービスから分離したアーキテクチャを採用することを推奨します。Kafka ストリームからデータをプルするには、[ClickPipes](https://clickhouse.com/cloud/clickpipes) の利用を推奨します。あるいは、[Kafka User Guide](/integrations/data-ingestion/kafka/index.md) に記載されているプッシュ型の代替案の利用を検討してください。
 
 ### Named collections {#named-collections}
 
@@ -149,4 +137,4 @@ ClickHouse サービスの作成時に、デフォルトのデータベースと
 
 ## ロードマップ {#roadmap}
 
-現在、ClickHouse Cloud での実行可能な UDF のサポートを導入しており、その他多くの機能についてもニーズを評価しています。フィードバックや特定の機能のリクエストがある場合は、[こちらから送信してください](https://console.clickhouse.cloud/support)。
+ClickHouse Cloud におけるさまざまな追加機能のニーズを評価しています。フィードバックや特定の機能のリクエストがある場合は、[こちらから送信してください](https://console.clickhouse.cloud/support)。

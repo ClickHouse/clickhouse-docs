@@ -229,7 +229,7 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL 
 
 在 `GLOBAL IN` 子句中指定一个本地表也是有意义的，特别是在该本地表仅在发起请求的服务器上可用，而你又希望在远程服务器上使用其中数据的情况下。
 
-### 分布式子查询和 max&#95;rows&#95;in&#95;set {#distributed-subqueries-and-max&#95;rows&#95;in&#95;set}
+### 分布式子查询和 max_rows_in_set {#distributed-subqueries-and-max_rows_in_set}
 
 你可以使用 [`max_rows_in_set`](/operations/settings/settings#max_rows_in_set) 和 [`max_bytes_in_set`](/operations/settings/settings#max_bytes_in_set) 来控制在分布式查询期间传输的数据量。
 
@@ -241,7 +241,7 @@ SELECT * FROM table1 WHERE col1 GLOBAL IN (SELECT col1 FROM table2 WHERE <some_p
 
 如果 `some_predicate` 的选择性不够高，它会返回大量数据并导致性能问题。在这种情况下，限制通过网络传输的数据量是明智的做法。另请注意，[`set_overflow_mode`](/operations/settings/settings#set_overflow_mode) 默认设置为 `throw`，这意味着当达到这些阈值时会抛出异常。
 
-### 分布式子查询与 max&#95;parallel&#95;replicas {#distributed-subqueries-and-max&#95;parallel&#95;replicas}
+### 分布式子查询与 max_parallel_replicas {#distributed-subqueries-and-max_parallel_replicas}
 
 当 [max&#95;parallel&#95;replicas](#distributed-subqueries-and-max_parallel_replicas) 大于 1 时，分布式查询会被进一步转换。
 

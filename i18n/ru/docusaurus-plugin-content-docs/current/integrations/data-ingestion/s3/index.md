@@ -704,9 +704,7 @@ ALTER TABLE trips_s3 MODIFY SETTING storage_policy='s3_tiered'
 
 ## Использование объектного хранилища S3 как диска ClickHouse {#configuring-s3-for-clickhouse-use}
 
-Если вам нужны пошаговые инструкции по созданию бакетов и роли IAM, разверните раздел **Create S3 buckets and an IAM role** и следуйте инструкциям:
-
-<BucketDetails />
+Если вам нужны пошаговые инструкции по созданию бакетов и роли IAM, обратитесь к разделу ["How to create an AWS IAM user and S3 bucket"](/integrations/s3/creating-iam-user-and-s3-bucket)
 
 ### Настройка ClickHouse для использования бакета S3 в качестве диска {#configure-clickhouse-to-use-the-s3-bucket-as-a-disk}
 

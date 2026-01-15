@@ -704,9 +704,7 @@ S3 ディスクを使用したレプリケーションは、`ReplicatedMergeTree
 
 ## S3 オブジェクトストレージを ClickHouse のディスクとして使用する {#configuring-s3-for-clickhouse-use}
 
-バケットと IAM ロールを作成するための詳細な手順が必要な場合は、**Create S3 buckets and an IAM role** を展開して、手順に従ってください。
-
-<BucketDetails />
+バケットと IAM ロールを作成するための詳細な手順が必要な場合は、「[How to create an AWS IAM user and S3 bucket](/integrations/s3/creating-iam-user-and-s3-bucket)」を参照してください。
 
 ### ClickHouse を構成して S3 バケットをディスクとして使用する {#configure-clickhouse-to-use-the-s3-bucket-as-a-disk}
 
