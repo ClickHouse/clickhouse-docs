@@ -355,6 +355,8 @@ There is no guarantee the same connection in a pool will be used for subsequent 
 
 Also, note that the `ConnMaxLifetime` is by default 1hr. This can lead to cases where the load to ClickHouse becomes unbalanced if nodes leave the cluster. This can occur when a node becomes unavailable, connections will balance to the other nodes. These connections will persist and not be refreshed for 1hr by default, even if the problematic node returns to the cluster. Consider lowering this value in heavy workload cases.
 
+Connection polling is enabled for both Native (TCP) and HTTP protocol.
+
 ### Using TLS {#using-tls}
 
 At a low level, all client connect methods (`DSN/OpenDB/Open`) will use the[ Go tls package](https://pkg.go.dev/crypto/tls) to establish a secure connection. The client knows to use TLS if the Options struct contains a non-nil `tls.Config` pointer.
@@ -1966,7 +1968,8 @@ func ConnectSettings() error {
 
 #### Connection pooling {#connection-pooling-1}
 
-You can influence the use of the provided list of node addresses as described in [Connecting to Multiple Nodes](#connecting-to-multiple-nodes). Connection management and pooling is, however, delegated to `sql.DB` by design.
+You can influence the use of the provided list of node addresses as described in [Connecting to Multiple Nodes](#connecting-to-multiple-nodes). Connection management and pooling is, however, delegated to `sql.DB` by design. 
+Connection polling is enabled for both Native (TCP) and HTTP protocol.
 
 #### Connecting over HTTP {#connecting-over-http}
 
