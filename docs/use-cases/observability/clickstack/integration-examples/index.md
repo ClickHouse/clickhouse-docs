@@ -23,6 +23,7 @@ Several of these integration guides use ClickStack's built-in OpenTelemetry Coll
 | [JVM Metrics](/use-cases/observability/clickstack/integrations/jvm-metrics) | Monitor JVM performance |
 | [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Monitor Kafka performance |
 | [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | Monitor K8s clusters |
+| [MySQL Logs](/use-cases/observability/clickstack/integrations/mysql-logs) | Collect MySQL slow query/error logs |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Collect Nginx access/error logs |
 | [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Trace Nginx HTTP requests |
 | [PostgreSQL Logs](/use-cases/observability/clickstack/integrations/postgresql-logs) | Collect Postgres logs |
