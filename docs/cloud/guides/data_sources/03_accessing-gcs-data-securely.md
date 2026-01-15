@@ -177,7 +177,7 @@ FROM gcs(
 
 ClickPipes uses HMAC (Hash-based Message Authentication Code) keys to authenticate with Google Cloud Storage.
 
-When setting up a GCS ClickPipe:
+When [setting up a GCS ClickPipe](/integrations/clickpipes/object-storage/gcs/get-started):
 
 1. Select `Credentials` under `Authentication method` during ClickPipe setup
 2. Provide HMAC credentials obtained in the previous steps
