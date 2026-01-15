@@ -485,11 +485,13 @@ select a,b,c from {{ source('raw', 'table_2') }}
 
 #### Data catch-up {#data-catch-up}
 
-Currently, when creating a materialized view (MV), the target table is first populated with historical data before the MV itself is created.
+By default, when creating or recreating a materialized view (MV), the target table is first populated with historical data before the MV itself is created.
 
-In other words, dbt-clickhouse initially creates the target table and preloads it with historical data based on the query defined for the MV. Only after this step is the MV created.
+In other words, dbt-clickhouse initially creates the target table and preloads it with historical data based on the query defined for the MV. Only after this step is the MV created. This behavior applies to:
+- **Initial deployment**: When running `dbt run` on a new model
+- **Full refresh**: When running `dbt run --full-refresh` on an existing model
 
-If you prefer not to preload historical data during MV creation, you can disable this behavior by setting the catch-up config to False:
+If you prefer not to preload historical data, you can disable this behavior by setting the `catchup` config to `False`:
 
 ```python
 {{config(
@@ -499,6 +501,34 @@ If you prefer not to preload historical data during MV creation, you can disable
     catchup=False
 )}}
 ```
+
+:::warning Data Loss Risk with Full Refresh
+Using `catchup: False` during full refresh operations (`dbt run --full-refresh`) will **discard all existing data** in the target table. The table will be recreated empty, and only new data inserted into the source table after the refresh will be captured by the materialized view.
+
+**Example scenario:**
+- Your materialized view has been collecting data for 30 days
+- You run `dbt run --full-refresh` with `catchup: False`
+- **Result**: All 30 days of historical data will be permanently lost
+- The target table will start fresh and only capture new data going forward
+
+**Before using `catchup: False` during full refresh, ensure:**
+- Downstream consumers (dashboards, reports, applications) can handle the data gap
+- You have backups if the historical data might be needed later
+- Stakeholders who rely on this data are aware of the data loss
+
+**Common use cases for `catchup: False`:**
+- Development and testing environments where historical data isn't critical
+- Heavy transformations that would be too resource-intensive to backfill
+- Intentional fresh start with new schema or logic where old data should be discarded
+:::
+
+**Behavior summary:**
+
+| Operation | `catchup: True` (default) | `catchup: False` |
+|-----------|---------------------------|------------------|
+| Initial deployment (`dbt run`) | Target table backfilled with historical data | Target table created empty |
+| Full refresh (`dbt run --full-refresh`) | Target table rebuilt and backfilled | Target table recreated empty, **existing data lost** |
+| Normal operation | Materialized view captures new inserts | Materialized view captures new inserts |
 
 #### Refreshable Materialized Views {#refreshable-materialized-views}
 
