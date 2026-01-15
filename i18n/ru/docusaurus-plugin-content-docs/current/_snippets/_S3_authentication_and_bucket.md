@@ -23,7 +23,7 @@ import s3_h from '@site/static/images/_snippets/s3/s3-h.png';
   В этой статье описаны основы настройки пользователя AWS IAM, создания корзины S3 и настройки ClickHouse для использования корзины в качестве диска S3.
   You should work with your security team to determine the permissions to be used, and consider these as a starting point.
 
-  ### Создание пользователя AWS IAM {#create-an-aws-iam-user}
+  ### Создание пользователя AWS IAM
 
   В следующих шагах вы создадите пользователя служебной учетной записи (не пользователя для входа в систему).
 
