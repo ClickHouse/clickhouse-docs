@@ -5,7 +5,7 @@ title: 'uniqCombined'
 doc_type: 'reference'
 ---
 
-# uniqCombined {#uniqcombined}
+# uniqCombined \{#uniqcombined\}
 
 異なる引数の値のおおよその数を計算します。
 

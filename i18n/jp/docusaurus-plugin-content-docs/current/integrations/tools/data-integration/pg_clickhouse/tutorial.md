@@ -7,13 +7,13 @@ doc_type: 'guide'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension', 'tutorial', 'taxi']
 ---
 
-# pg_clickhouse チュートリアル {#pg_clickhouse-tutorial}
+# pg_clickhouse チュートリアル \{#pg_clickhouse-tutorial\}
 
-## 概要 {#overview}
+## 概要 \{#overview\}
 
 このチュートリアルでは、[ClickHouse tutorial] に従いながら、すべてのクエリを pg_clickhouse 経由で実行します。
 
-## ClickHouse を起動する {#start-clickhouse}
+## ClickHouse を起動する \{#start-clickhouse\}
 
 まず、まだ ClickHouse データベースがない場合は、新しく作成してください。手軽に始めるには、Docker イメージを利用する方法があります。
 
@@ -23,7 +23,7 @@ docker exec -it clickhouse clickhouse-client
 ```
 
 
-## テーブルを作成する {#create-a-table}
+## テーブルを作成する \{#create-a-table\}
 
 [ClickHouse tutorial] を参考に、ニューヨーク市タクシーのデータセットを使ってシンプルなデータベースを作成します。
 
@@ -88,7 +88,7 @@ ORDER BY pickup_datetime;
 ```
 
 
-## データセットを追加 {#add-the-data-set}
+## データセットを追加 \{#add-the-data-set\}
 
 次にデータをインポートします。
 
@@ -158,7 +158,7 @@ quit
 ```
 
 
-### pg&#95;clickhouse をインストールする {#install-pg&#95;clickhouse}
+### pg&#95;clickhouse をインストールする \{#install-pg&#95;clickhouse\}
 
 [PGXN] または [GitHub] から pg&#95;clickhouse をビルドしてインストールします。もしくは、[pg&#95;clickhouse image] を使って Docker コンテナを起動します。このイメージは、Docker の [Postgres image] に pg&#95;clickhouse を追加したものです。
 
@@ -168,7 +168,7 @@ docker run -d --network host --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
 ```
 
 
-### pg&#95;clickhouse に接続 {#connect-pg&#95;clickhouse}
+### pg&#95;clickhouse に接続 \{#connect-pg&#95;clickhouse\}
 
 次に、Postgres に接続します。
 
@@ -300,7 +300,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 実行計画のルートに「Foreign Scan」が表示されていることに注目してください。これは、クエリ全体が ClickHouse にプッシュダウンされていることを意味します。
 
 
-## データを分析する {#analyze-the-data}
+## データを分析する \{#analyze-the-data\}
 
 いくつかクエリを実行してデータを分析してみましょう。以下の例を試すか、
 独自の SQL クエリを実行してください。
@@ -453,7 +453,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 17.450 ms
   ```
 
-## Dictionary を作成する {#create-a-dictionary}
+## Dictionary を作成する \{#create-a-dictionary\}
 
 ClickHouse サービス内のテーブルに関連付けられた Dictionary を作成します。
 テーブルと Dictionary は、ニューヨーク市の各地区ごとに 1 行が含まれる CSV ファイルに基づいています。
@@ -550,7 +550,7 @@ ClickHouse サービス内のテーブルに関連付けられた Dictionary を
     borough ごとに合計します。pickup の地区が不明なトリップがかなり多いことが
     わかります。
 
-## JOIN を実行する {#perform-a-join}
+## JOIN を実行する \{#perform-a-join\}
 
 `taxi_zone_dictionary` を `trips` テーブルと結合するクエリをいくつか書きます。
 

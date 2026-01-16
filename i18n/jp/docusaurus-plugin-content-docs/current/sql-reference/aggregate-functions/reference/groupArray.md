@@ -5,7 +5,7 @@ title: 'groupArray'
 doc_type: 'reference'
 ---
 
-# groupArray {#grouparray}
+# groupArray \{#grouparray\}
 
 構文: `groupArray(x)` または `groupArray(max_size)(x)`
 

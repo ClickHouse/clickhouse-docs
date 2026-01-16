@@ -7,13 +7,13 @@ title: '表 TTL 操作'
 doc_type: 'reference'
 ---
 
-# 表 TTL 操作 {#manipulations-with-table-ttl}
+# 表 TTL 操作 \{#manipulations-with-table-ttl\}
 
 :::note
 如果你想了解如何使用 TTL 管理历史数据的更多信息，请参阅用户指南：[使用 TTL 管理数据](/guides/developer/ttl.md)。下文演示了如何修改或删除现有的 TTL 规则。
 :::
 
-## 修改 TTL {#modify-ttl}
+## 修改 TTL \{#modify-ttl\}
 
 你可以使用如下形式的请求来修改[表 TTL](../../../engines/table-engines/mergetree-family/mergetree.md#mergetree-table-ttl)：
 
@@ -21,7 +21,7 @@ doc_type: 'reference'
 ALTER TABLE [db.]table_name [ON CLUSTER cluster] MODIFY TTL ttl_expression;
 ```
 
-## 移除 TTL {#remove-ttl}
+## 移除 TTL \{#remove-ttl\}
 
 可以使用以下查询移除表上的 TTL 属性：
 

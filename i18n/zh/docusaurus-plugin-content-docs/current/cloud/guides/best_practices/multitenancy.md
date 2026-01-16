@@ -11,7 +11,7 @@ keywords: ['多租户', '隔离', '最佳实践', '架构', '多租户架构']
 
 根据具体需求，实现多租户架构有多种方式。下面的指南将介绍如何在 ClickHouse Cloud 中实现这些方式。
 
-## 共享表  {#shared-table}
+## 共享表  \{#shared-table\}
 
 在这种方案中，所有租户的数据都存储在单个共享表中，并使用一个字段（或一组字段）来标识每个租户的数据。为最大化性能，该字段应包含在[主键](/sql-reference/statements/create/table#primary-key)中。为确保只能访问各自租户的数据，我们使用[基于角色的访问控制](/operations/access-rights)，并通过[行策略](/operations/access-rights#row-policy-management)来实现。
 
@@ -25,7 +25,7 @@ keywords: ['多租户', '隔离', '最佳实践', '架构', '多租户架构']
 
 在不同租户之间存在显著数据量差异的情况下，小租户可能会承受不必要的查询性能影响。需要注意的是，通过在主键中包含租户字段，这一问题在很大程度上可以被缓解。
 
-### 示例 {#shared-table-example}
+### 示例 \{#shared-table-example\}
 
 这是一个共享表多租户模型实现的示例。
 
@@ -109,7 +109,7 @@ FROM events
 ```
 
 
-## 独立表 {#separate-tables}
+## 独立表 \{#separate-tables\}
 
 在这种方案中，每个租户的数据都存储在同一数据库中的独立表里，从而不再需要使用单独的字段来标识租户。通过使用 [GRANT 语句](/sql-reference/statements/grant) 来控制用户访问，确保每个用户只能访问包含其所属租户数据的表。
 
@@ -119,7 +119,7 @@ FROM events
 
 请注意，这种方案不适用于扩展到成千上百个租户。参见 [使用限制](/cloud/bestpractices/usage-limits)。
 
-### 示例 {#separate-tables-example}
+### 示例 \{#separate-tables-example\}
 
 这是一个独立表多租户模型实现的示例。
 
@@ -202,7 +202,7 @@ FROM default.events_tenant_1
 ```
 
 
-## 独立数据库 {#separate-databases}
+## 独立数据库 \{#separate-databases\}
 
 每个租户的数据都存储在同一 ClickHouse 服务中的独立数据库内。
 
@@ -212,7 +212,7 @@ FROM default.events_tenant_1
 
 请注意，此方案无法扩展到成千上万个租户。请参阅[使用限制](/cloud/bestpractices/usage-limits)。
 
-### 示例 {#separate-databases-example}
+### 示例 \{#separate-databases-example\}
 
 这是一个使用独立数据库实现多租户模型的示例。
 
@@ -304,7 +304,7 @@ FROM tenant_1.events
 ```
 
 
-## 计算-计算分离 {#compute-compute-separation}
+## 计算-计算分离 \{#compute-compute-separation\}
 
 上面描述的三种方法也可以通过使用 [Warehouses](/cloud/reference/warehouses#what-is-a-warehouse) 进一步隔离。数据存储在共享的对象存储中，但借助于 [计算-计算分离](/cloud/reference/warehouses#what-is-compute-compute-separation)，每个租户都可以拥有自己的计算服务，并配置不同的 CPU/内存配比。 
 
@@ -312,7 +312,7 @@ FROM tenant_1.events
 
 请注意，一个 Warehouse 中的子服务数量有较小的上限。参见 [Warehouse 限制](/cloud/reference/warehouses#limitations)。
 
-## 独立的云服务 {#separate-service}
+## 独立的云服务 \{#separate-service\}
 
 最激进的方法是为每个租户单独使用一个 ClickHouse 服务。 
 
@@ -322,7 +322,7 @@ FROM tenant_1.events
 
 这种方法更难管理，并且每个服务都会带来额外开销，因为它们各自需要独立的基础设施来运行。服务可以通过 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 进行管理，也可以使用 [官方 Terraform provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) 进行编排。
 
-### 示例 {#separate-service-example}
+### 示例 \{#separate-service-example\}
 
 这是一个独立服务多租户模型实现示例。请注意，该示例展示了在一个 ClickHouse 服务上创建数据表和用户，同样的操作需要在所有服务上执行。
 

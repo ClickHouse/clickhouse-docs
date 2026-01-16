@@ -5,7 +5,7 @@ title: 'median'
 doc_type: 'reference'
 ---
 
-# median {#median}
+# median \{#median\}
 
 Функции `median*` являются псевдонимами соответствующих функций `quantile*`. Они вычисляют медиану по числовой выборке данных.
 

@@ -7,14 +7,14 @@ sidebar_label: 'minMap'
 doc_type: 'reference'
 ---
 
-# minMap {#minmap}
+# minMap \{#minmap\}
 
-## Описание {#description}
+## Описание \{#description\}
 
 Комбинатор [`Map`](/sql-reference/aggregate-functions/combinators#-map) может быть применён к функции [`min`](/sql-reference/aggregate-functions/reference/min)
 для вычисления минимального значения в Map отдельно для каждого ключа с использованием агрегатной функции-комбинатора `minMap`.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 В этом примере мы создадим таблицу, которая хранит коды статуса и их количество для различных временных слотов,
 где каждая строка содержит `Map` с отображением кодов статуса в соответствующие им количества. Мы будем использовать
@@ -61,6 +61,6 @@ GROUP BY timeslot;
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
-## См. также {#see-also}
+## См. также \{#see-also\}
 - [`min`](/sql-reference/aggregate-functions/reference/min)
 - [`Map combinator`](/sql-reference/aggregate-functions/combinators#-map)

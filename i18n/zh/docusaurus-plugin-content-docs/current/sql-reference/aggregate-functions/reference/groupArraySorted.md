@@ -5,7 +5,7 @@ title: 'groupArraySorted'
 doc_type: 'reference'
 ---
 
-# groupArraySorted {#grouparraysorted}
+# groupArraySorted \{#grouparraysorted\}
 
 返回包含按升序排列的前 N 个元素的数组。
 

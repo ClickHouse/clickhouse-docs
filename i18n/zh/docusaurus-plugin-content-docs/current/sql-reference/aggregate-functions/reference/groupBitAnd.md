@@ -5,7 +5,7 @@ title: 'groupBitAnd'
 doc_type: 'reference'
 ---
 
-# groupBitAnd {#groupbitand}
+# groupBitAnd \{#groupbitand\}
 
 对一系列数值执行按位 `AND` 运算。
 

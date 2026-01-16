@@ -5,7 +5,7 @@ title: 'deltaSum'
 doc_type: 'reference'
 ---
 
-# deltaSum {#deltasum}
+# deltaSum \{#deltasum\}
 
 对相邻行之间的算术差求和。如果差值为负，则会被忽略。
 
@@ -71,7 +71,7 @@ SELECT deltaSum(arrayJoin([2.25, 3, 4.5]));
 └─────────────────────────────────────┘
 ```
 
-## 另请参阅 {#see-also}
+## 另请参阅 \{#see-also\}
 
 * [runningDifference](/sql-reference/functions/other-functions#runningDifference)
 

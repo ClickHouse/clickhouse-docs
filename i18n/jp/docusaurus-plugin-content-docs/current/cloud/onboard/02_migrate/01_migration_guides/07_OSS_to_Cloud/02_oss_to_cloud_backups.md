@@ -19,9 +19,9 @@ import create_new_role from '@site/static/images/cloud/onboard/migrate/oss_to_cl
 import backup_s3_bucket from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/backup_in_s3_bucket.png';
 
 
-# バックアップコマンドを使用してセルフマネージド ClickHouse から ClickHouse Cloud に移行する {#migrating-from-self-managed-clickhouse-to-clickhouse-cloud-using-backup-commands}
+# バックアップコマンドを使用してセルフマネージド ClickHouse から ClickHouse Cloud に移行する \{#migrating-from-self-managed-clickhouse-to-clickhouse-cloud-using-backup-commands\}
 
-## 概要 {#overview-migration-approaches}
+## 概要 \{#overview-migration-approaches\}
 
 セルフマネージドな ClickHouse (OSS) から ClickHouse Cloud へデータを移行するには、主に 2 つの方法があります:
 
@@ -43,7 +43,7 @@ import backup_s3_bucket from '@site/static/images/cloud/onboard/migrate/oss_to_c
 単一インスタンスで実行している場合は、代わりに「[Migrating between self-managed ClickHouse and ClickHouse Cloud using remoteSecure](/cloud/migration/clickhouse-to-cloud)」の手順に従ってください。
 :::
 
-## OSS の準備 {#oss-setup}
+## OSS の準備 \{#oss-setup\}
 
 まず、examples リポジトリにある Docker Compose 設定を使って ClickHouse クラスターを起動します。
 すでに ClickHouse クラスターが稼働している場合は、ここでのクラスター起動手順は省略して構いません。
@@ -76,7 +76,7 @@ docker exec -it clickhouse-01 clickhouse-client
 ```
 
 
-### サンプルデータの作成 {#create-sample-data}
+### サンプルデータの作成 \{#create-sample-data\}
 
 ClickHouse Cloud では [`SharedMergeTree`](/cloud/reference/shared-merge-tree) を使用します。
 バックアップを復元する際、ClickHouse は `ReplicatedMergeTree` を使用しているテーブルを自動的に `SharedMergeTree` テーブルへ変換します。
@@ -175,34 +175,34 @@ WHERE name = 'trips_small' AND database = 'nyc_taxi';
 これで、後で S3 バケットからバックアップをリストアできるよう、Cloud サービスのセットアップに進む準備が整いました。
 
 
-## Cloud の準備 {#cloud-setup}
+## Cloud の準備 \{#cloud-setup\}
 
 データは新しい Cloud サービスにリストアされます。
 以下の手順に従って、新しい Cloud サービスを作成します。
 
 <VerticalStepper headerLevel="h4">
 
-#### Cloud Console を開く {#open-cloud-console}
+#### Cloud Console を開く \{#open-cloud-console\}
 
 [https://console.clickhouse.cloud/](https://console.clickhouse.cloud/) にアクセスします。
 
-#### 新しいサービスを作成する {#create-new-service}
+#### 新しいサービスを作成する \{#create-new-service\}
 
 <Image img={create_service} size="md" alt="新しいサービスを作成する"/> 
 
-#### サービスを設定して作成する {#configure-and-create}
+#### サービスを設定して作成する \{#configure-and-create\}
 
 希望するリージョンと構成を選択し、`Create service` をクリックします。
 
 <Image img={service_details} size="md" alt="サービスの設定を行う"/> 
 
-#### アクセスロールを作成する {#create-an-access-role}
+#### アクセスロールを作成する \{#create-an-access-role\}
 
 SQL コンソールを開きます。
 
 <Image img={open_console} size="md" alt="サービスの設定を行う"/>
 
-### S3 アクセスを設定する {#set-up-s3-access}
+### S3 アクセスを設定する \{#set-up-s3-access\}
 
 S3 からバックアップをリストアするには、ClickHouse Cloud と S3 バケット間の安全なアクセスを設定する必要があります。
 
@@ -244,7 +244,7 @@ S3 からバックアップをリストアするには、ClickHouse Cloud と S3
 
 </VerticalStepper>
 
-## バックアップの取得（セルフマネージド環境のデプロイメント） {#taking-a-backup-on-oss}
+## バックアップの取得（セルフマネージド環境のデプロイメント） \{#taking-a-backup-on-oss\}
 
 単一のデータベースのバックアップを取得するには、OSS デプロイメントに接続した clickhouse-client から次のコマンドを実行します。
 
@@ -333,7 +333,7 @@ WHERE id = 'abc123-def456-789'
 バックアップ全般の詳細については、[backup and restore](/operations/backup) ドキュメントを参照してください。
 
 
-## ClickHouse Cloud へのリストア {#restore-to-clickhouse-cloud}
+## ClickHouse Cloud へのリストア \{#restore-to-clickhouse-cloud\}
 
 単一のデータベースをリストアするには、Cloud サービスから次のクエリを実行します。以下の AWS 認証情報を自分のものに置き換え、
 `ROLE_ARN` を [&quot;Accessing S3 data securely&quot;](/cloud/data-sources/secure-s3) で説明した手順の出力として取得した値に設定します。

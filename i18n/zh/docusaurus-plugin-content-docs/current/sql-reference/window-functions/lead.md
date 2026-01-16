@@ -7,7 +7,7 @@ title: 'lead'
 doc_type: 'reference'
 ---
 
-# lead {#lead}
+# lead \{#lead\}
 
 返回在有序窗口中、相对于当前行向后偏移指定行数的那一行上计算得到的值。
 此函数与 [`leadInFrame`](./leadInFrame.md) 类似，但始终使用 `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` 这一窗口框架。

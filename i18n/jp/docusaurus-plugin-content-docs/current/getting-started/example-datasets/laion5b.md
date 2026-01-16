@@ -11,7 +11,7 @@ import search_results_image from '@site/static/images/getting-started/example-da
 import Image from '@theme/IdealImage';
 
 
-## はじめに {#introduction}
+## はじめに \{#introduction\}
 
 [LAION 5b データセット](https://laion.ai/blog/laion-5b/) には、58 億 5,000 万の画像-テキスト埋め込みと
 それに関連する画像メタデータが含まれています。これらの埋め込みは、`OpenAI CLIP` モデル [ViT-L/14](https://huggingface.co/sentence-transformers/clip-ViT-L-14) を使用して生成されました。
@@ -20,7 +20,7 @@ import Image from '@theme/IdealImage';
 このデータセットは、大規模な実世界のベクトル検索アプリケーションにおける設計、サイジング、およびパフォーマンス面を検証するために利用できます。テキストから画像への検索と、
 画像から画像への検索の両方に利用できます。
 
-## データセットの詳細 {#dataset-details}
+## データセットの詳細 \{#dataset-details\}
 
 完全なデータセットは、`npy` および `Parquet` ファイルの組み合わせとして [the-eye.eu](https://the-eye.eu/public/AI/cah/laion5b/) で利用できます。
 
@@ -29,7 +29,7 @@ ClickHouse は、1 億個のベクトルからなるサブセットを `S3` バ�
 
 このデータセットのストレージおよびメモリ要件を見積もるために、まず [ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md) を参照してサイジングを行うことを推奨します。
 
-## 手順 {#steps}
+## 手順 \{#steps\}
 
 <VerticalStepper headerLevel="h3">
   ### テーブルの作成

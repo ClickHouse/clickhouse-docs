@@ -7,9 +7,9 @@ title: '第三方开发的代理服务器'
 doc_type: 'reference'
 ---
 
-# 第三方开发的代理服务器 {#proxy-servers-from-third-party-developers}
+# 第三方开发的代理服务器 \{#proxy-servers-from-third-party-developers\}
 
-## chproxy {#chproxy}
+## chproxy \{#chproxy\}
 
 [chproxy](https://github.com/Vertamedia/chproxy) 是一个用于 ClickHouse 数据库的 HTTP 代理和负载均衡器。
 
@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 由 Go 语言实现。
 
-## KittenHouse {#kittenhouse}
+## KittenHouse \{#kittenhouse\}
 
 [KittenHouse](https://github.com/VKCOM/kittenhouse) 旨在在无法或不方便在应用程序端对 `INSERT` 数据进行缓冲时，作为 ClickHouse 与应用服务器之间的本地代理。
 
@@ -33,7 +33,7 @@ doc_type: 'reference'
 
 使用 Go 语言实现。
 
-## ClickHouse-Bulk {#clickhouse-bulk}
+## ClickHouse-Bulk \{#clickhouse-bulk\}
 
 [ClickHouse-Bulk](https://github.com/nikepan/clickhouse-bulk) 是一个简单的 ClickHouse 数据写入收集器。
 

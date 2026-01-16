@@ -7,12 +7,12 @@ title: 'Keeper HTTP API 和仪表板'
 doc_type: 'reference'
 ---
 
-# Keeper HTTP API 和仪表盘 {#keeper-http-api-and-dashboard}
+# Keeper HTTP API 和仪表盘 \{#keeper-http-api-and-dashboard\}
 
 ClickHouse Keeper 提供用于监控、健康检查和存储管理的 HTTP API 和内嵌 Web 仪表盘。
 该界面允许运维人员通过 Web 浏览器或 HTTP 客户端查看集群状态、执行命令并管理 Keeper 存储。
 
-## 配置 {#configuration}
+## 配置 \{#configuration\}
 
 要启用 HTTP API，请在 `keeper_server` 配置中添加 `http_control` 配置段：
 
@@ -28,7 +28,7 @@ ClickHouse Keeper 提供用于监控、健康检查和存储管理的 HTTP API �
 ```
 
 
-### 配置选项 {#configuration-options}
+### 配置选项 \{#configuration-options\}
 
 | 设置                                      | 默认值   | 描述                                       |
 |-------------------------------------------|----------|--------------------------------------------|
@@ -37,9 +37,9 @@ ClickHouse Keeper 提供用于监控、健康检查和存储管理的 HTTP API �
 | `http_control.readiness.endpoint`         | `/ready` | 就绪探针的自定义路径                       |
 | `http_control.storage.session_timeout_ms` | `30000`  | 存储 API 操作的会话超时时间                |
 
-## API 端点 {#endpoints}
+## API 端点 \{#endpoints\}
 
-### 仪表板 {#dashboard}
+### 仪表板 \{#dashboard\}
 
 - **路径**: `/dashboard`
 - **方法**: GET
@@ -52,7 +52,7 @@ ClickHouse Keeper 提供用于监控、健康检查和存储管理的 HTTP API �
 - 存储浏览器
 - 命令执行界面
 
-### 就绪探针 {#readiness-probe}
+### 就绪探针 \{#readiness-probe\}
 
 * **路径**: `/ready`（可配置）
 * **方法**: GET
@@ -71,7 +71,7 @@ ClickHouse Keeper 提供用于监控、健康检查和存储管理的 HTTP API �
 ```
 
 
-### Commands API {#commands-api}
+### Commands API \{#commands-api\}
 
 * **路径**: `/api/v1/commands/{command}`
 * **方法**: GET, POST
@@ -93,7 +93,7 @@ curl "http://localhost:9182/api/v1/commands/ls?command=ls%20'/'&cwd=/"
 ```
 
 
-### Storage API {#storage-api}
+### Storage API \{#storage-api\}
 
 - **基础路径**：`/api/v1/storage`
 - **说明**：用于 Keeper 存储操作的 REST API

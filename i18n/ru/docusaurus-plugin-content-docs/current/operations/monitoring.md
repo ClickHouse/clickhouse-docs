@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 import Image from '@theme/IdealImage';
 
-# Мониторинг {#monitoring}
+# Мониторинг \{#monitoring\}
 
 :::note
 Данные мониторинга, описанные в данном руководстве, доступны в ClickHouse Cloud. Помимо отображения во встроенной панели, описанной ниже, как базовые, так и расширенные метрики производительности можно просматривать непосредственно в основной консоли сервиса.
@@ -21,7 +21,7 @@ import Image from '@theme/IdealImage';
 - Использование аппаратных ресурсов.
 - Метрики сервера ClickHouse.
 
-## Встроенная расширенная панель наблюдаемости {#built-in-advanced-observability-dashboard}
+## Встроенная расширенная панель наблюдаемости \{#built-in-advanced-observability-dashboard\}
 
 <Image img="https://github.com/ClickHouse/ClickHouse/assets/3936029/2bd10011-4a47-4b94-b836-d44557c7fdc1" alt="Screenshot 2023-11-12 at 6 08 58 PM" size="md" />
 
@@ -42,7 +42,7 @@ ClickHouse включает встроенную расширенную пане
 - Общее количество частей MergeTree
 - Максимальное количество частей на раздел
 
-## Использование ресурсов {#resource-utilization}
+## Использование ресурсов \{#resource-utilization\}
 
 ClickHouse также самостоятельно отслеживает состояние аппаратных ресурсов, таких как:
 
@@ -51,7 +51,7 @@ ClickHouse также самостоятельно отслеживает сос
 
 Эти данные собираются в таблице `system.asynchronous_metric_log`.
 
-## Метрики сервера ClickHouse {#clickhouse-server-metrics}
+## Метрики сервера ClickHouse \{#clickhouse-server-metrics\}
 
 Сервер ClickHouse имеет встроенные средства для мониторинга собственного состояния.
 

@@ -7,13 +7,13 @@ title: 'Табличный движок SummingMergeTree'
 doc_type: 'reference'
 ---
 
-# Движок таблиц SummingMergeTree {#summingmergetree-table-engine}
+# Движок таблиц SummingMergeTree \{#summingmergetree-table-engine\}
 
 Этот движок наследуется от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree). Разница в том, что при слиянии частей данных для таблиц `SummingMergeTree` ClickHouse заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) одной строкой, которая содержит суммы значений для столбцов с числовым типом данных. Если ключ сортировки построен таким образом, что одному значению ключа соответствует большое количество строк, это существенно уменьшает объем хранимых данных и ускоряет выборку.
 
 Мы рекомендуем использовать этот движок совместно с `MergeTree`. Храните полные данные в таблице `MergeTree`, а `SummingMergeTree` используйте для хранения агрегированных данных, например при подготовке отчетов. Такой подход поможет избежать потери ценных данных из-за некорректно составленного первичного ключа.
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -31,16 +31,16 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 Описание параметров запроса см. в [описании запроса](../../../sql-reference/statements/create/table.md).
 
 
-### Параметры SummingMergeTree {#parameters-of-summingmergetree}
+### Параметры SummingMergeTree \{#parameters-of-summingmergetree\}
 
-#### Столбцы {#columns}
+#### Столбцы \{#columns\}
 
 `columns` — кортеж с именами столбцов, значения в которых будут суммироваться. Необязательный параметр.
 Столбцы должны иметь числовой тип и не должны входить в ключ партиционирования или сортировки.
 
 Если `columns` не указан, ClickHouse суммирует значения во всех столбцах с числовым типом данных, которые не входят в ключ сортировки.
 
-### Части запроса {#query-clauses}
+### Части запроса \{#query-clauses\}
 
 При создании таблицы `SummingMergeTree` требуются те же [части запроса](../../../engines/table-engines/mergetree-family/mergetree.md), что и при создании таблицы `MergeTree`.
 
@@ -67,7 +67,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 </details>
 
-## Пример использования {#usage-example}
+## Пример использования \{#usage-example\}
 
 Рассмотрим следующую таблицу:
 
@@ -101,13 +101,13 @@ SELECT key, sum(value) FROM summtt GROUP BY key
 ```
 
 
-## Обработка данных {#data-processing}
+## Обработка данных \{#data-processing\}
 
 Когда данные вставляются в таблицу, они сохраняются как есть. ClickHouse периодически сливает вставленные части данных, и именно в этот момент строки с одинаковым первичным ключом суммируются и заменяются одной строкой для каждой получившейся части данных.
 
 ClickHouse может сливать части данных таким образом, что разные получившиеся части данных могут содержать строки с одинаковым первичным ключом, т. е. суммирование будет неполным. Поэтому при выполнении запроса (`SELECT`) следует использовать агрегатную функцию [sum()](/sql-reference/aggregate-functions/reference/sum) и предложение `GROUP BY`, как описано в примере выше.
 
-### Общие правила суммирования {#common-rules-for-summation}
+### Общие правила суммирования \{#common-rules-for-summation\}
 
 Значения в столбцах с числовым типом данных суммируются. Набор столбцов определяется параметром `columns`.
 
@@ -117,11 +117,11 @@ ClickHouse может сливать части данных таким обра
 
 Значения не суммируются для столбцов, входящих в первичный ключ.
 
-### Суммирование в столбцах AggregateFunction {#the-summation-in-the-aggregatefunction-columns}
+### Суммирование в столбцах AggregateFunction \{#the-summation-in-the-aggregatefunction-columns\}
 
 Для столбцов типа [AggregateFunction](../../../sql-reference/data-types/aggregatefunction.md) ClickHouse ведёт себя как движок [AggregatingMergeTree](../../../engines/table-engines/mergetree-family/aggregatingmergetree.md), агрегируя в соответствии с функцией.
 
-### Вложенные структуры {#nested-structures}
+### Вложенные структуры \{#nested-structures\}
 
 Таблица может содержать вложенные структуры данных, которые обрабатываются особым образом.
 
@@ -193,6 +193,6 @@ ARRAY JOIN
 Для вложенной структуры данных не нужно указывать её столбцы в кортеже столбцов, по которым выполняется суммирование.
 
 
-## Связанные материалы {#related-content}
+## Связанные материалы \{#related-content\}
 
 - Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)

@@ -5,7 +5,7 @@ title: 'exponentialTimeDecayedMax'
 doc_type: 'reference'
 ---
 
-## exponentialTimeDecayedMax {#exponentialtimedecayedmax}
+## exponentialTimeDecayedMax \{#exponentialtimedecayedmax\}
 
 返回在时间索引 `t` 和 `t-1` 处计算得到的指数平滑移动平均值中的最大值。
 

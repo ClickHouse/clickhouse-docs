@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.metric_log {#systemmetric_log}
+# system.metric_log \{#systemmetric_log\}
 
 <SystemTableCloud />
 

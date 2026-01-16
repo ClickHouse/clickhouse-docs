@@ -13,7 +13,7 @@ import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.
 import Image from '@theme/IdealImage';
 
 
-# TLS の設定 {#configuring-tls}
+# TLS の設定 \{#configuring-tls\}
 
 <SelfManaged />
 
@@ -25,7 +25,7 @@ TLS の実装は複雑であり、完全に安全で堅牢なデプロイメン�
 概要レベルの導入として、この [証明書の利用に関する基本チュートリアル](https://ubuntu.com/server/docs/security-certificates) を参照してください。
 :::
 
-## 1. ClickHouse デプロイメントを作成する {#1-create-a-clickhouse-deployment}
+## 1. ClickHouse デプロイメントを作成する \{#1-create-a-clickhouse-deployment\}
 
 このガイドは、Ubuntu 20.04 上で、以下のホストに apt を用いて DEB パッケージから ClickHouse をインストールした環境を前提としています。ドメインは `marsnet.local` です。
 
@@ -39,7 +39,7 @@ TLS の実装は複雑であり、完全に安全で堅牢なデプロイメン�
 ClickHouse のインストール方法の詳細については、[クイックスタート](/getting-started/install/install.mdx) を参照してください。
 :::
 
-## 2. TLS 証明書を作成する {#2-create-tls-certificates}
+## 2. TLS 証明書を作成する \{#2-create-tls-certificates\}
 
 :::note
 自己署名証明書の使用はデモ目的に限定され、本番環境では使用すべきではありません。証明書要求は組織によって署名されるように作成し、設定で構成する予定の CA チェーンを使って検証される必要があります。ただし、これらの手順は設定の構成とテストに使用でき、その後、実際に使用する証明書に置き換えることができます。
@@ -89,7 +89,7 @@ ClickHouse のインストール方法の詳細については、[クイック�
     chnode1.crt: OK
     ```
 
-## 3. 証明書と鍵を保存するディレクトリを作成して設定します。 {#3-create-and-configure-a-directory-to-store-certificates-and-keys}
+## 3. 証明書と鍵を保存するディレクトリを作成して設定します。 \{#3-create-and-configure-a-directory-to-store-certificates-and-keys\}
 
 :::note
 これは各ノードで実行する必要があります。各ホストで適切な証明書と鍵を使用してください。
@@ -119,7 +119,7 @@ ClickHouse のインストール方法の詳細については、[クイック�
     -rw------- 1 clickhouse clickhouse 1131 Apr 12 20:23 marsnet_ca.crt
     ```
 
-## 4. ClickHouse Keeper を使用して基本クラスタで環境を構成する {#4-configure-the-environment-with-basic-clusters-using-clickhouse-keeper}
+## 4. ClickHouse Keeper を使用して基本クラスタで環境を構成する \{#4-configure-the-environment-with-basic-clusters-using-clickhouse-keeper\}
 
 このデプロイ環境では、各ノードで次の ClickHouse Keeper の設定を使用します。各サーバーにはそれぞれ固有の `<server_id>` が割り当てられます（たとえば、ノード `chnode1` には `<server_id>1</server_id>` を割り当てます）。
 
@@ -238,7 +238,7 @@ ClickHouse Keeper に推奨されるポートは `9281` です。ただし、こ
     </macros>
     ```
 
-## 5. ClickHouse ノード上での TLS インターフェースの設定 {#5-configure-tls-interfaces-on-clickhouse-nodes}
+## 5. ClickHouse ノード上での TLS インターフェースの設定 \{#5-configure-tls-interfaces-on-clickhouse-nodes\}
 
 以下の設定は ClickHouse サーバーの `config.xml` で行います。
 
@@ -344,7 +344,7 @@ ClickHouse Keeper に推奨されるポートは `9281` です。ただし、こ
     <!--postgresql_port>9005</postgresql_port-->
     ```
 
-## 6. テスト {#6-testing}
+## 6. テスト \{#6-testing\}
 
 1. すべてのノードを、1 つずつ起動します:
    ```bash
@@ -509,6 +509,6 @@ ClickHouse Keeper に推奨されるポートは `9281` です。ただし、こ
     └────┴────────────┴─────────┘
     ```
 
-## 要約 {#summary}
+## 要約 \{#summary\}
 
 この記事では、ClickHouse 環境で TLS を用いた設定方法に焦点を当てました。本番環境では要件に応じて、証明書検証レベル、プロトコル、暗号スイートなどの設定が異なります。ここまでの内容により、安全な接続を構成し実装するための手順について十分に理解できているはずです。

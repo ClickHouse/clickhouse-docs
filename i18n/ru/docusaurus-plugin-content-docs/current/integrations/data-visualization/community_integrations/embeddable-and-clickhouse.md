@@ -13,7 +13,7 @@ integration:
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Подключение Embeddable к ClickHouse {#connecting-embeddable-to-clickhouse}
+# Подключение Embeddable к ClickHouse \{#connecting-embeddable-to-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
@@ -23,11 +23,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 Встроенная безопасность на уровне строк гарантирует, что каждый пользователь видит только те данные, к которым у него есть доступ. А два уровня полностью настраиваемого кэширования позволяют обеспечивать быструю, масштабируемую аналитику в режиме реального времени.
 
-## 1. Соберите сведения о подключении {#1-gather-your-connection-details}
+## 1. Соберите сведения о подключении \{#1-gather-your-connection-details\}
 
 <ConnectionDetails />
 
-## 2. Создайте тип подключения к ClickHouse {#2-create-a-clickhouse-connection-type}
+## 2. Создайте тип подключения к ClickHouse \{#2-create-a-clickhouse-connection-type\}
 
 Вы добавляете подключение к базе данных с помощью API Embeddable. Это подключение используется для доступа к вашему сервису ClickHouse. Вы можете добавить подключение с помощью следующего вызова API:
 

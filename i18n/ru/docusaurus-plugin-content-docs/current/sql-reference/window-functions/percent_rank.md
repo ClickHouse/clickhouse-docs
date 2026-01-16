@@ -7,7 +7,7 @@ title: 'percent_rank'
 doc_type: 'reference'
 ---
 
-# percent&#95;rank {#percent&#95;rank}
+# percent&#95;rank \{#percent&#95;rank\}
 
 Возвращает относительный ранг (т. е. перцентиль) строк в пределах раздела окна.
 

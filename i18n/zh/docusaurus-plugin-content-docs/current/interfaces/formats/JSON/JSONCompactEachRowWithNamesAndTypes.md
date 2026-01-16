@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 与[`JSONCompactEachRow`](./JSONCompactEachRow.md)格式的区别在于，它还会输出两行表头，包含列名和列类型，类似于[TabSeparatedWithNamesAndTypes](../TabSeparated/TabSeparatedWithNamesAndTypes.md)格式。
 
-## 使用示例 {#example-usage}
+## 使用示例 \{#example-usage\}
 
-### 插入数据 {#inserting-data}
+### 插入数据 \{#inserting-data\}
 
 使用一个包含以下数据的 JSON 文件，文件名为 `football.json`：
 
@@ -51,7 +51,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactEachRowWithNamesAndTypes;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据 \{#reading-data\}
 
 使用 `JSONCompactEachRowWithNamesAndTypes` 格式来读取数据：
 
@@ -85,7 +85,7 @@ FORMAT JSONCompactEachRowWithNamesAndTypes
 ["2022-05-07", 2021, "Walsall", "Swindon Town", 0, 3]
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}
 
 :::note
 如果将[`input_format_with_names_use_header`](/operations/settings/settings-formats.md/#input_format_with_names_use_header)设置为 `1`，

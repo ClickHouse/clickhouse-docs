@@ -5,9 +5,9 @@ title: 'GROUPING'
 doc_type: 'reference'
 ---
 
-# 分组 {#grouping}
+# 分组 \{#grouping\}
 
-## GROUPING {#grouping}
+## GROUPING \{#grouping\}
 
 [ROLLUP](../statements/select/group-by.md/#rollup-modifier) 和 [CUBE](../statements/select/group-by.md/#cube-modifier) 是对 GROUP BY 的修饰符，它们都会计算小计。ROLLUP 接收一个有序的列列表，例如 `(day, month, year)`，并在聚合的每个层级计算小计，最后再计算总计。CUBE 则会针对所指定列的所有可能组合计算小计。GROUPING 用于识别由 ROLLUP 或 CUBE 返回的哪些行是更高层级的聚合行（superaggregate），哪些则是未使用修饰符的 GROUP BY 本应返回的普通分组结果行。
 
@@ -15,13 +15,13 @@ GROUPING 函数接收多个列作为参数，并返回一个位掩码（bitmask�
 - `1` 表示由 `ROLLUP` 或 `CUBE` 修饰的 `GROUP BY` 返回的该行是小计
 - `0` 表示由 `ROLLUP` 或 `CUBE` 返回的该行不是小计
 
-## GROUPING SETS {#grouping-sets}
+## GROUPING SETS \{#grouping-sets\}
 
 默认情况下，CUBE 修饰符会对传入 CUBE 的所有列的所有可能组合计算小计。GROUPING SETS 允许你指定要计算的具体组合。
 
 对层次化数据进行分析是使用 ROLLUP、CUBE 和 GROUPING SETS 修饰符的典型用例。这里的示例是一张表，包含了在两个数据中心中安装的 Linux 发行版及其版本的信息。按发行版、版本和数据中心位置来查看这些数据可能是有价值的。
 
-### 加载示例数据 {#load-sample-data}
+### 加载示例数据 \{#load-sample-data\}
 
 ```sql
 CREATE TABLE servers ( datacenter VARCHAR(255),
@@ -70,7 +70,7 @@ FROM
 10 rows in set. Elapsed: 0.409 sec.
 ```
 
-### 简单查询 {#simple-queries}
+### 简单查询 \{#simple-queries\}
 
 按分布情况统计每个数据中心中的服务器数量：
 
@@ -151,7 +151,7 @@ FROM
 1 row in set. Elapsed: 0.244 sec. 
 ```
 
-### 对比多个 GROUP BY 语句与 GROUPING SETS {#comparing-multiple-group-by-statements-with-grouping-sets}
+### 对比多个 GROUP BY 语句与 GROUPING SETS \{#comparing-multiple-group-by-statements-with-grouping-sets\}
 
 在不使用 CUBE、ROLLUP 或 GROUPING SETS 的情况下对数据进行拆分：
 
@@ -254,7 +254,7 @@ GROUP BY
 9 rows in set. Elapsed: 0.427 sec.
 ```
 
-### 将 CUBE 与 GROUPING SETS 进行比较 {#comparing-cube-with-grouping-sets}
+### 将 CUBE 与 GROUPING SETS 进行比较 \{#comparing-cube-with-grouping-sets\}
 
 下一条查询中的 CUBE，`CUBE(datacenter,distro,version)` 会生成一个可能不太合理的层次结构。跨这两个发行版比较版本并没有意义（因为 Arch 和 RHEL 的发布周期和版本命名规范并不相同）。后面的 GROUPING SETS 示例更为合适，因为它在同一个分组集合中同时包含了 `distro` 和 `version`。
 

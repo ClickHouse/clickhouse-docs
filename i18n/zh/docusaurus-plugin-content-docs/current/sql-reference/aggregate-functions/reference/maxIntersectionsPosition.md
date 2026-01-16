@@ -5,7 +5,7 @@ title: 'maxIntersectionsPosition'
 doc_type: 'reference'
 ---
 
-# maxIntersectionsPosition {#maxintersectionsposition}
+# maxIntersectionsPosition \{#maxintersectionsposition\}
 
 计算[`maxIntersections` 函数](./maxIntersections.md)出现位置的聚合函数。
 

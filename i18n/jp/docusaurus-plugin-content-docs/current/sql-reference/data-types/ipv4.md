@@ -7,11 +7,11 @@ title: 'IPv4'
 doc_type: 'reference'
 ---
 
-## IPv4 {#ipv4}
+## IPv4 \{#ipv4\}
 
 IPv4 アドレス。4 バイトの UInt32 型として格納されます。
 
-### 基本的な使い方 {#basic-usage}
+### 基本的な使い方 \{#basic-usage\}
 
 ```sql
 CREATE TABLE hits (url String, from IPv4) ENGINE = MergeTree() ORDER BY url;

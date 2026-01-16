@@ -5,7 +5,7 @@ title: 'sumMapWithOverflow'
 doc_type: 'reference'
 ---
 
-# sumMapWithOverflow {#summapwithoverflow}
+# sumMapWithOverflow \{#summapwithoverflow\}
 
 根据 `key` 数组中指定的键，对 `value` 数组进行求和。返回一个包含两个数组的元组：按排序顺序排列的键数组，以及对应键的求和值数组。
 它与 [sumMap](../reference/sumMap.md) 函数的区别在于，它执行的是会发生溢出的求和运算——即求和结果的数据类型与参数的数据类型相同。

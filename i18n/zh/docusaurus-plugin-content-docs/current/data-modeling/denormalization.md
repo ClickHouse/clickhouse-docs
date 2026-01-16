@@ -11,11 +11,11 @@ import denormalizationSchema from '@site/static/images/data-modeling/denormaliza
 import Image from '@theme/IdealImage';
 
 
-# 数据反规范化 {#denormalizing-data}
+# 数据反规范化 \{#denormalizing-data\}
 
 在 ClickHouse 中，数据反规范化是一种通过使用扁平表并避免 `JOIN` 来最大限度降低查询延迟的技术。
 
-## 比较规范化与反规范化模式 {#comparing-normalized-vs-denormalized-schemas}
+## 比较规范化与反规范化模式 \{#comparing-normalized-vs-denormalized-schemas\}
 
 对数据进行反规范化，是指有意地逆转规范化过程，以针对特定查询模式优化数据库性能。在规范化数据库中，数据被拆分到多个关联表中，以最小化冗余并确保数据完整性。反规范化通过合并表、复制数据，以及将计算字段并入单个或更少数量的表中来重新引入冗余——实质上是把原本在查询时执行的 `JOIN` 操作前移到写入（插入）阶段完成。
 
@@ -27,7 +27,7 @@ import Image from '@theme/IdealImage';
 
 一种由 NoSQL 方案推广的常见技术，是在缺乏 `JOIN` 支持的情况下对数据进行反规范化，将所有统计信息或相关行作为列和嵌套对象存储在父行上。例如，在博客的示例模式中，我们可以将所有 `Comments` 作为对象的 `Array` 存储在各自对应的帖子记录中。
 
-## 何时使用反规范化 {#when-to-use-denormalization}
+## 何时使用反规范化 \{#when-to-use-denormalization\}
 
 通常情况下，我们建议在以下情形下进行反规范化：
 
@@ -40,7 +40,7 @@ import Image from '@theme/IdealImage';
 
 反规范化工作可以在 ClickHouse 中完成，也可以在上游系统中完成，例如使用 Apache Flink。
 
-## 避免对频繁更新的数据进行反规范化 {#avoid-denormalization-on-frequently-updated-data}
+## 避免对频繁更新的数据进行反规范化 \{#avoid-denormalization-on-frequently-updated-data\}
 
 对于 ClickHouse，反规范化是用户可用于优化查询性能的多种手段之一，但应谨慎使用。如果数据被频繁更新，并且需要接近实时地完成更新，就应避免采用这种方法。仅当主表基本上是追加写入（append-only），或者可以按批次（例如每日）周期性重新加载时，才建议使用这种方式。
 
@@ -55,7 +55,7 @@ import Image from '@theme/IdealImage';
 
 因此，更常见的做法是采用批量更新流程，定期重新加载所有反规范化后的对象。
 
-## 反规范化的实践案例 {#practical-cases-for-denormalization}
+## 反规范化的实践案例 \{#practical-cases-for-denormalization\}
 
 我们来看看几个适合进行反规范化的实际示例，以及一些更适合采用其他方法的情形。
 
@@ -65,7 +65,7 @@ import Image from '@theme/IdealImage';
 
 *在以下每个示例中，都假设存在一个查询，需要在联接操作中同时使用这两个表。*
 
-### Posts 与 Votes {#posts-and-votes}
+### Posts 与 Votes \{#posts-and-votes\}
 
 帖子上的投票使用单独的表来表示。下面展示的是针对这一场景优化后的模式，以及用于加载数据的插入命令：
 
@@ -131,7 +131,7 @@ LIMIT 5
 这里的关键点是：对于大多数分析场景来说，每条帖子只需要聚合后的投票统计信息就足够了——我们不需要对所有投票信息进行反规范化。比如，当前的 `Score` 列就代表了这种统计信息，即赞成票总数减去反对票总数。理想情况下，我们只需在查询时通过一次简单查找就能获取这些统计数据（参见 [dictionaries](/dictionary)）。
 
 
-### Users 和 Badges {#users-and-badges}
+### Users 和 Badges \{#users-and-badges\}
 
 现在我们来看看 `Users` 和 `Badges`：
 
@@ -204,7 +204,7 @@ SELECT UserId, count() AS c FROM badges GROUP BY UserId ORDER BY c DESC LIMIT 5
 > 我们可能希望把徽章相关的统计信息反规范化到用户上，例如徽章的数量。在该数据集的插入阶段使用字典时，我们会考虑这种情况。
 
 
-### Posts 和 PostLinks {#posts-and-postlinks}
+### Posts 和 PostLinks \{#posts-and-postlinks\}
 
 `PostLinks` 用于关联用户认为相关或重复的 `Posts`。下面的查询展示了表结构和加载命令：
 
@@ -266,7 +266,7 @@ FROM
 在下文中，我们将以此作为反规范化的示例。
 
 
-### 简单统计示例 {#simple-statistic-example}
+### 简单统计示例 \{#simple-statistic-example\}
 
 在大多数情况下，反规范化只需要在父行上添加单个列或统计信息。例如，我们可能只希望为帖子补充一个表示其重复帖数量的列，此时只需添加一列即可。
 
@@ -296,7 +296,7 @@ LEFT JOIN
 ```
 
 
-### 利用复杂类型处理一对多关系 {#exploiting-complex-types-for-one-to-many-relationships}
+### 利用复杂类型处理一对多关系 \{#exploiting-complex-types-for-one-to-many-relationships\}
 
 为了进行反规范化，我们通常需要利用复杂类型。如果是列数较少的一对一关系，用户可以像上面所示那样，直接将这些列以其原始类型添加到主表中。不过，对于较大的对象，这往往并不理想，对一对多关系则根本不可行。
 
@@ -364,9 +364,9 @@ DuplicatePosts: [('2017-04-11 12:18:37.260',3922739),('2017-04-11 12:18:37.260',
 ```
 
 
-## 编排和调度反规范化 {#orchestrating-and-scheduling-denormalization}
+## 编排和调度反规范化 \{#orchestrating-and-scheduling-denormalization\}
 
-### 批处理 {#batch}
+### 批处理 \{#batch\}
 
 要充分利用反规范化，需要一个能够执行并编排该转换的流程。
 
@@ -377,6 +377,6 @@ DuplicatePosts: [('2017-04-11 12:18:37.260',3922739),('2017-04-11 12:18:37.260',
 - **[可刷新materialized view](/materialized-view/refreshable-materialized-view)** - 可刷新materialized view 可以用来周期性地调度查询，并将结果写入目标表。在查询执行时，VIEW 会确保对目标表的更新是原子性的。这提供了一种 ClickHouse 原生的任务调度方式。
 - **外部工具** - 使用诸如 [dbt](https://www.getdbt.com/) 和 [Airflow](https://airflow.apache.org/) 等工具，定期调度转换任务。[ClickHouse 的 dbt 集成](/integrations/dbt) 确保该过程以原子方式执行：先创建目标表的新版本，然后通过 [EXCHANGE](/sql-reference/statements/exchange) 命令，将其与当前对外提供查询服务的版本进行原子交换。
 
-### 流式处理 {#streaming}
+### 流式处理 \{#streaming\}
 
 用户也可以选择在 ClickHouse 之外、在数据插入之前，使用诸如 [Apache Flink](https://flink.apache.org/) 等流式技术来执行这一过程。或者，也可以使用增量[物化视图](/guides/developer/cascading-materialized-views)，在数据插入时执行这一处理流程。

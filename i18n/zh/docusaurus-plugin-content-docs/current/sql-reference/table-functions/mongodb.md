@@ -7,17 +7,17 @@ title: 'mongodb'
 doc_type: 'reference'
 ---
 
-# MongoDB 表函数 {#mongodb-table-function}
+# MongoDB 表函数 \{#mongodb-table-function\}
 
 可以对存储在远程 MongoDB 服务器中的数据执行 `SELECT` 查询。
 
-## 语法 {#syntax}
+## 语法 \{#syntax\}
 
 ```sql
 mongodb(host:port, database, collection, user, password, structure[, options[, oid_columns]])
 ```
 
-## 参数 {#arguments}
+## 参数 \{#arguments\}
 
 | 参数            | 描述                                              |
 | ------------- | ----------------------------------------------- |
@@ -52,11 +52,11 @@ mongodb(uri, collection, structure[, oid_columns])
 | `structure`   | 此函数返回的 ClickHouse 表的模式（schema）。            |
 | `oid_columns` | 在 WHERE 子句中应被视为 `oid` 的列的逗号分隔列表。默认为 `_id`。 |
 
-## 返回值 {#returned_value}
+## 返回值 \{#returned_value\}
 
 一个表对象，其列与原始 MongoDB 表的列相同。
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
 假设我们在名为 `test` 的 MongoDB 数据库中有一个名为 `my_collection` 的集合，并向其中插入了几条文档：
 
@@ -98,7 +98,7 @@ SELECT * FROM mongodb(
 )
 ```
 
-## 相关 {#related}
+## 相关 \{#related\}
 
 - [`MongoDB` 表引擎](engines/table-engines/integrations/mongodb.md)
 - [将 MongoDB 用作字典源](sql-reference/dictionaries/index.md#mongodb)

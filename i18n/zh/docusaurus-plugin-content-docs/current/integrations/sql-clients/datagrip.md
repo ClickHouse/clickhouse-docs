@@ -19,19 +19,19 @@ import datagrip_6 from '@site/static/images/integrations/sql-clients/datagrip-6.
 import datagrip_7 from '@site/static/images/integrations/sql-clients/datagrip-7.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# 在 DataGrip 中连接 ClickHouse {#connecting-datagrip-to-clickhouse}
+# 在 DataGrip 中连接 ClickHouse \{#connecting-datagrip-to-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
-## 启动或下载 DataGrip {#start-or-download-datagrip}
+## 启动或下载 DataGrip \{#start-or-download-datagrip\}
 
 DataGrip 可从 https://www.jetbrains.com/datagrip/ 获取
 
-## 1. 收集连接信息 {#1-gather-your-connection-details}
+## 1. 收集连接信息 \{#1-gather-your-connection-details\}
 
 <ConnectionDetails />
 
-## 2. 加载 ClickHouse 驱动程序 {#2-load-the-clickhouse-driver}
+## 2. 加载 ClickHouse 驱动程序 \{#2-load-the-clickhouse-driver\}
 
 1. 启动 DataGrip，在 **Data Sources and Drivers** 对话框的 **Data Sources** 选项卡中，点击 **+** 图标
 
@@ -52,7 +52,7 @@ DataGrip 可从 https://www.jetbrains.com/datagrip/ 获取
 
 <Image img={datagrip_1} size="lg" border alt="在 DataGrip 的 Drivers 选项卡中显示 ClickHouse 驱动程序安装" />
 
-## 3. 连接到 ClickHouse {#3-connect-to-clickhouse}
+## 3. 连接到 ClickHouse \{#3-connect-to-clickhouse\}
 
 - 指定数据库连接详细信息，然后单击 **Test Connection**。  
 在第一步中你已经收集了连接信息——填写主机 URL、端口、用户名、密码和数据库名称，然后测试连接。
@@ -71,6 +71,6 @@ ClickHouse Cloud 要求所有连接都使用 SSL 加密。如果没有 `?ssl=tru
 
 <Image img={datagrip_7} border alt="包含 ClickHouse 设置的 DataGrip 连接详细信息表单" />
 
-## 深入了解 {#learn-more}
+## 深入了解 \{#learn-more\}
 
 如需了解有关 DataGrip 的更多信息，请参阅 DataGrip 文档。

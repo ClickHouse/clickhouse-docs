@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|--------|
 | ✔     | ✔      | `TSV`  |
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 在 TabSeparated 格式中，数据按行写入。每一行包含由制表符分隔的值。每个值后面都跟着一个制表符，除了该行的最后一个值，它后面跟的是换行符。在所有场景下都假定使用 Unix 风格换行符。最后一行的末尾也必须包含一个换行符。各个值以文本格式写入，不带引号，且特殊字符会被转义。
 
@@ -40,7 +40,7 @@ SELECT EventDate, count() AS c FROM test.hits GROUP BY EventDate WITH TOTALS ORD
 2014-03-23      1406958
 ```
 
-## 数据格式化 {#tabseparated-data-formatting}
+## 数据格式化 \{#tabseparated-data-formatting\}
 
 整数以十进制形式书写。数字开头可以包含额外的“+”字符（解析时会被忽略，格式化输出时也不会被输出）。非负数不能包含负号。在读取时，允许将空字符串解析为零，或者（对于有符号类型）将仅包含一个减号的字符串解析为零。超出对应数据类型范围的数字可能会被解析为其他数值，而不会产生错误信息。
 
@@ -105,9 +105,9 @@ SELECT * FROM nestedt FORMAT TSV
 1  [1]    ['a']
 ```
 
-## 使用示例 {#example-usage}
+## 使用示例 \{#example-usage\}
 
-### 插入数据 {#inserting-data}
+### 插入数据 \{#inserting-data\}
 
 使用以下名为 `football.tsv` 的 TSV 文件：
 
@@ -137,7 +137,7 @@ SELECT * FROM nestedt FORMAT TSV
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparated;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据 \{#reading-data\}
 
 以 `TabSeparated` 格式读取数据：
 
@@ -169,7 +169,7 @@ FORMAT TabSeparated
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}
 
 | Setting                                                                                                                                                          | Description                                                                                                                                                                                                                                    | Default |
 |------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|

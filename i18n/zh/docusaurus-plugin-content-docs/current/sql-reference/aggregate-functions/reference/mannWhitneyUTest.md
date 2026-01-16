@@ -6,7 +6,7 @@ title: 'mannWhitneyUTest'
 doc_type: 'reference'
 ---
 
-# mannWhitneyUTest {#mannwhitneyutest}
+# mannWhitneyUTest \{#mannwhitneyutest\}
 
 对来自两个总体的样本执行 Mann-Whitney 秩和检验。
 

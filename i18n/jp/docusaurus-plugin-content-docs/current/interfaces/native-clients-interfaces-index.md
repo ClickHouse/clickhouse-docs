@@ -6,7 +6,7 @@ title: 'ネイティブ クライアントとインターフェース'
 doc_type: 'landing-page'
 ---
 
-# ネイティブクライアントとインターフェース {#native-clients-interfaces}
+# ネイティブクライアントとインターフェース \{#native-clients-interfaces\}
 
 ClickHouse には、接続のために利用できる複数のネイティブクライアントおよびインターフェースが用意されています。
 

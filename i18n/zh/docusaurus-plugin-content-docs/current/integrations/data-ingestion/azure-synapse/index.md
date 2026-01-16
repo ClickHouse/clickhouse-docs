@@ -16,7 +16,7 @@ import sparkConfigViaNotebook from '@site/static/images/integrations/data-ingest
 import sparkUICHSettings from '@site/static/images/integrations/data-ingestion/azure-synapse/spark_ui_ch_settings.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# 将 Azure Synapse 与 ClickHouse 集成 {#integrating-azure-synapse-with-clickhouse}
+# 将 Azure Synapse 与 ClickHouse 集成 \{#integrating-azure-synapse-with-clickhouse\}
 
 <ClickHouseSupportedBadge/>
 
@@ -27,7 +27,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <TOCInline toc={toc}></TOCInline>
 
-## 添加连接器的依赖项 {#add-connector-dependencies}
+## 添加连接器的依赖项 \{#add-connector-dependencies\}
 Azure Synapse 支持三种级别的[包维护](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-portal-add-libraries)：
 1. 默认包
 2. Spark 池级别
@@ -41,7 +41,7 @@ Azure Synapse 支持三种级别的[包维护](https://learn.microsoft.com/en-us
 
 请查阅我们的 [Spark Connector 兼容性矩阵](/integrations/apache-spark/spark-native-connector#compatibility-matrix)文档，以了解哪些版本更适合你的需求。
 
-## 将 ClickHouse 添加为目录 {#add-clickhouse-as-catalog}
+## 将 ClickHouse 添加为目录 \{#add-clickhouse-as-catalog\}
 
 可以通过多种方式向会话中添加 Spark 配置：
 
@@ -80,14 +80,14 @@ Azure Synapse 支持三种级别的[包维护](https://learn.microsoft.com/en-us
 :::
 
 
-## 设置验证 {#setup-verification}
+## 设置验证 \{#setup-verification\}
 
 要验证依赖和配置是否已成功完成，请访问本次会话的 Spark UI，然后进入 `Environment` 选项卡。
 在其中查找与 ClickHouse 相关的设置：
 
 <Image img={sparkUICHSettings} size="xl" alt="使用 Spark UI 验证 ClickHouse 设置" border/>
 
-## 其他资源 {#additional-resources}
+## 其他资源 \{#additional-resources\}
 
 - [ClickHouse Spark 连接器文档](/integrations/apache-spark)
 - [Azure Synapse Spark 池概述](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-overview)

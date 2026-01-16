@@ -25,13 +25,13 @@ import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Astrato を ClickHouse に接続する {#connecting-astrato-to-clickhouse}
+# Astrato を ClickHouse に接続する \{#connecting-astrato-to-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
 Astrato は Pushdown SQL を使用して、ClickHouse Cloud またはオンプレミスの ClickHouse 環境に直接クエリを実行します。つまり、業界をリードする ClickHouse のパフォーマンスを活用して、必要なすべてのデータにアクセスできます。
 
-## 接続に必要な情報 {#connection-data-required}
+## 接続に必要な情報 \{#connection-data-required\}
 
 データ接続を設定するには、以下の情報が必要です。
 
@@ -40,7 +40,7 @@ Astrato は Pushdown SQL を使用して、ClickHouse Cloud またはオンプ�
 
 <ConnectionDetails />
 
-## ClickHouse へのデータ接続の作成 {#creating-the-data-connection-to-clickhouse}
+## ClickHouse へのデータ接続の作成 \{#creating-the-data-connection-to-clickhouse\}
 
 - サイドバーで **Data** を選択し、**Data Connection** タブを選択します  
 （または、次のリンクにアクセスします: https://app.astrato.io/data/sources）
@@ -69,7 +69,7 @@ Astrato は Pushdown SQL を使用して、ClickHouse Cloud またはオンプ�
 重複が作成された場合、データソース名にタイムスタンプが追加されます。
 :::
 
-## セマンティックモデル / データビューの作成 {#creating-a-semantic-model--data-view}
+## セマンティックモデル / データビューの作成 \{#creating-a-semantic-model--data-view\}
 
 Data View エディターでは、ClickHouse 上のすべてのテーブルとスキーマが表示されます。開始するには、そこからいくつかを選択します。
 
@@ -85,7 +85,7 @@ Data View エディターでは、ClickHouse 上のすべてのテーブルと�
 
 <Image size="lg" img={astrato_4c_clickhouse_completed_data_view} alt="Astrato を ClickHouse に接続するユーザーアクセス" border />
 
-## ダッシュボードの作成 {#creating-a-dashboard}
+## ダッシュボードの作成 \{#creating-a-dashboard\}
 
 わずか数ステップで、Astrato で最初のチャートを作成できます。
 1. ビジュアルパネルを開きます
@@ -95,13 +95,13 @@ Data View エディターでは、ClickHouse 上のすべてのテーブルと�
 
 <Image size="lg" img={astrato_5a_clickhouse_build_chart} alt="Astrato と ClickHouse の接続 ユーザーアクセス" border />
 
-### 各ビジュアルに対応する生成 SQL を表示する {#view-generated-sql-supporting-each-visualization}
+### 各ビジュアルに対応する生成 SQL を表示する \{#view-generated-sql-supporting-each-visualization\}
 
 Astrato では透明性と正確性を最重視しています。生成されたすべてのクエリを確認できるため、常に完全にコントロールできます。すべての計算処理は ClickHouse 上で直接実行され、その高速性を活用しつつ、堅牢なセキュリティとガバナンスを維持します。
 
 <Image size="lg" img={astrato_5b_clickhouse_view_sql} alt="Astrato と ClickHouse の接続 ユーザーアクセス" border />
 
-### 完成したダッシュボードの例 {#example-completed-dashboard}
+### 完成したダッシュボードの例 \{#example-completed-dashboard\}
 
 完成度の高い美しいダッシュボードやデータアプリも、もう目前です。さらに多くの作成例を見るには、当社ウェブサイトのデモギャラリーをご覧ください。https://astrato.io/gallery
 

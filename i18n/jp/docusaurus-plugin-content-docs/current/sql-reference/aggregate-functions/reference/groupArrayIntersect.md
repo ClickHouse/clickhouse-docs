@@ -5,7 +5,7 @@ title: 'groupArrayIntersect'
 doc_type: 'reference'
 ---
 
-# groupArrayIntersect {#grouparrayintersect}
+# groupArrayIntersect \{#grouparrayintersect\}
 
 指定された配列の共通部分を返します（すべての指定された配列に共通して含まれる要素を返します）。
 

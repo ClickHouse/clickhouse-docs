@@ -5,7 +5,7 @@ title: 'argAndMin'
 doc_type: 'reference'
 ---
 
-# argAndMin {#argandmin}
+# argAndMin \{#argandmin\}
 
 计算最小 `val` 对应的 `arg` 和 `val`。如果有多行的 `val` 相同且都是最小值，则返回哪一行对应的 `arg` 和 `val` 是不确定的。
 `arg` 部分和 `min` 部分都像[聚合函数](/sql-reference/aggregate-functions/index.md)一样工作，它们在处理过程中都会[跳过 `Null`](/sql-reference/aggregate-functions/index.md#null-processing)，并在存在非 `Null` 值时返回非 `Null` 值。

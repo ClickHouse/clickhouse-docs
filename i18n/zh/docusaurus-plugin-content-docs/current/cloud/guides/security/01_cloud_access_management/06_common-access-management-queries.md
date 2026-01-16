@@ -10,7 +10,7 @@ doc_type: 'guide'
 import CommonUserRolesContent from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
 
 
-# 常见访问管理查询 {#common-access-management-queries}
+# 常见访问管理查询 \{#common-access-management-queries\}
 
 :::tip 自管理
 如果使用自管理 ClickHouse，请参阅 [SQL 用户和角色](/guides/sre/user-management/index.md)。
@@ -18,7 +18,7 @@ import CommonUserRolesContent from '@site/i18n/zh/docusaurus-plugin-content-docs
 
 本文介绍了定义 SQL 用户和角色的基础知识，以及如何将相应的权限和许可应用于数据库、表、行和列。
 
-## 管理员用户 {#admin-user}
+## 管理员用户 \{#admin-user\}
 
 ClickHouse Cloud 服务在创建时会自动创建一个名为 `default` 的管理员用户。密码在创建服务时提供，具有 **Admin** 角色的 ClickHouse Cloud 用户可以重置该密码。
 
@@ -40,13 +40,13 @@ GRANT default_role TO clickhouse_admin;
 :::
 
 
-## 无密码认证 {#passwordless-authentication}
+## 无密码认证 \{#passwordless-authentication\}
 
 SQL 控制台提供两个可用角色：`sql_console_admin`（其权限与 `default_role` 完全相同）和只读权限的 `sql_console_read_only`。
 
 管理员用户默认会被分配 `sql_console_admin` 角色，因此对他们而言不会有任何变化。而 `sql_console_read_only` 角色则允许为非管理员用户授予对任意实例的只读或完全访问权限。管理员需要对这些访问权限进行配置。可以使用 `GRANT` 或 `REVOKE` 命令调整这些角色，以更好地满足特定实例的需求，对这些角色所做的任何更改都会被持久化保存。
 
-### 细粒度访问控制 {#granular-access-control}
+### 细粒度访问控制 \{#granular-access-control\}
 
 此访问控制功能也可以手动配置，以实现用户级别的精细访问控制。在将新的 `sql_console_*` 角色分配给用户之前，应创建与命名空间 `sql-console-role:&lt;email&gt;` 匹配的、针对 SQL 控制台用户的数据库角色。例如：
 

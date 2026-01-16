@@ -5,7 +5,7 @@ title: 'corrMatrix'
 doc_type: 'reference'
 ---
 
-# corrMatrix {#corrmatrix}
+# corrMatrix \{#corrmatrix\}
 
 Вычисляет матрицу корреляций по N переменным.
 

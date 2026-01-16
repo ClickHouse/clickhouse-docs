@@ -19,7 +19,7 @@ import dbt_06 from '@site/static/images/integrations/data-ingestion/etl-tools/db
 import dbt_07 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_07.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# ガイド {#guides}
+# ガイド \{#guides\}
 
 <ClickHouseSupportedBadge/>
 
@@ -36,13 +36,13 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <TOCInline toc={toc}  maxHeadingLevel={2} />
 
-## セットアップ {#setup}
+## セットアップ \{#setup\}
 
 環境を準備するには、[dbt と ClickHouse アダプターのセットアップ](/integrations/dbt) セクションの手順に従ってください。
 
 **重要: 以下は python 3.9 環境で検証されています。**
 
-### ClickHouse の準備 {#prepare-clickhouse}
+### ClickHouse の準備 \{#prepare-clickhouse\}
 
 dbt はリレーショナル性の高いデータのモデリングに優れています。例として、次のようなリレーショナルスキーマを持つ小さな IMDB データセットを用意しています。このデータセットは [relational dataset repository](https://relational.fit.cvut.cz/dataset/IMDb) に由来します。これは dbt で一般的に使われるスキーマと比べると単純ですが、扱いやすいサンプルになっています。
 
@@ -183,7 +183,7 @@ LIMIT 5;
 
 後続のガイドでは、このクエリをモデル化し、ClickHouse 上で dbt のビューおよびテーブルとしてマテリアライズします。
 
-## ClickHouse への接続 {#connecting-to-clickhouse}
+## ClickHouse への接続 \{#connecting-to-clickhouse\}
 
 1. dbt プロジェクトを作成します。ここでは、`imdb` ソースにちなんでこの名前を付けます。プロンプトが表示されたら、データベースとして `clickhouse` を選択します。
 
@@ -274,7 +274,7 @@ LIMIT 5;
 
     レスポンスに `Connection test: [OK connection ok]` が含まれていることを確認してください。これは接続が成功していることを示しています。
 
-## シンプルなビュー・マテリアライゼーションの作成 {#creating-a-simple-view-materialization}
+## シンプルなビュー・マテリアライゼーションの作成 \{#creating-a-simple-view-materialization\}
 
 ビュー・マテリアライゼーションを使用する場合、モデルは ClickHouse の `CREATE VIEW AS` ステートメントを通じて、実行のたびにビューとして再構築されます。これは追加のデータストレージは必要ありませんが、テーブル・マテリアライゼーションに比べてクエリの実行は遅くなります。
 
@@ -402,7 +402,7 @@ LIMIT 5;
     +------+------------+----------+------------------+------+---------+-------------------+
     ```
 
-## テーブルマテリアライゼーションの作成 {#creating-a-table-materialization}
+## テーブルマテリアライゼーションの作成 \{#creating-a-table-materialization\}
 
 前の例では、モデルはビューとしてマテリアライズされていました。これは一部のクエリには十分なパフォーマンスを提供しますが、より複雑な SELECT や頻繁に実行されるクエリは、テーブルとしてマテリアライズした方がよい場合があります。このマテリアライゼーションは、BI ツールからクエリされるモデルに対して有用であり、ユーザーがより高速な応答を得られるようにします。これにより、クエリ結果が新しいテーブルとして保存されることになり、その分のストレージオーバーヘッドが発生します。実質的には `INSERT TO SELECT` が実行されます。このテーブルは毎回再作成される点に注意してください。つまりインクリメンタルではありません。そのため結果セットが大きい場合、実行時間が長くなる可能性があります。詳細は [dbt の制限事項](/integrations/dbt#limitations) を参照してください。
 
@@ -479,7 +479,7 @@ LIMIT 5;
     SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DESC LIMIT 10;
     ```
 
-## インクリメンタルマテリアライゼーションの作成 {#creating-an-incremental-materialization}
+## インクリメンタルマテリアライゼーションの作成 \{#creating-an-incremental-materialization\}
 
 前の例では、モデルをマテリアライズするためのテーブルを作成しました。このテーブルは、dbt の各実行ごとに再構築されます。これは、結果セットが大きい場合や複雑な変換を行う場合には、実行不可能または非常にコストが高くなる可能性があります。この課題に対処し、ビルド時間を短縮するために、dbt はインクリメンタルマテリアライゼーションを提供しています。これにより、dbt は前回の実行以降にテーブルへレコードを挿入または更新するだけで済むようになり、イベントスタイルのデータに適した方式となります。内部的には、更新されたすべてのレコードを含む一時テーブルが作成され、その後、変更されていないレコードと更新されたレコードの両方が新しいターゲットテーブルに挿入されます。その結果、大きな結果セットに対する制約は、テーブルモデルの場合と同様の[制限事項](/integrations/dbt#limitations)となります。
 
@@ -655,7 +655,7 @@ SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 2;
 +------+-------------------+----------+------------------+------+---------+-------------------+
 ```
 
-### 内部動作 {#internals}
+### 内部動作 \{#internals\}
 
 上記の増分更新を実現するために実行されたステートメントは、ClickHouse のクエリログを参照することで確認できます。
 
@@ -677,7 +677,7 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 
 この戦略は、非常に大きなモデルでは問題が発生する可能性があります。詳細については [Limitations](/integrations/dbt#limitations) を参照してください。
 
-### Append Strategy（挿入のみモード） {#append-strategy-inserts-only-mode}
+### Append Strategy（挿入のみモード） \{#append-strategy-inserts-only-mode\}
 
 インクリメンタルモデルにおける大規模データセットの制約を回避するために、アダプターは dbt の設定パラメータ `incremental_strategy` を使用します。これは `append` に設定できます。これを設定すると、更新された行はターゲットテーブル（`imdb_dbt.actor_summary`）に直接挿入され、一時テーブルは作成されません。
 注意: Append only モードでは、データが不変であるか、重複を許容できる必要があります。更新された行をサポートするインクリメンタルテーブルモデルが必要な場合、このモードは使用しないでください。
@@ -778,7 +778,7 @@ WHERE id > (SELECT max(id) FROM imdb_dbt.actor_summary) OR updated_at > (SELECT 
 
 この実行では、新しい行だけが直接 `imdb_dbt.actor_summary` テーブルに追加され、テーブルの作成は行われません。
 
-### 削除および挿入モード（実験的） {#deleteinsert-mode-experimental}
+### 削除および挿入モード（実験的） \{#deleteinsert-mode-experimental\}
 
 歴史的には、ClickHouse は非同期の [Mutations](/sql-reference/statements/alter/index.md) としてのみ、更新および削除を限定的にサポートしていました。これらは非常に I/O 負荷が高く、一般的には避けるべきです。
 
@@ -802,7 +802,7 @@ This process is shown below:
 
 <Image img={dbt_06} size="lg" alt="軽量な delete インクリメンタル" />
 
-### insert&#95;overwrite mode (experimental) {#insert_overwrite-mode-experimental}
+### insert&#95;overwrite mode (experimental) \{#insert_overwrite-mode-experimental\}
 
 Performs the following steps:
 
@@ -820,7 +820,7 @@ This approach has the following advantages:
 
 <Image img={dbt_07} size="lg" alt="insert overwrite インクリメンタル" />
 
-## スナップショットの作成 {#creating-a-snapshot}
+## スナップショットの作成 \{#creating-a-snapshot\}
 
 dbt のスナップショット機能を使用すると、更新可能なモデルに対する変更を時間の経過とともに記録できます。これにより、アナリストはモデルに対して任意時点のクエリを実行し、モデルの過去の状態を「遡って」確認できるようになります。これは、行が有効であった期間を記録する from 日付列および to 日付列を持つ [タイプ 2 のゆっくり変化する次元 (Slowly Changing Dimensions)](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row) を使用して実現されます。この機能は ClickHouse アダプターでサポートされており、以下に示します。
 

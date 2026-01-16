@@ -9,11 +9,11 @@ doc_type: 'reference'
 
 
 
-# avgMerge {#avgMerge}
+# avgMerge \{#avgMerge\}
 
 
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 [`Merge`](/sql-reference/aggregate-functions/combinators#-state) 组合器
 可以应用于 [`avg`](/sql-reference/aggregate-functions/reference/avg)
@@ -21,14 +21,14 @@ doc_type: 'reference'
 
 
 
-## 示例用法 {#example-usage}
+## 示例用法 \{#example-usage\}
 
 `Merge` 组合子与 `State` 组合子密切相关。有关 `avgMerge` 和 `avgState` 的示例，请参阅 
 ["avgState 示例用法"](/examples/aggregate-function-combinators/avgState/#example-usage)。
 
 
 
-## 另请参阅 {#see-also}
+## 另请参阅 \{#see-also\}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`Merge`](/sql-reference/aggregate-functions/combinators#-merge)
 - [`MergeState`](/sql-reference/aggregate-functions/combinators#-mergestate)

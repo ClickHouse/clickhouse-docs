@@ -9,7 +9,7 @@ doc_type: 'landing-page'
 
 import TableOfContents from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_table_of_contents.md';
 
-# ClickHouse Cloud におけるベストプラクティス {#best-practices-in-clickhouse-cloud}
+# ClickHouse Cloud におけるベストプラクティス \{#best-practices-in-clickhouse-cloud\}
 
 このセクションでは、ClickHouse Cloud を最大限に活用するために従うべきベストプラクティスを紹介します。
 

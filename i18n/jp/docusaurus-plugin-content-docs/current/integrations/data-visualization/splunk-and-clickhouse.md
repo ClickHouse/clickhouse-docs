@@ -24,7 +24,7 @@ import splunk_9 from '@site/static/images/integrations/splunk/splunk-9.png';
 import splunk_10 from '@site/static/images/integrations/splunk/splunk-10.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Splunk を ClickHouse に接続する {#connecting-splunk-to-clickhouse}
+# Splunk を ClickHouse に接続する \{#connecting-splunk-to-clickhouse\}
 
 <ClickHouseSupportedBadge/>
 
@@ -38,7 +38,7 @@ ClickHouse 向けには、[Splunk DB Connect App](https://splunkbase.splunk.com/
 
 この連携の代表的なユースケースは、NetFlow、Avro や Protobuf のバイナリデータ、DNS、VPC フローログ、その他の OTel ログなどの大規模データソースに ClickHouse を利用し、それらを Splunk 上でチームと共有して検索やダッシュボード作成を行う場合です。このアプローチでは、データは Splunk のインデックス層に取り込まれず、[Metabase](https://www.metabase.com/) や [Superset](https://superset.apache.org/) などの他の可視化ツール連携と同様に、ClickHouse から直接クエリされます。
 
-## 目的​ {#goal}
+## 目的​ \{#goal\}
 
 このガイドでは、ClickHouse JDBC ドライバーを使用して ClickHouse を Splunk に接続します。ローカル環境に Splunk Enterprise をインストールしますが、データのインデックス作成は行いません。その代わりに、DB Connect のクエリエンジン経由で検索機能を使用します。
 
@@ -50,7 +50,7 @@ ClickHouse 向けには、[Splunk DB Connect App](https://splunkbase.splunk.com/
 このガイドでは [New York City Taxi データセット](/getting-started/example-datasets/nyc-taxi) を使用します。[ドキュメント](http://localhost:3000/docs/getting-started/example-datasets)には、利用できる他の多くのデータセットもあります。
 :::
 
-## 前提条件 {#prerequisites}
+## 前提条件 \{#prerequisites\}
 
 開始する前に、次のものが必要です:
 
@@ -60,7 +60,7 @@ ClickHouse 向けには、[Splunk DB Connect App](https://splunkbase.splunk.com/
 - Splunk Enterprise を実行している OS インスタンスへの管理者権限または SSH アクセス
 - ClickHouse の接続情報（ClickHouse Cloud を使用している場合は[こちら](/integrations/metabase#1-gather-your-connection-details)を参照）
 
-## Splunk Enterprise で DB Connect をインストールして設定する {#install-and-configure-db-connect-on-splunk-enterprise}
+## Splunk Enterprise で DB Connect をインストールして設定する \{#install-and-configure-db-connect-on-splunk-enterprise\}
 
 まず、Splunk Enterprise インスタンスに Java Runtime Environment をインストールする必要があります。Docker を使用している場合は、`microdnf install java-11-openjdk` コマンドを実行します。
 
@@ -78,7 +78,7 @@ DB Connect App がインストールされていることを確認したら、[C
 
 <Image img={splunk_2} size="md" border alt="Java Home の設定が表示されている Splunk DB Connect 設定ページ" />
 
-## ClickHouse 向けに JDBC を設定する {#configure-jdbc-for-clickhouse}
+## ClickHouse 向けに JDBC を設定する \{#configure-jdbc-for-clickhouse\}
 
 [ClickHouse JDBC driver](https://github.com/ClickHouse/clickhouse-java) をダウンロードし、次のような DB Connect Drivers フォルダに配置します：
 
@@ -107,7 +107,7 @@ DB Connect App に戻り、Configuration &gt; Settings &gt; Drivers に移動し
 <Image img={splunk_3} size="lg" border alt="ClickHouse ドライバーが正常にインストールされていることを示す Splunk DB Connect の Drivers ページ" />
 
 
-## Splunk の検索を ClickHouse に接続する {#connect-splunk-search-to-clickhouse}
+## Splunk の検索を ClickHouse に接続する \{#connect-splunk-search-to-clickhouse\}
 
 DB Connect App の Configuration から Databases -> Identities に移動し、ClickHouse 用の Identity を作成します。
 
@@ -127,7 +127,7 @@ ClickHouse ホストの情報を入力し、"Enable SSL" にチェックが入�
 エラーが発生した場合は、Splunk インスタンスの IP アドレスを ClickHouse Cloud の IP Access List に追加しているか確認してください。詳細は [ドキュメント](/cloud/security/setting-ip-filters) を参照してください。
 :::
 
-## SQL クエリを実行する {#run-a-sql-query}
+## SQL クエリを実行する \{#run-a-sql-query\}
 
 ここでは、すべてが正しく動作していることを確認するために SQL クエリを実行します。
 
@@ -141,7 +141,7 @@ DB Connect App の DataLab セクションにある SQL Explorer で、接続先
 
 クエリが成功すると、結果が表示されます。
 
-## ダッシュボードを作成する {#create-a-dashboard}
+## ダッシュボードを作成する \{#create-a-dashboard\}
 
 SQL と強力な Splunk Processing Language (SPL) を組み合わせて活用するダッシュボードを作成します。
 
@@ -186,7 +186,7 @@ ORDER BY year, count(*) DESC; " connection="chc"
 <Image img={splunk_10} size="lg" border alt="NYC タクシーデータの複数の可視化を含む最終的な Splunk ダッシュボード" />
 
 
-## 時系列データ {#time-series-data}
+## 時系列データ \{#time-series-data\}
 
 Splunk には、ダッシュボードで時系列データの可視化や表示に利用できる組み込み関数が数百用意されています。ここでは、SQL と SPL を組み合わせて、Splunk で時系列データを扱えるクエリを作成する例を示します。
 
@@ -201,6 +201,6 @@ FROM "demo"."conn" WHERE time >= now() - interval 1 HOURS" connection="chc"
 ```
 
 
-## さらに詳しく知る {#learn-more}
+## さらに詳しく知る \{#learn-more\}
 
 Splunk DB Connect およびダッシュボードの作成方法の詳細については、[Splunk ドキュメント](https://docs.splunk.com/Documentation)を参照してください。

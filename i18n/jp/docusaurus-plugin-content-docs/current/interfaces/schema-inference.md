@@ -9,11 +9,11 @@ doc_type: 'reference'
 ClickHouse は、サポートされているほぼすべての[入力フォーマット](formats.md)において、入力データの構造を自動的に判定できます。
 このドキュメントでは、スキーマ推論がいつ使用されるか、各種入力フォーマットでどのように動作するか、およびどの設定によって制御できるかについて説明します。
 
-## 使用方法 {#usage}
+## 使用方法 \{#usage\}
 
 スキーマ推論は、ClickHouse が特定のデータ形式でデータを読み取る必要があるものの、その構造が不明な場合に使用されます。
 
-## テーブル関数 [file](../sql-reference/table-functions/file.md)、[s3](../sql-reference/table-functions/s3.md)、[url](../sql-reference/table-functions/url.md)、[hdfs](../sql-reference/table-functions/hdfs.md)、[azureBlobStorage](../sql-reference/table-functions/azureBlobStorage.md)。 {#table-functions-file-s3-url-hdfs-azureblobstorage}
+## テーブル関数 [file](../sql-reference/table-functions/file.md)、[s3](../sql-reference/table-functions/s3.md)、[url](../sql-reference/table-functions/url.md)、[hdfs](../sql-reference/table-functions/hdfs.md)、[azureBlobStorage](../sql-reference/table-functions/azureBlobStorage.md)。 \{#table-functions-file-s3-url-hdfs-azureblobstorage\}
 
 これらのテーブル関数には、入力データの構造を表すオプションの引数 `structure` があります。この引数が指定されていないか、`auto` に設定されている場合は、構造がデータから自動的に推論されます。
 
@@ -60,7 +60,7 @@ DESCRIBE file('hobbies.jsonl')
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-## テーブルエンジン [File](../engines/table-engines/special/file.md)、[S3](../engines/table-engines/integrations/s3.md)、[URL](../engines/table-engines/special/url.md)、[HDFS](../engines/table-engines/integrations/hdfs.md)、[azureBlobStorage](../engines/table-engines/integrations/azureBlobStorage.md) {#table-engines-file-s3-url-hdfs-azureblobstorage}
+## テーブルエンジン [File](../engines/table-engines/special/file.md)、[S3](../engines/table-engines/integrations/s3.md)、[URL](../engines/table-engines/special/url.md)、[HDFS](../engines/table-engines/integrations/hdfs.md)、[azureBlobStorage](../engines/table-engines/integrations/azureBlobStorage.md) \{#table-engines-file-s3-url-hdfs-azureblobstorage\}
 
 `CREATE TABLE` クエリでカラムのリストを指定しない場合、テーブルの構造はデータから自動的に推論されます。
 
@@ -102,7 +102,7 @@ DESCRIBE TABLE hobbies
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-## clickhouse-local {#clickhouse-local}
+## clickhouse-local \{#clickhouse-local\}
 
 `clickhouse-local` には、入力データの構造を指定するためのオプションのパラメータ `-S/--structure` があります。このパラメータが指定されていないか、`auto` に設定されている場合、構造はデータから自動的に推論されます。
 
@@ -132,7 +132,7 @@ clickhouse-local --file='hobbies.jsonl' --table='hobbies' --query='SELECT * FROM
 4    47    Brayan    ['movies','skydiving']
 ```
 
-## 挿入先テーブルの構造を使用する {#using-structure-from-insertion-table}
+## 挿入先テーブルの構造を使用する \{#using-structure-from-insertion-table\}
 
 テーブル関数 `file/s3/url/hdfs` を使用してテーブルにデータを挿入する場合、
 データから構造を推論する代わりに、挿入先テーブルの構造を使用するオプションがあります。
@@ -240,7 +240,7 @@ INSERT INTO hobbies4 SELECT id, empty(hobbies) ? NULL : hobbies[1] FROM file(hob
 
 この場合、テーブルに挿入するための `SELECT` クエリ内でカラム `hobbies` に対していくつかの操作が実行されているため、ClickHouse は挿入元テーブルの構造を利用できず、スキーマ推論が行われます。
 
-## スキーマ推論キャッシュ {#schema-inference-cache}
+## スキーマ推論キャッシュ \{#schema-inference-cache\}
 
 ほとんどの入力フォーマットでは、スキーマ推論のために一部のデータを読み取り、その構造を判定しますが、この処理には一定の時間がかかります。
 同じファイルからデータを読むたびに毎回同じスキーマを推論しないようにするため、推論されたスキーマはキャッシュされ、同じファイルへ再度アクセスする際には、ClickHouse はキャッシュからそのスキーマを利用します。
@@ -1511,7 +1511,7 @@ Line: value&#95;1=2, value&#95;2=&quot;Some string 2&quot;, value&#95;3=&quot;[4
 * `input_format_max_rows_to_read_for_schema_inference`: `25000`
 * `input_format_max_bytes_to_read_for_schema_inference`: `33554432`（32 MB）
 
-#### column&#95;names&#95;for&#95;schema&#95;inference {#column-names-for-schema-inference}
+#### column&#95;names&#95;for&#95;schema&#95;inference \{#column-names-for-schema-inference\}
 
 明示的なカラム名を持たないフォーマットに対して、スキーマ推論で使用するカラム名のリストです。指定した名前は、デフォルトの `c1,c2,c3,...` の代わりに使用されます。形式: `column1,column2,column3,...`。
 
@@ -1870,7 +1870,7 @@ $$)
 └──────┴──────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-### メタデータを含む JSON フォーマット {#json-with-metadata}
+### メタデータを含む JSON フォーマット \{#json-with-metadata\}
 
 一部の JSON 入力フォーマット（[JSON](/interfaces/formats/JSON)、[JSONCompact](/interfaces/formats/JSONCompact)、[JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)）には、列名およびデータ型に関するメタデータが含まれます。
 そのようなフォーマットでスキーマ推論を行う際、ClickHouse はこのメタデータを参照します。
@@ -1978,7 +1978,7 @@ Parquet フォーマットでは、ClickHouse はデータからスキーマを�
 
 その他の Parquet 型はサポートされていません。
 
-### Arrow {#arrow}
+### Arrow \{#arrow\}
 
 Arrow フォーマットでは、ClickHouse はデータからスキーマを読み取り、次の型対応に従って ClickHouse のスキーマに変換します。
 
@@ -2006,7 +2006,7 @@ Arrow フォーマットでは、ClickHouse はデータからスキーマを読
 
 その他の Arrow 型はサポートされていません。
 
-### ORC {#orc}
+### ORC \{#orc\}
 
 ORC 形式では、ClickHouse はスキーマをデータから読み取り、以下の型対応に従って ClickHouse のスキーマに変換します。
 
@@ -2029,7 +2029,7 @@ ORC 形式では、ClickHouse はスキーマをデータから読み取り、�
 
 その他の ORC 型はサポートされていません。
 
-### Native {#native}
+### Native \{#native\}
 
 Native 形式は ClickHouse 内部で使用され、スキーマをデータ内に含みます。
 スキーマ推論では、ClickHouse は変換を一切行わずにデータからスキーマを読み取ります。
@@ -2039,7 +2039,7 @@ Native 形式は ClickHouse 内部で使用され、スキーマをデータ内�
 この種のフォーマットでは、特定のスキーマ言語で記述された、データを表すスキーマを別ファイルで用意する必要があります。
 これらのフォーマットのファイルからスキーマを自動推論するために、ClickHouse は外部スキーマを別ファイルから読み込み、ClickHouse のテーブルスキーマに変換します。
 
-### Protobuf {#protobuf}
+### Protobuf \{#protobuf\}
 
 Protobuf フォーマットのスキーマ推論では、ClickHouse は次の型の対応関係を使用します。
 
@@ -2057,7 +2057,7 @@ Protobuf フォーマットのスキーマ推論では、ClickHouse は次の型
 | `repeated T`                  | [Array(T)](../sql-reference/data-types/array.md)  |
 | `message`, `group`            | [Tuple](../sql-reference/data-types/tuple.md)     |
 
-### CapnProto {#capnproto}
+### CapnProto \{#capnproto\}
 
 CapnProto フォーマットのスキーマ推論では、ClickHouse は次の型の対応関係を使用します。
 

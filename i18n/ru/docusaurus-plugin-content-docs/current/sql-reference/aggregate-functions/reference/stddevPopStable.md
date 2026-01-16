@@ -6,7 +6,7 @@ title: 'stddevPopStable'
 doc_type: 'reference'
 ---
 
-# stddevPopStable {#stddevpopstable}
+# stddevPopStable \{#stddevpopstable\}
 
 Результат равен квадратному корню из [varPop](../../../sql-reference/aggregate-functions/reference/varPop.md). В отличие от [`stddevPop`](../reference/stddevPop.md), эта функция использует численно устойчивый алгоритм. Она работает медленнее, но обеспечивает меньшую вычислительную погрешность.
 

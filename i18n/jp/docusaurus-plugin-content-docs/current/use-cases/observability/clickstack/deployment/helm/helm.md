@@ -37,12 +37,12 @@ ClickStack 用の Helm チャートは [こちら](https://github.com/ClickHouse
 * シークレット管理および認証設定
 
 
-### 適した用途 {#suitable-for}
+### 適した用途 \{#suitable-for\}
 
 * 検証・PoC
 * 本番運用
 
-## デプロイ手順 {#deployment-steps}
+## デプロイ手順 \{#deployment-steps\}
 
 <br/>
 
@@ -318,13 +318,13 @@ helm uninstall my-clickstack
 
 ## トラブルシューティング {#troubleshooting}
 
-### ログの確認 {#customizing-values}
+### ログの確認 \{#customizing-values\}
 
 ```shell
 kubectl logs -l app.kubernetes.io/name=clickstack
 ```
 
-### インストール失敗時のデバッグ {#using-secrets}
+### インストール失敗時のデバッグ \{#using-secrets\}
 
 ```shell
 helm install my-clickstack clickstack/clickstack --debug --dry-run

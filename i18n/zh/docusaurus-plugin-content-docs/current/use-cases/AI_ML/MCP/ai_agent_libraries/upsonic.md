@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 如何使用 Upsonic 和 ClickHouse MCP Server 构建 AI 代理 {#how-to-build-an-ai-agent-with-upsonic-and-the-clickhouse-mcp-server}
+# 如何使用 Upsonic 和 ClickHouse MCP Server 构建 AI 代理 \{#how-to-build-an-ai-agent-with-upsonic-and-the-clickhouse-mcp-server\}
 
 在本指南中，您将学习如何构建一个基于 [Upsonic](https://github.com/Upsonic/Upsonic/tree/master) 的 AI 代理，使其能够通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 进行交互。
 
@@ -18,7 +18,7 @@ doc_type: 'guide'
 该示例以 Notebook 形式提供，位于 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/upsonic/upsonic.ipynb) 中。
 :::
 
-## 前置条件 {#prerequisites}
+## 前置条件 \{#prerequisites\}
 
 - 系统中已安装 Python。
 - 系统中已安装 `pip`。

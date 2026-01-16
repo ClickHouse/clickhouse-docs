@@ -7,9 +7,9 @@ sidebar_label: 'argMinIf'
 doc_type: 'reference'
 ---
 
-# argMinIf {#argminif}
+# argMinIf \{#argminif\}
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 可以将 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器应用于 [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
 函数，从而在条件为 true 的行中，找到其 `val` 取最小值时对应的 `arg` 值，
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 当需要在数据集中查找与最小值关联的值，但只针对满足特定条件的行时，`argMinIf` 函数非常有用。
 
-## 示例用法 {#example-usage}
+## 示例用法 \{#example-usage\}
 
 在本示例中，我们将创建一张表，用于存储商品价格及其时间戳，
 并使用 `argMinIf` 在商品有库存时找出每个商品的最低价格。
@@ -58,7 +58,7 @@ GROUP BY product_id;
    └────────────┴────────────────────────────┘
 ```
 
-## 另请参阅 {#see-also}
+## 另请参阅 \{#see-also\}
 - [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
 - [`argMaxIf`](/examples/aggregate-function-combinators/argMaxIf)

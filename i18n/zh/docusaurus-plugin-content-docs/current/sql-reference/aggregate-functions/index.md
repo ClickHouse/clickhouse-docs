@@ -7,7 +7,7 @@ title: '聚合函数'
 doc_type: 'reference'
 ---
 
-# 聚合函数 {#aggregate-functions}
+# 聚合函数 \{#aggregate-functions\}
 
 聚合函数以[常规](http://www.sql-tutorial.com/sql-aggregate-functions-sql-tutorial)方式工作，符合数据库专家对其的预期。
 
@@ -16,7 +16,7 @@ ClickHouse 还支持：
 * [参数化聚合函数](/sql-reference/aggregate-functions/parametric-functions)，除了列之外还可以接受其他参数。
 * [组合器](/sql-reference/aggregate-functions/combinators)，用于改变聚合函数的行为。
 
-## NULL 处理 {#null-processing}
+## NULL 处理 \{#null-processing\}
 
 在聚合过程中，所有 `NULL` 参数都会被跳过。如果聚合函数有多个参数，那么对于任意一个或多个参数为 NULL 的行，都会被忽略。
 

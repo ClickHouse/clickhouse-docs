@@ -10,7 +10,7 @@ integration:
    - category: 'clickpipes'
 ---
 
-# 通用 Postgres 源设置指南 {#generic-postgres-source-setup-guide}
+# 通用 Postgres 源设置指南 \{#generic-postgres-source-setup-guide\}
 
 :::info
 
@@ -20,7 +20,7 @@ integration:
 
 ClickPipes 支持 Postgres 12 及更高版本。
 
-## 启用逻辑复制 {#enable-logical-replication}
+## 启用逻辑复制 \{#enable-logical-replication\}
 
 1. 要在你的 Postgres 实例上启用复制，需要确保设置以下参数：
 
@@ -55,7 +55,7 @@ ClickPipes 支持 Postgres 12 及更高版本。
     ```
 3. 如果你对上述配置做了任何更改，必须重启 Postgres 实例，更改才会生效。
 
-## 创建具有权限和 publication 的用户 {#creating-a-user-with-permissions-and-publication}
+## 创建具有权限和 publication 的用户 \{#creating-a-user-with-permissions-and-publication\}
 
 以管理员用户身份连接到你的 Postgres 实例，并执行以下命令：
 
@@ -99,7 +99,7 @@ ClickPipes 支持 Postgres 12 及更高版本。
 
    `clickpipes` publication 将包含由指定表生成的一组变更事件，并将在后续用于摄取复制数据流。
 
-## 在 pg_hba.conf 中为 ClickPipes 用户启用连接 {#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user}
+## 在 pg_hba.conf 中为 ClickPipes 用户启用连接 \{#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user\}
 
 如果您是自托管环境，则需要按照以下步骤，允许来自 ClickPipes 的 IP 地址对 ClickPipes 用户的连接。如果您使用的是托管服务，可以参考服务提供商的文档完成相同的配置。
 
@@ -113,7 +113,7 @@ ClickPipes 支持 Postgres 12 及更高版本。
     SELECT pg_reload_conf();
     ```
 
-## 增大 `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
+## 增大 `max_slot_wal_keep_size` \{#increase-max_slot_wal_keep_size\}
 
 这是一个推荐的配置调整，用于确保大型事务或提交不会导致复制槽被丢弃。
 
@@ -136,7 +136,7 @@ SELECT pg_reload_conf();
 :::
 
 
-## 接下来是什么？ {#whats-next}
+## 接下来是什么？ \{#whats-next\}
 
 现在你可以[创建 ClickPipe](../index.md)，并开始将 Postgres 实例中的数据摄取到 ClickHouse Cloud 中。
 请务必记录下在设置 Postgres 实例时使用的连接信息，因为在创建 ClickPipe 的过程中将需要这些信息。

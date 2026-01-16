@@ -6,7 +6,7 @@ title: 'studentTTestOneSample'
 doc_type: 'reference'
 ---
 
-# studentTTestOneSample {#studentttestonesample}
+# studentTTestOneSample \{#studentttestonesample\}
 
 既知の母平均に対して、標本の平均が異なるかどうかを判定するために、1標本 Student の t 検定を適用します。
 

@@ -8,7 +8,7 @@ doc_type: 'landing-page'
 keywords: ['運用', '管理', 'デプロイメント', 'クラスター管理', 'FAQ']
 ---
 
-# ClickHouse サーバーおよびクラスターの運用に関する質問 {#question-about-operating-clickhouse-servers-and-clusters}
+# ClickHouse サーバーおよびクラスターの運用に関する質問 \{#question-about-operating-clickhouse-servers-and-clusters\}
 
 * [本番環境ではどの ClickHouse バージョンを使用すべきですか？](/faq/operations/production.md)
 * [ストレージとコンピュートを分離した構成で ClickHouse をデプロイできますか？](/faq/operations/separate_storage.md)

@@ -7,11 +7,11 @@ title: 'odbc'
 doc_type: 'reference'
 ---
 
-# Табличная функция ODBC {#odbc-table-function}
+# Табличная функция ODBC \{#odbc-table-function\}
 
 Возвращает таблицу, подключённую через [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity).
 
-## Синтаксис {#syntax}
+## Синтаксис \{#syntax\}
 
 ```sql
 odbc(datasource, external_database, external_table)
@@ -19,7 +19,7 @@ odbc(datasource, external_table)
 odbc(named_collection)
 ```
 
-## Аргументы {#arguments}
+## Аргументы \{#arguments\}
 
 | Аргумент            | Описание                                                            |
 |---------------------|------------------------------------------------------------------------|
@@ -33,7 +33,7 @@ odbc(named_collection)
 
 Поля со значениями `NULL` из внешней таблицы преобразуются в значения по умолчанию для базового типа данных. Например, если поле удалённой таблицы MySQL имеет тип `INT NULL`, оно преобразуется в 0 (значение по умолчанию для типа данных ClickHouse `Int32`).
 
-## Пример использования {#usage-example}
+## Пример использования \{#usage-example\}
 
 **Получение данных из локального экземпляра MySQL через ODBC**
 
@@ -110,7 +110,7 @@ SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 └────────┴──────────────┴───────┴────────────────┘
 ```
 
-## См. также {#see-also}
+## См. также \{#see-also\}
 
 - [Словари ODBC](/sql-reference/dictionaries#dbms)
 - [Табличный движок ODBC](/engines/table-engines/integrations/odbc).

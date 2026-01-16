@@ -5,7 +5,7 @@ title: 'quantileTimingWeighted'
 doc_type: 'reference'
 ---
 
-# quantileTimingWeighted {#quantiletimingweighted}
+# quantileTimingWeighted \{#quantiletimingweighted\}
 
 С заданной точностью вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных с учетом веса каждого элемента последовательности.
 

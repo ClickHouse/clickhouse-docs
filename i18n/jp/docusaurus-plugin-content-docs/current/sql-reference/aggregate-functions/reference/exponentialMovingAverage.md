@@ -5,7 +5,7 @@ title: 'exponentialMovingAverage'
 doc_type: 'reference'
 ---
 
-## exponentialMovingAverage {#exponentialmovingaverage}
+## exponentialMovingAverage \{#exponentialmovingaverage\}
 
 指定された期間における値の指数移動平均を計算します。
 

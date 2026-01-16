@@ -6,7 +6,7 @@ title: 'meanZTest'
 doc_type: 'reference'
 ---
 
-# meanZTest {#meanztest}
+# meanZTest \{#meanztest\}
 
 对来自两个总体的样本进行均值 z 检验。
 

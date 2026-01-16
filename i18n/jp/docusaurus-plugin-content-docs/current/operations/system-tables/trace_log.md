@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.trace&#95;log {#systemtrace&#95;log}
+# system.trace&#95;log \{#systemtrace&#95;log\}
 
 <SystemTableCloud />
 
@@ -110,7 +110,7 @@ entry_type:              Exit
 duration_nanoseconds:   58435
 ```
 
-## Chrome Event Trace Format への変換 {#chrome-event-trace-format}
+## Chrome Event Trace Format への変換 \{#chrome-event-trace-format\}
 
 プロファイリングデータは、次のクエリを使用して Chrome の Event Trace Format に変換できます。クエリを `chrome_trace.sql` ファイルとして保存してください：
 

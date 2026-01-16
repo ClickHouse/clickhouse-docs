@@ -8,13 +8,13 @@ title: '填充时间序列数据中的缺失值'
 doc_type: 'guide'
 ---
 
-# 填补时间序列数据中的缺口 {#filling-gaps-in-time-series-data}
+# 填补时间序列数据中的缺口 \{#filling-gaps-in-time-series-data\}
 
 在处理时间序列数据时，由于数据缺失或业务/采集不活跃，数据中可能会出现间断。
 通常在查询数据时，我们不希望这些缺口存在。在这种情况下，`WITH FILL` 子句就派上用场了。
 本指南将介绍如何使用 `WITH FILL` 来填补时间序列数据中的缺口。
 
-## 配置 {#setup}
+## 配置 \{#setup\}
 
 假设我们有如下表，用于存储由生成式 AI 图像服务生成的图像的元数据：
 
@@ -43,7 +43,7 @@ INSERT INTO images VALUES (1088619208524431510, '2023-03-24 00:24:04.879', 1024,
 INSERT INTO images VALUES (1088619208425437515, '2023-03-24 00:24:05.160', 1024, 1024, 1538451);
 ```
 
-## 按桶查询 {#querying-by-bucket}
+## 按桶查询 \{#querying-by-bucket\}
 
 我们将查看创建时间在 2023 年 3 月 24 日 `00:24:03` 到 `00:24:04` 之间的图像，因此先为这两个时间点创建一些参数：
 
@@ -77,7 +77,7 @@ ORDER BY bucket ASC
 
 结果集只包含那些生成了图像的桶，但在时间序列分析时，我们可能希望返回每个 100ms 的桶，即使其中没有任何记录。
 
-## WITH FILL {#with-fill}
+## WITH FILL \{#with-fill\}
 
 我们可以使用 `WITH FILL` 子句来填补这些空缺。
 我们还将指定 `STEP`，即要填充的间隔步长。
@@ -115,7 +115,7 @@ STEP toIntervalMillisecond(100);
 
 可以看到，`count` 列中的空缺已经被填充为 0。
 
-## WITH FILL...FROM {#with-fillfrom}
+## WITH FILL...FROM \{#with-fillfrom\}
 
 然而，在时间范围的起始位置仍然存在一个空缺，我们可以通过指定 `FROM` 来填补这一点：
 
@@ -158,7 +158,7 @@ STEP toIntervalMillisecond(100);
 
 从结果可以看到，`00:24:03.000` 到 `00:24:03.500` 这一段的所有分桶现在都已经显示出来了。
 
-## WITH FILL...TO {#with-fillto}
+## WITH FILL...TO \{#with-fillto\}
 
 不过，在时间范围的末尾我们仍然缺少一些桶，可以通过提供一个 `TO` 值来填补。
 `TO` 不包含其自身指定的时间点，因此我们会在结束时间上增加一小段时间，以确保该时间点被包含在内：
@@ -205,7 +205,7 @@ STEP toIntervalMillisecond(100);
 
 现在所有空白区间都已填充完毕，从 `00:24:03.000` 到 `00:24:05.000` 的每个 100 毫秒都有记录。
 
-## 累计计数 {#cumulative-count}
+## 累计计数 \{#cumulative-count\}
 
 假设我们现在希望对所有 bucket 中已创建图像的数量进行累计计数。
 我们可以通过添加一个 `cumulative` 列来实现，如下所示：
@@ -253,7 +253,7 @@ STEP toIntervalMillisecond(100);
 
 累积列中的值未按我们期望的方式运行。
 
-## WITH FILL...INTERPOLATE {#with-fillinterpolate}
+## WITH FILL...INTERPOLATE \{#with-fillinterpolate\}
 
 在 `count` 列中值为 `0` 的所有行，其 `cumulative` 列中的值同样是 `0`，而我们更希望这些行在 `cumulative` 列中沿用前一行的值。
 我们可以通过使用 `INTERPOLATE` 子句来实现，如下所示：

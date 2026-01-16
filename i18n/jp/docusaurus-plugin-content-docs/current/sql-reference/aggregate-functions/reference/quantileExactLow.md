@@ -5,7 +5,7 @@ title: 'quantileExactLow'
 doc_type: 'reference'
 ---
 
-# quantileExactLow {#quantileexactlow}
+# quantileExactLow \{#quantileexactlow\}
 
 `quantileExact` と同様に、数値データ列の正確な[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 

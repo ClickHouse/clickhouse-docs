@@ -10,7 +10,7 @@ integration:
   - category: 'clickpipes'
 ---
 
-# 通用 MongoDB 数据源配置指南 {#generic-mongodb-source-setup-guide}
+# 通用 MongoDB 数据源配置指南 \{#generic-mongodb-source-setup-guide\}
 
 :::info
 
@@ -18,7 +18,7 @@ integration:
 
 :::
 
-## 启用 oplog 保留 {#enable-oplog-retention}
+## 启用 oplog 保留 \{#enable-oplog-retention\}
 
 复制至少需要 24 小时的 oplog 保留时间。我们建议将 oplog 保留时间设置为 72 小时或更长，以确保在初始快照完成之前 oplog 不会被截断。
 
@@ -40,7 +40,7 @@ db.adminCommand({
 有关 `replSetResizeOplog` 命令及 oplog 保留的更多详情，请参阅 [MongoDB 文档](https://www.mongodb.com/docs/manual/reference/command/replSetResizeOplog/)。
 
 
-## 配置数据库用户 {#configure-database-user}
+## 配置数据库用户 \{#configure-database-user\}
 
 以管理员用户身份连接到您的 MongoDB 实例，并执行以下命令，为 MongoDB CDC ClickPipes 创建一个用户：
 
@@ -57,7 +57,7 @@ db.getSiblingDB("admin").createUser({
 :::
 
 
-## 接下来 {#whats-next}
+## 接下来 \{#whats-next\}
 
 现在可以[创建 ClickPipe](../index.md)，并开始将 MongoDB 实例中的数据摄取到 ClickHouse Cloud。
 请务必记录在设置 MongoDB 实例时使用的连接信息，因为在创建 ClickPipe 的过程中将需要这些信息。

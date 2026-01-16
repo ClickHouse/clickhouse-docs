@@ -10,7 +10,7 @@ import CloudOnlyBadge from '@theme/badges/CloudOnlyBadge';
 
 <CloudOnlyBadge />
 
-# system.masking_policies {#systemmasking_policies}
+# system.masking_policies \{#systemmasking_policies\}
 
 定義されているすべてのマスキングポリシーに関する情報を保持します。
 

@@ -7,15 +7,15 @@ sidebar_label: 'quantilesTimingIf'
 doc_type: 'reference'
 ---
 
-# quantilesTimingIf {#quantilestimingif}
+# quantilesTimingIf \{#quantilestimingif\}
 
-## Описание {#description}
+## Описание \{#description\}
 
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
 для вычисления квантилей значений времени для строк, для которых условие истинно,
 с использованием агрегатной функции-комбинатора `quantilesTimingIf`.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 В этом примере мы создадим таблицу, которая хранит время ответа API для различных эндпоинтов
 и используем `quantilesTimingIf` для вычисления квантилей времени ответа для успешных запросов.
@@ -79,6 +79,6 @@ GROUP BY endpoint;
    └──────────┴─────────────────────────────────────────────────────────────────────┘
 ```
 
-## См. также {#see-also}
+## См. также \{#see-also\}
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
 - [`Комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)

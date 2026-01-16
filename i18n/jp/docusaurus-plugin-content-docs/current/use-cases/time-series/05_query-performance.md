@@ -8,13 +8,13 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 時系列クエリのパフォーマンス {#time-series-query-performance}
+# 時系列クエリのパフォーマンス \{#time-series-query-performance\}
 
 ストレージの最適化が完了したら、次のステップはクエリパフォーマンスの向上です。
 このセクションでは、`ORDER BY` キーの最適化とマテリアライズドビューの活用という 2 つの主要な手法を解説します。
 これらのアプローチによって、クエリ時間を秒単位からミリ秒単位まで短縮できることを見ていきます。
 
-## `ORDER BY` キーの最適化 {#time-series-optimize-order-by}
+## `ORDER BY` キーの最適化 \{#time-series-optimize-order-by\}
 
 他の最適化に取り組む前に、ClickHouse が可能な限り高速に結果を返せるよう、まず `ORDER BY` キーを最適化する必要があります。
 最適なキーの選択は、主に実行するクエリに依存します。たとえば、ほとんどのクエリが `project` と `subproject` カラムでフィルタするとします。
@@ -112,7 +112,7 @@ ORDER BY (project, subproject, time);
   </tbody>
 </table>
 
-## マテリアライズドビュー {#time-series-materialized-views}
+## マテリアライズドビュー \{#time-series-materialized-views\}
 
 別の方法として、マテリアライズドビューを使用して、よく実行されるクエリの結果を集計・保存することができます。以降は、元のテーブルではなく、これらの結果に対してクエリを実行します。ここでは、次のクエリがかなり頻繁に実行されるケースを想定します。
 
@@ -143,7 +143,7 @@ LIMIT 10
 ピークメモリ使用量: 1.50 GiB。
 ```
 
-### マテリアライズドビューを作成する {#time-series-create-materialized-view}
+### マテリアライズドビューを作成する \{#time-series-create-materialized-view\}
 
 次のマテリアライズドビューを作成します。
 
@@ -170,7 +170,7 @@ FROM wikistat
 GROUP BY path, month;
 ```
 
-### 宛先テーブルのバックフィル {#time-series-backfill-destination-table}
+### 宛先テーブルのバックフィル \{#time-series-backfill-destination-table\}
 
 この宛先テーブルは `wikistat` テーブルに新しいレコードが挿入されたときにのみデータが投入されるため、[バックフィル](/docs/data-modeling/backfilling)を行う必要があります。
 

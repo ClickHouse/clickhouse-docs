@@ -13,11 +13,11 @@ import json_offsets from '@site/static/images/integrations/data-ingestion/data-f
 import shared_json_column from '@site/static/images/integrations/data-ingestion/data-formats/json_shared_column.png';
 
 
-# 设计你的 schema {#designing-your-schema}
+# 设计你的 schema \{#designing-your-schema\}
 
 虽然可以使用 [schema inference](/integrations/data-formats/json/inference) 为 JSON 数据建立初始 schema，并直接对存储在 S3 等位置的 JSON 数据文件进行查询，但你应当为数据建立一个经过优化并具备版本管理的 schema。下面我们将讨论对 JSON 结构建模的推荐方法。
 
-## 静态 JSON 与动态 JSON {#static-vs-dynamic-json}
+## 静态 JSON 与动态 JSON \{#static-vs-dynamic-json\}
 
 为 JSON 定义 schema 的首要任务是为每个键的值确定合适的类型。我们建议在 JSON 层级结构中的每一层、每个键上递归地应用以下规则，以确定每个键的合适类型。
 
@@ -92,7 +92,7 @@ import shared_json_column from '@site/static/images/integrations/data-ingestion/
 具有数百或数千个静态键的结构也可以被视为动态结构，因为几乎不可能为这些键静态声明所有列。不过，在可能的情况下，请尽量[跳过](#using-type-hints-and-skipping-paths)那些不需要的路径，以同时节省存储和推断开销。
 :::
 
-## 处理静态结构 {#handling-static-structures}
+## 处理静态结构 \{#handling-static-structures\}
 
 我们建议对静态结构使用命名元组（即 `Tuple`）来表示。对象数组可以使用元组数组来表示，即 `Array(Tuple)`。在元组内部，列及其对应的类型也应按照相同的规则进行定义。这样一来，为了表示嵌套对象，就可能会出现嵌套的 Tuple，如下所示。
 
@@ -203,7 +203,7 @@ ORDER BY company.name
 ```
 
 
-### 处理默认值 {#handling-default-values}
+### 处理默认值 \{#handling-default-values\}
 
 即使 JSON 对象是结构化的，它们通常也是稀疏的，只提供已知键中的一部分。幸运的是，`Tuple` 类型并不要求 JSON 载荷中必须包含所有列。如果未提供，将会使用默认值。
 
@@ -282,7 +282,7 @@ FORMAT PrettyJSONEachRow
 :::
 
 
-### 处理新增列 {#handling-new-columns}
+### 处理新增列 \{#handling-new-columns\}
 
 当 JSON 键是固定不变时，采用结构化方式是最简单的。但即使如此，只要可以事先规划模式的变更（即预先知道会新增哪些键，并可以相应修改模式），仍然可以使用这种方法。
 
@@ -360,7 +360,7 @@ SELECT id, nickname FROM people
 ```
 
 
-## 处理半结构化/动态结构 {#handling-semi-structured-dynamic-structures}
+## 处理半结构化/动态结构 \{#handling-semi-structured-dynamic-structures\}
 
 如果 JSON 数据是半结构化的，其中的键可以动态添加和/或具有多种类型，则推荐使用 [`JSON`](/sql-reference/data-types/newjson) 类型。
 
@@ -491,7 +491,7 @@ SELECT id, nickname FROM people
 - **避免列爆炸风险** - 虽然 JSON 类型可以扩展到潜在数千个列（其中子列作为独立列存储），但这可能导致列文件数量爆炸式增长，即创建过多列文件，从而影响性能。为缓解这一问题，JSON 底层使用的 [Dynamic type](/sql-reference/data-types/dynamic) 提供了一个 [`max_dynamic_paths`](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) 参数，用于限制以独立列文件形式存储的唯一路径数量。一旦达到该阈值，额外的路径会存储在一个共享列文件中，并使用紧凑的编码格式，从而在支持灵活数据摄取的同时，保持性能和存储效率。然而，访问这个共享列文件的性能不如独立列文件。需要注意的是，JSON 列可以与[类型提示](#using-type-hints-and-skipping-paths)一起使用。带有类型提示的列将提供与独立列相同的性能。
 - **更简单的路径和类型自省** - 尽管 JSON 类型支持[自省函数](/sql-reference/data-types/newjson#introspection-functions)来确定已推断的类型和路径，但静态结构在探索时（例如使用 `DESCRIBE`）可能更简单。
 
-### 单个 JSON 列 {#single-json-column}
+### 单个 JSON 列 \{#single-json-column\}
 
 这种方法对原型设计和数据工程任务很有用。在生产环境中，仅在必要时将 `JSON` 用于动态子结构。
 
@@ -667,7 +667,7 @@ FROM people
 ```
 
 
-### 针对性 JSON 列 {#targeted-json-column}
+### 针对性 JSON 列 \{#targeted-json-column\}
 
 虽然在原型设计和数据工程场景中很有用，但在生产环境中，我们建议在可能的情况下使用显式 schema 定义。
 
@@ -767,7 +767,7 @@ FORMAT PrettyJsonEachRow
 ```
 
 
-### 使用类型提示和跳过路径 {#using-type-hints-and-skipping-paths}
+### 使用类型提示和跳过路径 \{#using-type-hints-and-skipping-paths\}
 
 类型提示允许我们为某个路径及其子列指定类型，从而避免不必要的类型推断。请看下面的示例，我们为 JSON 列 `company.labels` 中的 JSON 键 `dissolved`、`employees` 和 `founded` 明确指定了类型。
 
@@ -926,7 +926,7 @@ FORMAT PrettyJSONEachRow
 ```
 
 
-#### 通过类型提示优化性能 {#optimizing-performance-with-type-hints}  
+#### 通过类型提示优化性能 \{#optimizing-performance-with-type-hints\}
 
 类型提示不仅仅是避免不必要类型推断的一种方式——它还能完全消除存储和处理过程中的间接访问开销，并且允许指定[最优的原始类型](/data-modeling/schema-design#optimizing-types)。带有类型提示的 JSON 路径始终与传统列一样存储，从而无需使用[**判别列（discriminator columns）**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data) 或在查询时进行动态解析。 
 
@@ -934,7 +934,7 @@ FORMAT PrettyJSONEachRow
 
 因此，对于大体结构一致但仍希望利用 JSON 灵活性的数据集，类型提示提供了一种便捷方式，无需重构模式（schema）或摄取管道即可保持性能。
 
-### 配置动态路径 {#configuring-dynamic-paths}
+### 配置动态路径 \{#configuring-dynamic-paths\}
 
 ClickHouse 将每个 JSON 路径作为子列存储在真正的列式存储布局中，从而获得与传统列相同的性能优势——例如压缩、SIMD 加速处理以及最小化磁盘 I/O。JSON 数据中每个唯一的路径与类型组合都可以在磁盘上对应自己的列文件。
 

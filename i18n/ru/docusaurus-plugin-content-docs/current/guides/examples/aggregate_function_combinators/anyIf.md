@@ -7,15 +7,15 @@ sidebar_label: 'anyIf'
 doc_type: 'reference'
 ---
 
-# anyIf {#avgif}
+# anyIf \{#avgif\}
 
-## Описание {#description}
+## Описание \{#description\}
 
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к агрегатной функции [`any`](/sql-reference/aggregate-functions/reference/any)
 для выбора первого встретившегося элемента из заданного столбца,
 который удовлетворяет указанному условию.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успешности,
 и используем `anyIf`, чтобы выбрать первые значения `transaction_id`, которые больше и
@@ -54,6 +54,6 @@ FROM sales;
 └────────────┴────────────┘
 ```
 
-## См. также {#see-also}
+## См. также \{#see-also\}
 - [`any`](/sql-reference/aggregate-functions/reference/any)
 - [`комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)

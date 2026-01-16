@@ -7,11 +7,11 @@ title: 'Array(T)'
 doc_type: 'reference'
 ---
 
-# Array(T) {#arrayt}
+# Array(T) \{#arrayt\}
 
 Массив элементов типа `T` с индексацией, начинающейся с 1. `T` может быть любым типом данных, включая массив.
 
-## Создание массива {#creating-an-array}
+## Создание массива \{#creating-an-array\}
 
 Для создания массива можно использовать функцию:
 
@@ -47,7 +47,7 @@ SELECT [1, 2] AS x, toTypeName(x)
 └───────┴────────────────────┘
 ```
 
-## Работа с типами данных {#working-with-data-types}
+## Работа с типами данных \{#working-with-data-types\}
 
 При создании массива «на лету» ClickHouse автоматически определяет тип аргумента как самый узкий тип данных, который может хранить все перечисленные аргументы. Если в массиве есть значения [Nullable](/sql-reference/data-types/nullable) или литералы [NULL](/operations/settings/formats#input_format_null_as_default), тип элемента массива также становится [Nullable](../../sql-reference/data-types/nullable.md).
 
@@ -76,7 +76,7 @@ Received exception from server (version 1.1.54388):
 Code: 386. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: There is no supertype for types UInt8, String because some of them are String/FixedString and some of them are not.
 ```
 
-## Размер массива {#array-size}
+## Размер массива \{#array-size\}
 
 Можно определить размер массива, используя подстолбец `size0`, не считывая весь столбец целиком. Для многомерных массивов вы можете использовать `sizeN-1`, где `N` — требуемая размерность.
 
@@ -100,7 +100,7 @@ SELECT arr.size0, arr.size1, arr.size2 FROM t_arr;
 └───────────┴───────────┴───────────┘
 ```
 
-## Чтение вложенных подколонок из Array {#reading-nested-subcolumns-from-array}
+## Чтение вложенных подколонок из Array \{#reading-nested-subcolumns-from-array\}
 
 Если вложенный тип `T` внутри `Array` имеет подколонки (например, если это [именованный кортеж](./tuple.md)), вы можете читать его подколонки из типа `Array(T)` с теми же именами подколонок. Тип подколонки будет `Array` от типа исходной подколонки.
 

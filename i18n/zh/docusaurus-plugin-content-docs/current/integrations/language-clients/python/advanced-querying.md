@@ -8,9 +8,9 @@ title: '高级查询'
 doc_type: 'reference'
 ---
 
-# 使用 ClickHouse Connect 查询数据：进阶用法 {#querying-data-with-clickhouse-connect--advanced-usage}
+# 使用 ClickHouse Connect 查询数据：进阶用法 \{#querying-data-with-clickhouse-connect--advanced-usage\}
 
-## QueryContexts {#querycontexts}
+## QueryContexts \{#querycontexts\}
 
 ClickHouse Connect 会在 `QueryContext` 中执行常规查询。`QueryContext` 包含用于针对 ClickHouse 数据库构建查询的关键结构，以及用于将结果处理为 `QueryResult` 或其他响应数据结构的配置。这其中包括查询本身、参数、设置、读取格式以及其他属性。
 
@@ -31,7 +31,7 @@ assert result.result_set[1][0] == 'first_value2'
 
 请注意，`QueryContext` 不是线程安全的，但在多线程环境中可以通过调用 `QueryContext.updated_copy` 方法来获取其副本。
 
-## 流式查询 {#streaming-queries}
+## 流式查询 \{#streaming-queries\}
 
 ClickHouse Connect 客户端提供多种以流（实现为 Python 生成器）形式检索数据的方法：
 
@@ -45,7 +45,7 @@ ClickHouse Connect 客户端提供多种以流（实现为 Python 生成器）�
 
 上述每个方法都会返回一个 `ContextStream` 对象，必须在 `with` 语句中打开该对象，才能开始读取流数据。
 
-### 数据块 {#data-blocks}
+### 数据块 \{#data-blocks\}
 
 ClickHouse Connect 将来自主要 `query` 方法的所有数据，作为从 ClickHouse 服务器接收的数据块流进行处理。这些数据块使用 ClickHouse 自定义的 “Native” 格式进行双向传输。一个“块（block）”本质上就是一组二进制数据列的序列，其中每一列都包含相同数量且具有指定数据类型的数据值。（作为列式数据库，ClickHouse 以类似的形式存储这些数据。）查询返回的数据块大小由两个用户设置控制，这两个设置可以在多个层级（用户配置、用户、会话或查询）中进行配置。它们是：
 
@@ -56,11 +56,11 @@ ClickHouse Connect 将来自主要 `query` 方法的所有数据，作为从 Cli
 
 当使用任一客户端的 `query_*_stream` 方法时，结果会按数据块逐块返回。ClickHouse Connect 一次只加载一个数据块。这样可以在无需将整个大型结果集全部加载到内存中的情况下处理大量数据。请注意，应用程序应做好准备以处理任意数量的数据块，并且无法精确控制每个数据块的大小。
 
-### 处理速度较慢时的 HTTP 数据缓冲区 {#http-data-buffer-for-slow-processing}
+### 处理速度较慢时的 HTTP 数据缓冲区 \{#http-data-buffer-for-slow-processing\}
 
 由于 HTTP 协议的限制，如果数据块的处理速度显著慢于 ClickHouse 服务器推送数据的速度，ClickHouse 服务器会关闭连接，从而在处理线程中抛出异常。可以通过使用通用的 `http_buffer_size` 设置来增大 HTTP 流式缓冲区（默认大小为 10 兆字节），以在一定程度上缓解这一问题。在应用程序可用内存充足的情况下，在这种场景中使用较大的 `http_buffer_size` 值通常是可以接受的。如果使用 `lz4` 或 `zstd` 压缩，缓冲区中的数据会以压缩形式存储，因此使用这些压缩类型会扩大整体可用缓冲容量。
 
-### StreamContexts {#streamcontexts}
+### StreamContexts \{#streamcontexts\}
 
 每个 `query_*_stream` 方法（例如 `query_row_block_stream`）都会返回一个 ClickHouse 的 `StreamContext` 对象，它是一个结合了 Python 上下文管理器和生成器的对象。基本用法如下：
 
@@ -75,7 +75,7 @@ with client.query_row_block_stream('SELECT pickup, dropoff, pickup_longitude, pi
 
 你可以使用 `StreamContext` 的 `source` 属性来访问其父级 `QueryResult` 对象，其中包含列名和类型。
 
-### 流类型 {#stream-types}
+### 流类型 \{#stream-types\}
 
 `query_column_block_stream` 方法会将块（block）作为一系列按列存储的数据返回，并使用原生的 Python 数据类型。结合上面的 `taxi_trips` 查询示例，返回的数据将是一个列表，其中每个元素又是另一个列表（或元组），包含对应列的所有数据。因此，`block[0]` 将是一个只包含字符串的元组。列式格式最常用于对某一列的全部值执行聚合操作，例如对总车费求和。
 
@@ -99,9 +99,9 @@ with df_stream:
 
 最后，`query_arrow_stream` 方法会返回一个 ClickHouse `ArrowStream` 格式的结果，其类型为包装在 `StreamContext` 中的 `pyarrow.ipc.RecordBatchStreamReader`。流的每次迭代都会返回一个 PyArrow RecordBlock。
 
-### 流式传输示例 {#streaming-examples}
+### 流式传输示例 \{#streaming-examples\}
 
-#### 流式传输行 {#stream-rows}
+#### 流式传输行 \{#stream-rows\}
 
 ```python
 import clickhouse_connect
@@ -119,7 +119,7 @@ with client.query_rows_stream("SELECT number, number * 2 as doubled FROM system.
         # ....
 ```
 
-#### 流式行数据块 {#stream-row-blocks}
+#### 流式行数据块 \{#stream-row-blocks\}
 
 ```python
 import clickhouse_connect
@@ -135,7 +135,7 @@ with client.query_row_block_stream("SELECT number, number * 2 FROM system.number
         # Received block with 34591 rows
 ```
 
-#### 以流式方式传输 Pandas DataFrame {#stream-pandas-dataframes}
+#### 以流式方式传输 Pandas DataFrame \{#stream-pandas-dataframes\}
 
 ```python
 import clickhouse_connect
@@ -161,7 +161,7 @@ with client.query_df_stream("SELECT number, toString(number) AS str FROM system.
         # 2   65411  65411
 ```
 
-#### 流式传输 Arrow 批处理 {#stream-arrow-batches}
+#### 流式传输 Arrow 批处理 \{#stream-arrow-batches\}
 
 ```python
 import clickhouse_connect
@@ -178,11 +178,11 @@ with client.query_arrow_stream("SELECT * FROM large_table") as stream:
         # Received Arrow batch with 34591 rows
 ```
 
-## NumPy、Pandas 和 Arrow 查询 {#numpy-pandas-and-arrow-queries}
+## NumPy、Pandas 和 Arrow 查询 \{#numpy-pandas-and-arrow-queries\}
 
 ClickHouse Connect 提供了用于处理 NumPy、Pandas 和 Arrow 数据结构的专用查询方法。通过这些方法，可以直接以这些常用数据格式获取查询结果，而无需手动进行格式转换。
 
-### NumPy 查询 {#numpy-queries}
+### NumPy 查询 \{#numpy-queries\}
 
 `query_np` 方法会将查询结果作为 NumPy 数组返回，而不是返回 ClickHouse Connect 的 `QueryResult` 对象。
 
@@ -207,7 +207,7 @@ print(np_array)
 #  [4 8]]
 ```
 
-### Pandas 查询 {#pandas-queries}
+### Pandas 查询 \{#pandas-queries\}
 
 `query_df` 方法会将查询结果作为 Pandas DataFrame 返回，而不是 ClickHouse Connect 的 `QueryResult`。
 
@@ -231,7 +231,7 @@ print(df)
 # 4       4        8
 ```
 
-### PyArrow 查询 {#pyarrow-queries}
+### PyArrow 查询 \{#pyarrow-queries\}
 
 `query_arrow` 方法会以 PyArrow Table 的形式返回查询结果。它直接使用 ClickHouse 的 `Arrow` 格式，因此只接受与主 `query` 方法相同的三个参数：`query`、`parameters` 和 `settings`。另外还有一个附加参数 `use_strings`，用于决定 Arrow Table 在渲染 ClickHouse 的 String 类型时，是作为字符串（当为 `True`）还是作为字节（当为 `False`）。
 
@@ -257,7 +257,7 @@ print(arrow_table)
 # str: [["0","1","2"]]
 ```
 
-### 基于 Arrow 的 DataFrame {#arrow-backed-dataframes}
+### 基于 Arrow 的 DataFrame \{#arrow-backed-dataframes\}
 
 ClickHouse Connect 通过 `query_df_arrow` 和 `query_df_arrow_stream` 方法，支持从 Arrow 查询结果快速且高效地创建 DataFrame，并节省内存。这些方法是对 Arrow 查询方法的轻量封装，并在可能的情况下执行零拷贝转换为 DataFrame：
 
@@ -266,7 +266,7 @@ ClickHouse Connect 通过 `query_df_arrow` 和 `query_df_arrow_stream` 方法，
   - 对于 `dataframe_library='polars'`，返回一个由 Arrow 表（`pl.from_arrow`）创建的 Polars DataFrame，其同样高效，并且根据数据情况可以实现零拷贝。
 - `query_df_arrow_stream`：以 DataFrame（pandas 2.x 或 Polars）序列的形式流式返回结果，这些 DataFrame 是由 Arrow 流式批次转换而来的。
 
-#### 查询基于 Arrow 的 DataFrame {#query-to-arrow-backed-dataframe}
+#### 查询基于 Arrow 的 DataFrame \{#query-to-arrow-backed-dataframe\}
 
 ```python
 import clickhouse_connect
@@ -306,7 +306,7 @@ with client.query_df_arrow_stream(
         # Received <class 'polars.dataframe.frame.DataFrame'> batch with 34591 rows and dtypes: [UInt64, String]
 ```
 
-#### 注意事项和说明 {#notes-and-caveats}
+#### 注意事项和说明 \{#notes-and-caveats\}
 
 - Arrow 类型映射：当以 Arrow 格式返回数据时，ClickHouse 会将类型映射到最接近且受支持的 Arrow 类型。某些 ClickHouse 类型没有原生的 Arrow 等价类型，会作为原始字节返回在 Arrow 字段中（通常为 `BINARY` 或 `FIXED_SIZE_BINARY`）。
   - 示例：`IPv4` 表示为 Arrow `UINT32`；`IPv6` 和大整数（`Int128/UInt128/Int256/UInt256`）通常表示为带原始字节的 `FIXED_SIZE_BINARY`/`BINARY`。
@@ -315,7 +315,7 @@ with client.query_df_arrow_stream(
 - Pandas 要求：基于 Arrow 的 dtypes 需要 pandas 2.x。对于旧版本的 pandas，请改用 `query_df`（非 Arrow）。
 - 字符串 vs 二进制：`use_strings` 选项（在服务器设置 `output_format_arrow_string_as_string` 启用时有效）控制 ClickHouse 的 `String` 列是作为 Arrow 字符串还是作为二进制返回。
 
-#### 不匹配的 ClickHouse/Arrow 类型转换示例 {#mismatched-clickhousearrow-type-conversion-examples}
+#### 不匹配的 ClickHouse/Arrow 类型转换示例 \{#mismatched-clickhousearrow-type-conversion-examples\}
 
 当 ClickHouse 以原始二进制数据形式返回列数据（例如 `FIXED_SIZE_BINARY` 或 `BINARY`）时，应用程序代码需要负责将这些字节转换为合适的 Python 类型。下面的示例展示了一些转换可以通过 DataFrame 库 API 完成，而其他转换则可能需要使用纯 Python 方法（例如 `struct.unpack`，这会牺牲一定性能但具备更高的灵活性）。
 
@@ -355,7 +355,7 @@ print([int.from_bytes(n, byteorder="little") for n in df["int_128_col"].to_list(
 
 关键要点是：应用程序代码必须根据所选 DataFrame 库的能力以及可接受的性能权衡来处理这些转换。当 DataFrame 原生转换不可用时，仍然可以采用纯 Python 的方式来实现。
 
-## 读取格式 {#read-formats}
+## 读取格式 \{#read-formats\}
 
 读取格式用于控制客户端 `query`、`query_np` 和 `query_df` 方法返回值的数据类型。（`raw_query` 和 `query_arrow` 不会修改来自 ClickHouse 的原始数据，因此不适用格式控制。）例如，如果将 UUID 的读取格式从默认的 `native` 格式更改为可选的 `string` 格式，那么对 `UUID` 列的 ClickHouse 查询结果将以字符串形式返回（使用标准的 8-4-4-4-12 RFC 1422 格式），而不是 Python UUID 对象。
 
@@ -389,7 +389,7 @@ client.query('SELECT user_id, user_uuid, device_uuid from users', query_formats=
 client.query('SELECT device_id, dev_address, gw_address from devices', column_formats={'dev_address':'string'})
 ```
 
-### 读取格式选项（Python 类型） {#read-format-options-python-types}
+### 读取格式选项（Python 类型） \{#read-format-options-python-types\}
 
 | ClickHouse Type       | Native Python Type  | Read Formats      | Comments                                                                                                          |
 |-----------------------|---------------------|-------------------|-------------------------------------------------------------------------------------------------------------------|
@@ -419,7 +419,7 @@ client.query('SELECT device_id, dev_address, gw_address from devices', column_fo
 | Variant               | object              | -                 | 返回与该值所存储的 ClickHouse 数据类型相匹配的 Python 类型                                                         |
 | Dynamic               | object              | -                 | 返回与该值所存储的 ClickHouse 数据类型相匹配的 Python 类型                                                         |
 
-## 外部数据 {#external-data}
+## 外部数据 \{#external-data\}
 
 ClickHouse 查询可以接受任意 ClickHouse 格式的外部数据。该二进制数据会与查询字符串一同发送，用于参与数据处理。External Data 功能的详细信息见[此处](/engines/table-engines/special/external-data.md)。客户端的 `query*` 方法接受一个可选的 `external_data` 参数以利用该功能。`external_data` 参数的值应为一个 `clickhouse_connect.driver.external.ExternalData` 对象。该对象的构造函数接受以下参数：
 
@@ -449,7 +449,7 @@ result = client.query('SELECT name, avg(rating) FROM directors INNER JOIN movies
 
 可以使用 `add_file` 方法向初始的 `ExternalData` 对象添加额外的外部数据文件，该方法接受与构造函数相同的参数。对于 HTTP，所有外部数据都会作为 `multipart/form-data` 文件上传的一部分进行传输。
 
-## 时区 {#time-zones}
+## 时区 \{#time-zones\}
 
 有多种机制可将时区应用到 ClickHouse 的 DateTime 和 DateTime64 值上。在内部，ClickHouse 服务器始终将任何 DateTime 或 `DateTime64` 对象存储为一个不含时区信息的数值，表示自 Unix 纪元（1970-01-01 00:00:00 UTC）以来的秒数。对于 `DateTime64` 值，根据精度不同，其表示形式可以是自纪元以来的毫秒、微秒或纳秒。因此，任何时区信息的应用始终发生在客户端。请注意，这会引入一定的额外计算开销，所以在对性能敏感的应用中，建议将 DateTime 类型视为纪元时间戳，仅在用户展示和转换时才使用时区（例如，Pandas Timestamps 始终是一个表示纪元纳秒的 64 位整数，以提升性能）。
 

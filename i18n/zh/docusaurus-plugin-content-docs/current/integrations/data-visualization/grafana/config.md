@@ -22,7 +22,7 @@ import alias_table_config_example from '@site/static/images/integrations/data-vi
 import alias_table_select_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_select_example.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# 在 Grafana 中配置 ClickHouse 数据源 {#configuring-clickhouse-data-source-in-grafana}
+# 在 Grafana 中配置 ClickHouse 数据源 \{#configuring-clickhouse-data-source-in-grafana\}
 
 <ClickHouseSupportedBadge/>
 
@@ -32,7 +32,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 如需快速了解所有可用选项，可在[此处](#all-yaml-options)查看完整的配置选项列表。
 
-## 通用设置 {#common-settings}
+## 通用设置 \{#common-settings\}
 
 示例配置界面：
 
@@ -64,13 +64,13 @@ secureJsonData:
 
 请注意，从 UI 中保存配置时会添加一个 `version` 属性。该属性表示配置保存时所使用的插件版本。
 
-### HTTP 协议 {#http-protocol}
+### HTTP 协议 \{#http-protocol\}
 
 如果选择通过 HTTP 协议连接，将会显示更多设置。
 
 <Image size="md" img={config_http} alt="额外的 HTTP 配置选项" border />
 
-#### HTTP path {#http-path}
+#### HTTP path \{#http-path\}
 
 如果 HTTP 服务器是在不同的 URL 路径下对外提供服务，可以在此配置该路径。
 
@@ -80,7 +80,7 @@ jsonData:
   path: additional/path/example
 ```
 
-#### 自定义 HTTP 头 {#custom-http-headers}
+#### 自定义 HTTP 头 \{#custom-http-headers\}
 
 可以为发送到服务器的请求添加自定义 HTTP 头。
 
@@ -106,7 +106,7 @@ secureJsonData:
   secureHttpHeaders.X-Example-Secure-Header: secure header value
 ```
 
-## 其他配置 {#additional-settings}
+## 其他配置 \{#additional-settings\}
 
 以下附加配置为可选项。
 
@@ -124,7 +124,7 @@ jsonData:
   validateSql: false # when set to true, will validate the SQL in the SQL editor.
 ```
 
-### OpenTelemetry {#opentelemetry}
+### OpenTelemetry \{#opentelemetry\}
 
 OpenTelemetry (OTel) 已与该插件深度集成。
 可以使用我们的 [exporter 插件](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter) 将 OpenTelemetry 数据导出到 ClickHouse。
@@ -132,7 +132,7 @@ OpenTelemetry (OTel) 已与该插件深度集成。
 
 还需要配置这些默认设置以启用 [data links](./query-builder.md#data-links)，这是一个可以实现强大可观测性工作流的功能。
 
-### 日志 {#logs}
+### 日志 \{#logs\}
 
 为了加快[日志查询构建](./query-builder.md#logs)，可以为日志查询预先设置默认的数据库 / 表以及列。这样会在查询构建器中预加载一个可直接运行的日志查询，从而在探索页面中浏览日志时提升可观测性分析的效率。
 
@@ -162,7 +162,7 @@ jsonData:
     messageColumn: <string> # the log's message/content.
 ```
 
-### Traces {#traces}
+### Traces \{#traces\}
 
 为了加快[构建追踪查询](./query-builder.md#traces)的速度，可以为追踪查询设置默认数据库/数据表以及列。这样会在查询构建器中预加载一条可直接运行的追踪搜索查询，从而使在 Explore 页面中浏览可观测性数据更加高效。
 
@@ -198,7 +198,7 @@ jsonData:
     serviceTagsColumn:   <string>    # service tags column. This is expected to be a map type.
 ```
 
-### 列别名 {#column-aliases}
+### 列别名 \{#column-aliases\}
 
 列别名是一种便捷方式，可以使用不同的名称和类型来查询数据。
 通过使用别名，你可以将嵌套的模式结构扁平化，从而在 Grafana 中更方便地进行选择。
@@ -210,7 +210,7 @@ jsonData:
 - 你将 JSON 以字符串形式存储
 - 你经常对所选列应用函数以进行转换
 
-#### 表中定义的 ALIAS 列 {#table-defined-alias-columns}
+#### 表中定义的 ALIAS 列 \{#table-defined-alias-columns\}
 
 ClickHouse 内置了列别名功能，并可开箱即用地与 Grafana 配合使用。
 可以在表定义中直接声明别名列。
@@ -228,7 +228,7 @@ CREATE TABLE alias_example (
 
 更多信息请参阅 [ALIAS](/sql-reference/statements/create/table#alias) 列类型的文档。
 
-#### 列别名表 {#column-alias-tables}
+#### 列别名表 \{#column-alias-tables\}
 
 默认情况下，Grafana 会根据 `DESC table` 命令的返回结果提供列建议。
 在某些情况下，您可能希望完全覆盖 Grafana 所识别到的列。
@@ -270,7 +270,7 @@ INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES
 
 这两种类型的别名都可以用于执行复杂的类型转换或 JSON 字段提取。
 
-## 所有 YAML 选项 {#all-yaml-options}
+## 所有 YAML 选项 \{#all-yaml-options\}
 
 以下是该插件提供的全部 YAML 配置选项。
 部分字段给出了示例值，其他字段仅展示字段类型。

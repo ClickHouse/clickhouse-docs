@@ -5,7 +5,7 @@ title: 'groupBitmapXor'
 doc_type: 'reference'
 ---
 
-# groupBitmapXor {#groupbitmapxor}
+# groupBitmapXor \{#groupbitmapxor\}
 
 `groupBitmapXor` はビットマップカラムの XOR を計算し、その結果の基数（cardinality）を UInt64 型で返します。`-State` サフィックス付きで使用した場合は、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md) を返します。
 

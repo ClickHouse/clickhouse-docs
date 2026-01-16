@@ -17,7 +17,7 @@ import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png
   <iframe width="560" height="315" src="https://www.youtube.com/embed/2wjl3OijCto?si=EVf2JhjS5fe4j6Cy" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 </div>
 
-## Настройка {#setup}
+## Настройка \{#setup\}
 
 Сначала создадим виртуальное окружение:
 
@@ -48,7 +48,7 @@ jupyter lab
 Если вы используете Jupyter Lab, вам нужно создать ноутбук, прежде чем продолжить выполнение остальных шагов этого руководства.
 :::
 
-## Загрузка набора данных {#downloading-a-dataset}
+## Загрузка набора данных \{#downloading-a-dataset\}
 
 Мы будем использовать один из наборов данных из репозитория [Jeff Sackmann&#39;s tennis&#95;atp](https://github.com/JeffSackmann/tennis_atp), который содержит метаданные об игроках и динамике их рейтингов.
 Начнем с загрузки файлов с рейтингами:
@@ -67,7 +67,7 @@ for file in files:
   )
 ```
 
-## Настройка chDB и JupySQL {#configuring-chdb-and-jupysql}
+## Настройка chDB и JupySQL \{#configuring-chdb-and-jupysql\}
 
 Теперь импортируем модуль `dbapi` для chDB:
 
@@ -95,7 +95,7 @@ conn = dbapi.connect(path="atp.chdb")
 %config SqlMagic.displaylimit = None
 ```
 
-## Запрос данных из CSV-файлов {#querying-data-in-csv-files}
+## Запрос данных из CSV-файлов \{#querying-data-in-csv-files\}
 
 Мы скачали набор файлов с префиксом `atp_rankings`.
 Давайте используем конструкцию `DESCRIBE`, чтобы разобраться со схемой:
@@ -162,7 +162,7 @@ SETTINGS schema_inference_make_columns_nullable=0
 +--------------+------+--------+--------+
 ```
 
-## Импорт CSV-файлов в chDB {#querying-data-in-csv-files}
+## Импорт CSV-файлов в chDB \{#querying-data-in-csv-files\}
 
 Теперь мы сохраним данные из этих CSV-файлов в таблицу.
 База данных по умолчанию не сохраняет данные на диск, поэтому сначала нам нужно создать отдельную базу данных:
@@ -264,7 +264,7 @@ SETTINGS schema_inference_make_columns_nullable=0
 +-----------+------------+-----------+------+------------+-----+--------+-------------+
 ```
 
-## Выполнение запросов к chDB {#importing-csv-files-into-chdb}
+## Выполнение запросов к chDB \{#importing-csv-files-into-chdb\}
 
 Ингестия данных завершена, теперь самое интересное — выполнение запросов к данным!
 
@@ -304,7 +304,7 @@ LIMIT 10
 
 Довольно интересно, что некоторые игроки в этом списке набрали много очков, так и не став номером 1 с таким общим количеством очков.
 
-## Сохранение запросов {#querying-chdb}
+## Сохранение запросов \{#querying-chdb\}
 
 Мы можем сохранять запросы, используя параметр `--save` в той же строке, что и магическая команда `%%sql`.
 Параметр `--no-execute` означает, что выполнение запроса будет пропущено.
@@ -349,7 +349,7 @@ ORDER BY maxPoints DESC
 +-------------+-----------+-----------+------+------------+
 ```
 
-## Запросы с параметрами {#saving-queries}
+## Запросы с параметрами \{#saving-queries\}
 
 Мы также можем использовать параметры в наших запросах.
 Параметры — это обычные переменные:
@@ -393,7 +393,7 @@ LIMIT 10
 +------------+-----------+---------------+------------------+------+-------+
 ```
 
-## Построение гистограмм {#querying-with-parameters}
+## Построение гистограмм \{#querying-with-parameters\}
 
 JupySQL также имеет ограниченную функциональность для построения графиков.
 Мы можем создавать ящиковые диаграммы (box plot) или гистограммы.

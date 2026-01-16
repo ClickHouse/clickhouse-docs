@@ -5,7 +5,7 @@ title: 'quantilesGK'
 doc_type: 'reference'
 ---
 
-# quantilesGK {#quantilesgk}
+# quantilesGK \{#quantilesgk\}
 
 `quantilesGK` 的工作方式与 `quantileGK` 类似，但允许我们同时计算多个不同分位点的分位数，并返回一个数组。
 

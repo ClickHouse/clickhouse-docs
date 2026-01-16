@@ -5,7 +5,7 @@ title: 'groupArrayInsertAt'
 doc_type: 'reference'
 ---
 
-# groupArrayInsertAt {#grouparrayinsertat}
+# groupArrayInsertAt \{#grouparrayinsertat\}
 
 Вставляет значение в массив на указанную позицию.
 

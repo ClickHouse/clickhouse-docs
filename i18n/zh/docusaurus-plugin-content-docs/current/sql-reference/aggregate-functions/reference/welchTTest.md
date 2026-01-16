@@ -6,7 +6,7 @@ title: 'welchTTest'
 doc_type: 'reference'
 ---
 
-# welchTTest {#welchttest}
+# welchTTest \{#welchttest\}
 
 对来自两个总体的样本进行 Welch t 检验。
 

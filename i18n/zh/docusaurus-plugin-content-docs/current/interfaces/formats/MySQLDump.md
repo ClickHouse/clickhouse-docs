@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|---------|-------|
 | ✔     | ✗       |       |
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 ClickHouse 支持读取 MySQL 的 [转储文件（dump）](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html)。
 
@@ -24,7 +24,7 @@ ClickHouse 支持读取 MySQL 的 [转储文件（dump）](https://dev.mysql.com
 此格式支持表结构推断：如果转储文件中包含该指定表的 `CREATE` 语句，则从中推断表结构；否则从 `INSERT` 语句中的数据推断表结构。
 :::
 
-## 示例用法 {#example-usage}
+## 示例用法 \{#example-usage\}
 
 假设有如下 SQL 转储文件：
 
@@ -80,7 +80,7 @@ SETTINGS input_format_mysql_dump_table_name = 'test2'
 └───┘
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}
 
 可以使用 [`input_format_mysql_dump_table_name`](/operations/settings/settings-formats.md/#input_format_mysql_dump_table_name) 设置来指定要读取数据的表名。
 如果将 `input_format_mysql_dump_map_columns` 设置为 `1`，并且转储中包含该表的 `CREATE` 查询，或者在 `INSERT` 查询中包含指定的列名，则输入数据中的列会按名称映射到该表中的列。

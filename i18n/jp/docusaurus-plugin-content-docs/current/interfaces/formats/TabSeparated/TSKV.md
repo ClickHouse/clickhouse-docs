@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 [`TabSeparated`](./TabSeparated.md) フォーマットと似ていますが、値を `name=value` 形式で出力します。
 名前は [`TabSeparated`](./TabSeparated.md) フォーマットの場合と同じ方法でエスケープされ、`=` 記号も同様にエスケープされます。
@@ -55,9 +55,9 @@ x=1    y=\N
 
 [NULL](/sql-reference/syntax.md) は `\N` としてフォーマットされます。
 
-## 利用例 {#example-usage}
+## 利用例 \{#example-usage\}
 
-### データの挿入 {#inserting-data}
+### データの挿入 \{#inserting-data\}
 
 次の tskv ファイル `football.tskv` を使用します。
 
@@ -87,7 +87,7 @@ date=2022-05-07 season=2021     home_team=Walsall       away_team=Swindon Town  
 INSERT INTO football FROM INFILE 'football.tskv' FORMAT TSKV;
 ```
 
-### データの読み込み {#reading-data}
+### データの読み込み \{#reading-data\}
 
 `TSKV` フォーマットを使用してデータを読み込みます。
 
@@ -119,4 +119,4 @@ date=2022-05-07 season=2021     home_team=Stevenage Borough     away_team=Salfor
 date=2022-05-07 season=2021     home_team=Walsall       away_team=Swindon Town  home_team_goals=0       away_team_goals=3
 ```
 
-## フォーマットの設定 {#format-settings}
+## フォーマットの設定 \{#format-settings\}

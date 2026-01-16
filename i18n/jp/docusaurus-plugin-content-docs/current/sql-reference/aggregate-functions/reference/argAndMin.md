@@ -5,7 +5,7 @@ title: 'argAndMin'
 doc_type: 'reference'
 ---
 
-# argAndMin {#argandmin}
+# argAndMin \{#argandmin\}
 
 最小の `val` 値に対応する `arg` と `val` の値を計算します。最小となる `val` が同じ行が複数存在する場合、どの行に対応する `arg` および `val` が返されるかは決定されていません。
 `arg` と `min` はどちらも [集約関数](/sql-reference/aggregate-functions/index.md)として動作し、処理中に [`Null` をスキップ](/sql-reference/aggregate-functions/index.md#null-processing)し、`Null` ではない値が存在する場合は `Null` ではない値を返します。

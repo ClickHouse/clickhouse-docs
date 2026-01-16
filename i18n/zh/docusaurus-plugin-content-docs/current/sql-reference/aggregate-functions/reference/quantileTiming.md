@@ -5,7 +5,7 @@ title: 'quantileTiming'
 doc_type: 'reference'
 ---
 
-# quantileTiming {#quantiletiming}
+# quantileTiming \{#quantiletiming\}
 
 在给定精度下，计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 

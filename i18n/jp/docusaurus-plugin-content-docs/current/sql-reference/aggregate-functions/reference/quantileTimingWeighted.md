@@ -5,7 +5,7 @@ title: 'quantileTimingWeighted'
 doc_type: 'reference'
 ---
 
-# quantileTimingWeighted {#quantiletimingweighted}
+# quantileTimingWeighted \{#quantiletimingweighted\}
 
 指定された精度で、各シーケンス要素の重みに基づいて数値データシーケンスの[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 

@@ -5,7 +5,7 @@ title: 'argMin'
 doc_type: 'reference'
 ---
 
-# argMin {#argmin}
+# argMin \{#argmin\}
 
 计算最小 `val` 值所对应的 `arg` 值。如果存在多行具有相同的最小 `val` 值，则返回哪一个关联的 `arg` 值是非确定性的。
 `arg` 和 `min` 这两部分都作为[聚合函数](/sql-reference/aggregate-functions/index.md)工作，在处理过程中都会[跳过 `Null`](/sql-reference/aggregate-functions/index.md#null-processing)，并在存在非 `Null` 值时返回非 `Null` 值。

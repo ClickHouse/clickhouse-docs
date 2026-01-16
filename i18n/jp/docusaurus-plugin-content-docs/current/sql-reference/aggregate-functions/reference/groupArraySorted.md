@@ -5,7 +5,7 @@ title: 'groupArraySorted'
 doc_type: 'reference'
 ---
 
-# groupArraySorted {#grouparraysorted}
+# groupArraySorted \{#grouparraysorted\}
 
 先頭の N 個の要素を昇順に並べた配列を返します。
 

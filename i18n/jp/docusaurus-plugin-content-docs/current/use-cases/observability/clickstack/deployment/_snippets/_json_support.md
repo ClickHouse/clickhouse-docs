@@ -1,6 +1,6 @@
 import BetaBadge from '@theme/badges/BetaBadge';
 
-## JSON 型サポート {#json-type-support}
+## JSON 型サポート \{#json-type-support\}
 
 <BetaBadge/>
 

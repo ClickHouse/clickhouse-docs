@@ -5,7 +5,7 @@ title: 'maxIntersections'
 doc_type: 'reference'
 ---
 
-# maxIntersections {#maxintersections}
+# maxIntersections \{#maxintersections\}
 
 聚合函数，用于在所有区间至少相交一次的前提下，计算一组区间之间相互重叠的最大数量。
 

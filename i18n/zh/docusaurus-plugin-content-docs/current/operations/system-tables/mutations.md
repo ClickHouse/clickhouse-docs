@@ -6,11 +6,11 @@ title: 'system.mutations'
 doc_type: 'reference'
 ---
 
-# system.mutations {#systemmutations}
+# system.mutations \{#systemmutations\}
 
 该表包含 [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) 表的[变更](/sql-reference/statements/alter/index.md#mutations)及其执行进度的信息。每条变更命令在该表中对应一行记录。
 
-## 列 {#columns}
+## 列 \{#columns\}
 
 - `database` ([String](/sql-reference/data-types/string.md)) — 应用变更操作的数据库名称。
 - `table` ([String](/sql-reference/data-types/string.md)) — 应用变更操作的表名称。
@@ -41,7 +41,7 @@ doc_type: 'reference'
 - `latest_fail_time` ([DateTime](/sql-reference/data-types/datetime.md)) — 最近一次数据部分变更失败的日期和时间。
 - `latest_fail_reason` ([String](/sql-reference/data-types/string.md)) — 导致最近一次数据部分变更失败的异常消息。
 
-## 监控 Mutation {#monitoring-mutations}
+## 监控 Mutation \{#monitoring-mutations\}
 
 要跟踪 `system.mutations` 表中的进度,请使用以下查询:
 

@@ -11,7 +11,7 @@ import CloudOnlyBadge from '@theme/badges/CloudOnlyBadge';
 
 <CloudOnlyBadge />
 
-# ALTER MASKING POLICY {#alter-masking-policy}
+# ALTER MASKING POLICY \{#alter-masking-policy\}
 
 既存のマスキングポリシーを変更します。
 

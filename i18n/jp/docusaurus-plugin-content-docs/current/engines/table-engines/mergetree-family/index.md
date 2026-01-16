@@ -7,7 +7,7 @@ title: 'MergeTree エンジンファミリー'
 doc_type: 'reference'
 ---
 
-# MergeTreeエンジンファミリー {#mergetree-engine-family}
+# MergeTreeエンジンファミリー \{#mergetree-engine-family\}
 
 MergeTreeファミリーのテーブルエンジンは、ClickHouseのデータストレージ機能の中核です。耐障害性と高性能なデータ取得のための主要な機能を提供します：カラムナストレージ、カスタムパーティショニング、スパースプライマリインデックス、セカンダリデータスキッピングインデックスなど。
 

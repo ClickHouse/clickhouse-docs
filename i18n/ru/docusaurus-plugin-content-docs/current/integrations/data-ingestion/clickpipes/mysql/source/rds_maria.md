@@ -20,7 +20,7 @@ import security_group_in_rds_mysql from '@site/static/images/integrations/data-i
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-# Руководство по настройке источника RDS MariaDB {#rds-mariadb-source-setup-guide}
+# Руководство по настройке источника RDS MariaDB \{#rds-mariadb-source-setup-guide\}
 
 Это пошаговое руководство по настройке экземпляра RDS MariaDB для репликации его данных с помощью MySQL ClickPipe.
 
@@ -30,11 +30,11 @@ import Image from '@theme/IdealImage';
 Рекомендуем также ознакомиться с разделом часто задаваемых вопросов по MySQL [здесь](/integrations/data-ingestion/clickpipes/mysql/faq.md). Страница с вопросами и ответами активно обновляется.
 :::
 
-## Включение хранения двоичного лога {#enable-binlog-retention-rds}
+## Включение хранения двоичного лога \{#enable-binlog-retention-rds\}
 
 Двоичный лог — это набор файлов журнала, которые содержат информацию об изменениях данных, выполненных в экземпляре сервера MySQL. Файлы двоичного лога необходимы для репликации. Необходимо выполнить оба шага, приведённых ниже:
 
-### 1. Включение двоичного логирования через автоматическое резервное копирование {#enable-binlog-logging-rds}
+### 1. Включение двоичного логирования через автоматическое резервное копирование \{#enable-binlog-logging-rds\}
 
 Функция автоматического резервного копирования определяет, включено или выключено двоичное логирование для MySQL. Её можно настроить в консоли AWS:
 
@@ -42,7 +42,7 @@ import Image from '@theme/IdealImage';
 
 Рекомендуется установить срок хранения резервных копий на достаточно большое значение, в зависимости от сценария репликации.
 
-### 2. Срок хранения binlog (в часах) {#binlog-retention-hours-rds}
+### 2. Срок хранения binlog (в часах) \{#binlog-retention-hours-rds\}
 
 Amazon RDS for MariaDB использует иной способ задания длительности хранения binlog, то есть времени, в течение которого файл binlog с изменениями сохраняется. Если некоторые изменения не будут прочитаны до удаления файла binlog, репликация не сможет продолжиться. Значение по умолчанию для срока хранения binlog — NULL, что означает, что двоичные логи не сохраняются.
 
@@ -53,7 +53,7 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 ```
 
 
-## Настройка параметров binlog в группе параметров {#binlog-parameter-group-rds}
+## Настройка параметров binlog в группе параметров \{#binlog-parameter-group-rds\}
 
 Группу параметров можно найти, если нажать на экземпляр MariaDB в консоли RDS, а затем перейти на вкладку `Configurations`.
 
@@ -85,11 +85,11 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 Если у вас кластер MariaDB, указанные выше параметры будут находиться в группе параметров [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html), а не в группе параметров экземпляра БД.
 :::
 
-## Включение режима GTID {#gtid-mode-rds}
+## Включение режима GTID \{#gtid-mode-rds\}
 
 Global Transaction Identifiers (GTID) — это уникальные идентификаторы, назначаемые каждой зафиксированной транзакции в MySQL/MariaDB. Они упрощают репликацию по бинарным логам (binlog) и облегчают устранение неполадок. В MariaDB режим GTID включён по умолчанию, поэтому от пользователя не требуется никаких действий для его использования.
 
-## Настройка пользователя базы данных {#configure-database-user-rds}
+## Настройка пользователя базы данных \{#configure-database-user-rds\}
 
 Подключитесь к экземпляру RDS MariaDB под учетной записью администратора и выполните следующие команды:
 

@@ -13,7 +13,7 @@ import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.
 import Image from '@theme/IdealImage';
 
 
-# 配置 TLS {#configuring-tls}
+# 配置 TLS \{#configuring-tls\}
 
 <SelfManaged />
 
@@ -25,7 +25,7 @@ TLS 的实现较为复杂，要确保部署的安全性和健壮性，需要综�
 如需入门概览，可先阅读这篇[关于证书使用的基础教程](https://ubuntu.com/server/docs/security-certificates)。
 :::
 
-## 1. 创建 ClickHouse 部署 {#1-create-a-clickhouse-deployment}
+## 1. 创建 ClickHouse 部署 \{#1-create-a-clickhouse-deployment\}
 
 本指南以 Ubuntu 20.04 为基础环境编写，并在以下主机上通过 DEB 软件包（使用 apt）安装了 ClickHouse。域名为 `marsnet.local`：
 
@@ -39,7 +39,7 @@ TLS 的实现较为复杂，要确保部署的安全性和健壮性，需要综�
 请参阅[快速开始](/getting-started/install/install.mdx)以了解有关安装 ClickHouse 的更多详细说明。
 :::
 
-## 2. 创建 TLS 证书 {#2-create-tls-certificates}
+## 2. 创建 TLS 证书 \{#2-create-tls-certificates\}
 
 :::note
 本文使用自签名证书仅用于演示目的，不应在生产环境中使用。生产环境中应创建证书请求，由组织签发证书，并使用将在设置中配置的 CA 链进行验证。不过，这些步骤可用于先配置和测试相关设置，之后再替换为实际要使用的证书。
@@ -89,7 +89,7 @@ TLS 的实现较为复杂，要确保部署的安全性和健壮性，需要综�
     chnode1.crt: OK
     ```
 
-## 3. 创建并配置用于存储证书和密钥的目录。 {#3-create-and-configure-a-directory-to-store-certificates-and-keys}
+## 3. 创建并配置用于存储证书和密钥的目录。 \{#3-create-and-configure-a-directory-to-store-certificates-and-keys\}
 
 :::note
 必须在每个节点上执行此操作。在每个主机上使用相应的证书和密钥。
@@ -119,7 +119,7 @@ TLS 的实现较为复杂，要确保部署的安全性和健壮性，需要综�
     -rw------- 1 clickhouse clickhouse 1131 Apr 12 20:23 marsnet_ca.crt
     ```
 
-## 4. 使用 ClickHouse Keeper 配置基础集群环境 {#4-configure-the-environment-with-basic-clusters-using-clickhouse-keeper}
+## 4. 使用 ClickHouse Keeper 配置基础集群环境 \{#4-configure-the-environment-with-basic-clusters-using-clickhouse-keeper\}
 
 在此部署环境中，每个节点上都使用以下 ClickHouse Keeper 设置。每台服务器都有自己的 `<server_id>`。（例如，节点 `chnode1` 的 `<server_id>1</server_id>`，其余节点依此类推。）
 
@@ -237,7 +237,7 @@ ClickHouse Keeper 推荐使用的端口为 `9281`。不过，该端口是可配�
     </macros>
     ```
 
-## 5. 在 ClickHouse 节点上配置 TLS 接口 {#5-configure-tls-interfaces-on-clickhouse-nodes}
+## 5. 在 ClickHouse 节点上配置 TLS 接口 \{#5-configure-tls-interfaces-on-clickhouse-nodes\}
 
 以下设置在 ClickHouse 服务器的 `config.xml` 中进行配置。
 
@@ -343,7 +343,7 @@ ClickHouse Keeper 推荐使用的端口为 `9281`。不过，该端口是可配�
     <!--postgresql_port>9005</postgresql_port-->
     ```
 
-## 6. 测试 {#6-testing}
+## 6. 测试 \{#6-testing\}
 
 1. 依次启动所有节点：
    ```bash
@@ -508,6 +508,6 @@ ClickHouse Keeper 推荐使用的端口为 `9281`。不过，该端口是可配�
     └────┴────────────┴─────────┘
     ```
 
-## 摘要 {#summary}
+## 摘要 \{#summary\}
 
 本文重点介绍了如何在 ClickHouse 环境中配置 TLS。针对生产环境中的不同需求（例如证书验证级别、协议、密码套件等），具体配置会有所差异。但现在你应该已经对配置和实现安全连接所需的各个步骤有了清晰的理解。

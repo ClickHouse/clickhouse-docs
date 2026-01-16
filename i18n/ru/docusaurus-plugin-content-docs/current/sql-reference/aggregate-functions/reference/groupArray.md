@@ -6,7 +6,7 @@ title: 'groupArray'
 doc_type: 'reference'
 ---
 
-# groupArray {#grouparray}
+# groupArray \{#grouparray\}
 
 Синтаксис: `groupArray(x)` или `groupArray(max_size)(x)`
 

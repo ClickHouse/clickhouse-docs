@@ -9,9 +9,9 @@ doc_type: 'reference'
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-# 受支持的 Cloud 区域 {#supported-cloud-regions}
+# 受支持的 Cloud 区域 \{#supported-cloud-regions\}
 
-## AWS 区域 {#aws-regions}
+## AWS 区域 \{#aws-regions\}
 
 - ap-northeast-1（东京）
 - ap-northeast-2（韩国首尔）
@@ -34,7 +34,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - eu-north-1（斯德哥尔摩）
 - sa-east-1（南美洲）
 
-## Google Cloud 区域 {#google-cloud-regions}
+## Google Cloud 区域 \{#google-cloud-regions\}
 
 - asia-southeast1（新加坡）
 - asia-northeast1（东京）
@@ -50,7 +50,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - europe-west6（苏黎世）
 - northamerica-northeast1（蒙特利尔）
 
-## Azure 区域 {#azure-regions}
+## Azure 区域 \{#azure-regions\}
 
 - West US 3 (Arizona)
 - East US 2 (Virginia)
@@ -65,7 +65,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 需要部署到目前未列出的区域？[提交申请](https://clickhouse.com/pricing?modal=open)。 
 :::
 
-## 私有区域 {#private-regions}
+## 私有区域 \{#private-regions\}
 
 <EnterprisePlanFeatureBadge feature="Private regions feature"/>
 
@@ -79,7 +79,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 为满足 HIPAA 合规性要求（包括签署 BAA），可能需要额外条件。请注意，HIPAA 目前仅适用于 Enterprise 企业版服务。
 
-## 符合 HIPAA 要求的区域 {#hipaa-compliant-regions}
+## 符合 HIPAA 要求的区域 \{#hipaa-compliant-regions\}
 
 <EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
 
@@ -99,7 +99,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - GCP us-central1（爱荷华）
 - GCP us-east1（南卡罗来纳）
 
-## 符合 PCI 合规要求的区域 {#pci-compliant-regions}
+## 符合 PCI 合规要求的区域 \{#pci-compliant-regions\}
 
 <EnterprisePlanFeatureBadge feature="PCI" support="true"/>
 

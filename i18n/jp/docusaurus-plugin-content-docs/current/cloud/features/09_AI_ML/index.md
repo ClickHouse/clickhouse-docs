@@ -6,7 +6,7 @@ description: 'ClickHouse Cloud で提供される AI/ML 機能の概要'
 doc_type: 'reference'
 ---
 
-# ClickHouse Cloud における AI/ML {#aiml-in-clickhouse-cloud}
+# ClickHouse Cloud における AI/ML \{#aiml-in-clickhouse-cloud\}
 
 従来のアナリティクスのワークフローでは、クエリを作成するデータエンジニア、ダッシュボードを構築するアナリスト、結果を解釈するビジネスユーザーの間で、複数回の受け渡しが発生するのが一般的です。
 各ステップで発生するレイテンシは、数時間から数日に及びます。

@@ -31,7 +31,7 @@ column_name QBit(element_type, dimension)
 * `dimension` – 向量的维度（每个向量中的元素数量）
 
 
-## 创建 QBit {#creating-qbit}
+## 创建 QBit \{#creating-qbit\}
 
 在表的列定义中使用 `QBit` 类型：
 
@@ -49,7 +49,7 @@ SELECT vec FROM test ORDER BY id;
 ```
 
 
-## QBit 子列 {#qbit-subcolumns}
+## QBit 子列 \{#qbit-subcolumns\}
 
 `QBit` 实现了一种子列访问模式，允许访问已存储向量的各个位平面。每一个比特位都可以使用 `.N` 语法进行访问，其中 `N` 是该比特位的位置：
 
@@ -74,7 +74,7 @@ SELECT bin(vec.1) FROM test;
 * `Float64`：64 个子列（1–64）
 
 
-## 向量搜索函数 {#vector-search-functions}
+## 向量搜索函数 \{#vector-search-functions\}
 
 以下是用于向量相似度搜索且使用 `QBit` 数据类型的距离函数：
 

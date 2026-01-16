@@ -17,7 +17,7 @@ import ABSDataSource from '@site/i18n/zh/docusaurus-plugin-content-docs/current/
 
 <VerticalStepper type="numbered" headerLevel="h2">
 
-## 选择数据源 {#1-select-the-data-source}
+## 选择数据源 \{#1-select-the-data-source\}
 
 **1.** 在 ClickHouse Cloud 中，通过主导航菜单选择 **Data sources**，然后点击 **Create ClickPipe**。
 
@@ -27,7 +27,7 @@ import ABSDataSource from '@site/i18n/zh/docusaurus-plugin-content-docs/current/
 {props.provider === 'gcs' && <GCSSDataSource />}
 {props.provider === 'abs' && <ABSDataSource />}
 
-## 设置 ClickPipe 连接 {#2-setup-your-clickpipe-connection}
+## 设置 ClickPipe 连接 \{#2-setup-your-clickpipe-connection\}
 
 **1.** 要创建一个新的 ClickPipe，你需要提供如何连接到对象存储服务并进行身份验证的详细信息。
 
@@ -37,7 +37,7 @@ import ABSDataSource from '@site/i18n/zh/docusaurus-plugin-content-docs/current/
 
 **2.** 点击 **Incoming data**。ClickPipes 将从你的 bucket（存储桶）中获取元数据，用于下一步。
 
-## 选择数据格式 {#3-select-data-format}
+## 选择数据格式 \{#3-select-data-format\}
 
 UI 会显示指定 bucket 中的文件列表。
 选择你的数据格式（当前我们支持部分 ClickHouse 格式），以及是否启用持续摄取。
@@ -45,7 +45,7 @@ UI 会显示指定 bucket 中的文件列表。
 
 <Image img={cp_step3_object_storage} alt="设置数据格式和主题" size="lg" border/>
 
-## 配置表、schema 和设置 {#5-configure-table-schema-settings}
+## 配置表、schema 和设置 \{#5-configure-table-schema-settings\}
 
 在下一步中，你可以选择将数据摄取到一个新的 ClickHouse 表中，或复用现有表。
 按照界面中的说明修改表名、schema（表结构）和相关设置。
@@ -66,7 +66,7 @@ UI 会显示指定 bucket 中的文件列表。
 你还可以将 [虚拟列](/sql-reference/table-functions/s3#virtual-columns)，例如 `_path` 或 `_size`，映射到字段。
 :::
 
-## 配置权限 {#6-configure-permissions}
+## 配置权限 \{#6-configure-permissions\}
 
 最后，你可以为内部 ClickPipes 用户配置权限。
 
@@ -76,7 +76,7 @@ UI 会显示指定 bucket 中的文件列表。
 
 <Image img={cp_step5} alt="权限" size="lg" border/>
 
-## 完成设置 {#7-complete-setup}
+## 完成设置 \{#7-complete-setup\}
 
 点击 “Complete Setup” 后，系统会注册你的 ClickPipe，你将能在汇总表中看到它的条目。
 

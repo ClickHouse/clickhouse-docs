@@ -7,11 +7,11 @@ title: 'prometheusQuery'
 doc_type: 'reference'
 ---
 
-# Табличная функция prometheusQuery {#prometheusquery-table-function}
+# Табличная функция prometheusQuery \{#prometheusquery-table-function\}
 
 Выполняет запрос Prometheus по данным таблицы TimeSeries.
 
-## Синтаксис {#syntax}
+## Синтаксис \{#syntax\}
 
 ```sql
 prometheusQuery('db_name', 'time_series_table', 'promql_query', evaluation_time)
@@ -19,14 +19,14 @@ prometheusQuery(db_name.time_series_table, 'promql_query', evaluation_time)
 prometheusQuery('time_series_table', 'promql_query', evaluation_time)
 ```
 
-## Аргументы {#arguments}
+## Аргументы \{#arguments\}
 
 - `db_name` — имя базы данных, в которой находится таблица TimeSeries.
 - `time_series_table` — имя таблицы TimeSeries.
 - `promql_query` — запрос, написанный в [синтаксисе PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/).
 - `evaluation_time` — метка времени вычисления. Чтобы вычислить запрос на текущий момент времени, используйте `now()` в качестве значения `evaluation_time`.
 
-## Возвращаемое значение {#returned_value}
+## Возвращаемое значение \{#returned_value\}
 
 Функция может возвращать различные наборы столбцов в зависимости от типа результата запроса, переданного в параметр `promql_query`:
 
@@ -37,7 +37,7 @@ prometheusQuery('time_series_table', 'promql_query', evaluation_time)
 | scalar         | scalar ValueType | prometheusQuery(mytable, '1h30m') |
 | string         | string String | prometheusQuery(mytable, '"abc"') |
 
-## Пример {#example}
+## Пример \{#example\}
 
 ```sql
 SELECT * FROM prometheusQuery(mytable, 'rate(http_requests{job="prometheus"}[10m])[1h:10m]', now())

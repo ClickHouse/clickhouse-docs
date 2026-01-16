@@ -7,7 +7,7 @@ doc_type: 'reference'
 
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-# Kerberos {#kerberos}
+# Kerberos \{#kerberos\}
 
 <SelfManaged />
 
@@ -17,11 +17,11 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 
 采用此方式时，必须在系统中完成 Kerberos 配置，并在 ClickHouse 配置中将其启用。
 
-## 在 ClickHouse 中启用 Kerberos {#enabling-kerberos-in-clickhouse}
+## 在 ClickHouse 中启用 Kerberos \{#enabling-kerberos-in-clickhouse\}
 
 要启用 Kerberos，应在 `config.xml` 中添加 `kerberos` 部分。该部分可以包含其他附加参数。
 
-#### 参数 {#parameters}
+#### 参数 \{#parameters\}
 
 * `principal` - 在接受安全上下文时将被获取和使用的规范服务主体名称（service principal name）。
   * 此参数是可选的，如果省略，将使用默认 principal。
@@ -71,7 +71,7 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 `principal` 和 `realm` 节不能同时指定。如果同时存在 `principal` 和 `realm` 节，ClickHouse 会禁用 Kerberos 认证。
 :::
 
-## 将 Kerberos 用作现有用户的外部认证器 {#kerberos-as-an-external-authenticator-for-existing-users}
+## 将 Kerberos 用作现有用户的外部认证器 \{#kerberos-as-an-external-authenticator-for-existing-users\}
 
 Kerberos 可以作为一种方式，用于验证本地定义用户（在 `users.xml` 或本地访问控制路径中定义的用户）的身份。目前，**只**支持通过 HTTP 接口的请求进行 Kerberos 认证（通过 GSS-SPNEGO 机制）。
 
@@ -81,7 +81,7 @@ Kerberos 主体（principal）名称格式通常遵循以下模式：
 
 其中 */instance* 部分可以出现零次或多次。**发起方规范主体名称（canonical principal name）中的 *primary* 部分需要与启用 Kerberos 的用户名匹配，认证才能成功**。
 
-### 在 `users.xml` 中启用 Kerberos {#enabling-kerberos-in-users-xml}
+### 在 `users.xml` 中启用 Kerberos \{#enabling-kerberos-in-users-xml\}
 
 要为用户启用 Kerberos 认证，请在用户定义中指定 `kerberos` 段，而不是使用 `password` 或类似配置段。
 
@@ -115,7 +115,7 @@ Kerberos 主体（principal）名称格式通常遵循以下模式：
 请注意，现在一旦用户 `my_user` 使用 `kerberos`，就必须按照前文所述在主配置文件 `config.xml` 中启用 Kerberos。
 :::
 
-### 使用 SQL 启用 Kerberos {#enabling-kerberos-using-sql}
+### 使用 SQL 启用 Kerberos \{#enabling-kerberos-using-sql\}
 
 当在 ClickHouse 中启用 [基于 SQL 的访问控制和账号管理](/operations/access-rights#access-control-usage) 时，也可以通过 SQL 语句创建由 Kerberos 标识的用户。
 

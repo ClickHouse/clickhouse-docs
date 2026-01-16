@@ -7,17 +7,17 @@ title: 'urlCluster'
 doc_type: 'reference'
 ---
 
-# urlCluster 表函数 {#urlcluster-table-function}
+# urlCluster 表函数 \{#urlcluster-table-function\}
 
 允许在指定集群的多个节点上并行处理通过 URL 访问的文件。在发起端，它会与集群中所有节点建立连接，展开 URL 文件路径中的星号，并动态分发每个文件。在工作节点上，它会向发起端请求下一个要处理的任务并进行处理。该过程会重复进行，直到所有任务完成。
 
-## 语法 {#syntax}
+## 语法 \{#syntax\}
 
 ```sql
 urlCluster(cluster_name, URL, format, structure)
 ```
 
-## 参数 {#arguments}
+## 参数 \{#arguments\}
 
 | 参数           | 描述                                                                                                                                                     |
 |----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -26,11 +26,11 @@ urlCluster(cluster_name, URL, format, structure)
 | `format`       | 数据的[格式](/sql-reference/formats)。类型：[String](../../sql-reference/data-types/string.md)。                                                         |
 | `structure`    | 以 `'UserID UInt64, Name String'` 形式表示的表结构。用于确定列名和数据类型。类型：[String](../../sql-reference/data-types/string.md)。                     |
 
-## 返回值 {#returned_value}
+## 返回值 \{#returned_value\}
 
 一个具有指定格式和结构，并包含来自指定 `URL` 中数据的表。
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
 从 HTTP 服务器获取一个表的前 3 行，该表包含 `String` 和 [UInt32](../../sql-reference/data-types/int-uint.md) 类型的列，服务器以 [CSV](/interfaces/formats/CSV) 格式返回结果。
 
@@ -56,12 +56,12 @@ if __name__ == "__main__":
 SELECT * FROM urlCluster('cluster_simple','http://127.0.0.1:12345', CSV, 'column1 String, column2 UInt32')
 ```
 
-## URL 中的通配符 {#globs-in-url}
+## URL 中的通配符 \{#globs-in-url\}
 
 花括号 `{ }` 中的模式可用于生成一组分片，或用于指定故障转移地址。支持的模式类型及示例，参见 [remote](remote.md#globs-in-addresses) 函数的描述。
 模式内的字符 `|` 用于指定故障转移地址。它们会按照在模式中出现的顺序进行迭代。生成的地址数量受 [glob_expansion_max_elements](../../operations/settings/settings.md#glob_expansion_max_elements) 设置的限制。
 
-## 相关内容 {#related}
+## 相关内容 \{#related\}
 
 -   [HDFS 引擎](/engines/table-engines/integrations/hdfs)
 -   [URL 表函数](/engines/table-engines/special/url)

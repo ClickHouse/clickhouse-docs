@@ -55,7 +55,7 @@ HyperDX が ClickHouse Cloud 上でホストされている場合、リモート
 このデータセットは毎日深夜からリプレイされるため、デモを確認するタイミングによって、可視化の内容が多少異なる場合があります。
 :::
 
-## デモシナリオ {#demo-scenario}
+## デモシナリオ \{#demo-scenario\}
 
 このデモでは、望遠鏡および関連アクセサリを販売する eコマースサイトで発生したインシデントを調査します。
 
@@ -63,13 +63,13 @@ HyperDX が ClickHouse Cloud 上でホストされている場合、リモート
 
 SRE チームは HyperDX を使用してログ、トレース、メトリクスを分析し、問題を診断・解決します。そのうえで、セッションデータを確認し、導き出した結論が実際のユーザー行動と一致しているかどうかを検証します。
 
-## OpenTelemetry デモ {#otel-demo}
+## OpenTelemetry デモ \{#otel-demo\}
 
 このデモでは、公式 OpenTelemetry デモの [ClickStack がメンテナンスしているフォーク](https://github.com/ClickHouse/opentelemetry-demo) を使用します。
 
 <DemoArchitecture/>
 
-## デモの手順 {#demo-steps}
+## デモの手順 \{#demo-steps\}
 
 **このデモでは、[ClickStack SDKs](/use-cases/observability/clickstack/sdks) を用いてサービスをインストルメントし、Kubernetes 上にデプロイしています。さらに、そのサービスからメトリクスとログも収集しています。**
 

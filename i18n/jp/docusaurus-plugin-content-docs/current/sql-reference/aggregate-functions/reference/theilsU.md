@@ -5,7 +5,7 @@ title: 'theilsU'
 doc_type: 'reference'
 ---
 
-# theilsU {#theilsu}
+# theilsU \{#theilsu\}
 
 `theilsU` 関数は、[Theil の U 不確実性係数](https://en.wikipedia.org/wiki/Contingency_table#Uncertainty_coefficient) を計算します。これは、テーブル内の 2 つのカラム間の関連の強さを測定する指標で、値の範囲は 0.0（関連性なし）から 1.0（完全な一致）までです。
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# paimonCluster 表函数 {#paimoncluster-table-function}
+# paimonCluster 表函数 \{#paimoncluster-table-function\}
 
 <ExperimentalBadge />
 
@@ -17,7 +17,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 允许在指定集群中的多个节点上并行处理来自 Apache [Paimon](https://paimon.apache.org/) 的文件。在发起节点上，它会与集群中所有节点建立连接，并动态分派每个文件。在工作节点上，它会向发起节点请求下一个要处理的任务并对其进行处理。此过程会重复，直到所有任务全部完成。
 
-## 语法 {#syntax}
+## 语法 \{#syntax\}
 
 ```sql
 paimonS3Cluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
@@ -27,7 +27,7 @@ paimonAzureCluster(cluster_name, connection_string|storage_account_url, containe
 paimonHDFSCluster(cluster_name, path_to_table, [,format] [,compression_method])
 ```
 
-## 参数 {#arguments}
+## 参数 \{#arguments\}
 
 - `cluster_name` — 用于构建远程和本地服务器地址及连接参数集合的集群名称。
 - 其他所有参数的说明与等价的 [paimon](/sql-reference/table-functions/paimon.md) 表函数中的参数说明相同。
@@ -36,7 +36,7 @@ paimonHDFSCluster(cluster_name, path_to_table, [,format] [,compression_method])
 
 一个具有指定结构的表，用于从集群中读取指定 Paimon 表的数据。
 
-## 虚拟列 {#virtual-columns}
+## 虚拟列 \{#virtual-columns\}
 
 - `_path` — 文件路径。类型：`LowCardinality(String)`。
 - `_file` — 文件名。类型：`LowCardinality(String)`。

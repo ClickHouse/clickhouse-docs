@@ -13,15 +13,15 @@ import activity_log_2 from '@site/static/images/cloud/security/activity_log2.png
 import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png';
 
 
-# 控制台审计日志 {#console-audit-log}
+# 控制台审计日志 \{#console-audit-log\}
 
 控制台中的操作会记录到审计日志中。具有 Admin 或 Developer 组织角色的用户可以查看审计日志，并将其与日志系统集成。
 
-## 通过用户界面访问控制台审计日志 {#console-audit-log-ui}
+## 通过用户界面访问控制台审计日志 \{#console-audit-log-ui\}
 
 <VerticalStepper>
 
-## 选择组织 {#select-org}
+## 选择组织 \{#select-org\}
 
 在 ClickHouse Cloud 中，进入你的组织详情页面。
 
@@ -29,7 +29,7 @@ import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png
 
 <br/>
 
-## 选择审计 {#select-audit}
+## 选择审计 \{#select-audit\}
 
 在左侧菜单中选择 **Audit** 选项卡，以查看对你的 ClickHouse Cloud 组织所做的更改，包括是谁进行了更改以及发生的时间。
 
@@ -44,7 +44,7 @@ import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png
 
 <br/>
 
-## 使用搜索栏 {#use-search-bar}
+## 使用搜索栏 \{#use-search-bar\}
 
 你可以使用提供的搜索栏，根据某些条件（例如服务名称或 IP 地址）筛选事件。你还可以将这些信息导出为 CSV 格式，以便在外部工具中分发或分析。
 
@@ -54,11 +54,11 @@ import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png
     <Image img={activity_log_3} size="lg" alt="ClickHouse Cloud 活动 CSV 导出" border />
 </div>
 
-## 通过 API 访问控制台审计日志 {#console-audit-log-api}
+## 通过 API 访问控制台审计日志 \{#console-audit-log-api\}
 
 你可以使用 ClickHouse Cloud API 的 `activity` 端点来导出审计事件。更多详细信息请参阅 [API 参考](https://clickhouse.com/docs/cloud/manage/api/swagger)。
 
-## 日志集成 {#log-integrations}
+## 日志集成 \{#log-integrations\}
 
 用户可以使用 API 与任意日志平台进行集成。当前支持以下开箱即用的连接器：
 - [ClickHouse Cloud Splunk 审计附加组件](/integrations/audit-splunk)

@@ -5,7 +5,7 @@ title: 'varPopStable'
 doc_type: 'reference'
 ---
 
-## varPopStable {#varpopstable}
+## varPopStable \{#varpopstable\}
 
 Возвращает дисперсию генеральной совокупности. В отличие от [`varPop`](../reference/varPop.md), эта функция использует [численно устойчивый](https://en.wikipedia.org/wiki/Numerical_stability) алгоритм. Работает медленнее, но обеспечивает меньшую погрешность вычислений.
 

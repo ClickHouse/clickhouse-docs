@@ -5,7 +5,7 @@ title: 'メモリオーバーコミット'
 doc_type: 'reference'
 ---
 
-# メモリオーバーコミット {#memory-overcommit}
+# メモリオーバーコミット \{#memory-overcommit\}
 
 メモリオーバーコミットは、クエリに対してより柔軟にメモリ制限を設定できるようにすることを目的とした実験的な手法です。
 
@@ -19,7 +19,7 @@ doc_type: 'reference'
 停止または強制終了するクエリの選択は、どのメモリ制限に達したかに応じて、グローバルまたはユーザーのオーバーコミットトラッカーのいずれかによって行われます。
 オーバーコミットトラッカーが停止させるクエリを選択できない場合、MEMORY_LIMIT_EXCEEDED 例外がスローされます。
 
-## ユーザーオーバーコミットトラッカー {#user-overcommit-tracker}
+## ユーザーオーバーコミットトラッカー \{#user-overcommit-tracker\}
 
 ユーザーオーバーコミットトラッカーは、ユーザーのクエリの中から、最もオーバーコミット率が高いクエリを特定します。
 クエリのオーバーコミット率は、割り当てられたバイト数を `memory_overcommit_ratio_denominator_for_user` 設定値で割ることで計算されます。
@@ -34,7 +34,7 @@ doc_type: 'reference'
 SELECT number FROM numbers(1000) GROUP BY number SETTINGS memory_overcommit_ratio_denominator_for_user=4000, memory_usage_overcommit_max_wait_microseconds=500
 ```
 
-## グローバルオーバーコミットトラッカー {#global-overcommit-tracker}
+## グローバルオーバーコミットトラッカー \{#global-overcommit-tracker\}
 
 グローバルオーバーコミットトラッカーは、すべてのクエリの一覧の中から、オーバーコミット率が最大のクエリを検出します。
 ここでのオーバーコミット率は、割り当てられたバイト数を設定値 `memory_overcommit_ratio_denominator` で割った値として計算されます。

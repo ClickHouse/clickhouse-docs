@@ -5,7 +5,7 @@ title: 'quantileTimingWeighted'
 doc_type: 'reference'
 ---
 
-# quantileTimingWeighted {#quantiletimingweighted}
+# quantileTimingWeighted \{#quantiletimingweighted\}
 
 在给定精度下，根据每个序列成员的权重，计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 

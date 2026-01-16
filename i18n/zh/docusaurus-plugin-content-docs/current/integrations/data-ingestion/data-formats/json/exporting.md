@@ -6,7 +6,7 @@ keywords: ['json', 'clickhouse', 'formats', 'exporting']
 doc_type: 'guide'
 ---
 
-# 导出 JSON {#exporting-json}
+# 导出 JSON \{#exporting-json\}
 
 几乎所有用于导入的 JSON 格式也都可以用于导出。最常用的是 [`JSONEachRow`](/interfaces/formats/JSONEachRow)：
 
@@ -32,7 +32,7 @@ SELECT * FROM sometable FORMAT JSONCompactEachRow
 ["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", 3]
 ```
 
-## 将数据类型强制为字符串 {#overriding-data-types-as-strings}
+## 将数据类型强制为字符串 \{#overriding-data-types-as-strings\}
 
 ClickHouse 会遵循列的数据类型，并按规范导出 JSON。但在某些情况下，如果需要将所有值都编码为字符串，可以使用 [JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow) 格式：
 
@@ -58,7 +58,7 @@ SELECT * FROM sometable FORMAT JSONCompactStringsEachRow
 ["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", "3"]
 ```
 
-## 将元数据与数据一起导出 {#exporting-metadata-together-with-data}
+## 将元数据与数据一起导出 \{#exporting-metadata-together-with-data\}
 
 通用的 [JSON](/interfaces/formats/JSON) 格式在应用中非常流行，它不仅会导出结果数据，还会导出列类型和查询统计信息：
 
@@ -135,7 +135,7 @@ SELECT * FROM sometable FORMAT JSONCompact
 
 可以考虑使用 [`JSONStrings`](/interfaces/formats/JSONStrings) 或 [`JSONCompactStrings`](/interfaces/formats/JSONCompactStrings) 这两种变体，将所有值编码为字符串。
 
-## 导出 JSON 数据及其结构的紧凑方式 {#compact-way-to-export-json-data-and-structure}
+## 导出 JSON 数据及其结构的紧凑方式 \{#compact-way-to-export-json-data-and-structure\}
 
 获取数据及其结构的一种更高效方式是使用 [`JSONCompactEachRowWithNamesAndTypes`](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes) 格式：
 
@@ -153,7 +153,7 @@ SELECT * FROM sometable FORMAT JSONCompactEachRowWithNamesAndTypes
 
 这将使用一种紧凑的 JSON 格式，并在开头附加两行包含列名和类型的表头。之后即可使用这种格式将数据摄取到另一个 ClickHouse 实例（或其他应用）中。
 
-## 将 JSON 导出为文件 {#exporting-json-to-a-file}
+## 将 JSON 导出为文件 \{#exporting-json-to-a-file\}
 
 要将导出的 JSON 数据保存到文件中，我们可以使用 [INTO OUTFILE](/sql-reference/statements/select/into-outfile.md) 子句：
 

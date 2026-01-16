@@ -7,7 +7,7 @@ title: 'VersionedCollapsingMergeTree テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# VersionedCollapsingMergeTree テーブルエンジン {#versionedcollapsingmergetree-table-engine}
+# VersionedCollapsingMergeTree テーブルエンジン \{#versionedcollapsingmergetree-table-engine\}
 
 このエンジンは次のことができます：
 
@@ -18,7 +18,7 @@ doc_type: 'reference'
 
 このエンジンは [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) を継承し、データパーツのマージアルゴリズムに行の折りたたみロジックを追加します。`VersionedCollapsingMergeTree` は [CollapsingMergeTree](../../../engines/table-engines/mergetree-family/collapsingmergetree.md) と同じ目的で使用されますが、異なる折りたたみアルゴリズムを採用しており、複数スレッドで任意の順序でデータを挿入できます。特に、`Version` 列は、行が誤った順序で挿入された場合でも、適切に行を折りたたむのに役立ちます。これに対して、`CollapsingMergeTree` は厳密に連続した順序での挿入のみをサポートします。
 
-## テーブルの作成 {#creating-a-table}
+## テーブルの作成 \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -35,7 +35,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 クエリパラメータの説明は、[クエリの説明](../../../sql-reference/statements/create/table.md)を参照してください。
 
-### エンジンのパラメータ {#engine-parameters}
+### エンジンのパラメータ \{#engine-parameters\}
 
 ```sql
 VersionedCollapsingMergeTree(sign, version)
@@ -46,7 +46,7 @@ VersionedCollapsingMergeTree(sign, version)
 | `sign`    | 行の種類を示す列の名前。`1` は「state」行、`-1` は「cancel」行を表します。 | [`Int8`](/sql-reference/data-types/int-uint)                                                                                                                                                                                                                                                   |
 | `version` | オブジェクト状態のバージョンを表す列の名前。                          | [`Int*`](/sql-reference/data-types/int-uint), [`UInt*`](/sql-reference/data-types/int-uint), [`Date`](/sql-reference/data-types/date), [`Date32`](/sql-reference/data-types/date32), [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64) |
 
-### クエリ句 {#query-clauses}
+### クエリ句 \{#query-clauses\}
 
 `VersionedCollapsingMergeTree` テーブルを作成する際は、`MergeTree` テーブルを作成する場合と同じ [句](../../../engines/table-engines/mergetree-family/mergetree.md) が必要です。
 
@@ -77,9 +77,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
     列のデータ型は `UInt*` である必要があります。
 </details>
 
-## 折りたたみ（Collapsing） {#table_engines_versionedcollapsingmergetree}
+## 折りたたみ（Collapsing） \{#table_engines_versionedcollapsingmergetree\}
 
-### データ {#data}
+### データ \{#data\}
 
 あるオブジェクトについて、継続的に変化するデータを保存する必要がある状況を考えます。オブジェクトごとに 1 行を持ち、変更があるたびにその行を更新するのは合理的に思えます。しかし、更新操作はストレージ上のデータを書き換える必要があるため、DBMS にとっては高コストかつ低速です。データを高速に書き込む必要がある場合、更新は適していませんが、その代わりにオブジェクトに対する変更を次のように逐次書き込むことができます。
 
@@ -125,13 +125,13 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 2. 列内で長く伸び続ける配列は、書き込み時の負荷によりエンジンの効率を低下させます。データが単純であればあるほど効率は高くなります。
 3. `SELECT` の結果は、オブジェクト変更履歴の一貫性に大きく依存します。挿入するデータを準備する際は注意してください。セッション深度のような本来非負であるメトリクスに対して負の値が得られるなど、不整合なデータでは予測不能な結果になる可能性があります。
 
-### Algorithm {#table_engines-versionedcollapsingmergetree-algorithm}
+### Algorithm \{#table_engines-versionedcollapsingmergetree-algorithm\}
 
 ClickHouse がデータパートをマージする際、同じ主キーとバージョンを持ち、`Sign` が異なる行のペアを削除します。行の順序は関係ありません。
 
 ClickHouse がデータを挿入する際には、行は主キーでソートされます。`Version` 列が主キーに含まれていない場合、ClickHouse はそれを暗黙的に主キーの最後のフィールドとして追加し、その並び替えに使用します。
 
-## データの選択 {#selecting-data}
+## データの選択 \{#selecting-data\}
 
 ClickHouse は、同じプライマリキーを持つすべての行が、同じ結果のデータパート内、あるいは同じ物理サーバー上に存在することを保証しません。これは、データを書き込むときと、その後にデータパートをマージするときの両方について当てはまります。さらに、ClickHouse は `SELECT` クエリを複数スレッドで処理するため、結果の行の順序を予測できません。つまり、`VersionedCollapsingMergeTree` テーブルから完全に「折りたたまれた」データを取得する必要がある場合は、集約処理が必要になります。
 
@@ -141,7 +141,7 @@ ClickHouse は、同じプライマリキーを持つすべての行が、同じ
 
 集約なしで「折りたたみ」を行ったデータを抽出する必要がある場合（たとえば、最新の値が特定の条件に一致する行が存在するかを確認する場合）は、`FROM` 句に対して `FINAL` 修飾子を使用できます。このアプローチは非効率的であり、大きなテーブルには使用すべきではありません。
 
-## 使用例 {#example-of-use}
+## 使用例 \{#example-of-use\}
 
 サンプルデータ：
 

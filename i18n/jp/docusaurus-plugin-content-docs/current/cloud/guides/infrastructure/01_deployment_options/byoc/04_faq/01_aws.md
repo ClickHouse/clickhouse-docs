@@ -9,9 +9,9 @@ doc_type: 'reference'
 
 
 
-## FAQ {#faq}
+## FAQ \{#faq\}
 
-### コンピュート {#compute}
+### コンピュート \{#compute\}
 
 <details>
 <summary>1 つの EKS クラスター上に複数のサービスを作成できますか？</summary>
@@ -36,7 +36,7 @@ ClickHouse インスタンス（ClickHouse サーバーと ClickHouse Keeper）�
 
 </details>
 
-### ネットワークとセキュリティ {#network-and-security}
+### ネットワークとセキュリティ \{#network-and-security\}
 
 <details>
 <summary>セットアップ完了後に、インストール時に設定した権限を取り消すことはできますか？</summary>
@@ -66,7 +66,7 @@ ClickHouse インスタンス（ClickHouse サーバーと ClickHouse Keeper）�
 
 </details>
 
-### 稼働率 SLA {#uptime-sla}
+### 稼働率 SLA \{#uptime-sla\}
 
 <details>
 <summary>ClickHouse は BYOC に対して稼働率 SLA を提供していますか？</summary>

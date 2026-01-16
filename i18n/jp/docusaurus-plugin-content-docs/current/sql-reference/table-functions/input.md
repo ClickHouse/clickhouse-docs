@@ -7,7 +7,7 @@ title: 'input'
 doc_type: 'reference'
 ---
 
-# input テーブル関数 {#input-table-function}
+# input テーブル関数 \{#input-table-function\}
 
 `input(structure)` - クライアントからサーバーに送信される、指定された構造を持つデータを、別の構造を持つテーブルへ効率的に変換して挿入するためのテーブル関数です。
 
@@ -23,7 +23,7 @@ doc_type: 'reference'
 この関数の主な特徴は、サーバーがクライアントからデータを受信する際に、`SELECT` 句中の式リストに従って同時にデータを変換し、
 その結果をターゲットテーブルに直接挿入する点です。転送されたすべてのデータを保持する一時テーブルは作成されません。
 
-## 例 {#examples}
+## 例 \{#examples\}
 
 * `test` テーブルが `(a String, b String)` という構造を持ち、
   `data.csv` 内のデータが `(col1 String, col2 Date, col3 Int32)` という別の構造であるとします。`data.csv` から `test` テーブルへデータを挿入しつつ、同時に型変換も行うクエリは次のようになります。

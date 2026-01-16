@@ -8,7 +8,7 @@ description: '了解如何在 ClickHouse 中可视化数据'
 doc_type: 'guide'
 ---
 
-# 在 ClickHouse 中可视化数据 {#visualizing-data-in-clickhouse}
+# 在 ClickHouse 中可视化数据 \{#visualizing-data-in-clickhouse\}
 
 <div class='vimeo-container'>
 <iframe
@@ -48,7 +48,7 @@ doc_type: 'guide'
 - [Zing Data](./community_integrations/zingdata-and-clickhouse.md)
 - [Holistics BI](./community_integrations/holistics-and-clickhouse.md)
 
-## ClickHouse Cloud 与数据可视化工具的兼容性 {#clickhouse-cloud-compatibility-with-data-visualization-tools}
+## ClickHouse Cloud 与数据可视化工具的兼容性 \{#clickhouse-cloud-compatibility-with-data-visualization-tools\}
 
 | 工具                                                                    | 支持方式                 | 已测试 | 有文档 | 备注                                                                                                                                   |
 |-------------------------------------------------------------------------|--------------------------|--------|--------|----------------------------------------------------------------------------------------------------------------------------------------|

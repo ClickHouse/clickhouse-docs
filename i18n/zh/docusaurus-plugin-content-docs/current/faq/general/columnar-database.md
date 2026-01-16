@@ -13,7 +13,7 @@ import RowOriented from '@site/static/images/row-oriented.gif';
 import ColumnOriented from '@site/static/images/column-oriented.gif';
 
 
-# 什么是列式数据库？ {#what-is-a-columnar-database}
+# 什么是列式数据库？ \{#what-is-a-columnar-database\}
 
 列式数据库会将每一列的数据独立存储。这样在执行任意查询时，只需从磁盘读取该查询实际使用到的那些列的数据。代价是，对整行产生影响的操作成本会相应提高。列式数据库也常被称为“面向列的数据库管理系统”。ClickHouse 是此类系统的典型代表。
 

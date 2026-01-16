@@ -7,11 +7,11 @@ title: 'Сборка на Linux для s390x (zLinux)'
 doc_type: 'guide'
 ---
 
-# Сборка в Linux для s390x (zLinux) {#build-on-linux-for-s390x-zlinux}
+# Сборка в Linux для s390x (zLinux) \{#build-on-linux-for-s390x-zlinux\}
 
 ClickHouse в экспериментальном режиме поддерживает архитектуру s390x.
 
-## Сборка ClickHouse для s390x {#building-clickhouse-for-s390x}
+## Сборка ClickHouse для s390x \{#building-clickhouse-for-s390x\}
 
 На платформе s390x, как и на других платформах, OpenSSL собирается как статическая библиотека. Если вы хотите собрать с динамическим OpenSSL, необходимо передать `-DENABLE_OPENSSL_DYNAMIC=1` в CMake.
 
@@ -31,7 +31,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE=cmake/linux/toolchain-s390x.cmake ..
 ninja
 ```
 
-## Запуск {#running}
+## Запуск \{#running\}
 
 Для эмуляции вам понадобится статический бинарник qemu-user для s390x. В Ubuntu его можно установить с помощью:
 
@@ -46,7 +46,7 @@ qemu-s390x-static -L /usr/s390x-linux-gnu ./programs/clickhouse local --query "S
 2
 ```
 
-## Отладка {#debugging}
+## Отладка \{#debugging\}
 
 Установите LLDB:
 
@@ -91,16 +91,16 @@ Process 1 stopped
    453      /// PHDR cache is required for query profiler to work reliably
 ```
 
-## Интеграция с Visual Studio Code {#visual-studio-code-integration}
+## Интеграция с Visual Studio Code \{#visual-studio-code-integration\}
 
 - Для визуальной отладки требуется расширение [CodeLLDB](https://github.com/vadimcn/vscode-lldb).
 - Расширение [Command Variable](https://github.com/rioj7/command-variable) может упростить динамический запуск при использовании [CMake Variants](https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/variants.md).
 - Убедитесь, что бекенд настроен на вашу установку LLVM, например: `"lldb.library": "/usr/lib/x86_64-linux-gnu/liblldb-21.so"`.
 - Перед запуском визуальной отладки предварительно запустите исполняемый файл clickhouse в режиме отладки. (Также можно создать задачу `preLaunchTask`, которая автоматизирует это.)
 
-### Примеры конфигураций {#example-configurations}
+### Примеры конфигураций \{#example-configurations\}
 
-#### cmake-variants.yaml {#cmake-variantsyaml}
+#### cmake-variants.yaml \{#cmake-variantsyaml\}
 
 ```yaml
 buildType:
@@ -137,7 +137,7 @@ toolchain:
         CMAKE_TOOLCHAIN_FILE: cmake/linux/toolchain-s390x.cmake
 ```
 
-#### launch.json {#launchjson}
+#### launch.json \{#launchjson\}
 
 ```json
 {
@@ -155,7 +155,7 @@ toolchain:
 }
 ```
 
-#### settings.json {#settingsjson}
+#### settings.json \{#settingsjson\}
 
 Это также поместит разные сборки в разные подпапки в каталоге `build`.
 
@@ -166,7 +166,7 @@ toolchain:
 }
 ```
 
-#### run-debug.sh {#run-debugsh}
+#### run-debug.sh \{#run-debugsh\}
 
 ```sh
 #! /bin/sh
@@ -175,7 +175,7 @@ cd $1
 qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
 ```
 
-#### tasks.json {#tasksjson}
+#### tasks.json \{#tasksjson\}
 
 Определяет задачу для запуска скомпилированного исполняемого файла в режиме `server` в подкаталоге `tmp` рядом с бинарными файлами, с использованием конфигурации из файла `programs/server/config.xml`.
 

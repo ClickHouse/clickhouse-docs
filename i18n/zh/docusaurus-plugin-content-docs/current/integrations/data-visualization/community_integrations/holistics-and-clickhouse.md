@@ -17,7 +17,7 @@ import holistics_05 from '@site/static/images/integrations/data-visualization/ho
 import holistics_06 from '@site/static/images/integrations/data-visualization/holistics_06.png';
 
 
-# 将 ClickHouse 连接到 Holistics {#connecting-clickhouse-to-holistics}
+# 将 ClickHouse 连接到 Holistics \{#connecting-clickhouse-to-holistics\}
 
 <CommunityMaintainedBadge/>
 
@@ -25,7 +25,7 @@ import holistics_06 from '@site/static/images/integrations/data-visualization/ho
 
 通过将 ClickHouse 连接到 Holistics，您的团队可以基于代码化语义层，获得快速、可靠的 AI 驱动自助分析体验。业务用户可以借助拖放操作和 AI 自信地探索数据，而您则可以在 Git 中保持指标定义的可复用性、可组合性和版本可控性。
 
-## 前提条件 {#prerequisites}
+## 前提条件 \{#prerequisites\}
 
 在连接之前，请确保满足以下条件：
 
@@ -33,7 +33,7 @@ import holistics_06 from '@site/static/images/integrations/data-visualization/ho
 - **网络访问：** ClickHouse 服务器必须允许来自 [Holistics 的 IP 地址](https://docs.holistics.io/docs/connect/ip-whitelisting) 的访问。
 - **数据库用户：** 为 Holistics 创建一个专用的只读数据库用户，而不要使用管理员账号。
 
-### 建议的权限 {#recommended-privileges}
+### 建议的权限 \{#recommended-privileges\}
 
 专用用户需要对你希望查询的表拥有 `SELECT` 权限，同时还需要对 `system` 表拥有权限（用于模式检测）。
 
@@ -102,7 +102,7 @@ GRANT SELECT ON system.* TO holistics_user;
 </VerticalStepper>
 
 
-## 已知限制 {#known-limitations}
+## 已知限制 \{#known-limitations\}
 
 Holistics 支持 ClickHouse 中的大多数标准 SQL 特性，但存在以下例外：
 

@@ -8,14 +8,14 @@ doc_type: 'guide'
 keywords: ['ランダムデータ', 'テストデータ']
 ---
 
-# ClickHouse でランダムなテストデータを生成する {#generating-random-test-data-in-clickhouse}
+# ClickHouse でランダムなテストデータを生成する \{#generating-random-test-data-in-clickhouse\}
 
 ランダムなデータの生成は、新しいユースケースを試したり実装のベンチマークを行ったりする際に役立ちます。
 ClickHouse には、外部のデータジェネレーターを用意する必要がない場合も多い、[ランダムデータ生成のための多様な関数](/sql-reference/functions/random-functions) が用意されています。
 
 このガイドでは、異なるランダム性要件に応じて、ClickHouse でランダムなデータセットを生成する方法の例をいくつか紹介します。
 
-## シンプルな一様データセット {#simple-uniform-dataset}
+## シンプルな一様データセット \{#simple-uniform-dataset\}
 
 **ユースケース**: ランダムなタイムスタンプとイベント種別を持つユーザーイベントのデータセットを手早く生成する。
 
@@ -43,7 +43,7 @@ FROM numbers(1000000);
 
 ***
 
-## 指数分布 {#exponential-distribution}
+## 指数分布 \{#exponential-distribution\}
 
 **ユースケース**: 多くの値は小さいが、一部は大きくなるような購入金額をシミュレートする。
 
@@ -68,7 +68,7 @@ FROM numbers(500000);
 
 ***
 
-## 時間分布イベント（ポアソン） {#poisson-distribution}
+## 時間分布イベント（ポアソン） \{#poisson-distribution\}
 
 **ユースケース**: 特定の時間帯（例: ピーク時間帯）に集中して発生するイベントをシミュレートする。
 
@@ -91,7 +91,7 @@ FROM numbers(200000);
 
 ***
 
-## 時間とともに変化する正規分布 {#time-varying-normal-distribution}
+## 時間とともに変化する正規分布 \{#time-varying-normal-distribution\}
 
 **ユースケース**: 時間とともに変化するシステムメトリクス（例：CPU 使用率）を模擬します。
 
@@ -118,7 +118,7 @@ FROM numbers(10000);
 
 ***
 
-## カテゴリカルおよびネストされたデータ {#categorical-and-nested-data}
+## カテゴリカルおよびネストされたデータ \{#categorical-and-nested-data\}
 
 **ユースケース**: 複数の興味・関心を持つユーザープロファイルを作成する場合。
 
@@ -145,7 +145,7 @@ FROM numbers(20000);
 さらに多くの例については、[Generating Random Data in ClickHouse](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse) ブログを参照してください。
 :::
 
-## ランダムなテーブルの生成 {#generating-random-tables}
+## ランダムなテーブルの生成 \{#generating-random-tables\}
 
 [`generateRandomStructure`](/sql-reference/functions/other-functions#generateRandomStructure) 関数は、テストやベンチマーク、任意のスキーマを持つモックデータの作成のために、[`generateRandom`](/sql-reference/table-functions/generate) テーブルエンジンと組み合わせて使用することで特に有用です。
 

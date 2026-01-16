@@ -5,7 +5,7 @@ title: 'uniqCombined64'
 doc_type: 'reference'
 ---
 
-# uniqCombined64 {#uniqcombined64}
+# uniqCombined64 \{#uniqcombined64\}
 
 计算不同参数取值的近似数量。该函数与 [uniqCombined](/sql-reference/aggregate-functions/reference/uniqcombined) 相同，但对所有数据类型都使用 64 位哈希值，而不仅仅是对 String 数据类型使用。
 

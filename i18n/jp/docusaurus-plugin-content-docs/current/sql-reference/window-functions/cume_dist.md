@@ -7,7 +7,7 @@ title: 'cume_dist'
 doc_type: 'reference'
 ---
 
-# cume&#95;dist {#cume&#95;dist}
+# cume&#95;dist \{#cume&#95;dist\}
 
 値のグループ内におけるある値の累積分布を計算します。つまり、現在の行の値以下の値を持つ行の割合を返します。パーティション内での値の相対的な位置を判断するために使用できます。
 

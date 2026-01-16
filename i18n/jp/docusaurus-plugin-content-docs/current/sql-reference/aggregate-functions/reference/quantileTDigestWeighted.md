@@ -5,7 +5,7 @@ title: 'quantileTDigestWeighted'
 doc_type: 'reference'
 ---
 
-# quantileTDigestWeighted {#quantiletdigestweighted}
+# quantileTDigestWeighted \{#quantiletdigestweighted\}
 
 数値データ列に対して [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf) アルゴリズムを用いて近似的な [quantile](https://en.wikipedia.org/wiki/Quantile) を計算します。この関数は各要素の重みを考慮に入れます。最大誤差は 1% です。メモリ消費量は `log(n)` で、ここで `n` は値の個数です。
 

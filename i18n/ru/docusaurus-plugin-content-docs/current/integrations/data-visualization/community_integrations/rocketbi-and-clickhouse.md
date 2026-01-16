@@ -33,7 +33,7 @@ import rocketbi_17 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Цель: создать свой первый дашборд в Rocket.BI {#goal-build-your-first-dashboard-with-rocketbi}
+# Цель: создать свой первый дашборд в Rocket.BI \{#goal-build-your-first-dashboard-with-rocketbi\}
 
 <CommunityMaintainedBadge/>
 
@@ -46,7 +46,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 Вы можете открыть [этот дашборд по ссылке.](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
 
-## Установка {#install}
+## Установка \{#install\}
 
 Запустите RocketBI с помощью наших предварительно собранных образов Docker.
 
@@ -66,7 +66,7 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 Чтобы собрать из исходников или выполнить расширенную настройку, ознакомьтесь с файлом [Rocket.BI Readme](https://github.com/datainsider-co/rocket-bi/blob/main/README.md).
 
 
-## Давайте соберём дашборд {#lets-build-the-dashboard}
+## Давайте соберём дашборд \{#lets-build-the-dashboard\}
 
 Во вкладке Dashboard вы найдёте свои отчёты, начните создавать визуализации, нажав **+New**.
 
@@ -78,9 +78,9 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 
 Подробный обучающий ролик в высоком разрешении смотрите на YouTube: [https://www.youtube.com/watch?v=TMkdMHHfvqY](https://www.youtube.com/watch?v=TMkdMHHfvqY)
 
-### Создаём элементы управления для диаграмм {#build-the-chart-controls}
+### Создаём элементы управления для диаграмм \{#build-the-chart-controls\}
 
-#### Создайте контрол метрик {#create-a-metrics-control}
+#### Создайте контрол метрик \{#create-a-metrics-control\}
 
 Во вкладке Tab filter выберите поля метрик, которые вы хотите использовать. Убедитесь, что корректно настроена агрегация.
 
@@ -92,7 +92,7 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 
 <Image size="md" img={rocketbi_04} alt="Контрол метрик с переименованными фильтрами, готовый к сохранению в дашборд" border />
 
-#### Создайте контрол типа дата {#create-a-date-type-control}
+#### Создайте контрол типа дата \{#create-a-date-type-control\}
 
 Выберите поле Date как основную колонку Main Date:
 
@@ -110,9 +110,9 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 
 <Image size="md" img={rocketbi_07} alt="Контрол диапазона дат с переименованными фильтрами, готовый к сохранению в дашборд" border />
 
-### Теперь давайте построим диаграммы {#now-let-build-the-charts}
+### Теперь давайте построим диаграммы \{#now-let-build-the-charts\}
 
-#### Круговая диаграмма: метрики продаж по регионам {#pie-chart-sales-metrics-by-regions}
+#### Круговая диаграмма: метрики продаж по регионам \{#pie-chart-sales-metrics-by-regions\}
 
 Выберите добавление новой диаграммы, затем выберите Pie Chart.
 
@@ -156,7 +156,7 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 
 <Image size="md" img={rocketbi_14} alt="Вид дашборда с только что добавленной круговой диаграммой и другими контролами" border />
 
-#### Использование дата-контрола во временной диаграмме {#use-date-control-in-a-time-series-chart}
+#### Использование дата-контрола во временной диаграмме \{#use-date-control-in-a-time-series-chart\}
 
 Используем Stacked Column Chart.
 

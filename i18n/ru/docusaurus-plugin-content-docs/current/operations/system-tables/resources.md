@@ -7,7 +7,7 @@ title: 'system.resources'
 doc_type: 'reference'
 ---
 
-# system.resources {#systemresources}
+# system.resources \{#systemresources\}
 
 Содержит информацию о [ресурсах](/operations/workload-scheduling.md#workload_entity_storage), находящихся на локальном сервере. В таблице по одной строке на каждый ресурс.
 

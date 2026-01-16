@@ -9,11 +9,11 @@ score: 15
 doc_type: 'guide'
 ---
 
-# 加载 JSON {#loading-json}
+# 加载 JSON \{#loading-json\}
 
 以下示例展示了一个非常简单的用例,用于加载结构化和半结构化 JSON 数据。对于更复杂的 JSON(包括嵌套结构),请参阅指南 [**设计 JSON 模式**](/integrations/data-formats/json/schema)。
 
-## 加载结构化 JSON {#loading-structured-json}
+## 加载结构化 JSON \{#loading-structured-json\}
 
 在本节中,我们假定 JSON 数据为 [`NDJSON`](https://github.com/ndjson/ndjson-spec)(以换行分隔的 JSON)格式,在 ClickHouse 中称为 [`JSONEachRow`](/interfaces/formats/JSONEachRow),且结构规范,即列名和类型是固定的。由于 `NDJSON` 简洁且空间利用率高,是加载 JSON 数据的首选格式,但 ClickHouse 也支持其他格式用于[输入和输出](/interfaces/formats/JSON)。
 
@@ -116,7 +116,7 @@ FORMAT JSONEachRow
 
 这些示例假定使用 `JSONEachRow` 格式。系统同样支持其他常见的 JSON 格式,加载这些格式的示例请参见[此处](/integrations/data-formats/json/other-formats)。
 
-## 加载半结构化 JSON {#loading-semi-structured-json}
+## 加载半结构化 JSON \{#loading-semi-structured-json\}
 
 前面的示例加载的是结构固定、键名和类型都已知的 JSON。现实中往往并非如此——可以新增键,或者键的类型会发生变化。这在可观测性数据等场景中非常常见。
 
@@ -191,7 +191,7 @@ LIMIT 2
 
 请注意此处在加载数据时的性能差异。`JSON` 列在插入时需要进行类型推断,并且如果某些列中存在多种类型的值,还需要额外的存储空间。尽管可以通过配置 `JSON` 类型(参见 [Designing JSON schema](/integrations/data-formats/json/schema))来获得与显式声明列相当的性能,但它在开箱即用时被刻意设计为更加灵活。不过,这种灵活性也会带来一定的代价。
 
-### 何时使用 JSON 类型 {#when-to-use-the-json-type}
+### 何时使用 JSON 类型 \{#when-to-use-the-json-type\}
 
 在以下情况下使用 `JSON` 类型:
 

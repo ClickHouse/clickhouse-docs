@@ -7,7 +7,7 @@ keywords: ['ネイティブプロトコル 列型', '列型', 'データ型', '�
 doc_type: 'reference'
 ---
 
-# ネイティブプロトコルのカラム型 {#native-protocol-column-types}
+# ネイティブプロトコルのカラム型 \{#native-protocol-column-types\}
 
 一般的な事項については [Data Types](/sql-reference/data-types/) を参照してください。
 

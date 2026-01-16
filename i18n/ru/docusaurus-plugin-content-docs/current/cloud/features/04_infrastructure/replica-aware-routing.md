@@ -8,7 +8,7 @@ doc_type: 'guide'
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
-# Маршрутизация с учетом реплик {#replica-aware-routing}
+# Маршрутизация с учетом реплик \{#replica-aware-routing\}
 
 <PrivatePreviewBadge/>
 
@@ -26,16 +26,16 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 Обратите внимание, что исходное имя хоста по-прежнему будет использовать балансировку нагрузки `LEAST_CONNECTION`, которая является алгоритмом маршрутизации по умолчанию.
 
-## Ограничения маршрутизации с учетом реплик {#limitations-of-replica-aware-routing}
+## Ограничения маршрутизации с учетом реплик \{#limitations-of-replica-aware-routing\}
 
-### Маршрутизация с учетом реплик не гарантирует изоляцию {#replica-aware-routing-does-not-guarantee-isolation}
+### Маршрутизация с учетом реплик не гарантирует изоляцию \{#replica-aware-routing-does-not-guarantee-isolation\}
 
 Любой сбой в работе сервиса, например перезапуск серверных подов (по любой причине, такой как обновление версии, сбой, вертикальное масштабирование и т. д.), горизонтальное масштабирование сервера (увеличение/уменьшение числа экземпляров) приводит к изменению хэш-кольца маршрутизации. В результате соединения с одним и тем же именем хоста будут попадать на другой серверный под.
 
-### Маршрутизация с учетом реплик не работает из коробки с Private Link {#replica-aware-routing-does-not-work-out-of-the-box-with-private-link}
+### Маршрутизация с учетом реплик не работает из коробки с Private Link \{#replica-aware-routing-does-not-work-out-of-the-box-with-private-link\}
 
 Клиентам необходимо вручную добавить DNS-запись, чтобы разрешение имен работало для нового шаблона имени хоста. При неправильном использовании это может привести к неравномерной нагрузке на сервер.
 
-## Настройка маршрутизации с учётом реплик {#configuring-replica-aware-routing}
+## Настройка маршрутизации с учётом реплик \{#configuring-replica-aware-routing\}
 
 Чтобы включить маршрутизацию с учётом реплик, пожалуйста, обратитесь в [нашу службу поддержки](https://clickhouse.com/support/program).

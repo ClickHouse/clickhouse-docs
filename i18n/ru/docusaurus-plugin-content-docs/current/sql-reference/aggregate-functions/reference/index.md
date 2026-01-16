@@ -8,7 +8,7 @@ toc_hidden: true
 doc_type: 'landing-page'
 ---
 
-# Агрегатные функции {#aggregate-functions}
+# Агрегатные функции \{#aggregate-functions\}
 
 ClickHouse поддерживает все стандартные агрегатные функции SQL ([sum](../reference/sum.md), [avg](../reference/avg.md), [min](../reference/min.md), [max](../reference/max.md), [count](../reference/count.md)), а также широкий набор других агрегатных функций.
 

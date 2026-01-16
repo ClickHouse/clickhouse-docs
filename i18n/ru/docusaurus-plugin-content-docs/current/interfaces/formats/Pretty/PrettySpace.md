@@ -16,16 +16,16 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | ✗    | ✔     |           |
 
 
-## Описание {#description}
+## Описание \{#description\}
 
 Отличается от формата [`PrettyCompact`](./PrettyCompact.md) тем, что для отображения таблицы вместо сетки используются пробелы (пробельные символы).
 
 
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 
 
-## Настройки форматирования {#format-settings}
+## Настройки форматирования \{#format-settings\}
 
 <PrettyFormatSettings/>

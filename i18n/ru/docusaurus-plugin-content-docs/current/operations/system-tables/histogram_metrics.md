@@ -10,7 +10,7 @@ doc_type: 'reference'
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
-# histogram&#95;metrics {#histogram&#95;metrics}
+# histogram&#95;metrics \{#histogram&#95;metrics\}
 
 <SystemTableCloud/>
 
@@ -43,17 +43,17 @@ FORMAT Prometheus
 ```
 
 
-## Описание метрик {#metric_descriptions}
+## Описание метрик \{#metric_descriptions\}
 
-### keeper_response_time_ms_bucket {#keeper_response_time_ms_bucket}
+### keeper_response_time_ms_bucket \{#keeper_response_time_ms_bucket\}
 
 Время ответа Keeper в миллисекундах.
 
-### keeper_batch_size_elements_bucket {#keeper_batch_size_elements_bucket}
+### keeper_batch_size_elements_bucket \{#keeper_batch_size_elements_bucket\}
 
 Размер пакета, отправляемого в Raft, в элементах.
 
-### keeper_batch_size_bytes_bucket {#keeper_batch_size_bytes_bucket}
+### keeper_batch_size_bytes_bucket \{#keeper_batch_size_bytes_bucket\}
 
 Размер пакета, отправляемого в Raft, в байтах.
 

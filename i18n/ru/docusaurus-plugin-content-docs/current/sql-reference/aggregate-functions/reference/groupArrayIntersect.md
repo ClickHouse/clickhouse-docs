@@ -6,7 +6,7 @@ title: 'groupArrayIntersect'
 doc_type: 'reference'
 ---
 
-# groupArrayIntersect {#grouparrayintersect}
+# groupArrayIntersect \{#grouparrayintersect\}
 
 Возвращает пересечение заданных массивов (все элементы, которые присутствуют во всех этих массивах).
 

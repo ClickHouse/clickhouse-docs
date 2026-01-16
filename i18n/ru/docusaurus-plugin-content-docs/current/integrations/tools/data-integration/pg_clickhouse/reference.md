@@ -7,15 +7,15 @@ doc_type: 'reference'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension']
 ---
 
-# Справочная документация по pg_clickhouse {#pg_clickhouse-reference-documentation}
+# Справочная документация по pg_clickhouse \{#pg_clickhouse-reference-documentation\}
 
-## Описание {#description}
+## Описание \{#description\}
 
 pg_clickhouse — это расширение PostgreSQL, которое позволяет выполнять удалённые запросы
 к базам данных ClickHouse, включая [обёртку внешних данных (foreign data wrapper)]. Оно поддерживает
 PostgreSQL 13 и новее и ClickHouse 23 и новее.
 
-## Начало работы {#getting-started}
+## Начало работы \{#getting-started\}
 
 Самый простой способ попробовать pg&#95;clickhouse — использовать [Docker image], который представляет собой стандартный Docker-образ PostgreSQL с расширением pg&#95;clickhouse:
 
@@ -29,7 +29,7 @@ docker exec -it pg_clickhouse psql -U postgres
 настроить проброс запросов в ClickHouse.
 
 
-## Использование {#usage}
+## Использование \{#usage\}
 
 ```sql
 CREATE EXTENSION pg_clickhouse;
@@ -42,7 +42,7 @@ IMPORT FOREIGN SCHEMA taxi FROM SERVER taxi_srv INTO taxi;
 ```
 
 
-## Политика версионирования {#versioning-policy}
+## Политика версионирования \{#versioning-policy\}
 
 pg_clickhouse следует [Semantic Versioning] для своих публичных релизов.
 
@@ -69,11 +69,11 @@ pg_clickhouse следует [Semantic Versioning] для своих публи�
 содержащие расширение, должны выполнить `ALTER EXTENSION pg_clickhouse UPDATE`,
 чтобы получить преимущества обновления.
 
-## Справочник по DDL SQL {#ddl-sql-reference}
+## Справочник по DDL SQL \{#ddl-sql-reference\}
 
 В следующих SQL-выражениях [DDL] используется pg_clickhouse.
 
-### CREATE EXTENSION {#create-extension}
+### CREATE EXTENSION \{#create-extension\}
 
 Используйте [CREATE EXTENSION], чтобы добавить pg&#95;clickhouse в базу данных:
 
@@ -89,7 +89,7 @@ CREATE EXTENSION pg_clickhouse WITH SCHEMA ch;
 ```
 
 
-### ALTER EXTENSION {#alter-extension}
+### ALTER EXTENSION \{#alter-extension\}
 
 Используйте [ALTER EXTENSION], чтобы изменить расширение pg_clickhouse. Примеры:
 
@@ -106,7 +106,7 @@ CREATE EXTENSION pg_clickhouse WITH SCHEMA ch;
     ALTER EXTENSION pg_clickhouse SET SCHEMA ch;
     ```
 
-### DROP EXTENSION {#drop-extension}
+### DROP EXTENSION \{#drop-extension\}
 
 Используйте [DROP EXTENSION], чтобы удалить расширение pg&#95;clickhouse из базы данных:
 
@@ -121,7 +121,7 @@ DROP EXTENSION pg_clickhouse CASCADE;
 ```
 
 
-### CREATE SERVER {#create-server}
+### CREATE SERVER \{#create-server\}
 
 Используйте [CREATE SERVER], чтобы создать удалённый сервер, который подключается к серверу ClickHouse. Пример:
 
@@ -144,7 +144,7 @@ CREATE SERVER taxi_srv FOREIGN DATA WRAPPER clickhouse_fdw
   * 8123, если `driver` — &quot;http&quot; и `host` не является хостом ClickHouse Cloud
 
 
-### ALTER SERVER {#alter-server}
+### ALTER SERVER \{#alter-server\}
 
 Используйте [ALTER SERVER] для изменения внешнего сервера. Например:
 
@@ -155,7 +155,7 @@ ALTER SERVER taxi_srv OPTIONS (SET driver 'http');
 Параметры те же, что и у [CREATE SERVER](#create-server).
 
 
-### DROP SERVER {#drop-server}
+### DROP SERVER \{#drop-server\}
 
 Используйте [DROP SERVER] для удаления внешнего сервера:
 
@@ -171,7 +171,7 @@ DROP SERVER taxi_srv CASCADE;
 ```
 
 
-### CREATE USER MAPPING {#create-user-mapping}
+### CREATE USER MAPPING \{#create-user-mapping\}
 
 Используйте [CREATE USER MAPPING], чтобы сопоставить пользователя PostgreSQL с пользователем ClickHouse. Например, чтобы сопоставить текущего пользователя PostgreSQL с удалённым пользователем ClickHouse при подключении к внешнему серверу `taxi_srv`:
 
@@ -186,7 +186,7 @@ CREATE USER MAPPING FOR CURRENT_USER SERVER taxi_srv
 * `password`: Пароль пользователя ClickHouse.
 
 
-### ALTER USER MAPPING {#alter-user-mapping}
+### ALTER USER MAPPING \{#alter-user-mapping\}
 
 Используйте [ALTER USER MAPPING], чтобы изменить определение отображения пользователя:
 
@@ -198,7 +198,7 @@ ALTER USER MAPPING FOR CURRENT_USER SERVER taxi_srv
 Параметры те же, что и для [CREATE USER MAPPING](#create-user-mapping).
 
 
-### DROP USER MAPPING {#drop-user-mapping}
+### DROP USER MAPPING \{#drop-user-mapping\}
 
 Используйте [DROP USER MAPPING], чтобы удалить отображение пользователя:
 
@@ -207,7 +207,7 @@ DROP USER MAPPING FOR CURRENT_USER SERVER taxi_srv;
 ```
 
 
-### IMPORT FOREIGN SCHEMA {#import-foreign-schema}
+### IMPORT FOREIGN SCHEMA \{#import-foreign-schema\}
 
 Используйте оператор [IMPORT FOREIGN SCHEMA], чтобы импортировать все таблицы, определённые в базе данных ClickHouse как внешние таблицы в схему PostgreSQL:
 
@@ -278,7 +278,7 @@ FOREIGN TABLE](#create-foreign-table).
 :::
 
 
-### CREATE FOREIGN TABLE {#create-foreign-table}
+### CREATE FOREIGN TABLE \{#create-foreign-table\}
 
 Используйте [CREATE FOREIGN TABLE], чтобы создать внешнюю таблицу, которая позволяет выполнять запросы к данным в базе данных ClickHouse:
 
@@ -331,7 +331,7 @@ CREATE FOREIGN TABLE test (
 Для столбцов типа `AggregateFunction` pg&#95;clickhouse автоматически добавит `Merge` к агрегатной функции, вычисляющей значение столбца.
 
 
-### ALTER FOREIGN TABLE {#alter-foreign-table}
+### ALTER FOREIGN TABLE \{#alter-foreign-table\}
 
 Используйте оператор [ALTER FOREIGN TABLE], чтобы изменить определение внешней таблицы:
 
@@ -343,7 +343,7 @@ ALTER TABLE table ALTER COLUMN b OPTIONS (SET AggregateFunction 'count');
 TABLE].
 
 
-### DROP FOREIGN TABLE {#drop-foreign-table}
+### DROP FOREIGN TABLE \{#drop-foreign-table\}
 
 Используйте [DROP FOREIGN TABLE], чтобы удалить внешнюю таблицу:
 
@@ -359,7 +359,7 @@ DROP FOREIGN TABLE uact CASCADE;
 ```
 
 
-## Справочник по SQL DML {#dml-sql-reference}
+## Справочник по SQL DML \{#dml-sql-reference\}
 
 Ниже приведены выражения SQL [DML], которые могут использовать pg&#95;clickhouse. Примеры зависят от таблиц ClickHouse, созданных с помощью [make-logs.sql]:
 
@@ -386,7 +386,7 @@ CREATE TABLE nodes (
 ```
 
 
-### EXPLAIN {#explain}
+### EXPLAIN \{#explain\}
 
 Команда [EXPLAIN] работает как и ожидалось, но опция `VERBOSE` приводит к тому,
 что выводится ClickHouse-запрос «Remote SQL»:
@@ -408,7 +408,7 @@ try=# EXPLAIN (VERBOSE)
 Этот запрос передаётся на выполнение в ClickHouse в виде удалённого SQL через плановый узел «Foreign Scan».
 
 
-### SELECT {#select}
+### SELECT \{#select\}
 
 Используйте оператор [SELECT], чтобы выполнять запросы к таблицам pg&#95;clickhouse так же, как к любым другим таблицам:
 
@@ -548,7 +548,7 @@ try=# EXPLAIN (ANALYZE, VERBOSE)
 до всего лишь 8, по одной для каждого узла.
 
 
-### PREPARE, EXECUTE, DEALLOCATE {#prepare-execute-deallocate}
+### PREPARE, EXECUTE, DEALLOCATE \{#prepare-execute-deallocate\}
 
 Начиная с v0.1.2, pg&#95;clickhouse поддерживает параметризованные запросы, которые, как правило, создаются
 командой [PREPARE]:
@@ -615,7 +615,7 @@ DEALLOCATE
 ```
 
 
-### INSERT {#insert}
+### INSERT \{#insert\}
 
 Используйте оператор [INSERT], чтобы добавлять значения в удалённую таблицу ClickHouse:
 
@@ -629,7 +629,7 @@ INSERT 0 3
 ```
 
 
-### COPY {#copy}
+### COPY \{#copy\}
 
 Используйте команду [COPY], чтобы вставить пакет строк в удалённую таблицу
 ClickHouse:
@@ -650,7 +650,7 @@ try=# COPY logs FROM stdin CSV;
 > вставки записей. Это будет улучшено в одном из следующих релизов.
 
 
-### LOAD {#load}
+### LOAD \{#load\}
 
 Используйте [LOAD] для загрузки разделяемой библиотеки pg&#95;clickhouse:
 
@@ -667,7 +667,7 @@ pg&#95;clickhouse при первом использовании любой ег
 задать параметры pg&#95;clickhouse перед выполнением зависящих от них запросов.
 
 
-### SET {#set}
+### SET \{#set\}
 
 Используйте [SET], чтобы задать параметр времени выполнения `pg_clickhouse.session_settings`.
 Этот параметр задаёт [настройки ClickHouse], которые будут применяться к последующим
@@ -726,7 +726,7 @@ pg&#95;clickhouse не проверяет настройки, а передаё�
 обратитесь к одному из объектов расширения, чтобы гарантировать его загрузку.
 
 
-### ALTER ROLE {#alter-role}
+### ALTER ROLE \{#alter-role\}
 
 Используйте команду `SET` оператора [ALTER ROLE](#alter-role), чтобы [предварительно загрузить](#preloading) pg&#95;clickhouse
 и/или [настроить](#set) его параметры для конкретных ролей:
@@ -750,12 +750,12 @@ ALTER ROLE
 ```
 
 
-## Предзагрузка {#preloading}
+## Предзагрузка \{#preloading\}
 
 Если каждому или почти каждому подключению к Postgres требуется использовать pg_clickhouse,
 имеет смысл использовать [предзагрузку общей библиотеки] для его автоматической загрузки:
 
-### `session_preload_libraries` {#session&#95;preload&#95;libraries}
+### `session_preload_libraries` \{#session&#95;preload&#95;libraries\}
 
 Загружает разделяемую библиотеку при каждом новом подключении к PostgreSQL:
 
@@ -768,7 +768,7 @@ session_preload_libraries = pg_clickhouse
 ROLE](#alter-role).
 
 
-### `shared_preload_libraries` {#shared&#95;preload&#95;libraries}
+### `shared_preload_libraries` \{#shared&#95;preload&#95;libraries\}
 
 Загружает разделяемую библиотеку в родительский процесс PostgreSQL при запуске:
 
@@ -779,9 +779,9 @@ shared_preload_libraries = pg_clickhouse
 Полезно для экономии памяти и сокращения накладных расходов на загрузку в каждой сессии, однако при обновлении библиотеки требует перезапуска кластера.
 
 
-## Справочник функций и операторов {#function-and-operator-reference}
+## Справочник функций и операторов \{#function-and-operator-reference\}
 
-### Типы данных {#data-types}
+### Типы данных \{#data-types\}
 
 pg_clickhouse сопоставляет следующие типы данных ClickHouse с типами данных
 PostgreSQL:
@@ -809,11 +809,11 @@ PostgreSQL:
 | UInt8      | smallint         |                                                   |
 | UUID       | uuid             |                                                   |
 
-### Функции {#functions}
+### Функции \{#functions\}
 
 Эти функции предоставляют интерфейс для выполнения запросов к базе данных ClickHouse.
 
-#### `clickhouse_raw_query` {#clickhouse&#95;raw&#95;query}
+#### `clickhouse_raw_query` \{#clickhouse&#95;raw&#95;query\}
 
 ```sql
 SELECT clickhouse_raw_query(
@@ -857,7 +857,7 @@ SELECT clickhouse_raw_query(
 ```
 
 
-### Функции pushdown {#pushdown-functions}
+### Функции pushdown \{#pushdown-functions\}
 
 Все встроенные функции PostgreSQL, используемые в условных выражениях (в конструкциях `HAVING` и `WHERE`) при выполнении запросов к внешним таблицам ClickHouse, автоматически передаются на исполнение (pushdown) в ClickHouse с теми же именами и сигнатурами. Однако у некоторых функции имена или сигнатуры отличаются, и их необходимо сопоставить с эквивалентами. `pg_clickhouse` сопоставляет следующие функции:
 
@@ -888,13 +888,13 @@ SELECT clickhouse_raw_query(
 * `strpos`: [position](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#position)
 * `regexp_like`: [match](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#match)
 
-### Пользовательские функции {#custom-functions}
+### Пользовательские функции \{#custom-functions\}
 
 Эти пользовательские функции, созданные `pg_clickhouse`, обеспечивают pushdown удалённых запросов (foreign query pushdown) для некоторых функций ClickHouse, не имеющих эквивалентов в PostgreSQL. Если какую-либо из этих функций нельзя протолкнуть (push down), будет возбуждено исключение.
 
 * [dictGet](https://clickhouse.com/docs/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull)
 
-### Проталкивание приведений типов {#pushdown-casts}
+### Проталкивание приведений типов \{#pushdown-casts\}
 
 pg_clickhouse проталкивает приведения типов, такие как `CAST(x AS bigint)`, для совместимых
 типов данных. Для несовместимых типов проталкивание завершится ошибкой; если `x` в этом
@@ -909,7 +909,7 @@ pg_clickhouse проталкивает приведения типов, таки
 * [toUInt64](https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#touint64)
 * [toUInt128](https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#touint128)
 
-### Агрегаты с pushdown {#pushdown-aggregates}
+### Агрегаты с pushdown \{#pushdown-aggregates\}
 
 Эти агрегатные функции PostgreSQL могут быть протолкнуты для выполнения в ClickHouse (pushdown).
 
@@ -919,7 +919,7 @@ pg_clickhouse проталкивает приведения типов, таки
 * [min](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/min)
 * [max](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/max)
 
-### Пользовательские агрегатные функции {#custom-aggregates}
+### Пользовательские агрегатные функции \{#custom-aggregates\}
 
 Эти пользовательские агрегатные функции, созданные `pg_clickhouse`, поддерживают foreign query pushdown для ряда агрегатных функций ClickHouse, не имеющих эквивалентов в PostgreSQL. Если для какой-либо из этих функций pushdown невозможен, будет сгенерировано исключение.
 
@@ -934,7 +934,7 @@ pg_clickhouse проталкивает приведения типов, таки
 * [quantile](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantile)
 * [quantileExact](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantileexact)
 
-### Pushdown агрегатных функций Ordered Set {#pushdown-ordered-set-aggregates}
+### Pushdown агрегатных функций Ordered Set \{#pushdown-ordered-set-aggregates\}
 
 Эти [ordered-set aggregate functions] отображаются на ClickHouse [Parametric
 aggregate functions], при этом их *direct argument* передаётся как параметр, а выражения `ORDER BY` — как аргументы. Например, такой PostgreSQL-запрос:
@@ -957,11 +957,11 @@ SELECT quantile(0.25)(a) FROM t1;
 * `quantileExact(double)`: [quantileExact](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantileexact)
 
 
-## Авторы {#authors}
+## Авторы \{#authors\}
 
 [David E. Wheeler](https://justatheory.com/)
 
-## Авторские права {#copyright}
+## Авторские права \{#copyright\}
 
 Copyright (c) 2025-2026, ClickHouse
 

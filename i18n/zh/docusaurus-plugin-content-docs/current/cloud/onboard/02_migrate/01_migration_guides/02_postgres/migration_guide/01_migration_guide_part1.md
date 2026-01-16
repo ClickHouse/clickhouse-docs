@@ -14,7 +14,7 @@ import Image from '@theme/IdealImage';
 > 本文是从 PostgreSQL 迁移到 ClickHouse 指南的**第一部分**。通过一个实际示例，演示如何采用实时复制（CDC）方案高效完成迁移。文中涉及的许多概念同样适用于从 PostgreSQL 到 ClickHouse 的手动批量数据传输。
 
 
-## 数据集 {#dataset}
+## 数据集 \{#dataset\}
 
 作为一个用于展示从 Postgres 迁移到 ClickHouse 的典型过程的示例数据集，我们使用了 [此处](/getting-started/example-datasets/stackoverflow) 文档化的 Stack Overflow 数据集。该数据集包含从 2008 年到 2024 年 4 月期间在 Stack Overflow 上产生的每一条 `post`、`vote`、`user`、`comment` 和 `badge`。该数据在 PostgreSQL 中的模式（schema）如下所示：
 
@@ -70,9 +70,9 @@ psql < postlinks.sql
 > 虽然我们的示例结果使用完整数据集来展示 Postgres 与 ClickHouse 之间的性能差异，但下文记录的所有步骤在较小子集上执行时在功能上是完全相同的。希望将完整数据集加载到 Postgres 的用户请参见[此处](https://pastila.nl/?00d47a08/1c5224c0b61beb480539f15ac375619d#XNj5vX3a7ZjkdiX7In8wqA==)。由于上述模式中施加的外键约束，PostgreSQL 的完整数据集仅包含满足引用完整性的行。一个不包含此类约束的 [Parquet 版本](/getting-started/example-datasets/stackoverflow) 可以在需要时直接加载到 ClickHouse 中。
 
 
-## 迁移数据 {#migrating-data}
+## 迁移数据 \{#migrating-data\}
 
-### 实时复制（CDC） {#real-time-replication-or-cdc}
+### 实时复制（CDC） \{#real-time-replication-or-cdc\}
 
 请参阅此[指南](/integrations/clickpipes/postgres)，为 PostgreSQL 配置 ClickPipes。该指南涵盖了多种不同类型的 Postgres 源实例。
 
@@ -109,7 +109,7 @@ ORDER BY id;
 完成设置后，ClickPipes 会开始将 PostgreSQL 中的所有数据迁移到 ClickHouse。根据网络状况和部署规模，对于 Stack Overflow 数据集，这通常只需要几分钟。
 
 
-### 手动批量加载与定期更新 {#initial-bulk-load-with-periodic-updates}
+### 手动批量加载与定期更新 \{#initial-bulk-load-with-periodic-updates\}
 
 采用手动方式时，可以通过以下方法完成数据集的初始批量加载：
 

@@ -5,7 +5,7 @@ title: 'exponentialTimeDecayedCount'
 doc_type: 'reference'
 ---
 
-## exponentialTimeDecayedCount {#exponentialtimedecayedcount}
+## exponentialTimeDecayedCount \{#exponentialtimedecayedcount\}
 
 時系列において、時間インデックス `t` における累積指数減衰値を返します。
 

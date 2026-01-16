@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## Описание {#description}
+## Описание \{#description\}
 
 Формат `LineAsString` интерпретирует каждую строку входных данных как одно строковое значение. 
 Этот формат может быть использован только для таблицы с одним полем типа [String](/sql-reference/data-types/string.md). 
 Остальные столбцы должны иметь типы [`DEFAULT`](/sql-reference/statements/create/table.md/#default), [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) или быть опущены.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 ```sql title="Query"
 DROP TABLE IF EXISTS line_as_string;
@@ -34,4 +34,4 @@ SELECT * FROM line_as_string;
 └───────────────────────────────────────────────────┘
 ```
 
-## Настройки формата {#format-settings}
+## Настройки формата \{#format-settings\}

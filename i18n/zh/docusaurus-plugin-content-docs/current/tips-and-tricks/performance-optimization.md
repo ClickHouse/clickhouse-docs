@@ -21,19 +21,19 @@ title: '实践经验 - 性能优化'
 description: '性能优化策略的真实案例'
 ---
 
-# 性能优化：经过社区验证的策略 {#performance-optimization}
+# 性能优化：经过社区验证的策略 \{#performance-optimization\}
 *本指南是基于社区 Meetup 活动总结的经验汇总。若想获取更多真实场景中的解决方案与见解，可以[按具体问题浏览](./community-wisdom.md)。*
 *在使用物化视图时遇到问题？请查看[物化视图](./materialized-views.md)社区见解指南。*
 *如果你遇到查询变慢的问题并希望查看更多示例，我们还提供了[查询优化](/optimize/query-optimization)指南。*
 
-## 按基数排序（从低到高） {#cardinality-ordering}
+## 按基数排序（从低到高） \{#cardinality-ordering\}
 当低基数列排在前面时，ClickHouse 的主索引效果最佳，可以更高效地跳过大块数据。键中后面的高基数列则用于在这些数据块内提供更细粒度的排序。请从具有较少唯一值的列开始（如 status、category、country），最后再放置具有大量唯一值的列（如 user_id、timestamp、session_id）。
 
 在以下文档中了解更多关于基数和主索引的内容：
 - [选择主键](/best-practices/choosing-a-primary-key)
 - [主索引](/primary-indexes)
 
-## 时间粒度很重要 {#time-granularity}
+## 时间粒度很重要 \{#time-granularity\}
 
 在 ORDER BY 子句中使用时间戳时，需要权衡基数与精度之间的取舍。微秒级精度的时间戳会产生非常高的基数（几乎每行一个唯一值），从而降低 ClickHouse 稀疏主索引的效率。对时间戳进行取整可以降低基数，从而实现更好的索引跳过，但会在基于时间的查询中损失时间精度。
 
@@ -62,7 +62,7 @@ FROM github.github_events
 WHERE created_at >= '2024-01-01';
 ```
 
-## 聚焦单条查询，而不是平均值 {#focus-on-individual-queries-not-averages}
+## 聚焦单条查询，而不是平均值 \{#focus-on-individual-queries-not-averages\}
 
 在排查 ClickHouse 性能问题时，不要依赖平均查询时间或系统整体指标。相反，要找出为什么某些特定查询会变慢。系统在平均意义上可能表现良好，但单条查询可能会因为内存耗尽、过滤不佳或高基数操作而表现很差。
 
@@ -70,7 +70,7 @@ ClickHouse 的 CTO Alexey 指出：*"正确的做法是问自己，为什么这�
 
 当某条查询变慢时，不要只看平均值。要问“为什么偏偏是这条查询慢？”，并检查其实际的资源使用模式。
 
-## 内存与行扫描 {#memory-and-row-scanning}
+## 内存与行扫描 \{#memory-and-row-scanning\}
 
 Sentry 是一个面向开发者的错误跟踪平台，每天为 400 多万开发者处理数十亿个事件。他们的一个关键认识是：*“在这种特定情形下，驱动内存使用的是分组键的基数（cardinality）”*——高基数聚合拖垮性能，根本原因在于内存被耗尽，而不是扫描了太多行。
 
@@ -86,7 +86,7 @@ WHERE cityHash64(user_id) % 10 = 0  -- 始终为相同的 10% 用户
 
 这可以确保相同的用户在每次查询中都会以相同的方式出现，从而在不同时间段内提供一致的结果。关键在于：`cityHash64()` 会对相同输入生成一致的哈希值，因此 `user_id = 12345` 始终会被哈希到同一个值，保证该用户要么始终出现在你的 10% 样本中，要么从不出现——不会在不同查询之间时有时无。
 
-## Sentry 的位掩码优化 {#bit-mask-optimization}
+## Sentry 的位掩码优化 \{#bit-mask-optimization\}
 
 当按高基数列（如 URL）进行聚合时，每个唯一值都会在内存中创建一个单独的聚合状态，最终可能导致内存耗尽。Sentry 的解决方案是：不再按实际的 URL 字符串分组，而是按会被归约为位掩码的布尔表达式分组。
 
@@ -129,7 +129,7 @@ LIMIT 20
 
 来自 Sentry 工程团队的反馈：“这些重量级查询的速度提升了 10 倍以上，而内存使用降低了 100 倍（更重要的是，现在是有上界的）。我们最大的一些客户在搜索回放时不再遇到错误，我们现在也可以在不耗尽内存的情况下支持任意规模的客户。”
 
-## 视频资源 {#video-sources}
+## 视频资源 \{#video-sources\}
 
 - [Lost in the Haystack - Optimizing High Cardinality Aggregations](https://www.youtube.com/watch?v=paK84-EUJCA) - 来自 Sentry 的生产环境内存优化实战经验
 - [ClickHouse Performance Analysis](https://www.youtube.com/watch?v=lxKbvmcLngo) - Alexey Milovidov 讲解性能调试方法论

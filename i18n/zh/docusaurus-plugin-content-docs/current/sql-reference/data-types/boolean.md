@@ -7,7 +7,7 @@ title: 'Bool（布尔）'
 doc_type: 'reference'
 ---
 
-# Bool {#bool}
+# Bool \{#bool\}
 
 `bool` 类型在内部存储为 UInt8。可能的取值为 `true`（1）、`false`（0）。
 

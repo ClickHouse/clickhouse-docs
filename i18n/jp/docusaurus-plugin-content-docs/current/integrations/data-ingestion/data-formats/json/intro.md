@@ -9,7 +9,7 @@ score: 10
 doc_type: 'guide'
 ---
 
-# JSON の概要 {#json-overview}
+# JSON の概要 \{#json-overview\}
 
 <iframe
   src="//www.youtube.com/embed/gCg5ISOujtc"

@@ -1,13 +1,13 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# 在 Debian/Ubuntu 上安装 ClickHouse {#install-from-deb-packages}
+# 在 Debian/Ubuntu 上安装 ClickHouse \{#install-from-deb-packages\}
 
 > 建议在 **Debian** 或 **Ubuntu** 上使用官方预编译的 `deb` 安装包。
 
 <VerticalStepper>
 
-## 配置 Debian 软件源 {#setup-the-debian-repository}
+## 配置 Debian 软件源 \{#setup-the-debian-repository\}
 
 要安装 ClickHouse，请运行以下命令：
 
@@ -61,13 +61,13 @@ clickhouse-client # or "clickhouse-client --password" if you set up a password.
 
 </details>
 
-## 安装 ClickHouse 服务端和客户端 {#install-clickhouse-server-and-client}
+## 安装 ClickHouse 服务端和客户端 \{#install-clickhouse-server-and-client\}
 
 ```bash
 sudo apt-get install -y clickhouse-server clickhouse-client
 ```
 
-## 启动 ClickHouse {#start-clickhouse-server}
+## 启动 ClickHouse \{#start-clickhouse-server\}
 
 要启动 ClickHouse 服务器，请运行：
 
@@ -87,7 +87,7 @@ clickhouse-client
 clickhouse-client --password
 ```
 
-## 安装独立的 ClickHouse Keeper {#install-standalone-clickhouse-keeper}
+## 安装独立的 ClickHouse Keeper \{#install-standalone-clickhouse-keeper\}
 
 :::tip
 在生产环境中，我们强烈建议在专用节点上运行 ClickHouse Keeper。
@@ -101,7 +101,7 @@ clickhouse-client --password
 sudo apt-get install -y clickhouse-keeper
 ```
 
-## 启用并启动 ClickHouse Keeper {#enable-and-start-clickhouse-keeper}
+## 启用并启动 ClickHouse Keeper \{#enable-and-start-clickhouse-keeper\}
 
 ```bash
 sudo systemctl enable clickhouse-keeper
@@ -111,7 +111,7 @@ sudo systemctl status clickhouse-keeper
 
 </VerticalStepper>
 
-## 软件包 {#packages}
+## 软件包 \{#packages\}
 
 可用的各种 deb 软件包如下所示：
 

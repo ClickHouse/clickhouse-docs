@@ -5,7 +5,7 @@ title: 'groupArrayIntersect'
 doc_type: 'reference'
 ---
 
-# groupArrayIntersect {#grouparrayintersect}
+# groupArrayIntersect \{#grouparrayintersect\}
 
 返回给定数组的交集（返回出现在所有给定数组中的所有元素）。
 

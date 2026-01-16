@@ -5,7 +5,7 @@ title: 'groupBitOr'
 doc_type: 'reference'
 ---
 
-# groupBitOr {#groupbitor}
+# groupBitOr \{#groupbitor\}
 
 Применяет побитовое `OR` к последовательности чисел.
 

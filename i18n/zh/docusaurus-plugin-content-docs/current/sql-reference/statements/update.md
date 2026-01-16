@@ -28,7 +28,7 @@ UPDATE [db.]table [ON CLUSTER cluster] SET column1 = expr1 [, ...] [IN PARTITION
 `filter_expr` 必须是 `UInt8` 类型。此查询会将指定列的值更新为对应表达式的值，更新发生在那些 `filter_expr` 为非零的行上。
 值会使用 `CAST` 运算符转换为列的数据类型。不支持更新用于计算主键或分区键的列。
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
 ```sql
 UPDATE hits SET Title = 'Updated Title' WHERE EventDate = today();
@@ -36,7 +36,7 @@ UPDATE hits SET Title = 'Updated Title' WHERE EventDate = today();
 UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 ```
 
-## 轻量级更新不会立即更新数据 {#lightweight-update-does-not-update-data-immediately}
+## 轻量级更新不会立即更新数据 \{#lightweight-update-does-not-update-data-immediately\}
 
 轻量级 `UPDATE` 是通过 **补丁部件（patch parts）** 实现的，这是一种只包含已更新列和行的特殊数据部件。
 轻量级 `UPDATE` 会创建补丁部件，但不会立即对存储中的原始数据进行物理修改。
@@ -47,17 +47,17 @@ UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 - 仅在后续的合并（merge）和变更（mutation）过程中才会在物理数据部分中被**实际物化**
 - 一旦所有活动数据分片中的补丁都已完成物化，就会被**自动清理**
 
-## 轻量级更新的要求 {#lightweight-update-requirements}
+## 轻量级更新的要求 \{#lightweight-update-requirements\}
 
 轻量级更新适用于 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree)、[`ReplacingMergeTree`](/engines/table-engines/mergetree-family/replacingmergetree)、[`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) 引擎及其 [`Replicated`](/engines/table-engines/mergetree-family/replication.md) 和 [`Shared`](/cloud/reference/shared-merge-tree) 版本。
 
 要使用轻量级更新，必须通过表设置 [`enable_block_number_column`](/operations/settings/merge-tree-settings#enable_block_number_column) 和 [`enable_block_offset_column`](/operations/settings/merge-tree-settings#enable_block_offset_column) 启用 `_block_number` 和 `_block_offset` 列的物化。
 
-## 轻量级删除 {#lightweight-delete}
+## 轻量级删除 \{#lightweight-delete\}
 
 [轻量级 `DELETE`](/sql-reference/statements/delete) 查询可以作为轻量级 `UPDATE` 执行，而不是作为 `ALTER UPDATE` 变更语句。轻量级 `DELETE` 的实现由 [`lightweight_delete_mode`](/operations/settings/settings#lightweight_delete_mode) 设置进行控制。
 
-## 性能注意事项 {#performance-considerations}
+## 性能注意事项 \{#performance-considerations\}
 
 **轻量级更新的优势：**
 - 更新延迟与 `INSERT ... SELECT ...` 查询的延迟相当
@@ -71,12 +71,12 @@ UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 - 过于频繁的小更新可能会导致 “too many parts” 错误。建议将多个更新合并为单个查询，例如在 `WHERE` 子句中通过一个 `IN` 子句统一指定所有要更新的 id
 - 轻量级更新旨在用于更新少量行（大约不超过表的 10%）。如果需要更新更大数量的数据，建议使用 [`ALTER TABLE ... UPDATE`](/sql-reference/statements/alter/update) 变更操作
 
-## 并发操作 {#concurrent-operations}
+## 并发操作 \{#concurrent-operations\}
 
 与重型 mutation 不同，轻量级更新不会等待当前正在运行的合并/变更操作完成。
 并发轻量级更新的一致性由设置 [`update_sequential_consistency`](/operations/settings/settings#update_sequential_consistency) 和 [`update_parallel_mode`](/operations/settings/settings#update_parallel_mode) 控制。
 
-## 更新权限 {#update-permissions}
+## 更新权限 \{#update-permissions\}
 
 `UPDATE` 需要 `ALTER UPDATE` 权限。要为指定用户在特定表上启用执行 `UPDATE` 语句的权限，请运行：
 
@@ -84,7 +84,7 @@ UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 GRANT ALTER UPDATE ON db.table TO username;
 ```
 
-## 实现细节 {#details-of-the-implementation}
+## 实现细节 \{#details-of-the-implementation\}
 
 Patch part 与常规 part 相同，但只包含已更新的列以及若干系统列：
 - `_part` - 原始 part 的名称
@@ -119,7 +119,7 @@ Patch part 之间可以相互合并，以减少在 `SELECT` 查询中需要应�
 
 join 模式比 merge 模式更慢且需要更多内存，但使用频率较低。
 
-## 相关内容 {#related-content}
+## 相关内容 \{#related-content\}
 
 - [`ALTER UPDATE`](/sql-reference/statements/alter/update) - 大规模 `UPDATE` 操作
 - [轻量级 `DELETE`](/sql-reference/statements/delete) - 轻量级 `DELETE` 操作

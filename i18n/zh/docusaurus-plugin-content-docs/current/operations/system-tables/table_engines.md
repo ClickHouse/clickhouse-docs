@@ -6,7 +6,7 @@ title: 'system.table_engines'
 doc_type: 'reference'
 ---
 
-# system.table&#95;engines {#systemtable&#95;engines}
+# system.table&#95;engines \{#systemtable&#95;engines\}
 
 描述服务器所支持的表引擎及其功能支持情况。
 

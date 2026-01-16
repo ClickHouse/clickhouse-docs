@@ -20,7 +20,7 @@ import Image from '@theme/IdealImage';
 [AWS Marketplace](https://aws.amazon.com/marketplace) の PAYG（従量課金制）パブリックオファーから ClickHouse Cloud の利用を開始しましょう。
 
 
-## 前提条件 {#prerequisites}
+## 前提条件 \{#prerequisites\}
 
 - 請求管理者によって購入権限が有効化されている AWS アカウント。
 - サブスクリプションを購入するには、そのアカウントで AWS Marketplace にログインしている必要があります。
@@ -30,23 +30,23 @@ import Image from '@theme/IdealImage';
 1 つの AWS アカウントは、「ClickHouse Cloud - Pay As You Go」サブスクリプション 1 件にしか登録できず、そのサブスクリプションは 1 つの ClickHouse 組織にのみリンクできます。
 :::
 
-## サインアップ手順 {#steps-to-sign-up}
+## サインアップ手順 \{#steps-to-sign-up\}
 
 <VerticalStepper headerLevel="h3">
 
-### ClickHouse Cloud - Pay As You Go を検索する {#search-payg}
+### ClickHouse Cloud - Pay As You Go を検索する \{#search-payg\}
 
 [AWS Marketplace](https://aws.amazon.com/marketplace) にアクセスし、「ClickHouse Cloud - Pay As You Go」を検索します。
 
 <Image img={aws_marketplace_payg_1} alt="ClickHouse を検索している AWS Marketplace" border/>
 
-### 購入オプションを表示する {#purchase-options}
+### 購入オプションを表示する \{#purchase-options\}
 
 [リスティング](https://aws.amazon.com/marketplace/pp/prodview-p4gwofrqpkltu) をクリックし、続いて **View purchase options** をクリックします。
 
 <Image img={aws_marketplace_payg_2} alt="AWS Marketplace の購入オプションの表示" border/>
 
-### 購読する {#subscribe}
+### 購読する \{#subscribe\}
 
 次の画面で「Subscribe」をクリックします。
 
@@ -57,7 +57,7 @@ import Image from '@theme/IdealImage';
 
 <Image img={aws_marketplace_payg_3} alt="AWS Marketplace でのサブスクライブ画面" border/>
 
-### アカウントをセットアップする {#set-up-your-account}
+### アカウントをセットアップする \{#set-up-your-account\}
 
 この時点ではセットアップは完了しておらず、まだ ClickHouse Cloud の組織は Marketplace 経由での課金対象にはなっていない点に注意してください。Marketplace のサブスクリプション画面で「Set up your account」をクリックし、ClickHouse Cloud にリダイレクトしてセットアップを完了させます。
 
@@ -88,7 +88,7 @@ ClickHouse Cloud を初めて利用する場合は、ページ下部の「Regist
 
 既存の ClickHouse Cloud ユーザーの場合は、認証情報を使用してログインするだけで構いません。
 
-### Marketplace サブスクリプションを組織に追加する {#add-marketplace-subscription}
+### Marketplace サブスクリプションを組織に追加する \{#add-marketplace-subscription\}
 
 ログインに成功したら、この Marketplace サブスクリプションで課金する新しい組織を作成するか、既存の組織のいずれかを選択して、このサブスクリプションの課金先として指定できます。 
 
@@ -102,6 +102,6 @@ ClickHouse の UI にある組織の請求ページから、請求が AWS Market
 
 </VerticalStepper>
 
-## サポート {#support}
+## サポート \{#support\}
 
 問題が発生した場合は、[弊社サポートチーム](https://clickhouse.com/support/program)まで遠慮なくお問い合わせください。

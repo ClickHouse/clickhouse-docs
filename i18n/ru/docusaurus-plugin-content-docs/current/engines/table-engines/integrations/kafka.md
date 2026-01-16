@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# Табличный движок Kafka {#kafka-table-engine}
+# Табличный движок Kafka \{#kafka-table-engine\}
 
 :::tip
 Если вы используете ClickHouse Cloud, мы рекомендуем вместо этого использовать [ClickPipes](/integrations/clickpipes). ClickPipes нативно поддерживает приватные сетевые соединения, независимое масштабирование ресурсов для приёма данных и ресурсов кластера, а также всесторонний мониторинг при потоковой загрузке данных из Kafka в ClickHouse.
@@ -20,7 +20,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 - Организовывать отказоустойчивое хранилище.
 - Обрабатывать потоки по мере их поступления.
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -134,7 +134,7 @@ SETTINGS
 Табличный движок Kafka не поддерживает столбцы со [значениями по умолчанию](/sql-reference/statements/create/table#default_values). Если вам нужны такие столбцы, их можно добавить на уровне materialized view (см. ниже).
 :::
 
-## Описание {#description}
+## Описание \{#description\}
 
 Доставленные сообщения отслеживаются автоматически, поэтому каждое сообщение в группе учитывается только один раз. Если вам нужно получить данные дважды, создайте копию таблицы с другим именем группы.
 
@@ -184,7 +184,7 @@ SETTINGS
 
 Если вы хотите изменить целевую таблицу с помощью `ALTER`, рекомендуем отключить материализованное представление, чтобы избежать расхождений между целевой таблицей и данными из представления.
 
-## Конфигурация {#configuration}
+## Конфигурация \{#configuration\}
 
 Как и движок GraphiteMergeTree, движок Kafka поддерживает расширенную конфигурацию с использованием файла конфигурации ClickHouse. Вы можете использовать два ключа конфигурации: глобальный (в секции `<kafka>`) и на уровне топика (в секции `<kafka><kafka_topic>`). Сначала применяется глобальная конфигурация, а затем — конфигурация для конкретного топика (если она задана).
 
@@ -230,7 +230,7 @@ SETTINGS
 
 Список доступных параметров конфигурации приведён в [справочнике по конфигурации librdkafka](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md). Используйте символ подчёркивания (`_`) вместо точки в конфигурации ClickHouse. Например, `check.crcs=true` будет записано как `<check_crcs>true</check_crcs>`.
 
-### Поддержка Kerberos {#kafka-kerberos-support}
+### Поддержка Kerberos \{#kafka-kerberos-support\}
 
 Для работы с Kafka с поддержкой Kerberos добавьте дочерний элемент `security_protocol` со значением `sasl_plaintext`. Этого достаточно при наличии действительного Kerberos ticket-granting ticket (TGT), уже полученного и закэшированного средствами операционной системы.
 ClickHouse может самостоятельно поддерживать учетные данные Kerberos с использованием файла keytab. Для этого используйте дочерние элементы `sasl_kerberos_service_name`, `sasl_kerberos_keytab` и `sasl_kerberos_principal`.
@@ -246,7 +246,7 @@ ClickHouse может самостоятельно поддерживать уч
 </kafka>
 ```
 
-## Виртуальные столбцы {#virtual-columns}
+## Виртуальные столбцы \{#virtual-columns\}
 
 - `_topic` — топик Kafka. Тип данных: `LowCardinality(String)`.
 - `_key` — ключ сообщения. Тип данных: `String`.
@@ -264,7 +264,7 @@ ClickHouse может самостоятельно поддерживать уч
 
 Примечание: виртуальные столбцы `_raw_message` и `_error` заполняются только в случае возникновения исключения во время разбора; при успешном разборе сообщения они всегда пусты.
 
-## Поддержка форматов данных {#data-formats-support}
+## Поддержка форматов данных \{#data-formats-support\}
 
 Движок Kafka поддерживает все [форматы](../../../interfaces/formats.md), поддерживаемые в ClickHouse.
 Количество строк в одном сообщении Kafka зависит от того, является ли формат построчным или блочным:
@@ -272,7 +272,7 @@ ClickHouse может самостоятельно поддерживать уч
 - Для построчных форматов количество строк в одном сообщении Kafka можно контролировать с помощью настройки `kafka_max_rows_per_message`.
 - Для блочных форматов мы не можем разделить блок на более мелкие части, но количество строк в одном блоке можно контролировать с помощью общего параметра настройки [max_block_size](/operations/settings/settings#max_block_size).
 
-## Движок для хранения зафиксированных смещений в ClickHouse Keeper {#engine-to-store-committed-offsets-in-clickhouse-keeper}
+## Движок для хранения зафиксированных смещений в ClickHouse Keeper \{#engine-to-store-committed-offsets-in-clickhouse-keeper\}
 
 <ExperimentalBadge />
 
@@ -294,7 +294,7 @@ SETTINGS
 SETTINGS allow_experimental_kafka_offsets_storage_in_keeper=1;
 ```
 
-### Известные ограничения {#known-limitations}
+### Известные ограничения \{#known-limitations\}
 
 Поскольку новый движок является экспериментальным, он ещё не готов для промышленного использования. На данный момент в реализации есть несколько известных ограничений:
 

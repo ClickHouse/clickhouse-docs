@@ -6,7 +6,7 @@ title: 'aggThrow'
 doc_type: 'reference'
 ---
 
-# aggThrow {#aggthrow}
+# aggThrow \{#aggthrow\}
 
 この関数は、例外安全性をテストするために使用できます。指定した確率で、作成時に例外をスローします。
 

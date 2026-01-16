@@ -6,7 +6,7 @@ title: 'system.settings_profile_elements'
 doc_type: 'reference'
 ---
 
-# system.settings&#95;profile&#95;elements {#systemsettings&#95;profile&#95;elements}
+# system.settings&#95;profile&#95;elements \{#systemsettings&#95;profile&#95;elements\}
 
 設定プロファイルの内容について説明します。
 

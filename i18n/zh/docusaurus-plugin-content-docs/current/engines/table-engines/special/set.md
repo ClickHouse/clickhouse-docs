@@ -7,7 +7,7 @@ title: 'Set 表引擎'
 doc_type: 'reference'
 ---
 
-# Set 表引擎 {#set-table-engine}
+# Set 表引擎 \{#set-table-engine\}
 
 :::note
 在 ClickHouse Cloud 中，如果服务创建时使用的版本早于 25.4，则需要使用 `SET compatibility=25.4` 将兼容性设置为至少 25.4。
@@ -22,11 +22,11 @@ doc_type: 'reference'
 
 在发生非正常服务器重启时，磁盘上的数据块可能会丢失或损坏。后一种情况下，你可能需要手动删除包含损坏数据的文件。
 
-### 限制和设置 {#join-limitations-and-settings}
+### 限制和设置 \{#join-limitations-and-settings\}
 
 创建表时，会应用以下设置：
 
-#### Persistent {#persistent}
+#### Persistent \{#persistent\}
 
 为 Set 和 [Join](/engines/table-engines/special/join) 表引擎禁用持久化功能。
 

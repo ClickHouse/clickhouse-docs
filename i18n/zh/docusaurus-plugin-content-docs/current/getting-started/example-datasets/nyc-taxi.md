@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 :::
 
 
-## 创建 `trips` 表 {#create-the-table-trips}
+## 创建 `trips` 表 \{#create-the-table-trips\}
 
 首先为出租车行程创建一张表：
 
@@ -55,7 +55,7 @@ ENGINE = MergeTree
 PRIMARY KEY (pickup_datetime, dropoff_datetime);
 ```
 
-## 直接从对象存储加载数据 {#load-the-data-directly-from-object-storage}
+## 直接从对象存储加载数据 \{#load-the-data-directly-from-object-storage\}
 
 用户可以先获取一小部分数据（300 万行）来熟悉数据集。数据以 TSV 文件形式存储在对象存储中，可以很方便地通过 `s3` 表函数流式写入 ClickHouse Cloud。
 
@@ -124,7 +124,7 @@ FROM gcs(
 </TabItem>
 </Tabs>
 
-## 示例查询 {#sample-queries}
+## 示例查询 \{#sample-queries\}
 
 下面的查询是在上文所述的示例数据上执行的。你可以在 [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19) 上针对完整数据集运行这些示例查询，只需将下面的查询修改为使用表 `nyc_taxi.trips`。
 
@@ -181,7 +181,7 @@ ORDER BY passenger_count ASC
 ```
 
 
-## 下载预先生成的分区 {#download-of-prepared-partitions}
+## 下载预先生成的分区 \{#download-of-prepared-partitions\}
 
 :::note
 以下步骤介绍原始数据集的信息，以及将预先生成的分区加载到自行管理的 ClickHouse 服务器环境中的方法。
@@ -207,7 +207,7 @@ $ clickhouse-client --query "select count(*) from datasets.trips_mergetree"
 如果您要运行下文所述的查询，必须使用完整的表名 `datasets.trips_mergetree`。
 :::
 
-## 单机环境下的结果 {#results-on-single-server}
+## 单机环境下的结果 \{#results-on-single-server\}
 
 问题 1：
 
@@ -291,7 +291,7 @@ Q4：0.072 秒。
 在这种情况下，查询处理时间主要由网络延迟决定。
 我们使用位于与集群不同数据中心的客户端来运行查询，这带来了大约 20 毫秒的额外延迟。
 
-## 摘要 {#summary}
+## 摘要 \{#summary\}
 
 | 服务器 | Q1    | Q2    | Q3    | Q4    |
 |---------|-------|-------|-------|-------|

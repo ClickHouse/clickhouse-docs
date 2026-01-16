@@ -7,7 +7,7 @@ title: 'system.replication_queue'
 doc_type: 'reference'
 ---
 
-# system.replication&#95;queue {#systemreplication&#95;queue}
+# system.replication&#95;queue \{#systemreplication&#95;queue\}
 
 包含关于存储在 ClickHouse Keeper 或 ZooKeeper 中、属于 `ReplicatedMergeTree` 系列表的复制队列任务的信息。
 

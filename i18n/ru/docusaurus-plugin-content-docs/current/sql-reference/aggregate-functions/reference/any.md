@@ -5,7 +5,7 @@ title: 'any'
 doc_type: 'reference'
 ---
 
-# any {#any}
+# any \{#any\}
 
 Выбирает первое встретившееся значение в столбце.
 

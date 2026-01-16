@@ -5,7 +5,7 @@ title: 'uniqExact'
 doc_type: 'reference'
 ---
 
-# uniqExact {#uniqexact}
+# uniqExact \{#uniqexact\}
 
 计算参数中不同取值的精确个数。
 

@@ -5,7 +5,7 @@ title: 'aggThrow'
 doc_type: 'reference'
 ---
 
-# aggThrow {#aggthrow}
+# aggThrow \{#aggthrow\}
 
 此函数可用于测试异常安全。它会在创建时以指定的概率抛出异常。
 

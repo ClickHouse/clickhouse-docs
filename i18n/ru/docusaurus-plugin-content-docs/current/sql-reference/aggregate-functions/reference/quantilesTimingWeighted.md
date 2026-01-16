@@ -5,7 +5,7 @@ title: 'quantilesTimingWeighted'
 doc_type: 'reference'
 ---
 
-# quantilesTimingWeighted {#quantilestimingweighted}
+# quantilesTimingWeighted \{#quantilestimingweighted\}
 
 То же, что и `quantileTimingWeighted`, но принимает несколько аргументов с уровнями квантилей и возвращает Array, заполненный множеством значений соответствующих квантилей.
 

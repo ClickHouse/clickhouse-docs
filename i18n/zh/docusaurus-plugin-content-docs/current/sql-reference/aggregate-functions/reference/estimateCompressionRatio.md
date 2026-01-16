@@ -5,7 +5,7 @@ title: 'estimateCompressionRatio'
 doc_type: 'reference'
 ---
 
-## estimateCompressionRatio {#estimatecompressionration}
+## estimateCompressionRatio \{#estimatecompressionration\}
 
 在不实际压缩的情况下估算给定列的压缩比。
 

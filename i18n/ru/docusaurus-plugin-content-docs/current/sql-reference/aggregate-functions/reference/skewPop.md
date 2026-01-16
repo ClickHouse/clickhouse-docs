@@ -5,7 +5,7 @@ title: 'skewPop'
 doc_type: 'reference'
 ---
 
-# skewPop {#skewpop}
+# skewPop \{#skewpop\}
 
 Вычисляет [коэффициент асимметрии](https://en.wikipedia.org/wiki/Skewness) набора значений.
 

@@ -21,7 +21,7 @@ import dropdown_cell_chart from '@site/static/images/integrations/sql-clients/ma
 import run_app_view from '@site/static/images/integrations/sql-clients/marimo/run-app-view.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Использование marimo с ClickHouse {#using-marimo-with-clickhouse}
+# Использование marimo с ClickHouse \{#using-marimo-with-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
@@ -29,7 +29,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={marimo_connect} size="md" border alt="Подключение к ClickHouse" />
 
-## 1. Установите Marimo с поддержкой SQL {#install-marimo-sql}
+## 1. Установите Marimo с поддержкой SQL \{#install-marimo-sql\}
 
 ```shell
 pip install "marimo[sql]" clickhouse_connect
@@ -39,7 +39,7 @@ marimo edit clickhouse_demo.py
 Должен открыться веб‑браузер с адресом localhost.
 
 
-## 2. Подключение к ClickHouse. {#connect-to-clickhouse}
+## 2. Подключение к ClickHouse. \{#connect-to-clickhouse\}
 
 Перейдите на панель источников данных слева в редакторе marimo и нажмите «Add database».
 
@@ -53,7 +53,7 @@ marimo edit clickhouse_demo.py
 
 <Image img={run_cell} size="md" border alt="Выполните ячейку, чтобы подключиться к ClickHouse" />
 
-## 3. Выполнение SQL-запросов {#run-sql}
+## 3. Выполнение SQL-запросов \{#run-sql\}
 
 После настройки подключения вы можете создать новую SQL-ячейку и выбрать движок ClickHouse.
 

@@ -5,7 +5,7 @@ title: 'sumMap'
 doc_type: 'reference'
 ---
 
-# sumMap {#summap}
+# sumMap \{#summap\}
 
 根据 `key` 数组中指定的键，对一个或多个 `value` 数组进行求和。返回一个数组形式的元组：第一个数组是排序后的键数组，后续数组是对应键的求和值，且不会发生溢出。
 

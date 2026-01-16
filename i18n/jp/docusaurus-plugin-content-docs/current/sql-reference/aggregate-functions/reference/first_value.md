@@ -5,7 +5,7 @@ title: 'first_value'
 doc_type: 'reference'
 ---
 
-# first_value {#first_value}
+# first_value \{#first_value\}
 
 これは[`any`](../../../sql-reference/aggregate-functions/reference/any.md) のエイリアスですが、[Window Functions](../../window-functions/index.md) との互換性のために導入されたものです。Window Functions では `NULL` 値を処理する必要が生じることがあります（デフォルトでは、すべての ClickHouse 集約関数は NULL 値を無視します）。
 
@@ -13,7 +13,7 @@ doc_type: 'reference'
 
 `any` と同様に、Window Functions を使用しない場合、ソースストリームがソートされていなければ結果はランダムになり、戻り値の型は入力の型と一致します（NULL が返されるのは、入力が Nullable 型である場合、または -OrNull コンビネータが追加されている場合のみです）。
 
-## 使用例 {#examples}
+## 使用例 \{#examples\}
 
 ```sql
 CREATE TABLE test_data
@@ -26,7 +26,7 @@ ENGINE = Memory;
 INSERT INTO test_data (a, b) VALUES (1,null), (2,3), (4, 5), (6,null);
 ```
 
-### 例 1 {#example1}
+### 例 1 \{#example1\}
 
 デフォルトでは、NULL値は無視されます。
 
@@ -40,7 +40,7 @@ SELECT first_value(b) FROM test_data;
 └────────┘
 ```
 
-### 例 2 {#example2}
+### 例 2 \{#example2\}
 
 NULL 値は無視されます。
 
@@ -54,7 +54,7 @@ SELECT first_value(b) ignore nulls FROM test_data
 └──────────────────────┘
 ```
 
-### 例 3 {#example3}
+### 例 3 \{#example3\}
 
 NULL 値が許容されます。
 
@@ -68,7 +68,7 @@ SELECT first_value(b) respect nulls FROM test_data
 └───────────────────────┘
 ```
 
-### 例 4 {#example4}
+### 例 4 \{#example4\}
 
 `ORDER BY` を含むサブクエリを使用して結果を安定させた例。
 

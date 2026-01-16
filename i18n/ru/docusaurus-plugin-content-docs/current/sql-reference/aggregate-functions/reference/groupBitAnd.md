@@ -5,7 +5,7 @@ title: 'groupBitAnd'
 doc_type: 'reference'
 ---
 
-# groupBitAnd {#groupbitand}
+# groupBitAnd \{#groupbitand\}
 
 Применяет побитовую операцию `AND` к последовательности чисел.
 

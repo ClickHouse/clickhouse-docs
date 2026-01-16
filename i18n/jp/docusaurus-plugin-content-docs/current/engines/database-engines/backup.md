@@ -7,13 +7,13 @@ title: 'バックアップ'
 doc_type: 'reference'
 ---
 
-# バックアップ {#backup}
+# バックアップ \{#backup\}
 
 データベースのバックアップ機能を使用すると、[バックアップ](/operations/backup/overview) からテーブルやデータベースを読み取り専用モードで即座にアタッチできます。
 
 データベースのバックアップは、増分バックアップと非増分バックアップの両方に対応しています。
 
-## データベースの作成 {#creating-a-database}
+## データベースの作成 \{#creating-a-database\}
 
 ```sql
 CREATE DATABASE backup_database
@@ -34,7 +34,7 @@ ENGINE = Backup('database_name_inside_backup', Disk('disk_name', 'backup_name'))
 * `database_name_inside_backup` — バックアップ内のデータベースの名前。
 * `backup_destination` — バックアップ先。
 
-## 使用例 {#usage-example}
+## 使用例 \{#usage-example\}
 
 `Disk` バックアップ先を使った例を見てみましょう。まずは `storage.xml` でバックアップ用ディスクを設定します：
 

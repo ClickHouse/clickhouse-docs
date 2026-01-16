@@ -14,7 +14,7 @@ import Image from '@theme/IdealImage';
 > これは、PostgreSQL から ClickHouse への移行に関するガイドの **パート 1** です。具体例を用いて、リアルタイムレプリケーション（CDC）方式により効率的に移行を行う方法を示します。ここで扱う多くの概念は、PostgreSQL から ClickHouse への手動での一括データ転送にも適用できます。
 
 
-## データセット {#dataset}
+## データセット \{#dataset\}
 
 Postgres から ClickHouse への典型的なマイグレーション例を示すサンプルデータセットとして、[こちら](/getting-started/example-datasets/stackoverflow) で説明している Stack Overflow データセットを使用します。これは、2008 年から 2024 年 4 月までに Stack Overflow 上で発生したすべての `post`、`vote`、`user`、`comment`、`badge` を含みます。このデータ用の PostgreSQL スキーマを以下に示します。
 
@@ -70,9 +70,9 @@ ClickHouse にとっては小規模ですが、このデータセットは Postg
 > この例では、Postgres と ClickHouse 間のパフォーマンス差を示すためにフルデータセットを使用していますが、以下で説明するすべての手順は、より小さいサブセットでも機能的にはまったく同一です。フルデータセットを Postgres にロードしたいユーザーは[こちら](https://pastila.nl/?00d47a08/1c5224c0b61beb480539f15ac375619d#XNj5vX3a7ZjkdiX7In8wqA==)を参照してください。上記スキーマで課されている外部キー制約により、PostgreSQL 用のフルデータセットには、参照整合性を満たす行のみが含まれます。このような制約のない [Parquet 版](/getting-started/example-datasets/stackoverflow) は、必要に応じて簡単に ClickHouse に直接ロードできます。
 
 
-## データの移行 {#migrating-data}
+## データの移行 \{#migrating-data\}
 
-### リアルタイムレプリケーション（CDC） {#real-time-replication-or-cdc}
+### リアルタイムレプリケーション（CDC） \{#real-time-replication-or-cdc\}
 
 PostgreSQL 用の ClickPipes をセットアップするには、この[ガイド](/integrations/clickpipes/postgres)を参照してください。このガイドでは、さまざまな種類のソースとなる Postgres インスタンスを扱っています。
 
@@ -109,7 +109,7 @@ ORDER BY id;
 セットアップが完了すると、ClickPipes は PostgreSQL から ClickHouse へのすべてのデータ移行処理を開始します。ネットワークやデプロイメントの規模によってかかる時間は異なりますが、Stack Overflow データセットであれば数分程度で完了するはずです。
 
 
-### 手動による一括ロードと定期更新 {#initial-bulk-load-with-periodic-updates}
+### 手動による一括ロードと定期更新 \{#initial-bulk-load-with-periodic-updates\}
 
 手動アプローチを用いる場合、データセットの初回一括ロードは次の方法で実施できます。
 

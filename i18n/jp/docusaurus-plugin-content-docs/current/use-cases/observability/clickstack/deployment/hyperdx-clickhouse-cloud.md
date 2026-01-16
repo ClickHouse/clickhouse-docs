@@ -38,7 +38,7 @@ ClickHouse Cloud を初めて利用する場合は、
 
 このモードでは、データのインジェストは完全にユーザーに委ねられます。独自にホストした OpenTelemetry コレクター、クライアントライブラリからの直接インジェスト、Kafka や S3 などの ClickHouse ネイティブなテーブルエンジン、ETL パイプライン、あるいは ClickHouse Cloud のマネージドインジェストサービスである ClickPipes を使用して、ClickHouse Cloud にデータを取り込むことができます。このアプローチは、ClickStack を運用するうえで最もシンプルかつ高パフォーマンスな方法を提供します。
 
-### 適したユースケース {#suitable-for}
+### 適したユースケース \{#suitable-for\}
 
 このデプロイメントパターンは、次のようなシナリオに最適です。
 
@@ -46,13 +46,13 @@ ClickHouse Cloud を初めて利用する場合は、
 2. 大規模なオブザーバビリティデプロイメントを運用しており、ClickHouse Cloud と組み合わせた ClickStack の専用のパフォーマンスとスケーラビリティが必要な場合。
 3. すでに分析用途で ClickHouse Cloud を利用していて、ClickStack のインストルメンテーションライブラリを使ってアプリケーションを計測し、同じクラスターにデータを送信したい場合。この場合は、オブザーバビリティワークロード用のコンピュートリソースを分離するために [warehouses](/cloud/reference/warehouses) の利用を推奨します。
 
-## デプロイ手順 {#deployment-steps}
+## デプロイ手順 \{#deployment-steps\}
 
 このガイドでは、すでに ClickHouse Cloud サービスが作成済みであることを前提とします。まだサービスを作成していない場合は、クイックスタートガイドの「[ClickHouse サービスを作成する](/getting-started/quick-start/cloud#1-create-a-clickhouse-service)」の手順に従ってください。
 
 <VerticalStepper headerLevel="h3">
 
-### サービス認証情報のコピー（オプション） {#copy-service-credentials}
+### サービス認証情報のコピー（オプション） \{#copy-service-credentials\}
 
 **サービスで可視化する既存のオブザーバビリティイベントが既にある場合は、この手順をスキップできます。**
 
@@ -62,7 +62,7 @@ ClickHouse Cloud を初めて利用する場合は、
 
 <Image img={cloud_connect} alt="ClickHouse Cloud への接続" size="lg"/>
 
-### OpenTelemetry Collectorのデプロイ（オプション） {#deploy-otel-collector}
+### OpenTelemetry Collectorのデプロイ（オプション） \{#deploy-otel-collector\}
 
 **サービスで可視化する既存のオブザーバビリティイベントが既にある場合は、この手順をスキップできます。**
 
@@ -276,7 +276,7 @@ docker run --rm -it \
 本番環境では、インジェスト専用のユーザーを作成し、必要なデータベースとテーブルへのアクセス権限を制限することを推奨します。詳細については、[&quot;データベースとインジェストユーザー&quot;](/use-cases/observability/clickstack/production#database-ingestion-user)を参照してください。
 :::
 
-### ClickStackに接続する {#connect-to-clickstack}
+### ClickStackに接続する \{#connect-to-clickstack\}
 
 サービスを選択し、左側のメニューから `ClickStack` を選択します。
 
@@ -288,11 +288,11 @@ HyperDXインターフェースの操作のみを確認したいユーザーに�
 
 <Image img={hyperdx_cloud_landing} alt="ClickHouse Cloud HyperDX のランディングページ" size="lg"/>
 
-### ユーザー権限 {#user-permissions}
+### ユーザー権限 \{#user-permissions\}
 
 HyperDXにアクセスするユーザーは、ClickHouse Cloudコンソールの認証情報を使用して自動的に認証されます。アクセス制御は、サービス設定で構成されたSQLコンソールの権限を通じて行われます。
 
-#### ユーザーアクセスを設定するには {#configure-access}
+#### ユーザーアクセスを設定するには \{#configure-access\}
 
 1. ClickHouse Cloud コンソールで対象のサービスに移動します
 2. **Settings** → **SQL Console Access** に移動します
@@ -307,11 +307,11 @@ HyperDXにアクセスするユーザーは、ClickHouse Cloudコンソールの
 アラートを有効にするには、**Service Admin**権限（SQL Console Accessドロップダウンの**Full Access**に対応）を持つユーザーが少なくとも1名、HyperDXに一度ログインする必要があります。これにより、アラートクエリを実行する専用ユーザーがデータベースにプロビジョニングされます。
 :::
 
-### データソースを作成する {#create-a-datasource}
+### データソースを作成する \{#create-a-datasource\}
 
 HyperDXはOpenTelemetryネイティブですが、OpenTelemetry専用ではありません。必要に応じて独自のテーブルスキーマを使用することも可能です。
 
-#### OpenTelemetryスキーマの使用 {#using-otel-schemas}
+#### OpenTelemetryスキーマの使用 \{#using-otel-schemas\}
 
 上記のOTel collectorを使用してClickHouse内にデータベースとテーブルを作成する場合、ソース作成モデル内のすべてのデフォルト値を保持し、`Table`フィールドに`otel_logs`を入力してログソースを作成します。その他の設定はすべて自動検出されるため、`Save New Source`をクリックしてください。
 
@@ -329,7 +329,7 @@ HyperDXはOpenTelemetryネイティブですが、OpenTelemetry専用ではあ�
 ClickStackでは、ログやトレースなどの異なるデータソースを相互に相関付けることができます。これを有効にするには、各ソースで追加の設定が必要です。例えば、ログソースで対応するトレースソースを指定でき、トレースソースでも同様です。詳細については、[&quot;相関ソース&quot;](/use-cases/observability/clickstack/config#correlated-sources)を参照してください。
 :::
 
-#### カスタムスキーマの使用 {#using-custom-schemas}
+#### カスタムスキーマの使用 \{#using-custom-schemas\}
 
 既存のデータを持つサービスにHyperDXを接続する場合は、必要に応じてデータベースとテーブルの設定を行ってください。テーブルがClickHouse用のOpenTelemetryスキーマに準拠している場合、設定は自動的に検出されます。
 

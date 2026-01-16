@@ -7,9 +7,9 @@ title: 'SimpleAggregateFunction 型'
 doc_type: 'reference'
 ---
 
-# SimpleAggregateFunction 型 {#simpleaggregatefunction-type}
+# SimpleAggregateFunction 型 \{#simpleaggregatefunction-type\}
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 `SimpleAggregateFunction` データ型は、[`AggregateFunction`](../../sql-reference/data-types/aggregatefunction.md) 型が保持するような集約関数の完全な状態ではなく、集約関数の中間状態のみを格納します。
 
@@ -22,7 +22,7 @@ doc_type: 'reference'
 
 集約関数の値は通常、関数名に [`-SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) コンビネータを付与した集約関数を呼び出すことで生成されます。
 
-## 構文 {#syntax}
+## 構文 \{#syntax\}
 
 ```sql
 SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
@@ -34,7 +34,7 @@ SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
 * `Type` - 集約関数の引数の型。
 
 
-## サポートされている関数 {#supported-functions}
+## サポートされている関数 \{#supported-functions\}
 
 次の集約関数がサポートされています：
 
@@ -65,14 +65,14 @@ SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
 `AggregateFunction` よりも高いパフォーマンスを発揮します。
 :::
 
-## 例 {#example}
+## 例 \{#example\}
 
 ```sql
 CREATE TABLE simple (id UInt64, val SimpleAggregateFunction(sum, Double)) ENGINE=AggregatingMergeTree ORDER BY id;
 ```
 
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \{#related-content\}
 
 * ブログ: [ClickHouse で集約関数コンビネータを使用する](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)    - ブログ: [ClickHouse で集約関数コンビネータを使用する](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
 * [AggregateFunction](/sql-reference/data-types/aggregatefunction) 型。

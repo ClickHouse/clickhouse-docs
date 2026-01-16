@@ -5,7 +5,7 @@ title: 'quantilesExactExclusive'
 doc_type: 'reference'
 ---
 
-## quantilesExactExclusive {#quantilesexactexclusive}
+## quantilesExactExclusive \{#quantilesexactexclusive\}
 
 精确计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 

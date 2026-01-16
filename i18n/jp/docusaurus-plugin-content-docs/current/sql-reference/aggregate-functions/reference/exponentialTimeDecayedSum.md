@@ -5,7 +5,7 @@ title: 'exponentialTimeDecayedSum'
 doc_type: 'reference'
 ---
 
-## exponentialTimeDecayedSum {#exponentialtimedecayedsum}
+## exponentialTimeDecayedSum \{#exponentialtimedecayedsum\}
 
 時系列に対して、時間インデックス `t` における指数平滑移動平均値の合計を返します。
 

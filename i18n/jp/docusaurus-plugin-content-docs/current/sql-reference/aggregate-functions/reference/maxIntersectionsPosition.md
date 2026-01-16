@@ -5,7 +5,7 @@ title: 'maxIntersectionsPosition'
 doc_type: 'reference'
 ---
 
-# maxIntersectionsPosition {#maxintersectionsposition}
+# maxIntersectionsPosition \{#maxintersectionsposition\}
 
 [`maxIntersections` 関数](./maxIntersections.md) の出現位置を計算する集約関数です。
 

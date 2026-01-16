@@ -17,7 +17,7 @@ import ABSDataSource from '@site/i18n/ru/docusaurus-plugin-content-docs/current/
 
 <VerticalStepper type="numbered" headerLevel="h2">
 
-## Выберите источник данных {#1-select-the-data-source}
+## Выберите источник данных \{#1-select-the-data-source\}
 
 **1.** В ClickHouse Cloud в главном меню навигации выберите **Data sources** и нажмите **Create ClickPipe**.
 
@@ -27,7 +27,7 @@ import ABSDataSource from '@site/i18n/ru/docusaurus-plugin-content-docs/current/
 {props.provider === 'gcs' && <GCSSDataSource />}
 {props.provider === 'abs' && <ABSDataSource />}
 
-## Настройте подключение ClickPipe {#2-setup-your-clickpipe-connection}
+## Настройте подключение ClickPipe \{#2-setup-your-clickpipe-connection\}
 
 **1.** Чтобы настроить новый ClickPipe, необходимо указать параметры подключения и аутентификации к вашему сервису объектного хранилища.
 
@@ -37,7 +37,7 @@ import ABSDataSource from '@site/i18n/ru/docusaurus-plugin-content-docs/current/
 
 **2.** Нажмите **Incoming data**. ClickPipes получит метаданные из вашего бакета для следующего шага.
 
-## Выберите формат данных {#3-select-data-format}
+## Выберите формат данных \{#3-select-data-format\}
 
 В интерфейсе будет показан список файлов в указанном бакете.
 Выберите формат данных (в настоящее время поддерживается подмножество форматов ClickHouse) и укажите, хотите ли вы включить непрерывную ингестию.
@@ -45,7 +45,7 @@ import ABSDataSource from '@site/i18n/ru/docusaurus-plugin-content-docs/current/
 
 <Image img={cp_step3_object_storage} alt="Задать формат данных и топик" size="lg" border/>
 
-## Настройте таблицу, схему и параметры {#5-configure-table-schema-settings}
+## Настройте таблицу, схему и параметры \{#5-configure-table-schema-settings\}
 
 На следующем шаге вы можете выбрать, хотите ли вы выполнять приём данных в новую таблицу ClickHouse или использовать существующую.
 Следуйте инструкциям на экране, чтобы изменить имя таблицы, схему и параметры.
@@ -66,7 +66,7 @@ import ABSDataSource from '@site/i18n/ru/docusaurus-plugin-content-docs/current/
 Вы также можете сопоставлять [виртуальные столбцы](/sql-reference/table-functions/s3#virtual-columns), такие как `_path` или `_size`, с полями.
 :::
 
-## Настройте права доступа {#6-configure-permissions}
+## Настройте права доступа \{#6-configure-permissions\}
 
 Наконец, вы можете настроить права доступа для внутреннего пользователя ClickPipes.
 
@@ -76,7 +76,7 @@ import ABSDataSource from '@site/i18n/ru/docusaurus-plugin-content-docs/current/
 
 <Image img={cp_step5} alt="Права доступа" size="lg" border/>
 
-## Завершите настройку {#7-complete-setup}
+## Завершите настройку \{#7-complete-setup\}
 
 Нажав «Complete Setup», система зарегистрирует ваш ClickPipe, и вы сможете увидеть его в сводной таблице.
 

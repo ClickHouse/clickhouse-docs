@@ -15,7 +15,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 
-# Spark コネクタ {#spark-connector}
+# Spark コネクタ \{#spark-connector\}
 
 このコネクタは、高度なパーティショニングや述語プッシュダウンなど、ClickHouse 固有の最適化機能を活用して、
 クエリのパフォーマンスとデータ処理を向上させます。
@@ -32,13 +32,13 @@ Spark のデフォルトのカタログは `spark_catalog` であり、テーブ
 
 <TOCInline toc={toc}></TOCInline>
 
-## 要件 {#requirements}
+## 要件 \{#requirements\}
 
 - Java 8 または 17（Spark 4.0 では Java 17 以上が必須）
 - Scala 2.12 または 2.13（Spark 4.0 は Scala 2.13 のみをサポート）
 - Apache Spark 3.3、3.4、3.5、または 4.0
 
-## 互換性マトリックス {#compatibility-matrix}
+## 互換性マトリックス \{#compatibility-matrix\}
 
 | バージョン | 対応 Spark バージョン | ClickHouse JDBC バージョン |
 |---------|-----------------------|---------------------------|
@@ -53,7 +53,7 @@ Spark のデフォルトのカタログは `spark_catalog` であり、テーブ
 | 0.2.1   | Spark 3.2                 | 依存なし                 |
 | 0.1.2   | Spark 3.2                 | 依存なし                 |
 
-## インストールとセットアップ {#installation--setup}
+## インストールとセットアップ \{#installation--setup\}
 
 Spark と ClickHouse を統合するには、さまざまなプロジェクト構成に対応した複数のインストール方法が用意されています。
 ClickHouse Spark コネクタを、プロジェクトのビルドファイル（Maven の `pom.xml` や SBT の `build.sbt` など）に
@@ -62,7 +62,7 @@ ClickHouse Spark コネクタを、プロジェクトのビルドファイル（
 `--jars` フラグを使って Spark のオプションとして直接指定することもできます。
 いずれの方法を用いても、Spark 環境で ClickHouse コネクタを利用できるようになります。
 
-### 依存関係としてインポートする {#import-as-a-dependency}
+### 依存関係としてインポートする \{#import-as-a-dependency\}
 
 <Tabs>
 <TabItem value="Maven" label="Maven" default>
@@ -148,7 +148,7 @@ JAR ファイルを Spark クライアントノードにコピーしたくない
 </TabItem>
 </Tabs>
 
-### ライブラリをダウンロードする {#download-the-library}
+### ライブラリをダウンロードする \{#download-the-library\}
 
 バイナリ JAR のファイル名パターンは次のとおりです。
 
@@ -175,7 +175,7 @@ clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${versi
 [Compatibility Matrix](#compatibility-matrix) に従ってパッケージのバージョン互換性が取れていることを確認してください。
 :::
 
-## カタログを登録する（必須） {#register-the-catalog-required}
+## カタログを登録する（必須） \{#register-the-catalog-required\}
 
 ClickHouse のテーブルへアクセスするには、以下の設定で新しい Spark カタログを構成する必要があります。
 
@@ -224,7 +224,7 @@ spark.sql.catalog.clickhouse2.option.ssl     true
 
 :::
 
-## ClickHouse Cloud の設定 {#clickhouse-cloud-settings}
+## ClickHouse Cloud の設定 \{#clickhouse-cloud-settings\}
 
 [ClickHouse Cloud](https://clickhouse.com) に接続する際は、SSL を有効にし、適切な SSL モードを設定してください。例えば、次のように指定します。
 
@@ -233,7 +233,7 @@ spark.sql.catalog.clickhouse.option.ssl        true
 spark.sql.catalog.clickhouse.option.ssl_mode   NONE
 ```
 
-## データの読み込み {#read-data}
+## データの読み込み \{#read-data\}
 
 <Tabs groupId="spark_apis">
 <TabItem value="Java" label="Java" default>
@@ -340,7 +340,7 @@ df.show()
 </TabItem>
 </Tabs>
 
-## データを書き込む {#write-data}
+## データを書き込む \{#write-data\}
 
 <Tabs groupId="spark_apis">
   <TabItem value="Java" label="Java" default>
@@ -466,7 +466,7 @@ df.writeTo("clickhouse.default.example_table").append()
   </TabItem>
 </Tabs>
 
-## DDL 操作 {#ddl-operations}
+## DDL 操作 \{#ddl-operations\}
 
 Spark SQL を使用して ClickHouse インスタンスに対して DDL 操作を実行でき、そこで行ったすべての変更は即座に
 ClickHouse に永続化されます。
@@ -499,7 +499,7 @@ TBLPROPERTIES (
 
 上記の例は Spark SQL クエリを示しており、Java や Scala、PySpark、シェルなどの任意の API からアプリケーション内で実行できます。
 
-## 設定 {#configurations}
+## 設定 \{#configurations\}
 
 コネクタで変更可能な設定項目は次のとおりです。
 
@@ -529,11 +529,11 @@ TBLPROPERTIES (
 | spark.clickhouse.write.retryInterval               | 10秒                                              | 書き込み再試行間隔（秒）                                                                                                                                                                                                                                                           | 0.1.0 |
 | spark.clickhouse.write.retryableErrorCodes         | 241                                              | 書き込み処理が失敗した際に ClickHouse サーバーから返される再試行可能なエラーコード。                                                                                                                                                                                                                       | 0.1.0 |
 
-## サポートされているデータ型 {#supported-data-types}
+## サポートされているデータ型 \{#supported-data-types\}
 
 このセクションでは、Spark と ClickHouse 間のデータ型マッピングについて説明します。以下の表は、ClickHouse から Spark へデータを読み込む場合、および Spark から ClickHouse へデータを挿入する場合のデータ型変換に関するクイックリファレンスです。
 
-### ClickHouse から Spark へのデータの読み取り {#reading-data-from-clickhouse-into-spark}
+### ClickHouse から Spark へのデータの読み取り \{#reading-data-from-clickhouse-into-spark\}
 
 | ClickHouse データ型                                              | Spark データ型                 | サポート状況 | プリミティブ型 | 備考                                               |
 |-------------------------------------------------------------------|--------------------------------|-----------|--------------|----------------------------------------------------|
@@ -572,7 +572,7 @@ TBLPROPERTIES (
 | `AggregateFunction`                                               |                                | ❌         |              |                                                    |
 | `SimpleAggregateFunction`                                         |                                | ❌         |              |                                                    |
 
-### Spark から ClickHouse へのデータ挿入 {#inserting-data-from-spark-into-clickhouse}
+### Spark から ClickHouse へのデータ挿入 \{#inserting-data-from-spark-into-clickhouse\}
 
 | Spark Data Type                     | ClickHouse Data Type | サポート有無 | プリミティブ型か | 備考                                   |
 |-------------------------------------|----------------------|-------------|------------------|----------------------------------------|
@@ -596,7 +596,7 @@ TBLPROPERTIES (
 | `Object`                            |                      | ❌          |                  |                                        |
 | `Nested`                            |                      | ❌          |                  |                                        |
 
-## 貢献とサポート {#contributing-and-support}
+## 貢献とサポート \{#contributing-and-support\}
 
 プロジェクトへの貢献や問題の報告をご希望の場合は、ぜひご協力ください。
 [GitHub リポジトリ](https://github.com/ClickHouse/spark-clickhouse-connector)にアクセスして、issue の作成、改善提案、

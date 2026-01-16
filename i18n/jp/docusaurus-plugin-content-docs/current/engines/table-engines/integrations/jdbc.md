@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# JDBC テーブルエンジン {#jdbc-table-engine}
+# JDBC テーブルエンジン \{#jdbc-table-engine\}
 
 <CloudNotSupportedBadge/>
 
@@ -24,7 +24,7 @@ JDBC 接続を実現するために、ClickHouse はデーモンとして実行�
 
 このエンジンは [Nullable](../../../sql-reference/data-types/nullable.md) データ型をサポートします。
 
-## テーブルを作成する {#creating-a-table}
+## テーブルを作成する \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -47,7 +47,7 @@ ENGINE = JDBC(datasource, external_database, external_table)
 
 * これらのパラメータは、[名前付きコレクション](operations/named-collections.md)を使用して指定することもできます。
 
-## 使用例 {#usage-example}
+## 使用例 \{#usage-example\}
 
 コンソールクライアントから MySQL サーバーに直接接続してテーブルを作成します。
 
@@ -102,6 +102,6 @@ SELECT toInt32(number), toFloat32(number * 1.0)
 FROM system.numbers
 ```
 
-## 関連項目 {#see-also}
+## 関連項目 \{#see-also\}
 
 - [JDBCテーブル関数](../../../sql-reference/table-functions/jdbc.md)

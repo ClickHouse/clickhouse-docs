@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Easypanel への ClickHouse のデプロイ {#deploying-clickhouse-on-easypanel}
+# Easypanel への ClickHouse のデプロイ \{#deploying-clickhouse-on-easypanel\}
 
 <CommunityMaintainedBadge/>
 
@@ -17,7 +17,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 [![Deploy to Easypanel](https://easypanel.io/img/deploy-on-easypanel-40.svg)](https://easypanel.io/docs/templates/clickhouse)
 
-## 手順 {#instructions}
+## 手順 \{#instructions\}
 
 1. クラウドプロバイダー上で Ubuntu が動作する VM を作成します。
 2. Web サイトの手順に従って Easypanel をインストールします。

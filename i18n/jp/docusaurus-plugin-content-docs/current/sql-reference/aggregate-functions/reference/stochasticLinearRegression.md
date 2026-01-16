@@ -5,11 +5,11 @@ title: 'stochasticLinearRegression'
 doc_type: 'reference'
 ---
 
-# stochasticLinearRegression {#agg_functions_stochasticlinearregression_parameters}
+# stochasticLinearRegression \{#agg_functions_stochasticlinearregression_parameters\}
 
 この関数は確率的線形回帰を実装します。学習率、L2 正則化係数、ミニバッチサイズのパラメータをカスタマイズでき、重み更新のための複数の手法（[Adam](https://en.wikipedia.org/wiki/Stochastic_gradient_descent#Adam)（デフォルト）、[simple SGD](https://en.wikipedia.org/wiki/Stochastic_gradient_descent)、[Momentum](https://en.wikipedia.org/wiki/Stochastic_gradient_descent#Momentum)、[Nesterov](https://mipt.ru/upload/medialibrary/d7e/41-91.pdf)）をサポートします。
 
-### パラメータ {#parameters}
+### パラメータ \{#parameters\}
 
 カスタマイズ可能なパラメータは 4 つあります。これらは関数に順番に渡されますが、4 つすべてを渡す必要はありません。指定されていないものにはデフォルト値が使用されます。ただし、より良いモデルを得るには、いくつかのパラメータ調整が必要です。
 
@@ -23,7 +23,7 @@ stochasticLinearRegression(0.00001, 0.1, 15, 'Adam')
 4. `method for updating weights` は次のとおりです: `Adam`（デフォルト）、`SGD`、`Momentum`、`Nesterov`。`Momentum` と `Nesterov` は、計算量とメモリをやや多く必要としますが、確率的勾配降下法の収束速度と安定性の観点から有用な場合があります。
 
 
-### 使用方法 {#usage}
+### 使用方法 \{#usage\}
 
 `stochasticLinearRegression` は、モデルのフィッティングと新しいデータへの予測という 2 つのステップで使用します。モデルをフィットさせ、その状態を後で使用できるように保存するために、`-State` コンビネータを使用します。これは状態（例: モデルの重み）を保存します。
 予測を行うには、[evalMLMethod](/sql-reference/functions/machine-learning-functions#evalmlmethod) 関数を使用します。この関数は、状態と予測対象の特徴量を引数として受け取ります。
@@ -64,7 +64,7 @@ evalMLMethod(model, param1, param2) FROM test_data
 `test_data` は `train_data` と同様の構造を持つテーブルですが、目的変数を含まない場合があります。
 
 
-### 注意事項 {#notes}
+### 注意事項 \{#notes\}
 
 1. 2つのモデルをマージするには、次のようなクエリを作成できます:
    `sql  SELECT state1 + state2 FROM your_models`

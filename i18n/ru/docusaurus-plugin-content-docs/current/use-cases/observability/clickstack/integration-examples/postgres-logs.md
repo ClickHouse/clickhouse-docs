@@ -19,7 +19,7 @@ import finish_import from '@site/static/images/clickstack/postgres/import-logs-d
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# Мониторинг логов PostgreSQL с помощью ClickStack {#postgres-logs-clickstack}
+# Мониторинг логов PostgreSQL с помощью ClickStack \{#postgres-logs-clickstack\}
 
 :::note[Кратко]
 В этом руководстве показано, как настроить мониторинг PostgreSQL с помощью ClickStack, настроив OTel collector для приёма серверных логов PostgreSQL. Вы узнаете, как:
@@ -34,13 +34,13 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 Оценочное время: 10–15 минут
 :::
 
-## Интеграция с существующим PostgreSQL {#existing-postgres}
+## Интеграция с существующим PostgreSQL \{#existing-postgres\}
 
 В этом разделе описывается настройка вашей существующей инсталляции PostgreSQL для отправки логов в ClickStack путём изменения конфигурации OTel collector в ClickStack.
 
 Если вы хотите протестировать интеграцию логов PostgreSQL до настройки вашей собственной инсталляции, вы можете воспользоваться нашей преднастроенной средой и примером данных в разделе ["Demo dataset"](/use-cases/observability/clickstack/integrations/postgresql-logs#demo-dataset).
 
-##### Предварительные требования {#prerequisites}
+##### Предварительные требования \{#prerequisites\}
 
 - Запущенный экземпляр ClickStack
 - Установленный PostgreSQL версии 9.6 или новее
@@ -225,7 +225,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### Загрузка демонстрационного набора данных {#download-sample}
+#### Загрузка демонстрационного набора данных \{#download-sample\}
 
 Загрузите пример файла лога:
 
@@ -233,7 +233,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgresql.log
 ```
 
-#### Создание тестовой конфигурации коллектора {#test-config}
+#### Создание тестовой конфигурации коллектора \{#test-config\}
 
 Создайте файл с именем `postgres-logs-demo.yaml` со следующей конфигурацией:
 
@@ -317,7 +317,7 @@ HyperDX отображает временные метки в локальном
 
 #### <TrackedLink href={useBaseUrl('/examples/postgres-logs-dashboard.json')} download="postgresql-logs-dashboard.json" eventName="docs.postgres_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда {#download}
 
-#### Импорт готового дашборда {#import-dashboard}
+#### Импорт готового дашборда \{#import-dashboard\}
 
 1. Откройте HyperDX и перейдите в раздел Dashboards
 2. Нажмите **Import Dashboard** в правом верхнем углу в меню с многоточием
@@ -328,7 +328,7 @@ HyperDX отображает временные метки в локальном
 
 <Image img={finish_import} alt="Завершение импорта"/>
 
-#### Просмотр дашборда {#created-dashboard}
+#### Просмотр дашборда \{#created-dashboard\}
 
 Дашборд будет создан со всеми преднастроенными визуализациями:
 

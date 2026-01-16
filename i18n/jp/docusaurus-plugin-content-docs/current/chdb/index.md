@@ -10,12 +10,12 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import dfBench from '@site/static/images/chdb/df_bench.png';
 
-# chDB {#chdb}
+# chDB \{#chdb\}
 
 chDB は、[ClickHouse](https://github.com/clickhouse/clickhouse) v25.8.2.1 を基盤とした、高速なインプロセス SQL OLAP エンジンです。
 ClickHouse サーバーに接続することなく、任意のプログラミング言語から ClickHouse のパワーを利用したい場合に使用できます。
 
-## 主な機能 {#key-features}
+## 主な機能 \{#key-features\}
 
 - **インプロセス SQL OLAP エンジン** - ClickHouse を基盤としており、ClickHouse サーバーのインストールは不要
 - **複数のデータ形式** - Parquet、CSV、JSON、Arrow、ORC などに加え、[70 以上の形式](/interfaces/formats) での入出力をサポート
@@ -23,7 +23,7 @@ ClickHouse サーバーに接続することなく、任意のプログラミン
 - **豊富な Python エコシステムとの統合** - Pandas、Arrow、DB API 2.0 をネイティブサポートし、既存のデータサイエンスワークフローにシームレスに組み込める
 - **依存関係ゼロ** - 外部データベースのインストールは不要
 
-## chDB はどの言語をサポートしていますか？ {#what-languages-are-supported-by-chdb}
+## chDB はどの言語をサポートしていますか？ \{#what-languages-are-supported-by-chdb\}
 
 chDB では次の言語バインディングを利用できます。
 
@@ -34,7 +34,7 @@ chDB では次の言語バインディングを利用できます。
 * [Bun](install/bun.md)
 * [C および C++](install/c.md)
 
-## どのように始めればよいですか？ {#how-do-i-get-started}
+## どのように始めればよいですか？ \{#how-do-i-get-started\}
 
 * [Go](install/go.md)、[Rust](install/rust.md)、[NodeJS](install/nodejs.md)、[Bun](install/bun.md)、または [C および C++](install/c.md) を使用している場合は、対応する言語ページを参照してください。
 * Python を使用している場合は、[Getting Started 開発者ガイド](getting-started.md) または [chDB オンデマンドコース](https://learn.clickhouse.com/user_catalog_class/show/1901178) を参照してください。以下のような一般的なタスクを実行する方法を説明するガイドも用意されています：
@@ -46,7 +46,7 @@ chDB では次の言語バインディングを利用できます。
   * [リモート ClickHouse をクエリする](guides/query-remote-clickhouse.md)
   * [clickhouse-local データベースの使用](guides/clickhouse-local.md)
 
-## 紹介動画 {#an-introductory-video}
+## 紹介動画 \{#an-introductory-video\}
 
 ClickHouse のオリジナル開発者である Alexey Milovidov が chDB プロジェクトについて簡潔に紹介する動画をご覧いただけます。
 
@@ -54,7 +54,7 @@ ClickHouse のオリジナル開発者である Alexey Milovidov が chDB プロ
 <iframe width="560" height="315" src="https://www.youtube.com/embed/cuf_hYn7dqU?si=SzUm7RW4Ae5-YwFo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## パフォーマンスベンチマーク {#performance-benchmarks}
+## パフォーマンスベンチマーク \{#performance-benchmarks\}
 
 chDB は、さまざまなユースケースにおいて卓越したパフォーマンスを発揮します。
 
@@ -64,7 +64,7 @@ chDB は、さまざまなユースケースにおいて卓越したパフォー
 
 <Image img={dfBench} alt='DataFrame benchmark results' size="md"/>
 
-## chDB について {#about-chdb}
+## chDB について \{#about-chdb\}
 
 - chDB プロジェクト誕生の経緯については [ブログ記事](https://clickhouse.com/blog/chdb-embedded-clickhouse-rocket-engine-on-a-bicycle) を参照してください
 - chDB とそのユースケースについては [ブログ記事](https://clickhouse.com/blog/welcome-chdb-to-clickhouse) を参照してください
@@ -72,6 +72,6 @@ chDB は、さまざまなユースケースにおいて卓越したパフォー
 - ブラウザ上で [codapi のサンプル](https://antonz.org/trying-chdb/) を使って chDB を試してください
 - さらに多くのサンプルについては https://github.com/chdb-io/chdb/tree/main/examples を参照してください
 
-## ライセンス {#license}
+## ライセンス \{#license\}
 
 chDB は Apache License 2.0 のもとで提供されています。詳細については [LICENSE](https://github.com/chdb-io/chdb/blob/main/LICENSE.txt) を参照してください。
