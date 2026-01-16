@@ -5,7 +5,7 @@ title: 'rankCorr'
 doc_type: 'reference'
 ---
 
-# rankCorr {#rankcorr}
+# rankCorr \{#rankcorr\}
 
 Вычисляет коэффициент ранговой корреляции.
 

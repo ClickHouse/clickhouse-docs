@@ -10,7 +10,7 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Управление статистикой столбцов {#manipulating-column-statistics}
+# Управление статистикой столбцов \{#manipulating-column-statistics\}
 
 <ExperimentalBadge />
 
@@ -32,7 +32,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 Кроме того, они реплицируются, синхронизируя метаданные статистики через ZooKeeper.
 
-## Пример: {#example}
+## Пример: \{#example\}
 
 Добавление двух типов статистики к двум столбцам:
 

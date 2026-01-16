@@ -16,9 +16,9 @@ import compute_8 from '@site/static/images/cloud/reference/compute-compute-8.png
 import Image from '@theme/IdealImage';
 
 
-# 仓库 {#warehouses}
+# 仓库 \{#warehouses\}
 
-## 什么是计算-计算分离？ {#what-is-compute-compute-separation}
+## 什么是计算-计算分离？ \{#what-is-compute-compute-separation\}
 
 计算-计算分离适用于 Scale 和 Enterprise 层级。
 
@@ -49,7 +49,7 @@ _图 2 - ClickHouse Cloud 中的计算分离_
 
 你可以创建与现有服务共享同一数据的额外服务，或者从零开始创建一个包含多个共享同一数据的服务的新部署。
 
-## 什么是仓库？ {#what-is-a-warehouse}
+## 什么是仓库？ \{#what-is-a-warehouse\}
 
 在 ClickHouse Cloud 中，_仓库（warehouse）_ 是共享同一数据的一组服务。
 每个仓库都有一个主服务（最先创建的服务）和一个或多个次级服务。例如，在下面的截图中，您可以看到一个名为 "DWH Prod" 的仓库，其中包含两个服务：
@@ -71,9 +71,9 @@ _图 3 - 仓库示例_
 
 您可以按照所属的仓库对服务进行排序。
 
-## 访问控制 {#access-controls}
+## 访问控制 \{#access-controls\}
 
-### 数据库凭证 {#database-credentials}
+### 数据库凭证 \{#database-credentials\}
 
 由于同一仓库中的所有服务共享同一组表，它们也共享对这些服务的访问控制。这意味着，在 Service 1 中创建的所有数据库用户，也能够以相同的权限（对表、视图等的授权）使用 Service 2，反之亦然。用户会为每个服务使用不同的访问端点（endpoint），但会使用相同的用户名和密码。换句话说，_在使用同一存储的服务之间，用户是共享的：_
 
@@ -83,7 +83,7 @@ _图 3 - 仓库示例_
 
 _图 4 - 用户 Alice 在 Service 1 中创建，但她可以使用相同的凭证访问所有共享同一数据的服务_
 
-### 网络访问控制 {#network-access-control}
+### 网络访问控制 \{#network-access-control\}
 
 通常需要限制特定服务被其他应用或临时用户使用。可以通过网络限制来实现这一点，方式类似于目前为常规服务所进行的配置（在 ClickHouse Cloud 控制台中，进入指定服务的服务页，在 **Settings** 中进行配置）。
 
@@ -95,7 +95,7 @@ _图 4 - 用户 Alice 在 Service 1 中创建，但她可以使用相同的凭�
 
 _图 5 - 由于网络设置，Alice 被限制访问 Service 2_
 
-### 只读 vs 读写 {#read-vs-read-write}
+### 只读 vs 读写 \{#read-vs-read-write\}
 
 有时需要将写入权限限制到某个特定服务，只允许仓库中一部分服务执行写入操作。这可以在创建第二个及其后的服务时进行设置（第一个服务应始终为读写）：
 
@@ -110,7 +110,7 @@ _图 6 - 仓库中的读写服务和只读服务_
 2. 可刷新materialized view **仅**在仓库中的读写（RW）服务上运行，**不会**在只读（RO）服务上执行。
 :::
 
-## 扩展 {#scaling}
+## 扩展 \{#scaling\}
 
 仓库中的每个服务都可以根据您的工作负载在以下方面进行调整：
 - 节点（副本）数量。主服务（在该仓库中首先创建的服务）应具有 2 个或更多节点。每个次级服务可以有 1 个或更多节点。
@@ -118,11 +118,11 @@ _图 6 - 仓库中的读写服务和只读服务_
 - 服务是否应自动扩展
 - 服务在空闲时是否应被停用（不适用于组中的第一个服务——请参阅 **限制** 部分）
 
-## 行为变化 {#changes-in-behavior}
+## 行为变化 \{#changes-in-behavior\}
 
 一旦为某个服务启用了 compute-compute（已创建至少一个次级服务），使用 `default` 集群名称调用 `clusterAllReplicas()` 函数时，将只会使用调用该函数的服务中的副本。也就是说，如果有两个服务连接到同一数据集，并且从服务 1 调用了 `clusterAllReplicas(default, system, processes)`，则只会显示运行在服务 1 上的进程。如有需要，仍然可以调用 `clusterAllReplicas('all_groups.default', system, processes)` 来访问所有副本。
 
-## 限制 {#limitations}
+## 限制 \{#limitations\}
 
 1. **主服务必须始终保持运行且不能被休眠（该限制会在 GA 正式发布后的一段时间内移除）。** 在私有预览期间以及 GA 之后的一段时间内，主服务（通常是你希望通过添加其他服务来扩展的现有服务）必须始终保持运行，并且会禁用休眠设置。如果至少存在一个次级服务，你将无法停止或休眠主服务。一旦所有次级服务都被移除，你就可以再次停止或休眠原始服务。
 
@@ -144,20 +144,20 @@ SETTINGS distributed_ddl_task_timeout=0
 7. **当前每个 warehouse 最多支持 5 个服务（软限制）。** 如需在单个 warehouse 中配置超过 5 个服务，请联系支持团队。
 
 
-## 定价 {#pricing}
+## 定价 \{#pricing\}
 
 在同一个仓库（主服务和次服务）中，所有服务的计算费用相同。存储费用只计费一次——包含在第一个（原始）服务中。
 
 请参阅 [定价](https://clickhouse.com/pricing) 页面上的价格计算器，它可以根据您的工作负载大小和所选级别帮助估算成本。
 
-## 备份 {#backups}
+## 备份 \{#backups\}
 
 - 由于同一仓库中的所有服务共享同一存储，因此只在主（初始）服务上执行备份。通过这种方式，可以备份该仓库中所有服务的数据。
 - 如果你从某个仓库的主服务还原备份，该备份会被还原到一个全新的服务，而不是还原到与现有仓库关联的服务上。还原完成后，你可以立即为这个新服务添加更多服务。
 
-## 使用仓库 {#using-warehouses}
+## 使用仓库 \{#using-warehouses\}
 
-### 创建仓库 {#creating-a-warehouse}
+### 创建仓库 \{#creating-a-warehouse\}
 
 要创建一个仓库，需要创建第二个服务，以与现有服务共享数据。可以通过单击任一现有服务上的加号来完成此操作：
 
@@ -169,14 +169,14 @@ _图 7 - 单击加号以在仓库中创建新服务_
 
 在服务创建界面中，原始服务会在下拉列表中被选为新服务的数据来源。创建完成后，这两个服务将共同组成一个仓库。
 
-### 重命名仓库 {#renaming-a-warehouse}
+### 重命名仓库 \{#renaming-a-warehouse\}
 
 重命名仓库有两种方法：
 
 - 在服务页面右上角选择“Sort by warehouse”，然后点击仓库名称旁边的铅笔图标；
 - 点击任一服务上的仓库名称，并在弹出的界面中重命名仓库。
 
-### 删除仓库 {#deleting-a-warehouse}
+### 删除仓库 \{#deleting-a-warehouse\}
 
 删除仓库意味着删除所有计算服务以及其中的数据（表、视图、用户等）。此操作无法撤销。
 只能通过删除第一个创建的服务来删除一个仓库。执行步骤如下：

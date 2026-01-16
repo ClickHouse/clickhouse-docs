@@ -8,7 +8,7 @@ hide_title: false
 doc_type: 'guide'
 ---
 
-## ソースからコンパイルする {#compile-from-source}
+## ソースからコンパイルする \{#compile-from-source\}
 
 ClickHouse を手動でコンパイルするには、[Linux](/development/build.md) または [macOS](/development/build-osx.md) 向けの手順に従ってください。
 
@@ -29,7 +29,7 @@ Server: <build_directory>/programs/clickhouse-server
 Gentoo では、`emerge clickhouse` を実行するだけで、ソースから ClickHouse をインストールできます。
 
 
-## CI で生成されたバイナリをインストールする {#install-a-ci-generated-binary}
+## CI で生成されたバイナリをインストールする \{#install-a-ci-generated-binary\}
 
 ClickHouse の継続的インテグレーション (CI) 基盤は、[ClickHouse
 リポジトリ](https://github.com/clickhouse/clickhouse/) の各コミットごとに、例えば [sanitized](https://github.com/google/sanitizers) ビルド、最適化なしの (Debug)

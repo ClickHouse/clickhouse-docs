@@ -5,7 +5,7 @@ title: 'quantiles 関数'
 doc_type: 'reference'
 ---
 
-# quantiles {#quantiles}
+# quantiles \{#quantiles\}
 
 構文: `quantiles(level1, level2, ...)(x)`
 

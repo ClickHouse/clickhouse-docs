@@ -14,7 +14,7 @@ import supabase_commands from '@site/static/images/integrations/data-ingestion/c
 import supabase_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-connection-details.jpg'
 import Image from '@theme/IdealImage';
 
-# Руководство по настройке источника Supabase {#supabase-source-setup-guide}
+# Руководство по настройке источника Supabase \{#supabase-source-setup-guide\}
 
 Это руководство по настройке Supabase Postgres для использования в ClickPipes.
 
@@ -24,7 +24,7 @@ ClickPipes нативно поддерживает Supabase через IPv6 дл
 
 :::
 
-## Создание пользователя с правами и слотом репликации {#creating-a-user-with-permissions-and-replication-slot}
+## Создание пользователя с правами и слотом репликации \{#creating-a-user-with-permissions-and-replication-slot\}
 
 Подключитесь к вашему инстансу Supabase от имени пользователя с правами администратора и выполните следующие команды:
 
@@ -68,7 +68,7 @@ ClickPipes нативно поддерживает Supabase через IPv6 дл
 
    Publication `clickpipes` будет содержать набор событий изменений, сгенерированных из указанных таблиц, и позже будет использоваться для приёма потока репликации.
 
-## Увеличение `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
+## Увеличение `max_slot_wal_keep_size` \{#increase-max_slot_wal_keep_size\}
 
 :::warning
 
@@ -80,7 +80,7 @@ ClickPipes нативно поддерживает Supabase через IPv6 дл
 
 :::
 
-## Параметры подключения для использования с Supabase {#connection-details-to-use-for-supabase}
+## Параметры подключения для использования с Supabase \{#connection-details-to-use-for-supabase\}
 
 Перейдите в `Project Settings` вашего проекта Supabase, затем в `Database` (в разделе `Configuration`).
 
@@ -94,7 +94,7 @@ ClickPipes нативно поддерживает Supabase через IPv6 дл
 
 :::
 
-## Примечание по RLS {#note-on-rls}
+## Примечание по RLS \{#note-on-rls\}
 
 К пользователю ClickPipes Postgres не должны применяться политики RLS, так как это может привести к потере данных. Вы можете отключить политики RLS для этого пользователя, выполнив следующую команду:
 
@@ -103,7 +103,7 @@ ALTER USER clickpipes_user BYPASSRLS;
 ```
 
 
-## Что дальше? {#whats-next}
+## Что дальше? \{#whats-next\}
 
 Теперь вы можете [создать ClickPipe](../index.md) и начать приём данных из экземпляра Postgres в ClickHouse Cloud.
 Обязательно запишите параметры подключения, которые вы использовали при настройке экземпляра Postgres, так как они понадобятся вам при создании ClickPipe.

@@ -5,7 +5,7 @@ title: 'anyHeavy'
 doc_type: 'reference'
 ---
 
-# anyHeavy {#anyheavy}
+# anyHeavy \{#anyheavy\}
 
 [heavy hitters](https://doi.org/10.1145/762471.762473) アルゴリズムを使用して、高頻度に出現する値を選択します。クエリの各実行スレッドにおいて、ケースの過半数で出現する値がある場合、その値が返されます。通常、結果は非決定的です。
 

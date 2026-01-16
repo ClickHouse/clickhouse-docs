@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['SQL 语法', 'ANSI SQL']
 ---
 
-# ClickHouse 支持哪些 SQL 语法？ {#what-sql-syntax-does-clickhouse-support}
+# ClickHouse 支持哪些 SQL 语法？ \{#what-sql-syntax-does-clickhouse-support\}
 
 ClickHouse 对 SQL 语法提供了完整支持，包括以下特性：
 

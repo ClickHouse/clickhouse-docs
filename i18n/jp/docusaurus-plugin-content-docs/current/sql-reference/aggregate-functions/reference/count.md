@@ -5,7 +5,7 @@ title: 'count'
 doc_type: 'reference'
 ---
 
-# count {#count}
+# count \{#count\}
 
 行数または NULL ではない値の数をカウントします。
 

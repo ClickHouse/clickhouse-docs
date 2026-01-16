@@ -26,7 +26,7 @@ import edit_connection from '@site/static/images/use-cases/observability/edit_co
 得益于预构建的 Docker 镜像，入门 **ClickStack** 十分简单。这些镜像基于官方的 ClickHouse Debian 软件包构建，并提供多个发行版本，以满足不同的使用场景。
 
 
-## 本地部署 {#local-deployment}
+## 本地部署 \{#local-deployment\}
 
 最简单的选项是使用包含该栈所有核心组件的**单镜像版本**：
 
@@ -38,7 +38,7 @@ import edit_connection from '@site/static/images/use-cases/observability/edit_co
 
 <VerticalStepper headerLevel="h3">
 
-### 使用 Docker 部署栈 {#deploy-stack-with-docker}
+### 使用 Docker 部署栈 \{#deploy-stack-with-docker\}
 
 下面的命令会运行一个 OpenTelemetry collector（监听端口 4317 和 4318）以及 HyperDX UI（监听端口 8080）。
 
@@ -68,7 +68,7 @@ docker run \
 ```
 :::
 
-### 访问 HyperDX UI {#navigate-to-hyperdx-ui}
+### 访问 HyperDX UI \{#navigate-to-hyperdx-ui\}
 
 访问 [http://localhost:8080](http://localhost:8080) 打开 HyperDX UI。
 
@@ -78,7 +78,7 @@ docker run \
 
 HyperDX 会自动连接到本地集群，并为日志、追踪、指标和会话创建数据源，使你可以立即开始探索产品。
 
-### 探索产品 {#explore-the-product}
+### 探索产品 \{#explore-the-product\}
 
 在栈部署完成后，可以尝试我们的任一示例数据集。
 
@@ -94,17 +94,17 @@ HyperDX 会自动连接到本地集群，并为日志、追踪、指标和会话
 
 </VerticalStepper>
 
-## 使用 ClickHouse Cloud 部署 {#deploy-with-clickhouse-cloud}
+## 使用 ClickHouse Cloud 部署 \{#deploy-with-clickhouse-cloud\}
 
 你可以将 ClickStack 部署到 ClickHouse Cloud，享受完全托管且安全的后端，同时仍然对摄取、schema 和可观测性工作流保持完全控制。
 
 <VerticalStepper headerLevel="h3">
 
-### 创建 ClickHouse Cloud 服务 {#create-a-service}
+### 创建 ClickHouse Cloud 服务 \{#create-a-service\}
 
 按照 [ClickHouse Cloud 入门指南](/getting-started/quick-start/cloud#1-create-a-clickhouse-service)创建服务。
 
-### 复制连接详情 {#copy-cloud-connection-details}
+### 复制连接详情 \{#copy-cloud-connection-details\}
 
 要找到 HyperDX 的连接详情，在 ClickHouse Cloud 控制台中点击侧边栏中的 <b>Connect</b> 按钮。 
 
@@ -116,7 +116,7 @@ HyperDX 会自动连接到本地集群，并为日志、追踪、指标和会话
 本示例将使用 `default` 用户连接 HyperDX，但我们建议在[上线生产环境时](/use-cases/observability/clickstack/production#create-a-user)创建一个专用用户。
 :::
 
-### 使用 docker 部署 {#deploy-with-docker}
+### 使用 docker 部署 \{#deploy-with-docker\}
 
 打开终端并导出上面复制的凭据：
 
@@ -134,7 +134,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 这会暴露一个 OTel collector（端口 4317 和 4318），以及 HyperDX UI（端口 8080）。
 
-### 访问 HyperDX UI {#navigate-to-hyperdx-ui-cloud}
+### 访问 HyperDX UI \{#navigate-to-hyperdx-ui-cloud\}
 
 访问 [http://localhost:8080](http://localhost:8080) 进入 HyperDX UI。
 
@@ -142,7 +142,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 <Image img={hyperdx_login} alt="HyperDX 登录" size="lg"/>
 
-### 创建 ClickHouse Cloud 连接 {#create-a-cloud-connection}
+### 创建 ClickHouse Cloud 连接 \{#create-a-cloud-connection\}
 
 进入 `Team Settings` 并点击 `Edit` 以编辑 `Local Connection`：
 
@@ -152,7 +152,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 <Image img={edit_cloud_connection} alt="创建 Cloud 连接" size="lg"/>
 
-### 体验产品 {#explore-the-product-cloud}
+### 体验产品 \{#explore-the-product-cloud\}
 
 在完成整个 ClickStack 部署后，可以尝试我们的其中一个示例数据集。
 
@@ -161,7 +161,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 </VerticalStepper>
 
-## 本地模式 {#local-mode}
+## 本地模式 \{#local-mode\}
 
 本地模式是一种无需身份验证即可部署 HyperDX 的方式。
 
@@ -169,15 +169,15 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 此模式适用于快速测试、开发、演示，以及在不需要身份验证和设置持久化的调试等场景。
 
-### 托管版 {#hosted-version}
+### 托管版 \{#hosted-version\}
 
 可在本地模式下使用托管版 HyperDX，访问地址为 [play.hyperdx.io](https://play.hyperdx.io)。
 
-### 自托管版本 {#self-hosted-version}
+### 自托管版本 \{#self-hosted-version\}
 
 <VerticalStepper headerLevel="h3">
 
-### 使用 Docker 运行 {#run-local-with-docker}
+### 使用 Docker 运行 \{#run-local-with-docker\}
 
 自托管本地模式镜像预先配置了 OpenTelemetry collector 和 ClickHouse server，可方便地从应用程序中采集遥测数据，并在 HyperDX 中进行可视化，几乎无需额外配置。要开始使用自托管版本，只需运行 Docker 容器并映射合适的端口：
 
@@ -187,7 +187,7 @@ docker run -p 8080:8080 clickhouse/clickstack-local:latest
 
 系统不会提示你创建用户，因为本地模式不包含认证功能。
 
-### 完整连接凭据 {#complete-connection-credentials}
+### 完整连接凭据 \{#complete-connection-credentials\}
 
 要连接到你自己的 **外部 ClickHouse 集群**，可以手动输入连接凭据。
 

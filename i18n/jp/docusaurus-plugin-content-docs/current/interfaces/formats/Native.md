@@ -15,7 +15,7 @@ doc_type: 'reference'
 
 
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 `Native` フォーマットは、カラムを行に変換しないという意味で真の「カラム指向」であり、ClickHouse において最も効率的なフォーマットです。  
 
@@ -30,8 +30,8 @@ doc_type: 'reference'
 
 
 
-## 使用例 {#example-usage}
+## 使用例 \{#example-usage\}
 
 
 
-## 書式設定 {#format-settings}
+## 書式設定 \{#format-settings\}

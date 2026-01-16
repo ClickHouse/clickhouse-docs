@@ -5,11 +5,11 @@ title: 'stochasticLinearRegression'
 doc_type: 'reference'
 ---
 
-# stochasticLinearRegression {#agg_functions_stochasticlinearregression_parameters}
+# stochasticLinearRegression \{#agg_functions_stochasticlinearregression_parameters\}
 
 该函数实现了随机线性回归。它支持通过参数自定义学习率、L2 正则化系数和小批量大小，并提供多种用于更新权重的算法（默认使用 [Adam](https://en.wikipedia.org/wiki/Stochastic_gradient_descent#Adam)，以及 [simple SGD](https://en.wikipedia.org/wiki/Stochastic_gradient_descent)、[Momentum](https://en.wikipedia.org/wiki/Stochastic_gradient_descent#Momentum) 和 [Nesterov](https://mipt.ru/upload/medialibrary/d7e/41-91.pdf)）。
 
-### 参数 {#parameters}
+### 参数 \{#parameters\}
 
 共有 4 个可配置参数。它们按顺序传递给函数，但不需要传入全部四个参数——未指定的将使用默认值，不过要得到效果较好的模型通常需要对部分参数进行调优。
 
@@ -23,7 +23,7 @@ stochasticLinearRegression(0.00001, 0.1, 15, 'Adam')
 4. `method for updating weights` 的可选值为：`Adam`（默认）、`SGD`、`Momentum` 和 `Nesterov`。`Momentum` 和 `Nesterov` 需要稍多的计算和内存，但在随机梯度方法的收敛速度和稳定性方面通常更有帮助。
 
 
-### 用法 {#usage}
+### 用法 \{#usage\}
 
 `stochasticLinearRegression` 的使用分为两个步骤：拟合模型和对新数据进行预测。为了拟合模型并保存其状态以供后续使用，我们使用 `-State` 组合器，它会保存状态（例如模型权重）。
 要进行预测，我们使用函数 [evalMLMethod](/sql-reference/functions/machine-learning-functions#evalmlmethod)，该函数以状态和要预测的特征作为参数。
@@ -64,7 +64,7 @@ evalMLMethod(model, param1, param2) FROM test_data
 `test_data` 是一个与 `train_data` 类似的表，但可能不包含目标值。
 
 
-### 注意事项 {#notes}
+### 注意事项 \{#notes\}
 
 1. 要合并两个模型，用户可以创建如下查询：
    `sql  SELECT state1 + state2 FROM your_models`

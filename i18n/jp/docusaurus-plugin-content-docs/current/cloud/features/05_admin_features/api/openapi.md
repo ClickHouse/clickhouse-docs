@@ -14,7 +14,7 @@ import image_04 from '@site/static/images/cloud/manage/openapi4.png';
 import image_05 from '@site/static/images/cloud/manage/openapi5.png';
 import Image from '@theme/IdealImage';
 
-# API キーの管理 {#managing-api-keys}
+# API キーの管理 \{#managing-api-keys\}
 
 ClickHouse Cloud は OpenAPI を利用した API を提供しており、アカウントおよびサービスをプログラムから管理できます。
 
@@ -67,7 +67,7 @@ API キーの削除は元に戻せない操作です。そのキーを使用し�
 
 <Image img={image_05} size="md" alt="API キー管理ページ" border />
 
-## エンドポイント {#endpoints}
+## エンドポイント \{#endpoints\}
 
 エンドポイントの詳細については、[API リファレンス](https://clickhouse.com/docs/cloud/manage/api/swagger) を参照してください。
 ベース URL `https://api.clickhouse.cloud/v1` を使用し、API キーと API シークレットを指定してください。

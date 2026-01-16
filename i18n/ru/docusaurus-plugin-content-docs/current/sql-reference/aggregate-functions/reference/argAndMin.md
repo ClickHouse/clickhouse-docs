@@ -5,7 +5,7 @@ title: 'argAndMin'
 doc_type: 'reference'
 ---
 
-# argAndMin {#argandmin}
+# argAndMin \{#argandmin\}
 
 Вычисляет значения `arg` и `val` для минимального значения `val`. Если существует несколько строк с одинаковым минимальным значением `val`, выбор возвращаемых связанных `arg` и `val` является недетерминированным.
 Обе части — `arg` и `min` — ведут себя как [агрегатные функции](/sql-reference/aggregate-functions/index.md), при обработке они обе [пропускают `Null`](/sql-reference/aggregate-functions/index.md#null-processing) и возвращают значения, отличные от `Null`, если такие значения доступны.

@@ -6,8 +6,8 @@ title: 'HiveText'
 doc_type: 'reference'
 ---
 
-## Описание {#description}
+## Описание \{#description\}
 
-## Примеры использования {#example-usage}
+## Примеры использования \{#example-usage\}
 
-## Параметры форматирования {#format-settings}
+## Параметры форматирования \{#format-settings\}

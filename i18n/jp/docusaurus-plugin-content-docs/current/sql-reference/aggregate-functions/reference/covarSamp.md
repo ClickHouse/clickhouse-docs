@@ -5,7 +5,7 @@ title: 'covarSamp'
 doc_type: 'reference'
 ---
 
-# covarSamp {#covarsamp}
+# covarSamp \{#covarsamp\}
 
 `Σ((x - x̅)(y - y̅)) / (n - 1)` の値を計算します。
 

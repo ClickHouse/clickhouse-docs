@@ -6,7 +6,7 @@ title: 'system.settings_changes'
 doc_type: 'reference'
 ---
 
-# system.settings&#95;changes {#systemsettings&#95;changes}
+# system.settings&#95;changes \{#systemsettings&#95;changes\}
 
 過去の ClickHouse バージョンで行われた設定変更に関する情報を保持します。
 

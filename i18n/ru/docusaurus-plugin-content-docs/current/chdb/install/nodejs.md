@@ -7,21 +7,21 @@ keywords: ['chdb', 'nodejs', 'javascript', 'встраиваемая', 'clickhou
 doc_type: 'guide'
 ---
 
-# chDB для Node.js {#chdb-for-nodejs}
+# chDB для Node.js \{#chdb-for-nodejs\}
 
 chDB-node предоставляет биндинги chDB для Node.js, позволяя выполнять запросы к ClickHouse непосредственно в ваших Node.js-приложениях без каких-либо внешних зависимостей.
 
-## Установка {#installation}
+## Установка \{#installation\}
 
 ```bash
 npm install chdb
 ```
 
-## Использование {#usage}
+## Использование \{#usage\}
 
 chDB-node поддерживает два режима выполнения запросов: автономные запросы для простых операций и сеансовые запросы для сохранения состояния базы данных.
 
-### Автономные запросы {#standalone-queries}
+### Автономные запросы \{#standalone-queries\}
 
 Для простых разовых запросов, которым не нужно сохранять состояние:
 
@@ -45,7 +45,7 @@ const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "Pretty");
 console.log("System functions:", systemInfo);
 ```
 
-### Запросы по сессиям {#session-based-queries}
+### Запросы по сессиям \{#session-based-queries\}
 
 ```javascript
 const { Session } = require("chdb");
@@ -96,7 +96,7 @@ try {
 }
 ```
 
-### Обработка внешних данных {#processing-external-data}
+### Обработка внешних данных \{#processing-external-data\}
 
 ```javascript
 const { Session } = require("chdb");
@@ -141,7 +141,7 @@ try {
 }
 ```
 
-## Обработка ошибок {#error-handling}
+## Обработка ошибок \{#error-handling\}
 
 Всегда правильно обрабатывайте ошибки при работе с chDB:
 
@@ -186,7 +186,7 @@ function safeSessionQuery() {
 safeSessionQuery();
 ```
 
-## Репозиторий на GitHub {#github-repository}
+## Репозиторий на GitHub \{#github-repository\}
 
 - **Репозиторий на GitHub**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
 - **Обсуждение проблем и поддержка**: Создавайте обращения в разделе Issues в [репозитории на GitHub](https://github.com/chdb-io/chdb-node/issues)

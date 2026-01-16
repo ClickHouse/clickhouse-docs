@@ -13,7 +13,7 @@ OTel collector ClickStack использует [ClickHouse exporter](https://git
 
 Следующие таблицы создаются для каждого типа данных в базе данных `default`. Целевую базу данных можно изменить, настроив переменную окружения `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` для образа, на котором запущен OTel collector.
 
-## Логи {#logs}
+## Логи \{#logs\}
 
 ```sql
 CREATE TABLE otel_logs
@@ -49,7 +49,7 @@ PRIMARY KEY (ServiceName, TimestampTime)
 ORDER BY (ServiceName, TimestampTime, Timestamp)
 ```
 
-## Трейсы {#traces}
+## Трейсы \{#traces\}
 
 ```sql
 CREATE TABLE otel_traces
@@ -88,9 +88,9 @@ PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SpanName, toDateTime(Timestamp))
 ```
 
-## Метрики {#metrics}
+## Метрики \{#metrics\}
 
-### Метрики типа Gauge {#gauge}
+### Метрики типа Gauge \{#gauge\}
 
 ```sql
 CREATE TABLE otel_metrics_gauge
@@ -128,7 +128,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Суммирующие метрики {#sum}
+### Суммирующие метрики \{#sum\}
 
 ```sql
 CREATE TABLE otel_metrics_sum
@@ -168,7 +168,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Гистограммные метрики {#histogram}
+### Гистограммные метрики \{#histogram\}
 
 ```sql
 CREATE TABLE otel_metrics_histogram
@@ -212,7 +212,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Экспоненциальные гистограммы {#exponential-histograms}
+### Экспоненциальные гистограммы \{#exponential-histograms\}
 
 :::note
 HyperDX пока не поддерживает получение и отображение метрик экспоненциальных гистограмм. Вы можете настраивать их в источнике метрик, но поддержка появится в будущем.
@@ -266,7 +266,7 @@ ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
 
-### Сводная таблица {#summary-table}
+### Сводная таблица \{#summary-table\}
 
 ```sql
 CREATE TABLE otel_metrics_summary
@@ -302,7 +302,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-## Сессии {#sessions}
+## Сессии \{#sessions\}
 
 ```sql
 CREATE TABLE hyperdx_sessions

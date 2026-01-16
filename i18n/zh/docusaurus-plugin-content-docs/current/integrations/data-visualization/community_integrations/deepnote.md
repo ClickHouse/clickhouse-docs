@@ -19,7 +19,7 @@ import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# 将 ClickHouse 连接到 Deepnote {#connect-clickhouse-to-deepnote}
+# 将 ClickHouse 连接到 Deepnote \{#connect-clickhouse-to-deepnote\}
 
 <CommunityMaintainedBadge/>
 
@@ -27,13 +27,13 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 
 本指南假定您已经拥有 Deepnote 账户，并且已有一个正在运行的 ClickHouse 实例。
 
-## 交互式示例 {#interactive-example}
+## 交互式示例 \{#interactive-example\}
 
 如果您希望在 Deepnote 数据笔记本中探索从 ClickHouse 查询数据的交互式示例，请点击下方按钮，启动一个已连接到 [ClickHouse Playground](../../../getting-started/playground.md) 的模板项目。
 
 [<Image size="logo" img="https://deepnote.com/buttons/launch-in-deepnote.svg" alt="在 Deepnote 中启动" />](https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote)
 
-## 连接到 ClickHouse {#connect-to-clickhouse}
+## 连接到 ClickHouse \{#connect-to-clickhouse\}
 
 1. 在 Deepnote 中，打开 “Integrations” 概览并点击 ClickHouse 卡片。
 
@@ -49,7 +49,7 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 
 3. 恭喜！您已在 Deepnote 中成功集成 ClickHouse。
 
-## 使用 ClickHouse 集成 {#using-clickhouse-integration}
+## 使用 ClickHouse 集成 \{#using-clickhouse-integration\}
 
 1. 首先，在笔记本右侧连接 ClickHouse 集成。
 

@@ -21,7 +21,7 @@ ClickHouse 提供了原生命令行客户端，用于直接在 ClickHouse 服务
 它同时支持[命令行选项](#command-line-options)和[配置文件](#configuration_files)。
 
 
-## 安装 {#install}
+## 安装 \{#install\}
 
 要下载 ClickHouse，请运行以下命令：
 
@@ -40,7 +40,7 @@ sudo ./clickhouse install
 不同版本的客户端和服务器之间是兼容的，但较旧的客户端可能不支持某些功能。我们建议客户端和服务器使用相同的版本。
 
 
-## 运行 {#run}
+## 运行 \{#run\}
 
 :::note
 如果您只是下载了 ClickHouse 但尚未安装，请使用 `./clickhouse client`，而不要使用 `clickhouse-client`。
@@ -72,7 +72,7 @@ Connected to ClickHouse server version 24.12.2.
 有关命令行选项的完整列表，请参见 [Command Line Options](#command-line-options)。
 
 
-### 连接到 ClickHouse Cloud {#connecting-cloud}
+### 连接到 ClickHouse Cloud \{#connecting-cloud\}
 
 你的 ClickHouse Cloud 服务的详细信息可以在 ClickHouse Cloud 控制台中查看。选择你要连接的服务，然后单击 **Connect**：
 
@@ -92,7 +92,7 @@ Connected to ClickHouse server version 24.12.2.
   alt="ClickHouse Cloud 原生 TCP 连接详情"
 />
 
-### 在配置文件中保存连接 {#connection-credentials}
+### 在配置文件中保存连接 \{#connection-credentials\}
 
 可以在[配置文件](#configuration_files)中保存一个或多个 ClickHouse 服务器的连接信息。
 
@@ -124,9 +124,9 @@ Connected to ClickHouse server version 24.12.2.
 :::
 
 
-## 交互模式 {#interactive-mode}
+## 交互模式 \{#interactive-mode\}
 
-### 使用交互式模式 {#using-interactive-mode}
+### 使用交互式模式 \{#using-interactive-mode\}
 
 要以交互式模式运行 ClickHouse，只需运行：
 
@@ -169,7 +169,7 @@ ClickHouse Client 基于 `replxx`（类似于 `readline`），因此它使用了
 * `logout` 或 `logout;`
 
 
-### 查询处理信息 {#processing-info}
+### 查询处理信息 \{#processing-info\}
 
 在处理查询时，客户端会显示：
 
@@ -188,7 +188,7 @@ ClickHouse Client 基于 `replxx`（类似于 `readline`），因此它使用了
 ClickHouse Client 允许在查询时传递外部数据（外部临时表）。
 更多信息，请参阅 [External data for query processing](../engines/table-engines/special/external-data.md) 部分。
 
-### 别名 {#cli_aliases}
+### 别名 \{#cli_aliases\}
 
 你可以在 REPL 中使用以下别名：
 
@@ -197,7 +197,7 @@ ClickHouse Client 允许在查询时传递外部数据（外部临时表）。
 - `\c <DATABASE>` - USE DATABASE
 - `.` - 重复上一次查询
 
-### 键盘快捷键 {#keyboard_shortcuts}
+### 键盘快捷键 \{#keyboard_shortcuts\}
 
 - `Alt (Option) + Shift + e` - 使用当前查询打开编辑器。可以通过环境变量 `EDITOR` 指定要使用的编辑器。默认使用 `vim`。
 - `Alt (Option) + #` - 注释当前行。
@@ -211,9 +211,9 @@ ClickHouse Client 允许在查询时传递外部数据（外部临时表）。
 iTerm2：依次进入 Preferences -> Profiles -> Keys -> Left Option key，然后点击 Esc+
 :::
 
-## 批量模式 {#batch-mode}
+## 批量模式 \{#batch-mode\}
 
-### 使用批处理模式 {#using-batch-mode}
+### 使用批处理模式 \{#using-batch-mode\}
 
 除了以交互方式使用 ClickHouse Client 之外，你也可以以批处理模式运行它。
 在批处理模式下，ClickHouse 执行单个查询后会立即退出——不会进入交互式提示符或循环。
@@ -248,7 +248,7 @@ $ echo "Hello\nGoodbye" | clickhouse-client --query "INSERT INTO messages FORMAT
 当指定 `--query` 选项时，所有输入都会在换行符之后追加到请求中。
 
 
-### 将 CSV 文件插入到远程 ClickHouse 服务中 {#cloud-example}
+### 将 CSV 文件插入到远程 ClickHouse 服务中 \{#cloud-example\}
 
 以下示例演示如何将示例 CSV 数据集文件 `cell_towers.csv` 插入到 `default` 数据库中已存在的 `cell_towers` 表中：
 
@@ -262,7 +262,7 @@ clickhouse-client --host HOSTNAME.clickhouse.cloud \
 ```
 
 
-### 从命令行插入数据的示例 {#more-examples}
+### 从命令行插入数据的示例 \{#more-examples\}
 
 可以通过多种方式从命令行插入数据。
 下面的示例使用批量模式将两行 CSV 数据插入到一个 ClickHouse 表中：
@@ -291,7 +291,7 @@ cat file.csv | clickhouse-client --database=test --query="INSERT INTO test FORMA
 你可以在查询的 `FORMAT` 子句中指定格式，如上面的示例所示。
 
 
-## 带参数的查询 {#cli-queries-with-parameters}
+## 带参数的查询 \{#cli-queries-with-parameters\}
 
 你可以在查询中指定参数，并通过命令行选项向其传递值。
 这样就无需在客户端根据特定的动态值来格式化查询。
@@ -334,7 +334,7 @@ Query id: 0358a729-7bbe-4191-bb48-29b063c548a7
 ```
 
 
-### 查询语法 {#cli-queries-with-parameters-syntax}
+### 查询语法 \{#cli-queries-with-parameters-syntax\}
 
 在查询中，将希望通过命令行参数传入的值用大括号括起来，格式如下：
 
@@ -348,7 +348,7 @@ Query id: 0358a729-7bbe-4191-bb48-29b063c548a7
 | `data type` | 参数的[数据类型](../sql-reference/data-types/index.md)。<br /><br />例如，类似 `(integer, ('string', integer))` 的数据结构可以使用 `Tuple(UInt8, Tuple(String, UInt8))` 数据类型（也可以使用其他 [integer](../sql-reference/data-types/int-uint.md) 类型）。<br /><br />还可以将表名、数据库名和列名作为参数传递，在这种情况下，需要使用 `Identifier` 作为数据类型。 |
 
 
-### 示例 {#cli-queries-with-parameters-examples}
+### 示例 \{#cli-queries-with-parameters-examples\}
 
 ```bash
 $ clickhouse-client --param_tuple_in_tuple="(10, ('dt', 10))" \
@@ -359,13 +359,13 @@ $ clickhouse-client --param_tbl="numbers" --param_db="system" --param_col="numbe
 ```
 
 
-## AI 驱动的 SQL 生成 {#ai-sql-generation}
+## AI 驱动的 SQL 生成 \{#ai-sql-generation\}
 
 ClickHouse Client 内置了 AI 助手，可以根据自然语言描述生成 SQL 查询。此功能可帮助用户在不具备深厚 SQL 知识的情况下编写复杂查询。
 
 如果已设置 `OPENAI_API_KEY` 或 `ANTHROPIC_API_KEY` 环境变量，AI 助手即可直接使用。有关更高级的配置，请参阅[配置](#ai-sql-generation-configuration)部分。
 
-### 使用方法 {#ai-sql-generation-usage}
+### 使用方法 \{#ai-sql-generation-usage\}
 
 要使用 AI SQL 自动生成功能，请在自然语言查询前加上前缀 `??`：
 
@@ -380,7 +380,7 @@ AI 将会：
 3. 立即执行生成的查询
 
 
-### 示例 {#ai-sql-generation-example}
+### 示例 \{#ai-sql-generation-example\}
 
 ```bash
 :) ?? count orders by product category
@@ -414,11 +414,11 @@ ORDER BY order_count DESC
 ```
 
 
-### 配置 {#ai-sql-generation-configuration}
+### 配置 \{#ai-sql-generation-configuration\}
 
 要使用 AI 驱动的 SQL 生成功能，需要在 ClickHouse 客户端配置文件中配置一个 AI 提供商。可以使用 OpenAI、Anthropic，或任何与 OpenAI API 兼容的服务。
 
-#### 基于环境变量的回退机制 {#ai-sql-generation-fallback}
+#### 基于环境变量的回退机制 \{#ai-sql-generation-fallback\}
 
 如果在配置文件中没有指定任何 AI 配置，ClickHouse Client 会自动尝试使用环境变量：
 
@@ -439,7 +439,7 @@ clickhouse-client
 ```
 
 
-#### 配置文件 {#ai-sql-generation-configuration-file}
+#### 配置文件 \{#ai-sql-generation-configuration-file\}
 
 若要对 AI 设置进行更精细的控制，请在以下位置的 ClickHouse Client 配置文件中进行配置：
 
@@ -544,7 +544,7 @@ ai:
 ```
 
 
-### 参数 {#ai-sql-generation-parameters}
+### 参数 \{#ai-sql-generation-parameters\}
 
 <details>
 <summary>必需参数</summary>
@@ -593,7 +593,7 @@ ai:
 
 </details>
 
-### 工作原理 {#ai-sql-generation-how-it-works}
+### 工作原理 \{#ai-sql-generation-how-it-works\}
 
 AI SQL 生成器使用多步流程：
 
@@ -619,22 +619,22 @@ AI 使用内置工具来探索您的数据库：
 
 </VerticalStepper>
 
-### 限制 {#ai-sql-generation-limitations}
+### 限制 \{#ai-sql-generation-limitations\}
 
 - 需要有可用的网络连接
 - API 使用受 AI 提供方的速率限制和费用约束
 - 复杂查询可能需要多次优化
 - AI 只能以只读方式访问 schema 信息，无法访问实际数据
 
-### 安全性 {#ai-sql-generation-security}
+### 安全性 \{#ai-sql-generation-security\}
 
 - API 密钥绝不会被发送到 ClickHouse 服务器
 - AI 只能看到 schema 信息（表名、列名和类型），而不会看到实际数据
 - 所有生成的查询都会遵循您现有的数据库权限
 
-## 连接字符串 {#connection_string}
+## 连接字符串 \{#connection_string\}
 
-### 用法 {#connection-string-usage}
+### 用法 \{#connection-string-usage\}
 
 ClickHouse Client 还支持使用连接字符串的方式连接到 ClickHouse 服务器，其形式类似于 [MongoDB](https://www.mongodb.com/docs/manual/reference/connection-string/)、[PostgreSQL](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING)、[MySQL](https://dev.mysql.com/doc/refman/8.0/en/connecting-using-uri-or-key-value-pairs.html#connecting-using-uri)。其语法如下：
 
@@ -651,7 +651,7 @@ clickhouse:[//[user[:password]@][hosts_and_ports]][/database][?query_parameters]
 | `query_parameters` | 键值对列表 `param1=value1[,&param2=value2], ...`。对于某些参数，不需要指定值。参数名和值区分大小写。 | -                |
 
 
-### 注意事项 {#connection-string-notes}
+### 注意事项 \{#connection-string-notes\}
 
 如果在连接字符串中已经指定了用户名、密码或数据库，则不能再通过 `--user`、`--password` 或 `--database` 指定（反之亦然）。
 
@@ -686,7 +686,7 @@ ClickHouse 客户端会按顺序（从左到右）尝试连接这些主机。
 * `query parameters`
 
 
-### 示例 {#connection_string_examples}
+### 示例 \{#connection_string_examples\}
 
 连接到 `localhost` 的 9000 端口，并执行查询 `SELECT 1`。
 
@@ -767,7 +767,7 @@ clickhouse-client clickhouse://192.168.1.15,192.168.1.25
 ```
 
 
-## 查询 ID 格式 {#query-id-format}
+## 查询 ID 格式 \{#query-id-format\}
 
 在以交互模式运行时，ClickHouse Client 会为每个查询显示查询 ID。ID 的默认格式如下：
 
@@ -795,7 +795,7 @@ speedscope:http://speedscope-host/#profileURL=qp%3Fid%3Dc8ecc783-e753-4b38-97f1-
 ```
 
 
-## 配置文件 {#configuration_files}
+## 配置文件 \{#configuration_files\}
 
 ClickHouse Client 会按以下顺序查找配置文件，并使用找到的第一个：
 
@@ -834,16 +834,16 @@ ClickHouse Client 会按以下顺序查找配置文件，并使用找到的第�
   </TabItem>
 </Tabs>
 
-## 环境变量选项 {#environment-variable-options}
+## 环境变量选项 \{#environment-variable-options\}
 
 用户名、密码和主机可以通过环境变量 `CLICKHOUSE_USER`、`CLICKHOUSE_PASSWORD` 和 `CLICKHOUSE_HOST` 来设置。
 命令行参数 `--user`、`--password` 或 `--host`，以及（如果已指定）[连接字符串](#connection_string)，其优先级都高于环境变量。
 
-## 命令行选项 {#command-line-options}
+## 命令行选项 \{#command-line-options\}
 
 所有命令行选项都可以直接在命令行中指定，或者在[配置文件](#configuration_files)中设置为默认值。
 
-### 通用选项 {#command-line-options-general}
+### 通用选项 \{#command-line-options-general\}
 
 | Option                                              | Description                                                                                                                        | Default                      |
 |-----------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|------------------------------|
@@ -855,7 +855,7 @@ ClickHouse Client 会按以下顺序查找配置文件，并使用找到的第�
 | `--verbose`                                         | 提高输出的详细程度。                                                                                                               | -                            |
 | `-V [ --version ]`                                  | 打印版本并退出。                                                                                                                   | -                            |
 
-### 连接选项 {#command-line-options-connection}
+### 连接选项 \{#command-line-options-connection\}
 
 | Option                           | Description                                                                                                                                                                                                                                                                                                                        | Default                                                                                                          |
 |----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
@@ -878,7 +878,7 @@ ClickHouse Client 会按以下顺序查找配置文件，并使用找到的第�
 除了 `--host`、`--port`、`--user` 和 `--password` 选项外，客户端还支持[连接字符串](#connection_string)。
 :::
 
-### 查询选项 {#command-line-options-query}
+### 查询选项 \{#command-line-options-query\}
 
 | 选项                            | 说明                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 |---------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -887,7 +887,7 @@ ClickHouse Client 会按以下顺序查找配置文件，并使用找到的第�
 | `--queries-file <path-to-file>` | 包含查询语句的文件路径。`--queries-file` 可以被多次指定，例如：`--queries-file queries1.sql --queries-file queries2.sql`。<br/><br/>不能与 `--query` 同时使用。                                                                                                                                                                                                                                                                                                                                  |
 | `-m [ --multiline ]`            | 如果指定该选项，则允许输入多行查询（按 Enter 键时不会立即发送查询）。只有当查询以分号结束时才会被发送。                                                                                                                                                                                                                                                                                                                                                  |
 
-### 查询设置 {#command-line-options-query-settings}
+### 查询设置 \{#command-line-options-query-settings\}
 
 可以在客户端中通过命令行选项指定查询设置，例如：
 
@@ -898,7 +898,7 @@ $ clickhouse-client --max_threads 1
 有关设置项的完整列表，请参阅 [Settings](../operations/settings/settings.md)。
 
 
-### 格式选项 {#command-line-options-formatting}
+### 格式选项 \{#command-line-options-formatting\}
 
 | Option                    | Description                                                                                                                                                                                                                   | Default        |
 |---------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|
@@ -906,7 +906,7 @@ $ clickhouse-client --max_threads 1
 | `--pager <command>`       | 将所有输出通过管道传递给该命令。通常为 `less`（例如使用 `less -S` 来显示宽结果集）或类似工具。                                                                                                                | -              |
 | `-E [ --vertical ]`       | 使用 [Vertical 格式](/interfaces/formats/Vertical) 输出结果。这等同于 `--format Vertical`。在该格式下，每个值都会打印在单独的一行上，这有助于显示列很多的表。 | -              |
 
-### 执行详情 {#command-line-options-execution-details}
+### 执行详情 \{#command-line-options-execution-details\}
 
 | Option                            | Description                                                                                                                                                                                                                                                                                                         | Default                                                             |
 |-----------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|

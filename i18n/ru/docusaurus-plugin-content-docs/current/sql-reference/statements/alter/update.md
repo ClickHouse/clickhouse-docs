@@ -7,7 +7,7 @@ title: 'Команды ALTER TABLE ... UPDATE'
 doc_type: 'reference'
 ---
 
-# Команды ALTER TABLE ... UPDATE {#alter-table-update-statements}
+# Команды ALTER TABLE ... UPDATE \{#alter-table-update-statements\}
 
 ```sql
 ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN PARTITION partition_id] WHERE filter_expr
@@ -31,6 +31,6 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN P
 * [Синхронность ALTER-запросов](/sql-reference/statements/alter/index.md#synchronicity-of-alter-queries)
 * Настройка [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync)
 
-## Связанные материалы {#related-content}
+## Связанные материалы \{#related-content\}
 
 - Блог: [Обработка обновлений и удалений в ClickHouse](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

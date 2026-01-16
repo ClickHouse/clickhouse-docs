@@ -5,7 +5,7 @@ title: 'argMin'
 doc_type: 'reference'
 ---
 
-# argMin {#argmin}
+# argMin \{#argmin\}
 
 Вычисляет значение `arg` для минимального значения `val`. Если существует несколько строк с одинаковым минимальным значением `val`, то выбор возвращаемого связанного значения `arg` недетерминирован.
 И `arg`, и `min` ведут себя как [агрегатные функции](/sql-reference/aggregate-functions/index.md), обе [пропускают `Null`](/sql-reference/aggregate-functions/index.md#null-processing) в процессе обработки и возвращают значения, отличные от `Null`, если такие значения есть.

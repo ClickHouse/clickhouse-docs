@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# Alias 表引擎 {#alias-table-engine}
+# Alias 表引擎 \{#alias-table-engine\}
 
 <ExperimentalBadge/>
 
@@ -21,7 +21,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 输入命令 `set allow_experimental_alias_table_engine = 1`。
 :::
 
-## 创建表 {#creating-a-table}
+## 创建表 \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [db_name.]alias_name
@@ -39,16 +39,16 @@ ENGINE = Alias(target_db, target_table)
 `Alias` 表不支持显式定义列。列会自动从目标表继承，从而确保该别名表始终与目标表的 schema 保持一致。
 :::
 
-## 引擎参数 {#engine-parameters}
+## 引擎参数 \{#engine-parameters\}
 
 - **`target_db（可选）`** — 包含目标表的数据库名称。
 - **`target_table`** — 目标表的名称。
 
-## 支持的操作 {#supported-operations}
+## 支持的操作 \{#supported-operations\}
 
 `Alias` 表引擎支持所有主要操作。 
 
-### 目标表上的操作 {#operations-on-target}
+### 目标表上的操作 \{#operations-on-target\}
 
 这些操作会被转发到目标表：
 
@@ -65,7 +65,7 @@ ENGINE = Alias(target_db, target_table)
 | `OPTIMIZE TABLE` | ✅ | 优化目标表（合并数据片段） |
 | `TRUNCATE TABLE` | ✅ | 截断目标表 |
 
-### 对别名本身的操作 {#operations-on-alias}
+### 对别名本身的操作 \{#operations-on-alias\}
 
 这些操作只会影响别名，**不会**影响目标表：
 
@@ -74,9 +74,9 @@ ENGINE = Alias(target_db, target_table)
 | `DROP TABLE` | ✅ | 仅删除别名，目标表保持不变 |
 | `RENAME TABLE` | ✅ | 仅重命名别名，目标表保持不变 |
 
-## 使用示例 {#usage-examples}
+## 使用示例 \{#usage-examples\}
 
-### 创建基本别名 {#basic-alias-creation}
+### 创建基本别名 \{#basic-alias-creation\}
 
 在同一数据库中创建一个简单的别名：
 
@@ -106,7 +106,7 @@ SELECT * FROM data_alias;
 └────┴──────┴───────┘
 ```
 
-### 跨数据库别名 {#cross-database-alias}
+### 跨数据库别名 \{#cross-database-alias\}
 
 创建一个指向不同数据库中某个表的别名：
 
@@ -134,7 +134,7 @@ INSERT INTO db2.events_alias VALUES (now(), 'click', 100);
 SELECT * FROM db2.events_alias2;
 ```
 
-### 通过别名执行写入操作 {#write-operations}
+### 通过别名执行写入操作 \{#write-operations\}
 
 经由别名的所有写入操作都会被转发到其目标表：
 
@@ -164,7 +164,7 @@ SELECT count() FROM metrics;  -- Returns 7
 SELECT count() FROM metrics_alias;  -- Returns 7
 ```
 
-### 表结构修改 {#schema-modification}
+### 表结构修改 \{#schema-modification\}
 
 `ALTER` 操作用于修改目标表的表结构：
 
@@ -192,7 +192,7 @@ DESCRIBE users;
 └───────┴────────┴──────────────┴────────────────────┘
 ```
 
-### 数据变更 {#data-mutations}
+### 数据变更 \{#data-mutations\}
 
 支持 UPDATE 和 DELETE 操作：
 
@@ -229,7 +229,7 @@ SELECT * FROM products ORDER BY id;
 └────┴──────────┴───────┴────────┘
 ```
 
-### 分区操作 {#partition-operations}
+### 分区操作 \{#partition-operations\}
 
 对于分区表，分区操作将被转发：
 
@@ -260,7 +260,7 @@ ALTER TABLE logs_alias ATTACH PARTITION '202402';
 SELECT count() FROM logs_alias;  -- Returns 3
 ```
 
-### 表优化 {#table-optimization}
+### 表优化 \{#table-optimization\}
 
 对目标表中的分片执行合并优化操作：
 
@@ -294,7 +294,7 @@ WHERE database = currentDatabase()
   AND active;  -- Returns 1
 ```
 
-### 别名管理 {#alias-management}
+### 别名管理 \{#alias-management\}
 
 可以分别对别名进行重命名或删除：
 

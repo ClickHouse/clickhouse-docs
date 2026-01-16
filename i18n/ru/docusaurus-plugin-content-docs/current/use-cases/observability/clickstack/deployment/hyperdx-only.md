@@ -24,18 +24,18 @@ HyperDX может использоваться независимо от ост
 В этом режиме ингестия данных полностью остаётся на стороне пользователя. Вы можете осуществлять приём данных в ClickHouse, используя собственный развёрнутый OpenTelemetry collector, прямую ингестию из клиентских библиотек, родные для ClickHouse движки таблиц (такие как Kafka или S3), ETL‑конвейеры или управляемые сервисы ингестии, такие как ClickPipes. Такой подход обеспечивает максимальную гибкость и подходит командам, которые уже эксплуатируют ClickHouse и хотят добавить HyperDX поверх него для визуализации, поиска и оповещений.
 
 
-### Подходит для {#suitable-for}
+### Подходит для \{#suitable-for\}
 
 - Существующие пользователи ClickHouse
 - Настраиваемые конвейеры событий
 
-## Шаги развертывания {#deployment-steps}
+## Шаги развертывания \{#deployment-steps\}
 
 <br/>
 
 <VerticalStepper headerLevel="h3">
 
-### Развертывание с помощью Docker {#deploy-hyperdx-with-docker}
+### Развертывание с помощью Docker \{#deploy-hyperdx-with-docker\}
 
 Выполните следующую команду, изменив `YOUR_MONGODB_URI` при необходимости. 
 
@@ -43,7 +43,7 @@ HyperDX может использоваться независимо от ост
 docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx
 ```
 
-### Перейдите в интерфейс HyperDX {#navigate-to-hyperdx-ui}
+### Перейдите в интерфейс HyperDX \{#navigate-to-hyperdx-ui\}
 
 Перейдите по адресу [http://localhost:8080](http://localhost:8080), чтобы открыть интерфейс HyperDX.
 
@@ -53,7 +53,7 @@ docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.i
 
 <Image img={hyperdx_login} alt="Интерфейс HyperDX" size="lg"/>
 
-### Заполните параметры подключения {#complete-connection-details}
+### Заполните параметры подключения \{#complete-connection-details\}
 
 Подключитесь к своему внешнему кластеру ClickHouse, например к ClickHouse Cloud.
 
@@ -67,11 +67,11 @@ docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.i
 
 </VerticalStepper>
 
-## Использование Docker Compose {#using-docker-compose}
+## Использование Docker Compose \{#using-docker-compose\}
 
 Вы можете изменить [конфигурацию Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose), чтобы добиться того же результата, что и в этом руководстве, удалив OTel collector и экземпляр ClickHouse из манифеста.
 
-## Коллектор OpenTelemetry ClickStack {#otel-collector}
+## Коллектор OpenTelemetry ClickStack \{#otel-collector\}
 
 Даже если вы управляете собственным коллектором OpenTelemetry, независимо от других компонентов стека, мы всё равно рекомендуем использовать дистрибутив коллектора ClickStack. Это гарантирует использование схемы по умолчанию и применение лучших практик для ингестии.
 

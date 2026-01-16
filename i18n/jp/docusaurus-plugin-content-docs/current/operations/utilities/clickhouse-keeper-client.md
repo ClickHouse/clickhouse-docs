@@ -6,11 +6,11 @@ title: 'clickhouse-keeper-client ユーティリティ'
 doc_type: 'reference'
 ---
 
-# clickhouse-keeper-client ユーティリティ {#clickhouse-keeper-client-utility}
+# clickhouse-keeper-client ユーティリティ \{#clickhouse-keeper-client-utility\}
 
 ネイティブプロトコルを使用して clickhouse-keeper と通信するためのクライアントアプリケーションです。
 
-## オプション {#clickhouse-keeper-client}
+## オプション \{#clickhouse-keeper-client\}
 
 -   `-q QUERY`, `--query=QUERY` — 実行するクエリ。 このパラメータが指定されない場合、`clickhouse-keeper-client` はインタラクティブモードで起動します。
 -   `-h HOST`, `--host=HOST` — サーバーのホスト名。 デフォルト値: `localhost`。
@@ -24,7 +24,7 @@ doc_type: 'reference'
 -   `--no-confirmation` — 指定した場合、いくつかのコマンドで確認を求めません。 インタラクティブモードではデフォルト値は `false`、クエリでは `true` です。
 -   `--help` — ヘルプメッセージを表示します。
 
-## 例 {#clickhouse-keeper-client-example}
+## 例 \{#clickhouse-keeper-client-example\}
 
 ```bash
 ./clickhouse-keeper-client -h localhost -p 9181 --connection-timeout 30 --session-timeout 30 --operation-timeout 30
@@ -46,7 +46,7 @@ keeper foo bar
 2
 ```
 
-## コマンド {#clickhouse-keeper-client-commands}
+## コマンド \{#clickhouse-keeper-client-commands\}
 
 -   `ls '[path]'` -- 指定されたパスのノードを一覧表示します（デフォルト: カレントディレクトリ）
 -   `cd '[path]'` -- 作業パスを変更します（デフォルト: `.`）

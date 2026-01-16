@@ -10,7 +10,7 @@ doc_type: 'reference'
 import BetaBadge from '@theme/badges/BetaBadge';
 
 
-# テキストインデックスを使用した全文検索 {#full-text-search-using-text-indexes}
+# テキストインデックスを使用した全文検索 \{#full-text-search-using-text-indexes\}
 
 <BetaBadge/>
 
@@ -20,7 +20,7 @@ ClickHouse のテキストインデックス（["inverted indexes"](https://en.w
 たとえば、ClickHouse は英語の文 "All cat like mice." をデフォルトで ["All", "cat", "like", "mice"] のようにトークン化します（末尾のドットは無視される点に注意してください）。
 ログデータ向けなど、さらに高度なトークナイザーも利用可能です。
 
-## テキスト索引の作成 {#creating-a-text-index}
+## テキスト索引の作成 \{#creating-a-text-index\}
 
 テキスト索引を作成するには、まず対応する実験的な設定を有効化します。
 
@@ -180,12 +180,12 @@ ALTER TABLE tab ADD INDEX text_idx(s) TYPE text(tokenizer = splitByNonAlpha);
 ```
 
 
-## テキスト索引の使用 {#using-a-text-index}
+## テキスト索引の使用 \{#using-a-text-index\}
 
 SELECT クエリでテキスト索引を利用するのは容易で、一般的な文字列検索関数は索引を自動的に利用します。
 索引が存在しない場合、以下の文字列検索関数は遅いフルスキャンにフォールバックします。
 
-### サポートされている関数 {#functions-support}
+### サポートされている関数 \{#functions-support\}
 
 テキストインデックスは、`WHERE` 句または `PREWHERE` 句でテキスト関数が使用されている場合に使用できます。
 
@@ -196,7 +196,7 @@ WHERE string_search_function(column_with_text_index)
 ```
 
 
-#### `=` と `!=` {#functions-example-equals-notequals}
+#### `=` と `!=` \{#functions-example-equals-notequals\}
 
 `=` ([equals](/sql-reference/functions/comparison-functions.md/#equals)) と `!=` ([notEquals](/sql-reference/functions/comparison-functions.md/#notEquals)) は、指定した検索語と完全に一致するものを対象とします。
 
@@ -209,7 +209,7 @@ SELECT * from tab WHERE str = 'Hello';
 テキストインデックスは `=` と `!=` をサポートしますが、等価検索や不等価検索が有効なのは `array` tokenizer を使用する場合のみです（`array` tokenizer により、索引には行全体の値が保存されます）。
 
 
-#### `IN` および `NOT IN` {#functions-example-in-notin}
+#### `IN` および `NOT IN` \{#functions-example-in-notin\}
 
 `IN` ([in](/sql-reference/functions/in-functions)) と `NOT IN` ([notIn](/sql-reference/functions/in-functions)) は、関数 `equals` および `notEquals` と似ていますが、検索語のいずれかに一致するもの（`IN`）、または検索語のどれにも一致しないもの（`NOT IN`）を検索します。
 
@@ -222,7 +222,7 @@ SELECT * from tab WHERE str IN ('Hello', 'World');
 `=` および `!=` と同じ制約が適用されます。つまり、`IN` と `NOT IN` は `array` トークナイザーと組み合わせて使用する場合にのみ有効です。
 
 
-#### `LIKE`、`NOT LIKE`、`match` {#functions-example-like-notlike-match}
+#### `LIKE`、`NOT LIKE`、`match` \{#functions-example-like-notlike-match\}
 
 :::note
 これらの関数がフィルタリング時にテキスト索引を利用できるのは、索引トークナイザが `splitByNonAlpha`、`ngrams`、または `sparseGrams` の場合のみです。
@@ -260,7 +260,7 @@ SELECT count() FROM tab WHERE comment LIKE ' support %'; -- or `% support %`
 `support` の左右に空白を入れておくことで、その語をトークンとして抽出できるようにしています。
 
 
-#### `startsWith` と `endsWith` {#functions-example-startswith-endswith}
+#### `startsWith` と `endsWith` \{#functions-example-startswith-endswith\}
 
 `LIKE` と同様に、[startsWith](/sql-reference/functions/string-functions.md/#startsWith) 関数と [endsWith](/sql-reference/functions/string-functions.md/#endsWith) 関数は、検索語句から完全なトークンを抽出できる場合に限り、テキストインデックスを利用できます。
 `ngrams` トークナイザーを用いるインデックスの場合、ワイルドカードの間で検索される文字列の長さが ngram の長さ以上であれば、この条件を満たします。
@@ -287,7 +287,7 @@ SELECT count() FROM tab WHERE endsWith(comment, ' olap engine');
 ```
 
 
-#### `hasToken` と `hasTokenOrNull` {#functions-example-hastoken-hastokenornull}
+#### `hasToken` と `hasTokenOrNull` \{#functions-example-hastoken-hastokenornull\}
 
 [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken) 関数と [hasTokenOrNull](/sql-reference/functions/string-search-functions.md/#hasTokenOrNull) 関数は、指定された 1 つのトークンに対して照合を行います。
 
@@ -302,7 +302,7 @@ SELECT count() FROM tab WHERE hasToken(comment, 'clickhouse');
 `text` 索引と組み合わせて使用する場合、`hasToken` 関数と `hasTokenOrNull` 関数が最も効率的です。
 
 
-#### `hasAnyTokens` と `hasAllTokens` {#functions-example-hasanytokens-hasalltokens}
+#### `hasAnyTokens` と `hasAllTokens` \{#functions-example-hasanytokens-hasalltokens\}
 
 関数 [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) および [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens) は、指定されたトークンの一部またはすべてにマッチします。
 
@@ -322,7 +322,7 @@ SELECT count() FROM tab WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 ```
 
 
-#### `has` {#functions-example-has}
+#### `has` \{#functions-example-has\}
 
 配列関数 [has](/sql-reference/functions/array-functions#has) は、文字列配列内の特定のトークンに対して一致判定を行います。
 
@@ -333,7 +333,7 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 ```
 
 
-#### `mapContains` {#functions-example-mapcontains}
+#### `mapContains` \{#functions-example-mapcontains\}
 
 [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains) 関数（`mapContainsKey` のエイリアス）は、検索文字列から抽出されたトークンを、マップのキーに含まれるトークンと照合してマッチさせます。挙動は、`String` カラムに対する `equals` 関数と似ています。テキストインデックスは、`mapKeys(map)` 式に対して作成された場合にのみ使用されます。
 
@@ -346,7 +346,7 @@ SELECT count() FROM tab WHERE mapContains(map, 'clickhouse');
 ```
 
 
-#### `mapContainsValue` {#functions-example-mapcontainsvalue}
+#### `mapContainsValue` \{#functions-example-mapcontainsvalue\}
 
 [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapcontainsvalue) 関数は、検索対象とする文字列から抽出されたトークンに対して、マップの値の中から一致を検索します。
 この動作は、`String` カラムに対する `equals` 関数と同様です。
@@ -359,7 +359,7 @@ SELECT count() FROM tab WHERE mapContainsValue(map, 'clickhouse');
 ```
 
 
-#### `mapContainsKeyLike` と `mapContainsValueLike` {#functions-example-mapcontainslike}
+#### `mapContainsKeyLike` と `mapContainsValueLike` \{#functions-example-mapcontainslike\}
 
 [mapContainsKeyLike](/sql-reference/functions/tuple-map-functions#mapContainsKeyLike) 関数と [mapContainsValueLike](/sql-reference/functions/tuple-map-functions#mapContainsValueLike) 関数は、マップのキーまたは値（それぞれ対応する関数に応じて）に対してパターンマッチを行います。
 
@@ -371,7 +371,7 @@ SELECT count() FROM tab WHERE mapContainsValueLike(map, '% clickhouse %');
 ```
 
 
-#### `operator[]` {#functions-example-access-operator}
+#### `operator[]` \{#functions-example-access-operator\}
 
 アクセス演算子 [operator[]](/sql-reference/operators#access-operators) をテキスト索引と組み合わせて使用し、キーと値をフィルタリングできます。テキスト索引は、`mapKeys(map)` または `mapValues(map)` の式、あるいはその両方に対して作成されている場合にのみ使用されます。
 
@@ -384,9 +384,9 @@ SELECT count() FROM tab WHERE map['engine'] = 'clickhouse';
 テキスト索引で `Array(T)` 型および `Map(K, V)` 型のカラムを使用する例を以下に示します。
 
 
-### テキスト索引付き `Array` および `Map` カラムの例 {#text-index-array-and-map-examples}
+### テキスト索引付き `Array` および `Map` カラムの例 \{#text-index-array-and-map-examples\}
 
-#### Array(String) カラムのインデックス作成 {#text-index-example-array}
+#### Array(String) カラムのインデックス作成 \{#text-index-example-array\}
 
 ブログプラットフォームを想像してください。著者はキーワードを使ってブログ記事にカテゴリを付けます。
 ユーザーには、トピックを検索したりクリックしたりして関連コンテンツを見つけられるようにしたいとします。
@@ -420,7 +420,7 @@ ALTER TABLE posts MATERIALIZE INDEX keywords_idx; -- Don't forget to rebuild the
 ```
 
 
-#### Map カラムへのインデックス作成 {#text-index-example-map}
+#### Map カラムへのインデックス作成 \{#text-index-example-map\}
 
 多くのオブザーバビリティ関連のユースケースでは、ログメッセージは「コンポーネント」に分割され、タイムスタンプには datetime 型、ログレベルには enum 型など、適切なデータ型として保存されます。
 メトリクスのフィールドはキー・バリューのペアとして保存するのが最適です。
@@ -481,9 +481,9 @@ SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 ```
 
 
-## パフォーマンスのチューニング {#performance-tuning}
+## パフォーマンスのチューニング \{#performance-tuning\}
 
-### ダイレクトリード {#direct-read}
+### ダイレクトリード \{#direct-read\}
 
 特定の種類のテキストクエリは、「ダイレクトリード」と呼ばれる最適化によって大幅に高速化されます。
 
@@ -617,7 +617,7 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 2 つ目の `EXPLAIN PLAN` の出力では、フィルター条件に追加の条件（`__text_index_...`）が加えられていることが分かります。[`PREWHERE`](docs/sql-reference/statements/select/prewhere) 最適化により、フィルター条件は 3 つの個別の条件（論理積の各節）に分解され、計算コストが小さいものから順に適用されます。このクエリでは、適用順序は `__text_index_...`、次に `greaterOrEquals(...)`、最後に `like(...)` です。この順序付けにより、テキストインデックスと元のフィルターだけでスキップされるグラニュールよりもさらに多くのデータグラニュールをスキップし、そのうえで `WHERE` 句以降のクエリで使用される重いカラムを読み込む前に、読み取るデータ量を一層削減できます。
 
 
-### キャッシュ {#caching}
+### キャッシュ \{#caching\}
 
 テキストインデックスの一部をメモリ上でバッファするために、複数のキャッシュが利用できます（[Implementation Details](#implementation) セクションを参照してください）。
 現在、I/O を削減するために、テキストインデックスのデシリアライズ済みの Dictionary ブロック、ヘッダー、およびポスティングリスト向けのキャッシュが用意されています。
@@ -627,7 +627,7 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 
 キャッシュを構成するには、以下のサーバー設定を参照してください。
 
-#### Dictionary ブロックキャッシュ設定 {#caching-dictionary}
+#### Dictionary ブロックキャッシュ設定 \{#caching-dictionary\}
 
 | Setting                                                                                                                                                  | 説明                                                                                                            |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
@@ -636,7 +636,7 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 | [text_index_dictionary_block_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_max_entries)      | キャッシュ内に保持されるデシリアライズ済み Dictionary ブロック数の上限。                                       |
 | [text_index_dictionary_block_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_size_ratio)        | テキストインデックス Dictionary ブロックキャッシュにおける、保護キューのサイズ（キャッシュ全体に対する比率）。 |
 
-#### ヘッダーキャッシュの設定 {#caching-header}
+#### ヘッダーキャッシュの設定 \{#caching-header\}
 
 | 設定                                                                                                                                | 説明                                                                                                 |
 |--------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
@@ -645,7 +645,7 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 | [text_index_header_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_header_cache_max_entries)      | キャッシュ内のデシリアライズ済みヘッダーの最大数。                                                   |
 | [text_index_header_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_header_cache_size_ratio)        | テキストインデックスヘッダーキャッシュにおける、保護キューのサイズがキャッシュ全体サイズに対して占める割合。 |
 
-#### ポスティングリストキャッシュ設定 {#caching-posting-lists}
+#### ポスティングリストキャッシュ設定 \{#caching-posting-lists\}
 
 | 設定                                                                                                                               | 説明                                                                                             |
 |---------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
@@ -654,7 +654,7 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 | [text_index_postings_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_postings_cache_max_entries)   | キャッシュ内のデシリアライズ済みポスティングリストの最大件数。                                                       |
 | [text_index_postings_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_postings_cache_size_ratio)     | テキストインデックスのポスティングリストキャッシュにおける保護キューサイズの、キャッシュ全体サイズに対する比率。   |
 
-## 実装の詳細 {#implementation}
+## 実装の詳細 \{#implementation\}
 
 各テキスト索引は、2つの（抽象的な）データ構造から構成されます。
 
@@ -691,7 +691,7 @@ Index header ファイルには、各 dictionary block について、そのブ�
 このテキスト索引のマージ方法は、`_part_offset` カラムを持つ [projections](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field) がマージされる方法と類似しています。
 索引がソースパーツ内でマテリアライズされていない場合は、その索引を構築して一時ファイルに書き出し、その後、他のパーツの索引や他の一時索引ファイルと一緒にマージします。
 
-## 例：Hackernews データセット {#hacker-news-dataset}
+## 例：Hackernews データセット \{#hacker-news-dataset\}
 
 大量のテキストを含む大規模データセットに対するテキスト索引のパフォーマンス向上を見ていきます。
 ここでは、人気サイト「Hacker News」のコメント 2,870 万行を使用します。
@@ -759,7 +759,7 @@ ALTER TABLE hackernews MATERIALIZE INDEX comment_idx SETTINGS mutations_sync = 2
 次の例では、通常の索引スキャンとダイレクトリード最適化を比較した場合の、劇的なパフォーマンス差を示します。
 
 
-### 1. `hasToken` を使用する {#using-hasToken}
+### 1. `hasToken` を使用する \{#using-hasToken\}
 
 `hasToken` は、テキストに特定の単一トークンが含まれているかどうかを確認します。
 ここでは、大文字・小文字を区別するトークン &#39;ClickHouse&#39; を検索します。
@@ -800,7 +800,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 直接読み取りクエリは、索引だけを読み取ることで 45 倍以上高速 (0.362 秒 対 0.008 秒) であり、処理するデータ量も大幅に少なくなります (9.51 GB 対 3.15 MB)。
 
 
-### 2. `hasAnyTokens` の使用 {#using-hasAnyTokens}
+### 2. `hasAnyTokens` の使用 \{#using-hasAnyTokens\}
 
 `hasAnyTokens` は、テキストに指定されたトークンのうち少なくとも 1 つが含まれているかどうかをチェックします。
 ここでは、&#39;love&#39; または &#39;ClickHouse&#39; のいずれかを含むコメントを検索します。
@@ -839,7 +839,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 フルカラムスキャンを回避することで、クエリはほぼ 89 倍高速になります（1.329秒 対 0.015秒）。
 
 
-### 3. `hasAllTokens` の使用 {#using-hasAllTokens}
+### 3. `hasAllTokens` の使用 \{#using-hasAllTokens\}
 
 `hasAllTokens` は、テキストが指定されたすべてのトークンを含んでいるかどうかをチェックします。
 ここでは、&#39;love&#39; と &#39;ClickHouse&#39; の両方を含むコメントを検索します。
@@ -880,7 +880,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 この「AND」検索では、ダイレクトリード最適化は標準的なスキップ索引スキャンに比べて 26 倍以上高速です（0.184 秒に対して 0.007 秒）。
 
 
-### 4. 複合検索: OR、AND、NOT、... {#compound-search}
+### 4. 複合検索: OR、AND、NOT、... \{#compound-search\}
 
 ダイレクトリードの最適化は、複合的なブール式にも適用されます。
 ここでは、大文字小文字を区別せずに「ClickHouse」または「clickhouse」を検索します。
@@ -919,7 +919,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 このケースでは、`hasAnyTokens(comment, ['ClickHouse', 'clickhouse'])` が、より効率的で推奨される構文となります。
 
 
-## 関連資料 {#related-content}
+## 関連資料 \{#related-content\}
 
 - ブログ: [Introducing Inverted Indices in ClickHouse](https://clickhouse.com/blog/clickhouse-search-with-inverted-indices)
 - ブログ: [Inside ClickHouse full-text search: fast, native, and columnar](https://clickhouse.com/blog/clickhouse-full-text-search)

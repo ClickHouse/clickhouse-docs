@@ -11,7 +11,7 @@ import Image from '@theme/IdealImage';
 import aws_rds_mysql from '@site/static/images/_snippets/aws-rds-mysql.png';
 import gcp_authorized_network from '@site/static/images/_snippets/gcp-authorized-network.png';
 
-## 静态 IP API {#static-ips-api}
+## 静态 IP API \{#static-ips-api\}
 
 如果需要获取静态 IP 列表，可以使用以下 ClickHouse Cloud API 端点：[`https://api.clickhouse.cloud/static-ips.json`](https://api.clickhouse.cloud/static-ips.json)。该 API 提供 ClickHouse Cloud 服务的端点信息，例如按云和区域划分的入口/出口 IP 以及 S3 端点。
 

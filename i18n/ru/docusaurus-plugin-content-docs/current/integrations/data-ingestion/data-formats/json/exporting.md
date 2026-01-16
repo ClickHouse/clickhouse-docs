@@ -6,7 +6,7 @@ keywords: ['json', 'clickhouse', 'formats', 'exporting']
 doc_type: 'guide'
 ---
 
-# Экспорт JSON {#exporting-json}
+# Экспорт JSON \{#exporting-json\}
 
 Почти любой формат JSON, используемый для импорта, может использоваться и для экспорта. Наиболее популярный — [`JSONEachRow`](/interfaces/formats/JSONEachRow):
 
@@ -32,7 +32,7 @@ SELECT * FROM sometable FORMAT JSONCompactEachRow
 ["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", 3]
 ```
 
-## Переопределение типов данных строковым типом {#overriding-data-types-as-strings}
+## Переопределение типов данных строковым типом \{#overriding-data-types-as-strings\}
 
 ClickHouse строго следует типам данных и экспортирует JSON в соответствии со стандартами. В случаях, когда требуется, чтобы все значения были закодированы в виде строк, можно использовать формат [JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow):
 
@@ -58,7 +58,7 @@ SELECT * FROM sometable FORMAT JSONCompactStringsEachRow
 ["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", "3"]
 ```
 
-## Экспорт метаданных вместе с данными {#exporting-metadata-together-with-data}
+## Экспорт метаданных вместе с данными \{#exporting-metadata-together-with-data\}
 
 Формат [JSON](/interfaces/formats/JSON), распространённый в приложениях, экспортирует не только результирующие данные, но и типы столбцов, а также статистику запроса:
 
@@ -135,7 +135,7 @@ SELECT * FROM sometable FORMAT JSONCompact
 
 Рассмотрите использование вариантов [`JSONStrings`](/interfaces/formats/JSONStrings) или [`JSONCompactStrings`](/interfaces/formats/JSONCompactStrings) для кодирования всех значений в виде строк.
 
-## Компактный способ экспорта данных и их структуры в формате JSON {#compact-way-to-export-json-data-and-structure}
+## Компактный способ экспорта данных и их структуры в формате JSON \{#compact-way-to-export-json-data-and-structure\}
 
 Более эффективный способ получить данные вместе с их структурой — использовать формат [`JSONCompactEachRowWithNamesAndTypes`](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes):
 
@@ -153,7 +153,7 @@ SELECT * FROM sometable FORMAT JSONCompactEachRowWithNamesAndTypes
 
 Будет использован компактный формат JSON, в начале которого будут две строки заголовка с именами столбцов и их типами. Затем этот формат можно использовать для приёма данных в другой экземпляр ClickHouse (или другие приложения).
 
-## Экспорт JSON в файл {#exporting-json-to-a-file}
+## Экспорт JSON в файл \{#exporting-json-to-a-file\}
 
 Чтобы сохранить экспортируемые данные в формате JSON в файл, можно использовать клаузу [INTO OUTFILE](/sql-reference/statements/select/into-outfile.md):
 

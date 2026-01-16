@@ -18,7 +18,7 @@ import search_view from '@site/static/images/clickstack/nginx-logs-search-view.p
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# ClickStack による Nginx ログのモニタリング {#nginx-clickstack}
+# ClickStack による Nginx ログのモニタリング \{#nginx-clickstack\}
 
 :::note[要約]
 このガイドでは、OpenTelemetry collector を構成して Nginx のアクセスログをインジェストし、ClickStack で Nginx をモニタリングする方法を説明します。以下のことを行います:
@@ -33,12 +33,12 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 所要時間: 5〜10 分
 :::
 
-## 既存の Nginx との統合 {#existing-nginx}
+## 既存の Nginx との統合 \{#existing-nginx\}
 
 このセクションでは、ClickStack の OTel collector の設定を変更し、既存の Nginx 環境から ClickStack にログを送信するように構成する方法について説明します。
 既存環境を設定する前に統合の動作を試してみたい場合は、[次のセクション](/use-cases/observability/clickstack/integrations/nginx#demo-dataset)にある事前構成済みの環境とサンプルデータを使用してテストできます。
 
-##### 前提条件 {#prerequisites}
+##### 前提条件 \{#prerequisites\}
 
 - 稼働中の ClickStack インスタンス
 - 既存の Nginx 環境
@@ -193,7 +193,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### サンプルデータセットのダウンロード {#download-sample}
+#### サンプルデータセットのダウンロード \{#download-sample\}
 
 ```bash
 # ログをダウンロード
@@ -206,7 +206,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - 成功したリクエストとエラーの混在
 - 現実的なレスポンスタイムとバイト数
 
-#### テスト用 Collector 設定の作成 {#test-config}
+#### テスト用 Collector 設定の作成 \{#test-config\}
 
 次の設定を含む `nginx-demo.yaml` という名前のファイルを作成します：
 
@@ -282,7 +282,7 @@ ClickStack で nginx の監視を始めやすくするために、Nginx Logs 用
 
 #### ダッシュボード構成を<TrackedLink href={useBaseUrl('/examples/nginx-logs-dashboard.json')} download="nginx-logs-dashboard.json" eventName="docs.nginx_logs_monitoring.dashboard_download">ダウンロード</TrackedLink>する {#download}
 
-#### あらかじめ用意されたダッシュボードをインポートする {#import-dashboard}
+#### あらかじめ用意されたダッシュボードをインポートする \{#import-dashboard\}
 1. HyperDX を開き、「Dashboards」セクションに移動します。
 2. 右上の三点リーダー（…）アイコンから「Import Dashboard」をクリックします。
 
@@ -292,7 +292,7 @@ ClickStack で nginx の監視を始めやすくするために、Nginx Logs 用
 
 <Image img={finish_import} alt="インポートの完了"/>
 
-#### すべての可視化が事前設定された状態でダッシュボードが作成されます {#created-dashboard}
+#### すべての可視化が事前設定された状態でダッシュボードが作成されます \{#created-dashboard\}
 
 :::note
 デモデータセットの場合、時間範囲を **2025-10-20 11:00:00 - 2025-10-21 11:00:00 (UTC)** に設定してください（ローカルタイムゾーンに応じて調整してください）。インポートされたダッシュボードには、デフォルトでは時間範囲が指定されていません。

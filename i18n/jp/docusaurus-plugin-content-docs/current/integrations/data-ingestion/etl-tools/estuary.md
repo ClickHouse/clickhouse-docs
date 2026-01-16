@@ -13,7 +13,7 @@ keywords: ['estuary', 'データインジェスト', 'ETL', 'パイプライン'
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Estuary と ClickHouse を接続する {#connect-estuary-with-clickhouse}
+# Estuary と ClickHouse を接続する \{#connect-estuary-with-clickhouse\}
 
 <PartnerBadge/>
 
@@ -21,7 +21,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 Estuary は Kafka ClickPipe を通じて ClickHouse と接続します。この連携では、Kafka 環境を自前で構築・運用する必要はありません。
 
-## セットアップガイド {#setup-guide}
+## セットアップガイド \{#setup-guide\}
 
 **前提条件**
 
@@ -31,7 +31,7 @@ Estuary は Kafka ClickPipe を通じて ClickHouse と接続します。この�
 
 <VerticalStepper headerLevel="h3">
 
-### Estuary マテリアライゼーションを作成する {#1-create-an-estuary-materialization}
+### Estuary マテリアライゼーションを作成する \{#1-create-an-estuary-materialization\}
 
 Estuary のソースコレクションから ClickHouse にデータを移動するには、まず **マテリアライゼーション** を作成する必要があります。
 
@@ -55,7 +55,7 @@ Estuary のソースコレクションから ClickHouse にデータを移動す
 
 Estuary は、選択したコレクションを Kafka メッセージとしてストリーミングし始めます。ClickHouse は、Estuary のブローカー情報と指定した Auth Token を使用した Kafka ClickPipe 経由でこのデータにアクセスできます。
 
-### Kafka 接続情報を入力する {#2-enter-kafka-connection-details}
+### Kafka 接続情報を入力する \{#2-enter-kafka-connection-details\}
 
 ClickHouse で新しい Kafka ClickPipe をセットアップし、接続情報を入力します。
 
@@ -79,7 +79,7 @@ ClickHouse で新しい Kafka ClickPipe をセットアップし、接続情報�
    * スキーマキーはブローカーユーザー (マテリアライゼーション名) と同じ値です
    * シークレットはブローカーパスワード (Auth Token) と同じ値です
 
-### 受信データを構成する {#3-configure-incoming-data}
+### 受信データを構成する \{#3-configure-incoming-data\}
 
 1. Kafka の **トピック** の 1 つ (Estuary のデータコレクションの 1 つ) を選択します。
 
@@ -99,7 +99,7 @@ ClickHouse は新しいデータソースをプロビジョニングし、Estuar
 
 </VerticalStepper>
 
-## 追加リソース {#additional-resources}
+## 追加リソース \{#additional-resources\}
 
 Estuary との連携設定の詳細については、Estuary のドキュメントを参照してください。
 

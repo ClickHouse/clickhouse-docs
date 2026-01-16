@@ -7,7 +7,7 @@ title: 'timeSeriesData'
 doc_type: 'reference'
 ---
 
-# timeSeriesData 表函数 {#timeseriesdata-table-function}
+# timeSeriesData 表函数 \{#timeseriesdata-table-function\}
 
 `timeSeriesData(db_name.time_series_table)` - 返回表引擎为 [TimeSeries](../../engines/table-engines/integrations/time-series.md) 的表 `db_name.time_series_table` 所使用的 [data](../../engines/table-engines/integrations/time-series.md#data-table) 表。
 

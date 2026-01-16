@@ -5,7 +5,7 @@ title: 'groupBitmap'
 doc_type: 'reference'
 ---
 
-# groupBitmap {#groupbitmap}
+# groupBitmap \{#groupbitmap\}
 
 对无符号整数列进行 Bitmap 或聚合计算，返回类型为 UInt64 的基数值；如果添加后缀 -State，则返回 [bitmap 对象](../../../sql-reference/functions/bitmap-functions.md)。
 

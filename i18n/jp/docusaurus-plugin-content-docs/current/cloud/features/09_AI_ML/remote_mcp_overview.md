@@ -6,7 +6,7 @@ description: 'ClickHouse Cloud におけるリモート MCP 機能の説明'
 doc_type: 'reference'
 ---
 
-# ClickHouse Cloud 上のリモート MCP サーバー {#remote-mcp-server-in-cloud}
+# ClickHouse Cloud 上のリモート MCP サーバー \{#remote-mcp-server-in-cloud\}
 
 すべてのユーザーが ClickHouse Cloud コンソール経由で ClickHouse を操作するわけではありません。
 たとえば、多くの開発者は好みのコードエディタや CLI エージェントから直接作業したり、カスタムセットアップを通じてデータベースに接続したりします。また、Anthropic Claude のような汎用 AI アシスタントに、探索や試行の多くを任せているユーザーもいます。

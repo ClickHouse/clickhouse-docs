@@ -19,14 +19,14 @@ import retool_04 from '@site/static/images/integrations/tools/data-integration/r
 import retool_05 from '@site/static/images/integrations/tools/data-integration/retool/retool_05.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Подключение Retool к ClickHouse {#connecting-retool-to-clickhouse}
+# Подключение Retool к ClickHouse \{#connecting-retool-to-clickhouse\}
 
 <PartnerBadge/>
 
-## 1. Соберите сведения о подключении {#1-gather-your-connection-details}
+## 1. Соберите сведения о подключении \{#1-gather-your-connection-details\}
 <ConnectionDetails />
 
-## 2. Создайте ресурс ClickHouse {#2-create-a-clickhouse-resource}
+## 2. Создайте ресурс ClickHouse \{#2-create-a-clickhouse-resource\}
 
 Войдите в свой аккаунт Retool и перейдите на вкладку _Resources_. Выберите «Create New» → «Resource»:
 

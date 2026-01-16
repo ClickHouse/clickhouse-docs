@@ -7,11 +7,11 @@ title: 'Linux 上で RISC-V 64 向けに ClickHouse をビルドする方法'
 doc_type: 'guide'
 ---
 
-# Linux 上で RISC-V 64 向けに ClickHouse をビルドする方法 {#how-to-build-clickhouse-on-linux-for-risc-v-64}
+# Linux 上で RISC-V 64 向けに ClickHouse をビルドする方法 \{#how-to-build-clickhouse-on-linux-for-risc-v-64\}
 
 ClickHouse は RISC-V を実験的にサポートしています。すべての機能を有効にできるわけではありません。
 
-## ClickHouse をビルドする {#build-clickhouse}
+## ClickHouse をビルドする \{#build-clickhouse\}
 
 RISC-V ではないマシン上で RISC-V 向けにクロスコンパイルするには:
 

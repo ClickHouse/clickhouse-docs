@@ -24,7 +24,7 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 :::
 
 <VerticalStepper>
-## Создание пользовательской конфигурации OpenTelemetry {#create-otel-configuration}
+## Создание пользовательской конфигурации OpenTelemetry \{#create-otel-configuration\}
 
   Создайте файл `custom-local-config.yaml` со следующим содержимым:
 
@@ -104,7 +104,7 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 
   Подробнее о структуре конфигурации OpenTelemetry (OTel) см. в [официальном руководстве](https://opentelemetry.io/docs/collector/configuration/).
 
-## Запуск ClickStack с пользовательской конфигурацией {#start-clickstack}
+## Запуск ClickStack с пользовательской конфигурацией \{#start-clickstack\}
 
   Выполните следующую команду docker для запуска универсального контейнера с вашей конфигурацией:
 
@@ -144,17 +144,17 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 
   Коллектор немедленно начнёт сбор локальных системных журналов и метрик.
 
-## Переход к интерфейсу HyperDX {#navigate-to-the-hyperdx-ui}
+## Переход к интерфейсу HyperDX \{#navigate-to-the-hyperdx-ui\}
 
   Перейдите по адресу [http://localhost:8080](http://localhost:8080) для доступа к интерфейсу HyperDX при локальном развёртывании. При использовании HyperDX в ClickHouse Cloud выберите ваш сервис и пункт `HyperDX` в меню слева.
 
-## Изучение системных логов {#explore-system-logs}
+## Изучение системных логов \{#explore-system-logs\}
 
   В интерфейсе поиска должны отобразиться локальные системные логи. Разверните фильтры и выберите `system.log`:
 
   <Image img={hyperdx_20} alt="Локальные логи HyperDX" size="lg" />
 
-## Изучение системных метрик {#explore-system-metrics}
+## Изучение системных метрик \{#explore-system-metrics\}
 
   Метрики можно изучать с помощью графиков.
 

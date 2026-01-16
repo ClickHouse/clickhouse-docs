@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.processors&#95;profile&#95;log {#systemprocessors&#95;profile&#95;log}
+# system.processors&#95;profile&#95;log \{#systemprocessors&#95;profile&#95;log\}
 
 <SystemTableCloud />
 

@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✗      |       |
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 `Regex` フォーマットは、指定された正規表現に従って、インポートされたデータの各行をパースします。
 
@@ -27,7 +27,7 @@ doc_type: 'reference'
 
 正規表現が行にマッチせず、かつ [format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_escaping_rule) が 1 に設定されている場合、その行は何の通知もなくスキップされます。そうでない場合は、例外がスローされます。
 
-## 使用例 {#example-usage}
+## 使用例 \{#example-usage\}
 
 `data.tsv` というファイルがあるとします。
 
@@ -63,7 +63,7 @@ SELECT * FROM imp_regex_table;
 └────┴─────────┴────────┴────────────┘
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \{#format-settings\}
 
 `Regexp` フォーマットを使用する場合、次の設定を使用できます。
 

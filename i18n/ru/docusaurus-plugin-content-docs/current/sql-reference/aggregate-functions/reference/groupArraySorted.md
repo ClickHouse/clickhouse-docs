@@ -5,7 +5,7 @@ title: 'groupArraySorted'
 doc_type: 'reference'
 ---
 
-# groupArraySorted {#grouparraysorted}
+# groupArraySorted \{#grouparraysorted\}
 
 Возвращает массив с первыми N элементами в порядке возрастания.
 

@@ -5,7 +5,7 @@ title: 'exponentialTimeDecayedMax'
 doc_type: 'reference'
 ---
 
-## exponentialTimeDecayedMax {#exponentialtimedecayedmax}
+## exponentialTimeDecayedMax \{#exponentialtimedecayedmax\}
 
 Возвращает максимум между вычисленным экспоненциально сглаженным скользящим средним в момент времени с индексом `t` и значением в момент времени с индексом `t-1`.
 

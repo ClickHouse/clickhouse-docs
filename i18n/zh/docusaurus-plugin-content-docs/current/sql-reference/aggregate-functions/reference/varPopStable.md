@@ -5,7 +5,7 @@ title: 'varPopStable'
 doc_type: 'reference'
 ---
 
-## varPopStable {#varpopstable}
+## varPopStable \{#varpopstable\}
 
 返回总体方差。与 [`varPop`](../reference/varPop.md) 不同，此函数使用一种[数值上更稳定](https://en.wikipedia.org/wiki/Numerical_stability)的算法。它的运行速度较慢，但计算误差更小。
 

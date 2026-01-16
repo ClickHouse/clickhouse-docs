@@ -16,7 +16,7 @@ LDAP サーバーは ClickHouse ユーザーの認証に使用できます。こ
 
 これら 2 つのアプローチのいずれにおいても、ClickHouse の設定内で内部名を持つ LDAP サーバーを定義し、設定の他の箇所からそれを参照できるようにする必要があります。
 
-## LDAP サーバーの定義 {#ldap-server-definition}
+## LDAP サーバーの定義 \{#ldap-server-definition\}
 
 LDAP サーバーを定義するには、`config.xml` に `ldap_servers` セクションを追加する必要があります。
 
@@ -90,7 +90,7 @@ LDAP サーバーを定義するには、`config.xml` に `ldap_servers` セク�
 * `tls_ca_cert_dir` — CA 証明書を含むディレクトリへのパス。
 * `tls_cipher_suite` — 許可される暗号スイート（OpenSSL の表記）。
 
-## LDAP 外部認証 {#ldap-external-authenticator}
+## LDAP 外部認証 \{#ldap-external-authenticator\}
 
 リモートの LDAP サーバーを、ローカルで定義されたユーザー（`users.xml` またはローカルのアクセス制御パスで定義されたユーザー）のパスワード検証方法として使用できます。これを行うには、ユーザー定義内で `password` などのセクションの代わりに、事前に定義した LDAP サーバー名を指定します。
 
@@ -123,7 +123,7 @@ SQL 駆動の[アクセス制御とアカウント管理](/operations/access-rig
 CREATE USER my_user IDENTIFIED WITH ldap SERVER 'my_ldap_server';
 ```
 
-## LDAP 外部ユーザーディレクトリ {#ldap-external-user-directory}
+## LDAP 外部ユーザーディレクトリ \{#ldap-external-user-directory\}
 
 ローカルで定義されたユーザーに加えて、リモートの LDAP サーバーをユーザー定義のソースとして使用できます。これを行うには、`config.xml` ファイルの `users_directories` セクション内の `ldap` セクションで、事前に定義した LDAP サーバー名（[LDAP Server Definition](#ldap-server-definition) を参照）を指定します。
 

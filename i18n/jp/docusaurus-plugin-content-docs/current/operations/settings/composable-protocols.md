@@ -7,13 +7,13 @@ title: 'コンポーザブルプロトコル'
 doc_type: 'reference'
 ---
 
-# 合成可能なプロトコル {#composable-protocols}
+# 合成可能なプロトコル \{#composable-protocols\}
 
-## 概要 {#overview}
+## 概要 \{#overview\}
 
 Composable プロトコルを使用すると、ClickHouse サーバーへの TCP アクセスをより柔軟に設定できます。この設定は、従来の設定と併用することも、置き換えることもできます。
 
-## コンポーザブルプロトコルの設定 {#composable-protocols-section-is-denoted-as-protocols-in-configuration-xml}
+## コンポーザブルプロトコルの設定 \{#composable-protocols-section-is-denoted-as-protocols-in-configuration-xml\}
 
 コンポーザブルプロトコルは XML 設定ファイルで設定できます。`protocols` セクションは、XML 設定ファイル内で `protocols` タグで表されます。
 
@@ -23,7 +23,7 @@ Composable プロトコルを使用すると、ClickHouse サーバーへの TCP
 </protocols>
 ```
 
-### プロトコルレイヤーの設定 {#basic-modules-define-protocol-layers}
+### プロトコルレイヤーの設定 \{#basic-modules-define-protocol-layers\}
 
 プロトコルレイヤーは基本モジュールを使用して定義できます。たとえば、HTTP レイヤーを定義するには、`protocols` セクションに新しい基本モジュールを追加します。
 
@@ -56,7 +56,7 @@ Composable プロトコルを使用すると、ClickHouse サーバーへの TCP
 `gRPC` プロトコルハンドラは `Composable protocols` では実装されていません。
 :::
 
-### エンドポイントの設定 {#endpoint-ie-listening-port-is-denoted-by-port-and-optional-host-tags}
+### エンドポイントの設定 \{#endpoint-ie-listening-port-is-denoted-by-port-and-optional-host-tags\}
 
 エンドポイント（待ち受けポート）は `<port>` と、任意の `<host>` タグで指定します。
 例えば、先ほど追加した HTTP レイヤーに対してエンドポイントを設定するには、
@@ -79,7 +79,7 @@ Composable プロトコルを使用すると、ClickHouse サーバーへの TCP
 
 `<host>` タグが省略された場合は、ルート設定の `<listen_host>` が使用されます。
 
-### レイヤーシーケンスの設定 {#layers-sequence-is-defined-by-impl-tag-referencing-another-module}
+### レイヤーシーケンスの設定 \{#layers-sequence-is-defined-by-impl-tag-referencing-another-module\}
 
 レイヤーシーケンスは `<impl>` タグを使用し、別のモジュールを参照することで定義します。例えば、`plain_http` モジュールの上に TLS レイヤーを構成するには、設定を次のようにさらに変更できます。
 
@@ -102,7 +102,7 @@ Composable プロトコルを使用すると、ClickHouse サーバーへの TCP
 </protocols>
 ```
 
-### レイヤーにエンドポイントを関連付ける {#endpoint-can-be-attached-to-any-layer}
+### レイヤーにエンドポイントを関連付ける \{#endpoint-can-be-attached-to-any-layer\}
 
 エンドポイントは任意のレイヤーに関連付けることができます。たとえば、HTTP（ポート 8123）および HTTPS（ポート 8443）向けのエンドポイントを定義できます。
 
@@ -125,7 +125,7 @@ Composable プロトコルを使用すると、ClickHouse サーバーへの TCP
 </protocols>
 ```
 
-### 追加のエンドポイントの定義 {#additional-endpoints-can-be-defined-by-referencing-any-module-and-omitting-type-tag}
+### 追加のエンドポイントの定義 \{#additional-endpoints-can-be-defined-by-referencing-any-module-and-omitting-type-tag\}
 
 追加のエンドポイントは、任意のモジュールを参照し、`<type>` タグを省略することで定義できます。たとえば、`plain_http` モジュールに対する `another_http` エンドポイントを次のように定義できます。
 
@@ -154,7 +154,7 @@ Composable プロトコルを使用すると、ClickHouse サーバーへの TCP
 </protocols>
 ```
 
-### 追加のレイヤーパラメータの指定 {#some-modules-can-contain-specific-for-its-layer-parameters}
+### 追加のレイヤーパラメータの指定 \{#some-modules-can-contain-specific-for-its-layer-parameters\}
 
 一部のモジュールには、追加のレイヤーパラメータが含まれる場合があります。たとえば、TLS レイヤーでは
 秘密鍵ファイル（`privateKeyFile`）および証明書ファイル（`certificateFile`）を

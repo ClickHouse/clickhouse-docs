@@ -7,7 +7,7 @@ title: 'first_value'
 doc_type: 'reference'
 ---
 
-# first&#95;value {#first&#95;value}
+# first&#95;value \{#first&#95;value\}
 
 順序付けされたフレーム内で評価される最初の値を返します。デフォルトでは NULL 引数はスキップされますが、この動作は `RESPECT NULLS` 修飾子を使用して上書きできます。
 

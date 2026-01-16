@@ -7,19 +7,19 @@ title: 'generateRandom'
 doc_type: 'reference'
 ---
 
-# Табличная функция generateRandom {#generaterandom-table-function}
+# Табличная функция generateRandom \{#generaterandom-table-function\}
 
 Генерирует случайные данные с заданной схемой.
 Позволяет заполнять тестовые таблицы этими данными.
 Поддерживаются не все типы данных.
 
-## Синтаксис {#syntax}
+## Синтаксис \{#syntax\}
 
 ```sql
 generateRandom(['name TypeName[, name TypeName]...', [, 'random_seed'[, 'max_string_length'[, 'max_array_length']]]])
 ```
 
-## Аргументы {#arguments}
+## Аргументы \{#arguments\}
 
 | Аргумент            | Описание                                                                                       |
 |---------------------|------------------------------------------------------------------------------------------------|
@@ -29,11 +29,11 @@ generateRandom(['name TypeName[, name TypeName]...', [, 'random_seed'[, 'max_str
 | `max_string_length` | Максимальная длина для всех сгенерированных строк. По умолчанию `10`.                          |
 | `max_array_length`  | Максимальное количество элементов для всех сгенерированных массивов или map-ов. По умолчанию `10`. |
 
-## Возвращаемое значение {#returned_value}
+## Возвращаемое значение \{#returned_value\}
 
 Объект таблицы с запрошенной схемой.
 
-## Пример использования {#usage-example}
+## Пример использования \{#usage-example\}
 
 ```sql
 SELECT * FROM generateRandom('a Array(Int8), d Decimal32(4), c Tuple(DateTime64(3), UUID)', 1, 10, 2) LIMIT 3;
@@ -106,5 +106,5 @@ SELECT * FROM generateRandom(11) LIMIT 3;
 `generateRandom(generateRandomStructure(), [random seed], max_string_length, max_array_length)` с достаточно большим значением `max_array_length` может сгенерировать очень большой результат из-за потенциально большой глубины вложенности (до 16) составных типов (`Array`, `Tuple`, `Map`, `Nested`).
 :::
 
-## Связанные материалы {#related-content}
+## Связанные материалы \{#related-content\}
 - Блог: [Генерация случайных данных в ClickHouse](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)

@@ -17,7 +17,7 @@ import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# 将 Streamkap 连接到 ClickHouse {#connect-streamkap-to-clickhouse}
+# 将 Streamkap 连接到 ClickHouse \{#connect-streamkap-to-clickhouse\}
 
 <PartnerBadge/>
 
@@ -27,7 +27,7 @@ Streamkap 允许将来自 PostgreSQL、MySQL、SQL Server、MongoDB 等源数据
 
 因此，它非常适合支撑实时分析型仪表盘、运营分析，以及为机器学习模型持续提供实时数据。
 
-## Key Features {#key-features}
+## Key Features \{#key-features\}
 
 - **Real-time Streaming CDC:** Streamkap 直接从数据库日志中捕获变更，确保 ClickHouse 中的数据始终是源数据库的实时副本。
 Simplified Stream Processing: 在数据写入 ClickHouse 之前，以实时方式对数据进行转换、丰富、路由、格式化，并创建 embeddings。由 Flink 提供驱动，同时对用户屏蔽其复杂性。
@@ -40,17 +40,17 @@ Simplified Stream Processing: 在数据写入 ClickHouse 之前，以实时方�
 
 - **Resilient Delivery:** 该平台提供至少一次投递（at-least-once）保证，确保源端与 ClickHouse 之间的数据一致性。对于 upsert 操作，它会基于主键执行去重。
 
-## 入门 {#started}
+## 入门 \{#started\}
 
 本指南概述了如何配置 Streamkap 数据管道，将数据加载到 ClickHouse 中。
 
-### 前提条件 {#prerequisites}
+### 前提条件 \{#prerequisites\}
 
 - 一个 <a href="https://app.streamkap.com/account/sign-up" target="_blank">Streamkap 帐户</a>。
 - 您的 ClickHouse 集群连接信息：主机名（Hostname）、端口（Port）、用户名（Username）和密码（Password）。
 - 一个已配置为允许 CDC（变更数据捕获）的源数据库（例如 PostgreSQL、SQL Server）。您可以在 Streamkap 文档中找到详细的设置指南。
 
-### 步骤 1：在 Streamkap 中配置数据源 {#configure-clickhouse-source}
+### 步骤 1：在 Streamkap 中配置数据源 \{#configure-clickhouse-source\}
 
 1. 登录到你的 Streamkap 账户。
 2. 在侧边栏中进入 **Connectors**，然后选择 **Sources** 选项卡。
@@ -58,7 +58,7 @@ Simplified Stream Processing: 在数据写入 ClickHouse 之前，以实时方�
 4. 填写连接配置信息，包括端点（endpoint）、端口、数据库名称和用户凭据。
 5. 保存该连接器。
 
-### 步骤 2：配置 ClickHouse 目标 {#configure-clickhouse-dest}
+### 步骤 2：配置 ClickHouse 目标 \{#configure-clickhouse-dest\}
 
 1. 在 **Connectors** 部分中，选择 **Destinations** 选项卡。
 2. 点击 **+ Add**，并从列表中选择 **ClickHouse**。
@@ -69,7 +69,7 @@ Simplified Stream Processing: 在数据写入 ClickHouse 之前，以实时方�
    - **Database：** ClickHouse 中的目标数据库名称
 4. 保存该目标。
 
-### 步骤 3：创建并运行 Pipeline {#run-pipeline}
+### 步骤 3：创建并运行 Pipeline \{#run-pipeline\}
 
 1. 在侧边栏中点击 **Pipelines**，然后点击 **+ Create**。
 2. 选择你刚刚配置好的 Source 和 Destination。
@@ -78,7 +78,7 @@ Simplified Stream Processing: 在数据写入 ClickHouse 之前，以实时方�
 
 创建完成后，pipeline 会自动激活。Streamkap 会先对现有数据进行一次快照，然后在有新变更发生时开始持续进行流式传输。
 
-### 步骤 4：在 ClickHouse 中验证数据 {#verify-data-clickhoouse}
+### 步骤 4：在 ClickHouse 中验证数据 \{#verify-data-clickhoouse\}
 
 连接到你的 ClickHouse 集群，运行查询以查看写入目标表的数据。
 
@@ -87,11 +87,11 @@ SELECT * FROM your_table_name LIMIT 10;
 ```
 
 
-## 与 ClickHouse 的工作原理 {#how-it-works-with-clickhouse}
+## 与 ClickHouse 的工作原理 \{#how-it-works-with-clickhouse\}
 
 Streamkap 集成专为在 ClickHouse 中高效管理 CDC 数据而设计。
 
-### 表引擎和数据处理 {#table-engine-data-handling}
+### 表引擎和数据处理 \{#table-engine-data-handling\}
 
 默认情况下，Streamkap 使用 upsert 摄取模式。在 ClickHouse 中创建表时，它会使用 ReplacingMergeTree 引擎。此引擎非常适合处理 CDC 事件：
 
@@ -102,7 +102,7 @@ Streamkap 集成专为在 ClickHouse 中高效管理 CDC 数据而设计。
 - **删除**通过一个元数据标志映射到 ReplacingMergeTree 的 ```is_deleted``` 参数来处理。源端被删除的行不会立即被移除，而是被标记为已删除。
   - 可以选择在 ClickHouse 中保留这些已删除记录，以便用于分析
 
-### 元数据列 {#metadata-columns}
+### 元数据列 \{#metadata-columns\}
 
 Streamkap 为每个表添加了多个元数据列，用于管理数据状态：
 
@@ -113,7 +113,7 @@ Streamkap 为每个表添加了多个元数据列，用于管理数据状态：
 | `__DELETED`               | 一个布尔标志位（`true`/`false`），指示该行是否在源端被删除。                      |
 | `_STREAMKAP_OFFSET`       | 来自 Streamkap 内部日志的偏移量值，用于排序和调试。                             |
 
-### 查询最新数据 {#query-latest-data}
+### 查询最新数据 \{#query-latest-data\}
 
 由于 ReplacingMergeTree 在后台处理更新和删除操作，在合并完成之前，简单的 SELECT * 查询可能会显示历史或已删除的行。若要获取数据的最新状态，必须过滤掉已删除的记录，并且只选择每一行的最新版本。
 
@@ -141,7 +141,7 @@ GROUP BY key;
 在生产环境场景下，对于存在并发且反复执行的终端用户查询，可以使用 materialized view 对数据进行建模，使其更好地匹配下游的访问模式。
 
 
-## 延伸阅读 {#further-reading}
+## 延伸阅读 \{#further-reading\}
 
 - <a href="https://streamkap.com/" target="_blank">Streamkap 网站</a>
 - <a href="https://docs.streamkap.com/clickhouse" target="_blank">Streamkap 的 ClickHouse 文档</a>

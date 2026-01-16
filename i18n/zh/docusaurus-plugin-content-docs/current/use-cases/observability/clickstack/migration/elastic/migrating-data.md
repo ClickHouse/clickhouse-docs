@@ -11,7 +11,7 @@ keywords: ['ClickStack']
 doc_type: 'guide'
 ---
 
-## 并行运行策略 {#parallel-operation-strategy}
+## 并行运行策略 \{#parallel-operation-strategy\}
 
 在将可观测性场景从 Elastic 迁移到 ClickStack 时，我们推荐采用**并行运行**的方法，而不是尝试迁移历史数据。此策略具有以下优势：
 
@@ -25,7 +25,7 @@ doc_type: 'guide'
 我们在 ["Migrating data"](#migrating-data) 章节中演示了从 Elasticsearch 向 ClickHouse 迁移关键数据的一种方法。对于更大规模的数据集不应采用该方法，因为其性能往往不佳——受限于 Elasticsearch 的导出效率，且仅支持 JSON 格式。
 :::
 
-### 实施步骤 {#implementation-steps}
+### 实施步骤 \{#implementation-steps\}
 
 1. **配置双重摄取**
 
@@ -57,7 +57,7 @@ doc_type: 'guide'
 - 随着 Elastic 中的数据自然过期，你会逐步更多地依赖 ClickStack
 - 一旦对 ClickStack 建立了足够信心，即可开始将查询和仪表盘重定向到 ClickStack
 
-### 长期保留 {#long-term-retention}
+### 长期保留 \{#long-term-retention\}
 
 对于需要更长数据保留周期的组织：
 
@@ -65,7 +65,7 @@ doc_type: 'guide'
 - 利用 ClickStack 的 [分层存储](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes) 功能高效管理长期数据。
 - 考虑使用 [物化视图](/materialized-view/incremental-materialized-view) 来维护聚合或过滤后的历史数据，同时允许原始数据过期。
 
-### 迁移时间线 {#migration-timeline}
+### 迁移时间线 \{#migration-timeline\}
 
 迁移时间线取决于数据保留要求：
 
@@ -73,11 +73,11 @@ doc_type: 'guide'
 - **更长保留期**：在 Elastic 中的数据过期之前，继续保持并行运行。
 - **历史数据**：如确有必要，可考虑使用 [迁移数据](#migrating-data) 来导入特定的历史数据。
 
-## 迁移设置 {#migration-settings}
+## 迁移设置 \{#migration-settings\}
 
 从 Elastic 迁移到 ClickStack 时，需要调整索引和存储设置以适应 ClickHouse 的架构。Elasticsearch 依赖水平扩展和分片来获得性能和容错能力，因此默认采用多个分片；而 ClickHouse 针对垂直扩展进行了优化，通常在分片较少的情况下可以获得最佳性能。
 
-### 推荐设置 {#recommended-settings}
+### 推荐设置 \{#recommended-settings\}
 
 我们建议从**单个分片**开始，并进行纵向扩展。此配置适用于大多数可观测性工作负载，同时简化管理和查询性能优化。
 
@@ -89,7 +89,7 @@ doc_type: 'guide'
   - 在需要高可用性时使用 [`ReplicatedMergeTree`](/engines/table-engines/mergetree-family/replication)
   - 为实现容错能力，[1 个分片副本](/engines/table-engines/mergetree-family/replication)通常已足以满足可观测性工作负载的需求。
 
-### 何时进行分片 {#when-to-shard}
+### 何时进行分片 \{#when-to-shard\}
 
 在以下情况下，可能需要进行分片：
 
@@ -99,7 +99,7 @@ doc_type: 'guide'
 
 如果确实需要分片，请参考[横向扩展](/architecture/horizontal-scaling)，获取关于分片键和分布式表设置的指导。
 
-### 数据保留与 TTL {#retention-and-ttl}
+### 数据保留与 TTL \{#retention-and-ttl\}
 
 ClickHouse 在 MergeTree 表上使用 [TTL 子句](/use-cases/observability/clickstack/production#configure-ttl) 来管理数据过期。TTL 策略可以：
 
@@ -109,7 +109,7 @@ ClickHouse 在 MergeTree 表上使用 [TTL 子句](/use-cases/observability/clic
 
 我们建议将 ClickHouse 的 TTL 配置与现有的 Elastic 保留策略保持一致，以便在迁移期间维持统一的数据生命周期。示例请参见 [ClickStack 生产环境 TTL 配置](/use-cases/observability/clickstack/production#configure-ttl)。
 
-## 迁移数据 {#migrating-data}
+## 迁移数据 \{#migrating-data\}
 
 虽然我们建议对大多数可观测性数据采用并行运行的方式，但在某些特定情况下，可能需要将数据从 Elasticsearch 直接迁移到 ClickHouse：
 

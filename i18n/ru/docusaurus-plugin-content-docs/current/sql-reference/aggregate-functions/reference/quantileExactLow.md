@@ -5,7 +5,7 @@ title: 'quantileExactLow'
 doc_type: 'reference'
 ---
 
-# quantileExactLow {#quantileexactlow}
+# quantileExactLow \{#quantileexactlow\}
 
 Аналогично функции `quantileExact`, эта функция вычисляет точный [квантиль](https://en.wikipedia.org/wiki/Quantile) последовательности числовых данных.
 

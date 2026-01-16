@@ -7,7 +7,7 @@ doc_type: 'reference'
 
 
 
-## varSamp {#varsamp}
+## varSamp \{#varsamp\}
 
 データセットの標本分散を計算します。
 

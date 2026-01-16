@@ -15,15 +15,15 @@ import DataTypeMapping from './_snippets/data-types-matching.md'
 | -- | -- | ----- |
 | ✔  | ✔  |       |
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 [Apache Avro](https://avro.apache.org/) は、効率的なデータ処理のためにバイナリエンコーディングを使用する行指向のシリアル化フォーマットです。`Avro` フォーマットは、[Avro データファイル](https://avro.apache.org/docs/++version++/specification/#object-container-files) の読み書きをサポートします。このフォーマットは、スキーマを埋め込んだ自己記述型のメッセージを前提としています。Avro をスキーマレジストリと併用している場合は、[`AvroConfluent`](./AvroConfluent.md) フォーマットを参照してください。
 
-## データ型マッピング {#data-type-mapping}
+## データ型マッピング \{#data-type-mapping\}
 
 <DataTypeMapping/>
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \{#format-settings\}
 
 | 設定                                         | 説明                                                                                                  | デフォルト |
 |---------------------------------------------|-----------------------------------------------------------------------------------------------------|-----------|
@@ -34,9 +34,9 @@ import DataTypeMapping from './_snippets/data-types-matching.md'
 | `output_format_avro_string_column_pattern`  | Avro の `string` 型にマッピングする対象となる `String` 列を識別するための正規表現。デフォルトでは、ClickHouse の `String` 列は Avro の `bytes` 型として書き出される。 |           |
 | `output_format_avro_rows_in_file`           | 1 つの Avro 出力ファイルあたりの最大行数。この上限に達すると、新しいファイルが作成される（ストレージシステムがファイル分割をサポートしている場合）。 | `1`       |
 
-## 例 {#examples}
+## 例 \{#examples\}
 
-### Avro データの読み取り {#reading-avro-data}
+### Avro データの読み取り \{#reading-avro-data\}
 
 Avro ファイルから ClickHouse テーブルにデータを読み込むには、次のとおりです。
 
@@ -54,7 +54,7 @@ ClickHouse テーブルのカラムのデータ型は、挿入される Avro デ
 データをインポートする際、スキーマ内でフィールドが見つからず、設定 [`input_format_avro_allow_missing_fields`](/operations/settings/settings-formats.md/#input_format_avro_allow_missing_fields) が有効になっている場合は、エラーを発生させる代わりにデフォルト値が使用されます。
 
 
-### Avro データの書き込み {#writing-avro-data}
+### Avro データの書き込み \{#writing-avro-data\}
 
 ClickHouse テーブルのデータを Avro ファイルに書き出すには、次のようにします。
 
@@ -69,7 +69,7 @@ $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Avro" > file.avro
 
 Avro ファイルの出力圧縮と同期間隔は、それぞれ [`output_format_avro_codec`](/operations/settings/settings-formats.md/#output_format_avro_codec) および [`output_format_avro_sync_interval`](/operations/settings/settings-formats.md/#output_format_avro_sync_interval) 設定を使用して構成できます。
 
-### Avro スキーマの推論 {#inferring-the-avro-schema}
+### Avro スキーマの推論 \{#inferring-the-avro-schema\}
 
 ClickHouse の [`DESCRIBE`](/sql-reference/statements/describe-table) 関数を使用すると、次の例のように Avro ファイルの推論されたスキーマをすばやく確認できます。
 この例には、ClickHouse の S3 パブリックバケット内にある、公開アクセス可能な Avro ファイルの URL が含まれています。

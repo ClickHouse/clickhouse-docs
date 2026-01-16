@@ -10,7 +10,7 @@ keywords: ['多区域', '复制', '地理分布式', '分布式系统', '数据�
 
 
 
-# ClickHouse 是否支持多区域复制？ {#does-clickhouse-support-multi-region-replication}
+# ClickHouse 是否支持多区域复制？ \{#does-clickhouse-support-multi-region-replication\}
 
 简要回答是“支持”。不过，我们建议各区域 / 机房之间的时延保持在两位数毫秒级范围内，否则由于需要经过分布式共识协议，写入性能会受到影响。比如，美国东西海岸之间的复制通常可以正常工作，但美国和欧洲之间则不太适合。
 

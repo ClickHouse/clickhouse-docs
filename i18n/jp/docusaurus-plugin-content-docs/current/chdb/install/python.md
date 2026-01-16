@@ -7,21 +7,21 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'install']
 doc_type: 'guide'
 ---
 
-## 前提条件 {#requirements}
+## 前提条件 \{#requirements\}
 
 - Python 3.8以降
 - サポートされるプラットフォーム：macOS および Linux（x86_64 および ARM64）
 
-## インストール {#install}
+## インストール \{#install\}
 
 ```bash
 pip install chdb
 ```
 
 
-## 使用方法 {#usage} 
+## 使用方法 \{#usage\}
 
-### コマンドラインインターフェイス {#command-line-interface}
+### コマンドラインインターフェイス \{#command-line-interface\}
 
 コマンドラインから直接 SQL クエリを実行できます：
 
@@ -34,7 +34,7 @@ python3 -m chdb "SELECT version()" JSON
 ```
 
 
-### Python の基本的な使い方 {#basic-python-usage}
+### Python の基本的な使い方 \{#basic-python-usage\}
 
 ```python
 import chdb
@@ -50,7 +50,7 @@ print(f"Execution time: {result.elapsed()} seconds")
 ```
 
 
-### 接続ベースの API（推奨） {#connection-based-api}
+### 接続ベースの API（推奨） \{#connection-based-api\}
 
 リソース管理とパフォーマンスを向上させるには：
 
@@ -85,9 +85,9 @@ conn.close()
 ```
 
 
-## データ取り込み方法 {#data-input}
+## データ取り込み方法 \{#data-input\}
 
-### ファイルベースのデータソース {#file-based-data-sources}
+### ファイルベースのデータソース \{#file-based-data-sources\}
 
 chDB はファイルを直接クエリするために、70 以上のデータ形式をサポートしています。
 
@@ -119,7 +119,7 @@ result = chdb.query("""
 ```
 
 
-### 出力形式の例 {#output-format-examples}
+### 出力形式の例 \{#output-format-examples\}
 
 ```python
 # DataFrame for analysis
@@ -140,9 +140,9 @@ print(pretty_result)
 ```
 
 
-### DataFrame の操作 {#dataframe-operations}
+### DataFrame の操作 \{#dataframe-operations\}
 
-#### レガシーな DataFrame API {#legacy-dataframe-api}
+#### レガシーな DataFrame API \{#legacy-dataframe-api\}
 
 ```python
 import chdb.dataframe as cdf
@@ -165,7 +165,7 @@ print(summary)
 ```
 
 
-#### Python テーブルエンジン（推奨） {#python-table-engine-recommended}
+#### Python テーブルエンジン（推奨） \{#python-table-engine-recommended\}
 
 ```python
 import chdb
@@ -213,7 +213,7 @@ chdb.query("""
 ```
 
 
-### ステートフルセッション {#stateful-sessions}
+### ステートフルセッション \{#stateful-sessions\}
 
 セッションは複数の操作にまたがってクエリの状態を保持し、複雑なワークフローを実現します。
 
@@ -268,7 +268,7 @@ sess.close()  # Optional - auto-closed when object is deleted
 ```
 
 
-### セッションの高度な機能 {#advanced-session-features}
+### セッションの高度な機能 \{#advanced-session-features\}
 
 ```python
 # Session with custom settings
@@ -289,7 +289,7 @@ result = sess.query("""
 こちらも参照してください: [test&#95;stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py).
 
 
-### Python DB-API 2.0 インターフェース {#python-db-api-20}
+### Python DB-API 2.0 インターフェース \{#python-db-api-20\}
 
 既存の Python アプリケーションとの互換性を保つための標準的なデータベースインターフェースです。
 
@@ -338,11 +338,11 @@ cursor.executemany(
 ```
 
 
-### ユーザー定義関数 (UDF) {#user-defined-functions}
+### ユーザー定義関数 (UDF) \{#user-defined-functions\}
 
 独自の Python 関数で SQL を拡張します。
 
-#### UDF の基本的な使い方 {#basic-udf-usage}
+#### UDF の基本的な使い方 \{#basic-udf-usage\}
 
 ```python
 from chdb.udf import chdb_udf
@@ -379,7 +379,7 @@ print(result)
 ```
 
 
-#### カスタム戻り値型を使用する高度な UDF {#advanced-udf-custom-return-types}
+#### カスタム戻り値型を使用する高度な UDF \{#advanced-udf-custom-return-types\}
 
 ```python
 # UDF with specific return type
@@ -414,7 +414,7 @@ print(result)
 ```
 
 
-#### UDF のベストプラクティス {#udf-best-practices}
+#### UDF のベストプラクティス \{#udf-best-practices\}
 
 1. **ステートレス関数**: UDF は副作用のない純粋関数であるべきです
 2. **関数内でのインポート**: 必要なすべてのモジュールは UDF 内でインポートする必要があります
@@ -450,7 +450,7 @@ query("""
 ```
 
 
-### ストリーミングクエリ処理 {#streaming-queries}
+### ストリーミングクエリ処理 \{#streaming-queries\}
 
 一定のメモリ使用量で大規模なデータセットを処理します。
 
@@ -521,9 +521,9 @@ sess.close()
 ```
 
 
-### Python テーブルエンジン {#python-table-engine}
+### Python テーブルエンジン \{#python-table-engine\}
 
-#### Pandas の DataFrame をクエリする {#query-pandas-dataframes}
+#### Pandas の DataFrame をクエリする \{#query-pandas-dataframes\}
 
 ```python
 import chdb
@@ -579,7 +579,7 @@ print(window_result)
 ```
 
 
-#### PyReader を使用したカスタムデータソース {#custom-data-sources-pyreader}
+#### PyReader を使用したカスタムデータソース \{#custom-data-sources-pyreader\}
 
 特殊なデータソース向けにカスタムデータリーダーを実装します。
 

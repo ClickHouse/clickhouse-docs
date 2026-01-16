@@ -11,7 +11,7 @@ keywords: ['Elasticsearch']
 doc_type: 'guide'
 ---
 
-## Миграция на ClickStack с Elastic {#migrating-to-clickstack-from-elastic}
+## Миграция на ClickStack с Elastic \{#migrating-to-clickstack-from-elastic\}
 
 Это руководство предназначено для пользователей, мигрирующих с Elastic Stack — в частности, для тех, кто использует Kibana для мониторинга логов, трейсов и метрик, собираемых через Elastic Agent и хранимых в Elasticsearch. В нём описаны эквивалентные концепции и типы данных в ClickStack, объясняется, как переводить основанные на Lucene запросы Kibana в синтаксис HyperDX, а также даются рекомендации по миграции как данных, так и агентов для плавного перехода.
 

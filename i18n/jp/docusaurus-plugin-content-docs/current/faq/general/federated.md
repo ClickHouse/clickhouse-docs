@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['federated', 'hybrid', 'postgres', 'mysql', 'sqlite', 'odbc', 'jdbc']
 ---
 
-# ClickHouse はフェデレーテッドクエリをサポートしていますか？ {#does-clickhouse-support-federated-queries}
+# ClickHouse はフェデレーテッドクエリをサポートしていますか？ \{#does-clickhouse-support-federated-queries\}
 
 ClickHouse は、分析用データベースの中でもフェデレーテッドクエリおよびハイブリッドクエリ実行について、最も包括的なサポートを提供します。
 

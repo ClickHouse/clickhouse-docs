@@ -5,7 +5,7 @@ title: 'exponentialTimeDecayedSum'
 doc_type: 'reference'
 ---
 
-## exponentialTimeDecayedSum {#exponentialtimedecayedsum}
+## exponentialTimeDecayedSum \{#exponentialtimedecayedsum\}
 
 Возвращает сумму значений экспоненциально сглаженного скользящего среднего для временного ряда в момент времени с индексом `t`.
 

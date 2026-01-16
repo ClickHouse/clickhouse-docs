@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Интерфейс PostgreSQL {#postgresql-interface}
+# Интерфейс PostgreSQL \{#postgresql-interface\}
 
 <CloudNotSupportedBadge />
 
@@ -29,7 +29,7 @@ ClickHouse поддерживает сетевой протокол PostgreSQL (
 {} <Information> Application: Listening for PostgreSQL compatibility protocol: 127.0.0.1:9005
 ```
 
-## Подключение psql к ClickHouse {#connect-psql-to-clickhouse}
+## Подключение psql к ClickHouse \{#connect-psql-to-clickhouse\}
 
 Следующая команда показывает, как подключить клиент PostgreSQL `psql` к ClickHouse:
 
@@ -65,7 +65,7 @@ default=>
 Протокол PostgreSQL в настоящий момент поддерживает только пароли в виде открытого текста.
 :::
 
-## Использование SSL {#using-ssl}
+## Использование SSL \{#using-ssl\}
 
 Если в экземпляре ClickHouse у вас настроен SSL/TLS, то `postgresql_port` будет использовать те же настройки (порт общий для защищённых и незащищённых клиентов).
 
@@ -75,7 +75,7 @@ default=>
 psql "port=9005 host=127.0.0.1 user=alice dbname=default sslcert=/path/to/certificate.pem sslkey=/path/to/key.pem sslrootcert=/path/to/rootcert.pem sslmode=verify-ca"
 ```
 
-## Настройка аутентификации пользователей ClickHouse с использованием SCRAM-SHA-256 {#using-scram-sha256}
+## Настройка аутентификации пользователей ClickHouse с использованием SCRAM-SHA-256 \{#using-scram-sha256\}
 
 Чтобы обеспечить безопасную аутентификацию пользователей в ClickHouse, рекомендуется использовать протокол SCRAM-SHA-256. Настройте пользователя, указав элемент `password_scram_sha256_hex` в файле users.xml. Хеш пароля должен быть сгенерирован с числом итераций num&#95;iterations=4096.
 

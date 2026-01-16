@@ -13,7 +13,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# Руководство по настройке источника Azure Flexible Server for MySQL {#azure-flexible-server-for-mysql-source-setup-guide}
+# Руководство по настройке источника Azure Flexible Server for MySQL \{#azure-flexible-server-for-mysql-source-setup-guide\}
 
 В этом пошаговом руководстве показано, как настроить Azure Flexible Server for MySQL для репликации данных в ClickHouse Cloud с использованием [MySQL ClickPipe](../index.md). Для этого сервиса поддерживается только **однократная ингестия**. Ответы на распространённые вопросы по MySQL CDC смотрите на странице [MySQL FAQs](/integrations/data-ingestion/clickpipes/mysql/faq.md).
 
@@ -23,7 +23,7 @@ import TabItem from '@theme/TabItem';
 Отправьте запрос на добавление этой возможности на [форуме обратной связи Azure](https://feedback.azure.com/d365community/forum/47b1e71d-ee24-ec11-b6e6-000d3a4f0da0), проголосуйте за [этот вопрос](https://learn.microsoft.com/en-us/answers/questions/766047/setting-binlog-row-metadata-to-full-in-azure-db-fo) или [свяжитесь со службой поддержки Azure](https://azure.microsoft.com/en-us/support/create-ticket/), чтобы запросить эту возможность.
 :::
 
-## Настройте пользователя базы данных {#configure-database-user}
+## Настройте пользователя базы данных \{#configure-database-user\}
 
 Подключитесь к экземпляру Azure Flexible Server for MySQL от имени пользователя-администратора и выполните следующие команды:
 
@@ -45,7 +45,7 @@ import TabItem from '@theme/TabItem';
    FLUSH PRIVILEGES;
    ```
 
-## Настройте сетевой доступ {#configure-network-access}
+## Настройте сетевой доступ \{#configure-network-access\}
 
 :::note
 ClickPipes не поддерживает подключения через Azure Private Link. Если вы не разрешаете публичный доступ к экземпляру Azure Flexible Server for MySQL, вы можете [использовать SSH‑туннель](#configure-network-security) для безопасного подключения. Поддержка Azure Private Link будет добавлена в будущем.
@@ -82,6 +82,6 @@ ClickPipes не поддерживает подключения через Azure
 </TabItem>
 </Tabs>
 
-## Что дальше? {#whats-next}
+## Что дальше? \{#whats-next\}
 
 Теперь вы можете [создать ClickPipe](../index.md) и начать приём данных из экземпляра Azure Flexible Server for MySQL в ClickHouse Cloud. Обязательно сохраните параметры подключения, которые вы использовали при настройке экземпляра, так как они понадобятся вам в процессе создания ClickPipe.

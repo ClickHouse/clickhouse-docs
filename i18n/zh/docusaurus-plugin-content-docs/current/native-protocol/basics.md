@@ -7,7 +7,7 @@ keywords: ['原生协议', 'TCP 协议', '协议基础', '二进制协议', '客
 doc_type: 'guide'
 ---
 
-# 基础知识 {#basics}
+# 基础知识 \{#basics\}
 
 :::note
 客户端协议参考文档正在编写中。
@@ -20,7 +20,7 @@ import TabItem from '@theme/TabItem';
 
 本文档描述了 ClickHouse TCP 客户端使用的二进制协议。
 
-## Varint {#varint}
+## Varint \{#varint\}
 
 对于长度、数据包代码以及其他场景，采用 *无符号 varint* 编码。
 请使用 [binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) 和 [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint)。
@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 *有符号* varint 不会被使用。
 :::
 
-## 字符串 {#string}
+## 字符串 \{#string\}
 
 可变长度字符串编码为 *(length, value)*，其中 *length* 为 [varint](#varint)，*value* 为 UTF-8 字符串。
 
@@ -114,13 +114,13 @@ data := []byte{
 </TabItem>
 </Tabs>
 
-## 整数 {#integers}
+## 整数 \{#integers\}
 
 :::tip
 ClickHouse 对固定大小的整数采用 **小端序（Little Endian）** 存储。
 :::
 
-### Int32 {#int32}
+### Int32 \{#int32\}
 
 ```go
 v := int32(1000)
@@ -148,6 +148,6 @@ fmt.Println(d) // 1000
   </TabItem>
 </Tabs>
 
-## 布尔值 {#boolean}
+## 布尔值 \{#boolean\}
 
 布尔值使用单个字节表示，`1` 为 `true`，`0` 为 `false`。

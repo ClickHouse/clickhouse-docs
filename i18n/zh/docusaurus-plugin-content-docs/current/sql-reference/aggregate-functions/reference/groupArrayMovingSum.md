@@ -5,7 +5,7 @@ title: 'groupArrayMovingSum'
 doc_type: 'reference'
 ---
 
-# groupArrayMovingSum {#grouparraymovingsum}
+# groupArrayMovingSum \{#grouparraymovingsum\}
 
 计算输入值的滑动求和。
 

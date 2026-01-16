@@ -5,7 +5,7 @@ title: 'quantileTDigest'
 doc_type: 'reference'
 ---
 
-# quantileTDigest {#quantiletdigest}
+# quantileTDigest \{#quantiletdigest\}
 
 数値データ列に対して、[t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf) アルゴリズムを用いて近似的な [分位数](https://en.wikipedia.org/wiki/Quantile) を計算します。
 

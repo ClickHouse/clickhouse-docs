@@ -5,7 +5,7 @@ title: 'quantileDeterministic'
 doc_type: 'reference'
 ---
 
-# quantileDeterministic {#quantiledeterministic}
+# quantileDeterministic \{#quantiledeterministic\}
 
 Вычисляет приближённый [квантиль](https://en.wikipedia.org/wiki/Quantile) последовательности числовых данных.
 

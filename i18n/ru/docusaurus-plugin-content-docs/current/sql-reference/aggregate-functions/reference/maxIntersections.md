@@ -5,7 +5,7 @@ title: 'maxIntersections'
 doc_type: 'reference'
 ---
 
-# maxIntersections {#maxintersections}
+# maxIntersections \{#maxintersections\}
 
 Агрегатная функция, которая вычисляет максимальное количество раз, когда интервалы в группе пересекаются между собой (при условии, что все интервалы пересекаются хотя бы один раз).
 

@@ -7,13 +7,13 @@ title: 'Backup'
 doc_type: 'reference'
 ---
 
-# Backup {#backup}
+# Backup \{#backup\}
 
 База данных Backup позволяет мгновенно подключить таблицу или базу данных из [резервных копий](/operations/backup/overview) в режиме только для чтения.
 
 База данных Backup работает как с инкрементными, так и с неинкрементными резервными копиями.
 
-## Создание базы данных {#creating-a-database}
+## Создание базы данных \{#creating-a-database\}
 
 ```sql
 CREATE DATABASE backup_database
@@ -35,7 +35,7 @@ ENGINE = Backup('database_name_inside_backup', Disk('disk_name', 'backup_name'))
 * `backup_destination` — Место размещения резервной копии.
 
 
-## Пример использования {#usage-example}
+## Пример использования \{#usage-example\}
 
 Рассмотрим пример с местом назначения резервных копий типа `Disk`. Сначала настроим диск для резервных копий в `storage.xml`:
 

@@ -7,7 +7,7 @@ title: 'Time'
 doc_type: 'reference'
 ---
 
-# Time {#time}
+# Time \{#time\}
 
 データ型 `Time` は、時・分・秒の要素から成る時刻を表します。
 これはカレンダーの日付とは独立しており、日・月・年の要素を必要としない値に適しています。
@@ -22,7 +22,7 @@ Time
 
 精度: 1秒。
 
-## 実装の詳細 {#implementation-details}
+## 実装の詳細 \{#implementation-details\}
 
 **表現とパフォーマンス**  
 データ型 `Time` は内部的に、秒数を符号付き 32 ビット整数として保持します。  
@@ -47,7 +47,7 @@ Time
 同様に、`Time` 列に対してタイムゾーンを適用したり変更しようとする操作はサポートされず、エラーとなります。  
 `Time` 値が異なるタイムゾーンの下で暗黙的に再解釈されることはありません。
 
-## 例 {#examples}
+## 例 \{#examples\}
 
 **1.** `Time` 型の列を持つテーブルを作成し、そのテーブルにデータを挿入する:
 
@@ -114,7 +114,7 @@ SELECT CAST('14:30:25' AS Time) AS column, toTypeName(column) AS type
    └───────────┴──────┘
 ```
 
-## 関連項目 {#see-also}
+## 関連項目 \{#see-also\}
 
 - [型変換関数](../functions/type-conversion-functions.md)
 - [日付と時刻を扱う関数](../functions/date-time-functions.md)

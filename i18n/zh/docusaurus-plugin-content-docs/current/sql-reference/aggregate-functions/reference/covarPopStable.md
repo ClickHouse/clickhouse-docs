@@ -7,7 +7,7 @@ doc_type: 'reference'
 
 
 
-# covarPopStable {#covarpopstable}
+# covarPopStable \{#covarpopstable\}
 
 Calculates the value of the population covariance:
 

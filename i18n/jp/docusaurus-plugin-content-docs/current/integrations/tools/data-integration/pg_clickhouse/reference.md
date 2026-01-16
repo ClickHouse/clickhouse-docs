@@ -7,13 +7,13 @@ doc_type: 'reference'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension']
 ---
 
-# pg_clickhouse リファレンス ドキュメント {#pg_clickhouse-reference-documentation}
+# pg_clickhouse リファレンス ドキュメント \{#pg_clickhouse-reference-documentation\}
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 pg_clickhouse は、[foreign data wrapper] を含め、ClickHouse データベースに対するリモートでのクエリ実行を可能にする PostgreSQL 拡張機能です。PostgreSQL 13 以降および ClickHouse 23 以降をサポートしています。
 
-## はじめに {#getting-started}
+## はじめに \{#getting-started\}
 
 pg&#95;clickhouse を試す最も簡単な方法は、pg&#95;clickhouse 拡張機能を組み込んだ標準 PostgreSQL の [Docker image] を使うことです。
 
@@ -26,7 +26,7 @@ docker exec -it pg_clickhouse psql -U postgres
 ClickHouse テーブルのインポートやクエリのプッシュダウンを始めるには、[チュートリアル](tutorial.md) を参照してください。
 
 
-## 使用方法 {#usage}
+## 使用方法 \{#usage\}
 
 ```sql
 CREATE EXTENSION pg_clickhouse;
@@ -39,7 +39,7 @@ IMPORT FOREIGN SCHEMA taxi FROM SERVER taxi_srv INTO taxi;
 ```
 
 
-## バージョニングポリシー {#versioning-policy}
+## バージョニングポリシー \{#versioning-policy\}
 
 pg_clickhouse は公開リリースに対して [Semantic Versioning] に従います。
 
@@ -58,11 +58,11 @@ pg_clickhouse は公開リリースに対して [Semantic Versioning] に従い�
 
 一方で、マイナーまたはメジャーバージョンがインクリメントされるリリースには SQL アップグレードスクリプトが伴い、その拡張機能を含む既存のすべてのデータベースは、アップグレードの恩恵を受けるために `ALTER EXTENSION pg_clickhouse UPDATE` を実行する必要があります。
 
-## DDL SQL リファレンス {#ddl-sql-reference}
+## DDL SQL リファレンス \{#ddl-sql-reference\}
 
 以下の SQL [DDL] 文は pg_clickhouse を利用します。
 
-### CREATE EXTENSION {#create-extension}
+### CREATE EXTENSION \{#create-extension\}
 
 [CREATE EXTENSION] ステートメントを使用して、pg&#95;clickhouse 拡張機能をデータベースに追加します。
 
@@ -78,7 +78,7 @@ CREATE EXTENSION pg_clickhouse WITH SCHEMA ch;
 ```
 
 
-### ALTER EXTENSION {#alter-extension}
+### ALTER EXTENSION \{#alter-extension\}
 
 [ALTER EXTENSION] を使用して pg_clickhouse を変更します。例：
 
@@ -95,7 +95,7 @@ CREATE EXTENSION pg_clickhouse WITH SCHEMA ch;
     ALTER EXTENSION pg_clickhouse SET SCHEMA ch;
     ```
 
-### DROP EXTENSION {#drop-extension}
+### DROP EXTENSION \{#drop-extension\}
 
 [DROP EXTENSION] を使用して、データベースから pg&#95;clickhouse 拡張機能を削除します。
 
@@ -111,7 +111,7 @@ DROP EXTENSION pg_clickhouse CASCADE;
 ```
 
 
-### CREATE SERVER {#create-server}
+### CREATE SERVER \{#create-server\}
 
 [CREATE SERVER] を使用して、ClickHouse サーバーへの接続を定義する foreign server（外部サーバー）を作成します。例:
 
@@ -134,7 +134,7 @@ CREATE SERVER taxi_srv FOREIGN DATA WRAPPER clickhouse_fdw
   * `driver` が &quot;http&quot; で、`host` が ClickHouse Cloud のホストではない場合は 8123
 
 
-### ALTER SERVER {#alter-server}
+### ALTER SERVER \{#alter-server\}
 
 [ALTER SERVER] を使用して、外部サーバーの定義を変更します。例:
 
@@ -145,7 +145,7 @@ ALTER SERVER taxi_srv OPTIONS (SET driver 'http');
 オプションは [CREATE SERVER](#create-server) の場合と同じです。
 
 
-### DROP SERVER {#drop-server}
+### DROP SERVER \{#drop-server\}
 
 [DROP SERVER] を使用して、外部サーバー定義を削除します。
 
@@ -160,7 +160,7 @@ DROP SERVER taxi_srv CASCADE;
 ```
 
 
-### CREATE USER MAPPING {#create-user-mapping}
+### CREATE USER MAPPING \{#create-user-mapping\}
 
 [CREATE USER MAPPING] を使用して、PostgreSQL ユーザーを ClickHouse ユーザーにマッピングします。
 たとえば、`taxi_srv` フォーリンサーバーに接続する際に、現在の PostgreSQL ユーザーをリモートの ClickHouse ユーザーにマッピングするには、次のようにします。
@@ -176,7 +176,7 @@ CREATE USER MAPPING FOR CURRENT_USER SERVER taxi_srv
 * `password`: ClickHouse のユーザーのパスワード。
 
 
-### ALTER USER MAPPING {#alter-user-mapping}
+### ALTER USER MAPPING \{#alter-user-mapping\}
 
 ユーザー マッピングの定義を変更するには、[ALTER USER MAPPING] を使用します。
 
@@ -188,7 +188,7 @@ ALTER USER MAPPING FOR CURRENT_USER SERVER taxi_srv
 オプションは [CREATE USER MAPPING](#create-user-mapping) の場合と同じです。
 
 
-### DROP USER MAPPING {#drop-user-mapping}
+### DROP USER MAPPING \{#drop-user-mapping\}
 
 ユーザーマッピングを削除するには、[DROP USER MAPPING] を使用します。
 
@@ -197,7 +197,7 @@ DROP USER MAPPING FOR CURRENT_USER SERVER taxi_srv;
 ```
 
 
-### IMPORT FOREIGN SCHEMA {#import-foreign-schema}
+### IMPORT FOREIGN SCHEMA \{#import-foreign-schema\}
 
 [IMPORT FOREIGN SCHEMA] を使用して、ClickHouse データベース内で定義されているすべてのテーブルを、外部テーブルとして PostgreSQL のスキーマ内にインポートします。
 
@@ -258,7 +258,7 @@ pg&#95;clickhouse は、指定された ClickHouse データベース（上記�
 :::
 
 
-### CREATE FOREIGN TABLE {#create-foreign-table}
+### CREATE FOREIGN TABLE \{#create-foreign-table\}
 
 [CREATE FOREIGN TABLE] を使用して、ClickHouse データベース内のデータを参照する外部テーブルを作成します。
 
@@ -300,7 +300,7 @@ CREATE FOREIGN TABLE test (
 `AggregateFunction` 関数を持つカラムに対しては、pg&#95;clickhouse がそのカラムを評価する集約関数の末尾に自動的に `Merge` を付加します。
 
 
-### ALTER FOREIGN TABLE {#alter-foreign-table}
+### ALTER FOREIGN TABLE \{#alter-foreign-table\}
 
 [ALTER FOREIGN TABLE] を使用すると、外部テーブルの定義を変更できます。
 
@@ -311,7 +311,7 @@ ALTER TABLE table ALTER COLUMN b OPTIONS (SET AggregateFunction 'count');
 サポートされるテーブルおよびカラムのオプションは、[CREATE FOREIGN TABLE] の場合と同様です。
 
 
-### DROP FOREIGN TABLE {#drop-foreign-table}
+### DROP FOREIGN TABLE \{#drop-foreign-table\}
 
 [DROP FOREIGN TABLE] を使用して、外部テーブルを削除します。
 
@@ -327,7 +327,7 @@ DROP FOREIGN TABLE uact CASCADE;
 ```
 
 
-## DML SQL リファレンス {#dml-sql-reference}
+## DML SQL リファレンス \{#dml-sql-reference\}
 
 以下の SQL [DML] ステートメントでは、pg&#95;clickhouse を使用する場合があります。例は、
 [make-logs.sql] によって作成されたこれらの ClickHouse テーブルに依存します。
@@ -355,7 +355,7 @@ CREATE TABLE nodes (
 ```
 
 
-### EXPLAIN {#explain}
+### EXPLAIN \{#explain\}
 
 [EXPLAIN] コマンドは期待どおりに動作しますが、`VERBOSE` オプションを指定すると、
 ClickHouse の「Remote SQL」クエリが発行されます。
@@ -377,7 +377,7 @@ try=# EXPLAIN (VERBOSE)
 このクエリは「Foreign Scan」プランノードを通じて、リモート SQL が ClickHouse にプッシュダウンされます。
 
 
-### SELECT {#select}
+### SELECT \{#select\}
 
 [SELECT] 文を使用して、他のテーブルと同様に pg&#95;clickhouse テーブルに対してクエリを実行できます。
 
@@ -514,7 +514,7 @@ try=# EXPLAIN (ANALYZE, VERBOSE)
 Postgres に引き戻す必要がある行数は、1000 行（全行）から 8 行だけ（各ノードにつき 1 行）にまで削減されます。
 
 
-### PREPARE, EXECUTE, DEALLOCATE {#prepare-execute-deallocate}
+### PREPARE, EXECUTE, DEALLOCATE \{#prepare-execute-deallocate\}
 
 v0.1.2 以降の pg&#95;clickhouse ではパラメータ化されたクエリがサポートされており、主に
 [PREPARE] コマンドで作成します。
@@ -579,7 +579,7 @@ DEALLOCATE
 ```
 
 
-### INSERT {#insert}
+### INSERT \{#insert\}
 
 [INSERT] コマンドを使用して、リモート側の ClickHouse テーブルに値を挿入します。
 
@@ -593,7 +593,7 @@ INSERT 0 3
 ```
 
 
-### COPY {#copy}
+### COPY \{#copy\}
 
 [COPY] コマンドを使用して、複数行をリモート ClickHouse
 テーブルに一括挿入します。
@@ -614,7 +614,7 @@ try=# COPY logs FROM stdin CSV;
 > これは今後のリリースで改善される予定です。
 
 
-### LOAD {#load}
+### LOAD \{#load\}
 
 [LOAD] を使用して、pg&#95;clickhouse の共有ライブラリをロードします。
 
@@ -628,7 +628,7 @@ LOAD
 pg&#95;clickhouse を [LOAD] しておくことが有用なのは、それに依存するクエリを実行する前に、[SET](#set) で pg&#95;clickhouse のパラメータを設定しておきたい場合だけです。
 
 
-### SET {#set}
+### SET \{#set\}
 
 [SET] を使用して `pg_clickhouse.session_settings` ランタイムパラメーターを設定します。
 このパラメーターで、後続のクエリに適用される [ClickHouse settings] を指定します。例:
@@ -682,7 +682,7 @@ pg&#95;clickhouse は設定を検証せず、すべてのクエリについて�
 なお、`pg_clickhouse.session_settings` を設定する前に pg&#95;clickhouse をロードしておく必要があります。[shared library preloading] を使用するか、拡張機能内のいずれかのオブジェクトを利用してロードされるようにしてください。
 
 
-### ALTER ROLE {#alter-role}
+### ALTER ROLE \{#alter-role\}
 
 [ALTER ROLE] の `SET` コマンドを使用すると、特定のロールに対して pg&#95;clickhouse を[プリロード](#preloading)したり、そのパラメータを [SET](#set) したりできます。
 
@@ -705,12 +705,12 @@ ALTER ROLE
 ```
 
 
-## 事前読み込み {#preloading}
+## 事前読み込み \{#preloading\}
 
 ほとんどすべて、あるいは大半の Postgres 接続で pg_clickhouse を使用する必要がある場合は、
 [共有ライブラリの事前読み込み] を利用して自動的にロードされるようにすることを検討してください。
 
-### `session_preload_libraries` {#session&#95;preload&#95;libraries}
+### `session_preload_libraries` \{#session&#95;preload&#95;libraries\}
 
 PostgreSQL への新しい接続ごとに、共有ライブラリをロードします。
 
@@ -722,7 +722,7 @@ session_preload_libraries = pg_clickhouse
 ROLE](#alter-role) を使用して、特定のユーザーまたはロールに対して設定することもできます。
 
 
-### `shared_preload_libraries` {#shared&#95;preload&#95;libraries}
+### `shared_preload_libraries` \{#shared&#95;preload&#95;libraries\}
 
 PostgreSQL の親プロセスの起動時に共有ライブラリをロードします。
 
@@ -733,9 +733,9 @@ shared_preload_libraries = pg_clickhouse
 各セッションのメモリ使用量とロードのオーバーヘッドを削減するのに有効ですが、ライブラリを更新した場合はクラスターを再起動する必要があります。
 
 
-## 関数と演算子のリファレンス {#function-and-operator-reference}
+## 関数と演算子のリファレンス \{#function-and-operator-reference\}
 
-### データ型 {#data-types}
+### データ型 \{#data-types\}
 
 pg_clickhouse は、次の ClickHouse データ型を PostgreSQL データ型にマッピングします。
 
@@ -762,11 +762,11 @@ pg_clickhouse は、次の ClickHouse データ型を PostgreSQL データ型に
 | UInt8      | smallint         |                                      |
 | UUID       | uuid             |                                      |
 
-### 関数 {#functions}
+### 関数 \{#functions\}
 
 これらの関数は、ClickHouse データベースに対してクエリを実行するためのインターフェースを提供します。
 
-#### `clickhouse_raw_query` {#clickhouse&#95;raw&#95;query}
+#### `clickhouse_raw_query` \{#clickhouse&#95;raw&#95;query\}
 
 ```sql
 SELECT clickhouse_raw_query(
@@ -805,7 +805,7 @@ SELECT clickhouse_raw_query(
 ```
 
 
-### プッシュダウン関数 {#pushdown-functions}
+### プッシュダウン関数 \{#pushdown-functions\}
 
 条件式（`HAVING` および `WHERE` 句）で使用される PostgreSQL のすべての組み込み関数は、ClickHouse 外部テーブルに対してクエリを実行する際、同じ名前とシグネチャのまま自動的に ClickHouse 側へプッシュダウンされます。ただし、一部の関数は名前やシグネチャが異なるため、同等の関数にマッピングする必要があります。`pg_clickhouse` は次の関数をマッピングします:
 
@@ -836,13 +836,13 @@ SELECT clickhouse_raw_query(
 * `strpos`: [position](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#position)
 * `regexp_like`: [match](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#match)
 
-### カスタム関数 {#custom-functions}
+### カスタム関数 \{#custom-functions\}
 
 `pg_clickhouse` によって作成されるこれらのカスタム関数は、PostgreSQL に同等の機能が存在しない一部の ClickHouse 関数に対して、外部クエリのプッシュダウンを可能にします。これらの関数のいずれかがプッシュダウンできない場合は、例外を発生させます。
 
 * [dictGet](https://clickhouse.com/docs/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull)
 
-### キャストのプッシュダウン {#pushdown-casts}
+### キャストのプッシュダウン \{#pushdown-casts\}
 
 pg_clickhouse は、互換性のあるデータ型に対して `CAST(x AS bigint)` のようなキャストをプッシュダウンします。互換性のない型の場合はプッシュダウンが失敗します。この例で `x` が ClickHouse の `UInt64` である場合、ClickHouse はその値のキャストを拒否します。
 
@@ -854,7 +854,7 @@ pg_clickhouse は、互換性のあるデータ型に対して `CAST(x AS bigint
 * [toUInt64](https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#touint64)
 * [toUInt128](https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#touint128)
 
-### プッシュダウンされる集約関数 {#pushdown-aggregates}
+### プッシュダウンされる集約関数 \{#pushdown-aggregates\}
 
 これらの PostgreSQL 集約関数は ClickHouse へプッシュダウンされます。
 
@@ -864,7 +864,7 @@ pg_clickhouse は、互換性のあるデータ型に対して `CAST(x AS bigint
 * [min](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/min)
 * [max](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/max)
 
-### カスタム集約関数 {#custom-aggregates}
+### カスタム集約関数 \{#custom-aggregates\}
 
 `pg_clickhouse` によって定義されるこれらのカスタム集約関数は、PostgreSQL に同等の機能が存在しない一部の ClickHouse 集約関数に対して、外部クエリのプッシュダウンを可能にします。これらの関数のいずれかをプッシュダウンできない場合は、例外を発生させます。
 
@@ -879,7 +879,7 @@ pg_clickhouse は、互換性のあるデータ型に対して `CAST(x AS bigint
 * [quantile](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantile)
 * [quantileExact](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantileexact)
 
-### プッシュダウンされる順序付き集合集約 {#pushdown-ordered-set-aggregates}
+### プッシュダウンされる順序付き集合集約 \{#pushdown-ordered-set-aggregates\}
 
 これらの [ordered-set aggregate functions] は、*direct argument* をパラメータとして渡し、`ORDER BY` の式を引数として渡すことで、ClickHouse の [Parametric
 aggregate functions] に対応します。例えば、次の PostgreSQL クエリでは：
@@ -901,11 +901,11 @@ SELECT quantile(0.25)(a) FROM t1;
 * `quantileExact(double)`: [quantileExact](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantileexact)
 
 
-## 著者 {#authors}
+## 著者 \{#authors\}
 
 [David E. Wheeler](https://justatheory.com/)
 
-## 著作権 {#copyright}
+## 著作権 \{#copyright\}
 
 Copyright (c) 2025-2026, ClickHouse
 

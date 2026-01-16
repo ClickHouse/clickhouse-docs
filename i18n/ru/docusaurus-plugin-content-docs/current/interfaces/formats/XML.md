@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## Описание {#description}
+## Описание \{#description\}
 
 Формат `XML` предназначен только для вывода и не подходит для парсинга. 
 
@@ -24,7 +24,7 @@ doc_type: 'reference'
 
 Массивы выводятся как `<array><elem>Hello</elem><elem>World</elem>...</array>`, а кортежи — как `<tuple><elem>Hello</elem><elem>World</elem>...</tuple>`.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 Пример:
 
@@ -90,6 +90,6 @@ doc_type: 'reference'
 </result>
 ```
 
-## Параметры форматирования {#format-settings}
+## Параметры форматирования \{#format-settings\}
 
-## XML {#xml}
+## XML \{#xml\}

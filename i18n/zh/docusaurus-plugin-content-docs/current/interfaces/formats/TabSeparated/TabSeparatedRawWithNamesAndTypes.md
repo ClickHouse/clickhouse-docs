@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|---------------------------------------------------|
 | ✔     | ✔      | `TSVRawWithNamesAndNames`, `RawWithNamesAndNames` |
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 与 [`TabSeparatedWithNamesAndTypes`](./TabSeparatedWithNamesAndTypes.md) 格式不同，
 该格式在写入行数据时不会进行转义。
@@ -22,9 +22,9 @@ doc_type: 'reference'
 使用此格式进行解析时，每个字段中不允许包含制表符或换行符。
 :::
 
-## 使用示例 {#example-usage}
+## 使用示例 \{#example-usage\}
 
-### 插入数据 {#inserting-data}
+### 插入数据 \{#inserting-data\}
 
 使用以下名为 `football.tsv` 的 TSV 文件：
 
@@ -56,7 +56,7 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRawWithNamesAndTypes;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据 \{#reading-data\}
 
 以 `TabSeparatedRawWithNamesAndTypes` 格式读取数据：
 
@@ -90,4 +90,4 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}

@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Как создать агента ИИ на базе ClickHouse с помощью Streamlit {#how-to-build-a-clickhouse-backed-ai-agent-with-streamlit}
+# Как создать агента ИИ на базе ClickHouse с помощью Streamlit \{#how-to-build-a-clickhouse-backed-ai-agent-with-streamlit\}
 
 В этом руководстве вы узнаете, как создать веб-агента ИИ с использованием [Streamlit](https://streamlit.io/), способного взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) через [MCP-сервер ClickHouse](https://github.com/ClickHouse/mcp-clickhouse) и [Agno](https://github.com/agno-agi/agno).
 
@@ -19,7 +19,7 @@ doc_type: 'guide'
 Исходный код этого примера вы можете найти в [репозитории examples](https://github.com/ClickHouse/examples/tree/main/ai/mcp/streamlit).
 :::
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \{#prerequisites\}
 
 - В вашей системе должен быть установлен Python.
   Необходимо установить [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
@@ -29,7 +29,7 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-## Установка библиотек {#install-libraries}
+## Установка библиотек \{#install-libraries\}
 
 Установите необходимые библиотеки, выполнив следующие команды:
 
@@ -37,7 +37,7 @@ doc_type: 'guide'
 pip install streamlit agno ipywidgets
 ```
 
-## Создайте файл с утилитами {#create-utilities}
+## Создайте файл с утилитами \{#create-utilities\}
 
 Создайте файл `utils.py` с двумя вспомогательными функциями. Первая — это
 асинхронная функция-генератор для обработки потоковых ответов от
@@ -64,7 +64,7 @@ def apply_styles():
   <hr class='divider' />""", unsafe_allow_html=True)
 ```
 
-## Настройка учётных данных {#setup-credentials}
+## Настройка учётных данных \{#setup-credentials\}
 
 Установите ключ API Anthropic в переменную окружения:
 
@@ -77,7 +77,7 @@ export ANTHROPIC_API_KEY="your_api_key_here"
 вы можете найти инструкции по настройке учетных данных в документации [Agno «Integrations»](https://docs.agentops.ai/v2/integrations/ag2)
 :::
 
-## Импорт необходимых библиотек {#import-libraries}
+## Импорт необходимых библиотек \{#import-libraries\}
 
 Начните с создания основного файла приложения Streamlit (например, `app.py`) и добавьте импорты:
 
@@ -101,7 +101,7 @@ import threading
 from queue import Queue
 ```
 
-## Определите функцию потоковой передачи агента {#define-agent-function}
+## Определите функцию потоковой передачи агента \{#define-agent-function\}
 
 Добавьте основную функцию агента, которая подключается к [SQL-песочнице ClickHouse](https://sql.clickhouse.com/) и осуществляет потоковую передачу ответов:
 
@@ -151,7 +151,7 @@ async def stream_clickhouse_agent(message):
                     yield chunk.content
 ```
 
-## Добавьте синхронные функции-обёртки {#add-wrapper-functions}
+## Добавьте синхронные функции-обёртки \{#add-wrapper-functions\}
 
 Добавьте вспомогательные функции для обработки асинхронного стриминга в Streamlit:
 
@@ -173,7 +173,7 @@ async def _agent_stream_to_queue(message, queue):
         queue.put(chunk)
 ```
 
-## Создайте интерфейс Streamlit {#create-interface}
+## Создайте интерфейс Streamlit \{#create-interface\}
 
 Добавьте компоненты пользовательского интерфейса Streamlit и функции чата:
 
@@ -202,7 +202,7 @@ if prompt := st.chat_input("What is up?"):
   st.session_state.messages.append({"role": "assistant", "content": response})
 ```
 
-## Запуск приложения {#run-application}
+## Запуск приложения \{#run-application\}
 
 Чтобы запустить веб-приложение AI-агента ClickHouse, выполните
 следующую команду в терминале:

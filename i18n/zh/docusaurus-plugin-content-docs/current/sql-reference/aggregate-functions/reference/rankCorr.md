@@ -5,7 +5,7 @@ title: 'rankCorr'
 doc_type: 'reference'
 ---
 
-# rankCorr {#rankcorr}
+# rankCorr \{#rankcorr\}
 
 计算秩相关系数。
 

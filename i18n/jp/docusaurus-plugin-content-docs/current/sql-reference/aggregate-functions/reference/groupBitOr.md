@@ -5,7 +5,7 @@ title: 'groupBitOr'
 doc_type: 'reference'
 ---
 
-# groupBitOr {#groupbitor}
+# groupBitOr \{#groupbitor\}
 
 一連の数値にビット単位の `OR` を適用します。
 

@@ -5,7 +5,7 @@ title: 'quantileGK'
 doc_type: 'reference'
 ---
 
-# quantileGK {#quantilegk}
+# quantileGK \{#quantilegk\}
 
 使用 [Greenwald-Khanna](http://infolab.stanford.edu/~datar/courses/cs361a/papers/quantiles.pdf) 算法计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。Greenwald-Khanna 算法是一种用于在数据流中高效计算分位数的算法，由 Michael Greenwald 和 Sanjeev Khanna 于 2001 年提出。它广泛应用于数据库和大数据系统中，在这些场景下，需要对大规模数据流进行实时且较为精确的分位数计算。该算法在空间复杂度上仅为 O(log n)，并且对每个元素的时间复杂度仅为 O(log log n)（其中 n 为输入数据量）。同时，该算法具有很高的精度，能够以较高概率给出近似的分位数值。
 

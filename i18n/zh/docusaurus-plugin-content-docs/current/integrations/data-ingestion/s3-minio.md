@@ -11,7 +11,7 @@ integration:
 keywords: ['s3', 'minio', '对象存储', '数据加载', '兼容存储']
 ---
 
-# 使用 MinIO {#using-minio}
+# 使用 MinIO \{#using-minio\}
 
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 

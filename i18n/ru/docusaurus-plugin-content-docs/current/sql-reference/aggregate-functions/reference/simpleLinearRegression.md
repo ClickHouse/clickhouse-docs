@@ -5,7 +5,7 @@ title: 'simpleLinearRegression'
 doc_type: 'reference'
 ---
 
-# simpleLinearRegression {#simplelinearregression}
+# simpleLinearRegression \{#simplelinearregression\}
 
 Выполняет простую линейную регрессию с одной переменной.
 

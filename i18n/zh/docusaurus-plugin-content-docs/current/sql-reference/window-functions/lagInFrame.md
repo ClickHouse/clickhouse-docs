@@ -7,7 +7,7 @@ title: 'lagInFrame'
 doc_type: 'reference'
 ---
 
-# lagInFrame {#laginframe}
+# lagInFrame \{#laginframe\}
 
 返回在有序窗口帧内、位于当前行之前指定物理偏移量处那一行所计算得到的值。
 

@@ -5,7 +5,7 @@ title: 'quantileExactLow'
 doc_type: 'reference'
 ---
 
-# quantileExactLow {#quantileexactlow}
+# quantileExactLow \{#quantileexactlow\}
 
 与 `quantileExact` 类似，该函数计算数值数据序列的精确[分位数](https://en.wikipedia.org/wiki/Quantile)。
 

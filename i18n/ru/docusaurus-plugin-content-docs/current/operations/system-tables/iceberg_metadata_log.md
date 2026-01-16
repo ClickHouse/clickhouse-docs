@@ -9,11 +9,11 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.iceberg_metadata_log {#systemiceberg_metadata_log}
+# system.iceberg_metadata_log \{#systemiceberg_metadata_log\}
 
 Таблица `system.iceberg_metadata_log` фиксирует события доступа к метаданным и их разбора для таблиц Iceberg, прочитанных ClickHouse. Она предоставляет подробную информацию о каждом обработанном файле или записи метаданных, что полезно для отладки, аудита и анализа эволюции структуры таблиц Iceberg.
 
-## Назначение {#purpose}
+## Назначение \{#purpose\}
 
 Эта таблица фиксирует каждый файл и каждую запись метаданных, прочитанные из таблиц Iceberg, включая корневые файлы метаданных, списки манифестов и записи манифестов. Она помогает пользователям отследить, как ClickHouse интерпретирует метаданные таблиц Iceberg, и диагностировать проблемы, связанные с эволюцией схемы, поиском и разрешением файлов или планированием выполнения запросов.
 
@@ -21,7 +21,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 Эта таблица в первую очередь предназначена для отладки.
 :::
 
-## Столбцы {#columns}
+## Столбцы \{#columns\}
 
 | Имя           | Тип      | Описание                                                                                       |
 |---------------|----------|------------------------------------------------------------------------------------------------|
@@ -35,7 +35,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 | `row_in_file`  | [Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md)) | Номер строки в файле, если применимо. Заполняется для типов содержимого `ManifestListEntry` и `ManifestFileEntry`. |
 | `pruning_status`  | [Nullable](../../sql-reference/data-types/nullable.md)([Enum8](../../sql-reference/data-types/enum.md)) | Статус отсечения для записи. `NotPruned`, `PartitionPruned`, `MinMaxIndexPruned`. Учтите, что отсечение по партиции выполняется до отсечения по minmax, поэтому `PartitionPruned` означает, что запись была отброшена фильтром по партиции и отсечение по minmax даже не выполнялось. Заполняется для типа содержимого `ManifestFileEntry`. |
 
-## Значения `content_type` {#content-type-values}
+## Значения `content_type` \{#content-type-values\}
 
 - `None`: Нет содержимого.
 - `Metadata`: Корневой файл метаданных.
@@ -46,7 +46,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-## Управление подробностью журналирования {#controlling-log-verbosity}
+## Управление подробностью журналирования \{#controlling-log-verbosity\}
 
 Вы можете управлять тем, какие события, связанные с метаданными, записываются в журнал, с помощью настройки [`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level).
 
@@ -77,7 +77,7 @@ WHERE query_id = '{previous_query_id}';
 См. дополнительную информацию в описании настройки [`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level).
 
 
-### Полезная информация {#good-to-know}
+### Полезная информация \{#good-to-know\}
 
 - Используйте `iceberg_metadata_log_level` на уровне запроса только тогда, когда вам нужно детально исследовать таблицу Iceberg. В противном случае вы можете заполнить таблицу логов избыточными метаданными и столкнуться с ухудшением производительности.
 - Таблица содержит дублирующиеся записи, так как она предназначена в первую очередь для отладки и не гарантирует уникальность записей для каждой сущности. Отдельные строки хранят содержимое и статус отсечения, потому что они собираются в разные моменты выполнения программы: содержимое — при чтении метаданных, статус отсечения — при проверке метаданных на возможность отсечения. **Никогда не полагайтесь на саму таблицу для дедупликации.**
@@ -85,7 +85,7 @@ WHERE query_id = '{previous_query_id}';
 - Аналогично, если вы используете `content_type`, более подробный, чем `ManifestFileMetadata`, кэш метаданных Iceberg для файлов манифестов отключается.
 - Если запрос SELECT был отменён или завершился ошибкой, таблица логов всё равно может содержать записи о метаданных, обработанных до сбоя, но не будет содержать информацию о сущностях метаданных, которые не были обработаны.
 
-## См. также {#see-also}
+## См. также \{#see-also\}
 
 - [Движок таблиц Iceberg](../../engines/table-engines/integrations/iceberg.md)
 - [Табличная функция Iceberg](../../sql-reference/table-functions/iceberg.md)

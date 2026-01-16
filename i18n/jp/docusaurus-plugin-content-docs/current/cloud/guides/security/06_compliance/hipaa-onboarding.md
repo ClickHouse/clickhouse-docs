@@ -25,11 +25,11 @@ ClickHouse のコンプライアンスプログラムおよびサードパーテ
 本ページでは、ClickHouse Cloud において HIPAA 準拠サービスのデプロイを有効にするための手順について説明します。
 
 
-## HIPAA 準拠サービスを有効にしてデプロイする {#enable-hipaa-compliant-services}
+## HIPAA 準拠サービスを有効にしてデプロイする \{#enable-hipaa-compliant-services\}
 
 <VerticalStepper headerLevel="h3">
 
-### Enterprise サービスに申し込む {#sign-up-for-enterprise}
+### Enterprise サービスに申し込む \{#sign-up-for-enterprise\}
 
 1. コンソール左下の組織名を選択します。
 2. **Billing** をクリックします。
@@ -37,7 +37,7 @@ ClickHouse のコンプライアンスプログラムおよびサードパーテ
 4. **Plan** が **Enterprise** の場合は次のセクションに進みます。そうでない場合は **Change plan** をクリックします。
 5. **Switch to Enterprise** を選択します。
 
-### 組織で HIPAA を有効化する {#enable-hipaa}
+### 組織で HIPAA を有効化する \{#enable-hipaa\}
 
 1. コンソール左下の組織名を選択します。
 2. **Organization details** をクリックします。
@@ -65,7 +65,7 @@ ClickHouse のコンプライアンスプログラムおよびサードパーテ
 
 <br />
 
-### HIPAA 準拠リージョンにサービスをデプロイする {#deploy-hippa-services}
+### HIPAA 準拠リージョンにサービスをデプロイする \{#deploy-hippa-services\}
 
 1. コンソールのホーム画面左上で **New service** を選択します。
 2. **Region type** を **HIPAA compliant** に変更します。
@@ -84,7 +84,7 @@ HIPAA 準拠クラウドプロバイダーおよびサービスの一覧につ�
 
 
 
-## 既存のサービスを移行する {#migrate-to-hipaa}
+## 既存のサービスを移行する \{#migrate-to-hipaa\}
 
 必要に応じて、お客様には法令・規制要件に準拠した環境へサービスをデプロイすることを強く推奨します。標準リージョンから HIPAA 準拠リージョンへのサービス移行プロセスでは、バックアップからの復元を行う必要があり、多少のダウンタイムが発生する可能性があります。
 

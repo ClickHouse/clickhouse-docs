@@ -13,11 +13,11 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 ClickHouse は [MessagePack](https://msgpack.org/) データファイルの読み書きをサポートしています。
 
-## データ型の対応 {#data-types-matching}
+## データ型の対応 \{#data-types-matching\}
 
 | MessagePack データ型（`INSERT`）                                   | ClickHouse のデータ型                                                                                 | MessagePack データ型（`SELECT`） |
 |--------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|----------------------------------|
@@ -42,7 +42,7 @@ ClickHouse は [MessagePack](https://msgpack.org/) データファイルの読�
 | `int 64`                                                           | [`Decimal64`](/sql-reference/data-types/decimal.md)                                               | `int 64`                         |
 | `bin 8`                                                            | [`Decimal128`/`Decimal256`](/sql-reference/data-types/decimal.md)                                 | `bin 8`                          |
 
-## 使用例 {#example-usage}
+## 使用例 \{#example-usage\}
 
 「.msgpk」ファイルへの書き込み:
 
@@ -52,7 +52,7 @@ $ clickhouse-client --query="INSERT INTO msgpack VALUES ([0, 1, 2, 3, 42, 253, 2
 $ clickhouse-client --query="SELECT * FROM msgpack FORMAT MsgPack" > tmp_msgpack.msgpk;
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \{#format-settings\}
 
 | 設定                                                                                                                                    | 説明                                                                                         | 既定値 |
 |--------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|---------|

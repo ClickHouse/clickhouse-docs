@@ -29,7 +29,7 @@ ClickHouse 中的压缩效率主要取决于三个因素：排序键、数据类
 * **使用 Enum 进行数据校验：** Enum 类型可用于高效编码枚举类型。根据需要存储的唯一值数量，Enum 可以是 8 位或 16 位。如果你需要在写入时进行相关校验（未声明的值会被拒绝），或者希望执行利用 Enum 值自然顺序的查询，都应考虑使用该类型。例如，设想一个反馈列包含用户响应：Enum(&#39;:(&#39; = 1, &#39;:|&#39; = 2, &#39;:)&#39; = 3)。
 
 
-## 示例 {#example}
+## 示例 \{#example\}
 
 ClickHouse 提供了内置工具来简化数据类型优化。例如，schema 推断可以自动识别初始类型。以以 Parquet 格式公开提供的 Stack Overflow 数据集为例，运行一个简单的 schema 推断，通过 [`DESCRIBE`](/sql-reference/statements/describe-table) 命令即可得到一个初始的、未优化的 schema。
 
@@ -138,6 +138,6 @@ ORDER BY tuple()
 ```
 
 
-## 避免 Nullable 列 {#avoid-nullable-columns}
+## 避免 Nullable 列 \{#avoid-nullable-columns\}
 
 <NullableColumns />

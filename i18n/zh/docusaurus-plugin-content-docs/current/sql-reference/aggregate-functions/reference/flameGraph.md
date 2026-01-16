@@ -5,18 +5,18 @@ title: 'flameGraph'
 doc_type: 'reference'
 ---
 
-# flameGraph {#flamegraph}
+# flameGraph \{#flamegraph\}
 
 聚合函数，根据调用栈（stack trace）列表构建一个[火焰图（flamegraph）](https://www.brendangregg.com/flamegraphs.html)。输出一个字符串数组，可供 [flamegraph.pl 工具](https://github.com/brendangregg/FlameGraph) 使用，以渲染火焰图的 SVG 图像。
 
-## 语法 {#syntax}
+## 语法 \{#syntax\}
 
 ```sql
 flameGraph(traces, [size], [ptr])
 ```
 
 
-## 参数 {#parameters}
+## 参数 \{#parameters\}
 
 - `traces` — 堆栈跟踪。[Array](../../data-types/array.md)([UInt64](../../data-types/int-uint.md))。
 - `size` — 用于内存分析的分配大小。（可选 — 默认值为 `1`）。[UInt64](../../data-types/int-uint.md)。
@@ -27,13 +27,13 @@ flameGraph(traces, [size], [ptr])
 仅显示尚未被释放的分配。无法映射的释放将被忽略。
 :::
 
-## 返回值 {#returned-value}
+## 返回值 \{#returned-value\}
 
 - 返回一个可用于 [flamegraph.pl 工具](https://github.com/brendangregg/FlameGraph) 的字符串数组，类型为 [Array](../../data-types/array.md)([String](../../data-types/string.md))。
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
-### 使用 CPU 查询分析器构建火焰图 {#building-a-flamegraph-based-on-a-cpu-query-profiler}
+### 使用 CPU 查询分析器构建火焰图 \{#building-a-flamegraph-based-on-a-cpu-query-profiler\}
 
 ```sql
 SET query_profiler_cpu_time_period_ns=10000000;
@@ -45,7 +45,7 @@ clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGr
 ```
 
 
-### 基于内存查询分析器构建火焰图，展示所有内存分配 {#building-a-flamegraph-based-on-a-memory-query-profiler-showing-all-allocations}
+### 基于内存查询分析器构建火焰图，展示所有内存分配 \{#building-a-flamegraph-based-on-a-memory-query-profiler-showing-all-allocations\}
 
 ```sql
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;
@@ -57,7 +57,7 @@ clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGr
 ```
 
 
-### 基于内存查询分析器构建火焰图，显示在查询上下文中未释放的内存分配 {#building-a-flamegraph-based-on-a-memory-query-profiler-showing-allocations-which-were-not-deallocated-in-query-context}
+### 基于内存查询分析器构建火焰图，显示在查询上下文中未释放的内存分配 \{#building-a-flamegraph-based-on-a-memory-query-profiler-showing-allocations-which-were-not-deallocated-in-query-context\}
 
 ```sql
 SET memory_profiler_sample_probability=1, max_untracked_memory=1, use_uncompressed_cache=1, merge_tree_max_rows_to_use_cache=100000000000, merge_tree_max_bytes_to_use_cache=1000000000000;
@@ -69,7 +69,7 @@ clickhouse client --allow_introspection_functions=1 -q "SELECT arrayJoin(flameGr
 ```
 
 
-### 基于内存查询分析器构建火焰图，用于展示某一时刻的活动内存分配 {#build-a-flamegraph-based-on-memory-query-profiler-showing-active-allocations-at-the-fixed-point-of-time}
+### 基于内存查询分析器构建火焰图，用于展示某一时刻的活动内存分配 \{#build-a-flamegraph-based-on-memory-query-profiler-showing-active-allocations-at-the-fixed-point-of-time\}
 
 ```sql
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;

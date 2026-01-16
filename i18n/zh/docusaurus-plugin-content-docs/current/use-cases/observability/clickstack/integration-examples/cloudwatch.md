@@ -22,7 +22,7 @@ import error_log_column_values from '@site/static/images/clickstack/cloudwatch/e
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# 使用 ClickStack 监控 AWS CloudWatch 日志 {#cloudwatch-clickstack}
+# 使用 ClickStack 监控 AWS CloudWatch 日志 \{#cloudwatch-clickstack\}
 
 :::note[摘要]
 本指南演示如何使用 OpenTelemetry Collector 的 AWS CloudWatch receiver 将 AWS CloudWatch 日志转发到 ClickStack。您将学习如何：
@@ -38,7 +38,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 所需时间：10–15 分钟
 :::
 
-## 概览 {#overview}
+## 概览 \{#overview\}
 
 AWS CloudWatch 是一项用于监控 AWS 资源和应用程序的服务。虽然 CloudWatch 提供日志聚合功能，但将日志转发到 ClickStack 可以让你：
 
@@ -48,13 +48,13 @@ AWS CloudWatch 是一项用于监控 AWS 资源和应用程序的服务。虽然
 
 本指南将说明如何使用 OpenTelemetry Collector 将 CloudWatch 日志转发到 ClickStack。
 
-## 与现有 CloudWatch 日志组集成 {#existing-cloudwatch}
+## 与现有 CloudWatch 日志组集成 \{#existing-cloudwatch\}
 
 本节介绍如何配置 OpenTelemetry Collector，从现有的 CloudWatch 日志组中获取日志并将其转发到 ClickStack。
 
 如果希望在配置生产环境之前先测试集成效果，可以使用我们的演示数据集进行测试，详见[演示数据集部分](#demo-dataset)。
 
-### 先决条件 {#prerequisites}
+### 先决条件 \{#prerequisites\}
 
 - 已在运行的 ClickStack 实例
 - 拥有 CloudWatch 日志组的 AWS 账户
@@ -291,7 +291,7 @@ AWS CloudWatch 是一项用于监控 AWS 资源和应用程序的服务。虽然
 
 <VerticalStepper headerLevel="h4">
 
-#### 下载示例数据集 {#download-sample}
+#### 下载示例数据集 \{#download-sample\}
 
 ```bash
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/aws/cloudwatch/cloudwatch-logs.jsonl
@@ -302,7 +302,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - **ECS services**：带有速率限制和超时配置的 API 网关
 - **Background jobs**：带重试模式的批处理任务
 
-#### 启动 ClickStack {#start-clickstack}
+#### 启动 ClickStack \{#start-clickstack\}
 
 如果您尚未运行 ClickStack：
 
@@ -314,7 +314,7 @@ docker run -d --name clickstack \
 
 等待片刻，直到 ClickStack 完全启动。
 
-#### 导入演示数据集 {#import-demo-data}
+#### 导入演示数据集 \{#import-demo-data\}
 
 ```bash
 docker exec -i clickstack clickhouse-client --query="
@@ -324,7 +324,7 @@ docker exec -i clickstack clickhouse-client --query="
 
 这会将日志直接导入到 ClickStack 的日志表中。
 
-#### 验证演示数据 {#verify-demo-logs}
+#### 验证演示数据 \{#verify-demo-logs\}
 
 导入完成后：
 
@@ -343,15 +343,15 @@ HyperDX 会使用您浏览器的本地时区显示时间戳。演示数据覆盖
 
 </VerticalStepper>
 
-## 仪表板和可视化 {#dashboards}
+## 仪表板和可视化 \{#dashboards\}
 
 为了帮助您使用 ClickStack 监控 CloudWatch 日志，我们提供了一个预先构建好的仪表板，其中包含关键可视化图表。
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/cloudwatch-logs-dashboard.json')} download="cloudwatch-logs-dashboard.json" eventName="docs.cloudwatch_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 {#download}
+#### <TrackedLink href={useBaseUrl('/examples/cloudwatch-logs-dashboard.json')} download="cloudwatch-logs-dashboard.json" eventName="docs.cloudwatch_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download\}
 
-#### 导入仪表板 {#import-dashboard}
+#### 导入仪表板 \{#import-dashboard\}
 
 1. 打开 HyperDX 并导航到 Dashboards 部分
 2. 在右上角的省略号菜单中点击 **Import Dashboard**
@@ -362,7 +362,7 @@ HyperDX 会使用您浏览器的本地时区显示时间戳。演示数据覆盖
 
 <Image img={finish_import} alt="Finish import dialog"/>
 
-#### 查看仪表板 {#created-dashboard}
+#### 查看仪表板 \{#created-dashboard\}
 
 系统会创建仪表板，并预先配置好所有可视化图表：
 

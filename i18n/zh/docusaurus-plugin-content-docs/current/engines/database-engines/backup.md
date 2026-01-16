@@ -7,13 +7,13 @@ title: '备份'
 doc_type: '参考'
 ---
 
-# 备份 {#backup}
+# 备份 \{#backup\}
 
 数据库备份允许从[备份](/operations/backup/overview)中即时附加表或数据库，并以只读模式访问。
 
 数据库备份同时支持增量和非增量备份。
 
-## 创建数据库 {#creating-a-database}
+## 创建数据库 \{#creating-a-database\}
 
 ```sql
 CREATE DATABASE backup_database
@@ -34,7 +34,7 @@ ENGINE = Backup('database_name_inside_backup', Disk('disk_name', 'backup_name'))
 * `database_name_inside_backup` — 备份中数据库的名称。
 * `backup_destination` — 备份存储位置。
 
-## 使用示例 {#usage-example}
+## 使用示例 \{#usage-example\}
 
 以 `Disk` 作为备份目标为例。首先在 `storage.xml` 中配置备份磁盘：
 

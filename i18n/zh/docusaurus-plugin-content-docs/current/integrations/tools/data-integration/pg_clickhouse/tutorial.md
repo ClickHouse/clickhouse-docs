@@ -7,13 +7,13 @@ doc_type: 'guide'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', '外部数据封装器', 'pg_clickhouse', '扩展', '教程', '出租车']
 ---
 
-# pg_clickhouse 教程 {#pg_clickhouse-tutorial}
+# pg_clickhouse 教程 \{#pg_clickhouse-tutorial\}
 
-## 概览 {#overview}
+## 概览 \{#overview\}
 
 本教程延续 [ClickHouse tutorial] 的内容，但所有查询均通过 pg_clickhouse 执行。
 
-## 启动 ClickHouse {#start-clickhouse}
+## 启动 ClickHouse \{#start-clickhouse\}
 
 首先，如果你还没有 ClickHouse 数据库，请先创建一个。一个快速开始的方式是使用 Docker 镜像：
 
@@ -23,7 +23,7 @@ docker exec -it clickhouse clickhouse-client
 ```
 
 
-## 创建表 {#create-a-table}
+## 创建表 \{#create-a-table\}
 
 让我们参考 [ClickHouse 教程] 中的示例，使用纽约市出租车数据集创建一个简单的数据库：
 
@@ -88,7 +88,7 @@ ORDER BY pickup_datetime;
 ```
 
 
-## 添加数据集 {#add-the-data-set}
+## 添加数据集 \{#add-the-data-set\}
 
 接下来导入数据：
 
@@ -158,7 +158,7 @@ quit
 ```
 
 
-### 安装 pg&#95;clickhouse {#install-pg&#95;clickhouse}
+### 安装 pg&#95;clickhouse \{#install-pg&#95;clickhouse\}
 
 从 [PGXN] 或 [GitHub] 构建并安装 pg&#95;clickhouse。或者使用 [pg&#95;clickhouse image] 启动一个
 Docker 容器，该镜像只是将 pg&#95;clickhouse 添加到 Docker 的 [Postgres image] 中：
@@ -169,7 +169,7 @@ docker run -d --network host --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
 ```
 
 
-### 连接 pg&#95;clickhouse {#connect-pg&#95;clickhouse}
+### 连接 pg&#95;clickhouse \{#connect-pg&#95;clickhouse\}
 
 现在连接到 Postgres：
 
@@ -302,7 +302,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 请注意，执行计划的根节点中出现了 “Foreign Scan”，这意味着整个查询都被下推到了 ClickHouse。
 
 
-## 分析数据 {#analyze-the-data}
+## 分析数据 \{#analyze-the-data\}
 
 运行一些查询来分析数据。可以参考以下示例，或尝试编写自己的 SQL 查询。
 
@@ -454,7 +454,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 17.450 ms
   ```
 
-## 创建字典 {#create-a-dictionary}
+## 创建字典 \{#create-a-dictionary\}
 
 在你的 ClickHouse 服务中创建一个与表关联的字典。该表和字典都基于一个 CSV 文件，该文件为纽约市的每个社区提供一行数据。
 
@@ -542,7 +542,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 
     此查询汇总了所有在 LaGuardia 或 JFK 机场结束的出租车行程，并按行政区统计数量。请注意，有相当多行程的上车社区是未知的。
 
-## 执行一次 JOIN 操作 {#perform-a-join}
+## 执行一次 JOIN 操作 \{#perform-a-join\}
 
 编写一些将 `taxi_zone_dictionary` 与你的 `trips` 表进行 JOIN 的查询。
 

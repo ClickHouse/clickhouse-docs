@@ -5,7 +5,7 @@ title: 'simpleLinearRegression'
 doc_type: 'reference'
 ---
 
-# simpleLinearRegression {#simplelinearregression}
+# simpleLinearRegression \{#simplelinearregression\}
 
 単回帰分析（一次元の線形回帰）を行います。
 

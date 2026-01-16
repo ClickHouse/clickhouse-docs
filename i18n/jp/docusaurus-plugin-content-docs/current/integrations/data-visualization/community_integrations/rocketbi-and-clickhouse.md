@@ -33,7 +33,7 @@ import rocketbi_17 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# 目標: Rocket.BI で最初のダッシュボードを構築する {#goal-build-your-first-dashboard-with-rocketbi}
+# 目標: Rocket.BI で最初のダッシュボードを構築する \{#goal-build-your-first-dashboard-with-rocketbi\}
 
 <CommunityMaintainedBadge/>
 
@@ -46,7 +46,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 [こちらのリンクからダッシュボードを確認できます。](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
 
-## インストール {#install}
+## インストール \{#install\}
 
 あらかじめ用意されている Docker イメージで RocketBI を起動します。
 
@@ -66,7 +66,7 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 ソースコードからのビルドや高度な設定については、[Rocket.BI README](https://github.com/datainsider-co/rocket-bi/blob/main/README.md) を参照してください。
 
 
-## ダッシュボードを作成しましょう {#lets-build-the-dashboard}
+## ダッシュボードを作成しましょう \{#lets-build-the-dashboard\}
 
 Dashboard では、作成したレポートを確認でき、**+New** をクリックして可視化を開始します。
 
@@ -77,9 +77,9 @@ Dashboard では、作成したレポートを確認でき、**+New** をクリ�
 
 高解像度のチュートリアルは YouTube で確認できます: [https://www.youtube.com/watch?v=TMkdMHHfvqY](https://www.youtube.com/watch?v=TMkdMHHfvqY)
 
-### チャート用コントロールを作成する {#build-the-chart-controls}
+### チャート用コントロールを作成する \{#build-the-chart-controls\}
 
-#### メトリクスコントロールを作成する {#create-a-metrics-control}
+#### メトリクスコントロールを作成する \{#create-a-metrics-control\}
 
 Tab filter で、使用したいメトリクスフィールドを選択します。集計設定を必ず確認してください。
 
@@ -91,7 +91,7 @@ Tab filter で、使用したいメトリクスフィールドを選択します
 
 <Image size="md" img={rocketbi_04} alt="名前を変更したフィルターを持ち、ダッシュボードに保存可能な状態のメトリクスコントロール" border />
 
-#### 日付タイプのコントロールを作成する {#create-a-date-type-control}
+#### 日付タイプのコントロールを作成する \{#create-a-date-type-control\}
 
 Date フィールドの中から、メインの Date 列を選択します:
 
@@ -109,9 +109,9 @@ Date フィールドの中から、メインの Date 列を選択します:
 
 <Image size="md" img={rocketbi_07} alt="名前を変更したフィルターを持ち、ダッシュボードに保存可能な状態の日付範囲コントロール" border />
 
-### それでは、チャートを作成しましょう {#now-let-build-the-charts}
+### それでは、チャートを作成しましょう \{#now-let-build-the-charts\}
 
-#### 円グラフ: 地域別の売上メトリクス {#pie-chart-sales-metrics-by-regions}
+#### 円グラフ: 地域別の売上メトリクス \{#pie-chart-sales-metrics-by-regions\}
 
 新しいチャートの追加を選択し、Pie Chart を選択します。
 
@@ -155,7 +155,7 @@ Metrics Control を Value フィールドへドラッグ & ドロップします
 
 <Image size="md" img={rocketbi_14} alt="新しく追加された円グラフと他のコントロールが表示されたダッシュボード画面" border />
 
-#### 時系列チャートで日付コントロールを使用する {#use-date-control-in-a-time-series-chart}
+#### 時系列チャートで日付コントロールを使用する \{#use-date-control-in-a-time-series-chart\}
 
 Stacked Column Chart を使ってみましょう。
 

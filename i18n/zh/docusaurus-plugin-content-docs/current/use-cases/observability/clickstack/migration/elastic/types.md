@@ -51,7 +51,7 @@ Elasticsearch 和 ClickHouse 支持的数据显示类型非常丰富，但它们
 | `percolator`                       | 不适用                                                                                                                                                                                                                                                                                          | 没有为查询建立索引这种概念。请改用标准 SQL 和增量物化视图。                                                                                                                                                                                                                                 |
 | `version`                          | [`String`](/sql-reference/data-types/string)                                                                                                                                                                                                                                                 | ClickHouse 没有原生的版本类型。请将版本存储为字符串，并在需要时使用自定义 UDF 执行语义比较。如果需要进行范围查询，建议将其规范化为数值格式。                                                                                                                                                                                   |
 
-### 备注 {#notes}
+### 备注 \{#notes\}
 
 - **数组（Arrays）**：在 Elasticsearch 中，所有字段原生支持数组。在 ClickHouse 中，数组必须显式定义（例如 `Array(String)`），其优点是可以按特定位置访问和查询，例如 `an_array[1]`。
 - **多字段（Multi-fields）**：Elasticsearch 允许以[多种方式索引同一字段](https://www.elastic.co/docs/reference/elasticsearch/mapping-reference/multi-fields#_multi_fields_with_multiple_analyzers)（例如同时作为 `text` 和 `keyword`）。在 ClickHouse 中，必须通过单独的列或视图来实现这种模式。

@@ -5,7 +5,7 @@ title: 'analysisOfVariance'
 doc_type: 'reference'
 ---
 
-# analysisOfVariance {#analysisofvariance}
+# analysisOfVariance \{#analysisofvariance\}
 
 Предоставляет статистический критерий для однофакторного дисперсионного анализа (ANOVA). Это критерий для нескольких групп нормально распределённых наблюдений, позволяющий определить, имеют ли все группы одинаковое среднее значение.
 

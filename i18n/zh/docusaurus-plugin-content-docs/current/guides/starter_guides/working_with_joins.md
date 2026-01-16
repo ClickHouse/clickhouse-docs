@@ -22,7 +22,7 @@ ClickHouse 完全支持标准 SQL JOIN，从而实现高效的数据分析。
 在本指南中，我们将借助维恩（Venn）图和示例查询，了解一些常用的 JOIN 类型，并展示如何在一个规范化的 [IMDB](https://en.wikipedia.org/wiki/IMDb) 数据集上使用它们，该数据集来源于 [relational dataset repository](https://relational.fit.cvut.cz/dataset/IMDb)。
 
 
-## 测试数据和资源 {#test-data-and-resources}
+## 测试数据和资源 \{#test-data-and-resources\}
 
 有关如何创建和加载这些表的说明可以在[此处](/integrations/dbt/guides)找到。
 如果你不想在本地创建和加载这些表，该数据集也可以在 [playground](https://sql.clickhouse.com?query_id=AACTS8ZBT3G7SSGN8ZJBJY) 中直接使用。
@@ -40,7 +40,7 @@ ClickHouse 完全支持标准 SQL JOIN，从而实现高效的数据分析。
 这种多对多关系通过使用 `roles` 表被规范化为两个[一对多关系](https://en.wikipedia.org/wiki/One-to-many_(data_model))。
 `roles` 表中的每一行都包含 `movies` 表和 `actors` 表中 `id` 列的值。
 
-## ClickHouse 中支持的 JOIN 类型 {#join-types-supported-in-clickhouse}
+## ClickHouse 中支持的 JOIN 类型 \{#join-types-supported-in-clickhouse\}
 
 ClickHouse 支持以下几种 JOIN 类型：
 
@@ -54,7 +54,7 @@ ClickHouse 支持以下几种 JOIN 类型：
 
 在接下来的章节中，您将为上述每种 JOIN 类型编写示例查询。
 
-## INNER JOIN {#inner-join}
+## INNER JOIN \{#inner-join\}
 
 `INNER JOIN` 会针对每一对在连接键上匹配的行，返回左表中该行的列值与右表中该行的列值的组合。
 如果某一行有多条匹配记录，则会返回所有匹配记录（这意味着对于连接键匹配的行会产生[笛卡尔积](https://en.wikipedia.org/wiki/Cartesian_product)）。
@@ -98,7 +98,7 @@ LIMIT 10;
 可以通过使用以下其他 JOIN 类型来扩展或改变 `INNER JOIN` 的行为。
 
 
-## (LEFT / RIGHT / FULL) OUTER JOIN {#left--right--full-outer-join}
+## (LEFT / RIGHT / FULL) OUTER JOIN \{#left--right--full-outer-join\}
 
 `LEFT OUTER JOIN` 的行为类似于 `INNER JOIN`；另外，对于左表中不匹配的行，ClickHouse 会为右表的列返回[默认值](/sql-reference/statements/create/table#default_values)。
 
@@ -145,7 +145,7 @@ LIMIT 10;
 :::
 
 
-## CROSS JOIN {#cross-join}
+## CROSS JOIN \{#cross-join\}
 
 `CROSS JOIN` 会生成两个表的完整笛卡尔积，且不使用任何关联键。
 左表中的每一行都会与右表中的每一行进行组合。
@@ -242,7 +242,7 @@ ALL
 由于如上所述，在 `RIGHT OUTER JOIN` 中可以省略 `OUTER` 关键字，并且可以添加可选的 `ALL` 关键字，所以你可以写成 `ALL RIGHT JOIN`，它同样可以正常工作。
 
 
-## (LEFT / RIGHT) SEMI JOIN {#left--right-semi-join}
+## (LEFT / RIGHT) SEMI JOIN \{#left--right-semi-join\}
 
 `LEFT SEMI JOIN` 查询会返回左表中每一行在右表中至少有一个连接键匹配的列值。
 只返回找到的第一条匹配记录（不生成笛卡尔积）。
@@ -281,7 +281,7 @@ LIMIT 10;
 ```
 
 
-## (LEFT / RIGHT) ANTI JOIN {#left--right-anti-join}
+## (LEFT / RIGHT) ANTI JOIN \{#left--right-anti-join\}
 
 `LEFT ANTI JOIN` 返回左表中所有不匹配行的列值。
 
@@ -317,7 +317,7 @@ LIMIT 10;
 ```
 
 
-## (LEFT / RIGHT / INNER) ANY JOIN {#left--right--inner-any-join}
+## (LEFT / RIGHT / INNER) ANY JOIN \{#left--right--inner-any-join\}
 
 `LEFT ANY JOIN` 是 `LEFT OUTER JOIN` + `LEFT SEMI JOIN` 的组合，这意味着 ClickHouse 会为左表中的每一行返回列值，要么与右表中匹配行的列值组合，要么在不存在匹配时与右表的默认列值组合。
 如果左表中的某一行在右表中有多个匹配，ClickHouse 只会返回来自第一个匹配行的组合列值（笛卡尔积被禁用）。
@@ -393,7 +393,7 @@ INNER ANY JOIN right_table AS r ON l.c = r.c;
 ```
 
 
-## ASOF JOIN {#asof-join}
+## ASOF JOIN \{#asof-join\}
 
 `ASOF JOIN` 支持非精确匹配。
 如果左表中的某一行在右表中没有精确匹配行，则会使用右表中与之时间上“最近”的行作为匹配结果。
@@ -451,7 +451,7 @@ final_price:        9645
 :::
 
 
-## 摘要 {#summary}
+## 摘要 \{#summary\}
 
 本指南介绍 ClickHouse 如何支持所有标准 SQL JOIN 类型，以及用于支持分析查询的专用 JOIN。
 有关 JOIN 的更多详细信息，请参阅 [JOIN](/sql-reference/statements/select/join) 语句的文档。

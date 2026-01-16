@@ -6,13 +6,13 @@ title: 'Функции для работы с Geohash'
 doc_type: 'reference'
 ---
 
-## Geohash {#geohash}
+## Geohash \{#geohash\}
 
 [Geohash](https://en.wikipedia.org/wiki/Geohash) — это система геокодирования, которая разбивает поверхность Земли на ячейки сетки и кодирует каждую ячейку в короткую строку из букв и цифр. Это иерархическая структура данных, поэтому чем длиннее строка geohhash, тем точнее будет указано географическое местоположение.
 
 Если вам нужно вручную преобразовать географические координаты в строки geohash, вы можете использовать [geohash.org](http://geohash.co/).
 
-## geohashEncode {#geohashencode}
+## geohashEncode \{#geohashencode\}
 
 Кодирует широту и долготу в строку формата [geohash](#geohash).
 
@@ -54,7 +54,7 @@ SELECT geohashEncode(-5.60302734375, 42.593994140625, 0) AS res;
 └──────────────┘
 ```
 
-## geohashDecode {#geohashdecode}
+## geohashDecode \{#geohashdecode\}
 
 Декодирует любую строку, закодированную с помощью [geohash](#geohash), в значения долготы и широты.
 
@@ -84,7 +84,7 @@ SELECT geohashDecode('ezs42') AS res;
 └─────────────────────────────────┘
 ```
 
-## geohashesInBox {#geohashesinbox}
+## geohashesInBox \{#geohashesinbox\}
 
 Возвращает массив строк, закодированных в [geohash](#geohash) с заданной точностью, которые находятся внутри заданного прямоугольника или пересекают его границы, по сути представляя собой 2D‑сетку, развёрнутую в одномерный массив.
 

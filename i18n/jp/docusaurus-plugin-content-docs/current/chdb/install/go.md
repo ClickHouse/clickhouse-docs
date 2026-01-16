@@ -7,13 +7,13 @@ keywords: ['chdb', 'go', 'golang', 'embedded', 'clickhouse', 'sql', 'olap']
 doc_type: 'guide'
 ---
 
-# Go向けchDB {#chdb-for-go}
+# Go向けchDB \{#chdb-for-go\}
 
 chDB-goは、chDBのGoバインディングを提供し、外部依存関係なしでGoアプリケーション内で直接ClickHouseクエリを実行できるようにします。
 
-## インストール {#installation}
+## インストール \{#installation\}
 
-### ステップ1：libchdbのインストール {#install-libchdb}
+### ステップ1：libchdbのインストール \{#install-libchdb\}
 
 まず、chDBライブラリをインストールします：
 
@@ -21,7 +21,7 @@ chDB-goは、chDBのGoバインディングを提供し、外部依存関係な�
 curl -sL https://lib.chdb.io | bash
 ```
 
-### ステップ2：chdb-goのインストール {#install-chdb-go}
+### ステップ2：chdb-goのインストール \{#install-chdb-go\}
 
 Goパッケージをインストールします：
 
@@ -35,9 +35,9 @@ go install github.com/chdb-io/chdb-go@latest
 go get github.com/chdb-io/chdb-go
 ```
 
-## 使用方法 {#usage}
+## 使用方法 \{#usage\}
 
-### コマンドラインインターフェース {#cli}
+### コマンドラインインターフェース \{#cli\}
 
 chDB-goには、クイッククエリ用のCLIが含まれています：
 
@@ -52,9 +52,9 @@ chDB-goには、クイッククエリ用のCLIが含まれています：
 ./chdb-go --path /tmp/chdb
 ```
 
-### Goライブラリ - クイックスタート {#quick-start}
+### Goライブラリ - クイックスタート \{#quick-start\}
 
-#### ステートレスクエリ {#stateless-queries}
+#### ステートレスクエリ \{#stateless-queries\}
 
 シンプルな単発クエリの場合：
 
@@ -76,7 +76,7 @@ func main() {
 }
 ```
 
-#### セッションを使用したステートフルクエリ {#stateful-queries}
+#### セッションを使用したステートフルクエリ \{#stateful-queries\}
 
 永続的な状態を持つ複雑なクエリの場合：
 
@@ -129,7 +129,7 @@ func main() {
 }
 ```
 
-#### SQLドライバーインターフェース {#sql-driver}
+#### SQLドライバーインターフェース \{#sql-driver\}
 
 chDB-goはGoの`database/sql`インターフェースを実装しています：
 
@@ -168,7 +168,7 @@ func main() {
 }
 ```
 
-#### 大規模データセット向けクエリストリーミング {#query-streaming}
+#### 大規模データセット向けクエリストリーミング \{#query-streaming\}
 
 メモリに収まらない大規模データセットを処理する場合は、ストリーミングクエリを使用します：
 
@@ -235,14 +235,14 @@ func main() {
 - **キャンセルサポート** - `Cancel()`で長時間実行中のクエリをキャンセル可能
 - **エラー処理** - `Error()`でストリーミング中のエラーを確認
 
-## APIドキュメント {#api-documentation}
+## APIドキュメント \{#api-documentation\}
 
 chDB-goは高レベルAPIと低レベルAPIの両方を提供しています：
 
 - **[高レベルAPIドキュメント](https://github.com/chdb-io/chdb-go/blob/main/chdb.md)** - ほとんどのユースケースに推奨
 - **[低レベルAPIドキュメント](https://github.com/chdb-io/chdb-go/blob/main/lowApi.md)** - きめ細かい制御が必要な高度なユースケース向け
 
-## システム要件 {#requirements}
+## システム要件 \{#requirements\}
 
 - Go 1.21以降
 - Linux、macOSに対応

@@ -8,7 +8,7 @@ show_related_blogs: true
 doc_type: 'reference'
 ---
 
-# 日付および時刻データ型 {#date-and-time-data-types}
+# 日付および時刻データ型 \{#date-and-time-data-types\}
 
 効果的な時系列データ管理のためには、充実した日付および時刻型の体系が不可欠であり、ClickHouse はまさにそれを提供します。
 コンパクトな日付表現からナノ秒精度を持つ高精度タイムスタンプまで、これらの型は、さまざまな時系列アプリケーションにおける実用上の要件とストレージ効率のバランスを取るように設計されています。
@@ -68,7 +68,7 @@ very_precise_datetime: 2025-03-12 11:39:07.196724000
 ```
 
 
-## Time と Time64 型 {#time-series-time-types}
+## Time と Time64 型 \{#time-series-time-types\}
 
 日付部分を含まない時刻のみを保存する必要がある場合に、ClickHouse では [`Time`](/sql-reference/data-types/time) と [`Time64`](/sql-reference/data-types/time64) 型が提供されています。これらはバージョン 25.6 で導入されたもので、繰り返しスケジュールや日次パターンの表現、あるいは日付と時刻のコンポーネントを分離するのが適切な状況で有用です。
 
@@ -125,7 +125,7 @@ SELECT * FROM time_examples WHERE basic_time = '14:30:25';
 ```
 
 
-## タイムゾーン {#time-series-timezones}
+## タイムゾーン \{#time-series-timezones\}
 
 多くのユースケースでは、タイムゾーンもあわせて保存しておく必要があります。`DateTime` または `DateTime64` 型の最後の引数として、タイムゾーンを指定できます。
 
@@ -192,7 +192,7 @@ dt64_2: 2022-12-12 12:13:15.123456789
 1 行目と同様に、`dt_1` と `dt64_1` は `Europe/Berlin` に変換され、`dt_2` と `dt64_2` はサーバーのローカルタイムゾーンを使用します。
 
 
-## 日付と時刻の関数 {#time-series-date-time-functions}
+## 日付と時刻の関数 \{#time-series-date-time-functions\}
 
 ClickHouse には、異なるデータ型同士を変換するための一連の関数も用意されています。
 

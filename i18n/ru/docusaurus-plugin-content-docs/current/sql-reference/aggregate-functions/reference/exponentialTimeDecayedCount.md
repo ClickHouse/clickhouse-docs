@@ -5,7 +5,7 @@ title: 'exponentialTimeDecayedCount'
 doc_type: 'reference'
 ---
 
-## exponentialTimeDecayedCount {#exponentialtimedecayedcount}
+## exponentialTimeDecayedCount \{#exponentialtimedecayedcount\}
 
 Возвращает кумулятивное значение с экспоненциальным затуханием для временного ряда в момент времени с индексом `t`.
 

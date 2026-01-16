@@ -5,7 +5,7 @@ title: 'approx_top_sum'
 doc_type: 'reference'
 ---
 
-# approx_top_sum {#approx_top_sum}
+# approx_top_sum \{#approx_top_sum\}
 
 指定したカラムに対して、近似的に最も頻出する値とその出現回数を含む配列を返します。結果の配列は、値そのものではなく、値の近似的な出現頻度が高い順（降順）にソートされます。さらに、値の重みも考慮されます。
 

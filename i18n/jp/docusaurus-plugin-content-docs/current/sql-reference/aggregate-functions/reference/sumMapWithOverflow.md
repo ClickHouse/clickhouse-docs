@@ -5,7 +5,7 @@ title: 'sumMapWithOverflow'
 doc_type: 'reference'
 ---
 
-# sumMapWithOverflow {#summapwithoverflow}
+# sumMapWithOverflow \{#summapwithoverflow\}
 
 `key` 配列で指定されたキーに従って `value` 配列を合計します。ソート済みのキーと、それぞれのキーに対応する合計値からなる 2 つの配列のタプルを返します。
 [sumMap](../reference/sumMap.md) 関数との違いは、オーバーフローを許容して加算を行う点、つまり合計結果のデータ型が引数のデータ型と同じになる点です。

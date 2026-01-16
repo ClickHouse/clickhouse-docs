@@ -6,7 +6,7 @@ title: 'groupArrayArray'
 doc_type: 'reference'
 ---
 
-# groupArrayArray {#grouparrayarray}
+# groupArrayArray \{#grouparrayarray\}
 
 Агрегирует массивы в единый более крупный массив этих массивов.
 Комбинирует функцию [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) с комбинатором [Array](/sql-reference/aggregate-functions/combinators#-array).

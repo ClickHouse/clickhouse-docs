@@ -6,7 +6,7 @@ title: 'Функции quantileExact'
 doc_type: 'reference'
 ---
 
-# quantileExact {#quantileexact}
+# quantileExact \{#quantileexact\}
 
 Точно вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных.
 

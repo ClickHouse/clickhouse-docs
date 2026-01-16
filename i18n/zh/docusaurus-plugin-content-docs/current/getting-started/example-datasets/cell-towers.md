@@ -29,7 +29,7 @@ import superset_radio_umts from '@site/static/images/getting-started/example-dat
 import superset_umts_netherlands from '@site/static/images/getting-started/example-datasets/superset-umts-netherlands.png'
 import superset_cell_tower_dashboard from '@site/static/images/getting-started/example-datasets/superset-cell-tower-dashboard.png'
 
-## 目标 {#goal}
+## 目标 \{#goal\}
 
 在本指南中，您将学习如何：
 
@@ -41,7 +41,7 @@ import superset_cell_tower_dashboard from '@site/static/images/getting-started/e
 
 <Image img={cell_towers_1} size="md" alt="mcc 204 区域内按无线制式分类的基站仪表盘"/>
 
-## 获取数据集 {#get-the-dataset}
+## 获取数据集 \{#get-the-dataset\}
 
 该数据集来自 [OpenCelliD](https://www.opencellid.org/)——全球最大的蜂窝基站开放数据库。
 
@@ -52,7 +52,7 @@ OpenCelliD 项目采用 Creative Commons Attribution-ShareAlike 4.0 Internationa
 <Tabs groupId="deployMethod">
 <TabItem value="serverless" label="ClickHouse Cloud" default>
 
-### 加载示例数据 {#load-the-sample-data}
+### 加载示例数据 \{#load-the-sample-data\}
 
 ClickHouse Cloud 提供了从 S3 上传该数据集的一键式操作。登录到你的 ClickHouse Cloud 组织，或在 [ClickHouse.cloud](https://clickhouse.cloud) 创建一个免费试用。
 <ActionsMenu menu="Load Data" />
@@ -61,7 +61,7 @@ ClickHouse Cloud 提供了从 S3 上传该数据集的一键式操作。登录�
 
 <Image img={cloud_load_data_sample} size='md' alt='Load cell towers dataset' />
 
-### 查看 cell_towers 表的结构 {#examine-the-schema-of-the-cell_towers-table}
+### 查看 cell_towers 表的结构 \{#examine-the-schema-of-the-cell_towers-table\}
 ```sql
 DESCRIBE TABLE cell_towers
 ```
@@ -123,7 +123,7 @@ INSERT INTO cell_towers SELECT * FROM s3('https://datasets-documentation.s3.amaz
 </TabItem>
 </Tabs>
 
-## 运行一些示例查询 {#examples}
+## 运行一些示例查询 \{#examples\}
 
 1. 各类型蜂窝基站的数量：
 
@@ -170,7 +170,7 @@ SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
 
 您可以考虑在 ClickHouse 中创建一个 [Dictionary](../../sql-reference/dictionaries/index.md) 来对这些值进行解码。
 
-## 使用场景：集成地理数据 {#use-case}
+## 使用场景：集成地理数据 \{#use-case\}
 
 使用 [`pointInPolygon`](/sql-reference/functions/geo/coordinates.md/#pointinpolygon) 函数。
 
@@ -264,7 +264,7 @@ WHERE pointInPolygon((lon, lat), (SELECT * FROM moscow))
 1 rows in set. Elapsed: 0.067 sec. Processed 43.28 million rows, 692.42 MB (645.83 million rows/s., 10.33 GB/s.)
 ```
 
-## 查看模式 {#review-of-the-schema}
+## 查看模式 \{#review-of-the-schema\}
 
 在 Superset 中构建可视化之前，请先查看你将要使用的列。此数据集主要提供全球移动蜂窝基站的位置（经度和纬度）以及无线接入技术类型。各列的说明可以在[社区论坛](https://community.opencellid.org/t/documenting-the-columns-in-the-downloadable-cells-database-csv/186)中找到。下面描述将用于构建可视化的列。
 
@@ -289,7 +289,7 @@ WHERE pointInPolygon((lon, lat), (SELECT * FROM moscow))
 
 本指南中的查询或可视化不会用到其他字段，但如果你感兴趣，可以在上面链接的论坛中查看它们的说明。
 
-## 使用 Apache Superset 构建可视化 {#build-visualizations-with-apache-superset}
+## 使用 Apache Superset 构建可视化 \{#build-visualizations-with-apache-superset\}
 
 Superset 可以很方便地通过 Docker 运行。 如果已经在运行 Superset，只需要执行 `pip install clickhouse-connect` 来添加 ClickHouse Connect 即可。 如果需要安装 Superset，请打开下方的 **Launch Apache Superset in Docker**。
 
@@ -302,7 +302,7 @@ Superset 可以很方便地通过 Docker 运行。 如果已经在运行 Superse
 - 创建一些 **charts**
 - 将这些图表添加到一个 **dashboard**
 
-### 将你的 ClickHouse 服务添加为 Superset 数据库 {#add-your-clickhouse-service-as-a-superset-database}
+### 将你的 ClickHouse 服务添加为 Superset 数据库 \{#add-your-clickhouse-service-as-a-superset-database\}
 
 <ConnectionDetails />
 
@@ -318,7 +318,7 @@ Superset 可以很方便地通过 Docker 运行。 如果已经在运行 Superse
   如果在可选项中没有 **ClickHouse Connect**，则需要先安装它。命令为 `pip install clickhouse-connect`，更多信息请参见[此处](https://pypi.org/project/clickhouse-connect/)。
 :::
 
-#### 添加连接详细信息 {#add-your-connection-details}
+#### 添加连接详细信息 \{#add-your-connection-details\}
 
 :::tip
   在连接到 ClickHouse Cloud 或其他强制使用 SSL 的 ClickHouse 系统时，请确保已启用 **SSL**。
@@ -326,19 +326,19 @@ Superset 可以很方便地通过 Docker 运行。 如果已经在运行 Superse
 
 <Image img={add_clickhouse_as_superset_datasource} size="md" alt="将 ClickHouse 添加为 Superset 数据源"/>
 
-### 将表 **cell_towers** 添加为 Superset **数据集（dataset）** {#add-the-table-cell_towers-as-a-superset-dataset}
+### 将表 **cell_towers** 添加为 Superset **数据集（dataset）** \{#add-the-table-cell_towers-as-a-superset-dataset\}
 
 在 Superset 中，一个 **dataset** 对应数据库中的一张表。点击 “Add dataset”，选择你的 ClickHouse 服务、包含该表的数据库（`default`），然后选择 `cell_towers` 表：
 
 <Image img={add_cell_towers_table_as_dataset} size="md" alt="将 cell_towers 表添加为一个数据集（dataset）"/>
 
-### 创建一些**图表** {#create-some-charts}
+### 创建一些**图表** \{#create-some-charts\}
 
 在 Superset 中选择添加图表时，您需要指定数据集（`cell_towers`）和图表类型。由于 OpenCelliD 数据集为基站提供了经度和纬度坐标，我们将创建一个**地图图表（Map）**。**deck.gl Scatterplot** 类型非常适合该数据集，因为它在地图上展示高密度数据点时表现出色。
 
 <Image img={create_a_map_in_superset} size="md" alt="在 Superset 中创建地图"/>
 
-#### 为地图指定所使用的查询 {#specify-the-query-used-for-the-map}
+#### 为地图指定所使用的查询 \{#specify-the-query-used-for-the-map\}
 
 deck.gl 的散点图（Scatterplot）需要经度和纬度字段，并且可以在查询中应用一个或多个过滤条件。本示例中应用了两个过滤条件：一个用于带有 UMTS 无线电的基站，一个用于分配给荷兰的移动国家码（Mobile Country Code, MCC）。
 
@@ -360,7 +360,7 @@ deck.gl 的散点图（Scatterplot）需要经度和纬度字段，并且可以�
 
 点击 **UPDATE CHART** 来渲染该可视化图表。
 
-### 将图表添加到**仪表板** {#add-the-charts-to-a-dashboard}
+### 将图表添加到**仪表板** \{#add-the-charts-to-a-dashboard\}
 
 此截图展示了包含 LTE、UMTS 和 GSM 无线电的基站位置。所有图表均以相同方式创建，然后添加到同一个仪表板中。
 

@@ -23,9 +23,9 @@ ClickStack использует стандарт OpenTelemetry для сбора
 * **Трейсы**
 * **Исключения**
 
-## Начало работы {#getting-started}
+## Начало работы \{#getting-started\}
 
-### Установка пакета инструментирования HyperDX OpenTelemetry {#install-hyperdx-opentelemetry-instrumentation-package}
+### Установка пакета инструментирования HyperDX OpenTelemetry \{#install-hyperdx-opentelemetry-instrumentation-package\}
 
 Установите [пакет ClickStack OpenTelemetry](https://www.npmjs.com/package/@hyperdx/node-opentelemetry) с помощью следующей команды.
 
@@ -46,7 +46,7 @@ yarn add @hyperdx/node-opentelemetry
 </TabItem>
 </Tabs>
 
-### Инициализация SDK {#initializin-the-sdk}
+### Инициализация SDK \{#initializin-the-sdk\}
 
 Чтобы инициализировать SDK, вам нужно вызвать функцию `init` в самом начале файла — точки входа вашего приложения.
 
@@ -79,7 +79,7 @@ HyperDX.init({
 
 Это позволит автоматически собирать трейсы, метрики и логи из вашего Node.js-приложения.
 
-### Настройка сбора логов {#setup-log-collection}
+### Настройка сбора логов \{#setup-log-collection\}
 
 По умолчанию логи `console.*` собираются автоматически. Если вы используете логгер
 такой, как `winston` или `pino`, вам необходимо добавить в него транспорт для
@@ -143,7 +143,7 @@ export default logger;
 </TabItem>
 </Tabs>
 
-### Настройка сбора ошибок {#setup-error-collection}
+### Настройка сбора ошибок \{#setup-error-collection\}
 
 SDK ClickStack может автоматически собирать необработанные исключения и ошибки в вашем приложении с полным стеком вызовов и контекстом кода. 
 
@@ -206,7 +206,7 @@ function myErrorHandler(error, req, res, next) {
 </TabItem>
 </Tabs>
 
-## Устранение неполадок {#troubleshooting}
+## Устранение неполадок \{#troubleshooting\}
 
 Если у вас возникают проблемы с SDK, вы можете включить подробное логирование, установив
 переменную окружения `OTEL_LOG_LEVEL` в значение `debug`.
@@ -215,9 +215,9 @@ function myErrorHandler(error, req, res, next) {
 export OTEL_LOG_LEVEL=debug
 ```
 
-## Расширенная конфигурация инструментирования {#advanced-instrumentation-configuration}
+## Расширенная конфигурация инструментирования \{#advanced-instrumentation-configuration\}
 
-### Сбор логов консоли {#capture-console-logs}
+### Сбор логов консоли \{#capture-console-logs\}
 
 По умолчанию SDK ClickStack собирает логи консоли. Чтобы отключить это, установите для переменной окружения `HDX_NODE_CONSOLE_CAPTURE` значение 0.
 
@@ -225,7 +225,7 @@ export OTEL_LOG_LEVEL=debug
 export HDX_NODE_CONSOLE_CAPTURE=0
 ```
 
-### Attach user information or metadata {#attach-user-information-or-metadata}
+### Attach user information or metadata \{#attach-user-information-or-metadata\}
 
 To easily tag all events related to a given attribute or identifier (ex. user id
 or email), you can call the `setTraceAttributes` function which will tag every
@@ -265,7 +265,7 @@ enable trace attributes.
 export HDX_NODE_BETA_MODE=1
 ```
 
-### Google Cloud Run {#google-cloud-run}
+### Google Cloud Run \{#google-cloud-run\}
 
 If you're running your application on Google Cloud Run, Cloud Trace
 automatically injects sampling headers into incoming requests, currently
@@ -282,7 +282,7 @@ achieve the same result.
 To learn more, and to force tracing of specific requests, please refer to the
 [Google Cloud Run documentation](https://cloud.google.com/run/docs/trace).
 
-### Auto-instrumented libraries {#auto-instrumented-libraries}
+### Auto-instrumented libraries \{#auto-instrumented-libraries\}
 
 The following libraries will be automatically instrumented (traced) by the SDK:
 
@@ -304,9 +304,9 @@ The following libraries will be automatically instrumented (traced) by the SDK:
 - [`redis`](https://www.npmjs.com/package/redis)
 - [`winston`](https://www.npmjs.com/package/winston)
 
-## Alternative installation {#alternative-installation}
+## Alternative installation \{#alternative-installation\}
 
-### Run the Application with ClickStack OpenTelemetry CLI {#run-the-application-with-cli}
+### Run the Application with ClickStack OpenTelemetry CLI \{#run-the-application-with-cli\}
 
 Alternatively, you can auto-instrument your application without any code changes by using the `opentelemetry-instrument` CLI or using the
 Node.js `--require` flag. The CLI installation exposes a wider range of auto-instrumented libraries and frameworks.
@@ -346,7 +346,7 @@ initSDK({
 
 _The `OTEL_SERVICE_NAME` environment variable is used to identify your service in the HyperDX app, it can be any name you want._
 
-### Enabling exception capturing {#enabling-exception-capturing}
+### Enabling exception capturing \{#enabling-exception-capturing\}
 
 To enable uncaught exception capturing, you'll need to set the `HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE` environment variable to 1.
 
@@ -356,7 +356,7 @@ HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE=1
 
 После этого, чтобы автоматически перехватывать исключения в Express или Koa либо обрабатывать их вручную, следуйте инструкциям в разделе [Настройка сбора ошибок](#setup-error-collection) выше.
 
-### Автоматически инструментируемые библиотеки {#auto-instrumented-libraries-2}
+### Автоматически инструментируемые библиотеки \{#auto-instrumented-libraries-2\}
 
 Следующие библиотеки будут автоматически инструментированы (с включением трассировки) с помощью описанных выше методов установки:
 

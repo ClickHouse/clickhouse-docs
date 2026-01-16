@@ -5,7 +5,7 @@ title: 'exponentialTimeDecayedAvg'
 doc_type: 'reference'
 ---
 
-## exponentialTimeDecayedAvg {#exponentialtimedecayedavg}
+## exponentialTimeDecayedAvg \{#exponentialtimedecayedavg\}
 
 時刻 `t` における時系列データの値に対する指数平滑化された加重移動平均を返します。
 

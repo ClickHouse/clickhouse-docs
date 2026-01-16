@@ -16,7 +16,7 @@ import finish_import from '@site/static/images/clickstack/import-redis-metrics-d
 import example_dashboard from '@site/static/images/clickstack/redis-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Мониторинг метрик Redis с помощью ClickStack {#redis-metrics-clickstack}
+# Мониторинг метрик Redis с помощью ClickStack \{#redis-metrics-clickstack\}
 
 :::note[TL;DR]
 В этом руководстве показано, как отслеживать метрики производительности Redis с помощью ClickStack, настроив Redis receiver в OTel collector. Вы узнаете, как:
@@ -30,13 +30,13 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 Требуемое время: 5–10 минут
 :::
 
-## Интеграция с существующим Redis {#existing-redis}
+## Интеграция с существующим Redis \{#existing-redis\}
 
 В этом разделе описывается, как настроить вашу существующую установку Redis для отправки метрик в ClickStack путём настройки ClickStack OTel collector с приёмником Redis.
 
 Если вы хотите протестировать интеграцию метрик Redis, прежде чем настраивать собственную инфраструктуру, вы можете использовать наш предварительно настроенный демонстрационный набор данных в [следующем разделе](#demo-dataset).
 
-##### Предварительные требования {#prerequisites}
+##### Предварительные требования \{#prerequisites\}
 
 - Запущенный экземпляр ClickStack
 - Установка Redis версии 3.0 или новее
@@ -235,7 +235,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### Загрузите пример датасета метрик {#download-sample}
+#### Загрузите пример датасета метрик \{#download-sample\}
 
 Скачайте заранее сгенерированные файлы метрик (24 часа Redis Metrics с реалистичными профилями):
 ```bash
@@ -252,7 +252,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - **Дефицит памяти (20:00)** — вытеснение ключей и деградация производительности кэша
 - **Ежедневные профили трафика** — пики в рабочие часы, падения вечером, случайные короткие всплески
 
-#### Запустите ClickStack {#start-clickstack}
+#### Запустите ClickStack \{#start-clickstack\}
 
 Запустите экземпляр ClickStack:
 ```bash
@@ -301,7 +301,7 @@ cat redis-metrics-sum.csv | docker exec -i clickstack-demo \
 
 #### <TrackedLink href={useBaseUrl('/examples/redis-metrics-dashboard.json')} download="redis-metrics-dashboard.json" eventName="docs.redis_metrics_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда {#download}
 
-#### Импорт готового дашборда {#import-dashboard}
+#### Импорт готового дашборда \{#import-dashboard\}
 
 1. Откройте HyperDX и перейдите в раздел **Dashboards**
 2. Нажмите **Import Dashboard** в правом верхнем углу под значком с многоточием
@@ -312,7 +312,7 @@ cat redis-metrics-sum.csv | docker exec -i clickstack-demo \
 
 <Image img={finish_import} alt="Диалог завершения импорта"/>
 
-#### Просмотр дашборда {#created-dashboard}
+#### Просмотр дашборда \{#created-dashboard\}
 
 Дашборд будет создан со всеми преднастроенными визуализациями:
 

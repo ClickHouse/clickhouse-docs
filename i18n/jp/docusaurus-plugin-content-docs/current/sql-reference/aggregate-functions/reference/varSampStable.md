@@ -7,7 +7,7 @@ doc_type: 'reference'
 
 
 
-## varSampStable {#varsampstable}
+## varSampStable \{#varsampstable\}
 
 Calculate the sample variance of a data set. Unlike [`varSamp`](../reference/varSamp.md), this function uses a numerically stable algorithm. It works slower but provides a lower computational error.
 

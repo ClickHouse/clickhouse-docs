@@ -3,7 +3,7 @@ import dev_error from "@site/static/images/knowledgebase/fix-the-developer-verif
 import privacy_default from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-default-view.png";
 import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-screen-allow-anyway.png";
 
-# Установка ClickHouse с помощью Homebrew {#install-clickhouse-using-homebrew}
+# Установка ClickHouse с помощью Homebrew \{#install-clickhouse-using-homebrew\}
 
 :::warning
 Установка с использованием формулы Homebrew устарела и будет отключена 2026-09-01.
@@ -12,7 +12,7 @@ import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-v
 
 <VerticalStepper>
 
-## Установка с использованием community-формулы Homebrew {#install-using-community-homebrew-formula}
+## Установка с использованием community-формулы Homebrew \{#install-using-community-homebrew-formula\}
 
 Чтобы установить ClickHouse на macOS с помощью [Homebrew](https://brew.sh/), вы можете использовать
 [формулу Homebrew](https://formulae.brew.sh/cask/clickhouse), поддерживаемую сообществом ClickHouse.
@@ -21,7 +21,7 @@ import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-v
 brew install --cask clickhouse
 ```
 
-## Исправление ошибки проверки разработчика в macOS {#fix-developer-verification-error-macos}
+## Исправление ошибки проверки разработчика в macOS \{#fix-developer-verification-error-macos\}
 
 Если вы устанавливаете ClickHouse с помощью `brew`, вы можете столкнуться с ошибкой со стороны macOS.
 По умолчанию macOS не запускает приложения или инструменты, созданные разработчиком, подлинность которого не может быть подтверждена.
@@ -32,7 +32,7 @@ brew install --cask clickhouse
 
 Чтобы обойти эту ошибку проверки, нужно убрать приложение из карантина macOS — либо найдя соответствующую настройку в окне **System Settings**, используя терминал, либо переустановив ClickHouse.
 
-### Процесс через системные настройки {#system-settings-process}
+### Процесс через системные настройки \{#system-settings-process\}
 
 Самый простой способ убрать исполняемый файл `clickhouse` из карантина:
 
@@ -52,7 +52,7 @@ brew install --cask clickhouse
 
 Теперь вы должны иметь возможность запускать команды `clickhouse` в терминале.
 
-### Процесс через терминал {#terminal-process}
+### Процесс через терминал \{#terminal-process\}
 
 Иногда нажатие кнопки `Allow Anyway` не решает эту проблему, и в этом случае вы можете выполнить этот процесс через командную строку.
 Или вы можете просто предпочитать использовать командную строку!
@@ -90,7 +90,7 @@ clickhouse client [args]
 clickhouse benchmark [args]
 ```
 
-## Устранение проблемы путем повторной установки ClickHouse {#fix-issue}
+## Устранение проблемы путем повторной установки ClickHouse \{#fix-issue\}
 
 В brew есть параметр командной строки, который изначально предотвращает помещение установленных бинарных файлов в карантин.
 

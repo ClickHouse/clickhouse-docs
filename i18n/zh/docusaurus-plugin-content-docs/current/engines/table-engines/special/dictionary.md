@@ -7,11 +7,11 @@ title: 'Dictionary 表引擎'
 doc_type: 'reference'
 ---
 
-# Dictionary 表引擎 {#dictionary-table-engine}
+# Dictionary 表引擎 \{#dictionary-table-engine\}
 
 `Dictionary` 引擎将 [dictionary](../../../sql-reference/dictionaries/index.md) 数据显示为 ClickHouse 表。
 
-## 示例 {#example}
+## 示例 \{#example\}
 
 例如，假设有一个名为 `products` 的字典，其配置如下：
 

@@ -7,11 +7,11 @@ title: 'IPv6'
 doc_type: 'reference'
 ---
 
-## IPv6 {#ipv6}
+## IPv6 \{#ipv6\}
 
 IPv6-адреса. Хранятся в 16 байтах в виде UInt128 в формате big-endian.
 
-### Базовое использование {#basic-usage}
+### Базовое использование \{#basic-usage\}
 
 ```sql
 CREATE TABLE hits (url String, from IPv6) ENGINE = MergeTree() ORDER BY url;

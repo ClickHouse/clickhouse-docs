@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 このフォーマットは、JSONCompactEachRow のコンパクトな行単位出力に、ストリーミングされる進行状況情報を組み合わせたものです。
 メタデータ、各行、進行状況の更新、合計値、例外を、それぞれ個別の JSON オブジェクトとして出力します。値はネイティブな型で表現されます。
@@ -26,7 +26,7 @@ doc_type: 'reference'
 - totals と extremes をサポートします
 - 値はネイティブな型を保持します（数値は数値、文字列は文字列として扱われます）
 
-## 使用例 {#example-usage}
+## 使用例 \{#example-usage\}
 
 ```sql title="Query"
 SELECT *
@@ -46,4 +46,4 @@ FORMAT JSONCompactEachRowWithProgress
 {"rows_before_limit_at_least":5}
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \{#format-settings\}

@@ -5,7 +5,7 @@ title: 'quantileTDigestWeighted'
 doc_type: 'reference'
 ---
 
-# quantileTDigestWeighted {#quantiletdigestweighted}
+# quantileTDigestWeighted \{#quantiletdigestweighted\}
 
 使用 [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf) 算法对数值数据序列计算近似的[分位数](https://en.wikipedia.org/wiki/Quantile)。该函数会考虑序列中每个成员的权重。最大误差为 1%。内存消耗为 `log(n)`，其中 `n` 是值的数量。
 

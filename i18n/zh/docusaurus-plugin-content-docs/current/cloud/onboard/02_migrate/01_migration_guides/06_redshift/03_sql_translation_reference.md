@@ -7,9 +7,9 @@ title: 'Amazon Redshift SQL 语法对照指南'
 doc_type: 'reference'
 ---
 
-# Amazon Redshift SQL 转换指南 {#amazon-redshift-sql-translation-guide}
+# Amazon Redshift SQL 转换指南 \{#amazon-redshift-sql-translation-guide\}
 
-## 数据类型 {#data-types}
+## 数据类型 \{#data-types\}
 
 在 ClickHouse 与 Redshift 之间迁移数据的用户会立刻注意到，ClickHouse 提供的类型范围更广，而且限制更少。Redshift 要求用户指定字符串的可能长度，即使是可变长度；而 ClickHouse 通过以原始字节的形式存储字符串，取消了这一限制和负担。因此，ClickHouse 的 `String` 类型没有长度限制或长度声明要求。
 
@@ -42,9 +42,9 @@ doc_type: 'reference'
 <sub><span>*</span> ClickHouse 此外还支持取值范围更大的无符号整数类型，即 <a href='http://clickhouse.com/docs/sql-reference/data-types/int-uint'>`UInt8`、`UInt32`、`UInt32` 和 `UInt64`</a>。</sub><br />
 <sub><span>**</span>ClickHouse 的 String 类型默认不受长度限制，但可以通过使用 <a href='http://clickhouse.com/docs/sql-reference/statements/create/table#constraints'>约束</a> 将其限制为特定长度。</sub>
 
-## DDL 语法 {#compression}
+## DDL 语法 \{#compression\}
 
-### 排序键 {#sorting-keys}
+### 排序键 \{#sorting-keys\}
 
 ClickHouse 和 Redshift 都有“排序键”的概念，用于定义数据在存储时的排序方式。Redshift 使用 `SORTKEY` 子句来定义排序键：
 

@@ -7,7 +7,7 @@ title: 'クエリ権限'
 doc_type: 'reference'
 ---
 
-# クエリの権限 {#permissions-for-queries}
+# クエリの権限 \{#permissions-for-queries\}
 
 ClickHouse におけるクエリは、次のいくつかの種類に分類できます。
 
@@ -19,7 +19,7 @@ ClickHouse におけるクエリは、次のいくつかの種類に分類でき
 
 次の設定によって、クエリ種別ごとにユーザー権限を制御します。
 
-## readonly {#readonly}
+## readonly \{#readonly\}
 
 データの読み取り・書き込みおよび設定変更を行うクエリに対する権限を制限します。
 
@@ -52,7 +52,7 @@ ClickHouse におけるクエリは、次のいくつかの種類に分類でき
 `readonly = 1` を設定すると、ユーザーは設定を変更できなくなります。特定の設定のみの変更を禁止することもできます。また、`readonly = 1` の制約下で特定の設定のみの変更を許可することもできます。詳細については、[設定に対する制約](../../operations/settings/constraints-on-settings.md) を参照してください。
 :::
 
-## allow_ddl {#allow_ddl}
+## allow_ddl \{#allow_ddl\}
 
 [DDL](https://en.wikipedia.org/wiki/Data_definition_language) クエリを許可するかどうかを制御します。
 

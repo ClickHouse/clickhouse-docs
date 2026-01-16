@@ -30,7 +30,7 @@ ALTER USER [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]]
 
 Чтобы использовать `ALTER USER`, необходимо иметь привилегию [ALTER USER](../../../sql-reference/statements/grant.md#access-management).
 
-## Клауза GRANTEES {#grantees-clause}
+## Клауза GRANTEES \{#grantees-clause\}
 
 Определяет пользователей или роли, которым разрешено получать [привилегии](../../../sql-reference/statements/grant.md#privileges) от этого пользователя при условии, что этому пользователю также выданы все необходимые привилегии с [GRANT OPTION](../../../sql-reference/statements/grant.md#granting-privilege-syntax). Параметры клаузы `GRANTEES`:
 
@@ -41,7 +41,7 @@ ALTER USER [IF EXISTS] name1 [RENAME TO new_name |, name2 [,...]]
 
 Вы можете исключить любого пользователя или роль с помощью выражения `EXCEPT`. Например, `ALTER USER user1 GRANTEES ANY EXCEPT user2`. Это означает, что если у `user1` есть какие‑то привилегии, выданные с `GRANT OPTION`, то он сможет выдавать эти привилегии кому угодно, кроме `user2`.
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 Сделайте назначенные роли ролями по умолчанию:
 
@@ -101,7 +101,7 @@ ALTER USER user1 IDENTIFIED WITH plaintext_password by '1', bcrypt_password by '
 ALTER USER user1 RESET AUTHENTICATION METHODS TO NEW
 ```
 
-## Оператор VALID UNTIL {#valid-until-clause}
+## Оператор VALID UNTIL \{#valid-until-clause\}
 
 Позволяет задать дату окончания срока действия и, при необходимости, время для метода аутентификации. Принимает строку в качестве параметра. Рекомендуется использовать формат `YYYY-MM-DD [hh:mm:ss] [timezone]` для значения даты и времени. По умолчанию этот параметр равен `'infinity'`.
 Оператор `VALID UNTIL` может быть указан только вместе с методом аутентификации, за исключением случая, когда в запросе метод аутентификации не задан. В этом случае оператор `VALID UNTIL` будет применён ко всем существующим методам аутентификации.

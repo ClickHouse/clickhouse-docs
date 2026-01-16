@@ -29,7 +29,7 @@ import superset_authors_matrix_v2 from '@site/static/images/getting-started/exam
 * `line_changes` - 2.7G - 7,535,157 行
 
 
-## 生成数据 {#generating-the-data}
+## 生成数据 \{#generating-the-data\}
 
 此步骤为可选。我们免费提供这些数据——请参阅[下载并插入数据](#downloading-and-inserting-the-data)。
 
@@ -73,7 +73,7 @@ CREATE TABLE git.commits
 * Linux - `~/clickhouse git-import` - 160 分钟
 
 
-## 下载并插入数据 {#downloading-and-inserting-the-data}
+## 下载并插入数据 \{#downloading-and-inserting-the-data\}
 
 可以使用以下数据来复现一个可用的环境。或者，也可以在 play.clickhouse.com 上获取该数据集——有关更多详情，请参见 [Queries](#queries)。
 
@@ -214,13 +214,13 @@ FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhou
 ```
 
 
-## 查询 {#queries}
+## 查询 \{#queries\}
 
 该工具会在其帮助信息中建议若干查询。除了这些查询之外，我们还解答了一些额外的补充性问题。这些查询大致按复杂度递增的顺序排列，而不是按工具给出的任意顺序。
 
 该数据集可在 [play.clickhouse.com](https://sql.clickhouse.com?query_id=DCQPNPAIMAQXRLHYURLKVJ) 的 `git_clickhouse` 数据库中获取。我们为所有查询都提供了指向此环境的链接，并在需要时调整数据库名称。请注意，由于数据采集时间不同，play 环境中的结果可能与此处展示的结果有所差异。
 
-### 单个文件的历史记录 {#history-of-a-single-file}
+### 单个文件的历史记录 \{#history-of-a-single-file\}
 
 这是最简单的查询。在这里，我们查看 `StorageReplicatedMergeTree.cpp` 的所有提交说明。由于这些记录通常更有参考价值，我们按时间倒序排序，让最新的记录排在最前面。
 
@@ -296,7 +296,7 @@ LIMIT 10
 请注意，还有一个更复杂的查询变体，用于在考虑重命名的情况下查找[文件的逐行提交历史](#line-by-line-commit-history-of-a-file)。
 
 
-### 查找当前有效的文件 {#find-the-current-active-files}
+### 查找当前有效的文件 \{#find-the-current-active-files\}
 
 这对于后续分析非常重要，因为我们只想考虑代码仓库中当前存在的文件。我们将当前有效文件近似定义为那些尚未被重命名或删除（然后再次添加/重新命名）的文件。
 
@@ -428,7 +428,7 @@ git ls-files | grep -v -E 'generated\.cpp|^(contrib|docs?|website|libs/(libcityh
 这些差异不应对我们的分析产生实质性影响。**我们欢迎对该查询的改进版本**。
 
 
-### 列出修改最多的文件 {#list-files-with-most-modifications}
+### 列出修改最多的文件 \{#list-files-with-most-modifications\}
 
 在仅考虑当前文件的前提下，我们将修改次数定义为删除和新增的总和。
 
@@ -484,7 +484,7 @@ LIMIT 10
 ```
 
 
-### 通常在一周的哪一天提交最频繁？ {#what-day-of-the-week-do-commits-usually-occur}
+### 通常在一周的哪一天提交最频繁？ \{#what-day-of-the-week-do-commits-usually-occur\}
 
 [play](https://sql.clickhouse.com?query_id=GED2STFSYJDRAA59H8RLIV)
 
@@ -510,7 +510,7 @@ GROUP BY dayOfWeek(time) AS day_of_week
 这也说得通，周五的工作效率通常会有所下降。很高兴看到大家在周末还有人提交代码！非常感谢我们的贡献者！
 
 
-### 子目录/文件的历史记录 - 随时间变化的行数、提交次数和贡献者数量 {#history-of-subdirectoryfile---number-of-lines-commits-and-contributors-over-time}
+### 子目录/文件的历史记录 - 随时间变化的行数、提交次数和贡献者数量 \{#history-of-subdirectoryfile---number-of-lines-commits-and-contributors-over-time\}
 
 如果不加过滤，这会产生一个过于庞大的查询结果，难以实际展示或可视化。因此，在下面的示例中，我们支持按文件或子目录进行过滤。这里我们使用 `toStartOfWeek` 函数按周分组——可根据需要进行调整。
 
@@ -555,7 +555,7 @@ LIMIT 10
 <Image img={superset_commits_authors} alt="针对提交和作者" size="md" />
 
 
-### 列出作者最多的文件 {#list-files-with-maximum-number-of-authors}
+### 列出作者最多的文件 \{#list-files-with-maximum-number-of-authors\}
 
 仅限当前文件。
 
@@ -611,7 +611,7 @@ LIMIT 10
 ```
 
 
-### 仓库中历史最久的代码行 {#oldest-lines-of-code-in-the-repository}
+### 仓库中历史最久的代码行 \{#oldest-lines-of-code-in-the-repository\}
 
 仅限当前文件版本。
 
@@ -669,7 +669,7 @@ LIMIT 10
 ```
 
 
-### 历史最久的文件 {#files-with-longest-history}
+### 历史最久的文件 \{#files-with-longest-history\}
 
 范围仅包括当前仍存在的文件。
 
@@ -728,7 +728,7 @@ LIMIT 10
 我们的核心数据结构 Merge Tree 显然一直在不断演进，并且拥有悠久的修改历史！
 
 
-### 本月在文档与代码方面的贡献者分布 {#distribution-of-contributors-with-respect-to-docs-and-code-over-the-month}
+### 本月在文档与代码方面的贡献者分布 \{#distribution-of-contributors-with-respect-to-docs-and-code-over-the-month\}
 
 **在数据采集期间，由于 `docs/` 文件夹的提交历史非常混乱，该目录下的变更已被过滤掉。因此本查询结果并不精确。**
 
@@ -792,7 +792,7 @@ FROM
 也许在月底时会略高一些，但整体来看分布仍然比较均匀。再次说明，由于在插入数据时应用了文档过滤器进行筛选，这些结果并不可靠。
 
 
-### 影响范围最广的作者 {#authors-with-the-most-diverse-impact}
+### 影响范围最广的作者 \{#authors-with-the-most-diverse-impact\}
 
 这里我们将多样性定义为作者贡献过的不同文件数量。
 
@@ -870,7 +870,7 @@ LIMIT 10
 ```
 
 
-### 某位作者最常参与的文件 {#favorite-files-for-an-author}
+### 某位作者最常参与的文件 \{#favorite-files-for-an-author\}
 
 在这里，我们选择创始人 [Alexey Milovidov](https://github.com/alexey-milovidov)，并将分析范围限制为当前的文件。
 
@@ -957,7 +957,7 @@ LIMIT 10
 这或许更能体现他感兴趣的领域。
 
 
-### 作者最少的最大文件 {#largest-files-with-lowest-number-of-authors}
+### 作者最少的最大文件 \{#largest-files-with-lowest-number-of-authors\}
 
 为此，我们首先需要找出最大的文件。若要基于提交历史，为每个文件做完整重建来估算其大小，代价会非常高！
 
@@ -1130,7 +1130,7 @@ LIMIT 10
 ```
 
 
-### 提交次数和代码行数按时间分布；按星期几、按作者；针对特定子目录 {#commits-and-lines-of-code-distribution-by-time-by-weekday-by-author-for-specific-subdirectories}
+### 提交次数和代码行数按时间分布；按星期几、按作者；针对特定子目录 \{#commits-and-lines-of-code-distribution-by-time-by-weekday-by-author-for-specific-subdirectories\}
 
 我们将其理解为按一周中每一天统计新增和删除的代码行数。在此示例中，我们聚焦于 [Functions 目录](https://github.com/ClickHouse/ClickHouse/tree/master/src/Functions)
 
@@ -1258,7 +1258,7 @@ FROM
 ```
 
 
-### 展示哪些作者倾向于重写其他作者代码的矩阵 {#matrix-of-authors-that-shows-what-authors-tends-to-rewrite-another-authors-code}
+### 展示哪些作者倾向于重写其他作者代码的矩阵 \{#matrix-of-authors-that-shows-what-authors-tends-to-rewrite-another-authors-code\}
 
 `sign = -1` 表示删除代码。我们会排除标点符号以及仅插入空行的情况。
 
@@ -1313,7 +1313,7 @@ Alexey 显然很喜欢删除别人的代码。为了获得更均衡的代码删�
 <Image img={superset_authors_matrix_v2} alt="Superset authors matrix v2" size="md" />
 
 
-### 一周中，每天贡献占比最高的是谁？ {#who-is-the-highest-percentage-contributor-per-day-of-week}
+### 一周中，每天贡献占比最高的是谁？ \{#who-is-the-highest-percentage-contributor-per-day-of-week\}
 
 如果我们只按提交次数来算：
 
@@ -1430,7 +1430,7 @@ INNER JOIN
 ```
 
 
-### 整个代码库的代码年龄分布 {#distribution-of-code-age-across-repository}
+### 整个代码库的代码年龄分布 \{#distribution-of-code-age-across-repository\}
 
 我们将分析范围限定为当前存在的文件。为简洁起见，我们将结果限制为目录深度 2，每个根目录下最多显示 5 个文件。可根据需要进行调整。
 
@@ -1514,7 +1514,7 @@ LIMIT 5 BY root
 ```
 
 
-### 某位作者编写的代码中，有多少百分比被其他作者移除？ {#what-percentage-of-code-for-an-author-has-been-removed-by-other-authors}
+### 某位作者编写的代码中，有多少百分比被其他作者移除？ \{#what-percentage-of-code-for-an-author-has-been-removed-by-other-authors\}
 
 要回答这个问题，我们需要用该作者被其他贡献者移除的代码行总数，除以其编写的代码行总数。
 
@@ -1565,7 +1565,7 @@ LIMIT 10
 ```
 
 
-### 列出被修改次数最多的文件？ {#list-files-that-were-rewritten-most-number-of-times}
+### 列出被修改次数最多的文件？ \{#list-files-that-were-rewritten-most-number-of-times\}
 
 回答这个问题最简单的方法，可能就是按每个路径统计行修改次数（仅限当前仍存在的文件），例如：
 
@@ -1708,7 +1708,7 @@ LIMIT 10
 ```
 
 
-### 代码在代码仓库中保留时间最长的是星期几？ {#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository}
+### 代码在代码仓库中保留时间最长的是星期几？ \{#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository\}
 
 为此，我们需要对每一行代码进行唯一标识。考虑到同一行内容可能在文件中出现多次，我们通过路径和行内容来近似实现。
 
@@ -1771,7 +1771,7 @@ GROUP BY dayOfWeek(added_day) AS day_of_week_added
 ```
 
 
-### 按平均代码年龄排序的文件 {#files-sorted-by-average-code-age}
+### 按平均代码年龄排序的文件 \{#files-sorted-by-average-code-age\}
 
 此查询采用与[一周中哪一天编写的代码最有可能保留在代码仓库中](#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository)相同的思路——通过路径和行内容唯一标识一行代码。
 这使我们能够确定某行代码从添加到删除之间所经过的时间。不过，这里我们只考虑当前存在的文件和代码，并在行级别上计算每个文件的平均存活时间。
@@ -1862,7 +1862,7 @@ LIMIT 10
 ```
 
 
-### 谁更倾向于写更多测试 / CPP 代码 / 注释？ {#who-tends-to-write-more-tests--cpp-code--comments}
+### 谁更倾向于写更多测试 / CPP 代码 / 注释？ \{#who-tends-to-write-more-tests--cpp-code--comments\}
 
 我们可以通过几种方式来回答这个问题。聚焦在代码与测试的比例上，这条查询语句相对简单——统计对包含 `tests` 的目录的贡献次数，并计算其占总贡献次数的比例。
 
@@ -1996,7 +1996,7 @@ LIMIT 10
 请注意，我们是按代码贡献排序的。所有主要贡献者的代码占比都出乎意料地高，这也是我们的代码如此易读的原因之一。
 
 
-### 按作者来看，提交中代码/注释比例随时间如何变化？ {#how-does-an-authors-commits-change-over-time-with-respect-to-codecomments-percentage}
+### 按作者来看，提交中代码/注释比例随时间如何变化？ \{#how-does-an-authors-commits-change-over-time-with-respect-to-codecomments-percentage\}
 
 按作者维度计算这一点非常简单，
 
@@ -2114,7 +2114,7 @@ LIMIT 20
 令人欣慰的是，我们的注释率始终相当稳定，作者贡献时间越长也不会下降。
 
 
-### 代码在被重写前存活的平均时间是多少？中位数（代码衰减的“半衰期”）又是多少？ {#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay}
+### 代码在被重写前存活的平均时间是多少？中位数（代码衰减的“半衰期”）又是多少？ \{#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay\}
 
 我们可以使用与[List files that were rewritten most number of time or by most of authors](#list-files-that-were-rewritten-most-number-of-times)相同的原则来识别重写，但将范围扩展到所有文件。使用窗口函数来计算每个文件两次重写之间的时间间隔。基于此，我们可以计算所有文件的平均值和中位数。
 
@@ -2175,7 +2175,7 @@ FROM rewrites
 ```
 
 
-### 在什么时间写代码最“糟糕”，也就是代码被重写的概率最高？ {#what-is-the-worst-time-to-write-code-in-sense-that-the-code-has-highest-chance-to-be-re-written}
+### 在什么时间写代码最“糟糕”，也就是代码被重写的概率最高？ \{#what-is-the-worst-time-to-write-code-in-sense-that-the-code-has-highest-chance-to-be-re-written\}
 
 与 [代码在被重写前的平均时间和中位数（代码衰减的半衰期）是多少？](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay) 和 [列出被重写次数最多或被最多作者重写的文件](#list-files-that-were-rewritten-most-number-of-times) 类似，只是这里只是按一周中的星期几来聚合。可根据需要调整，例如按一年中的月份。
 
@@ -2240,7 +2240,7 @@ GROUP BY dayOfWeek
 ```
 
 
-### 哪位作者的代码“黏性”最高？ {#which-authors-code-is-the-most-sticky}
+### 哪位作者的代码“黏性”最高？ \{#which-authors-code-is-the-most-sticky\}
 
 我们将“黏性”定义为某位作者的代码在被重写之前能保留多长时间。类似于前一个问题 [代码在被重写前的平均时间是多少？其中位数（代码衰减的半衰期）又是多少？](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay) —— 使用相同的重写度量标准，即当某个文件的代码中有 50% 为新增、50% 为删除时视为一次重写。我们按作者计算平均重写时间，并且只考虑在超过两个文件上有贡献的作者。
 
@@ -2318,7 +2318,7 @@ LIMIT 10
 ```
 
 
-### 作者最长连续提交天数 {#most-consecutive-days-of-commits-by-an-author}
+### 作者最长连续提交天数 \{#most-consecutive-days-of-commits-by-an-author\}
 
 此查询首先需要计算作者有提交的日期。使用窗口函数按作者进行分区，我们可以计算每次提交之间相隔的天数。对于每次提交，如果距离上一次提交的时间是 1 天，则将其标记为连续（1），否则标记为 0——并将结果存储在 `consecutive_day` 中。
 
@@ -2374,7 +2374,7 @@ LIMIT 10
 ```
 
 
-### 文件的逐行提交历史 {#line-by-line-commit-history-of-a-file}
+### 文件的逐行提交历史 \{#line-by-line-commit-history-of-a-file\}
 
 文件可能会被重命名。发生这种情况时，会产生一个重命名事件，其中 `path` 列被设置为文件的新路径，而 `old_path` 列表示之前的位置，例如：
 
@@ -2453,9 +2453,9 @@ FORMAT PrettyCompactMonoBlock
 ```
 
 
-## 未解决的问题 {#unsolved-questions}
+## 未解决的问题 \{#unsolved-questions\}
 
-### Git blame {#git-blame}
+### Git blame \{#git-blame\}
 
 由于当前无法在数组函数中维护状态，要得到精确结果尤其困难。借助 `arrayFold` 或 `arrayReduce` 之后就可以实现，因为它们允许在每次迭代时保存状态。
 

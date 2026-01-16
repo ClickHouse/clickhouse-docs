@@ -5,7 +5,7 @@ title: 'quantilesExactInclusive'
 doc_type: 'reference'
 ---
 
-# quantilesExactInclusive {#quantilesexactinclusive}
+# quantilesExactInclusive \{#quantilesexactinclusive\}
 
 数値データ列の[分位点](https://en.wikipedia.org/wiki/Quantile)を厳密に計算します。
 

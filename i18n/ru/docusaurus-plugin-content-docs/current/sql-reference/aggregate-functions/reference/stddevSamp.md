@@ -5,7 +5,7 @@ title: 'stddevSamp'
 doc_type: 'reference'
 ---
 
-# stddevSamp {#stddevsamp}
+# stddevSamp \{#stddevsamp\}
 
 Результат равен квадратному корню из [varSamp](./varSamp.md).
 

@@ -5,7 +5,7 @@ title: 'groupBitmapOr'
 doc_type: 'reference'
 ---
 
-# groupBitmapOr {#groupbitmapor}
+# groupBitmapOr \{#groupbitmapor\}
 
 ビットマップカラムに対して OR 演算を行い、`UInt64` 型のカーディナリティを返します。サフィックスに `-State` を付けた場合は、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md) を返します。これは `groupBitmapMerge` と同等です。
 

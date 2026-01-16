@@ -5,7 +5,7 @@ title: 'quantileDeterministic'
 doc_type: 'reference'
 ---
 
-# quantileDeterministic {#quantiledeterministic}
+# quantileDeterministic \{#quantiledeterministic\}
 
 数値データ系列の近似的な[分位点](https://en.wikipedia.org/wiki/Quantile)を計算します。
 

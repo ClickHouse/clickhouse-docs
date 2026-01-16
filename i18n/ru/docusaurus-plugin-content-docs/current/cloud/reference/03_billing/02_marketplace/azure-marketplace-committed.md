@@ -24,13 +24,13 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 Начните работу с ClickHouse Cloud в [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps), оформив контракт с обязательствами. Такой контракт, также известный как Private Offer (частное предложение), позволяет клиентам заранее обязаться потратить определённую сумму на ClickHouse Cloud в течение заданного периода времени.
 
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \{#prerequisites\}
 
 - Индивидуальное предложение от ClickHouse с особыми условиями контракта.
 
 
 
-## Шаги для регистрации {#steps-to-sign-up}
+## Шаги для регистрации \{#steps-to-sign-up\}
 
 1. Вы должны были получить электронное письмо со ссылкой для просмотра и принятия приватного предложения.
 

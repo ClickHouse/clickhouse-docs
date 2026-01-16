@@ -6,11 +6,11 @@ title: 'LIMIT 子句'
 doc_type: 'reference'
 ---
 
-# LIMIT 子句 {#limit-clause}
+# LIMIT 子句 \{#limit-clause\}
 
 `LIMIT` 子句用于控制查询结果返回的行数。
 
-## 基本语法 {#basic-syntax}
+## 基本语法 \{#basic-syntax\}
 
 **选择前几行数据：**
 
@@ -42,7 +42,7 @@ LIMIT n, m
 
 在这两种形式中，`n` 和 `m` 都必须是非负整数。
 
-## 负数 LIMIT {#negative-limits}
+## 负数 LIMIT \{#negative-limits\}
 
 使用负值从结果集的*末尾*选择行：
 
@@ -55,7 +55,7 @@ LIMIT n, m
 
 `LIMIT -n, -m` 语法等价于 `LIMIT -m OFFSET -n`。
 
-## 分数限制 {#fractional-limits}
+## 分数限制 \{#fractional-limits\}
 
 使用介于 0 和 1 之间的小数值来选择一定百分比的行：
 
@@ -71,7 +71,7 @@ LIMIT n, m
 - 分数对应的行数会向上取整到下一个整数。
 :::
 
-## 组合限制类型 {#combining-limit-types}
+## 组合限制类型 \{#combining-limit-types\}
 
 你可以将标准整数与小数或负数偏移量组合使用：
 
@@ -80,7 +80,7 @@ LIMIT 10 OFFSET 0.5    -- 10 rows starting from the halfway point
 LIMIT 10 OFFSET -20    -- 10 rows after skipping the last 20
 ```
 
-## LIMIT ... WITH TIES {#limit--with-ties-modifier}
+## LIMIT ... WITH TIES \{#limit--with-ties-modifier\}
 
 `WITH TIES` 修饰符会额外返回那些 `ORDER BY` 值与 LIMIT 结果中最后一行相同的行。
 
@@ -127,12 +127,12 @@ SELECT * FROM (
 
 此修饰符可以与 [`ORDER BY ... WITH FILL`](/sql-reference/statements/select/order-by#order-by-expr-with-fill-modifier) 修饰符组合使用。
 
-## 注意事项 {#considerations}
+## 注意事项 \{#considerations\}
 
 **非确定性结果：** 如果未使用 [`ORDER BY`](../../../sql-reference/statements/select/order-by.md) 子句，返回的行可能不固定，并且在不同的查询执行中可能会有所不同。
 
 **服务器端限制：** 返回的行数也可能会受到 [limit](../../../operations/settings/settings.md#limit) SETTING 的影响。
 
-## 另请参阅 {#see-also}
+## 另请参阅 \{#see-also\}
 
 - [LIMIT BY](/sql-reference/statements/select/limit-by) — 按值分组后限制每组的行数，可用于在每个类别中获取前 N 个结果。

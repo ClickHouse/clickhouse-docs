@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Log 表引擎 {#log-table-engine}
+# Log 表引擎 \{#log-table-engine\}
 
 <CloudNotSupportedBadge/>
 
@@ -19,7 +19,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 对于并发数据访问，多个读操作可以同时执行，而写操作会阻塞读操作以及其他写操作。
 `Log` 引擎不支持索引。同样地，如果向表写入失败，表就会损坏，此时从表中读取会返回错误。`Log` 引擎适用于临时数据、只写一次的表，以及测试或演示用途。
 
-## 创建表 {#table_engines-log-creating-a-table}
+## 创建表 \{#table_engines-log-creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -32,14 +32,14 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 请参阅 [CREATE TABLE](/sql-reference/statements/create/table) 查询的详细说明。
 
-## 写入数据 {#table_engines-log-writing-the-data}
+## 写入数据 \{#table_engines-log-writing-the-data\}
 
 `Log` 引擎通过将每一列写入各自独立的文件来高效存储数据。对于每个表，Log 引擎会在指定的存储路径下写入以下文件：
 
 - `<column>.bin`：每一列对应的数据文件，包含序列化并压缩后的数据。
 - `__marks.mrk`：标记文件，存储每个插入数据块的偏移量和行数。标记用于在读取时帮助引擎跳过无关的数据块，从而提升查询执行效率。
 
-### 写入过程 {#writing-process}
+### 写入过程 \{#writing-process\}
 
 当数据写入到 `Log` 表时：
 
@@ -47,11 +47,11 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 2.    对于每一列，压缩后的数据会追加写入对应的 `<column>.bin` 文件。
 3.    在 `__marks.mrk` 文件中添加相应条目，用于记录新插入数据的偏移量和行数。
 
-## 读取数据 {#table_engines-log-reading-the-data}
+## 读取数据 \{#table_engines-log-reading-the-data\}
 
 带有标记的文件使得 ClickHouse 能够并行读取数据。这意味着 `SELECT` 查询会以不可预测的顺序返回行。使用 `ORDER BY` 子句对结果进行排序。
 
-## 使用示例 {#table_engines-log-example-of-use}
+## 使用示例 \{#table_engines-log-example-of-use\}
 
 创建表：
 

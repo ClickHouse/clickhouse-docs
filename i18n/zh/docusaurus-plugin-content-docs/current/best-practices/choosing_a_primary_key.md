@@ -30,7 +30,7 @@ import primary_key from '@site/static/images/bestpractices/primary_key.gif';
 Ordering key 必须在建表时定义，之后无法添加。可以通过名为 projections 的特性在数据插入之后（或之前）为表添加额外的排序。注意，这会导致数据重复。更多细节参见[此处](/sql-reference/statements/alter/projection)。
 :::
 
-## 示例 {#example}
+## 示例 \{#example\}
 
 请看下面的 `posts_unordered` 表。该表中每一行对应一个 Stack Overflow 帖子。
 

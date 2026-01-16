@@ -17,7 +17,7 @@ import datalakehouse_01 from '@site/static/images/cloud/onboard/discover/use_cas
 湖仓并不是对数据库的简单拆分，而是在截然不同的基础（云对象存储）之上构建类似数据库的能力，旨在在统一的平台上同时支持传统分析和现代 AI/ML 工作负载。
 
 
-## 数据湖仓由哪些组件构成？ {#components-of-the-data-lakehouse}
+## 数据湖仓由哪些组件构成？ \{#components-of-the-data-lakehouse\}
 
 现代数据湖仓架构是一种将数据仓库与数据湖技术融合在一起的架构，结合了这两种方法的优点。
 该架构由多个相互独立但彼此联通的层组成，为数据存储、管理和分析提供一个灵活且健壮的平台。
@@ -39,11 +39,11 @@ import datalakehouse_01 from '@site/static/images/cloud/onboard/discover/use_cas
 
 
 
-## 数据湖仓有哪些优势？ {#benefits-of-the-data-lakehouse}
+## 数据湖仓有哪些优势？ \{#benefits-of-the-data-lakehouse\}
 
 与传统数据仓库和数据湖直接对比时，数据湖仓架构具备多项显著优势：
 
-### 与传统数据仓库对比 {#compared-to-traditional-data-warehouses}
+### 与传统数据仓库对比 \{#compared-to-traditional-data-warehouses\}
 
 | # | Benefit                                          | Description                                                                                                                                                                                                                                                                                                                                                                                                                                |
 |---|--------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -53,7 +53,7 @@ import datalakehouse_01 from '@site/static/images/cloud/onboard/discover/use_cas
 | 4 | **AI/ML 集成**                                   | 湖仓为机器学习框架和 Python/R 库提供对数据的直接访问，而传统数据仓库通常需要先导出数据后才能用于高级分析。                                                                                                                                                                                                                                                                                                                     |
 | 5 | **独立伸缩**                                     | 湖仓将存储与计算解耦，允许根据实际需求分别伸缩；而在许多数据仓库中，存储与计算往往需要同步扩缩。                                                                                                                                                                                                                                                                                                                                   |
 
-### 与数据湖对比 {#compared-to-data-lakes}
+### 与数据湖对比 \{#compared-to-data-lakes\}
 
 | # | Benefit                     | Description                                                                                                                                                                                         |
 |---|-----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -65,7 +65,7 @@ import datalakehouse_01 from '@site/static/images/cloud/onboard/discover/use_cas
 
 
 
-## ClickHouse 在数据湖仓架构中扮演什么角色？ {#where-does-clickhouse-fit-in-the-data-lakehouse-architecture}
+## ClickHouse 在数据湖仓架构中扮演什么角色？ \{#where-does-clickhouse-fit-in-the-data-lakehouse-architecture\}
 
 ClickHouse 是现代数据湖仓生态系统中的一款强大的分析查询引擎，为组织在大规模数据分析方面提供了高性能选项。凭借卓越的查询速度和高效率，ClickHouse 成为极具吸引力的选择。
 
@@ -77,7 +77,7 @@ ClickHouse 是现代数据湖仓生态系统中的一款强大的分析查询引
 
 
 
-## 混合架构：两全其美 {#hybrid-architecture-the-best-of-both-worlds}
+## 混合架构：两全其美 \{#hybrid-architecture-the-best-of-both-worlds\}
 
 虽然 ClickHouse 在查询 lakehouse 组件方面表现出色，但其高度优化的
 存储引擎还带来了额外优势。对于需要超低延迟查询的用例——例如实时仪表盘、

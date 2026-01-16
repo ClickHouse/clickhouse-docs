@@ -6,7 +6,7 @@ title: 'meanZTest'
 doc_type: 'reference'
 ---
 
-# meanZTest {#meanztest}
+# meanZTest \{#meanztest\}
 
 Выполняет z‑тест для проверки равенства средних двух совокупностей по их выборкам.
 

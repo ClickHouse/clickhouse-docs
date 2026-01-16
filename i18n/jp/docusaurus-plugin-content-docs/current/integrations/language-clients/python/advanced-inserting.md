@@ -8,9 +8,9 @@ title: '高度なデータ挿入'
 doc_type: 'reference'
 ---
 
-## ClickHouse Connect を使ったデータの挿入: 高度な利用方法 {#inserting-data-with-clickhouse-connect--advanced-usage}
+## ClickHouse Connect を使ったデータの挿入: 高度な利用方法 \{#inserting-data-with-clickhouse-connect--advanced-usage\}
 
-### InsertContexts {#insertcontexts}
+### InsertContexts \{#insertcontexts\}
 
 ClickHouse Connect は、すべての挿入処理を `InsertContext` 内で実行します。`InsertContext` には、クライアントの `insert` メソッドに引数として渡されたすべての値が含まれます。さらに、`InsertContext` が最初に構築される際、ClickHouse Connect は、効率的な Native 形式での挿入に必要な挿入列のデータ型を取得します。複数回の挿入で同じ `InsertContext` を再利用することで、この「事前クエリ」を避けることができ、挿入処理をより高速かつ効率的に実行できます。
 
@@ -31,13 +31,13 @@ assert qr[0][0] == 4
 
 `InsertContext` には挿入処理中に更新される可変な状態が含まれるため、スレッドセーフではありません。
 
-### 書き込みフォーマット {#write-formats}
+### 書き込みフォーマット \{#write-formats\}
 
 書き込みフォーマットは、現在は限られた数の型に対してのみ実装されています。ほとんどの場合、ClickHouse Connect は、最初の（null でない）データ値の型を確認することで、その列に対して適切な書き込みフォーマットを自動的に判定しようとします。たとえば、`DateTime` 列に挿入する際に、その列の最初の挿入値が Python の整数であれば、ClickHouse Connect はそれが実際にはエポック秒であるとみなし、その整数値をそのまま挿入します。
 
 多くの場合、データ型ごとに書き込みフォーマットを上書きする必要はありませんが、`clickhouse_connect.datatypes.format` パッケージ内の関連メソッドを使用することで、グローバルレベルで書き込みフォーマットを変更することもできます。
 
-#### 書き込みフォーマットのオプション {#write-format-options}
+#### 書き込みフォーマットのオプション \{#write-format-options\}
 
 | ClickHouse Type       | ネイティブ Python 型   | 書き込みフォーマット | コメント                                                                                                       |
 |-----------------------|-------------------------|-----------------------|---------------------------------------------------------------------------------------------------------------|
@@ -67,7 +67,7 @@ assert qr[0][0] == 4
 | Variant               | object                  |                       | 現時点では、すべての Variant は String として挿入され、ClickHouse サーバー側でパースされます                 |
 | Dynamic               | object                  |                       | 警告: 現時点では Dynamic カラムへの挿入はすべて ClickHouse の String として永続化されます                    |
 
-### 専用の挿入メソッド {#specialized-insert-methods}
+### 専用の挿入メソッド \{#specialized-insert-methods\}
 
 ClickHouse Connect には、一般的なデータ形式向けの専用挿入メソッドがあります。
 
@@ -79,7 +79,7 @@ ClickHouse Connect には、一般的なデータ形式向けの専用挿入メ�
 NumPy 配列は有効なシーケンスのシーケンスであり、メインの `insert` メソッドにおける `data` 引数として使用できるため、専用メソッドは不要です。
 :::
 
-#### Pandas DataFrame への挿入 {#pandas-dataframe-insert}
+#### Pandas DataFrame への挿入 \{#pandas-dataframe-insert\}
 
 ```python
 import clickhouse_connect
@@ -96,7 +96,7 @@ df = pd.DataFrame({
 client.insert_df("users", df)
 ```
 
-#### PyArrow テーブルへの挿入 {#pyarrow-table-insert}
+#### PyArrow テーブルへの挿入 \{#pyarrow-table-insert\}
 
 ```python
 import clickhouse_connect
@@ -113,7 +113,7 @@ arrow_table = pa.table({
 client.insert_arrow("users", arrow_table)
 ```
 
-#### Arrow バックエンドを利用した DataFrame 挿入（pandas 2.x） {#arrow-backed-dataframe-insert-pandas-2}
+#### Arrow バックエンドを利用した DataFrame 挿入（pandas 2.x） \{#arrow-backed-dataframe-insert-pandas-2\}
 
 ```python
 import clickhouse_connect
@@ -131,11 +131,11 @@ df = pd.DataFrame({
 client.insert_df_arrow("users", df)
 ```
 
-### タイムゾーン {#time-zones}
+### タイムゾーン \{#time-zones\}
 
 Python の `datetime.datetime` オブジェクトを ClickHouse の `DateTime` または `DateTime64` カラムに挿入する際、ClickHouse Connect はタイムゾーン情報を自動的に処理します。ClickHouse はすべての DateTime 値を内部的にはタイムゾーン情報を持たない Unix タイムスタンプ（エポックからの秒または小数秒）として保存するため、タイムゾーン変換は挿入時にクライアント側で自動的に行われます。
 
-#### タイムゾーン対応の datetime オブジェクト {#timezone-aware-datetime-objects}
+#### タイムゾーン対応の datetime オブジェクト \{#timezone-aware-datetime-objects\}
 
 タイムゾーン情報を持つ Python の `datetime.datetime` オブジェクトを挿入すると、ClickHouse Connect は自動的に `.timestamp()` を呼び出して Unix タイムスタンプに変換し、タイムゾーンオフセットを正しく考慮します。つまり、任意のタイムゾーンの datetime オブジェクトを挿入しても、それらは UTC に対応するタイムスタンプとして正しく保存されます。
 
@@ -172,7 +172,7 @@ print(*results.result_rows, sep="\n")
 pytz を使用する場合、タイムゾーン情報のない（naive な）datetime にタイムゾーン情報を付与するには、`localize()` メソッドを使用する必要があります。`tzinfo=` を直接 datetime コンストラクタに渡すと、過去のオフセットが誤った値になります。UTC の場合は、`tzinfo=pytz.UTC` は正しく動作します。詳細は [pytz docs](https://pythonhosted.org/pytz/#localized-times-and-date-arithmetic) を参照してください。
 :::
 
-#### タイムゾーン情報を持たない datetime オブジェクト {#timezone-naive-datetime-objects}
+#### タイムゾーン情報を持たない datetime オブジェクト \{#timezone-naive-datetime-objects\}
 
 タイムゾーン情報を持たない Python の `datetime.datetime` オブジェクト（`tzinfo` が設定されていないもの）を挿入すると、`.timestamp()` メソッドはそれをシステムのローカルタイムゾーンとして解釈します。曖昧さを避けるため、次のいずれかを推奨します。
 
@@ -197,7 +197,7 @@ epoch_timestamp = int(naive_time.replace(tzinfo=pytz.UTC).timestamp())
 client.insert('events', [[epoch_timestamp]], column_names=['event_time'])
 ```
 
-#### タイムゾーンメタデータを持つ DateTime カラム {#datetime-columns-with-timezone-metadata}
+#### タイムゾーンメタデータを持つ DateTime カラム \{#datetime-columns-with-timezone-metadata\}
 
 ClickHouse のカラムはタイムゾーンメタデータ付きで定義できます（例: `DateTime('America/Denver')` や `DateTime64(3, 'Asia/Tokyo')`）。このメタデータはデータの保存方法には影響せず（データは引き続き UTC タイムスタンプとして保存されます）、ClickHouse からデータをクエリする際に使用されるタイムゾーンを制御します。
 
@@ -226,7 +226,7 @@ print(*results.result_rows, sep="\n")
 # (datetime.datetime(2023, 6, 15, 7, 30, tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day, 17:00:00 DST>),)
 ```
 
-## ファイルからの挿入 {#file-inserts}
+## ファイルからの挿入 \{#file-inserts\}
 
 `clickhouse_connect.driver.tools` パッケージには、既存の ClickHouse テーブルへファイルシステムから直接データを挿入できる `insert_file` メソッドが含まれています。パース処理は ClickHouse サーバー側で行われます。`insert_file` は次のパラメータを受け取ります:
 

@@ -5,7 +5,7 @@ title: 'quantileExactWeightedInterpolated'
 doc_type: 'reference'
 ---
 
-# quantileExactWeightedInterpolated {#quantileexactweightedinterpolated}
+# quantileExactWeightedInterpolated \{#quantileexactweightedinterpolated\}
 
 各要素の重みを考慮しつつ線形補間を用いて、数値データ列の[分位数 (quantile)](https://en.wikipedia.org/wiki/Quantile) を計算します。
 

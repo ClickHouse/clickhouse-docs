@@ -6,7 +6,7 @@ description: 'ClickHouse Cloud 中的 AI/ML 功能概览'
 doc_type: 'reference'
 ---
 
-# ClickHouse Cloud 中的 AI/ML {#aiml-in-clickhouse-cloud}
+# ClickHouse Cloud 中的 AI/ML \{#aiml-in-clickhouse-cloud\}
 
 传统分析工作流通常需要在数据工程师（编写查询）、分析师（构建仪表盘）与业务用户（解读结果）之间多次交接。
 每个环节都会引入以小时甚至天为单位的延迟。

@@ -19,20 +19,20 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# Dataflow BigQuery 到 ClickHouse 模板 {#dataflow-bigquery-to-clickhouse-template}
+# Dataflow BigQuery 到 ClickHouse 模板 \{#dataflow-bigquery-to-clickhouse-template\}
 
 BigQuery 到 ClickHouse 模板是一个批处理管道，用于将 BigQuery 表中的数据摄取到 ClickHouse 表中。
 该模板可以读取整个表，或使用提供的 SQL 查询筛选特定记录。
 
 <TOCInline toc={toc}   maxHeadingLevel={2}></TOCInline>
 
-## 管道要求 {#pipeline-requirements}
+## 管道要求 \{#pipeline-requirements\}
 
 * 源 BigQuery 表必须已存在。
 * 目标 ClickHouse 表必须已存在。
 * 必须能从 Dataflow 工作器实例访问 ClickHouse 主机。
 
-## 模板参数 {#template-parameters}
+## 模板参数 \{#template-parameters\}
 
 <br/>
 
@@ -61,7 +61,7 @@ BigQuery 到 ClickHouse 模板是一个批处理管道，用于将 BigQuery 表�
 所有 `ClickHouseIO` 参数的默认值可在 [`ClickHouseIO` Apache Beam Connector](/integrations/apache-beam#clickhouseiowrite-parameters) 中找到。
 :::
 
-## 源表与目标表的模式 {#source-and-target-tables-schema}
+## 源表与目标表的模式 \{#source-and-target-tables-schema\}
 
 为了高效地将 BigQuery 数据集加载到 ClickHouse 中，流水线会执行列推断流程，该流程包含以下阶段：
 
@@ -74,7 +74,7 @@ BigQuery 到 ClickHouse 模板是一个批处理管道，用于将 BigQuery 表�
 因此，BigQuery 数据集（无论是表还是查询）中的列名必须与 ClickHouse 目标表完全相同。
 :::
 
-## 数据类型映射 {#data-types-mapping}
+## 数据类型映射 \{#data-types-mapping\}
 
 BigQuery 类型会根据 ClickHouse 表的定义进行转换。因此，上表列出了在目标 ClickHouse 表中（针对给定的 BigQuery 表/查询）推荐使用的映射关系：
 
@@ -88,7 +88,7 @@ BigQuery 类型会根据 ClickHouse 表的定义进行转换。因此，上表�
 | [**Numeric - Integer Types**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types) | [**Integer Types**](../../../sql-reference/data-types/int-uint) | 在 BigQuery 中，所有 Int 类型（`INT`、`SMALLINT`、`INTEGER`、`BIGINT`、`TINYINT`、`BYTEINT`）都是 `INT64` 的别名。建议在 ClickHouse 中为列设置合适的整数宽度，因为模板会根据定义的列类型（`Int8`、`Int16`、`Int32`、`Int64`）来转换列。如果在 ClickHouse 表中使用了无符号 Int 类型（`UInt8`、`UInt16`、`UInt32`、`UInt64`），模板也会对其进行转换。 |
 | [**Numeric - Float Types**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types)   | [**Float Types**](../../../sql-reference/data-types/float)      | 支持的 ClickHouse 类型：`Float32` 和 `Float64`                                                                                                                                                                                                                                                                                                                                                                    |
 
-## 运行模板 {#running-the-template}
+## 运行模板 \{#running-the-template\}
 
 BigQuery 到 ClickHouse 模板可以通过 Google Cloud CLI 执行。
 
@@ -126,14 +126,14 @@ ClickHouse 密码选项被标记为可选，适用于未配置密码的场景。
   </TabItem>
   <TabItem value="cli" label="Google Cloud CLI">
 
-### 安装并配置 `gcloud` CLI {#install--configure-gcloud-cli}
+### 安装并配置 `gcloud` CLI \{#install--configure-gcloud-cli\}
 
 - 如果尚未安装，请安装 [`gcloud` CLI](https://cloud.google.com/sdk/docs/install)。
 - 按照
   [本指南](https://cloud.google.com/dataflow/docs/guides/templates/using-flex-templates#before-you-begin)
   中的 `Before you begin` 部分，完成运行 Dataflow 模板所需的配置、设置和权限。
 
-### 运行命令 {#run-command}
+### 运行命令 \{#run-command\}
 
 使用 [`gcloud dataflow flex-template run`](https://cloud.google.com/sdk/gcloud/reference/dataflow/flex-template/run)
 命令来运行使用 Flex Template 的 Dataflow 作业。
@@ -146,13 +146,13 @@ gcloud dataflow flex-template run "bigquery-clickhouse-dataflow-$(date +%Y%m%d-%
  --parameters inputTableSpec="<bigquery table id>",jdbcUrl="jdbc:clickhouse://<clickhouse host>:<clickhouse port>/<schema>?ssl=true&sslmode=NONE",clickHouseUsername="<username>",clickHousePassword="<password>",clickHouseTable="<clickhouse target table>"
 ```
 
-### 命令解析 {#command-breakdown}
+### 命令解析 \{#command-breakdown\}
 
 - **作业名称（Job Name）：** `run` 关键字后面的文本是唯一的作业名称。
 - **模板文件（Template File）：** 由 `--template-file-gcs-location` 指定的 JSON 文件定义了模板结构以及可接受参数的详细信息。上述文件路径是公开的，可直接使用。
 - **参数（Parameters）：** 参数之间用逗号分隔。对于字符串类型的参数，请使用双引号包裹参数值。
 
-### 预期响应 {#expected-response}
+### 预期响应 \{#expected-response\}
 
 运行命令后，你应会看到类似如下的响应：
 
@@ -170,7 +170,7 @@ job:
   </TabItem>
 </Tabs>
 
-### 监控作业 {#monitor-the-job}
+### 监控作业 \{#monitor-the-job\}
 
 在 Google Cloud 控制台中导航到 [Dataflow Jobs 选项卡](https://console.cloud.google.com/dataflow/jobs)，以监控作业状态。你可以查看作业详情，包括进度和任何错误信息：
 

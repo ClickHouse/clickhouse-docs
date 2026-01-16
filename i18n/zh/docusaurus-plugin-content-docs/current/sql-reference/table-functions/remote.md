@@ -7,13 +7,13 @@ title: 'remote, remoteSecure'
 doc_type: 'reference'
 ---
 
-# remote、remoteSecure 表函数 {#remote-remotesecure-table-function}
+# remote、remoteSecure 表函数 \{#remote-remotesecure-table-function\}
 
 表函数 `remote` 允许按需访问远程服务器，即无需创建 [Distributed](../../engines/table-engines/special/distributed.md) 表。表函数 `remoteSecure` 与 `remote` 相同，只是通过安全连接进行访问。
 
 这两个函数都可以在 `SELECT` 和 `INSERT` 查询中使用。
 
-## 语法 {#syntax}
+## 语法 \{#syntax\}
 
 ```sql
 remote(addresses_expr, [db, table, user [, password], sharding_key])
@@ -24,7 +24,7 @@ remoteSecure(addresses_expr, [db.table, user [, password], sharding_key])
 remoteSecure(named_collection[, option=value [,..]])
 ```
 
-## 参数 {#parameters}
+## 参数 \{#parameters\}
 
 | 参数           | 说明                                                                                                                                                                                                                                                                                                                                                               |
 |----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -37,11 +37,11 @@ remoteSecure(named_collection[, option=value [,..]])
 
 这些参数也可以通过 [命名集合](operations/named-collections.md) 传递。
 
-## 返回值 {#returned-value}
+## 返回值 \{#returned-value\}
 
 位于远程服务器上的数据表。
 
-## 用法 {#usage}
+## 用法 \{#usage\}
 
 由于表函数 `remote` 和 `remoteSecure` 会在每个请求时重新建立连接，建议改为使用 `Distributed` 表。另外，如果设置了主机名，这些名称会被解析，并且在与不同副本协同工作时，解析错误不会计入错误统计。在处理大量查询时，应始终预先创建 `Distributed` 表，而不要使用 `remote` 表函数。
 
@@ -53,7 +53,7 @@ remoteSecure(named_collection[, option=value [,..]])
 * 不频繁且由人工发起的分布式请求。
 * 每次都会重新定义服务器集合的分布式请求。
 
-### 地址 {#addresses}
+### 地址 \{#addresses\}
 
 ```text
 example01-01-1
@@ -72,9 +72,9 @@ localhost
 example01-01-1,example01-02-1
 ```
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
-### 从远程服务器查询数据： {#selecting-data-from-a-remote-server}
+### 从远程服务器查询数据： \{#selecting-data-from-a-remote-server\}
 
 ```sql
 SELECT * FROM remote('127.0.0.1', db.remote_engine_table) LIMIT 3;
@@ -89,7 +89,7 @@ CREATE NAMED COLLECTION creds AS
 SELECT * FROM remote(creds, table='remote_engine_table') LIMIT 3;
 ```
 
-### 向远程服务器上的表中插入数据： {#inserting-data-into-a-table-on-a-remote-server}
+### 向远程服务器上的表中插入数据： \{#inserting-data-into-a-table-on-a-remote-server\}
 
 ```sql
 CREATE TABLE remote_table (name String, value UInt32) ENGINE=Memory;
@@ -97,11 +97,11 @@ INSERT INTO FUNCTION remote('127.0.0.1', currentDatabase(), 'remote_table') VALU
 SELECT * FROM remote_table;
 ```
 
-### 将表从一个系统迁移到另一个系统： {#migration-of-tables-from-one-system-to-another}
+### 将表从一个系统迁移到另一个系统： \{#migration-of-tables-from-one-system-to-another\}
 
 本示例使用示例数据集中的一张表。数据库为 `imdb`，表为 `actors`。
 
-#### 在源 ClickHouse 系统上（当前存放数据的系统） {#on-the-source-clickhouse-system-the-system-that-currently-hosts-the-data}
+#### 在源 ClickHouse 系统上（当前存放数据的系统） \{#on-the-source-clickhouse-system-the-system-that-currently-hosts-the-data\}
 
 * 确认源数据库和表名（`imdb.actors`）
 
@@ -132,7 +132,7 @@ SELECT * FROM remote_table;
                   ORDER BY (id, first_name, last_name, gender);
   ```
 
-#### 在目标 ClickHouse 系统上 {#on-the-destination-clickhouse-system}
+#### 在目标 ClickHouse 系统上 \{#on-the-destination-clickhouse-system\}
 
 * 创建目标数据库：
 
@@ -151,7 +151,7 @@ SELECT * FROM remote_table;
                   ORDER BY (id, first_name, last_name, gender);
   ```
 
-#### 回到源端部署 {#back-on-the-source-deployment}
+#### 回到源端部署 \{#back-on-the-source-deployment\}
 
 向远程系统中新建的数据库和表中插入数据。你需要准备主机、端口、用户名、密码、目标数据库以及目标表名。
 
@@ -161,7 +161,7 @@ remoteSecure('remote.clickhouse.cloud:9440', 'imdb.actors', 'USER', 'PASSWORD')
 SELECT * from imdb.actors
 ```
 
-## 通配模式 {#globs-in-addresses}
+## 通配模式 \{#globs-in-addresses\}
 
 花括号 `{ }` 中的模式用于生成一组分片并指定副本。如果存在多个花括号对，则会生成对应集合的笛卡尔积。
 

@@ -9,7 +9,7 @@ score: 10
 doc_type: 'guide'
 ---
 
-# Обзор работы с JSON {#json-overview}
+# Обзор работы с JSON \{#json-overview\}
 
 <iframe
   src="//www.youtube.com/embed/gCg5ISOujtc"

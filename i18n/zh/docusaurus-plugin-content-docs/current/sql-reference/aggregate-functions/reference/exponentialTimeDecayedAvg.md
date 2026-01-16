@@ -5,7 +5,7 @@ title: 'exponentialTimeDecayedAvg'
 doc_type: 'reference'
 ---
 
-## exponentialTimeDecayedAvg {#exponentialtimedecayedavg}
+## exponentialTimeDecayedAvg \{#exponentialtimedecayedavg\}
 
 返回在时间点 `t` 处基于时间序列值计算得到的指数平滑加权移动平均值。
 

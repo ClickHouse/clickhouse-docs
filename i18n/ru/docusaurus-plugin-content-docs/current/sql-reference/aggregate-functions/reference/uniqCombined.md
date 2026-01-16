@@ -5,7 +5,7 @@ title: 'uniqCombined'
 doc_type: 'reference'
 ---
 
-# uniqCombined {#uniqcombined}
+# uniqCombined \{#uniqcombined\}
 
 Вычисляет приблизительное количество различных значений аргументов.
 

@@ -38,7 +38,7 @@ import diagram_17 from '@site/static/images/use-cases/AI_ML/QBit/diagram_17.jpg'
   :::
 
 
-## ベクトル検索入門 {#vector-search-primer}
+## ベクトル検索入門 \{#vector-search-primer\}
 
 数学や物理学において、ベクトルは大きさと向きをあわせ持つ対象として形式的に定義されます。
 これはしばしば線分や空間中の矢印として表現され、速度・力・加速度などの量を表すために使われます。
@@ -57,7 +57,7 @@ import diagram_17 from '@site/static/images/use-cases/AI_ML/QBit/diagram_17.jpg'
 専用のベクトルデータベースには利点があるにもかかわらず、多くのユーザーは完全に特化したベクトルストアよりも、アドホックにベクトル機能を備えた一般的なデータベースを好みます。
 ClickHouse は、[総当たりによるベクトル検索](/engines/table-engines/mergetree-family/annindexes#exact-nearest-neighbor-search)に加えて、HNSW を含む[近似最近傍 (ANN: Approximate Nearest Neighbour) 検索のための手法](/engines/table-engines/mergetree-family/annindexes#approximate-nearest-neighbor-search)もサポートしており、これは高速なベクトル検索の現在の標準的な方式となっています。
 
-### 埋め込みを理解する {#understanding-embeddings}
+### 埋め込みを理解する \{#understanding-embeddings\}
 
 ベクトル検索がどのように動作するのかを理解するために、簡単な例を見てみましょう。
 単語の埋め込み（ベクトル表現）について考えてみます：
@@ -110,12 +110,12 @@ query embedding: [-0.88693672,1.31532824,-0.51182908,-0.99652702,0.5990777]
 ```
 
 
-## 近似最近傍探索 (ANN) {#approximate-nearest-neighbours}
+## 近似最近傍探索 (ANN) \{#approximate-nearest-neighbours\}
 
 巨大なデータセットに対しては、総当たり検索は処理が遅くなりすぎます。
 ここで役立つのが、Approximate Nearest Neighbours（ANN）手法です。
 
-### Quantisation {#quantisation}
+### Quantisation \{#quantisation\}
 
 Quantisation では、数値型をより小さい型へダウンキャストします。
 より小さい数値型を使うとデータ量が小さくなり、データ量が小さくなると距離計算が高速になります。
@@ -126,7 +126,7 @@ ClickHouse のベクトル化クエリ実行エンジンは、1 回の処理で�
 1. **元のカラムと並行して量子化したコピーを保持する** - ストレージ使用量は 2 倍になりますが、常にフル精度のデータにフォールバックできるため安全です
 2. **元の値を完全に置き換える**（挿入時にダウンキャストする） - 容量と I/O を節約できますが、後戻りはできません
 
-### Hierarchical Navigable Small World (HNSW) {#hnsw}
+### Hierarchical Navigable Small World (HNSW) \{#hnsw\}
 
 <Image size="md" img={diagram_1} alt="HNSW layer structure"/>
 
@@ -141,7 +141,7 @@ HNSW は複数のレイヤーから成るノード（ベクトル）の階層構
 その結果、大規模なデータセットではそれに応じて多くの RAM が必要になります。
 :::
 
-### 手法の比較 {#comparison-approaches}
+### 手法の比較 \{#comparison-approaches\}
 
 | カテゴリ | Brute-force | HNSW | QBit |
 |----------|-------------|------|------|
@@ -149,9 +149,9 @@ HNSW は複数のレイヤーから成るノード（ベクトル）の階層構
 | **速度** | 低速 | 高速 | 柔軟 |
 | **その他** | 量子化：より多くの容量を消費、もしくは不可逆な精度低下 | 索引をメモリに載せる必要があり、構築も必要 | 依然として O(レコード数) |
 
-## QBit の詳細 {#qbit-deepdive}
+## QBit の詳細 \{#qbit-deepdive\}
 
-### Quantised Bit (QBit) {#quantised-bit}
+### Quantised Bit (QBit) \{#quantised-bit\}
 
 QBit は、新しいデータ構造であり、浮動小数点数がビット列として表現される仕組みを活用して `BFloat16`、`Float32`、`Float64` の値を格納できます。
 各数値をそのまま格納するのではなく、QBit は値を**ビットプレーン**に分割します。各値の第 1 ビット、各値の第 2 ビット、各値の第 3 ビット、というようにです。
@@ -169,7 +169,7 @@ QBit は、新しいデータ構造であり、浮動小数点数がビット列
 QBit はベクトル検索を高速化しますが、その計算量は依然として O(n) のままです。言い換えると、データセットが十分小さく、HNSW のインデックスを RAM に余裕を持って収められる場合は、依然としてそれが最速の選択肢です。
 :::
 
-### データ型 {#the-data-type}
+### データ型 \{#the-data-type\}
 
 QBit カラムを作成するには、次のようにします。
 
@@ -204,7 +204,7 @@ INSERT INTO fruit_animal VALUES
 :::
 
 
-### 距離計算 {#the-distance-calculation}
+### 距離計算 \{#the-distance-calculation\}
 
 QBit でクエリするには、精度パラメータを指定して [`L2DistanceTransposed`](/sql-reference/functions/distance-functions#L2DistanceTransposed) 関数を使用します。
 
@@ -229,7 +229,7 @@ ORDER BY distance;
 3 つ目のパラメータ (16) は、ビットでの精度レベルを指定します。
 
 
-### I/O 最適化 {#io-optimisation}
+### I/O 最適化 \{#io-optimisation\}
 
 <Image size="md" img={diagram_3} alt="QBit I/O optimization"/>
 
@@ -241,7 +241,7 @@ ORDER BY distance;
 
 読み込み後、ロードされたビットプレーンから各数値の上位部分だけを再構築し、未読み込みのビットは 0 のまま残します。
 
-### 計算の最適化 {#calculation-optimisation}
+### 計算の最適化 \{#calculation-optimisation\}
 
 <Image size="md" img={diagram_7} alt="ダウンキャストの比較"/>
 
@@ -249,11 +249,11 @@ Float32 や BFloat16 のような、より小さい型にキャストするこ�
 
 代わりに、参照ベクターだけをダウンキャストし、QBit データはより狭い値を含んでいるかのように扱います（いくつかのカラムが存在しないものとして扱うイメージです）。これは、そのレイアウトがしばしばそれらの型を切り詰めたものに対応しているためです。
 
-#### BFloat16 の最適化 {#bfloat16-optimization}
+#### BFloat16 の最適化 \{#bfloat16-optimization\}
 
 BFloat16 は、Float32 の下位ビットを半分切り捨てた形式です。同じ符号ビットと 8 ビットの指数部を保持しますが、23 ビットある仮数部のうち保持されるのは上位 7 ビットだけです。そのため、QBit カラムから最初の 16 ビットプレーンを読み出すことで、実質的に BFloat16 のメモリレイアウトを再現できます。したがって、この場合には参照ベクターを BFloat16 に安全に変換できます（実際にそうしています）。
 
-#### Float64 の複雑さ {#float64-complexity}
+#### Float64 の複雑さ \{#float64-complexity\}
 
 一方、Float64 は話が異なります。Float64 は 11 ビットの指数部と 52 ビットの仮数部を使用しており、単にビット数が 2 倍になった Float32 というわけではありません。その構造や指数バイアスはまったく異なります。Float64 を Float32 のような、より小さいフォーマットにダウンキャストするには、各値を最も近い表現可能な Float32 に丸める、正規の IEEE-754 変換が必要になります。この丸め処理は計算コストが高くなります。
 
@@ -261,11 +261,11 @@ BFloat16 は、Float32 の下位ビットを半分切り捨てた形式です。
 QBit のパフォーマンス要素をより詳しく知りたい場合は、["Let’s vectorise"](https://clickhouse.com/blog/qbit-vector-search#lets-vectorise) を参照してください。
 :::
 
-## DBpedia を用いた例 {#example}
+## DBpedia を用いた例 \{#example\}
 
 DBpedia データセットを用いた実世界の例で、QBit の動作を確認してみましょう。このデータセットには、Float32 形式の埋め込みベクトルとして表現された Wikipedia 記事が 100 万件含まれています。
 
-### セットアップ {#setup}
+### セットアップ \{#setup\}
 
 まずテーブルを作成します
 
@@ -325,7 +325,7 @@ ALTER TABLE dbpedia UPDATE qbit = vector WHERE 1;
 ```
 
 
-### 検索クエリ {#search-query}
+### 検索クエリ \{#search-query\}
 
 Moon、Apollo 11、Space Shuttle、Astronaut、Rocket といった宇宙関連の検索語すべてに対して、最も関連性の高い概念を探してみます。
 
@@ -630,7 +630,7 @@ Peak memory usage: 327.04 MiB.
   **パフォーマンス:** 10行のセット。経過時間: 1.157秒。処理済み: 1000万行、32.76 GB (864万行/秒、28.32 GB/秒)。ピークメモリ使用量: **6.05 GiB**。
 </details>
 
-### 重要なインサイト {#key-insight}
+### 重要なインサイト \{#key-insight\}
 
 結果はどうだったでしょうか？ 単に良いどころではありません。驚くほど良好でした。浮動小数点数から仮数部全体と指数部の半分を取り除いても、依然として意味のある情報が保持されるとは、直感的には思えません。
 
@@ -638,7 +638,7 @@ Peak memory usage: 327.04 MiB.
 
 メモリ使用量は、優れたセマンティック検索品質を維持したまま、**6.05 GB から 740 MB** へと削減されました！
 
-## 結論 {#result}
+## 結論 \{#result\}
 
 QBit は、浮動小数点数をビットプレーンとして保存するカラム型です。
 ベクトル検索の際に読み出すビット数を選択できるため、データを変更することなく、再現率とパフォーマンスを調整できます。

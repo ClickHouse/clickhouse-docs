@@ -5,7 +5,7 @@ title: 'cramersV'
 doc_type: 'reference'
 ---
 
-# cramersV {#cramersv}
+# cramersV \{#cramersv\}
 
 [Cramer&#39;s V](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V)（有时也称为 Cramer&#39;s phi）是用于度量一张表中两列之间关联程度的指标。`cramersV` 函数的结果范围为 0（表示变量之间没有关联）到 1，且只有当每个值都完全由另一个变量决定时才会达到 1。可以将其理解为两个变量之间关联程度占其最大可能变动的百分比。
 

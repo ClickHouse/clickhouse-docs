@@ -7,7 +7,7 @@ title: 'テーブル設定の操作'
 doc_type: 'reference'
 ---
 
-# テーブル設定の操作 {#table-settings-manipulations}
+# テーブル設定の操作 \{#table-settings-manipulations\}
 
 テーブル設定を変更するためのクエリが用意されています。設定を変更したり、デフォルト値にリセットしたりできます。1つのクエリで複数の設定を同時に変更できます。
 指定された名前の設定が存在しない場合、そのクエリは例外をスローします。
@@ -22,7 +22,7 @@ ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY|RESET SETTING ...
 これらのクエリは [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) テーブルにのみ適用できます。
 :::
 
-## MODIFY SETTING {#modify-setting}
+## MODIFY SETTING \{#modify-setting\}
 
 テーブルの設定を変更します。
 
@@ -40,7 +40,7 @@ CREATE TABLE example_table (id UInt32, data String) ENGINE=MergeTree() ORDER BY 
 ALTER TABLE example_table MODIFY SETTING max_part_loading_threads=8, max_parts_in_total=50000;
 ```
 
-## RESET SETTING {#reset-setting}
+## RESET SETTING \{#reset-setting\}
 
 テーブルの設定をデフォルト値にリセットします。設定がデフォルト状態の場合は、何も行われません。
 

@@ -5,7 +5,7 @@ title: 'quantilesTimingWeighted'
 doc_type: 'reference'
 ---
 
-# quantilesTimingWeighted {#quantilestimingweighted}
+# quantilesTimingWeighted \{#quantilestimingweighted\}
 
 与 `quantileTimingWeighted` 相同，但接受带有分位水平的多个参数，并返回一个 `Array`，其中包含这些分位数对应的多个值。
 

@@ -5,7 +5,7 @@ title: 'analysisOfVariance'
 doc_type: 'reference'
 ---
 
-# analysisOfVariance {#analysisofvariance}
+# analysisOfVariance \{#analysisofvariance\}
 
 提供单因素方差分析（ANOVA）的统计检验。该检验适用于若干组服从正态分布的观测数据，用于判断各组的均值是否相同。
 

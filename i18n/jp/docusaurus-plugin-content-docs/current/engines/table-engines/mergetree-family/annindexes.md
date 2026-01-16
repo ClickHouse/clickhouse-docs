@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-# 厳密ベクトル検索と近似ベクトル検索 {#exact-and-approximate-vector-search}
+# 厳密ベクトル検索と近似ベクトル検索 \{#exact-and-approximate-vector-search\}
 
 多次元（ベクトル）空間において、ある点に最も近い N 個の点を見つける問題は、[nearest neighbor search](https://en.wikipedia.org/wiki/Nearest_neighbor_search)（最近傍探索）、または略してベクトル検索と呼ばれます。
 ベクトル検索を行うための一般的なアプローチは 2 つあります:
@@ -35,13 +35,13 @@ LIMIT <N>
 `<N>` は、返すべき近傍点の数を指定します。
 
 
-## 厳密なベクトル検索 {#exact-nearest-neighbor-search}
+## 厳密なベクトル検索 \{#exact-nearest-neighbor-search\}
 
 厳密なベクトル検索は、上記の SELECT クエリをそのまま使用して実行できます。
 このようなクエリの実行時間は、一般的に保存されているベクトル数とその次元数、つまり配列要素数に比例します。
 また、ClickHouse はすべてのベクトルに対して総当たりスキャンを行うため、クエリで使用されるスレッド数（設定項目 [max&#95;threads](../../../operations/settings/settings.md#max_threads) を参照）にも実行時間が依存します。
 
-### 例 {#exact-nearest-neighbor-search-example}
+### 例 \{#exact-nearest-neighbor-search-example\}
 
 ```sql
 CREATE TABLE tab(id Int32, vec Array(Float32)) ENGINE = MergeTree ORDER BY id;
@@ -66,9 +66,9 @@ LIMIT 3;
 ```
 
 
-## 近似ベクトル検索 {#approximate-nearest-neighbor-search}
+## 近似ベクトル検索 \{#approximate-nearest-neighbor-search\}
 
-### ベクトル類似度インデックス {#vector-similarity-index}
+### ベクトル類似度インデックス \{#vector-similarity-index\}
 
 ClickHouse は、近似ベクトル検索を実行するための特別な「ベクトル類似度」インデックスを提供します。
 
@@ -77,7 +77,7 @@ ClickHouse は、近似ベクトル検索を実行するための特別な「ベ
 問題が発生した場合は、[ClickHouse リポジトリ](https://github.com/clickhouse/clickhouse/issues) に issue を作成してください。
 :::
 
-#### ベクトル類似度インデックスの作成 {#creating-a-vector-similarity-index}
+#### ベクトル類似度インデックスの作成 \{#creating-a-vector-similarity-index\}
 
 新しいテーブルに対して、次のようにベクトル類似度インデックスを作成できます。
 
@@ -196,7 +196,7 @@ Memory consumption = 3072 + 512 = 3584 MB
 上記の式には、事前割り当てバッファやキャッシュなど、ベクトル類似性インデックスがランタイムのデータ構造を割り当てるために必要となる追加メモリは含まれていません。
 
 
-#### ベクター類似性インデックスの使用 {#using-a-vector-similarity-index}
+#### ベクター類似性インデックスの使用 \{#using-a-vector-similarity-index\}
 
 :::note
 ベクター類似性インデックスを使用するには、設定 [compatibility](../../../operations/settings/settings.md) の値が `''`（デフォルト値）、または `'25.1'` 以降である必要があります。
@@ -407,7 +407,7 @@ Query id: a2a9d0c8-a525-45c1-96ca-c5a11fa66f47
 :::
 
 
-#### パフォーマンスチューニング {#performance-tuning}
+#### パフォーマンスチューニング \{#performance-tuning\}
 
 **圧縮のチューニング**
 
@@ -543,7 +543,7 @@ result = chclient.query(
 これによりサーバー側の CPU 時間を節約でき、サーバーログおよび `system.query_log` の肥大化も防止できます。
 
 
-#### 管理と監視 {#administration}
+#### 管理と監視 \{#administration\}
 
 ベクトル類似度インデックスのディスク上のサイズは、[system.data&#95;skipping&#95;indices](../../../operations/system-tables/data_skipping_indices) から取得できます。
 
@@ -562,7 +562,7 @@ WHERE type = 'vector_similarity';
 ```
 
 
-#### 通常のスキッピングインデックスとの違い {#differences-to-regular-skipping-indexes}
+#### 通常のスキッピングインデックスとの違い \{#differences-to-regular-skipping-indexes\}
 
 通常の[スキッピングインデックス](/optimize/skipping-indexes)と同様に、ベクトル類似度インデックスはグラニュール単位で構築され、各インデックスブロックは `GRANULARITY = [N]` 個のグラニュールで構成されます（通常のスキッピングインデックスではデフォルトで `[N]` = 1）。
 たとえば、テーブルのプライマリインデックスのグラニュラリティが 8192（`index_granularity = 8192` の設定）で `GRANULARITY = 2` の場合、各インデックスブロックには 16384 行が含まれます。
@@ -587,7 +587,7 @@ WHERE type = 'vector_similarity';
 一般的には、ベクトル類似度インデックスには大きな `GRANULARITY` を使用し、ベクトル類似度構造のメモリ使用量が過大になるなどの問題が発生した場合にのみ、より小さな `GRANULARITY` の値へ切り替えることが推奨されます。
 ベクトル類似度インデックスに対して `GRANULARITY` が明示的に指定されていない場合、デフォルト値は 1 億です。
 
-#### 例 {#approximate-nearest-neighbor-search-example}
+#### 例 \{#approximate-nearest-neighbor-search-example\}
 
 ```sql
 CREATE TABLE tab(id Int32, vec Array(Float32), INDEX idx vec TYPE vector_similarity('hnsw', 'L2Distance', 2)) ENGINE = MergeTree ORDER BY id;
@@ -619,7 +619,7 @@ LIMIT 3;
 * [hackernews](../../../getting-started/example-datasets/hackernews-vector-search-dataset)
 
 
-### Quantized Bit (QBit) {#approximate-nearest-neighbor-search-qbit}
+### Quantized Bit (QBit) \{#approximate-nearest-neighbor-search-qbit\}
 
 <BetaBadge/>
 
@@ -653,7 +653,7 @@ column_name QBit(element_type, dimension)
 * `dimension` – 各ベクトル内の要素数です
 
 
-#### `QBit` テーブルの作成とデータの追加 {#qbit-create}
+#### `QBit` テーブルの作成とデータの追加 \{#qbit-create\}
 
 ```sql
 CREATE TABLE fruit_animal (
@@ -672,7 +672,7 @@ INSERT INTO fruit_animal VALUES
 ```
 
 
-#### `QBit` を使ったベクトル検索 {#qbit-search}
+#### `QBit` を使ったベクトル検索 \{#qbit-search\}
 
 L2 距離を用いて、単語 &#39;lemon&#39; を表すベクトルに最も近い近傍を検索します。距離関数の第 3 引数ではビット単位の精度を指定します。値を大きくすると精度は向上しますが、計算コストも増加します。
 
@@ -723,14 +723,14 @@ ORDER BY distance;
 12 ビット量子化では、クエリ実行を高速化しつつ、距離を良好に近似できていることに注目してください。相対的な順位付けは概ね維持されており、依然として &#39;apple&#39; が最も近い一致となっています。
 
 
-#### パフォーマンス上の考慮事項 {#qbit-performance}
+#### パフォーマンス上の考慮事項 \{#qbit-performance\}
 
 `QBit` のパフォーマンス上の利点は、より低い精度を使用した場合に、ストレージから読み取る必要のあるデータ量が減ることによる I/O 操作の削減から生じます。さらに、`QBit` に格納されているデータが `Float32` であり、`precision` パラメータが 16 以下の場合は、計算量が減ることによる追加のメリットも得られます。`precision` パラメータは、精度と速度のトレードオフを直接制御します。
 
 - **精度が高い場合**（元のデータ幅に近い場合）: 結果はより正確だが、クエリは遅くなる
 - **精度が低い場合**: 近似結果になるがクエリは高速になり、メモリ使用量も削減される
 
-### 参考文献 {#references}
+### 参考文献 \{#references\}
 
 ブログ:
 

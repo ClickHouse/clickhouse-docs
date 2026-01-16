@@ -5,7 +5,7 @@ title: 'entropy'
 doc_type: 'reference'
 ---
 
-# entropy {#entropy}
+# entropy \{#entropy\}
 
 Вычисляет [энтропию Шеннона](https://en.wikipedia.org/wiki/Entropy_\(information_theory\)) для столбца значений.
 

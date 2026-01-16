@@ -5,7 +5,7 @@ title: 'sumWithOverflow'
 doc_type: 'reference'
 ---
 
-# sumWithOverflow {#sumwithoverflow}
+# sumWithOverflow \{#sumwithoverflow\}
 
 入力パラメータと同じデータ型で結果を返す形で数値の合計を計算します。合計がこのデータ型の最大値を超えた場合は、オーバーフローさせて計算します。
 

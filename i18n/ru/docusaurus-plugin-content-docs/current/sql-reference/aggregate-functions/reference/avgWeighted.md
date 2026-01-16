@@ -5,7 +5,7 @@ title: 'avgWeighted'
 doc_type: 'reference'
 ---
 
-# avgWeighted {#avgweighted}
+# avgWeighted \{#avgweighted\}
 
 Вычисляет [взвешенное среднее арифметическое](https://en.wikipedia.org/wiki/Weighted_arithmetic_mean).
 

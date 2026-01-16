@@ -5,7 +5,7 @@ title: 'singleValueOrNull'
 doc_type: 'reference'
 ---
 
-# singleValueOrNull {#singlevalueornull}
+# singleValueOrNull \{#singlevalueornull\}
 
 Агрегатная функция `singleValueOrNull` используется для реализации операторов с подзапросами, таких как `x = ALL (SELECT ...)`. Она проверяет, есть ли в данных ровно одно уникальное значение, не равное NULL.
 Если уникальное значение только одно, она возвращает его. Если значений нет или как минимум два различных значения, она возвращает NULL.

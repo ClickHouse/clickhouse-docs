@@ -5,7 +5,7 @@ title: 'groupArrayInsertAt'
 doc_type: 'reference'
 ---
 
-# groupArrayInsertAt {#grouparrayinsertat}
+# groupArrayInsertAt \{#grouparrayinsertat\}
 
 向数组的指定位置插入一个值。
 

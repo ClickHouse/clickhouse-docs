@@ -7,7 +7,7 @@ keywords: ['原生协议列类型', '列类型', '数据类型', '协议数据�
 doc_type: 'reference'
 ---
 
-# 原生协议列类型 {#native-protocol-column-types}
+# 原生协议列类型 \{#native-protocol-column-types\}
 
 通用参考请参见 [Data Types](/sql-reference/data-types/)。
 

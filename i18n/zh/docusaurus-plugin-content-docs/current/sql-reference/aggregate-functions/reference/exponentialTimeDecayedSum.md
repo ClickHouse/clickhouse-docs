@@ -5,7 +5,7 @@ title: 'exponentialTimeDecayedSum'
 doc_type: 'reference'
 ---
 
-## exponentialTimeDecayedSum {#exponentialtimedecayedsum}
+## exponentialTimeDecayedSum \{#exponentialtimedecayedsum\}
 
 返回时间序列在时间索引 `t` 处的指数平滑移动平均值之和。
 

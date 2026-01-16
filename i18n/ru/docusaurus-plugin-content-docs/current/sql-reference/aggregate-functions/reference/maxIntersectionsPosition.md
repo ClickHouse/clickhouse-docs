@@ -5,7 +5,7 @@ title: 'maxIntersectionsPosition'
 doc_type: 'reference'
 ---
 
-# maxIntersectionsPosition {#maxintersectionsposition}
+# maxIntersectionsPosition \{#maxintersectionsposition\}
 
 Агрегатная функция, вычисляющая позиции вхождений функции [`maxIntersections`](./maxIntersections.md).
 

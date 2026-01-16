@@ -25,7 +25,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 PAYG（従量課金制）のパブリックオファーを通じて、[Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) から ClickHouse Cloud の利用を開始しましょう。
 
 
-## 前提条件 {#prerequisites}
+## 前提条件 \{#prerequisites\}
 
 - 課金管理者によって購入権限が付与されている Azure プロジェクト。
 - Azure Marketplace で ClickHouse Cloud をサブスクライブするには、購入権限を持つアカウントでログインし、適切なプロジェクトを選択する必要があります。

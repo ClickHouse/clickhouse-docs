@@ -6,7 +6,7 @@ title: 'system.projections'
 doc_type: 'reference'
 ---
 
-# system.projections {#systemprojections}
+# system.projections \{#systemprojections\}
 
 包含所有表中已存在的投影信息。
 

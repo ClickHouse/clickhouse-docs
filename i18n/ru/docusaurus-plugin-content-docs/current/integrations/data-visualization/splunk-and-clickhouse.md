@@ -24,7 +24,7 @@ import splunk_9 from '@site/static/images/integrations/splunk/splunk-9.png';
 import splunk_10 from '@site/static/images/integrations/splunk/splunk-10.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Подключение Splunk к ClickHouse {#connecting-splunk-to-clickhouse}
+# Подключение Splunk к ClickHouse \{#connecting-splunk-to-clickhouse\}
 
 <ClickHouseSupportedBadge/>
 
@@ -38,7 +38,7 @@ Splunk — популярная платформа для обеспечения
 
 Идеальный сценарий использования этой интеграции — когда вы применяете ClickHouse для больших объёмов данных, таких как NetFlow, двоичные данные Avro или Protobuf, DNS, журналы трафика VPC и другие журналы OTel, которыми можно делиться с вашей командой в Splunk для поиска и построения дашбордов. При таком подходе данные не проходят приём в индексный слой Splunk, а запрашиваются напрямую из ClickHouse, аналогично другим интеграциям для визуализации, таким как [Metabase](https://www.metabase.com/) или [Superset](https://superset.apache.org/).
 
-## Цель​ {#goal}
+## Цель​ \{#goal\}
 
 В этом руководстве мы будем использовать JDBC-драйвер ClickHouse для подключения ClickHouse к Splunk. Мы установим локальный экземпляр Splunk Enterprise, но не будем индексировать какие-либо данные. Вместо этого мы будем использовать функции поиска через движок запросов DB Connect.
 
@@ -50,7 +50,7 @@ Splunk — популярная платформа для обеспечения
 В этом руководстве используется [набор данных такси города Нью-Йорк](/getting-started/example-datasets/nyc-taxi). В нашей [документации](http://localhost:3000/docs/getting-started/example-datasets) есть и многие другие наборы данных, которые вы можете использовать.
 :::
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \{#prerequisites\}
 
 Перед началом работы вам потребуется:
 
@@ -60,7 +60,7 @@ Splunk — популярная платформа для обеспечения
 - Административный или SSH-доступ к экземпляру ОС с установленным Splunk Enterprise
 - Данные для подключения к ClickHouse (см. [здесь](/integrations/metabase#1-gather-your-connection-details), если вы используете ClickHouse Cloud)
 
-## Установка и настройка DB Connect в Splunk Enterprise {#install-and-configure-db-connect-on-splunk-enterprise}
+## Установка и настройка DB Connect в Splunk Enterprise \{#install-and-configure-db-connect-on-splunk-enterprise\}
 
 Сначала необходимо установить Java Runtime Environment на инстанс Splunk Enterprise. Если вы используете Docker, можно выполнить команду `microdnf install java-11-openjdk`.
 
@@ -78,7 +78,7 @@ Splunk — популярная платформа для обеспечения
 
 <Image img={splunk_2} size="md" border alt="Страница настроек Splunk DB Connect с конфигурацией Java Home" />
 
-## Настройка JDBC для ClickHouse {#configure-jdbc-for-clickhouse}
+## Настройка JDBC для ClickHouse \{#configure-jdbc-for-clickhouse\}
 
 Скачайте [драйвер ClickHouse JDBC](https://github.com/ClickHouse/clickhouse-java) в папку DB Connect Drivers, например:
 
@@ -107,7 +107,7 @@ ui_default_catalog = $database$
 <Image img={splunk_3} size="lg" border alt="Страница драйверов Splunk DB Connect, на которой показано, что драйвер ClickHouse успешно установлен" />
 
 
-## Подключение поиска Splunk к ClickHouse {#connect-splunk-search-to-clickhouse}
+## Подключение поиска Splunk к ClickHouse \{#connect-splunk-search-to-clickhouse\}
 
 Перейдите в DB Connect App Configuration -> Databases -> Identities и создайте Identity для вашего ClickHouse.
 
@@ -127,7 +127,7 @@ ui_default_catalog = $database$
 Если вы получили ошибку, убедитесь, что добавили IP-адрес вашего экземпляра Splunk в список ClickHouse Cloud IP Access List. Для получения дополнительной информации смотрите [документацию](/cloud/security/setting-ip-filters).
 :::
 
-## Выполнение SQL-запроса {#run-a-sql-query}
+## Выполнение SQL-запроса \{#run-a-sql-query\}
 
 Теперь мы выполним SQL-запрос, чтобы убедиться, что всё работает корректно.
 
@@ -141,7 +141,7 @@ ui_default_catalog = $database$
 
 Если запрос выполнен успешно, вы должны увидеть результат.
 
-## Создайте дашборд {#create-a-dashboard}
+## Создайте дашборд \{#create-a-dashboard\}
 
 Давайте создадим дашборд, который использует сочетание SQL и мощного Splunk Processing Language (SPL).
 
@@ -186,7 +186,7 @@ ORDER BY year, count(*) DESC; " connection="chc"
 <Image img={splunk_10} size="lg" border alt="Final Splunk dashboard with multiple visualizations of NYC taxi data" />
 
 
-## Данные временных рядов {#time-series-data}
+## Данные временных рядов \{#time-series-data\}
 
 В Splunk есть сотни встроенных функций, которые дашборды могут использовать для визуализации и представления данных временных рядов. В этом примере будут объединены SQL и SPL для создания запроса, который может работать с данными временных рядов в Splunk.
 
@@ -201,6 +201,6 @@ FROM "demo"."conn" WHERE time >= now() - interval 1 HOURS" connection="chc"
 ```
 
 
-## Дополнительные материалы {#learn-more}
+## Дополнительные материалы \{#learn-more\}
 
 Если вы хотите получить больше информации о Splunk DB Connect и создании дашбордов, обратитесь к [документации Splunk](https://docs.splunk.com/Documentation).

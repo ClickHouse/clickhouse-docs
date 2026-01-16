@@ -7,11 +7,11 @@ title: '第三方开发者提供的图形界面'
 doc_type: 'reference'
 ---
 
-# 第三方开发者的可视化界面 {#visual-interfaces-from-third-party-developers}
+# 第三方开发者的可视化界面 \{#visual-interfaces-from-third-party-developers\}
 
-## 开源 {#open-source}
+## 开源 \{#open-source\}
 
-### agx {#agx}
+### agx \{#agx\}
 
 [agx](https://github.com/agnosticeng/agx) 是一款使用 Tauri 和 SvelteKit 构建的桌面应用程序，为使用 ClickHouse 内置数据库引擎（chdb）进行数据探索和查询提供了现代化界面。
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 - 集成 Monaco 编辑器，带来熟悉的编辑体验。
 - 提供多种且持续演进的数据可视化方式。
 
-### ch-ui {#ch-ui}
+### ch-ui \{#ch-ui\}
 
 [ch-ui](https://github.com/caioricciuti/ch-ui) 是一个为 ClickHouse 数据库设计的简洁 React.js 应用界面，用于执行查询和可视化数据。基于 React 和 ClickHouse Web 客户端构建，提供简洁且易用的 UI，便于进行数据库交互。
 
@@ -31,7 +31,7 @@ doc_type: 'reference'
 - 性能优化：使用 IndexedDB 进行高效缓存和状态管理。
 - 本地数据存储：所有数据都存储在浏览器本地，不会发送到任何其他地方。
 
-### ChartDB {#chartdb}
+### ChartDB \{#chartdb\}
 
 [ChartDB](https://chartdb.io) 是一个免费开源工具，可通过单条查询对包括 ClickHouse 在内的数据库 schema 进行可视化和设计。基于 React 构建，提供无缝且易用的体验，无需数据库凭证或注册即可开始使用。
 
@@ -44,7 +44,7 @@ doc_type: 'reference'
 
 [ChartDB 源代码](https://github.com/chartdb/chartdb)。
 
-### DataPup {#datapup}
+### DataPup \{#datapup\}
 
 [DataPup](https://github.com/DataPupOrg/DataPup) 是一款现代的、AI 辅助的跨平台数据库客户端，对 ClickHouse 提供原生支持。
 
@@ -58,7 +58,7 @@ doc_type: 'reference'
 - 快速且响应灵敏的性能
 - 开源并采用 MIT 许可证
 
-### ClickHouse Schema Flow Visualizer {#clickhouse-schemaflow-visualizer}
+### ClickHouse Schema Flow Visualizer \{#clickhouse-schemaflow-visualizer\}
 
 [ClickHouse Schema Flow Visualizer](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer) 是一个用于通过 Mermaid.js 图表可视化 ClickHouse 表关系的强大开源 Web 应用。你可以通过直观界面浏览数据库和数据表，利用可选的行数与大小信息探索表元数据，并导出交互式 schema 图。
 
@@ -75,7 +75,7 @@ doc_type: 'reference'
 
 [ClickHouse Schema Flow Visualizer - 源代码](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer)
 
-### Tabix {#tabix}
+### Tabix \{#tabix\}
 
 [Tabix](https://github.com/tabixio/tabix) 项目中的 ClickHouse Web 界面。
 
@@ -89,7 +89,7 @@ doc_type: 'reference'
 
 [Tabix 文档](https://tabix.io/doc/)。
 
-### HouseOps {#houseops}
+### HouseOps \{#houseops\}
 
 [HouseOps](https://github.com/HouseOps/HouseOps) 是适用于 macOS、Linux 和 Windows 的 UI/IDE。
 
@@ -111,7 +111,7 @@ doc_type: 'reference'
 - 集群管理。
 - 监控复制表和 Kafka 表。
 
-### LightHouse {#lighthouse}
+### LightHouse \{#lighthouse\}
 
 [LightHouse](https://github.com/VKCOM/lighthouse) 是一个适用于 ClickHouse 的轻量级 Web 界面。
 
@@ -121,7 +121,7 @@ doc_type: 'reference'
 - 带有过滤和排序功能的表预览。
 - 只读查询执行。
 
-### Redash {#redash}
+### Redash \{#redash\}
 
 [Redash](https://github.com/getredash/redash) 是一个数据可视化平台。
 
@@ -133,7 +133,7 @@ Redash 支持包括 ClickHouse 在内的多种数据源，可以将来自不同�
 - 数据库浏览器。
 - 可视化工具，允许你以不同形式呈现数据。
 
-### Grafana {#grafana}
+### Grafana \{#grafana\}
 
 [Grafana](https://grafana.com/grafana/plugins/grafana-clickhouse-datasource/) 是一个监控和可视化平台。
 
@@ -141,7 +141,7 @@ Redash 支持包括 ClickHouse 在内的多种数据源，可以将来自不同�
 
 ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 
-### qryn {#qryn}
+### qryn \{#qryn\}
 
 [qryn](https://metrico.in) 是一个基于 ClickHouse 的多协议高性能可观测性栈 _(前身为 cLoki)_，与 Grafana 原生集成，允许用户从任何支持 Loki/LogQL、Prometheus/PromQL、OTLP/Tempo、Elastic、InfluxDB 等众多代理中摄取并分析日志、指标和遥测追踪。
 
@@ -153,7 +153,7 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 - 摄取和 PUSH API 与 LogQL、PromQL、InfluxDB、Elastic 等透明兼容
 - 开箱即用，可与 Promtail、Grafana-Agent、Vector、Logstash、Telegraf 等多种 Agent 搭配使用
 
-### DBeaver {#dbeaver}
+### DBeaver \{#dbeaver\}
 
 [DBeaver](https://dbeaver.io/) —— 通用桌面数据库客户端，支持 ClickHouse。
 
@@ -166,7 +166,7 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 
 默认情况下，DBeaver 连接时不使用会话（例如 CLI 会使用会话）。如果你需要会话支持（例如为你的会话设置参数），请编辑驱动连接属性并将 `session_id` 设置为一个随机字符串（其底层使用 HTTP 连接）。然后你就可以在查询窗口中使用任意设置。
 
-### clickhouse-cli {#clickhouse-cli}
+### clickhouse-cli \{#clickhouse-cli\}
 
 [clickhouse-cli](https://github.com/hatarist/clickhouse-cli) 是一个用 Python 3 编写的 ClickHouse 命令行客户端替代工具。
 
@@ -177,27 +177,27 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 - 数据输出的分页器支持。
 - 自定义类似 PostgreSQL 的命令。
 
-### clickhouse-flamegraph {#clickhouse-flamegraph}
+### clickhouse-flamegraph \{#clickhouse-flamegraph\}
 
 [clickhouse-flamegraph](https://github.com/Slach/clickhouse-flamegraph) 是一个专门用于将 `system.trace_log` 可视化为 [flamegraph](http://www.brendangregg.com/flamegraphs.html) 的工具。
 
-### clickhouse-plantuml {#clickhouse-plantuml}
+### clickhouse-plantuml \{#clickhouse-plantuml\}
 
 [cickhouse-plantuml](https://pypi.org/project/clickhouse-plantuml/) 是一个用于生成表结构 [PlantUML](https://plantuml.com/) 图的脚本。
 
-### ClickHouse table graph {#clickhouse-table-graph}
+### ClickHouse table graph \{#clickhouse-table-graph\}
 
 [ClickHouse table graph](https://github.com/mbaksheev/clickhouse-table-graph) 是一个用于可视化 ClickHouse 表之间依赖关系的简单 CLI 工具。该工具从 `system.tables` 表中检索表之间的连接关系，并以 [mermaid](https://mermaid.js.org/syntax/flowchart.html) 格式构建依赖流程图。借助该工具，你可以轻松可视化表依赖关系，并理解 ClickHouse 数据库中的数据流。得益于 mermaid，生成的流程图十分美观，并且可以轻松添加到你的 Markdown 文档中。
 
-### xeus-clickhouse {#xeus-clickhouse}
+### xeus-clickhouse \{#xeus-clickhouse\}
 
 [xeus-clickhouse](https://github.com/wangfenjin/xeus-clickhouse) 是一个适用于 ClickHouse 的 Jupyter 内核，支持在 Jupyter 中使用 SQL 查询 ClickHouse 数据。
 
-### MindsDB Studio {#mindsdb}
+### MindsDB Studio \{#mindsdb\}
 
 [MindsDB](https://mindsdb.com/) 是一个面向包括 ClickHouse 在内的数据库的开源 AI 层，可以让你轻松开发、训练和部署最先进的机器学习模型。MindsDB Studio（GUI）可以从数据库中训练新模型、解释模型生成的预测结果、识别潜在的数据偏差，并使用可解释 AI 功能评估和可视化模型精度，从而更快速地调整和优化你的机器学习模型。
 
-### DBM {#dbm}
+### DBM \{#dbm\}
 
 [DBM](https://github.com/devlive-community/dbm) DBM 是一个用于 ClickHouse 的可视化管理工具！
 
@@ -213,7 +213,7 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 - 支持监控（处理器、连接、查询）
 - 支持数据迁移
 
-### Bytebase {#bytebase}
+### Bytebase \{#bytebase\}
 
 [Bytebase](https://bytebase.com) 是一个基于 Web 的开源架构变更和版本控制工具，面向团队使用。它支持包括 ClickHouse 在内的多种数据库。
 
@@ -227,11 +227,11 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 - 备份与恢复。
 - RBAC（基于角色的访问控制）。
 
-### Zeppelin-Interpreter-for-ClickHouse {#zeppelin-interpreter-for-clickhouse}
+### Zeppelin-Interpreter-for-ClickHouse \{#zeppelin-interpreter-for-clickhouse\}
 
 [Zeppelin-Interpreter-for-ClickHouse](https://github.com/SiderZhang/Zeppelin-Interpreter-for-ClickHouse) 是一个适用于 ClickHouse 的 [Zeppelin](https://zeppelin.apache.org) 解释器。与 JDBC 解释器相比，它可以为长时间运行的查询提供更好的超时控制。
 
-### ClickCat {#clickcat}
+### ClickCat \{#clickcat\}
 
 [ClickCat](https://github.com/clickcat-project/ClickCat) 是一个直观友好的用户界面，可用于搜索、探索和可视化你的 ClickHouse 数据。
 
@@ -241,7 +241,7 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 - 你可以查看所有进程和变更（mutations）。对于尚未完成的进程，可以在 UI 中将其终止。
 - 指标包括集群分析、数据分析和查询分析。
 
-### ClickVisual {#clickvisual}
+### ClickVisual \{#clickvisual\}
 
 [ClickVisual](https://clickvisual.net/) ClickVisual 是一个轻量级的开源日志查询、分析与告警可视化平台。
 
@@ -253,7 +253,7 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 - 支持告警配置
 - 支持将权限粒度细化到库级和表级的权限配置
 
-### ClickHouse-Mate {#clickmate}
+### ClickHouse-Mate \{#clickmate\}
 
 [ClickHouse-Mate](https://github.com/metrico/clickhouse-mate) 是一个 Angular Web 客户端和用户界面，用于在 ClickHouse 中搜索和探索数据。
 
@@ -268,7 +268,7 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 
 该客户端可通过 GitHub Pages 即时使用：https://metrico.github.io/clickhouse-mate/
 
-### Uptrace {#uptrace}
+### Uptrace \{#uptrace\}
 
 [Uptrace](https://github.com/uptrace/uptrace) 是一个 APM（应用性能监控）工具，基于 OpenTelemetry 和 ClickHouse 提供分布式追踪和指标能力。
 
@@ -281,7 +281,7 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 - 预构建的指标仪表盘。
 - 通过 YAML 配置支持多用户/多项目。
 
-### clickhouse-monitoring {#clickhouse-monitoring}
+### clickhouse-monitoring \{#clickhouse-monitoring\}
 
 [clickhouse-monitoring](https://github.com/duyet/clickhouse-monitoring) 是一个基于 Next.js 的简单仪表盘，依赖 `system.*` 表来帮助监控并提供 ClickHouse 集群的概览。
 
@@ -293,7 +293,7 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 - 实用工具：Zookeeper 数据探索、查询 EXPLAIN、终止查询等。
 - 指标可视化图表：查询和资源使用、合并/变更数量、合并性能、查询性能等。
 
-### CKibana {#ckibana}
+### CKibana \{#ckibana\}
 
 [CKibana](https://github.com/TongchengOpenSource/ckibana) 是一款轻量级服务，可让你使用原生 Kibana UI 轻松搜索、探索和可视化 ClickHouse 数据。
 
@@ -303,7 +303,7 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 - 支持采样与缓存等高级特性，以提升查询性能。
 - 从 Elasticsearch 迁移到 ClickHouse 后，可将用户的学习成本降到最低。
 
-### Telescope {#telescope}
+### Telescope \{#telescope\}
 
 [Telescope](https://iamtelescope.net/) 是一个用于探索存储在 ClickHouse 中日志的现代 Web 界面。它提供用户友好的 UI，可对日志数据进行查询、可视化和管理，并支持细粒度的访问控制。
 
@@ -319,9 +319,9 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 
 [Telescope 源码](https://github.com/iamtelescope/telescope) · [在线演示](https://demo.iamtelescope.net)
 
-## 商业版 {#commercial}
+## 商业版 \{#commercial\}
 
-### DataGrip {#datagrip}
+### DataGrip \{#datagrip\}
 
 [DataGrip](https://www.jetbrains.com/datagrip/) 是 JetBrains 出品的数据库 IDE，对 ClickHouse 提供专门支持。它也集成在其他基于 IntelliJ 的工具中：PyCharm、IntelliJ IDEA、GoLand、PhpStorm 等。
 
@@ -334,7 +334,7 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 - 重构功能。
 - 搜索与导航。
 
-### Yandex DataLens {#yandex-datalens}
+### Yandex DataLens \{#yandex-datalens\}
 
 [Yandex DataLens](https://cloud.yandex.ru/services/datalens) 是一个数据可视化与分析服务。
 
@@ -350,7 +350,7 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 - [DataLens 文档](https://cloud.yandex.com/docs/datalens/)。
 - [教程](https://cloud.yandex.com/docs/solutions/datalens/data-from-ch-visualization)：可视化来自 ClickHouse 数据库的数据。
 
-### Holistics Software {#holistics-software}
+### Holistics Software \{#holistics-software\}
 
 [Holistics](https://www.holistics.io/) 是一套全栈数据平台与商业智能工具。
 
@@ -362,7 +362,7 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 - 数据准备和 ETL 能力。
 - 支持 SQL 数据建模，用于数据的关系映射。
 
-### Looker {#looker}
+### Looker \{#looker\}
 
 [Looker](https://looker.com) 是一个数据平台和商业智能工具，支持 50 多种数据库方言，包括 ClickHouse。Looker 既可作为 SaaS 平台使用，也可自托管。用户可以通过浏览器使用 Looker 来探索数据、构建可视化和仪表板、调度报表，并与同事分享分析洞见。Looker 提供了一套丰富的工具，将这些功能嵌入到其他应用程序中，并提供 API 以便与其他应用集成数据。
 
@@ -373,7 +373,7 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 
 [如何在 Looker 中配置 ClickHouse。](https://docs.looker.com/setup-and-management/database-config/clickhouse)
 
-### SeekTable {#seektable}
+### SeekTable \{#seektable\}
 
 [SeekTable](https://www.seektable.com) 是一款用于数据探索和运营报表的自助式 BI 工具，既提供云服务，也提供自托管版本。SeekTable 生成的报表可以嵌入到任意 Web 应用中。
 
@@ -390,11 +390,11 @@ SeekTable 对于个人/个体使用是[免费的](https://www.seektable.com/help
 
 [如何在 SeekTable 中配置 ClickHouse 连接。](https://www.seektable.com/help/clickhouse-pivot-table)
 
-### Chadmin {#chadmin}
+### Chadmin \{#chadmin\}
 
 [Chadmin](https://github.com/bun4uk/chadmin) 是一个简单的 UI，用于可视化你在 ClickHouse 集群上当前正在运行的查询及其相关信息，并在需要时终止这些查询。
 
-### TABLUM.IO {#tablum_io}
+### TABLUM.IO \{#tablum_io\}
 
 [TABLUM.IO](https://tablum.io/) 是一款用于 ETL 和可视化的在线查询与分析工具。它支持连接 ClickHouse，可通过通用的 SQL 控制台查询数据，也可以从静态文件和第三方服务加载数据。TABLUM.IO 可以将查询结果可视化为图表和表格。
 
@@ -414,7 +414,7 @@ TABLUM.IO 既可以以 Docker 镜像形式自托管部署，也可以在云端�
 在[云端免费试用](https://tablum.io/try)。  
 在 [TABLUM.IO](https://tablum.io/) 了解更多产品信息。
 
-### CKMAN {#ckman}
+### CKMAN \{#ckman\}
 
 [CKMAN](https://www.github.com/housepower/ckman) 是一个用于管理和监控 ClickHouse 集群的工具！
 

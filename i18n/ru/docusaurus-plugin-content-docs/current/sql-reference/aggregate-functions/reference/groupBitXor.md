@@ -5,7 +5,7 @@ title: 'groupBitXor'
 doc_type: 'reference'
 ---
 
-# groupBitXor {#groupbitxor}
+# groupBitXor \{#groupbitxor\}
 
 Выполняет побитовое исключающее ИЛИ (`XOR`) для набора чисел.
 

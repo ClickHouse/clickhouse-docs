@@ -17,7 +17,7 @@ import httpAdvanced from '@site/static/images/integrations/data-ingestion/kafka/
 import createMessageInTopic from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_message_in_topic.png';
 
 
-# Коннектор Confluent HTTP Sink {#confluent-http-sink-connector}
+# Коннектор Confluent HTTP Sink \{#confluent-http-sink-connector\}
 
 Коннектор HTTP Sink не зависит от формата данных, поэтому не требует схемы Kafka и при этом поддерживает специфичные для ClickHouse типы данных, такие как `Map` и `Array`. Эта дополнительная гибкость приводит к небольшому усложнению конфигурации.
 
@@ -27,13 +27,13 @@ import createMessageInTopic from '@site/static/images/integrations/data-ingestio
   HTTP Connector распространяется по [лицензии Confluent Enterprise](https://docs.confluent.io/kafka-connect-http/current/overview.html#license).
 :::
 
-### Быстрый старт {#quick-start-steps}
+### Быстрый старт \{#quick-start-steps\}
 
-#### 1. Соберите параметры подключения {#1-gather-your-connection-details}
+#### 1. Соберите параметры подключения \{#1-gather-your-connection-details\}
 
 <ConnectionDetails />
 
-#### 2. Запустите Kafka Connect и коннектор HTTP Sink {#2-run-kafka-connect-and-the-http-sink-connector}
+#### 2. Запустите Kafka Connect и коннектор HTTP Sink \{#2-run-kafka-connect-and-the-http-sink-connector\}
 
 У вас есть два варианта:
 
@@ -46,7 +46,7 @@ import createMessageInTopic from '@site/static/images/integrations/data-ingestio
 В следующих примерах используется Confluent Cloud.
 :::
 
-#### 3. Создайте целевую таблицу в ClickHouse {#3-create-destination-table-in-clickhouse}
+#### 3. Создайте целевую таблицу в ClickHouse \{#3-create-destination-table-in-clickhouse\}
 
 Перед проверкой соединения создадим тестовую таблицу в ClickHouse Cloud, которая будет получать данные из Kafka:
 
@@ -64,7 +64,7 @@ ORDER BY tuple()
 ```
 
 
-#### 4. Настройте HTTP Sink {#4-configure-http-sink}
+#### 4. Настройте HTTP Sink \{#4-configure-http-sink\}
 
 Создайте топик Kafka и экземпляр HTTP Sink Connector:
 
@@ -101,7 +101,7 @@ ORDER BY tuple()
 
 <Image img={httpAdvanced} size="sm" alt="Интерфейс Confluent Cloud, показывающий расширенные параметры конфигурации для коннектора HTTP Sink" border />
 
-#### 5. Тестирование подключения {#5-testing-the-connectivity}
+#### 5. Тестирование подключения \{#5-testing-the-connectivity\}
 
 Создайте сообщение в топике, настроенном для вашего HTTP Sink
 
@@ -111,9 +111,9 @@ ORDER BY tuple()
 
 и убедитесь, что созданное сообщение было записано в ваш экземпляр ClickHouse.
 
-### Устранение неполадок {#troubleshooting}
+### Устранение неполадок \{#troubleshooting\}
 
-#### HTTP Sink не объединяет сообщения в батчи {#http-sink-doesnt-batch-messages}
+#### HTTP Sink не объединяет сообщения в батчи \{#http-sink-doesnt-batch-messages\}
 
 Из [документации по Sink](https://docs.confluent.io/kafka-connectors/http/current/overview.html#http-sink-connector-for-cp):
 
@@ -122,9 +122,9 @@ ORDER BY tuple()
 1. Убедитесь, что ваши записи Kafka имеют одинаковый ключ.
 2. Когда вы добавляете параметры к URL-адресу HTTP API, каждая запись может приводить к уникальному URL-адресу. По этой причине батчирование отключается при использовании дополнительных параметров URL.
 
-#### 400 bad request {#400-bad-request}
+#### 400 bad request \{#400-bad-request\}
 
-##### CANNOT&#95;PARSE&#95;QUOTED&#95;STRING {#cannot_parse_quoted_string}
+##### CANNOT&#95;PARSE&#95;QUOTED&#95;STRING \{#cannot_parse_quoted_string\}
 
 Если HTTP Sink завершает работу с ошибкой со следующим сообщением при вставке JSON-объекта в столбец типа `String`:
 
@@ -135,11 +135,11 @@ Code: 26. DB::ParsingException: Cannot parse JSON string: expected opening quote
 Установите настройку `input_format_json_read_objects_as_strings=1` в URL, указав её как URL‑кодированную строку `SETTINGS%20input_format_json_read_objects_as_strings%3D1`
 
 
-### Загрузка набора данных GitHub (необязательно) {#load-the-github-dataset-optional}
+### Загрузка набора данных GitHub (необязательно) \{#load-the-github-dataset-optional\}
 
 Обратите внимание, что в этом примере сохраняются поля типа Array из набора данных GitHub. Мы предполагаем, что в вашем примере есть пустой топик github и что вы используете [kcat](https://github.com/edenhill/kcat) для отправки сообщений в Kafka.
 
-##### 1. Подготовьте конфигурацию {#1-prepare-configuration}
+##### 1. Подготовьте конфигурацию \{#1-prepare-configuration\}
 
 Следуйте [этим инструкциям](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install) по настройке Connect в соответствии с типом вашей установки, обращая внимание на различия между автономным и распределённым кластерами. Если вы используете Confluent Cloud, вам подходит распределённая схема.
 
@@ -170,7 +170,7 @@ http://localhost:8123?query=INSERT%20INTO%20default.github%20FORMAT%20JSONEachRo
 Примеры файлов конфигурации для примера данных GitHub можно найти [здесь](https://github.com/ClickHouse/clickhouse-docs/tree/main/docs/integrations/data-ingestion/kafka/code/connectors/http_sink), при условии, что Connect запущен в автономном режиме, а Kafka развернута в Confluent Cloud.
 
 
-##### 2. Создайте таблицу ClickHouse {#2-create-the-clickhouse-table}
+##### 2. Создайте таблицу ClickHouse \{#2-create-the-clickhouse-table\}
 
 Убедитесь, что таблица создана. Ниже приведён пример минимального набора данных GitHub, использующего стандартный движок MergeTree.
 
@@ -207,7 +207,7 @@ CREATE TABLE github
 ```
 
 
-##### 3. Добавьте данные в Kafka {#3-add-data-to-kafka}
+##### 3. Добавьте данные в Kafka \{#3-add-data-to-kafka\}
 
 Отправьте сообщения в Kafka. Ниже мы используем [kcat](https://github.com/edenhill/kcat) для отправки 10 000 сообщений.
 

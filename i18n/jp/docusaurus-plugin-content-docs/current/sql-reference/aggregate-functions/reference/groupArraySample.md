@@ -5,7 +5,7 @@ title: 'groupArraySample'
 doc_type: 'reference'
 ---
 
-# groupArraySample {#grouparraysample}
+# groupArraySample \{#grouparraysample\}
 
 引数の値からサンプルを取り、配列を作成します。生成される配列の要素数は `max_size` を上限とします。引数の値はランダムに選択され、配列に追加されます。
 

@@ -11,7 +11,7 @@ import Image from '@theme/IdealImage';
 import aws_rds_mysql from '@site/static/images/_snippets/aws-rds-mysql.png';
 import gcp_authorized_network from '@site/static/images/_snippets/gcp-authorized-network.png';
 
-## Static IPs API {#static-ips-api}
+## Static IPs API \{#static-ips-api\}
 
 静的 IP の一覧を取得する必要がある場合は、次の ClickHouse Cloud API エンドポイントを使用できます：[`https://api.clickhouse.cloud/static-ips.json`](https://api.clickhouse.cloud/static-ips.json)。この API は、イングレス/エグレス IP や、リージョンおよびクラウドごとの S3 エンドポイントなど、ClickHouse Cloud サービスのエンドポイントを提供します。
 

@@ -13,12 +13,12 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 [Apache Arrow](https://arrow.apache.org/) 提供两种内置的列式存储格式。ClickHouse 支持对这两种格式进行读写操作。
 `Arrow` 是 Apache Arrow 的“文件模式（file mode）”格式，适用于内存中的随机访问。
 
-## 数据类型匹配 {#data-types-matching}
+## 数据类型匹配 \{#data-types-matching\}
 
 下表列出了支持的数据类型，以及它们在 `INSERT` 和 `SELECT` 查询中与 ClickHouse [数据类型](/sql-reference/data-types/index.md) 的对应关系。
 
@@ -62,9 +62,9 @@ Array 类型可以嵌套，并且可以将 `Nullable` 类型的值作为参数�
 
 ClickHouse 表列的数据类型不必与对应的 Arrow 数据字段完全一致。插入数据时，ClickHouse 会根据上表解析数据类型，然后将数据[转换](/sql-reference/functions/type-conversion-functions#CAST)为为 ClickHouse 表列所设置的数据类型。
 
-## 使用示例 {#example-usage}
+## 使用示例 \{#example-usage\}
 
-### 插入数据 {#inserting-data}
+### 插入数据 \{#inserting-data\}
 
 可以使用以下命令，将文件中的 Arrow 数据插入到 ClickHouse 表中：
 
@@ -72,7 +72,7 @@ ClickHouse 表列的数据类型不必与对应的 Arrow 数据字段完全一�
 $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT Arrow"
 ```
 
-### 选择数据 {#selecting-data}
+### 选择数据 \{#selecting-data\}
 
 可以使用以下命令，从 ClickHouse 表中选择数据，并将其保存为 Arrow 格式的文件：
 
@@ -80,7 +80,7 @@ $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT 
 $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Arrow" > {filename.arrow}
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}
 
 | 设置                                                                                                                     | 描述                                                                                               | 默认值       |
 |--------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|--------------|

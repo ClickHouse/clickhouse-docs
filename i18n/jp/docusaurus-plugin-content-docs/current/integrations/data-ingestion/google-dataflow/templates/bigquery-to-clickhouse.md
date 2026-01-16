@@ -19,20 +19,20 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# Dataflow BigQuery から ClickHouse へのテンプレート {#dataflow-bigquery-to-clickhouse-template}
+# Dataflow BigQuery から ClickHouse へのテンプレート \{#dataflow-bigquery-to-clickhouse-template\}
 
 BigQuery から ClickHouse への Dataflow テンプレートは、BigQuery テーブルから ClickHouse テーブルへデータをバッチで取り込むパイプラインです。
 このテンプレートは、テーブル全体を読み取ることも、指定された SQL クエリを使用して特定のレコードに絞り込むこともできます。
 
 <TOCInline toc={toc}   maxHeadingLevel={2}></TOCInline>
 
-## パイプラインの要件 {#pipeline-requirements}
+## パイプラインの要件 \{#pipeline-requirements\}
 
 * ソース BigQuery テーブルが存在している必要があります。
 * ターゲット ClickHouse テーブルが存在している必要があります。
 * ClickHouse ホストが Dataflow ワーカーマシンからアクセス可能である必要があります。
 
-## テンプレートパラメータ {#template-parameters}
+## テンプレートパラメータ \{#template-parameters\}
 
 <br/>
 
@@ -61,7 +61,7 @@ BigQuery から ClickHouse への Dataflow テンプレートは、BigQuery テ�
 すべての `ClickHouseIO` パラメータのデフォルト値は、[`ClickHouseIO` Apache Beam Connector](/integrations/apache-beam#clickhouseiowrite-parameters) に記載されています。
 :::
 
-## ソースおよびターゲットテーブルのスキーマ {#source-and-target-tables-schema}
+## ソースおよびターゲットテーブルのスキーマ \{#source-and-target-tables-schema\}
 
 BigQuery のデータセットを ClickHouse に効果的にロードするために、このパイプラインは次の段階からなる列推論プロセスを実行します。
 
@@ -74,7 +74,7 @@ BigQuery のデータセットを ClickHouse に効果的にロードするた�
 ただし、BigQuery データセット（テーブルまたはクエリ）の列名は、ClickHouse のターゲットテーブルと完全に一致している必要があります。
 :::
 
-## データ型のマッピング {#data-types-mapping}
+## データ型のマッピング \{#data-types-mapping\}
 
 BigQuery の型は、ClickHouse テーブル定義に基づいて変換されます。したがって、上記の表では（特定の BigQuery テーブル／クエリに対して）ClickHouse 側のテーブルで使用することを推奨するマッピングを示しています。
 
@@ -88,7 +88,7 @@ BigQuery の型は、ClickHouse テーブル定義に基づいて変換されま
 | [**数値 - 整数型**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types)           | [**整数型**](../../../sql-reference/data-types/int-uint)        | BigQuery では、すべての Int 型（`INT`、`SMALLINT`、`INTEGER`、`BIGINT`、`TINYINT`、`BYTEINT`）は `INT64` のエイリアスです。テンプレートは定義されたカラム型（`Int8`、`Int16`、`Int32`、`Int64`）に基づいてカラムを変換するため、ClickHouse では適切な整数サイズを設定することを推奨します。また、ClickHouse テーブルで符号なし整数型（`UInt8`、`UInt16`、`UInt32`、`UInt64`）が使用されている場合も、テンプレートはそれらにも変換します。 |
 | [**数値 - 浮動小数点型**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types)     | [**浮動小数点型**](../../../sql-reference/data-types/float)     | サポートされる ClickHouse 型は `Float32` と `Float64` です。                                                                                                                                                                                                                                                                                                                                                          |
 
-## テンプレートの実行 {#running-the-template}
+## テンプレートの実行 \{#running-the-template\}
 
 BigQuery から ClickHouse へのテンプレートは、Google Cloud CLI を通じて実行できます。
 
@@ -126,14 +126,14 @@ ClickHouse のパスワードオプションは、パスワードが設定され
   </TabItem>
   <TabItem value="cli" label="Google Cloud CLI">
 
-### `gcloud` CLI のインストールと設定 {#install--configure-gcloud-cli}
+### `gcloud` CLI のインストールと設定 \{#install--configure-gcloud-cli\}
 
 - まだインストールしていない場合は、[`gcloud` CLI](https://cloud.google.com/sdk/docs/install) をインストールします。
 - Dataflow テンプレートを実行するために必要な設定・構成・権限を準備するには、
   [このガイド](https://cloud.google.com/dataflow/docs/guides/templates/using-flex-templates#before-you-begin) の
   `Before you begin` セクションに従ってください。
 
-### コマンドの実行 {#run-command}
+### コマンドの実行 \{#run-command\}
 
 [`gcloud dataflow flex-template run`](https://cloud.google.com/sdk/gcloud/reference/dataflow/flex-template/run)
 コマンドを使用して、Flex Template を利用する Dataflow ジョブを実行します。
@@ -146,14 +146,14 @@ gcloud dataflow flex-template run "bigquery-clickhouse-dataflow-$(date +%Y%m%d-%
  --parameters inputTableSpec="<bigquery table id>",jdbcUrl="jdbc:clickhouse://<clickhouse host>:<clickhouse port>/<schema>?ssl=true&sslmode=NONE",clickHouseUsername="<username>",clickHousePassword="<password>",clickHouseTable="<clickhouse target table>"
 ```
 
-### コマンドの詳細 {#command-breakdown}
+### コマンドの詳細 \{#command-breakdown\}
 
 - **ジョブ名:** `run` キーワードの後に続く文字列が一意のジョブ名です。
 - **テンプレートファイル:** `--template-file-gcs-location` で指定された JSON ファイルには、テンプレートの構造および
   受け付けるパラメータに関する詳細が定義されています。記載されているファイルパスは公開されており、すぐに利用できます。
 - **パラメータ:** パラメータはカンマで区切ります。文字列型のパラメータ値は、ダブルクォートで囲んでください。
 
-### 想定されるレスポンス {#expected-response}
+### 想定されるレスポンス \{#expected-response\}
 
 コマンドを実行すると、次のようなレスポンスが表示されます:
 
@@ -171,22 +171,22 @@ job:
   </TabItem>
 </Tabs>
 
-### ジョブの監視 {#monitor-the-job}
+### ジョブの監視 \{#monitor-the-job\}
 
 Google Cloud Console の [Dataflow Jobs タブ](https://console.cloud.google.com/dataflow/jobs) に移動し、
 ジョブのステータスを監視します。進捗状況やエラーなどのジョブの詳細を確認できます:
 
 <Image img={dataflow_inqueue_job} size="lg" border alt="BigQuery から ClickHouse へのジョブが実行中の Dataflow コンソール" />
 
-## トラブルシューティング {#troubleshooting}
+## トラブルシューティング \{#troubleshooting\}
 
-### メモリ制限（合計）超過エラー（コード 241）{#code-241-dbexception-memory-limit-total-exceeded}
+### メモリ制限（合計）超過エラー（コード 241）\{#code-241-dbexception-memory-limit-total-exceeded\}
 
 このエラーは、大きなバッチのデータを処理している際に ClickHouse のメモリが不足した場合に発生します。これを解決するには、次の対応を行います。
 
 * インスタンスのリソースを増やす: データ処理負荷に対応できるよう、より多くのメモリを持つ大きなインスタンスに ClickHouse サーバーをアップグレードします。
 * バッチサイズを減らす: Dataflow ジョブ設定でバッチサイズを調整し、より小さなデータチャンクを ClickHouse に送信することで、バッチごとのメモリ消費を抑えます。これらの変更により、データインジェスト時のリソース使用をバランスさせることができます。
 
-## テンプレートのソースコード {#template-source-code}
+## テンプレートのソースコード \{#template-source-code\}
 
 このテンプレートのソースコードは、ClickHouse の [DataflowTemplates](https://github.com/ClickHouse/DataflowTemplates) フォークで公開されています。

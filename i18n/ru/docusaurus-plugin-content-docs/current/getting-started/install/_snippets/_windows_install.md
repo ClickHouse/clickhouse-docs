@@ -1,6 +1,6 @@
-# Установка ClickHouse на Windows с помощью WSL {#install-clickhouse-on-windows-with-wsl}
+# Установка ClickHouse на Windows с помощью WSL \{#install-clickhouse-on-windows-with-wsl\}
 
-## Требования {#requirements}
+## Требования \{#requirements\}
 
 :::note
 Для установки ClickHouse в Windows потребуется WSL (подсистема Windows для Linux).
@@ -8,7 +8,7 @@
 
 <VerticalStepper>
 
-## Установка WSL {#install-wsl}
+## Установка WSL \{#install-wsl\}
 
 Откройте Windows PowerShell от имени администратора и выполните следующую команду:
 
@@ -22,7 +22,7 @@ wsl --install
 Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
 ```
 
-## Установите ClickHouse с помощью скрипта curl {#install-clickhouse-via-script-using-curl}
+## Установите ClickHouse с помощью скрипта curl \{#install-clickhouse-via-script-using-curl\}
 
 Выполните следующую команду, чтобы установить ClickHouse с помощью скрипта curl:
 
@@ -37,7 +37,7 @@ Successfully downloaded the ClickHouse binary, you can run it as:
   ./clickhouse
 ```
 
-## Запуск clickhouse-local {#start-clickhouse-local}
+## Запуск clickhouse-local \{#start-clickhouse-local\}
 
 `clickhouse-local` позволяет обрабатывать локальные и удалённые файлы с
 использованием мощного SQL-синтаксиса ClickHouse и без необходимости настройки. Данные таблиц
@@ -50,7 +50,7 @@ Successfully downloaded the ClickHouse binary, you can run it as:
 ./clickhouse
 ```
 
-## Запуск clickhouse-server {#start-clickhouse-server}
+## Запуск clickhouse-server \{#start-clickhouse-server\}
 
 Если вы хотите обеспечить сохранность данных, вам нужно запустить `clickhouse-server`. Вы можете
 запустить сервер ClickHouse с помощью следующей команды:
@@ -59,7 +59,7 @@ Successfully downloaded the ClickHouse binary, you can run it as:
 ./clickhouse server
 ```
 
-## Start clickhouse-client {#start-clickhouse-client}
+## Start clickhouse-client \{#start-clickhouse-client\}
 
 При работающем сервере откройте новое окно терминала и выполните следующую команду
 для запуска `clickhouse-client`:

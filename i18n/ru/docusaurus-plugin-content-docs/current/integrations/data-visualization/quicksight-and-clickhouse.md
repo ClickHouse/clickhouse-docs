@@ -21,13 +21,13 @@ import quicksight_06 from '@site/static/images/integrations/data-visualization/q
 import quicksight_07 from '@site/static/images/integrations/data-visualization/quicksight_07.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# QuickSight {#quicksight}
+# QuickSight \{#quicksight\}
 
 <ClickHouseSupportedBadge/>
 
 QuickSight может подключаться к локальному развертыванию ClickHouse (23.11+) через интерфейс MySQL, используя официальный источник данных MySQL и режим Direct Query.
 
-## Настройка локально развернутого сервера ClickHouse {#on-premise-clickhouse-server-setup}
+## Настройка локально развернутого сервера ClickHouse \{#on-premise-clickhouse-server-setup\}
 
 Обратитесь к [официальной документации](/interfaces/mysql) по настройке сервера ClickHouse с включённым интерфейсом MySQL.
 
@@ -119,7 +119,7 @@ mysql> show databases;
 Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 ```
 
-## Подключение QuickSight к ClickHouse {#connecting-quicksight-to-clickhouse}
+## Подключение QuickSight к ClickHouse \{#connecting-quicksight-to-clickhouse\}
 
 Для начала перейдите на [https://quicksight.aws.amazon.com](https://quicksight.aws.amazon.com), откройте раздел Datasets и нажмите "New dataset":
 
@@ -159,6 +159,6 @@ Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 
 Теперь вы можете опубликовать набор данных и создать новую визуализацию!
 
-## Известные ограничения {#known-limitations}
+## Известные ограничения \{#known-limitations\}
 
 - Импорт SPICE работает некорректно; вместо него используйте режим Direct Query. См. [#58553](https://github.com/ClickHouse/ClickHouse/issues/58553).

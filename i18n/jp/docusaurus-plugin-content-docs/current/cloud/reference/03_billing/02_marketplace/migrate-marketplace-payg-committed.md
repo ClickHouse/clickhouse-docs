@@ -8,13 +8,13 @@ doc_type: 'guide'
 
 
 
-# クラウドマーケットプレイスでの従量課金 (PAYG) からコミットメント支出契約への課金移行 {#migrate-payg-to-committed}
+# クラウドマーケットプレイスでの従量課金 (PAYG) からコミットメント支出契約への課金移行 \{#migrate-payg-to-committed\}
 
 ClickHouse の組織が現在、クラウドマーケットプレイスの有効な従量課金 (PAYG) サブスクリプション（または注文）によって課金されており、同じクラウドマーケットプレイス経由でコミットメント支出契約による課金へ移行したい場合は、新しいオファーを承諾したうえで、利用しているクラウドサービスプロバイダーに応じて以下の手順に従ってください。
 
 
 
-## 重要な注意事項 {#important-notes}
+## 重要な注意事項 \{#important-notes\}
 
 マーケットプレイスの従量課金制 (PAYG) サブスクリプションをキャンセルしても、ClickHouse Cloud アカウント自体は削除されません。削除されるのは、マーケットプレイス経由の請求関係のみです。キャンセルが完了すると、ClickHouse Cloud サービスに対するマーケットプレイス経由での課金は停止されます。（注意：この処理は即時には行われず、完了まで数分かかる場合があります）。
 
@@ -28,13 +28,13 @@ ClickHouse の組織が現在、クラウドマーケットプレイスの有効
 
 
 
-## AWS Marketplace {#aws-marketplace}
+## AWS Marketplace \{#aws-marketplace\}
 
 同じ AWS アカウント ID を使用して、PAYG サブスクリプションをコミット済み支出契約に移行したい場合は、この変更を行うために[営業窓口までお問い合わせ](https://clickhouse.com/company/contact)いただく方法を推奨します。そうすることで、追加の手順は不要となり、ClickHouse 組織やサービスに中断が発生することもありません。
 
 別の AWS アカウント ID を使用して、ClickHouse 組織を PAYG サブスクリプションからコミット済み支出契約に移行したい場合は、次の手順に従ってください。
 
-### AWS PAYG サブスクリプションを解約する手順 {#cancel-aws-payg}
+### AWS PAYG サブスクリプションを解約する手順 \{#cancel-aws-payg\}
 
 1. **[AWS Marketplace](https://us-east-1.console.aws.amazon.com/marketplace) にアクセスします**
 2. **「Manage Subscriptions」ボタンをクリックします**
@@ -52,9 +52,9 @@ ClickHouse の組織が現在、クラウドマーケットプレイスの有効
 
 
 
-## GCP Marketplace {#gcp-marketplace}
+## GCP Marketplace \{#gcp-marketplace\}
 
-### GCP PAYG 注文をキャンセルする手順 {#cancel-gcp-payg}
+### GCP PAYG 注文をキャンセルする手順 \{#cancel-gcp-payg\}
 
 1. **[Google Cloud Marketplace Console](https://console.cloud.google.com/marketplace) にアクセスします。**
     - 正しい GCP アカウントでログインし、該当するプロジェクトが選択されていることを確認します。
@@ -70,9 +70,9 @@ ClickHouse の組織が現在、クラウドマーケットプレイスの有効
 
 
 
-## Azure Marketplace {#azure-marketplace}
+## Azure Marketplace \{#azure-marketplace\}
 
-### Azure の PAYG サブスクリプションを解約する手順 {#cancel-azure-payg}
+### Azure の PAYG サブスクリプションを解約する手順 \{#cancel-azure-payg\}
 
 1. **[Microsoft Azure Portal](http://portal.azure.com) にアクセスします**
 2. **「Subscriptions」に移動します**
@@ -87,7 +87,7 @@ ClickHouse の組織が現在、クラウドマーケットプレイスの有効
 
 
 
-## コミット済み利用契約へのリンク要件 {#linking-requirements}
+## コミット済み利用契約へのリンク要件 \{#linking-requirements\}
 
 > **注記:** 組織をマーケットプレイスのコミット済み利用契約にリンクするには、次の条件を満たしている必要があります:
 > - 手順を実行するユーザーは、サブスクリプションを関連付ける対象の ClickHouse 組織の管理者ユーザーである必要があります

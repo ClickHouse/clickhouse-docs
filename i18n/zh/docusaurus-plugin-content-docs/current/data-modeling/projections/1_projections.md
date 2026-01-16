@@ -11,9 +11,9 @@ import projections_1 from '@site/static/images/data-modeling/projections_1.png';
 import projections_2 from '@site/static/images/data-modeling/projections_2.png';
 import Image from '@theme/IdealImage';
 
-# 投影 {#projections}
+# 投影 \{#projections\}
 
-## 简介 {#introduction}
+## 简介 \{#introduction\}
 
 ClickHouse 为实时场景下的大规模数据分析查询提供了多种加速机制。其中一种是使用 _Projections（投影）_ 来加速查询。Projections 通过根据关注的属性对数据进行重新排序来帮助优化查询，具体可以是：
 
@@ -26,7 +26,7 @@ ClickHouse 为实时场景下的大规模数据分析查询提供了多种加速
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6CdnUdZSEG0?si=1zUyrP-tCvn9tXse" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-## Projections 如何工作？ {#how-do-projections-work}
+## Projections 如何工作？ \{#how-do-projections-work\}
 
 在实践中，可以将 Projection 看作是原始表的一个额外的隐藏表。Projection 可以拥有与原始表不同的行顺序，因此也可以拥有不同的主索引，并且它可以自动、增量地预计算聚合值。因此，使用 Projections 可以通过两个“调优手段”来加速查询执行：
 
@@ -40,7 +40,7 @@ ClickHouse 会自动对主键进行采样，并选择一个既能生成相同正
 
 <Image img={projections_1} size="md" alt="ClickHouse 中的 Projections"/>
 
-### 使用 `_part_offset` 的更智能存储 {#smarter_storage_with_part_offset}
+### 使用 `_part_offset` 的更智能存储 \{#smarter_storage_with_part_offset\}
 
 从 25.5 版本开始，ClickHouse 在 projection 中支持虚拟列 `_part_offset`，这为定义 projection 提供了一种新的方式。
 
@@ -54,7 +54,7 @@ ClickHouse 会自动对主键进行采样，并选择一个既能生成相同正
 
 上述方法也可以混合使用，在 projection 中直接存储部分列，而通过 `_part_offset` 间接存储其他列。
 
-## 何时使用 Projections？ {#when-to-use-projections}
+## 何时使用 Projections？ \{#when-to-use-projections\}
 
 Projections 对新用户而言非常有吸引力，因为它们会在数据插入时自动维护。并且，查询只需发送到单个表，并在可能时利用 projections 来加速响应时间。
 
@@ -73,9 +73,9 @@ Projections 对新用户而言非常有吸引力，因为它们会在数据插�
 - 需要对数据进行完全重新排序时。虽然理论上，projection 中的表达式可以使用 `GROUP BY`，但物化视图在维护聚合方面更有效。查询优化器也更有可能利用仅做简单重排的 projections，即 `SELECT * ORDER BY x`。你可以在该表达式中选择列的子集，以减少存储占用。
 - 用户能够接受可能带来的存储占用增加，以及将数据写入两次的额外开销时。请测试其对插入速度的影响，并[评估存储开销](/data-compression/compression-in-clickhouse)。
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
-### 在非主键列上进行过滤 {#filtering-without-using-primary-keys}
+### 在非主键列上进行过滤 \{#filtering-without-using-primary-keys\}
 
 在这个示例中，我们将向你展示如何为表添加一个投影（projection）。
 我们还将了解如何利用该投影加速在非主键列上进行过滤的查询。
@@ -154,7 +154,7 @@ WHERE query_id='<query_id>'
    └───────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────┘
 ```
 
-### 使用投影加速英国房价已付数据查询 {#using-projections-to-speed-up-UK-price-paid}
+### 使用投影加速英国房价已付数据查询 \{#using-projections-to-speed-up-UK-price-paid\}
 
 为了演示如何使用投影来加速查询性能,我们
 通过一个真实数据集的示例来说明。在本示例中,我们将
@@ -336,7 +336,7 @@ projections:    ['uk.uk_price_paid_with_projections.prj_obj_town_price']
 返回 2 行。耗时：0.006 秒。
 ```
 
-### 更多示例 {#further-examples}
+### 更多示例 \{#further-examples\}
 
 以下示例继续使用相同的英国价格数据集，对比使用和不使用投影的查询。
 
@@ -347,7 +347,7 @@ CREATE TABLE uk.uk_price_paid_with_projections_v2 AS uk.uk_price_paid;
 INSERT INTO uk.uk_price_paid_with_projections_v2 SELECT * FROM uk.uk_price_paid;
 ```
 
-#### 构建 Projection {#build-projection}
+#### 构建 Projection \{#build-projection\}
 
 让我们基于 `toYear(date)`、`district` 和 `town` 这三个维度创建一个聚合 Projection：
 
@@ -379,7 +379,7 @@ SETTINGS mutations_sync = 1
 
 以下查询对比了启用和未启用投影时的性能。若要禁用投影功能，请使用设置 [`optimize_use_projections`](/operations/settings/settings#optimize_use_projections)，该设置默认是启用的。
 
-#### 查询 1：各年份的平均价格 {#average-price-projections}
+#### 查询 1：各年份的平均价格 \{#average-price-projections\}
 
 ```sql runnable
 SELECT
@@ -405,7 +405,7 @@ ORDER BY year ASC
 
 结果应该是相同的，但后一个示例的性能会更优！
 
-#### 查询 2：伦敦历年平均价格 {#average-price-london-projections}
+#### 查询 2：伦敦历年平均价格 \{#average-price-london-projections\}
 
 ```sql runnable
 SELECT
@@ -430,7 +430,7 @@ GROUP BY year
 ORDER BY year ASC
 ```
 
-#### 查询 3：最昂贵的街区 {#most-expensive-neighborhoods-projections}
+#### 查询 3：最昂贵的街区 \{#most-expensive-neighborhoods-projections\}
 
 条件 (date &gt;= &#39;2020-01-01&#39;) 需要进行修改，以便与投影维度 (`toYear(date) >= 2020)` 保持一致：
 
@@ -471,7 +471,7 @@ LIMIT 100
 
 同样，结果相同，但请注意第二个查询的执行性能有所提升。
 
-### 在单个查询中组合投影 {#combining-projections}
+### 在单个查询中组合投影 \{#combining-projections\}
 
 从 25.6 版本开始，在前一版本引入的 `_part_offset` 支持基础之上，ClickHouse
 现在可以在带有多个过滤条件的单个查询中使用多个投影来加速查询。
@@ -587,7 +587,7 @@ SELECT * FROM page_views WHERE region = 'us_west' AND user_id = 107;
 通过结合多个 projection 的索引分析结果，ClickHouse 能显著减少扫描的数据量，
 在保持存储开销较低的同时提升性能。
 
-## 相关内容 {#related-content}
+## 相关内容 \{#related-content\}
 
 - [ClickHouse 主键索引实用入门指南](/guides/best-practices/sparse-primary-indexes#option-3-projections)
 - [物化视图](/docs/materialized-views)

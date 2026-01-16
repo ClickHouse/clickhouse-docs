@@ -7,13 +7,13 @@ sidebar_label: 'maxMap'
 doc_type: 'reference'
 ---
 
-# maxMap {#maxmap}
+# maxMap \{#maxmap\}
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 可以将 [`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器应用于 [`max`](/sql-reference/aggregate-functions/reference/max) 函数，以使用 `maxMap` 聚合组合器函数按键分别计算 Map 中的最大值。
 
-## 示例用法 {#example-usage}
+## 示例用法 \{#example-usage\}
 
 在这个示例中，我们将创建一张表，用于存储不同时间段的状态码及其计数，
 其中每一行都包含一个 `Map`，用于将状态码映射到对应的计数。我们将使用
@@ -60,6 +60,6 @@ GROUP BY timeslot;
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
-## 另请参阅 {#see-also}
+## 另请参阅 \{#see-also\}
 - [`max`](/sql-reference/aggregate-functions/reference/max)
 - [`Map组合器`](/sql-reference/aggregate-functions/combinators#-map)

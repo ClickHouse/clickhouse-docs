@@ -6,7 +6,7 @@ description: 'ClickHouse Cloud における Ask AI チャット機能の説明'
 doc_type: 'reference'
 ---
 
-# Cloud で AI エージェントに質問する {#ask-ai-agent-in-cloud}
+# Cloud で AI エージェントに質問する \{#ask-ai-agent-in-cloud\}
 
 “Ask AI” エージェントは、ClickHouse Cloud サービス上にホストされているデータに対して複雑な分析タスクをすぐに実行できる、ターンキー型のエクスペリエンスです。
 ユーザーは SQL を書いたりダッシュボードを操作したりする代わりに、自然言語で探している内容を記述できます。

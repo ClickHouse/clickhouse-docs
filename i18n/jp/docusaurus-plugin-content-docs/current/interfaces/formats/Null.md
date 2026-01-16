@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 `Null` フォーマットでは、何も出力されません。  
 一見すると奇妙に思えるかもしれませんが、何も出力されない場合でもクエリ自体は処理されており、  
@@ -23,9 +23,9 @@ doc_type: 'reference'
 `Null` フォーマットは、パフォーマンス測定や性能テストに役立ちます。
 :::
 
-## 使用例 {#example-usage}
+## 使用例 \{#example-usage\}
 
-### データの読み取り {#reading-data}
+### データの読み取り \{#reading-data\}
 
 次のデータを含むテーブル `football` を例にします。
 
@@ -65,4 +65,4 @@ FORMAT Null
 0 rows in set. Elapsed: 0.154 sec.
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \{#format-settings\}

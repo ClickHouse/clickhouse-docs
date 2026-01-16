@@ -5,7 +5,7 @@ title: 'argMax'
 doc_type: 'reference'
 ---
 
-# argMax {#argmax}
+# argMax \{#argmax\}
 
 计算具有最大 `val` 值所对应的 `arg` 值。如果存在多行具有相同的最大 `val` 值，则返回哪个关联的 `arg` 值是不确定的。
 参数 `arg` 和 `val` 都表现为[聚合函数](/sql-reference/aggregate-functions/index.md)，在处理过程中都会[跳过 `Null`](/sql-reference/aggregate-functions/index.md#null-processing)，并且在存在非 `Null` 值时返回非 `Null` 值。

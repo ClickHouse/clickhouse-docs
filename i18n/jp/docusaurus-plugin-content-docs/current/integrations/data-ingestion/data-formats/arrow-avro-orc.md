@@ -8,11 +8,11 @@ keywords: ['Apache Avro', 'Apache Arrow', 'ORC 形式', 'カラムナ形式', '�
 doc_type: 'guide'
 ---
 
-# ClickHouse で Avro、Arrow、ORC データを扱う {#working-with-avro-arrow-and-orc-data-in-clickhouse}
+# ClickHouse で Avro、Arrow、ORC データを扱う \{#working-with-avro-arrow-and-orc-data-in-clickhouse\}
 
 Apache は、分析環境で広く利用されている複数のデータ形式を提供しており、その中には広く利用されている [Avro](https://avro.apache.org/)、[Arrow](https://arrow.apache.org/)、[Orc](https://orc.apache.org/) などが含まれます。ClickHouse では、これらのいずれの形式を用いたデータのインポートおよびエクスポートが可能です。
 
-## Avro 形式でのインポートおよびエクスポート {#importing-and-exporting-in-avro-format}
+## Avro 形式でのインポートおよびエクスポート \{#importing-and-exporting-in-avro-format\}
 
 ClickHouse は、Hadoop システムで広く使用されている [Apache Avro](https://avro.apache.org/) データファイルの読み書きをサポートしています。
 
@@ -51,7 +51,7 @@ INTO OUTFILE 'export.avro'
 FORMAT Avro;
 ```
 
-### Avro と ClickHouse のデータ型 {#avro-and-clickhouse-data-types}
+### Avro と ClickHouse のデータ型 \{#avro-and-clickhouse-data-types\}
 
 Avro ファイルをインポートまたはエクスポートする際は、[データ型の対応](/interfaces/formats/Avro#data-type-mapping) を確認してください。Avro ファイルからデータを読み込む際には、明示的な型キャストを使用して変換してください。
 
@@ -71,7 +71,7 @@ LIMIT 3;
 └───────┴──────────────┘
 ```
 
-### Kafka における Avro メッセージ {#avro-messages-in-kafka}
+### Kafka における Avro メッセージ \{#avro-messages-in-kafka\}
 
 Kafka メッセージが Avro 形式を使用している場合、ClickHouse は [AvroConfluent](/interfaces/formats/AvroConfluent) フォーマットと [Kafka](/engines/table-engines/integrations/kafka.md) エンジンを使用して、これらのストリームを読み取ることができます。
 
@@ -88,7 +88,7 @@ kafka_group_name = 'some_group',
 kafka_format = 'AvroConfluent';
 ```
 
-## Arrow フォーマットの利用 {#working-with-arrow-format}
+## Arrow フォーマットの利用 \{#working-with-arrow-format\}
 
 もう一つのカラムナフォーマットとして [Apache Arrow](https://arrow.apache.org/) があります。これは ClickHouse でのインポートおよびエクスポートにも対応しています。[Arrow ファイル](assets/data.arrow) からデータをインポートするには、[Arrow](/interfaces/formats/Arrow) フォーマットを使用します。
 
@@ -108,7 +108,7 @@ FORMAT Arrow
 
 また、[data types matching](/interfaces/formats/Arrow#data-types-matching) を参照して、手動で変換が必要な型がないか確認してください。
 
-### Arrow データストリーミング {#arrow-data-streaming}
+### Arrow データストリーミング \{#arrow-data-streaming\}
 
 [ArrowStream](/interfaces/formats/ArrowStream) フォーマットは、Arrow ストリーミング（インメモリ処理に使用）データを扱うために利用できます。ClickHouse は Arrow ストリームの読み書きが可能です。
 
@@ -142,7 +142,7 @@ arrow-stream | clickhouse-client -q "INSERT INTO sometable FORMAT ArrowStream"
 
 Arrow ストリーミングデータのソースの一例として `arrow-stream` を使用しました。
 
-## ORC データのインポートとエクスポート {#importing-and-exporting-orc-data}
+## ORC データのインポートとエクスポート \{#importing-and-exporting-orc-data\}
 
 [Apache ORC](https://orc.apache.org/) は、主に Hadoop で使用される列指向ストレージ形式です。ClickHouse は、[ORC フォーマット](/interfaces/formats/ORC) を使用して [ORC データ](assets/data.orc) のインポートおよびエクスポートの両方をサポートしています。
 
@@ -159,7 +159,7 @@ FORMAT ORC;
 
 また、エクスポートおよびインポートを最適化するために、[データ型の対応](/interfaces/formats/ORC)や[追加設定](/interfaces/formats/Parquet#format-settings)も確認してください。
 
-## 参考情報 {#further-reading}
+## 参考情報 \{#further-reading\}
 
 ClickHouse は、多様なシナリオやプラットフォームをカバーするために、テキスト形式とバイナリ形式の両方を含む多数の形式をサポートしています。形式の種類やその扱い方については、次の記事を参照してください。
 

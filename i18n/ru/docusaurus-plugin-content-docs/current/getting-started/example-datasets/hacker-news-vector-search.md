@@ -7,7 +7,7 @@ keywords: ['семантический поиск', 'векторное сход
 doc_type: 'guide'
 ---
 
-## Введение {#introduction}
+## Введение \{#introduction\}
 
 Набор данных [Hacker News](https://news.ycombinator.com/) содержит 28,74 миллиона
 публикаций и их векторные эмбеддинги. Эмбеддинги были сгенерированы с помощью модели [SentenceTransformers](https://sbert.net/) [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2). Размерность каждого векторного эмбеддинга — `384`.
@@ -15,13 +15,13 @@ doc_type: 'guide'
 Этот набор данных можно использовать для пошагового рассмотрения аспектов проектирования, масштабирования и производительности крупномасштабного
 реального приложения векторного поиска, построенного на пользовательских текстовых данных.
 
-## Подробности о наборе данных {#dataset-details}
+## Подробности о наборе данных \{#dataset-details\}
 
 Полный набор данных с векторными эмбеддингами предоставляется ClickHouse в виде одного файла `Parquet` в [S3-бакете](https://clickhouse-datasets.s3.amazonaws.com/hackernews-miniLM/hackernews_part_1_of_1.parquet)
 
 Мы рекомендуем пользователям сначала выполнить оценку размера, чтобы определить требования к хранилищу и памяти для этого набора данных, обратившись к [документации](../../engines/table-engines/mergetree-family/annindexes.md).
 
-## Шаги {#steps}
+## Шаги \{#steps\}
 
 <VerticalStepper headerLevel="h3">
   ### Создание таблицы

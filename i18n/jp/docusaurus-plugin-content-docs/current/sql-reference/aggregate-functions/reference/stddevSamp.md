@@ -5,7 +5,7 @@ title: 'stddevSamp'
 doc_type: 'reference'
 ---
 
-# stddevSamp {#stddevsamp}
+# stddevSamp \{#stddevsamp\}
 
 結果は [varSamp](./varSamp.md) の平方根です。
 

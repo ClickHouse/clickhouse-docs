@@ -27,7 +27,7 @@ ClickStack 浏览器 SDK 允许你在前端应用中接入埋点，
 * **XHR/Fetch/Websocket 请求**
 * **异常（Exceptions）**
 
-## 快速开始 {#getting-started}
+## 快速开始 \{#getting-started\}
 
 <br/>
 
@@ -83,7 +83,7 @@ HyperDX.init({
 </TabItem>
 </Tabs>
 
-### 选项 {#options}
+### 选项 \{#options\}
 
 - `apiKey` - 您的 ClickStack 摄取 API key。
 - `service` - 事件在 HyperDX UI 中显示时使用的服务名称。
@@ -96,9 +96,9 @@ HyperDX.init({
 - `disableIntercom` -（可选）是否禁用 Intercom 集成（默认值为 `false`）。
 - `disableReplay` -（可选）是否禁用会话回放（默认值为 `false`）。
 
-## 其他配置 {#additional-configuration}
+## 其他配置 \{#additional-configuration\}
 
-### 附加用户信息或元数据 {#attach-user-information-or-metadata}
+### 附加用户信息或元数据 \{#attach-user-information-or-metadata\}
 
 附加用户信息可以让你在 HyperDX UI 中搜索和筛选会话与事件。
 可以在客户端会话期间的任意时刻调用该方法。当前客户端会话以及调用之后发送的所有事件都会与该用户信息关联。
@@ -115,7 +115,7 @@ HyperDX.setGlobalAttributes({
 });
 ```
 
-### 自动捕获 React 错误边界中的错误 {#auto-capture-react-error-boundary-errors}
+### 自动捕获 React 错误边界中的错误 \{#auto-capture-react-error-boundary-errors\}
 
 如果你使用 React，可以通过将错误边界组件传入 `attachToReactErrorBoundary` 函数，自动捕获出现在 React 错误边界内的错误。
 
@@ -128,7 +128,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 HyperDX.attachToReactErrorBoundary(ErrorBoundary);
 ```
 
-### 发送自定义操作 {#send-custom-actions}
+### 发送自定义操作 \{#send-custom-actions\}
 
 要对特定的应用程序事件进行明确跟踪（例如注册、提交
 等），可以调用 `addAction` 函数，并传入事件名称以及可选的事件元数据。
@@ -143,7 +143,7 @@ HyperDX.addAction('Form-Completed', {
 });
 ```
 
-### 动态启用网络捕获 {#enable-network-capture-dynamically}
+### 动态启用网络捕获 \{#enable-network-capture-dynamically\}
 
 要动态启用或禁用网络捕获，只需视需要调用 `enableAdvancedNetworkCapture` 或 `disableAdvancedNetworkCapture` 函数即可。
 
@@ -151,7 +151,7 @@ HyperDX.addAction('Form-Completed', {
 HyperDX.enableAdvancedNetworkCapture();
 ```
 
-### 为 CORS 请求启用资源计时 {#enable-resource-timing-for-cors-requests}
+### 为 CORS 请求启用资源计时 \{#enable-resource-timing-for-cors-requests\}
 
 如果前端应用向其他域名发起 API 请求，可以选择启用随请求发送的 `Timing-Allow-Origin` [头](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Timing-Allow-Origin)。这将允许 ClickStack 通过 [`PerformanceResourceTiming`](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming) 捕获该请求的精细资源计时信息，例如 DNS 查询、响应下载等。
 
