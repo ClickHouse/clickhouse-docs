@@ -11277,6 +11277,14 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 遵守服务器级并发控制（参见全局服务器设置 `concurrent_threads_soft_limit_num` 和 `concurrent_threads_soft_limit_ratio_to_cores`）。如果禁用该设置，即使服务器已过载，也允许使用更多线程（不建议在常规场景中使用此配置，主要用于测试场景）。
 
+## use_hash_table_stats_for_join_reordering \\{#use_hash_table_stats_for_join_reordering\\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "New setting. Previously mirrored 'collect_hash_table_stats_during_joins' setting."}]}]}/>
+
+启用在连接重排期间使用已收集的哈希表统计信息进行基数估计
+
 ## use_hedged_requests \\{#use_hedged_requests\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

@@ -11299,6 +11299,14 @@ materialized view のクエリを非同期で（必要に応じてマルチス�
 
 サーバーの同時実行制御（`concurrent_threads_soft_limit_num` および `concurrent_threads_soft_limit_ratio_to_cores` のグローバルサーバー設定を参照）に従います。無効にした場合、サーバーが過負荷状態であっても、より多くのスレッド数を使用できるようになります（通常の利用には推奨されず、主にテスト用途で必要となります）。
 
+## use_hash_table_stats_for_join_reordering \\{#use_hash_table_stats_for_join_reordering\\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "新しい設定。以前は 'collect_hash_table_stats_during_joins' 設定と同じ動作でした。"}]}]}/>
+
+結合の再順序付け時の基数推定に収集済みのハッシュテーブル統計情報を使用することを有効にします
+
 ## use_hedged_requests \\{#use_hedged_requests\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

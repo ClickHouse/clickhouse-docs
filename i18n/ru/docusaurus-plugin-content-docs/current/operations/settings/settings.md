@@ -11322,6 +11322,14 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Учитывать контроль конкуренции сервера (см. глобальные настройки сервера `concurrent_threads_soft_limit_num` и `concurrent_threads_soft_limit_ratio_to_cores`). Если параметр отключён, можно использовать большее количество потоков, даже если сервер перегружен (не рекомендуется для обычного использования и в основном нужно для тестов).
 
+## use_hash_table_stats_for_join_reordering \\{#use_hash_table_stats_for_join_reordering\\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Новая настройка. Ранее повторяла поведение настройки `collect_hash_table_stats_during_joins`."}]}]}/>
+
+Включает использование собранной статистики хеш-таблиц для оценки кардинальности при переупорядочивании операций JOIN.
+
 ## use_hedged_requests \\{#use_hedged_requests\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
