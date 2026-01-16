@@ -53,7 +53,7 @@ catalog_type,
 | `auth_scope`            | 用于认证的 OAuth2 范围（scope）（如果使用 OAuth）                                   |
 | `storage_endpoint`      | 底层存储的端点 URL                                                          |
 | `oauth_server_uri`      | 用于认证的 OAuth2 授权服务器 URI                                               |
-| `vended_credentials`    | 布尔值，指示是否使用由服务下发的凭证（vended credentials，AWS 特定）                        |
+| `vended_credentials`    | 布尔值，指示是否使用由目录下发的凭证（支持 AWS S3 和 Azure ADLS Gen2）                      |
 | `aws_access_key_id`     | 用于访问 S3/Glue 的 AWS access key ID（如果不使用 vended credentials）           |
 | `aws_secret_access_key` | 用于访问 S3/Glue 的 AWS secret access key（如果不使用 vended credentials）       |
 | `region`                | 服务所在的 AWS 区域（例如 `us-east-1`）                                         |

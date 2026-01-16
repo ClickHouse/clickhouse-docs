@@ -230,7 +230,7 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL 
 
 Также имеет смысл указать локальную таблицу в предложении `GLOBAL IN` в случае, если эта локальная таблица доступна только на сервере-инициаторе запроса, а вы хотите использовать данные из неё на удалённых серверах.
 
-### Распределённые подзапросы и max&#95;rows&#95;in&#95;set {#distributed-subqueries-and-max&#95;rows&#95;in&#95;set}
+### Распределённые подзапросы и max_rows_in_set {#distributed-subqueries-and-max_rows_in_set}
 
 Вы можете использовать [`max_rows_in_set`](/operations/settings/settings#max_rows_in_set) и [`max_bytes_in_set`](/operations/settings/settings#max_bytes_in_set), чтобы контролировать объём данных, передаваемых при распределённых запросах.
 
@@ -242,7 +242,7 @@ SELECT * FROM table1 WHERE col1 GLOBAL IN (SELECT col1 FROM table2 WHERE <some_p
 
 Если `some_predicate` недостаточно селективен, он вернёт большой объём данных и приведёт к проблемам с производительностью. В таких случаях целесообразно ограничить передачу данных по сети. Также обратите внимание, что [`set_overflow_mode`](/operations/settings/settings#set_overflow_mode) установлено в значение `throw` (по умолчанию), что означает генерацию исключения при превышении этих порогов.
 
-### Распределённые подзапросы и max&#95;parallel&#95;replicas {#distributed-subqueries-and-max&#95;parallel&#95;replicas}
+### Распределённые подзапросы и max_parallel_replicas {#distributed-subqueries-and-max_parallel_replicas}
 
 Когда [max&#95;parallel&#95;replicas](#distributed-subqueries-and-max_parallel_replicas) больше 1, распределённые запросы дополнительно преобразуются.
 

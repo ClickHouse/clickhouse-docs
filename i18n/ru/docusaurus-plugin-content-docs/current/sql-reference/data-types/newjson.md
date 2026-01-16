@@ -10,6 +10,7 @@ doc_type: 'reference'
 ---
 
 import {CardSecondary} from '@clickhouse/click-ui/bundled';
+import WhenToUseJson from '@site/i18n/ru/docusaurus-plugin-content-docs/current/best-practices/_snippets/_when-to-use-json.md';
 import Link from '@docusaurus/Link'
 
 <Link to="/docs/best-practices/use-json-where-appropriate" style={{display: 'flex', textDecoration: 'none', width: 'fit-content'}}>
@@ -47,8 +48,10 @@ import Link from '@docusaurus/Link'
 | `SKIP path.to.skip`         | Необязательная подсказка для конкретного пути, который должен быть пропущен при разборе JSON. Такие пути никогда не будут сохранены в столбце JSON. Если указанный путь является вложенным объектом JSON, весь вложенный объект будет пропущен.                                                                                          |                       |
 | `SKIP REGEXP 'path_regexp'` | Необязательная подсказка с регулярным выражением, которое используется для пропуска путей при разборе JSON. Все пути, соответствующие этому регулярному выражению, никогда не будут сохранены в столбце JSON.                                                                                                                            |                       |
 
+<WhenToUseJson />
 
-## Создание JSON {#creating-json}
+
+## Создание `JSON` {#creating-json}
 
 В этом разделе мы рассмотрим различные способы создания `JSON`.
 

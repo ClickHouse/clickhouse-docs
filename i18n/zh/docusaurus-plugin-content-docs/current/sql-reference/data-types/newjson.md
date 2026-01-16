@@ -9,6 +9,7 @@ doc_type: 'reference'
 ---
 
 import {CardSecondary} from '@clickhouse/click-ui/bundled';
+import WhenToUseJson from '@site/i18n/zh/docusaurus-plugin-content-docs/current/best-practices/_snippets/_when-to-use-json.md';
 import Link from '@docusaurus/Link'
 
 <Link to="/docs/best-practices/use-json-where-appropriate" style={{display: 'flex', textDecoration: 'none', width: 'fit-content'}}>
@@ -46,8 +47,10 @@ import Link from '@docusaurus/Link'
 | `SKIP path.to.skip`         | 针对在 JSON 解析期间应跳过的特定路径的可选提示。此类路径将永远不会存储在 JSON 列中。若指定路径是一个嵌套 JSON 对象，则整个嵌套对象都会被跳过。                                                                             |               |
 | `SKIP REGEXP 'path_regexp'` | 使用正则表达式在 JSON 解析期间跳过路径的可选提示。所有匹配此正则表达式的路径将永远不会存储在 JSON 列中。                                                                                                   |               |
 
+<WhenToUseJson />
 
-## 创建 JSON {#creating-json}
+
+## 创建 `JSON` {#creating-json}
 
 本节将介绍创建 `JSON` 的多种方法。
 

@@ -36,13 +36,13 @@ import optimize_read from "@site/static/images/knowledgebase/optimize_read.png";
 
 Обратите внимание, что существует также настройка [max&#95;streams&#95;to&#95;max&#95;threads&#95;ratio](https://github.com/ClickHouse/ClickHouse/pull/43260) для настройки соотношения между количеством потоков чтения (streams) и количеством потоков в остальном конвейере выполнения запроса. Однако в бенчмарках она давала меньший эффект, чем настройка `max_streams_for_merge_tree_reading`.
 
-### А как насчёт optimize&#95;read&#95;in&#95;order? \{#what-about-optimize&#95;read&#95;in&#95;order\}
+### А как насчёт optimize_read_in_order? \{#what-about-optimize_read_in_order\}
 
 С [оптимизацией optimize&#95;read&#95;in&#95;order](https://clickhouse.com/docs/sql-reference/statements/select/order-by/#optimization-of-data-reading) ClickHouse может [избежать](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes) пересортировки данных в памяти, если порядок сортировки в запросах отражает физический порядок данных на диске, **но для этого необходимо последовательное чтение данных (в отличие от асинхронного чтения)**:
 
 <Image img={optimize_read} size="md" alt="Диаграмма оптимизации чтения по порядку" />
 
-### optimize&#95;read&#95;in&#95;order имеет приоритет над асинхронным чтением \{#optimize&#95;read&#95;in&#95;order-has-precedence-over-asynchronous-reading\}
+### optimize_read_in_order имеет приоритет над асинхронным чтением \{#optimize_read_in_order-has-precedence-over-asynchronous-reading\}
 
 Когда ClickHouse обнаруживает, что может быть применена оптимизация `optimize_read_in_order`, настройка `allow_asynchronous_read_from_io_pool_for_merge_tree` будет проигнорирована или отключена.
 

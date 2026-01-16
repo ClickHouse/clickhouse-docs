@@ -364,6 +364,8 @@ if err != nil {
 
 另外请注意，`ConnMaxLifetime` 的默认值为 1 小时。如果节点离开集群，这可能会导致发送到 ClickHouse 的负载出现不均衡。当某个节点不可用时，连接会被分配到其他节点。这些连接会持续存在，且在默认情况下 1 小时内不会被刷新，即使出现问题的节点已经重新加入集群也是如此。在高负载场景下，建议考虑适当降低该值。
 
+在 Native（TCP）和 HTTP 协议下均启用连接池。
+
 ### 使用 TLS {#using-tls}
 
 在底层，所有客户端连接方法（`DSN/OpenDB/Open`）都会使用 [Go 的 tls 包](https://pkg.go.dev/crypto/tls) 来建立安全连接。如果 Options 结构体中包含一个非 nil 的 `tls.Config` 指针，客户端就会知道需要使用 TLS。
@@ -1991,7 +1993,8 @@ func ConnectSettings() error {
 
 #### 连接池 {#connection-pooling-1}
 
-你可以按照[连接到多个节点](#connecting-to-multiple-nodes)中的说明，控制所提供节点地址列表的使用方式。不过，按照设计，连接管理和连接池功能由 `sql.DB` 负责处理。
+你可以按照[连接到多个节点](#connecting-to-multiple-nodes)中的说明，控制所提供节点地址列表的使用方式。不过，按照设计，连接管理和连接池功能由 `sql.DB` 负责处理。 
+对于 Native（TCP）和 HTTP 协议，均启用了连接池。
 
 #### 通过 HTTP 连接 {#connecting-over-http}
 

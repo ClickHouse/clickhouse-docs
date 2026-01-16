@@ -36,13 +36,13 @@ import optimize_read from "@site/static/images/knowledgebase/optimize_read.png";
 
 また、読み取りスレッド（ストリーム）の数と、クエリ実行パイプラインの残りの部分で使用されるスレッド数との比率を設定するための [max&#95;streams&#95;to&#95;max&#95;threads&#95;ratio](https://github.com/ClickHouse/ClickHouse/pull/43260) 設定も存在します。ただし、ベンチマークでは `max_streams_for_merge_tree_reading` 設定ほどの効果はありませんでした。
 
-### optimize&#95;read&#95;in&#95;order の場合はどうなりますか？ \{#what-about-optimize&#95;read&#95;in&#95;order\}
+### optimize_read_in_order の場合はどうなりますか？ \{#what-about-optimize_read_in_order\}
 
 [optimize&#95;read&#95;in&#95;order 最適化](https://clickhouse.com/docs/sql-reference/statements/select/order-by/#optimization-of-data-reading)を有効にすると、クエリのソート順がディスク上のデータの物理的な並び順を反映している場合、ClickHouse はメモリ内でのデータの再ソート処理を[省略](https://clickhouse.com/blog/clickhouse-faster-queries-with-projections-and-primary-indexes)できます。**ただし、そのためにはデータを順序どおりに読み出す必要があります（非同期読み取りとは対照的です）。**
 
 <Image img={optimize_read} size="md" alt="順序どおりの読み取り最適化を示す図" />
 
-### optimize&#95;read&#95;in&#95;order は非同期読み取りよりも優先される \{#optimize&#95;read&#95;in&#95;order-has-precedence-over-asynchronous-reading\}
+### optimize_read_in_order は非同期読み取りよりも優先される \{#optimize_read_in_order-has-precedence-over-asynchronous-reading\}
 
 ClickHouse が `optimize_read_in_order optimization` を適用できると判断した場合、`allow_asynchronous_read_from_io_pool_for_merge_tree` 設定は無視されるか、無効化されます。
 

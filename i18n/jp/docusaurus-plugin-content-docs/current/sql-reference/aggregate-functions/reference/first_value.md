@@ -5,7 +5,7 @@ title: 'first_value'
 doc_type: 'reference'
 ---
 
-# first&#95;value {#first&#95;value}
+# first_value {#first_value}
 
 これは[`any`](../../../sql-reference/aggregate-functions/reference/any.md) のエイリアスですが、[Window Functions](../../window-functions/index.md) との互換性のために導入されたものです。Window Functions では `NULL` 値を処理する必要が生じることがあります（デフォルトでは、すべての ClickHouse 集約関数は NULL 値を無視します）。
 

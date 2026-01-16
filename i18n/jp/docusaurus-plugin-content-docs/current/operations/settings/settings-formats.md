@@ -34,15 +34,17 @@ TSV/CSV/Vertical/Pretty フォーマットで false の bool 値を表すテキ�
 
 TSV/CSV/Vertical/Pretty 各フォーマットで、bool 型の true 値を表現する文字列。
 
+## check_conversion_from_numbers_to_enum {#check_conversion_from_numbers_to_enum}   
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+数値から Enum への変換の際に、その値が Enum 内に存在しない場合は例外をスローします。
+
+デフォルトでは無効です。
+
 ## column_names_for_schema_inference {#column_names_for_schema_inference}   
 
 カラム名を持たないフォーマットに対して、スキーマ推論に使用するカラム名のリストです。書式: 'column1,column2,column3,...'
-
-## cross_to_inner_join_rewrite {#cross_to_inner_join_rewrite}   
-
-<SettingsInfoBlock type="UInt64" default_value="1" />
-
-WHERE 句に結合条件がある場合、comma/cross join の代わりに inner join を使用します。値: 0 — 書き換えなし、1 — 可能な場合に comma/cross join を書き換え、2 — すべての comma join を強制的に書き換え、cross — 可能な場合に cross join を書き換え
 
 ## date_time_64_output_format_cut_trailing_zeros_align_to_groups_of_thousands {#date_time_64_output_format_cut_trailing_zeros_align_to_groups_of_thousands}   
 
@@ -117,23 +119,11 @@ Cloud におけるデフォルト値: `'best_effort'`。
 
 デフォルト値: `ignore`。
 
-## dictionary_use_async_executor {#dictionary_use_async_executor}   
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-Dictionary ソースの読み取りを複数スレッドで行うパイプラインを実行します。ローカルの ClickHouse ソースを使用する Dictionary でのみサポートされます。
-
 ## errors_output_format {#errors_output_format}   
 
 <SettingsInfoBlock type="String" default_value="CSV" />
 
 エラーをテキスト出力する形式。
-
-## exact_rows_before_limit {#exact_rows_before_limit}   
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-有効にすると、ClickHouse は rows_before_limit_at_least 統計情報に対して正確な値を返しますが、その代償として、limit に到達するまでのデータをすべて読み取る必要があります。
 
 ## format_avro_schema_registry_url {#format_avro_schema_registry_url}   
 
@@ -997,6 +987,17 @@ ORC フォーマットのスキーマ推論を行う際に、サポートされ�
 
 より高速な ORC デコーダーの実装を使用します。
 
+## input_format_parallel_parsing {#input_format_parallel_parsing}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+データ形式の順序を保持した並列パースを有効または無効にします。[TabSeparated (TSV)](/interfaces/formats/TabSeparated)、[TSKV](/interfaces/formats/TSKV)、[CSV](/interfaces/formats/CSV)、[JSONEachRow](/interfaces/formats/JSONEachRow) 形式でのみサポートされます。
+
+指定可能な値:
+
+- 1 — 有効。
+- 0 — 無効。
+
 ## input_format_parquet_allow_geoparquet_parser {#input_format_parquet_allow_geoparquet_parser}   
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -1435,6 +1436,22 @@ RowBinary 出力フォーマットで、[JSON](../../sql-reference/data-types/ne
 
 String カラムに対しては、Binary ではなく BSON の String 型を使用します。
 
+## output_format_compression_level {#output_format_compression_level}   
+
+<SettingsInfoBlock type="UInt64" default_value="3" />
+
+クエリ出力が圧縮される場合のデフォルトの圧縮レベルです。`SELECT` クエリに `INTO OUTFILE` が指定されている場合、またはテーブル関数 `file`、`url`、`hdfs`、`s3`、`azureBlobStorage` に書き込む場合に、この設定が適用されます。
+
+可能な値: `1` から `22`
+
+## output_format_compression_zstd_window_log {#output_format_compression_zstd_window_log}   
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+出力時の圧縮メソッドが `zstd` の場合に使用できます。`0` より大きい値を指定すると、この設定によって圧縮ウィンドウサイズ（`2` のべき乗）を明示的に指定し、zstd 圧縮の long-range モードを有効にします。これにより、より高い圧縮率を達成できる可能性があります。
+
+指定可能な値: 0 以上の非負整数。値が小さすぎる、または大きすぎる場合は、`zstdlib` によって例外がスローされます。典型的な値は `20`（ウィンドウサイズ = `1MB`）から `30`（ウィンドウサイズ = `1GB`）の範囲です。
+
 ## output_format_csv_crlf_end_of_line {#output_format_csv_crlf_end_of_line}   
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -1793,6 +1810,17 @@ String カラムに対しては Binary ではなく ORC の String 型を使用�
 <SettingsInfoBlock type="String" default_value="GMT" />
 
 ORC writer が使用するタイムゾーン名です。デフォルトは GMT です。
+
+## output_format_parallel_formatting {#output_format_parallel_formatting}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+データ形式のフォーマット処理を並列実行するかどうかを制御します。[TSV](/interfaces/formats/TabSeparated)、[TSKV](/interfaces/formats/TSKV)、[CSV](/interfaces/formats/CSV)、[JSONEachRow](/interfaces/formats/JSONEachRow) の各フォーマットでのみサポートされます。
+
+設定可能な値:
+
+- 1 — 有効。
+- 0 — 無効。
 
 ## output_format_parquet_batch_size {#output_format_parquet_batch_size}   
 
@@ -2168,30 +2196,6 @@ true の場合は ' を '' でエスケープし、それ以外の場合は \\' 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 より高精度（だが低速）の浮動小数点数パースアルゴリズムを優先的に使用します
-
-## regexp_dict_allow_hyperscan {#regexp_dict_allow_hyperscan}   
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-regexp_tree Dictionary で Hyperscan ライブラリの使用を許可します。
-
-## regexp_dict_flag_case_insensitive {#regexp_dict_flag_case_insensitive}   
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-`regexp_tree` Dictionary に対して大文字と小文字を区別しないマッチングを行います。個々の正規表現内で `(?i)` および `(?-i)` を使って上書きできます。
-
-## regexp_dict_flag_dotall {#regexp_dict_flag_dotall}   
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-regexp_tree Dictionary において、'.' を改行文字にもマッチさせることを許可します。
-
-## rows_before_aggregation {#rows_before_aggregation}   
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-有効にすると、ClickHouse は rows_before_aggregation 統計値の正確な値を提供します。これは、集約処理の前に読み取られた行数を表します。
 
 ## schema&#95;inference&#95;hints {#schema&#95;inference&#95;hints}
 

@@ -344,7 +344,7 @@ SELECT HEX(SHA512('abc'));
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## SHA512&#95;256 {#SHA512&#95;256}
+## SHA512_256 {#SHA512_256}
 
 Добавлена в: v1.1
 
@@ -1104,7 +1104,7 @@ SELECT metroHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:
 └──────────────────────┴────────┘
 ```
 
-## murmurHash2&#95;32 {#murmurHash2&#95;32}
+## murmurHash2_32 {#murmurHash2_32}
 
 Появилась в версии: v18.5
 
@@ -1143,7 +1143,7 @@ SELECT murmurHash2_32(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 └─────────────┴────────┘
 ```
 
-## murmurHash2&#95;64 {#murmurHash2&#95;64}
+## murmurHash2_64 {#murmurHash2_64}
 
 Появилась в версии: v18.10
 
@@ -1182,7 +1182,7 @@ SELECT murmurHash2_64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 └──────────────────────┴────────┘
 ```
 
-## murmurHash3&#95;128 {#murmurHash3&#95;128}
+## murmurHash3_128 {#murmurHash3_128}
 
 Добавлено в: v18.10
 
@@ -1216,7 +1216,7 @@ SELECT hex(murmurHash3_128('foo', 'foo', 'foo'));
 └───────────────────────────────────────────┘
 ```
 
-## murmurHash3&#95;32 {#murmurHash3&#95;32}
+## murmurHash3_32 {#murmurHash3_32}
 
 Введена в версии v18.10
 
@@ -1255,7 +1255,7 @@ SELECT murmurHash3_32(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 └─────────────┴────────┘
 ```
 
-## murmurHash3&#95;64 {#murmurHash3&#95;64}
+## murmurHash3_64 {#murmurHash3_64}
 
 Введена в версии: v18.10
 
