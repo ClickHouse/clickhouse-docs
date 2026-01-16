@@ -44,7 +44,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
 - **Data Catalog integration:** You can now connect an external data catalog as a data source. ClickHouse Cloud supports AWS Glue and Unity Catalog (with more coming soon). Once connected, the catalog appears as a database, allowing you to read Iceberg tables directly—without duplicating data. For access, contact support to request access.
 - **ClickPipes:**
   - The MongoDB connector has been promoted to Public Beta, and is now available to new and existing ClickHouse Cloud customers, in all service tiers. Read the [blogpost](https://clickhouse.com/blog/mongodb-cdc-connector-clickpipes-beta) for an overview of new features and head to the [documentation](https://clickhouse.com/docs/integrations/clickpipes/mongodb) to get started.
-  - The S3 ClickPipe is now compatible with OVH Object Storage, the S3 API-compatible object storage service in OVHcloud.
+  - The [S3 ClickPipe](https://clickhouse.com/docs/integrations/clickpipes/object-storage/s3/overview) is now compatible with OVH Object Storage, the S3 API-compatible object storage service in OVHcloud.
 
 ## December 19, 2025 {#december-19-2025}
 
