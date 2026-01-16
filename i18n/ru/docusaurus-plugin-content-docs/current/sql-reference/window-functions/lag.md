@@ -7,7 +7,7 @@ title: 'lag'
 doc_type: 'reference'
 ---
 
-# lag {#lag}
+# lag \\{#lag\\}
 
 Возвращает значение, вычисленное для строки, которая находится на указанном физическом смещении перед текущей строкой в упорядоченном фрейме окна.
 Эта функция аналогична [`lagInFrame`](./lagInFrame.md), но всегда использует фрейм `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`.

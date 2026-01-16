@@ -10,7 +10,7 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# 列統計の操作 {#manipulating-column-statistics}
+# 列統計の操作 \\{#manipulating-column-statistics\\}
 
 <ExperimentalBadge />
 
@@ -32,7 +32,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 また、これらの操作はレプリケートされ、ZooKeeper を介して統計メタデータを同期します。
 
-## 例： {#example}
+## 例： \\{#example\\}
 
 2 種類の統計タイプを 2 つの列に追加する：
 

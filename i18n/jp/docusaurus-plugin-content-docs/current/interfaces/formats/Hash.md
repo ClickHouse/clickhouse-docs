@@ -13,14 +13,14 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 `Hash` 出力形式は、結果のすべての列および行を対象に、1つのハッシュ値を計算します。
 これは、たとえばデータ転送がボトルネックとなっている状況で、結果の「フィンガープリント」を算出する場合に役立ちます。
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
-### データの読み取り {#reading-data}
+### データの読み取り \\{#reading-data\\}
 
 次のデータを含む `football` テーブルを考えます。
 
@@ -62,4 +62,4 @@ df2ec2f0669b000edff6adee264e7d68
 1 rows in set. Elapsed: 0.154 sec.
 ```
 
-## 書式設定 {#format-settings}
+## 書式設定 \\{#format-settings\\}

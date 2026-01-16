@@ -6,7 +6,7 @@ title: 'kolmogorovSmirnovTest'
 doc_type: 'reference'
 ---
 
-# kolmogorovSmirnovTest {#kolmogorovsmirnovtest}
+# kolmogorovSmirnovTest \{#kolmogorovsmirnovtest\}
 
 Применяет критерий Колмогорова–Смирнова к выборкам из двух генеральных совокупностей.
 

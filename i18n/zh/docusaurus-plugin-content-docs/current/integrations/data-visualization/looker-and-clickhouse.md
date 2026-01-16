@@ -18,16 +18,16 @@ import looker_03 from '@site/static/images/integrations/data-visualization/looke
 import looker_04 from '@site/static/images/integrations/data-visualization/looker_04.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Looker {#looker}
+# Looker \\{#looker\\}
 
 <PartnerBadge/>
 
 Looker 可以通过官方的 ClickHouse 数据源连接到 ClickHouse Cloud 或自托管的 ClickHouse 部署。
 
-## 1. 收集连接信息 {#1-gather-your-connection-details}
+## 1. 收集连接信息 \\{#1-gather-your-connection-details\\}
 <ConnectionDetails />
 
-## 2. 创建 ClickHouse 数据源 {#2-create-a-clickhouse-data-source}
+## 2. 创建 ClickHouse 数据源 \\{#2-create-a-clickhouse-data-source\\}
 
 导航到 Admin -> Database -> Connections，然后单击右上角的 “Add Connection” 按钮。
 
@@ -51,7 +51,7 @@ Looker 可以通过官方的 ClickHouse 数据源连接到 ClickHouse Cloud 或�
 
 现在，您应该可以将 ClickHouse 数据源关联到 Looker 项目中。
 
-## 3. 已知限制 {#3-known-limitations}
+## 3. 已知限制 \\{#3-known-limitations\\}
 
 1. 以下数据类型默认按字符串类型处理：
    * Array - 由于 JDBC 驱动的限制，序列化无法按预期工作

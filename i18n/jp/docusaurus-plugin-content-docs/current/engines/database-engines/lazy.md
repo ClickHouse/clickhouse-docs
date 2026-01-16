@@ -7,13 +7,13 @@ title: 'Lazy'
 doc_type: 'reference'
 ---
 
-# Lazy {#lazy}
+# Lazy \\{#lazy\\}
 
 テーブルを最後のアクセスから `expiration_time_in_seconds` 秒間だけ RAM 内に保持します。 *Log テーブルでのみ使用できます。
 
 アクセス間隔が長い多数の小さな *Log テーブルを格納する用途に最適化されています。
 
-## データベースを作成する {#creating-a-database}
+## データベースを作成する \\{#creating-a-database\\}
 
 ```sql
 CREATE DATABASE testlazy 

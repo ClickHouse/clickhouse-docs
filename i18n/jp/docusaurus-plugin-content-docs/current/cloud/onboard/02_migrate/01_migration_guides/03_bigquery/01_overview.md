@@ -12,19 +12,19 @@ import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';
 
 
-# ClickHouse Cloud と BigQuery の比較  {#comparing-clickhouse-cloud-and-bigquery} 
+# ClickHouse Cloud と BigQuery の比較  \\{#comparing-clickhouse-cloud-and-bigquery\\}
 
-## リソースの構成 {#resource-organization}
+## リソースの構成 \\{#resource-organization\\}
 
 ClickHouse Cloud におけるリソースの構成方法は、[BigQuery のリソース階層](https://cloud.google.com/bigquery/docs/resource-hierarchy)と類似しています。以下の図に示す ClickHouse Cloud のリソース階層に基づき、主な違いを説明します。
 
 <Image img={bigquery_1} size="md" alt="リソースの構成"/>
 
-### Organizations {#organizations}
+### Organizations \\{#organizations\\}
 
 BigQuery と同様に、organization は ClickHouse Cloud のリソース階層におけるルートノードです。ClickHouse Cloud アカウントで最初にセットアップしたユーザーは、自動的にそのユーザーが所有する organization に割り当てられます。ユーザーは、ほかのユーザーを organization に招待できます。
 
-### BigQuery Projects と ClickHouse Cloud Services の比較 {#bigquery-projects-vs-clickhouse-cloud-services}
+### BigQuery Projects と ClickHouse Cloud Services の比較 \\{#bigquery-projects-vs-clickhouse-cloud-services\\}
 
 organization の中では、BigQuery の project と大まかに同等の service を作成できます。これは、ClickHouse Cloud に保存されるデータが service に紐づいているためです。ClickHouse Cloud には[複数の service タイプ](/cloud/manage/cloud-tiers)が用意されています。各 ClickHouse Cloud service は特定のリージョンにデプロイされ、次の要素を含みます:
 
@@ -32,15 +32,15 @@ organization の中では、BigQuery の project と大まかに同等の servic
 2. service がすべてのデータを保存するオブジェクトストレージフォルダ。
 3. エンドポイント（または ClickHouse Cloud UI コンソールから作成される複数のエンドポイント） - service へ接続するために使用する service の URL（例: `https://dv2fzne24g.us-east-1.aws.clickhouse.cloud:8443`）
 
-### BigQuery Datasets と ClickHouse Cloud Databases の比較 {#bigquery-datasets-vs-clickhouse-cloud-databases}
+### BigQuery Datasets と ClickHouse Cloud Databases の比較 \\{#bigquery-datasets-vs-clickhouse-cloud-databases\\}
 
 ClickHouse はテーブルを論理的にデータベースにグループ化します。BigQuery のデータセットと同様に、ClickHouse のデータベースはテーブルデータを整理し、アクセスを制御するための論理コンテナです。
 
-### BigQuery Folders {#bigquery-folders}
+### BigQuery Folders \\{#bigquery-folders\\}
 
 現在、ClickHouse Cloud には BigQuery のフォルダに相当する概念は存在しません。
 
-### BigQuery Slot reservations と Quotas {#bigquery-slot-reservations-and-quotas}
+### BigQuery Slot reservations と Quotas \\{#bigquery-slot-reservations-and-quotas\\}
 
 BigQuery の slot reservation と同様に、ClickHouse Cloud では [垂直および水平のオートスケーリングを構成](/manage/scaling#configuring-vertical-auto-scaling)できます。垂直オートスケーリングでは、service のコンピュートノードに対してメモリおよび CPU コアの最小値と最大値を設定できます。service はその範囲内で必要に応じてスケールします。これらの設定は、service の初期作成フローの際にも指定できます。service 内の各コンピュートノードは同じサイズです。[水平スケーリング](/manage/scaling#manual-horizontal-scaling)により、service 内のコンピュートノード数を変更できます。
 
@@ -50,11 +50,11 @@ ClickHouse はメモリアロケーションのバイトサイズをサーバー
 
 最後に、I/O スケジューリングでは、最大帯域幅、インフライト要求数、およびポリシーに基づき、ワークロードクラスごとにローカルおよびリモートディスクへのアクセスを制限できます。
 
-### 権限 {#permissions}
+### 権限 \\{#permissions\\}
 
 ClickHouse Cloud では、[cloud コンソール](/cloud/guides/sql-console/manage-sql-console-role-assignments)と[データベース](/cloud/security/manage-database-users)の 2 か所でユーザーアクセスを制御します。コンソールアクセスは [clickhouse.cloud](https://console.clickhouse.cloud) のユーザーインターフェイスを介して管理されます。データベースアクセスは、データベースユーザーアカウントとロールによって管理されます。さらに、コンソールユーザーにはデータベース内のロールを付与でき、これによりコンソールユーザーは[SQL コンソール](/integrations/sql-clients/sql-console)を通じてデータベースと対話できます。
 
-## データ型 {#data-types}
+## データ型 \\{#data-types\\}
 
 ClickHouse は数値型に関して、より細かい精度指定を提供します。たとえば、BigQuery は数値型として [`INT64`, `NUMERIC`, `BIGNUMERIC`, `FLOAT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types) を提供しています。これに対して ClickHouse は、小数、浮動小数点数、整数に対して複数の精度レベルの型を提供しています。これらのデータ型を用いることで、ストレージおよびメモリのオーバーヘッドを最適化でき、その結果、クエリの高速化とリソース消費の削減につながります。以下では、各 BigQuery 型に対応する ClickHouse 型を対応付けています。
 
@@ -79,15 +79,15 @@ ClickHouse は数値型に関して、より細かい精度指定を提供しま
 
 ClickHouse の型に複数の選択肢がある場合は、実際のデータの取り得る範囲を考慮し、必要最小限の型を選択してください。さらに圧縮率を高めるには、[適切なコーデック](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema) の利用も検討してください。
 
-## クエリ高速化手法 {#query-acceleration-techniques}
+## クエリ高速化手法 \\{#query-acceleration-techniques\\}
 
-### 主キー・外部キーとプライマリインデックス {#primary-and-foreign-keys-and-primary-index}
+### 主キー・外部キーとプライマリインデックス \\{#primary-and-foreign-keys-and-primary-index\\}
 
 BigQuery では、テーブルに [主キーおよび外部キー制約](https://cloud.google.com/bigquery/docs/information-schema-table-constraints) を設定できます。一般的に、主キーと外部キーはリレーショナルデータベースにおいてデータ完全性を保証するために使用されます。主キーの値は通常、各行で一意であり、`NULL` にはなりません。各行の外部キーの値は、主キー側テーブルの主キー列に存在するか、`NULL` でなければなりません。BigQuery では、これらの制約は実際には強制されませんが、クエリオプティマイザがこの情報を利用してクエリをさらに最適化する場合があります。
 
 ClickHouse でも、テーブルに主キーを設定できます。BigQuery と同様に、ClickHouse はテーブルの主キー列の値の一意性を強制しません。BigQuery と異なり、テーブルのデータはディスク上において主キー列で [ソートされた順序](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files) で格納されます。クエリオプティマイザはこのソート順を利用して再ソートを防ぎ、JOIN のためのメモリ使用量を最小化し、LIMIT 句の早期打ち切りを可能にします。BigQuery と異なり、ClickHouse は主キー列の値に基づいて [（疎な）プライマリインデックス](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales) を自動的に作成します。このインデックスは、主キー列に対するフィルタを含むすべてのクエリの高速化に利用されます。ClickHouse は現在、外部キー制約をサポートしていません。
 
-## セカンダリインデックス（ClickHouse のみで利用可能） {#secondary-indexes-only-available-in-clickhouse}
+## セカンダリインデックス（ClickHouse のみで利用可能） \\{#secondary-indexes-only-available-in-clickhouse\\}
 
 テーブルのプライマリキー列の値から作成されるプライマリインデックスに加えて、ClickHouse ではプライマリキー以外の列にもセカンダリインデックスを作成できます。ClickHouse には複数種類のセカンダリインデックスがあり、それぞれ異なるタイプのクエリに適しています。
 
@@ -100,29 +100,29 @@ ClickHouse でも、テーブルに主キーを設定できます。BigQuery と
   - 各データパートごとに、その列の最小値と最大値を保持します。
   - 指定された範囲に含まれないデータパートの読み取りをスキップするのに役立ちます。
 
-## 検索インデックス {#search-indexes}
+## 検索インデックス \\{#search-indexes\\}
 
 BigQuery の [search indexes](https://cloud.google.com/bigquery/docs/search-index) と同様に、ClickHouse のテーブルでは、文字列値を持つカラムに対して [full-text indexes](/engines/table-engines/mergetree-family/textindexes) を作成できます。
 
-## ベクトルインデックス {#vector-indexes}
+## ベクトルインデックス \\{#vector-indexes\\}
 
 BigQuery は最近、Pre-GA 機能として [ベクトルインデックス](https://cloud.google.com/bigquery/docs/vector-index) を導入しました。同様に、ClickHouse でもベクトル検索を高速化するための [インデックス](/engines/table-engines/mergetree-family/annindexes) が実験的にサポートされています。
 
-## パーティション分割 {#partitioning}
+## パーティション分割 \\{#partitioning\\}
 
 BigQuery と同様に、ClickHouse もテーブルをパーティションに分割することで、大規模テーブルをより小さく管理しやすい単位に分け、パフォーマンスと管理性を向上させます。ClickHouse のパーティション分割の詳細については[こちら](/engines/table-engines/mergetree-family/custom-partitioning-key)をご覧ください。
 
-## クラスタリング {#clustering}
+## クラスタリング \\{#clustering\\}
 
 クラスタリングを使用すると、BigQuery は指定された少数のカラムの値に基づいてテーブルデータを自動的にソートし、それらを最適なサイズのブロックにまとめて格納します。クラスタリングによりクエリのパフォーマンスが向上し、BigQuery はクエリの実行コストをより正確に見積もれるようになります。クラスタリングされたカラムを利用することで、クエリは不要なデータのスキャンも回避できます。
 
 ClickHouse では、テーブルのプライマリキーのカラムに基づいてデータは自動的に[ディスク上でクラスタ化](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files)され、プライマリインデックスのデータ構造を利用するクエリによってすばやく特定または除外できるブロックとして論理的に構成されます。
 
-## マテリアライズドビュー {#materialized-views}
+## マテリアライズドビュー \\{#materialized-views\\}
 
 BigQuery と ClickHouse はどちらもマテリアライズドビューをサポートしています。これは、ベーステーブルに対して実行される変換クエリの結果に基づいて結果を事前計算して保持する機能で、パフォーマンスと効率を向上させます。
 
-## マテリアライズドビューのクエリ実行 {#querying-materialized-views}
+## マテリアライズドビューのクエリ実行 \\{#querying-materialized-views\\}
 
 BigQuery のマテリアライズドビューは、直接クエリすることも、オプティマイザが基となるテーブルへのクエリを処理するために利用することもできます。基となるテーブルへの変更によってマテリアライズドビューが無効化される可能性がある場合は、データは基となるテーブルから直接読み取られます。基となるテーブルへの変更がマテリアライズドビューを無効化しない場合は、残りのデータはマテリアライズドビューから読み取られ、変更分のみが基となるテーブルから読み取られます。
 
@@ -134,29 +134,29 @@ BigQuery は、基となるテーブルに対してビューの変換クエリ�
 
 ClickHouse では、マテリアライズドビューはインクリメンタルに更新されます。このインクリメンタル更新メカニズムにより、高いスケーラビリティと低い計算コストが実現されます。インクリメンタル更新されるマテリアライズドビューは、基となるテーブルが数十億から数兆行のデータを含むようなシナリオ向けに特別に設計されています。マテリアライズドビューをリフレッシュするために、増え続ける基となるテーブル全体に対して繰り返しクエリを実行する代わりに、ClickHouse は新たに挿入された基となるテーブル行の値だけから部分的な結果を計算します。この部分的な結果は、バックグラウンドで以前に計算された部分的な結果とインクリメンタルにマージされます。その結果、基となるテーブル全体からマテリアライズドビューを繰り返しリフレッシュする場合と比べて、計算コストを劇的に削減できます。
 
-## トランザクション {#transactions}
+## トランザクション \\{#transactions\\}
 
 ClickHouse と対照的に、BigQuery は 1 つのクエリ内、またはセッションを使用することで複数のクエリにまたがる複数ステートメントのトランザクションをサポートしています。複数ステートメントのトランザクションを使用すると、1 つ以上のテーブルに対する行の挿入や削除といった変更操作を行い、その変更を原子的にコミットまたはロールバックできます。複数ステートメントトランザクションは [ClickHouse の 2024 年のロードマップ](https://github.com/ClickHouse/ClickHouse/issues/58392) に含まれています。
 
-## 集約関数 {#aggregate-functions}
+## 集約関数 \\{#aggregate-functions\\}
 
 BigQuery と比べると、ClickHouse には標準で利用できる集約関数が大幅に多く用意されています:
 
 - BigQuery には [18 個の集約関数](https://cloud.google.com/bigquery/docs/reference/standard-sql/aggregate_functions) と、[4 個の近似集約関数](https://cloud.google.com/bigquery/docs/reference/standard-sql/approximate_aggregate_functions) が用意されています。
 - ClickHouse には [150 個以上の事前定義された集約関数](/sql-reference/aggregate-functions/reference) に加えて、事前定義された集約関数の動作を[拡張](https://www.youtube.com/watch?v=7ApwD0cfAFI)するための強力な [aggregation combinator](/sql-reference/aggregate-functions/combinators) が用意されています。例えば、150 個を超える事前定義済み集約関数をテーブルの行ではなく配列に対して適用したい場合は、[-Array サフィックス](/sql-reference/aggregate-functions/combinators#-array) を付けて呼び出すだけで構いません。[-Map サフィックス](/sql-reference/aggregate-functions/combinators#-map) を付けると、任意の集約関数を Map 型に対して適用できます。また、[-ForEach サフィックス](/sql-reference/aggregate-functions/combinators#-foreach) を付けると、任意の集約関数をネストされた配列に対して適用できます。
 
-## データソースとファイル形式 {#data-sources-and-file-formats}
+## データソースとファイル形式 \\{#data-sources-and-file-formats\\}
 
 BigQuery と比較すると、ClickHouse ははるかに多くのファイル形式とデータソースをサポートしています。
 
 - ClickHouse は、事実上あらゆるデータソースから 90 以上のファイル形式でデータを読み込むことをネイティブにサポートしています
 - BigQuery は 5 種類のファイル形式と 19 種類のデータソースをサポートしています
 
-## SQL 言語機能 {#sql-language-features}
+## SQL 言語機能 \\{#sql-language-features\\}
 
 ClickHouse は、分析タスクにより適したものとなるよう、多くの拡張と改良を施した標準 SQL を提供します。例えば、ClickHouse SQL は [ラムダ関数をサポートし](/sql-reference/functions/overview#arrow-operator-and-lambda)、高階関数も利用できるため、変換処理を行う際に配列をアンネストしたり explode したりする必要がありません。これは BigQuery のような他のシステムと比べて大きな利点です。
 
-## 配列 {#arrays}
+## 配列 \{#arrays\}
 
 BigQuery の配列関数が 8 個であるのに対して、ClickHouse には 80 個以上の[組み込み配列関数](/sql-reference/functions/array-functions)があり、幅広い問題をエレガントかつシンプルにモデリング・解決できます。
 

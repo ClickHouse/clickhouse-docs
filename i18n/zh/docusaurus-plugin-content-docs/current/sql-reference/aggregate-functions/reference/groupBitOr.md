@@ -5,7 +5,7 @@ title: 'groupBitOr'
 doc_type: 'reference'
 ---
 
-# groupBitOr {#groupbitor}
+# groupBitOr \{#groupbitor\}
 
 对一组数值执行按位 `OR` 运算。
 

@@ -6,7 +6,7 @@ title: 'groupArrayArray'
 doc_type: 'reference'
 ---
 
-# groupArrayArray {#grouparrayarray}
+# groupArrayArray \{#grouparrayarray\}
 
 将多个数组聚合为由这些数组组成的更大数组。
 是将 [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 函数与 [Array](/sql-reference/aggregate-functions/combinators#-array) 组合子结合使用的结果。

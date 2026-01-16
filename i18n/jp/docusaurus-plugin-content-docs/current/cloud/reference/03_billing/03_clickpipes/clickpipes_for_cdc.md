@@ -9,7 +9,7 @@ keywords: ['課金', 'ClickPipes', 'CDC 料金', 'コスト', '料金']
 
 
 
-# PostgreSQL CDC 向けの ClickPipes {#clickpipes-for-postgresql-cdc}
+# PostgreSQL CDC 向けの ClickPipes \\{#clickpipes-for-postgresql-cdc\\}
 
 このセクションでは、ClickPipes における Postgres Change Data Capture (CDC)
 コネクタの料金モデルについて説明します。このモデルの設計にあたっては、料金を
@@ -28,14 +28,14 @@ Postgres CDC ClickPipes を利用しているすべてのお客様（既存・�
 
 
 
-## 料金体系 {#pricing-dimensions}
+## 料金体系 \\{#pricing-dimensions\\}
 
 料金には2つの主要な要素があります：
 
 1. **取り込みデータ**: Postgresから送信され、ClickHouseに取り込まれる未圧縮の生バイト数。
 2. **コンピュート**: サービスごとにプロビジョニングされるコンピュートユニットは、複数のPostgres CDC（変更データキャプチャ）ClickPipeを管理し、ClickHouse Cloudサービスで使用されるコンピュートユニットとは別です。この追加コンピュートは、Postgres CDC（変更データキャプチャ）ClickPipe専用です。コンピュートは個別のパイプごとではなく、サービスレベルで課金されます。各コンピュートユニットには2 vCPUと8 GBのRAMが含まれます。
 
-### 取り込みデータ {#ingested-data}
+### 取り込みデータ \\{#ingested-data\\}
 
 Postgres CDC（変更データキャプチャ）コネクタは、2つの主要なフェーズで動作します：
 
@@ -49,7 +49,7 @@ Postgres CDC（変更データキャプチャ）コネクタは、2つの主要�
 | **初期ロード / 再同期**        | $0.10 / GB |
 | **継続的レプリケーション（CDC（変更データキャプチャ））** | $0.20 / GB |
 
-### コンピュート {#compute}
+### コンピュート \\{#compute\\}
 
 この要素は、Postgres ClickPipe専用にサービスごとにプロビジョニングされるコンピュートユニットをカバーします。コンピュートは、サービス内のすべてのPostgresパイプ間で共有されます。**最初のPostgresパイプが作成されたときにプロビジョニングされ、Postgres CDC（変更データキャプチャ）パイプが残っていない場合に解放されます**。プロビジョニングされるコンピュートの量は、組織のティアによって異なります：
 
@@ -58,7 +58,7 @@ Postgres CDC（変更データキャプチャ）コネクタは、2つの主要�
 | **Basicティア**               | サービスあたり0.5コンピュートユニット — $0.10 / 時間 |
 | **ScaleまたはEnterpriseティア** | サービスあたり1コンピュートユニット — $0.20 / 時間   |
 
-### 例 {#example}
+### 例 \\{#example\\}
 
 サービスがScaleティアにあり、以下の構成であるとします：
 
@@ -66,7 +66,7 @@ Postgres CDC（変更データキャプチャ）コネクタは、2つの主要�
 - 各パイプは月あたり500 GBのデータ変更（CDC（変更データキャプチャ））を取り込む
 - 最初のパイプが開始されると、サービスはPostgres CDC（変更データキャプチャ）用に**Scaleティアで1コンピュートユニット**をプロビジョニングします
 
-#### 月額コストの内訳 {#cost-breakdown}
+#### 月額コストの内訳 \\{#cost-breakdown\\}
 
 **取り込みデータ（CDC（変更データキャプチャ））**：
 
@@ -87,7 +87,7 @@ $$1 \text{ コンピュートユニット} \times \$0.20/\text{時間} \times 73
 $$\$200 \text{ （取り込み）} + \$146 \text{ （コンピュート）} = \$346$$
 
 
-## Postgres CDC ClickPipes に関する FAQ {#faq-postgres-cdc-clickpipe}
+## Postgres CDC ClickPipes に関する FAQ \\{#faq-postgres-cdc-clickpipe\\}
 
 <details>
 

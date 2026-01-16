@@ -7,7 +7,7 @@ doc_type: 'reference'
 
 
 
-## varPop {#varpop}
+## varPop \\{#varpop\\}
 
 Calculates the population variance:
 

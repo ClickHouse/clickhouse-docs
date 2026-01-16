@@ -5,7 +5,7 @@ title: 'count'
 doc_type: 'reference'
 ---
 
-# count {#count}
+# count \{#count\}
 
 统计行数或非 NULL 值的数量。
 

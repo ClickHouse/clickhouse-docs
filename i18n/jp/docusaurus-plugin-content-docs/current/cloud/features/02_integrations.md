@@ -28,7 +28,7 @@ import Image from '@theme/IdealImage';
 ClickHouse Cloud を使用すると、お気に入りのツールやサービスを接続できます。
 
 
-## ClickHouse Cloud 向けマネージド連携パイプライン {#clickpipes}
+## ClickHouse Cloud 向けマネージド連携パイプライン \\{#clickpipes\\}
 
 ClickPipes は、さまざまなソースからのデータを数クリックで取り込めるようにするマネージドインテグレーションプラットフォームです。
 最も要求の厳しいワークロードを想定して設計されており、ClickPipes の堅牢でスケーラブルなアーキテクチャにより、一貫したパフォーマンスと高い信頼性を実現します。
@@ -53,7 +53,7 @@ ClickPipes は、長期的なストリーミング用途にも、単発のデー
 
 
 
-## 言語クライアント連携 {#language-client-integrations}
+## 言語クライアント連携 \\{#language-client-integrations\\}
 
 ClickHouse には複数の言語クライアント連携が用意されており、それぞれのドキュメントへのリンクは以下のとおりです。
 

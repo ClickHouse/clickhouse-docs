@@ -7,7 +7,7 @@ title: 'fileCluster'
 doc_type: 'reference'
 ---
 
-# fileCluster 表函数 {#filecluster-table-function}
+# fileCluster 表函数 \\{#filecluster-table-function\\}
 
 允许在集群中的多个节点上并行处理与指定路径匹配的文件。发起节点会与工作节点建立连接，展开文件路径中的通配符（globs），并将读文件任务分派给各个工作节点。每个工作节点都会向发起节点请求下一个要处理的文件，如此循环，直到所有任务完成（所有文件都被读取）。
 
@@ -16,13 +16,13 @@ doc_type: 'reference'
 如果这些文件在不同节点之间存在差异，则返回值无法预先确定，并且取决于各工作节点向发起节点请求任务的先后顺序。
 :::
 
-## 语法 {#syntax}
+## 语法 \\{#syntax\\}
 
 ```sql
 fileCluster(cluster_name, path[, format, structure, compression_method])
 ```
 
-## 参数 {#arguments}
+## 参数 \\{#arguments\\}
 
 | 参数                 | 说明                                                                                                                                                                               |
 |----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -32,7 +32,7 @@ fileCluster(cluster_name, path[, format, structure, compression_method])
 | `structure`          | 以 `'UserID UInt64, Name String'` 形式指定的表结构。用于确定列名和类型。类型：[String](../../sql-reference/data-types/string.md)。                                               |
 | `compression_method` | 压缩方法。支持的压缩类型包括 `gz`、`br`、`xz`、`zst`、`lz4` 和 `bz2`。                                                                                                             |
 
-## 返回值 {#returned_value}
+## 返回值 \\{#returned_value\\}
 
 具有指定格式和结构，并包含来自匹配指定路径的文件的数据的表。
 
@@ -81,10 +81,10 @@ SELECT * FROM fileCluster('my_cluster', 'file{1,2}.csv', 'CSV', 'i UInt32, s Str
 └────┴────────┘
 ```
 
-## 路径中的通配符 {#globs-in-path}
+## 路径中的通配符 \\{#globs-in-path\\}
 
 FileCluster 同样支持 [File](../../sql-reference/table-functions/file.md#globs-in-path) 表函数所支持的所有模式。
 
-## 相关 {#related}
+## 相关 \\{#related\\}
 
 - [file 表函数](../../sql-reference/table-functions/file.md)

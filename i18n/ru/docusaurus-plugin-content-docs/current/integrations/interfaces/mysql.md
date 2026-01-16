@@ -15,7 +15,7 @@ import mysql2 from '@site/static/images/interfaces/mysql2.png';
 import mysql3 from '@site/static/images/interfaces/mysql3.png';
 
 
-# Интерфейс MySQL {#mysql-interface}
+# Интерфейс MySQL \{#mysql-interface\}
 
 ClickHouse поддерживает сетевой протокол MySQL (MySQL wire protocol). Это позволяет некоторым клиентам, у которых нет нативных коннекторов для ClickHouse, использовать вместо них протокол MySQL. Он был проверен со следующими BI‑инструментами:
 
@@ -37,7 +37,7 @@ ClickHouse поддерживает сетевой протокол MySQL (MySQL
 Эту опцию нельзя отключить, и в редких пограничных случаях это может приводить к отличающемуся поведению между запросами, отправленными через обычный интерфейс ClickHouse и через MySQL‑интерфейс.
 ::::
 
-## Включение интерфейса MySQL в ClickHouse Cloud {#enabling-the-mysql-interface-on-clickhouse-cloud}
+## Включение интерфейса MySQL в ClickHouse Cloud \\{#enabling-the-mysql-interface-on-clickhouse-cloud\\}
 
 1. После создания сервиса ClickHouse Cloud нажмите кнопку `Connect`.
 
@@ -61,7 +61,7 @@ ClickHouse поддерживает сетевой протокол MySQL (MySQL
 
 <Image img={mysql3} alt="Экран учетных данных — строка подключения" size="md"/>
 
-## Создание нескольких пользователей MySQL в ClickHouse Cloud {#creating-multiple-mysql-users-in-clickhouse-cloud}
+## Создание нескольких пользователей MySQL в ClickHouse Cloud \\{#creating-multiple-mysql-users-in-clickhouse-cloud\\}
 
 По умолчанию существует встроенный пользователь `mysql4<subdomain>`, который использует тот же пароль, что и пользователь `default`. Часть `<subdomain>` — это первый сегмент имени хоста ClickHouse Cloud. Такой формат необходим для работы с инструментами, которые реализуют защищённое соединение, но не передают [информацию SNI в своём TLS-рукопожатии](https://www.cloudflare.com/learning/ssl/what-is-sni), из‑за чего невозможно выполнить внутреннюю маршрутизацию без дополнительной подсказки в имени пользователя (консольный клиент MySQL — один из таких инструментов).
 
@@ -101,7 +101,7 @@ ClickHouse поддерживает сетевой протокол MySQL (MySQL
 
 4. Используйте созданного пользователя для подключения к вашему сервису ClickHouse Cloud через интерфейс MySQL.
 
-### Устранение неполадок при работе с несколькими пользователями MySQL в ClickHouse Cloud {#troubleshooting-multiple-mysql-users-in-clickhouse-cloud}
+### Устранение неполадок при работе с несколькими пользователями MySQL в ClickHouse Cloud \{#troubleshooting-multiple-mysql-users-in-clickhouse-cloud\}
 
 Если вы создали нового пользователя MySQL и при подключении через CLI‑клиент MySQL видите следующую ошибку:
 
@@ -112,7 +112,7 @@ ERROR 2013 (HY000): Lost connection to MySQL server at 'reading authorization pa
 В этом случае убедитесь, что имя пользователя соответствует формату `mysql4<subdomain>_<username>`, как описано ([выше](#creating-multiple-mysql-users-in-clickhouse-cloud)).
 
 
-## Включение интерфейса MySQL для самоуправляемого ClickHouse {#enabling-the-mysql-interface-on-self-managed-clickhouse}
+## Включение интерфейса MySQL для самоуправляемого ClickHouse \{#enabling-the-mysql-interface-on-self-managed-clickhouse\}
 
 Добавьте параметр [mysql&#95;port](../../operations/server-configuration-parameters/settings.md#mysql_port) в конфигурационный файл сервера. Например, вы можете указать порт в новом XML-файле в каталоге `config.d/` [configuration files](/operations/configuration-files):
 
@@ -129,7 +129,7 @@ ERROR 2013 (HY000): Lost connection to MySQL server at 'reading authorization pa
 ```
 
 
-## Подключение MySQL к ClickHouse {#connect-mysql-to-clickhouse}
+## Подключение MySQL к ClickHouse \{#connect-mysql-to-clickhouse\}
 
 Следующая команда демонстрирует, как подключить клиент MySQL `mysql` к ClickHouse:
 

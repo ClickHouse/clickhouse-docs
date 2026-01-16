@@ -18,15 +18,15 @@ import gcp_mysql_cert from '@site/static/images/integrations/data-ingestion/clic
 import rootca from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/gcp/rootca.png';
 import Image from '@theme/IdealImage';
 
-# Руководство по настройке источника Cloud SQL for MySQL {#cloud-sql-for-mysql-source-setup-guide}
+# Руководство по настройке источника Cloud SQL for MySQL \\{#cloud-sql-for-mysql-source-setup-guide\\}
 
 Это пошаговое руководство по настройке экземпляра Cloud SQL for MySQL для репликации его данных с помощью MySQL ClickPipe.
 
-## Включение хранения бинарного лога {#enable-binlog-retention-gcp}
+## Включение хранения бинарного лога \\{#enable-binlog-retention-gcp\\}
 
 Бинарный лог — это набор файлов журнала, которые содержат информацию об изменениях данных, произведённых в экземпляре сервера MySQL. Файлы бинарного лога необходимы для репликации.
 
-### Включение бинарного логирования через PITR{#enable-binlog-logging-gcp}
+### Включение бинарного логирования через PITR\\{#enable-binlog-logging-gcp\\}
 
 Функция PITR определяет, включено или выключено бинарное логирование для MySQL в Google Cloud. Она настраивается в консоли Cloud Console при редактировании экземпляра Cloud SQL и прокрутке до следующего раздела.
 
@@ -48,7 +48,7 @@ import Image from '@theme/IdealImage';
 
 <Image img={gcp_mysql_flags} alt="Настройка флагов binlog в GCP" size="lg" border/>
 
-## Настройка пользователя базы данных {#configure-database-user-gcp}
+## Настройка пользователя базы данных \\{#configure-database-user-gcp\\}
 
 Подключитесь к экземпляру Cloud SQL MySQL от имени пользователя root и выполните следующие команды:
 
@@ -71,14 +71,14 @@ import Image from '@theme/IdealImage';
     GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
     ```
 
-## Настройка сетевого доступа {#configure-network-access-gcp-mysql}
+## Настройка сетевого доступа \\{#configure-network-access-gcp-mysql\\}
 
 Если вы хотите ограничить трафик к экземпляру Cloud SQL, добавьте [указанные статические NAT IP-адреса](../../index.md#list-of-static-ips) в список разрешённых IP-адресов вашего экземпляра Cloud SQL MySQL.
 Это можно сделать, отредактировав экземпляр или перейдя на вкладку `Connections` в боковой панели консоли Cloud.
 
 <Image img={gcp_mysql_ip} alt="Добавление IP-адресов в allowlist в GCP MySQL" size="lg" border/>
 
-## Загрузка и использование корневого сертификата ЦС {#download-root-ca-certificate-gcp-mysql}
+## Загрузка и использование корневого сертификата ЦС \\{#download-root-ca-certificate-gcp-mysql\\}
 
 Чтобы подключиться к экземпляру Cloud SQL, необходимо скачать корневой сертификат центра сертификации (ЦС).
 

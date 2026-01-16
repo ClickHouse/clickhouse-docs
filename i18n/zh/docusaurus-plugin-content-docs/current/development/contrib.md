@@ -7,7 +7,7 @@ title: '第三方库'
 doc_type: 'reference'
 ---
 
-# 第三方库 {#third-party-libraries}
+# 第三方库 \\{#third-party-libraries\\}
 
 ClickHouse 出于不同目的会使用第三方库，例如连接到其他数据库、在从磁盘加载/保存到磁盘时对数据进行解码/编码，或实现某些专用 SQL 函数。
 为避免依赖目标系统中可用的库，每个第三方库都会作为 Git 子模块导入到 ClickHouse 的源代码树中，并与 ClickHouse 一起编译和链接。
@@ -22,7 +22,7 @@ SELECT library_name, license_type, license_path FROM system.licenses ORDER BY li
 
 [示例](https://sql.clickhouse.com?query_id=478GCPU7LRTSZJBNY3EJT3)
 
-## 添加和维护第三方库 {#adding-and-maintaining-third-party-libraries}
+## 添加和维护第三方库 \\{#adding-and-maintaining-third-party-libraries\\}
 
 每个第三方库都必须位于 ClickHouse 仓库 `contrib/` 目录下的一个专用子目录中。
 避免直接把外部代码随意拷贝到库目录中。

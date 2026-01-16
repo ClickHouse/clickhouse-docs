@@ -22,7 +22,7 @@ AI システム向けに特別に設計された汎用的な API 標準だと考
 MCP の主な利点は、AI ライブラリ側がこのプロトコルへの対応を一度実装するだけでよい点です。
 一度対応すれば、すべての MCP 対応サービスへ即座にアクセス可能となり、AI ライブラリのメンテナンス担当者の工数を大幅に削減できます。
 
-## MCP のアーキテクチャとは？  {#mcp-architecture}
+## MCP のアーキテクチャとは？  \\{#mcp-architecture\\}
 
 MCP はクライアントサーバー型アーキテクチャに従います。
 
@@ -34,7 +34,7 @@ MCP はクライアントサーバー型アーキテクチャに従います。
 
 <Image img={overview} alt="MCP overview" size="lg"/>
 
-## ClickHouse に MCP Server はありますか？ {#clickhouse-mcp-server}
+## ClickHouse に MCP Server はありますか？ \\{#clickhouse-mcp-server\\}
 
 あります！
 [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) は次のツールを提供します：
@@ -45,7 +45,7 @@ MCP はクライアントサーバー型アーキテクチャに従います。
 
 ClickHouse Cloud でリモート MCP サーバーを利用する場合は、[Cloud におけるリモート MCP サーバー](/cloud/features/ai-ml/remote-mcp) のページを参照してください。
 
-## ClickHouse MCP Server を使用するためのガイド {#clickhouse-mcp-server-guides}
+## ClickHouse MCP Server を使用するためのガイド \\{#clickhouse-mcp-server-guides\\}
 
 以下に、ClickHouse MCP Server の使い方を説明したガイドを示します。
 

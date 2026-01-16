@@ -14,7 +14,7 @@ import visualization_2 from '@site/static/images/getting-started/example-dataset
 import visualization_3 from '@site/static/images/getting-started/example-datasets/visualization_3.png';
 import visualization_4 from '@site/static/images/getting-started/example-datasets/visualization_4.png';
 
-## Набор данных {#dataset}
+## Набор данных \\{#dataset\\}
 
 Этот набор данных от Foursquare доступен для [загрузки](https://docs.foursquare.com/data-products/docs/access-fsq-os-places)
 и может использоваться бесплатно по лицензии Apache 2.0.
@@ -23,7 +23,7 @@ import visualization_4 from '@site/static/images/getting-started/example-dataset
 таких как магазины, рестораны, парки, игровые площадки и памятники. Он также включает
 дополнительные метаданные об этих местах, такие как категории и данные из социальных сетей.
 
-## Исследование данных {#data-exploration}
+## Исследование данных \\{#data-exploration\\}
 
 Для исследования данных мы будем использовать [`clickhouse-local`](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) — небольшую утилиту командной строки,
 которая предоставляет полноценный движок ClickHouse. Также вы можете использовать
@@ -145,7 +145,7 @@ DESCRIBE s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*
     └─────────────────────┴─────────────────────────────┘
 ```
 
-## Загрузка данных в ClickHouse {#loading-the-data}
+## Загрузка данных в ClickHouse \\{#loading-the-data\\}
 
 Если вы хотите сохранять данные на диске, вы можете использовать `clickhouse-server`
 или ClickHouse Cloud.
@@ -257,7 +257,7 @@ INSERT INTO foursquare_mercator
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
 ```
 
-## Визуализация данных {#data-visualization}
+## Визуализация данных \\{#data-visualization\\}
 
 Чтобы увидеть, что можно сделать с этим набором данных, зайдите на [adsb.exposed](https://adsb.exposed/?dataset=Places&zoom=5&lat=52.3488&lng=4.9219).
 adsb.exposed изначально был создан сооснователем и CTO ClickHouse Алексеем Миловидовым для визуализации данных о полётах ADS‑B (Automatic Dependent Surveillance‑Broadcast), которые в тысячу раз больше по объёму. Во время внутреннего хакатона Алексей добавил в этот инструмент данные Foursquare.

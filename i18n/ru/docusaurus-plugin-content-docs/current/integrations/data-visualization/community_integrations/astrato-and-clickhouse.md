@@ -25,13 +25,13 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Подключение Astrato к ClickHouse {#connecting-astrato-to-clickhouse}
+# Подключение Astrato к ClickHouse \\{#connecting-astrato-to-clickhouse\\}
 
 <CommunityMaintainedBadge/>
 
 Astrato использует технологию Pushdown SQL для прямого выполнения запросов к ClickHouse Cloud или локальным развертываниям ClickHouse. Это означает, что вы можете получать доступ ко всем необходимым данным, опираясь на ведущую в отрасли производительность ClickHouse.
 
-## Необходимые данные для подключения {#connection-data-required}
+## Необходимые данные для подключения \\{#connection-data-required\\}
 
 При настройке подключения к данным вам потребуются:
 
@@ -41,7 +41,7 @@ Astrato использует технологию Pushdown SQL для прямо
 
 <ConnectionDetails />
 
-## Создание подключения данных к ClickHouse {#creating-the-data-connection-to-clickhouse}
+## Создание подключения данных к ClickHouse \\{#creating-the-data-connection-to-clickhouse\\}
 
 - В боковой панели выберите **Data** и перейдите на вкладку **Data Connection**
 (или откройте ссылку: https://app.astrato.io/data/sources)
@@ -70,7 +70,7 @@ Astrato использует технологию Pushdown SQL для прямо
 Если создаётся дубликат, к имени источника данных добавляется метка времени (timestamp).
 :::
 
-## Создание семантической модели / представления данных {#creating-a-semantic-model--data-view}
+## Создание семантической модели / представления данных \\{#creating-a-semantic-model--data-view\\}
 
 В редакторе представления данных (Data View) вы увидите все свои таблицы и схемы (Schemas) в ClickHouse. Выберите нужные, чтобы начать.
 
@@ -86,7 +86,7 @@ Astrato использует технологию Pushdown SQL для прямо
 
 <Image size="lg" img={astrato_4c_clickhouse_completed_data_view} alt="Подключение Astrato к ClickHouse User Access" border />
 
-## Создание дашборда {#creating-a-dashboard}
+## Создание дашборда \\{#creating-a-dashboard\\}
 
 Всего за несколько шагов вы можете построить свой первый график в Astrato.
 1. Откройте панель визуализаций
@@ -96,13 +96,13 @@ Astrato использует технологию Pushdown SQL для прямо
 
 <Image size="lg" img={astrato_5a_clickhouse_build_chart} alt="Astrato connect to ClickHouse User Access" border />
 
-### Просмотр сгенерированного SQL, лежащего в основе каждой визуализации {#view-generated-sql-supporting-each-visualization}
+### Просмотр сгенерированного SQL, лежащего в основе каждой визуализации \\{#view-generated-sql-supporting-each-visualization\\}
 
 Прозрачность и точность лежат в основе Astrato. Мы делаем видимым каждый сгенерированный запрос, предоставляя вам полный контроль. Все вычисления выполняются непосредственно в ClickHouse, что позволяет воспользоваться его скоростью при сохранении надежного уровня безопасности и управляемости.
 
 <Image size="lg" img={astrato_5b_clickhouse_view_sql} alt="Astrato connect to ClickHouse User Access" border />
 
-### Пример готового дашборда {#example-completed-dashboard}
+### Пример готового дашборда \\{#example-completed-dashboard\\}
 
 Красивый и полноценный дашборд или data‑приложение уже совсем близко. Чтобы увидеть больше наших примеров, перейдите в нашу демо‑галерею на сайте: https://astrato.io/gallery
 

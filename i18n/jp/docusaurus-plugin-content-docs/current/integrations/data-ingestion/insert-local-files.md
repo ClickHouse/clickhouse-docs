@@ -9,7 +9,7 @@ doc_type: 'guide'
 keywords: ['ローカルファイル インポート ClickHouse', 'ClickHouse ローカルファイル インポート', 'clickhouse-client ファイルアップロード']
 ---
 
-# ローカルファイルの挿入 {#insert-local-files}
+# ローカルファイルの挿入 \\{#insert-local-files\\}
 
 `clickhouse-client` を使用して、ローカルファイルを ClickHouse サービスにストリーミングできます。これにより、ClickHouse が備える数多くの強力かつ便利な関数を使ってデータを前処理できます。例を見てみましょう...
 

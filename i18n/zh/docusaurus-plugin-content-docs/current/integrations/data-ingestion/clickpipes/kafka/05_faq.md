@@ -11,9 +11,9 @@ integration:
   - category: 'clickpipes'
 ---
 
-## Kafka ClickPipes 常见问题 {#faq}
+## Kafka ClickPipes 常见问题 \\{#faq\\}
 
-### 常规 {#general}
+### 常规 \\{#general\\}
 
 <details>
 
@@ -79,7 +79,7 @@ ClickPipes 是独立于 ClickHouse 服务运行的单独云服务。它连接到
 
 </details>
 
-### Azure Event Hubs {#azure-eventhubs}
+### Azure Event Hubs \\{#azure-eventhubs\\}
 
 <details>
 

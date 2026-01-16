@@ -7,11 +7,11 @@ title: 'iceberg'
 doc_type: 'reference'
 ---
 
-# Табличная функция iceberg {#iceberg-table-function}
+# Табличная функция iceberg \\{#iceberg-table-function\\}
 
 Предоставляет табличный интерфейс только для чтения к таблицам Apache [Iceberg](https://iceberg.apache.org/), размещённым в Amazon S3, Azure, HDFS или в локальном хранилище.
 
-## Синтаксис {#syntax}
+## Синтаксис \\{#syntax\\}
 
 ```sql
 icebergS3(url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method])
@@ -27,16 +27,16 @@ icebergLocal(path_to_table, [,format] [,compression_method])
 icebergLocal(named_collection[, option=value [,..]])
 ```
 
-## Аргументы {#arguments}
+## Аргументы \\{#arguments\\}
 
 Описание аргументов совпадает с описанием аргументов табличных функций `s3`, `azureBlobStorage`, `HDFS` и `file` соответственно.
 `format` обозначает формат файлов с данными в таблице Iceberg.
 
-### Возвращаемое значение {#returned-value}
+### Возвращаемое значение \\{#returned-value\\}
 
 Таблица с указанной структурой для чтения данных из указанной таблицы Iceberg.
 
-### Пример {#example}
+### Пример \\{#example\\}
 
 ```sql
 SELECT * FROM icebergS3('http://test.s3.amazonaws.com/clickhouse-bucket/test_table', 'test', 'test')
@@ -46,7 +46,7 @@ SELECT * FROM icebergS3('http://test.s3.amazonaws.com/clickhouse-bucket/test_tab
 На данный момент ClickHouse поддерживает чтение версий v1 и v2 формата Iceberg с помощью табличных функций `icebergS3`, `icebergAzure`, `icebergHDFS` и `icebergLocal`, а также табличных движков `IcebergS3`, `icebergAzure`, `IcebergHDFS` и `IcebergLocal`.
 :::
 
-## Определение именованной коллекции {#defining-a-named-collection}
+## Определение именованной коллекции \\{#defining-a-named-collection\\}
 
 Ниже приведён пример настройки именованной коллекции для хранения URL-адреса и учётных данных:
 
@@ -69,7 +69,7 @@ SELECT * FROM icebergS3(iceberg_conf, filename = 'test_table')
 DESCRIBE icebergS3(iceberg_conf, filename = 'test_table')
 ```
 
-## Использование каталога данных {#iceberg-writes-catalogs}
+## Использование каталога данных \\{#iceberg-writes-catalogs\\}
 
 Таблицы Iceberg также можно использовать с различными каталогами данных, такими как [REST Catalog](https://iceberg.apache.org/rest-catalog-spec/), [AWS Glue Data Catalog](https://docs.aws.amazon.com/prescriptive-guidance/latest/serverless-etl-aws-glue/aws-glue-data-catalog.html) и [Unity Catalog](https://www.unitycatalog.io/).
 
@@ -113,7 +113,7 @@ SETTINGS
   storage_catalog_url = 'https://glue.us-east-1.amazonaws.com/iceberg/v1'
 ```
 
-## Эволюция схемы {#schema-evolution}
+## Эволюция схемы \\{#schema-evolution\\}
 
 На данный момент в ClickHouse можно читать таблицы Iceberg, схема которых со временем изменялась. Поддерживается чтение таблиц, в которых были добавлены и удалены столбцы, а также изменён их порядок. Можно также изменить столбец с обязательным значением на столбец, где допускается значение NULL. Кроме того, поддерживается допустимое приведение простых типов, а именно:  
 
@@ -123,15 +123,15 @@ SETTINGS
 
 Пока невозможно изменять вложенные структуры или типы элементов внутри массивов и map.
 
-## Отсечение партиций {#partition-pruning}
+## Отсечение партиций \\{#partition-pruning\\}
 
 ClickHouse поддерживает отсечение партиций при выполнении запросов SELECT к таблицам Iceberg, что помогает оптимизировать производительность запросов за счёт пропуска не относящихся к делу файлов данных. Чтобы включить отсечение партиций, установите `use_iceberg_partition_pruning = 1`. Для получения дополнительной информации об отсечении партиций в Iceberg см. https://iceberg.apache.org/spec/#partitioning
 
-## Time Travel {#time-travel}
+## Time Travel \\{#time-travel\\}
 
 ClickHouse поддерживает механизм time travel для таблиц Iceberg, позволяющий выполнять запросы к историческим данным по заданной метке времени или идентификатору снимка.
 
-## Обработка таблиц с удалёнными строками {#deleted-rows}
+## Обработка таблиц с удалёнными строками \\{#deleted-rows\\}
 
 В настоящее время поддерживаются только таблицы Iceberg, использующие [position deletes](https://iceberg.apache.org/spec/#position-delete-files). 
 
@@ -140,7 +140,7 @@ ClickHouse поддерживает механизм time travel для табл
 - [Equality deletes](https://iceberg.apache.org/spec/#equality-delete-files)
 - [Deletion vectors](https://iceberg.apache.org/spec/#deletion-vectors) (появились в версии 3)
 
-### Основы использования {#basic-usage}
+### Основы использования \\{#basic-usage\\}
 
 ```sql
  SELECT * FROM example_table ORDER BY 1 
@@ -154,7 +154,7 @@ ClickHouse поддерживает механизм time travel для табл
 
 Примечание: Нельзя указывать параметры `iceberg_timestamp_ms` и `iceberg_snapshot_id` одновременно в одном запросе.
 
-### Важные замечания {#important-considerations}
+### Важные замечания \\{#important-considerations\\}
 
 * **Снимки (snapshots)** обычно создаются, когда:
 * В таблицу записываются новые данные
@@ -162,11 +162,11 @@ ClickHouse поддерживает механизм time travel для табл
 
 * **Изменения схемы обычно не создают снимки** — это приводит к важным особенностям поведения при использовании time travel для таблиц, схему которых со временем изменяли.
 
-### Примеры сценариев {#example-scenarios}
+### Примеры сценариев \\{#example-scenarios\\}
 
 Во всех сценариях используется Spark, так как ClickHouse пока не поддерживает запись в таблицы Iceberg.
 
-#### Сценарий 1: изменение схемы без создания новых снимков {#scenario-1}
+#### Сценарий 1: изменение схемы без создания новых снимков \\{#scenario-1\\}
 
 Рассмотрим следующую последовательность операций:
 
@@ -226,7 +226,7 @@ ClickHouse поддерживает механизм time travel для табл
 * На ts1 и ts2: отображаются только исходные два столбца
 * На ts3: отображаются все три столбца; для цены первой строки указано значение NULL
 
-#### Сценарий 2: различия между исторической и текущей схемой {#scenario-2}
+#### Сценарий 2: различия между исторической и текущей схемой \\{#scenario-2\\}
 
 Запрос time travel, выполненный в текущий момент времени, может показать схему, отличающуюся от текущей схемы таблицы:
 
@@ -268,7 +268,7 @@ ClickHouse поддерживает механизм time travel для табл
 
 Это происходит потому, что `ALTER TABLE` не создаёт новый snapshot, а при работе с текущей таблицей Spark берёт значение `schema_id` из последнего файла метаданных, а не из snapshot.
 
-#### Сценарий 3: различия между исторической и текущей схемой {#scenario-3}
+#### Сценарий 3: различия между исторической и текущей схемой \\{#scenario-3\\}
 
 Второе ограничение состоит в том, что при использовании механизма time travel нельзя получить состояние таблицы до того, как в неё были записаны какие‑либо данные:
 
@@ -289,11 +289,11 @@ ClickHouse поддерживает механизм time travel для табл
 
 В ClickHouse поведение такое же, как в Spark. Вы можете мысленно заменить запросы SELECT в Spark на запросы SELECT в ClickHouse — и всё будет работать так же.
 
-## Определение файла метаданных {#metadata-file-resolution}
+## Определение файла метаданных \\{#metadata-file-resolution\\}
 
 При использовании табличной функции `iceberg` в ClickHouse системе необходимо найти нужный файл metadata.json, который описывает структуру таблицы Iceberg. Ниже описано, как работает процесс его определения:
 
-### Поиск кандидатов (в порядке приоритета) {#candidate-search}
+### Поиск кандидатов (в порядке приоритета) \\{#candidate-search\\}
 
 1. **Явное указание пути**:
 *Если вы задаёте `iceberg_metadata_file_path`, система будет использовать именно этот путь, добавляя его к пути каталога таблицы Iceberg.
@@ -308,7 +308,7 @@ ClickHouse поддерживает механизм time travel для табл
 3. **Поиск по умолчанию**:
 *Если ни один из вышеперечисленных параметров не задан, все файлы `.metadata.json` в каталоге `metadata` рассматриваются как кандидаты
 
-### Выбор самого нового файла {#most-recent-file}
+### Выбор самого нового файла \\{#most-recent-file\\}
 
 После определения кандидатов на основе приведённых выше правил система выбирает, какой файл является самым новым:
 
@@ -331,15 +331,15 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 
 **Примечание**: Хотя каталоги Iceberg обычно отвечают за разрешение метаданных, табличная функция `iceberg` в ClickHouse напрямую интерпретирует файлы, хранящиеся в S3, как таблицы Iceberg, поэтому важно понимать эти правила разрешения метаданных.
 
-## Metadata cache {#metadata-cache}
+## Metadata cache \\{#metadata-cache\\}
 
 Движок таблиц `Iceberg` и табличная функция `Iceberg` поддерживают кэш метаданных, в котором хранится информация о файлах manifest, списках manifest и JSON-файлах с метаданными. Кэш хранится в памяти. Этот функционал управляется настройкой `use_iceberg_metadata_files_cache`, которая по умолчанию включена.
 
-## Псевдонимы {#aliases}
+## Псевдонимы \\{#aliases\\}
 
 Табличная функция `iceberg` теперь является псевдонимом для `icebergS3`.
 
-## Виртуальные столбцы {#virtual-columns}
+## Виртуальные столбцы \\{#virtual-columns\\}
 
 - `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
 - `_file` — Имя файла. Тип: `LowCardinality(String)`.
@@ -347,7 +347,7 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 - `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
 - `_etag` — ETag файла. Тип: `LowCardinality(String)`. Если ETag неизвестен, значение — `NULL`.
 
-## Запись в таблицы Iceberg {#writes-into-iceberg-table}
+## Запись в таблицы Iceberg \\{#writes-into-iceberg-table\\}
 
 Начиная с версии 25.7, ClickHouse поддерживает модификацию пользовательских таблиц Iceberg.
 
@@ -357,12 +357,12 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 SET allow_experimental_insert_into_iceberg = 1;
 ```
 
-### Создание таблицы {#create-iceberg-table}
+### Создание таблицы \\{#create-iceberg-table\\}
 
 Чтобы создать собственную пустую таблицу Iceberg, используйте те же команды, что и для чтения, но явно укажите схему.
 Операции записи поддерживают все форматы данных из спецификации Iceberg, такие как Parquet, Avro и ORC.
 
-### Пример {#example-iceberg-writes-create}
+### Пример \\{#example-iceberg-writes-create\\}
 
 ```sql
 CREATE TABLE iceberg_writes_example
@@ -376,11 +376,11 @@ ENGINE = IcebergLocal('/home/scanhex12/iceberg_example/')
 Примечание: чтобы создать файл подсказки версии, включите настройку `iceberg_use_version_hint`.
 Если нужно сжать файл metadata.json, укажите имя кодека в настройке `iceberg_metadata_compression_method`.
 
-### INSERT {#writes-inserts}
+### INSERT \\{#writes-inserts\\}
 
 После создания новой таблицы вы можете добавить данные, используя стандартный синтаксис ClickHouse.
 
-### Пример {#example-iceberg-writes-insert}
+### Пример \\{#example-iceberg-writes-insert\\}
 
 ```sql
 INSERT INTO iceberg_writes_example VALUES ('Pavel', 777), ('Ivanov', 993);
@@ -400,7 +400,7 @@ x: Ivanov
 y: 993
 ```
 
-### DELETE {#iceberg-writes-delete}
+### DELETE \\{#iceberg-writes-delete\\}
 
 Удаление избыточных строк в формате merge-on-read также поддерживается в ClickHouse.
 Этот запрос создаст новый снимок (snapshot) с файлами position delete.
@@ -409,7 +409,7 @@ y: 993
 Это связано с тем, что Spark читает эти файлы по идентификаторам полей Parquet (field-id), в то время как ClickHouse в настоящее время не поддерживает запись этих идентификаторов при включённых флагах.
 Мы планируем исправить это поведение в будущем.
 
-### Пример {#example-iceberg-writes-delete}
+### Пример \\{#example-iceberg-writes-delete\\}
 
 ```sql
 ALTER TABLE iceberg_writes_example DELETE WHERE x != 'Ivanov';
@@ -424,11 +424,11 @@ x: Ivanov
 y: 993
 ```
 
-### Эволюция схемы {#iceberg-writes-schema-evolution}
+### Эволюция схемы \\{#iceberg-writes-schema-evolution\\}
 
 ClickHouse позволяет добавлять, удалять или изменять столбцы с простыми типами данных (не типа `Tuple`, `Array` или `Map`).
 
-### Пример {#example-iceberg-writes-evolution}
+### Пример \\{#example-iceberg-writes-evolution\\}
 
 ```sql
 ALTER TABLE iceberg_writes_example MODIFY COLUMN y Nullable(Int64);
@@ -487,7 +487,7 @@ x: Ivanov
 y: 993
 ```
 
-### Компакция {#iceberg-writes-compaction}
+### Компакция \\{#iceberg-writes-compaction\\}
 
 ClickHouse поддерживает компактацию таблиц Iceberg. В данный момент он может объединять файлы position delete с файлами данных с одновременным обновлением метаданных. Идентификаторы и метки времени предыдущих snapshot остаются без изменений, поэтому возможность time-travel по-прежнему доступна с теми же значениями.
 
@@ -508,7 +508,7 @@ x: Ivanov
 y: 993
 ```
 
-## См. также {#see-also}
+## См. также \\{#see-also\\}
 
 * [Движок Iceberg](/engines/table-engines/integrations/iceberg.md)
 * [Табличная функция icebergCluster](/sql-reference/table-functions/icebergCluster.md)

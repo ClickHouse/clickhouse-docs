@@ -5,7 +5,7 @@ title: 'groupUniqArray'
 doc_type: 'reference'
 ---
 
-# groupUniqArray {#groupuniqarray}
+# groupUniqArray \{#groupuniqarray\}
 
 Синтаксис: `groupUniqArray(x)` или `groupUniqArray(max_size)(x)`
 

@@ -13,7 +13,7 @@ import RowOriented from '@site/static/images/row-oriented.gif';
 import ColumnOriented from '@site/static/images/column-oriented.gif';
 
 
-# 列指向データベースとは何ですか？ {#what-is-a-columnar-database}
+# 列指向データベースとは何ですか？ \\{#what-is-a-columnar-database\\}
 
 列指向データベースは、各列のデータを独立して格納します。これにより、任意のクエリで実際に使用される列だけをディスクから読み取ることができます。その代償として、行全体に対して行う処理は、相対的に高コストになります。列指向データベースは、列指向データベース管理システムと呼ばれることもあります。ClickHouse はその典型的な例です。
 

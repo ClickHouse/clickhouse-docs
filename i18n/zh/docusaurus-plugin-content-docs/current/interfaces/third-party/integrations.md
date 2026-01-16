@@ -7,14 +7,14 @@ title: '由第三方开发者提供的集成库'
 doc_type: 'reference'
 ---
 
-# 来自第三方开发者的集成库 {#integration-libraries-from-third-party-developers}
+# 来自第三方开发者的集成库 \\{#integration-libraries-from-third-party-developers\\}
 
 :::warning 免责声明
 ClickHouse, Inc. **不**维护以下列出的这些工具和库，也未对其质量进行充分测试。
 如需官方集成，请参阅[集成页面](/integrations)。
 :::
 
-## 基础设施产品 {#infrastructure-products}
+## 基础设施产品 \\{#infrastructure-products\\}
 
 <details>
 <summary>关系型数据库管理系统</summary>
@@ -124,7 +124,7 @@ ClickHouse, Inc. **不**维护以下列出的这些工具和库，也未对其�
   - [MindsDB](https://github.com/mindsdb/mindsdb) - 与 ClickHouse 集成，使 ClickHouse 中的数据可供各类 AI/ML 模型使用。
 </details>
 
-## 编程语言生态系统 {#programming-language-ecosystems}
+## 编程语言生态系统 \\{#programming-language-ecosystems\\}
 
 <details>
 <summary>Python</summary>

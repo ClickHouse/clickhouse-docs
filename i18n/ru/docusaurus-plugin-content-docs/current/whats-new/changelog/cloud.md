@@ -8,7 +8,7 @@ doc_type: 'changelog'
 keywords: ['ClickHouse Cloud', 'журнал изменений облака', 'обновления облака', 'функции облака', 'релизы облака']
 ---
 
-# Журнал изменений облака {#cloud-changelog}
+# Журнал изменений облака \\{#cloud-changelog\\}
 
 import CloudChangelog from '@site/i18n/ru/docusaurus-plugin-content-docs/current/cloud/reference/01_changelog/01_changelog.md';
 

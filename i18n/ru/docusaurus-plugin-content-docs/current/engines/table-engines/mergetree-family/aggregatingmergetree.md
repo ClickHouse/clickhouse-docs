@@ -7,7 +7,7 @@ title: 'Движок таблицы AggregatingMergeTree'
 doc_type: 'reference'
 ---
 
-# Движок таблиц AggregatingMergeTree {#aggregatingmergetree-table-engine}
+# Движок таблиц AggregatingMergeTree \\{#aggregatingmergetree-table-engine\\}
 
 Движок наследуется от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) и изменяет логику слияния частей данных. ClickHouse заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) одной строкой (в пределах одной части данных), которая хранит комбинацию состояний агрегатных функций.
 
@@ -25,7 +25,7 @@ doc_type: 'reference'
 
 Имеет смысл использовать `AggregatingMergeTree`, если он уменьшает число строк на несколько порядков.
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \\{#creating-a-table\\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -66,14 +66,14 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   Все параметры имеют то же значение, что и в `MergeTree`.
 </details>
 
-## SELECT и INSERT {#select-and-insert}
+## SELECT и INSERT \\{#select-and-insert\\}
 
 Для вставки данных используйте запрос [INSERT SELECT](../../../sql-reference/statements/insert-into.md) с агрегирующими функциями с суффиксом `-State`.
 При выборке данных из таблицы `AggregatingMergeTree` используйте предложение `GROUP BY` и те же агрегирующие функции, что и при вставке данных, но с суффиксом `-Merge`.
 
 В результатах запроса `SELECT` значения типа `AggregateFunction` имеют двоичное представление, зависящее от реализации, для всех форматов вывода ClickHouse. Например, если вы выгружаете данные в формате `TabSeparated` с помощью запроса `SELECT`, то этот дамп можно загрузить обратно с помощью запроса `INSERT`.
 
-## Пример агрегированного материализованного представления {#example-of-an-aggregated-materialized-view}
+## Пример агрегированного материализованного представления \\{#example-of-an-aggregated-materialized-view\\}
 
 В этом примере предполагается, что у вас есть база данных под названием `test`. Создайте её, если она ещё не существует, с помощью приведённой ниже команды:
 
@@ -185,6 +185,6 @@ FROM test.visits;
 `AggregatingMergeTree` объединяет части. Это верно только в том случае, если `optimize_on_insert = 0`.
 :::
 
-## Связанные материалы {#related-content}
+## Связанные материалы \\{#related-content\\}
 
 - Блог: [Использование комбинаторов агрегатных функций в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)

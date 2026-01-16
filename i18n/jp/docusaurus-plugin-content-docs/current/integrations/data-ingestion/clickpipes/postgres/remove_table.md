@@ -15,7 +15,7 @@ import remove_table from '@site/static/images/integrations/data-ingestion/clickp
 
 場合によっては、Postgres ClickPipe から特定のテーブルを除外したほうがよいことがあります。たとえば、分析ワークロードに必要ないテーブルであれば、それをスキップすることで、ClickHouse におけるストレージおよびレプリケーションのコストを削減できます。
 
-## 特定のテーブルを削除する手順 {#remove-tables-steps}
+## 特定のテーブルを削除する手順 \\{#remove-tables-steps\\}
 
 最初の手順は、パイプからテーブルを外すことです。次の手順で行います。
 

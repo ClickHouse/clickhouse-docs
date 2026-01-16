@@ -20,7 +20,7 @@ doc_type: 'guide'
 * `list_tables_in_database` - 列出指定数据库中的所有表
 * `get_schema_for_table` - 获取指定表的 `CREATE TABLE` 语句（表结构）
 
-## 前提条件 {#prerequisites}
+## 前提条件 \{#prerequisites\}
 
 我们需要将 Anthropic 或 OpenAI 密钥添加为环境变量：
 
@@ -32,7 +32,7 @@ export OPENAI_API_KEY=your_api_key
 或者可以[提供一个配置文件](https://clickhouse.com/docs/interfaces/cli#ai-sql-generation-configuration)。
 
 
-## 连接到 ClickHouse SQL Playground {#connecting-to-the-clickhouse-sql-playground}
+## 连接到 ClickHouse SQL Playground \{#connecting-to-the-clickhouse-sql-playground\}
 
 我们将使用 [ClickHouse SQL Playground](https://sql.clickhouse.com/) 来演示该功能。
 
@@ -50,7 +50,7 @@ clickhouse client -mn \
 :::
 
 
-## 使用自然语言向 ClickHouse 提问 {#asking-clickhouse-questions-in-natural-language}
+## 使用自然语言向 ClickHouse 提问 \\{#asking-clickhouse-questions-in-natural-language\\}
 
 现在是开始提问的时候了！
 
@@ -60,7 +60,7 @@ clickhouse client -mn \
 你希望进行的分析类型（平均值、总量、排名等）\
 任何筛选条件
 
-### 查找高房价住房市场 {#finding-expensive-housing-markets}
+### 查找高房价住房市场 \{#finding-expensive-housing-markets\}
 
 我们先从一个关于房价的问题开始。SQL playground 中包含一个英国房价数据集，AI 会自动识别该数据集：
 
@@ -132,7 +132,7 @@ AI 会按以下步骤执行：
 如果我们想要继续追问，就需要从头重新表述问题。
 
 
-### 在大伦敦地区查找高价房产 {#finding-expensive-properties-in-greater-london}
+### 在大伦敦地区查找高价房产 \{#finding-expensive-properties-in-greater-london\}
 
 由于该功能不会保留会话历史，因此每个查询都必须是独立的。当提出后续问题时，你需要提供完整的上下文，而不是引用之前的查询。
 例如，在看到前面的结果之后，我们可能希望专门关注大伦敦地区的房产。此时不能只问“那大伦敦地区呢？”，而是需要包含完整的上下文信息：

@@ -11,28 +11,28 @@ keywords: ['ClickHouse Kafka Connect Sink', 'ClickHouse 用 Kafka コネクタ',
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
-# ClickHouse Kafka Connect Sink {#clickhouse-kafka-connect-sink}
+# ClickHouse Kafka Connect Sink \{#clickhouse-kafka-connect-sink\}
 
 :::note
 サポートが必要な場合は、[リポジトリで issue を作成](https://github.com/ClickHouse/clickhouse-kafka-connect/issues)するか、[ClickHouse public Slack](https://clickhouse.com/slack) で質問してください。
 :::
 **ClickHouse Kafka Connect Sink** は、Kafka トピックから ClickHouse テーブルへデータを配信する Kafka コネクタです。
 
-### ライセンス {#license}
+### ライセンス \\{#license\\}
 
 Kafka Connector Sink は [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0) の下で配布されています。
 
-### 環境要件 {#requirements-for-the-environment}
+### 環境要件 \\{#requirements-for-the-environment\\}
 
 [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html) フレームワーク v2.7 以降が環境にインストールされている必要があります。
 
-### バージョン互換性マトリクス {#version-compatibility-matrix}
+### バージョン互換性マトリクス \\{#version-compatibility-matrix\\}
 
 | ClickHouse Kafka Connect version | ClickHouse version | Kafka Connect | Confluent platform |
 | -------------------------------- | ------------------ | ------------- | ------------------ |
 | 1.0.0                            | &gt; 23.3          | &gt; 2.7      | &gt; 6.1           |
 
-### 主な機能 {#main-features}
+### 主な機能 \\{#main-features\\}
 
 * 標準で厳密な exactly-once セマンティクスを提供します。これは、新しい ClickHouse コア機能である [KeeperMap](https://github.com/ClickHouse/ClickHouse/pull/39976)（コネクタのステートストアとして使用）によって実現されており、ミニマルなアーキテクチャを可能にします。
 * サードパーティ製ステートストアのサポート: 現在はデフォルトでインメモリストアを使用しますが、KeeperMap も利用可能です（Redis は今後追加予定）。
@@ -41,13 +41,13 @@ Kafka Connector Sink は [Apache 2.0 License](https://www.apache.org/licenses/LI
 * 宣言されたスキーマあり／スキーマレスのどちらの場合でもデータ挿入をサポートします。
 * ClickHouse のすべてのデータ型をサポートします。
 
-### インストール手順 {#installation-instructions}
+### インストール手順 \\{#installation-instructions\\}
 
-#### 接続情報を取得する {#gather-your-connection-details}
+#### 接続情報を取得する \\{#gather-your-connection-details\\}
 
 <ConnectionDetails />
 
-#### 一般的なインストール手順 {#general-installation-instructions}
+#### 一般的なインストール手順 \{#general-installation-instructions\}
 
 このコネクタは、プラグインの実行に必要なすべてのクラスファイルを含む単一の JAR ファイルとして配布されています。
 
@@ -81,7 +81,7 @@ schemas.enable=false
 * Confluent Platform を使用している場合は、Confluent Control Center UI にログインし、利用可能なコネクタ一覧に ClickHouse Sink が表示されていることを確認します。
 
 
-### 設定オプション {#configuration-options}
+### 設定オプション \\{#configuration-options\\}
 
 ClickHouse Sink を ClickHouse サーバーに接続するには、次の情報を指定する必要があります。
 
@@ -122,17 +122,17 @@ ClickHouse Sink を ClickHouse サーバーに接続するには、次の情報�
 | `tolerateStateMismatch`                         | AFTER_PROCESSING に保存されている現在のオフセットよりも「前」のレコードを connector が破棄することを許可する（例: オフセット 250 が最後に記録されたオフセットである状態で、オフセット 5 が送信された場合など）                  | `"false"`                                                |
 | `ignorePartitionsWhenBatching`                  | insert 用にメッセージを収集する際にパーティションを無視する（ただし `exactlyOnce` が `false` の場合のみ）。パフォーマンス上の注意: Connector Task が多いほど、1 Task あたりに割り当てられる Kafka パーティションは少なくなり、効果が逓減しうる。 | `"false"`                                                |
 
-### 対象テーブル {#target-tables}
+### 対象テーブル \\{#target-tables\\}
 
 ClickHouse Connect Sink は Kafka のトピックからメッセージを読み取り、適切なテーブルに書き込みます。ClickHouse Connect Sink が書き込むのは既存のテーブルのみです。データの挿入を開始する前に、対象テーブルが ClickHouse 上に適切なスキーマで作成済みであることを必ず確認してください。
 
 各トピックごとに、ClickHouse 上に専用の対象テーブルが必要です。対象テーブル名は、元のトピック名と一致している必要があります。
 
-### 前処理 {#pre-processing}
+### 前処理 \\{#pre-processing\\}
 
 ClickHouse Kafka Connect Sink に送信される前に送信するメッセージを変換する必要がある場合は、[Kafka Connect Transformations](https://docs.confluent.io/platform/current/connect/transforms/overview.html) を使用してください。
 
-### サポートされるデータ型 {#supported-data-types}
+### サポートされるデータ型 \\{#supported-data-types\\}
 
 **スキーマを宣言している場合:**
 
@@ -166,11 +166,11 @@ ClickHouse Kafka Connect Sink に送信される前に送信するメッセー�
 
 レコードは JSON に変換され、[JSONEachRow](/interfaces/formats/JSONEachRow) フォーマットの値として ClickHouse に送信されます。
 
-### 設定レシピ {#configuration-recipes}
+### 設定レシピ \\{#configuration-recipes\\}
 
 すぐに使い始めるための、一般的な設定レシピをいくつか示します。
 
-#### 基本設定 {#basic-configuration}
+#### 基本設定 \{#basic-configuration\}
 
 最も基本的な設定です。Kafka Connect を分散モードで実行しており、`localhost:8443` で SSL 有効な ClickHouse サーバーが稼働していて、データはスキーマレスな JSON であることを前提としています。
 
@@ -200,7 +200,7 @@ ClickHouse Kafka Connect Sink に送信される前に送信するメッセー�
 ```
 
 
-#### 複数トピックを使用した基本構成 {#basic-configuration-with-multiple-topics}
+#### 複数トピックを使用した基本構成 \{#basic-configuration-with-multiple-topics\}
 
 このコネクタは複数のトピックからデータを取り込めます。
 
@@ -217,7 +217,7 @@ ClickHouse Kafka Connect Sink に送信される前に送信するメッセー�
 ```
 
 
-#### DLQ を使用した基本構成 {#basic-configuration-with-dlq}
+#### DLQ を使用した基本構成 \{#basic-configuration-with-dlq\}
 
 ```json
 {
@@ -233,9 +233,9 @@ ClickHouse Kafka Connect Sink に送信される前に送信するメッセー�
 ```
 
 
-#### 異なるデータ形式での利用 {#using-with-different-data-formats}
+#### 異なるデータ形式での利用 \\{#using-with-different-data-formats\\}
 
-##### Avro スキーマのサポート {#avro-schema-support}
+##### Avro スキーマのサポート \{#avro-schema-support\}
 
 ```json
 {
@@ -251,7 +251,7 @@ ClickHouse Kafka Connect Sink に送信される前に送信するメッセー�
 ```
 
 
-##### Protobuf スキーマのサポート {#protobuf-schema-support}
+##### Protobuf スキーマのサポート \{#protobuf-schema-support\}
 
 ```json
 {
@@ -269,7 +269,7 @@ ClickHouse Kafka Connect Sink に送信される前に送信するメッセー�
 注意：クラスが見つからないといった問題が発生する場合は、一部の環境には `protobuf` コンバーターが同梱されていないため、依存関係をバンドルした別の `jar` リリースを使用する必要がある場合があります。
 
 
-##### JSON スキーマのサポート {#json-schema-support}
+##### JSON スキーマのサポート \{#json-schema-support\}
 
 ```json
 {
@@ -283,7 +283,7 @@ ClickHouse Kafka Connect Sink に送信される前に送信するメッセー�
 ```
 
 
-##### 文字列のサポート {#string-support}
+##### 文字列のサポート \{#string-support\}
 
 このコネクタは、ClickHouse のさまざまなフォーマット（[JSON](/interfaces/formats/JSONEachRow)、[CSV](/interfaces/formats/CSV)、[TSV](/interfaces/formats/TabSeparated)）で String コンバーターをサポートします。
 
@@ -301,7 +301,7 @@ ClickHouse Kafka Connect Sink に送信される前に送信するメッセー�
 ```
 
 
-### ログ記録 {#logging}
+### ログ記録 \{#logging\}
 
 ログ記録は Kafka Connect Platform によって自動的に行われます。
 ログの出力先や形式は、Kafka Connect の[設定ファイル](https://docs.confluent.io/platform/current/connect/logging.html#log4j-properties-file)で設定できます。
@@ -315,11 +315,11 @@ confluent local services connect log
 詳細については、公式の[チュートリアル](https://docs.confluent.io/platform/current/connect/logging.html)を参照してください。
 
 
-### モニタリング {#monitoring}
+### モニタリング \\{#monitoring\\}
 
 ClickHouse Kafka Connect は、[Java Management Extensions (JMX)](https://www.oracle.com/technical-resources/articles/javase/jmx.html) を通じて実行時メトリクスを公開します。JMX は Kafka Connector でデフォルトで有効になっています。
 
-#### ClickHouse 固有のメトリクス {#clickhouse-specific-metrics}
+#### ClickHouse 固有のメトリクス \{#clickhouse-specific-metrics\}
 
 コネクタは、次の MBean 名でカスタムメトリクスを公開します。
 
@@ -334,7 +334,7 @@ com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
 | `taskProcessingTime`   | long | データを処理して ClickHouse に挿入するのに要した合計時間（ナノ秒）。 |
 
 
-#### Kafka Producer/Consumer のメトリクス {#kafka-producer-consumer-metrics}
+#### Kafka Producer/Consumer のメトリクス \\{#kafka-producer-consumer-metrics\\}
 
 このコネクタは、データフロー、スループット、およびパフォーマンスを把握するための標準的な Kafka Producer/Consumer メトリクスを公開します。
 
@@ -370,7 +370,7 @@ com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
 - **圧縮**: データ圧縮効率の測定
 - **接続状態**: ネットワーク接続性と安定性の監視
 
-#### Kafka Connect フレームワークのメトリクス {#kafka-connect-framework-metrics}
+#### Kafka Connect フレームワークのメトリクス \\{#kafka-connect-framework-metrics\\}
 
 コネクタは Kafka Connect フレームワークと統合されており、タスクのライフサイクルおよびエラー追跡のためのメトリクスを公開します。
 
@@ -403,7 +403,7 @@ com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
 - `put-batch-max-time-ms`: バッチ処理に要する最大時間
 - `source-record-poll-total`: 取得されたレコードの総数
 
-#### 監視のベストプラクティス {#monitoring-best-practices}
+#### 監視のベストプラクティス \\{#monitoring-best-practices\\}
 
 1. **コンシューマラグを監視する**: パーティションごとに `records-lag` を追跡して処理ボトルネックを特定します
 2. **エラーレートを追跡する**: `errors-total` と `records-skip-total` を監視してデータ品質の問題を検出します
@@ -414,17 +414,17 @@ com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
 
 JMX メトリクスの詳細な定義および Prometheus との統合については、[jmx-export-connector.yml](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/jmx-export-connector.yml) 設定ファイルを参照してください。
 
-### 制限事項 {#limitations}
+### 制限事項 \\{#limitations\\}
 
 - 削除はサポートされていません。
 - バッチサイズは Kafka Consumer のプロパティから継承されます。
 - exactly-once 処理のために KeeperMap を使用していて、オフセットが変更または巻き戻された場合、その特定のトピックの KeeperMap の内容を削除する必要があります（詳細については、以下のトラブルシューティングガイドを参照してください）。
 
-### パフォーマンスチューニングとスループット最適化 {#tuning-performance}
+### パフォーマンスチューニングとスループット最適化 \\{#tuning-performance\\}
 
 このセクションでは、ClickHouse Kafka Connect Sink のパフォーマンスチューニング戦略について説明します。高スループットなユースケースを扱う場合や、リソース使用状況を最適化してラグを最小化する必要がある場合、パフォーマンスチューニングは重要です。
 
-#### いつパフォーマンスチューニングが必要になるか {#when-is-performance-tuning-needed}
+#### いつパフォーマンスチューニングが必要になるか \\{#when-is-performance-tuning-needed\\}
 
 パフォーマンスチューニングが一般的に必要となるのは、次のようなシナリオです:
 
@@ -441,7 +441,7 @@ JMX メトリクスの詳細な定義および Prometheus との統合につい�
 - デフォルトのコネクタ設定で既にスループット要件を満たしている場合
 - ClickHouse クラスターが受信負荷を容易に処理できている場合
 
-#### データフローの理解 {#understanding-the-data-flow}
+#### データフローの理解 \\{#understanding-the-data-flow\\}
 
 チューニングを行う前に、コネクタ内でデータがどのように流れるかを理解しておくことが重要です。
 
@@ -453,11 +453,11 @@ JMX メトリクスの詳細な定義および Prometheus との統合につい�
 
 これら各段階でパフォーマンスを最適化できます。
 
-#### Kafka Connect のバッチサイズ調整 {#connect-fetch-vs-connector-poll}
+#### Kafka Connect のバッチサイズ調整 \\{#connect-fetch-vs-connector-poll\\}
 
 最初の最適化ポイントは、Kafka からコネクタが 1 バッチあたりに受け取るデータ量を制御することです。
 
-##### フェッチ設定 {#fetch-settings}
+##### フェッチ設定 \\{#fetch-settings\\}
 
 Kafka Connect（フレームワーク）は、コネクタとは独立してバックグラウンドで Kafka のトピックからメッセージを取得します。
 
@@ -469,7 +469,7 @@ Kafka Connect（フレームワーク）は、コネクタとは独立してバ�
 Confluent Cloud では、これらの設定を変更するには Confluent Cloud 経由でサポートケースを起票する必要があります。  
 :::  
 
-##### ポーリング設定 {#poll-settings}
+##### ポーリング設定 \\{#poll-settings\\}
 
 コネクタはフレームワークの内部バッファからメッセージをポーリングします。
 
@@ -480,7 +480,7 @@ Confluent Cloud では、これらの設定を変更するには Confluent Cloud
 Confluent Cloud では、これらの設定を調整するには Confluent Cloud を通じてサポートケースを起票する必要があります。  
 :::  
 
-##### 高スループット向けの推奨設定 {#recommended-batch-settings}
+##### 高スループット向けの推奨設定 \{#recommended-batch-settings\}
 
 ClickHouse で最適なパフォーマンスを得るには、より大きなバッチを使用することを推奨します：
 
@@ -509,11 +509,11 @@ consumer.fetch.max.wait.ms=300
 詳細: [Confluent documentation](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) | [Kafka documentation](https://kafka.apache.org/documentation/#consumerconfigs)
 
 
-#### Asynchronous inserts {#asynchronous-inserts}
+#### Asynchronous inserts \\{#asynchronous-inserts\\}
 
 コネクタが比較的小さなバッチを送信する場合や、バッチングの責務を ClickHouse 側に移すことでインジェストをさらに最適化したい場合、非同期インサートは強力な機能です。
 
-##### 非同期インサートを使用するタイミング {#when-to-use-async-inserts}
+##### 非同期インサートを使用するタイミング \\{#when-to-use-async-inserts\\}
 
 次のような場合に、非同期インサートの有効化を検討してください。
 
@@ -530,7 +530,7 @@ consumer.fetch.max.wait.ms=300
 - `wait_for_async_insert=0` を用いた厳密な 1 回限りのセマンティクスが要件と競合する場合
 - クライアント側でのバッチ処理の改善によって要件を満たせるユースケースである場合
 
-##### 非同期インサートの仕組み {#how-async-inserts-work}
+##### 非同期インサートの仕組み \\{#how-async-inserts-work\\}
 
 非同期インサートを有効にすると、ClickHouse は次のように動作します:
 
@@ -544,7 +544,7 @@ consumer.fetch.max.wait.ms=300
 
 これにより作成されるパーツの数が大幅に削減され、全体的なスループットが向上します。
 
-##### 非同期インサートの有効化 {#enabling-async-inserts}
+##### 非同期インサートの有効化 \{#enabling-async-inserts\}
 
 `clickhouseSettings` 構成パラメータに非同期インサート用の設定を追加します。
 
@@ -566,7 +566,7 @@ consumer.fetch.max.wait.ms=300
 * **`wait_for_async_insert=0`**: コネクタはバッファリング直後に即座に ACK を返す。パフォーマンスは向上するが、フラッシュ前にサーバーがクラッシュした場合、データが失われる可能性がある。
 
 
-##### 非同期挿入動作のチューニング {#tuning-async-inserts}
+##### 非同期挿入動作のチューニング \{#tuning-async-inserts\}
 
 非同期挿入におけるフラッシュ動作を細かく調整できます。
 
@@ -588,7 +588,7 @@ consumer.fetch.max.wait.ms=300
 * **リスク**: `wait_for_async_insert=0` の場合、サーバークラッシュ時のデータ損失の可能性、大きなバッファによるメモリ圧迫の可能性
 
 
-##### exactly-once セマンティクスを持つ非同期インサート {#async-inserts-with-exactly-once}
+##### exactly-once セマンティクスを持つ非同期インサート \{#async-inserts-with-exactly-once\}
 
 `exactlyOnce=true` と非同期インサートを併用する場合：
 
@@ -606,11 +606,11 @@ consumer.fetch.max.wait.ms=300
 async insert の詳細については、[ClickHouse の async inserts ドキュメント](/best-practices/selecting-an-insert-strategy#asynchronous-inserts)を参照してください。
 
 
-#### コネクタの並列度 {#connector-parallelism}
+#### コネクタの並列度 \\{#connector-parallelism\\}
 
 スループットを向上させるには並列度を高めます:
 
-##### コネクタあたりのタスク数 {#tasks-per-connector}
+##### コネクタあたりのタスク数 \{#tasks-per-connector\}
 
 ```json
 "tasks.max": "4"
@@ -625,7 +625,7 @@ async insert の詳細については、[ClickHouse の async inserts ドキュ�
 **推奨**: まずは `tasks.max` をトピックのパーティション数と同じ値に設定し、その後 CPU とスループットのメトリクスに基づいて調整してください。
 
 
-##### バッチ処理時にパーティションを無視する {#ignoring-partitions}
+##### バッチ処理時にパーティションを無視する \{#ignoring-partitions\}
 
 デフォルトでは、コネクタはパーティションごとにメッセージをバッチ処理します。より高いスループットを得るには、パーティションをまたいでバッチ化できます。
 
@@ -636,7 +636,7 @@ async insert の詳細については、[ClickHouse の async inserts ドキュ�
 **警告**: `exactlyOnce=false` の場合にのみ使用してください。この設定は、より大きなバッチを作成することでスループットを向上させられますが、パーティションごとの順序保証が失われます。
 
 
-#### Multiple high throughput topics {#multiple-high-throughput-topics}
+#### Multiple high throughput topics \\{#multiple-high-throughput-topics\\}
 
 コネクタが複数のトピックを購読するように設定されており、`topic2TableMap` を使用してトピックをテーブルにマッピングしていて、挿入処理がボトルネックとなることでコンシューマラグが発生している場合は、代わりにトピックごとに 1 つずつコネクタを作成することを検討してください。
 
@@ -644,7 +644,7 @@ async insert の詳細については、[ClickHouse の async inserts ドキュ�
 
 **推奨**: 高スループットのトピックが複数ある場合は、並列挿入スループットを最大化するために、トピックごとに 1 つのコネクタインスタンスをデプロイしてください。
 
-#### ClickHouse テーブルエンジンに関する考慮事項 {#table-engine-considerations}
+#### ClickHouse テーブルエンジンに関する考慮事項 \{#table-engine-considerations\}
 
 ユースケースに応じて適切な ClickHouse テーブルエンジンを選択します。
 
@@ -672,7 +672,7 @@ SETTINGS
 ```
 
 
-#### 接続プーリングとタイムアウト {#connection-pooling}
+#### 接続プーリングとタイムアウト \{#connection-pooling\}
 
 コネクタは ClickHouse への HTTP 接続を維持します。高遅延のネットワーク環境では、タイムアウト値を調整してください。
 
@@ -686,7 +686,7 @@ SETTINGS
 大きなバッチ処理でタイムアウトエラーが発生する場合は、これらの値を増やしてください。
 
 
-#### パフォーマンスの監視とトラブルシューティング {#monitoring-performance}
+#### パフォーマンスの監視とトラブルシューティング \\{#monitoring-performance\\}
 
 次の主要なメトリクスを監視します:
 
@@ -709,7 +709,7 @@ SETTINGS
 | OutOfMemory エラー | バッチサイズが大きすぎる | `max.poll.records`, `max.partition.fetch.bytes` を減らす |
 | タスク負荷が不均一 | パーティション分布が不均一 | パーティションを再バランスするか、`tasks.max` を調整する |
 
-#### ベストプラクティスのまとめ {#performance-best-practices}
+#### ベストプラクティスのまとめ \\{#performance-best-practices\\}
 
 1. **まずはデフォルト設定から始め**、実際のパフォーマンスを測定してからチューニングする
 2. **より大きなバッチを優先する**：可能であれば、1 回の挿入あたり 10,000～100,000 行を目標にする
@@ -720,7 +720,7 @@ SETTINGS
 7. **継続的にモニタリングする**：consumer lag、part 数、マージのアクティビティを追跡する
 8. **十分にテストする**：本番デプロイ前に、現実的な負荷の下で設定変更を必ずテストする
 
-#### 例：高スループット構成 {#example-high-throughput}
+#### 例：高スループット構成 \{#example-high-throughput\}
 
 以下は、高スループット向けに最適化した完全な構成例です。
 
@@ -764,16 +764,16 @@ SETTINGS
 * 厳密な順序保証よりもスループットを優先して最適化されています
 
 
-### トラブルシューティング {#troubleshooting}
+### トラブルシューティング \\{#troubleshooting\\}
 
-#### "State mismatch for topic `[someTopic]` partition `[0]`" {#state-mismatch-for-topic-sometopic-partition-0}
+#### "State mismatch for topic `[someTopic]` partition `[0]`" \\{#state-mismatch-for-topic-sometopic-partition-0\\}
 
 これは、KeeperMap に保存されているオフセットが Kafka に保存されているオフセットと異なる場合に発生します。通常は、トピックが削除された場合やオフセットが手動で調整された場合に発生します。
 これを修正するには、該当するトピックとパーティションに対して保存されている古い値を削除する必要があります。
 
 **注意: この調整は exactly-once セマンティクスに影響を与える可能性があります。**
 
-#### "コネクタはどのエラーをリトライしますか?" {#what-errors-will-the-connector-retry}
+#### "コネクタはどのエラーをリトライしますか?" \\{#what-errors-will-the-connector-retry\\}
 
 現時点では、一時的でリトライ可能なエラーの特定に注力しており、次のものが含まれます:
 
@@ -797,7 +797,7 @@ SETTINGS
 - `UnknownHostException` - ホスト名を解決できないときにスローされます。
 - `IOException` - ネットワークに問題があるときにスローされます。
 
-#### &quot;すべてのデータが空白／ゼロになる&quot; {#all-my-data-is-blankzeroes}
+#### &quot;すべてのデータが空白／ゼロになる&quot; \{#all-my-data-is-blankzeroes\}
 
 おそらく、データ内のフィールドがテーブルのフィールドと一致していません。これは特に CDC（および Debezium フォーマット）を使用している場合によく発生します。
 一般的な解決策の 1 つは、コネクタ設定に flatten 変換を追加することです。
@@ -811,7 +811,7 @@ transforms.flatten.delimiter=_
 これは、入れ子になった JSON データをフラットな JSON に変換します（区切り文字として `_` を使用します）。変換後、テーブル内のフィールドは「field1&#95;field2&#95;field3」形式（例: 「before&#95;id」「after&#95;id」など）に従うようになります。
 
 
-#### &quot;ClickHouse で Kafka のキーを使いたい&quot; {#i-want-to-use-my-kafka-keys-in-clickhouse}
+#### &quot;ClickHouse で Kafka のキーを使いたい&quot; \{#i-want-to-use-my-kafka-keys-in-clickhouse\}
 
 Kafka のキーはデフォルトでは value フィールドに保存されませんが、`KeyToValue` 変換を使用して、キーを新しい `_key` フィールド名として value フィールドに移動できます。
 

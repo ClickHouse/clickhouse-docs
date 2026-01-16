@@ -135,6 +135,6 @@ ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/stat
 
 当服务器重启时，配额会被重置。
 
-## 相关内容 {#related-content}
+## 相关内容 \\{#related-content\\}
 
 - 博文：[使用 ClickHouse 构建单页应用](https://clickhouse.com/blog/building-single-page-applications-with-clickhouse-and-http)

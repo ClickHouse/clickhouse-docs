@@ -8,7 +8,7 @@ title: 'Табличный движок File'
 doc_type: 'reference'
 ---
 
-# Движок таблицы File {#file-table-engine}
+# Движок таблицы File \\{#file-table-engine\\}
 
 Движок таблицы File хранит данные в файле в одном из поддерживаемых [форматов файлов](/interfaces/formats#formats-overview) (`TabSeparated`, `Native` и т. д.).
 
@@ -22,7 +22,7 @@ doc_type: 'reference'
 Этот движок в настоящее время недоступен в ClickHouse Cloud, пожалуйста, [используйте вместо него табличную функцию S3](/sql-reference/table-functions/s3.md).
 :::
 
-## Использование на сервере ClickHouse {#usage-in-clickhouse-server}
+## Использование на сервере ClickHouse \\{#usage-in-clickhouse-server\\}
 
 ```sql
 File(Format)
@@ -43,7 +43,7 @@ ClickHouse не позволяет указывать путь в файлово
 Будьте осторожны с этой функциональностью, так как ClickHouse не отслеживает внешние изменения таких файлов. Результат одновременной записи через ClickHouse и вне ClickHouse неопределён.
 :::
 
-## Пример {#example}
+## Пример \\{#example\\}
 
 **1.** Настройте таблицу `file_engine_table`:
 
@@ -74,7 +74,7 @@ SELECT * FROM file_engine_table
 └──────┴───────┘
 ```
 
-## Использование в clickhouse-local {#usage-in-clickhouse-local}
+## Использование в clickhouse-local \\{#usage-in-clickhouse-local\\}
 
 В [clickhouse-local](../../../operations/utilities/clickhouse-local.md) движок File, помимо параметра `Format`, принимает путь к файлу. Потоки ввода/вывода по умолчанию можно указывать с помощью числовых или понятных имён, таких как `0` или `stdin`, `1` или `stdout`. Можно читать и записывать сжатые файлы, исходя из дополнительного параметра движка или расширения файла (`gz`, `br` или `xz`).
 
@@ -84,7 +84,7 @@ SELECT * FROM file_engine_table
 $ echo -e "1,2\n3,4" | clickhouse-local -q "CREATE TABLE table (a Int64, b Int64) ENGINE = File(CSV, stdin); SELECT a, b FROM table; DROP TABLE table"
 ```
 
-## Подробности реализации {#details-of-implementation}
+## Подробности реализации \\{#details-of-implementation\\}
 
 - Несколько запросов `SELECT` могут выполняться одновременно, но запросы `INSERT` выполняются последовательно.
 - Поддерживается создание нового файла с помощью запроса `INSERT`.
@@ -95,20 +95,20 @@ $ echo -e "1,2\n3,4" | clickhouse-local -q "CREATE TABLE table (a Int64, b Int64
   - Индексы
   - Репликация
 
-## PARTITION BY {#partition-by}
+## PARTITION BY \\{#partition-by\\}
 
 `PARTITION BY` — необязательное выражение. Можно создавать отдельные файлы, разбивая данные на партиции по ключу партиционирования (partition key). В большинстве случаев ключ партиционирования не нужен, а если он и требуется, как правило, нет необходимости делать его более детализированным, чем до уровня месяца. Партиционирование не ускоряет выполнение запросов (в отличие от выражения ORDER BY). Никогда не используйте слишком мелкое партиционирование. Не разделяйте данные на партиции по идентификаторам или именам клиентов (вместо этого сделайте идентификатор или имя клиента первым столбцом в выражении ORDER BY).
 
 Для партиционирования по месяцам используйте выражение `toYYYYMM(date_column)`, где `date_column` — это столбец с датой типа данных [Date](/sql-reference/data-types/date.md). Имена партиций в этом случае имеют формат `"YYYYMM"`.
 
-## Виртуальные столбцы {#virtual-columns}
+## Виртуальные столбцы \\{#virtual-columns\\}
 
 - `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
 - `_file` — Имя файла. Тип: `LowCardinality(String)`.
 - `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер неизвестен, значение — `NULL`.
 - `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
 
-## Настройки {#settings}
+## Настройки \\{#settings\\}
 
 - [engine_file_empty_if_not_exists](/operations/settings/settings#engine_file_empty_if_not_exists) — позволяет выполнять выборку из несуществующего файла, возвращая пустой набор данных. По умолчанию отключена.
 - [engine_file_truncate_on_insert](/operations/settings/settings#engine_file_truncate_on_insert) — позволяет усекать файл перед вставкой в него данных. По умолчанию отключена.

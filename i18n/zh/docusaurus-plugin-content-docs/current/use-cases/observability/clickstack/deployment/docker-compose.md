@@ -33,20 +33,20 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 
 这些端口支持与多种遥测源集成，使 OpenTelemetry collector 能够在生产环境中满足多样化的摄取需求。
 
-### 适用场景 {#suitable-for}
+### 适用场景 \\{#suitable-for\\}
 
 * 本地测试
 * 概念验证
 * 对容错性无要求、单台服务器即可承载全部 ClickHouse 数据的生产环境部署
 * 部署 ClickStack，但将 ClickHouse 独立托管（例如通过 ClickHouse Cloud）
 
-## 部署步骤 {#deployment-steps}
+## 部署步骤 \\{#deployment-steps\\}
 
 <br/>
 
 <VerticalStepper headerLevel="h3">
 
-### 克隆仓库 {#clone-the-repo}
+### 克隆仓库 \\{#clone-the-repo\\}
 
 要使用 Docker Compose 进行部署，先克隆 ClickStack 仓库，进入该目录并运行 `docker-compose up`：
 
@@ -55,7 +55,7 @@ git clone https://github.com/ClickHouse/ClickStack.git
 docker compose up
 ```
 
-### 访问 HyperDX UI {#navigate-to-hyperdx-ui}
+### 访问 HyperDX UI \\{#navigate-to-hyperdx-ui\\}
 
 访问 [http://localhost:8080](http://localhost:8080) 以打开 HyperDX UI。
 
@@ -71,7 +71,7 @@ docker compose up
 
 有关使用其他 ClickHouse 实例的示例，请参阅 ["Create a ClickHouse Cloud connection"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)。
 
-### 完成连接配置 {#complete-connection-details}
+### 完成连接配置 \\{#complete-connection-details\\}
 
 要连接到已部署的 ClickHouse 实例，只需点击 **Create** 并接受默认设置。  
 
@@ -83,7 +83,7 @@ docker compose up
 
 </VerticalStepper>
 
-## 修改 compose 设置 {#modifying-settings}
+## 修改 compose 设置 \{#modifying-settings\}
 
 用户可以通过环境变量文件来修改该栈的设置，例如使用的版本。
 
@@ -113,11 +113,11 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 ```
 
 
-### 配置 OpenTelemetry collector {#configuring-collector}
+### 配置 OpenTelemetry collector \\{#configuring-collector\\}
 
 如有需要，可以修改 OTel collector 的配置——请参阅[“修改配置”](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration)。
 
-## 使用 ClickHouse Cloud {#using-clickhouse-cloud}
+## 使用 ClickHouse Cloud \{#using-clickhouse-cloud\}
 
 此发行版可以与 ClickHouse Cloud 一起使用。用户应当：
 

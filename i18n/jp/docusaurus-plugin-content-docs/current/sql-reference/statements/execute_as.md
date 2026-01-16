@@ -7,11 +7,11 @@ title: 'EXECUTE AS ステートメント'
 doc_type: 'reference'
 ---
 
-# EXECUTE AS ステートメント {#execute-as-statement}
+# EXECUTE AS ステートメント \\{#execute-as-statement\\}
 
 別のユーザーとしてクエリを実行できるようにします。
 
-## 構文 {#syntax}
+## 構文 \\{#syntax\\}
 
 ```sql
 EXECUTE AS target_user;
@@ -35,7 +35,7 @@ GRANT IMPERSONATE ON * TO user3;
 別のユーザーとして実行している間、関数 [currentUser()](/sql-reference/functions/other-functions#currentUser) はそのユーザーの名前を返し、
 関数 [authenticatedUser()](/sql-reference/functions/other-functions#authenticatedUser) は実際に認証されたユーザーの名前を返します。
 
-## 例 {#examples}
+## 例 \\{#examples\\}
 
 ```sql
 SELECT currentUser(), authenticatedUser(); -- outputs "default    default"

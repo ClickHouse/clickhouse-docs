@@ -10,7 +10,7 @@ doc_type: 'guide'
 [Apache Arrow](https://arrow.apache.org/) 是一种标准化的列式内存格式，在数据领域中已获得广泛认可。
 在本指南中，我们将学习如何使用 `python` 表函数来查询 Apache Arrow。
 
-## 设置 {#setup}
+## 设置 \\{#setup\\}
 
 我们先来创建一个虚拟环境：
 
@@ -40,7 +40,7 @@ ipython
 
 你也可以在 Python 脚本或常用的 Notebook 环境中使用这段代码。
 
-## 从文件创建 Apache Arrow 表 {#creating-an-apache-arrow-table-from-a-file}
+## 从文件创建 Apache Arrow 表 \\{#creating-an-apache-arrow-table-from-a-file\\}
 
 让我们首先使用 [AWS CLI 工具](https://aws.amazon.com/cli/) 下载 [Ookla 数据集](https://github.com/teamookla/ookla-open-data) 中的一个 Parquet 文件：
 
@@ -96,7 +96,7 @@ arrow_table.shape
 (3864546, 11)
 ```
 
-## 查询 Apache Arrow {#querying-apache-arrow}
+## 查询 Apache Arrow \\{#querying-apache-arrow\\}
 
 现在让我们从 chDB 查询该 Arrow 表。
 首先，导入 chDB：

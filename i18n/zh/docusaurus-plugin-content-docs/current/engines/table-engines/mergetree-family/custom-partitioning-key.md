@@ -7,7 +7,7 @@ title: '自定义分区键'
 doc_type: 'guide'
 ---
 
-# 自定义分区键 {#custom-partitioning-key}
+# 自定义分区键 \\{#custom-partitioning-key\\}
 
 :::note
 在大多数情况下，无需使用分区键；在其他大多数情况下，除非是针对按天分区较为常见的可观测性场景，否则也不需要比“按月”更细粒度的分区键。
@@ -137,7 +137,7 @@ drwxr-xr-x 2 clickhouse clickhouse 4096 Feb  1 16:48 detached
 
 ClickHouse 允许你对分区执行操作：删除分区、在表之间复制分区，或者创建备份。所有操作的完整列表请参见 [Manipulations With Partitions and Parts](/sql-reference/statements/alter/partition) 一节。
 
-## 使用分区键进行 GROUP BY 优化 {#group-by-optimisation-using-partition-key}
+## 使用分区键进行 GROUP BY 优化 \\{#group-by-optimisation-using-partition-key\\}
 
 对于某些表的分区键与查询的 GROUP BY 键的特定组合，可以针对每个分区独立执行聚合。
 这样在最后我们就不必合并所有执行线程产生的部分聚合结果，

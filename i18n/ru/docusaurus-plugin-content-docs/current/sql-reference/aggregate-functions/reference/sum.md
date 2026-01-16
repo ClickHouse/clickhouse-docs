@@ -5,7 +5,7 @@ title: 'sum'
 doc_type: 'reference'
 ---
 
-# sum {#sum}
+# sum \{#sum\}
 
 Вычисляет сумму. Может применяться только к числам.
 

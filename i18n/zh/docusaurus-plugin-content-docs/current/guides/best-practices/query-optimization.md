@@ -10,11 +10,11 @@ keywords: ['query optimization', 'performance', 'best practices', 'query tuning'
 import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices/query_optimization_diagram_1.png';
 import Image from '@theme/IdealImage';
 
-# 查询优化简明指南 {#a-simple-guide-for-query-optimization}
+# 查询优化简明指南 \\{#a-simple-guide-for-query-optimization\\}
 
 本节通过常见场景示例说明如何使用不同的性能优化技术，例如 [analyzer](/operations/analyzer)、[query profiling](/operations/optimizing-performance/sampling-query-profiler) 或 [avoid nullable Columns](/optimize/avoid-nullable-columns)，从而提升 ClickHouse 查询性能。
 
-## 理解查询性能 {#understand-query-performance}
+## 理解查询性能 \\{#understand-query-performance\\}
 
 思考性能优化的最佳时机，是在你第一次向 ClickHouse 摄取数据之前设计好[数据模式](/data-modeling/schema-design)时。 
 
@@ -26,7 +26,7 @@ ClickHouse 提供了一套丰富的工具，帮助你了解查询是如何执行
 
 在本节中，我们将介绍这些工具以及如何使用它们。 
 
-## 总体考量 {#general-considerations}
+## 总体考量 \\{#general-considerations\\}
 
 要理解查询性能，我们先来看一下在 ClickHouse 中执行查询时会发生什么。
 
@@ -54,7 +54,7 @@ ClickHouse 提供了一套丰富的工具，帮助你了解查询是如何执行
 
 在有了这种宏观认识之后，我们接下来看看 ClickHouse 提供了哪些工具，以及如何使用这些工具来跟踪影响查询性能的各项指标。 
 
-## 数据集 {#dataset}
+## 数据集 \\{#dataset\\}
 
 我们将使用一个真实示例来说明我们是如何处理查询性能的。
 
@@ -104,9 +104,9 @@ CREATE TABLE nyc_taxi.trips_small_inferred
 ORDER BY tuple()
 ```
 
-## 找出慢查询 {#spot-the-slow-queries}
+## 找出慢查询 \\{#spot-the-slow-queries\\}
 
-### 查询日志 {#query-logs}
+### 查询日志 \\{#query-logs\\}
 
 默认情况下，ClickHouse 会在 [查询日志](/operations/system-tables/query_log) 中收集并记录每条已执行查询的信息。这些数据存储在表 `system.query_log` 中。 
 

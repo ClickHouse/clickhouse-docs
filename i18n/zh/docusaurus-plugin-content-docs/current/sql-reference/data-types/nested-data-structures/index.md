@@ -7,9 +7,9 @@ title: 'Nested'
 doc_type: 'guide'
 ---
 
-# 嵌套 {#nested}
+# 嵌套 \\{#nested\\}
 
-## Nested(name1 Type1, Name2 Type2, ...) {#nestedname1-type1-name2-type2-}
+## Nested(name1 Type1, Name2 Type2, ...) \\{#nestedname1-type1-name2-type2-\\}
 
 嵌套数据结构就像表格单元格中的一张表。嵌套数据结构的参数——列名和类型——的指定方式与 [CREATE TABLE](../../../sql-reference/statements/create/table.md) 查询中相同。表中的每一行都可以对应嵌套数据结构中的任意数量的行。
 

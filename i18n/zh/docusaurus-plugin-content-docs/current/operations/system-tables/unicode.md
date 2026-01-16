@@ -6,7 +6,7 @@ title: 'system.unicode'
 doc_type: 'reference'
 ---
 
-# system.unicode {#systemunicode}
+# system.unicode \\{#systemunicode\\}
 
 `system.unicode` 表是一个虚拟表，用于提供关于 Unicode 字符及其属性的信息（[https://unicode-org.github.io/icu/userguide/strings/properties.html](https://unicode-org.github.io/icu/userguide/strings/properties.html)）。该表是动态生成的。
 

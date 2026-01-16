@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# 谁在使用 ClickHouse？ {#who-is-using-clickhouse}
+# 谁在使用 ClickHouse？ \\{#who-is-using-clickhouse\\}
 
 由于 ClickHouse 是一个开源产品，这个问题并不那么容易直接回答。你无需向任何人报备就可以开始使用 ClickHouse，只要获取源代码或预编译包即可。你不需要签任何合同，而 [Apache 2.0 许可证](https://github.com/ClickHouse/ClickHouse/blob/master/LICENSE) 允许不受限制地分发软件。
 

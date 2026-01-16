@@ -11,16 +11,16 @@ import PlayUI from '@site/static/images/play.png';
 import Image from '@theme/IdealImage';
 
 
-# HTTP 接口 {#http-interface}
+# HTTP 接口 \{#http-interface\}
 
-## 前提条件 {#prerequisites}
+## 前提条件 \\{#prerequisites\\}
 
 要完成本文中的示例，你需要：
 
 - 一个正在运行的 ClickHouse 服务器实例
 - 已安装 `curl`。在 Ubuntu 或 Debian 上，运行 `sudo apt install curl`，或参阅此[文档](https://curl.se/download.html)获取安装说明。
 
-## 概述 {#overview}
+## 概述 \{#overview\}
 
 HTTP 接口以 REST API 的形式，让你可以在任意平台上、通过任意编程语言使用 ClickHouse。与原生接口相比，HTTP 接口的功能更有限，但它对各类语言的支持更好。
 
@@ -41,7 +41,7 @@ Ok.
 另请参阅：[HTTP 响应码注意事项](#http_response_codes_caveats)。
 
 
-## Web 用户界面 {#web-ui}
+## Web 用户界面 \{#web-ui\}
 
 ClickHouse 提供了一个 Web 用户界面，可以通过以下地址进行访问：
 
@@ -68,7 +68,7 @@ Ok.
 ```
 
 
-## 通过 HTTP/HTTPS 查询 {#querying}
+## 通过 HTTP/HTTPS 查询 \{#querying\}
 
 要通过 HTTP/HTTPS 执行查询，有三种方式：
 
@@ -220,11 +220,11 @@ $ curl -X POST -F 'query=select {p1:UInt8} + {p2:UInt8}' -F "param_p1=3" -F "par
 ```
 
 
-## 通过 HTTP/HTTPS 执行 INSERT 查询 {#insert-queries}
+## 通过 HTTP/HTTPS 执行 INSERT 查询 \\{#insert-queries\\}
 
 用于传输数据的 `POST` 方法是执行 `INSERT` 查询所必需的。在这种情况下，你可以在 URL 参数中写入查询的开头部分，并使用 POST 传递要插入的数据。要插入的数据例如可以是来自 MySQL 的制表符分隔导出数据。通过这种方式，`INSERT` 查询可以替代 MySQL 中的 `LOAD DATA LOCAL INFILE`。
 
-### 示例 {#examples}
+### 示例 \{#examples\}
 
 要创建一张表：
 
@@ -287,7 +287,7 @@ $ echo 'DROP TABLE t' | curl 'http://localhost:8123/' --data-binary @-
 对于成功但不返回数据表的请求，将返回一个空的响应体。
 
 
-## 压缩 {#compression}
+## 压缩 \\{#compression\\}
 
 在传输大量数据或创建会立即被压缩的转储文件时，可以使用压缩来减少网络流量。
 
@@ -318,7 +318,7 @@ $ echo 'DROP TABLE t' | curl 'http://localhost:8123/' --data-binary @-
 某些 HTTP 客户端可能会默认解压缩来自服务器的数据（例如使用 `gzip` 和 `deflate`），因此即使正确使用了压缩设置，也可能会接收到已解压缩的数据。
 :::
 
-## 示例 {#examples-compression}
+## 示例 \{#examples-compression\}
 
 向服务器发送压缩数据：
 
@@ -350,7 +350,7 @@ curl -sS "http://localhost:8123/?enable_http_compression=1" \
 ```
 
 
-## 默认数据库 {#default-database}
+## 默认数据库 \{#default-database\}
 
 可以使用 `database` URL 参数或 `X-ClickHouse-Database` 请求头来指定默认数据库。
 
@@ -371,7 +371,7 @@ echo 'SELECT number FROM numbers LIMIT 10' | curl 'http://localhost:8123/?databa
 默认情况下，会使用在服务器设置中注册的数据库作为默认数据库。系统默认提供的数据库名为 `default`。或者，你也可以在表名前加上“数据库名.” 来显式指定要使用的数据库。
 
 
-## 身份验证 {#authentication}
+## 身份验证 \{#authentication\}
 
 可以通过三种方式之一来指定用户名和密码：
 
@@ -432,7 +432,7 @@ $ echo 'SELECT number FROM system.numbers LIMIT 10' | curl 'http://localhost:812
 * [SET](/sql-reference/statements/set)
 
 
-## 在 HTTP 协议中使用 ClickHouse 会话 {#using-clickhouse-sessions-in-the-http-protocol}
+## 在 HTTP 协议中使用 ClickHouse 会话 \{#using-clickhouse-sessions-in-the-http-protocol\}
 
 还可以在 HTTP 协议中使用 ClickHouse 会话。为此，需要在请求中添加 `session_id` `GET` 参数。可以使用任意字符串作为会话 ID。
 
@@ -474,7 +474,7 @@ X-ClickHouse-Progress: {"read_rows":"1000000","read_bytes":"8000000","total_rows
 HTTP 接口允许为查询传递外部数据（外部临时表）。有关更多信息，参见[“查询处理的外部数据”](/engines/table-engines/special/external-data)。
 
 
-## 响应缓冲 {#response-buffering}
+## 响应缓冲 \{#response-buffering\}
 
 可以在服务端启用响应缓冲。为此提供了以下 URL 参数：
 
@@ -501,7 +501,7 @@ curl -sS 'http://localhost:8123/?max_result_bytes=4000000&buffer_size=3000000&wa
 :::
 
 
-## 通过查询参数设置角色 {#setting-role-with-query-parameters}
+## 通过查询参数设置角色 \{#setting-role-with-query-parameters\}
 
 此功能在 ClickHouse 24.4 中引入。
 
@@ -535,7 +535,7 @@ curl -sS "http://localhost:8123?role=my_role&role=my_other_role" --data-binary "
 在这种情况下，`?role=my_role&role=my_other_role` 的效果类似于在执行该语句之前先执行 `SET ROLE my_role, my_other_role`。
 
 
-## HTTP 响应状态码注意事项 {#http_response_codes_caveats}
+## HTTP 响应状态码注意事项 \{#http_response_codes_caveats\}
 
 由于 HTTP 协议的限制，HTTP 200 响应状态码并不能保证查询成功执行。
 
@@ -628,18 +628,18 @@ __exception__
 ```
 
 
-## 带参数的查询 {#cli-queries-with-parameters}
+## 带参数的查询 \\{#cli-queries-with-parameters\\}
 
 可以创建带参数的查询，并通过相应的 HTTP 请求参数传递这些参数的值。要了解更多信息，请参阅 [CLI 中的带参数查询](../../interfaces/cli.md#cli-queries-with-parameters)。
 
-### 示例 {#example-3}
+### 示例 \{#example-3\}
 
 ```bash
 $ curl -sS "<address>?param_id=2&param_phrase=test" -d "SELECT * FROM table WHERE int_column = {id:UInt8} and string_column = {phrase:String}"
 ```
 
 
-### URL 参数中的制表符 {#tabs-in-url-parameters}
+### URL 参数中的制表符 \{#tabs-in-url-parameters\}
 
 查询参数会从“转义”的格式中解析出来。这样做有一些好处，例如可以将 null 明确地解析为 `\N`。这意味着制表符应编码为 `\t`（或 `\` 加一个制表符）。例如，下面的示例在 `abc` 和 `123` 之间包含一个实际的制表符，输入字符串会被拆分成两个值：
 
@@ -669,7 +669,7 @@ curl -sS "http://localhost:8123?param_arg1=abc%5C%09123" -d "SELECT splitByChar(
 ```
 
 
-## 预定义 HTTP 接口 {#predefined_http_interface}
+## 预定义 HTTP 接口 \{#predefined_http_interface\}
 
 ClickHouse 通过 HTTP 接口支持特定类型的查询。例如，可以通过以下方式向表中写入数据：
 
@@ -794,7 +794,7 @@ $ curl -v 'http://localhost:8123/predefined_query'
 
 不同 `type` 的配置方式将在下文进行介绍。
 
-### predefined&#95;query&#95;handler {#predefined&#95;query&#95;handler}
+### predefined&#95;query&#95;handler \\{#predefined&#95;query&#95;handler\\}
 
 `predefined_query_handler` 支持设置 `Settings` 和 `query_params` 的值。你可以在 `predefined_query_handler` 类型中配置 `query`。
 
@@ -836,7 +836,7 @@ max_threads    1
 ```
 
 
-#### 虚拟参数 `_request_body` {#virtual-param-request-body}
+#### 虚拟参数 `_request_body` \\{#virtual-param-request-body\\}
 
 除了 URL 参数、请求头和查询参数之外，`predefined_query_handler` 还支持一个特殊的虚拟参数 `_request_body`。
 它包含原始的 HTTP 请求体（字符串形式）。
@@ -874,7 +874,7 @@ curl -X POST 'http://localhost:8123/api/events?id=123' \
 :::
 
 
-### dynamic&#95;query&#95;handler {#dynamic_query_handler}
+### dynamic&#95;query&#95;handler \{#dynamic_query_handler\}
 
 在 `dynamic_query_handler` 中，查询语句以 HTTP 请求参数的形式编写。不同之处在于，在 `predefined_query_handler` 中，查询语句是写在配置文件里的。可以在 `dynamic_query_handler` 中配置 `query_param_name`。
 
@@ -905,7 +905,7 @@ max_final_threads   2
 ```
 
 
-### static {#static}
+### static \{#static\}
 
 `static` 可用于返回 [`content_type`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type)、[status](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) 和 `response_content`。其中，`response_content` 会返回指定的内容。
 
@@ -1100,7 +1100,7 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
 ```
 
 
-### redirect {#redirect}
+### redirect \{#redirect\}
 
 `redirect` 会执行一次到 `location` 的 `302` 重定向。
 
@@ -1122,7 +1122,7 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
 ```
 
 
-## HTTP 响应头 {#http-response-headers}
+## HTTP 响应头 \{#http-response-headers\}
 
 ClickHouse 允许配置自定义 HTTP 响应头，这些响应头可以应用到任何可配置的处理程序上。可以使用 `http_response_headers` 来设置这些响应头，该设置接收表示响应头名称及其值的键值对。此功能对于在 ClickHouse 的 HTTP 接口中统一实现自定义安全响应头、CORS 策略或其他任何 HTTP 响应头需求特别有用。
 
@@ -1159,7 +1159,7 @@ ClickHouse 允许配置自定义 HTTP 响应头，这些响应头可以应用到
 ```
 
 
-## HTTP 流式传输过程中异常的有效 JSON/XML 响应 {#valid-output-on-exception-http-streaming}
+## HTTP 流式传输过程中异常的有效 JSON/XML 响应 \{#valid-output-on-exception-http-streaming\}
 
 在通过 HTTP 执行查询时，即使部分数据已经发送，仍有可能发生异常。通常，异常会以纯文本形式发送给客户端。
 这意味着即便使用了某种特定的数据格式来输出数据，输出结果也可能在该数据格式的语义上变得无效。

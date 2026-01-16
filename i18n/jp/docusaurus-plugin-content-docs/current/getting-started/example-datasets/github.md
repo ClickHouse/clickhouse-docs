@@ -29,7 +29,7 @@ import superset_authors_matrix_v2 from '@site/static/images/getting-started/exam
 * `line_changes` - 2.7G - 7,535,157 行
 
 
-## データの生成 {#generating-the-data}
+## データの生成 \{#generating-the-data\}
 
 これは任意です。データは無償で提供しているため、[データのダウンロードと挿入](#downloading-and-inserting-the-data)を参照してください。
 
@@ -73,7 +73,7 @@ CREATE TABLE git.commits
 * Linux - `~/clickhouse git-import` - 160分
 
 
-## データのダウンロードと挿入 {#downloading-and-inserting-the-data}
+## データのダウンロードと挿入 \{#downloading-and-inserting-the-data\}
 
 以下のデータを使用して、動作する環境を再現できます。また、このデータセットは play.clickhouse.com でも利用できます。詳細については [Queries](#queries) を参照してください。
 
@@ -214,13 +214,13 @@ FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhou
 ```
 
 
-## クエリ {#queries}
+## クエリ \\{#queries\\}
 
 このツールは、ヘルプ出力を通じていくつかのクエリ例を提示します。本セクションでは、それらに対する解説に加え、関連する補足的な問いにも対応します。ここで扱うクエリは、ツールが出力する任意の順序とは異なり、おおよそ簡単なものから複雑なものへと並べています。
 
 このデータセットは、`git_clickhouse` データベースとして [play.clickhouse.com](https://sql.clickhouse.com?query_id=DCQPNPAIMAQXRLHYURLKVJ) で利用可能です。以降のすべてのクエリについて、この環境へのリンクを提示し、必要に応じてデータベース名を調整しています。なお、データ収集時期の違いにより、play 環境での実行結果は、ここに示す結果と異なる場合があります。
 
-### 単一ファイルの履歴 {#history-of-a-single-file}
+### 単一ファイルの履歴 \{#history-of-a-single-file\}
 
 最も単純なクエリです。ここでは `StorageReplicatedMergeTree.cpp` ファイルに対するすべてのコミットメッセージを取得します。これらの方が一般に興味深いため、最新のメッセージが先に来るようにソートします。
 
@@ -296,7 +296,7 @@ LIMIT 10
 なお、ファイルの[行ごとのコミット履歴](#line-by-line-commit-history-of-a-file)をリネームも考慮して取得する、より複雑なクエリのバリエーションもあります。
 
 
-### 現在アクティブなファイルを特定する {#find-the-current-active-files}
+### 現在アクティブなファイルを特定する \{#find-the-current-active-files\}
 
 これは、リポジトリ内の現在のファイルだけを対象にしたい後続の分析において重要になります。ここでは、名前変更や削除（およびその後の再追加／再命名）が行われていないファイルを、現在のファイル群として推定します。
 
@@ -428,7 +428,7 @@ git ls-files | grep -v -E 'generated\.cpp|^(contrib|docs?|website|libs/(libcityh
 これらの差分は、本分析に大きな影響を与えるものではありません。**このクエリの改良版のご提供を歓迎します**。
 
 
-### 変更回数が最も多いファイルを一覧表示する {#list-files-with-most-modifications}
+### 変更回数が最も多いファイルを一覧表示する \{#list-files-with-most-modifications\}
 
 現在のファイルのみに対象を絞り、削除と追加の合計を変更回数として扱います。
 
@@ -484,7 +484,7 @@ LIMIT 10
 ```
 
 
-### コミットは通常、週のどの曜日に行われていますか？ {#what-day-of-the-week-do-commits-usually-occur}
+### コミットは通常、週のどの曜日に行われていますか？ \{#what-day-of-the-week-do-commits-usually-occur\}
 
 [play](https://sql.clickhouse.com?query_id=GED2STFSYJDRAA59H8RLIV)
 
@@ -510,7 +510,7 @@ GROUP BY dayOfWeek(time) AS day_of_week
 金曜日に少し生産性が落ちているのも自然ですね。週末にもコードをコミットしてくれているのは素晴らしいことです！コントリビューターの皆さんに心から感謝します！
 
 
-### サブディレクトリ／ファイルの履歴 - 行数、コミット数、コントリビューター数の時系列推移 {#history-of-subdirectoryfile---number-of-lines-commits-and-contributors-over-time}
+### サブディレクトリ／ファイルの履歴 - 行数、コミット数、コントリビューター数の時系列推移 \{#history-of-subdirectoryfile---number-of-lines-commits-and-contributors-over-time\}
 
 フィルタリングしない場合、クエリ結果が非常に大きくなり、表示や可視化が現実的ではありません。そのため、次の例ではファイルまたはサブディレクトリでフィルタリングできるようにしています。ここでは `toStartOfWeek` 関数を使って週単位でグループ化していますが、必要に応じて変更してください。
 
@@ -555,7 +555,7 @@ LIMIT 10
 <Image img={superset_commits_authors} alt="コミット数と著者" size="md" />
 
 
-### 著者数が最も多いファイルを一覧表示 {#list-files-with-maximum-number-of-authors}
+### 著者数が最も多いファイルを一覧表示 \{#list-files-with-maximum-number-of-authors\}
 
 現在存在するファイルのみに限定します。
 
@@ -611,7 +611,7 @@ LIMIT 10
 ```
 
 
-### リポジトリ内で最も古いコード行 {#oldest-lines-of-code-in-the-repository}
+### リポジトリ内で最も古いコード行 \{#oldest-lines-of-code-in-the-repository\}
 
 現在存在するファイルのみを対象とします。
 
@@ -669,7 +669,7 @@ LIMIT 10
 ```
 
 
-### 履歴が最も長いファイル {#files-with-longest-history}
+### 履歴が最も長いファイル \{#files-with-longest-history\}
 
 現在存在するファイルのみが対象です。
 
@@ -728,7 +728,7 @@ LIMIT 10
 私たちのコアデータ構造である Merge Tree は、長年にわたって数多くの変更が加えられており、今も絶えず進化し続けています。
 
 
-### 今月におけるドキュメントとコード別のコントリビューター分布 {#distribution-of-contributors-with-respect-to-docs-and-code-over-the-month}
+### 今月におけるドキュメントとコード別のコントリビューター分布 \{#distribution-of-contributors-with-respect-to-docs-and-code-over-the-month\}
 
 **データ取得時、`docs/` フォルダーにはコミット履歴が非常に入り組んでいたため、その変更は除外されています。そのため、このクエリの結果は正確ではありません。**
 
@@ -792,7 +792,7 @@ FROM
 月末近くに少し多くなる傾向はありますが、全体としては概ね良好に均等分布しています。繰り返しになりますが、データ挿入時に適用される docs フィルターによる絞り込みの影響で、この数値の信頼性はあまり高くありません。
 
 
-### 最も幅広く影響を与えている著者 {#authors-with-the-most-diverse-impact}
+### 最も幅広く影響を与えている著者 \{#authors-with-the-most-diverse-impact\}
 
 ここでの「多様性」とは、著者が貢献したユニークなファイルの数を指します。
 
@@ -870,7 +870,7 @@ LIMIT 10
 ```
 
 
-### ある著者のお気に入りファイル {#favorite-files-for-an-author}
+### ある著者のお気に入りファイル \{#favorite-files-for-an-author\}
 
 ここでは創業者である [Alexey Milovidov](https://github.com/alexey-milovidov) を選択し、分析対象を現行のファイルに限定します。
 
@@ -957,7 +957,7 @@ LIMIT 10
 こちらのほうが、彼の関心分野をよりよく反映しているかもしれません。
 
 
-### 著者数が少ない最大のファイル {#largest-files-with-lowest-number-of-authors}
+### 著者数が少ない最大のファイル \{#largest-files-with-lowest-number-of-authors\}
 
 このためには、まず最大のファイルを特定する必要があります。すべてのコミット履歴から、すべてのファイルについて完全なファイル再構築を行って推定するのは、計算コストが非常に高くなります。
 
@@ -1130,7 +1130,7 @@ LIMIT 10
 ```
 
 
-### 時間別（曜日別、著者別、特定サブディレクトリ別）のコミット数とコード行数の分布 {#commits-and-lines-of-code-distribution-by-time-by-weekday-by-author-for-specific-subdirectories}
+### 時間別（曜日別、著者別、特定サブディレクトリ別）のコミット数とコード行数の分布 \{#commits-and-lines-of-code-distribution-by-time-by-weekday-by-author-for-specific-subdirectories\}
 
 ここでは、曜日ごとの追加行数と削除行数として解釈します。この例では、[Functions ディレクトリ](https://github.com/ClickHouse/ClickHouse/tree/master/src/Functions)に注目します。
 
@@ -1258,7 +1258,7 @@ FROM
 ```
 
 
-### どの著者が他の著者のコードを書き換える傾向があるかを示す著者間マトリクス {#matrix-of-authors-that-shows-what-authors-tends-to-rewrite-another-authors-code}
+### どの著者が他の著者のコードを書き換える傾向があるかを示す著者間マトリクス \{#matrix-of-authors-that-shows-what-authors-tends-to-rewrite-another-authors-code\}
 
 `sign = -1` はコードの削除を示します。句読点と空行の挿入は除外します。
 
@@ -1313,7 +1313,7 @@ Alexey は明らかに他人のコードを削除するのが好きなようで�
 <Image img={superset_authors_matrix_v2} alt="Superset authors matrix v2（Superset の author 行列 v2）" size="md" />
 
 
-### 曜日ごとに貢献割合が最も高いのは誰か？ {#who-is-the-highest-percentage-contributor-per-day-of-week}
+### 曜日ごとに貢献割合が最も高いのは誰か？ \{#who-is-the-highest-percentage-contributor-per-day-of-week\}
 
 コミット数だけで見ると:
 
@@ -1430,7 +1430,7 @@ INNER JOIN
 ```
 
 
-### リポジトリ全体におけるコードの年代分布 {#distribution-of-code-age-across-repository}
+### リポジトリ全体におけるコードの年代分布 \\{#distribution-of-code-age-across-repository\\}
 
 解析対象は現存するファイルのみに限定します。結果を簡潔に示すため、ルートフォルダーごとに階層の深さを 2、各ルートフォルダーあたり 5 ファイルまでに制限しています。必要に応じて調整してください。
 
@@ -1514,7 +1514,7 @@ LIMIT 5 BY root
 ```
 
 
-### ある著者のコードのうち、他の著者によって削除された割合はどれくらいか？ {#what-percentage-of-code-for-an-author-has-been-removed-by-other-authors}
+### ある著者のコードのうち、他の著者によって削除された割合はどれくらいか？ \{#what-percentage-of-code-for-an-author-has-been-removed-by-other-authors\}
 
 この問いでは、ある著者が記述した行数を、その著者のコードから他のコントリビューターによって削除された行数の合計で割った値が必要です。
 
@@ -1565,7 +1565,7 @@ LIMIT 10
 ```
 
 
-### 最も多く書き換えが行われたファイルを一覧表示するには？ {#list-files-that-were-rewritten-most-number-of-times}
+### 最も多く書き換えが行われたファイルを一覧表示するには？ \{#list-files-that-were-rewritten-most-number-of-times\}
 
 この問いに対する最も単純なアプローチは、（現在存在するファイルに限定して）パスごとに行の変更回数を単純にカウントすることです。例えば:
 
@@ -1708,7 +1708,7 @@ LIMIT 10
 ```
 
 
-### どの曜日に追加されたコードが、リポジトリ内に最も長く残りやすいでしょうか？ {#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository}
+### どの曜日に追加されたコードが、リポジトリ内に最も長く残りやすいでしょうか？ \{#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository\}
 
 このためには、コードの行を一意に特定する必要があります。同じ行がファイル内に複数回現れる可能性があるため、パスと行の内容を使って推定します。
 
@@ -1771,7 +1771,7 @@ GROUP BY dayOfWeek(added_day) AS day_of_week_added
 ```
 
 
-### ファイルを平均コード年齢順にソート {#files-sorted-by-average-code-age}
+### ファイルを平均コード年齢順にソート \{#files-sorted-by-average-code-age\}
 
 このクエリは、[どの曜日に追加されたコードがリポジトリに残りやすいか](#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository) と同じ原理を使用し、パスと行の内容によってコード行を一意に識別することを目的としています。
 これにより、ある行が追加されてから削除されるまでの期間を特定できます。ただしここでは、現在存在するファイルかつ現在のコードのみを対象とし、各ファイルについて行ごとの期間を平均します。
@@ -1862,7 +1862,7 @@ LIMIT 10
 ```
 
 
-### 誰がより多くのテスト / CPP コード / コメントを書く傾向があるのか？ {#who-tends-to-write-more-tests--cpp-code--comments}
+### 誰がより多くのテスト / CPP コード / コメントを書く傾向があるのか？ \{#who-tends-to-write-more-tests--cpp-code--comments\}
 
 この問いにはいくつかのアプローチがあります。コードとテストの比率に着目すると、このクエリは比較的単純です。`tests` を含むディレクトリへのコントリビューション数を数え、それを全体のコントリビューション数に対する比率として計算します。
 
@@ -1996,7 +1996,7 @@ LIMIT 10
 ここではコードへの貢献量でソートしている点に注意してください。主要なコントリビューターはいずれもコード（コメントではなく）の割合が驚くほど高く、そのことがコードの可読性の高さの一因になっています。
 
 
-### コード／コメントの割合という観点で、ある開発者のコミットは時間とともにどのように変化するか？ {#how-does-an-authors-commits-change-over-time-with-respect-to-codecomments-percentage}
+### コード／コメントの割合という観点で、ある開発者のコミットは時間とともにどのように変化するか？ \{#how-does-an-authors-commits-change-over-time-with-respect-to-codecomments-percentage\}
 
 開発者ごとにこれを算出するのは容易です。
 
@@ -2114,7 +2114,7 @@ LIMIT 20
 心強いことに、コメント率はほぼ一定のままで、著者が長く貢献し続けても低下していません。
 
 
-### コードが書き換えられるまでの平均時間と中央値（コード劣化の半減期）はどれくらいですか？ {#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay}
+### コードが書き換えられるまでの平均時間と中央値（コード劣化の半減期）はどれくらいですか？ \{#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay\}
 
 すべてのファイルを対象に書き換えを特定するために、[最も多くの回数書き換えられたファイル、または最も多くの著者によって編集されたファイルを一覧表示する](#list-files-that-were-rewritten-most-number-of-times) 場合と同じ原理を用いることができます。各ファイルについて、書き換えと書き換えの間の時間を計算するためにウィンドウ関数を使用します。これにより、すべてのファイルを対象に平均と中央値を算出できます。
 
@@ -2175,7 +2175,7 @@ FROM rewrites
 ```
 
 
-### コードが書き直される可能性が最も高いという意味で、いつコードを書くのが最悪でしょうか？ {#what-is-the-worst-time-to-write-code-in-sense-that-the-code-has-highest-chance-to-be-re-written}
+### コードが書き直される可能性が最も高いという意味で、いつコードを書くのが最悪でしょうか？ \{#what-is-the-worst-time-to-write-code-in-sense-that-the-code-has-highest-chance-to-be-re-written\}
 
 [コードが書き直されるまでの平均時間と中央値（コード劣化の半減期）はどれくらいか？](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay) および [最も多くの回数、または最も多くの著者によって書き直されたファイルを一覧表示](#list-files-that-were-rewritten-most-number-of-times) と似ていますが、ここでは曜日ごとに集計します。必要に応じて、たとえば年の月ごとなどに調整してください。
 
@@ -2240,7 +2240,7 @@ GROUP BY dayOfWeek
 ```
 
 
-### どの著者のコードが最も「スティッキー」か？ {#which-authors-code-is-the-most-sticky}
+### どの著者のコードが最も「スティッキー」か？ \{#which-authors-code-is-the-most-sticky\}
 
 ここでは、著者のコードが書き換えられるまでどれくらい長く残るかを「スティッキーさ」と定義します。前の質問 [What is the average time before code will be rewritten and the median (half-life of code decay)?](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay) と同様に、ファイルに対する 50% の追加と 50% の削除という同じ基準で書き換えを定義します。著者ごとに平均の書き換えまでの時間を算出し、2 ファイルを超えるコントリビューターのみを対象とします。
 
@@ -2318,7 +2318,7 @@ LIMIT 10
 ```
 
 
-### 著者ごとの連続コミット日数の最長記録 {#most-consecutive-days-of-commits-by-an-author}
+### 著者ごとの連続コミット日数の最長記録 \{#most-consecutive-days-of-commits-by-an-author\}
 
 このクエリではまず、著者がコミットした日付を算出する必要があります。著者ごとにパーティション分割したウィンドウ関数を使い、コミット間の日数差を計算します。各コミットについて、前回コミットからの経過日数が 1 日であれば連続とみなして 1 を、それ以外は 0 を設定し、その結果を `consecutive_day` に保存します。
 
@@ -2374,7 +2374,7 @@ LIMIT 10
 ```
 
 
-### ファイルの行ごとのコミット履歴 {#line-by-line-commit-history-of-a-file}
+### ファイルの行ごとのコミット履歴 \{#line-by-line-commit-history-of-a-file\}
 
 ファイルはリネームされることがあります。これが発生するとリネームイベントが発生し、その際 `path` カラムにはファイルの新しいパスが設定され、`old_path` には以前の場所が格納されます。例えば次のとおりです。
 
@@ -2453,9 +2453,9 @@ FORMAT PrettyCompactMonoBlock
 ```
 
 
-## 未解決の課題 {#unsolved-questions}
+## 未解決の課題 \\{#unsolved-questions\\}
 
-### Git blame {#git-blame}
+### Git blame \{#git-blame\}
 
 現在は配列関数内で状態を保持できないため、正確な結果を得るのは特に困難です。各イテレーションで状態を保持できる `arrayFold` や `arrayReduce` が利用可能になれば、これは実現できます。
 

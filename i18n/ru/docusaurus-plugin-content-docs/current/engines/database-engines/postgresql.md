@@ -7,7 +7,7 @@ title: 'PostgreSQL'
 doc_type: 'guide'
 ---
 
-# PostgreSQL {#postgresql}
+# PostgreSQL \\{#postgresql\\}
 
 Позволяет подключаться к базам данных на удалённом сервере [PostgreSQL](https://www.postgresql.org). Поддерживает операции чтения и записи (запросы `SELECT` и `INSERT`) для обмена данными между ClickHouse и PostgreSQL.
 
@@ -15,7 +15,7 @@ doc_type: 'guide'
 
 Поддерживает модификацию структуры таблиц (`ALTER TABLE ... ADD|DROP COLUMN`). Если параметр `use_table_cache` (см. параметры движка ниже) установлен в `1`, структура таблиц кэшируется и не проверяется на наличие изменений, но может быть обновлена с помощью запросов `DETACH` и `ATTACH`.
 
-## Создание базы данных {#creating-a-database}
+## Создание базы данных \\{#creating-a-database\\}
 
 ```sql
 CREATE DATABASE test_database
@@ -31,7 +31,7 @@ ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use
 * `schema` — схема PostgreSQL.
 * `use_table_cache` — определяет, кэшируется ли структура таблицы базы данных. Необязательный параметр. Значение по умолчанию: `0`.
 
-## Поддержка типов данных {#data_types-support}
+## Поддержка типов данных \\{#data_types-support\\}
 
 | PostgreSQL       | ClickHouse                                                   |
 |------------------|--------------------------------------------------------------|
@@ -49,7 +49,7 @@ ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use
 | INTEGER          | Nullable([Int32](../../sql-reference/data-types/int-uint.md))|
 | ARRAY            | [Array](../../sql-reference/data-types/array.md)             |
 
-## Примеры использования {#examples-of-use}
+## Примеры использования \\{#examples-of-use\\}
 
 База данных в ClickHouse, обменивающаяся данными с сервером PostgreSQL:
 
@@ -141,7 +141,7 @@ DESCRIBE TABLE test_database.test_table;
 └────────┴───────────────────┘
 ```
 
-## Связанные материалы {#related-content}
+## Связанные материалы \\{#related-content\\}
 
 - Блог: [ClickHouse и PostgreSQL — идеальный союз в мире данных — часть 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
 - Блог: [ClickHouse и PostgreSQL — идеальный союз в мире данных — часть 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)

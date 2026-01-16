@@ -14,7 +14,7 @@ import Image from '@theme/IdealImage';
 
 ClickHouse® 是一款高性能的列式存储 SQL 数据库管理系统（DBMS），用于联机分析处理（OLAP）。它既可以作为[开源软件](https://github.com/ClickHouse/ClickHouse)，也可以作为[云服务](https://clickhouse.com/cloud)提供。
 
-## 什么是分析？ {#what-are-analytics}
+## 什么是分析？ \\{#what-are-analytics\\}
 
 Analytics（也称为 OLAP，即联机分析处理，Online Analytical Processing）是指在海量数据集上执行包含复杂计算（例如聚合、字符串处理、算术运算）的 SQL 查询。
 
@@ -22,7 +22,7 @@ Analytics（也称为 OLAP，即联机分析处理，Online Analytical Processin
 
 在许多应用场景中，[分析查询必须是“实时”的](https://clickhouse.com/engineering-resources/what-is-real-time-analytics)，即在不到一秒内返回结果。
 
-## 行式存储 vs 列式存储 {#row-oriented-vs-column-oriented-storage}
+## 行式存储 vs 列式存储 \\{#row-oriented-vs-column-oriented-storage\\}
 
 只有采用合适的数据组织方式，才能达到这样的性能水平。
 
@@ -67,45 +67,45 @@ LIMIT 8;
 
 <Image img={column_orientated} alt="列式数据库结构" size="lg"/>
 
-## 数据复制与完整性 {#data-replication-and-integrity}
+## 数据复制与完整性 \\{#data-replication-and-integrity\\}
 
 ClickHouse 使用异步多主复制架构，确保数据在多个节点上冗余存储。数据写入任一可用副本后，其余所有副本会在后台获取各自的副本数据。系统会在不同副本上维护完全一致的数据。在大多数故障情况下，系统能够自动完成恢复；在复杂场景下，则采用半自动方式完成恢复。
 
-## 基于角色的访问控制 {#role-based-access-control}
+## 基于角色的访问控制 \\{#role-based-access-control\\}
 
 ClickHouse 通过 SQL 查询实现用户账号管理，并支持配置基于角色的访问控制，方式类似于 ANSI SQL 标准和主流关系型数据库管理系统中的实现。
 
-## SQL 支持 {#sql-support}
+## SQL 支持 \\{#sql-support\\}
 
 ClickHouse 支持一种[基于 SQL 的声明式查询语言](/sql-reference)，在很多方面与 ANSI SQL 标准保持一致。支持的查询子句包括 [GROUP BY](/sql-reference/statements/select/group-by)、[ORDER BY](/sql-reference/statements/select/order-by)、[FROM](/sql-reference/statements/select/from) 中的子查询、[JOIN](/sql-reference/statements/select/join) 子句、[IN](/sql-reference/operators/in) 运算符、[窗口函数](/sql-reference/window-functions) 以及标量子查询。
 
-## 近似计算 {#approximate-calculation}
+## 近似计算 \\{#approximate-calculation\\}
 
 ClickHouse 提供了一些以精度换取性能的方式。例如，其中一些聚合函数可以近似计算不同值的数量、中位数和分位数。此外，可以在数据的一个样本上执行查询，从而快速得到近似结果。最后，可以只在有限数量的键上执行聚合，而不是对所有键进行聚合。根据键分布偏斜程度的不同，这种方式在显著减少相较于精确计算所需资源的同时，仍然可以提供相当精确的结果。
 
-## 自适应 Join 算法 {#adaptive-join-algorithms}
+## 自适应 Join 算法 \\{#adaptive-join-algorithms\\}
 
 ClickHouse 会自适应地选择 join 算法：它首先使用快速的哈希 join，当存在多张大表时，会回退为合并 join。
 
-## 卓越的查询性能 {#superior-query-performance}
+## 卓越的查询性能 \\{#superior-query-performance\\}
 
 ClickHouse 以其极快的查询性能而闻名。
 要了解 ClickHouse 为何如此之快，请参阅 [Why is ClickHouse fast?](/concepts/why-clickhouse-is-so-fast.mdx) 指南。
 
 <!--
-## 什么是 OLAP？ {#what-is-olap}
+## 什么是 OLAP？ \\{#what-is-olap\\}
 OLAP 场景需要在大规模数据集上对复杂的分析查询提供实时响应，具有以下特征：
 - 数据集规模可能极其庞大——数十亿甚至数万亿行
 - 数据以包含众多列的表格形式组织
 - 任何特定查询仅需选择少数几列
 - 查询结果必须在毫秒或秒级内返回
 
-## 列式数据库与行式数据库 {#column-oriented-vs-row-oriented-databases}
+## 列式数据库与行式数据库 \\{#column-oriented-vs-row-oriented-databases\\}
 在行式数据库管理系统（DBMS）中，数据按行存储，同一行的所有相关值在物理存储上彼此相邻。
 
 在列式数据库管理系统（DBMS）中，数据按列存储，同一列中的值被集中存放在一起。
 
-## 为什么列式数据库在 OLAP 场景中表现更好 {#why-column-oriented-databases-work-better-in-the-olap-scenario}
+## 为什么列式数据库在 OLAP 场景中表现更好 \\{#why-column-oriented-databases-work-better-in-the-olap-scenario\\}
 
 列式数据库更适合 OLAP 场景：在处理大多数查询时，它们的速度至少快 100 倍。原因会在下文中详细解释，但通过下面的图示更容易直观地看出来：
 
@@ -113,7 +113,7 @@ OLAP 场景需要在大规模数据集上对复杂的分析查询提供实时响
 
 本文的其余部分将解释为什么列式数据库在这些场景中表现出色，以及为什么 ClickHouse 在这一类别的系统中[表现优于](/concepts/why-clickhouse-is-so-fast/concepts/why-clickhouse-is-so-fast#storage-layer-concurrent-inserts-and-selects-are-isolated)其他方案。
 
-## 为什么 ClickHouse 如此之快？ {#why-is-clickhouse-so-fast}
+## 为什么 ClickHouse 如此之快？ \\{#why-is-clickhouse-so-fast\\}
 
 ClickHouse 充分利用系统的全部可用资源，将其性能发挥到极致，从而尽可能快速地处理每个分析查询。之所以能够做到这一点，是因为它将强大的分析能力与对实现最快 OLAP 数据库所需底层细节的高度打磨独特地结合在一起。
 
@@ -122,7 +122,7 @@ ClickHouse 充分利用系统的全部可用资源，将其性能发挥到极致
 - [ClickHouse 的独特特性](/about-us/distinctive-features.md)
 - [常见问题：为什么 ClickHouse 如此之快？](/knowledgebase/why-clickhouse-is-so-fast)
 
-## 实时处理分析型查询 {#processing-analytical-queries-in-real-time}
+## 实时处理分析型查询 \\{#processing-analytical-queries-in-real-time\\}
 
 在行式 DBMS 中，数据按如下方式存储：
 
@@ -155,7 +155,7 @@ ClickHouse 充分利用系统的全部可用资源，将其性能发挥到极致
 
 系统负载越高，就越需要根据具体使用场景对系统进行有针对性的配置调整，而且这种调整会越精细。不存在一种系统可以同样好地适配明显不同的场景。如果一个系统试图适配非常广泛的场景，在高负载下，它要么在所有场景中的表现都很差，要么只在少数场景下表现良好。
 
-### OLAP 场景的关键特性 {#key-properties-of-olap-scenario}
+### OLAP 场景的关键特性 \\{#key-properties-of-olap-scenario\\}
 
 - 表是「宽表」，也就是说包含大量列。
 - 数据集规模很大，单次查询需要高吞吐量（每台服务器每秒可处理数十亿行）。
@@ -170,7 +170,7 @@ ClickHouse 充分利用系统的全部可用资源，将其性能发挥到极致
 
 可以很容易看出，OLAP 场景与其他常见场景（例如 OLTP 或 Key-Value 访问）有显著差异。因此，如果希望获得良好的性能，就不应尝试使用 OLTP 或 Key-Value 数据库来处理分析型查询。比如，如果你尝试使用 MongoDB 或 Redis 做分析，与 OLAP 数据库相比，你会得到非常差的性能表现。
 
-### 输入/输出 {#inputoutput}
+### 输入/输出 \\{#inputoutput\\}
 
 1.  对于分析型查询，只需要读取表中少量列。在列式数据库中，你可以只读取所需的数据。比如，如果在 100 列中只需要 5 列，可以预期 I/O 量减少 20 倍。
 2.  由于数据是按数据块读取的，因此更易于压缩。按列存储的数据也更易压缩。这进一步降低了 I/O 量。
@@ -178,7 +178,7 @@ ClickHouse 充分利用系统的全部可用资源，将其性能发挥到极致
 
 例如，查询“统计每个广告平台的记录数”只需要读取一个“广告平台 ID”列，该列在未压缩时每行占用 1 字节。如果大部分流量并非来自广告平台，可以预期该列至少能获得 10 倍的压缩率。在使用快速压缩算法时，数据解压速度至少可以达到每秒数 GB 的未压缩数据。换句话说，在单个服务器上，该查询可以以每秒大约数十亿行的速度进行处理。实践中确实能够达到这一速度。
 
-### CPU {#cpu}
+### CPU \\{#cpu\\}
 
 由于执行查询需要处理大量行，将所有操作针对整块向量而不是针对单独行来分发，或将查询引擎实现为几乎没有分发开销，会有所帮助。如果不这样做，即使磁盘子系统足够优秀，查询解释器也会不可避免地让 CPU 空转。因此，在存储数据时按列存储，并在可能的情况下按列进行处理，是合理的做法。
 

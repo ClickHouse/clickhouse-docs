@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 指定された[構造](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields)、[ソース](../../../sql-reference/dictionaries/index.md#dictionary-sources)、[レイアウト](/sql-reference/dictionaries#storing-dictionaries-in-memory)、および[有効期間](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)を持つ新しい[辞書](../../../sql-reference/dictionaries/index.md)を作成します。
 
-## 構文 {#syntax}
+## 構文 \\{#syntax\\}
 
 ```sql
 CREATE [OR REPLACE] DICTIONARY [IF NOT EXISTS] [db.]dictionary_name [ON CLUSTER cluster]
@@ -33,7 +33,7 @@ COMMENT 'Comment'
 
 辞書の [layout](/sql-reference/dictionaries#storing-dictionaries-in-memory) に応じて、1 つ以上の属性を辞書キーとして指定できます。
 
-## ソース {#source}
+## ソース \\{#source\\}
 
 辞書のソースには、次のようなものを使用できます。
 
@@ -42,7 +42,7 @@ COMMENT 'Comment'
 * HTTP(S) 経由で利用可能なファイル
 * 別のデータベース
 
-### 現在の ClickHouse サービス内のテーブルから辞書を作成する {#create-a-dictionary-from-a-table-in-the-current-clickhouse-service}
+### 現在の ClickHouse サービス内のテーブルから辞書を作成する \\{#create-a-dictionary-from-a-table-in-the-current-clickhouse-service\\}
 
 入力テーブル `source_table`:
 
@@ -114,7 +114,7 @@ LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000);
 ```
 
-### リモートの ClickHouse サービス上のテーブルからディクショナリを作成する {#create-a-dictionary-from-a-table-in-a-remote-clickhouse-service}
+### リモートの ClickHouse サービス上のテーブルからディクショナリを作成する \\{#create-a-dictionary-from-a-table-in-a-remote-clickhouse-service\\}
 
 リモートの ClickHouse サービス上の入力テーブル `source_table`:
 
@@ -139,7 +139,7 @@ LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000)
 ```
 
-### HTTP(S) 経由で取得可能なファイルから辞書を作成する {#create-a-dictionary-from-a-file-available-by-https}
+### HTTP(S) 経由で取得可能なファイルから辞書を作成する \\{#create-a-dictionary-from-a-file-available-by-https\\}
 
 ```sql
 CREATE DICTIONARY default.taxi_zone_dictionary
@@ -155,7 +155,7 @@ LIFETIME(MIN 0 MAX 0)
 LAYOUT(HASHED())
 ```
 
-### 別のデータベースから辞書を作成する {#create-a-dictionary-from-another-database}
+### 別のデータベースから辞書を作成する \\{#create-a-dictionary-from-another-database\\}
 
 詳細については、[Dictionary sources](/sql-reference/dictionaries#dbms) を参照してください。
 

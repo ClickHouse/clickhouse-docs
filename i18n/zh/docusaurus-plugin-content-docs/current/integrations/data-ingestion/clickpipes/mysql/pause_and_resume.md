@@ -19,7 +19,7 @@ import resume_dialog from '@site/static/images/integrations/data-ingestion/click
 
 在某些情况下，暂停 MySQL ClickPipe 会很有用。例如，您可能希望在数据保持静止时对现有数据进行分析，或者正在执行 MySQL 升级操作。以下介绍如何暂停和恢复 MySQL ClickPipe。
 
-## 暂停 MySQL ClickPipe 的步骤 {#pause-clickpipe-steps}
+## 暂停 MySQL ClickPipe 的步骤 \\{#pause-clickpipe-steps\\}
 
 1. 在 **Data Sources** 选项卡中，单击要暂停的 MySQL ClickPipe。
 2. 前往 **Settings** 选项卡。
@@ -36,7 +36,7 @@ import resume_dialog from '@site/static/images/integrations/data-ingestion/click
 
 <Image img={pause_status} border size="md"/>
 
-## 恢复 MySQL ClickPipe 的步骤 {#resume-clickpipe-steps}
+## 恢复 MySQL ClickPipe 的步骤 \\{#resume-clickpipe-steps\\}
 
 1. 在 Data Sources 选项卡中，点击你希望恢复的 MySQL ClickPipe。镜像的状态最初应为 **Paused**。
 2. 前往 **Settings** 选项卡。

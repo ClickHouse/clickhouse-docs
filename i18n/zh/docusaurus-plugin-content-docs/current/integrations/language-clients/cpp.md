@@ -7,7 +7,7 @@ title: 'C++ 客户端库'
 doc_type: 'reference'
 ---
 
-# C++ 客户端库 {#c-client-library}
+# C++ 客户端库 \{#c-client-library\}
 
 `clickhouse-cpp` 是 ClickHouse 的官方 C++ 客户端库，基于其原生二进制协议为 ClickHouse 提供快速且类型安全的接口。
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 [https://github.com/ClickHouse/clickhouse-cpp/issues](https://github.com/ClickHouse/clickhouse-cpp/issues)
 :::
 
-## 在项目中引入该库 {#including-library-into-project}
+## 在项目中引入该库 \{#including-library-into-project\}
 
 将该库集成到项目中最简单的方法是使用 CMake 的 `FetchContent` 模块。通过这种方式，可以固定库的精确版本，并将其作为常规 CMake 工作流程的一部分进行构建。
 
@@ -47,9 +47,9 @@ target_link_libraries(your-target PRIVATE clickhouse-cpp-lib)
 ```
 
 
-## 示例 {#examples}
+## 示例 \\{#examples\\}
 
-### 设置客户端对象 {#example-setup-client}
+### 设置客户端对象 \{#example-setup-client\}
 
 创建一个 `Client` 实例以与 ClickHouse 建立连接。下面的示例展示如何连接到本地 ClickHouse 实例，该实例无需密码且未启用 SSL。
 
@@ -75,7 +75,7 @@ clickhouse::Client client{
 ```
 
 
-### 在无返回数据的情况下创建表并执行查询 {#example-create-table}
+### 在无返回数据的情况下创建表并执行查询 \{#example-create-table\}
 
 要执行不返回任何数据的查询（例如创建表），请使用 `Execute` 方法。
 同样的方法也适用于其他语句，例如 `ALTER TABLE`、`DROP` 等。
@@ -90,7 +90,7 @@ client.Execute(R"(
 ```
 
 
-### 插入数据 {#example-insert-data}
+### 插入数据 \{#example-insert-data\}
 
 要向表中插入数据，先构造一个 `Block`，并使用与表结构匹配的列对象来填充它。数据会按列追加，然后通过一次操作，使用经过优化的 `Insert` 方法插入，以实现高效的批量写入。
 
@@ -120,7 +120,7 @@ client.Insert("greetings", block);
 ```
 
 
-### 选择数据 {#example-select}
+### 选择数据 \{#example-select\}
 
 要执行返回数据的查询，请使用 `Select` 方法，并提供一个回调函数来处理结果。查询结果会以 `Block` 对象的形式返回，反映 ClickHouse 原生的列式数据表示方式。
 
@@ -138,7 +138,7 @@ client.Select(
 ```
 
 
-## 支持的数据类型 {#supported-data-types}
+## 支持的数据类型 \\{#supported-data-types\\}
 
 - `UInt8`, `UInt16`, `UInt32`, `UInt64`, `Int8`, `Int16`, `Int32`, `Int64`
 - `UInt128`, `Int128`

@@ -7,7 +7,7 @@ keywords: ['EXCEPT', '句']
 doc_type: 'reference'
 ---
 
-# EXCEPT 句 {#except-clause}
+# EXCEPT 句 \\{#except-clause\\}
 
 > `EXCEPT` 句は、最初のクエリの結果から 2 つ目のクエリの結果を除外した行だけを返します。
 
@@ -16,7 +16,7 @@ doc_type: 'reference'
 * `EXCEPT` が複数ある場合は、かっこで明示的にグループ化しない限り、左から右の順に評価されます。
 * `EXCEPT` 演算子の優先順位は `UNION` 句と同じで、`INTERSECT` 句よりも低くなります。
 
-## 構文 {#syntax}
+## 構文 \\{#syntax\\}
 
 ```sql
 SELECT column1 [, column2 ]
@@ -40,11 +40,11 @@ FROM table1
 [WHERE condition]
 ```
 
-## 例 {#examples}
+## 例 \\{#examples\\}
 
 このセクションの例では、`EXCEPT` 句の使用方法を示します。
 
-### `EXCEPT` 句を使用した数値のフィルタリング {#filtering-numbers-using-the-except-clause}
+### `EXCEPT` 句を使用した数値のフィルタリング \\{#filtering-numbers-using-the-except-clause\\}
 
 次は、1 から 10 までの数のうち、3 から 8 までの数には *含まれない* ものを返す簡単な例です。
 
@@ -65,7 +65,7 @@ FROM numbers(3, 6)
 └────────┘
 ```
 
-### `EXCEPT()` を使用して特定のカラムを除外する {#excluding-specific-columns-using-except}
+### `EXCEPT()` を使用して特定のカラムを除外する \\{#excluding-specific-columns-using-except\\}
 
 `EXCEPT()` は、結果セットからカラムを素早く除外するために使用できます。例えば、以下の例のように、テーブルから特定のカラムのみを除外し、それ以外のすべてのカラムを選択したい場合に利用できます。
 

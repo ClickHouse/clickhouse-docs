@@ -18,7 +18,7 @@ import image_7 from '@site/static/images/use-cases/AI_ML/jupyter/7.png';
 import image_8 from '@site/static/images/use-cases/AI_ML/jupyter/8.png';
 import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
-# 使用 Jupyter Notebook 和 chDB 探索数据 {#exploring-data-with-jupyter-notebooks-and-chdb}
+# 使用 Jupyter Notebook 和 chDB 探索数据 \\{#exploring-data-with-jupyter-notebooks-and-chdb\\}
 
 在本指南中，您将学习如何借助 [chDB](/chdb)（一个由 ClickHouse 驱动的快速进程内 SQL OLAP 引擎），在 Jupyter Notebook 中探索 ClickHouse Cloud 上的数据集。
 
@@ -42,7 +42,7 @@ import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 我们将使用 UK Property Price 数据集，该数据集是 ClickHouse Cloud 提供的入门数据集之一。
 它包含 1995 年到 2024 年间英国房屋成交价格的数据。
 
-## 设置 {#setup}
+## 设置 \\{#setup\\}
 
 要将此数据集添加到现有的 ClickHouse Cloud 服务中，请使用您的账户信息登录 [console.clickhouse.cloud](https://console.clickhouse.cloud/)。
 
@@ -111,7 +111,7 @@ result = chdb.query("SELECT 'Hello, ClickHouse!' as message")
 print(result)
 ```
 
-## 探索数据 {#exploring-the-data}
+## 探索数据 \\{#exploring-the-data\\}
 
 在已经完成 UK price paid 数据集的配置，并在 Jupyter notebook 中成功运行 chDB 之后，我们现在可以开始探索这些数据。
 
@@ -320,7 +320,7 @@ plt.show()
 2012 年之后增速显著加快，从约 £400,000 急剧上升，到 2019 年超过 £1,000,000。
 与销售量不同，价格几乎未受到 2008 年危机的影响，并一直保持上升趋势。真是惊人！
 
-## 总结 {#summary}
+## 总结 \\{#summary\\}
 
 本指南演示了如何通过 chDB 将 ClickHouse Cloud 与本地数据源连接起来，在 Jupyter Notebook 中实现无缝的数据探索。
 借助英国房产价格数据集，我们展示了如何使用 `remoteSecure()` 函数查询远程 ClickHouse Cloud 数据，使用 `file()` 表引擎读取本地 CSV 文件，并将结果直接转换为 Pandas DataFrame 以便进行分析和可视化。

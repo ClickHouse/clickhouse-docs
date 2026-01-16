@@ -6,7 +6,7 @@ keywords: ['マテリアライズドビュー', '集約']
 doc_type: 'guide'
 ---
 
-# カスケードするマテリアライズドビュー {#cascading-materialized-views}
+# カスケードするマテリアライズドビュー \\{#cascading-materialized-views\\}
 
 この例では、まずマテリアライズドビューの作成方法を示し、その後、2つ目のマテリアライズドビューを1つ目にカスケードさせる方法を説明します。このページでは、その手順、さまざまな活用方法、および制約について説明します。2つ目のマテリアライズドビューをソースとして使用してマテリアライズドビューを作成することで、さまざまなユースケースに対応できます。
 
@@ -31,7 +31,7 @@ doc_type: 'guide'
 
 マテリアライズドビューを使ってデータを準備することで、ClickHouse が処理する必要のあるデータ量と計算量を抑え、SELECT クエリを高速化できます。
 
-## マテリアライズドビュー用のソーステーブル {#source-table-for-the-materialized-views}
+## マテリアライズドビュー用のソーステーブル \\{#source-table-for-the-materialized-views\\}
 
 ソーステーブルを作成します。今回の目的は個々の行ではなく集約されたデータに対してレポートすることなので、受信データをパースしてその情報をマテリアライズドビューに渡し、実際の入力データ自体は破棄して構いません。これにより目的を達成しつつストレージを節約できるため、`Null` テーブルエンジンを使用します。
 
@@ -53,7 +53,7 @@ ENGINE = Null
 Null テーブルに対してマテリアライズドビューを作成できます。つまり、テーブルに書き込まれたデータはビューには反映されますが、元の生データそのものは破棄されます。
 :::
 
-## 月次集計テーブルとマテリアライズドビュー {#monthly-aggregated-table-and-materialized-view}
+## 月次集計テーブルとマテリアライズドビュー \\{#monthly-aggregated-table-and-materialized-view\\}
 
 最初のマテリアライズドビューのために `Target` テーブルを作成する必要があります。この例では `analytics.monthly_aggregated_data` とし、月単位およびドメイン名単位でビュー数の合計を保存します。
 
@@ -84,7 +84,7 @@ GROUP BY
     month
 ```
 
-## 年次集計テーブルとマテリアライズドビュー {#yearly-aggregated-table-and-materialized-view}
+## 年次集計テーブルとマテリアライズドビュー \\{#yearly-aggregated-table-and-materialized-view\\}
 
 次に、先ほど作成したターゲットテーブル `monthly_aggregated_data` に関連付けられる 2つ目のマテリアライズドビューを作成します。
 
@@ -129,7 +129,7 @@ GROUP BY
 もし CollapsingMergeTree、ReplacingMergeTree、あるいは SummingMergeTree を使用していて、カスケード構成のマテリアライズドビューを作成する予定がある場合は、ここで説明している制限事項を理解しておく必要があります。
 :::
 
-## サンプルデータ {#sample-data}
+## サンプルデータ \\{#sample-data\\}
 
 ここで、カスケードマテリアライズドビューをテストするために、いくつかのデータを挿入します。
 
@@ -155,7 +155,7 @@ Ok.
 
 ここでは、期待どおりの結果と突き合わせて検証しやすいように、小さなデータセットを使用しています。小さなデータセットでフローが正しく動作することを確認できたら、その設定のまま大規模なデータに切り替えることができます。
 
-## 結果 {#results}
+## 結果 \\{#results\\}
 
 ターゲットテーブルに対して `sumCountViews` フィールドを選択するクエリを実行すると、一部のターミナルではバイナリ表現が表示されます。これは、その値が数値ではなく AggregateFunction 型として保存されているためです。
 集計の最終結果を取得するには、`-Merge` サフィックスを使用する必要があります。
@@ -252,7 +252,7 @@ GROUP BY
 2 rows in set. Elapsed: 0.004 sec.
 ```
 
-## 複数のソーステーブルを単一のターゲットテーブルに結合する {#combining-multiple-source-tables-to-single-target-table}
+## 複数のソーステーブルを単一のターゲットテーブルに結合する \\{#combining-multiple-source-tables-to-single-target-table\\}
 
 マテリアライズドビューは、複数のソーステーブルを 1 つのターゲットテーブルに結合するためにも使用できます。これは、`UNION ALL` のロジックに近いマテリアライズドビューを作成する際に有用です。
 

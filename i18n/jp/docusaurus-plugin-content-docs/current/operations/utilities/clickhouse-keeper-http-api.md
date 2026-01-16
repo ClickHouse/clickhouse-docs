@@ -7,12 +7,12 @@ title: 'Keeper HTTP API およびダッシュボード'
 doc_type: 'reference'
 ---
 
-# Keeper HTTP API とダッシュボード {#keeper-http-api-and-dashboard}
+# Keeper HTTP API とダッシュボード \{#keeper-http-api-and-dashboard\}
 
 ClickHouse Keeper は、監視・ヘルスチェック・ストレージ管理のための HTTP API と組み込み Web ダッシュボードを提供します。
 このインターフェースを使用すると、運用者は Web ブラウザや HTTP クライアントを通じて、クラスタの状態を確認し、コマンドを実行し、Keeper ストレージを管理できます。
 
-## 設定 {#configuration}
+## 設定 \{#configuration\}
 
 HTTP API を有効にするには、`keeper_server` の設定に `http_control` セクションを追加します。
 
@@ -28,7 +28,7 @@ HTTP API を有効にするには、`keeper_server` の設定に `http_control` 
 ```
 
 
-### 設定オプション {#configuration-options}
+### 設定オプション \\{#configuration-options\\}
 
 | 設定項目                                   | デフォルト | 説明                                            |
 |--------------------------------------------|-----------|-------------------------------------------------|
@@ -37,9 +37,9 @@ HTTP API を有効にするには、`keeper_server` の設定に `http_control` 
 | `http_control.readiness.endpoint`          | `/ready`  | readiness プローブ用のカスタムパス             |
 | `http_control.storage.session_timeout_ms`  | `30000`   | ストレージ API 操作のセッションタイムアウト時間 |
 
-## エンドポイント {#endpoints}
+## エンドポイント \\{#endpoints\\}
 
-### ダッシュボード {#dashboard}
+### ダッシュボード \\{#dashboard\\}
 
 - **Path**: `/dashboard`
 - **Method**: GET
@@ -52,7 +52,7 @@ HTTP API を有効にするには、`keeper_server` の設定に `http_control` 
 - ストレージブラウザー
 - コマンド実行用インターフェース
 
-### Readiness Probe {#readiness-probe}
+### Readiness Probe \{#readiness-probe\}
 
 * **パス**: `/ready`（設定可能）
 * **メソッド**: GET
@@ -71,7 +71,7 @@ HTTP API を有効にするには、`keeper_server` の設定に `http_control` 
 ```
 
 
-### Commands API {#commands-api}
+### Commands API \{#commands-api\}
 
 * **Path**: `/api/v1/commands/{command}`
 * **Methods**: GET, POST
@@ -93,7 +93,7 @@ curl "http://localhost:9182/api/v1/commands/ls?command=ls%20'/'&cwd=/"
 ```
 
 
-### Storage API {#storage-api}
+### Storage API \\{#storage-api\\}
 
 - **Base Path**: `/api/v1/storage`
 - **Description**: Keeper のストレージ操作用 REST API

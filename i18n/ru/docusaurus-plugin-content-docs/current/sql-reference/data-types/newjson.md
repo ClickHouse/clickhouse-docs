@@ -51,11 +51,11 @@ import Link from '@docusaurus/Link'
 <WhenToUseJson />
 
 
-## Создание `JSON` {#creating-json}
+## Создание `JSON` \\{#creating-json\\}
 
 В этом разделе мы рассмотрим различные способы создания `JSON`.
 
-### Использование `JSON` в определении столбца таблицы {#using-json-in-a-table-column-definition}
+### Использование `JSON` в определении столбца таблицы \{#using-json-in-a-table-column-definition\}
 
 ```sql title="Query (Example 1)"
 CREATE TABLE test (json JSON) ENGINE = Memory;
@@ -86,11 +86,11 @@ SELECT json FROM test;
 ```
 
 
-### Использование CAST с `::JSON` {#using-cast-with-json}
+### Использование CAST с `::JSON` \\{#using-cast-with-json\\}
 
 Можно приводить различные типы данных с помощью специального синтаксиса `::JSON`.
 
-#### CAST из типа `String` в тип `JSON` {#cast-from-string-to-json}
+#### CAST из типа `String` в тип `JSON` \{#cast-from-string-to-json\}
 
 ```sql title="Query"
 SELECT '{"a" : {"b" : 42},"c" : [1, 2, 3], "d" : "Hello, World!"}'::JSON AS json;
@@ -103,7 +103,7 @@ SELECT '{"a" : {"b" : 42},"c" : [1, 2, 3], "d" : "Hello, World!"}'::JSON AS json
 ```
 
 
-#### CAST из типа `Tuple` в `JSON` {#cast-from-tuple-to-json}
+#### CAST из типа `Tuple` в `JSON` \{#cast-from-tuple-to-json\}
 
 ```sql title="Query"
 SET enable_named_columns_in_function_tuple = 1;
@@ -117,7 +117,7 @@ SELECT (tuple(42 AS b) AS a, [1, 2, 3] AS c, 'Hello, World!' AS d)::JSON AS json
 ```
 
 
-#### Приведение типа из `Map` к `JSON` {#cast-from-map-to-json}
+#### Приведение типа из `Map` к `JSON` \{#cast-from-map-to-json\}
 
 ```sql title="Query"
 SET use_variant_as_common_type=1;
@@ -160,7 +160,7 @@ SELECT CAST('{"a.b.c" : 42}', 'JSON') AS json
 :::
 
 
-## Чтение JSON-путей как подстолбцов {#reading-json-paths-as-sub-columns}
+## Чтение JSON-путей как подстолбцов \{#reading-json-paths-as-sub-columns\}
 
 Тип `JSON` поддерживает чтение каждого пути как отдельного подстолбца.
 Если тип запрашиваемого пути не указан в объявлении типа `JSON`,
@@ -293,7 +293,7 @@ while executing 'FUNCTION CAST(__table1.json.a.g :: 2, 'UUID'_String :: 1) -> CA
 :::
 
 
-## Чтение вложенных объектов JSON как подстолбцов {#reading-json-sub-objects-as-sub-columns}
+## Чтение вложенных объектов JSON как подстолбцов \{#reading-json-sub-objects-as-sub-columns\}
 
 Тип `JSON` поддерживает чтение вложенных объектов как подстолбцов типа `JSON` с использованием специального синтаксиса `json.^some.path`:
 
@@ -328,7 +328,7 @@ SELECT json.^a.b, json.^d.e.f FROM test;
 :::
 
 
-## Определение типов для путей {#type-inference-for-paths}
+## Определение типов для путей \{#type-inference-for-paths\}
 
 Во время разбора `JSON` ClickHouse пытается определить наиболее подходящий тип данных для каждого пути в JSON.
 Это работает аналогично [автоматическому определению схемы по входным данным](/interfaces/schema-inference.md)
@@ -388,7 +388,7 @@ SELECT JSONAllPathsWithTypes('{"a" : [1, 2, 3]}'::JSON) AS paths_with_types sett
 ```
 
 
-## Обработка массивов JSON-объектов {#handling-arrays-of-json-objects}
+## Обработка массивов JSON-объектов \{#handling-arrays-of-json-objects\}
 
 JSON-пути, содержащие массив объектов, интерпретируются как тип `Array(JSON)` и записываются в столбец `Dynamic` для этого пути.
 Чтобы прочитать массив объектов, вы можете извлечь его из столбца `Dynamic` в виде подстолбца:
@@ -501,7 +501,7 @@ SELECT json.a.b[].^k FROM test
 ```
 
 
-## Обработка JSON-ключей со значением NULL {#handling-json-keys-with-nulls}
+## Обработка JSON-ключей со значением NULL \{#handling-json-keys-with-nulls\}
 
 В нашей реализации JSON значение `null` и отсутствие значения считаются эквивалентными:
 
@@ -518,7 +518,7 @@ SELECT '{}'::JSON AS json1, '{"a" : null}'::JSON AS json2, json1 = json2
 Это означает, что невозможно определить, содержали ли исходные данные JSON какой‑либо путь со значением NULL или не содержали его вовсе.
 
 
-## Обработка ключей JSON с точками {#handling-json-keys-with-dots}
+## Обработка ключей JSON с точками \{#handling-json-keys-with-dots\}
 
 Внутренне столбец JSON хранит все пути и значения в виде плоской структуры. Это означает, что по умолчанию следующие два объекта считаются одинаковыми:
 
@@ -627,7 +627,7 @@ SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON(SKIP `a%2Eb`) as json,
 ```
 
 
-## Чтение типа JSON из данных {#reading-json-type-from-data}
+## Чтение типа JSON из данных \{#reading-json-type-from-data\}
 
 Все текстовые форматы
 ([`JSONEachRow`](/interfaces/formats/JSONEachRow),
@@ -681,7 +681,7 @@ SELECT json FROM format(TSV, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP REGEXP \'
 ```
 
 
-## Достижение предела динамических путей внутри JSON {#reaching-the-limit-of-dynamic-paths-inside-json}
+## Достижение предела динамических путей внутри JSON \\{#reaching-the-limit-of-dynamic-paths-inside-json\\}
 
 Тип данных `JSON` может хранить только ограниченное количество путей как отдельных внутренних подстолбцов.
 По умолчанию этот предел равен `1024`, но вы можете изменить его в объявлении типа с помощью параметра `max_dynamic_paths`.
@@ -693,7 +693,7 @@ SELECT json FROM format(TSV, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP REGEXP \'
 
 Рассмотрим, что происходит при достижении предела в нескольких различных сценариях.
 
-### Достижение предела во время разбора данных {#reaching-the-limit-during-data-parsing}
+### Достижение предела во время разбора данных \{#reaching-the-limit-during-data-parsing\}
 
 Во время разбора `JSON`-объектов из данных, когда предел достигнут для текущего блока данных,
 все новые пути будут храниться в общей структуре данных. Мы можем использовать следующие две функции интроспекции: `JSONDynamicPaths`, `JSONSharedDataPaths`:
@@ -722,7 +722,7 @@ SELECT json, JSONDynamicPaths(json), JSONSharedDataPaths(json) FROM format(JSONE
 и они были помещены в общую структуру данных.
 
 
-### При слиянии частей данных в движках таблиц MergeTree {#during-merges-of-data-parts-in-mergetree-table-engines}
+### При слиянии частей данных в движках таблиц MergeTree \{#during-merges-of-data-parts-in-mergetree-table-engines\}
 
 Во время слияния нескольких частей данных в таблице `MergeTree` столбец `JSON` в результирующей части данных может достичь предела динамических путей
 и не сможет хранить все пути из исходных частей в виде подстолбцов.
@@ -788,19 +788,19 @@ ORDER BY _part ASC
 Как мы видим, ClickHouse сохранил наиболее частые пути `a`, `b` и `c` и перенёс пути `d` и `e` в общую структуру данных.
 
 
-## Общая структура данных {#shared-data-structure}
+## Общая структура данных \\{#shared-data-structure\\}
 
 Как было описано в предыдущем разделе, когда достигается предел `max_dynamic_paths`, все новые пути сохраняются в одной общей структуре данных.
 В этом разделе мы рассмотрим детали общей структуры данных и то, как мы читаем из неё подстолбцы путей.
 
 См. раздел ["функции интроспекции"](/sql-reference/data-types/newjson#introspection-functions) для подробностей о функциях, используемых для анализа содержимого столбца JSON.
 
-### Общая структура данных в памяти {#shared-data-structure-in-memory}
+### Общая структура данных в памяти \\{#shared-data-structure-in-memory\\}
 
 В памяти общая структура данных — это просто подстолбец с типом `Map(String, String)`, который хранит отображение от развёрнутого JSON-пути к двоично закодированному значению.
 Чтобы извлечь из него подстолбец пути, мы просто итерируемся по всем строкам в этом столбце `Map` и пытаемся найти требуемый путь и его значения.
 
-### Общая структура данных в частях MergeTree {#shared-data-structure-in-merge-tree-parts}
+### Общая структура данных в частях MergeTree \\{#shared-data-structure-in-merge-tree-parts\\}
 
 В таблицах [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) мы храним данные в частях данных, которые содержат всё на диске (локальном или удалённом). При этом данные на диске могут храниться иначе, чем в памяти.
 В настоящее время в частях данных MergeTree используются три разных варианта сериализации общей структуры данных: `map`, `map_with_buckets`
@@ -814,7 +814,7 @@ ORDER BY _part ASC
 Примечание: изменение формата сериализации общей структуры данных поддерживается только
 для `v3` [версии сериализации объектов](../../operations/settings/merge-tree-settings.md#object_serialization_version)
 
-#### Map {#shared-data-map}
+#### Map \\{#shared-data-map\\}
 
 В версии сериализации `map` общие данные сериализуются как один столбец с типом `Map(String, String)`, так же, как он хранится в
 памяти. Чтобы прочитать подстолбец пути из такого типа сериализации, ClickHouse читает целиком столбец `Map` и
@@ -822,7 +822,7 @@ ORDER BY _part ASC
 
 Эта сериализация эффективна для записи данных и чтения всего столбца `JSON`, но неэффективна для чтения подстолбцов путей.
 
-#### Map with buckets {#shared-data-map-with-buckets} 
+#### Map with buckets \\{#shared-data-map-with-buckets\\}
 
 В версии сериализации `map_with_buckets` общие данные сериализуются как `N` столбцов («buckets») с типом `Map(String, String)`.
 Каждый такой бакет содержит только подмножество путей. Чтобы прочитать подстолбец пути из такого типа сериализации, ClickHouse
@@ -836,7 +836,7 @@ ORDER BY _part ASC
 и [object_shared_data_buckets_for_wide_part](
 ../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_wide_part) (по умолчанию 32).
 
-#### Advanced {#shared-data-advanced}
+#### Advanced \\{#shared-data-advanced\\}
 
 В версии сериализации `advanced` общие данные сериализуются в специальной структуре данных, которая максимально повышает производительность
 чтения подстолбцов путей за счёт хранения дополнительной информации, позволяющей читать только данные запрошенных путей.
@@ -849,7 +849,7 @@ ORDER BY _part ASC
 
 Более подробный обзор новых сериализаций общей структуры данных и деталей реализации см. в [публикации в блоге](https://clickhouse.com/blog/json-data-type-gets-even-better).
 
-## Функции интроспекции {#introspection-functions}
+## Функции интроспекции \{#introspection-functions\}
 
 Существует несколько функций, которые помогают исследовать содержимое столбца JSON:
 
@@ -989,7 +989,7 @@ SETTINGS date_time_input_format = 'best_effort'
 ```
 
 
-## ALTER MODIFY COLUMN к типу JSON {#alter-modify-column-to-json-type}
+## ALTER MODIFY COLUMN к типу JSON \{#alter-modify-column-to-json-type\}
 
 Можно изменить существующую таблицу и сменить тип столбца на новый тип `JSON`. На данный момент поддерживается только `ALTER` для столбцов типа `String`.
 
@@ -1012,7 +1012,7 @@ SELECT json, json.a, json.b, json.c FROM test;
 ```
 
 
-## Сравнение значений типа JSON {#comparison-between-values-of-the-json-type}
+## Сравнение значений типа JSON \{#comparison-between-values-of-the-json-type\}
 
 Объекты JSON сравниваются аналогично значениям типа `Map`.
 
@@ -1051,7 +1051,7 @@ SELECT json1, json2, json1 < json2, json1 = json2, json1 > json2 FROM test;
 **Примечание:** если два пути содержат значения разных типов данных, они сравниваются в соответствии с [правилом сравнения](/sql-reference/data-types/variant#comparing-values-of-variant-data) типа данных `Variant`.
 
 
-## Рекомендации по более эффективному использованию типа JSON {#tips-for-better-usage-of-the-json-type}
+## Рекомендации по более эффективному использованию типа JSON \\{#tips-for-better-usage-of-the-json-type\\}
 
 Прежде чем создавать столбец `JSON` и загружать в него данные, учитывайте следующие рекомендации:
 
@@ -1060,7 +1060,7 @@ SELECT json1, json2, json1 < json2, json1 = json2, json1 > json2 FROM test;
 - Не устанавливайте параметр `max_dynamic_paths` на слишком большие значения, так как это может сделать хранение и чтение менее эффективными. 
   Хотя это сильно зависит от системных параметров, таких как память, CPU и т.д., в качестве общего ориентира не следует устанавливать `max_dynamic_paths` более 10 000 для хранилища на локальной файловой системе и 1024 для хранилища на удалённой файловой системе.
 
-## Дополнительные материалы {#further-reading}
+## Дополнительные материалы \\{#further-reading\\}
 
 - [Как мы разработали новый мощный тип данных JSON для ClickHouse](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)
 - [Испытание «миллиард JSON‑документов»: ClickHouse против MongoDB, Elasticsearch и других](https://clickhouse.com/blog/json-bench-clickhouse-vs-mongodb-elasticsearch-duckdb-postgresql)

@@ -7,15 +7,15 @@ sidebar_label: 'anyIf'
 doc_type: 'reference'
 ---
 
-# anyIf {#avgif}
+# anyIf \\{#avgif\\}
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターは、[`any`](/sql-reference/aggregate-functions/reference/any)
 集約関数に適用して、指定した条件に一致する要素のうち、指定したカラム内で最初に出現したものを
 選択します。
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
 この例では、成功フラグを含む売上データを格納するテーブルを作成し、
 `anyIf` を使用して、金額 200 をしきい値としてそれより大きい場合と小さい場合の
@@ -54,6 +54,6 @@ FROM sales;
 └────────────┴────────────┘
 ```
 
-## 関連項目 {#see-also}
+## 関連項目 \\{#see-also\\}
 - [`any`](/sql-reference/aggregate-functions/reference/any)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

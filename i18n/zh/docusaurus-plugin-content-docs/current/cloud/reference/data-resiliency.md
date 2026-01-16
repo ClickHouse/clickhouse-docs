@@ -11,7 +11,7 @@ import Image from '@theme/IdealImage';
 import restore_backup from '@site/static/images/cloud/guides/restore_backup.png';
 
 
-# 数据弹性 {#clickhouse-cloud-data-resiliency}
+# 数据弹性 \\{#clickhouse-cloud-data-resiliency\\}
 
 本页介绍 ClickHouse Cloud 的灾难恢复建议，以及为客户从故障中断中恢复提供指导。
 ClickHouse Cloud 目前不支持自动故障转移，也不支持跨多个地理区域的自动同步。
@@ -22,7 +22,7 @@ ClickHouse Cloud 目前不支持自动故障转移，也不支持跨多个地理
 
 
 
-## 定义 {#definitions}
+## 定义 \\{#definitions\\}
 
 首先了解一些相关定义会很有帮助。
 
@@ -34,7 +34,7 @@ ClickHouse Cloud 目前不支持自动故障转移，也不支持跨多个地理
 
 
 
-## 数据库备份 {#database-backups}
+## 数据库备份 \\{#database-backups\\}
 
 为主服务创建备份，可以在主服务发生停机时从备份中进行恢复，是一种行之有效的手段。
 ClickHouse Cloud 支持以下备份功能。
@@ -65,14 +65,14 @@ Enterprise Tier 客户可以将[备份导出](/cloud/manage/backups/export-backu
 
 
 
-## 从备份恢复 {#restoring-from-a-backup}
+## 从备份恢复 \\{#restoring-from-a-backup\\}
 
 1. 默认备份（位于 ClickHouse Cloud 存储桶中）可以恢复到同一区域内的新服务。
 2. 外部备份（位于客户对象存储中）可以恢复到同一区域或不同区域的新服务。
 
 
 
-## 备份和恢复时长指南 {#backup-and-restore-duration-guidance}
+## 备份和恢复时长指南 \\{#backup-and-restore-duration-guidance\\}
 
 备份和恢复所需时间取决于多个因素，例如数据库大小、模式（schema）以及数据库中的表数量。
 
@@ -92,16 +92,16 @@ Enterprise Tier 客户可以将[备份导出](/cloud/manage/backups/export-backu
 
 
 
-## 恢复流程 {#recovery-process}
+## 恢复流程 \\{#recovery-process\\}
 
 本节说明了可用的恢复选项以及在每种情况下可以遵循的具体流程。
 
-### 主服务数据损坏 {#primary-service-data-corruption}
+### 主服务数据损坏 \\{#primary-service-data-corruption\\}
 
 在这种情况下，可以将备份中的数据[恢复](/cloud/manage/backups/overview#restore-a-backup)到同一地域中的另一个服务。
 如果使用默认备份策略，备份可能最多早至24小时前创建；如果使用备份频率为6小时的可配置备份，备份可能最多早至6小时前创建。
 
-#### 恢复步骤 {#restoration-steps}
+#### 恢复步骤 \\{#restoration-steps\\}
 
 要从现有备份进行恢复
 
@@ -115,7 +115,7 @@ Enterprise Tier 客户可以将[备份导出](/cloud/manage/backups/export-backu
 
 </VerticalStepper>
 
-### 主地域停机 {#primary-region-downtime}
+### 主地域停机 \\{#primary-region-downtime\\}
 
 Enterprise Tier 的客户可以将[备份导出](/cloud/manage/backups/export-backups-to-own-cloud-account)到其自己的云服务商 bucket 中。
 如果您担心地域级故障，建议将备份导出到其他地域。
@@ -135,7 +135,7 @@ Enterprise Tier 的客户可以将[备份导出](/cloud/manage/backups/export-ba
 
 
 
-## 其他选项 {#additional-options}
+## 其他选项 \\{#additional-options\\}
 
 还有一些其他选项可以考虑。
 

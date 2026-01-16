@@ -20,7 +20,7 @@ import bp_ck_8 from '@site/static/images/integrations/data-ingestion/etl-tools/b
 import bp_ck_9 from '@site/static/images/integrations/data-ingestion/etl-tools/bp_ck_9.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# 将 BladePipe 连接到 ClickHouse {#connect-bladepipe-to-clickhouse}
+# 将 BladePipe 连接到 ClickHouse \\{#connect-bladepipe-to-clickhouse\\}
 
 <PartnerBadge/>
 
@@ -28,7 +28,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 ClickHouse 是 BladePipe 的内置连接器之一，可帮助用户将来自各种数据源的数据自动集成到 ClickHouse 中。本文将逐步演示如何将数据实时加载到 ClickHouse 中。
 
-## 支持的数据源 {#supported-sources}
+## 支持的数据源 \\{#supported-sources\\}
 目前 BladePipe 支持从以下数据源将数据集成到 ClickHouse：
 - MySQL/MariaDB/AuroraMySQL
 - Oracle
@@ -42,7 +42,7 @@ ClickHouse 是 BladePipe 的内置连接器之一，可帮助用户将来自各�
 后续将支持更多数据源。
 
 <VerticalStepper headerLevel="h2">
-## 下载并运行 BladePipe {#1-run-bladepipe}
+## 下载并运行 BladePipe \\{#1-run-bladepipe\\}
 1. 登录到 <a href="https://www.bladepipe.com/" target="_blank">BladePipe Cloud</a>。
 
 2. 按照 <a href="https://doc.bladepipe.com/productOP/byoc/installation/install_worker_docker" target="_blank">安装 Worker (Docker)</a> 或 <a href="https://doc.bladepipe.com/productOP/byoc/installation/install_worker_binary" target="_blank">安装 Worker (二进制)</a> 中的说明来下载并安装 BladePipe Worker。
@@ -51,7 +51,7 @@ ClickHouse 是 BladePipe 的内置连接器之一，可帮助用户将来自各�
 或者,您也可以下载并部署 <a href="https://doc.bladepipe.com/productOP/onPremise/installation/install_all_in_one_binary" target="_blank">BladePipe Enterprise</a>。
 :::
 
-## 将 ClickHouse 添加为目标 {#2-add-clickhouse-as-a-target}
+## 将 ClickHouse 添加为目标 \\{#2-add-clickhouse-as-a-target\\}
 
   :::note
   1. BladePipe 支持 `20.12.3.3` 及以上版本的 ClickHouse。
@@ -66,7 +66,7 @@ ClickHouse 是 BladePipe 的内置连接器之一，可帮助用户将来自各�
 
 3. 点击底部的 “Add DataSource”，即可添加一个 ClickHouse 实例。
 
-## 将 MySQL 添加为数据源 {#3-add-mysql-as-a-source}
+## 将 MySQL 添加为数据源 \\{#3-add-mysql-as-a-source\\}
 在本教程中，我们使用一个 MySQL 实例作为数据源，并演示如何将 MySQL 数据加载到 ClickHouse。
 
 :::note
@@ -81,7 +81,7 @@ ClickHouse 是 BladePipe 的内置连接器之一，可帮助用户将来自各�
 
 3. 点击底部的 "Add DataSource"，即可添加一个 MySQL 实例。
 
-## 创建流水线 {#4-create-a-pipeline}
+## 创建流水线 \\{#4-create-a-pipeline\\}
 
 1. 在 BladePipe 中，点击 “DataJob” > “Create DataJob”。
 
@@ -100,7 +100,7 @@ ClickHouse 是 BladePipe 的内置连接器之一，可帮助用户将来自各�
 6. 确认创建 DataJob 后，DataJob 会自动运行。
     <Image img={bp_ck_8} size="lg" border alt="DataJob 正在运行" />
 
-## 验证数据 {#5-verify-the-data}
+## 验证数据 \\{#5-verify-the-data\\}
 
 1. 停止 MySQL 实例的数据写入,等待 ClickHouse 合并数据。
    :::note

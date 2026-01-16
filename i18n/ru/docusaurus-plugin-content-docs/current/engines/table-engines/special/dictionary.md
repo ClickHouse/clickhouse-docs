@@ -7,11 +7,11 @@ title: 'Движок таблицы Dictionary'
 doc_type: 'reference'
 ---
 
-# Движок таблицы словаря {#dictionary-table-engine}
+# Движок таблицы словаря \\{#dictionary-table-engine\\}
 
 Движок `Dictionary` отображает данные [словаря](../../../sql-reference/dictionaries/index.md) как таблицу ClickHouse.
 
-## Пример {#example}
+## Пример \\{#example\\}
 
 Рассмотрим в качестве примера словарь `products` со следующей конфигурацией:
 

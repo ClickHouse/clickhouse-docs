@@ -7,9 +7,9 @@ title: 'SimpleAggregateFunction 类型'
 doc_type: 'reference'
 ---
 
-# SimpleAggregateFunction 类型 {#simpleaggregatefunction-type}
+# SimpleAggregateFunction 类型 \\{#simpleaggregatefunction-type\\}
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 `SimpleAggregateFunction` 数据类型用于存储聚合函数的中间状态，但不会像 [`AggregateFunction`](../../sql-reference/data-types/aggregatefunction.md) 类型那样存储其完整状态。
 
@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 聚合函数的值通常是通过调用在函数名后追加 [`-SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) 组合器的聚合函数来生成的。
 
-## 语法 {#syntax}
+## 语法 \{#syntax\}
 
 ```sql
 SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
@@ -33,7 +33,7 @@ SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
 * `Type` - 聚合函数参数类型。
 
 
-## 支持的函数 {#supported-functions}
+## 支持的函数 \\{#supported-functions\\}
 
 支持以下聚合函数：
 
@@ -64,14 +64,14 @@ SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
 具有更好的性能。
 :::
 
-## 示例 {#example}
+## 示例 \{#example\}
 
 ```sql
 CREATE TABLE simple (id UInt64, val SimpleAggregateFunction(sum, Double)) ENGINE=AggregatingMergeTree ORDER BY id;
 ```
 
 
-## 相关内容 {#related-content}
+## 相关内容 \\{#related-content\\}
 
 * 博文：[在 ClickHouse 中使用聚合函数组合器](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)    - 博文：[在 ClickHouse 中使用聚合函数组合器](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
 * [AggregateFunction](/sql-reference/data-types/aggregatefunction) 类型。

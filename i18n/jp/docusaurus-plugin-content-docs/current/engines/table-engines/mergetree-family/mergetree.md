@@ -10,7 +10,7 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# MergeTree テーブルエンジン {#mergetree-table-engine}
+# MergeTree テーブルエンジン \\{#mergetree-table-engine\\}
 
 `MergeTree` エンジンおよび `MergeTree` ファミリーの他のエンジン（例: `ReplacingMergeTree`、`AggregatingMergeTree`）は、ClickHouse で最も一般的に使用され、最も堅牢なテーブルエンジンです。
 
@@ -31,7 +31,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 名前は似ていますが、[Merge](/engines/table-engines/special/merge) エンジンは `*MergeTree` エンジンとは異なります。
 :::
 
-## テーブルの作成 {#table_engine-mergetree-creating-a-table}
+## テーブルの作成 \\{#table_engine-mergetree-creating-a-table\\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -58,13 +58,13 @@ ORDER BY expr
 
 パラメータの詳細については、[CREATE TABLE](/sql-reference/statements/create/table.md) ステートメントを参照してください。
 
-### クエリ句 {#mergetree-query-clauses}
+### クエリ句 \\{#mergetree-query-clauses\\}
 
-#### ENGINE {#engine}
+#### ENGINE \\{#engine\\}
 
 `ENGINE` — エンジンの名前とパラメータを指定します。`ENGINE = MergeTree()`。`MergeTree` エンジンにはパラメータがありません。
 
-#### ORDER BY {#order&#95;by}
+#### ORDER BY \\{#order&#95;by\\}
 
 `ORDER BY` — ソートキーです。
 
@@ -75,20 +75,20 @@ ORDER BY expr
 ソートが不要な場合は、`ORDER BY tuple()` 構文を使用できます。
 また、設定 `create_table_empty_primary_key_by_default` が有効な場合、`ORDER BY ()` が `CREATE TABLE` 文に暗黙的に追加されます。[プライマリキーの選択](#selecting-a-primary-key) を参照してください。
 
-#### PARTITION BY {#partition-by}
+#### PARTITION BY \\{#partition-by\\}
 
 `PARTITION BY` — [パーティションキー](/engines/table-engines/mergetree-family/custom-partitioning-key.md)。省略可能です。ほとんどの場合、パーティションキーは不要であり、パーティション分割が必要な場合でも、通常は月単位より細かい粒度のパーティションキーは必要ありません。パーティション分割は（ORDER BY 式とは対照的に）クエリを高速化しません。パーティションは決して細かくしすぎないでください。データをクライアント識別子や名前でパーティション分割しないでください（その代わりに、クライアント識別子または名前を ORDER BY 式の先頭のカラムにしてください）。
 
 月単位でパーティション分割するには、`toYYYYMM(date_column)` 式を使用します。ここで、`date_column` は [Date](/sql-reference/data-types/date.md) 型の日付を保持するカラムです。この場合のパーティション名は `"YYYYMM"` 形式になります。
 
-#### PRIMARY KEY {#primary-key}
+#### PRIMARY KEY \\{#primary-key\\}
 
 `PRIMARY KEY` — [ソートキーと異なる場合](#choosing-a-primary-key-that-differs-from-the-sorting-key)に指定するプライマリキーです。省略可能です。
 
 ソートキー（`ORDER BY` 句）を指定すると、暗黙的にプライマリキーも指定されます。
 通常、ソートキーとは別にプライマリキーを指定する必要はありません。
 
-#### SAMPLE BY {#sample-by}
+#### SAMPLE BY \\{#sample-by\\}
 
 `SAMPLE BY` — サンプリング用の式です。省略可能です。
 
@@ -97,7 +97,7 @@ ORDER BY expr
 
 例: `SAMPLE BY intHash32(UserID) ORDER BY (CounterID, EventDate, intHash32(UserID))`.
 
-#### TTL {#ttl}
+#### TTL \\{#ttl\\}
 
 `TTL` — 行の保存期間と、[ディスクおよびボリューム間](#table_engine-mergetree-multiple-volumes)の自動的なパーツ移動ロジックを指定するルールのリストです。省略可能です。
 
@@ -107,7 +107,7 @@ ORDER BY expr
 
 詳細については、[カラムおよびテーブルの TTL](#table_engine-mergetree-ttl) を参照してください。
 
-#### 設定 {#settings}
+#### 設定 \\{#settings\\}
 
 [MergeTree Settings](../../../operations/settings/merge-tree-settings.md) を参照してください。
 
@@ -155,7 +155,7 @@ MergeTree(EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID)
   `MergeTree` エンジンは、メインのエンジン構成方法について上記の例と同様に設定されます。
 </details>
 
-## データストレージ {#mergetree-data-storage}
+## データストレージ \\{#mergetree-data-storage\\}
 
 テーブルは、主キーでソートされたデータパーツから構成されます。
 
@@ -171,7 +171,7 @@ MergeTree(EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID)
 
 グラニュールサイズは、テーブルエンジンの `index_granularity` および `index_granularity_bytes` 設定によって制限されます。グラニュール内の行数は、行のサイズに応じて `[1, index_granularity]` の範囲になります。単一の行のサイズがこの設定値より大きい場合、グラニュールのサイズは `index_granularity_bytes` を超えることがあります。この場合、グラニュールのサイズはその行のサイズと同じになります。
 
-## クエリにおける主キーとインデックス {#primary-keys-and-indexes-in-queries}
+## クエリにおける主キーとインデックス \\{#primary-keys-and-indexes-in-queries\\}
 
 例として、主キー `(CounterID, Date)` を取り上げます。この場合、並び順とインデックスは次のように示されます。
 
@@ -200,7 +200,7 @@ ClickHouse では、一意なプライマリキーは不要です。同じプラ
 
 `PRIMARY KEY` および `ORDER BY` 句では `Nullable` 型の式を使用できますが、これは強く非推奨です。この機能を許可するには、[allow&#95;nullable&#95;key](/operations/settings/merge-tree-settings/#allow_nullable_key) 設定を有効にします。`ORDER BY` 句での `NULL` 値には、[NULLS&#95;LAST](/sql-reference/statements/select/order-by.md/#sorting-of-special-values) の原則が適用されます。
 
-### 主キーの選択 {#selecting-a-primary-key}
+### 主キーの選択 \\{#selecting-a-primary-key\\}
 
 主キーに含めるカラム数に明示的な制限はありません。データ構造に応じて、主キーに含めるカラム数を増やしたり減らしたりできます。これにより、次の効果が得られる場合があります:
 
@@ -225,7 +225,7 @@ ClickHouse では、一意なプライマリキーは不要です。同じプラ
 
 挿入時の順序でデータを取得するには、[single-threaded](/operations/settings/settings.md/#max_threads) な `SELECT` クエリを使用します。
 
-### 並べ替えキーと異なる主キーを選択する {#choosing-a-primary-key-that-differs-from-the-sorting-key}
+### 並べ替えキーと異なる主キーを選択する \\{#choosing-a-primary-key-that-differs-from-the-sorting-key\\}
 
 主キー（各マークごとのインデックスファイルに書き込まれる値を持つ式）は、並べ替えキー（データパーツ内の行を並べ替えるための式）とは異なるものを指定できます。この場合、主キーの式タプルは、並べ替えキーの式タプルのプレフィックスでなければなりません。
 
@@ -236,7 +236,7 @@ ClickHouse では、一意なプライマリキーは不要です。同じプラ
 
 並べ替えキーの [ALTER](/sql-reference/statements/alter/index.md) は軽量な操作です。新しいカラムがテーブルおよび並べ替えキーに同時に追加される場合、既存のデータパーツを変更する必要がないためです。古い並べ替えキーが新しい並べ替えキーのプレフィックスであり、新しく追加されたカラムにはデータが存在しないので、テーブルを変更した時点では、データは古い並べ替えキーと新しい並べ替えキーの両方に従って並べ替えられていることになります。
 
-### クエリにおけるインデックスとパーティションの利用 {#use-of-indexes-and-partitions-in-queries}
+### クエリにおけるインデックスとパーティションの利用 \\{#use-of-indexes-and-partitions-in-queries\\}
 
 `SELECT` クエリに対して、ClickHouse はインデックスを利用できるかどうかを解析して判断します。`WHERE/PREWHERE` 句に、等価比較または不等価比較の演算（連言要素の 1 つ、もしくは式全体）を表す式が含まれている場合、あるいは、プライマリキーまたはパーティションキーに含まれる列や式、それらの列に対する特定の部分的に反復的な関数、さらにそれらの式同士の論理関係に対して、固定プレフィックスを伴う `IN` または `LIKE` が含まれている場合、インデックスを使用できます。
 
@@ -283,7 +283,7 @@ SELECT count() FROM table WHERE CounterID = 34 OR URL LIKE '%upyachka%'
 
 月単位のパーティションキーは、指定した範囲に含まれる日付を持つデータブロックだけを読み取れるようにします。この場合、データブロックには多数の日付（最大で 1 か月分）に対応するデータが含まれている可能性があります。ブロック内ではデータは主キーでソートされていますが、主キーの先頭のカラムとして日付が含まれていない場合があります。そのため、主キーのプレフィックスを指定せずに日付条件のみを含むクエリを使用すると、単一の日付だけを対象とする場合よりも多くのデータを読み取ることになります。
 
-### 部分的に単調なプライマリキーに対する索引の利用 {#use-of-index-for-partially-monotonic-primary-keys}
+### 部分的に単調なプライマリキーに対する索引の利用 \\{#use-of-index-for-partially-monotonic-primary-keys\\}
 
 例として、月の日付を考えます。1 か月という範囲では[単調な数列](https://en.wikipedia.org/wiki/Monotonic_function)ですが、より長い期間では単調ではありません。このようなものは部分的に単調な数列です。ユーザーが部分的に単調なプライマリキーでテーブルを作成すると、ClickHouse は通常どおりスパースな索引を作成します。ユーザーがこの種類のテーブルからデータを取得する際、ClickHouse はクエリ条件を解析します。ユーザーが索引の 2 つのマークの間のデータを取得しようとし、かつその 2 つのマークが同じ 1 か月の範囲内に収まっている場合、ClickHouse はクエリのパラメータと索引マークとの距離を計算できるため、この特定のケースでは索引を使用できます。
 
@@ -291,7 +291,7 @@ SELECT count() FROM table WHERE CounterID = 34 OR URL LIKE '%upyachka%'
 
 ClickHouse は、このロジックを月の日付の数列に対してだけでなく、部分的に単調な数列を表す任意のプライマリキーに対しても適用します。
 
-### データスキップインデックス {#table_engine-mergetree-data_skipping-indexes}
+### データスキップインデックス \\{#table_engine-mergetree-data_skipping-indexes\\}
 
 インデックスの宣言は、`CREATE` クエリのカラム定義セクション内に記述します。
 
@@ -345,7 +345,7 @@ INDEX nested_1_index col.nested_col1 TYPE bloom_filter
 INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 ```
 
-### スキップインデックスの種類 {#skip-index-types}
+### スキップインデックスの種類 \\{#skip-index-types\\}
 
 `MergeTree` テーブルエンジンは、次の種類のスキップインデックスをサポートします。
 スキップインデックスを用いたパフォーマンス最適化の方法については、
@@ -357,7 +357,7 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`ngrambf_v1`](#n-gram-bloom-filter) インデックス
 - [`tokenbf_v1`](#token-bloom-filter) インデックス
 
-#### MinMax スキップインデックス {#minmax}
+#### MinMax スキップインデックス \\{#minmax\\}
 
 各インデックスグラニュールごとに、式の最小値と最大値が格納されます。
 （式の型が `tuple` の場合は、各タプル要素ごとに最小値と最大値が格納されます。）
@@ -366,7 +366,7 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 minmax
 ```
 
-#### Set {#set}
+#### Set \{#set\}
 
 各索引グラニュールにつき、指定された式の一意の値が最大で `max_rows` 個まで保存されます。
 `max_rows = 0` は &quot;すべての一意の値を保存する&quot; ことを意味します。
@@ -376,7 +376,7 @@ set(max_rows)
 ```
 
 
-#### ブルームフィルター {#bloom-filter}
+#### ブルームフィルター \{#bloom-filter\}
 
 各インデックスグラニュールには、指定されたカラムに対する[ブルームフィルター](https://en.wikipedia.org/wiki/Bloom_filter)が格納されます。
 
@@ -406,7 +406,7 @@ bloom_filter([false_positive_rate])
 :::
 
 
-#### N-gram ブルームフィルタ {#n-gram-bloom-filter}
+#### N-gram ブルームフィルタ \{#n-gram-bloom-filter\}
 
 各インデックスグラニュールは、指定されたカラムの [N-gram](https://en.wikipedia.org/wiki/N-gram) に対する [ブルームフィルタ](https://en.wikipedia.org/wiki/Bloom_filter) を保持します。
 
@@ -475,7 +475,7 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 上記の関数は、Bloom フィルター計算ツールである [こちら](https://hur.st/bloomfilter) を参考にしています。
 
 
-#### トークン Bloom フィルター {#token-bloom-filter}
+#### トークン Bloom フィルター \{#token-bloom-filter\}
 
 トークン Bloom フィルターは `ngrambf_v1` と同様ですが、n-gram の代わりに、英数字以外の文字で区切られたトークン（文字列）を格納します。
 
@@ -484,7 +484,7 @@ tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```
 
 
-#### スパースグラム Bloom フィルター {#sparse-grams-bloom-filter}
+#### スパースグラム Bloom フィルター \{#sparse-grams-bloom-filter\}
 
 スパースグラム Bloom フィルターは `ngrambf_v1` と似ていますが、n-gram の代わりに [sparse grams トークン](/sql-reference/functions/string-functions.md/#sparseGrams) を使用します。
 
@@ -493,15 +493,15 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 ```
 
 
-### テキスト索引 {#text}
+### テキスト索引 \\{#text\\}
 
 全文検索をサポートしています。詳細は[こちら](textindexes.md)を参照してください。
 
-#### ベクトル類似性 {#vector-similarity}
+#### ベクトル類似性 \\{#vector-similarity\\}
 
 近似最近傍検索をサポートしています。詳細は[こちら](annindexes.md)をご覧ください。
 
-### 関数のサポート {#functions-support}
+### 関数のサポート \\{#functions-support\\}
 
 `WHERE` 句の条件式には、カラムを操作する関数呼び出しが含まれます。カラムがインデックスの一部である場合、ClickHouse は関数を評価する際にそのインデックスを利用しようとします。ClickHouse では、インデックスで利用できる関数のサブセットがインデックスタイプごとに異なります。
 
@@ -562,7 +562,7 @@ Bloom filter では偽陽性が発生し得るため、`ngrambf_v1`、`tokenbf_v
   * `NOT startsWith(s, 'test')`
     :::
 
-## プロジェクション {#projections}
+## プロジェクション \\{#projections\\}
 
 プロジェクションは [マテリアライズドビュー](/sql-reference/statements/create/view) に似ていますが、パーツレベルで定義されます。クエリで自動的に利用されることに加えて、一貫性を保証します。
 
@@ -572,7 +572,7 @@ Bloom filter では偽陽性が発生し得るため、`ngrambf_v1`、`tokenbf_v
 
 プロジェクションは、[FINAL](/sql-reference/statements/select/from#final-modifier) 修飾子付きの `SELECT` ステートメントではサポートされていません。
 
-### プロジェクションクエリ {#projection-query}
+### プロジェクションクエリ \\{#projection-query\\}
 
 プロジェクションクエリは、プロジェクションを定義するクエリです。親テーブルからデータを暗黙的に選択します。
 **構文**
@@ -583,12 +583,12 @@ SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 
 プロジェクションは [ALTER](/sql-reference/statements/alter/projection.md) 文を使って変更または削除できます。
 
-### Projection indexes {#projection-index}
+### Projection indexes \\{#projection-index\\}
 
 Projection indexes は、軽量で明示的な方法で projection レベルの索引を定義できるようにすることで、projection サブシステムを拡張します。
 概念的には、projection index も依然として projection の一種ですが、構文が簡略化され、意図がより明確になっています。つまり、マテリアライズされたデータとして利用するのではなく、フィルタリング専用の式を定義します。
 
-#### 構文 {#projection-index-syntax}
+#### 構文 \{#projection-index-syntax\}
 
 ```sql
 PROJECTION <name> INDEX <index_expr> TYPE <index_type>
@@ -610,7 +610,7 @@ ORDER BY id;
 ```
 
 
-#### インデックスの種類 {#projection-index-types}
+#### インデックスの種類 \\{#projection-index-types\\}
 
 現在サポートされている種類は次のとおりです:
 
@@ -618,23 +618,23 @@ ORDER BY id;
 
 このフレームワークにより、将来的にさらに多くのインデックスの種類を追加できます。
 
-### Projection のストレージ {#projection-storage}
+### Projection のストレージ \\{#projection-storage\\}
 
 Projection はパートディレクトリ内に保存されます。これは索引に似ていますが、無名の `MergeTree` テーブルのパートを保存するサブディレクトリを含みます。テーブルは Projection の定義クエリに基づいて決定されます。`GROUP BY` 句がある場合、基盤となるストレージエンジンは [AggregatingMergeTree](aggregatingmergetree.md) になり、すべての集約関数は `AggregateFunction` に変換されます。`ORDER BY` 句がある場合、`MergeTree` テーブルはそれを主キー式として使用します。マージ処理中、Projection のパートはそのストレージのマージルーチンを介してマージされます。親テーブルのパートのチェックサムは Projection のパートのものと組み合わされます。その他のメンテナンス処理はスキップインデックスと同様です。
 
-### クエリ解析 {#projection-query-analysis}
+### クエリ解析 \\{#projection-query-analysis\\}
 
 1. プロジェクションがベーステーブルに対するクエリと同じ結果を生成し、与えられたクエリに対する回答として利用できるかを確認します。
 2. 読み取る必要があるグラニュール数が最も少ない、実行可能な最適な一致を選択します。
 3. プロジェクションを利用するクエリパイプラインは、元のパーツを利用するものとは異なります。あるパーツにプロジェクションが存在しない場合、その場で「投影」するためのパイプラインを追加できます。
 
-## 同時データアクセス {#concurrent-data-access}
+## 同時データアクセス \\{#concurrent-data-access\\}
 
 テーブルへの同時アクセスにはマルチバージョン方式を使用します。つまり、テーブルで読み取りと更新が同時に行われている場合でも、クエリ時点で有効なパーツの集合からデータが読み取られます。長時間にわたるロックは発生しません。挿入処理が読み取り操作の妨げになることもありません。
 
 テーブルからの読み取りは自動的に並列化されます。
 
-## 列およびテーブルの TTL {#table_engine-mergetree-ttl}
+## 列およびテーブルの TTL \\{#table_engine-mergetree-ttl\\}
 
 値の有効期間（time-to-live）を決定します。
 
@@ -658,7 +658,7 @@ TTL date_time + INTERVAL 1 MONTH
 TTL date_time + INTERVAL 15 HOUR
 ```
 
-### カラムの有効期限 (TTL) {#mergetree-column-ttl}
+### カラムの有効期限 (TTL) \\{#mergetree-column-ttl\\}
 
 カラム内の値の有効期限が切れると、ClickHouse はそれらをカラムのデータ型におけるデフォルト値に置き換えます。データパーツ内のそのカラムのすべての値が有効期限切れになった場合、ClickHouse はファイルシステム上のそのデータパーツからこのカラムを削除します。
 
@@ -666,7 +666,7 @@ TTL date_time + INTERVAL 15 HOUR
 
 **例**
 
-#### `TTL` を設定したテーブルの作成: {#creating-a-table-with-ttl}
+#### `TTL` を設定したテーブルの作成: \\{#creating-a-table-with-ttl\\}
 
 ```sql
 CREATE TABLE tab
@@ -681,7 +681,7 @@ PARTITION BY toYYYYMM(d)
 ORDER BY d;
 ```
 
-#### 既存のテーブルのカラムに有効期限 (TTL) を追加する {#adding-ttl-to-a-column-of-an-existing-table}
+#### 既存のテーブルのカラムに有効期限 (TTL) を追加する \{#adding-ttl-to-a-column-of-an-existing-table\}
 
 ```sql
 ALTER TABLE tab
@@ -690,7 +690,7 @@ ALTER TABLE tab
 ```
 
 
-#### カラムの有効期限 (TTL) を変更する {#altering-ttl-of-the-column}
+#### カラムの有効期限 (TTL) を変更する \{#altering-ttl-of-the-column\}
 
 ```sql
 ALTER TABLE tab
@@ -699,7 +699,7 @@ ALTER TABLE tab
 ```
 
 
-### テーブルの有効期限 (TTL) {#mergetree-table-ttl}
+### テーブルの有効期限 (TTL) \{#mergetree-table-ttl\}
 
 テーブルには、有効期限が切れた行を削除するための式を1つと、[ディスクまたはボリューム](#table_engine-mergetree-multiple-volumes)間でパーツを自動的に移動するための複数の式を設定できます。テーブル内の行の有効期限が切れると、ClickHouse は該当するすべての行を削除します。パーツの移動や再圧縮を行う場合、そのパーツ内のすべての行が `TTL` 式の条件を満たしている必要があります。
 
@@ -731,7 +731,7 @@ TTL time_column + INTERVAL 1 MONTH DELETE WHERE column = 'value'
 **例**
 
 
-#### 有効期限 (TTL) を設定してテーブルを作成する: {#creating-a-table-with-ttl-1}
+#### 有効期限 (TTL) を設定してテーブルを作成する: \{#creating-a-table-with-ttl-1\}
 
 ```sql
 CREATE TABLE tab
@@ -748,7 +748,7 @@ TTL d + INTERVAL 1 MONTH DELETE,
 ```
 
 
-#### テーブルの `TTL` 設定を変更する: {#altering-ttl-of-the-table}
+#### テーブルの `TTL` 設定を変更する: \{#altering-ttl-of-the-table\}
 
 ```sql
 ALTER TABLE tab
@@ -770,7 +770,7 @@ TTL d + INTERVAL 1 MONTH DELETE WHERE toDayOfWeek(d) = 1;
 ```
 
 
-#### 期限切れの行を再圧縮するテーブルの作成： {#creating-a-table-where-expired-rows-are-recompressed}
+#### 期限切れの行を再圧縮するテーブルの作成： \{#creating-a-table-where-expired-rows-are-recompressed\}
 
 ```sql
 CREATE TABLE table_for_recompression
@@ -802,7 +802,7 @@ TTL d + INTERVAL 1 MONTH GROUP BY k1, k2 SET x = max(x), y = min(y);
 ```
 
 
-### 有効期限切れデータの削除 {#mergetree-removing-expired-data}
+### 有効期限切れデータの削除 \\{#mergetree-removing-expired-data\\}
 
 `TTL` の有効期限が切れたデータは、ClickHouse がデータパーツをマージするタイミングで削除されます。
 
@@ -814,7 +814,7 @@ ClickHouse はデータが有効期限切れであることを検出すると、
 
 - [ttl_only_drop_parts](/operations/settings/merge-tree-settings#ttl_only_drop_parts) 設定
 
-## ディスクの種類 {#disk-types}
+## ディスクの種類 \\{#disk-types\\}
 
 ローカルブロックデバイスに加えて、ClickHouse は次のストレージタイプをサポートします：
 
@@ -827,15 +827,15 @@ ClickHouse はデータが有効期限切れであることを検出すると、
 * [`s3_plain` — S3 へのバックアップ用](/operations/backup/disk)
 * [`s3_plain_rewritable` — S3 上の変更不可能な非レプリケートテーブル用](/operations/storing-data.md#s3-plain-rewritable-storage)
 
-## データストレージで複数のブロックデバイスを利用する {#table_engine-mergetree-multiple-volumes}
+## データストレージで複数のブロックデバイスを利用する \\{#table_engine-mergetree-multiple-volumes\\}
 
-### はじめに {#introduction}
+### はじめに \\{#introduction\\}
 
 `MergeTree` ファミリーのテーブルエンジンは、複数のブロックデバイス上にデータを保存できます。たとえば、特定のテーブルのデータが事実上「ホット」と「コールド」に分割されている場合に有用です。最新のデータは頻繁に参照されますが、必要な容量は小さくて済みます。対照的に、裾の重い履歴データはまれにしか参照されません。複数のディスクが利用可能な場合、「ホット」データは高速なディスク（たとえば NVMe SSD やメモリ上）に配置し、「コールド」データは比較的低速なディスク（たとえば HDD）上に配置できます。
 
 データパーツは、`MergeTree` エンジンのテーブルにおける最小の移動可能な単位です。1 つのパーツに属するデータは 1 台のディスク上に保存されます。データパーツは、バックグラウンドでユーザー設定に従ってディスク間を移動できるほか、[ALTER](/sql-reference/statements/alter/partition) クエリを使用して移動することもできます。
 
-### 用語 {#terms}
+### 用語 \\{#terms\\}
 
 * ディスク — ファイルシステムにマウントされたブロックデバイス。
 * デフォルトディスク — [path](/operations/server-configuration-parameters/settings.md/#path) サーバー設定で指定されたパス上にデータを保存するディスク。
@@ -844,7 +844,7 @@ ClickHouse はデータが有効期限切れであることを検出すると、
 
 ここで説明した各エンティティの名称は、システムテーブル [system.storage&#95;policies](/operations/system-tables/storage_policies) および [system.disks](/operations/system-tables/disks) で確認できます。テーブルに対して設定済みのストレージポリシーのいずれかを適用するには、`MergeTree` エンジンファミリーのテーブルで `storage_policy` 設定を使用します。
 
-### 設定 {#table_engine-mergetree-multiple-volumes_configure}
+### 設定 \\{#table_engine-mergetree-multiple-volumes_configure\\}
 
 ディスク、ボリューム、およびストレージポリシーは、`config.d` ディレクトリ内のファイルにある `<storage_configuration>` タグ内で宣言する必要があります。
 
@@ -1003,7 +1003,7 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 
 データパーツのバックグラウンド移動を実行するスレッド数は、[background&#95;move&#95;pool&#95;size](/operations/server-configuration-parameters/settings.md/#background_move_pool_size) 設定で変更できます。
 
-### 詳細 {#details}
+### 詳細 \\{#details\\}
 
 `MergeTree` テーブルの場合、データは次のようなさまざまな方法でディスクに書き込まれます。
 
@@ -1031,7 +1031,7 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 
 ユーザーは、[JBOD](https://en.wikipedia.org/wiki/Non-RAID_drive_architectures) ボリュームの複数ディスクに新しい大きなパーツをバランス良く割り当てるために、設定 [min&#95;bytes&#95;to&#95;rebalance&#95;partition&#95;over&#95;jbod](/operations/settings/merge-tree-settings.md/#min_bytes_to_rebalance_partition_over_jbod) を使用できます。
 
-## データの保存に外部ストレージを使用する {#table_engine-mergetree-s3}
+## データの保存に外部ストレージを使用する \\{#table_engine-mergetree-s3\\}
 
 [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) ファミリーのテーブルエンジンは、それぞれ `s3`、`azure_blob_storage`、`hdfs` タイプのディスクを使用して、データを `S3`、`AzureBlobStorage`、`HDFS` に保存できます。詳細は、[外部ストレージオプションの設定](/operations/storing-data.md/#configuring-external-storage)を参照してください。
 
@@ -1084,7 +1084,7 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 ClickHouse バージョン 22.3 から 22.7 までは異なるキャッシュ設定が使用されています。これらのバージョンのいずれかを使用している場合は、[ローカルキャッシュの使用](/operations/storing-data.md/#using-local-cache)を参照してください。
 :::
 
-## 仮想カラム {#virtual-columns}
+## 仮想カラム \\{#virtual-columns\\}
 
 - `_part` — パーツ名。
 - `_part_index` — クエリ結果におけるそのパーツの連番のインデックス。
@@ -1100,7 +1100,7 @@ ClickHouse バージョン 22.3 から 22.7 までは異なるキャッシュ設
 - `_block_offset` — ブロック内の行に対して挿入時に割り当てられた元の行番号で、SETTING `enable_block_offset_column` が有効な場合はマージ時も保持される。
 - `_disk_name` — ストレージに使用されているディスク名。
 
-## カラム統計 {#column-statistics}
+## カラム統計 \\{#column-statistics\\}
 
 <ExperimentalBadge />
 
@@ -1128,7 +1128,7 @@ ALTER TABLE tab DROP STATISTICS a;
 これらの軽量な統計情報は、列内の値の分布に関する情報を集約します。統計情報は各パートごとに保存され、挿入のたびに更新されます。
 `set allow_statistics_optimize = 1` を有効にした場合にのみ、PREWHERE の最適化に利用できます。
 
-### 利用可能なカラム統計の種類 {#available-types-of-column-statistics}
+### 利用可能なカラム統計の種類 \\{#available-types-of-column-statistics\\}
 
 - `MinMax`
 
@@ -1154,7 +1154,7 @@ ALTER TABLE tab DROP STATISTICS a;
 
     構文: `countmin`
 
-### サポートされているデータ型 {#supported-data-types}
+### サポートされているデータ型 \\{#supported-data-types\\}
 
 |           | (U)Int*, Float*, Decimal(*), Date*, Boolean, Enum* | String または FixedString |
 |-----------|----------------------------------------------------|---------------------------|
@@ -1163,7 +1163,7 @@ ALTER TABLE tab DROP STATISTICS a;
 | TDigest   | ✔                                                  | ✗                         |
 | Uniq      | ✔                                                  | ✔                         |
 
-### サポートされる操作 {#supported-operations}
+### サポートされる操作 \\{#supported-operations\\}
 
 |           | 等値フィルター (==) | 範囲フィルター (`>, >=, <, <=`) |
 |-----------|---------------------|------------------------------|
@@ -1172,7 +1172,7 @@ ALTER TABLE tab DROP STATISTICS a;
 | TDigest   | ✗                   | ✔                            |
 | Uniq      | ✔                   | ✗                            |
 
-## 列レベルの設定 {#column-level-settings}
+## 列レベルの設定 \\{#column-level-settings\\}
 
 一部の MergeTree の設定は列レベルで上書きできます。
 

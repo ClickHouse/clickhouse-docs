@@ -6,11 +6,11 @@ title: 'clickhouse-keeper-client 工具'
 doc_type: 'reference'
 ---
 
-# clickhouse-keeper-client 工具 {#clickhouse-keeper-client-utility}
+# clickhouse-keeper-client 工具 \\{#clickhouse-keeper-client-utility\\}
 
 一个通过其原生协议与 clickhouse-keeper 交互的客户端工具。
 
-## 参数 {#clickhouse-keeper-client}
+## 参数 \\{#clickhouse-keeper-client\\}
 
 -   `-q QUERY`, `--query=QUERY` — 要执行的查询。若未指定此参数，`clickhouse-keeper-client` 将以交互模式启动。
 -   `-h HOST`, `--host=HOST` — 服务器地址。默认值：`localhost`。
@@ -24,7 +24,7 @@ doc_type: 'reference'
 -   `--no-confirmation` — 如果启用，则在若干命令上不再需要确认。交互模式下的默认值为 `false`，查询模式下的默认值为 `true`。
 -   `--help` — 显示帮助信息。
 
-## 示例 {#clickhouse-keeper-client-example}
+## 示例 \\{#clickhouse-keeper-client-example\\}
 
 ```bash
 ./clickhouse-keeper-client -h localhost -p 9181 --connection-timeout 30 --session-timeout 30 --operation-timeout 30
@@ -46,7 +46,7 @@ keeper foo bar
 2
 ```
 
-## 命令 {#clickhouse-keeper-client-commands}
+## 命令 \\{#clickhouse-keeper-client-commands\\}
 
 -   `ls '[path]'` -- 列出指定路径下的节点（默认：当前工作目录）
 -   `cd '[path]'` -- 切换工作路径（默认 `.`）

@@ -29,7 +29,7 @@ ClickHouse は多用途なデータベースシステムであり、ニーズに
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/EOXEW_-r10A?si=6IanDSJlRzN8f9Mo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 
-## ClickHouse Server {#clickhouse-server}
+## ClickHouse Server \\{#clickhouse-server\\}
 
 ClickHouse Server は従来型のクライアント／サーバーアーキテクチャに基づいており、本番環境でのデプロイメントに最適です。このデプロイメントモードでは、ClickHouse が特長とする高スループットかつ低レイテンシなクエリを備えた、完全な OLAP データベース機能を提供します。
 
@@ -41,7 +41,7 @@ ClickHouse Server は従来型のクライアント／サーバーアーキテ�
 
 このデプロイメントモードは、信頼性、パフォーマンス、そしてすべての機能を利用できることが重要となる本番環境における最有力な選択肢です。
 
-## ClickHouse Cloud {#clickhouse-cloud}
+## ClickHouse Cloud \\{#clickhouse-cloud\\}
 
 [ClickHouse Cloud](/cloud/overview) は、自前のデプロイメント運用に伴うオペレーション負荷を取り除く、完全マネージド版の ClickHouse です。ClickHouse Server の中核となる機能はすべて維持しつつ、開発と運用を効率化するために設計された追加機能によって、利用体験を一段と高めます。
 
@@ -55,7 +55,7 @@ ClickHouse Cloud の SQL Console には強力な [dashboarding](/cloud/manage/da
 
 マネージドサービスであることから、アップデート、バックアップ、スケーリング、セキュリティパッチについて心配する必要はありません — これらはすべて自動的に処理されます。そのため、データベース管理ではなく、自社のデータとアプリケーションに注力したい組織にとって理想的な選択肢となります。
 
-## clickhouse-local {#clickhouse-local}
+## clickhouse-local \\{#clickhouse-local\\}
 
 [clickhouse-local](/operations/utilities/clickhouse-local) は、単体の実行ファイルとして ClickHouse の完全な機能を提供する強力なコマンドラインツールです。基本的には ClickHouse Server と同じデータベースですが、サーバーインスタンスを起動することなくコマンドラインから直接 ClickHouse の機能をすべて活用できるようにパッケージされています。
 
@@ -67,7 +67,7 @@ clickhouse-local には ClickHouse の全機能が含まれているため、デ
 
 リモートテーブル関数とローカルファイルシステムへのアクセスを組み合わせることで、clickhouse-local は ClickHouse Server 上のデータとローカルマシン上のファイルを結合する必要があるシナリオでとくに有用です。サーバーにアップロードしたくない機密性の高いローカルデータや一時的なローカルデータを扱う場合に、きわめて有用です。
 
-## chDB {#chdb}
+## chDB \\{#chdb\\}
 
 [chDB](/chdb) は、プロセス内データベースエンジンとして組み込まれた ClickHouse であり、主な実装は Python ですが、Go、Rust、NodeJS、Bun 向けにも利用できます。このデプロイオプションにより、ClickHouse の強力な OLAP 機能をアプリケーションのプロセス内に直接組み込めるため、別途データベースをインストールする必要がなくなります。
 

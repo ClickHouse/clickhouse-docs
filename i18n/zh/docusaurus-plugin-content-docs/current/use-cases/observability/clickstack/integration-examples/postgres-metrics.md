@@ -16,7 +16,7 @@ import finish_import from '@site/static/images/clickstack/postgres/import-dashbo
 import example_dashboard from '@site/static/images/clickstack/postgres/postgres-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# 使用 ClickStack 监控 PostgreSQL 指标 {#postgres-metrics-clickstack}
+# 使用 ClickStack 监控 PostgreSQL 指标 \\{#postgres-metrics-clickstack\\}
 
 :::note[TL;DR]
 本指南介绍如何通过配置 OTel collector 的 PostgreSQL 接收器（receiver），使用 ClickStack 监控 PostgreSQL 性能指标。您将学会如何：
@@ -30,13 +30,13 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 所需时间：10–15 分钟
 :::
 
-## 集成现有 PostgreSQL {#existing-postgres}
+## 集成现有 PostgreSQL \\{#existing-postgres\\}
 
 本节介绍如何通过为 ClickStack OTel collector 配置 PostgreSQL receiver，使您现有的 PostgreSQL 安装将度量指标发送到 ClickStack。
 
 如果您希望在为自己的现有环境进行配置之前先测试 PostgreSQL 指标集成，可以在[以下章节](#demo-dataset)中使用我们预先配置的演示数据集进行测试。
 
-##### 先决条件 {#prerequisites}
+##### 先决条件 \\{#prerequisites\\}
 
 - 已运行的 ClickStack 实例
 - 已存在的 PostgreSQL 安装（版本 9.6 或更高）
@@ -45,7 +45,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### 确保监控用户具备所需权限 {#monitoring-permissions}
+#### 确保监控用户具备所需权限 \\{#monitoring-permissions\\}
 
 PostgreSQL 接收器需要一个对统计视图具有只读访问权限的用户。为你的监控用户授予 `pg_monitor` 角色：
 
@@ -53,7 +53,7 @@ PostgreSQL 接收器需要一个对统计视图具有只读访问权限的用户
 GRANT pg_monitor TO your_monitoring_user;
 ```
 
-#### 创建自定义 OTel collector 配置 {#create-custom-config}
+#### 创建自定义 OTel collector 配置 \\{#create-custom-config\\}
 
 ClickStack 允许你通过挂载自定义配置文件并设置环境变量来扩展基础的 OpenTelemetry collector 配置。
 
@@ -99,7 +99,7 @@ service:
 `tls: insecure: true` 设置会在开发/测试环境中禁用 SSL 验证。对于启用 SSL 的生产 PostgreSQL，请删除这一行或配置正确的证书。
 :::
 
-#### 使用自定义配置部署 ClickStack {#deploy-clickstack}
+#### 使用自定义配置部署 ClickStack \\{#deploy-clickstack\\}
 
 挂载你的自定义配置：
 
@@ -115,7 +115,7 @@ docker run -d \
   clickhouse/clickstack:latest
 ```
 
-#### 验证指标采集 {#verify-metrics}
+#### 验证指标采集 \\{#verify-metrics\\}
 
 完成配置后，登录 HyperDX 并验证指标是否开始流入：
 
@@ -127,7 +127,7 @@ docker run -d \
 
 </VerticalStepper>
 
-## 演示数据集 {#demo-dataset}
+## 演示数据集 \\{#demo-dataset\\}
 
 对于希望在配置生产系统之前先测试 PostgreSQL 指标集成的用户，我们提供了一个预先生成的数据集，其中包含具有逼真模式的 PostgreSQL 指标。
 
@@ -137,7 +137,7 @@ docker run -d \
 
 <VerticalStepper headerLevel="h4">
 
-#### 下载示例指标数据集 {#download-sample}
+#### 下载示例指标数据集 \\{#download-sample\\}
 
 下载预先生成的指标文件（包含 24 小时、具有逼真模式的 PostgreSQL 指标）：
 
@@ -155,7 +155,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - **应用程序 Bug（14:00-14:30）** - 回滚率激增至 15%
 - **死锁事件（14:15、16:30）** - 罕见死锁
 
-#### 启动 ClickStack {#start-clickstack}
+#### 启动 ClickStack \\{#start-clickstack\\}
 
 启动一个 ClickStack 实例：
 
@@ -167,7 +167,7 @@ docker run -d --name clickstack-postgres-demo \
 
 等待大约 30 秒，直至 ClickStack 完全启动。
 
-#### 将指标加载到 ClickStack 中 {#load-metrics}
+#### 将指标加载到 ClickStack 中 \\{#load-metrics\\}
 
 将指标直接加载到 ClickHouse 中：
 
@@ -181,7 +181,7 @@ cat postgres-metrics-sum.csv | docker exec -i clickstack-postgres-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
 
-#### 在 HyperDX 中验证指标 {#verify-metrics-demo}
+#### 在 HyperDX 中验证指标 \\{#verify-metrics-demo\\}
 
 加载完成后，查看指标的最快方式是使用预构建的仪表板。
 
@@ -193,15 +193,15 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据覆盖的时
 
 </VerticalStepper>
 
-## 仪表板和可视化 {#dashboards}
+## 仪表板和可视化 \\{#dashboards\\}
 
 为了帮助您开始使用 ClickStack 监控 PostgreSQL，我们提供了一套关键的 PostgreSQL 指标可视化。
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/postgres-metrics-dashboard.json')} download="postgres-metrics-dashboard.json" eventName="docs.postgres_metrics_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 {#download}
+#### <TrackedLink href={useBaseUrl('/examples/postgres-metrics-dashboard.json')} download="postgres-metrics-dashboard.json" eventName="docs.postgres_metrics_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \\{#download\\}
 
-#### 导入预构建的仪表板 {#import-dashboard}
+#### 导入预构建的仪表板 \\{#import-dashboard\\}
 
 1. 打开 HyperDX，并进入 Dashboards 页面
 2. 点击右上角省略号菜单中的 **Import Dashboard**
@@ -212,7 +212,7 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据覆盖的时
 
 <Image img={finish_import} alt="Finish import 对话框"/>
 
-#### 查看仪表板 {#created-dashboard}
+#### 查看仪表板 \\{#created-dashboard\\}
 
 系统会创建一个仪表板，并预先配置好所有可视化组件：
 
@@ -224,9 +224,9 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据覆盖的时
 
 </VerticalStepper>
 
-## 故障排查 {#troubleshooting}
+## 故障排查 \\{#troubleshooting\\}
 
-### 自定义配置未生效 {#troubleshooting-not-loading}
+### 自定义配置未生效 \\{#troubleshooting-not-loading\\}
 
 请确认已设置环境变量：
 
@@ -240,7 +240,7 @@ docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
-### HyperDX 中未显示任何指标 {#no-metrics}
+### HyperDX 中未显示任何指标 \\{#no-metrics\\}
 
 检查 PostgreSQL 是否可访问：
 
@@ -254,7 +254,7 @@ docker exec <clickstack-container> psql -h postgres-host -U otel_monitor -d post
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i postgres
 ```
 
-### 身份验证错误 {#auth-errors}
+### 身份验证错误 \\{#auth-errors\\}
 
 确认密码是否配置正确：
 
@@ -268,7 +268,7 @@ docker exec <clickstack-container> printenv POSTGRES_PASSWORD
 psql -h postgres-host -U otel_monitor -d postgres -c "SELECT version();"
 ```
 
-## 后续步骤 {#next-steps}
+## 后续步骤 \\{#next-steps\\}
 
 在完成 PostgreSQL 指标监控配置后：
 
@@ -276,6 +276,6 @@ psql -h postgres-host -U otel_monitor -d postgres -c "SELECT version();"
 - 启用 `pg_stat_statements` 扩展以实现查询级监控
 - 通过复制接收器配置，并为其指定不同的端点和服务名称来监控多个 PostgreSQL 实例
 
-## 上线生产环境 {#going-to-production}
+## 上线生产环境 \\{#going-to-production\\}
 
 本指南基于 ClickStack 内置的 OpenTelemetry Collector，帮助你快速完成初始配置。对于生产环境部署，我们建议运行你自己的 OTel Collector，并将数据发送到 ClickStack 的 OTLP 端点。有关生产环境配置，请参见[发送 OpenTelemetry 数据](/use-cases/observability/clickstack/ingesting-data/opentelemetry)。

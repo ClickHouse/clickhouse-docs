@@ -11,7 +11,7 @@ import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_s
 
 HTTP サーバーを使用して ClickHouse ユーザーを認証できます。HTTP 認証は、`users.xml` またはローカルのアクセス制御パスで定義された既存ユーザーに対する外部認証方式としてのみ使用できます。現在は、GET メソッドを使用する [Basic](https://datatracker.ietf.org/doc/html/rfc7617) 認証スキームがサポートされています。
 
-## HTTP 認証サーバーの定義 {#http-auth-server-definition}
+## HTTP 認証サーバーの定義 \\{#http-auth-server-definition\\}
 
 HTTP認証サーバーを定義するには、`config.xml` ファイルに `http_authentication_servers` セクションを追加する必要があります。
 
@@ -62,7 +62,7 @@ HTTP認証サーバーを定義するには、`config.xml` ファイルに `http
 
 ここでは、クライアントリクエストのヘッダーから外部 HTTP 認証サーバーへ転送されるヘッダーを定義します。ヘッダーは設定済みのものと大文字小文字を区別せずに照合されますが、転送時は元の形、すなわち変更されずに送信されます。
 
-### `users.xml` での HTTP 認証の有効化 {#enabling-http-auth-in-users-xml}
+### `users.xml` での HTTP 認証の有効化 \\{#enabling-http-auth-in-users-xml\\}
 
 ユーザーに対して HTTP 認証を有効にするには、ユーザー定義内で `password` などのセクションの代わりに `http_authentication` セクションを指定します。
 
@@ -90,7 +90,7 @@ HTTP認証サーバーを定義するには、`config.xml` ファイルに `http
 HTTP 認証は、他の認証メカニズムと併用できない点に注意してください。`http_authentication` と一緒に `password` など他のセクションが存在する場合、ClickHouse は強制終了されます。
 :::
 
-### SQL を使用した HTTP 認証の有効化 {#enabling-http-auth-using-sql}
+### SQL を使用した HTTP 認証の有効化 \\{#enabling-http-auth-using-sql\\}
 
 ClickHouse で [SQL ベースのアクセス制御とアカウント管理](/operations/access-rights#access-control-usage) が有効になっている場合、HTTP 認証で認証されるユーザーは、SQL 文を使用して作成することもできます。
 
@@ -104,6 +104,6 @@ CREATE USER my_user IDENTIFIED WITH HTTP SERVER 'basic_server' SCHEME 'Basic'
 CREATE USER my_user IDENTIFIED WITH HTTP SERVER 'basic_server'
 ```
 
-### セッション設定の受け渡し {#passing-session-settings}
+### セッション設定の受け渡し \\{#passing-session-settings\\}
 
 HTTP 認証サーバーからのレスポンスボディが JSON 形式で、`settings` サブオブジェクトを含んでいる場合、ClickHouse はそのキーと値のペアを文字列値として解析しようとし、認証済みユーザーの現在のセッションのセッション設定としてそれらを設定します。解析に失敗した場合、サーバーからのレスポンスボディは無視されます。

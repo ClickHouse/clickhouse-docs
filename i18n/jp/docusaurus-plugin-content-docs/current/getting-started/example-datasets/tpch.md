@@ -18,7 +18,7 @@ keywords: ['サンプルデータセット', 'tpch', 'ベンチマーク', 'サ�
 * [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
 * [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
 
-## データ生成とインポート {#data-generation-and-import}
+## データ生成とインポート \\{#data-generation-and-import\\}
 
 まず、TPC-H リポジトリを取得し、データ生成ツールをコンパイルします。
 
@@ -193,7 +193,7 @@ INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 
 :::
 
-## クエリ {#queries}
+## クエリ \\{#queries\\}
 
 :::note
 SQL 標準に従った正しい結果を得るために、[`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) の設定を有効にする必要があります。

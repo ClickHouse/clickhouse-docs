@@ -7,7 +7,7 @@ title: 'Set テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# Set テーブルエンジン {#set-table-engine}
+# Set テーブルエンジン \\{#set-table-engine\\}
 
 :::note
 ClickHouse Cloud では、サービスが 25.4 より前のバージョンで作成されている場合、`SET compatibility=25.4` を使って互換性を少なくとも 25.4 に設定する必要があります。
@@ -22,11 +22,11 @@ ClickHouse Cloud では、サービスが 25.4 より前のバージョンで作
 
 サーバーが異常再起動した場合、ディスク上のデータブロックが失われたり破損したりする可能性があります。後者の場合、破損したデータを含むファイルを手動で削除する必要があるかもしれません。
 
-### 制限事項と設定 {#join-limitations-and-settings}
+### 制限事項と設定 \\{#join-limitations-and-settings\\}
 
 テーブルを作成する際、以下の設定が適用されます。
 
-#### Persistent {#persistent}
+#### Persistent \\{#persistent\\}
 
 Set および [Join](/engines/table-engines/special/join) テーブルエンジンに対して永続化を無効化します。
 

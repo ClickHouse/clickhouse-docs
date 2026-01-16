@@ -7,7 +7,7 @@ title: 'RabbitMQ 表引擎'
 doc_type: 'guide'
 ---
 
-# RabbitMQ 表引擎 {#rabbitmq-table-engine}
+# RabbitMQ 表引擎 \{#rabbitmq-table-engine\}
 
 该引擎用于将 ClickHouse 与 [RabbitMQ](https://www.rabbitmq.com) 集成。
 
@@ -16,7 +16,7 @@ doc_type: 'guide'
 - 发布或订阅数据流。
 - 在数据流可用时对其进行处理。
 
-## 创建表 {#creating-a-table}
+## 创建表 \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -84,7 +84,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 - `rabbitmq_empty_queue_backoff_step_ms` — 当 RabbitMQ 队列为空时，重新调度读取操作时使用的退避步长（毫秒）。
 - `rabbitmq_handle_error_mode` — RabbitMQ 引擎的错误处理方式。可选值：`default`（如果解析消息失败，将抛出异常）、`stream`（异常信息和原始消息将保存在虚拟列 `_error` 和 `_raw_message` 中）、`dead_letter_queue`（与错误相关的数据将保存在 `system.dead_letter_queue` 中）。
 
-### SSL 连接 {#ssl-connection}
+### SSL 连接 \{#ssl-connection\}
 
 使用 `rabbitmq_secure = 1` 或在连接地址中使用 `amqps`：`rabbitmq_address = 'amqps://guest:guest@localhost/vhost'`。
 所使用的库的默认行为是不会检查所建立的 TLS 连接是否足够安全。无论证书是否过期、自签名、缺失或无效，连接照样会被允许。将来可能会实现对证书更严格的检查。
@@ -125,7 +125,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ```
 
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 `SELECT` 对于读取消息并不是特别有用（除非用于调试），因为每条消息只能被读取一次。更实用的方式是使用[物化视图](../../../sql-reference/statements/create/view.md)创建实时处理流程。为此：
 
@@ -187,7 +187,7 @@ Exchange 类型说明：
 ```
 
 
-## 虚拟列 {#virtual-columns}
+## 虚拟列 \\{#virtual-columns\\}
 
 - `_exchange_name` - RabbitMQ 交换器（exchange）名称。数据类型：`String`。
 - `_channel_id` - 接收该消息的 consumer 所声明的 ChannelID。数据类型：`String`。
@@ -203,11 +203,11 @@ Exchange 类型说明：
 
 注意：仅在解析期间发生异常时，`_raw_message` 和 `_error` 虚拟列才会被填充；当消息被成功解析时，它们始终为 `NULL`。
 
-## 注意事项 {#caveats}
+## 注意事项 \\{#caveats\\}
 
 即使在表定义中指定了[默认列表达式](/sql-reference/statements/create/table.md/#default_values)（例如 `DEFAULT`、`MATERIALIZED`、`ALIAS`），这些也会被忽略。列将使用其各自数据类型的默认值进行填充。
 
-## 数据格式支持 {#data-formats-support}
+## 数据格式支持 \\{#data-formats-support\\}
 
 RabbitMQ 引擎支持 ClickHouse 所支持的所有[格式](../../../interfaces/formats.md)。
 单个 RabbitMQ 消息中的行数取决于使用的是按行还是按块的格式：

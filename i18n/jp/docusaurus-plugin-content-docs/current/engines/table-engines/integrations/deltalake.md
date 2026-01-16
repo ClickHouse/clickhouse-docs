@@ -7,11 +7,11 @@ title: 'DeltaLake テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# DeltaLake テーブルエンジン {#deltalake-table-engine}
+# DeltaLake テーブルエンジン \\{#deltalake-table-engine\\}
 
 このエンジンは、Amazon S3 上に存在する既存の [Delta Lake](https://github.com/delta-io/delta) テーブルとの読み取り専用の連携を提供します。
 
-## テーブルを作成する {#create-table}
+## テーブルを作成する \\{#create-table\\}
 
 Delta Lake テーブルはあらかじめ S3 上に存在している必要があり、このコマンドでは新しいテーブルを作成するための DDL パラメータは指定できません。
 
@@ -51,10 +51,10 @@ CREATE TABLE deltalake ENGINE=DeltaLake('http://mars-doc-test.s3.amazonaws.com/c
 CREATE TABLE deltalake ENGINE=DeltaLake(deltalake_conf, filename = 'test_table')
 ```
 
-### データキャッシュ {#data-cache}
+### データキャッシュ \\{#data-cache\\}
 
 `Iceberg` テーブルエンジンおよびテーブル関数は、`S3`、`AzureBlobStorage`、`HDFS` ストレージと同様に、データキャッシュをサポートします。詳細は[こちら](../../../engines/table-engines/integrations/s3.md#data-cache)を参照してください。
 
-## 関連項目 {#see-also}
+## 関連項目 \\{#see-also\\}
 
 - [deltaLake テーブル関数](../../../sql-reference/table-functions/deltalake.md)

@@ -7,14 +7,14 @@ sidebar_label: 'sumMap'
 doc_type: 'reference'
 ---
 
-# sumMap {#summap}
+# sumMap \\{#summap\\}
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 [`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器可以应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum)
 函数，此时会使用 `sumMap` 聚合组合器函数，根据每个键计算 Map 中对应值的总和。
 
-## 示例用法 {#example-usage}
+## 示例用法 \\{#example-usage\\}
 
 在本示例中，我们将创建一张表，用于存储不同时间段内的状态码及其计数，其中每一行都包含一个 Map，用于将状态码映射到其对应的计数。我们将使用
 `sumMap` 来计算每个时间段内各状态码的总计数。
@@ -60,6 +60,6 @@ GROUP BY timeslot;
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
-## 另请参阅 {#see-also}
+## 另请参阅 \\{#see-also\\}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`Map 组合器`](/sql-reference/aggregate-functions/combinators#-map)

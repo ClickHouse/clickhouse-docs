@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Как создать AI-агента с CrewAI и сервером MCP для ClickHouse {#how-to-build-an-ai-agent-with-crewai-and-the-clickhouse-mcp-server}
+# Как создать AI-агента с CrewAI и сервером MCP для ClickHouse \\{#how-to-build-an-ai-agent-with-crewai-and-the-clickhouse-mcp-server\\}
 
 В этом руководстве вы узнаете, как создать AI-агента [mcp-agent](https://github.com/lastmile-ai/mcp-agent), который может взаимодействовать с 
 [SQL-песочницей ClickHouse](https://sql.clickhouse.com/), используя [сервер MCP для ClickHouse](https://github.com/ClickHouse/mcp-clickhouse).
@@ -19,7 +19,7 @@ doc_type: 'guide'
 Этот пример доступен в виде ноутбука в [репозитории с примерами](https://github.com/ClickHouse/examples/blob/main/ai/mcp/mcp-agent/mcp-agent.ipynb).
 :::
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \\{#prerequisites\\}
 
 - На вашей системе должен быть установлен Python.
 - На вашей системе должен быть установлен `pip`.

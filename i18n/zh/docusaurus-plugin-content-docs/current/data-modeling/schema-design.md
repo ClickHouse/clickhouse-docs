@@ -13,7 +13,7 @@ import Image from '@theme/IdealImage';
 理解高效的 schema 设计是优化 ClickHouse 性能的关键，其中的诸多选择往往需要在不同方案之间进行权衡，最优方案取决于实际查询模式，以及数据更新频率、延迟要求和数据量等因素。本指南概述了用于优化 ClickHouse 性能的 schema 设计最佳实践和数据建模技术。
 
 
-## Stack Overflow 数据集 {#stack-overflow-dataset}
+## Stack Overflow 数据集 \\{#stack-overflow-dataset\\}
 
 在本指南的示例中，我们使用 Stack Overflow 数据集的一个子集。该数据集包含自 2008 年至 2024 年 4 月在 Stack Overflow 上产生的每一条帖子、投票、用户、评论和徽章。该数据以 Parquet 格式提供，使用下方所示的 schema，存储在 S3 bucket `s3://datasets-documentation/stackoverflow/parquet/` 中：
 
@@ -27,7 +27,7 @@ Stack Overflow 数据集包含多张相互关联的表。在任何数据建模�
 
 上述 schema 在本指南中是刻意未进行最优设计的。
 
-## 建立初始 schema {#establish-initial-schema}
+## 建立初始 schema \{#establish-initial-schema\}
 
 由于 `posts` 表将是大多数分析查询的目标，我们重点为该表建立 schema。此数据位于公共 S3 bucket `s3://datasets-documentation/stackoverflow/parquet/posts/*.parquet` 中，每年一个文件。
 
@@ -129,7 +129,7 @@ INSERT INTO posts SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.
 > 上述查询会加载 6000 万行。对于 ClickHouse 来说这算小规模，但网络连接较慢的用户可能希望只加载一部分数据。可以通过使用 glob 通配模式指定要加载的年份来实现，例如 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2008.parquet` 或 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/{2008, 2009}.parquet`。关于如何使用 glob 模式来筛选文件子集，请参阅[此处](/sql-reference/table-functions/file#globs-in-path)。
 
 
-## 优化类型 {#optimizing-types}
+## 优化类型 \\{#optimizing-types\\}
 
 ClickHouse 查询性能的秘密之一是压缩。
 
@@ -225,7 +225,7 @@ ClickHouse 中的主（排序）键
 来自 OLTP 数据库的用户通常会在 ClickHouse 中寻找与之对应的等价概念。
 
 
-## 选择排序键 {#choosing-an-ordering-key}
+## 选择排序键 \\{#choosing-an-ordering-key\\}
 
 在 ClickHouse 通常使用的规模下，内存和磁盘效率至关重要。数据以称为 part 的数据块形式写入 ClickHouse 表，并在后台根据规则对这些 part 进行合并。在 ClickHouse 中，每个 part 都有自己的主索引。当 part 被合并时，合并后 part 的主索引也会被合并。每个 part 的主索引对每一组行只包含一个索引条目——这种技术称为稀疏索引（sparse indexing）。
 
@@ -244,7 +244,7 @@ ClickHouse 中的主（排序）键
 
 在确定用于排序键的列子集时，需要按特定顺序声明这些列。此顺序会显著影响查询中对排序键中后续列进行过滤的效率，以及表数据文件的压缩比。通常，最好按基数（cardinality）从低到高来排列键。这需要与以下事实进行权衡：对在排序键中位置靠后的列进行过滤，其效率会低于对位置靠前列的过滤。在这些行为之间取得平衡，并结合你的访问模式进行考虑（最重要的是要测试不同方案）。
 
-### 示例 {#example}
+### 示例 \{#example\}
 
 将上述指南应用到我们的 `posts` 表时，假设用户希望执行按日期和帖子类型过滤的分析，例如：
 
@@ -332,7 +332,7 @@ LIMIT 3
 对于希望通过使用特定数据类型和合理排序键来提升压缩效果的用户，请参阅 [Compression in ClickHouse](/data-compression/compression-in-clickhouse)。如果你需要进一步提高压缩率，我们还推荐参考其中的 [Choosing the right column compression codec](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec) 部分。
 
 
-## 下一步：数据建模技术 {#next-data-modeling-techniques}
+## 下一步：数据建模技术 \\{#next-data-modeling-techniques\\}
 
 到目前为止，我们只迁移了一张表。虽然这已经让我们能够介绍一些核心的 ClickHouse 概念，但大多数 schema 往往没有这么简单。
 

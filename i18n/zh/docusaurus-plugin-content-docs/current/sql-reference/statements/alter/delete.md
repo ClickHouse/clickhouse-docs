@@ -7,7 +7,7 @@ title: 'ALTER TABLE ... DELETE 语句'
 doc_type: 'reference'
 ---
 
-# ALTER TABLE ... DELETE 语句 {#alter-table-delete-statement}
+# ALTER TABLE ... DELETE 语句 \\{#alter-table-delete-statement\\}
 
 ```sql
 ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE WHERE filter_expr
@@ -31,6 +31,6 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE WHERE filter_expr
 * [ALTER 查询的同步性](/sql-reference/statements/alter/index.md#synchronicity-of-alter-queries)
 * [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync) 设置
 
-## 相关内容 {#related-content}
+## 相关内容 \\{#related-content\\}
 
 - 博客文章：[在 ClickHouse 中处理更新和删除](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

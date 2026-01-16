@@ -5,7 +5,7 @@ title: 'quantileExactInclusive'
 doc_type: 'reference'
 ---
 
-# quantileExactInclusive {#quantileexactinclusive}
+# quantileExactInclusive \\{#quantileexactinclusive\\}
 
 精确计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 

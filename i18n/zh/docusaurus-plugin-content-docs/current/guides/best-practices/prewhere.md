@@ -16,13 +16,13 @@ import visual05 from '@site/static/images/guides/best-practices/prewhere_05.gif'
 
 import Image from '@theme/IdealImage';
 
-# PREWHERE 优化是如何工作的？ {#how-does-the-prewhere-optimization-work}
+# PREWHERE 优化是如何工作的？ \\{#how-does-the-prewhere-optimization-work\\}
 
 [PREWHERE 子句](/sql-reference/statements/select/prewhere) 是 ClickHouse 中的一种查询执行优化机制。它通过避免不必要的数据读取、在从磁盘读取非过滤列之前先过滤掉无关数据，从而减少 I/O 并提升查询速度。
 
 本指南将介绍 PREWHERE 的工作原理、如何衡量它带来的效果，以及如何对其进行调优以获得最佳性能。
 
-## 未使用 PREWHERE 优化时的查询处理 {#query-processing-without-prewhere-optimization}
+## 未使用 PREWHERE 优化时的查询处理 \\{#query-processing-without-prewhere-optimization\\}
 
 我们先来说明在不使用 PREWHERE 的情况下，对 [uk_price_paid_simple](/parts) 表的查询是如何处理的：
 
@@ -41,7 +41,7 @@ import Image from '@theme/IdealImage';
 
 可以看到，在没有 PREWHERE 的情况下，所有潜在相关的列都会在过滤之前加载，即便最终只有少量行实际匹配条件。
 
-## PREWHERE 如何提升查询效率 {#how-prewhere-improves-query-efficiency}
+## PREWHERE 如何提升查询效率 \\{#how-prewhere-improves-query-efficiency\\}
 
 下列动画展示了在将 PREWHERE 子句应用到所有查询谓词后，上文中的查询是如何被处理的。
 
@@ -90,7 +90,7 @@ ClickHouse 首先通过 ① 从 `town` 列读取选定的 granule，并检查哪
 请注意，在带 PREWHERE 和不带 PREWHERE 的两种查询版本中，ClickHouse 处理的行数是相同的。然而，在应用 PREWHERE 优化后，并不需要为每一行都加载所有列的值。
 :::
 
-## PREWHERE 优化会自动应用 {#prewhere-optimization-is-automatically-applied}
+## PREWHERE 优化会自动应用 \\{#prewhere-optimization-is-automatically-applied\\}
 
 如上例所示，可以手动添加 PREWHERE 子句。不过，你无需手动编写 PREWHERE。当将设置 [`optimize_move_to_prewhere`](/operations/settings/settings#optimize_move_to_prewhere) 启用时（默认值为 true），ClickHouse 会自动将过滤条件从 WHERE 移动到 PREWHERE，并优先选择那些最能减少读取量的条件。
 
@@ -100,7 +100,7 @@ ClickHouse 首先通过 ① 从 `town` 列读取选定的 granule，并检查哪
 
 从版本 [23.11](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere) 开始，可选的列统计信息可以进一步优化这一过程，即基于实际数据的选择性来决定过滤处理顺序，而不仅仅依赖列大小。
 
-## 如何衡量 PREWHERE 的影响 {#how-to-measure-prewhere-impact}
+## 如何衡量 PREWHERE 的影响 \\{#how-to-measure-prewhere-impact\\}
 
 要验证 PREWHERE 是否提升了查询性能，可以对比在启用和禁用 `optimize_move_to_prewhere` 设置时的查询表现。
 
@@ -205,7 +205,7 @@ SETTINGS send_logs_level = 'test';
 ...
 ```
 
-## 关键要点 {#key-takeaways}
+## 关键要点 \\{#key-takeaways\\}
 
 * PREWHERE 可以避免读取之后会被过滤掉的列数据，从而节省 I/O 和内存。
 * 当启用 `optimize_move_to_prewhere`（默认启用）时，它会自动起作用。

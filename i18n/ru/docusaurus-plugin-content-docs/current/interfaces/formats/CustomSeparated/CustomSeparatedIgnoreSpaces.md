@@ -10,11 +10,11 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     |        |       |
 
-## Описание {#description}
+## Описание \\{#description\\}
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
-### Вставка данных {#inserting-data}
+### Вставка данных \\{#inserting-data\\}
 
 Используя следующий текстовый файл с именем `football.txt`:
 
@@ -38,4 +38,4 @@ SET format_custom_escaping_rule = 'Quoted';
 INSERT INTO football FROM INFILE 'football.txt' FORMAT CustomSeparatedIgnoreSpaces;
 ```
 
-## Настройки формата {#format-settings}
+## Настройки формата \\{#format-settings\\}

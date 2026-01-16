@@ -6,7 +6,7 @@ doc_type: 'landing-page'
 keywords: ['о ClickHouse', 'обзор', 'введение']
 ---
 
-# О ClickHouse {#about-clickhouse}
+# О ClickHouse \\{#about-clickhouse\\}
 
 В этом разделе документации вы найдёте информацию о ClickHouse. См. оглавление ниже для списка страниц этого раздела документации.
 

@@ -26,7 +26,7 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-# 将数据从 MySQL 摄取到 ClickHouse（使用 CDC） {#ingesting-data-from-mysql-to-clickhouse-using-cdc}
+# 将数据从 MySQL 摄取到 ClickHouse（使用 CDC） \{#ingesting-data-from-mysql-to-clickhouse-using-cdc\}
 
 <BetaBadge/>
 
@@ -38,13 +38,13 @@ MySQL ClickPipe 提供了一种完全托管且高可靠的方式，将 MySQL 和
 
 可以使用 ClickPipes UI 手动部署和管理 MySQL ClickPipes。未来，还可以使用 [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) 和 [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.8.1-alpha1/docs/resources/clickpipe) 以编程方式部署和管理 MySQL ClickPipes。
 
-## 前置条件 {#prerequisites}
+## 前置条件 \\{#prerequisites\\}
 
 [//]: # "TODO 对于一次性摄取的管道，不需要进行 binlog 复制配置。过去这一直是困惑的来源，因此我们也应该提供批量加载所需的最低要求，以避免把用户吓跑。"
 
 在开始之前，首先需要确保你的 MySQL 数据库已正确配置为支持 binlog 复制。具体配置步骤取决于你是如何部署 MySQL 的，请按照下面相应的指南进行操作：
 
-### 支持的数据源 {#supported-data-sources}
+### 支持的数据源 \\{#supported-data-sources\\}
 
 | 名称                 | Logo | 详情           |
 |----------------------|------|-------------------|
@@ -58,7 +58,7 @@ MySQL ClickPipe 提供了一种完全托管且高可靠的方式，将 MySQL 和
 
 在完成源 MySQL 数据库的配置后，可以继续创建 ClickPipe。
 
-## 创建你的 ClickPipe {#create-your-clickpipe}
+## 创建你的 ClickPipe \\{#create-your-clickpipe\\}
 
 请确保你已登录到你的 ClickHouse Cloud 账户。如果你还没有账户，可以在[这里](https://cloud.clickhouse.com/)注册。
 
@@ -75,7 +75,7 @@ MySQL ClickPipe 提供了一种完全托管且高可靠的方式，将 MySQL 和
 
 <Image img={mysql_tile} alt="选择 MySQL" size="lg" border/>
 
-### 添加你的源 MySQL 数据库连接 {#add-your-source-mysql-database-connection}
+### 添加你的源 MySQL 数据库连接 \\{#add-your-source-mysql-database-connection\\}
 
 4. 填写在前置条件步骤中配置好的源 MySQL 数据库的连接信息。
 
@@ -86,7 +86,7 @@ MySQL ClickPipe 提供了一种完全托管且高可靠的方式，将 MySQL 和
 
    <Image img={mysql_connection_details} alt="填写连接信息" size="lg" border/>
 
-#### （可选）设置 SSH 隧道 {#optional-set-up-ssh-tunneling}
+#### （可选）设置 SSH 隧道 \\{#optional-set-up-ssh-tunneling\\}
 
 如果你的源 MySQL 数据库无法通过公网访问，你可以配置 SSH 隧道的相关参数。
 
@@ -104,7 +104,7 @@ MySQL ClickPipe 提供了一种完全托管且高可靠的方式，将 MySQL 和
 
 在填写完连接信息后，点击 `Next`。
 
-#### 配置高级设置 {#advanced-settings}
+#### 配置高级设置 \\{#advanced-settings\\}
 
 如有需要，你可以配置高级设置。下面是每个设置的简要说明：
 
@@ -114,7 +114,7 @@ MySQL ClickPipe 提供了一种完全托管且高可靠的方式，将 MySQL 和
 - **Snapshot number of rows per partition**：在初始快照期间，每个分区中将要抓取的行数。当你的表中有大量行，并希望控制每个分区抓取的行数时，这个设置会很有用。
 - **Snapshot number of tables in parallel**：在初始快照期间，将并行抓取的表的数量。当你有大量表，并希望控制并行抓取的表数量时，这个设置会很有用。
 
-### 配置表 {#configure-the-tables}
+### 配置表 \\{#configure-the-tables\\}
 
 5. 在这里你可以选择 ClickPipe 的目标数据库。你可以选择一个已存在的数据库，或者创建一个新数据库。
 
@@ -122,7 +122,7 @@ MySQL ClickPipe 提供了一种完全托管且高可靠的方式，将 MySQL 和
 
 6. 你可以选择要从源 MySQL 数据库复制的表。在选择表时，你还可以选择在目标 ClickHouse 数据库中重命名这些表，以及排除特定列。
 
-### 检查权限并启动 ClickPipe {#review-permissions-and-start-the-clickpipe}
+### 检查权限并启动 ClickPipe \\{#review-permissions-and-start-the-clickpipe\\}
 
 7. 在权限下拉框中选择 "Full access" 角色，然后点击 "Complete Setup"。
 
@@ -130,7 +130,7 @@ MySQL ClickPipe 提供了一种完全托管且高可靠的方式，将 MySQL 和
 
 最后，如需了解更多常见问题及其解决方法，请参阅 ["ClickPipes for MySQL FAQ"](/integrations/clickpipes/mysql/faq) 页面。
 
-## 下一步操作 {#whats-next}
+## 下一步操作 \\{#whats-next\\}
 
 [//]: # "TODO Write a MySQL-specific migration guide and best practices similar to the existing one for PostgreSQL. The current migration guide points to the MySQL table engine, which is not ideal."
 

@@ -8,12 +8,12 @@ doc_type: 'reference'
 
 
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
 
 
-## Настройки формата {#format-settings}
+## Настройки формата \\{#format-settings\\}

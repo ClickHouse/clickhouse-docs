@@ -8,7 +8,7 @@ doc_type: 'guide'
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
-# 副本感知路由 {#replica-aware-routing}
+# 副本感知路由 \\{#replica-aware-routing\\}
 
 <PrivatePreviewBadge/>
 
@@ -26,16 +26,16 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 请注意，原始主机名仍然会使用 `LEAST_CONNECTION` 负载均衡，这是默认的路由算法。
 
-## 副本感知路由的限制 {#limitations-of-replica-aware-routing}
+## 副本感知路由的限制 \\{#limitations-of-replica-aware-routing\\}
 
-### 副本感知路由不保证隔离 {#replica-aware-routing-does-not-guarantee-isolation}
+### 副本感知路由不保证隔离 \\{#replica-aware-routing-does-not-guarantee-isolation\\}
 
 对服务的任何中断，例如服务器 pod（容器组）重启（由于版本升级、崩溃、纵向扩容等原因）、服务器横向扩容或缩容，都会导致路由哈希环发生变化。这会使使用相同主机名的连接被调度到不同的服务器 pod（容器组）上。
 
-### 副本感知路由无法开箱即用地与 Private Link 搭配使用 {#replica-aware-routing-does-not-work-out-of-the-box-with-private-link}
+### 副本感知路由无法开箱即用地与 Private Link 搭配使用 \\{#replica-aware-routing-does-not-work-out-of-the-box-with-private-link\\}
 
 客户需要手动添加一条 DNS 记录，才能使新的主机名模式的名称解析生效。如果使用不当，这可能会导致服务器负载不均衡。
 
-## 配置副本感知路由 {#configuring-replica-aware-routing}
+## 配置副本感知路由 \\{#configuring-replica-aware-routing\\}
 
 如需启用副本感知路由功能，请联系[我们的支持团队](https://clickhouse.com/support/program)。

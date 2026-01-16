@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['CBE', 'optimizer']
 ---
 
-# ClickHouse 是否有基于成本的优化器？ {#does-clickhouse-have-a-cost-based-optimizer}
+# ClickHouse 是否有基于成本的优化器？ \\{#does-clickhouse-have-a-cost-based-optimizer\\}
 
 ClickHouse 具备一些局部的基于成本的优化机制，例如：读取列的顺序由从磁盘读取压缩数据范围的成本来决定。
 

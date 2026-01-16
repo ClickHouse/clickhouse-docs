@@ -10,7 +10,7 @@ import nullTableMV from '@site/static/images/data-modeling/null_table_mv.png';
 import Image from '@theme/IdealImage';
 
 
-# データのバックフィル {#backfilling-data}
+# データのバックフィル \\{#backfilling-data\\}
 
 ClickHouse を新規に利用している場合でも、既存のデプロイメントを担当している場合でも、履歴データでテーブルをバックフィルする必要が生じることがあります。状況によっては比較的単純ですが、マテリアライズドビューをバックフィルする必要がある場合は、より複雑になることがあります。本ガイドでは、そのようなタスクに対してユーザーが自身のユースケースに適用できるいくつかの手順を説明します。
 
@@ -18,7 +18,7 @@ ClickHouse を新規に利用している場合でも、既存のデプロイメ
 本ガイドでは、ユーザーがすでに [インクリメンタルマテリアライズドビュー](/materialized-view/incremental-materialized-view) の概念と、[S3 や GCS などのテーブル関数を用いたデータ読み込み](/integrations/s3) に精通していることを前提としています。また、[オブジェクトストレージからの挿入パフォーマンス最適化](/integrations/s3/performance) に関するガイドも併せて読むことを推奨します。そこでの推奨事項は、このガイド全体で行う挿入処理に適用できます。
 :::
 
-## サンプルデータセット {#example-dataset}
+## サンプルデータセット \{#example-dataset\}
 
 このガイド全体を通して、PyPI データセットを使用します。このデータセットの各行は、`pip` などのツールを用いた Python パッケージのダウンロードを表しています。
 
@@ -70,7 +70,7 @@ SETTINGS describe_compact_output = 1
 :::
 
 
-## バックフィルのシナリオ {#backfilling-scenarios}
+## バックフィルのシナリオ \\{#backfilling-scenarios\\}
 
 バックフィルは通常、ある時点以降のデータストリームを取り込んでいる場合に必要になります。このデータは [インクリメンタルなマテリアライズドビュー](/materialized-view/incremental-materialized-view) を介して ClickHouse のテーブルに挿入され、ブロックが挿入されるたびにトリガーされます。これらのビューは、挿入前にデータを変換したり、集計を計算して、その結果をダウンストリームのアプリケーションで後から使用するためのターゲットテーブルに送信している場合があります。
 
@@ -83,7 +83,7 @@ SETTINGS describe_compact_output = 1
 
 履歴データのバックフィルには、オブジェクトストレージ上のデータを用いて実施することを推奨します。データは、可能であれば Parquet にエクスポートしておくと、読み取り性能と圧縮率（ネットワーク転送量の削減）の観点で最適です。ファイルサイズは 150MB 前後が一般的に好まれますが、ClickHouse は [70 を超えるファイルフォーマット](/interfaces/formats) をサポートしており、あらゆるサイズのファイルを処理できます。
 
-## 複製テーブルとビューの使用 {#using-duplicate-tables-and-views}
+## 複製テーブルとビューの使用 \{#using-duplicate-tables-and-views\}
 
 すべてのシナリオにおいては、「複製テーブルとビュー」という概念を前提とします。これらのテーブルとビューは、ライブストリーミングデータで使用されているもののコピーであり、バックフィル処理を本番の系統から切り離して実行し、障害が発生した場合でも容易にリカバリできるようにするためのものです。たとえば、次のようなメインの `pypi` テーブルとマテリアライズドビューがあり、各 Python プロジェクトごとのダウンロード数を計算します。
 
@@ -261,7 +261,7 @@ ClickPipes はオブジェクトストレージからデータをロードする
 :::
 
 
-## シナリオ 1: 既存のデータインジェストを利用したデータのバックフィル {#scenario-1-backfilling-data-with-existing-data-ingestion}
+## シナリオ 1: 既存のデータインジェストを利用したデータのバックフィル \{#scenario-1-backfilling-data-with-existing-data-ingestion\}
 
 このシナリオでは、バックフィル対象のデータが専用のバケットに存在せず、フィルタリングが必要であると仮定します。データの挿入はすでに行われており、どこから履歴データをバックフィルする必要があるかを示すタイムスタンプまたは単調増加するカラムを特定できます。
 
@@ -325,7 +325,7 @@ ClickHouse Cloud のユーザーは、データを専用のバケットに分離
 :::
 
 
-## シナリオ 2: 既存テーブルへのマテリアライズドビューの追加 {#scenario-2-adding-materialized-views-to-existing-tables}
+## シナリオ 2: 既存テーブルへのマテリアライズドビューの追加 \\{#scenario-2-adding-materialized-views-to-existing-tables\\}
 
 大量のデータがすでに格納されており、データの挿入が継続しているセットアップに対して、新しいマテリアライズドビューを追加する必要が生じることは珍しくありません。このような場合、ストリーム内のある地点を特定するために使用できるタイムスタンプ列または単調増加する列が役立ち、データのインジェストの一時停止を避けることができます。以下の例では両方のケースを想定し、インジェストの一時停止を避けるアプローチを優先しています。
 
@@ -333,7 +333,7 @@ ClickHouse Cloud のユーザーは、データを専用のバケットに分離
 [`POPULATE`](/sql-reference/statements/create/view#materialized-view) コマンドを使用してマテリアライズドビューをバックフィルする方法は、インジェストを停止している小規模なデータセット以外には推奨しません。この演算子は、POPULATE のハッシュ処理が完了した後にマテリアライズドビューが作成されるため、その間にソーステーブルへ挿入された行を取りこぼす可能性があります。さらに、この POPULATE は全データを対象に実行されるため、大規模なデータセットでは中断やメモリ制限の影響を受けやすくなります。
 :::
 
-### タイムスタンプまたは単調増加する列が利用可能な場合 {#timestamp-or-monotonically-increasing-column-available}
+### タイムスタンプまたは単調増加する列が利用可能な場合 \{#timestamp-or-monotonically-increasing-column-available\}
 
 この場合、新しいマテリアライズドビューには、将来の任意の時刻より後の行に限定するフィルターを含めることを推奨します。その後、この日時以降についてメインテーブルの履歴データを使用してマテリアライズドビューをバックフィルできます。バックフィルの方法は、データサイズと関連クエリの複雑さに依存します。
 
@@ -417,7 +417,7 @@ Peak memory usage: 543.71 MiB.
 
 (2) については、この後で詳しく説明します。
 
-#### マテリアライズドビューを埋めるために Null table engine を使用する {#using-a-null-table-engine-for-filling-materialized-views}
+#### マテリアライズドビューを埋めるために Null table engine を使用する \{#using-a-null-table-engine-for-filling-materialized-views\}
 
 [Null table engine](/engines/table-engines/special/null) は、データを永続化しないストレージエンジンを提供します（テーブルエンジン版の `/dev/null` のようなものだと考えてください）。一見すると矛盾しているように見えますが、このテーブルエンジンに挿入されたデータに対しても、マテリアライズドビューは引き続き実行されます。これにより、元データを永続化することなくマテリアライズドビューを構築でき、I/O とそれに伴うストレージ消費を回避できます。
 
@@ -466,7 +466,7 @@ Peak memory usage: 639.47 MiB.
 ここではメモリ使用量が `639.47 MiB` である点に注目してください。
 
 
-##### パフォーマンスとリソースのチューニング {#tuning-performance--resources}
+##### パフォーマンスとリソースのチューニング \{#tuning-performance--resources\}
 
 上記のシナリオにおけるパフォーマンスとリソース使用量は、複数の要因によって決まります。チューニングを行う前に、[Optimizing for S3 Insert and Read Performance guide](/integrations/s3/performance) の [Using Threads for Reads](/integrations/s3/performance#using-threads-for-reads) セクションで詳細に説明されている挿入メカニズムを理解しておくことを推奨します。要点は次のとおりです。
 
@@ -528,7 +528,7 @@ Peak memory usage: 218.64 MiB.
 最後に、ブロックサイズを小さくするとパーツ数が増え、マージ処理の負荷が高くなることに注意してください。[こちら](/integrations/s3/performance#be-aware-of-merges)で説明しているように、これらの設定は慎重に変更する必要があります。
 
 
-### タイムスタンプまたは単調増加カラムがない場合 {#no-timestamp-or-monotonically-increasing-column}
+### タイムスタンプまたは単調増加カラムがない場合 \{#no-timestamp-or-monotonically-increasing-column\}
 
 上記のプロセスは、ユーザーがタイムスタンプまたは単調増加カラムを持っていることを前提としています。場合によっては、そもそもそれが存在しないことがあります。その場合には、以前に説明した多くの手順を活用しつつ、ユーザー側で取り込みを一時停止する必要のある次のプロセスを推奨します。
 

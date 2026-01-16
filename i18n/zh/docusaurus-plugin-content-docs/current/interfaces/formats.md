@@ -10,11 +10,11 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# 输入和输出数据的格式 {#formats-for-input-and-output-data}
+# 输入和输出数据的格式 \\{#formats-for-input-and-output-data\\}
 
 ClickHouse 支持大多数已知的文本和二进制数据格式，从而可以轻松集成到几乎任何现有的数据管道中，充分发挥 ClickHouse 的优势。
 
-## 输入格式 {#input-formats}
+## 输入格式 \\{#input-formats\\}
 
 输入格式用于：
 
@@ -33,14 +33,14 @@ ClickHouse 支持大多数已知的文本和二进制数据格式，从而可以
 请阅读完整的[基准分析](https://www.clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient)。
 要查看完整测试结果，请访问 [FastFormats](https://fastformats.clickhouse.com/) 在线仪表盘。
 
-## 输出格式 {#output-formats}
+## 输出格式 \\{#output-formats\\}
 
 支持的输出格式用于：
 
 - 组织 `SELECT` 查询的结果
 - 向以文件为后端的表执行 `INSERT` 操作
 
-## 格式概览 {#formats-overview}
+## 格式概览 \\{#formats-overview\\}
 
 受支持的格式有：
 
@@ -136,7 +136,7 @@ ClickHouse 支持大多数已知的文本和二进制数据格式，从而可以
 
 你可以通过 ClickHouse 的设置来控制某些格式处理参数。如需了解更多信息，请参阅[设置](/operations/settings/settings-formats.md)部分。
 
-## 格式模式 {#formatschema}
+## 格式模式 \\{#formatschema\\}
 
 包含格式模式的文件名由设置 `format_schema` 指定。
 在使用 `Cap'n Proto` 或 `Protobuf` 任一格式时，必须设置该配置。
@@ -152,7 +152,7 @@ ClickHouse 支持大多数已知的文本和二进制数据格式，从而可以
 如果通过 [HTTP 接口](/interfaces/http) 进行数据输入或输出，则格式模式中指定的文件名
 必须位于服务器配置中由 [format_schema_path](/operations/server-configuration-parameters/settings.md/#format_schema_path) 指定的目录中。
 
-## 跳过错误 {#skippingerrors}
+## 跳过错误 \\{#skippingerrors\\}
 
 某些格式，例如 `CSV`、`TabSeparated`、`TSKV`、`JSONEachRow`、`Template`、`CustomSeparated` 和 `Protobuf`，在发生解析错误时可以跳过有问题的行，并从下一行的开头继续解析。参见 [input_format_allow_errors_num](/operations/settings/settings-formats.md/#input_format_allow_errors_num) 和
 [input_format_allow_errors_ratio](/operations/settings/settings-formats.md/#input_format_allow_errors_ratio) 设置。

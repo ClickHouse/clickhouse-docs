@@ -26,7 +26,7 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-# MySQL から ClickHouse へのデータインジェスト（CDC の利用） {#ingesting-data-from-mysql-to-clickhouse-using-cdc}
+# MySQL から ClickHouse へのデータインジェスト（CDC の利用） \{#ingesting-data-from-mysql-to-clickhouse-using-cdc\}
 
 <BetaBadge/>
 
@@ -38,13 +38,13 @@ MySQL ClickPipe は、MySQL および MariaDB データベースから ClickHous
 
 MySQL ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび管理できます。将来的には、[OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) や [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.8.1-alpha1/docs/resources/clickpipe) を用いて、MySQL ClickPipes をプログラム的にデプロイおよび管理できるようになる予定です。
 
-## 前提条件 {#prerequisites}
+## 前提条件 \\{#prerequisites\\}
 
 [//]: # "TODO Binlog replication configuration is not needed for one-time ingestion pipes. This has been a source of confusion in the past, so we should also provide the bare minimum requirements for bulk loads to avoid scaring users off."
 
 開始するには、まず MySQL データベースが binlog レプリケーション用に正しく設定されていることを確認する必要があります。設定手順は MySQL のデプロイ方法によって異なるため、以下の該当するガイドの手順に従ってください。
 
-### サポートされているデータソース {#supported-data-sources}
+### サポートされているデータソース \\{#supported-data-sources\\}
 
 | 名前                 | ロゴ | 詳細           |
 |----------------------|------|-------------------|
@@ -58,7 +58,7 @@ MySQL ClickPipes は、ClickPipes UI を使用して手動でデプロイおよ�
 
 ソースの MySQL データベースのセットアップが完了したら、ClickPipe の作成に進むことができます。
 
-## ClickPipe を作成する {#create-your-clickpipe}
+## ClickPipe を作成する \\{#create-your-clickpipe\\}
 
 ClickHouse Cloud アカウントにログインしていることを確認します。まだアカウントをお持ちでない場合は、[こちら](https://cloud.clickhouse.com/)からサインアップできます。
 
@@ -75,7 +75,7 @@ ClickHouse Cloud アカウントにログインしていることを確認しま
 
 <Image img={mysql_tile} alt="MySQL を選択" size="lg" border/>
 
-### ソース MySQL データベース接続を追加する {#add-your-source-mysql-database-connection}
+### ソース MySQL データベース接続を追加する \\{#add-your-source-mysql-database-connection\\}
 
 4. 事前準備のステップで設定したソース MySQL データベースの接続情報を入力します。
 
@@ -86,7 +86,7 @@ ClickHouse Cloud アカウントにログインしていることを確認しま
 
    <Image img={mysql_connection_details} alt="接続情報を入力" size="lg" border/>
 
-#### （オプション）SSH トンネリングを設定する {#optional-set-up-ssh-tunneling}
+#### （オプション）SSH トンネリングを設定する \\{#optional-set-up-ssh-tunneling\\}
 
 ソース MySQL データベースがインターネットから直接アクセスできない場合は、SSH トンネリングの詳細を指定できます。
 
@@ -104,7 +104,7 @@ ClickPipes が SSH トンネルを確立できるように、SSH バスティオ
 
 接続情報をすべて入力したら、`Next` をクリックします。
 
-#### 詳細設定を構成する {#advanced-settings}
+#### 詳細設定を構成する \\{#advanced-settings\\}
 
 必要に応じて詳細設定を構成できます。各設定の簡単な説明は次のとおりです。
 
@@ -114,7 +114,7 @@ ClickPipes が SSH トンネルを確立できるように、SSH バスティオ
 - **Snapshot number of rows per partition**: 初回スナップショット中に各パーティションで取得される行数です。テーブル内の行数が多い場合に、各パーティションで取得される行数を制御するのに有用です。
 - **Snapshot number of tables in parallel**: 初回スナップショット中に並列で取得されるテーブル数です。テーブル数が多い場合に、並列で取得するテーブル数を制御するのに有用です。
 
-### テーブルを構成する {#configure-the-tables}
+### テーブルを構成する \\{#configure-the-tables\\}
 
 5. ここで ClickPipe の宛先データベースを選択できます。既存のデータベースを選択するか、新しく作成することもできます。
 
@@ -122,7 +122,7 @@ ClickPipes が SSH トンネルを確立できるように、SSH バスティオ
 
 6. ソース MySQL データベースからレプリケートしたいテーブルを選択できます。テーブルを選択する際、宛先の ClickHouse データベースでテーブル名を変更したり、特定のカラムを除外したりすることも可能です。
 
-### 権限を確認して ClickPipe を開始する {#review-permissions-and-start-the-clickpipe}
+### 権限を確認して ClickPipe を開始する \\{#review-permissions-and-start-the-clickpipe\\}
 
 7. 権限のドロップダウンから「Full access」ロールを選択し、「Complete Setup」をクリックします。
 
@@ -130,7 +130,7 @@ ClickPipes が SSH トンネルを確立できるように、SSH バスティオ
 
 最後に、一般的な問題とその解決方法については、「[ClickPipes for MySQL FAQ](/integrations/clickpipes/mysql/faq)」ページを参照してください。
 
-## 次のステップ {#whats-next}
+## 次のステップ \\{#whats-next\\}
 
 [//]: # "TODO Write a MySQL-specific migration guide and best practices similar to the existing one for PostgreSQL. The current migration guide points to the MySQL table engine, which is not ideal."
 

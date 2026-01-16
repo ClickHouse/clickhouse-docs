@@ -30,7 +30,7 @@ import powerbi_16 from '@site/static/images/integrations/data-visualization/powe
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Power BI {#power-bi}
+# Power BI \\{#power-bi\\}
 
 <ClickHouseSupportedBadge/>
 
@@ -50,15 +50,15 @@ Microsoft Power BI может выполнять запросы к данным 
 * [Выполнение запросов к данным из ClickHouse для визуализации в Power BI Desktop](#query-and-visualise-data)
 * [Настройка локального шлюза данных для Power BI Service](#power-bi-service)
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \\{#prerequisites\\}
 
-### Установка Power BI {#power-bi-installation}
+### Установка Power BI \\{#power-bi-installation\\}
 
 В этом руководстве предполагается, что на вашем компьютере с Windows установлен Microsoft Power BI Desktop. Вы можете загрузить и установить Power BI Desktop [здесь](https://www.microsoft.com/en-us/download/details.aspx?id=58494)
 
 Рекомендуется обновить Power BI до последней версии. Коннектор ClickHouse доступен по умолчанию, начиная с версии `2.137.751.0`.
 
-### Сбор данных для подключения к ClickHouse {#gather-your-clickhouse-connection-details}
+### Сбор данных для подключения к ClickHouse \\{#gather-your-clickhouse-connection-details\\}
 
 Вам потребуются следующие данные для подключения к вашему экземпляру ClickHouse:
 
@@ -67,7 +67,7 @@ Microsoft Power BI может выполнять запросы к данным 
 * Password — пароль пользователя
 * Database — имя базы данных на экземпляре, к которому вы хотите подключиться
 
-## Power BI Desktop {#power-bi-desktop}
+## Power BI Desktop \\{#power-bi-desktop\\}
 
 Чтобы начать выполнять запросы к данным в Power BI Desktop, выполните следующие шаги:
 
@@ -76,7 +76,7 @@ Microsoft Power BI может выполнять запросы к данным 
 3. Подключитесь к ClickHouse
 4. Выполняйте запросы и визуализируйте данные
 
-### Установка драйвера ODBC {#install-the-odbc-driver}
+### Установка драйвера ODBC \\{#install-the-odbc-driver\\}
 
 Скачайте последнюю версию [ClickHouse ODBC](https://github.com/ClickHouse/clickhouse-odbc/releases).
 
@@ -90,7 +90,7 @@ Microsoft Power BI может выполнять запросы к данным 
 `Debug symbols` являются необязательными и не требуются.
 :::
 
-#### Проверка драйвера ODBC {#verify-odbc-driver}
+#### Проверка драйвера ODBC \\{#verify-odbc-driver\\}
 
 После завершения установки драйвера вы можете убедиться, что установка прошла успешно, выполнив следующее:
 
@@ -106,7 +106,7 @@ Microsoft Power BI может выполнять запросы к данным 
 
 <br/>
 
-### Поиск коннектора ClickHouse {#find-the-clickhouse-connector}
+### Поиск коннектора ClickHouse \\{#find-the-clickhouse-connector\\}
 
 :::note
 Доступно в версии Power BI Desktop `2.137.751.0`.
@@ -123,7 +123,7 @@ Microsoft Power BI может выполнять запросы к данным 
 
 <br/>
 
-### Подключение к ClickHouse {#connect-to-clickhouse}
+### Подключение к ClickHouse \\{#connect-to-clickhouse\\}
 
 Выберите коннектор и введите учётные данные экземпляра ClickHouse:
 
@@ -150,7 +150,7 @@ Microsoft Power BI может выполнять запросы к данным 
 
 <br/>
 
-### Выполнение запросов и визуализация данных {#query-and-visualise-data}
+### Выполнение запросов и визуализация данных \\{#query-and-visualise-data\\}
 
 В результате вы должны увидеть базы данных и таблицы в окне Navigator. Выберите нужную таблицу и нажмите «Load»,
 чтобы импортировать данные из ClickHouse.
@@ -163,19 +163,19 @@ Microsoft Power BI может выполнять запросы к данным 
 
 <br/>
 
-## Сервис Power BI {#power-bi-service}
+## Сервис Power BI \\{#power-bi-service\\}
 
 Чтобы использовать Microsoft Power BI Service, необходимо создать [локальный шлюз данных](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-onprem).
 
 Подробную информацию по настройке пользовательских коннекторов см. в документации Microsoft о том, как [использовать пользовательские коннекторы данных с локальным шлюзом данных](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-custom-connectors).
 
-## Драйвер ODBC (только импорт) {#odbc-driver-import-only}
+## Драйвер ODBC (только импорт) \\{#odbc-driver-import-only\\}
 
 Мы рекомендуем использовать ClickHouse Connector, который использует DirectQuery.
 
 Установите [драйвер ODBC](#install-the-odbc-driver) на экземпляр локального шлюза данных и [проверьте его работу](#verify-odbc-driver), как описано выше.
 
-### Создание нового пользовательского DSN {#create-a-new-user-dsn}
+### Создание нового пользовательского DSN \\{#create-a-new-user-dsn\\}
 
 После завершения установки драйвера можно создать источник данных ODBC. Найдите ODBC в меню «Пуск» и выберите "ODBC Data Sources (64-bit)".
 
@@ -204,7 +204,7 @@ Microsoft Power BI может выполнять запросы к данным 
 - `Timeout` — целое число, задающее тайм-аут в секундах. Значение по умолчанию: `30` секунд.
 :::
 
-### Загрузка данных в Power BI {#get-data-into-power-bi}
+### Загрузка данных в Power BI \\{#get-data-into-power-bi\\}
 
 Если у вас еще не установлен Power BI,
 [скачайте и установите Power BI Desktop](https://www.microsoft.com/en-us/download/details.aspx?id=58494).
@@ -243,7 +243,7 @@ Microsoft Power BI может выполнять запросы к данным 
 
 После завершения импорта данные из ClickHouse будут доступны в Power BI как обычно.
 
-## Оптимизация работы с большими наборами данных {#optimizing-work-with-large-datasets}
+## Оптимизация работы с большими наборами данных \\{#optimizing-work-with-large-datasets\\}
 
 PowerBI разработан для традиционных строчно-ориентированных баз данных с умеренными объемами данных. При работе с ClickHouse на больших объемах (миллиарды строк) для достижения оптимальной производительности требуется использование специальных архитектурных шаблонов.
 
@@ -259,9 +259,9 @@ PowerBI автоматически генерирует SQL-запросы с в
 Если ваши дашборды работают медленно, проверьте [`query_log`](/operations/system-tables/query_log) в ClickHouse, чтобы увидеть, какие SQL-запросы фактически выполняет Power BI. Распространенные проблемы включают вложенные подзапросы, сканирование всех таблиц или неэффективные соединения. После того как вы определите проблему, создайте [materialized views](/materialized-views), которые устраняют эти конкретные проблемы.
 :::
 
-### Рекомендации по реализации {#implementation-best-practices}
+### Рекомендации по реализации \\{#implementation-best-practices\\}
 
-####  Стратегия предагрегации {#pre-aggregation-strategy}
+####  Стратегия предагрегации \\{#pre-aggregation-strategy\\}
 
 Создавайте materialized view на нескольких уровнях агрегации:
 
@@ -270,16 +270,16 @@ PowerBI автоматически генерирует SQL-запросы с в
 - Месячные сводки для долгосрочной отчетности
 - Храните сырые данные с подходящим TTL для разовых аналитических запросов
 
-#### Оптимизация моделирования данных {#data-modelling-optimization}
+#### Оптимизация моделирования данных \\{#data-modelling-optimization\\}
 
 - Определяйте ключи `ORDER BY`, соответствующие вашим шаблонам запросов
 - Используйте разбиение на партиции для данных временных рядов
 - Преобразуйте небольшие таблицы измерений в словари для эффективного поиска
 - Используйте проекции для дополнительной оптимизации запросов
 
-## Известные ограничения {#known-limitations}
+## Известные ограничения \\{#known-limitations\\}
 
-### UInt64 {#uint64}
+### UInt64 \\{#uint64\\}
 
 Беззнаковые целочисленные типы, такие как UInt64 и старше, не будут автоматически загружены в набор данных, так как Int64 — максимальный целочисленный тип, поддерживаемый Power BI.
 

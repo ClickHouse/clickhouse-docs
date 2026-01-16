@@ -11,11 +11,11 @@ doc_type: 'guide'
 
 该数据集是理解向量嵌入、向量相似搜索和生成式 AI 的优秀入门数据集。我们使用该数据集来演示 ClickHouse 中的[近似最近邻搜索](../../engines/table-engines/mergetree-family/annindexes.md)，以及一个简单但功能强大的问答应用。
 
-## 数据集详情 {#dataset-details}
+## 数据集详情 \\{#dataset-details\\}
 
 该数据集包含位于 [huggingface.co](https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/) 上的 26 个 `Parquet` 文件。文件名为 `0.parquet`、`1.parquet`、...、`25.parquet`。要查看该数据集的一些示例记录，请访问此 [Hugging Face 页面](https://huggingface.co/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M)。
 
-## 创建表 {#create-table}
+## 创建表 \\{#create-table\\}
 
 创建 `dbpedia` 表，用于存储文章 ID、标题、正文和嵌入向量：
 
@@ -30,7 +30,7 @@ CREATE TABLE dbpedia
 
 ```
 
-## 加载表数据 {#load-table}
+## 加载表数据 \\{#load-table\\}
 
 要从所有 Parquet 文件中加载数据集，请运行以下 shell 命令：
 
@@ -63,7 +63,7 @@ FROM dbpedia
    └─────────┘
 ```
 
-## 语义搜索 {#semantic-search}
+## 语义搜索 \\{#semantic-search\\}
 
 推荐阅读：["Vector embeddings" OpenAPI 指南](https://platform.openai.com/docs/guides/embeddings)
 
@@ -76,7 +76,7 @@ FROM dbpedia
 _最近邻_ 指的是与用户查询最相关的文档、图像或其他内容。
 检索结果是生成式 AI 应用中 RAG（检索增强生成，Retrieval Augmented Generation）的关键输入。
 
-## 运行暴力向量相似度搜索 {#run-a-brute-force-vector-similarity-search}
+## 运行暴力向量相似度搜索 \\{#run-a-brute-force-vector-similarity-search\\}
 
 KNN（k 近邻）搜索或暴力搜索是指计算数据集中每个向量与搜索嵌入向量之间的距离，然后对这些距离进行排序以获得最近邻。使用 `dbpedia` 数据集时，一种快速、直观地观察语义搜索效果的方法，是直接使用数据集本身的嵌入向量作为搜索向量。例如：
 
@@ -117,7 +117,7 @@ LIMIT 20
 记下查询延迟，以便后续与 ANN（基于向量索引）的查询延迟进行比较。
 同时分别记录在 OS 文件缓存为冷状态时，以及在将 `max_threads` 设置为 1 时的查询延迟，以识别实际的计算资源占用和存储带宽使用情况（从而可以将结果推算到包含数百万向量的生产数据集！）
 
-## 构建向量相似度索引 {#build-vector-similarity-index}
+## 构建向量相似度索引 \\{#build-vector-similarity-index\\}
 
 运行以下 SQL，在 `vector` 列上定义并构建向量相似度索引：
 
@@ -131,7 +131,7 @@ ALTER TABLE dbpedia MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
 
 根据可用 CPU 核心数量和存储带宽的不同，构建并保存索引可能需要几分钟时间。
 
-## 执行 ANN 搜索 {#perform-ann-search}
+## 执行 ANN 搜索 \\{#perform-ann-search\\}
 
 *Approximate Nearest Neighbours*（近似最近邻，ANN）指一类技术（例如采用图结构、随机森林等特殊数据结构），可以比精确向量搜索更快地计算结果。结果的准确度通常在实际使用中已经“足够好”。许多近似算法提供参数，用于在结果准确度和搜索时间之间进行权衡和调优。
 
@@ -177,7 +177,7 @@ LIMIT 20
 20 rows in set. Elapsed: 0.025 sec. Processed 32.03 thousand rows, 2.10 MB (1.29 million rows/s., 84.80 MB/s.)
 ```
 
-## 为搜索查询生成嵌入向量 {#generating-embeddings-for-search-query}
+## 为搜索查询生成嵌入向量 \\{#generating-embeddings-for-search-query\\}
 
 目前为止看到的相似度搜索查询，都是使用 `dbpedia` 表中已有的向量之一作为搜索向量。在实际应用中，需要根据用户输入的查询（可能是自然语言）来生成搜索向量。搜索向量应当使用与为数据集生成嵌入向量时相同的 LLM 模型生成。
 
@@ -218,7 +218,7 @@ while True:
         print("---------------")
 ```
 
-## 问答演示应用 {#q-and-a-demo-application}
+## 问答演示应用 \\{#q-and-a-demo-application\\}
 
 上面的示例演示了使用 ClickHouse 进行语义搜索和文档检索。下面将介绍一个非常简单但具有巨大潜力的生成式 AI 示例应用。
 

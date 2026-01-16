@@ -7,7 +7,7 @@ keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OU
 doc_type: 'справочник'
 ---
 
-# Оператор JOIN {#join-clause}
+# Оператор JOIN \{#join-clause\}
 
 Оператор `JOIN` формирует новую таблицу, объединяя столбцы из одной или нескольких таблиц по общим для них значениям. Это распространённая операция в базах данных с поддержкой SQL, которая соответствует операции соединения в [реляционной алгебре](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators). Особый случай соединения таблицы с самой собой часто называют «self-join».
 
@@ -23,7 +23,7 @@ FROM <left_table>
 Выражения из предложения `ON` и столбцы из предложения `USING` называются «ключами соединения». Если не указано иное, оператор `JOIN` формирует [декартово произведение](https://en.wikipedia.org/wiki/Cartesian_product) строк с совпадающими «ключами соединения», что может приводить к получению результата с гораздо большим количеством строк, чем в исходных таблицах.
 
 
-## Поддерживаемые типы JOIN {#supported-types-of-join}
+## Поддерживаемые типы JOIN \\{#supported-types-of-join\\}
 
 Поддерживаются все стандартные типы [SQL JOIN](https://en.wikipedia.org/wiki/Join_(SQL)):
 
@@ -53,7 +53,7 @@ FROM <left_table>
 Когда [join_algorithm](../../../operations/settings/settings.md#join_algorithm) установлен в значение `partial_merge`, `RIGHT JOIN` и `FULL JOIN` поддерживаются только со строгостью `ALL` (`SEMI`, `ANTI`, `ANY` и `ASOF` не поддерживаются).
 :::
 
-## Настройки {#settings}
+## Настройки \\{#settings\\}
 
 Тип соединения по умолчанию можно переопределить с помощью настройки [`join_default_strictness`](../../../operations/settings/settings.md#join_default_strictness).
 
@@ -70,7 +70,7 @@ FROM <left_table>
 
 Используйте настройку `cross_to_inner_join_rewrite`, чтобы задать поведение на случай, если ClickHouse не может переписать `CROSS JOIN` в `INNER JOIN`. Значение по умолчанию — `1`, при котором соединение продолжает выполняться, но будет работать медленнее. Установите `cross_to_inner_join_rewrite` в `0`, если вы хотите, чтобы генерировалась ошибка, и в `2` — чтобы не выполнять операции `CROSS JOIN`, а вместо этого принудительно переписывать все соединения через запятую/`CROSS JOIN`. Если при значении `2` переписать не удаётся, вы получите сообщение об ошибке: «Please, try to simplify `WHERE` section».
 
-## Условия в секции ON {#on-section-conditions}
+## Условия в секции ON \{#on-section-conditions\}
 
 Секция `ON` может содержать несколько условий, объединённых операторами `AND` и `OR`. Условия, определяющие ключи соединения, должны:
 
@@ -182,7 +182,7 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key AND t2.
 ```
 
 
-## JOIN с условиями неравенства для столбцов из разных таблиц {#join-with-inequality-conditions-for-columns-from-different-tables}
+## JOIN с условиями неравенства для столбцов из разных таблиц \{#join-with-inequality-conditions-for-columns-from-different-tables\}
 
 ClickHouse в настоящее время поддерживает `ALL/ANY/SEMI/ANTI INNER/LEFT/RIGHT/FULL JOIN` с условиями неравенства в дополнение к условиям равенства. Условия неравенства поддерживаются только для алгоритмов соединения `hash` и `grace_hash`. Условия неравенства не поддерживаются при `join_use_nulls`.
 
@@ -233,7 +233,7 @@ key4    f    2    3    4            0    0    \N
 ```
 
 
-## Значения NULL в ключах JOIN {#null-values-in-join-keys}
+## Значения NULL в ключах JOIN \{#null-values-in-join-keys\}
 
 `NULL` не равно ни одному значению, включая само себя. Это означает, что если ключ `JOIN` содержит значение `NULL` в одной таблице, оно не будет соответствовать значению `NULL` в другой таблице.
 
@@ -288,7 +288,7 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 ```
 
 
-## Использование ASOF JOIN {#asof-join-usage}
+## Использование ASOF JOIN \{#asof-join-usage\}
 
 `ASOF JOIN` полезен, когда нужно соединить записи, для которых нет точного совпадения.
 
@@ -343,7 +343,7 @@ USING (equi_column1, ... equi_columnN, asof_column)
 :::
 
 
-## Использование PASTE JOIN {#paste-join-usage}
+## Использование PASTE JOIN \{#paste-join-usage\}
 
 Результат `PASTE JOIN` — таблица, содержащая все столбцы из левого подзапроса, за которыми следуют все столбцы из правого подзапроса.
 Строки сопоставляются по их позициям в исходных таблицах (должен быть определён порядок строк).
@@ -402,7 +402,7 @@ SETTINGS max_block_size = 2;
 ```
 
 
-## Распределённый JOIN {#distributed-join}
+## Распределённый JOIN \\{#distributed-join\\}
 
 Существует два способа выполнить JOIN с участием распределённых таблиц:
 
@@ -411,7 +411,7 @@ SETTINGS max_block_size = 2;
 
 Будьте осторожны при использовании `GLOBAL`. Дополнительную информацию см. в разделе [Распределённые подзапросы](/sql-reference/operators/in#distributed-subqueries).
 
-## Неявное преобразование типов {#implicit-type-conversion}
+## Неявное преобразование типов \{#implicit-type-conversion\}
 
 Запросы `INNER JOIN`, `LEFT JOIN`, `RIGHT JOIN` и `FULL JOIN` поддерживают неявное преобразование типов для «ключей соединения». Однако запрос не может быть выполнен, если ключи соединения из левой и правой таблиц не могут быть приведены к одному типу (например, не существует типа данных, который может содержать все значения как из `UInt64`, так и из `Int64`, или из `String` и `Int32`).
 
@@ -454,21 +454,21 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 ```
 
 
-## Рекомендации по использованию {#usage-recommendations}
+## Рекомендации по использованию \\{#usage-recommendations\\}
 
-### Обработка пустых или NULL-ячеек {#processing-of-empty-or-null-cells}
+### Обработка пустых или NULL-ячеек \\{#processing-of-empty-or-null-cells\\}
 
 При соединении таблиц могут появляться пустые ячейки. Настройка [join_use_nulls](../../../operations/settings/settings.md#join_use_nulls) определяет, как ClickHouse заполняет эти ячейки.
 
 Если ключи `JOIN` являются полями типа [Nullable](../../../sql-reference/data-types/nullable.md), то строки, в которых хотя бы один из ключей имеет значение [NULL](/sql-reference/syntax#null), не соединяются.
 
-### Синтаксис {#syntax}
+### Синтаксис \\{#syntax\\}
 
 Столбцы, указанные в `USING`, должны иметь одинаковые имена в обоих подзапросах, а остальные столбцы должны иметь разные имена. Вы можете использовать псевдонимы, чтобы изменить имена столбцов в подзапросах.
 
 Предложение `USING` задаёт один или несколько столбцов для соединения, задавая равенство этих столбцов. Список столбцов указывается без скобок. Более сложные условия соединения не поддерживаются.
 
-### Ограничения синтаксиса {#syntax-limitations}
+### Ограничения синтаксиса \\{#syntax-limitations\\}
 
 Для нескольких предложений `JOIN` в одном запросе `SELECT`:
 
@@ -480,7 +480,7 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 
 - Произвольные выражения не могут использоваться в предложениях `ON`, `WHERE` и `GROUP BY`, но вы можете определить выражение в предложении `SELECT`, а затем использовать его в этих предложениях через псевдоним.
 
-### Производительность {#performance}
+### Производительность \\{#performance\\}
 
 При выполнении `JOIN` не производится оптимизация порядка выполнения относительно других стадий запроса. Соединение (поиск в правой таблице) выполняется до фильтрации в `WHERE` и до агрегации.
 
@@ -490,7 +490,7 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 
 Если вам нужен `JOIN` для соединения с таблицами измерений (это относительно небольшие таблицы, содержащие свойства измерений, такие как имена рекламных кампаний), `JOIN` может быть не очень удобен из-за того, что правая таблица повторно читается для каждого запроса. Для таких случаев существует функциональность «словарей» (dictionaries), которую следует использовать вместо `JOIN`. Подробности см. в разделе [Dictionaries](../../../sql-reference/dictionaries/index.md).
 
-### Ограничения по памяти {#memory-limitations}
+### Ограничения по памяти \\{#memory-limitations\\}
 
 По умолчанию ClickHouse использует алгоритм [hash join](https://en.wikipedia.org/wiki/Hash_join). ClickHouse берёт `right_table` и создаёт для неё хеш-таблицу в оперативной памяти. Если включён режим `join_algorithm = 'auto'`, то после достижения некоторого порога потребления памяти ClickHouse переключается на алгоритм [merge](https://en.wikipedia.org/wiki/Sort-merge_join) join. Описание алгоритмов `JOIN` см. в настройке [join_algorithm](../../../operations/settings/settings.md#join_algorithm).
 
@@ -501,7 +501,7 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 
 Когда достигается любой из этих лимитов, ClickHouse действует в соответствии с настройкой [join_overflow_mode](/operations/settings/settings#join_overflow_mode).
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 Пример:
 
@@ -545,7 +545,7 @@ LIMIT 10
 ```
 
 
-## Связанные материалы {#related-content}
+## Связанные материалы \\{#related-content\\}
 
 - Блог: [ClickHouse: молниеносно быстрая СУБД с полной поддержкой операторов SQL JOIN — часть 1](https://clickhouse.com/blog/clickhouse-fully-supports-joins)
 - Блог: [ClickHouse: молниеносно быстрая СУБД с полной поддержкой операторов SQL JOIN — внутренняя архитектура — часть 2](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2)

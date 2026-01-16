@@ -7,15 +7,15 @@ sidebar_label: 'sumSimpleState'
 doc_type: 'reference'
 ---
 
-# sumSimpleState {#sumsimplestate}
+# sumSimpleState \\{#sumsimplestate\\}
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Комбинатор [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) может быть применён к функции [`sum`](/sql-reference/aggregate-functions/reference/sum) для вычисления суммы по всем входным значениям. Результат имеет тип [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
-### Отслеживание голосов «за» и «против» {#tracking-post-votes}
+### Отслеживание голосов «за» и «против» \\{#tracking-post-votes\\}
 
 Рассмотрим практический пример с таблицей, которая отслеживает голоса по постам.
 Для каждого поста мы хотим поддерживать текущее количество голосов «за», голосов «против» и
@@ -99,7 +99,7 @@ ORDER BY post_id ASC;
 └─────────┴───────────────┴─────────────────┴─────────────┘
 ```
 
-## См. также {#see-also}
+## См. также \\{#see-also\\}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [комбинатор `SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate)
 - [тип `SimpleAggregateFunction`](/sql-reference/data-types/simpleaggregatefunction)

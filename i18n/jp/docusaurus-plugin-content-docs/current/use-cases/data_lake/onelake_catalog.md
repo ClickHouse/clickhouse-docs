@@ -23,7 +23,7 @@ Microsoft OneLake は、レイクハウス向けに複数のテーブル形式�
 `SET allow_database_iceberg = 1;`
 :::
 
-## OneLake の要件の収集 {#gathering-requirements}
+## OneLake の要件の収集 \\{#gathering-requirements\\}
 
 Microsoft Fabric でテーブルをクエリする前に、次の情報を収集する必要があります。
 
@@ -34,7 +34,7 @@ Microsoft Fabric でテーブルをクエリする前に、次の情報を収集
 
 これらの値の確認方法については、[Microsoft OneLake のドキュメント](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites)を参照してください。
 
-## OneLake と ClickHouse 間の接続を作成する {#creating-a-connection-between-unity-catalog-and-clickhouse}
+## OneLake と ClickHouse 間の接続を作成する \\{#creating-a-connection-between-unity-catalog-and-clickhouse\\}
 
 上記の必要な情報が揃ったら、Microsoft OneLake と ClickHouse 間の接続を作成できます。ただし、その前にカタログを有効にする必要があります。
 
@@ -42,7 +42,7 @@ Microsoft Fabric でテーブルをクエリする前に、次の情報を収集
 SET allow_database_iceberg=1
 ```
 
-### OneLakeに接続する {#connect-onelake}
+### OneLakeに接続する \\{#connect-onelake\\}
 
 ```sql
 CREATE DATABASE onelake_catalog
@@ -57,7 +57,7 @@ onelake_client_id = '<client_id>',
 onelake_client_secret = '<client_secret>'
 ```
 
-## ClickHouse を使用した OneLake へのクエリ実行 {#querying-onelake-using-clickhouse}
+## ClickHouse を使用した OneLake へのクエリ実行 \\{#querying-onelake-using-clickhouse\\}
 
 接続が確立できたので、これで OneLake に対してクエリを実行できます。
 
@@ -151,7 +151,7 @@ Query id: 8bd5bd8e-83be-453e-9a88-32de12ba7f24
    └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## データレイクから ClickHouse へのデータ読み込み {#loading-data-from-onelake-into-clickhouse}
+## データレイクから ClickHouse へのデータ読み込み \\{#loading-data-from-onelake-into-clickhouse\\}
 
 OneLake から ClickHouse にデータを読み込む必要がある場合は、次の手順を実行します。
 

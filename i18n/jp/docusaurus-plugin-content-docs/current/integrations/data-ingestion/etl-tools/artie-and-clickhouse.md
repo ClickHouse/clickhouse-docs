@@ -16,11 +16,11 @@ import monitor from '@site/static/images/integrations/data-ingestion/etl-tools/a
 import schema_notification from '@site/static/images/integrations/data-ingestion/etl-tools/artie/schema_notification.png';
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# Artie を ClickHouse に接続する {#connect-artie-to-clickhouse}
+# Artie を ClickHouse に接続する \{#connect-artie-to-clickhouse\}
 
 <a href="https://www.artie.com/" target="_blank">Artie</a> は、本番環境のデータを ClickHouse にレプリケーションし、顧客向け分析、運用ワークフロー、そして本番環境での Agentic AI を実現する、完全マネージド型のリアルタイムデータストリーミングプラットフォームです。
 
-## 概要 {#overview}
+## 概要 \\{#overview\\}
 
 Artie は AI 時代のための最新のデータ基盤レイヤーであり、本番データをデータウェアハウスと継続的に同期し続ける、フルマネージドなリアルタイムデータストリーミングプラットフォームです。
 
@@ -32,19 +32,19 @@ ClickUp、Substack、Alloy のようなリーダー企業は、今日のパイ�
 
 <VerticalStepper headerLevel="h2">
 
-## Artie アカウントを作成する {#1-create-an-artie-account}
+## Artie アカウントを作成する \\{#1-create-an-artie-account\\}
 
 <a href="https://www.artie.com/contact" target="_blank">artie.com/contact</a> にアクセスし、フォームに入力してアクセスをリクエストしてください。
 
 <Image img={artie_signup} size="md" border alt="Artie のサインアップページ" />
 
-## ClickHouse の認証情報を確認する {#2-find-your-clickhouse-credentials}
+## ClickHouse の認証情報を確認する \\{#2-find-your-clickhouse-credentials\\}
 
 ClickHouse Cloud でサービスを作成した後、次の必須設定を確認します。
 
 <ConnectionDetails />
 
-## Artie で新しいパイプラインを作成する {#3-create-a-new-pipeline-in-artie}
+## Artie で新しいパイプラインを作成する \\{#3-create-a-new-pipeline-in-artie\\}
 
 前の手順で収集した情報をもとに Artie にアクセスし、次の 3 ステップで新しいパイプラインを作成します。
 
@@ -56,11 +56,11 @@ ClickHouse Cloud でサービスを作成した後、次の必須設定を確認
 
 </VerticalStepper>
 
-## お問い合わせ {#contact-us}
+## お問い合わせ \\{#contact-us\\}
 
 ご不明な点がある場合は、<a href="https://www.artie.com/docs/destinations/clickhouse" target="_blank">ClickHouse ドキュメント</a>を参照するか、<a href="mailto:hi@artie.com">hi@artie.com</a> までお問い合わせください。
 
-## 製品スクリーンショット {#product-screenshots}
+## 製品スクリーンショット \\{#product-screenshots\\}
 
 Analytics ポータル
 

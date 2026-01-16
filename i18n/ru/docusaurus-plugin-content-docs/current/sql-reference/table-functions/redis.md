@@ -7,17 +7,17 @@ title: 'redis'
 doc_type: 'reference'
 ---
 
-# Табличная функция redis {#redis-table-function}
+# Табличная функция redis \\{#redis-table-function\\}
 
 Эта табличная функция предназначена для интеграции ClickHouse с [Redis](https://redis.io/).
 
-## Синтаксис {#syntax}
+## Синтаксис \\{#syntax\\}
 
 ```sql
 redis(host:port, key, structure[, db_index[, password[, pool_size]]])
 ```
 
-## Аргументы {#arguments}
+## Аргументы \\{#arguments\\}
 
 | Argument    | Description                                                                                                |
 |-------------|------------------------------------------------------------------------------------------------------------|
@@ -34,11 +34,11 @@ redis(host:port, key, structure[, db_index[, password[, pool_size]]])
 
 [Именованные коллекции](/operations/named-collections.md) в настоящий момент не поддерживаются для табличной функции `redis`.
 
-## Возвращаемое значение {#returned_value}
+## Возвращаемое значение \\{#returned_value\\}
 
 Объект-таблица, в котором ключ — это ключ Redis, а остальные столбцы вместе образуют значение Redis.
 
-## Пример использования {#usage-example}
+## Пример использования \\{#usage-example\\}
 
 Чтение данных из Redis:
 
@@ -59,7 +59,7 @@ INSERT INTO TABLE FUNCTION redis(
     'key String, v1 String, v2 UInt32') values ('1', '1', 1);
 ```
 
-## См. также {#related}
+## См. также \\{#related\\}
 
 - [Табличный движок `Redis`](/engines/table-engines/integrations/redis.md)
 - [Использование Redis в качестве источника словаря](/sql-reference/dictionaries/index.md#redis)

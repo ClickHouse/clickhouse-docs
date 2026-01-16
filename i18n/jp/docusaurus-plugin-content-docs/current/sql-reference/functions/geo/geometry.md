@@ -6,11 +6,11 @@ title: 'ジオメトリを扱う関数'
 doc_type: 'reference'
 ---
 
-## ジオメトリ {#geometry}
+## ジオメトリ \\{#geometry\\}
 
 ジオメトリ関数を使用すると、POLYGON、LINESTRING、MULTIPOLYGON、MULTILINESTRING、RING、POINT などのジオメトリ型に対して周長および面積を計算できます。ジオメトリは Geometry 型で扱います。入力値が `NULL` の場合、以下のすべての関数は 0 を返します。
 
-## perimeterCartesian {#perimetercartesian}
+## perimeterCartesian \{#perimetercartesian\}
 
 与えられた Geometry オブジェクトの周長を、デカルト（平面）座標系で計算します。
 
@@ -43,7 +43,7 @@ SELECT perimeterCartesian(geom) FROM geo_dst;
 ```
 
 
-## areaCartesian {#areacartesian}
+## areaCartesian \{#areacartesian\}
 
 与えられた Geometry オブジェクトの面積をデカルト座標系で計算します。
 
@@ -76,7 +76,7 @@ SELECT areaCartesian(geom) FROM geo_dst;
 ```
 
 
-## perimeterSpherical {#perimeterspherical}
+## perimeterSpherical \{#perimeterspherical\}
 
 球面上の Geometry オブジェクトの周長を計算します。
 
@@ -109,7 +109,7 @@ SELECT perimeterSpherical(geom) FROM geo_dst;
 ```
 
 
-## areaSpherical {#areaspherical}
+## areaSpherical \{#areaspherical\}
 
 球面上にある Geometry オブジェクトの面積を計算します。
 

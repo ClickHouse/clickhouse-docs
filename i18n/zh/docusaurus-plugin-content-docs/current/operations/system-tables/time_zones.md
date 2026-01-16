@@ -6,7 +6,7 @@ title: 'system.time_zones'
 doc_type: 'reference'
 ---
 
-# system.time&#95;zones {#systemtime&#95;zones}
+# system.time&#95;zones \\{#systemtime&#95;zones\\}
 
 包含 ClickHouse 服务器支持的时区列表。该列表可能会因 ClickHouse 版本不同而有所变化。
 

@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['数据湖', '湖仓']
 ---
 
-# ClickHouse 是否支持数据湖？ {#does-clickhouse-support-data-lakes}
+# ClickHouse 是否支持数据湖？ \\{#does-clickhouse-support-data-lakes\\}
 
 ClickHouse 支持数据湖，包括 Iceberg、Delta Lake、Apache Hudi、Apache Paimon、Hive。
 

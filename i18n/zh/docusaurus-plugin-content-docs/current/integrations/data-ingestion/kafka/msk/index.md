@@ -13,7 +13,7 @@ integration:
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# 将 Amazon MSK 与 ClickHouse 集成 {#integrating-amazon-msk-with-clickhouse}
+# 将 Amazon MSK 与 ClickHouse 集成 \\{#integrating-amazon-msk-with-clickhouse\\}
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/6lKI_WlQ3-s"
@@ -29,20 +29,20 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 
 > 注意：视频中展示的策略较为宽松，仅用于快速上手。请参阅下文基于最小权限原则的 IAM 指南。
 
-## 前提条件 {#prerequisites}
+## 前提条件 \\{#prerequisites\\}
 
 我们假定：
 
 * 你已经熟悉 [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)。
 * 你已经熟悉 Amazon MSK 和 MSK Connectors。我们推荐阅读 Amazon MSK 的[入门指南](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html)和 [MSK Connect 指南](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html)。
 
-## ClickHouse 官方 Kafka 连接器（适用于 Amazon MSK） {#the-official-kafka-connector-from-clickhouse-with-amazon-msk}
+## ClickHouse 官方 Kafka 连接器（适用于 Amazon MSK） \\{#the-official-kafka-connector-from-clickhouse-with-amazon-msk\\}
 
-### 收集连接详细信息 {#gather-your-connection-details}
+### 收集连接详细信息 \\{#gather-your-connection-details\\}
 
 <ConnectionDetails />
 
-### 步骤 {#steps}
+### 步骤 \\{#steps\\}
 
 1. 请确保已熟悉 [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)。
 2. [创建一个 MSK 实例](https://docs.aws.amazon.com/msk/latest/developerguide/create-cluster.html)。
@@ -70,7 +70,7 @@ username=default
 schemas.enable=false
 ```
 
-## 推荐的 IAM 权限（最小权限原则） {#iam-least-privilege}
+## 推荐的 IAM 权限（最小权限原则） \\{#iam-least-privilege\\}
 
 仅使用部署所需的最小权限集。先从下面的基线配置开始，只有在实际使用相关服务时才添加对应的可选服务权限。
 
@@ -140,7 +140,7 @@ schemas.enable=false
 
 另请参阅：[Kafka 最佳实践 – IAM](../../clickpipes/kafka/04_best_practices.md#iam)。
 
-## 性能调优 {#performance-tuning}
+## 性能调优 \\{#performance-tuning\\}
 
 提高性能的一种方法是在 **worker** 配置中添加以下内容，以调整从 Kafka 拉取的批量大小和记录数量：
 
@@ -159,7 +159,7 @@ consumer.max.partition.fetch.bytes=1048576
 你可以在官方的 [Kafka](https://kafka.apache.org/documentation/#consumerconfigs) 文档和
 [Amazon MSK](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-workers.html#msk-connect-create-custom-worker-config) 文档中查阅更多信息（包括实现细节和其他方面的考量）。
 
-## 关于 MSK Connect 的网络注意事项 {#notes-on-networking-for-msk-connect}
+## 关于 MSK Connect 的网络注意事项 \\{#notes-on-networking-for-msk-connect\\}
 
 为了使 MSK Connect 能够连接到 ClickHouse，我们建议将 MSK 集群部署在带有 Private NAT、可访问互联网的私有子网中。下面提供了相关设置步骤。请注意，虽然也支持使用公共子网，但并不推荐，因为需要持续为 ENI 分配 Elastic IP 地址，[AWS 在此提供了更多详细信息](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-internet-access.html)
 

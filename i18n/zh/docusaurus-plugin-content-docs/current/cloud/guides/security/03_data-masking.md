@@ -7,13 +7,13 @@ keywords: ['数据脱敏']
 doc_type: 'guide'
 ---
 
-# 在 ClickHouse 中进行数据脱敏 {#data-masking-in-clickhouse}
+# 在 ClickHouse 中进行数据脱敏 \\{#data-masking-in-clickhouse\\}
 
 数据脱敏是一种用于数据保护的技术，它通过将原始数据替换为在格式和结构上保持不变、但移除了任何可识别个人身份的信息（PII）或其他敏感信息的数据版本来实现保护。
 
 本指南将演示如何在 ClickHouse 中进行数据脱敏。
 
-## 使用字符串替换函数 {#using-string-functions}
+## 使用字符串替换函数 \\{#using-string-functions\\}
 
 对于基本的数据脱敏场景，`replace` 系列函数提供了一种方便的数据掩码手段：
 
@@ -75,7 +75,7 @@ SELECT replaceRegexpAll(
 └──────────────────┘
 ```
 
-## 创建掩码 `VIEW` {#masked-views}
+## 创建掩码 `VIEW` \\{#masked-views\\}
 
 可以将 [`VIEW`](/sql-reference/statements/create/view) 与前面提到的字符串函数结合使用，在向用户展示之前，对包含敏感数据的列进行转换。
 通过这种方式，原始数据保持不变，而查询该视图的用户只能看到经过掩码处理的数据。
@@ -172,7 +172,7 @@ GRANT masked_orders_viewer TO your_user;
 
 这可确保拥有 `masked_orders_viewer` 角色的用户只能在该视图中看到脱敏后的数据，而无法从表中查看原始的未脱敏数据。
 
-## 使用 `MATERIALIZED` 列和列级访问限制 {#materialized-ephemeral-column-restrictions}
+## 使用 `MATERIALIZED` 列和列级访问限制 \\{#materialized-ephemeral-column-restrictions\\}
 
 在你不想创建单独视图的情况下，可以在原始数据的同时存储经过遮蔽处理的数据副本。
 为此，你可以使用[物化列](/sql-reference/statements/create/table#materialized)。
@@ -314,7 +314,7 @@ ORDER BY user_id ASC
    └─────────┴──────────────┴────────────┴──────────────┴────────────────────┴──────────────┴───────────────────────────┘
 ```
 
-## 对日志数据使用查询掩码规则 {#use-query-masking-rules}
+## 对日志数据使用查询掩码规则 \\{#use-query-masking-rules\\}
 
 对于希望专门对日志数据进行掩码的 ClickHouse OSS 用户，可以使用[查询掩码规则](/operations/server-configuration-parameters/settings#query_masking_rules)（日志掩码）对数据进行处理。
 

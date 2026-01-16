@@ -7,25 +7,25 @@ title: '视图'
 doc_type: 'reference'
 ---
 
-# view 表函数 {#view-table-function}
+# view 表函数 \\{#view-table-function\\}
 
 将子查询转换为一张表。该函数用于实现视图（参见 [CREATE VIEW](/sql-reference/statements/create/view)）。生成的表本身不存储数据，而只保存指定的 `SELECT` 查询。从该表读取时，ClickHouse 会执行该查询，并从结果中丢弃所有不需要的列。
 
-## 语法 {#syntax}
+## 语法 \\{#syntax\\}
 
 ```sql
 view(subquery)
 ```
 
-## 参数 {#arguments}
+## 参数 \\{#arguments\\}
 
 - `subquery` — `SELECT` 查询。
 
-## 返回值 {#returned_value}
+## 返回值 \\{#returned_value\\}
 
 - 一张表。
 
-## 示例 {#examples}
+## 示例 \\{#examples\\}
 
 输入表：
 
@@ -65,6 +65,6 @@ SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
 SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 ```
 
-## 相关内容 {#related}
+## 相关内容 \\{#related\\}
 
 - [View 表引擎](/engines/table-engines/special/view/)

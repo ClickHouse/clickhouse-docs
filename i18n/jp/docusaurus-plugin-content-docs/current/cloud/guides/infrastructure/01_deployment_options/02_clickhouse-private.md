@@ -10,7 +10,7 @@ import Image from '@theme/IdealImage';
 import private_gov_architecture from '@site/static/images/cloud/reference/private-gov-architecture.png';
 
 
-## 概要 {#overview}
+## 概要 \\{#overview\\}
 
 ClickHouse Private は、ClickHouse Cloud 上で動作しているものと同じプロプライエタリ版の ClickHouse と、コンピュートとストレージの分離向けに構成された ClickHouse Operator で構成されるセルフホスト型パッケージです。S3 互換ストレージを用いた Kubernetes 環境にデプロイされます。
 
@@ -22,20 +22,20 @@ ClickHouse Private は、最も厳格なコンプライアンス要件を持つ�
 
 
 
-## オープンソースに対する利点 {#benefits-over-os}
+## オープンソースに対する利点 \\{#benefits-over-os\\}
 
 以下の機能により、自己管理型のオープンソースデプロイメントと比較して、ClickHouse Private は優位性を発揮します。
 
 <VerticalStepper headerLevel="h3">
 
-### 強化されたパフォーマンス {#enhanced-performance}
+### 強化されたパフォーマンス \\{#enhanced-performance\\}
 - コンピュートとストレージのネイティブな分離
 - [shared merge tree](/cloud/reference/shared-merge-tree) や [warehouse](/cloud/reference/warehouses) 機能などの独自クラウド機能
 
-### 多様なユースケースや条件下での検証・実証済み {#tested-proven-through-variety-of-use-cases}
+### 多様なユースケースや条件下での検証・実証済み \\{#tested-proven-through-variety-of-use-cases\\}
 - ClickHouse Cloud での十分なテストおよび検証
 
-### 新機能が定期的に追加される充実したロードマップ {#full-featured-roadmap}
+### 新機能が定期的に追加される充実したロードマップ \\{#full-featured-roadmap\\}
 今後追加予定の機能には、次のようなものが含まれます:
 - リソースをプログラムから管理するための API
   - 自動バックアップ
@@ -46,7 +46,7 @@ ClickHouse Private は、最も厳格なコンプライアンス要件を持つ�
 
 
 
-## アーキテクチャ {#architecture}
+## アーキテクチャ \\{#architecture\\}
 
 ClickHouse Private は、お使いのデプロイ環境内で完結しており、Kubernetes 上で管理されるコンピュートと、S3 互換ストレージソリューション上のストレージで構成されます。
 
@@ -58,17 +58,17 @@ ClickHouse Private は、お使いのデプロイ環境内で完結しており�
 
 
 
-## オンボーディングプロセス {#onboarding-process}
+## オンボーディングプロセス \\{#onboarding-process\\}
 
 お客様は、[こちら](https://clickhouse.com/company/contact?loc=nav)からお問い合わせいただくことで、オンボーディングを開始できます。要件を満たすお客様には、詳細な環境構築ガイドと、デプロイメント用のイメージおよび Helm チャートへのアクセスを提供します。
 
 
 
-## 一般要件 {#general-requirements}
+## 一般要件 \\{#general-requirements\\}
 
 このセクションでは、ClickHouse Private をデプロイするために必要なリソースの概要を示します。具体的なデプロイメントガイドはオンボーディングの一部として提供されます。インスタンス/サーバーの種類とサイズはユースケースによって異なります。
 
-### AWS 上の ClickHouse Private {#clickhouse-private-aws}
+### AWS 上の ClickHouse Private \\{#clickhouse-private-aws\\}
 
 必要なリソース：
 - イメージと Helm チャートを受け取るための [ECR](https://docs.aws.amazon.com/ecr/)
@@ -79,7 +79,7 @@ ClickHouse Private は、お使いのデプロイ環境内で完結しており�
 - イングレスが必要な場合は、NLB も設定すること
 - clickhouse-server/keeper の運用のために、ClickHouse クラスターごとに 1 つの AWS ロール
 
-### IBM Cloud 上の ClickHouse Private {#clickhouse-private-ibm-cloud}
+### IBM Cloud 上の ClickHouse Private \\{#clickhouse-private-ibm-cloud\\}
 
 必要なリソース：
 - イメージと Helm チャートを受け取るための [Container Registry](https://cloud.ibm.com/docs/Registry?topic=Registry-getting-started)

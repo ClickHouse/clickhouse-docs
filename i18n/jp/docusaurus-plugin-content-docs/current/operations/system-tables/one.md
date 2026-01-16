@@ -6,7 +6,7 @@ title: 'system.one'
 doc_type: 'reference'
 ---
 
-# system.one {#systemone}
+# system.one \\{#systemone\\}
 
 このテーブルは 1 行 1 列のテーブルで、UInt8 型の `dummy` 列に値 0 が格納されています。
 

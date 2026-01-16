@@ -5,18 +5,18 @@ title: 'flameGraph'
 doc_type: 'reference'
 ---
 
-# flameGraph {#flamegraph}
+# flameGraph \{#flamegraph\}
 
 スタックトレースのリストを使用して[フレームグラフ](https://www.brendangregg.com/flamegraphs.html)を生成する集約関数です。[flamegraph.pl ユーティリティ](https://github.com/brendangregg/FlameGraph)を使ってフレームグラフの SVG をレンダリングする際に利用できる文字列の配列を出力します。
 
-## 構文 {#syntax}
+## 構文 \{#syntax\}
 
 ```sql
 flameGraph(traces, [size], [ptr])
 ```
 
 
-## パラメータ {#parameters}
+## パラメータ \\{#parameters\\}
 
 - `traces` — スタックトレース。[Array](../../data-types/array.md)([UInt64](../../data-types/int-uint.md))。
 - `size` — メモリプロファイリング用の割り当てサイズ（オプション。デフォルトは `1`）。[UInt64](../../data-types/int-uint.md)。
@@ -27,13 +27,13 @@ flameGraph(traces, [size], [ptr])
 解放されていない割り当てのみが表示されます。対応付けられない解放は無視されます。
 :::
 
-## 戻り値 {#returned-value}
+## 戻り値 \\{#returned-value\\}
 
 - [flamegraph.pl ユーティリティ](https://github.com/brendangregg/FlameGraph)で使用する文字列の配列。[Array](../../data-types/array.md)([String](../../data-types/string.md))。
 
-## 使用例 {#examples}
+## 使用例 \\{#examples\\}
 
-### CPU クエリプロファイラに基づくフレームグラフの作成 {#building-a-flamegraph-based-on-a-cpu-query-profiler}
+### CPU クエリプロファイラに基づくフレームグラフの作成 \{#building-a-flamegraph-based-on-a-cpu-query-profiler\}
 
 ```sql
 SET query_profiler_cpu_time_period_ns=10000000;
@@ -45,7 +45,7 @@ clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGr
 ```
 
 
-### メモリクエリプロファイラに基づいて、すべてのアロケーションを表示するフレームグラフを作成する {#building-a-flamegraph-based-on-a-memory-query-profiler-showing-all-allocations}
+### メモリクエリプロファイラに基づいて、すべてのアロケーションを表示するフレームグラフを作成する \{#building-a-flamegraph-based-on-a-memory-query-profiler-showing-all-allocations\}
 
 ```sql
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;
@@ -57,7 +57,7 @@ clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGr
 ```
 
 
-### メモリクエリプロファイラを基にフレームグラフを作成し、クエリコンテキスト内で解放されなかったアロケーションを表示する {#building-a-flamegraph-based-on-a-memory-query-profiler-showing-allocations-which-were-not-deallocated-in-query-context}
+### メモリクエリプロファイラを基にフレームグラフを作成し、クエリコンテキスト内で解放されなかったアロケーションを表示する \{#building-a-flamegraph-based-on-a-memory-query-profiler-showing-allocations-which-were-not-deallocated-in-query-context\}
 
 ```sql
 SET memory_profiler_sample_probability=1, max_untracked_memory=1, use_uncompressed_cache=1, merge_tree_max_rows_to_use_cache=100000000000, merge_tree_max_bytes_to_use_cache=1000000000000;
@@ -69,7 +69,7 @@ clickhouse client --allow_introspection_functions=1 -q "SELECT arrayJoin(flameGr
 ```
 
 
-### メモリクエリプロファイラに基づいて flamegraph を生成し、特定時点でのアクティブなアロケーションを可視化する {#build-a-flamegraph-based-on-memory-query-profiler-showing-active-allocations-at-the-fixed-point-of-time}
+### メモリクエリプロファイラに基づいて flamegraph を生成し、特定時点でのアクティブなアロケーションを可視化する \{#build-a-flamegraph-based-on-memory-query-profiler-showing-active-allocations-at-the-fixed-point-of-time\}
 
 ```sql
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;

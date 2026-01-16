@@ -11,14 +11,14 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# Движок таблицы YTsaurus {#ytsaurus-table-engine}
+# Движок таблицы YTsaurus \\{#ytsaurus-table-engine\\}
 
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
 
 Движок таблицы YTsaurus позволяет импортировать данные из кластера YTsaurus.
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \\{#creating-a-table\\}
 
 ```sql
     CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -44,7 +44,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 * `cypress_path` — Cypress-путь к источнику данных.
 * `oauth_token` — OAuth-токен.
 
-## Пример использования {#usage-example}
+## Пример использования \\{#usage-example\\}
 
 Пример запроса для создания таблицы YTsaurus:
 
@@ -73,9 +73,9 @@ SELECT * FROM yt_saurus;
  └────┴────┘
 ```
 
-## Типы данных {#data-types}
+## Типы данных \\{#data-types\\}
 
-### Примитивные типы данных {#primitive-data-types}
+### Примитивные типы данных \\{#primitive-data-types\\}
 
 | Тип данных YTsaurus | Тип данных ClickHouse    |
 | ------------------- | ------------------------ |
@@ -108,7 +108,7 @@ SELECT * FROM yt_saurus;
 | `void`              | `Nothing`                |
 | `T` с `required = False` | `Nullable(T)`       |
 
-### Составные типы данных {#composite-data-types}
+### Составные типы данных \\{#composite-data-types\\}
 
 | Тип данных YTsaurus | Тип данных ClickHouse |
 | ------------------- | --------------------- |

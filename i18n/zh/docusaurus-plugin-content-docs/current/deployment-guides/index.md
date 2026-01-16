@@ -6,7 +6,7 @@ keywords: ['部署指南', '扩展', '集群部署', '复制', '容错']
 doc_type: 'landing-page'
 ---
 
-# 部署与扩展 {#deployment-and-scaling}
+# 部署与扩展 \\{#deployment-and-scaling\\}
 
 本节涵盖以下主题：
 

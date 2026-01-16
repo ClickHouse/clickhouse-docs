@@ -15,7 +15,7 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | -- | -- | ----- |
 | ✗  | ✔  |       |
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 `Pretty` フォーマットは、Unicode アートによるテーブルとしてデータを出力し、
 ターミナルで色を表示するために ANSI エスケープシーケンスを使用します。
@@ -25,7 +25,7 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 [NULL](/sql-reference/syntax.md) は `ᴺᵁᴸᴸ` として出力されます。
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
 例（[`PrettyCompact`](./PrettyCompact.md) 形式の場合）：
 
@@ -94,6 +94,6 @@ Extremes:
 └────────────┴─────────┘
 ```
 
-## 書式設定 {#format-settings}
+## 書式設定 \\{#format-settings\\}
 
 <PrettyFormatSettings/>

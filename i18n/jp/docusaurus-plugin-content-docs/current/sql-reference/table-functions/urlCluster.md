@@ -7,17 +7,17 @@ title: 'urlCluster'
 doc_type: 'reference'
 ---
 
-# urlCluster テーブル関数 {#urlcluster-table-function}
+# urlCluster テーブル関数 \\{#urlcluster-table-function\\}
 
 指定したクラスタ内の複数ノードで、URL から取得したファイルを並列処理できます。イニシエーター側では、クラスタ内のすべてのノードへの接続を確立し、URL のファイルパス中のアスタリスクを展開して、各ファイルを動的に割り当てます。ワーカーノードでは、処理すべき次のタスクをイニシエーターに問い合わせ、そのタスクを処理します。これは、すべてのタスクが完了するまで繰り返されます。
 
-## 構文 {#syntax}
+## 構文 \\{#syntax\\}
 
 ```sql
 urlCluster(cluster_name, URL, format, structure)
 ```
 
-## 引数 {#arguments}
+## 引数 \\{#arguments\\}
 
 | 引数           | 説明                                                                                                                                                     |
 |----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -26,11 +26,11 @@ urlCluster(cluster_name, URL, format, structure)
 | `format`       | データの[フォーマット](/sql-reference/formats)。型: [String](../../sql-reference/data-types/string.md)。                                                 |
 | `structure`    | `'UserID UInt64, Name String'` の形式のテーブル構造。カラム名と型を決定する。型: [String](../../sql-reference/data-types/string.md)。                    |
 
-## 戻り値 {#returned_value}
+## 戻り値 \\{#returned_value\\}
 
 指定されたフォーマットと構造を持ち、定義された `URL` から取得したデータを含むテーブル。
 
-## 例 {#examples}
+## 例 \\{#examples\\}
 
 `String` 列と [UInt32](../../sql-reference/data-types/int-uint.md) 型の列を含むテーブルについて、[CSV](/interfaces/formats/CSV) 形式で応答する HTTP サーバー経由で先頭 3 行を取得します。
 
@@ -56,12 +56,12 @@ if __name__ == "__main__":
 SELECT * FROM urlCluster('cluster_simple','http://127.0.0.1:12345', CSV, 'column1 String, column2 UInt32')
 ```
 
-## URL のグロブ {#globs-in-url}
+## URL のグロブ \\{#globs-in-url\\}
 
 波括弧 `{ }` 内のパターンは、シャード集合の生成やフェイルオーバーアドレスの指定に使用されます。サポートされているパターンの型と例については、[remote](remote.md#globs-in-addresses) 関数の説明を参照してください。
 パターン内の文字 `|` はフェイルオーバーアドレスを指定するために使用されます。これらはパターン内で列挙された順に試行されます。生成されるアドレスの数は、[glob_expansion_max_elements](../../operations/settings/settings.md#glob_expansion_max_elements) 設定によって制限されます。
 
-## 関連項目 {#related}
+## 関連項目 \\{#related\\}
 
 -   [HDFS エンジン](/engines/table-engines/integrations/hdfs)
 -   [URL テーブル関数](/engines/table-engines/special/url)

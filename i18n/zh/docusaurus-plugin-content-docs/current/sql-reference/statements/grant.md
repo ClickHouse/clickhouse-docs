@@ -9,14 +9,14 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# GRANT 语句 {#grant-statement}
+# GRANT 语句 \\{#grant-statement\\}
 
 - 向 ClickHouse 用户账户或角色授予[权限](#privileges)。
 - 将角色分配给用户账户或其他角色。
 
 要撤销权限，请使用 [REVOKE](../../sql-reference/statements/revoke.md) 语句。还可以使用 [SHOW GRANTS](../../sql-reference/statements/show.md#show-grants) 语句列出已授予的权限。
 
-## 授予权限的语法 {#granting-privilege-syntax}
+## 授予权限的语法 \\{#granting-privilege-syntax\\}
 
 ```sql
 GRANT [ON CLUSTER cluster_name] privilege[(column_name [,...])] [,...] ON {db.table[*]|db[*].*|*.*|table[*]|*} TO {user | role | CURRENT_USER} [,...] [WITH GRANT OPTION] [WITH REPLACE OPTION]
@@ -29,7 +29,7 @@ GRANT [ON CLUSTER cluster_name] privilege[(column_name [,...])] [,...] ON {db.ta
 `WITH GRANT OPTION` 子句为 `user` 或 `role` 授予执行 `GRANT` 查询的权限。用户可以授予与自己权限范围相同或更小范围的权限。
 `WITH REPLACE OPTION` 子句会将 `user` 或 `role` 的现有权限替换为新权限；如果未指定该子句，则会将新权限追加到现有权限上，而不是进行替换。
 
-## 分配角色的语法 {#assigning-role-syntax}
+## 分配角色的语法 \\{#assigning-role-syntax\\}
 
 ```sql
 GRANT [ON CLUSTER cluster_name] role [,...] TO {user | another_role | CURRENT_USER} [,...] [WITH ADMIN OPTION] [WITH REPLACE OPTION]
@@ -41,7 +41,7 @@ GRANT [ON CLUSTER cluster_name] role [,...] TO {user | another_role | CURRENT_US
 `WITH ADMIN OPTION` 子句向 `user` 或 `role` 授予 [ADMIN OPTION](#admin-option) 权限。
 `WITH REPLACE OPTION` 子句会用新的角色替换该 `user` 或 `role` 现有的角色；如果未指定该子句，则会在原有角色基础上追加新角色。
 
-## GRANT CURRENT GRANTS 语法 {#grant-current-grants-syntax}
+## GRANT CURRENT GRANTS 语法 \\{#grant-current-grants-syntax\\}
 
 ```sql
 GRANT CURRENT GRANTS{(privilege[(column_name [,...])] [,...] ON {db.table|db.*|*.*|table|*}) | ON {db.table|db.*|*.*|table|*}} TO {user | role | CURRENT_USER} [,...] [WITH GRANT OPTION] [WITH REPLACE OPTION]
@@ -54,7 +54,7 @@ GRANT CURRENT GRANTS{(privilege[(column_name [,...])] [,...] ON {db.table|db.*|*
 使用 `CURRENT GRANTS` 语句可以为指定的用户或角色授予所有列出的权限。
 如果未指定任何权限，则该用户或角色将获得 `CURRENT_USER` 的所有可用权限。
 
-## 用法 {#usage}
+## 用法 \\{#usage\\}
 
 要使用 `GRANT`，您的账户必须具有 `GRANT OPTION` 权限。您只能在自身账户权限范围内授予权限。
 
@@ -83,7 +83,7 @@ GRANT SELECT(x,y) ON db.table TO john WITH GRANT OPTION
 
 你可以在一个查询中为多个账号授予多个权限。查询 `GRANT SELECT, INSERT ON *.* TO john, robin` 允许账号 `john` 和 `robin` 在服务器上所有数据库的所有表上执行 `INSERT` 和 `SELECT` 查询。
 
-## 通配符授权 {#wildcard-grants}
+## 通配符授权 \\{#wildcard-grants\\}
 
 在指定权限时，可以使用星号（`*`）来代替表名或数据库名。例如，`GRANT SELECT ON db.* TO john` 查询允许 `john` 在 `db` 数据库中的所有表上执行 `SELECT` 查询。
 也可以省略数据库名。在这种情况下，权限会被授予当前数据库。
@@ -134,7 +134,7 @@ GRANT SELECT ON *suffix TO john -- wrong
 GRANT SELECT(foo) ON db.table* TO john -- wrong
 ```
 
-## 权限 {#privileges}
+## 权限 \\{#privileges\\}
 
 权限是授予用户以执行特定类型查询的许可。
 
@@ -375,7 +375,7 @@ ClickHouse 中的权限层级如下所示：
 
 某些查询在实现上需要一组权限。例如，要执行 [RENAME](../../sql-reference/statements/optimize.md) 查询，需要以下权限：`SELECT`、`CREATE TABLE`、`INSERT` 和 `DROP TABLE`。
 
-### SELECT {#select}
+### SELECT \\{#select\\}
 
 允许执行 [SELECT](../../sql-reference/statements/select/index.md) 查询。
 
@@ -393,7 +393,7 @@ GRANT SELECT(x,y) ON db.table TO john
 
 该权限允许 `john` 执行任何涉及 `db.table` 中 `x` 和/或 `y` 列数据的 `SELECT` 查询，例如 `SELECT x FROM db.table`。`john` 不能执行 `SELECT z FROM db.table`。也不能执行 `SELECT * FROM db.table`。在处理此查询时，ClickHouse 不会返回任何数据，连 `x` 和 `y` 也不会返回。唯一的例外是当表只包含 `x` 和 `y` 列时，在这种情况下，ClickHouse 会返回该表中的所有数据。
 
-### INSERT {#insert}
+### INSERT \\{#insert\\}
 
 允许执行 [INSERT](../../sql-reference/statements/insert-into.md) 查询。
 
@@ -411,7 +411,7 @@ GRANT INSERT(x,y) ON db.table TO john
 
 授予的权限允许 `john` 向 `db.table` 表中的 `x` 和/或 `y` 列插入数据。
 
-### ALTER {#alter}
+### ALTER \\{#alter\\}
 
 允许根据以下权限层级执行 [ALTER](../../sql-reference/statements/alter/index.md) 查询：
 
@@ -459,11 +459,11 @@ GRANT INSERT(x,y) ON db.table TO john
 - `DETACH` 操作需要具有 [DROP](#drop) 权限。
 - 要通过 [KILL MUTATION](../../sql-reference/statements/kill.md#kill-mutation) 查询停止一次 mutation，需要具有启动该 mutation 的相应权限。例如，如果你想停止 `ALTER UPDATE` 查询，你需要具有 `ALTER UPDATE`、`ALTER TABLE` 或 `ALTER` 权限。
 
-### BACKUP {#backup}
+### BACKUP \\{#backup\\}
 
 允许在查询中执行 [`BACKUP`] 语句。有关备份的更多信息，请参阅[《备份与恢复》](/operations/backup/overview)。
 
-### CREATE {#create}
+### CREATE \\{#create\\}
 
 允许按照以下权限层级执行 [CREATE](../../sql-reference/statements/create/index.md) 和 [ATTACH](../../sql-reference/statements/attach.md) DDL 查询：
 
@@ -479,7 +479,7 @@ GRANT INSERT(x,y) ON db.table TO john
 
 - 若要删除已创建的表，用户需要 [DROP](#drop) 权限。
 
-### CLUSTER {#cluster}
+### CLUSTER \\{#cluster\\}
 
 支持执行 `ON CLUSTER` 查询。
 
@@ -502,7 +502,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 </access_control_improvements>
 ```
 
-### DROP {#drop}
+### DROP \\{#drop\\}
 
 允许按照以下权限层级执行 [DROP](../../sql-reference/statements/drop.md) 和 [DETACH](../../sql-reference/statements/detach.md) 查询语句：
 
@@ -512,19 +512,19 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
   - `DROP VIEW`。级别：`VIEW`
   - `DROP DICTIONARY`。级别：`DICTIONARY`
 
-### TRUNCATE {#truncate}
+### TRUNCATE \\{#truncate\\}
 
 允许执行 [TRUNCATE](../../sql-reference/statements/truncate.md) 查询。
 
 所需权限级别：`TABLE`。
 
-### OPTIMIZE {#optimize}
+### OPTIMIZE \\{#optimize\\}
 
 允许执行 [OPTIMIZE TABLE](../../sql-reference/statements/optimize.md) 查询。
 
 权限级别：`TABLE`。
 
-### SHOW {#show}
+### SHOW \\{#show\\}
 
 允许根据以下权限层级执行 `SHOW`、`DESCRIBE`、`USE` 和 `EXISTS` 查询：
 
@@ -538,7 +538,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 如果用户对指定的表、字典或数据库拥有任意其他相关权限，则该用户自动具有 `SHOW` 权限。
 
-### KILL QUERY {#kill-query}
+### KILL QUERY \\{#kill-query\\}
 
 允许根据以下权限层级执行 [KILL](../../sql-reference/statements/kill.md#kill-query) 查询：
 
@@ -548,7 +548,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 具有 `KILL QUERY` 权限的用户可以终止其他用户的查询。
 
-### 访问管理 {#access-management}
+### 访问管理 \\{#access-management\\}
 
 允许用户执行用于管理用户、角色和行策略的查询。
 
@@ -579,7 +579,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 `ROLE ADMIN` 权限允许用户分配和撤销任意角色，包括那些并未授予给该用户（即使带有 admin 选项）的角色。
 
-### SYSTEM {#system}
+### SYSTEM \\{#system\\}
 
 允许用户根据以下权限层级执行 [SYSTEM](../../sql-reference/statements/system.md) 查询。
 
@@ -609,7 +609,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 `SYSTEM RELOAD EMBEDDED DICTIONARIES` 权限会通过 `SYSTEM RELOAD DICTIONARY ON *.*` 权限隐式授予。
 
-### 自省 {#introspection}
+### 自省 \\{#introspection\\}
 
 允许使用[自省](../../operations/optimizing-performance/sampling-query-profiler.md)函数。
 
@@ -619,7 +619,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
   - `addressToSymbol`。级别：`GLOBAL`
   - `demangle`。级别：`GLOBAL`
 
-### SOURCES {#sources}
+### SOURCES \\{#sources\\}
 
 允许使用外部数据源。适用于[表引擎](../../engines/table-engines/index.md)和[表函数](/sql-reference/table-functions)。
 
@@ -659,7 +659,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 - 要创建一个使用 [MySQL 表引擎](../../engines/table-engines/integrations/mysql.md)的表，您需要具备 `CREATE TABLE (ON db.table_name)` 和 `MYSQL` 权限。
 - 要使用 [mysql 表函数](../../sql-reference/table-functions/mysql.md)，您需要具备 `CREATE TEMPORARY TABLE` 和 `MYSQL` 权限。
 
-### 源过滤器授权 {#source-filter-grants}
+### 源过滤器授权 \\{#source-filter-grants\\}
 
 :::note
 此功能自 25.8 版本起可用，并且仅在服务器设置
@@ -730,7 +730,7 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 * **不允许部分撤销：** 不能只撤销已授予过滤模式中的一部分。如有需要，必须撤销整个授权，然后使用新的模式重新授权。
 * **不允许使用通配符授权：** 不能使用 `GRANT READ ON *('regexp')` 或类似仅包含通配符的模式。必须提供具体的数据源。
 
-### dictGet {#dictget}
+### dictGet \\{#dictget\\}
 
 - `dictGet`。别名：`dictHas`、`dictGetHierarchy`、`dictIsIn`
 
@@ -743,7 +743,7 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 - `GRANT dictGet ON mydb.mydictionary TO john`
 - `GRANT dictGet ON mydictionary TO john`
 
-### displaySecretsInShowAndSelect {#displaysecretsinshowandselect}
+### displaySecretsInShowAndSelect \\{#displaysecretsinshowandselect\\}
 
 允许用户在 `SHOW` 和 `SELECT` 查询中查看机密信息（secrets），前提是
 [`display_secrets_in_show_and_select` 服务器设置](../../operations/server-configuration-parameters/settings#display_secrets_in_show_and_select)
@@ -751,7 +751,7 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 [`format_display_secrets_in_show_and_select` 格式设置](../../operations/settings/formats#format_display_secrets_in_show_and_select)
 都已开启。
 
-### NAMED COLLECTION ADMIN {#named-collection-admin}
+### NAMED COLLECTION ADMIN \\{#named-collection-admin\\}
 
 允许对指定的 named collection 执行某项操作。在 23.7 版本之前，它被称为 NAMED COLLECTION CONTROL，从 23.7 开始新增了 NAMED COLLECTION ADMIN，同时保留 NAMED COLLECTION CONTROL 作为别名。
 
@@ -771,7 +771,7 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 - `GRANT CREATE NAMED COLLECTION ON abc TO john`
 
-### TABLE ENGINE {#table-engine}
+### TABLE ENGINE \\{#table-engine\\}
 
 在创建表时允许使用指定的表引擎。适用于[表引擎](../../engines/table-engines/index.md)。
 
@@ -786,7 +786,7 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 来更改这一行为。
 :::
 
-### ALL {#all}
+### ALL \\{#all\\}
 
 <CloudNotSupportedBadge/>
 
@@ -797,10 +797,10 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 用户也可以以 `default` 用户的身份使用 `GRANT CURRENT GRANTS`，来实现与 `ALL` 类似的效果。
 :::
 
-### NONE {#none}
+### NONE \\{#none\\}
 
 不赋予任何权限。
 
-### ADMIN OPTION {#admin-option}
+### ADMIN OPTION \\{#admin-option\\}
 
 `ADMIN OPTION` 权限允许用户将自己的角色授予其他用户。

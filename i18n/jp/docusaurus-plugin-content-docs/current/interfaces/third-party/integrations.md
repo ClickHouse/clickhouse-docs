@@ -7,14 +7,14 @@ title: 'サードパーティ開発者による統合ライブラリ'
 doc_type: 'reference'
 ---
 
-# サードパーティ開発者による連携ライブラリ {#integration-libraries-from-third-party-developers}
+# サードパーティ開発者による連携ライブラリ \\{#integration-libraries-from-third-party-developers\\}
 
 :::warning 免責事項
 ClickHouse, Inc. は、以下に掲載しているツールおよびライブラリを**保守しておらず**、その品質について十分なテストも行っていません。
 公式な連携については [Integrations ページ](/integrations) を参照してください。
 :::
 
-## インフラストラクチャ製品 {#infrastructure-products}
+## インフラストラクチャ製品 \\{#infrastructure-products\\}
 
 <details>
 <summary>リレーショナルデータベース管理システム</summary>
@@ -124,7 +124,7 @@ ClickHouse, Inc. は、以下に掲載しているツールおよびライブラ
   - [MindsDB](https://github.com/mindsdb/mindsdb) - ClickHouse と統合し、ClickHouse のデータを多様な AI/ML モデルから利用可能にします。
 </details>
 
-## プログラミング言語エコシステム {#programming-language-ecosystems}
+## プログラミング言語エコシステム \\{#programming-language-ecosystems\\}
 
 <details>
 <summary>Python</summary>

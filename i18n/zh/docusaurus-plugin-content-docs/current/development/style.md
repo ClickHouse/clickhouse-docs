@@ -7,16 +7,16 @@ title: 'C++ 风格指南'
 doc_type: 'guide'
 ---
 
-# C++ 编码风格指南 {#c-style-guide}
+# C++ 编码风格指南 \\{#c-style-guide\\}
 
-## 通用建议 {#general-recommendations}
+## 通用建议 \\{#general-recommendations\\}
 
 以下内容是建议，非强制要求。
 如果你在编辑代码，遵循现有代码的格式通常是更合理的做法。
 代码风格的目的是保持一致性。一致性可以让代码更易阅读，也更便于在代码中搜索。
 许多规则并没有严格的逻辑依据；更多是由既有实践所约定的。
 
-## 格式 {#formatting}
+## 格式 \\{#formatting\\}
 
 **1.** 大部分格式由 `clang-format` 自动完成。
 
@@ -206,7 +206,7 @@ std::cerr << static_cast<int>(c) << std::endl;
 for (Names::const_iterator it = column_names.begin(); it != column_names.end(); ++it)
 ```
 
-## 注释 {#comments}
+## 注释 \\{#comments\\}
 
 **1.** 一定要为所有非一目了然的代码部分添加注释。
 
@@ -303,7 +303,7 @@ void executeQuery(
 /// for
 ```
 
-## 命名 {#names}
+## 命名 \\{#names\\}
 
 **1.** 变量名和类成员名应使用小写字母并以下划线分隔。
 
@@ -421,7 +421,7 @@ enum class CompressionMethod
 
 **17.** 包含 C++ 源代码的文件必须使用 `.cpp` 扩展名。头文件必须使用 `.h` 扩展名。
 
-## 如何编写代码 {#how-to-write-code}
+## 如何编写代码 \\{#how-to-write-code\\}
 
 **1.** 内存管理。
 
@@ -688,7 +688,7 @@ auto s = std::string{"Hello"};
 
 **26.** 对于虚函数，在基类中使用 `virtual` 关键字，而在派生类中不要再写 `virtual`，改为写 `override`。
 
-## 未使用的 C++ 特性 {#unused-features-of-c}
+## 未使用的 C++ 特性 \\{#unused-features-of-c\\}
 
 **1.** 不使用虚继承。
 
@@ -735,7 +735,7 @@ auto func(const E<G> & e) // auto return type (C++14)
 }
 ```
 
-## 平台 {#platform}
+## 平台 \\{#platform\\}
 
 **1.** 我们为特定平台编写代码。
 
@@ -759,7 +759,7 @@ CPU 指令集为我们服务器中支持的最小公共子集，目前为 SSE 4.
 
 **8.** 使用发布（release）配置进行代码开发和调试。
 
-## 工具 {#tools}
+## 工具 \\{#tools\\}
 
 **1.** KDevelop 是一个不错的 IDE。
 
@@ -787,7 +787,7 @@ CPU 指令集为我们服务器中支持的最小公共子集，目前为 SSE 4.
 
 **10.** 未使用的代码会从仓库中删除。
 
-## 库 {#libraries}
+## 库 \\{#libraries\\}
 
 **1.** 使用 C++20 标准库（允许使用 experimental 扩展特性），以及 `boost` 和 `Poco` 框架。
 
@@ -795,7 +795,7 @@ CPU 指令集为我们服务器中支持的最小公共子集，目前为 SSE 4.
 
 **3.** 始终优先使用已经在使用的库。
 
-## 通用建议 {#general-recommendations-1}
+## 通用建议 \\{#general-recommendations-1\\}
 
 **1.** 尽可能少写代码。
 
@@ -809,7 +809,7 @@ CPU 指令集为我们服务器中支持的最小公共子集，目前为 SSE 4.
 
 **6.** 鼓励简化代码。在可能的情况下尽量减少代码量。
 
-## 其他补充建议 {#additional-recommendations}
+## 其他补充建议 \\{#additional-recommendations\\}
 
 **1.** 对来自 `stddef.h` 的类型显式添加 `std::`
 

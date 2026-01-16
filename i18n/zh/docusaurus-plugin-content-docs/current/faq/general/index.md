@@ -8,7 +8,7 @@ description: '列出关于 ClickHouse 常见问题的索引页面'
 doc_type: 'landing-page'
 ---
 
-# 关于 ClickHouse 的常见问题 {#general-questions-about-clickhouse}
+# 关于 ClickHouse 的常见问题 \\{#general-questions-about-clickhouse\\}
 
 * [什么是 ClickHouse？](../../intro.md)
 * [为什么 ClickHouse 如此之快？](../../concepts/why-clickhouse-is-so-fast.mdx)

@@ -17,7 +17,7 @@ import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashb
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# 使用 ClickStack 监控 Nginx 链路追踪 {#nginx-traces-clickstack}
+# 使用 ClickStack 监控 Nginx 链路追踪 \\{#nginx-traces-clickstack\\}
 
 :::note[TL;DR]
 本指南演示如何从现有的 Nginx 部署中捕获分布式链路追踪（traces），并在 ClickStack 中对其进行可视化。您将学习如何：
@@ -32,12 +32,12 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 所需时间：5–10 分钟
 ::::
 
-## 与现有 Nginx 集成 {#existing-nginx}
+## 与现有 Nginx 集成 \\{#existing-nginx\\}
 
 本节介绍如何通过安装 OpenTelemetry 模块，并将其配置为向 ClickStack 发送追踪数据，为你现有的 Nginx 部署添加分布式追踪功能。
 如果你希望在配置自己的现有环境之前先测试集成效果，可以使用我们预先配置的环境和示例数据进行测试，详见[以下章节](/use-cases/observability/clickstack/integrations/nginx-traces#demo-dataset)。
 
-##### 前置条件 {#prerequisites}
+##### 前置条件 \\{#prerequisites\\}
 
 - 已运行的 ClickStack 实例，并且 OTLP 端点可访问（端口 4317/4318）
 - 已安装 Nginx（版本 1.18 或更高）
@@ -46,11 +46,11 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### 安装 OpenTelemetry Nginx 模块 {#install-module}
+#### 安装 OpenTelemetry Nginx 模块 \\{#install-module\\}
 
 为 Nginx 添加追踪的最简单方式是使用已内置 OpenTelemetry 支持的官方 Nginx 镜像。
 
-##### 使用 nginx:otel 镜像 {#using-otel-image}
+##### 使用 nginx:otel 镜像 \\{#using-otel-image\\}
 
 将你当前的 Nginx 镜像替换为启用 OpenTelemetry 的版本：
 
@@ -65,7 +65,7 @@ image: nginx:1.27-otel
 如果你在 Docker 之外运行 Nginx，请参考 [OpenTelemetry Nginx 文档](https://github.com/open-telemetry/opentelemetry-cpp-contrib/tree/main/instrumentation/nginx) 以获取手动安装说明。
 :::
 
-#### 配置 Nginx 将追踪发送至 ClickStack {#configure-nginx}
+#### 配置 Nginx 将追踪发送至 ClickStack \\{#configure-nginx\\}
 
 在你的 `nginx.conf` 文件中添加 OpenTelemetry 配置。该配置会加载模块，并将追踪数据发送到 ClickStack 的 OTLP 端点。
 
@@ -137,7 +137,7 @@ services:
 - 修改 **otel_service_name** 以匹配你的环境，方便在 HyperDX 中进行识别
 :::
 
-##### 配置说明 {#understanding-configuration}
+##### 配置说明 \\{#understanding-configuration\\}
 
 **会被追踪的内容：**
 每个到 Nginx 的请求都会创建一个 trace span，显示：
@@ -163,7 +163,7 @@ docker-compose restart nginx
 sudo systemctl reload nginx
 ```
 
-#### 在 HyperDX 中验证追踪 {#verifying-traces}
+#### 在 HyperDX 中验证追踪 \\{#verifying-traces\\}
 
 配置完成后，登录 HyperDX 并验证追踪数据是否正常流入，你应当能看到类似如下的画面；如果没有看到追踪数据，尝试调整时间范围：
 
@@ -171,13 +171,13 @@ sudo systemctl reload nginx
 
 </VerticalStepper>
 
-## 演示数据集 {#demo-dataset}
+## 演示数据集 \\{#demo-dataset\\}
 
 对于希望在配置生产系统之前测试 nginx trace 集成的用户，我们提供了一个预生成的 Nginx trace 示例数据集，包含接近真实的流量模式。
 
 <VerticalStepper headerLevel="h4">
 
-#### 启动 ClickStack {#start-clickstack}
+#### 启动 ClickStack \\{#start-clickstack\\}
 
 如果你还没有运行 ClickStack，请通过以下命令启动：
 
@@ -193,7 +193,7 @@ docker run --name clickstack-demo \
 - 端口 4317：OTLP gRPC 端点（由 nginx 模块使用）
 - 端口 4318：OTLP HTTP 端点（用于演示 trace）
 
-#### 下载示例数据集 {#download-sample}
+#### 下载示例数据集 \\{#download-sample\\}
 
 下载示例 trace 文件，并将时间戳更新为当前时间：
 
@@ -209,7 +209,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - 延迟范围从 10ms 到 800ms
 - 保留原始流量模式，并平移到当前时间
 
-#### 将 trace 发送到 ClickStack {#send-traces}
+#### 将 trace 发送到 ClickStack \\{#send-traces\\}
 
 将你的 API key 设置为环境变量（如果尚未设置）：
 
@@ -237,7 +237,7 @@ curl -X POST http://localhost:4318/v1/traces \
 
 你应当看到类似 `{"partialSuccess":{}}` 的响应，表明 trace 已成功发送。全部 1,000 条 trace 都会被摄取到 ClickStack 中。
 
-#### 在 HyperDX 中验证 trace {#verify-demo-traces}
+#### 在 HyperDX 中验证 trace \\{#verify-demo-traces\\}
 
 1. 打开 [HyperDX](http://localhost:8080/) 并登录你的账户（可能需要先创建账户）
 2. 进入 Search 视图，并将 source 设置为 `Traces`
@@ -253,15 +253,15 @@ HyperDX 会以浏览器本地时区显示时间戳。演示数据覆盖的时间
 
 </VerticalStepper>
 
-## 仪表板与可视化 {#dashboards}
+## 仪表板与可视化 \\{#dashboards\\}
 
 为帮助您开始使用 ClickStack 监控追踪数据，我们提供了一些用于 trace 数据的基础可视化配置。
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nginx-traces-dashboard.json')} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 {#download}
+#### <TrackedLink href={useBaseUrl('/examples/nginx-traces-dashboard.json')} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \\{#download\\}
 
-#### 导入预构建仪表板 {#import-dashboard}
+#### 导入预构建仪表板 \\{#import-dashboard\\}
 1. 打开 HyperDX 并进入 Dashboards 页面。
 2. 点击右上角省略号菜单中的 "Import Dashboard"。
 
@@ -271,7 +271,7 @@ HyperDX 会以浏览器本地时区显示时间戳。演示数据覆盖的时间
 
 <Image img={finish_import} alt="完成导入"/>
 
-#### 仪表板将被创建，并包含所有预先配置好的可视化视图。 {#created-dashboard}
+#### 仪表板将被创建，并包含所有预先配置好的可视化视图。 \\{#created-dashboard\\}
 
 :::note
 对于演示数据集，请将时间范围设置为 **2025-10-26 13:00:00 - 2025-10-27 13:00:00 (UTC)**（可根据本地时区进行调整）。导入的仪表板默认不会指定时间范围。
@@ -281,9 +281,9 @@ HyperDX 会以浏览器本地时区显示时间戳。演示数据覆盖的时间
 
 </VerticalStepper>
 
-## 故障排查 {#troubleshooting}
+## 故障排查 \\{#troubleshooting\\}
 
-### 在 HyperDX 中看不到任何追踪数据 {#no-traces}
+### 在 HyperDX 中看不到任何追踪数据 \\{#no-traces\\}
 
 **确认已加载 nginx 模块：**
 
@@ -328,7 +328,7 @@ sudo tail -f /var/log/nginx/error.log | grep -i otel
 tail -f /var/log/nginx/access.log
 ```
 
-## 后续步骤 {#next-steps}
+## 后续步骤 \\{#next-steps\\}
 
 如果你想进一步探索，可以尝试以下步骤来体验和优化你的仪表板：
 

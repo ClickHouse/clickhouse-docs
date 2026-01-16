@@ -5,7 +5,7 @@ title: 'stddevSampStable'
 doc_type: 'reference'
 ---
 
-# stddevSampStable {#stddevsampstable}
+# stddevSampStable \{#stddevsampstable\}
 
 Результат равен квадратному корню из [varSamp](../../../sql-reference/aggregate-functions/reference/varSamp.md). В отличие от [`stddevSamp`](../reference/stddevSamp.md) эта функция использует численно устойчивый алгоритм. Она работает медленнее, но обеспечивает меньшую вычислительную погрешность.
 

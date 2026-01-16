@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.stack&#95;trace {#systemstack&#95;trace}
+# system.stack&#95;trace \\{#systemstack&#95;trace\\}
 
 <SystemTableCloud />
 

@@ -8,7 +8,7 @@ doc_type: 'landing-page'
 keywords: ['运维', '管理', '部署', '集群管理', '常见问题']
 ---
 
-# 关于运维 ClickHouse 服务器和集群的问题 {#question-about-operating-clickhouse-servers-and-clusters}
+# 关于运维 ClickHouse 服务器和集群的问题 \\{#question-about-operating-clickhouse-servers-and-clusters\\}
 
 * [在生产环境中应该使用哪个 ClickHouse 版本？](/faq/operations/production.md)
 * [是否可以采用存储与计算分离的方式部署 ClickHouse？](/faq/operations/separate_storage.md)

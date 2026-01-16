@@ -33,7 +33,7 @@ import rocketbi_17 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# 目标：使用 Rocket.BI 构建你的第一个仪表盘 {#goal-build-your-first-dashboard-with-rocketbi}
+# 目标：使用 Rocket.BI 构建你的第一个仪表盘 \\{#goal-build-your-first-dashboard-with-rocketbi\\}
 
 <CommunityMaintainedBadge/>
 
@@ -45,7 +45,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 你可以通过[此链接访问该仪表盘。](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
 
-## 安装 {#install}
+## 安装 \\{#install\\}
 
 使用我们预先构建的 Docker 镜像启动 RocketBI。
 
@@ -65,7 +65,7 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 如果你想从源码构建或进行高级配置，可以在这里查看 [Rocket.BI Readme](https://github.com/datainsider-co/rocket-bi/blob/main/README.md)。
 
 
-## 让我们来构建仪表板 {#lets-build-the-dashboard}
+## 让我们来构建仪表板 \\{#lets-build-the-dashboard\\}
 
 在 Dashboard 中，你可以找到你的报表，点击 **+New** 开始可视化。
 
@@ -76,9 +76,9 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 
 在 YouTube 上查看高清教程：[https://www.youtube.com/watch?v=TMkdMHHfvqY](https://www.youtube.com/watch?v=TMkdMHHfvqY)
 
-### 构建图表控制组件 {#build-the-chart-controls}
+### 构建图表控制组件 \\{#build-the-chart-controls\\}
 
-#### 创建一个指标控制组件 {#create-a-metrics-control}
+#### 创建一个指标控制组件 \\{#create-a-metrics-control\\}
 
 在 Tab filter 中，选择你想使用的 metric 字段。请务必检查聚合设置。
 
@@ -90,7 +90,7 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 
 <Image size="md" img={rocketbi_04} alt="已重命名过滤器、准备保存到仪表板的指标控制组件" border />
 
-#### 创建一个日期类型控制组件 {#create-a-date-type-control}
+#### 创建一个日期类型控制组件 \\{#create-a-date-type-control\\}
 
 选择一个 Date 字段作为主日期列（Main Date column）：
 
@@ -108,9 +108,9 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 
 <Image size="md" img={rocketbi_07} alt="已重命名过滤器、准备保存到仪表板的日期范围控制组件" border />
 
-### 现在，让我们来构建图表 {#now-let-build-the-charts}
+### 现在，让我们来构建图表 \\{#now-let-build-the-charts\\}
 
-#### 饼图：按区域展示销售指标 {#pie-chart-sales-metrics-by-regions}
+#### 饼图：按区域展示销售指标 \\{#pie-chart-sales-metrics-by-regions\\}
 
 选择添加新图表，然后选择 Pie Chart
 
@@ -154,7 +154,7 @@ wget https://raw.githubusercontent.com/datainsider-co/rocket-bi/main/docker/.cli
 
 <Image size="md" img={rocketbi_14} alt="仪表板视图，展示新添加的饼图和其他控制组件" border />
 
-#### 在时间序列图表中使用日期控制组件 {#use-date-control-in-a-time-series-chart}
+#### 在时间序列图表中使用日期控制组件 \\{#use-date-control-in-a-time-series-chart\\}
 
 我们来使用一个堆叠柱状图（Stacked Column Chart）
 

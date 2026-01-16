@@ -20,7 +20,7 @@ ClickHouse 中的压缩效果主要会受到三个关键因素的影响：
 
 所有这些都通过 schema 进行配置。
 
-## 选择合适的数据类型以优化压缩 {#choose-the-right-data-type-to-optimize-compression}
+## 选择合适的数据类型以优化压缩 \{#choose-the-right-data-type-to-optimize-compression\}
 
 让我们以 Stack Overflow 数据集为例，对比 `posts` 表在以下表结构下的压缩统计信息：
 
@@ -207,7 +207,7 @@ GROUP BY name
 ```
 
 
-## 选择合适的列压缩编解码器 {#choosing-the-right-column-compression-codec}
+## 选择合适的列压缩编解码器 \{#choosing-the-right-column-compression-codec\}
 
 通过列压缩编解码器，我们可以更改用于对每一列进行编码和压缩的算法（及其设置）。
 
@@ -293,6 +293,6 @@ ORDER BY
 ```
 
 
-### ClickHouse Cloud 中的压缩 {#compression-in-clickhouse-cloud}
+### ClickHouse Cloud 中的压缩 \\{#compression-in-clickhouse-cloud\\}
 
 在 ClickHouse Cloud 中，我们默认使用压缩级别为 1 的 `ZSTD` 压缩算法。该算法的压缩速度会随压缩级别变化（级别越高速度越慢），但其解压缩速度始终较快（波动约在 20% 以内），并且还支持良好的并行化。我们的历史测试结果表明，该算法通常已经足够高效，甚至在与其他 codec 搭配使用时也可以优于 `LZ4`。它对大多数数据类型和数据分布都有效，因此是一个合理的通用默认选择，也解释了为什么即便不做进一步优化，我们的初始压缩效果就已经非常出色。

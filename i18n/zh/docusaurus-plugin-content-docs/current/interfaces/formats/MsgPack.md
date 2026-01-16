@@ -13,11 +13,11 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 ClickHouse 支持读写 [MessagePack](https://msgpack.org/) 数据文件。
 
-## 数据类型对应关系 {#data-types-matching}
+## 数据类型对应关系 \\{#data-types-matching\\}
 
 | MessagePack 数据类型（`INSERT`）                                   | ClickHouse 数据类型                                                                                    | MessagePack 数据类型（`SELECT`） |
 |--------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|----------------------------------|
@@ -42,7 +42,7 @@ ClickHouse 支持读写 [MessagePack](https://msgpack.org/) 数据文件。
 | `int 64`                                                           | [`Decimal64`](/sql-reference/data-types/decimal.md)                                               | `int 64`                         |
 | `bin 8`                                                            | [`Decimal128`/`Decimal256`](/sql-reference/data-types/decimal.md)                                   | `bin 8 `                         |
 
-## 示例用法 {#example-usage}
+## 示例用法 \\{#example-usage\\}
 
 写入“.msgpk”文件：
 
@@ -52,7 +52,7 @@ $ clickhouse-client --query="INSERT INTO msgpack VALUES ([0, 1, 2, 3, 42, 253, 2
 $ clickhouse-client --query="SELECT * FROM msgpack FORMAT MsgPack" > tmp_msgpack.msgpk;
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \\{#format-settings\\}
 
 | 设置                                                                                                                                    | 描述                                                                                    | 默认值 |
 |--------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|---------|

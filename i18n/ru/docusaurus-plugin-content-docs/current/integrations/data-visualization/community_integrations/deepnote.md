@@ -19,7 +19,7 @@ import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# Подключение ClickHouse к Deepnote {#connect-clickhouse-to-deepnote}
+# Подключение ClickHouse к Deepnote \\{#connect-clickhouse-to-deepnote\\}
 
 <CommunityMaintainedBadge/>
 
@@ -27,13 +27,13 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 
 В этом руководстве предполагается, что у вас уже есть аккаунт Deepnote и запущенный экземпляр ClickHouse.
 
-## Интерактивный пример {#interactive-example}
+## Интерактивный пример \\{#interactive-example\\}
 
 Если вы хотите изучить интерактивный пример выполнения запросов к ClickHouse из ноутбуков с данными в Deepnote, нажмите кнопку ниже, чтобы создать шаблон проекта, подключённый к [песочнице ClickHouse](../../../getting-started/playground.md).
 
 [<Image size="logo" img="https://deepnote.com/buttons/launch-in-deepnote.svg" alt="Запустить в Deepnote" />](https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote)
 
-## Подключение к ClickHouse {#connect-to-clickhouse}
+## Подключение к ClickHouse \\{#connect-to-clickhouse\\}
 
 1. В Deepnote выберите раздел «Integrations» и нажмите на плитку ClickHouse.
 
@@ -49,7 +49,7 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 
 3. Готово! ClickHouse интегрирован с Deepnote.
 
-## Использование интеграции с ClickHouse. {#using-clickhouse-integration}
+## Использование интеграции с ClickHouse. \\{#using-clickhouse-integration\\}
 
 1. Для начала подключитесь к интеграции с ClickHouse в правой части блокнота.
 

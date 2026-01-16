@@ -11,15 +11,15 @@ doc_type: 'reference'
 |-------|--------|----------------------------------------------|
 | ✔     | ✔      | `JSONEachRow`, `JSONLines`, `NDJSON`, `JSONL` |
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 この形式では、ClickHouse は各行を改行区切りの個別の JSON オブジェクトとして出力します。
 
 この形式は `JSONEachRow`、`NDJSON`（Newline Delimited JSON）、または `JSONL`（`JSONLines`）としても知られています。これらの名称はすべて同じ形式の別名であり、区別なく使用できます。
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
-### データの挿入 {#inserting-data}
+### データの挿入 \\{#inserting-data\\}
 
 次のデータを含む `football.json` という名前の JSON ファイルを使用します。
 
@@ -49,7 +49,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONLines;
 ```
 
-### データの読み取り {#reading-data}
+### データの読み取り \\{#reading-data\\}
 
 `JSONLines` フォーマットを使用してデータを読み込みます。
 
@@ -83,4 +83,4 @@ FORMAT JSONLines
 
 列名が不明な列のインポートは、[input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定が 1 に設定されている場合、スキップされます。
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \\{#format-settings\\}

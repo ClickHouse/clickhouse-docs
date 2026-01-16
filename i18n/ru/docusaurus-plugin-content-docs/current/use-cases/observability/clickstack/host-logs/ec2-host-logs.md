@@ -22,7 +22,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Мониторинг журналов хостов EC2 с помощью ClickStack {#ec2-host-logs-clickstack}
+# Мониторинг журналов хостов EC2 с помощью ClickStack \\{#ec2-host-logs-clickstack\\}
 
 :::note[Кратко]
 Отслеживайте системные журналы EC2 с помощью ClickStack, установив OpenTelemetry Collector на ваши экземпляры. Коллектор автоматически обогащает журналы метаданными EC2 (ID экземпляра, регион, зона доступности, тип экземпляра). Вы узнаете, как:
@@ -37,7 +37,7 @@ import TabItem from '@theme/TabItem';
 Требуемое время: 10–15 минут
 :::
 
-## Интеграция с существующим экземпляром EC2 {#existing-ec2}
+## Интеграция с существующим экземпляром EC2 \\{#existing-ec2\\}
 
 В этом разделе рассматривается установка OpenTelemetry Collector на экземпляры EC2 для сбора системных логов и их отправки в ClickStack с автоматическим обогащением метаданными EC2. Такая распределённая архитектура готова к продакшену и масштабируется на несколько экземпляров.
 
@@ -47,7 +47,7 @@ import TabItem from '@theme/TabItem';
 
 Если вы хотите протестировать интеграцию логов хоста EC2 перед настройкой продакшен-экземпляра, вы можете опробовать нашу преднастроенную конфигурацию и пример данных в разделе ["Демонстрационный датасет"](/use-cases/observability/clickstack/integrations/host-logs/ec2#demo-dataset).
 
-##### Предварительные требования {#prerequisites}
+##### Предварительные требования \\{#prerequisites\\}
 
 - Запущенный экземпляр ClickStack (on-premises, в Cloud или локальный)
 - Запущенный экземпляр EC2 (Ubuntu, Amazon Linux или другой дистрибутив Linux)
@@ -447,9 +447,9 @@ docker run --name clickstack-demo \
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.ec2_host_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда {#download}
+#### <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.ec2_host_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \\{#download\\}
 
-#### Импортируйте готовый дашборд {#import-dashboard}
+#### Импортируйте готовый дашборд \\{#import-dashboard\\}
 
 1. Откройте HyperDX и перейдите в раздел Dashboards
 2. Нажмите **Import Dashboard** в правом верхнем углу под значком с многоточием
@@ -460,7 +460,7 @@ docker run --name clickstack-demo \
 
 <Image img={finish_import} alt="Завершение импорта"/>
 
-#### Просмотрите дашборд {#created-dashboard}
+#### Просмотрите дашборд \\{#created-dashboard\\}
 
 Дашборд будет создан со всеми преднастроенными визуализациями:
 

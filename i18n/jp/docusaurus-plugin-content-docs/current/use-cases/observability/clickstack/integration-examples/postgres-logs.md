@@ -19,7 +19,7 @@ import finish_import from '@site/static/images/clickstack/postgres/import-logs-d
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# ClickStack を使用した PostgreSQL ログの監視 {#postgres-logs-clickstack}
+# ClickStack を使用した PostgreSQL ログの監視 \\{#postgres-logs-clickstack\\}
 
 :::note[概要]
 このガイドでは、OpenTelemetry Collector を設定して PostgreSQL サーバーログを取り込むことで、ClickStack を使って PostgreSQL を監視する方法を説明します。次の内容を学びます。
@@ -34,13 +34,13 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 所要時間: 10〜15 分
 :::
 
-## 既存の PostgreSQL との統合 {#existing-postgres}
+## 既存の PostgreSQL との統合 \\{#existing-postgres\\}
 
 このセクションでは、ClickStack の OTel collector の設定を変更して、既存の PostgreSQL 環境から ClickStack にログを送信する方法について説明します。
 
 既存環境を設定する前に PostgreSQL ログ連携を試したい場合は、["Demo dataset"](/use-cases/observability/clickstack/integrations/postgresql-logs#demo-dataset) セクションにあるあらかじめ設定済みのセットアップとサンプルデータを使ってテストできます。
 
-##### 前提条件 {#prerequisites}
+##### 前提条件 \\{#prerequisites\\}
 
 - ClickStack インスタンスが稼働していること
 - 既存の PostgreSQL 環境（バージョン 9.6 以降）
@@ -225,7 +225,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### サンプルデータセットをダウンロードする {#download-sample}
+#### サンプルデータセットをダウンロードする \\{#download-sample\\}
 
 サンプルのログファイルをダウンロードします:
 
@@ -233,7 +233,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgresql.log
 ```
 
-#### テスト用 collector 設定を作成する {#test-config}
+#### テスト用 collector 設定を作成する \\{#test-config\\}
 
 次の設定内容で `postgres-logs-demo.yaml` という名前のファイルを作成します:
 
@@ -317,7 +317,7 @@ ClickStack を使って PostgreSQL の監視を始めやすくするために、
 
 #### <TrackedLink href={useBaseUrl('/examples/postgres-logs-dashboard.json')} download="postgresql-logs-dashboard.json" eventName="docs.postgres_logs_monitoring.dashboard_download">ダッシュボード設定をダウンロード</TrackedLink> {#download}
 
-#### 事前構築済みダッシュボードをインポートする {#import-dashboard}
+#### 事前構築済みダッシュボードをインポートする \\{#import-dashboard\\}
 
 1. HyperDX を開き、Dashboards セクションに移動します
 2. 画面右上の三点リーダー（省略記号）メニューから **Import Dashboard** をクリックします
@@ -328,7 +328,7 @@ ClickStack を使って PostgreSQL の監視を始めやすくするために、
 
 <Image img={finish_import} alt="インポートの完了"/>
 
-#### ダッシュボードを表示する {#created-dashboard}
+#### ダッシュボードを表示する \\{#created-dashboard\\}
 
 ダッシュボードは、すべての可視化が事前設定された状態で作成されます。
 

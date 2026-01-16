@@ -11,23 +11,23 @@ import Image from '@theme/IdealImage';
 <details>
 <summary>Создайте бакеты GCS и HMAC-ключ</summary>
 
-### ch_bucket_us_east1 {#ch_bucket_us_east1}
+### ch_bucket_us_east1 \\{#ch_bucket_us_east1\\}
 
 <Image size="md" img={GCS_bucket_1} alt="Создание GCS-бакета в регионе US East 1" border />
 
-### ch_bucket_us_east4 {#ch_bucket_us_east4}
+### ch_bucket_us_east4 \\{#ch_bucket_us_east4\\}
 
 <Image size="md" img={GCS_bucket_2} alt="Создание GCS-бакета в регионе US East 4" border />
 
-### Сгенерируйте ключ доступа {#generate-an-access-key}
+### Сгенерируйте ключ доступа \\{#generate-an-access-key\\}
 
-### Создайте HMAC-ключ и секрет для сервисного аккаунта {#create-a-service-account-hmac-key-and-secret}
+### Создайте HMAC-ключ и секрет для сервисного аккаунта \\{#create-a-service-account-hmac-key-and-secret\\}
 
 Откройте **Cloud Storage &gt; Settings &gt; Interoperability** и либо выберите существующий **Access key**, либо нажмите **CREATE A KEY FOR A SERVICE ACCOUNT**. В этом руководстве описывается процесс создания нового ключа для нового сервисного аккаунта.
 
 <Image size="md" img={GCS_create_service_account_key} alt="Генерация HMAC-ключа сервисного аккаунта в GCS" border />
 
-### Добавьте новый сервисный аккаунт {#add-a-new-service-account}
+### Добавьте новый сервисный аккаунт \\{#add-a-new-service-account\\}
 
 Если в проекте ещё нет сервисного аккаунта, нажмите **CREATE NEW ACCOUNT**.
 

@@ -7,11 +7,11 @@ title: 'Сборка на Linux для E2K'
 doc_type: 'guide'
 ---
 
-# Сборка на Linux для E2K {#build-on-linux-for-e2k}
+# Сборка на Linux для E2K \\{#build-on-linux-for-e2k\\}
 
 В ClickHouse имеется крайне экспериментальная поддержка архитектуры E2K (Эльбрус‑2000), и он может быть скомпилирован только в нативном режиме с минимальной конфигурацией, используя специально собранные для E2K библиотеки, такие как Boost, CRoaring, libunwind, Zstd.
 
-## Сборка ClickHouse {#build-clickhouse}
+## Сборка ClickHouse \\{#build-clickhouse\\}
 
 Требуемая версия LLVM для сборки должна быть не ниже 20.1.8.
 

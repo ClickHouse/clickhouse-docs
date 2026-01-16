@@ -6,7 +6,7 @@ title: 'Files'
 doc_type: 'reference'
 ---
 
-## file {#file}
+## file \\{#file\\}
 
 ファイルを文字列として読み取り、そのデータを指定された列に読み込みます。ファイルの内容は解釈されません。
 

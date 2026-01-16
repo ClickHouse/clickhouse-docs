@@ -9,9 +9,9 @@ doc_type: 'reference'
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-# サポート対象の Cloud リージョン {#supported-cloud-regions}
+# サポート対象の Cloud リージョン \\{#supported-cloud-regions\\}
 
-## AWS リージョン {#aws-regions}
+## AWS リージョン \\{#aws-regions\\}
 
 - ap-northeast-1 (東京)
 - ap-northeast-2 (韓国（ソウル）)
@@ -34,7 +34,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - eu-north-1 (ストックホルム)
 - sa-east-1 (南米)
 
-## Google Cloud リージョン {#google-cloud-regions}
+## Google Cloud リージョン \\{#google-cloud-regions\\}
 
 - asia-southeast1 (Singapore)
 - asia-northeast1 (Tokyo)
@@ -50,7 +50,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - europe-west6 (Zurich)
 - northamerica-northeast1 (Montréal)
 
-## Azure リージョン {#azure-regions}
+## Azure リージョン \\{#azure-regions\\}
 
 - West US 3 (Arizona)
 - East US 2 (Virginia)
@@ -65,7 +65,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 現在リストにないリージョンにデプロイする必要がありますか？[リクエストを送信](https://clickhouse.com/pricing?modal=open)してください。 
 :::
 
-## プライベートリージョン {#private-regions}
+## プライベートリージョン \\{#private-regions\\}
 
 <EnterprisePlanFeatureBadge feature="Private regions feature"/>
 
@@ -79,7 +79,7 @@ Enterprise ティアのサービス向けにプライベートリージョンを
 
 HIPAA 準拠のために、追加要件（BAA の締結を含む）が適用される場合があります。なお、HIPAA は現在、Enterprise ティアのサービスでのみ利用可能です。
 
-## HIPAA 準拠リージョン {#hipaa-compliant-regions}
+## HIPAA 準拠リージョン \\{#hipaa-compliant-regions\\}
 
 <EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
 
@@ -99,7 +99,7 @@ HIPAA 準拠のために、追加要件（BAA の締結を含む）が適用さ�
 - GCP us-central1 (Iowa)
 - GCP us-east1 (South Carolina)
 
-## PCI 準拠リージョン {#pci-compliant-regions}
+## PCI 準拠リージョン \\{#pci-compliant-regions\\}
 
 <EnterprisePlanFeatureBadge feature="PCI" support="true"/>
 

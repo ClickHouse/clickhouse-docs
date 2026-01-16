@@ -7,7 +7,7 @@ keywords: ['ネイティブプロトコル', 'TCPプロトコル', 'プロトコ
 doc_type: 'guide'
 ---
 
-# 基本 {#basics}
+# 基本 \\{#basics\\}
 
 :::note
 クライアントプロトコルのリファレンスは現在作成中です。
@@ -20,7 +20,7 @@ import TabItem from '@theme/TabItem';
 
 このドキュメントでは、ClickHouse の TCP クライアント向けバイナリプロトコルについて説明します。
 
-## Varint {#varint}
+## Varint \\{#varint\\}
 
 長さやパケットコードなどには、*unsigned varint* エンコード方式が使われます。
 [binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) と [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint) を使用してください。
@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 *signed* varint は使用されません。
 :::
 
-## String {#string}
+## String \\{#string\\}
 
 可変長文字列は *(length, value)* という形式でエンコードされます。ここで *length* は [varint](#varint)、*value* は UTF-8 文字列です。
 
@@ -114,13 +114,13 @@ data := []byte{
 </TabItem>
 </Tabs>
 
-## 整数 {#integers}
+## 整数 \\{#integers\\}
 
 :::tip
 ClickHouse は固定サイズの整数に **リトルエンディアン (Little Endian)** を使用します。
 :::
 
-### Int32 {#int32}
+### Int32 \\{#int32\\}
 
 ```go
 v := int32(1000)
@@ -148,6 +148,6 @@ fmt.Println(d) // 1000
   </TabItem>
 </Tabs>
 
-## Boolean {#boolean}
+## Boolean \\{#boolean\\}
 
 Boolean 型は 1 バイトで表現され、`1` は `true`、`0` は `false` を表します。

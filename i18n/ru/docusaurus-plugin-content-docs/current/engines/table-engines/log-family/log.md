@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Движок таблицы Log {#log-table-engine}
+# Движок таблицы Log \\{#log-table-engine\\}
 
 <CloudNotSupportedBadge/>
 
@@ -19,7 +19,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 Для параллельного доступа к данным операции чтения могут выполняться одновременно, при этом операции записи блокируют чтение и друг друга.
 Движок `Log` не поддерживает индексы. Аналогично, если запись в таблицу завершилась ошибкой, таблица считается повреждённой, и чтение из неё приводит к ошибке. Движок `Log` подходит для временных данных, таблиц с однократной записью, а также для тестирования или демонстрационных целей.
 
-## Создание таблицы {#table_engines-log-creating-a-table}
+## Создание таблицы \\{#table_engines-log-creating-a-table\\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -32,14 +32,14 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 См. подробное описание запроса [CREATE TABLE](/sql-reference/statements/create/table).
 
-## Запись данных {#table_engines-log-writing-the-data}
+## Запись данных \\{#table_engines-log-writing-the-data\\}
 
 Движок `Log` эффективно хранит данные, записывая каждый столбец в отдельный файл. Для каждой таблицы движок `Log` записывает следующие файлы в указанный путь хранения:
 
 - `<column>.bin`: файл данных для каждого столбца, содержащий сериализованные и сжатые данные.
 `__marks.mrk`: файл меток, в котором хранятся смещения и количество строк для каждого вставленного блока данных. Метки используются для эффективного выполнения запросов, позволяя движку пропускать нерелевантные блоки данных при чтении.
 
-### Процесс записи {#writing-process}
+### Процесс записи \\{#writing-process\\}
 
 Когда данные записываются в таблицу `Log`:
 
@@ -47,11 +47,11 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 2.    Для каждого столбца сжатые данные дописываются в соответствующий файл `<column>.bin`.
 3.    В файл `__marks.mrk` добавляются соответствующие записи, фиксирующие смещение и количество строк вновь вставленных данных.
 
-## Чтение данных {#table_engines-log-reading-the-data}
+## Чтение данных \\{#table_engines-log-reading-the-data\\}
 
 Файл меток позволяет ClickHouse выполнять параллельное чтение данных. Это означает, что запрос `SELECT` может возвращать строки в непредсказуемом порядке. Используйте конструкцию `ORDER BY`, чтобы отсортировать строки.
 
-## Пример использования {#table_engines-log-example-of-use}
+## Пример использования \\{#table_engines-log-example-of-use\\}
 
 Создание таблицы:
 

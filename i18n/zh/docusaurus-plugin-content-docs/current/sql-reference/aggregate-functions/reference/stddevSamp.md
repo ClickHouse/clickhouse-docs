@@ -5,7 +5,7 @@ title: 'stddevSamp'
 doc_type: 'reference'
 ---
 
-# stddevSamp {#stddevsamp}
+# stddevSamp \{#stddevsamp\}
 
 结果等于 [varSamp](./varSamp.md) 的平方根。
 

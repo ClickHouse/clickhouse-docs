@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import TableOfContents from '@site/i18n/zh/docusaurus-plugin-content-docs/current/guides/best-practices/_snippets/_performance_optimizations_table_of_contents.md';
 
-# 性能与优化 {#performance-and-optimizations}
+# 性能与优化 \\{#performance-and-optimizations\\}
 
 本节提供有关提升 ClickHouse 性能的建议和最佳实践。
 建议读者在阅读本节之前先查阅[核心概念](/parts)，

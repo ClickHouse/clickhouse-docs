@@ -28,7 +28,7 @@ import Image from '@theme/IdealImage';
 ClickHouse Cloud 让你连接你常用的各类工具和服务。
 
 
-## 面向 ClickHouse Cloud 的托管集成管道 {#clickpipes}
+## 面向 ClickHouse Cloud 的托管集成管道 \\{#clickpipes\\}
 
 ClickPipes 是一个托管集成平台，可使从多种不同来源摄取数据变得像点击几下按钮一样简单。
 ClickPipes 为最苛刻的工作负载而设计，其健壮且可扩展的架构确保了稳定的性能和可靠性。
@@ -53,7 +53,7 @@ ClickPipes 既可以用于长期的流式数据摄取需求，也可以用于一
 
 
 
-## 语言客户端集成 {#language-client-integrations}
+## 语言客户端集成 \\{#language-client-integrations\\}
 
 ClickHouse 提供了多种语言客户端集成，下面列出了每种集成对应的文档链接。
 

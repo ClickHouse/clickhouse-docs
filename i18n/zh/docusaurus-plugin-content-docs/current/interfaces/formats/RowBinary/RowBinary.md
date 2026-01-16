@@ -16,7 +16,7 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 | ✔  | ✔  |    |
 
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 `RowBinary` 格式按行以二进制形式解析数据。  
 行和数值按顺序连续列出，没有分隔符。  
@@ -52,10 +52,10 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 
 
 
-## 使用示例 {#example-usage}
+## 使用示例 \\{#example-usage\\}
 
 
 
-## 格式设置 {#format-settings}
+## 格式设置 \\{#format-settings\\}
 
 <RowBinaryFormatSettings/>

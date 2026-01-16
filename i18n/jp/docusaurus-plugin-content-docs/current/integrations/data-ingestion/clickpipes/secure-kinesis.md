@@ -16,14 +16,14 @@ import Image from '@theme/IdealImage';
 
 この記事では、ClickPipes のお客様がロールベースアクセスを利用して Amazon Kinesis で認証を行い、自身のデータストリームに安全にアクセスする方法を説明します。
 
-## 前提条件 {#prerequisite}
+## 前提条件 \\{#prerequisite\\}
 
 このガイドに従うには、次のものが必要です：
 
 - アクティブな ClickHouse Cloud サービス
 - AWS アカウント
 
-## はじめに {#introduction}
+## はじめに \\{#introduction\\}
 
 Kinesis へのセキュアなアクセス設定の説明に入る前に、その仕組みを理解しておくことが重要です。ここでは、ClickPipes がどのようにしてお客様の AWS アカウント内でロールを引き受けることにより、Amazon Kinesis ストリームへアクセスできるかの概要を説明します。
 
@@ -31,11 +31,11 @@ Kinesis へのセキュアなアクセス設定の説明に入る前に、その
 
 このアプローチを用いることで、お客様は各ストリームのアクセスポリシーを個別に変更することなく、引き受けたロールの IAM ポリシーだけで Kinesis データストリームへのすべてのアクセスを一元的に管理できます。
 
-## セットアップ {#setup}
+## セットアップ \\{#setup\\}
 
 <VerticalStepper headerLevel="h3"/>
 
-### ClickHouse サービスの IAM ロール ARN の取得 {#obtaining-the-clickhouse-service-iam-role-arn}
+### ClickHouse サービスの IAM ロール ARN の取得 \\{#obtaining-the-clickhouse-service-iam-role-arn\\}
 
 - 1. ClickHouse Cloud アカウントにログインします。
 - 2. 連携を作成したい ClickHouse サービスを選択します。
@@ -45,9 +45,9 @@ Kinesis へのセキュアなアクセス設定の説明に入る前に、その
 
 <Image img={secures3_arn} alt="Secure S3 ARN" size="lg" border/>
 
-### IAM AssumeRole の設定 {#setting-up-iam-assume-role}
+### IAM AssumeRole の設定 \\{#setting-up-iam-assume-role\\}
 
-#### IAM ロールを手動で作成する {#manually-create-iam-role}
+#### IAM ロールを手動で作成する \\{#manually-create-iam-role\\}
 
 - 1. IAM ロールの作成および管理権限を持つ IAM ユーザーで、Web ブラウザから AWS アカウントにログインします。
 - 2. IAM サービスコンソールを開きます。

@@ -15,7 +15,7 @@ import remove_table from '@site/static/images/integrations/data-ingestion/clickp
 
 場合によっては、特定のテーブルを MongoDB の ClickPipe から除外するのが理にかなうことがあります。たとえば、あるテーブルが分析ワークロードに不要な場合、それをスキップすることで、ClickHouse におけるストレージおよびレプリケーションコストを削減できます。
 
-## 特定のテーブルを削除する手順 {#remove-tables-steps}
+## 特定のテーブルを削除する手順 \\{#remove-tables-steps\\}
 
 最初に、対象のテーブルをパイプから削除します。次の手順で行います。
 

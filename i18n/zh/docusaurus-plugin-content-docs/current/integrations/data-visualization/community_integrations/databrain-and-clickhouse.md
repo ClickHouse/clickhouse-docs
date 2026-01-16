@@ -18,7 +18,7 @@ import databrain_06 from '@site/static/images/integrations/data-visualization/da
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# 将 Databrain 连接到 ClickHouse {#connecting-databrain-to-clickhouse}
+# 将 Databrain 连接到 ClickHouse \\{#connecting-databrain-to-clickhouse\\}
 
 <CommunityMaintainedBadge/>
 
@@ -30,19 +30,19 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 本指南将逐步介绍如何将 Databrain 连接到你的 ClickHouse 实例。
 
-## 前置条件 {#pre-requisites}
+## 前置条件 \\{#pre-requisites\\}
 
 - 一个 ClickHouse 数据库，可以部署在自有基础设施上，或托管于 [ClickHouse Cloud](https://clickhouse.com/)。
 - 一个 [Databrain 账号](https://app.usedatabrain.com/users/sign-up)。
 - 一个 Databrain 工作区，用于连接数据源。
 
-## 将 Databrain 连接到 ClickHouse 的步骤 {#steps-to-connect-databrain-to-clickhouse}
+## 将 Databrain 连接到 ClickHouse 的步骤 \\{#steps-to-connect-databrain-to-clickhouse\\}
 
-### 1. 收集连接详细信息 {#1-gather-your-connection-details}
+### 1. 收集连接详细信息 \\{#1-gather-your-connection-details\\}
 
 <ConnectionDetails />
 
-### 2. 允许 Databrain 的 IP 地址（如有需要） {#2-allow-databrain-ip-addresses}
+### 2. 允许 Databrain 的 IP 地址（如有需要） \\{#2-allow-databrain-ip-addresses\\}
 
 如果你的 ClickHouse 实例启用了 IP 过滤，则需要将 Databrain 的 IP 地址加入白名单。
 
@@ -56,7 +56,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 请参阅 [Databrain 的 IP 白名单文档](https://docs.usedatabrain.com/guides/datasources/allow-access-to-our-ip)，获取当前需要加入白名单的 IP 地址列表。
 :::
 
-### 3. 在 Databrain 中添加 ClickHouse 作为数据源 {#3-add-clickhouse-as-a-data-source}
+### 3. 在 Databrain 中添加 ClickHouse 作为数据源 \\{#3-add-clickhouse-as-a-data-source\\}
 
 1. 登录你的 Databrain 帐户，并进入你希望添加数据源的工作区。
 
@@ -83,7 +83,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 7. 连接成功后，点击 **Save（保存）** 或 **Connect（连接）** 以添加数据源。
 
-### 4. 配置用户权限 {#4-configure-user-permissions}
+### 4. 配置用户权限 \\{#4-configure-user-permissions\\}
 
 确保你所使用的 ClickHouse 用户具有必要的权限：
 
@@ -97,9 +97,9 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 
 将 `your_databrain_user` 和 `your_database` 替换为您实际使用的用户名和数据库名称。
 
-## 将 Databrain 与 ClickHouse 配合使用 {#using-databrain-with-clickhouse}
+## 将 Databrain 与 ClickHouse 配合使用 \\{#using-databrain-with-clickhouse\\}
 
-### 探索你的数据 {#explore-your-data}
+### 探索你的数据 \\{#explore-your-data\\}
 
 1. 完成连接后，在 Databrain 中进入你的工作区（workspace）。
 
@@ -109,7 +109,7 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 
 3. 点击任意表来查看其表结构（schema）并预览数据。
 
-### 创建指标和可视化图表 {#create-metrics-and-visualizations}
+### 创建指标和可视化图表 \\{#create-metrics-and-visualizations\\}
 
 1. 点击 **Create Metric**，开始基于 ClickHouse 数据构建可视化图表。
 
@@ -123,7 +123,7 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 
 4. 保存你的指标，以便在多个仪表板中复用。
 
-### 构建仪表板 {#build-dashboards}
+### 构建仪表板 \\{#build-dashboards\\}
 
 1. 点击 **Create Dashboard** 开始创建仪表板。
 
@@ -135,7 +135,7 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 
 4. 将仪表板分享给你的团队，或将其嵌入到你的应用程序中。
 
-### 高级功能 {#advanced-features}
+### 高级功能 \\{#advanced-features\\}
 
 在配合 ClickHouse 使用时，Databrain 提供了多项高级功能：
 
@@ -146,9 +146,9 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 - **Embedded Analytics**：将仪表板和指标直接嵌入到你的应用程序中
 - **Semantic Layer**：创建可复用的数据模型和业务逻辑
 
-## 故障排查 {#troubleshooting}
+## 故障排查 \\{#troubleshooting\\}
 
-### 连接失败 {#connection-fails}
+### 连接失败 \\{#connection-fails\\}
 
 如果无法连接到 ClickHouse：
 
@@ -158,7 +158,7 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 4. **SSL/TLS**：如果使用 HTTPS，确保已正确配置 SSL/TLS
 5. **用户权限**：验证该用户在 `information_schema` 以及目标数据库上具有 SELECT 权限
 
-### 查询性能慢 {#slow-query-performance}
+### 查询性能慢 \\{#slow-query-performance\\}
 
 如果查询执行较慢：
 
@@ -167,7 +167,7 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 3. **使用合适的数据类型**：确保 ClickHouse 模式（schema）使用了最优的数据类型
 4. **索引优化**：利用 ClickHouse 的主键和跳过索引（skipping index）
 
-## 进一步了解 {#learn-more}
+## 进一步了解 \\{#learn-more\\}
 
 如需深入了解 Databrain 的功能以及如何构建强大的分析能力：
 

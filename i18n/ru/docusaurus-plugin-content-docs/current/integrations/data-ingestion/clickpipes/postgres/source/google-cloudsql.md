@@ -20,7 +20,7 @@ import firewall1 from '@site/static/images/integrations/data-ingestion/clickpipe
 import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall2.png';
 import Image from '@theme/IdealImage';
 
-# Руководство по настройке источника Google Cloud SQL Postgres {#google-cloud-sql-postgres-source-setup-guide}
+# Руководство по настройке источника Google Cloud SQL Postgres \\{#google-cloud-sql-postgres-source-setup-guide\\}
 
 :::info
 
@@ -28,11 +28,11 @@ import Image from '@theme/IdealImage';
 
 :::
 
-## Поддерживаемые версии Postgres {#supported-postgres-versions}
+## Поддерживаемые версии Postgres \\{#supported-postgres-versions\\}
 
 Любая версия Postgres 12 и новее
 
-## Включение логической репликации {#enable-logical-replication}
+## Включение логической репликации \\{#enable-logical-replication\\}
 
 **Вам не нужно** выполнять следующие шаги, если параметр `cloudsql.logical_decoding` включен, а `wal_sender_timeout` равен 0. Эти параметры, как правило, уже настроены заранее, если вы мигрируете с другого инструмента репликации данных.
 
@@ -48,7 +48,7 @@ import Image from '@theme/IdealImage';
 
 <Image img={cloudsql_logical_decoding3} alt="Перезапуск сервера" size="lg" border/>
 
-## Создание пользователя ClickPipes и назначение прав {#creating-clickpipes-user-and-granting-permissions}
+## Создание пользователя ClickPipes и назначение прав \\{#creating-clickpipes-user-and-granting-permissions\\}
 
 Подключитесь к вашему Cloud SQL Postgres под учётной записью администратора и выполните следующие команды:
 
@@ -94,7 +94,7 @@ import Image from '@theme/IdealImage';
 
 [//]: # (TODO Add SSH Tunneling)
 
-## Добавление IP-адресов ClickPipes в брандмауэр {#add-clickpipes-ips-to-firewall}
+## Добавление IP-адресов ClickPipes в брандмауэр \\{#add-clickpipes-ips-to-firewall\\}
 
 Выполните следующие шаги, чтобы добавить IP-адреса ClickPipes в вашу сеть.
 
@@ -118,7 +118,7 @@ import Image from '@theme/IdealImage';
 
 <Image img={firewall2} alt="Сети ClickPipes добавлены в брандмауэр" size="lg" border/>
 
-## Что дальше? {#whats-next}
+## Что дальше? \\{#whats-next\\}
 
 Теперь вы можете [создать ClickPipe](../index.md) и начать приём данных из экземпляра Postgres в ClickHouse Cloud.
 Обязательно сохраните сведения о подключении, которые вы использовали при настройке экземпляра Postgres — они понадобятся при создании ClickPipe.

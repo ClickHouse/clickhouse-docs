@@ -11,7 +11,7 @@ import Image from '@theme/IdealImage';
 import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';
 
 
-## 概要 {#overview}
+## 概要 \\{#overview\\}
 
 BYOC（Bring Your Own Cloud）は、お客様自身のクラウドインフラストラクチャ上に ClickHouse Cloud をデプロイできるオプションです。ClickHouse Cloud のマネージドサービスを利用できない特定の要件や制約がある場合に有用です。
 
@@ -27,13 +27,13 @@ BYOC は特に大規模なデプロイメント向けに設計されており、
 * GCP (Private Preview)。ご興味のある方は[こちら](https://clickhouse.com/cloud/bring-your-own-cloud)からウェイティングリストにご登録ください。
 * Azure (Roadmap)。ご興味のある方は[こちら](https://clickhouse.com/cloud/bring-your-own-cloud)からウェイティングリストにご登録ください。
 
-## 用語集 {#glossary}
+## 用語集 \\{#glossary\\}
 
 - **ClickHouse VPC:**  ClickHouse Cloud が所有する VPC。
 - **Customer BYOC VPC:** 顧客のクラウドアカウントが所有し、ClickHouse Cloud によってプロビジョニングおよび管理される、ClickHouse Cloud の BYOC デプロイメント専用の VPC。
 - **Customer VPC:** Customer BYOC VPC に接続する必要があるアプリケーションのために、顧客のクラウドアカウントが所有するその他の VPC。
 
-## アーキテクチャ {#architecture}
+## アーキテクチャ \\{#architecture\\}
 
 メトリクスとログは、顧客の BYOC VPC 内に保存されています。ログは現在、EBS のローカルストレージに保存されています。今後のアップデートでは、ログは LogHouse に保存される予定であり、LogHouse は顧客の BYOC VPC 内で動作する ClickHouse サービスです。メトリクスは、顧客の BYOC VPC 内にローカルで構成された Prometheus と Thanos のスタックによって実装されています。
 
@@ -43,9 +43,9 @@ BYOC は特に大規模なデプロイメント向けに設計されており、
 
 <br />
 
-## 機能 {#features}
+## 機能 \\{#features\\}
 
-### サポートされている機能 {#supported-features}
+### サポートされている機能 \\{#supported-features\\}
 
 - **SharedMergeTree**: ClickHouse Cloud と BYOC は同じバイナリと設定を使用します。そのため、SharedMergeTree をはじめとする ClickHouse コアのすべての機能が BYOC でもサポートされます。
 - **サービス状態管理のためのコンソールアクセス**:
@@ -64,7 +64,7 @@ BYOC は特に大規模なデプロイメント向けに設計されており、
 - **セキュアな S3。**
 - **[AWS PrivateLink](https://aws.amazon.com/privatelink/)。**
 
-### 計画中の機能（現在は未サポート） {#planned-features-currently-unsupported}
+### 計画中の機能（現在は未サポート） \\{#planned-features-currently-unsupported\\}
 
 - [AWS KMS](https://aws.amazon.com/kms/)、別名 CMEK（customer-managed encryption keys）
 - ClickPipes

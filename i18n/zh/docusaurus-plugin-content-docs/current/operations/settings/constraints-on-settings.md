@@ -7,13 +7,13 @@ title: '设置约束条件'
 doc_type: 'reference'
 ---
 
-# 配置约束 {#constraints-on-settings}
+# 配置约束 \\{#constraints-on-settings\\}
 
-## 概览 {#overview}
+## 概览 \\{#overview\\}
 
 在 ClickHouse 中，设置上的“约束”是指可以应用于这些设置的限制和规则。这些约束可以帮助维护数据库的稳定性、安全性以及行为的可预测性。
 
-## 定义约束 {#defining-constraints}
+## 定义约束 \\{#defining-constraints\\}
 
 可以在 `user.xml` 配置文件的 `profiles` 部分中定义设置约束。它们会禁止用户通过
 [`SET`](/sql-reference/statements/set) 语句更改某些设置。
@@ -57,7 +57,7 @@ doc_type: 'reference'
 
 如果用户尝试违反这些约束，则会抛出异常，且该设置保持不变。
 
-## 约束类型 {#types-of-constraints}
+## 约束类型 \\{#types-of-constraints\\}
 
 ClickHouse 中支持以下几种类型的约束：
 
@@ -86,7 +86,7 @@ ClickHouse 中支持以下几种类型的约束：
 
 :::
 
-## 多个约束配置文件 {#multiple-constraint-profiles}
+## 多个约束配置文件 \\{#multiple-constraint-profiles\\}
 
 如果某个用户同时有多个配置文件生效，这些约束会被合并。
 合并行为取决于 `settings_constraints_replace_previous`：
@@ -95,7 +95,7 @@ ClickHouse 中支持以下几种类型的约束：
 - **false**（默认）：在合并时，相同设置的约束会按以下方式处理：
   所有未设置的约束类型从之前的配置文件中继承，所有已设置的约束类型则被新配置文件中的值所替换。
 
-## 只读模式 {#read-only}
+## 只读模式 \\{#read-only\\}
 
 只读模式通过 `readonly` 设置启用，不要将其与 `readonly` 约束类型混淆：
 
@@ -105,7 +105,7 @@ ClickHouse 中支持以下几种类型的约束：
 * `readonly=2`：只允许执行只读查询，但可以更改设置，
   `readonly` 设置本身除外。
 
-### 示例 {#example-read-only}
+### 示例 \\{#example-read-only\\}
 
 假设 `users.xml` 包含以下几行：
 
@@ -146,7 +146,7 @@ Code: 452, e.displayText() = DB::Exception: Setting force_index_by_date should n
 `default` 配置文件有特殊处理方式：为 `default` 配置文件定义的所有约束都会成为默认约束，因此它们会对所有用户生效，直到为这些用户显式设置了新的约束将其覆盖为止。
 :::
 
-## 对 MergeTree 设置的约束 {#constraints-on-merge-tree-settings}
+## 对 MergeTree 设置的约束 \\{#constraints-on-merge-tree-settings\\}
 
 可以为 [MergeTree 设置](merge-tree-settings.md) 定义约束。
 在创建使用 MergeTree 引擎的表，
@@ -155,7 +155,7 @@ Code: 452, e.displayText() = DB::Exception: Setting force_index_by_date should n
 在 `<constraints>` 部分中引用 MergeTree 设置名称时，
 必须在其前面加上 `merge_tree_` 前缀。
 
-### 示例 {#example-mergetree}
+### 示例 \\{#example-mergetree\\}
 
 可以禁止创建显式指定 `storage_policy` 的新表。
 

@@ -11,9 +11,9 @@ import observability_1 from '@site/static/images/use-cases/observability/observa
 import observability_2 from '@site/static/images/use-cases/observability/observability-2.png';
 import Image from '@theme/IdealImage';
 
-# オブザーバビリティのための ClickHouse 活用 {#using-clickhouse-for-observability}
+# オブザーバビリティのための ClickHouse 活用 \\{#using-clickhouse-for-observability\\}
 
-## はじめに {#introduction}
+## はじめに \\{#introduction\\}
 
 このガイドは、ClickHouse を用いて独自の SQL ベースのオブザーバビリティソリューション（特にログとトレースに焦点を当てたもの）を構築したいユーザー向けに作成されています。ここでは、インジェストに関する考慮事項、アクセスパターンに最適化されたスキーマ設計、非構造化ログの構造化など、独自ソリューションを構築するうえでのあらゆる側面をカバーします。
 
@@ -27,7 +27,7 @@ ClickHouse 単体は、オブザーバビリティ向けのすぐに使えるソ
 データ収集には OpenTelemetry (OTel) プロジェクトを使用することを推奨していますが、Vector や Fluentd など他のフレームワークやツールを利用しても同様のアーキテクチャを構成できます（Fluent Bit を用いた[例](https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit)を参照してください）。Superset や Metabase など、他の可視化ツールも存在します。
 :::
 
-## なぜ ClickHouse を使うのか {#why-use-clickhouse}
+## なぜ ClickHouse を使うのか \\{#why-use-clickhouse\\}
 
 あらゆる集中型の Observability ストアにおいて最も重要な機能は、多様なソースから集まる膨大なログデータを高速に集約・分析・検索できることです。この集中管理によりトラブルシューティングが効率化され、サービス障害の根本原因を特定しやすくなります。
 
@@ -45,7 +45,7 @@ ClickHouse 単体は、オブザーバビリティ向けのすぐに使えるソ
 - **セカンダリインデックス** - ClickHouse は、特定のクエリパターンを高速化するために、ブルームフィルターなどのセカンダリインデックスをサポートしています。これらはカラム単位で任意に有効化でき、ユーザーはきめ細かな制御を行いながら、コストとパフォーマンスのトレードオフを評価できます。
 - **オープンソース & オープンスタンダード** - オープンソースのデータベースとして、ClickHouse は OpenTelemetry などのオープンスタンダードを採用しています。プロジェクトにコントリビュートし、積極的に参加できる点は魅力的であり、同時にベンダーロックインの問題を回避できます。
 
-## 可観測性に ClickHouse を使用すべきタイミング {#when-should-you-use-clickhouse-for-observability}
+## 可観測性に ClickHouse を使用すべきタイミング \\{#when-should-you-use-clickhouse-for-observability\\}
 
 可観測性データに ClickHouse を使用するには、SQL ベースの可観測性というアプローチを採用する必要があります。SQL ベースの可観測性の歴史については [このブログ記事](https://clickhouse.com/blog/the-state-of-sql-based-observability) を参照してください。要約すると、次のとおりです。
 
@@ -66,7 +66,7 @@ SQL ベースの可観測性が適さない可能性があるのは、次のよ�
 - ユースケースがメトリクス中心であり、PromQL を必要としている。この場合でも、メトリクスには Prometheus を用いつつ、ログとトレースには ClickHouse を使用し、プレゼンテーションレイヤーで Grafana によって統合することは可能です。
 - さらにエコシステムが成熟し、SQL ベースの可観測性がより「すぐ使える」状態になるまで待ちたい
 
-## ログとトレース {#logs-and-traces}
+## ログとトレース \\{#logs-and-traces\\}
 
 Observability のユースケースには、ログ、トレース、メトリクスという 3 つの明確な柱があります。各柱はデータ型とアクセスパターンが異なります。
 
@@ -85,7 +85,7 @@ Observability のユースケースには、ログ、トレース、メトリク
 ClickHouse はメトリクスデータの保存にも使用できますが、この柱については、Prometheus データフォーマットや PromQL のサポートなどの機能がまだ開発途上であり、ClickHouse における成熟度はそれほど高くありません。
 :::
 
-### 分散トレーシング {#distributed-tracing}
+### 分散トレーシング \\{#distributed-tracing\\}
 
 分散トレーシングは、オブザーバビリティにおける重要な機能です。分散トレース（単にトレースとも呼ばれます）は、システム内を流れるリクエストの経路を表現します。リクエストはエンドユーザーまたはアプリケーションから送信され、システム全体へと広がり、一般的にはマイクロサービス間の一連の処理フローとして現れます。このシーケンスを記録し、その後に発生するイベント同士を相関付けることで、アーキテクチャの複雑さやサーバーレスであるかどうかに関わらず、オブザーバビリティの利用者や SRE はアプリケーションフロー内の問題を診断できるようになります。
 

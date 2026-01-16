@@ -16,17 +16,17 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | ✗  | ✔  |       |
 
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 [`PrettyCompact`](./PrettyCompact.md) 形式とは、[ANSI エスケープシーケンス](http://en.wikipedia.org/wiki/ANSI_escape_code) を使用しない点が異なります。
 これは、ブラウザでこの形式を表示する場合や、`watch` コマンドラインユーティリティで使用する場合に必要です。
 
 
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
 
 
-## 書式設定 {#format-settings}
+## 書式設定 \\{#format-settings\\}
 
 <PrettyFormatSettings/>

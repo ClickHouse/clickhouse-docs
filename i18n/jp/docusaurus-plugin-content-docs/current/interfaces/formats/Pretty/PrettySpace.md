@@ -16,16 +16,16 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | ✗  | ✔  |       |
 
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 [`PrettyCompact`](./PrettyCompact.md) フォーマットとは異なり、テーブルの表示にグリッドではなく空白文字（スペース文字）が使用されます。
 
 
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
 
 
-## 書式設定 {#format-settings}
+## 書式設定 \\{#format-settings\\}
 
 <PrettyFormatSettings/>

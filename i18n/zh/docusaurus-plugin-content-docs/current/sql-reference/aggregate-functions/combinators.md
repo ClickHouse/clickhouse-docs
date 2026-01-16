@@ -7,11 +7,11 @@ title: '聚合函数组合器'
 doc_type: 'reference'
 ---
 
-# 聚合函数组合器 {#aggregate-function-combinators}
+# 聚合函数组合器 \\{#aggregate-function-combinators\\}
 
 聚合函数名可以追加一个后缀，从而改变该聚合函数的工作方式。
 
-## -If {#-if}
+## -If \\{#-if\\}
 
 后缀 -If 可以附加到任意聚合函数的名称后面。此时，聚合函数会额外接受一个参数——条件（`UInt8` 类型）。聚合函数只会处理触发该条件的行。如果条件一次都没有被触发，则返回默认值（通常为 0 或空字符串）。
 
@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 借助条件聚合函数，你可以在不使用子查询和 `JOIN` 的情况下，同时针对多个条件计算聚合值。例如，可以使用条件聚合函数实现分群对比功能。
 
-## -Array {#-array}
+## -Array \\{#-array\\}
 
 可以将 -Array 后缀附加到任意聚合函数上。在这种情况下，聚合函数接受类型为 `Array(T)`（数组）的参数，而不是类型为 `T` 的参数。如果聚合函数接受多个参数，则这些参数必须是长度相同的数组。在处理数组时，该聚合函数的行为与原始聚合函数在所有数组元素上的行为相同。
 
@@ -29,7 +29,7 @@ doc_type: 'reference'
 
 -If 和 -Array 可以组合使用。不过，必须先使用 `Array`，再使用 `If`。示例：`uniqArrayIf(arr, cond)`、`quantilesTimingArrayIf(level1, level2)(arr, cond)`。由于这一顺序，`cond` 参数不会是数组。
 
-## -Map {#-map}
+## -Map \\{#-map\\}
 
 可以为任意聚合函数添加 `-Map` 后缀。这样会创建一个以 `Map` 类型作为参数的聚合函数，并使用指定的聚合函数分别聚合该 `Map` 中每个键对应的值。结果同样为 `Map` 类型。
 
@@ -62,7 +62,7 @@ GROUP BY timeslot;
 └─────────────────────┴──────────────────────────────────────┴──────────────────────────────────────┴──────────────────────────────────────┘
 ```
 
-## -SimpleState {#-simplestate}
+## -SimpleState \\{#-simplestate\\}
 
 应用此组合子后，聚合函数会返回相同的值，但类型不同。它是一个可以存储在表中的 [SimpleAggregateFunction(...)](../../sql-reference/data-types/simpleaggregatefunction.md)，用于与 [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) 表配合使用。
 
@@ -96,7 +96,7 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 └──────────────────────────────────────┴───┘
 ```
 
-## -State {#-state}
+## -State \\{#-state\\}
 
 如果你应用这个组合子，聚合函数不会返回最终结果值（例如 [uniq](/sql-reference/aggregate-functions/reference/uniq) 函数的唯一值个数），而是返回聚合的中间状态（对于 `uniq`，这是用于计算唯一值个数的哈希表）。这是一个 `AggregateFunction(...)` 类型，可以用于后续处理，或者存储在表中以便稍后完成聚合。
 
@@ -112,24 +112,24 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 - [-Merge](#-merge) 组合子。
 - [-MergeState](#-mergestate) 组合子。
 
-## -Merge {#-merge}
+## -Merge \\{#-merge\\}
 
 如果使用此组合器，聚合函数会将中间聚合状态作为参数，合并这些状态以完成聚合，并返回最终结果值。
 
-## -MergeState {#-mergestate}
+## -MergeState \\{#-mergestate\\}
 
 以与 -Merge 组合器相同的方式合并中间聚合状态。但它不会返回最终结果值，而是返回中间聚合状态，类似于 -State 组合器。
 
-## -ForEach {#-foreach}
+## -ForEach \\{#-foreach\\}
 
 将作用于表的聚合函数转换为作用于数组的聚合函数，对各数组中对应位置的元素进行聚合，并返回结果数组。例如，对于数组 `[1, 2]`、`[3, 4, 5]` 和 `[6, 7]`，`sumForEach` 在对对应位置的数组元素求和后返回结果 `[10, 13, 5]`。
 
-## -Distinct {#-distinct}
+## -Distinct \\{#-distinct\\}
 
 每个唯一的参数组合只会被聚合一次。重复的值会被忽略。
 示例：`sum(DISTINCT x)`（或 `sumDistinct(x)`）、`groupArray(DISTINCT x)`（或 `groupArrayDistinct(x)`）、`corrStable(DISTINCT x, y)`（或 `corrStableDistinct(x, y)`）等。
 
-## -OrDefault {#-ordefault}
+## -OrDefault \\{#-ordefault\\}
 
 修改聚合函数的行为。
 
@@ -189,7 +189,7 @@ FROM
 └───────────────────────────────────┘
 ```
 
-## -OrNull {#-ornull}
+## -OrNull \\{#-ornull\\}
 
 修改聚合函数的行为。
 
@@ -252,7 +252,7 @@ FROM
 └────────────────────────────────┘
 ```
 
-## -Resample {#-resample}
+## -Resample \\{#-resample\\}
 
 可将数据划分为多个组，并分别对每个组中的数据进行聚合。分组是通过将某一列的取值划分为不同的区间来完成的。
 
@@ -320,16 +320,16 @@ FROM people
 └────────┴───────────────────────────┘
 ```
 
-## -ArgMin {#-argmin}
+## -ArgMin \\{#-argmin\\}
 
 后缀 -ArgMin 可以附加到任意聚合函数的名称后使用。在这种情况下，该聚合函数会额外接受一个参数，该参数应当是任意可比较的表达式。聚合函数只会处理在该附加表达式对应的值上最小的那些行。
 
 示例：`sumArgMin(column, expr)`、`countArgMin(expr)`、`avgArgMin(x, expr)` 等。
 
-## -ArgMax {#-argmax}
+## -ArgMax \\{#-argmax\\}
 
 类似于后缀 -ArgMin，但只处理在指定附加表达式上具有最大值的行。
 
-## 相关内容 {#related-content}
+## 相关内容 \\{#related-content\\}
 
 - 博客文章：[在 ClickHouse 中使用聚合组合器](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)

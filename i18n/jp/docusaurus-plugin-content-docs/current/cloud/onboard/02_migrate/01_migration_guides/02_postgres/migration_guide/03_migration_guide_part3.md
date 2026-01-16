@@ -19,15 +19,15 @@ import Image from '@theme/IdealImage';
 Postgres から移行するユーザーには、[ClickHouse におけるデータモデリングのガイド](/data-modeling/schema-design)を読むことをお勧めします。このガイドでは、同じ Stack Overflow データセットを使用し、ClickHouse の機能を活用した複数のアプローチを紹介します。
 
 
-## ClickHouse における主キー（オーダリングキー） {#primary-ordering-keys-in-clickhouse}
+## ClickHouse における主キー（オーダリングキー） \\{#primary-ordering-keys-in-clickhouse\\}
 
 OLTP データベースから移行してくるユーザーは、ClickHouse における同等の概念を探すことがよくあります。ClickHouse が `PRIMARY KEY` 構文をサポートしていることに気づくと、元の OLTP データベースと同じキーを使ってテーブルスキーマを定義したくなるかもしれませんが、これは推奨されません。
 
-### ClickHouse における主キー（オーダリングキー） {#primary-ordering-keys-in-clickhouse}
+### ClickHouse における主キー（オーダリングキー） \\{#primary-ordering-keys-in-clickhouse\\}
 
 OLTP データベースから移行してくるユーザーは、ClickHouse における同等の概念を探すことがよくあります。ClickHouse が `PRIMARY KEY` 構文をサポートしていることに気づくと、元の OLTP データベースと同じキーを使ってテーブルスキーマを定義したくなるかもしれませんが、これは推奨されません。
 
-### ClickHouse の主キーは何が違うのか {#how-are-clickhouse-primary-keys-different}
+### ClickHouse の主キーは何が違うのか \\{#how-are-clickhouse-primary-keys-different\\}
 
 OLTP の主キーを ClickHouse で使用することが適切でない理由を理解するには、まず ClickHouse のインデックスの基本を理解する必要があります。ここでは比較対象として Postgres を使用しますが、一般的な概念は他の OLTP データベースにも当てはまります。
 
@@ -79,7 +79,7 @@ PARTITION BY toYear(CreationDate)
 パーティショニングの詳細については [&quot;Table partitions&quot;](/partitions) を参照してください。
 
 
-### パーティションの用途 {#recommendations-for-partitions}
+### パーティションの用途 \{#recommendations-for-partitions\}
 
 ClickHouse におけるパーティショニングは、Postgres における用途と類似していますが、いくつか微妙な違いがあります。より具体的には次のとおりです。
 

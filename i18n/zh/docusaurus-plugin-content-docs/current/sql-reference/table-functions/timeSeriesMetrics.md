@@ -7,7 +7,7 @@ title: 'timeSeriesMetrics'
 doc_type: 'reference'
 ---
 
-# timeSeriesMetrics 表函数 {#timeseriesmetrics-table-function}
+# timeSeriesMetrics 表函数 \\{#timeseriesmetrics-table-function\\}
 
 `timeSeriesMetrics(db_name.time_series_table)` - 返回表引擎为 [TimeSeries](../../engines/table-engines/integrations/time-series.md) 的表 `db_name.time_series_table` 所使用的 [metrics](../../engines/table-engines/integrations/time-series.md#metrics-table) 表：
 

@@ -6,7 +6,7 @@ title: '組み込み辞書を扱う関数'
 doc_type: 'reference'
 ---
 
-# 埋め込みディクショナリを扱う関数 {#functions-for-working-with-embedded-dictionaries}
+# 埋め込みディクショナリを扱う関数 \\{#functions-for-working-with-embedded-dictionaries\\}
 
 :::note
 以下の関数が動作するためには、サーバー設定で、すべての埋め込みディクショナリを取得するためのパスとアドレスを指定しておく必要があります。ディクショナリは、これらの関数のいずれかが最初に呼び出された時点で読み込まれます。参照リストを読み込めない場合は、例外がスローされます。
@@ -16,7 +16,7 @@ doc_type: 'reference'
 
 参照リストの作成方法については、「[Dictionaries](../dictionaries#embedded-dictionaries)」セクションを参照してください。
 
-## 複数のジオベース {#multiple-geobases}
+## 複数のジオベース \\{#multiple-geobases\\}
 
 ClickHouse は、複数の代替ジオベース（地域階層）を同時に扱うことをサポートしており、特定の地域がどの国に属するかについてのさまざまな見方に対応できます。
 

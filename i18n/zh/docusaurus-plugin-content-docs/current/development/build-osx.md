@@ -8,7 +8,7 @@ keywords: ['MacOS', 'Mac', '构建']
 doc_type: 'guide'
 ---
 
-# 如何在 macOS 上为 macOS 构建 ClickHouse {#how-to-build-clickhouse-on-macos-for-macos}
+# 如何在 macOS 上为 macOS 构建 ClickHouse \\{#how-to-build-clickhouse-on-macos-for-macos\\}
 
 :::info 你不需要自己构建 ClickHouse！
 你可以按照 [Quick Start](https://clickhouse.com/#quick-start) 中的说明安装预编译的 ClickHouse。
@@ -18,7 +18,7 @@ ClickHouse 可以在 macOS 10.15（Catalina）或更高版本上编译，支持 
 
 作为编译器，仅支持使用通过 Homebrew 安装的 Clang。
 
-## 安装前提条件 {#install-prerequisites}
+## 安装前提条件 \\{#install-prerequisites\\}
 
 首先，请参阅通用的[前提条件文档](developer-instruction.md)。
 
@@ -36,7 +36,7 @@ Apple 默认使用不区分大小写的文件系统。虽然这通常不会影�
 在 macOS 上进行正式开发时，请确保源代码存放在区分大小写的磁盘卷上，例如参见[这些说明](https://brianboyko.medium.com/a-case-sensitive-src-folder-for-mac-programmers-176cc82a3830)。
 :::
 
-## 构建 ClickHouse {#build-clickhouse}
+## 构建 ClickHouse \\{#build-clickhouse\\}
 
 构建时必须使用 Homebrew 的 Clang 编译器：
 
@@ -53,7 +53,7 @@ cmake --build build
 如果在链接阶段遇到 `ld: archive member '/' not a mach-o file in ...` 错误，可能需要将标志 `-DCMAKE_AR=/opt/homebrew/opt/llvm/bin/llvm-ar` 设置为使用 llvm-ar。
 :::
 
-## 注意事项 {#caveats}
+## 注意事项 \\{#caveats\\}
 
 如果您打算运行 `clickhouse-server`，请确保增大系统的 `maxfiles` 参数值。
 

@@ -7,7 +7,7 @@ title: 'EXISTS 语句'
 doc_type: 'reference'
 ---
 
-# EXISTS 语句 {#exists-statement}
+# EXISTS 语句 \\{#exists-statement\\}
 
 ```sql
 EXISTS [TEMPORARY] [TABLE|DICTIONARY|DATABASE] [db.]name [INTO OUTFILE filename] [FORMAT format]

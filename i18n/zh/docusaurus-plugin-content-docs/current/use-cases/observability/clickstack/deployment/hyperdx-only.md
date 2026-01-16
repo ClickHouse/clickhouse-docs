@@ -24,18 +24,18 @@ HyperDX 可以独立于其余组件使用，并且兼容任意数据 schema—�
 在此模式下，数据摄取完全由用户自行负责。你可以使用自己部署的 OpenTelemetry collector、从客户端库直接摄取、ClickHouse 原生表引擎（例如 Kafka 或 S3）、ETL 管道，或诸如 ClickPipes 等托管摄取服务，将数据摄取到 ClickHouse 中。这种方式提供了最大的灵活性，适合已经在运行 ClickHouse、并希望在其之上引入 HyperDX 以实现可视化、搜索和告警的团队。
 
 
-### 适用对象 {#suitable-for}
+### 适用对象 \\{#suitable-for\\}
 
 - 现有 ClickHouse 用户
 - 自定义事件数据管道
 
-## 部署步骤 {#deployment-steps}
+## 部署步骤 \\{#deployment-steps\\}
 
 <br/>
 
 <VerticalStepper headerLevel="h3">
 
-### 使用 Docker 部署 {#deploy-hyperdx-with-docker}
+### 使用 Docker 部署 \\{#deploy-hyperdx-with-docker\\}
 
 运行以下命令，并根据需要修改 `YOUR_MONGODB_URI`。 
 
@@ -43,7 +43,7 @@ HyperDX 可以独立于其余组件使用，并且兼容任意数据 schema—�
 docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx
 ```
 
-### 访问 HyperDX UI {#navigate-to-hyperdx-ui}
+### 访问 HyperDX UI \\{#navigate-to-hyperdx-ui\\}
 
 访问 [http://localhost:8080](http://localhost:8080) 打开 HyperDX UI。
 
@@ -53,7 +53,7 @@ docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.i
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
-### 完成连接信息 {#complete-connection-details}
+### 完成连接信息 \\{#complete-connection-details\\}
 
 连接到你自己的外部 ClickHouse 集群，例如 ClickHouse Cloud。
 
@@ -67,11 +67,11 @@ docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.i
 
 </VerticalStepper>
 
-## 使用 Docker Compose {#using-docker-compose}
+## 使用 Docker Compose \\{#using-docker-compose\\}
 
 用户可以修改 [Docker Compose 配置](/use-cases/observability/clickstack/deployment/docker-compose)，以实现与本指南相同的效果，并从清单中移除 OTel collector 和 ClickHouse 实例。
 
-## ClickStack OpenTelemetry collector {#otel-collector}
+## ClickStack OpenTelemetry collector \\{#otel-collector\\}
 
 即使您在该栈之外自行管理 OpenTelemetry collector，我们仍然建议使用 ClickStack 提供的 collector 发行版。这样可以确保使用默认的 schema，并采用推荐的摄取最佳实践。
 

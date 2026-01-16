@@ -6,7 +6,7 @@ title: 'ParquetMetadata'
 doc_type: 'reference'
 ---
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 Parquet ファイルメタデータ (https://parquet.apache.org/docs/file-format/metadata/) を読み取るための特別なフォーマットです。常に次の構造/内容を持つ 1 行を出力します:
 - `num_columns` - 列数
@@ -45,7 +45,7 @@ Parquet ファイルメタデータ (https://parquet.apache.org/docs/file-format
       - `min` - カラムチャンクの最小値
       - `max` - カラムチャンクの最大値
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
 例：
 

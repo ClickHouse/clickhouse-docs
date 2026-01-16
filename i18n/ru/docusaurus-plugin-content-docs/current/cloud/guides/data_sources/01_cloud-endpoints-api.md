@@ -11,7 +11,7 @@ import Image from '@theme/IdealImage';
 import aws_rds_mysql from '@site/static/images/_snippets/aws-rds-mysql.png';
 import gcp_authorized_network from '@site/static/images/_snippets/gcp-authorized-network.png';
 
-## API статических IP-адресов {#static-ips-api}
+## API статических IP-адресов \\{#static-ips-api\\}
 
 Если вам нужно получить список статических IP-адресов, вы можете использовать следующий API-эндпоинт ClickHouse Cloud: [`https://api.clickhouse.cloud/static-ips.json`](https://api.clickhouse.cloud/static-ips.json). Этот API предоставляет эндпоинты для сервисов ClickHouse Cloud, такие как ingress/egress IP-адреса и S3-эндпоинты по каждому региону и облаку.
 

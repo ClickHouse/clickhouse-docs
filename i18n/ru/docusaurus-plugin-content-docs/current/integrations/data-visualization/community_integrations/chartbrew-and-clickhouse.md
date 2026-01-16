@@ -25,13 +25,13 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import Image from '@theme/IdealImage';
 
-# Подключение Chartbrew к ClickHouse {#connecting-chartbrew-to-clickhouse}
+# Подключение Chartbrew к ClickHouse \{#connecting-chartbrew-to-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
 [Chartbrew](https://chartbrew.com) — это платформа визуализации данных, которая позволяет вам создавать дашборды и мониторить данные в режиме реального времени. Она поддерживает различные источники данных, включая ClickHouse, и предоставляет интерфейс без необходимости писать код для создания графиков и отчётов.
 
-## Цель {#goal}
+## Цель \\{#goal\\}
 
 В этом руководстве вы подключите Chartbrew к ClickHouse, выполните SQL-запрос и создадите визуализацию. В конце ваша панель мониторинга может выглядеть примерно так:
 
@@ -41,11 +41,11 @@ import Image from '@theme/IdealImage';
 Если у вас нет набора данных для работы, вы можете добавить один из примеров. В этом руководстве используется набор данных [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md).
 :::
 
-## 1. Соберите параметры подключения {#1-gather-your-connection-details}
+## 1. Соберите параметры подключения \\{#1-gather-your-connection-details\\}
 
 <ConnectionDetails />
 
-## 2. Подключение Chartbrew к ClickHouse {#2-connect-chartbrew-to-clickhouse}
+## 2. Подключение Chartbrew к ClickHouse \\{#2-connect-chartbrew-to-clickhouse\\}
 
 1. Войдите в [Chartbrew](https://chartbrew.com/login) и перейдите на вкладку **Connections**.
 2. Нажмите **Create connection** и выберите **ClickHouse** из доступных вариантов баз данных.
@@ -68,7 +68,7 @@ import Image from '@theme/IdealImage';
 
    <Image img={chartbrew_04} size="lg" alt="JSON-схема ClickHouse в Chartbrew" />
 
-## 3. Создайте набор данных и выполните SQL-запрос {#3-create-a-dataset-and-run-a-sql-query}
+## 3. Создайте набор данных и выполните SQL-запрос \{#3-create-a-dataset-and-run-a-sql-query\}
 
 1. Нажмите кнопку **Create dataset** или перейдите на вкладку **Datasets**, чтобы создать набор данных.
 2. Выберите подключение к ClickHouse, созданное ранее.
@@ -95,7 +95,7 @@ import Image from '@theme/IdealImage';
 После того как данные будут получены, нажмите **Configure dataset**, чтобы настроить параметры визуализации.
 
 
-## 4. Создание визуализации {#4-create-a-visualization}
+## 4. Создание визуализации \\{#4-create-a-visualization\\}
    
   1. Определите метрику (числовое значение) и размерность (категориальное значение) для визуализации.
   2. Просмотрите набор данных в режиме предварительного просмотра, чтобы убедиться, что результаты запроса корректно структурированы.
@@ -108,7 +108,7 @@ import Image from '@theme/IdealImage';
 
   <Image img={chartbrew_01} size="lg" alt="Дашборд Chartbrew с данными ClickHouse" />
 
-## 5. Автоматизация обновления данных {#5-automate-data-updates}
+## 5. Автоматизация обновления данных \\{#5-automate-data-updates\\}
 
 Чтобы панель мониторинга всегда отображала актуальные данные, вы можете запланировать автоматическое обновление:
 
@@ -118,6 +118,6 @@ import Image from '@theme/IdealImage';
 
 <Image img={chartbrew_09} size="lg" alt="Настройки обновления набора данных в Chartbrew" />
 
-## Дополнительные материалы {#learn-more}
+## Дополнительные материалы \\{#learn-more\\}
 
 Более подробную информацию можно найти в статье в блоге о [Chartbrew и ClickHouse](https://chartbrew.com/blog/visualizing-clickhouse-data-with-chartbrew-a-step-by-step-guide/).

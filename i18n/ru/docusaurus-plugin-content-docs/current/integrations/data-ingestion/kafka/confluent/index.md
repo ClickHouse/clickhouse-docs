@@ -8,7 +8,7 @@ doc_type: 'guide'
 keywords: ['Confluent Cloud ClickHouse', 'интеграция Confluent Cloud с ClickHouse', 'коннектор Kafka для ClickHouse', 'Confluent Platform ClickHouse', 'ClickHouse Connect Sink']
 ---
 
-# Интеграция Confluent Cloud с ClickHouse {#integrating-confluent-cloud-with-clickhouse}
+# Интеграция Confluent Cloud с ClickHouse \\{#integrating-confluent-cloud-with-clickhouse\\}
 
 Платформа Confluent предоставляет два варианта интеграции с ClickHouse:
 

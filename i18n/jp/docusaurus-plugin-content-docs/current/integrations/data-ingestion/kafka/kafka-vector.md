@@ -11,7 +11,7 @@ keywords: ['kafka', 'vector', 'ログ収集', 'オブザーバビリティ', '�
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
-## Kafka と ClickHouse で Vector を使用する {#using-vector-with-kafka-and-clickhouse}
+## Kafka と ClickHouse で Vector を使用する \\{#using-vector-with-kafka-and-clickhouse\\}
 
 Vector はベンダー非依存のデータパイプラインであり、Kafka からデータを読み取り、ClickHouse にイベントを送信できます。
 
@@ -23,15 +23,15 @@ Vector はデータの[変換](https://vector.dev/docs/reference/configuration/t
 
 現在の ClickHouse sink の実装では HTTP インターフェースを利用している点に注意してください。ClickHouse sink は現時点では JSON スキーマの利用をサポートしていません。データはプレーンな JSON 形式、もしくは文字列として Kafka に送信される必要があります。
 
-### ライセンス {#license}
+### ライセンス \\{#license\\}
 
 Vector は [MPL-2.0 License](https://github.com/vectordotdev/vector/blob/master/LICENSE) の下で配布されています。
 
-### 接続情報を確認する {#gather-your-connection-details}
+### 接続情報を確認する \\{#gather-your-connection-details\\}
 
 <ConnectionDetails />
 
-### 手順 {#steps}
+### 手順 \{#steps\}
 
 1. Kafka の `github` トピックを作成し、[GitHub データセット](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson) を取り込みます。
 

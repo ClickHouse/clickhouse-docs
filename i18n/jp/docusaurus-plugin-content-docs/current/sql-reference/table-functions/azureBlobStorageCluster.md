@@ -7,18 +7,18 @@ title: 'azureBlobStorageCluster'
 doc_type: 'reference'
 ---
 
-# azureBlobStorageCluster テーブル関数 {#azureblobstoragecluster-table-function}
+# azureBlobStorageCluster テーブル関数 \\{#azureblobstoragecluster-table-function\\}
 
 指定したクラスタ内の多数のノードで、[Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 上のファイルを並列処理することを可能にします。イニシエーターノードでは、クラスタ内のすべてのノードへの接続を確立し、S3 ファイルパス中のアスタリスクを展開して、各ファイルを動的に振り分けます。ワーカーノードでは、処理すべき次のタスクをイニシエーターに問い合わせ、そのタスクを処理します。これは、すべてのタスクが完了するまで繰り返されます。
 このテーブル関数は [s3Cluster 関数](../../sql-reference/table-functions/s3Cluster.md) と類似しています。
 
-## 構文 {#syntax}
+## 構文 \\{#syntax\\}
 
 ```sql
 azureBlobStorageCluster(cluster_name, connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression, structure])
 ```
 
-## 引数 {#arguments}
+## 引数 \\{#arguments\\}
 
 | 引数                | 説明                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 |---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -32,11 +32,11 @@ azureBlobStorageCluster(cluster_name, connection_string|storage_account_url, con
 | `compression`       | サポートされる値: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`。デフォルトでは、ファイル拡張子から圧縮形式を自動検出します（`auto` を指定した場合と同じ）。                                                                                                                                                                                                                                                                                                                                                |
 | `structure`         | テーブルの構造。形式は `'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
-## 返される値 {#returned_value}
+## 返される値 \\{#returned_value\\}
 
 指定された構造を持ち、指定されたファイル内のデータを読み書きするためのテーブル。
 
-## 例 {#examples}
+## 例 \\{#examples\\}
 
 [AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage) テーブルエンジンと同様に、ローカルでの Azure Storage 開発には Azurite エミュレーターを使用できます。詳細は[こちら](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage)を参照してください。以下では、Azurite がホスト名 `azurite1` で利用可能であると仮定します。
 
@@ -49,11 +49,11 @@ SELECT count(*) FROM azureBlobStorageCluster(
         'auto', 'key UInt64')
 ```
 
-## 共有アクセス署名 (SAS) の使用 {#using-shared-access-signatures-sas-sas-tokens}
+## 共有アクセス署名 (SAS) の使用 \\{#using-shared-access-signatures-sas-sas-tokens\\}
 
 使用例については [azureBlobStorage](/sql-reference/table-functions/azureBlobStorage#using-shared-access-signatures-sas-sas-tokens) を参照してください。
 
-## 関連項目 {#related}
+## 関連項目 \\{#related\\}
 
 - [AzureBlobStorage エンジン](../../engines/table-engines/integrations/azureBlobStorage.md)
 - [azureBlobStorage テーブル関数](../../sql-reference/table-functions/azureBlobStorage.md)

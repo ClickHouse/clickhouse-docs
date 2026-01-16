@@ -33,7 +33,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
 <DedicatedKeeperServers />
 
-## 前置条件 {#pre-requisites}
+## 前置条件 \\{#pre-requisites\\}
 
 - 您之前已设置过[本地 ClickHouse 服务器](/install)
 - 您熟悉 ClickHouse 的基本配置概念，例如[配置文件](/operations/configuration-files)
@@ -762,7 +762,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 </VerticalStepper>
 
-## 总结 {#conclusion}
+## 总结 \\{#conclusion\\}
 
 这种集群拓扑的优势在于，在存在两个副本的情况下，
 数据同时存储在两台独立的主机上。如果其中一台主机发生故障，另一台副本

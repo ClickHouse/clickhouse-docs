@@ -9,13 +9,13 @@ title: 'Replicated'
 doc_type: 'reference'
 ---
 
-# Replicated {#replicated}
+# Replicated \\{#replicated\\}
 
 Движок основан на движке [Atomic](../../engines/database-engines/atomic.md). Он поддерживает репликацию метаданных по журналу DDL, который записывается в ZooKeeper и выполняется на всех репликах заданной базы данных.
 
 Один сервер ClickHouse может одновременно запускать и обновлять несколько реплицируемых баз данных. Однако для одной и той же реплицируемой базы данных не может существовать несколько реплик.
 
-## Создание базы данных {#creating-a-database}
+## Создание базы данных \\{#creating-a-database\\}
 
 ```sql
 CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name', 'replica_name') [SETTINGS ...]
@@ -33,7 +33,7 @@ CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name'
 
 Для таблиц [ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication), если аргументы не заданы, используются значения по умолчанию: `/clickhouse/tables/{uuid}/{shard}` и `{replica}`. Их можно изменить в настройках сервера [default&#95;replica&#95;path](../../operations/server-configuration-parameters/settings.md#default_replica_path) и [default&#95;replica&#95;name](../../operations/server-configuration-parameters/settings.md#default_replica_name). Макрос `{uuid}` раскрывается в UUID таблицы, `{shard}` и `{replica}` раскрываются в значения из конфигурации сервера, а не из аргументов движка базы данных. В будущем можно будет использовать `shard_name` и `replica_name` реплицируемой базы данных.
 
-## Особенности и рекомендации {#specifics-and-recommendations}
+## Особенности и рекомендации \\{#specifics-and-recommendations\\}
 
 DDL-запросы с базой данных `Replicated` работают аналогично запросам [ON CLUSTER](../../sql-reference/distributed-ddl.md), но с небольшими отличиями.
 
@@ -49,7 +49,7 @@ DDL-запросы с базой данных `Replicated` работают ан
 
 Если вам необходимо только настроить кластер без поддержки репликации таблиц, воспользуйтесь функцией [Cluster Discovery](../../operations/cluster-discovery.md).
 
-## Пример использования {#usage-example}
+## Пример использования \\{#usage-example\\}
 
 Создание кластера с тремя хостами:
 
@@ -146,7 +146,7 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 └───────┴───────────────┘
 ```
 
-## Параметры {#settings}
+## Параметры \\{#settings\\}
 
 Поддерживаются следующие параметры:
 

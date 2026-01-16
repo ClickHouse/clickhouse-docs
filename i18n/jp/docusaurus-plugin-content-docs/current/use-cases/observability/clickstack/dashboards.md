@@ -31,7 +31,7 @@ ClickStack はイベントの可視化をサポートしており、HyperDX に�
 
 可視化は、トレース、メトリクス、ログ、または任意のユーザー定義のワイドイベントスキーマに基づいて作成できます。
 
-## 可視化の作成 {#creating-visualizations}
+## 可視化の作成 \\{#creating-visualizations\\}
 
 HyperDX の **Chart Explorer** インターフェイスを使用すると、メトリクス、トレース、ログを時間経過とともに可視化でき、データ分析用の簡易な可視化をすばやく作成できます。このインターフェイスは、ダッシュボード作成時にも再利用されます。以下のセクションでは、Chart Explorer を使用して可視化を作成する手順を説明します。
 
@@ -43,13 +43,13 @@ HyperDX の **Chart Explorer** インターフェイスを使用すると、メ�
 
 <VerticalStepper headerLevel="h3">
 
-### Chart Explorer に移動する {#navigate-chart-explorer}
+### Chart Explorer に移動する \\{#navigate-chart-explorer\\}
 
 左側のメニューから `Chart Explorer` を選択します。
 
 <Image img={visualization_1} alt="Chart Explorer" size="lg"/>
 
-### 可視化を作成する {#create-visualization}
+### 可視化を作成する \\{#create-visualization\\}
 
 次の例では、サービス名ごとに時間経過に沿って平均リクエスト時間をグラフ化します。これには、メトリクス、列（SQL 式でも可）、および集計フィールドを指定する必要があります。
 
@@ -77,7 +77,7 @@ SQL の `WHERE` 句または Lucene 構文を使用してイベントをフィ�
 
 </VerticalStepper>
 
-## ダッシュボードの作成 {#creating-dashboards}
+## ダッシュボードの作成 \\{#creating-dashboards\\}
 
 ダッシュボードは、関連する可視化をまとめて扱えるようにし、ユーザーがメトリクスを比較したり、パターンを並べて確認したりして、システム内の潜在的な根本原因を特定できるようにします。これらのダッシュボードは、アドホックな調査にも、継続的なモニタリング用として保存して利用することもできます。
 
@@ -87,7 +87,7 @@ SQL の `WHERE` 句または Lucene 構文を使用してイベントをフィ�
 
 <VerticalStepper headerLevel="h3">
 
-### Dashboards 画面に移動する {#navigate-dashboards}
+### Dashboards 画面に移動する \\{#navigate-dashboards\\}
 
 左側のメニューから `Dashboards` を選択します。
 
@@ -97,7 +97,7 @@ SQL の `WHERE` 句または Lucene 構文を使用してイベントをフィ�
 
 自前の HyperDX インスタンスを使用している場合は、`Create New Saved Dashboard` をクリックすることで、このダッシュボードを後から保存できるようにできます。読み取り専用環境の [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) を使用している場合、このオプションは利用できません。
 
-### 可視化を作成する – サービスごとの平均リクエスト時間 {#create-a-tile}
+### 可視化を作成する – サービスごとの平均リクエスト時間 \\{#create-a-tile\\}
 
 `Add New Tile` を選択して、可視化作成パネルを開きます。
 
@@ -118,7 +118,7 @@ SQL の `WHERE` 句または Lucene 構文を使用してイベントをフィ�
 
 <Image img={dashboard_3} alt="ビジュアルを含むダッシュボード" size="lg"/>
 
-### 可視化を作成する – サービスごとの時間経過に伴うイベント数 {#create-a-tile-2}
+### 可視化を作成する – サービスごとの時間経過に伴うイベント数 \\{#create-a-tile-2\\}
 
 `Add New Tile` を選択して、可視化作成パネルを開きます。
 
@@ -138,7 +138,7 @@ SQL の `WHERE` 句または Lucene 構文を使用してイベントをフィ�
 
 <Image img={dashboard_5} alt="ビジュアルを含むダッシュボード 2" size="lg"/>
 
-### ダッシュボードをフィルタリングする {#filter-dashboards}
+### ダッシュボードをフィルタリングする \\{#filter-dashboards\\}
 
 Lucene または SQL フィルターと時間範囲は、ダッシュボードレベルで適用でき、すべての可視化に自動的に伝播します。
 
@@ -152,27 +152,27 @@ Lucene または SQL フィルターと時間範囲は、ダッシュボード�
 
 </VerticalStepper>
 
-## ダッシュボード - ビジュアライゼーションの編集 {#dashboards-editing-visualizations}
+## ダッシュボード - ビジュアライゼーションの編集 \\{#dashboards-editing-visualizations\\}
 
 ビジュアライゼーションを削除、編集、または複製するには、その上にマウスオーバーして表示されるアクションボタンを使用します。
 
 <Image img={dashboard_edit} alt="ダッシュボードの編集" size="lg"/>
 
-## ダッシュボード - 一覧と検索 {#dashboard-listing-search}
+## ダッシュボード - 一覧と検索 \\{#dashboard-listing-search\\}
 
 ダッシュボードには左側のメニューからアクセスでき、内蔵の検索機能で特定のダッシュボードをすばやく見つけることができます。
 
 <Image img={dashboard_search} alt="ダッシュボード検索" size="sm"/>
 
-## ダッシュボードのタグ付け {#tagging}
+## ダッシュボードのタグ付け \\{#tagging\\}
 
 <Tagging />
 
-## プリセット {#presets}
+## プリセット \\{#presets\\}
 
 HyperDX は、標準のダッシュボード付きでデプロイされます。
 
-### ClickHouse ダッシュボード {#clickhouse-dashboard}
+### ClickHouse ダッシュボード \\{#clickhouse-dashboard\\}
 
 このダッシュボードは、ClickHouse を監視するための可視化を提供します。このダッシュボードに移動するには、左側のメニューからこのダッシュボードを選択します。
 
@@ -192,7 +192,7 @@ HyperDX は、標準のダッシュボード付きでデプロイされます。
 `GRANT SHOW COLUMNS, SELECT(event_date, event_time, hostname, metric, value) ON system.transposed_metric_log`
 :::
 
-### サービスダッシュボード {#services-dashboard}
+### サービスダッシュボード \\{#services-dashboard\\}
 
 サービスダッシュボードは、トレースデータに基づいて現在アクティブなサービスを表示します。これには、トレースが収集されており、有効な Traces データソースが構成されている必要があります。
 
@@ -202,7 +202,7 @@ HyperDX は、標準のダッシュボード付きでデプロイされます。
 
 <Image img={dashboard_services} alt="ClickHouse services" size="lg"/>
 
-### Kubernetes ダッシュボード {#kubernetes-dashboard}
+### Kubernetes ダッシュボード \\{#kubernetes-dashboard\\}
 
 このダッシュボードでは、OpenTelemetry を通じて収集された Kubernetes イベントを確認・探索できます。高度なフィルタリング機能を備えており、Kubernetes のポッド、デプロイメント、ノード名、ネームスペース、クラスターでの絞り込みに加えて、フリーテキスト検索も実行できます。
 

@@ -8,12 +8,12 @@ keywords: ['ClickHouse Cloud', 'クラウドデータベース', 'マネージ�
 doc_type: 'reference'
 ---
 
-# ClickHouse Cloud {#clickhouse-cloud}
+# ClickHouse Cloud \\{#clickhouse-cloud\\}
 
 ClickHouse Cloud は、人気の高いオープンソース OLAP データベースである ClickHouse の開発元によって提供されるクラウドサービスです。  
 [無料トライアルを開始](https://console.clickhouse.cloud/signUp)して ClickHouse Cloud を体験できます。
 
-## ClickHouse Cloud の利点 {#clickhouse-cloud-benefits}
+## ClickHouse Cloud の利点 \{#clickhouse-cloud-benefits\}
 
 ClickHouse Cloud を利用する主な利点は次のとおりです。
 
@@ -46,7 +46,7 @@ ClickHouse Cloud を利用する主な利点は次のとおりです。
   */ }
 
 
-## ClickHouse Cloud はどのバージョンの ClickHouse を使用していますか？ {#what-version-of-clickhouse-does-clickhouse-cloud-use}
+## ClickHouse Cloud はどのバージョンの ClickHouse を使用していますか？ \\{#what-version-of-clickhouse-does-clickhouse-cloud-use\\}
 
 ClickHouse Cloud は、お使いのサービスを、修正・新機能・パフォーマンス向上を含む新しいバージョンへ定期的にアップグレードします。コアとなるデータベースバージョンをオープンソースとして公開した後、クラウドのステージング環境で追加の検証を行い、通常は本番環境へのロールアウトまでに 6〜8 週間かかります。ロールアウトは、クラウドサービスプロバイダー、サービスの種類、リージョンごとに段階的に行われます。
 

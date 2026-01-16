@@ -25,13 +25,13 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 通过在 [GCP Marketplace](https://console.cloud.google.com/marketplace) 上签订承诺合约来开始使用 ClickHouse Cloud。承诺合约（也称为 Private Offer）允许客户在一定期限内预先承诺在 ClickHouse Cloud 上消费指定金额。
 
 
-## 先决条件 {#prerequisites}
+## 先决条件 \\{#prerequisites\\}
 
 - 基于特定合同条款的 ClickHouse 私有优惠。
 
 
 
-## 注册步骤 {#steps-to-sign-up}
+## 注册步骤 \\{#steps-to-sign-up\\}
 
 1. 您应已收到一封包含链接的电子邮件，用于查看并接受您的私有优惠。
 

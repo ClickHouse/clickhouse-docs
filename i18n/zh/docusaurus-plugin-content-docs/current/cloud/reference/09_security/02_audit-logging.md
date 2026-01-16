@@ -9,19 +9,19 @@ keywords: ['审计日志', '安全', '合规', '日志', '监控']
 
 
 
-## 控制台审计日志事件 {#console-audit-log-events}
+## 控制台审计日志事件 \\{#console-audit-log-events\\}
 
 为组织记录的不同类型事件分为 3 类：**Organization**、**Service** 和 **User**。有关审计日志以及如何导出或添加 API 集成的更多信息，请查看上方“指南”（Guides）部分中的[控制台审计日志](/cloud/security/audit-logging/console-audit-log)文档。
 
 以下事件会记录到审计日志中。
 
-### Organization {#organization}
+### Organization \\{#organization\\}
 
 - 创建组织
 - 删除组织
 - 修改组织名称
 
-### Service {#service}
+### Service \\{#service\\}
 
 - 创建服务
 - 删除服务
@@ -31,7 +31,7 @@ keywords: ['审计日志', '安全', '合规', '日志', '监控']
 - 修改服务 IP 访问列表
 - 重置服务密码
 
-### User {#user}
+### User \\{#user\\}
 
 - 更改用户角色
 - 将用户从组织中移除

@@ -29,7 +29,7 @@ import Image from '@theme/IdealImage';
 Cloudの両方で利用可能です。この記事では、Cloudでの高度なダッシュボードの
 使用方法を説明します。
 
-## 高度なダッシュボードへのアクセス {#accessing-the-advanced-dashboard}
+## 高度なダッシュボードへのアクセス \\{#accessing-the-advanced-dashboard\\}
 
 高度なダッシュボードには以下の方法でアクセスできます：
 
@@ -38,7 +38,7 @@ Cloudの両方で利用可能です。この記事では、Cloudでの高度な�
 
 <Image img={AdvancedDashboard} size="lg" alt="高度なダッシュボード"/>
 
-## ネイティブ高度なダッシュボードへのアクセス {#accessing-the-native-advanced-dashboard}
+## ネイティブ高度なダッシュボードへのアクセス \\{#accessing-the-native-advanced-dashboard\\}
 
 ネイティブ高度なダッシュボードには以下の方法でアクセスできます：
 
@@ -56,14 +56,14 @@ Cloudの両方で利用可能です。この記事では、Cloudでの高度な�
 
 <Image img={EditVisualization} size="lg" alt="高度なダッシュボード"/>
 
-## 標準搭載のビジュアライゼーション {#out-of-box-visualizations}
+## 標準搭載のビジュアライゼーション \\{#out-of-box-visualizations\\}
 
 高度なダッシュボードのデフォルトチャートは、ClickHouseシステムの
 リアルタイムの可視性を提供するように設計されています。以下は各チャートの
 説明付きリストです。ナビゲーションを容易にするため、3つのカテゴリに
 分類されています。
 
-### ClickHouse固有 {#clickhouse-specific}
+### ClickHouse固有 \\{#clickhouse-specific\\}
 
 これらのメトリクスは、ClickHouseインスタンスの健全性とパフォーマンスを
 監視するために調整されています。
@@ -78,7 +78,7 @@ Cloudの両方で利用可能です。この記事では、Cloudでの高度な�
 | Queries Running | 現在実行中のクエリ数を表示 |
 | Selected Bytes Per Second | クエリによって読み取られているデータ量を示す |
 
-### システムヘルス固有 {#system-health-specific}
+### システムヘルス固有 \\{#system-health-specific\\}
 
 基盤となるシステムの監視は、ClickHouse自体の監視と同様に重要です。
 
@@ -93,7 +93,7 @@ Cloudの両方で利用可能です。この記事では、Cloudでの高度な�
 | OS CPU Usage (Userspace) | ユーザースペースコードを実行しているCPU使用率 |
 | OS CPU Usage (Kernel) | カーネルコードを実行しているCPU使用率 |
 
-## ClickHouse Cloud固有 {#clickhouse-cloud-specific}
+## ClickHouse Cloud固有 \\{#clickhouse-cloud-specific\\}
 
 ClickHouse Cloudはオブジェクトストレージ（S3タイプ）を使用してデータを
 保存します。このインターフェースを監視することで、問題の検出に役立ちます。
@@ -112,13 +112,13 @@ ClickHouse Cloudはオブジェクトストレージ（S3タイプ）を使用�
 | Network receive bytes/sec | 送信ネットワークトラフィックの現在の速度を追跡 |
 | Concurrent network connections | 現在の同時ネットワーク接続数を追跡 |
 
-## 高度なダッシュボードを使用した問題の特定 {#identifying-issues-with-the-advanced-dashboard}
+## 高度なダッシュボードを使用した問題の特定 \\{#identifying-issues-with-the-advanced-dashboard\\}
 
 ClickHouseサービスの健全性をリアルタイムで把握できることは、ビジネスに
 影響を与える前に問題を軽減したり、解決したりするのに大いに役立ちます。
 以下は、高度なダッシュボードを使用して発見できる問題の例です。
 
-### バッチ化されていないインサート {#unbatched-inserts}
+### バッチ化されていないインサート \\{#unbatched-inserts\\}
 
 [ベストプラクティスドキュメント](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous)に
 記載されているように、同期的に行える場合は常にClickHouseへの一括インサートを
@@ -141,7 +141,7 @@ ClickHouseサービスの健全性をリアルタイムで把握できること�
 非常に少ないにもかかわらず、多くのパーツが作成されており、パーツのサイズが
 最適でないことを示しています。
 
-### リソース集約型クエリ {#resource-intensive-query}
+### リソース集約型クエリ \\{#resource-intensive-query\\}
 
 CPUやメモリなど、大量のリソースを消費するSQLクエリを実行することはよくあります。
 ただし、これらのクエリを監視し、デプロイメント全体のパフォーマンスへの
@@ -157,7 +157,7 @@ CPU使用率がピークに達している例です。
 
 <Image img={ResourceIntensiveQuery} size="lg" alt="リソース集約型クエリ"/>
 
-### 不適切なプライマリキー設計 {#bad-primary-key-design}
+### 不適切なプライマリキー設計 \\{#bad-primary-key-design\\}
 
 高度なダッシュボードを使用して発見できるもう1つの問題は、不適切なプライマリキー
 設計です。["ClickHouseにおけるプライマリインデックスの実践的入門"](/guides/best-practices/sparse-primary-indexes#a-table-with-a-primary-key)に

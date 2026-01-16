@@ -13,7 +13,7 @@ import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.
 import Image from '@theme/IdealImage';
 
 
-# Настройка TLS {#configuring-tls}
+# Настройка TLS \{#configuring-tls\}
 
 <SelfManaged />
 
@@ -25,7 +25,7 @@ import Image from '@theme/IdealImage';
 Ознакомьтесь с этим [базовым руководством по использованию сертификатов](https://ubuntu.com/server/docs/security-certificates) для вводного обзора.
 :::
 
-## 1. Создание развертывания ClickHouse {#1-create-a-clickhouse-deployment}
+## 1. Создание развертывания ClickHouse \\{#1-create-a-clickhouse-deployment\\}
 
 Это руководство подготовлено на Ubuntu 20.04 с ClickHouse, установленным на следующих хостах из DEB-пакета (через apt). Домен — `marsnet.local`:
 
@@ -39,7 +39,7 @@ import Image from '@theme/IdealImage';
 См. раздел [Quick Start](/getting-started/install/install.mdx) для более подробной информации по установке ClickHouse.
 :::
 
-## 2. Создайте TLS-сертификаты {#2-create-tls-certificates}
+## 2. Создайте TLS-сертификаты \\{#2-create-tls-certificates\\}
 
 :::note
 Самоподписанные сертификаты предназначены только для демонстрационных целей и не должны использоваться в рабочей (production) среде. Запросы на сертификаты должны создаваться для подписи вашей организацией и проверяться с использованием цепочки сертификатов CA, которая будет настроена в конфигурации. Тем не менее, эти шаги можно использовать для настройки и тестирования, а затем заменить временные сертификаты на реальные, которые будут использоваться в дальнейшем.
@@ -89,7 +89,7 @@ import Image from '@theme/IdealImage';
     chnode1.crt: OK
     ```
 
-## 3. Создайте и настройте каталог для хранения сертификатов и ключей. {#3-create-and-configure-a-directory-to-store-certificates-and-keys}
+## 3. Создайте и настройте каталог для хранения сертификатов и ключей. \\{#3-create-and-configure-a-directory-to-store-certificates-and-keys\\}
 
 :::note
 Это нужно сделать на каждом узле. Используйте соответствующие сертификаты и ключи на каждом хосте.
@@ -119,7 +119,7 @@ import Image from '@theme/IdealImage';
     -rw------- 1 clickhouse clickhouse 1131 Apr 12 20:23 marsnet_ca.crt
     ```
 
-## 4. Настройка окружения с базовыми кластерами с использованием ClickHouse Keeper {#4-configure-the-environment-with-basic-clusters-using-clickhouse-keeper}
+## 4. Настройка окружения с базовыми кластерами с использованием ClickHouse Keeper \\{#4-configure-the-environment-with-basic-clusters-using-clickhouse-keeper\\}
 
 Для этой среды развертывания в каждом узле используются следующие параметры ClickHouse Keeper. У каждого сервера будет собственный `<server_id>`. (Например, `<server_id>1</server_id>` для узла `chnode1` и так далее.)
 
@@ -237,7 +237,7 @@ import Image from '@theme/IdealImage';
     </macros>
     ```
 
-## 5. Настройка TLS-интерфейсов на узлах ClickHouse {#5-configure-tls-interfaces-on-clickhouse-nodes}
+## 5. Настройка TLS-интерфейсов на узлах ClickHouse \\{#5-configure-tls-interfaces-on-clickhouse-nodes\\}
 
 Параметры ниже настраиваются в `config.xml` сервера ClickHouse.
 
@@ -343,7 +343,7 @@ import Image from '@theme/IdealImage';
     <!--postgresql_port>9005</postgresql_port-->
     ```
 
-## 6. Тестирование {#6-testing}
+## 6. Тестирование \{#6-testing\}
 
 1. Запустите все узлы по очереди:
    ```bash
@@ -508,6 +508,6 @@ import Image from '@theme/IdealImage';
     └────┴────────────┴─────────┘
     ```
 
-## Итоги {#summary}
+## Итоги \\{#summary\\}
 
 В этой статье основное внимание было уделено настройке среды ClickHouse с использованием TLS. Параметры будут отличаться в зависимости от требований в продуктивных средах, например уровни проверки сертификатов, протоколы, шифры и т. д. Теперь у вас должно быть хорошее понимание последовательности шагов по настройке и использованию защищённых соединений.

@@ -16,16 +16,16 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | ✗  | ✔  |       |
 
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 [`PrettySpace`](./PrettySpace.md) 形式とは異なり、最大 `10,000` 行をバッファリングしてから、[ブロック](/development/architecture#block)単位ではなく 1 つのテーブルとして出力します。
 
 
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
 
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \\{#format-settings\\}
 
 <PrettyFormatSettings/>

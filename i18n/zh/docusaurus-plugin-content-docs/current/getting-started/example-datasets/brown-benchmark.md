@@ -94,7 +94,7 @@ clickhouse-client --query "INSERT INTO mgbench.logs2 FORMAT CSVWithNames" < mgbe
 clickhouse-client --query "INSERT INTO mgbench.logs3 FORMAT CSVWithNames" < mgbench3.csv
 ```
 
-## 运行基准查询 {#run-benchmark-queries}
+## 运行基准查询 \\{#run-benchmark-queries\\}
 
 ```sql
 USE mgbench;

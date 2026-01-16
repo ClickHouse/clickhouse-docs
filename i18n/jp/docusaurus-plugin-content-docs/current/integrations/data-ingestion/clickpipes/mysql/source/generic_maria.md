@@ -10,7 +10,7 @@ integration:
    - category: 'clickpipes'
 ---
 
-# 汎用 MariaDB ソース設定ガイド {#generic-mariadb-source-setup-guide}
+# 汎用 MariaDB ソース設定ガイド \\{#generic-mariadb-source-setup-guide\\}
 
 :::info
 
@@ -18,7 +18,7 @@ integration:
 
 :::
 
-## バイナリログの保持を有効にする {#enable-binlog-retention}
+## バイナリログの保持を有効にする \\{#enable-binlog-retention\\}
 
 バイナリログには、MariaDB サーバーインスタンスで行われたデータ変更に関する情報が含まれており、レプリケーションに必要です。
 
@@ -65,7 +65,7 @@ expire_logs_days = 1
 :::
 
 
-## データベースユーザーを構成する {#configure-database-user}
+## データベースユーザーを構成する \\{#configure-database-user\\}
 
 root ユーザーとして MariaDB インスタンスに接続し、以下のコマンドを実行します。
 
@@ -94,7 +94,7 @@ root ユーザーとして MariaDB インスタンスに接続し、以下のコ
 
 :::
 
-## SSL/TLS の設定（推奨） {#ssl-tls-configuration}
+## SSL/TLS の設定（推奨） \\{#ssl-tls-configuration\\}
 
 SSL 証明書により、MariaDB データベースへの安全な接続が確立されます。設定内容は証明書の種類によって異なります。
 
@@ -108,7 +108,7 @@ SSL 証明書により、MariaDB データベースへの安全な接続が確�
 
 SSL/TLS オプションの詳細については、[FAQ](https://clickhouse.com/docs/integrations/clickpipes/mysql/faq#tls-certificate-validation-error) を参照してください。
 
-## 次のステップ {#whats-next}
+## 次のステップ \\{#whats-next\\}
 
 これで[ClickPipe を作成](../index.md)し、MariaDB インスタンスから ClickHouse Cloud へデータの取り込みを開始できます。
 MariaDB インスタンスのセットアップ時に使用した接続情報は、ClickPipe の作成時にも必要になるため、必ず記録しておいてください。

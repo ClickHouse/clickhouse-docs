@@ -5,7 +5,7 @@ title: 'quantileExactWeighted'
 doc_type: 'reference'
 ---
 
-# quantileExactWeighted {#quantileexactweighted}
+# quantileExactWeighted \{#quantileexactweighted\}
 
 数値データ列に対して、各要素の重みを考慮した[分位数](https://en.wikipedia.org/wiki/Quantile)を厳密に計算します。
 

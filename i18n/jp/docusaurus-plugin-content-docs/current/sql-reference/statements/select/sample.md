@@ -6,7 +6,7 @@ title: 'SAMPLE 句'
 doc_type: 'reference'
 ---
 
-# SAMPLE 句 {#sample-clause}
+# SAMPLE 句 \\{#sample-clause\\}
 
 `SAMPLE` 句は、近似的な `SELECT` クエリの実行を可能にします。
 
@@ -36,7 +36,7 @@ doc_type: 'reference'
 | `SAMPLE n`    | ここで `n` は十分に大きな整数です。クエリは少なくとも `n` 行（ただし、それを大きく超えない）のサンプルに対して実行されます。たとえば、`SAMPLE 10000000` は最小で 10,000,000 行に対してクエリを実行します。 [詳細](#sample-n) |
 | `SAMPLE k OFFSET m`  | ここで `k` と `m` は 0 から 1 までの数値です。クエリはデータの `k` の割合のサンプルに対して実行されます。サンプルに使用されるデータは、`m` の割合だけオフセットされます。 [詳細](#sample-k-offset-m)                                           |
 
-## SAMPLE K {#sample-k}
+## SAMPLE K \\{#sample-k\\}
 
 ここで `k` は 0 以上 1 以下の数値です（分数表記と小数表記の両方がサポートされています）。例えば、`SAMPLE 1/2` や `SAMPLE 0.5` のように指定します。
 
@@ -56,7 +56,7 @@ ORDER BY PageViews DESC LIMIT 1000
 
 この例では、クエリはデータの 0.1（10%）だけを抽出したサンプルに対して実行されます。集約関数の値は自動的には補正されないため、おおよその結果を得るには、`count()` の値を手動で 10 倍します。
 
-## SAMPLE N {#sample-n}
+## SAMPLE N \\{#sample-n\\}
 
 ここで `n` は十分に大きな整数です。例えば、`SAMPLE 10000000` のようになります。
 
@@ -92,7 +92,7 @@ FROM visits
 SAMPLE 10000000
 ```
 
-## SAMPLE K OFFSET M {#sample-k-offset-m}
+## SAMPLE K OFFSET M \\{#sample-k-offset-m\\}
 
 ここで `k` と `m` は 0 から 1 までの数値です。以下に例を示します。
 

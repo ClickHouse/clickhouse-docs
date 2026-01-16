@@ -5,7 +5,7 @@ title: 'groupBitmapOr'
 doc_type: 'reference'
 ---
 
-# groupBitmapOr {#groupbitmapor}
+# groupBitmapOr \{#groupbitmapor\}
 
 计算 bitmap 列的 OR 运算结果，返回 UInt64 类型的基数。如果添加后缀 `-State`，则返回一个 [bitmap 对象](../../../sql-reference/functions/bitmap-functions.md)。这等价于 `groupBitmapMerge`。
 

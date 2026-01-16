@@ -8,11 +8,11 @@ title: '追加オプション'
 doc_type: 'reference'
 ---
 
-# 追加オプション {#additional-options}
+# 追加オプション \\{#additional-options\\}
 
 ClickHouse Connect は、高度なユースケースに対応するためのさまざまな追加オプションを提供しています。
 
-## グローバル設定 {#global-settings}
+## グローバル設定 \\{#global-settings\\}
 
 ClickHouse Connect の動作をグローバルに制御する設定はごく少数のみです。これらにはトップレベルの `common` パッケージからアクセスできます。
 
@@ -45,7 +45,7 @@ common.get_setting('invalid_setting_action')
 | http&#95;buffer&#95;size                        | 10MB            |                                                 | HTTP ストリーミングクエリに使用されるインメモリバッファのサイズ（バイト単位）です。                                                                                                                                                      |
 | preserve&#95;pandas&#95;datetime&#95;resolution | False           | True, False                                     | True かつ pandas 2.x を使用している場合、datetime64/timedelta64 の dtype 解像度（例: &#39;s&#39;, &#39;ms&#39;, &#39;us&#39;, &#39;ns&#39;）を保持します。False（または pandas &lt;2.x の場合）は、互換性のためにナノ秒（&#39;ns&#39;）解像度に変換します。 |
 
-## 圧縮 {#compression}
+## 圧縮 \\{#compression\\}
 
 ClickHouse Connect は、クエリ結果および挿入の両方に対して lz4、zstd、brotli、gzip 圧縮をサポートします。圧縮を使用する場合、一般的にネットワーク帯域幅／転送速度と CPU 使用率（クライアントおよびサーバー双方）の間のトレードオフが発生することを常に念頭に置いてください。
 
@@ -59,27 +59,27 @@ ClickHouse Connect は、クエリ結果および挿入の両方に対して lz4
 
 また、`gzip` 圧縮の使用は推奨しません。データの圧縮および伸張の両方において、代替方式と比較して大幅に低速であるためです。
 
-## HTTP プロキシサポート {#http-proxy-support}
+## HTTP プロキシサポート \\{#http-proxy-support\\}
 
 ClickHouse Connect は、`urllib3` ライブラリを使用して基本的な HTTP プロキシサポートを提供します。標準的な `HTTP_PROXY` および `HTTPS_PROXY` 環境変数を認識します。これらの環境変数を使用すると、`clickhouse_connect.get_client` メソッドで作成されたすべてのクライアントに適用される点に注意してください。クライアントごとに個別に設定する場合は、`get_client` メソッドに `http_proxy` または `https_proxy` 引数を渡すことができます。HTTP プロキシサポートの実装の詳細については、[urllib3](https://urllib3.readthedocs.io/en/stable/advanced-usage.html#http-and-https-proxies) のドキュメントを参照してください。
 
 SOCKS プロキシを使用するには、`urllib3` の `SOCKSProxyManager` を `get_client` の `pool_mgr` 引数として渡します。この場合、PySocks ライブラリを直接インストールするか、`urllib3` の依存関係に対して `[socks]` オプションを指定してインストールする必要がある点に注意してください。
 
-## 「旧」JSON データ型 {#old-json-data-type}
+## 「旧」JSON データ型 \\{#old-json-data-type\\}
 
 実験的な `Object`（または `Object('json')`）データ型は非推奨となっており、本番環境での使用は避けてください。ClickHouse Connect は後方互換性のために、このデータ型への限定的なサポートを引き続き提供しています。ただし、このサポートには、「トップレベル」または「親」JSON 値を辞書またはそれに相当する形式で返すことを想定したクエリは含まれておらず、そのようなクエリは例外がスローされます。
 
-## 「新しい」Variant/Dynamic/JSON データ型（実験的機能） {#new-variantdynamicjson-datatypes-experimental-feature}
+## 「新しい」Variant/Dynamic/JSON データ型（実験的機能） \\{#new-variantdynamicjson-datatypes-experimental-feature\\}
 
 0.8.0 リリース以降、`clickhouse-connect` は新しい（同じく実験的な）ClickHouse 型である Variant、Dynamic、JSON に対する実験的サポートを提供しています。
 
-### 使用上の注意 {#usage-notes}
+### 使用上の注意 \\{#usage-notes\\}
 
 - JSON データは、Python の辞書型オブジェクト、もしくは JSON オブジェクト `{}` を含む JSON 文字列としてのみ挿入できます。それ以外の形式の JSON データはサポートされていません。
 - これらの型に対してサブカラム/パスを使ったクエリでは、そのサブカラムの型が返されます。
 - その他の使用上の注意については、ClickHouse の[公式ドキュメント](https://clickhouse.com/docs)を参照してください。
 
-### 既知の制限事項 {#known-limitations}
+### 既知の制限事項 \\{#known-limitations\\}
 
 - これらの各型は、使用する前に ClickHouse の設定で有効化する必要があります。
 - 「新」JSON 型は ClickHouse 24.8 リリースから利用可能です。

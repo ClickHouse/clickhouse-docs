@@ -5,7 +5,7 @@ title: 'stddevPopStable'
 doc_type: 'reference'
 ---
 
-# stddevPopStable {#stddevpopstable}
+# stddevPopStable \{#stddevpopstable\}
 
 結果は [varPop](../../../sql-reference/aggregate-functions/reference/varPop.md) の平方根です。[`stddevPop`](../reference/stddevPop.md) とは異なり、この関数は数値的に安定したアルゴリズムを使用します。動作は遅くなりますが、計算誤差をより小さく抑えられます。
 

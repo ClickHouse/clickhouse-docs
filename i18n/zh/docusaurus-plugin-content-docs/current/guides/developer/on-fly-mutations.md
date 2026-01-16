@@ -7,7 +7,7 @@ description: '介绍实时变更'
 doc_type: 'guide'
 ---
 
-## 实时变更 {#on-the-fly-mutations}
+## 实时变更 \\{#on-the-fly-mutations\\}
 
 当启用实时变更时，被更新的行会立即被标记为已更新，之后的 `SELECT` 查询会自动返回已更改的值。当未启用实时变更时，你可能需要等待后台进程应用这些变更后，才能看到更新后的值。
 
@@ -17,7 +17,7 @@ doc_type: 'guide'
 SET apply_mutations_on_fly = 1;
 ```
 
-## 示例 {#example}
+## 示例 \\{#example\\}
 
 让我们创建一张表并执行一些变更操作（mutation）：
 
@@ -76,7 +76,7 @@ SELECT id, v FROM test_on_fly_mutations ORDER BY id;
 └────┴───┘
 ```
 
-## 性能影响 {#performance-impact}
+## 性能影响 \\{#performance-impact\\}
 
 当启用实时应用变更（on-the-fly mutations）时，变更不会被立即物化，而只会在执行 `SELECT` 查询时才会被应用。不过，请注意，变更仍会在后台以异步方式进行物化，而这是一个开销较大的过程。
 
@@ -84,7 +84,7 @@ SELECT id, v FROM test_on_fly_mutations ORDER BY id;
 
 我们建议在启用 `apply_mutations_on_fly` 设置的同时，配合使用其他 `MergeTree` 级别的设置，例如 `number_of_mutations_to_throw` 和 `number_of_mutations_to_delay`，以限制未物化变更的无限增长。
 
-## 对子查询和非确定性函数的支持 {#support-for-subqueries-and-non-deterministic-functions}
+## 对子查询和非确定性函数的支持 \\{#support-for-subqueries-and-non-deterministic-functions\\}
 
 即时变更（on-the-fly mutations）对子查询和非确定性函数的支持是有限的。仅支持结果大小在合理范围内的标量子查询（由设置 `mutations_max_literal_size_to_replace` 控制）。仅支持常量型非确定性函数（例如函数 `now()`）。
 

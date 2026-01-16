@@ -9,7 +9,7 @@ show_related_blogs: true
 doc_type: 'reference'
 ---
 
-# CoalescingMergeTree テーブルエンジン {#coalescingmergetree-table-engine}
+# CoalescingMergeTree テーブルエンジン \\{#coalescingmergetree-table-engine\\}
 
 :::note Available from version 25.6
 このテーブルエンジンは、OSS と Cloud の両方でバージョン 25.6 以降で利用可能です。
@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 `CoalescingMergeTree` は、キー以外のカラムで Nullable 型と併用することを想定しています。カラムが Nullable でない場合は、その動作は [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) と同じになります。
 
-## テーブルを作成する {#creating-a-table}
+## テーブルを作成する \\{#creating-a-table\\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -38,16 +38,16 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 リクエストパラメータの説明については、[リクエストの説明](../../../sql-reference/statements/create/table.md)を参照してください。
 
-### CoalescingMergeTree のパラメータ {#parameters-of-coalescingmergetree}
+### CoalescingMergeTree のパラメータ \\{#parameters-of-coalescingmergetree\\}
 
-#### Columns {#columns}
+#### Columns \\{#columns\\}
 
 `columns` - 値が統合されるカラム名のタプルです。省略可能なパラメータです。\
 カラムは数値型である必要があり、パーティションキーまたはソートキーに含まれていてはなりません。
 
 `columns` が指定されていない場合、ClickHouse はソートキーに含まれていないすべてのカラムの値を統合します。
 
-### クエリ句 {#query-clauses}
+### クエリ句 \\{#query-clauses\\}
 
 `CoalescingMergeTree` テーブルを作成する際には、`MergeTree` テーブルを作成する場合と同じ [句](../../../engines/table-engines/mergetree-family/mergetree.md) が必要です。
 
@@ -72,7 +72,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   * `columns` — 値が合計されるカラム名のタプルです。省略可能なパラメータです。詳細な説明については上記のテキストを参照してください。
 </details>
 
-## 使用例 {#usage-example}
+## 使用例 \\{#usage-example\\}
 
 次のテーブルを例にします。
 

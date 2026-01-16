@@ -6,7 +6,7 @@ title: '起動スクリプト'
 doc_type: 'guide'
 ---
 
-# 起動スクリプト {#startup-scripts}
+# 起動スクリプト \\{#startup-scripts\\}
 
 ClickHouse は、起動時にサーバー設定に記述した任意の SQL クエリを実行できます。これは、マイグレーションやスキーマの自動作成などに役立ちます。
 

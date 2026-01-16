@@ -6,7 +6,7 @@ title: 'system.role_grants'
 doc_type: 'reference'
 ---
 
-# system.role&#95;grants {#systemrole&#95;grants}
+# system.role&#95;grants \\{#systemrole&#95;grants\\}
 
 Содержит назначения ролей для пользователей и ролей. Чтобы добавить записи в эту таблицу, используйте `GRANT role TO user`.
 

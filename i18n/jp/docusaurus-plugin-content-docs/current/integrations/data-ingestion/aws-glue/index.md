@@ -18,13 +18,13 @@ import notebook_connections_config from '@site/static/images/integrations/data-i
 import dependent_jars_path_option from '@site/static/images/integrations/data-ingestion/aws-glue/dependent_jars_path_option.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Amazon Glue を ClickHouse および Spark と統合する {#integrating-amazon-glue-with-clickhouse-and-spark}
+# Amazon Glue を ClickHouse および Spark と統合する \\{#integrating-amazon-glue-with-clickhouse-and-spark\\}
 
 <ClickHouseSupportedBadge/>
 
 [Amazon Glue](https://aws.amazon.com/glue/) は、Amazon Web Services (AWS) が提供するフルマネージドなサーバーレスのデータ統合サービスです。分析、機械学習、アプリケーション開発のためのデータの検出、準備、変換といった処理を簡素化します。
 
-## インストール {#installation}
+## インストール \\{#installation\\}
 
 Glue のコードを ClickHouse と連携させるには、次のいずれかの方法で Glue から公式 Spark コネクタを利用できます。
 
@@ -64,7 +64,7 @@ Glue コネクタで使用される JAR は、`Spark 3.3`、`Scala 2`、`Python 
 </TabItem>
 </Tabs>
 
-## 使用例 {#example}
+## 使用例 \\{#example\\}
 
 <Tabs>
   <TabItem value="Scala" label="Scala（スカラ）" default>

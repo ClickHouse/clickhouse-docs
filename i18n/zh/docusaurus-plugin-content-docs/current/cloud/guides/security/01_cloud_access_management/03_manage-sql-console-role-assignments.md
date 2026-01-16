@@ -16,13 +16,13 @@ import step_5 from '@site/static/images/cloud/guides/sql_console/service_level_a
 import step_6 from '@site/static/images/cloud/guides/sql_console/service_level_access/6_service_settings.png'
 import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_access/7_service_settings.png'
 
-# 配置 SQL 控制台角色分配 {#configuring-sql-console-role-assignments}
+# 配置 SQL 控制台角色分配 \\{#configuring-sql-console-role-assignments\\}
 
 > 本指南介绍如何配置 SQL 控制台角色分配，这些分配决定整个控制台的访问权限，以及用户在 Cloud 控制台中可使用的功能。
 
 <VerticalStepper headerLevel="h3">
 
-### 访问服务设置 {#access-service-settings}
+### 访问服务设置 \\{#access-service-settings\\}
 
 在 Services 页面中，点击你希望调整 SQL 控制台访问设置的服务右上角菜单。
 
@@ -32,13 +32,13 @@ import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_a
 
 <Image img={step_2} size="lg"/>
 
-### 调整 SQL 控制台访问权限 {#adjust-sql-console-access}
+### 调整 SQL 控制台访问权限 \\{#adjust-sql-console-access\\}
 
 在 "Security" 部分下，找到 "SQL console access" 区域：
 
 <Image img={step_3} size="md"/>
 
-### 更新 Service Admin 的设置 {#update-settings-for-service-admin}
+### 更新 Service Admin 的设置 \\{#update-settings-for-service-admin\\}
 
 选择 Service Admin 的下拉菜单，更改 Service Admin 角色的访问控制设置：
 
@@ -52,7 +52,7 @@ import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_a
 | `Read only`   |
 | `Full access` |
 
-### 更新 Service Read Only 的设置 {#update-settings-for-service-read-only}
+### 更新 Service Read Only 的设置 \\{#update-settings-for-service-read-only\\}
 
 选择 Service Read Only 的下拉菜单，更改 Service Read Only 角色的访问控制设置：
 
@@ -66,7 +66,7 @@ import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_a
 | `Read only`   |
 | `Full access` |
 
-### 查看具有访问权限的用户 {#review-users-with-access}
+### 查看具有访问权限的用户 \\{#review-users-with-access\\}
 
 点击用户数量可以查看该服务的用户概览：
 

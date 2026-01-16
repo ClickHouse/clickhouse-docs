@@ -22,7 +22,7 @@ import BulkInserts from '@site/i18n/zh/docusaurus-plugin-content-docs/current/be
 :::
 
 
-## 默认情况下为同步写入 {#synchronous-inserts-by-default}
+## 默认情况下为同步写入 \\{#synchronous-inserts-by-default\\}
 
 默认情况下，对 ClickHouse 的写入是同步的。每个 insert 查询都会立即在磁盘上创建一个存储分片（part），包括元数据和索引。
 
@@ -34,7 +34,7 @@ import BulkInserts from '@site/i18n/zh/docusaurus-plugin-content-docs/current/be
 
 <Image img={insert_process} size="lg" alt="写入流程" background="black"/>
 
-#### 客户端侧步骤 {#client-side-steps}
+#### 客户端侧步骤 \\{#client-side-steps\\}
 
 为了获得最佳性能，数据必须进行 ①[批处理](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)，这使得批大小成为**首要决策**。
 
@@ -46,17 +46,17 @@ ClickHouse 将写入的数据存储在磁盘上，并按照表的主键列[排�
 
 数据会被 ⑤ 传输到 ClickHouse 的某个网络接口——[原生](/interfaces/tcp)接口或 [HTTP](/interfaces/http) 接口（我们会在本文后面对其进行[比较](https://clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient#clickhouse-client-defaults)）。
 
-#### 服务器侧步骤 {#server-side-steps}
+#### 服务器侧步骤 \\{#server-side-steps\\}
 
 在 ⑥ 接收数据之后，如果使用了压缩，ClickHouse 会先对其进行 ⑦ 解压，然后从原始发送格式中进行 ⑧ 解析。
 
 使用该格式化数据中的值以及目标表的 [DDL](/sql-reference/statements/create/table) 语句，ClickHouse 会以 MergeTree 格式构建一个内存中的 ⑨[块（block）](/development/architecture#block)，在数据未预先排序的情况下，按主键列对行进行 ⑩[排序](/parts#what-are-table-parts-in-clickhouse)，创建 ⑪[稀疏主索引](/guides/best-practices/sparse-primary-indexes)，对每一列应用 ⑫[按列压缩](/parts#what-are-table-parts-in-clickhouse)，并将数据作为一个新的 ⑭[数据分片（data part）](/parts)写入磁盘。
 
-### 同步写入时请进行批量插入 {#batch-inserts-if-synchronous}
+### 同步写入时请进行批量插入 \\{#batch-inserts-if-synchronous\\}
 
 <BulkInserts/>
 
-### 确保幂等重试 {#ensure-idempotent-retries}
+### 确保幂等重试 \\{#ensure-idempotent-retries\\}
 
 同步写入同样是**幂等的**。在使用 MergeTree 引擎时，ClickHouse 默认会对写入进行去重。这可以防止以下不明确的失败场景：
 
@@ -65,7 +65,7 @@ ClickHouse 将写入的数据存储在磁盘上，并按照表的主键列[排�
 
 在这两种情况下，只要批次的内容和顺序保持完全一致，**重试写入**就是安全的。基于此原因，客户端在重试时必须保持一致，不得修改或重新排序数据。
 
-### 选择合适的写入目标 {#choose-the-right-insert-target}
+### 选择合适的写入目标 \\{#choose-the-right-insert-target\\}
 
 对于分片集群，有两种选择：
 
@@ -74,7 +74,7 @@ ClickHouse 将写入的数据存储在磁盘上，并按照表的主键列[排�
 
 **在 ClickHouse Cloud 中，所有节点都对同一个单分片进行读写。写入会在节点之间自动负载均衡。只需将写入发送到对外暴露的 endpoint 即可。**
 
-### 选择合适的格式 {#choose-the-right-format}
+### 选择合适的格式 \\{#choose-the-right-format\\}
 
 为高效地在 ClickHouse 中进行数据摄取选择正确的输入格式至关重要。ClickHouse 支持 70 多种格式，选择性能最佳的选项会显著影响插入速度、CPU 与内存使用以及整体系统效率。 
 
@@ -84,7 +84,7 @@ ClickHouse 将写入的数据存储在磁盘上，并按照表的主键列[排�
 * **RowBinary**：高效的行式格式，如果在客户端进行列式转换比较困难，这是理想选择。Java 客户端使用该格式。
 * **JSONEachRow**：易于使用但解析开销大。适用于低流量场景或快速集成。
 
-### 使用压缩 {#use-compression}
+### 使用压缩 \\{#use-compression\\}
 
 压缩在降低网络开销、加速插入以及减少 ClickHouse 存储成本方面起着关键作用。若使用得当，无需更改数据格式或 schema 即可提升摄取性能。
 
@@ -92,7 +92,7 @@ ClickHouse 将写入的数据存储在磁盘上，并按照表的主键列[排�
 
 对于插入操作，压缩与 Native 格式配合使用时尤为高效，因为该格式已经与 ClickHouse 的内部列式存储模型相匹配。在此设置下，服务端可以高效地解压并以最小的转换直接存储数据。
 
-#### 使用 LZ4 获取速度，使用 ZSTD 获取压缩率 {#use-lz4-for-speed-zstd-for-compression-ratio}
+#### 使用 LZ4 获取速度，使用 ZSTD 获取压缩率 \\{#use-lz4-for-speed-zstd-for-compression-ratio\\}
 
 ClickHouse 在数据传输过程中支持多种压缩编解码器。两种常见选项为：
 
@@ -105,7 +105,7 @@ ClickHouse 在数据传输过程中支持多种压缩编解码器。两种常见
 在 [FastFormats 基准测试](https://clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient) 中，使用 LZ4 压缩的 Native 插入将数据大小减少了 50% 以上，在 5.6 GiB 数据集上将摄取时间从 150 秒缩短至 131 秒。切换到 ZSTD 后，同一数据集被压缩到 1.69 GiB，但服务端处理时间略有增加。
 :::
 
-#### 压缩可降低资源使用 {#compression-reduces-resource-usage}
+#### 压缩可降低资源使用 \\{#compression-reduces-resource-usage\\}
 
 压缩不仅减少网络流量——还提升了服务端的 CPU 与内存效率。对于压缩数据，ClickHouse 接收的字节更少，并且在解析大体量输入时花费的时间更短。当从多个并发客户端（例如在可观测性场景中）进行摄取时，这一优势尤为重要。
 
@@ -117,7 +117,7 @@ ClickHouse 在数据传输过程中支持多种压缩编解码器。两种常见
 
 使用 [HTTP 接口](/interfaces/http) 时，请通过 Content-Encoding 头部应用压缩（例如 Content-Encoding: lz4）。整个有效载荷必须在发送前完成压缩。
 
-### 如果代价低则预排序 {#pre-sort-if-low-cost}
+### 如果代价低则预排序 \\{#pre-sort-if-low-cost\\}
 
 在插入前按主键对数据进行预排序，可以提升 ClickHouse 中的摄取效率，尤其是对于大批量插入。
 
@@ -127,19 +127,19 @@ ClickHouse 在数据传输过程中支持多种压缩编解码器。两种常见
 
 **我们仅在数据已经接近有序，或客户端资源（CPU、内存）充足且未被充分利用时才建议进行预排序。** 在对延迟敏感或高吞吐的用例中（例如可观测性场景），数据通常是乱序到达或来自大量代理 / agent，此时往往更好的做法是跳过预排序，而依赖 ClickHouse 内建的高性能能力。
 
-## 异步插入 {#asynchronous-inserts}
+## 异步插入 \\{#asynchronous-inserts\\}
 
 <AsyncInserts />
 
-## 选择接口——HTTP 或原生 {#choose-an-interface}
+## 选择接口——HTTP 或原生 \\{#choose-an-interface\\}
 
-### 原生 {#choose-an-interface-native}
+### 原生 \\{#choose-an-interface-native\\}
 
 ClickHouse 提供两种主要的数据摄取接口：**原生接口** 和 **HTTP 接口**——二者在性能与灵活性之间各有取舍。原生接口由 [clickhouse-client](/interfaces/cli) 以及部分语言客户端（如 Go 和 C++）使用，专为高性能而设计。它始终以 ClickHouse 高效的 Native 格式来传输数据，支持基于数据块的 LZ4 或 ZSTD 压缩，并通过将解析和格式转换等工作下放到客户端，最大限度地减少服务端处理。
 
 它甚至支持在客户端计算 MATERIALIZED 和 DEFAULT 列的值，从而使服务端可以完全跳过这些步骤。这使得原生接口非常适合对效率要求极高的高吞吐量摄取场景。
 
-### HTTP {#choose-an-interface-http}
+### HTTP \\{#choose-an-interface-http\\}
 
 与许多传统数据库不同，ClickHouse 也支持 HTTP 接口。**相比之下，该接口优先考虑兼容性和灵活性。** 它允许以[任意受支持的格式](/integrations/data-formats)发送数据——包括 JSON、CSV、Parquet 等——并在大多数 ClickHouse 客户端中得到广泛支持，包括 Python、Java、JavaScript 和 Rust。
 

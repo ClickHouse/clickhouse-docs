@@ -16,25 +16,25 @@ import byoc_subnet_1 from '@site/static/images/cloud/reference/byoc-subnet-1.png
 import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png';
 import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoint.png'
 
-## 接入流程 {#onboarding-process}
+## 接入流程 \\{#onboarding-process\\}
 
 客户可以通过联系[我们](https://clickhouse.com/cloud/bring-your-own-cloud)来发起接入流程。客户需要准备一个专用的 AWS 账号，并确认将要使用的 Region。目前，我们仅允许用户在 ClickHouse Cloud 支持的 Region 中启动 BYOC 服务。
 
-### 准备 AWS 账号 {#prepare-an-aws-account}
+### 准备 AWS 账号 \\{#prepare-an-aws-account\\}
 
 建议客户为托管 ClickHouse BYOC 部署准备一个专用的 AWS 账号，以确保更好的隔离性。不过，也可以使用共享账号和已有的 VPC。详细信息请参见下文的 *Setup BYOC Infrastructure*。
 
 准备好该账号以及初始组织管理员的邮箱地址后，您可以联系 ClickHouse 支持团队。
 
-### 初始化 BYOC 设置 {#initialize-byoc-setup}
+### 初始化 BYOC 设置 \\{#initialize-byoc-setup\\}
 
 初始 BYOC 设置可以通过 CloudFormation 模板或 Terraform 模块来完成。这两种方式都会创建相同的 IAM 角色，使来自 ClickHouse Cloud 的 BYOC 控制器能够管理您的基础设施。注意，运行 ClickHouse 所需的 S3、VPC 和计算资源不包含在此初始设置中。
 
-#### CloudFormation 模板 {#cloudformation-template}
+#### CloudFormation 模板 \\{#cloudformation-template\\}
 
 [BYOC CloudFormation 模板](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml)
 
-#### Terraform 模块 {#terraform-module}
+#### Terraform 模块 \\{#terraform-module\\}
 
 [BYOC Terraform 模块](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/tf/byoc.tar.gz)
 
@@ -47,7 +47,7 @@ module "clickhouse_onboarding" {
 
 <!-- TODO: 在自助接入流程上线后，为其余接入步骤添加截图。 -->
 
-### 设置 BYOC 基础设施 {#setup-byoc-infrastructure}
+### 设置 BYOC 基础设施 \\{#setup-byoc-infrastructure\\}
 
 在创建 CloudFormation 堆栈之后，系统会提示您在云控制台中设置基础设施，包括 S3、VPC 和 EKS 集群。某些配置必须在此阶段确定，因为之后无法更改。具体包括：
 
@@ -55,7 +55,7 @@ module "clickhouse_onboarding" {
 * **BYOC 的 VPC CIDR 范围**：默认情况下，我们为 BYOC VPC CIDR 范围使用 `10.0.0.0/16`。如果您计划与另一个账号使用 VPC 对等连接，请确保 CIDR 范围不重叠。为 BYOC 分配合适的 CIDR 范围，最小大小为 `/22`，以容纳必要的工作负载。
 * **BYOC VPC 的可用区**：如果您计划使用 VPC 对等连接，使源账号与 BYOC 账号之间的可用区保持一致，可以帮助降低跨可用区流量成本。在 AWS 中，可用区后缀（`a, b, c`）在不同账号中可能对应不同的物理可用区 ID。详情请参阅 [AWS 指南](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html)。
 
-#### 客户托管 VPC {#customer-managed-vpc}
+#### 客户托管 VPC \\{#customer-managed-vpc\\}
 
 默认情况下，ClickHouse Cloud 会为您的 BYOC 部署预配一个专用 VPC，以实现更好的隔离。不过，您也可以使用账号中已有的 VPC。这需要特定配置，并且必须通过 ClickHouse Support 配合完成。
 
@@ -96,15 +96,15 @@ module "clickhouse_onboarding" {
 * 您为 ClickHouse 分配的私有子网 ID
 * 这些子网所在的可用区
 
-### 可选：设置 VPC Peering {#optional-setup-vpc-peering}
+### 可选：设置 VPC Peering \\{#optional-setup-vpc-peering\\}
 
 要为 ClickHouse BYOC 创建或删除 VPC peering，请按照以下步骤操作：
 
-#### 步骤 1：为 ClickHouse BYOC 启用私有负载均衡器 {#step-1-enable-private-load-balancer-for-clickhouse-byoc}
+#### 步骤 1：为 ClickHouse BYOC 启用私有负载均衡器 \\{#step-1-enable-private-load-balancer-for-clickhouse-byoc\\}
 
 联系 ClickHouse 支持团队以启用 Private Load Balancer。
 
-#### 步骤 2 创建 peering 连接 {#step-2-create-a-peering-connection}
+#### 步骤 2 创建 peering 连接 \\{#step-2-create-a-peering-connection\\}
 
 1. 在 ClickHouse BYOC 账号中，进入 VPC Dashboard。
 2. 选择 Peering Connections。
@@ -119,7 +119,7 @@ module "clickhouse_onboarding" {
 
 <br />
 
-#### 步骤 3 接受 peering 连接请求 {#step-3-accept-the-peering-connection-request}
+#### 步骤 3 接受 peering 连接请求 \\{#step-3-accept-the-peering-connection-request\\}
 
 在对端账号中，进入 (VPC -> Peering connections -> Actions -> Accept request) 页面，客户可以在此批准该 VPC peering 请求。
 
@@ -129,7 +129,7 @@ module "clickhouse_onboarding" {
 
 <br />
 
-#### 步骤 4 为 ClickHouse VPC 路由表添加目标 {#step-4-add-destination-to-clickhouse-vpc-route-tables}
+#### 步骤 4 为 ClickHouse VPC 路由表添加目标 \\{#step-4-add-destination-to-clickhouse-vpc-route-tables\\}
 
 在 ClickHouse BYOC 账号中：
 1. 在 VPC Dashboard 中选择 Route Tables。
@@ -145,7 +145,7 @@ module "clickhouse_onboarding" {
 
 <br />
 
-#### 步骤 5 为目标 VPC 路由表添加目标 {#step-5-add-destination-to-the-target-vpc-route-tables}
+#### 步骤 5 为目标 VPC 路由表添加目标 \\{#step-5-add-destination-to-the-target-vpc-route-tables\\}
 
 在对端 AWS 账号中：
 1. 在 VPC Dashboard 中选择 Route Tables。
@@ -161,7 +161,7 @@ module "clickhouse_onboarding" {
 
 <br />
 
-#### 步骤 6：编辑安全组以允许对等 VPC 访问 {#step-6-edit-security-group-to-allow-peered-vpc-access}
+#### 步骤 6：编辑安全组以允许对等 VPC 访问 \\{#step-6-edit-security-group-to-allow-peered-vpc-access\\}
 
 在 ClickHouse BYOC 账号中，您需要更新 Security Group 设置，以允许来自对等 VPC 的流量。请联系 ClickHouse 支持团队，请求添加包含对等 VPC CIDR 范围的入站规则。
 
@@ -176,7 +176,7 @@ module "clickhouse_onboarding" {
 
 可选：在验证 peering 正常工作之后，您可以请求为 ClickHouse BYOC 删除公共负载均衡器。
 
-## 升级流程 {#upgrade-process}
+## 升级流程 \\{#upgrade-process\\}
 
 我们会定期升级软件，包括 ClickHouse 数据库版本、ClickHouse Operator、EKS 以及其他组件。
 
@@ -186,9 +186,9 @@ module "clickhouse_onboarding" {
 维护窗口不适用于安全补丁和漏洞修复。这类升级将作为周期外升级进行处理，并通过及时沟通协调合适的时间，从而将对运行的影响降至最低。
 :::
 
-## CloudFormation IAM 角色 {#cloudformation-iam-roles}
+## CloudFormation IAM 角色 \\{#cloudformation-iam-roles\\}
 
-### Bootstrap IAM 角色 {#bootstrap-iam-role}
+### Bootstrap IAM 角色 \\{#bootstrap-iam-role\\}
 
 Bootstrap IAM 角色具有以下权限：
 
@@ -198,7 +198,7 @@ Bootstrap IAM 角色具有以下权限：
 - **IAM 操作（例如 `iam:CreatePolicy`）**：用于控制器创建额外角色（详细信息见下一节）。
 - **EKS 操作**：仅限名称以 `clickhouse-cloud` 前缀开头的资源。
 
-### 控制器创建的其他 IAM 角色 {#additional-iam-roles-created-by-the-controller}
+### 控制器创建的其他 IAM 角色 \\{#additional-iam-roles-created-by-the-controller\\}
 
 除了通过 CloudFormation 创建的 `ClickHouseManagementRole` 之外，控制器还会创建多个其他角色。
 
@@ -221,7 +221,7 @@ Bootstrap IAM 角色具有以下权限：
 
 最后，**`data-plane-mgmt`** 允许一个 ClickHouse Cloud 控制平面组件对所需的自定义资源（例如 `ClickHouseCluster` 和 Istio Virtual Service/Gateway）进行协调（reconcile）。
 
-## 网络边界 {#network-boundaries}
+## 网络边界 \\{#network-boundaries\\}
 
 本节介绍往返于客户 BYOC VPC 的不同网络流量：
 
@@ -238,13 +238,13 @@ Istio 入口网关终止 TLS 连接。由 CertManager 使用 Let's Encrypt 签�
 
 默认情况下，入口通过 IP 允许列表过滤对公网开放。客户可以通过配置 VPC Peering 将其改为私网并禁用公网连接。我们强烈建议配置 [IP 过滤器](/cloud/security/setting-ip-filters) 来限制访问。
 
-### 访问故障排查 {#troubleshooting-access}
+### 访问故障排查 \\{#troubleshooting-access\\}
 
 *入站，公网（可配置为私网）*
 
 ClickHouse Cloud 工程师需要通过 Tailscale 获取故障排查访问权限。他们在 BYOC 部署中通过基于证书的 Just-in-time 认证方式获得访问。
 
-### 计费采集器 {#billing-scraper}
+### 计费采集器 \\{#billing-scraper\\}
 
 *出站，私网*
 
@@ -252,7 +252,7 @@ ClickHouse Cloud 工程师需要通过 Tailscale 获取故障排查访问权限�
 
 它作为 sidecar 与 ClickHouse server 容器一起运行，定期采集 CPU 和内存指标。同一区域内的请求通过 VPC 网关服务端点进行路由。
 
-### 告警 {#alerts}
+### 告警 \\{#alerts\\}
 
 *出站，公网*
 
@@ -260,7 +260,7 @@ AlertManager 被配置为在客户的 ClickHouse 集群状态异常时向 ClickH
 
 指标和日志存储在客户的 BYOC VPC 内。日志当前本地存储在 EBS 中。在后续更新中，它们将被存储在 LogHouse 中，这是一个运行在 BYOC VPC 内的 ClickHouse 服务。指标使用 Prometheus 和 Thanos 技术栈，并在 BYOC VPC 内本地存储。
 
-### 服务状态 {#service-state}
+### 服务状态 \\{#service-state\\}
 
 *出站*
 

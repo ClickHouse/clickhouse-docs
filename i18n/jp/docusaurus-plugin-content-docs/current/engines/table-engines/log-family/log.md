@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Log テーブルエンジン {#log-table-engine}
+# Log テーブルエンジン \\{#log-table-engine\\}
 
 <CloudNotSupportedBadge/>
 
@@ -19,7 +19,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 同時データアクセスを可能にするために、読み取り操作は同時に実行できますが、書き込み操作は読み取りおよび他の書き込みをブロックします。
 `Log` エンジンはインデックスをサポートしません。また、テーブルへの書き込みが失敗した場合、そのテーブルは破損し、それ以降の読み取りはエラーを返します。`Log` エンジンは、一時データ、書き込み一度きりのテーブル、およびテストやデモ目的に適しています。
 
-## テーブルを作成する {#table_engines-log-creating-a-table}
+## テーブルを作成する \\{#table_engines-log-creating-a-table\\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -32,14 +32,14 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 [CREATE TABLE](/sql-reference/statements/create/table) クエリの詳細な説明を参照してください。
 
-## データの書き込み {#table_engines-log-writing-the-data}
+## データの書き込み \\{#table_engines-log-writing-the-data\\}
 
 `Log` エンジンは、各列を個別のファイルに書き込むことで効率的にデータを保存します。各テーブルに対して、Log エンジンは指定されたストレージパスに次のファイルを書き出します。
 
 - `<column>.bin`: 各列用のデータファイルで、シリアル化および圧縮されたデータを格納します。
 - `__marks.mrk`: 各挿入データブロックのオフセットと行数を保持するマークファイルです。マークは、読み取り時に不要なデータブロックをスキップできるようにすることで、クエリ実行を効率化するために使用されます。
 
-### 書き込みプロセス {#writing-process}
+### 書き込みプロセス \\{#writing-process\\}
 
 データが `Log` テーブルに書き込まれるとき:
 
@@ -47,11 +47,11 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 2. 各列について、圧縮されたデータが対応する `<column>.bin` ファイルに追記されます。
 3. 新しく挿入されたデータのオフセットと行数を記録するために、対応するエントリが `__marks.mrk` ファイルに追加されます。
 
-## データの読み取り {#table_engines-log-reading-the-data}
+## データの読み取り \\{#table_engines-log-reading-the-data\\}
 
 マークファイルにより、ClickHouse はデータの読み取りを並列化できます。つまり、`SELECT` クエリが行を返す順序は保証されません。行を並べ替えるには、`ORDER BY` 句を使用します。
 
-## 使用例 {#table_engines-log-example-of-use}
+## 使用例 \\{#table_engines-log-example-of-use\\}
 
 テーブルの作成：
 

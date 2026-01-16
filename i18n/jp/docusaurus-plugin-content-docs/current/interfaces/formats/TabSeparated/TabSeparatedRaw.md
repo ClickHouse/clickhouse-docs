@@ -13,7 +13,7 @@ doc_type: 'reference'
 |------|------|------------------|
 | ✔    | ✔    | `TSVRaw`, `Raw`  |
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 このフォーマットは [`TabSeparated`](/interfaces/formats/TabSeparated) フォーマットと異なり、行をエスケープせずに書き込みます。
 
@@ -23,9 +23,9 @@ doc_type: 'reference'
 
 `TabSeparatedRaw` フォーマットと `RawBlob` フォーマットの比較については、[Raw フォーマットの比較](../RawBLOB.md/#raw-formats-comparison) を参照してください。
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
-### データの挿入 {#inserting-data}
+### データの挿入 \\{#inserting-data\\}
 
 次の TSV ファイル `football.tsv` を使用します:
 
@@ -55,7 +55,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRaw;
 ```
 
-### データの読み込み {#reading-data}
+### データの読み込み \\{#reading-data\\}
 
 `TabSeparatedRaw` 形式でデータを読み込みます。
 
@@ -87,4 +87,4 @@ FORMAT TabSeparatedRaw
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \\{#format-settings\\}

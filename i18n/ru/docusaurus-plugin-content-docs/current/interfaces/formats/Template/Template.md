@@ -13,7 +13,7 @@ doc_type: 'guide'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 В случаях, когда вам требуется больше возможностей для настройки, чем предоставляют другие стандартные форматы, 
 формат `Template` позволяет задать собственную строку формата с заполнителями для значений
@@ -30,9 +30,9 @@ doc_type: 'guide'
 | `format_template_resultset_format`                                                                       | Указывает строку формата для набора результатов [во встроенной спецификации](#inline_specification).                       |
 | Некоторые настройки других форматов (например, `output_format_json_quote_64bit_integers` при использовании экранирования `JSON` |                                                                                                                            |
 
-## Настройки и правила экранирования {#settings-and-escaping-rules}
+## Настройки и правила экранирования \\{#settings-and-escaping-rules\\}
 
-### format&#95;template&#95;row {#format_template_row}
+### format&#95;template&#95;row \\{#format_template_row\\}
 
 Настройка `format_template_row` задаёт путь к файлу, который содержит шаблоны формата для строк со следующим синтаксисом:
 
@@ -84,11 +84,11 @@ Search phrase: ${s:Quoted}, count: ${c:Escaped}, ad price: $$${p:JSON};
 Search phrase: 'bathroom interior design', count: 2166, ad price: $3;
 ```
 
-### format&#95;template&#95;rows&#95;between&#95;delimiter {#format_template_rows_between_delimiter}
+### format&#95;template&#95;rows&#95;between&#95;delimiter \\{#format_template_rows_between_delimiter\\}
 
 Параметр `format_template_rows_between_delimiter` задаёт разделитель между строками, который выводится (или ожидается) после каждой строки, кроме последней (`\n` по умолчанию).
 
-### format&#95;template&#95;resultset {#format_template_resultset}
+### format&#95;template&#95;resultset \\{#format_template_resultset\\}
 
 Параметр `format_template_resultset` указывает путь к файлу, содержащему форматную строку для результирующего набора данных.
 
@@ -113,7 +113,7 @@ Search phrase: 'bathroom interior design', count: 2166, ad price: $3;
 
 Для запросов INSERT формат позволяет пропускать некоторые столбцы или поля, если задан префикс или суффикс (см. пример).
 
-### Встроенная спецификация {#inline_specification}
+### Встроенная спецификация \\{#inline_specification\\}
 
 Часто бывает сложно или невозможно развернуть конфигурации формата
 (заданные `format_template_row`, `format_template_resultset`) для шаблонного формата в каталог на всех узлах кластера. 
@@ -128,11 +128,11 @@ Search phrase: 'bathroom interior design', count: 2166, ad price: $3;
 - [`format_template_resultset`](#format_template_resultset) при использовании `format_template_resultset_format`.
 :::
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
 Рассмотрим два примера того, как можно использовать формат `Template`: сначала для выборки данных, а затем для вставки данных.
 
-### Выборка данных {#selecting-data}
+### Выборка данных \\{#selecting-data\\}
 
 ```sql
 SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase ORDER BY c DESC LIMIT 5 FORMAT Template SETTINGS
@@ -181,7 +181,7 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 </html>
 ```
 
-### Вставка данных {#inserting-data}
+### Вставка данных \\{#inserting-data\\}
 
 ```text
 Some header
@@ -207,7 +207,7 @@ Page views: ${PageViews:CSV}, User id: ${UserID:CSV}, Useless field: ${:CSV}, Du
 `PageViews`, `UserID`, `Duration` и `Sign` внутри плейсхолдеров — это имена столбцов в таблице. Значения после `Useless field` в строках и после `\nTotal rows:` в суффиксе будут игнорироваться.
 Все разделители во входных данных должны в точности совпадать с разделителями в указанных строках формата.
 
-### Встроенная спецификация {#in-line-specification}
+### Встроенная спецификация \\{#in-line-specification\\}
 
 Устали вручную форматировать таблицы Markdown? В этом примере мы рассмотрим, как можно использовать формат `Template` и настройки встроенной спецификации, чтобы решить простую задачу — выполнить `SELECT` по именам некоторых форматов ClickHouse из таблицы `system.formats` и отформатировать их как таблицу в формате Markdown. Это можно легко сделать, используя формат `Template` и настройки `format_template_row_format` и `format_template_resultset_format`.
 

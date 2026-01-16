@@ -31,13 +31,13 @@ import explo_15 from '@site/static/images/integrations/data-visualization/explo_
 import explo_16 from '@site/static/images/integrations/data-visualization/explo_16.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Подключение Explo к ClickHouse {#connecting-explo-to-clickhouse}
+# Подключение Explo к ClickHouse \\{#connecting-explo-to-clickhouse\\}
 
 <CommunityMaintainedBadge/>
 
 Клиентская аналитика для любой платформы. Создана для красивой визуализации. Спроектирована с упором на простоту.
 
-## Цель {#goal}
+## Цель \\{#goal\\}
 
 В этом руководстве вы подключите данные из ClickHouse к Explo и визуализируете результаты. Диаграмма будет выглядеть так:
 <Image img={explo_15} size="md" alt="Explo Dashboard" />
@@ -48,11 +48,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 Если у вас ещё нет набора данных для работы, вы можете добавить один из примерных наборов. В этом руководстве используется набор данных [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md), поэтому вы можете выбрать его. В той же категории документации есть и несколько других примеров.
 :::
 
-## 1. Соберите сведения о подключении {#1-gather-your-connection-details}
+## 1. Соберите сведения о подключении \\{#1-gather-your-connection-details\\}
 
 <ConnectionDetails />
 
-## 2.  Подключение Explo к ClickHouse {#2--connect-explo-to-clickhouse}
+## 2.  Подключение Explo к ClickHouse \\{#2--connect-explo-to-clickhouse\\}
 
 1. Зарегистрируйтесь в Explo.
 
@@ -85,7 +85,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 54.211.43.19, 52.55.98.121, 3.214.169.94 и 54.156.141.148
 `
 
-## 3. Создайте дашборд {#3-create-a-dashboard}
+## 3. Создайте дашборд \\{#3-create-a-dashboard\\}
 
 1. Перейдите на вкладку **Dashboard** в левой панели навигации.
 
@@ -99,7 +99,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={explo_09} size="md" alt="Explo Dashboard" border />
 
-## 4. Выполните SQL-запрос {#4-run-a-sql-query}
+## 4. Выполните SQL-запрос \\{#4-run-a-sql-query\\}
 
 1. Найдите имя таблицы в правой боковой панели под заголовком схемы. Затем введите следующую команду в редактор датасета:
 `
@@ -113,7 +113,7 @@ LIMIT 100
 
 <Image img={explo_11} size="md" alt="Панель управления Explo" border />
 
-## 5. Построение графика {#5-build-a-chart}
+## 5. Построение графика \\{#5-build-a-chart\\}
 
 1. С левой стороны экрана перетащите значок столбчатой диаграммы на область построения.
 
@@ -135,6 +135,6 @@ LIMIT 100
 
 <Image img={explo_15} size="md" alt="Explo Dashboard" />
 
-## Узнать больше {#learn-more}
+## Узнать больше \\{#learn-more\\}
 
 Найдите более подробную информацию об Explo и о том, как создавать дашборды, в <a href="https://docs.explo.co/" target="_blank">документации Explo</a>.

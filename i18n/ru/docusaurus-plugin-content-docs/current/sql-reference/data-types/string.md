@@ -7,7 +7,7 @@ title: 'String'
 doc_type: 'reference'
 ---
 
-# String {#string}
+# String \\{#string\\}
 
 Строки произвольной длины. Длина не ограничена. Значение может содержать произвольный набор байт, включая байты нулевого значения.
 Тип String заменяет типы VARCHAR, BLOB, CLOB и другие типы из других СУБД.
@@ -18,7 +18,7 @@ doc_type: 'reference'
 
 - `String` — `LONGTEXT`, `MEDIUMTEXT`, `TINYTEXT`, `TEXT`, `LONGBLOB`, `MEDIUMBLOB`, `TINYBLOB`, `BLOB`, `VARCHAR`, `CHAR`, `CHAR LARGE OBJECT`, `CHAR VARYING`, `CHARACTER LARGE OBJECT`, `CHARACTER VARYING`, `NCHAR LARGE OBJECT`, `NCHAR VARYING`, `NATIONAL CHARACTER LARGE OBJECT`, `NATIONAL CHARACTER VARYING`, `NATIONAL CHAR VARYING`, `NATIONAL CHARACTER`, `NATIONAL CHAR`, `BINARY LARGE OBJECT`, `BINARY VARYING`,
 
-## Кодировки {#encodings}
+## Кодировки \\{#encodings\\}
 
 В ClickHouse нет понятия кодировок. Строки могут содержать произвольный набор байтов, которые сохраняются и выводятся как есть.
 Если вам нужно хранить текст, мы рекомендуем использовать кодировку UTF-8. Как минимум, если ваш терминал использует UTF-8 (как и рекомендуется), вы сможете читать и записывать значения без выполнения преобразований.

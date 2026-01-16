@@ -14,7 +14,7 @@ import Image from '@theme/IdealImage';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
-# ACME を利用した自動 TLS プロビジョニングの設定 {#configuring-automatic-tls-provisioning-via-acme}
+# ACME を利用した自動 TLS プロビジョニングの設定 \{#configuring-automatic-tls-provisioning-via-acme\}
 
 <ExperimentalBadge/>
 
@@ -24,7 +24,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 ACME をサポートすることで、ClickHouse は [Let's Encrypt](https://letsencrypt.org/) や [ZeroSSL](https://zerossl.com/) などのプロバイダから証明書を自動的に取得および更新できます。
 TLS による暗号化は、クライアントと ClickHouse サーバー間で転送されるデータを保護し、機密性の高いクエリや結果の盗聴を防ぎます。
 
-## 概要 {#overview}
+## 概要 \{#overview\}
 
 ACME プロトコルは、[Let&#39;s Encrypt](https://letsencrypt.org/) や [ZeroSSL](https://zerossl.com/) のようなサービスを用いて証明書を自動取得・更新するプロセスを定義します。簡単に言えば、証明書要求者である ClickHouse は、証明書を取得するために、あらかじめ定義されたチャレンジ方式を通じてドメイン所有権を証明する必要があります。
 
@@ -51,13 +51,13 @@ HTTP ポートはサーバー上で必ずしも 80 である必要はなく、`n
 その後に必要なのは、ドメインのリストだけです。
 
 
-### 現在の制限事項 {#current-limitations}
+### 現在の制限事項 \\{#current-limitations\\}
 
 - `HTTP-01` チャレンジタイプのみサポートされています。
 - `RSA 2048` キーのみサポートされています。
 - レート制限は考慮されません。
 
-## 設定パラメータ {#configuration-parameters}
+## 設定パラメータ \\{#configuration-parameters\\}
 
 `acme` セクションで利用可能な設定オプション:
 
@@ -73,9 +73,9 @@ HTTP ポートはサーバー上で必ずしも 80 である必要はなく、`n
 
 設定では、デフォルトで Let’s Encrypt の本番ディレクトリを使用する点に注意してください。誤設定によりリクエスト QUOTA の上限に達することを避けるため、まずは [staging directory](https://letsencrypt.org/docs/staging-environment/)（ステージングディレクトリ）を用いて証明書発行プロセスをテストすることを推奨する。
 
-# 管理 {#administration}
+# 管理 \{#administration\}
 
-## 初期デプロイメント {#initial-deployment}
+## 初期デプロイメント \\{#initial-deployment\\}
 
 複数のレプリカを持つクラスタで ACME クライアントを有効化する場合、初回の証明書発行時には追加の考慮が必要です。
 
@@ -87,7 +87,7 @@ ACME を有効化して起動した最初のレプリカは、直ちに ACME オ
 
 初回の証明書が発行またはインポートされた後は、すべてのレプリカが ACME クライアントを実行し Keeper を通じて状態を共有しているため、証明書の更新に特別な対応は不要です。
 
-## Keeper のデータ構造 {#keeper-data-structure}
+## Keeper のデータ構造 \{#keeper-data-structure\}
 
 ```text
 /clickhouse/acme
@@ -101,7 +101,7 @@ ACME を有効化して起動した最初のレプリカは、直ちに ACME オ
 ```
 
 
-## 他の ACME クライアントからの移行 {#migrating-from-other-acme-clients}
+## 他の ACME クライアントからの移行 \{#migrating-from-other-acme-clients\}
 
 現在使用中の TLS 証明書と鍵を Keeper に取り込むことで、移行を容易にできます。
 現時点では、サーバーは `RSA 2048` 鍵のみをサポートしています。

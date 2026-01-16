@@ -16,16 +16,16 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | ✗    | ✔     |           |
 
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Отличается от формата [`PrettyCompactNoEscapes`](./PrettyCompactNoEscapes.md) тем, что до `10,000` строк накапливаются в буфере, а затем выводятся как одна таблица, а не по [блокам](/development/architecture#block).
 
 
 
-## Примеры использования {#example-usage}
+## Примеры использования \\{#example-usage\\}
 
 
 
-## Параметры форматирования {#format-settings}
+## Параметры форматирования \\{#format-settings\\}
 
 <PrettyFormatSettings/>

@@ -5,7 +5,7 @@ title: 'uniqCombined64'
 doc_type: 'reference'
 ---
 
-# uniqCombined64 {#uniqcombined64}
+# uniqCombined64 \{#uniqcombined64\}
 
 異なる引数の値のおおよその個数を計算します。[uniqCombined](/sql-reference/aggregate-functions/reference/uniqcombined) と同じですが、`String` データ型だけでなく、すべてのデータ型に対して 64 ビットのハッシュ値を使用します。
 

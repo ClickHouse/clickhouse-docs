@@ -7,7 +7,7 @@ title: 'lead'
 doc_type: 'reference'
 ---
 
-# lead {#lead}
+# lead \\{#lead\\}
 
 Возвращает значение, вычисленное в строке, которая находится на `offset` строк ниже текущей строки в упорядоченном окне.
 Эта функция похожа на [`leadInFrame`](./leadInFrame.md), но всегда использует окно `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`.

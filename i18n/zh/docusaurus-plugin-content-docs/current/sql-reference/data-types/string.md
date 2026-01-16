@@ -7,7 +7,7 @@ title: 'String'
 doc_type: 'reference'
 ---
 
-# String {#string}
+# String \\{#string\\}
 
 任意长度的字符串。长度不受限制。其值可以包含任意字节序列，包括空字节（null byte）。
 `String` 类型替代了其他数据库管理系统中的 `VARCHAR`、`BLOB`、`CLOB` 等类型。
@@ -18,7 +18,7 @@ doc_type: 'reference'
 
 - `String` — `LONGTEXT`、`MEDIUMTEXT`、`TINYTEXT`、`TEXT`、`LONGBLOB`、`MEDIUMBLOB`、`TINYBLOB`、`BLOB`、`VARCHAR`、`CHAR`、`CHAR LARGE OBJECT`、`CHAR VARYING`、`CHARACTER LARGE OBJECT`、`CHARACTER VARYING`、`NCHAR LARGE OBJECT`、`NCHAR VARYING`、`NATIONAL CHARACTER LARGE OBJECT`、`NATIONAL CHARACTER VARYING`、`NATIONAL CHAR VARYING`、`NATIONAL CHARACTER`、`NATIONAL CHAR`、`BINARY LARGE OBJECT`、`BINARY VARYING`,
 
-## 编码 {#encodings}
+## 编码 \\{#encodings\\}
 
 ClickHouse 没有“编码”这一概念。`String` 类型的值可以包含任意字节序列，并会按原样存储和输出。
 如果你需要存储文本，我们建议使用 UTF-8 编码。至少在你的终端使用 UTF-8（同样是推荐的）时，你可以在不进行转换的情况下读写这些值。

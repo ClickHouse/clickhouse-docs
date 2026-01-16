@@ -7,7 +7,7 @@ title: '查询条件缓存'
 doc_type: 'guide'
 ---
 
-# 查询条件缓存 {#query-condition-cache}
+# 查询条件缓存 \\{#query-condition-cache\\}
 
 :::note
 查询条件缓存仅在 [enable_analyzer](https://clickhouse.com/docs/operations/settings/settings#enable_analyzer) 设置为 true 时生效，这是默认值。
@@ -31,7 +31,7 @@ ClickHouse 提供了多种优化技术来针对这类查询模式进行优化。
 - 第二，大部分数据是不可变的，即在查询之间不会变化。这在 ClickHouse 中通常成立，因为数据分片（part）是不可变的，只会通过 INSERT 创建。
 - 第三，过滤条件需要具有较高选择性，即只有相对较少的行满足过滤条件。匹配过滤条件的行越少，被记录为位 0（无匹配行）的 granule 就越多，从而可以在后续的过滤评估中“裁剪”掉更多数据。
 
-## 内存消耗 {#memory-consumption}
+## 内存消耗 \\{#memory-consumption\\}
 
 由于查询条件缓存针对每个过滤条件和粒度仅存储 1 位信息，因此只占用很少的内存。
 查询条件缓存的最大容量可以通过服务器设置 [`query_condition_cache_size`](server-configuration-parameters/settings.md#query_condition_cache_size) 进行配置（默认值：100 MB）。
@@ -39,7 +39,7 @@ ClickHouse 提供了多种优化技术来针对这类查询模式进行优化。
 由于每个条目表示一个标记（默认对应 8192 行），因此缓存最多可以覆盖单个列的 6,871,947,673,600（6.8 万亿）行。
 在实际使用中，过滤通常会在多个列上进行评估，因此该数值需要除以参与过滤的列数。
 
-## 配置项与用法 {#configuration-settings-and-usage}
+## 配置项与用法 \\{#configuration-settings-and-usage\\}
 
 设置项 [use&#95;query&#95;condition&#95;cache](settings/settings#use_query_condition_cache) 用于控制特定查询或当前会话中的所有查询是否使用查询条件缓存。
 
@@ -55,7 +55,7 @@ SETTINGS use_query_condition_cache = true;
 会缓存不满足该谓词的表数据范围。
 之后再次执行相同查询，并将参数 `use_query_condition_cache` 设为 `true` 时，会利用查询条件缓存，从而扫描更少的数据。
 
-## 管理 {#administration}
+## 管理 \\{#administration\\}
 
 查询条件缓存在 ClickHouse 重启后不会被保留。
 
@@ -69,7 +69,7 @@ SETTINGS use_query_condition_cache = true;
 自数据库启动以来查询条件缓存的命中与未命中次数，分别作为事件 "QueryConditionCacheHits" 和 "QueryConditionCacheMisses" 显示在系统表 [system.events](system-tables/events.md) 中。
 这两个计数器仅在设置 `use_query_condition_cache = true` 的 `SELECT` 查询时才会更新，其他查询不会影响 "QueryCacheMisses"。
 
-## 相关内容 {#related-content}
+## 相关内容 \\{#related-content\\}
 
 - 博客：[Introducing the Query Condition Cache](https://clickhouse.com/blog/introducing-the-clickhouse-query-condition-cache)
 - [Predicate Caching: Query-Driven Secondary Indexing for Cloud Data Warehouses (Schmidt et. al., 2024)](https://doi.org/10.1145/3626246.3653395)

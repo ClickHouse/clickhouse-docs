@@ -7,9 +7,9 @@ sidebar_label: 'argMaxIf'
 doc_type: 'reference'
 ---
 
-# argMaxIf {#argmaxif}
+# argMaxIf \\{#argmaxif\\}
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`argMax`](/sql-reference/aggregate-functions/reference/argmax),
 чтобы найти значение `arg`, которое соответствует максимальному значению `val` для строк, где условие истинно,
@@ -19,7 +19,7 @@ doc_type: 'reference'
 максимальным значением в наборе данных, но только для строк, которые удовлетворяют определённому
 условию.
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
 В этом примере мы используем демонстрационный набор данных о продажах товаров, чтобы показать, как работает `argMaxIf`. Мы найдём название товара с наивысшей ценой, но только среди тех товаров, которые были проданы как минимум 10 раз.
 
@@ -53,7 +53,7 @@ FROM product_sales;
    └──────────────────────────┘
 ```
 
-## См. также {#see-also}
+## См. также \\{#see-also\\}
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
 - [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
 - [`argMinIf`](/examples/aggregate-function-combinators/argMinIf)

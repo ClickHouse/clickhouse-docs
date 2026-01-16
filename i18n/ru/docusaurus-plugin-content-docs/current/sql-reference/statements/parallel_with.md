@@ -7,11 +7,11 @@ title: 'Предложение PARALLEL WITH'
 doc_type: 'reference'
 ---
 
-# Предложение PARALLEL WITH {#parallel-with-clause}
+# Предложение PARALLEL WITH \\{#parallel-with-clause\\}
 
 Позволяет выполнять несколько операторов параллельно.
 
-## Синтаксис {#syntax}
+## Синтаксис \\{#syntax\\}
 
 ```sql
 statement1 PARALLEL WITH statement2 [PARALLEL WITH statement3 ...]
@@ -21,7 +21,7 @@ statement1 PARALLEL WITH statement2 [PARALLEL WITH statement3 ...]
 
 Параллельное выполнение операторов во многих случаях может быть быстрее, чем их последовательный запуск. Например, `statement1 PARALLEL WITH statement2 PARALLEL WITH statement3` скорее всего будет выполнено быстрее, чем `statement1; statement2; statement3`.
 
-## Примеры {#examples}
+## Примеры \\{#examples\\}
 
 Создаёт две таблицы одновременно:
 
@@ -39,11 +39,11 @@ PARALLEL WITH
 DROP TABLE table2;
 ```
 
-## Настройки {#settings}
+## Настройки \\{#settings\\}
 
 Параметр [max_threads](../../operations/settings/settings.md#max_threads) определяет, сколько потоков будет создано.
 
-## Сравнение с UNION {#comparison-with-union}
+## Сравнение с UNION \\{#comparison-with-union\\}
 
 Конструкция `PARALLEL WITH` немного похожа на [UNION](select/union.md), который также выполняет свои операнды параллельно. Однако есть некоторые отличия:
 - `PARALLEL WITH` не возвращает результатов выполнения своих операндов, он может только пробросить исключение из них, если оно произошло;

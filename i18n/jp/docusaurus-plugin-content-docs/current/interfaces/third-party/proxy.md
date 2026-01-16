@@ -7,9 +7,9 @@ title: 'サードパーティ製プロキシサーバー'
 doc_type: 'reference'
 ---
 
-# サードパーティ開発のプロキシサーバー {#proxy-servers-from-third-party-developers}
+# サードパーティ開発のプロキシサーバー \\{#proxy-servers-from-third-party-developers\\}
 
-## chproxy {#chproxy}
+## chproxy \\{#chproxy\\}
 
 [chproxy](https://github.com/Vertamedia/chproxy) は、ClickHouse データベース向けの HTTP プロキシ兼ロードバランサーです。
 
@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 Go で実装されています。
 
-## KittenHouse {#kittenhouse}
+## KittenHouse \\{#kittenhouse\\}
 
 [KittenHouse](https://github.com/VKCOM/kittenhouse) は、アプリケーション側で INSERT データをバッファリングすることができない、あるいは不便な場合に、ClickHouse とアプリケーションサーバーとの間に位置するローカルプロキシとして設計されています。
 
@@ -33,7 +33,7 @@ Go で実装されています。
 
 Go で実装されています。
 
-## ClickHouse-Bulk {#clickhouse-bulk}
+## ClickHouse-Bulk \\{#clickhouse-bulk\\}
 
 [ClickHouse-Bulk](https://github.com/nikepan/clickhouse-bulk) は、ClickHouse への INSERT をまとめて処理するシンプルなコレクターです。
 

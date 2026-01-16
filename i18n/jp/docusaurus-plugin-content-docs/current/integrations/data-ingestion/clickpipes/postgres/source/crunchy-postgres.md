@@ -14,11 +14,11 @@ import firewall_rules_crunchy_bridge from '@site/static/images/integrations/data
 import add_firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/add_firewall_rules_crunchy_bridge.png'
 import Image from '@theme/IdealImage';
 
-# Crunchy Bridge Postgres ソース設定ガイド {#crunchy-bridge-postgres-source-setup-guide}
+# Crunchy Bridge Postgres ソース設定ガイド \\{#crunchy-bridge-postgres-source-setup-guide\\}
 
 ClickPipes は Postgres バージョン 12 以降をサポートしています。
 
-## 論理レプリケーションを有効化する {#enable-logical-replication}
+## 論理レプリケーションを有効化する \{#enable-logical-replication\}
 
 Crunchy Bridge では、論理レプリケーションが[既定](https://docs.crunchybridge.com/how-to/logical-replication)で有効になっています。以下の設定が正しく構成されていることを確認してください。そうでない場合は、必要に応じて調整してください。
 
@@ -29,7 +29,7 @@ SHOW max_replication_slots; -- should be 10
 ```
 
 
-## ClickPipes ユーザーの作成と権限付与 {#creating-clickpipes-user-and-granting-permissions}
+## ClickPipes ユーザーの作成と権限付与 \\{#creating-clickpipes-user-and-granting-permissions\\}
 
 `postgres` ユーザーで Crunchy Bridge Postgres に接続し、以下のコマンドを実行します。
 
@@ -73,7 +73,7 @@ SHOW max_replication_slots; -- should be 10
 
    `clickpipes` publication には、指定したテーブルから生成される変更イベント群が含まれ、後でレプリケーションストリームを取り込むために使用されます。
 
-## ClickPipes の IP アドレスを許可リストに追加する {#safe-list-clickpipes-ips}
+## ClickPipes の IP アドレスを許可リストに追加する \\{#safe-list-clickpipes-ips\\}
 
 Crunchy Bridge で Firewall Rules を追加して、[ClickPipes IPs](../../index.md#list-of-static-ips) を許可リストに登録します。
 
@@ -81,7 +81,7 @@ Crunchy Bridge で Firewall Rules を追加して、[ClickPipes IPs](../../index
 
 <Image size="lg" img={add_firewall_rules_crunchy_bridge} alt="ClickPipes 用の Firewall Rules を追加する" border/>
 
-## 次のステップ {#whats-next}
+## 次のステップ \\{#whats-next\\}
 
 これで、[ClickPipe を作成](../index.md)し、Postgres インスタンスから ClickHouse Cloud へデータの取り込みを開始できます。
 ClickPipe を作成する際に使用するため、Postgres インスタンスのセットアップ時に使用した接続情報を必ずメモしておいてください。

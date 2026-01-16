@@ -7,11 +7,11 @@ description: '開始値から終了値までの整数（両端を含む）を格
 doc_type: 'reference'
 ---
 
-# generate&#95;series テーブル関数 {#generate&#95;series-table-function}
+# generate&#95;series テーブル関数 \\{#generate&#95;series-table-function\\}
 
 エイリアス: `generateSeries`
 
-## 構文 {#syntax}
+## 構文 \\{#syntax\\}
 
 `start` から `stop` までの整数（両端を含む）を格納した、単一の `generate_series` 列（`UInt64`）を持つテーブルを返します。
 
@@ -25,7 +25,7 @@ generate_series(START, STOP)
 generate_series(START, STOP, STEP)
 ```
 
-## 例 {#examples}
+## 例 \\{#examples\\}
 
 次のクエリは、同じ内容で列名だけが異なるテーブルを返します。
 

@@ -6,7 +6,7 @@ title: 'system.licenses'
 doc_type: 'reference'
 ---
 
-# system.licenses {#systemlicenses}
+# system.licenses \\{#systemlicenses\\}
 
 ClickHouse のソース内の [contrib](https://github.com/ClickHouse/ClickHouse/tree/master/contrib) ディレクトリに配置されているサードパーティライブラリのライセンスが格納されています。
 

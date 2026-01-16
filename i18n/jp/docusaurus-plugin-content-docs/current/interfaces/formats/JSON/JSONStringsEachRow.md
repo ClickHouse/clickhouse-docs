@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 [`JSONEachRow`](./JSONEachRow.md) との違いは、データフィールドが型付きのJSON値ではなく文字列として出力される点だけです。
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
-### データの挿入 {#inserting-data}
+### データの挿入 \\{#inserting-data\\}
 
 以下のデータを含む JSON ファイルを `football.json` として用意します:
 
@@ -49,7 +49,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStringsEachRow;
 ```
 
-### データの読み込み {#reading-data}
+### データの読み込み \\{#reading-data\\}
 
 `JSONStringsEachRow` 形式を使用してデータを読み込みます。
 
@@ -81,4 +81,4 @@ FORMAT JSONStringsEachRow
 {"date":"2022-05-07","season":"2021","home_team":"Walsall","away_team":"Swindon Town","home_team_goals":"0","away_team_goals":"3"}   
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \\{#format-settings\\}

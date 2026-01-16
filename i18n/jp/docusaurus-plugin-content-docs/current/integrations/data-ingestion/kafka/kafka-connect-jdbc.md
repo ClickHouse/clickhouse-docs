@@ -10,7 +10,7 @@ keywords: ['kafka', 'kafka connect', 'jdbc', 'integration', 'data pipeline']
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# JDBC コネクタ {#jdbc-connector}
+# JDBC コネクタ \\{#jdbc-connector\\}
 
 :::note
 このコネクタは、データが単純で、`int` などのプリミティブ型で構成されている場合にのみ使用してください。ClickHouse 固有の型（例: map）はサポートされていません。
@@ -22,14 +22,14 @@ import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/curr
 
 JDBC コネクタにはスキーマが必須であることに注意してください（JDBC コネクタではプレーンな JSON や CSV は使用できません）。スキーマは各メッセージにエンコードすることもできますが、関連するオーバーヘッドを避けるために[Confluent Schema Registry を使用することが強く推奨されます](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas)。ここで提供する挿入スクリプトは、メッセージからスキーマを自動的に推論してレジストリに登録するため、このスクリプトは他のデータセットにも再利用できます。Kafka のキーは String であることを前提としています。Kafka のスキーマの詳細は[こちら](https://docs.confluent.io/platform/current/schema-registry/index.html)を参照してください。
 
-### ライセンス {#license}
+### ライセンス \\{#license\\}
 JDBC コネクタは [Confluent Community License](https://www.confluent.io/confluent-community-license) の下で配布されています。
 
-### 手順 {#steps}
-#### 接続情報を収集する {#gather-your-connection-details}
+### 手順 \\{#steps\\}
+#### 接続情報を収集する \\{#gather-your-connection-details\\}
 <ConnectionDetails />
 
-#### 1. Kafka Connect とコネクタをインストールする {#1-install-kafka-connect-and-connector}
+#### 1. Kafka Connect とコネクタをインストールする \\{#1-install-kafka-connect-and-connector\\}
 
 Confluent パッケージをダウンロードしてローカルにインストール済みであることを前提とします。コネクタのインストール手順については、[こちら](https://docs.confluent.io/kafka-connect-jdbc/current/#install-the-jdbc-connector)に記載されている手順に従ってください。
 
@@ -37,7 +37,7 @@ Confluent パッケージをダウンロードしてローカルにインスト�
 
 Kafka から ClickHouse へデータを送信するには、コネクタの Sink コンポーネントを使用します。
 
-#### 2. JDBC ドライバをダウンロードしてインストールする {#2-download-and-install-the-jdbc-driver}
+#### 2. JDBC ドライバをダウンロードしてインストールする \\{#2-download-and-install-the-jdbc-driver\\}
 
 ClickHouse JDBC ドライバ `clickhouse-jdbc-<version>-shaded.jar` を[こちら](https://github.com/ClickHouse/clickhouse-java/releases)からダウンロードしてインストールします。Kafka Connect へのインストール方法は[こちら](https://docs.confluent.io/kafka-connect-jdbc/current/#installing-jdbc-drivers)に従ってください。他のドライバも動作する可能性はありますが、検証は行っていません。
 
@@ -47,7 +47,7 @@ ClickHouse JDBC ドライバ `clickhouse-jdbc-<version>-shaded.jar` を[こち�
 
 :::
 
-#### 3. 設定を準備する {#3-prepare-configuration}
+#### 3. 設定を準備する \\{#3-prepare-configuration\\}
 
 スタンドアロンと分散クラスタの違いに注意しながら、インストール形態に応じた Connect のセットアップについては、[これらの手順](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install)に従ってください。Confluent Cloud を使用する場合は、分散構成が該当します。
 
@@ -77,7 +77,7 @@ ClickHouse JDBC ドライバ `clickhouse-jdbc-<version>-shaded.jar` を[こち�
 
 GitHub サンプルデータ用の設定ファイル例は、Connect をスタンドアロンモードで実行し、Kafka を Confluent Cloud 上でホストしていることを前提として、[こちら](https://github.com/ClickHouse/kafka-samples/tree/main/github_events/jdbc_sink) から参照できます。
 
-#### 4. ClickHouse テーブルを作成する {#4-create-the-clickhouse-table}
+#### 4. ClickHouse テーブルを作成する \\{#4-create-the-clickhouse-table\\}
 
 テーブルが作成されていることを確認し、以前の例で既に存在する場合は削除してください。縮小版 GitHub データセットと互換性のある例を以下に示します。現在サポートされていない Array 型や Map 型が存在しないことに注意してください。
 
@@ -109,7 +109,7 @@ CREATE TABLE github
 ) ENGINE = MergeTree ORDER BY (event_type, repo_name, created_at)
 ```
 
-#### 5. Kafka Connect を起動する {#5-start-kafka-connect}
+#### 5. Kafka Connect を起動する \\{#5-start-kafka-connect\\}
 
 Kafka Connect を [スタンドアロン](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#standalone-cluster) モードまたは [分散](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#distributed-cluster) モードのいずれかで起動します。
 
@@ -117,7 +117,7 @@ Kafka Connect を [スタンドアロン](https://docs.confluent.io/cloud/curren
 ./bin/connect-standalone connect.properties.ini github-jdbc-sink.properties.ini
 ```
 
-#### 6. Kafka にデータを追加する {#6-add-data-to-kafka}
+#### 6. Kafka にデータを追加する \\{#6-add-data-to-kafka\\}
 
 提供されている[スクリプトと設定](https://github.com/ClickHouse/kafka-samples/tree/main/producer)を使用して、メッセージを Kafka に送信します。`github.config` を編集し、Kafka の認証情報を設定する必要があります。スクリプトは現在、Confluent Cloud での使用向けに構成されています。
 
@@ -143,7 +143,7 @@ SELECT count() FROM default.github;
 | 10000 |
 ```
 
-### おすすめの参考資料 {#recommended-further-reading}
+### おすすめの参考資料 \\{#recommended-further-reading\\}
 
 * [Kafka Sink 構成パラメータ](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/sink_config_options.html#sink-config-options)
 * [Kafka Connect Deep Dive – JDBC Source Connector](https://www.confluent.io/blog/kafka-connect-deep-dive-jdbc-source-connector)

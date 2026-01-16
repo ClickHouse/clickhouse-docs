@@ -7,7 +7,7 @@ title: 'system.one'
 doc_type: 'reference'
 ---
 
-# system.one {#systemone}
+# system.one \\{#systemone\\}
 
 Эта таблица содержит одну строку с единственным столбцом `dummy` типа UInt8 со значением 0.
 

@@ -37,12 +37,12 @@ Helm-чарт для ClickStack можно найти [здесь](https://githu
 * Управление секретами и настройку аутентификации
 
 
-### Подходит для {#suitable-for}
+### Подходит для \\{#suitable-for\\}
 
 * Пилотных проектов (proof of concept)
 * Продакшена (production)
 
-## Этапы развертывания {#deployment-steps}
+## Этапы развертывания \\{#deployment-steps\\}
 
 <br/>
 
@@ -318,13 +318,13 @@ helm uninstall my-clickstack
 
 ## Устранение неполадок {#troubleshooting}
 
-### Проверка логов {#customizing-values}
+### Проверка логов \{#customizing-values\}
 
 ```shell
 kubectl logs -l app.kubernetes.io/name=clickstack
 ```
 
-### Устранение неполадок при неудачной установке {#using-secrets}
+### Устранение неполадок при неудачной установке \{#using-secrets\}
 
 ```shell
 helm install my-clickstack clickstack/clickstack --debug --dry-run

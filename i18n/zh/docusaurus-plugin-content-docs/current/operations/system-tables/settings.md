@@ -6,7 +6,7 @@ title: 'system.settings'
 doc_type: 'reference'
 ---
 
-# system.settings {#systemsettings}
+# system.settings \\{#systemsettings\\}
 
 包含当前用户会话参数设置信息。
 

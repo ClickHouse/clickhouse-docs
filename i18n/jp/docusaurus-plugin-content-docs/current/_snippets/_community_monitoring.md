@@ -1,4 +1,4 @@
-## コミュニティによる監視ソリューション {#community-monitoring}
+## コミュニティによる監視ソリューション \\{#community-monitoring\\}
 
 ClickHouse コミュニティは、一般的なオブザーバビリティスタックと連携する包括的な監視ソリューションを開発しています。[ClickHouse Monitoring](https://github.com/duyet/clickhouse-monitoring) は、あらかじめ用意されたダッシュボードを備えた完全な監視環境を提供します。このオープンソースプロジェクトは、確立されたベストプラクティスと実績のあるダッシュボード構成に基づいて ClickHouse の監視を導入したいチームに、迅速に開始するための手段を提供します。
 

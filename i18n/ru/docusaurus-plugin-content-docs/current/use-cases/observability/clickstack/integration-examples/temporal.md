@@ -24,7 +24,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 Temporal предоставляет абстракцию для создания простых, сложных и отказоустойчивых приложений.
 
 
-# Мониторинг метрик Temporal Cloud с помощью ClickStack {#temporal-metrics-clickstack}
+# Мониторинг метрик Temporal Cloud с помощью ClickStack \\{#temporal-metrics-clickstack\\}
 
 :::note[Кратко]
 В этом руководстве показано, как отслеживать Temporal Cloud с помощью ClickStack, настроив Prometheus receiver в OTel collector. Вы узнаете, как:
@@ -36,11 +36,11 @@ Temporal предоставляет абстракцию для создания
 Требуемое время: 5–10 минут
 :::
 
-## Интеграция с существующим Temporal Cloud {#existing-temporal}
+## Интеграция с существующим Temporal Cloud \\{#existing-temporal\\}
 
 В этом разделе описывается настройка ClickStack через конфигурацию OTel collector ClickStack с приемником Prometheus.
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \\{#prerequisites\\}
 
 - Запущенный экземпляр ClickStack
 - Учетная запись Temporal Cloud
@@ -170,9 +170,9 @@ Temporal предоставляет абстракцию для создания
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/temporal-metrics-dashboard.json')} download="temporal-metrics-dashboard.json" eventName="docs.temporal_metrics_monitoring.dashboard_download">Скачайте</TrackedLink> конфигурацию дашборда {#download}
+#### <TrackedLink href={useBaseUrl('/examples/temporal-metrics-dashboard.json')} download="temporal-metrics-dashboard.json" eventName="docs.temporal_metrics_monitoring.dashboard_download">Скачайте</TrackedLink> конфигурацию дашборда \\{#download\\}
 
-#### Импортируйте преднастроенный дашборд {#import-dashboard}
+#### Импортируйте преднастроенный дашборд \\{#import-dashboard\\}
 
 1. Откройте HyperDX и перейдите в раздел Dashboards
 2. Нажмите **Import Dashboard** в правом верхнем углу под значком с многоточием

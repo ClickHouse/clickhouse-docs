@@ -27,7 +27,7 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.png';
 在下面的章节中，您将学习如何完成这一配置。
 
 
-## 获取 ClickHouse 服务 IAM 角色 ARN {#obtaining-the-clickhouse-service-iam-role-arn}
+## 获取 ClickHouse 服务 IAM 角色 ARN \\{#obtaining-the-clickhouse-service-iam-role-arn\\}
 
 1. 登录到你的 ClickHouse cloud 账户。
 
@@ -41,14 +41,14 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.png';
 
 <Image img={s3_info} size="lg" alt="获取 ClickHouse 服务 IAM 角色 ARN" border />
 
-## 设置用于 AssumeRole 的 IAM 角色 {#setting-up-iam-assume-role}
+## 设置用于 AssumeRole 的 IAM 角色 \\{#setting-up-iam-assume-role\\}
 
 可以通过以下两种方式之一来设置该 IAM 角色：
 
 - [使用 CloudFormation 堆栈](#option-1-deploying-with-cloudformation-stack)
 - [手动创建 IAM 角色](#option-2-manually-create-iam-role)
 
-### 使用 CloudFormation 堆栈部署 {#option-1-deploying-with-cloudformation-stack}
+### 使用 CloudFormation 堆栈部署 \\{#option-1-deploying-with-cloudformation-stack\\}
 
 1. 在浏览器中使用具备创建和管理 IAM 角色权限的 IAM 用户登录到您的 AWS 账户。
 
@@ -85,7 +85,7 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.png';
 
 <Image img={s3_output} size="lg" alt="显示 IAM Role ARN 的 CloudFormation stack 输出" border />
 
-### 手动创建 IAM 角色 {#option-2-manually-create-iam-role}
+### 手动创建 IAM 角色 \{#option-2-manually-create-iam-role\}
 
 1. 在浏览器中登录到您的 AWS 账户，使用具有创建和管理 IAM 角色权限的 IAM 用户。
 
@@ -141,7 +141,7 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.png';
 4. 在创建完成后复制新的 **IAM Role Arn**，这是访问您的 S3 bucket 所需的标识。
 
 
-## 使用 ClickHouseAccess 角色访问你的 S3 bucket {#access-your-s3-bucket-with-the-clickhouseaccess-role}
+## 使用 ClickHouseAccess 角色访问你的 S3 bucket \{#access-your-s3-bucket-with-the-clickhouseaccess-role\}
 
 ClickHouse Cloud 允许你在 S3 表函数中指定 `extra_credentials`。下面是一个示例，展示如何使用上面新创建的角色来运行查询。
 
@@ -162,7 +162,7 @@ DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWit
 :::
 
 
-## 高级操作控制 {#advanced-action-control}
+## 高级操作控制 \{#advanced-action-control\}
 
 为了实现更严格的访问控制，可以使用 [`aws:SourceVpce` 条件](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies-vpc-endpoint.html#example-bucket-policies-restrict-accesss-vpc-endpoint)，将存储桶策略限制为仅接受来源于 ClickHouse Cloud 的 VPC 端点的请求。要获取 ClickHouse Cloud 所在区域的 VPC 端点，请打开终端并运行：
 

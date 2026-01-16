@@ -18,7 +18,7 @@ import vector01 from '@site/static/images/integrations/data-ingestion/etl-tools/
 import vector02 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Vector と ClickHouse の統合 {#integrating-vector-with-clickhouse}
+# Vector と ClickHouse の統合 \\{#integrating-vector-with-clickhouse\\}
 
 <PartnerBadge />
 
@@ -35,7 +35,7 @@ ClickHouse は、優れた圧縮率（ログでは最大 [170x](https://clickhou
 
 <VerticalStepper headerLevel="h2">
 
-## データベースとテーブルを作成する {#1-create-a-database-and-table}
+## データベースとテーブルを作成する \\{#1-create-a-database-and-table\\}
 
 ログイベントを保存するためのテーブルを定義します。
 
@@ -59,7 +59,7 @@ ORDER BY tuple()
 **ORDER BY** は、まだ主キーが不要なため、空のタプルである **tuple()** に設定されています。
 :::
 
-## Nginx を構成する {#2--configure-nginx}
+## Nginx を構成する \\{#2--configure-nginx\\}
 
 このステップでは、Nginx のログ出力を構成する方法を説明します。
 
@@ -88,7 +88,7 @@ http {
  192.168.208.1 - - [12/Oct/2021:03:31:49 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
  ```
 
-## Vector を設定する {#3-configure-vector}
+## Vector を設定する \\{#3-configure-vector\\}
 
 Vector はログ、メトリクス、トレース（**sources** と呼ばれます）を収集・変換・ルーティングし、ClickHouse を含む多数の異なるベンダー（**sinks** と呼ばれます）へ送信します。
 Source と sink は **vector.toml** という名前の設定ファイルで定義します。
@@ -120,7 +120,7 @@ SELECT * FROM nginxdb.access_logs
 
 <Image img={vector01} size="lg" border alt="テーブル形式で ClickHouse のログを表示する" />
 
-## ログをパースする {#4-parse-the-logs}
+## ログをパースする \\{#4-parse-the-logs\\}
 
 ログを ClickHouse に保存できるのは有用ですが、各イベントを 1 つの文字列として保存するだけでは、十分なデータ分析は行えません。
 次に、[マテリアライズドビュー](/materialized-view/incremental-materialized-view) を使用してログイベントをどのようにパースするかを見ていきます。

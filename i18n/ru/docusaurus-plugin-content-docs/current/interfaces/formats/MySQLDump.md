@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|-------|-----------|
 | ✔     | ✗     |           |
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 ClickHouse поддерживает чтение [дампов](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html) MySQL.
 
@@ -24,7 +24,7 @@ ClickHouse поддерживает чтение [дампов](https://dev.mysq
 Этот формат поддерживает автоматическое определение схемы: если дамп содержит запрос `CREATE` для указанной таблицы, структура определяется по нему, в противном случае схема определяется по данным запросов `INSERT`.
 :::
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
 Предположим, у нас есть следующий файл дампа SQL:
 
@@ -80,7 +80,7 @@ SETTINGS input_format_mysql_dump_table_name = 'test2'
 └───┘
 ```
 
-## Настройки формата {#format-settings}
+## Настройки формата \\{#format-settings\\}
 
 Вы можете указать имя таблицы, из которой нужно читать данные, с помощью настройки [`input_format_mysql_dump_table_name`](/operations/settings/settings-formats.md/#input_format_mysql_dump_table_name).
 Если настройка `input_format_mysql_dump_map_columns` установлена в `1` и дамп содержит запрос `CREATE` для указанной таблицы или содержит имена столбцов в запросе `INSERT`, то столбцы из входных данных будут сопоставлены со столбцами таблицы по имени.

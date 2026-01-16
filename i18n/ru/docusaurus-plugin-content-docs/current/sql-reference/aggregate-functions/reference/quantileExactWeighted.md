@@ -5,7 +5,7 @@ title: 'quantileExactWeighted'
 doc_type: 'reference'
 ---
 
-# quantileExactWeighted {#quantileexactweighted}
+# quantileExactWeighted \{#quantileexactweighted\}
 
 Точно вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности, учитывая вес каждого элемента.
 

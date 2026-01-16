@@ -7,7 +7,7 @@ title: 'EXCHANGE 语句'
 doc_type: 'reference'
 ---
 
-# EXCHANGE 语句 {#exchange-statement}
+# EXCHANGE 语句 \\{#exchange-statement\\}
 
 以原子方式交换两个表或字典的名称。
 也可以通过使用临时名称的 [`RENAME`](./rename.md) 查询来实现这一操作，但在这种情况下该操作不是原子的。
@@ -22,7 +22,7 @@ doc_type: 'reference'
 EXCHANGE TABLES|DICTIONARIES [db0.]name_A AND [db1.]name_B [ON CLUSTER cluster]
 ```
 
-## EXCHANGE TABLES {#exchange-tables}
+## EXCHANGE TABLES \\{#exchange-tables\\}
 
 交换两张表的名称。
 
@@ -32,7 +32,7 @@ EXCHANGE TABLES|DICTIONARIES [db0.]name_A AND [db1.]name_B [ON CLUSTER cluster]
 EXCHANGE TABLES [db0.]table_A AND [db1.]table_B [ON CLUSTER cluster]
 ```
 
-### 交换多个表 {#exchange-multiple-tables}
+### 交换多个表 \\{#exchange-multiple-tables\\}
 
 你可以在单个查询中交换多个表对，用逗号将它们分隔开。
 
@@ -92,7 +92,7 @@ SHOW TABLE d;
 └────────────────────────┘
 ```
 
-## EXCHANGE DICTIONARIES {#exchange-dictionaries}
+## EXCHANGE DICTIONARIES \\{#exchange-dictionaries\\}
 
 交换两个字典的名称。
 

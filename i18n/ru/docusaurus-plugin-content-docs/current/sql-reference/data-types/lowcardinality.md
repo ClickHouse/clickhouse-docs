@@ -7,11 +7,11 @@ title: 'LowCardinality(T)'
 doc_type: 'reference'
 ---
 
-# LowCardinality(T) {#lowcardinalityt}
+# LowCardinality(T) \{#lowcardinalityt\}
 
 Изменяет внутреннее представление других типов данных на представление с использованием словарной кодировки.
 
-## Синтаксис {#syntax}
+## Синтаксис \{#syntax\}
 
 ```sql
 LowCardinality(data_type)
@@ -22,7 +22,7 @@ LowCardinality(data_type)
 * `data_type` — [String](../../sql-reference/data-types/string.md), [FixedString](../../sql-reference/data-types/fixedstring.md), [Date](../../sql-reference/data-types/date.md), [DateTime](../../sql-reference/data-types/datetime.md) и числовые типы данных, за исключением [Decimal](../../sql-reference/data-types/decimal.md). `LowCardinality` неэффективен для некоторых типов данных, см. описание настройки [allow&#95;suspicious&#95;low&#95;cardinality&#95;types](../../operations/settings/settings.md#allow_suspicious_low_cardinality_types).
 
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 `LowCardinality` — это надстройка, которая изменяет способ хранения данных и правила их обработки. ClickHouse применяет [словарное кодирование](https://en.wikipedia.org/wiki/Dictionary_coder) к столбцам типа `LowCardinality`. Работа со словарно закодированными данными существенно повышает производительность выполнения запросов [SELECT](../../sql-reference/statements/select/index.md) для многих приложений.
 
@@ -30,7 +30,7 @@ LowCardinality(data_type)
 
 Рассмотрите возможность использования `LowCardinality` вместо [Enum](../../sql-reference/data-types/enum.md) при работе со строками. `LowCardinality` обеспечивает большую гибкость в использовании и часто демонстрирует такую же или более высокую эффективность.
 
-## Пример {#example}
+## Пример \{#example\}
 
 Создайте таблицу со столбцом типа `LowCardinality`:
 
@@ -45,7 +45,7 @@ ORDER BY id
 ```
 
 
-## Связанные настройки и функции {#related-settings-and-functions}
+## Связанные настройки и функции \\{#related-settings-and-functions\\}
 
 Настройки:
 
@@ -59,7 +59,7 @@ ORDER BY id
 
 - [toLowCardinality](../../sql-reference/functions/type-conversion-functions.md#toLowCardinality)
 
-## Связанные материалы {#related-content}
+## Связанные материалы \\{#related-content\\}
 
 - Блог: [Оптимизация ClickHouse с помощью схем и кодеков](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)
 - Блог: [Работа с временными рядами в ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

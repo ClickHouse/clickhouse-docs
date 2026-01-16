@@ -6,13 +6,13 @@ title: 'Geohash を扱うための関数'
 doc_type: 'reference'
 ---
 
-## Geohash {#geohash}
+## Geohash \\{#geohash\\}
 
 [Geohash](https://en.wikipedia.org/wiki/Geohash) はジオコードシステムで、地球の表面を格子状のグリッドセル（バケット）に分割し、それぞれのセルを英数字からなる短い文字列としてエンコードします。これは階層的なデータ構造であり、Geohash 文字列が長くなるほど、地理的位置をより高い精度で表現できます。
 
 地理座標を Geohash 文字列に手動で変換する必要がある場合は、[geohash.org](http://geohash.co/) を利用できます。
 
-## geohashEncode {#geohashencode}
+## geohashEncode \\{#geohashencode\\}
 
 緯度と経度を [geohash](#geohash) 形式の文字列にエンコードします。
 
@@ -54,7 +54,7 @@ SELECT geohashEncode(-5.60302734375, 42.593994140625, 0) AS res;
 └──────────────┘
 ```
 
-## geohashDecode {#geohashdecode}
+## geohashDecode \\{#geohashdecode\\}
 
 [geohash](#geohash) でエンコードされた任意の文字列を緯度・経度にデコードします。
 
@@ -84,7 +84,7 @@ SELECT geohashDecode('ezs42') AS res;
 └─────────────────────────────────┘
 ```
 
-## geohashesInBox {#geohashesinbox}
+## geohashesInBox \\{#geohashesinbox\\}
 
 指定されたボックスの内部および境界と交差する位置にある、指定した精度の [geohash](#geohash) でエンコードされた文字列の配列を返します。基本的には、2 次元グリッドを 1 次元の配列に平坦化したものです。
 

@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 この形式では、すべてのデータは 1 つの JSON 配列として表現されます。
 
@@ -21,9 +21,9 @@ doc_type: 'reference'
 `JSONCompactColumns` 出力形式は、すべてのデータを 1 つのブロックとして出力するためにメモリ上にバッファリングするため、多くのメモリを消費する可能性があります。
 :::
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
-### データの挿入 {#inserting-data}
+### データの挿入 \\{#inserting-data\\}
 
 次のデータが含まれた JSON ファイル `football.json` を使用します。
 
@@ -44,7 +44,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactColumns;
 ```
 
-### データの読み込み {#reading-data}
+### データの読み込み \\{#reading-data\\}
 
 `JSONCompactColumns` 形式を使用してデータを読み込みます。
 
@@ -69,4 +69,4 @@ FORMAT JSONCompactColumns
 
 ブロック内に存在しないカラムにはデフォルト値が補われます（ここでは [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) 設定を使用できます）
 
-## フォーマットの設定 {#format-settings}
+## フォーマットの設定 \\{#format-settings\\}

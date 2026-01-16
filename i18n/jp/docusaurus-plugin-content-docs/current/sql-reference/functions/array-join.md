@@ -6,7 +6,7 @@ title: 'arrayJoin 関数'
 doc_type: 'reference'
 ---
 
-# arrayJoin function {#arrayjoin-function}
+# arrayJoin function \\{#arrayjoin-function\\}
 
 これは少し特殊な関数です。
 
@@ -83,7 +83,7 @@ GROUP BY
 └─────────────┴──────────┴─────────┘
 ```
 
-### ベストプラクティス {#important-note}
+### ベストプラクティス \\{#important-note\\}
 
 同じ式に対して複数回 `arrayJoin` を使用すると、共通部分式の除去により意図しない結果になる場合があります。
 そのような場合は、結合の結果に影響を与えない追加の処理を加えて、繰り返し利用される配列式を変更することを検討してください。例えば、`arrayJoin(arraySort(arr))` や `arrayJoin(arrayConcat(arr, []))` などです。

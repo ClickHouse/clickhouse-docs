@@ -11,26 +11,26 @@ integration:
   - category: 'clickpipes'
 ---
 
-# 最佳实践 {#best-practices}
+# 最佳实践 \\{#best-practices\\}
 
-## 消息压缩 {#compression}
+## 消息压缩 \\{#compression\\}
 
 我们强烈建议为 Kafka 主题启用压缩。压缩几乎不会带来性能开销，却可以在数据传输成本上带来显著节省。
 要进一步了解 Kafka 中的消息压缩，我们建议从这篇[指南](https://www.confluent.io/blog/apache-kafka-message-compression/)开始阅读。
 
-## 限制 {#limitations}
+## 限制 \\{#limitations\\}
 
 - 不支持 [`DEFAULT`](/sql-reference/statements/create/table#default)。
 
-## 投递语义 {#delivery-semantics}
+## 投递语义 \\{#delivery-semantics\\}
 
 用于 Kafka 的 ClickPipes 提供 `at-least-once` 投递语义（这是最常用的方法之一）。欢迎您通过[联系表单](https://clickhouse.com/company/contact?loc=clickpipes)就投递语义向我们反馈意见。如果您需要 `exactly-once` 语义，建议使用我们的官方 [`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse) sink 连接器。
 
-## 身份验证 {#authentication}
+## 身份验证 \\{#authentication\\}
 
 对于 Apache Kafka 协议数据源，ClickPipes 支持使用 TLS 加密的 [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) 身份验证，以及 `SASL/SCRAM-SHA-256` 和 `SASL/SCRAM-SHA-512`。具体会根据流式数据源（Redpanda、MSK 等）的不同，在兼容性范围内启用全部或部分这些身份验证机制。如有不同的身份验证需求，请[向我们反馈](https://clickhouse.com/company/contact?loc=clickpipes)。
 
-### IAM {#iam}
+### IAM \\{#iam\\}
 
 :::info
 用于 MSK ClickPipe 的 IAM 身份验证目前为测试版功能。
@@ -82,7 +82,7 @@ ClickPipes 支持以下 AWS MSK 身份验证方式：
 ```
 
 
-#### 配置信任关系 {#configuring-a-trusted-relationship}
+#### 配置信任关系 \\{#configuring-a-trusted-relationship\\}
 
 如果您使用 IAM 角色 ARN 对 MSK 进行身份验证，则需要为您的 ClickHouse Cloud 实例配置一条信任关系，以便该实例可以承担该角色（assume）。
 
@@ -107,27 +107,27 @@ ClickPipes 支持以下 AWS MSK 身份验证方式：
 ```
 
 
-### 自定义证书 {#custom-certificates}
+### 自定义证书 \\{#custom-certificates\\}
 
 用于 Kafka 的 ClickPipes 支持为使用非公开服务器证书的 Kafka broker 上传自定义证书。
 也支持上传客户端证书和密钥，以用于基于双向 TLS（mTLS）的身份验证。
 
-## 性能 {#performance}
+## 性能 \\{#performance\\}
 
-### 批处理 {#batching}
+### 批处理 \\{#batching\\}
 ClickPipes 以批处理的方式向 ClickHouse 插入数据。这样可以避免在数据库中创建过多的数据片段（parts），从而防止导致集群性能问题。
 
 在满足以下任一条件时会插入一个批次：
 - 批大小达到最大值（每 1GB pod（容器组）内存对应 100,000 行或 32MB）
 - 批已打开达到最大时长（5 秒）
 
-### 延迟 {#latency}
+### 延迟 \\{#latency\\}
 
 延迟（定义为从 Kafka 消息被生产到该消息在 ClickHouse 中可用之间的时间）取决于多种因素（如 broker 延迟、网络延迟、消息大小/格式）。上文所述的[批处理](#batching)也会影响延迟。我们始终建议使用典型负载对您的特定用例进行测试，以确定预期延迟。
 
 ClickPipes 不对延迟提供任何保证。如果您有特定的低延迟需求，请[联系我们](https://clickhouse.com/company/contact?loc=clickpipes)。
 
-### 扩展性 {#scaling}
+### 扩展性 \\{#scaling\\}
 
 面向 Kafka 的 ClickPipes 被设计为既可水平扩展也可垂直扩展。默认情况下，我们会创建一个包含单个消费者的 consumer group。此设置可以在创建 ClickPipe 时进行配置，或在之后任何时间通过 **Settings** -> **Advanced Settings** -> **Scaling** 进行调整。
 
@@ -138,7 +138,7 @@ ClickPipes 提供高可用的跨可用区分布式架构，
 如果某个消费者或其底层基础设施发生故障，
 ClickPipe 会自动重启该消费者并继续处理消息。
 
-### 基准测试 {#benchmarks}
+### 基准测试 \\{#benchmarks\\}
 
 以下是面向 Kafka 的 ClickPipes 的一些非正式基准测试，可用于大致了解基线性能。需要注意的是，许多因素都会影响性能，包括消息大小、数据类型和数据格式。您的实际结果可能有所不同，这里展示的内容并不构成对实际性能的保证。
 

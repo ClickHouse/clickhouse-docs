@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 [TabSeparatedWithNamesAndTypes](../formats/TabSeparatedWithNamesAndTypes) と同様に、列名と型が記載されたヘッダー行を 2 行出力します。
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
-### データの挿入 {#inserting-data}
+### データの挿入 \\{#inserting-data\\}
 
 :::tip
 [バージョン](https://github.com/ClickHouse/ClickHouse/releases) 23.1 以降では、ClickHouse は `CSV` フォーマットを使用する際に CSV ファイル内のヘッダーを自動検出するため、`CSVWithNames` や `CSVWithNamesAndTypes` を使用する必要はありません。
@@ -71,7 +71,7 @@ ORDER BY (date, home_team);
 INSERT INTO football FROM INFILE 'football_types.csv' FORMAT CSVWithNamesAndTypes;
 ```
 
-### データの読み込み {#reading-data}
+### データの読み込み \\{#reading-data\\}
 
 `CSVWithNamesAndTypes` 形式を使用してデータを読み込みます。
 
@@ -105,7 +105,7 @@ FORMAT CSVWithNamesAndTypes
 "2022-05-07",2021,"Walsall","Swindon Town",0,3
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \\{#format-settings\\}
 
 :::note
 [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) 設定が `1` の場合、

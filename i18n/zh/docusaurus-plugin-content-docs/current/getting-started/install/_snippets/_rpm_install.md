@@ -1,10 +1,10 @@
-# 在基于 rpm 的发行版上安装 ClickHouse {#from-rpm-packages}
+# 在基于 rpm 的发行版上安装 ClickHouse \\{#from-rpm-packages\\}
 
 > 建议在 **CentOS**、**RedHat** 及其他所有基于 rpm 的 Linux 发行版上使用官方预编译的 `rpm` 软件包。
 
 <VerticalStepper>
 
-## 配置 RPM 软件源 {#setup-the-rpm-repository}
+## 配置 RPM 软件源 \\{#setup-the-rpm-repository\\}
 
 运行以下命令添加官方软件源：
 
@@ -22,7 +22,7 @@ sudo zypper --gpg-auto-import-keys refresh clickhouse-stable
 
 在以下步骤中，您可以根据所使用的包管理器，将 `yum install` 替换为 `zypper install`。
 
-## 安装 ClickHouse 服务端和客户端 {#install-clickhouse-server-and-client-1}
+## 安装 ClickHouse 服务端和客户端 \\{#install-clickhouse-server-and-client-1\\}
 
 要安装 ClickHouse，请运行以下命令：
 
@@ -38,7 +38,7 @@ sudo yum install -y clickhouse-server clickhouse-client
 sudo yum install clickhouse-server-22.8.7.34
 ```
 
-## 启动 ClickHouse 服务器 {#start-clickhouse-server-1}
+## 启动 ClickHouse 服务器 \\{#start-clickhouse-server-1\\}
 
 要启动 ClickHouse 服务器，运行以下命令：
 
@@ -60,7 +60,7 @@ clickhouse-client
 clickhouse-client --password
 ```
 
-## 安装独立的 ClickHouse Keeper {#install-standalone-clickhouse-keeper-1}
+## 安装独立的 ClickHouse Keeper \\{#install-standalone-clickhouse-keeper-1\\}
 
 :::tip
 在生产环境中，我们强烈建议在独立节点上运行 ClickHouse Keeper。
@@ -74,7 +74,7 @@ clickhouse-client --password
 sudo yum install -y clickhouse-keeper
 ```
 
-## 启用并启动 ClickHouse Keeper {#enable-and-start-clickhouse-keeper-1}
+## 启用并启动 ClickHouse Keeper \\{#enable-and-start-clickhouse-keeper-1\\}
 
 ```bash
 sudo systemctl enable clickhouse-keeper

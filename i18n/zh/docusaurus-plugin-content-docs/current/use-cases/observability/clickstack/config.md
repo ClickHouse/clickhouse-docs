@@ -14,9 +14,9 @@ import hyperdx_26 from '@site/static/images/use-cases/observability/hyperdx-26.p
 
 ClickStack 的每个组件都提供如下配置选项：
 
-## 修改设置 {#modifying-settings}
+## 修改设置 \\{#modifying-settings\\}
 
-### Docker {#docker}
+### Docker \{#docker\}
 
 如果使用 [All in One](/use-cases/observability/clickstack/deployment/all-in-one)、[HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only) 或 [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only)，只需通过环境变量传递所需设置，例如：
 
@@ -25,7 +25,7 @@ docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 
 ```
 
 
-### Docker Compose {#docker-compose}
+### Docker Compose \\{#docker-compose\\}
 
 如果使用 [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) 部署指南，可以通过修改 [`.env`](https://github.com/hyperdxio/hyperdx/blob/main/.env) 文件来调整配置。
 
@@ -42,9 +42,9 @@ services:
       # ... 其他配置
 ```
 
-### Helm {#helm}
+### Helm \\{#helm\\}
 
-#### 自定义配置（可选） {#customizing-values}
+#### 自定义配置（可选） \\{#customizing-values\\}
 
 可以通过使用 `--set` 标志来自定义配置，例如：
 
@@ -95,9 +95,9 @@ ingress:
       value: abc
 ```
 
-## HyperDX {#hyperdx}
+## HyperDX \\{#hyperdx\\}
 
-### 数据源设置 {#datasource-settings}
+### 数据源设置 \\{#datasource-settings\\}
 
 HyperDX 依赖用户为每一种可观测性数据类型/支柱定义一个数据源：
 
@@ -120,7 +120,7 @@ ClickStack 随附的 ClickHouse 默认 schema 是由 [ClickHouse exporter for th
 
 每个数据源均提供以下设置：
 
-#### 日志 {#logs}
+#### 日志 \\{#logs\\}
 
 | Setting                        | Description                                                                                                             | Required | Inferred in Default Schema | Inferred Value                                      |
 |-------------------------------|-------------------------------------------------------------------------------------------------------------------------|----------|-----------------------------|-----------------------------------------------------|
@@ -142,7 +142,7 @@ ClickStack 随附的 ClickHouse 默认 schema 是由 [ClickHouse exporter for th
 | `Span Id Expression`          | 用于提取 Span ID 的表达式或列。                                                                                         | 是       | 是                         | `SpanId`                                              |
 | `Implicit Column Expression`  | 当未指定字段时，用于全文搜索的列（类似 Lucene 的风格）。通常为日志正文。                                               | 是       | 是                         | `Body`                                                |
 
-#### Traces {#traces}
+#### Traces \\{#traces\\}
 
 | Setting                          | Description                                                                                                             | Required | Inferred in Default Schema | Inferred Value         |
 |----------------------------------|-------------------------------------------------------------------------------------------------------------------------|----------|-----------------------------|------------------------|
@@ -171,7 +171,7 @@ ClickStack 随附的 ClickHouse 默认 schema 是由 [ClickHouse exporter for th
 | `Span Events Expression`        | 用于提取 span 事件的表达式。通常是 `Nested` 类型的列。这使得可以使用受支持语言的 SDK 渲染异常堆栈追踪。                                                   | Yes      | Yes                         | `Events`                 |
 | `Implicit Column Expression`   | 在未指定字段时用于全文搜索（类似 Lucene 风格）的列。通常为日志正文。  | Yes  | Yes  | `SpanName`|
 
-#### 指标 {#metrics}
+#### 指标 \\{#metrics\\}
 
 | 设置                   | 说明                                                                                         | 是否必需 | 在默认模式中是否可推断       | 推断值                       |
 |------------------------|----------------------------------------------------------------------------------------------|----------|------------------------------|------------------------------|
@@ -183,7 +183,7 @@ ClickStack 随附的 ClickHouse 默认 schema 是由 [ClickHouse exporter for th
 | `Sum Table`            | 存储 sum 类型（计数器）指标的表。                                                           | 是       | 否                           | `otel_metrics_sum`           |
 | `Correlated Log Source`| 可选。关联的日志源（例如 HyperDX 日志）。                                                   | 否       | 否                           | –                            |
 
-#### 会话 {#settings}
+#### 会话 \\{#settings\\}
 
 | 设置                        | 描述                                                                                         | 必需 | 在默认架构中推断 | 推断值         |
 |-------------------------------|-----------------------------------------------------------------------------------------------------|----------|-----------------------------|------------------------|
@@ -198,7 +198,7 @@ ClickStack 随附的 ClickHouse 默认 schema 是由 [ClickHouse exporter for th
 | `Correlated Trace Source`     | 可选。用于会话关联的 Trace 来源。                                              | 否       | 否                          | —                      |
 | `Implicit Column Expression`  | 当未指定字段时用于全文搜索的列或表达式（例如 Lucene 风格的查询解析）。      | 是      | 是                         | `Body` |
 
-### 关联来源 {#correlated-sources}
+### 关联来源 \\{#correlated-sources\\}
 
 要在 ClickStack 中启用跨来源的完整关联功能，你必须为 logs、traces、metrics 和 sessions 配置关联来源。这使 HyperDX 能够将相关数据关联起来，并在展示事件时提供丰富的上下文。
 
@@ -213,7 +213,7 @@ ClickStack 随附的 ClickHouse 默认 schema 是由 [ClickHouse exporter for th
 
 <Image img={hyperdx_26} alt="已配置关联来源的 HyperDX 来源" size="md"/>
 
-### 应用配置设置 {#application-configuration-settings}
+### 应用配置设置 \\{#application-configuration-settings\\}
 
 :::note ClickHouse Cloud 中的 HyperDX
 在 ClickHouse Cloud 中托管 HyperDX 时，这些设置无法修改。
@@ -348,7 +348,7 @@ ClickStack 随附的 ClickHouse 默认 schema 是由 [ClickHouse exporter for th
   * **指导：**
   * 将其设置为 `true` 以在 ClickStack 中启用 JSON 支持。
 
-## OpenTelemetry collector {#otel-collector}
+## OpenTelemetry collector \\{#otel-collector\\}
 
 有关更多详细信息，请参阅 ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector)。
 
@@ -400,7 +400,7 @@ ClickStack 随附的 ClickHouse 默认 schema 是由 [ClickHouse exporter for th
   - **指导：**
     - 将其设置为 `true` 以在 ClickStack 中启用 JSON 支持。
 
-## ClickHouse {#clickhouse}
+## ClickHouse \\{#clickhouse\\}
 
 ClickStack 随附的默认 ClickHouse 配置面向多 TB 级别规模设计，但用户可以自由修改和优化，使其更适合自身的工作负载。
 

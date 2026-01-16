@@ -7,12 +7,12 @@ title: '开发者前提条件'
 doc_type: 'guide'
 ---
 
-# 前提条件 {#prerequisites}
+# 前提条件 \\{#prerequisites\\}
 
 ClickHouse 可以在 Linux、FreeBSD 和 macOS 上构建。
 如果你使用的是 Windows，仍然可以在运行 Linux 的虚拟机中构建 ClickHouse，例如在安装了 Ubuntu 的 [VirtualBox](https://www.virtualbox.org/) 中。
 
-## 在 GitHub 上创建仓库 {#create-a-repository-on-github}
+## 在 GitHub 上创建仓库 \\{#create-a-repository-on-github\\}
 
 要开始为 ClickHouse 开发，你需要一个 [GitHub](https://www.github.com/) 账号。
 如果你还没有 SSH 密钥，请在本地生成一个 SSH 密钥，并将公钥上传到 GitHub，因为这是提交补丁的前置条件。
@@ -31,7 +31,7 @@ sudo apt install git
 Git 速查表可在[此处](https://education.github.com/git-cheat-sheet-education.pdf)查阅。
 Git 详细手册在[此处](https://git-scm.com/book/en/v2)。
 
-## 将仓库克隆到你的开发环境中 {#clone-the-repository-to-your-development-machine}
+## 将仓库克隆到你的开发环境中 \\{#clone-the-repository-to-your-development-machine\\}
 
 首先，将源文件下载到你的工作环境中，也就是克隆该仓库：
 
@@ -91,7 +91,7 @@ git remote add upstream git@github.com:ClickHouse/ClickHouse.git
 最好显式指定远程和分支名，例如 `git push origin my_branch_name`。
 :::
 
-## 编写代码 {#writing-code}
+## 编写代码 \\{#writing-code\\}
 
 下面是一些在为 ClickHouse 编写代码时可能会用到的快速链接：
 
@@ -101,7 +101,7 @@ git remote add upstream git@github.com:ClickHouse/ClickHouse.git
 - [编写测试](/development/tests/)
 - [开放的 issue](https://github.com/ClickHouse/ClickHouse/issues?q=is%3Aopen+is%3Aissue+label%3A%22easy+task%22)
 
-### IDE {#ide}
+### IDE \\{#ide\\}
 
 [Visual Studio Code](https://code.visualstudio.com/) 和 [Neovim](https://neovim.io/) 在开发 ClickHouse 的实践中被证明是两个效果不错的选项。若你使用 VS Code，我们建议使用 [clangd 扩展](https://marketplace.visualstudio.com/items?itemName=llvm-vs-code-extensions.vscode-clangd) 来替换 IntelliSense，因为它的性能要高得多。
 
@@ -113,7 +113,7 @@ git remote add upstream git@github.com:ClickHouse/ClickHouse.git
 
 你也可以使用其他 IDE，例如 [Sublime Text](https://www.sublimetext.com/)、[Qt Creator](https://www.qt.io/product/development-tools) 或 [Kate](https://kate-editor.org/)。
 
-## 创建 Pull Request {#create-a-pull-request}
+## 创建 Pull Request \\{#create-a-pull-request\\}
 
 在 GitHub 的 UI 中打开你 fork 出来的仓库。
 如果你是在某个分支上开发的，需要先选择该分支。
@@ -134,7 +134,7 @@ git remote add upstream git@github.com:ClickHouse/ClickHouse.git
 要获取这些构建，点击检查列表中 “Builds” 条目旁边的 “Details” 链接。
 在那里你会找到已构建的 ClickHouse `.deb` 包的直接链接，你甚至可以将它们部署到生产环境服务器上（如果你不担心的话）。
 
-## 编写文档 {#write-documentation}
+## 编写文档 \\{#write-documentation\\}
 
 每个添加新功能的 pull request 都必须附带相应的文档。
 如果你想预览文档修改内容，如何在本地构建文档页面的说明请参见 README.md 文件：[链接](https://github.com/ClickHouse/clickhouse-docs)。
@@ -182,7 +182,7 @@ Response:
 \```
 ```
 
-## 使用测试数据 {#using-test-data}
+## 使用测试数据 \\{#using-test-data\\}
 
 在开发 ClickHouse 时，经常需要加载接近真实的数据集。
 这对性能测试尤为重要。

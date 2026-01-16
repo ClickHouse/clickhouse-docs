@@ -10,11 +10,11 @@ import postgresReplicas from '@site/static/images/integrations/data-ingestion/db
 import Image from '@theme/IdealImage';
 
 
-## Postgres 与 ClickHouse：相同与不同的概念 {#postgres-vs-clickhouse-equivalent-and-different-concepts}
+## Postgres 与 ClickHouse：相同与不同的概念 \\{#postgres-vs-clickhouse-equivalent-and-different-concepts\\}
 
 来自 OLTP 系统、习惯使用 ACID 事务的用户需要注意，ClickHouse 为了性能有意选择不完全提供这些特性。只要理解得当，ClickHouse 的语义依然可以提供很高的持久性保证和高写入吞吐量。下面我们重点介绍一些关键概念，Postgres 用户在使用 ClickHouse 前应先熟悉这些概念。
 
-### 分片与副本 {#shards-vs-replicas}
+### 分片与副本 \\{#shards-vs-replicas\\}
 
 当存储和/或计算成为性能瓶颈时，分片和复制是两种用于扩展到单个 Postgres 实例之外的策略。Postgres 中的分片涉及将一个大型数据库拆分为更小、更易管理的部分，并分布到多个节点上。然而，Postgres 本身并不原生支持分片。相反，可以通过诸如 [Citus](https://www.citusdata.com/) 这样的扩展实现分片，此时 Postgres 成为一个能够横向扩展的分布式数据库。这种方式允许 Postgres 通过将负载分散到多台机器上来处理更高的事务速率和更大的数据集。分片可以按行或按 schema 进行，以便为不同类型的工作负载（例如事务型或分析型）提供灵活性。分片会在数据管理和查询执行方面引入显著复杂度，因为它需要在多台机器之间进行协调并提供一致性保证。
 
@@ -30,7 +30,7 @@ import Image from '@theme/IdealImage';
 
 > ClickHouse Cloud 使用位于 S3 上的单份数据副本，并搭配多个计算副本。每个副本节点都可以访问这份数据，并且各自拥有本地 SSD 缓存。这仅依赖通过 ClickHouse Keeper 进行的元数据复制。
 
-## 最终一致性 {#eventual-consistency}
+## 最终一致性 \\{#eventual-consistency\\}
 
 ClickHouse 使用 ClickHouse Keeper（ZooKeeper 的 C++ 实现，也可以直接使用 ZooKeeper）来管理其内部复制机制，主要负责元数据存储并确保最终一致性。Keeper 用于在分布式环境中为每次插入分配唯一的顺序号，这对于在各类操作中维持顺序和一致性至关重要。该框架还负责处理诸如合并（merge）和变更（mutation）等后台操作，确保这些工作在副本之间分布执行的同时，在所有副本上都以相同顺序执行。除了元数据之外，Keeper 还充当复制的统一控制中心，包括跟踪已存储数据分片的校验和，并作为副本之间的分布式通知系统。
 
@@ -42,25 +42,25 @@ ClickHouse 中的复制过程 (1) 从数据被插入任意一个副本开始。�
 
 与 ClickHouse 相比，PostgreSQL 采用了不同的复制策略，主要使用流复制（streaming replication），其特点是主–从（primary–replica）模型，数据会从 primary 持续流式传输到一个或多个 replica 节点。这种复制方式能够实现近实时一致性，并且可以配置为同步或异步复制，使管理员可以在可用性与一致性之间进行权衡。与 ClickHouse 不同，PostgreSQL 依赖 WAL（Write-Ahead Logging，预写日志）以及逻辑复制与解码，在节点之间流式传输数据对象及其变更。PostgreSQL 中的这种方式相对更加直接，但在高度分布式环境中，其可扩展性和容错能力可能不及 ClickHouse 借助 Keeper 对分布式操作进行复杂协调并实现最终一致性所达到的水平。
 
-## 对用户的影响 {#user-implications}
+## 对用户的影响 \\{#user-implications\\}
 
 在 ClickHouse 中，发生脏读的可能性——即你可以将数据写入一个副本，然后从另一个副本读取到可能尚未完成复制的数据——源于其由 Keeper 管理的最终一致性复制模型。该模型强调在分布式系统中的性能和可扩展性，使各个副本能够独立运行，并以异步方式进行数据同步。其结果是，取决于复制延迟以及变更在系统中传播所需的时间，新插入的数据可能无法立即在所有副本上可见。
 
 相比之下，PostgreSQL 的流复制模型通常可以通过采用同步复制选项来防止脏读，此时主库会在提交事务前等待至少一个副本确认已接收数据。这确保了一旦事务被提交，即可保证在另一副本中已存在该数据。在主库发生故障的情况下，副本将确保查询能够看到已提交的数据，从而维持更严格的一致性级别。
 
-## 建议 {#recommendations}
+## 建议 \\{#recommendations\\}
 
 刚接触 ClickHouse 的用户应当了解以下差异，这些差异会在副本环境中体现出来。通常，对于包含数十亿甚至数万亿数据点的分析场景而言，最终一致性已经足够——在这类场景中，指标往往更加稳定，或者在新数据持续高速写入的前提下，采用估算值也已可以接受。
 
 如果需要提升读取一致性，可以采用若干可选方案。下面的两种方案都需要增加系统复杂度或资源开销——从而降低查询性能，并使 ClickHouse 的扩展更加困难。**我们仅在绝对必要时才建议采用这些方案。**
 
-## 一致性路由 {#consistent-routing}
+## 一致性路由 \\{#consistent-routing\\}
 
 为克服最终一致性的一些限制，您可以确保客户端始终被路由到相同的副本。在多个用户查询 ClickHouse 且希望跨请求获得确定性结果的场景下，这一点非常有用。虽然随着新数据的插入，结果可能会有所不同，但应始终查询相同的副本，以保证视图的一致性。
 
 根据您的架构，以及您使用的是 ClickHouse OSS 还是 ClickHouse Cloud，可以通过多种方式实现这一点。
 
-## ClickHouse Cloud {#clickhouse-cloud}
+## ClickHouse Cloud \\{#clickhouse-cloud\\}
 
 ClickHouse Cloud 在 S3 上只保留一份数据副本，并配合多个计算副本使用。每个副本节点都可以访问这份数据，并且拥有本地 SSD 缓存。为了确保结果一致，用户只需要保证请求始终被路由到同一节点即可。
 
@@ -70,7 +70,7 @@ ClickHouse Cloud 在 S3 上只保留一份数据副本，并配合多个计算�
 
 > 请联系技术支持以获取 sticky endpoints 的访问权限。
 
-## ClickHouse OSS {#clickhouse-oss}
+## ClickHouse OSS \\{#clickhouse-oss\\}
 
 在 OSS 中实现此行为取决于你的分片与副本拓扑结构，以及在查询时是否使用了 [Distributed table](/engines/table-engines/special/distributed)。
 
@@ -82,7 +82,7 @@ ClickHouse Cloud 在 S3 上只保留一份数据副本，并配合多个计算�
 
 > 在创建 Distributed table 时，你需要指定一个 cluster。这个在 config.xml 中定义的 cluster 会列出分片（以及它们的副本），从而允许你控制从每个节点使用它们的顺序。通过这一点，你可以确保选择是确定性的。
 
-## 顺序一致性 {#sequential-consistency}
+## 顺序一致性 \\{#sequential-consistency\\}
 
 在特殊情况下，用户可能需要顺序一致性。
 
@@ -101,7 +101,7 @@ ClickHouse Cloud 在 S3 上只保留一份数据副本，并配合多个计算�
 
 > 使用顺序一致性会对 ClickHouse Keeper 施加更大负载，这可能会导致写入和读取变慢。SharedMergeTree 作为 ClickHouse Cloud 中主要的表引擎，在启用顺序一致性时[引入的开销更小且可伸缩性更好](/cloud/reference/shared-merge-tree#consistency)。在 OSS 中，用户应谨慎采用这种方式，并对 Keeper 负载进行监控和评估。
 
-## 事务型（ACID）支持 {#transactional-acid-support}
+## 事务型（ACID）支持 \\{#transactional-acid-support\\}
 
 从 PostgreSQL 迁移的用户可能已经习惯了其对 ACID（原子性、一致性、隔离性、持久性）属性的强大支持，这使其成为事务型数据库的可靠选择。PostgreSQL 中的原子性确保每个事务被视为一个单一的操作单元，要么完全成功，要么完全回滚，从而避免产生部分更新。一致性通过强制执行约束、触发器和规则来维持，从而保证所有数据库事务都会使系统保持在一个有效状态。PostgreSQL 支持从 Read Committed 到 Serializable 的隔离级别，允许对并发事务所做更改的可见性进行精细控制。最后，持久性是通过预写日志（WAL）实现的，以确保一旦事务提交，即使发生系统故障也能保持提交状态。
 
@@ -111,7 +111,7 @@ ClickHouse Cloud 在 S3 上只保留一份数据副本，并配合多个计算�
 
 在[受限配置](/guides/developer/transactional)下，ClickHouse 可以提供 ACID 属性——最简单的情况是使用单分区的非复制 MergeTree 表引擎实例。在这些场景之外，你不应期望具备这些属性，并应确保这些属性不是系统的硬性要求。
 
-## 压缩 {#compression}
+## 压缩 \{#compression\}
 
 由于 ClickHouse 采用列式存储，相比 Postgres，压缩效果通常会显著更好。如下图所示，我们对比了在这两个数据库中存储所有 Stack Overflow 表时的空间需求：
 
@@ -151,7 +151,7 @@ GROUP BY `table`
 有关如何优化和衡量压缩的更多详情，请参见[此处](/data-compression/compression-in-clickhouse)。
 
 
-## 数据类型映射 {#data-type-mappings}
+## 数据类型映射 \\{#data-type-mappings\\}
 
 下表展示了 Postgres 数据类型在 ClickHouse 中对应的等价数据类型。
 

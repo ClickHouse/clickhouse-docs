@@ -58,7 +58,7 @@ Union
                   ReadFromStorage (SystemNumbers)
 ```
 
-## Типы EXPLAIN {#explain-types}
+## Типы EXPLAIN \\{#explain-types\\}
 
 - `AST` — абстрактное синтаксическое дерево.
 - `SYNTAX` — текст запроса после оптимизаций на уровне AST.
@@ -66,7 +66,7 @@ Union
 - `PLAN` — план выполнения запроса.
 - `PIPELINE` — конвейер выполнения запроса.
 
-### EXPLAIN AST {#explain-ast}
+### EXPLAIN AST \\{#explain-ast\\}
 
 Выводит AST запроса. Поддерживаются все типы запросов, а не только `SELECT`.
 
@@ -100,7 +100,7 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
         ExpressionList
 ```
 
-### EXPLAIN SYNTAX {#explain-syntax}
+### EXPLAIN SYNTAX \\{#explain-syntax\\}
 
 Показывает абстрактное синтаксическое дерево (AST) запроса после синтаксического анализа.
 
@@ -144,7 +144,7 @@ ALL INNER JOIN system.numbers AS __table2 ON __table1.number = __table2.number
 ALL INNER JOIN system.numbers AS __table3 ON __table2.number = __table3.number
 ```
 
-### EXPLAIN QUERY TREE {#explain-query-tree}
+### EXPLAIN QUERY TREE \\{#explain-query-tree\\}
 
 Настройки:
 
@@ -173,7 +173,7 @@ QUERY id: 0
     TABLE id: 3, table_name: default.test_table
 ```
 
-### EXPLAIN PLAN {#explain-plan}
+### EXPLAIN PLAN \\{#explain-plan\\}
 
 Выводит шаги плана запроса.
 
@@ -500,7 +500,7 @@ Expression ((Project names + Projection))
 
 В обоих примерах план запроса показывает полный процесс выполнения, включая локальные и удалённые этапы.
 
-### EXPLAIN PIPELINE {#explain-pipeline}
+### EXPLAIN PIPELINE \\{#explain-pipeline\\}
 
 Настройки:
 
@@ -532,7 +532,7 @@ ExpressionTransform
             NumbersRange × 2 0 → 1
 ```
 
-### EXPLAIN ESTIMATE {#explain-estimate}
+### EXPLAIN ESTIMATE \\{#explain-estimate\\}
 
 Показывает приблизительное количество строк, меток и частей, которые нужно прочитать из таблиц при обработке запроса. Работает с таблицами семейства [MergeTree](/engines/table-engines/mergetree-family/mergetree).
 
@@ -560,7 +560,7 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 └──────────┴───────┴───────┴──────┴───────┘
 ```
 
-### EXPLAIN TABLE OVERRIDE {#explain-table-override}
+### EXPLAIN TABLE OVERRIDE \\{#explain-table-override\\}
 
 Показывает результат применения переопределения таблицы к схеме таблицы, доступной через табличную функцию.
 Также выполняет проверку и генерирует исключение, если переопределение привело бы к какой-либо ошибке.

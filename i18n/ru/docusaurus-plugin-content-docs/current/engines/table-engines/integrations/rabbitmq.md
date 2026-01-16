@@ -7,7 +7,7 @@ title: 'Табличный движок RabbitMQ'
 doc_type: 'guide'
 ---
 
-# Табличный движок RabbitMQ {#rabbitmq-table-engine}
+# Табличный движок RabbitMQ \\{#rabbitmq-table-engine\\}
 
 Этот движок позволяет интегрировать ClickHouse с [RabbitMQ](https://www.rabbitmq.com).
 
@@ -16,7 +16,7 @@ doc_type: 'guide'
 - Публиковать или подписываться на потоки данных.
 - Обрабатывать потоки по мере их поступления.
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -84,7 +84,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 - `rabbitmq_empty_queue_backoff_step_ms` — Шаг backoff (в миллисекундах) для переназначения чтения, если очередь RabbitMQ пуста.
 - `rabbitmq_handle_error_mode` — Способ обработки ошибок для движка RabbitMQ. Возможные значения: default (будет выброшено исключение, если не удаётся разобрать сообщение), stream (текст исключения и исходное сообщение будут сохранены во виртуальных столбцах `_error` и `_raw_message`), dead_letter_queue (данные, связанные с ошибкой, будут сохранены в system.dead_letter_queue).
 
-### SSL-соединение {#ssl-connection}
+### SSL-соединение \{#ssl-connection\}
 
 Используйте либо `rabbitmq_secure = 1`, либо `amqps` в адресе подключения: `rabbitmq_address = 'amqps://guest:guest@localhost/vhost'`.
 Используемая библиотека по умолчанию не проверяет, достаточно ли безопасно установленное TLS-соединение. Независимо от того, истёк ли срок действия сертификата, является ли он самоподписанным, отсутствующим или недействительным, соединение просто разрешается. В будущем может быть реализована более строгая проверка сертификатов.
@@ -125,7 +125,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ```
 
 
-## Описание {#description}
+## Описание \{#description\}
 
 `SELECT` не особенно полезен для чтения сообщений (кроме отладки), потому что каждое сообщение можно прочитать только один раз. Гораздо практичнее создавать потоки в реальном времени с помощью [материализованных представлений](../../../sql-reference/statements/create/view.md). Для этого:
 
@@ -187,7 +187,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ```
 
 
-## Виртуальные столбцы {#virtual-columns}
+## Виртуальные столбцы \\{#virtual-columns\\}
 
 - `_exchange_name` — имя exchange в RabbitMQ. Тип данных: `String`.
 - `_channel_id` — идентификатор канала (ChannelID), на котором был объявлен consumer, получивший сообщение. Тип данных: `String`.
@@ -203,11 +203,11 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Примечание: виртуальные столбцы `_raw_message` и `_error` заполняются только в случае возникновения исключения во время разбора; при успешном разборе сообщения они всегда равны `NULL`.
 
-## Ограничения {#caveats}
+## Ограничения \\{#caveats\\}
 
 Даже если вы укажете [выражения значений по умолчанию для столбцов](/sql-reference/statements/create/table.md/#default_values) (например, `DEFAULT`, `MATERIALIZED`, `ALIAS`) в определении таблицы, они будут игнорироваться. Вместо этого столбцы будут заполняться значениями по умолчанию своих типов.
 
-## Поддержка форматов данных {#data-formats-support}
+## Поддержка форматов данных \\{#data-formats-support\\}
 
 Движок RabbitMQ поддерживает все [форматы](../../../interfaces/formats.md), которые поддерживаются в ClickHouse.
 Количество строк в одном сообщении RabbitMQ зависит от того, является ли формат построчным или блочным:

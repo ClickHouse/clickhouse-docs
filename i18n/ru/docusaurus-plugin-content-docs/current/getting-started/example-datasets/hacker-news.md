@@ -7,11 +7,11 @@ doc_type: 'guide'
 keywords: ['пример набора данных', 'hacker news', 'пример данных', 'анализ текста', 'векторный поиск']
 ---
 
-# Набор данных Hacker News {#hacker-news-dataset}
+# Набор данных Hacker News \\{#hacker-news-dataset\\}
 
 > В этом руководстве вы загрузите в таблицу ClickHouse 28 миллионов строк данных Hacker News из форматов CSV и Parquet и выполните несколько простых запросов, чтобы изучить данные.
 
-## CSV {#csv}
+## CSV \\{#csv\\}
 
 <VerticalStepper headerLevel="h3">
   ### Скачать CSV

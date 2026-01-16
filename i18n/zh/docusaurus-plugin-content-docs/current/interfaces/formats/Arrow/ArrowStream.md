@@ -13,10 +13,10 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 `ArrowStream` 是 Apache Arrow 的“流式模式”格式，专为内存流处理而设计。
 
-## 示例用法 {#example-usage}
+## 示例用法 \\{#example-usage\\}
 
-## 格式设置 {#format-settings}
+## 格式设置 \\{#format-settings\\}

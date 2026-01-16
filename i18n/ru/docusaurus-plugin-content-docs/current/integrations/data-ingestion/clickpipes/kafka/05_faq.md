@@ -11,9 +11,9 @@ integration:
   - category: 'clickpipes'
 ---
 
-## Часто задаваемые вопросы о Kafka ClickPipes {#faq}
+## Часто задаваемые вопросы о Kafka ClickPipes \\{#faq\\}
 
-### Общие сведения {#general}
+### Общие сведения \\{#general\\}
 
 <details>
 
@@ -80,7 +80,7 @@ AWS PrivateLink поддерживается. См. [документацию](/
 
 </details>
 
-### Azure Event Hubs {#azure-eventhubs}
+### Azure Event Hubs \\{#azure-eventhubs\\}
 
 <details>
 

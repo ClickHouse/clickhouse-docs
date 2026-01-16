@@ -20,7 +20,7 @@ import Image from '@theme/IdealImage';
 在 [AWS Marketplace](https://aws.amazon.com/marketplace) 上通过 PAYG（按需付费）公共优惠开始使用 ClickHouse Cloud。
 
 
-## 前提条件 {#prerequisites}
+## 前提条件 \\{#prerequisites\\}
 
 - 一个已由计费管理员开通购买权限的 AWS 账户。
 - 要进行购买，您必须使用该账户登录 AWS Marketplace。
@@ -30,23 +30,23 @@ import Image from '@theme/IdealImage';
 一个 AWS 账户最多只能订阅一个“ClickHouse Cloud - Pay As You Go”订阅，并且该订阅只能关联到一个 ClickHouse 组织。
 :::
 
-## 注册步骤 {#steps-to-sign-up}
+## 注册步骤 \\{#steps-to-sign-up\\}
 
 <VerticalStepper headerLevel="h3">
 
-### 搜索 ClickHouse Cloud - Pay As You Go {#search-payg}
+### 搜索 ClickHouse Cloud - Pay As You Go \\{#search-payg\\}
 
 前往 [AWS Marketplace](https://aws.amazon.com/marketplace)，搜索“ClickHouse Cloud - Pay As You Go”。
 
 <Image img={aws_marketplace_payg_1} alt="在 AWS Marketplace 中搜索 ClickHouse" border/>
 
-### 查看购买选项 {#purchase-options}
+### 查看购买选项 \\{#purchase-options\\}
 
 点击该[商品详情页](https://aws.amazon.com/marketplace/pp/prodview-p4gwofrqpkltu)，然后点击 **View purchase options**。
 
 <Image img={aws_marketplace_payg_2} alt="AWS Marketplace 查看购买选项" border/>
 
-### 订阅 {#subscribe}
+### 订阅 \\{#subscribe\\}
 
 在下一屏上点击 **subscribe**。
 
@@ -57,7 +57,7 @@ import Image from '@theme/IdealImage';
 
 <Image img={aws_marketplace_payg_3} alt="AWS Marketplace 订阅" border/>
 
-### 设置您的账户 {#set-up-your-account}
+### 设置您的账户 \\{#set-up-your-account\\}
 
 请注意，此时设置尚未完成，您的 ClickHouse Cloud 组织也尚未通过 Marketplace 计费。您现在需要在 Marketplace 订阅页面中点击 **Set up your account**，跳转到 ClickHouse Cloud 完成最终设置。
 
@@ -88,7 +88,7 @@ import Image from '@theme/IdealImage';
 
 如果您是现有的 ClickHouse Cloud 用户，只需使用您的账号凭据登录即可。
 
-### 将 Marketplace 订阅添加到组织 {#add-marketplace-subscription}
+### 将 Marketplace 订阅添加到组织 \\{#add-marketplace-subscription\\}
 
 成功登录后，您可以选择创建一个新组织，将此 Marketplace 订阅的计费归到该组织；也可以选择一个现有组织，将其计费归到此订阅下。
 
@@ -102,6 +102,6 @@ import Image from '@theme/IdealImage';
 
 </VerticalStepper>
 
-## 支持 {#support}
+## 支持 \\{#support\\}
 
 如果您遇到任何问题，请随时联系[我们的支持团队](https://clickhouse.com/support/program)。

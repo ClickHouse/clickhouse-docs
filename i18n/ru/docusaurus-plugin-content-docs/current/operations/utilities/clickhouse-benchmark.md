@@ -7,7 +7,7 @@ title: 'clickhouse-benchmark'
 doc_type: 'reference'
 ---
 
-# clickhouse-benchmark {#clickhouse-benchmark}
+# clickhouse-benchmark \\{#clickhouse-benchmark\\}
 
 Подключается к серверу ClickHouse и многократно отправляет заданные запросы.
 
@@ -42,7 +42,7 @@ SELECT 1;
 clickhouse-benchmark [keys] < queries_file;
 ```
 
-## Параметры командной строки {#clickhouse-benchmark-command-line-options}
+## Параметры командной строки \\{#clickhouse-benchmark-command-line-options\\}
 
 - `--query=QUERY` — Запрос для выполнения. Если этот параметр не передан, `clickhouse-benchmark` будет читать запросы из стандартного ввода.
 - `--query_id=ID` — ID запроса.
@@ -75,12 +75,12 @@ clickhouse-benchmark [keys] < queries_file;
 
 Если вы хотите применить некоторые [настройки](/operations/settings/overview) к запросам, передайте их в виде параметров `--<session setting name>= SETTING_VALUE`. Например, `--max_memory_usage=1048576`.
 
-## Параметры переменных окружения {#clickhouse-benchmark-environment-variable-options}
+## Параметры переменных окружения \\{#clickhouse-benchmark-environment-variable-options\\}
 
 Имя пользователя, пароль и хост могут быть заданы с помощью переменных окружения `CLICKHOUSE_USER`, `CLICKHOUSE_PASSWORD` и `CLICKHOUSE_HOST`.  
 Аргументы командной строки `--user`, `--password` или `--host` имеют приоритет над переменными окружения.
 
-## Вывод {#clickhouse-benchmark-output}
+## Вывод \\{#clickhouse-benchmark-output\\}
 
 По умолчанию `clickhouse-benchmark` выводит отчет по каждому интервалу `--delay`.
 
@@ -123,13 +123,13 @@ localhost:9000, queries 10, QPS: 6.772, RPS: 67904487.440, MiB/s: 518.070, resul
 
 * Перцентили времени выполнения запросов.
 
-## Режим сравнения {#clickhouse-benchmark-comparison-mode}
+## Режим сравнения \\{#clickhouse-benchmark-comparison-mode\\}
 
 `clickhouse-benchmark` может сравнивать производительность двух запущенных серверов ClickHouse.
 
 Чтобы использовать режим сравнения, укажите конечные точки обоих серверов двумя парами ключей `--host`, `--port`. Ключи сопоставляются по позициям в списке аргументов: первый `--host` — с первым `--port` и так далее. `clickhouse-benchmark` устанавливает подключения к обоим серверам, затем отправляет запросы. Каждый запрос отправляется на случайно выбранный сервер. Результаты отображаются в таблице.
 
-## Пример {#clickhouse-benchmark-example}
+## Пример \\{#clickhouse-benchmark-example\\}
 
 ```bash
 $ echo "SELECT * FROM system.numbers LIMIT 10000000 OFFSET 10000000" | clickhouse-benchmark --host=localhost --port=9001 --host=localhost --port=9000 -i 10

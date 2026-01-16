@@ -7,7 +7,7 @@ title: 'lag'
 doc_type: 'reference'
 ---
 
-# lag {#lag}
+# lag \\{#lag\\}
 
 順序付けされたフレーム内で、現在の行から指定された物理オフセットだけ前に位置する行で評価された値を返します。
 この関数は [`lagInFrame`](./lagInFrame.md) と似ていますが、常に `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` フレームを使用します。

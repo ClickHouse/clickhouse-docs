@@ -25,13 +25,13 @@ import cp_destination from '@site/static/images/integrations/data-ingestion/clic
 import cp_overview from '@site/static/images/integrations/data-ingestion/clickpipes/cp_overview.png';
 import Image from '@theme/IdealImage';
 
-# 将 Amazon Kinesis 集成到 ClickHouse Cloud {#integrating-amazon-kinesis-with-clickhouse-cloud}
+# 将 Amazon Kinesis 集成到 ClickHouse Cloud \{#integrating-amazon-kinesis-with-clickhouse-cloud\}
 
-## 前置条件 {#prerequisite}
+## 前置条件 \\{#prerequisite\\}
 
 你已经熟悉了 [ClickPipes 介绍](./index.md)，并已配置好 [IAM 凭证](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) 或 [IAM 角色](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)。请按照 [Kinesis 基于角色的访问控制指南](./secure-kinesis.md) 中的说明，设置可与 ClickHouse Cloud 协同工作的角色。
 
-## 创建你的第一个 ClickPipe {#creating-your-first-clickpipe}
+## 创建你的第一个 ClickPipe \\{#creating-your-first-clickpipe\\}
 
 1. 打开你的 ClickHouse Cloud Service 的 SQL Console。
 
@@ -92,15 +92,15 @@ import Image from '@theme/IdealImage';
 
 13. **恭喜！**你已成功完成第一个 ClickPipe 的设置。如果这是一个流式 ClickPipe，它会持续运行，从远程数据源实时摄取数据。否则，它会完成批量摄取后终止。
 
-## 支持的数据格式 {#supported-data-formats}
+## 支持的数据格式 \\{#supported-data-formats\\}
 
 支持的格式包括：
 
 - [JSON](/interfaces/formats/JSON)
 
-## 支持的数据类型 {#supported-data-types}
+## 支持的数据类型 \\{#supported-data-types\\}
 
-### 标准类型支持 {#standard-types-support}
+### 标准类型支持 \\{#standard-types-support\\}
 
 当前 ClickPipes 支持以下 ClickHouse 数据类型：
 
@@ -121,15 +121,15 @@ import Image from '@theme/IdealImage';
 - Tuple 和 Array，其元素使用上述任意类型（包括 Nullable，仅支持一层嵌套）
 - SimpleAggregateFunction 类型（用于 AggregatingMergeTree 或 SummingMergeTree 目标表）
 
-### Variant 类型支持 {#variant-type-support}
+### Variant 类型支持 \\{#variant-type-support\\}
 
 您可以为源数据流中的任意 JSON 字段手动指定 Variant 类型（例如 `Variant(String, Int64, DateTime)`）。由于 ClickPipes 判定应使用的具体 Variant 子类型的方式所限，在 Variant 定义中只能使用一种整数类型或一种 datetime 类型，例如，`Variant(Int64, UInt32)` 不支持。
 
-### JSON 类型支持 {#json-type-support}
+### JSON 类型支持 \\{#json-type-support\\}
 
 始终为 JSON 对象的 JSON 字段可以映射到 JSON 目标列。您需要手动将目标列修改为所需的 JSON 类型，包括任何固定或跳过的路径。 
 
-## Kinesis 虚拟列 {#kinesis-virtual-columns}
+## Kinesis 虚拟列 \\{#kinesis-virtual-columns\\}
 
 下表列出了 Kinesis 流支持的虚拟列。创建新的目标表时，可以通过 `Add Column` 按钮添加虚拟列。
 
@@ -143,13 +143,13 @@ import Image from '@theme/IdealImage';
 
 在仅需要完整 Kinesis JSON 记录的场景中（例如使用 ClickHouse [`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions) 函数来填充下游物化视图），可以使用 `_raw_message` 字段。对于此类管道，删除所有“非虚拟”列可能会提升 ClickPipes 的性能。
 
-## 限制 {#limitations}
+## 限制 \\{#limitations\\}
 
 - 不支持 [DEFAULT](/sql-reference/statements/create/table#default)。
 
-## 性能 {#performance}
+## 性能 \\{#performance\\}
 
-### 批处理 {#batching}
+### 批处理 \\{#batching\\}
 
 ClickPipes 以批处理的方式向 ClickHouse 插入数据。这样可以避免在数据库中创建过多的分区片段，从而防止集群出现性能问题。
 
@@ -158,13 +158,13 @@ ClickPipes 以批处理的方式向 ClickHouse 插入数据。这样可以避免
 - 批次大小达到最大值（每 1GB 副本内存最多 100,000 行或 32MB）
 - 批次已打开的时间达到上限（5 秒）
 
-### 延迟 {#latency}
+### 延迟 \\{#latency\\}
 
 延迟（定义为 Kinesis 消息发送到流与该消息在 ClickHouse 中可用之间的时间）取决于多种因素（例如 Kinesis 自身的延迟、网络延迟、消息大小/格式）。上文中描述的[批处理](#batching)也会影响延迟。我们始终建议针对您的具体使用场景进行测试，以了解可以预期的延迟水平。
 
 如果您有特别严格的低延迟需求，请[联系我们](https://clickhouse.com/company/contact?loc=clickpipes)。
 
-### 扩展性 {#scaling}
+### 扩展性 \\{#scaling\\}
 
 用于 Kinesis 的 ClickPipes 被设计为既可以水平扩展，也可以垂直扩展。默认情况下，我们会创建一个包含单个 consumer 的 consumer group。该配置可以在创建 ClickPipe 时设置，也可以在之后通过 **Settings** -> **Advanced Settings** -> **Scaling** 进行修改。
 
@@ -175,6 +175,6 @@ ClickPipes 通过跨可用区分布式架构提供高可用性。
 如果某个 consumer 或其底层基础设施发生故障，
 ClickPipe 会自动重启该 consumer 并继续处理消息。
 
-## 身份验证 {#authentication}
+## 身份验证 \\{#authentication\\}
 
 要访问 Amazon Kinesis 流，你可以使用 [IAM 凭证](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) 或 [IAM 角色](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)。有关如何配置 IAM 角色的更多信息，请[参考本指南](./secure-kinesis.md)，了解如何配置可与 ClickHouse Cloud 配合使用的角色。

@@ -8,7 +8,7 @@ doc_type: 'guide'
 keywords: ['サイジング', 'ハードウェア', 'キャパシティプランニング', 'ベストプラクティス', 'パフォーマンス']
 ---
 
-# サイジングとハードウェアの推奨事項 {#sizing-and-hardware-recommendations}
+# サイジングとハードウェアの推奨事項 \\{#sizing-and-hardware-recommendations\\}
 
 このガイドでは、オープンソースユーザー向けのハードウェア、コンピューティングリソース、メモリ、およびディスク構成に関する一般的な推奨事項について説明します。セットアップを簡素化したい場合は、[ClickHouse Cloud](https://clickhouse.com/cloud) の利用を推奨します。ClickHouse Cloud は、インフラ管理にかかるコストを最小限に抑えつつ、ワークロードに応じて自動的にスケールおよび調整を行います。
 
@@ -21,23 +21,23 @@ ClickHouse クラスターの構成は、アプリケーションのユースケ
 - ハードウェアコスト
 - 運用・保守コスト
 
-## Disk {#disk}
+## Disk \\{#disk\\}
 
 ClickHouse で使用するディスクの種類は、データ量、レイテンシ、スループット要件によって異なります。
 
-### パフォーマンスの最適化 {#optimizing-for-performance}
+### パフォーマンスの最適化 \\{#optimizing-for-performance\\}
 
 パフォーマンスを最大化するには、I/O に最適化された [AWS のプロビジョンド IOPS SSD ボリューム](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/provisioned-iops.html)、または利用中のクラウドプロバイダーにおける同等のサービスをインスタンスに直接アタッチすることを推奨します。
 
-### ストレージコストの最適化 {#optimizing-for-storage-costs}
+### ストレージコストの最適化 \\{#optimizing-for-storage-costs\\}
 
 コストを抑えるには、[汎用 SSD EBS ボリューム](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/general-purpose.html) を使用できます。
 
 また、SSD と HDD を組み合わせて [hot/warm/cold アーキテクチャ](/guides/developer/ttl#implementing-a-hotwarmcold-architecture) による階層型ストレージを実装することもできます。あるいは、コンピュートとストレージを分離するために、ストレージとして [AWS S3](https://aws.amazon.com/s3/) を利用することも可能です。コンピュートとストレージを分離したオープンソース版 ClickHouse の利用方法については、[こちら](/guides/separation-storage-compute)のガイドを参照してください。ClickHouse Cloud では、コンピュートとストレージの分離がデフォルトで利用可能です。
 
-## CPU {#cpu}
+## CPU \\{#cpu\\}
 
-### どの CPU を使用すべきですか？ {#which-cpu-should-i-use}
+### どの CPU を使用すべきですか？ \\{#which-cpu-should-i-use\\}
 
 使用すべき CPU のタイプは、ワークロードのパターンに依存します。一般的には、多数かつ頻繁な同時クエリがあり、より多くのデータを処理する場合や、計算量の多い UDF を使用するアプリケーションでは、より多くの CPU コアが必要になります。
 
@@ -55,11 +55,11 @@ ClickHouse で使用するディスクの種類は、データ量、レイテン
 
 ---
 
-### CPU 使用率はどの程度にすべきですか？ {#what-should-cpu-utilization-be}
+### CPU 使用率はどの程度にすべきですか？ \\{#what-should-cpu-utilization-be\\}
 
 ClickHouse に対して標準的な CPU 使用率の目標値は存在しません。[iostat](https://linux.die.net/man/1/iostat) などのツールを使用して平均 CPU 使用率を計測し、予期しないトラフィックのスパイクに対応できるよう、それに応じてサーバーのサイズを調整してください。ただし、アドホッククエリを含む分析系やデータウェアハウス用途では、CPU 使用率の目標は 10〜20% とすることを推奨します。
 
-### いくつの CPU コアを使用すべきですか？ {#how-many-cpu-cores-should-i-use}
+### いくつの CPU コアを使用すべきですか？ \\{#how-many-cpu-cores-should-i-use\\}
 
 使用すべき CPU のコア数は、ワークロードに依存します。ただし、一般的には CPU タイプごとに次のメモリ対 CPU コア比を推奨します。
 
@@ -69,7 +69,7 @@ ClickHouse に対して標準的な CPU 使用率の目標値は存在しませ�
 
 例えば、M 系 CPU を使用する場合、25 CPU コアあたり 100 GB のメモリをプロビジョニングすることを推奨します。アプリケーションに適切なメモリ量を決定するには、メモリ使用状況のプロファイリングが必要です。[メモリ問題のデバッグに関するこのガイド](/guides/developer/debugging-memory-issues) を参照するか、[組み込みのオブザーバビリティダッシュボード](/operations/monitoring) を使用して ClickHouse を監視してください。
 
-## メモリ {#memory}
+## メモリ \\{#memory\\}
 
 CPU の選択と同様に、メモリとストレージの比率、およびメモリと CPU の比率は、ユースケースに依存します。
 
@@ -80,7 +80,7 @@ CPU の選択と同様に、メモリとストレージの比率、およびメ�
 一般的には、メモリが多いほどクエリの実行は高速になります。  
 コストに敏感なユースケースの場合、メモリ量を少なめにしても、設定（[`max_bytes_before_external_group_by`](/operations/settings/settings#max_bytes_before_external_group_by) および [`max_bytes_before_external_sort`](/operations/settings/settings#max_bytes_before_external_sort)）を有効化してディスクへのスピルを許可することで運用することも可能です。ただし、その場合はクエリ性能に大きく影響する可能性がある点に注意してください。
 
-### メモリとストレージの比率はどの程度にすべきか {#what-should-the-memory-to-storage-ratio-be}
+### メモリとストレージの比率はどの程度にすべきか \\{#what-should-the-memory-to-storage-ratio-be\\}
 
 データ量が少ない場合、メモリとストレージの比率が 1:1 でも問題ありませんが、総メモリは 8GB 未満にしないでください。
 
@@ -88,7 +88,7 @@ CPU の選択と同様に、メモリとストレージの比率、およびメ�
 
 顧客向けワークロードなど頻繁にアクセスされるユースケースでは、1:30〜1:50 のメモリとストレージの比率とし、より多くのメモリを使用することを推奨します。
 
-## レプリカ {#replicas}
+## レプリカ \\{#replicas\\}
 
 1シャードあたり少なくとも3つのレプリカ（または [Amazon EBS](https://aws.amazon.com/ebs/) を使用する場合は2つのレプリカ）を確保することを推奨します。さらに、レプリカを追加して水平方向にスケールする前に、まずはすべてのレプリカを垂直方向にスケールアップしておくことを推奨します。
 
@@ -96,13 +96,13 @@ ClickHouse は自動でシャーディングを行わず、データセットの
 
 自動スケーリングに対応し、ユースケースに応じてレプリカ数を容易に制御できる [ClickHouse Cloud](https://clickhouse.com/cloud) の利用も検討してください。
 
-## 大規模ワークロード向けの構成例 {#example-configurations-for-large-workloads}
+## 大規模ワークロード向けの構成例 \\{#example-configurations-for-large-workloads\\}
 
 ClickHouse の構成は、利用するアプリケーション固有の要件に大きく依存します。コストとパフォーマンスの両面で最適なアーキテクチャ設計の支援をご希望の場合は、[営業チームまでお問い合わせ](https://clickhouse.com/company/contact?loc=docs-sizing-and-hardware-recommendations)ください。
 
 推奨構成というわけではありませんが、参考情報として、以下に本番環境で ClickHouse を利用しているユーザーの構成例を示します。
 
-### Fortune 500 B2B SaaS {#fortune-500-b2b-saas}
+### Fortune 500 B2B SaaS \\{#fortune-500-b2b-saas\\}
 
 <table>
     <tr>
@@ -164,7 +164,7 @@ ClickHouse の構成は、利用するアプリケーション固有の要件に
     </tr>
 </table>
 
-### ログ用途向け Fortune 500 通信事業者の例 {#fortune-500-telecom-operator-for-a-logging-use-case}
+### ログ用途向け Fortune 500 通信事業者の例 \\{#fortune-500-telecom-operator-for-a-logging-use-case\\}
 
 <table>
     <tr>
@@ -222,7 +222,7 @@ ClickHouse の構成は、利用するアプリケーション固有の要件に
     </tr>
 </table>
 
-## 参考資料 {#further-reading}
+## 参考資料 \\{#further-reading\\}
 
 以下は、オープンソースの ClickHouse を利用している企業のアーキテクチャについて解説した公開ブログ記事です：
 

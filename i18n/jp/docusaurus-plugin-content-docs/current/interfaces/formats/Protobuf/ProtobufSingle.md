@@ -18,14 +18,14 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 | ✔  | ✔  |       |
 
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 `ProtobufSingle` 形式は [`Protobuf`](./Protobuf.md) 形式と同じですが、長さデリミタなしで単一の Protobuf メッセージを保存およびパースするためのものです。
 
 
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
 
 
-## 書式設定 {#format-settings}
+## 書式設定 \\{#format-settings\\}

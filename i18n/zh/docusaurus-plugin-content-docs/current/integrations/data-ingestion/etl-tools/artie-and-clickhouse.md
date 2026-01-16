@@ -16,11 +16,11 @@ import monitor from '@site/static/images/integrations/data-ingestion/etl-tools/a
 import schema_notification from '@site/static/images/integrations/data-ingestion/etl-tools/artie/schema_notification.png';
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# 将 Artie 连接到 ClickHouse {#connect-artie-to-clickhouse}
+# 将 Artie 连接到 ClickHouse \{#connect-artie-to-clickhouse\}
 
 <a href="https://www.artie.com/" target="_blank">Artie</a> 是一个全托管的实时数据流平台，可将生产数据实时复制/同步到 ClickHouse，从而在生产环境中支持面向客户的分析、运营工作流以及 Agentic AI 等能力。
 
-## 概览 {#overview}
+## 概览 \\{#overview\\}
 
 Artie 是面向 AI 时代的现代数据基础设施层——一个完全托管的实时数据流平台，使生产数据与数据仓库持续保持同步。
 
@@ -32,19 +32,19 @@ Artie 是面向 AI 时代的现代数据基础设施层——一个完全托管�
 
 <VerticalStepper headerLevel="h2">
 
-## 创建 Artie 账户 {#1-create-an-artie-account}
+## 创建 Artie 账户 \\{#1-create-an-artie-account\\}
 
 访问 <a href="https://www.artie.com/contact" target="_blank">artie.com/contact</a> 并填写表单以申请访问权限。
 
 <Image img={artie_signup} size="md" border alt="Artie 注册页面" />
 
-## 查找你的 ClickHouse 凭证 {#2-find-your-clickhouse-credentials}
+## 查找你的 ClickHouse 凭证 \\{#2-find-your-clickhouse-credentials\\}
 
 在 ClickHouse Cloud 中创建服务后，找到以下必需的配置：
 
 <ConnectionDetails />
 
-## 在 Artie 中创建新 pipeline {#3-create-a-new-pipeline-in-artie}
+## 在 Artie 中创建新 pipeline \\{#3-create-a-new-pipeline-in-artie\\}
 
 使用你在前面步骤中收集的信息前往 Artie，并按照 3 个步骤创建一个新的 pipeline。
 
@@ -56,11 +56,11 @@ Artie 是面向 AI 时代的现代数据基础设施层——一个完全托管�
 
 </VerticalStepper>
 
-## 联系我们 {#contact-us}
+## 联系我们 \\{#contact-us\\}
 
 如果您有任何问题，请查阅我们的 <a href="https://www.artie.com/docs/destinations/clickhouse" target="_blank">ClickHouse 文档</a>，或发送邮件至 <a href="mailto:hi@artie.com">hi@artie.com</a> 与团队联系。
 
-## 产品截图 {#product-screenshots}
+## 产品截图 \\{#product-screenshots\\}
 
 Analytics Portal（分析门户）
 

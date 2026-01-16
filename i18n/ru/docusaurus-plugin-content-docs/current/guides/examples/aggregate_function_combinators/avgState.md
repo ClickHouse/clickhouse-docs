@@ -7,16 +7,16 @@ sidebar_label: 'avgState'
 doc_type: 'reference'
 ---
 
-# avgState {#avgState}
+# avgState \\{#avgState\\}
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Комбинатор [`State`](/sql-reference/aggregate-functions/combinators#-state) 
 можно применить к функции [`avg`](/sql-reference/aggregate-functions/reference/avg) 
 для получения промежуточного состояния типа `AggregateFunction(avg, T)`, где
 `T` — указанный тип для среднего значения.
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
 В этом примере мы рассмотрим, как можно использовать тип `AggregateFunction`
 вместе с функцией `avgState` для агрегирования данных о трафике сайта.
@@ -141,6 +141,6 @@ ORDER BY page_id;
 └─────────┴───────────┴──────────────────────────┘
 ```
 
-## Смотрите также {#see-also}
+## Смотрите также \\{#see-also\\}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`State`](/sql-reference/aggregate-functions/combinators#-state)

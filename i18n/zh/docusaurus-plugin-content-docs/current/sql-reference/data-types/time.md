@@ -7,7 +7,7 @@ title: 'Time'
 doc_type: 'reference'
 ---
 
-# Time {#time}
+# Time \\{#time\\}
 
 数据类型 `Time` 表示一个由小时、分钟和秒组成的时间。
 它独立于任何日历日期，适用于不需要日、月、年部分的取值。
@@ -22,7 +22,7 @@ Time
 
 精度：1 秒。
 
-## 实现细节 {#implementation-details}
+## 实现细节 \\{#implementation-details\\}
 
 **表示与性能**。
 数据类型 `Time` 在内部存储为一个带符号的 32 位整数，用于编码秒数。
@@ -47,7 +47,7 @@ Time
 同样，对 `Time` 列应用或更改时区的尝试也不被支持，并会导致错误。
 `Time` 值不会在不同的时区下被静默重新解释。
 
-## 示例 {#examples}
+## 示例 \\{#examples\\}
 
 **1.** 创建一个包含 `Time` 类型列的表，并向其中插入数据：
 
@@ -101,7 +101,7 @@ Time
    └───────────┴──────┘
 ```
 
-## 另请参阅 {#see-also}
+## 另请参阅 \\{#see-also\\}
 
 - [类型转换函数](../functions/type-conversion-functions.md)
 - [用于处理日期和时间的函数](../functions/date-time-functions.md)

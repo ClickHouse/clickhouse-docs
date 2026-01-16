@@ -8,7 +8,7 @@ description: 'ClickHouse におけるデータ可視化について学ぶ'
 doc_type: 'guide'
 ---
 
-# ClickHouse でのデータの可視化 {#visualizing-data-in-clickhouse}
+# ClickHouse でのデータの可視化 \{#visualizing-data-in-clickhouse\}
 
 <div class='vimeo-container'>
 <iframe
@@ -48,7 +48,7 @@ doc_type: 'guide'
 - [Zing Data](./community_integrations/zingdata-and-clickhouse.md)
 - [Holistics BI](./community_integrations/holistics-and-clickhouse.md)
 
-## ClickHouse Cloud とデータ可視化ツールの互換性 {#clickhouse-cloud-compatibility-with-data-visualization-tools}
+## ClickHouse Cloud とデータ可視化ツールの互換性 \\{#clickhouse-cloud-compatibility-with-data-visualization-tools\\}
 
 | Tool                                                                    | サポート方法                 | テスト済み | ドキュメント | コメント                                                                                                                                 |
 |-------------------------------------------------------------------------|-------------------------------|--------|------------|-----------------------------------------------------------------------------------------------------------------------------------------|

@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['озеро данных', 'lakehouse']
 ---
 
-# Поддерживает ли ClickHouse озёра данных? {#does-clickhouse-support-data-lakes}
+# Поддерживает ли ClickHouse озёра данных? \\{#does-clickhouse-support-data-lakes\\}
 
 ClickHouse поддерживает озёра данных (Data Lakes), включая Iceberg, Delta Lake, Apache Hudi, Apache Paimon, Hive.
 

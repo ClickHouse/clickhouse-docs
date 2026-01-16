@@ -7,7 +7,7 @@ title: 'サードパーティライブラリ'
 doc_type: 'reference'
 ---
 
-# サードパーティライブラリ {#third-party-libraries}
+# サードパーティライブラリ \\{#third-party-libraries\\}
 
 ClickHouse は、さまざまな目的でサードパーティライブラリを利用します。たとえば、他のデータベースへの接続、ディスクへの保存／ディスクからの読み込み時のデータのデコード／エンコード、あるいは特定の SQL 関数の実装などです。
 対象システムにインストールされているライブラリに依存しないようにするため、各サードパーティライブラリは Git サブモジュールとして ClickHouse のソースツリーにインポートされ、ClickHouse とともにコンパイルおよびリンクされます。
@@ -22,7 +22,7 @@ SELECT library_name, license_type, license_path FROM system.licenses ORDER BY li
 
 [例](https://sql.clickhouse.com?query_id=478GCPU7LRTSZJBNY3EJT3)
 
-## サードパーティライブラリの追加と保守 {#adding-and-maintaining-third-party-libraries}
+## サードパーティライブラリの追加と保守 \\{#adding-and-maintaining-third-party-libraries\\}
 
 各サードパーティライブラリは、ClickHouse リポジトリの `contrib/` ディレクトリ配下に専用ディレクトリを持つ必要があります。
 ライブラリ用ディレクトリに外部コードをそのままコピーして放り込むことは避けてください。

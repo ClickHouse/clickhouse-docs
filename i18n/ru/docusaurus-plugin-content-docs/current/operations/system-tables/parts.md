@@ -6,7 +6,7 @@ title: 'system.parts'
 doc_type: 'reference'
 ---
 
-# system.parts {#systemparts}
+# system.parts \\{#systemparts\\}
 
 Содержит информацию о частях таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
 

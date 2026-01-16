@@ -8,14 +8,14 @@ doc_type: 'guide'
 keywords: ['随机数据', '测试数据']
 ---
 
-# 在 ClickHouse 中生成随机测试数据 {#generating-random-test-data-in-clickhouse}
+# 在 ClickHouse 中生成随机测试数据 \\{#generating-random-test-data-in-clickhouse\\}
 
 在测试新用例或对实现进行基准测试时，生成随机数据非常有用。
 ClickHouse 提供了[用于生成随机数据的丰富函数](/sql-reference/functions/random-functions)，在很多情况下可以避免依赖外部数据生成器。
 
 本指南提供了多个示例，展示如何在 ClickHouse 中根据不同的随机性需求生成随机数据集。
 
-## 简单均匀分布数据集 {#simple-uniform-dataset}
+## 简单均匀分布数据集 \\{#simple-uniform-dataset\\}
 
 **使用场景**：快速生成包含随机时间戳和事件类型的用户事件数据集。
 
@@ -43,7 +43,7 @@ FROM numbers(1000000);
 
 ***
 
-## 指数分布 {#exponential-distribution}
+## 指数分布 \\{#exponential-distribution\\}
 
 **使用场景**：用于模拟购买金额，其中大多数金额较低，但有少数金额较高。
 
@@ -68,7 +68,7 @@ FROM numbers(500000);
 
 ***
 
-## 时间分布的事件（泊松） {#poisson-distribution}
+## 时间分布的事件（泊松） \\{#poisson-distribution\\}
 
 **适用场景**：模拟在特定时间段（例如高峰时段）附近集中发生的事件。
 
@@ -91,7 +91,7 @@ FROM numbers(200000);
 
 ***
 
-## 随时间变化的正态分布 {#time-varying-normal-distribution}
+## 随时间变化的正态分布 \\{#time-varying-normal-distribution\\}
 
 **使用场景**：模拟会随时间变化的系统指标（如 CPU 使用率）。
 
@@ -118,7 +118,7 @@ FROM numbers(10000);
 
 ***
 
-## 分类和嵌套数据 {#categorical-and-nested-data}
+## 分类和嵌套数据 \\{#categorical-and-nested-data\\}
 
 **使用场景**：创建具有多值兴趣字段的用户画像。
 
@@ -145,7 +145,7 @@ FROM numbers(20000);
 阅读博客文章 [Generating Random Data in ClickHouse](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse) 以获取更多示例。
 :::
 
-## 生成随机表 {#generating-random-tables}
+## 生成随机表 \\{#generating-random-tables\\}
 
 当与 [`generateRandom`](/sql-reference/table-functions/generate) 表引擎结合使用时，[`generateRandomStructure`](/sql-reference/functions/other-functions#generateRandomStructure) 函数在测试、基准测试或使用任意模式创建模拟数据等场景中尤为有用。
 

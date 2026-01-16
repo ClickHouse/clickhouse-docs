@@ -8,7 +8,7 @@ title: '数据库引擎'
 doc_type: 'landing-page'
 ---
 
-# 数据库引擎 {#database-engines}
+# 数据库引擎 \\{#database-engines\\}
 
 数据库引擎用于操作表。默认情况下，ClickHouse 使用 [Atomic](../../engines/database-engines/atomic.md) 数据库引擎，它提供可配置的 [表引擎](../../engines/table-engines/index.md) 和 [SQL 方言](../../sql-reference/syntax.md)。
 

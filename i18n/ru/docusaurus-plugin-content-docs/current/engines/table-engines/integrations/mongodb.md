@@ -7,14 +7,14 @@ title: 'Движок таблицы MongoDB'
 doc_type: 'reference'
 ---
 
-# Табличный движок MongoDB {#mongodb-table-engine}
+# Табличный движок MongoDB \\{#mongodb-table-engine\\}
 
 Табличный движок MongoDB — это движок только для чтения, который позволяет читать данные из удалённой коллекции [MongoDB](https://www.mongodb.com/).
 
 Поддерживаются только серверы MongoDB версии 3.6 и выше.
 [Seed list (`mongodb+srv`)](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list) пока не поддерживается.
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \\{#creating-a-table\\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -56,7 +56,7 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 | `collection`  | Имя коллекции на удалённом сервере.                                                                                                |
 | `oid_columns` | Список имён столбцов, разделённых запятыми, которые в предложении WHERE должны интерпретироваться как `oid`. По умолчанию — `_id`. |
 
-## Сопоставление типов {#types-mappings}
+## Сопоставление типов \\{#types-mappings\\}
 
 | MongoDB                 | ClickHouse                                                                           |
 | ----------------------- | ------------------------------------------------------------------------------------ |
@@ -73,7 +73,7 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 
 Если ключ не найден в документе MongoDB (например, имя столбца не совпадает), будет вставлено значение по умолчанию или `NULL` (если столбец допускает значения `NULL`).
 
-### OID {#oid}
+### OID \\{#oid\\}
 
 Если вы хотите, чтобы `String` обрабатывался как `oid` в условии WHERE, просто укажите имя столбца в последнем аргументе движка таблицы.
 Это может понадобиться при выборке записи по столбцу `_id`, который по умолчанию имеет тип `oid` в MongoDB.
@@ -126,7 +126,7 @@ CREATE TABLE sample_oid
 SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; -- will output 1 now
 ```
 
-## Поддерживаемые предложения {#supported-clauses}
+## Поддерживаемые предложения \\{#supported-clauses\\}
 
 Поддерживаются только запросы с простыми выражениями (например, `WHERE field = <constant> ORDER BY field2 LIMIT <constant>`).
 Такие выражения переводятся в язык запросов MongoDB и выполняются на стороне сервера.
@@ -151,7 +151,7 @@ SELECT * FROM mongo_table WHERE date = '2024-01-01'::Date OR date = toDate('2024
 
 :::
 
-## Пример использования {#usage-example}
+## Пример использования \\{#usage-example\\}
 
 Предположим, что в MongoDB загружен набор данных [sample&#95;mflix](https://www.mongodb.com/docs/atlas/sample-data/sample-mflix).
 
@@ -231,7 +231,7 @@ LIMIT 3;
    └────────────────────────┴────────┘
 ```
 
-## Диагностика и устранение неполадок {#troubleshooting}
+## Диагностика и устранение неполадок \\{#troubleshooting\\}
 Сгенерированный запрос MongoDB можно увидеть в журналах с уровнем DEBUG.
 
 Подробности реализации приведены в документации [mongocxx](https://github.com/mongodb/mongo-cxx-driver) и [mongoc](https://github.com/mongodb/mongo-c-driver).

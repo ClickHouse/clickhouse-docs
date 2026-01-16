@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 与 [`JSONColumns`](./JSONColumns.md) 格式的区别在于，它还包含一些元数据和统计信息（类似于 [`JSON`](./JSON.md) 格式）。
 
@@ -21,7 +21,7 @@ doc_type: 'reference'
 `JSONColumnsWithMetadata` 格式会将所有数据缓存在内存中，然后以单个数据块输出，因此可能会导致较高的内存占用。
 :::
 
-## 使用示例 {#example-usage}
+## 使用示例 \\{#example-usage\\}
 
 示例：
 
@@ -66,4 +66,4 @@ doc_type: 'reference'
 
 对于 `JSONColumnsWithMetadata` 输入格式，如果将 [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) 设置为 `1`，则会将输入数据中元数据中的类型与表中对应列的类型进行比较。
 
-## 格式设置 {#format-settings}
+## 格式设置 \\{#format-settings\\}

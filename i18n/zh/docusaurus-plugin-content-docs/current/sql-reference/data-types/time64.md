@@ -7,7 +7,7 @@ title: 'Time64'
 doc_type: 'reference'
 ---
 
-# Time64 {#time64}
+# Time64 \\{#time64\\}
 
 数据类型 `Time64` 表示带有小数秒的一天中的时刻（time-of-day）。
 它不包含任何日历日期组件（日、月、年）。
@@ -30,7 +30,7 @@ Time64(precision)
 
 文本表示范围：当 `precision = 3` 时为 [-999:59:59.000, 999:59:59.999]。一般情况下，最小值为 `-999:59:59`，最大值为 `999:59:59`，并且最多带有 `precision` 位小数（例如，当 `precision = 9` 时，最小值为 `-999:59:59.999999999`）。
 
-## 实现细节 {#implementation-details}
+## 实现细节 \\{#implementation-details\\}
 
 **表示形式**。  
 带符号的 `Decimal64` 值，用于表示具有 `precision` 位小数的秒的小数部分。
@@ -53,7 +53,7 @@ Time64(precision)
 在创建 `Time64` 类型或值时指定时区会抛出错误。  
 同样，尝试对 `Time64` 列应用或更改时区也不被支持，并会导致错误。
 
-## 示例 {#examples}
+## 示例 \\{#examples\\}
 
 1. 创建一个包含 `Time64` 类型列的表，并向其中插入数据：
 

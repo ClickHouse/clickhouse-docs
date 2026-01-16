@@ -11,7 +11,7 @@ import shared_merge_tree from '@site/static/images/cloud/reference/shared-merge-
 import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merge-tree-2.png';
 import Image from '@theme/IdealImage';
 
-# SharedMergeTree 表引擎 {#sharedmergetree-table-engine}
+# SharedMergeTree 表引擎 \\{#sharedmergetree-table-engine\\}
 
 SharedMergeTree 表引擎系列是面向云环境、用于替代 ReplicatedMergeTree 引擎的解决方案，并针对在共享存储之上运行进行了优化（例如 Amazon S3、Google Cloud Storage、MinIO、Azure Blob Storage）。每一种具体的 MergeTree 引擎类型都有对应的 SharedMergeTree 变体，例如 SharedReplacingMergeTree 用来替代 ReplicatedReplacingMergeTree。
 
@@ -33,7 +33,7 @@ SharedMergeTree 带来的一个重要改进是：相比 ReplicatedMergeTree，�
 
 与 ReplicatedMergeTree 不同，SharedMergeTree 不需要副本之间直接通信。相反，所有通信都通过共享存储和 clickhouse-keeper 完成。SharedMergeTree 实现了异步、无主（leaderless）的复制机制，并使用 clickhouse-keeper 进行协调和元数据存储。这意味着在服务扩容和缩容时，无需再在所有副本间复制元数据。由此带来了更快的复制、变更、合并以及扩容操作。SharedMergeTree 允许每个表拥有数百个副本，使得在不使用分片的情况下实现动态伸缩成为可能。在 ClickHouse Cloud 中，会采用分布式查询执行方式，以便为单个查询利用更多的计算资源。
 
-## 内省 {#introspection}
+## 内省 \\{#introspection\\}
 
 用于对 ReplicatedMergeTree 进行内省的大多数系统表在 SharedMergeTree 中同样存在，`system.replication_queue` 和 `system.replicated_fetches` 除外，因为 SharedMergeTree 中不会发生数据和元数据的复制。不过，SharedMergeTree 为这两个表提供了相应的替代表。
 
@@ -45,7 +45,7 @@ SharedMergeTree 带来的一个重要改进是：相比 ReplicatedMergeTree，�
 
 此表是 SharedMergeTree 中 `system.replicated_fetches` 的替代表。它包含当前正在进行中的将主键和校验和拉取到内存的操作信息。
 
-## 启用 SharedMergeTree {#enabling-sharedmergetree}
+## 启用 SharedMergeTree \\{#enabling-sharedmergetree\\}
 
 `SharedMergeTree` 默认已启用。
 
@@ -98,7 +98,7 @@ ENGINE = SharedReplacingMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica
 ORDER BY key
 ```
 
-## 设置 {#settings}
+## 设置 \\{#settings\\}
 
 某些设置的行为发生了显著变化：
 
@@ -106,7 +106,7 @@ ORDER BY key
 - `insert_quorum_parallel` -- 所有对 SharedMergeTree 的插入都是 quorum 插入（写入到共享存储），因此在使用 SharedMergeTree 表引擎时无需配置该设置。
 - `select_sequential_consistency` -- 不要求使用 quorum 插入，但会在执行 `SELECT` 查询时给 clickhouse-keeper 带来额外负载。
 
-## 一致性 {#consistency}
+## 一致性 \\{#consistency\\}
 
 SharedMergeTree 相比 ReplicatedMergeTree 提供更好的轻量级一致性。向 SharedMergeTree 执行插入时，无需设置诸如 `insert_quorum` 或 `insert_quorum_parallel` 之类的参数。插入本身就是 quorum 插入，这意味着元数据会存储在 ClickHouse-Keeper 中，并会被复制到至少达到 quorum 的 ClickHouse-Keeper 节点。集群中的每个副本都会从 ClickHouse-Keeper 异步拉取最新的元数据信息。
 

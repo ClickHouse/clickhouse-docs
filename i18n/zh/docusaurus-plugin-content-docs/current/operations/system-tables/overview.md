@@ -8,7 +8,7 @@ title: '系统表概述'
 doc_type: 'reference'
 ---
 
-## 系统表概览 {#system-tables-introduction}
+## 系统表概览 \\{#system-tables-introduction\\}
 
 系统表提供以下信息：
 
@@ -58,7 +58,7 @@ doc_type: 'reference'
 
 默认情况下，表的大小不设上限。要控制表的大小，可以使用 [TTL](/sql-reference/statements/alter/ttl) 设置来删除过期的日志记录，还可以使用 `MergeTree` 引擎表的分区功能。
 
-## 系统指标的来源 {#system-tables-sources-of-system-metrics}
+## 系统指标的来源 \\{#system-tables-sources-of-system-metrics\\}
 
 为了收集系统指标，ClickHouse 服务器会使用：
 
@@ -84,7 +84,7 @@ doc_type: 'reference'
 可以通过执行 `sudo sysctl kernel.task_delayacct=1` 来启用它，或者在 `/etc/sysctl.d/` 中创建一个 `.conf` 文件，并写入 `kernel.task_delayacct = 1`。
 :::
 
-## ClickHouse Cloud 中的 system 表 {#system-tables-in-clickhouse-cloud}
+## ClickHouse Cloud 中的 system 表 \\{#system-tables-in-clickhouse-cloud\\}
 
 在 ClickHouse Cloud 中，system 表与在自托管部署中一样，为服务的状态和性能提供关键洞察。一些 system 表在整个集群范围内生效，尤其是那些从 Keeper 节点获取数据的表，这些节点负责管理分布式元数据。这些表反映了整个集群的状态，并且在各个节点上查询时其结果应当保持一致。例如，[`parts`](/operations/system-tables/parts) 在从任意节点查询时都应该是一致的：
 
@@ -144,7 +144,7 @@ SHOW TABLES FROM system LIKE 'query_log%'
 11 rows in set. Elapsed: 0.004 sec.
 ```
 
-### 跨多个版本查询 {#querying-multiple-versions}
+### 跨多个版本查询 \\{#querying-multiple-versions\\}
 
 我们可以使用 [`merge`](/sql-reference/table-functions/merge) 函数对这些表进行跨表查询。例如，下面的查询会在每个 `query_log` 表中找出发送到目标节点的最新一次查询：
 

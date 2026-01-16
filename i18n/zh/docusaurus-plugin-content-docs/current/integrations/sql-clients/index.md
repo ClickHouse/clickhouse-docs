@@ -6,7 +6,7 @@ title: 'SQL 客户端集成'
 doc_type: 'landing-page'
 ---
 
-# SQL 客户端集成 {#sql-client-integrations}
+# SQL 客户端集成 \\{#sql-client-integrations\\}
 
 本节介绍如何将 ClickHouse 与各种常见的数据库管理、分析和可视化工具进行集成。
 

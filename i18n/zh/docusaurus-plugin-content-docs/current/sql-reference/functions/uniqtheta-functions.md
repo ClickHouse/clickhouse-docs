@@ -6,7 +6,7 @@ title: 'uniqTheta 函数'
 doc_type: 'reference'
 ---
 
-# uniqTheta 函数 {#uniqtheta-functions}
+# uniqTheta 函数 \\{#uniqtheta-functions\\}
 
 uniqTheta 函数适用于两个 uniqThetaSketch 对象，用于执行集合运算，例如 ∪ / ∩ / ×（并集 / 交集 / 差集），并返回一个包含运算结果的新 uniqThetaSketch 对象。
 
@@ -15,7 +15,7 @@ uniqThetaSketch 对象由带有 -State 后缀的聚合函数 uniqTheta 构造。
 UniqThetaSketch 是一种用于存储近似集合取值的数据结构。
 关于 RoaringBitmap 的更多信息，请参阅：[Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketchFramework.html)。
 
-## uniqThetaUnion {#uniqthetaunion}
+## uniqThetaUnion \\{#uniqthetaunion\\}
 
 对两个 uniqThetaSketch 对象执行并集运算（集合运算 ∪），结果会生成一个新的 uniqThetaSketch。
 
@@ -41,7 +41,7 @@ FROM
 └───────────┴───────────────┴───────────────┘
 ```
 
-## uniqThetaIntersect {#uniqthetaintersect}
+## uniqThetaIntersect \\{#uniqthetaintersect\\}
 
 对两个 uniqThetaSketch 对象执行交集计算（集合运算 ∩），返回一个新的 uniqThetaSketch。
 
@@ -67,7 +67,7 @@ FROM
 └───────────────┴───────────────┴───────────────┘
 ```
 
-## uniqThetaNot {#uniqthetanot}
+## uniqThetaNot \\{#uniqthetanot\\}
 
 对两个 uniqThetaSketch 对象执行 a&#95;not&#95;b 计算（集合运算 ×），返回一个新的 uniqThetaSketch。
 

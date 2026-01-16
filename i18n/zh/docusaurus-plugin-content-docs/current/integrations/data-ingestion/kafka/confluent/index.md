@@ -8,7 +8,7 @@ doc_type: 'guide'
 keywords: ['Confluent Cloud ClickHouse', 'Confluent ClickHouse integration', 'Kafka ClickHouse connector', 'Confluent Platform ClickHouse', 'ClickHouse Connect Sink']
 ---
 
-# 将 Confluent Cloud 与 ClickHouse 集成 {#integrating-confluent-cloud-with-clickhouse}
+# 将 Confluent Cloud 与 ClickHouse 集成 \\{#integrating-confluent-cloud-with-clickhouse\\}
 
 Confluent 平台提供以下与 ClickHouse 集成的选项
 

@@ -18,7 +18,7 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 在生产环境部署 ClickStack 时，还需要额外考虑一些事项，以确保安全性、稳定性和正确配置。
 
 
-## 网络和端口安全 {#network-security}
+## 网络和端口安全 \{#network-security\}
 
 默认情况下，Docker Compose 会在主机上暴露端口，使其可以从容器外部访问——即使已启用 `ufw`（Uncomplicated Firewall，简单防火墙）等工具。之所以会这样，是因为 Docker 的网络栈机制在未进行显式配置时，可能会绕过主机层面的防火墙规则。
 
@@ -39,7 +39,7 @@ ports:
 如需了解如何隔离容器并加固访问安全的更多详细信息，请参阅 [Docker 网络文档](https://docs.docker.com/network/)。
 
 
-## 会话密钥配置 {#session-secret}
+## 会话密钥配置 \{#session-secret\}
 
 在生产环境中，必须为 `EXPRESS_SESSION_SECRET` 环境变量设置一个强且随机的值，以保护会话数据并防止被篡改。
 
@@ -80,7 +80,7 @@ openssl rand -hex 32
 避免将敏感信息（如密钥和凭证）提交到源代码管理系统。在生产环境中，可以考虑使用环境变量管理工具（例如 Docker Secrets、HashiCorp Vault，或针对不同环境的 CI/CD 配置）。
 
 
-## 安全摄取 {#secure-ingestion}
+## 安全摄取 \\{#secure-ingestion\\}
 
 所有数据摄取操作都应通过 ClickStack 发行版中的 OpenTelemetry (OTel) collector 暴露的 OTLP 端口进行。默认情况下，这需要在启动时生成的安全摄取 API key。向 OTel 端口发送数据时必须提供此 key，可以在 HyperDX UI 的 `Team Settings → API Keys` 中找到。
 
@@ -88,13 +88,13 @@ openssl rand -hex 32
 
 此外，我们建议为 OTLP 端点启用 TLS，并[为 ClickHouse 摄取创建专用用户](#database-ingestion-user)。
 
-## ClickHouse {#clickhouse}
+## ClickHouse \\{#clickhouse\\}
 
 对于生产环境部署，我们建议使用 [ClickHouse Cloud](https://clickhouse.com/cloud)，其默认采用符合行业标准的[安全实践](/cloud/security)，包括增强的加密、身份验证与连接性，以及托管的访问控制机制。请参阅「[ClickHouse Cloud](#clickhouse-cloud-production)」，获取结合最佳实践使用 ClickHouse Cloud 的分步指南。
 
-### 用户权限 {#user-permissions}
+### 用户权限 \\{#user-permissions\\}
 
-#### HyperDX 用户 {#hyperdx-user}
+#### HyperDX 用户 \\{#hyperdx-user\\}
 
 用于 HyperDX 的 ClickHouse 用户只需要是一个 `readonly` 用户，并且具有修改以下设置的权限：
 
@@ -105,11 +105,11 @@ openssl rand -hex 32
 
 默认情况下，OSS 和 ClickHouse Cloud 中的 `default` 用户都具备这些权限，但我们建议你创建一个具有这些权限的新用户。
 
-#### 数据库和摄取用户 {#database-ingestion-user}
+#### 数据库和摄取用户 \\{#database-ingestion-user\\}
 
 我们建议为 OTel collector 创建一个专用的摄取用户，并确保将摄取数据发送到特定的数据库，例如 `otel`。有关更多详细信息，请参阅[《创建摄取用户》](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)。
 
-### 自管理安全性 {#self-managed-security}
+### 自管理安全性 \\{#self-managed-security\\}
 
 如果你自行管理 ClickHouse 实例，务必要启用 **TLS**、强制身份验证，并遵循加固访问的最佳实践。有关实际环境中错误配置及其规避方法的背景信息，请参阅[这篇博客文章](https://www.wiz.io/blog/clickhouse-and-wiz)。
 
@@ -128,25 +128,25 @@ ClickHouse OSS 默认提供了健壮的安全特性，但需要进行相应配�
 
 另请参阅[外部认证器](/operations/external-authenticators)和[查询复杂度设置](/operations/settings/query-complexity)，以管理用户并确保查询/资源限制得到遵守。
 
-### 配置生存时间 (TTL) {#configure-ttl}
+### 配置生存时间 (TTL) \\{#configure-ttl\\}
 
 请确保已为 ClickStack 部署的[生存时间 (TTL)](/use-cases/observability/clickstack/ttl)[进行了适当配置](/use-cases/observability/clickstack/ttl#modifying-ttl)。这将控制数据的保留时长；默认的 3 天通常需要进行调整。
 
-## MongoDB 使用指南 {#mongodb-guidelines}
+## MongoDB 使用指南 \\{#mongodb-guidelines\\}
 
 请遵循 MongoDB 官方提供的[安全检查清单](https://www.mongodb.com/docs/manual/administration/security-checklist/)。
 
-## ClickHouse Cloud {#clickhouse-cloud-production}
+## ClickHouse Cloud \\{#clickhouse-cloud-production\\}
 
 以下示例展示了使用 ClickHouse Cloud 部署 ClickStack 的一个简单方案，并符合最佳实践。
 
 <VerticalStepper headerLevel="h3">
 
-### 创建服务 {#create-a-service}
+### 创建服务 \\{#create-a-service\\}
 
 按照 [ClickHouse Cloud 快速入门指南](/getting-started/quick-start/cloud/#1-create-a-clickhouse-service) 创建服务。
 
-### 复制连接信息 {#copy-connection-details}
+### 复制连接信息 \\{#copy-connection-details\\}
 
 要查找 HyperDX 的连接信息，请进入 ClickHouse Cloud 控制台并点击侧边栏中的 <b>Connect</b> 按钮，记录 HTTP 连接信息，尤其是 URL。
 
@@ -154,7 +154,7 @@ ClickHouse OSS 默认提供了健壮的安全特性，但需要进行相应配�
 
 <Image img={connect_cloud} alt="连接 Cloud" size="md" background/>
 
-### 创建 HyperDX 用户 {#create-a-user}
+### 创建 HyperDX 用户 \\{#create-a-user\\}
 
 我们建议为 HyperDX 创建一个专用用户。在 [Cloud SQL 控制台](/cloud/get-started/sql-console) 中运行以下 SQL 命令，并提供满足复杂度要求的安全密码：
 
@@ -163,7 +163,7 @@ CREATE USER hyperdx IDENTIFIED WITH sha256_password BY '<YOUR_PASSWORD>' SETTING
 GRANT sql_console_read_only TO hyperdx;
 ```
 
-### 准备摄取用户 {#prepare-for-ingestion}
+### 准备摄取用户 \\{#prepare-for-ingestion\\}
 
 创建一个用于存储数据的 `otel` 数据库，以及一个权限受限的 `hyperdx_ingest` 摄取用户。
 
@@ -173,7 +173,7 @@ CREATE USER hyperdx_ingest IDENTIFIED WITH sha256_password BY 'ClickH0u3eRocks12
 GRANT SELECT, INSERT, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
 ```
 
-### 部署 ClickStack {#deploy-clickstack}
+### 部署 ClickStack \\{#deploy-clickstack\\}
 
 部署 ClickStack，推荐使用 [Helm](/use-cases/observability/clickstack/deployment/helm) 或 [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)（修改为不包含 ClickHouse）的部署模型。 
 
@@ -183,7 +183,7 @@ GRANT SELECT, INSERT, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
 
 关于在 Helm 图表中使用 ClickHouse Cloud 的说明见[此处](/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud)。Docker Compose 的对应说明见[此处](/use-cases/observability/clickstack/deployment/docker-compose)。
 
-### 访问 HyperDX UI {#navigate-to-hyperdx-ui}
+### 访问 HyperDX UI \\{#navigate-to-hyperdx-ui\\}
 
 访问 [http://localhost:8080](http://localhost:8080) 打开 HyperDX UI。
 
@@ -193,13 +193,13 @@ GRANT SELECT, INSERT, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
 
 点击 `Create` 后，系统会提示您填写连接信息。
 
-### 连接到 ClickHouse Cloud {#connect-to-clickhouse-cloud}
+### 连接到 ClickHouse Cloud \\{#connect-to-clickhouse-cloud\\}
 
 使用之前创建的凭据补全连接信息，然后点击 `Create`。
 
 <Image img={hyperdx_cloud} alt="HyperDX Cloud" size="md"/>
 
-### 向 ClickStack 发送数据 {#send-data}
+### 向 ClickStack 发送数据 \\{#send-data\\}
 
 要向 ClickStack 发送数据，请参阅「[发送 OpenTelemetry 数据](/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data)」。
 

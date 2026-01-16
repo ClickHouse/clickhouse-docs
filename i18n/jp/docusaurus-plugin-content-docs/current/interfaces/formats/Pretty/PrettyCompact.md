@@ -16,7 +16,7 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | ✗  | ✔  |    |
 
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 [`Pretty`](./Pretty.md) フォーマットとは異なり、行と行の間に罫線を表示してテーブルを描画します。  
 そのため、結果はより省スペースな表示になります。
@@ -27,10 +27,10 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
 
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \\{#format-settings\\}
 
 <PrettyFormatSettings />

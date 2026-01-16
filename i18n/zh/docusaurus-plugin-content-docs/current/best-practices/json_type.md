@@ -15,7 +15,7 @@ ClickHouse 现在提供了适用于半结构化和动态数据的原生 JSON 列
 
 <WhenToUseJson />
 
-## 使用 JSON 的注意事项和技巧 {#considerations-and-tips-for-using-json}
+## 使用 JSON 的注意事项和技巧 \\{#considerations-and-tips-for-using-json\\}
 
 JSON 类型通过将路径扁平化为子列，实现高效的列式存储。但灵活性也意味着更高的使用要求。要高效使用它，请：
 
@@ -27,7 +27,7 @@ JSON 类型通过将路径扁平化为子列，实现高效的列式存储。但
 类型提示不仅仅是避免不必要类型推断的一种方式——它们还能完全消除存储和处理中的间接层。带有类型提示的 JSON 路径始终与传统列以相同方式存储，从而无需在查询时依赖[**判别列（discriminator column）**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data)或进行动态解析。这意味着，在合理定义类型提示的情况下，嵌套 JSON 字段可以获得与从一开始就被建模为顶层字段相同的性能和效率。因此，对于大部分结构一致、但仍希望利用 JSON 灵活性的数据集，类型提示提供了一种便捷方式，可以在无需重构 schema 或摄取管道的前提下保持性能。
 :::
 
-## 高级特性 {#advanced-features}
+## 高级特性 \\{#advanced-features\\}
 
 * JSON 列 **可以和其他列一样用作主键**。不能为子列指定编解码器（codec）。
 * 它们支持通过诸如 [`JSONAllPathsWithTypes()` 和 `JSONDynamicPaths()`](/sql-reference/data-types/newjson#introspection-functions) 等函数进行自省。
@@ -36,7 +36,7 @@ JSON 类型通过将路径扁平化为子列，实现高效的列式存储。但
 
 如需更多指导，请参阅 [ClickHouse JSON 文档](/sql-reference/data-types/newjson) 或查看我们的博文 [A New Powerful JSON Data Type for ClickHouse](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse)。
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
 考虑如下 JSON 示例，它表示 [Python PyPI 数据集](https://clickpy.clickhouse.com/) 中的一行数据：
 

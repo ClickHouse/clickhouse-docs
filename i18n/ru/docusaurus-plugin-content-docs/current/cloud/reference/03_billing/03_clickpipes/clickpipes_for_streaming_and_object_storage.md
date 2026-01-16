@@ -10,13 +10,13 @@ keywords: ['тарификация', 'clickpipes', 'цены на потоков
 import ClickPipesFAQ from '../../../_snippets/_clickpipes_faq.md'
 
 
-# ClickPipes для потоковой передачи данных и объектного хранилища {#clickpipes-for-streaming-object-storage}
+# ClickPipes для потоковой передачи данных и объектного хранилища \\{#clickpipes-for-streaming-object-storage\\}
 
 В этом разделе рассматривается модель ценообразования ClickPipes для потоковой передачи данных и объектного хранилища.
 
 
 
-## Как устроена структура ценообразования ClickPipes? {#what-does-the-clickpipes-pricing-structure-look-like}
+## Как устроена структура ценообразования ClickPipes? \\{#what-does-the-clickpipes-pricing-structure-look-like\\}
 
 Она включает два компонента:
 
@@ -30,7 +30,7 @@ import ClickPipesFAQ from '../../../_snippets/_clickpipes_faq.md'
 
 
 
-## Что такое реплики ClickPipes? {#what-are-clickpipes-replicas}
+## Что такое реплики ClickPipes? \\{#what-are-clickpipes-replicas\\}
 
 ClickPipes выполняет приём данных из удалённых источников через специализированную инфраструктуру,
 которая работает и масштабируется независимо от сервиса ClickHouse Cloud.
@@ -38,14 +38,14 @@ ClickPipes выполняет приём данных из удалённых и
 
 
 
-## Какое количество реплик используется по умолчанию и какого они размера? {#what-is-the-default-number-of-replicas-and-their-size}
+## Какое количество реплик используется по умолчанию и какого они размера? \\{#what-is-the-default-number-of-replicas-and-their-size\\}
 
 Каждый ClickPipe по умолчанию использует 1 реплику, которой выделяется 512 MiB RAM и 0.125 vCPU (XS).
 Это соответствует **0.0625** вычислительной единицы ClickHouse (1 единица = 8 GiB RAM, 2 vCPU).
 
 
 
-## Каковы публичные цены ClickPipes? {#what-are-the-clickpipes-public-prices}
+## Каковы публичные цены ClickPipes? \\{#what-are-the-clickpipes-public-prices\\}
 
 - Вычислительные ресурсы: \$0.20 за единицу в час (\$0.0125 за реплику в час для размера реплики по умолчанию)
 - Данные при приёме: \$0.04 за ГБ
@@ -62,7 +62,7 @@ ClickPipes выполняет приём данных из удалённых и
 
 
 
-## Как это выглядит на наглядном примере? {#how-does-it-look-in-an-illustrative-example}
+## Как это выглядит на наглядном примере? \\{#how-does-it-look-in-an-illustrative-example\\}
 
 В следующих примерах по умолчанию предполагается одна реплика размера M, если явно не указано иное.
 
@@ -93,6 +93,6 @@ $^1$ _Оплачиваются только вычисления ClickPipes дл
 
 
 
-## FAQ по ClickPipes для стриминга данных и объектного хранилища {#faq-streaming-and-object-storage}
+## FAQ по ClickPipes для стриминга данных и объектного хранилища \\{#faq-streaming-and-object-storage\\}
 
 <ClickPipesFAQ/>

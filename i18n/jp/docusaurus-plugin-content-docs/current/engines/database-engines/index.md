@@ -8,7 +8,7 @@ title: 'データベース エンジン'
 doc_type: 'landing-page'
 ---
 
-# データベースエンジン {#database-engines}
+# データベースエンジン \\{#database-engines\\}
 
 データベースエンジンを使用すると、テーブルを扱うことができます。デフォルトでは、ClickHouse は [Atomic](../../engines/database-engines/atomic.md) データベースエンジンを使用します。このエンジンは、設定可能な [テーブルエンジン](../../engines/table-engines/index.md) と [SQL 方言](../../sql-reference/syntax.md) を提供します。
 

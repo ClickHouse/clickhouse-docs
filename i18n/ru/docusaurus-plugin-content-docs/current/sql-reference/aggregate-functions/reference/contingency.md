@@ -5,7 +5,7 @@ title: 'contingency'
 doc_type: 'reference'
 ---
 
-# contingency {#contingency}
+# contingency \{#contingency\}
 
 Функция `contingency` вычисляет [коэффициент контингенции](https://en.wikipedia.org/wiki/Contingency_table#Cram%C3%A9r's_V_and_the_contingency_coefficient_C) — величину, которая измеряет связь между двумя столбцами в таблице. Вычисление аналогично [функции `cramersV`](./cramersV.md), но отличается знаменателем под знаком квадратного корня.
 

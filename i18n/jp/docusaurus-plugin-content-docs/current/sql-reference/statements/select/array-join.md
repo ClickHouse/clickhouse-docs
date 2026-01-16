@@ -6,7 +6,7 @@ title: 'ARRAY JOIN 句'
 doc_type: 'reference'
 ---
 
-# ARRAY JOIN 句 {#array-join-clause}
+# ARRAY JOIN 句 \\{#array-join-clause\\}
 
 配列カラムを含むテーブルに対して、元の配列カラムの各要素ごとに 1 行を持つ新しいテーブルを生成し、その他のカラムの値は複製するという操作は一般的です。これは `ARRAY JOIN` 句が行う処理の基本的なケースです。
 
@@ -27,9 +27,9 @@ FROM <left_subquery>
 * `ARRAY JOIN` - 通常、空配列は `JOIN` の結果に含まれません。
 * `LEFT ARRAY JOIN` - `JOIN` の結果には、空配列を持つ行も含まれます。空配列に対する値は、その配列要素の型のデフォルト値（通常は 0、空文字列、または NULL）に設定されます。
 
-## 基本的な ARRAY JOIN の例 {#basic-array-join-examples}
+## 基本的な ARRAY JOIN の例 \\{#basic-array-join-examples\\}
 
-### ARRAY JOIN と LEFT ARRAY JOIN {#array-join-left-array-join-examples}
+### ARRAY JOIN と LEFT ARRAY JOIN \\{#array-join-left-array-join-examples\\}
 
 以下の例では、`ARRAY JOIN` 句と `LEFT ARRAY JOIN` 句の使用方法を示します。[Array](../../../sql-reference/data-types/array.md) 型のカラムを持つテーブルを作成し、値を挿入します。
 
@@ -89,7 +89,7 @@ LEFT ARRAY JOIN arr;
 └─────────────┴─────┘
 ```
 
-### ARRAY JOIN と arrayEnumerate 関数 {#array-join-arrayEnumerate}
+### ARRAY JOIN と arrayEnumerate 関数 \\{#array-join-arrayEnumerate\\}
 
 この関数は通常、`ARRAY JOIN` と組み合わせて使用されます。`ARRAY JOIN` を適用したあと、各配列ごとに一度だけ値をカウントできるようにします。例:
 
@@ -127,7 +127,7 @@ WHERE (CounterID = 160656) AND notEmpty(GoalsReached)
 └─────────┴───────┘
 ```
 
-### ARRAY JOIN と arrayEnumerateUniq {#array_join_arrayEnumerateUniq}
+### ARRAY JOIN と arrayEnumerateUniq \\{#array_join_arrayEnumerateUniq\\}
 
 この関数は、`ARRAY JOIN` を使用して配列要素を集約する場合に役立ちます。
 
@@ -163,7 +163,7 @@ LIMIT 10
 └─────────┴─────────┴────────┘
 ```
 
-## エイリアスの使用 {#using-aliases}
+## エイリアスの使用 \\{#using-aliases\\}
 
 `ARRAY JOIN` 句では、配列にエイリアスを指定できます。この場合、配列要素にはそのエイリアスを用いてアクセスできますが、配列自体には元の名前でアクセスします。例：
 
@@ -261,7 +261,7 @@ SETTINGS enable_unaligned_array_join = 1;
 └─────────┴─────────┴───┴───────────┘
 ```
 
-## ネストされたデータ構造での ARRAY JOIN {#array-join-with-nested-data-structure}
+## ネストされたデータ構造での ARRAY JOIN \\{#array-join-with-nested-data-structure\\}
 
 `ARRAY JOIN` は [ネストされたデータ構造](../../../sql-reference/data-types/nested-data-structures/index.md) に対しても使用できます。
 
@@ -374,16 +374,16 @@ ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 └───────┴─────┴─────┴─────────┴────────────┴─────┘
 ```
 
-## 実装の詳細 {#implementation-details}
+## 実装の詳細 \\{#implementation-details\\}
 
 `ARRAY JOIN` を実行する際、クエリの実行順序は最適化されます。クエリ内では `ARRAY JOIN` は常に [WHERE](../../../sql-reference/statements/select/where.md)/[PREWHERE](../../../sql-reference/statements/select/prewhere.md) 句より前に指定する必要がありますが、技術的には、`ARRAY JOIN` の結果がフィルタリングに使用されない限り、どの順序で実行されても問題ありません。処理順序はクエリオプティマイザによって制御されます。
 
-### ショートサーキット関数評価との非互換性 {#incompatibility-with-short-circuit-function-evaluation}
+### ショートサーキット関数評価との非互換性 \\{#incompatibility-with-short-circuit-function-evaluation\\}
 
 [ショートサーキット関数評価](/operations/settings/settings#short_circuit_function_evaluation) は、`if`、`multiIf`、`and`、`or` などの特定の関数において、複雑な式の実行を最適化するための機能です。これにより、ゼロ除算のような、これらの関数の実行中に発生しうる例外を防止します。
 
 `arrayJoin` は常に実行され、ショートサーキット関数評価をサポートしません。これは、クエリ解析および実行時に他のすべての関数とは別に処理される特殊な関数であり、ショートサーキット関数実行とは両立しない追加のロジックを必要とするためです。その理由は、結果の行数が `arrayJoin` の結果に依存しており、`arrayJoin` の遅延実行を実装するのはあまりに複雑かつ高コストであるためです。
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \\{#related-content\\}
 
 - ブログ記事: [ClickHouse における時系列データの扱い方](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

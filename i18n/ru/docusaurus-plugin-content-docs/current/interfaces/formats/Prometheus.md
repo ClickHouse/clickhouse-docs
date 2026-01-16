@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|-------|-----------|
 | ✗     | ✔     |           |
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Выводит метрики в [текстовом формате экспозиции Prometheus](https://prometheus.io/docs/instrumenting/exposition_formats/#text-based-format).
 
@@ -28,7 +28,7 @@ doc_type: 'reference'
 Существуют особые требования к меткам `histogram` и `summary` - см. [документацию Prometheus](https://prometheus.io/docs/instrumenting/exposition_formats/#histograms-and-summaries) для получения подробностей.
 Специальные правила применяются к строкам с метками `{'count':''}` и `{'sum':''}`, которые преобразуются в `<metric_name>_count` и `<metric_name>_sum` соответственно.
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
 ```yaml
 ┌─name────────────────────────────────┬─type──────┬─help──────────────────────────────────────┬─labels─────────────────────────┬────value─┬─────timestamp─┐
@@ -86,5 +86,5 @@ rpc_duration_seconds_count 2693
 something_weird{problem="division by zero"} +Inf -3982045
 ```
 
-## Настройки формата {#format-settings}
+## Настройки формата \\{#format-settings\\}
 

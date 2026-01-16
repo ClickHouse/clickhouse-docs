@@ -5,7 +5,7 @@ title: 'exponentialTimeDecayedCount'
 doc_type: 'reference'
 ---
 
-## exponentialTimeDecayedCount {#exponentialtimedecayedcount}
+## exponentialTimeDecayedCount \{#exponentialtimedecayedcount\}
 
 返回时间序列在时间索引 `t` 处的累积指数衰减值。
 

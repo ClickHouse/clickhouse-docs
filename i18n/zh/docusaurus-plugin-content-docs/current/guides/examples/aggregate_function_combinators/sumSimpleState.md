@@ -7,17 +7,17 @@ sidebar_label: 'sumSimpleState'
 doc_type: 'reference'
 ---
 
-# sumSimpleState {#sumsimplestate}
+# sumSimpleState \\{#sumsimplestate\\}
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 可以将 [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) 组合器应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum)
 函数，以返回所有输入值的总和。它返回结果的类型为
 [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction)。
 
-## 示例用法 {#example-usage}
+## 示例用法 \\{#example-usage\\}
 
-### 跟踪点赞和点踩 {#tracking-post-votes}
+### 跟踪点赞和点踩 \\{#tracking-post-votes\\}
 
 来看一个实际示例，使用一张表来跟踪帖子上的投票。
 对于每条帖子，我们希望维护点赞、点踩以及总体得分的累计总数。
@@ -100,7 +100,7 @@ ORDER BY post_id ASC;
 └─────────┴───────────────┴─────────────────┴─────────────┘
 ```
 
-## 另请参阅 {#see-also}
+## 另请参阅 \\{#see-also\\}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`SimpleState 组合器`](/sql-reference/aggregate-functions/combinators#-simplestate)
 - [`SimpleAggregateFunction 类型`](/sql-reference/data-types/simpleaggregatefunction)

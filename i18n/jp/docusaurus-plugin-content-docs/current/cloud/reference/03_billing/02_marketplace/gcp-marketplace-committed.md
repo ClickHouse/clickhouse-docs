@@ -25,13 +25,13 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 コミット型契約を通じて、[GCP Marketplace](https://console.cloud.google.com/marketplace) 上で ClickHouse Cloud の利用を開始できます。コミット型契約（Private Offer とも呼ばれます）は、一定期間にわたって ClickHouse Cloud の利用に一定額をコミットする仕組みです。
 
 
-## 前提条件 {#prerequisites}
+## 前提条件 \\{#prerequisites\\}
 
 - 特定の契約条件に基づいて ClickHouse から提示されるプライベートオファー。
 
 
 
-## サインアップ手順 {#steps-to-sign-up}
+## サインアップ手順 \\{#steps-to-sign-up\\}
 
 1. プライベートオファーを確認・同意するためのリンクが記載されたメールを受信しているはずです。
 

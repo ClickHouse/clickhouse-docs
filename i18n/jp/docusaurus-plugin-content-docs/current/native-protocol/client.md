@@ -7,7 +7,7 @@ doc_type: 'reference'
 keywords: ['クライアントパケット', 'ネイティブプロトコルクライアント', 'プロトコルパケット', 'クライアント通信', 'TCP クライアント']
 ---
 
-# クライアントパケット {#client-packets}
+# クライアントパケット \\{#client-packets\\}
 
 | value | name              | description              |
 |-------|-------------------|--------------------------|
@@ -20,7 +20,7 @@ keywords: ['クライアントパケット', 'ネイティブプロトコルク�
 
 `Data` は圧縮可能です。
 
-## Hello {#hello}
+## Hello \\{#hello\\}
 
 例えば、`54451` のプロトコルバージョンをサポートする `Go Client` v1.10 を使用して、
 `default` データベースに `default` ユーザー、`secret` パスワードで接続したいとします。
@@ -35,20 +35,20 @@ keywords: ['クライアントパケット', 'ネイティブプロトコルク�
 | username         | String  | `"default"`   | ユーザー名                     |
 | password         | String  | `"secret"`    | パスワード                     |
 
-### Protocol version {#protocol-version}
+### Protocol version \\{#protocol-version\\}
 
 プロトコルバージョンは、クライアントの TCP プロトコルのバージョンです。
 
 通常、互換性のある最新のサーバーリビジョンと同じですが、
 サーバーリビジョンそのものと混同してはいけません。
 
-### Defaults {#defaults}
+### Defaults \\{#defaults\\}
 
 すべての値は**明示的に設定**する必要があり、サーバー側にはデフォルト値はありません。
 クライアント側では、デフォルトとして `"default"` データベース、`"default"` ユーザー名、
 およびパスワードには `""`（空文字列）を使用してください。
 
-## クエリ {#query}
+## クエリ \\{#query\\}
 
 | field           | type                       | value      | description                         |
 |-----------------|----------------------------|------------|-------------------------------------|
@@ -60,7 +60,7 @@ keywords: ['クライアントパケット', 'ネイティブプロトコルク�
 | compression     | UVarInt                    | `0`        | 無効=0、有効=1                      |
 | body            | String                     | `SELECT 1` | クエリテキスト                      |
 
-### Client info {#client-info}
+### Client info \\{#client-info\\}
 
 | field             | type            | description                                   |
 |-------------------|-----------------|-----------------------------------------------|
@@ -85,7 +85,7 @@ keywords: ['クライアントパケット', 'ネイティブプロトコルク�
 | trace_state       | String          | トレースの状態                                |
 | trace_flags       | Byte            | トレースのフラグ                              |
 
-### Settings {#settings}
+### Settings \\{#settings\\}
 
 | field     | type   | value             | description                 |
 |-----------|--------|-------------------|-----------------------------|
@@ -95,7 +95,7 @@ keywords: ['クライアントパケット', 'ネイティブプロトコルク�
 
 リストとしてエンコードされており、key と value が空の要素が現れるとリストの終端を示します。
 
-### Stage {#stage}
+### Stage \\{#stage\\}
 
 | value | name               | description                                       |
 |-------|--------------------|---------------------------------------------------|
@@ -103,7 +103,7 @@ keywords: ['クライアントパケット', 'ネイティブプロトコルク�
 | 1     | WithMergeableState | マージ可能な状態になるまで                        |
 | 2     | Complete           | 完全に完了するまで（デフォルトであるべき値）      |
 
-## データ {#data}
+## データ \\{#data\\}
 
 | field   | type                | description              |
 |---------|---------------------|--------------------------|
@@ -112,7 +112,7 @@ keywords: ['クライアントパケット', 'ネイティブプロトコルク�
 | rows    | UVarInt             | 行数                     |
 | columns | [[]列](#column)     | データを含む列           |
 
-### 列 {#column}
+### 列 \\{#column\\}
 
 | field | type   | value           | description |
 |-------|--------|-----------------|-------------|
@@ -120,10 +120,10 @@ keywords: ['クライアントパケット', 'ネイティブプロトコルク�
 | type  | String | `DateTime64(9)` | 列の型      |
 | data  | bytes  | ~               | 列データ    |
 
-## キャンセル {#cancel}
+## キャンセル \\{#cancel\\}
 
 パケット本体はありません。サーバーはクエリをキャンセルする必要があります。
 
-## Ping {#ping}
+## Ping \\{#ping\\}
 
 パケットの本体はありません。サーバーは[pong](./server.md#pong)で応答する必要があります。

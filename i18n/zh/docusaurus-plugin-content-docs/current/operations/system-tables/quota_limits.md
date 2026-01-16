@@ -6,7 +6,7 @@ title: 'system.quota_limits'
 doc_type: 'reference'
 ---
 
-# system.quota&#95;limits {#systemquota&#95;limits}
+# system.quota&#95;limits \\{#systemquota&#95;limits\\}
 
 包含所有配额各个时间区间的最大限制信息。一个配额可以对应任意数量的行，也可以为零行。
 

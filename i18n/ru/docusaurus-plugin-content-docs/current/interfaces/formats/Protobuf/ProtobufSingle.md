@@ -18,14 +18,14 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 | ✔    | ✔     |           |
 
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Формат `ProtobufSingle` аналогичен формату [`Protobuf`](./Protobuf.md), но предназначен для хранения и парсинга одиночных Protobuf‑сообщений без префикса длины.
 
 
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
 
 
-## Параметры форматирования {#format-settings}
+## Параметры форматирования \\{#format-settings\\}

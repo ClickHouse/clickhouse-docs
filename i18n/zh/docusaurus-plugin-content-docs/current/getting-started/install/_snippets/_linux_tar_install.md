@@ -1,10 +1,10 @@
-# 使用 tgz 归档文件安装 ClickHouse {#install-clickhouse-using-tgz-archives}
+# 使用 tgz 归档文件安装 ClickHouse \\{#install-clickhouse-using-tgz-archives\\}
 
 > 对于无法安装 `deb` 或 `rpm` 软件包的 Linux 发行版,建议使用官方预编译的 `tgz` 归档文件。
 
 <VerticalStepper>
 
-## 下载并安装最新稳定版本 {#install-latest-stable}
+## 下载并安装最新稳定版本 \\{#install-latest-stable\\}
 
 所需版本可以使用 `curl` 或 `wget` 从仓库 https://packages.clickhouse.com/tgz/ 下载。
 随后需要将下载的压缩包解压缩，并使用安装脚本完成安装。
@@ -17,7 +17,7 @@
 中查找到带有 `-stable` 后缀的发布版本号。
 :::
 
-## 获取最新的 ClickHouse 版本 {#get-latest-version}
+## 获取最新的 ClickHouse 版本 \\{#get-latest-version\\}
 
 从 GitHub 获取最新的 ClickHouse 版本，并将其保存到 `LATEST_VERSION` 变量中。
 
@@ -27,7 +27,7 @@ LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse
 export LATEST_VERSION
 ```
 
-## 检测系统架构 {#detect-system-architecture}
+## 检测系统架构 \\{#detect-system-architecture\\}
 
 检测系统架构，并相应设置 ARCH 变量：
 
@@ -39,7 +39,7 @@ case $(uname -m) in
 esac
 ```
 
-## 为每个 ClickHouse 组件下载 tar 包 {#download-tarballs}
+## 为每个 ClickHouse 组件下载 tar 包 \\{#download-tarballs\\}
 
 为每个 ClickHouse 组件下载 tar 包。该循环会优先尝试特定架构的
 软件包，如果不存在则退回到通用软件包。
@@ -52,7 +52,7 @@ do
 done
 ```
 
-## 解压并安装软件包 {#extract-and-install}
+## 解压并安装软件包 \\{#extract-and-install\\}
 
 运行下面的命令以解压并安装下列软件包：
 - `clickhouse-common-static`

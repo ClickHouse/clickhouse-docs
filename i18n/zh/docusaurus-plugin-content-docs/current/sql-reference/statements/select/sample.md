@@ -6,7 +6,7 @@ title: 'SAMPLE 子句'
 doc_type: 'reference'
 ---
 
-# SAMPLE 子句 {#sample-clause}
+# SAMPLE 子句 \\{#sample-clause\\}
 
 `SAMPLE` 子句用于对 `SELECT` 查询进行近似处理。
 
@@ -36,7 +36,7 @@ doc_type: 'reference'
 | `SAMPLE n`    | 其中 `n` 为足够大的整数。查询会在至少包含 `n` 行的样本上执行（但不会显著多于该数量）。例如，`SAMPLE 10000000` 会在至少 10,000,000 行数据的样本上执行查询。[详细说明](#sample-n) |
 | `SAMPLE k OFFSET m`  | 其中 `k` 和 `m` 为 0 到 1 之间的数值。查询会在占比为 `k` 的数据样本上执行。用于采样的数据相对于整个数据集偏移 `m` 的比例。[详细说明](#sample-k-offset-m)                                           |
 
-## SAMPLE K {#sample-k}
+## SAMPLE K \\{#sample-k\\}
 
 这里的 `k` 是一个介于 0 和 1 之间的数（支持分数和小数表示）。例如，`SAMPLE 1/2` 或 `SAMPLE 0.5`。
 
@@ -56,7 +56,7 @@ ORDER BY PageViews DESC LIMIT 1000
 
 在本示例中，查询只在占全部数据 0.1（10%）的样本上执行。聚合函数的值不会自动校正，因此要获得近似结果，就将 `count()` 的值手动乘以 10。
 
-## SAMPLE N {#sample-n}
+## SAMPLE N \\{#sample-n\\}
 
 这里的 `n` 是一个足够大的整数。例如，`SAMPLE 10000000`。
 
@@ -92,7 +92,7 @@ FROM visits
 SAMPLE 10000000
 ```
 
-## SAMPLE K OFFSET M {#sample-k-offset-m}
+## SAMPLE K OFFSET M \\{#sample-k-offset-m\\}
 
 这里的 `k` 和 `m` 是取值范围在 0 到 1 之间的数字。下面给出一些示例。
 

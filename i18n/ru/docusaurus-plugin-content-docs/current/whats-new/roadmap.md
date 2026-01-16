@@ -9,7 +9,7 @@ keywords: ['дорожная карта', 'будущие возможности
 
 
 
-## Текущая дорожная карта {#current-roadmap}
+## Текущая дорожная карта \\{#current-roadmap\\}
 
 Текущая дорожная карта доступна для открытого обсуждения:
 
@@ -17,7 +17,7 @@ keywords: ['дорожная карта', 'будущие возможности
 
 
 
-## Предыдущие дорожные карты {#previous-roadmaps}
+## Предыдущие дорожные карты \\{#previous-roadmaps\\}
 
 - [2024](https://github.com/ClickHouse/ClickHouse/issues/58392)
 - [2023](https://github.com/ClickHouse/ClickHouse/issues/44767)

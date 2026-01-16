@@ -7,11 +7,11 @@ title: 'ClickHouse-disks'
 doc_type: 'reference'
 ---
 
-# Clickhouse-disks {#clickhouse-disks}
+# Clickhouse-disks \\{#clickhouse-disks\\}
 
 ClickHouse ディスクに対して、ファイルシステムのような操作を提供するユーティリティです。インタラクティブおよび非インタラクティブの両モードで動作します。
 
-## プログラム全体のオプション {#program-wide-options}
+## プログラム全体のオプション \\{#program-wide-options\\}
 
 * `--config-file, -C` -- 使用する ClickHouse の設定ファイルへのパス。既定値は `/etc/clickhouse-server/config.xml`。
 * `--save-logs` -- 実行したコマンドの進行状況を `/var/log/clickhouse-server/clickhouse-disks.log` にログ出力します。
@@ -20,22 +20,22 @@ ClickHouse ディスクに対して、ファイルシステムのような操作
 * `--query, -q` -- 対話モードを起動せずに実行できる単一のクエリ。
 * `--help, -h` -- すべてのオプションとコマンド、およびその説明を表示します。
 
-## 遅延初期化 {#lazy-initialization}
+## 遅延初期化 \\{#lazy-initialization\\}
 設定に記載されているすべてのディスクは、遅延初期化されます。つまり、あるディスクに対応するオブジェクトは、そのディスクが何らかのコマンドで実際に使用されたときにのみ初期化されます。これは、ユーティリティをより堅牢にし、設定には記述されているもののユーザーが使用しておらず、初期化時に失敗する可能性のあるディスクに触れないようにするためです。ただし、`clickhouse-disks` の起動時に初期化されるディスクが 1 つ存在している必要があります。このディスクは、コマンドラインからパラメータ `--disk` を使用して指定します（デフォルト値は `default` です）。
 
-## デフォルトディスク {#default-disks}
+## デフォルトディスク \\{#default-disks\\}
 起動後、設定には明示されていませんが、初期化に利用可能なディスクが 2 つあります。
 
 1. **`local` ディスク**: このディスクは、`clickhouse-disks` ユーティリティが起動された元のローカルファイルシステムを模倣するように設計されています。初期パスは `clickhouse-disks` が開始されたディレクトリであり、ファイルシステムのルートディレクトリにマウントされます。
 
 2. **`default` ディスク**: このディスクは、設定内の `clickhouse/path` パラメータで指定されたディレクトリ（デフォルト値は `/var/lib/clickhouse`）に、ローカルファイルシステム上のディレクトリとしてマウントされます。初期パスは `/` に設定されています。
 
-## Clickhouse-disks の状態 {#clickhouse-disks-state}
+## Clickhouse-disks の状態 \\{#clickhouse-disks-state\\}
 追加された各ディスクについて、このユーティリティは現在のディレクトリ（通常のファイルシステムと同様）を記録します。ユーザーは現在のディレクトリを変更したり、ディスク間を切り替えたりできます。
 
 状態はプロンプト "`disk_name`:`path_name`" に反映されます。
 
-## コマンド {#commands}
+## コマンド \\{#commands\\}
 
 このドキュメントでは、必須の位置引数は `<parameter>`、名前付き引数は `[--parameter value]` の形式で表記します。すべての位置引数は、対応する名前を用いた名前付き引数として指定することもできます。
 

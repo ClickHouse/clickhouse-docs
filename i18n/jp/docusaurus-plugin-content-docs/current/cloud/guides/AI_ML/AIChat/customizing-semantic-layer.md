@@ -10,13 +10,13 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# セマンティックレイヤーを使って Ask AI チャットをカスタマイズする {#customize-ask-ai-chat-with-a-semantic-layer}
+# セマンティックレイヤーを使って Ask AI チャットをカスタマイズする \{#customize-ask-ai-chat-with-a-semantic-layer\}
 
 Ask AI チャットエージェントは、**AGENTS.md** を通じて、特定のビジネスロジック、データ構造、ドメイン知識を理解するようにカスタマイズできます。**AGENTS.md** は、エージェントのシステムプロンプトに重ねて動作するセマンティックレイヤーとして機能する、特別な保存済みクエリです。
 
 AGENTS.md ファイルを作成することで、すべての会話の冒頭に挿入されるカスタムインストラクションを定義でき、組織固有の要件、計算、慣習に基づいた SQL クエリ生成とデータ分析をガイドできます。
 
-## 仕組み {#how-it-works}
+## 仕組み \\{#how-it-works\\}
 
 Cloud Console で "AGENTS.md"（大文字・小文字を区別）という名前のクエリを保存すると、次のことが行われます。
 
@@ -24,18 +24,18 @@ Cloud Console で "AGENTS.md"（大文字・小文字を区別）という名前
 2. コンテンツは構造化されたコンテンツタグ内に配置され、エージェントの system prompt に挿入されます
 3. そのサービス内のすべての Ask AI チャットでの会話に対して、これらの指示が適用されます
 
-## AGENTS.md を作成する {#creating-agents-md}
+## AGENTS.md を作成する \\{#creating-agents-md\\}
 
 <VerticalStepper headerLevel="h3">
 
-### 保存済みクエリを作成する {#create-query}
+### 保存済みクエリを作成する \\{#create-query\\}
 
 1. Cloud Console で新しいクエリを作成します
 2. 名前を **"AGENTS.md"**（大文字・小文字を区別）に設定します
 3. クエリテキストエディタにカスタムの指示内容を書きます（実際の SQL ではありません）
 4. クエリを保存します
 
-### 手順を追加する {#add-instructions}
+### 手順を追加する \\{#add-instructions\\}
 
 手順は、明確で実行可能な表現で構成してください。次の内容を含めます:
 
@@ -47,13 +47,13 @@ Cloud Console で "AGENTS.md"（大文字・小文字を区別）という名前
 
 </VerticalStepper>
 
-## ベストプラクティス {#best-practices}
+## ベストプラクティス \\{#best-practices\\}
 
-### コンテキストを有限のリソースとして扱う {#finite-resource}
+### コンテキストを有限のリソースとして扱う \\{#finite-resource\\}
 
 コンテキストは貴重です — 1トークンごとにエージェントの「注意予算」が消費されます。限られたワーキングメモリしか持たない人間と同様に、コンテキストが増えるほど言語モデルのパフォーマンスは低下します。つまり、望む結果が得られる確率を最大化するために、**できるだけ少なく、かつ情報量の高いトークンの最小集合** を見極める必要があります。
 
-### 適切な「高度」を見つける {#right-altitude}
+### 適切な「高度」を見つける \\{#right-altitude\\}
 
 次の 2 つの極端な状態の間でバランスを取ります。
 
@@ -62,7 +62,7 @@ Cloud Console で "AGENTS.md"（大文字・小文字を区別）という名前
 
 最適な「高度」は、行動を効果的に導くのに十分な具体性を持ちつつ、モデルが強力なヒューリスティクスを適用できるだけの柔軟性も備えた状態です。利用可能な中で最良のモデルに対して最小限のプロンプトから始め、観測された失敗パターンに基づいて明確な指示を追加していきましょう。
 
-### 構造化されたセクションで整理する {#structured-sections}
+### 構造化されたセクションで整理する \\{#structured-sections\\}
 
 XML タグや Markdown の見出しを使って、明確でざっと見て把握しやすいセクションを作成します。
 
@@ -81,11 +81,11 @@ How to use specific ClickHouse features
 ```
 
 
-### 多様で代表的なサンプルを用意する {#canonical-examples}
+### 多様で代表的なサンプルを用意する \\{#canonical-examples\\}
 
 サンプルは、まさに「百聞は一見にしかず」です。あらゆる例外ケースをプロンプトに詰め込むのではなく、期待される挙動を効果的に示せる、多様で厳選されたサンプルを用意しましょう。
 
-### 最小限かつ完全に保つ {#minimal-complete}
+### 最小限かつ完全に保つ \\{#minimal-complete\\}
 
 - 頻繁に必要となる指示だけを含める
 - 簡潔に保つ — コンテキストが大きすぎると「コンテキストの劣化」によりパフォーマンスが低下する
@@ -96,7 +96,7 @@ How to use specific ClickHouse features
 最小限というのは、必ずしも短いという意味ではありません。エージェントが期待どおりに振る舞えるだけの十分な詳細は必要ですが、不要な冗長さは避けてください。
 :::
 
-## 例: 生データからの計算済みメトリクス {#example-calculated-metrics}
+## 例: 生データからの計算済みメトリクス \\{#example-calculated-metrics\\}
 
 メトリクスが単純なカラム参照ではなく特定の計算を必要とする場合、どのように計算するかをエージェントに指示します。
 
@@ -120,7 +120,7 @@ GROUP BY date;
 ```
 
 
-## 例：ビジネスロジックルール {#example-business-logic}
+## 例：ビジネスロジックルール \\{#example-business-logic\\}
 
 ドメイン固有の計算や分類を定義します。
 
@@ -155,7 +155,7 @@ Always include these categorizations when generating traffic or revenue reports.
 ```
 
 
-## 例：データ構造の特有の癖 {#example-data-quirks}
+## 例：データ構造の特有の癖 \\{#example-data-quirks\\}
 
 一般的ではないデータ形式やレガシーなスキーマ設計上の判断を文書化します。
 
@@ -185,7 +185,7 @@ FROM products;
 ```
 
 
-## 例: ドメイン用語 {#example-terminology}
+## 例: ドメイン用語 \\{#example-terminology\\}
 
 ビジネス用語を技術的な実装に対応付けます。
 

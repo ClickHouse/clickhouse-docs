@@ -5,9 +5,9 @@ title: 'GROUPING'
 doc_type: 'リファレンス'
 ---
 
-# グループ化 {#grouping}
+# グループ化 \\{#grouping\\}
 
-## GROUPING {#grouping}
+## GROUPING \\{#grouping\\}
 
 [ROLLUP](../statements/select/group-by.md/#rollup-modifier) と [CUBE](../statements/select/group-by.md/#cube-modifier) は GROUP BY の修飾子です。これらはいずれも小計を計算します。ROLLUP は `(day, month, year)` のような順序付きのカラムリストを受け取り、集約の各レベルで小計を計算し、最後に総計を計算します。CUBE は、指定されたカラムのあらゆる組み合わせに対して小計を計算します。GROUPING は、ROLLUP または CUBE によって返される行のうち、どれがスーパー集約（より上位レベルの集約行）であり、どれが修飾されていない GROUP BY によって返される行に相当するかを識別します。
 
@@ -15,13 +15,13 @@ GROUPING 関数は複数のカラムを引数として取り、ビットマス�
 - `1` は、`GROUP BY` に対する `ROLLUP` または `CUBE` 修飾子によって返された行が小計であることを示します
 - `0` は、`GROUP BY` に対する `ROLLUP` または `CUBE` 修飾子によって返された行が小計ではないことを示します
 
-## GROUPING SETS {#grouping-sets}
+## GROUPING SETS \\{#grouping-sets\\}
 
 デフォルトでは、`CUBE` 修飾子は、`CUBE` に渡された列のあらゆる組み合わせに対して小計を計算します。`GROUPING SETS` を使用すると、計算する組み合わせを明示的に指定できます。
 
 階層データの分析は、`ROLLUP`、`CUBE`、`GROUPING SETS` 修飾子の代表的なユースケースの 1 つです。ここでのサンプルは、2 つのデータセンターにインストールされている Linux ディストリビューションとそのバージョンに関するデータを含むテーブルです。ディストリビューション別、バージョン別、ロケーション別にデータを確認することが有用な場合があります。
 
-### サンプルデータの読み込み {#load-sample-data}
+### サンプルデータの読み込み \\{#load-sample-data\\}
 
 ```sql
 CREATE TABLE servers ( datacenter VARCHAR(255),
@@ -70,7 +70,7 @@ FROM
 10 rows in set. Elapsed: 0.409 sec.
 ```
 
-### 簡単なクエリ {#simple-queries}
+### 簡単なクエリ \\{#simple-queries\\}
 
 分布別に各データセンター内のサーバー数を取得します。
 
@@ -151,7 +151,7 @@ FROM
 1 row in set. Elapsed: 0.244 sec. 
 ```
 
-### 複数の GROUP BY と GROUPING SETS の比較 {#comparing-multiple-group-by-statements-with-grouping-sets}
+### 複数の GROUP BY と GROUPING SETS の比較 \\{#comparing-multiple-group-by-statements-with-grouping-sets\\}
 
 CUBE、ROLLUP、GROUPING SETS を使わずにデータを集計する場合:
 
@@ -254,7 +254,7 @@ GROUP BY
 9 rows in set. Elapsed: 0.427 sec.
 ```
 
-### GROUPING SETS との比較 {#comparing-cube-with-grouping-sets}
+### GROUPING SETS との比較 \\{#comparing-cube-with-grouping-sets\\}
 
 次のクエリにおける CUBE `CUBE(datacenter,distro,version)` は、意味のある階層にはなりません。Arch と RHEL ではリリースサイクルやバージョン命名規則が異なるため、2 つのディストリビューションをまたいでバージョンを見ることには意味がありません。この後に続く GROUPING SETS の例のほうが適切であり、`distro` と `version` を同じセット内でグループ化しています。
 

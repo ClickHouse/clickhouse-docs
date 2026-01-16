@@ -22,7 +22,7 @@ import stackoverflow from '@site/static/images/getting-started/example-datasets/
 このデータのスキーマの説明は[こちら](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede)にあります。
 
 
-## 事前に用意されたデータ {#pre-prepared-data}
+## 事前に用意されたデータ \{#pre-prepared-data\}
 
 このデータのコピーを Parquet 形式で提供しており、内容は 2024 年 4 月時点のものです。行数（投稿 6,000 万件）だけを見れば ClickHouse にとっては小規模ですが、このデータセットには大量のテキストとサイズの大きい String 型カラムが含まれています。
 
@@ -33,7 +33,7 @@ CREATE DATABASE stackoverflow
 以下の計測値は、`eu-west-2` にある 96 GiB、24 vCPU の ClickHouse Cloud クラスターに対するものです。データセットは `eu-west-3` にあります。
 
 
-### 投稿 {#posts}
+### 投稿 \{#posts\}
 
 ```sql
 CREATE TABLE stackoverflow.posts
@@ -73,7 +73,7 @@ INSERT INTO stackoverflow.posts SELECT * FROM s3('https://datasets-documentation
 投稿データは年別のファイルとしても利用できます。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
 
 
-### 投票 {#votes}
+### 投票 \{#votes\}
 
 ```sql
 CREATE TABLE stackoverflow.votes
@@ -96,7 +96,7 @@ INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation
 投票データは年ごとのファイルも利用可能です。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
 
 
-### コメント {#comments}
+### コメント \{#comments\}
 
 ```sql
 CREATE TABLE stackoverflow.comments
@@ -120,7 +120,7 @@ INSERT INTO stackoverflow.comments SELECT * FROM s3('https://datasets-documentat
 コメントデータは年ごとにも利用できます。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
 
 
-### ユーザー {#users}
+### ユーザー \{#users\}
 
 ```sql
 CREATE TABLE stackoverflow.users
@@ -147,7 +147,7 @@ INSERT INTO stackoverflow.users SELECT * FROM s3('https://datasets-documentation
 ```
 
 
-### バッジ {#badges}
+### バッジ \{#badges\}
 
 ```sql
 CREATE TABLE stackoverflow.badges
@@ -168,7 +168,7 @@ INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentatio
 ```
 
 
-### PostLinks {#postlinks}
+### PostLinks \{#postlinks\}
 
 ```sql
 CREATE TABLE stackoverflow.postlinks
@@ -188,7 +188,7 @@ INSERT INTO stackoverflow.postlinks SELECT * FROM s3('https://datasets-documenta
 ```
 
 
-### PostHistory（投稿履歴） {#posthistory}
+### PostHistory（投稿履歴） \{#posthistory\}
 
 ```sql
 CREATE TABLE stackoverflow.posthistory
@@ -213,11 +213,11 @@ INSERT INTO stackoverflow.posthistory SELECT * FROM s3('https://datasets-documen
 ```
 
 
-## 元のデータセット {#original-dataset}
+## 元のデータセット \\{#original-dataset\\}
 
 元のデータセットは、圧縮済みの (7zip) XML 形式で [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) から入手できます（`stackoverflow.com*` というプレフィックスが付いたファイル）。
 
-### ダウンロード {#download}
+### ダウンロード \{#download\}
 
 ```bash
 wget https://archive.org/download/stackexchange/stackoverflow.com-Badges.7z
@@ -232,7 +232,7 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 これらのファイルのサイズは最大 35GB あり、インターネット接続状況によってはダウンロードに約 30 分かかる場合があります。ダウンロードサーバー側で帯域制限がかけられており、速度はおおよそ 20MB/秒が上限です。
 
 
-### JSON への変換 {#convert-to-json}
+### JSON への変換 \{#convert-to-json\}
 
 本稿執筆時点では、ClickHouse は入力フォーマットとしての XML をネイティブにサポートしていません。データを ClickHouse にロードするには、まずデータを NDJSON に変換します。
 
@@ -279,11 +279,11 @@ clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int3
 ```
 
 
-## クエリ例 {#example-queries}
+## クエリ例 \\{#example-queries\\}
 
 最初の一歩として試せる、いくつかの簡単なクエリ例です。
 
-### Stack Overflow で最もよく使われているタグ {#most-popular-tags-on-stack-overflow}
+### Stack Overflow で最もよく使われているタグ \{#most-popular-tags-on-stack-overflow\}
 
 ```sql
 
@@ -313,7 +313,7 @@ Peak memory usage: 224.03 MiB.
 ```
 
 
-### 回答数が最も多いユーザー（アクティブアカウント） {#user-with-the-most-answers-active-accounts}
+### 回答数が最も多いユーザー（アクティブアカウント） \{#user-with-the-most-answers-active-accounts\}
 
 アカウントには `UserId` が必要です。
 
@@ -340,7 +340,7 @@ Peak memory usage: 206.45 MiB.
 ```
 
 
-### ビュー数が最も多い ClickHouse 関連投稿 {#clickhouse-related-posts-with-the-most-views}
+### ビュー数が最も多い ClickHouse 関連投稿 \{#clickhouse-related-posts-with-the-most-views\}
 
 ```sql
 SELECT
@@ -371,7 +371,7 @@ Peak memory usage: 240.01 MiB.
 ```
 
 
-### 最も物議を醸した投稿 {#most-controversial-posts}
+### 最も物議を醸した投稿 \{#most-controversial-posts\}
 
 ```sql
 SELECT
@@ -406,6 +406,6 @@ Peak memory usage: 6.05 GiB.
 ```
 
 
-## 帰属表示 {#attribution}
+## 帰属表示 \\{#attribution\\}
 
 このデータを `cc-by-sa 4.0` ライセンスの下で提供している Stack Overflow に感謝するとともに、その貢献と、このデータの元となる情報源である [https://archive.org/details/stackexchange](https://archive.org/details/stackexchange) をここに明記します。

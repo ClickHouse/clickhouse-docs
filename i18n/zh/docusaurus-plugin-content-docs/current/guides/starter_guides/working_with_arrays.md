@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 > 本指南将介绍如何在 ClickHouse 中使用数组，以及一些最常用的[数组函数](/sql-reference/functions/array-functions)。
 
-## 数组简介 {#array-basics}
+## 数组简介 \{#array-basics\}
 
 数组是一种内存中的数据结构，用于将多个值组合在一起。
 这些值称为数组的*元素*，每个元素都可以通过索引来访问，该索引表示该元素在这一组中的位置。
@@ -161,12 +161,12 @@ SELECT string_array[0]
 ```
 
 
-## 数组函数 {#array-functions}
+## 数组函数 \\{#array-functions\\}
 
 ClickHouse 提供了大量用于数组操作的实用函数。
 本节中，我们将从最简单的函数开始，依次介绍一些最常用且逐步增加复杂度的函数。
 
-### length、arrayEnumerate、indexOf、has* 函数 {#length-arrayEnumerate-indexOf-has-functions}
+### length、arrayEnumerate、indexOf、has* 函数 \{#length-arrayEnumerate-indexOf-has-functions\}
 
 `length` 函数用于返回数组中的元素个数：
 
@@ -228,7 +228,7 @@ hasAll_false: 0
 ```
 
 
-## 使用数组函数探索航班数据 {#exploring-flight-data-with-array-functions}
+## 使用数组函数探索航班数据 \\{#exploring-flight-data-with-array-functions\\}
 
 到目前为止，我们的示例都相当简单。
 在实际数据集上使用时，数组的实用性才能真正体现出来。
@@ -242,7 +242,7 @@ hasAll_false: 0
 单击下面的 “play” 按钮，在文档中直接运行查询并实时查看结果。
 :::
 
-### groupArray {#grouparray}
+### groupArray \{#grouparray\}
 
 该数据集中有许多列，但我们将重点关注其中一部分。
 运行下面的查询来查看我们的数据是什么样的：
@@ -311,7 +311,7 @@ ORDER BY outward_flights DESC
 ```
 
 
-### arrayMap 和 arrayZip {#arraymap}
+### arrayMap 和 arrayZip \{#arraymap\}
 
 在前一个查询中，我们看到丹佛国际机场是在我们选定的那一天中出港航班数量最多的机场。
 现在来看一下，这些航班中有多少是准点的，有多少延误了 15–30 分钟，以及有多少延误了超过 30 分钟。
@@ -345,7 +345,7 @@ GROUP BY ALL
 [`arrayZip`](/sql-reference/functions/array-functions#arrayZip) 函数会将 `Tail_Number` 数组和 `statuses` 数组合并成一个数组。
 
 
-### arrayFilter {#arrayfilter}
+### arrayFilter \{#arrayfilter\}
 
 接下来，我们只查看机场 `DEN`、`ATL` 和 `DFW` 中延误 30 分钟及以上的航班数量：
 
@@ -370,7 +370,7 @@ d -> d >= 30
 ```
 
 
-### arraySort 和 arrayIntersect {#arraysort-and-arrayintersect}
+### arraySort 和 arrayIntersect \{#arraysort-and-arrayintersect\}
 
 接下来，我们将借助 [`arraySort`](/sql-reference/functions/array-functions#arraySort) 和 [`arrayIntersect`](/sql-reference/functions/array-functions#arrayIntersect) 函数，找出哪些美国主要机场组合拥有最多共同目的地。
 `arraySort` 接收一个数组，默认按升序对元素进行排序，你也可以向其传入一个 lambda 函数来自定义排序顺序。
@@ -417,7 +417,7 @@ LIMIT 10
 这揭示了哪些主要枢纽机场的航线网络重叠最多，这可能表明多个航空公司在同一城市对之间展开竞争，或者这些枢纽服务于类似的地理区域，因此潜在地可以作为旅客的替代中转点。
 
 
-### arrayReduce {#arrayReduce}
+### arrayReduce \{#arrayReduce\}
 
 在继续研究延误数据的同时，让我们使用另一个高阶数组函数 `arrayReduce`，来计算从丹佛国际机场出发的每条航线的平均和最大延误时间：
 
@@ -442,7 +442,7 @@ ORDER BY avg_delay DESC
 `arrayReduce` 会将一个聚合函数（在第一个参数中指定）应用到提供的数组（在第二个参数中指定）的各个元素上。
 
 
-### arrayJoin {#arrayJoin}
+### arrayJoin \{#arrayJoin\}
 
 ClickHouse 中的一般函数都有一个特性：返回的行数与输入的行数相同。
 不过，有一个有趣且独特的函数打破了这一规则，值得单独了解 —— `arrayJoin` 函数。
@@ -502,7 +502,7 @@ ORDER BY flightsDelayed DESC
 ```
 
 
-## 后续步骤 {#next-steps}
+## 后续步骤 \\{#next-steps\\}
 
 恭喜！您已经学会了如何在 ClickHouse 中使用数组，从基础的数组创建和索引操作，到 `groupArray`、`arrayFilter`、`arrayMap`、`arrayReduce` 和 `arrayJoin` 等强大函数。
 如需继续深入学习，请查阅完整的数组函数参考文档，了解更多函数，例如 `arrayFlatten`、`arrayReverse` 和 `arrayDistinct`。

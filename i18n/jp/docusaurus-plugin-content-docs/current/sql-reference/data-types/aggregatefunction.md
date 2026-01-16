@@ -8,9 +8,9 @@ title: 'AggregateFunction 型'
 doc_type: 'reference'
 ---
 
-# AggregateFunction 型 {#aggregatefunction-type}
+# AggregateFunction 型 \\{#aggregatefunction-type\\}
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 ClickHouse のすべての [集約関数](/sql-reference/aggregate-functions) には、
 実装固有の中間状態があり、それを `AggregateFunction` データ型としてシリアル化して
@@ -25,7 +25,7 @@ ClickHouse のすべての [集約関数](/sql-reference/aggregate-functions) �
 - 中間状態から集約の最終結果を取得するために使用される
   [`-Merge`](/sql-reference/aggregate-functions/combinators#-merge) 集約関数コンビネータ。
 
-## 構文 {#syntax}
+## 構文 \\{#syntax\\}
 
 ```sql
 AggregateFunction(aggregate_function_name, types_of_arguments...)
@@ -47,9 +47,9 @@ CREATE TABLE t
 ) ENGINE = ...
 ```
 
-## 使用方法 {#usage}
+## 使用方法 \\{#usage\\}
 
-### データ挿入 {#data-insertion}
+### データ挿入 \\{#data-insertion\\}
 
 `AggregateFunction` 型のカラムを持つテーブルにデータを挿入するには、
 集約関数と
@@ -81,7 +81,7 @@ quantilesState(0.5, 0.9)(SendTiming)
 * `value` - フォーマットは集約関数の引数の単一の値、もしくは複数引数の場合はそれらのタプルを受け取り、それをデシリアライズして対応する状態を構成します。
 * `array` - フォーマットは上記の `value` オプションで説明したような値の Array を受け取り、その配列内のすべての要素を集約して状態を構成します。
 
-### データの選択 {#data-selection}
+### データの選択 \\{#data-selection\\}
 
 `AggregatingMergeTree` テーブルからデータを選択する場合は、データを挿入したときと同じ集約関数を `GROUP BY` 句とともに使用しますが、[`-Merge`](/sql-reference/aggregate-functions/combinators#-merge) コンビネータを付けて使用します。
 
@@ -95,11 +95,11 @@ SELECT uniq(UserID) FROM table
 SELECT uniqMerge(state) FROM (SELECT uniqState(UserID) AS state FROM table GROUP BY RegionID)
 ```
 
-## 使用例 {#usage-example}
+## 使用例 \\{#usage-example\\}
 
 [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) エンジンの説明を参照してください。
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \\{#related-content\\}
 
 - ブログ記事: [Using Aggregate Combinators in ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
 - [MergeState](/sql-reference/aggregate-functions/combinators#-mergestate)

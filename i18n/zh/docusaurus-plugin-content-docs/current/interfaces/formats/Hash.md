@@ -13,14 +13,14 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 `Hash` 输出格式会为结果中的所有列和行计算一个单个哈希值。
 这在数据传输成为瓶颈的场景中，对于计算结果的“指纹”非常有用。
 
-## 示例用法 {#example-usage}
+## 示例用法 \\{#example-usage\\}
 
-### 读取数据 {#reading-data}
+### 读取数据 \\{#reading-data\\}
 
 假设有一张名为 `football` 的表，包含如下数据：
 
@@ -62,4 +62,4 @@ df2ec2f0669b000edff6adee264e7d68
 1 rows in set. Elapsed: 0.154 sec.
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \\{#format-settings\\}

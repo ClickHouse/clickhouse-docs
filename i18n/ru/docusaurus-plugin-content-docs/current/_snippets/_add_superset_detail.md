@@ -13,7 +13,7 @@
 Приведенные ниже команды необходимо выполнять из корневой директории репозитория GitHub `superset`.
 :::
 
-## Официальный драйвер ClickHouse Connect {#official-clickhouse-connect-driver}
+## Официальный драйвер ClickHouse Connect \\{#official-clickhouse-connect-driver\\}
 
 Чтобы драйвер ClickHouse Connect был доступен в развертывании Superset, добавьте его в локальный файл `requirements`:
 
@@ -21,7 +21,7 @@
 echo "clickhouse-connect" >> ./docker/requirements-local.txt
 ```
 
-## Mapbox {#mapbox}
+## Mapbox \\{#mapbox\\}
 
 Этот шаг необязателен: вы можете отображать геоданные в Superset без ключа API Mapbox, но при этом увидите сообщение с рекомендацией добавить ключ, а фоновое изображение карты будет отсутствовать (вы увидите только точки данных, но не подложку карты). Mapbox предоставляет бесплатный тарифный план, если вы хотите им воспользоваться.
 
@@ -33,7 +33,7 @@ echo "clickhouse-connect" >> ./docker/requirements-local.txt
 echo "MAPBOX_API_KEY=pk.SAMPLE-Use-your-key-instead" >> docker/.env-non-dev
 ```
 
-## Развертывание Superset версии 2.0.0 {#deploy-superset-version-200}
+## Развертывание Superset версии 2.0.0 \\{#deploy-superset-version-200\\}
 
 Для развертывания релиза 2.0.0 выполните:
 

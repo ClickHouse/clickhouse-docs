@@ -7,7 +7,7 @@ title: 'Distributed 表引擎'
 doc_type: 'reference'
 ---
 
-# 分布式表引擎 {#distributed-table-engine}
+# 分布式表引擎 \\{#distributed-table-engine\\}
 
 :::warning 在 Cloud 中使用 Distributed 引擎
 要在 ClickHouse Cloud 中创建分布式表引擎，可以使用 [`remote` 和 `remoteSecure`](../../../sql-reference/table-functions/remote) 表函数。
@@ -17,7 +17,7 @@ doc_type: 'reference'
 使用 Distributed 引擎的表本身不存储任何数据，但允许在多个服务器上进行分布式查询处理。
 读操作会自动并行执行。在读取时，如果远程服务器上存在表索引，则会使用这些索引。
 
-## 创建表 {#distributed-creating-a-table}
+## 创建表 \\{#distributed-creating-a-table\\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -29,7 +29,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 [SETTINGS name=value, ...]
 ```
 
-### 基于现有表 {#distributed-from-a-table}
+### 基于现有表 \\{#distributed-from-a-table\\}
 
 当 `Distributed` 表指向当前服务器上的某个表时，你可以沿用该表的表结构：
 
@@ -37,7 +37,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster] AS [db2.]name2 ENGINE = Distributed(cluster, database, table[, sharding_key[, policy_name]]) [SETTINGS name=value, ...]
 ```
 
-### 分布式参数 {#distributed-parameters}
+### 分布式参数 \\{#distributed-parameters\\}
 
 | Parameter                 | Description                                                                                                                                                                                                                                                  |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -52,7 +52,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster] AS [db2.]name2
 * [distributed&#95;foreground&#95;insert](../../../operations/settings/settings.md#distributed_foreground_insert) 设置
 * [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-multiple-volumes) 使用示例
 
-### 分布式设置 {#distributed-settings}
+### 分布式设置 \\{#distributed-settings\\}
 
 | Setting                                    | Description                                                                                                                                                 | Default value |
 | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
@@ -96,7 +96,7 @@ SETTINGS
 
 在数据库名的位置上，你可以使用返回字符串的常量表达式。例如：`currentDatabase()`。
 
-## 集群 {#distributed-clusters}
+## 集群 \\{#distributed-clusters\\}
 
 集群是在[服务器配置文件](../../../operations/configuration-files.md)中配置的：
 
@@ -182,7 +182,7 @@ SETTINGS
 
 如果每次都需要向一组未知的分片和副本发送查询，则不需要创建 `Distributed` 表——改用 `remote` 表函数。参见 [Table functions](../../../sql-reference/table-functions/index.md) 部分。
 
-## 写入数据 {#distributed-writing-data}
+## 写入数据 \\{#distributed-writing-data\\}
 
 向集群写入数据有两种方法：
 
@@ -211,7 +211,7 @@ SETTINGS
 
 如果服务器在对 `Distributed` 表执行 `INSERT` 之后宕机或发生了异常重启（例如由于硬件故障），插入的数据可能会丢失。如果在表目录中检测到损坏的数据部分，它会被移动到 `broken` 子目录中并不再使用。
 
-## 读取数据 {#distributed-reading-data}
+## 读取数据 \\{#distributed-reading-data\\}
 
 在查询 `Distributed` 表时，`SELECT` 查询会被发送到所有分片，并且无论数据如何分布在这些分片上（可以是完全随机分布），都可以正常工作。添加新分片时，无需将旧数据迁移到其中。相反，你可以通过为该分片指定更大的权重，将新数据写入其中——这样数据分布会略有不均，但查询仍能正确且高效地执行。
 
@@ -219,9 +219,9 @@ SETTINGS
 
 要了解分布式 `in` 和 `global in` 查询的处理方式，请参阅[此处](/sql-reference/operators/in#distributed-subqueries)的文档。
 
-## 虚拟列 {#virtual-columns}
+## 虚拟列 \\{#virtual-columns\\}
 
-#### _Shard_num {#_shard_num}
+#### _Shard_num \\{#_shard_num\\}
 
 `_shard_num` — 包含表 `system.clusters` 中的 `shard_num` 值。类型：[UInt32](../../../sql-reference/data-types/int-uint.md)。
 

@@ -19,7 +19,7 @@ import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# ClickHouse を Deepnote に接続する {#connect-clickhouse-to-deepnote}
+# ClickHouse を Deepnote に接続する \\{#connect-clickhouse-to-deepnote\\}
 
 <CommunityMaintainedBadge/>
 
@@ -27,13 +27,13 @@ import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/curr
 
 このガイドでは、Deepnote のアカウントと稼働中の ClickHouse インスタンスが既に用意されていることを前提とします。
 
-## インタラクティブな例 {#interactive-example}
+## インタラクティブな例 \\{#interactive-example\\}
 
 Deepnote のデータノートブックから ClickHouse に対してクエリを実行するインタラクティブな例を試したい場合は、下のボタンをクリックして、[ClickHouse playground](../../../getting-started/playground.md) と接続されたテンプレートプロジェクトを起動してください。
 
 [<Image size="logo" img="https://deepnote.com/buttons/launch-in-deepnote.svg" alt="Deepnote で起動" />](https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote)
 
-## ClickHouse に接続する {#connect-to-clickhouse}
+## ClickHouse に接続する \\{#connect-to-clickhouse\\}
 
 1. Deepnote 内で「Integrations」画面を開き、ClickHouse のタイルをクリックします。
 
@@ -49,7 +49,7 @@ Deepnote のデータノートブックから ClickHouse に対してクエリ�
 
 3. 以上で、ClickHouse と Deepnote の連携が完了しました。
 
-## ClickHouse 連携を使用する {#using-clickhouse-integration}
+## ClickHouse 連携を使用する \\{#using-clickhouse-integration\\}
 
 1. まず、ノートブック右側の ClickHouse 連携に接続します。
 

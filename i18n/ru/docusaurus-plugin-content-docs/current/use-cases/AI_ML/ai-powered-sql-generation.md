@@ -20,7 +20,7 @@ doc_type: 'guide'
 * `list_tables_in_database` — выводит список всех таблиц в заданной базе данных
 * `get_schema_for_table` — выводит команду `CREATE TABLE` (схему) для заданной таблицы
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \{#prerequisites\}
 
 Нам потребуется добавить ключ Anthropic или OpenAI в виде переменной окружения:
 
@@ -32,7 +32,7 @@ export OPENAI_API_KEY=your_api_key
 Кроме того, вы можете [указать файл конфигурации](https://clickhouse.com/docs/interfaces/cli#ai-sql-generation-configuration).
 
 
-## Подключение к SQL‑песочнице ClickHouse {#connecting-to-the-clickhouse-sql-playground}
+## Подключение к SQL‑песочнице ClickHouse \{#connecting-to-the-clickhouse-sql-playground\}
 
 Мы будем исследовать эту возможность, используя [SQL‑песочницу ClickHouse](https://sql.clickhouse.com/).
 
@@ -50,7 +50,7 @@ clickhouse client -mn \
 :::
 
 
-## Задаём вопросы ClickHouse на естественном языке {#asking-clickhouse-questions-in-natural-language}
+## Задаём вопросы ClickHouse на естественном языке \\{#asking-clickhouse-questions-in-natural-language\\}
 
 Теперь пора начать задавать вопросы!
 
@@ -60,7 +60,7 @@ clickhouse client -mn \
 Тип анализа, который вам нужен (средние значения, суммы, рейтинги и т. д.)\
 Любые условия фильтрации
 
-### Поиск самых дорогих рынков жилья {#finding-expensive-housing-markets}
+### Поиск самых дорогих рынков жилья \{#finding-expensive-housing-markets\}
 
 Начнём с вопроса о ценах на жильё. В SQL Playground есть датасет с ценами на жильё в Великобритании, который ИИ автоматически обнаружит:
 
@@ -132,7 +132,7 @@ clickhouse client -mn \
 Если мы хотим задать уточняющий вопрос, его нужно заново сформулировать с нуля.
 
 
-### Поиск дорогой недвижимости в Большом Лондоне {#finding-expensive-properties-in-greater-london}
+### Поиск дорогой недвижимости в Большом Лондоне \{#finding-expensive-properties-in-greater-london\}
 
 Поскольку функция не сохраняет историю диалога, каждый запрос должен быть самодостаточным. Задавая уточняющие вопросы, вам необходимо предоставлять полный контекст, а не ссылаться на предыдущие запросы.
 Например, после просмотра предыдущих результатов мы можем захотеть сосредоточиться именно на объектах недвижимости в Большом Лондоне. Вместо того чтобы спрашивать: «А что насчёт Большого Лондона?», нам нужно включить полный контекст:

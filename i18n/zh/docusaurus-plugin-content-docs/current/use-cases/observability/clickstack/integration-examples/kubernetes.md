@@ -21,11 +21,11 @@ ClickStack 使用 OpenTelemetry (OTel) collector 从 Kubernetes 集群中收集�
 
 本指南假设你已经部署了一个作为网关的 [ClickStack OTel collector](/use-cases/observability/clickstack/ingesting-data/otel-collector)，并通过摄取 API key 实现了安全防护。
 
-## 创建 OTel Helm 图表配置文件 {#creating-the-otel-helm-chart-config-files}
+## 创建 OTel Helm 图表配置文件 \\{#creating-the-otel-helm-chart-config-files\\}
 
 为了同时从每个节点以及整个集群层面收集日志和指标，我们需要部署两个独立的 OpenTelemetry collector。一个将以 DaemonSet 守护进程集的形式部署，用于从每个节点收集日志和指标，另一个将以 Deployment 部署的形式部署，用于从整个集群收集日志和指标。
 
-### 创建 API key Secret {#create-api-key-secret}
+### 创建 API key Secret \\{#create-api-key-secret\\}
 
 使用来自 HyperDX 的[摄取 API key](/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data)创建一个新的 Kubernetes Secret。下面将要安装的组件会使用这个 Secret，将数据安全地摄取到你的 ClickStack OTel collector 中：
 
@@ -41,7 +41,7 @@ kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_
 # 例如 kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=http://my-hyperdx-hdx-oss-v2-otel-collector:4318 {#eg-kubectl-create-configmap-notel-demo-otel-config-vars-from-literalyour_otel_collector_endpointhttpmy-hyperdx-hdx-oss-v2-otel-collector4318}
 ```
 
-### 创建 DaemonSet 守护进程集配置 {#creating-the-daemonset-configuration}
+### 创建 DaemonSet 守护进程集配置 \\{#creating-the-daemonset-configuration\\}
 
 DaemonSet 守护进程集会从集群中的每个节点收集日志和指标，但不会收集 Kubernetes 事件或集群范围的指标。
 
@@ -154,7 +154,7 @@ curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/
   ```
 </details>
 
-### 创建部署配置 {#creating-the-deployment-configuration}
+### 创建部署配置 \{#creating-the-deployment-configuration\}
 
 要收集 Kubernetes 事件和集群范围的指标，我们需要另外部署一个以 Deployment 方式运行的独立 OpenTelemetry collector。
 
@@ -229,7 +229,7 @@ curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/
   ```
 </details>
 
-## 部署 OpenTelemetry 收集器 {#deploying-the-otel-collector}
+## 部署 OpenTelemetry 收集器 \{#deploying-the-otel-collector\}
 
 现在可以使用
 [OpenTelemetry Helm 图表](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-collector)
@@ -250,7 +250,7 @@ helm install my-opentelemetry-collector-daemonset open-telemetry/opentelemetry-c
 
 现在，你的 Kubernetes 集群中的指标、日志和 Kubernetes 事件应该已经出现在 HyperDX 中了。
 
-## 将资源标签转发到 pod（容器组）（推荐） {#forwarding-resouce-tags-to-pods}
+## 将资源标签转发到 pod（容器组）（推荐） \{#forwarding-resouce-tags-to-pods\}
 
 为了将应用级日志、指标和追踪与 Kubernetes 元数据（例如 pod 名称、命名空间等）进行关联，你可以使用 `OTEL_RESOURCE_ATTRIBUTES` 环境变量，将 Kubernetes 元数据转发到应用程序。
 

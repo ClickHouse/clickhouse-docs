@@ -7,7 +7,7 @@ title: 'system.s3_queue_settings'
 doc_type: 'reference'
 ---
 
-# system.s3&#95;queue&#95;settings {#systems3&#95;queue&#95;settings}
+# system.s3&#95;queue&#95;settings \\{#systems3&#95;queue&#95;settings\\}
 
 Содержит информацию о настройках таблиц [S3Queue](../../engines/table-engines/integrations/s3queue.md). Доступно, начиная с версии сервера `24.10`.
 

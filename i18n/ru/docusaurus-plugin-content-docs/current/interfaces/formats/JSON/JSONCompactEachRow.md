@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Отличается от [`JSONEachRow`](./JSONEachRow.md) только тем, что строки данных выводятся в виде массивов, а не объектов.
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
-### Вставка данных {#inserting-data}
+### Вставка данных \\{#inserting-data\\}
 
 Используйте JSON‑файл со следующими данными под названием `football.json`:
 
@@ -49,7 +49,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactEachRow;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных \\{#reading-data\\}
 
 Считайте данные в формате `JSONCompactEachRow`:
 
@@ -81,4 +81,4 @@ FORMAT JSONCompactEachRow
 ["2022-05-07", 2021, "Walsall", "Swindon Town", 0, 3]
 ```
 
-## Параметры формата {#format-settings}
+## Параметры формата \\{#format-settings\\}

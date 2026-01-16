@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
-# Оператор WATCH {#watch-statement}
+# Оператор WATCH \\{#watch-statement\\}
 
 <DeprecatedBadge />
 

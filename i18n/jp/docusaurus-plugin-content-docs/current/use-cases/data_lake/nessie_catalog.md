@@ -34,16 +34,16 @@ Nessie は、次の機能を備えたデータレイク向けのオープンソ�
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
-## ローカル開発環境のセットアップ {#local-development-setup}
+## ローカル開発環境のセットアップ \\{#local-development-setup\\}
 
 ローカル開発およびテストには、コンテナ化された Nessie セットアップを利用できます。このアプローチは、学習、プロトタイピング、開発用途に最適です。
 
-### 前提条件 {#local-prerequisites}
+### 前提条件 \\{#local-prerequisites\\}
 
 1. **Docker と Docker Compose**: Docker がインストールされ、起動していることを確認します
 2. **サンプルセットアップ**: Nessie の公式 docker-compose セットアップを利用できます
 
-### ローカルでの Nessie カタログのセットアップ {#setting-up-local-nessie-catalog}
+### ローカルでの Nessie カタログのセットアップ \\{#setting-up-local-nessie-catalog\\}
 
 公式の [Nessie docker-compose セットアップ](https://projectnessie.org/guides/setting-up/) を使用できます。これは、Nessie、インメモリのバージョンストア、およびオブジェクトストレージ用の MinIO を含む完全な環境を提供します。
 
@@ -147,7 +147,7 @@ docker-compose logs -f
 Nessie のセットアップではインメモリのバージョンストアを使用し、最初にサンプルデータを Iceberg テーブルにロードしておく必要があります。ClickHouse からクエリを実行する前に、その環境でテーブルが作成され、データが投入されていることを必ず確認してください。
 :::
 
-### ローカル Nessie カタログへの接続 {#connecting-to-local-nessie-catalog}
+### ローカル Nessie カタログへの接続 \\{#connecting-to-local-nessie-catalog\\}
 
 ClickHouse コンテナに接続します。
 
@@ -165,7 +165,7 @@ ENGINE = DataLakeCatalog('http://nessie:19120/iceberg', 'admin', 'password')
 SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/my-bucket', warehouse = 'warehouse'
 ```
 
-## ClickHouse を使用した Nessie カタログテーブルのクエリ実行 {#querying-nessie-catalog-tables-using-clickhouse}
+## ClickHouse を使用した Nessie カタログテーブルのクエリ実行 \\{#querying-nessie-catalog-tables-using-clickhouse\\}
 
 接続が確立できたので、Nessie カタログ経由でクエリを実行し始めることができます。たとえば次のとおりです。
 
@@ -248,7 +248,7 @@ SHOW CREATE TABLE `default.taxis`;
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## データレイクから ClickHouse へのデータ読み込み {#loading-data-from-your-data-lake-into-clickhouse}
+## データレイクから ClickHouse へのデータ読み込み \\{#loading-data-from-your-data-lake-into-clickhouse\\}
 
 Nessie カタログから ClickHouse にデータをロードする必要がある場合は、まずローカルの ClickHouse テーブルを作成することから始めます。
 

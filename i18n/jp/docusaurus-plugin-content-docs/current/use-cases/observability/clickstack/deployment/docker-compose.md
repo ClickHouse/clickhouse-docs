@@ -33,20 +33,20 @@ Docker Compose は、デフォルトの `otel-collector` セットアップに�
 
 これらのポートにより、多様なテレメトリソースとの連携が可能になり、OpenTelemetry collector はさまざまなインジェスト要件に対応できる本番運用向けの構成になります。
 
-### 適しているケース {#suitable-for}
+### 適しているケース \\{#suitable-for\\}
 
 * ローカルでのテスト
 * PoC（概念実証）
 * フォールトトレランスが不要で、1 台のサーバーで全ての ClickHouse データをホストできるプロダクション環境向けのデプロイ
 * ClickStack はデプロイするが ClickHouse は別でホストする場合（例: ClickHouse Cloud を利用する場合）
 
-## デプロイ手順 {#deployment-steps}
+## デプロイ手順 \\{#deployment-steps\\}
 
 <br/>
 
 <VerticalStepper headerLevel="h3">
 
-### リポジトリをクローンする {#clone-the-repo}
+### リポジトリをクローンする \\{#clone-the-repo\\}
 
 Docker Compose を使用してデプロイするには、ClickStack リポジトリをクローンし、そのディレクトリに移動して `docker-compose up` を実行します:
 
@@ -55,7 +55,7 @@ git clone https://github.com/ClickHouse/ClickStack.git
 docker compose up
 ```
 
-### HyperDX UI にアクセスする {#navigate-to-hyperdx-ui}
+### HyperDX UI にアクセスする \\{#navigate-to-hyperdx-ui\\}
 
 [http://localhost:8080](http://localhost:8080) にアクセスして HyperDX UI を表示します。
 
@@ -71,7 +71,7 @@ docker compose up
 
 別の ClickHouse インスタンスを使用する例については、「[Create a ClickHouse Cloud connection](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)」を参照してください。
 
-### 接続情報を入力する {#complete-connection-details}
+### 接続情報を入力する \\{#complete-connection-details\\}
 
 デプロイ済みの ClickHouse インスタンスに接続するには、**Create** をクリックして既定の設定をそのまま使用します。  
 
@@ -83,7 +83,7 @@ docker compose up
 
 </VerticalStepper>
 
-## compose 設定の変更 {#modifying-settings}
+## compose 設定の変更 \{#modifying-settings\}
 
 ユーザーは、使用するバージョンなどのスタック設定を、環境変数ファイルで変更できます。
 
@@ -113,11 +113,11 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 ```
 
 
-### OpenTelemetry collector の設定 {#configuring-collector}
+### OpenTelemetry collector の設定 \\{#configuring-collector\\}
 
 必要に応じて OTel collector の設定を変更できます。設定の変更方法の詳細は、["Modifying configuration"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration) を参照してください。
 
-## ClickHouse Cloud を使用する {#using-clickhouse-cloud}
+## ClickHouse Cloud を使用する \{#using-clickhouse-cloud\}
 
 このディストリビューションは ClickHouse Cloud と併用できます。次の手順を実行してください:
 

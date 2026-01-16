@@ -16,12 +16,12 @@ import neon_ip_allow from '@site/static/images/integrations/data-ingestion/click
 import neon_conn_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-conn-details.png'
 import Image from '@theme/IdealImage';
 
-# Руководство по настройке источника Neon Postgres {#neon-postgres-source-setup-guide}
+# Руководство по настройке источника Neon Postgres \\{#neon-postgres-source-setup-guide\\}
 
 Это руководство по настройке Neon Postgres, который вы можете использовать для репликации данных в ClickPipes.
 Для выполнения этой настройки убедитесь, что вы вошли в свою [консоль Neon](https://console.neon.tech/app/projects).
 
-## Создание пользователя с правами доступа {#creating-a-user-with-permissions}
+## Создание пользователя с правами доступа \\{#creating-a-user-with-permissions\\}
 
 Подключитесь к вашему экземпляру Neon под пользователем с правами администратора и выполните следующие команды:
 
@@ -65,7 +65,7 @@ import Image from '@theme/IdealImage';
 
    Публикация `clickpipes` будет содержать набор событий изменений, генерируемых из указанных таблиц, и позже будет использоваться для приёма потока репликации.
 
-## Включите логическую репликацию {#enable-logical-replication}
+## Включите логическую репликацию \{#enable-logical-replication\}
 
 В Neon вы можете включить логическую репликацию через интерфейс. Это необходимо для работы CDC (фиксации изменений данных) в ClickPipes, чтобы реплицировать данные.
 Перейдите на вкладку **Settings**, затем в раздел **Logical Replication**.
@@ -85,14 +85,14 @@ SHOW max_replication_slots; -- should be 10
 ```
 
 
-## Разрешение IP-адресов (для тарифа Neon Enterprise) {#ip-whitelisting-for-neon-enterprise-plan}
+## Разрешение IP-адресов (для тарифа Neon Enterprise) \\{#ip-whitelisting-for-neon-enterprise-plan\\}
 
 Если вы используете тариф Neon Enterprise, вы можете разрешить [IP-адреса ClickPipes](../../index.md#list-of-static-ips), чтобы включить репликацию из ClickPipes в экземпляр Neon Postgres.
 Для этого откройте вкладку **Settings** и перейдите в раздел **IP Allow**.
 
 <Image size="lg" img={neon_ip_allow} alt="Экран настройки разрешенных IP-адресов" border/>
 
-## Скопируйте данные подключения {#copy-connection-details}
+## Скопируйте данные подключения \\{#copy-connection-details\\}
 
 Теперь, когда у нас создан пользователь, подготовлена публикация и включена репликация, мы можем скопировать данные подключения, чтобы создать новый ClickPipe.
 Перейдите в **Dashboard** и в текстовом поле, где отображается строка подключения,
@@ -100,7 +100,7 @@ SHOW max_replication_slots; -- should be 10
 
 <Image size="lg" img={neon_conn_details} alt="Данные подключения" border/>
 
-## Что дальше? {#whats-next}
+## Что дальше? \\{#whats-next\\}
 
 Теперь вы можете [создать ClickPipe](../index.md) и начать приём данных из экземпляра Postgres в ClickHouse Cloud.
 Обязательно сохраните параметры подключения, которые вы использовали при настройке экземпляра Postgres, поскольку они понадобятся вам при создании ClickPipe.

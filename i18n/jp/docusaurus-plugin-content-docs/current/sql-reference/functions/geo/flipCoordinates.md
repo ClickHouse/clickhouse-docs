@@ -7,7 +7,7 @@ title: '座標の入れ替え'
 doc_type: 'reference'
 ---
 
-## flipCoordinates {#flipcoordinates}
+## flipCoordinates \\{#flipcoordinates\\}
 
 `flipCoordinates` 関数は、ポイント、リング、ポリゴン、またはマルチポリゴンの座標を入れ替えます。これは、たとえば緯度と経度の順序が異なる座標系間で変換する場合に役立ちます。
 
@@ -15,7 +15,7 @@ doc_type: 'reference'
 flipCoordinates(coordinates)
 ```
 
-### 入力パラメータ {#input-parameters}
+### 入力パラメータ \\{#input-parameters\\}
 
 * `coordinates` — 点 `(x, y)` を表すタプル、またはリング、ポリゴン、マルチポリゴンを表すそのようなタプルからなる配列。サポートされる入力型は次のとおりです:
   * [**Point**](../../data-types/geo.md#point): `x` と `y` が [Float64](../../data-types/float.md) 値であるタプル `(x, y)`。
@@ -23,7 +23,7 @@ flipCoordinates(coordinates)
   * [**Polygon**](../../data-types/geo.md#polygon): `[ring1, ring2, ...]` のようなリングの配列で、各リングは点の配列です。
   * [**Multipolygon**](../../data-types/geo.md#multipolygon): `[polygon1, polygon2, ...]` のようなポリゴンの配列です。
 
-### 返り値 {#returned-value}
+### 返り値 \\{#returned-value\\}
 
 この関数は、座標を入れ替えた結果を返します。たとえば:
 
@@ -31,9 +31,9 @@ flipCoordinates(coordinates)
 * リング `[(x1, y1), (x2, y2)]` は `[(y1, x1), (y2, x2)]` になります。
 * ポリゴンやマルチポリゴンのようなネストされた構造は再帰的に処理されます。
 
-### 例 {#examples}
+### 例 \\{#examples\\}
 
-#### 例 1: 単一の点の座標を入れ替える {#example-1}
+#### 例 1: 単一の点の座標を入れ替える \\{#example-1\\}
 
 ```sql
 SELECT flipCoordinates((10, 20)) AS flipped_point
@@ -45,7 +45,7 @@ SELECT flipCoordinates((10, 20)) AS flipped_point
 └───────────────┘
 ```
 
-#### 例 2: 点の配列（リング）を反転する {#example-2}
+#### 例 2: 点の配列（リング）を反転する \\{#example-2\\}
 
 ```sql
 SELECT flipCoordinates([(10, 20), (30, 40)]) AS flipped_ring
@@ -57,7 +57,7 @@ SELECT flipCoordinates([(10, 20), (30, 40)]) AS flipped_ring
 └───────────────────────────┘
 ```
 
-#### 例 3：多角形の反転 {#example-3}
+#### 例 3：多角形の反転 \\{#example-3\\}
 
 ```sql
 SELECT flipCoordinates([[(10, 20), (30, 40)], [(50, 60), (70, 80)]]) AS flipped_polygon
@@ -69,7 +69,7 @@ SELECT flipCoordinates([[(10, 20), (30, 40)], [(50, 60), (70, 80)]]) AS flipped_
 └──────────────────────────────────────────────┘
 ```
 
-#### 例 4: マルチポリゴンを反転する {#example-4}
+#### 例 4: マルチポリゴンを反転する \\{#example-4\\}
 
 ```sql
 SELECT flipCoordinates([[[10, 20], [30, 40]], [[50, 60], [70, 80]]]) AS flipped_multipolygon

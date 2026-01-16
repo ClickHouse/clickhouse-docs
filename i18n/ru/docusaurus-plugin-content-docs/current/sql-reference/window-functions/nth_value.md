@@ -7,7 +7,7 @@ title: 'nth_value'
 doc_type: 'reference'
 ---
 
-# nth&#95;value {#nth&#95;value}
+# nth&#95;value \\{#nth&#95;value\\}
 
 Возвращает первое отличное от NULL значение, вычисленное для n-й строки (смещения) в упорядоченном фрейме окна.
 

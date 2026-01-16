@@ -1,13 +1,13 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Debian/UbuntuへのClickHouseのインストール {#install-from-deb-packages}
+# Debian/UbuntuへのClickHouseのインストール \\{#install-from-deb-packages\\}
 
 > **Debian**または**Ubuntu**では、公式のプリコンパイル済み`deb`パッケージの使用を推奨します。
 
 <VerticalStepper>
 
-## Debian リポジトリの設定 {#setup-the-debian-repository}
+## Debian リポジトリの設定 \\{#setup-the-debian-repository\\}
 
 ClickHouse をインストールするには、次のコマンドを実行します。
 
@@ -61,13 +61,13 @@ clickhouse-client # or "clickhouse-client --password" if you set up a password.
 
 </details>
 
-## ClickHouse サーバーとクライアントのインストール {#install-clickhouse-server-and-client}
+## ClickHouse サーバーとクライアントのインストール \\{#install-clickhouse-server-and-client\\}
 
 ```bash
 sudo apt-get install -y clickhouse-server clickhouse-client
 ```
 
-## ClickHouse を起動する {#start-clickhouse-server}
+## ClickHouse を起動する \\{#start-clickhouse-server\\}
 
 ClickHouse サーバーを起動するには、次のコマンドを実行します。
 
@@ -87,7 +87,7 @@ clickhouse-client
 clickhouse-client --password
 ```
 
-## スタンドアロン構成の ClickHouse Keeper をインストールする {#install-standalone-clickhouse-keeper}
+## スタンドアロン構成の ClickHouse Keeper をインストールする \\{#install-standalone-clickhouse-keeper\\}
 
 :::tip
 本番環境では、ClickHouse Keeper を専用ノード上で実行することを強く推奨します。
@@ -101,7 +101,7 @@ ClickHouse Server に ClickHouse Keeper が同梱されているため、ClickHo
 sudo apt-get install -y clickhouse-keeper
 ```
 
-## ClickHouse Keeper を有効化して起動する {#enable-and-start-clickhouse-keeper}
+## ClickHouse Keeper を有効化して起動する \\{#enable-and-start-clickhouse-keeper\\}
 
 ```bash
 sudo systemctl enable clickhouse-keeper
@@ -111,7 +111,7 @@ sudo systemctl status clickhouse-keeper
 
 </VerticalStepper>
 
-## パッケージ {#packages}
+## パッケージ \\{#packages\\}
 
 利用可能な各種 deb パッケージの詳細は次のとおりです。
 

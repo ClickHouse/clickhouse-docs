@@ -18,7 +18,7 @@ import vector01 from '@site/static/images/integrations/data-ingestion/etl-tools/
 import vector02 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# 将 Vector 与 ClickHouse 集成 {#integrating-vector-with-clickhouse}
+# 将 Vector 与 ClickHouse 集成 \\{#integrating-vector-with-clickhouse\\}
 
 <PartnerBadge />
 
@@ -35,7 +35,7 @@ ClickHouse 在存储和分析日志数据方面表现卓越,这得益于其出�
 
 <VerticalStepper headerLevel="h2">
 
-## 创建数据库和表 {#1-create-a-database-and-table}
+## 创建数据库和表 \\{#1-create-a-database-and-table\\}
 
 定义一个用于存储日志事件的表：
 
@@ -59,7 +59,7 @@ ORDER BY tuple()
 **ORDER BY** 被设置为 **tuple()**（一个空元组），因为当前还不需要主键。
 :::
 
-## 配置 Nginx {#2--configure-nginx}
+## 配置 Nginx \\{#2--configure-nginx\\}
 
 在本步骤中，将演示如何配置 Nginx 日志记录。
 
@@ -88,7 +88,7 @@ http {
  192.168.208.1 - - [12/Oct/2021:03:31:49 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
  ```
 
-## 配置 Vector {#3-configure-vector}
+## 配置 Vector \\{#3-configure-vector\\}
 
 Vector 会收集、转换并路由日志、指标和追踪数据（统称为 **sources**），将其发送到多个不同的后端目标（统称为 **sinks**），并且开箱即用地兼容 ClickHouse。
 Sources 和 sinks 都在名为 **vector.toml** 的配置文件中定义。
@@ -120,7 +120,7 @@ SELECT * FROM nginxdb.access_logs
 
 <Image img={vector01} size="lg" border alt="以表格形式查看 ClickHouse 日志" />
 
-## 解析日志 {#4-parse-the-logs}
+## 解析日志 \\{#4-parse-the-logs\\}
 
 将日志存储在 ClickHouse 中固然很好，但如果将每个事件都存储为单个字符串，就很难进行有效的数据分析。
 接下来我们将介绍如何使用[物化视图](/materialized-view/incremental-materialized-view)来解析日志事件。

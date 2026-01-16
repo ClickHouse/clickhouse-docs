@@ -7,18 +7,18 @@ sidebar_label: 'avgResample'
 doc_type: 'reference'
 ---
 
-# countResample {#countResample}
+# countResample \\{#countResample\\}
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Комбинатор [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
 может быть применён к агрегатной функции [`count`](/sql-reference/aggregate-functions/reference/count)
 для подсчёта значений указанного ключевого столбца в фиксированном количестве
 интервалов (`N`).
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
-### Базовый пример {#basic-example}
+### Базовый пример \\{#basic-example\\}
 
 Рассмотрим пример. Мы создадим таблицу, в которой будут храниться `name`, `age` и
 `wage` сотрудников, и вставим в неё некоторые данные:
@@ -65,6 +65,6 @@ FROM avg_wage;
 └──────────────────┘
 ```
 
-## См. также {#see-also}
+## См. также \\{#see-also\\}
 - [`count`](/sql-reference/aggregate-functions/reference/count)
 - [комбинатор `Resample`](/sql-reference/aggregate-functions/combinators#-resample)

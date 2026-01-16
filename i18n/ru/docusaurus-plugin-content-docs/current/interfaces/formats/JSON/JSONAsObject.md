@@ -9,15 +9,15 @@ title: 'JSONAsObject'
 doc_type: 'reference'
 ---
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 В этом формате один JSON-объект интерпретируется как одно значение типа [JSON](/sql-reference/data-types/newjson.md). Если на входе — несколько JSON-объектов (через запятую), они интерпретируются как отдельные строки. Если входные данные заключены в квадратные скобки, они интерпретируются как массив значений JSON.
 
 Этот формат может быть разобран только для таблицы с одним полем типа [JSON](/sql-reference/data-types/newjson.md). Остальные столбцы должны быть заданы как [`DEFAULT`](/sql-reference/statements/create/table.md/#default) или [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view).
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
-### Простой пример {#basic-example}
+### Простой пример \\{#basic-example\\}
 
 ```sql title="Query"
 CREATE TABLE json_as_object (json JSON) ENGINE = Memory;
@@ -31,7 +31,7 @@ SELECT * FROM json_as_object FORMAT JSONEachRow;
 {"json":{"any json stucture":"1"}}
 ```
 
-### Массив объектов JSON {#an-array-of-json-objects}
+### Массив объектов JSON \\{#an-array-of-json-objects\\}
 
 ```sql title="Query"
 CREATE TABLE json_square_brackets (field JSON) ENGINE = Memory;
@@ -44,7 +44,7 @@ SELECT * FROM json_square_brackets FORMAT JSONEachRow;
 {"field":{"id":"2","name":"name2"}}
 ```
 
-### Столбцы со значениями по умолчанию {#columns-with-default-values}
+### Столбцы со значениями по умолчанию \\{#columns-with-default-values\\}
 
 ```sql title="Query"
 CREATE TABLE json_as_object (json JSON, time DateTime MATERIALIZED now()) ENGINE = Memory;
@@ -60,4 +60,4 @@ SELECT time, json FROM json_as_object FORMAT JSONEachRow
 {"time":"2024-09-16 12:18:08","json":{"foo":{"bar":{"x":"y"},"baz":"1"}}}
 ```
 
-## Параметры формата {#format-settings}
+## Параметры формата \\{#format-settings\\}

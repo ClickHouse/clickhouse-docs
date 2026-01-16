@@ -16,7 +16,7 @@ import Jdbc02 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-02
 import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03.png';
 
 
-# 使用 JDBC 将 ClickHouse 连接到外部数据源 {#connecting-clickhouse-to-external-data-sources-with-jdbc}
+# 使用 JDBC 将 ClickHouse 连接到外部数据源 \\{#connecting-clickhouse-to-external-data-sources-with-jdbc\\}
 
 :::note
 使用 JDBC 需要 ClickHouse JDBC Bridge，因此您需要在本地机器上使用 `clickhouse-local`，将数据库中的数据以流式方式传输到 ClickHouse Cloud。请访问文档 **Migrate** 部分中的 [**Using clickhouse-local**](/cloud/migration/clickhouse-local#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge) 页面了解详细信息。
@@ -42,7 +42,7 @@ import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03
 5. 已安装并运行较新的 **ClickHouse** 版本（参见[安装指南](/getting-started/install/install.mdx)）
 :::
 
-## 在本地安装 ClickHouse JDBC Bridge {#install-the-clickhouse-jdbc-bridge-locally}
+## 在本地安装 ClickHouse JDBC Bridge \{#install-the-clickhouse-jdbc-bridge-locally\}
 
 使用 ClickHouse JDBC Bridge 最简单的用法，是将它安装并运行在与 ClickHouse 相同的主机上：<Image img={Jdbc02} size="lg" alt="ClickHouse JDBC Bridge 本地部署示意图" background="white" />
 
@@ -105,7 +105,7 @@ wget https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v2.0
 :::
 
 
-## 在 ClickHouse 中使用 JDBC 连接 {#use-the-jdbc-connection-from-within-clickhouse}
+## 在 ClickHouse 中使用 JDBC 连接 \{#use-the-jdbc-connection-from-within-clickhouse\}
 
 ClickHouse 现在可以通过使用 [jdbc 表函数](/sql-reference/table-functions/jdbc.md) 或 [JDBC 表引擎](/engines/table-engines/integrations/jdbc.md) 来访问 MySQL 数据。
 
@@ -140,7 +140,7 @@ ClickHouse JDBC 引擎表的 schema 必须与所连接的 MySQL 表的 schema �
 :::
 
 
-## 在外部安装 ClickHouse JDBC Bridge {#install-the-clickhouse-jdbc-bridge-externally}
+## 在外部安装 ClickHouse JDBC Bridge \\{#install-the-clickhouse-jdbc-bridge-externally\\}
 
 对于分布式 ClickHouse 集群（拥有多个 ClickHouse 主机的集群），在独立主机上以外部方式安装并运行 ClickHouse JDBC Bridge 是一种合理的做法：
 <Image img={Jdbc03} size="lg" alt="ClickHouse JDBC Bridge 外部部署示意图" background='white'/>

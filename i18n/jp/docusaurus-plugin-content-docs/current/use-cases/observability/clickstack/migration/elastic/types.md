@@ -51,7 +51,7 @@ Elasticsearch と ClickHouse は幅広いデータ型をサポートしますが
 | `percolator`                       | 該当なし                                                                                                                                                                                                                                                                                         | クエリにインデックスを張るという概念はありません。代わりに標準SQLとインクリメンタルマテリアライズドビューを使用してください。                                                                                                                                                                                                                                          |
 | `version`                          | [`String`](/sql-reference/data-types/string)                                                                                                                                                                                                                                                 | ClickHouse にはネイティブな `version` 型はありません。バージョンは文字列として保存し、必要に応じてカスタム UDF 関数を使ってセマンティックな比較を行ってください。レンジクエリが必要な場合は、数値形式への正規化も検討してください。                                                                                                                                                                           |
 
-### 補足事項 {#notes}
+### 補足事項 \\{#notes\\}
 
 - **配列**: Elasticsearch では、すべてのフィールドがネイティブに配列をサポートします。ClickHouse では、配列は明示的に定義する必要があります（例: `Array(String)`）。その代わり、特定の位置を参照してクエリできる利点があります（例: `an_array[1]`）。
 - **マルチフィールド**: Elasticsearch では、[同一フィールドを複数の方法でインデックス化](https://www.elastic.co/docs/reference/elasticsearch/mapping-reference/multi-fields#_multi_fields_with_multiple_analyzers)できます（例: `text` と `keyword` の両方）。ClickHouse では、このパターンは別々のカラムまたはビューを使ってモデリングする必要があります。

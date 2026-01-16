@@ -7,7 +7,7 @@ doc_type: 'reference'
 keywords: ['network', 'ports', 'configuration', 'security', 'firewall']
 ---
 
-# Сетевые порты {#network-ports}
+# Сетевые порты \\{#network-ports\\}
 
 :::note
 Порты, обозначенные как **по умолчанию**, означают, что номер порта задан в `/etc/clickhouse-server/config.xml`. Чтобы переопределить эти настройки, добавьте файл в `/etc/clickhouse-server/config.d/`. См. документацию по [конфигурационному файлу](/operations/configuration-files).

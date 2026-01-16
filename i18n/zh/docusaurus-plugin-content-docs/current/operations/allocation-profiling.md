@@ -10,7 +10,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# 内存分配分析 {#allocation-profiling}
+# 内存分配分析 \\{#allocation-profiling\\}
 
 ClickHouse 使用 [jemalloc](https://github.com/jemalloc/jemalloc) 作为其全局分配器。Jemalloc 自带了一些用于内存分配采样和分析的工具。  
 为了让内存分配分析更方便，ClickHouse 和 Keeper 允许通过配置、查询设置、`SYSTEM` 命令以及 Keeper 中的四字命令（4LW）来控制采样。  
@@ -23,7 +23,7 @@ ClickHouse 使用 [jemalloc](https://github.com/jemalloc/jemalloc) 作为其全�
 
 :::
 
-## 采样内存分配 {#sampling-allocations}
+## 采样内存分配 \{#sampling-allocations\}
 
 如需在 `jemalloc` 中对内存分配进行采样和分析，你需要在启动 ClickHouse/Keeper 时启用配置项 `jemalloc_enable_global_profiler`。
 
@@ -42,7 +42,7 @@ ClickHouse 使用 [jemalloc](https://github.com/jemalloc/jemalloc) 作为其全�
 :::
 
 
-## 在 `system.trace_log` 中存储 jemalloc 采样数据 {#storing-jemalloc-samples-in-system-trace-log}
+## 在 `system.trace_log` 中存储 jemalloc 采样数据 \{#storing-jemalloc-samples-in-system-trace-log\}
 
 你可以将所有 jemalloc 采样数据以 `JemallocSample` 类型存储到 `system.trace_log` 中。
 要在全局范围内启用此功能，可以使用配置项 `jemalloc_collect_global_profile_samples_in_trace_log`。
@@ -60,7 +60,7 @@ ClickHouse 使用 [jemalloc](https://github.com/jemalloc/jemalloc) 作为其全�
 你也可以通过使用 `jemalloc_collect_profile_samples_in_trace_log` 设置，为单个查询启用该功能。
 
 
-### 使用 `system.trace_log` 分析查询内存使用情况的示例 {#example-analyzing-memory-usage-trace-log}
+### 使用 `system.trace_log` 分析查询内存使用情况的示例 \{#example-analyzing-memory-usage-trace-log\}
 
 首先，我们需要在启用 jemalloc profiler 的情况下运行查询，并将该查询的样本收集到 `system.trace_log` 中：
 
@@ -179,7 +179,7 @@ ORDER BY per_trace_sum ASC
 ```
 
 
-## 刷新堆内存剖析文件 {#flushing-heap-profiles}
+## 刷新堆内存剖析文件 \{#flushing-heap-profiles\}
 
 默认情况下，堆剖析文件会生成在 `/tmp/jemalloc_clickhouse._pid_._seqnum_.heap` 中，其中 `_pid_` 是 ClickHouse 的 PID，`_seqnum_` 是当前堆剖析文件的全局序号。
 对于 Keeper，默认文件为 `/tmp/jemalloc_keeper._pid_._seqnum_.heap`，并遵循相同规则。
@@ -212,7 +212,7 @@ MALLOC_CONF=prof_prefix:/data/my_current_profile
 生成的文件名会在前缀后追加 PID 和序列号。
 
 
-## 分析堆内存剖析数据 {#analyzing-heap-profiles}
+## 分析堆内存剖析数据 \\{#analyzing-heap-profiles\\}
 
 在生成堆内存剖析数据之后，需要对其进行分析。
 为此，可以使用 `jemalloc` 提供的工具 [jeprof](https://github.com/jemalloc/jemalloc/blob/dev/bin/jeprof.in)。它可以通过多种方式安装：
@@ -223,7 +223,7 @@ MALLOC_CONF=prof_prefix:/data/my_current_profile
 可以使用 `jeprof` 从堆内存分析结果生成多种不同的输出格式。
 可以运行 `jeprof --help` 来查看该工具的用法以及提供的各类选项。
 
-### 符号化堆内存剖析数据 {#symbolized-heap-profiles}
+### 符号化堆内存剖析数据 \{#symbolized-heap-profiles\}
 
 从 26.1+ 版本开始，当你使用 `SYSTEM JEMALLOC FLUSH PROFILE` 进行刷新时，ClickHouse 会自动生成符号化的堆内存剖析数据。
 符号化的剖析文件（扩展名为 `.symbolized`）包含内嵌的函数符号，可以在不需要 ClickHouse 二进制文件的情况下由 `jeprof` 进行分析。
@@ -279,7 +279,7 @@ jeprof --base /path/to/first.heap.symbolized /path/to/second.heap.symbolized --o
 ```
 
 
-### 示例 {#examples}
+### 示例 \{#examples\}
 
 使用带符号信息的 profile（推荐）：
 
@@ -310,7 +310,7 @@ jeprof /path/to/clickhouse /tmp/jemalloc_clickhouse.12345.0.heap --pdf > result.
 ```
 
 
-### 生成火焰图 {#generating-flame-graph}
+### 生成火焰图 \{#generating-flame-graph\}
 
 `jeprof` 可以生成用于构建火焰图的折叠后调用栈。
 
@@ -337,7 +337,7 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
 另一个有用的工具是 [speedscope](https://www.speedscope.app/)，它使你能够以更直观、交互的方式分析收集到的调用栈。
 
 
-## 分析器的其他选项 {#additional-options-for-profiler}
+## 分析器的其他选项 \\{#additional-options-for-profiler\\}
 
 `jemalloc` 提供了许多与分析器相关的选项。可以通过设置 `MALLOC_CONF` 环境变量来进行配置。
 例如，可以使用 `lg_prof_sample` 控制分配采样之间的间隔。  
@@ -345,7 +345,7 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
 
 建议查看 `jemalloc` 的[参考页面](https://jemalloc.net/jemalloc.3.html)以获取完整的选项列表。
 
-## 其他资源 {#other-resources}
+## 其他资源 \\{#other-resources\\}
 
 ClickHouse/Keeper 通过多种方式暴露与 `jemalloc` 相关的指标。
 
@@ -353,7 +353,7 @@ ClickHouse/Keeper 通过多种方式暴露与 `jemalloc` 相关的指标。
 需要注意的是，这些指标之间并不同步，数值可能会出现偏移。
 :::
 
-### 系统表 `asynchronous_metrics` {#system-table-asynchronous_metrics}
+### 系统表 `asynchronous_metrics` \{#system-table-asynchronous_metrics\}
 
 ```sql
 SELECT *
@@ -365,19 +365,19 @@ FORMAT Vertical
 [参考](/operations/system-tables/asynchronous_metrics)
 
 
-### 系统表 `jemalloc_bins` {#system-table-jemalloc_bins}
+### 系统表 `jemalloc_bins` \\{#system-table-jemalloc_bins\\}
 
 包含通过 jemalloc 分配器在不同大小类（bins）中的内存分配情况，这些信息从所有 arena 聚合而来。
 
 [参考](/operations/system-tables/jemalloc_bins)
 
-### Prometheus {#prometheus}
+### Prometheus \\{#prometheus\\}
 
 来自 `asynchronous_metrics` 的所有与 `jemalloc` 相关的指标，也会通过 ClickHouse 和 Keeper 中的 Prometheus 端点对外暴露。
 
 [参考](/operations/server-configuration-parameters/settings#prometheus)
 
-### Keeper 中的 `jmst` 4LW 命令 {#jmst-4lw-command-in-keeper}
+### Keeper 中的 `jmst` 4LW 命令 \{#jmst-4lw-command-in-keeper\}
 
 Keeper 支持 `jmst` 4LW 命令，它会返回[基础分配器统计信息](https://github.com/jemalloc/jemalloc/wiki/Use-Case%3A-Basic-Allocator-Statistics)：
 

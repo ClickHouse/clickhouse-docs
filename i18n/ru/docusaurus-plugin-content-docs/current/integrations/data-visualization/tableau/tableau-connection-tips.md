@@ -14,11 +14,11 @@ integration:
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Рекомендации по подключению {#connection-tips}
+# Рекомендации по подключению \\{#connection-tips\\}
 
 <ClickHouseSupportedBadge/>
 
-## Вкладка Initial SQL {#initial-sql-tab}
+## Вкладка Initial SQL \\{#initial-sql-tab\\}
 
 Если на вкладке Advanced (по умолчанию) установлен флажок *Set Session ID*, вы можете задать [настройки](/operations/settings/settings/) на уровне сеанса с помощью
 
@@ -27,7 +27,7 @@ SET my_setting=value;
 ```
 
 
-## Вкладка Advanced {#advanced-tab}
+## Вкладка Advanced \\{#advanced-tab\\}
 
 В 99% случаев вам не понадобится вкладка Advanced, для оставшегося 1% вы можете использовать следующие настройки:
 
@@ -42,7 +42,7 @@ SET my_setting=value;
 - **JDBC Driver URL Parameters**. В это поле вы можете передать оставшиеся [параметры драйвера](https://github.com/ClickHouse/clickhouse-jdbc#configuration), например `jdbcCompliance`. Будьте внимательны: значения параметров должны передаваться в формате URL-encoded, и в случае передачи `custom_http_params` или `typeMappings` и в этом поле, и в предыдущих полях вкладки Advanced значения двух предыдущих полей на вкладке Advanced имеют более высокий приоритет.
 - Флажок **Set Session ID**. Необходим для задания сеансовых настроек на вкладке Initial SQL: генерирует `session_id` с меткой времени и псевдослучайным числом в формате `"tableau-jdbc-connector-*{timestamp}*-*{number}*"`.
 
-## Ограниченная поддержка типов данных UInt64, Int128, (U)Int256 {#limited-support-for-uint64-int128-uint256-data-types}
+## Ограниченная поддержка типов данных UInt64, Int128, (U)Int256 \\{#limited-support-for-uint64-int128-uint256-data-types\\}
 
 По умолчанию драйвер отображает поля типов *UInt64, Int128, (U)Int256* как строки, **при этом он их именно отображает, а не конвертирует**. Это означает, что при попытке записать вычисляемое поле, как показано ниже, вы получите ошибку.
 

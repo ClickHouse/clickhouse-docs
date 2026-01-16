@@ -22,7 +22,7 @@ doc_type: 'reference'
 
 你可以在[此页面](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections)中查看更多关于投影内部工作机制的技术细节。
 
-## 未使用主键的过滤示例 {#example-filtering-without-using-primary-keys}
+## 未使用主键的过滤示例 \{#example-filtering-without-using-primary-keys\}
 
 创建表：
 
@@ -79,7 +79,7 @@ SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
 
-## 预聚合查询示例 {#example-pre-aggregation-query}
+## 预聚合查询示例 \{#example-pre-aggregation-query\}
 
 创建包含 Projection 的表：
 
@@ -157,7 +157,7 @@ SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
 
-## 带有 `_part_offset` 字段的常规投影 {#normal-projection-with-part-offset-field}
+## 带有 `_part_offset` 字段的常规投影 \{#normal-projection-with-part-offset-field\}
 
 创建一个带有常规投影并使用 `_part_offset` 字段的表：
 
@@ -186,7 +186,7 @@ INSERT INTO events SELECT * FROM generateRandom() LIMIT 100000;
 ```
 
 
-### 将 `_part_offset` 用作二级索引 {#normal-projection-secondary-index}
+### 将 `_part_offset` 用作二级索引 \{#normal-projection-secondary-index\}
 
 `_part_offset` 字段在合并和变更操作过程中会保留其值，因此非常适合作为二级索引使用。我们可以在查询中加以利用：
 
@@ -203,15 +203,15 @@ SETTINGS enable_shared_storage_snapshot_in_query = 1
 ```
 
 
-# 投影操作 {#manipulating-projections}
+# 投影操作 \\{#manipulating-projections\\}
 
 可以执行以下关于[投影](/engines/table-engines/mergetree-family/mergetree.md/#projections)的操作：
 
-## ADD PROJECTION {#add-projection}
+## ADD PROJECTION \\{#add-projection\\}
 
 `ALTER TABLE [db.]name [ON CLUSTER cluster] ADD PROJECTION [IF NOT EXISTS] name ( SELECT &lt;COLUMN LIST EXPR&gt; [GROUP BY] [ORDER BY] ) [WITH SETTINGS ( setting_name1 = setting_value1, setting_name2 = setting_value2, ...)]` - 在表的元数据中添加投影定义。
 
-### `WITH SETTINGS` 子句 {#with-settings}
+### `WITH SETTINGS` 子句 \{#with-settings\}
 
 `WITH SETTINGS` 定义了**投影级别设置**，用于自定义该投影如何存储数据（例如 `index_granularity` 或 `index_granularity_bytes`）。
 这些设置与 **MergeTree 表设置** 直接对应，但**仅应用于此投影**。
@@ -231,15 +231,15 @@ ADD PROJECTION p (
 PROJECTION 的设置会覆盖该 PROJECTION 实际生效的表设置，但需遵守校验规则（例如，无效或不兼容的覆盖将被拒绝）。
 
 
-## DROP PROJECTION {#drop-projection}
+## DROP PROJECTION \\{#drop-projection\\}
 
 `ALTER TABLE [db.]name [ON CLUSTER cluster] DROP PROJECTION [IF EXISTS] name` - 从表的元数据中移除投影描述，并从磁盘中删除投影文件。以[变更](/sql-reference/statements/alter/index.md#mutations)的形式实现。
 
-## MATERIALIZE PROJECTION {#materialize-projection}
+## MATERIALIZE PROJECTION \\{#materialize-projection\\}
 
 `ALTER TABLE [db.]table [ON CLUSTER cluster] MATERIALIZE PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` —— 此语句会在分区 `partition_name` 中重建投影 `name`。其实现方式为一次[变更操作](/sql-reference/statements/alter/index.md#mutations)。
 
-## CLEAR PROJECTION {#clear-projection}
+## CLEAR PROJECTION \\{#clear-projection\\}
 
 `ALTER TABLE [db.]table [ON CLUSTER cluster] CLEAR PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` - 在不删除其定义的情况下，从磁盘中删除投影文件。其实现方式为一种[变更](/sql-reference/statements/alter/index.md#mutations)操作。
 

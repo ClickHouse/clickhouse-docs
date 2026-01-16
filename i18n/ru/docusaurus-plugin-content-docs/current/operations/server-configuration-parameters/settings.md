@@ -15,7 +15,7 @@ import SystemLogParameters from '@site/i18n/ru/docusaurus-plugin-content-docs/cu
 import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
 
 
-# Настройки сервера {#server-settings}
+# Настройки сервера \{#server-settings\}
 
 В этом разделе приведены описания настроек сервера. Это настройки,
 которые не могут быть изменены на уровне сеанса или запроса.
@@ -25,11 +25,11 @@ import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
 Другие настройки описаны в разделе [«Settings»](/operations/settings/overview). Перед изучением настроек рекомендуется прочитать раздел [«Configuration files»](/operations/configuration-files)
 и обратить внимание на использование подстановок (атрибуты `incl` и `optional`).
 
-## abort_on_logical_error {#abort_on_logical_error} 
+## abort_on_logical_error \\{#abort_on_logical_error\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />При возникновении исключений LOGICAL_ERROR аварийно завершает работу сервера. Только для экспертов.
 
-## access&#95;control&#95;improvements {#access_control_improvements}
+## access&#95;control&#95;improvements \{#access_control_improvements\}
 
 Настройки для необязательных улучшений в системе управления доступом.
 
@@ -58,7 +58,7 @@ Example:
 ```
 
 
-## access_control_path {#access_control_path} 
+## access_control_path \\{#access_control_path\\}
 
 Путь к каталогу, в котором сервер ClickHouse хранит конфигурации пользователей и ролей, созданные SQL-командами.
 
@@ -66,15 +66,15 @@ Example:
 
 - [Управление доступом и учетными записями](/operations/access-rights#access-control-usage)
 
-## aggregate_function_group_array_action_when_limit_is_reached {#aggregate_function_group_array_action_when_limit_is_reached} 
+## aggregate_function_group_array_action_when_limit_is_reached \\{#aggregate_function_group_array_action_when_limit_is_reached\\}
 
 <SettingsInfoBlock type="GroupArrayActionWhenLimitReached" default_value="throw" />Действие, выполняемое при превышении максимального размера элемента массива в groupArray: сгенерировать исключение (`throw`) или отбросить лишние значения (`discard`)
 
-## aggregate_function_group_array_max_element_size {#aggregate_function_group_array_max_element_size} 
+## aggregate_function_group_array_max_element_size \\{#aggregate_function_group_array_max_element_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16777215" />Максимальный размер элемента массива в байтах для функции groupArray. Этот лимит проверяется при сериализации и позволяет избежать чрезмерного размера состояния.
 
-## allow_feature_tier {#allow_feature_tier} 
+## allow_feature_tier \\{#allow_feature_tier\\}
 
 <SettingsInfoBlock type="UInt32" default_value="0" />
 
@@ -90,11 +90,11 @@ Example:
 Значение `0` означает, что можно изменять любые настройки.
 :::
 
-## allow_impersonate_user {#allow_impersonate_user} 
+## allow_impersonate_user \\{#allow_impersonate_user\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />Включает/отключает возможность использования функции IMPERSONATE (EXECUTE AS target_user).
 
-## allow&#95;implicit&#95;no&#95;password {#allow_implicit_no_password}
+## allow&#95;implicit&#95;no&#95;password \{#allow_implicit_no_password\}
 
 Запрещает создавать пользователя без пароля, если явно не указано &#39;IDENTIFIED WITH no&#95;password&#39;.
 
@@ -103,7 +103,7 @@ Example:
 ```
 
 
-## allow&#95;no&#95;password {#allow_no_password}
+## allow&#95;no&#95;password \{#allow_no_password\}
 
 Устанавливает, разрешён ли небезопасный тип пароля `no&#95;password`.
 
@@ -112,7 +112,7 @@ Example:
 ```
 
 
-## allow&#95;plaintext&#95;password {#allow_plaintext_password}
+## allow&#95;plaintext&#95;password \{#allow_plaintext_password\}
 
 Определяет, разрешено ли использование паролей в открытом виде (небезопасных).
 
@@ -121,23 +121,23 @@ Example:
 ```
 
 
-## allow_use_jemalloc_memory {#allow_use_jemalloc_memory} 
+## allow_use_jemalloc_memory \\{#allow_use_jemalloc_memory\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />Разрешает использовать jemalloc для управления памятью.
 
-## allowed_disks_for_table_engines {#allowed_disks_for_table_engines} 
+## allowed_disks_for_table_engines \\{#allowed_disks_for_table_engines\\}
 
 Список дисков, разрешённых для использования с Iceberg
 
-## async_insert_queue_flush_on_shutdown {#async_insert_queue_flush_on_shutdown} 
+## async_insert_queue_flush_on_shutdown \\{#async_insert_queue_flush_on_shutdown\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />Если установлено значение true, то очередь асинхронных вставок сбрасывается при корректном завершении работы сервера
 
-## async_insert_threads {#async_insert_threads} 
+## async_insert_threads \\{#async_insert_threads\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16" />Максимальное количество потоков для фонового разбора и вставки данных. Ноль означает, что асинхронный режим отключен.
 
-## async&#95;load&#95;databases {#async_load_databases}
+## async&#95;load&#95;databases \{#async_load_databases\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -153,7 +153,7 @@ Example:
 ```
 
 
-## async&#95;load&#95;system&#95;database {#async_load_system_database}
+## async&#95;load&#95;system&#95;database \{#async_load_system_database\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -169,11 +169,11 @@ Example:
 ```
 
 
-## asynchronous_heavy_metrics_update_period_s {#asynchronous_heavy_metrics_update_period_s} 
+## asynchronous_heavy_metrics_update_period_s \\{#asynchronous_heavy_metrics_update_period_s\\}
 
 <SettingsInfoBlock type="UInt32" default_value="120" />Интервал в секундах для обновления «тяжёлых» асинхронных метрик.
 
-## asynchronous&#95;insert&#95;log {#asynchronous_insert_log}
+## asynchronous&#95;insert&#95;log \{#asynchronous_insert_log\}
 
 Настройки системной таблицы [asynchronous&#95;insert&#95;log](/operations/system-tables/asynchronous_insert_log) для журналирования асинхронных вставок.
 
@@ -198,7 +198,7 @@ Example:
 ```
 
 
-## asynchronous&#95;metric&#95;log {#asynchronous_metric_log}
+## asynchronous&#95;metric&#95;log \{#asynchronous_metric_log\}
 
 По умолчанию включен в развертываниях ClickHouse Cloud.
 
@@ -234,19 +234,19 @@ Example:
 <SystemLogParameters />
 
 
-## asynchronous_metrics_enable_heavy_metrics {#asynchronous_metrics_enable_heavy_metrics} 
+## asynchronous_metrics_enable_heavy_metrics \\{#asynchronous_metrics_enable_heavy_metrics\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />Включает вычисление ресурсоёмких асинхронных метрик.
 
-## asynchronous_metrics_keeper_metrics_only {#asynchronous_metrics_keeper_metrics_only} 
+## asynchronous_metrics_keeper_metrics_only \\{#asynchronous_metrics_keeper_metrics_only\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />Заставляет асинхронный сбор метрик вычислять только метрики, относящиеся к Keeper.
 
-## asynchronous_metrics_update_period_s {#asynchronous_metrics_update_period_s} 
+## asynchronous_metrics_update_period_s \\{#asynchronous_metrics_update_period_s\\}
 
 <SettingsInfoBlock type="UInt32" default_value="1" />Период обновления асинхронных метрик в секундах.
 
-## auth_use_forwarded_address {#auth_use_forwarded_address} 
+## auth_use_forwarded_address \\{#auth_use_forwarded_address\\}
 
 Использовать исходный адрес для аутентификации клиентов, подключённых через прокси.
 
@@ -254,23 +254,23 @@ Example:
 Этот параметр следует использовать с особой осторожностью, так как пересылаемые адреса легко подделать. Серверы, принимающие такую аутентификацию, не должны быть доступны напрямую, а только через доверенный прокси.
 :::
 
-## background_buffer_flush_schedule_pool_size {#background_buffer_flush_schedule_pool_size} 
+## background_buffer_flush_schedule_pool_size \\{#background_buffer_flush_schedule_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16" />Максимальное количество потоков, которые будут использоваться для фонового выполнения операций сброса в [таблицах с движком Buffer](/engines/table-engines/special/buffer).
 
-## background_common_pool_size {#background_common_pool_size} 
+## background_common_pool_size \\{#background_common_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="8" />Максимальное количество потоков, которые будут использоваться для выполнения различных операций (в основном сбора мусора) для таблиц движка [*MergeTree](/engines/table-engines/mergetree-family) в фоновом режиме.
 
-## background_distributed_schedule_pool_size {#background_distributed_schedule_pool_size} 
+## background_distributed_schedule_pool_size \\{#background_distributed_schedule_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16" />Максимальное количество потоков, которые будут использоваться для выполнения распределённых отправок.
 
-## background_fetches_pool_size {#background_fetches_pool_size} 
+## background_fetches_pool_size \\{#background_fetches_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16" />Максимальное число потоков, которые будут использоваться для фоновой загрузки частей данных с другой реплики для таблиц семейства движков [*MergeTree](/engines/table-engines/mergetree-family).
 
-## background_merges_mutations_concurrency_ratio {#background_merges_mutations_concurrency_ratio} 
+## background_merges_mutations_concurrency_ratio \\{#background_merges_mutations_concurrency_ratio\\}
 
 <SettingsInfoBlock type="Float" default_value="2" />
 
@@ -284,7 +284,7 @@ Example:
 Как и параметр [`background_pool_size`](/operations/server-configuration-parameters/settings#background_pool_size), настройка [`background_merges_mutations_concurrency_ratio`](/operations/server-configuration-parameters/settings#background_merges_mutations_concurrency_ratio) может быть применена из профиля `default` для обратной совместимости.
 :::
 
-## background_merges_mutations_scheduling_policy {#background_merges_mutations_scheduling_policy} 
+## background_merges_mutations_scheduling_policy \\{#background_merges_mutations_scheduling_policy\\}
 
 <SettingsInfoBlock type="String" default_value="round_robin" />
 
@@ -298,15 +298,15 @@ Example:
 - `round_robin` — Каждое одновременное слияние и мутация выполняются в порядке round-robin, чтобы избежать голодания. Малые слияния завершаются быстрее больших просто потому, что содержат меньше блоков для слияния.
 - `shortest_task_first` — Всегда выполнять более мелкое слияние или мутацию. Слияниям и мутациям назначаются приоритеты на основе их результирующего размера. Слияния с меньшим размером строго предпочтительнее больших. Эта политика обеспечивает максимально быстрое слияние малых частей, но может приводить к бесконечному голоданию больших слияний в партициях, сильно перегруженных операциями `INSERT`.
 
-## background_message_broker_schedule_pool_size {#background_message_broker_schedule_pool_size} 
+## background_message_broker_schedule_pool_size \\{#background_message_broker_schedule_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16" />Максимальное количество потоков, которое будет использоваться для выполнения фоновых операций потоковой передачи сообщений.
 
-## background_move_pool_size {#background_move_pool_size} 
+## background_move_pool_size \\{#background_move_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="8" />Максимальное количество потоков, используемых для перемещения частей данных на другой диск или том для таблиц семейства движков *MergeTree в фоновом режиме.
 
-## background&#95;pool&#95;size {#background_pool_size}
+## background&#95;pool&#95;size \{#background_pool_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="16" />
 
@@ -337,7 +337,7 @@ Example:
 ```
 
 
-## background&#95;schedule&#95;pool&#95;log {#background_schedule_pool_log}
+## background&#95;schedule&#95;pool&#95;log \{#background_schedule_pool_log\}
 
 Содержит информацию обо всех фоновых задачах, которые выполняются в различных фоновых пулах.
 
@@ -357,15 +357,15 @@ Example:
 ```
 
 
-## background_schedule_pool_max_parallel_tasks_per_type_ratio {#background_schedule_pool_max_parallel_tasks_per_type_ratio} 
+## background_schedule_pool_max_parallel_tasks_per_type_ratio \\{#background_schedule_pool_max_parallel_tasks_per_type_ratio\\}
 
 <SettingsInfoBlock type="Float" default_value="0.8" />Максимальная доля потоков в пуле, которые могут одновременно выполнять задачи одного типа.
 
-## background_schedule_pool_size {#background_schedule_pool_size} 
+## background_schedule_pool_size \\{#background_schedule_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="512" />Максимальное количество потоков, используемых для постоянного выполнения легковесных периодических операций для реплицируемых таблиц, потоковой обработки данных из Kafka и обновления кэша DNS.
 
-## backup&#95;log {#backup_log}
+## backup&#95;log \{#backup_log\}
 
 Настройки системной таблицы [backup&#95;log](../../operations/system-tables/backup_log.md), которая регистрирует операции `BACKUP` и `RESTORE`.
 
@@ -390,11 +390,11 @@ Example:
 ```
 
 
-## backup_threads {#backup_threads} 
+## backup_threads \\{#backup_threads\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="16" />Максимальное количество потоков для выполнения запросов `BACKUP`.
 
-## backups {#backups}
+## backups \{#backups\}
 
 Настройки резервного копирования, используемые при выполнении команд [`BACKUP` и `RESTORE`](/operations/backup/overview).
 
@@ -452,7 +452,7 @@ Example:
 ```
 
 
-## backups_io_thread_pool_queue_size {#backups_io_thread_pool_queue_size} 
+## backups_io_thread_pool_queue_size \\{#backups_io_thread_pool_queue_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -462,7 +462,7 @@ Example:
 Значение `0` (по умолчанию) означает отсутствие ограничения.
 :::
 
-## bcrypt&#95;workfactor {#bcrypt_workfactor}
+## bcrypt&#95;workfactor \{#bcrypt_workfactor\}
 
 Параметр сложности для типа аутентификации `bcrypt_password`, который использует [алгоритм Bcrypt](https://wildlyinaccurate.com/bcrypt-choosing-a-work-factor/).
 Параметр сложности определяет объем вычислений и время, необходимые для вычисления хеша и проверки пароля.
@@ -478,7 +478,7 @@ Example:
 :::
 
 
-## blob&#95;storage&#95;log {#blob_storage_log}
+## blob&#95;storage&#95;log \{#blob_storage_log\}
 
 Настройки для системной таблицы [`blob_storage_log`](../system-tables/blob_storage_log.md).
 
@@ -497,7 +497,7 @@ Example:
 ```
 
 
-## builtin&#95;dictionaries&#95;reload&#95;interval {#builtin_dictionaries_reload_interval}
+## builtin&#95;dictionaries&#95;reload&#95;interval \{#builtin_dictionaries_reload_interval\}
 
 Интервал в секундах, через который выполняется перезагрузка встроенных словарей.
 
@@ -510,15 +510,15 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## cache_size_to_ram_max_ratio {#cache_size_to_ram_max_ratio} 
+## cache_size_to_ram_max_ratio \\{#cache_size_to_ram_max_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />Устанавливает максимальное соотношение размера кэша к объёму оперативной памяти (RAM). Позволяет уменьшить размер кэша на системах с ограниченным объёмом памяти.
 
-## cannot_allocate_thread_fault_injection_probability {#cannot_allocate_thread_fault_injection_probability} 
+## cannot_allocate_thread_fault_injection_probability \\{#cannot_allocate_thread_fault_injection_probability\\}
 
 <SettingsInfoBlock type="Double" default_value="0" />Для тестирования.
 
-## cgroups_memory_usage_observer_wait_time {#cgroups_memory_usage_observer_wait_time} 
+## cgroups_memory_usage_observer_wait_time \\{#cgroups_memory_usage_observer_wait_time\\}
 
 <SettingsInfoBlock type="UInt64" default_value="15" />
 
@@ -526,15 +526,15 @@ ClickHouse перезагружает встроенные словари каж
 
 Чтобы отключить наблюдатель cgroups, установите это значение в `0`.
 
-## compiled_expression_cache_elements_size {#compiled_expression_cache_elements_size} 
+## compiled_expression_cache_elements_size \\{#compiled_expression_cache_elements_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />Устанавливает размер кэша (в элементах) для [скомпилированных выражений](../../operations/caches.md).
 
-## compiled_expression_cache_size {#compiled_expression_cache_size} 
+## compiled_expression_cache_size \\{#compiled_expression_cache_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="134217728" />Задает размер кэша (в байтах) для [скомпилированных выражений](../../operations/caches.md).
 
-## compression {#compression}
+## compression \{#compression\}
 
 Настройки сжатия данных для таблиц движка [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
 
@@ -590,7 +590,7 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## concurrent_threads_scheduler {#concurrent_threads_scheduler} 
+## concurrent_threads_scheduler \\{#concurrent_threads_scheduler\\}
 
 <SettingsInfoBlock type="String" default_value="fair_round_robin" />
 
@@ -601,7 +601,7 @@ ClickHouse перезагружает встроенные словари каж
 - `round_robin` — Каждый запрос с настройкой `use_concurrency_control` = 1 может выделять до `max_threads` слотов CPU. Один слот на поток. При конкуренции за ресурсы слоты CPU выдаются запросам по принципу round-robin. Обратите внимание, что первый слот выделяется безусловно, что может приводить к несправедливому распределению и повышенной задержке выполнения запросов с большим `max_threads` при наличии большого числа запросов с `max_threads` = 1.
 - `fair_round_robin` — Каждый запрос с настройкой `use_concurrency_control` = 1 может выделять до `max_threads - 1` слотов CPU. Вариант `round_robin`, который не требует выделения слота CPU для первого потока каждого запроса. Таким образом, запросы с `max_threads` = 1 не требуют ни одного слота и не могут несправедливо занять все слоты. Слоты не выделяются безусловно.
 
-## concurrent_threads_soft_limit_num {#concurrent_threads_soft_limit_num} 
+## concurrent_threads_soft_limit_num \\{#concurrent_threads_soft_limit_num\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -611,17 +611,17 @@ ClickHouse перезагружает встроенные словари каж
 Значение `0` (по умолчанию) означает отсутствие ограничений.
 :::
 
-## concurrent_threads_soft_limit_ratio_to_cores {#concurrent_threads_soft_limit_ratio_to_cores} 
+## concurrent_threads_soft_limit_ratio_to_cores \\{#concurrent_threads_soft_limit_ratio_to_cores\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />То же, что и [`concurrent_threads_soft_limit_num`](#concurrent_threads_soft_limit_num), но задаётся как коэффициент относительно числа ядер.
 
-## config_reload_interval_ms {#config_reload_interval_ms} 
+## config_reload_interval_ms \\{#config_reload_interval_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2000" />
 
 Как часто ClickHouse будет перезагружать конфигурацию и проверять наличие изменений.
 
-## core&#95;dump {#core_dump}
+## core&#95;dump \{#core_dump\}
 
 Устанавливает мягкий лимит на размер файла дампа памяти (core dump).
 
@@ -638,7 +638,7 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## cpu&#95;slot&#95;preemption {#cpu_slot_preemption}
+## cpu&#95;slot&#95;preemption \{#cpu_slot_preemption\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -658,7 +658,7 @@ ClickHouse перезагружает встроенные словари каж
 * [Планирование рабочих нагрузок](/operations/workload-scheduling.md)
 
 
-## cpu&#95;slot&#95;preemption&#95;timeout&#95;ms {#cpu_slot_preemption_timeout_ms}
+## cpu&#95;slot&#95;preemption&#95;timeout&#95;ms \{#cpu_slot_preemption_timeout_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -675,7 +675,7 @@ ClickHouse перезагружает встроенные словари каж
 * [Планирование нагрузки](/operations/workload-scheduling.md)
 
 
-## cpu&#95;slot&#95;quantum&#95;ns {#cpu_slot_quantum_ns}
+## cpu&#95;slot&#95;quantum&#95;ns \{#cpu_slot_quantum_ns\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000000" />
 
@@ -692,7 +692,7 @@ ClickHouse перезагружает встроенные словари каж
 * [Планирование рабочих нагрузок](/operations/workload-scheduling.md)
 
 
-## crash&#95;log {#crash_log}
+## crash&#95;log \{#crash_log\}
 
 Настройки для работы системной таблицы [crash&#95;log](../../operations/system-tables/crash_log.md).
 
@@ -730,7 +730,7 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## custom&#95;cached&#95;disks&#95;base&#95;directory {#custom_cached_disks_base_directory}
+## custom&#95;cached&#95;disks&#95;base&#95;directory \{#custom_cached_disks_base_directory\}
 
 Этот параметр задает путь к кэшу для пользовательских (созданных из SQL) кэшируемых дисков.
 `custom_cached_disks_base_directory` имеет более высокий приоритет для пользовательских дисков по сравнению с `filesystem_caches_path` (указанным в `filesystem_caches_path.xml`),
@@ -750,7 +750,7 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## custom&#95;settings&#95;prefixes {#custom_settings_prefixes}
+## custom&#95;settings&#95;prefixes \{#custom_settings_prefixes\}
 
 Список префиксов для [пользовательских настроек](/operations/settings/query-level#custom_settings). Префиксы должны быть разделены запятыми.
 
@@ -765,22 +765,22 @@ ClickHouse перезагружает встроенные словари каж
 * [Пользовательские настройки](/operations/settings/query-level#custom_settings)
 
 
-## database_atomic_delay_before_drop_table_sec {#database_atomic_delay_before_drop_table_sec} 
+## database_atomic_delay_before_drop_table_sec \\{#database_atomic_delay_before_drop_table_sec\\}
 
 <SettingsInfoBlock type="UInt64" default_value="480" />
 
 Задержка, в течение которой удалённая таблица может быть восстановлена с помощью команды [`UNDROP`](/sql-reference/statements/undrop.md). Если `DROP TABLE` выполнялась с модификатором `SYNC`, этот параметр не учитывается.
 Значение по умолчанию для этого параметра — `480` (8 минут).
 
-## database_catalog_drop_error_cooldown_sec {#database_catalog_drop_error_cooldown_sec} 
+## database_catalog_drop_error_cooldown_sec \\{#database_catalog_drop_error_cooldown_sec\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5" />В случае неудачного удаления таблицы ClickHouse будет ждать в течение этого интервала, прежде чем повторить операцию.
 
-## database_catalog_drop_table_concurrency {#database_catalog_drop_table_concurrency} 
+## database_catalog_drop_table_concurrency \\{#database_catalog_drop_table_concurrency\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16" />Размер пула потоков, используемого при удалении таблиц.
 
-## database_catalog_unused_dir_cleanup_period_sec {#database_catalog_unused_dir_cleanup_period_sec} 
+## database_catalog_unused_dir_cleanup_period_sec \\{#database_catalog_unused_dir_cleanup_period_sec\\}
 
 <SettingsInfoBlock type="UInt64" default_value="86400" />
 
@@ -791,7 +791,7 @@ ClickHouse перезагружает встроенные словари каж
 Значение `0` означает «никогда». Значение по умолчанию соответствует 1 дню.
 :::
 
-## database_catalog_unused_dir_hide_timeout_sec {#database_catalog_unused_dir_hide_timeout_sec} 
+## database_catalog_unused_dir_hide_timeout_sec \\{#database_catalog_unused_dir_hide_timeout_sec\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3600" />
 
@@ -805,7 +805,7 @@ ClickHouse перезагружает встроенные словари каж
 Значение `0` означает «немедленно».
 :::
 
-## database_catalog_unused_dir_rm_timeout_sec {#database_catalog_unused_dir_rm_timeout_sec} 
+## database_catalog_unused_dir_rm_timeout_sec \\{#database_catalog_unused_dir_rm_timeout_sec\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2592000" />
 
@@ -821,15 +821,15 @@ ClickHouse перезагружает встроенные словари каж
 Значение `0` означает «никогда». Значение по умолчанию соответствует 30 дням.
 :::
 
-## database_replicated_allow_detach_permanently {#database_replicated_allow_detach_permanently} 
+## database_replicated_allow_detach_permanently \\{#database_replicated_allow_detach_permanently\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />Разрешает навсегда отсоединять таблицы в базах данных типа Replicated
 
-## database_replicated_drop_broken_tables {#database_replicated_drop_broken_tables} 
+## database_replicated_drop_broken_tables \\{#database_replicated_drop_broken_tables\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />Удалять неожиданные таблицы из баз данных Replicated вместо перемещения их в отдельную локальную базу данных
 
-## dead&#95;letter&#95;queue {#dead_letter_queue}
+## dead&#95;letter&#95;queue \{#dead_letter_queue\}
 
 Параметр настройки для системной таблицы &#39;dead&#95;letter&#95;queue&#39;.
 
@@ -847,11 +847,11 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## default_database {#default_database} 
+## default_database \\{#default_database\\}
 
 <SettingsInfoBlock type="String" default_value="default" />Имя базы данных, используемой по умолчанию.
 
-## default&#95;password&#95;type {#default_password_type}
+## default&#95;password&#95;type \{#default_password_type\}
 
 Задает тип пароля, который будет автоматически устанавливаться в запросах вида `CREATE USER u IDENTIFIED BY 'p'`.
 
@@ -867,7 +867,7 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## default&#95;profile {#default_profile}
+## default&#95;profile \{#default_profile\}
 
 Профиль настроек по умолчанию. Профили настроек расположены в файле, заданном в параметре `user_config`.
 
@@ -878,7 +878,7 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## default&#95;replica&#95;name {#default_replica_name}
+## default&#95;replica&#95;name \{#default_replica_name\}
 
 <SettingsInfoBlock type="String" default_value="{replica}" />
 
@@ -891,7 +891,7 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## default&#95;replica&#95;path {#default_replica_path}
+## default&#95;replica&#95;path \{#default_replica_path\}
 
 <SettingsInfoBlock type="String" default_value="/clickhouse/tables/{uuid}/{shard}" />
 
@@ -904,7 +904,7 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## default&#95;session&#95;timeout {#default_session_timeout}
+## default&#95;session&#95;timeout \{#default_session_timeout\}
 
 Таймаут сеанса по умолчанию (в секундах).
 
@@ -913,7 +913,7 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## dictionaries&#95;config {#dictionaries_config}
+## dictionaries&#95;config \{#dictionaries_config\}
 
 Путь к конфигурационному файлу словарей.
 
@@ -933,7 +933,7 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## dictionaries&#95;lazy&#95;load {#dictionaries_lazy_load}
+## dictionaries&#95;lazy&#95;load \{#dictionaries_lazy_load\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -954,21 +954,21 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## dictionary_background_reconnect_interval {#dictionary_background_reconnect_interval} 
+## dictionary_background_reconnect_interval \\{#dictionary_background_reconnect_interval\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />Интервал в миллисекундах между повторными попытками подключения словарей MySQL и Postgres с включённым параметром `background_reconnect` после сбоя подключения.
 
-## disable_insertion_and_mutation {#disable_insertion_and_mutation} 
+## disable_insertion_and_mutation \\{#disable_insertion_and_mutation\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Отключает запросы INSERT/ALTER/DELETE. Этот параметр можно включить, если требуются узлы только для чтения, чтобы операции вставки и мутации не влияли на производительность чтения. Вставки во внешние движки (S3, DataLake, MySQL, PostgreSQL, Kafka и т. д.) разрешены даже при включённом этом параметре.
 
-## disable_internal_dns_cache {#disable_internal_dns_cache} 
+## disable_internal_dns_cache \\{#disable_internal_dns_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />Отключает внутренний DNS-кэш. Рекомендуется при эксплуатации ClickHouse в системах с часто изменяющейся инфраструктурой, таких как Kubernetes.
 
-## disable&#95;tunneling&#95;for&#95;https&#95;requests&#95;over&#95;http&#95;proxy {#disable_tunneling_for_https_requests_over_http_proxy}
+## disable&#95;tunneling&#95;for&#95;https&#95;requests&#95;over&#95;http&#95;proxy \{#disable_tunneling_for_https_requests_over_http_proxy\}
 
 По умолчанию туннелирование (т.е. `HTTP CONNECT`) используется для выполнения запросов `HTTPS` через прокси `HTTP`. Этот параметр позволяет его отключить.
 
@@ -997,23 +997,23 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## disk_connections_hard_limit {#disk_connections_hard_limit} 
+## disk_connections_hard_limit \\{#disk_connections_hard_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="200000" />Исключение выбрасывается при попытке создания, когда достигнут этот лимит. Установите значение 0, чтобы отключить жесткое ограничение. Лимит применяется к подключениям к дискам.
 
-## disk_connections_soft_limit {#disk_connections_soft_limit} 
+## disk_connections_soft_limit \\{#disk_connections_soft_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000" />Подключения сверх этого лимита имеют значительно меньший срок жизни. Лимит применяется к подключению к дискам.
 
-## disk_connections_store_limit {#disk_connections_store_limit} 
+## disk_connections_store_limit \\{#disk_connections_store_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />Соединения сверх этого лимита сбрасываются после использования. Установите значение 0, чтобы отключить кэш соединений. Лимит применяется к соединениям с дисками.
 
-## disk_connections_warn_limit {#disk_connections_warn_limit} 
+## disk_connections_warn_limit \\{#disk_connections_warn_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="8000" />Предупреждающие сообщения записываются в логи, если число активных подключений превышает это значение. Ограничение распространяется на подключения к дискам.
 
-## display_secrets_in_show_and_select {#display_secrets_in_show_and_select} 
+## display_secrets_in_show_and_select \\{#display_secrets_in_show_and_select\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1029,15 +1029,15 @@ ClickHouse перезагружает встроенные словари каж
 - `0` — Отключено.
 - `1` — Включено.
 
-## distributed_cache_apply_throttling_settings_from_client {#distributed_cache_apply_throttling_settings_from_client} 
+## distributed_cache_apply_throttling_settings_from_client \\{#distributed_cache_apply_throttling_settings_from_client\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />Определяет, следует ли серверу кэша применять настройки троттлинга, полученные от клиента.
 
-## distributed_cache_keep_up_free_connections_ratio {#distributed_cache_keep_up_free_connections_ratio} 
+## distributed_cache_keep_up_free_connections_ratio \\{#distributed_cache_keep_up_free_connections_ratio\\}
 
 <SettingsInfoBlock type="Float" default_value="0.1" />Мягкое ограничение на количество активных соединений, которые кэш распределённых соединений будет стараться держать свободными. Когда количество свободных соединений опускается ниже значения distributed_cache_keep_up_free_connections_ratio * max_connections, соединения с самой давней активностью будут закрыты, пока количество не превысит этот порог.
 
-## distributed&#95;ddl {#distributed_ddl}
+## distributed&#95;ddl \{#distributed_ddl\}
 
 Управление выполнением [распределённых DDL-запросов](../../sql-reference/distributed-ddl.md) (`CREATE`, `DROP`, `ALTER`, `RENAME`) в кластере.
 Работает только при включённом [ZooKeeper](/operations/server-configuration-parameters/settings#zookeeper).
@@ -1082,27 +1082,27 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## distributed_ddl_use_initial_user_and_roles {#distributed_ddl_use_initial_user_and_roles} 
+## distributed_ddl_use_initial_user_and_roles \\{#distributed_ddl_use_initial_user_and_roles\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />Если включено, запросы ON CLUSTER будут сохранять и использовать пользователя и роли инициатора при выполнении на удалённых сегментах. Это обеспечивает единообразный контроль доступа по всему кластеру, но требует, чтобы этот пользователь и роли были созданы на всех узлах.
 
-## dns_allow_resolve_names_to_ipv4 {#dns_allow_resolve_names_to_ipv4} 
+## dns_allow_resolve_names_to_ipv4 \\{#dns_allow_resolve_names_to_ipv4\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />Разрешает преобразование имён в IPv4-адреса.
 
-## dns_allow_resolve_names_to_ipv6 {#dns_allow_resolve_names_to_ipv6} 
+## dns_allow_resolve_names_to_ipv6 \\{#dns_allow_resolve_names_to_ipv6\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />Разрешает преобразование доменных имён в IPv6-адреса.
 
-## dns_cache_max_entries {#dns_cache_max_entries} 
+## dns_cache_max_entries \\{#dns_cache_max_entries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />Максимальное число записей во внутреннем DNS-кэше.
 
-## dns_cache_update_period {#dns_cache_update_period} 
+## dns_cache_update_period \\{#dns_cache_update_period\\}
 
 <SettingsInfoBlock type="Int32" default_value="15" />Период обновления внутреннего DNS-кэша в секундах.
 
-## dns_max_consecutive_failures {#dns_max_consecutive_failures} 
+## dns_max_consecutive_failures \\{#dns_max_consecutive_failures\\}
 
 <SettingsInfoBlock type="UInt32" default_value="5" />
 
@@ -1112,19 +1112,19 @@ ClickHouse перезагружает встроенные словари каж
 
 - [`SYSTEM DROP DNS CACHE`](../../sql-reference/statements/system#drop-dns-cache)
 
-## drop_distributed_cache_pool_size {#drop_distributed_cache_pool_size} 
+## drop_distributed_cache_pool_size \\{#drop_distributed_cache_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="8" />Размер пула потоков, используемого для очистки распределённого кэша.
 
-## drop_distributed_cache_queue_size {#drop_distributed_cache_queue_size} 
+## drop_distributed_cache_queue_size \\{#drop_distributed_cache_queue_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />Размер очереди пула потоков, используемого для очистки распределённого кэша.
 
-## enable_azure_sdk_logging {#enable_azure_sdk_logging} 
+## enable_azure_sdk_logging \\{#enable_azure_sdk_logging\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />Включает ведение журнала в Azure SDK
 
-## encryption {#encryption}
+## encryption \{#encryption\}
 
 Настраивает команду для получения ключа, который будет использоваться [кодеками шифрования](/sql-reference/statements/create/table#encryption-codecs). Ключ (или ключи) должен быть задан в переменных окружения или в конфигурационном файле.
 
@@ -1207,7 +1207,7 @@ ClickHouse перезагружает встроенные словари каж
 :::
 
 
-## error&#95;log {#error_log}
+## error&#95;log \{#error_log\}
 
 По умолчанию он отключён.
 
@@ -1243,7 +1243,7 @@ ClickHouse перезагружает встроенные словари каж
 <SystemLogParameters />
 
 
-## format_parsing_thread_pool_queue_size {#format_parsing_thread_pool_queue_size} 
+## format_parsing_thread_pool_queue_size \\{#format_parsing_thread_pool_queue_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -1253,7 +1253,7 @@ ClickHouse перезагружает встроенные словари каж
 Значение `0` означает отсутствие ограничения.
 :::
 
-## format&#95;schema&#95;path {#format_schema_path}
+## format&#95;schema&#95;path \{#format_schema_path\}
 
 Путь к каталогу со схемами для входных данных, таких как схемы для формата [CapnProto](/interfaces/formats/CapnProto).
 
@@ -1265,15 +1265,15 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## global_profiler_cpu_time_period_ns {#global_profiler_cpu_time_period_ns} 
+## global_profiler_cpu_time_period_ns \\{#global_profiler_cpu_time_period_ns\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000000000" />Период таймера тактов процессора глобального профайлера (в наносекундах). Установите значение 0, чтобы отключить глобальный профайлер по тактам CPU. Рекомендуемое значение — не менее 10000000 (100 раз в секунду) для одиночных запросов или 1000000000 (раз в секунду) для профилирования кластера целиком.
 
-## global_profiler_real_time_period_ns {#global_profiler_real_time_period_ns} 
+## global_profiler_real_time_period_ns \\{#global_profiler_real_time_period_ns\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000000000" />Период таймера реального времени глобального профилировщика (в наносекундах). Установите значение 0, чтобы выключить глобальный профилировщик по реальному времени. Рекомендуемое значение — не менее 10000000 (100 раз в секунду) для одиночных запросов или 1000000000 (раз в секунду) для профилирования всего кластера.
 
-## google&#95;protos&#95;path {#google_protos_path}
+## google&#95;protos&#95;path \{#google_protos_path\}
 
 Определяет каталог, содержащий proto‑файлы для типов Protobuf.
 
@@ -1284,7 +1284,7 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## graphite {#graphite}
+## graphite \{#graphite\}
 
 Отправка данных в [Graphite](https://github.com/graphite-project).
 
@@ -1319,7 +1319,7 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## graphite&#95;rollup {#graphite_rollup}
+## graphite&#95;rollup \{#graphite_rollup\}
 
 Настройки прореживания данных Graphite.
 
@@ -1348,7 +1348,7 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## hsts&#95;max&#95;age {#hsts_max_age}
+## hsts&#95;max&#95;age \{#hsts_max_age\}
 
 Срок действия HSTS в секундах.
 
@@ -1363,23 +1363,23 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## http_connections_hard_limit {#http_connections_hard_limit} 
+## http_connections_hard_limit \\{#http_connections_hard_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="200000" />Исключение генерируется при попытке создания, когда достигнут этот лимит. Установите значение 0, чтобы отключить жесткое ограничение. Лимит применяется к HTTP‑подключениям, которые не привязаны ни к какому диску или хранилищу.
 
-## http_connections_soft_limit {#http_connections_soft_limit} 
+## http_connections_soft_limit \\{#http_connections_soft_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />Соединения сверх этого предела имеют значительно более короткий срок жизни. Лимит применяется к HTTP‑соединениям, которые не привязаны ни к какому диску или хранилищу.
 
-## http_connections_store_limit {#http_connections_store_limit} 
+## http_connections_store_limit \\{#http_connections_store_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />Соединения сверх этого лимита сбрасываются после использования. Установите значение 0, чтобы отключить кэш соединений. Лимит применяется к HTTP‑соединениям, которые не относятся ни к какому диску или хранилищу.
 
-## http_connections_warn_limit {#http_connections_warn_limit} 
+## http_connections_warn_limit \\{#http_connections_warn_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="500" />Предупреждающие сообщения записываются в журналы, если количество активных подключений превышает этот предел. Предел применяется к HTTP‑подключениям, которые не относятся ни к одному диску или хранилищу.
 
-## http&#95;handlers {#http_handlers}
+## http&#95;handlers \{#http_handlers\}
 
 Позволяет использовать пользовательские HTTP-обработчики.
 Чтобы добавить новый HTTP-обработчик, просто добавьте новый `<rule>`.
@@ -1445,7 +1445,7 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## http&#95;options&#95;response {#http_options_response}
+## http&#95;options&#95;response \{#http_options_response\}
 
 Используется для добавления заголовков в ответ HTTP-запроса `OPTIONS`.
 Метод `OPTIONS` используется при выполнении предварительных (preflight) CORS-запросов.
@@ -1476,7 +1476,7 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## http&#95;server&#95;default&#95;response {#http_server_default_response}
+## http&#95;server&#95;default&#95;response \{#http_server_default_response\}
 
 Страница, которая отображается по умолчанию при обращении к HTTP(S)-серверу ClickHouse.
 Значение по умолчанию — &quot;Ok.&quot; (с переводом строки в конце)
@@ -1492,31 +1492,31 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## iceberg_catalog_threadpool_pool_size {#iceberg_catalog_threadpool_pool_size} 
+## iceberg_catalog_threadpool_pool_size \\{#iceberg_catalog_threadpool_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="50" />Размер пула фоновых потоков для каталога iceberg
 
-## iceberg_catalog_threadpool_queue_size {#iceberg_catalog_threadpool_queue_size} 
+## iceberg_catalog_threadpool_queue_size \\{#iceberg_catalog_threadpool_queue_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />Количество задач, которые можно добавить в очередь пула каталога Iceberg
 
-## iceberg_metadata_files_cache_max_entries {#iceberg_metadata_files_cache_max_entries} 
+## iceberg_metadata_files_cache_max_entries \\{#iceberg_metadata_files_cache_max_entries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />Максимальный размер кэша файлов метаданных Iceberg (в записях). Ноль — кэш отключен.
 
-## iceberg_metadata_files_cache_policy {#iceberg_metadata_files_cache_policy} 
+## iceberg_metadata_files_cache_policy \\{#iceberg_metadata_files_cache_policy\\}
 
 <SettingsInfoBlock type="String" default_value="SLRU" />Название политики кэширования метаданных Iceberg.
 
-## iceberg_metadata_files_cache_size {#iceberg_metadata_files_cache_size} 
+## iceberg_metadata_files_cache_size \\{#iceberg_metadata_files_cache_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />Максимальный размер кэша метаданных Iceberg в байтах. Ноль означает, что кэш отключен.
 
-## iceberg_metadata_files_cache_size_ratio {#iceberg_metadata_files_cache_size_ratio} 
+## iceberg_metadata_files_cache_size_ratio \\{#iceberg_metadata_files_cache_size_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />Размер защищённой очереди (в случае политики SLRU) в кэше метаданных Iceberg относительно общего размера кэша.
 
-## ignore_empty_sql_security_in_create_view_query {#ignore_empty_sql_security_in_create_view_query} 
+## ignore_empty_sql_security_in_create_view_query \\{#ignore_empty_sql_security_in_create_view_query\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1526,7 +1526,7 @@ ClickHouse перезагружает встроенные словари каж
 Этот параметр необходим только в период миграции и утратит актуальность в версии 24.4.
 :::
 
-## include&#95;from {#include_from}
+## include&#95;from \{#include_from\}
 
 Путь к файлу с подстановками. Поддерживаются форматы XML и YAML.
 
@@ -1539,11 +1539,11 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## index_mark_cache_policy {#index_mark_cache_policy} 
+## index_mark_cache_policy \\{#index_mark_cache_policy\\}
 
 <SettingsInfoBlock type="String" default_value="SLRU" />Имя политики кэширования меток вторичного индекса.
 
-## index_mark_cache_size {#index_mark_cache_size} 
+## index_mark_cache_size \\{#index_mark_cache_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5368709120" />
 
@@ -1556,15 +1556,15 @@ ClickHouse перезагружает встроенные словари каж
 Этот параметр можно изменять во время работы сервера, и изменения вступают в силу немедленно.
 :::
 
-## index_mark_cache_size_ratio {#index_mark_cache_size_ratio} 
+## index_mark_cache_size_ratio \\{#index_mark_cache_size_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.3" />Размер защищённой очереди (в случае политики SLRU) во вторичном кэше меток индекса по отношению к общему размеру этого кэша.
 
-## index_uncompressed_cache_policy {#index_uncompressed_cache_policy} 
+## index_uncompressed_cache_policy \\{#index_uncompressed_cache_policy\\}
 
 <SettingsInfoBlock type="String" default_value="SLRU" />Имя политики кэширования несжатого вторичного индекса.
 
-## index_uncompressed_cache_size {#index_uncompressed_cache_size} 
+## index_uncompressed_cache_size \\{#index_uncompressed_cache_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1576,11 +1576,11 @@ ClickHouse перезагружает встроенные словари каж
 Этот параметр можно изменять во время работы сервера, и изменения вступают в силу немедленно.
 :::
 
-## index_uncompressed_cache_size_ratio {#index_uncompressed_cache_size_ratio} 
+## index_uncompressed_cache_size_ratio \\{#index_uncompressed_cache_size_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />Размер защищённой очереди (в случае политики SLRU) во вторичном кэше несжатого индекса по отношению к общему размеру кэша.
 
-## interserver&#95;http&#95;credentials {#interserver_http_credentials}
+## interserver&#95;http&#95;credentials \{#interserver_http_credentials\}
 
 Имя пользователя и пароль, используемые для подключения к другим серверам во время [репликации](../../engines/table-engines/mergetree-family/replication.md). Кроме того, сервер аутентифицирует другие реплики, используя эти учетные данные.
 Поэтому `interserver_http_credentials` должны быть одинаковыми для всех реплик в кластере.
@@ -1635,7 +1635,7 @@ ClickHouse поддерживает динамическую ротацию ме
 После применения новых учетных данных ко всем репликам старые можно удалить.
 
 
-## interserver&#95;http&#95;host {#interserver_http_host}
+## interserver&#95;http&#95;host \{#interserver_http_host\}
 
 Имя хоста, которое другие серверы могут использовать для доступа к этому серверу.
 
@@ -1650,7 +1650,7 @@ ClickHouse поддерживает динамическую ротацию ме
 ```
 
 
-## interserver&#95;http&#95;port {#interserver_http_port}
+## interserver&#95;http&#95;port \{#interserver_http_port\}
 
 Порт, используемый для обмена данными между серверами ClickHouse.
 
@@ -1661,7 +1661,7 @@ ClickHouse поддерживает динамическую ротацию ме
 ```
 
 
-## interserver&#95;https&#95;host {#interserver_https_host}
+## interserver&#95;https&#95;host \{#interserver_https_host\}
 
 Аналогично [`interserver_http_host`](#interserver_http_host), но в данном случае это имя хоста может использоваться другими серверами для доступа к этому серверу по протоколу `HTTPS`.
 
@@ -1672,7 +1672,7 @@ ClickHouse поддерживает динамическую ротацию ме
 ```
 
 
-## interserver&#95;https&#95;port {#interserver_https_port}
+## interserver&#95;https&#95;port \{#interserver_https_port\}
 
 Порт для обмена данными между серверами ClickHouse по `HTTPS`.
 
@@ -1683,7 +1683,7 @@ ClickHouse поддерживает динамическую ротацию ме
 ```
 
 
-## interserver&#95;listen&#95;host {#interserver_listen_host}
+## interserver&#95;listen&#95;host \{#interserver_listen_host\}
 
 Ограничение на хосты, между которыми серверам ClickHouse разрешён обмен данными.
 Если используется Keeper, то такое же ограничение применяется к взаимодействию между разными экземплярами Keeper.
@@ -1704,7 +1704,7 @@ ClickHouse поддерживает динамическую ротацию ме
 По умолчанию:
 
 
-## io_thread_pool_queue_size {#io_thread_pool_queue_size} 
+## io_thread_pool_queue_size \\{#io_thread_pool_queue_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -1714,34 +1714,34 @@ ClickHouse поддерживает динамическую ротацию ме
 Значение `0` означает отсутствие ограничения.
 :::
 
-## jemalloc_collect_global_profile_samples_in_trace_log {#jemalloc_collect_global_profile_samples_in_trace_log} 
+## jemalloc_collect_global_profile_samples_in_trace_log \\{#jemalloc_collect_global_profile_samples_in_trace_log\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />Сохранять выборочные выделения памяти jemalloc в system.trace_log
 
-## jemalloc_enable_background_threads {#jemalloc_enable_background_threads} 
+## jemalloc_enable_background_threads \\{#jemalloc_enable_background_threads\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />Включает фоновые потоки jemalloc. Jemalloc использует фоновые потоки для очистки неиспользуемых страниц памяти. Отключение этой настройки может привести к снижению производительности.
 
-## jemalloc_enable_global_profiler {#jemalloc_enable_global_profiler} 
+## jemalloc_enable_global_profiler \\{#jemalloc_enable_global_profiler\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />Включает профилировщик выделений памяти jemalloc для всех потоков. Jemalloc будет выполнять выборочное профилирование выделений и всех освобождений для тех выделений, которые попали в выборку.
 Профили можно сбрасывать с помощью SYSTEM JEMALLOC FLUSH PROFILE, что может использоваться для анализа выделений памяти.
 Выборки также могут сохраняться в system.trace_log с помощью конфигурационного параметра jemalloc_collect_global_profile_samples_in_trace_log или настройки запроса jemalloc_collect_profile_samples_in_trace_log.
 См. раздел [Профилирование выделений памяти](/operations/allocation-profiling)
 
-## jemalloc_flush_profile_interval_bytes {#jemalloc_flush_profile_interval_bytes} 
+## jemalloc_flush_profile_interval_bytes \\{#jemalloc_flush_profile_interval_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Сброс профиля jemalloc будет выполняться после увеличения глобального пикового потребления памяти на jemalloc_flush_profile_interval_bytes
 
-## jemalloc_flush_profile_on_memory_exceeded {#jemalloc_flush_profile_on_memory_exceeded} 
+## jemalloc_flush_profile_on_memory_exceeded \\{#jemalloc_flush_profile_on_memory_exceeded\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />Сброс профиля jemalloc будет выполняться при ошибках, связанных с превышением общего объёма памяти
 
-## jemalloc_max_background_threads_num {#jemalloc_max_background_threads_num} 
+## jemalloc_max_background_threads_num \\{#jemalloc_max_background_threads_num\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Максимальное количество фоновых потоков jemalloc, которые будут созданы; установите 0, чтобы использовать значение по умолчанию jemalloc
 
-## keep&#95;alive&#95;timeout {#keep_alive_timeout}
+## keep&#95;alive&#95;timeout \{#keep_alive_timeout\}
 
 <SettingsInfoBlock type="Seconds" default_value="30" />
 
@@ -1754,17 +1754,17 @@ ClickHouse поддерживает динамическую ротацию ме
 ```
 
 
-## keeper_hosts {#keeper_hosts} 
+## keeper_hosts \\{#keeper_hosts\\}
 
 Динамическая настройка. Содержит набор хостов ZooKeeper, к которым ClickHouse потенциально может подключаться. Не раскрывает информацию из `<auxiliary_zookeepers>`.
 
-## keeper_multiread_batch_size {#keeper_multiread_batch_size} 
+## keeper_multiread_batch_size \\{#keeper_multiread_batch_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
 Максимальный размер пакета для запроса MultiRead к [Zoo]Keeper, поддерживающему пакетную обработку. Если установить значение 0, пакетная обработка будет отключена. Доступно только в ClickHouse Cloud.
 
-## ldap_servers {#ldap_servers} 
+## ldap_servers \\{#ldap_servers\\}
 
 Перечислите здесь LDAP‑серверы с их параметрами подключения, чтобы:
 
@@ -1832,15 +1832,15 @@ Example:
 ```
 
 
-## license_file {#license_file} 
+## license_file \\{#license_file\\}
 
 Содержимое файла лицензии для ClickHouse Enterprise Edition
 
-## license_public_key_for_testing {#license_public_key_for_testing} 
+## license_public_key_for_testing \\{#license_public_key_for_testing\\}
 
 Демонстрационный лицензионный ключ, предназначенный только для использования в CI
 
-## listen&#95;backlog {#listen_backlog}
+## listen&#95;backlog \{#listen_backlog\}
 
 Backlog (размер очереди ожидающих установления подключений) прослушивающего сокета. Значение по умолчанию `4096` совпадает со значением в Linux [5.4+](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=19f92a030ca6d772ab44b22ee6a01378a8cb32d4)).
 
@@ -1861,7 +1861,7 @@ Backlog (размер очереди ожидающих установления
 ```
 
 
-## listen&#95;host {#listen_host}
+## listen&#95;host \{#listen_host\}
 
 Ограничение на хосты, с которых могут приходить запросы. Если вы хотите, чтобы сервер принимал запросы с любых хостов, укажите `::`.
 
@@ -1873,7 +1873,7 @@ Backlog (размер очереди ожидающих установления
 ```
 
 
-## listen&#95;reuse&#95;port {#listen_reuse_port}
+## listen&#95;reuse&#95;port \{#listen_reuse_port\}
 
 Разрешает нескольким серверам прослушивать один и тот же адрес:порт. Операционная система будет направлять запросы на случайный сервер. Не рекомендуется включать этот параметр.
 
@@ -1888,7 +1888,7 @@ Backlog (размер очереди ожидающих установления
 Значение по умолчанию:
 
 
-## listen&#95;try {#listen_try}
+## listen&#95;try \{#listen_try\}
 
 Сервер не завершит работу, если сети IPv6 или IPv4 недоступны при попытке начать прослушивание сокета.
 
@@ -1899,15 +1899,15 @@ Backlog (размер очереди ожидающих установления
 ```
 
 
-## load_marks_threadpool_pool_size {#load_marks_threadpool_pool_size} 
+## load_marks_threadpool_pool_size \\{#load_marks_threadpool_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="50" />Размер фонового пула потоков для загрузки меток
 
-## load_marks_threadpool_queue_size {#load_marks_threadpool_queue_size} 
+## load_marks_threadpool_queue_size \\{#load_marks_threadpool_queue_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />Количество задач, которые можно отправить в пул предварительной выборки
 
-## logger {#logger} 
+## logger \\{#logger\\}
 
 Расположение и формат сообщений журнала.
 
@@ -2099,7 +2099,7 @@ Backlog (размер очереди ожидающих установления
 Свойства лога можно исключить, закомментировав соответствующее свойство. Например, если вы не хотите, чтобы лог выводил `query_id`, вы можете закомментировать тег `<query_id>`.
 
 
-## macros {#macros}
+## macros \{#macros\}
 
 Подстановки параметров для реплицируемых таблиц.
 
@@ -2114,15 +2114,15 @@ Backlog (размер очереди ожидающих установления
 ```
 
 
-## Политика кэша меток {#mark_cache_policy} 
+## Политика кэша меток \\{#mark_cache_policy\\}
 
 <SettingsInfoBlock type="String" default_value="SLRU" />Имя политики кэша меток.
 
-## mark_cache_prewarm_ratio {#mark_cache_prewarm_ratio} 
+## mark_cache_prewarm_ratio \\{#mark_cache_prewarm_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.95" />Доля общего объема кэша меток, которая должна быть заполнена при предварительном прогреве.
 
-## mark_cache_size {#mark_cache_size} 
+## mark_cache_size \\{#mark_cache_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5368709120" />
 
@@ -2132,15 +2132,15 @@ Backlog (размер очереди ожидающих установления
 Этот параметр можно изменить во время работы сервера, и он вступит в силу немедленно.
 :::
 
-## mark_cache_size_ratio {#mark_cache_size_ratio} 
+## mark_cache_size_ratio \\{#mark_cache_size_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />Размер защищённой очереди (при политике SLRU) в кэше меток по отношению к общему размеру кэша.
 
-## max_active_parts_loading_thread_pool_size {#max_active_parts_loading_thread_pool_size} 
+## max_active_parts_loading_thread_pool_size \\{#max_active_parts_loading_thread_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="64" />Количество потоков, используемых для загрузки активного набора частей данных (Active) при запуске сервера.
 
-## max_authentication_methods_per_user {#max_authentication_methods_per_user} 
+## max_authentication_methods_per_user \\{#max_authentication_methods_per_user\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
@@ -2152,19 +2152,19 @@ Backlog (размер очереди ожидающих установления
 Значение `0` означает отсутствие ограничения.
 :::
 
-## max_backup_bandwidth_for_server {#max_backup_bandwidth_for_server} 
+## max_backup_bandwidth_for_server \\{#max_backup_bandwidth_for_server\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Максимальная скорость чтения в байтах в секунду для всех операций резервного копирования на сервере. Ноль означает, что ограничений нет.
 
-## max_backups_io_thread_pool_free_size {#max_backups_io_thread_pool_free_size} 
+## max_backups_io_thread_pool_free_size \\{#max_backups_io_thread_pool_free_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Если количество **простаивающих** потоков в пуле потоков Backups IO превышает `max_backup_io_thread_pool_free_size`, ClickHouse освобождает ресурсы, занятые простаивающими потоками, и уменьшает размер пула. При необходимости потоки могут быть созданы снова.
 
-## max_backups_io_thread_pool_size {#max_backups_io_thread_pool_size} 
+## max_backups_io_thread_pool_size \\{#max_backups_io_thread_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />ClickHouse использует потоки из пула потоков Backups IO Thread pool для выполнения операций ввода-вывода при резервном копировании в S3. `max_backups_io_thread_pool_size` ограничивает максимальное количество потоков в этом пуле.
 
-## max_build_vector_similarity_index_thread_pool_size {#max_build_vector_similarity_index_thread_pool_size} 
+## max_build_vector_similarity_index_thread_pool_size \\{#max_build_vector_similarity_index_thread_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16" />
 
@@ -2174,7 +2174,7 @@ Backlog (размер очереди ожидающих установления
 Значение `0` означает, что используются все ядра.
 :::
 
-## max_concurrent_insert_queries {#max_concurrent_insert_queries} 
+## max_concurrent_insert_queries \\{#max_concurrent_insert_queries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2187,7 +2187,7 @@ Backlog (размер очереди ожидающих установления
 Этот параметр можно изменять во время работы сервера, и изменение вступает в силу немедленно. Уже выполняющиеся запросы не затрагиваются.
 :::
 
-## max_concurrent_queries {#max_concurrent_queries} 
+## max_concurrent_queries \\{#max_concurrent_queries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2206,7 +2206,7 @@ Backlog (размер очереди ожидающих установления
 Этот параметр может быть изменён во время работы и вступит в силу немедленно. Уже выполняющиеся запросы останутся без изменений.
 :::
 
-## max_concurrent_select_queries {#max_concurrent_select_queries} 
+## max_concurrent_select_queries \\{#max_concurrent_select_queries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2219,15 +2219,15 @@ Backlog (размер очереди ожидающих установления
 Этот параметр можно изменять во время работы сервера; изменения вступают в силу немедленно. Уже выполняющиеся запросы не будут затронуты.
 :::
 
-## max_connections {#max_connections} 
+## max_connections \\{#max_connections\\}
 
 <SettingsInfoBlock type="Int32" default_value="4096" />Максимальное число подключений к серверу.
 
-## max_database_num_to_throw {#max_database_num_to_throw} 
+## max_database_num_to_throw \\{#max_database_num_to_throw\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Если количество баз данных превышает это значение, сервер сгенерирует исключение. 0 означает отсутствие ограничения.
 
-## max&#95;database&#95;num&#95;to&#95;warn {#max_database_num_to_warn}
+## max&#95;database&#95;num&#95;to&#95;warn \{#max_database_num_to_warn\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -2240,11 +2240,11 @@ Backlog (размер очереди ожидающих установления
 ```
 
 
-## max_database_replicated_create_table_thread_pool_size {#max_database_replicated_create_table_thread_pool_size} 
+## max_database_replicated_create_table_thread_pool_size \\{#max_database_replicated_create_table_thread_pool_size\\}
 
 <SettingsInfoBlock type="UInt32" default_value="1" />Количество потоков, используемых для создания таблиц при восстановлении реплики в DatabaseReplicated. Ноль означает, что число потоков равно числу ядер.
 
-## max&#95;dictionary&#95;num&#95;to&#95;throw {#max_dictionary_num_to_throw}
+## max&#95;dictionary&#95;num&#95;to&#95;throw \{#max_dictionary_num_to_throw\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2268,7 +2268,7 @@ Backlog (размер очереди ожидающих установления
 ```
 
 
-## max&#95;dictionary&#95;num&#95;to&#95;warn {#max_dictionary_num_to_warn}
+## max&#95;dictionary&#95;num&#95;to&#95;warn \{#max_dictionary_num_to_warn\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -2281,47 +2281,47 @@ Backlog (размер очереди ожидающих установления
 ```
 
 
-## max_distributed_cache_read_bandwidth_for_server {#max_distributed_cache_read_bandwidth_for_server} 
+## max_distributed_cache_read_bandwidth_for_server \\{#max_distributed_cache_read_bandwidth_for_server\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Максимальная суммарная скорость чтения из распределённого кэша сервера в байтах в секунду. Ноль означает отсутствие ограничения.
 
-## max_distributed_cache_write_bandwidth_for_server {#max_distributed_cache_write_bandwidth_for_server} 
+## max_distributed_cache_write_bandwidth_for_server \\{#max_distributed_cache_write_bandwidth_for_server\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Максимальная суммарная скорость записи в распределённый кэш на сервере в байтах в секунду. Ноль означает отсутствие ограничений.
 
-## max_entries_for_hash_table_stats {#max_entries_for_hash_table_stats} 
+## max_entries_for_hash_table_stats \\{#max_entries_for_hash_table_stats\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />Максимально допустимое количество записей статистики хеш-таблицы, собираемой при агрегации
 
-## max_fetch_partition_thread_pool_size {#max_fetch_partition_thread_pool_size} 
+## max_fetch_partition_thread_pool_size \\{#max_fetch_partition_thread_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="64" />Количество потоков, используемых для ALTER TABLE FETCH PARTITION.
 
-## max_format_parsing_thread_pool_free_size {#max_format_parsing_thread_pool_free_size} 
+## max_format_parsing_thread_pool_free_size \\{#max_format_parsing_thread_pool_free_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальное количество простаивающих резервных потоков, которые сохраняются в пуле потоков для разбора входных данных.
 
-## max_format_parsing_thread_pool_size {#max_format_parsing_thread_pool_size} 
+## max_format_parsing_thread_pool_size \\{#max_format_parsing_thread_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
 Максимальное общее число потоков, которые можно использовать для разбора входных данных.
 
-## max_io_thread_pool_free_size {#max_io_thread_pool_free_size} 
+## max_io_thread_pool_free_size \\{#max_io_thread_pool_free_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Если количество **простаивающих** потоков в пуле потоков ввода-вывода превышает `max_io_thread_pool_free_size`, ClickHouse освободит ресурсы, занятые этими потоками, и уменьшит размер пула. При необходимости потоки могут быть созданы снова.
 
-## max_io_thread_pool_size {#max_io_thread_pool_size} 
+## max_io_thread_pool_size \\{#max_io_thread_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
 ClickHouse использует потоки из пула потоков ввода‑вывода (IO thread pool) для выполнения некоторых операций ввода‑вывода (например, для взаимодействия с S3). `max_io_thread_pool_size` ограничивает максимальное количество потоков в этом пуле.
 
-## max&#95;keep&#95;alive&#95;requests {#max_keep_alive_requests}
+## max&#95;keep&#95;alive&#95;requests \{#max_keep_alive_requests\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -2334,7 +2334,7 @@ ClickHouse использует потоки из пула потоков вво
 ```
 
 
-## max_local_read_bandwidth_for_server {#max_local_read_bandwidth_for_server} 
+## max_local_read_bandwidth_for_server \\{#max_local_read_bandwidth_for_server\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2344,7 +2344,7 @@ ClickHouse использует потоки из пула потоков вво
 Значение `0` означает отсутствие ограничений.
 :::
 
-## max_local_write_bandwidth_for_server {#max_local_write_bandwidth_for_server} 
+## max_local_write_bandwidth_for_server \\{#max_local_write_bandwidth_for_server\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2354,7 +2354,7 @@ ClickHouse использует потоки из пула потоков вво
 Значение `0` означает отсутствие ограничений.
 :::
 
-## max_materialized_views_count_for_table {#max_materialized_views_count_for_table} 
+## max_materialized_views_count_for_table \\{#max_materialized_views_count_for_table\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2364,15 +2364,15 @@ ClickHouse использует потоки из пула потоков вво
 Здесь учитываются только непосредственно зависящие от таблицы представления; создание представления на основе другого представления сюда не входит.
 :::
 
-## max_merges_bandwidth_for_server {#max_merges_bandwidth_for_server} 
+## max_merges_bandwidth_for_server \\{#max_merges_bandwidth_for_server\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Максимальная скорость чтения для всех операций слияния на сервере в байтах в секунду. Ноль означает, что ограничений нет.
 
-## max_mutations_bandwidth_for_server {#max_mutations_bandwidth_for_server} 
+## max_mutations_bandwidth_for_server \\{#max_mutations_bandwidth_for_server\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Максимальная суммарная скорость чтения при выполнении всех мутаций на сервере, в байтах в секунду. Ноль означает отсутствие ограничения.
 
-## max&#95;named&#95;collection&#95;num&#95;to&#95;throw {#max_named_collection_num_to_throw}
+## max&#95;named&#95;collection&#95;num&#95;to&#95;throw \{#max_named_collection_num_to_throw\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2389,7 +2389,7 @@ ClickHouse использует потоки из пула потоков вво
 ```
 
 
-## max&#95;named&#95;collection&#95;num&#95;to&#95;warn {#max_named_collection_num_to_warn}
+## max&#95;named&#95;collection&#95;num&#95;to&#95;warn \{#max_named_collection_num_to_warn\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -2402,7 +2402,7 @@ ClickHouse использует потоки из пула потоков вво
 ```
 
 
-## max&#95;open&#95;files {#max_open_files}
+## max&#95;open&#95;files \{#max_open_files\}
 
 Максимальное количество открытых файлов.
 
@@ -2417,18 +2417,18 @@ ClickHouse использует потоки из пула потоков вво
 ```
 
 
-## max_os_cpu_wait_time_ratio_to_drop_connection {#max_os_cpu_wait_time_ratio_to_drop_connection} 
+## max_os_cpu_wait_time_ratio_to_drop_connection \\{#max_os_cpu_wait_time_ratio_to_drop_connection\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
 Максимальное соотношение между временем ожидания CPU в ОС (метрика OSCPUWaitMicroseconds) и временем занятости (метрика OSCPUVirtualTimeMicroseconds), при котором рассматривается разрыв соединений. Для вычисления вероятности используется линейная интерполяция между минимальным и максимальным значениями этого соотношения; при этом значении вероятность равна 1.
 Дополнительные сведения см. в разделе [Управление поведением при перегрузке CPU сервера](/operations/settings/server-overload).
 
-## max_outdated_parts_loading_thread_pool_size {#max_outdated_parts_loading_thread_pool_size} 
+## max_outdated_parts_loading_thread_pool_size \\{#max_outdated_parts_loading_thread_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="32" />Количество потоков для загрузки неактивных (устаревших) частей данных при запуске.
 
-## max&#95;part&#95;num&#95;to&#95;warn {#max_part_num_to_warn}
+## max&#95;part&#95;num&#95;to&#95;warn \{#max_part_num_to_warn\}
 
 <SettingsInfoBlock type="UInt64" default_value="100000" />
 
@@ -2441,7 +2441,7 @@ ClickHouse использует потоки из пула потоков вво
 ```
 
 
-## max&#95;partition&#95;size&#95;to&#95;drop {#max_partition_size_to_drop}
+## max&#95;partition&#95;size&#95;to&#95;drop \{#max_partition_size_to_drop\}
 
 <SettingsInfoBlock type="UInt64" default_value="50000000000" />
 
@@ -2463,11 +2463,11 @@ ClickHouse использует потоки из пула потоков вво
 ```
 
 
-## max_parts_cleaning_thread_pool_size {#max_parts_cleaning_thread_pool_size} 
+## max_parts_cleaning_thread_pool_size \\{#max_parts_cleaning_thread_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="128" />Количество потоков для одновременного удаления неактивных частей данных.
 
-## max&#95;pending&#95;mutations&#95;execution&#95;time&#95;to&#95;warn {#max_pending_mutations_execution_time_to_warn}
+## max&#95;pending&#95;mutations&#95;execution&#95;time&#95;to&#95;warn \{#max_pending_mutations_execution_time_to_warn\}
 
 <SettingsInfoBlock type="UInt64" default_value="86400" />
 
@@ -2480,7 +2480,7 @@ ClickHouse использует потоки из пула потоков вво
 ```
 
 
-## max&#95;pending&#95;mutations&#95;to&#95;warn {#max_pending_mutations_to_warn}
+## max&#95;pending&#95;mutations&#95;to&#95;warn \{#max_pending_mutations_to_warn\}
 
 <SettingsInfoBlock type="UInt64" default_value="500" />
 
@@ -2493,19 +2493,19 @@ ClickHouse использует потоки из пула потоков вво
 ```
 
 
-## max_prefixes_deserialization_thread_pool_free_size {#max_prefixes_deserialization_thread_pool_free_size} 
+## max_prefixes_deserialization_thread_pool_free_size \\{#max_prefixes_deserialization_thread_pool_free_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Если количество **простаивающих** потоков в пуле потоков десериализации префиксов превышает `max_prefixes_deserialization_thread_pool_free_size`, ClickHouse освобождает ресурсы, занятые простаивающими потоками, и уменьшает размер пула. При необходимости потоки могут быть созданы вновь.
 
-## max_prefixes_deserialization_thread_pool_size {#max_prefixes_deserialization_thread_pool_size} 
+## max_prefixes_deserialization_thread_pool_size \\{#max_prefixes_deserialization_thread_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
 ClickHouse использует пул потоков десериализации префиксов для параллельного чтения метаданных столбцов и подстолбцов из файловых префиксов в широких частях MergeTree. `max_prefixes_deserialization_thread_pool_size` ограничивает максимальное количество потоков в пуле.
 
-## max_remote_read_network_bandwidth_for_server {#max_remote_read_network_bandwidth_for_server} 
+## max_remote_read_network_bandwidth_for_server \\{#max_remote_read_network_bandwidth_for_server\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2515,7 +2515,7 @@ ClickHouse использует пул потоков десериализаци
 Значение `0` (по умолчанию) означает отсутствие ограничения.
 :::
 
-## max_remote_write_network_bandwidth_for_server {#max_remote_write_network_bandwidth_for_server} 
+## max_remote_write_network_bandwidth_for_server \\{#max_remote_write_network_bandwidth_for_server\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2525,15 +2525,15 @@ ClickHouse использует пул потоков десериализаци
 Значение `0` (по умолчанию) означает отсутствие ограничений.
 :::
 
-## max_replicated_fetches_network_bandwidth_for_server {#max_replicated_fetches_network_bandwidth_for_server} 
+## max_replicated_fetches_network_bandwidth_for_server \\{#max_replicated_fetches_network_bandwidth_for_server\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Максимальная скорость обмена данными по сети в байтах в секунду для операций репликации (replicated fetches). Ноль означает отсутствие ограничений.
 
-## max_replicated_sends_network_bandwidth_for_server {#max_replicated_sends_network_bandwidth_for_server} 
+## max_replicated_sends_network_bandwidth_for_server \\{#max_replicated_sends_network_bandwidth_for_server\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Максимальная скорость обмена данными по сети, в байтах в секунду, для replicated sends. Нулевое значение означает отсутствие ограничения.
 
-## max&#95;replicated&#95;table&#95;num&#95;to&#95;throw {#max_replicated_table_num_to_throw}
+## max&#95;replicated&#95;table&#95;num&#95;to&#95;throw \{#max_replicated_table_num_to_throw\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2557,7 +2557,7 @@ ClickHouse использует пул потоков десериализаци
 ```
 
 
-## max_server_memory_usage {#max_server_memory_usage} 
+## max_server_memory_usage \\{#max_server_memory_usage\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2569,7 +2569,7 @@ ClickHouse использует пул потоков десериализаци
 
 Как частный случай, значение `0` (по умолчанию) означает, что сервер может потреблять всю доступную память (за исключением дополнительных ограничений, накладываемых `max_server_memory_usage_to_ram_ratio`).
 
-## max_server_memory_usage_to_ram_ratio {#max_server_memory_usage_to_ram_ratio} 
+## max_server_memory_usage_to_ram_ratio \\{#max_server_memory_usage_to_ram_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.9" />
 
@@ -2584,7 +2584,7 @@ ClickHouse использует пул потоков десериализаци
 Максимальное потребление памяти сервером дополнительно ограничивается параметром `max_server_memory_usage`.
 :::
 
-## max&#95;session&#95;timeout {#max_session_timeout}
+## max&#95;session&#95;timeout \{#max_session_timeout\}
 
 Максимальное значение тайм-аута сеанса в секундах.
 
@@ -2595,7 +2595,7 @@ ClickHouse использует пул потоков десериализаци
 ```
 
 
-## max&#95;table&#95;num&#95;to&#95;throw {#max_table_num_to_throw}
+## max&#95;table&#95;num&#95;to&#95;throw \{#max_table_num_to_throw\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2626,7 +2626,7 @@ ClickHouse использует пул потоков десериализаци
 ```
 
 
-## max&#95;table&#95;num&#95;to&#95;warn {#max_table_num_to_warn}
+## max&#95;table&#95;num&#95;to&#95;warn \{#max_table_num_to_warn\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000" />
 
@@ -2639,7 +2639,7 @@ ClickHouse использует пул потоков десериализаци
 ```
 
 
-## max&#95;table&#95;size&#95;to&#95;drop {#max_table_size_to_drop}
+## max&#95;table&#95;size&#95;to&#95;drop \{#max_table_size_to_drop\}
 
 <SettingsInfoBlock type="UInt64" default_value="50000000000" />
 
@@ -2660,7 +2660,7 @@ ClickHouse использует пул потоков десериализаци
 ```
 
 
-## max_temporary_data_on_disk_size {#max_temporary_data_on_disk_size} 
+## max_temporary_data_on_disk_size \\{#max_temporary_data_on_disk_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2676,7 +2676,7 @@ ClickHouse использует пул потоков десериализаци
 - [`max_temporary_data_on_disk_size_for_user`](/operations/settings/settings#max_temporary_data_on_disk_size_for_user)
 - [`max_temporary_data_on_disk_size_for_query`](/operations/settings/settings#max_temporary_data_on_disk_size_for_query)
 
-## max&#95;thread&#95;pool&#95;free&#95;size {#max_thread_pool_free_size}
+## max&#95;thread&#95;pool&#95;free&#95;size \{#max_thread_pool_free_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -2689,7 +2689,7 @@ ClickHouse использует пул потоков десериализаци
 ```
 
 
-## max&#95;thread&#95;pool&#95;size {#max_thread_pool_size}
+## max&#95;thread&#95;pool&#95;size \{#max_thread_pool_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -2702,11 +2702,11 @@ ClickHouse использует потоки из глобального пул�
 ```
 
 
-## max_unexpected_parts_loading_thread_pool_size {#max_unexpected_parts_loading_thread_pool_size} 
+## max_unexpected_parts_loading_thread_pool_size \\{#max_unexpected_parts_loading_thread_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="8" />Количество потоков для загрузки неактивных (неожидаемых) частей данных при запуске.
 
-## max&#95;view&#95;num&#95;to&#95;throw {#max_view_num_to_throw}
+## max&#95;view&#95;num&#95;to&#95;throw \{#max_view_num_to_throw\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2730,7 +2730,7 @@ ClickHouse использует потоки из глобального пул�
 ```
 
 
-## max&#95;view&#95;num&#95;to&#95;warn {#max_view_num_to_warn}
+## max&#95;view&#95;num&#95;to&#95;warn \{#max_view_num_to_warn\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -2743,7 +2743,7 @@ ClickHouse использует потоки из глобального пул�
 ```
 
 
-## max_waiting_queries {#max_waiting_queries} 
+## max_waiting_queries \\{#max_waiting_queries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2769,29 +2769,29 @@ ClickHouse использует потоки из глобального пул�
 Эту настройку можно изменять в процессе работы сервера; изменения вступают в силу сразу. Уже выполняющиеся запросы при этом не изменяются.
 :::
 
-## memory_worker_correct_memory_tracker {#memory_worker_correct_memory_tracker} 
+## memory_worker_correct_memory_tracker \\{#memory_worker_correct_memory_tracker\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Определяет, должен ли фоновый обработчик памяти корректировать внутренний трекер памяти на основе информации из внешних источников, таких как jemalloc и cgroups.
 
-## memory_worker_period_ms {#memory_worker_period_ms} 
+## memory_worker_period_ms \\{#memory_worker_period_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Период срабатывания фонового обработчика памяти, который корректирует показания трекера памяти и очищает неиспользуемые страницы при повышенном потреблении памяти. Если установлено значение 0, будет использовано значение по умолчанию, зависящее от источника потребления памяти.
 
-## memory_worker_purge_dirty_pages_threshold_ratio {#memory_worker_purge_dirty_pages_threshold_ratio} 
+## memory_worker_purge_dirty_pages_threshold_ratio \\{#memory_worker_purge_dirty_pages_threshold_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.2" />
 
 Пороговая доля «грязных» страниц jemalloc по отношению к объёму памяти, доступной серверу ClickHouse. Когда объём грязных страниц превышает эту долю, фоновый обработчик памяти (memory worker) принудительно очищает грязные страницы. Если установлено значение 0, принудительная очистка отключается.
 
-## memory_worker_use_cgroup {#memory_worker_use_cgroup} 
+## memory_worker_use_cgroup \\{#memory_worker_use_cgroup\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />Использовать данные о текущем использовании памяти cgroup для корректировки учета памяти.
 
-## merge&#95;tree {#merge_tree}
+## merge&#95;tree \{#merge_tree\}
 
 Тонкая настройка таблиц в [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
 
@@ -2806,7 +2806,7 @@ ClickHouse использует потоки из глобального пул�
 ```
 
 
-## merge_workload {#merge_workload} 
+## merge_workload \\{#merge_workload\\}
 
 <SettingsInfoBlock type="String" default_value="default" />
 
@@ -2816,7 +2816,7 @@ ClickHouse использует потоки из глобального пул�
 
 - [Планирование рабочих нагрузок](/operations/workload-scheduling.md)
 
-## merges&#95;mutations&#95;memory&#95;usage&#95;soft&#95;limit {#merges_mutations_memory_usage_soft_limit}
+## merges&#95;mutations&#95;memory&#95;usage&#95;soft&#95;limit \{#merges_mutations_memory_usage_soft_limit\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2834,7 +2834,7 @@ ClickHouse использует потоки из глобального пул�
 ```
 
 
-## merges_mutations_memory_usage_to_ram_ratio {#merges_mutations_memory_usage_to_ram_ratio} 
+## merges_mutations_memory_usage_to_ram_ratio \\{#merges_mutations_memory_usage_to_ram_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />
 
@@ -2845,7 +2845,7 @@ ClickHouse использует потоки из глобального пул�
 - [max_memory_usage](/operations/settings/settings#max_memory_usage)
 - [merges_mutations_memory_usage_soft_limit](/operations/server-configuration-parameters/settings#merges_mutations_memory_usage_soft_limit)
 
-## metric&#95;log {#metric_log}
+## metric&#95;log \{#metric_log\}
 
 По умолчанию он отключен.
 
@@ -2881,14 +2881,14 @@ ClickHouse использует потоки из глобального пул�
 <SystemLogParameters />
 
 
-## min_os_cpu_wait_time_ratio_to_drop_connection {#min_os_cpu_wait_time_ratio_to_drop_connection} 
+## min_os_cpu_wait_time_ratio_to_drop_connection \\{#min_os_cpu_wait_time_ratio_to_drop_connection\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
 Минимальное соотношение между временем ожидания CPU в ОС (метрика OSCPUWaitMicroseconds) и временем занятости (метрика OSCPUVirtualTimeMicroseconds), при достижении которого рассматривается возможность разрыва соединений. Для вычисления вероятности используется линейная интерполяция между минимальным и максимальным значением этого соотношения; при минимальном значении вероятность равна 0.
 Подробности см. в разделе [Управление поведением при перегрузке CPU сервера](/operations/settings/server-overload).
 
-## mlock&#95;executable {#mlock_executable}
+## mlock&#95;executable \{#mlock_executable\}
 
 Выполнить `mlockall` после старта, чтобы снизить задержку первых запросов и предотвратить выгрузку исполняемого файла clickhouse из памяти при высокой нагрузке на ввод-вывод.
 
@@ -2904,7 +2904,7 @@ ClickHouse использует потоки из глобального пул�
 ```
 
 
-## mmap_cache_size {#mmap_cache_size} 
+## mmap_cache_size \\{#mmap_cache_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1024" />
 
@@ -2921,7 +2921,7 @@ ClickHouse использует потоки из глобального пул�
 Этот параметр можно изменять во время работы сервера, и изменения вступят в силу немедленно.
 :::
 
-## mutation_workload {#mutation_workload} 
+## mutation_workload \\{#mutation_workload\\}
 
 <SettingsInfoBlock type="String" default_value="default" />
 
@@ -2931,7 +2931,7 @@ ClickHouse использует потоки из глобального пул�
 
 - [Планирование рабочих нагрузок](/operations/workload-scheduling.md)
 
-## mysql&#95;port {#mysql_port}
+## mysql&#95;port \{#mysql_port\}
 
 Порт для обмена данными с клиентами по протоколу MySQL.
 
@@ -2948,11 +2948,11 @@ ClickHouse использует потоки из глобального пул�
 ```
 
 
-## mysql_require_secure_transport {#mysql_require_secure_transport} 
+## mysql_require_secure_transport \\{#mysql_require_secure_transport\\}
 
 Если установлено значение true, для клиентов при работе через [mysql_port](#mysql_port) требуется защищённое соединение. Подключения с опцией `--ssl-mode=none` будут отклоняться. Используйте совместно с настройками [OpenSSL](#openssl).
 
-## openSSL {#openssl} 
+## openSSL \\{#openssl\\}
 
 Конфигурация клиента и сервера SSL.
 
@@ -3014,7 +3014,7 @@ ClickHouse использует потоки из глобального пул�
 ```
 
 
-## opentelemetry&#95;span&#95;log {#opentelemetry_span_log}
+## opentelemetry&#95;span&#95;log \{#opentelemetry_span_log\}
 
 Настройки для системной таблицы [`opentelemetry_span_log`](../system-tables/opentelemetry_span_log.md).
 
@@ -3040,15 +3040,15 @@ ClickHouse использует потоки из глобального пул�
 ```
 
 
-## os_collect_psi_metrics {#os_collect_psi_metrics} 
+## os_collect_psi_metrics \\{#os_collect_psi_metrics\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />Включает сбор метрик PSI из файлов /proc/pressure/.
 
-## os_cpu_busy_time_threshold {#os_cpu_busy_time_threshold} 
+## os_cpu_busy_time_threshold \\{#os_cpu_busy_time_threshold\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />Порог времени занятости CPU операционной системы в микросекундах (метрика OSCPUVirtualTimeMicroseconds), при котором считается, что CPU выполняет полезную работу; перегрузка CPU не фиксируется, если время занятости ниже этого значения.
 
-## os_threads_nice_value_distributed_cache_tcp_handler {#os_threads_nice_value_distributed_cache_tcp_handler} 
+## os_threads_nice_value_distributed_cache_tcp_handler \\{#os_threads_nice_value_distributed_cache_tcp_handler\\}
 
 <SettingsInfoBlock type="Int32" default_value="0" />
 
@@ -3058,7 +3058,7 @@ ClickHouse использует потоки из глобального пул�
 
 Возможные значения: от -20 до 19.
 
-## os_threads_nice_value_merge_mutate {#os_threads_nice_value_merge_mutate} 
+## os_threads_nice_value_merge_mutate \\{#os_threads_nice_value_merge_mutate\\}
 
 <SettingsInfoBlock type="Int32" default_value="0" />
 
@@ -3068,7 +3068,7 @@ ClickHouse использует потоки из глобального пул�
 
 Возможные значения: от -20 до 19.
 
-## os_threads_nice_value_zookeeper_client_send_receive {#os_threads_nice_value_zookeeper_client_send_receive} 
+## os_threads_nice_value_zookeeper_client_send_receive \\{#os_threads_nice_value_zookeeper_client_send_receive\\}
 
 <SettingsInfoBlock type="Int32" default_value="0" />
 
@@ -3078,35 +3078,35 @@ ClickHouse использует потоки из глобального пул�
 
 Возможные значения: от -20 до 19.
 
-## page_cache_free_memory_ratio {#page_cache_free_memory_ratio} 
+## page_cache_free_memory_ratio \\{#page_cache_free_memory_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.15" />Доля лимита памяти, которую следует оставлять свободной от кэша страниц в пространстве пользователя. Аналогично параметру Linux min_free_kbytes.
 
-## page_cache_history_window_ms {#page_cache_history_window_ms} 
+## page_cache_history_window_ms \\{#page_cache_history_window_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />Задержка перед тем, как освобождённая память может быть использована кэшем страниц в пространстве пользователя.
 
-## page_cache_max_size {#page_cache_max_size} 
+## page_cache_max_size \\{#page_cache_max_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Максимальный размер кэша страниц в пространстве пользователя. Установите значение 0, чтобы отключить кэш. Если значение больше page_cache_min_size, размер кэша будет динамически подстраиваться в этих пределах, чтобы использовать большую часть доступной памяти, при этом общий объём потребляемой памяти будет оставаться ниже лимита (max_server_memory_usage[_to_ram_ratio]).
 
-## page_cache_min_size {#page_cache_min_size} 
+## page_cache_min_size \\{#page_cache_min_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="104857600" />Минимальный размер кэша страниц в пространстве пользователя.
 
-## page_cache_policy {#page_cache_policy} 
+## page_cache_policy \\{#page_cache_policy\\}
 
 <SettingsInfoBlock type="String" default_value="SLRU" />Имя политики кэша страниц в пользовательском пространстве.
 
-## page_cache_shards {#page_cache_shards} 
+## page_cache_shards \\{#page_cache_shards\\}
 
 <SettingsInfoBlock type="UInt64" default_value="4" />Разбейте пользовательский кэш страниц в пространстве пользователя на указанное число сегментов, чтобы уменьшить конкуренцию за мьютекс. Экспериментальная настройка; маловероятно, что она улучшит производительность.
 
-## page_cache_size_ratio {#page_cache_size_ratio} 
+## page_cache_size_ratio \\{#page_cache_size_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />Размер защищённой очереди в кэше страниц в пользовательском пространстве (userspace page cache) относительно общего размера кэша.
 
-## part&#95;log {#part_log}
+## part&#95;log \{#part_log\}
 
 Логирование событий, связанных с [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md), например добавления или слияния данных. Вы можете использовать лог для моделирования алгоритмов слияния и сравнения их характеристик, а также для визуализации процесса слияния.
 
@@ -3130,25 +3130,25 @@ ClickHouse использует потоки из глобального пул�
 ```
 
 
-## parts_kill_delay_period {#parts_kill_delay_period} 
+## parts_kill_delay_period \\{#parts_kill_delay_period\\}
 
 <SettingsInfoBlock type="UInt64" default_value="30" />
 
 Интервал времени, по истечении которого части для SharedMergeTree удаляются полностью. Доступно только в ClickHouse Cloud.
 
-## parts_kill_delay_period_random_add {#parts_kill_delay_period_random_add} 
+## parts_kill_delay_period_random_add \\{#parts_kill_delay_period_random_add\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
 Добавляет к `kill_delay_period` равномерно распределённое значение в диапазоне от 0 до x секунд, чтобы избежать эффекта массовых одновременных обращений (thundering herd) и последующей DoS-атаки на ZooKeeper в случае очень большого количества таблиц. Параметр доступен только в ClickHouse Cloud.
 
-## parts_killer_pool_size {#parts_killer_pool_size} 
+## parts_killer_pool_size \\{#parts_killer_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="128" />
 
 Потоки, выполняющие очистку устаревших частей в общем SharedMergeTree. Доступно только в ClickHouse Cloud.
 
-## path {#path}
+## path \{#path\}
 
 Путь к каталогу, содержащему данные.
 
@@ -3163,7 +3163,7 @@ ClickHouse использует потоки из глобального пул�
 ```
 
 
-## postgresql&#95;port {#postgresql_port}
+## postgresql&#95;port \{#postgresql_port\}
 
 Порт для взаимодействия с клиентами по протоколу PostgreSQL.
 
@@ -3180,19 +3180,19 @@ ClickHouse использует потоки из глобального пул�
 ```
 
 
-## postgresql_require_secure_transport {#postgresql_require_secure_transport} 
+## postgresql_require_secure_transport \\{#postgresql_require_secure_transport\\}
 
 Если параметр установлен в true, для связи с клиентами по [postgresql_port](#postgresql_port) требуется защищённое соединение. Подключение с параметром `sslmode=disable` будет отклонено. Используйте совместно с настройками [OpenSSL](#openssl).
 
-## prefetch_threadpool_pool_size {#prefetch_threadpool_pool_size} 
+## prefetch_threadpool_pool_size \\{#prefetch_threadpool_pool_size\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="100" />Размер фонового пула для упреждающей выборки данных из удалённых объектных хранилищ
 
-## prefetch_threadpool_queue_size {#prefetch_threadpool_queue_size} 
+## prefetch_threadpool_queue_size \\{#prefetch_threadpool_queue_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />Количество задач, которые можно поместить в пул задач предварительной выборки
 
-## prefixes_deserialization_thread_pool_thread_pool_queue_size {#prefixes_deserialization_thread_pool_thread_pool_queue_size} 
+## prefixes_deserialization_thread_pool_thread_pool_queue_size \\{#prefixes_deserialization_thread_pool_thread_pool_queue_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -3202,29 +3202,29 @@ ClickHouse использует потоки из глобального пул�
 Значение `0` означает отсутствие ограничений.
 :::
 
-## prepare_system_log_tables_on_startup {#prepare_system_log_tables_on_startup} 
+## prepare_system_log_tables_on_startup \\{#prepare_system_log_tables_on_startup\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Если параметр имеет значение `true`, ClickHouse создаёт все настроенные таблицы `system.*_log` перед запуском. Это может быть полезно, если некоторые стартовые скрипты зависят от этих таблиц.
 
-## primary_index_cache_policy {#primary_index_cache_policy} 
+## primary_index_cache_policy \\{#primary_index_cache_policy\\}
 
 <SettingsInfoBlock type="String" default_value="SLRU" />Имя политики кэширования основного индекса.
 
-## primary_index_cache_prewarm_ratio {#primary_index_cache_prewarm_ratio} 
+## primary_index_cache_prewarm_ratio \\{#primary_index_cache_prewarm_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.95" />Часть общего объёма кэша меток, которая заполняется во время предварительного прогрева.
 
-## primary_index_cache_size {#primary_index_cache_size} 
+## primary_index_cache_size \\{#primary_index_cache_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5368709120" />Максимальный размер кэша первичного индекса (индекса семейства таблиц MergeTree).
 
-## primary_index_cache_size_ratio {#primary_index_cache_size_ratio} 
+## primary_index_cache_size_ratio \\{#primary_index_cache_size_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />Размер защищённой очереди (в случае политики SLRU) в кэше первичного индекса по отношению к общему размеру кэша.
 
-## process&#95;query&#95;plan&#95;packet {#process_query_plan_packet}
+## process&#95;query&#95;plan&#95;packet \{#process_query_plan_packet\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3238,7 +3238,7 @@ ClickHouse использует потоки из глобального пул�
 ```
 
 
-## processors&#95;profile&#95;log {#processors_profile_log}
+## processors&#95;profile&#95;log \{#processors_profile_log\}
 
 Настройки для системной таблицы [`processors_profile_log`](../system-tables/processors_profile_log.md).
 
@@ -3260,7 +3260,7 @@ ClickHouse использует потоки из глобального пул�
 ```
 
 
-## prometheus {#prometheus}
+## prometheus \{#prometheus\}
 
 Экспорт метрик для сбора системой [Prometheus](https://prometheus.io).
 
@@ -3300,7 +3300,7 @@ curl 127.0.0.1:9363/metrics
 ```
 
 
-## proxy {#proxy}
+## proxy \{#proxy\}
 
 Определите прокси‑серверы для HTTP‑ и HTTPS‑запросов, которые в данный момент поддерживаются хранилищем S3, табличными функциями S3 и функциями URL.
 
@@ -3437,7 +3437,7 @@ ClickHouse будет проверять тип резолвера с наивы
 будет проверен следующий по приоритету тип резолвера, пока не будет задействован резолвер окружения.
 Это также позволяет одновременно использовать несколько типов резолверов.
 
-## query&#95;cache {#query_cache}
+## query&#95;cache \{#query_cache\}
 
 Конфигурация [кеша запросов](../query-cache.md).
 
@@ -3468,11 +3468,11 @@ ClickHouse будет проверять тип резолвера с наивы
 ```
 
 
-## query_condition_cache_policy {#query_condition_cache_policy} 
+## query_condition_cache_policy \\{#query_condition_cache_policy\\}
 
 <SettingsInfoBlock type="String" default_value="SLRU" />Имя политики кэша условий запроса.
 
-## query_condition_cache_size {#query_condition_cache_size} 
+## query_condition_cache_size \\{#query_condition_cache_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="104857600" />
 
@@ -3481,11 +3481,11 @@ ClickHouse будет проверять тип резолвера с наивы
 Этот параметр можно изменить во время работы сервера, и изменение вступит в силу немедленно.
 :::
 
-## query_condition_cache_size_ratio {#query_condition_cache_size_ratio} 
+## query_condition_cache_size_ratio \\{#query_condition_cache_size_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />Размер защищённой очереди (в случае политики SLRU) в кэше условий запроса по отношению к общему размеру кэша.
 
-## query&#95;log {#query_log}
+## query&#95;log \{#query_log\}
 
 Настройка логирования запросов, полученных при включённой настройке [log&#95;queries=1](../../operations/settings/settings.md).
 
@@ -3511,7 +3511,7 @@ ClickHouse будет проверять тип резолвера с наивы
 ```
 
 
-## query&#95;masking&#95;rules {#query_masking_rules}
+## query&#95;masking&#95;rules \{#query_masking_rules\}
 
 Правила на основе регулярных выражений, которые будут применяться к запросам, а также ко всем сообщениям журнала перед их записью в серверные журналы:
 таблицы [`system.query_log`](/operations/system-tables/query_log), [`system.text_log`](/operations/system-tables/text_log), [`system.processes`](/operations/system-tables/processes), а также к журналам, отправляемым клиенту. Это позволяет предотвратить утечку конфиденциальных данных из SQL-запросов, таких как имена, адреса электронной почты, персональные идентификаторы или номера кредитных карт, в журналы.
@@ -3543,7 +3543,7 @@ ClickHouse будет проверять тип резолвера с наивы
 Для распределённых запросов каждый сервер должен быть настроен отдельно, иначе подзапросы, передаваемые на другие узлы, будут сохраняться без маскирования.
 
 
-## query&#95;metric&#95;log {#query_metric_log}
+## query&#95;metric&#95;log \{#query_metric_log\}
 
 По умолчанию этот лог отключён.
 
@@ -3579,7 +3579,7 @@ ClickHouse будет проверять тип резолвера с наивы
 <SystemLogParameters />
 
 
-## query&#95;thread&#95;log {#query_thread_log}
+## query&#95;thread&#95;log \{#query_thread_log\}
 
 Настройка для журналирования потоков запросов при включённой настройке [log&#95;query&#95;threads=1](/operations/settings/settings#log_query_threads).
 
@@ -3605,7 +3605,7 @@ ClickHouse будет проверять тип резолвера с наивы
 ```
 
 
-## query&#95;views&#95;log {#query_views_log}
+## query&#95;views&#95;log \{#query_views_log\}
 
 Настройка для логирования представлений (live, materialized и т. д.) в зависимости от запросов, для которых включена настройка [log&#95;query&#95;views=1](/operations/settings/settings#log_query_views).
 
@@ -3631,7 +3631,7 @@ ClickHouse будет проверять тип резолвера с наивы
 ```
 
 
-## remap&#95;executable {#remap_executable}
+## remap&#95;executable \{#remap_executable\}
 
 Параметр для перевыделения памяти под машинный код (&quot;text&quot;) с использованием больших страниц памяти (huge pages).
 
@@ -3646,7 +3646,7 @@ ClickHouse будет проверять тип резолвера с наивы
 ```
 
 
-## remote&#95;servers {#remote_servers}
+## remote&#95;servers \{#remote_servers\}
 
 Конфигурация кластеров, используемых движком таблицы [Distributed](../../engines/table-engines/special/distributed.md) и табличной функцией `cluster`.
 
@@ -3665,7 +3665,7 @@ ClickHouse будет проверять тип резолвера с наивы
 * [Движок реплицируемой базы данных](../../engines/database-engines/replicated.md)
 
 
-## remote&#95;url&#95;allow&#95;hosts {#remote_url_allow_hosts}
+## remote&#95;url&#95;allow&#95;hosts \{#remote_url_allow_hosts\}
 
 Список хостов, которые разрешено использовать в движках хранения и табличных функциях, работающих с URL.
 
@@ -3686,7 +3686,7 @@ ClickHouse будет проверять тип резолвера с наивы
 ```
 
 
-## replica&#95;group&#95;name {#replica_group_name}
+## replica&#95;group&#95;name \{#replica_group_name\}
 
 Имя группы реплик для базы данных с движком Replicated.
 
@@ -3702,19 +3702,19 @@ DDL‑запросы будут ожидать только реплики из 
 ```
 
 
-## replicated_fetches_http_connection_timeout {#replicated_fetches_http_connection_timeout} 
+## replicated_fetches_http_connection_timeout \\{#replicated_fetches_http_connection_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="0" />Таймаут HTTP-соединения для запросов на загрузку частей данных. Наследуется из профиля по умолчанию `http_connection_timeout`, если явно не задан.
 
-## replicated_fetches_http_receive_timeout {#replicated_fetches_http_receive_timeout} 
+## replicated_fetches_http_receive_timeout \\{#replicated_fetches_http_receive_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="0" />Таймаут ожидания получения данных по HTTP для запросов выборки частей (fetch part). Наследуется от профиля по умолчанию `http_receive_timeout`, если не установлен явно.
 
-## replicated_fetches_http_send_timeout {#replicated_fetches_http_send_timeout} 
+## replicated_fetches_http_send_timeout \\{#replicated_fetches_http_send_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="0" />Тайм-аут отправки HTTP при запросах на получение кусков данных. Наследуется из профиля по умолчанию `http_send_timeout`, если не задан явно.
 
-## replicated&#95;merge&#95;tree {#replicated_merge_tree}
+## replicated&#95;merge&#95;tree \{#replicated_merge_tree\}
 
 Тонкая настройка для таблиц в [ReplicatedMergeTree](../../engines/table-engines/mergetree-family/mergetree.md). Этот параметр имеет более высокий приоритет.
 
@@ -3729,27 +3729,27 @@ DDL‑запросы будут ожидать только реплики из 
 ```
 
 
-## restore_threads {#restore_threads} 
+## restore_threads \\{#restore_threads\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="16" />Максимальное количество потоков для выполнения запросов RESTORE.
 
-## s3_credentials_provider_max_cache_size {#s3_credentials_provider_max_cache_size} 
+## s3_credentials_provider_max_cache_size \\{#s3_credentials_provider_max_cache_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />Максимальное количество провайдеров учетных данных S3, которые могут храниться в кэше
 
-## s3_max_redirects {#s3_max_redirects} 
+## s3_max_redirects \\{#s3_max_redirects\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />Максимальное допустимое количество перенаправлений S3.
 
-## s3_retry_attempts {#s3_retry_attempts} 
+## s3_retry_attempts \\{#s3_retry_attempts\\}
 
 <SettingsInfoBlock type="UInt64" default_value="500" />Настройка для Aws::Client::RetryStrategy, Aws::Client самостоятельно выполняет повторные попытки, 0 означает отсутствие повторных попыток
 
-## s3queue_disable_streaming {#s3queue_disable_streaming} 
+## s3queue_disable_streaming \\{#s3queue_disable_streaming\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />Отключает потоковую обработку в S3Queue, даже если таблица уже создана и к ней прикреплены материализованные представления
 
-## s3queue&#95;log {#s3queue_log}
+## s3queue&#95;log \{#s3queue_log\}
 
 Настройки системной таблицы `s3queue_log`.
 
@@ -3767,7 +3767,7 @@ DDL‑запросы будут ожидать только реплики из 
 ```
 
 
-## send&#95;crash&#95;reports {#send_crash_reports}
+## send&#95;crash&#95;reports \{#send_crash_reports\}
 
 Настройки отправки отчётов о сбоях команде разработчиков ядра ClickHouse.
 
@@ -3790,33 +3790,33 @@ DDL‑запросы будут ожидать только реплики из 
 ```
 
 
-## series_keeper_path {#series_keeper_path} 
+## series_keeper_path \\{#series_keeper_path\\}
 
 <SettingsInfoBlock type="String" default_value="/clickhouse/series" />
 
 Путь в Keeper, под которым создаются узлы с автоинкрементными номерами, генерируемыми функцией `generateSerialID`. Каждая серия представлена отдельным узлом по этому пути.
 
-## show_addresses_in_stack_traces {#show_addresses_in_stack_traces} 
+## show_addresses_in_stack_traces \\{#show_addresses_in_stack_traces\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />Если установлено значение true, в трассировках стека будут отображаться адреса
 
-## shutdown_wait_backups_and_restores {#shutdown_wait_backups_and_restores} 
+## shutdown_wait_backups_and_restores \\{#shutdown_wait_backups_and_restores\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />Если параметр установлен в true, ClickHouse будет ожидать завершения всех выполняющихся операций резервного копирования и восстановления перед завершением работы.
 
-## shutdown_wait_unfinished {#shutdown_wait_unfinished} 
+## shutdown_wait_unfinished \\{#shutdown_wait_unfinished\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5" />Время ожидания незавершённых запросов в секундах
 
-## shutdown_wait_unfinished_queries {#shutdown_wait_unfinished_queries} 
+## shutdown_wait_unfinished_queries \\{#shutdown_wait_unfinished_queries\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />Если значение параметра равно true, ClickHouse будет дожидаться завершения выполняющихся запросов перед остановкой.
 
-## skip_binary_checksum_checks {#skip_binary_checksum_checks} 
+## skip_binary_checksum_checks \\{#skip_binary_checksum_checks\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />Отключает проверку контрольных сумм бинарного файла ClickHouse
 
-## ssh&#95;server {#ssh_server}
+## ssh&#95;server \{#ssh_server\}
 
 Публичная часть ключа хоста будет записана в файл known&#95;hosts
 на стороне SSH-клиента при первом подключении.
@@ -3835,11 +3835,11 @@ DDL‑запросы будут ожидать только реплики из 
 ```
 
 
-## startup_mv_delay_ms {#startup_mv_delay_ms} 
+## startup_mv_delay_ms \\{#startup_mv_delay_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Отладочный параметр для имитации задержки при создании материализованного представления
 
-## storage&#95;configuration {#storage_configuration}
+## storage&#95;configuration \{#storage_configuration\}
 
 Позволяет задать многодисковую конфигурацию хранилища.
 
@@ -3857,7 +3857,7 @@ DDL‑запросы будут ожидать только реплики из 
 ```
 
 
-### Настройка дисков {#configuration-of-disks}
+### Настройка дисков \{#configuration-of-disks\}
 
 Секция `disks` имеет следующую структуру:
 
@@ -3893,7 +3893,7 @@ DDL‑запросы будут ожидать только реплики из 
 :::
 
 
-### Конфигурация политик {#configuration-of-policies}
+### Конфигурация политик \\{#configuration-of-policies\\}
 
 Приведённые выше подтеги определяют следующие настройки для `policies`:
 
@@ -3917,31 +3917,31 @@ DDL‑запросы будут ожидать только реплики из 
 - Если _ни одному_ тому этот параметр не задан, их порядок определяется порядком описания в конфигурационном файле.
 - Приоритет томов может отличаться.
 
-## storage_connections_hard_limit {#storage_connections_hard_limit} 
+## storage_connections_hard_limit \\{#storage_connections_hard_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="200000" />Исключение генерируется при попытке создать новое соединение, когда этот лимит достигнут. Установите 0, чтобы отключить жёсткий лимит. Ограничение применяется к соединениям хранилищ.
 
-## storage_connections_soft_limit {#storage_connections_soft_limit} 
+## storage_connections_soft_limit \\{#storage_connections_soft_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />Подключения сверх этого лимита имеют значительно более короткое время жизни. Ограничение применяется к подключениям к хранилищам.
 
-## storage_connections_store_limit {#storage_connections_store_limit} 
+## storage_connections_store_limit \\{#storage_connections_store_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />Соединения сверх этого предела сбрасываются после использования. Установите 0, чтобы отключить кэш соединений. Предел применяется к соединениям хранилищ.
 
-## storage_connections_warn_limit {#storage_connections_warn_limit} 
+## storage_connections_warn_limit \\{#storage_connections_warn_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="500" />Предупреждающие сообщения записываются в журнал, если количество используемых подключений превышает этот предел. Этот предел распространяется на подключения к хранилищам.
 
-## storage_metadata_write_full_object_key {#storage_metadata_write_full_object_key} 
+## storage_metadata_write_full_object_key \\{#storage_metadata_write_full_object_key\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />Записывать файлы метаданных диска в формате VERSION_FULL_OBJECT_KEY. Эта настройка включена по умолчанию. Настройка устарела.
 
-## storage_shared_set_join_use_inner_uuid {#storage_shared_set_join_use_inner_uuid} 
+## storage_shared_set_join_use_inner_uuid \\{#storage_shared_set_join_use_inner_uuid\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />Если параметр включён, при создании SharedSet и SharedJoin генерируется внутренний UUID. Только в ClickHouse Cloud
 
-## table_engines_require_grant {#table_engines_require_grant} 
+## table_engines_require_grant \\{#table_engines_require_grant\\}
 
 Если установлено в true, пользователям требуется grant, чтобы создать таблицу с конкретным движком, например: `GRANT TABLE ENGINE ON TinyLog to user`.
 
@@ -3949,7 +3949,7 @@ DDL‑запросы будут ожидать только реплики из 
 По умолчанию, для обеспечения обратной совместимости, при создании таблицы с конкретным движком grant игнорируется, однако вы можете изменить это поведение, установив данный параметр в true.
 :::
 
-## tables_loader_background_pool_size {#tables_loader_background_pool_size} 
+## tables_loader_background_pool_size \\{#tables_loader_background_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -3959,7 +3959,7 @@ DDL‑запросы будут ожидать только реплики из 
 Значение `0` означает, что будут использоваться все доступные CPU.
 :::
 
-## tables_loader_foreground_pool_size {#tables_loader_foreground_pool_size} 
+## tables_loader_foreground_pool_size \\{#tables_loader_foreground_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -3969,15 +3969,15 @@ DDL‑запросы будут ожидать только реплики из 
 Значение `0` означает, что будут использованы все доступные CPU.
 :::
 
-## tcp_close_connection_after_queries_num {#tcp_close_connection_after_queries_num} 
+## tcp_close_connection_after_queries_num \\{#tcp_close_connection_after_queries_num\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Максимальное число запросов, которое может быть выполнено по одному TCP‑соединению, прежде чем соединение будет закрыто. Установите 0 для неограниченного числа запросов.
 
-## tcp_close_connection_after_queries_seconds {#tcp_close_connection_after_queries_seconds} 
+## tcp_close_connection_after_queries_seconds \\{#tcp_close_connection_after_queries_seconds\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Максимальное время жизни TCP‑подключения в секундах до его закрытия. Установите значение 0 для неограниченного времени жизни подключения.
 
-## tcp&#95;port {#tcp_port}
+## tcp&#95;port \{#tcp_port\}
 
 Порт для взаимодействия с клиентами по протоколу TCP.
 
@@ -3988,7 +3988,7 @@ DDL‑запросы будут ожидать только реплики из 
 ```
 
 
-## tcp&#95;port&#95;secure {#tcp_port_secure}
+## tcp&#95;port&#95;secure \{#tcp_port_secure\}
 
 TCP-порт для защищённого соединения с клиентами. Используйте его совместно с настройками [OpenSSL](#openssl).
 
@@ -3999,7 +3999,7 @@ TCP-порт для защищённого соединения с клиент�
 ```
 
 
-## tcp&#95;ssh&#95;port {#tcp_ssh_port}
+## tcp&#95;ssh&#95;port \{#tcp_ssh_port\}
 
 Порт SSH-сервера, который позволяет пользователю подключаться и выполнять запросы в интерактивном режиме, используя встроенный клиент поверх PTY.
 
@@ -4010,7 +4010,7 @@ TCP-порт для защищённого соединения с клиент�
 ```
 
 
-## temporary&#95;data&#95;in&#95;cache {#temporary_data_in_cache}
+## temporary&#95;data&#95;in&#95;cache \{#temporary_data_in_cache\}
 
 При использовании этой настройки временные данные будут храниться в кеше для соответствующего диска.
 В этом разделе следует указать имя диска с типом `cache`.
@@ -4053,19 +4053,19 @@ TCP-порт для защищённого соединения с клиент�
 ```
 
 
-## temporary_data_in_distributed_cache {#temporary_data_in_distributed_cache} 
+## temporary_data_in_distributed_cache \\{#temporary_data_in_distributed_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />Хранить временные данные в распределённом кэше.
 
-## text_index_dictionary_block_cache_max_entries {#text_index_dictionary_block_cache_max_entries} 
+## text_index_dictionary_block_cache_max_entries \\{#text_index_dictionary_block_cache_max_entries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />Размер кеша блока словаря текстового индекса (в элементах). Ноль означает, что кеш отключён.
 
-## text_index_dictionary_block_cache_policy {#text_index_dictionary_block_cache_policy} 
+## text_index_dictionary_block_cache_policy \\{#text_index_dictionary_block_cache_policy\\}
 
 <SettingsInfoBlock type="String" default_value="SLRU" />Имя политики кэширования блоков словаря текстового индекса.
 
-## text_index_dictionary_block_cache_size {#text_index_dictionary_block_cache_size} 
+## text_index_dictionary_block_cache_size \\{#text_index_dictionary_block_cache_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />Размер кэша для блоков словаря текстового индекса. Нулевое значение отключает кэш.
 
@@ -4073,19 +4073,19 @@ TCP-порт для защищённого соединения с клиент�
 Этот параметр можно изменять во время работы сервера, и изменения вступают в силу немедленно.
 :::
 
-## text_index_dictionary_block_cache_size_ratio {#text_index_dictionary_block_cache_size_ratio} 
+## text_index_dictionary_block_cache_size_ratio \\{#text_index_dictionary_block_cache_size_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />Размер защищённой очереди (в случае политики SLRU) в кэше блоков словаря текстового индекса по отношению к общему размеру кэша.
 
-## text_index_header_cache_max_entries {#text_index_header_cache_max_entries} 
+## text_index_header_cache_max_entries \\{#text_index_header_cache_max_entries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100000" />Размер кэша заголовков текстового индекса в элементах. Значение 0 отключает кэш.
 
-## text_index_header_cache_policy {#text_index_header_cache_policy} 
+## text_index_header_cache_policy \\{#text_index_header_cache_policy\\}
 
 <SettingsInfoBlock type="String" default_value="SLRU" />Имя политики кэширования заголовков текстового индекса.
 
-## text_index_header_cache_size {#text_index_header_cache_size} 
+## text_index_header_cache_size \\{#text_index_header_cache_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />Размер кэша заголовков текстового индекса. Ноль означает, что кэш отключён.
 
@@ -4093,19 +4093,19 @@ TCP-порт для защищённого соединения с клиент�
 Этот параметр можно изменить во время работы сервера, и изменение вступает в силу немедленно.
 :::
 
-## text_index_header_cache_size_ratio {#text_index_header_cache_size_ratio} 
+## text_index_header_cache_size_ratio \\{#text_index_header_cache_size_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />Размер защищённой очереди (в случае политики SLRU) в кэше заголовков текстового индекса по отношению к общему размеру кэша.
 
-## text_index_postings_cache_max_entries {#text_index_postings_cache_max_entries} 
+## text_index_postings_cache_max_entries \\{#text_index_postings_cache_max_entries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />Размер кэша для списка вхождений текстового индекса, измеряемый числом элементов. Значение 0 отключает кэш.
 
-## text_index_postings_cache_policy {#text_index_postings_cache_policy} 
+## text_index_postings_cache_policy \\{#text_index_postings_cache_policy\\}
 
 <SettingsInfoBlock type="String" default_value="SLRU" />Имя политики кэширования списков постингов текстового индекса.
 
-## text_index_postings_cache_size {#text_index_postings_cache_size} 
+## text_index_postings_cache_size \\{#text_index_postings_cache_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2147483648" />Размер кэша для списков вхождений текстового индекса. Ноль означает, что кэш отключен.
 
@@ -4113,11 +4113,11 @@ TCP-порт для защищённого соединения с клиент�
 Этот параметр можно изменить во время работы сервера, и изменения вступают в силу немедленно.
 :::
 
-## text_index_postings_cache_size_ratio {#text_index_postings_cache_size_ratio} 
+## text_index_postings_cache_size_ratio \\{#text_index_postings_cache_size_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />Размер защищённой очереди (в случае политики SLRU) в кэше списка вхождений текстового индекса относительно общего объёма кэша.
 
-## text&#95;log {#text_log}
+## text&#95;log \{#text_log\}
 
 Настройки системной таблицы [text&#95;log](/operations/system-tables/text_log), используемой для логирования текстовых сообщений.
 
@@ -4149,7 +4149,7 @@ TCP-порт для защищённого соединения с клиент�
 ```
 
 
-## thread&#95;pool&#95;queue&#95;size {#thread_pool_queue_size}
+## thread&#95;pool&#95;queue&#95;size \{#thread_pool_queue_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -4166,31 +4166,31 @@ TCP-порт для защищённого соединения с клиент�
 ```
 
 
-## threadpool_local_fs_reader_pool_size {#threadpool_local_fs_reader_pool_size} 
+## threadpool_local_fs_reader_pool_size \\{#threadpool_local_fs_reader_pool_size\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="100" />Количество потоков в пуле, используемом для чтения из локальной файловой системы, когда `local_filesystem_read_method = 'pread_threadpool'`.
 
-## threadpool_local_fs_reader_queue_size {#threadpool_local_fs_reader_queue_size} 
+## threadpool_local_fs_reader_queue_size \\{#threadpool_local_fs_reader_queue_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />Максимальное количество заданий в очереди пула потоков для чтения из локальной файловой системы.
 
-## threadpool_remote_fs_reader_pool_size {#threadpool_remote_fs_reader_pool_size} 
+## threadpool_remote_fs_reader_pool_size \\{#threadpool_remote_fs_reader_pool_size\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="250" />Количество потоков в пуле потоков, используемом для чтения из удалённой файловой системы при значении `remote_filesystem_read_method = 'threadpool'`.
 
-## threadpool_remote_fs_reader_queue_size {#threadpool_remote_fs_reader_queue_size} 
+## threadpool_remote_fs_reader_queue_size \\{#threadpool_remote_fs_reader_queue_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />Максимальное количество задач, которые могут быть запланированы в пуле потоков для чтения с удалённой файловой системы.
 
-## threadpool_writer_pool_size {#threadpool_writer_pool_size} 
+## threadpool_writer_pool_size \\{#threadpool_writer_pool_size\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="100" />Размер фонового пула потоков для операций записи в объектные хранилища
 
-## threadpool_writer_queue_size {#threadpool_writer_queue_size} 
+## threadpool_writer_queue_size \\{#threadpool_writer_queue_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />Количество задач, которые можно добавить в фоновый пул потоков, обрабатывающий запросы на запись в объектные хранилища
 
-## throw&#95;on&#95;unknown&#95;workload {#throw_on_unknown_workload}
+## throw&#95;on&#95;unknown&#95;workload \{#throw_on_unknown_workload\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4210,7 +4210,7 @@ TCP-порт для защищённого соединения с клиент�
 * [Планирование рабочих нагрузок](/operations/workload-scheduling.md)
 
 
-## timezone {#timezone}
+## timezone \{#timezone\}
 
 Часовой пояс сервера.
 
@@ -4229,7 +4229,7 @@ TCP-порт для защищённого соединения с клиент�
 * [session&#95;timezone](../settings/settings.md#session_timezone)
 
 
-## tmp&#95;path {#tmp_path}
+## tmp&#95;path \{#tmp_path\}
 
 Путь в локальной файловой системе для хранения временных данных при обработке крупных запросов.
 
@@ -4246,7 +4246,7 @@ TCP-порт для защищённого соединения с клиент�
 ```
 
 
-## tmp&#95;policy {#tmp_policy}
+## tmp&#95;policy \{#tmp_policy\}
 
 Политика хранения временных данных. Все файлы с префиксом `tmp` будут удалены при старте.
 
@@ -4304,7 +4304,7 @@ TCP-порт для защищённого соединения с клиент�
 ```
 
 
-## top&#95;level&#95;domains&#95;list {#top_level_domains_list}
+## top&#95;level&#95;domains&#95;list \{#top_level_domains_list\}
 
 Определяет список пользовательских доменов верхнего уровня для добавления, где каждый элемент имеет вид `<name>/path/to/file</name>`.
 
@@ -4322,19 +4322,19 @@ TCP-порт для защищённого соединения с клиент�
   которая принимает имя пользовательского списка TLD и возвращает часть домена, включающую поддомены верхнего уровня вплоть до первого значимого поддомена.
 
 
-## total_memory_profiler_sample_max_allocation_size {#total_memory_profiler_sample_max_allocation_size} 
+## total_memory_profiler_sample_max_allocation_size \\{#total_memory_profiler_sample_max_allocation_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Собирать случайные выделения памяти размером не больше указанного значения с вероятностью, равной `total_memory_profiler_sample_probability`. 0 означает, что параметр отключён. Имеет смысл установить значение параметра `max_untracked_memory` равным 0, чтобы этот порог работал как ожидается.
 
-## total_memory_profiler_sample_min_allocation_size {#total_memory_profiler_sample_min_allocation_size} 
+## total_memory_profiler_sample_min_allocation_size \\{#total_memory_profiler_sample_min_allocation_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Собирать случайные выделения памяти размером не меньше указанного значения с вероятностью, равной `total_memory_profiler_sample_probability`. 0 — отключено. Возможно, вам потребуется установить `max_untracked_memory` в 0, чтобы этот порог работал как ожидается.
 
-## total_memory_profiler_step {#total_memory_profiler_step} 
+## total_memory_profiler_step \\{#total_memory_profiler_step\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />Каждый раз, когда объём потребляемой сервером памяти превышает очередной порог по числу байт, профилировщик памяти будет собирать трассировку стека выделения. Нулевое значение означает, что профилировщик памяти отключён. Значения меньше нескольких мегабайт будут замедлять работу сервера.
 
-## total_memory_tracker_sample_probability {#total_memory_tracker_sample_probability} 
+## total_memory_tracker_sample_probability \\{#total_memory_tracker_sample_probability\\}
 
 <SettingsInfoBlock type="Double" default_value="0" />
 
@@ -4345,7 +4345,7 @@ TCP-порт для защищённого соединения с клиент�
 - Положительное число с плавающей запятой.
 - `0` — запись случайных выделений и освобождений памяти в системную таблицу `system.trace_log` отключена.
 
-## trace&#95;log {#trace_log}
+## trace&#95;log \{#trace_log\}
 
 Настройки работы системной таблицы [trace&#95;log](/operations/system-tables/trace_log).
 
@@ -4368,11 +4368,11 @@ TCP-порт для защищённого соединения с клиент�
 ```
 
 
-## uncompressed_cache_policy {#uncompressed_cache_policy} 
+## uncompressed_cache_policy \\{#uncompressed_cache_policy\\}
 
 <SettingsInfoBlock type="String" default_value="SLRU" />Название политики кэширования несжатых данных.
 
-## uncompressed_cache_size {#uncompressed_cache_size} 
+## uncompressed_cache_size \\{#uncompressed_cache_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -4388,11 +4388,11 @@ TCP-порт для защищённого соединения с клиент�
 Эту настройку можно изменять во время работы сервера, и изменения вступают в силу немедленно.
 :::
 
-## uncompressed_cache_size_ratio {#uncompressed_cache_size_ratio} 
+## uncompressed_cache_size_ratio \\{#uncompressed_cache_size_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />Размер защищённой очереди (в случае политики SLRU) в несжатом кэше относительно общего размера кэша.
 
-## url&#95;scheme&#95;mappers {#url_scheme_mappers}
+## url&#95;scheme&#95;mappers \{#url_scheme_mappers\}
 
 Конфигурация для преобразования сокращённых или символических префиксов URL в полные URL-адреса.
 
@@ -4413,7 +4413,7 @@ TCP-порт для защищённого соединения с клиент�
 ```
 
 
-## use_minimalistic_part_header_in_zookeeper {#use_minimalistic_part_header_in_zookeeper} 
+## use_minimalistic_part_header_in_zookeeper \\{#use_minimalistic_part_header_in_zookeeper\\}
 
 Способ хранения заголовков частей данных в ZooKeeper. Этот параметр применяется только к семейству [`MergeTree`](/engines/table-engines/mergetree-family). Его можно задать:
 
@@ -4438,7 +4438,7 @@ ClickHouse использует этот параметр для всех таб
 Заголовки частей данных, уже сохранённые с этим параметром, нельзя восстановить в их прежнее (некомпактное) представление.
 :::
 
-## user&#95;defined&#95;executable&#95;functions&#95;config {#user_defined_executable_functions_config}
+## user&#95;defined&#95;executable&#95;functions&#95;config \{#user_defined_executable_functions_config\}
 
 Путь к файлу конфигурации для исполняемых пользовательских определяемых функций.
 
@@ -4458,7 +4458,7 @@ ClickHouse использует этот параметр для всех таб
 ```
 
 
-## user&#95;defined&#95;path {#user_defined_path}
+## user&#95;defined&#95;path \{#user_defined_path\}
 
 Каталог для пользовательских файлов. Используется для пользовательских SQL-функций, см. [SQL User Defined Functions](/sql-reference/functions/udf).
 
@@ -4469,7 +4469,7 @@ ClickHouse использует этот параметр для всех таб
 ```
 
 
-## user&#95;directories {#user_directories}
+## user&#95;directories \{#user_directories\}
 
 Раздел конфигурационного файла, содержащий настройки:
 
@@ -4529,7 +4529,7 @@ ClickHouse использует этот параметр для всех таб
 ```
 
 
-## user&#95;files&#95;path {#user_files_path}
+## user&#95;files&#95;path \{#user_files_path\}
 
 Каталог пользовательских файлов. Используется в табличных функциях [file()](../../sql-reference/table-functions/file.md), [fileCluster()](../../sql-reference/table-functions/fileCluster.md).
 
@@ -4540,7 +4540,7 @@ ClickHouse использует этот параметр для всех таб
 ```
 
 
-## user&#95;scripts&#95;path {#user_scripts_path}
+## user&#95;scripts&#95;path \{#user_scripts_path\}
 
 Каталог, содержащий файлы пользовательских скриптов. Используется для исполняемых функций, определённых пользователем [Executable User Defined Functions](/sql-reference/functions/udf#executable-user-defined-functions).
 
@@ -4555,7 +4555,7 @@ ClickHouse использует этот параметр для всех таб
 Значение по умолчанию:
 
 
-## users&#95;config {#users_config}
+## users&#95;config \{#users_config\}
 
 Путь к файлу с:
 
@@ -4571,7 +4571,7 @@ ClickHouse использует этот параметр для всех таб
 ```
 
 
-## validate&#95;tcp&#95;client&#95;information {#validate_tcp_client_information}
+## validate&#95;tcp&#95;client&#95;information \{#validate_tcp_client_information\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />Определяет, включена ли проверка информации о клиенте при получении пакета с запросом.
 
@@ -4582,15 +4582,15 @@ ClickHouse использует этот параметр для всех таб
 ```
 
 
-## vector_similarity_index_cache_max_entries {#vector_similarity_index_cache_max_entries} 
+## vector_similarity_index_cache_max_entries \\{#vector_similarity_index_cache_max_entries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000000" />Размер кэша индекса векторного сходства в записях. Ноль означает отключение.
 
-## vector_similarity_index_cache_policy {#vector_similarity_index_cache_policy} 
+## vector_similarity_index_cache_policy \\{#vector_similarity_index_cache_policy\\}
 
 <SettingsInfoBlock type="String" default_value="SLRU" />Название политики кэширования индекса векторного сходства.
 
-## vector_similarity_index_cache_size {#vector_similarity_index_cache_size} 
+## vector_similarity_index_cache_size \\{#vector_similarity_index_cache_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5368709120" />Размер кэша для индексов векторного сходства. Ноль — отключено.
 
@@ -4598,11 +4598,11 @@ ClickHouse использует этот параметр для всех таб
 Этот параметр можно изменять во время работы, и изменения вступают в силу немедленно.
 :::
 
-## vector_similarity_index_cache_size_ratio {#vector_similarity_index_cache_size_ratio} 
+## vector_similarity_index_cache_size_ratio \\{#vector_similarity_index_cache_size_ratio\\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />Размер защищённой очереди (в случае политики SLRU) в кэше индекса векторного сходства относительно его общего размера.
 
-## wait&#95;dictionaries&#95;load&#95;at&#95;startup {#wait_dictionaries_load_at_startup}
+## wait&#95;dictionaries&#95;load&#95;at&#95;startup \{#wait_dictionaries_load_at_startup\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -4625,7 +4625,7 @@ ClickHouse использует этот параметр для всех таб
 ```
 
 
-## workload&#95;path {#workload_path}
+## workload&#95;path \{#workload_path\}
 
 Директория, используемая для хранения всех запросов `CREATE WORKLOAD` и `CREATE RESOURCE`. По умолчанию используется директория `/workload/` в рабочем каталоге сервера.
 
@@ -4641,7 +4641,7 @@ ClickHouse использует этот параметр для всех таб
 * [workload&#95;zookeeper&#95;path](#workload_zookeeper_path)
 
 
-## workload&#95;zookeeper&#95;path {#workload_zookeeper_path}
+## workload&#95;zookeeper&#95;path \{#workload_zookeeper_path\}
 
 Путь к узлу ZooKeeper, который используется как хранилище для всех запросов `CREATE WORKLOAD` и `CREATE RESOURCE`. Для согласованности все SQL-определения хранятся в виде значения этого единственного znode. По умолчанию ZooKeeper не используется, и определения хранятся на [диске](#workload_path).
 
@@ -4657,7 +4657,7 @@ ClickHouse использует этот параметр для всех таб
 * [workload&#95;path](#workload_path)
 
 
-## zookeeper {#zookeeper}
+## zookeeper \{#zookeeper\}
 
 Содержит настройки, которые позволяют ClickHouse взаимодействовать с кластером [ZooKeeper](http://zookeeper.apache.org/). ClickHouse использует ZooKeeper для хранения метаданных реплик при использовании реплицируемых таблиц. Если реплицируемые таблицы не используются, этот раздел параметров можно опустить.
 
@@ -4715,7 +4715,7 @@ ClickHouse использует этот параметр для всех таб
 * [Необязательное защищённое взаимодействие между ClickHouse и Zookeeper](/operations/ssl-zookeeper)
 
 
-## zookeeper&#95;log {#zookeeper_log}
+## zookeeper&#95;log \{#zookeeper_log\}
 
 Настройки для системной таблицы [`zookeeper_log`](/operations/system-tables/zookeeper_log).
 

@@ -19,7 +19,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 具体使用哪种查询语言由 `dialect` 设置项控制。
 
-## 标准 SQL {#standard-sql}
+## 标准 SQL \\{#standard-sql\\}
 
 标准 SQL 是 ClickHouse 的默认查询语言。
 
@@ -27,7 +27,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 SET dialect = 'clickhouse'
 ```
 
-## 管道式关系查询语言（PRQL） {#pipelined-relational-query-language-prql}
+## 管道式关系查询语言（PRQL） \\{#pipelined-relational-query-language-prql\\}
 
 <ExperimentalBadge />
 
@@ -50,7 +50,7 @@ aggregate {
 
 在底层，ClickHouse 会先将 PRQL 转译为 SQL，然后再执行 PRQL 查询。
 
-## Kusto 查询语言 (KQL) {#kusto-query-language-kql}
+## Kusto 查询语言 (KQL) \\{#kusto-query-language-kql\\}
 
 <ExperimentalBadge />
 

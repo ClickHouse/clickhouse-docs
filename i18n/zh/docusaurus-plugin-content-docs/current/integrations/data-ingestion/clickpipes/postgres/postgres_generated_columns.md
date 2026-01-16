@@ -11,7 +11,7 @@ integration:
 
 在复制包含 PostgreSQL 生成列的表时，有一些重要注意事项需要牢记。这些“坑”可能会影响复制过程以及目标系统中的数据一致性。
 
-## 生成列的问题 {#the-problem-with-generated-columns}
+## 生成列的问题 \\{#the-problem-with-generated-columns\\}
 
 1. **不会通过 `pgoutput` 发布：** 生成列不会通过 `pgoutput` 逻辑复制插件发布。这意味着，当你将数据从 PostgreSQL 复制到另一个系统时，复制流中不会包含生成列的值。
 
@@ -19,7 +19,7 @@ integration:
 
 3. **Schema 变更问题：** 如果你在已经进行复制的表上新增一个生成列，该新列在目标端将不会被填充——因为 Postgres 不会为该新列提供 `RelationMessage`。之后如果你在同一张表上再新增一个非生成列，ClickPipe 在尝试对齐 schema 时，将无法在目标端找到这个生成列，从而导致复制过程失败。
 
-## 最佳实践 {#best-practices}
+## 最佳实践 \\{#best-practices\\}
 
 为规避这些限制，请考虑以下最佳实践：
 
@@ -27,7 +27,7 @@ integration:
 
 2. **避免在主键中使用生成列：** 在设计需要被复制的表时，最好避免将生成列作为主键的一部分。
 
-## 即将推出的 UI 改进 {#upcoming-improvements-to-ui}
+## 即将推出的 UI 改进 \\{#upcoming-improvements-to-ui\\}
 
 在即将发布的版本中，我们计划新增一个 UI，帮助你完成以下操作：
 

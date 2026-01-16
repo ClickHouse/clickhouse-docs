@@ -7,11 +7,11 @@ title: 'Linux 上での s390x (zLinux) 向けビルド'
 doc_type: 'guide'
 ---
 
-# Linux 上での s390x (zLinux) 向けビルド {#build-on-linux-for-s390x-zlinux}
+# Linux 上での s390x (zLinux) 向けビルド \\{#build-on-linux-for-s390x-zlinux\\}
 
 ClickHouse は s390x を実験的にサポートしています。
 
-## s390x 向けの ClickHouse のビルド {#building-clickhouse-for-s390x}
+## s390x 向けの ClickHouse のビルド \\{#building-clickhouse-for-s390x\\}
 
 s390x では、他のプラットフォームと同様に、OpenSSL はスタティックライブラリとしてビルドされます。OpenSSL を動的ライブラリとしてビルドしたい場合は、CMake に `-DENABLE_OPENSSL_DYNAMIC=1` を指定する必要があります。
 
@@ -31,7 +31,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE=cmake/linux/toolchain-s390x.cmake ..
 ninja
 ```
 
-## 実行 {#running}
+## 実行 \\{#running\\}
 
 エミュレーションを行うには、s390x 用の QEMU user static バイナリが必要です。Ubuntu では次のコマンドでインストールできます。
 
@@ -46,7 +46,7 @@ qemu-s390x-static -L /usr/s390x-linux-gnu ./programs/clickhouse local --query "S
 2
 ```
 
-## デバッグ {#debugging}
+## デバッグ \\{#debugging\\}
 
 LLDB をインストールします：
 
@@ -91,16 +91,16 @@ Process 1 stopped
    453      /// PHDR cache is required for query profiler to work reliably
 ```
 
-## Visual Studio Code との連携 {#visual-studio-code-integration}
+## Visual Studio Code との連携 \\{#visual-studio-code-integration\\}
 
 - ビジュアルデバッグを行うには [CodeLLDB](https://github.com/vadimcn/vscode-lldb) 拡張機能が必要です。
 - [CMake Variants](https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/variants.md) を使用する場合、動的な起動設定には [Command Variable](https://github.com/rioj7/command-variable) 拡張機能が役立ちます。
 - バックエンドが使用している LLVM のインストール先に設定されていることを確認してください。例: `"lldb.library": "/usr/lib/x86_64-linux-gnu/liblldb-21.so"`
 - 起動前に ClickHouse の実行ファイルをデバッグモードで実行しておいてください（これを自動化する `preLaunchTask` を作成することも可能です）。
 
-### 構成例 {#example-configurations}
+### 構成例 \\{#example-configurations\\}
 
-#### cmake-variants.yaml {#cmake-variantsyaml}
+#### cmake-variants.yaml \\{#cmake-variantsyaml\\}
 
 ```yaml
 buildType:
@@ -137,7 +137,7 @@ toolchain:
         CMAKE_TOOLCHAIN_FILE: cmake/linux/toolchain-s390x.cmake
 ```
 
-#### launch.json {#launchjson}
+#### launch.json \\{#launchjson\\}
 
 ```json
 {
@@ -155,7 +155,7 @@ toolchain:
 }
 ```
 
-#### settings.json {#settingsjson}
+#### settings.json \\{#settingsjson\\}
 
 これにより、ビルドごとに `build` フォルダー内の別々のサブフォルダーに配置されます。
 
@@ -166,7 +166,7 @@ toolchain:
 }
 ```
 
-#### run-debug.sh {#run-debugsh}
+#### run-debug.sh \\{#run-debugsh\\}
 
 ```sh
 #! /bin/sh
@@ -175,7 +175,7 @@ cd $1
 qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
 ```
 
-#### tasks.json {#tasksjson}
+#### tasks.json \\{#tasksjson\\}
 
 `server` モードでコンパイル済み実行ファイルを実行するタスクを定義します。バイナリと同じディレクトリ内の `tmp` フォルダを使用し、`programs/server/config.xml` にある設定を利用します。
 

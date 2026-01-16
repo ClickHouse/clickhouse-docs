@@ -13,12 +13,12 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 `BSONEachRow` 格式将数据解析为一系列二进制 JSON（BSON）文档，文档之间没有任何分隔符。
 每一行会被格式化为一个单独的文档，每一列会被格式化为该文档中的一个 BSON 字段，列名作为字段名。
 
-## 数据类型匹配 {#data-types-matching}
+## 数据类型匹配 \\{#data-types-matching\\}
 
 在输出时，使用以下 ClickHouse 类型与 BSON 类型之间的对应关系：
 
@@ -80,9 +80,9 @@ doc_type: 'reference'
 此格式在大端（Big-Endian）平台上不能正常工作。
 :::
 
-## 使用示例 {#example-usage}
+## 使用示例 \\{#example-usage\\}
 
-### 插入数据 {#inserting-data}
+### 插入数据 \\{#inserting-data\\}
 
 使用名为 `football.bson`、包含以下数据的 BSON 文件：
 
@@ -114,7 +114,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.bson' FORMAT BSONEachRow;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据 \\{#reading-data\\}
 
 以 `BSONEachRow` 格式读取数据：
 
@@ -128,7 +128,7 @@ FORMAT BSONEachRow
 BSON 是一种二进制格式，无法在终端以人类可读形式显示。使用 `INTO OUTFILE` 将数据输出为 BSON 文件。
 :::
 
-## 格式设置 {#format-settings}
+## 格式设置 \\{#format-settings\\}
 
 | 设置                                                                                                                                                                                                  | 描述                                                                                         | 默认值   |
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|----------|

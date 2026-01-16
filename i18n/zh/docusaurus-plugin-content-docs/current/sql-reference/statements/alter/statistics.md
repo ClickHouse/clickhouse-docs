@@ -10,7 +10,7 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# 操作列统计信息 {#manipulating-column-statistics}
+# 操作列统计信息 \\{#manipulating-column-statistics\\}
 
 <ExperimentalBadge />
 
@@ -32,7 +32,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 此外，这些命令会在副本间复制，通过 ZooKeeper 同步统计信息元数据。
 
-## 示例： {#example}
+## 示例： \\{#example\\}
 
 向两列添加两种统计类型：
 

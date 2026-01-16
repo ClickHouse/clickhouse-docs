@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|---------|-------|
 | ✔     | ✗       |       |
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 ClickHouse は MySQL の [ダンプ](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html) の読み取りをサポートしています。
 
@@ -24,7 +24,7 @@ ClickHouse は MySQL の [ダンプ](https://dev.mysql.com/doc/refman/8.0/en/mys
 この形式はスキーマ推論をサポートします。ダンプに指定されたテーブルに対する `CREATE` クエリが含まれている場合は、そのクエリからテーブル構造を推論し、含まれていない場合は `INSERT` クエリのデータからスキーマを推論します。
 :::
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
 次の SQL ダンプファイルがあるとします。
 
@@ -80,7 +80,7 @@ SETTINGS input_format_mysql_dump_table_name = 'test2'
 └───┘
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \\{#format-settings\\}
 
 [`input_format_mysql_dump_table_name`](/operations/settings/settings-formats.md/#input_format_mysql_dump_table_name) 設定を使用して、データの読み取り元となるテーブル名を指定できます。
 `input_format_mysql_dump_map_columns` 設定が `1` に設定されており、ダンプに指定したテーブルの `CREATE` クエリ、または `INSERT` クエリ内でカラム名が指定されている場合、入力データのカラムは名前に基づいてテーブルのカラムにマッピングされます。

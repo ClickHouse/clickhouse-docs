@@ -9,17 +9,17 @@ keywords: ['ALTER DATABASE', 'MODIFY COMMENT']
 doc_type: 'reference'
 ---
 
-# ALTER DATABASE ... MODIFY COMMENT {#alter-database-modify-comment}
+# ALTER DATABASE ... MODIFY COMMENT \\{#alter-database-modify-comment\\}
 
 Добавляет, изменяет или удаляет комментарий к базе данных, независимо от того, был ли он задан ранее. Изменение комментария отражается как в [`system.databases`](/operations/system-tables/databases.md), так и в результате запроса `SHOW CREATE DATABASE`.
 
-## Синтаксис {#syntax}
+## Синтаксис \\{#syntax\\}
 
 ```sql
 ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
 
-## Примеры {#examples}
+## Примеры \\{#examples\\}
 
 Чтобы создать базу данных (`DATABASE`) с комментарием:
 
@@ -69,7 +69,7 @@ WHERE  name = 'database_with_comment';
 └─────────┘
 ```
 
-## См. также {#related-content}
+## См. также \\{#related-content\\}
 
 - Предложение [`COMMENT`](/sql-reference/statements/create/table#comment-clause)
 - [`ALTER TABLE ... MODIFY COMMENT`](./comment.md)

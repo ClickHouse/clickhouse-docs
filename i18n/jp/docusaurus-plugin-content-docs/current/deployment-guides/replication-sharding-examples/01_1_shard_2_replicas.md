@@ -31,7 +31,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
 <DedicatedKeeperServers />
 
-## 前提条件 {#pre-requisites}
+## 前提条件 \\{#pre-requisites\\}
 
 - 以前に [ローカルの ClickHouse サーバー](/install) をセットアップしている
 - [設定ファイル](/operations/configuration-files) など、ClickHouse の基本的な設定の概念を理解している
@@ -752,7 +752,7 @@ SELECT count(*) FROM uk.uk_price_paid_local;
 ```
 </VerticalStepper>
 
-## まとめ {#conclusion}
+## まとめ \\{#conclusion\\}
 
 このクラスタートポロジーの利点は、2 つのレプリカを持つことで
 データを 2 台の別々のホスト上に保持できる点です。片方のホストが障害を起こしても、

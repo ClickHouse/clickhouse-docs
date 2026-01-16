@@ -7,7 +7,7 @@ title: 'GraphiteMergeTree テーブルエンジン'
 doc_type: 'guide'
 ---
 
-# GraphiteMergeTree テーブルエンジン {#graphitemergetree-table-engine}
+# GraphiteMergeTree テーブルエンジン \\{#graphitemergetree-table-engine\\}
 
 このエンジンは、[Graphite](http://graphite.readthedocs.io/en/latest/index.html) データの間引きおよび集約・平均化（ロールアップ）のために設計されています。Graphite のデータストアとして ClickHouse を使用したい開発者に役立ちます。
 
@@ -15,7 +15,7 @@ doc_type: 'guide'
 
 このエンジンは [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) の特性を継承します。
 
-## テーブルの作成 {#creating-table}
+## テーブルの作成 \\{#creating-table\\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -78,7 +78,7 @@ Graphite データ用のテーブルには、以下のデータを格納する�
   * `config_section` — 設定ファイル内のセクション名。このセクションに rollup のルールを設定します。
 </details>
 
-## ロールアップ設定 {#rollup-configuration}
+## ロールアップ設定 \\{#rollup-configuration\\}
 
 ロールアップの設定は、サーバー設定内の [graphite&#95;rollup](../../../operations/server-configuration-parameters/settings.md#graphite) パラメータによって定義されます。パラメータ名は任意の名前を付けることができます。複数の設定を作成し、異なるテーブルに対して使い分けることができます。
 
@@ -87,25 +87,25 @@ Graphite データ用のテーブルには、以下のデータを格納する�
 required-columns
 patterns
 
-### 必須カラム {#required-columns}
+### 必須カラム \\{#required-columns\\}
 
-#### `path_column_name` {#path&#95;column&#95;name}
+#### `path_column_name` \\{#path&#95;column&#95;name\\}
 
 `path_column_name` — メトリック名（Graphite センサー）を保存するカラム名。デフォルト値: `Path`。
 
-#### `time_column_name` {#time&#95;column&#95;name}
+#### `time_column_name` \\{#time&#95;column&#95;name\\}
 
 `time_column_name` — メトリックを計測した時刻を保存するカラム名。デフォルト値: `Time`。
 
-#### `value_column_name` {#value&#95;column&#95;name}
+#### `value_column_name` \\{#value&#95;column&#95;name\\}
 
 `value_column_name` — `time_column_name` で指定された時刻におけるメトリック値を保存するカラム名。デフォルト値: `Value`。
 
-#### `version_column_name` {#version&#95;column&#95;name}
+#### `version_column_name` \\{#version&#95;column&#95;name\\}
 
 `version_column_name` — メトリックのバージョンを保存するカラム名。デフォルト値: `Timestamp`。
 
-### パターン {#patterns}
+### パターン \\{#patterns\\}
 
 `patterns` セクションの構造:
 
@@ -158,7 +158,7 @@ default
 * `precision`– データの経過時間を秒単位でどの程度の精度で定義するか。86400（1 日の秒数）を割り切れる値である必要があります。
 * `function` – 経過時間が `[age, age + precision]` の範囲に入るデータに適用する集約関数の名前。使用可能な関数: min / max / any / avg。平均は、平均値同士の平均を取るのと同様に、厳密ではない平均として計算されます。
 
-### ルールタイプなしの設定例 {#configuration-example}
+### ルールタイプなしの設定例 \\{#configuration-example\\}
 
 ```xml
 <graphite_rollup>
@@ -193,7 +193,7 @@ default
 </graphite_rollup>
 ```
 
-### ルールタイプ別の設定例 {#configuration-typed-example}
+### ルールタイプ別の設定例 \\{#configuration-typed-example\\}
 
 ```xml
 <graphite_rollup>

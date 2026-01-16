@@ -6,7 +6,7 @@ keywords: ['json', 'formats']
 doc_type: 'reference'
 ---
 
-# 对 JSON 建模的其他方法 {#other-approaches-to-modeling-json}
+# 对 JSON 建模的其他方法 \\{#other-approaches-to-modeling-json\\}
 
 **以下是在 ClickHouse 中对 JSON 建模的替代方法。这些方法为了文档完整性而被记录下来，主要适用于 JSON 类型尚未出现之前的阶段，因此在大多数用例中通常不推荐使用或不再适用。**
 
@@ -14,7 +14,7 @@ doc_type: 'reference'
 在同一个 schema 中，可以对不同对象采用不同的技术。例如，一些对象最适合使用 `String` 类型，另一些则适合使用 `Map` 类型。请注意，一旦使用了 `String` 类型，就不再需要做进一步的 schema 决策。相反，我们也可以在 `Map` 的某个 key 下嵌套子对象——包括用 `String` 表示的 JSON——如下所示：
 :::
 
-## 使用 String 类型 {#using-string}
+## 使用 String 类型 \{#using-string\}
 
 如果对象高度动态、没有可预测的结构并且包含任意嵌套对象，建议使用 `String` 类型。可以在查询时使用 JSON 函数提取值，如下所示。
 
@@ -153,7 +153,7 @@ Peak memory usage: 205.98 MiB.
 这种方法的灵活性带来了显著的性能和语法开销，只应在模式中对象高度动态的情况下使用。
 
 
-### 简单 JSON 函数 {#simple-json-functions}
+### 简单 JSON 函数 \{#simple-json-functions\}
 
 上面的示例使用了 JSON* 函数族。这些函数使用基于 [simdjson](https://github.com/simdjson/simdjson) 的完整 JSON 解析器，解析严格，并且会区分位于不同嵌套层级的同名字段。这些函数能够处理语法正确但格式不佳的 JSON，例如键之间存在双空格。
 

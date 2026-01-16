@@ -13,7 +13,7 @@ integration:
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
 import Image from '@theme/IdealImage';
 
-### Resync 有什么作用？ {#what-postgres-resync-do}
+### Resync 有什么作用？ \\{#what-postgres-resync-do\\}
 
 Resync 会按以下顺序执行操作：
 
@@ -24,7 +24,7 @@ Resync 会按以下顺序执行操作：
 
 原始 ClickPipe 的所有设置都会保留在 resync ClickPipe 中。原始 ClickPipe 的统计信息会在 UI 中被清除。
 
-### 何时需要对 ClickPipe 进行 Resync {#use-cases-postgres-resync}
+### 何时需要对 ClickPipe 进行 Resync \\{#use-cases-postgres-resync\\}
 
 以下是几种典型场景：
 
@@ -37,7 +37,7 @@ Resync 会按以下顺序执行操作：
 因为每次都会涉及使用并行线程的初始加载。
 :::
 
-### Resync ClickPipe 指南 {#guide-postgres-resync}
+### Resync ClickPipe 指南 \\{#guide-postgres-resync\\}
 
 1. 在 Data Sources 选项卡中，点击你想要执行 resync 的 Postgres ClickPipe。
 2. 进入 **Settings** 选项卡。

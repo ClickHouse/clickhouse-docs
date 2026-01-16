@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.trace&#95;log {#systemtrace&#95;log}
+# system.trace&#95;log \\{#systemtrace&#95;log\\}
 
 <SystemTableCloud />
 
@@ -110,7 +110,7 @@ entry_type:              Exit
 duration_nanoseconds:   58435
 ```
 
-## 转换为 Chrome 事件跟踪格式 {#chrome-event-trace-format}
+## 转换为 Chrome 事件跟踪格式 \\{#chrome-event-trace-format\\}
 
 可以使用以下查询将性能分析数据转换为 Chrome 的事件跟踪格式（Event Trace Format）。将该查询保存为名为 `chrome_trace.sql` 的文件：
 

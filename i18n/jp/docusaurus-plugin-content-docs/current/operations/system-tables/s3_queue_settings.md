@@ -6,7 +6,7 @@ title: 'system.s3_queue_settings'
 doc_type: 'reference'
 ---
 
-# system.s3&#95;queue&#95;settings {#systems3&#95;queue&#95;settings}
+# system.s3&#95;queue&#95;settings \\{#systems3&#95;queue&#95;settings\\}
 
 [S3Queue](../../engines/table-engines/integrations/s3queue.md) テーブルの設定に関する情報を格納します。サーバーバージョン `24.10` 以降で利用可能です。
 

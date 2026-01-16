@@ -25,7 +25,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 Начните работу с ClickHouse Cloud на [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) с использованием публичного предложения по модели PAYG (pay-as-you-go, оплата по мере использования).
 
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \\{#prerequisites\\}
 
 - Проект Azure, для которого администратор биллинга включил права на совершение покупок.
 - Чтобы оформить подписку на ClickHouse Cloud в Azure Marketplace, вы должны войти под учетной записью с правами на совершение покупок и выбрать соответствующий проект.

@@ -6,7 +6,7 @@ title: 'system.zookeeper'
 doc_type: 'reference'
 ---
 
-# system.zookeeper {#systemzookeeper}
+# system.zookeeper \\{#systemzookeeper\\}
 
 除非配置了 ClickHouse Keeper 或 ZooKeeper，否则该表不会存在。`system.zookeeper` 表会暴露配置中定义的 Keeper 集群中的数据。
 查询必须在 `WHERE` 子句中按如下所示包含 `path =` 条件或 `path IN` 条件。这对应于你希望获取其子节点数据的路径。

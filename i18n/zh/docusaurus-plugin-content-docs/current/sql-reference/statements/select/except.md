@@ -7,7 +7,7 @@ keywords: ['EXCEPT', 'clause']
 doc_type: 'reference'
 ---
 
-# EXCEPT 子句 {#except-clause}
+# EXCEPT 子句 \{#except-clause\}
 
 > `EXCEPT` 子句仅返回第一个查询的结果中不在第二个查询中的行。
 
@@ -16,7 +16,7 @@ doc_type: 'reference'
 - 如果未指定括号,多个 `EXCEPT` 语句将从左到右执行。
 - `EXCEPT` 运算符具有与 `UNION` 子句相同的优先级,并且优先级低于 `INTERSECT` 子句。
 
-## 语法 {#syntax}
+## 语法 \\{#syntax\\}
 
 ```sql
 SELECT column1 [, column2 ]
@@ -39,11 +39,11 @@ FROM table1
 [WHERE condition]
 ```
 
-## 示例 {#examples}
+## 示例 \\{#examples\\}
 
 本节中的示例演示了 `EXCEPT` 子句的用法。
 
-### 使用 `EXCEPT` 子句过滤数字 {#filtering-numbers-using-the-except-clause}
+### 使用 `EXCEPT` 子句过滤数字 \\{#filtering-numbers-using-the-except-clause\\}
 
 这是一个简单的示例,返回 1 到 10 之间_不属于_ 3 到 8 之间的数字:
 
@@ -64,7 +64,7 @@ FROM numbers(3, 6)
 └────────┘
 ```
 
-### 使用 `EXCEPT()` 排除特定列 {#excluding-specific-columns-using-except}
+### 使用 `EXCEPT()` 排除特定列 \\{#excluding-specific-columns-using-except\\}
 
 `EXCEPT()` 可用于快速从结果中排除列。例如,如果我们想从表中选择所有列,但排除少数选定的列,如下例所示:
 
@@ -101,7 +101,7 @@ LIMIT 5
    └─────────────────────────┴────────────┴─────────┴──────┴──────┴─────────┴─────────────┴────────────┘
 ```
 
-### 在加密货币数据中使用 `EXCEPT` 和 `INTERSECT` {#using-except-and-intersect-with-cryptocurrency-data}
+### 在加密货币数据中使用 `EXCEPT` 和 `INTERSECT` \\{#using-except-and-intersect-with-cryptocurrency-data\\}
 
 `EXCEPT` 和 `INTERSECT` 通常可以通过不同的布尔逻辑互换使用,如果您有两个共享公共列(或多列)的表,它们都很有用。
 例如,假设我们有几百万行包含交易价格和交易量的历史加密货币数据:
@@ -185,7 +185,7 @@ WHERE price < 10;
 
 这意味着在我们拥有的四种加密货币中,只有 Bitcoin 从未跌破 $10(基于我们在此示例中拥有的有限数据)。
 
-### 使用 `EXCEPT DISTINCT` {#using-except-distinct}
+### 使用 `EXCEPT DISTINCT` \\{#using-except-distinct\\}
 
 请注意,在前面的查询中,我们在结果中有多个 Bitcoin 持仓。您可以将 `DISTINCT` 添加到 `EXCEPT` 以从结果中消除重复行:
 

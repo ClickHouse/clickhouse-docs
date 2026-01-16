@@ -14,11 +14,11 @@ import ObservabilityIntegrations from '@site/i18n/jp/docusaurus-plugin-content-d
 import DirectIntegrations from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
 import CommunityMonitoring from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
-# ClickHouse Cloud の監視 {#cloud-monitoring}
+# ClickHouse Cloud の監視 \\{#cloud-monitoring\\}
 
 このガイドでは、ClickHouse Cloud を評価しているエンタープライズチーム向けに、本番環境デプロイメントにおける監視およびオブザーバビリティ機能についての包括的な情報を提供します。エンタープライズのお客様からは、すぐに利用できる監視機能、Datadog や AWS CloudWatch などのツールを含む既存のオブザーバビリティスタックとの統合、そして ClickHouse の監視機能がセルフホスト型デプロイメントとどのように比較されるのかについて、頻繁にお問い合わせをいただきます。
 
-## 高度なオブザーバビリティダッシュボード {#advanced-observability}
+## 高度なオブザーバビリティダッシュボード \\{#advanced-observability\\}
 
 ClickHouse Cloud では、Monitoring セクションからアクセス可能な組み込みダッシュボードインターフェースを通じて包括的なモニタリング機能を提供します。これらのダッシュボードは、追加のセットアップ不要でリアルタイムにシステムおよびパフォーマンスメトリクスを可視化し、ClickHouse Cloud における本番環境のリアルタイム監視の主要なツールとして機能します。
 
@@ -40,7 +40,7 @@ ClickHouse Cloud では、Monitoring セクションからアクセス可能な�
 
 ダッシュボードの詳細な機能および利用可能なメトリクスについては、[高度なダッシュボードに関するドキュメント](/cloud/manage/monitor/advanced-dashboard)を参照してください。
 
-## クエリインサイトとリソース監視 {#query-insights}
+## クエリインサイトとリソース監視 \\{#query-insights\\}
 
 ClickHouse Cloud には、次の追加監視機能が含まれます:
 
@@ -49,7 +49,7 @@ ClickHouse Cloud には、次の追加監視機能が含まれます:
 
 詳細な機能については、[query insights](/cloud/get-started/query-insights) および [resource utilization](/operations/monitoring#resource-utilization) のドキュメントを参照してください。
 
-## Prometheus 互換メトリクスエンドポイント {#prometheus}
+## Prometheus 互換メトリクスエンドポイント \\{#prometheus\\}
 
 ClickHouse Cloud は Prometheus エンドポイントを提供します。これにより、ユーザーは既存のワークフローを維持し、チームが持つ既存の専門知識を活用しながら、ClickHouse のメトリクスを Grafana、Datadog、その他の Prometheus 互換ツールを含むエンタープライズ向け監視プラットフォームに統合できます。 
 
@@ -64,7 +64,7 @@ ClickHouse Cloud は Prometheus エンドポイントを提供します。これ
 
 <ObservabilityIntegrations/>
 
-### ClickStack のデプロイオプション {#clickstack-deployment}
+### ClickStack のデプロイオプション \\{#clickstack-deployment\\}
 
 - **ClickHouse Cloud 上の HyperDX**（プライベートプレビュー）：HyperDX は任意の ClickHouse Cloud サービス上で起動できます。
 - [Helm](/use-cases/observability/clickstack/deployment/helm)：Kubernetes ベースのデバッグ用環境に推奨されます。ClickHouse Cloud との連携をサポートし、`values.yaml` を通じて環境固有の設定、リソース制限、およびスケーリングを行えます。
@@ -81,7 +81,7 @@ ClickHouse Cloud の Prometheus エンドポイントから OpenTelemetry Collec
 
 <CommunityMonitoring/>
 
-## システムへの影響に関する考慮事項 {#system-impact}
+## システムへの影響に関する考慮事項 \\{#system-impact\\}
 
 上記のアプローチはいずれも、Prometheus エンドポイントへの依存、ClickHouse Cloud による管理、またはシステムテーブルへの直接クエリのいずれか、もしくはそれらの組み合わせを利用します。
 このうち後者の選択肢は、本番環境の ClickHouse サービスへのクエリに依存します。これは監視対象システムへのクエリ負荷を増加させ、ClickHouse Cloud インスタンスがアイドル状態になることを防ぐため、コスト最適化に影響します。さらに、本番システムが障害を起こした場合、両者が密結合しているために監視も影響を受ける可能性があります。このアプローチは詳細な内部観察やデバッグには有効ですが、リアルタイムな本番監視にはあまり適していません。直接的な Grafana 連携と、次のセクションで説明する外部ツール連携アプローチを評価する際には、詳細なシステム分析能力と運用上のオーバーヘッドとのトレードオフを考慮してください。

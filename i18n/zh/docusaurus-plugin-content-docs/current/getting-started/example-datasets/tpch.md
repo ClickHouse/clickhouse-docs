@@ -18,7 +18,7 @@ keywords: ['示例数据集', 'tpch', '基准测试', '示例数据', '性能测
 * [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5)（Boncz 等，2013）
 * [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138)（Dresseler 等，2020）
 
-## 数据生成与导入 {#data-generation-and-import}
+## 数据生成与导入 \\{#data-generation-and-import\\}
 
 首先，检出 TPC-H 仓库代码并编译数据生成器：
 
@@ -194,7 +194,7 @@ INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 
 :::
 
-## 查询 {#queries}
+## 查询 \\{#queries\\}
 
 :::note
 应启用 [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) 设置，以获得符合 SQL 标准的正确结果。

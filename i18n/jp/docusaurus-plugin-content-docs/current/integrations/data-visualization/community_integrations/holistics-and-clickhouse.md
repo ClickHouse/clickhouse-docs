@@ -17,7 +17,7 @@ import holistics_05 from '@site/static/images/integrations/data-visualization/ho
 import holistics_06 from '@site/static/images/integrations/data-visualization/holistics_06.png';
 
 
-# ClickHouse を Holistics に接続する {#connecting-clickhouse-to-holistics}
+# ClickHouse を Holistics に接続する \{#connecting-clickhouse-to-holistics\}
 
 <CommunityMaintainedBadge/>
 
@@ -25,7 +25,7 @@ import holistics_06 from '@site/static/images/integrations/data-visualization/ho
 
 ClickHouse を Holistics に接続すると、チームはコードベースのセマンティックレイヤーに基づく、高速で信頼性の高い AI 活用型のセルフサービス環境を利用できます。ビジネスユーザーはドラッグ＆ドロップと AI を用いて自信を持ってデータを探索でき、同時にメトリクス定義を再利用可能かつ組み合わせ可能な形で維持し、Git でバージョン管理することができます。
 
-## 前提条件 {#prerequisites}
+## 前提条件 \\{#prerequisites\\}
 
 接続を行う前に、以下を確認してください。
 
@@ -33,7 +33,7 @@ ClickHouse を Holistics に接続すると、チームはコードベースの�
 - **ネットワークアクセス:** ClickHouse サーバーが [Holistics の IP アドレス](https://docs.holistics.io/docs/connect/ip-whitelisting) からアクセス可能である必要があります。
 - **データベースユーザー:** 管理者アカウントは使用せず、Holistics 用に専用の読み取り専用ユーザーを作成してください。
 
-### 推奨される権限 {#recommended-privileges}
+### 推奨される権限 \{#recommended-privileges\}
 
 専用ユーザーには、クエリを実行したいテーブルに対する `SELECT` 権限に加えて、スキーマ検出のために `system` テーブルに対する `SELECT` 権限が必要です。
 
@@ -102,7 +102,7 @@ GRANT SELECT ON system.* TO holistics_user;
 </VerticalStepper>
 
 
-## 既知の制限事項 {#known-limitations}
+## 既知の制限事項 \\{#known-limitations\\}
 
 Holistics は ClickHouse の標準的な SQL 機能の大部分をサポートしていますが、以下の例外があります。
 

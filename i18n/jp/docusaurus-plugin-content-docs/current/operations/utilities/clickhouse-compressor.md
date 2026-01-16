@@ -7,7 +7,7 @@ doc_type: 'reference'
 
 データの圧縮および解凍を行うシンプルなプログラムです。
 
-### 例 {#examples}
+### 例 \\{#examples\\}
 
 LZ4 でデータを圧縮します：
 

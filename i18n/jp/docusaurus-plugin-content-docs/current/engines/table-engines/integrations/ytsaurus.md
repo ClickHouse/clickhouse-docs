@@ -11,14 +11,14 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# YTsaurus テーブルエンジン {#ytsaurus-table-engine}
+# YTsaurus テーブルエンジン \\{#ytsaurus-table-engine\\}
 
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
 
 YTsaurus テーブルエンジンを使用すると、YTsaurus クラスターからデータを取り込むことができます。
 
-## テーブルの作成 {#creating-a-table}
+## テーブルの作成 \\{#creating-a-table\\}
 
 ```sql
     CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -43,7 +43,7 @@ YTsaurus テーブルエンジンを使用すると、YTsaurus クラスター�
 * `cypress_path` — データソースへの Cypress パス。
 * `oauth_token` — OAuth トークン。
 
-## 使用例 {#usage-example}
+## 使用例 \\{#usage-example\\}
 
 YTsaurus テーブルを作成するクエリの例です。
 
@@ -72,9 +72,9 @@ SELECT * FROM yt_saurus;
  └────┴────┘
 ```
 
-## データ型 {#data-types}
+## データ型 \\{#data-types\\}
 
-### プリミティブ型 {#primitive-data-types}
+### プリミティブ型 \\{#primitive-data-types\\}
 
 | YTsaurus データ型 | ClickHouse データ型      |
 | ------------------ | ----------------------- |
@@ -107,7 +107,7 @@ SELECT * FROM yt_saurus;
 | `void`             | `Nothing`               |
 | `T`（`required = False` の場合）| `Nullable(T)`   |
 
-### 複合型 {#composite-data-types}
+### 複合型 \\{#composite-data-types\\}
 
 | YTsaurus データ型 | ClickHouse データ型 |
 | ------------------ | -------------------- |

@@ -19,7 +19,7 @@ import resume_dialog from '@site/static/images/integrations/data-ingestion/click
 
 В некоторых сценариях может быть полезно приостановить Postgres ClickPipe. Например, вы можете захотеть выполнить анализ существующих данных в неизменном состоянии. Или же вы можете проводить обновление Postgres. Ниже описано, как приостановить и возобновить Postgres ClickPipe.
 
-## Шаги по приостановке Postgres ClickPipe {#pause-clickpipe-steps}
+## Шаги по приостановке Postgres ClickPipe \\{#pause-clickpipe-steps\\}
 
 1. На вкладке **Data Sources** нажмите на Postgres ClickPipe, который вы хотите приостановить.
 2. Перейдите на вкладку **Settings**.
@@ -40,7 +40,7 @@ import resume_dialog from '@site/static/images/integrations/data-ingestion/click
 
 <Image img={pause_status} border size="md"/>
 
-## Шаги по возобновлению работы Postgres ClickPipe {#resume-clickpipe-steps}
+## Шаги по возобновлению работы Postgres ClickPipe \\{#resume-clickpipe-steps\\}
 
 1. На вкладке Data Sources нажмите на Postgres ClickPipe, работу которого вы хотите возобновить. Статус зеркала изначально должен быть **Paused**.
 2. Перейдите на вкладку **Settings**.

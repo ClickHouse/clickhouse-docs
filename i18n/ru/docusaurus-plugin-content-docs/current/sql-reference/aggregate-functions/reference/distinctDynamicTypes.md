@@ -5,7 +5,7 @@ title: 'distinctDynamicTypes'
 doc_type: 'reference'
 ---
 
-# distinctDynamicTypes {#distinctdynamictypes}
+# distinctDynamicTypes \{#distinctdynamictypes\}
 
 Вычисляет список уникальных типов данных, содержащихся в столбце [Dynamic](../../data-types/dynamic.md).
 

@@ -7,14 +7,14 @@ sidebar_label: 'avgIf'
 doc_type: 'reference'
 ---
 
-# avgIf {#avgif}
+# avgIf \\{#avgif\\}
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`avg`](/sql-reference/aggregate-functions/reference/avg)
 函数，通过 `avgIf` 聚合组合器函数来计算条件为 true 的行中各值的算术平均值。
 
-## 示例用法 {#example-usage}
+## 示例用法 \\{#example-usage\\}
 
 在本示例中，我们将创建一个用于存储带有成功标志的销售数据的表，
 并使用 `avgIf` 来计算成功交易的平均销售金额。
@@ -48,6 +48,6 @@ FROM sales;
    └─────────────────────┘
 ```
 
-## 另请参阅 {#see-also}
+## 另请参阅 \\{#see-also\\}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

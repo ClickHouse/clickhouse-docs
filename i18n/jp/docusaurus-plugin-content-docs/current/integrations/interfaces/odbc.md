@@ -7,7 +7,7 @@ title: 'ODBC ドライバー'
 doc_type: 'reference'
 ---
 
-# ODBC ドライバー {#odbc-driver}
+# ODBC ドライバー \{#odbc-driver\}
 
 ClickHouse ODBC ドライバーは、ODBC 互換アプリケーションを ClickHouse に接続するための、標準に準拠したインターフェイスを提供します。ODBC API を実装しており、アプリケーション、BI ツール、およびスクリプト実行環境から SQL クエリを実行し、結果を取得し、慣れ親しんだ仕組みで ClickHouse と対話できるようにします。
 
@@ -26,12 +26,12 @@ https://github.com/ClickHouse/clickhouse-odbc) で入手できます。
 皆様からのフィードバックは非常に重要であり、新機能や改善の優先順位付けに役立ちます。制約や不足している機能、予期しない動作に遭遇した場合は、観察内容や機能要望を https://github.com/ClickHouse/clickhouse-odbc/issues の issue tracker から共有してください。
 :::
 
-## Windows へのインストール {#installation-on-windows}
+## Windows へのインストール \\{#installation-on-windows\\}
 
 最新バージョンのドライバーは https://github.com/ClickHouse/clickhouse-odbc/releases/latest から入手できます。
 このページから MSI インストーラーをダウンロードして実行し、表示される簡単なインストール手順に従ってください。
 
-## テスト {#testing}
+## テスト \{#testing\}
 
 次の簡単な PowerShell スクリプトを実行して、ドライバーをテストできます。以下のテキストをコピーし、URL、ユーザー名、パスワードを設定してから、
 PowerShell のコマンドプロンプトに貼り付けて実行してください。$reader.GetValue(0) を実行すると、ClickHouse
@@ -57,7 +57,7 @@ $conn.Close()
 ```
 
 
-## 設定パラメータ {#configuration-parameters}
+## 設定パラメータ \{#configuration-parameters\}
 
 以下のパラメータは、ClickHouse ODBC ドライバーとの接続を確立する際によく使用される代表的な設定です。基本的な認証、接続時の動作、およびデータ処理オプションをカバーします。サポートされているパラメータの全一覧は、プロジェクトの GitHub ページ [https://github.com/ClickHouse/clickhouse-odbc](https://github.com/ClickHouse/clickhouse-odbc) で確認できます。
 
@@ -84,7 +84,7 @@ Driver={ClickHouse ODBC Driver (Unicode)};Url=https://you-instance-url.gcp.click
 ```
 
 
-## Microsoft Power BI との統合 {#powerbi-Integration}
+## Microsoft Power BI との統合 \\{#powerbi-Integration\\}
 
 ODBC ドライバーを使用して、Microsoft Power BI を ClickHouse サーバーに接続できます。Power BI では 2 つの接続オプションを提供しており、いずれも標準の Power BI インストールに含まれています。1 つは汎用 ODBC Connector、もう 1 つは ClickHouse Connector です。
 

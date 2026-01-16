@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Отличается от [`JSONEachRow`](./JSONEachRow.md) только тем, что поля данных выводятся как строки, а не как типизированные JSON-значения.
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
-### Вставка данных {#inserting-data}
+### Вставка данных \\{#inserting-data\\}
 
 Используем JSON-файл со следующими данными с именем `football.json`:
 
@@ -49,7 +49,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStringsEachRow;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных \\{#reading-data\\}
 
 Прочитайте данные в формате `JSONStringsEachRow`:
 
@@ -81,4 +81,4 @@ FORMAT JSONStringsEachRow
 {"date":"2022-05-07","season":"2021","home_team":"Walsall","away_team":"Swindon Town","home_team_goals":"0","away_team_goals":"3"}   
 ```
 
-## Параметры форматирования {#format-settings}
+## Параметры форматирования \\{#format-settings\\}

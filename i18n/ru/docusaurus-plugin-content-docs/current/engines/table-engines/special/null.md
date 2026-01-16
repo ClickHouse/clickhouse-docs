@@ -8,7 +8,7 @@ title: 'Движок таблицы Null'
 doc_type: 'reference'
 ---
 
-# Движок таблицы Null {#null-table-engine}
+# Движок таблицы Null \\{#null-table-engine\\}
 
 При записи данных в таблицу `Null` они игнорируются.
 При чтении из таблицы `Null` результат будет пустым.

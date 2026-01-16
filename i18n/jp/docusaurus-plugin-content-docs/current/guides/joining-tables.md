@@ -125,7 +125,7 @@ Peak memory usage: 250.66 MiB.
 ```
 
 
-## JOIN アルゴリズムの選択 {#choosing-a-join-algorithm}
+## JOIN アルゴリズムの選択 \\{#choosing-a-join-algorithm\\}
 
 ClickHouse は、いくつかの[JOIN アルゴリズム](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)をサポートしています。これらのアルゴリズムは、一般的にメモリ使用量とパフォーマンスの間にトレードオフの関係があります。以下では、ClickHouse の JOIN アルゴリズムを、相対的なメモリ消費量と実行時間に基づいて概観します。
 
@@ -149,7 +149,7 @@ ClickHouse は、いくつかの[JOIN アルゴリズム](https://clickhouse.com
 
 適切な JOIN アルゴリズムの選択は、メモリ使用量とパフォーマンスのどちらを優先して最適化するかによって決まります。
 
-## JOIN のパフォーマンス最適化 {#optimizing-join-performance}
+## JOIN のパフォーマンス最適化 \\{#optimizing-join-performance\\}
 
 主な最適化指標がパフォーマンスであり、JOIN をできるだけ高速に実行したい場合は、適切な JOIN アルゴリズムを選択するために次の意思決定ツリーを使用できます。
 
@@ -173,7 +173,7 @@ grace hash join は、3 つのメモリ制約非依存 JOIN アルゴリズム�
 
 3 つのメモリ制約非依存アルゴリズムのうちどれが最速かは、データ量、データ型、および JOIN キーカラムの値分布によって決まります。どのアルゴリズムが最速かを判断するには、現実的なデータ量・データでベンチマークを実行するのが最善です。
 
-## メモリ使用量の最適化 {#optimizing-for-memory}
+## メモリ使用量の最適化 \\{#optimizing-for-memory\\}
 
 最速の実行時間ではなくメモリ使用量の最小化を目的に結合を最適化したい場合は、代わりに次の決定木を使用できます。
 

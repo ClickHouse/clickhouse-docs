@@ -6,7 +6,7 @@ title: 'system.zookeeper'
 doc_type: 'reference'
 ---
 
-# system.zookeeper {#systemzookeeper}
+# system.zookeeper \\{#systemzookeeper\\}
 
 Таблица не существует, если не настроен ClickHouse Keeper или ZooKeeper. Таблица `system.zookeeper` предоставляет данные из кластеров Keeper, определённых в конфигурации.
 Запрос должен содержать либо условие `path =`, либо условие `path IN` в секции `WHERE`, как показано ниже. Это соответствует пути дочерних узлов, для которых вы хотите получить данные.

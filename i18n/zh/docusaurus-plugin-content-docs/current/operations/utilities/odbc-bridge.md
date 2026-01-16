@@ -12,7 +12,7 @@ doc_type: 'reference'
 - 调试更简单
 - jdbc-bridge 可以以同样的方式实现
 
-## 用法 {#usage}
+## 用法 \\{#usage\\}
 
 `clickhouse-server` 在 ODBC 表函数和 StorageODBC 引擎中使用此工具。
 不过它也可以作为独立工具从命令行使用，在 POST 请求的 URL 中指定以下参数：
@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 查询在 POST 请求的请求体中发送，响应以 RowBinary 格式返回。
 
-## 示例： {#example}
+## 示例： \\{#example\\}
 
 ```bash
 $ clickhouse-odbc-bridge --http-port 9018 --daemon

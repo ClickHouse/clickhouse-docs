@@ -19,7 +19,7 @@ import finish_import from '@site/static/images/clickstack/postgres/import-logs-d
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# 使用 ClickStack 监控 PostgreSQL 日志 {#postgres-logs-clickstack}
+# 使用 ClickStack 监控 PostgreSQL 日志 \\{#postgres-logs-clickstack\\}
 
 :::note[要点速览]
 本指南介绍如何通过配置 OpenTelemetry collector 来摄取 PostgreSQL 服务器日志，从而使用 ClickStack 监控 PostgreSQL。你将学习如何：
@@ -34,13 +34,13 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 所需时间：10–15 分钟
 :::
 
-## 与现有 PostgreSQL 的集成 {#existing-postgres}
+## 与现有 PostgreSQL 的集成 \\{#existing-postgres\\}
 
 本节介绍如何通过修改 ClickStack OTel collector 配置，将你现有的 PostgreSQL 实例日志发送到 ClickStack。
 
 如果你希望在为自己的现有环境进行配置之前先测试 PostgreSQL 日志集成，可以在["演示数据集"](/use-cases/observability/clickstack/integrations/postgresql-logs#demo-dataset)一节中，使用我们预配置的环境和示例数据进行测试。
 
-##### 前提条件 {#prerequisites}
+##### 前提条件 \\{#prerequisites\\}
 
 - 正在运行的 ClickStack 实例
 - 现有的 PostgreSQL 部署（版本 9.6 或更高）
@@ -225,7 +225,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### 下载示例数据集 {#download-sample}
+#### 下载示例数据集 \\{#download-sample\\}
 
 下载示例日志文件：
 
@@ -233,7 +233,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgresql.log
 ```
 
-#### 创建测试收集器配置 {#test-config}
+#### 创建测试收集器配置 \\{#test-config\\}
 
 创建名为 `postgres-logs-demo.yaml` 的文件，并填入以下配置：
 
@@ -317,7 +317,7 @@ HyperDX 会以浏览器的本地时区显示时间戳。该演示数据覆盖的
 
 #### <TrackedLink href={useBaseUrl('/examples/postgres-logs-dashboard.json')} download="postgresql-logs-dashboard.json" eventName="docs.postgres_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 {#download}
 
-#### 导入预构建的仪表板 {#import-dashboard}
+#### 导入预构建的仪表板 \\{#import-dashboard\\}
 
 1. 打开 HyperDX 并进入 **Dashboards** 区域
 2. 点击右上角省略号下的 **Import Dashboard**
@@ -328,7 +328,7 @@ HyperDX 会以浏览器的本地时区显示时间戳。该演示数据覆盖的
 
 <Image img={finish_import} alt="完成导入"/>
 
-#### 查看仪表板 {#created-dashboard}
+#### 查看仪表板 \\{#created-dashboard\\}
 
 系统会创建一个已预先配置好所有可视化内容的仪表板：
 

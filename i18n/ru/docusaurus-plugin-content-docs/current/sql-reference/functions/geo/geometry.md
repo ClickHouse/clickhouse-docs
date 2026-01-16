@@ -6,11 +6,11 @@ title: 'Функции для работы с геометрией'
 doc_type: 'reference'
 ---
 
-## Геометрия {#geometry}
+## Геометрия \\{#geometry\\}
 
 Функции для работы с геометрией позволяют вычислять периметр и площадь для геометрических типов, таких как POLYGON, LINESTRING, MULTIPOLYGON, MULTILINESTRING, RING и POINT. Используйте геометрические объекты в типе данных Geometry. Если входное значение равно `NULL`, все приведённые ниже функции вернут 0.
 
-## perimeterCartesian {#perimetercartesian}
+## perimeterCartesian \{#perimetercartesian\}
 
 Вычисляет периметр заданного объекта типа Geometry в декартовой (плоской) системе координат.
 
@@ -43,7 +43,7 @@ SELECT perimeterCartesian(geom) FROM geo_dst;
 ```
 
 
-## areaCartesian {#areacartesian}
+## areaCartesian \{#areacartesian\}
 
 Вычисляет площадь заданного объекта Geometry в декартовой системе координат.
 
@@ -76,7 +76,7 @@ SELECT areaCartesian(geom) FROM geo_dst;
 ```
 
 
-## perimeterSpherical {#perimeterspherical}
+## perimeterSpherical \{#perimeterspherical\}
 
 Вычисляет периметр объекта Geometry на поверхности сферы.
 
@@ -109,7 +109,7 @@ SELECT perimeterSpherical(geom) FROM geo_dst;
 ```
 
 
-## areaSpherical {#areaspherical}
+## areaSpherical \{#areaspherical\}
 
 Вычисляет площадь объекта типа Geometry на поверхности сферы.
 

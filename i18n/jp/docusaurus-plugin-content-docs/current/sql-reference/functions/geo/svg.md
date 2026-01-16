@@ -6,7 +6,7 @@ title: '地理データから SVG 画像を生成する関数'
 doc_type: 'reference'
 ---
 
-## Svg {#svg}
+## Svg \\{#svg\\}
 
 Geo データから特定の SVG 要素タグの文字列を返します。
 

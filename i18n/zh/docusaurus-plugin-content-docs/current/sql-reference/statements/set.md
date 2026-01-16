@@ -7,7 +7,7 @@ title: 'SET 语句'
 doc_type: 'reference'
 ---
 
-# SET 语句 {#set-statement}
+# SET 语句 \\{#set-statement\\}
 
 ```sql
 SET param = value
@@ -29,7 +29,7 @@ SET force_index_by_date = 1
 SET force_index_by_date
 ```
 
-## 设置查询参数 {#setting-query-parameters}
+## 设置查询参数 \\{#setting-query-parameters\\}
 
 `SET` 语句还可以用于定义查询参数，只需在参数名称前添加前缀 `param_`。
 查询参数允许您编写带占位符的通用查询，这些占位符会在执行时被实际值替换。

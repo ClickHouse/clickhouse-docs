@@ -8,7 +8,7 @@ keywords: ['macOS', 'Mac', 'ビルド']
 doc_type: 'guide'
 ---
 
-# macOS 向けに macOS 上で ClickHouse をビルドする方法 {#how-to-build-clickhouse-on-macos-for-macos}
+# macOS 向けに macOS 上で ClickHouse をビルドする方法 \\{#how-to-build-clickhouse-on-macos-for-macos\\}
 
 :::info ClickHouse を自分でビルドする必要はありません！
 [Quick Start](https://clickhouse.com/#quick-start) に記載されている手順に従って、事前にビルド済みの ClickHouse をインストールできます。
@@ -18,7 +18,7 @@ ClickHouse は、macOS 10.15 (Catalina) 以降の macOS 上で、x86_64 (Intel) 
 
 コンパイラとしては、Homebrew の Clang のみがサポートされています。
 
-## 前提条件をインストールする {#install-prerequisites}
+## 前提条件をインストールする \\{#install-prerequisites\\}
 
 まず、共通の[前提条件ドキュメント](developer-instruction.md)を参照してください。
 
@@ -36,7 +36,7 @@ Apple はデフォルトで大文字・小文字を区別しないファイル�
 macOS 上で本格的な開発を行う場合は、ソースコードを大文字・小文字を区別するディスクボリュームに保存していることを確認してください。たとえば、[こちらの手順](https://brianboyko.medium.com/a-case-sensitive-src-folder-for-mac-programmers-176cc82a3830) を参照してください。
 :::
 
-## ClickHouse をビルドする {#build-clickhouse}
+## ClickHouse をビルドする \\{#build-clickhouse\\}
 
 ビルドには、Homebrew 版の Clang コンパイラを使用する必要があります。
 
@@ -54,7 +54,7 @@ cmake --build build
 フラグ `-DCMAKE_AR=/opt/homebrew/opt/llvm/bin/llvm-ar` を指定して llvm-ar を使用する必要がある場合があります。
 :::
 
-## 注意点 {#caveats}
+## 注意点 \\{#caveats\\}
 
 `clickhouse-server` を実行する場合は、システムの `maxfiles` 変数の値を増やしておいてください。
 

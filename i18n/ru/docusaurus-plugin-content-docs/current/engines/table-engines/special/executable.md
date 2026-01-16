@@ -9,7 +9,7 @@ title: 'Движки таблиц Executable и ExecutablePool'
 doc_type: 'reference'
 ---
 
-# Движки таблиц Executable и ExecutablePool {#executable-and-executablepool-table-engines}
+# Движки таблиц Executable и ExecutablePool \\{#executable-and-executablepool-table-engines\\}
 
 Движки таблиц `Executable` и `ExecutablePool` позволяют задать таблицу, строки которой генерируются скриптом, который вы пишете (путём вывода строк в **stdout**). Исполняемый скрипт хранится в каталоге `users_scripts` и может читать данные из любого источника.
 
@@ -18,7 +18,7 @@ doc_type: 'reference'
 
 Дополнительно вы можете указать один или несколько входных запросов, результаты которых будут передаваться в **stdin** для чтения скриптом.
 
-## Создание таблицы `Executable` {#creating-an-executable-table}
+## Создание таблицы `Executable` \{#creating-an-executable-table\}
 
 Движку таблицы `Executable` требуются два параметра: имя скрипта и формат входящих данных. При необходимости можно передать один или несколько входных запросов:
 
@@ -101,7 +101,7 @@ SELECT * FROM my_executable_table
 ```
 
 
-## Передача результатов запроса в скрипт {#passing-query-results-to-a-script}
+## Передача результатов запроса в скрипт \{#passing-query-results-to-a-script\}
 
 Пользователи веб‑сайта Hacker News оставляют комментарии. В Python есть набор инструментов для обработки естественного языка (`nltk`) с `SentimentIntensityAnalyzer` для определения, являются ли комментарии положительными, отрицательными или нейтральными, — в том числе для присвоения значения от -1 (очень негативный комментарий) до 1 (очень позитивный комментарий). Давайте создадим таблицу `Executable`, которая вычисляет тональность комментариев Hacker News с помощью `nltk`.
 
@@ -202,7 +202,7 @@ FROM sentiment
 ```
 
 
-## Создание таблицы `ExecutablePool` {#creating-an-executablepool-table}
+## Создание таблицы `ExecutablePool` \{#creating-an-executablepool-table\}
 
 Синтаксис `ExecutablePool` похож на `Executable`, но у таблицы `ExecutablePool` есть несколько параметров, характерных именно для нее:
 

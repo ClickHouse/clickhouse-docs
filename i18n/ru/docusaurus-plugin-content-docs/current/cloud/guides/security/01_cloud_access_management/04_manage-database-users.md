@@ -13,11 +13,11 @@ import user_grant_permissions_options from '@site/static/images/cloud/security/c
 В этом руководстве рассматриваются два способа управления пользователями базы данных: через SQL-консоль и непосредственно в самой базе данных.
 
 
-### Аутентификация в SQL-консоли без пароля {#sql-console-passwordless-authentication}
+### Аутентификация в SQL-консоли без пароля \\{#sql-console-passwordless-authentication\\}
 
 Пользователи SQL-консоли создаются для каждого сеанса и аутентифицируются с использованием X.509-сертификатов, которые автоматически обновляются. Пользователь удаляется при завершении сеанса. При формировании списков доступа для аудита перейдите на вкладку Settings для соответствующего сервиса в консоли и учитывайте доступ через SQL-консоль помимо пользователей, уже существующих в базе данных. Если настроены пользовательские роли, доступ пользователя отражается в роли, имя которой оканчивается на имя пользователя.
 
-## Пользователи и роли консоли SQL {#sql-console-users-and-roles}
+## Пользователи и роли консоли SQL \\{#sql-console-users-and-roles\\}
 
 Базовые роли консоли SQL могут быть назначены пользователям с правами Service Read Only и Service Admin. Для получения дополнительной информации см. раздел [Manage SQL Console Role Assignments](/cloud/guides/sql-console/manage-sql-console-role-assignments). В этом руководстве показано, как создать настраиваемую роль для пользователя консоли SQL.
 
@@ -25,7 +25,7 @@ import user_grant_permissions_options from '@site/static/images/cloud/security/c
 
 <VerticalStepper headerLevel="h4">
 
-#### Создайте `database_developer` и выдайте права {#create-role-grant-permissions} 
+#### Создайте `database_developer` и выдайте права \\{#create-role-grant-permissions\\}
 
 Создайте роль `database_developer` и выдайте права `SHOW`, `CREATE`, `ALTER` и `DELETE`.
     
@@ -37,7 +37,7 @@ GRANT ALTER ON * TO database_developer;
 GRANT DELETE ON * TO database_developer;
 ```
 
-#### Создайте роль пользователя консоли SQL {#create-sql-console-user-role} 
+#### Создайте роль пользователя консоли SQL \\{#create-sql-console-user-role\\}
 
 Создайте роль для пользователя консоли SQL my.user@domain.com и назначьте ей роль database_developer.
     
@@ -46,15 +46,15 @@ CREATE ROLE OR REPLACE `sql-console-role:my.user@domain.com`;
 GRANT database_developer TO `sql-console-role:my.user@domain.com`;
 ```
 
-#### Пользователю назначается новая роль при использовании консоли SQL {#use-assigned-new-role}
+#### Пользователю назначается новая роль при использовании консоли SQL \\{#use-assigned-new-role\\}
 
 Пользователю будет назначаться роль, связанная с его адресом электронной почты, каждый раз при использовании консоли SQL. 
 
 </VerticalStepper>
 
-## Аутентификация в базе данных {#database-authentication}
+## Аутентификация в базе данных \\{#database-authentication\\}
 
-### Идентификатор пользователя базы данных и пароль {#database-user-id--password}
+### Идентификатор пользователя базы данных и пароль \{#database-user-id--password\}
 
 Используйте метод SHA256&#95;hash при [создании учетных записей пользователей](/sql-reference/statements/create/user.md) для защиты паролей. Пароли базы данных ClickHouse должны содержать минимум 12 символов и соответствовать требованиям к сложности: заглавные буквы, строчные буквы, цифры и/или специальные символы.
 
@@ -68,7 +68,7 @@ CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 ```
 
 
-### Пользователь базы данных с аутентификацией по SSH {#database-ssh}
+### Пользователь базы данных с аутентификацией по SSH \\{#database-ssh\\}
 
 Чтобы настроить аутентификацию по SSH для пользователя базы данных ClickHouse Cloud:
 
@@ -79,7 +79,7 @@ CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 
 Подробное пошаговое руководство с примерами см. в статье [How to connect to ClickHouse Cloud using SSH keys](/knowledgebase/how-to-connect-to-ch-cloud-using-ssh-keys) в нашей базе знаний.
 
-## Права доступа к базе данных {#database-permissions}
+## Права доступа к базе данных \\{#database-permissions\\}
 
 Настройте следующие параметры в сервисах и базах данных с помощью SQL-оператора [GRANT](/sql-reference/statements/grant).
 
@@ -96,7 +96,7 @@ CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 
 <Image img={user_grant_permissions_options} alt="Иллюстрация, показывающая различные способы предоставления прав доступа пользователю" size="md" background="black" />
 
-### Начальные настройки {#initial-settings}
+### Начальные настройки \{#initial-settings\}
 
 В базах данных есть учетная запись с именем `default`, которая добавляется автоматически и получает default&#95;role при создании сервиса. Пользователю, создающему сервис, отображается автоматически сгенерированный случайный пароль, который назначается учетной записи `default` при создании сервиса. Пароль не показывается после первоначальной настройки, но может быть изменён в любое время любым пользователем с правами Service Admin в консоли. Эта учетная запись или учетная запись с правами Service Admin в консоли может в любой момент создать дополнительных пользователей и роли базы данных.
 
@@ -114,13 +114,13 @@ CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 Пользователи могут использовать генератор SHA256-хеша или функцию в коде, такую как `hashlib` в Python, чтобы преобразовать пароль длиной 12+ символов с достаточной сложностью в SHA256-хеш и передать его системному администратору в качестве пароля. Это гарантирует, что администратор не видит и не обрабатывает пароли в открытом виде.
 
 
-### Списки доступа к базе данных с пользователями SQL-консоли {#database-access-listings-with-sql-console-users}
+### Списки доступа к базе данных с пользователями SQL-консоли \\{#database-access-listings-with-sql-console-users\\}
 
 Следующую процедуру можно использовать для формирования полного списка доступов по SQL-консоли и базам данных в вашей организации.
 
 <VerticalStepper headerLevel="h4">
 
-#### Получить список всех грантов базы данных {#get-a-list-of-all-database-grants}
+#### Получить список всех грантов базы данных \\{#get-a-list-of-all-database-grants\\}
 
 Выполните следующие запросы, чтобы получить список всех грантов в базе данных. 
 
@@ -146,7 +146,7 @@ FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_rol
 WHERE role_grants.user_name is null;
 ```
 
-#### Соотнести список грантов с пользователями Console, имеющими доступ к SQL-консоли {#associate-grant-list-to-console-users-with-access-to-sql-console}
+#### Соотнести список грантов с пользователями Console, имеющими доступ к SQL-консоли \\{#associate-grant-list-to-console-users-with-access-to-sql-console\\}
 
 Соотнесите этот список с пользователями Console, которые имеют доступ к SQL-консоли.
    
@@ -162,6 +162,6 @@ e. Нажмите на ссылку с числом пользователей, 
 
 </VerticalStepper>
 
-## Пользователи warehouse {#warehouse-users}
+## Пользователи warehouse \\{#warehouse-users\\}
 
 Пользователи warehouse являются общими для всех сервисов в пределах одного и того же warehouse. Для получения дополнительной информации ознакомьтесь с разделом [контроль доступа к warehouse](/cloud/reference/warehouses#access-controls).

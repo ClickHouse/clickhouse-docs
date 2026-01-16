@@ -18,7 +18,7 @@ import search_view from '@site/static/images/clickstack/nginx-logs-search-view.p
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# 使用 ClickStack 监控 Nginx 日志 {#nginx-clickstack}
+# 使用 ClickStack 监控 Nginx 日志 \\{#nginx-clickstack\\}
 
 :::note[概要]
 本指南演示如何通过配置 OpenTelemetry collector 来摄取 Nginx 访问日志，从而使用 ClickStack 监控 Nginx。你将了解如何：
@@ -33,12 +33,12 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 所需时间：5–10 分钟
 :::
 
-## 集成现有的 Nginx {#existing-nginx}
+## 集成现有的 Nginx \\{#existing-nginx\\}
 
 本节介绍如何通过修改 ClickStack 中的 OTel collector 配置，将你现有 Nginx 部署产生的日志发送到 ClickStack。
 如果你希望在配置自己的现有环境之前先测试该集成，可以使用我们预先配置的环境和示例数据进行测试，详见[下一节](/use-cases/observability/clickstack/integrations/nginx#demo-dataset)。
 
-##### 前提条件 {#prerequisites}
+##### 前提条件 \\{#prerequisites\\}
 
 - 正在运行的 ClickStack 实例
 - 已安装的 Nginx
@@ -194,7 +194,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### 下载示例数据集 {#download-sample}
+#### 下载示例数据集 \\{#download-sample\\}
 
 ```bash
 # 下载日志
@@ -207,7 +207,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - 成功请求与错误请求的混合
 - 真实的响应时间和字节数
 
-#### 创建测试 collector 配置 {#test-config}
+#### 创建测试 collector 配置 \\{#test-config\\}
 
 创建一个名为 `nginx-demo.yaml` 的文件，并填入以下配置：
 
@@ -283,7 +283,7 @@ HyperDX 使用浏览器的本地时区显示时间戳。演示数据覆盖的时
 
 #### <TrackedLink href={useBaseUrl('/examples/nginx-logs-dashboard.json')} download="nginx-logs-dashboard.json" eventName="docs.nginx_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表盘配置 {#download}
 
-#### 导入预置仪表盘 {#import-dashboard}
+#### 导入预置仪表盘 \\{#import-dashboard\\}
 1. 打开 HyperDX 并导航到 Dashboards 页面。
 2. 点击右上角省略号下的 "Import Dashboard"。
 
@@ -293,7 +293,7 @@ HyperDX 使用浏览器的本地时区显示时间戳。演示数据覆盖的时
 
 <Image img={finish_import} alt="完成导入"/>
 
-#### 仪表盘会被创建，并预先配置好所有可视化组件 {#created-dashboard}
+#### 仪表盘会被创建，并预先配置好所有可视化组件 \\{#created-dashboard\\}
 
 :::note
 对于演示数据集，将时间范围设置为 **2025-10-20 11:00:00 - 2025-10-21 11:00:00 (UTC)**（可根据你的本地时区进行调整）。导入的仪表盘默认不会指定时间范围。

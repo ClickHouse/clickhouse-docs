@@ -6,11 +6,11 @@ title: '条件函数'
 doc_type: '参考文档'
 ---
 
-# 条件函数 {#conditional-functions}
+# 条件函数 \\{#conditional-functions\\}
 
-## 概述 {#overview}
+## 概述 \\{#overview\\}
 
-### 直接使用条件表达式结果 {#using-conditional-results-directly}
+### 直接使用条件表达式结果 \\{#using-conditional-results-directly\\}
 
 条件表达式始终返回 `0`、`1` 或 `NULL`。因此，你可以直接使用条件表达式的结果，例如：
 
@@ -27,7 +27,7 @@ FROM LEFT_RIGHT
 └──────────┘
 ```
 
-### 条件表达式中的 NULL 值 {#null-values-in-conditionals}
+### 条件表达式中的 NULL 值 \\{#null-values-in-conditionals\\}
 
 当条件表达式中涉及 `NULL` 值时，结果也将为 `NULL`。
 
@@ -63,7 +63,7 @@ FROM LEFT_RIGHT
 └──────┴───────┴──────────────────┘
 ```
 
-### CASE 语句 {#case-statement}
+### CASE 语句 \\{#case-statement\\}
 
 ClickHouse 中的 CASE 表达式提供了与 SQL CASE 运算符类似的条件逻辑。它会对条件进行求值，并根据第一个满足的条件返回相应的值。
 

@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.view&#95;refreshes {#systemview&#95;refreshes}
+# system.view&#95;refreshes \\{#systemview&#95;refreshes\\}
 
 <SystemTableCloud />
 

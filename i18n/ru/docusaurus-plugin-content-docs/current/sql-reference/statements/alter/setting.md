@@ -7,7 +7,7 @@ title: 'Операции с настройками таблиц'
 doc_type: 'reference'
 ---
 
-# Операции с настройками таблиц {#table-settings-manipulations}
+# Операции с настройками таблиц \\{#table-settings-manipulations\\}
 
 Существует ряд запросов, с помощью которых можно изменять настройки таблицы. Вы можете изменять настройки или сбрасывать их к значениям по умолчанию. Один запрос может изменять несколько настроек одновременно.
 Если настройка с указанным именем не существует, запрос завершится с исключением.
@@ -22,7 +22,7 @@ ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY|RESET SETTING ...
 Эти запросы можно применять только к таблицам [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md).
 :::
 
-## MODIFY SETTING {#modify-setting}
+## MODIFY SETTING \\{#modify-setting\\}
 
 Изменяет настройки таблицы.
 
@@ -40,7 +40,7 @@ CREATE TABLE example_table (id UInt32, data String) ENGINE=MergeTree() ORDER BY 
 ALTER TABLE example_table MODIFY SETTING max_part_loading_threads=8, max_parts_in_total=50000;
 ```
 
-## RESET SETTING {#reset-setting}
+## RESET SETTING \\{#reset-setting\\}
 
 Сбрасывает настройки таблицы до их значений по умолчанию. Если настройка уже имеет значение по умолчанию, действие не выполняется.
 

@@ -7,7 +7,7 @@ title: 'データ型のバイナリエンコーディング仕様'
 doc_type: 'reference'
 ---
 
-# データ型のバイナリエンコーディング仕様 {#data-types-binary-encoding-specification}
+# データ型のバイナリエンコーディング仕様 \\{#data-types-binary-encoding-specification\\}
 
 この仕様では、ClickHouse のデータ型のバイナリエンコードおよびデコードに使用できるバイナリ形式について説明します。この形式は `Dynamic` カラムの[バイナリシリアル化](dynamic.md#binary-output-format)で使用され、対応する設定の下で入出力フォーマット [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) および [Native](/interfaces/formats/Native) でも使用できます。
 
@@ -72,7 +72,7 @@ doc_type: 'reference'
 
 `JSON` 型の場合、バイト `uint8_serialization_version` はシリアル化のバージョンを表します。現在のところバージョンは常に 0 ですが、今後 `JSON` 型に新しい引数が導入された場合には変更される可能性があります。
 
-### Interval 種別のバイナリ エンコーディング {#interval-kind-binary-encoding}
+### Interval 種別のバイナリ エンコーディング \\{#interval-kind-binary-encoding\\}
 
 次の表は、`Interval` データ型のさまざまな種別がどのようにバイナリ形式でエンコードされるかを示します。
 
@@ -90,7 +90,7 @@ doc_type: 'reference'
 | `Quarter`       | `0x09`                     |
 | `Year`          | `0x1A`                     |
 
-### 集約関数パラメータのバイナリエンコーディング {#aggregate-function-parameter-binary-encoding}
+### 集約関数パラメータのバイナリエンコーディング \\{#aggregate-function-parameter-binary-encoding\\}
 
 次の表は、`AggregateFunction` および `SimpleAggregateFunction` のパラメータがどのようにエンコードされるかを示します。
 パラメータのエンコードは、パラメータの型を示す 1 バイトと、その値そのものから構成されます。

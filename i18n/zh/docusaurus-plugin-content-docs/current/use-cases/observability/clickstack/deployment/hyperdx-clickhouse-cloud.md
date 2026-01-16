@@ -38,7 +38,7 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 
 在此模式下，数据摄取完全由用户负责。您可以使用自托管的 OpenTelemetry collector、通过客户端库直接摄取、ClickHouse 原生表引擎（例如 Kafka 或 S3）、ETL 流水线，或 ClickPipes（ClickHouse Cloud 的托管摄取服务）将数据摄取到 ClickHouse Cloud 中。这种方式是运行 ClickStack 最简单且性能最佳的方案。
 
-### 适用场景 {#suitable-for}
+### 适用场景 \\{#suitable-for\\}
 
 此部署模式在以下场景中尤为适用：
 
@@ -46,13 +46,13 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 2. 您正在运行大规模可观测性部署，并且需要 ClickStack 搭配 ClickHouse Cloud 所提供的专用级性能与可扩展性。
 3. 您已经在使用 ClickHouse Cloud 进行分析，并希望通过 ClickStack 的 instrumentation 库为应用进行观测，将数据发送到同一个集群。在这种情况下，我们建议使用 [warehouses](/cloud/reference/warehouses) 来隔离可观测性工作负载的计算资源。
 
-## 部署步骤 {#deployment-steps}
+## 部署步骤 \\{#deployment-steps\\}
 
 本指南假设你已创建 ClickHouse Cloud 服务。如果尚未创建，请参考快速入门指南中的[“创建 ClickHouse 服务”](/getting-started/quick-start/cloud#1-create-a-clickhouse-service)步骤。
 
 <VerticalStepper headerLevel="h3">
 
-### 复制服务凭证(可选) {#copy-service-credentials}
+### 复制服务凭证(可选) \\{#copy-service-credentials\\}
 
 **如果您已有希望在服务中可视化的可观测性事件,则可以跳过此步骤。**
 
@@ -62,7 +62,7 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 
 <Image img={cloud_connect} alt="ClickHouse Cloud 连接界面" size="lg"/>
 
-### 部署 OpenTelemetry Collector(可选) {#deploy-otel-collector}
+### 部署 OpenTelemetry Collector(可选) \\{#deploy-otel-collector\\}
 
 **如果您已有希望在服务中可视化的可观测性事件,则可以跳过此步骤。**
 
@@ -276,7 +276,7 @@ docker run --rm -it \
 在生产环境中,我们建议为摄取操作创建专用用户,并限制其对所需数据库和表的访问权限。详情请参阅[&quot;数据库和摄取用户&quot;](/use-cases/observability/clickstack/production#database-ingestion-user)。
 :::
 
-### 连接到 ClickStack {#connect-to-clickstack}
+### 连接到 ClickStack \\{#connect-to-clickstack\\}
 
 选择您的服务,然后从左侧菜单中选择 `ClickStack`。
 
@@ -288,11 +288,11 @@ docker run --rm -it \
 
 <Image img={hyperdx_cloud_landing} alt="ClickHouse Cloud HyperDX 首页" size="lg"/>
 
-### 用户权限 {#user-permissions}
+### 用户权限 \\{#user-permissions\\}
 
 访问 HyperDX 的用户会使用其 ClickHouse Cloud 控制台凭据自动完成身份验证。访问控制通过服务设置中配置的 SQL 控制台权限实现。
 
-#### 配置用户访问权限 {#configure-access}
+#### 配置用户访问权限 \\{#configure-access\\}
 
 1. 在 ClickHouse Cloud 控制台中转到您的服务
 2. 转到 **Settings（设置）** → **SQL Console Access（SQL 控制台访问）**
@@ -307,11 +307,11 @@ docker run --rm -it \
 要启用告警功能,至少需要一位拥有 **Service Admin** 权限(在 SQL Console Access 下拉菜单中对应 **Full Access**)的用户登录 HyperDX 一次。此操作将在数据库中创建一个专用用户,用于执行告警查询。
 :::
 
-### 创建数据源 {#create-a-datasource}
+### 创建数据源 \\{#create-a-datasource\\}
 
 HyperDX 原生支持 OpenTelemetry,但不限于 OpenTelemetry——用户可根据需要使用自定义表结构。
 
-#### 使用 OpenTelemetry 架构 {#using-otel-schemas}
+#### 使用 OpenTelemetry 架构 \\{#using-otel-schemas\\}
 
 如果您使用上述 OTel collector 在 ClickHouse 中创建数据库和表,请在创建数据源模型中保留所有默认值,并在 `Table` 字段中填入 `otel_logs` 以创建日志数据源。其他设置将自动检测,然后您可以点击 `Save New Source`。
 
@@ -329,7 +329,7 @@ HyperDX 原生支持 OpenTelemetry,但不限于 OpenTelemetry——用户可根�
 请注意，ClickStack 中的不同数据源（如日志和追踪）可以相互关联。要启用此功能，需要对每个来源进行额外配置。例如，在日志来源中可以指定对应的追踪来源，在追踪来源中也可以指定对应的日志来源。有关更多详细信息，请参阅[&quot;关联来源&quot;](/use-cases/observability/clickstack/config#correlated-sources)。
 :::
 
-#### 使用自定义架构 {#using-custom-schemas}
+#### 使用自定义架构 \\{#using-custom-schemas\\}
 
 需要将 HyperDX 连接到现有数据服务的用户可按需完成数据库和表的配置。如果表结构符合 ClickHouse 的 OpenTelemetry 架构,相关设置将被自动检测。
 

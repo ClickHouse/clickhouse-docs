@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 ClickHouse は、オブザーバビリティにおいて比類のない速度、スケーラビリティ、およびコスト効率を提供します。このガイドでは、ニーズに応じて選択できる 2 つのパスを紹介します。
 
-## ClickStack - ClickHouse オブザーバビリティスタック {#clickstack}
+## ClickStack - ClickHouse オブザーバビリティスタック \\{#clickstack\\}
 
 ClickHouse Observability Stack は、ほとんどのユーザーに対する**推奨構成**です。
 
@@ -28,7 +28,7 @@ ClickHouse Observability Stack は、ほとんどのユーザーに対する**�
 | [Search](/use-cases/observability/clickstack/search) | オブザーバビリティデータを検索・クエリする方法 |
 | [Production](/use-cases/observability/clickstack/production) | 本番運用におけるデプロイメントのベストプラクティス |
 
-## 独自スタックの構築 {#build-your-own-stack}
+## 独自スタックの構築 \\{#build-your-own-stack\\}
 
 **カスタム要件**（高度に特化したインジェストパイプライン、スキーマ設計、非常に大規模なスケーリングニーズなど）を持つユーザー向けに、ClickHouse をコアデータベースとして使用した独自のオブザーバビリティスタックを構築するためのガイドラインを提供します。
 

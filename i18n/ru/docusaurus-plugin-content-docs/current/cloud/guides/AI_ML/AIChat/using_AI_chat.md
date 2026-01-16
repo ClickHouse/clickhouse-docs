@@ -21,17 +21,17 @@ import img_history from '@site/static/images/use-cases/AI_ML/AIChat/5_history.pn
 import img_result_actions from '@site/static/images/use-cases/AI_ML/AIChat/6_result_actions.png';
 import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_editor.png';
 
-# Использование чата Ask AI в ClickHouse Cloud {#use-ask-ai-chat-in-clickhouse-cloud}
+# Использование чата Ask AI в ClickHouse Cloud \{#use-ask-ai-chat-in-clickhouse-cloud\}
 
 > В этом руководстве объясняется, как включить и использовать функцию AI Chat в консоли ClickHouse Cloud.
 
 <VerticalStepper headerLevel="h2">
 
-## Необходимые условия {#prerequisites}
+## Необходимые условия \\{#prerequisites\\}
 
 1. У вас должен быть доступ к организации ClickHouse Cloud с включёнными AI‑функциями (обратитесь к администратору организации или в поддержку, если они недоступны).
 
-## Открытие панели AI Chat {#open-panel}
+## Открытие панели AI Chat \\{#open-panel\\}
 
 1. Перейдите к сервису ClickHouse Cloud.
 2. В левой боковой панели нажмите на значок с искрами с подписью «Ask AI».
@@ -39,14 +39,14 @@ import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_ed
 
 <Image img={img_open} alt="Открытие всплывающей панели AI Chat" size="md"/>
 
-## Принятие условий использования данных (при первом запуске) {#consent}
+## Принятие условий использования данных (при первом запуске) \\{#consent\\}
 
 1. При первом использовании отображается диалог согласия с описанием обработки данных и сторонних LLM‑субобработчиков.
 2. Ознакомьтесь с условиями и примите их, чтобы продолжить. Если вы отклоните условия, панель не откроется.
 
 <Image img={img_consent} alt="Диалог согласия" size="md"/>
 
-## Выбор режима чата {#modes}
+## Выбор режима чата \\{#modes\\}
 
 В настоящее время AI Chat поддерживает:
 
@@ -57,23 +57,23 @@ import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_ed
 
 <Image img={img_modes} alt="Выбор режима" size="sm"/>
 
-## Написание и отправка сообщения {#compose}
+## Написание и отправка сообщения \\{#compose\\}
 
 1. Введите свой вопрос (например, «Создать materialized view для агрегации ежедневных событий по пользователю»).  
 2. Нажмите <kbd>Enter</kbd>, чтобы отправить (используйте <kbd>Shift</kbd> + <kbd>Enter</kbd> для новой строки).  
 3. Пока модель обрабатывает запрос, вы можете нажать «Stop», чтобы прервать выполнение.
 
-## Понимание шагов рассуждения «Agent» {#thinking-steps}
+## Понимание шагов рассуждения «Agent» \\{#thinking-steps\\}
 
 В режиме Agent могут отображаться разворачиваемые промежуточные шаги «thinking» или планирования. Они помогают понять, как помощник формирует ответ. По необходимости сворачивайте или разворачивайте их.
 
 <Image img={img_thinking} alt="Шаги рассуждения" size="md"/>
 
-## Начало новых чатов {#new-chats}
+## Начало новых чатов \\{#new-chats\\}
 
 Нажмите кнопку «New Chat», чтобы очистить контекст и начать новый сеанс.
 
-## Просмотр истории чатов {#history}
+## Просмотр истории чатов \\{#history\\}
 
 1. В нижней части панели отображается список ваших недавних чатов.
 2. Выберите предыдущий чат, чтобы загрузить его сообщения.
@@ -81,7 +81,7 @@ import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_ed
 
 <Image img={img_history} alt="Список истории чатов" size="md"/>
 
-## Работа с сгенерированным SQL {#sql-actions}
+## Работа с сгенерированным SQL \\{#sql-actions\\}
 
 Когда помощник возвращает SQL:
 
@@ -93,14 +93,14 @@ import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_ed
 
 <Image img={img_new_tab} alt="Открытие сгенерированного запроса в редакторе" size="md"/>
 
-## Остановка или прерывание ответа {#interrupt}
+## Остановка или прерывание ответа \\{#interrupt\\}
 
 Если ответ занимает слишком много времени или уходит в сторону:
 
 1. Нажмите кнопку «Stop» (отображается во время обработки).
 2. Сообщение помечается как прерванное; вы можете уточнить запрос и отправить его снова.
 
-## Комбинации клавиш {#shortcuts}
+## Комбинации клавиш \\{#shortcuts\\}
 
 | Действие | Комбинация клавиш |
 | ------ | -------- |

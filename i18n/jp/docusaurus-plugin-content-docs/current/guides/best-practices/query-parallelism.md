@@ -17,7 +17,7 @@ import visual05 from '@site/static/images/guides/best-practices/query-parallelis
 import Image from '@theme/IdealImage';
 
 
-# ClickHouseがクエリを並列実行する方法 {#how-clickhouse-executes-a-query-in-parallel}
+# ClickHouseがクエリを並列実行する方法 \{#how-clickhouse-executes-a-query-in-parallel\}
 
 ClickHouseは[速度のために構築](/concepts/why-clickhouse-is-so-fast)されています。利用可能なすべてのCPUコアを使用し、処理レーン全体にデータを分散し、しばしばハードウェアを限界近くまで押し上げることで、高度に並列な方法でクエリを実行します。
 
@@ -25,13 +25,13 @@ ClickHouseは[速度のために構築](/concepts/why-clickhouse-is-so-fast)さ�
 
 ここでは、主要な概念を説明するために、[uk_price_paid_simple](/parts)データセットに対する集約クエリを使用します。
 
-## ステップバイステップ：ClickHouseが集計クエリを並列化する方法 {#step-by-step-how-clickHouse-parallelizes-an-aggregation-query}
+## ステップバイステップ：ClickHouseが集計クエリを並列化する方法 \\{#step-by-step-how-clickHouse-parallelizes-an-aggregation-query\\}
 
 ClickHouseが①テーブルのプライマリキーにフィルターを持つ集計クエリを実行する際、②プライマリインデックスをメモリにロードして、③どのグラニュールを処理する必要があり、どれを安全にスキップできるかを識別します：
 
 <Image img={visual01} size="md" alt="インデックス分析"/>
 
-### 処理レーン全体への作業の分散 {#distributing-work-across-processing-lanes}
+### 処理レーン全体への作業の分散 \\{#distributing-work-across-processing-lanes\\}
 
 選択されたデータは、`n`個の並列[処理レーン](/academic_overview#4-2-multi-core-parallelization)全体に[動的に](#load-balancing-across-processing-lanes)分散され、データを[ブロック](/development/architecture#block)ごとにストリーミングしながら処理して最終結果を生成します：
 
@@ -53,7 +53,7 @@ ClickHouseが①テーブルのプライマリキーにフィルターを持つ�
 
 効率的なレーン分散は、CPU使用率を最大化し、総クエリ時間を短縮するために重要です。
 
-### シャーディングされたテーブルでのクエリ処理 {#processing-queries-on-sharded-tables}
+### シャーディングされたテーブルでのクエリ処理 \\{#processing-queries-on-sharded-tables\\}
 
 テーブルデータが[シャード](/shards)として複数のサーバーに分散されている場合、各サーバーは並列にそのシャードを処理します。各サーバー内では、上記で説明したように、並列処理レーンを使用してローカルデータが処理されます：
 
@@ -71,7 +71,7 @@ ClickHouseが①テーブルのプライマリキーにフィルターを持つ�
 ClickHouse Cloudでは、この同じ並列処理が[並列レプリカ](https://clickhouse.com/docs/deployment-guides/parallel-replicas)を通じて実現されます。これは、シェアードナッシングクラスターのシャードと同様に機能します。各ClickHouse Cloudレプリカ（ステートレスコンピュートノード）は、データの一部を並列に処理し、独立したシャードと同じように最終結果に貢献します。
 :::
 
-## クエリの並列処理の監視 {#monitoring-query-parallelism}
+## クエリの並列処理の監視 \{#monitoring-query-parallelism\}
 
 これらのツールを使用して、クエリが利用可能なCPUリソースを完全に活用していることを確認し、そうでない場合に診断します。
 
@@ -132,11 +132,11 @@ ClickHouseの[埋め込みWeb UI](/interfaces/http)（`/play`エンドポイン�
 注：視覚化を左から右に読んでください。各行は、フィルタリング、集計、最終処理ステージなどの変換を適用しながら、データをブロックごとにストリーミングする並列処理レーンを表します。この例では、`max_threads = 4`設定に対応する4つの並列レーンを確認できます。
 
 
-### 処理レーン全体の負荷分散 {#load-balancing-across-processing-lanes}
+### 処理レーン全体の負荷分散 \\{#load-balancing-across-processing-lanes\\}
 
 上記の物理プランの`Resize`演算子は、処理レーン全体でデータブロックストリームを[再パーティション化して再分散](/academic_overview#4-2-multi-core-parallelization)し、均等に活用されるようにすることに注意してください。この再バランシングは、データ範囲がクエリ述語に一致する行数が異なる場合に特に重要です。そうでなければ、一部のレーンが過負荷になり、他のレーンがアイドル状態になる可能性があります。作業を再分散することで、高速なレーンが効果的に低速なレーンを支援し、全体的なクエリランタイムを最適化します。
 
-## max&#95;threadsが常に尊重されない理由 {#why-max-threads-isnt-always-respected}
+## max&#95;threadsが常に尊重されない理由 \{#why-max-threads-isnt-always-respected\}
 
 上記で述べたように、`n`個の並列処理レーンの数は`max_threads`設定によって制御され、デフォルトではサーバー上のClickHouseが利用可能なCPUコアの数と同じ値になります：
 
@@ -266,13 +266,13 @@ MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 59
 これは、小さなデータセットでのクエリに対して、ClickHouseが意図的に同時実行性を制限することを示しています。設定のオーバーライドは、テスト専用に使用してください。本番環境では使用しないでください。非効率的な実行やリソース競合につながる可能性があります。
 
 
-## 重要なポイント {#key-takeaways}
+## 重要なポイント \\{#key-takeaways\\}
 
 * ClickHouseは`max_threads`に結び付けられた処理レーンを使用してクエリを並列化します。
 * 実際のレーン数は、処理用に選択されたデータのサイズに依存します。
 * `EXPLAIN PIPELINE`とトレースログを使用して、レーン使用を分析します。
 
-## 詳細情報の入手先 {#where-to-find-more-information}
+## 詳細情報の入手先 \\{#where-to-find-more-information\\}
 
 ClickHouseがクエリを並列に実行する方法と、大規模でどのように高いパフォーマンスを実現するかについてさらに深く掘り下げたい場合は、次のリソースを探索してください：
 

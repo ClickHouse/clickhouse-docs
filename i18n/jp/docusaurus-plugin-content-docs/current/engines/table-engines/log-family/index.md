@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Log テーブルエンジンファミリー {#log-table-engine-family}
+# Log テーブルエンジンファミリー \\{#log-table-engine-family\\}
 
 <CloudNotSupportedBadge/>
 
@@ -29,7 +29,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 名前に *Log* と付いているものの、Log テーブルエンジンはログデータの保存を目的としたものではありません。高速な書き込みが必要な、少量のデータに対してのみ使用してください。
 :::
 
-## 共通プロパティ {#common-properties}
+## 共通プロパティ \\{#common-properties\\}
 
 エンジンの共通特性:
 
@@ -51,7 +51,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
     たとえばサーバーの異常終了などにより書き込み処理が中断された場合、破損したデータを含むテーブルが生成される可能性があります。
 
-## 違い {#differences}
+## 違い \\{#differences\\}
 
 `TinyLog` エンジンはこのファミリーの中で最も単純で、提供される機能が最も少なく、効率も最も低いエンジンです。`TinyLog` エンジンは、単一のクエリ内で複数スレッドによる並列データ読み取りをサポートしません。単一クエリからの並列読み取りをサポートする同じファミリー内の他のエンジンと比べてデータ読み取りが遅く、また各カラムを個別のファイルとして保存するため、`Log` エンジンとほぼ同じ数のファイルディスクリプタを使用します。シンプルな用途でのみ使用してください。
 

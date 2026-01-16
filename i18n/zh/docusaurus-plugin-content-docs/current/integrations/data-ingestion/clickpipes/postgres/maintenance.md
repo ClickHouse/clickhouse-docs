@@ -10,7 +10,7 @@ integration:
   - category: 'clickpipes'
 ---
 
-# 针对 Postgres 的 ClickPipes 维护窗口 {#maintenance-windows-for-clickpipes-for-postgres}
+# 针对 Postgres 的 ClickPipes 维护窗口 \\{#maintenance-windows-for-clickpipes-for-postgres\\}
 
 即将对 Postgres ClickPipes 执行维护操作，具体时间为：
 

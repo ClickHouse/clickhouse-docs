@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# なぜ MapReduce のようなものを使わないのか？ {#why-not-use-something-like-mapreduce}
+# なぜ MapReduce のようなものを使わないのか？ \\{#why-not-use-something-like-mapreduce\\}
 
 MapReduce のようなシステムは、reduce 演算を分散ソートに基づいて行う分散コンピューティングシステムとみなせます。このクラスで最も一般的なオープンソースソリューションは [Apache Hadoop](http://hadoop.apache.org) です。 
 

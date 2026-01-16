@@ -22,7 +22,7 @@ import valid_ds from '@site/static/images/integrations/data-visualization/grafan
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Grafana 向け ClickHouse データソースプラグイン {#clickhouse-data-source-plugin-for-grafana}
+# Grafana 向け ClickHouse データソースプラグイン \\{#clickhouse-data-source-plugin-for-grafana\\}
 
 <ClickHouseSupportedBadge/>
 
@@ -41,11 +41,11 @@ Grafana から ClickHouse に接続するにはプラグインが必要です。
   </iframe>
 </div>
 
-## 1. 接続情報を確認する {#1-gather-your-connection-details}
+## 1. 接続情報を確認する \\{#1-gather-your-connection-details\\}
 
 <ConnectionDetails />
 
-## 2. 読み取り専用ユーザーの作成 {#2-making-a-read-only-user}
+## 2. 読み取り専用ユーザーの作成 \\{#2-making-a-read-only-user\\}
 
 Grafana のようなデータ可視化ツールから ClickHouse に接続する場合、意図しない変更からデータを保護するために、読み取り専用ユーザーを作成することを推奨します。
 
@@ -57,7 +57,7 @@ Grafana はクエリが安全かどうかを検証しません。クエリでは
 2. `readonly` ユーザーに、バックエンドで使用される [clickhouse-go client](https://github.com/ClickHouse/clickhouse-go) によって必要とされる `max_execution_time` 設定を変更できるだけの権限が付与されていることを確認します。
 3. パブリックな ClickHouse インスタンスを使用している場合、`readonly` プロファイルで `readonly=2` を設定することは推奨されません。代わりに、`readonly=1` のままにし、この設定を変更できるように `max_execution_time` の制約タイプを [changeable_in_readonly](/operations/settings/constraints-on-settings) に設定します。
 
-## 3.  Grafana 用 ClickHouse プラグインをインストールする {#3--install-the-clickhouse-plugin-for-grafana}
+## 3.  Grafana 用 ClickHouse プラグインをインストールする \\{#3--install-the-clickhouse-plugin-for-grafana\\}
 
 Grafana を ClickHouse に接続できるようにするには、適切な Grafana プラグインをインストールする必要があります。Grafana にログインしていることを前提として、次の手順に従います。
 
@@ -71,7 +71,7 @@ Grafana を ClickHouse に接続できるようにするには、適切な Grafa
 
     <Image size="md" img={install} alt="ClickHouse プラグインをインストールする" border />
 
-## 4. ClickHouse データソースを定義する {#4-define-a-clickhouse-data-source}
+## 4. ClickHouse データソースを定義する \\{#4-define-a-clickhouse-data-source\\}
 
 1. インストールが完了したら、**Add new data source** ボタンをクリックします（**Connections** ページの **Data sources** タブからデータソースを追加することもできます）。
 
@@ -95,7 +95,7 @@ Grafana を ClickHouse に接続できるようにするには、適切な Grafa
 
     <Image size="md" img={valid_ds} alt="Save & test を選択する" border />
 
-## 5. 次のステップ {#5-next-steps}
+## 5. 次のステップ \\{#5-next-steps\\}
 
 データソースの使用準備が整いました。[クエリビルダー](./query-builder.md) を使ってクエリを作成する方法の詳細を確認してください。
 
@@ -103,7 +103,7 @@ Grafana を ClickHouse に接続できるようにするには、適切な Grafa
 
 これらのドキュメントに含まれていない情報をお探しの場合は、[GitHub 上のプラグインリポジトリ](https://github.com/grafana/clickhouse-datasource) を確認してください。
 
-## プラグインバージョンのアップグレード {#upgrading-plugin-versions}
+## プラグインバージョンのアップグレード \\{#upgrading-plugin-versions\\}
 
 v4 以降は、新しいバージョンがリリースされるたびに、設定やクエリをアップグレードできるようになりました。
 

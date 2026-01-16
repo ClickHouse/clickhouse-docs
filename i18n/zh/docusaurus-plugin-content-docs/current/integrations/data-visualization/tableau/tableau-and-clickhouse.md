@@ -29,7 +29,7 @@ import tableau_workbook6 from '@site/static/images/integrations/data-visualizati
 import tableau_workbook7 from '@site/static/images/integrations/data-visualization/tableau_workbook7.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# 将 Tableau 连接到 ClickHouse {#connecting-tableau-to-clickhouse}
+# 将 Tableau 连接到 ClickHouse \\{#connecting-tableau-to-clickhouse\\}
 
 <ClickHouseSupportedBadge/>
 
@@ -42,7 +42,7 @@ ClickHouse 提供了官方 Tableau 连接器，该连接器已发布在
 
 <TOCInline toc={toc}/>
 
-## 使用前的准备工作 {#setup-required-prior-usage}
+## 使用前的准备工作 \\{#setup-required-prior-usage\\}
 
 1. 收集连接详情
    <ConnectionDetails />
@@ -61,7 +61,7 @@ ClickHouse 提供了官方 Tableau 连接器，该连接器已发布在
     - Windows: `C:\Program Files\Tableau\Drivers`
 5. 在 Tableau 中配置 ClickHouse 数据源，并开始构建数据可视化报表！
 
-## 在 Tableau 中配置 ClickHouse 数据源 {#configure-a-clickhouse-data-source-in-tableau}
+## 在 Tableau 中配置 ClickHouse 数据源 \\{#configure-a-clickhouse-data-source-in-tableau\\}
 
 现在你已经安装并设置好了 `clickhouse-jdbc` 驱动，接下来将介绍如何在 Tableau 中定义一个数据源，用于连接 ClickHouse 中的 **TPCD** 数据库。
 
@@ -119,7 +119,7 @@ ClickHouse 提供了官方 Tableau 连接器，该连接器已发布在
 
 现在你已经可以在 Tableau 中开始构建可视化报表了！
 
-## 在 Tableau 中构建可视化 {#building-visualizations-in-tableau}
+## 在 Tableau 中构建可视化 \\{#building-visualizations-in-tableau\\}
 
 现在我们已经在 Tableau 中配置好了 ClickHouse 数据源，接下来就可以对这些数据进行可视化……
 
@@ -178,7 +178,7 @@ ClickHouse 提供了官方 Tableau 连接器，该连接器已发布在
 恭喜！您已经成功将 Tableau 连接到了 ClickHouse，并为分析和可视化您的 ClickHouse 数据
 打开了无限可能。
 
-## 手动安装连接器 {#install-the-connector-manually}
+## 手动安装连接器 \\{#install-the-connector-manually\\}
 
 如果你使用的是未默认包含该连接器的旧版本 Tableau Desktop，可以按照以下步骤手动安装：
 
@@ -188,13 +188,13 @@ ClickHouse 提供了官方 Tableau 连接器，该连接器已发布在
    * Windows: `C:\Users\[Windows User]\Documents\My Tableau Repository\Connectors`
 3. 重启 Tableau Desktop，如果安装成功，你会在 `New Data Source` 部分看到该连接器。
 
-## 连接和分析技巧 {#connection-and-analysis-tips}
+## 连接和分析技巧 \\{#connection-and-analysis-tips\\}
 
 如需获取有关优化 Tableau-ClickHouse 集成的更多指导，
 请访问[连接技巧](/integrations/tableau/connection-tips)和[分析技巧](/integrations/tableau/analysis-tips)。
 
-## 测试 {#tests}
+## 测试 \\{#tests\\}
 该连接器正在使用 [TDVT 框架](https://tableau.github.io/connector-plugin-sdk/docs/tdvt) 进行测试，目前测试覆盖率为 97%。
 
-## 摘要 {#summary}
+## 摘要 \\{#summary\\}
 可以使用通用的 ClickHouse ODBC/JDBC 驱动将 Tableau 连接到 ClickHouse。不过，本连接器可以简化连接配置过程。如果在使用该连接器时遇到任何问题，欢迎前往 <a href="https://github.com/ClickHouse/clickhouse-tableau-connector-jdbc/issues" target="_blank"  >GitHub</a> 反馈。

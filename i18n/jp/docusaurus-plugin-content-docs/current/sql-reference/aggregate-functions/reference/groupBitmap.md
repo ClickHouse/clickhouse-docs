@@ -5,7 +5,7 @@ title: 'groupBitmap'
 doc_type: 'reference'
 ---
 
-# groupBitmap {#groupbitmap}
+# groupBitmap \{#groupbitmap\}
 
 符号なし整数カラムに対してビットマップを用いた集約計算を行い、`UInt64` 型の基数（cardinality）を返します。サフィックスに `-State` を付けると、[bitmap object](../../../sql-reference/functions/bitmap-functions.md) を返します。
 

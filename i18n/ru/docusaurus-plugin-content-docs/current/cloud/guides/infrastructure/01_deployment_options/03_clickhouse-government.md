@@ -10,7 +10,7 @@ import Image from '@theme/IdealImage';
 import private_gov_architecture from '@site/static/images/cloud/reference/private-gov-architecture.png';
 
 
-## Обзор {#overview}
+## Обзор \\{#overview\\}
 
 ClickHouse Government — это пакет для самостоятельного развёртывания, который включает ту же проприетарную версию ClickHouse, что используется в ClickHouse Cloud, и наш ClickHouse Operator, настроенные для разделения вычислительных ресурсов и хранилища и дополнительно защищённые для соответствия строгим требованиям государственных учреждений и организаций государственного сектора. Он развёртывается в кластерах Kubernetes с S3‑совместимым хранилищем.
 
@@ -22,23 +22,23 @@ ClickHouse Government предназначен для государственн
 
 
 
-## Преимущества по сравнению с open source {#benefits-over-os}
+## Преимущества по сравнению с open source \\{#benefits-over-os\\}
 
 Следующие возможности отличают ClickHouse Government от самостоятельных развертываний open source:
 
 <VerticalStepper headerLevel="h3">
 
-### Повышенная производительность {#enhanced-performance}
+### Повышенная производительность \\{#enhanced-performance\\}
 - Нативное разделение вычислительных ресурсов и хранилища
 - Проприетарные облачные функции, такие как [shared merge tree](/cloud/reference/shared-merge-tree) и функциональность [warehouse](/cloud/reference/warehouses)
 
-### Проверено и подтверждено на множестве сценариев использования и в различных условиях {#tested-proven}
+### Проверено и подтверждено на множестве сценариев использования и в различных условиях \\{#tested-proven\\}
 - Полностью протестировано и проверено в ClickHouse Cloud
 
-### Пакет по соответствию требованиям {#compliance-package}
+### Пакет по соответствию требованиям \\{#compliance-package\\}
 - Документация по [NIST Risk Management Framework (RMF)](https://csrc.nist.gov/projects/risk-management/about-rmf) для ускорения получения Authorization to Operate (ATO)
 
-### Полнофункциональный план развития с регулярным добавлением новых возможностей {#full-featured-roadmap}
+### Полнофункциональный план развития с регулярным добавлением новых возможностей \\{#full-featured-roadmap\\}
 Дополнительные возможности, которые появятся в ближайшее время:
 - API для программного управления ресурсами
   - Автоматизированное создание резервных копий
@@ -49,7 +49,7 @@ ClickHouse Government предназначен для государственн
 
 
 
-## Архитектура {#architecture}
+## Архитектура \\{#architecture\\}
 
 ClickHouse Government полностью автономен в рамках вашей среды развертывания и состоит из вычислительных ресурсов, управляемых в Kubernetes, и хранилища в совместимом с S3 объектном хранилище.
 
@@ -61,17 +61,17 @@ ClickHouse Government полностью автономен в рамках ва
 
 
 
-## Процесс подключения {#onboarding-process}
+## Процесс подключения \\{#onboarding-process\\}
 
 Клиенты могут начать процесс подключения, обратившись [к нам](https://clickhouse.com/government). Для подходящих клиентов мы предоставим подробное руководство по развертыванию окружения и доступ к образам контейнеров и Helm-чартам для развертывания.
 
 
 
-## Общие требования {#general-requirements}
+## Общие требования \\{#general-requirements\\}
 
 В этом разделе приведен обзор ресурсов, необходимых для развертывания ClickHouse Government. Подробные руководства по развертыванию предоставляются в рамках онбординга. Типы и размеры экземпляров/серверов зависят от сценария использования.
 
-### ClickHouse Government в AWS {#clickhouse-government-aws}
+### ClickHouse Government в AWS \\{#clickhouse-government-aws\\}
 
 Необходимые ресурсы:
 - [ECR](https://docs.aws.amazon.com/ecr/) для получения образов и Helm-чартов

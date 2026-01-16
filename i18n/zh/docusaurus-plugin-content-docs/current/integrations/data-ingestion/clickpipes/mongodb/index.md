@@ -20,7 +20,7 @@ import ch_permissions from '@site/static/images/integrations/data-ingestion/clic
 import Image from '@theme/IdealImage';
 import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 
-# 将数据从 MongoDB 摄取到 ClickHouse（使用 CDC） {#ingesting-data-from-mongodb-to-clickhouse-using-cdc}
+# 将数据从 MongoDB 摄取到 ClickHouse（使用 CDC） \\{#ingesting-data-from-mongodb-to-clickhouse-using-cdc\\}
 
 <BetaBadge/>
 
@@ -34,7 +34,7 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 
 你可以使用 ClickPipes 将 MongoDB 数据库中的数据摄取到 ClickHouse Cloud 中。源 MongoDB 数据库可以部署在本地，或者使用 MongoDB Atlas 等服务托管在云端。
 
-## 前置条件 {#prerequisites}
+## 前置条件 \\{#prerequisites\\}
 
 在开始之前，需要先确保 MongoDB 数据库已正确配置用于复制。配置步骤取决于 MongoDB 的部署方式，请按照下方相应的指南进行操作：
 
@@ -46,7 +46,7 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 
 在完成源 MongoDB 数据库的设置之后，即可继续创建 ClickPipe。
 
-## 创建 ClickPipe {#create-your-clickpipe}
+## 创建 ClickPipe \\{#create-your-clickpipe\\}
 
 请确保您已登录到您的 ClickHouse Cloud 账号。如果您还没有账号，可以在[这里](https://cloud.clickhouse.com/)注册。
 
@@ -62,7 +62,7 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 
 <Image img={mongodb_tile} alt="选择 MongoDB" size="lg" border/>
 
-### 添加源 MongoDB 数据库连接 {#add-your-source-mongodb-database-connection}
+### 添加源 MongoDB 数据库连接 \\{#add-your-source-mongodb-database-connection\\}
 
 4. 填写您在前置条件步骤中配置的源 MongoDB 数据库连接详细信息。
 
@@ -73,7 +73,7 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 
    <Image img={mongodb_connection_details} alt="填写连接详情" size="lg" border/>
 
-#### （可选）配置 SSH 隧道 {#optional-set-up-ssh-tunneling}
+#### （可选）配置 SSH 隧道 \\{#optional-set-up-ssh-tunneling\\}
 
 如果您的源 MongoDB 数据库不对公网开放，您可以配置 SSH 隧道的相关信息。
 
@@ -91,7 +91,7 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 
 在填写完连接详细信息后，点击 `Next`。
 
-#### 配置高级设置 {#advanced-settings}
+#### 配置高级设置 \\{#advanced-settings\\}
 
 如有需要，您可以配置高级设置。以下是每个设置的简要说明：
 
@@ -99,7 +99,7 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 - **Pull batch size**：单次批量拉取的行数。这是一个尽力而为的目标值，在某些情况下可能无法被严格遵守。
 - **Snapshot number of tables in parallel**：初始快照期间并行拉取的表数量。当您拥有大量表并希望控制并行获取的表数量时，这一选项非常有用。
 
-### 配置表 {#configure-the-tables}
+### 配置表 \\{#configure-the-tables\\}
 
 5. 在这里您可以为 ClickPipe 选择目标数据库。您可以选择一个已有数据库，或者新建一个数据库。
 
@@ -107,17 +107,17 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 
 6. 您可以选择要从源 MongoDB 数据库复制的表。在选择表的同时，您也可以选择在目标 ClickHouse 数据库中对这些表进行重命名。
 
-### 审核权限并启动 ClickPipe {#review-permissions-and-start-the-clickpipe}
+### 审核权限并启动 ClickPipe \\{#review-permissions-and-start-the-clickpipe\\}
 
 7. 在权限下拉列表中选择 "Full access" 角色，然后点击 "Complete Setup"。
 
    <Image img={ch_permissions} alt="审核权限" size="lg" border/>
 
-## 接下来该做什么？ {#whats-next}
+## 接下来该做什么？ \\{#whats-next\\}
 
 在使用 ClickPipe 将数据从 MongoDB 复制到 ClickHouse Cloud 之后，你可以将重点放在如何查询和建模数据以获得最佳性能。
 
-## 注意事项 {#caveats}
+## 注意事项 \\{#caveats\\}
 
 在使用此连接器时，需要注意以下几点：
 

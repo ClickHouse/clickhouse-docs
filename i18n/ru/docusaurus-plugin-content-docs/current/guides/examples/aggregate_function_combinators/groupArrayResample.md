@@ -7,9 +7,9 @@ sidebar_label: 'groupArrayResample'
 doc_type: 'reference'
 ---
 
-# groupArrayResample {#grouparrayresample}
+# groupArrayResample \\{#grouparrayresample\\}
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Комбинатор [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
 может быть применён к агрегатной функции [`groupArray`](/sql-reference/aggregate-functions/reference/sum),
@@ -18,7 +18,7 @@ doc_type: 'reference'
 (соответствующему минимальному ключу) из точек данных, попадающих в каждый интервал.
 Он формирует укрупнённое (downsampled) представление данных вместо сбора всех значений.
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
 Рассмотрим пример. Мы создадим таблицу, содержащую столбцы `name`, `age` и
 `wage` сотрудников, и вставим в неё некоторые данные:
@@ -60,6 +60,6 @@ SELECT groupArrayResample(30, 75, 30)(name, age) FROM employee_data
 └───────────────────────────────────────────────┘
 ```
 
-## См. также {#see-also}
+## См. также \\{#see-also\\}
 - [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
 - [`Комбинатор Resample`](/sql-reference/aggregate-functions/combinators#-resample)

@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# ClickHouse MCP Server を使用して LangChain/LangGraph AI エージェントを構築する方法 {#how-to-build-a-langchainlanggraph-ai-agent-using-clickhouse-mcp-server}
+# ClickHouse MCP Server を使用して LangChain/LangGraph AI エージェントを構築する方法 \\{#how-to-build-a-langchainlanggraph-ai-agent-using-clickhouse-mcp-server\\}
 
 このガイドでは、[ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できるようにするために、[ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を利用した [LangChain/LangGraph](https://github.com/langchain-ai/langgraph) AI エージェントの構築方法を学びます。
 
@@ -18,7 +18,7 @@ doc_type: 'guide'
 このサンプルは、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/langchain/langchain.ipynb) 内の notebook として利用できます。
 :::
 
-## 前提条件 {#prerequisites}
+## 前提条件 \\{#prerequisites\\}
 
 - システムに Python がインストールされている必要があります。
 - システムに `pip` がインストールされている必要があります。

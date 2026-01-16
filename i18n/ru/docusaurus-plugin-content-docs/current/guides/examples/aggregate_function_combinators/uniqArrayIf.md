@@ -7,9 +7,9 @@ sidebar_label: 'uniqArrayIf'
 doc_type: 'reference'
 ---
 
-# uniqArrayIf {#uniqarrayif}
+# uniqArrayIf \\{#uniqarrayif\\}
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Комбинаторы [`Array`](/sql-reference/aggregate-functions/combinators#-array) и [`If`](/sql-reference/aggregate-functions/combinators#-if) могут быть применены к функции [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
 для подсчёта количества уникальных значений в массивах для строк, удовлетворяющих
@@ -22,9 +22,9 @@ doc_type: 'reference'
 Это полезно, когда нужно посчитать уникальные элементы в массиве на основе 
 определённых условий, не используя `arrayJoin`.
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
-### Подсчёт уникальных товаров, просмотренных по типу сегмента и уровню вовлечённости {#count-unique-products}
+### Подсчёт уникальных товаров, просмотренных по типу сегмента и уровню вовлечённости \\{#count-unique-products\\}
 
 В этом примере мы используем таблицу с данными пользовательских сессий в интернет‑магазине, чтобы подсчитать количество уникальных товаров, просмотренных пользователями определённого сегмента, при этом метрикой вовлечённости является время, проведённое в сессии.
 
@@ -76,7 +76,7 @@ returning_customer_products: 2
 total_unique_products:       7
 ```
 
-## См. также {#see-also}
+## См. также \\{#see-also\\}
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
 - [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

@@ -22,15 +22,15 @@ import bigquery_12 from '@site/static/images/migrations/bigquery-12.png';
 import Image from '@theme/IdealImage';
 
 
-## 为什么选择 ClickHouse Cloud 而不是 BigQuery？ {#why-use-clickhouse-cloud-over-bigquery}
+## 为什么选择 ClickHouse Cloud 而不是 BigQuery？ \\{#why-use-clickhouse-cloud-over-bigquery\\}
 
 简而言之：在现代数据分析场景中，ClickHouse 比 BigQuery 更快、更便宜，也更强大：
 
 <Image img={bigquery_2} size="md" alt="ClickHouse vs BigQuery"/>
 
-## 从 BigQuery 向 ClickHouse Cloud 加载数据 {#loading-data-from-bigquery-to-clickhouse-cloud}
+## 从 BigQuery 向 ClickHouse Cloud 加载数据 \\{#loading-data-from-bigquery-to-clickhouse-cloud\\}
 
-### 数据集 {#dataset}
+### 数据集 \\{#dataset\\}
 
 作为展示从 BigQuery 迁移到 ClickHouse Cloud 典型流程的示例数据集，我们使用了 Stack Overflow 数据集，相关说明文档见[此处](/getting-started/example-datasets/stackoverflow)。该数据集包含自 2008 年至 2024 年 4 月期间出现在 Stack Overflow 上的每条 `post`、`vote`、`user`、`comment` 和 `badge`。该数据在 BigQuery 中的 schema 如下所示：
 
@@ -38,14 +38,14 @@ import Image from '@theme/IdealImage';
 
 对于希望在自己的 BigQuery 实例中填充该数据集以测试迁移步骤的用户，我们在一个 GCS bucket 中提供了这些表的 Parquet 格式数据，并提供了在 BigQuery 中创建并加载这些表的 DDL 命令，详见[此处](https://pastila.nl/?003fd86b/2b93b1a2302cfee5ef79fd374e73f431#hVPC52YDsUfXg2eTLrBdbA==)。
 
-### 数据迁移 {#migrating-data}
+### 数据迁移 \\{#migrating-data\\}
 
 在 BigQuery 和 ClickHouse Cloud 之间迁移数据，大致可以分为两类主要工作负载模式：
 
 - **初始批量加载与周期性更新** - 首先需要迁移一个初始数据集，随后按照固定周期（例如每天）执行更新。这里的更新通过重新发送已发生变更的行来处理——这些行通常通过某个可用于比较的列（例如日期列）来识别。删除操作则通过周期性地对整个数据集执行完全重新加载来处理。
 - **实时复制或 CDC** - 首先需要迁移一个初始数据集。随后对该数据集的变更必须在 ClickHouse 中实现近实时反映，只允许数秒级的延迟。这实质上是一个[CDC（变更数据捕获）流程](https://en.wikipedia.org/wiki/Change_data_capture)，即 BigQuery 中的表必须与 ClickHouse 中的表保持同步，也就是说，BigQuery 表中的插入、更新和删除必须应用到 ClickHouse 中对应的表上。
 
-#### 通过 Google Cloud Storage（GCS）进行批量加载 {#bulk-loading-via-google-cloud-storage-gcs}
+#### 通过 Google Cloud Storage（GCS）进行批量加载 \\{#bulk-loading-via-google-cloud-storage-gcs\\}
 
 BigQuery 支持将数据导出到 Google 的对象存储服务（GCS）。针对我们的示例数据集：
 
@@ -65,11 +65,11 @@ BigQuery 支持将数据导出到 Google 的对象存储服务（GCS）。针对
 
 在尝试以下示例之前，我们建议用户先查看[导出所需权限](https://cloud.google.com/bigquery/docs/exporting-data#required_permissions)和[数据位置方面的建议](https://cloud.google.com/bigquery/docs/exporting-data#data-locations)，以最大化导出与导入性能。
 
-### 通过计划查询实现实时复制或 CDC {#real-time-replication-or-cdc-via-scheduled-queries}
+### 通过计划查询实现实时复制或 CDC \\{#real-time-replication-or-cdc-via-scheduled-queries\\}
 
 CDC（变更数据捕获）是指在两个数据库之间保持表数据同步的过程。如果需要在近实时场景下处理更新和删除操作，这会变得更加复杂。一种方法是简单地利用 BigQuery 的[计划查询功能](https://cloud.google.com/bigquery/docs/scheduling-queries)定期导出数据。只要能够接受数据在插入 ClickHouse 时存在一定延迟，这种方法就非常容易实现和维护。示例见[这篇博客文章](https://clickhouse.com/blog/clickhouse-bigquery-migrating-data-for-realtime-queries#using-scheduled-queries)。
 
-## 模式设计 {#designing-schemas}
+## 模式设计 \{#designing-schemas\}
 
 Stack Overflow 数据集包含许多相关的表。我们建议优先迁移主表。这不一定是最大的那张表，而是您预计会收到最多分析查询的那张表。这样可以帮助您熟悉 ClickHouse 的核心概念。随着后续添加更多表，为了充分利用 ClickHouse 的特性并获得最佳性能，可能需要对该表进行重新建模。我们在[数据建模文档](/data-modeling/schema-design#next-data-modeling-techniques)中对这一建模过程进行了探讨。
 
@@ -103,7 +103,7 @@ CREATE TABLE stackoverflow.posts (
 ```
 
 
-### 优化数据类型 {#optimizing-types}
+### 优化数据类型 \{#optimizing-types\}
 
 按照[此处所述的流程](/data-modeling/schema-design)进行后，将得到如下模式：
 
@@ -147,7 +147,7 @@ INSERT INTO stackoverflow.posts SELECT * FROM gcs( 'gs://clickhouse-public-datas
 在我们的新模式中不会保留任何 null 值。上面的 insert 语句会将这些值隐式转换为其各自类型的默认值——整数为 0，字符串为空字符串。ClickHouse 还会自动将所有数值类型转换为其目标精度。
 
 
-## ClickHouse 主键有何不同？ {#how-are-clickhouse-primary-keys-different}
+## ClickHouse 主键有何不同？ \\{#how-are-clickhouse-primary-keys-different\\}
 
 如[此处](/migrations/bigquery)所述，与 BigQuery 一样，ClickHouse 不会对表主键列的取值强制唯一性。
 
@@ -163,7 +163,7 @@ INSERT INTO stackoverflow.posts SELECT * FROM gcs( 'gs://clickhouse-public-datas
 
 > 表中的所有列都会根据指定排序键的值进行排序，而不论这些列本身是否包含在排序键中。例如，如果使用 `CreationDate` 作为排序键，那么所有其他列中的取值顺序将与 `CreationDate` 列中的值顺序保持一致。可以指定多个排序键——其排序语义与 `SELECT` 查询中的 `ORDER BY` 子句相同。
 
-### 选择排序键 {#choosing-an-ordering-key}
+### 选择排序键 \\{#choosing-an-ordering-key\\}
 
 有关选择排序键时的考量因素和具体步骤，并以 posts 表为例进行说明，请参见[此处](/data-modeling/schema-design#choosing-an-ordering-key)。
 
@@ -203,7 +203,7 @@ PARTITION BY toYear(CreationDate)
 ```
 
 
-#### 应用场景 {#recommendations}
+#### 应用场景 \{#recommendations\}
 
 ClickHouse 中的分区与 BigQuery 中的分区有类似的用途，但也存在一些细微差别。更具体来说：
 
@@ -389,7 +389,7 @@ WHERE UserId = 8592047
 - 需要对数据进行完全重新排序。虽然投影中的表达式理论上可以使用 `GROUP BY`,但物化视图在维护聚合方面更为有效。查询优化器也更有可能利用使用简单重新排序的投影,即 `SELECT * ORDER BY x`。用户可以在此表达式中选择列的子集以减少存储占用空间。
 - 用户能够接受相关的存储占用空间增加以及两次写入数据的开销。测试对插入速度的影响并[评估存储开销](/data-compression/compression-in-clickhouse)。
 
-## 在 ClickHouse 中重写 BigQuery 查询 {#aggregate-functions}
+## 在 ClickHouse 中重写 BigQuery 查询 \{#aggregate-functions\}
 
 下文给出了 BigQuery 与 ClickHouse 的对比查询示例。该列表旨在演示如何利用 ClickHouse 的特性来大幅简化查询。这里的示例使用完整的 Stack Overflow 数据集（截至 2024 年 4 月）。
 
@@ -457,7 +457,7 @@ Peak memory usage: 567.41 MiB.
 ```
 
 
-## 聚合函数 {#conditionals-and-arrays}
+## 聚合函数 \{#conditionals-and-arrays\}
 
 在条件允许的情况下，应尽可能利用 ClickHouse 的聚合函数。下面我们展示如何使用 [`argMax` 函数](/sql-reference/aggregate-functions/reference/argmax) 来计算每一年浏览次数最多的问题。
 

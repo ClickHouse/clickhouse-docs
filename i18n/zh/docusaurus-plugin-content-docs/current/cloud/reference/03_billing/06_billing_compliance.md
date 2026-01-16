@@ -10,9 +10,9 @@ doc_type: 'guide'
 import billing_compliance from '@site/static/images/cloud/manage/billing_compliance.png';
 import Image from '@theme/IdealImage';
 
-# ClickHouse Cloud 计费合规 {#clickhouse-cloud-billing-compliance}
+# ClickHouse Cloud 计费合规 \\{#clickhouse-cloud-billing-compliance\\}
 
-## 计费合规性 {#billing-compliance}
+## 计费合规性 \\{#billing-compliance\\}
 
 您在使用 ClickHouse Cloud 时，必须为您的组织配置一项处于激活状态且有效的计费方式。在 30 天试用期结束或试用额度耗尽（以先到者为准）后，如需继续使用 ClickHouse Cloud，您可以选择以下计费方式：
 
@@ -26,7 +26,7 @@ import Image from '@theme/IdealImage';
 
 ClickHouse 按组织级别对服务进行计费。如果我们无法使用您当前的计费方式处理付款，您必须将其更新为上述三种选项之一，以避免服务中断。有关根据所选计费方式进行付款合规性的更多详情，请参阅下文。
 
-### 使用信用卡的按使用量付费计费 {#direct-payg}
+### 使用信用卡的按使用量付费计费 \\{#direct-payg\\}
 
 您可以使用信用卡，以按月后付的方式为您的 ClickHouse Cloud 用量付款。要添加信用卡，请按照这些[说明](#add-credit-card)操作。
 
@@ -42,7 +42,7 @@ ClickHouse 的月度计费周期从选择组织层级（Basic、Scale 或 Enterp
 
 我们会在最长 30 天内尝试使用该组织配置的计费方式处理付款。如果在 14 天后仍未成功收款，该组织内的所有服务将被停止。如果在这 30 天期限结束前仍未收到付款且我们未授予延期，与您的组织相关的所有数据和服务将被删除。
 
-### 云市场按使用量付费计费 {#cloud-marketplace-payg}
+### 云市场按使用量付费计费 \\{#cloud-marketplace-payg\\}
 
 您也可以配置按使用量付费（Pay-As-You-Go）计费，通过我们支持的云市场（AWS、GCP 或 Azure）向组织收取费用。要注册 Marketplace PAYG 计费，请按照这些[说明](#marketplace-payg)操作。
 
@@ -54,7 +54,7 @@ ClickHouse 的月度计费周期从选择组织层级（Basic、Scale 或 Enterp
 
 如果您的 PAYG 云市场订阅被取消或未能自动续订，计费将回退到该组织系统中登记的信用卡（如果有）。要添加信用卡，请[联系支持](/about-us/support)以获得帮助。如果未提供有效信用卡，将适用上述针对 [Direct PAYG](#direct-payg) 的相同未付款发票限制，包括服务暂停以及最终的数据删除。
 
-### 预承诺合约计费 {#committed-spend-contract}
+### 预承诺合约计费 \\{#committed-spend-contract\\}
 
 您可以通过预承诺合约为您的组织购买额度，方式包括：
 
@@ -73,13 +73,13 @@ ClickHouse 的月度计费周期从选择组织层级（Basic、Scale 或 Enterp
 
 如果您希望在现有额度到期或用尽之前添加额外额度，请[联系我们](https://clickhouse.com/company/contact)。
 
-### 如何使用信用卡付款 {#add-credit-card}
+### 如何使用信用卡付款 \\{#add-credit-card\\}
 
 在 ClickHouse Cloud 界面中进入 Billing（计费）部分，点击下面所示的“Add Credit Card”按钮完成设置。如果您有任何问题，请[联系支持](/about-us/support)获取帮助。
 
 <Image img={billing_compliance} size="md" alt="如何添加信用卡" />
 
-## 如何通过云市场支付 {#marketplace-payg}
+## 如何通过云市场支付 \\{#marketplace-payg\\}
 
 如果您想通过我们支持的云市场（AWS、GCP 或 Azure）进行支付，
 可以按照[此处](/cloud/marketplace/marketplace-billing)的步骤操作。

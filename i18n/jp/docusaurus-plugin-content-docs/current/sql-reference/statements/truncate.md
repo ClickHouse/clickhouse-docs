@@ -7,11 +7,11 @@ title: 'TRUNCATE 文'
 doc_type: 'reference'
 ---
 
-# TRUNCATE 文 {#truncate-statements}
+# TRUNCATE 文 \\{#truncate-statements\\}
 
 ClickHouse の `TRUNCATE` 文は、テーブルまたはデータベースからすべてのデータを、構造を保持したまま高速に削除するために使用されます。
 
-## TRUNCATE TABLE {#truncate-table}
+## TRUNCATE TABLE \\{#truncate-table\\}
 
 ```sql
 TRUNCATE TABLE [IF EXISTS] [db.]name [ON CLUSTER cluster] [SYNC]
@@ -42,7 +42,7 @@ TRUNCATE TABLE [IF EXISTS] [db.]name [ON CLUSTER cluster] [SYNC]
 * [`Buffer`](../../engines/table-engines/special/buffer.md)
 * [`Null`](../../engines/table-engines/special/null.md)
 
-## すべてのテーブルを TRUNCATE する {#truncate-all-tables}
+## すべてのテーブルを TRUNCATE する \\{#truncate-all-tables\\}
 
 ```sql
 TRUNCATE [ALL] TABLES FROM [IF EXISTS] db [LIKE | ILIKE | NOT LIKE '<pattern>'] [ON CLUSTER cluster]
@@ -60,7 +60,7 @@ TRUNCATE [ALL] TABLES FROM [IF EXISTS] db [LIKE | ILIKE | NOT LIKE '<pattern>'] 
 
 データベース内のすべてのテーブルから全データを削除します。
 
-## TRUNCATE DATABASE {#truncate-database}
+## TRUNCATE DATABASE \\{#truncate-database\\}
 
 ```sql
 TRUNCATE DATABASE [IF EXISTS] db [ON CLUSTER cluster]

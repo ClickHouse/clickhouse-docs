@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 このガイドでは、chDB からリモート ClickHouse サーバーにクエリを実行する方法について説明します。
 
-## セットアップ {#setup}
+## セットアップ \\{#setup\\}
 
 まずは仮想環境を作成します。
 
@@ -39,7 +39,7 @@ ipython
 
 このコードは、Python スクリプトやお使いのノートブック環境でも利用できます。
 
-## ClickPy 入門 {#an-intro-to-clickpy}
+## ClickPy 入門 \\{#an-intro-to-clickpy\\}
 
 これからクエリを実行する対象となるリモート ClickHouse サーバーは [ClickPy](https://clickpy.clickhouse.com) です。
 ClickPy は PyPI パッケージのすべてのダウンロードを記録し、UI 上からパッケージの統計情報を探索できるようにします。
@@ -47,7 +47,7 @@ ClickPy は PyPI パッケージのすべてのダウンロードを記録し、
 
 ClickPy について詳しくは、[GitHub リポジトリ](https://github.com/ClickHouse/clickpy)を参照してください。
 
-## ClickPy ClickHouse サービスにクエリを実行する {#querying-the-clickpy-clickhouse-service}
+## ClickPy ClickHouse サービスにクエリを実行する \\{#querying-the-clickpy-clickhouse-service\\}
 
 chDB をインポートします：
 
@@ -128,7 +128,7 @@ sklearn_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-## Pandas の DataFrame を結合する {#merging-pandas-dataframes}
+## Pandas の DataFrame を結合する \\{#merging-pandas-dataframes\\}
 
 これで 2 つの DataFrame が揃ったので、日付（`x` 列）をキーとして、次のように結合できます。
 
@@ -166,7 +166,7 @@ df.head(n=5)
 4  2018-03-02         5      23842  0.000210
 ```
 
-## Pandas DataFrame をクエリする {#querying-pandas-dataframes}
+## Pandas DataFrame をクエリする \\{#querying-pandas-dataframes\\}
 
 次に、最も良い比率と最も悪い比率となっている日付を見つけたいとします。
 そのために chDB に戻り、それらの値を計算します。

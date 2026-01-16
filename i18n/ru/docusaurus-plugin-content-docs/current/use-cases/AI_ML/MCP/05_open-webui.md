@@ -25,19 +25,19 @@ import AddConnection from '@site/static/images/use-cases/AI_ML/MCP/7_add_connect
 import OpenAIModels from '@site/static/images/use-cases/AI_ML/MCP/8_openai_models_more.png';
 import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation.png';
 
-# Использование MCP-сервера ClickHouse с Open WebUI {#using-clickhouse-mcp-server-with-open-webui}
+# Использование MCP-сервера ClickHouse с Open WebUI \\{#using-clickhouse-mcp-server-with-open-webui\\}
 
 > В данном руководстве описывается настройка [Open WebUI](https://github.com/open-webui/open-webui) с MCP-сервером ClickHouse
 > и подключение к примерам наборов данных ClickHouse.
 
 <VerticalStepper headerLevel="h2">
 
-## Установите uv {#install-uv}
+## Установите uv \\{#install-uv\\}
 
 Вам нужно установить [uv](https://docs.astral.sh/uv/), чтобы выполнить инструкции из этого руководства.
 Если вы не хотите использовать uv, вам потребуется обновить конфигурацию MCP Server, чтобы использовать другой менеджер пакетов.
 
-## Запуск Open WebUI {#launch-open-webui}
+## Запуск Open WebUI \\{#launch-open-webui\\}
 
 Чтобы запустить Open WebUI, выполните следующую команду:
 
@@ -47,7 +47,7 @@ uv run --with open-webui open-webui serve
 
 Перейдите по адресу [http://localhost:8080/](http://localhost:8080/), чтобы открыть веб-интерфейс.
 
-## Настройка сервера ClickHouse MCP {#configure-clickhouse-mcp-server}
+## Настройка сервера ClickHouse MCP \\{#configure-clickhouse-mcp-server\\}
 
 Чтобы настроить сервер ClickHouse MCP, нам нужно будет представить интерфейс сервера MCP в виде конечных точек OpenAPI.
 Сначала зададим переменные окружения, которые позволят нам подключиться к ClickHouse SQL Playground:
@@ -88,7 +88,7 @@ uvx mcpo --port 8000 -- uv run --with mcp-clickhouse --python 3.10 mcp-clickhous
 
 <Image img={ListOfTools} alt="Список инструментов Open WebUI" size="md" />
 
-## Настройка OpenAI {#configure-openai}
+## Настройка OpenAI \\{#configure-openai\\}
 
 По умолчанию Open WebUI работает с моделями Ollama, но мы также можем добавить конечные точки API, совместимые с OpenAI.
 Они настраиваются через меню настроек, но в этот раз нам нужно перейти на вкладку `Connections`:
@@ -103,7 +103,7 @@ uvx mcpo --port 8000 -- uv run --with mcp-clickhouse --python 3.10 mcp-clickhous
 
 <Image img={OpenAIModels} alt="Open WebUI — модели" size="md"/>
 
-## Общение с ClickHouse MCP Server через Open WebUI {#chat-to-clickhouse-mcp-server}
+## Общение с ClickHouse MCP Server через Open WebUI \\{#chat-to-clickhouse-mcp-server\\}
 
 Теперь можно начать диалог, и Open WebUI при необходимости обратится к MCP Server:
 

@@ -23,7 +23,7 @@ import splunk_012 from '@site/static/images/integrations/tools/data-integration/
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# 将 ClickHouse Cloud 审计日志存储到 Splunk 中 {#storing-clickhouse-cloud-audit-logs-into-splunk}
+# 将 ClickHouse Cloud 审计日志存储到 Splunk 中 \{#storing-clickhouse-cloud-audit-logs-into-splunk\}
 
 <PartnerBadge/>
 
@@ -33,9 +33,9 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 此附加组件仅包含模块化输入，不提供任何额外的 UI。
 
-# 安装 {#installation}
+# 安装 \\{#installation\\}
 
-## 适用于 Splunk Enterprise {#for-splunk-enterprise}
+## 适用于 Splunk Enterprise \\{#for-splunk-enterprise\\}
 
 从 [Splunkbase](https://splunkbase.splunk.com/app/7709) 下载 ClickHouse Cloud Audit Add-on for Splunk。
 
@@ -51,14 +51,14 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 如果一切正常，此时应能看到已安装的 ClickHouse Audit logs 应用。否则，请检查 Splunkd 日志以定位错误。
 
-# 模块化输入配置 {#modular-input-configuration}
+# 模块化输入配置 \\{#modular-input-configuration\\}
 
 要配置模块化输入，首先需要从您的 ClickHouse Cloud 部署中获取以下信息：
 
 - 组织 ID
 - 管理员 [API Key](/cloud/manage/openapi)
 
-## 从 ClickHouse Cloud 获取信息 {#getting-information-from-clickhouse-cloud}
+## 从 ClickHouse Cloud 获取信息 \\{#getting-information-from-clickhouse-cloud\\}
 
 登录 [ClickHouse Cloud 控制台](https://console.clickhouse.cloud/)。
 
@@ -78,7 +78,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <Image img={splunk_007} size="lg" alt="ClickHouse Cloud 控制台展示需要保存的已生成 API Key 和 secret" border />
 
-## 在 Splunk 中配置数据输入 {#configure-data-input-in-splunk}
+## 在 Splunk 中配置数据输入 \\{#configure-data-input-in-splunk\\}
 
 回到 Splunk，依次进入 Settings -> Data inputs。
 
@@ -98,7 +98,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 数据输入已配置完成，现在可以开始浏览审计日志。
 
-# 用法 {#usage}
+# 用法 \\{#usage\\}
 
 模块化输入会将数据存储在 Splunk 中。要查看这些数据，可以在 Splunk 中使用通用搜索视图。
 

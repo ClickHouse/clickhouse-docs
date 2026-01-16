@@ -25,7 +25,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 在 [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) 上通过按需付费（PAYG，按使用量付费）的公共方案开始使用 ClickHouse Cloud。
 
 
-## 先决条件 {#prerequisites}
+## 先决条件 \\{#prerequisites\\}
 
 - 一个已由计费管理员授予购买权限的 Azure 项目。
 - 若要在 Azure Marketplace 中订阅 ClickHouse Cloud，必须使用具有购买权限的账户登录，并选择相应的项目。

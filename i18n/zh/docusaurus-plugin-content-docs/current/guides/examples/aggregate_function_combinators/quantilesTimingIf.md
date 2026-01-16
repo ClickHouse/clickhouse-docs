@@ -7,14 +7,14 @@ sidebar_label: 'quantilesTimingIf'
 doc_type: 'reference'
 ---
 
-# quantilesTimingIf {#quantilestimingif}
+# quantilesTimingIf \\{#quantilestimingif\\}
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
 函数，使用 `quantilesTimingIf` 聚合组合器函数来计算满足条件为 true 的行的耗时值分位数。
 
-## 使用示例 {#example-usage}
+## 使用示例 \\{#example-usage\\}
 
 在这个示例中，我们将创建一个表，用于存储不同接口端点的 API 响应时间，
 并使用 `quantilesTimingIf` 来计算成功请求的响应时间分位数。
@@ -78,6 +78,6 @@ GROUP BY endpoint;
    └──────────┴─────────────────────────────────────────────────────────────────────┘
 ```
 
-## 另请参阅 {#see-also}
+## 另请参阅 \\{#see-also\\}
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
 - [`If` 组合器](/sql-reference/aggregate-functions/combinators#-if)

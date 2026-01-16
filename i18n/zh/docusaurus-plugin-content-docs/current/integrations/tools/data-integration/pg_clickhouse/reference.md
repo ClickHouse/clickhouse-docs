@@ -7,13 +7,13 @@ doc_type: 'reference'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', '外部数据封装器', 'pg_clickhouse', '扩展']
 ---
 
-# pg_clickhouse 参考文档 {#pg_clickhouse-reference-documentation}
+# pg_clickhouse 参考文档 \{#pg_clickhouse-reference-documentation\}
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 pg_clickhouse 是一个 PostgreSQL 扩展，可在 ClickHouse 数据库上远程执行查询，并提供一个[外部数据封装器（foreign data wrapper）]。它支持 PostgreSQL 13 及更高版本以及 ClickHouse 23 及更高版本。
 
-## 入门 {#getting-started}
+## 入门 \{#getting-started\}
 
 试用 pg&#95;clickhouse 最简单的方式是使用提供的 [Docker image]，该镜像基于标准 PostgreSQL Docker 镜像，并预装了 pg&#95;clickhouse 扩展：
 
@@ -26,7 +26,7 @@ docker exec -it pg_clickhouse psql -U postgres
 请参阅[教程](tutorial.md)，开始导入 ClickHouse 表并启用查询下推。
 
 
-## 用法 {#usage}
+## 用法 \{#usage\}
 
 ```sql
 CREATE EXTENSION pg_clickhouse;
@@ -39,7 +39,7 @@ IMPORT FOREIGN SCHEMA taxi FROM SERVER taxi_srv INTO taxi;
 ```
 
 
-## 版本策略 {#versioning-policy}
+## 版本策略 \\{#versioning-policy\\}
 
 pg_clickhouse 在其公开发布中遵循[语义化版本]。
 
@@ -57,11 +57,11 @@ pg_clickhouse 在其公开发布中遵循[语义化版本]。
 
 另一方面，一个递增次版本或主版本的发布，则会附带 SQL 升级脚本，所有包含该扩展的现有数据库都必须运行 `ALTER EXTENSION pg_clickhouse UPDATE` 才能获得升级带来的好处。
 
-## DDL SQL 参考 {#ddl-sql-reference}
+## DDL SQL 参考 \\{#ddl-sql-reference\\}
 
 以下 SQL [DDL] 表达式使用 pg_clickhouse。
 
-### CREATE EXTENSION {#create-extension}
+### CREATE EXTENSION \{#create-extension\}
 
 使用 [CREATE EXTENSION] 将 pg&#95;clickhouse 扩展添加到数据库：
 
@@ -77,7 +77,7 @@ CREATE EXTENSION pg_clickhouse WITH SCHEMA ch;
 ```
 
 
-### ALTER EXTENSION {#alter-extension}
+### ALTER EXTENSION \\{#alter-extension\\}
 
 使用 [ALTER EXTENSION] 来更改 pg_clickhouse。示例：
 
@@ -94,7 +94,7 @@ CREATE EXTENSION pg_clickhouse WITH SCHEMA ch;
     ALTER EXTENSION pg_clickhouse SET SCHEMA ch;
     ```
 
-### DROP EXTENSION {#drop-extension}
+### DROP EXTENSION \{#drop-extension\}
 
 使用 [DROP EXTENSION] 从数据库中删除 pg&#95;clickhouse 扩展：
 
@@ -110,7 +110,7 @@ DROP EXTENSION pg_clickhouse CASCADE;
 ```
 
 
-### CREATE SERVER {#create-server}
+### CREATE SERVER \{#create-server\}
 
 使用 [CREATE SERVER] 语句创建一个连接到 ClickHouse 服务器的外部服务器（foreign server）。示例：
 
@@ -133,7 +133,7 @@ CREATE SERVER taxi_srv FOREIGN DATA WRAPPER clickhouse_fdw
   * 当 `driver` 为 &quot;http&quot; 且 `host` 不是 ClickHouse Cloud 主机时为 8123
 
 
-### ALTER SERVER {#alter-server}
+### ALTER SERVER \{#alter-server\}
 
 使用 [ALTER SERVER] 来修改外部服务器。示例：
 
@@ -144,7 +144,7 @@ ALTER SERVER taxi_srv OPTIONS (SET driver 'http');
 选项与 [CREATE SERVER](#create-server) 中的相同。
 
 
-### DROP SERVER {#drop-server}
+### DROP SERVER \{#drop-server\}
 
 使用 [DROP SERVER] 删除外部服务器：
 
@@ -159,7 +159,7 @@ DROP SERVER taxi_srv CASCADE;
 ```
 
 
-### CREATE USER MAPPING {#create-user-mapping}
+### CREATE USER MAPPING \{#create-user-mapping\}
 
 使用 [CREATE USER MAPPING] 将 PostgreSQL 用户映射为 ClickHouse 用户。例如，在通过 `taxi_srv` 外部服务器进行连接时，将当前 PostgreSQL 用户映射到远程 ClickHouse 用户：
 
@@ -174,7 +174,7 @@ CREATE USER MAPPING FOR CURRENT_USER SERVER taxi_srv
 * `password`：ClickHouse 用户的密码。
 
 
-### ALTER USER MAPPING {#alter-user-mapping}
+### ALTER USER MAPPING \{#alter-user-mapping\}
 
 使用 [ALTER USER MAPPING] 更改用户映射的定义：
 
@@ -186,7 +186,7 @@ ALTER USER MAPPING FOR CURRENT_USER SERVER taxi_srv
 这些选项与 [CREATE USER MAPPING](#create-user-mapping) 的选项相同。
 
 
-### DROP USER MAPPING {#drop-user-mapping}
+### DROP USER MAPPING \{#drop-user-mapping\}
 
 使用 [DROP USER MAPPING] 来删除用户映射：
 
@@ -195,7 +195,7 @@ DROP USER MAPPING FOR CURRENT_USER SERVER taxi_srv;
 ```
 
 
-### IMPORT FOREIGN SCHEMA {#import-foreign-schema}
+### IMPORT FOREIGN SCHEMA \\{#import-foreign-schema\\}
 
 使用 [IMPORT FOREIGN SCHEMA] 将某个 ClickHouse 数据库中定义的所有表作为外部表导入到 PostgreSQL 的某个 schema 中：
 
@@ -256,7 +256,7 @@ pg&#95;clickhouse 将检索指定 ClickHouse 数据库（上述示例中为 &quo
 :::
 
 
-### CREATE FOREIGN TABLE {#create-foreign-table}
+### CREATE FOREIGN TABLE \\{#create-foreign-table\\}
 
 使用 [CREATE FOREIGN TABLE] 创建一个外部表（foreign table），用于从 ClickHouse 数据库查询数据：
 
@@ -298,7 +298,7 @@ CREATE FOREIGN TABLE test (
 对于类型为 `AggregateFunction` 的列，pg&#95;clickhouse 会在用于计算该列的聚合函数名后自动追加 `Merge`。
 
 
-### ALTER FOREIGN TABLE {#alter-foreign-table}
+### ALTER FOREIGN TABLE \{#alter-foreign-table\}
 
 使用 [ALTER FOREIGN TABLE] 来修改外部表的定义：
 
@@ -309,7 +309,7 @@ ALTER TABLE table ALTER COLUMN b OPTIONS (SET AggregateFunction 'count');
 受支持的表和列选项与 [CREATE FOREIGN TABLE] 相同。
 
 
-### DROP FOREIGN TABLE {#drop-foreign-table}
+### DROP FOREIGN TABLE \{#drop-foreign-table\}
 
 使用 [DROP FOREIGN TABLE] 删除外部表：
 
@@ -325,7 +325,7 @@ DROP FOREIGN TABLE uact CASCADE;
 ```
 
 
-## DML SQL 参考 {#dml-sql-reference}
+## DML SQL 参考 \\{#dml-sql-reference\\}
 
 下面的 SQL [DML] 表达式会使用 pg&#95;clickhouse。示例依赖于这些由 [make-logs.sql] 创建的 ClickHouse 表：
 
@@ -352,7 +352,7 @@ CREATE TABLE nodes (
 ```
 
 
-### EXPLAIN {#explain}
+### EXPLAIN \\{#explain\\}
 
 [EXPLAIN] 命令按预期工作，但在使用 `VERBOSE` 选项时，会触发
 ClickHouse 发出“Remote SQL”查询：
@@ -374,7 +374,7 @@ try=# EXPLAIN (VERBOSE)
 该查询通过名为“Foreign Scan”的计划节点将远程 SQL 下推到 ClickHouse。
 
 
-### SELECT {#select}
+### SELECT \\{#select\\}
 
 使用 [SELECT] 语句在 pg&#95;clickhouse 表上执行查询，与在其他任意表上一样：
 
@@ -508,7 +508,7 @@ try=# EXPLAIN (ANALYZE, VERBOSE)
 现在，“Foreign Scan” 节点会按 `node_id` 下推聚合操作，将需要从 Postgres 拉回的行数从 1000 行（全部）减少到仅 8 行，每个节点一行。
 
 
-### PREPARE、EXECUTE、DEALLOCATE {#prepare-execute-deallocate}
+### PREPARE、EXECUTE、DEALLOCATE \\{#prepare-execute-deallocate\\}
 
 自 v0.1.2 起，pg&#95;clickhouse 支持参数化查询，这类查询主要通过 [PREPARE] 命令创建：
 
@@ -574,7 +574,7 @@ DEALLOCATE
 ```
 
 
-### INSERT {#insert}
+### INSERT \\{#insert\\}
 
 使用 [INSERT] 命令向远程 ClickHouse 表中插入数据：
 
@@ -588,7 +588,7 @@ INSERT 0 3
 ```
 
 
-### COPY {#copy}
+### COPY \\{#copy\\}
 
 使用 [COPY] 命令将一批数据行插入到远程 ClickHouse
 表中：
@@ -609,7 +609,7 @@ try=# COPY logs FROM stdin CSV;
 > 这一点计划在未来版本中改进。
 
 
-### LOAD {#load}
+### LOAD \\{#load\\}
 
 使用 [LOAD] 加载 pg&#95;clickhouse 共享库：
 
@@ -623,7 +623,7 @@ LOAD
 唯一可能需要 [LOAD] pg&#95;clickhouse 的情况是，在执行依赖相关参数的查询之前，预先通过 [SET](#set) 设置 pg&#95;clickhouse 参数。
 
 
-### SET {#set}
+### SET \\{#set\\}
 
 使用 [SET] 命令设置运行时参数 `pg_clickhouse.session_settings`。
 该参数用于配置在后续查询中要应用的 [ClickHouse settings]。示例：
@@ -677,7 +677,7 @@ pg&#95;clickhouse 不会验证这些设置，而是会在处理每个查询时�
 请注意，必须在设置 `pg_clickhouse.session_settings` 之前加载 pg&#95;clickhouse；可以使用 [共享库预加载]，或者直接使用该扩展中的任意对象以确保其被加载。
 
 
-### ALTER ROLE {#alter-role}
+### ALTER ROLE \\{#alter-role\\}
 
 使用 [ALTER ROLE] 的 `SET` 命令，为特定角色[预加载](#preloading) pg&#95;clickhouse
 和/或[设置](#set)其参数：
@@ -701,12 +701,12 @@ ALTER ROLE
 ```
 
 
-## 预加载 {#preloading}
+## 预加载 \\{#preloading\\}
 
 如果所有或几乎所有 Postgres 连接都需要使用 pg_clickhouse，
 建议使用[共享库预加载]来自动加载它：
 
-### `session_preload_libraries` {#session&#95;preload&#95;libraries}
+### `session_preload_libraries` \\{#session&#95;preload&#95;libraries\\}
 
 在每个新的 PostgreSQL 连接建立时加载共享库：
 
@@ -717,7 +717,7 @@ session_preload_libraries = pg_clickhouse
 无需重启服务器即可利用更新，只需重新连接即可。也可以通过 [ALTER ROLE](#alter-role) 为特定用户或角色单独设置。
 
 
-### `shared_preload_libraries` {#shared&#95;preload&#95;libraries}
+### `shared_preload_libraries` \\{#shared&#95;preload&#95;libraries\\}
 
 在 PostgreSQL 父进程启动时加载共享库：
 
@@ -728,9 +728,9 @@ shared_preload_libraries = pg_clickhouse
 对于每个会话来说有助于节省内存和加载开销，但在更新该库时需要重启集群。
 
 
-## 函数和运算符参考 {#function-and-operator-reference}
+## 函数和运算符参考 \\{#function-and-operator-reference\\}
 
-### 数据类型 {#data-types}
+### 数据类型 \\{#data-types\\}
 
 pg_clickhouse 将下列 ClickHouse 数据类型映射到 PostgreSQL 数据类型：
 
@@ -757,11 +757,11 @@ pg_clickhouse 将下列 ClickHouse 数据类型映射到 PostgreSQL 数据类型
 | UInt8      | smallint         |                               |
 | UUID       | uuid             |                               |
 
-### 函数 {#functions}
+### 函数 \\{#functions\\}
 
 这些函数提供查询 ClickHouse 数据库的接口。
 
-#### `clickhouse_raw_query` {#clickhouse&#95;raw&#95;query}
+#### `clickhouse_raw_query` \\{#clickhouse&#95;raw&#95;query\\}
 
 ```sql
 SELECT clickhouse_raw_query(
@@ -804,7 +804,7 @@ SELECT clickhouse_raw_query(
 ```
 
 
-### 下推函数 {#pushdown-functions}
+### 下推函数 \\{#pushdown-functions\\}
 
 在用于查询 ClickHouse 外部表的条件（`HAVING` 和 `WHERE` 子句）中，所有 PostgreSQL 内置函数都会以相同的名称和签名自动下推到 ClickHouse。不过，其中有一些函数在名称或签名上不同，必须映射到它们在 ClickHouse 中的等价函数。`pg_clickhouse` 会映射以下函数：
 
@@ -835,14 +835,14 @@ SELECT clickhouse_raw_query(
 * `strpos`： [position](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#position)
 * `regexp_like`： [match](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#match)
 
-### 自定义函数 {#custom-functions}
+### 自定义函数 \\{#custom-functions\\}
 
 这些由 `pg_clickhouse` 创建的自定义函数，为部分在 PostgreSQL 中没有等价实现的 ClickHouse 函数提供外部查询下推能力。  
 如果其中任何一个函数无法下推，则会抛出异常。
 
 * [dictGet](https://clickhouse.com/docs/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull)
 
-### 下推类型转换 {#pushdown-casts}
+### 下推类型转换 \\{#pushdown-casts\\}
 
 pg_clickhouse 会对兼容数据类型下推诸如 `CAST(x AS bigint)` 的类型转换。对于不兼容的数据类型，下推会失败；如果在此示例中 `x` 是 ClickHouse 的 `UInt64`，ClickHouse 将拒绝执行该转换。
 
@@ -854,7 +854,7 @@ pg_clickhouse 会对兼容数据类型下推诸如 `CAST(x AS bigint)` 的类型
 * [toUInt64](https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#touint64)
 * [toUInt128](https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#touint128)
 
-### 下推聚合 {#pushdown-aggregates}
+### 下推聚合 \\{#pushdown-aggregates\\}
 
 这些 PostgreSQL 聚合函数可以下推到 ClickHouse 执行。
 
@@ -864,7 +864,7 @@ pg_clickhouse 会对兼容数据类型下推诸如 `CAST(x AS bigint)` 的类型
 * [min](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/min)
 * [max](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/max)
 
-### 自定义聚合 {#custom-aggregates}
+### 自定义聚合 \\{#custom-aggregates\\}
 
 这些由 `pg_clickhouse` 创建的自定义聚合函数，为部分在 PostgreSQL 中没有等价实现的 ClickHouse 聚合函数提供外部查询下推能力。若这些函数中的任意一个无法下推，则会抛出异常。
 
@@ -879,7 +879,7 @@ pg_clickhouse 会对兼容数据类型下推诸如 `CAST(x AS bigint)` 的类型
 * [quantile](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantile)
 * [quantileExact](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantileexact)
 
-### 下推有序集合聚合函数 {#pushdown-ordered-set-aggregates}
+### 下推有序集合聚合函数 \{#pushdown-ordered-set-aggregates\}
 
 这些[有序集合聚合函数]会通过将它们的*直接参数*作为参数传入，并将其 `ORDER BY` 表达式作为聚合函数的参数，映射到 ClickHouse 的[参数化聚合函数]。例如，下面这个 PostgreSQL 查询：
 
@@ -901,11 +901,11 @@ SELECT quantile(0.25)(a) FROM t1;
 * `quantileExact(double)`: [quantileExact](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantileexact)
 
 
-## 作者 {#authors}
+## 作者 \\{#authors\\}
 
 [David E. Wheeler](https://justatheory.com/)
 
-## 版权 {#copyright}
+## 版权 \\{#copyright\\}
 
 版权 (c) 2025-2026，ClickHouse
 

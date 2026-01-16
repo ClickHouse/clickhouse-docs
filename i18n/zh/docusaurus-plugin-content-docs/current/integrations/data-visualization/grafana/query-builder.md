@@ -23,7 +23,7 @@ import trace_id_in_logs from '@site/static/images/integrations/data-visualizatio
 import demo_data_links from '@site/static/images/integrations/data-visualization/grafana/demo_data_links.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# 查询构建器 {#query-builder}
+# 查询构建器 \{#query-builder\}
 
 <ClickHouseSupportedBadge/>
 
@@ -40,12 +40,12 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 - [追踪](#traces)：针对搜索和查看追踪数据进行了优化。在配置了[默认值](./config.md#traces)的探索视图中效果最佳。
 - [SQL 编辑器](#sql-editor)：当你需要对查询进行完全控制时，可以使用 SQL 编辑器。在此模式下，可以执行任意 SQL 查询。
 
-## 查询类型 {#query-types}
+## 查询类型 \\{#query-types\\}
 
 *Query Type* 设置会更改查询构建器的布局，以匹配正在构建的查询类型。
 查询类型还决定在可视化数据时使用哪个面板。
 
-### 表格 {#table}
+### 表格 \\{#table\\}
 
 最灵活的查询类型是表格查询。它是一个通用查询构建器，用于处理简单查询和聚合查询。
 
@@ -63,7 +63,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 此查询类型会将数据渲染为表格。
 
-### 日志 {#logs}
+### 日志 \\{#logs\\}
 
 日志查询类型提供了一个专注于查询日志数据的查询构建器。
 可以在数据源的[日志配置](./config.md#logs)中配置默认值，使查询构建器预加载默认数据库/表和列。
@@ -97,7 +97,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <Image size="md" img={demo_logs_query_fields} alt="日志查询中额外字段示例" border />
 
-### 时间序列 {#time-series}
+### 时间序列 \\{#time-series\\}
 
 时间序列查询类型与 [table](#table) 类似，但更侧重于时间序列数据。
 
@@ -129,7 +129,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 该查询类型会使用时间序列面板来渲染数据。
 
-### Traces {#traces}
+### Traces \\{#traces\\}
 
 Trace 查询类型提供了一个查询构建器，用于便捷地搜索和查看 traces。
 它是为 OpenTelemetry 数据设计的，但也可以选择不同 schema 中的列来渲染 traces。
@@ -166,7 +166,7 @@ Trace 查询类型支持 [data links](#data-links)。
 
 此查询类型会在 Trace Search 模式下使用表格视图渲染数据，在 Trace ID 模式下使用 trace 面板渲染数据。
 
-## SQL 编辑器 {#sql-editor}
+## SQL 编辑器 \\{#sql-editor\\}
 
 对于过于复杂而无法通过查询构建器完成的查询，你可以使用 SQL 编辑器。
 这使你能够直接编写并运行原生 ClickHouse SQL，从而完全掌控查询。
@@ -180,7 +180,7 @@ Trace 查询类型支持 [data links](#data-links)。
 
 <Image size="md" img={demo_raw_sql_query} alt="原始 SQL 查询示例" border />
 
-## 数据链接 {#data-links}
+## 数据链接 \\{#data-links\\}
 
 Grafana 的 [data links](https://grafana.com/docs/grafana/latest/panels-visualizations/configure-data-links)
 可用于跳转到新的查询。
@@ -196,7 +196,7 @@ Grafana 的 [data links](https://grafana.com/docs/grafana/latest/panels-visualiz
   <Image size="md" img={trace_id_in_logs} alt="日志中的 trace 链接" border />
 </div>
 
-### 如何创建数据链接 {#how-to-make-a-data-link}
+### 如何创建数据链接 \\{#how-to-make-a-data-link\\}
 
 您可以在查询中选择名为 `traceID` 的列来创建数据链接。该名称不区分大小写，并且支持在“ID”前添加下划线。例如：`traceId`、`TraceId`、`TRACE_ID` 和 `tracE_iD` 都是有效的。
 
@@ -204,7 +204,7 @@ Grafana 的 [data links](https://grafana.com/docs/grafana/latest/panels-visualiz
 
 通过包含 trace ID 列，会自动在数据上附加 **View Trace** 和 **View Logs** 链接。
 
-### 链接功能 {#linking-abilities}
+### 链接功能 \\{#linking-abilities\\}
 
 在配置了数据链接后，可以使用提供的 trace ID 打开 trace 和日志。
 
@@ -218,14 +218,14 @@ Grafana 的 [data links](https://grafana.com/docs/grafana/latest/panels-visualiz
   <Image size="md" img={demo_data_links} alt="数据链接跳转示例" border />
 </div>
 
-## 宏 {#macros}
+## 宏 \\{#macros\\}
 
 宏是一种在查询中添加动态 SQL 的简单方式。
 在查询被发送到 ClickHouse 服务器之前，插件会展开宏并将其替换为完整的表达式。
 
 来自 SQL Editor 和 Query Builder 的查询都可以使用宏。
 
-### 使用宏 {#using-macros}
+### 使用宏 \\{#using-macros\\}
 
 宏可以出现在查询中的任意位置，必要时可以多次使用。
 
@@ -252,7 +252,7 @@ WHERE log_time >= toDateTime(1415792726) AND log_time <= toDateTime(1447328726)
 该插件还支持使用花括号 `{}` 的语法。当需要在[参数](/sql-reference/syntax.md#defining-and-using-query-parameters)中编写查询时，请使用这种语法。
 
 
-### 宏列表 {#list-of-macros}
+### 宏列表 \\{#list-of-macros\\}
 
 下面列出了插件中可用的所有宏：
 

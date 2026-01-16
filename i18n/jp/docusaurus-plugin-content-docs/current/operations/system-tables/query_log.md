@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.query_log {#systemquery_log}
+# system.query_log \\{#systemquery_log\\}
 
 <SystemTableCloud/>
 
@@ -37,7 +37,7 @@ ClickHouse はこのテーブルからデータを自動的に削除しません
 
 [log_formatted_queries](/operations/settings/settings#log_formatted_queries) 設定を使用して、フォーマット済みクエリを `formatted_query` 列に記録できます。
 
-## カラム {#columns}
+## カラム \\{#columns\\}
 
 * `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバーのホスト名。
 * `type` ([Enum8](../../sql-reference/data-types/enum.md)) — クエリの実行時に発生したイベントの種別。値：
@@ -132,7 +132,7 @@ ClickHouse はこのテーブルからデータを自動的に削除しません
 
 
 
-## 例 {#examples}
+## 例 \\{#examples\\}
 
 **基本的な例**
 

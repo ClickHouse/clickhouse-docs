@@ -7,7 +7,7 @@ title: 'FixedString(N)'
 doc_type: 'reference'
 ---
 
-# FixedString(N) {#fixedstringn}
+# FixedString(N) \\{#fixedstringn\\}
 
 一个固定长度为 `N` 字节的字符串（不是按字符数或码点数计算）。
 

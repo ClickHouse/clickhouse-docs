@@ -23,7 +23,7 @@ import s3_h from '@site/static/images/_snippets/s3/s3-h.png';
 この記事では、AWS IAMユーザーの構成、S3バケットの作成、およびClickHouseがバケットをS3ディスクとして使用するための構成の基本を説明します。
 使用する権限を決定するには、セキュリティチームと協力してください。これらを出発点として検討してください。
 
-### AWS IAMユーザーの作成 {#create-an-aws-iam-user}
+### AWS IAMユーザーの作成 \\{#create-an-aws-iam-user\\}
 
 以下の手順では、サービスアカウントユーザー(ログインユーザーではなく)を作成します。
 
@@ -69,7 +69,7 @@ import s3_h from '@site/static/images/_snippets/s3/s3-h.png';
 
 <Image size="md" img={s3_8} alt="IAMユーザーのARNをコピー" border force />
 
-### S3バケットの作成 {#create-an-s3-bucket}
+### S3バケットの作成 \\{#create-an-s3-bucket\\}
 
 1. S3 バケットセクションで`Create bucket`を選択します
 

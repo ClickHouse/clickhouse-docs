@@ -11,9 +11,9 @@ import observability_1 from '@site/static/images/use-cases/observability/observa
 import observability_2 from '@site/static/images/use-cases/observability/observability-2.png';
 import Image from '@theme/IdealImage';
 
-# 使用 ClickHouse 实现可观测性 {#using-clickhouse-for-observability}
+# 使用 ClickHouse 实现可观测性 \\{#using-clickhouse-for-observability\\}
 
-## 引言 {#introduction}
+## 引言 \\{#introduction\\}
 
 本指南面向希望使用 ClickHouse 构建自有、基于 SQL 的可观测性解决方案的用户，重点关注日志和追踪（traces）。内容涵盖构建自有方案的各个方面，包括对数据摄取的考虑、根据访问模式优化表结构，以及从非结构化日志中提取结构化信息。
 
@@ -27,7 +27,7 @@ import Image from '@theme/IdealImage';
 虽然我们推荐使用 OpenTelemetry（OTel）项目进行数据采集，但也可以使用其他框架和工具构建类似架构，例如 Vector 和 Fluentd（参见使用 Fluent Bit 的[示例](https://clickhouse.com/blog/kubernetes-logs-to-clickhouse-fluent-bit)）。也存在其他可视化工具，包括 Superset 和 Metabase。
 :::
 
-## 为什么使用 ClickHouse？ {#why-use-clickhouse}
+## 为什么使用 ClickHouse？ \\{#why-use-clickhouse\\}
 
 任何集中式可观测性存储最重要的特性，是它能够快速聚合、分析并检索来自不同来源的大量日志数据。这种集中化简化了故障排查，使定位服务中断的根本原因更加容易。
 
@@ -45,7 +45,7 @@ import Image from '@theme/IdealImage';
 - **二级索引** - ClickHouse 支持二级索引，例如 Bloom 过滤器，用于加速特定类型的查询。可以在列级别按需启用这些索引，从而为用户提供精细化控制，并允许他们评估成本与性能之间的权衡。
 - **开源与开放标准** - 作为一款开源数据库，ClickHouse 采用 OpenTelemetry 等开放标准。能够参与并积极贡献到这些项目中具有很大吸引力，同时还能避免供应商锁定带来的挑战。
 
-## 何时应在可观测性场景中使用 ClickHouse {#when-should-you-use-clickhouse-for-observability}
+## 何时应在可观测性场景中使用 ClickHouse \\{#when-should-you-use-clickhouse-for-observability\\}
 
 在可观测性数据方面使用 ClickHouse，意味着你需要采用基于 SQL 的可观测性方案。我们推荐阅读[这篇博客文章](https://clickhouse.com/blog/the-state-of-sql-based-observability)以了解基于 SQL 的可观测性的历史，但简而言之：
 
@@ -66,7 +66,7 @@ import Image from '@theme/IdealImage';
 - 你的用例以指标为主且需要 PromQL。在这种情况下，你仍然可以在使用 Prometheus 处理指标的同时，使用 ClickHouse 存储日志和链路追踪数据，并在展示层通过 Grafana 进行统一。
 - 你更倾向于等待整个生态系统进一步成熟，以及基于 SQL 的可观测性更加开箱即用。
 
-## 日志与追踪 {#logs-and-traces}
+## 日志与追踪 \\{#logs-and-traces\\}
 
 可观测性场景通常包含三个核心支柱：Logging、Tracing 和 Metrics，每一类都有不同的数据类型和访问模式。
 
@@ -85,7 +85,7 @@ import Image from '@theme/IdealImage';
 虽然 ClickHouse 可以用于存储 metrics 数据，但在 ClickHouse 中，这一支柱目前尚不够成熟，对 Prometheus 数据格式和 PromQL 等特性的支持仍在完善中。
 :::
 
-### 分布式追踪 {#distributed-tracing}
+### 分布式追踪 \\{#distributed-tracing\\}
 
 分布式追踪是可观测性中的关键特性。分布式追踪（通常简称为 trace）用于描绘请求在系统中的完整路径。请求源自终端用户或应用程序，并在系统中扩散，通常表现为在各个微服务之间的一系列操作流转。通过记录这一序列，并支持对后续事件进行关联，可观测性平台用户或 SRE 能够在不受架构复杂度或是否采用无服务器架构影响的情况下，对应用流程中的问题进行诊断。
 

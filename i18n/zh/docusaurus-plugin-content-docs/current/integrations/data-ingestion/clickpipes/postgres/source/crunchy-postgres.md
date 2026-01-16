@@ -14,11 +14,11 @@ import firewall_rules_crunchy_bridge from '@site/static/images/integrations/data
 import add_firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/add_firewall_rules_crunchy_bridge.png'
 import Image from '@theme/IdealImage';
 
-# Crunchy Bridge Postgres 源设置指南 {#crunchy-bridge-postgres-source-setup-guide}
+# Crunchy Bridge Postgres 源设置指南 \\{#crunchy-bridge-postgres-source-setup-guide\\}
 
 ClickPipes 支持 Postgres 12 及更高版本。
 
-## 启用逻辑复制 {#enable-logical-replication}
+## 启用逻辑复制 \{#enable-logical-replication\}
 
 Crunchy Bridge 默认已[启用](https://docs.crunchybridge.com/how-to/logical-replication)逻辑复制。请确保以下设置配置正确；如有不符，请进行相应调整。
 
@@ -29,7 +29,7 @@ SHOW max_replication_slots; -- should be 10
 ```
 
 
-## 创建 ClickPipes 用户并授予权限 {#creating-clickpipes-user-and-granting-permissions}
+## 创建 ClickPipes 用户并授予权限 \\{#creating-clickpipes-user-and-granting-permissions\\}
 
 使用 `postgres` 用户连接到你的 Crunchy Bridge Postgres，并运行以下命令：
 
@@ -73,7 +73,7 @@ SHOW max_replication_slots; -- should be 10
 
    `clickpipes` publication 将包含由指定表生成的一组变更事件，并会在之后用于摄取复制流。
 
-## 将 ClickPipes IP 加入允许列表 {#safe-list-clickpipes-ips}
+## 将 ClickPipes IP 加入允许列表 \\{#safe-list-clickpipes-ips\\}
 
 在 Crunchy Bridge 中添加 Firewall Rules，将 [ClickPipes IP](../../index.md#list-of-static-ips) 加入允许列表。
 
@@ -81,7 +81,7 @@ SHOW max_replication_slots; -- should be 10
 
 <Image size="lg" img={add_firewall_rules_crunchy_bridge} alt="为 ClickPipes 添加 Firewall Rules" border/>
 
-## 下一步？ {#whats-next}
+## 下一步？ \\{#whats-next\\}
 
 现在你可以[创建你的 ClickPipe](../index.md)，并开始将 Postgres 实例中的数据摄取到 ClickHouse Cloud 中。
 请务必记录好在设置 Postgres 实例时使用的连接信息，因为在创建 ClickPipe 的过程中你会需要这些信息。

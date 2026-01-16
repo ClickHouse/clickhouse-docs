@@ -5,7 +5,7 @@ title: 'topKWeighted'
 doc_type: 'reference'
 ---
 
-# topKWeighted {#topkweighted}
+# topKWeighted \{#topkweighted\}
 
 返回指定列中近似最常出现的值构成的数组。结果数组按照这些值的近似出现频率降序排序（而不是按值本身的大小排序）。此外，还会考虑每个值的权重。
 

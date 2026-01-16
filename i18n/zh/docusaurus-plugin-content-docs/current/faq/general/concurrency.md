@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['并发', 'QPS']
 ---
 
-# ClickHouse 是否支持高频并发查询？ {#does-clickhouse-support-frequent-concurrent-queries}
+# ClickHouse 是否支持高频并发查询？ \\{#does-clickhouse-support-frequent-concurrent-queries\\}
 
 ClickHouse 专为可直接对外服务的实时分析型应用而设计。它可以在 PB 级数据库上，将历史数据与实时写入相结合，以低延迟（小于 10 毫秒）和高并发（每秒超过 10,000 次查询）处理分析查询。
 

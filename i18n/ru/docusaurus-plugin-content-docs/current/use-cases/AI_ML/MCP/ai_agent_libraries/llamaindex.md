@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Как создать AI-агента LlamaIndex с использованием ClickHouse MCP Server {#how-to-build-a-llamaindex-ai-agent-using-clickhouse-mcp-server}
+# Как создать AI-агента LlamaIndex с использованием ClickHouse MCP Server \\{#how-to-build-a-llamaindex-ai-agent-using-clickhouse-mcp-server\\}
 
 В этом руководстве вы узнаете, как создать AI-агента [LlamaIndex](https://docs.llamaindex.ai), который
 может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) с помощью [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
@@ -19,7 +19,7 @@ doc_type: 'guide'
 Этот пример доступен в виде ноутбука в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/llamaindex/llamaindex.ipynb).
 :::
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \\{#prerequisites\\}
 
 - В вашей системе должен быть установлен Python.
 - В вашей системе должен быть установлен `pip`.
@@ -29,7 +29,7 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-## Установите библиотеки {#install-libraries}
+## Установите библиотеки \\{#install-libraries\\}
 
 Установите необходимые библиотеки, выполнив следующие команды:
 
@@ -38,7 +38,7 @@ pip install -q --upgrade pip
 pip install -q llama-index clickhouse-connect llama-index-llms-anthropic llama-index-tools-mcp
 ```
 
-## Настройка учётных данных {#setup-credentials}
+## Настройка учётных данных \\{#setup-credentials\\}
 
 Далее вам нужно указать свой ключ API Anthropic:
 
@@ -56,7 +56,7 @@ Enter Anthropic API Key: ········
 вы можете найти инструкции по настройке учетных данных в [документации LlamaIndex «LLMs»](https://docs.llamaindex.ai/en/stable/examples/)
 :::
 
-## Инициализируйте MCP Server {#initialize-mcp-and-agent}
+## Инициализируйте MCP Server \\{#initialize-mcp-and-agent\\}
 
 Теперь настройте ClickHouse MCP Server для работы с ClickHouse SQL Playground.
 Вам потребуется преобразовать их из функций Python в инструменты LlamaIndex:
@@ -88,7 +88,7 @@ mcp_tool_spec = McpToolSpec(
 tools = await mcp_tool_spec.to_tool_list_async()
 ```
 
-## Создайте агента {#create-agent}
+## Создайте агента \\{#create-agent\\}
 
 Теперь вы готовы создать агента, который имеет доступ к этим инструментам. Установите максимальное
 количество вызовов инструментов за один запуск равным 10. Вы можете изменить этот параметр при необходимости:
@@ -103,7 +103,7 @@ agent_worker = FunctionCallingAgentWorker.from_tools(
 agent = AgentRunner(agent_worker)
 ```
 
-## Инициализируйте LLM {#initialize-llm}
+## Инициализируйте LLM \\{#initialize-llm\\}
 
 Инициализируйте модель Claude Sonnet 4.0 следующим кодом:
 
@@ -112,7 +112,7 @@ from llama_index.llms.anthropic import Anthropic
 llm = Anthropic(model="claude-sonnet-4-0")
 ```
 
-## Запустите агента {#run-agent}
+## Запустите агента \\{#run-agent\\}
 
 Наконец, вы можете задать агенту вопрос:
 

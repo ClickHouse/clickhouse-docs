@@ -18,13 +18,13 @@ import VersionHistory from '@theme/VersionHistory/VersionHistory';
 下文所述的所有设置也可以在表 [system.settings](/docs/operations/system-tables/settings) 中找到。这些设置是从 [source](https://github.com/ClickHouse/ClickHouse/blob/master/src/Core/Settings.cpp) 自动生成的。
 
 
-## add_http_cors_header {#add_http_cors_header} 
+## add_http_cors_header \\{#add_http_cors_header\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 写入 HTTP CORS 响应头部。
 
-## additional_result_filter {#additional_result_filter}
+## additional_result_filter \{#additional_result_filter\}
 
 应用于 `SELECT` 查询结果的附加过滤表达式。
 此设置不会应用于任何子查询。
@@ -60,7 +60,7 @@ SETTINGS additional_result_filter = 'x != 2'
 ```
 
 
-## additional_table_filters {#additional_table_filters}
+## additional_table_filters \{#additional_table_filters\}
 
 <SettingsInfoBlock type="Map" default_value="{}" />
 
@@ -97,7 +97,7 @@ SETTINGS additional_table_filters = {'table_1': 'x != 2'}
 ```
 
 
-## aggregate_function_input_format {#aggregate_function_input_format}
+## aggregate_function_input_format \{#aggregate_function_input_format\}
 
 <SettingsInfoBlock type="AggregateFunctionInputFormat" default_value="state" />
 
@@ -139,7 +139,7 @@ INSERT INTO example FORMAT CSV
 注意：`value` 和 `array` 格式比默认的 `state` 格式更慢，因为它们在插入时需要创建并聚合这些值。
 
 
-## aggregate_functions_null_for_empty {#aggregate_functions_null_for_empty}
+## aggregate_functions_null_for_empty \{#aggregate_functions_null_for_empty\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -176,25 +176,25 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 ```
 
 
-## aggregation_in_order_max_block_bytes {#aggregation_in_order_max_block_bytes} 
+## aggregation_in_order_max_block_bytes \\{#aggregation_in_order_max_block_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="50000000" />
 
 按主键顺序聚合时累积的块的最大大小（字节）。较小的块大小可以在聚合的最终合并阶段实现更高的并行度。
 
-## aggregation_memory_efficient_merge_threads {#aggregation_memory_efficient_merge_threads} 
+## aggregation_memory_efficient_merge_threads \\{#aggregation_memory_efficient_merge_threads\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 在内存高效模式下，用于合并中间聚合结果的线程数。值越大，内存消耗越多。0 表示与 `max_threads` 相同。
 
-## allow_aggregate_partitions_independently {#allow_aggregate_partitions_independently} 
+## allow_aggregate_partitions_independently \\{#allow_aggregate_partitions_independently\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 当分区键与 GROUP BY 键一致时，在独立线程上启用对分区的独立聚合。当分区数量接近 CPU 核心数且各分区大小大致相同时，该设置效果最佳。
 
-## allow_archive_path_syntax {#allow_archive_path_syntax} 
+## allow_archive_path_syntax \\{#allow_archive_path_syntax\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -202,43 +202,43 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `::` 的路径解析为 `<archive>::<file>`。
 
-## allow_asynchronous_read_from_io_pool_for_merge_tree {#allow_asynchronous_read_from_io_pool_for_merge_tree} 
+## allow_asynchronous_read_from_io_pool_for_merge_tree \\{#allow_asynchronous_read_from_io_pool_for_merge_tree\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 使用后台 I/O 池从 MergeTree 表中读取数据。此设置可能会提升 I/O 受限查询的性能。
 
-## allow_changing_replica_until_first_data_packet {#allow_changing_replica_until_first_data_packet} 
+## allow_changing_replica_until_first_data_packet \\{#allow_changing_replica_until_first_data_packet\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 如果启用此设置，在对冲请求中，即使我们已经取得了一些进展（但在 `receive_data_timeout` 超时时间内进度没有更新），在收到第一个数据包之前仍然可以建立新的连接；否则，一旦我们首次取得进展，就会禁止切换副本。
 
-## allow_create_index_without_type {#allow_create_index_without_type} 
+## allow_create_index_without_type \\{#allow_create_index_without_type\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 允许在不指定 TYPE 的情况下执行 CREATE INDEX 查询。该查询将被忽略。用于 SQL 兼容性测试。
 
-## allow_custom_error_code_in_throwif {#allow_custom_error_code_in_throwif} 
+## allow_custom_error_code_in_throwif \\{#allow_custom_error_code_in_throwif\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在函数 throwIf() 中启用自定义错误码。若为 true，被抛出的异常可能会具有非预期的错误码。
 
-## allow_ddl {#allow_ddl} 
+## allow_ddl \\{#allow_ddl\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 将其设置为 `true` 时，允许用户执行 DDL 查询。
 
-## allow_deprecated_database_ordinary {#allow_deprecated_database_ordinary} 
+## allow_deprecated_database_ordinary \\{#allow_deprecated_database_ordinary\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 允许创建基于已弃用 Ordinary 引擎的数据库
 
-## allow_deprecated_error_prone_window_functions {#allow_deprecated_error_prone_window_functions} 
+## allow_deprecated_error_prone_window_functions \\{#allow_deprecated_error_prone_window_functions\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -246,7 +246,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许使用已弃用且易出错的窗口函数（neighbor、runningAccumulate、runningDifferenceStartingWithFirstValue、runningDifference）
 
-## allow_deprecated_snowflake_conversion_functions {#allow_deprecated_snowflake_conversion_functions} 
+## allow_deprecated_snowflake_conversion_functions \\{#allow_deprecated_snowflake_conversion_functions\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -257,25 +257,25 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 要重新启用这些已弃用的函数（例如在迁移过渡期间），请将此设置设为 `true`。
 
-## allow_deprecated_syntax_for_merge_tree {#allow_deprecated_syntax_for_merge_tree} 
+## allow_deprecated_syntax_for_merge_tree \\{#allow_deprecated_syntax_for_merge_tree\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 允许使用已弃用的引擎定义语法来创建 *MergeTree 表
 
-## allow_distributed_ddl {#allow_distributed_ddl} 
+## allow_distributed_ddl \\{#allow_distributed_ddl\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 当设置为 `true` 时，允许用户执行分布式 DDL 查询。
 
-## allow_drop_detached {#allow_drop_detached} 
+## allow_drop_detached \\{#allow_drop_detached\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 允许执行 ALTER TABLE ... DROP DETACHED PART[ITION] ... 语句
 
-## allow_dynamic_type_in_join_keys {#allow_dynamic_type_in_join_keys} 
+## allow_dynamic_type_in_join_keys \\{#allow_dynamic_type_in_join_keys\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -283,13 +283,13 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许在 JOIN 键中使用 Dynamic 类型。为兼容性目的添加。不建议在 JOIN 键中使用 Dynamic 类型，因为与其他类型进行比较时可能会产生意外结果。
 
-## allow_execute_multiif_columnar {#allow_execute_multiif_columnar} 
+## allow_execute_multiif_columnar \\{#allow_execute_multiif_columnar\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 允许以列式方式执行 multiIf 函数
 
-## allow_experimental_alias_table_engine {#allow_experimental_alias_table_engine} 
+## allow_experimental_alias_table_engine \\{#allow_experimental_alias_table_engine\\}
 
 <ExperimentalBadge/>
 
@@ -299,7 +299,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许创建使用 Alias 引擎的表。
 
-## allow_experimental_analyzer {#allow_experimental_analyzer} 
+## allow_experimental_analyzer \\{#allow_experimental_analyzer\\}
 
 **别名**: `enable_analyzer`
 
@@ -309,7 +309,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许使用新的查询分析器。
 
-## allow_experimental_codecs {#allow_experimental_codecs} 
+## allow_experimental_codecs \\{#allow_experimental_codecs\\}
 
 <ExperimentalBadge/>
 
@@ -317,7 +317,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 如果将其设置为 true，则允许指定实验性的压缩编解码器（但目前还没有任何此类编解码器，因此该选项实际上不起任何作用）。
 
-## allow_experimental_correlated_subqueries {#allow_experimental_correlated_subqueries} 
+## allow_experimental_correlated_subqueries \\{#allow_experimental_correlated_subqueries\\}
 
 <BetaBadge/>
 
@@ -327,7 +327,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许执行关联子查询。
 
-## allow_experimental_database_glue_catalog {#allow_experimental_database_glue_catalog} 
+## allow_experimental_database_glue_catalog \\{#allow_experimental_database_glue_catalog\\}
 
 <BetaBadge/>
 
@@ -339,7 +339,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许使用 catalog_type = 'glue' 的实验性 DataLakeCatalog 数据库引擎
 
-## allow_experimental_database_hms_catalog {#allow_experimental_database_hms_catalog} 
+## allow_experimental_database_hms_catalog \\{#allow_experimental_database_hms_catalog\\}
 
 <ExperimentalBadge/>
 
@@ -349,7 +349,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许在 catalog_type = 'hms' 时使用实验性数据库引擎 DataLakeCatalog
 
-## allow_experimental_database_iceberg {#allow_experimental_database_iceberg} 
+## allow_experimental_database_iceberg \\{#allow_experimental_database_iceberg\\}
 
 <BetaBadge/>
 
@@ -361,7 +361,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许使用 catalog_type = 'iceberg' 的实验性数据库引擎 DataLakeCatalog。
 
-## allow_experimental_database_materialized_postgresql {#allow_experimental_database_materialized_postgresql} 
+## allow_experimental_database_materialized_postgresql \\{#allow_experimental_database_materialized_postgresql\\}
 
 <ExperimentalBadge/>
 
@@ -369,7 +369,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许创建使用 Engine=MaterializedPostgreSQL(...) 的数据库。
 
-## allow_experimental_database_paimon_rest_catalog {#allow_experimental_database_paimon_rest_catalog} 
+## allow_experimental_database_paimon_rest_catalog \\{#allow_experimental_database_paimon_rest_catalog\\}
 
 <ExperimentalBadge/>
 
@@ -379,7 +379,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许使用实验性数据库引擎 DataLakeCatalog（catalog_type = 'paimon_rest'）
 
-## allow_experimental_database_unity_catalog {#allow_experimental_database_unity_catalog} 
+## allow_experimental_database_unity_catalog \\{#allow_experimental_database_unity_catalog\\}
 
 <BetaBadge/>
 
@@ -391,7 +391,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许使用 catalog_type = 'unity' 的实验性 DataLakeCatalog 数据库引擎
 
-## allow_experimental_delta_kernel_rs {#allow_experimental_delta_kernel_rs} 
+## allow_experimental_delta_kernel_rs \\{#allow_experimental_delta_kernel_rs\\}
 
 <BetaBadge/>
 
@@ -401,7 +401,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 启用 delta-kernel-rs 的实验性实现。
 
-## allow_experimental_delta_lake_writes {#allow_experimental_delta_lake_writes} 
+## allow_experimental_delta_lake_writes \\{#allow_experimental_delta_lake_writes\\}
 
 <ExperimentalBadge/>
 
@@ -411,7 +411,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 启用 delta-kernel 写入特性。
 
-## allow_experimental_funnel_functions {#allow_experimental_funnel_functions} 
+## allow_experimental_funnel_functions \\{#allow_experimental_funnel_functions\\}
 
 <ExperimentalBadge/>
 
@@ -419,7 +419,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 启用实验性的漏斗分析函数。
 
-## allow_experimental_hash_functions {#allow_experimental_hash_functions} 
+## allow_experimental_hash_functions \\{#allow_experimental_hash_functions\\}
 
 <ExperimentalBadge/>
 
@@ -427,7 +427,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 启用实验性哈希函数
 
-## allow_experimental_iceberg_compaction {#allow_experimental_iceberg_compaction} 
+## allow_experimental_iceberg_compaction \\{#allow_experimental_iceberg_compaction\\}
 
 <ExperimentalBadge/>
 
@@ -437,7 +437,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许显式对 Iceberg 表使用 `OPTIMIZE`。
 
-## allow_experimental_insert_into_iceberg {#allow_experimental_insert_into_iceberg} 
+## allow_experimental_insert_into_iceberg \\{#allow_experimental_insert_into_iceberg\\}
 
 <ExperimentalBadge/>
 
@@ -447,7 +447,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许执行向 Iceberg 插入数据的 `insert` 查询。
 
-## allow_experimental_join_right_table_sorting {#allow_experimental_join_right_table_sorting} 
+## allow_experimental_join_right_table_sorting \\{#allow_experimental_join_right_table_sorting\\}
 
 <ExperimentalBadge/>
 
@@ -457,7 +457,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 如果将其设置为 true，并且满足 `join_to_sort_minimum_perkey_rows` 和 `join_to_sort_maximum_table_rows` 的条件，则会按键对右表重新排序，以提升左连接或内哈希连接的性能。
 
-## allow_experimental_kafka_offsets_storage_in_keeper {#allow_experimental_kafka_offsets_storage_in_keeper} 
+## allow_experimental_kafka_offsets_storage_in_keeper \\{#allow_experimental_kafka_offsets_storage_in_keeper\\}
 
 <ExperimentalBadge/>
 
@@ -467,7 +467,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许启用将 Kafka 相关偏移量存储在 ClickHouse Keeper 中的实验性功能。启用后，可以在 Kafka 表引擎中指定 ClickHouse Keeper 路径和副本名称。这样将使用一种新的存储引擎类型来替代常规的 Kafka 引擎，该引擎主要将已提交的偏移量存储在 ClickHouse Keeper 中。
 
-## allow_experimental_kusto_dialect {#allow_experimental_kusto_dialect} 
+## allow_experimental_kusto_dialect \\{#allow_experimental_kusto_dialect\\}
 
 <ExperimentalBadge/>
 
@@ -477,7 +477,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 启用 Kusto Query Language (KQL) —— 一种替代 SQL 的查询语言。
 
-## allow_experimental_materialized_postgresql_table {#allow_experimental_materialized_postgresql_table} 
+## allow_experimental_materialized_postgresql_table \\{#allow_experimental_materialized_postgresql_table\\}
 
 <ExperimentalBadge/>
 
@@ -485,7 +485,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许使用 `MaterializedPostgreSQL` 表引擎。该功能为实验性质，默认关闭。
 
-## allow_experimental_nlp_functions {#allow_experimental_nlp_functions} 
+## allow_experimental_nlp_functions \\{#allow_experimental_nlp_functions\\}
 
 <ExperimentalBadge/>
 
@@ -493,7 +493,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 启用自然语言处理相关的实验性函数。
 
-## allow_experimental_object_storage_queue_hive_partitioning {#allow_experimental_object_storage_queue_hive_partitioning} 
+## allow_experimental_object_storage_queue_hive_partitioning \\{#allow_experimental_object_storage_queue_hive_partitioning\\}
 
 <ExperimentalBadge/>
 
@@ -503,7 +503,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许在 S3Queue/AzureQueue 引擎中使用 Hive 分区
 
-## allow_experimental_parallel_reading_from_replicas {#allow_experimental_parallel_reading_from_replicas} 
+## allow_experimental_parallel_reading_from_replicas \\{#allow_experimental_parallel_reading_from_replicas\\}
 
 **别名**: `enable_parallel_replicas`
 
@@ -511,7 +511,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 在执行 SELECT 查询时，每个分片最多使用 `max_parallel_replicas` 个副本。读取将被并行化并动态协调。0 - 禁用，1 - 启用，在发生故障时静默禁用，2 - 启用，在发生故障时抛出异常。
 
-## allow_experimental_prql_dialect {#allow_experimental_prql_dialect} 
+## allow_experimental_prql_dialect \\{#allow_experimental_prql_dialect\\}
 
 <ExperimentalBadge/>
 
@@ -521,7 +521,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 启用 PRQL —— 一种 SQL 的替代方案。
 
-## allow_experimental_query_deduplication {#allow_experimental_query_deduplication} 
+## allow_experimental_query_deduplication \\{#allow_experimental_query_deduplication\\}
 
 <ExperimentalBadge/>
 
@@ -529,7 +529,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 基于 part UUID 的 SELECT 查询实验性去重功能
 
-## allow_experimental_statistics {#allow_experimental_statistics} 
+## allow_experimental_statistics \\{#allow_experimental_statistics\\}
 
 <ExperimentalBadge/>
 
@@ -541,7 +541,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许定义带有[统计信息](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table)的列，并且[对统计信息进行操作](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics)。
 
-## allow_experimental_time_series_aggregate_functions {#allow_experimental_time_series_aggregate_functions} 
+## allow_experimental_time_series_aggregate_functions \\{#allow_experimental_time_series_aggregate_functions\\}
 
 <ExperimentalBadge/>
 
@@ -553,7 +553,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 实验性 timeSeries* 聚合函数，用于类 Prometheus 的时间序列重采样、速率和增量计算。
 
-## allow_experimental_time_series_table {#allow_experimental_time_series_table} 
+## allow_experimental_time_series_table \\{#allow_experimental_time_series_table\\}
 
 <ExperimentalBadge/>
 
@@ -566,7 +566,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 - 0 — 禁用 [TimeSeries](../../engines/table-engines/integrations/time-series.md) 表引擎。
 - 1 — 启用 [TimeSeries](../../engines/table-engines/integrations/time-series.md) 表引擎。
 
-## allow_experimental_window_view {#allow_experimental_window_view} 
+## allow_experimental_window_view \\{#allow_experimental_window_view\\}
 
 <ExperimentalBadge/>
 
@@ -574,7 +574,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 启用 WINDOW VIEW。该功能尚不够成熟。
 
-## allow_experimental_ytsaurus_dictionary_source {#allow_experimental_ytsaurus_dictionary_source} 
+## allow_experimental_ytsaurus_dictionary_source \\{#allow_experimental_ytsaurus_dictionary_source\\}
 
 <ExperimentalBadge/>
 
@@ -584,7 +584,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 用于与 YTsaurus 集成的实验性字典数据源。
 
-## allow_experimental_ytsaurus_table_engine {#allow_experimental_ytsaurus_table_engine} 
+## allow_experimental_ytsaurus_table_engine \\{#allow_experimental_ytsaurus_table_engine\\}
 
 <ExperimentalBadge/>
 
@@ -594,7 +594,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 用于与 YTsaurus 集成的实验性表引擎。
 
-## allow_experimental_ytsaurus_table_function {#allow_experimental_ytsaurus_table_function} 
+## allow_experimental_ytsaurus_table_function \\{#allow_experimental_ytsaurus_table_function\\}
 
 <ExperimentalBadge/>
 
@@ -604,7 +604,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 用于集成 YTsaurus 的实验性表引擎。
 
-## allow_general_join_planning {#allow_general_join_planning} 
+## allow_general_join_planning \\{#allow_general_join_planning\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -613,7 +613,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 允许使用更通用的 JOIN 规划算法，以处理更复杂的条件，但它仅适用于哈希 JOIN。
 如果未启用哈希 JOIN，则无论该设置的值为何，都会使用常规的 JOIN 规划算法。
 
-## allow_get_client_http_header {#allow_get_client_http_header} 
+## allow_get_client_http_header \\{#allow_get_client_http_header\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -621,13 +621,13 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许使用函数 `getClientHTTPHeader` 来获取当前 HTTP 请求中某个头部字段的值。出于安全原因，该设置默认未启用，因为某些请求头（例如 `Cookie`）可能包含敏感信息。请注意，`X-ClickHouse-*` 和 `Authentication` 请求头始终受限制，无法通过此函数获取。
 
-## allow_hyperscan {#allow_hyperscan} 
+## allow_hyperscan \\{#allow_hyperscan\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 允许使用 Hyperscan 库的函数。禁用该设置可避免潜在的长时间编译以及过多的资源消耗。
 
-## allow_introspection_functions {#allow_introspection_functions} 
+## allow_introspection_functions \\{#allow_introspection_functions\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -643,7 +643,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 - [Sampling Query Profiler](../../operations/optimizing-performance/sampling-query-profiler.md)
 - 系统表 [trace_log](/operations/system-tables/trace_log)
 
-## allow_materialized_view_with_bad_select {#allow_materialized_view_with_bad_select} 
+## allow_materialized_view_with_bad_select \\{#allow_materialized_view_with_bad_select\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -651,19 +651,19 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 即使 SELECT 查询引用了不存在的表或列，也允许执行 CREATE MATERIALIZED VIEW。该语句仍然必须在语法上有效。不适用于可刷新的 MV。不适用于需要从 SELECT 查询推断 MV schema 的情况（即 CREATE 语句没有列列表且没有 TO 表时）。可用于在其源表创建之前先创建 MV。
 
-## allow_named_collection_override_by_default {#allow_named_collection_override_by_default} 
+## allow_named_collection_override_by_default \\{#allow_named_collection_override_by_default\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 默认允许对 named collection 中的字段进行覆盖。
 
-## allow_non_metadata_alters {#allow_non_metadata_alters} 
+## allow_non_metadata_alters \\{#allow_non_metadata_alters\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 允许执行不仅修改表元数据、还会修改磁盘上数据的 ALTER 操作
 
-## allow_nonconst_timezone_arguments {#allow_nonconst_timezone_arguments} 
+## allow_nonconst_timezone_arguments \\{#allow_nonconst_timezone_arguments\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -674,7 +674,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 启用此设置会让人误以为同一列中的不同值可以具有不同的时区。
 因此，请不要启用此设置。
 
-## allow_nondeterministic_mutations {#allow_nondeterministic_mutations}
+## allow_nondeterministic_mutations \{#allow_nondeterministic_mutations\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -698,7 +698,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 ```
 
 
-## allow_nondeterministic_optimize_skip_unused_shards {#allow_nondeterministic_optimize_skip_unused_shards} 
+## allow_nondeterministic_optimize_skip_unused_shards \\{#allow_nondeterministic_optimize_skip_unused_shards\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -709,19 +709,19 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 - 0 — 不允许。
 - 1 — 允许。
 
-## allow_prefetched_read_pool_for_local_filesystem {#allow_prefetched_read_pool_for_local_filesystem} 
+## allow_prefetched_read_pool_for_local_filesystem \\{#allow_prefetched_read_pool_for_local_filesystem\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 如果所有分区片段都在本地文件系统上，则优先使用预取读取线程池
 
-## allow_prefetched_read_pool_for_remote_filesystem {#allow_prefetched_read_pool_for_remote_filesystem} 
+## allow_prefetched_read_pool_for_remote_filesystem \\{#allow_prefetched_read_pool_for_remote_filesystem\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 如果所有分区片段都位于远程文件系统上，则优先使用预取读取线程池
 
-## allow_push_predicate_ast_for_distributed_subqueries {#allow_push_predicate_ast_for_distributed_subqueries} 
+## allow_push_predicate_ast_for_distributed_subqueries \\{#allow_push_predicate_ast_for_distributed_subqueries\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -729,13 +729,13 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许在启用 analyzer 时，在 AST 层面对分布式子查询执行谓词下推。
 
-## allow_push_predicate_when_subquery_contains_with {#allow_push_predicate_when_subquery_contains_with} 
+## allow_push_predicate_when_subquery_contains_with \\{#allow_push_predicate_when_subquery_contains_with\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 允许在子查询包含 WITH 子句时进行谓词下推
 
-## allow_reorder_prewhere_conditions {#allow_reorder_prewhere_conditions} 
+## allow_reorder_prewhere_conditions \\{#allow_reorder_prewhere_conditions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -743,7 +743,7 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 在将条件从 WHERE 移动到 PREWHERE 时，允许对其重新排序以优化过滤
 
-## allow_settings_after_format_in_insert {#allow_settings_after_format_in_insert}
+## allow_settings_after_format_in_insert \{#allow_settings_after_format_in_insert\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -774,13 +774,13 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 :::
 
 
-## allow_simdjson {#allow_simdjson} 
+## allow_simdjson \\{#allow_simdjson\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 如果可用 AVX2 指令，则允许在 `JSON*` 函数中使用 simdjson 库。若禁用，则改用 rapidjson 库。
 
-## allow_special_serialization_kinds_in_output_formats {#allow_special_serialization_kinds_in_output_formats} 
+## allow_special_serialization_kinds_in_output_formats \\{#allow_special_serialization_kinds_in_output_formats\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -789,7 +789,7 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 允许输出具有 Sparse 和 Replicated 等特殊序列化类型的列，而无需将其转换为完整列表示形式。
 这有助于在格式化期间避免不必要的数据复制。
 
-## allow_statistics_optimize {#allow_statistics_optimize} 
+## allow_statistics_optimize \\{#allow_statistics_optimize\\}
 
 <BetaBadge/>
 
@@ -801,7 +801,7 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 
 允许使用统计信息来优化查询。
 
-## allow_suspicious_codecs {#allow_suspicious_codecs} 
+## allow_suspicious_codecs \\{#allow_suspicious_codecs\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -809,13 +809,13 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 
 如果设置为 true，则允许指定无意义的压缩编解码器。
 
-## allow_suspicious_fixed_string_types {#allow_suspicious_fixed_string_types} 
+## allow_suspicious_fixed_string_types \\{#allow_suspicious_fixed_string_types\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在 `CREATE TABLE` 语句中允许创建类型为 `FixedString(n)` 且 `n > 256` 的列。长度 `>= 256` 的 `FixedString` 被视为可疑，极有可能表示被误用。
 
-## allow_suspicious_indices {#allow_suspicious_indices} 
+## allow_suspicious_indices \\{#allow_suspicious_indices\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -823,7 +823,7 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 
 拒绝具有相同表达式的主/次级索引和排序键
 
-## allow_suspicious_low_cardinality_types {#allow_suspicious_low_cardinality_types} 
+## allow_suspicious_low_cardinality_types \\{#allow_suspicious_low_cardinality_types\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -842,7 +842,7 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 - 1 — 不限制使用 `LowCardinality`。
 - 0 — 限制使用 `LowCardinality`。
 
-## allow_suspicious_primary_key {#allow_suspicious_primary_key} 
+## allow_suspicious_primary_key \\{#allow_suspicious_primary_key\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -850,7 +850,7 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 
 允许在 MergeTree 中使用可疑的 `PRIMARY KEY`/`ORDER BY`（例如包含 SimpleAggregateFunction 的键）。
 
-## allow_suspicious_ttl_expressions {#allow_suspicious_ttl_expressions} 
+## allow_suspicious_ttl_expressions \\{#allow_suspicious_ttl_expressions\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -858,7 +858,7 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 
 拒绝任何不依赖于表中任意列的生存时间 (TTL) 表达式。这在大多数情况下表明是用户错误。
 
-## allow_suspicious_types_in_group_by {#allow_suspicious_types_in_group_by} 
+## allow_suspicious_types_in_group_by \\{#allow_suspicious_types_in_group_by\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -866,7 +866,7 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 
 允许或禁止在 GROUP BY 键中使用 [Variant](../../sql-reference/data-types/variant.md) 和 [Dynamic](../../sql-reference/data-types/dynamic.md) 类型。
 
-## allow_suspicious_types_in_order_by {#allow_suspicious_types_in_order_by} 
+## allow_suspicious_types_in_order_by \\{#allow_suspicious_types_in_order_by\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -874,7 +874,7 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 
 控制是否允许在 ORDER BY 子句的键中使用 [Variant](../../sql-reference/data-types/variant.md) 和 [Dynamic](../../sql-reference/data-types/dynamic.md) 类型。
 
-## allow_suspicious_variant_types {#allow_suspicious_variant_types} 
+## allow_suspicious_variant_types \\{#allow_suspicious_variant_types\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -882,19 +882,19 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 
 在 CREATE TABLE 语句中允许指定包含类型相近变体的 Variant 类型（例如，不同的数值或日期类型）。启用此设置后，在处理这类相近类型的值时可能会引入一定的歧义。
 
-## allow_unrestricted_reads_from_keeper {#allow_unrestricted_reads_from_keeper} 
+## allow_unrestricted_reads_from_keeper \\{#allow_unrestricted_reads_from_keeper\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 允许对 `system.zookeeper` 表进行不受限制的读取（对路径不加任何条件），在某些情况下很方便，但对 ZooKeeper 来说并不安全
 
-## alter_move_to_space_execute_async {#alter_move_to_space_execute_async} 
+## alter_move_to_space_execute_async \\{#alter_move_to_space_execute_async\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 以异步方式执行 ALTER TABLE MOVE ... TO [DISK|VOLUME]
 
-## alter_partition_verbose_result {#alter_partition_verbose_result}
+## alter_partition_verbose_result \{#alter_partition_verbose_result\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -930,7 +930,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 ```
 
 
-## alter_sync {#alter_sync} 
+## alter_sync \\{#alter_sync\\}
 
 **别名**: `replication_alter_partitions_sync`
 
@@ -950,7 +950,7 @@ Cloud 默认值：`1`。
 `alter_sync` 仅适用于 `Replicated` 表，对非 `Replicated` 表的 ALTER 不产生任何效果。
 :::
 
-## alter_update_mode {#alter_update_mode} 
+## alter_update_mode \\{#alter_update_mode\\}
 
 <SettingsInfoBlock type="AlterUpdateMode" default_value="heavy" />
 
@@ -964,13 +964,13 @@ Cloud 默认值：`1`。
 - `lightweight` - 如果可能，执行轻量级更新，否则执行常规 mutation 操作。
 - `lightweight_force` - 如果可能，执行轻量级更新，否则抛出异常。
 
-## analyze_index_with_space_filling_curves {#analyze_index_with_space_filling_curves} 
+## analyze_index_with_space_filling_curves \\{#analyze_index_with_space_filling_curves\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 如果一个表的索引采用了空间填充曲线，例如 `ORDER BY mortonEncode(x, y)` 或 `ORDER BY hilbertEncode(x, y)`，并且查询对这些参数指定了条件，例如 `x >= 10 AND x <= 20 AND y >= 20 AND y <= 30`，则在索引分析时使用该空间填充曲线。
 
-## analyzer_compatibility_allow_compound_identifiers_in_unflatten_nested {#analyzer_compatibility_allow_compound_identifiers_in_unflatten_nested} 
+## analyzer_compatibility_allow_compound_identifiers_in_unflatten_nested \\{#analyzer_compatibility_allow_compound_identifiers_in_unflatten_nested\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -978,7 +978,7 @@ Cloud 默认值：`1`。
 
 允许向 Nested 中添加复合标识符。由于它会改变查询结果，因此这是一个兼容性设置。禁用时，`SELECT a.b.c FROM table ARRAY JOIN a` 将无法使用，并且 `SELECT a FROM table` 的 `Nested a` 结果中不会包含 `a.b.c` 列。
 
-## analyzer_compatibility_join_using_top_level_identifier {#analyzer_compatibility_join_using_top_level_identifier} 
+## analyzer_compatibility_join_using_top_level_identifier \\{#analyzer_compatibility_join_using_top_level_identifier\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -986,7 +986,7 @@ Cloud 默认值：`1`。
 
 强制在 JOIN USING 中从 PROJECTION 解析标识符（例如，在 `SELECT a + 1 AS b FROM t1 JOIN t2 USING (b)` 中，连接将按 `t1.a + 1 = t2.b` 来执行，而不是按 `t1.b = t2.b`）。
 
-## any_join_distinct_right_table_keys {#any_join_distinct_right_table_keys} 
+## any_join_distinct_right_table_keys \\{#any_join_distinct_right_table_keys\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1017,19 +1017,19 @@ Cloud 默认值：`1`。
 
 - [JOIN strictness](/sql-reference/statements/select/join#settings)
 
-## apply_deleted_mask {#apply_deleted_mask} 
+## apply_deleted_mask \\{#apply_deleted_mask\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 启用对通过轻量级删除标记为已删除的行进行过滤。如果禁用，查询仍然可以读取这些行。这对于调试和“撤销删除”等场景非常有用。
 
-## apply_mutations_on_fly {#apply_mutations_on_fly} 
+## apply_mutations_on_fly \\{#apply_mutations_on_fly\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 为 true 时，尚未在数据 part 中物化的变更（UPDATE 和 DELETE）会在执行 SELECT 查询时应用。
 
-## apply_patch_parts {#apply_patch_parts} 
+## apply_patch_parts \\{#apply_patch_parts\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1037,7 +1037,7 @@ Cloud 默认值：`1`。
 
 如果为 true，则在执行 SELECT 时会应用表示轻量级更新的补丁分区片段。
 
-## apply_patch_parts_join_cache_buckets {#apply_patch_parts_join_cache_buckets} 
+## apply_patch_parts_join_cache_buckets \\{#apply_patch_parts_join_cache_buckets\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="8" />
 
@@ -1045,7 +1045,7 @@ Cloud 默认值：`1`。
 
 在 Join 模式下应用分区片段补丁时使用的临时缓存桶数量。
 
-## apply_prewhere_after_final {#apply_prewhere_after_final} 
+## apply_prewhere_after_final \\{#apply_prewhere_after_final\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1055,7 +1055,7 @@ Cloud 默认值：`1`。
 当 PREWHERE 引用的列在重复行中可能具有不同的值，并且你希望由 FINAL 先选出“获胜”行再进行过滤时，这会很有用。禁用时，PREWHERE 会在读取阶段应用。
 注意：如果 `apply_row_level_security_after_final` 已启用，并且 ROW POLICY 使用了非排序键列，为保持正确的执行顺序（ROW POLICY 必须在 PREWHERE 之前应用），PREWHERE 也会被延后执行。
 
-## apply_row_policy_after_final {#apply_row_policy_after_final} 
+## apply_row_policy_after_final \\{#apply_row_policy_after_final\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1072,7 +1072,7 @@ Cloud 默认值：`1`。
 - 0 — 在 FINAL 之前应用 ROW POLICY 和 PREWHERE（默认）。
 - 1 — 在 FINAL 之后应用 ROW POLICY 和 PREWHERE。
 
-## apply_settings_from_server {#apply_settings_from_server} 
+## apply_settings_from_server \\{#apply_settings_from_server\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1086,7 +1086,7 @@ Cloud 默认值：`1`。
 
 注意在最初（24.12）这是由服务器端的 SETTING（`send_settings_to_client`）控制的，但随后为了提升可用性，被此客户端 SETTING 所取代。
 
-## archive_adaptive_buffer_max_size_bytes {#archive_adaptive_buffer_max_size_bytes} 
+## archive_adaptive_buffer_max_size_bytes \\{#archive_adaptive_buffer_max_size_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="8388608" />
 
@@ -1094,7 +1094,7 @@ Cloud 默认值：`1`。
 
 限制用于写入归档文件（例如 tar 归档）时所使用的自适应缓冲区的最大大小。
 
-## arrow_flight_request_descriptor_type {#arrow_flight_request_descriptor_type} 
+## arrow_flight_request_descriptor_type \\{#arrow_flight_request_descriptor_type\\}
 
 <SettingsInfoBlock type="ArrowFlightDescriptorType" default_value="path" />
 
@@ -1107,7 +1107,7 @@ Cloud 默认值：`1`。
 - 'path' — 使用 FlightDescriptor::Path（默认值，适用于大多数 Arrow Flight 服务器）
 - 'command' — 使用带有 SELECT 查询的 FlightDescriptor::Command（Dremio 必需）
 
-## asterisk_include_alias_columns {#asterisk_include_alias_columns} 
+## asterisk_include_alias_columns \\{#asterisk_include_alias_columns\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1118,7 +1118,7 @@ Cloud 默认值：`1`。
 - 0 - 禁用
 - 1 - 启用
 
-## asterisk_include_materialized_columns {#asterisk_include_materialized_columns} 
+## asterisk_include_materialized_columns \\{#asterisk_include_materialized_columns\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1129,13 +1129,13 @@ Cloud 默认值：`1`。
 - 0 - 禁用
 - 1 - 启用
 
-## async_insert {#async_insert} 
+## async_insert \\{#async_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 如果设置为 true，来自 INSERT 查询的数据会先存储在队列中，随后在后台写入表中。若 wait_for_async_insert 为 false，则 INSERT 查询几乎会立刻处理完成；否则客户端会一直等待，直到数据被写入表中。
 
-## async_insert_busy_timeout_decrease_rate {#async_insert_busy_timeout_decrease_rate} 
+## async_insert_busy_timeout_decrease_rate \\{#async_insert_busy_timeout_decrease_rate\\}
 
 <SettingsInfoBlock type="Double" default_value="0.2" />
 
@@ -1143,7 +1143,7 @@ Cloud 默认值：`1`。
 
 自适应异步插入超时减少时的指数衰减速率
 
-## async_insert_busy_timeout_increase_rate {#async_insert_busy_timeout_increase_rate} 
+## async_insert_busy_timeout_increase_rate \\{#async_insert_busy_timeout_increase_rate\\}
 
 <SettingsInfoBlock type="Double" default_value="0.2" />
 
@@ -1151,7 +1151,7 @@ Cloud 默认值：`1`。
 
 自适应异步插入超时时间递增时的指数增长率
 
-## async_insert_busy_timeout_max_ms {#async_insert_busy_timeout_max_ms} 
+## async_insert_busy_timeout_max_ms \\{#async_insert_busy_timeout_max_ms\\}
 
 **别名**: `async_insert_busy_timeout_ms`
 
@@ -1161,7 +1161,7 @@ Cloud 默认值：`1`。
 
 自第一条数据出现起，在将为每个查询收集的数据写出前所能等待的最长时间。
 
-## async_insert_busy_timeout_min_ms {#async_insert_busy_timeout_min_ms} 
+## async_insert_busy_timeout_min_ms \\{#async_insert_busy_timeout_min_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="50" />
 
@@ -1169,13 +1169,13 @@ Cloud 默认值：`1`。
 
 如果通过 async_insert_use_adaptive_busy_timeout 启用了自动调整，则为自首次数据出现以来，在为每个查询写出已收集数据之前需要等待的最短时间。同时它也作为自适应算法的初始值。
 
-## async_insert_deduplicate {#async_insert_deduplicate} 
+## async_insert_deduplicate \\{#async_insert_deduplicate\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 对于在副本表中执行的异步 INSERT 查询，指定是否对插入的数据块进行去重。
 
-## async_insert_max_data_size {#async_insert_max_data_size} 
+## async_insert_max_data_size \\{#async_insert_max_data_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10485760" />
 
@@ -1183,14 +1183,14 @@ Cloud 默认值：`1`。
 
 在插入之前，为每个查询收集的未解析数据的最大字节数
 
-## async_insert_max_query_number {#async_insert_max_query_number} 
+## async_insert_max_query_number \\{#async_insert_max_query_number\\}
 
 <SettingsInfoBlock type="UInt64" default_value="450" />
 
 在实际执行插入前可累积的插入查询的最大数量。
 仅当 [`async_insert_deduplicate`](#async_insert_deduplicate) 设置为 1 时生效。
 
-## async_insert_poll_timeout_ms {#async_insert_poll_timeout_ms} 
+## async_insert_poll_timeout_ms \\{#async_insert_poll_timeout_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="10" />
 
@@ -1198,7 +1198,7 @@ Cloud 默认值：`1`。
 
 从异步插入队列中轮询数据的超时时间
 
-## async_insert_use_adaptive_busy_timeout {#async_insert_use_adaptive_busy_timeout} 
+## async_insert_use_adaptive_busy_timeout \\{#async_insert_use_adaptive_busy_timeout\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1206,7 +1206,7 @@ Cloud 默认值：`1`。
 
 如果设置为 true，则对异步插入使用自适应 busy 超时时间。
 
-## async_query_sending_for_remote {#async_query_sending_for_remote} 
+## async_query_sending_for_remote \\{#async_query_sending_for_remote\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1216,7 +1216,7 @@ Cloud 默认值：`1`。
 
 默认启用。
 
-## async_socket_for_remote {#async_socket_for_remote} 
+## async_socket_for_remote \\{#async_socket_for_remote\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1226,7 +1226,7 @@ Cloud 默认值：`1`。
 
 默认启用。
 
-## automatic_parallel_replicas_min_bytes_per_replica {#automatic_parallel_replicas_min_bytes_per_replica} 
+## automatic_parallel_replicas_min_bytes_per_replica \\{#automatic_parallel_replicas_min_bytes_per_replica\\}
 
 <ExperimentalBadge/>
 
@@ -1236,7 +1236,7 @@ Cloud 默认值：`1`。
 
 用于自动启用并行副本时的每个副本最小读取字节数阈值（仅在 `automatic_parallel_replicas_mode`=1 时生效）。0 表示不设阈值。
 
-## automatic_parallel_replicas_mode {#automatic_parallel_replicas_mode} 
+## automatic_parallel_replicas_mode \\{#automatic_parallel_replicas_mode\\}
 
 <ExperimentalBadge/>
 
@@ -1247,7 +1247,7 @@ Cloud 默认值：`1`。
 基于收集到的统计信息，自动切换为使用并行副本执行。需要启用 `parallel_replicas_local_plan` 并提供 `cluster_for_parallel_replicas`。
 0 - 关闭，1 - 开启，2 - 仅收集统计信息（不切换为使用并行副本执行）。
 
-## azure_allow_parallel_part_upload {#azure_allow_parallel_part_upload} 
+## azure_allow_parallel_part_upload \\{#azure_allow_parallel_part_upload\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1255,7 +1255,7 @@ Cloud 默认值：`1`。
 
 使用多线程进行 Azure 分块上传。
 
-## azure_check_objects_after_upload {#azure_check_objects_after_upload} 
+## azure_check_objects_after_upload \\{#azure_check_objects_after_upload\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1263,7 +1263,7 @@ Cloud 默认值：`1`。
 
 检查已上传到 Azure Blob Storage 的每个对象，以确保上传成功
 
-## azure_connect_timeout_ms {#azure_connect_timeout_ms} 
+## azure_connect_timeout_ms \\{#azure_connect_timeout_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -1271,13 +1271,13 @@ Cloud 默认值：`1`。
 
 与 Azure 磁盘主机建立连接的超时时间。
 
-## azure_create_new_file_on_insert {#azure_create_new_file_on_insert} 
+## azure_create_new_file_on_insert \\{#azure_create_new_file_on_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 启用或禁用在 Azure 引擎表中每次插入数据时创建一个新文件
 
-## azure_ignore_file_doesnt_exist {#azure_ignore_file_doesnt_exist} 
+## azure_ignore_file_doesnt_exist \\{#azure_ignore_file_doesnt_exist\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1290,13 +1290,13 @@ Cloud 默认值：`1`。
 - 1 — `SELECT` 返回空结果。
 - 0 — `SELECT` 抛出异常。
 
-## azure_list_object_keys_size {#azure_list_object_keys_size} 
+## azure_list_object_keys_size \\{#azure_list_object_keys_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
 单次批量 ListObject 请求中可返回的最大文件数
 
-## azure_max_blocks_in_multipart_upload {#azure_max_blocks_in_multipart_upload} 
+## azure_max_blocks_in_multipart_upload \\{#azure_max_blocks_in_multipart_upload\\}
 
 <SettingsInfoBlock type="UInt64" default_value="50000" />
 
@@ -1304,7 +1304,7 @@ Cloud 默认值：`1`。
 
 Azure 分段上传时的最大块数量。
 
-## azure_max_get_burst {#azure_max_get_burst} 
+## azure_max_get_burst \\{#azure_max_get_burst\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1312,7 +1312,7 @@ Azure 分段上传时的最大块数量。
 
 在达到每秒请求数限制之前，可以同时发出的最大请求数。默认值（0）等于 `azure_max_get_rps`。
 
-## azure_max_get_rps {#azure_max_get_rps} 
+## azure_max_get_rps \\{#azure_max_get_rps\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1320,7 +1320,7 @@ Azure 分段上传时的最大块数量。
 
 在触发限流之前，对 Azure GET 请求每秒请求数的限制。零表示不受限制。
 
-## azure_max_inflight_parts_for_one_file {#azure_max_inflight_parts_for_one_file} 
+## azure_max_inflight_parts_for_one_file \\{#azure_max_inflight_parts_for_one_file\\}
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
@@ -1328,7 +1328,7 @@ Azure 分段上传时的最大块数量。
 
 在分片上传请求中可同时上传的分区片段的最大数量。0 表示不限制。
 
-## azure_max_put_burst {#azure_max_put_burst} 
+## azure_max_put_burst \\{#azure_max_put_burst\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1336,7 +1336,7 @@ Azure 分段上传时的最大块数量。
 
 在达到每秒请求数上限之前，可以同时发出的最大请求数。默认值为 0 时，其效果等同于 `azure_max_put_rps`。
 
-## azure_max_put_rps {#azure_max_put_rps} 
+## azure_max_put_rps \\{#azure_max_put_rps\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1344,7 +1344,7 @@ Azure 分段上传时的最大块数量。
 
 在触发限流之前，Azure PUT 请求每秒次数的上限。0 表示不限制。
 
-## azure_max_redirects {#azure_max_redirects} 
+## azure_max_redirects \\{#azure_max_redirects\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -1352,7 +1352,7 @@ Azure 分段上传时的最大块数量。
 
 Azure 重定向允许的最大跳转次数。
 
-## azure_max_single_part_copy_size {#azure_max_single_part_copy_size} 
+## azure_max_single_part_copy_size \\{#azure_max_single_part_copy_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="268435456" />
 
@@ -1360,7 +1360,7 @@ Azure 重定向允许的最大跳转次数。
 
 通过单部分复制操作复制到 Azure Blob 存储时单个对象允许的最大大小。
 
-## azure_max_single_part_upload_size {#azure_max_single_part_upload_size} 
+## azure_max_single_part_upload_size \\{#azure_max_single_part_upload_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="33554432" />
 
@@ -1368,13 +1368,13 @@ Azure 重定向允许的最大跳转次数。
 
 通过单次上传（singlepart upload）方式向 Azure Blob 存储上传对象时允许的最大对象大小。
 
-## azure_max_single_read_retries {#azure_max_single_read_retries} 
+## azure_max_single_read_retries \\{#azure_max_single_read_retries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="4" />
 
 从 Azure Blob Storage 进行单次读取时的最大重试次数。
 
-## azure_max_unexpected_write_error_retries {#azure_max_unexpected_write_error_retries} 
+## azure_max_unexpected_write_error_retries \\{#azure_max_unexpected_write_error_retries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="4" />
 
@@ -1382,7 +1382,7 @@ Azure 重定向允许的最大跳转次数。
 
 在向 Azure Blob 存储写入数据时出现非预期错误时的最大重试次数
 
-## azure_max_upload_part_size {#azure_max_upload_part_size} 
+## azure_max_upload_part_size \\{#azure_max_upload_part_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5368709120" />
 
@@ -1390,7 +1390,7 @@ Azure 重定向允许的最大跳转次数。
 
 在对 Azure Blob Storage 进行多部分（multipart）上传时，单个上传分片的最大大小。
 
-## azure_min_upload_part_size {#azure_min_upload_part_size} 
+## azure_min_upload_part_size \\{#azure_min_upload_part_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16777216" />
 
@@ -1398,7 +1398,7 @@ Azure 重定向允许的最大跳转次数。
 
 在向 Azure Blob 存储执行多部分上传时的最小分片大小。
 
-## azure_request_timeout_ms {#azure_request_timeout_ms} 
+## azure_request_timeout_ms \\{#azure_request_timeout_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="30000" />
 
@@ -1406,7 +1406,7 @@ Azure 重定向允许的最大跳转次数。
 
 与 Azure 之间发送和接收数据时的空闲超时时间。如果单次 TCP 读或写调用阻塞时间达到该时长，则视为失败。
 
-## azure_sdk_max_retries {#azure_sdk_max_retries} 
+## azure_sdk_max_retries \\{#azure_sdk_max_retries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -1414,7 +1414,7 @@ Azure 重定向允许的最大跳转次数。
 
 Azure SDK 的最大重试次数
 
-## azure_sdk_retry_initial_backoff_ms {#azure_sdk_retry_initial_backoff_ms} 
+## azure_sdk_retry_initial_backoff_ms \\{#azure_sdk_retry_initial_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -1422,7 +1422,7 @@ Azure SDK 的最大重试次数
 
 Azure SDK 重试操作之间的最小退避时间
 
-## azure_sdk_retry_max_backoff_ms {#azure_sdk_retry_max_backoff_ms} 
+## azure_sdk_retry_max_backoff_ms \\{#azure_sdk_retry_max_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -1430,7 +1430,7 @@ Azure SDK 重试操作之间的最小退避时间
 
 Azure SDK 重试之间的最大退避时间
 
-## azure_skip_empty_files {#azure_skip_empty_files} 
+## azure_skip_empty_files \\{#azure_skip_empty_files\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1443,7 +1443,7 @@ Azure SDK 重试之间的最大退避时间
 - 0 — 如果空文件与请求的格式不兼容，`SELECT` 会抛出异常。
 - 1 — 对于空文件，`SELECT` 返回空结果。
 
-## azure_strict_upload_part_size {#azure_strict_upload_part_size} 
+## azure_strict_upload_part_size \\{#azure_strict_upload_part_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1451,7 +1451,7 @@ Azure SDK 重试之间的最大退避时间
 
 在对 Azure Blob Storage 执行分片上传时，每个分片的精确大小。
 
-## azure_throw_on_zero_files_match {#azure_throw_on_zero_files_match} 
+## azure_throw_on_zero_files_match \\{#azure_throw_on_zero_files_match\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1464,13 +1464,13 @@ Azure SDK 重试之间的最大退避时间
 - 1 — `SELECT` 抛出异常。
 - 0 — `SELECT` 返回空结果。
 
-## azure_truncate_on_insert {#azure_truncate_on_insert} 
+## azure_truncate_on_insert \\{#azure_truncate_on_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在 Azure 引擎的表中启用或禁用在插入前截断表数据。
 
-## azure_upload_part_size_multiply_factor {#azure_upload_part_size_multiply_factor} 
+## azure_upload_part_size_multiply_factor \\{#azure_upload_part_size_multiply_factor\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
@@ -1478,7 +1478,7 @@ Azure SDK 重试之间的最大退避时间
 
 每当在一次写入 Azure Blob Storage 的过程中上传了 azure_multiply_parts_count_threshold 个分区片段时，将 azure_min_upload_part_size 乘以该系数。
 
-## azure_upload_part_size_multiply_parts_count_threshold {#azure_upload_part_size_multiply_parts_count_threshold} 
+## azure_upload_part_size_multiply_parts_count_threshold \\{#azure_upload_part_size_multiply_parts_count_threshold\\}
 
 <SettingsInfoBlock type="UInt64" default_value="500" />
 
@@ -1486,7 +1486,7 @@ Azure SDK 重试之间的最大退避时间
 
 每当向 Azure Blob 存储上传的分区片段数量达到该值时，azure_min_upload_part_size 会乘以 azure_upload_part_size_multiply_factor。
 
-## azure_use_adaptive_timeouts {#azure_use_adaptive_timeouts} 
+## azure_use_adaptive_timeouts \\{#azure_use_adaptive_timeouts\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1495,19 +1495,19 @@ Azure SDK 重试之间的最大退避时间
 当设置为 `true` 时，所有 Azure 请求的前两次尝试将使用较短的发送和接收超时设置。
 当设置为 `false` 时，所有尝试都将使用相同的超时设置。
 
-## backup_restore_batch_size_for_keeper_multi {#backup_restore_batch_size_for_keeper_multi} 
+## backup_restore_batch_size_for_keeper_multi \\{#backup_restore_batch_size_for_keeper_multi\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
 备份或恢复期间向 [Zoo]Keeper 发送批量请求时的最大批量大小
 
-## backup_restore_batch_size_for_keeper_multiread {#backup_restore_batch_size_for_keeper_multiread} 
+## backup_restore_batch_size_for_keeper_multiread \\{#backup_restore_batch_size_for_keeper_multiread\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
 在备份或恢复期间向 [Zoo]Keeper 发送 multiread 请求时的最大批量大小
 
-## backup_restore_failure_after_host_disconnected_for_seconds {#backup_restore_failure_after_host_disconnected_for_seconds} 
+## backup_restore_failure_after_host_disconnected_for_seconds \\{#backup_restore_failure_after_host_disconnected_for_seconds\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3600" />
 
@@ -1517,7 +1517,7 @@ Azure SDK 重试之间的最大退避时间
 该值应大于主机在发生故障后重新连接到 ZooKeeper 的任何合理时间。
 零表示无限制。
 
-## backup_restore_finish_timeout_after_error_sec {#backup_restore_finish_timeout_after_error_sec} 
+## backup_restore_finish_timeout_after_error_sec \\{#backup_restore_finish_timeout_after_error_sec\\}
 
 <SettingsInfoBlock type="UInt64" default_value="180" />
 
@@ -1525,19 +1525,19 @@ Azure SDK 重试之间的最大退避时间
 
 在当前 BACKUP ON CLUSTER 或 RESTORE ON CLUSTER 操作中，发起端在出现 `error` 节点后，应等待其他主机做出反应并停止其当前工作的最长时间。
 
-## backup_restore_keeper_fault_injection_probability {#backup_restore_keeper_fault_injection_probability} 
+## backup_restore_keeper_fault_injection_probability \\{#backup_restore_keeper_fault_injection_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
 在备份或恢复期间 Keeper 请求失败的近似概率。有效取值范围为 [0.0f, 1.0f] 区间内。
 
-## backup_restore_keeper_fault_injection_seed {#backup_restore_keeper_fault_injection_seed} 
+## backup_restore_keeper_fault_injection_seed \\{#backup_restore_keeper_fault_injection_seed\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 0 - 表示使用随机种子，否则为该设置的取值
 
-## backup_restore_keeper_max_retries {#backup_restore_keeper_max_retries} 
+## backup_restore_keeper_max_retries \\{#backup_restore_keeper_max_retries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -1546,7 +1546,7 @@ Azure SDK 重试之间的最大退避时间
 在 BACKUP 或 RESTORE 操作过程中，[Zoo]Keeper 操作的最大重试次数。
 应将其设置得足够大，以避免整个操作因中途出现临时的 [Zoo]Keeper 故障而失败。
 
-## backup_restore_keeper_max_retries_while_handling_error {#backup_restore_keeper_max_retries_while_handling_error} 
+## backup_restore_keeper_max_retries_while_handling_error \\{#backup_restore_keeper_max_retries_while_handling_error\\}
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
@@ -1554,7 +1554,7 @@ Azure SDK 重试之间的最大退避时间
 
 在处理 BACKUP ON CLUSTER 或 RESTORE ON CLUSTER 操作时发生错误的情况下，[Zoo]Keeper 操作的最大重试次数。
 
-## backup_restore_keeper_max_retries_while_initializing {#backup_restore_keeper_max_retries_while_initializing} 
+## backup_restore_keeper_max_retries_while_initializing \\{#backup_restore_keeper_max_retries_while_initializing\\}
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
@@ -1562,25 +1562,25 @@ Azure SDK 重试之间的最大退避时间
 
 在 BACKUP ON CLUSTER 或 RESTORE ON CLUSTER 操作初始化期间，[Zoo]Keeper 操作的最大重试次数。
 
-## backup_restore_keeper_retry_initial_backoff_ms {#backup_restore_keeper_retry_initial_backoff_ms} 
+## backup_restore_keeper_retry_initial_backoff_ms \\{#backup_restore_keeper_retry_initial_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
 备份或恢复期间 [Zoo]Keeper 操作的初始退避超时时间
 
-## backup_restore_keeper_retry_max_backoff_ms {#backup_restore_keeper_retry_max_backoff_ms} 
+## backup_restore_keeper_retry_max_backoff_ms \\{#backup_restore_keeper_retry_max_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000" />
 
 在备份或恢复期间 [Zoo]Keeper 操作的最大退避时间
 
-## backup_restore_keeper_value_max_size {#backup_restore_keeper_value_max_size} 
+## backup_restore_keeper_value_max_size \\{#backup_restore_keeper_value_max_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
 
 备份时 [Zoo]Keeper 节点数据的最大大小
 
-## backup_restore_s3_retry_attempts {#backup_restore_s3_retry_attempts} 
+## backup_restore_s3_retry_attempts \\{#backup_restore_s3_retry_attempts\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -1588,7 +1588,7 @@ Azure SDK 重试之间的最大退避时间
 
 用于 Aws::Client::RetryStrategy 的设置项，Aws::Client 会自行执行重试，0 表示不重试。仅在备份/恢复时生效。
 
-## backup_restore_s3_retry_initial_backoff_ms {#backup_restore_s3_retry_initial_backoff_ms} 
+## backup_restore_s3_retry_initial_backoff_ms \\{#backup_restore_s3_retry_initial_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="25" />
 
@@ -1596,7 +1596,7 @@ Azure SDK 重试之间的最大退避时间
 
 在备份和恢复过程中，在第一次重试前的初始退避延迟（以毫秒为单位）。每次后续重试都会以指数方式增加延迟，直到达到 `backup_restore_s3_retry_max_backoff_ms` 指定的最大值。
 
-## backup_restore_s3_retry_jitter_factor {#backup_restore_s3_retry_jitter_factor} 
+## backup_restore_s3_retry_jitter_factor \\{#backup_restore_s3_retry_jitter_factor\\}
 
 <SettingsInfoBlock type="Float" default_value="0.1" />
 
@@ -1604,7 +1604,7 @@ Azure SDK 重试之间的最大退避时间
 
 在备份和恢复操作期间，应用于 `Aws::Client::RetryStrategy` 中重试退避延迟的抖动系数。计算出的退避延迟会乘以区间 [1.0, 1.0 + jitter] 内的随机因子，最大不超过 `backup_restore_s3_retry_max_backoff_ms`。必须位于区间 [0.0, 1.0] 内。
 
-## backup_restore_s3_retry_max_backoff_ms {#backup_restore_s3_retry_max_backoff_ms} 
+## backup_restore_s3_retry_max_backoff_ms \\{#backup_restore_s3_retry_max_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000" />
 
@@ -1612,7 +1612,7 @@ Azure SDK 重试之间的最大退避时间
 
 在备份和恢复操作期间，两次重试之间的最大延迟时间（以毫秒为单位）。
 
-## backup_slow_all_threads_after_retryable_s3_error {#backup_slow_all_threads_after_retryable_s3_error} 
+## backup_slow_all_threads_after_retryable_s3_error \\{#backup_slow_all_threads_after_retryable_s3_error\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1621,7 +1621,7 @@ Azure SDK 重试之间的最大退避时间
 当设置为 `true` 时，一旦任意单个 S3 请求遇到可重试的 S3 错误（例如 “Slow Down”），所有向同一备份端点执行 S3 请求的线程都会被减慢。
 当设置为 `false` 时，每个线程会独立于其他线程处理各自的 S3 请求退避。
 
-## cache_warmer_threads {#cache_warmer_threads} 
+## cache_warmer_threads \\{#cache_warmer_threads\\}
 
 <CloudOnlyBadge/>
 
@@ -1629,13 +1629,13 @@ Azure SDK 重试之间的最大退避时间
 
 仅在 ClickHouse Cloud 中生效。后台线程的数量，用于在启用 [cache_populated_by_fetch](merge-tree-settings.md/#cache_populated_by_fetch) 时推测性地将新数据分区片段下载到文件系统缓存中。设为 0 表示禁用。
 
-## calculate_text_stack_trace {#calculate_text_stack_trace} 
+## calculate_text_stack_trace \\{#calculate_text_stack_trace\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 在查询执行过程中出现异常时计算文本堆栈追踪。这是默认行为。该过程依赖符号查找，在模糊测试中执行大量错误查询时可能会降低性能。在正常情况下，不应禁用此选项。
 
-## cancel_http_readonly_queries_on_client_close {#cancel_http_readonly_queries_on_client_close} 
+## cancel_http_readonly_queries_on_client_close \\{#cancel_http_readonly_queries_on_client_close\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1643,7 +1643,7 @@ Azure SDK 重试之间的最大退避时间
 
 Cloud 默认值：`0`。
 
-## cast_ipv4_ipv6_default_on_conversion_error {#cast_ipv4_ipv6_default_on_conversion_error} 
+## cast_ipv4_ipv6_default_on_conversion_error \\{#cast_ipv4_ipv6_default_on_conversion_error\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1651,7 +1651,7 @@ Cloud 默认值：`0`。
 
 当发生转换错误时，将值转换为 IPv4 的 CAST 运算符、将值转换为 IPv6 类型的 CAST 运算符，以及 toIPv4 和 toIPv6 函数会返回默认值，而不是抛出异常。
 
-## cast_keep_nullable {#cast_keep_nullable}
+## cast_keep_nullable \{#cast_keep_nullable\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1701,7 +1701,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 * [CAST](/sql-reference/functions/type-conversion-functions#CAST) 函数
 
 
-## cast_string_to_date_time_mode {#cast_string_to_date_time_mode} 
+## cast_string_to_date_time_mode \\{#cast_string_to_date_time_mode\\}
 
 <SettingsInfoBlock type="DateTimeInputFormat" default_value="basic" />
 
@@ -1726,7 +1726,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 - [DateTime 数据类型。](../../sql-reference/data-types/datetime.md)
 - [用于处理日期和时间的函数。](../../sql-reference/functions/date-time-functions.md)
 
-## cast_string_to_dynamic_use_inference {#cast_string_to_dynamic_use_inference} 
+## cast_string_to_dynamic_use_inference \\{#cast_string_to_dynamic_use_inference\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1734,7 +1734,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 在将 String 转换为 Dynamic 时启用类型推断
 
-## cast_string_to_variant_use_inference {#cast_string_to_variant_use_inference} 
+## cast_string_to_variant_use_inference \\{#cast_string_to_variant_use_inference\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1742,7 +1742,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 在将 String 转换为 Variant 时使用类型推断。
 
-## check_query_single_value_result {#check_query_single_value_result} 
+## check_query_single_value_result \\{#check_query_single_value_result\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1755,31 +1755,31 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 - 0 — 查询会显示该表中每个单独数据 part 的检查状态。
 - 1 — 查询会显示该表的整体检查状态。
 
-## check_referential_table_dependencies {#check_referential_table_dependencies} 
+## check_referential_table_dependencies \\{#check_referential_table_dependencies\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 用于检查 DDL 查询（例如 DROP TABLE 或 RENAME）是否会破坏引用依赖关系
 
-## check_table_dependencies {#check_table_dependencies} 
+## check_table_dependencies \\{#check_table_dependencies\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 检查 DDL 查询（例如 DROP TABLE 或 RENAME）不会破坏其依赖关系
 
-## checksum_on_read {#checksum_on_read} 
+## checksum_on_read \\{#checksum_on_read\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 在读取时校验校验和。默认启用，并且在生产环境中应始终保持启用。请不要期望通过禁用该设置获得任何好处。它仅可用于实验和基准测试。该设置仅适用于 MergeTree 系列的表。对于其他表引擎以及通过网络接收数据的情况，始终会验证校验和。
 
-## cloud_mode {#cloud_mode} 
+## cloud_mode \\{#cloud_mode\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Cloud 模式
 
-## cloud_mode_database_engine {#cloud_mode_database_engine} 
+## cloud_mode_database_engine \\{#cloud_mode_database_engine\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
@@ -1787,7 +1787,7 @@ Cloud 模式
 
 在 Cloud 中允许使用的数据库引擎类型。1：将 DDL 重写为使用 Replicated 数据库；2：将 DDL 重写为使用 Shared 数据库。
 
-## cloud_mode_engine {#cloud_mode_engine} 
+## cloud_mode_engine \\{#cloud_mode_engine\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
@@ -1801,11 +1801,11 @@ Cloud 模式
 
 使用 UInt64 以最小化对外公开部分
 
-## cluster_for_parallel_replicas {#cluster_for_parallel_replicas} 
+## cluster_for_parallel_replicas \\{#cluster_for_parallel_replicas\\}
 
 当前服务器所在分片对应的集群
 
-## cluster_function_process_archive_on_multiple_nodes {#cluster_function_process_archive_on_multiple_nodes} 
+## cluster_function_process_archive_on_multiple_nodes \\{#cluster_function_process_archive_on_multiple_nodes\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1813,7 +1813,7 @@ Cloud 模式
 
 如果设置为 `true`，将提升在 cluster 函数中处理归档的性能。若在较早版本中使用带归档的 cluster 函数，为了兼容性并避免在升级到 25.7+ 时出现错误，应将其设置为 `false`。
 
-## cluster_table_function_buckets_batch_size {#cluster_table_function_buckets_batch_size} 
+## cluster_table_function_buckets_batch_size \\{#cluster_table_function_buckets_batch_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1821,7 +1821,7 @@ Cloud 模式
 
 定义在具有按 `bucket` 粒度拆分的 cluster 表函数中，用于分布式处理任务的批次近似大小（以字节为单位）。系统会累积数据，直到至少达到该数值。实际大小可能会略大一些，以与数据边界对齐。
 
-## cluster_table_function_split_granularity {#cluster_table_function_split_granularity} 
+## cluster_table_function_split_granularity \\{#cluster_table_function_split_granularity\\}
 
 <SettingsInfoBlock type="ObjectStorageGranularityLevel" default_value="file" />
 
@@ -1837,13 +1837,13 @@ Cloud 模式
 在处理少量大型文件时，选择更细的粒度（如 `bucket`）可以提高并行度。
 例如，如果一个 Parquet 文件包含多个行组，启用 `bucket` 粒度可以让每个行组由不同的工作节点独立处理。
 
-## collect_hash_table_stats_during_aggregation {#collect_hash_table_stats_during_aggregation} 
+## collect_hash_table_stats_during_aggregation \\{#collect_hash_table_stats_during_aggregation\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 启用哈希表统计信息收集，以优化内存分配
 
-## collect_hash_table_stats_during_joins {#collect_hash_table_stats_during_joins} 
+## collect_hash_table_stats_during_joins \\{#collect_hash_table_stats_during_joins\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1851,7 +1851,7 @@ Cloud 模式
 
 启用哈希表统计信息收集，以优化内存分配。
 
-## compatibility {#compatibility} 
+## compatibility \\{#compatibility\\}
 
 `compatibility` 设置会使 ClickHouse 使用某个旧版本 ClickHouse 的默认设置，该旧版本的版本号通过此设置来指定。
 
@@ -1866,19 +1866,19 @@ Cloud 模式
 但是，可以通过标准的 ClickHouse 设置机制，在用户、角色、profile、查询或会话级别覆盖 compatibility 设置，例如在会话中使用 `SET compatibility = '22.3'`，或在查询中使用 `SETTINGS compatibility = '22.3'`。
 :::
 
-## compatibility_ignore_auto_increment_in_create_table {#compatibility_ignore_auto_increment_in_create_table} 
+## compatibility_ignore_auto_increment_in_create_table \\{#compatibility_ignore_auto_increment_in_create_table\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 为 true 时，在列声明中忽略 AUTO_INCREMENT 关键字；否则会返回错误。这样可以简化从 MySQL 的迁移过程。
 
-## compatibility_ignore_collation_in_create_table {#compatibility_ignore_collation_in_create_table} 
+## compatibility_ignore_collation_in_create_table \\{#compatibility_ignore_collation_in_create_table\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 在 CREATE TABLE 中出于兼容性忽略排序规则
 
-## compatibility_s3_presigned_url_query_in_path {#compatibility_s3_presigned_url_query_in_path} 
+## compatibility_s3_presigned_url_query_in_path \\{#compatibility_s3_presigned_url_query_in_path\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1888,7 +1888,7 @@ Cloud 模式
 因此在路径中将 `?` 视为通配符。禁用时（默认），预签名 URL 的查询参数保留在 URL 查询字符串中，
 以避免将 `?` 解释为通配符。
 
-## compile_aggregate_expressions {#compile_aggregate_expressions} 
+## compile_aggregate_expressions \\{#compile_aggregate_expressions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1903,7 +1903,7 @@ Cloud 模式
 
 - [min_count_to_compile_aggregate_expression](#min_count_to_compile_aggregate_expression)
 
-## compile_expressions {#compile_expressions} 
+## compile_expressions \\{#compile_expressions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1911,19 +1911,19 @@ Cloud 模式
 
 将某些标量函数和运算符编译为本机代码。
 
-## compile_sort_description {#compile_sort_description} 
+## compile_sort_description \\{#compile_sort_description\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 将排序描述编译为原生代码。
 
-## connect_timeout {#connect_timeout} 
+## connect_timeout \\{#connect_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="10" />
 
 在没有副本时的连接超时时间。
 
-## connect_timeout_with_failover_ms {#connect_timeout_with_failover_ms} 
+## connect_timeout_with_failover_ms \\{#connect_timeout_with_failover_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="1000" />
 
@@ -1932,7 +1932,7 @@ Cloud 模式
 当在集群定义中使用 `shard` 和 `replica` 部分时，用于 Distributed 表引擎连接到远程服务器的超时时间（毫秒）。
 如果连接失败，将会尝试多次连接到不同的副本。
 
-## connect_timeout_with_failover_secure_ms {#connect_timeout_with_failover_secure_ms} 
+## connect_timeout_with_failover_secure_ms \\{#connect_timeout_with_failover_secure_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="1000" />
 
@@ -1940,7 +1940,7 @@ Cloud 模式
 
 用于在安全连接中选择首个健康副本的连接超时时间。
 
-## connection_pool_max_wait_ms {#connection_pool_max_wait_ms} 
+## connection_pool_max_wait_ms \\{#connection_pool_max_wait_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="0" />
 
@@ -1951,13 +1951,13 @@ Cloud 模式
 - 正整数。
 - 0 — 无限等待（无超时）。
 
-## connections_with_failover_max_tries {#connections_with_failover_max_tries} 
+## connections_with_failover_max_tries \\{#connections_with_failover_max_tries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3" />
 
 在分布式表引擎中与每个副本进行连接尝试的最大次数。
 
-## convert_query_to_cnf {#convert_query_to_cnf}
+## convert_query_to_cnf \{#convert_query_to_cnf\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2026,7 +2026,7 @@ SETTINGS convert_query_to_cnf = true;
 可能的取值：true、false
 
 
-## correlated_subqueries_default_join_kind {#correlated_subqueries_default_join_kind} 
+## correlated_subqueries_default_join_kind \\{#correlated_subqueries_default_join_kind\\}
 
 <SettingsInfoBlock type="DecorrelationJoinKind" default_value="right" />
 
@@ -2039,7 +2039,7 @@ SETTINGS convert_query_to_cnf = true;
 - `left` - 去相关化过程将生成 LEFT JOIN，并且输入表将出现在左侧。
 - `right` - 去相关化过程将生成 RIGHT JOIN，并且输入表将出现在右侧。
 
-## correlated_subqueries_substitute_equivalent_expressions {#correlated_subqueries_substitute_equivalent_expressions} 
+## correlated_subqueries_substitute_equivalent_expressions \\{#correlated_subqueries_substitute_equivalent_expressions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2047,7 +2047,7 @@ SETTINGS convert_query_to_cnf = true;
 
 使用过滤表达式推断等价表达式，并用它们替代创建 CROSS JOIN 的方式。
 
-## correlated_subqueries_use_in_memory_buffer {#correlated_subqueries_use_in_memory_buffer} 
+## correlated_subqueries_use_in_memory_buffer \\{#correlated_subqueries_use_in_memory_buffer\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2055,7 +2055,7 @@ SETTINGS convert_query_to_cnf = true;
 
 对关联子查询的输入使用内存缓冲区，以避免对其进行重复求值。
 
-## count_distinct_implementation {#count_distinct_implementation} 
+## count_distinct_implementation \\{#count_distinct_implementation\\}
 
 <SettingsInfoBlock type="String" default_value="uniqExact" />
 
@@ -2069,13 +2069,13 @@ SETTINGS convert_query_to_cnf = true;
 - [uniqHLL12](/sql-reference/aggregate-functions/reference/uniqhll12)
 - [uniqExact](/sql-reference/aggregate-functions/reference/uniqexact)
 
-## count_distinct_optimization {#count_distinct_optimization} 
+## count_distinct_optimization \\{#count_distinct_optimization\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 将 `count distinct` 重写为基于 `group by` 结果的子查询
 
-## count_matches_stop_at_empty_match {#count_matches_stop_at_empty_match} 
+## count_matches_stop_at_empty_match \\{#count_matches_stop_at_empty_match\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2083,7 +2083,7 @@ SETTINGS convert_query_to_cnf = true;
 
 在 `countMatches` 函数中，一旦某个模式出现零长度匹配，就停止计数。
 
-## create_if_not_exists {#create_if_not_exists} 
+## create_if_not_exists \\{#create_if_not_exists\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2091,19 +2091,19 @@ SETTINGS convert_query_to_cnf = true;
 
 默认对 `CREATE` 语句启用 `IF NOT EXISTS`。如果启用了该设置，或者在语句中显式指定了 `IF NOT EXISTS`，且已存在同名表，则不会抛出异常。
 
-## create_index_ignore_unique {#create_index_ignore_unique} 
+## create_index_ignore_unique \\{#create_index_ignore_unique\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在 `CREATE UNIQUE INDEX` 语句中忽略 `UNIQUE` 关键字。用于 SQL 兼容性测试。
 
-## create_replicated_merge_tree_fault_injection_probability {#create_replicated_merge_tree_fault_injection_probability} 
+## create_replicated_merge_tree_fault_injection_probability \\{#create_replicated_merge_tree_fault_injection_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
 在 ZooKeeper 中创建元数据之后，在创建表期间进行故障注入的概率
 
-## create_table_empty_primary_key_by_default {#create_table_empty_primary_key_by_default} 
+## create_table_empty_primary_key_by_default \\{#create_table_empty_primary_key_by_default\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2111,7 +2111,7 @@ SETTINGS convert_query_to_cnf = true;
 
 允许在未指定 ORDER BY 和 PRIMARY KEY 的情况下创建主键为空的 *MergeTree 表
 
-## cross_join_min_bytes_to_compress {#cross_join_min_bytes_to_compress} 
+## cross_join_min_bytes_to_compress \\{#cross_join_min_bytes_to_compress\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
@@ -2119,7 +2119,7 @@ SETTINGS convert_query_to_cnf = true;
 
 在 CROSS JOIN 中要压缩的数据块的最小大小。值为零表示禁用此阈值。当达到两个阈值之一（按行数或按字节数）时，此数据块将被压缩。
 
-## cross_join_min_rows_to_compress {#cross_join_min_rows_to_compress} 
+## cross_join_min_rows_to_compress \\{#cross_join_min_rows_to_compress\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000000" />
 
@@ -2127,7 +2127,7 @@ SETTINGS convert_query_to_cnf = true;
 
 在 CROSS JOIN 中对数据块进行压缩所需的最小行数。值为 0 表示禁用此阈值。当达到任一阈值（按行数或按字节数）时，该数据块会被压缩。
 
-## cross_to_inner_join_rewrite {#cross_to_inner_join_rewrite} 
+## cross_to_inner_join_rewrite \\{#cross_to_inner_join_rewrite\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
@@ -2135,7 +2135,7 @@ SETTINGS convert_query_to_cnf = true;
 
 如果在 WHERE 子句中存在连接表达式，则使用 inner join 替代 comma/cross join。取值：0 - 不重写，1 - 在可能的情况下重写 comma/cross 连接，2 - 强制重写所有 comma 连接，cross - 在可能的情况下重写
 
-## data_type_default_nullable {#data_type_default_nullable} 
+## data_type_default_nullable \\{#data_type_default_nullable\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2146,7 +2146,7 @@ SETTINGS convert_query_to_cnf = true;
 - 1 — 列定义中的数据类型默认设置为 `Nullable`。
 - 0 — 列定义中的数据类型默认设置为非 `Nullable`。
 
-## database_atomic_wait_for_drop_and_detach_synchronously {#database_atomic_wait_for_drop_and_detach_synchronously} 
+## database_atomic_wait_for_drop_and_detach_synchronously \\{#database_atomic_wait_for_drop_and_detach_synchronously\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2157,7 +2157,7 @@ SETTINGS convert_query_to_cnf = true;
 - 0 — 查询将以延迟方式执行。
 - 1 — 查询将同步执行（无延迟）。
 
-## database_replicated_allow_explicit_uuid {#database_replicated_allow_explicit_uuid} 
+## database_replicated_allow_explicit_uuid \\{#database_replicated_allow_explicit_uuid\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2165,7 +2165,7 @@ SETTINGS convert_query_to_cnf = true;
 
 0 - 不允许在 Replicated 类型数据库中的表显式指定 UUID。1 - 允许。2 - 允许，但会忽略指定的 UUID，改为生成一个随机的 UUID。
 
-## database_replicated_allow_heavy_create {#database_replicated_allow_heavy_create} 
+## database_replicated_allow_heavy_create \\{#database_replicated_allow_heavy_create\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2173,13 +2173,13 @@ SETTINGS convert_query_to_cnf = true;
 
 允许在 Replicated 数据库引擎中执行长时间运行的 DDL 查询（CREATE AS SELECT 和 POPULATE）。注意，这可能会长时间阻塞 DDL 队列。
 
-## database_replicated_allow_only_replicated_engine {#database_replicated_allow_only_replicated_engine} 
+## database_replicated_allow_only_replicated_engine \\{#database_replicated_allow_only_replicated_engine\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 仅允许在使用 Replicated 引擎的数据库中创建 Replicated 表
 
-## database_replicated_allow_replicated_engine_arguments {#database_replicated_allow_replicated_engine_arguments} 
+## database_replicated_allow_replicated_engine_arguments \\{#database_replicated_allow_replicated_engine_arguments\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2187,19 +2187,19 @@ SETTINGS convert_query_to_cnf = true;
 
 0 - 不允许为 Replicated 数据库中的 *MergeTree 表显式指定 ZooKeeper 路径和副本名称。1 - 允许。2 - 允许，但忽略指定的路径并改用默认路径。3 - 允许且不记录警告日志。
 
-## database_replicated_always_detach_permanently {#database_replicated_always_detach_permanently} 
+## database_replicated_always_detach_permanently \\{#database_replicated_always_detach_permanently\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 当 database 引擎为 Replicated 时，将 DETACH TABLE 按 DETACH TABLE PERMANENTLY 执行。
 
-## database_replicated_enforce_synchronous_settings {#database_replicated_enforce_synchronous_settings} 
+## database_replicated_enforce_synchronous_settings \\{#database_replicated_enforce_synchronous_settings\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 强制对某些查询进行同步等待（另请参见 database_atomic_wait_for_drop_and_detach_synchronously、mutations_sync、alter_sync）。不建议启用这些设置。
 
-## database_replicated_initial_query_timeout_sec {#database_replicated_initial_query_timeout_sec} 
+## database_replicated_initial_query_timeout_sec \\{#database_replicated_initial_query_timeout_sec\\}
 
 <SettingsInfoBlock type="UInt64" default_value="300" />
 
@@ -2210,7 +2210,7 @@ SETTINGS convert_query_to_cnf = true;
 - 正整数。
 - 0 — 不限。
 
-## database_shared_drop_table_delay_seconds {#database_shared_drop_table_delay_seconds} 
+## database_shared_drop_table_delay_seconds \\{#database_shared_drop_table_delay_seconds\\}
 
 <SettingsInfoBlock type="UInt64" default_value="28800" />
 
@@ -2218,13 +2218,13 @@ SETTINGS convert_query_to_cnf = true;
 
 被删除的表在实际从 Shared 数据库中移除之前的延迟时间（秒）。在此期间，可以使用 `UNDROP TABLE` 语句恢复该表。
 
-## decimal_check_overflow {#decimal_check_overflow} 
+## decimal_check_overflow \\{#decimal_check_overflow\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 检查 Decimal 算术/比较运算是否溢出
 
-## deduplicate_blocks_in_dependent_materialized_views {#deduplicate_blocks_in_dependent_materialized_views} 
+## deduplicate_blocks_in_dependent_materialized_views \\{#deduplicate_blocks_in_dependent_materialized_views\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2242,7 +2242,7 @@ SETTINGS convert_query_to_cnf = true;
 
 - [IN 运算符中的 NULL 处理](/guides/developer/deduplicating-inserts-on-retries#insert-deduplication-with-materialized-views)
 
-## deduplicate_insert_select {#deduplicate_insert_select} 
+## deduplicate_insert_select \\{#deduplicate_insert_select\\}
 
 <SettingsInfoBlock type="DeduplicateInsertSelectMode" default_value="enable_when_possible" />
 
@@ -2257,7 +2257,7 @@ SETTINGS convert_query_to_cnf = true;
 - enable_when_possible — 如果 `insert_deduplicate` 启用且 SELECT 结果稳定，则启用去重，否则禁用。
 - enable_even_for_bad_queries - 如果 `insert_deduplicate` 启用，则始终启用去重。如果 SELECT 结果不稳定，会记录警告日志，但查询仍然在启用去重的情况下执行。此选项用于向后兼容。建议优先使用其他选项，因为该选项可能导致不符合预期的结果。
 
-## default_materialized_view_sql_security {#default_materialized_view_sql_security} 
+## default_materialized_view_sql_security \\{#default_materialized_view_sql_security\\}
 
 <SettingsInfoBlock type="SQLSecurityType" default_value="DEFINER" />
 
@@ -2267,13 +2267,13 @@ SETTINGS convert_query_to_cnf = true;
 
 默认值为 `DEFINER`。
 
-## default_max_bytes_in_join {#default_max_bytes_in_join} 
+## default_max_bytes_in_join \\{#default_max_bytes_in_join\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000000" />
 
 在需要限制但未设置 `max_bytes_in_join` 时，右侧表允许的最大字节数。
 
-## default_normal_view_sql_security {#default_normal_view_sql_security} 
+## default_normal_view_sql_security \\{#default_normal_view_sql_security\\}
 
 <SettingsInfoBlock type="SQLSecurityType" default_value="INVOKER" />
 
@@ -2283,7 +2283,7 @@ SETTINGS convert_query_to_cnf = true;
 
 默认值为 `INVOKER`。
 
-## default_table_engine {#default_table_engine}
+## default_table_engine \{#default_table_engine\}
 
 <SettingsInfoBlock type="DefaultTableEngine" default_value="MergeTree" />
 
@@ -2342,7 +2342,7 @@ ENGINE = Log
 ```
 
 
-## default_temporary_table_engine {#default_temporary_table_engine}
+## default_temporary_table_engine \{#default_temporary_table_engine\}
 
 <SettingsInfoBlock type="DefaultTableEngine" default_value="Memory" />
 
@@ -2377,7 +2377,7 @@ ENGINE = Log
 ```
 
 
-## default_view_definer {#default_view_definer} 
+## default_view_definer \\{#default_view_definer\\}
 
 <SettingsInfoBlock type="String" default_value="CURRENT_USER" />
 
@@ -2387,7 +2387,7 @@ ENGINE = Log
 
 默认值为 `CURRENT_USER`。
 
-## delta_lake_enable_engine_predicate {#delta_lake_enable_engine_predicate} 
+## delta_lake_enable_engine_predicate \\{#delta_lake_enable_engine_predicate\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2395,7 +2395,7 @@ ENGINE = Log
 
 启用 delta-kernel 的内部数据剪枝功能。
 
-## delta_lake_enable_expression_visitor_logging {#delta_lake_enable_expression_visitor_logging} 
+## delta_lake_enable_expression_visitor_logging \\{#delta_lake_enable_expression_visitor_logging\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2403,7 +2403,7 @@ ENGINE = Log
 
 启用 DeltaLake 表达式访问器的测试级别日志记录。即使仅作为测试日志，这些日志也可能过于冗长。
 
-## delta_lake_insert_max_bytes_in_data_file {#delta_lake_insert_max_bytes_in_data_file} 
+## delta_lake_insert_max_bytes_in_data_file \\{#delta_lake_insert_max_bytes_in_data_file\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1073741824" />
 
@@ -2411,7 +2411,7 @@ ENGINE = Log
 
 定义 Delta Lake 中单个插入数据文件的最大字节数限制。
 
-## delta_lake_insert_max_rows_in_data_file {#delta_lake_insert_max_rows_in_data_file} 
+## delta_lake_insert_max_rows_in_data_file \\{#delta_lake_insert_max_rows_in_data_file\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1000000" />
 
@@ -2419,7 +2419,7 @@ ENGINE = Log
 
 定义 Delta Lake 中单个插入数据文件的最大行数限制。
 
-## delta_lake_log_metadata {#delta_lake_log_metadata} 
+## delta_lake_log_metadata \\{#delta_lake_log_metadata\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2427,7 +2427,7 @@ ENGINE = Log
 
 启用在 system 系统表中记录 Delta Lake 元数据文件。
 
-## delta_lake_snapshot_end_version {#delta_lake_snapshot_end_version} 
+## delta_lake_snapshot_end_version \\{#delta_lake_snapshot_end_version\\}
 
 <SettingsInfoBlock type="Int64" default_value="-1" />
 
@@ -2435,7 +2435,7 @@ ENGINE = Log
 
 要读取的 Delta Lake 快照的结束版本号。值 -1 表示读取最新版本（值 0 也是一个有效的快照版本号）。
 
-## delta_lake_snapshot_start_version {#delta_lake_snapshot_start_version} 
+## delta_lake_snapshot_start_version \\{#delta_lake_snapshot_start_version\\}
 
 <SettingsInfoBlock type="Int64" default_value="-1" />
 
@@ -2443,7 +2443,7 @@ ENGINE = Log
 
 要读取的 Delta Lake 快照的起始版本。值为 -1 表示读取最新版本（值为 0 也是一个有效的快照版本）。
 
-## delta_lake_snapshot_version {#delta_lake_snapshot_version} 
+## delta_lake_snapshot_version \\{#delta_lake_snapshot_version\\}
 
 <SettingsInfoBlock type="Int64" default_value="-1" />
 
@@ -2451,7 +2451,7 @@ ENGINE = Log
 
 要读取的 Delta Lake 快照版本。值 -1 表示读取最新版本（值 0 也是一个有效的快照版本）。
 
-## delta_lake_throw_on_engine_predicate_error {#delta_lake_throw_on_engine_predicate_error} 
+## delta_lake_throw_on_engine_predicate_error \\{#delta_lake_throw_on_engine_predicate_error\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2459,13 +2459,13 @@ ENGINE = Log
 
 启用此设置后，如果在 delta-kernel 中分析扫描谓词时发生错误，则抛出异常。
 
-## describe_compact_output {#describe_compact_output} 
+## describe_compact_output \\{#describe_compact_output\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 如果为 true，则 DESCRIBE 查询的结果中仅包含列名和类型。
 
-## describe_include_subcolumns {#describe_include_subcolumns} 
+## describe_include_subcolumns \\{#describe_include_subcolumns\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2480,25 +2480,25 @@ ENGINE = Log
 
 参见 [DESCRIBE](../../sql-reference/statements/describe-table.md) 语句的示例。
 
-## describe_include_virtual_columns {#describe_include_virtual_columns} 
+## describe_include_virtual_columns \\{#describe_include_virtual_columns\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 如果设置为 true，表的虚拟列会被包含在 DESCRIBE 查询结果中
 
-## dialect {#dialect} 
+## dialect \\{#dialect\\}
 
 <SettingsInfoBlock type="Dialect" default_value="clickhouse" />
 
 用于解析查询的方言
 
-## dictionary_use_async_executor {#dictionary_use_async_executor} 
+## dictionary_use_async_executor \\{#dictionary_use_async_executor\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 使用多线程执行用于读取字典数据源的 pipeline。仅支持使用本地 CLICKHOUSE 源的字典。
 
-## dictionary_validate_primary_key_type {#dictionary_validate_primary_key_type} 
+## dictionary_validate_primary_key_type \\{#dictionary_validate_primary_key_type\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2506,7 +2506,7 @@ ENGINE = Log
 
 验证字典的主键类型。默认情况下，简单布局的 ID 类型将被隐式转换为 UInt64。
 
-## distinct_overflow_mode {#distinct_overflow_mode} 
+## distinct_overflow_mode \\{#distinct_overflow_mode\\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
@@ -2517,13 +2517,13 @@ ENGINE = Log
 - `throw`：抛出异常（默认）。
 - `break`：停止执行查询并返回已处理的部分结果，就像源数据已经耗尽一样。
 
-## distributed_aggregation_memory_efficient {#distributed_aggregation_memory_efficient} 
+## distributed_aggregation_memory_efficient \\{#distributed_aggregation_memory_efficient\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 是否启用分布式聚合的内存节省模式。
 
-## distributed_background_insert_batch {#distributed_background_insert_batch} 
+## distributed_background_insert_batch \\{#distributed_background_insert_batch\\}
 
 **别名**: `distributed_directory_monitor_batch_inserts`
 
@@ -2538,7 +2538,7 @@ ENGINE = Log
 - 1 — 启用。
 - 0 — 禁用。
 
-## distributed_background_insert_max_sleep_time_ms {#distributed_background_insert_max_sleep_time_ms} 
+## distributed_background_insert_max_sleep_time_ms \\{#distributed_background_insert_max_sleep_time_ms\\}
 
 **别名**: `distributed_directory_monitor_max_sleep_time_ms`
 
@@ -2550,7 +2550,7 @@ ENGINE = Log
 
 - 一个正整数，单位为毫秒。
 
-## distributed_background_insert_sleep_time_ms {#distributed_background_insert_sleep_time_ms} 
+## distributed_background_insert_sleep_time_ms \\{#distributed_background_insert_sleep_time_ms\\}
 
 **别名**: `distributed_directory_monitor_sleep_time_ms`
 
@@ -2562,7 +2562,7 @@ ENGINE = Log
 
 - 正整数的毫秒数。
 
-## distributed_background_insert_split_batch_on_failure {#distributed_background_insert_split_batch_on_failure} 
+## distributed_background_insert_split_batch_on_failure \\{#distributed_background_insert_split_batch_on_failure\\}
 
 **别名**：`distributed_directory_monitor_split_batch_on_failure`
 
@@ -2587,7 +2587,7 @@ ENGINE = Log
 不应依赖自动批次拆分，因为这可能会影响性能。
 :::
 
-## distributed_background_insert_timeout {#distributed_background_insert_timeout} 
+## distributed_background_insert_timeout \\{#distributed_background_insert_timeout\\}
 
 **别名**: `insert_distributed_timeout`
 
@@ -2595,7 +2595,7 @@ ENGINE = Log
 
 向 Distributed 表执行插入查询时的超时时间。仅在启用了 insert_distributed_sync 时使用该设置。值为 0 表示不限制超时时间。
 
-## distributed_cache_alignment {#distributed_cache_alignment} 
+## distributed_cache_alignment \\{#distributed_cache_alignment\\}
 
 <CloudOnlyBadge/>
 
@@ -2605,7 +2605,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。此设置仅用于测试，请勿更改。
 
-## distributed_cache_bypass_connection_pool {#distributed_cache_bypass_connection_pool} 
+## distributed_cache_bypass_connection_pool \\{#distributed_cache_bypass_connection_pool\\}
 
 <CloudOnlyBadge/>
 
@@ -2615,7 +2615,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。用于绕过 distributed cache 连接池。
 
-## distributed_cache_connect_backoff_max_ms {#distributed_cache_connect_backoff_max_ms} 
+## distributed_cache_connect_backoff_max_ms \\{#distributed_cache_connect_backoff_max_ms\\}
 
 <CloudOnlyBadge/>
 
@@ -2625,7 +2625,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。用于创建 distributed cache 连接的最大退避时长（毫秒）。
 
-## distributed_cache_connect_backoff_min_ms {#distributed_cache_connect_backoff_min_ms} 
+## distributed_cache_connect_backoff_min_ms \\{#distributed_cache_connect_backoff_min_ms\\}
 
 <CloudOnlyBadge/>
 
@@ -2635,7 +2635,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。创建分布式缓存连接时的最小退避时长（毫秒）。
 
-## distributed_cache_connect_max_tries {#distributed_cache_connect_max_tries} 
+## distributed_cache_connect_max_tries \\{#distributed_cache_connect_max_tries\\}
 
 <CloudOnlyBadge/>
 
@@ -2645,7 +2645,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。连接分布式缓存失败时的最大重试次数。
 
-## distributed_cache_connect_timeout_ms {#distributed_cache_connect_timeout_ms} 
+## distributed_cache_connect_timeout_ms \\{#distributed_cache_connect_timeout_ms\\}
 
 <CloudOnlyBadge/>
 
@@ -2655,7 +2655,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。用于连接分布式缓存服务器的超时时间。
 
-## distributed_cache_credentials_refresh_period_seconds {#distributed_cache_credentials_refresh_period_seconds} 
+## distributed_cache_credentials_refresh_period_seconds \\{#distributed_cache_credentials_refresh_period_seconds\\}
 
 <CloudOnlyBadge/>
 
@@ -2665,7 +2665,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。凭证刷新时间间隔。
 
-## distributed_cache_data_packet_ack_window {#distributed_cache_data_packet_ack_window} 
+## distributed_cache_data_packet_ack_window \\{#distributed_cache_data_packet_ack_window\\}
 
 <CloudOnlyBadge/>
 
@@ -2675,7 +2675,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。用于在单个分布式缓存读取请求中，为 DataPacket 序列发送 ACK 的窗口大小。
 
-## distributed_cache_discard_connection_if_unread_data {#distributed_cache_discard_connection_if_unread_data} 
+## distributed_cache_discard_connection_if_unread_data \\{#distributed_cache_discard_connection_if_unread_data\\}
 
 <CloudOnlyBadge/>
 
@@ -2685,7 +2685,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。如果存在未读取的数据，则关闭连接。
 
-## distributed_cache_fetch_metrics_only_from_current_az {#distributed_cache_fetch_metrics_only_from_current_az} 
+## distributed_cache_fetch_metrics_only_from_current_az \\{#distributed_cache_fetch_metrics_only_from_current_az\\}
 
 <CloudOnlyBadge/>
 
@@ -2695,7 +2695,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中有效。仅从当前可用区获取 system.distributed_cache_metrics 和 system.distributed_cache_events 中的指标。
 
-## distributed_cache_file_cache_name {#distributed_cache_file_cache_name} 
+## distributed_cache_file_cache_name \\{#distributed_cache_file_cache_name\\}
 
 <CloudOnlyBadge/>
 
@@ -2703,7 +2703,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中有效。仅用于 CI 测试的设置——在分布式缓存中使用的文件系统缓存名称。
 
-## distributed_cache_log_mode {#distributed_cache_log_mode} 
+## distributed_cache_log_mode \\{#distributed_cache_log_mode\\}
 
 <CloudOnlyBadge/>
 
@@ -2713,7 +2713,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。用于控制写入 system.distributed_cache_log 的模式。
 
-## distributed_cache_max_unacked_inflight_packets {#distributed_cache_max_unacked_inflight_packets} 
+## distributed_cache_max_unacked_inflight_packets \\{#distributed_cache_max_unacked_inflight_packets\\}
 
 <CloudOnlyBadge/>
 
@@ -2723,7 +2723,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。单个分布式缓存读取请求中未确认在途数据包的最大数量。
 
-## distributed_cache_min_bytes_for_seek {#distributed_cache_min_bytes_for_seek} 
+## distributed_cache_min_bytes_for_seek \\{#distributed_cache_min_bytes_for_seek\\}
 
 <CloudOnlyBadge/>
 
@@ -2733,7 +2733,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。在分布式缓存中执行 seek 操作所需的最小字节数。
 
-## distributed_cache_pool_behaviour_on_limit {#distributed_cache_pool_behaviour_on_limit} 
+## distributed_cache_pool_behaviour_on_limit \\{#distributed_cache_pool_behaviour_on_limit\\}
 
 <CloudOnlyBadge/>
 
@@ -2743,7 +2743,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。用于标识在连接池达到上限时分布式缓存连接的行为方式。
 
-## distributed_cache_prefer_bigger_buffer_size {#distributed_cache_prefer_bigger_buffer_size} 
+## distributed_cache_prefer_bigger_buffer_size \\{#distributed_cache_prefer_bigger_buffer_size\\}
 
 <CloudOnlyBadge/>
 
@@ -2753,7 +2753,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中有效。与 filesystem_cache_prefer_bigger_buffer_size 相同，但适用于分布式缓存。
 
-## distributed_cache_read_only_from_current_az {#distributed_cache_read_only_from_current_az} 
+## distributed_cache_read_only_from_current_az \\{#distributed_cache_read_only_from_current_az\\}
 
 <CloudOnlyBadge/>
 
@@ -2763,7 +2763,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。只允许从当前可用区的缓存服务器读取。如果禁用，则会从所有可用区中的所有缓存服务器读取。
 
-## distributed_cache_read_request_max_tries {#distributed_cache_read_request_max_tries} 
+## distributed_cache_read_request_max_tries \\{#distributed_cache_read_request_max_tries\\}
 
 <CloudOnlyBadge/>
 
@@ -2773,7 +2773,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。分布式缓存请求失败后的重试次数。
 
-## distributed_cache_receive_response_wait_milliseconds {#distributed_cache_receive_response_wait_milliseconds} 
+## distributed_cache_receive_response_wait_milliseconds \\{#distributed_cache_receive_response_wait_milliseconds\\}
 
 <CloudOnlyBadge/>
 
@@ -2783,7 +2783,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。从分布式缓存接收请求数据的等待时间（毫秒）。
 
-## distributed_cache_receive_timeout_milliseconds {#distributed_cache_receive_timeout_milliseconds} 
+## distributed_cache_receive_timeout_milliseconds \\{#distributed_cache_receive_timeout_milliseconds\\}
 
 <CloudOnlyBadge/>
 
@@ -2793,7 +2793,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。以毫秒为单位，用于等待从分布式缓存（distributed cache）接收任意类型响应的时间。
 
-## distributed_cache_receive_timeout_ms {#distributed_cache_receive_timeout_ms} 
+## distributed_cache_receive_timeout_ms \\{#distributed_cache_receive_timeout_ms\\}
 
 <CloudOnlyBadge/>
 
@@ -2803,7 +2803,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。用于从分布式缓存服务器接收数据的超时时间，单位为毫秒。如果在此时间内未接收到任何字节，将抛出异常。
 
-## distributed_cache_send_timeout_ms {#distributed_cache_send_timeout_ms} 
+## distributed_cache_send_timeout_ms \\{#distributed_cache_send_timeout_ms\\}
 
 <CloudOnlyBadge/>
 
@@ -2813,7 +2813,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。向分布式缓存服务器发送数据的超时时间（毫秒）。如果客户端需要发送数据，但在该时间间隔内未能发送出任何字节，将抛出异常。
 
-## distributed_cache_tcp_keep_alive_timeout_ms {#distributed_cache_tcp_keep_alive_timeout_ms} 
+## distributed_cache_tcp_keep_alive_timeout_ms \\{#distributed_cache_tcp_keep_alive_timeout_ms\\}
 
 <CloudOnlyBadge/>
 
@@ -2823,7 +2823,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。以毫秒为单位，表示在 TCP 开始发送 keepalive 探测包之前，与分布式缓存服务器的连接可以保持空闲的时间。
 
-## distributed_cache_throw_on_error {#distributed_cache_throw_on_error} 
+## distributed_cache_throw_on_error \\{#distributed_cache_throw_on_error\\}
 
 <CloudOnlyBadge/>
 
@@ -2833,7 +2833,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。会重新抛出在与分布式缓存通信期间发生的异常或从分布式缓存接收到的异常；否则，在出错时将改为跳过分布式缓存。
 
-## distributed_cache_use_clients_cache_for_read {#distributed_cache_use_clients_cache_for_read} 
+## distributed_cache_use_clients_cache_for_read \\{#distributed_cache_use_clients_cache_for_read\\}
 
 <CloudOnlyBadge/>
 
@@ -2843,7 +2843,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。对读取请求使用客户端缓存。
 
-## distributed_cache_use_clients_cache_for_write {#distributed_cache_use_clients_cache_for_write} 
+## distributed_cache_use_clients_cache_for_write \\{#distributed_cache_use_clients_cache_for_write\\}
 
 <CloudOnlyBadge/>
 
@@ -2853,7 +2853,7 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。对写入请求使用客户端缓存。
 
-## distributed_cache_wait_connection_from_pool_milliseconds {#distributed_cache_wait_connection_from_pool_milliseconds} 
+## distributed_cache_wait_connection_from_pool_milliseconds \\{#distributed_cache_wait_connection_from_pool_milliseconds\\}
 
 <CloudOnlyBadge/>
 
@@ -2863,19 +2863,19 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。当 distributed_cache_pool_behaviour_on_limit 为 wait 时，从连接池获取连接的等待时间（毫秒）。
 
-## distributed_connections_pool_size {#distributed_connections_pool_size} 
+## distributed_connections_pool_size \\{#distributed_connections_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1024" />
 
 对单个分布式表的所有查询进行分布式处理时，与远程服务器之间允许建立的最大并发连接数。建议将该值设置为不小于集群中的服务器数量。
 
-## distributed_ddl_entry_format_version {#distributed_ddl_entry_format_version} 
+## distributed_ddl_entry_format_version \\{#distributed_ddl_entry_format_version\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5" />
 
 分布式 DDL（`ON CLUSTER`）查询使用的兼容性版本
 
-## distributed_ddl_output_mode {#distributed_ddl_output_mode} 
+## distributed_ddl_output_mode \\{#distributed_ddl_output_mode\\}
 
 <SettingsInfoBlock type="DistributedDDLOutputMode" default_value="throw" />
 
@@ -2893,7 +2893,7 @@ ENGINE = Log
 
 Cloud 默认值：`throw`。
 
-## distributed_ddl_task_timeout {#distributed_ddl_task_timeout} 
+## distributed_ddl_task_timeout \\{#distributed_ddl_task_timeout\\}
 
 <SettingsInfoBlock type="Int64" default_value="180" />
 
@@ -2905,7 +2905,7 @@ Cloud 默认值：`throw`。
 - 0 — 异步模式。
 - 负整数 — 无限超时。
 
-## distributed_foreground_insert {#distributed_foreground_insert} 
+## distributed_foreground_insert \\{#distributed_foreground_insert\\}
 
 **别名**: `insert_distributed_sync`
 
@@ -2927,7 +2927,7 @@ Cloud 默认值：`0`。
 - [Distributed 表引擎](/engines/table-engines/special/distributed)
 - [管理 Distributed 表](/sql-reference/statements/system#managing-distributed-tables)
 
-## distributed_group_by_no_merge {#distributed_group_by_no_merge}
+## distributed_group_by_no_merge \{#distributed_group_by_no_merge\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2969,7 +2969,7 @@ FORMAT PrettyCompactMonoBlock
 ```
 
 
-## distributed_insert_skip_read_only_replicas {#distributed_insert_skip_read_only_replicas} 
+## distributed_insert_skip_read_only_replicas \\{#distributed_insert_skip_read_only_replicas\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2982,7 +2982,7 @@ FORMAT PrettyCompactMonoBlock
 - 0 — INSERT 行为与通常相同，如果请求被发送到只读副本则会失败
 - 1 — 发起方在向分片发送数据前会跳过只读副本。
 
-## distributed_plan_default_reader_bucket_count {#distributed_plan_default_reader_bucket_count} 
+## distributed_plan_default_reader_bucket_count \\{#distributed_plan_default_reader_bucket_count\\}
 
 <ExperimentalBadge/>
 
@@ -2992,7 +2992,7 @@ FORMAT PrettyCompactMonoBlock
 
 分布式查询中并行读取任务的默认数量。任务会在各个副本之间分配。
 
-## distributed_plan_default_shuffle_join_bucket_count {#distributed_plan_default_shuffle_join_bucket_count} 
+## distributed_plan_default_shuffle_join_bucket_count \\{#distributed_plan_default_shuffle_join_bucket_count\\}
 
 <ExperimentalBadge/>
 
@@ -3002,7 +3002,7 @@ FORMAT PrettyCompactMonoBlock
 
 用于分布式 shuffle-hash-join 的默认分桶数。
 
-## distributed_plan_execute_locally {#distributed_plan_execute_locally} 
+## distributed_plan_execute_locally \\{#distributed_plan_execute_locally\\}
 
 <ExperimentalBadge/>
 
@@ -3012,7 +3012,7 @@ FORMAT PrettyCompactMonoBlock
 
 在本地执行分布式查询计划的所有任务。用于测试和调试。
 
-## distributed_plan_force_exchange_kind {#distributed_plan_force_exchange_kind} 
+## distributed_plan_force_exchange_kind \\{#distributed_plan_force_exchange_kind\\}
 
 <ExperimentalBadge/>
 
@@ -3026,7 +3026,7 @@ FORMAT PrettyCompactMonoBlock
  - 'Persisted' - 在对象存储中使用临时文件。
  - 'Streaming' - 通过网络以流式方式交换数据。
 
-## distributed_plan_force_shuffle_aggregation {#distributed_plan_force_shuffle_aggregation} 
+## distributed_plan_force_shuffle_aggregation \\{#distributed_plan_force_shuffle_aggregation\\}
 
 <ExperimentalBadge/>
 
@@ -3036,7 +3036,7 @@ FORMAT PrettyCompactMonoBlock
 
 在分布式查询计划中，将 PartialAggregation + Merge 替换为 Shuffle 聚合策略。
 
-## distributed_plan_max_rows_to_broadcast {#distributed_plan_max_rows_to_broadcast} 
+## distributed_plan_max_rows_to_broadcast \\{#distributed_plan_max_rows_to_broadcast\\}
 
 <ExperimentalBadge/>
 
@@ -3046,7 +3046,7 @@ FORMAT PrettyCompactMonoBlock
 
 在分布式查询计划中，用于选择广播 join 而非 shuffle join 的最大行数阈值。
 
-## distributed_plan_optimize_exchanges {#distributed_plan_optimize_exchanges} 
+## distributed_plan_optimize_exchanges \\{#distributed_plan_optimize_exchanges\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3054,7 +3054,7 @@ FORMAT PrettyCompactMonoBlock
 
 在分布式查询计划中移除不必要的 exchange 操作。若需调试，可将其禁用。
 
-## distributed_product_mode {#distributed_product_mode} 
+## distributed_product_mode \\{#distributed_product_mode\\}
 
 <SettingsInfoBlock type="DistributedProductMode" default_value="deny" />
 
@@ -3076,7 +3076,7 @@ FORMAT PrettyCompactMonoBlock
 - `global` — 将 `IN`/`JOIN` 查询替换为 `GLOBAL IN`/`GLOBAL JOIN`。
 - `allow` — 允许使用此类子查询。
 
-## distributed_push_down_limit {#distributed_push_down_limit} 
+## distributed_push_down_limit \\{#distributed_push_down_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
@@ -3106,7 +3106,7 @@ FORMAT PrettyCompactMonoBlock
 - [optimize_skip_unused_shards](#optimize_skip_unused_shards)
 - [optimize_distributed_group_by_sharding_key](#optimize_distributed_group_by_sharding_key)
 
-## distributed_replica_error_cap {#distributed_replica_error_cap} 
+## distributed_replica_error_cap \\{#distributed_replica_error_cap\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -3122,7 +3122,7 @@ FORMAT PrettyCompactMonoBlock
 - [distributed_replica_error_half_life](#distributed_replica_error_half_life)
 - [distributed_replica_max_ignored_errors](#distributed_replica_max_ignored_errors)
 
-## distributed_replica_error_half_life {#distributed_replica_error_half_life} 
+## distributed_replica_error_half_life \\{#distributed_replica_error_half_life\\}
 
 <SettingsInfoBlock type="Seconds" default_value="60" />
 
@@ -3138,7 +3138,7 @@ FORMAT PrettyCompactMonoBlock
 - [distributed_replica_error_cap](#distributed_replica_error_cap)
 - [distributed_replica_max_ignored_errors](#distributed_replica_max_ignored_errors)
 
-## distributed_replica_max_ignored_errors {#distributed_replica_max_ignored_errors} 
+## distributed_replica_max_ignored_errors \\{#distributed_replica_max_ignored_errors\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -3154,25 +3154,25 @@ FORMAT PrettyCompactMonoBlock
 - [distributed_replica_error_cap](#distributed_replica_error_cap)
 - [distributed_replica_error_half_life](#distributed_replica_error_half_life)
 
-## do_not_merge_across_partitions_select_final {#do_not_merge_across_partitions_select_final} 
+## do_not_merge_across_partitions_select_final \\{#do_not_merge_across_partitions_select_final\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在 `SELECT FINAL` 查询中仅合并同一分区内的分区片段
 
-## empty_result_for_aggregation_by_constant_keys_on_empty_set {#empty_result_for_aggregation_by_constant_keys_on_empty_set} 
+## empty_result_for_aggregation_by_constant_keys_on_empty_set \\{#empty_result_for_aggregation_by_constant_keys_on_empty_set\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 当在空 Set 上按常量键进行聚合时，返回空结果。
 
-## empty_result_for_aggregation_by_empty_set {#empty_result_for_aggregation_by_empty_set} 
+## empty_result_for_aggregation_by_empty_set \\{#empty_result_for_aggregation_by_empty_set\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在空 Set 上执行无键聚合时返回空结果。
 
-## enable_adaptive_memory_spill_scheduler {#enable_adaptive_memory_spill_scheduler} 
+## enable_adaptive_memory_spill_scheduler \\{#enable_adaptive_memory_spill_scheduler\\}
 
 <ExperimentalBadge/>
 
@@ -3182,7 +3182,7 @@ FORMAT PrettyCompactMonoBlock
 
 触发处理器以自适应方式将数据溢写到外部存储。目前支持 grace join。
 
-## enable_add_distinct_to_in_subqueries {#enable_add_distinct_to_in_subqueries} 
+## enable_add_distinct_to_in_subqueries \\{#enable_add_distinct_to_in_subqueries\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3191,7 +3191,7 @@ FORMAT PrettyCompactMonoBlock
 启用在 `IN` 子查询中使用 `DISTINCT`。这是一个权衡型设置：启用后可以大幅减少为分布式 IN 子查询传输的临时表大小，并通过确保只发送唯一值，显著加快分片之间的数据传输。
 但是，启用此设置会在每个节点上增加额外的合并开销，因为必须执行去重（DISTINCT）。当网络传输是瓶颈且可以接受额外的合并开销时再使用此设置。
 
-## enable_blob_storage_log {#enable_blob_storage_log} 
+## enable_blob_storage_log \\{#enable_blob_storage_log\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3199,13 +3199,13 @@ FORMAT PrettyCompactMonoBlock
 
 将 blob 存储操作相关信息写入 system.blob_storage_log 表
 
-## enable_early_constant_folding {#enable_early_constant_folding} 
+## enable_early_constant_folding \\{#enable_early_constant_folding\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 启用此查询优化：分析函数和子查询的结果，如果结果为常量，则对查询进行重写
 
-## enable_extended_results_for_datetime_functions {#enable_extended_results_for_datetime_functions} 
+## enable_extended_results_for_datetime_functions \\{#enable_extended_results_for_datetime_functions\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3237,32 +3237,32 @@ FORMAT PrettyCompactMonoBlock
 | `toStartOfMinute`         | 返回 `DateTime`<br />*注意：对超出 1970-2149 范围的值会产生错误结果*     | 对于 `Date`/`DateTime` 类型的输入返回 `DateTime`<br />对于 `Date32`/`DateTime64` 类型的输入返回 `DateTime64`                   |
 | `timeSlot`                | 返回 `DateTime`<br />*注意：对于超出 1970–2149 年范围的值会返回不正确的结果* | 对于 `Date`/`DateTime` 类型的输入返回 `DateTime`<br />对于 `Date32`/`DateTime64` 类型的输入返回 `DateTime64`                   |
 
-## enable_filesystem_cache {#enable_filesystem_cache} 
+## enable_filesystem_cache \\{#enable_filesystem_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 对远程文件系统使用缓存。该设置不会为磁盘启用或禁用文件系统缓存（必须通过磁盘配置完成），但在需要时允许某些查询跳过缓存。
 
-## enable_filesystem_cache_log {#enable_filesystem_cache_log} 
+## enable_filesystem_cache_log \\{#enable_filesystem_cache_log\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 允许记录每个查询的文件系统缓存日志
 
-## enable_filesystem_cache_on_write_operations {#enable_filesystem_cache_on_write_operations} 
+## enable_filesystem_cache_on_write_operations \\{#enable_filesystem_cache_on_write_operations\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 启用或禁用 `write-through` 缓存。若设置为 `false`，则对写入操作禁用 `write-through` 缓存。若设置为 `true`，且在服务器配置中的缓存磁盘配置部分已开启 `cache_on_write_operations`，则启用 `write-through` 缓存。
 有关更多详情，请参阅[“使用本地缓存”](/operations/storing-data#using-local-cache)。
 
-## enable_filesystem_read_prefetches_log {#enable_filesystem_read_prefetches_log} 
+## enable_filesystem_read_prefetches_log \\{#enable_filesystem_read_prefetches_log\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在查询执行期间将日志写入 system.filesystem prefetch_log。仅应在测试或调试时使用，不建议默认启用。
 
-## enable_full_text_index {#enable_full_text_index} 
+## enable_full_text_index \\{#enable_full_text_index\\}
 
 <BetaBadge/>
 
@@ -3274,7 +3274,7 @@ FORMAT PrettyCompactMonoBlock
 
 如果设置为 true，则允许使用文本索引。
 
-## enable_global_with_statement {#enable_global_with_statement} 
+## enable_global_with_statement \\{#enable_global_with_statement\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3282,7 +3282,7 @@ FORMAT PrettyCompactMonoBlock
 
 将 WITH 语句传递到 UNION 查询和所有子查询
 
-## enable_hdfs_pread {#enable_hdfs_pread} 
+## enable_hdfs_pread \\{#enable_hdfs_pread\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3290,7 +3290,7 @@ FORMAT PrettyCompactMonoBlock
 
 启用或禁用对 HDFS 文件的 `pread` 操作。默认情况下使用 `hdfsPread`。如果禁用，则会改用 `hdfsRead` 和 `hdfsSeek` 来读取 HDFS 文件。
 
-## enable_http_compression {#enable_http_compression} 
+## enable_http_compression \\{#enable_http_compression\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3305,7 +3305,7 @@ FORMAT PrettyCompactMonoBlock
 - 0 — 禁用。
 - 1 — 启用。
 
-## enable_job_stack_trace {#enable_job_stack_trace} 
+## enable_job_stack_trace \\{#enable_job_stack_trace\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3313,7 +3313,7 @@ FORMAT PrettyCompactMonoBlock
 
 当作业导致异常时，输出作业创建方的堆栈跟踪。为避免性能开销，默认禁用。
 
-## enable_join_runtime_filters {#enable_join_runtime_filters} 
+## enable_join_runtime_filters \\{#enable_join_runtime_filters\\}
 
 <ExperimentalBadge/>
 
@@ -3323,7 +3323,7 @@ FORMAT PrettyCompactMonoBlock
 
 在运行时根据从右侧收集到的一组 JOIN 键来过滤左侧。
 
-## enable_lazy_columns_replication {#enable_lazy_columns_replication} 
+## enable_lazy_columns_replication \\{#enable_lazy_columns_replication\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3331,7 +3331,7 @@ FORMAT PrettyCompactMonoBlock
 
 在 JOIN 和 ARRAY JOIN 中启用惰性列复制，从而避免在内存中对相同行进行不必要的多次复制。
 
-## enable_lightweight_delete {#enable_lightweight_delete} 
+## enable_lightweight_delete \\{#enable_lightweight_delete\\}
 
 **Aliases**: `allow_experimental_lightweight_delete`
 
@@ -3339,7 +3339,7 @@ FORMAT PrettyCompactMonoBlock
 
 为 MergeTree 表启用轻量级 DELETE 变更操作。
 
-## enable_lightweight_update {#enable_lightweight_update} 
+## enable_lightweight_update \\{#enable_lightweight_update\\}
 
 <BetaBadge/>
 
@@ -3351,19 +3351,19 @@ FORMAT PrettyCompactMonoBlock
 
 允许使用轻量级更新。
 
-## enable_memory_bound_merging_of_aggregation_results {#enable_memory_bound_merging_of_aggregation_results} 
+## enable_memory_bound_merging_of_aggregation_results \\{#enable_memory_bound_merging_of_aggregation_results\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 启用受内存限制的聚合结果合并策略。
 
-## enable_multiple_prewhere_read_steps {#enable_multiple_prewhere_read_steps} 
+## enable_multiple_prewhere_read_steps \\{#enable_multiple_prewhere_read_steps\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 在存在由 AND 组合的多个条件时，将更多条件从 WHERE 下推到 PREWHERE，并分多步执行磁盘读取和过滤
 
-## enable_named_columns_in_function_tuple {#enable_named_columns_in_function_tuple} 
+## enable_named_columns_in_function_tuple \\{#enable_named_columns_in_function_tuple\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3371,7 +3371,7 @@ FORMAT PrettyCompactMonoBlock
 
 当所有名称都是唯一且可作为未加引号的标识符处理时，在 tuple() 函数中生成具名元组。
 
-## enable_optimize_predicate_expression {#enable_optimize_predicate_expression} 
+## enable_optimize_predicate_expression \\{#enable_optimize_predicate_expression\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3397,13 +3397,13 @@ FORMAT PrettyCompactMonoBlock
 
 如果 `enable_optimize_predicate_expression = 0`，则第二个查询的执行时间会长得多，因为 `WHERE` 子句是在子查询完成后才对所有数据进行过滤的。
 
-## enable_optimize_predicate_expression_to_final_subquery {#enable_optimize_predicate_expression_to_final_subquery} 
+## enable_optimize_predicate_expression_to_final_subquery \\{#enable_optimize_predicate_expression_to_final_subquery\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 允许将谓词下推至 FINAL 子查询。
 
-## enable_order_by_all {#enable_order_by_all}
+## enable_order_by_all \{#enable_order_by_all\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3439,7 +3439,7 @@ SELECT * FROM TAB ORDER BY ALL SETTINGS enable_order_by_all = 0;
 ```
 
 
-## enable_parallel_blocks_marshalling {#enable_parallel_blocks_marshalling} 
+## enable_parallel_blocks_marshalling \\{#enable_parallel_blocks_marshalling\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3447,7 +3447,7 @@ SELECT * FROM TAB ORDER BY ALL SETTINGS enable_order_by_all = 0;
 
 仅影响分布式查询。启用后，将在 pipeline 线程上对数据块进行（反）序列化和（反）压缩，并在发送给查询发起端之前/之后执行这些操作（即并行度高于默认情况）。
 
-## enable_parsing_to_custom_serialization {#enable_parsing_to_custom_serialization} 
+## enable_parsing_to_custom_serialization \\{#enable_parsing_to_custom_serialization\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3455,7 +3455,7 @@ SELECT * FROM TAB ORDER BY ALL SETTINGS enable_order_by_all = 0;
 
 如果为 `true`，则可以根据从表中获取的序列化提示信息，将数据直接解析到使用自定义序列化（例如稀疏）的列中。
 
-## enable_positional_arguments {#enable_positional_arguments}
+## enable_positional_arguments \{#enable_positional_arguments\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3491,7 +3491,7 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 ```
 
 
-## enable_positional_arguments_for_projections {#enable_positional_arguments_for_projections} 
+## enable_positional_arguments_for_projections \\{#enable_positional_arguments_for_projections\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3508,7 +3508,7 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 - 0 — 不支持位置参数。
 - 1 — 支持位置参数：可以使用列号代替列名。
 
-## enable_producing_buckets_out_of_order_in_aggregation {#enable_producing_buckets_out_of_order_in_aggregation} 
+## enable_producing_buckets_out_of_order_in_aggregation \\{#enable_producing_buckets_out_of_order_in_aggregation\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3518,7 +3518,7 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 当各聚合 bucket 的大小分布不均衡时，通过允许副本在自身仍在处理一些较大的低 ID bucket 的同时，将较高 ID 的 bucket 提前发送给发起方，可以提升性能。
 其缺点是可能会占用更多内存。
 
-## enable_qbit_type {#enable_qbit_type} 
+## enable_qbit_type \\{#enable_qbit_type\\}
 
 <BetaBadge/>
 
@@ -3530,7 +3530,7 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 允许创建 [QBit](../../sql-reference/data-types/qbit.md) 数据类型。
 
-## enable_reads_from_query_cache {#enable_reads_from_query_cache} 
+## enable_reads_from_query_cache \\{#enable_reads_from_query_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3541,13 +3541,13 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 - 0 - 禁用
 - 1 - 启用
 
-## enable_s3_requests_logging {#enable_s3_requests_logging} 
+## enable_s3_requests_logging \\{#enable_s3_requests_logging\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 启用对 S3 请求的极其详细的日志记录。仅建议在调试时使用。
 
-## enable_scalar_subquery_optimization {#enable_scalar_subquery_optimization} 
+## enable_scalar_subquery_optimization \\{#enable_scalar_subquery_optimization\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3555,7 +3555,7 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 如果设置为 true，则会防止标量子查询对大规模标量值进行（反）序列化，并在可能的情况下避免多次运行同一子查询。
 
-## enable_scopes_for_with_statement {#enable_scopes_for_with_statement} 
+## enable_scopes_for_with_statement \\{#enable_scopes_for_with_statement\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3565,7 +3565,7 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 请注意，这是为新分析器提供的兼容性设置，用于允许运行一些在语义上无效但旧分析器仍能执行的查询。
 
-## enable_shared_storage_snapshot_in_query {#enable_shared_storage_snapshot_in_query}
+## enable_shared_storage_snapshot_in_query \{#enable_shared_storage_snapshot_in_query\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3602,19 +3602,19 @@ WHERE (_part, _part_offset) IN (
 * 1 - 启用
 
 
-## enable_sharing_sets_for_mutations {#enable_sharing_sets_for_mutations} 
+## enable_sharing_sets_for_mutations \\{#enable_sharing_sets_for_mutations\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 允许在同一条 mutation 的不同任务之间共享为 `IN` 子查询构建的 Set 对象。这可以减少内存使用和 CPU 消耗。
 
-## enable_software_prefetch_in_aggregation {#enable_software_prefetch_in_aggregation} 
+## enable_software_prefetch_in_aggregation \\{#enable_software_prefetch_in_aggregation\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 启用在聚合操作中使用软件预取
 
-## enable_time_time64_type {#enable_time_time64_type} 
+## enable_time_time64_type \\{#enable_time_time64_type\\}
 
 **别名**: `allow_experimental_time_time64_type`
 
@@ -3624,13 +3624,13 @@ WHERE (_part, _part_offset) IN (
 
 允许创建 [Time](../../sql-reference/data-types/time.md) 和 [Time64](../../sql-reference/data-types/time64.md) 数据类型。
 
-## enable_unaligned_array_join {#enable_unaligned_array_join} 
+## enable_unaligned_array_join \\{#enable_unaligned_array_join\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 允许对多个大小不同的数组执行 ARRAY JOIN。启用该设置后，这些数组会被调整为与最长数组的长度一致。
 
-## enable_url_encoding {#enable_url_encoding} 
+## enable_url_encoding \\{#enable_url_encoding\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3640,7 +3640,7 @@ WHERE (_part, _part_offset) IN (
 
 默认禁用。
 
-## enable_vertical_final {#enable_vertical_final} 
+## enable_vertical_final \\{#enable_vertical_final\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3648,7 +3648,7 @@ WHERE (_part, _part_offset) IN (
 
 如果启用，该设置会在执行 FINAL 时通过将重复行标记为已删除，并在之后进行过滤来移除重复行，而不是直接合并这些行
 
-## enable_writes_to_query_cache {#enable_writes_to_query_cache} 
+## enable_writes_to_query_cache \\{#enable_writes_to_query_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3659,7 +3659,7 @@ WHERE (_part, _part_offset) IN (
 - 0 - 禁用
 - 1 - 启用
 
-## enforce_strict_identifier_format {#enforce_strict_identifier_format} 
+## enforce_strict_identifier_format \\{#enforce_strict_identifier_format\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3667,7 +3667,7 @@ WHERE (_part, _part_offset) IN (
 
 如果启用，则仅允许使用由字母、数字和下划线组成的标识符。
 
-## engine_file_allow_create_multiple_files {#engine_file_allow_create_multiple_files} 
+## engine_file_allow_create_multiple_files \\{#engine_file_allow_create_multiple_files\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3680,7 +3680,7 @@ WHERE (_part, _part_offset) IN (
 - 0 — `INSERT` 查询会将新数据追加到文件末尾。
 - 1 — `INSERT` 查询会创建一个新文件。
 
-## engine_file_empty_if_not_exists {#engine_file_empty_if_not_exists} 
+## engine_file_empty_if_not_exists \\{#engine_file_empty_if_not_exists\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3691,7 +3691,7 @@ WHERE (_part, _part_offset) IN (
 - 0 — `SELECT` 抛出异常。
 - 1 — `SELECT` 返回空结果。
 
-## engine_file_skip_empty_files {#engine_file_skip_empty_files} 
+## engine_file_skip_empty_files \\{#engine_file_skip_empty_files\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3702,7 +3702,7 @@ WHERE (_part, _part_offset) IN (
 - 0 — 如果空文件与请求的格式不兼容，则 `SELECT` 抛出异常。
 - 1 — 对于空文件，`SELECT` 返回空结果。
 
-## engine_file_truncate_on_insert {#engine_file_truncate_on_insert} 
+## engine_file_truncate_on_insert \\{#engine_file_truncate_on_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3713,7 +3713,7 @@ WHERE (_part, _part_offset) IN (
 - 0 — `INSERT` 查询将新数据追加到文件末尾。
 - 1 — `INSERT` 查询用新数据替换文件的现有内容。
 
-## engine_url_skip_empty_files {#engine_url_skip_empty_files} 
+## engine_url_skip_empty_files \\{#engine_url_skip_empty_files\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3724,19 +3724,19 @@ WHERE (_part, _part_offset) IN (
 - 0 — 如果空文件与请求的格式不兼容，`SELECT` 会抛出异常。
 - 1 — 对于空文件，`SELECT` 返回空结果。
 
-## exact_rows_before_limit {#exact_rows_before_limit} 
+## exact_rows_before_limit \\{#exact_rows_before_limit\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 启用后，ClickHouse 会为 `rows_before_limit_at_least` 统计指标提供精确数值，但代价是必须完整读取 LIMIT 之前的全部数据。
 
-## except_default_mode {#except_default_mode} 
+## except_default_mode \\{#except_default_mode\\}
 
 <SettingsInfoBlock type="SetOperationMode" default_value="ALL" />
 
 在 EXCEPT 查询中设置默认模式。可选值：空字符串、'ALL'、'DISTINCT'。如果留空，则不带模式的查询会抛出异常。
 
-## exclude_materialize_skip_indexes_on_insert {#exclude_materialize_skip_indexes_on_insert}
+## exclude_materialize_skip_indexes_on_insert \{#exclude_materialize_skip_indexes_on_insert\}
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": ""},{"label": "新设置。"}]}]} />
 
@@ -3771,7 +3771,7 @@ SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- reset setting to de
 ```
 
 
-## execute_exists_as_scalar_subquery {#execute_exists_as_scalar_subquery} 
+## execute_exists_as_scalar_subquery \\{#execute_exists_as_scalar_subquery\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3779,31 +3779,31 @@ SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- reset setting to de
 
 将非关联 EXISTS 子查询作为标量子查询来执行。与标量子查询一样，会使用缓存，并且对结果应用常量折叠。
 
-## external_storage_connect_timeout_sec {#external_storage_connect_timeout_sec} 
+## external_storage_connect_timeout_sec \\{#external_storage_connect_timeout_sec\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
 连接超时时间（以秒为单位）。当前仅支持 MySQL
 
-## external_storage_max_read_bytes {#external_storage_max_read_bytes} 
+## external_storage_max_read_bytes \\{#external_storage_max_read_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 限制在使用 external 引擎的表刷新历史数据时可读取的最大字节数。目前仅支持 MySQL 表引擎、数据库引擎和字典。若等于 0，则禁用该设置。
 
-## external_storage_max_read_rows {#external_storage_max_read_rows} 
+## external_storage_max_read_rows \\{#external_storage_max_read_rows\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 限制使用 external engine 的表在刷新历史数据时可读取的最大行数。目前仅支持 MySQL 表引擎、数据库引擎和字典。如果等于 0，则禁用此设置。
 
-## external_storage_rw_timeout_sec {#external_storage_rw_timeout_sec} 
+## external_storage_rw_timeout_sec \\{#external_storage_rw_timeout_sec\\}
 
 <SettingsInfoBlock type="UInt64" default_value="300" />
 
 读写超时时间（以秒为单位）。当前仅支持 MySQL。
 
-## external_table_functions_use_nulls {#external_table_functions_use_nulls} 
+## external_table_functions_use_nulls \\{#external_table_functions_use_nulls\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3818,13 +3818,13 @@ SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- reset setting to de
 
 如果将该设置设为 `0`，则表函数不会生成 Nullable 列，而是插入默认值来代替 NULL。这同样适用于数组中的 NULL 值。
 
-## external_table_strict_query {#external_table_strict_query} 
+## external_table_strict_query \\{#external_table_strict_query\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 如果将其设置为 true，则禁止在针对外部表的查询中将表达式转换为本地过滤条件。
 
-## extract_key_value_pairs_max_pairs_per_row {#extract_key_value_pairs_max_pairs_per_row} 
+## extract_key_value_pairs_max_pairs_per_row \\{#extract_key_value_pairs_max_pairs_per_row\\}
 
 **别名**: `extract_kvp_max_pairs_per_row`
 
@@ -3834,14 +3834,14 @@ SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- reset setting to de
 
 由 `extractKeyValuePairs` 函数能够生成的键值对的最大数量。用于防止过多内存占用的保护机制。
 
-## extremes {#extremes} 
+## extremes \\{#extremes\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 是否统计查询结果中各列的极值（最小值和最大值）。取值为 0 或 1。默认值为 0（禁用）。
 有关更多信息，请参阅“Extreme values”部分。
 
-## fallback_to_stale_replicas_for_distributed_queries {#fallback_to_stale_replicas_for_distributed_queries} 
+## fallback_to_stale_replicas_for_distributed_queries \\{#fallback_to_stale_replicas_for_distributed_queries\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3853,7 +3853,7 @@ ClickHouse 会从该表所有滞后的副本中选择一个最合适的副本。
 
 默认值为 1（启用）。
 
-## filesystem_cache_allow_background_download {#filesystem_cache_allow_background_download} 
+## filesystem_cache_allow_background_download \\{#filesystem_cache_allow_background_download\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3861,7 +3861,7 @@ ClickHouse 会从该表所有滞后的副本中选择一个最合适的副本。
 
 允许 filesystem cache 将从远程存储读取的数据加入后台下载队列。禁用后，将针对当前查询/会话在前台执行下载。
 
-## filesystem_cache_boundary_alignment {#filesystem_cache_boundary_alignment} 
+## filesystem_cache_boundary_alignment \\{#filesystem_cache_boundary_alignment\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -3869,7 +3869,7 @@ ClickHouse 会从该表所有滞后的副本中选择一个最合适的副本。
 
 文件系统缓存边界对齐。此设置仅应用于非磁盘读操作（例如远程表引擎 / 表函数的缓存），不适用于 MergeTree 表的存储配置。值为 0 表示不对齐。
 
-## filesystem_cache_enable_background_download_during_fetch {#filesystem_cache_enable_background_download_during_fetch} 
+## filesystem_cache_enable_background_download_during_fetch \\{#filesystem_cache_enable_background_download_during_fetch\\}
 
 <CloudOnlyBadge/>
 
@@ -3879,7 +3879,7 @@ ClickHouse 会从该表所有滞后的副本中选择一个最合适的副本。
 
 仅在 ClickHouse Cloud 中生效。在 filesystem cache 中，为预留空间而锁定缓存时的等待时间。
 
-## filesystem_cache_enable_background_download_for_metadata_files_in_packed_storage {#filesystem_cache_enable_background_download_for_metadata_files_in_packed_storage} 
+## filesystem_cache_enable_background_download_for_metadata_files_in_packed_storage \\{#filesystem_cache_enable_background_download_for_metadata_files_in_packed_storage\\}
 
 <CloudOnlyBadge/>
 
@@ -3889,19 +3889,19 @@ ClickHouse 会从该表所有滞后的副本中选择一个最合适的副本。
 
 仅在 ClickHouse Cloud 中生效。在文件系统缓存中，为预留空间而锁定缓存时的等待时间。
 
-## filesystem_cache_max_download_size {#filesystem_cache_max_download_size} 
+## filesystem_cache_max_download_size \\{#filesystem_cache_max_download_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="137438953472" />
 
 单个查询可从远程文件系统缓存下载的数据最大容量
 
-## filesystem_cache_name {#filesystem_cache_name} 
+## filesystem_cache_name \\{#filesystem_cache_name\\}
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": ""},{"label": "用于无状态表引擎或数据湖的文件系统缓存名称"}]}]}/>
 
 用于无状态表引擎或数据湖的文件系统缓存名称
 
-## filesystem_cache_prefer_bigger_buffer_size {#filesystem_cache_prefer_bigger_buffer_size} 
+## filesystem_cache_prefer_bigger_buffer_size \\{#filesystem_cache_prefer_bigger_buffer_size\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3909,7 +3909,7 @@ ClickHouse 会从该表所有滞后的副本中选择一个最合适的副本。
 
 如果启用了 filesystem cache，则优先采用更大的缓冲区大小，以避免写入过小的文件片段，从而降低缓存性能。另一方面，启用该设置可能会增加内存使用量。
 
-## filesystem_cache_reserve_space_wait_lock_timeout_milliseconds {#filesystem_cache_reserve_space_wait_lock_timeout_milliseconds} 
+## filesystem_cache_reserve_space_wait_lock_timeout_milliseconds \\{#filesystem_cache_reserve_space_wait_lock_timeout_milliseconds\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -3917,13 +3917,13 @@ ClickHouse 会从该表所有滞后的副本中选择一个最合适的副本。
 
 在文件系统缓存中为预留空间获取缓存锁的等待时间
 
-## filesystem_cache_segments_batch_size {#filesystem_cache_segments_batch_size} 
+## filesystem_cache_segments_batch_size \\{#filesystem_cache_segments_batch_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
 限制读缓冲区单次可从缓存请求的文件片段批次大小。值过小会导致对缓存的请求过于频繁，值过大可能会减慢缓存淘汰的速度。
 
-## filesystem_cache_skip_download_if_exceeds_per_query_cache_write_limit {#filesystem_cache_skip_download_if_exceeds_per_query_cache_write_limit} 
+## filesystem_cache_skip_download_if_exceeds_per_query_cache_write_limit \\{#filesystem_cache_skip_download_if_exceeds_per_query_cache_write_limit\\}
 
 **别名**: `skip_download_if_exceeds_query_cache`
 
@@ -3933,31 +3933,31 @@ ClickHouse 会从该表所有滞后的副本中选择一个最合适的副本。
 
 如果超过查询缓存大小，则跳过从远程文件系统进行下载
 
-## filesystem_prefetch_max_memory_usage {#filesystem_prefetch_max_memory_usage} 
+## filesystem_prefetch_max_memory_usage \\{#filesystem_prefetch_max_memory_usage\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1073741824" />
 
 用于预取的最大内存用量。
 
-## filesystem_prefetch_step_bytes {#filesystem_prefetch_step_bytes} 
+## filesystem_prefetch_step_bytes \\{#filesystem_prefetch_step_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 以字节为单位的预取步长。零表示 `auto` —— 预取步长将自动推断为一个大致最佳的值，但可能并非完全最优。实际取值可能会不同，因为还会受到设置项 filesystem_prefetch_min_bytes_for_single_read_task 的影响。
 
-## filesystem_prefetch_step_marks {#filesystem_prefetch_step_marks} 
+## filesystem_prefetch_step_marks \\{#filesystem_prefetch_step_marks\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 按 mark 数指定的预取步长。零表示 `auto` —— 将自动推导出一个大致最优的预取步长，但可能无法做到 100% 最优。实际取值可能会不同，因为还会受到设置项 filesystem_prefetch_min_bytes_for_single_read_task 的影响。
 
-## filesystem_prefetches_limit {#filesystem_prefetches_limit} 
+## filesystem_prefetches_limit \\{#filesystem_prefetches_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="200" />
 
 预取的最大次数。0 表示不限制。如果需要限制预取次数，更建议使用 `filesystem_prefetches_max_memory_usage` 设置。
 
-## final {#final}
+## final \{#final\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4003,7 +4003,7 @@ SELECT * FROM test;
 ```
 
 
-## flatten_nested {#flatten_nested}
+## flatten_nested \{#flatten_nested\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -4069,19 +4069,19 @@ SETTINGS index_granularity = 8192 │
 ```
 
 
-## force_aggregate_partitions_independently {#force_aggregate_partitions_independently} 
+## force_aggregate_partitions_independently \\{#force_aggregate_partitions_independently\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在该优化适用但启发式算法判定不使用时，强制启用该优化
 
-## force_aggregation_in_order {#force_aggregation_in_order} 
+## force_aggregation_in_order \\{#force_aggregation_in_order\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 该设置由服务器内部使用，用于支持分布式查询。不要手动更改它，否则会破坏正常运行。（在分布式聚合期间强制远程节点按顺序执行聚合）。
 
-## force_data_skipping_indices {#force_data_skipping_indices}
+## force_data_skipping_indices \{#force_data_skipping_indices\}
 
 如果传入的数据跳过索引未被使用，则会禁止执行查询。
 
@@ -4109,7 +4109,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 ```
 
 
-## force_grouping_standard_compatibility {#force_grouping_standard_compatibility} 
+## force_grouping_standard_compatibility \\{#force_grouping_standard_compatibility\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -4117,7 +4117,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 使 GROUPING 函数在参数未用作聚合键时返回 1
 
-## force_index_by_date {#force_index_by_date} 
+## force_index_by_date \\{#force_index_by_date\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4127,7 +4127,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 如果 `force_index_by_date=1`，ClickHouse 会检查查询是否具有可用于限制数据范围的日期键条件。如果没有合适的条件，它将抛出异常。但是，它不会检查该条件是否实际减少了需要读取的数据量。例如，即使条件 `Date != ' 2000-01-01 '` 匹配表中的所有数据（即运行查询需要全表扫描），该条件仍然是可接受的。有关 MergeTree 表中数据范围的更多信息，请参阅 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md)。
 
-## force_optimize_projection {#force_optimize_projection} 
+## force_optimize_projection \\{#force_optimize_projection\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4138,7 +4138,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 - 0 — 投影优化不是必需的。
 - 1 — 投影优化是必需的。
 
-## force_optimize_projection_name {#force_optimize_projection_name} 
+## force_optimize_projection_name \\{#force_optimize_projection_name\\}
 
 如果将其设置为非空字符串，则会检查在查询中是否至少使用过一次该 PROJECTION。
 
@@ -4146,7 +4146,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 - string：在查询中使用的 PROJECTION 的名称
 
-## force_optimize_skip_unused_shards {#force_optimize_skip_unused_shards} 
+## force_optimize_skip_unused_shards \\{#force_optimize_skip_unused_shards\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -4158,7 +4158,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 - 1 — 启用。仅当表具有分片键时才会禁用查询执行。
 - 2 — 启用。无论表是否定义了分片键，都会禁用查询执行。
 
-## force_optimize_skip_unused_shards_nesting {#force_optimize_skip_unused_shards_nesting} 
+## force_optimize_skip_unused_shards_nesting \\{#force_optimize_skip_unused_shards_nesting\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -4170,7 +4170,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 - 1 — 仅在第 1 级启用 `force_optimize_skip_unused_shards`。
 - 2 — 在最多第 2 级启用 `force_optimize_skip_unused_shards`。
 
-## force_primary_key {#force_primary_key} 
+## force_primary_key \\{#force_primary_key\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4180,13 +4180,13 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 如果 `force_primary_key=1`，ClickHouse 会检查查询中是否包含可用于限制数据范围的主键条件。如果没有合适的条件，则会抛出异常。但不会检查该条件是否实际上减少了需要读取的数据量。有关 MergeTree 表中数据范围的更多信息，请参阅 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md)。
 
-## force_remove_data_recursively_on_drop {#force_remove_data_recursively_on_drop} 
+## force_remove_data_recursively_on_drop \\{#force_remove_data_recursively_on_drop\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在执行 DROP 查询时递归删除数据。可避免 ‘Directory not empty’ 错误，但可能静默删除已分离的数据
 
-## formatdatetime_e_with_space_padding {#formatdatetime_e_with_space_padding} 
+## formatdatetime_e_with_space_padding \\{#formatdatetime_e_with_space_padding\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4194,7 +4194,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 函数 `formatDateTime` 中的格式说明符 `%e` 会以前导空格输出一位数的日期，例如输出 `' 2'` 而不是 `'2'`。
 
-## formatdatetime_f_prints_scale_number_of_digits {#formatdatetime_f_prints_scale_number_of_digits} 
+## formatdatetime_f_prints_scale_number_of_digits \\{#formatdatetime_f_prints_scale_number_of_digits\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4202,7 +4202,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 函数 `formatDateTime` 中的格式说明符 `%f` 对于 `DateTime64` 只会按其 scale 的位数输出数字，而不是固定输出 6 位数字。
 
-## formatdatetime_f_prints_single_zero {#formatdatetime_f_prints_single_zero} 
+## formatdatetime_f_prints_single_zero \\{#formatdatetime_f_prints_single_zero\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4210,13 +4210,13 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 在函数 `formatDateTime` 中，当被格式化的值不包含小数秒时，格式说明符 `%f` 会输出单个零而不是六个零。
 
-## formatdatetime_format_without_leading_zeros {#formatdatetime_format_without_leading_zeros} 
+## formatdatetime_format_without_leading_zeros \\{#formatdatetime_format_without_leading_zeros\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在函数 `formatDateTime` 中，格式说明符 `%c`、`%l` 和 `%k` 在输出月份和小时值时不会使用前导零。
 
-## formatdatetime_parsedatetime_m_is_month_name {#formatdatetime_parsedatetime_m_is_month_name} 
+## formatdatetime_parsedatetime_m_is_month_name \\{#formatdatetime_parsedatetime_m_is_month_name\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -4224,7 +4224,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 在函数 `formatDateTime` 和 `parseDateTime` 中，格式符 `%M` 会输出/解析月份名称，而不是分钟。
 
-## fsync_metadata {#fsync_metadata} 
+## fsync_metadata \\{#fsync_metadata\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -4232,7 +4232,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 如果服务器上有数以百万计、不断被创建和销毁的小表，那么禁用该设置是有意义的。
 
-## function_date_trunc_return_type_behavior {#function_date_trunc_return_type_behavior} 
+## function_date_trunc_return_type_behavior \\{#function_date_trunc_return_type_behavior\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -4245,11 +4245,11 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 - 0 - 当第二个参数为 `DateTime64/Date32` 时，返回类型将为 `DateTime64/Date32`，而不受第一个参数中的时间单位影响。
 - 1 - 对于 `Date32`，结果始终为 `Date`。对于 `DateTime64`，在时间单位为 `second` 或更粗粒度时，结果为 `DateTime`。
 
-## function_implementation {#function_implementation} 
+## function_implementation \\{#function_implementation\\}
 
 为特定目标或变体选择函数实现（实验性功能）。留空则启用全部实现。
 
-## function_json_value_return_type_allow_complex {#function_json_value_return_type_allow_complex}
+## function_json_value_return_type_allow_complex \{#function_json_value_return_type_allow_complex\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4271,7 +4271,7 @@ Possible values:
 * false — 不允许。
 
 
-## function_json_value_return_type_allow_nullable {#function_json_value_return_type_allow_nullable}
+## function_json_value_return_type_allow_nullable \{#function_json_value_return_type_allow_nullable\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4293,7 +4293,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 * false — 不允许。
 
 
-## function_locate_has_mysql_compatible_argument_order {#function_locate_has_mysql_compatible_argument_order} 
+## function_locate_has_mysql_compatible_argument_order \\{#function_locate_has_mysql_compatible_argument_order\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -4306,7 +4306,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 - 0 — 函数 `locate` 接受参数 `(haystack, needle[, start_pos])`。
 - 1 — 函数 `locate` 接受参数 `(needle, haystack[, start_pos])`（与 MySQL locate 函数的行为兼容）
 
-## function_range_max_elements_in_block {#function_range_max_elements_in_block} 
+## function_range_max_elements_in_block \\{#function_range_max_elements_in_block\\}
 
 <SettingsInfoBlock type="UInt64" default_value="500000000" />
 
@@ -4321,7 +4321,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 - [`max_block_size`](#max_block_size)
 - [`min_insert_block_size_rows`](#min_insert_block_size_rows)
 
-## function_sleep_max_microseconds_per_block {#function_sleep_max_microseconds_per_block} 
+## function_sleep_max_microseconds_per_block \\{#function_sleep_max_microseconds_per_block\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3000000" />
 
@@ -4329,7 +4329,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 函数 `sleep` 在每个数据块中允许休眠的最大微秒数。如果用户传入了更大的值，将抛出异常。这是一个安全阈值。
 
-## function_visible_width_behavior {#function_visible_width_behavior} 
+## function_visible_width_behavior \\{#function_visible_width_behavior\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
@@ -4337,7 +4337,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 `visibleWidth` 行为的版本号。0：仅统计 Unicode 码点的数量；1：正确处理零宽度和组合字符，将全角字符计为两个，估算制表符宽度，并统计删除字符。
 
-## geo_distance_returns_float64_on_float64_arguments {#geo_distance_returns_float64_on_float64_arguments} 
+## geo_distance_returns_float64_on_float64_arguments \\{#geo_distance_returns_float64_on_float64_arguments\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -4345,7 +4345,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 如果对 `geoDistance`、`greatCircleDistance`、`greatCircleAngle` 这三个函数传入的四个参数全部为 Float64，则返回 Float64，并在内部计算中使用双精度。在之前的 ClickHouse 版本中，这些函数始终返回 Float32。
 
-## geotoh3_argument_order {#geotoh3_argument_order} 
+## geotoh3_argument_order \\{#geotoh3_argument_order\\}
 
 <BetaBadge/>
 
@@ -4355,13 +4355,13 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 当设置为 `lon_lat` 时，函数 `geoToH3` 接受参数顺序为 (lon, lat)；当设置为 `lat_lon` 时，则接受参数顺序为 (lat, lon)。
 
-## glob_expansion_max_elements {#glob_expansion_max_elements} 
+## glob_expansion_max_elements \\{#glob_expansion_max_elements\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
 允许的最大地址数量（用于外部存储、表函数等）。
 
-## grace_hash_join_initial_buckets {#grace_hash_join_initial_buckets} 
+## grace_hash_join_initial_buckets \\{#grace_hash_join_initial_buckets\\}
 
 <ExperimentalBadge/>
 
@@ -4369,7 +4369,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 grace hash join 的初始 bucket 数量
 
-## grace_hash_join_max_buckets {#grace_hash_join_max_buckets} 
+## grace_hash_join_max_buckets \\{#grace_hash_join_max_buckets\\}
 
 <ExperimentalBadge/>
 
@@ -4377,7 +4377,7 @@ grace hash join 的初始 bucket 数量
 
 grace hash join 的 bucket 数量上限
 
-## group_by_overflow_mode {#group_by_overflow_mode} 
+## group_by_overflow_mode \\{#group_by_overflow_mode\\}
 
 <SettingsInfoBlock type="OverflowModeGroupBy" default_value="throw" />
 
@@ -4389,19 +4389,19 @@ grace hash join 的 bucket 数量上限
 
 使用 `any` 值可以运行一种近似的 GROUP BY。该近似的质量取决于数据的统计特性。
 
-## group_by_two_level_threshold {#group_by_two_level_threshold} 
+## group_by_two_level_threshold \\{#group_by_two_level_threshold\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100000" />
 
 当键的数量达到该值时开始执行两级聚合。0 表示不设置阈值。
 
-## group_by_two_level_threshold_bytes {#group_by_two_level_threshold_bytes} 
+## group_by_two_level_threshold_bytes \\{#group_by_two_level_threshold_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="50000000" />
 
 从聚合状态的大小（字节数）达到多少开始使用两级聚合。0 表示不设置阈值。当任一阈值被触发时，将使用两级聚合。
 
-## group_by_use_nulls {#group_by_use_nulls} 
+## group_by_use_nulls \\{#group_by_use_nulls\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4418,7 +4418,7 @@ grace hash join 的 bucket 数量上限
 
 - [GROUP BY 子句](/sql-reference/statements/select/group-by)
 
-## h3togeo_lon_lat_result_order {#h3togeo_lon_lat_result_order} 
+## h3togeo_lon_lat_result_order \\{#h3togeo_lon_lat_result_order\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4426,13 +4426,13 @@ grace hash join 的 bucket 数量上限
 
 函数 'h3ToGeo' 在为 true 时返回 (lon, lat)，否则返回 (lat, lon)。
 
-## handshake_timeout_ms {#handshake_timeout_ms} 
+## handshake_timeout_ms \\{#handshake_timeout_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="10000" />
 
 在握手期间从副本接收 Hello 数据包的超时时间（毫秒）。
 
-## hdfs_create_new_file_on_insert {#hdfs_create_new_file_on_insert} 
+## hdfs_create_new_file_on_insert \\{#hdfs_create_new_file_on_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4445,7 +4445,7 @@ grace hash join 的 bucket 数量上限
 - 0 — `INSERT` 查询将新数据追加到文件末尾。
 - 1 — `INSERT` 查询会创建一个新文件。
 
-## hdfs_ignore_file_doesnt_exist {#hdfs_ignore_file_doesnt_exist} 
+## hdfs_ignore_file_doesnt_exist \\{#hdfs_ignore_file_doesnt_exist\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4458,13 +4458,13 @@ grace hash join 的 bucket 数量上限
 - 1 — `SELECT` 返回空结果。
 - 0 — `SELECT` 抛出异常。
 
-## hdfs_replication {#hdfs_replication} 
+## hdfs_replication \\{#hdfs_replication\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 实际的副本数可以在创建 hdfs 文件时指定。
 
-## hdfs_skip_empty_files {#hdfs_skip_empty_files} 
+## hdfs_skip_empty_files \\{#hdfs_skip_empty_files\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4475,7 +4475,7 @@ grace hash join 的 bucket 数量上限
 - 0 — 如果空文件与请求的格式不兼容，`SELECT` 会抛出异常。
 - 1 — 对于空文件，`SELECT` 返回空结果集。
 
-## hdfs_throw_on_zero_files_match {#hdfs_throw_on_zero_files_match} 
+## hdfs_throw_on_zero_files_match \\{#hdfs_throw_on_zero_files_match\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4488,7 +4488,7 @@ grace hash join 的 bucket 数量上限
 - 1 — `SELECT` 抛出异常。
 - 0 — `SELECT` 返回空结果。
 
-## hdfs_truncate_on_insert {#hdfs_truncate_on_insert} 
+## hdfs_truncate_on_insert \\{#hdfs_truncate_on_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4499,7 +4499,7 @@ grace hash join 的 bucket 数量上限
 - 0 — `INSERT` 查询将新数据追加到文件末尾。
 - 1 — `INSERT` 查询以新数据替换文件中已有的内容。
 
-## hedged_connection_timeout_ms {#hedged_connection_timeout_ms} 
+## hedged_connection_timeout_ms \\{#hedged_connection_timeout_ms\\}
 
 <SettingsInfoBlock type="毫秒" default_value="50" />
 
@@ -4507,7 +4507,7 @@ grace hash join 的 bucket 数量上限
 
 Hedged 请求与副本建立连接的超时时间
 
-## hnsw_candidate_list_size_for_search {#hnsw_candidate_list_size_for_search} 
+## hnsw_candidate_list_size_for_search \\{#hnsw_candidate_list_size_for_search\\}
 
 <SettingsInfoBlock type="UInt64" default_value="256" />
 
@@ -4515,13 +4515,13 @@ Hedged 请求与副本建立连接的超时时间
 
 在搜索向量相似性索引时使用的动态候选列表的大小，也称为“ef_search”。
 
-## hsts_max_age {#hsts_max_age} 
+## hsts_max_age \\{#hsts_max_age\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 HSTS 的生效时长。0 表示禁用 HSTS。
 
-## http_connection_timeout {#http_connection_timeout} 
+## http_connection_timeout \\{#http_connection_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="1" />
 
@@ -4532,55 +4532,55 @@ HTTP 连接超时时间（秒）。
 - 任意正整数。
 - 0 - 表示禁用（无限超时）。
 
-## http_headers_progress_interval_ms {#http_headers_progress_interval_ms} 
+## http_headers_progress_interval_ms \\{#http_headers_progress_interval_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
 不要以小于指定时间间隔的频率发送名为 `X-ClickHouse-Progress` 的 HTTP 头。
 
-## http_make_head_request {#http_make_head_request} 
+## http_make_head_request \\{#http_make_head_request\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 `http_make_head_request` 设置项允许在通过 HTTP 读取数据时先执行 `HEAD` 请求，以获取即将读取的文件的信息，例如其大小。由于该设置默认启用，当服务器不支持 `HEAD` 请求时，可能需要将其禁用。
 
-## http_max_field_name_size {#http_max_field_name_size} 
+## http_max_field_name_size \\{#http_max_field_name_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="131072" />
 
 HTTP 请求头中字段名的最大长度
 
-## http_max_field_value_size {#http_max_field_value_size} 
+## http_max_field_value_size \\{#http_max_field_value_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="131072" />
 
 HTTP 头部中字段值的最大长度
 
-## http_max_fields {#http_max_fields} 
+## http_max_fields \\{#http_max_fields\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />
 
 HTTP 头部中的最大字段数
 
-## http_max_multipart_form_data_size {#http_max_multipart_form_data_size} 
+## http_max_multipart_form_data_size \\{#http_max_multipart_form_data_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
 `multipart/form-data` 内容大小的上限。该设置不能通过 URL 参数解析，必须在用户配置文件中设置。注意，在开始执行查询之前，内容会被解析，且外部表会在内存中创建。而且这是在该阶段唯一生效的限制（在读取 HTTP 表单数据时，对最大内存使用量和最大执行时间的限制均不起作用）。
 
-## http_max_request_param_data_size {#http_max_request_param_data_size} 
+## http_max_request_param_data_size \\{#http_max_request_param_data_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10485760" />
 
 限制预定义 HTTP 请求中作为查询参数使用的请求数据大小。
 
-## http_max_tries {#http_max_tries} 
+## http_max_tries \\{#http_max_tries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
 通过 HTTP 读取的最大重试次数。
 
-## http_max_uri_size {#http_max_uri_size} 
+## http_max_uri_size \\{#http_max_uri_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
 
@@ -4590,7 +4590,7 @@ HTTP 头部中的最大字段数
 
 - 正整数。
 
-## http_native_compression_disable_checksumming_on_decompress {#http_native_compression_disable_checksumming_on_decompress} 
+## http_native_compression_disable_checksumming_on_decompress \\{#http_native_compression_disable_checksumming_on_decompress\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4603,7 +4603,7 @@ HTTP 头部中的最大字段数
 - 0 — 禁用。
 - 1 — 启用。
 
-## http_receive_timeout {#http_receive_timeout} 
+## http_receive_timeout \\{#http_receive_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="30" />
 
@@ -4616,13 +4616,13 @@ HTTP 接收超时时间（以秒为单位）。
 - 任意正整数。
 - 0 - 禁用（无限超时）。
 
-## http_response_buffer_size {#http_response_buffer_size} 
+## http_response_buffer_size \\{#http_response_buffer_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 在向客户端发送 HTTP 响应之前，或在将数据写入磁盘之前（当启用 http_wait_end_of_query 时），在服务器内存中用于缓冲的字节数。
 
-## http_response_headers {#http_response_headers} 
+## http_response_headers \\{#http_response_headers\\}
 
 <SettingsInfoBlock type="Map" default_value="{}" />
 
@@ -4643,19 +4643,19 @@ HTTP 接收超时时间（以秒为单位）。
 
 示例：`SET http_response_headers = '{"Content-Type": "image/png"}'`
 
-## http_retry_initial_backoff_ms {#http_retry_initial_backoff_ms} 
+## http_retry_initial_backoff_ms \\{#http_retry_initial_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
 通过 HTTP 重试读取时的最小退避时间（毫秒）
 
-## http_retry_max_backoff_ms {#http_retry_max_backoff_ms} 
+## http_retry_max_backoff_ms \\{#http_retry_max_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
 通过 HTTP 重试读取时的最大退避时长（毫秒）
 
-## http_send_timeout {#http_send_timeout} 
+## http_send_timeout \\{#http_send_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="30" />
 
@@ -4672,19 +4672,19 @@ HTTP 发送超时时间（以秒为单位）。
 仅适用于默认 profile。需要重启服务器后更改才会生效。
 :::
 
-## http_skip_not_found_url_for_globs {#http_skip_not_found_url_for_globs} 
+## http_skip_not_found_url_for_globs \\{#http_skip_not_found_url_for_globs\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 对 glob 通配模式，跳过返回 HTTP_NOT_FOUND 错误的 URL
 
-## http_wait_end_of_query {#http_wait_end_of_query} 
+## http_wait_end_of_query \\{#http_wait_end_of_query\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在服务端启用 HTTP 响应的缓冲处理。
 
-## http_write_exception_in_output_format {#http_write_exception_in_output_format} 
+## http_write_exception_in_output_format \\{#http_write_exception_in_output_format\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4692,7 +4692,7 @@ HTTP 发送超时时间（以秒为单位）。
 
 在输出格式中写入异常信息，以生成格式正确的输出。适用于 JSON 和 XML 格式。
 
-## http_zlib_compression_level {#http_zlib_compression_level} 
+## http_zlib_compression_level \\{#http_zlib_compression_level\\}
 
 <SettingsInfoBlock type="Int64" default_value="3" />
 
@@ -4700,7 +4700,7 @@ HTTP 发送超时时间（以秒为单位）。
 
 可选值：1 到 9 的整数。
 
-## iceberg_delete_data_on_drop {#iceberg_delete_data_on_drop} 
+## iceberg_delete_data_on_drop \\{#iceberg_delete_data_on_drop\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4708,7 +4708,7 @@ HTTP 发送超时时间（以秒为单位）。
 
 是否在执行 DROP 时删除所有 Iceberg 文件。
 
-## iceberg_insert_max_bytes_in_data_file {#iceberg_insert_max_bytes_in_data_file} 
+## iceberg_insert_max_bytes_in_data_file \\{#iceberg_insert_max_bytes_in_data_file\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
@@ -4716,7 +4716,7 @@ HTTP 发送超时时间（以秒为单位）。
 
 在插入操作中，iceberg Parquet 数据文件的最大大小（字节）。
 
-## iceberg_insert_max_partitions {#iceberg_insert_max_partitions} 
+## iceberg_insert_max_partitions \\{#iceberg_insert_max_partitions\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
@@ -4724,7 +4724,7 @@ HTTP 发送超时时间（以秒为单位）。
 
 Iceberg 表引擎中每次 INSERT 操作允许的最大分区数量。
 
-## iceberg_insert_max_rows_in_data_file {#iceberg_insert_max_rows_in_data_file} 
+## iceberg_insert_max_rows_in_data_file \\{#iceberg_insert_max_rows_in_data_file\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />
 
@@ -4732,7 +4732,7 @@ Iceberg 表引擎中每次 INSERT 操作允许的最大分区数量。
 
 在插入操作期间，Iceberg Parquet 数据文件中允许的最大行数。
 
-## iceberg_metadata_compression_method {#iceberg_metadata_compression_method} 
+## iceberg_metadata_compression_method \\{#iceberg_metadata_compression_method\\}
 
 <ExperimentalBadge/>
 
@@ -4740,7 +4740,7 @@ Iceberg 表引擎中每次 INSERT 操作允许的最大分区数量。
 
 用于压缩 `.metadata.json` 文件的方法。
 
-## iceberg_metadata_log_level {#iceberg_metadata_log_level} 
+## iceberg_metadata_log_level \\{#iceberg_metadata_log_level\\}
 
 <SettingsInfoBlock type="IcebergMetadataLogLevel" default_value="none" />
 
@@ -4758,7 +4758,7 @@ Iceberg 表引擎中每次 INSERT 操作允许的最大分区数量。
 - manifest_file_metadata - 上述所有内容 + 遍历到的 avro manifest 文件中的元数据。
 - manifest_file_entry - 上述所有内容 + 遍历到的 avro manifest 文件中的条目。
 
-## iceberg_snapshot_id {#iceberg_snapshot_id} 
+## iceberg_snapshot_id \\{#iceberg_snapshot_id\\}
 
 <SettingsInfoBlock type="Int64" default_value="0" />
 
@@ -4766,7 +4766,7 @@ Iceberg 表引擎中每次 INSERT 操作允许的最大分区数量。
 
 使用特定的快照 ID 查询 Iceberg 表。
 
-## iceberg_timestamp_ms {#iceberg_timestamp_ms} 
+## iceberg_timestamp_ms \\{#iceberg_timestamp_ms\\}
 
 <SettingsInfoBlock type="Int64" default_value="0" />
 
@@ -4774,7 +4774,7 @@ Iceberg 表引擎中每次 INSERT 操作允许的最大分区数量。
 
 使用在特定时间戳时生效的快照来查询 Iceberg 表。
 
-## idle_connection_timeout {#idle_connection_timeout} 
+## idle_connection_timeout \\{#idle_connection_timeout\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3600" />
 
@@ -4784,7 +4784,7 @@ Iceberg 表引擎中每次 INSERT 操作允许的最大分区数量。
 
 - 非负整数（0 表示在 0 秒后立即关闭）。
 
-## ignore_cold_parts_seconds {#ignore_cold_parts_seconds} 
+## ignore_cold_parts_seconds \\{#ignore_cold_parts_seconds\\}
 
 <CloudOnlyBadge/>
 
@@ -4792,7 +4792,7 @@ Iceberg 表引擎中每次 INSERT 操作允许的最大分区数量。
 
 仅在 ClickHouse Cloud 中生效。在新的数据分区片段被预热（参见 [cache_populated_by_fetch](merge-tree-settings.md/#cache_populated_by_fetch)）或其存在时间达到指定秒数之前，将这些新分区片段从 SELECT 查询中排除。仅适用于 Replicated-/SharedMergeTree。
 
-## ignore_data_skipping_indices {#ignore_data_skipping_indices}
+## ignore_data_skipping_indices \{#ignore_data_skipping_indices\}
 
 如果查询本来会使用指定的跳过索引，则忽略这些跳过索引。
 
@@ -4880,7 +4880,7 @@ Expression ((Projection + Before ORDER BY))
 适用于 MergeTree 系列的表。
 
 
-## ignore_drop_queries_probability {#ignore_drop_queries_probability} 
+## ignore_drop_queries_probability \\{#ignore_drop_queries_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
@@ -4888,7 +4888,7 @@ Expression ((Projection + Before ORDER BY))
 
 如果启用，服务器会以指定的概率忽略所有 DROP TABLE 查询（对于 Memory 和 JOIN 引擎，会将 DROP 替换为 TRUNCATE），用于测试目的。
 
-## ignore_materialized_views_with_dropped_target_table {#ignore_materialized_views_with_dropped_target_table} 
+## ignore_materialized_views_with_dropped_target_table \\{#ignore_materialized_views_with_dropped_target_table\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4896,13 +4896,13 @@ Expression ((Projection + Before ORDER BY))
 
 在向视图推送数据时忽略目标表已被删除的 MV
 
-## ignore_on_cluster_for_replicated_access_entities_queries {#ignore_on_cluster_for_replicated_access_entities_queries} 
+## ignore_on_cluster_for_replicated_access_entities_queries \\{#ignore_on_cluster_for_replicated_access_entities_queries\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在管理副本访问实体的查询中忽略 ON CLUSTER 子句。
 
-## ignore_on_cluster_for_replicated_database {#ignore_on_cluster_for_replicated_database} 
+## ignore_on_cluster_for_replicated_database \\{#ignore_on_cluster_for_replicated_database\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4910,7 +4910,7 @@ Expression ((Projection + Before ORDER BY))
 
 对于复制数据库的 DDL 查询，始终忽略 ON CLUSTER 子句。
 
-## ignore_on_cluster_for_replicated_named_collections_queries {#ignore_on_cluster_for_replicated_named_collections_queries} 
+## ignore_on_cluster_for_replicated_named_collections_queries \\{#ignore_on_cluster_for_replicated_named_collections_queries\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4918,13 +4918,13 @@ Expression ((Projection + Before ORDER BY))
 
 对副本 named collection 的管理查询忽略 ON CLUSTER 子句。
 
-## ignore_on_cluster_for_replicated_udf_queries {#ignore_on_cluster_for_replicated_udf_queries} 
+## ignore_on_cluster_for_replicated_udf_queries \\{#ignore_on_cluster_for_replicated_udf_queries\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在用于管理副本 UDF 的查询中忽略 ON CLUSTER 子句。
 
-## implicit_select {#implicit_select} 
+## implicit_select \\{#implicit_select\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4934,7 +4934,7 @@ Expression ((Projection + Before ORDER BY))
 
 在 `clickhouse-local` 中，该设置默认开启，并且可以显式关闭。
 
-## implicit_table_at_top_level {#implicit_table_at_top_level} 
+## implicit_table_at_top_level \\{#implicit_table_at_top_level\\}
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": ""},{"label": "一个在 clickhouse-local 中使用的新设置"}]}]}/>
 
@@ -4950,7 +4950,7 @@ Expression ((Projection + Before ORDER BY))
 该设置接受一个表名（此时表会从当前数据库中解析），或者形式为 'database.table' 的限定名称。
 database 和 table 名称必须为不带引号的简单标识符。
 
-## implicit_transaction {#implicit_transaction} 
+## implicit_transaction \\{#implicit_transaction\\}
 
 <ExperimentalBadge/>
 
@@ -4958,7 +4958,7 @@ database 和 table 名称必须为不带引号的简单标识符。
 
 如果启用且当前不在事务中，则会将该查询封装在一个完整的事务中（BEGIN + COMMIT 或 ROLLBACK）
 
-## inject_random_order_for_select_without_order_by {#inject_random_order_for_select_without_order_by} 
+## inject_random_order_for_select_without_order_by \\{#inject_random_order_for_select_without_order_by\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4969,13 +4969,13 @@ database 和 table 名称必须为不带引号的简单标识符。
 如果顶层结构是 UNION，则会在其所有子查询中分别注入 `ORDER BY rand()`。
 仅在测试和开发中有用（缺少 ORDER BY 会导致查询结果具有非确定性）。
 
-## insert_allow_materialized_columns {#insert_allow_materialized_columns} 
+## insert_allow_materialized_columns \\{#insert_allow_materialized_columns\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 启用该设置后，允许在 INSERT 语句中使用物化列。
 
-## insert_deduplicate {#insert_deduplicate} 
+## insert_deduplicate \\{#insert_deduplicate\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -4990,7 +4990,7 @@ database 和 table 名称必须为不带引号的简单标识符。
 对于复制表，默认情况下仅对每个分区中最近的 100 个数据块进行去重（参见 [replicated_deduplication_window](merge-tree-settings.md/#replicated_deduplication_window)、[replicated_deduplication_window_seconds](merge-tree-settings.md/#replicated_deduplication_window_seconds)）。
 对于非复制表，参见 [non_replicated_deduplication_window](merge-tree-settings.md/#non_replicated_deduplication_window)。
 
-## insert_deduplication_token {#insert_deduplication_token}
+## insert_deduplication_token \{#insert_deduplication_token\}
 
 该设置允许用户在 MergeTree/ReplicatedMergeTree 中提供自定义的去重语义。
 例如，在每个 INSERT 语句中为该设置提供一个唯一值，
@@ -5038,19 +5038,19 @@ SELECT * FROM test_table
 ```
 
 
-## insert_keeper_fault_injection_probability {#insert_keeper_fault_injection_probability} 
+## insert_keeper_fault_injection_probability \\{#insert_keeper_fault_injection_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
 在执行插入操作期间，keeper 请求发生故障的大致概率。有效取值范围为区间 [0.0f, 1.0f]。
 
-## insert_keeper_fault_injection_seed {#insert_keeper_fault_injection_seed} 
+## insert_keeper_fault_injection_seed \\{#insert_keeper_fault_injection_seed\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 0 - 随机种子，否则为该设置值
 
-## insert_keeper_max_retries {#insert_keeper_max_retries}
+## insert_keeper_max_retries \{#insert_keeper_max_retries\}
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
@@ -5077,7 +5077,7 @@ timeout = min(insert_keeper_retry_max_backoff_ms, latest_timeout * 2)
 除了容错性之外，重试机制还旨在提供更好的用户体验——例如，当 Keeper 因升级而重启时，它可以避免在执行 INSERT 期间返回错误。
 
 
-## insert_keeper_retry_initial_backoff_ms {#insert_keeper_retry_initial_backoff_ms} 
+## insert_keeper_retry_initial_backoff_ms \\{#insert_keeper_retry_initial_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
@@ -5088,7 +5088,7 @@ timeout = min(insert_keeper_retry_max_backoff_ms, latest_timeout * 2)
 - 正整数。
 - 0 — 无超时
 
-## insert_keeper_retry_max_backoff_ms {#insert_keeper_retry_max_backoff_ms} 
+## insert_keeper_retry_max_backoff_ms \\{#insert_keeper_retry_max_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -5099,7 +5099,7 @@ timeout = min(insert_keeper_retry_max_backoff_ms, latest_timeout * 2)
 - 正整数。
 - 0 — 最大等待时间不受限制
 
-## insert_null_as_default {#insert_null_as_default} 
+## insert_null_as_default \\{#insert_null_as_default\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -5113,7 +5113,7 @@ timeout = min(insert_keeper_retry_max_backoff_ms, latest_timeout * 2)
 - 0 — 向非 Nullable 列插入 `NULL` 会引发异常。
 - 1 — 插入列的默认值来替代 `NULL`。
 
-## insert_quorum {#insert_quorum} 
+## insert_quorum \\{#insert_quorum\\}
 
 <SettingsInfoBlock type="UInt64Auto" default_value="0" />
 
@@ -5144,7 +5144,7 @@ ClickHouse 在以下情况下会抛出异常：
 - [insert_quorum_parallel](#insert_quorum_parallel)
 - [select_sequential_consistency](#select_sequential_consistency)
 
-## insert_quorum_parallel {#insert_quorum_parallel} 
+## insert_quorum_parallel \\{#insert_quorum_parallel\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -5167,7 +5167,7 @@ ClickHouse 在以下情况下会抛出异常：
 - [insert_quorum_timeout](#insert_quorum_timeout)
 - [select_sequential_consistency](#select_sequential_consistency)
 
-## insert_quorum_timeout {#insert_quorum_timeout} 
+## insert_quorum_timeout \\{#insert_quorum_timeout\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="600000" />
 
@@ -5179,7 +5179,7 @@ ClickHouse 在以下情况下会抛出异常：
 - [insert_quorum_parallel](#insert_quorum_parallel)
 - [select_sequential_consistency](#select_sequential_consistency)
 
-## insert_shard_id {#insert_shard_id}
+## insert_shard_id \{#insert_shard_id\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -5227,19 +5227,19 @@ SELECT * FROM x_dist ORDER BY number ASC;
 ```
 
 
-## interactive_delay {#interactive_delay} 
+## interactive_delay \\{#interactive_delay\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100000" />
 
 以微秒为单位的时间间隔，用于检查请求执行是否已被取消以及发送进度信息。
 
-## intersect_default_mode {#intersect_default_mode} 
+## intersect_default_mode \\{#intersect_default_mode\\}
 
 <SettingsInfoBlock type="SetOperationMode" default_value="ALL" />
 
 设置 INTERSECT 查询的默认模式。可选值：空字符串、'ALL'、'DISTINCT'。如果为空，则未显式指定模式的查询会抛出异常。
 
-## jemalloc_collect_profile_samples_in_trace_log {#jemalloc_collect_profile_samples_in_trace_log} 
+## jemalloc_collect_profile_samples_in_trace_log \\{#jemalloc_collect_profile_samples_in_trace_log\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5247,7 +5247,7 @@ SELECT * FROM x_dist ORDER BY number ASC;
 
 在 trace 日志中收集 jemalloc 分配和释放操作的样本。
 
-## jemalloc_enable_profiler {#jemalloc_enable_profiler} 
+## jemalloc_enable_profiler \\{#jemalloc_enable_profiler\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5258,7 +5258,7 @@ SELECT * FROM x_dist ORDER BY number ASC;
 采样数据也可以通过配置 `jemalloc_collect_global_profile_samples_in_trace_log` 或通过查询设置 `jemalloc_collect_profile_samples_in_trace_log` 存储到 `system.trace_log` 中。
 参见 [Allocation Profiling](/operations/allocation-profiling)。
 
-## join_algorithm {#join_algorithm} 
+## join_algorithm \\{#join_algorithm\\}
 
 <SettingsInfoBlock type="JoinAlgorithm" default_value="direct,parallel_hash,hash" />
 
@@ -5324,7 +5324,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 遗留取值，请不要再使用。
 等价于 `direct,hash`，即按顺序尝试使用 direct join 和 hash join。
 
-## join_any_take_last_row {#join_any_take_last_row} 
+## join_any_take_last_row \\{#join_any_take_last_row\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5345,7 +5345,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 - [Join 表引擎](../../engines/table-engines/special/join.md)
 - [join_default_strictness](#join_default_strictness)
 
-## join_default_strictness {#join_default_strictness} 
+## join_default_strictness \\{#join_default_strictness\\}
 
 <SettingsInfoBlock type="JoinStrictness" default_value="ALL" />
 
@@ -5358,7 +5358,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 - `ASOF` — 用于在匹配条件不确定的情况下连接序列。
 - `Empty string` — 如果在查询中未显式指定 `ALL` 或 `ANY`，ClickHouse 会抛出异常。
 
-## join_on_disk_max_files_to_merge {#join_on_disk_max_files_to_merge} 
+## join_on_disk_max_files_to_merge \\{#join_on_disk_max_files_to_merge\\}
 
 <SettingsInfoBlock type="UInt64" default_value="64" />
 
@@ -5370,7 +5370,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 - 任意从 2 开始的正整数。
 
-## join_output_by_rowlist_perkey_rows_threshold {#join_output_by_rowlist_perkey_rows_threshold} 
+## join_output_by_rowlist_perkey_rows_threshold \\{#join_output_by_rowlist_perkey_rows_threshold\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5" />
 
@@ -5378,7 +5378,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 用于确定在哈希连接中是否以行列表形式输出时，右表中每个键对应的平均行数下限。
 
-## join_overflow_mode {#join_overflow_mode} 
+## join_overflow_mode \\{#join_overflow_mode\\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
@@ -5399,7 +5399,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 - [JOIN 子句](/sql-reference/statements/select/join)
 - [Join 表引擎](/engines/table-engines/special/join)
 
-## join_runtime_bloom_filter_bytes {#join_runtime_bloom_filter_bytes} 
+## join_runtime_bloom_filter_bytes \\{#join_runtime_bloom_filter_bytes\\}
 
 <ExperimentalBadge/>
 
@@ -5409,7 +5409,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 作为 JOIN 运行时过滤器使用的 Bloom 过滤器大小（以字节为单位）（参见 enable_join_runtime_filters 设置）。
 
-## join_runtime_bloom_filter_hash_functions {#join_runtime_bloom_filter_hash_functions} 
+## join_runtime_bloom_filter_hash_functions \\{#join_runtime_bloom_filter_hash_functions\\}
 
 <ExperimentalBadge/>
 
@@ -5419,7 +5419,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 在作为 JOIN 运行时过滤器使用的 Bloom 过滤器中哈希函数的数量（参见 enable_join_runtime_filters 设置）。
 
-## join_runtime_bloom_filter_max_ratio_of_set_bits {#join_runtime_bloom_filter_max_ratio_of_set_bits} 
+## join_runtime_bloom_filter_max_ratio_of_set_bits \\{#join_runtime_bloom_filter_max_ratio_of_set_bits\\}
 
 <ExperimentalBadge/>
 
@@ -5429,7 +5429,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 如果运行时 bloom filter 中被置位的比特数量超过该比率，则会将该过滤器完全禁用，以减少开销。
 
-## join_runtime_filter_blocks_to_skip_before_reenabling {#join_runtime_filter_blocks_to_skip_before_reenabling} 
+## join_runtime_filter_blocks_to_skip_before_reenabling \\{#join_runtime_filter_blocks_to_skip_before_reenabling\\}
 
 <ExperimentalBadge/>
 
@@ -5439,7 +5439,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 在尝试动态重新启用先前因过滤效果较差而被禁用的 runtime filter 之前需要跳过的数据块数量。
 
-## join_runtime_filter_exact_values_limit {#join_runtime_filter_exact_values_limit} 
+## join_runtime_filter_exact_values_limit \\{#join_runtime_filter_exact_values_limit\\}
 
 <ExperimentalBadge/>
 
@@ -5449,7 +5449,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 在 runtime filter 中以原值形式存储在 Set 中的元素的最大数量。当超过此阈值时，将切换为使用 Bloom 过滤器。
 
-## join_runtime_filter_pass_ratio_threshold_for_disabling {#join_runtime_filter_pass_ratio_threshold_for_disabling} 
+## join_runtime_filter_pass_ratio_threshold_for_disabling \\{#join_runtime_filter_pass_ratio_threshold_for_disabling\\}
 
 <ExperimentalBadge/>
 
@@ -5459,7 +5459,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 如果通过行数与检查行数的比值大于该阈值，则认为该 runtime filter 性能较差，并会在接下来的 `join_runtime_filter_blocks_to_skip_before_reenabling` 个数据块中被禁用，以减少开销。
 
-## join_to_sort_maximum_table_rows {#join_to_sort_maximum_table_rows} 
+## join_to_sort_maximum_table_rows \\{#join_to_sort_maximum_table_rows\\}
 
 <ExperimentalBadge/>
 
@@ -5469,7 +5469,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 在左连接或内连接中，用于判断是否需要按键列重新排序右表的右表最大行数阈值。
 
-## join_to_sort_minimum_perkey_rows {#join_to_sort_minimum_perkey_rows} 
+## join_to_sort_minimum_perkey_rows \\{#join_to_sort_minimum_perkey_rows\\}
 
 <ExperimentalBadge/>
 
@@ -5479,7 +5479,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 用于确定在 LEFT 或 INNER JOIN 中是否按键对右表重新排序时，右表中每个键对应的平均行数下限。该设置确保不会对键分布稀疏的表应用此优化
 
-## join_use_nulls {#join_use_nulls} 
+## join_use_nulls \\{#join_use_nulls\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5490,7 +5490,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 - 0 — 空单元格将填充为对应字段类型的默认值。
 - 1 — `JOIN` 的行为与标准 SQL 相同。对应字段的类型会被转换为 [Nullable](/sql-reference/data-types/nullable)，空单元格将填充为 [NULL](/sql-reference/syntax)。
 
-## joined_block_split_single_row {#joined_block_split_single_row} 
+## joined_block_split_single_row \\{#joined_block_split_single_row\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5501,19 +5501,19 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 注意，`max_joined_block_size_rows != 0` 是此设置生效的前提条件。
 将 `max_joined_block_size_bytes` 与此设置配合使用，有助于在数据倾斜、某些大行在右表中有大量匹配时避免过度的内存使用。
 
-## joined_subquery_requires_alias {#joined_subquery_requires_alias} 
+## joined_subquery_requires_alias \\{#joined_subquery_requires_alias\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 强制要求在 JOIN 中使用的子查询和表函数指定别名，以确保名称限定正确。
 
-## kafka_disable_num_consumers_limit {#kafka_disable_num_consumers_limit} 
+## kafka_disable_num_consumers_limit \\{#kafka_disable_num_consumers_limit\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 禁用对 kafka_num_consumers 的限制，该限制取决于可用 CPU 核心数。
 
-## kafka_max_wait_ms {#kafka_max_wait_ms} 
+## kafka_max_wait_ms \\{#kafka_max_wait_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="5000" />
 
@@ -5528,13 +5528,13 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 - [Apache Kafka](https://kafka.apache.org/)
 
-## keeper_map_strict_mode {#keeper_map_strict_mode} 
+## keeper_map_strict_mode \\{#keeper_map_strict_mode\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在对 KeeperMap 执行操作时强制进行额外检查。例如，如果插入已存在的键，则抛出异常。
 
-## keeper_max_retries {#keeper_max_retries} 
+## keeper_max_retries \\{#keeper_max_retries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -5542,7 +5542,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 常规 Keeper 操作的最大重试次数
 
-## keeper_retry_initial_backoff_ms {#keeper_retry_initial_backoff_ms} 
+## keeper_retry_initial_backoff_ms \\{#keeper_retry_initial_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
@@ -5550,7 +5550,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 一般 Keeper 操作的初始退避超时时间
 
-## keeper_retry_max_backoff_ms {#keeper_retry_max_backoff_ms} 
+## keeper_retry_max_backoff_ms \\{#keeper_retry_max_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000" />
 
@@ -5558,7 +5558,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 常规 Keeper 操作的最大退避超时时间
 
-## least_greatest_legacy_null_behavior {#least_greatest_legacy_null_behavior} 
+## least_greatest_legacy_null_behavior \\{#least_greatest_legacy_null_behavior\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5566,7 +5566,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 启用后，如果任一参数为 `NULL`，函数 `least` 和 `greatest` 将返回 `NULL`。
 
-## legacy_column_name_of_tuple_literal {#legacy_column_name_of_tuple_literal} 
+## legacy_column_name_of_tuple_literal \\{#legacy_column_name_of_tuple_literal\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5574,7 +5574,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 在列名中列出大型 tuple 字面量中各元素的所有名称，而不是使用哈希值。此设置仅为兼容性而存在。在将集群从低于 21.7 的版本滚动升级到更高版本时，将其设置为 'true' 是合理的。
 
-## lightweight_delete_mode {#lightweight_delete_mode} 
+## lightweight_delete_mode \\{#lightweight_delete_mode\\}
 
 <SettingsInfoBlock type="LightweightDeleteMode" default_value="alter_update" />
 
@@ -5588,7 +5588,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 - `lightweight_update` - 如果可能则运行轻量级更新，否则运行 `ALTER UPDATE`。
 - `lightweight_update_force` - 如果可能则运行轻量级更新，否则抛出异常。
 
-## lightweight_deletes_sync {#lightweight_deletes_sync} 
+## lightweight_deletes_sync \\{#lightweight_deletes_sync\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
@@ -5610,7 +5610,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 - [ALTER 查询的同步性](../../sql-reference/statements/alter/index.md/#synchronicity-of-alter-queries)
 - [变更（Mutations）](../../sql-reference/statements/alter/index.md/#mutations)
 
-## limit {#limit} 
+## limit \\{#limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -5621,7 +5621,7 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 - 0 — 行数不受限制。
 - 正整数。
 
-## load_balancing {#load_balancing} 
+## load_balancing \\{#load_balancing\\}
 
 <SettingsInfoBlock type="LoadBalancing" default_value="random" />
 
@@ -5640,7 +5640,7 @@ ClickHouse 支持以下副本选择算法：
 
 - [distributed_replica_max_ignored_errors](#distributed_replica_max_ignored_errors)
 
-### 随机（默认方式） {#load_balancing-random}
+### 随机（默认方式） \{#load_balancing-random\}
 
 ```sql
 load_balancing = random
@@ -5651,7 +5651,7 @@ load_balancing = random
 缺点：不考虑服务器的网络/地理距离；如果各个副本上的数据不同，你也会得到不同的数据。
 
 
-### 最接近的主机名 {#load_balancing-nearest_hostname}
+### 最接近的主机名 \{#load_balancing-nearest_hostname\}
 
 ```sql
 load_balancing = nearest_hostname
@@ -5666,7 +5666,7 @@ load_balancing = nearest_hostname
 我们也可以假设，在没有故障的情况下，当向同一台服务器发送查询时，一个分布式查询也会发送到同一组服务器上。所以即使不同数据被放置在不同副本上，查询也会在大多数情况下返回相同的结果。
 
 
-### 主机名的 Levenshtein 距离 {#load_balancing-hostname_levenshtein_distance}
+### 主机名的 Levenshtein 距离 \{#load_balancing-hostname_levenshtein_distance\}
 
 ```sql
 load_balancing = hostname_levenshtein_distance
@@ -5686,7 +5686,7 @@ example-clickhouse-0-0 example-clickhouse-12-0
 ```
 
 
-### 顺序 {#load_balancing-in_order}
+### 顺序 \{#load_balancing-in_order\}
 
 ```sql
 load_balancing = in_order
@@ -5696,7 +5696,7 @@ load_balancing = in_order
 当您明确知道哪个副本更优先时，适合采用此方法。
 
 
-### 优先或随机 {#load_balancing-first_or_random}
+### 优先或随机 \{#load_balancing-first_or_random\}
 
 ```sql
 load_balancing = first_or_random
@@ -5709,7 +5709,7 @@ load_balancing = first_or_random
 可以通过设置 `load_balancing_first_offset` 来显式定义哪个副本是“第一个”副本。这样可以对副本之间的查询工作负载再平衡进行更精细的控制。
 
 
-### 轮询 {#load_balancing-round_robin}
+### 轮询 \{#load_balancing-round_robin\}
 
 ```sql
 load_balancing = round_robin
@@ -5718,19 +5718,19 @@ load_balancing = round_robin
 该算法采用轮询（round-robin）策略在错误次数相同的副本之间进行分配（仅考虑使用 `round_robin` 策略的查询）。
 
 
-## load_balancing_first_offset {#load_balancing_first_offset} 
+## load_balancing_first_offset \\{#load_balancing_first_offset\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 在使用 FIRST_OR_RANDOM 负载均衡策略时，应优先将查询发送到哪个副本。
 
-## load_marks_asynchronously {#load_marks_asynchronously} 
+## load_marks_asynchronously \\{#load_marks_asynchronously\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 以异步方式加载 MergeTree 标记
 
-## local_filesystem_read_method {#local_filesystem_read_method} 
+## local_filesystem_read_method \\{#local_filesystem_read_method\\}
 
 <SettingsInfoBlock type="String" default_value="pread_threadpool" />
 
@@ -5739,13 +5739,13 @@ load_balancing = round_robin
 `io_uring` 方法是实验性的，并且在存在并发读写的情况下，不适用于 Log、TinyLog、StripeLog、File、Set 和 Join，以及其他具有可追加文件的表。
 即使在互联网上看到各种关于 `io_uring` 的文章，也不要被这些内容误导。除非是在大量小 IO 请求的场景下，否则它并不是更优的文件读取方法，而这并不是 ClickHouse 的典型场景。没有任何理由启用 `io_uring`。
 
-## local_filesystem_read_prefetch {#local_filesystem_read_prefetch} 
+## local_filesystem_read_prefetch \\{#local_filesystem_read_prefetch\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 从本地文件系统读取数据时是否启用预取功能。
 
-## lock_acquire_timeout {#lock_acquire_timeout} 
+## lock_acquire_timeout \\{#lock_acquire_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="120" />
 
@@ -5758,7 +5758,7 @@ load_balancing = round_robin
 - 正整数（单位为秒）。
 - 0 — 禁用锁超时。
 
-## log_comment {#log_comment}
+## log_comment \{#log_comment\}
 
 指定 [system.query&#95;log](../system-tables/query_log.md) 表中 `log_comment` 字段的值，以及服务器日志中的注释文本。
 
@@ -5789,7 +5789,7 @@ SELECT type, query FROM system.query_log WHERE log_comment = 'log_comment test' 
 ```
 
 
-## log_formatted_queries {#log_formatted_queries} 
+## log_formatted_queries \\{#log_formatted_queries\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5800,7 +5800,7 @@ SELECT type, query FROM system.query_log WHERE log_comment = 'log_comment test' 
 - 0 — 不在系统表中记录格式化查询。
 - 1 — 在系统表中记录格式化查询。
 
-## log_processors_profiles {#log_processors_profiles} 
+## log_processors_profiles \\{#log_processors_profiles\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -5813,13 +5813,13 @@ SELECT type, query FROM system.query_log WHERE log_comment = 'log_comment test' 
 - [`system.processors_profile_log`](../../operations/system-tables/processors_profile_log.md)
 - [`EXPLAIN PIPELINE`](../../sql-reference/statements/explain.md/#explain-pipeline)
 
-## log_profile_events {#log_profile_events} 
+## log_profile_events \\{#log_profile_events\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 将查询性能统计信息写入 query_log、query_thread_log 和 query_views_log。
 
-## log_queries {#log_queries}
+## log_queries \{#log_queries\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -5834,13 +5834,13 @@ log_queries=1
 ```
 
 
-## log_queries_cut_to_length {#log_queries_cut_to_length} 
+## log_queries_cut_to_length \\{#log_queries_cut_to_length\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100000" />
 
 如果查询长度超过指定阈值（以字节计），则在写入查询日志时截断该查询。同时限制在普通文本日志中打印的查询长度。
 
-## log_queries_min_query_duration_ms {#log_queries_min_query_duration_ms} 
+## log_queries_min_query_duration_ms \\{#log_queries_min_query_duration_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="0" />
 
@@ -5857,7 +5857,7 @@ log_queries=1
 - 类型：毫秒
 - 默认值：0（记录任意查询）
 
-## log_queries_min_type {#log_queries_min_type}
+## log_queries_min_type \{#log_queries_min_type\}
 
 <SettingsInfoBlock type="LogQueriesType" default_value="QUERY_START" />
 
@@ -5877,7 +5877,7 @@ log_queries_min_type='EXCEPTION_WHILE_PROCESSING'
 ```
 
 
-## log_queries_probability {#log_queries_probability} 
+## log_queries_probability \\{#log_queries_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="1" />
 
@@ -5889,13 +5889,13 @@ log_queries_min_type='EXCEPTION_WHILE_PROCESSING'
 - 区间 [0..1] 内的正浮点数。例如，如果该设置的值为 `0.5`，大约有一半的查询会记录到系统表中。
 - 1 — 所有查询都会记录到系统表中。
 
-## log_query_settings {#log_query_settings} 
+## log_query_settings \\{#log_query_settings\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 将查询设置记录到 `query_log` 和 OpenTelemetry span 日志中。
 
-## log_query_threads {#log_query_threads}
+## log_query_threads \{#log_query_threads\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5915,7 +5915,7 @@ log_query_threads=1
 ```
 
 
-## log_query_views {#log_query_views}
+## log_query_views \{#log_query_views\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -5930,7 +5930,7 @@ log_query_views=1
 ```
 
 
-## low_cardinality_allow_in_native_format {#low_cardinality_allow_in_native_format} 
+## low_cardinality_allow_in_native_format \\{#low_cardinality_allow_in_native_format\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -5945,7 +5945,7 @@ log_query_views=1
 - 1 — 不限制使用 `LowCardinality`。
 - 0 — 限制使用 `LowCardinality`。
 
-## low_cardinality_max_dictionary_size {#low_cardinality_max_dictionary_size} 
+## low_cardinality_max_dictionary_size \\{#low_cardinality_max_dictionary_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="8192" />
 
@@ -5955,7 +5955,7 @@ log_query_views=1
 
 - 任意正整数。
 
-## low_cardinality_use_single_dictionary_for_part {#low_cardinality_use_single_dictionary_for_part} 
+## low_cardinality_use_single_dictionary_for_part \\{#low_cardinality_use_single_dictionary_for_part\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5968,7 +5968,7 @@ log_query_views=1
 - 1 — 禁止为该数据部分创建多个字典。
 - 0 — 允许为该数据部分创建多个字典。
 
-## low_priority_query_wait_time_ms {#low_priority_query_wait_time_ms} 
+## low_priority_query_wait_time_ms \\{#low_priority_query_wait_time_ms\\}
 
 <BetaBadge/>
 
@@ -5978,7 +5978,7 @@ log_query_views=1
 
 当启用查询优先级机制时（参见设置 `priority`），低优先级查询会等待高优先级查询完成。此设置用于指定等待时间。
 
-## make_distributed_plan {#make_distributed_plan} 
+## make_distributed_plan \\{#make_distributed_plan\\}
 
 <ExperimentalBadge/>
 
@@ -5988,7 +5988,7 @@ log_query_views=1
 
 生成分布式查询计划。
 
-## materialize_skip_indexes_on_insert {#materialize_skip_indexes_on_insert} 
+## materialize_skip_indexes_on_insert \\{#materialize_skip_indexes_on_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -5998,7 +5998,7 @@ log_query_views=1
 
 另请参阅 [exclude_materialize_skip_indexes_on_insert](#exclude_materialize_skip_indexes_on_insert)。
 
-## materialize_statistics_on_insert {#materialize_statistics_on_insert} 
+## materialize_statistics_on_insert \\{#materialize_statistics_on_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -6006,19 +6006,19 @@ log_query_views=1
 
 控制是否在执行 INSERT 时构建并写入统计信息。若禁用，则统计信息会在合并期间或通过显式执行 MATERIALIZE STATISTICS 来构建并存储。
 
-## materialize_ttl_after_modify {#materialize_ttl_after_modify} 
+## materialize_ttl_after_modify \\{#materialize_ttl_after_modify\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 在执行 ALTER MODIFY TTL 查询后，为已有数据应用生存时间 (TTL)
 
-## materialized_views_ignore_errors {#materialized_views_ignore_errors} 
+## materialized_views_ignore_errors \\{#materialized_views_ignore_errors\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 允许忽略 MATERIALIZED VIEW 的错误，并且无论 MVs 是否处理成功，都将原始数据块写入目标表
 
-## materialized_views_squash_parallel_inserts {#materialized_views_squash_parallel_inserts} 
+## materialized_views_squash_parallel_inserts \\{#materialized_views_squash_parallel_inserts\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -6027,13 +6027,13 @@ log_query_views=1
 将来自单个 INSERT 查询的并行插入合并写入 materialized view 的目标表，以减少生成的分区片段数量。
 如果将此设置为 false 且启用了 `parallel_view_processing`，则 INSERT 查询会在目标表中为每个 `max_insert_thread` 生成一个分区片段。
 
-## max_analyze_depth {#max_analyze_depth} 
+## max_analyze_depth \\{#max_analyze_depth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000" />
 
 由解释器执行的最大分析次数。
 
-## max_ast_depth {#max_ast_depth} 
+## max_ast_depth \\{#max_ast_depth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -6044,7 +6044,7 @@ log_query_views=1
 这意味着在解析过程中可能会创建过深的语法树，但该查询将执行失败。
 :::
 
-## max_ast_elements {#max_ast_elements} 
+## max_ast_elements \\{#max_ast_elements\\}
 
 <SettingsInfoBlock type="UInt64" default_value="50000" />
 
@@ -6055,7 +6055,7 @@ log_query_views=1
 这意味着在解析过程中可能会构建层级过深的语法树，但该查询最终会执行失败。
 :::
 
-## max_autoincrement_series {#max_autoincrement_series} 
+## max_autoincrement_series \\{#max_autoincrement_series\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -6065,13 +6065,13 @@ log_query_views=1
 
 由于每个序列都对应 Keeper 中的一个节点，建议其数量控制在数百万以内。
 
-## max_backup_bandwidth {#max_backup_bandwidth} 
+## max_backup_bandwidth \\{#max_backup_bandwidth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 服务器上特定备份的最大读取速率（以每秒字节数计）。0 表示不受限制。
 
-## max_block_size {#max_block_size} 
+## max_block_size \\{#max_block_size\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="65409" />
 
@@ -6081,7 +6081,7 @@ log_query_views=1
 
 块的大小不应过小，以避免在处理每个块时产生显著开销；也不应过大，以确保带有 LIMIT 子句的查询在处理完第一个块后即可快速返回结果。设置 `max_block_size` 时，应以在多线程提取大量列时避免占用过多内存，并尽可能保留一定的缓存局部性为目标。
 
-## max_bytes_before_external_group_by {#max_bytes_before_external_group_by} 
+## max_bytes_before_external_group_by \\{#max_bytes_before_external_group_by\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6102,7 +6102,7 @@ Cloud 默认值：每个副本内存容量的一半。
 推荐值为系统可用内存的一半。
 :::
 
-## max_bytes_before_external_sort {#max_bytes_before_external_sort} 
+## max_bytes_before_external_sort \\{#max_bytes_before_external_sort\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6117,19 +6117,19 @@ Cloud 默认值：每个副本可用内存的一半。
   推荐值为系统可用内存的一半。
 - `0` — 禁用在外部存储中执行 `ORDER BY`。
 
-## max_bytes_before_remerge_sort {#max_bytes_before_remerge_sort} 
+## max_bytes_before_remerge_sort \\{#max_bytes_before_remerge_sort\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000000" />
 
 在使用带有 LIMIT 的 ORDER BY 时，当内存使用量超过指定阈值后，会在最终合并之前执行额外的块合并操作，仅保留前 LIMIT 行。
 
-## max_bytes_in_distinct {#max_bytes_in_distinct} 
+## max_bytes_in_distinct \\{#max_bytes_in_distinct\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 哈希表在内存中为 DISTINCT 运算的状态（以未压缩字节计）所能使用的最大字节数。
 
-## max_bytes_in_join {#max_bytes_in_join} 
+## max_bytes_in_join \\{#max_bytes_in_join\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6148,13 +6148,13 @@ Cloud 默认值：每个副本可用内存的一半。
 - 正整数。
 - 0 — 禁用内存控制。
 
-## max_bytes_in_set {#max_bytes_in_set} 
+## max_bytes_in_set \\{#max_bytes_in_set\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 在 `IN` 子句中由子查询创建的 `Set` 所允许使用的最大未压缩数据字节数。
 
-## max_bytes_ratio_before_external_group_by {#max_bytes_ratio_before_external_group_by} 
+## max_bytes_ratio_before_external_group_by \\{#max_bytes_ratio_before_external_group_by\\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />
 
@@ -6165,7 +6165,7 @@ Cloud 默认值：每个副本可用内存的一半。
 例如，如果设置为 `0.6`，`GROUP BY` 在执行开始时最多可以使用 60% 的可用内存
 （分配给 server/user/merges 的内存），之后将开始使用外部聚合。
 
-## max_bytes_ratio_before_external_sort {#max_bytes_ratio_before_external_sort} 
+## max_bytes_ratio_before_external_sort \\{#max_bytes_ratio_before_external_sort\\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />
 
@@ -6177,14 +6177,14 @@ Cloud 默认值：每个副本可用内存的一半。
 
 注意，`max_bytes_before_external_sort` 仍然会生效，只有当排序块大小大于 `max_bytes_before_external_sort` 时才会写入磁盘。
 
-## max_bytes_to_read {#max_bytes_to_read} 
+## max_bytes_to_read \\{#max_bytes_to_read\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 在执行查询时，从表中可读取的未压缩数据的最大字节数。
 该限制会在每个处理的数据块上进行检查，仅适用于最深层的表表达式；在从远程服务器读取时，该限制仅在远程服务器上进行检查。
 
-## max_bytes_to_read_leaf {#max_bytes_to_read_leaf} 
+## max_bytes_to_read_leaf \\{#max_bytes_to_read_leaf\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6198,19 +6198,19 @@ Cloud 默认值：每个副本可用内存的一半。
 在 `prefer_localhost_replica=1` 的情况下，此设置的行为是不稳定的。
 :::
 
-## max_bytes_to_sort {#max_bytes_to_sort} 
+## max_bytes_to_sort \\{#max_bytes_to_sort\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 排序前允许处理的最大字节数。如果在 ORDER BY 操作中需要处理的未压缩字节数超过该值，其行为将由 `sort_overflow_mode` 决定，默认值为 `throw`。
 
-## max_bytes_to_transfer {#max_bytes_to_transfer} 
+## max_bytes_to_transfer \\{#max_bytes_to_transfer\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 在执行 GLOBAL IN/JOIN 部分时，可传递到远程服务器或保存到临时表中的未压缩数据的最大字节数。
 
-## max_columns_to_read {#max_columns_to_read} 
+## max_columns_to_read \\{#max_columns_to_read\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6223,7 +6223,7 @@ Cloud 默认值：每个副本可用内存的一半。
 
 当值为 `0` 时表示不限制。
 
-## max_compress_block_size {#max_compress_block_size} 
+## max_compress_block_size \\{#max_compress_block_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
 
@@ -6235,7 +6235,7 @@ Cloud 默认值：每个副本可用内存的一半。
 
 不要将用于压缩的块（由字节组成的一段内存）与用于查询处理的块（来自表的一组行）混淆。
 
-## max_concurrent_queries_for_all_users {#max_concurrent_queries_for_all_users}
+## max_concurrent_queries_for_all_users \{#max_concurrent_queries_for_all_users\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6261,7 +6261,7 @@ Cloud 默认值：每个副本可用内存的一半。
 * [max&#95;concurrent&#95;queries](/operations/server-configuration-parameters/settings#max_concurrent_queries)
 
 
-## max_concurrent_queries_for_user {#max_concurrent_queries_for_user}
+## max_concurrent_queries_for_user \{#max_concurrent_queries_for_user\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6279,7 +6279,7 @@ Cloud 默认值：每个副本可用内存的一半。
 ```
 
 
-## max_distributed_connections {#max_distributed_connections} 
+## max_distributed_connections \\{#max_distributed_connections\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1024" />
 
@@ -6287,7 +6287,7 @@ Cloud 默认值：每个副本可用内存的一半。
 
 以下参数仅在创建分布式表（以及启动服务器）时使用，因此无需在运行时更改它们。
 
-## max_distributed_depth {#max_distributed_depth} 
+## max_distributed_depth \\{#max_distributed_depth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5" />
 
@@ -6300,19 +6300,19 @@ Cloud 默认值：每个副本可用内存的一半。
 - 正整数。
 - 0 — 深度无上限。
 
-## max_download_buffer_size {#max_download_buffer_size} 
+## max_download_buffer_size \\{#max_download_buffer_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10485760" />
 
 每个线程在并行下载时（例如 URL 引擎）使用的最大缓冲区大小。
 
-## max_download_threads {#max_download_threads} 
+## max_download_threads \\{#max_download_threads\\}
 
 <SettingsInfoBlock type="MaxThreads" default_value="4" />
 
 用于下载数据的最大线程数（例如 URL 引擎）。
 
-## max_estimated_execution_time {#max_estimated_execution_time} 
+## max_estimated_execution_time \\{#max_estimated_execution_time\\}
 
 <SettingsInfoBlock type="Seconds" default_value="0" />
 
@@ -6321,7 +6321,7 @@ Cloud 默认值：每个副本可用内存的一半。
 以秒为单位的最大查询预估执行时间。当 [`timeout_before_checking_execution_speed`](/operations/settings/settings#timeout_before_checking_execution_speed)
 过期时，会对每个数据块进行检查。
 
-## max_execution_speed {#max_execution_speed} 
+## max_execution_speed \\{#max_execution_speed\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6329,7 +6329,7 @@ Cloud 默认值：每个副本可用内存的一半。
 [`timeout_before_checking_execution_speed`](/operations/settings/settings#timeout_before_checking_execution_speed)
 超时时，会对每个数据块进行检查。如果执行速度过高，将降低执行速度。
 
-## max_execution_speed_bytes {#max_execution_speed_bytes} 
+## max_execution_speed_bytes \\{#max_execution_speed_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6337,7 +6337,7 @@ Cloud 默认值：每个副本可用内存的一半。
 [`timeout_before_checking_execution_speed`](/operations/settings/settings#timeout_before_checking_execution_speed)
 到期时，对每个数据块进行检查。如果执行速度过高，将对其进行限制。
 
-## max_execution_time {#max_execution_time} 
+## max_execution_time \\{#max_execution_time\\}
 
 <SettingsInfoBlock type="Seconds" default_value="0" />
 
@@ -6364,7 +6364,7 @@ ClickHouse 将终止查询。若将 `timeout_before_checking_execution_speed`
 因此实际运行时间会高于该设置指定的值。
 :::
 
-## max_execution_time_leaf {#max_execution_time_leaf}
+## max_execution_time_leaf \{#max_execution_time_leaf\}
 
 <SettingsInfoBlock type="Seconds" default_value="0" />
 
@@ -6385,19 +6385,19 @@ FROM cluster(cluster, view(SELECT * FROM t)) SETTINGS max_execution_time_leaf = 
 ```
 
 
-## max_expanded_ast_elements {#max_expanded_ast_elements} 
+## max_expanded_ast_elements \\{#max_expanded_ast_elements\\}
 
 <SettingsInfoBlock type="UInt64" default_value="500000" />
 
 在展开别名和星号（*）之后，查询语法树的最大节点数。
 
-## max_fetch_partition_retries_count {#max_fetch_partition_retries_count} 
+## max_fetch_partition_retries_count \\{#max_fetch_partition_retries_count\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5" />
 
 从其他主机获取分区时的最大重试次数。
 
-## max_final_threads {#max_final_threads} 
+## max_final_threads \\{#max_final_threads\\}
 
 <SettingsInfoBlock type="MaxThreads" default_value="'auto(N)'" />
 
@@ -6408,13 +6408,13 @@ FROM cluster(cluster, view(SELECT * FROM t)) SETTINGS max_execution_time_leaf = 
 - 正整数。
 - 0 或 1 — 禁用。`SELECT` 查询在单线程中执行。
 
-## max_http_get_redirects {#max_http_get_redirects} 
+## max_http_get_redirects \\{#max_http_get_redirects\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 允许的 HTTP GET 重定向跳转的最大次数。通过限制该值，可增加额外的安全防护，防止恶意服务器将请求重定向到意料之外的服务。\n\n例如，外部服务器可能会重定向到另一个地址，而该地址看起来属于公司内部基础设施。此时，如果向该内部服务器发送 HTTP 请求，就可能从内部网络访问内部 API，从而绕过鉴权，甚至访问 Redis、Memcached 等其他内部服务。如果没有任何内部基础设施（包括运行在 localhost 上的进程），或者你信任该服务器，那么允许重定向是安全的。不过请注意，如果 URL 使用的是 HTTP 而非 HTTPS，你不仅需要信任远程服务器，还必须信任你的 ISP 以及中间路径上的所有网络。
 
-## max_hyperscan_regexp_length {#max_hyperscan_regexp_length}
+## max_hyperscan_regexp_length \{#max_hyperscan_regexp_length\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6458,7 +6458,7 @@ Exception: Regexp length too large.
 * [max&#95;hyperscan&#95;regexp&#95;total&#95;length](#max_hyperscan_regexp_total_length)
 
 
-## max_hyperscan_regexp_total_length {#max_hyperscan_regexp_total_length}
+## max_hyperscan_regexp_total_length \{#max_hyperscan_regexp_total_length\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6502,7 +6502,7 @@ Exception: Total regexp lengths too large.
 * [max&#95;hyperscan&#95;regexp&#95;length](#max_hyperscan_regexp_length)
 
 
-## max_insert_block_size {#max_insert_block_size} 
+## max_insert_block_size \\{#max_insert_block_size\\}
 
 **别名**: `max_insert_block_size_rows`
 
@@ -6524,7 +6524,7 @@ Exception: Total regexp lengths too large.
 
 - 正整数。
 
-## max_insert_block_size_bytes {#max_insert_block_size_bytes} 
+## max_insert_block_size_bytes \\{#max_insert_block_size_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6539,13 +6539,13 @@ Exception: Total regexp lengths too large.
 - 正整数。
 - 0 — 该设置不参与块的生成。
 
-## max_insert_delayed_streams_for_parallel_write {#max_insert_delayed_streams_for_parallel_write} 
+## max_insert_delayed_streams_for_parallel_write \\{#max_insert_delayed_streams_for_parallel_write\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 用于延迟最终数据分片刷写的最大流（列）数量。默认为自动（如果底层存储支持并行写入，则为 100，例如 S3；否则为禁用）
 
-## max_insert_threads {#max_insert_threads} 
+## max_insert_threads \\{#max_insert_threads\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6565,7 +6565,7 @@ Cloud 默认值：
 仅当 `SELECT` 部分是并行执行时，并行 `INSERT SELECT` 才会生效，参见 [`max_threads`](#max_threads) 设置。
 较大的取值会导致更高的内存占用。
 
-## max_joined_block_size_bytes {#max_joined_block_size_bytes} 
+## max_joined_block_size_bytes \\{#max_joined_block_size_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="4194304" />
 
@@ -6573,13 +6573,13 @@ Cloud 默认值：
 
 JOIN 结果的数据块最大大小（以字节为单位，前提是 JOIN 算法支持）。0 表示不限制。
 
-## max_joined_block_size_rows {#max_joined_block_size_rows} 
+## max_joined_block_size_rows \\{#max_joined_block_size_rows\\}
 
 <SettingsInfoBlock type="UInt64" default_value="65409" />
 
 JOIN 结果的最大数据块大小（前提是 JOIN 算法支持该设置）。0 表示不限制。
 
-## max_limit_for_vector_search_queries {#max_limit_for_vector_search_queries} 
+## max_limit_for_vector_search_queries \\{#max_limit_for_vector_search_queries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -6587,19 +6587,19 @@ JOIN 结果的最大数据块大小（前提是 JOIN 算法支持该设置）。
 
 LIMIT 超过该设置值的 SELECT 查询将无法使用向量相似性索引。此设置有助于防止向量相似性索引发生内存溢出。
 
-## max_local_read_bandwidth {#max_local_read_bandwidth} 
+## max_local_read_bandwidth \\{#max_local_read_bandwidth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 本地读取的最大带宽，单位为字节每秒。
 
-## max_local_write_bandwidth {#max_local_write_bandwidth} 
+## max_local_write_bandwidth \\{#max_local_write_bandwidth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 本地写入的最大速度，以每秒字节数为单位。
 
-## max_memory_usage {#max_memory_usage} 
+## max_memory_usage \\{#max_memory_usage\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6625,7 +6625,7 @@ Cloud 默认值：取决于副本可用的 RAM 容量。
 内存消耗还会受到参数 [`max_memory_usage_for_user`](/operations/settings/settings#max_memory_usage_for_user)
 和 [`max_server_memory_usage`](/operations/server-configuration-parameters/settings#max_server_memory_usage) 的限制。
 
-## max_memory_usage_for_user {#max_memory_usage_for_user}
+## max_memory_usage_for_user \{#max_memory_usage_for_user\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6648,7 +6648,7 @@ SELECT getSetting('max_memory_usage_for_user');
 ```
 
 
-## max_network_bandwidth {#max_network_bandwidth} 
+## max_network_bandwidth \\{#max_network_bandwidth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6659,7 +6659,7 @@ SELECT getSetting('max_memory_usage_for_user');
 - 正整数。
 - 0 — 禁用带宽控制。
 
-## max_network_bandwidth_for_all_users {#max_network_bandwidth_for_all_users} 
+## max_network_bandwidth_for_all_users \\{#max_network_bandwidth_for_all_users\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6670,7 +6670,7 @@ SELECT getSetting('max_memory_usage_for_user');
 - 正整数。
 - 0 — 关闭对数据传输速度的控制。
 
-## max_network_bandwidth_for_user {#max_network_bandwidth_for_user} 
+## max_network_bandwidth_for_user \\{#max_network_bandwidth_for_user\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6681,7 +6681,7 @@ SELECT getSetting('max_memory_usage_for_user');
 - 正整数。
 - 0 — 禁用对数据传输速率的控制。
 
-## max_network_bytes {#max_network_bytes} 
+## max_network_bytes \\{#max_network_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6692,13 +6692,13 @@ SELECT getSetting('max_memory_usage_for_user');
 - 正整数。
 - 0 — 禁用数据量控制。
 
-## max_number_of_partitions_for_independent_aggregation {#max_number_of_partitions_for_independent_aggregation} 
+## max_number_of_partitions_for_independent_aggregation \\{#max_number_of_partitions_for_independent_aggregation\\}
 
 <SettingsInfoBlock type="UInt64" default_value="128" />
 
 在表中应用该优化时允许的最大分区数
 
-## max_os_cpu_wait_time_ratio_to_throw {#max_os_cpu_wait_time_ratio_to_throw} 
+## max_os_cpu_wait_time_ratio_to_throw \\{#max_os_cpu_wait_time_ratio_to_throw\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
@@ -6706,7 +6706,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 用于决定是否拒绝查询的操作系统 CPU 等待时间（OSCPUWaitMicroseconds 指标）与忙碌时间（OSCPUVirtualTimeMicroseconds 指标）之间的最大比值。通过在最小和最大比值之间进行线性插值来计算概率，在该点概率为 1。
 
-## max_parallel_replicas {#max_parallel_replicas} 
+## max_parallel_replicas \\{#max_parallel_replicas\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1000" />
 
@@ -6726,7 +6726,7 @@ SELECT getSetting('max_memory_usage_for_user');
 当涉及 `JOIN` 或子查询，且所有表未满足特定要求时，此设置会产生不正确的结果。有关更多详细信息，请参阅 [Distributed Subqueries and max_parallel_replicas](/operations/settings/settings#max_parallel_replicas)。
 :::
 
-### 使用 `SAMPLE` 键进行并行处理 {#parallel-processing-using-sample-key}
+### 使用 `SAMPLE` 键进行并行处理 \{#parallel-processing-using-sample-key\}
 
 如果在多个服务器上并行执行，一个查询可以更快完成。但在以下情况下，查询性能可能会下降：
 
@@ -6735,11 +6735,11 @@ SELECT getSetting('max_memory_usage_for_user');
 - 采样键是一个计算代价较高的表达式。
 - 集群的延迟分布具有长尾特性，因此查询更多服务器会增加查询的整体延迟。
 
-### 使用 [parallel_replicas_custom_key](#parallel_replicas_custom_key) 进行并行处理 {#parallel-processing-using-parallel_replicas_custom_keyparallel_replicas_custom_key}
+### 使用 [parallel_replicas_custom_key](#parallel_replicas_custom_key) 进行并行处理 \{#parallel-processing-using-parallel_replicas_custom_keyparallel_replicas_custom_key\}
 
 此设置适用于任何复制表。
 
-## max_parser_backtracks {#max_parser_backtracks} 
+## max_parser_backtracks \\{#max_parser_backtracks\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />
 
@@ -6747,7 +6747,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 解析器允许的最大回溯次数（在递归下降解析过程中尝试不同解析分支的最大次数）。
 
-## max_parser_depth {#max_parser_depth} 
+## max_parser_depth \\{#max_parser_depth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -6758,7 +6758,7 @@ SELECT getSetting('max_memory_usage_for_user');
 - 正整数。
 - 0 — 递归深度不受限制。
 
-## max_parsing_threads {#max_parsing_threads} 
+## max_parsing_threads \\{#max_parsing_threads\\}
 
 <SettingsInfoBlock type="MaxThreads" default_value="'auto(N)'" />
 
@@ -6766,7 +6766,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 在支持并行解析的输入格式中，用于解析数据的最大线程数。默认情况下，该值会自动确定。
 
-## max_partition_size_to_drop {#max_partition_size_to_drop} 
+## max_partition_size_to_drop \\{#max_partition_size_to_drop\\}
 
 <SettingsInfoBlock type="UInt64" default_value="50000000000" />
 
@@ -6778,7 +6778,7 @@ Cloud 默认值：1 TB。
 此查询设置会覆盖其对应的服务器设置，参见 [max_partition_size_to_drop](/operations/server-configuration-parameters/settings#max_partition_size_to_drop)
 :::
 
-## max_partitions_per_insert_block {#max_partitions_per_insert_block} 
+## max_partitions_per_insert_block \\{#max_partitions_per_insert_block\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
@@ -6808,7 +6808,7 @@ Cloud 默认值：1 TB。
 此设置是一个安全阈值，因为大量使用分区是一个常见的误区。
 :::
 
-## max_partitions_to_read {#max_partitions_to_read} 
+## max_partitions_to_read \\{#max_partitions_to_read\\}
 
 <SettingsInfoBlock type="Int64" default_value="-1" />
 
@@ -6825,7 +6825,7 @@ Cloud 默认值：1 TB。
 你也可以在表的 setting 中指定 MergeTree 的 [`max_partitions_to_read`](/operations/settings/settings#max_partitions_to_read) 设置。
 :::
 
-## max_parts_to_move {#max_parts_to_move} 
+## max_parts_to_move \\{#max_parts_to_move\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -6833,7 +6833,7 @@ Cloud 默认值：1 TB。
 
 限制在单个查询中可以移动的分区片段数量。0 表示不限制数量。
 
-## max_projection_rows_to_use_projection_index {#max_projection_rows_to_use_projection_index} 
+## max_projection_rows_to_use_projection_index \\{#max_projection_rows_to_use_projection_index\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />
 
@@ -6841,7 +6841,7 @@ Cloud 默认值：1 TB。
 
 如果需要从 projection 索引中读取的行数小于或等于该阈值，ClickHouse 会在执行查询时尝试使用该 projection 索引。
 
-## max_query_size {#max_query_size} 
+## max_query_size \\{#max_query_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="262144" />
 
@@ -6852,25 +6852,25 @@ INSERT 查询中 VALUES 子句里的数据由单独的流式解析器处理（�
 `max_query_size` 不能在 SQL 查询内部进行设置（例如，`SELECT now() SETTINGS max_query_size=10000`），因为 ClickHouse 在解析查询前需要先分配缓冲区，而该缓冲区大小由 `max_query_size` 设置决定，因此必须在查询执行之前进行配置。
 :::
 
-## max_read_buffer_size {#max_read_buffer_size} 
+## max_read_buffer_size \\{#max_read_buffer_size\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1048576" />
 
 从文件系统读取数据时使用的缓冲区的最大大小。
 
-## max_read_buffer_size_local_fs {#max_read_buffer_size_local_fs} 
+## max_read_buffer_size_local_fs \\{#max_read_buffer_size_local_fs\\}
 
 <SettingsInfoBlock type="UInt64" default_value="131072" />
 
 从本地文件系统读取数据时使用的缓冲区最大大小。如果设置为 0，则会使用 max_read_buffer_size 的值。
 
-## max_read_buffer_size_remote_fs {#max_read_buffer_size_remote_fs} 
+## max_read_buffer_size_remote_fs \\{#max_read_buffer_size_remote_fs\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 从远程文件系统读取时使用的最大缓冲区大小。若设置为 0，则会使用 `max_read_buffer_size`。
 
-## max_recursive_cte_evaluation_depth {#max_recursive_cte_evaluation_depth} 
+## max_recursive_cte_evaluation_depth \\{#max_recursive_cte_evaluation_depth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -6878,19 +6878,19 @@ INSERT 查询中 VALUES 子句里的数据由单独的流式解析器处理（�
 
 最大递归 CTE 求值深度
 
-## max_remote_read_network_bandwidth {#max_remote_read_network_bandwidth} 
+## max_remote_read_network_bandwidth \\{#max_remote_read_network_bandwidth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 读取时网络数据交换的最大速率（以字节/秒计）。
 
-## max_remote_write_network_bandwidth {#max_remote_write_network_bandwidth} 
+## max_remote_write_network_bandwidth \\{#max_remote_write_network_bandwidth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 写入时通过网络进行的数据交换速率上限（以字节/秒为单位）。
 
-## max_replica_delay_for_distributed_queries {#max_replica_delay_for_distributed_queries} 
+## max_replica_delay_for_distributed_queries \\{#max_replica_delay_for_distributed_queries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="300" />
 
@@ -6907,7 +6907,7 @@ INSERT 查询中 VALUES 子句里的数据由单独的流式解析器处理（�
 
 在对指向复制表的分布式表执行 `SELECT` 时使用。
 
-## max_result_bytes {#max_result_bytes} 
+## max_result_bytes \\{#max_result_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6925,7 +6925,7 @@ INSERT 查询中 VALUES 子句里的数据由单独的流式解析器处理（�
 该设置属于比较底层的参数，应谨慎使用
 :::
 
-## max_result_rows {#max_result_rows} 
+## max_result_rows \\{#max_result_rows\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6938,7 +6938,7 @@ Cloud 默认值：`0`。
 但不会截断结果集中的最后一个数据块，因此结果大小可能会
 大于该阈值。
 
-## max_reverse_dictionary_lookup_cache_size_bytes {#max_reverse_dictionary_lookup_cache_size_bytes} 
+## max_reverse_dictionary_lookup_cache_size_bytes \\{#max_reverse_dictionary_lookup_cache_size_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="104857600" />
 
@@ -6946,13 +6946,13 @@ Cloud 默认值：`0`。
 
 `dictGetKeys` 函数在每次查询中使用的反向字典查找缓存的最大字节数。该缓存按属性值存储序列化的键元组，以避免在同一查询中重新扫描字典。达到该限制时，将使用 LRU（最近最少使用）策略淘汰条目。设置为 0 可禁用缓存。
 
-## max_rows_in_distinct {#max_rows_in_distinct} 
+## max_rows_in_distinct \\{#max_rows_in_distinct\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 使用 DISTINCT 时允许的最大不同行数。
 
-## max_rows_in_join {#max_rows_in_join} 
+## max_rows_in_join \\{#max_rows_in_join\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6971,13 +6971,13 @@ Cloud 默认值：`0`。
 - 正整数。
 - `0` — 行数不受限制。
 
-## max_rows_in_set {#max_rows_in_set} 
+## max_rows_in_set \\{#max_rows_in_set\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 由子查询生成的 IN 子句中，数据集允许包含的最大行数。
 
-## max_rows_in_set_to_optimize_join {#max_rows_in_set_to_optimize_join} 
+## max_rows_in_set_to_optimize_join \\{#max_rows_in_set_to_optimize_join\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6990,7 +6990,7 @@ Cloud 默认值：`0`。
 - 0 — 禁用。
 - 任意正整数。
 
-## max_rows_to_group_by {#max_rows_to_group_by} 
+## max_rows_to_group_by \\{#max_rows_to_group_by\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6998,14 +6998,14 @@ Cloud 默认值：`0`。
 
 如果在 `GROUP BY` 期间的聚合生成的行数（唯一的 `GROUP BY` 键）超过指定数量，其行为将由 `group_by_overflow_mode` 决定。该设置默认值为 `throw`，也可以将其切换为近似 `GROUP BY` 模式。
 
-## max_rows_to_read {#max_rows_to_read} 
+## max_rows_to_read \\{#max_rows_to_read\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 在运行查询时，从表中可读取的最大行数。  
 该限制会针对每个处理的数据块进行检查，只应用于最底层的表表达式；在从远程服务器读取时，仅在远程服务器上检查该限制。
 
-## max_rows_to_read_leaf {#max_rows_to_read_leaf} 
+## max_rows_to_read_leaf \\{#max_rows_to_read_leaf\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7019,7 +7019,7 @@ Cloud 默认值：`0`。
 当 `prefer_localhost_replica=1` 时，此设置是不稳定的。
 :::
 
-## max_rows_to_sort {#max_rows_to_sort} 
+## max_rows_to_sort \\{#max_rows_to_sort\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7027,13 +7027,13 @@ Cloud 默认值：`0`。
 如果在执行 ORDER BY 操作时需要处理的记录数超过该数值，
 具体行为将由 `sort_overflow_mode` 决定，其默认值为 `throw`。
 
-## max_rows_to_transfer {#max_rows_to_transfer} 
+## max_rows_to_transfer \\{#max_rows_to_transfer\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 在执行 GLOBAL IN/JOIN 子句时，可以传递到远程服务器或保存在临时表中的最大行数。
 
-## max_sessions_for_user {#max_sessions_for_user}
+## max_sessions_for_user \{#max_sessions_for_user\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7075,7 +7075,7 @@ Cloud 默认值：`0`。
 * `0` - 无限个并发会话（默认）
 
 
-## max_size_to_preallocate_for_aggregation {#max_size_to_preallocate_for_aggregation} 
+## max_size_to_preallocate_for_aggregation \\{#max_size_to_preallocate_for_aggregation\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000000000" />
 
@@ -7083,7 +7083,7 @@ Cloud 默认值：`0`。
 
 在聚合之前，所有哈希表中允许预先分配的元素总数上限。
 
-## max_size_to_preallocate_for_joins {#max_size_to_preallocate_for_joins} 
+## max_size_to_preallocate_for_joins \\{#max_size_to_preallocate_for_joins\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000000000" />
 
@@ -7091,7 +7091,7 @@ Cloud 默认值：`0`。
 
 在执行 join 之前，允许在所有哈希表中合计为多少个元素预先分配空间
 
-## max_streams_for_files_processing_in_cluster_functions {#max_streams_for_files_processing_in_cluster_functions} 
+## max_streams_for_files_processing_in_cluster_functions \\{#max_streams_for_files_processing_in_cluster_functions\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7099,25 +7099,25 @@ Cloud 默认值：`0`。
 
 如果该设置值不为零，则限制在 *Cluster 表函数中从文件读取数据的线程数量。
 
-## max_streams_for_merge_tree_reading {#max_streams_for_merge_tree_reading} 
+## max_streams_for_merge_tree_reading \\{#max_streams_for_merge_tree_reading\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 如果该值不为 0，则限制读取 MergeTree 表时的流数量。
 
-## max_streams_multiplier_for_merge_tables {#max_streams_multiplier_for_merge_tables} 
+## max_streams_multiplier_for_merge_tables \\{#max_streams_multiplier_for_merge_tables\\}
 
 <SettingsInfoBlock type="Float" default_value="5" />
 
 在从 Merge 表读取数据时会请求更多的流（streams）。这些流会分布到 Merge 表所使用的各个表上。这可以使工作在各线程之间分配得更加均衡，尤其是在被合并的表大小不同时特别有帮助。
 
-## max_streams_to_max_threads_ratio {#max_streams_to_max_threads_ratio} 
+## max_streams_to_max_threads_ratio \\{#max_streams_to_max_threads_ratio\\}
 
 <SettingsInfoBlock type="Float" default_value="1" />
 
 允许你使用比线程数更多的源，以便在各线程之间更均匀地分配工作。假定这是一个临时方案，因为将来可以做到让源的数量等于线程数，同时让每个源为自身动态选择可用的工作。
 
-## max_subquery_depth {#max_subquery_depth} 
+## max_subquery_depth \\{#max_subquery_depth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
@@ -7127,7 +7127,7 @@ Cloud 默认值：`0`。
 这使你可以设置合理性检查，用于防止集群用户编写过于复杂的查询。
 :::
 
-## max_table_size_to_drop {#max_table_size_to_drop} 
+## max_table_size_to_drop \\{#max_table_size_to_drop\\}
 
 <SettingsInfoBlock type="UInt64" default_value="50000000000" />
 
@@ -7139,7 +7139,7 @@ Cloud 默认值：1 TB。
 此查询设置会覆盖其对应的服务器设置，参见 [max_table_size_to_drop](/operations/server-configuration-parameters/settings#max_table_size_to_drop)
 :::
 
-## max_temporary_columns {#max_temporary_columns} 
+## max_temporary_columns \\{#max_temporary_columns\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7151,7 +7151,7 @@ Cloud 默认值：1 TB。
 
 `0` 表示不限制。
 
-## max_temporary_data_on_disk_size_for_query {#max_temporary_data_on_disk_size_for_query} 
+## max_temporary_data_on_disk_size_for_query \\{#max_temporary_data_on_disk_size_for_query\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7162,7 +7162,7 @@ Cloud 默认值：1 TB。
 - 正整数。
 - `0` — 不限制（默认）
 
-## max_temporary_data_on_disk_size_for_user {#max_temporary_data_on_disk_size_for_user} 
+## max_temporary_data_on_disk_size_for_user \\{#max_temporary_data_on_disk_size_for_user\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7173,7 +7173,7 @@ Cloud 默认值：1 TB。
 - 正整数。
 - `0` — 不限制（默认）
 
-## max_temporary_non_const_columns {#max_temporary_non_const_columns} 
+## max_temporary_non_const_columns \\{#max_temporary_non_const_columns\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7183,7 +7183,7 @@ Cloud 默认值：1 TB。
 在执行查询时，常量列会相当频繁地被生成，但它们几乎不消耗计算资源。
 :::
 
-## max_threads {#max_threads} 
+## max_threads \\{#max_threads\\}
 
 <SettingsInfoBlock type="MaxThreads" default_value="'auto(N)'" />
 
@@ -7202,19 +7202,19 @@ Cloud 默认值：1 TB。
 对于 ClickHouse Cloud 用户，默认值会显示为 `auto(N)`，其中 N 对应于服务的 vCPU 规格，例如 2vCPU/8GiB、4vCPU/16GiB 等。
 有关所有服务规格的完整列表，请参阅 Cloud 控制台中的 Settings 选项卡。
 
-## max_threads_for_indexes {#max_threads_for_indexes} 
+## max_threads_for_indexes \\{#max_threads_for_indexes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 用于处理索引的最大线程数。
 
-## max_untracked_memory {#max_untracked_memory} 
+## max_untracked_memory \\{#max_untracked_memory\\}
 
 <SettingsInfoBlock type="UInt64" default_value="4194304" />
 
 小规模的内存分配和释放会被归入线程局部变量中，只有当其大小（绝对值）超过指定值时，才会被跟踪或进行分析。如果该数值大于 `memory_profiler_step`，则会被实际降低并调整为 `memory_profiler_step`。
 
-## memory_overcommit_ratio_denominator {#memory_overcommit_ratio_denominator} 
+## memory_overcommit_ratio_denominator \\{#memory_overcommit_ratio_denominator\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
@@ -7225,7 +7225,7 @@ Cloud 默认值：1 TB。
 值为 0 表示跳过该查询。
 有关[内存 overcommit](memory-overcommit.md) 的更多信息，请参阅相关文档。
 
-## memory_overcommit_ratio_denominator_for_user {#memory_overcommit_ratio_denominator_for_user} 
+## memory_overcommit_ratio_denominator_for_user \\{#memory_overcommit_ratio_denominator_for_user\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
@@ -7236,25 +7236,25 @@ Cloud 默认值：1 TB。
 为零时表示跳过该查询。
 详见 [memory overcommit](memory-overcommit.md)。
 
-## memory_profiler_sample_max_allocation_size {#memory_profiler_sample_max_allocation_size} 
+## memory_profiler_sample_max_allocation_size \\{#memory_profiler_sample_max_allocation_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 以 `memory_profiler_sample_probability` 的概率收集大小小于或等于指定值的随机内存分配。0 表示禁用。可能需要将 `max_untracked_memory` 设置为 0，以便该阈值按预期生效。
 
-## memory_profiler_sample_min_allocation_size {#memory_profiler_sample_min_allocation_size} 
+## memory_profiler_sample_min_allocation_size \\{#memory_profiler_sample_min_allocation_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 以 `memory_profiler_sample_probability` 指定的概率，随机采集大小大于或等于给定值的内存分配。0 表示禁用。可能需要将 `max_untracked_memory` 设置为 0，才能使该阈值按预期生效。
 
-## memory_profiler_sample_probability {#memory_profiler_sample_probability} 
+## memory_profiler_sample_probability \\{#memory_profiler_sample_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
 收集随机的内存分配和释放操作，并将它们以 `trace_type` 为 `MemorySample` 的记录写入 `system.trace_log`。该概率适用于每一次分配/释放操作，而不考虑分配大小（可通过 `memory_profiler_sample_min_allocation_size` 和 `memory_profiler_sample_max_allocation_size` 进行调整）。注意，只有在未被跟踪的内存量超过 `max_untracked_memory` 时才会进行采样。为了实现更细粒度的采样，可以将 `max_untracked_memory` 设置为 0。
 
-## memory_profiler_step {#memory_profiler_step} 
+## memory_profiler_step \\{#memory_profiler_step\\}
 
 <SettingsInfoBlock type="UInt64" default_value="4194304" />
 
@@ -7266,13 +7266,13 @@ Cloud 默认值：1 TB。
 
 - 0 表示关闭 memory profiler。
 
-## memory_tracker_fault_probability {#memory_tracker_fault_probability} 
+## memory_tracker_fault_probability \\{#memory_tracker_fault_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
 用于测试 `异常安全性` —— 在每次内存分配时按指定概率抛出异常。
 
-## memory_usage_overcommit_max_wait_microseconds {#memory_usage_overcommit_max_wait_microseconds} 
+## memory_usage_overcommit_max_wait_microseconds \\{#memory_usage_overcommit_max_wait_microseconds\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000000" />
 
@@ -7280,7 +7280,7 @@ Cloud 默认值：1 TB。
 如果在超时时间到达时仍未释放内存，则会抛出异常。
 在 [memory overcommit](memory-overcommit.md) 中了解更多信息。
 
-## merge_table_max_tables_to_look_for_schema_inference {#merge_table_max_tables_to_look_for_schema_inference} 
+## merge_table_max_tables_to_look_for_schema_inference \\{#merge_table_max_tables_to_look_for_schema_inference\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -7289,7 +7289,7 @@ Cloud 默认值：1 TB。
 在创建未显式指定 schema 的 `Merge` 表或使用 `merge` 表函数时，将 schema 推断为不超过指定数量的匹配表的并集。
 如果匹配表的数量更多，则仅基于前面指定数量的表来推断 schema。
 
-## merge_tree_coarse_index_granularity {#merge_tree_coarse_index_granularity} 
+## merge_tree_coarse_index_granularity \\{#merge_tree_coarse_index_granularity\\}
 
 <SettingsInfoBlock type="UInt64" default_value="8" />
 
@@ -7299,7 +7299,7 @@ Cloud 默认值：1 TB。
 
 - 任意正偶整数。
 
-## merge_tree_compact_parts_min_granules_to_multibuffer_read {#merge_tree_compact_parts_min_granules_to_multibuffer_read} 
+## merge_tree_compact_parts_min_granules_to_multibuffer_read \\{#merge_tree_compact_parts_min_granules_to_multibuffer_read\\}
 
 <CloudOnlyBadge/>
 
@@ -7307,13 +7307,13 @@ Cloud 默认值：1 TB。
 
 仅在 ClickHouse Cloud 中生效。用于在 MergeTree 表的紧凑分区片段中，决定当条带（stripe）中的 granule 数量达到多少时启用 multibuffer reader，从而支持并行读取和预取（prefetch）。当从远程文件系统读取数据时，使用 multibuffer reader 会增加读取请求的数量。
 
-## merge_tree_determine_task_size_by_prewhere_columns {#merge_tree_determine_task_size_by_prewhere_columns} 
+## merge_tree_determine_task_size_by_prewhere_columns \\{#merge_tree_determine_task_size_by_prewhere_columns\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 是否仅根据 `prewhere` 列的数据量来确定读取任务的大小。
 
-## merge_tree_max_bytes_to_use_cache {#merge_tree_max_bytes_to_use_cache} 
+## merge_tree_max_bytes_to_use_cache \\{#merge_tree_max_bytes_to_use_cache\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2013265920" />
 
@@ -7325,7 +7325,7 @@ Cloud 默认值：1 TB。
 
 - 任意正整数。
 
-## merge_tree_max_rows_to_use_cache {#merge_tree_max_rows_to_use_cache} 
+## merge_tree_max_rows_to_use_cache \\{#merge_tree_max_rows_to_use_cache\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
 
@@ -7337,7 +7337,7 @@ Cloud 默认值：1 TB。
 
 - 任意正整数。
 
-## merge_tree_min_bytes_for_concurrent_read {#merge_tree_min_bytes_for_concurrent_read} 
+## merge_tree_min_bytes_for_concurrent_read \\{#merge_tree_min_bytes_for_concurrent_read\\}
 
 <SettingsInfoBlock type="UInt64" default_value="251658240" />
 
@@ -7347,7 +7347,7 @@ Cloud 默认值：1 TB。
 
 - 正整数。
 
-## merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem {#merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem} 
+## merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem \\{#merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7359,7 +7359,7 @@ Cloud 默认值：1 TB。
 
 - 正整数。
 
-## merge_tree_min_bytes_for_seek {#merge_tree_min_bytes_for_seek} 
+## merge_tree_min_bytes_for_seek \\{#merge_tree_min_bytes_for_seek\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7369,7 +7369,7 @@ Cloud 默认值：1 TB。
 
 - 任意正整数。
 
-## merge_tree_min_bytes_per_task_for_remote_reading {#merge_tree_min_bytes_per_task_for_remote_reading} 
+## merge_tree_min_bytes_per_task_for_remote_reading \\{#merge_tree_min_bytes_per_task_for_remote_reading\\}
 
 **别名**: `filesystem_prefetch_min_bytes_for_single_read_task`
 
@@ -7379,7 +7379,7 @@ Cloud 默认值：1 TB。
 
 每个任务最少需要读取的字节数。
 
-## merge_tree_min_read_task_size {#merge_tree_min_read_task_size} 
+## merge_tree_min_read_task_size \\{#merge_tree_min_read_task_size\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="8" />
 
@@ -7387,7 +7387,7 @@ Cloud 默认值：1 TB。
 
 读取任务大小的硬性下限（即便 granule 数量很少且可用线程数很多，我们也不会创建更小的任务）
 
-## merge_tree_min_rows_for_concurrent_read {#merge_tree_min_rows_for_concurrent_read} 
+## merge_tree_min_rows_for_concurrent_read \\{#merge_tree_min_rows_for_concurrent_read\\}
 
 <SettingsInfoBlock type="UInt64" default_value="163840" />
 
@@ -7397,7 +7397,7 @@ Cloud 默认值：1 TB。
 
 - 正整数。
 
-## merge_tree_min_rows_for_concurrent_read_for_remote_filesystem {#merge_tree_min_rows_for_concurrent_read_for_remote_filesystem} 
+## merge_tree_min_rows_for_concurrent_read_for_remote_filesystem \\{#merge_tree_min_rows_for_concurrent_read_for_remote_filesystem\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7409,7 +7409,7 @@ Cloud 默认值：1 TB。
 
 - 正整数。
 
-## merge_tree_min_rows_for_seek {#merge_tree_min_rows_for_seek} 
+## merge_tree_min_rows_for_seek \\{#merge_tree_min_rows_for_seek\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7419,7 +7419,7 @@ Cloud 默认值：1 TB。
 
 - 任意正整数。
 
-## merge_tree_read_split_ranges_into_intersecting_and_non_intersecting_injection_probability {#merge_tree_read_split_ranges_into_intersecting_and_non_intersecting_injection_probability} 
+## merge_tree_read_split_ranges_into_intersecting_and_non_intersecting_injection_probability \\{#merge_tree_read_split_ranges_into_intersecting_and_non_intersecting_injection_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
@@ -7427,7 +7427,7 @@ Cloud 默认值：1 TB。
 
 用于测试 `PartsSplitter` —— 以指定的概率在每次从 MergeTree 读取时，将读取范围拆分为相交和不相交的读取范围。
 
-## merge_tree_storage_snapshot_sleep_ms {#merge_tree_storage_snapshot_sleep_ms} 
+## merge_tree_storage_snapshot_sleep_ms \\{#merge_tree_storage_snapshot_sleep_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7441,13 +7441,13 @@ Cloud 默认值：1 TB。
 - 0 - 无延迟（默认）
 - N - 延迟的毫秒数
 
-## merge_tree_use_const_size_tasks_for_remote_reading {#merge_tree_use_const_size_tasks_for_remote_reading} 
+## merge_tree_use_const_size_tasks_for_remote_reading \\{#merge_tree_use_const_size_tasks_for_remote_reading\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 是否在从远程表读取时使用固定大小的任务。
 
-## merge_tree_use_deserialization_prefixes_cache {#merge_tree_use_deserialization_prefixes_cache} 
+## merge_tree_use_deserialization_prefixes_cache \\{#merge_tree_use_deserialization_prefixes_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -7455,7 +7455,7 @@ Cloud 默认值：1 TB。
 
 在从远程磁盘读取 MergeTree 数据时，启用对文件前缀中列元数据的缓存功能。
 
-## merge_tree_use_prefixes_deserialization_thread_pool {#merge_tree_use_prefixes_deserialization_thread_pool} 
+## merge_tree_use_prefixes_deserialization_thread_pool \\{#merge_tree_use_prefixes_deserialization_thread_pool\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -7463,7 +7463,7 @@ Cloud 默认值：1 TB。
 
 启用在 MergeTree 的 Wide 分区片段中使用线程池并行反序列化前缀。该线程池的大小由服务器设置 `max_prefixes_deserialization_thread_pool_size` 控制。
 
-## merge_tree_use_v1_object_and_dynamic_serialization {#merge_tree_use_v1_object_and_dynamic_serialization} 
+## merge_tree_use_v1_object_and_dynamic_serialization \\{#merge_tree_use_v1_object_and_dynamic_serialization\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -7471,17 +7471,17 @@ Cloud 默认值：1 TB。
 
 启用后，将在 MergeTree 中对 JSON 和 Dynamic 类型使用 V1 序列化版本，而不使用 V2。更改此设置仅会在服务器重启后生效。
 
-## metrics_perf_events_enabled {#metrics_perf_events_enabled} 
+## metrics_perf_events_enabled \\{#metrics_perf_events_enabled\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 如果启用，将在整个查询执行过程中对部分 perf 事件进行测量。
 
-## metrics_perf_events_list {#metrics_perf_events_list} 
+## metrics_perf_events_list \\{#metrics_perf_events_list\\}
 
 以逗号分隔的 `perf` 指标列表，这些指标会在查询执行期间被测量。留空表示测量所有事件。可用事件列表请参见源代码中的 `PerfEventInfo`。
 
-## min_bytes_to_use_direct_io {#min_bytes_to_use_direct_io} 
+## min_bytes_to_use_direct_io \\{#min_bytes_to_use_direct_io\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7494,7 +7494,7 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 - 0 — 禁用 direct I/O。
 - 正整数。
 
-## min_bytes_to_use_mmap_io {#min_bytes_to_use_mmap_io} 
+## min_bytes_to_use_mmap_io \\{#min_bytes_to_use_mmap_io\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7505,7 +7505,7 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 - 正整数。
 - 0 — 读取大文件时，仅通过将数据从内核复制到用户态来完成读取。
 
-## min_chunk_bytes_for_parallel_parsing {#min_chunk_bytes_for_parallel_parsing} 
+## min_chunk_bytes_for_parallel_parsing \\{#min_chunk_bytes_for_parallel_parsing\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="10485760" />
 
@@ -7514,7 +7514,7 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 
 每个线程在并行解析时所处理的数据块的最小字节数。
 
-## min_compress_block_size {#min_compress_block_size} 
+## min_compress_block_size \\{#min_compress_block_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="65536" />
 
@@ -7532,7 +7532,7 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 这是一个专家级设置，如果你刚开始使用 ClickHouse，则不应修改它。
 :::
 
-## min_count_to_compile_aggregate_expression {#min_count_to_compile_aggregate_expression} 
+## min_count_to_compile_aggregate_expression \\{#min_count_to_compile_aggregate_expression\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3" />
 
@@ -7543,19 +7543,19 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 - 正整数。
 - 0 — 相同的聚合表达式将始终进行 JIT 编译。
 
-## min_count_to_compile_expression {#min_count_to_compile_expression} 
+## min_count_to_compile_expression \\{#min_count_to_compile_expression\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3" />
 
 同一表达式在被编译之前所需的最小执行次数。
 
-## min_count_to_compile_sort_description {#min_count_to_compile_sort_description} 
+## min_count_to_compile_sort_description \\{#min_count_to_compile_sort_description\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3" />
 
 在对排序描述进行 JIT 编译之前，相同排序描述需要出现的最小次数
 
-## min_execution_speed {#min_execution_speed} 
+## min_execution_speed \\{#min_execution_speed\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7563,7 +7563,7 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 [`timeout_before_checking_execution_speed`](/operations/settings/settings#timeout_before_checking_execution_speed)
 设定的超时时间到期时触发检查。如果执行速度低于该值，则会抛出异常。
 
-## min_execution_speed_bytes {#min_execution_speed_bytes} 
+## min_execution_speed_bytes \\{#min_execution_speed_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7571,7 +7571,7 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 [`timeout_before_checking_execution_speed`](/operations/settings/settings#timeout_before_checking_execution_speed)
 到期后，会在每个数据块上进行检查。如果执行速度低于该值，则会抛出异常。
 
-## min_external_table_block_size_bytes {#min_external_table_block_size_bytes} 
+## min_external_table_block_size_bytes \\{#min_external_table_block_size_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="268402944" />
 
@@ -7579,7 +7579,7 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 
 如果数据块不够大，则将传递到 external table 的数据块压缩合并为指定的字节大小。
 
-## min_external_table_block_size_rows {#min_external_table_block_size_rows} 
+## min_external_table_block_size_rows \\{#min_external_table_block_size_rows\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048449" />
 
@@ -7587,7 +7587,7 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 
 如果数据块不够大，则将传递给外部表的数据块合并为指定行数的块。
 
-## min_free_disk_bytes_to_perform_insert {#min_free_disk_bytes_to_perform_insert} 
+## min_free_disk_bytes_to_perform_insert \\{#min_free_disk_bytes_to_perform_insert\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7595,7 +7595,7 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 
 执行插入操作所需的最小空闲磁盘空间（字节）数量。
 
-## min_free_disk_ratio_to_perform_insert {#min_free_disk_ratio_to_perform_insert} 
+## min_free_disk_ratio_to_perform_insert \\{#min_free_disk_ratio_to_perform_insert\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
@@ -7603,19 +7603,19 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 
 执行 INSERT 时所需的最小空闲磁盘空间比例。
 
-## min_free_disk_space_for_temporary_data {#min_free_disk_space_for_temporary_data} 
+## min_free_disk_space_for_temporary_data \\{#min_free_disk_space_for_temporary_data\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 在写入用于外部排序和聚合的临时数据时需要保留的最小磁盘可用空间。
 
-## min_hit_rate_to_use_consecutive_keys_optimization {#min_hit_rate_to_use_consecutive_keys_optimization} 
+## min_hit_rate_to_use_consecutive_keys_optimization \\{#min_hit_rate_to_use_consecutive_keys_optimization\\}
 
 <SettingsInfoBlock type="Float" default_value="0.5" />
 
 在聚合中启用连续键优化所需的缓存最小命中率
 
-## min_insert_block_size_bytes {#min_insert_block_size_bytes} 
+## min_insert_block_size_bytes \\{#min_insert_block_size_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="268402944" />
 
@@ -7628,7 +7628,7 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 - 正整数。
 - 0 — 此设置不参与数据块形成。
 
-## min_insert_block_size_bytes_for_materialized_views {#min_insert_block_size_bytes_for_materialized_views} 
+## min_insert_block_size_bytes_for_materialized_views \\{#min_insert_block_size_bytes_for_materialized_views\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7643,7 +7643,7 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 
 - [min_insert_block_size_bytes](#min_insert_block_size_bytes)
 
-## min_insert_block_size_rows {#min_insert_block_size_rows} 
+## min_insert_block_size_rows \\{#min_insert_block_size_rows\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048449" />
 
@@ -7667,7 +7667,7 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 - 正整数。
 - 0 — 此设置不参与数据块形成。
 
-## min_insert_block_size_rows_for_materialized_views {#min_insert_block_size_rows_for_materialized_views} 
+## min_insert_block_size_rows_for_materialized_views \\{#min_insert_block_size_rows_for_materialized_views\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7682,7 +7682,7 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 
 - [min_insert_block_size_rows](#min_insert_block_size_rows)
 
-## min_joined_block_size_bytes {#min_joined_block_size_bytes} 
+## min_joined_block_size_bytes \\{#min_joined_block_size_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="524288" />
 
@@ -7690,7 +7690,7 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 
 JOIN 输入和输出数据块的最小大小（以字节为单位，前提是 JOIN 算法支持）。更小的数据块会被合并为更大的数据块。0 表示不限制。
 
-## min_joined_block_size_rows {#min_joined_block_size_rows} 
+## min_joined_block_size_rows \\{#min_joined_block_size_rows\\}
 
 <SettingsInfoBlock type="UInt64" default_value="65409" />
 
@@ -7698,7 +7698,7 @@ JOIN 输入和输出数据块的最小大小（以字节为单位，前提是 JO
 
 JOIN 输入和输出块的最小块大小（以行数计）（如果 JOIN 算法支持）。较小的块会被合并。0 表示不限制大小。
 
-## min_os_cpu_wait_time_ratio_to_throw {#min_os_cpu_wait_time_ratio_to_throw} 
+## min_os_cpu_wait_time_ratio_to_throw \\{#min_os_cpu_wait_time_ratio_to_throw\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
@@ -7706,7 +7706,7 @@ JOIN 输入和输出块的最小块大小（以行数计）（如果 JOIN 算法
 
 在考虑是否拒绝查询时，OS CPU 等待时间（OSCPUWaitMicroseconds 指标）与忙碌时间（OSCPUVirtualTimeMicroseconds 指标）之间的最小比率。使用最小和最大比率之间的线性插值来计算概率，在该比率处概率为 0。
 
-## min_outstreams_per_resize_after_split {#min_outstreams_per_resize_after_split} 
+## min_outstreams_per_resize_after_split \\{#min_outstreams_per_resize_after_split\\}
 
 <SettingsInfoBlock type="UInt64" default_value="24" />
 
@@ -7714,13 +7714,13 @@ JOIN 输入和输出块的最小块大小（以行数计）（如果 JOIN 算法
 
 指定在管道生成阶段执行拆分后，`Resize` 或 `StrictResize` 处理器的输出流最小数量。如果生成的流数量小于该值，则不会执行拆分操作。
 
-### 什么是 Resize 节点 {#what-is-a-resize-node}
+### 什么是 Resize 节点 \{#what-is-a-resize-node\}
 
 `Resize` 节点是查询流水线中的一种处理器，用于调整在流水线中传递的数据流数量。它可以增加或减少数据流的数量，以在多个线程或处理器之间平衡工作负载。例如，如果某个查询需要更高的并行度，`Resize` 节点可以将单个数据流拆分成多个数据流。相反，它也可以将多个数据流合并为更少的数据流，以整合数据处理。
 
 `Resize` 节点确保数据在各个数据流之间均匀分布，同时保持数据块的结构不变。这有助于优化资源利用率并提升查询性能。
 
-### 为什么需要拆分 Resize 节点 {#why-the-resize-node-needs-to-be-split}
+### 为什么需要拆分 Resize 节点 \{#why-the-resize-node-needs-to-be-split\}
 
 在管道执行过程中，作为集中枢纽的 `Resize` 节点的 ExecutingGraph::Node::status_mutex 存在严重争用，尤其是在高核心数环境下，这种争用会导致：
 
@@ -7728,25 +7728,25 @@ JOIN 输入和输出块的最小块大小（以行数计）（如果 JOIN 算法
 2. 大量 CPU 周期浪费在自旋锁争用（native_queued_spin_lock_slowpath）上，降低效率。
 3. CPU 利用率下降，限制了并行度和吞吐量。
 
-### Resize 节点如何被拆分 {#how-the-resize-node-gets-split}
+### Resize 节点如何被拆分 \{#how-the-resize-node-gets-split\}
 
 1. 首先检查输出流的数量，以确保可以执行拆分：使每个拆分后的 processor 的输出流数量都满足或超过 `min_outstreams_per_resize_after_split` 阈值。
 2. 将 `Resize` 节点拆分为多个较小的 `Resize` 节点，这些节点具有相同数量的端口，每个节点各自处理一部分输入和输出流。
 3. 各个分组会被独立处理，从而减少锁争用。
 
-### 使用任意输入/输出拆分 Resize 节点 {#splitting-resize-node-with-arbitrary-inputsoutputs}
+### 使用任意输入/输出拆分 Resize 节点 \{#splitting-resize-node-with-arbitrary-inputsoutputs\}
 
 在某些情况下，如果输入/输出的数量不能被拆分得到的 `Resize` 节点数量整除，则会将部分输入连接到 `NullSource`，将部分输出连接到 `NullSink`。这样就可以在不影响整体数据流的前提下完成拆分。
 
-### 此 Setting 的用途 {#purpose-of-the-setting}
+### 此 Setting 的用途 \{#purpose-of-the-setting\}
 
 `min_outstreams_per_resize_after_split` Setting 确保对 `Resize` 节点的拆分是有效的，并避免产生过少的流，否则可能导致并行处理效率低下。通过强制设置最小输出流数量，该 Setting 有助于在并行度与开销之间保持平衡，从而在涉及流拆分与合并的场景中优化查询执行。
 
-### 禁用该设置 {#disabling-the-setting}
+### 禁用该设置 \{#disabling-the-setting\}
 
 要禁用对 `Resize` 节点的拆分，请将该设置的值设为 0。这样将在管道生成过程中阻止对 `Resize` 节点的拆分，使其保留原始结构，而不会被划分为更小的节点。
 
-## min_table_rows_to_use_projection_index {#min_table_rows_to_use_projection_index} 
+## min_table_rows_to_use_projection_index \\{#min_table_rows_to_use_projection_index\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />
 
@@ -7754,7 +7754,7 @@ JOIN 输入和输出块的最小块大小（以行数计）（如果 JOIN 算法
 
 如果预估将从表中读取的行数大于或等于该阈值，ClickHouse 会在查询执行期间尝试使用 projection 索引。
 
-## mongodb_throw_on_unsupported_query {#mongodb_throw_on_unsupported_query} 
+## mongodb_throw_on_unsupported_query \\{#mongodb_throw_on_unsupported_query\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -7762,43 +7762,43 @@ JOIN 输入和输出块的最小块大小（以行数计）（如果 JOIN 算法
 
 启用后，如果无法构建 MongoDB 查询，MongoDB 表将返回错误。否则，ClickHouse 会读取整个表并在本地处理数据。此选项在 `allow_experimental_analyzer=0` 时不适用。
 
-## move_all_conditions_to_prewhere {#move_all_conditions_to_prewhere} 
+## move_all_conditions_to_prewhere \\{#move_all_conditions_to_prewhere\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 将所有可以移动的条件从 WHERE 移动到 PREWHERE
 
-## move_primary_key_columns_to_end_of_prewhere {#move_primary_key_columns_to_end_of_prewhere} 
+## move_primary_key_columns_to_end_of_prewhere \\{#move_primary_key_columns_to_end_of_prewhere\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 将包含主键列的 PREWHERE 条件移动到 AND 条件链的末尾。此类条件很可能已经在主键分析阶段被考虑在内，因此对 PREWHERE 过滤效果本身的提升不会太大。
 
-## multiple_joins_try_to_keep_original_names {#multiple_joins_try_to_keep_original_names} 
+## multiple_joins_try_to_keep_original_names \\{#multiple_joins_try_to_keep_original_names\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在重写包含多个 JOIN 的查询时，不要为顶层表达式列表添加别名
 
-## mutations_execute_nondeterministic_on_initiator {#mutations_execute_nondeterministic_on_initiator} 
+## mutations_execute_nondeterministic_on_initiator \\{#mutations_execute_nondeterministic_on_initiator\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 如果为 true，则常量非确定性函数（例如函数 `now()`）会在发起查询的节点上执行，并在 `UPDATE` 和 `DELETE` 查询中被替换为字面量值。这样有助于在使用常量非确定性函数执行 mutation 时保持各副本之间的数据同步。默认值：`false`。
 
-## mutations_execute_subqueries_on_initiator {#mutations_execute_subqueries_on_initiator} 
+## mutations_execute_subqueries_on_initiator \\{#mutations_execute_subqueries_on_initiator\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 如果为 `true`，则在发起方执行标量子查询，并在 `UPDATE` 和 `DELETE` 查询中将其替换为字面量。默认值：`false`。
 
-## mutations_max_literal_size_to_replace {#mutations_max_literal_size_to_replace} 
+## mutations_max_literal_size_to_replace \\{#mutations_max_literal_size_to_replace\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16384" />
 
 在 `UPDATE` 和 `DELETE` 查询中要被替换的序列化字面量的最大大小（以字节为单位）。仅当上述两个设置中至少有一个被启用时才生效。默认值：16384（16 KiB）。
 
-## mutations_sync {#mutations_sync} 
+## mutations_sync \\{#mutations_sync\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7813,7 +7813,7 @@ JOIN 输入和输出块的最小块大小（以行数计）（如果 JOIN 算法
 | `2`   | 查询会等待所有副本（如果存在）上的所有变更完成。                                                                                                      |
 | `3`   | 查询仅等待活动副本。仅对 `SharedMergeTree` 支持。对于 `ReplicatedMergeTree`，其行为与 `mutations_sync = 2` 相同。                                       |
 
-## mysql_datatypes_support_level {#mysql_datatypes_support_level} 
+## mysql_datatypes_support_level \\{#mysql_datatypes_support_level\\}
 
 定义如何将 MySQL 类型转换为对应的 ClickHouse 类型。取值为逗号分隔的列表，可为 `decimal`、`datetime64`、`date2Date32` 或 `date2String` 的任意组合。
 
@@ -7822,7 +7822,7 @@ JOIN 输入和输出块的最小块大小（以行数计）（如果 JOIN 算法
 - `date2Date32`：将 `DATE` 转换为 `Date32` 而不是 `Date`。优先级高于 `date2String`。
 - `date2String`：将 `DATE` 转换为 `String` 而不是 `Date`。会被 `datetime64` 覆盖。
 
-## mysql_map_fixed_string_to_text_in_show_columns {#mysql_map_fixed_string_to_text_in_show_columns} 
+## mysql_map_fixed_string_to_text_in_show_columns \\{#mysql_map_fixed_string_to_text_in_show_columns\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -7835,7 +7835,7 @@ JOIN 输入和输出块的最小块大小（以行数计）（如果 JOIN 算法
 - 0 - 使用 `BLOB`。
 - 1 - 使用 `TEXT`。
 
-## mysql_map_string_to_text_in_show_columns {#mysql_map_string_to_text_in_show_columns} 
+## mysql_map_string_to_text_in_show_columns \\{#mysql_map_string_to_text_in_show_columns\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -7848,13 +7848,13 @@ JOIN 输入和输出块的最小块大小（以行数计）（如果 JOIN 算法
 - 0 - 使用 `BLOB`。
 - 1 - 使用 `TEXT`。
 
-## mysql_max_rows_to_insert {#mysql_max_rows_to_insert} 
+## mysql_max_rows_to_insert \\{#mysql_max_rows_to_insert\\}
 
 <SettingsInfoBlock type="UInt64" default_value="65536" />
 
 MySQL 存储引擎在进行批量插入时允许的最大行数上限
 
-## network_compression_method {#network_compression_method} 
+## network_compression_method \\{#network_compression_method\\}
 
 <SettingsInfoBlock type="String" default_value="LZ4" />
 
@@ -7871,7 +7871,7 @@ MySQL 存储引擎在进行批量插入时允许的最大行数上限
 
 - [network_zstd_compression_level](#network_zstd_compression_level)
 
-## network_zstd_compression_level {#network_zstd_compression_level} 
+## network_zstd_compression_level \\{#network_zstd_compression_level\\}
 
 <SettingsInfoBlock type="Int64" default_value="1" />
 
@@ -7881,7 +7881,7 @@ MySQL 存储引擎在进行批量插入时允许的最大行数上限
 
 - 1 到 15 之间的正整数。
 
-## normalize_function_names {#normalize_function_names} 
+## normalize_function_names \\{#normalize_function_names\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -7889,31 +7889,31 @@ MySQL 存储引擎在进行批量插入时允许的最大行数上限
 
 将函数名规范化为其标准名称
 
-## number_of_mutations_to_delay {#number_of_mutations_to_delay} 
+## number_of_mutations_to_delay \\{#number_of_mutations_to_delay\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 如果该表中未完成的变更数量至少达到该值，则人为放慢对该表的变更操作。0 表示禁用该限制。
 
-## number_of_mutations_to_throw {#number_of_mutations_to_throw} 
+## number_of_mutations_to_throw \\{#number_of_mutations_to_throw\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 如果被变更的表中包含至少这么多未完成的 mutation，则抛出 “Too many mutations ...” 异常。0 表示禁用。
 
-## odbc_bridge_connection_pool_size {#odbc_bridge_connection_pool_size} 
+## odbc_bridge_connection_pool_size \\{#odbc_bridge_connection_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16" />
 
 ODBC bridge 中每个连接配置字符串对应的连接池大小。
 
-## odbc_bridge_use_connection_pooling {#odbc_bridge_use_connection_pooling} 
+## odbc_bridge_use_connection_pooling \\{#odbc_bridge_use_connection_pooling\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 在 ODBC bridge 中使用连接池。如果将其设置为 false，则每次都会新建一个连接。
 
-## offset {#offset}
+## offset \{#offset\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7952,7 +7952,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 ```
 
 
-## opentelemetry_start_trace_probability {#opentelemetry_start_trace_probability} 
+## opentelemetry_start_trace_probability \\{#opentelemetry_start_trace_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
@@ -7964,7 +7964,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - 区间 [0..1] 内的正浮点数。例如，如果该设置值为 `0,5`，ClickHouse 平均可以为一半的查询启动 trace。
 - 1 — 为所有执行查询启用 trace。
 
-## opentelemetry_trace_cpu_scheduling {#opentelemetry_trace_cpu_scheduling} 
+## opentelemetry_trace_cpu_scheduling \\{#opentelemetry_trace_cpu_scheduling\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -7972,13 +7972,13 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 收集与工作负载抢占式 CPU 调度相关的 OpenTelemetry spans。
 
-## opentelemetry_trace_processors {#opentelemetry_trace_processors} 
+## opentelemetry_trace_processors \\{#opentelemetry_trace_processors\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 收集处理器所用的 OpenTelemetry spans。
 
-## optimize_aggregation_in_order {#optimize_aggregation_in_order} 
+## optimize_aggregation_in_order \\{#optimize_aggregation_in_order\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -7993,13 +7993,13 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 - [GROUP BY 优化](/sql-reference/statements/select/group-by#group-by-optimization-depending-on-table-sorting-key)
 
-## optimize_aggregators_of_group_by_keys {#optimize_aggregators_of_group_by_keys} 
+## optimize_aggregators_of_group_by_keys \\{#optimize_aggregators_of_group_by_keys\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 在 SELECT 子句中消除对 GROUP BY 键使用的 min/max/any/anyLast 聚合函数
 
-## optimize_and_compare_chain {#optimize_and_compare_chain} 
+## optimize_and_compare_chain \\{#optimize_and_compare_chain\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8007,7 +8007,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 在 AND 条件链中补充常量比较条件，以增强过滤效果。支持运算符 `<`、`<=`、`>`、`>=`、`=` 及其混合使用。例如，`(a < b) AND (b < c) AND (c < 5)` 将被扩展为 `(a < b) AND (b < c) AND (c < 5) AND (b < 5) AND (a < 5)`。
 
-## optimize_append_index {#optimize_append_index} 
+## optimize_append_index \\{#optimize_append_index\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8017,13 +8017,13 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 - true, false
 
-## optimize_arithmetic_operations_in_aggregate_functions {#optimize_arithmetic_operations_in_aggregate_functions} 
+## optimize_arithmetic_operations_in_aggregate_functions \\{#optimize_arithmetic_operations_in_aggregate_functions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 将算术运算从聚合函数中移出
 
-## optimize_const_name_size {#optimize_const_name_size} 
+## optimize_const_name_size \\{#optimize_const_name_size\\}
 
 <SettingsInfoBlock type="Int64" default_value="256" />
 
@@ -8037,7 +8037,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - 0 —— 始终进行替换，
 - 负整数 —— 从不进行替换。
 
-## optimize_count_from_files {#optimize_count_from_files} 
+## optimize_count_from_files \\{#optimize_count_from_files\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8048,13 +8048,13 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - 0 — 禁用优化。
 - 1 — 启用优化。
 
-## optimize_distinct_in_order {#optimize_distinct_in_order} 
+## optimize_distinct_in_order \\{#optimize_distinct_in_order\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 当 DISTINCT 子句中的某些列构成排序的前缀时，启用 DISTINCT 优化。例如，在 MergeTree 中构成排序键的前缀，或在 ORDER BY 子句中构成前缀。
 
-## optimize_distributed_group_by_sharding_key {#optimize_distributed_group_by_sharding_key} 
+## optimize_distributed_group_by_sharding_key \\{#optimize_distributed_group_by_sharding_key\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8090,7 +8090,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 目前该设置依赖于 `optimize_skip_unused_shards`（原因在于：未来某个时候它可能会默认启用，而它只有在数据通过 Distributed 表插入、即数据按照 sharding_key 分布的情况下才能正确工作）。
 :::
 
-## optimize_empty_string_comparisons {#optimize_empty_string_comparisons} 
+## optimize_empty_string_comparisons \\{#optimize_empty_string_comparisons\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8099,7 +8099,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 将诸如 col = '' 或 '' = col 的表达式转换为 empty(col)，并将 col != '' 或 '' != col 转换为 notEmpty(col)，
 仅当 col 的类型为 String 或 FixedString 时才会进行此转换。
 
-## optimize_extract_common_expressions {#optimize_extract_common_expressions} 
+## optimize_extract_common_expressions \\{#optimize_extract_common_expressions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8110,7 +8110,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - 在简单过滤表达式中使用索引
 - 将 cross join 优化为 inner join
 
-## optimize_functions_to_subcolumns {#optimize_functions_to_subcolumns} 
+## optimize_functions_to_subcolumns \\{#optimize_functions_to_subcolumns\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8134,7 +8134,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - 0 — 禁用优化。
 - 1 — 启用优化。
 
-## optimize_group_by_constant_keys {#optimize_group_by_constant_keys} 
+## optimize_group_by_constant_keys \\{#optimize_group_by_constant_keys\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8142,25 +8142,25 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 当数据块中的所有分组键都是常量时，对 GROUP BY 进行优化
 
-## optimize_group_by_function_keys {#optimize_group_by_function_keys} 
+## optimize_group_by_function_keys \\{#optimize_group_by_function_keys\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 消除 GROUP BY 子句中对其他键的函数调用
 
-## optimize_if_chain_to_multiif {#optimize_if_chain_to_multiif} 
+## optimize_if_chain_to_multiif \\{#optimize_if_chain_to_multiif\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 将 if(cond1, then1, if(cond2, ...)) 链替换为 multiIf。目前对数值类型没有明显收益。
 
-## optimize_if_transform_strings_to_enum {#optimize_if_transform_strings_to_enum} 
+## optimize_if_transform_strings_to_enum \\{#optimize_if_transform_strings_to_enum\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 将 `If` 和 `Transform` 中的字符串类型参数替换为 `enum`。默认关闭，因为在分布式查询中可能引入不一致的变更，从而导致查询失败。
 
-## optimize_injective_functions_in_group_by {#optimize_injective_functions_in_group_by} 
+## optimize_injective_functions_in_group_by \\{#optimize_injective_functions_in_group_by\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8168,13 +8168,13 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 在 GROUP BY 子句中将单射函数替换为其参数
 
-## optimize_injective_functions_inside_uniq {#optimize_injective_functions_inside_uniq} 
+## optimize_injective_functions_inside_uniq \\{#optimize_injective_functions_inside_uniq\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 删除 `uniq*()` 函数内部的单参数单射函数。
 
-## optimize_inverse_dictionary_lookup {#optimize_inverse_dictionary_lookup} 
+## optimize_inverse_dictionary_lookup \\{#optimize_inverse_dictionary_lookup\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8182,19 +8182,19 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 通过在预先计算好的可能键值集合中进行更快速的查找，避免重复执行反向字典查找。
 
-## optimize_min_equality_disjunction_chain_length {#optimize_min_equality_disjunction_chain_length} 
+## optimize_min_equality_disjunction_chain_length \\{#optimize_min_equality_disjunction_chain_length\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3" />
 
 可进行优化的表达式 `expr = x1 OR ... expr = xN` 的最小长度
 
-## optimize_min_inequality_conjunction_chain_length {#optimize_min_inequality_conjunction_chain_length} 
+## optimize_min_inequality_conjunction_chain_length \\{#optimize_min_inequality_conjunction_chain_length\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3" />
 
 用于触发优化的表达式 `expr <> x1 AND ... expr <> xN` 的最小长度
 
-## optimize_move_to_prewhere {#optimize_move_to_prewhere} 
+## optimize_move_to_prewhere \\{#optimize_move_to_prewhere\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8207,7 +8207,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - 0 — 禁用自动 `PREWHERE` 优化。
 - 1 — 启用自动 `PREWHERE` 优化。
 
-## optimize_move_to_prewhere_if_final {#optimize_move_to_prewhere_if_final} 
+## optimize_move_to_prewhere_if_final \\{#optimize_move_to_prewhere_if_final\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8224,13 +8224,13 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 - [optimize_move_to_prewhere](#optimize_move_to_prewhere) 设置
 
-## optimize_multiif_to_if {#optimize_multiif_to_if} 
+## optimize_multiif_to_if \\{#optimize_multiif_to_if\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 将只有一个条件的 `multiIf` 重写为 `if`。
 
-## optimize_normalize_count_variants {#optimize_normalize_count_variants} 
+## optimize_normalize_count_variants \\{#optimize_normalize_count_variants\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8238,7 +8238,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 默认会将语义上等同于 count() 的聚合函数重写为 count()。
 
-## optimize_on_insert {#optimize_on_insert}
+## optimize_on_insert \{#optimize_on_insert\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8295,13 +8295,13 @@ SELECT * FROM test2;
 请注意，此设置会影响 [materialized view](/sql-reference/statements/create/view#materialized-view) 的行为方式。
 
 
-## optimize_or_like_chain {#optimize_or_like_chain} 
+## optimize_or_like_chain \\{#optimize_or_like_chain\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 将多个 OR LIKE 表达式优化为 multiMatchAny。此优化默认不应启用，因为在某些情况下会干扰索引分析。
 
-## optimize_qbit_distance_function_reads {#optimize_qbit_distance_function_reads} 
+## optimize_qbit_distance_function_reads \\{#optimize_qbit_distance_function_reads\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8309,7 +8309,7 @@ SELECT * FROM test2;
 
 将 `QBit` 数据类型上的距离函数替换为等价的距离函数，使其只从存储中读取计算所需的列。
 
-## optimize_read_in_order {#optimize_read_in_order} 
+## optimize_read_in_order \\{#optimize_read_in_order\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8324,25 +8324,25 @@ SELECT * FROM test2;
 
 - [ORDER BY 子句](/sql-reference/statements/select/order-by#optimization-of-data-reading)
 
-## optimize_read_in_window_order {#optimize_read_in_window_order} 
+## optimize_read_in_window_order \\{#optimize_read_in_window_order\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 启用窗口子句中的 ORDER BY 优化，以便在 MergeTree 表中按对应顺序读取数据。
 
-## optimize_redundant_functions_in_order_by {#optimize_redundant_functions_in_order_by} 
+## optimize_redundant_functions_in_order_by \\{#optimize_redundant_functions_in_order_by\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 如果函数的参数也出现在 ORDER BY 中，则从 ORDER BY 中移除该函数
 
-## optimize_respect_aliases {#optimize_respect_aliases} 
+## optimize_respect_aliases \\{#optimize_respect_aliases\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 如果设置为 true，则会在 WHERE/GROUP BY/ORDER BY 中遵循别名引用，这有助于进行分区剪枝、二级索引、optimize_aggregation_in_order、optimize_read_in_order 和 optimize_trivial_count。
 
-## optimize_rewrite_aggregate_function_with_if {#optimize_rewrite_aggregate_function_with_if} 
+## optimize_rewrite_aggregate_function_with_if \\{#optimize_rewrite_aggregate_function_with_if\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8353,13 +8353,13 @@ SELECT * FROM test2;
 仅在启用 analyzer（`enable_analyzer = 1`）时支持。
 :::
 
-## optimize_rewrite_array_exists_to_has {#optimize_rewrite_array_exists_to_has} 
+## optimize_rewrite_array_exists_to_has \\{#optimize_rewrite_array_exists_to_has\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在逻辑上等价的情况下，将 arrayExists() 函数重写为 has()。例如，arrayExists(x -> x = 1, arr) 可以重写为 has(arr, 1)。
 
-## optimize_rewrite_like_perfect_affix {#optimize_rewrite_like_perfect_affix} 
+## optimize_rewrite_like_perfect_affix \\{#optimize_rewrite_like_perfect_affix\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8367,7 +8367,7 @@ SELECT * FROM test2;
 
 将前缀或后缀为精确字面量的 LIKE 表达式（例如 `col LIKE 'ClickHouse%'`）重写为 startsWith 或 endsWith 函数（例如 `startsWith(col, 'ClickHouse')`）。
 
-## optimize_rewrite_regexp_functions {#optimize_rewrite_regexp_functions} 
+## optimize_rewrite_regexp_functions \\{#optimize_rewrite_regexp_functions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8375,7 +8375,7 @@ SELECT * FROM test2;
 
 将与正则表达式相关的函数重写为更简单、更高效的形式。
 
-## optimize_rewrite_sum_if_to_count_if {#optimize_rewrite_sum_if_to_count_if} 
+## optimize_rewrite_sum_if_to_count_if \\{#optimize_rewrite_sum_if_to_count_if\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8383,7 +8383,7 @@ SELECT * FROM test2;
 
 在逻辑上等价时，将 sumIf() 和 sum(if()) 函数重写为 countIf() 函数
 
-## optimize_skip_merged_partitions {#optimize_skip_merged_partitions} 
+## optimize_skip_merged_partitions \\{#optimize_skip_merged_partitions\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8398,7 +8398,7 @@ SELECT * FROM test2;
 - 1 - 启用优化。
 - 0 - 禁用优化。
 
-## optimize_skip_unused_shards {#optimize_skip_unused_shards} 
+## optimize_skip_unused_shards \\{#optimize_skip_unused_shards\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8413,7 +8413,7 @@ SELECT * FROM test2;
 - 0 — 禁用。
 - 1 — 启用。
 
-## optimize_skip_unused_shards_limit {#optimize_skip_unused_shards_limit} 
+## optimize_skip_unused_shards_limit \\{#optimize_skip_unused_shards_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -8421,7 +8421,7 @@ SELECT * FROM test2;
 
 过多的值可能会导致处理开销显著增加，而收益并不明显，因为如果 `IN (...)` 中包含大量的值，那么查询很可能无论如何都会被发送到所有分片。
 
-## optimize_skip_unused_shards_nesting {#optimize_skip_unused_shards_nesting} 
+## optimize_skip_unused_shards_nesting \\{#optimize_skip_unused_shards_nesting\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -8433,7 +8433,7 @@ SELECT * FROM test2;
 - 1 — 仅对第一层启用 `optimize_skip_unused_shards`。
 - 2 — 对最多第二层启用 `optimize_skip_unused_shards`。
 
-## optimize_skip_unused_shards_rewrite_in {#optimize_skip_unused_shards_rewrite_in} 
+## optimize_skip_unused_shards_rewrite_in \\{#optimize_skip_unused_shards_rewrite_in\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8444,13 +8444,13 @@ SELECT * FROM test2;
 - 0 — 禁用。
 - 1 — 启用。
 
-## optimize_sorting_by_input_stream_properties {#optimize_sorting_by_input_stream_properties} 
+## optimize_sorting_by_input_stream_properties \\{#optimize_sorting_by_input_stream_properties\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 根据输入流的排序属性优化排序
 
-## optimize_substitute_columns {#optimize_substitute_columns} 
+## optimize_substitute_columns \\{#optimize_substitute_columns\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8460,7 +8460,7 @@ SELECT * FROM test2;
 
 - true, false
 
-## optimize_syntax_fuse_functions {#optimize_syntax_fuse_functions}
+## optimize_syntax_fuse_functions \{#optimize_syntax_fuse_functions\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8493,7 +8493,7 @@ FROM fuse_tbl
 ```
 
 
-## optimize_throw_if_noop {#optimize_throw_if_noop} 
+## optimize_throw_if_noop \\{#optimize_throw_if_noop\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8506,7 +8506,7 @@ FROM fuse_tbl
 - 1 — 启用抛出异常。
 - 0 — 禁用抛出异常。
 
-## optimize_time_filter_with_preimage {#optimize_time_filter_with_preimage} 
+## optimize_time_filter_with_preimage \\{#optimize_time_filter_with_preimage\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8514,7 +8514,7 @@ FROM fuse_tbl
 
 通过将函数转换为等价且无需类型转换的比较来优化 Date 和 DateTime 谓词（例如：`toYear(col) = 2023 -> col >= '2023-01-01' AND col <= '2023-12-31'`）
 
-## optimize_trivial_approximate_count_query {#optimize_trivial_approximate_count_query} 
+## optimize_trivial_approximate_count_query \\{#optimize_trivial_approximate_count_query\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8525,7 +8525,7 @@ FROM fuse_tbl
 - 0 — 优化已禁用。
    - 1 — 优化已启用。
 
-## optimize_trivial_count_query {#optimize_trivial_count_query} 
+## optimize_trivial_count_query \\{#optimize_trivial_count_query\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8540,7 +8540,7 @@ FROM fuse_tbl
 
 - [optimize_functions_to_subcolumns](#optimize_functions_to_subcolumns)
 
-## optimize_trivial_insert_select {#optimize_trivial_insert_select} 
+## optimize_trivial_insert_select \\{#optimize_trivial_insert_select\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8548,19 +8548,19 @@ FROM fuse_tbl
 
 优化简单的 'INSERT INTO table SELECT ... FROM TABLES' 查询
 
-## optimize_uniq_to_count {#optimize_uniq_to_count} 
+## optimize_uniq_to_count \\{#optimize_uniq_to_count\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 当子查询中包含 distinct 或 group by 子句时，将 uniq 及其变体（uniqUpTo 除外）重写为 count。
 
-## optimize_use_implicit_projections {#optimize_use_implicit_projections} 
+## optimize_use_implicit_projections \\{#optimize_use_implicit_projections\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 自动选择隐式 PROJECTION 用于执行 SELECT 查询
 
-## optimize_use_projection_filtering {#optimize_use_projection_filtering} 
+## optimize_use_projection_filtering \\{#optimize_use_projection_filtering\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8568,7 +8568,7 @@ FROM fuse_tbl
 
 即使未选择使用 PROJECTION 来执行 SELECT 查询，也启用使用 PROJECTION 来过滤数据分片范围。
 
-## optimize_use_projections {#optimize_use_projections} 
+## optimize_use_projections \\{#optimize_use_projections\\}
 
 **别名**: `allow_experimental_projection_optimization`
 
@@ -8581,7 +8581,7 @@ FROM fuse_tbl
 - 0 — 禁用 projection 优化。
 - 1 — 启用 projection 优化。
 
-## optimize_using_constraints {#optimize_using_constraints} 
+## optimize_using_constraints \\{#optimize_using_constraints\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8591,7 +8591,7 @@ FROM fuse_tbl
 
 - true, false
 
-## os_threads_nice_value_materialized_view {#os_threads_nice_value_materialized_view} 
+## os_threads_nice_value_materialized_view \\{#os_threads_nice_value_materialized_view\\}
 
 <SettingsInfoBlock type="Int32" default_value="0" />
 
@@ -8603,7 +8603,7 @@ FROM fuse_tbl
 
 可选值范围：-20 到 19。
 
-## os_threads_nice_value_query {#os_threads_nice_value_query} 
+## os_threads_nice_value_query \\{#os_threads_nice_value_query\\}
 
 **别名**: `os_thread_priority`
 
@@ -8617,7 +8617,7 @@ FROM fuse_tbl
 
 取值范围：-20 到 19。
 
-## page_cache_block_size {#page_cache_block_size} 
+## page_cache_block_size \\{#page_cache_block_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
 
@@ -8629,7 +8629,7 @@ FROM fuse_tbl
 
 较大的值（例如 1 MiB）适用于高吞吐量查询，而较小的值（例如 64 KiB）适用于低延迟的点查询。
 
-## page_cache_inject_eviction {#page_cache_inject_eviction} 
+## page_cache_inject_eviction \\{#page_cache_inject_eviction\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8637,7 +8637,7 @@ FROM fuse_tbl
 
 用户态页面缓存有时会随机使部分页面失效。主要用于测试。
 
-## page_cache_lookahead_blocks {#page_cache_lookahead_blocks} 
+## page_cache_lookahead_blocks \\{#page_cache_lookahead_blocks\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16" />
 
@@ -8647,7 +8647,7 @@ FROM fuse_tbl
 
 较高的取值有利于高吞吐量查询，而低延迟的点查询在不启用预读时效果会更好。
 
-## parallel_distributed_insert_select {#parallel_distributed_insert_select} 
+## parallel_distributed_insert_select \\{#parallel_distributed_insert_select\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
@@ -8665,7 +8665,7 @@ FROM fuse_tbl
 
 使用该设置时，需要将 `enable_parallel_replicas` 设置为 `1`。
 
-## parallel_hash_join_threshold {#parallel_hash_join_threshold} 
+## parallel_hash_join_threshold \\{#parallel_hash_join_threshold\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100000" />
 
@@ -8674,7 +8674,7 @@ FROM fuse_tbl
 当使用基于哈希的 join 算法时，此阈值用于在 `hash` 和 `parallel_hash` 之间进行选择（仅当可以估算右表大小时适用）。
 当我们知道右表大小低于该阈值时，会使用前者。
 
-## parallel_replica_offset {#parallel_replica_offset} 
+## parallel_replica_offset \\{#parallel_replica_offset\\}
 
 <BetaBadge/>
 
@@ -8682,7 +8682,7 @@ FROM fuse_tbl
 
 这是一个内部设置，不应被直接使用，用于表示“parallel replicas”模式的实现细节。对于分布式查询，发起查询的服务器会自动为参与并行副本中查询处理的各个副本索引设置该参数。
 
-## parallel_replicas_allow_in_with_subquery {#parallel_replicas_allow_in_with_subquery} 
+## parallel_replicas_allow_in_with_subquery \\{#parallel_replicas_allow_in_with_subquery\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8690,7 +8690,7 @@ FROM fuse_tbl
 
 如果为 true，IN 的子查询将在每个跟随副本上执行。
 
-## parallel_replicas_allow_materialized_views {#parallel_replicas_allow_materialized_views} 
+## parallel_replicas_allow_materialized_views \\{#parallel_replicas_allow_materialized_views\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8698,7 +8698,7 @@ FROM fuse_tbl
 
 允许将 materialized view 与并行副本一起使用
 
-## parallel_replicas_connect_timeout_ms {#parallel_replicas_connect_timeout_ms} 
+## parallel_replicas_connect_timeout_ms \\{#parallel_replicas_connect_timeout_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="300" />
 
@@ -8706,7 +8706,7 @@ FROM fuse_tbl
 
 在使用并行副本执行查询时，连接到远程副本的超时时间（毫秒）。如果超时到期，相应副本将不会参与该次查询执行。
 
-## parallel_replicas_count {#parallel_replicas_count} 
+## parallel_replicas_count \\{#parallel_replicas_count\\}
 
 <BetaBadge/>
 
@@ -8714,7 +8714,7 @@ FROM fuse_tbl
 
 这是一个内部设置项，不应被直接使用，用于表示“parallel replicas”模式的实现细节。对于分布式查询，该设置会由发起查询的服务器自动配置为参与查询处理的并行副本数量。
 
-## parallel_replicas_custom_key {#parallel_replicas_custom_key} 
+## parallel_replicas_custom_key \\{#parallel_replicas_custom_key\\}
 
 <BetaBadge/>
 
@@ -8726,7 +8726,7 @@ FROM fuse_tbl
 如果在由单个分片且具有多个副本组成的集群上使用该设置，这些副本将被转换为虚拟分片。
 否则，其行为与 `SAMPLE` 键相同，会为每个分片使用多个副本。
 
-## parallel_replicas_custom_key_range_lower {#parallel_replicas_custom_key_range_lower} 
+## parallel_replicas_custom_key_range_lower \\{#parallel_replicas_custom_key_range_lower\\}
 
 <BetaBadge/>
 
@@ -8740,7 +8740,7 @@ FROM fuse_tbl
 
 注意：此设置不会在查询处理过程中导致额外数据被过滤，而是改变了范围过滤器为并行处理拆分范围 `[0, INT_MAX]` 时所使用的分割点。
 
-## parallel_replicas_custom_key_range_upper {#parallel_replicas_custom_key_range_upper} 
+## parallel_replicas_custom_key_range_upper \\{#parallel_replicas_custom_key_range_upper\\}
 
 <BetaBadge/>
 
@@ -8754,7 +8754,7 @@ FROM fuse_tbl
 
 注意：此设置不会在查询处理期间额外过滤任何数据，而是改变范围过滤器将范围 `[0, INT_MAX]` 拆分为并行处理子范围的切分点。
 
-## parallel_replicas_for_cluster_engines {#parallel_replicas_for_cluster_engines} 
+## parallel_replicas_for_cluster_engines \\{#parallel_replicas_for_cluster_engines\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8762,13 +8762,13 @@ FROM fuse_tbl
 
 将表函数引擎替换为对应的 -Cluster 变体。
 
-## parallel_replicas_for_non_replicated_merge_tree {#parallel_replicas_for_non_replicated_merge_tree} 
+## parallel_replicas_for_non_replicated_merge_tree \\{#parallel_replicas_for_non_replicated_merge_tree\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 如果为 true，ClickHouse 也会对非复制的 MergeTree 表使用并行副本算法
 
-## parallel_replicas_index_analysis_only_on_coordinator {#parallel_replicas_index_analysis_only_on_coordinator} 
+## parallel_replicas_index_analysis_only_on_coordinator \\{#parallel_replicas_index_analysis_only_on_coordinator\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8776,7 +8776,7 @@ FROM fuse_tbl
 
 仅在副本协调器上进行索引分析，其他副本跳过此步骤。仅在启用 parallel_replicas_local_pla 时有效
 
-## parallel_replicas_insert_select_local_pipeline {#parallel_replicas_insert_select_local_pipeline} 
+## parallel_replicas_insert_select_local_pipeline \\{#parallel_replicas_insert_select_local_pipeline\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8784,7 +8784,7 @@ FROM fuse_tbl
 
 在并行副本场景下的分布式 INSERT SELECT 中使用本地 pipeline
 
-## parallel_replicas_local_plan {#parallel_replicas_local_plan} 
+## parallel_replicas_local_plan \\{#parallel_replicas_local_plan\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8792,7 +8792,7 @@ FROM fuse_tbl
 
 为本地副本构建本地执行计划
 
-## parallel_replicas_mark_segment_size {#parallel_replicas_mark_segment_size} 
+## parallel_replicas_mark_segment_size \\{#parallel_replicas_mark_segment_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -8800,13 +8800,13 @@ FROM fuse_tbl
 
 分区片段在逻辑上被划分为若干段，并在副本之间分配以实现并行读取。此设置用于控制这些段的大小。不建议修改此值，除非您完全清楚自己的操作。取值范围应为 [128; 16384]。
 
-## parallel_replicas_min_number_of_rows_per_replica {#parallel_replicas_min_number_of_rows_per_replica} 
+## parallel_replicas_min_number_of_rows_per_replica \\{#parallel_replicas_min_number_of_rows_per_replica\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 将查询中使用的副本数量限制为（预估要读取的行数 / min_number_of_rows_per_replica），但最大值仍受 `max_parallel_replicas` 限制。
 
-## parallel_replicas_mode {#parallel_replicas_mode} 
+## parallel_replicas_mode \\{#parallel_replicas_mode\\}
 
 <SettingsInfoBlock type="ParallelReplicasMode" default_value="read_tasks" />
 
@@ -8814,7 +8814,7 @@ FROM fuse_tbl
 
 用于并行副本的自定义键过滤器类型。`default` — 对自定义键使用取模运算；`range` — 基于自定义键值类型的所有可能取值，对自定义键应用范围过滤。
 
-## parallel_replicas_only_with_analyzer {#parallel_replicas_only_with_analyzer} 
+## parallel_replicas_only_with_analyzer \\{#parallel_replicas_only_with_analyzer\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8822,7 +8822,7 @@ FROM fuse_tbl
 
 要使用并行副本，必须启用 analyzer。禁用 analyzer 时，即使启用了从副本并行读取，查询执行也会回退到本地执行。在未启用 analyzer 的情况下使用并行副本不受支持。
 
-## parallel_replicas_prefer_local_join {#parallel_replicas_prefer_local_join} 
+## parallel_replicas_prefer_local_join \\{#parallel_replicas_prefer_local_join\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8830,7 +8830,7 @@ FROM fuse_tbl
 
 如果为 true，且 JOIN 可以使用 parallel replicas 算法执行，并且 JOIN 右侧部分的所有存储引擎都是 *MergeTree，将使用本地 JOIN 而不是 GLOBAL JOIN。
 
-## parallel_replicas_support_projection {#parallel_replicas_support_projection} 
+## parallel_replicas_support_projection \\{#parallel_replicas_support_projection\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8838,13 +8838,13 @@ FROM fuse_tbl
 
 可以在并行副本中使用 PROJECTION 优化。仅在启用了 parallel_replicas_local_plan 且 aggregation_in_order 处于禁用状态时生效。
 
-## parallel_view_processing {#parallel_view_processing} 
+## parallel_view_processing \\{#parallel_view_processing\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 启用并行地向附加视图推送数据，而不是顺序推送。
 
-## parallelize_output_from_storages {#parallelize_output_from_storages} 
+## parallelize_output_from_storages \\{#parallelize_output_from_storages\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8852,7 +8852,7 @@ FROM fuse_tbl
 
 对从存储读取步骤的输出进行并行处理。如果可能，它允许在从存储读取之后立刻对查询进行并行处理。
 
-## parsedatetime_e_requires_space_padding {#parsedatetime_e_requires_space_padding} 
+## parsedatetime_e_requires_space_padding \\{#parsedatetime_e_requires_space_padding\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8860,7 +8860,7 @@ FROM fuse_tbl
 
 函数 `parseDateTime` 中的格式说明符 `%e` 要求一位数的日期使用前导空格填充，例如接受 `' 2'`，但 `'2'` 会报错。
 
-## parsedatetime_parse_without_leading_zeros {#parsedatetime_parse_without_leading_zeros} 
+## parsedatetime_parse_without_leading_zeros \\{#parsedatetime_parse_without_leading_zeros\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8868,13 +8868,13 @@ FROM fuse_tbl
 
 在 `parseDateTime` 函数中，格式说明符 `%c`、`%l` 和 `%k` 用于解析不带前导零的月份和小时。
 
-## partial_merge_join_left_table_buffer_bytes {#partial_merge_join_left_table_buffer_bytes} 
+## partial_merge_join_left_table_buffer_bytes \\{#partial_merge_join_left_table_buffer_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 如果不为 0，则在 partial merge join 中，将左侧表的数据块合并成更大的块。每个 join 线程最多会使用不超过指定值两倍的内存。
 
-## partial_merge_join_rows_in_right_blocks {#partial_merge_join_rows_in_right_blocks} 
+## partial_merge_join_rows_in_right_blocks \\{#partial_merge_join_rows_in_right_blocks\\}
 
 <SettingsInfoBlock type="UInt64" default_value="65536" />
 
@@ -8890,25 +8890,25 @@ ClickHouse 服务器：
 
 - 任意正整数。推荐取值范围：\[1000, 100000\]。
 
-## partial_result_on_first_cancel {#partial_result_on_first_cancel} 
+## partial_result_on_first_cancel \\{#partial_result_on_first_cancel\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 允许查询在被取消时返回部分结果。
 
-## parts_to_delay_insert {#parts_to_delay_insert} 
+## parts_to_delay_insert \\{#parts_to_delay_insert\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 如果目标表在单个分区中包含至少这么多活跃分区片段，则会对向该表的插入操作进行人为限速。
 
-## parts_to_throw_insert {#parts_to_throw_insert} 
+## parts_to_throw_insert \\{#parts_to_throw_insert\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 如果目标表某个分区中的活动分区片段数量超过此数值，将抛出 `Too many parts ...` 异常。
 
-## per_part_index_stats {#per_part_index_stats} 
+## per_part_index_stats \\{#per_part_index_stats\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8916,13 +8916,13 @@ ClickHouse 服务器：
 
 记录每个 part 的索引统计信息
 
-## poll_interval {#poll_interval} 
+## poll_interval \\{#poll_interval\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
 在服务器的查询等待循环中阻塞指定的秒数。
 
-## postgresql_connection_attempt_timeout {#postgresql_connection_attempt_timeout} 
+## postgresql_connection_attempt_timeout \\{#postgresql_connection_attempt_timeout\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
@@ -8931,13 +8931,13 @@ ClickHouse 服务器：
 单次尝试连接 PostgreSQL 端点时的超时时间（单位为秒）。
 该值会作为连接 URL 中的 `connect_timeout` 参数传递。
 
-## postgresql_connection_pool_auto_close_connection {#postgresql_connection_pool_auto_close_connection} 
+## postgresql_connection_pool_auto_close_connection \\{#postgresql_connection_pool_auto_close_connection\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在将连接归还到连接池之前关闭该连接。
 
-## postgresql_connection_pool_retries {#postgresql_connection_pool_retries} 
+## postgresql_connection_pool_retries \\{#postgresql_connection_pool_retries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
@@ -8945,19 +8945,19 @@ ClickHouse 服务器：
 
 用于 PostgreSQL 表引擎和数据库引擎的连接池 push/pop 操作的重试次数。
 
-## postgresql_connection_pool_size {#postgresql_connection_pool_size} 
+## postgresql_connection_pool_size \\{#postgresql_connection_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16" />
 
 PostgreSQL 表引擎和数据库引擎所使用的连接池大小。
 
-## postgresql_connection_pool_wait_timeout {#postgresql_connection_pool_wait_timeout} 
+## postgresql_connection_pool_wait_timeout \\{#postgresql_connection_pool_wait_timeout\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000" />
 
 PostgreSQL 表引擎和数据库引擎在连接池为空时进行 push/pop 操作的超时时间。默认情况下，在连接池为空时会阻塞等待。
 
-## postgresql_fault_injection_probability {#postgresql_fault_injection_probability} 
+## postgresql_fault_injection_probability \\{#postgresql_fault_injection_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
@@ -8965,7 +8965,7 @@ PostgreSQL 表引擎和数据库引擎在连接池为空时进行 push/pop 操�
 
 内部（用于复制的）PostgreSQL 查询失败的近似概率。有效取值范围为 [0.0f, 1.0f]。
 
-## prefer_column_name_to_alias {#prefer_column_name_to_alias}
+## prefer_column_name_to_alias \{#prefer_column_name_to_alias\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9010,7 +9010,7 @@ SELECT avg(number) AS number, max(number) FROM numbers(10);
 ```
 
 
-## prefer_external_sort_block_bytes {#prefer_external_sort_block_bytes} 
+## prefer_external_sort_block_bytes \\{#prefer_external_sort_block_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16744704" />
 
@@ -9018,7 +9018,7 @@ SELECT avg(number) AS number, max(number) FROM numbers(10);
 
 在外部排序时优先使用最大块大小，以减少合并阶段的内存使用。
 
-## prefer_global_in_and_join {#prefer_global_in_and_join} 
+## prefer_global_in_and_join \\{#prefer_global_in_and_join\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9041,7 +9041,7 @@ SELECT avg(number) AS number, max(number) FROM numbers(10);
 
 - [分布式子查询](/sql-reference/operators/in#distributed-subqueries)，了解如何使用 `GLOBAL IN`/`GLOBAL JOIN` 的更多信息
 
-## prefer_localhost_replica {#prefer_localhost_replica} 
+## prefer_localhost_replica \\{#prefer_localhost_replica\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9058,7 +9058,7 @@ SELECT avg(number) AS number, max(number) FROM numbers(10);
 如果其用于只有单个分片但包含多个副本的集群，禁用此设置会产生负面影响。
 :::
 
-## prefer_warmed_unmerged_parts_seconds {#prefer_warmed_unmerged_parts_seconds} 
+## prefer_warmed_unmerged_parts_seconds \\{#prefer_warmed_unmerged_parts_seconds\\}
 
 <CloudOnlyBadge/>
 
@@ -9066,19 +9066,19 @@ SELECT avg(number) AS number, max(number) FROM numbers(10);
 
 仅在 ClickHouse Cloud 中生效。若某个合并分区片段距今的生成时间小于指定的秒数且尚未被预热（参见 [cache_populated_by_fetch](merge-tree-settings.md/#cache_populated_by_fetch)），但其所有源分区片段都可用且已预热，则 SELECT 查询会改为从这些源分区片段读取数据。仅适用于 Replicated-/SharedMergeTree。注意，这个设置只检查 CacheWarmer 是否处理过该分区片段；如果该分区片段是被其他组件拉取到缓存中的，在 CacheWarmer 处理到它之前仍会被视为“冷”；如果它曾被预热但之后从缓存中被驱逐，仍然会被视为“热”。
 
-## preferred_block_size_bytes {#preferred_block_size_bytes} 
+## preferred_block_size_bytes \\{#preferred_block_size_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />
 
 此设置用于调整用于查询处理的数据块大小，是对粒度更粗的 `max_block_size` 设置的进一步微调。如果列较宽，并且在 `max_block_size` 行数下块大小可能会超过指定的字节数，则会相应减小块大小，以更好地利用 CPU 缓存局部性。
 
-## preferred_max_column_in_block_size_bytes {#preferred_max_column_in_block_size_bytes} 
+## preferred_max_column_in_block_size_bytes \\{#preferred_max_column_in_block_size_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 在读取时，限制每个数据块中单个列的最大大小。有助于减少缓存未命中次数。该值应尽量接近 L2 缓存的容量。
 
-## preferred_optimize_projection_name {#preferred_optimize_projection_name} 
+## preferred_optimize_projection_name \\{#preferred_optimize_projection_name\\}
 
 如果将其设置为非空字符串，ClickHouse 将尝试在查询中应用指定的投影。
 
@@ -9086,13 +9086,13 @@ SELECT avg(number) AS number, max(number) FROM numbers(10);
 
 - 字符串：首选投影的名称
 
-## prefetch_buffer_size {#prefetch_buffer_size} 
+## prefetch_buffer_size \\{#prefetch_buffer_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
 
 用于从文件系统读取数据的预取缓冲区的最大大小。
 
-## print_pretty_type_names {#print_pretty_type_names}
+## print_pretty_type_names \{#print_pretty_type_names\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9130,13 +9130,13 @@ a   Tuple(
 ```
 
 
-## priority {#priority} 
+## priority \\{#priority\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 查询优先级。1 为最高，数值越大优先级越低；0 表示不使用优先级机制。
 
-## promql_database {#promql_database} 
+## promql_database \\{#promql_database\\}
 
 <ExperimentalBadge/>
 
@@ -9144,7 +9144,7 @@ a   Tuple(
 
 指定 `promql` 方言所使用的数据库名称。空字符串表示当前数据库。
 
-## promql_evaluation_time {#promql_evaluation_time} 
+## promql_evaluation_time \\{#promql_evaluation_time\\}
 
 <ExperimentalBadge/>
 
@@ -9156,7 +9156,7 @@ a   Tuple(
 
 设置用于 promql 方言的求值时间。`auto` 表示当前时间。
 
-## promql_table {#promql_table} 
+## promql_table \\{#promql_table\\}
 
 <ExperimentalBadge/>
 
@@ -9164,7 +9164,7 @@ a   Tuple(
 
 指定 `promql` 方言使用的 TimeSeries 表的名称。
 
-## push_external_roles_in_interserver_queries {#push_external_roles_in_interserver_queries} 
+## push_external_roles_in_interserver_queries \\{#push_external_roles_in_interserver_queries\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9172,7 +9172,7 @@ a   Tuple(
 
 在执行查询时，启用将用户角色从源节点推送到其他节点。
 
-## query_cache_compress_entries {#query_cache_compress_entries} 
+## query_cache_compress_entries \\{#query_cache_compress_entries\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9183,7 +9183,7 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
-## query_cache_max_entries {#query_cache_max_entries} 
+## query_cache_max_entries \\{#query_cache_max_entries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -9193,7 +9193,7 @@ a   Tuple(
 
 - 大于等于 0 的整数。
 
-## query_cache_max_size_in_bytes {#query_cache_max_size_in_bytes} 
+## query_cache_max_size_in_bytes \\{#query_cache_max_size_in_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -9203,7 +9203,7 @@ a   Tuple(
 
 - 大于等于 0 的整数。
 
-## query_cache_min_query_duration {#query_cache_min_query_duration} 
+## query_cache_min_query_duration \\{#query_cache_min_query_duration\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="0" />
 
@@ -9213,7 +9213,7 @@ a   Tuple(
 
 - 大于等于 0 的正整数。
 
-## query_cache_min_query_runs {#query_cache_min_query_runs} 
+## query_cache_min_query_runs \\{#query_cache_min_query_runs\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -9223,7 +9223,7 @@ a   Tuple(
 
 - 大于等于 0 的非负整数。
 
-## query_cache_nondeterministic_function_handling {#query_cache_nondeterministic_function_handling} 
+## query_cache_nondeterministic_function_handling \\{#query_cache_nondeterministic_function_handling\\}
 
 <SettingsInfoBlock type="QueryResultCacheNondeterministicFunctionHandling" default_value="throw" />
 
@@ -9235,7 +9235,7 @@ a   Tuple(
 - `'save'` - 缓存查询结果。
 - `'ignore'` - 不缓存查询结果且不抛出异常。
 
-## query_cache_share_between_users {#query_cache_share_between_users} 
+## query_cache_share_between_users \\{#query_cache_share_between_users\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9247,7 +9247,7 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
-## query_cache_squash_partial_results {#query_cache_squash_partial_results} 
+## query_cache_squash_partial_results \\{#query_cache_squash_partial_results\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9258,7 +9258,7 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
-## query_cache_system_table_handling {#query_cache_system_table_handling} 
+## query_cache_system_table_handling \\{#query_cache_system_table_handling\\}
 
 <SettingsInfoBlock type="QueryResultCacheSystemTableHandling" default_value="throw" />
 
@@ -9272,7 +9272,7 @@ a   Tuple(
 - `'save'` - 缓存查询结果。
 - `'ignore'` - 不缓存查询结果且不抛出异常。
 
-## query_cache_tag {#query_cache_tag} 
+## query_cache_tag \\{#query_cache_tag\\}
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.8"},{"label": ""},{"label": "用于为查询缓存设置添加标签的新设置。"}]}]}/>
 
@@ -9283,7 +9283,7 @@ a   Tuple(
 
 - 任意字符串
 
-## query_cache_ttl {#query_cache_ttl} 
+## query_cache_ttl \\{#query_cache_ttl\\}
 
 <SettingsInfoBlock type="Seconds" default_value="60" />
 
@@ -9293,7 +9293,7 @@ a   Tuple(
 
 - 大于等于 0 的正整数。
 
-## query_condition_cache_store_conditions_as_plaintext {#query_condition_cache_store_conditions_as_plaintext} 
+## query_condition_cache_store_conditions_as_plaintext \\{#query_condition_cache_store_conditions_as_plaintext\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9308,7 +9308,7 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
-## query_metric_log_interval {#query_metric_log_interval} 
+## query_metric_log_interval \\{#query_metric_log_interval\\}
 
 <SettingsInfoBlock type="Int64" default_value="-1" />
 
@@ -9322,7 +9322,7 @@ a   Tuple(
 
 默认值：-1
 
-## query_plan_aggregation_in_order {#query_plan_aggregation_in_order} 
+## query_plan_aggregation_in_order \\{#query_plan_aggregation_in_order\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9340,7 +9340,7 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
-## query_plan_convert_any_join_to_semi_or_anti_join {#query_plan_convert_any_join_to_semi_or_anti_join} 
+## query_plan_convert_any_join_to_semi_or_anti_join \\{#query_plan_convert_any_join_to_semi_or_anti_join\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9348,7 +9348,7 @@ a   Tuple(
 
 当 JOIN 之后的过滤条件对未匹配或已匹配的行结果始终为 false 时，允许将 ANY JOIN 转换为 SEMI JOIN 或 ANTI JOIN。
 
-## query_plan_convert_join_to_in {#query_plan_convert_join_to_in} 
+## query_plan_convert_join_to_in \\{#query_plan_convert_join_to_in\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9356,7 +9356,7 @@ a   Tuple(
 
 允许在输出列仅与左表关联时，将 `JOIN` 转换为带有 `IN` 的子查询。对于非 ANY 的 JOIN（例如默认的 ALL JOIN）可能会导致结果不正确。
 
-## query_plan_convert_outer_join_to_inner_join {#query_plan_convert_outer_join_to_inner_join} 
+## query_plan_convert_outer_join_to_inner_join \\{#query_plan_convert_outer_join_to_inner_join\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9364,7 +9364,7 @@ a   Tuple(
 
 允许在 `JOIN` 之后的过滤条件始终过滤掉默认值时，将 `OUTER JOIN` 转换为 `INNER JOIN`
 
-## query_plan_direct_read_from_text_index {#query_plan_direct_read_from_text_index} 
+## query_plan_direct_read_from_text_index \\{#query_plan_direct_read_from_text_index\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9372,7 +9372,7 @@ a   Tuple(
 
 允许在查询计划中仅使用倒排文本索引来执行全文搜索过滤。
 
-## query_plan_display_internal_aliases {#query_plan_display_internal_aliases} 
+## query_plan_display_internal_aliases \\{#query_plan_display_internal_aliases\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9380,13 +9380,13 @@ a   Tuple(
 
 在 EXPLAIN PLAN 中显示内部别名（例如 __table1），而不是使用原始查询中指定的别名。
 
-## query_plan_enable_multithreading_after_window_functions {#query_plan_enable_multithreading_after_window_functions} 
+## query_plan_enable_multithreading_after_window_functions \\{#query_plan_enable_multithreading_after_window_functions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 在计算完窗口函数后启用多线程，以便并行处理数据流
 
-## query_plan_enable_optimizations {#query_plan_enable_optimizations} 
+## query_plan_enable_optimizations \\{#query_plan_enable_optimizations\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9401,7 +9401,7 @@ a   Tuple(
 - 0 - 在查询计划层面禁用所有优化
 - 1 - 在查询计划层面启用优化（但单个优化仍可通过其各自的设置单独禁用）
 
-## query_plan_execute_functions_after_sorting {#query_plan_execute_functions_after_sorting} 
+## query_plan_execute_functions_after_sorting \\{#query_plan_execute_functions_after_sorting\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9417,7 +9417,7 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
-## query_plan_filter_push_down {#query_plan_filter_push_down} 
+## query_plan_filter_push_down \\{#query_plan_filter_push_down\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9433,7 +9433,7 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
-## query_plan_join_shard_by_pk_ranges {#query_plan_join_shard_by_pk_ranges} 
+## query_plan_join_shard_by_pk_ranges \\{#query_plan_join_shard_by_pk_ranges\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9441,7 +9441,7 @@ a   Tuple(
 
 如果两个表的 JOIN 键都包含各自 PRIMARY KEY 的前缀，则对 JOIN 进行分片处理。适用于 hash、parallel_hash 和 full_sorting_merge 算法。通常不会加速查询，但可能减少内存占用。
 
-## query_plan_join_swap_table {#query_plan_join_swap_table} 
+## query_plan_join_swap_table \\{#query_plan_join_swap_table\\}
 
 <SettingsInfoBlock type="BoolAuto" default_value="auto" />
 
@@ -9453,7 +9453,7 @@ a   Tuple(
     - 'false'：从不交换表（右表为构建表）。
     - 'true'：始终交换表（左表为构建表）。
 
-## query_plan_lift_up_array_join {#query_plan_lift_up_array_join} 
+## query_plan_lift_up_array_join \\{#query_plan_lift_up_array_join\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9469,7 +9469,7 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
-## query_plan_lift_up_union {#query_plan_lift_up_union} 
+## query_plan_lift_up_union \\{#query_plan_lift_up_union\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9485,7 +9485,7 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
-## query_plan_max_limit_for_lazy_materialization {#query_plan_max_limit_for_lazy_materialization} 
+## query_plan_max_limit_for_lazy_materialization \\{#query_plan_max_limit_for_lazy_materialization\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -9493,7 +9493,7 @@ a   Tuple(
 
 控制在允许使用查询计划进行惰性物化优化时的最大 LIMIT 值。若为零，则不设限制。
 
-## query_plan_max_limit_for_top_k_optimization {#query_plan_max_limit_for_top_k_optimization} 
+## query_plan_max_limit_for_top_k_optimization \\{#query_plan_max_limit_for_top_k_optimization\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -9501,7 +9501,7 @@ a   Tuple(
 
 控制在使用 minmax skip 索引和动态阈值过滤进行 TopK 优化时，可对查询计划进行评估的最大 limit 值。如果为 0，则不设上限。
 
-## query_plan_max_optimizations_to_apply {#query_plan_max_optimizations_to_apply} 
+## query_plan_max_optimizations_to_apply \\{#query_plan_max_optimizations_to_apply\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -9514,7 +9514,7 @@ a   Tuple(
 这是一个仅供开发人员在调试时使用的高级设置。该设置将来可能以不向后兼容的方式更改或被移除。
 :::
 
-## query_plan_max_step_description_length {#query_plan_max_step_description_length} 
+## query_plan_max_step_description_length \\{#query_plan_max_step_description_length\\}
 
 <SettingsInfoBlock type="UInt64" default_value="500" />
 
@@ -9522,7 +9522,7 @@ a   Tuple(
 
 `EXPLAIN PLAN` 输出中步骤描述的最大长度。
 
-## query_plan_merge_expressions {#query_plan_merge_expressions} 
+## query_plan_merge_expressions \\{#query_plan_merge_expressions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9538,7 +9538,7 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
-## query_plan_merge_filter_into_join_condition {#query_plan_merge_filter_into_join_condition} 
+## query_plan_merge_filter_into_join_condition \\{#query_plan_merge_filter_into_join_condition\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9546,7 +9546,7 @@ a   Tuple(
 
 允许将过滤条件合并到 `JOIN` 条件中，并将 `CROSS JOIN` 转换为 `INNER JOIN`。
 
-## query_plan_merge_filters {#query_plan_merge_filters} 
+## query_plan_merge_filters \\{#query_plan_merge_filters\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9554,7 +9554,7 @@ a   Tuple(
 
 允许在查询计划中合并过滤条件。
 
-## query_plan_optimize_join_order_algorithm {#query_plan_optimize_join_order_algorithm} 
+## query_plan_optimize_join_order_algorithm \\{#query_plan_optimize_join_order_algorithm\\}
 
 <ExperimentalBadge/>
 
@@ -9568,7 +9568,7 @@ a   Tuple(
  - 'dpsize' - 实现 DPsize 算法，目前仅适用于 INNER JOIN——考虑所有可能的 JOIN 顺序并找到最优的一个，但对于包含大量表和 JOIN 谓词的查询可能较慢。
 可以指定多个算法，例如 'dpsize,greedy'。
 
-## query_plan_optimize_join_order_limit {#query_plan_optimize_join_order_limit} 
+## query_plan_optimize_join_order_limit \\{#query_plan_optimize_join_order_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -9577,7 +9577,7 @@ a   Tuple(
 在同一子查询内优化 JOIN 的顺序。目前仅在极少数场景中受支持。
 该值表示要优化的最大表数量。
 
-## query_plan_optimize_lazy_materialization {#query_plan_optimize_lazy_materialization} 
+## query_plan_optimize_lazy_materialization \\{#query_plan_optimize_lazy_materialization\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9585,7 +9585,7 @@ a   Tuple(
 
 使用查询计划进行惰性物化优化。
 
-## query_plan_optimize_prewhere {#query_plan_optimize_prewhere} 
+## query_plan_optimize_prewhere \\{#query_plan_optimize_prewhere\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9593,7 +9593,7 @@ a   Tuple(
 
 允许将过滤条件下推到受支持存储的 PREWHERE 表达式中
 
-## query_plan_push_down_limit {#query_plan_push_down_limit} 
+## query_plan_push_down_limit \\{#query_plan_push_down_limit\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9609,7 +9609,7 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
-## query_plan_read_in_order {#query_plan_read_in_order} 
+## query_plan_read_in_order \\{#query_plan_read_in_order\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9625,7 +9625,7 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
-## query_plan_read_in_order_through_join {#query_plan_read_in_order_through_join} 
+## query_plan_read_in_order_through_join \\{#query_plan_read_in_order_through_join\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9633,7 +9633,7 @@ a   Tuple(
 
 在 JOIN 操作中保持按左表顺序读取，以便后续步骤使用。
 
-## query_plan_remove_redundant_distinct {#query_plan_remove_redundant_distinct} 
+## query_plan_remove_redundant_distinct \\{#query_plan_remove_redundant_distinct\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9651,7 +9651,7 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
-## query_plan_remove_redundant_sorting {#query_plan_remove_redundant_sorting} 
+## query_plan_remove_redundant_sorting \\{#query_plan_remove_redundant_sorting\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9669,7 +9669,7 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
-## query_plan_remove_unused_columns {#query_plan_remove_unused_columns} 
+## query_plan_remove_unused_columns \\{#query_plan_remove_unused_columns\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9687,7 +9687,7 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
-## query_plan_reuse_storage_ordering_for_window_functions {#query_plan_reuse_storage_ordering_for_window_functions} 
+## query_plan_reuse_storage_ordering_for_window_functions \\{#query_plan_reuse_storage_ordering_for_window_functions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9703,7 +9703,7 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
-## query_plan_split_filter {#query_plan_split_filter} 
+## query_plan_split_filter \\{#query_plan_split_filter\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9719,7 +9719,7 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
-## query_plan_text_index_add_hint {#query_plan_text_index_add_hint} 
+## query_plan_text_index_add_hint \\{#query_plan_text_index_add_hint\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9727,7 +9727,7 @@ a   Tuple(
 
 允许在查询计划中为由倒排文本索引构建的过滤条件添加提示（附加谓词）。
 
-## query_plan_try_use_vector_search {#query_plan_try_use_vector_search} 
+## query_plan_try_use_vector_search \\{#query_plan_try_use_vector_search\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9745,7 +9745,7 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
-## query_plan_use_new_logical_join_step {#query_plan_use_new_logical_join_step} 
+## query_plan_use_new_logical_join_step \\{#query_plan_use_new_logical_join_step\\}
 
 **别名**: `query_plan_use_logical_join_step`
 
@@ -9756,7 +9756,7 @@ a   Tuple(
 在查询计划中使用逻辑 JOIN 步骤。
 注意：`query_plan_use_new_logical_join_step` 已被弃用，请改用 `query_plan_use_logical_join_step`。
 
-## query_profiler_cpu_time_period_ns {#query_profiler_cpu_time_period_ns} 
+## query_profiler_cpu_time_period_ns \\{#query_profiler_cpu_time_period_ns\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000000" />
 
@@ -9777,7 +9777,7 @@ a   Tuple(
 
 - 系统表 [trace_log](/operations/system-tables/trace_log)
 
-## query_profiler_real_time_period_ns {#query_profiler_real_time_period_ns} 
+## query_profiler_real_time_period_ns \\{#query_profiler_real_time_period_ns\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000000" />
 
@@ -9798,49 +9798,49 @@ a   Tuple(
 
 - 系统表 [trace_log](/operations/system-tables/trace_log)
 
-## queue_max_wait_ms {#queue_max_wait_ms} 
+## queue_max_wait_ms \\{#queue_max_wait_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="0" />
 
 当并发请求数超过配置的最大值时，请求在队列中的等待时间。
 
-## rabbitmq_max_wait_ms {#rabbitmq_max_wait_ms} 
+## rabbitmq_max_wait_ms \\{#rabbitmq_max_wait_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="5000" />
 
 从 RabbitMQ 读取时在重试前的等待时间。
 
-## read_backoff_max_throughput {#read_backoff_max_throughput} 
+## read_backoff_max_throughput \\{#read_backoff_max_throughput\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
 
 在读取速度较慢时用于减少线程数量的设置。当读取带宽低于该值指定的每秒字节数时开始统计事件。
 
-## read_backoff_min_concurrency {#read_backoff_min_concurrency} 
+## read_backoff_min_concurrency \\{#read_backoff_min_concurrency\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
 在读取变慢时尝试维持的最小线程数设置。
 
-## read_backoff_min_events {#read_backoff_min_events} 
+## read_backoff_min_events \\{#read_backoff_min_events\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
 用于在读取速度较慢时减少线程数量的设置。该参数表示发生的事件次数达到多少后开始减少线程数量。
 
-## read_backoff_min_interval_between_events_ms {#read_backoff_min_interval_between_events_ms} 
+## read_backoff_min_interval_between_events_ms \\{#read_backoff_min_interval_between_events_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="1000" />
 
 在读取变慢时用于减少线程数量的设置。如果距离上一次事件发生的时间小于指定的间隔，则忽略本次事件。
 
-## read_backoff_min_latency_ms {#read_backoff_min_latency_ms} 
+## read_backoff_min_latency_ms \\{#read_backoff_min_latency_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="1000" />
 
 此设置用于在读取变慢时减少线程数量。仅对耗时至少达到该值的读取操作生效。
 
-## read_from_distributed_cache_if_exists_otherwise_bypass_cache {#read_from_distributed_cache_if_exists_otherwise_bypass_cache} 
+## read_from_distributed_cache_if_exists_otherwise_bypass_cache \\{#read_from_distributed_cache_if_exists_otherwise_bypass_cache\\}
 
 <CloudOnlyBadge/>
 
@@ -9850,13 +9850,13 @@ a   Tuple(
 
 仅在 ClickHouse Cloud 中生效。与 read_from_filesystem_cache_if_exists_otherwise_bypass_cache 相同，但针对分布式缓存。
 
-## read_from_filesystem_cache_if_exists_otherwise_bypass_cache {#read_from_filesystem_cache_if_exists_otherwise_bypass_cache} 
+## read_from_filesystem_cache_if_exists_otherwise_bypass_cache \\{#read_from_filesystem_cache_if_exists_otherwise_bypass_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 允许以被动模式使用文件系统缓存——利用已有的缓存条目，但不再向缓存中写入新的条目。对于开销较大的临时（ad‑hoc）查询启用此设置，而对短实时查询保持禁用，可以避免重型查询引发缓存抖动，从而提升整体系统效率。
 
-## read_from_page_cache_if_exists_otherwise_bypass_cache {#read_from_page_cache_if_exists_otherwise_bypass_cache} 
+## read_from_page_cache_if_exists_otherwise_bypass_cache \\{#read_from_page_cache_if_exists_otherwise_bypass_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9864,13 +9864,13 @@ a   Tuple(
 
 在被动模式下使用用户态页缓存，其行为类似于 read_from_filesystem_cache_if_exists_otherwise_bypass_cache。
 
-## read_in_order_two_level_merge_threshold {#read_in_order_two_level_merge_threshold} 
+## read_in_order_two_level_merge_threshold \\{#read_in_order_two_level_merge_threshold\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
 在按主键顺序进行多线程读取时，为执行预合并步骤所需读取的最少分区片段数。
 
-## read_in_order_use_buffering {#read_in_order_use_buffering} 
+## read_in_order_use_buffering \\{#read_in_order_use_buffering\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9878,7 +9878,7 @@ a   Tuple(
 
 按主键顺序读取时，在合并前使用缓冲。这可以提高查询执行的并行度。
 
-## read_in_order_use_virtual_row {#read_in_order_use_virtual_row} 
+## read_in_order_use_virtual_row \\{#read_in_order_use_virtual_row\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9886,13 +9886,13 @@ a   Tuple(
 
 在按主键或其单调函数的顺序读取时使用虚拟行。在跨多个分区片段进行搜索时很有用，因为只会访问相关的分区片段。
 
-## read_overflow_mode {#read_overflow_mode} 
+## read_overflow_mode \\{#read_overflow_mode\\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
 超过限制时的处理方式。
 
-## read_overflow_mode_leaf {#read_overflow_mode_leaf} 
+## read_overflow_mode_leaf \\{#read_overflow_mode_leaf\\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
@@ -9903,13 +9903,13 @@ a   Tuple(
 - `throw`: 抛出异常（默认）。
 - `break`: 停止执行查询并返回部分结果。
 
-## read_priority {#read_priority} 
+## read_priority \\{#read_priority\\}
 
 <SettingsInfoBlock type="Int64" default_value="0" />
 
 从本地文件系统或远程文件系统读取数据时的优先级。仅在本地文件系统使用 `pread_threadpool` 方法以及在远程文件系统使用 `threadpool` 方法时受支持。
 
-## read_through_distributed_cache {#read_through_distributed_cache} 
+## read_through_distributed_cache \\{#read_through_distributed_cache\\}
 
 <CloudOnlyBadge/>
 
@@ -9919,43 +9919,43 @@ a   Tuple(
 
 仅在 ClickHouse Cloud 中有效。允许从分布式缓存中读取
 
-## readonly {#readonly} 
+## readonly \\{#readonly\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 0 - 无只读限制。1 - 仅允许读取请求，并可修改被显式允许的设置。2 - 仅允许读取请求，并可修改除 `readonly` 设置之外的其他设置。
 
-## receive_data_timeout_ms {#receive_data_timeout_ms} 
+## receive_data_timeout_ms \\{#receive_data_timeout_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="2000" />
 
 用于在从副本接收首个数据包或带有正向进度更新的数据包时的连接超时时间
 
-## receive_timeout {#receive_timeout} 
+## receive_timeout \\{#receive_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="300" />
 
 从网络接收数据的超时时间（以秒为单位）。如果在此时间间隔内未接收到任何字节，将抛出异常。如果在客户端设置该配置项，则会在服务器端对应连接的套接字上同时设置 `send_timeout`。
 
-## regexp_dict_allow_hyperscan {#regexp_dict_allow_hyperscan} 
+## regexp_dict_allow_hyperscan \\{#regexp_dict_allow_hyperscan\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 允许 regexp_tree 字典使用 Hyperscan 库。
 
-## regexp_dict_flag_case_insensitive {#regexp_dict_flag_case_insensitive} 
+## regexp_dict_flag_case_insensitive \\{#regexp_dict_flag_case_insensitive\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 对 `regexp_tree` 字典使用不区分大小写的匹配。可以在单个表达式中通过 `(?i)` 和 `(?-i)` 覆盖该设置。
 
-## regexp_dict_flag_dotall {#regexp_dict_flag_dotall} 
+## regexp_dict_flag_dotall \\{#regexp_dict_flag_dotall\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 允许 `regexp_tree` 字典中的 '.' 匹配换行字符。
 
-## regexp_max_matches_per_row {#regexp_max_matches_per_row} 
+## regexp_max_matches_per_row \\{#regexp_max_matches_per_row\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -9965,49 +9965,49 @@ a   Tuple(
 
 - 正整数。
 
-## reject_expensive_hyperscan_regexps {#reject_expensive_hyperscan_regexps} 
+## reject_expensive_hyperscan_regexps \\{#reject_expensive_hyperscan_regexps\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 拒绝那些在使用 Hyperscan 进行评估时代价可能很高的模式（例如会导致 NFA 状态爆炸的情况）
 
-## remerge_sort_lowered_memory_bytes_ratio {#remerge_sort_lowered_memory_bytes_ratio} 
+## remerge_sort_lowered_memory_bytes_ratio \\{#remerge_sort_lowered_memory_bytes_ratio\\}
 
 <SettingsInfoBlock type="Float" default_value="2" />
 
 如果重新合并后的内存使用量未按该比例减少，则会禁用重新合并。
 
-## remote_filesystem_read_method {#remote_filesystem_read_method} 
+## remote_filesystem_read_method \\{#remote_filesystem_read_method\\}
 
 <SettingsInfoBlock type="String" default_value="threadpool" />
 
 读取远程文件系统数据的方法，可选值：read 或 threadpool。
 
-## remote_filesystem_read_prefetch {#remote_filesystem_read_prefetch} 
+## remote_filesystem_read_prefetch \\{#remote_filesystem_read_prefetch\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 在从远程文件系统读取数据时是否启用预取。
 
-## remote_fs_read_backoff_max_tries {#remote_fs_read_backoff_max_tries} 
+## remote_fs_read_backoff_max_tries \\{#remote_fs_read_backoff_max_tries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5" />
 
 带退避的最大读取重试次数
 
-## remote_fs_read_max_backoff_ms {#remote_fs_read_max_backoff_ms} 
+## remote_fs_read_max_backoff_ms \\{#remote_fs_read_max_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
 尝试从远程磁盘读取数据时的最大等待时间（毫秒）
 
-## remote_read_min_bytes_for_seek {#remote_read_min_bytes_for_seek} 
+## remote_read_min_bytes_for_seek \\{#remote_read_min_bytes_for_seek\\}
 
 <SettingsInfoBlock type="UInt64" default_value="4194304" />
 
 在远程读取（URL、S3）时，为执行 seek 操作而不是以 ignore 模式读取所需的最小字节数。
 
-## rename_files_after_processing {#rename_files_after_processing} 
+## rename_files_after_processing \\{#rename_files_after_processing\\}
 
 - **类型：** String
 
@@ -10015,7 +10015,7 @@ a   Tuple(
 
 此设置允许为由 `file` table function 处理的文件指定重命名模式。启用该选项后，所有由 `file` table function 读取的文件，只有在处理成功时，才会按照包含占位符的指定模式进行重命名。
 
-### 占位符 {#placeholders}
+### 占位符 \{#placeholders\}
 
 - `%a` — 原始完整文件名（例如："sample.csv"）。
 - `%f` — 原始文件名（不含扩展名，例如："sample"）。
@@ -10023,7 +10023,7 @@ a   Tuple(
 - `%t` — 时间戳（微秒级）。
 - `%%` — 百分号（"%"）。
 
-### 示例 {#example}
+### 示例 \{#example\}
 
 - 选项：`--rename_files_after_processing="processed_%f_%t%e"`
 
@@ -10031,7 +10031,7 @@ a   Tuple(
 
 如果成功读取 `sample.csv`，则文件将被重命名为 `processed_sample_1683473210851438.csv`。
 
-## replace_running_query {#replace_running_query} 
+## replace_running_query \\{#replace_running_query\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10044,7 +10044,7 @@ a   Tuple(
 
 将此参数设置为 1 可用于实现分段条件提示功能。在输入下一个字符后，如果旧查询尚未完成，则应将其取消。
 
-## replace_running_query_max_wait_ms {#replace_running_query_max_wait_ms} 
+## replace_running_query_max_wait_ms \\{#replace_running_query_max_wait_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="5000" />
 
@@ -10055,7 +10055,7 @@ a   Tuple(
 - 正整数。
 - 0 — 如果服务器已经在执行具有相同 `query_id` 的查询，则抛出异常，不允许运行新的查询。
 
-## replication_wait_for_inactive_replica_timeout {#replication_wait_for_inactive_replica_timeout} 
+## replication_wait_for_inactive_replica_timeout \\{#replication_wait_for_inactive_replica_timeout\\}
 
 <SettingsInfoBlock type="Int64" default_value="120" />
 
@@ -10067,7 +10067,7 @@ a   Tuple(
 - 负整数 — 无限期等待。
 - 正整数 — 要等待的秒数。
 
-## restore_replace_external_dictionary_source_to_null {#restore_replace_external_dictionary_source_to_null} 
+## restore_replace_external_dictionary_source_to_null \\{#restore_replace_external_dictionary_source_to_null\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10075,7 +10075,7 @@ a   Tuple(
 
 在恢复时将外部字典源替换为 Null，可用于测试场景。
 
-## restore_replace_external_engines_to_null {#restore_replace_external_engines_to_null} 
+## restore_replace_external_engines_to_null \\{#restore_replace_external_engines_to_null\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10083,7 +10083,7 @@ a   Tuple(
 
 用于测试。将所有外部引擎替换为 Null，以避免建立外部连接。
 
-## restore_replace_external_table_functions_to_null {#restore_replace_external_table_functions_to_null} 
+## restore_replace_external_table_functions_to_null \\{#restore_replace_external_table_functions_to_null\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10091,7 +10091,7 @@ a   Tuple(
 
 用于测试。将所有外部表函数替换为 Null，使其不会发起外部连接。
 
-## restore_replicated_merge_tree_to_shared_merge_tree {#restore_replicated_merge_tree_to_shared_merge_tree} 
+## restore_replicated_merge_tree_to_shared_merge_tree \\{#restore_replicated_merge_tree_to_shared_merge_tree\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10099,7 +10099,7 @@ a   Tuple(
 
 在 RESTORE 过程中将表引擎从 Replicated*MergeTree 更换为 Shared*MergeTree。
 
-## result_overflow_mode {#result_overflow_mode}
+## result_overflow_mode \{#result_overflow_mode\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
@@ -10134,7 +10134,7 @@ FORMAT Null;
 ```
 
 
-## rewrite_count_distinct_if_with_count_distinct_implementation {#rewrite_count_distinct_if_with_count_distinct_implementation} 
+## rewrite_count_distinct_if_with_count_distinct_implementation \\{#rewrite_count_distinct_if_with_count_distinct_implementation\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10147,7 +10147,7 @@ FORMAT Null;
 - true — 允许。
 - false — 不允许。
 
-## rewrite_in_to_join {#rewrite_in_to_join} 
+## rewrite_in_to_join \\{#rewrite_in_to_join\\}
 
 <ExperimentalBadge/>
 
@@ -10157,7 +10157,7 @@ FORMAT Null;
 
 将类似 `x IN subquery` 的表达式重写成 JOIN。这可能有助于通过重新排序 JOIN 来优化整个查询。
 
-## rows_before_aggregation {#rows_before_aggregation} 
+## rows_before_aggregation \\{#rows_before_aggregation\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10165,7 +10165,7 @@ FORMAT Null;
 
 启用后，ClickHouse 将为 rows_before_aggregation 统计量提供精确值，表示在聚合前读取的行数。
 
-## s3_allow_multipart_copy {#s3_allow_multipart_copy} 
+## s3_allow_multipart_copy \\{#s3_allow_multipart_copy\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10173,19 +10173,19 @@ FORMAT Null;
 
 允许在 S3 中使用多部分复制。
 
-## s3_allow_parallel_part_upload {#s3_allow_parallel_part_upload} 
+## s3_allow_parallel_part_upload \\{#s3_allow_parallel_part_upload\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 为 S3 多部分上传使用多个线程。这可能会略微增加内存使用。
 
-## s3_check_objects_after_upload {#s3_check_objects_after_upload} 
+## s3_check_objects_after_upload \\{#s3_check_objects_after_upload\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 使用 HEAD 请求检查上传到 S3 的每个对象，以确保上传已成功完成。
 
-## s3_connect_timeout_ms {#s3_connect_timeout_ms} 
+## s3_connect_timeout_ms \\{#s3_connect_timeout_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -10193,7 +10193,7 @@ FORMAT Null;
 
 用于 S3 磁盘主机连接的超时时间。
 
-## s3_create_new_file_on_insert {#s3_create_new_file_on_insert} 
+## s3_create_new_file_on_insert \\{#s3_create_new_file_on_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10208,13 +10208,13 @@ FORMAT Null;
 
 更多详情请参阅[此处](/integrations/s3#inserting-data)。
 
-## s3_disable_checksum {#s3_disable_checksum} 
+## s3_disable_checksum \\{#s3_disable_checksum\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在将文件发送到 S3 时不计算校验和。这样可以通过避免对文件进行多次处理来加快写入。大多数情况下这是安全的，因为 MergeTree 表的数据无论如何都会由 ClickHouse 计算校验和，并且当通过 HTTPS 访问 S3 时，TLS 层已经在网络传输过程中提供了数据完整性保护。同时，在 S3 端保留额外的校验和可以作为纵深防御的一部分。
 
-## s3_ignore_file_doesnt_exist {#s3_ignore_file_doesnt_exist} 
+## s3_ignore_file_doesnt_exist \\{#s3_ignore_file_doesnt_exist\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10227,37 +10227,37 @@ FORMAT Null;
 - 1 — `SELECT` 返回空结果。
 - 0 — `SELECT` 抛出异常。
 
-## s3_list_object_keys_size {#s3_list_object_keys_size} 
+## s3_list_object_keys_size \\{#s3_list_object_keys_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
 `ListObject` 请求单次批量返回的最大文件数量
 
-## s3_max_connections {#s3_max_connections} 
+## s3_max_connections \\{#s3_max_connections\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1024" />
 
 每台服务器的最大连接数。
 
-## s3_max_get_burst {#s3_max_get_burst} 
+## s3_max_get_burst \\{#s3_max_get_burst\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 在达到每秒请求数限制之前可同时发出的最大请求数。默认情况下，取值为 0 时等同于 `s3_max_get_rps`。
 
-## s3_max_get_rps {#s3_max_get_rps} 
+## s3_max_get_rps \\{#s3_max_get_rps\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 在触发限流之前，S3 GET 请求的每秒请求速率上限。0 表示无限制。
 
-## s3_max_inflight_parts_for_one_file {#s3_max_inflight_parts_for_one_file} 
+## s3_max_inflight_parts_for_one_file \\{#s3_max_inflight_parts_for_one_file\\}
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
 在一次分段上传请求中可并发上传的分区片段的最大数量。0 表示不限制。
 
-## s3_max_part_number {#s3_max_part_number} 
+## s3_max_part_number \\{#s3_max_part_number\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -10265,19 +10265,19 @@ FORMAT Null;
 
 用于 S3 分段上传的部件序号上限。
 
-## s3_max_put_burst {#s3_max_put_burst} 
+## s3_max_put_burst \\{#s3_max_put_burst\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 在达到每秒请求数限制之前，允许并发发出的最大请求数量。默认值（0）等同于 `s3_max_put_rps`。
 
-## s3_max_put_rps {#s3_max_put_rps} 
+## s3_max_put_rps \\{#s3_max_put_rps\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 在触发限流前，每秒允许的 S3 PUT 请求数量上限。零表示不限制。
 
-## s3_max_single_operation_copy_size {#s3_max_single_operation_copy_size} 
+## s3_max_single_operation_copy_size \\{#s3_max_single_operation_copy_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="33554432" />
 
@@ -10285,37 +10285,37 @@ FORMAT Null;
 
 S3 中单次复制操作的最大大小。仅当 `s3_allow_multipart_copy` 为 true 时才会使用此设置。
 
-## s3_max_single_part_upload_size {#s3_max_single_part_upload_size} 
+## s3_max_single_part_upload_size \\{#s3_max_single_part_upload_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="33554432" />
 
 使用单部分上传方式将对象上传到 S3 时，单个对象允许的最大大小。
 
-## s3_max_single_read_retries {#s3_max_single_read_retries} 
+## s3_max_single_read_retries \\{#s3_max_single_read_retries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="4" />
 
 单次 S3 读取的最大重试次数。
 
-## s3_max_unexpected_write_error_retries {#s3_max_unexpected_write_error_retries} 
+## s3_max_unexpected_write_error_retries \\{#s3_max_unexpected_write_error_retries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="4" />
 
 在向 S3 写入期间发生非预期错误时允许的最大重试次数。
 
-## s3_max_upload_part_size {#s3_max_upload_part_size} 
+## s3_max_upload_part_size \\{#s3_max_upload_part_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5368709120" />
 
 执行向 S3 进行分段上传（multipart upload）时，每个分段可上传的最大大小。
 
-## s3_min_upload_part_size {#s3_min_upload_part_size} 
+## s3_min_upload_part_size \\{#s3_min_upload_part_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16777216" />
 
 向 S3 执行分段上传时，每个上传分片的最小大小。
 
-## s3_path_filter_limit {#s3_path_filter_limit} 
+## s3_path_filter_limit \\{#s3_path_filter_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -10323,13 +10323,13 @@ S3 中单次复制操作的最大大小。仅当 `s3_allow_multipart_copy` 为 t
 
 可以从查询过滤条件中提取并用于文件遍历（而非基于通配符的列举）的 `_path` 值的最大数量。0 表示禁用。
 
-## s3_request_timeout_ms {#s3_request_timeout_ms} 
+## s3_request_timeout_ms \\{#s3_request_timeout_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="30000" />
 
 向 S3 发送数据及从 S3 接收数据的空闲超时时间。如果单次 TCP 读或写调用阻塞时间超过该值，则判定为失败。
 
-## s3_skip_empty_files {#s3_skip_empty_files} 
+## s3_skip_empty_files \\{#s3_skip_empty_files\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10342,7 +10342,7 @@ S3 中单次复制操作的最大大小。仅当 `s3_allow_multipart_copy` 为 t
 - 0 — 如果空文件与请求的格式不兼容，`SELECT` 会抛出异常。
 - 1 — 对于空文件，`SELECT` 返回空结果集。
 
-## s3_slow_all_threads_after_network_error {#s3_slow_all_threads_after_network_error} 
+## s3_slow_all_threads_after_network_error \\{#s3_slow_all_threads_after_network_error\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10351,19 +10351,19 @@ S3 中单次复制操作的最大大小。仅当 `s3_allow_multipart_copy` 为 t
 当设置为 `true` 时，一旦任意一个 S3 请求遇到可重试的网络错误（例如 socket 超时），所有向同一备份端点发起 S3 请求的线程都会被放慢。
 当设置为 `false` 时，每个线程会独立于其他线程处理自身 S3 请求的退避。
 
-## s3_strict_upload_part_size {#s3_strict_upload_part_size} 
+## s3_strict_upload_part_size \\{#s3_strict_upload_part_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 在向 S3 执行 multipart 上传时，每个要上传的分区片段的精确大小（某些实现不支持可变大小的分区片段）。
 
-## s3_throw_on_zero_files_match {#s3_throw_on_zero_files_match} 
+## s3_throw_on_zero_files_match \\{#s3_throw_on_zero_files_match\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 当 ListObjects 请求未能匹配到任何文件时，是否抛出错误
 
-## s3_truncate_on_insert {#s3_truncate_on_insert} 
+## s3_truncate_on_insert \\{#s3_truncate_on_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10376,26 +10376,26 @@ S3 中单次复制操作的最大大小。仅当 `s3_allow_multipart_copy` 为 t
 
 更多信息参见[此处](/integrations/s3#inserting-data)。
 
-## s3_upload_part_size_multiply_factor {#s3_upload_part_size_multiply_factor} 
+## s3_upload_part_size_multiply_factor \\{#s3_upload_part_size_multiply_factor\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
 每当在一次写入 S3 的操作中上传的分区片段数量达到 s3_multiply_parts_count_threshold 时，将 s3_min_upload_part_size 乘以该系数。
 
-## s3_upload_part_size_multiply_parts_count_threshold {#s3_upload_part_size_multiply_parts_count_threshold} 
+## s3_upload_part_size_multiply_parts_count_threshold \\{#s3_upload_part_size_multiply_parts_count_threshold\\}
 
 <SettingsInfoBlock type="UInt64" default_value="500" />
 
 每当上传到 S3 的分区片段数量达到该阈值时，`s3_min_upload_part_size` 就会乘以 `s3_upload_part_size_multiply_factor`。
 
-## s3_use_adaptive_timeouts {#s3_use_adaptive_timeouts} 
+## s3_use_adaptive_timeouts \\{#s3_use_adaptive_timeouts\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 当设置为 `true` 时，所有发往 S3 的请求在前两次尝试时将使用较短的发送和接收超时时间。
 当设置为 `false` 时，所有尝试都将使用相同的发送和接收超时时间。
 
-## s3_validate_request_settings {#s3_validate_request_settings} 
+## s3_validate_request_settings \\{#s3_validate_request_settings\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10407,19 +10407,19 @@ S3 中单次复制操作的最大大小。仅当 `s3_allow_multipart_copy` 为 t
 - 1 — 校验请求设置。
 - 0 — 不校验请求设置。
 
-## s3queue_default_zookeeper_path {#s3queue_default_zookeeper_path} 
+## s3queue_default_zookeeper_path \\{#s3queue_default_zookeeper_path\\}
 
 <SettingsInfoBlock type="String" default_value="/clickhouse/s3queue/" />
 
 S3Queue 引擎的默认 ZooKeeper 路径前缀
 
-## s3queue_enable_logging_to_s3queue_log {#s3queue_enable_logging_to_s3queue_log} 
+## s3queue_enable_logging_to_s3queue_log \\{#s3queue_enable_logging_to_s3queue_log\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 启用向 system.s3queue_log 的写入。该值可以在每个表中通过表设置单独覆盖
 
-## s3queue_keeper_fault_injection_probability {#s3queue_keeper_fault_injection_probability} 
+## s3queue_keeper_fault_injection_probability \\{#s3queue_keeper_fault_injection_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
@@ -10427,7 +10427,7 @@ S3Queue 引擎的默认 ZooKeeper 路径前缀
 
 用于 S3Queue 的 Keeper 故障注入概率。
 
-## s3queue_migrate_old_metadata_to_buckets {#s3queue_migrate_old_metadata_to_buckets} 
+## s3queue_migrate_old_metadata_to_buckets \\{#s3queue_migrate_old_metadata_to_buckets\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10435,43 +10435,43 @@ S3Queue 引擎的默认 ZooKeeper 路径前缀
 
 将 S3Queue 表的旧元数据结构迁移为新的结构
 
-## schema_inference_cache_require_modification_time_for_url {#schema_inference_cache_require_modification_time_for_url} 
+## schema_inference_cache_require_modification_time_for_url \\{#schema_inference_cache_require_modification_time_for_url\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 对具有最后修改时间验证的 URL 使用缓存中的 schema（适用于带有 Last-Modified 头的 URL）
 
-## schema_inference_use_cache_for_azure {#schema_inference_use_cache_for_azure} 
+## schema_inference_use_cache_for_azure \\{#schema_inference_use_cache_for_azure\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 在使用 Azure 表函数进行 schema 推断时使用缓存
 
-## schema_inference_use_cache_for_file {#schema_inference_use_cache_for_file} 
+## schema_inference_use_cache_for_file \\{#schema_inference_use_cache_for_file\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 在使用 file 表函数进行模式推断时使用缓存
 
-## schema_inference_use_cache_for_hdfs {#schema_inference_use_cache_for_hdfs} 
+## schema_inference_use_cache_for_hdfs \\{#schema_inference_use_cache_for_hdfs\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 在使用 HDFS 表函数进行 schema 推断时使用缓存
 
-## schema_inference_use_cache_for_s3 {#schema_inference_use_cache_for_s3} 
+## schema_inference_use_cache_for_s3 \\{#schema_inference_use_cache_for_s3\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 在使用 S3 表函数进行模式推断时使用缓存
 
-## schema_inference_use_cache_for_url {#schema_inference_use_cache_for_url} 
+## schema_inference_use_cache_for_url \\{#schema_inference_use_cache_for_url\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 在通过 url 表函数进行 schema 推断时启用缓存
 
-## secondary_indices_enable_bulk_filtering {#secondary_indices_enable_bulk_filtering} 
+## secondary_indices_enable_bulk_filtering \\{#secondary_indices_enable_bulk_filtering\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10479,7 +10479,7 @@ S3Queue 引擎的默认 ZooKeeper 路径前缀
 
 启用针对索引的批量过滤算法。一般情况下它应当始终表现更好，但我们保留此设置以确保兼容性并提供更精细的控制。
 
-## select_sequential_consistency {#select_sequential_consistency} 
+## select_sequential_consistency \\{#select_sequential_consistency\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -10506,17 +10506,17 @@ S3Queue 引擎的默认 ZooKeeper 路径前缀
 - [insert_quorum_timeout](#insert_quorum_timeout)
 - [insert_quorum_parallel](#insert_quorum_parallel)
 
-## send_logs_level {#send_logs_level} 
+## send_logs_level \\{#send_logs_level\\}
 
 <SettingsInfoBlock type="LogsLevel" default_value="fatal" />
 
 将达到指定最低级别的服务器文本日志发送到客户端。有效取值：'trace'、'debug'、'information'、'warning'、'error'、'fatal'、'none'
 
-## send_logs_source_regexp {#send_logs_source_regexp} 
+## send_logs_source_regexp \\{#send_logs_source_regexp\\}
 
 发送服务器文本日志时，使用指定的正则表达式匹配日志源名称。留空表示匹配所有日志源。
 
-## send_profile_events {#send_profile_events} 
+## send_profile_events \\{#send_profile_events\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10531,7 +10531,7 @@ S3Queue 引擎的默认 ZooKeeper 路径前缀
 - 0 — 禁用。
 - 1 — 启用。
 
-## send_progress_in_http_headers {#send_progress_in_http_headers} 
+## send_progress_in_http_headers \\{#send_progress_in_http_headers\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10544,13 +10544,13 @@ S3Queue 引擎的默认 ZooKeeper 路径前缀
 - 0 — 禁用。
 - 1 — 启用。
 
-## send_timeout {#send_timeout} 
+## send_timeout \\{#send_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="300" />
 
 向网络发送数据的超时时间（以秒为单位）。如果客户端需要发送数据，但在该时间段内无法发送任何字节，就会抛出异常。如果在客户端上设置此参数，则在服务端对应连接端的套接字上也会设置 `receive_timeout`。
 
-## serialize_query_plan {#serialize_query_plan} 
+## serialize_query_plan \\{#serialize_query_plan\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10558,7 +10558,7 @@ S3Queue 引擎的默认 ZooKeeper 路径前缀
 
 序列化用于分布式处理的查询计划
 
-## serialize_string_in_memory_with_zero_byte {#serialize_string_in_memory_with_zero_byte} 
+## serialize_string_in_memory_with_zero_byte \\{#serialize_string_in_memory_with_zero_byte\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10566,7 +10566,7 @@ S3Queue 引擎的默认 ZooKeeper 路径前缀
 
 在聚合过程中将 String 值序列化为以零字节结尾的形式。启用该选项以在对存在版本不兼容的集群执行查询时保持兼容性。
 
-## session_timezone {#session_timezone}
+## session_timezone \{#session_timezone\}
 
 <BetaBadge />
 
@@ -10630,7 +10630,7 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 * [timezone](../server-configuration-parameters/settings.md/#timezone)
 
 
-## set_overflow_mode {#set_overflow_mode} 
+## set_overflow_mode \\{#set_overflow_mode\\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
@@ -10641,7 +10641,7 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 - `throw`: 抛出异常（默认）。
 - `break`: 停止执行查询并返回部分结果，仿佛源数据已经耗尽。
 
-## shared_merge_tree_sync_parts_on_partition_operations {#shared_merge_tree_sync_parts_on_partition_operations} 
+## shared_merge_tree_sync_parts_on_partition_operations \\{#shared_merge_tree_sync_parts_on_partition_operations\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10649,7 +10649,7 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 
 在 SMT 表中，在执行 MOVE|REPLACE|ATTACH 分区操作后自动同步相关的数据分区片段。仅限 Cloud
 
-## short_circuit_function_evaluation {#short_circuit_function_evaluation} 
+## short_circuit_function_evaluation \\{#short_circuit_function_evaluation\\}
 
 <SettingsInfoBlock type="ShortCircuitFunctionEvaluation" default_value="enable" />
 
@@ -10661,7 +10661,7 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 - `force_enable` — 为所有函数启用短路求值。
 - `disable` — 禁用短路求值。
 
-## short_circuit_function_evaluation_for_nulls {#short_circuit_function_evaluation_for_nulls} 
+## short_circuit_function_evaluation_for_nulls \\{#short_circuit_function_evaluation_for_nulls\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10669,7 +10669,7 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 
 优化对在任一参数为 NULL 时返回 NULL 的函数的求值。当函数参数中 NULL 值的占比超过 `short_circuit_function_evaluation_for_nulls_threshold` 时，系统会跳过逐行计算该函数，而是直接为所有行返回 NULL，从而避免不必要的计算。
 
-## short_circuit_function_evaluation_for_nulls_threshold {#short_circuit_function_evaluation_for_nulls_threshold} 
+## short_circuit_function_evaluation_for_nulls_threshold \\{#short_circuit_function_evaluation_for_nulls_threshold\\}
 
 <SettingsInfoBlock type="Double" default_value="1" />
 
@@ -10678,7 +10678,7 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 对具有 Nullable 参数的函数，仅在所有参数均为非 NULL 值的行上执行时所使用的 NULL 值占比阈值。当设置 `short_circuit_function_evaluation_for_nulls` 启用时生效。
 当包含 NULL 值的行数与总行数的比值超过该阈值时，将不会对这些包含 NULL 值的行执行函数计算。
 
-## show_data_lake_catalogs_in_system_tables {#show_data_lake_catalogs_in_system_tables} 
+## show_data_lake_catalogs_in_system_tables \\{#show_data_lake_catalogs_in_system_tables\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10686,7 +10686,7 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 
 启用在 system 表中显示数据湖目录。
 
-## show_processlist_include_internal {#show_processlist_include_internal} 
+## show_processlist_include_internal \\{#show_processlist_include_internal\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10696,7 +10696,7 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 
 内部进程包括字典重载、可刷新 materialized view 的重载、在 `SHOW ...` 查询中执行的辅助 `SELECT` 语句、为处理损坏表而在内部执行的辅助 `CREATE DATABASE ...` 查询等。
 
-## show_table_uuid_in_table_create_query_if_not_nil {#show_table_uuid_in_table_create_query_if_not_nil} 
+## show_table_uuid_in_table_create_query_if_not_nil \\{#show_table_uuid_in_table_create_query_if_not_nil\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10709,13 +10709,13 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 - 0 — 查询结果中不包含表 UUID。
 - 1 — 查询结果中包含表 UUID。
 
-## single_join_prefer_left_table {#single_join_prefer_left_table} 
+## single_join_prefer_left_table \\{#single_join_prefer_left_table\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 在单一 JOIN 中若存在标识符歧义，则优先使用左表
 
-## skip_redundant_aliases_in_udf {#skip_redundant_aliases_in_udf}
+## skip_redundant_aliases_in_udf \{#skip_redundant_aliases_in_udf\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10763,7 +10763,7 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 ```
 
 
-## skip_unavailable_shards {#skip_unavailable_shards} 
+## skip_unavailable_shards \\{#skip_unavailable_shards\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10793,25 +10793,25 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 
     如果某个分片不可用，ClickHouse 会抛出异常。
 
-## sleep_after_receiving_query_ms {#sleep_after_receiving_query_ms} 
+## sleep_after_receiving_query_ms \\{#sleep_after_receiving_query_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="0" />
 
 在 TCPHandler 接收到查询后休眠的时间
 
-## sleep_in_send_data_ms {#sleep_in_send_data_ms} 
+## sleep_in_send_data_ms \\{#sleep_in_send_data_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="0" />
 
 在 TCPHandler 发送数据时的休眠时长
 
-## sleep_in_send_tables_status_ms {#sleep_in_send_tables_status_ms} 
+## sleep_in_send_tables_status_ms \\{#sleep_in_send_tables_status_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="0" />
 
 在 TCPHandler 中发送表状态响应时的休眠时间
 
-## sort_overflow_mode {#sort_overflow_mode} 
+## sort_overflow_mode \\{#sort_overflow_mode\\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
@@ -10822,7 +10822,7 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 - `throw`: 抛出异常。
 - `break`: 停止执行查询并返回部分结果。
 
-## split_intersecting_parts_ranges_into_layers_final {#split_intersecting_parts_ranges_into_layers_final} 
+## split_intersecting_parts_ranges_into_layers_final \\{#split_intersecting_parts_ranges_into_layers_final\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10830,7 +10830,7 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 
 在 FINAL 优化期间将相交的分区片段范围拆分为层
 
-## split_parts_ranges_into_intersecting_and_non_intersecting_final {#split_parts_ranges_into_intersecting_and_non_intersecting_final} 
+## split_parts_ranges_into_intersecting_and_non_intersecting_final \\{#split_parts_ranges_into_intersecting_and_non_intersecting_final\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10838,7 +10838,7 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 
 在 FINAL 优化期间将分区片段范围拆分为相交和非相交两类
 
-## splitby_max_substrings_includes_remaining_string {#splitby_max_substrings_includes_remaining_string} 
+## splitby_max_substrings_includes_remaining_string \\{#splitby_max_substrings_includes_remaining_string\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10849,7 +10849,7 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 - `0` - 剩余字符串不会包含在结果数组的最后一个元素中。
 - `1` - 剩余字符串会包含在结果数组的最后一个元素中。这与 Spark 的 [`split()`](https://spark.apache.org/docs/3.1.2/api/python/reference/api/pyspark.sql.functions.split.html) 函数和 Python 的 ['string.split()'](https://docs.python.org/3/library/stdtypes.html#str.split) 方法的行为相同。
 
-## stop_refreshable_materialized_views_on_startup {#stop_refreshable_materialized_views_on_startup} 
+## stop_refreshable_materialized_views_on_startup \\{#stop_refreshable_materialized_views_on_startup\\}
 
 <ExperimentalBadge/>
 
@@ -10857,19 +10857,19 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 
 在服务器启动时，禁止为可刷新materialized view进行调度，其效果等同于执行 SYSTEM STOP VIEWS。之后可以通过 `SYSTEM START VIEWS` 或 `SYSTEM START VIEW <name>` 手动启动它们。该设置同样适用于新创建的视图。对不可刷新materialized view无效。
 
-## storage_file_read_method {#storage_file_read_method} 
+## storage_file_read_method \\{#storage_file_read_method\\}
 
 <SettingsInfoBlock type="LocalFSReadMethod" default_value="pread" />
 
 用于从存储文件读取数据的方法，可选值之一：`read`、`pread`、`mmap`。`mmap` 方法不适用于 clickhouse-server（仅用于 clickhouse-local）。
 
-## storage_system_stack_trace_pipe_read_timeout_ms {#storage_system_stack_trace_pipe_read_timeout_ms} 
+## storage_system_stack_trace_pipe_read_timeout_ms \\{#storage_system_stack_trace_pipe_read_timeout_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="100" />
 
 在查询 `system.stack_trace` 表时，从管道中读取线程信息的最长等待时间（毫秒）。该设置仅用于测试用途，不面向用户修改。
 
-## stream_flush_interval_ms {#stream_flush_interval_ms} 
+## stream_flush_interval_ms \\{#stream_flush_interval_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="7500" />
 
@@ -10879,7 +10879,7 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 
 该值越小，数据刷入表中的频率越高。但将该值设置得过低会导致性能下降。
 
-## stream_like_engine_allow_direct_select {#stream_like_engine_allow_direct_select} 
+## stream_like_engine_allow_direct_select \\{#stream_like_engine_allow_direct_select\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10888,17 +10888,17 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 允许对 Kafka、RabbitMQ、FileLog、Redis Streams、S3Queue、AzureQueue 和 NATS 引擎直接执行 SELECT 查询。如果存在已附加的 materialized view，即使启用了此设置，也不允许执行 SELECT 查询。
 如果没有附加 materialized view，启用此设置可以读取数据。请注意，通常读取的数据会从队列中被移除。为了避免已读取的数据被移除，应正确配置相关引擎的设置。
 
-## stream_like_engine_insert_queue {#stream_like_engine_insert_queue} 
+## stream_like_engine_insert_queue \\{#stream_like_engine_insert_queue\\}
 
 当类流式引擎从多个队列中读取数据时，用户在写入时需要选择一个队列进行插入。供 Redis Streams 和 NATS 使用。
 
-## stream_poll_timeout_ms {#stream_poll_timeout_ms} 
+## stream_poll_timeout_ms \\{#stream_poll_timeout_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="500" />
 
 从流式存储中轮询读写数据的超时时间。
 
-## system_events_show_zero_values {#system_events_show_zero_values}
+## system_events_show_zero_values \{#system_events_show_zero_values\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10941,7 +10941,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 ```
 
 
-## table_engine_read_through_distributed_cache {#table_engine_read_through_distributed_cache} 
+## table_engine_read_through_distributed_cache \\{#table_engine_read_through_distributed_cache\\}
 
 <CloudOnlyBadge/>
 
@@ -10951,7 +10951,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 仅在 ClickHouse Cloud 中有效。允许通过表引擎 / 表函数（如 S3、Azure 等）从分布式缓存读取数据。
 
-## table_function_remote_max_addresses {#table_function_remote_max_addresses} 
+## table_function_remote_max_addresses \\{#table_function_remote_max_addresses\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -10961,13 +10961,13 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 - 正整数。
 
-## tcp_keep_alive_timeout {#tcp_keep_alive_timeout} 
+## tcp_keep_alive_timeout \\{#tcp_keep_alive_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="290" />
 
 在 TCP 开始发送 keepalive 探测之前，连接允许保持空闲的时间（以秒为单位）
 
-## temporary_data_in_cache_reserve_space_wait_lock_timeout_milliseconds {#temporary_data_in_cache_reserve_space_wait_lock_timeout_milliseconds} 
+## temporary_data_in_cache_reserve_space_wait_lock_timeout_milliseconds \\{#temporary_data_in_cache_reserve_space_wait_lock_timeout_milliseconds\\}
 
 <SettingsInfoBlock type="UInt64" default_value="600000" />
 
@@ -10975,7 +10975,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 在文件系统缓存中为临时数据预留空间时获取缓存锁的等待时间（毫秒）
 
-## temporary_files_buffer_size {#temporary_files_buffer_size} 
+## temporary_files_buffer_size \\{#temporary_files_buffer_size\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1048576" />
 
@@ -10983,7 +10983,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 用于临时文件写入的缓冲区大小。缓冲区越大，系统调用越少，但内存占用越高。
 
-## temporary_files_codec {#temporary_files_codec} 
+## temporary_files_codec \\{#temporary_files_codec\\}
 
 <SettingsInfoBlock type="String" default_value="LZ4" />
 
@@ -10994,7 +10994,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 - LZ4 — 应用 [LZ4](https://en.wikipedia.org/wiki/LZ4_(compression_algorithm)) 压缩。
 - NONE — 不应用任何压缩。
 
-## text_index_hint_max_selectivity {#text_index_hint_max_selectivity} 
+## text_index_hint_max_selectivity \\{#text_index_hint_max_selectivity\\}
 
 <SettingsInfoBlock type="Float" default_value="0.2" />
 
@@ -11002,7 +11002,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 用于决定是否使用由倒排文本索引构建的提示时，过滤器的最大选择性。
 
-## text_index_use_bloom_filter {#text_index_use_bloom_filter} 
+## text_index_use_bloom_filter \\{#text_index_use_bloom_filter\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11010,19 +11010,19 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 用于测试时，启用或禁用在文本索引中使用布隆过滤器。
 
-## throw_if_no_data_to_insert {#throw_if_no_data_to_insert} 
+## throw_if_no_data_to_insert \\{#throw_if_no_data_to_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 允许或禁止执行空 INSERT，默认启用（在空 INSERT 时抛出错误）。仅适用于使用 [`clickhouse-client`](/interfaces/cli) 或 [gRPC 接口](/interfaces/grpc) 的 INSERT。
 
-## throw_on_error_from_cache_on_write_operations {#throw_on_error_from_cache_on_write_operations} 
+## throw_on_error_from_cache_on_write_operations \\{#throw_on_error_from_cache_on_write_operations\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在写入操作（INSERT、合并）过程中进行缓存时，如果发生来自缓存的错误，则忽略该错误
 
-## throw_on_max_partitions_per_insert_block {#throw_on_max_partitions_per_insert_block} 
+## throw_on_max_partitions_per_insert_block \\{#throw_on_max_partitions_per_insert_block\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11037,7 +11037,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 当你在修改 [`max_partitions_per_insert_block`](/operations/settings/settings#max_partitions_per_insert_block) 时，这有助于评估对用户的影响。
 :::
 
-## throw_on_unsupported_query_inside_transaction {#throw_on_unsupported_query_inside_transaction} 
+## throw_on_unsupported_query_inside_transaction \\{#throw_on_unsupported_query_inside_transaction\\}
 
 <ExperimentalBadge/>
 
@@ -11045,13 +11045,13 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 在事务中执行不受支持的查询时抛出异常
 
-## timeout_before_checking_execution_speed {#timeout_before_checking_execution_speed} 
+## timeout_before_checking_execution_speed \\{#timeout_before_checking_execution_speed\\}
 
 <SettingsInfoBlock type="Seconds" default_value="10" />
 
 在指定的秒数过去后，检查执行速度是否不低于 `min_execution_speed`（以确保执行速度不会过慢）。
 
-## timeout_overflow_mode {#timeout_overflow_mode} 
+## timeout_overflow_mode \\{#timeout_overflow_mode\\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
@@ -11062,7 +11062,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 - `throw`：抛出异常（默认）。
 - `break`：停止执行查询并返回部分结果，就像源数据已经耗尽一样。
 
-## timeout_overflow_mode_leaf {#timeout_overflow_mode_leaf} 
+## timeout_overflow_mode_leaf \\{#timeout_overflow_mode_leaf\\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
@@ -11073,21 +11073,21 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 - `throw`: 抛出异常（默认）。
 - `break`: 停止执行查询并返回部分结果，就好像源数据已经耗尽一样。
 
-## totals_auto_threshold {#totals_auto_threshold} 
+## totals_auto_threshold \\{#totals_auto_threshold\\}
 
 <SettingsInfoBlock type="Float" default_value="0.5" />
 
 用于 `totals_mode = 'auto'` 的阈值。
 参见 “WITH TOTALS 修饰符” 一节。
 
-## totals_mode {#totals_mode} 
+## totals_mode \\{#totals_mode\\}
 
 <SettingsInfoBlock type="TotalsMode" default_value="after_having_exclusive" />
 
 当存在 HAVING 子句时如何计算 TOTALS，以及在同时设置了 max_rows_to_group_by 和 group_by_overflow_mode = 'any' 时的计算方式。
 参见“WITH TOTALS 修饰符”一节。
 
-## trace_profile_events {#trace_profile_events} 
+## trace_profile_events \\{#trace_profile_events\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11098,7 +11098,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 - 1 — 启用对 profile events 的跟踪。
 - 0 — 禁用对 profile events 的跟踪。
 
-## trace_profile_events_list {#trace_profile_events_list} 
+## trace_profile_events_list \\{#trace_profile_events_list\\}
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": ""},{"label": "New setting"}]}]}/>
 
@@ -11109,7 +11109,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 使用此设置可以在存在大量查询时更精确地收集数据，否则，大量事件可能会导致内部系统日志队列溢出，从而使部分事件被丢弃。
 
-## transfer_overflow_mode {#transfer_overflow_mode} 
+## transfer_overflow_mode \\{#transfer_overflow_mode\\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
@@ -11121,7 +11121,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 - `break`: 停止执行查询并返回部分结果，仿佛
 源数据已经耗尽。
 
-## transform_null_in {#transform_null_in}
+## transform_null_in \{#transform_null_in\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11180,7 +11180,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 * [IN 运算符中的 NULL 处理](/sql-reference/operators/in#null-processing)
 
 
-## traverse_shadow_remote_data_paths {#traverse_shadow_remote_data_paths} 
+## traverse_shadow_remote_data_paths \\{#traverse_shadow_remote_data_paths\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11188,7 +11188,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 在查询 system.remote_data_paths 时，除实际表数据外，还遍历冻结数据（shadow 目录）。
 
-## union_default_mode {#union_default_mode} 
+## union_default_mode \\{#union_default_mode\\}
 
 设置用于合并 `SELECT` 查询结果的模式。该 SETTING 仅在与 [UNION](../../sql-reference/statements/select/union.md) 一起使用且未显式指定 `UNION ALL` 或 `UNION DISTINCT` 时生效。
 
@@ -11200,13 +11200,13 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 示例参见 [UNION](../../sql-reference/statements/select/union.md)。
 
-## unknown_packet_in_send_data {#unknown_packet_in_send_data} 
+## unknown_packet_in_send_data \\{#unknown_packet_in_send_data\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 将第 N 个数据包改为发送未知数据包
 
-## update_parallel_mode {#update_parallel_mode} 
+## update_parallel_mode \\{#update_parallel_mode\\}
 
 <SettingsInfoBlock type="UpdateParallelMode" default_value="auto" />
 
@@ -11220,7 +11220,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 - `auto` - 仅对存在依赖关系的 `UPDATE` 查询依次顺序执行：即一个查询中被更新的列，会在另一个查询的表达式中被使用。
 - `async` - 不对更新查询进行同步。
 
-## update_sequential_consistency {#update_sequential_consistency} 
+## update_sequential_consistency \\{#update_sequential_consistency\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11228,7 +11228,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 如果为 true，则会在执行更新之前将分区片段集合更新到最新版本。
 
-## use_async_executor_for_materialized_views {#use_async_executor_for_materialized_views} 
+## use_async_executor_for_materialized_views \\{#use_async_executor_for_materialized_views\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11236,7 +11236,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 对 materialized view 的查询使用异步（可能为多线程）执行方式，可以在 INSERT 期间加速 materialized view 的处理，但也会占用更多内存。
 
-## use_cache_for_count_from_files {#use_cache_for_count_from_files} 
+## use_cache_for_count_from_files \\{#use_cache_for_count_from_files\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11244,13 +11244,13 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 默认启用。
 
-## use_client_time_zone {#use_client_time_zone} 
+## use_client_time_zone \\{#use_client_time_zone\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 使用客户端时区来解析 DateTime 字符串值，而不是使用服务器时区。
 
-## use_compact_format_in_distributed_parts_names {#use_compact_format_in_distributed_parts_names} 
+## use_compact_format_in_distributed_parts_names \\{#use_compact_format_in_distributed_parts_names\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11269,7 +11269,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 - 当 `use_compact_format_in_distributed_parts_names=1` 时，更改集群定义中节点的顺序会改变 `shard_index` / `replica_index`，需谨慎。
 :::
 
-## use_concurrency_control {#use_concurrency_control} 
+## use_concurrency_control \\{#use_concurrency_control\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11277,7 +11277,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 遵守服务器级并发控制（参见全局服务器设置 `concurrent_threads_soft_limit_num` 和 `concurrent_threads_soft_limit_ratio_to_cores`）。如果禁用该设置，即使服务器已过载，也允许使用更多线程（不建议在常规场景中使用此配置，主要用于测试场景）。
 
-## use_hedged_requests {#use_hedged_requests} 
+## use_hedged_requests \\{#use_hedged_requests\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11292,7 +11292,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Cloud 默认值：`1`
 
-## use_hive_partitioning {#use_hive_partitioning} 
+## use_hive_partitioning \\{#use_hive_partitioning\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11300,7 +11300,7 @@ Cloud 默认值：`1`
 
 启用后，ClickHouse 会在类文件表引擎 [File](/sql-reference/table-functions/file#hive-style-partitioning)/[S3](/sql-reference/table-functions/s3#hive-style-partitioning)/[URL](/sql-reference/table-functions/url#hive-style-partitioning)/[HDFS](/sql-reference/table-functions/hdfs#hive-style-partitioning)/[AzureBlobStorage](/sql-reference/table-functions/azureBlobStorage#hive-style-partitioning) 的路径（`/name=value/`）中检测 Hive 风格的分区，并允许在查询中将分区列作为虚拟列使用。这些虚拟列的名称与分区路径中的名称相同，但都以下划线 `_` 开头。
 
-## use_iceberg_metadata_files_cache {#use_iceberg_metadata_files_cache} 
+## use_iceberg_metadata_files_cache \\{#use_iceberg_metadata_files_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11313,7 +11313,7 @@ Cloud 默认值：`1`
 - 0 - 禁用
 - 1 - 启用
 
-## use_iceberg_partition_pruning {#use_iceberg_partition_pruning} 
+## use_iceberg_partition_pruning \\{#use_iceberg_partition_pruning\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11321,19 +11321,19 @@ Cloud 默认值：`1`
 
 对 Iceberg 表使用分区裁剪
 
-## use_index_for_in_with_subqueries {#use_index_for_in_with_subqueries} 
+## use_index_for_in_with_subqueries \\{#use_index_for_in_with_subqueries\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 如果在 IN 运算符右侧存在子查询或表表达式，应尝试使用索引。
 
-## use_index_for_in_with_subqueries_max_values {#use_index_for_in_with_subqueries_max_values} 
+## use_index_for_in_with_subqueries_max_values \\{#use_index_for_in_with_subqueries_max_values\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 在使用 `IN` 运算符时，右侧参与过滤的集合可以使用表索引的最大大小。超过该大小时，将不再使用表索引进行过滤。这样可以避免在处理大查询时，为构建额外数据结构而导致的性能下降和更高的内存占用。0 表示不设上限。
 
-## use_join_disjunctions_push_down {#use_join_disjunctions_push_down} 
+## use_join_disjunctions_push_down \\{#use_join_disjunctions_push_down\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11343,7 +11343,7 @@ Cloud 默认值：`1`
 这使得存储引擎可以更早进行过滤，从而减少数据读取量。
 该优化在保持语义不变的前提下，仅在每个顶层 OR 分支都为目标端提供至少一个确定性谓词时才会应用。
 
-## use_legacy_to_time {#use_legacy_to_time} 
+## use_legacy_to_time \\{#use_legacy_to_time\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11353,7 +11353,7 @@ Cloud 默认值：`1`
 否则，将使用新版 toTime 函数，用于将不同类型的数据转换为 Time 类型。
 旧版函数也始终可以通过 toTimeWithFixedDate 直接访问。
 
-## use_page_cache_for_disks_without_file_cache {#use_page_cache_for_disks_without_file_cache} 
+## use_page_cache_for_disks_without_file_cache \\{#use_page_cache_for_disks_without_file_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11361,7 +11361,7 @@ Cloud 默认值：`1`
 
 对未启用文件系统缓存的远程磁盘使用用户态页缓存。
 
-## use_page_cache_with_distributed_cache {#use_page_cache_with_distributed_cache} 
+## use_page_cache_with_distributed_cache \\{#use_page_cache_with_distributed_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11369,7 +11369,7 @@ Cloud 默认值：`1`
 
 在使用分布式缓存时使用用户空间页缓存。
 
-## use_paimon_partition_pruning {#use_paimon_partition_pruning} 
+## use_paimon_partition_pruning \\{#use_paimon_partition_pruning\\}
 
 <ExperimentalBadge/>
 
@@ -11379,7 +11379,7 @@ Cloud 默认值：`1`
 
 对 Paimon 表函数使用 Paimon 分区裁剪
 
-## use_primary_key {#use_primary_key} 
+## use_primary_key \\{#use_primary_key\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11392,7 +11392,7 @@ Cloud 默认值：`1`
 - 0 — 禁用。
 - 1 — 启用。
 
-## use_query_cache {#use_query_cache} 
+## use_query_cache \\{#use_query_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11404,7 +11404,7 @@ Cloud 默认值：`1`
 - 0 - 禁用
 - 1 - 启用
 
-## use_query_condition_cache {#use_query_condition_cache} 
+## use_query_condition_cache \\{#use_query_condition_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11418,7 +11418,7 @@ Cloud 默认值：`1`
 - 0 - 禁用
 - 1 - 启用
 
-## use_roaring_bitmap_iceberg_positional_deletes {#use_roaring_bitmap_iceberg_positional_deletes} 
+## use_roaring_bitmap_iceberg_positional_deletes \\{#use_roaring_bitmap_iceberg_positional_deletes\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11426,7 +11426,7 @@ Cloud 默认值：`1`
 
 将 roaring bitmap 用于 Iceberg 位置删除。
 
-## use_skip_indexes {#use_skip_indexes} 
+## use_skip_indexes \\{#use_skip_indexes\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11437,7 +11437,7 @@ Cloud 默认值：`1`
 - 0 — 禁用。
 - 1 — 启用。
 
-## use_skip_indexes_for_disjunctions {#use_skip_indexes_for_disjunctions} 
+## use_skip_indexes_for_disjunctions \\{#use_skip_indexes_for_disjunctions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11451,7 +11451,7 @@ Cloud 默认值：`1`
 - 0 — 禁用。
 - 1 — 启用。
 
-## use_skip_indexes_for_top_k {#use_skip_indexes_for_top_k} 
+## use_skip_indexes_for_top_k \\{#use_skip_indexes_for_top_k\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11466,7 +11466,7 @@ Cloud 默认值：`1`
 - 0 — 禁用。
 - 1 — 启用。
 
-## use_skip_indexes_if_final {#use_skip_indexes_if_final} 
+## use_skip_indexes_if_final \\{#use_skip_indexes_if_final\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11481,7 +11481,7 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 - 0 — 禁用。
 - 1 — 启用。
 
-## use_skip_indexes_if_final_exact_mode {#use_skip_indexes_if_final_exact_mode} 
+## use_skip_indexes_if_final_exact_mode \\{#use_skip_indexes_if_final_exact_mode\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11496,7 +11496,7 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 - 0 — 禁用。
 - 1 — 启用。
 
-## use_skip_indexes_on_data_read {#use_skip_indexes_on_data_read} 
+## use_skip_indexes_on_data_read \\{#use_skip_indexes_on_data_read\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11511,7 +11511,7 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 - 0 — 禁用。
 - 1 — 启用。
 
-## use_statistics_cache {#use_statistics_cache} 
+## use_statistics_cache \\{#use_statistics_cache\\}
 
 <ExperimentalBadge/>
 
@@ -11521,7 +11521,7 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 在查询中使用统计信息缓存，以避免为每个分区片段分别加载统计信息带来的开销
 
-## use_structure_from_insertion_table_in_table_functions {#use_structure_from_insertion_table_in_table_functions} 
+## use_structure_from_insertion_table_in_table_functions \\{#use_structure_from_insertion_table_in_table_functions\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
@@ -11529,7 +11529,7 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 使用插入表的结构，而不是从数据推断表结构。可选值：0 - 禁用，1 - 启用，2 - 自动
 
-## use_text_index_dictionary_cache {#use_text_index_dictionary_cache} 
+## use_text_index_dictionary_cache \\{#use_text_index_dictionary_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11538,7 +11538,7 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 是否使用反序列化后的文本索引字典块缓存。
 在处理大量文本索引查询时，使用文本索引字典块缓存可以显著降低延迟并提高吞吐量。
 
-## use_text_index_header_cache {#use_text_index_header_cache} 
+## use_text_index_header_cache \\{#use_text_index_header_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11547,7 +11547,7 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 是否启用反序列化后的文本索引头部缓存。
 在处理大量文本索引查询时，使用文本索引头部缓存可以显著降低延迟并提高吞吐量。
 
-## use_text_index_postings_cache {#use_text_index_postings_cache} 
+## use_text_index_postings_cache \\{#use_text_index_postings_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11556,7 +11556,7 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 是否使用反序列化后的文本索引 posting 列表缓存。
 在处理大量文本索引查询时，使用文本索引 postings 缓存可以显著降低延迟并提高吞吐量。
 
-## use_top_k_dynamic_filtering {#use_top_k_dynamic_filtering} 
+## use_top_k_dynamic_filtering \\{#use_top_k_dynamic_filtering\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11571,7 +11571,7 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 - 0 — 禁用。
 - 1 — 启用。
 
-## use_uncompressed_cache {#use_uncompressed_cache} 
+## use_uncompressed_cache \\{#use_uncompressed_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11580,7 +11580,7 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 对于读取数据量至少达到 100 万行或更多的查询，未压缩缓存会自动禁用，以便为真正的小查询节省空间。这意味着可以始终将 `use_uncompressed_cache` 设置为 1。
 
-## use_variant_as_common_type {#use_variant_as_common_type}
+## use_variant_as_common_type \{#use_variant_as_common_type\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11665,7 +11665,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 ```
 
 
-## use_variant_default_implementation_for_comparisons {#use_variant_default_implementation_for_comparisons} 
+## use_variant_default_implementation_for_comparisons \\{#use_variant_default_implementation_for_comparisons\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11673,7 +11673,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 
 启用或禁用在比较函数中对 Variant 类型使用默认实现。
 
-## use_with_fill_by_sorting_prefix {#use_with_fill_by_sorting_prefix} 
+## use_with_fill_by_sorting_prefix \\{#use_with_fill_by_sorting_prefix\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11681,7 +11681,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 
 ORDER BY 子句中位于 WITH FILL 列之前的列构成排序前缀。具有不同排序前缀值的行会被独立填充
 
-## validate_enum_literals_in_operators {#validate_enum_literals_in_operators} 
+## validate_enum_literals_in_operators \\{#validate_enum_literals_in_operators\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11689,7 +11689,7 @@ ORDER BY 子句中位于 WITH FILL 列之前的列构成排序前缀。具有不
 
 启用后，会根据枚举类型校验在 `IN`、`NOT IN`、`==`、`!=` 等运算符中的枚举字面量；如果该字面量不是有效的枚举值，则抛出异常。
 
-## validate_mutation_query {#validate_mutation_query} 
+## validate_mutation_query \\{#validate_mutation_query\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11699,7 +11699,7 @@ ORDER BY 子句中位于 WITH FILL 列之前的列构成排序前缀。具有不
 
 仅当遇到不向后兼容的 bug 时才应修改此设置。
 
-## validate_polygons {#validate_polygons} 
+## validate_polygons \\{#validate_polygons\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11712,7 +11712,7 @@ ORDER BY 子句中位于 WITH FILL 列之前的列构成排序前缀。具有不
 - 0 — 禁用抛出异常。`pointInPolygon` 接受无效的多边形，并为其返回可能不正确的结果。
 - 1 — 启用抛出异常。
 
-## vector_search_filter_strategy {#vector_search_filter_strategy} 
+## vector_search_filter_strategy \\{#vector_search_filter_strategy\\}
 
 <SettingsInfoBlock type="VectorSearchFilterStrategy" default_value="auto" />
 
@@ -11724,7 +11724,7 @@ ORDER BY 子句中位于 WITH FILL 列之前的列构成排序前缀。具有不
 - 'postfilter' - 使用向量相似度索引来识别最近邻，然后再应用其他过滤条件。
 - 'prefilter' - 先评估其他过滤条件，然后执行穷举搜索以识别最近邻。
 
-## vector_search_index_fetch_multiplier {#vector_search_index_fetch_multiplier} 
+## vector_search_index_fetch_multiplier \\{#vector_search_index_fetch_multiplier\\}
 
 **别名**: `vector_search_postfilter_multiplier`
 
@@ -11734,7 +11734,7 @@ ORDER BY 子句中位于 WITH FILL 列之前的列构成排序前缀。具有不
 
 将从向量相似度索引中获取的最近邻数量乘以此数值。仅在与其他谓词一起进行后置过滤时，或当设置 `vector_search_with_rescoring = 1` 时生效。
 
-## vector_search_with_rescoring {#vector_search_with_rescoring} 
+## vector_search_with_rescoring \\{#vector_search_with_rescoring\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11746,7 +11746,7 @@ ORDER BY 子句中位于 WITH FILL 列之前的列构成排序前缀。具有不
 在大多数情况下，重新打分对准确性的提升有限，但会显著降低向量搜索查询的性能。
 注意：在未启用重新打分但启用了并行副本的情况下，查询可能会退回到执行重新打分。
 
-## wait_changes_become_visible_after_commit_mode {#wait_changes_become_visible_after_commit_mode} 
+## wait_changes_become_visible_after_commit_mode \\{#wait_changes_become_visible_after_commit_mode\\}
 
 <ExperimentalBadge/>
 
@@ -11754,19 +11754,19 @@ ORDER BY 子句中位于 WITH FILL 列之前的列构成排序前缀。具有不
 
 等待已提交的更改在最新快照中实际可见
 
-## wait_for_async_insert {#wait_for_async_insert} 
+## wait_for_async_insert \\{#wait_for_async_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 如果为 true，则等待异步插入处理完成。
 
-## wait_for_async_insert_timeout {#wait_for_async_insert_timeout} 
+## wait_for_async_insert_timeout \\{#wait_for_async_insert_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="120" />
 
 等待异步插入处理完成的超时时间
 
-## wait_for_window_view_fire_signal_timeout {#wait_for_window_view_fire_signal_timeout} 
+## wait_for_window_view_fire_signal_timeout \\{#wait_for_window_view_fire_signal_timeout\\}
 
 <ExperimentalBadge/>
 
@@ -11774,7 +11774,7 @@ ORDER BY 子句中位于 WITH FILL 列之前的列构成排序前缀。具有不
 
 在事件时间处理过程中等待 Window View 触发信号的超时时间
 
-## window_view_clean_interval {#window_view_clean_interval} 
+## window_view_clean_interval \\{#window_view_clean_interval\\}
 
 <ExperimentalBadge/>
 
@@ -11782,7 +11782,7 @@ ORDER BY 子句中位于 WITH FILL 列之前的列构成排序前缀。具有不
 
 window view 的清理间隔（以秒为单位），用于清理过期数据。
 
-## window_view_heartbeat_interval {#window_view_heartbeat_interval} 
+## window_view_heartbeat_interval \\{#window_view_heartbeat_interval\\}
 
 <ExperimentalBadge/>
 
@@ -11790,13 +11790,13 @@ window view 的清理间隔（以秒为单位），用于清理过期数据。
 
 以秒为单位的心跳间隔，用于指示 watch 查询仍在运行。
 
-## 工作负载 {#workload} 
+## 工作负载 \\{#workload\\}
 
 <SettingsInfoBlock type="String" default_value="default" />
 
 用于访问资源的工作负载的名称
 
-## write_full_path_in_iceberg_metadata {#write_full_path_in_iceberg_metadata} 
+## write_full_path_in_iceberg_metadata \\{#write_full_path_in_iceberg_metadata\\}
 
 <ExperimentalBadge/>
 
@@ -11806,7 +11806,7 @@ window view 的清理间隔（以秒为单位），用于清理过期数据。
 
 将完整路径（包括 S3://）写入到 Iceberg 元数据文件中。
 
-## write_through_distributed_cache {#write_through_distributed_cache} 
+## write_through_distributed_cache \\{#write_through_distributed_cache\\}
 
 <CloudOnlyBadge/>
 
@@ -11816,7 +11816,7 @@ window view 的清理间隔（以秒为单位），用于清理过期数据。
 
 仅在 ClickHouse Cloud 中生效。允许通过分布式缓存进行写入（对 S3 的写入也将通过分布式缓存完成）
 
-## write_through_distributed_cache_buffer_size {#write_through_distributed_cache_buffer_size} 
+## write_through_distributed_cache_buffer_size \\{#write_through_distributed_cache_buffer_size\\}
 
 <CloudOnlyBadge/>
 
@@ -11826,7 +11826,7 @@ window view 的清理间隔（以秒为单位），用于清理过期数据。
 
 仅在 ClickHouse Cloud 中生效。设置直写分布式缓存的缓冲区大小。若为 0，则使用在没有分布式缓存时本应使用的缓冲区大小。
 
-## zstd_window_log_max {#zstd_window_log_max} 
+## zstd_window_log_max \\{#zstd_window_log_max\\}
 
 <SettingsInfoBlock type="Int64" default_value="0" />
 

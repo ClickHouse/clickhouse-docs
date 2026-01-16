@@ -7,17 +7,17 @@ keywords: ['APPLY', 'modifier']
 doc_type: 'reference'
 ---
 
-# Модификатор APPLY {#apply}
+# Модификатор APPLY \\{#apply\\}
 
 > Позволяет выполнить функцию для каждой строки, возвращаемой внешним табличным выражением запроса.
 
-## Синтаксис {#syntax}
+## Синтаксис \\{#syntax\\}
 
 ```sql
 SELECT <expr> APPLY( <func> ) FROM [db.]table_name
 ```
 
-## Пример {#example}
+## Пример \\{#example\\}
 
 ```sql
 CREATE TABLE columns_transformers (i Int64, j Int16, k Int64) ENGINE = MergeTree ORDER by (i);

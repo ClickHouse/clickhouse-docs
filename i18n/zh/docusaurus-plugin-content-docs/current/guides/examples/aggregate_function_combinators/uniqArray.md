@@ -7,9 +7,9 @@ sidebar_label: 'uniqArray'
 doc_type: 'reference'
 ---
 
-# uniqArray {#uniqarray}
+# uniqArray \\{#uniqarray\\}
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 [`Array`](/sql-reference/aggregate-functions/combinators#-array) 组合器
 可以应用于 [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 当你需要在数据集中跨多个数组统计唯一元素时，`uniqArray` 函数非常有用。它等同于使用 `uniq(arrayJoin())`，其中 `arrayJoin` 会先将数组展开，然后 `uniq` 再统计唯一元素的数量。
 
-## 示例用法 {#example-usage}
+## 示例用法 \\{#example-usage\\}
 
 在这个示例中，我们将使用一个包含不同类别下用户兴趣的样例数据集来演示 `uniqArray` 的工作方式。我们会将它与 `uniq(arrayJoin())` 进行对比，以展示在统计唯一元素数量时的差异。
 
@@ -51,7 +51,7 @@ FROM user_interests;
    └────────────────────────┴────────────────────────────┘
 ```
 
-## 另请参阅 {#see-also}
+## 另请参阅 \\{#see-also\\}
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
 - [`arrayJoin`](/sql-reference/functions/array-join)
 - [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)

@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-# Оптимизация, управляемая профилированием {#profile-guided-optimization}
+# Оптимизация, управляемая профилированием \\{#profile-guided-optimization\\}
 
 Profile-Guided Optimization (PGO) — это техника оптимизации компилятора, при которой программа оптимизируется на основе профиля выполнения во время работы.
 
@@ -17,7 +17,7 @@ Profile-Guided Optimization (PGO) — это техника оптимизаци
 
 Подробнее о PGO в ClickHouse можно прочитать в соответствующем [issue](https://github.com/ClickHouse/ClickHouse/issues/44567) на GitHub.
 
-## Как собрать ClickHouse с PGO? {#how-to-build-clickhouse-with-pgo}
+## Как собрать ClickHouse с PGO? \\{#how-to-build-clickhouse-with-pgo\\}
 
 Существует два основных вида PGO: [Instrumentation](https://clang.llvm.org/docs/UsersManual.html#using-sampling-profilers) и [Sampling](https://clang.llvm.org/docs/UsersManual.html#using-sampling-profilers) (также известный как AutoFDO). В этом руководстве описывается использование Instrumentation PGO с ClickHouse.
 

@@ -5,7 +5,7 @@ title: 'deltaSum'
 doc_type: 'reference'
 ---
 
-# deltaSum {#deltasum}
+# deltaSum \{#deltasum\}
 
 連続する行同士の算術的な差分を合計します。差分が負の場合は無視されます。
 
@@ -71,7 +71,7 @@ SELECT deltaSum(arrayJoin([2.25, 3, 4.5]));
 └─────────────────────────────────────┘
 ```
 
-## 関連項目 {#see-also}
+## 関連項目 \{#see-also\}
 
 * [runningDifference](/sql-reference/functions/other-functions#runningDifference)
 

@@ -9,9 +9,9 @@ doc_type: 'reference'
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-# Поддерживаемые регионы Cloud {#supported-cloud-regions}
+# Поддерживаемые регионы Cloud \\{#supported-cloud-regions\\}
 
-## Регионы AWS {#aws-regions}
+## Регионы AWS \\{#aws-regions\\}
 
 - ap-northeast-1 (Токио)
 - ap-northeast-2 (Южная Корея, Сеул)
@@ -34,7 +34,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - eu-north-1 (Стокгольм)
 - sa-east-1 (Южная Америка)
 
-## Регионы Google Cloud {#google-cloud-regions}
+## Регионы Google Cloud \\{#google-cloud-regions\\}
 
 - asia-southeast1 (Сингапур)
 - asia-northeast1 (Токио)
@@ -50,7 +50,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - europe-west6 (Цюрих)
 - northamerica-northeast1 (Монреаль)
 
-## Регионы Azure {#azure-regions}
+## Регионы Azure \\{#azure-regions\\}
 
 - West US 3 (Аризона)
 - East US 2 (Вирджиния)
@@ -65,7 +65,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 Нужно развернуть в регионе, который сейчас не указан в списке? [Отправьте запрос](https://clickhouse.com/pricing?modal=open). 
 :::
 
-## Частные регионы {#private-regions}
+## Частные регионы \\{#private-regions\\}
 
 <EnterprisePlanFeatureBadge feature="Private regions feature"/>
 
@@ -79,7 +79,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 Для соответствия требованиям HIPAA могут потребоваться дополнительные условия (включая подписание BAA). Обратите внимание, что HIPAA в настоящее время доступна только для сервисов уровня Enterprise.
 
-## Регионы, соответствующие требованиям HIPAA {#hipaa-compliant-regions}
+## Регионы, соответствующие требованиям HIPAA \\{#hipaa-compliant-regions\\}
 
 <EnterprisePlanFeatureBadge feature="HIPAA" support="true"/>
 
@@ -99,7 +99,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - GCP us-central1 (Iowa)
 - GCP us-east1 (South Carolina)
 
-## Регионы, соответствующие требованиям PCI {#pci-compliant-regions}
+## Регионы, соответствующие требованиям PCI \\{#pci-compliant-regions\\}
 
 <EnterprisePlanFeatureBadge feature="PCI" support="true"/>
 

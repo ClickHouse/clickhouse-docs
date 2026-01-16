@@ -6,7 +6,7 @@ title: 'system.parts_columns'
 doc_type: 'reference'
 ---
 
-# system.parts&#95;columns {#systemparts&#95;columns}
+# system.parts&#95;columns \\{#systemparts&#95;columns\\}
 
 包含 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表的各个数据 part 及其列的信息。
 

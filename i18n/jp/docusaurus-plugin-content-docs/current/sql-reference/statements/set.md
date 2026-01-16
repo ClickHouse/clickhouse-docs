@@ -7,7 +7,7 @@ title: 'SET ステートメント'
 doc_type: 'reference'
 ---
 
-# SET ステートメント {#set-statement}
+# SET ステートメント \\{#set-statement\\}
 
 ```sql
 SET param = value
@@ -29,7 +29,7 @@ SET force_index_by_date = 1
 SET force_index_by_date
 ```
 
-## クエリパラメータの設定 {#setting-query-parameters}
+## クエリパラメータの設定 \\{#setting-query-parameters\\}
 
 `SET` ステートメントは、パラメータ名に `param_` というプレフィックスを付けることで、クエリパラメータを定義するためにも使用できます。
 クエリパラメータを使用すると、実行時に実際の値に置き換えられるプレースホルダーを含む汎用的なクエリを記述できます。

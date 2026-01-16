@@ -37,12 +37,12 @@ ClickStack 的 Helm 图表可以在 [此处](https://github.com/ClickHouse/Click
 * Secrets 管理和认证设置
 
 
-### 适用场景 {#suitable-for}
+### 适用场景 \\{#suitable-for\\}
 
 * 概念验证（PoC）
 * 生产环境
 
-## 部署步骤 {#deployment-steps}
+## 部署步骤 \\{#deployment-steps\\}
 
 <br/>
 
@@ -318,13 +318,13 @@ helm uninstall my-clickstack
 
 ## 故障排查 {#troubleshooting}
 
-### 查看日志 {#customizing-values}
+### 查看日志 \{#customizing-values\}
 
 ```shell
 kubectl logs -l app.kubernetes.io/name=clickstack
 ```
 
-### 排查安装失败 {#using-secrets}
+### 排查安装失败 \{#using-secrets\}
 
 ```shell
 helm install my-clickstack clickstack/clickstack --debug --dry-run

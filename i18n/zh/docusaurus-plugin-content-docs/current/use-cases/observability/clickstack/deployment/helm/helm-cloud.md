@@ -11,11 +11,11 @@ keywords: ['ClickStack GKE', 'ClickStack EKS', 'ClickStack AKS', 'Kubernetes 云
 
 本指南介绍在托管 Kubernetes 服务上部署 ClickStack 时的云平台特定配置。有关基础安装，请参阅 [Helm 通用部署指南](/docs/use-cases/observability/clickstack/deployment/helm)。
 
-## Google Kubernetes Engine (GKE) {#google-kubernetes-engine-gke}
+## Google Kubernetes Engine (GKE) \\{#google-kubernetes-engine-gke\\}
 
 在部署到 GKE 时，由于云环境特有的网络特性，可能需要覆盖某些默认配置值。
 
-### LoadBalancer DNS 解析问题 {#loadbalancer-dns-resolution-issue}
+### LoadBalancer DNS 解析问题 \\{#loadbalancer-dns-resolution-issue\\}
 
 GKE 的 LoadBalancer 服务可能会导致内部 DNS 解析问题，即 pod（容器组）之间的通信会被解析到外部 IP，而不是保持在集群网络内部。这会特别影响 OTel collector 与 OpAMP server 之间的连接。
 
@@ -34,7 +34,7 @@ helm install my-clickstack clickstack/clickstack \
   --set otel.opampServerUrl="http://my-clickstack-clickstack-app.default.svc.cluster.local:4320"
 ```
 
-### 其他 GKE 注意事项 {#other-gke-considerations}
+### 其他 GKE 注意事项 \\{#other-gke-considerations\\}
 
 ```yaml
 # values-gke.yaml
@@ -52,7 +52,7 @@ clickhouse:
       - "10.0.0.0/8"   # Fallback for other configurations
 ```
 
-## Amazon EKS {#amazon-eks}
+## Amazon EKS \\{#amazon-eks\\}
 
 在 EKS 上进行部署时，可以考虑以下常见配置：
 
@@ -77,7 +77,7 @@ hyperdx:
       enabled: true
 ```
 
-## Azure AKS {#azure-aks}
+## Azure AKS \\{#azure-aks\\}
 
 适用于 AKS 部署：
 
@@ -94,7 +94,7 @@ clickhouse:
       - "10.0.0.0/8"
 ```
 
-## 生产环境云部署检查清单 {#production-cloud-deployment-checklist}
+## 生产环境云部署检查清单 \\{#production-cloud-deployment-checklist\\}
 
 在任何云服务商上将 ClickStack 部署到生产环境之前：
 
@@ -108,9 +108,9 @@ clickhouse:
 - [ ] 配置备份和灾难恢复
 - [ ] 实施适当的 Secret 管理
 
-## 生产环境最佳实践 {#production-best-practices}
+## 生产环境最佳实践 \\{#production-best-practices\\}
 
-### 资源管理 {#resource-management}
+### 资源管理 \\{#resource-management\\}
 
 ```yaml
 hyperdx:
@@ -123,7 +123,7 @@ hyperdx:
       memory: 4Gi
 ```
 
-### 高可用性 {#high-availability}
+### 高可用性 \\{#high-availability\\}
 
 ```yaml
 hyperdx:
@@ -143,7 +143,7 @@ hyperdx:
             topologyKey: kubernetes.io/hostname
 ```
 
-### 持久化存储 {#persistent-storage}
+### 持久化存储 \\{#persistent-storage\\}
 
 确保持久卷已配置好用于数据保留：
 
@@ -161,13 +161,13 @@ clickhouse:
 * **EKS**: `gp3` 或 `io2`
 * **AKS**: `managed-premium` 或 `managed-csi`
 
-### 浏览器兼容性注意事项 {#browser-compatibility-notes}
+### 浏览器兼容性注意事项 \\{#browser-compatibility-notes\\}
 
 对于仅使用 HTTP 的部署（开发/测试环境），某些浏览器可能会因为安全上下文要求而在使用加密 API 时出现错误。对于生产环境部署，请务必通过入口配置使用启用正确 TLS 证书的 HTTPS。
 
 有关 TLS 配置步骤，请参阅[入口配置](/docs/use-cases/observability/clickstack/deployment/helm-configuration#ingress-setup)。
 
-## 后续步骤 {#next-steps}
+## 后续步骤 \\{#next-steps\\}
 
 - [配置指南](/docs/use-cases/observability/clickstack/deployment/helm-configuration) - API 密钥、机密信息和入口
 - [部署选项](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) - 外部系统配置

@@ -7,7 +7,7 @@ title: 'jdbc'
 doc_type: 'reference'
 ---
 
-# JDBC テーブル関数 {#jdbc-table-function}
+# JDBC テーブル関数 \\{#jdbc-table-function\\}
 
 :::note
 clickhouse-jdbc-bridge には実験的なコードが含まれており、すでにサポート対象外です。信頼性の問題やセキュリティ上の脆弱性を含んでいる可能性があります。自己責任で使用してください。\
@@ -19,7 +19,7 @@ JDBC テーブル関数は、JDBC ドライバー経由で接続されたテー�
 このテーブル関数を使用するには、別途 [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) プログラムを起動しておく必要があります。\
 リモートテーブル（クエリ対象）の DDL に基づいて Nullable 型をサポートします。
 
-## 構文 {#syntax}
+## 構文 \\{#syntax\\}
 
 ```sql
 jdbc(datasource, external_database, external_table)
@@ -27,7 +27,7 @@ jdbc(datasource, external_table)
 jdbc(named_collection)
 ```
 
-## 例 {#examples}
+## 例 \\{#examples\\}
 
 外部データベース名の代わりにスキーマを指定することもできます。
 

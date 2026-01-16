@@ -24,11 +24,11 @@ CREATE [ROW] POLICY [IF NOT EXISTS | OR REPLACE] policy_name1 [ON CLUSTER cluste
     [TO {role1 [, role2 ...] | ALL | ALL EXCEPT role1 [, role2 ...]}]
 ```
 
-## USING 子句 {#using-clause}
+## USING 子句 \\{#using-clause\\}
 
 允许指定条件来过滤行。只有当对某行计算该条件的结果为非零值时，用户才能看到该行。
 
-## TO 子句 {#to-clause}
+## TO 子句 \\{#to-clause\\}
 
 在 `TO` 部分中，可以提供该策略适用的用户和角色列表。例如：`CREATE ROW POLICY ... TO accountant, john@localhost`。
 
@@ -46,7 +46,7 @@ CREATE [ROW] POLICY [IF NOT EXISTS | OR REPLACE] policy_name1 [ON CLUSTER cluste
 `CREATE ROW POLICY pol2 ON mydb.table1 USING 1 TO ALL EXCEPT mira, peter`
 :::
 
-## AS 子句 {#as-clause}
+## AS 子句 \\{#as-clause\\}
 
 允许在同一张表上针对同一用户同时启用多个策略。因此，我们需要一种方法将多个策略中的条件组合起来。
 
@@ -91,11 +91,11 @@ CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 AS RESTRICTIVE TO peter, antonio
 使用户 `peter` 只能在 `b=1` 且 `c=2` 时查看 table1 的行，尽管
 mydb 中的其他任何表对该用户只会应用 `b=1` 的策略。
 
-## ON CLUSTER 子句 {#on-cluster-clause}
+## ON CLUSTER 子句 \\{#on-cluster-clause\\}
 
 允许在集群中创建行策略，参见 [Distributed DDL](../../../sql-reference/distributed-ddl.md)。
 
-## 示例 {#examples}
+## 示例 \\{#examples\\}
 
 `CREATE ROW POLICY filter1 ON mydb.mytable USING a<1000 TO accountant, john@localhost`
 

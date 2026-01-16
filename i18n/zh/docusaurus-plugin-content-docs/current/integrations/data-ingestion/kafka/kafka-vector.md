@@ -11,7 +11,7 @@ keywords: ['kafka', 'vector', '日志采集', '可观测性', '集成']
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
-## 在 Kafka 和 ClickHouse 中使用 Vector {#using-vector-with-kafka-and-clickhouse}
+## 在 Kafka 和 ClickHouse 中使用 Vector \\{#using-vector-with-kafka-and-clickhouse\\}
 
 Vector 是一个与厂商无关的数据管道，能够从 Kafka 读取数据并将事件发送到 ClickHouse。
 
@@ -23,15 +23,15 @@ Vector 还支持对数据进行[转换](https://vector.dev/docs/reference/config
 
 请注意，当前 ClickHouse sink 的实现使用的是 HTTP 接口。ClickHouse sink 目前不支持使用 JSON schema。数据必须以纯 JSON 格式或字符串形式发布到 Kafka。
 
-### 许可证 {#license}
+### 许可证 \\{#license\\}
 
 Vector 按 [MPL-2.0 许可证](https://github.com/vectordotdev/vector/blob/master/LICENSE) 分发。
 
-### 收集连接信息 {#gather-your-connection-details}
+### 收集连接信息 \\{#gather-your-connection-details\\}
 
 <ConnectionDetails />
 
-### 步骤 {#steps}
+### 步骤 \{#steps\}
 
 1. 创建 Kafka 中的 `github` 主题，并写入 [GitHub 数据集](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson)。
 

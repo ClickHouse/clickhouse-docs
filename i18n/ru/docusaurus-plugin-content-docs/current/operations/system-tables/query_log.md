@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.query_log {#systemquery_log}
+# system.query_log \\{#systemquery_log\\}
 
 <SystemTableCloud/>
 
@@ -38,7 +38,7 @@ ClickHouse не удаляет данные из этой таблицы авт�
 
 Вы можете использовать настройку [log_formatted_queries](/operations/settings/settings#log_formatted_queries), чтобы логировать форматированные запросы в столбец `formatted_query`.
 
-## Столбцы {#columns}
+## Столбцы \\{#columns\\}
 
 * `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, на котором выполняется запрос.
 * `type` ([Enum8](../../sql-reference/data-types/enum.md)) — Тип события, произошедшего при выполнении запроса. Значения:`
@@ -133,7 +133,7 @@ ClickHouse не удаляет данные из этой таблицы авт�
 
 
 
-## Примеры {#examples}
+## Примеры \\{#examples\\}
 
 **Простой пример**
 

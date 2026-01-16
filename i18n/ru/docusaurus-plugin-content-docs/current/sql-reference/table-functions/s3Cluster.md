@@ -9,20 +9,20 @@ title: 's3Cluster'
 doc_type: 'reference'
 ---
 
-# Табличная функция s3Cluster {#s3cluster-table-function}
+# Табличная функция s3Cluster \\{#s3cluster-table-function\\}
 
 Это расширение табличной функции [s3](sql-reference/table-functions/s3.md).
 
 Позволяет обрабатывать файлы из [Amazon S3](https://aws.amazon.com/s3/) и [Google Cloud Storage](https://cloud.google.com/storage/) параллельно на нескольких узлах заданного кластера. На узле-инициаторе она устанавливает соединение со всеми узлами кластера, раскрывает шаблоны с использованием символа `*` в путях к файлам S3 и динамически распределяет каждый файл. На рабочем узле она запрашивает у инициатора следующую задачу для обработки и обрабатывает её. Это повторяется до тех пор, пока все задачи не будут выполнены.
 
-## Синтаксис {#syntax}
+## Синтаксис \\{#syntax\\}
 
 ```sql
 s3Cluster(cluster_name, url[, NOSIGN | access_key_id, secret_access_key,[session_token]][, format][, structure][, compression_method][, headers][, extra_credentials])
 s3Cluster(cluster_name, named_collection[, option=value [,..]])
 ```
 
-## Аргументы {#arguments}
+## Аргументы \\{#arguments\\}
 
 | Argument                              | Description                                                                                                                                                                                             |
 |---------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -46,11 +46,11 @@ s3Cluster(cluster_name, named_collection[, option=value [,..]])
 | `no_sign_request`              | По умолчанию отключён.                                                                                                                                                                                                           |
 | `expiration_window_seconds`    | Значение по умолчанию — 120.                                                                                                                                                                                                     |
 
-## Возвращаемое значение {#returned_value}
+## Возвращаемое значение \\{#returned_value\\}
 
 Таблица заданной структуры, используемая для чтения или записи данных в указанный файл.
 
-## Примеры {#examples}
+## Примеры \\{#examples\\}
 
 Выберите данные из всех файлов в каталогах `/root/data/clickhouse` и `/root/data/database/`, используя все узлы кластера `cluster_simple`:
 
@@ -84,15 +84,15 @@ SELECT count(*) FROM s3Cluster(
 )
 ```
 
-## Доступ к приватным и публичным бакетам {#accessing-private-and-public-buckets}
+## Доступ к приватным и публичным бакетам \\{#accessing-private-and-public-buckets\\}
 
 Пользователи могут использовать те же подходы, что и описанные для функции S3 [здесь](/sql-reference/table-functions/s3#accessing-public-buckets).
 
-## Оптимизация производительности {#optimizing-performance}
+## Оптимизация производительности \\{#optimizing-performance\\}
 
 Подробнее об оптимизации производительности функции s3 читайте в [нашем подробном руководстве](/integrations/s3/performance).
 
-## Связанные разделы {#related}
+## Связанные разделы \\{#related\\}
 
 - [Движок S3](../../engines/table-engines/integrations/s3.md)
 - [Табличная функция S3](../../sql-reference/table-functions/s3.md)

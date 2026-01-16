@@ -21,7 +21,7 @@ import dropdown_cell_chart from '@site/static/images/integrations/sql-clients/ma
 import run_app_view from '@site/static/images/integrations/sql-clients/marimo/run-app-view.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# ClickHouse で marimo を使う {#using-marimo-with-clickhouse}
+# ClickHouse で marimo を使う \{#using-marimo-with-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
@@ -29,7 +29,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={marimo_connect} size="md" border alt="ClickHouse への接続" />
 
-## 1. SQL サポート付きの marimo をインストールする {#install-marimo-sql}
+## 1. SQL サポート付きの marimo をインストールする \\{#install-marimo-sql\\}
 
 ```shell
 pip install "marimo[sql]" clickhouse_connect
@@ -39,7 +39,7 @@ marimo edit clickhouse_demo.py
 これにより、localhost を表示する Web ブラウザが開きます。
 
 
-## 2. ClickHouse への接続 {#connect-to-clickhouse}
+## 2. ClickHouse への接続 \\{#connect-to-clickhouse\\}
 
 marimo エディタ左側のデータソースパネルを開き、「Add database」をクリックします。
 
@@ -53,7 +53,7 @@ marimo エディタ左側のデータソースパネルを開き、「Add databa
 
 <Image img={run_cell} size="md" border alt="セルを実行して ClickHouse に接続" />
 
-## 3. SQL を実行する {#run-sql}
+## 3. SQL を実行する \\{#run-sql\\}
 
 接続を設定したら、新しい SQL セルを作成し、ClickHouse エンジンを選択できます。
 

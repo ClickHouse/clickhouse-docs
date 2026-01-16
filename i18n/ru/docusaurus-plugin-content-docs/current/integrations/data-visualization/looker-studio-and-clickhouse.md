@@ -23,21 +23,21 @@ import looker_studio_enable_mysql from '@site/static/images/integrations/data-vi
 import looker_studio_mysql_cloud from '@site/static/images/integrations/data-visualization/looker_studio_mysql_cloud.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Looker Studio {#looker-studio}
+# Looker Studio \{#looker-studio\}
 
 <PartnerBadge/>
 
 Looker Studio может подключаться к ClickHouse через интерфейс MySQL, используя официальный источник данных Google MySQL.
 
-## Настройка ClickHouse Cloud {#clickhouse-cloud-setup}
+## Настройка ClickHouse Cloud \\{#clickhouse-cloud-setup\\}
 
 <MySQLCloudSetup />
 
-## Настройка локального сервера ClickHouse {#on-premise-clickhouse-server-setup}
+## Настройка локального сервера ClickHouse \\{#on-premise-clickhouse-server-setup\\}
 
 <MySQLOnPremiseSetup />
 
-## Подключение Looker Studio к ClickHouse {#connecting-looker-studio-to-clickhouse}
+## Подключение Looker Studio к ClickHouse \\{#connecting-looker-studio-to-clickhouse\\}
 
 Сначала войдите на сайт https://lookerstudio.google.com под своей учетной записью Google и создайте новый источник данных (Data Source):
 
@@ -78,7 +78,7 @@ Looker Studio может подключаться к ClickHouse через ин�
 
 Теперь вы можете приступать к анализу своих данных или созданию нового отчета!
 
-## Использование Looker Studio с ClickHouse Cloud {#using-looker-studio-with-clickhouse-cloud}
+## Использование Looker Studio с ClickHouse Cloud \\{#using-looker-studio-with-clickhouse-cloud\\}
 
 При использовании ClickHouse Cloud сначала необходимо включить интерфейс MySQL. Это можно сделать в диалоговом окне подключения, на вкладке «MySQL».
 

@@ -22,15 +22,15 @@ import edit_button from '@site/static/images/integrations/data-ingestion/clickpi
 import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/enable_gtid.png';
 import Image from '@theme/IdealImage';
 
-# RDS MySQL 源设置指南 {#rds-mysql-source-setup-guide}
+# RDS MySQL 源设置指南 \\{#rds-mysql-source-setup-guide\\}
 
 本分步指南介绍如何配置 Amazon RDS MySQL，通过 [MySQL ClickPipe](../index.md) 将数据复制到 ClickHouse Cloud。有关 MySQL CDC 的常见问题解答，请参阅 [MySQL 常见问题页面](/integrations/data-ingestion/clickpipes/mysql/faq.md)。
 
-## 启用二进制日志保留 {#enable-binlog-retention-rds}
+## 启用二进制日志保留 \\{#enable-binlog-retention-rds\\}
 
 二进制日志是一组日志文件，其中包含对 MySQL 服务器实例所做数据修改的信息，而二进制日志文件是实现复制所必需的。要在 RDS MySQL 中配置二进制日志保留，您必须先[启用二进制日志记录](#enable-binlog-logging)，然后[增加 binlog 保留时间间隔](#binlog-retention-interval)。
 
-### 1. 通过自动备份启用二进制日志记录 {#enable-binlog-logging}
+### 1. 通过自动备份启用二进制日志记录 \\{#enable-binlog-logging\\}
 
 自动备份功能决定是否为 MySQL 启用二进制日志记录。您可以在 RDS 控制台中通过导航到 **Modify** > **Additional configuration** > **Backup**，并勾选 **Enable automated backups** 复选框（如果尚未选中）来为实例配置自动备份。
 
@@ -38,7 +38,7 @@ import Image from '@theme/IdealImage';
 
 我们建议根据具体的复制场景，将 **Backup retention period** 设置为相对较长的值。
 
-### 2. 增加 binlog 保留时间间隔 {#binlog-retention-interval}
+### 2. 增加 binlog 保留时间间隔 \\{#binlog-retention-interval\\}
 
 :::warning
 如果 ClickPipes 尝试恢复复制时，所需的 binlog 文件由于配置的 binlog 保留时间而已被清除，那么对应的 ClickPipe 将进入错误状态，并且需要重新同步。
@@ -55,7 +55,7 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 如果未配置此项，或将其间隔设置得过短，可能会导致二进制日志中出现缺口，影响 ClickPipes 恢复复制的能力。
 
 
-## 配置 binlog 设置 {#binlog-settings}
+## 配置 binlog 设置 \\{#binlog-settings\\}
 
 在 RDS 控制台中单击你的 MySQL 实例，然后导航到 **Configuration** 选项卡即可找到参数组。
 
@@ -87,7 +87,7 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 <br/>
 然后，单击右上角的 **Save Changes**。你可能需要重启实例以使更改生效——如果在 RDS 实例的 **Configuration** 选项卡中参数组链接旁看到 `Pending reboot`，则表示需要重启。
 
-## 启用 GTID 模式 {#gtid-mode}
+## 启用 GTID 模式 \\{#gtid-mode\\}
 
 :::tip
 MySQL ClickPipe 也支持在未启用 GTID 模式的情况下进行复制。但为了获得更好的性能并简化故障排查，建议启用 GTID 模式。
@@ -114,7 +114,7 @@ MySQL ClickPipe 也支持在未启用 GTID 模式的情况下进行复制。但�
 MySQL ClickPipe 也支持在未启用 GTID 模式的情况下进行复制。但为了获得更好的性能并简化故障排查，建议启用 GTID 模式。
 :::
 
-## 配置数据库用户 {#configure-database-user}
+## 配置数据库用户 \\{#configure-database-user\\}
 
 以管理员用户身份连接到你的 RDS MySQL 实例，并执行以下命令：
 
@@ -137,9 +137,9 @@ MySQL ClickPipe 也支持在未启用 GTID 模式的情况下进行复制。但�
     GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
     ```
 
-## 配置网络访问 {#configure-network-access}
+## 配置网络访问 \\{#configure-network-access\\}
 
-### 基于 IP 的访问控制 {#ip-based-access-control}
+### 基于 IP 的访问控制 \\{#ip-based-access-control\\}
 
 要限制进入 Aurora MySQL 实例的流量，请将[文档中列出的静态 NAT IP](../../index.md#list-of-static-ips) 添加到 RDS 安全组的 **Inbound rules（入站规则）** 中。
 
@@ -147,10 +147,10 @@ MySQL ClickPipe 也支持在未启用 GTID 模式的情况下进行复制。但�
 
 <Image img={edit_inbound_rules} alt="为上述安全组编辑入站规则" size="lg" border/>
 
-### 通过 AWS PrivateLink 的私有访问 {#private-access-via-aws-privatelink}
+### 通过 AWS PrivateLink 的私有访问 \\{#private-access-via-aws-privatelink\\}
 
 若要通过私有网络连接到 RDS 实例，可以使用 AWS PrivateLink。请按照 [ClickPipes 的 AWS PrivateLink 设置指南](/knowledgebase/aws-privatelink-setup-for-clickpipes) 完成连接配置。
 
-## 后续步骤 {#next-steps}
+## 后续步骤 \\{#next-steps\\}
 
 现在，您的 Amazon RDS MySQL 实例已经配置好用于 binlog 复制，并已安全连接到 ClickHouse Cloud，您就可以[创建第一个 MySQL ClickPipe](/integrations/clickpipes/mysql/#create-your-clickpipe)。关于 MySQL CDC 的常见问题，请参阅 [MySQL 常见问题页面](/integrations/data-ingestion/clickpipes/mysql/faq.md)。

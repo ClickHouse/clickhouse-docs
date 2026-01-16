@@ -21,7 +21,7 @@ import dropdown_cell_chart from '@site/static/images/integrations/sql-clients/ma
 import run_app_view from '@site/static/images/integrations/sql-clients/marimo/run-app-view.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# 将 marimo 与 ClickHouse 配合使用 {#using-marimo-with-clickhouse}
+# 将 marimo 与 ClickHouse 配合使用 \{#using-marimo-with-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
@@ -29,7 +29,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={marimo_connect} size="md" border alt="连接到 ClickHouse" />
 
-## 1. 安装支持 SQL 的 marimo {#install-marimo-sql}
+## 1. 安装支持 SQL 的 marimo \\{#install-marimo-sql\\}
 
 ```shell
 pip install "marimo[sql]" clickhouse_connect
@@ -39,7 +39,7 @@ marimo edit clickhouse_demo.py
 这会在本机（localhost）打开一个浏览器窗口。
 
 
-## 2. 连接到 ClickHouse。 {#connect-to-clickhouse}
+## 2. 连接到 ClickHouse。 \\{#connect-to-clickhouse\\}
 
 在 marimo 编辑器左侧进入数据源面板，点击 “Add database”。
 
@@ -53,7 +53,7 @@ marimo edit clickhouse_demo.py
 
 <Image img={run_cell} size="md" border alt="运行单元格以连接到 ClickHouse" />
 
-## 3. 运行 SQL {#run-sql}
+## 3. 运行 SQL \\{#run-sql\\}
 
 在设置好连接之后，你可以创建一个新的 SQL 单元格，并选择 ClickHouse 引擎。
 

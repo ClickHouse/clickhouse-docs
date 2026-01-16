@@ -10,7 +10,7 @@ integration:
   - category: 'clickpipes'
 ---
 
-# Общее руководство по настройке источника данных MongoDB {#generic-mongodb-source-setup-guide}
+# Общее руководство по настройке источника данных MongoDB \\{#generic-mongodb-source-setup-guide\\}
 
 :::info
 
@@ -18,7 +18,7 @@ integration:
 
 :::
 
-## Включение хранения oplog {#enable-oplog-retention}
+## Включение хранения oplog \\{#enable-oplog-retention\\}
 
 Для репликации требуется минимальный срок хранения oplog в 24 часа. Рекомендуется устанавливать срок хранения oplog на 72 часа или больше, чтобы избежать его усечения до завершения начального снимка.
 
@@ -40,7 +40,7 @@ db.adminCommand({
 Подробнее о команде `replSetResizeOplog` и хранении журнала операций (oplog) см. [документацию MongoDB](https://www.mongodb.com/docs/manual/reference/command/replSetResizeOplog/).
 
 
-## Настройте пользователя базы данных {#configure-database-user}
+## Настройте пользователя базы данных \\{#configure-database-user\\}
 
 Подключитесь к экземпляру MongoDB как пользователь с правами администратора и выполните следующую команду, чтобы создать пользователя для MongoDB CDC ClickPipes:
 
@@ -57,7 +57,7 @@ db.getSiblingDB("admin").createUser({
 :::
 
 
-## Что дальше? {#whats-next}
+## Что дальше? \\{#whats-next\\}
 
 Теперь вы можете [создать ClickPipe](../index.md) и начать приём данных из экземпляра MongoDB в ClickHouse Cloud.
 Обязательно сохраните параметры подключения, которые вы использовали при настройке MongoDB, так как они понадобятся вам в процессе создания ClickPipe.

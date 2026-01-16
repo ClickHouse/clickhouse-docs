@@ -22,13 +22,13 @@ import img5 from '@site/static/images/use-cases/AI_ML/MCP/5connected_mcp_claude.
 import img6 from '@site/static/images/use-cases/AI_ML/MCP/6slash_mcp_claude.png';
 import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
-# ClickHouse Cloud リモート MCP サーバーの有効化 {#enabling-the-clickhouse-cloud-remote-mcp-server}
+# ClickHouse Cloud リモート MCP サーバーの有効化 \{#enabling-the-clickhouse-cloud-remote-mcp-server\}
 
 > このガイドでは、ClickHouse Cloud リモート MCP サーバーを有効化して使用する方法を説明します。ここでは例として Claude Code を MCP クライアントとして使用しますが、MCP をサポートする任意の LLM クライアントを使用できます。
 
 <VerticalStepper headerLevel="h2">
 
-## ClickHouse Cloud サービスでリモート MCP サーバーを有効化する {#enable-remote-mcp-server}
+## ClickHouse Cloud サービスでリモート MCP サーバーを有効化する \\{#enable-remote-mcp-server\\}
 
 1. ClickHouse Cloud サービスに接続し、`Connect` ボタンをクリックして、対象サービスの Remote MCP Server を有効化します。
 
@@ -42,7 +42,7 @@ import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 https://mcp.clickhouse.cloud/mcp
 ```
 
-## Claude Code に ClickHouse MCP Server を追加する {#add-clickhouse-mcp-server-claude-code}
+## Claude Code に ClickHouse MCP Server を追加する \\{#add-clickhouse-mcp-server-claude-code\\}
 
 1. 作業ディレクトリ内で、次のコマンドを実行して ClickHouse Cloud MCP Server の設定を Claude Code に追加します。この例では、Claude Code の設定内で MCP サーバーに `clickhouse_cloud` という名前を付けています。
 
@@ -68,7 +68,7 @@ claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.cloud/mc
 [user@host ~/Documents/repos/mcp_test] $ claude
 ```
 
-## OAuth を使用して ClickHouse Cloud に対して認証する {#authenticate-via-oauth}
+## OAuth を使用して ClickHouse Cloud に対して認証する \\{#authenticate-via-oauth\\}
 
 1. 最初のセッションでは、Claude Code がブラウザウィンドウを開きます。そうでない場合は、Claude Code で `/mcp` コマンドを実行し、`clickhouse_cloud` MCP サーバーを選択して接続を開始できます。
 
@@ -78,7 +78,7 @@ claude mcp add --transport http clickhouse_cloud https://mcp.clickhouse.cloud/mc
 
 <Image img={img4} alt="OAuth 接続フローの成功" size="sm"/>
 
-## Claude Code から ClickHouse Cloud Remote MCP Server を使用する {#use-rempte-mcp-from-claude-code}
+## Claude Code から ClickHouse Cloud Remote MCP Server を使用する \\{#use-rempte-mcp-from-claude-code\\}
 
 1. Claude Code でリモート MCP サーバーが接続されていることを確認します。
 

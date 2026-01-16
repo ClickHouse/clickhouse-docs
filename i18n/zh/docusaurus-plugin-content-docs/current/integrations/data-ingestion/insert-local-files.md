@@ -9,7 +9,7 @@ doc_type: 'guide'
 keywords: ['插入本地文件 ClickHouse', 'ClickHouse 本地文件导入', 'clickhouse-client 文件上传']
 ---
 
-# 插入本地文件 {#insert-local-files}
+# 插入本地文件 \\{#insert-local-files\\}
 
 你可以使用 `clickhouse-client` 将本地文件以流方式导入到你的 ClickHouse 服务中。这样你就可以在插入前利用众多强大且便捷的 ClickHouse 函数对数据进行预处理。下面来看一个示例……
 

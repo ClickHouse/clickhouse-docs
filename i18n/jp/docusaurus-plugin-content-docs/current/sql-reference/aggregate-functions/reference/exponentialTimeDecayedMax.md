@@ -5,7 +5,7 @@ title: 'exponentialTimeDecayedMax'
 doc_type: 'reference'
 ---
 
-## exponentialTimeDecayedMax {#exponentialtimedecayedmax}
+## exponentialTimeDecayedMax \{#exponentialtimedecayedmax\}
 
 時間インデックス `t` における指数平滑移動平均の計算結果と、時間インデックス `t-1` における計算結果のうち、最大値を返します。
 

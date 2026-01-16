@@ -17,7 +17,7 @@ import ch_local_02 from '@site/static/images/integrations/migration/ch-local-02.
 import ch_local_03 from '@site/static/images/integrations/migration/ch-local-03.png';
 import ch_local_04 from '@site/static/images/integrations/migration/ch-local-04.png';
 
-# 使用 clickhouse-local 迁移到 ClickHouse {#migrating-to-clickhouse-using-clickhouse-local}
+# 使用 clickhouse-local 迁移到 ClickHouse \\{#migrating-to-clickhouse-using-clickhouse-local\\}
 
 <Image img={ch_local_01} size='lg' alt='迁移自管理 ClickHouse'/>
 
@@ -28,7 +28,7 @@ import ch_local_04 from '@site/static/images/integrations/migration/ch-local-04.
 
 ClickHouse 为 [MySQL](/engines/table-engines/integrations/mysql/)、[PostgreSQL](/engines/table-engines/integrations/postgresql)、[MongoDB](/engines/table-engines/integrations/mongodb) 和 [SQLite](/engines/table-engines/integrations/sqlite) 提供了集成引擎（integration engines）和表函数（table functions，运行时即时创建集成引擎）。对于所有其他流行的数据库系统，系统供应商通常会提供 JDBC 驱动或 ODBC 驱动。
 
-## 什么是 clickhouse-local？ {#what-is-clickhouse-local}
+## 什么是 clickhouse-local？ \\{#what-is-clickhouse-local\\}
 
 <Image img={ch_local_02} size='lg' alt='迁移自管理 ClickHouse'  />
 
@@ -38,7 +38,7 @@ ClickHouse 为 [MySQL](/engines/table-engines/integrations/mysql/)、[PostgreSQL
 
 `clickhouse-local` 工具允许你在一个相互隔离的命令行工具环境中使用 ClickHouse 数据库引擎，对海量输入和输出进行极速 SQL 数据处理，而无需配置并启动 ClickHouse 服务器。
 
-## 安装 clickhouse-local {#installing-clickhouse-local}
+## 安装 clickhouse-local \\{#installing-clickhouse-local\\}
 
 你需要一台用于运行 `clickhouse-local` 的主机，该主机必须能够通过网络同时访问你当前的源数据库系统以及目标 ClickHouse Cloud 服务。
 
@@ -84,21 +84,21 @@ ClickHouse 为 [MySQL](/engines/table-engines/integrations/mysql/)、[PostgreSQL
 
 <AddARemoteSystem />
 
-## 示例 1：使用 Integration 表引擎从 MySQL 迁移到 ClickHouse Cloud {#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine}
+## 示例 1：使用 Integration 表引擎从 MySQL 迁移到 ClickHouse Cloud \\{#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine\\}
 
 我们将使用 [integration 表引擎](/engines/table-engines/integrations/mysql/)（由 [mysql 表函数](/sql-reference/table-functions/mysql/) 动态创建）从源 MySQL 数据库读取数据，并使用 [remoteSecure 表函数](/sql-reference/table-functions/remote/) 将数据写入您在 ClickHouse Cloud 服务中的目标表。
 
 <Image img={ch_local_03} size='lg' alt='迁移自管理的 ClickHouse'  />
 
-### 在目标 ClickHouse Cloud 服务中：{#on-the-destination-clickhouse-cloud-service}
+### 在目标 ClickHouse Cloud 服务中：\\{#on-the-destination-clickhouse-cloud-service\\}
 
-#### 创建目标端数据库： {#create-the-destination-database}
+#### 创建目标端数据库： \\{#create-the-destination-database\\}
 
 ```sql
   CREATE DATABASE db
   ```
 
-#### 创建一个与 MySQL 表具有相同 schema 的目标表： {#create-a-destination-table-that-has-a-schema-equivalent-to-the-mysql-table}
+#### 创建一个与 MySQL 表具有相同 schema 的目标表： \\{#create-a-destination-table-that-has-a-schema-equivalent-to-the-mysql-table\\}
 
 ```sql
   CREATE TABLE db.table ...
@@ -108,9 +108,9 @@ ClickHouse 为 [MySQL](/engines/table-engines/integrations/mysql/)、[PostgreSQL
 ClickHouse Cloud 目标表与源 MySQL 表的表结构必须保持一致（列名及顺序必须相同，且列的数据类型必须兼容）。
 :::
 
-### 在 clickhouse-local 主机上： {#on-the-clickhouse-local-host-machine}
+### 在 clickhouse-local 主机上： \\{#on-the-clickhouse-local-host-machine\\}
 
-#### 使用迁移查询来运行 clickhouse-local： {#run-clickhouse-local-with-the-migration-query}
+#### 使用迁移查询来运行 clickhouse-local： \\{#run-clickhouse-local-with-the-migration-query\\}
 
 ```sql
   ./clickhouse-local --query "
@@ -123,16 +123,16 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
 在 `clickhouse-local` 主机本地不会存储任何数据。相反，数据会从源 MySQL 表中读取，然后立即写入 ClickHouse Cloud 服务上的目标表。
 :::
 
-## 示例 2：使用 JDBC Bridge 将 MySQL 迁移到 ClickHouse Cloud {#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge}
+## 示例 2：使用 JDBC Bridge 将 MySQL 迁移到 ClickHouse Cloud \\{#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge\\}
 
 我们将使用 [JDBC 集成表引擎](/engines/table-engines/integrations/jdbc.md)（由 [jdbc 表函数](/sql-reference/table-functions/jdbc.md) 动态创建），配合 [ClickHouse JDBC Bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) 和 MySQL JDBC 驱动，从源 MySQL 数据库中读取数据，并使用 [remoteSecure 表函数](/sql-reference/table-functions/remote.md)
 将数据写入 ClickHouse Cloud 服务中的目标表。
 
 <Image img={ch_local_04} size='lg' alt='迁移自管理 ClickHouse'  />
 
-### 在目标 ClickHouse Cloud 服务中： {#on-the-destination-clickhouse-cloud-service-1}
+### 在目标 ClickHouse Cloud 服务中： \\{#on-the-destination-clickhouse-cloud-service-1\\}
 
-#### 创建目标数据库： {#create-the-destination-database-1}
+#### 创建目标数据库： \\{#create-the-destination-database-1\\}
 
 ```sql
   CREATE DATABASE db

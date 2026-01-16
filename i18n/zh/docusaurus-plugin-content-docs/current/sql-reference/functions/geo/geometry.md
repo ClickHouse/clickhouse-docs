@@ -6,11 +6,11 @@ title: '几何处理函数'
 doc_type: 'reference'
 ---
 
-## 几何 {#geometry}
+## 几何 \\{#geometry\\}
 
 几何函数可用于计算 POLYGON、LINESTRING、MULTIPOLYGON、MULTILINESTRING、RING 和 POINT 等几何类型的周长和面积。将这些几何对象表示为 `Geometry` 类型。若输入值为 `NULL`，则以下所有函数均返回 0。
 
-## perimeterCartesian {#perimetercartesian}
+## perimeterCartesian \{#perimetercartesian\}
 
 在笛卡尔（平面）坐标系下计算给定 Geometry 对象的周长。
 
@@ -43,7 +43,7 @@ SELECT perimeterCartesian(geom) FROM geo_dst;
 ```
 
 
-## areaCartesian {#areacartesian}
+## areaCartesian \{#areacartesian\}
 
 在笛卡尔坐标系下计算给定 Geometry 对象的面积。
 
@@ -76,7 +76,7 @@ SELECT areaCartesian(geom) FROM geo_dst;
 ```
 
 
-## perimeterSpherical {#perimeterspherical}
+## perimeterSpherical \{#perimeterspherical\}
 
 计算球面上 Geometry 对象的周长。
 
@@ -109,7 +109,7 @@ SELECT perimeterSpherical(geom) FROM geo_dst;
 ```
 
 
-## areaSpherical {#areaspherical}
+## areaSpherical \{#areaspherical\}
 
 计算球面上 Geometry 对象的面积。
 

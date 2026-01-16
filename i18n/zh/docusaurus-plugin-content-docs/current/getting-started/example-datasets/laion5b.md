@@ -11,7 +11,7 @@ import search_results_image from '@site/static/images/getting-started/example-da
 import Image from '@theme/IdealImage';
 
 
-## 简介 {#introduction}
+## 简介 \\{#introduction\\}
 
 [LAION 5b 数据集](https://laion.ai/blog/laion-5b/)包含 58.5 亿个图文嵌入及
 其关联的图像元数据。嵌入向量是使用 `Open AI CLIP` 模型 [ViT-L/14](https://huggingface.co/sentence-transformers/clip-ViT-L-14) 生成的，
@@ -20,7 +20,7 @@ import Image from '@theme/IdealImage';
 该数据集可用于对真实世界的大规模向量搜索应用的设计、容量规划和性能特征进行建模。
 该数据集既可用于文本到图像检索，也可用于图像到图像检索。
 
-## 数据集详情 {#dataset-details}
+## 数据集详情 \\{#dataset-details\\}
 
 完整数据集以 `npy` 和 `Parquet` 文件混合形式提供，托管在 [the-eye.eu](https://the-eye.eu/public/AI/cah/laion5b/)。
 
@@ -29,7 +29,7 @@ ClickHouse 在一个 `S3` 存储桶中提供了包含 1 亿个向量的子集。
 
 我们建议用户首先进行一次容量评估，并参考[文档](../../engines/table-engines/mergetree-family/annindexes.md)来估算该数据集的存储和内存需求。
 
-## 步骤 {#steps}
+## 步骤 \\{#steps\\}
 
 <VerticalStepper headerLevel="h3">
   ### 创建表

@@ -7,14 +7,14 @@ sidebar_label: 'avgMap'
 doc_type: 'reference'
 ---
 
-# avgMap {#avgmap}
+# avgMap \\{#avgmap\\}
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Комбинатор [`Map`](/sql-reference/aggregate-functions/combinators#-map) может быть применён к функции [`avg`](/sql-reference/aggregate-functions/reference/avg)
 для вычисления среднего арифметического значений в `Map` по каждому ключу с использованием агрегатной функции-комбинатора `avgMap`.
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
 В этом примере мы создадим таблицу, которая хранит коды статусов и количество их появлений для разных временных интервалов,
 где каждая строка содержит Map, сопоставляющий коды статусов с соответствующими им количествами. Мы будем использовать
@@ -61,6 +61,6 @@ GROUP BY timeslot;
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
-## См. также {#see-also}
+## См. также \\{#see-also\\}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`Комбинатор Map`](/sql-reference/aggregate-functions/combinators#-map)

@@ -6,20 +6,20 @@
 - [クエリ処理](#troubleshooting-does-not-process-queries)
 - [クエリ処理のパフォーマンス](#troubleshooting-too-slow)
 
-## インストール {#troubleshooting-installation-errors}
+## インストール \\{#troubleshooting-installation-errors\\}
 
-### apt-get を使用して ClickHouse リポジトリから deb パッケージを取得できない {#you-cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
+### apt-get を使用して ClickHouse リポジトリから deb パッケージを取得できない \\{#you-cannot-get-deb-packages-from-clickhouse-repository-with-apt-get\\}
 
 * ファイアウォールの設定を確認してください。
 * 何らかの理由でリポジトリにアクセスできない場合は、[インストールガイド](../getting-started/install.md)の記事で説明されているようにパッケージをダウンロードし、`sudo dpkg -i <packages>` コマンドを使用して手動でインストールしてください。`tzdata` パッケージも必要です。
 
-### apt-get を使用して ClickHouse リポジトリから deb パッケージを更新できない {#you-cannot-update-deb-packages-from-clickhouse-repository-with-apt-get}
+### apt-get を使用して ClickHouse リポジトリから deb パッケージを更新できない \\{#you-cannot-update-deb-packages-from-clickhouse-repository-with-apt-get\\}
 
 * GPG キーが変更された場合にこの問題が発生することがあります。
 
 リポジトリ設定を更新するには、[セットアップ](../getting-started/install.md#setup-the-debian-repository) ページの手順に従ってください。
 
-### `apt-get update` でさまざまな警告が表示される {#you-get-different-warnings-with-apt-get-update}
+### `apt-get update` でさまざまな警告が表示される \\{#you-get-different-warnings-with-apt-get-update\\}
 
 * 実際の警告メッセージは次のいずれかになります:
 
@@ -51,7 +51,7 @@ sudo apt-get clean
 sudo apt-get autoclean
 ```
 
-### 誤った署名が原因で yum からパッケージを取得できない {#you-cant-get-packages-with-yum-because-of-wrong-signature}
+### 誤った署名が原因で yum からパッケージを取得できない \\{#you-cant-get-packages-with-yum-because-of-wrong-signature\\}
 
 起こりうる原因: キャッシュが不正です。2022 年 9 月に GPG キーを更新した後に壊れた可能性があります。
 
@@ -64,7 +64,7 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 
 その後は、[インストールガイド](../getting-started/install.md#from-rpm-packages) に従ってください。
 
-### Docker コンテナを実行できない {#you-cant-run-docker-container}
+### Docker コンテナを実行できない \\{#you-cant-run-docker-container\\}
 
 単純に `docker run clickhouse/clickhouse-server` を実行すると、以下のようなスタックトレースが出力されてクラッシュします。
 
@@ -108,14 +108,14 @@ Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread
 $ sudo service clickhouse-server status
 ```
 
-## サーバーへの接続 {#troubleshooting-accepts-no-connections}
+## サーバーへの接続 \\{#troubleshooting-accepts-no-connections\\}
 
 想定される問題:
 
 * サーバーが起動していない
 * 想定外または誤った設定パラメータ
 
-### サーバーが起動していない {#server-is-not-running}
+### サーバーが起動していない \\{#server-is-not-running\\}
 
 **サーバーが起動しているか確認する**
 
@@ -185,7 +185,7 @@ Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that ther
 
 このコマンドは、autostart スクリプトの標準パラメータを使用してサーバーを対話型アプリケーションとして起動します。このモードでは、`clickhouse-server` はすべてのイベントメッセージをコンソールに出力します。
 
-### 設定パラメータ {#configuration-parameters}
+### 設定パラメータ \\{#configuration-parameters\\}
 
 次の点を確認します。
 
@@ -216,7 +216,7 @@ Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that ther
 
   誤ったユーザー名またはパスワードを使用している可能性があります。
 
-## クエリ処理 {#troubleshooting-does-not-process-queries}
+## クエリ処理 \\{#troubleshooting-does-not-process-queries\\}
 
 ClickHouse がクエリを処理できない場合、エラー内容の説明をクライアントに送信します。`clickhouse-client` を使用している場合は、コンソール上でエラー内容を確認できます。HTTP インターフェイスを使用している場合は、ClickHouse はレスポンスボディ内にエラーの説明を送信します。例えば次のとおりです。
 
@@ -229,7 +229,7 @@ Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that ther
 
 接続が切断されたことを示すメッセージが表示される場合があります。この場合は、クエリを再実行してみてください。クエリを実行するたびに接続が切断される場合は、サーバーログにエラーが出力されていないか確認してください。
 
-## クエリ処理の効率 {#troubleshooting-too-slow}
+## クエリ処理の効率 \\{#troubleshooting-too-slow\\}
 
 ClickHouse の動作が遅すぎると感じる場合は、クエリに対するサーバーリソースやネットワークへの負荷をプロファイリングする必要があります。
 

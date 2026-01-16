@@ -6,7 +6,7 @@ title: 'DISTINCT 子句'
 doc_type: 'reference'
 ---
 
-# DISTINCT 子句 {#distinct-clause}
+# DISTINCT 子句 \\{#distinct-clause\\}
 
 如果指定了 `SELECT DISTINCT`，查询结果中只会保留唯一的行。也就是说，在所有完全相同的行集合中，最终结果每组只会保留一行。
 
@@ -54,7 +54,7 @@ SELECT DISTINCT ON (a,b) * FROM t1;
 └───┴───┴───┘
 ```
 
-## DISTINCT 和 ORDER BY {#distinct-and-order-by}
+## DISTINCT 和 ORDER BY \\{#distinct-and-order-by\\}
 
 ClickHouse 支持在单个查询中对不同的列分别使用 `DISTINCT` 和 `ORDER BY` 子句。`DISTINCT` 子句会先于 `ORDER BY` 子句执行。
 
@@ -101,11 +101,11 @@ SELECT DISTINCT a FROM t1 ORDER BY b DESC;
 
 在编写查询时请将这一实现特性考虑在内。
 
-## NULL 处理 {#null-processing}
+## NULL 处理 \\{#null-processing\\}
 
 `DISTINCT` 与 [NULL](/sql-reference/syntax#null) 的行为就好像 `NULL` 是一个具体的值，并且 `NULL==NULL`。换句话说，在 `DISTINCT` 的结果中，包含 `NULL` 的不同组合只会出现一次。这与大多数其他上下文中的 `NULL` 处理方式不同。
 
-## 替代方案 {#alternatives}
+## 替代方案 \\{#alternatives\\}
 
 也可以在不使用任何聚合函数的情况下，对 `SELECT` 子句中指定的同一组值使用 [GROUP BY](/sql-reference/statements/select/group-by)，从而获得相同的结果。但与基于 `GROUP BY` 的方式相比，仍存在一些差异：
 

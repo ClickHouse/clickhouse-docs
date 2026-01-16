@@ -7,7 +7,7 @@ title: 'Buffer テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# Buffer テーブルエンジン {#buffer-table-engine}
+# Buffer テーブルエンジン \\{#buffer-table-engine\\}
 
 書き込み対象のデータを RAM 上でバッファリングし、定期的に別のテーブルへフラッシュします。読み取り時には、バッファとその別のテーブルの両方から同時にデータを読み取ります。
 
@@ -19,27 +19,27 @@ Buffer テーブルエンジンの代替として推奨されるのは、[非同
 Buffer(database, table, num_layers, min_time, max_time, min_rows, max_rows, min_bytes, max_bytes [,flush_time [,flush_rows [,flush_bytes]]])
 ```
 
-### エンジンパラメータ {#engine-parameters}
+### エンジンパラメータ \\{#engine-parameters\\}
 
-#### `database` {#database}
+#### `database` \\{#database\\}
 
 `database` – データベース名。`currentDatabase()` もしくは文字列を返す他の定数式を使用できます。
 
-#### `table` {#table}
+#### `table` \\{#table\\}
 
 `table` – データをフラッシュする対象のテーブル。
 
-#### `num_layers` {#num&#95;layers}
+#### `num_layers` \\{#num&#95;layers\\}
 
 `num_layers` – 並列レイヤー数。物理的には、テーブルは互いに独立したバッファが `num_layers` 個ある形で表現されます。
 
-#### `min_time`, `max_time`, `min_rows`, `max_rows`, `min_bytes`, および `max_bytes` {#min&#95;time-max&#95;time-min&#95;rows-max&#95;rows-min&#95;bytes-and-max&#95;bytes}
+#### `min_time`, `max_time`, `min_rows`, `max_rows`, `min_bytes`, および `max_bytes` \\{#min&#95;time-max&#95;time-min&#95;rows-max&#95;rows-min&#95;bytes-and-max&#95;bytes\\}
 
 バッファからデータをフラッシュするための条件。
 
-### オプションのエンジンパラメータ {#optional-engine-parameters}
+### オプションのエンジンパラメータ \\{#optional-engine-parameters\\}
 
-#### `flush_time`, `flush_rows`, および `flush_bytes` {#flush&#95;time-flush&#95;rows-and-flush&#95;bytes}
+#### `flush_time`, `flush_rows`, および `flush_bytes` \\{#flush&#95;time-flush&#95;rows-and-flush&#95;bytes\\}
 
 バックグラウンドでバッファからデータをフラッシュするための条件（省略または 0 の場合は、`flush*` パラメータは存在しないものとして扱われます）。
 
@@ -47,15 +47,15 @@ Buffer(database, table, num_layers, min_time, max_time, min_rows, max_rows, min_
 
 また、少なくとも 1 つの `flush*` 条件が満たされると、バックグラウンドでフラッシュが開始されます。これは `max*` とは異なり、`flush*` によって、Buffer テーブルへの `INSERT` クエリにレイテンシを追加しないように、バックグラウンドフラッシュを個別に構成できます。
 
-#### `min_time`, `max_time`, および `flush_time` {#min&#95;time-max&#95;time-and-flush&#95;time}
+#### `min_time`, `max_time`, および `flush_time` \\{#min&#95;time-max&#95;time-and-flush&#95;time\\}
 
 最初の書き込み時点からの経過時間（秒）に関する条件。
 
-#### `min_rows`, `max_rows`, および `flush_rows` {#min&#95;rows-max&#95;rows-and-flush&#95;rows}
+#### `min_rows`, `max_rows`, および `flush_rows` \\{#min&#95;rows-max&#95;rows-and-flush&#95;rows\\}
 
 バッファ内の行数に関する条件。
 
-#### `min_bytes`, `max_bytes`, および `flush_bytes` {#min&#95;bytes-max&#95;bytes-and-flush&#95;bytes}
+#### `min_bytes`, `max_bytes`, および `flush_bytes` \\{#min&#95;bytes-max&#95;bytes-and-flush&#95;bytes\\}
 
 バッファ内のバイト数に関する条件。
 

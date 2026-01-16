@@ -7,7 +7,7 @@ title: 'Enum'
 doc_type: 'reference'
 ---
 
-# Enum {#enum}
+# Enum \\{#enum\\}
 
 由具名值组成的枚举类型。
 
@@ -20,7 +20,7 @@ ClickHouse 支持：
 
 在插入数据时，ClickHouse 会自动选择 `Enum` 的类型。也可以使用 `Enum8` 或 `Enum16` 类型来确保存储大小。
 
-## 使用示例 {#usage-examples}
+## 使用示例 \\{#usage-examples\\}
 
 这里我们创建一个表，其中包含一个类型为 `Enum8('hello' = 1, 'world' = 2)` 的列：
 
@@ -124,7 +124,7 @@ SELECT toTypeName(CAST('a', 'Enum(\'a\' = 1, \'b\' = 2)'))
 └─────────────────────────────────────────────────────┘
 ```
 
-## 一般规则和用法 {#general-rules-and-usage}
+## 一般规则和用法 \\{#general-rules-and-usage\\}
 
 对于 `Enum8`，每个值被分配到 `-128 ... 127` 范围内的一个数字；对于 `Enum16`，则分配到 `-32768 ... 32767` 范围内的一个数字。所有字符串和数字都必须互不相同。允许使用空字符串。如果在（表定义中）指定了这种类型，数字可以按任意顺序给出。不过，顺序并不重要。
 

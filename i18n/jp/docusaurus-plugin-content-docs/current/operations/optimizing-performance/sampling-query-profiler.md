@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-# サンプリングクエリプロファイラ {#sampling-query-profiler}
+# サンプリングクエリプロファイラ \\{#sampling-query-profiler\\}
 
 ClickHouse にはクエリ実行を解析できるサンプリングプロファイラが搭載されています。プロファイラを使用すると、クエリ実行中に最も頻繁に使用されたソースコード内のルーチンを特定できます。CPU 時間と、アイドル時間を含むウォールクロック時間（実時間）を追跡できます。
 
@@ -54,7 +54,7 @@ SETTINGS allow_introspection_functions = 1
 
 `trace_log` の情報を可視化する必要がある場合は、[flamegraph](/interfaces/third-party/gui#clickhouse-flamegraph) や [speedscope](https://github.com/laplab/clickhouse-speedscope) の使用を検討してください。
 
-## 例 {#example}
+## 例 \\{#example\\}
 
 この例では次のことを行います。
 

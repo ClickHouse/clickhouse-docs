@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Как создать AI-агента с помощью CopilotKit и ClickHouse MCP Server {#how-to-build-an-ai-agent-with-copilotkit-and-the-clickhouse-mcp-server}
+# Как создать AI-агента с помощью CopilotKit и ClickHouse MCP Server \\{#how-to-build-an-ai-agent-with-copilotkit-and-the-clickhouse-mcp-server\\}
 
 Это пример того, как создать агентское приложение, используя данные, хранящиеся в 
 ClickHouse. В нем используется [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 
@@ -23,12 +23,12 @@ ClickHouse. В нем используется [ClickHouse MCP Server](https://g
 Код этого примера доступен в [репозитории с примерами](https://github.com/ClickHouse/examples/edit/main/ai/mcp/copilotkit).
 :::
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \\{#prerequisites\\}
 
 - `Node.js >= 20.14.0`
 - `uv >= 0.1.0`
 
-## Установка зависимостей {#install-dependencies}
+## Установка зависимостей \\{#install-dependencies\\}
 
 Клонируйте проект локально: `git clone https://github.com/ClickHouse/examples` и 
 перейдите в каталог `ai/mcp/copilotkit`.
@@ -36,7 +36,7 @@ ClickHouse. В нем используется [ClickHouse MCP Server](https://g
 Можете пропустить этот раздел и просто запустить скрипт `./install.sh` для установки зависимостей. Если 
 вы хотите установить зависимости вручную, следуйте инструкциям ниже.
 
-## Ручная установка зависимостей {#install-dependencies-manually}
+## Ручная установка зависимостей \\{#install-dependencies-manually\\}
 
 1. Установите зависимости:
 
@@ -59,18 +59,18 @@ uv sync
 uv add fastmcp
 ```
 
-## Настройка приложения {#configure-the-application}
+## Настройка приложения \\{#configure-the-application\\}
 
 Скопируйте файл `env.example` в `.env` и отредактируйте его, указав значение `ANTHROPIC_API_KEY`.
 
-## Используйте свою LLM {#use-your-own-llm}
+## Используйте свою LLM \\{#use-your-own-llm\\}
 
 Если вы предпочитаете использовать другого провайдера LLM вместо Anthropic, вы можете изменить 
 среду выполнения Copilotkit, чтобы использовать другой адаптер LLM.
 [Здесь](https://docs.copilotkit.ai/guides/bring-your-own-llm) приведён список поддерживаемых 
 провайдеров.
 
-## Использование собственного кластера ClickHouse {#use-your-own-clickhouse-cluster}
+## Использование собственного кластера ClickHouse \\{#use-your-own-clickhouse-cluster\\}
 
 По умолчанию пример настроен на подключение к 
 [демо-кластеру ClickHouse](https://sql.clickhouse.com/). Вы также можете использовать 
@@ -82,7 +82,7 @@ uv add fastmcp
 - `CLICKHOUSE_PASSWORD`
 - `CLICKHOUSE_SECURE`
 
-# Запуск приложения {#run-the-application}
+# Запуск приложения \\{#run-the-application\\}
 
 Выполните `npm run dev`, чтобы запустить сервер разработки.
 

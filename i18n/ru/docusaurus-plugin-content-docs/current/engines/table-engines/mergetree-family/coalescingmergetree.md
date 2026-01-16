@@ -9,7 +9,7 @@ show_related_blogs: true
 doc_type: 'reference'
 ---
 
-# Движок таблицы CoalescingMergeTree {#coalescingmergetree-table-engine}
+# Движок таблицы CoalescingMergeTree \\{#coalescingmergetree-table-engine\\}
 
 :::note Доступно начиная с версии 25.6
 Этот движок таблицы доступен начиная с версии 25.6 как в OSS, так и в Cloud.
@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 `CoalescingMergeTree` предназначен для использования с типами Nullable в неклю́чевых столбцах. Если столбцы не являются Nullable, поведение такое же, как у [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree).
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \\{#creating-a-table\\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -38,16 +38,16 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Описание параметров запроса см. в разделе [описание запроса](../../../sql-reference/statements/create/table.md).
 
-### Параметры движка CoalescingMergeTree {#parameters-of-coalescingmergetree}
+### Параметры движка CoalescingMergeTree \\{#parameters-of-coalescingmergetree\\}
 
-#### Столбцы {#columns}
+#### Столбцы \\{#columns\\}
 
 `columns` — кортеж имен столбцов, значения в которых будут объединены. Необязательный параметр.
 Столбцы должны иметь числовой тип и не должны входить в ключ партиционирования или сортировки.
 
 Если `columns` не указан, ClickHouse объединяет значения во всех столбцах, которые не входят в ключ сортировки.
 
-### Части запроса {#query-clauses}
+### Части запроса \\{#query-clauses\\}
 
 При создании таблицы `CoalescingMergeTree` требуются те же [части запроса](../../../engines/table-engines/mergetree-family/mergetree.md), что и при создании таблицы `MergeTree`.
 
@@ -72,7 +72,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   * `columns` — кортеж имен столбцов, значения которых будут суммироваться. Необязательный параметр. Описание см. в тексте выше.
 </details>
 
-## Пример использования {#usage-example}
+## Пример использования \\{#usage-example\\}
 
 Рассмотрим следующую таблицу:
 

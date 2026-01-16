@@ -19,13 +19,13 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-# RDS Postgres ソース設定ガイド {#rds-postgres-source-setup-guide}
+# RDS Postgres ソース設定ガイド \\{#rds-postgres-source-setup-guide\\}
 
-## サポートされている Postgres のバージョン {#supported-postgres-versions}
+## サポートされている Postgres のバージョン \\{#supported-postgres-versions\\}
 
 ClickPipes は Postgres バージョン 12 以降をサポートしています。
 
-## 論理レプリケーションを有効にする {#enable-logical-replication}
+## 論理レプリケーションを有効にする \{#enable-logical-replication\}
 
 お使いの RDS インスタンスですでに次の設定が行われている場合、このセクションはスキップできます。
 
@@ -69,7 +69,7 @@ postgres=> SHOW wal_sender_timeout ;
 <Image img={reboot_rds} alt="RDS Postgres の再起動" size="lg" border />
 
 
-## データベースユーザーの設定 {#configure-database-user}
+## データベースユーザーの設定 \\{#configure-database-user\\}
 
 管理ユーザーとして RDS Postgres インスタンスに接続し、次のコマンドを実行します。
 
@@ -113,9 +113,9 @@ postgres=> SHOW wal_sender_timeout ;
 
    `clickpipes` publication には、指定したテーブルから生成される変更イベントの一連の集合が含まれ、後でレプリケーションストリームを取り込む際に使用されます。
 
-## ネットワークアクセスを設定する {#configure-network-access}
+## ネットワークアクセスを設定する \\{#configure-network-access\\}
 
-### IP ベースのアクセス制御 {#ip-based-access-control}
+### IP ベースのアクセス制御 \\{#ip-based-access-control\\}
 
 RDS インスタンスへのトラフィックを制限する場合は、[ドキュメントで定義されている固定 NAT IP アドレス](../../index.md#list-of-static-ips) を、RDS セキュリティグループの `Inbound rules` に追加してください。
 
@@ -123,11 +123,11 @@ RDS インスタンスへのトラフィックを制限する場合は、[ドキ
 
 <Image img={edit_inbound_rules} alt="上記のセキュリティグループのインバウンドルールを編集する" size="lg" border/>
 
-### AWS PrivateLink によるプライベートアクセス {#private-access-via-aws-privatelink}
+### AWS PrivateLink によるプライベートアクセス \\{#private-access-via-aws-privatelink\\}
 
 RDS インスタンスへプライベートネットワーク経由で接続するには、AWS PrivateLink を使用できます。接続を設定するには、[ClickPipes 向け AWS PrivateLink セットアップガイド](/knowledgebase/aws-privatelink-setup-for-clickpipes) に従ってください。
 
-### RDS Proxy の回避策 {#workarounds-for-rds-proxy}
+### RDS Proxy の回避策 \\{#workarounds-for-rds-proxy\\}
 
 RDS Proxy はロジカルレプリケーション接続をサポートしていません。RDS の IP アドレスが動的で、DNS 名や Lambda 関数を利用できない場合は、次のような代替策があります。
 
@@ -136,7 +136,7 @@ RDS Proxy はロジカルレプリケーション接続をサポートしてい�
 3. 固定の EC2 インスタンス: ポーリングサービスまたは IP ベースのプロキシとして動作する EC2 インスタンスをデプロイする。
 4. Terraform や CloudFormation などのツールを使用して、IP アドレス管理を自動化する。
 
-## 次のステップ {#whats-next}
+## 次のステップ \\{#whats-next\\}
 
 これで、[ClickPipe を作成](../index.md)し、Postgres インスタンスから ClickHouse Cloud へデータの取り込みを開始できます。
 ClickPipe を作成する際に必要になるため、Postgres インスタンスをセットアップしたときに使用した接続情報は必ず控えておいてください。

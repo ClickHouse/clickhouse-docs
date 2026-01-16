@@ -10,7 +10,7 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# MaterializedPostgreSQL {#materializedpostgresql}
+# MaterializedPostgreSQL \\{#materializedpostgresql\\}
 
 <ExperimentalBadge />
 
@@ -33,7 +33,7 @@ SET allow_experimental_database_materialized_postgresql=1
 
 :::
 
-## データベースの作成 {#creating-a-database}
+## データベースの作成 \\{#creating-a-database\\}
 
 ```sql
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster]
@@ -47,7 +47,7 @@ ENGINE = MaterializedPostgreSQL('host:port', 'database', 'user', 'password') [SE
 * `user` — PostgreSQL ユーザー名。
 * `password` — ユーザーのパスワード。
 
-## 使用例 {#example-of-use}
+## 使用例 \\{#example-of-use\\}
 
 ```sql
 CREATE DATABASE postgres_db
@@ -62,7 +62,7 @@ SHOW TABLES FROM postgres_db;
 SELECT * FROM postgresql_db.postgres_table;
 ```
 
-## レプリケーションへの新しいテーブルの動的追加 {#dynamically-adding-table-to-replication}
+## レプリケーションへの新しいテーブルの動的追加 \\{#dynamically-adding-table-to-replication\\}
 
 `MaterializedPostgreSQL` データベースが作成された後は、対応する PostgreSQL データベース内の新しいテーブルは自動的には検出されません。こうしたテーブルは手動で追加できます。
 
@@ -74,7 +74,7 @@ ATTACH TABLE postgres_database.new_table;
 バージョン 22.1 より前では、レプリケーションにテーブルを追加すると、削除されない一時レプリケーションスロット（名前は `{db_name}_ch_replication_slot_tmp`）が残っていました。ClickHouse のバージョン 22.1 より前でテーブルをアタッチする場合は、それを手動で削除してください（`SELECT pg_drop_replication_slot('{db_name}_ch_replication_slot_tmp')`）。そうしないとディスク使用量が増加します。この問題は 22.1 で修正されています。
 :::
 
-## レプリケーションからテーブルを動的に除外する {#dynamically-removing-table-from-replication}
+## レプリケーションからテーブルを動的に除外する \\{#dynamically-removing-table-from-replication\\}
 
 特定のテーブルをレプリケーション対象から除外することができます。
 
@@ -82,7 +82,7 @@ ATTACH TABLE postgres_database.new_table;
 DETACH TABLE postgres_database.table_to_remove PERMANENTLY;
 ```
 
-## PostgreSQL スキーマ {#schema}
+## PostgreSQL スキーマ \\{#schema\\}
 
 PostgreSQL の [スキーマ](https://www.postgresql.org/docs/9.1/ddl-schemas.html) は、3 通りの方法で設定できます（バージョン 21.12 以降）。
 
@@ -129,7 +129,7 @@ SELECT * FROM database1.`schema2.table2`;
 
 警告: このケースでは、テーブル名にピリオド（.）を含めることはできません。
 
-## 要件 {#requirements}
+## 要件 \\{#requirements\\}
 
 1. PostgreSQL の設定ファイルにおいて、[wal&#95;level](https://www.postgresql.org/docs/current/runtime-config-wal.html) 設定は `logical` にし、`max_replication_slots` パラメータは少なくとも `2` に設定する必要があります。
 
@@ -164,9 +164,9 @@ WHERE oid = 'postgres_table'::regclass;
 [**TOAST**](https://www.postgresql.org/docs/9.5/storage-toast.html) 値のレプリケーションはサポートされていません。データ型に対して定義されたデフォルト値が使用されます。
 :::
 
-## 設定 {#settings}
+## 設定 \\{#settings\\}
 
-### `materialized_postgresql_tables_list` {#materialized-postgresql-tables-list}
+### `materialized_postgresql_tables_list` \\{#materialized-postgresql-tables-list\\}
 
 [MaterializedPostgreSQL](../../engines/database-engines/materialized-postgresql.md) データベースエンジンによって複製される、PostgreSQL データベースのテーブルのコンマ区切りリストを設定します。
 
@@ -178,15 +178,15 @@ materialized_postgresql_tables_list = 'table1(co1, col2),table2,table3(co3, col5
 
 デフォルト値: 空リスト。空リストの場合、PostgreSQL データベース全体がレプリケートされます。
 
-### `materialized_postgresql_schema` {#materialized-postgresql-schema}
+### `materialized_postgresql_schema` \\{#materialized-postgresql-schema\\}
 
 デフォルト値: 空文字列（デフォルトスキーマが使用されます）。
 
-### `materialized_postgresql_schema_list` {#materialized-postgresql-schema-list}
+### `materialized_postgresql_schema_list` \\{#materialized-postgresql-schema-list\\}
 
 デフォルト値: 空リスト（デフォルトスキーマが使用されます）。
 
-### `materialized_postgresql_max_block_size` {#materialized-postgresql-max-block-size}
+### `materialized_postgresql_max_block_size` \\{#materialized-postgresql-max-block-size\\}
 
 PostgreSQL データベースのテーブルにデータをフラッシュする前に、メモリ内に蓄積する行数を設定します。
 
@@ -196,11 +196,11 @@ PostgreSQL データベースのテーブルにデータをフラッシュする
 
 デフォルト値: `65536`。
 
-### `materialized_postgresql_replication_slot` {#materialized-postgresql-replication-slot}
+### `materialized_postgresql_replication_slot` \\{#materialized-postgresql-replication-slot\\}
 
 ユーザーが作成したレプリケーションスロットです。`materialized_postgresql_snapshot` と一緒に使用する必要があります。
 
-### `materialized_postgresql_snapshot` {#materialized-postgresql-snapshot}
+### `materialized_postgresql_snapshot` \\{#materialized-postgresql-snapshot\\}
 
 スナップショットを識別する文字列であり、このスナップショットから [PostgreSQL テーブルの初回ダンプ](../../engines/database-engines/materialized-postgresql.md) が実行されます。`materialized_postgresql_replication_slot` と一緒に使用する必要があります。
 
@@ -218,14 +218,14 @@ SELECT * FROM database1.table1;
 ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_block_size = <new_size>;
 ```
 
-### `materialized_postgresql_use_unique_replication_consumer_identifier` {#materialized_postgresql_use_unique_replication_consumer_identifier}
+### `materialized_postgresql_use_unique_replication_consumer_identifier` \\{#materialized_postgresql_use_unique_replication_consumer_identifier\\}
 
 レプリケーション用に一意のレプリケーションコンシューマ識別子を使用します。デフォルト: `0`。
 `1` に設定すると、同じ `PostgreSQL` テーブルを参照する複数の `MaterializedPostgreSQL` テーブルを設定できるようになります。
 
-## 注意事項 {#notes}
+## 注意事項 \\{#notes\\}
 
-### 論理レプリケーションスロットのフェイルオーバー {#logical-replication-slot-failover}
+### 論理レプリケーションスロットのフェイルオーバー \\{#logical-replication-slot-failover\\}
 
 プライマリ上に存在する論理レプリケーションスロットは、スタンバイレプリカでは利用できません。
 そのためフェイルオーバーが発生すると、新しいプライマリ（元の物理スタンバイ）は、旧プライマリに存在していたスロットを認識できません。この結果、PostgreSQL からのレプリケーションが中断されます。
@@ -279,7 +279,7 @@ ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_bloc
     kubectl exec acid-demo-cluster-0 -c postgres -- su postgres -c 'patronictl failover --candidate acid-demo-cluster-1 --force'
     ```
 
-### 必要な権限 {#required-permissions}
+### 必要な権限 \\{#required-permissions\\}
 
 1. [CREATE PUBLICATION](https://postgrespro.ru/docs/postgresql/14/sql-createpublication) -- CREATE PUBLICATION を実行する権限。
 

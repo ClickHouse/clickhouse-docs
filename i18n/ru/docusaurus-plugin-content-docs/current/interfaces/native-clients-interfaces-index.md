@@ -6,7 +6,7 @@ title: 'Нативные клиенты и интерфейсы'
 doc_type: 'landing-page'
 ---
 
-# Нативные клиенты и интерфейсы {#native-clients-interfaces}
+# Нативные клиенты и интерфейсы \\{#native-clients-interfaces\\}
 
 ClickHouse предоставляет несколько нативных клиентов и интерфейсов, которые позволяют подключаться к ClickHouse.
 

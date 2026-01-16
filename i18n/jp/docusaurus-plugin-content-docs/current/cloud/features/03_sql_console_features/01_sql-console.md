@@ -43,7 +43,7 @@ import update_query_name from '@site/static/images/cloud/sqlconsole/update-query
 import update_subtitle_etc from '@site/static/images/cloud/sqlconsole/update-subtitle-etc.png';
 import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-scale.png';
 
-# SQL コンソール {#sql-console}
+# SQL コンソール \\{#sql-console\\}
 
 SQL コンソールは、ClickHouse Cloud 上のデータベースを探索し、クエリを実行するための最速かつ最も簡単な方法です。SQL コンソールを使用すると、次のことができます。
 
@@ -52,9 +52,9 @@ SQL コンソールは、ClickHouse Cloud 上のデータベースを探索し�
 - クエリを実行し、数回のクリックで結果データを可視化する
 - クエリをチームメンバーと共有し、より効果的に共同作業を行う
 
-### テーブルの探索 {#exploring-tables}
+### テーブルの探索 \\{#exploring-tables\\}
 
-### テーブル一覧とスキーマ情報の表示 {#viewing-table-list-and-schema-info}
+### テーブル一覧とスキーマ情報の表示 \\{#viewing-table-list-and-schema-info\\}
 
 ClickHouse インスタンスに含まれるテーブルの概要は、左側のサイドバーで確認できます。左サイドバー上部のデータベースセレクタを使用して、特定のデータベース内のテーブルを表示します。
 
@@ -63,21 +63,21 @@ ClickHouse インスタンスに含まれるテーブルの概要は、左側の
 
 <Image img={view_columns} size="md" alt="カラムの表示" />
 
-### テーブルデータの探索 {#exploring-table-data}
+### テーブルデータの探索 \\{#exploring-table-data\\}
 
 リスト内のテーブルをクリックすると、新しいタブで開きます。Table View では、データを容易に表示、選択、およびコピーできます。Microsoft Excel や Google Sheets などのスプレッドシートアプリケーションにコピー＆ペーストする際、構造と書式は保持されます。フッターのナビゲーションを使用して、30 行単位でページ分割されているテーブルデータのページを切り替えることができます。
 
 <Image img={abc} size="md" alt="abc" />
 
-### セルデータの検査 {#inspecting-cell-data}
+### セルデータの検査 \\{#inspecting-cell-data\\}
 
 Cell Inspector（セルインスペクター）ツールを使用すると、単一のセルに含まれる大量のデータを表示できます。開くには、セルを右クリックし、「Inspect Cell」を選択します。セルインスペクターの内容は、インスペクターウィンドウ右上隅のコピーアイコンをクリックすることでコピーできます。
 
 <Image img={inspecting_cell_content} size="md" alt="セル内容の検査" />
 
-## テーブルのフィルタリングとソート {#filtering-and-sorting-tables}
+## テーブルのフィルタリングとソート \\{#filtering-and-sorting-tables\\}
 
-### テーブルをソートする {#sorting-a-table}
+### テーブルをソートする \\{#sorting-a-table\\}
 
 SQL コンソールでテーブルをソートするには、テーブルを開き、ツールバーの 'Sort' ボタンを選択します。このボタンをクリックすると、ソートを設定できるメニューが開きます。ソートしたい列を選択し、ソート順序（昇順または降順）を設定できます。'Apply' を選択するか Enter キーを押すと、テーブルがソートされます。
 
@@ -89,7 +89,7 @@ SQL コンソールでは、テーブルに複数のソート条件を追加す�
 ソート条件は、ソートペインに表示される順序（上から下）で適用されます。ソート条件を削除するには、対象のソートの横にある 'x' ボタンをクリックするだけです。
 :::
 
-### テーブルをフィルタリングする {#filtering-a-table}
+### テーブルをフィルタリングする \\{#filtering-a-table\\}
 
 SQL コンソールでテーブルをフィルタリングするには、テーブルを開き、'Filter' ボタンを選択します。ソートと同様に、このボタンをクリックするとフィルタを設定できるメニューが開きます。フィルタを適用する列を選択し、必要な条件を指定します。SQL コンソールは、列に含まれるデータ型に対応したフィルタオプションを自動的に表示します。
 
@@ -101,13 +101,13 @@ SQL コンソールでテーブルをフィルタリングするには、テー�
 
 ソート機能と同様に、フィルタを削除するにはフィルタの横にある 'x' ボタンをクリックします。
 
-### フィルタリングとソートを同時に行う {#filtering-and-sorting-together}
+### フィルタリングとソートを同時に行う \\{#filtering-and-sorting-together\\}
 
 SQL コンソールでは、テーブルに対してフィルタリングとソートを同時に行うことができます。これを行うには、上記の手順で必要なフィルタとソートをすべて追加し、'Apply' ボタンをクリックします。
 
 <Image img={filtering_and_sorting_together} size="md" alt='範囲が 2000 より大きい条件でフィルタを追加する' />
 
-### フィルタとソートからクエリを作成する {#creating-a-query-from-filters-and-sorts}
+### フィルタとソートからクエリを作成する \\{#creating-a-query-from-filters-and-sorts\\}
 
 SQL コンソールは、設定したソート条件とフィルタ条件をワンクリックでクエリに変換できます。ツールバーから 'Create Query' ボタンを選択し、任意のソートおよびフィルタパラメータを指定します。'Create query' をクリックすると、新しいクエリタブが開き、テーブルビューの内容に対応する SQL コマンドがあらかじめ入力されています。
 
@@ -119,9 +119,9 @@ SQL コンソールは、設定したソート条件とフィルタ条件をワ�
 
 SQL コンソールでのクエリの実行方法については、(link) クエリドキュメントを参照してください。
 
-## クエリの作成と実行 {#creating-and-running-a-query}
+## クエリの作成と実行 \\{#creating-and-running-a-query\\}
 
-### クエリの作成 {#creating-a-query}
+### クエリの作成 \\{#creating-a-query\\}
 
 SQL コンソールで新しいクエリを作成する方法は 2 つあります。
 
@@ -130,7 +130,7 @@ SQL コンソールで新しいクエリを作成する方法は 2 つありま�
 
 <Image img={creating_a_query} size="md" alt="クエリの作成" />
 
-### クエリの実行 {#running-a-query}
+### クエリの実行 \\{#running-a-query\\}
 
 クエリを実行するには、SQL Editor に SQL コマンドを入力し、「Run」ボタンをクリックするか、ショートカット `cmd / ctrl + enter` を使用します。複数のコマンドを順番に記述して実行する場合は、各コマンドの末尾にセミコロンを追加してください。
 
@@ -158,13 +158,13 @@ SQL コンソールで新しいクエリを作成する方法は 2 つありま�
 実行時には、カーソル位置にあるコマンドが黄色に点滅します。
 :::
 
-### クエリのキャンセル {#canceling-a-query}
+### クエリのキャンセル \\{#canceling-a-query\\}
 
 クエリの実行中は、Query Editor ツールバーの「Run」ボタンが「Cancel」ボタンに置き換わります。このボタンをクリックするか、`Esc` キーを押すだけでクエリをキャンセルできます。注意：すでに返された結果は、キャンセル後も保持されます。
 
 <Image img={cancel_a_query} size="md" alt="クエリをキャンセル" />
 
-### クエリの保存 {#saving-a-query}
+### クエリの保存 \\{#saving-a-query\\}
 
 クエリを保存しておくと、後から簡単に見つけたり、チームメイトと共有したりできます。SQL コンソールでは、クエリをフォルダに整理することもできます。
 
@@ -180,7 +180,7 @@ SQL コンソールで新しいクエリを作成する方法は 2 つありま�
 
 <Image img={sql_console_rename} size="md" alt="クエリ名を変更" />
 
-### クエリの共有 {#query-sharing}
+### クエリの共有 \\{#query-sharing\\}
 
 SQL コンソールでは、クエリをチームメンバーと簡単に共有できます。SQL コンソールは、グローバルおよびユーザー単位の両方で調整可能な 4 種類のアクセスレベルをサポートしています。
 
@@ -207,21 +207,21 @@ SQL コンソールでは、クエリをチームメンバーと簡単に共有�
 
 <Image img={sql_console_edit_member} size="md" alt="チームメンバーのアクセスを編集" />
 
-### 共有クエリへのアクセス {#accessing-shared-queries}
+### 共有クエリへのアクセス \\{#accessing-shared-queries\\}
 
 クエリがあなたと共有されている場合、SQL コンソール左サイドバーの「Queries」タブに表示されます。
 
 <Image img={sql_console_access_queries} size="md" alt="クエリにアクセス" />
 
-### クエリへのリンク（パーマリンク） {#linking-to-a-query-permalinks}
+### クエリへのリンク（パーマリンク） \\{#linking-to-a-query-permalinks\\}
 
 保存されたクエリにはパーマリンクも付与されるため、共有クエリへのリンクを送受信して、直接開くことができます。
 
 クエリに含まれるパラメータの値は、自動的に保存されたクエリの URL にクエリパラメータとして追加されます。たとえば、クエリに `{start_date: Date}` と `{end_date: Date}` パラメータが含まれている場合、パーマリンクは次のようになります: `https://console.clickhouse.cloud/services/:serviceId/console/query/:queryId?param_start_date=2015-01-01&param_end_date=2016-01-01`。
 
-## 高度なクエリ機能 {#advanced-querying-features}
+## 高度なクエリ機能 \\{#advanced-querying-features\\}
 
-### クエリ結果の検索 {#searching-query-results}
+### クエリ結果の検索 \\{#searching-query-results\\}
 
 クエリの実行後、結果ペイン内の検索入力欄を使って、返された結果セットをすばやく検索できます。この機能は、追加の `WHERE` 句を指定した場合の結果をプレビューしたり、特定のデータが結果セットに含まれているかを確認したりするのに役立ちます。検索入力欄に値を入力すると、結果ペインが更新され、入力した値に一致するエントリを含むレコードが返されます。この例では、`ClickHouse` を含むコメントについて、`hackernews` テーブル内の `breakfast` のすべての出現箇所を検索します（大文字小文字は区別されません）:
 
@@ -231,7 +231,7 @@ SQL コンソールでは、クエリをチームメンバーと簡単に共有�
 
 <Image img={match_in_body} size="md" alt="本文内での一致" />
 
-### ページネーション設定の調整 {#adjusting-pagination-settings}
+### ページネーション設定の調整 \\{#adjusting-pagination-settings\\}
 
 デフォルトでは、クエリ結果ペインはすべての結果レコードを 1 ページに表示します。結果セットが大きい場合は、見やすくするために結果をページ分割する方が好ましい場合があります。これは、結果ペイン右下隅にあるページネーションセレクタを使用して行えます:
 
@@ -241,13 +241,13 @@ SQL コンソールでは、クエリをチームメンバーと簡単に共有�
 
 <Image img={pagination_nav} size="md" alt="ページネーションナビゲーション" />
 
-### クエリ結果データのエクスポート {#exporting-query-result-data}
+### クエリ結果データのエクスポート \\{#exporting-query-result-data\\}
 
 クエリ結果セットは、SQL コンソールから直接 CSV 形式に簡単にエクスポートできます。実行するには、結果ペインツールバー右側にある `•••` メニューを開き、「Download as CSV」を選択します。
 
 <Image img={download_as_csv} size="md" alt="CSV としてダウンロード" />
 
-## クエリデータの可視化 {#visualizing-query-data}
+## クエリデータの可視化 \\{#visualizing-query-data\\}
 
 一部のデータは、チャート形式にするとより理解しやすくなります。SQL コンソールからクエリ結果データを直接利用して、数回のクリックで素早く可視化を作成できます。例として、NYC タクシー乗車データの週次統計を計算するクエリを使用します。
 
@@ -269,7 +269,7 @@ ORDER BY
 
 可視化がないと、これらの結果を解釈するのは困難です。チャートにしてみましょう。
 
-### チャートの作成 {#creating-charts}
+### チャートの作成 \\{#creating-charts\\}
 
 可視化の作成を始めるには、クエリ結果ペインのツールバーから「Chart」オプションを選択します。チャート設定ペインが表示されます。
 
@@ -283,7 +283,7 @@ ORDER BY
 
 <Image img={bar_chart} size="md" alt="棒グラフ" />
 
-### チャートのカスタマイズ {#customizing-charts}
+### チャートのカスタマイズ \\{#customizing-charts\\}
 
 SQL コンソールは 10 種類のチャートタイプをサポートしており、チャート設定ペインのチャートタイプセレクターから選択できます。たとえば、先ほどのチャートタイプを Bar から Area に簡単に変更できます。
 

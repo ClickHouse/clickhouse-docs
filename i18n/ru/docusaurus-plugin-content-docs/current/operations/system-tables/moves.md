@@ -7,7 +7,7 @@ title: 'system.moves'
 doc_type: 'reference'
 ---
 
-# system.moves {#systemmoves}
+# system.moves \\{#systemmoves\\}
 
 Эта таблица содержит информацию о выполняющихся [перемещениях частей данных](/sql-reference/statements/alter/partition#move-partitionpart) таблиц [MergeTree](/engines/table-engines/mergetree-family/mergetree.md). Каждое перемещение части данных представлено одной строкой.
 

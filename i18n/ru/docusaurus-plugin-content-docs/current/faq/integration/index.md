@@ -8,7 +8,7 @@ description: 'Главная страница со списком вопросо
 doc_type: 'landing-page'
 ---
 
-# Вопросы об интеграции ClickHouse с другими системами {#questions-about-integrating-clickhouse-and-other-systems}
+# Вопросы об интеграции ClickHouse с другими системами \\{#questions-about-integrating-clickhouse-and-other-systems\\}
 
 * [Как экспортировать данные из ClickHouse в файл?](https://clickhouse.com/docs/knowledgebase/file-export)
 * [Как импортировать JSON в ClickHouse?](/integrations/data-ingestion/data-formats/json/intro.md)

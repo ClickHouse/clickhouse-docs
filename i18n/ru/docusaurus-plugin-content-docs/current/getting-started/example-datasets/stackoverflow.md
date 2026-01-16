@@ -22,7 +22,7 @@ import stackoverflow from '@site/static/images/getting-started/example-datasets/
 Описание схемы этих данных можно найти [здесь](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede).
 
 
-## Предварительно подготовленные данные {#pre-prepared-data}
+## Предварительно подготовленные данные \{#pre-prepared-data\}
 
 Мы предоставляем копию этих данных в формате Parquet, актуальную по состоянию на апрель 2024 года. Хотя этот набор данных и невелик для ClickHouse по числу строк (60 миллионов публикаций), он содержит значительный объем текстов и крупные столбцы типа String.
 
@@ -33,7 +33,7 @@ CREATE DATABASE stackoverflow
 Приведённые ниже временные показатели получены для кластера ClickHouse Cloud с 96 ГиБ ОЗУ и 24 vCPU, расположенного в `eu-west-2`. Набор данных находится в `eu-west-3`.
 
 
-### Публикации {#posts}
+### Публикации \{#posts\}
 
 ```sql
 CREATE TABLE stackoverflow.posts
@@ -73,7 +73,7 @@ INSERT INTO stackoverflow.posts SELECT * FROM s3('https://datasets-documentation
 Посты также доступны по годам, например, по адресу: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
 
 
-### Голоса {#votes}
+### Голоса \{#votes\}
 
 ```sql
 CREATE TABLE stackoverflow.votes
@@ -96,7 +96,7 @@ INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation
 Голоса также доступны по годам, например: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
 
 
-### Комментарии {#comments}
+### Комментарии \{#comments\}
 
 ```sql
 CREATE TABLE stackoverflow.comments
@@ -120,7 +120,7 @@ INSERT INTO stackoverflow.comments SELECT * FROM s3('https://datasets-documentat
 Комментарии также доступны по годам, например, [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
 
 
-### Пользователи {#users}
+### Пользователи \{#users\}
 
 ```sql
 CREATE TABLE stackoverflow.users
@@ -147,7 +147,7 @@ INSERT INTO stackoverflow.users SELECT * FROM s3('https://datasets-documentation
 ```
 
 
-### Значки {#badges}
+### Значки \{#badges\}
 
 ```sql
 CREATE TABLE stackoverflow.badges
@@ -168,7 +168,7 @@ INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentatio
 ```
 
 
-### Ссылки на сообщения {#postlinks}
+### Ссылки на сообщения \{#postlinks\}
 
 ```sql
 CREATE TABLE stackoverflow.postlinks
@@ -188,7 +188,7 @@ INSERT INTO stackoverflow.postlinks SELECT * FROM s3('https://datasets-documenta
 ```
 
 
-### PostHistory {#posthistory}
+### PostHistory \{#posthistory\}
 
 ```sql
 CREATE TABLE stackoverflow.posthistory
@@ -213,11 +213,11 @@ INSERT INTO stackoverflow.posthistory SELECT * FROM s3('https://datasets-documen
 ```
 
 
-## Исходный набор данных {#original-dataset}
+## Исходный набор данных \\{#original-dataset\\}
 
 Исходный набор данных доступен в сжатом XML-формате (7zip) по адресу [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) — файлы с префиксом `stackoverflow.com*`.
 
-### Скачивание {#download}
+### Скачивание \{#download\}
 
 ```bash
 wget https://archive.org/download/stackexchange/stackoverflow.com-Badges.7z
@@ -232,7 +232,7 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 Эти файлы могут иметь размер до 35 ГБ, и их скачивание может занять около 30 минут в зависимости от интернет-соединения — сервер загрузки ограничивает скорость примерно до 20 МБ/с.
 
 
-### Преобразование в JSON {#convert-to-json}
+### Преобразование в JSON \{#convert-to-json\}
 
 На момент написания ClickHouse не имеет встроенной поддержки XML в качестве входного формата. Чтобы загрузить данные в ClickHouse, сначала преобразуем их в формат NDJSON.
 
@@ -279,11 +279,11 @@ clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int3
 ```
 
 
-## Примеры запросов {#example-queries}
+## Примеры запросов \\{#example-queries\\}
 
 Несколько простых запросов для начала.
 
-### Наиболее популярные теги на Stack Overflow {#most-popular-tags-on-stack-overflow}
+### Наиболее популярные теги на Stack Overflow \{#most-popular-tags-on-stack-overflow\}
 
 ```sql
 
@@ -313,7 +313,7 @@ Peak memory usage: 224.03 MiB.
 ```
 
 
-### Пользователь с наибольшим числом ответов (активные учетные записи) {#user-with-the-most-answers-active-accounts}
+### Пользователь с наибольшим числом ответов (активные учетные записи) \{#user-with-the-most-answers-active-accounts\}
 
 Для учетной записи требуется `UserId`.
 
@@ -340,7 +340,7 @@ Peak memory usage: 206.45 MiB.
 ```
 
 
-### Самые просматриваемые посты о ClickHouse {#clickhouse-related-posts-with-the-most-views}
+### Самые просматриваемые посты о ClickHouse \{#clickhouse-related-posts-with-the-most-views\}
 
 ```sql
 SELECT
@@ -371,7 +371,7 @@ Peak memory usage: 240.01 MiB.
 ```
 
 
-### Самые резонансные публикации {#most-controversial-posts}
+### Самые резонансные публикации \{#most-controversial-posts\}
 
 ```sql
 SELECT
@@ -406,6 +406,6 @@ Peak memory usage: 6.05 GiB.
 ```
 
 
-## Атрибуция {#attribution}
+## Атрибуция \\{#attribution\\}
 
 Мы благодарим Stack Overflow за предоставление этих данных по лицензии `CC BY-SA 4.0`, признавая их вклад и указывая на оригинальный источник данных по адресу [https://archive.org/details/stackexchange](https://archive.org/details/stackexchange).

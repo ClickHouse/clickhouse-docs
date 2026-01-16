@@ -19,9 +19,9 @@ import create_new_role from '@site/static/images/cloud/onboard/migrate/oss_to_cl
 import backup_s3_bucket from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/backup_in_s3_bucket.png';
 
 
-# 使用备份命令将自管理 ClickHouse 迁移到 ClickHouse Cloud {#migrating-from-self-managed-clickhouse-to-clickhouse-cloud-using-backup-commands}
+# 使用备份命令将自管理 ClickHouse 迁移到 ClickHouse Cloud \{#migrating-from-self-managed-clickhouse-to-clickhouse-cloud-using-backup-commands\}
 
-## 概述 {#overview-migration-approaches}
+## 概述 \\{#overview-migration-approaches\\}
 
 将数据从自管理 ClickHouse（OSS）迁移到 ClickHouse Cloud 主要有两种方法：
 
@@ -44,7 +44,7 @@ import backup_s3_bucket from '@site/static/images/cloud/onboard/migrate/oss_to_c
 如果你只运行单个实例，请改为按照["在自管理 ClickHouse 与 ClickHouse Cloud 之间使用 remoteSecure 进行迁移"](/cloud/migration/clickhouse-to-cloud)中的步骤操作。
 :::
 
-## OSS 准备工作 {#oss-setup}
+## OSS 准备工作 \{#oss-setup\}
 
 我们首先会使用示例仓库中的一个 Docker Compose 配置来启动一个 ClickHouse 集群。
 如果你已经有一个正在运行的 ClickHouse 集群，可以跳过这一步。
@@ -77,7 +77,7 @@ docker exec -it clickhouse-01 clickhouse-client
 ```
 
 
-### 创建示例数据 {#create-sample-data}
+### 创建示例数据 \{#create-sample-data\}
 
 ClickHouse Cloud 使用 [`SharedMergeTree`](/cloud/reference/shared-merge-tree)。
 在恢复备份时，ClickHouse 会自动将使用 `ReplicatedMergeTree` 的表转换为 `SharedMergeTree` 表。
@@ -176,34 +176,34 @@ WHERE name = 'trips_small' AND database = 'nyc_taxi';
 现在，您已经可以继续配置 Cloud 服务，为稍后从 S3 存储桶中恢复备份做准备。
 
 
-## Cloud 准备工作 {#cloud-setup}
+## Cloud 准备工作 \\{#cloud-setup\\}
 
 你将把数据恢复到一个新的 Cloud 服务中。
 按照以下步骤创建一个新的 Cloud 服务。
 
 <VerticalStepper headerLevel="h4">
 
-#### 打开 Cloud 控制台 {#open-cloud-console}
+#### 打开 Cloud 控制台 \\{#open-cloud-console\\}
 
 访问 [https://console.clickhouse.cloud/](https://console.clickhouse.cloud/)
 
-#### 创建一个新服务 {#create-new-service}
+#### 创建一个新服务 \\{#create-new-service\\}
 
 <Image img={create_service} size="md" alt="创建一个新服务"/> 
 
-#### 配置并创建服务 {#configure-and-create}
+#### 配置并创建服务 \\{#configure-and-create\\}
 
 选择目标区域和配置，然后点击 `Create service`。
 
 <Image img={service_details} size="md" alt="配置服务参数"/> 
 
-#### 创建访问角色 {#create-an-access-role}
+#### 创建访问角色 \\{#create-an-access-role\\}
 
 打开 SQL 控制台。
 
 <Image img={open_console} size="md" alt="打开 SQL 控制台"/>
 
-### 设置 S3 访问 {#set-up-s3-access}
+### 设置 S3 访问 \\{#set-up-s3-access\\}
 
 要从 S3 恢复备份，需要在 ClickHouse Cloud 与 S3 bucket 之间配置安全访问。
 
@@ -245,7 +245,7 @@ WHERE name = 'trips_small' AND database = 'nyc_taxi';
 
 </VerticalStepper>
 
-## 执行备份（在自管理部署中） {#taking-a-backup-on-oss}
+## 执行备份（在自管理部署中） \{#taking-a-backup-on-oss\}
 
 要对单个数据库进行备份，请在连接到 OSS 部署的 clickhouse-client 中运行以下命令：
 
@@ -336,7 +336,7 @@ WHERE id = 'abc123-def456-789'
 有关备份的一般信息，请参阅[备份与恢复](/operations/backup)文档。
 
 
-## 恢复到 ClickHouse Cloud {#restore-to-clickhouse-cloud}
+## 恢复到 ClickHouse Cloud \{#restore-to-clickhouse-cloud\}
 
 要恢复单个数据库，请在你的 Cloud 服务中运行以下查询，将其中的 AWS 凭证替换为你的实际值，
 并将 `ROLE_ARN` 设置为你在[“安全访问 S3 数据”](/cloud/data-sources/secure-s3)中按照步骤获取的输出值。

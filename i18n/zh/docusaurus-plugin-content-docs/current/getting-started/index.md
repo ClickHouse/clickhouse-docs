@@ -9,7 +9,7 @@ title: '教程和示例数据集'
 doc_type: 'landing-page'
 ---
 
-# 教程和示例数据集 {#tutorials-and-example-datasets}
+# 教程和示例数据集 \\{#tutorials-and-example-datasets\\}
 
 我们提供了大量资源，帮助你上手并了解 ClickHouse 的工作原理：
 

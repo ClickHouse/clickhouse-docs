@@ -6,7 +6,7 @@ keywords: ['json', 'clickhouse', 'formats', 'exporting']
 doc_type: 'guide'
 ---
 
-# JSON のエクスポート {#exporting-json}
+# JSON のエクスポート \\{#exporting-json\\}
 
 インポートに使用可能なほとんどの JSON 形式は、エクスポートにも使用できます。最も一般的なのは [`JSONEachRow`](/interfaces/formats/JSONEachRow) です。
 
@@ -32,7 +32,7 @@ SELECT * FROM sometable FORMAT JSONCompactEachRow
 ["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", 3]
 ```
 
-## データ型を文字列として出力する {#overriding-data-types-as-strings}
+## データ型を文字列として出力する \\{#overriding-data-types-as-strings\\}
 
 ClickHouse はデータ型を尊重し、標準に従って JSON をエクスポートします。ただし、すべての値を文字列としてエンコードする必要がある場合は、[JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow) 形式を使用できます。
 
@@ -58,7 +58,7 @@ SELECT * FROM sometable FORMAT JSONCompactStringsEachRow
 ["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", "3"]
 ```
 
-## データと一緒にメタデータをエクスポートする {#exporting-metadata-together-with-data}
+## データと一緒にメタデータをエクスポートする \\{#exporting-metadata-together-with-data\\}
 
 多くのアプリケーションで一般的に利用される [JSON](/interfaces/formats/JSON) 形式では、結果データだけでなく、列の型やクエリの統計情報もエクスポートされます。
 
@@ -135,7 +135,7 @@ SELECT * FROM sometable FORMAT JSONCompact
 
 すべての値を文字列としてエンコードするには、[`JSONStrings`](/interfaces/formats/JSONStrings) または [`JSONCompactStrings`](/interfaces/formats/JSONCompactStrings) バリアントの使用を検討してください。
 
-## JSON データと構造をエクスポートするコンパクトな方法 {#compact-way-to-export-json-data-and-structure}
+## JSON データと構造をエクスポートするコンパクトな方法 \\{#compact-way-to-export-json-data-and-structure\\}
 
 データ本体とその構造をより効率的に取得するには、[`JSONCompactEachRowWithNamesAndTypes`](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes) フォーマットを使用します。
 
@@ -153,7 +153,7 @@ SELECT * FROM sometable FORMAT JSONCompactEachRowWithNamesAndTypes
 
 これは、先頭に列名と型を含む 2 行のヘッダー行を付加したコンパクトな JSON 形式を使用します。この形式は、その後、別の ClickHouse インスタンス（または他のアプリケーション）にデータを取り込むために使用できます。
 
-## JSON をファイルにエクスポートする {#exporting-json-to-a-file}
+## JSON をファイルにエクスポートする \\{#exporting-json-to-a-file\\}
 
 エクスポートした JSON データをファイルに保存するには、[INTO OUTFILE](/sql-reference/statements/select/into-outfile.md) 句を使用できます。
 

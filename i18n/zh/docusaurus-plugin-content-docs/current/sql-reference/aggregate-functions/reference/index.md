@@ -8,7 +8,7 @@ toc_hidden: true
 doc_type: 'landing-page'
 ---
 
-# 聚合函数 {#aggregate-functions}
+# 聚合函数 \\{#aggregate-functions\\}
 
 ClickHouse 支持所有标准 SQL 聚合函数（[sum](../reference/sum.md)、[avg](../reference/avg.md)、[min](../reference/min.md)、[max](../reference/max.md)、[count](../reference/count.md)），以及大量其他聚合函数。
 

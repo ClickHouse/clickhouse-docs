@@ -27,7 +27,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
 <DedicatedKeeperServers />
 
-## 前提条件 {#prerequisites}
+## 前提条件 \\{#prerequisites\\}
 
 - すでに [ローカルの ClickHouse サーバー](/install) をセットアップしている
 - [設定ファイル](/operations/configuration-files) など、ClickHouse の基本的な設定の概念に慣れている
@@ -708,7 +708,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ```
 </VerticalStepper>
 
-## 結論 {#conclusion}
+## 結論 \\{#conclusion\\}
 
 2つのシャードと2つのレプリカを持つこのクラスター・トポロジーの利点は、スケーラビリティとフォールトトレランスの両方を提供できる点にあります。
 データは個別のホスト間で分散されるため、ノードごとのストレージおよび I/O 要件が削減される一方で、クエリは両方のシャードにまたがって並列に処理されるため、パフォーマンスとメモリ効率が向上します。

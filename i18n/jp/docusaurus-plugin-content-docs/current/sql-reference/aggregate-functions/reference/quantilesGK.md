@@ -5,7 +5,7 @@ title: 'quantilesGK'
 doc_type: 'reference'
 ---
 
-# quantilesGK {#quantilesgk}
+# quantilesGK \{#quantilesgk\}
 
 `quantilesGK` は `quantileGK` と同様に動作しますが、複数のレベルの分位数を同時に計算し、その結果を配列として返します。
 

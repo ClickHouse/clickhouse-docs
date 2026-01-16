@@ -19,7 +19,7 @@ import samlAzureClaims from '@site/static/images/cloud/security/saml-azure-claim
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
 
-# 配置 SAML SSO {#saml-sso-setup}
+# 配置 SAML SSO \\{#saml-sso-setup\\}
 
 <EnterprisePlanFeatureBadge feature="SAML SSO"/>
 
@@ -29,13 +29,13 @@ ClickHouse Cloud 通过安全断言标记语言（SAML）支持单点登录（SS
 
 启用 SAML 集成的客户还可以指定新用户的默认角色，并调整会话超时设置。
 
-## 开始之前 {#before-you-begin}
+## 开始之前 \\{#before-you-begin\\}
 
 你需要在你的 IdP 中拥有管理员（Admin）权限，能够在你所属域名的 DNS 设置中添加 TXT 记录，并在 ClickHouse Cloud 组织中具有 **Admin** 角色。我们建议在配置 SAML 连接的同时，额外设置一个**指向你组织的直接链接**，以简化登录流程。不同 IdP 的具体配置方式各不相同。请继续阅读，了解如何在你的 IdP 中完成这些操作。
 
-## 如何配置 IdP {#how-to-configure-your-idp}
+## 如何配置 IdP \\{#how-to-configure-your-idp\\}
 
-### 步骤 {#steps}
+### 步骤 \\{#steps\\}
 
 <VerticalStepper headerLevel="h3">
   ### 访问组织设置
@@ -128,7 +128,7 @@ ClickHouse Cloud 通过安全断言标记语言（SAML）支持单点登录（SS
   移除所有使用非 SAML 方式的用户，以完成集成，并将访问权限限制为仅来自您的身份提供商连接的用户。
 </VerticalStepper>
 
-### 配置 Okta SAML {#configure-okta-saml}
+### 配置 Okta SAML \\{#configure-okta-saml\\}
 
 您需要在 Okta 中为每个 ClickHouse 组织配置两个 App Integration：一个 SAML 应用和一个用于保存直接链接的书签应用。
 
@@ -210,7 +210,7 @@ ClickHouse Cloud 通过安全断言标记语言（SAML）支持单点登录（SS
    
 </details>
 
-### 配置 Google SAML {#configure-google-saml}
+### 配置 Google SAML \\{#configure-google-saml\\}
 
 您需要在 Google 中为每个组织配置一个 SAML 应用。如果使用多组织 SSO，必须向用户提供直接链接 (`https://console.clickhouse.cloud/?connection={organizationId}`)，以便他们添加书签。
 
@@ -257,7 +257,7 @@ ClickHouse Cloud 通过安全断言标记语言（SAML）支持单点登录（SS
        
 </details>
 
-### 配置 Azure (Microsoft) SAML {#configure-azure-microsoft-saml}
+### 配置 Azure (Microsoft) SAML \\{#configure-azure-microsoft-saml\\}
 
 Azure (Microsoft) SAML 也可称为 Azure Active Directory (AD) 或 Microsoft Entra。
 
@@ -308,7 +308,7 @@ Azure (Microsoft) SAML 也可称为 Azure Active Directory (AD) 或 Microsoft En
 
 </details>
 
-### 配置 Duo SAML {#configure-duo-saml}
+### 配置 Duo SAML \\{#configure-duo-saml\\}
 
 <details>
    <summary> 为 Duo 创建通用 SAML 服务提供商 </summary>
@@ -335,15 +335,15 @@ Azure (Microsoft) SAML 也可称为 Azure Active Directory (AD) 或 Microsoft En
 
 ## 工作原理 {#how-it-works}
 
-### 使用 SAML SSO 的用户管理 {#user-management-with-saml-sso}
+### 使用 SAML SSO 的用户管理 \\{#user-management-with-saml-sso\\}
 
 有关管理用户权限以及将访问限制为仅允许通过 SAML 连接访问的更多信息，请参阅[管理云用户](/cloud/security/manage-cloud-users)。
 
-### 服务提供方发起的 SSO {#service-provider-initiated-sso}
+### 服务提供方发起的 SSO \\{#service-provider-initiated-sso\\}
 
 我们只支持由服务提供方发起的 SSO。这意味着用户访问 `https://console.clickhouse.cloud`，输入其电子邮件地址后，将被重定向至 IdP 进行身份验证。已经通过你的 IdP 完成身份验证的用户，可以使用直接链接自动登录到你的组织，而无需在登录页面再次输入电子邮件地址。
 
-### 多组织 SSO {#multi-org-sso}
+### 多组织 SSO \\{#multi-org-sso\\}
 
 ClickHouse Cloud 通过为每个组织提供单独的连接来支持多组织 SSO。使用直接链接（`https://console.clickhouse.cloud/?connection={organizationid}`）登录到各自的组织。在登录另一个组织之前，请务必先从当前组织注销。
 

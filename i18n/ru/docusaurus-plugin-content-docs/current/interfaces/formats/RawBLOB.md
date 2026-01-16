@@ -6,12 +6,12 @@ title: 'RawBLOB'
 doc_type: 'reference'
 ---
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Формат `RawBLOB` считывает все входные данные в одно значение. Можно разобрать только таблицу с одним полем типа [`String`](/sql-reference/data-types/string.md) или аналогичного типа.
 Результат выводится в двоичном формате без разделителей и экранирования. Если выводится более одного значения, формат становится неоднозначным, и прочитать данные обратно будет невозможно.
 
-### Сравнение форматов Raw {#raw-formats-comparison}
+### Сравнение форматов Raw \\{#raw-formats-comparison\\}
 
 Ниже приведено сравнение форматов `RawBLOB` и [`TabSeparatedRaw`](./TabSeparated/TabSeparatedRaw.md).
 
@@ -43,7 +43,7 @@ doc_type: 'reference'
 Code: 108. DB::Exception: No data to insert
 ```
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
 ```bash title="Query"
 $ clickhouse-client --query "CREATE TABLE {some_table} (a String) ENGINE = Memory;"
@@ -55,4 +55,4 @@ $ clickhouse-client --query "SELECT * FROM {some_table} FORMAT RawBLOB" | md5sum
 f9725a22f9191e064120d718e26862a9  -
 ```
 
-## Параметры форматирования {#format-settings}
+## Параметры форматирования \\{#format-settings\\}

@@ -10,7 +10,7 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import cloud_settings_sidebar from '@site/static/images/cloud/manage/cloud-settings-sidebar.png';
 
-# 配置设置 {#configuring-settings}
+# 配置设置 \\{#configuring-settings\\}
 
 要为特定[用户](/operations/access-rights#user-account-management)或[角色](/operations/access-rights#role-management)指定 ClickHouse Cloud 服务的设置，必须使用[基于 SQL 的 Settings Profiles](/operations/access-rights#settings-profiles-management)。应用 Settings Profiles 可以确保你配置的设置在服务停止、处于空闲状态或升级时仍然保持不变。要了解有关 Settings Profiles 的更多信息，请参阅[此页面](/operations/settings/settings-profiles.md)。
 

@@ -6,7 +6,7 @@ title: 'system.workloads'
 doc_type: 'reference'
 ---
 
-# system.workloads {#systemworkloads}
+# system.workloads \\{#systemworkloads\\}
 
 包含本地服务器上[工作负载](/operations/workload-scheduling.md#workload_entity_storage)的信息。该表中每个工作负载对应一行记录。
 

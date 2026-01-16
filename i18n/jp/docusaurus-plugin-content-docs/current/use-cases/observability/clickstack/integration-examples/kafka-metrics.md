@@ -17,7 +17,7 @@ import finish_import from '@site/static/images/clickstack/kafka/import-kafka-das
 import example_dashboard from '@site/static/images/clickstack/kafka/kafka-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# ClickStack を使用した Kafka メトリクスの監視 {#kafka-metrics-clickstack}
+# ClickStack を使用した Kafka メトリクスの監視 \\{#kafka-metrics-clickstack\\}
 
 :::note[概要]
 このガイドでは、OpenTelemetry JMX Metric Gatherer を使用して ClickStack で Apache Kafka のパフォーマンスメトリクスを監視する方法を説明します。次の内容を学びます:
@@ -31,13 +31,13 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 所要時間: 約 10〜15 分
 :::
 
-## 既存の Kafka デプロイメントとの統合 {#existing-kafka}
+## 既存の Kafka デプロイメントとの統合 \\{#existing-kafka\\}
 
 既存の Kafka デプロイメントを監視するには、OpenTelemetry JMX Metric Gatherer コンテナを実行してメトリクスを収集し、OTLP 経由で ClickStack に送信します。
 
 既存のセットアップを変更せずにまずこの統合をテストしたい場合は、[デモデータセットのセクション](#demo-dataset)に進んでください。
 
-##### 前提条件 {#prerequisites}
+##### 前提条件 \\{#prerequisites\\}
 
 - 稼働中の ClickStack インスタンス
 - JMX が有効化された既存の Kafka インストール（バージョン 2.0 以降）
@@ -215,7 +215,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### サンプルメトリクスデータセットのダウンロード {#download-sample}
+#### サンプルメトリクスデータセットのダウンロード \\{#download-sample\\}
 
 事前生成済みのメトリクスファイルをダウンロードします（現実的なパターンを含む 29 時間分の Kafka メトリクス）:
 ```bash
@@ -235,7 +235,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - **18:45: コンシューマーリバランス** - リバランス中にラグが 6 倍までスパイク
 - **20:00-22:00: 夜間の減少** - 夜間レベルまで急激に減少
 
-#### ClickStack の起動 {#start-clickstack}
+#### ClickStack の起動 \\{#start-clickstack\\}
 
 ClickStack インスタンスを起動します:
 ```bash
@@ -244,7 +244,7 @@ docker run -d --name clickstack-demo \
   clickhouse/clickstack-all-in-one:latest
 ```
 
-#### メトリクスを ClickStack に読み込む {#load-metrics}
+#### メトリクスを ClickStack に読み込む \\{#load-metrics\\}
 
 メトリクスを直接 ClickHouse に読み込みます:
 ```bash
@@ -257,7 +257,7 @@ cat kafka-metrics-sum.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
 
-#### HyperDX でメトリクスを確認する {#verify-demo-metrics}
+#### HyperDX でメトリクスを確認する \\{#verify-demo-metrics\\}
 
 読み込みが完了したら、メトリクスを確認する最も手早い方法は、あらかじめ用意されたダッシュボードを利用することです。
 
@@ -269,15 +269,15 @@ HyperDX はタイムスタンプをブラウザのローカルタイムゾーン
 
 </VerticalStepper>
 
-## ダッシュボードと可視化 {#dashboards}
+## ダッシュボードと可視化 \\{#dashboards\\}
 
 ClickStack で Kafka の監視を始めるにあたり役立つよう、Kafka メトリクス向けの基本的な可視化を提供しています。
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/kafka-metrics-dashboard.json')} download="kafka-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">ダッシュボード設定ファイルをダウンロード</TrackedLink> {#download}
+#### <TrackedLink href={useBaseUrl('/examples/kafka-metrics-dashboard.json')} download="kafka-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">ダッシュボード設定ファイルをダウンロード</TrackedLink> \\{#download\\}
 
-#### あらかじめ用意されたダッシュボードをインポートする {#import-dashboard}
+#### あらかじめ用意されたダッシュボードをインポートする \\{#import-dashboard\\}
 
 1. HyperDX を開き、「Dashboards」セクションに移動します
 2. 右上の三点リーダー（…）メニューから **Import Dashboard** をクリックします
@@ -288,7 +288,7 @@ ClickStack で Kafka の監視を始めるにあたり役立つよう、Kafka �
 
 <Image img={finish_import} alt="インポート完了ダイアログ"/>
 
-#### ダッシュボードを表示する {#created-dashboard}
+#### ダッシュボードを表示する \\{#created-dashboard\\}
 
 ダッシュボードはすべての可視化があらかじめ設定された状態で作成されます:
 
@@ -348,7 +348,7 @@ docker exec kafka bash -c "unset JMX_PORT && kafka-topics --create --topic test-
 echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset JMX_PORT && kafka-console-producer --topic test-topic --bootstrap-server kafka:9092"
 ```
 
-#### 認証エラー {#created-dashboard}
+#### 認証エラー \\{#created-dashboard\\}
 
 `Authorization failed` または `401 Unauthorized` が表示される場合:
 
@@ -361,7 +361,7 @@ docker compose down
 docker compose up -d
 ```
 
-#### Kafka クライアントコマンド使用時のポート競合 {#import-dashboard}
+#### Kafka クライアントコマンド使用時のポート競合 \{#import-dashboard\}
 
 Kafka コンテナ内から Kafka コマンドを実行すると、次のようなメッセージが表示される場合があります：
 
@@ -375,7 +375,7 @@ Kafka コンテナ内から Kafka コマンドを実行すると、次のよう�
 docker exec kafka bash -c "unset JMX_PORT && kafka-topics --list --bootstrap-server kafka:9092"
 ```
 
-#### ネットワーク接続の問題 {#no-metrics}
+#### ネットワーク接続の問題 \\{#no-metrics\\}
 
 JMX exporter のログに `Connection refused` が表示される場合は、次の点を確認してください。
 
@@ -393,7 +393,7 @@ docker network inspect <ネットワーク名>
 docker exec <jmx-exporter-container> sh -c "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/clickstack/4318' && echo 'Connected' || echo 'Failed'"
 ```
 
-## 本番環境での運用 {#going-to-production}
+## 本番環境での運用 \\{#going-to-production\\}
 
 このガイドでは、JMX Metric Gatherer から ClickStack の OTLP エンドポイントへメトリクスを直接送信します。これはテストや小規模なデプロイには有効です。
 

@@ -18,7 +18,7 @@ import CreateClickPipe from '@site/i18n/ru/docusaurus-plugin-content-docs/curren
 import Image from '@theme/IdealImage';
 
 
-# Создание первого Amazon S3 ClickPipe {#creating-your-first-amazon-s3-clickpipe}
+# Создание первого Amazon S3 ClickPipe \\{#creating-your-first-amazon-s3-clickpipe\\}
 
 S3 ClickPipe предоставляет полностью управляемый и отказоустойчивый способ приёма данных из Amazon S3 и S3-совместимых объектных хранилищ в ClickHouse Cloud. Он поддерживает как **однократную**, так и **непрерывную ингестию** с семантикой exactly-once.
 

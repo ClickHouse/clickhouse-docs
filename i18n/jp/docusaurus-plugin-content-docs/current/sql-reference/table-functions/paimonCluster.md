@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# paimonCluster テーブル関数 {#paimoncluster-table-function}
+# paimonCluster テーブル関数 \\{#paimoncluster-table-function\\}
 
 <ExperimentalBadge />
 
@@ -17,7 +17,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 指定したクラスタ内の複数のノードで、Apache [Paimon](https://paimon.apache.org/) のファイルを並列処理できます。イニシエーターはクラスタ内のすべてのノードへの接続を確立し、各ファイルの処理を動的に割り当てます。ワーカーノードは、処理すべき次のタスクをイニシエーターに問い合わせて処理を行います。この処理は、すべてのタスクが完了するまで繰り返されます。
 
-## 構文 {#syntax}
+## 構文 \\{#syntax\\}
 
 ```sql
 paimonS3Cluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
@@ -27,7 +27,7 @@ paimonAzureCluster(cluster_name, connection_string|storage_account_url, containe
 paimonHDFSCluster(cluster_name, path_to_table, [,format] [,compression_method])
 ```
 
-## 引数 {#arguments}
+## 引数 \\{#arguments\\}
 
 - `cluster_name` — リモートおよびローカルサーバーへのアドレスと接続パラメータのセットを構成するために使用されるクラスタ名。
 - その他すべての引数の説明は、同等の [paimon](/sql-reference/table-functions/paimon.md) テーブル関数における引数の説明と同一です。
@@ -36,7 +36,7 @@ paimonHDFSCluster(cluster_name, path_to_table, [,format] [,compression_method])
 
 指定された Paimon テーブル内のクラスタからデータを読み取るための、指定した構造を持つテーブルが返されます。
 
-## 仮想カラム {#virtual-columns}
+## 仮想カラム \\{#virtual-columns\\}
 
 - `_path` — ファイルへのパス。型: `LowCardinality(String)`。
 - `_file` — ファイル名。型: `LowCardinality(String)`。

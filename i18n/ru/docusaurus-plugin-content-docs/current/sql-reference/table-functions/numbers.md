@@ -7,7 +7,7 @@ description: 'Возвращает таблицы с единственным с
 doc_type: 'reference'
 ---
 
-# Табличная функция numbers {#numbers-table-function}
+# Табличная функция numbers \\{#numbers-table-function\\}
 
 `numbers(N)` – возвращает таблицу с единственным столбцом `number` (UInt64), содержащим целые числа от 0 до N-1.\
 `numbers(N, M)` – возвращает таблицу с единственным столбцом `number` (UInt64), содержащим целые числа от N до (N + M - 1).\

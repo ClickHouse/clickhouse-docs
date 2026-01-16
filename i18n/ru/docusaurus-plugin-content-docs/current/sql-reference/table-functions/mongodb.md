@@ -7,17 +7,17 @@ title: 'mongodb'
 doc_type: 'reference'
 ---
 
-# Табличная функция MongoDB {#mongodb-table-function}
+# Табличная функция MongoDB \\{#mongodb-table-function\\}
 
 Позволяет выполнять `SELECT`-запросы к данным, хранящимся на удалённом сервере MongoDB.
 
-## Синтаксис {#syntax}
+## Синтаксис \\{#syntax\\}
 
 ```sql
 mongodb(host:port, database, collection, user, password, structure[, options[, oid_columns]])
 ```
 
-## Аргументы {#arguments}
+## Аргументы \\{#arguments\\}
 
 | Аргумент      | Описание                                                                                                             |
 | ------------- | -------------------------------------------------------------------------------------------------------------------- |
@@ -52,11 +52,11 @@ mongodb(uri, collection, structure[, oid_columns])
 | `structure`   | Схема таблицы ClickHouse, возвращаемой этой функцией.                                                                         |
 | `oid_columns` | Список столбцов, разделённых запятыми, которые в предложении WHERE должны интерпретироваться как `oid`. По умолчанию — `_id`. |
 
-## Возвращаемое значение {#returned_value}
+## Возвращаемое значение \\{#returned_value\\}
 
 Объект таблицы с теми же столбцами, что и исходная таблица MongoDB.
 
-## Примеры {#examples}
+## Примеры \\{#examples\\}
 
 Предположим, у нас есть коллекция `my_collection` в базе данных MongoDB `test`, и мы вставляем в неё пару документов:
 
@@ -98,7 +98,7 @@ SELECT * FROM mongodb(
 )
 ```
 
-## См. также {#related}
+## См. также \\{#related\\}
 
 - [Движок таблицы `MongoDB`](engines/table-engines/integrations/mongodb.md)
 - [Использование MongoDB в качестве источника словаря](sql-reference/dictionaries/index.md#mongodb)

@@ -13,11 +13,11 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 [Apache Parquet](https://parquet.apache.org/) 是 Hadoop 生态系统中广泛使用的列式存储格式。ClickHouse 支持对该格式进行读写操作。
 
-## 数据类型匹配 {#data-types-matching-parquet}
+## 数据类型匹配 \\{#data-types-matching-parquet\\}
 
 下表展示了 Parquet 数据类型与 ClickHouse [数据类型](/sql-reference/data-types/index.md)之间的对应关系。
 
@@ -68,9 +68,9 @@ ClickHouse 表列的数据类型可以与插入的 Parquet 数据中对应字段
 * 具有 `isAdjustedToUTC=false` 的 `TIMESTAMP`/`TIME` 表示本地挂钟时间（本地时区下的年、月、日、时、分、秒和子秒字段，而不考虑具体本地时区是哪一个），等同于 SQL 中的 `TIMESTAMP WITHOUT TIME ZONE`。ClickHouse 会将其当作 UTC 时间戳来读取。例如，`2025-09-29 18:42:13.000`（表示本地挂钟的读数）会变成 `2025-09-29 18:42:13.000`（`DateTime64(3, 'UTC')`，表示某个时间点）。如果将其转换为 String，它会显示正确的年、月、日、时、分、秒和子秒，然后可以将其解释为某个本地时区中的时间，而不是 UTC。违背直觉的是，将类型从 `DateTime64(3, 'UTC')` 改为 `DateTime64(3)` 并不会有帮助，因为这两种类型都表示时间点而不是挂钟读数，但 `DateTime64(3)` 会错误地使用本地时区来格式化。
 * `INTERVAL` 当前会被读取为 `FixedString(12)`，其内容是 Parquet 文件中编码的时间间隔的原始二进制表示。
 
-## 示例用法 {#example-usage}
+## 示例用法 \\{#example-usage\\}
 
-### 插入数据 {#inserting-data}
+### 插入数据 \\{#inserting-data\\}
 
 使用一个包含以下数据的 Parquet 文件，文件名为 `football.parquet`：
 
@@ -102,7 +102,7 @@ ClickHouse 表列的数据类型可以与插入的 Parquet 数据中对应字段
 INSERT INTO football FROM INFILE 'football.parquet' FORMAT Parquet;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据 \{#reading-data\}
 
 以 `Parquet` 格式读取数据：
 
@@ -120,7 +120,7 @@ Parquet 是一种二进制格式，无法在终端中以人类可读的形式显
 要与 Hadoop 进行数据交换，可以使用 [`HDFS 表引擎`](/engines/table-engines/integrations/hdfs.md)。
 
 
-## 格式设置 {#format-settings}
+## 格式设置 \\{#format-settings\\}
 
 | 设置                                                                             | 描述                                                                                                                     | 默认值                                                                                                                                                                                                                                               |
 | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

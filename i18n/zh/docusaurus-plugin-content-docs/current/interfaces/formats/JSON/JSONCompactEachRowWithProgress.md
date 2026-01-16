@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 此格式将 `JSONCompactEachRow` 的紧凑按行输出与流式进度信息结合在一起。
 它将元数据、单独的行、进度更新、汇总以及异常分别作为独立的 JSON 对象输出。各个值以其原生类型进行表示。
@@ -26,7 +26,7 @@ doc_type: 'reference'
 - 支持 totals（汇总）和 extremes（极值）
 - 保留值的原生类型（数字为数字，字符串为字符串）
 
-## 使用示例 {#example-usage}
+## 使用示例 \\{#example-usage\\}
 
 ```sql title="Query"
 SELECT *
@@ -46,4 +46,4 @@ FORMAT JSONCompactEachRowWithProgress
 {"rows_before_limit_at_least":5}
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \\{#format-settings\\}

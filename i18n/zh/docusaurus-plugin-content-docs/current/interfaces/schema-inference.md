@@ -9,11 +9,11 @@ doc_type: 'reference'
 ClickHouse 可以在几乎所有受支持的 [输入格式](formats.md) 中自动确定输入数据的结构。
 本文档将介绍在何种情况下会使用 schema 推断、它在不同输入格式中的工作方式，以及可以用来控制它的设置。
 
-## 用法 {#usage}
+## 用法 \\{#usage\\}
 
 当 ClickHouse 需要读取特定格式的数据但其结构未知时，会使用模式推断。
 
-## 表函数 [file](../sql-reference/table-functions/file.md)、[s3](../sql-reference/table-functions/s3.md)、[url](../sql-reference/table-functions/url.md)、[hdfs](../sql-reference/table-functions/hdfs.md)、[azureBlobStorage](../sql-reference/table-functions/azureBlobStorage.md)。 {#table-functions-file-s3-url-hdfs-azureblobstorage}
+## 表函数 [file](../sql-reference/table-functions/file.md)、[s3](../sql-reference/table-functions/s3.md)、[url](../sql-reference/table-functions/url.md)、[hdfs](../sql-reference/table-functions/hdfs.md)、[azureBlobStorage](../sql-reference/table-functions/azureBlobStorage.md)。 \\{#table-functions-file-s3-url-hdfs-azureblobstorage\\}
 
 这些表函数支持一个可选参数 `structure`，用于指定输入数据的结构。如果未指定该参数或将其设置为 `auto`，则会自动从数据中推断结构。
 
@@ -60,7 +60,7 @@ DESCRIBE file('hobbies.jsonl')
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-## 表引擎 [File](../engines/table-engines/special/file.md)、[S3](../engines/table-engines/integrations/s3.md)、[URL](../engines/table-engines/special/url.md)、[HDFS](../engines/table-engines/integrations/hdfs.md)、[azureBlobStorage](../engines/table-engines/integrations/azureBlobStorage.md) {#table-engines-file-s3-url-hdfs-azureblobstorage}
+## 表引擎 [File](../engines/table-engines/special/file.md)、[S3](../engines/table-engines/integrations/s3.md)、[URL](../engines/table-engines/special/url.md)、[HDFS](../engines/table-engines/integrations/hdfs.md)、[azureBlobStorage](../engines/table-engines/integrations/azureBlobStorage.md) \\{#table-engines-file-s3-url-hdfs-azureblobstorage\\}
 
 如果在 `CREATE TABLE` 查询中未指定列列表，表结构将会根据数据自动推断。
 
@@ -102,7 +102,7 @@ DESCRIBE TABLE hobbies
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-## clickhouse-local {#clickhouse-local}
+## clickhouse-local \\{#clickhouse-local\\}
 
 `clickhouse-local` 提供一个可选参数 `-S/--structure`，用于指定输入数据的结构。如果未指定该参数或将其设置为 `auto`，则会从数据中自动推断结构。
 
@@ -132,7 +132,7 @@ clickhouse-local --file='hobbies.jsonl' --table='hobbies' --query='SELECT * FROM
 4    47    Brayan    ['movies','skydiving']
 ```
 
-## 使用插入表的结构 {#using-structure-from-insertion-table}
+## 使用插入表的结构 \\{#using-structure-from-insertion-table\\}
 
 当使用 `file/s3/url/hdfs` 表函数向表中插入数据时，
 可以选择使用插入表的结构，而不是从数据中推断结构。
@@ -240,7 +240,7 @@ INSERT INTO hobbies4 SELECT id, empty(hobbies) ? NULL : hobbies[1] FROM file(hob
 
 在这种情况下，由于在 `SELECT` 查询中对列 `hobbies` 进行了某些操作后再将其插入表中，ClickHouse 无法复用插入目标表的结构，而是会使用 schema 推断。
 
-## Schema inference cache {#schema-inference-cache}
+## Schema inference cache \\{#schema-inference-cache\\}
 
 对于大多数输入格式，schema 推断会读取一部分数据来确定其结构，这个过程可能需要一定时间。
 为了避免 ClickHouse 每次从同一个文件读取数据时都重新推断相同的 schema，推断出的 schema 会被缓存，当再次访问同一个文件时，ClickHouse 将直接使用缓存中的 schema。
@@ -1556,7 +1556,7 @@ DESC format(TSV, 'Hello, World!    42    [1, 2, 3]') settings column_names_for_s
 * `input_format_max_rows_to_read_for_schema_inference` 的默认值为 `25000`。
 * `input_format_max_bytes_to_read_for_schema_inference` 的默认值为 `33554432`（32 MB）。
 
-#### column&#95;names&#95;for&#95;schema&#95;inference {#column-names-for-schema-inference}
+#### column&#95;names&#95;for&#95;schema&#95;inference \\{#column-names-for-schema-inference\\}
 
 在对不含显式列名的格式进行模式推断时使用的列名列表。指定的名称将替代默认的 `c1,c2,c3,...`。格式：`column1,column2,column3,...`。
 
@@ -1951,7 +1951,7 @@ DESC format(JSON, $$
 $$)
 ```
 
-### 带元数据的 JSON 格式 {#json-with-metadata}
+### 带元数据的 JSON 格式 \\{#json-with-metadata\\}
 
 某些 JSON 输入格式（[JSON](/interfaces/formats/JSON)、[JSONCompact](/interfaces/formats/JSONCompact)、[JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)）包含列名和类型等元数据。
 在对这类格式进行模式推断时，ClickHouse 会读取这些元数据。
@@ -2023,7 +2023,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 
 不支持其他 Parquet 类型。
 
-### Arrow {#arrow}
+### Arrow \\{#arrow\\}
 
 在 Arrow 格式中，ClickHouse 从数据中读取 schema，并使用以下类型映射将其转换为 ClickHouse 的 schema：
 
@@ -2051,7 +2051,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 
 不支持其他 Arrow 类型。
 
-### ORC {#orc}
+### ORC \\{#orc\\}
 
 在 ORC 格式中，ClickHouse 从数据中读取模式（schema），并使用下表中的类型对应关系将其转换为 ClickHouse 模式：
 
@@ -2074,7 +2074,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 
 不支持其他 ORC 类型。
 
-### Native {#native}
+### Native \\{#native\\}
 
 Native 格式在 ClickHouse 内部使用，并在数据中包含模式（schema）。
 在模式推断时，ClickHouse 直接从数据中读取模式，而不进行任何转换。
@@ -2084,7 +2084,7 @@ Native 格式在 ClickHouse 内部使用，并在数据中包含模式（schema�
 此类格式需要在单独的文件中，使用特定的模式语言来描述数据的模式。
 要从此类格式的文件中自动推断模式，ClickHouse 会从单独的文件中读取外部模式，并将其转换为 ClickHouse 表的模式定义。
 
-### Protobuf {#protobuf}
+### Protobuf \\{#protobuf\\}
 
 在对 Protobuf 格式进行模式推断时，ClickHouse 使用以下类型对应关系：
 
@@ -2102,7 +2102,7 @@ Native 格式在 ClickHouse 内部使用，并在数据中包含模式（schema�
 | `repeated T`                  | [Array(T)](../sql-reference/data-types/array.md)  |
 | `message`, `group`            | [Tuple](../sql-reference/data-types/tuple.md)     |
 
-### CapnProto {#capnproto}
+### CapnProto \\{#capnproto\\}
 
 在对 CapnProto 格式进行模式推断时，ClickHouse 使用以下类型对应关系：
 

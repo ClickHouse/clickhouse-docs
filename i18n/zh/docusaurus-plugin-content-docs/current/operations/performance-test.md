@@ -13,7 +13,7 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 
 你可以在任何服务器上运行基本的 ClickHouse 性能测试，而无需安装 ClickHouse 软件包。
 
-## 自动化运行 {#automated-run}
+## 自动化运行 \\{#automated-run\\}
 
 你只需使用一个脚本即可运行基准测试。
 

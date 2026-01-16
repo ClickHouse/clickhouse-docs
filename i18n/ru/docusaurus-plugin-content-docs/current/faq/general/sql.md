@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['синтаксис SQL', 'ANSI SQL']
 ---
 
-# Какой синтаксис SQL поддерживает ClickHouse? {#what-sql-syntax-does-clickhouse-support}
+# Какой синтаксис SQL поддерживает ClickHouse? \\{#what-sql-syntax-does-clickhouse-support\\}
 
 ClickHouse полностью поддерживает синтаксис SQL, включая такие возможности, как:
 

@@ -20,7 +20,7 @@ import ch_permissions from '@site/static/images/integrations/data-ingestion/clic
 import Image from '@theme/IdealImage';
 import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 
-# Приём данных из MongoDB в ClickHouse (с использованием CDC) {#ingesting-data-from-mongodb-to-clickhouse-using-cdc}
+# Приём данных из MongoDB в ClickHouse (с использованием CDC) \{#ingesting-data-from-mongodb-to-clickhouse-using-cdc\}
 
 <BetaBadge/>
 
@@ -34,7 +34,7 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 
 Вы можете использовать ClickPipes, чтобы организовать приём данных из вашей базы данных MongoDB в ClickHouse Cloud. Исходная база данных MongoDB может размещаться в локальной инфраструктуре (on-premises) или в облаке с использованием сервисов, таких как MongoDB Atlas.
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \\{#prerequisites\\}
 
 Прежде чем начать, необходимо убедиться, что ваша база данных MongoDB корректно настроена для репликации данных. Шаги настройки зависят от того, как вы разворачиваете MongoDB, поэтому выполните инструкции из соответствующего руководства ниже:
 
@@ -46,7 +46,7 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 
 После того как исходная база данных MongoDB настроена, можно продолжить создание ClickPipe.
 
-## Создайте свой ClickPipe {#create-your-clickpipe}
+## Создайте свой ClickPipe \\{#create-your-clickpipe\\}
 
 Убедитесь, что вы вошли в свою учетную запись ClickHouse Cloud. Если у вас еще нет учетной записи, вы можете зарегистрироваться [здесь](https://cloud.clickhouse.com/).
 
@@ -62,7 +62,7 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 
 <Image img={mongodb_tile} alt="Выбор MongoDB" size="lg" border/>
 
-### Добавьте подключение к исходной базе данных MongoDB {#add-your-source-mongodb-database-connection}
+### Добавьте подключение к исходной базе данных MongoDB \\{#add-your-source-mongodb-database-connection\\}
 
 4. Заполните данные подключения к исходной базе данных MongoDB, которую вы настроили на шаге с предварительными требованиями.
 
@@ -73,7 +73,7 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 
    <Image img={mongodb_connection_details} alt="Заполнение данных подключения" size="lg" border/>
 
-#### (Необязательно) Настройка SSH-туннелирования {#optional-set-up-ssh-tunneling}
+#### (Необязательно) Настройка SSH-туннелирования \\{#optional-set-up-ssh-tunneling\\}
 
 Вы можете указать параметры SSH-туннелирования, если ваша исходная база данных MongoDB недоступна из публичной сети.
 
@@ -91,7 +91,7 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 
 После заполнения данных подключения нажмите `Next`.
 
-#### Настройка расширенных параметров {#advanced-settings}
+#### Настройка расширенных параметров \\{#advanced-settings\\}
 
 При необходимости вы можете настроить расширенные параметры. Краткое описание каждого параметра приведено ниже:
 
@@ -99,7 +99,7 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 - **Pull batch size**: количество строк, выбираемых за один пакет. Это параметр с режимом best-effort и он может не соблюдаться во всех случаях.
 - **Snapshot number of tables in parallel**: количество таблиц, которые будут выгружаться параллельно во время первоначального snapshot-а. Это полезно, если у вас много таблиц и вы хотите контролировать количество таблиц, обрабатываемых параллельно.
 
-### Настройка таблиц {#configure-the-tables}
+### Настройка таблиц \\{#configure-the-tables\\}
 
 5. Здесь вы можете выбрать целевую базу данных для своего ClickPipe. Вы можете выбрать существующую базу данных или создать новую.
 
@@ -107,17 +107,17 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 
 6. Вы можете выбрать таблицы, которые хотите реплицировать из исходной базы данных MongoDB. При выборе таблиц вы также можете переименовать таблицы в целевой базе данных ClickHouse.
 
-### Проверьте права доступа и запустите ClickPipe {#review-permissions-and-start-the-clickpipe}
+### Проверьте права доступа и запустите ClickPipe \\{#review-permissions-and-start-the-clickpipe\\}
 
 7. Выберите роль "Full access" в раскрывающемся списке прав доступа и нажмите "Complete Setup".
 
    <Image img={ch_permissions} alt="Проверка прав доступа" size="lg" border/>
 
-## Что дальше? {#whats-next}
+## Что дальше? \\{#whats-next\\}
 
 После того как вы настроили ClickPipe для репликации данных из MongoDB в ClickHouse Cloud, можно сосредоточиться на том, как строить запросы и моделировать данные для оптимальной производительности.
 
-## Ограничения {#caveats}
+## Ограничения \\{#caveats\\}
 
 Ниже приведены несколько ограничений, которые следует учитывать при использовании этого коннектора:
 

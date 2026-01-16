@@ -6,7 +6,7 @@ title: 'system.quota_limits'
 doc_type: 'reference'
 ---
 
-# system.quota&#95;limits {#systemquota&#95;limits}
+# system.quota&#95;limits \\{#systemquota&#95;limits\\}
 
 すべてのクォータのすべての間隔に対する上限に関する情報を含みます。1 つのクォータに対して、対応する行数は任意（0 行も可）です。
 

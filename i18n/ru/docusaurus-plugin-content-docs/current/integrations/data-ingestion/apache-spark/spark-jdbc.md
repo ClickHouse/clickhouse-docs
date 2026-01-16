@@ -16,7 +16,7 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Spark JDBC {#spark-jdbc}
+# Spark JDBC \{#spark-jdbc\}
 
 <ClickHouseSupportedBadge/>
 
@@ -26,7 +26,7 @@ JDBC является одним из самых распространённы�
 
 <TOCInline toc={toc}></TOCInline>
 
-## Чтение данных {#read-data}
+## Чтение данных \\{#read-data\\}
 
 <Tabs groupId="spark_apis">
 <TabItem value="Java" label="Java" default>
@@ -165,7 +165,7 @@ df.show()
 </Tabs>
 
 
-## Запись данных {#write-data}
+## Запись данных \\{#write-data\\}
 
 <Tabs groupId="spark_apis">
 <TabItem value="Java" label="Java" default>
@@ -336,7 +336,7 @@ df.write \
 </TabItem>
 </Tabs>
 
-## Параллелизм {#parallelism}
+## Параллелизм \\{#parallelism\\}
 
 При использовании Spark JDBC Spark читает данные, используя один раздел (partition). Чтобы добиться более высокой степени параллелизма, необходимо указать
 `partitionColumn`, `lowerBound`, `upperBound` и `numPartitions`, которые определяют, как разбивать таблицу на разделы при
@@ -344,7 +344,7 @@ df.write \
 Дополнительную информацию см. в официальной документации Apache Spark
 по [параметрам JDBC](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option).
 
-## Ограничения JDBC {#jdbc-limitations}
+## Ограничения JDBC \\{#jdbc-limitations\\}
 
 *  В Spark JDBC отсутствует поддержка сложных типов (`MAP`, `ARRAY`, `STRUCT`) из-за отсутствия диалекта ClickHouse — используйте нативный коннектор Spark-ClickHouse для полноценной поддержки сложных типов.
 *  На данный момент с помощью JDBC можно вставлять данные только в уже существующие таблицы (нет возможности автоматически создавать таблицу при вставке DataFrame, как это делает Spark с другими подключениями).

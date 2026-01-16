@@ -25,19 +25,19 @@ import AddConnection from '@site/static/images/use-cases/AI_ML/MCP/7_add_connect
 import OpenAIModels from '@site/static/images/use-cases/AI_ML/MCP/8_openai_models_more.png';
 import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation.png';
 
-# 在 Open WebUI 中使用 ClickHouse MCP 服务器 {#using-clickhouse-mcp-server-with-open-webui}
+# 在 Open WebUI 中使用 ClickHouse MCP 服务器 \\{#using-clickhouse-mcp-server-with-open-webui\\}
 
 > 本指南介绍如何配置 [Open WebUI](https://github.com/open-webui/open-webui) 与 ClickHouse MCP 服务器，
 > 并将其连接到 ClickHouse 示例数据集。
 
 <VerticalStepper headerLevel="h2">
 
-## 安装 uv {#install-uv}
+## 安装 uv \\{#install-uv\\}
 
 要按照本指南的说明进行操作，你需要先安装 [uv](https://docs.astral.sh/uv/)。
 如果你不想使用 uv，则需要更新 MCP 服务器配置以使用其他包管理器。
 
-## 启动 Open WebUI {#launch-open-webui}
+## 启动 Open WebUI \\{#launch-open-webui\\}
 
 要启动 Open WebUI，可以运行以下命令：
 
@@ -47,7 +47,7 @@ uv run --with open-webui open-webui serve
 
 访问 [http://localhost:8080/](http://localhost:8080/) 查看 UI。
 
-## 配置 ClickHouse MCP Server {#configure-clickhouse-mcp-server}
+## 配置 ClickHouse MCP Server \\{#configure-clickhouse-mcp-server\\}
 
 要配置 ClickHouse MCP Server，我们需要将 MCP Server 暴露为一组 OpenAPI 端点。
 首先，先设置环境变量，以便连接到 ClickHouse SQL Playground：
@@ -88,7 +88,7 @@ uvx mcpo --port 8000 -- uv run --with mcp-clickhouse --python 3.10 mcp-clickhous
 
 <Image img={ListOfTools} alt="Open WebUI 工具列表" size="md" />
 
-## 配置 OpenAI {#configure-openai}
+## 配置 OpenAI \\{#configure-openai\\}
 
 默认情况下，Open WebUI 使用 Ollama 模型，但我们也可以添加兼容 OpenAI 的端点。
 这些可以在设置菜单中进行配置，这次我们需要点击 `Connections` 选项卡：
@@ -103,7 +103,7 @@ uvx mcpo --port 8000 -- uv run --with mcp-clickhouse --python 3.10 mcp-clickhous
 
 <Image img={OpenAIModels} alt="Open WebUI - Models" size="md"/>
 
-## 使用 Open WebUI 与 ClickHouse MCP 服务器对话 {#chat-to-clickhouse-mcp-server}
+## 使用 Open WebUI 与 ClickHouse MCP 服务器对话 \\{#chat-to-clickhouse-mcp-server\\}
 
 然后我们可以进行对话,Open WebUI 会在必要时调用 MCP 服务器:
 

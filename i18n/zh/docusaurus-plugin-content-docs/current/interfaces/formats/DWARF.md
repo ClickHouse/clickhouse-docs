@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|---------|-------|
 | ✔     | ✗       |       |
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 `DWARF` 格式用于从 ELF 文件（可执行文件、库或目标文件）中解析 DWARF 调试符号。
 它与 `dwarfdump` 类似，但速度要快得多（数百 MB/s），并且支持 SQL。
@@ -57,7 +57,7 @@ doc_type: 'reference'
   - `attr_int` - 属性的整数值；如果该属性没有数值型值则为 0
   - `attr_str` - 属性的字符串值；如果该属性没有字符串值则为空
 
-## 使用示例 {#example-usage}
+## 使用示例 \\{#example-usage\\}
 
 `DWARF` 格式可用于查找函数定义数量最多的编译单元（包括模板实例化以及来自所包含头文件的函数）：
 
@@ -83,4 +83,4 @@ LIMIT 3
 Peak memory usage: 271.92 MiB.
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \\{#format-settings\\}

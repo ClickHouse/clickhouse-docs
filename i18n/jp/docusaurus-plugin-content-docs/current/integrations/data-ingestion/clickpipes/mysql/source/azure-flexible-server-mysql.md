@@ -13,7 +13,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# Azure Flexible Server for MySQL ソース設定ガイド {#azure-flexible-server-for-mysql-source-setup-guide}
+# Azure Flexible Server for MySQL ソース設定ガイド \{#azure-flexible-server-for-mysql-source-setup-guide\}
 
 このステップバイステップガイドでは、[MySQL ClickPipe](../index.md) を使用して、Azure Flexible Server for MySQL を ClickHouse Cloud にデータをレプリケートするように構成する方法を説明します。このサービスでは **一度限りのインジェスト** のみがサポートされています。MySQL CDC に関する一般的な質問については、[MySQL FAQ ページ](/integrations/data-ingestion/clickpipes/mysql/faq.md) を参照してください。
 
@@ -23,7 +23,7 @@ import TabItem from '@theme/TabItem';
 この機能の追加を依頼するには、[Azure フィードバックフォーラム](https://feedback.azure.com/d365community/forum/47b1e71d-ee24-ec11-b6e6-000d3a4f0da0) で機能リクエストを送信するか、[この質問](https://learn.microsoft.com/en-us/answers/questions/766047/setting-binlog-row-metadata-to-full-in-azure-db-fo) に投票するか、[Azure サポートにお問い合わせ](https://azure.microsoft.com/en-us/support/create-ticket/)ください。
 :::
 
-## データベースユーザーを構成する {#configure-database-user}
+## データベースユーザーを構成する \\{#configure-database-user\\}
 
 管理者権限を持つユーザーとして Azure Flexible Server for MySQL インスタンスに接続し、次のコマンドを実行します。
 
@@ -45,7 +45,7 @@ import TabItem from '@theme/TabItem';
    FLUSH PRIVILEGES;
    ```
 
-## ネットワーク アクセスを構成する {#configure-network-access}
+## ネットワーク アクセスを構成する \\{#configure-network-access\\}
 
 :::note
 ClickPipes は Azure Private Link 接続をサポートしていません。Azure Flexible Server for MySQL インスタンスへのパブリック アクセスを許可していない場合は、[SSH トンネルを使用](#configure-network-security)して安全に接続できます。Azure Private Link は今後サポート予定です。
@@ -82,6 +82,6 @@ Azure Flexible Server for MySQL インスタンスへのパブリック アク�
 </TabItem>
 </Tabs>
 
-## 次のステップ {#whats-next}
+## 次のステップ \\{#whats-next\\}
 
 これで、[ClickPipe を作成](../index.md)し、Azure Flexible Server for MySQL インスタンスから ClickHouse Cloud へのデータ取り込みを開始できます。インスタンスをセットアップする際に使用した接続情報は、ClickPipe を作成する際にも必要になるため、必ず控えておいてください。

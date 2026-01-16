@@ -8,11 +8,11 @@ keywords: ['JSON 导入', 'JSONEachRow 格式', '数据导入', 'JSON 摄取', '
 doc_type: 'guide'
 ---
 
-# 如何将 JSON 导入 ClickHouse？ {#how-to-import-json-into-clickhouse}
+# 如何将 JSON 导入 ClickHouse？ \\{#how-to-import-json-into-clickhouse\\}
 
 ClickHouse 支持多种[输入和输出数据格式](/interfaces/formats)。其中包含多种 JSON 变体，但在数据摄取场景中最常用的是 [JSONEachRow](/interfaces/formats/JSONEachRow)。它要求每行一个 JSON 对象，各对象之间以换行符分隔。
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
 使用 [HTTP 接口](/interfaces/http)：
 
@@ -29,7 +29,7 @@ $ echo '{"foo":"bar"}'  | clickhouse-client --query="INSERT INTO test FORMAT JSO
 与其手动插入数据，你可以考虑改用[集成工具](../../integrations/index.mdx)。
 
 
-## 实用设置 {#useful-settings}
+## 实用设置 \\{#useful-settings\\}
 
 - `input_format_skip_unknown_fields` 允许即使 JSON 中包含表结构中不存在的额外字段也能插入数据（通过丢弃这些字段）。
 - `input_format_import_nested_json` 允许将嵌套的 JSON 对象插入到 [Nested](../../sql-reference/data-types/nested-data-structures/index.md) 类型的列中。

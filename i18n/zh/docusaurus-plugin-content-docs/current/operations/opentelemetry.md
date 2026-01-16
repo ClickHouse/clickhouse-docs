@@ -9,13 +9,13 @@ doc_type: 'guide'
 
 [OpenTelemetry](https://opentelemetry.io/) 是一个用于从分布式应用程序中收集链路追踪和指标的开放标准。ClickHouse 内置了对 OpenTelemetry 的部分支持。
 
-## 向 ClickHouse 提供 trace 上下文 {#supplying-trace-context-to-clickhouse}
+## 向 ClickHouse 提供 trace 上下文 \\{#supplying-trace-context-to-clickhouse\\}
 
 ClickHouse 接收符合 [W3C 规范](https://www.w3.org/TR/trace-context/)的 trace 上下文 HTTP 头部。它还可以通过一种原生协议接收 trace 上下文，该协议用于 ClickHouse 服务器之间或客户端与服务器之间的通信。对于手动测试，可以使用 `--opentelemetry-traceparent` 和 `--opentelemetry-tracestate` 参数，将符合 Trace Context 规范的 trace 上下文头部传递给 `clickhouse-client`。
 
 如果未提供父级 trace 上下文，或者提供的 trace 上下文不符合上述 W3C 标准，ClickHouse 可以启动一个新的 trace，其触发概率由 [opentelemetry_start_trace_probability](/operations/settings/settings#opentelemetry_start_trace_probability) 设置控制。
 
-## 传播 trace 上下文 {#propagating-the-trace-context}
+## 传播 trace 上下文 \\{#propagating-the-trace-context\\}
 
 在以下情况下，trace 上下文会被传播到下游服务：
 
@@ -23,7 +23,7 @@ ClickHouse 接收符合 [W3C 规范](https://www.w3.org/TR/trace-context/)的 tr
 
 * [url](../sql-reference/table-functions/url.md) 表函数。trace 上下文信息会通过 HTTP 请求头发送。
 
-## 对 ClickHouse 本身进行追踪 {#tracing-the-clickhouse-itself}
+## 对 ClickHouse 本身进行追踪 \\{#tracing-the-clickhouse-itself\\}
 
 ClickHouse 会为每个查询以及部分查询执行阶段（例如查询规划或分布式查询）创建 `trace spans`。
 
@@ -33,11 +33,11 @@ ClickHouse 会为每个查询以及部分查询执行阶段（例如查询规划
 
 标签或属性以两个并行数组的形式保存，分别包含键和值。使用 [ARRAY JOIN](../sql-reference/statements/select/array-join.md) 来处理它们。
 
-## Log-query-settings {#log-query-settings}
+## Log-query-settings \\{#log-query-settings\\}
 
 [log_query_settings](settings/settings.md) 设置允许在查询执行期间将对查询设置所做的更改写入日志。启用后，对查询设置的任何修改都会记录到 OpenTelemetry span 日志中。此功能在生产环境中尤为有用，可用于跟踪可能影响查询性能的配置更改。
 
-## 与监控系统的集成 {#integration-with-monitoring-systems}
+## 与监控系统的集成 \\{#integration-with-monitoring-systems\\}
 
 目前，还没有可将 ClickHouse 的跟踪数据导出到监控系统的现成工具。
 
@@ -64,6 +64,6 @@ FROM system.opentelemetry_span_log
 
 如果发生任何错误，发生错误的那部分日志数据将被静默丢弃。若数据未到达，请检查服务器日志中的错误消息。
 
-## 相关内容 {#related-content}
+## 相关内容 \\{#related-content\\}
 
 - 博客：[使用 ClickHouse 构建可观测性解决方案 - 第 2 部分：跟踪（Traces）](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)

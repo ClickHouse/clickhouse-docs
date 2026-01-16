@@ -11,7 +11,7 @@ import TableOfContentsBestPractices from '@site/i18n/jp/docusaurus-plugin-conten
 import TableOfContentsOptimizationAndPerformance from '@site/i18n/jp/docusaurus-plugin-content-docs/current/guides/best-practices/_snippets/_performance_optimizations_table_of_contents.md';
 import TableOfContentsSecurity from '@site/i18n/jp/docusaurus-plugin-content-docs/current/cloud/_snippets/_security_table_of_contents.md';
 
-# リソースの概要 {#resource-tour}
+# リソースの概要 \\{#resource-tour\\}
 
 この記事では、ClickHouse Cloud デプロイメントを最大限に活用するために、
 ドキュメント内で利用できる各種リソースの概要を紹介します。
@@ -28,11 +28,11 @@ import TableOfContentsSecurity from '@site/i18n/jp/docusaurus-plugin-content-doc
 
 <TableOfContentsBestPractices />
 
-## クエリ最適化手法とパフォーマンスチューニング {#query-optimization}
+## クエリ最適化手法とパフォーマンスチューニング \\{#query-optimization\\}
 
 <TableOfContentsOptimizationAndPerformance/>
 
-## 監視 {#monitoring}
+## 監視 \\{#monitoring\\}
 
 | ページ                                                                       | 説明                                                                               |
 |----------------------------------------------------------------------------|------------------------------------------------------------------------------------|
@@ -40,11 +40,11 @@ import TableOfContentsSecurity from '@site/i18n/jp/docusaurus-plugin-content-doc
 | [Prometheus 連携](/integrations/prometheus)                         | Prometheus を使用してクラウドサービスを監視します                                   |
 | [クラウド監視機能](/use-cases/observability/cloud-monitoring) | 組み込みの監視機能と連携オプションの概要を確認します                               |
 
-## セキュリティ {#security}
+## セキュリティ \\{#security\\}
 
 <TableOfContentsSecurity/>
 
-## コスト最適化と課金 {#cost-optimization}
+## コスト最適化と課金 \\{#cost-optimization\\}
 
 | ページ                                              | 説明                                                                                                                 |
 |-----------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|

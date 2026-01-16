@@ -7,11 +7,11 @@ title: 'Array(T)'
 doc_type: 'reference'
 ---
 
-# Array(T) {#arrayt}
+# Array(T) \\{#arrayt\\}
 
 由 `T` 类型元素组成的数组，数组的起始索引为 1。`T` 可以是任何数据类型，包括数组。
 
-## 创建数组 {#creating-an-array}
+## 创建数组 \\{#creating-an-array\\}
 
 你可以使用函数创建数组：
 
@@ -47,7 +47,7 @@ SELECT [1, 2] AS x, toTypeName(x)
 └───────┴────────────────────┘
 ```
 
-## 使用数据类型 {#working-with-data-types}
+## 使用数据类型 \\{#working-with-data-types\\}
 
 在临时创建数组时，ClickHouse 会自动将参数类型推断为能够容纳所有列出参数的最窄数据类型。如果其中包含任何 [Nullable](/sql-reference/data-types/nullable) 或字面量 [NULL](/operations/settings/formats#input_format_null_as_default) 值，数组元素的类型也会变成 [Nullable](../../sql-reference/data-types/nullable.md)。
 
@@ -76,7 +76,7 @@ Received exception from server (version 1.1.54388):
 Code: 386. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: There is no supertype for types UInt8, String because some of them are String/FixedString and some of them are not.
 ```
 
-## 数组大小 {#array-size}
+## 数组大小 \\{#array-size\\}
 
 可以在不读取整列数据的情况下，使用 `size0` 子列获取数组的长度。对于多维数组，可以使用 `sizeN-1` 子列，其中 `N` 表示目标维度。
 
@@ -100,7 +100,7 @@ SELECT arr.size0, arr.size1, arr.size2 FROM t_arr;
 └───────────┴───────────┴───────────┘
 ```
 
-## 从 Array 读取嵌套子列 {#reading-nested-subcolumns-from-array}
+## 从 Array 读取嵌套子列 \\{#reading-nested-subcolumns-from-array\\}
 
 如果 `Array` 中的嵌套类型 `T` 本身包含子列（例如，它是一个[命名元组](./tuple.md)），则可以通过具有相同子列名称的 `Array(T)` 类型来读取这些子列。此时子列的类型将是“原始子列类型”的 `Array`。
 

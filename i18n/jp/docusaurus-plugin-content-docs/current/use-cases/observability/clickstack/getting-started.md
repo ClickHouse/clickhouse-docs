@@ -26,7 +26,7 @@ import edit_connection from '@site/static/images/use-cases/observability/edit_co
 あらかじめ用意された Docker イメージが利用できるため、**ClickStack** を使い始めるのは簡単です。これらのイメージは公式の ClickHouse Debian パッケージをベースとしており、さまざまなユースケースに対応できるよう複数のディストリビューションが提供されています。
 
 
-## ローカルデプロイメント {#local-deployment}
+## ローカルデプロイメント \\{#local-deployment\\}
 
 最も簡単なオプションは、スタックのすべてのコアコンポーネントをまとめた **単一イメージのディストリビューション** です。
 
@@ -38,7 +38,7 @@ import edit_connection from '@site/static/images/use-cases/observability/edit_co
 
 <VerticalStepper headerLevel="h3">
 
-### Docker でスタックをデプロイ {#deploy-stack-with-docker}
+### Docker でスタックをデプロイ \\{#deploy-stack-with-docker\\}
 
 次のコマンドは、OpenTelemetry collector（ポート 4317 と 4318）と HyperDX UI（ポート 8080）を起動します。
 
@@ -68,7 +68,7 @@ docker run \
 ```
 :::
 
-### HyperDX UI にアクセスする {#navigate-to-hyperdx-ui}
+### HyperDX UI にアクセスする \\{#navigate-to-hyperdx-ui\\}
 
 [http://localhost:8080](http://localhost:8080) にアクセスして HyperDX UI を開きます。
 
@@ -78,7 +78,7 @@ docker run \
 
 HyperDX はローカルクラスターに自動的に接続し、ログ、トレース、メトリクス、セッション用のデータソースを作成します。これにより、すぐに製品を探索できます。
 
-### 製品を探索する {#explore-the-product}
+### 製品を探索する \\{#explore-the-product\\}
 
 スタックがデプロイされたら、サンプルデータセットのいずれかを試してみてください。
 
@@ -94,17 +94,17 @@ HyperDX はローカルクラスターに自動的に接続し、ログ、トレ
 
 </VerticalStepper>
 
-## ClickHouse Cloud でデプロイする {#deploy-with-clickhouse-cloud}
+## ClickHouse Cloud でデプロイする \\{#deploy-with-clickhouse-cloud\\}
 
 ClickStack を ClickHouse Cloud 上にデプロイすることで、完全マネージドでセキュアなバックエンドの利点を得つつ、インジェスト、スキーマ、オブザーバビリティのワークフローに対する完全な制御を維持できます。
 
 <VerticalStepper headerLevel="h3">
 
-### ClickHouse Cloud サービスを作成する {#create-a-service}
+### ClickHouse Cloud サービスを作成する \\{#create-a-service\\}
 
 [ClickHouse Cloud のクイックスタートガイド](/getting-started/quick-start/cloud#1-create-a-clickhouse-service)に従ってサービスを作成します。
 
-### 接続情報をコピーする {#copy-cloud-connection-details}
+### 接続情報をコピーする \\{#copy-cloud-connection-details\\}
 
 HyperDX 用の接続情報を確認するには、ClickHouse Cloud コンソールに移動し、サイドバーの <b>Connect</b> ボタンをクリックします。
 
@@ -116,7 +116,7 @@ HTTP 接続情報のうち、特に HTTPS エンドポイント（`endpoint`）�
 HyperDX への接続には `default` ユーザーを使用しますが、[本番環境へ移行する](/use-cases/observability/clickstack/production#create-a-user)際には専用ユーザーの作成を推奨します。
 :::
 
-### Docker でデプロイする {#deploy-with-docker}
+### Docker でデプロイする \\{#deploy-with-docker\\}
 
 ターミナルを開き、先ほどコピーした認証情報を環境変数としてエクスポートします:
 
@@ -134,7 +134,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 これにより、OpenTelemetry collector（ポート 4317 および 4318）と HyperDX UI（ポート 8080）が公開されます。
 
-### HyperDX UI にアクセスする {#navigate-to-hyperdx-ui-cloud}
+### HyperDX UI にアクセスする \\{#navigate-to-hyperdx-ui-cloud\\}
 
 [http://localhost:8080](http://localhost:8080) にアクセスして HyperDX UI を開きます。
 
@@ -142,7 +142,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 <Image img={hyperdx_login} alt="HyperDX Login" size="lg"/>
 
-### ClickHouse Cloud 接続を作成する {#create-a-cloud-connection}
+### ClickHouse Cloud 接続を作成する \\{#create-a-cloud-connection\\}
 
 `Team Settings` に移動し、`Local Connection` の `Edit` をクリックします:
 
@@ -152,7 +152,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 <Image img={edit_cloud_connection} alt="Create Cloud connection" size="lg"/>
 
-### 製品を試してみる {#explore-the-product-cloud}
+### 製品を試してみる \\{#explore-the-product-cloud\\}
 
 スタックがデプロイされたら、サンプルデータセットのいずれかを試してみてください。
 
@@ -161,7 +161,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 </VerticalStepper>
 
-## ローカルモード {#local-mode}
+## ローカルモード \\{#local-mode\\}
 
 ローカルモードは、認証なしで HyperDX をデプロイするためのモードです。
 
@@ -169,15 +169,15 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 このモードは、認証や設定の永続化が不要な、テスト、開発、デモ、デバッグといった用途での利用を想定しています。
 
-### ホスト型版 {#hosted-version}
+### ホスト型版 \\{#hosted-version\\}
 
 ローカルモードでは、[play.hyperdx.io](https://play.hyperdx.io) で提供されているホスト型 HyperDX を利用できます。
 
-### セルフホスト版 {#self-hosted-version}
+### セルフホスト版 \\{#self-hosted-version\\}
 
 <VerticalStepper headerLevel="h3">
 
-### Docker で実行する {#run-local-with-docker}
+### Docker で実行する \\{#run-local-with-docker\\}
 
 セルフホストのローカルモード用イメージには、事前に設定済みの OpenTelemetry collector と ClickHouse サーバーが含まれています。これにより、外部での追加セットアップを最小限に抑えつつ、アプリケーションからのテレメトリデータを取り込み、HyperDX 上で可視化できます。セルフホスト版を使い始めるには、適切なポートをフォワードして Docker コンテナを実行するだけです:
 
@@ -187,7 +187,7 @@ docker run -p 8080:8080 clickhouse/clickstack-local:latest
 
 ローカルモードには認証機能が含まれていないため、ユーザー作成を求められることはありません。
 
-### 接続認証情報の入力 {#complete-connection-credentials}
+### 接続認証情報の入力 \\{#complete-connection-credentials\\}
 
 独自の **外部 ClickHouse クラスター** に接続する場合は、接続認証情報を手動で入力できます。
 

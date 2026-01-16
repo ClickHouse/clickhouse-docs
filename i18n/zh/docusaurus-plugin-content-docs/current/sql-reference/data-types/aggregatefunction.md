@@ -8,9 +8,9 @@ title: 'AggregateFunction 类型'
 doc_type: 'reference'
 ---
 
-# AggregateFunction 数据类型 {#aggregatefunction-type}
+# AggregateFunction 数据类型 \\{#aggregatefunction-type\\}
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 ClickHouse 中的所有[聚合函数](/sql-reference/aggregate-functions)都有一个特定于实现的中间状态，可以序列化为
 `AggregateFunction` 数据类型并存储在表中。这通常通过
@@ -21,7 +21,7 @@ ClickHouse 中的所有[聚合函数](/sql-reference/aggregate-functions)都有�
 - [`-State`](/sql-reference/aggregate-functions/combinators#-state) 聚合函数组合器，将其附加到聚合函数名后时，会生成 `AggregateFunction` 的中间状态。
 - [`-Merge`](/sql-reference/aggregate-functions/combinators#-merge) 聚合函数组合器，用于从中间状态中获取聚合的最终结果。
 
-## 语法 {#syntax}
+## 语法 \\{#syntax\\}
 
 ```sql
 AggregateFunction(aggregate_function_name, types_of_arguments...)
@@ -43,9 +43,9 @@ CREATE TABLE t
 ) ENGINE = ...
 ```
 
-## 使用方法 {#usage}
+## 使用方法 \\{#usage\\}
 
-### 数据插入 {#data-insertion}
+### 数据插入 \\{#data-insertion\\}
 
 要向包含 `AggregateFunction` 类型列的表中插入数据，可以使用 `INSERT SELECT` 语句，结合聚合函数以及
 [`-State`](/sql-reference/aggregate-functions/combinators#-state) 聚合函数组合器。
@@ -74,7 +74,7 @@ quantilesState(0.5, 0.9)(SendTiming)
 * `value` - 该格式要求聚合函数参数的单个值，或者在参数为多个时，一个包含这些值的元组；这些值会被反序列化以构造相应的状态
 * `array` - 该格式要求一个值的 Array，如上面 `value` 选项所述；数组中的所有元素会被聚合以形成状态
 
-### 数据选择 {#data-selection}
+### 数据选择 \\{#data-selection\\}
 
 从 `AggregatingMergeTree` 表中查询数据时，使用 `GROUP BY` 子句，
 并使用与插入数据时相同的聚合函数，但要使用
@@ -91,11 +91,11 @@ SELECT uniq(UserID) FROM table
 SELECT uniqMerge(state) FROM (SELECT uniqState(UserID) AS state FROM table GROUP BY RegionID)
 ```
 
-## 使用示例 {#usage-example}
+## 使用示例 \\{#usage-example\\}
 
 参见 [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) 引擎描述。
 
-## 相关内容 {#related-content}
+## 相关内容 \\{#related-content\\}
 
 - 博客：[在 ClickHouse 中使用聚合组合器](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
 - [MergeState](/sql-reference/aggregate-functions/combinators#-mergestate)

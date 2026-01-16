@@ -7,11 +7,11 @@ title: 'deltaLake'
 doc_type: 'reference'
 ---
 
-# deltaLake テーブル関数 {#deltalake-table-function}
+# deltaLake テーブル関数 \\{#deltalake-table-function\\}
 
 Amazon S3、Azure Blob Storage、またはローカルにマウントされたファイルシステムにある [Delta Lake](https://github.com/delta-io/delta) テーブルに対して、読み取り専用のテーブル形式インターフェイスを提供します。
 
-## 構文 {#syntax}
+## 構文 \\{#syntax\\}
 
 `deltaLake` は `deltaLakeS3` のエイリアスであり、互換性維持のために提供されています。
 
@@ -25,16 +25,16 @@ deltaLakeAzure(connection_string|storage_account_url, container_name, blobpath, 
 deltaLakeLocal(path, [,format])
 ```
 
-## 引数 {#arguments}
+## 引数 \\{#arguments\\}
 
 引数の説明は、それぞれ `s3`、`azureBlobStorage`、`HDFS`、`file` のテーブル関数における引数の説明と同じです。  
 `format` は、Delta Lake テーブル内のデータファイルのフォーマットを指定します。
 
-## 返される値 {#returned_value}
+## 返される値 \\{#returned_value\\}
 
 指定した Delta Lake テーブルからデータを読み取るための、指定した構造を持つテーブル。
 
-## 例 {#examples}
+## 例 \\{#examples\\}
 
 S3 上のテーブル `https://clickhouse-public-datasets.s3.amazonaws.com/delta_lake/hits/` から行を選択する:
 
@@ -54,7 +54,7 @@ LIMIT 2
 └───────────────────────────────────────────────────────────────────────┴───────────┘
 ```
 
-## 仮想カラム {#virtual-columns}
+## 仮想カラム \\{#virtual-columns\\}
 
 - `_path` — ファイルへのパス。型: `LowCardinality(String)`。
 - `_file` — ファイル名。型: `LowCardinality(String)`。
@@ -62,7 +62,7 @@ LIMIT 2
 - `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合は `NULL`。
 - `_etag` — ファイルの ETag。型: `LowCardinality(String)`。ETag が不明な場合は `NULL`。
 
-## 関連項目 {#related}
+## 関連項目 \\{#related\\}
 
 - [DeltaLake エンジン](engines/table-engines/integrations/deltalake.md)
 - [DeltaLake クラスターテーブル関数](sql-reference/table-functions/deltalakeCluster.md)

@@ -7,7 +7,7 @@ doc_type: 'reference'
 keywords: ['CityHash', '原生协议散列', '哈希函数', 'Google CityHash', '协议散列']
 ---
 
-# CityHash {#cityhash}
+# CityHash \\{#cityhash\\}
 
 ClickHouse 使用的是 [Google 的 CityHash](https://github.com/google/cityhash) 的**一个较早版本**。
 
@@ -36,8 +36,8 @@ CityHash 的文档明确指出，用户不应依赖具体的哈希值，也不�
 
 另请参阅 [Introducing CityHash](https://opensource.googleblog.com/2011/04/introducing-cityhash.html)，了解其设计说明和创建动机。简而言之：这是一种**非加密**哈希，比 [MurmurHash](http://en.wikipedia.org/wiki/MurmurHash) 更快，但实现更复杂。
 
-## 实现 {#implementations}
+## 实现 \\{#implementations\\}
 
-### Go {#go}
+### Go \\{#go\\}
 
 可以使用 [go-faster/city](https://github.com/go-faster/city) 这个 Go 包，该包实现了这两种变体。

@@ -16,11 +16,11 @@ import restart from '@site/static/images/integrations/data-ingestion/clickpipes/
 import firewall from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/firewall.png';
 import Image from '@theme/IdealImage';
 
-# Azure Flexible Server for Postgres のソース設定ガイド {#azure-flexible-server-for-postgres-source-setup-guide}
+# Azure Flexible Server for Postgres のソース設定ガイド \\{#azure-flexible-server-for-postgres-source-setup-guide\\}
 
 ClickPipes は Postgres バージョン 12 以降をサポートしています。
 
-## 論理レプリケーションを有効にする {#enable-logical-replication}
+## 論理レプリケーションを有効にする \\{#enable-logical-replication\\}
 
 `wal_level` が `logical` に設定されている場合は、以下の手順に **従う必要はありません**。別のデータレプリケーションツールから移行する場合、この設定はあらかじめ構成されていることがほとんどです。
 
@@ -36,7 +36,7 @@ ClickPipes は Postgres バージョン 12 以降をサポートしています�
 
 <Image img={restart} alt="wal_level を変更した後にサーバーを再起動" size="lg" border/>
 
-## ClickPipes 用ユーザーの作成と権限付与 {#creating-clickpipes-user-and-granting-permissions}
+## ClickPipes 用ユーザーの作成と権限付与 \\{#creating-clickpipes-user-and-granting-permissions\\}
 
 管理ユーザーで Azure Flexible Server Postgres に接続し、以下のコマンドを実行します。
 
@@ -86,7 +86,7 @@ ClickPipes は Postgres バージョン 12 以降をサポートしています�
    ALTER ROLE clickpipes_user SET wal_sender_timeout to 0;
    ```
 
-## Firewall に ClickPipes の IP アドレスを追加する {#add-clickpipes-ips-to-firewall}
+## Firewall に ClickPipes の IP アドレスを追加する \\{#add-clickpipes-ips-to-firewall\\}
 
 以下の手順に従って、[ClickPipes の IP アドレス](../../index.md#list-of-static-ips) をネットワークに追加してください。
 
@@ -95,7 +95,7 @@ ClickPipes は Postgres バージョン 12 以降をサポートしています�
 
 <Image img={firewall} alt="Azure Flexible Server for Postgres のファイアウォールに ClickPipes の IP アドレスを追加する" size="lg"/>
 
-## 次のステップ {#whats-next}
+## 次のステップ \\{#whats-next\\}
 
 これで、[ClickPipe を作成](../index.md)し、Postgres インスタンスから ClickHouse Cloud へデータの取り込みを開始できます。
 ClickPipe の作成プロセスで必要になるため、Postgres インスタンスのセットアップ時に使用した接続情報は必ずメモしておいてください。

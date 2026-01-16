@@ -22,12 +22,12 @@ keywords: ['пример набора данных', 'nypd', 'данные о п
 **Источник**: [data.cityofnewyork.us](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243)
 **Условия использования**: https://www1.nyc.gov/home/terms-of-use.page
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \\{#prerequisites\\}
 
 - Загрузите набор данных, перейдя на страницу [NYPD Complaint Data Current (Year To Date)](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243), нажав кнопку «Export» и выбрав **TSV for Excel**.
 - Установите [ClickHouse server and client](../../getting-started/install/install.mdx)
 
-### Примечание о командах, описанных в этом руководстве {#a-note-about-the-commands-described-in-this-guide}
+### Примечание о командах, описанных в этом руководстве \\{#a-note-about-the-commands-described-in-this-guide\\}
 
 В этом руководстве используются два типа команд:
 
@@ -38,11 +38,11 @@ keywords: ['пример набора данных', 'nypd', 'данные о п
 В примерах в этом руководстве предполагается, что вы сохранили TSV-файл по пути `${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv`. При необходимости скорректируйте команды.
 :::
 
-## Ознакомьтесь с TSV‑файлом {#familiarize-yourself-with-the-tsv-file}
+## Ознакомьтесь с TSV‑файлом \\{#familiarize-yourself-with-the-tsv-file\\}
 
 Перед началом работы с базой данных ClickHouse ознакомьтесь с данными.
 
-### Посмотрите на поля в исходном TSV-файле {#look-at-the-fields-in-the-source-tsv-file}
+### Посмотрите на поля в исходном TSV-файле \{#look-at-the-fields-in-the-source-tsv-file\}
 
 Это пример команды для выполнения запроса к TSV-файлу, но пока не выполняйте её.
 
@@ -119,7 +119,7 @@ New Georeferenced Column Nullable(String)
 На этом этапе вам следует проверить, что столбцы в файле TSV совпадают по именам и типам с указанными в разделе **Columns in this Dataset** на [веб‑странице набора данных](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243). Типы данных заданы не очень строго: все числовые поля имеют тип `Nullable(Float64)`, а все остальные поля — `Nullable(String)`. При создании таблицы ClickHouse для хранения данных вы можете указать более подходящие и эффективные типы.
 
 
-### Определите подходящую схему {#determine-the-proper-schema}
+### Определите подходящую схему \{#determine-the-proper-schema\}
 
 Чтобы определить, какие типы данных следует использовать для полей, необходимо понимать, как выглядят сами данные. Например, поле `JURISDICTION_CODE` является числовым: должно ли оно быть `UInt8`, или `Enum`, или же больше подходит `Float64`?
 
@@ -210,7 +210,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 В наборе данных, используемом на момент написания, содержится лишь несколько сотен различных парков и детских площадок в столбце `PARK_NM`. Это небольшое количество по сравнению с рекомендацией для [LowCardinality](/sql-reference/data-types/lowcardinality#description) — иметь менее 10 000 различных строковых значений в поле `LowCardinality(String)`.
 
 
-### Поля DateTime {#datetime-fields}
+### Поля DateTime \{#datetime-fields\}
 
 Судя по разделу **Columns in this Dataset** на [веб‑странице набора данных](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243), в наборе данных есть поля даты и времени для начала и окончания зарегистрированного события. Просмотр минимальных и максимальных значений полей `CMPLNT_FR_DT` и `CMPLT_TO_DT` даёт представление о том, всегда ли эти поля заполняются:
 
@@ -279,7 +279,7 @@ FORMAT PrettyCompact"
 ```
 
 
-## Составьте план {#make-a-plan}
+## Составьте план \\{#make-a-plan\\}
 
 Исходя из проведённого выше анализа:
 
@@ -297,7 +297,7 @@ FORMAT PrettyCompact"
 Необходимо внести ещё много изменений в типы; все их можно определить, следуя тем же шагам анализа. Оценивайте количество различных строковых значений в поле, минимумы и максимумы числовых значений и принимайте решения. Схема таблицы, приведённая далее в руководстве, содержит много строковых значений с низкой кардинальностью и беззнаковых целочисленных полей и очень мало чисел с плавающей запятой.
 :::
 
-## Объединение полей даты и времени {#concatenate-the-date-and-time-fields}
+## Объединение полей даты и времени \{#concatenate-the-date-and-time-fields\}
 
 Чтобы объединить поля даты и времени `CMPLNT_FR_DT` и `CMPLNT_FR_TM` в одну строку (`String`), которую затем можно привести к типу `DateTime`, выберите эти два поля, соединённые оператором конкатенации: `CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM`. Поля `CMPLNT_TO_DT` и `CMPLNT_TO_TM` обрабатываются аналогичным образом.
 
@@ -328,7 +328,7 @@ FORMAT PrettyCompact"
 ```
 
 
-## Преобразование строки с датой и временем в тип DateTime64 {#convert-the-date-and-time-string-to-a-datetime64-type}
+## Преобразование строки с датой и временем в тип DateTime64 \{#convert-the-date-and-time-string-to-a-datetime64-type\}
 
 Ранее в руководстве мы обнаружили, что в TSV-файле есть даты до 1 января 1970 года, поэтому для них нам нужен 64-битный тип DateTime64. Даты также необходимо преобразовать из формата `MM/DD/YYYY` в `YYYY/MM/DD`. Оба этих действия можно выполнить с помощью [`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parseDateTime64BestEffort).
 
@@ -385,11 +385,11 @@ FORMAT PrettyCompact"
 :::
 
 
-## Создание таблицы {#create-a-table}
+## Создание таблицы \\{#create-a-table\\}
 
 Принятые выше решения о типах данных, используемых для столбцов, отражены в схеме таблицы, приведённой ниже. Нам также необходимо выбрать `ORDER BY` и `PRIMARY KEY`, которые будут использоваться для таблицы. Должна быть указана как минимум одна из директив: `ORDER BY` или `PRIMARY KEY`. Ниже приведены некоторые рекомендации по выбору столбцов, которые следует включить в `ORDER BY`. Дополнительная информация приведена в разделе *Next Steps* в конце этого документа.
 
-### Операторы `ORDER BY` и `PRIMARY KEY` {#order-by-and-primary-key-clauses}
+### Операторы `ORDER BY` и `PRIMARY KEY` \{#order-by-and-primary-key-clauses\}
 
 * Кортеж `ORDER BY` должен включать поля, которые используются в фильтрах запросов
 * Для максимального сжатия на диске кортеж `ORDER BY` должен быть упорядочен по возрастанию кардинальности
@@ -485,7 +485,7 @@ CREATE TABLE NYPD_Complaint (
 ```
 
 
-### Поиск первичного ключа таблицы {#finding-the-primary-key-of-a-table}
+### Поиск первичного ключа таблицы \{#finding-the-primary-key-of-a-table\}
 
 База данных ClickHouse `system`, а именно таблица `system.table`, содержит всю информацию о таблице, которую вы только что создали. Этот запрос показывает `ORDER BY` (ключ сортировки) и `PRIMARY KEY`:
 
@@ -516,11 +516,11 @@ table:         NYPD_Complaint
 ```
 
 
-## Предварительная обработка и импорт данных {#preprocess-import-data}
+## Предварительная обработка и импорт данных \\{#preprocess-import-data\\}
 
 Мы будем использовать утилиту `clickhouse-local` для предварительной обработки данных и `clickhouse-client` для их загрузки.
 
-### Аргументы, используемые с `clickhouse-local` {#clickhouse-local-arguments-used}
+### Аргументы, используемые с `clickhouse-local` \{#clickhouse-local-arguments-used\}
 
 :::tip
 `table='input'` используется в аргументах для clickhouse-local ниже. clickhouse-local принимает предоставленные входные данные (`cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv`) и вставляет их в таблицу. По умолчанию таблица называется `table`. В этом руководстве имя таблицы задано как `input`, чтобы сделать поток данных более наглядным. Последний аргумент для clickhouse-local — это запрос, который выбирает данные из таблицы (`FROM input`), после чего результат передаётся по конвейеру в `clickhouse-client` для заполнения таблицы `NYPD_Complaint`.
@@ -571,7 +571,7 @@ cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv \
 ```
 
 
-## Проверьте данные {#validate-data}
+## Проверьте данные \{#validate-data\}
 
 :::note
 Набор данных меняется один или несколько раз в год, поэтому полученные вами значения (подсчёты) могут не совпадать с приведёнными в этом документе.
@@ -613,9 +613,9 @@ WHERE name = 'NYPD_Complaint'
 ```
 
 
-## Выполнение нескольких запросов {#run-queries}
+## Выполнение нескольких запросов \\{#run-queries\\}
 
-### Запрос 1. Сравнение количества жалоб по месяцам {#query-1-compare-the-number-of-complaints-by-month}
+### Запрос 1. Сравнение количества жалоб по месяцам \{#query-1-compare-the-number-of-complaints-by-month\}
 
 Запрос:
 
@@ -653,7 +653,7 @@ Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 ```
 
 
-### Запрос 2. Сравнение общего количества жалоб по районам {#query-2-compare-total-number-of-complaints-by-borough}
+### Запрос 2. Сравнение общего количества жалоб по районам \{#query-2-compare-total-number-of-complaints-by-borough\}
 
 Запрос:
 
@@ -685,6 +685,6 @@ Query id: 8cdcdfd4-908f-4be0-99e3-265722a2ab8d
 ```
 
 
-## Дальнейшие шаги {#next-steps}
+## Дальнейшие шаги \\{#next-steps\\}
 
 [A Practical Introduction to Sparse Primary Indexes in ClickHouse](/guides/best-practices/sparse-primary-indexes.md) рассматривает отличия индексирования в ClickHouse по сравнению с традиционными реляционными базами данных, то, как ClickHouse строит и использует разреженный первичный индекс, а также практики индексирования, которых следует придерживаться.

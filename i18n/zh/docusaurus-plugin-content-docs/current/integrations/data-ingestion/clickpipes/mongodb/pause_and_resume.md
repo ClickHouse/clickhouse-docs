@@ -19,7 +19,7 @@ import resume_dialog from '@site/static/images/integrations/data-ingestion/click
 
 在某些场景下，暂停 MongoDB ClickPipe 会很有用。例如，你可能希望在数据保持静态时对现有数据进行分析，或者正在对 MongoDB 执行升级操作。下面介绍如何暂停和恢复 MongoDB ClickPipe。
 
-## 暂停 MongoDB ClickPipe 的步骤 {#pause-clickpipe-steps}
+## 暂停 MongoDB ClickPipe 的步骤 \\{#pause-clickpipe-steps\\}
 
 1. 在 **Data Sources** 选项卡中，点击要暂停的 MongoDB ClickPipe。
 2. 前往 **Settings** 选项卡。
@@ -36,7 +36,7 @@ import resume_dialog from '@site/static/images/integrations/data-ingestion/click
 
 <Image img={pause_status} border size="md"/>
 
-## 恢复 MongoDB ClickPipe 的步骤 {#resume-clickpipe-steps}
+## 恢复 MongoDB ClickPipe 的步骤 \\{#resume-clickpipe-steps\\}
 
 1. 在 **Data Sources** 选项卡中，单击要恢复的 MongoDB ClickPipe。此时该镜像的状态应为 **Paused**。
 2. 切换到 **Settings** 选项卡。

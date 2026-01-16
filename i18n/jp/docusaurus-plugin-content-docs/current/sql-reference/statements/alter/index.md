@@ -7,7 +7,7 @@ title: 'ALTER'
 doc_type: 'reference'
 ---
 
-# ALTER {#alter}
+# ALTER \\{#alter\\}
 
 ほとんどの `ALTER TABLE` クエリは、テーブルの設定またはデータを変更します。
 
@@ -49,7 +49,7 @@ doc_type: 'reference'
 | [ALTER TABLE ... MODIFY COMMENT](/sql-reference/statements/alter/comment.md)  | コメントがあらかじめ設定されていたかどうかに関係なく、テーブルのコメントを追加、変更、または削除します。 |
 | [ALTER NAMED COLLECTION](/sql-reference/statements/alter/named-collection.md) | [Named Collections](/operations/named-collections.md) を変更します。                   |
 
-## ミューテーション {#mutations}
+## ミューテーション \\{#mutations\\}
 
 テーブルデータを変更するための `ALTER` クエリは、「ミューテーション」と呼ばれるメカニズムで実装されています。代表的なものは [ALTER TABLE ... DELETE](/sql-reference/statements/alter/delete.md) や [ALTER TABLE ... UPDATE](/sql-reference/statements/alter/update.md) です。これらは [MergeTree](/engines/table-engines/mergetree-family/index.md) テーブルにおけるマージと類似した非同期のバックグラウンドプロセスで、新しい「ミューテートされた」パーツのバージョンを生成します。
 
@@ -62,7 +62,7 @@ doc_type: 'reference'
 
 完了したミューテーションのエントリはすぐには削除されません（保持されるエントリ数は `finished_mutations_to_keep` ストレージエンジンパラメータで決まります）。古いミューテーションエントリから順に削除されます。
 
-## ALTER クエリの同期性 {#synchronicity-of-alter-queries}
+## ALTER クエリの同期性 \\{#synchronicity-of-alter-queries\\}
 
 非レプリケートテーブルに対しては、すべての `ALTER` クエリは同期的に実行されます。レプリケートテーブルに対しては、クエリは該当するアクションの指示を `ZooKeeper` に追加するだけで、アクション自体は可能な限り早く実行されます。ただし、クエリ側で、これらのアクションがすべてのレプリカで完了するまで待機させることも可能です。
 
@@ -76,6 +76,6 @@ doc_type: 'reference'
 すべての `ALTER` クエリについて、`alter_sync = 2` であり、かつ一部のレプリカが `replication_wait_for_inactive_replica_timeout` 設定で指定された時間を超えて非アクティブな状態の場合、`UNFINISHED` という例外がスローされます。
 :::
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \\{#related-content\\}
 
 - ブログ: [ClickHouse における更新と削除の扱い](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

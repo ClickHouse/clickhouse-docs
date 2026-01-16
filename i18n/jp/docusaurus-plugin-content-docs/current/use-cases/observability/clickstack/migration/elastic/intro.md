@@ -11,7 +11,7 @@ keywords: ['Elasticsearch']
 doc_type: 'guide'
 ---
 
-## Elastic から ClickStack への移行 {#migrating-to-clickstack-from-elastic}
+## Elastic から ClickStack への移行 \\{#migrating-to-clickstack-from-elastic\\}
 
 このガイドは、Elastic Stack から移行するユーザー、特に Elastic Agent で収集し Elasticsearch に保存されたログ、トレース、メトリクスを Kibana で監視しているユーザーを対象としています。ClickStack における同等の概念やデータ型を説明し、Kibana の Lucene ベースのクエリを HyperDX の構文に変換する方法、およびスムーズに移行するためのデータとエージェントの移行に関するガイダンスを提供します。
 

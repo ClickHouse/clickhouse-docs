@@ -6,7 +6,7 @@ title: 'DISTINCT 句'
 doc_type: 'reference'
 ---
 
-# DISTINCT 句 {#distinct-clause}
+# DISTINCT 句 \\{#distinct-clause\\}
 
 `SELECT DISTINCT` が指定されている場合、クエリ結果には一意の行だけが残ります。つまり、結果内で完全に一致する行の集合ごとに、1 行だけが残ります。
 
@@ -54,7 +54,7 @@ SELECT DISTINCT ON (a,b) * FROM t1;
 └───┴───┴───┘
 ```
 
-## DISTINCT と ORDER BY {#distinct-and-order-by}
+## DISTINCT と ORDER BY \\{#distinct-and-order-by\\}
 
 ClickHouse では、1 つのクエリ内で `DISTINCT` 句と `ORDER BY` 句に異なる列を指定できます。`DISTINCT` 句は `ORDER BY` 句より先に実行されます。
 
@@ -101,11 +101,11 @@ SELECT DISTINCT a FROM t1 ORDER BY b DESC;
 
 クエリを記述する際には、このような実装上の特性を考慮してください。
 
-## NULL の処理 {#null-processing}
+## NULL の処理 \\{#null-processing\\}
 
 `DISTINCT` は、[`NULL`](/sql-reference/syntax#null) を特定の値であり、かつ `NULL==NULL` が成り立つかのように扱います。言い換えると、`DISTINCT` の結果においては、`NULL` を含む異なる組み合わせは 1 回しか出現しません。これは、他のほとんどのコンテキストにおける `NULL` の処理とは異なります。
 
-## 代替方法 {#alternatives}
+## 代替方法 \\{#alternatives\\}
 
 集約関数を一切使用せずに、`SELECT` 句で指定されたものと同じ値の集合に対して [GROUP BY](/sql-reference/statements/select/group-by) を適用することで、同じ結果を得ることも可能です。ただし、この場合は `GROUP BY` を用いる方法とはいくつかの違いがあります。
 

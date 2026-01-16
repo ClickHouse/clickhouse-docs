@@ -19,14 +19,14 @@ import observability_23 from '@site/static/images/use-cases/observability/observ
 import observability_24 from '@site/static/images/use-cases/observability/observability-24.png';
 import Image from '@theme/IdealImage';
 
-# 使用 Grafana 和 ClickHouse 构建可观测性 {#using-grafana-and-clickhouse-for-observability}
+# 使用 Grafana 和 ClickHouse 构建可观测性 \\{#using-grafana-and-clickhouse-for-observability\\}
 
 Grafana 是 ClickHouse 可观测性数据的首选可视化工具。这是通过 Grafana 官方的 ClickHouse 插件实现的。你可以按照[此处](/integrations/grafana)的安装说明进行操作。
 
 该插件的 V4 版本在全新的查询构建体验中，将日志和链路追踪提升为一等公民。这最大限度地减少了 SRE 编写 SQL 查询的需求，并简化了基于 SQL 的可观测性，推动了这一新兴范式的发展。
 其中一项重要工作是将 OpenTelemetry (OTel) 置于插件的核心位置，因为我们认为，在未来几年中，它将成为基于 SQL 的可观测性以及数据采集方式的基础。
 
-## OpenTelemetry 集成 {#open-telemetry-integration}
+## OpenTelemetry 集成 \\{#open-telemetry-integration\\}
 
 在 Grafana 中配置 ClickHouse 数据源时，插件允许用户为日志和链路追踪指定默认的数据库和表，并指明这些表是否符合 OTel 模式（schema）。这使插件可以返回在 Grafana 中正确渲染日志和链路追踪所需的列。如果你对默认的 OTel 模式进行了修改，并希望使用自定义列名，也可以在此指定。对于诸如时间列（`Timestamp`）、日志级别（`SeverityText`）或消息体（`Body`）等列，使用默认的 OTel 列名意味着无需做任何额外更改。
 
@@ -42,7 +42,7 @@ Grafana 是 ClickHouse 可观测性数据的首选可视化工具。这是通过
 
 配置完成后，你可以进入 [Grafana Explore](https://grafana.com/docs/grafana/latest/explore/)，开始搜索日志和链路追踪数据。
 
-## 日志 {#logs}
+## 日志 \{#logs\}
 
 如果符合 Grafana 的日志查询要求，你可以在查询构建器中选择 `Query Type: Log`，然后点击 `Run Query`。查询构建器会生成一条查询语句，用于列出日志并确保它们能够正确渲染，例如：
 
@@ -55,13 +55,13 @@ SELECT Timestamp as timestamp, Body as body, SeverityText as level, TraceId as t
 查询构建器提供了一种简便方式来修改查询，从而避免用户手写 SQL。包括关键词搜索在内的筛选操作都可以在查询构建器中完成。希望编写更复杂查询的用户可以切换到 SQL 编辑器。只要返回了合适的列，并且在 Query Type 中选择了 `logs`，结果就会以日志的形式呈现。用于日志渲染的必需列列在[此处](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)。
 
 
-### 从日志跳转到 Trace {#logs-to-traces}
+### 从日志跳转到 Trace \\{#logs-to-traces\\}
 
 如果日志中包含 trace ID，你可以从特定的日志行导航到对应的 trace 进行查看。
 
 <Image img={observability_17} alt="从日志跳转到 Trace" size="lg" border/>
 
-## Traces {#traces}
+## Traces \\{#traces\\}
 
 与上述日志体验类似，如果满足 Grafana 渲染 trace 所需的列（例如使用 OTel schema），查询构建器就能自动生成所需的查询。通过选择 `Query Type: Traces` 并点击 `Run Query`，就会生成并执行类似如下的查询（具体取决于你配置的列——下面示例假设使用 OTel）：
 
@@ -84,7 +84,7 @@ WHERE ( Timestamp >= $__fromTime AND Timestamp <= $__toTime )
 
 如需编写更复杂的查询，用户可以切换到 `SQL 编辑器`。
 
-### 查看 Trace 详情 {#view-trace-details}
+### 查看 Trace 详情 \\{#view-trace-details\\}
 
 如上所示，Trace ID 会显示为可点击的链接。点击某个 Trace ID 后，用户可以通过 `View Trace` 链接查看关联的 span。系统会执行如下查询（假设使用 OTel 列），以所需结构检索这些 span，并将结果以瀑布图形式呈现。
 
@@ -118,7 +118,7 @@ LIMIT 1000
 
 <Image img={observability_19} alt="Trace 详情" size="lg" border />
 
-### Trace 到日志 {#traces-to-logs}
+### Trace 到日志 \{#traces-to-logs\}
 
 如果日志中包含 trace ID，你可以从某个 trace 跳转到其关联的日志。要查看日志，单击某个 trace ID 并选择 `View Logs`。在使用默认 OTel 列的情况下，将会执行如下查询。
 
@@ -133,7 +133,7 @@ ORDER BY timestamp ASC LIMIT 1000
 <Image img={observability_20} alt="Trace 到日志" size="lg" border />
 
 
-## 仪表盘 {#dashboards}
+## 仪表盘 \\{#dashboards\\}
 
 用户可以在 Grafana 中使用 ClickHouse 数据源构建仪表盘。建议参考 Grafana 与 ClickHouse 的[数据源文档](https://github.com/grafana/clickhouse-datasource)以获取更多详细信息，尤其是其中关于[宏](https://github.com/grafana/clickhouse-datasource?tab=readme-ov-file#macros)和[变量](https://grafana.com/docs/grafana/latest/dashboards/variables/)的内容。
 
@@ -143,7 +143,7 @@ ORDER BY timestamp ASC LIMIT 1000
 
 下面是一些用于构建可视化的简单建议。
 
-### 时间序列 {#time-series}
+### 时间序列 \\{#time-series\\}
 
 在各种统计图表中，折线图是可观测性场景下最常见的可视化形式。ClickHouse 插件会在查询返回一个名为 `time` 的 `datetime` 列和一个数值列时自动渲染折线图。例如：
 
@@ -162,7 +162,7 @@ LIMIT 100000
 
 <Image img={observability_22} alt="时间序列" size="lg" border />
 
-### 多折线图 {#multi-line-charts}
+### 多折线图 \\{#multi-line-charts\\}
 
 当查询满足以下条件时，会自动渲染为多折线图：
 
@@ -187,7 +187,7 @@ LIMIT 100000
 
 <Image img={observability_23} alt="多折线图" size="lg" border />
 
-### 可视化地理数据 {#visualizing-geo-data}
+### 可视化地理数据 \\{#visualizing-geo-data\\}
 
 在前文中，我们已经探讨了如何使用 IP 字典为可观测性数据补充地理坐标。假设已经有 `latitude` 和 `longitude` 列，就可以使用 `geohashEncode` 函数来对可观测性数据进行可视化。该函数生成的地理哈希与 Grafana Geo Map 图表兼容。下面展示了一个示例查询和可视化结果：
 

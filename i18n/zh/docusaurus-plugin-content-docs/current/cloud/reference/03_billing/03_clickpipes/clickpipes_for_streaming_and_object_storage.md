@@ -10,13 +10,13 @@ keywords: ['计费', 'clickpipes', '流式数据定价', '成本', '价格']
 import ClickPipesFAQ from '../../../_snippets/_clickpipes_faq.md'
 
 
-# 用于流式传输和对象存储的 ClickPipes {#clickpipes-for-streaming-object-storage}
+# 用于流式传输和对象存储的 ClickPipes \\{#clickpipes-for-streaming-object-storage\\}
 
 本节概述 ClickPipes 在流式传输和对象存储场景下的定价模型。
 
 
 
-## ClickPipes 的定价结构是什么样的？ {#what-does-the-clickpipes-pricing-structure-look-like}
+## ClickPipes 的定价结构是什么样的？ \\{#what-does-the-clickpipes-pricing-structure-look-like\\}
 
 ClickPipes 的定价由两个维度组成：
 
@@ -30,7 +30,7 @@ ClickPipes 的定价由两个维度组成：
 
 
 
-## 什么是 ClickPipes 副本？ {#what-are-clickpipes-replicas}
+## 什么是 ClickPipes 副本？ \\{#what-are-clickpipes-replicas\\}
 
 ClickPipes 通过专用基础设施从远程数据源摄取数据，
 该基础设施在运行和伸缩方面独立于 ClickHouse Cloud 服务。
@@ -38,14 +38,14 @@ ClickPipes 通过专用基础设施从远程数据源摄取数据，
 
 
 
-## 默认的副本数量及其规格是多少？ {#what-is-the-default-number-of-replicas-and-their-size}
+## 默认的副本数量及其规格是多少？ \\{#what-is-the-default-number-of-replicas-and-their-size\\}
 
 每个 ClickPipe 默认为 1 个副本，规格为 512 MiB 内存和 0.125 个 vCPU（XS）。
 这相当于 **0.0625** 个 ClickHouse 计算单元（1 个单元 = 8 GiB 内存、2 个 vCPU）。
 
 
 
-## ClickPipes 公开价格是多少？ {#what-are-the-clickpipes-public-prices}
+## ClickPipes 公开价格是多少？ \\{#what-are-the-clickpipes-public-prices\\}
 
 - Compute：每单位每小时 \$0.20（默认副本规格为每个副本每小时 \$0.0125）
 - 摄取数据：每 GB \$0.04
@@ -62,7 +62,7 @@ Compute 计费维度的价格取决于 ClickPipe 中副本的**数量**和**规�
 
 
 
-## 在示例场景中是什么样子？ {#how-does-it-look-in-an-illustrative-example}
+## 在示例场景中是什么样子？ \\{#how-does-it-look-in-an-illustrative-example\\}
 
 以下示例均假设使用单个 M 规格副本，除非另有说明。
 
@@ -93,6 +93,6 @@ $^1$ _此处仅计入用于编排的 ClickPipes 计算成本，实际数据传�
 
 
 
-## 关于流式传输和对象存储 ClickPipes 的常见问题解答 {#faq-streaming-and-object-storage}
+## 关于流式传输和对象存储 ClickPipes 的常见问题解答 \\{#faq-streaming-and-object-storage\\}
 
 <ClickPipesFAQ/>

@@ -14,7 +14,7 @@ import Image from '@theme/IdealImage';
 import azureDataStoreSettings                   from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-settings.png';
 import azureDataStoreAccessKeys                 from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-access-keys.png';
 
-# Использование табличной функции azureBlobStorage в ClickHouse {#using-azureBlobStorage-function}
+# Использование табличной функции azureBlobStorage в ClickHouse \\{#using-azureBlobStorage-function\\}
 
 Это один из наиболее эффективных и простых способов копирования данных из
 Azure Blob Storage или Azure Data Lake Storage в ClickHouse. С помощью этой табличной
@@ -32,7 +32,7 @@ Azure Blob Storage или Azure Data Lake Storage в ClickHouse. С помощь
 обратитесь к официальной документации:
 странице документации табличной функции [`azureBlobStorage`](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
 
-## Получение ключей доступа к Azure Blob Storage {#acquiring-azure-blob-storage-access-keys}
+## Получение ключей доступа к Azure Blob Storage \\{#acquiring-azure-blob-storage-access-keys\\}
 
 Чтобы предоставить ClickHouse доступ к Azure Blob Storage, вам понадобится строка подключения с ключом доступа.
 
@@ -48,7 +48,7 @@ Azure Blob Storage или Azure Data Lake Storage в ClickHouse. С помощь
 
 4. Скопируйте строку подключения — вы будете использовать её в качестве параметра табличной функции azureBlobStorage.
 
-## Выполнение запросов к данным в Azure Blob Storage {#querying-the-data-from-azure-blob-storage}
+## Выполнение запросов к данным в Azure Blob Storage \\{#querying-the-data-from-azure-blob-storage\\}
 
 Откройте предпочитаемую консоль для выполнения запросов в ClickHouse — это может быть
 веб-интерфейс ClickHouse Cloud, клиент ClickHouse CLI или любой другой инструмент,
@@ -82,7 +82,7 @@ SELECT * FROM azureBlobStorage(
 Это позволяет эффективно загружать внешние данные в ClickHouse без необходимости промежуточных ETL-этапов.
 
 
-## Простой пример с использованием набора данных Environmental Sensors {#simple-example-using-the-environmental-sensors-dataset}
+## Простой пример с использованием набора данных Environmental Sensors \\{#simple-example-using-the-environmental-sensors-dataset\\}
 
 В качестве примера мы загрузим один файл из набора данных Environmental Sensors.
 
@@ -153,7 +153,7 @@ file stored in Azure Blob Storage.
 ````
 
 
-## Дополнительные ресурсы {#additional-resources}
+## Дополнительные ресурсы \\{#additional-resources\\}
 
 Это лишь базовое введение в использование функции azureBlobStorage. Для более
 продвинутых вариантов и параметров конфигурации обратитесь к официальной

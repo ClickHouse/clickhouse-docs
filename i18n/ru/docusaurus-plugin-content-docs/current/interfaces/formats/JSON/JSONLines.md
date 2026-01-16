@@ -11,15 +11,15 @@ doc_type: 'reference'
 |----------------|-----------------|-------------------------------------------|
 | ✔              | ✔               | `JSONEachRow`, `JSONLines`, `NDJSON`, `JSONL` |
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 В этом формате ClickHouse выводит каждую строку в виде отдельного JSON-объекта, по одному объекту на строку.
 
 Этот формат также известен как `JSONEachRow`, `NDJSON` (Newline Delimited JSON) или `JSONL` (`JSONLines`). Все эти названия являются синонимами одного и того же формата и могут использоваться взаимозаменяемо.
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
-### Вставка данных {#inserting-data}
+### Вставка данных \\{#inserting-data\\}
 
 Используем JSON-файл со следующими данными, сохранённый под именем `football.json`:
 
@@ -49,7 +49,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONLines;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных \\{#reading-data\\}
 
 Прочитайте данные в формате `JSONLines`:
 
@@ -83,4 +83,4 @@ FORMAT JSONLines
 
 Столбцы данных с неизвестными именами будут пропущены при импорте, если настройка [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в 1.
 
-## Параметры форматирования {#format-settings}
+## Параметры форматирования \\{#format-settings\\}

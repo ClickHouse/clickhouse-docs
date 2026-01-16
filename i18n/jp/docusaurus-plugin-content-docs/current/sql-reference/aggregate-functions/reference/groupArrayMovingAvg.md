@@ -5,7 +5,7 @@ title: 'groupArrayMovingAvg'
 doc_type: 'reference'
 ---
 
-# groupArrayMovingAvg {#grouparraymovingavg}
+# groupArrayMovingAvg \{#grouparraymovingavg\}
 
 入力値の移動平均を計算する集約関数です。
 

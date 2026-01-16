@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Microsoft Agent Framework と ClickHouse MCP Server を使用して AI エージェントを構築する方法 {#how-to-build-an-ai-agent-with-microsoft-agent-framework-and-the-clickhouse-mcp-server}
+# Microsoft Agent Framework と ClickHouse MCP Server を使用して AI エージェントを構築する方法 \\{#how-to-build-an-ai-agent-with-microsoft-agent-framework-and-the-clickhouse-mcp-server\\}
 
 このガイドでは、[Microsoft Agent Framework](https://github.com/microsoft/agent-framework) を使って、[ClickHouse の SQL Playground](https://sql.clickhouse.com/) と対話できる AI エージェントを [ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を通じて構築する方法を説明します。
 
@@ -18,7 +18,7 @@ doc_type: 'guide'
 このサンプルは、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/microsoft-agent-framework/microsoft-agent-framework.ipynb) 内のノートブックとして確認できます。
 :::
 
-## 前提条件 {#prerequisites}
+## 前提条件 \\{#prerequisites\\}
 
 - システムに Python がインストールされている必要があります。
 - システムに `pip` がインストールされている必要があります。

@@ -16,7 +16,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# Introduction {#introduction}
+# Introduction \\{#introduction\\}
 
 ClickHouse Connect は、幅広い Python アプリケーションとの相互運用性を提供する中核となるデータベースドライバーです。
 
@@ -32,7 +32,7 @@ ClickHouse Connect は、幅広い Python アプリケーションとの相互�
 公式の ClickHouse Connect Python ドライバーは、ClickHouse サーバーとの通信に HTTP プロトコルを使用します。これにより HTTP ロードバランサーの利用が可能となり、ファイアウォールやプロキシが存在するエンタープライズ環境でも適切に動作しますが、ネイティブな TCP ベースプロトコルと比べて圧縮効率とパフォーマンスがわずかに低く、クエリキャンセルのような一部の高度な機能はサポートされません。ユースケースによっては、ネイティブな TCP ベースプロトコルを使用する [Community Python drivers](/interfaces/third-party/client-libraries.md) の利用を検討してください。
 :::
 
-## 動作要件と互換性 {#requirements-and-compatibility}
+## 動作要件と互換性 \\{#requirements-and-compatibility\\}
 
 |       Python |   |       プラットフォーム¹ |   |      ClickHouse |    | SQLAlchemy² |   | Apache Superset |   |  Pandas |   | Polars |   |
 |-------------:|:--|----------------:|:--|----------------:|:---|------------:|:--|----------------:|:--|--------:|:--|-------:|:--|
@@ -50,7 +50,7 @@ ClickHouse Connect は、幅広い Python アプリケーションとの相互�
 
 ³ClickHouse Connect は、公式にサポートされている範囲外のバージョンでも概ね問題なく動作します。
 
-## インストール {#installation}
+## インストール \\{#installation\\}
 
 pip を使って [PyPI](https://pypi.org/project/clickhouse-connect/) から ClickHouse Connect をインストールします：
 
@@ -62,24 +62,24 @@ ClickHouse Connect はソースからインストールすることもできま�
 * （オプション）C/Cython の最適化をビルドして有効にするために `pip install cython` を実行します
 * `cd` コマンドでプロジェクトのルートディレクトリに移動し、`pip install .` を実行します
 
-## サポートポリシー {#support-policy}
+## サポートポリシー \\{#support-policy\\}
 
 問題を報告する前に、必ず ClickHouse Connect を最新バージョンに更新してください。問題は [GitHub のプロジェクト](https://github.com/ClickHouse/clickhouse-connect/issues)に起票してください。ClickHouse Connect の将来のリリースは、リリース時点で積極的にサポートされている ClickHouse バージョンとの互換性を保つことを想定しています。ClickHouse サーバーの積極的サポート対象バージョンは[こちら](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md)で確認できます。どのバージョンの ClickHouse サーバーを使用すべきか判断に迷う場合は、[こちらのディスカッション](https://clickhouse.com/docs/knowledgebase/production#how-to-choose-between-clickhouse-releases)を参照してください。CI のテストマトリクスでは、最新の 2 つの LTS リリースと最新の 3 つの安定版リリースに対してテストを実行しています。ただし、HTTP プロトコルの性質と、ClickHouse のリリース間で破壊的変更が最小限に抑えられていることから、ClickHouse Connect は公式にサポートされる範囲外のサーバーバージョンでも概ね良好に動作しますが、一部の高度なデータ型との互換性は変動する可能性があります。
 
-## 基本的な使い方 {#basic-usage}
+## 基本的な使い方 \\{#basic-usage\\}
 
-### 接続情報を確認する {#gather-your-connection-details}
+### 接続情報を確認する \\{#gather-your-connection-details\\}
 
 <ConnectionDetails />
 
-### 接続を確立する {#establish-a-connection}
+### 接続を確立する \\{#establish-a-connection\\}
 
 ClickHouse への接続方法として、次の 2 つの例を示します。
 
 - localhost 上で動作している ClickHouse サーバーに接続する場合
 - ClickHouse Cloud サービスに接続する場合
 
-#### ClickHouse Connect クライアント インスタンスを使用して localhost 上の ClickHouse サーバーに接続する: {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-server-on-localhost}
+#### ClickHouse Connect クライアント インスタンスを使用して localhost 上の ClickHouse サーバーに接続する: \\{#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-server-on-localhost\\}
 
 ```python
 import clickhouse_connect
@@ -87,7 +87,7 @@ import clickhouse_connect
 client = clickhouse_connect.get_client(host='localhost', username='default', password='password')
 ```
 
-#### ClickHouse Connect クライアントインスタンスを使用して ClickHouse Cloud サービスに接続します: {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-cloud-service}
+#### ClickHouse Connect クライアントインスタンスを使用して ClickHouse Cloud サービスに接続します: \\{#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-cloud-service\\}
 
 :::tip
 先ほど収集した接続情報を使用してください。ClickHouse Cloud サービスでは TLS が必須となるため、ポート 8443 を使用してください。
@@ -99,7 +99,7 @@ import clickhouse_connect
 client = clickhouse_connect.get_client(host='HOSTNAME.clickhouse.cloud', port=8443, username='default', password='your password')
 ```
 
-### データベースを操作する {#interact-with-your-database}
+### データベースを操作する \\{#interact-with-your-database\\}
 
 ClickHouse の SQL コマンドを実行するには、クライアントの `command` メソッドを使用します。
 

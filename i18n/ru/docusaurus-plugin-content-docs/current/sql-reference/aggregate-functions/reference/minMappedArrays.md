@@ -5,7 +5,7 @@ title: 'minMap'
 doc_type: 'reference'
 ---
 
-# minMap {#minmap}
+# minMap \{#minmap\}
 
 Вычисляет минимальное значение из массива `value` в соответствии с ключами, указанными в массиве `key`.
 

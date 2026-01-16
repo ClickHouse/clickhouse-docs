@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
-# S3Queue テーブルエンジン {#s3queue-table-engine}
+# S3Queue テーブルエンジン \\{#s3queue-table-engine\\}
 
 このエンジンは [Amazon S3](https://aws.amazon.com/s3/) エコシステムとの統合を提供し、ストリーミングインポートを可能にします。このエンジンは [Kafka](../../../engines/table-engines/integrations/kafka.md)、[RabbitMQ](../../../engines/table-engines/integrations/rabbitmq.md) エンジンと類似していますが、S3 固有の機能を提供します。
 
 [S3Queue 実装の元となった PR](https://github.com/ClickHouse/ClickHouse/pull/49086/files#diff-e1106769c9c8fbe48dd84f18310ef1a250f2c248800fde97586b3104e9cd6af8R183) に記載されている次の注意点を理解しておくことが重要です。`MATERIALIZED VIEW` がこのエンジンに接続されると、S3Queue テーブルエンジンはバックグラウンドでデータの収集を開始します。
 
-## テーブルを作成する {#creating-a-table}
+## テーブルを作成する \\{#creating-a-table\\}
 
 ```sql
 CREATE TABLE s3_queue_engine_table (name String, value UInt32)
@@ -83,7 +83,7 @@ SETTINGS
     mode = 'ordered';
 ```
 
-## 設定 {#settings}
+## 設定 \\{#settings\\}
 
 テーブルに対して構成されている設定一覧を取得するには、`system.s3_queue_settings` テーブルを使用します。ClickHouse 24.10 以降で利用可能です。
 
@@ -96,7 +96,7 @@ SETTINGS
 24.7 以降のバージョンでは、どちらの形式もサポートされています。本ページの例では、プレフィックスなしのモダンな構文を使用します。
 :::
 
-### Mode {#mode}
+### Mode \\{#mode\\}
 
 指定可能な値：
 
@@ -105,7 +105,7 @@ SETTINGS
 
 デフォルト値: バージョン 24.6 より前は `ordered`。24.6 以降ではデフォルト値は存在せず、この設定の指定が必須になります。以前のバージョンで作成されたテーブルについては、互換性のためデフォルト値は引き続き `Ordered` のままです。
 
-### `after_processing` {#after_processing}
+### `after_processing` \\{#after_processing\\}
 
 ファイルの処理が正常に完了した後の扱い方法。
 
@@ -141,7 +141,7 @@ Azure コンテナから別の Azure コンテナに移動するには、Blob St
 
 タグ付けを行うには、タグキーと値をそれぞれ `after_processing_tag_key` および `after_processing_tag_value` として指定します。
 
-### `after_processing_retries` {#after_processing_retries}
+### `after_processing_retries` \\{#after_processing_retries\\}
 
 要求された後処理アクションに対して、処理を断念するまでに行う再試行回数。
 
@@ -151,7 +151,7 @@ Azure コンテナから別の Azure コンテナに移動するには、Blob St
 
 デフォルト値: `10`。
 
-### `after_processing_move_access_key_id` {#after_processing_move_access_key_id}
+### `after_processing_move_access_key_id` \\{#after_processing_move_access_key_id\\}
 
 移動先が別の S3 バケットである場合に、正常に処理されたファイルをそのバケットへ移動するための Access Key ID。
 
@@ -161,7 +161,7 @@ Azure コンテナから別の Azure コンテナに移動するには、Blob St
 
 デフォルト値: 空文字列。
 
-### `after_processing_move_prefix` {#after_processing_move_prefix}
+### `after_processing_move_prefix` \\{#after_processing_move_prefix\\}
 
 正常に処理されたファイルを移動する先のパスプレフィックスです。同一バケット内での移動と、別のバケットへの移動の両方で有効です。
 
@@ -171,7 +171,7 @@ Azure コンテナから別の Azure コンテナに移動するには、Blob St
 
 デフォルト値: 空文字列。
 
-### `after_processing_move_secret_access_key` {#after_processing_move_secret_access_key}
+### `after_processing_move_secret_access_key` \\{#after_processing_move_secret_access_key\\}
 
 移動先が別の S3 バケットである場合に、正常に処理されたファイルをそのバケットへ移動するための Secret Access Key。
 
@@ -181,7 +181,7 @@ Azure コンテナから別の Azure コンテナに移動するには、Blob St
 
 デフォルト値: 空文字列。
 
-### `after_processing_move_uri` {#after_processing_move_uri}
+### `after_processing_move_uri` \\{#after_processing_move_uri\\}
 
 宛先が別の S3 バケットである場合に、正常に処理されたファイルを移動する先となる S3 バケットの URI。
 
@@ -191,7 +191,7 @@ Azure コンテナから別の Azure コンテナに移動するには、Blob St
 
 デフォルト値: 空文字列。
 
-### `after_processing_tag_key` {#after_processing_tag_key}
+### `after_processing_tag_key` \\{#after_processing_tag_key\\}
 
 `after_processing='tag'` の場合に、正常に処理されたファイルへタグ付けを行うためのタグキー。
 
@@ -201,7 +201,7 @@ Azure コンテナから別の Azure コンテナに移動するには、Blob St
 
 デフォルト値: 空文字列。
 
-### `after_processing_tag_value` {#after_processing_tag_value}
+### `after_processing_tag_value` \\{#after_processing_tag_value\\}
 
 `after_processing` が `tag` の場合に、正常に処理されたファイルに付与するタグ値。
 
@@ -211,7 +211,7 @@ Azure コンテナから別の Azure コンテナに移動するには、Blob St
 
 デフォルト値: 空文字列。
 
-### `keeper_path` {#keeper_path}
+### `keeper_path` \\{#keeper_path\\}
 
 ZooKeeper 内のパスはテーブルエンジンの設定として指定するか、グローバル設定で指定されたパスとテーブル UUID から既定パスを生成できます。
 取り得る値:
@@ -220,7 +220,7 @@ ZooKeeper 内のパスはテーブルエンジンの設定として指定する�
 
 既定値: `/`。
 
-### `loading_retries` {#loading_retries}
+### `loading_retries` \\{#loading_retries\\}
 
 指定された回数までファイルの読み込みを再試行します。デフォルトでは再試行は行われません。
 取りうる値:
@@ -229,13 +229,13 @@ ZooKeeper 内のパスはテーブルエンジンの設定として指定する�
 
 デフォルト値: `0`。
 
-### `processing_threads_num` {#processing_threads_num}
+### `processing_threads_num` \\{#processing_threads_num\\}
 
 処理を実行するスレッド数。`Unordered` モードでのみ適用されます。
 
 デフォルト値: CPU の数または 16。
 
-### `parallel_inserts` {#parallel_inserts}
+### `parallel_inserts` \\{#parallel_inserts\\}
 
 デフォルトでは、`processing_threads_num` は 1 つの `INSERT` しか生成されないため、複数スレッドで実行されるのはファイルのダウンロードとパース処理だけです。
 しかし、これは並列度を制限するため、スループットを向上させるには `parallel_inserts=true` を使用してください。これによりデータを並列に挿入できるようになります（ただし、その結果として MergeTree ファミリーのテーブルに対して生成されるデータパーツの数が増加する点に注意してください）。
@@ -246,13 +246,13 @@ ZooKeeper 内のパスはテーブルエンジンの設定として指定する�
 
 デフォルト値: `false`。
 
-### `enable_logging_to_s3queue_log` {#enable_logging_to_s3queue_log}
+### `enable_logging_to_s3queue_log` \\{#enable_logging_to_s3queue_log\\}
 
 `system.s3queue_log` へのログ記録を有効にします。
 
 デフォルト値: `0`。
 
-### `polling_min_timeout_ms` {#polling_min_timeout_ms}
+### `polling_min_timeout_ms` \\{#polling_min_timeout_ms\\}
 
 ClickHouse が次のポーリングを実行する前に待機する最小時間をミリ秒単位で指定します。
 
@@ -262,7 +262,7 @@ ClickHouse が次のポーリングを実行する前に待機する最小時間
 
 デフォルト値: `1000`。
 
-### `polling_max_timeout_ms` {#polling_max_timeout_ms}
+### `polling_max_timeout_ms` \\{#polling_max_timeout_ms\\}
 
 ClickHouse が次のポーリング試行を開始するまでに待機する最大時間を、ミリ秒単位で定義します。
 
@@ -272,7 +272,7 @@ ClickHouse が次のポーリング試行を開始するまでに待機する最
 
 デフォルト値: `10000`。
 
-### `polling_backoff_ms` {#polling_backoff_ms}
+### `polling_backoff_ms` \\{#polling_backoff_ms\\}
 
 新しいファイルが見つからなかった場合に、前回のポーリング間隔に追加される待機時間を決定します。次回のポーリングは、前回の間隔にこのバックオフ値を加えた値と最大間隔のうち、短い方の時間が経過した後に行われます。
 
@@ -282,7 +282,7 @@ ClickHouse が次のポーリング試行を開始するまでに待機する最
 
 デフォルト値: `0`。
 
-### `tracked_files_limit` {#tracked_files_limit}
+### `tracked_files_limit` \\{#tracked_files_limit\\}
 
 `unordered` モードが使用されている場合に、ZooKeeper ノードの数に上限を設けるための設定です。`ordered` モードでは何も行いません。
 上限に達した場合、最も古く処理されたファイルが ZooKeeper ノードから削除され、再度処理されます。
@@ -293,7 +293,7 @@ ClickHouse が次のポーリング試行を開始するまでに待機する最
 
 デフォルト値: `1000`。
 
-### `tracked_file_ttl_sec` {#tracked_file_ttl_sec}
+### `tracked_file_ttl_sec` \\{#tracked_file_ttl_sec\\}
 
 `unordered` モードにおいて、処理済みファイルを ZooKeeper のノードに保持しておく最大秒数（デフォルトでは無期限に保存）を指定します。`ordered` モードでは何もしません。
 指定された秒数が経過すると、そのファイルは再インポートされます。
@@ -304,37 +304,37 @@ ClickHouse が次のポーリング試行を開始するまでに待機する最
 
 デフォルト値: `0`。
 
-### `cleanup_interval_min_ms` {#cleanup_interval_min_ms}
+### `cleanup_interval_min_ms` \\{#cleanup_interval_min_ms\\}
 
 'Ordered' モード用。追跡対象ファイルの TTL および追跡対象ファイル集合の最大数を維持するバックグラウンドタスクについて、その再スケジュールの間隔の下限値を定義します。
 
 デフォルト値: `10000`。
 
-### `cleanup_interval_max_ms` {#cleanup_interval_max_ms}
+### `cleanup_interval_max_ms` \\{#cleanup_interval_max_ms\\}
 
 「Ordered」モード用。追跡対象ファイルの TTL と、追跡対象ファイル集合の最大数を維持するバックグラウンドタスクの再スケジュール間隔に対する上限値を定義します。
 
 デフォルト値: `30000`。
 
-### `buckets` {#buckets}
+### `buckets` \\{#buckets\\}
 
 「Ordered」モードで使用します。`24.6` から利用可能です。S3Queue テーブルのレプリカが複数あり、それぞれが keeper 内の同一のメタデータディレクトリを使用している場合、`buckets` の値はレプリカ数以上に設定する必要があります。`processing_threads` 設定も併用している場合は、`S3Queue` の処理における実際の並列度合いをこの設定が決定するため、`buckets` 設定の値をさらに大きくすることが推奨されます。
 
-### `use_persistent_processing_nodes` {#use_persistent_processing_nodes}
+### `use_persistent_processing_nodes` \\{#use_persistent_processing_nodes\\}
 
 デフォルトでは、S3Queue テーブルは常に一時的な処理ノードを使用しており、ZooKeeper セッションが、S3Queue が処理済みファイルを ZooKeeper にコミットする前に期限切れになり、かつ処理は開始されていた場合、データが重複する可能性がありました。この設定により、Keeper セッションの期限切れに起因する重複が発生しないようサーバーを強制的に動作させます。
 
-### `persistent_processing_nodes_ttl_seconds` {#persistent_processing_nodes_ttl_seconds}
+### `persistent_processing_nodes_ttl_seconds` \\{#persistent_processing_nodes_ttl_seconds\\}
 
 サーバーが正常終了しなかった場合、`use_persistent_processing_nodes` が有効になっていると、処理ノードが削除されずに残る可能性があります。この設定は、それらの処理ノードを安全にクリーンアップできる猶予時間を定義します。
 
 デフォルト値: `3600`（1時間）。
 
-## S3 に関連する設定 {#s3-settings}
+## S3 に関連する設定 \\{#s3-settings\\}
 
 このエンジンは、すべての S3 関連の設定をサポートしています。S3 に関する設定の詳細は[こちら](../../../engines/table-engines/integrations/s3.md)を参照してください。
 
-## S3 ロールベースアクセス {#s3-role-based-access}
+## S3 ロールベースアクセス \\{#s3-role-based-access\\}
 
 <ScalePlanFeatureBadge feature="S3 Role-Based Access" />
 
@@ -357,7 +357,7 @@ SETTINGS
     ...
 ```
 
-## S3Queue ordered モード {#ordered-mode}
+## S3Queue ordered モード \\{#ordered-mode\\}
 
 `S3Queue` の処理モードは ZooKeeper に保存するメタデータ量を減らせますが、その代わりに、後から追加されるファイルほど名前が英数字の辞書順で大きくなっている必要があるという制限があります。
 
@@ -366,13 +366,13 @@ SETTINGS
 `(s3queue_)processing_threads_num` 設定はバージョン `24.6` より前では使用を推奨しません。
 `(s3queue_)buckets` 設定はバージョン `24.6` 以降で利用可能です。
 
-## S3Queue テーブルエンジンからの SELECT {#select}
+## S3Queue テーブルエンジンからの SELECT \\{#select\\}
 
 S3Queue テーブルに対する SELECT クエリは、デフォルトでは禁止されています。これは、データを 1 回だけ読み取り、その後キューから削除するという一般的なキューのパターンに従うためです。SELECT を禁止することで、誤ってデータを失うことを防ぎます。
 ただし、場合によってはこれが役立つこともあります。そのためには、`stream_like_engine_allow_direct_select` 設定を `True` にする必要があります。
 S3Queue エンジンには、SELECT クエリ用の特別な設定 `commit_on_select` があります。これを `False` に設定すると、読み取り後もデータをキューに保持し、`True` に設定すると削除します。
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 `SELECT` は、各ファイルを 1 回しかインポートできないため（デバッグ用途を除いて）ストリーミングインポートにはあまり有用ではありません。代わりに、[マテリアライズドビュー](../../../sql-reference/statements/create/view.md) を使ってリアルタイムの処理フローを作成する方が実用的です。そのためには次のようにします。
 
@@ -399,7 +399,7 @@ S3Queue エンジンには、SELECT クエリ用の特別な設定 `commit_on_se
   SELECT * FROM stats ORDER BY name;
 ```
 
-## 仮想カラム {#virtual-columns}
+## 仮想カラム \\{#virtual-columns\\}
 
 - `_path` — ファイルへのパス。
 - `_file` — ファイル名。
@@ -408,7 +408,7 @@ S3Queue エンジンには、SELECT クエリ用の特別な設定 `commit_on_se
 
 仮想カラムの詳細については[こちら](../../../engines/table-engines/index.md#table_engines-virtual_columns)を参照してください。
 
-## パス内のワイルドカード {#wildcards-in-path}
+## パス内のワイルドカード \\{#wildcards-in-path\\}
 
 `path` 引数では、bash 風のワイルドカードを使用して複数のファイルを指定できます。ファイルが処理対象となるには、実際に存在し、パスパターン全体に完全一致している必要があります。ファイルの一覧は `SELECT` 実行時に決定されます（`CREATE` 時点ではありません）。
 
@@ -420,7 +420,7 @@ S3Queue エンジンには、SELECT クエリ用の特別な設定 `commit_on_se
 
 `{}` を用いた構文は [remote](../../../sql-reference/table-functions/remote.md) テーブル関数と類似しています。
 
-## 制限事項 {#limitations}
+## 制限事項 \\{#limitations\\}
 
 1. 行の重複は以下の要因により発生する可能性があります：
 
@@ -432,7 +432,7 @@ S3Queue エンジンには、SELECT クエリ用の特別な設定 `commit_on_se
 
 2. 複数のサーバーで同じ ZooKeeper のパスを指すように `S3Queue` が構成されており、かつ `Ordered` モードが使用されている場合、`s3queue_loading_retries` は動作しません。これは近いうちに修正される予定です。
 
-## 内部状態の確認 {#introspection}
+## 内部状態の確認 \{#introspection\}
 
 内部状態の確認には、ステートレスな `system.s3queue` テーブルと永続的な `system.s3queue_log` テーブルを使用します。
 

@@ -11,15 +11,15 @@ import S3Settings from '@site/i18n/jp/docusaurus-plugin-content-docs/current/ope
 import ExampleSetup from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-# ローカルディスクへのバックアップ／リストア {#backup-to-a-local-disk}
+# ローカルディスクへのバックアップ／リストア \\{#backup-to-a-local-disk\\}
 
-## 構文 {#syntax}
+## 構文 \\{#syntax\\}
 
 <Syntax/>
 
-## ディスク用のバックアップ先を構成する {#configure-backup-destinations-for-disk}
+## ディスク用のバックアップ先を構成する \\{#configure-backup-destinations-for-disk\\}
 
-### ローカルディスク用のバックアップ先を構成する {#configure-a-backup-destination}
+### ローカルディスク用のバックアップ先を構成する \\{#configure-a-backup-destination\\}
 
 以下の例では、バックアップ先は `Disk('backups', '1.zip')` として指定されています。\
 `Disk` バックアップエンジンを使用するには、まず以下のパスにバックアップ先を指定するファイルを追加する必要があります。
@@ -50,7 +50,7 @@ import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operati
 </clickhouse>
 ```
 
-### S3 ディスク用のバックアップ先を設定する {#backuprestore-using-an-s3-disk}
+### S3 ディスク用のバックアップ先を設定する \\{#backuprestore-using-an-s3-disk\\}
 
 ClickHouse のストレージ設定で S3 ディスクを構成することで、`BACKUP`/`RESTORE` の実行先として S3 を利用することも可能です。ローカルディスクの場合と同様に、`/etc/clickhouse-server/config.d` にファイルを追加して、このディスクを次のように設定します。
 
@@ -98,9 +98,9 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
   この用途には `BACKUP ... TO S3(<endpoint>)` 構文の使用を推奨します。
   :::
 
-## ローカルディスクへのバックアップ／リストアの使用例 {#usage-examples}
+## ローカルディスクへのバックアップ／リストアの使用例 \\{#usage-examples\\}
 
-### テーブルのバックアップとリストア {#backup-and-restore-a-table}
+### テーブルのバックアップとリストア \\{#backup-and-restore-a-table\\}
 
 <ExampleSetup />
 
@@ -165,7 +165,7 @@ RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backu
 zip 以外の形式も使用できます。詳細については、以下の [&quot;Backups as tar archives&quot;](#backups-as-tar-archives)
 を参照してください。
 
-### ディスクへの増分バックアップ {#incremental-backups}
+### ディスクへの増分バックアップ \\{#incremental-backups\\}
 
 ClickHouse におけるベースバックアップは、その後に作成される
 増分バックアップの基準となる最初のフルバックアップです。増分バックアップには、
@@ -196,7 +196,7 @@ RESTORE TABLE test_db.test_table AS test_db.test_table2
 FROM Disk('backups', 'incremental-a.zip');
 ```
 
-### バックアップの保護 {#assign-a-password-to-the-backup}
+### バックアップの保護 \\{#assign-a-password-to-the-backup\\}
 
 ディスクに出力されるバックアップファイルには、パスワードを設定できます。
 パスワードは `password` 設定を使用して指定します。
@@ -215,7 +215,7 @@ FROM Disk('backups', 'password-protected.zip')
 SETTINGS password='qwerty'
 ```
 
-### tar アーカイブとしてのバックアップ {#backups-as-tar-archives}
+### tar アーカイブとしてのバックアップ \\{#backups-as-tar-archives\\}
 
 バックアップは zip アーカイブだけでなく、tar アーカイブとしても保存できます。
 tar アーカイブに対する機能は zip アーカイブの場合と同様ですが、tar アーカイブではパスワード保護はサポートされていません。さらに、tar アーカイブではさまざまな圧縮方式がサポートされています。
@@ -248,7 +248,7 @@ BACKUP TABLE test_db.test_table TO Disk('backups', '1.tar.gz')
 * `.tzst`
 * `.tar.xz`
 
-### 圧縮設定 {#compression-settings}
+### 圧縮設定 \\{#compression-settings\\}
 
 圧縮方式と圧縮レベルは、それぞれ設定 `compression_method` と `compression_level` を使用して指定できます。
 
@@ -262,7 +262,7 @@ TO Disk('backups', 'filename.zip')
 SETTINGS compression_method='lzma', compression_level=3
 ```
 
-### 特定のパーティションを復元する {#restore-specific-partitions}
+### 特定のパーティションを復元する \\{#restore-specific-partitions\\}
 
 テーブルに関連付けられた特定のパーティションのみを復元する必要がある場合、それらを個別に指定できます。
 

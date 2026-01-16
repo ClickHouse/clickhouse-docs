@@ -7,13 +7,13 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
 doc_type: 'guide'
 ---
 
-# chDB を使い始める {#getting-started-with-chdb}
+# chDB を使い始める \\{#getting-started-with-chdb\\}
 
 このガイドでは、Python 版の chDB を使って、すぐに使い始めるための手順を説明します。
 まず S3 上の JSON ファイルに対してクエリを実行し、その JSON ファイルを元に chDB 内にテーブルを作成し、データに対していくつかクエリを実行します。
 また、Apache Arrow や Pandas など、複数のフォーマットでクエリ結果を取得する方法を確認し、最後に Pandas の DataFrame をクエリする方法を学びます。 
 
-## セットアップ {#setup}
+## セットアップ \\{#setup\\}
 
 まずは仮想環境を作成します。
 
@@ -47,7 +47,7 @@ ipython
 pip install pandas pyarrow
 ```
 
-## S3 内の JSON ファイルをクエリする {#querying-a-json-file-in-s3}
+## S3 内の JSON ファイルをクエリする \\{#querying-a-json-file-in-s3\\}
 
 ここでは、S3 バケットに保存されている JSON ファイルをどのようにクエリするかを見ていきます。
 [YouTube dislikes dataset](/getting-started/example-datasets/youtube-dislikes) には、2021 年までの YouTube 動画に対する 40 億行以上の低評価データが含まれています。
@@ -144,7 +144,7 @@ chdb.query(
 これはプログラム内で定義した変数に対して行う分には問題ありませんが、ユーザーからの入力に対しては決して行わないでください。そうしないと、クエリが SQL インジェクション攻撃に対して無防備になります。
 :::
 
-## 出力フォーマットの設定 {#configuring-the-output-format}
+## 出力フォーマットの設定 \\{#configuring-the-output-format\\}
 
 デフォルトの出力フォーマットは `CSV` ですが、`output_format` パラメータで変更できます。
 chDB は ClickHouse のデータフォーマットに加えて、`DataFrame` を含む[独自のフォーマット](/chdb/reference/data-formats.md)もサポートしており、`DataFrame` フォーマットでは Pandas DataFrame が返されます。
@@ -196,7 +196,7 @@ is_live_content: [[false,true]]
 count(): [[315746,20686]]
 ```
 
-## JSON ファイルからテーブルを作成する {#creating-a-table-from-json-file}
+## JSON ファイルからテーブルを作成する \\{#creating-a-table-from-json-file\\}
 
 次に、chDB でテーブルを作成する方法を見ていきます。
 これを行うには別の API を利用する必要があるので、まずはそれをインポートします。
@@ -302,7 +302,7 @@ sess.query(f"""
 )
 ```
 
-## テーブルをクエリする {#querying-a-table}
+## テーブルをクエリする \\{#querying-a-table\\}
 
 最後に、そのテーブルに対してクエリを実行してみましょう。
 
@@ -340,7 +340,7 @@ df
 df["likeDislikeRatio"] = df["likeCount"] / df["dislikeCount"]
 ```
 
-## Pandas データフレームをクエリする {#querying-a-pandas-dataframe}
+## Pandas データフレームをクエリする \\{#querying-a-pandas-dataframe\\}
 
 その後、chDB からその DataFrame に対してクエリを実行できます。
 
@@ -370,7 +370,7 @@ chdb.query(
 
 Pandas の DataFrame に対するクエリについては、[Querying Pandas developer guide](guides/querying-pandas.md) も参照してください。
 
-## 次のステップ {#next-steps}
+## 次のステップ \\{#next-steps\\}
 
 このガイドを通じて、chDB の概要を把握していただけたかと思います。
 さらに詳しい使い方については、以下の開発者向けガイドを参照してください。

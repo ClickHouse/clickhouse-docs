@@ -6,13 +6,13 @@ title: '代替のバックアップおよび復元方法'
 doc_type: 'reference'
 ---
 
-# 代替バックアップ方法 {#alternative-backup-methods}
+# 代替バックアップ方法 \\{#alternative-backup-methods\\}
 
 ClickHouse はデータをディスク上に保存しており、ディスクをバックアップする方法は多数あります。
 ここでは、これまでに使われてきた代替案の一部を紹介します。これらはユースケースによっては
 適合する可能性があります。
 
-### ソースデータを別の場所に複製する {#duplicating-source-data-somewhere-else}
+### ソースデータを別の場所に複製する \\{#duplicating-source-data-somewhere-else\\}
 
 ClickHouse に取り込まれるデータは、多くの場合、[Apache Kafka](https://kafka.apache.org) のような
 永続的なキューを経由して配信されます。この場合、ClickHouse に書き込まれているのと同じ
@@ -21,7 +21,7 @@ ClickHouse に取り込まれるデータは、多くの場合、[Apache Kafka](
 持っており、それはオブジェクトストアや [HDFS](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html)
 のような分散ファイルシステムである場合があります。
 
-### ファイルシステムのスナップショット {#filesystem-snapshots}
+### ファイルシステムのスナップショット \\{#filesystem-snapshots\\}
 
 一部のローカルファイルシステム（例: [ZFS](https://en.wikipedia.org/wiki/ZFS)）はスナップショット機能を提供しますが、
 ライブクエリを処理する用途としては最適ではない場合があります。1 つの解決策としては、
@@ -34,7 +34,7 @@ ClickHouse に取り込まれるデータは、多くの場合、[Apache Kafka](
 データ量が小さい場合には、リモートテーブルに対する単純な `INSERT INTO ... SELECT ...`
 でもうまく機能することがあります。
 
-### パーツ操作による方法 {#manipulations-with-parts}
+### パーツ操作による方法 \\{#manipulations-with-parts\\}
 
 ClickHouse では、`ALTER TABLE ... FREEZE PARTITION ...` クエリを使用して、
 テーブルパーティションのローカルコピーを作成できます。これは `/var/lib/clickhouse/shadow/`

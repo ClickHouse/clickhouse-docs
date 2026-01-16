@@ -17,7 +17,7 @@ import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# Streamkap を ClickHouse に接続する {#connect-streamkap-to-clickhouse}
+# Streamkap を ClickHouse に接続する \{#connect-streamkap-to-clickhouse\}
 
 <PartnerBadge/>
 
@@ -27,7 +27,7 @@ Streamkap を使用すると、PostgreSQL、MySQL、SQL Server、MongoDB、お�
 
 これにより、リアルタイム分析ダッシュボード、オペレーショナルアナリティクス、機械学習モデルへのライブデータ供給を実現するのに最適です。
 
-## 主な機能 {#key-features}
+## 主な機能 \\{#key-features\\}
 
 - **リアルタイムストリーミング CDC:** Streamkap はデータベースのログから直接変更をキャプチャし、ClickHouse 上のデータがソースのリアルタイムなレプリカとなるようにします。
 
@@ -41,17 +41,17 @@ Streamkap を使用すると、PostgreSQL、MySQL、SQL Server、MongoDB、お�
 
 - **堅牢なデータ配信:** プラットフォームは少なくとも 1 回の配信保証 (at-least-once) を提供し、ソースと ClickHouse 間のデータ整合性を確保します。アップサート処理では、主キーに基づいて重複排除を行います。
 
-## はじめに {#started}
+## はじめに \\{#started\\}
 
 このガイドでは、データを ClickHouse にロードするための Streamkap パイプラインのセットアップ方法について全体像を説明します。
 
-### 前提条件 {#prerequisites}
+### 前提条件 \\{#prerequisites\\}
 
 - <a href="https://app.streamkap.com/account/sign-up" target="_blank">Streamkap アカウント</a>。
 - ClickHouse クラスターの接続情報: ホスト名、ポート、ユーザー名、パスワード。
 - CDC（変更データキャプチャ）が有効になるように構成されたソースデータベース（例: PostgreSQL、SQL Server）。詳細なセットアップガイドは Streamkap のドキュメントに記載されています。
 
-### ステップ 1: Streamkap でソースを設定する {#configure-clickhouse-source}
+### ステップ 1: Streamkap でソースを設定する \\{#configure-clickhouse-source\\}
 
 1. Streamkap アカウントにログインします。
 2. サイドバーで **Connectors** に移動し、**Sources** タブを選択します。
@@ -59,7 +59,7 @@ Streamkap を使用すると、PostgreSQL、MySQL、SQL Server、MongoDB、お�
 4. エンドポイント、ポート、データベース名、ユーザーの認証情報など、接続情報を入力します。
 5. コネクタを保存します。
 
-### Step 2: ClickHouse 宛先を構成する {#configure-clickhouse-dest}
+### Step 2: ClickHouse 宛先を構成する \\{#configure-clickhouse-dest\\}
 
 1. **Connectors** セクションで、**Destinations** タブを選択します。
 2. **+ Add** をクリックし、リストから **ClickHouse** を選択します。
@@ -70,7 +70,7 @@ Streamkap を使用すると、PostgreSQL、MySQL、SQL Server、MongoDB、お�
    - **Database:** ClickHouse 内の対象データベース名
 4. 宛先を保存します。
 
-### ステップ 3: パイプラインを作成して実行する {#run-pipeline}
+### ステップ 3: パイプラインを作成して実行する \\{#run-pipeline\\}
 
 1. サイドバーの **Pipelines** を開き、**+ Create** をクリックします。
 2. 先ほど設定した Source と Destination を選択します。
@@ -79,7 +79,7 @@ Streamkap を使用すると、PostgreSQL、MySQL、SQL Server、MongoDB、お�
 
 作成が完了すると、パイプラインはアクティブになります。Streamkap はまず既存データのスナップショットを取得し、その後、以降に発生する変更をストリーミングし始めます。
 
-### ステップ 4: ClickHouse のデータを確認する {#verify-data-clickhoouse}
+### ステップ 4: ClickHouse のデータを確認する \{#verify-data-clickhoouse\}
 
 ClickHouse クラスターに接続し、ターゲットテーブルにデータが取り込まれているか確認するクエリを実行します。
 
@@ -88,11 +88,11 @@ SELECT * FROM your_table_name LIMIT 10;
 ```
 
 
-## ClickHouse との連携の仕組み {#how-it-works-with-clickhouse}
+## ClickHouse との連携の仕組み \\{#how-it-works-with-clickhouse\\}
 
 Streamkap の統合機能は、ClickHouse 上の CDC（変更データキャプチャ）データを効率的に管理できるように設計されています。
 
-### テーブルエンジンとデータ処理 {#table-engine-data-handling}
+### テーブルエンジンとデータ処理 \\{#table-engine-data-handling\\}
 
 デフォルトでは、Streamkap はアップサート型のインジェストモードを使用します。ClickHouse にテーブルを作成する際には、ReplacingMergeTree エンジンを使用します。このエンジンは CDC（変更データキャプチャ）イベントの処理に最適です。
 
@@ -103,7 +103,7 @@ Streamkap の統合機能は、ClickHouse 上の CDC（変更データキャプ�
 - **削除**は、ReplacingMergeTree の ```is_deleted``` パラメータに渡されるメタデータフラグによって処理されます。ソースで削除された行はすぐには物理削除されず、削除済みとしてマークされます。
   - 必要に応じて、削除済みレコードを分析目的で ClickHouse 内に保持しておくこともできます
 
-### メタデータカラム {#metadata-columns}
+### メタデータカラム \\{#metadata-columns\\}
 
 Streamkap は、データの状態を管理するために各テーブルに複数のメタデータカラムを追加します。
 
@@ -114,7 +114,7 @@ Streamkap は、データの状態を管理するために各テーブルに複�
 | `__DELETED`               | 行がソース側で削除されたかどうかを示すブール値フラグ（`true`/`false`）。 |
 | `_STREAMKAP_OFFSET`       | 並び順の制御やデバッグに有用な、Streamkap の内部ログにおけるオフセット値。 |
 
-### 最新データのクエリ実行 {#query-latest-data}
+### 最新データのクエリ実行 \{#query-latest-data\}
 
 ReplacingMergeTree は更新や削除をバックグラウンドで処理するため、単純な SELECT * クエリでは、マージが完了する前の履歴行や削除済みの行が表示される場合があります。最新のデータ状態を取得するには、削除されたレコードを除外し、各行の最新バージョンのみを選択する必要があります。
 
@@ -142,7 +142,7 @@ GROUP BY key;
 本番利用のユースケースや、エンドユーザーによる同時発生する反復的なクエリがある場合には、下流のアクセスパターンにより適した形でデータをモデリングするために Materialized Views を利用できます。
 
 
-## 参考資料 {#further-reading}
+## 参考資料 \\{#further-reading\\}
 
 - <a href="https://streamkap.com/" target="_blank">Streamkap の Web サイト</a>
 - <a href="https://docs.streamkap.com/clickhouse" target="_blank">ClickHouse 向け Streamkap ドキュメント</a>

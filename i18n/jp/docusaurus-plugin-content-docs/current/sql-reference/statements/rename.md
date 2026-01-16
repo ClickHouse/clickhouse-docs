@@ -7,7 +7,7 @@ title: 'RENAME ステートメント'
 doc_type: 'reference'
 ---
 
-# RENAME ステートメント {#rename-statement}
+# RENAME ステートメント \\{#rename-statement\\}
 
 データベース、テーブル、またはディクショナリの名前を変更します。1 つのクエリで複数のエンティティの名前を変更できます。
 複数のエンティティを対象とした `RENAME` クエリはアトミックな操作ではないことに注意してください。エンティティ名をアトミックに入れ替えるには、[EXCHANGE](./exchange.md) ステートメントを使用してください。
@@ -18,7 +18,7 @@ doc_type: 'reference'
 RENAME [DATABASE|TABLE|DICTIONARY] name TO new_name [,...] [ON CLUSTER cluster]
 ```
 
-## RENAME DATABASE {#rename-database}
+## RENAME DATABASE \\{#rename-database\\}
 
 データベースの名前を変更します。
 
@@ -28,7 +28,7 @@ RENAME [DATABASE|TABLE|DICTIONARY] name TO new_name [,...] [ON CLUSTER cluster]
 RENAME DATABASE atomic_database1 TO atomic_database2 [,...] [ON CLUSTER cluster]
 ```
 
-## RENAME TABLE {#rename-table}
+## RENAME TABLE \\{#rename-table\\}
 
 1 つ以上のテーブルの名前を変更します。
 
@@ -53,7 +53,7 @@ RENAME TABLE table_A TO table_A_bak, table_B TO table_B_bak;
 RENAME table_A TO table_A_bak, table_B TO table_B_bak;
 ```
 
-## RENAME DICTIONARY {#rename-dictionary}
+## RENAME DICTIONARY \\{#rename-dictionary\\}
 
 1つまたは複数の辞書の名前を変更します。このクエリは、辞書を別のデータベースに移動するためにも使用できます。
 

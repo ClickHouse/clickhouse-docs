@@ -7,9 +7,9 @@ title: '用户态页面缓存'
 doc_type: 'reference'
 ---
 
-# 用户态页缓存 {#userspace-page-cache}
+# 用户态页缓存 \\{#userspace-page-cache\\}
 
-## 概览 {#overview}
+## 概览 \\{#overview\\}
 
 > 用户态页缓存是一种新的缓存机制，它允许将数据缓存到进程内存中，而不是依赖操作系统的页缓存。
 
@@ -26,9 +26,9 @@ ClickHouse 已经提供了 [Filesystem cache](/docs/operations/storing-data)，
 | 不会体现在服务器的内存使用中                           | 会体现在服务器的内存使用中            |
 | 适用于基于磁盘和基于内存（操作系统页缓存）的场景        | **适用于无磁盘服务器**                |
 
-## 配置与使用 {#configuration-settings-and-usage}
+## 配置与使用 \\{#configuration-settings-and-usage\\}
 
-### 用法 {#usage}
+### 用法 \\{#usage\\}
 
 要启用用户态页缓存，首先需要在服务器上完成相应配置：
 
@@ -49,7 +49,7 @@ page_cache_max_size: 100G
 SET use_page_cache_for_disks_without_file_cache=1;
 ```
 
-### 设置 {#settings}
+### 设置 \\{#settings\\}
 
 | Setting                                                 | Description                                                                                                                                                                          | Default     |
 | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
@@ -67,6 +67,6 @@ SET use_page_cache_for_disks_without_file_cache=1;
 | `page_cache_lookahead_blocks`                           | 当用户态页缓存未命中时，如果后续连续块也不在缓存中，则一次性从底层存储中预读最多这么多连续块。每个块的大小为 `page_cache_block_size` 字节。                                                                                                   | `16`        |
 | `page_cache_shards`                                     | 将用户态页缓存划分为相应数量的分片（shard），以减少互斥锁竞争。为实验性功能，不太可能提升性能。                                                                                                                                   | `4`         |
 
-## 相关内容 {#related-content}
+## 相关内容 \\{#related-content\\}
 - [文件系统缓存](/docs/operations/storing-data)
 - [ClickHouse v25.3 版本发布网络研讨会](https://www.youtube.com/live/iCKEzp0_Z2Q?feature=shared&t=1320)

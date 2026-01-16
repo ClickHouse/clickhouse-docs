@@ -16,13 +16,13 @@ import Image from '@theme/IdealImage';
 
 В этой статье рассказывается, как клиенты ClickPipes могут использовать доступ на основе ролей для аутентификации в Amazon Kinesis и безопасного доступа к своим потокам данных.
 
-## Предварительные требования {#prerequisite}
+## Предварительные требования \\{#prerequisite\\}
 
 Для выполнения этого руководства вам потребуется:
 - Действующий сервис ClickHouse Cloud
 - Учетная запись AWS
 
-## Введение {#introduction}
+## Введение \\{#introduction\\}
 
 Прежде чем переходить к настройке безопасного доступа к Kinesis, важно понять, как он работает. Ниже приведён обзор того, как ClickPipes могут получать доступ к потокам Amazon Kinesis, принимая роль в учётных записях AWS клиентов.
 
@@ -30,11 +30,11 @@ import Image from '@theme/IdealImage';
 
 Используя этот подход, клиенты могут централизованно управлять доступом ко всем своим потокам данных Kinesis через политику IAM принимаемой роли, без необходимости изменять политику доступа каждого потока по отдельности.
 
-## Настройка {#setup}
+## Настройка \\{#setup\\}
 
 <VerticalStepper headerLevel="h3"/>
 
-### Получение ARN роли IAM сервиса ClickHouse {#obtaining-the-clickhouse-service-iam-role-arn}
+### Получение ARN роли IAM сервиса ClickHouse \\{#obtaining-the-clickhouse-service-iam-role-arn\\}
 
 - 1. Войдите в свою учетную запись ClickHouse Cloud.
 - 2. Выберите сервис ClickHouse, для которого вы хотите создать интеграцию.
@@ -44,9 +44,9 @@ import Image from '@theme/IdealImage';
 
 <Image img={secures3_arn} alt="Secure S3 ARN" size="lg" border/>
 
-### Настройка роли IAM для AssumeRole {#setting-up-iam-assume-role}
+### Настройка роли IAM для AssumeRole \\{#setting-up-iam-assume-role\\}
 
-#### Ручное создание роли IAM {#manually-create-iam-role}
+#### Ручное создание роли IAM \\{#manually-create-iam-role\\}
 
 - 1. Войдите в свою учетную запись AWS в веб-браузере под пользователем IAM, у которого есть права на создание и управление ролями IAM.
 - 2. Перейдите в консоль сервиса IAM.

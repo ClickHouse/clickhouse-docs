@@ -5,7 +5,7 @@ title: 'quantilePrometheusHistogram'
 doc_type: 'reference'
 ---
 
-# quantilePrometheusHistogram {#quantileprometheushistogram}
+# quantilePrometheusHistogram \{#quantileprometheushistogram\}
 
 使用线性插值计算直方图的[quantile](https://en.wikipedia.org/wiki/Quantile)，会考虑每个直方图桶的累计值和上界。
 

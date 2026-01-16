@@ -17,7 +17,7 @@ import scaling_memory_allocation from '@site/static/images/cloud/manage/scaling-
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 
-# 自動スケーリング {#automatic-scaling}
+# 自動スケーリング \\{#automatic-scaling\\}
 
 スケーリングとは、クライアントからの需要に応じて利用可能なリソースを調整する機能を指します。Scale および Enterprise（標準 1:4 プロファイル）ティアのサービスは、API をプログラム経由で呼び出すか、UI 上の設定を変更してシステムリソースを調整することで、水平スケーリングが可能です。これらのサービスは、アプリケーションの需要に合わせて**垂直方向に自動スケーリング**することもできます。
 
@@ -27,7 +27,7 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 Scale および Enterprise ティアは単一レプリカとマルチレプリカの両方のサービスをサポートしますが、Basic ティアは単一レプリカのサービスのみをサポートします。単一レプリカのサービスはサイズが固定されており、垂直・水平どちらのスケーリングもできません。サービスをスケーリングするには、Scale または Enterprise ティアにアップグレードできます。
 :::
 
-## ClickHouse Cloud におけるスケーリングの仕組み {#how-scaling-works-in-clickhouse-cloud}
+## ClickHouse Cloud におけるスケーリングの仕組み \\{#how-scaling-works-in-clickhouse-cloud\\}
 
 現在、ClickHouse Cloud は Scale ティアのサービスに対して、垂直オートスケーリングと手動による水平スケーリングをサポートしています。
 
@@ -47,7 +47,7 @@ ClickHouse Cloud におけるスケーリングは、["Make Before Break" (MBB)]
 これにより、既存のクエリ完了の必要性と、古いレプリカを長時間残さないようにする必要性とのバランスを取ります。
 :::
 
-### 垂直オートスケーリング {#vertical-auto-scaling}
+### 垂直オートスケーリング \\{#vertical-auto-scaling\\}
 
 <ScalePlanFeatureBadge feature="自動垂直スケーリング"/>
 
@@ -61,7 +61,7 @@ MBB を利用していないサービスでは、CPU ベースのオートスケ
 
 CPU とメモリの推奨値のうち**大きい方**が採用され、サービスに割り当てられる CPU とメモリは、`1` CPU と `4 GiB` メモリずつロックステップで増減する単位でスケーリングされます。
 
-### 垂直オートスケーリングの設定 {#configuring-vertical-auto-scaling}
+### 垂直オートスケーリングの設定 \\{#configuring-vertical-auto-scaling\\}
 
 ClickHouse Cloud の Scale または Enterprise サービスのスケーリングは、**Admin** ロールを持つ組織メンバーが調整できます。垂直オートスケーリングを設定するには、対象サービスの **Settings** タブに移動し、以下のように最小および最大メモリと CPU 設定を調整します。
 
@@ -83,7 +83,7 @@ Enterprise ティアのサービスでは、標準の 1:4 プロファイルが�
 ただし、サポートに連絡することで、これらのサービスも垂直方向にスケーリングできます。
 :::
 
-## 手動による水平スケーリング {#manual-horizontal-scaling}
+## 手動による水平スケーリング \\{#manual-horizontal-scaling\\}
 
 <ScalePlanFeatureBadge feature="Manual horizontal scaling"/>
 
@@ -95,7 +95,7 @@ ClickHouse Cloud の[パブリック API](https://clickhouse.com/docs/cloud/mana
 サービスは最大 20 レプリカまで水平スケーリングできます。さらに多くのレプリカが必要な場合は、サポートチームまでお問い合わせください。
 :::
 
-### API による水平スケーリング {#horizontal-scaling-via-api}
+### API による水平スケーリング \\{#horizontal-scaling-via-api\\}
 
 クラスターを水平スケーリングするには、API 経由で `PATCH` リクエストを送信し、レプリカ数を調整します。以下のスクリーンショットは、`3` レプリカのクラスターを `6` レプリカにスケールアウトする API 呼び出しと、その応答を示しています。
 
@@ -109,7 +109,7 @@ ClickHouse Cloud の[パブリック API](https://clickhouse.com/docs/cloud/mana
 
 スケーリングがすでに進行中の間に、新しいスケーリング要求や複数の要求を連続して発行した場合、スケーリングサービスは途中の状態を無視し、最終的なレプリカ数に収束します。
 
-### UI による水平スケーリング {#horizontal-scaling-via-ui}
+### UI による水平スケーリング \\{#horizontal-scaling-via-ui\\}
 
 UI からサービスを水平スケーリングするには、**Settings** ページでそのサービスのレプリカ数を調整します。
 
@@ -121,11 +121,11 @@ UI からサービスを水平スケーリングするには、**Settings** ペ�
 
 <Image img={scaling_memory_allocation} size="md" alt="スケーリング後のメモリ割り当て" border />
 
-## 自動アイドル化 {#automatic-idling}
+## 自動アイドル化 \\{#automatic-idling\\}
 
 **Settings** ページでは、サービスが一定時間非アクティブなとき（つまり、サービスがユーザーが送信したクエリを一切実行していないとき）に自動的にアイドル状態にするかどうかも選択できます。自動アイドル化を有効にすると、サービスが一時停止している間はコンピュートリソースに対して課金されないため、コストを削減できます。
 
-### アダプティブアイドル化 {#adaptive-idling}
+### アダプティブアイドル化 \\{#adaptive-idling\\}
 
 ClickHouse Cloud は、コスト削減を最適化しつつサービスの中断を防ぐために、アダプティブアイドル化を実装しています。システムはサービスをアイドル状態に移行する前に複数の条件を評価します。以下のいずれかの条件を満たす場合、アダプティブアイドル化は設定されているアイドル時間を上書きします。
 
@@ -145,7 +145,7 @@ ClickHouse Cloud は、コスト削減を最適化しつつサービスの中断
 クエリに応答するまでの遅延を許容できるユースケースにのみ自動アイドル化を使用してください。サービスが一時停止している間は、そのサービスへの接続はタイムアウトするためです。自動アイドル化は、利用頻度が低く、ある程度の遅延を許容できるサービスに最適です。頻繁に利用される顧客向け機能を支えるサービスには推奨されません。
 :::
 
-## ワークロードのスパイクへの対応 {#handling-bursty-workloads}
+## ワークロードのスパイクへの対応 \{#handling-bursty-workloads\}
 
 近いうちにワークロードのスパイクが予想される場合は、
 [ClickHouse Cloud API](/cloud/manage/api/api-overview) を使用して、

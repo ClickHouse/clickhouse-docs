@@ -12,7 +12,7 @@ import postgres_inserts from '@site/static/images/guides/postgres-inserts.png';
 import Image from '@theme/IdealImage';
 
 
-## ClickHouse への挿入と OLTP データベースへの挿入の違い {#inserting-into-clickhouse-vs-oltp-databases}
+## ClickHouse への挿入と OLTP データベースへの挿入の違い \\{#inserting-into-clickhouse-vs-oltp-databases\\}
 
 OLAP（Online Analytical Processing）データベースである ClickHouse は、高いパフォーマンスとスケーラビリティに最適化されており、最大で 1 秒間に数百万行のデータを挿入できます。
 これは、高度に並列化されたアーキテクチャと効率的なカラム指向圧縮の組み合わせによって実現されていますが、その代償として即時一貫性をある程度犠牲にしています。
@@ -25,9 +25,9 @@ PostgreSQL は、複数バージョン同時実行制御（MVCC: Multi-Version C
 高い挿入性能を実現しつつ強い一貫性保証も維持するためには、ClickHouse にデータを挿入する際に、以下で説明するシンプルなルールに従う必要があります。
 これらのルールに従うことで、ユーザーが初めて ClickHouse を利用する際に、OLTP データベースで有効だった挿入戦略をそのまま再現しようとして直面しがちな問題を回避できます。
 
-## Insert のベストプラクティス {#best-practices-for-inserts}
+## Insert のベストプラクティス \\{#best-practices-for-inserts\\}
 
-### 大きなバッチサイズで Insert する {#insert-in-large-batch-sizes}
+### 大きなバッチサイズで Insert する \\{#insert-in-large-batch-sizes\\}
 
 デフォルトでは、ClickHouse に送られた各 Insert は、Insert で送信されたデータと、保存する必要があるその他のメタデータを含むストレージのパーツを、ClickHouse が即座に作成します。
 したがって、少数の Insert に多くのデータを含めて送信する方が、多数の Insert に少量のデータを含めて送信する場合と比べて、必要な書き込み回数を減らすことができます。
@@ -36,7 +36,7 @@ PostgreSQL は、複数バージョン同時実行制御（MVCC: Multi-Version C
 
 大きなバッチが不可能な場合は、後述の非同期 Insert を使用してください。
 
-### 冪等なリトライのために一貫したバッチを確保する {#ensure-consistent-batches-for-idempotent-retries}
+### 冪等なリトライのために一貫したバッチを確保する \\{#ensure-consistent-batches-for-idempotent-retries\\}
 
 デフォルトでは、ClickHouse への Insert は同期的かつ冪等です（つまり同じ Insert 操作を複数回実行しても、1 回だけ実行した場合と結果が同じになります）。
 MergeTree エンジンファミリーのテーブルでは、ClickHouse はデフォルトで Insert を自動的に[重複排除](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time)します。
@@ -49,7 +49,7 @@ MergeTree エンジンファミリーのテーブルでは、ClickHouse はデ�
 クライアントの観点からは、(i) と (ii) を区別するのは難しい場合があります。しかし、どちらの場合でも、応答を受け取れていない Insert はすぐに再試行できます。
 リトライされた Insert クエリが、同じ順序で同じデータを含んでいる限り、（応答が返らなかった）元の Insert が成功していた場合、ClickHouse はリトライされた Insert を自動的に無視します。
 
-### MergeTree テーブルまたは Distributed テーブルに Insert する {#insert-to-a-mergetree-table-or-a-distributed-table}
+### MergeTree テーブルまたは Distributed テーブルに Insert する \\{#insert-to-a-mergetree-table-or-a-distributed-table\\}
 
 データがシャーディングされている場合には、MergeTree（または Replicated テーブル）に直接 Insert し、ノード群全体にリクエストを分散させ、`internal_replication=true` を設定することを推奨します。
 これにより、ClickHouse が利用可能なレプリカシャードへデータをレプリケーションし、データの最終的な整合性が保証されます。
@@ -57,7 +57,7 @@ MergeTree エンジンファミリーのテーブルでは、ClickHouse はデ�
 クライアント側での負荷分散が不便な場合、ユーザーは[distributed テーブル](/engines/table-engines/special/distributed)経由で Insert できます。この場合、書き込みはノード間に分散されます。同様に `internal_replication=true` を設定することを推奨します。
 ただし、このアプローチでは、Distributed テーブルを持つノード上で一度ローカルに書き込み、その後シャードへ送信する必要があるため、若干パフォーマンスが低下する点には注意してください。
 
-### 小さなバッチには非同期 Insert を使用する {#use-asynchronous-inserts-for-small-batches}
+### 小さなバッチには非同期 Insert を使用する \\{#use-asynchronous-inserts-for-small-batches\\}
 
 クライアント側でのバッチ処理が現実的でないシナリオも存在します。たとえば、数百〜数千の単一用途エージェントがログ、メトリクス、トレースなどを送信するオブザーバビリティのユースケースです。
 このようなシナリオでは、問題や異常をできるだけ早く検知するために、そのデータをリアルタイムに転送することが重要です。
@@ -84,14 +84,14 @@ MergeTree エンジンファミリーのテーブルでは、ClickHouse はデ�
 非同期 Insert の設定に関する詳細は[こちら](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)、さらに詳しい解説は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)を参照してください。
 :::
 
-### 公式の ClickHouse クライアントを使用する {#use-official-clickhouse-clients}
+### 公式の ClickHouse クライアントを使用する \\{#use-official-clickhouse-clients\\}
 
 ClickHouse には、主要なプログラミング言語向けのクライアントが用意されています。
 これらはインサートが正しく実行されるよう最適化されており、非同期インサートをネイティブにサポートします。たとえば [Go クライアント](/integrations/go#async-insert) のようにクライアント側で直接サポートする場合や、クエリ、ユーザー、接続レベルの設定で有効化した場合に間接的にサポートするケースがあります。
 
 利用可能な ClickHouse クライアントおよびドライバの一覧は、[Clients and Drivers](/interfaces/cli) を参照してください。
 
-### ネイティブフォーマットを優先する {#prefer-the-native-format}
+### ネイティブフォーマットを優先する \\{#prefer-the-native-format\\}
 
 ClickHouse は、インサート時（およびクエリ時）に多くの[入力フォーマット](/interfaces/formats)をサポートします。
 これは OLTP データベースとの大きな違いであり、[テーブル関数](/sql-reference/table-functions)やディスク上のファイルからデータをロードする機能と組み合わせることで、外部ソースからのデータロードを大幅に容易にします。
@@ -105,7 +105,7 @@ ClickHouse は、インサート時（およびクエリ時）に多くの[入�
 これは、[JSON](/interfaces/formats/JSON) などの他の行フォーマットと比べて、圧縮率、ネットワークオーバーヘッド、サーバー側での処理の観点から、より効率的です。
 書き込みスループットがそれほど高くなく、迅速な統合を望むユーザーは、[JSONEachRow](/interfaces/formats/JSONEachRow) フォーマットの利用を検討できます。ただし、このフォーマットでは ClickHouse 側でのパースに CPU オーバーヘッドが発生することに注意してください。
 
-### HTTP インターフェースを使用する {#use-the-http-interface}
+### HTTP インターフェースを使用する \\{#use-the-http-interface\\}
 
 多くの従来型データベースとは異なり、ClickHouse は HTTP インターフェースをサポートしています。
 ユーザーは、上記のいずれかのフォーマットを使用して、データのインサートとクエリの両方にこれを利用できます。
@@ -116,7 +116,7 @@ ClickHouse は、インサート時（およびクエリ時）に多くの[入�
 
 詳細については [HTTP Interface](/interfaces/http) を参照してください。
 
-## 基本例 {#basic-example}
+## 基本例 \{#basic-example\}
 
 ClickHouse では、おなじみの `INSERT INTO TABLE` コマンドを使用できます。入門ガイド「[Creating Tables in ClickHouse](./creating-tables)」で作成したテーブルにデータを挿入してみましょう。
 
@@ -145,7 +145,7 @@ user_id message                                             timestamp           
 ```
 
 
-## Postgres からのデータロード {#loading-data-from-postgres}
+## Postgres からのデータロード \\{#loading-data-from-postgres\\}
 
 Postgres からデータをロードするには、次の方法を利用できます。
 
@@ -159,7 +159,7 @@ Postgres からデータをロードするには、次の方法を利用でき�
 大きなデータセットの挿入について支援が必要な場合や、ClickHouse Cloud にデータをインポートする際にエラーが発生した場合は、support@clickhouse.com までご連絡ください。サポートいたします。
 :::
 
-## コマンドラインからデータを挿入する {#inserting-data-from-command-line}
+## コマンドラインからデータを挿入する \\{#inserting-data-from-command-line\\}
 
 **前提条件**
 - ClickHouse を[インストール](/install)済みであること
@@ -172,7 +172,7 @@ Postgres からデータをロードするには、次の方法を利用でき�
 
 <VerticalStepper headerLevel="h3">
     
-### CSV をダウンロードする {#download-csv}
+### CSV をダウンロードする \\{#download-csv\\}
 
 次のコマンドを実行して、パブリックな S3 バケットからデータセットの CSV 版をダウンロードします:
 
@@ -182,7 +182,7 @@ wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hackne
 
 この圧縮ファイルは 4.6GB、2,800 万行あり、ダウンロードには 5〜10 分程度かかるはずです。
 
-### テーブルを作成する {#create-table}
+### テーブルを作成する \\{#create-table\\}
 
 `clickhouse-server` が動作していれば、次のスキーマを持つ空のテーブルを、`clickhouse-client` をバッチモードで使ってコマンドラインから直接作成できます:
 
@@ -212,7 +212,7 @@ _EOF
 
 エラーが出なければ、テーブルは正常に作成されています。上記のコマンドでは、ヒアドキュメントの区切り文字 (`_EOF`) をシングルクォートで囲むことで、変数展開などを防いでいます。シングルクォートがない場合、カラム名を囲んでいるバッククォートをエスケープする必要があります。
 
-### コマンドラインからデータを挿入する {#insert-data-via-cmd}
+### コマンドラインからデータを挿入する \\{#insert-data-via-cmd\\}
 
 次に、以下のコマンドを実行して、先ほどダウンロードしたファイルからテーブルにデータを挿入します:
 
@@ -239,7 +239,7 @@ clickhouse-client --query "SELECT formatReadableQuantity(count(*)) FROM hackerne
 28.74 million
 ```
 
-### curl を用いてコマンドラインからデータを挿入する {#insert-using-curl}
+### curl を用いてコマンドラインからデータを挿入する \\{#insert-using-curl\\}
 
 前の手順では、まず `wget` を使って CSV ファイルをローカルマシンにダウンロードしました。リモート URL から、単一のコマンドでデータを直接挿入することも可能です。
 

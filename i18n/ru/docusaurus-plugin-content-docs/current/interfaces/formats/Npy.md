@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Формат `Npy` предназначен для загрузки массива NumPy из файла `.npy` в ClickHouse. 
 Формат файла NumPy — это бинарный формат, используемый для эффективного хранения массивов числовых данных. 
@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 В таблице ниже приведены поддерживаемые типы данных Npy и соответствующие им типы в ClickHouse:
 
-## Соответствие типов данных {#data_types-matching}
+## Соответствие типов данных \\{#data_types-matching\\}
 
 | Тип данных Npy (`INSERT`) | Тип данных ClickHouse                                         | Тип данных Npy (`SELECT`) |
 |---------------------------|----------------------------------------------------------------|---------------------------|
@@ -38,9 +38,9 @@ doc_type: 'reference'
 | `S`, `U`                  | [String](/sql-reference/data-types/string.md)                 | `S`                       |
 |                           | [FixedString](/sql-reference/data-types/fixedstring.md)       | `S`                       |
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
-### Сохранение массива в формате .npy на Python {#saving-an-array-in-npy-format-using-python}
+### Сохранение массива в формате .npy на Python \\{#saving-an-array-in-npy-format-using-python\\}
 
 ```Python
 import numpy as np
@@ -48,7 +48,7 @@ arr = np.array([[[1],[2],[3]],[[4],[5],[6]]])
 np.save('example_array.npy', arr)
 ```
 
-### Чтение файлов NumPy в ClickHouse {#reading-a-numpy-file-in-clickhouse}
+### Чтение файлов NumPy в ClickHouse \\{#reading-a-numpy-file-in-clickhouse\\}
 
 ```sql title="Query"
 SELECT *
@@ -62,7 +62,7 @@ FROM file('example_array.npy', Npy)
 └───────────────┘
 ```
 
-### Выбор данных {#selecting-data}
+### Выбор данных \\{#selecting-data\\}
 
 Вы можете выбрать данные из таблицы ClickHouse и сохранить их в файл формата Npy с помощью следующей команды clickhouse-client:
 
@@ -70,4 +70,4 @@ FROM file('example_array.npy', Npy)
 $ clickhouse-client --query="SELECT {column} FROM {some_table} FORMAT Npy" > {filename.npy}
 ```
 
-## Настройки формата {#format-settings}
+## Настройки формата \\{#format-settings\\}

@@ -7,7 +7,7 @@ title: 'lead'
 doc_type: 'reference'
 ---
 
-# lead {#lead}
+# lead \\{#lead\\}
 
 並べ替えられたフレーム内で、現在の行から `offset` 行後の行で評価された値を返します。
 この関数は [`leadInFrame`](./leadInFrame.md) と類似していますが、常に `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` というフレームを使用します。

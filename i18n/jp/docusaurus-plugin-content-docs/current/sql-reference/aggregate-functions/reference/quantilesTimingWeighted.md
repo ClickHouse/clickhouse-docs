@@ -5,7 +5,7 @@ title: 'quantilesTimingWeighted'
 doc_type: 'reference'
 ---
 
-# quantilesTimingWeighted {#quantilestimingweighted}
+# quantilesTimingWeighted \{#quantilestimingweighted\}
 
 `quantileTimingWeighted` と同様ですが、複数の分位レベルをパラメータとして受け取り、それらの分位値を要素とする Array を返します。
 

@@ -13,7 +13,7 @@ import visualization_2 from '@site/static/images/getting-started/example-dataset
 import visualization_3 from '@site/static/images/getting-started/example-datasets/visualization_3.png';
 import visualization_4 from '@site/static/images/getting-started/example-datasets/visualization_4.png';
 
-## データセット {#dataset}
+## データセット \\{#dataset\\}
 
 Foursquare によるこのデータセットは、[ダウンロード](https://docs.foursquare.com/data-products/docs/access-fsq-os-places)
 して利用でき、Apache License 2.0 の下で無償で使用できます。
@@ -22,7 +22,7 @@ Foursquare によるこのデータセットは、[ダウンロード](https://d
 1 億件以上のレコードが含まれています。さらに、それらの場所に関するカテゴリやソーシャルメディア情報といった
 追加のメタデータも含まれています。
 
-## データ探索 {#data-exploration}
+## データ探索 \\{#data-exploration\\}
 
 データ探索には、[`clickhouse-local`](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) を使用します。これはフル機能の ClickHouse エンジンを提供する軽量なコマンドラインツールですが、代わりに
 ClickHouse Cloud や `clickhouse-client`、あるいは `chDB` を使用することもできます。
@@ -144,7 +144,7 @@ DESCRIBE s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*
     └─────────────────────┴─────────────────────────────┘
 ```
 
-## データを ClickHouse に取り込む {#loading-the-data}
+## データを ClickHouse に取り込む \\{#loading-the-data\\}
 
 データをディスクに永続化したい場合は、`clickhouse-server`
 または ClickHouse Cloud を使用できます。
@@ -251,7 +251,7 @@ INSERT INTO foursquare_mercator
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
 ```
 
-## データの可視化 {#data-visualization}
+## データの可視化 \\{#data-visualization\\}
 
 このデータセットでどのようなことができるかを知るには、[adsb.exposed](https://adsb.exposed/?dataset=Places&zoom=5&lat=52.3488&lng=4.9219) を参照してください。
 adsb.exposed は、共同創業者兼 CTO の Alexey Milovidov によって、1000 倍の規模がある ADS-B (Automatic Dependent Surveillance-Broadcast) フライトデータを可視化するために最初に構築されました。社内ハッカソンの際に、Alexey がこのツールに Foursquare のデータを追加しました。

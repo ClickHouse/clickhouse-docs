@@ -7,9 +7,9 @@ title: 'クエリの複雑さの制限'
 doc_type: 'reference'
 ---
 
-# クエリの複雑さに関する制限 {#restrictions-on-query-complexity}
+# クエリの複雑さに関する制限 \\{#restrictions-on-query-complexity\\}
 
-## 概要 {#overview}
+## 概要 \\{#overview\\}
 
 [settings](/operations/settings/overview) の一部として、ClickHouse では
 クエリの複雑さに関する制限を設けることができます。これにより、潜在的にリソース負荷の高いクエリからシステムを保護し、
@@ -23,18 +23,18 @@ ClickHouse は一般的に、各行ごとに制限をチェックするのでは
 データパーツが完全に処理された後でのみ制限をチェックします。
 このため、パーツの処理中に制限違反が発生する状況が起こり得ます。
 
-## `overflow_mode` 設定 {#overflow_mode_setting}
+## `overflow_mode` 設定 \\{#overflow_mode_setting\\}
 
 ほとんどの制限には `overflow_mode` 設定もあり、制限を超過した場合に何が起こるかを定義します。`overflow_mode` には次の 2 つの値を設定できます:
 - `throw`: 例外をスローする（デフォルト）。
 - `break`: クエリの実行を停止し、ソースデータが尽きたかのように途中までの結果を返します。
 
-## `group_by_overflow_mode` 設定 {#group_by_overflow_mode_settings}
+## `group_by_overflow_mode` 設定 \\{#group_by_overflow_mode_settings\\}
 
 `group_by_overflow_mode` 設定には `any` という値もあります:
 - `any` : 集合にすでに含まれているキーは集計を継続しますが、新しいキーは集合に追加しません。
 
-## 設定一覧 {#relevant-settings}
+## 設定一覧 \\{#relevant-settings\\}
 
 以下の設定は、クエリの複雑さに対する制限を適用するために使用されます。
 
@@ -102,12 +102,12 @@ ClickHouse は一般的に、各行ごとに制限をチェックするのでは
 
 
 
-## 廃止された設定 {#obsolete-settings}
+## 廃止された設定 \\{#obsolete-settings\\}
 
 :::note
 次の設定は廃止されています
 :::
 
-### max_pipeline_depth {#max-pipeline-depth}
+### max_pipeline_depth \\{#max-pipeline-depth\\}
 
 パイプラインの最大深さです。クエリ処理中に各データブロックが通過する変換の数に対応します。単一サーバー内でのみカウントされます。パイプラインの深さがこれより大きい場合は、例外が送出されます。

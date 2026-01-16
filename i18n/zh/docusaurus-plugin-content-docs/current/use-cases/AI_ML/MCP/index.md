@@ -22,7 +22,7 @@ MCP 在 AI 模型与各类服务之间创建了一个通用接口，免去了为
 MCP 的关键优势在于，AI 库只需实现一次对该协议的支持。
 之后，所有兼容 MCP 的服务即可直接访问，从而为 AI 库维护者节省大量时间。
 
-## 什么是 MCP 的架构？  {#mcp-architecture}
+## 什么是 MCP 的架构？  \\{#mcp-architecture\\}
 
 MCP 采用客户端-服务器架构：
 
@@ -34,7 +34,7 @@ MCP 采用客户端-服务器架构：
 
 <Image img={overview} alt="MCP overview" size="lg"/>
 
-## ClickHouse 是否有 MCP Server？ {#clickhouse-mcp-server}
+## ClickHouse 是否有 MCP Server？ \\{#clickhouse-mcp-server\\}
 
 有的！
 [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 提供以下工具：
@@ -45,7 +45,7 @@ MCP 采用客户端-服务器架构：
 
 如果你在寻找 ClickHouse Cloud 中的远程 MCP 服务器，请参阅页面「[Cloud 中的远程 MCP 服务器](/cloud/features/ai-ml/remote-mcp)」。
 
-## 使用 ClickHouse MCP Server 的指南 {#clickhouse-mcp-server-guides}
+## 使用 ClickHouse MCP Server 的指南 \\{#clickhouse-mcp-server-guides\\}
 
 以下是一些介绍如何使用 ClickHouse MCP Server 的指南。
 

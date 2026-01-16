@@ -12,9 +12,9 @@ doc_type: 'guide'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# TTL（time-to-live）でデータを管理する {#manage-data-with-ttl-time-to-live}
+# TTL（time-to-live）でデータを管理する \{#manage-data-with-ttl-time-to-live\}
 
-## TTLの概要 {#overview-of-ttl}
+## TTLの概要 \\{#overview-of-ttl\\}
 
 TTL（有効期限, time-to-live）は、一定の時間が経過した後に行またはカラムを移動、削除、またはロールアップする機能を指します。「time-to-live」という表現は古いデータの削除にのみ適用されるように聞こえますが、TTLにはいくつかのユースケースがあります：
 
@@ -26,7 +26,7 @@ TTL（有効期限, time-to-live）は、一定の時間が経過した後に行
 TTLはテーブル全体または特定のカラムに適用できます。
 :::
 
-## TTL構文 {#ttl-syntax}
+## TTL構文 \{#ttl-syntax\}
 
 `TTL`句はカラム定義の後、またはテーブル定義の最後に指定できます。`INTERVAL`句を使用して期間を定義します（`Date`または`DateTime`データ型である必要があります）。たとえば、次のテーブルには `TTL` 句を持つ 2 つのカラムがあります：
 
@@ -62,7 +62,7 @@ TTLの期間に基づいてパーティションの粒度を選択します:
   :::
 
 
-## TTLイベントのトリガー {#triggering-ttl-events}
+## TTLイベントのトリガー \{#triggering-ttl-events\}
 
 期限切れの行の削除または集計は即座には行われません - テーブルのマージ中にのみ発生します。何らかの理由で積極的にマージされていないテーブルがある場合、TTLイベントをトリガーする2つの設定があります：
 
@@ -82,7 +82,7 @@ OPTIMIZE TABLE example1 FINAL
 :::
 
 
-## 行の削除 {#removing-rows}
+## 行の削除 \{#removing-rows\}
 
 一定時間後にテーブルから行全体を削除するには、テーブルレベルでTTLルールを定義します：
 
@@ -116,7 +116,7 @@ TTL time + INTERVAL 1 MONTH DELETE WHERE event != 'error',
 ```
 
 
-## カラムの削除 {#removing-columns}
+## カラムの削除 \{#removing-columns\}
 
 行全体を削除する代わりに、balanceとaddressカラムだけを期限切れにしたいとします。`customers`テーブルを変更して、両方のカラムに2時間のTTLを追加しましょう：
 
@@ -127,7 +127,7 @@ MODIFY COLUMN address String TTL timestamp + INTERVAL 2 HOUR
 ```
 
 
-## ロールアップの実装 {#implementing-a-rollup}
+## ロールアップの実装 \{#implementing-a-rollup\}
 
 一定時間後に行を削除したいが、レポート目的でデータの一部を保持したいとします。すべての詳細は必要ありません - 履歴データのいくつかの集計結果だけです。これは、`TTL`式に`GROUP BY`句を追加し、集計結果を格納するためにテーブルにいくつかの列を追加することで実装できます。
 
@@ -157,7 +157,7 @@ TTL timestamp + INTERVAL 1 DAY
 * `max_hits`と`sum_hits`のデフォルト値を`hits`に設定することは、`SET`句の定義方法に基づいて、ロジックが機能するために必要です
 
 
-## ホット/ウォーム/コールドアーキテクチャの実装 {#implementing-a-hotwarmcold-architecture}
+## ホット/ウォーム/コールドアーキテクチャの実装 \{#implementing-a-hotwarmcold-architecture\}
 
 <CloudNotSupportedBadge />
 

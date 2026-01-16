@@ -5,7 +5,7 @@ title: 'approx_top_sum'
 doc_type: 'reference'
 ---
 
-# approx_top_sum {#approx_top_sum}
+# approx_top_sum \{#approx_top_sum\}
 
 返回一个数组，包含指定列中近似出现频率最高的值及其计数。结果数组按值的近似出现频率降序排序（不是按值本身排序）。此外，还会考虑值的权重。
 

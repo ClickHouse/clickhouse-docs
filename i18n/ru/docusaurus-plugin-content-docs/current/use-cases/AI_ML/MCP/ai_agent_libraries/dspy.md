@@ -10,12 +10,12 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Как создать AI-агента с помощью DSPy и ClickHouse MCP Server {#how-to-build-an-ai-agent-with-dspy-and-the-clickhouse-mcp-server}
+# Как создать AI-агента с помощью DSPy и ClickHouse MCP Server \\{#how-to-build-an-ai-agent-with-dspy-and-the-clickhouse-mcp-server\\}
 
 В этом руководстве вы узнаете, как создать AI-агента с помощью [DSPy](https://github.com/langchain-ai/langgraph), который
 способен взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/), используя [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \\{#prerequisites\\}
 
 - На вашей системе должен быть установлен Python.
 - На вашей системе должен быть установлен `pip`.

@@ -7,13 +7,13 @@ keywords: ['chdb', 'c', 'cpp', 'embedded', 'clickhouse', 'sql', 'olap', 'api']
 doc_type: 'guide'
 ---
 
-# C および C++ 用 chDB {#chdb-for-c-and-c}
+# C および C++ 用 chDB \{#chdb-for-c-and-c\}
 
 chDB は、ClickHouse の機能をアプリケーションに直接組み込むためのネイティブ C/C++ API を提供します。この API は、シンプルなクエリと、永続的な接続やストリーミングクエリ結果などの高度な機能の両方をサポートしています。
 
-## インストール {#installation}
+## インストール \\{#installation\\}
 
-### ステップ 1: libchdb をインストール {#install-libchdb}
+### ステップ 1: libchdb をインストール \\{#install-libchdb\\}
 
 システムに chDB ライブラリをインストールします:
 
@@ -21,7 +21,7 @@ chDB は、ClickHouse の機能をアプリケーションに直接組み込む�
 curl -sL https://lib.chdb.io | bash
 ```
 
-### ステップ 2: ヘッダーをインクルード {#include-headers}
+### ステップ 2: ヘッダーをインクルード \\{#include-headers\\}
 
 プロジェクトに chDB ヘッダーをインクルードします:
 
@@ -29,7 +29,7 @@ curl -sL https://lib.chdb.io | bash
 #include <chdb.h>
 ```
 
-### ステップ 3: ライブラリをリンク {#link-library}
+### ステップ 3: ライブラリをリンク \\{#link-library\\}
 
 chDB を使用してアプリケーションをコンパイルおよびリンクします:
 
@@ -41,9 +41,9 @@ gcc -o myapp myapp.c -lchdb
 g++ -o myapp myapp.cpp -lchdb
 ```
 
-## C の例 {#c-examples}
+## C の例 \\{#c-examples\\}
 
-### 基本的な接続とクエリ {#basic-connection-queries}
+### 基本的な接続とクエリ \\{#basic-connection-queries\\}
 
 ```c
 #include <stdio.h>
@@ -92,7 +92,7 @@ int main() {
 }
 ```
 
-### ストリーミングクエリ {#streaming-queries}
+### ストリーミングクエリ \\{#streaming-queries\\}
 
 ```c
 #include <stdio.h>
@@ -156,7 +156,7 @@ int main() {
 }
 ```
 
-### 異なるデータフォーマットでの作業 {#data-formats}
+### 異なるデータフォーマットでの作業 \\{#data-formats\\}
 
 ```c
 #include <stdio.h>
@@ -194,7 +194,7 @@ int main() {
 }
 ```
 
-## C++ の例 {#cpp-example}
+## C++ の例 \\{#cpp-example\\}
 
 ```cpp
 #include <iostream>
@@ -277,7 +277,7 @@ int main() {
 }
 ```
 
-## エラーハンドリングのベストプラクティス {#error-handling}
+## エラーハンドリングのベストプラクティス \\{#error-handling\\}
 
 ```c
 #include <stdio.h>
@@ -324,7 +324,7 @@ cleanup:
 }
 ```
 
-## GitHub リポジトリ {#github-repository}
+## GitHub リポジトリ \\{#github-repository\\}
 
 - **メインリポジトリ**: [chdb-io/chdb](https://github.com/chdb-io/chdb)
 - **イシューとサポート**: [GitHub リポジトリ](https://github.com/chdb-io/chdb/issues)で問題を報告してください

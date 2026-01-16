@@ -21,7 +21,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# ClickStack によるホストログの監視 {#host-logs-clickstack}
+# ClickStack によるホストログの監視 \\{#host-logs-clickstack\\}
 
 :::note[TL;DR]
 このガイドでは、OpenTelemetry collector を構成して systemd、カーネル、SSH、cron などのシステムサービスからログを収集し、ClickStack でホストのシステムログを監視する方法を説明します。次の内容を学びます。
@@ -35,13 +35,13 @@ import TabItem from '@theme/TabItem';
 所要時間: 5〜10 分
 :::
 
-## 既存ホストとの統合 {#existing-hosts}
+## 既存ホストとの統合 \\{#existing-hosts\\}
 
 このセクションでは、ClickStack の OTel collector の設定を変更し、すべてのシステムログファイル（syslog、auth、kernel、daemon、アプリケーションログ）を読み取ることで、既存ホストから ClickStack にシステムログを送信する方法を説明します。
 
 ご自身の既存環境を設定する前にホストログの統合を試してみたい場合は、["Demo dataset"](/use-cases/observability/clickstack/integrations/host-logs#demo-dataset) セクションにある事前構成済みセットアップとサンプルデータを使ってテストできます。
 
-##### 前提条件 {#prerequisites}
+##### 前提条件 \\{#prerequisites\\}
 
 - 稼働中の ClickStack インスタンス
 - syslog ファイルがあるシステム
@@ -276,7 +276,7 @@ import TabItem from '@theme/TabItem';
 
 <VerticalStepper headerLevel="h4">
 
-#### サンプルデータセットをダウンロードする {#download-sample}
+#### サンプルデータセットをダウンロードする \\{#download-sample\\}
 
 サンプルログファイルをダウンロードします:
 
@@ -293,7 +293,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - カーネルメッセージおよびファイアウォールアクティビティ
 - 通常の運用と注目すべきイベントの混在
 
-#### テスト用 Collector 設定を作成する {#test-config}
+#### テスト用 Collector 設定を作成する \\{#test-config\\}
 
 次の設定を含む `host-logs-demo.yaml` というファイルを作成します:
 
@@ -377,7 +377,7 @@ ClickStack を使ってホストログのモニタリングを始められるよ
 
 #### <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.host_logs_monitoring.dashboard_download">ダッシュボード設定をダウンロード</TrackedLink> {#download}
 
-#### あらかじめ用意されたダッシュボードをインポートする {#import-dashboard}
+#### あらかじめ用意されたダッシュボードをインポートする \\{#import-dashboard\\}
 
 1. HyperDX を開き、Dashboards セクションに移動します
 2. 右上の三点リーダーメニューの下にある **Import Dashboard** をクリックします
@@ -388,7 +388,7 @@ ClickStack を使ってホストログのモニタリングを始められるよ
 
 <Image img={finish_import} alt="インポート完了"/>
 
-#### ダッシュボードを表示する {#created-dashboard}
+#### ダッシュボードを表示する \\{#created-dashboard\\}
 
 ダッシュボードは、すべての可視化が事前に設定された状態で作成されます。
 

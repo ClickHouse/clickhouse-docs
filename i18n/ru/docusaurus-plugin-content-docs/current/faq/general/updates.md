@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['обновления', 'реальное время']
 ---
 
-# Поддерживает ли ClickHouse обновления в режиме реального времени? {#does-clickhouse-support-real-time-updates}
+# Поддерживает ли ClickHouse обновления в режиме реального времени? \\{#does-clickhouse-support-real-time-updates\\}
 
 ClickHouse поддерживает оператор UPDATE и способен выполнять обновления в реальном времени с той же скоростью, с какой выполняет операции INSERT.
 

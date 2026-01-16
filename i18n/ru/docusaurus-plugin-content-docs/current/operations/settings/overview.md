@@ -6,9 +6,9 @@ title: 'Обзор настроек'
 doc_type: 'reference'
 ---
 
-# Обзор настроек {#settings-overview}
+# Обзор настроек \\{#settings-overview\\}
 
-## Обзор {#overview}
+## Обзор \\{#overview\\}
 
 :::note
 Профили настроек на основе XML и [конфигурационные файлы](/operations/configuration-files) в настоящее время не поддерживаются в ClickHouse Cloud. Чтобы задать настройки для вашего сервиса ClickHouse Cloud, необходимо использовать [профили настроек на основе SQL](/operations/access-rights#settings-profiles-management).
@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 Основное различие между ними заключается в том, что глобальные настройки сервера применяются ко всему серверу ClickHouse, тогда как сессионные настройки применяются к пользовательским сеансам или даже к отдельным запросам.
 
-## Просмотр настроек, отличающихся от значений по умолчанию {#see-non-default-settings}
+## Просмотр настроек, отличающихся от значений по умолчанию \\{#see-non-default-settings\\}
 
 Чтобы посмотреть, какие настройки были изменены по сравнению со значениями по умолчанию, выполните запрос к таблице
 `system.settings`:
@@ -50,7 +50,7 @@ SELECT name, value FROM system.settings WHERE name = 'max_threads'
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-## Дополнительные материалы {#further-reading}
+## Дополнительные материалы \\{#further-reading\\}
 
 - См. раздел [глобальные настройки сервера](/operations/server-configuration-parameters/settings.md), чтобы узнать больше о настройке 
   сервера ClickHouse на глобальном уровне.

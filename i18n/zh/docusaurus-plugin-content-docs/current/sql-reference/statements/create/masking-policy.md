@@ -28,7 +28,7 @@ CREATE MASKING POLICY [IF NOT EXISTS | OR REPLACE] policy_name ON [database.]tab
 ```
 
 
-## UPDATE 子句 {#update-clause}
+## UPDATE 子句 \\{#update-clause\\}
 
 `UPDATE` 子句指定要对哪些列进行脱敏以及如何转换它们。可以在单个策略中脱敏多个列。
 
@@ -39,7 +39,7 @@ CREATE MASKING POLICY [IF NOT EXISTS | OR REPLACE] policy_name ON [database.]tab
 - 基于哈希的脱敏：`UPDATE email = concat('masked_', substring(hex(cityHash64(email)), 1, 8))`
 - 多列脱敏：`UPDATE email = '***@***.***', phone = '***-***-****'`
 
-## WHERE 子句 {#where-clause}
+## WHERE 子句 \{#where-clause\}
 
 可选的 `WHERE` 子句允许基于行的取值进行条件脱敏。只有满足条件的行才会应用脱敏。
 
@@ -53,7 +53,7 @@ TO analyst;
 ```
 
 
-## TO 子句 {#to-clause}
+## TO 子句 \\{#to-clause\\}
 
 在 `TO` 子句中，指定该策略应应用到哪些用户和角色。
 
@@ -65,7 +65,7 @@ TO analyst;
 与行策略不同，掩码策略不会影响未被应用该策略的用户。如果某个用户没有任何适用的掩码策略，他们将看到原始数据。
 :::
 
-## PRIORITY 子句 {#priority-clause}
+## PRIORITY 子句 \{#priority-clause\}
 
 当多个掩码策略应用于同一用户的同一列时，`PRIORITY` 子句决定它们的应用顺序。策略会按从最高优先级到最低优先级的顺序应用。
 

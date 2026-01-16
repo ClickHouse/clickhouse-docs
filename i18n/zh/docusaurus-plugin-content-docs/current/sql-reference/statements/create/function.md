@@ -83,8 +83,8 @@ SELECT create_query FROM system.functions WHERE name = 'exampleReplaceFunction';
 ```
 
 
-## 相关内容 {#related-content}
+## 相关内容 \\{#related-content\\}
 
-### [可执行 UDF](/sql-reference/functions/udf.md). {#executable-udfs}
+### [可执行 UDF](/sql-reference/functions/udf.md). \\{#executable-udfs\\}
 
-### [ClickHouse Cloud 中的用户自定义函数](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs) {#user-defined-functions-in-clickhouse-cloud}
+### [ClickHouse Cloud 中的用户自定义函数](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs) \\{#user-defined-functions-in-clickhouse-cloud\\}

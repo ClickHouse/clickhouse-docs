@@ -16,7 +16,7 @@ import qstudio_running_query from '@site/static/images/integrations/sql-clients/
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Подключение QStudio к ClickHouse {#connect-qstudio-to-clickhouse}
+# Подключение QStudio к ClickHouse \\{#connect-qstudio-to-clickhouse\\}
 
 <CommunityMaintainedBadge/>
 
@@ -24,7 +24,7 @@ QStudio — это бесплатный SQL GUI, который позволяе
 
 QStudio подключается к ClickHouse через JDBC.
 
-## 1. Соберите параметры подключения к ClickHouse {#1-gather-your-clickhouse-details}
+## 1. Соберите параметры подключения к ClickHouse \\{#1-gather-your-clickhouse-details\\}
 
 QStudio использует JDBC поверх HTTP(S) для подключения к ClickHouse; вам потребуются:
 
@@ -35,11 +35,11 @@ QStudio использует JDBC поверх HTTP(S) для подключен
 
 <ConnectionDetails />
 
-## 2. Скачайте QStudio {#2-download-qstudio}
+## 2. Скачайте QStudio \\{#2-download-qstudio\\}
 
 QStudio доступен для скачивания по адресу https://www.timestored.com/qstudio/download/
 
-## 3. Добавьте базу данных {#3-add-a-database}
+## 3. Добавьте базу данных \\{#3-add-a-database\\}
 
 - Когда вы впервые откроете QStudio, нажмите пункт меню **Server -> Add Server** или кнопку добавления сервера на панели инструментов.
 - Затем задайте следующие параметры:
@@ -56,7 +56,7 @@ QStudio доступен для скачивания по адресу https://w
 
 Если QStudio обнаружит, что у вас не установлен JDBC‑драйвер ClickHouse, он предложит загрузить его для вас:
 
-## 4. Запрос к ClickHouse {#4-query-clickhouse}
+## 4. Запрос к ClickHouse \\{#4-query-clickhouse\\}
 
 - Откройте редактор запросов и выполните запрос. Вы можете запускать запросы с помощью:
 - Ctrl + E — выполняет выделенный текст
@@ -66,6 +66,6 @@ QStudio доступен для скачивания по адресу https://w
 
 <Image img={qstudio_running_query} size="lg" border alt="Интерфейс QStudio, показывающий выполнение примерного SQL-запроса к базе данных ClickHouse" />
 
-## Следующие шаги {#next-steps}
+## Следующие шаги \\{#next-steps\\}
 
 Ознакомьтесь с [QStudio](https://www.timestored.com/qstudio), чтобы узнать о возможностях QStudio, а также с [документацией ClickHouse](https://clickhouse.com/docs), чтобы подробнее узнать о возможностях ClickHouse.

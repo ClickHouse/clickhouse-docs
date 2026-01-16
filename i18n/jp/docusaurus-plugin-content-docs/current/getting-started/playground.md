@@ -7,14 +7,14 @@ title: 'ClickHouse Playground'
 doc_type: 'guide'
 ---
 
-# ClickHouse playground {#clickhouse-playground}
+# ClickHouse playground \{#clickhouse-playground\}
 
 [ClickHouse Playground](https://sql.clickhouse.com) は、ユーザーが独自のサーバーやクラスターをセットアップすることなく、すぐにクエリを実行して ClickHouse を試せる環境です。
 Playground には、いくつかのサンプルデータセットが用意されています。
 
 Playground には、任意の HTTP クライアントからクエリを送信できます。たとえば [curl](https://curl.haxx.se) や [wget](https://www.gnu.org/software/wget/) を使用するか、[JDBC](/interfaces/jdbc) や [ODBC](/interfaces/odbc) ドライバーを使って接続を設定できます。ClickHouse をサポートするソフトウェア製品の詳細については [こちら](../integrations/index.mdx) を参照してください。
 
-## 認証情報 {#credentials}
+## 認証情報 \\{#credentials\\}
 
 | パラメータ              | 値                                  |
 |:------------------------|:-----------------------------------|
@@ -23,7 +23,7 @@ Playground には、任意の HTTP クライアントからクエリを送信で
 | ユーザー                | `explorer` または `play`            |
 | パスワード              | (空)                                |
 
-## 制限事項 {#limitations}
+## 制限事項 \\{#limitations\\}
 
 クエリは読み取り専用ユーザーの権限で実行されます。これは、いくつかの制限を伴います。
 
@@ -32,7 +32,7 @@ Playground には、任意の HTTP クライアントからクエリを送信で
 
 このサービスの利用にはクォータも設けられています。
 
-## 例 {#examples}
+## 例 \{#examples\}
 
 `curl` を使って HTTPS エンドポイントにアクセスする例：
 
@@ -47,7 +47,7 @@ clickhouse client --secure --host play.clickhouse.com --user explorer
 ```
 
 
-## Playground specifications {#specifications}
+## Playground specifications \\{#specifications\\}
 
 ClickHouse Playground は、次の仕様で稼働しています。
 

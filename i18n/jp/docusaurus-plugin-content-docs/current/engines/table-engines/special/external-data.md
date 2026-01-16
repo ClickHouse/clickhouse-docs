@@ -7,7 +7,7 @@ title: 'クエリ処理のための外部データ'
 doc_type: 'reference'
 ---
 
-# クエリ処理のための外部データ {#external-data-for-query-processing}
+# クエリ処理のための外部データ \\{#external-data-for-query-processing\\}
 
 ClickHouse では、`SELECT` クエリと一緒に、そのクエリの処理に必要なデータをサーバーに送信できます。これらのデータは一時テーブル（「Temporary tables」のセクションを参照）に格納され、クエリ内（たとえば `IN` 演算子）で利用できます。
 

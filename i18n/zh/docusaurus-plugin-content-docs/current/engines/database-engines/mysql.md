@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# MySQL 数据库引擎 {#mysql-database-engine}
+# MySQL 数据库引擎 \\{#mysql-database-engine\\}
 
 <CloudNotSupportedBadge />
 
@@ -24,7 +24,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - `CREATE TABLE`
 - `ALTER`
 
-## 创建数据库 {#creating-a-database}
+## 创建数据库 \\{#creating-a-database\\}
 
 ```sql
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster]
@@ -38,7 +38,7 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 * `user` — MySQL 用户。
 * `password` — 用户密码。
 
-## 数据类型支持 {#data_types-support}
+## 数据类型支持 \\{#data_types-support\\}
 
 | MySQL                            | ClickHouse                                                   |
 |----------------------------------|--------------------------------------------------------------|
@@ -60,7 +60,7 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 
 支持 [Nullable](../../sql-reference/data-types/nullable.md)。
 
-## 全局变量支持 {#global-variables-support}
+## 全局变量支持 \\{#global-variables-support\\}
 
 为提高兼容性，可以使用 MySQL 风格来引用全局变量，即 `@@identifier`。
 
@@ -79,7 +79,7 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 SELECT @@version;
 ```
 
-## 使用示例 {#examples-of-use}
+## 使用示例 \\{#examples-of-use\\}
 
 在 MySQL 中的表：
 

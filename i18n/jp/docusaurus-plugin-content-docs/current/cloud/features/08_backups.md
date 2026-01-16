@@ -16,9 +16,9 @@ import backup_chain from '@site/static/images/cloud/manage/backup-chain.png';
 これによりダウンタイムを最小限に抑え、ビジネスにとって重要なデータが永久に失われることを防ぎます。
 
 
-## バックアップ {#backups}
+## バックアップ \\{#backups\\}
 
-### ClickHouse Cloud におけるバックアップの仕組み {#how-backups-work-in-clickhouse-cloud}
+### ClickHouse Cloud におけるバックアップの仕組み \\{#how-backups-work-in-clickhouse-cloud\\}
 
 ClickHouse Cloud のバックアップは、「フル」バックアップと「増分」バックアップを組み合わせたバックアップチェーンで構成されます。チェーンはフルバックアップから始まり、その後の複数のスケジュールされたタイミングで増分バックアップが取得され、バックアップのシーケンスが作成されます。バックアップチェーンが一定の長さに達すると、新しいチェーンが開始されます。このバックアップチェーン全体を利用して、必要に応じてデータを新しいサービスに復元できます。特定のチェーンに含まれるすべてのバックアップが、そのサービスに設定された保持期間（保持については後述）を過ぎると、そのチェーンは破棄されます。
 
@@ -28,7 +28,7 @@ ClickHouse Cloud のバックアップは、「フル」バックアップと「
 
 <Image img={backup_chain} size="lg" alt="ClickHouse Cloud におけるバックアップチェーンの例" />
 
-### デフォルトのバックアップポリシー {#default-backup-policy}
+### デフォルトのバックアップポリシー \\{#default-backup-policy\\}
 
 Basic、Scale、Enterprise の各ティアでは、バックアップはストレージとは別に計測および課金されます。
 すべてのサービスでは、デフォルトで 1 日 1 回のバックアップが設定されており、Scale ティア以上では Cloud コンソールの Settings タブから追加のバックアップを構成できます。
@@ -36,7 +36,7 @@ Basic、Scale、Enterprise の各ティアでは、バックアップはスト�
 
 詳細については「[バックアップの確認とリストア](/cloud/manage/backups/overview)」を参照してください。
 
-## 設定可能なバックアップ {#configurable-backups}
+## 設定可能なバックアップ \\{#configurable-backups\\}
 
 <ScalePlanFeatureBadge feature="Configurable Backups" linking_verb_are="True"/>
 
@@ -54,7 +54,7 @@ ClickHouse Cloud では、**Scale** および **Enterprise** ティアのサー�
 
 バックアップの設定手順については、["バックアップスケジュールの構成"](/cloud/manage/backups/configurable-backups) を参照してください。
 
-## Bring Your Own Bucket (BYOB) バックアップ {#byob}
+## Bring Your Own Bucket (BYOB) バックアップ \\{#byob\\}
 
 <EnterprisePlanFeatureBadge/>
 
@@ -75,20 +75,20 @@ ClickHouse Cloud のバックアップの仕組みの詳細については、[ba
 
 AWS、GCP、Azure のオブジェクトストレージに対してフルバックアップおよび増分バックアップを取得する方法と、それらのバックアップから復元する方法の例については、「[自分の Cloud アカウントにバックアップをエクスポートする](/cloud/manage/backups/export-backups-to-own-cloud-account)」を参照してください。
 
-### バックアップオプション {#backup-options}
+### バックアップオプション \\{#backup-options\\}
 
 お客様自身のクラウドアカウントにバックアップをエクスポートするには、次の 2 つのオプションがあります。
 
 <VerticalStepper headerLevel="h5">
 
-##### Cloud Console の UI 経由 {#via-ui}
+##### Cloud Console の UI 経由 \\{#via-ui\\}
 
 外部バックアップは [UI で設定](/cloud/manage/backups/backup-restore-via-ui) できます。
 デフォルトでは、バックアップは [デフォルトのバックアップポリシー](/cloud/features/backups#default-backup-policy) で指定されているとおり、日次で取得されます。
 ただし、お客様のクラウドアカウントに対して[設定可能な](/cloud/manage/backups/configurable-backups)バックアップもサポートしており、カスタムスケジュールを設定できます。
 お客様のバケットに対するすべてのバックアップは、過去および将来のほかのバックアップとの関連を持たないフルバックアップである点に注意することが重要です。
 
-##### SQL コマンドの使用 {#using-commands}
+##### SQL コマンドの使用 \\{#using-commands\\}
 
 [SQL コマンド](/cloud/manage/backups/backup-restore-via-commands) を使用して、バックアップをお客様のバケットにエクスポートできます。
 

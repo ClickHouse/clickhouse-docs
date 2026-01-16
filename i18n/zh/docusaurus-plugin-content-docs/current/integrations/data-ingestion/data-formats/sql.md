@@ -7,11 +7,11 @@ doc_type: 'guide'
 keywords: ['SQL 格式', '数据导出', '数据导入', '备份', 'SQL 转储']
 ---
 
-# 在 ClickHouse 中插入和导出 SQL 数据 {#inserting-and-dumping-sql-data-in-clickhouse}
+# 在 ClickHouse 中插入和导出 SQL 数据 \\{#inserting-and-dumping-sql-data-in-clickhouse\\}
 
 ClickHouse 可以通过多种方式轻松集成到 OLTP 数据库基础架构中。其中一种方式是使用 SQL 转储文件在其他数据库与 ClickHouse 之间传输数据。
 
-## 创建 SQL 转储 {#creating-sql-dumps}
+## 创建 SQL 转储 \\{#creating-sql-dumps\\}
 
 可以使用 [SQLInsert](/interfaces/formats/SQLInsert) 以 SQL 格式导出数据。ClickHouse 会以 `INSERT INTO <table name> VALUES(...` 的形式输出数据，并使用 [`output_format_sql_insert_table_name`](/operations/settings/settings-formats.md/#output_format_sql_insert_table_name) 设置项作为表名：
 
@@ -42,7 +42,7 @@ mysql some_db < dump.sql
 SET output_format_sql_insert_max_batch_size = 1000;
 ```
 
-### 导出一组值 {#exporting-a-set-of-values}
+### 导出一组值 \\{#exporting-a-set-of-values\\}
 
 ClickHouse 提供了一种 [Values](/interfaces/formats/Values) 格式，类似于 SQL INSERT，但会省略 `INSERT INTO table VALUES` 部分，仅返回一组值：
 
@@ -54,7 +54,7 @@ SELECT * FROM some_data LIMIT 3 FORMAT Values
 ('Bangor_City_Forest','2015-07-01',34),('Alireza_Afzal','2017-02-01',24),('Akhaura-Laksam-Chittagong_Line','2015-09-01',30)
 ```
 
-## 从 SQL 转储中插入数据 {#inserting-data-from-sql-dumps}
+## 从 SQL 转储中插入数据 \\{#inserting-data-from-sql-dumps\\}
 
 要读取 SQL 转储文件，使用 [MySQLDump](/interfaces/formats/MySQLDump)：
 
@@ -105,7 +105,7 @@ DESCRIBE TABLE table_from_mysql;
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-## 其他格式 {#other-formats}
+## 其他格式 \\{#other-formats\\}
 
 ClickHouse 支持多种格式，包括文本格式和二进制格式，以适配各种场景和平台。可以在以下文章中了解更多格式以及使用它们的方式：
 

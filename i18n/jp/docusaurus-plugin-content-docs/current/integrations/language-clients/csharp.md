@@ -17,20 +17,20 @@ import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-bu
 import connection_details_csharp from '@site/static/images/_snippets/connection-details-csharp.png';
 
 
-# ClickHouse C# クライアント {#clickhouse-c-client}
+# ClickHouse C# クライアント \\{#clickhouse-c-client\\}
 
 ClickHouse に接続するための公式の C# クライアントです。
 クライアントのソースコードは [GitHub リポジトリ](https://github.com/ClickHouse/clickhouse-cs) で公開されています。
 当初は [Oleg V. Kozlyuk](https://github.com/DarkWanderer) によって開発されました。
 
-## 移行ガイド {#migration-guide}
+## 移行ガイド \\{#migration-guide\\}
 
 1. `.csproj` ファイルでパッケージ名を `ClickHouse.Driver` に変更し、[NuGet 上の最新バージョン](https://www.nuget.org/packages/ClickHouse.Driver) を指定します。
 2. コードベース内のすべての `ClickHouse.Client` 参照を `ClickHouse.Driver` に更新します。
 
 ---
 
-## 対応している .NET バージョン {#supported-net-versions}
+## 対応している .NET バージョン \\{#supported-net-versions\\}
 
 `ClickHouse.Driver` は、次の .NET バージョンに対応しています。
 
@@ -42,7 +42,7 @@ ClickHouse に接続するための公式の C# クライアントです。
 * .NET 9.0
 * .NET 10.0
 
-## インストール {#installation}
+## インストール \{#installation\}
 
 NuGet からパッケージをインストールします：
 
@@ -57,7 +57,7 @@ Install-Package ClickHouse.Driver
 ```
 
 
-## クイックスタート {#quick-start}
+## クイックスタート \{#quick-start\}
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -70,7 +70,7 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 ```
 
 
-## 設定 {#configuration}
+## 設定 \\{#configuration\\}
 
 ClickHouse への接続を構成する方法は 2 つあります。
 
@@ -79,7 +79,7 @@ ClickHouse への接続を構成する方法は 2 つあります。
 
 以下に、すべての設定項目、そのデフォルト値、およびそれらが与える影響の一覧を示します。
 
-### 接続設定 {#connection-settings}
+### 接続設定 \\{#connection-settings\\}
 
 | プロパティ | 型 | デフォルト値 | 接続文字列キー | 説明 |
 |----------|------|---------|----------------------|-------------|
@@ -92,7 +92,7 @@ ClickHouse への接続を構成する方法は 2 つあります。
 | Path | `string` | `null` | `Path` | リバースプロキシ構成時に使用する URL パス（例: `/clickhouse`） |
 | Timeout | `TimeSpan` | 2 minutes | `Timeout` | 操作のタイムアウト値（接続文字列内では秒として保存） |
 
-### データ形式とシリアライゼーション {#data-format-serialization}
+### データ形式とシリアライゼーション \\{#data-format-serialization\\}
 
 | プロパティ | 型 | デフォルト | 接続文字列キー | 説明 |
 |----------|------|---------|----------------------|-------------|
@@ -100,7 +100,7 @@ ClickHouse への接続を構成する方法は 2 つあります。
 | UseCustomDecimals | `bool` | `true` | `UseCustomDecimals` | 任意精度の数値に `ClickHouseDecimal` を使用。false の場合は .NET の `decimal`（128 ビット上限）を使用 |
 | UseFormDataParameters | `bool` | `false` | `UseFormDataParameters` | パラメータを URL のクエリ文字列ではなくフォームデータとして送信 |
 
-### セッション管理 {#session-management}
+### セッション管理 \\{#session-management\\}
 
 | Property | Type | Default | Connection String Key | Description |
 |----------|------|---------|----------------------|-------------|
@@ -113,13 +113,13 @@ ClickHouse への接続を構成する方法は 2 つあります。
 `ClickHouseConnection` クラスは通常、並列実行（複数スレッドによる同時クエリ実行）を許可します。しかし、`UseSession` フラグを有効にすると、任意の時点で 1 接続あたり 1 つのアクティブなクエリに制限されます（これはサーバー側の制約です）。
 :::
 
-### セキュリティ {#security}
+### セキュリティ \\{#security\\}
 
 | プロパティ | 型 | 既定値 | 接続文字列キー | 説明 |
 |----------|------|---------|----------------------|-------------|
 | SkipServerCertificateValidation | `bool` | `false` | — | HTTPS サーバー証明書の検証をスキップします。**本番環境では使用しないでください** |
 
-### HTTP クライアントの構成 {#http-client-configuration}
+### HTTP クライアントの構成 \\{#http-client-configuration\\}
 
 | プロパティ | 型 | 既定値 | 接続文字列キー | 説明 |
 |----------|------|---------|----------------------|-------------|
@@ -127,14 +127,14 @@ ClickHouse への接続を構成する方法は 2 つあります。
 | HttpClientFactory | `IHttpClientFactory` | `null` | — | HttpClient インスタンスを作成するためのカスタムファクトリ |
 | HttpClientName | `string` | `null` | — | 特定のクライアントを作成するために HttpClientFactory で使用する名前 |
 
-### ロギングとデバッグ {#logging-debugging}
+### ロギングとデバッグ \\{#logging-debugging\\}
 
 | プロパティ | 型 | 既定値 | 接続文字列キー | 説明 |
 |----------|------|---------|----------------------|-------------|
 | LoggerFactory | `ILoggerFactory` | `null` | — | 診断ログ用の LoggerFactory |
 | EnableDebugMode | `bool` | `false` | — | .NET ネットワークトレースを有効にする（ログレベルが Trace に設定された LoggerFactory が必要）；**パフォーマンスに大きく影響します** |
 
-### カスタム設定とロール {#custom-settings-roles}
+### カスタム設定とロール \\{#custom-settings-roles\\}
 
 | プロパティ | 型 | デフォルト | 接続文字列キー | 説明 |
 |----------|------|---------|----------------------|-------------|
@@ -149,25 +149,25 @@ ClickHouse への接続を構成する方法は 2 つあります。
 
 ---
 
-### 接続文字列の例 {#connection-string-examples}
+### 接続文字列の例 \\{#connection-string-examples\\}
 
-#### 基本的な接続 {#basic-connection}
+#### 基本的な接続 \{#basic-connection\}
 
 ```text
 Host=localhost;Port=8123;Username=default;Password=secret;Database=mydb
 ```
 
 
-#### カスタム ClickHouse 設定を利用する {#with-custom-clickhouse-settings}
+#### カスタム ClickHouse 設定を利用する \{#with-custom-clickhouse-settings\}
 
 ```text
 Host=localhost;set_max_threads=4;set_readonly=1;set_max_memory_usage=10000000000
 ```
 
 
-## 使用方法 {#usage}
+## 使用方法 \\{#usage\\}
 
-### 接続 {#connecting}
+### 接続 \{#connecting\}
 
 ClickHouse に接続するには、接続文字列または `ClickHouseClientSettings` オブジェクトを使用して `ClickHouseConnection` を作成します。利用可能なオプションについては、「[Configuration](#configuration)」セクションを参照してください。
 
@@ -215,7 +215,7 @@ await connection2.OpenAsync();
 ***
 
 
-### テーブルの作成 {#creating-a-table}
+### テーブルの作成 \{#creating-a-table\}
 
 標準的な SQL 構文を使用してテーブルを作成します。
 
@@ -237,7 +237,7 @@ using (var connection = new ClickHouseConnection(connectionString))
 ***
 
 
-### データの挿入 {#inserting-data}
+### データの挿入 \{#inserting-data\}
 
 パラメータ化されたクエリを使用してデータを挿入します。
 
@@ -261,7 +261,7 @@ using (var connection = new ClickHouseConnection(connectionString))
 ***
 
 
-### 一括挿入 {#bulk-insert}
+### 一括挿入 \{#bulk-insert\}
 
 大量の行を挿入するには `ClickHouseBulkCopy` を使用します。ClickHouse のネイティブな行バイナリ形式を使って効率的にデータをストリーミングし、並列で動作し、データをバッチに分割できます。また、大きなパラメータセットによって発生する &quot;URL too long&quot; エラーといった制限も回避できます。
 
@@ -306,7 +306,7 @@ Console.WriteLine($"Rows written: {bulkCopy.RowsWritten}");
 ***
 
 
-### SELECT クエリの実行 {#performing-select-queries}
+### SELECT クエリの実行 \{#performing-select-queries\}
 
 `ExecuteReader()` または `ExecuteReaderAsync()` を使用して SELECT クエリを実行します。返される `DbDataReader` により、`GetInt64()`、`GetString()`、`GetFieldValue<T>()` などのメソッドを通じて、結果カラムへ型付きでアクセスできます。
 
@@ -336,7 +336,7 @@ using (var connection = new ClickHouseConnection(connectionString))
 ***
 
 
-### SQL パラメータ {#sql-parameters}
+### SQL パラメータ \{#sql-parameters\}
 
 ClickHouse では、SQL クエリ内で使用するパラメータの標準的な形式は `{parameter_name:DataType}` です。
 
@@ -361,7 +361,7 @@ SQL「bind」パラメータは HTTP URI のクエリパラメータとして渡
 ***
 
 
-### Query ID {#query-id}
+### Query ID \{#query-id\}
 
 クエリを実行するすべてのメソッドは、結果に query&#95;id を含みます。この一意の識別子はクエリごとにクライアントによって割り当てられ、（有効になっている場合）`system.query_log` テーブルからデータを取得したり、長時間実行中のクエリをキャンセルしたりするために使用できます。必要に応じて、ClickHouseCommand オブジェクトでユーザーが query&#95;id を上書きすることもできます。
 
@@ -383,7 +383,7 @@ Console.WriteLine($"QueryId: {command.QueryId}");
 ***
 
 
-### 生データストリーミング {#raw-streaming}
+### 生データストリーミング \{#raw-streaming\}
 
 特定のフォーマットでデータを直接ストリーミングし、データリーダーを介さずに処理することができます。これは、データを特定のフォーマットでファイルに保存したい場合などに有用です。例えば、次のようにします。
 
@@ -399,7 +399,7 @@ var json = await reader.ReadToEndAsync();
 ***
 
 
-### Raw ストリームでの挿入 {#raw-stream-insert}
+### Raw ストリームでの挿入 \{#raw-stream-insert\}
 
 `InsertRawStreamAsync` を使用すると、CSV や JSON などの形式、または [ClickHouse がサポートする任意のフォーマット](/docs/interfaces/formats) で、ファイルストリームまたはメモリストリームから直接データを挿入できます。
 
@@ -422,13 +422,13 @@ using var response = await connection.InsertRawStreamAsync(
 ***
 
 
-### その他のサンプル {#more-examples}
+### その他のサンプル \\{#more-examples\\}
 
 さらに実践的な利用例については、GitHub リポジトリの [examples ディレクトリ](https://github.com/ClickHouse/clickhouse-cs/tree/main/examples) を参照してください。
 
-## ベストプラクティス {#best-practices}
+## ベストプラクティス \\{#best-practices\\}
 
-### 接続の有効期間とプーリング {#best-practices-connection-lifetime}
+### 接続の有効期間とプーリング \\{#best-practices-connection-lifetime\\}
 
 `ClickHouse.Driver` は内部的に `System.Net.Http.HttpClient` を使用しています。`HttpClient` はエンドポイントごとに接続プールを持ちます。その結果:
 
@@ -446,7 +446,7 @@ DI 環境向けには、`ClickHouseConnection` が名前付き HTTP クライア
 
 ---
 
-### DateTime の扱い {#best-practice-datetime}
+### DateTime の扱い \\{#best-practice-datetime\\}
 
 1. **可能な限り UTC を使用する。** タイムスタンプは `DateTime('UTC')` カラムとして保存し、コード内では `DateTimeKind.Utc` を使用します。これによりタイムゾーンに関する曖昧さを排除できます。
 
@@ -459,7 +459,7 @@ DI 環境向けには、`ClickHouseConnection` が名前付き HTTP クライア
 
 ---
 
-### 非同期インサート {#async-inserts}
+### 非同期インサート \{#async-inserts\}
 
 [Async inserts](/docs/optimize/asynchronous-inserts) は、バッチングの責務をクライアントからサーバーに移します。クライアント側でのバッチングを必要とする代わりに、サーバーが受信データをバッファし、設定可能なしきい値に基づいてストレージへフラッシュします。これは、多数のエージェントが小さなペイロードを送信するオブザーバビリティ・ワークロードのような、高い同時実行性が求められるシナリオで有用です。
 
@@ -497,7 +497,7 @@ settings.CustomSettings["wait_for_async_insert"] = 1; // Recommended: wait for f
 ***
 
 
-### セッション {#best-practices-sessions}
+### セッション \{#best-practices-sessions\}
 
 サーバー側でステートフルな機能が必要な場合にのみ、セッションを有効にしてください。たとえば次のような場合です:
 
@@ -529,13 +529,13 @@ await using var reader = await cmd3.ExecuteReaderAsync();
 ```
 
 
-## サポートされているデータ型 {#supported-data-types}
+## サポートされているデータ型 \\{#supported-data-types\\}
 
 `ClickHouse.Driver` は、すべての ClickHouse のデータ型をサポートします。以下の表では、データベースからデータを読み取る際の ClickHouse の型と .NET のネイティブ型とのマッピングを示します。
 
-### 型マッピング: ClickHouse からの読み出し {#clickhouse-native-type-map-reading}
+### 型マッピング: ClickHouse からの読み出し \\{#clickhouse-native-type-map-reading\\}
 
-#### 整数型 {#type-map-reading-integer}
+#### 整数型 \\{#type-map-reading-integer\\}
 
 | ClickHouse 型 | .NET 型 |
 |-----------------|-----------|
@@ -554,7 +554,7 @@ await using var reader = await cmd3.ExecuteReaderAsync();
 
 ---
 
-#### 浮動小数点数型 {#type-map-reading-floating-points}
+#### 浮動小数点数型 \\{#type-map-reading-floating-points\\}
 
 | ClickHouse Type | .NET Type |
 |-----------------|-----------|
@@ -564,7 +564,7 @@ await using var reader = await cmd3.ExecuteReaderAsync();
 
 ---
 
-#### Decimal 型 {#type-map-reading-decimal}
+#### Decimal 型 \\{#type-map-reading-decimal\\}
 
 | ClickHouse Type | .NET Type |
 |-----------------|-----------|
@@ -580,7 +580,7 @@ Decimal 型の変換は、UseCustomDecimals 設定で制御されます。
 
 ---
 
-#### ブール型 {#type-map-reading-boolean}
+#### ブール型 \\{#type-map-reading-boolean\\}
 
 | ClickHouse 型 | .NET 型 |
 |-----------------|-----------|
@@ -588,7 +588,7 @@ Decimal 型の変換は、UseCustomDecimals 設定で制御されます。
 
 ---
 
-#### 文字列型 {#type-map-reading-strings}
+#### 文字列型 \\{#type-map-reading-strings\\}
 
 | ClickHouse 型 | .NET 型 |
 |-----------------|-----------|
@@ -597,7 +597,7 @@ Decimal 型の変換は、UseCustomDecimals 設定で制御されます。
 
 ---
 
-#### 日付および時刻型 {#type-map-reading-datetime}
+#### 日付および時刻型 \{#type-map-reading-datetime\}
 
 | ClickHouse Type | .NET Type  |
 | --------------- | ---------- |
@@ -640,7 +640,7 @@ var dto = reader.GetDateTimeOffset(0); // 2024-06-15 14:30:00 +02:00 (CEST)
 ***
 
 
-#### その他の型 {#type-map-reading-other}
+#### その他の型 \\{#type-map-reading-other\\}
 
 | ClickHouse Type | .NET Type |
 |-----------------|-----------|
@@ -668,7 +668,7 @@ Dynamic 型および Variant 型は、各行における実際の基本型に対
 
 ---
 
-#### ジオメトリ型 {#type-map-reading-geometry}
+#### ジオメトリ型 \\{#type-map-reading-geometry\\}
 
 | ClickHouse Type | .NET Type |
 |-----------------|-----------|
@@ -686,11 +686,11 @@ Geometry 型は、任意のジオメトリ型を保持できる Variant 型で�
 
 ---
 
-### 型マッピング: ClickHouse への書き込み {#clickhouse-native-type-map-writing}
+### 型マッピング: ClickHouse への書き込み \\{#clickhouse-native-type-map-writing\\}
 
 データを挿入する際、ドライバーは .NET 型を対応する ClickHouse 型に変換します。以下の表は、各 ClickHouse カラム型に対して、どの .NET 型が利用できるかを示します。
 
-#### 整数型 {#type-map-writing-integer}
+#### 整数型 \\{#type-map-writing-integer\\}
 
 | ClickHouse Type | 受け入れ可能な .NET 型 | 備考 |
 |-----------------|------------------------|------|
@@ -709,7 +709,7 @@ Geometry 型は、任意のジオメトリ型を保持できる Variant 型で�
 
 ---
 
-#### 浮動小数点型 {#type-map-writing-floating-point}
+#### 浮動小数点型 \\{#type-map-writing-floating-point\\}
 
 | ClickHouse Type | 対応する .NET 型 | 備考 |
 |-----------------|------------------|------|
@@ -718,7 +718,7 @@ Geometry 型は、任意のジオメトリ型を保持できる Variant 型で�
 | BFloat16 | `float`、`Convert.ToSingle()` と互換性のある任意の型 | 16 ビットの brain float 形式に切り捨てて変換 |
 ---
 
-#### Boolean 型 {#type-map-writing-boolean}
+#### Boolean 型 \\{#type-map-writing-boolean\\}
 
 | ClickHouse Type | 対応する .NET 型 | 備考 |
 |-----------------|------------------|------|
@@ -726,7 +726,7 @@ Geometry 型は、任意のジオメトリ型を保持できる Variant 型で�
 
 ---
 
-#### 文字列型 {#type-map-writing-strings}
+#### 文字列型 \\{#type-map-writing-strings\\}
 
 | ClickHouse Type | 受け入れ可能な .NET 型 | 備考 |
 |-----------------|------------------------|------|
@@ -734,7 +734,7 @@ Geometry 型は、任意のジオメトリ型を保持できる Variant 型で�
 | FixedString(N) | `string`, `byte[]` | 文字列は UTF-8 でエンコードされ、パディングまたは切り詰めが行われる。`byte[]` は長さがちょうど N バイトでなければならない |
 ---
 
-#### 日付および時刻型 {#type-map-writing-datetime}
+#### 日付および時刻型 \{#type-map-writing-datetime\}
 
 | ClickHouse Type | Accepted .NET Types                                               | Notes                                                               |
 | --------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------- |
@@ -776,7 +776,7 @@ var wallClock = new DateTime(2024, 1, 15, 14, 30, 0, DateTimeKind.Unspecified);
 **推奨:** 動作を最もシンプルかつ予測しやすくするため、すべての DateTime 操作で `DateTimeKind.Utc` または `DateTimeOffset` を使用してください。これにより、サーバーのタイムゾーン、クライアントのタイムゾーン、あるいはカラムのタイムゾーンに関わらず、コードが一貫して動作します。
 
 
-#### HTTP パラメータ vs 一括コピー {#datetime-http-param-vs-bulkcopy}
+#### HTTP パラメータ vs 一括コピー \{#datetime-http-param-vs-bulkcopy\}
 
 `Unspecified` な DateTime 値を書き込む場合、HTTP パラメータバインディングと一括コピーには重要な違いがあります。
 
@@ -806,7 +806,7 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 ***
 
 
-#### Decimal 型 {#type-map-writing-decimal}
+#### Decimal 型 \\{#type-map-writing-decimal\\}
 
 | ClickHouse Type | 対応する .NET 型 | 備考 |
 |-----------------|------------------|------|
@@ -818,7 +818,7 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 
 ---
 
-#### その他の型 {#type-map-writing-other}
+#### その他の型 \\{#type-map-writing-other\\}
 
 | ClickHouse Type | 受け入れ可能な .NET 型 | 備考 |
 |-----------------|------------------------|------|
@@ -842,7 +842,7 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 
 ---
 
-#### Geometry 型 {#type-map-writing-geometry}
+#### Geometry 型 \\{#type-map-writing-geometry\\}
 
 | ClickHouse Type | 受け入れ可能な .NET 型 | 備考 |
 |-----------------|------------------------|------|
@@ -856,7 +856,7 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 
 ---
 
-#### 書き込みはサポートされません  {#type-map-writing-not-supported}
+#### 書き込みはサポートされません  \\{#type-map-writing-not-supported\\}
 
 | ClickHouse Type | 備考 |
 |-----------------|-------|
@@ -865,7 +865,7 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 
 ---
 
-### ネスト型の扱い {#nested-type-handling}
+### ネスト型の扱い \{#nested-type-handling\}
 
 ClickHouse のネスト型（`Nested(...)`）は、配列と同様のセマンティクスで読み書きできます。
 
@@ -889,13 +889,13 @@ await bulkCopy.WriteToServerAsync(new[] { row1, row2 });
 ```
 
 
-## ロギングと診断 {#logging-and-diagnostics}
+## ロギングと診断 \\{#logging-and-diagnostics\\}
 
 ClickHouse の .NET クライアントは `Microsoft.Extensions.Logging` の抽象 API と統合されており、軽量なオプトイン方式のロギングを提供します。ロギングを有効にすると、ドライバーは接続ライフサイクルイベント、コマンド実行、トランスポート処理、およびバルクコピーアップロードに対して構造化されたメッセージを出力します。ロギングは完全に任意であり、ロガーを構成していないアプリケーションでも追加のオーバーヘッドなしに動作し続けます。
 
-### クイックスタート {#logging-quick-start}
+### クイックスタート \\{#logging-quick-start\\}
 
-#### ClickHouseConnection の使用 {#logging-clickhouseconnection}
+#### ClickHouseConnection の使用 \\{#logging-clickhouseconnection\\}
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -917,7 +917,7 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-#### appsettings.json の使用 {#logging-appsettings-config}
+#### appsettings.json の使用 \\{#logging-appsettings-config\\}
 
 標準的な .NET の構成機能を使用してログレベルを設定できます。
 
@@ -947,7 +947,7 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-#### インメモリ設定を使用する {#logging-inmemory-config}
+#### インメモリ設定を使用する \\{#logging-inmemory-config\\}
 
 コード内でカテゴリごとにログ出力の詳細度を設定することもできます。
 
@@ -983,7 +983,7 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-### カテゴリと出力元 {#logging-categories}
+### カテゴリと出力元 \\{#logging-categories\\}
 
 このドライバーは専用のカテゴリを使用しており、コンポーネントごとにログレベルをきめ細かく調整できます。
 
@@ -995,7 +995,7 @@ await connection.OpenAsync();
 | `ClickHouse.Driver.BulkCopy` | `ClickHouseBulkCopy` | メタデータの読み込み、バッチ処理、行数、アップロード完了。 |
 | `ClickHouse.Driver.NetTrace` | `TraceHelper` | デバッグモードが有効な場合にのみ行われるネットワークトレース。 |
 
-#### 例：接続に関する問題の診断 {#logging-config-example}
+#### 例：接続に関する問題の診断 \\{#logging-config-example\\}
 
 ```json
 {
@@ -1018,7 +1018,7 @@ await connection.OpenAsync();
 * 接続のオープン／クローズ イベント
 * セッション ID の追跡
 
-### デバッグモード: ネットワークトレースと診断 {#logging-debugmode}
+### デバッグモード: ネットワークトレースと診断 \{#logging-debugmode\}
 
 ネットワークに関する問題の診断を支援するために、ドライバーライブラリには .NET のネットワーク内部処理を低レベルでトレースできるヘルパー機能が含まれています。これを有効にするには、ログレベルを Trace に設定した LoggerFactory を渡し、EnableDebugMode を true に設定する必要があります（または `ClickHouse.Driver.Diagnostic.TraceHelper` クラスを使用して手動で有効化します）。イベントは `ClickHouse.Driver.NetTrace` カテゴリにログ出力されます。警告: これは非常に冗長なログを大量に生成し、パフォーマンスに影響します。本番環境でデバッグモードを有効にすることは推奨されません。
 
@@ -1038,11 +1038,11 @@ var settings = new ClickHouseClientSettings()
 ```
 
 
-## OpenTelemetry {#opentelemetry}
+## OpenTelemetry \\{#opentelemetry\\}
 
 このドライバーは、.NET の [`System.Diagnostics.Activity`](https://learn.microsoft.com/en-us/dotnet/core/diagnostics/distributed-tracing) API を介して、OpenTelemetry による分散トレーシングを組み込みでサポートしています。これを有効にすると、ドライバーはデータベース操作ごとに span を生成し、Jaeger や [OpenTelemetry Collector](https://clickhouse.com/docs/observability/integrating-opentelemetry) 経由の ClickHouse 自身といったオブザーバビリティバックエンドへエクスポートできます。
 
-### トレーシングの有効化 {#opentelemetry-enabling}
+### トレーシングの有効化 \{#opentelemetry-enabling\}
 
 ASP.NET Core アプリケーションでは、OpenTelemetry の設定に ClickHouse ドライバーの `ActivitySource` を追加します。
 
@@ -1067,7 +1067,7 @@ var tracerProvider = Sdk.CreateTracerProviderBuilder()
 ```
 
 
-### Span attributes {#opentelemetry-attributes}
+### Span attributes \\{#opentelemetry-attributes\\}
 
 各スパンには、標準的な OpenTelemetry のデータベース属性に加えて、デバッグに利用可能な ClickHouse 固有のクエリ統計情報が含まれます。
 
@@ -1083,7 +1083,7 @@ var tracerProvider = Sdk.CreateTracerProviderBuilder()
 | `db.clickhouse.written_bytes` | クエリによって書き込まれたバイト数 |
 | `db.clickhouse.elapsed_ns` | サーバー側の実行時間（ナノ秒単位） |
 
-### 設定オプション {#opentelemetry-configuration}
+### 設定オプション \{#opentelemetry-configuration\}
 
 `ClickHouseDiagnosticsOptions` を使用してトレースの挙動を制御できます。
 
@@ -1102,11 +1102,11 @@ ClickHouseDiagnosticsOptions.StatementMaxLength = 500;
 :::
 
 
-## TLS 構成 {#tls-configuration}
+## TLS 構成 \\{#tls-configuration\\}
 
 HTTPS 経由で ClickHouse に接続する場合、TLS/SSL の動作をいくつかの方法で設定できます。
 
-### カスタム証明書検証 {#custom-certificate-validation}
+### カスタム証明書検証 \{#custom-certificate-validation\}
 
 カスタム証明書検証ロジックが必要な本番環境では、`ServerCertificateCustomValidationCallback` ハンドラーを構成した独自の `HttpClient` を用意してください：
 
@@ -1156,9 +1156,9 @@ await connection.OpenAsync();
   :::
 
 
-## ORM サポート {#orm-support}
+## ORM サポート \\{#orm-support\\}
 
-### Dapper {#orm-support-dapper}
+### Dapper \{#orm-support-dapper\}
 
 `ClickHouse.Driver` は Dapper と併用できますが、anonymous objects（匿名オブジェクト）はサポート対象外です。
 
@@ -1181,7 +1181,7 @@ connection.QueryAsync<string>(
 ```
 
 
-### Linq2db {#orm-support-linq2db}
+### Linq2db \{#orm-support-linq2db\}
 
 このドライバは、.NET 向けの軽量な ORM / LINQ プロバイダーである [linq2db](https://github.com/linq2db/linq2db) に対応しています。詳細については、プロジェクトの Web サイトを参照してください。
 
@@ -1242,13 +1242,13 @@ await table.BulkCopyAsync(options, products);
 ```
 
 
-### Entity Framework Core {#orm-support-ef-core}
+### Entity Framework Core \\{#orm-support-ef-core\\}
 
 Entity Framework Core は現在サポートされていません。
 
-## 制限事項 {#limitations}
+## 制限事項 \\{#limitations\\}
 
-### AggregateFunction 列 {#aggregatefunction-columns}
+### AggregateFunction 列 \\{#aggregatefunction-columns\\}
 
 `AggregateFunction(...)` 型の列は、直接クエリしたりデータを挿入したりすることはできません。
 

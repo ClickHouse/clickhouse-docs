@@ -7,11 +7,11 @@ doc_type: 'guide'
 keywords: ['формат SQL', 'экспорт данных', 'импорт данных', 'резервное копирование', 'дампы SQL']
 ---
 
-# Вставка и выгрузка SQL-данных в ClickHouse {#inserting-and-dumping-sql-data-in-clickhouse}
+# Вставка и выгрузка SQL-данных в ClickHouse \\{#inserting-and-dumping-sql-data-in-clickhouse\\}
 
 ClickHouse можно легко интегрировать в OLTP‑инфраструктуры баз данных разными способами. Один из вариантов — передавать данные между другими базами данных и ClickHouse с помощью SQL‑дампов.
 
-## Создание SQL-дампов {#creating-sql-dumps}
+## Создание SQL-дампов \\{#creating-sql-dumps\\}
 
 Данные можно выгрузить в формате SQL с помощью [SQLInsert](/interfaces/formats/SQLInsert). ClickHouse запишет данные в виде `INSERT INTO <table name> VALUES(...` и будет использовать настройку [`output_format_sql_insert_table_name`](/operations/settings/settings-formats.md/#output_format_sql_insert_table_name) в качестве имени таблицы:
 
@@ -42,7 +42,7 @@ mysql some_db < dump.sql
 SET output_format_sql_insert_max_batch_size = 1000;
 ```
 
-### Экспорт набора значений {#exporting-a-set-of-values}
+### Экспорт набора значений \\{#exporting-a-set-of-values\\}
 
 В ClickHouse есть формат [Values](/interfaces/formats/Values), который аналогичен SQL INSERT, но опускает оператор `INSERT INTO table VALUES` и содержит только набор значений:
 
@@ -54,7 +54,7 @@ SELECT * FROM some_data LIMIT 3 FORMAT Values
 ('Bangor_City_Forest','2015-07-01',34),('Alireza_Afzal','2017-02-01',24),('Akhaura-Laksam-Chittagong_Line','2015-09-01',30)
 ```
 
-## Импорт данных из SQL-дампов {#inserting-data-from-sql-dumps}
+## Импорт данных из SQL-дампов \\{#inserting-data-from-sql-dumps\\}
 
 Для чтения SQL-дампов используется формат [MySQLDump](/interfaces/formats/MySQLDump):
 
@@ -105,7 +105,7 @@ DESCRIBE TABLE table_from_mysql;
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-## Другие форматы {#other-formats}
+## Другие форматы \\{#other-formats\\}
 
 ClickHouse поддерживает множество форматов, как текстовых, так и бинарных, чтобы охватить различные сценарии и платформы. Узнайте больше о форматах и способах работы с ними в следующих статьях:
 

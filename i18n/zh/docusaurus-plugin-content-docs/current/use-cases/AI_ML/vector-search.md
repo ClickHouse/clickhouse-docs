@@ -38,7 +38,7 @@ import diagram_17 from '@site/static/images/use-cases/AI_ML/QBit/diagram_17.jpg'
   :::
 
 
-## 向量搜索入门 {#vector-search-primer}
+## 向量搜索入门 \\{#vector-search-primer\\}
 
 在数学和物理中，向量被严格定义为同时具有大小和方向的对象。
 它通常表现为空间中的线段或箭头，可用于表示速度、力和加速度等物理量。
@@ -57,7 +57,7 @@ import diagram_17 from '@site/static/images/use-cases/AI_ML/QBit/diagram_17.jpg'
 尽管专用向量数据库有其优势，但用户往往更偏好具备按需（ad-hoc）向量能力的常规数据库，而不是完全专用的向量存储。
 ClickHouse 同时支持[穷举向量搜索](/engines/table-engines/mergetree-family/annindexes#exact-nearest-neighbor-search)以及[近似最近邻（ANN）搜索方法](/engines/table-engines/mergetree-family/annindexes#approximate-nearest-neighbor-search)，包括 HNSW —— 当前用于快速向量检索的事实标准。
 
-### 理解 embedding {#understanding-embeddings}
+### 理解 embedding \{#understanding-embeddings\}
 
 我们通过一个简单的示例来了解向量搜索是如何工作的。
 先来看一些单词的 embedding（向量表示）：
@@ -110,12 +110,12 @@ query embedding: [-0.88693672,1.31532824,-0.51182908,-0.99652702,0.5990777]
 ```
 
 
-## 近似最近邻 (ANN) {#approximate-nearest-neighbours}
+## 近似最近邻 (ANN) \\{#approximate-nearest-neighbours\\}
 
 对于大型数据集，穷举搜索会变得过于缓慢。
 这时就可以使用近似最近邻方法。
 
-### 量化 {#quantisation}
+### 量化 \\{#quantisation\\}
 
 量化是指将数据降级为更小的数值类型。
 数值越小，数据越小，而数据越小，距离计算就越快。
@@ -126,7 +126,7 @@ ClickHouse 的向量化查询执行引擎在每次操作中可以在处理器寄
 1. **在原始列的基础上保留一份量化后的副本** —— 虽然会使存储占用翻倍，但很安全，因为我们始终可以回退到全精度
 2. **完全替换原始值**（在插入时进行降级转换）—— 可以节省空间和 I/O，但这是单向选择，无法恢复到原始精度
 
-### 分层可导航小世界（HNSW） {#hnsw}
+### 分层可导航小世界（HNSW） \\{#hnsw\\}
 
 <Image size="md" img={diagram_1} alt="HNSW 层级结构"/>
 
@@ -141,7 +141,7 @@ HNSW 由多个由节点（向量）组成的层构成。每个节点会被随机
 因此，更大的数据集需要按比例更多的 RAM。
 :::
 
-### 方法对比 {#comparison-approaches}
+### 方法对比 \\{#comparison-approaches\\}
 
 | Category | Brute-force | HNSW | QBit |
 |----------|-------------|------|------|
@@ -149,9 +149,9 @@ HNSW 由多个由节点（向量）组成的层构成。每个节点会被随机
 | **Speed** | 慢 | 快 | 灵活 |
 | **Others** | 量化：占用更多空间或带来不可逆的精度损失 | 索引必须能放入内存并且需要预先构建 | 仍为 O(#records) 量级 |
 
-## QBit 深入剖析 {#qbit-deepdive}
+## QBit 深入剖析 \\{#qbit-deepdive\\}
 
-### 量化比特（QBit） {#quantised-bit}
+### 量化比特（QBit） \\{#quantised-bit\\}
 
 QBit 是一种新的数据结构，可以利用浮点数的底层表示——比特位——来存储 `BFloat16`、`Float32` 和 `Float64` 值。
 QBit 不再将每个数字作为一个整体来存储，而是将这些值拆分为**比特平面（bit planes）**：所有第 1 位比特、所有第 2 位比特、所有第 3 位比特，依此类推。
@@ -169,7 +169,7 @@ QBit 不再将每个数字作为一个整体来存储，而是将这些值拆分
 尽管 QBit 加速了向量搜索，但其计算复杂度仍然是 O(n)。换句话说：如果你的数据集足够小，使得 HNSW 索引可以轻松放入 RAM，那么 HNSW 依然是速度最快的选择。
 :::
 
-### 数据类型 {#the-data-type}
+### 数据类型 \{#the-data-type\}
 
 下面介绍如何创建一个 QBit 列：
 
@@ -204,7 +204,7 @@ INSERT INTO fruit_animal VALUES
 :::
 
 
-### 距离计算 {#the-distance-calculation}
+### 距离计算 \{#the-distance-calculation\}
 
 使用 QBit 进行查询时，请使用带有精度参数的 [`L2DistanceTransposed`](/sql-reference/functions/distance-functions#L2DistanceTransposed) 函数：
 
@@ -229,7 +229,7 @@ ORDER BY distance;
 第三个参数（16）指定精度，单位为比特。
 
 
-### I/O 优化 {#io-optimisation}
+### I/O 优化 \\{#io-optimisation\\}
 
 <Image size="md" img={diagram_3} alt="QBit I/O 优化"/>
 
@@ -241,7 +241,7 @@ ORDER BY distance;
 
 读取完成后，我们仅根据加载的位平面重建每个数值的高位部分，未读取的位保持为零。
 
-### 计算优化 {#calculation-optimisation}
+### 计算优化 \\{#calculation-optimisation\\}
 
 <Image size="md" img={diagram_7} alt="降精度转换对比"/>
 
@@ -249,11 +249,11 @@ ORDER BY distance;
 
 相反，我们可以只对引用向量进行降精度处理，并将 QBit 数据视为其中只包含精度更低的值（“忽略”某些列的存在），因为它的布局通常与这些类型截断后的版本相对应。
 
-#### BFloat16 优化 {#bfloat16-optimization}
+#### BFloat16 优化 \\{#bfloat16-optimization\\}
 
 BFloat16 是在 Float32 基础上按位截断一半精度得到的类型。它保留相同的符号位和 8 位指数位，但在 23 位尾数中仅保留最高的 7 位。正因为如此，从 QBit 列中读取前 16 个比特平面时，其效果等同于重现 BFloat16 值的内存布局。因此，在这种情况下，我们可以（并且确实会）安全地将参考向量转换为 BFloat16。
 
-#### Float64 复杂度 {#float64-complexity}
+#### Float64 复杂度 \\{#float64-complexity\\}
 
 然而，Float64 的情况则完全不同。它使用 11 位指数位和 52 位尾数位，这意味着它并不是简单地将 Float32 的位数翻倍。它的结构和指数偏置都完全不同。将 Float64 向下转换为像 Float32 这样更小的格式时，需要执行真正的 IEEE-754 转换，其中每个值都会被舍入到最接近且可由 Float32 表示的数值。这个舍入步骤在计算上开销很大。
 
@@ -261,11 +261,11 @@ BFloat16 是在 Float32 基础上按位截断一半精度得到的类型。它�
 如果你对 QBit 的性能要素感兴趣并想深入了解，请参阅 ["Let’s vectorise"](https://clickhouse.com/blog/qbit-vector-search#lets-vectorise)
 :::
 
-## 使用 DBpedia 的示例 {#example}
+## 使用 DBpedia 的示例 \\{#example\\}
 
 下面通过一个真实案例来看看 QBit 的实际效果，使用的是 DBpedia 数据集，其中包含 100 万篇 Wikipedia 文章，这些文章被表示为 Float32 类型的嵌入向量。
 
-### 环境准备 {#setup}
+### 环境准备 \{#setup\}
 
 首先，创建数据表
 
@@ -325,7 +325,7 @@ ALTER TABLE dbpedia UPDATE qbit = vector WHERE 1;
 ```
 
 
-### 搜索查询 {#search-query}
+### 搜索查询 \{#search-query\}
 
 我们将查找与以下所有太空相关搜索词最相关的概念：Moon、Apollo 11、Space Shuttle、Astronaut、Rocket：
 
@@ -630,7 +630,7 @@ Peak memory usage: 327.04 MiB.
   **性能:** 返回 10 行。耗时: 1.157 秒。已处理 1000 万行,32.76 GB (864 万行/秒,28.32 GB/秒)。峰值内存使用: **6.05 GiB**。
 </details>
 
-### 关键洞见 {#key-insight}
+### 关键洞见 \\{#key-insight\\}
 
 结果如何？不只是好，而是好得出乎意料。并不容易想到的是，即使把浮点数的整个尾数和一半的指数都去掉，它们仍然保留了有意义的信息。
 
@@ -638,7 +638,7 @@ Peak memory usage: 327.04 MiB.
 
 内存占用从 **6.05 GB 降低到 740 MB**，同时仍然保持了出色的语义搜索质量！
 
-## 结论 {#result}
+## 结论 \\{#result\\}
 
 QBit 是一种使用位平面存储浮点数的列类型。
 它允许你在向量搜索时选择读取多少位，从而在不改变数据的前提下微调召回率和性能。

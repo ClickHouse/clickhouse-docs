@@ -7,7 +7,7 @@ keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OU
 doc_type: 'reference'
 ---
 
-# JOIN 子句 {#join-clause}
+# JOIN 子句 \{#join-clause\}
 
 `JOIN` 子句通过使用一个或多个表中共有的值，将这些表的列组合在一起生成一个新表。它是支持 SQL 的数据库中常见的操作，对应于[关系代数](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators)中的连接（join）。对单个表自身进行连接的特殊情况通常被称为“自连接”（self-join）。
 
@@ -23,7 +23,7 @@ FROM <left_table>
 `ON` 子句中的表达式和 `USING` 子句中的列称为“连接键”（join keys）。除非另有说明，`JOIN` 会从具有匹配“连接键”的行生成[笛卡尔积](https://en.wikipedia.org/wiki/Cartesian_product)，这可能会产生比源表多得多的结果行。
 
 
-## 支持的 JOIN 类型 {#supported-types-of-join}
+## 支持的 JOIN 类型 \\{#supported-types-of-join\\}
 
 支持所有标准的 [SQL JOIN](https://en.wikipedia.org/wiki/Join_(SQL)) 类型：
 
@@ -53,7 +53,7 @@ ClickHouse 还提供了额外的 join 类型：
 当 [join_algorithm](../../../operations/settings/settings.md#join_algorithm) 设置为 `partial_merge` 时，仅在严格性为 `ALL` 时才支持 `RIGHT JOIN` 和 `FULL JOIN`（不支持 `SEMI`、`ANTI`、`ANY` 和 `ASOF`）。
 :::
 
-## 设置 {#settings}
+## 设置 \\{#settings\\}
 
 可以使用 [`join_default_strictness`](../../../operations/settings/settings.md#join_default_strictness) 设置来覆盖默认的 JOIN 类型。
 
@@ -70,7 +70,7 @@ ClickHouse 服务器在执行 `ANY JOIN` 操作时的行为取决于 [`any_join_
 
 使用 `cross_to_inner_join_rewrite` 设置来定义当 ClickHouse 无法将 `CROSS JOIN` 重写为 `INNER JOIN` 时的行为。默认值为 `1`，此时允许 JOIN 继续执行，但会更慢。如果希望抛出错误，请将 `cross_to_inner_join_rewrite` 设为 `0`；若希望不执行 CROSS JOIN，而是强制重写所有逗号/CROSS JOIN，请将其设为 `2`。如果在值为 `2` 时重写失败，您将收到一条错误消息：“Please, try to simplify `WHERE` section”。
 
-## ON 部分中的条件 {#on-section-conditions}
+## ON 部分中的条件 \{#on-section-conditions\}
 
 `ON` 部分可以包含多个条件，这些条件通过 `AND` 和 `OR` 运算符组合。指定连接键的条件必须：
 
@@ -182,7 +182,7 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key AND t2.
 ```
 
 
-## 针对来自不同表的列使用非等值条件的 JOIN {#join-with-inequality-conditions-for-columns-from-different-tables}
+## 针对来自不同表的列使用非等值条件的 JOIN \{#join-with-inequality-conditions-for-columns-from-different-tables\}
 
 ClickHouse 目前除等值条件外，还支持在 `ALL/ANY/SEMI/ANTI INNER/LEFT/RIGHT/FULL JOIN` 中使用非等值条件。非等值条件仅在 `hash` 和 `grace_hash` join 算法中受支持。使用 `join_use_nulls` 时不支持非等值条件。
 
@@ -233,7 +233,7 @@ key4    f    2    3    4            0    0    \N
 ```
 
 
-## JOIN 键中的 NULL 值 {#null-values-in-join-keys}
+## JOIN 键中的 NULL 值 \{#null-values-in-join-keys\}
 
 `NULL` 不等于任何值，包括它本身。这意味着如果某个表中用作 `JOIN` 键的列值为 `NULL`，它不会与另一张表中同样为 `NULL` 的值相匹配。
 
@@ -288,7 +288,7 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 ```
 
 
-## ASOF JOIN 用法 {#asof-join-usage}
+## ASOF JOIN 用法 \{#asof-join-usage\}
 
 当你需要联接那些没有精确匹配的记录时，`ASOF JOIN` 非常有用。
 
@@ -343,7 +343,7 @@ USING (equi_column1, ... equi_columnN, asof_column)
 :::
 
 
-## PASTE JOIN 用法 {#paste-join-usage}
+## PASTE JOIN 用法 \{#paste-join-usage\}
 
 `PASTE JOIN` 的结果是一个表，包含左侧子查询的所有列，后面紧跟右侧子查询的所有列。
 行是根据它们在原始表中的位置一一对应匹配的（行的顺序必须是确定的）。
@@ -402,7 +402,7 @@ SETTINGS max_block_size = 2;
 ```
 
 
-## 分布式 JOIN {#distributed-join}
+## 分布式 JOIN \\{#distributed-join\\}
 
 在包含分布式表的 JOIN 中，有两种执行方式：
 
@@ -411,7 +411,7 @@ SETTINGS max_block_size = 2;
 
 在使用 `GLOBAL` 时要小心。更多信息请参见[分布式子查询](/sql-reference/operators/in#distributed-subqueries)一节。
 
-## 隐式类型转换 {#implicit-type-conversion}
+## 隐式类型转换 \{#implicit-type-conversion\}
 
 `INNER JOIN`、`LEFT JOIN`、`RIGHT JOIN` 和 `FULL JOIN` 查询支持对“连接键”进行隐式类型转换。但是，如果左右表的连接键无法被转换为同一种类型，则查询无法执行（例如，没有任何一种数据类型能够同时容纳来自 `UInt64` 和 `Int64`，或 `String` 和 `Int32` 的所有值）。
 
@@ -454,21 +454,21 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 ```
 
 
-## 使用建议 {#usage-recommendations}
+## 使用建议 \\{#usage-recommendations\\}
 
-### 空单元格或 NULL 单元格的处理 {#processing-of-empty-or-null-cells}
+### 空单元格或 NULL 单元格的处理 \\{#processing-of-empty-or-null-cells\\}
 
 在进行表关联时，可能会出现空单元格。设置 [join_use_nulls](../../../operations/settings/settings.md#join_use_nulls) 定义了 ClickHouse 如何填充这些单元格。
 
 如果 `JOIN` 键列是 [Nullable](../../../sql-reference/data-types/nullable.md) 字段，则至少有一个键的值为 [NULL](/sql-reference/syntax#null) 的行不会被关联。
 
-### 语法 {#syntax}
+### 语法 \\{#syntax\\}
 
 在 `USING` 中指定的列在两个子查询中必须同名，而其他列必须使用不同的名称。你可以使用别名来更改子查询中列的名称。
 
 `USING` 子句指定一个或多个用于关联的列，表示这些列在两侧需要相等。列列表直接列出，无需括号。不支持更复杂的关联条件。
 
-### 语法限制 {#syntax-limitations}
+### 语法限制 \\{#syntax-limitations\\}
 
 对于单个 `SELECT` 查询中的多个 `JOIN` 子句：
 
@@ -480,7 +480,7 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 
 - 不能在 `ON`、`WHERE` 和 `GROUP BY` 子句中使用任意表达式，但你可以在 `SELECT` 子句中定义一个表达式，然后通过别名在这些子句中使用它。
 
-### 性能 {#performance}
+### 性能 \\{#performance\\}
 
 在执行 `JOIN` 时，不会根据查询中其他阶段自动优化执行顺序。关联操作（在右表中查找）会在 `WHERE` 过滤和聚合之前执行。
 
@@ -490,7 +490,7 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 
 如果你需要通过 `JOIN` 与维度表进行关联（这些是相对较小的表，包含维度属性，例如广告活动名称），由于每次查询都会重新访问右表，`JOIN` 可能不是很方便。对于这类场景，应使用 “字典（dictionaries）” 功能来替代 `JOIN`。更多信息请参阅 [Dictionaries](../../../sql-reference/dictionaries/index.md) 章节。
 
-### 内存限制 {#memory-limitations}
+### 内存限制 \\{#memory-limitations\\}
 
 默认情况下，ClickHouse 使用 [hash join](https://en.wikipedia.org/wiki/Hash_join) 算法。ClickHouse 读取右表（right_table），并在内存中为其创建哈希表。如果启用了 `join_algorithm = 'auto'`，则在内存消耗超过某个阈值后，ClickHouse 会降级为 [merge](https://en.wikipedia.org/wiki/Sort-merge_join) join 算法。关于 `JOIN` 算法的说明参见 [join_algorithm](../../../operations/settings/settings.md#join_algorithm) 设置。
 
@@ -501,7 +501,7 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 
 当达到上述任一限制时，ClickHouse 会按照 [join_overflow_mode](/operations/settings/settings#join_overflow_mode) 设置中的指示进行处理。
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
 示例：
 
@@ -545,7 +545,7 @@ LIMIT 10
 ```
 
 
-## 相关内容 {#related-content}
+## 相关内容 \\{#related-content\\}
 
 - 博客：[ClickHouse：具备完整 SQL JOIN 支持的极速数据库管理系统（DBMS）- 第 1 部分](https://clickhouse.com/blog/clickhouse-fully-supports-joins)
 - 博客：[ClickHouse：具备完整 SQL JOIN 支持的极速数据库管理系统（DBMS）- 深入解析 - 第 2 部分](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2)

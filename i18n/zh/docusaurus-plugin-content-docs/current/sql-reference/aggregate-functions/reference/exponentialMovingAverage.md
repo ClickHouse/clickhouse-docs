@@ -5,7 +5,7 @@ title: 'exponentialMovingAverage'
 doc_type: 'reference'
 ---
 
-## exponentialMovingAverage {#exponentialmovingaverage}
+## exponentialMovingAverage \{#exponentialmovingaverage\}
 
 计算在指定时间段内各数值的指数移动平均。
 

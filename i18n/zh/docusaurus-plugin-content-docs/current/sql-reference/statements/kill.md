@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 有两种 KILL 语句：一种用于终止查询，另一种用于终止变更。
 
-## KILL QUERY（终止查询） {#kill-query}
+## KILL QUERY（终止查询） \\{#kill-query\\}
 
 ```sql
 KILL QUERY [ON CLUSTER cluster]
@@ -80,7 +80,7 @@ KILL QUERY WHERE user='username' SYNC
 
 测试查询（`TEST`）仅检查用户权限，并显示要停止的查询列表。
 
-## KILL MUTATION {#kill-mutation}
+## KILL MUTATION \\{#kill-mutation\\}
 
 存在长时间运行或未完成的 mutation 往往表明 ClickHouse 服务运行状况不佳。mutation 的异步特性可能导致其耗尽系统上的所有可用资源。你可能需要：
 

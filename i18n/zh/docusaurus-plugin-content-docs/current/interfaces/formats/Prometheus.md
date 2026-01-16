@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 以 [Prometheus 文本暴露格式](https://prometheus.io/docs/instrumenting/exposition_formats/#text-based-format)导出指标数据。
 
@@ -28,7 +28,7 @@ doc_type: 'reference'
 对于 `histogram` 和 `summary` 的 labels 有特殊要求，详情参见 [Prometheus 文档](https://prometheus.io/docs/instrumenting/exposition_formats/#histograms-and-summaries)。  
 对标签为 `{'count':''}` 和 `{'sum':''}` 的行会应用特殊规则，它们分别会被转换为 `<metric_name>_count` 和 `<metric_name>_sum`。
 
-## 使用示例 {#example-usage}
+## 使用示例 \\{#example-usage\\}
 
 ```yaml
 ┌─name────────────────────────────────┬─type──────┬─help──────────────────────────────────────┬─labels─────────────────────────┬────value─┬─────timestamp─┐
@@ -86,4 +86,4 @@ rpc_duration_seconds_count 2693
 something_weird{problem="division by zero"} +Inf -3982045
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \\{#format-settings\\}

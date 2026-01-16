@@ -10,7 +10,7 @@ doc_type: 'guide'
 世界中のデータの多くは Amazon S3 バケット内に保存されています。
 このガイドでは、chDB を使用してそうしたデータに対してクエリを実行する方法を学びます。
 
-## セットアップ {#setup}
+## セットアップ \\{#setup\\}
 
 まず仮想環境を作成します。
 
@@ -40,7 +40,7 @@ ipython
 
 このコードは、Python スクリプトやお使いのノートブックでも使用できます。
 
-## Parquet メタデータを探索する {#exploring-parquet-metadata}
+## Parquet メタデータを探索する \\{#exploring-parquet-metadata\\}
 
 [Amazon reviews](/getting-started/example-datasets/amazon-reviews) データセットの Parquet ファイルを探索していきます。
 その前に、まずは `chDB` をインストールしましょう。
@@ -150,7 +150,7 @@ chdb.query(query, 'DataFrame')
 14        review_body              145886383                232457911                                                                                              🚅 +🐧=💥 😀
 ```
 
-## Parquet ファイルのクエリ {#querying-parquet-files}
+## Parquet ファイルのクエリ \\{#querying-parquet-files\\}
 
 次に、ファイルの内容をクエリしてみましょう。
 これを行うには、先ほどのクエリから `ParquetMetadata` を削除して調整し、たとえばすべてのレビューにおける最も頻出する `star_rating` を計算します。

@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Табличный движок EmbeddedRocksDB {#embeddedrocksdb-table-engine}
+# Табличный движок EmbeddedRocksDB \\{#embeddedrocksdb-table-engine\\}
 
 <CloudNotSupportedBadge />
 
 Этот движок позволяет интегрировать ClickHouse с [RocksDB](http://rocksdb.org/).
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \\{#creating-a-table\\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -56,7 +56,7 @@ ENGINE = EmbeddedRocksDB
 PRIMARY KEY key
 ```
 
-## Метрики {#metrics}
+## Метрики \\{#metrics\\}
 
 Кроме того, есть таблица `system.rocksdb`, содержащая статистику RocksDB:
 
@@ -72,7 +72,7 @@ FROM system.rocksdb
 └───────────────────────────┴───────┘
 ```
 
-## Конфигурация {#configuration}
+## Конфигурация \\{#configuration\\}
 
 Вы также можете изменить любые [параметры RocksDB](https://github.com/facebook/rocksdb/wiki/Option-String-and-Option-Map) с помощью конфигурации:
 
@@ -100,9 +100,9 @@ FROM system.rocksdb
 
 По умолчанию тривиальная оптимизация приблизительного подсчёта отключена, что может снизить производительность запросов `count()`. Чтобы включить эту оптимизацию, установите `optimize_trivial_approximate_count_query = 1`. Также этот параметр влияет на `system.tables` для движка EmbeddedRocksDB — включите его, чтобы увидеть приблизительные значения для `total_rows` и `total_bytes`.
 
-## Поддерживаемые операции {#supported-operations}
+## Поддерживаемые операции \\{#supported-operations\\}
 
-### Вставки {#inserts}
+### Вставки \\{#inserts\\}
 
 При вставке новых строк в `EmbeddedRocksDB`, если ключ уже существует, его значение обновляется, иначе создаётся новый ключ.
 
@@ -112,7 +112,7 @@ FROM system.rocksdb
 INSERT INTO test VALUES ('some key', 1, 'value', 3.2);
 ```
 
-### Удаление {#deletes}
+### Удаление \\{#deletes\\}
 
 Строки можно удалять с помощью запросов `DELETE` или `TRUNCATE`.
 
@@ -128,7 +128,7 @@ ALTER TABLE test DELETE WHERE key LIKE 'some%' AND v1 > 1;
 TRUNCATE TABLE test;
 ```
 
-### Обновления {#updates}
+### Обновления \\{#updates\\}
 
 Значения можно обновлять с помощью запроса `ALTER TABLE`. Первичный ключ нельзя изменять.
 
@@ -136,7 +136,7 @@ TRUNCATE TABLE test;
 ALTER TABLE test UPDATE v1 = v1 * 10 + 2 WHERE key LIKE 'some%' AND v3 > 3.1;
 ```
 
-### Соединения {#joins}
+### Соединения \\{#joins\\}
 
 Поддерживается специальный тип соединения `direct` с таблицами EmbeddedRocksDB.
 Такое прямое соединение позволяет избежать формирования хеш-таблицы в памяти и
@@ -155,9 +155,9 @@ SET join_algorithm = 'direct, hash'
 Когда параметр `join_algorithm` установлен в значение `direct, hash`, по возможности будут использоваться прямые соединения, а в остальных случаях — хеш-соединения.
 :::
 
-#### Пример {#example}
+#### Пример \\{#example\\}
 
-##### Создание и заполнение таблицы EmbeddedRocksDB {#create-and-populate-an-embeddedrocksdb-table}
+##### Создание и заполнение таблицы EmbeddedRocksDB \\{#create-and-populate-an-embeddedrocksdb-table\\}
 
 ```sql
 CREATE TABLE rdb
@@ -179,7 +179,7 @@ INSERT INTO rdb
     FROM numbers_mt(10);
 ```
 
-##### Создайте и заполните таблицу для объединения с таблицей `rdb` {#create-and-populate-a-table-to-join-with-table-rdb}
+##### Создайте и заполните таблицу для объединения с таблицей `rdb` \\{#create-and-populate-a-table-to-join-with-table-rdb\\}
 
 ```sql
 CREATE TABLE t2
@@ -194,13 +194,13 @@ INSERT INTO t2 SELECT number AS k
 FROM numbers_mt(10)
 ```
 
-##### Установите алгоритм соединения в значение `direct` {#set-the-join-algorithm-to-direct}
+##### Установите алгоритм соединения в значение `direct` \\{#set-the-join-algorithm-to-direct\\}
 
 ```sql
 SET join_algorithm = 'direct'
 ```
 
-##### Внутреннее соединение (INNER JOIN) {#an-inner-join}
+##### Внутреннее соединение (INNER JOIN) \\{#an-inner-join\\}
 
 ```sql
 SELECT *
@@ -225,7 +225,7 @@ ORDER BY key ASC
 └─────┴─────────┴────────┴────────┘
 ```
 
-### Подробнее о соединениях {#more-information-on-joins}
+### Подробнее о соединениях \\{#more-information-on-joins\\}
 
 * [настройка `join_algorithm`](/operations/settings/settings.md#join_algorithm)
 * [оператор JOIN](/sql-reference/statements/select/join.md)

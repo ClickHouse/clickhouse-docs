@@ -6,7 +6,7 @@ description: 'ClickHouse Cloud 中远程 MCP 功能的介绍'
 doc_type: 'reference'
 ---
 
-# Cloud 中的远程 MCP 服务器 {#remote-mcp-server-in-cloud}
+# Cloud 中的远程 MCP 服务器 \{#remote-mcp-server-in-cloud\}
 
 并非所有用户都通过 Cloud 控制台与 ClickHouse 进行交互。
 例如，许多开发者直接在自己偏好的代码编辑器、CLI agent 中工作，或者通过自定义方案连接数据库；而另一些人则主要依赖诸如 Anthropic Claude 这类通用 AI 助手来完成大部分探索工作。

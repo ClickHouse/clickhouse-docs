@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 import Image from '@theme/IdealImage';
 
-# 监控 {#monitoring}
+# 监控 \\{#monitoring\\}
 
 :::note
 本指南中介绍的监控数据可在 ClickHouse Cloud 中获取。除了可以通过下文所述的内置仪表板查看外，基础和高级性能指标也都可以直接在主服务控制台中查看。
@@ -22,7 +22,7 @@ import Image from '@theme/IdealImage';
 - 硬件资源使用率。
 - ClickHouse 服务器指标。
 
-## 内置高级可观测性仪表板 {#built-in-advanced-observability-dashboard}
+## 内置高级可观测性仪表板 \\{#built-in-advanced-observability-dashboard\\}
 
 <Image img="https://github.com/ClickHouse/ClickHouse/assets/3936029/2bd10011-4a47-4b94-b836-d44557c7fdc1" alt="屏幕截图 2023-11-12 6 08 58 PM" size="md" />
 
@@ -43,7 +43,7 @@ ClickHouse 提供内置的高级可观测性仪表板功能，可通过 `$HOST:$
 - MergeTree 数据片段总数
 - 每个分区的最大数据片段数
 
-## 资源使用情况 {#resource-utilization}
+## 资源使用情况 \\{#resource-utilization\\}
 
 ClickHouse 还会自行监控硬件资源的状态，例如：
 
@@ -52,7 +52,7 @@ ClickHouse 还会自行监控硬件资源的状态，例如：
 
 这些数据会被收集到 `system.asynchronous_metric_log` 表中。
 
-## ClickHouse 服务器指标 {#clickhouse-server-metrics}
+## ClickHouse 服务器指标 \\{#clickhouse-server-metrics\\}
 
 ClickHouse 服务器内置了用于自我状态监控的工具。
 

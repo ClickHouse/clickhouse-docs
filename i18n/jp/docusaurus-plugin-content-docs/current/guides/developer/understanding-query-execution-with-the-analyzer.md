@@ -14,7 +14,7 @@ import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
 
-# アナライザーを使用したクエリ実行の理解 {#understanding-query-execution-with-the-analyzer}
+# アナライザーを使用したクエリ実行の理解 \{#understanding-query-execution-with-the-analyzer\}
 
 ClickHouseはクエリを非常に高速に処理しますが、クエリの実行は単純な話ではありません。`SELECT`クエリがどのように実行されるかを理解してみましょう。これを説明するために、ClickHouseのテーブルにいくつかのデータを追加しましょう：
 
@@ -40,7 +40,7 @@ ClickHouseにデータがあるので、いくつかのクエリを実行して�
 
 クエリ実行中に動作する各エンティティを見てみましょう。いくつかのクエリを取り、`EXPLAIN`文を使用してそれらを検査します。
 
-## パーサー {#parser}
+## パーサー \\{#parser\\}
 
 パーサーの目標は、クエリテキストをAST（抽象構文木）に変換することです。このステップは`EXPLAIN AST`を使用して視覚化できます：
 
@@ -71,7 +71,7 @@ EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
 
 各ノードには対応する子があり、ツリー全体がクエリの全体構造を表します。これは、クエリを処理するのに役立つ論理構造です。エンドユーザーの観点から（クエリ実行に興味がある場合を除く）、それほど有用ではありません。このツールは主に開発者によって使用されます。
 
-## アナライザー {#analyzer}
+## アナライザー \\{#analyzer\\}
 
 ClickHouseには現在、アナライザーのための2つのアーキテクチャがあります。`enable_analyzer=0`を設定することで、古いアーキテクチャを使用できます。新しいアーキテクチャはデフォルトで有効になっています。新しいアナライザーが一般に利用可能になると、古いアーキテクチャは非推奨になる予定なので、ここでは新しいアーキテクチャのみを説明します。
 
@@ -128,7 +128,7 @@ EXPLAIN QUERY TREE passes=20 SELECT min(timestamp) AS minimum_date, max(timestam
 
 2つの実行の間で、エイリアスと射影の解決を確認できます。
 
-## プランナー {#planner}
+## プランナー \\{#planner\\}
 
 プランナーはクエリツリーを受け取り、それからクエリプランを構築します。クエリツリーは特定のクエリで何をしたいかを教えてくれ、クエリプランはそれをどのように行うかを教えてくれます。追加の最適化がクエリプランの一部として行われます。`EXPLAIN PLAN`または`EXPLAIN`を使用してクエリプランを確認できます（`EXPLAIN`は`EXPLAIN PLAN`を実行します）。
 
@@ -240,7 +240,7 @@ GROUP BY type
 
 これで、使用されているすべての入力、関数、エイリアス、データ型を確認できます。プランナーが適用する最適化のいくつかは[ここ](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h)で確認できます。
 
-## クエリパイプライン {#query-pipeline}
+## クエリパイプライン \\{#query-pipeline\\}
 
 クエリパイプラインはクエリプランから生成されます。クエリパイプラインはクエリプランと非常に似ていますが、違いは木ではなくグラフであることです。ClickHouseがクエリをどのように実行し、どのリソースが使用されるかを強調します。クエリパイプラインを分析することは、入出力の観点からボトルネックがどこにあるかを確認するのに非常に便利です。以前のクエリを取り、クエリパイプラインの実行を見てみましょう：
 
@@ -437,6 +437,6 @@ digraph
 
 つまり、エグゼキュータはデータ量が十分に多くなかったため、操作を並列化しないことを決定しました。より多くの行を追加することで、エグゼキュータはグラフに示されているように複数のスレッドを使用することを決定しました。
 
-## エグゼキュータ {#executor}
+## エグゼキュータ \\{#executor\\}
 
 最後に、クエリ実行の最後のステップはエグゼキュータによって行われます。クエリパイプラインを受け取り、それを実行します。`SELECT`、`INSERT`、または`INSERT SELECT`を実行しているかどうかによって、さまざまなタイプのエグゼキュータがあります。

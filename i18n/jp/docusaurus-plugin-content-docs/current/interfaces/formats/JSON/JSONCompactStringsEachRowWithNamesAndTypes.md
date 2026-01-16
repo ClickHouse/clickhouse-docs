@@ -10,13 +10,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 `JSONCompactEachRow` フォーマットとは異なり、[TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes) と同様に、列名と型を示す 2 行のヘッダー行も出力します。
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
-### データの挿入 {#inserting-data}
+### データの挿入 \\{#inserting-data\\}
 
 次のデータを含む JSON ファイルを `football.json` という名前で用意します：
 
@@ -48,7 +48,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactStringsEachRowWithNamesAndTypes;
 ```
 
-### データの読み込み {#reading-data}
+### データの読み込み \\{#reading-data\\}
 
 `JSONCompactStringsEachRowWithNamesAndTypes` 形式を使用してデータを読み込みます。
 
@@ -82,7 +82,7 @@ FORMAT JSONCompactStringsEachRowWithNamesAndTypes
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \\{#format-settings\\}
 
 :::note
 [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) の設定値が 1 の場合、

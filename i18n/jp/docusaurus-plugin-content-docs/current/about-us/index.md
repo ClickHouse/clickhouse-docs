@@ -6,7 +6,7 @@ doc_type: 'landing-page'
 keywords: ['ClickHouse について', '概要', '紹介']
 ---
 
-# About ClickHouse {#about-clickhouse}
+# About ClickHouse \\{#about-clickhouse\\}
 
 このドキュメントのこのセクションでは、ClickHouse に関する情報を紹介します。\
 このセクションに含まれるページの一覧は、以下の目次を参照してください。

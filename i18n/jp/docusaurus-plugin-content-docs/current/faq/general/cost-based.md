@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['CBE', 'optimizer']
 ---
 
-# ClickHouse はコストベースオプティマイザを持っていますか？ {#does-clickhouse-have-a-cost-based-optimizer}
+# ClickHouse はコストベースオプティマイザを持っていますか？ \\{#does-clickhouse-have-a-cost-based-optimizer\\}
 
 ClickHouse には、いくつかの限定的な形でコストベース最適化の仕組みがあります。たとえば、カラムの読み取り順序は、ディスクから圧縮されたデータ範囲を読み取るコストによって決定されます。
 

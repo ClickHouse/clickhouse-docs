@@ -23,7 +23,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/winI7256Ejk?si=TRThhzCJdq87xg_x" title="Проигрыватель видео YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \\{#prerequisites\\}
 
 Для выполнения этого руководства вам потребуется:
 
@@ -31,7 +31,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 - **[Helm](https://helm.sh/)** v3+
 - **`kubectl`**, настроенный для взаимодействия с кластером
 
-## Варианты развертывания {#deployment-options}
+## Варианты развертывания \\{#deployment-options\\}
 
 Вы можете следовать этому руководству, используя один из следующих вариантов развертывания:
 

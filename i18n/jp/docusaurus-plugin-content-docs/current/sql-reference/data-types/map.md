@@ -7,7 +7,7 @@ title: 'Map(K, V)'
 doc_type: 'reference'
 ---
 
-# Map(K, V) {#mapk-v}
+# Map(K, V) \{#mapk-v\}
 
 データ型 `Map(K, V)` はキーと値のペアを格納します。
 
@@ -66,7 +66,7 @@ SELECT m['key1'] FROM tab;
 ```
 
 
-## Tuple から Map への変換 {#converting-tuple-to-map}
+## Tuple から Map への変換 \{#converting-tuple-to-map\}
 
 `Tuple()` 型の値は、[CAST](/sql-reference/functions/type-conversion-functions#CAST) 関数を使用して `Map()` 型にキャストできます。
 
@@ -87,7 +87,7 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 ```
 
 
-## Map のサブカラムの読み取り {#reading-subcolumns-of-map}
+## Map のサブカラムの読み取り \{#reading-subcolumns-of-map\}
 
 Map 全体を読み出さずに済むように、場合によってはサブカラム `keys` と `values` を使用できます。
 
@@ -122,6 +122,6 @@ SELECT m.values FROM tab; -- same as mapValues(m)
 * [Map データ型用 -Map コンビネータ](../aggregate-functions/combinators.md#-map)
 
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \\{#related-content\\}
 
 - ブログ記事: [Building an Observability Solution with ClickHouse - Part 2 - Traces](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)

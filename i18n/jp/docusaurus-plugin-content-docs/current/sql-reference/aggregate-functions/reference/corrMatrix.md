@@ -5,7 +5,7 @@ title: 'corrMatrix'
 doc_type: 'reference'
 ---
 
-# corrMatrix {#corrmatrix}
+# corrMatrix \{#corrmatrix\}
 
 N 個の変数についての相関行列を計算します。
 

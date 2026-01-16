@@ -6,7 +6,7 @@ title: 'system.role_grants'
 doc_type: 'reference'
 ---
 
-# system.role&#95;grants {#systemrole&#95;grants}
+# system.role&#95;grants \\{#systemrole&#95;grants\\}
 
 包含用户和角色的角色授权信息。要向此表添加记录，请使用 `GRANT role TO user`。
 

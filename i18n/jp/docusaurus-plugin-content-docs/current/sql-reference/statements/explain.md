@@ -58,7 +58,7 @@ Union
                   ReadFromStorage (SystemNumbers)
 ```
 
-## EXPLAIN の種類 {#explain-types}
+## EXPLAIN の種類 \\{#explain-types\\}
 
 - `AST` — 抽象構文木 (Abstract Syntax Tree)。
 - `SYNTAX` — AST レベルの最適化後のクエリテキスト。
@@ -66,7 +66,7 @@ Union
 - `PLAN` — クエリ実行プラン。
 - `PIPELINE` — クエリ実行パイプライン。
 
-### EXPLAIN AST {#explain-ast}
+### EXPLAIN AST \\{#explain-ast\\}
 
 クエリの AST をダンプします。`SELECT` だけでなく、あらゆる種類のクエリをサポートします。
 
@@ -100,7 +100,7 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
         ExpressionList
 ```
 
-### EXPLAIN SYNTAX {#explain-syntax}
+### EXPLAIN SYNTAX \\{#explain-syntax\\}
 
 構文解析後のクエリの抽象構文木 (AST) を表示します。
 
@@ -144,7 +144,7 @@ ALL INNER JOIN system.numbers AS __table2 ON __table1.number = __table2.number
 ALL INNER JOIN system.numbers AS __table3 ON __table2.number = __table3.number
 ```
 
-### EXPLAIN QUERY TREE {#explain-query-tree}
+### EXPLAIN QUERY TREE \\{#explain-query-tree\\}
 
 Settings:
 
@@ -173,7 +173,7 @@ QUERY id: 0
     TABLE id: 3, table_name: default.test_table
 ```
 
-### EXPLAIN PLAN {#explain-plan}
+### EXPLAIN PLAN \\{#explain-plan\\}
 
 クエリプランのステップを出力します。
 
@@ -500,7 +500,7 @@ Expression ((Project names + Projection))
 
 どちらの例でも、クエリプランはローカルおよびリモートのステップを含む実行フロー全体を示します。
 
-### EXPLAIN PIPELINE {#explain-pipeline}
+### EXPLAIN PIPELINE \\{#explain-pipeline\\}
 
 設定:
 
@@ -532,7 +532,7 @@ ExpressionTransform
             NumbersRange × 2 0 → 1
 ```
 
-### EXPLAIN ESTIMATE {#explain-estimate}
+### EXPLAIN ESTIMATE \\{#explain-estimate\\}
 
 クエリを実行する際に、テーブルから読み取られる推定行数、マーク数、およびパーツ数を表示します。[MergeTree](/engines/table-engines/mergetree-family/mergetree) ファミリーのテーブルで利用できます。
 
@@ -560,7 +560,7 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 └──────────┴───────┴───────┴──────┴───────┘
 ```
 
-### EXPLAIN TABLE OVERRIDE {#explain-table-override}
+### EXPLAIN TABLE OVERRIDE \\{#explain-table-override\\}
 
 テーブル関数経由でアクセスされるテーブルスキーマに対して、テーブルオーバーライドを適用した結果を表示します。
 さらに検証も行い、オーバーライドによって何らかの不具合が発生する場合には例外をスローします。

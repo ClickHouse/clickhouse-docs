@@ -13,7 +13,7 @@ Superset 提供了[使用 Docker Compose 在本地安装 Superset](https://super
 以下命令需要在 GitHub 代码仓库 `superset` 的根目录下运行。
 :::
 
-## 官方 ClickHouse Connect 驱动程序 {#official-clickhouse-connect-driver}
+## 官方 ClickHouse Connect 驱动程序 \\{#official-clickhouse-connect-driver\\}
 
 要在 Superset 部署中启用 ClickHouse Connect 驱动程序，请将其添加到本地 requirements 文件中：
 
@@ -21,7 +21,7 @@ Superset 提供了[使用 Docker Compose 在本地安装 Superset](https://super
 echo "clickhouse-connect" >> ./docker/requirements-local.txt
 ```
 
-## Mapbox {#mapbox}
+## Mapbox \\{#mapbox\\}
 
 此步骤是可选的。你可以在不提供 Mapbox API 密钥的情况下在 Superset 中绘制地理位置信息，但你会看到一条提示信息，建议你添加密钥，而且地图的背景图像会缺失（你只能看到数据点，而看不到地图底图）。如果你想使用，Mapbox 提供了免费套餐。
 
@@ -33,7 +33,7 @@ echo "clickhouse-connect" >> ./docker/requirements-local.txt
 echo "MAPBOX_API_KEY=pk.SAMPLE-Use-your-key-instead" >> docker/.env-non-dev
 ```
 
-## 部署 Superset 2.0.0 版本 {#deploy-superset-version-200}
+## 部署 Superset 2.0.0 版本 \\{#deploy-superset-version-200\\}
 
 要部署 2.0.0 版本,请运行:
 

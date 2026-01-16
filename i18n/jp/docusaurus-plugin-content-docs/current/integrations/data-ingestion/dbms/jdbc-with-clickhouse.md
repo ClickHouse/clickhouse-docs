@@ -16,7 +16,7 @@ import Jdbc02 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-02
 import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03.png';
 
 
-# JDBC を使用して ClickHouse を外部データソースに接続する {#connecting-clickhouse-to-external-data-sources-with-jdbc}
+# JDBC を使用して ClickHouse を外部データソースに接続する \\{#connecting-clickhouse-to-external-data-sources-with-jdbc\\}
 
 :::note
 JDBC を使用するには ClickHouse JDBC Bridge が必要なため、ローカルマシン上で `clickhouse-local` を使用して、データベースから ClickHouse Cloud へデータをストリーミングする必要があります。詳細については、ドキュメントの **Migrate** セクションにある [**Using clickhouse-local**](/cloud/migration/clickhouse-local#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge) ページを参照してください。
@@ -44,7 +44,7 @@ ClickHouse JDBC Bridge は、読み取りと書き込みの両方に使用でき
 5. 最新バージョンの **ClickHouse** が [インストール](/getting-started/install/install.mdx) され、稼働している
 :::
 
-## ClickHouse JDBC Bridge をローカルにインストールする {#install-the-clickhouse-jdbc-bridge-locally}
+## ClickHouse JDBC Bridge をローカルにインストールする \{#install-the-clickhouse-jdbc-bridge-locally\}
 
 ClickHouse JDBC Bridge を使用する最も簡単な方法は、ClickHouse が動作しているのと同じホスト上にインストールして実行することです。<Image img={Jdbc02} size="lg" alt="ClickHouse JDBC Bridge をローカルにデプロイした構成図" background="white" />
 
@@ -107,7 +107,7 @@ ClickHouse JDBC Bridge をフォアグラウンドモードで起動しました
 :::
 
 
-## ClickHouse 内から JDBC 接続を使用する {#use-the-jdbc-connection-from-within-clickhouse}
+## ClickHouse 内から JDBC 接続を使用する \{#use-the-jdbc-connection-from-within-clickhouse\}
 
 ClickHouse は、[jdbc テーブル関数](/sql-reference/table-functions/jdbc.md) または [JDBC テーブルエンジン](/engines/table-engines/integrations/jdbc.md) を使用して、MySQL のデータにアクセスできます。
 
@@ -142,7 +142,7 @@ ClickHouse JDBC エンジンテーブルのスキーマと、接続されてい�
 :::
 
 
-## ClickHouse JDBC Bridge を外部にインストールする {#install-the-clickhouse-jdbc-bridge-externally}
+## ClickHouse JDBC Bridge を外部にインストールする \\{#install-the-clickhouse-jdbc-bridge-externally\\}
 
 分散 ClickHouse クラスター（複数の ClickHouse ホストを持つクラスター）の場合、ClickHouse JDBC Bridge を専用ホスト上にインストールして外部で実行するのが適切です。
 

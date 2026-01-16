@@ -11,7 +11,7 @@ import TableOfContentsBestPractices from '@site/i18n/zh/docusaurus-plugin-conten
 import TableOfContentsOptimizationAndPerformance from '@site/i18n/zh/docusaurus-plugin-content-docs/current/guides/best-practices/_snippets/_performance_optimizations_table_of_contents.md';
 import TableOfContentsSecurity from '@site/i18n/zh/docusaurus-plugin-content-docs/current/cloud/_snippets/_security_table_of_contents.md';
 
-# 资源导览 {#resource-tour}
+# 资源导览 \\{#resource-tour\\}
 
 本文旨在为您概述文档中可用的资源，帮助您充分发挥 ClickHouse Cloud 部署的价值。
 您可以按以下主题浏览资源：
@@ -26,11 +26,11 @@ ClickHouse 通用最佳实践指南开始，这些指南涵盖了使用 ClickHou
 
 <TableOfContentsBestPractices />
 
-## 查询优化技术及性能调优 {#query-optimization}
+## 查询优化技术及性能调优 \\{#query-optimization\\}
 
 <TableOfContentsOptimizationAndPerformance/>
 
-## 监控 {#monitoring}
+## 监控 \\{#monitoring\\}
 
 | 页面                                                                       | 描述                                                                               |
 |----------------------------------------------------------------------------|------------------------------------------------------------------------------------|
@@ -38,11 +38,11 @@ ClickHouse 通用最佳实践指南开始，这些指南涵盖了使用 ClickHou
 | [Prometheus 集成](/integrations/prometheus)                                | 使用 Prometheus 监控云服务                                                         |
 | [云监控功能](/use-cases/observability/cloud-monitoring)                   | 概览内置监控功能以及可用的集成选项                                                 |
 
-## 安全性 {#security}
+## 安全性 \\{#security\\}
 
 <TableOfContentsSecurity/>
 
-## 成本优化与计费 {#cost-optimization}
+## 成本优化与计费 \\{#cost-optimization\\}
 
 | 页面                                                | 说明                                                                                                      |
 |-----------------------------------------------------|-----------------------------------------------------------------------------------------------------------|

@@ -7,13 +7,13 @@ sidebar_label: 'avgIf'
 doc_type: 'reference'
 ---
 
-# avgIf {#avgif}
+# avgIf \\{#avgif\\}
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、[`avg`](/sql-reference/aggregate-functions/reference/avg) 関数に適用することで、`avgIf` 集約コンビネータ関数を使い、条件が真である行の値の算術平均を計算できます。
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
 この例では、成功フラグを含む売上データを格納するテーブルを作成し、
 `avgIf` を使用して、成功したトランザクションの平均売上額を計算します。
@@ -47,6 +47,6 @@ FROM sales;
    └─────────────────────┘
 ```
 
-## 関連項目 {#see-also}
+## 関連項目 \\{#see-also\\}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

@@ -18,7 +18,7 @@ import csv_09 from '@site/static/images/cloud/migrate/csv_09.png';
 import csv_10 from '@site/static/images/cloud/migrate/csv_10.png';
 
 
-# 将文件上传到 Cloud {#upload-files-to-cloud}
+# 将文件上传到 Cloud \{#upload-files-to-cloud\}
 
 ClickHouse Cloud 提供了便捷的文件导入方式，并支持以下格式：
 
@@ -34,7 +34,7 @@ ClickHouse Cloud 提供了便捷的文件导入方式，并支持以下格式：
 
 <VerticalStepper headerLevel="h2">
 
-## 上传文件 {#upload-file}
+## 上传文件 \\{#upload-file\\}
 
 在 Cloud 主页中，选择你的服务，如下所示：
 
@@ -54,7 +54,7 @@ ClickHouse Cloud 提供了便捷的文件导入方式，并支持以下格式：
 
 <Image img={csv_04} alt="upload_file_05" />
 
-## 配置表 {#configure-table}
+## 配置表 \\{#configure-table\\}
 
 文件上传完成后，你将能够配置要插入数据的目标表。界面会显示包含前三行数据的表预览。
 

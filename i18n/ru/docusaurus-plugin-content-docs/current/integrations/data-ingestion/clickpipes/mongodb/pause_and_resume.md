@@ -19,7 +19,7 @@ import resume_dialog from '@site/static/images/integrations/data-ingestion/click
 
 Существуют сценарии, когда полезно приостановить MongoDB ClickPipe. Например, вам может понадобиться проанализировать имеющиеся данные в неизменном виде. Или вы можете выполнять обновления MongoDB. Ниже описано, как можно приостановить и возобновить работу MongoDB ClickPipe.
 
-## Как приостановить MongoDB ClickPipe {#pause-clickpipe-steps}
+## Как приостановить MongoDB ClickPipe \\{#pause-clickpipe-steps\\}
 
 1. На вкладке Data Sources выберите MongoDB ClickPipe, который вы хотите приостановить.
 2. Перейдите на вкладку **Settings**.
@@ -36,7 +36,7 @@ import resume_dialog from '@site/static/images/integrations/data-ingestion/click
 
 <Image img={pause_status} border size="md"/>
 
-## Шаги по возобновлению работы MongoDB ClickPipe {#resume-clickpipe-steps}
+## Шаги по возобновлению работы MongoDB ClickPipe \\{#resume-clickpipe-steps\\}
 
 1. На вкладке **Data Sources** нажмите на MongoDB ClickPipe, который нужно возобновить. Статус зеркала изначально должен быть **Paused**.
 2. Перейдите на вкладку **Settings**.

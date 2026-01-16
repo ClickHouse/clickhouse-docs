@@ -15,7 +15,7 @@ import dynamodb_s3_export from '@site/static/images/integrations/data-ingestion/
 import dynamodb_map_columns from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-map-columns.png';
 import Image from '@theme/IdealImage';
 
-# CDC из DynamoDB в ClickHouse {#cdc-from-dynamodb-to-clickhouse}
+# CDC из DynamoDB в ClickHouse \\{#cdc-from-dynamodb-to-clickhouse\\}
 
 На этой странице описано, как настроить CDC из DynamoDB в ClickHouse с использованием ClickPipes. Эта интеграция состоит из двух компонентов:
 
@@ -27,23 +27,23 @@ import Image from '@theme/IdealImage';
 * [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 1](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1?loc=docs-rockest-migrations)
 * [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 2](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-2?loc=docs-rockest-migrations)
 
-## 1. Настройте поток Kinesis {#1-set-up-kinesis-stream}
+## 1. Настройте поток Kinesis \\{#1-set-up-kinesis-stream\\}
 
 Сначала необходимо включить поток Kinesis для таблицы DynamoDB, чтобы фиксировать изменения в режиме реального времени. Делайте это до создания снимка, чтобы не пропустить ни одних данных.
 Подробности см. в руководстве AWS [здесь](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/kds.html).
 
 <Image img={dynamodb_kinesis_stream} size="lg" alt="Поток DynamoDB Kinesis" border/>
 
-## 2. Создайте снимок {#2-create-the-snapshot}
+## 2. Создайте снимок \\{#2-create-the-snapshot\\}
 
 Далее мы создадим снимок таблицы DynamoDB. Это можно сделать, выполнив экспорт AWS в S3. Руководство AWS находится [здесь](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html).
 **Необходимо выполнить полную выгрузку («Full export») в формате DynamoDB JSON.**
 
 <Image img={dynamodb_s3_export} size="md" alt="Экспорт DynamoDB в S3" border/>
 
-## 3. Загрузите снимок в ClickHouse {#3-load-the-snapshot-into-clickhouse}
+## 3. Загрузите снимок в ClickHouse \\{#3-load-the-snapshot-into-clickhouse\\}
 
-### Создайте необходимые таблицы {#create-necessary-tables}
+### Создайте необходимые таблицы \\{#create-necessary-tables\\}
 
 Данные снимка из DynamoDB будут выглядеть примерно так:
 
@@ -106,7 +106,7 @@ ORDER BY id;
 * Таблица должна использовать ключ партиционирования в качестве ключа сортировки (задается через `ORDER BY`)
   * Строки с одним и тем же ключом сортировки будут дедуплироваться на основе столбца `version`.
 
-### Создайте ClickPipe для снимка {#create-the-snapshot-clickpipe}
+### Создайте ClickPipe для снимка \\{#create-the-snapshot-clickpipe\\}
 
 Теперь вы можете создать ClickPipe для загрузки данных снимка из S3 в ClickHouse. Следуйте руководству по S3 ClickPipe [здесь](/integrations/clickpipes/object-storage/s3/overview), но используйте следующие настройки:
 
@@ -121,7 +121,7 @@ https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 
 После создания данные начнут поступать в таблицу snapshot и целевую таблицу. Вам не нужно дожидаться завершения загрузки snapshot, чтобы переходить к следующему шагу.
 
-## 4. Создание Kinesis ClickPipe {#4-create-the-kinesis-clickpipe}
+## 4. Создание Kinesis ClickPipe \\{#4-create-the-kinesis-clickpipe\\}
 
 Теперь мы можем настроить Kinesis ClickPipe для фиксации изменений в реальном времени из потока Kinesis. Следуйте руководству по Kinesis ClickPipe [здесь](/integrations/data-ingestion/clickpipes/kinesis.md), при этом используйте следующие настройки:
 
@@ -134,7 +134,7 @@ https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 
 <Image img={dynamodb_map_columns} size="md" alt="Сопоставление столбцов DynamoDB" border/>
 
-## 5. Очистка (необязательно) {#5-cleanup-optional}
+## 5. Очистка (необязательно) \\{#5-cleanup-optional\\}
 
 После завершения snapshot ClickPipe вы можете удалить snapshot-таблицу и materialized view.
 

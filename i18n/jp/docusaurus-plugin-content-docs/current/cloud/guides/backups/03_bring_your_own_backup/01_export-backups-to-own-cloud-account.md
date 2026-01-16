@@ -20,11 +20,11 @@ ClickHouse Cloud では、お客様のクラウドサービスプロバイダ (C
 :::
 
 
-## 前提条件 {#requirements}
+## 前提条件 \\{#requirements\\}
 
 ご利用の CSP ストレージバケットにバックアップをエクスポート／リストアするには、次の情報が必要です。
 
-### AWS {#aws}
+### AWS \{#aws\}
 
 1. AWS S3 エンドポイント（形式）:
 
@@ -50,13 +50,13 @@ Where:
 :::
 
 
-### Azure {#azure}
+### Azure \\{#azure\\}
 
 1. Azure Storage の接続文字列。
 2. ストレージアカウント内の Azure コンテナー名。
 3. コンテナー内の Azure Blob 名。
 
-### Google Cloud Storage (GCS) {#google-cloud-storage-gcs}
+### Google Cloud Storage (GCS) \\{#google-cloud-storage-gcs\\}
 
 1. GCS エンドポイント（形式）：
 
@@ -67,11 +67,11 @@ Where:
 
 <hr/>
 
-# バックアップ / 復元 {#backup-restore}
+# バックアップ / 復元 \{#backup-restore\}
 
-## AWS S3 バケットへのバックアップ / 復元 {#backup--restore-to-aws-s3-bucket}
+## AWS S3 バケットへのバックアップ / 復元 \\{#backup--restore-to-aws-s3-bucket\\}
 
-### データベースのバックアップを作成する {#take-a-db-backup}
+### データベースのバックアップを作成する \{#take-a-db-backup\}
 
 **フルバックアップ**
 
@@ -96,7 +96,7 @@ SETTINGS base_backup = S3('https://testchbackups.s3.amazonaws.com/backups/<base-
 ```
 
 
-### バックアップから復元する {#restore-from-a-backup}
+### バックアップから復元する \{#restore-from-a-backup\}
 
 ```sql
 RESTORE DATABASE test_backups 
@@ -107,9 +107,9 @@ FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<k
 詳細については、[S3 エンドポイントを使用するように BACKUP/RESTORE を設定する](/operations/backup/s3_endpoint) を参照してください。
 
 
-## Azure Blob Storage へのバックアップ / リストア {#backup--restore-to-azure-blob-storage}
+## Azure Blob Storage へのバックアップ / リストア \\{#backup--restore-to-azure-blob-storage\\}
 
-### DB のバックアップを取得する {#take-a-db-backup-1}
+### DB のバックアップを取得する \{#take-a-db-backup-1\}
 
 **フルバックアップ**
 
@@ -129,7 +129,7 @@ SETTINGS base_backup = AzureBlobStorage('<AzureBlobStorage endpoint connection s
 ```
 
 
-### バックアップから復元する {#restore-from-a-backup-1}
+### バックアップから復元する \{#restore-from-a-backup-1\}
 
 ```sql
 RESTORE DATABASE test_backups 
@@ -140,9 +140,9 @@ FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<contain
 詳細については、[AzureBlobStorage エンドポイントを使用するように BACKUP/RESTORE を構成する](/operations/backup/azure#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) を参照してください。
 
 
-## Google Cloud Storage (GCS) へのバックアップ / 復元 {#backup--restore-to-google-cloud-storage-gcs}
+## Google Cloud Storage (GCS) へのバックアップ / 復元 \\{#backup--restore-to-google-cloud-storage-gcs\\}
 
-### DB バックアップの取得 {#take-a-db-backup-2}
+### DB バックアップの取得 \{#take-a-db-backup-2\}
 
 **フルバックアップ**
 
@@ -162,7 +162,7 @@ SETTINGS base_backup = S3('https://storage.googleapis.com/test_gcs_backups/<uuid
 ```
 
 
-### バックアップから復元する {#restore-from-a-backup-2}
+### バックアップから復元する \{#restore-from-a-backup-2\}
 
 ```sql
 RESTORE DATABASE test_backups 

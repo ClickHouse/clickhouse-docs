@@ -13,7 +13,7 @@ doc_type: 'reference'
 |------|------|-------------------|
 | ✔    | ✔    | `TSVRaw`, `Raw`   |
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 本格式与 [`TabSeparated`](/interfaces/formats/TabSeparated) 格式的不同之处在于，写入行时不会进行转义。
 
@@ -23,9 +23,9 @@ doc_type: 'reference'
 
 关于 `TabSeparatedRaw` 格式与 `RawBlob` 格式的比较，请参见：[原始格式比较](../RawBLOB.md/#raw-formats-comparison)
 
-## 示例用法 {#example-usage}
+## 示例用法 \\{#example-usage\\}
 
-### 插入数据 {#inserting-data}
+### 插入数据 \\{#inserting-data\\}
 
 使用以下名为 `football.tsv` 的 TSV 文件：
 
@@ -55,7 +55,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRaw;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据 \\{#reading-data\\}
 
 使用 `TabSeparatedRaw` 格式来读取数据：
 
@@ -87,4 +87,4 @@ FORMAT TabSeparatedRaw
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-## 格式配置 {#format-settings}
+## 格式配置 \\{#format-settings\\}

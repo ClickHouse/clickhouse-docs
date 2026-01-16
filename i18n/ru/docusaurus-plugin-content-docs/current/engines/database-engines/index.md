@@ -8,7 +8,7 @@ title: 'Движки баз данных'
 doc_type: 'landing-page'
 ---
 
-# Движки баз данных {#database-engines}
+# Движки баз данных \\{#database-engines\\}
 
 Движки баз данных позволяют работать с таблицами. По умолчанию ClickHouse использует движок базы данных [Atomic](../../engines/database-engines/atomic.md), который предоставляет настраиваемые [движки таблиц](../../engines/table-engines/index.md) и [диалект SQL](../../sql-reference/syntax.md).
 

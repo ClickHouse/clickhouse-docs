@@ -7,7 +7,7 @@ title: 'ALTER TABLE ... UPDATE 文'
 doc_type: 'reference'
 ---
 
-# ALTER TABLE ... UPDATE 文 {#alter-table-update-statements}
+# ALTER TABLE ... UPDATE 文 \\{#alter-table-update-statements\\}
 
 ```sql
 ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN PARTITION partition_id] WHERE filter_expr
@@ -31,6 +31,6 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN P
 * [ALTER クエリの同期性](/sql-reference/statements/alter/index.md#synchronicity-of-alter-queries)
 * [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync) 設定
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \\{#related-content\\}
 
 - ブログ記事: [Handling Updates and Deletes in ClickHouse](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

@@ -8,7 +8,7 @@ show_related_blogs: true
 doc_type: 'reference'
 ---
 
-# 日期和时间数据类型 {#date-and-time-data-types}
+# 日期和时间数据类型 \{#date-and-time-data-types\}
 
 要有效管理时间序列数据，需要一套完整的日期和时间类型，而 ClickHouse 正好提供了这一点。
 从紧凑的日期表示到具有纳秒精度的高精度时间戳，这些类型在存储效率与不同时间序列应用的实际需求之间取得了平衡。
@@ -68,7 +68,7 @@ very_precise_datetime: 2025-03-12 11:39:07.196724000
 ```
 
 
-## Time 和 Time64 类型 {#time-series-time-types}
+## Time 和 Time64 类型 \\{#time-series-time-types\\}
 
 对于需要存储不带日期组件的“时间（time-of-day）”值的场景，ClickHouse 提供了 [`Time`](/sql-reference/data-types/time) 和 [`Time64`](/sql-reference/data-types/time64) 类型，它们是在 25.6 版本中引入的。它们适用于表示重复日程、每日模式，或在逻辑上需要将日期与时间组件分离的情况。
 
@@ -125,7 +125,7 @@ SELECT * FROM time_examples WHERE basic_time = '14:30:25';
 ```
 
 
-## 时区 {#time-series-timezones}
+## 时区 \\{#time-series-timezones\\}
 
 许多使用场景需要同时存储时区信息。我们可以将时区设置为 `DateTime` 或 `DateTime64` 类型的最后一个参数：
 
@@ -192,7 +192,7 @@ dt64_2: 2022-12-12 12:13:15.123456789
 与第一行相同，`dt_1` 和 `dt64_1` 被转换为 `Europe/Berlin`，而 `dt_2` 和 `dt64_2` 使用服务器的本地时区。
 
 
-## 日期和时间函数 {#time-series-date-time-functions}
+## 日期和时间函数 \{#time-series-date-time-functions\}
 
 ClickHouse 还提供了一组函数，用于在不同数据类型之间相互转换。
 

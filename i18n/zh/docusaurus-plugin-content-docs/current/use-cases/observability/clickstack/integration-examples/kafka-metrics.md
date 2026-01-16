@@ -17,7 +17,7 @@ import finish_import from '@site/static/images/clickstack/kafka/import-kafka-das
 import example_dashboard from '@site/static/images/clickstack/kafka/kafka-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# 使用 ClickStack 监控 Kafka 指标 {#kafka-metrics-clickstack}
+# 使用 ClickStack 监控 Kafka 指标 \\{#kafka-metrics-clickstack\\}
 
 :::note[TL;DR]
 本指南介绍如何使用 OpenTelemetry JMX Metric Gatherer 搭配 ClickStack 来监控 Apache Kafka 性能指标。您将了解如何：
@@ -31,13 +31,13 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 预计耗时：10–15 分钟
 :::
 
-## 集成现有 Kafka 部署 {#existing-kafka}
+## 集成现有 Kafka 部署 \\{#existing-kafka\\}
 
 通过运行 OpenTelemetry JMX Metric Gatherer 容器以收集指标，并通过 OTLP 将其发送到 ClickStack，从而监控现有的 Kafka 部署。
 
 如果希望在不修改现有环境的情况下优先测试此集成，请跳转到[演示数据集章节](#demo-dataset)。
 
-##### 先决条件 {#prerequisites}
+##### 先决条件 \\{#prerequisites\\}
 
 - 正在运行的 ClickStack 实例
 - 已启用 JMX 的现有 Kafka 部署（版本 2.0 或更高）
@@ -215,7 +215,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### 下载示例指标数据集 {#download-sample}
+#### 下载示例指标数据集 \\{#download-sample\\}
 
 下载预生成的指标文件（包含 29 小时、具备真实流量模式的 Kafka 指标）：
 ```bash
@@ -235,7 +235,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - **18:45：consumer 重新平衡** - 重新平衡期间 lag 激增 6 倍
 - **20:00-22:00：夜间回落** - 流量急剧下降至夜间水平
 
-#### 启动 ClickStack {#start-clickstack}
+#### 启动 ClickStack \\{#start-clickstack\\}
 
 启动一个 ClickStack 实例：
 ```bash
@@ -244,7 +244,7 @@ docker run -d --name clickstack-demo \
   clickhouse/clickstack-all-in-one:latest
 ```
 
-#### 将指标加载到 ClickStack 中 {#load-metrics}
+#### 将指标加载到 ClickStack 中 \\{#load-metrics\\}
 
 将指标直接加载到 ClickHouse：
 ```bash
@@ -257,7 +257,7 @@ cat kafka-metrics-sum.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
 
-#### 在 HyperDX 中验证指标 {#verify-demo-metrics}
+#### 在 HyperDX 中验证指标 \\{#verify-demo-metrics\\}
 
 加载完成后，查看指标的最快方式是使用预构建的仪表板。
 
@@ -269,15 +269,15 @@ HyperDX 会以浏览器本地时区显示时间戳。演示数据的时间范围
 
 </VerticalStepper>
 
-## 仪表盘与可视化 {#dashboards}
+## 仪表盘与可视化 \\{#dashboards\\}
 
 为了帮助你开始使用 ClickStack 监控 Kafka，我们提供了 Kafka 指标的关键可视化图表。
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/kafka-metrics-dashboard.json')} download="kafka-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">下载</TrackedLink> 仪表盘配置 {#download}
+#### <TrackedLink href={useBaseUrl('/examples/kafka-metrics-dashboard.json')} download="kafka-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">下载</TrackedLink> 仪表盘配置 \\{#download\\}
 
-#### 导入预构建的仪表盘 {#import-dashboard}
+#### 导入预构建的仪表盘 \\{#import-dashboard\\}
 
 1. 打开 HyperDX 并导航到 Dashboards 页面
 2. 点击右上角省略号下的 **Import Dashboard**
@@ -288,7 +288,7 @@ HyperDX 会以浏览器本地时区显示时间戳。演示数据的时间范围
 
 <Image img={finish_import} alt="完成导入对话框"/>
 
-#### 查看仪表盘 {#created-dashboard}
+#### 查看仪表盘 \\{#created-dashboard\\}
 
 仪表盘会被创建好，并预先配置好所有可视化组件：
 
@@ -348,7 +348,7 @@ docker exec kafka bash -c "unset JMX_PORT && kafka-topics --create --topic test-
 echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset JMX_PORT && kafka-console-producer --topic test-topic --bootstrap-server kafka:9092"
 ```
 
-#### 身份验证错误 {#created-dashboard}
+#### 身份验证错误 \\{#created-dashboard\\}
 
 如果您看到 `Authorization failed` 或 `401 Unauthorized`：
 
@@ -361,7 +361,7 @@ docker compose down
 docker compose up -d
 ```
 
-#### 使用 Kafka 客户端命令时端口冲突 {#import-dashboard}
+#### 使用 Kafka 客户端命令时端口冲突 \{#import-dashboard\}
 
 在 Kafka 容器内运行 Kafka 命令时，你可能会看到：
 
@@ -375,7 +375,7 @@ docker compose up -d
 docker exec kafka bash -c "unset JMX_PORT && kafka-topics --list --bootstrap-server kafka:9092"
 ```
 
-#### 网络连接问题 {#no-metrics}
+#### 网络连接问题 \\{#no-metrics\\}
 
 如果 JMX 导出器的日志显示 `Connection refused`：
 
@@ -393,7 +393,7 @@ docker network inspect <网络名称>
 docker exec <jmx-exporter-container> sh -c "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/clickstack/4318' && echo 'Connected' || echo 'Failed'"
 ```
 
-## 进入生产环境 {#going-to-production}
+## 进入生产环境 \\{#going-to-production\\}
 
 本指南将指标直接从 JMX Metric Gatherer 发送到 ClickStack 的 OTLP 端点，这种方式适用于测试和小规模部署。
 

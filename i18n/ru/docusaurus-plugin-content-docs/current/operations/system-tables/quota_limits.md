@@ -6,7 +6,7 @@ title: 'system.quota_limits'
 doc_type: 'reference'
 ---
 
-# system.quota&#95;limits {#systemquota&#95;limits}
+# system.quota&#95;limits \\{#systemquota&#95;limits\\}
 
 Содержит информацию о максимальных значениях для всех интервалов всех квот. Одной квоте может соответствовать любое количество строк или ни одной.
 

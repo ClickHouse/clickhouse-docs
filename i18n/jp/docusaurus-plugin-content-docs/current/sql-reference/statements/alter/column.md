@@ -33,7 +33,7 @@ ALTER [TEMPORARY] TABLE [db].name [ON CLUSTER cluster] ADD|DROP|RENAME|CLEAR|COM
 
 これらのアクションについては、以下で詳しく説明します。
 
-## ADD COLUMN（列を追加） {#add-column}
+## ADD COLUMN（列を追加） \\{#add-column\\}
 
 ```sql
 ADD COLUMN [IF NOT EXISTS] name [type] [default_expr] [codec] [AFTER name_after | FIRST]
@@ -69,7 +69,7 @@ ToDrop  UInt32
 Added3  UInt32
 ```
 
-## DROP COLUMN {#drop-column}
+## DROP COLUMN \\{#drop-column\\}
 
 ```sql
 DROP COLUMN [IF EXISTS] name
@@ -89,7 +89,7 @@ DROP COLUMN [IF EXISTS] name
 ALTER TABLE visits DROP COLUMN browser
 ```
 
-## 列名を変更する {#rename-column}
+## 列名を変更する \\{#rename-column\\}
 
 ```sql
 RENAME COLUMN [IF EXISTS] name to new_name
@@ -105,7 +105,7 @@ RENAME COLUMN [IF EXISTS] name to new_name
 ALTER TABLE visits RENAME COLUMN webBrowser TO browser
 ```
 
-## CLEAR COLUMN {#clear-column}
+## CLEAR COLUMN \\{#clear-column\\}
 
 ```sql
 CLEAR COLUMN [IF EXISTS] name IN PARTITION partition_name
@@ -121,7 +121,7 @@ CLEAR COLUMN [IF EXISTS] name IN PARTITION partition_name
 ALTER TABLE visits CLEAR COLUMN browser IN PARTITION tuple()
 ```
 
-## COMMENT 列 {#comment-column}
+## COMMENT 列 \\{#comment-column\\}
 
 ```sql
 COMMENT COLUMN [IF EXISTS] name 'Text comment'
@@ -139,7 +139,7 @@ COMMENT COLUMN [IF EXISTS] name 'Text comment'
 ALTER TABLE visits COMMENT COLUMN browser 'This column shows the browser used for accessing the site.'
 ```
 
-## MODIFY COLUMN {#modify-column}
+## MODIFY COLUMN \\{#modify-column\\}
 
 ```sql
 MODIFY COLUMN [IF EXISTS] name [type] [default_expr] [codec] [TTL] [settings] [AFTER name_after | FIRST]
@@ -218,7 +218,7 @@ DESCRIBE users;
 `Nullable` カラムを `Non-Nullable` に変更する際は注意してください。カラム内に `NULL` 値が含まれていないことを必ず確認してください。そうでない場合、そのカラムから読み込む際に問題が発生します。その場合の回避策としては、`KILL MUTATION` を実行して mutation を停止し、カラムを `Nullable` 型に戻してください。
 :::
 
-## MODIFY COLUMN REMOVE {#modify-column-remove}
+## MODIFY COLUMN REMOVE \\{#modify-column-remove\\}
 
 次の列プロパティのいずれかを削除します: `DEFAULT`, `ALIAS`, `MATERIALIZED`, `CODEC`, `COMMENT`, `TTL`, `SETTINGS`。
 
@@ -240,7 +240,7 @@ ALTER TABLE table_with_ttl MODIFY COLUMN column_ttl REMOVE TTL;
 
 * [REMOVE TTL](ttl.md)
 
-## MODIFY COLUMN MODIFY SETTING — 列設定の変更 {#modify-column-modify-setting}
+## MODIFY COLUMN MODIFY SETTING — 列設定の変更 \\{#modify-column-modify-setting\\}
 
 列の設定を変更します。
 
@@ -258,7 +258,7 @@ ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING name=value,...;
 ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING max_compress_block_size = 1048576;
 ```
 
-## MODIFY COLUMN RESET SETTING {#modify-column-reset-setting}
+## MODIFY COLUMN RESET SETTING \\{#modify-column-reset-setting\\}
 
 列の設定をリセットします。また、テーブルの CREATE クエリ内の列式から、その設定の宣言も削除します。
 
@@ -276,7 +276,7 @@ ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING name,...;
 ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING max_compress_block_size;
 ```
 
-## MATERIALIZE COLUMN {#materialize-column}
+## MATERIALIZE COLUMN \\{#materialize-column\\}
 
 `DEFAULT` または `MATERIALIZED` の値式を持つカラムをマテリアライズします。`ALTER TABLE table_name ADD COLUMN column_name MATERIALIZED` を使用してマテリアライズされたカラムを追加する場合、マテリアライズされた値を持たない既存の行は自動的には埋められません。`MATERIALIZE COLUMN` 文は、`DEFAULT` または `MATERIALIZED` の式が追加または更新された後（この操作はメタデータのみを更新し、既存データは変更しない）、既存のカラムデータを書き換えるために使用できます。ソートキー内のカラムをマテリアライズすることは、ソート順を破壊しうるため無効な操作である点に注意してください。
 [mutation](/sql-reference/statements/alter/index.md#mutations) として実装されています。
@@ -336,7 +336,7 @@ SELECT groupArray(x), groupArray(s) FROM tmp;
 
 * [MATERIALIZED](/sql-reference/statements/create/view#materialized-view)
 
-## 制限事項 {#limitations}
+## 制限事項 \\{#limitations\\}
 
 `ALTER` クエリでは、ネストされたデータ構造内の個々の要素（カラム）の作成および削除はできますが、ネストされたデータ構造全体の作成や削除はできません。ネストされたデータ構造を追加するには、`name.nested_name` のような名前と型 `Array(T)` を持つカラムを追加します。ネストされたデータ構造は、「ドットの前のプレフィックスが同じ名前」を持つ複数の配列カラムと同等です。
 

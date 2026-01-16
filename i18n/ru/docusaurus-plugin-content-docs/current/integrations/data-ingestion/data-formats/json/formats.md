@@ -7,7 +7,7 @@ keywords: ['json', 'formats', 'json formats']
 doc_type: 'guide'
 ---
 
-# Обработка других форматов JSON {#handling-other-json-formats}
+# Обработка других форматов JSON \{#handling-other-json-formats\}
 
 В предыдущих примерах загрузки данных в формате JSON предполагается использование формата [`JSONEachRow`](/interfaces/formats/JSONEachRow) (`NDJSON`). Этот формат считывает ключи в каждой строке JSON как названия столбцов. Например:
 
@@ -31,7 +31,7 @@ LIMIT 5
 
 Ниже мы приводим примеры чтения и загрузки JSON в других распространённых форматах.
 
-## Чтение JSON как объекта {#reading-json-as-an-object}
+## Чтение JSON как объекта \{#reading-json-as-an-object\}
 
 Наши предыдущие примеры показывают, как `JSONEachRow` читает JSON, в котором каждая запись находится на отдельной строке: каждая строка интерпретируется как отдельный объект, сопоставляемый со строкой таблицы, а каждый ключ — со столбцом. Это идеально подходит для случаев, когда структура JSON предсказуема и для каждого столбца используется один тип.
 
@@ -111,7 +111,7 @@ FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.j
 1 row in set. Elapsed: 0.480 sec. Processed 1.00 million rows, 256.00 B (2.08 million rows/s., 533.76 B/s.)
 ```
 
-## Массив JSON-объектов {#array-of-json-objects}
+## Массив JSON-объектов \{#array-of-json-objects\}
 
 Одна из самых распространённых форм представления данных в JSON — это список JSON-объектов в JSON-массиве, как в [этом примере](../assets/list.json):
 
@@ -168,7 +168,7 @@ FROM sometable
 └───────────────────────────┴────────────┴──────┘
 ```
 
-## Ключи объектов JSON {#json-object-keys}
+## Ключи объектов JSON \{#json-object-keys\}
 
 В некоторых случаях список объектов JSON может быть представлен в виде свойств объекта, а не элементов массива (см. [objects.json](../assets/objects.json) в качестве примера):
 
@@ -207,7 +207,7 @@ SELECT * FROM sometable;
 └─────────────────┴────────────┴──────┘
 ```
 
-### Указание значений ключей родительского объекта {#specifying-parent-object-key-values}
+### Указание значений ключей родительского объекта \{#specifying-parent-object-key-values\}
 
 Предположим, мы также хотим сохранять значения ключей родительского объекта в таблице. В этом случае мы можем использовать [следующую настройку](/operations/settings/settings-formats.md/#format_json_object_each_row_column_for_object_name), чтобы указать имя столбца, в который будут сохраняться значения ключей:
 
@@ -231,7 +231,7 @@ SELECT * FROM file('objects.json', JSONObjectEachRow)
 
 Обратите внимание, что столбец `id` правильно заполнен значениями ключей.
 
-## Массивы JSON {#json-arrays}
+## Массивы JSON \{#json-arrays\}
 
 Иногда в целях экономии места файлы JSON кодируются как массивы вместо объектов. В этом случае мы имеем дело со [списком массивов JSON](../assets/arrays.json):
 
@@ -259,7 +259,7 @@ SELECT * FROM sometable
 └───────────────────────────┴────────────┴─────┘
 ```
 
-### Импорт отдельных столбцов из JSON-массивов {#importing-individual-columns-from-json-arrays}
+### Импорт отдельных столбцов из JSON-массивов \{#importing-individual-columns-from-json-arrays\}
 
 В некоторых случаях данные могут быть закодированы по столбцам, а не по строкам. В этом случае родительский JSON-объект содержит столбцы со значениями. Рассмотрим [следующий файл](../assets/columns.json):
 
@@ -303,7 +303,7 @@ SELECT * FROM file('columns-array.json', JSONCompactColumns)
 └─────────────────┴────────────┴────┘
 ```
 
-## Сохранение объектов JSON без разбора {#saving-json-objects-instead-of-parsing}
+## Сохранение объектов JSON без разбора \{#saving-json-objects-instead-of-parsing\}
 
 Иногда может потребоваться сохранять объекты JSON в одном столбце типа `String` (или `JSON`), а не разбирать их. Это может быть полезно при работе со списком объектов JSON с разной структурой. Возьмём [этот файл](../assets/custom.json) в качестве примера, где внутри родительского списка содержится несколько различных объектов JSON:
 
@@ -357,7 +357,7 @@ FROM events
 
 Обратите внимание, что `JSONAsString` отлично подходит для файлов, где каждая строка содержит один JSON-объект (обычно используется с форматом `JSONEachRow`).
 
-## Схема для вложенных объектов {#schema-for-nested-objects}
+## Схема для вложенных объектов \{#schema-for-nested-objects\}
 
 В случае работы с [вложенными объектами JSON](../assets/list-nested.json) мы можем дополнительно явно задать схему и использовать составные типы данных ([`Array`](/sql-reference/data-types/array.md), [`JSON`](/integrations/data-formats/json/overview) или [`Tuple`](/sql-reference/data-types/tuple.md)) для загрузки данных:
 
@@ -373,7 +373,7 @@ LIMIT 1
 └────────────────────────────────────────────────────┴────────────┴──────┘
 ```
 
-## Доступ к вложенным JSON-объектам {#accessing-nested-json-objects}
+## Доступ к вложенным JSON-объектам \{#accessing-nested-json-objects\}
 
 Мы можем обращаться к [вложенным ключам JSON](../assets/list-nested.json), включив [следующий параметр настройки](/operations/settings/settings-formats.md/#input_format_import_nested_json):
 
@@ -397,7 +397,7 @@ LIMIT 1
 
 Таким образом мы можем преобразовывать вложенные JSON-объекты в плоский вид или использовать отдельные вложенные значения и сохранять их в отдельных столбцах.
 
-## Пропуск неизвестных столбцов {#skipping-unknown-columns}
+## Пропуск неизвестных столбцов \{#skipping-unknown-columns\}
 
 По умолчанию ClickHouse будет игнорировать неизвестные столбцы при импорте JSON-данных. Давайте попробуем импортировать исходный файл в таблицу без столбца `month`:
 
@@ -441,7 +441,7 @@ Code: 117. DB::Exception: Unknown field found while parsing JSONEachRow format: 
 
 ClickHouse будет выдавать исключения, если структура JSON не соответствует структуре столбцов таблицы.
 
-## BSON {#bson}
+## BSON \{#bson\}
 
 ClickHouse позволяет экспортировать данные в файлы, закодированные в формате [BSON](https://bsonspec.org/), и импортировать данные из них. Этот формат используется некоторыми СУБД, например базой данных [MongoDB](https://github.com/mongodb/mongo).
 

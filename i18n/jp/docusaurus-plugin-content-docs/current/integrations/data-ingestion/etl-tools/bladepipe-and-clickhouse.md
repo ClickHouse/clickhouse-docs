@@ -20,7 +20,7 @@ import bp_ck_8 from '@site/static/images/integrations/data-ingestion/etl-tools/b
 import bp_ck_9 from '@site/static/images/integrations/data-ingestion/etl-tools/bp_ck_9.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# BladePipe を ClickHouse に接続する {#connect-bladepipe-to-clickhouse}
+# BladePipe を ClickHouse に接続する \\{#connect-bladepipe-to-clickhouse\\}
 
 <PartnerBadge/>
 
@@ -28,7 +28,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 ClickHouse は BladePipe にあらかじめ用意されたコネクタの 1 つであり、ユーザーはさまざまなソースから ClickHouse へ自動的にデータを取り込むことができます。このページでは、リアルタイムに ClickHouse にデータをロードする手順を順を追って説明します。
 
-## 対応しているソース {#supported-sources}
+## 対応しているソース \\{#supported-sources\\}
 現在、BladePipe は次のソースから ClickHouse へのデータ統合に対応しています:
 - MySQL/MariaDB/AuroraMySQL
 - Oracle
@@ -42,7 +42,7 @@ ClickHouse は BladePipe にあらかじめ用意されたコネクタの 1 つ�
 今後、対応ソースはさらに追加される予定です。
 
 <VerticalStepper headerLevel="h2">
-## BladePipeのダウンロードと実行 {#1-run-bladepipe}
+## BladePipeのダウンロードと実行 \\{#1-run-bladepipe\\}
 1. <a href="https://www.bladepipe.com/" target="_blank">BladePipe Cloud</a>にログインします。
 
 2. <a href="https://doc.bladepipe.com/productOP/byoc/installation/install_worker_docker" target="_blank">Install Worker (Docker)</a>または<a href="https://doc.bladepipe.com/productOP/byoc/installation/install_worker_binary" target="_blank">Install Worker (Binary)</a>の手順に従い、BladePipe Workerをダウンロードしてインストールします。
@@ -51,7 +51,7 @@ ClickHouse は BladePipe にあらかじめ用意されたコネクタの 1 つ�
 または、<a href="https://doc.bladepipe.com/productOP/onPremise/installation/install_all_in_one_binary" target="_blank">BladePipe Enterprise</a>をダウンロードしてデプロイすることもできます。
 :::
 
-## ClickHouse をターゲットとして追加する {#2-add-clickhouse-as-a-target}
+## ClickHouse をターゲットとして追加する \\{#2-add-clickhouse-as-a-target\\}
 
   :::note
   1. BladePipe は ClickHouse バージョン `20.12.3.3` 以降をサポートしています。
@@ -66,7 +66,7 @@ ClickHouse は BladePipe にあらかじめ用意されたコネクタの 1 つ�
 
 3. 画面下部の「Add DataSource」をクリックすると、ClickHouse インスタンスが追加されます。
 
-## MySQL をソースとして追加する {#3-add-mysql-as-a-source}
+## MySQL をソースとして追加する \\{#3-add-mysql-as-a-source\\}
 このチュートリアルでは、MySQL インスタンスをソースとして使用し、MySQL データを ClickHouse にロードする手順を説明します。
 
 :::note
@@ -81,7 +81,7 @@ MySQL をソースとして使用するには、ユーザーに<a href="https://
 
 3. 画面下部の「Add DataSource」をクリックすると、MySQL インスタンスが追加されます。
 
-## パイプラインを作成する {#4-create-a-pipeline}
+## パイプラインを作成する \\{#4-create-a-pipeline\\}
 
 1. BladePipe で「DataJob」>「Create DataJob」をクリックします。
 
@@ -100,7 +100,7 @@ MySQL をソースとして使用するには、ユーザーに<a href="https://
 6. DataJob の作成を確認すると、DataJob が自動的に実行されます。
     <Image img={bp_ck_8} size="lg" border alt="DataJob が実行中" />
 
-## データの検証 {#5-verify-the-data}
+## データの検証 \\{#5-verify-the-data\\}
 
 1. MySQLインスタンスへのデータ書き込みを停止し、ClickHouseがデータをマージするまで待機します。
    :::note

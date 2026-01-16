@@ -7,17 +7,17 @@ title: 'hdfsCluster'
 doc_type: 'reference'
 ---
 
-# hdfsCluster テーブル関数 {#hdfscluster-table-function}
+# hdfsCluster テーブル関数 \\{#hdfscluster-table-function\\}
 
 指定したクラスター内の複数ノードから、HDFS 上のファイルを並列に処理できます。イニシエーターでは、クラスター内のすべてのノードへの接続を確立し、HDFS のファイルパスに含まれるアスタリスクを展開して、各ファイルを動的に振り分けます。ワーカーノードでは、処理すべき次のタスクをイニシエーターに問い合わせ、そのタスクを処理します。これは、すべてのタスクが完了するまで繰り返されます。
 
-## 構文 {#syntax}
+## 構文 \\{#syntax\\}
 
 ```sql
 hdfsCluster(cluster_name, URI, format, structure)
 ```
 
-## 引数 {#arguments}
+## 引数 \\{#arguments\\}
 
 | 引数           | 説明                                                                                                                                                                                                                                                                                               |
 |----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -26,11 +26,11 @@ hdfsCluster(cluster_name, URI, format, structure)
 | `format`       | ファイルの[フォーマット](/sql-reference/formats)。                                                                                                                                                                                                                                                |
 | `structure`    | テーブルの構造。形式: `'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                                                             |
 
-## 返される値 {#returned_value}
+## 返される値 \\{#returned_value\\}
 
 指定した構造を持ち、指定したファイル内のデータを読み取るためのテーブル。
 
-## 例 {#examples}
+## 例 \\{#examples\\}
 
 1. `cluster_simple` という名前の ClickHouse クラスターと、HDFS 上に次の URI を持つ複数のファイルがあるとします:
 
@@ -59,7 +59,7 @@ FROM hdfsCluster('cluster_simple', 'hdfs://hdfs1:9000/{some,another}_dir/*', 'TS
 ファイル一覧に先頭ゼロ付きの数値範囲が含まれている場合は、各桁を個別に波かっこで囲む構文を用いるか、`?` を使用してください。
 :::
 
-## 関連項目 {#related}
+## 関連項目 \\{#related\\}
 
 - [HDFS エンジン](../../engines/table-engines/integrations/hdfs.md)
 - [HDFS テーブル関数](../../sql-reference/table-functions/hdfs.md)

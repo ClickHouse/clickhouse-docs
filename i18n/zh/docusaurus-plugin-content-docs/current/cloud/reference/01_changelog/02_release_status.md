@@ -12,7 +12,7 @@ import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedul
 ClickHouse Cloud 提供不同的发布通道，以满足用户在稳定性、新功能获取速度和升级可预测性方面的不同需求。每个通道都有各自明确的升级周期，分别针对不同的使用场景——既适用于希望即时获取新版本的用户，也适用于希望推迟升级以确保获得该版本中最稳定发布的用户。
 
 
-## 发布通道详情 {#release-channel-details}
+## 发布通道详情 \\{#release-channel-details\\}
 
 <details>
 <summary>了解更多发布通道信息</summary>
@@ -34,7 +34,7 @@ ClickHouse Cloud 提供不同的发布通道，以满足用户在稳定性、新
 
 对于 Enterprise 层级中的服务，所有发布通道都支持计划升级。该功能允许用户在一周中的指定日期配置升级时间窗口。
 
-## 发布计划 {#release-schedule}
+## 发布计划 \\{#release-schedule\\}
 
 下列发布时间仅为预估，可能会有所变动。
 

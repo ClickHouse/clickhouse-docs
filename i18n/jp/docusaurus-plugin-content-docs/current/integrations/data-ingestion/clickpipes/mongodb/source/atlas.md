@@ -18,9 +18,9 @@ import mongo_atlas_add_roles from '@site/static/images/integrations/data-ingesti
 import mongo_atlas_restrict_access from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/mongo-atlas-restrict-access.png'
 import Image from '@theme/IdealImage';
 
-# MongoDB Atlas ソースセットアップガイド {#mongodb-atlas-source-setup-guide}
+# MongoDB Atlas ソースセットアップガイド \\{#mongodb-atlas-source-setup-guide\\}
 
-## oplog の保持期間を設定する {#enable-oplog-retention}
+## oplog の保持期間を設定する \\{#enable-oplog-retention\\}
 
 レプリケーションには、最小 24 時間の oplog 保持期間が必要です。初回スナップショットが完了する前に oplog が削除されないようにするため、oplog の保持期間は 72 時間以上に設定することを推奨します。UI から oplog の保持期間を設定するには、次の手順を実行します。
 
@@ -38,7 +38,7 @@ import Image from '@theme/IdealImage';
 
 4. `Review Changes` をクリックして内容を確認し、その後 `Apply Changes` をクリックして変更を反映します。
 
-## データベースユーザーの設定 {#configure-database-user}
+## データベースユーザーの設定 \\{#configure-database-user\\}
 
 MongoDB Atlas コンソールにログインしたら、左側のナビゲーションバーで Security タブの `Database Access` をクリックし、「Add New Database User」をクリックします。
 
@@ -59,7 +59,7 @@ ClickPipes 用のユーザーには、次のロールが必要です：
 
 <Image img={mongo_atlas_restrict_access} alt="クラスター／インスタンスへのアクセス制限" size="lg" border/>
 
-## 次のステップ {#whats-next}
+## 次のステップ \\{#whats-next\\}
 
 これで [ClickPipe の作成](../index.md)を行い、MongoDB インスタンスから ClickHouse Cloud へデータの取り込みを開始できます。
 ClickPipe の作成プロセスで必要になるため、MongoDB インスタンスのセットアップ時に使用した接続情報は必ず控えておいてください。

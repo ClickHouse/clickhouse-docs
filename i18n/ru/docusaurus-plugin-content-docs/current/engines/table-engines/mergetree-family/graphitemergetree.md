@@ -7,7 +7,7 @@ title: 'Движок таблицы GraphiteMergeTree'
 doc_type: 'guide'
 ---
 
-# Движок таблицы GraphiteMergeTree {#graphitemergetree-table-engine}
+# Движок таблицы GraphiteMergeTree \\{#graphitemergetree-table-engine\\}
 
 Этот движок предназначен для прореживания и агрегирования/усреднения (rollup) данных [Graphite](http://graphite.readthedocs.io/en/latest/index.html). Он может быть полезен разработчикам, которые хотят использовать ClickHouse в качестве хранилища данных для Graphite.
 
@@ -15,7 +15,7 @@ doc_type: 'guide'
 
 Движок наследует свойства от [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md).
 
-## Создание таблицы {#creating-table}
+## Создание таблицы \\{#creating-table\\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -78,7 +78,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   * `config_section` — Имя раздела в файле конфигурации, где заданы правила rollup.
 </details>
 
-## Конфигурация rollup {#rollup-configuration}
+## Конфигурация rollup \\{#rollup-configuration\\}
 
 Настройки rollup задаются параметром [graphite&#95;rollup](../../../operations/server-configuration-parameters/settings.md#graphite) в конфигурации сервера. Имя параметра может быть любым. Вы можете создать несколько конфигураций и использовать их для разных таблиц.
 
@@ -87,25 +87,25 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 required-columns
 patterns
 
-### Обязательные столбцы {#required-columns}
+### Обязательные столбцы \\{#required-columns\\}
 
-#### `path_column_name` {#path&#95;column&#95;name}
+#### `path_column_name` \\{#path&#95;column&#95;name\\}
 
 `path_column_name` — имя столбца, в котором хранится имя метрики (датчик Graphite). Значение по умолчанию: `Path`.
 
-#### `time_column_name` {#time&#95;column&#95;name}
+#### `time_column_name` \\{#time&#95;column&#95;name\\}
 
 `time_column_name` — имя столбца, в котором хранится время измерения метрики. Значение по умолчанию: `Time`.
 
-#### `value_column_name` {#value&#95;column&#95;name}
+#### `value_column_name` \\{#value&#95;column&#95;name\\}
 
 `value_column_name` — имя столбца, в котором хранится значение метрики в момент времени, указанной в `time_column_name`. Значение по умолчанию: `Value`.
 
-#### `version_column_name` {#version&#95;column&#95;name}
+#### `version_column_name` \\{#version&#95;column&#95;name\\}
 
 `version_column_name` — имя столбца, в котором хранится версия метрики. Значение по умолчанию: `Timestamp`.
 
-### Шаблоны {#patterns}
+### Шаблоны \\{#patterns\\}
 
 Структура раздела `patterns`:
 
@@ -158,7 +158,7 @@ default
 * `precision` – точность определения возраста данных в секундах. Должно быть делителем 86400 (количество секунд в сутках).
 * `function` – имя агрегирующей функции, применяемой к данным, возраст которых попадает в диапазон `[age, age + precision]`. Допустимые функции: min / max / any / avg. Среднее значение рассчитывается неточно, как среднее от средних значений.
 
-### Пример конфигурации без типов правил {#configuration-example}
+### Пример конфигурации без типов правил \\{#configuration-example\\}
 
 ```xml
 <graphite_rollup>
@@ -193,7 +193,7 @@ default
 </graphite_rollup>
 ```
 
-### Пример конфигурации с типами правил {#configuration-typed-example}
+### Пример конфигурации с типами правил \\{#configuration-typed-example\\}
 
 ```xml
 <graphite_rollup>

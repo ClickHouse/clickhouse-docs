@@ -10,9 +10,9 @@ doc_type: 'guide'
 import billing_compliance from '@site/static/images/cloud/manage/billing_compliance.png';
 import Image from '@theme/IdealImage';
 
-# ClickHouse Cloud の課金コンプライアンス {#clickhouse-cloud-billing-compliance}
+# ClickHouse Cloud の課金コンプライアンス \\{#clickhouse-cloud-billing-compliance\\}
 
-## 請求に関するコンプライアンス {#billing-compliance}
+## 請求に関するコンプライアンス \\{#billing-compliance\\}
 
 ClickHouse Cloud を利用するには、組織に有効な請求方法が設定されている必要があります。30 日間のトライアルが終了するか、トライアルクレジットを使い切った時点の、いずれか早い方に達した後も ClickHouse Cloud の利用を継続するには、次のいずれかの請求オプションを選択してください。
 
@@ -26,7 +26,7 @@ ClickHouse Cloud を利用するには、組織に有効な請求方法が設定
 
 ClickHouse は組織単位でサービス料金を請求します。現在の請求方法で支払い処理ができない場合は、サービス中断を避けるために、上記 3 つのいずれかのオプションに更新する必要があります。選択した請求方法ごとの支払い要件の詳細については、以下を参照してください。
 
-### クレジットカードによる従量課金請求 {#direct-payg}
+### クレジットカードによる従量課金請求 \\{#direct-payg\\}
 
 ClickHouse Cloud の利用料金は、クレジットカードを使用して月次の後払いで支払うことができます。
 クレジットカードを追加するには、次の[手順](#add-credit-card)に従ってください。
@@ -43,7 +43,7 @@ ClickHouse の月次請求サイクルは、組織のティア (Basic、Scale、
 
 当社は、最大 30 日間、組織に設定されている請求方法で支払い処理を試行します。14 日間経過しても支払いが成功しない場合、組織内のすべてのサービスは停止されます。この 30 日間の期間の終了までに支払いが行われず、かつ当社が延長を認めていない場合、組織に関連するすべてのデータとサービスは削除されます。
 
-### クラウドマーケットプレイスによる従量課金請求 {#cloud-marketplace-payg}
+### クラウドマーケットプレイスによる従量課金請求 \\{#cloud-marketplace-payg\\}
 
 従量課金 (Pay-As-You-Go) 請求は、サポート対象のクラウドマーケットプレイス
 (AWS、GCP、または Azure) のいずれかを通じて組織に対して課金するように設定することもできます。Marketplace PAYG 請求に登録するには、次の
@@ -57,7 +57,7 @@ Direct PAYG による請求と同様に、Marketplace PAYG を利用した Click
 
 一方で、PAYG マーケットプレイスサブスクリプションが解約された場合、または自動更新に失敗した場合、（存在する場合は）組織に登録されているクレジットカードでの請求にフォールバックされます。クレジットカードを追加するには、[サポートにお問い合わせ](/about-us/support)ください。有効なクレジットカードが提供されていない場合、[Direct PAYG](#direct-payg) に対して前述した未払い請求書の制限と同じ制限が適用されます。これにはサービスの一時停止および最終的なデータ削除が含まれます。
 
-### コミットメント契約による請求 {#committed-spend-contract}
+### コミットメント契約による請求 \\{#committed-spend-contract\\}
 
 コミットメント契約を通じて、組織向けのクレジットを購入することができます。
 
@@ -100,7 +100,7 @@ Direct PAYG による請求と同様に、Marketplace PAYG を利用した Click
 クレジットを追加したい場合は、[お問い合わせ](https://clickhouse.com/company/contact)
 ください。
 
-### クレジットカードで支払う方法 {#add-credit-card}
+### クレジットカードで支払う方法 \\{#add-credit-card\\}
 
 ClickHouse Cloud UI の Billing セクションに移動し、「Add Credit Card」
 ボタン（下図）をクリックしてセットアップを完了します。ご不明な点がある場合は、
@@ -108,7 +108,7 @@ ClickHouse Cloud UI の Billing セクションに移動し、「Add Credit Card
 
 <Image img={billing_compliance} size="md" alt="クレジットカードの追加方法" />
 
-## マーケットプレイス経由での支払い方法 {#marketplace-payg}
+## マーケットプレイス経由での支払い方法 \\{#marketplace-payg\\}
 
 サポート対象のマーケットプレイス（AWS、GCP、または Azure）のいずれかを通じて支払う場合は、
 [こちら](/cloud/marketplace/marketplace-billing)の手順に従ってください。

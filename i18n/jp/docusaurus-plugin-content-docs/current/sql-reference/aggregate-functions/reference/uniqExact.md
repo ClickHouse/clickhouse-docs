@@ -5,7 +5,7 @@ title: 'uniqExact'
 doc_type: 'reference'
 ---
 
-# uniqExact {#uniqexact}
+# uniqExact \{#uniqexact\}
 
 引数の取り得る異なる値の正確な個数を計算します。
 

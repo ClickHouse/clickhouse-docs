@@ -8,7 +8,7 @@ hide_title: false
 doc_type: 'guide'
 ---
 
-## 从源码编译 {#compile-from-source}
+## 从源码编译 \{#compile-from-source\}
 
 要手动编译 ClickHouse，请按照 [Linux](/development/build.md) 或 [macOS](/development/build-osx.md) 的说明进行操作。
 
@@ -29,7 +29,7 @@ Server: <build_directory>/programs/clickhouse-server
 在 Gentoo 上，你只需运行 `emerge clickhouse` 即可从源代码安装 ClickHouse。
 
 
-## 安装 CI 生成的二进制文件 {#install-a-ci-generated-binary}
+## 安装 CI 生成的二进制文件 \\{#install-a-ci-generated-binary\\}
 
 ClickHouse 的持续集成（CI）基础设施会针对 [ClickHouse 代码仓库](https://github.com/clickhouse/clickhouse/) 中的每次提交生成专门的构建，例如 [sanitized](https://github.com/google/sanitizers) 构建、未优化（Debug）
 构建、交叉编译构建等。此类构建通常只在开发过程中有用，但在某些情况下，对你来说也可能有用。

@@ -10,7 +10,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# Профилирование выделений памяти {#allocation-profiling}
+# Профилирование выделений памяти \{#allocation-profiling\}
 
 ClickHouse использует [jemalloc](https://github.com/jemalloc/jemalloc) в качестве глобального аллокатора. Jemalloc предоставляет инструменты для сэмплирования и профилирования выделений памяти.  
 Чтобы сделать профилирование выделений более удобным, ClickHouse и Keeper позволяют управлять сэмплированием с помощью конфигурационных файлов, настроек запроса, команд `SYSTEM` и четырёхбуквенных (4LW) команд в Keeper.   
@@ -23,7 +23,7 @@ ClickHouse использует [jemalloc](https://github.com/jemalloc/jemalloc)
 
 :::
 
-## Сэмплирование выделений памяти {#sampling-allocations}
+## Сэмплирование выделений памяти \{#sampling-allocations\}
 
 Если вы хотите выполнять сэмплирование и профилирование выделений памяти в `jemalloc`, необходимо запускать ClickHouse/Keeper с включённой настройкой конфигурации `jemalloc_enable_global_profiler`.
 
@@ -42,7 +42,7 @@ ClickHouse использует [jemalloc](https://github.com/jemalloc/jemalloc)
 :::
 
 
-## Хранение выборок jemalloc в `system.trace_log` {#storing-jemalloc-samples-in-system-trace-log}
+## Хранение выборок jemalloc в `system.trace_log` \{#storing-jemalloc-samples-in-system-trace-log\}
 
 Вы можете хранить все выборки jemalloc в `system.trace_log` с типом записи `JemallocSample`.
 Чтобы включить это глобально, используйте параметр конфигурации `jemalloc_collect_global_profile_samples_in_trace_log`.
@@ -60,7 +60,7 @@ ClickHouse использует [jemalloc](https://github.com/jemalloc/jemalloc)
 Вы также можете включить это для отдельного запроса, используя настройку `jemalloc_collect_profile_samples_in_trace_log`.
 
 
-### Пример анализа использования памяти запросом с помощью `system.trace_log` {#example-analyzing-memory-usage-trace-log}
+### Пример анализа использования памяти запросом с помощью `system.trace_log` \{#example-analyzing-memory-usage-trace-log\}
 
 Сначала нам нужно выполнить запрос с включённым профилировщиком памяти jemalloc и собрать для него сэмплы в `system.trace_log`:
 
@@ -179,7 +179,7 @@ ORDER BY per_trace_sum ASC
 ```
 
 
-## Сброс профилей кучи {#flushing-heap-profiles}
+## Сброс профилей кучи \{#flushing-heap-profiles\}
 
 По умолчанию файл профиля кучи создаётся в `/tmp/jemalloc_clickhouse._pid_._seqnum_.heap`, где `_pid_` — это PID ClickHouse, а `_seqnum_` — глобальный порядковый номер для текущего профиля кучи.
 Для Keeper файл по умолчанию — `/tmp/jemalloc_keeper._pid_._seqnum_.heap` и подчиняется тем же правилам.
@@ -212,7 +212,7 @@ MALLOC_CONF=prof_prefix:/data/my_current_profile
 К префиксу имени сгенерированного файла будут добавлены PID и порядковый номер.
 
 
-## Анализ профилей кучи {#analyzing-heap-profiles}
+## Анализ профилей кучи \\{#analyzing-heap-profiles\\}
 
 После того как профили кучи были сгенерированы, их необходимо проанализировать.\
 Для этого можно использовать инструмент `jemalloc` под названием [jeprof](https://github.com/jemalloc/jemalloc/blob/dev/bin/jeprof.in). Его можно установить несколькими способами:
@@ -223,7 +223,7 @@ MALLOC_CONF=prof_prefix:/data/my_current_profile
 Существует множество различных форматов, которые можно получить из профиля кучи с помощью `jeprof`.
 Вы можете запустить `jeprof --help`, чтобы получить информацию об использовании и о различных опциях, которые предоставляет этот инструмент.
 
-### Символизированные профили кучи {#symbolized-heap-profiles}
+### Символизированные профили кучи \{#symbolized-heap-profiles\}
 
 Начиная с версии 26.1+ ClickHouse автоматически генерирует символизированные профили кучи при выполнении команды `SYSTEM JEMALLOC FLUSH PROFILE`.
 Символизированный профиль (с расширением `.symbolized`) содержит встроенные символы функций и может анализироваться с помощью `jeprof` без необходимости в исполняемом файле ClickHouse.
@@ -279,7 +279,7 @@ jeprof --base /path/to/first.heap.symbolized /path/to/second.heap.symbolized --o
 ```
 
 
-### Примеры {#examples}
+### Примеры \{#examples\}
 
 Использование символизированных профилей (рекомендуется):
 
@@ -310,7 +310,7 @@ jeprof /path/to/clickhouse /tmp/jemalloc_clickhouse.12345.0.heap --pdf > result.
 ```
 
 
-### Построение flame-графа {#generating-flame-graph}
+### Построение flame-графа \{#generating-flame-graph\}
 
 `jeprof` позволяет получать свернутые стеки вызовов для построения flame-графов.
 
@@ -337,7 +337,7 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
 Еще один полезный инструмент — [speedscope](https://www.speedscope.app/), который позволяет более интерактивно анализировать собранные стеки.
 
 
-## Дополнительные параметры профилировщика {#additional-options-for-profiler}
+## Дополнительные параметры профилировщика \\{#additional-options-for-profiler\\}
 
 У `jemalloc` есть множество параметров, относящихся к профилировщику. Ими можно управлять, изменяя переменную окружения `MALLOC_CONF`.
 Например, интервал между выборками операций выделения памяти можно контролировать с помощью `lg_prof_sample`.  
@@ -345,7 +345,7 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
 
 Рекомендуется ознакомиться со [справочной страницей](https://jemalloc.net/jemalloc.3.html) `jemalloc` для получения полного перечня параметров.
 
-## Другие ресурсы {#other-resources}
+## Другие ресурсы \\{#other-resources\\}
 
 ClickHouse/Keeper предоставляют метрики, связанные с `jemalloc`, множеством разных способов.
 
@@ -353,7 +353,7 @@ ClickHouse/Keeper предоставляют метрики, связанные 
 Важно понимать, что ни одна из этих метрик не синхронизирована с другими, и значения со временем могут расходиться.
 :::
 
-### Системная таблица `asynchronous_metrics` {#system-table-asynchronous_metrics}
+### Системная таблица `asynchronous_metrics` \{#system-table-asynchronous_metrics\}
 
 ```sql
 SELECT *
@@ -365,19 +365,19 @@ FORMAT Vertical
 [Справочник](/operations/system-tables/asynchronous_metrics)
 
 
-### Системная таблица `jemalloc_bins` {#system-table-jemalloc_bins}
+### Системная таблица `jemalloc_bins` \\{#system-table-jemalloc_bins\\}
 
 Содержит информацию о выделении памяти, выполненном через аллокатор jemalloc в разных классах размеров (bins), агрегированную по всем аренам.
 
 [Справочник](/operations/system-tables/jemalloc_bins)
 
-### Prometheus {#prometheus}
+### Prometheus \\{#prometheus\\}
 
 Все метрики, связанные с `jemalloc` из `asynchronous_metrics`, также доступны через конечную точку Prometheus как в ClickHouse, так и в Keeper.
 
 [Справочник](/operations/server-configuration-parameters/settings#prometheus)
 
-### Команда `jmst` 4LW в Keeper {#jmst-4lw-command-in-keeper}
+### Команда `jmst` 4LW в Keeper \{#jmst-4lw-command-in-keeper\}
 
 Keeper поддерживает команду `jmst` 4LW, которая возвращает [базовую статистику аллокатора](https://github.com/jemalloc/jemalloc/wiki/Use-Case%3A-Basic-Allocator-Statistics):
 

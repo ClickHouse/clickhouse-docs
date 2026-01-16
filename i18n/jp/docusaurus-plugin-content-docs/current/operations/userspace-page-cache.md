@@ -7,9 +7,9 @@ title: 'ユーザースペースページキャッシュ'
 doc_type: 'reference'
 ---
 
-# ユーザー空間ページキャッシュ {#userspace-page-cache}
+# ユーザー空間ページキャッシュ \\{#userspace-page-cache\\}
 
-## 概要 {#overview}
+## 概要 \\{#overview\\}
 
 > ユーザースペースページキャッシュは、新しいキャッシュ機構であり、OS のページキャッシュに依存するのではなく、プロセス内メモリ上にデータをキャッシュできるようにします。
 
@@ -25,9 +25,9 @@ ClickHouse にはすでに、Amazon S3、Google Cloud Storage (GCS)、Azure Blob
 | サーバーのメモリ使用量としては表示されない             | サーバーのメモリ使用量として表示される  |
 | ディスク上のデータおよびインメモリ（OS ページキャッシュ）の両方に適している | **ディスクレスサーバーに適している**   |
 
-## 設定と使用方法 {#configuration-settings-and-usage}
+## 設定と使用方法 \\{#configuration-settings-and-usage\\}
 
-### 利用方法 {#usage}
+### 利用方法 \\{#usage\\}
 
 ユーザースペースページキャッシュを有効にするには、まずサーバー側で設定を行います。
 
@@ -48,7 +48,7 @@ page_cache_max_size: 100G
 SET use_page_cache_for_disks_without_file_cache=1;
 ```
 
-### 設定 {#settings}
+### 設定 \\{#settings\\}
 
 | Setting                                                 | Description                                                                                                                                                                                            | Default     |
 | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
@@ -66,6 +66,6 @@ SET use_page_cache_for_disks_without_file_cache=1;
 | `page_cache_lookahead_blocks`                           | ユーザー空間ページキャッシュでキャッシュミスが発生し、かつそれらがキャッシュ内に存在しない場合に、基盤ストレージから一度にまとめて読み取る連続ブロック数の上限です。各ブロックのサイズは `page_cache_block_size` バイトです。                                                                            | `16`        |
 | `page_cache_shards`                                     | ミューテックス競合を減らすために、ユーザー空間ページキャッシュを指定した数のシャードにストライプ化します。実験的な機能であり、性能向上はあまり期待できません。                                                                                                                        | `4`         |
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \\{#related-content\\}
 - [ファイルシステムキャッシュ](/docs/operations/storing-data)
 - [ClickHouse v25.3 リリースウェビナー](https://www.youtube.com/live/iCKEzp0_Z2Q?feature=shared&t=1320)

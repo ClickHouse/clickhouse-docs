@@ -17,25 +17,25 @@ import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png
 import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoint.png'
 
 
-## Процесс подключения {#onboarding-process}
+## Процесс подключения \\{#onboarding-process\\}
 
 Клиенты могут инициировать процесс подключения, связавшись с [нами](https://clickhouse.com/cloud/bring-your-own-cloud). Клиентам необходимо иметь отдельную учетную запись AWS и знать регион, который они будут использовать. В настоящее время пользователи могут запускать сервисы BYOC только в тех регионах, которые поддерживаются в ClickHouse Cloud.
 
-### Подготовка учетной записи AWS {#prepare-an-aws-account}
+### Подготовка учетной записи AWS \\{#prepare-an-aws-account\\}
 
 Рекомендуется подготовить отдельную учетную запись AWS для размещения развертывания ClickHouse BYOC, чтобы обеспечить лучшую изоляцию. Однако возможно также использование общей учетной записи и существующего VPC. Подробности см. в разделе *Setup BYOC Infrastructure* ниже.
 
 Имея эту учетную запись и адрес электронной почты первоначального администратора организации, вы можете связаться со службой поддержки ClickHouse.
 
-### Инициализация настройки BYOC {#initialize-byoc-setup}
+### Инициализация настройки BYOC \\{#initialize-byoc-setup\\}
 
 Начальную настройку BYOC можно выполнить с помощью шаблона CloudFormation или модуля Terraform. Оба подхода создают одну и ту же роль IAM, которая позволяет контроллерам BYOC в ClickHouse Cloud управлять вашей инфраструктурой. Обратите внимание, что ресурсы S3, VPC и вычислительные ресурсы, необходимые для запуска ClickHouse, не включены в эту начальную настройку.
 
-#### Шаблон CloudFormation {#cloudformation-template}
+#### Шаблон CloudFormation \\{#cloudformation-template\\}
 
 [Шаблон BYOC CloudFormation](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml)
 
-#### Модуль Terraform {#terraform-module}
+#### Модуль Terraform \{#terraform-module\}
 
 [Модуль BYOC Terraform](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/tf/byoc.tar.gz)
 
@@ -49,7 +49,7 @@ module "clickhouse_onboarding" {
 {/* TODO: Добавить скриншот для оставшихся шагов онбординга после реализации онбординга в режиме самообслуживания. */ }
 
 
-### Настройка инфраструктуры BYOC {#setup-byoc-infrastructure}
+### Настройка инфраструктуры BYOC \\{#setup-byoc-infrastructure\\}
 
 После создания стека CloudFormation вам будет предложено настроить инфраструктуру, включая S3, VPC и кластер EKS, из облачной консоли. На этом этапе необходимо определить некоторые параметры, так как позже их изменить нельзя. В частности:
 
@@ -57,7 +57,7 @@ module "clickhouse_onboarding" {
 * **Диапазон CIDR для VPC BYOC**: по умолчанию мы используем `10.0.0.0/16` для диапазона CIDR VPC BYOC. Если вы планируете использовать пиринг VPC с другой учетной записью, убедитесь, что диапазоны CIDR не пересекаются. Выделите подходящий диапазон CIDR для BYOC, с минимальным размером `/22`, чтобы разместить необходимые нагрузки.
 * **Зоны доступности для VPC BYOC**: если вы планируете использовать пиринг VPC, согласование зон доступности между исходной учетной записью и учетной записью BYOC может помочь снизить стоимость межзонального трафика. В AWS суффиксы зон доступности (`a, b, c`) могут соответствовать разным физическим ID зон в разных учетных записях. Подробности см. в [руководстве AWS](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html).
 
-#### VPC, управляемая клиентом {#customer-managed-vpc}
+#### VPC, управляемая клиентом \\{#customer-managed-vpc\\}
 
 По умолчанию ClickHouse Cloud создает выделенную VPC для лучшей изоляции в вашем развертывании BYOC. Однако вы также можете использовать существующую VPC в своей учетной записи. Это требует особой настройки и должно быть согласовано через службу поддержки ClickHouse.
 
@@ -98,15 +98,15 @@ module "clickhouse_onboarding" {
 * ID приватных подсетей, которые вы выделили для ClickHouse
 * Зоны доступности, в которых находятся эти подсети
 
-### Необязательно: настройка VPC peering {#optional-setup-vpc-peering}
+### Необязательно: настройка VPC peering \\{#optional-setup-vpc-peering\\}
 
 Чтобы создать или удалить VPC peering для ClickHouse BYOC, выполните следующие шаги:
 
-#### Шаг 1: Включите частный балансировщик нагрузки для ClickHouse BYOC {#step-1-enable-private-load-balancer-for-clickhouse-byoc}
+#### Шаг 1: Включите частный балансировщик нагрузки для ClickHouse BYOC \\{#step-1-enable-private-load-balancer-for-clickhouse-byoc\\}
 
 Свяжитесь со службой поддержки ClickHouse, чтобы включить Private Load Balancer.
 
-#### Шаг 2 Создайте peering-подключение {#step-2-create-a-peering-connection}
+#### Шаг 2 Создайте peering-подключение \\{#step-2-create-a-peering-connection\\}
 
 1. Перейдите в VPC Dashboard в аккаунте ClickHouse BYOC.
 2. Выберите Peering Connections.
@@ -121,7 +121,7 @@ module "clickhouse_onboarding" {
 
 <br />
 
-#### Шаг 3 Примите запрос на peering-подключение {#step-3-accept-the-peering-connection-request}
+#### Шаг 3 Примите запрос на peering-подключение \\{#step-3-accept-the-peering-connection-request\\}
 
 Перейдите в аккаунт, с которым настраивается peering, на странице (VPC -> Peering connections -> Actions -> Accept request) клиент может одобрить этот запрос на VPC peering.
 
@@ -131,7 +131,7 @@ module "clickhouse_onboarding" {
 
 <br />
 
-#### Шаг 4 Добавьте пункт назначения в таблицы маршрутизации VPC ClickHouse {#step-4-add-destination-to-clickhouse-vpc-route-tables}
+#### Шаг 4 Добавьте пункт назначения в таблицы маршрутизации VPC ClickHouse \\{#step-4-add-destination-to-clickhouse-vpc-route-tables\\}
 
 В аккаунте ClickHouse BYOC:
 
@@ -148,7 +148,7 @@ module "clickhouse_onboarding" {
 
 <br />
 
-#### Шаг 5 Добавьте пункт назначения в таблицы маршрутизации целевого VPC {#step-5-add-destination-to-the-target-vpc-route-tables}
+#### Шаг 5 Добавьте пункт назначения в таблицы маршрутизации целевого VPC \\{#step-5-add-destination-to-the-target-vpc-route-tables\\}
 
 В AWS-аккаунте, с которым настроен peering:
 
@@ -165,7 +165,7 @@ module "clickhouse_onboarding" {
 
 <br />
 
-#### Шаг 6: Отредактируйте security group, чтобы разрешить доступ из peered VPC {#step-6-edit-security-group-to-allow-peered-vpc-access}
+#### Шаг 6: Отредактируйте security group, чтобы разрешить доступ из peered VPC \\{#step-6-edit-security-group-to-allow-peered-vpc-access\\}
 
 В аккаунте ClickHouse BYOC вам нужно обновить настройки группы безопасности (Security Group), чтобы разрешить трафик из вашего peered VPC. Пожалуйста, свяжитесь со службой поддержки ClickHouse, чтобы запросить добавление правил входящего трафика (inbound rules), включающих CIDR-диапазоны вашего peered VPC.
 
@@ -180,7 +180,7 @@ module "clickhouse_onboarding" {
 
 Необязательно: после проверки работоспособности peering вы можете запросить отключение публичного балансировщика нагрузки для ClickHouse BYOC.
 
-## Процесс обновления {#upgrade-process}
+## Процесс обновления \\{#upgrade-process\\}
 
 Мы регулярно обновляем программное обеспечение, включая обновления версии базы данных ClickHouse, ClickHouse Operator, EKS и других компонентов.
 
@@ -190,9 +190,9 @@ module "clickhouse_onboarding" {
 Окна обслуживания не распространяются на устранение уязвимостей и исправления, связанные с безопасностью. Они выполняются как внеплановые обновления; мы заблаговременно согласуем подходящее время, чтобы минимизировать влияние на эксплуатацию.
 :::
 
-## Роли IAM для CloudFormation {#cloudformation-iam-roles}
+## Роли IAM для CloudFormation \\{#cloudformation-iam-roles\\}
 
-### Начальная (bootstrap) роль IAM {#bootstrap-iam-role}
+### Начальная (bootstrap) роль IAM \\{#bootstrap-iam-role\\}
 
 Начальная роль IAM имеет следующие разрешения:
 
@@ -202,7 +202,7 @@ module "clickhouse_onboarding" {
 - **Операции IAM (например, `iam:CreatePolicy`)**: Необходимы контроллерам для создания дополнительных ролей (подробности см. в следующем разделе).
 - **Операции EKS**: Ограничены ресурсами с именами, начинающимися с префикса `clickhouse-cloud`.
 
-### Дополнительные роли IAM, создаваемые контроллером {#additional-iam-roles-created-by-the-controller}
+### Дополнительные роли IAM, создаваемые контроллером \\{#additional-iam-roles-created-by-the-controller\\}
 
 Помимо `ClickHouseManagementRole`, создаваемой через CloudFormation, контроллер создаст несколько дополнительных ролей.
 
@@ -225,7 +225,7 @@ module "clickhouse_onboarding" {
 
 Наконец, **`data-plane-mgmt`** позволяет компоненту Control Plane ClickHouse Cloud синхронизировать необходимые пользовательские ресурсы (Custom Resources), такие как `ClickHouseCluster` и Istio Virtual Service/Gateway.
 
-## Границы сети {#network-boundaries}
+## Границы сети \\{#network-boundaries\\}
 
 В этом разделе рассматриваются различные типы сетевого трафика в клиентский BYOC VPC и из него:
 
@@ -242,13 +242,13 @@ module "clickhouse_onboarding" {
 
 По умолчанию входной шлюз публично доступен, доступ ограничивается фильтрацией по списку разрешённых IP‑адресов (allow list). Клиенты могут настроить VPC peering, чтобы сделать его приватным и отключить публичные подключения. Мы настоятельно рекомендуем настроить [IP‑фильтр](/cloud/security/setting-ip-filters) для ограничения доступа.
 
-### Устранение проблем с доступом {#troubleshooting-access}
+### Устранение проблем с доступом \\{#troubleshooting-access\\}
 
 *Входящий, публичный (может быть приватным)*
 
 Инженерам ClickHouse Cloud требуется доступ для устранения неполадок через Tailscale. Им предоставляется just-in-time аутентификация на основе сертификатов для BYOC‑развертываний.
 
-### Сборщик биллинга {#billing-scraper}
+### Сборщик биллинга \\{#billing-scraper\\}
 
 *Исходящий, приватный*
 
@@ -256,7 +256,7 @@ module "clickhouse_onboarding" {
 
 Он запускается как вспомогательный контейнер (sidecar) рядом с контейнером сервера ClickHouse и периодически собирает метрики CPU и памяти. Запросы внутри одного региона маршрутизируются через сервисные endpoint'ы шлюза VPC (VPC gateway service endpoints).
 
-### Оповещения {#alerts}
+### Оповещения \\{#alerts\\}
 
 *Исходящий, публичный*
 
@@ -264,7 +264,7 @@ AlertManager настроен на отправку оповещений в Clic
 
 Метрики и логи хранятся внутри клиентского BYOC VPC. Логи в данный момент хранятся локально в EBS. В будущем они будут храниться в LogHouse — сервисе ClickHouse внутри BYOC VPC. Для метрик используется стек Prometheus и Thanos, данные метрик хранятся локально в BYOC VPC.
 
-### Состояние сервиса {#service-state}
+### Состояние сервиса \\{#service-state\\}
 
 *Исходящий*
 

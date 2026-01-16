@@ -25,11 +25,11 @@ ClickHouse 提供符合 1996 年《健康保险携带与责任法案》（HIPAA�
 本页描述了在 ClickHouse Cloud 中启用部署符合 HIPAA 要求服务的流程。
 
 
-## 启用并部署符合 HIPAA 的服务 {#enable-hipaa-compliant-services}
+## 启用并部署符合 HIPAA 的服务 \\{#enable-hipaa-compliant-services\\}
 
 <VerticalStepper headerLevel="h3">
 
-### 注册 Enterprise 服务 {#sign-up-for-enterprise}
+### 注册 Enterprise 服务 \\{#sign-up-for-enterprise\\}
 
 1. 在控制台左下角选择您的组织名称。
 2. 点击 **Billing**。
@@ -37,7 +37,7 @@ ClickHouse 提供符合 1996 年《健康保险携带与责任法案》（HIPAA�
 4. 如果您的 **Plan** 为 **Enterprise**，则继续下一部分；如果不是，点击 **Change plan**。
 5. 选择 **Switch to Enterprise**。
 
-### 为您的组织启用 HIPAA {#enable-hipaa}
+### 为您的组织启用 HIPAA \\{#enable-hipaa\\}
 
 1. 在控制台左下角选择您的组织名称。
 2. 点击 **Organization details**。
@@ -65,7 +65,7 @@ ClickHouse 提供符合 1996 年《健康保险携带与责任法案》（HIPAA�
 
 <br />
 
-### 将服务部署到符合 HIPAA 的区域 {#deploy-hippa-services}
+### 将服务部署到符合 HIPAA 的区域 \\{#deploy-hippa-services\\}
 
 1. 在控制台主页左上角选择 **New service**。
 2. 将 **Region type** 更改为 **HIPAA compliant**。
@@ -84,7 +84,7 @@ ClickHouse 提供符合 1996 年《健康保险携带与责任法案》（HIPAA�
 
 
 
-## 迁移现有服务 {#migrate-to-hipaa}
+## 迁移现有服务 \\{#migrate-to-hipaa\\}
 
 在需要满足合规要求的情况下，我们强烈建议客户将服务部署到符合合规要求的环境中。将服务从标准区域迁移到 HIPAA 合规区域的过程需要通过备份恢复来完成，并且可能会产生一定的停机时间。
 

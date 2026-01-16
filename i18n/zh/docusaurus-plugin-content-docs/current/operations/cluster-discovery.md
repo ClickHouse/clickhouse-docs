@@ -6,9 +6,9 @@ title: '集群发现'
 doc_type: 'guide'
 ---
 
-# 发现集群 {#cluster-discovery}
+# 发现集群 \\{#cluster-discovery\\}
 
-## 概述 {#overview}
+## 概述 \\{#overview\\}
 
 ClickHouse 的集群发现（Cluster Discovery）功能通过允许节点在无需在配置文件中显式定义的情况下自动发现并注册自身，从而简化了集群配置。当需要手动定义每个节点变得繁琐时，这一功能尤其有用。
 
@@ -27,9 +27,9 @@ ClickHouse 的集群发现（Cluster Discovery）功能通过允许节点在无�
 
 :::
 
-## 远程服务器配置 {#remote-servers-configuration}
+## 远程服务器配置 \\{#remote-servers-configuration\\}
 
-### 传统的手动配置方式 {#traditional-manual-configuration}
+### 传统的手动配置方式 \\{#traditional-manual-configuration\\}
 
 在过去，ClickHouse 集群中的每个分片和副本都需要在配置中手动指定：
 
@@ -61,7 +61,7 @@ ClickHouse 的集群发现（Cluster Discovery）功能通过允许节点在无�
 
 ```
 
-### 使用集群发现 {#using-cluster-discovery}
+### 使用集群发现 \\{#using-cluster-discovery\\}
 
 通过集群发现（Cluster Discovery），你无需显式定义每个节点，只需在 ZooKeeper 中指定一个路径。注册到该路径下的所有节点都会被自动发现并加入集群。
 
@@ -109,7 +109,7 @@ ClickHouse 的集群发现（Cluster Discovery）功能通过允许节点在无�
 </discovery>
 ```
 
-### 观察者模式 {#observer-mode}
+### 观察者模式 \\{#observer-mode\\}
 
 以观察者模式配置的节点不会将自身注册为副本。
 它们只会在集群中观察并发现其他活动副本，而不会主动参与。
@@ -122,7 +122,7 @@ ClickHouse 的集群发现（Cluster Discovery）功能通过允许节点在无�
 </discovery>
 ```
 
-### 集群发现 {#discovery-of-clusters}
+### 集群发现 \\{#discovery-of-clusters\\}
 
 有时你可能不仅需要在集群中添加或删除主机，还需要添加或删除整个集群本身。你可以使用 `<multicluster_root_path>` 节点，将其作为多个集群的根路径：
 
@@ -163,7 +163,7 @@ ClickHouse 的集群发现（Cluster Discovery）功能通过允许节点在无�
 * `<multicluster_root_path>` 只能与 `<observer/>` 搭配使用。
 * 来自 Keeper 的路径最后一段会被用作集群名称，而在注册时，名称是从 XML 标签中获取的。
 
-## 使用场景和限制 {#use-cases-and-limitations}
+## 使用场景和限制 \\{#use-cases-and-limitations\\}
 
 当在指定的 ZooKeeper 路径下添加或移除节点时，这些节点会在无需修改配置或重启服务器的情况下被自动发现或从集群中移除。
 

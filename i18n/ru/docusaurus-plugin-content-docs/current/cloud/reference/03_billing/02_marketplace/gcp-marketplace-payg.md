@@ -22,14 +22,14 @@ import Image from '@theme/IdealImage';
 Начните работу с ClickHouse Cloud на [GCP Marketplace](https://console.cloud.google.com/marketplace) по публичному предложению с оплатой по мере использования (PAYG, Pay-as-you-go).
 
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \\{#prerequisites\\}
 
 - Проект GCP, в котором ваш администратор биллинга включил возможность совершать покупки.
 - Чтобы оформить подписку на ClickHouse Cloud в GCP Marketplace, войдите под учетной записью с правами на совершение покупок и выберите соответствующий проект.
 
 
 
-## Шаги для регистрации {#steps-to-sign-up}
+## Шаги для регистрации \\{#steps-to-sign-up\\}
 
 1. Перейдите в [GCP Marketplace](https://cloud.google.com/marketplace) и найдите ClickHouse Cloud. Убедитесь, что выбран корректный проект.
 

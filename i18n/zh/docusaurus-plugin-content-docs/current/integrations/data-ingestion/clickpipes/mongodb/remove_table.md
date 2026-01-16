@@ -15,7 +15,7 @@ import remove_table from '@site/static/images/integrations/data-ingestion/clickp
 
 在某些情况下，从 MongoDB ClickPipe 中排除特定表是合理的——例如，如果某个表并不是分析工作负载所必需的，跳过该表可以降低在 ClickHouse 中的存储和复制成本。
 
-## 移除特定数据表的步骤 {#remove-tables-steps}
+## 移除特定数据表的步骤 \\{#remove-tables-steps\\}
 
 第一步是从管道中移除该数据表。可按以下步骤操作：
 

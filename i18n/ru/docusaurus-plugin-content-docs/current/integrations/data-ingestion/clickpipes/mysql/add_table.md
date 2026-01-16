@@ -14,11 +14,11 @@ integration:
 import Image from '@theme/IdealImage';
 import add_table from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/add_table.png'
 
-# Добавление отдельных таблиц в ClickPipe {#adding-specific-tables-to-a-clickpipe}
+# Добавление отдельных таблиц в ClickPipe \{#adding-specific-tables-to-a-clickpipe\}
 
 В некоторых случаях может понадобиться добавить в ClickPipe отдельные таблицы. Такая необходимость обычно возникает по мере масштабирования вашей транзакционной или аналитической нагрузки.
 
-## Шаги по добавлению отдельных таблиц в ClickPipe {#add-tables-steps}
+## Шаги по добавлению отдельных таблиц в ClickPipe \\{#add-tables-steps\\}
 
 Это можно сделать следующим образом:
 

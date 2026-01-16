@@ -6,31 +6,31 @@ title: '自托管升级'
 doc_type: 'guide'
 ---
 
-## ClickHouse 升级概览 {#clickhouse-upgrade-overview}
+## ClickHouse 升级概览 \\{#clickhouse-upgrade-overview\\}
 
 本文档包含：
 - 通用指南
 - 推荐方案
 - 在系统上升级二进制文件的具体说明
 
-## 一般指南 {#general-guidelines}
+## 一般指南 \\{#general-guidelines\\}
 
 这些说明有助于你进行规划，并理解在文档后面部分我们为何会给出相应的建议。
 
-### 将 ClickHouse server 与 ClickHouse Keeper 或 ZooKeeper 分开升级 {#upgrade-clickhouse-server-separately-from-clickhouse-keeper-or-zookeeper}
+### 将 ClickHouse server 与 ClickHouse Keeper 或 ZooKeeper 分开升级 \\{#upgrade-clickhouse-server-separately-from-clickhouse-keeper-or-zookeeper\\}
 除非 ClickHouse Keeper 或 Apache ZooKeeper 存在需要修复的安全问题，否则在升级 ClickHouse server 时没有必要同时升级 Keeper。升级过程中需要保持 Keeper 的稳定性，因此应先完成 ClickHouse server 的升级，再考虑升级 Keeper。
 
-### 应经常进行小版本升级 {#minor-version-upgrades-should-be-adopted-often}
+### 应经常进行小版本升级 \\{#minor-version-upgrades-should-be-adopted-often\\}
 强烈建议在最新小版本发布后尽快升级到该版本。小版本发布不会包含破坏性变更，但会包含重要的缺陷修复（并且可能包含安全修复）。
 
-### 在运行目标版本的独立 ClickHouse server 上测试实验特性 {#test-experimental-features-on-a-separate-clickhouse-server-running-the-target-version}
+### 在运行目标版本的独立 ClickHouse server 上测试实验特性 \\{#test-experimental-features-on-a-separate-clickhouse-server-running-the-target-version\\}
 
 实验特性的兼容性可能在任何时间、以任何方式被破坏。如果你在使用实验特性，请检查变更日志，并考虑搭建一个安装了目标版本的独立 ClickHouse server，在该实例上测试你对实验特性的使用情况。
 
-### 降级 {#downgrades}
+### 降级 \\{#downgrades\\}
 如果你升级后发现新版本与某些你依赖的特性不兼容，并且你尚未开始使用任何新特性，那么你可能可以降级到一个最近的版本（不超过一年前的版本）。一旦开始使用新特性，降级将无法进行。
 
-### 集群中存在多个 ClickHouse server 版本 {#multiple-clickhouse-server-versions-in-a-cluster}
+### 集群中存在多个 ClickHouse server 版本 \\{#multiple-clickhouse-server-versions-in-a-cluster\\}
 
 我们会努力维持一年的兼容性窗口（其中包含 2 个 LTS 版本）。这意味着只要两个版本之间的发布时间差小于一年（或它们之间少于两个 LTS 版本），这两个版本就应该能够在同一集群中协同工作。不过，仍然建议尽快将集群中所有成员升级到相同版本，因为可能会出现一些小问题（例如分布式查询变慢、ReplicatedMergeTree 中某些后台操作出现可重试错误等）。
 
@@ -41,13 +41,13 @@ doc_type: 'guide'
 - 日志中可能出现各种错误/警告
 - 可能无法执行降级
 
-### 增量升级 {#incremental-upgrades}
+### 增量升级 \\{#incremental-upgrades\\}
 
 如果当前版本与目标版本之间的差异超过一年，建议采取以下两种方式之一：
 - 通过停机升级（停止所有 server、升级所有 server、重新启动所有 server）。
 - 或通过中间版本进行升级（选择一个比当前版本新但发布时间不超过一年的版本作为中间版本）。
 
-## 推荐方案 {#recommended-plan}
+## 推荐方案 \\{#recommended-plan\\}
 
 以下是实现 ClickHouse 零停机升级的推荐步骤：
 
@@ -77,7 +77,7 @@ byte-identical to data on another replicas.
 
 :::
 
-## ClickHouse 服务器二进制升级流程 {#clickhouse-server-binary-upgrade-process}
+## ClickHouse 服务器二进制升级流程 \\{#clickhouse-server-binary-upgrade-process\\}
 
 如果 ClickHouse 是通过 `deb` 软件包安装的，请在服务器上执行以下命令：
 

@@ -14,17 +14,17 @@ import planetscale_wal_level_logical from '@site/static/images/integrations/data
 import planetscale_max_slot_wal_keep_size from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_max_slot_wal_keep_size.png';
 import Image from '@theme/IdealImage';
 
-# PlanetScale for Postgres 数据源设置指南 {#planetscale-for-postgres-source-setup-guide}
+# PlanetScale for Postgres 数据源设置指南 \\{#planetscale-for-postgres-source-setup-guide\\}
 
 :::info
 PlanetScale for Postgres 目前处于[早期试用](https://planetscale.com/postgres)阶段。
 :::
 
-## 支持的 Postgres 版本 {#supported-postgres-versions}
+## 支持的 Postgres 版本 \\{#supported-postgres-versions\\}
 
 ClickPipes 支持 Postgres 12 及更高版本。
 
-## 启用逻辑复制 {#enable-logical-replication}
+## 启用逻辑复制 \\{#enable-logical-replication\\}
 
 1. 要在 Postgres 实例上启用复制，需要确保将以下参数设置为：
 
@@ -48,7 +48,7 @@ ClickPipes 支持 Postgres 12 及更高版本。
 
 <Image img={planetscale_max_slot_wal_keep_size} alt="在 PlanetScale 控制台中调整 max_slot_wal_keep_size" size="md" border/>
 
-## 使用权限和发布（publication）创建用户 {#creating-a-user-with-permissions-and-publication}
+## 使用权限和发布（publication）创建用户 \\{#creating-a-user-with-permissions-and-publication\\}
 
 使用默认的 `postgres.<...>` 用户连接到你的 PlanetScale Postgres 实例，并运行以下命令：
 
@@ -92,12 +92,12 @@ ClickPipes 支持 Postgres 12 及更高版本。
 
    `clickpipes` 发布将包含由指定表生成的一组变更事件，稍后将用于摄取复制流。
 
-## 注意事项 {#caveats}
+## 注意事项 \\{#caveats\\}
 1. 要连接到 PlanetScale Postgres，需要在前面创建的用户名后追加当前分支名。例如，如果创建的用户为 `clickpipes_user`，则在创建 ClickPipe 时实际提供的用户名需要为 `clickpipes_user`.`branch`，其中 `branch` 指的是当前 PlanetScale Postgres [branch](https://planetscale.com/docs/postgres/branching) 的 “id”。要快速确定这一点，可以查看你之前用于创建该用户的 `postgres` 用户名，句点后的部分即为 branch id。
 2. 不要为连接到 PlanetScale Postgres 的 CDC 管道使用 `PSBouncer` 端口（当前为 `6432`），必须使用常规端口 `5432`。对于仅用于初始加载的管道，可以使用任一端口。
 3. 请确保你只连接到主实例，目前不支持[连接到副本实例](https://planetscale.com/docs/postgres/scaling/replicas#how-to-query-postgres-replicas)。 
 
-## 后续步骤 {#whats-next}
+## 后续步骤 \\{#whats-next\\}
 
 您现在可以[创建 ClickPipe](../index.md)，并开始将 Postgres 实例中的数据摄取到 ClickHouse Cloud。
 请务必记录在设置 Postgres 实例时使用的连接信息，因为在创建 ClickPipe 时将需要这些信息。

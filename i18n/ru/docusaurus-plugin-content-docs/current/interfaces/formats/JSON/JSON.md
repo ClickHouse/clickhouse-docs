@@ -13,7 +13,7 @@ doc_type: 'reference'
 |----------------|-----------------|-----------|
 | ✔              | ✔               |           |
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Формат `JSON` считывает и выводит данные в формате JSON. 
 
@@ -41,7 +41,7 @@ doc_type: 'reference'
 
 ClickHouse поддерживает [NULL](/sql-reference/syntax.md), который отображается как `null` в выводе JSON. Чтобы включить вывод значений `+nan`, `-nan`, `+inf`, `-inf`, установите параметр [output_format_json_quote_denormals](/operations/settings/settings-formats.md/#output_format_json_quote_denormals) в значение `1`.
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
 Пример:
 
@@ -99,12 +99,12 @@ SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase WITH TOTA
 }
 ```
 
-## Настройки формата {#format-settings}
+## Настройки формата \\{#format-settings\\}
 
 Для формата ввода JSON, если настройка [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) установлена в значение `1`,
 типы из метаданных во входных данных будут сравниваться с типами соответствующих столбцов таблицы.
 
-## См. также {#see-also}
+## См. также \\{#see-also\\}
 
 - формат [JSONEachRow](/interfaces/formats/JSONEachRow)
 - настройка [output_format_json_array_of_rows](/operations/settings/settings-formats.md/#output_format_json_array_of_rows)

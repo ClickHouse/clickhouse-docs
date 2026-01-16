@@ -7,11 +7,11 @@ title: 'Hudi 表引擎'
 doc_type: 'reference'
 ---
 
-# Hudi 表引擎 {#hudi-table-engine}
+# Hudi 表引擎 \\{#hudi-table-engine\\}
 
 该引擎提供与 Amazon S3 中现有 Apache [Hudi](https://hudi.apache.org/) 表的只读方式集成。
 
-## 创建表 {#create-table}
+## 创建表 \\{#create-table\\}
 
 请注意，S3 中必须已经存在该 Hudi 表，此命令不支持通过 DDL 参数创建新表。
 
@@ -51,6 +51,6 @@ CREATE TABLE hudi_table ENGINE=Hudi('http://mars-doc-test.s3.amazonaws.com/click
 CREATE TABLE hudi_table ENGINE=Hudi(hudi_conf, filename = 'test_table')
 ```
 
-## 另请参阅 {#see-also}
+## 另请参阅 \\{#see-also\\}
 
 - [Hudi 表函数](/sql-reference/table-functions/hudi.md)

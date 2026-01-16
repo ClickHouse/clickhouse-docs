@@ -7,7 +7,7 @@ doc_type: 'reference'
 
 
 
-## varSampStable {#varsampstable}
+## varSampStable \\{#varsampstable\\}
 
 Вычисляет выборочную дисперсию набора данных. В отличие от [`varSamp`](../reference/varSamp.md), эта функция использует численно устойчивый алгоритм. Работает медленнее, но обеспечивает меньшую вычислительную погрешность.
 

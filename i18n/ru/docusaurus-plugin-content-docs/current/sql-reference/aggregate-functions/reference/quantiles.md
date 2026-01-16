@@ -5,7 +5,7 @@ title: 'Функции quantiles'
 doc_type: 'reference'
 ---
 
-# quantiles {#quantiles}
+# quantiles \{#quantiles\}
 
 Синтаксис: `quantiles(level1, level2, ...)(x)`
 

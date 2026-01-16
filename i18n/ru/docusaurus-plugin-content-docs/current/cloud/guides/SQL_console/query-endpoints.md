@@ -17,11 +17,11 @@ import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Настройка конечных точек API для запросов {#setting-up-query-api-endpoints}
+# Настройка конечных точек API для запросов \\{#setting-up-query-api-endpoints\\}
 
 Возможность **Query API Endpoints** позволяет создавать конечные точки API непосредственно из любого сохранённого SQL-запроса в консоли ClickHouse Cloud. Вы сможете обращаться к конечным точкам API по HTTP для выполнения своих сохранённых запросов без необходимости подключаться к вашему сервису ClickHouse Cloud через нативный драйвер.
 
-## Предварительные требования {#quick-start-guide}
+## Предварительные требования \\{#quick-start-guide\\}
 
 Прежде чем продолжить, убедитесь, что у вас есть:
 
@@ -36,7 +36,7 @@ import TabItem from '@theme/TabItem';
 
 <VerticalStepper headerLevel="h3">
 
-### Создание сохранённого запроса {#creating-a-saved-query}
+### Создание сохранённого запроса \\{#creating-a-saved-query\\}
 
 Если у вас уже есть сохранённый запрос, вы можете пропустить этот шаг.
 
@@ -83,7 +83,7 @@ ORDER BY per_upload desc
 
 Дополнительную документацию по сохранённым запросам можно найти в разделе ["Сохранение запроса"](/cloud/get-started/sql-console#saving-a-query).
 
-### Настройка API-эндпоинта для запроса {#configuring-the-query-api-endpoint}
+### Настройка API-эндпоинта для запроса \\{#configuring-the-query-api-endpoint\\}
 
 Эндпоинты Query API можно настраивать непосредственно из окна запроса, нажав кнопку **Share** и выбрав `API Endpoint`.
 Вам будет предложено указать, какие ключи API должны иметь доступ к этому эндпоинту:
@@ -106,11 +106,11 @@ ORDER BY per_upload desc
 curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API-endpoint>?format=JSONEachRow&param_year=<value>'
 ```
 
-### Параметры Query API {#query-api-parameters}
+### Параметры Query API \\{#query-api-parameters\\}
 
 Параметры в запросе можно задавать с помощью синтаксиса `{parameter_name: type}`. Эти параметры будут обнаружены автоматически, и пример тела запроса будет содержать объект `queryVariables`, через который вы можете передавать эти параметры.
 
-### Тестирование и мониторинг {#testing-and-monitoring}
+### Тестирование и мониторинг \\{#testing-and-monitoring\\}
 
 После создания эндпоинта Query API вы можете проверить его работу, используя `curl` или любой другой HTTP-клиент:
 
@@ -122,7 +122,7 @@ curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API
 
 </VerticalStepper>
 
-## Детали реализации {#implementation-details}
+## Детали реализации \\{#implementation-details\\}
 
 Этот эндпоинт выполняет запросы к вашим сохранённым эндпоинтам Query API.
 Он поддерживает несколько версий, гибкие форматы ответа, параметризованные запросы и, при необходимости, потоковые ответы (только версия 2).
@@ -134,7 +134,7 @@ GET /query-endpoints/{queryEndpointId}/run
 POST /query-endpoints/{queryEndpointId}/run
 ```
 
-### HTTP-методы {#http-methods}
+### HTTP-методы \\{#http-methods\\}
 
 | Метод | Сценарий использования | Параметры |
 |---------|------------------------|-----------|
@@ -153,21 +153,21 @@ POST /query-endpoints/{queryEndpointId}/run
 - Когда для безопасности/конфиденциальности предпочтительно использовать тело запроса
 - Потоковая загрузка файлов или больших объёмов данных
 
-### Аутентификация {#authentication}
+### Аутентификация \\{#authentication\\}
 
 **Обязательно:** Да  
 **Метод:** Базовая аутентификация (Basic Auth) с использованием ключа/секрета OpenAPI  
 **Права доступа:** Соответствующие права доступа для конечной точки запроса (endpoint)
 
-### Настройка запроса {#request-configuration}
+### Настройка запроса \\{#request-configuration\\}
 
-#### Параметры URL {#url-params}
+#### Параметры URL \\{#url-params\\}
 
 | Параметр | Обязателен | Описание |
 |-----------|----------|-------------|
 | `queryEndpointId` | **Да** | Уникальный идентификатор endpoint'а запроса, который нужно выполнить |
 
-#### Параметры запроса {#query-params}
+#### Параметры запроса \\{#query-params\\}
 
 | Параметр | Обязателен | Описание | Пример |
 |---------|------------|----------|--------|
@@ -176,7 +176,7 @@ POST /query-endpoints/{queryEndpointId}/run
 | `request_timeout` | Нет | Таймаут выполнения запроса в миллисекундах (по умолчанию: 30000) | `?request_timeout=60000` |
 | `:clickhouse_setting` | Нет | Любая поддерживаемая [настройка ClickHouse](https://clickhouse.com/docs/operations/settings/settings) | `?max_threads=8` |
 
-#### Заголовки {#headers}
+#### Заголовки \\{#headers\\}
 
 | Заголовок | Обязателен | Описание | Значения |
 |--------|----------|-------------|--------|
@@ -185,16 +185,16 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ---
 
-### Тело запроса {#request-body}
+### Тело запроса \\{#request-body\\}
 
-#### Параметры {#params}
+#### Параметры \\{#params\\}
 
 | Параметр | Тип | Обязательный | Описание |
 |-----------|------|----------|-------------|
 | `queryVariables` | object | Нет | Переменные, которые будут использоваться в запросе |
 | `format` | string | Нет | Формат ответа |
 
-#### Поддерживаемые форматы {#supported-formats}
+#### Поддерживаемые форматы \\{#supported-formats\\}
 
 | Версия                     | Поддерживаемые форматы                                                                                                                                   |
 |----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -203,14 +203,14 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ---
 
-### Ответы {#responses}
+### Ответы \\{#responses\\}
 
-#### Успешный ответ {#success}
+#### Успешный ответ \\{#success\\}
 
 **Статус:** `200 OK`  
 Запрос был успешно выполнен.
 
-#### Коды ошибок {#error-codes}
+#### Коды ошибок \\{#error-codes\\}
 
 | Код состояния | Описание |
 |-------------|-------------|
@@ -218,7 +218,7 @@ POST /query-endpoints/{queryEndpointId}/run
 | `401 Unauthorized` | Отсутствует аутентификация или недостаточно прав |
 | `404 Not Found` | Указанный endpoint запроса не найден |
 
-#### Рекомендации по обработке ошибок {#error-handling-best-practices}
+#### Рекомендации по обработке ошибок \\{#error-handling-best-practices\\}
 
 - Убедитесь, что в запрос включены корректные учетные данные для аутентификации
 - Проверьте корректность `queryEndpointId` и `queryVariables` перед отправкой
@@ -226,7 +226,7 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ---
 
-### Обновление версий конечных точек {#upgrading-endpoint-versions}
+### Обновление версий конечных точек \\{#upgrading-endpoint-versions\\}
 
 Чтобы выполнить обновление с версии 1 до версии 2:
 
@@ -239,9 +239,9 @@ POST /query-endpoints/{queryEndpointId}/run
 - Возможности потоковой передачи ответов
 - Повышенную производительность и функциональность
 
-## Примеры {#examples}
+## Примеры \\{#examples\\}
 
-### Базовый запрос {#basic-request}
+### Базовый запрос \\{#basic-request\\}
 
 **SQL конечной точки API запросов:**
 
@@ -249,7 +249,7 @@ POST /query-endpoints/{queryEndpointId}/run
 SELECT database, name AS num_tables FROM system.tables LIMIT 3;
 ```
 
-#### Версия 1 {#version-1}
+#### Версия 1 \\{#version-1\\}
 
 <Tabs>
 <TabItem value="cURL" label="cURL" default>
@@ -306,7 +306,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-#### Версия 2 {#version-2}
+#### Версия 2 \\{#version-2\\}
 
 <Tabs>
 <TabItem value="GET" label="GET (cURL)" default>
@@ -360,7 +360,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-### Request with query variables and version 2 on JSONCompactEachRow format {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
+### Request with query variables and version 2 on JSONCompactEachRow format \\{#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format\\}
 
 **Query API Endpoint SQL:**
 
@@ -428,7 +428,7 @@ SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: Stri
 </TabItem>
 </Tabs>
 
-### Request with array in the query variables that inserts data into a table {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
+### Request with array in the query variables that inserts data into a table \\{#request-with-array-in-the-query-variables-that-inserts-data-into-a-table\\}
 
 **Table SQL:**
 
@@ -493,7 +493,7 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
 </TabItem>
 </Tabs>
 
-### Request with ClickHouse settings `max_threads` set to 8 {#request-with-clickhouse-settings-max_threads-set-to-8}
+### Request with ClickHouse settings `max_threads` set to 8 \\{#request-with-clickhouse-settings-max_threads-set-to-8\\}
 
 **Query API Endpoint SQL:**
 
@@ -543,7 +543,7 @@ SELECT * FROM system.tables;
 </TabItem>
 </Tabs>
 
-### Request and parse the response as a stream` {#request-and-parse-the-response-as-a-stream}
+### Request and parse the response as a stream` \\{#request-and-parse-the-response-as-a-stream\\}
 
 **Query API Endpoint SQL:**
 
@@ -615,7 +615,7 @@ SELECT name, database FROM system.tables;
 </TabItem>
 </Tabs>
 
-### Insert a stream from a file into a table {#insert-a-stream-from-a-file-into-a-table}
+### Insert a stream from a file into a table \\{#insert-a-stream-from-a-file-into-a-table\\}
 
 Create a file `./samples/my_first_table_2024-07-11.csv` with the following content:
 

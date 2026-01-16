@@ -17,7 +17,7 @@ import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
 import log from '@site/static/images/clickstack/redis/redis-log.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# ClickStack を使用した Redis ログの監視 {#redis-clickstack}
+# ClickStack を使用した Redis ログの監視 \\{#redis-clickstack\\}
 
 :::note[TL;DR]
 このガイドでは、OpenTelemetry Collector を構成して Redis サーバーログを取り込むことで、ClickStack を使って Redis を監視する方法を説明します。次の内容を学びます:
@@ -31,12 +31,12 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 所要時間: 5〜10 分
 :::
 
-## 既存の Redis との統合 {#existing-redis}
+## 既存の Redis との統合 \\{#existing-redis\\}
 
 このセクションでは、ClickStack の OTel collector 設定を変更して、既存の Redis 環境から ClickStack にログを送信する方法を説明します。
 既存環境を設定する前に Redis との連携を試してみたい場合は、["Demo dataset"](/use-cases/observability/clickstack/integrations/redis#demo-dataset) セクションにある事前構成済みセットアップとサンプルデータを使用してテストできます。
 
-### 前提条件 {#prerequisites}
+### 前提条件 \\{#prerequisites\\}
 
 - 稼働中の ClickStack インスタンス
 - 既存の Redis インストール（バージョン 3.0 以上）
@@ -190,7 +190,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### サンプルデータセットをダウンロードする {#download-sample}
+#### サンプルデータセットをダウンロードする \\{#download-sample\\}
 
 サンプルのログファイルをダウンロードします:
 
@@ -198,7 +198,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-server.log
 ```
 
-#### テスト用コレクター設定を作成する {#test-config}
+#### テスト用コレクター設定を作成する \\{#test-config\\}
 
 次の設定内容で `redis-demo.yaml` という名前のファイルを作成します:
 
@@ -283,7 +283,7 @@ ClickStack で Redis を監視し始める際に役立つように、Redis Logs 
 
 #### ダッシュボード構成を<TrackedLink href={useBaseUrl('/examples/redis-logs-dashboard.json')} download="redis-logs-dashboard.json" eventName="docs.redis_logs_monitoring.dashboard_download">ダウンロード</TrackedLink> {#download}
 
-#### あらかじめ用意されたダッシュボードをインポート {#import-dashboard}
+#### あらかじめ用意されたダッシュボードをインポート \\{#import-dashboard\\}
 
 1. HyperDX を開き、 Dashboards セクションに移動します。
 2. 右上の三点リーダーアイコンから「Import Dashboard」をクリックします。
@@ -294,7 +294,7 @@ ClickStack で Redis を監視し始める際に役立つように、Redis Logs 
 
 <Image img={finish_import} alt="インポートの完了"/>
 
-#### すべての可視化があらかじめ設定された状態でダッシュボードが作成されます {#created-dashboard}
+#### すべての可視化があらかじめ設定された状態でダッシュボードが作成されます \\{#created-dashboard\\}
 
 :::note
 デモデータセットの場合、時間範囲を **2025-10-27 10:00:00 - 2025-10-28 10:00:00 (UTC)** に設定してください（ローカルタイムゾーンに合わせて調整してください）。インポートされたダッシュボードには、デフォルトで時間範囲が指定されていません。

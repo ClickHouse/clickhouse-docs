@@ -5,7 +5,7 @@ title: 'median'
 doc_type: 'reference'
 ---
 
-# median {#median}
+# median \{#median\}
 
 `median*` 関数は、対応する `quantile*` 関数のエイリアスです。数値データのサンプルに対する中央値を計算します。
 

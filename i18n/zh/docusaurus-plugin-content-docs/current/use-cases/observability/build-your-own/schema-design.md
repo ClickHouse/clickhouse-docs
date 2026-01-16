@@ -14,7 +14,7 @@ import observability_13 from '@site/static/images/use-cases/observability/observ
 import Image from '@theme/IdealImage';
 
 
-# 为可观测性设计模式 {#designing-a-schema-for-observability}
+# 为可观测性设计模式 \{#designing-a-schema-for-observability\}
 
 我们建议用户始终为日志和追踪创建自己的模式，原因如下：
 
@@ -29,7 +29,7 @@ _我们将在下文详细介绍上述每个用例。_
 
 **重要说明：** 虽然鼓励用户扩展和修改其模式以获得最佳压缩和查询性能，但在可能的情况下，应遵循 OTel 对核心列的命名约定。ClickHouse Grafana 插件假定存在一些基础的 OTel 列以辅助构建查询，例如 Timestamp 和 SeverityText。日志和追踪的必需列分别记录在此处 [[1]](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)[[2]](https://grafana.com/docs/grafana/latest/explore/logs-integration/) 和[此处](https://grafana.com/docs/grafana/latest/explore/trace-integration/#data-frame-structure)。您可以选择更改这些列名，并在插件配置中覆盖默认值。
 
-## 使用 SQL 提取结构 {#extracting-structure-with-sql}
+## 使用 SQL 提取结构 \{#extracting-structure-with-sql\}
 
 无论是摄取结构化还是非结构化日志，用户通常都需要能够：
 
@@ -157,7 +157,7 @@ LIMIT 5
 :::
 
 
-### 物化列 {#materialized-columns}
+### 物化列 \{#materialized-columns\}
 
 物化列提供了从其他列中提取结构化信息的最简单方案。这类列的值始终在插入时计算，并且不能在 `INSERT` 查询中显式指定。
 
@@ -225,7 +225,7 @@ Peak memory usage: 3.16 MiB.
 :::
 
 
-## materialized view {#materialized-views}
+## materialized view \{#materialized-views\}
 
 [materialized view](/materialized-views) 为对日志和追踪应用 SQL 过滤和转换提供了一种更强大的方式。
 
@@ -441,7 +441,7 @@ FROM otel_logs
 ```
 
 
-### 注意类型 {#beware-types}
+### 注意类型 \\{#beware-types\\}
 
 上面的 materialized view 依赖隐式类型转换——尤其是在使用 `LogAttributes` 映射时。ClickHouse 通常会透明地将提取出的值转换为目标表的类型，从而减少显式类型转换语法的编写。不过，我们建议用户始终通过在目标表上使用相同 schema 的 [`INSERT INTO`](/sql-reference/statements/insert-into) 语句配合该 view 的 `SELECT` 语句来测试自己的 view。这样可以确认类型是否被正确处理。对以下情况需要特别注意：
 
@@ -453,7 +453,7 @@ FROM otel_logs
 避免在 ClickHouse 中为可观测性数据使用 [Nullable](/sql-reference/data-types/nullable)。在日志和链路追踪中，很少需要区分空值与 null。该特性会增加额外的存储开销，并对查询性能产生负面影响。参见[此处](/data-modeling/schema-design#optimizing-types)了解更多细节。
 :::
 
-## 选择主（排序）键 {#choosing-a-primary-ordering-key}
+## 选择主（排序）键 \\{#choosing-a-primary-ordering-key\\}
 
 在提取出所需的列之后，就可以开始优化排序键/主键了。
 
@@ -472,7 +472,7 @@ FROM otel_logs
 我们建议在理清日志结构后再决定排序键。不要使用属性 map 中的键或 JSON 提取表达式作为排序键。请确保你的排序键是表中的根级列。
 :::
 
-## 使用 map {#using-maps}
+## 使用 map \{#using-maps\}
 
 前面的示例展示了使用 `map['key']` 语法来访问 `Map(String, String)` 列中的值。除了使用 map 语法访问嵌套键之外，还可以使用 ClickHouse 提供的专用 [map 函数](/sql-reference/functions/tuple-map-functions#mapKeys) 来过滤或选取这些列。
 
@@ -496,7 +496,7 @@ Peak memory usage: 71.90 MiB.
 :::
 
 
-## 使用别名 {#using-aliases}
+## 使用别名 \{#using-aliases\}
 
 查询 map 类型比查询普通列更慢——参见 [&quot;Accelerating queries&quot;](#accelerating-queries)。此外，其语法更为复杂，书写起来也可能比较麻烦。为了解决后一个问题，我们建议使用 ALIAS 列。
 
@@ -574,11 +574,11 @@ LIMIT 5
 :::
 
 
-## 优化类型 {#optimizing-types}
+## 优化类型 \\{#optimizing-types\\}
 
 关于类型优化的 [通用 ClickHouse 最佳实践](/data-modeling/schema-design#optimizing-types) 在本 ClickHouse 可观测性场景中同样适用。
 
-## 使用编解码器 {#using-codecs}
+## 使用编解码器 \\{#using-codecs\\}
 
 除了类型优化之外，在尝试为 ClickHouse 可观测性 schema 优化压缩时，还可以遵循[关于编解码器的一般最佳实践](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec)。
 
@@ -586,7 +586,7 @@ LIMIT 5
 
 另外，时间戳在压缩方面虽然可以从差分编码中获益，但如果该列被用作主键或排序键，已被证明会导致查询性能下降。我们建议用户评估压缩率与查询性能之间的权衡。
 
-## 使用字典 {#using-dictionaries}
+## 使用字典 \\{#using-dictionaries\\}
 
 [Dictionaries](/sql-reference/dictionaries) 是 ClickHouse 的[关键特性](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)，提供一种内存中的 [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 形式，用于表示来自各种内部和外部[数据源](/sql-reference/dictionaries#dictionary-sources)的数据，并针对超低延迟的查找查询进行了优化。
 
@@ -599,7 +599,7 @@ LIMIT 5
 希望通过字典加速 JOIN 的用户可以在[此处](/dictionary)找到更多详细信息。
 :::
 
-### 插入时 vs 查询时 {#insert-time-vs-query-time}
+### 插入时 vs 查询时 \\{#insert-time-vs-query-time\\}
 
 字典可以在查询时或插入时用于丰富数据集。每种方式都有各自的优缺点。总结如下：
 
@@ -610,7 +610,7 @@ LIMIT 5
 
 有关简单丰富示例，请参阅关于字典的指南[此处](/dictionary)。下文我们将重点介绍常见的可观测性丰富任务。
 
-### 使用 IP 字典 {#using-ip-dictionaries}
+### 使用 IP 字典 \{#using-ip-dictionaries\}
 
 使用 IP 地址为日志和链路追踪添加经纬度等地理信息（Geo-enrich）是常见的可观测性需求。我们可以使用 `ip_trie` 结构化字典来实现这一点。
 
@@ -834,7 +834,7 @@ ORDER BY (ServiceName, Timestamp)
 上述国家和坐标信息不仅可用于按国家分组和过滤，还支持更丰富的可视化能力。可参考 [&quot;可视化地理数据&quot;](/observability/grafana#visualizing-geo-data) 获取灵感。
 
 
-### 使用正则表达式字典（User-Agent 解析） {#using-regex-dictionaries-user-agent-parsing}
+### 使用正则表达式字典（User-Agent 解析） \{#using-regex-dictionaries-user-agent-parsing\}
 
 [User-Agent 字符串](https://en.wikipedia.org/wiki/User_agent) 的解析是一个经典的正则表达式问题，也是基于日志和 trace 的数据集中的常见需求。ClickHouse 通过 Regular Expression Tree Dictionaries 高效解析 User-Agent。
 
@@ -1025,7 +1025,7 @@ Os:     ('Other','0','0','0')
 :::
 
 
-### 延伸阅读 {#further-reading}
+### 延伸阅读 \\{#further-reading\\}
 
 如需了解更多有关字典的示例和细节，我们推荐阅读以下文章：
 
@@ -1033,11 +1033,11 @@ Os:     ('Other','0','0','0')
 - [使用字典加速查询](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
 - [字典](/sql-reference/dictionaries)
 
-## 加速查询 {#accelerating-queries}
+## 加速查询 \\{#accelerating-queries\\}
 
 ClickHouse 支持多种用于加速查询性能的技术。只有在已经选择了合适的主键/排序键，以针对最常见的访问模式进行优化并最大化压缩之后，才应考虑下述方法。通常这一步能以最小的投入带来最大的性能提升。
 
-### 使用 Materialized views（增量）进行聚合 {#using-materialized-views-incremental-for-aggregations}
+### 使用 Materialized views（增量）进行聚合 \{#using-materialized-views-incremental-for-aggregations\}
 
 在前面的章节中，我们探讨了使用 Materialized views 进行数据转换和过滤。此外，Materialized views 还可以用于在插入时预先计算聚合并存储结果，并在后续插入时增量更新这些结果，从而实现在插入阶段就完成聚合计算。
 
@@ -1166,7 +1166,7 @@ LIMIT 5
 :::
 
 
-#### 一个更复杂的示例 {#a-more-complex-example}
+#### 一个更复杂的示例 \{#a-more-complex-example\}
 
 上面的示例使用 [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree) 按小时聚合简单的计数。若需要计算超出简单求和范围的统计信息，则需要使用另一种目标表引擎：[AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree)。
 
@@ -1245,7 +1245,7 @@ ORDER BY Hour DESC
 请注意，这里我们使用 `GROUP BY`，而不是 `FINAL`。
 
 
-### 使用 materialized view（增量）进行快速查找 {#using-materialized-views-incremental--for-fast-lookups}
+### 使用 materialized view（增量）进行快速查找 \{#using-materialized-views-incremental--for-fast-lookups\}
 
 在选择 ClickHouse 的排序键时，应根据访问模式优先选择那些在过滤和聚合子句中经常使用的列。但在可观测性场景中，这可能会显得相当受限，因为用户的访问模式更加多样，无法用单一的一组列来概括。默认 OTel schema 中自带的一个示例就很好地说明了这一点。以 traces 的默认 schema 为例：
 
@@ -1351,7 +1351,7 @@ LIMIT 1000
 同样的方法也可以应用于类似的访问模式。我们在数据建模部分的[此处](/materialized-view/incremental-materialized-view#lookup-table)中探讨了一个类似的示例。
 
 
-### 使用 PROJECTION {#using-projections}
+### 使用 PROJECTION \{#using-projections\}
 
 ClickHouse PROJECTION 允许您为一张表指定多个 `ORDER BY` 子句。
 
@@ -1461,7 +1461,7 @@ Peak memory usage: 27.85 MiB.
 在上述示例中，我们在 PROJECTION 中指定了之前查询所使用的列。这样一来，只有这些指定的列会作为 PROJECTION 的一部分按 Status 排序存储到磁盘上。相反，如果我们在此处使用 `SELECT *`，则会将所有列都存储下来。虽然这可以让更多查询（使用任意列子集）受益于 PROJECTION，但会产生额外的存储开销。关于磁盘空间占用和压缩情况的测量，请参见[“Measuring table size &amp; compression”](#measuring-table-size--compression)。
 
 
-### Secondary/data skipping indices {#secondarydata-skipping-indices}
+### Secondary/data skipping indices \\{#secondarydata-skipping-indices\\}
 
 无论在 ClickHouse 中主键调优得多好，某些查询仍然不可避免地需要对整张表进行全表扫描。虽然可以通过使用 materialized view（以及在某些查询中使用 projection）来缓解这一问题，但这会带来额外的维护开销，并且需要用户了解这些对象的存在才能确保真正利用上它们。传统关系型数据库通常通过二级索引来解决这一问题，但在像 ClickHouse 这样的列式数据库中，这类索引并不奏效。取而代之的是，ClickHouse 使用“跳过（Skip）索引”，通过允许数据库跳过不包含匹配值的大块数据，从而显著提升查询性能。
 
@@ -1471,7 +1471,7 @@ Peak memory usage: 27.85 MiB.
 
 **一般来说，当主键与目标的非主键列或表达式之间存在强相关性，并且用户查找的值较为稀有（即这些值只出现在很少的 granule 中）时，它们会更为有效。**
 
-### 文本搜索的布隆过滤器 {#bloom-filters-for-text-search}
+### 文本搜索的布隆过滤器 \{#bloom-filters-for-text-search\}
 
 对于可观测性查询,当需要执行文本搜索时,辅助索引非常有用。 具体而言,基于 ngram 和 token 的布隆过滤器索引 [`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types) 和 [`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types) 可用于加速在 String 列上使用 `LIKE`、`IN` 和 hasToken 操作符的搜索。 需要注意的是,基于 token 的索引使用非字母数字字符作为分隔符来生成 token。 这意味着查询时只能匹配 token(或完整单词)。 若需要更细粒度的匹配,可以使用 [N-gram 布隆过滤器](/optimize/skipping-indexes#bloom-filter-types)。 它将字符串拆分为指定大小的 ngram,从而实现子词匹配。
 
@@ -1655,13 +1655,13 @@ Bloom 过滤器通常需要进行大量调优。我们建议参考[此处](/engi
 关于二级跳过索引的更多细节可以在[此处](/optimize/skipping-indexes#skip-index-functions)找到。
 
 
-### 从 Map 中抽取 {#extracting-from-maps}
+### 从 Map 中抽取 \\{#extracting-from-maps\\}
 
 `Map` 类型在 OTel 模式中非常常见。此类型要求键和值具有相同的类型——这对于诸如 Kubernetes 标签之类的元数据来说已经足够。请注意，当查询 `Map` 类型的某个子键时，会加载整个父列。如果该 `Map` 包含大量键，那么相较于该键作为单独列存在的情况，这会导致需要从磁盘读取更多数据，从而带来显著的查询开销。
 
 如果你经常查询某个特定键，请考虑将其移动到表的根级，作为独立的专用列。这通常是在完成部署并观察到常见访问模式之后才会进行的任务，在生产前往往难以预估。有关如何在部署后修改模式，请参阅[“管理模式变更”](/observability/managing-data#managing-schema-changes)。
 
-## Measuring table size & compression {#measuring-table-size--compression}
+## Measuring table size & compression \\{#measuring-table-size--compression\\}
 
 ClickHouse 用于可观测性的主要原因之一是其出色的压缩能力。
 

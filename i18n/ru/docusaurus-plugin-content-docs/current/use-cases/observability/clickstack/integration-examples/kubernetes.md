@@ -21,11 +21,11 @@ ClickStack использует OTel collector для сбора логов, м�
 
 Предполагается, что вы уже развернули [ClickStack OTel collector в режиме шлюза](/use-cases/observability/clickstack/ingesting-data/otel-collector), защищённый ключом API для приёма данных (ingestion API key).
 
-## Создание конфигурационных файлов Helm-чарта OTel {#creating-the-otel-helm-chart-config-files}
+## Создание конфигурационных файлов Helm-чарта OTel \\{#creating-the-otel-helm-chart-config-files\\}
 
 Чтобы собирать логи и метрики как с каждого узла, так и с кластера в целом, нам нужно развернуть два отдельных коллектора OpenTelemetry. Один будет развернут в виде ДемонСета для сбора логов и метрик с каждого узла, а другой — в виде Развертывания для сбора логов и метрик с самого кластера.
 
-### Создание секрета с ключом API {#create-api-key-secret}
+### Создание секрета с ключом API \\{#create-api-key-secret\\}
 
 Создайте новый секрет Kubernetes с [ключом API для приёма данных](/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data) из HyperDX. Он будет использоваться указанными ниже компонентами для безопасной ингестии данных в ваш ClickStack OTel collector:
 
@@ -41,7 +41,7 @@ kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_
 # например: kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=http://my-hyperdx-hdx-oss-v2-otel-collector:4318 {#eg-kubectl-create-configmap-notel-demo-otel-config-vars-from-literalyour_otel_collector_endpointhttpmy-hyperdx-hdx-oss-v2-otel-collector4318}
 ```
 
-### Создание конфигурации ДемонСета {#creating-the-daemonset-configuration}
+### Создание конфигурации ДемонСета \\{#creating-the-daemonset-configuration\\}
 
 ДемонСет будет собирать логи и метрики с каждого узла в кластере, но не будет собирать события Kubernetes или метрики на уровне всего кластера.
 
@@ -154,7 +154,7 @@ curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/
   ```
 </details>
 
-### Создание конфигурации развертывания {#creating-the-deployment-configuration}
+### Создание конфигурации развертывания \{#creating-the-deployment-configuration\}
 
 Чтобы собирать события Kubernetes и метрики всего кластера, нам нужно развернуть отдельный коллектор OpenTelemetry в виде развертывания.
 
@@ -229,7 +229,7 @@ curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/
   ```
 </details>
 
-## Развертывание коллектора OpenTelemetry {#deploying-the-otel-collector}
+## Развертывание коллектора OpenTelemetry \{#deploying-the-otel-collector\}
 
 Теперь коллектор OpenTelemetry можно развернуть в вашем Kubernetes-кластере с помощью
 [Helm-чарта OpenTelemetry](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-collector).
@@ -249,7 +249,7 @@ helm install my-opentelemetry-collector-daemonset open-telemetry/opentelemetry-c
 
 Теперь метрики, логи и события Kubernetes из вашего кластера должны появиться в HyperDX.
 
-## Пересылка тегов ресурсов в поды (рекомендуется) {#forwarding-resouce-tags-to-pods}
+## Пересылка тегов ресурсов в поды (рекомендуется) \{#forwarding-resouce-tags-to-pods\}
 
 Чтобы коррелировать логи, метрики и трассировки на уровне приложения с метаданными Kubernetes
 (например, именем пода, пространством имен и т.п.), необходимо передавать метаданные Kubernetes

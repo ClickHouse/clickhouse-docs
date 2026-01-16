@@ -15,20 +15,20 @@ import dot_01 from '@site/static/images/integrations/data-visualization/dot_01.p
 import dot_02 from '@site/static/images/integrations/data-visualization/dot_02.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Dot {#dot}
+# Dot \\{#dot\\}
 
 <CommunityMaintainedBadge/>
 
 [Dot](https://www.getdot.ai/) 是你的 **AI 数据分析师**。
 它可以直接连接到 ClickHouse，让你能够使用自然语言询问数据相关问题、探索数据、验证假设，并解答「为什么」类的问题——而且这一切都可以直接在 Slack、Microsoft Teams、ChatGPT 或原生 Web UI 中完成。
 
-## 前提条件 {#pre-requisites}
+## 前提条件 \\{#pre-requisites\\}
 
 - 一个 ClickHouse 数据库，可以是自托管的，也可以托管在 [ClickHouse Cloud](https://clickhouse.com/cloud) 上  
 - 一个 [Dot](https://www.getdot.ai/) 账户  
 - 一个 [Hashboard](https://www.hashboard.com/) 账户和项目
 
-## 将 Dot 连接到 ClickHouse {#connecting-dot-to-clickhouse}
+## 将 Dot 连接到 ClickHouse \\{#connecting-dot-to-clickhouse\\}
 
 <Image size="md" img={dot_01} alt="在 Dot（浅色模式）中配置 ClickHouse 连接" border />
 
@@ -47,7 +47,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 Dot 使用 **query-pushdown**：由 ClickHouse 负责大规模的繁重计算，而 Dot 确保结果准确可信。
 
-## 亮点 {#highlights}
+## 亮点 \\{#highlights\\}
 
 Dot 通过对话让数据触手可及：
 
@@ -57,7 +57,7 @@ Dot 通过对话让数据触手可及：
 - **结果可靠可追溯**：Dot 会根据你的模式（schema）和定义验证查询，最大限度减少错误。  
 - **高扩展性**：基于查询下推（query pushdown）构建，将 Dot 的智能与 ClickHouse 的极速性能相结合。
 
-## 安全与治理 {#security}
+## 安全与治理 \\{#security\\}
 
 Dot 已达到企业级就绪标准：
 
@@ -67,7 +67,7 @@ Dot 已达到企业级就绪标准：
 - **治理与校验**：训练/验证空间有助于减少模型幻觉  
 - **合规性**：通过 SOC 2 Type I 认证
 
-## 其他资源 {#additional-resources}
+## 其他资源 \\{#additional-resources\\}
 
 - Dot 网站：[https://www.getdot.ai/](https://www.getdot.ai/)  
 - 文档：[https://docs.getdot.ai/](https://docs.getdot.ai/)  

@@ -9,7 +9,7 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import object_storage_01 from '@site/static/images/integrations/migration/object-storage-01.png';
 
-# クラウドオブジェクトストレージから ClickHouse Cloud へデータを移行する {#move-data-from-cloud-object-storage-to-clickhouse-cloud}
+# クラウドオブジェクトストレージから ClickHouse Cloud へデータを移行する \\{#move-data-from-cloud-object-storage-to-clickhouse-cloud\\}
 
 <Image img={object_storage_01} size="md" alt="セルフマネージド ClickHouse の移行" />
 

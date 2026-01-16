@@ -16,7 +16,7 @@ import finish_import from '@site/static/images/clickstack/jvm/jvm-metrics-import
 import example_dashboard from '@site/static/images/clickstack/jvm/jvm-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# 使用 ClickStack 监控 JVM 指标 {#jvm-clickstack}
+# 使用 ClickStack 监控 JVM 指标 \\{#jvm-clickstack\\}
 
 :::note[摘要]
 本指南介绍如何使用 ClickStack 结合 OpenTelemetry Java agent 收集指标，从而监控 JVM 应用程序。您将学习如何：
@@ -30,13 +30,13 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 所需时间：5–10 分钟
 :::
 
-## 与现有 JVM 应用集成 {#existing-jvm}
+## 与现有 JVM 应用集成 \\{#existing-jvm\\}
 
 本节介绍如何配置现有 JVM 应用，通过 OpenTelemetry Java 代理向 ClickStack 发送指标。
 
 如果希望在配置生产环境之前先测试集成效果，可以使用我们的演示数据集进行测试，详情见[演示数据集章节](#demo-dataset)。
 
-##### 前置条件 {#prerequisites}
+##### 前置条件 \\{#prerequisites\\}
 
 - 已运行的 ClickStack 实例
 - 现有 Java 应用程序（Java 8 及以上）
@@ -44,7 +44,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### 获取 ClickStack API key {#get-api-key}
+#### 获取 ClickStack API key \\{#get-api-key\\}
 
 OpenTelemetry Java agent 会向 ClickStack 的 OTLP 端点发送数据，该端点需要进行身份验证。
 
@@ -55,7 +55,7 @@ OpenTelemetry Java agent 会向 ClickStack 的 OTLP 端点发送数据，该端�
 
 <Image img={api_key} alt="ClickStack API Key"/>
 
-#### 下载 OpenTelemetry Java agent {#download-agent}
+#### 下载 OpenTelemetry Java agent \\{#download-agent\\}
 
 下载 OpenTelemetry Java agent JAR 文件：
 
@@ -65,11 +65,11 @@ curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/
 
 这会将 agent 下载到你当前的目录。你可以将其放置在适合你部署的位置（例如 `/opt/opentelemetry/`，或与应用 JAR 放在一起）。
 
-#### 配置 JVM 启动参数 {#configure-jvm}
+#### 配置 JVM 启动参数 \\{#configure-jvm\\}
 
 在 JVM 启动命令中添加 Java agent。该 agent 会自动收集 JVM 指标并将其发送到 ClickStack。
 
-##### 选项 1：命令行参数 {#command-line-flags}
+##### 选项 1：命令行参数 \\{#command-line-flags\\}
 
 ```bash
 java -javaagent:opentelemetry-javaagent.jar \
@@ -90,7 +90,7 @@ java -javaagent:opentelemetry-javaagent.jar \
 - `my-application.jar` → 你的应用程序 JAR 文件名
 - `http://localhost:4318` → 你的 ClickStack 端点（如果 ClickStack 运行在同一台机器上则使用 `localhost:4318`，否则使用 `http://your-clickstack-host:4318`）
 
-##### 选项 2：环境变量 {#env-vars}
+##### 选项 2：环境变量 \\{#env-vars\\}
 
 或者，使用环境变量：
 
@@ -123,7 +123,7 @@ OpenTelemetry Java agent 会自动收集以下 JVM 指标：
 - **CPU**：`jvm.cpu.time`、`jvm.cpu.count`
 :::
 
-#### 在 HyperDX 中验证指标 {#verifying-metrics}
+#### 在 HyperDX 中验证指标 \\{#verifying-metrics\\}
 
 当你的应用在附加该 agent 的情况下运行时，验证指标是否已经写入 ClickStack：
 
@@ -133,13 +133,13 @@ OpenTelemetry Java agent 会自动收集以下 JVM 指标：
 
 </VerticalStepper>
 
-## 演示数据集 {#demo-dataset}
+## 演示数据集 \\{#demo-dataset\\}
 
 对于希望在为应用接入监控之前先测试 JVM 指标集成的用户，我们提供了一个示例数据集，其中包含预先生成的指标，模拟了一个中等规模微服务在稳定中等流量下的真实 JVM 行为。
 
 <VerticalStepper headerLevel="h4">
 
-#### 下载示例数据集 {#download-sample}
+#### 下载示例数据集 \\{#download-sample\\}
 
 ```bash
 # 下载 gauge 指标（内存、线程、CPU、类）
@@ -156,7 +156,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - 类加载活动
 - CPU 利用率模式
 
-#### 启动 ClickStack {#start-clickstack}
+#### 启动 ClickStack \\{#start-clickstack\\}
 
 如果您尚未运行 ClickStack：
 
@@ -168,7 +168,7 @@ docker run -d --name clickstack \
 
 等待片刻，直到 ClickStack 完全启动。
 
-#### 导入演示数据集 {#import-demo-data}
+#### 导入演示数据集 \\{#import-demo-data\\}
 
 ```bash
 # 导入 gauge 指标（内存、线程、CPU、类）
@@ -184,7 +184,7 @@ docker exec -i clickstack clickhouse-client --query="
 
 这会将指标直接导入到 ClickStack 的指标表中。
 
-#### 验证演示数据 {#verify-demo-metrics}
+#### 验证演示数据 \\{#verify-demo-metrics\\}
 
 导入完成后：
 
@@ -201,15 +201,15 @@ HyperDX 会以浏览器本地时区显示时间戳。演示数据涵盖的时间
 
 </VerticalStepper>
 
-## 仪表板和可视化 {#dashboards}
+## 仪表板和可视化 \\{#dashboards\\}
 
 为便于使用 ClickStack 监控 JVM 应用，我们提供了一个预先构建的仪表板，其中包含 JVM 指标的关键可视化视图。
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/jvm-metrics-dashboard.json')} download="jvm-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 {#download}
+#### <TrackedLink href={useBaseUrl('/examples/jvm-metrics-dashboard.json')} download="jvm-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \\{#download\\}
 
-#### 导入预构建的仪表板 {#import-dashboard}
+#### 导入预构建的仪表板 \\{#import-dashboard\\}
 
 1. 打开 HyperDX 并进入 Dashboards 页面
 2. 点击右上角省略号下的 **Import Dashboard**
@@ -220,7 +220,7 @@ HyperDX 会以浏览器本地时区显示时间戳。演示数据涵盖的时间
 
 <Image img={finish_import} alt="Finish import"/>
 
-#### 查看仪表板 {#created-dashboard}
+#### 查看仪表板 \\{#created-dashboard\\}
 
 系统会创建仪表板，并预先配置好所有可视化视图：
 
@@ -232,9 +232,9 @@ HyperDX 会以浏览器本地时区显示时间戳。演示数据涵盖的时间
 
 </VerticalStepper>
 
-## 故障排除 {#troubleshooting}
+## 故障排除 \\{#troubleshooting\\}
 
-### Agent 未启动 {#troubleshooting-not-loading}
+### Agent 未启动 \\{#troubleshooting-not-loading\\}
 
 **确认 agent JAR 文件是否存在：**
 
@@ -255,7 +255,7 @@ java -version
 [otel.javaagent] OpenTelemetry Javaagent v2.22.0 started
 ```
 
-### 在 HyperDX 中未显示任何指标 {#no-metrics}
+### 在 HyperDX 中未显示任何指标 \\{#no-metrics\\}
 
 **确认 ClickStack 正在运行且可访问：**
 
@@ -281,14 +281,14 @@ echo $OTEL_METRICS_EXPORTER
 **确认 agent 版本：**
 请确保您使用的是最新的稳定版 agent（当前为 2.22.0），新版本通常包含性能改进。
 
-## 下一步 {#next-steps}
+## 下一步 \\{#next-steps\\}
 
 现在 JVM 指标已经接入 ClickStack，接下来可以：
 
 - 为关键指标（如高堆内存使用率、频繁 GC 暂停或线程耗尽）[设置告警](/use-cases/observability/clickstack/alerts)
 - 探索[其他 ClickStack 集成](/use-cases/observability/clickstack/integration-guides)，以整合可观测性数据
 
-## 迁移到生产环境 {#going-to-production}
+## 迁移到生产环境 \\{#going-to-production\\}
 
 本指南演示了如何为本地测试配置 OpenTelemetry Java agent。对于生产环境部署，请在容器镜像中包含该 agent 的 JAR 文件，并通过环境变量进行配置，以便更易于管理。对于包含大量 JVM 实例的大型环境，建议部署集中式 OpenTelemetry Collector，对来自多个应用的指标进行批处理并转发，而不是直接发送到 ClickStack。
 

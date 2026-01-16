@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 `JSONCompactStrings` 格式与 [JSONStrings](./JSONStrings.md) 的唯一区别是数据行以数组形式输出，而不是对象。
 
-## 使用示例 {#example-usage}
+## 使用示例 \\{#example-usage\\}
 
-### 读取数据 {#reading-data}
+### 读取数据 \\{#reading-data\\}
 
 以 `JSONCompactStrings` 格式读取数据：
 
@@ -93,4 +93,4 @@ FORMAT JSONCompactStrings
 }
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \\{#format-settings\\}

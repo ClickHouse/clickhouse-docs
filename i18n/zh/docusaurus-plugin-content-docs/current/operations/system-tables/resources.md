@@ -6,7 +6,7 @@ title: 'system.resources'
 doc_type: 'reference'
 ---
 
-# system.resources {#systemresources}
+# system.resources \\{#systemresources\\}
 
 包含位于本地服务器上的[资源](/operations/workload-scheduling.md#workload_entity_storage)的信息。该表中每个资源对应一行。
 

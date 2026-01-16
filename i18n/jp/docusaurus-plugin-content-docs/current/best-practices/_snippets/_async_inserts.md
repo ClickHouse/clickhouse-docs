@@ -21,7 +21,7 @@ ClickHouse における非同期 INSERT は、クライアント側でバッチ�
 
 このバッチ処理はクライアントからは見えず、ClickHouse が複数のソースからの INSERT トラフィックを効率的にマージするのに役立ちます。ただし、フラッシュが発生するまではデータをクエリすることはできません。重要な点として、INSERT の形状（クエリパターン）と設定の組み合わせごとに複数のバッファが存在し、クラスタではノードごとにバッファが維持されます。これにより、マルチテナント環境全体でのきめ細かな制御が可能になります。INSERT のメカニズム自体は、[同期 INSERT](/best-practices/selecting-an-insert-strategy#synchronous-inserts-by-default) で説明されているものと同一です。
 
-### 戻り値モードの選択 {#choosing-a-return-mode}
+### 戻り値モードの選択 \\{#choosing-a-return-mode\\}
 
 非同期 INSERT の挙動は、[`wait_for_async_insert`](/operations/settings/settings#wait_for_async_insert) 設定によってさらに細かく制御されます。
 
@@ -37,13 +37,13 @@ ClickHouse における非同期 INSERT は、クライアント側でバッチ�
 
 非同期 INSERT を使用する場合、`async_insert=1,wait_for_async_insert=1` を使用することを強く推奨します。`wait_for_async_insert=0` の使用は非常にリスクが高く、INSERT クライアントがエラーを認識できない可能性があるうえに、ClickHouse サーバー側が書き込みを減速させてバックプレッシャーをかけ、サービスの信頼性を確保する必要がある状況でも、クライアントが高速な書き込みを継続してしまい、潜在的な過負荷を引き起こす可能性があります。
 
-### 重複排除と信頼性 {#deduplication-and-reliability}
+### 重複排除と信頼性 \\{#deduplication-and-reliability\\}
 
 デフォルトでは、ClickHouse は同期 INSERT に対して自動重複排除を行い、失敗時のリトライを安全にします。しかし、これは非同期 INSERT では明示的に有効化しない限り無効になっています（依存するマテリアライズドビューがある場合は有効化すべきではありません — [issue を参照](https://github.com/ClickHouse/ClickHouse/issues/66003)）。
 
 実際には、重複排除が有効で同一の INSERT がリトライされた場合（タイムアウトやネットワーク切断などが原因）、ClickHouse は重複を安全に無視できます。これにより冪等性が維持され、データの二重書き込みを回避できます。ただし、INSERT の検証やスキーマのパースはバッファフラッシュ時にのみ行われるため、型不一致のようなエラーはそのタイミングで初めて表面化する点には注意が必要です。
 
-### 非同期インサートの有効化 {#enabling-asynchronous-inserts}
+### 非同期インサートの有効化 \\{#enabling-asynchronous-inserts\\}
 
 非同期インサートは、特定のユーザー単位、またはクエリ単位で有効化できます。
 

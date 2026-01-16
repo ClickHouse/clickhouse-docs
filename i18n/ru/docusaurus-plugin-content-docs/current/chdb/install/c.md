@@ -7,13 +7,13 @@ keywords: ['chdb', 'c', 'cpp', 'embedded', 'clickhouse', 'sql', 'olap', 'api']
 doc_type: 'guide'
 ---
 
-# chDB для C и C++ {#chdb-for-c-and-c}
+# chDB для C и C++ \{#chdb-for-c-and-c\}
 
 chDB предоставляет нативный C/C++ API для встраивания функциональности ClickHouse непосредственно в ваши приложения. API поддерживает как простые запросы, так и расширенные функции, такие как постоянные соединения и потоковые результаты запросов.
 
-## Установка {#installation}
+## Установка \\{#installation\\}
 
-### Шаг 1: Установка libchdb {#install-libchdb}
+### Шаг 1: Установка libchdb \\{#install-libchdb\\}
 
 Установите библиотеку chDB в вашу систему:
 
@@ -21,7 +21,7 @@ chDB предоставляет нативный C/C++ API для встраив
 curl -sL https://lib.chdb.io | bash
 ```
 
-### Шаг 2: Подключение заголовков {#include-headers}
+### Шаг 2: Подключение заголовков \\{#include-headers\\}
 
 Подключите заголовок chDB в ваш проект:
 
@@ -29,7 +29,7 @@ curl -sL https://lib.chdb.io | bash
 #include <chdb.h>
 ```
 
-### Шаг 3: Линковка библиотеки {#link-library}
+### Шаг 3: Линковка библиотеки \\{#link-library\\}
 
 Скомпилируйте и слинкуйте ваше приложение с chDB:
 
@@ -41,9 +41,9 @@ gcc -o myapp myapp.c -lchdb
 g++ -o myapp myapp.cpp -lchdb
 ```
 
-## Примеры на C {#c-examples}
+## Примеры на C \\{#c-examples\\}
 
-### Базовое подключение и запросы {#basic-connection-queries}
+### Базовое подключение и запросы \\{#basic-connection-queries\\}
 
 ```c
 #include <stdio.h>
@@ -92,7 +92,7 @@ int main() {
 }
 ```
 
-### Потоковые запросы {#streaming-queries}
+### Потоковые запросы \\{#streaming-queries\\}
 
 ```c
 #include <stdio.h>
@@ -156,7 +156,7 @@ int main() {
 }
 ```
 
-### Работа с различными форматами данных {#data-formats}
+### Работа с различными форматами данных \\{#data-formats\\}
 
 ```c
 #include <stdio.h>
@@ -194,7 +194,7 @@ int main() {
 }
 ```
 
-## Пример на C++ {#cpp-example}
+## Пример на C++ \\{#cpp-example\\}
 
 ```cpp
 #include <iostream>
@@ -277,7 +277,7 @@ int main() {
 }
 ```
 
-## Лучшие практики обработки ошибок {#error-handling}
+## Лучшие практики обработки ошибок \\{#error-handling\\}
 
 ```c
 #include <stdio.h>
@@ -324,7 +324,7 @@ cleanup:
 }
 ```
 
-## Репозиторий GitHub {#github-repository}
+## Репозиторий GitHub \\{#github-repository\\}
 
 - **Основной репозиторий**: [chdb-io/chdb](https://github.com/chdb-io/chdb)
 - **Проблемы и поддержка**: Сообщайте о проблемах в [репозитории GitHub](https://github.com/chdb-io/chdb/issues)

@@ -7,11 +7,11 @@ title: 'SELECT 查询语句'
 doc_type: 'reference'
 ---
 
-# SELECT 查询 {#select-query}
+# SELECT 查询 \\{#select-query\\}
 
 `SELECT` 查询用于执行数据检索。默认情况下，请求的数据会返回给客户端，而与 [INSERT INTO](../../../sql-reference/statements/insert-into.md) 结合使用时，可以将其转发到另一张表中。
 
-## 语法 {#syntax}
+## 语法 \\{#syntax\\}
 
 ```sql
 [WITH expr_list(subquery)]
@@ -60,13 +60,13 @@ SELECT [DISTINCT [ON (column1, column2, ...)]] expr_list
 - [INTO OUTFILE 子句](../../../sql-reference/statements/select/into-outfile.md)
 - [FORMAT 子句](../../../sql-reference/statements/select/format.md)
 
-## SELECT 子句 {#select-clause}
+## SELECT 子句 \\{#select-clause\\}
 
 `SELECT` 子句中指定的[表达式](/sql-reference/syntax#expressions)会在上述所有子句的操作完成后进行计算。这些表达式的作用相当于应用于结果中的各个独立行。如果 `SELECT` 子句中的表达式包含聚合函数,ClickHouse 会在 [GROUP BY](/sql-reference/statements/select/group-by) 聚合过程中处理聚合函数及其参数中使用的表达式。
 
 如果要在结果中包含所有列,请使用星号 (`*`) 符号。例如:`SELECT * FROM ...`。
 
-### 动态列选择 {#dynamic-column-selection}
+### 动态列选择 \\{#dynamic-column-selection\\}
 
 动态列选择(也称为 COLUMNS 表达式)允许您使用 [re2](<https://en.wikipedia.org/wiki/RE2_(software)>) 正则表达式匹配结果中的某些列。
 
@@ -125,7 +125,7 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 
 与 `COLUMNS` 表达式匹配的列可以具有不同的数据类型。如果 `COLUMNS` 不匹配任何列且是 `SELECT` 中的唯一表达式,ClickHouse 会抛出异常。
 
-### 星号 {#asterisk}
+### 星号 \\{#asterisk\\}
 
 您可以在查询的任何部分使用星号来代替表达式。当分析查询时,星号会扩展为所有表列的列表(不包括 `MATERIALIZED` 和 `ALIAS` 列)。只有少数情况下使用星号是合理的:
 
@@ -137,7 +137,7 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 
 在所有其他情况下,我们不建议使用星号,因为它只会给您带来列式数据库管理系统的缺点而非优点。换句话说,不建议使用星号。
 
-### 极值 {#extreme-values}
+### 极值 \\{#extreme-values\\}
 
 除了结果之外,您还可以获取结果列的最小值和最大值。为此,请将 **extremes** 设置设为 1。最小值和最大值会针对数值类型、日期和带时间的日期进行计算。对于其他列,输出默认值。
 
@@ -148,13 +148,13 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 
 极值是针对 `LIMIT` 之前但 `LIMIT BY` 之后的行计算的。但是,当使用 `LIMIT offset, size` 时,`offset` 之前的行会包含在 `extremes` 中。在流式请求中,结果还可能包含少量已通过 `LIMIT` 的行。
 
-### 注意事项 {#notes}
+### 注意事项 \\{#notes\\}
 
 您可以在查询的任何部分使用同义词(`AS` 别名)。
 
 `GROUP BY`、`ORDER BY` 和 `LIMIT BY` 子句支持位置参数。要启用此功能,请开启 [enable_positional_arguments](/operations/settings/settings#enable_positional_arguments) 设置。例如,`ORDER BY 1,2` 将按表中的第一列和第二列对行进行排序。
 
-## 实现细节 {#implementation-details}
+## 实现细节 \\{#implementation-details\\}
 
 如果查询中省略了 `DISTINCT`、`GROUP BY` 和 `ORDER BY` 子句,以及 `IN` 和 `JOIN` 子查询,则查询将完全采用流式处理,仅使用 O(1) 级别的 RAM。否则,如果未指定适当的限制条件,查询可能会消耗大量 RAM:
 
@@ -174,7 +174,7 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 
 更多信息请参阅"设置"章节。可以使用外部排序(将临时表保存到磁盘)和外部聚合。
 
-## SELECT 修饰符 {#select-modifiers}
+## SELECT 修饰符 \\{#select-modifiers\\}
 
 您可以在 `SELECT` 查询中使用以下修饰符。
 
@@ -184,7 +184,7 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 | [`EXCEPT`](./except_modifier.md)   | 指定要从结果中排除的一个或多个列名。所有匹配的列名都将从输出中省略。                                                                                                                                                                                                                                                                            |
 | [`REPLACE`](./replace_modifier.md) | 指定一个或多个[表达式别名](/sql-reference/syntax#expression-aliases)。每个别名必须与 `SELECT *` 语句中的列名匹配。在输出列列表中,与别名匹配的列将被 `REPLACE` 中的表达式替换。此修饰符不会更改列的名称或顺序,但可以更改列的值和值类型。 |
 
-### 修饰符组合 {#modifier-combinations}
+### 修饰符组合 \\{#modifier-combinations\\}
 
 您可以单独使用每个修饰符,也可以将它们组合使用。
 
@@ -214,7 +214,7 @@ SELECT * REPLACE(i + 1 AS i) EXCEPT (j) APPLY(sum) from columns_transformers;
 └─────────────────┴────────┘
 ```
 
-## SELECT 查询中的 SETTINGS {#settings-in-select-query}
+## SELECT 查询中的 SETTINGS \\{#settings-in-select-query\\}
 
 您可以直接在 `SELECT` 查询中指定所需的设置。设置值仅应用于此查询,并在查询执行后重置为默认值或之前的值。
 

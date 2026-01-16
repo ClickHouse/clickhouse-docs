@@ -7,7 +7,7 @@ title: 'Движки таблиц Replicated*'
 doc_type: 'reference'
 ---
 
-# Движки таблиц Replicated* {#replicated-table-engines}
+# Движки таблиц Replicated* \\{#replicated-table-engines\\}
 
 :::note
 В ClickHouse Cloud репликацией управляет платформа. Пожалуйста, создавайте таблицы без дополнительных аргументов. Например, в тексте ниже вы бы заменили:
@@ -139,7 +139,7 @@ ZooKeeper не используется в запросах `SELECT`, потом
 
 Система отслеживает синхронность данных на репликах и способна восстанавливаться после сбоя. Переключение на резерв (failover) происходит автоматически (при небольших различиях в данных) или полуавтоматически (когда данные различаются слишком сильно, что может указывать на ошибку конфигурации).
 
-## Создание реплицируемых таблиц {#creating-replicated-tables}
+## Создание реплицируемых таблиц \\{#creating-replicated-tables\\}
 
 :::note
 В ClickHouse Cloud репликация осуществляется автоматически.
@@ -150,7 +150,7 @@ ZooKeeper не используется в запросах `SELECT`, потом
 
 :::
 
-### Параметры Replicated*MergeTree {#replicatedmergetree-parameters}
+### Параметры Replicated*MergeTree \\{#replicatedmergetree-parameters\\}
 
 | Параметр           | Описание                                                                                                        |
 | ------------------ | --------------------------------------------------------------------------------------------------------------- |
@@ -248,7 +248,7 @@ ORDER BY x;
 
 Чтобы удалить реплику, выполните `DROP TABLE`. Однако удаляется только одна реплика — та, которая находится на сервере, где вы выполняете запрос.
 
-## Восстановление после сбоев {#recovery-after-failures}
+## Восстановление после сбоев \\{#recovery-after-failures\\}
 
 Если ClickHouse Keeper недоступен при запуске сервера, реплицируемые таблицы переключаются в режим только для чтения. Система периодически пытается подключиться к ClickHouse Keeper.
 
@@ -272,7 +272,7 @@ sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data
 
 Затем перезапустите сервер. При запуске сервер удаляет эти флаги и начинает восстановление.
 
-## Восстановление после полной потери данных {#recovery-after-complete-data-loss}
+## Восстановление после полной потери данных \\{#recovery-after-complete-data-loss\\}
 
 Если все данные и метаданные исчезли с одного из серверов, выполните следующие шаги для восстановления:
 
@@ -287,7 +287,7 @@ sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data
 
 Во время восстановления нет ограничений на пропускную способность сети. Учитывайте это, если вы восстанавливаете большое количество реплик одновременно.
 
-## Преобразование из MergeTree в ReplicatedMergeTree {#converting-from-mergetree-to-replicatedmergetree}
+## Преобразование из MergeTree в ReplicatedMergeTree \\{#converting-from-mergetree-to-replicatedmergetree\\}
 
 Мы используем термин `MergeTree` для обозначения всех движков таблиц семейства `MergeTree`, аналогично и для `ReplicatedMergeTree`.
 
@@ -319,7 +319,7 @@ SELECT zookeeper_path FROM system.replicas WHERE table = 'table_name';
 Переместите данные из старой таблицы в подкаталог `detached` внутри каталога с данными новой таблицы (`/var/lib/clickhouse/data/db_name/table_name/`).
 Затем выполните `ALTER TABLE ATTACH PARTITION` на одной из реплик, чтобы добавить эти части в рабочий набор.
 
-## Преобразование из ReplicatedMergeTree в MergeTree {#converting-from-replicatedmergetree-to-mergetree}
+## Преобразование из ReplicatedMergeTree в MergeTree \\{#converting-from-replicatedmergetree-to-mergetree\\}
 
 Используйте команду [ATTACH TABLE ... AS NOT REPLICATED](/sql-reference/statements/attach.md#attach-mergetree-table-as-replicatedmergetree), чтобы подключить отсоединённую таблицу `ReplicatedMergeTree` как `MergeTree` на одном сервере.
 
@@ -332,7 +332,7 @@ SELECT zookeeper_path FROM system.replicas WHERE table = 'table_name';
 
 После этого вы можете запустить сервер, создать таблицу `MergeTree`, переместить данные в её каталог, а затем перезапустить сервер.
 
-## Восстановление после потери или повреждения метаданных в кластере ClickHouse Keeper {#recovery-when-metadata-in-the-zookeeper-cluster-is-lost-or-damaged}
+## Восстановление после потери или повреждения метаданных в кластере ClickHouse Keeper \\{#recovery-when-metadata-in-the-zookeeper-cluster-is-lost-or-damaged\\}
 
 Если данные в ClickHouse Keeper были утеряны или повреждены, вы можете сохранить их, переместив в нереплицируемую таблицу, как описано выше.
 

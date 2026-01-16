@@ -8,7 +8,7 @@ title: 'システムテーブルの概要'
 doc_type: 'reference'
 ---
 
-## システムテーブルの概要 {#system-tables-introduction}
+## システムテーブルの概要 \\{#system-tables-introduction\\}
 
 システムテーブルは以下の情報を提供します:
 
@@ -58,7 +58,7 @@ doc_type: 'reference'
 
 デフォルトでは、テーブルの成長に上限はありません。テーブルサイズを制御するには、古くなったログレコードを削除するための [TTL](/sql-reference/statements/alter/ttl) 設定を使用できます。また、`MergeTree` エンジンを使用するテーブルのパーティション機能を利用することもできます。
 
-## システムメトリクスの取得元 {#system-tables-sources-of-system-metrics}
+## システムメトリクスの取得元 \\{#system-tables-sources-of-system-metrics\\}
 
 システムメトリクスを収集するために、ClickHouse サーバーは次を使用します。
 
@@ -84,7 +84,7 @@ procfs がシステムでサポートされていて有効化されている場�
 `sudo sysctl kernel.task_delayacct=1` を実行するか、`/etc/sysctl.d/` に `kernel.task_delayacct = 1` を含む `.conf` ファイルを作成することで有効にできます。
 :::
 
-## ClickHouse Cloud における system テーブル {#system-tables-in-clickhouse-cloud}
+## ClickHouse Cloud における system テーブル \\{#system-tables-in-clickhouse-cloud\\}
 
 ClickHouse Cloud では、system テーブルは自己管理型デプロイメントの場合と同様に、サービスの状態とパフォーマンスに関する重要な洞察を提供します。いくつかの system テーブルは、特に分散メタデータを管理する Keeper ノードからデータを取得するものについては、クラスタ全体で動作します。これらのテーブルはクラスタの集合的な状態を反映しており、個々のノードでクエリした場合にも結果が整合している必要があります。たとえば、[`parts`](/operations/system-tables/parts) は、どのノードからクエリしても一貫した結果が得られる必要があります。
 
@@ -144,7 +144,7 @@ SHOW TABLES FROM system LIKE 'query_log%'
 11 rows in set. Elapsed: 0.004 sec.
 ```
 
-### 複数バージョンにまたがるクエリ {#querying-multiple-versions}
+### 複数バージョンにまたがるクエリ \\{#querying-multiple-versions\\}
 
 [`merge`](/sql-reference/table-functions/merge) 関数を使用すると、これらのテーブルをまたいでクエリを実行できます。たとえば、次のクエリは、各 `query_log` テーブル内で対象ノードに対して発行された最新のクエリを特定します。
 

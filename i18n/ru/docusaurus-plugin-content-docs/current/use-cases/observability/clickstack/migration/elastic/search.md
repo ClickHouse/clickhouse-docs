@@ -15,7 +15,7 @@ import hyperdx_search from '@site/static/images/use-cases/observability/hyperdx-
 import hyperdx_sql from '@site/static/images/use-cases/observability/hyperdx-sql.png';
 
 
-## Поиск в ClickStack и Elastic {#search-in-clickstack-and-elastic}
+## Поиск в ClickStack и Elastic \\{#search-in-clickstack-and-elastic\\}
 
 ClickHouse — это нативный SQL-движок, изначально спроектированный для высокопроизводительных аналитических нагрузок. В отличие от него, Elasticsearch предоставляет SQL-подобный интерфейс, который транслирует SQL в базовый Elasticsearch query DSL — то есть SQL не является для него языком первого класса, и [функциональный паритет](https://www.elastic.co/docs/explore-analyze/query-filter/languages/sql-limitations) ограничен. 
 
@@ -31,7 +31,7 @@ ClickHouse не только полностью поддерживает SQL, н
 
 Ниже мы сравниваем языки запросов в стиле Lucene в ClickStack и Elasticsearch.
 
-## Синтаксис поиска ClickStack vs Elasticsearch query string {#hyperdx-vs-elasticsearch-query-string}
+## Синтаксис поиска ClickStack vs Elasticsearch query string \\{#hyperdx-vs-elasticsearch-query-string\\}
 
 И HyperDX, и Elasticsearch предоставляют гибкие языки запросов для интуитивной фильтрации логов и трассировок. Хотя query string в Elasticsearch тесно интегрирован с его DSL и движком индексирования, HyperDX поддерживает синтаксис, вдохновлённый Lucene, который под капотом транслируется в ClickHouse SQL. В таблице ниже показано, как распространённые шаблоны поиска работают в обеих системах, с акцентом на сходство синтаксиса и различия в выполнении на стороне бэкенда.
 
@@ -57,7 +57,7 @@ ClickHouse не только полностью поддерживает SQL, н
 | Field wildcard          | `service.*:error` | `service.*:error` | В настоящее время не поддерживается в HyperDX. |
 | Escaped special chars   | Escape reserved characters with `\` | Same      | Для зарезервированных символов требуется экранирование. |
 
-## Отличия между существующими и отсутствующими значениями {#empty-value-differences}
+## Отличия между существующими и отсутствующими значениями \\{#empty-value-differences\\}
 
 В отличие от Elasticsearch, где поле может быть полностью опущено в событии и, следовательно, действительно «не существовать», в ClickHouse требуется наличие всех столбцов, определённых в схеме таблицы. Если поле не указано в событии при вставке:
 

@@ -6,11 +6,11 @@ title: 'system.mutations'
 doc_type: 'reference'
 ---
 
-# system.mutations {#systemmutations}
+# system.mutations \\{#systemmutations\\}
 
 このテーブルには、[MergeTree](/engines/table-engines/mergetree-family/mergetree.md) テーブルに対する[ミューテーション](/sql-reference/statements/alter/index.md#mutations)と、その進行状況に関する情報が含まれます。各ミューテーションコマンドは 1 行で表現されます。
 
-## Columns: {#columns}
+## Columns: \\{#columns\\}
 
 - `database` ([String](/sql-reference/data-types/string.md)) — ミューテーションが適用されたデータベースの名前。
 - `table` ([String](/sql-reference/data-types/string.md)) — ミューテーションが適用されたテーブルの名前。
@@ -41,7 +41,7 @@ doc_type: 'reference'
 - `latest_fail_time` ([DateTime](/sql-reference/data-types/datetime.md)) — 最新のパートミューテーション失敗の日時。
 - `latest_fail_reason` ([String](/sql-reference/data-types/string.md)) — 最新のパートミューテーション失敗の原因となった例外メッセージ。
 
-## ミューテーションの監視 {#monitoring-mutations}
+## ミューテーションの監視 \\{#monitoring-mutations\\}
 
 `system.mutations`テーブルで進行状況を追跡するには、以下のクエリを使用します：
 

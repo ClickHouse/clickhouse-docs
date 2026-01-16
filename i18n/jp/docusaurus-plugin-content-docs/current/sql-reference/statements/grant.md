@@ -9,14 +9,14 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# GRANT 文 {#grant-statement}
+# GRANT 文 \\{#grant-statement\\}
 
 - ClickHouse のユーザーアカウントまたはロールに[権限](#privileges)を付与します。
 - ロールをユーザーアカウントまたは他のロールに割り当てます。
 
 権限を取り消すには、[REVOKE](../../sql-reference/statements/revoke.md) 文を使用します。また、付与済みの権限は [SHOW GRANTS](../../sql-reference/statements/show.md#show-grants) 文で一覧表示できます。
 
-## 権限付与の構文 {#granting-privilege-syntax}
+## 権限付与の構文 \\{#granting-privilege-syntax\\}
 
 ```sql
 GRANT [ON CLUSTER cluster_name] privilege[(column_name [,...])] [,...] ON {db.table[*]|db[*].*|*.*|table[*]|*} TO {user | role | CURRENT_USER} [,...] [WITH GRANT OPTION] [WITH REPLACE OPTION]
@@ -29,7 +29,7 @@ GRANT [ON CLUSTER cluster_name] privilege[(column_name [,...])] [,...] ON {db.ta
 `WITH GRANT OPTION` 句は、`user` または `role` に `GRANT` クエリを実行する権限を付与します。ユーザーは、自分が持つスコープと同じ、またはそれよりも狭いスコープの権限を付与できます。
 `WITH REPLACE OPTION` 句は、`user` または `role` に対する既存の権限を新しい権限に置き換えます。指定しない場合は、権限が追加されます。
 
-## ロール割り当ての構文 {#assigning-role-syntax}
+## ロール割り当ての構文 \\{#assigning-role-syntax\\}
 
 ```sql
 GRANT [ON CLUSTER cluster_name] role [,...] TO {user | another_role | CURRENT_USER} [,...] [WITH ADMIN OPTION] [WITH REPLACE OPTION]
@@ -41,7 +41,7 @@ GRANT [ON CLUSTER cluster_name] role [,...] TO {user | another_role | CURRENT_US
 `WITH ADMIN OPTION` 句は、`user` または `role` に [ADMIN OPTION](#admin-option) 権限を付与します。
 `WITH REPLACE OPTION` 句は、`user` または `role` に対して既存のロールを新しいロールに置き換えます。指定されていない場合は、既存のロールにロールを追加します。
 
-## GRANT CURRENT GRANTS 構文 {#grant-current-grants-syntax}
+## GRANT CURRENT GRANTS 構文 \\{#grant-current-grants-syntax\\}
 
 ```sql
 GRANT CURRENT GRANTS{(privilege[(column_name [,...])] [,...] ON {db.table|db.*|*.*|table|*}) | ON {db.table|db.*|*.*|table|*}} TO {user | role | CURRENT_USER} [,...] [WITH GRANT OPTION] [WITH REPLACE OPTION]
@@ -54,7 +54,7 @@ GRANT CURRENT GRANTS{(privilege[(column_name [,...])] [,...] ON {db.table|db.*|*
 `CURRENT GRANTS` ステートメントを使用すると、指定したユーザーまたはロールに、指定したすべての権限を付与できます。
 権限が 1 つも指定されていない場合、そのユーザーまたはロールには、`CURRENT_USER` に対して利用可能なすべての権限が付与されます。
 
-## 使用方法 {#usage}
+## 使用方法 \\{#usage\\}
 
 `GRANT` を使用するには、アカウントに `GRANT OPTION` 権限が付与されている必要があります。アカウントに付与されている権限の範囲内でのみ権限を付与できます。
 
@@ -83,7 +83,7 @@ GRANT SELECT(x,y) ON db.table TO john WITH GRANT OPTION
 
 1 つのクエリで複数のアカウントに複数の権限を付与できます。`GRANT SELECT, INSERT ON *.* TO john, robin` クエリは、アカウント `john` と `robin` に、サーバー上のすべてのデータベース内のすべてのテーブルに対して `INSERT` および `SELECT` クエリを実行することを許可します。
 
-## ワイルドカードによる権限付与 {#wildcard-grants}
+## ワイルドカードによる権限付与 \\{#wildcard-grants\\}
 
 権限を指定する際、テーブル名やデータベース名の代わりにアスタリスク（`*`）を使用できます。たとえば、`GRANT SELECT ON db.* TO john` クエリは、データベース `db` 内のすべてのテーブルに対して、`john` が `SELECT` クエリを実行できるようにします。
 また、データベース名を省略することもできます。この場合、権限は現在のデータベースに対して付与されます。
@@ -134,7 +134,7 @@ GRANT SELECT ON *suffix TO john -- wrong
 GRANT SELECT(foo) ON db.table* TO john -- wrong
 ```
 
-## 権限 {#privileges}
+## 権限 \\{#privileges\\}
 
 権限とは、ユーザーに対して特定の種類のクエリを実行することを許可するものです。
 
@@ -375,7 +375,7 @@ ClickHouse における権限の階層は次のとおりです。
 
 一部のクエリは、その実装上、一連の権限を必要とします。たとえば、[RENAME](../../sql-reference/statements/optimize.md) クエリを実行するには、`SELECT`、`CREATE TABLE`、`INSERT`、`DROP TABLE` の各権限が必要です。
 
-### SELECT {#select}
+### SELECT \\{#select\\}
 
 [SELECT](../../sql-reference/statements/select/index.md) クエリの実行を許可します。
 
@@ -393,7 +393,7 @@ GRANT SELECT(x,y) ON db.table TO john
 
 この権限により、`john` は `db.table` の `x` カラムおよび/または `y` カラムのデータを含む任意の `SELECT` クエリを実行できます。たとえば、`SELECT x FROM db.table` です。`john` は `SELECT z FROM db.table` を実行することはできません。`SELECT * FROM db.table` も実行できません。このクエリを処理する際、ClickHouse は `x` や `y` であっても一切データを返しません。唯一の例外は、テーブルが `x` と `y` カラムのみを含む場合であり、この場合は ClickHouse はすべてのデータを返します。
 
-### INSERT {#insert}
+### INSERT \\{#insert\\}
 
 [INSERT](../../sql-reference/statements/insert-into.md) クエリの実行を許可します。
 
@@ -411,7 +411,7 @@ GRANT INSERT(x,y) ON db.table TO john
 
 付与された権限により、`john` は `db.table` の `x` カラムおよび `y` カラムの一方または両方にデータを挿入できます。
 
-### ALTER {#alter}
+### ALTER \\{#alter\\}
 
 以下の権限階層に基づいて [ALTER](../../sql-reference/statements/alter/index.md) クエリを実行できます。
 
@@ -459,11 +459,11 @@ GRANT INSERT(x,y) ON db.table TO john
 - `DETACH` 操作には [DROP](#drop) 権限が必要です。
 - [KILL MUTATION](../../sql-reference/statements/kill.md#kill-mutation) クエリでミューテーションを停止するには、そのミューテーションを開始する権限が必要です。たとえば、`ALTER UPDATE` クエリを停止したい場合は、`ALTER UPDATE`、`ALTER TABLE`、または `ALTER` 権限が必要です。
 
-### BACKUP {#backup}
+### BACKUP \\{#backup\\}
 
 クエリ内で [`BACKUP`] を実行できるようにします。バックアップの詳細については「[Backup and Restore](/operations/backup/overview)」を参照してください。
 
-### CREATE {#create}
+### CREATE \\{#create\\}
 
 次の権限階層に従って、[CREATE](../../sql-reference/statements/create/index.md) および [ATTACH](../../sql-reference/statements/attach.md) の DDL クエリを実行できます：
 
@@ -479,7 +479,7 @@ GRANT INSERT(x,y) ON db.table TO john
 
 - 作成したテーブルを削除するには、ユーザーは [DROP](#drop) 権限が必要です。
 
-### CLUSTER {#cluster}
+### CLUSTER \\{#cluster\\}
 
 `ON CLUSTER` 付きクエリを実行できるようにします。
 
@@ -502,7 +502,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 </access_control_improvements>
 ```
 
-### DROP {#drop}
+### DROP \\{#drop\\}
 
 次の権限階層に従って、[DROP](../../sql-reference/statements/drop.md) および [DETACH](../../sql-reference/statements/detach.md) クエリの実行を許可します。
 
@@ -512,19 +512,19 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
   - `DROP VIEW`。レベル: `VIEW`
   - `DROP DICTIONARY`。レベル: `DICTIONARY`
 
-### TRUNCATE {#truncate}
+### TRUNCATE \\{#truncate\\}
 
 [TRUNCATE](../../sql-reference/statements/truncate.md) クエリを実行できます。
 
 権限レベル: `TABLE`。
 
-### OPTIMIZE {#optimize}
+### OPTIMIZE \\{#optimize\\}
 
 [OPTIMIZE TABLE](../../sql-reference/statements/optimize.md) クエリの実行を許可します。
 
 権限レベル: `TABLE`。
 
-### SHOW {#show}
+### SHOW \\{#show\\}
 
 `SHOW`、`DESCRIBE`、`USE`、`EXISTS` クエリを、次の権限階層に従って実行できるようにします。
 
@@ -538,7 +538,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 ユーザーは、指定されたテーブル、dictionary、またはデータベースに関するいずれかの権限を持っている場合、`SHOW` 権限を持っているとみなされます。
 
-### KILL QUERY {#kill-query}
+### KILL QUERY \\{#kill-query\\}
 
 [KILL](../../sql-reference/statements/kill.md#kill-query) クエリを、次の権限レベルの階層に従って実行できます：
 
@@ -548,7 +548,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 `KILL QUERY` 権限により、あるユーザーが他のユーザーのクエリを強制終了できます。
 
-### ACCESS MANAGEMENT {#access-management}
+### ACCESS MANAGEMENT \\{#access-management\\}
 
 ユーザーが、ユーザー、ロール、および行ポリシーを管理するためのクエリを実行できるようにします。
 
@@ -579,7 +579,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 `ROLE ADMIN` 権限により、ユーザーは、自身に admin オプション付きで付与されていないロールも含め、任意のロールを付与および取り消すことができます。
 
-### SYSTEM {#system}
+### SYSTEM \\{#system\\}
 
 ユーザーが次の権限の階層構造に従って [SYSTEM](../../sql-reference/statements/system.md) クエリを実行できるようにします。
 
@@ -609,7 +609,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 
 `SYSTEM RELOAD EMBEDDED DICTIONARIES` 権限は、`SYSTEM RELOAD DICTIONARY ON *.*` 権限によって暗黙的に付与されます。
 
-### INTROSPECTION {#introspection}
+### INTROSPECTION \\{#introspection\\}
 
 [イントロスペクション](../../operations/optimizing-performance/sampling-query-profiler.md) 関数の使用を許可します。
 
@@ -619,7 +619,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
   - `addressToSymbol`. Level: `GLOBAL`
   - `demangle`. Level: `GLOBAL`
 
-### SOURCES {#sources}
+### SOURCES \\{#sources\\}
 
 外部データソースを使用できるようにします。[テーブルエンジン](../../engines/table-engines/index.md) および [テーブル関数](/sql-reference/table-functions) に適用されます。
 
@@ -659,7 +659,7 @@ Not enough privileges. To execute this query, it's necessary to have the grant C
 - [MySQL テーブルエンジン](../../engines/table-engines/integrations/mysql.md) を使用してテーブルを作成するには、`CREATE TABLE (ON db.table_name)` と `MYSQL` 権限が必要です。
 - [mysql テーブル関数](../../sql-reference/table-functions/mysql.md) を使用するには、`CREATE TEMPORARY TABLE` と `MYSQL` 権限が必要です。
 
-### ソースフィルター権限 {#source-filter-grants}
+### ソースフィルター権限 \\{#source-filter-grants\\}
 
 :::note
 この機能はバージョン 25.8 以降で利用可能であり、サーバー設定
@@ -731,7 +731,7 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 * **部分的な取り消しはできません:** 付与したフィルターパターンの一部だけを取り消すことはできません。必要な場合は、付与全体をいったん取り消し、新しいパターンで改めて付与する必要があります。
 * **ワイルドカードを使用した GRANT はできません:** `GRANT READ ON *('regexp')` のような、ワイルドカードのみを用いたパターンは使用できません。必ず特定のソースを指定する必要があります。
 
-### dictGet {#dictget}
+### dictGet \\{#dictget\\}
 
 - `dictGet` エイリアス: `dictHas`, `dictGetHierarchy`, `dictIsIn`
 
@@ -744,7 +744,7 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 - `GRANT dictGet ON mydb.mydictionary TO john`
 - `GRANT dictGet ON mydictionary TO john`
 
-### displaySecretsInShowAndSelect {#displaysecretsinshowandselect}
+### displaySecretsInShowAndSelect \\{#displaysecretsinshowandselect\\}
 
 `SHOW` および `SELECT` クエリでシークレットを表示できるようにします。ただし、
 [`display_secrets_in_show_and_select` サーバー設定](../../operations/server-configuration-parameters/settings#display_secrets_in_show_and_select)
@@ -752,7 +752,7 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 [`format_display_secrets_in_show_and_select` フォーマット設定](../../operations/settings/formats#format_display_secrets_in_show_and_select)
 の両方が有効になっている必要があります。
 
-### NAMED COLLECTION ADMIN {#named-collection-admin}
+### NAMED COLLECTION ADMIN \\{#named-collection-admin\\}
 
 指定した named collection に対する特定の操作を許可します。バージョン 23.7 より前は NAMED COLLECTION CONTROL と呼ばれており、23.7 以降では NAMED COLLECTION ADMIN が追加され、NAMED COLLECTION CONTROL はエイリアスとして保持されています。
 
@@ -772,7 +772,7 @@ named collection の名前が abc であると仮定し、ユーザー john に�
 
 - `GRANT CREATE NAMED COLLECTION ON abc TO john`
 
-### TABLE ENGINE {#table-engine}
+### TABLE ENGINE \\{#table-engine\\}
 
 テーブルを作成する際に、指定したテーブルエンジンを使用してテーブルを作成できます。[テーブルエンジン](../../engines/table-engines/index.md)に対して適用されます。
 
@@ -786,7 +786,7 @@ named collection の名前が abc であると仮定し、ユーザー john に�
 ただし、config.xml で [`table_engines_require_grant` を true に設定](https://github.com/ClickHouse/ClickHouse/blob/df970ed64eaf472de1e7af44c21ec95956607ebb/programs/server/config.xml#L853-L855)することで、この動作を変更できます。
 :::
 
-### ALL {#all}
+### ALL \\{#all\\}
 
 <CloudNotSupportedBadge/>
 
@@ -797,10 +797,10 @@ named collection の名前が abc であると仮定し、ユーザー john に�
 また、`default` ユーザーとして `GRANT CURRENT GRANTS` を使用することで、`ALL` と同様の効果を得ることもできます。
 :::
 
-### NONE {#none}
+### NONE \\{#none\\}
 
 権限は一切付与されません。
 
-### ADMIN OPTION {#admin-option}
+### ADMIN OPTION \\{#admin-option\\}
 
 `ADMIN OPTION` 権限を持つユーザーは、自身のロールを他のユーザーに付与できます。

@@ -7,7 +7,7 @@ title: '键表达式操作'
 doc_type: 'reference'
 ---
 
-# 键表达式操作 {#manipulating-key-expressions}
+# 键表达式操作 \\{#manipulating-key-expressions\\}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY ORDER BY new_expression

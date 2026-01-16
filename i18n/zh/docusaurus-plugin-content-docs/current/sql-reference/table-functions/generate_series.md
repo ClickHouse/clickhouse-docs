@@ -7,11 +7,11 @@ description: '返回一个只有名为 `generate_series` 的单列（UInt64）�
 doc_type: 'reference'
 ---
 
-# generate&#95;series 表函数 {#generate&#95;series-table-function}
+# generate&#95;series 表函数 \\{#generate&#95;series-table-function\\}
 
 别名：`generateSeries`
 
-## 语法 {#syntax}
+## 语法 \\{#syntax\\}
 
 返回一个仅包含单列 &#39;generate&#95;series&#39;（类型为 `UInt64`）的表，该列的取值为从 start 到 stop（含端点）的整数：
 
@@ -25,7 +25,7 @@ generate_series(START, STOP)
 generate_series(START, STOP, STEP)
 ```
 
-## 示例 {#examples}
+## 示例 \\{#examples\\}
 
 以下查询返回的表内容相同，但列名不同：
 

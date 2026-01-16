@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Движок таблицы StripeLog {#stripelog-table-engine}
+# Движок таблицы StripeLog \\{#stripelog-table-engine\\}
 
 <CloudNotSupportedBadge/>
 
@@ -17,7 +17,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 Используйте этот движок в сценариях, когда необходимо создавать большое количество таблиц с небольшим объёмом данных (менее 1 миллиона строк). Например, такую таблицу можно использовать для хранения входящих пакетов данных для последующей трансформации, когда требуется их атомарная обработка. До 100 тыс. экземпляров таблиц этого типа являются нормальной конфигурацией для одного сервера ClickHouse. Этот табличный движок следует предпочесть движку [Log](./log.md), когда требуется большое количество таблиц, однако это происходит за счёт эффективности чтения.
 
-## Создание таблицы {#table_engines-stripelog-creating-a-table}
+## Создание таблицы \\{#table_engines-stripelog-creating-a-table\\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -30,7 +30,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 См. подробное описание запроса [CREATE TABLE](/sql-reference/statements/create/table).
 
-## Запись данных {#table_engines-stripelog-writing-the-data}
+## Запись данных \\{#table_engines-stripelog-writing-the-data\\}
 
 Движок `StripeLog` хранит все столбцы в одном файле. Для каждого запроса `INSERT` ClickHouse добавляет блок данных в конец файла таблицы, записывая столбцы по отдельности.
 
@@ -41,11 +41,11 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Движок `StripeLog` не поддерживает операции `ALTER UPDATE` и `ALTER DELETE`.
 
-## Чтение данных {#table_engines-stripelog-reading-the-data}
+## Чтение данных \\{#table_engines-stripelog-reading-the-data\\}
 
 Файл с метками позволяет ClickHouse параллелизировать чтение данных. Это означает, что запрос `SELECT` возвращает строки в непредсказуемом порядке. Используйте оператор `ORDER BY` для сортировки строк.
 
-## Пример использования {#table_engines-stripelog-example-of-use}
+## Пример использования \\{#table_engines-stripelog-example-of-use\\}
 
 Создание таблицы:
 

@@ -7,9 +7,9 @@ sidebar_label: 'uniqArrayIf'
 doc_type: 'reference'
 ---
 
-# uniqArrayIf {#uniqarrayif}
+# uniqArrayIf \\{#uniqarrayif\\}
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 可以将 [`Array`](/sql-reference/aggregate-functions/combinators#-array) 和 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器应用于 [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
 函数，通过 `uniqArrayIf` 聚合组合器函数，在条件为 true 的行中统计数组中唯一值的数量。
@@ -20,9 +20,9 @@ doc_type: 'reference'
 
 当需要根据特定条件统计数组中的唯一元素且不想使用 `arrayJoin` 时，此函数非常有用。
 
-## 使用示例 {#example-usage}
+## 使用示例 \\{#example-usage\\}
 
-### 按用户分群类型和参与度等级统计浏览过的唯一产品数量 {#count-unique-products}
+### 按用户分群类型和参与度等级统计浏览过的唯一产品数量 \\{#count-unique-products\\}
 
 在本示例中，我们将使用一张包含用户购物会话数据的表，来统计属于特定用户分群、且其参与度以会话停留时间度量的用户所浏览的唯一产品数量。
 
@@ -74,7 +74,7 @@ returning_customer_products: 2
 total_unique_products:       7
 ```
 
-## 另请参阅 {#see-also}
+## 另请参阅 \\{#see-also\\}
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
 - [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

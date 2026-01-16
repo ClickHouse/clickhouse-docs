@@ -5,7 +5,7 @@ title: 'quantilesExactExclusive'
 doc_type: 'reference'
 ---
 
-## quantilesExactExclusive {#quantilesexactexclusive}
+## quantilesExactExclusive \{#quantilesexactexclusive\}
 
 数値データ列の[分位数](https://en.wikipedia.org/wiki/Quantile)を厳密に計算します。
 

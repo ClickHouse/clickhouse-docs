@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## 概要 {#description}
+## 概要 \\{#description\\}
 
 `JSONCompactStrings` フォーマットは、データ行がオブジェクトではなく配列として出力されるという点だけが、[JSONStrings](./JSONStrings.md) と異なります。
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
-### データの読み込み {#reading-data}
+### データの読み込み \\{#reading-data\\}
 
 `JSONCompactStrings` フォーマットを使用してデータを読み込みます。
 
@@ -93,4 +93,4 @@ FORMAT JSONCompactStrings
 }
 ```
 
-## 書式設定 {#format-settings}
+## 書式設定 \\{#format-settings\\}

@@ -7,7 +7,7 @@ title: 'Variant(T1, T2, ...)'
 doc_type: 'reference'
 ---
 
-# Variant(T1, T2, ...) {#variantt1-t2}
+# Variant(T1, T2, ...) \\{#variantt1-t2\\}
 
 此类型表示由其他数据类型构成的联合类型。类型 `Variant(T1, T2, ..., TN)` 表示该类型的每一行都包含一个值，该值要么是类型 `T1`，要么是 `T2`，……，要么是 `TN`，或者都不是（即为 `NULL` 值）。
 
@@ -19,7 +19,7 @@ doc_type: 'reference'
 因为处理这类类型的值可能会导致歧义。默认情况下，创建此类 `Variant` 类型会抛出异常，但可以通过设置 `allow_suspicious_variant_types` 来放宽此限制。
 :::
 
-## 创建 Variant 类型 {#creating-variant}
+## 创建 Variant 类型 \\{#creating-variant\\}
 
 在表的列定义中使用 `Variant` 类型：
 
@@ -110,7 +110,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 ```
 
 
-## 以子列形式读取 Variant 中的嵌套类型 {#reading-variant-nested-types-as-subcolumns}
+## 以子列形式读取 Variant 中的嵌套类型 \\{#reading-variant-nested-types-as-subcolumns\\}
 
 Variant 类型支持使用类型名作为子列，从 Variant 列中读取单个嵌套类型。
 因此，如果有列 `variant Variant(T1, T2, T3)`，可以使用语法 `variant.T2` 读取类型为 `T2` 的子列。
@@ -191,11 +191,11 @@ SELECT toTypeName(variantType(v)) FROM test LIMIT 1;
 ```
 
 
-## 在 Variant 列与其他列之间进行转换 {#conversion-between-a-variant-column-and-other-columns}
+## 在 Variant 列与其他列之间进行转换 \\{#conversion-between-a-variant-column-and-other-columns\\}
 
 对于类型为 `Variant` 的列，可以执行 4 种转换。
 
-### 将 String 列转换为 Variant 列 {#converting-a-string-column-to-a-variant-column}
+### 将 String 列转换为 Variant 列 \\{#converting-a-string-column-to-a-variant-column\\}
 
 从 `String` 到 `Variant` 的转换是通过从字符串值中解析出一个 `Variant` 类型的值来完成的：
 
@@ -243,7 +243,7 @@ SELECT '[1, 2, 3]'::Variant(String, Array(UInt64)) as variant, variantType(varia
 ```
 
 
-### Converting an ordinary column to a Variant column {#converting-an-ordinary-column-to-a-variant-column}
+### Converting an ordinary column to a Variant column \\{#converting-an-ordinary-column-to-a-variant-column\\}
 
 It is possible to convert an ordinary column with type `T` to a `Variant` column containing this type:
 
@@ -270,7 +270,7 @@ SELECT '[1, 2, 3]'::Variant(String)::Variant(String, Array(UInt64), UInt64) as v
 ```
 
 
-### Converting a Variant column to an ordinary column {#converting-a-variant-column-to-an-ordinary-column}
+### Converting a Variant column to an ordinary column \\{#converting-a-variant-column-to-an-ordinary-column\\}
 
 It is possible to convert a `Variant` column to an ordinary column. In this case all nested variants will be converted to a destination type:
 
@@ -289,7 +289,7 @@ SELECT v::Nullable(Float64) FROM test;
 ```
 
 
-### 将一个 Variant 转换为另一个 Variant {#converting-a-variant-to-another-variant}
+### 将一个 Variant 转换为另一个 Variant \\{#converting-a-variant-to-another-variant\\}
 
 It is possible to convert a `Variant` column to another `Variant` column, but only if the destination `Variant` column contains all nested types from the original `Variant`:
 
@@ -308,7 +308,7 @@ SELECT v::Variant(UInt64, String, Array(UInt64)) FROM test;
 ```
 
 
-## Reading Variant type from the data {#reading-variant-type-from-the-data}
+## Reading Variant type from the data \\{#reading-variant-type-from-the-data\\}
 
 All text formats (TSV, CSV, CustomSeparated, Values, JSONEachRow, etc) supports reading `Variant` type. During data parsing ClickHouse tries to insert value into most appropriate variant type.
 
@@ -342,7 +342,7 @@ $$)
 ```
 
 
-## Comparing values of Variant type {#comparing-values-of-variant-data}
+## Comparing values of Variant type \\{#comparing-values-of-variant-data\\}
 
 Values of a `Variant` type can be compared only with values with the same `Variant` type.
 
@@ -472,7 +472,7 @@ SELECT v, variantType(v) FROM test ORDER by v;
 **Note** by default `Variant` type is not allowed in `GROUP BY`/`ORDER BY` keys, if you want to use it consider its special comparison rule and enable `allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by` settings.
 
 
-## JSONExtract functions with Variant {#jsonextract-functions-with-variant}
+## JSONExtract functions with Variant \\{#jsonextract-functions-with-variant\\}
 
 All `JSONExtract*` functions support `Variant` type:
 
@@ -507,7 +507,7 @@ SELECT JSONExtractKeysAndValues('{"a" : 42, "b" : "Hello", "c" : [1,2,3]}', 'Var
 ```
 
 
-## 带有 Variant 参数的函数 {#functions-with-variant-arguments}
+## 带有 Variant 参数的函数 \\{#functions-with-variant-arguments\\}
 
 ClickHouse 中的大多数函数会通过 **针对 Variant 的默认实现** 自动支持 `Variant` 类型参数。
 从 `26.1` 版本开始，当某个函数没有显式处理 Variant 类型却接收到一个 Variant 列时，ClickHouse 会：

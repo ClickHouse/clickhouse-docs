@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Upsonic と ClickHouse MCP Server を使って AI エージェントを構築する方法 {#how-to-build-an-ai-agent-with-upsonic-and-the-clickhouse-mcp-server}
+# Upsonic と ClickHouse MCP Server を使って AI エージェントを構築する方法 \\{#how-to-build-an-ai-agent-with-upsonic-and-the-clickhouse-mcp-server\\}
 
 このガイドでは、[ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を使用して [ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる [Upsonic](https://github.com/Upsonic/Upsonic/tree/master) 製 AI エージェントの構築方法を説明します。
 
@@ -18,7 +18,7 @@ doc_type: 'guide'
 このサンプルは、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/upsonic/upsonic.ipynb) にあるノートブックとして利用できます。
 :::
 
-## 前提条件 {#prerequisites}
+## 前提条件 \\{#prerequisites\\}
 
 - 環境に Python がインストールされている必要があります。
 - 環境に `pip` がインストールされている必要があります。

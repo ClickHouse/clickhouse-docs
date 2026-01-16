@@ -13,12 +13,12 @@ doc_type: 'guide'
 |------|-------|-----------------------------------|
 | ✗    | ✔     | `PrettyJSONLines`, `PrettyNDJSON` |
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Отличается от [JSONEachRow](./JSONEachRow.md) только тем, что JSON форматируется в читабельном виде с разделением по строкам и отступом в 4 пробела.
 
-## Пример использования {#example-usage}
-### Вставка данных {#inserting-data}
+## Пример использования \\{#example-usage\\}
+### Вставка данных \\{#inserting-data\\}
 
 Используем JSON-файл `football.json` со следующими данными:
 
@@ -167,7 +167,7 @@ doc_type: 'guide'
 INSERT INTO football FROM INFILE 'football.json' FORMAT PrettyJSONEachRow;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных \\{#reading-data\\}
 
 Прочитайте данные, используя формат `PrettyJSONEachRow`:
 
@@ -320,4 +320,4 @@ FORMAT PrettyJSONEachRow
 
 
 
-## Параметры форматирования {#format-settings}
+## Параметры форматирования \\{#format-settings\\}

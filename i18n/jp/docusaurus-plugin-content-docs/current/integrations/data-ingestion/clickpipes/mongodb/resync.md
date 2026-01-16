@@ -13,7 +13,7 @@ integration:
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
 import Image from '@theme/IdealImage';
 
-### Resync は何を行いますか？ {#what-mongodb-resync-do}
+### Resync は何を行いますか？ \\{#what-mongodb-resync-do\\}
 
 Resync では、次の処理がこの順序で実行されます。
 
@@ -24,14 +24,14 @@ Resync では、次の処理がこの順序で実行されます。
 
 元の ClickPipe のすべての設定は Resync ClickPipe に引き継がれます。元の ClickPipe の統計情報は UI 上でクリアされます。
 
-### ClickPipe を Resync するユースケース {#use-cases-mongodb-resync}
+### ClickPipe を Resync するユースケース \\{#use-cases-mongodb-resync\\}
 
 次のようなシナリオが考えられます。
 
 1. 既存の ClickPipe が動作しなくなるような大きなスキーマ変更をソーステーブルに対して行う必要があり、再起動が必要になる場合があります。この場合は、変更を行った後に Resync をクリックするだけでかまいません。
 2. 特に ClickHouse の場合、ターゲットテーブルの ORDER BY キーを変更する必要があるかもしれません。そのような場合は、Resync によって新しいテーブルに正しいソートキーでデータを再投入できます。
 
-### Resync ClickPipe ガイド {#guide-mongodb-resync}
+### Resync ClickPipe ガイド \\{#guide-mongodb-resync\\}
 
 1. **Data Sources** タブで、Resync を実行したい MongoDB ClickPipe をクリックします。
 2. **Settings** タブに移動します。

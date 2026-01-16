@@ -17,7 +17,7 @@ import finish_import from '@site/static/images/clickstack/kafka/import-kafka-das
 import example_dashboard from '@site/static/images/clickstack/kafka/kafka-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Мониторинг метрик Kafka с помощью ClickStack {#kafka-metrics-clickstack}
+# Мониторинг метрик Kafka с помощью ClickStack \\{#kafka-metrics-clickstack\\}
 
 :::note[TL;DR]
 В этом руководстве показано, как отслеживать метрики производительности Apache Kafka с помощью ClickStack, используя OpenTelemetry JMX Metric Gatherer. Вы узнаете, как:
@@ -31,13 +31,13 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 Требуемое время: 10–15 минут
 :::
 
-## Интеграция с существующим развертыванием Kafka {#existing-kafka}
+## Интеграция с существующим развертыванием Kafka \\{#existing-kafka\\}
 
 Мониторьте существующее развертывание Kafka, запустив контейнер OpenTelemetry JMX Metric Gatherer для сбора метрик и их отправки в ClickStack по OTLP.
 
 Если вы хотите сначала протестировать эту интеграцию, не изменяя существующее развертывание, перейдите к [разделу с демонстрационным набором данных](#demo-dataset).
 
-##### Предварительные требования {#prerequisites}
+##### Предварительные требования \\{#prerequisites\\}
 
 - Запущенный экземпляр ClickStack
 - Развернутая Kafka версии 2.0 или новее с включенным JMX
@@ -215,7 +215,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### Загрузите пример набора данных с метриками {#download-sample}
+#### Загрузите пример набора данных с метриками \\{#download-sample\\}
 
 Скачайте заранее сгенерированные файлы метрик (29 часов метрик Kafka с реалистичными шаблонами):
 ```bash
@@ -235,7 +235,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - **18:45: Перебалансировка потребителей** — 6× скачок лага во время перебалансировки
 - **20:00-22:00: Вечерний спад** — резкое снижение до ночного уровня
 
-#### Запустите ClickStack {#start-clickstack}
+#### Запустите ClickStack \\{#start-clickstack\\}
 
 Запустите экземпляр ClickStack:
 ```bash
@@ -244,7 +244,7 @@ docker run -d --name clickstack-demo \
   clickhouse/clickstack-all-in-one:latest
 ```
 
-#### Загрузите метрики в ClickStack {#load-metrics}
+#### Загрузите метрики в ClickStack \\{#load-metrics\\}
 
 Загрузите метрики напрямую в ClickHouse:
 ```bash
@@ -257,7 +257,7 @@ cat kafka-metrics-sum.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
 
-#### Проверьте метрики в HyperDX {#verify-demo-metrics}
+#### Проверьте метрики в HyperDX \\{#verify-demo-metrics\\}
 
 После загрузки самый быстрый способ посмотреть метрики — воспользоваться преднастроенным дашбордом.
 
@@ -269,15 +269,15 @@ HyperDX отображает временные метки в локальном
 
 </VerticalStepper>
 
-## Панели и визуализация {#dashboards}
+## Панели и визуализация \\{#dashboards\\}
 
 Чтобы помочь вам начать мониторинг Kafka с помощью ClickStack, мы предоставляем основные визуализации для метрик Kafka.
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/kafka-metrics-dashboard.json')} download="kafka-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию панели {#download}
+#### <TrackedLink href={useBaseUrl('/examples/kafka-metrics-dashboard.json')} download="kafka-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию панели \\{#download\\}
 
-#### Импорт готовой панели {#import-dashboard}
+#### Импорт готовой панели \\{#import-dashboard\\}
 
 1. Откройте HyperDX и перейдите в раздел Dashboards
 2. Нажмите **Import Dashboard** в правом верхнем углу под значком с многоточием
@@ -288,7 +288,7 @@ HyperDX отображает временные метки в локальном
 
 <Image img={finish_import} alt="Диалоговое окно завершения импорта"/>
 
-#### Просмотр панели {#created-dashboard}
+#### Просмотр панели \\{#created-dashboard\\}
 
 Панель будет создана со всеми предварительно настроенными визуализациями:
 
@@ -348,7 +348,7 @@ docker exec kafka bash -c "unset JMX_PORT && kafka-topics --create --topic test-
 echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset JMX_PORT && kafka-console-producer --topic test-topic --bootstrap-server kafka:9092"
 ```
 
-#### Ошибки авторизации {#created-dashboard}
+#### Ошибки авторизации \\{#created-dashboard\\}
 
 Если вы видите `Authorization failed` или `401 Unauthorized`:
 
@@ -361,7 +361,7 @@ docker compose down
 docker compose up -d
 ```
 
-#### Конфликты портов при выполнении команд клиента Kafka {#import-dashboard}
+#### Конфликты портов при выполнении команд клиента Kafka \{#import-dashboard\}
 
 При выполнении команд клиента Kafka внутри контейнера Kafka вы можете увидеть:
 
@@ -375,7 +375,7 @@ docker compose up -d
 docker exec kafka bash -c "unset JMX_PORT && kafka-topics --list --bootstrap-server kafka:9092"
 ```
 
-#### Проблемы с сетевым подключением {#no-metrics}
+#### Проблемы с сетевым подключением \\{#no-metrics\\}
 
 Если в логах экспортера JMX появляется сообщение `Connection refused`:
 
@@ -393,7 +393,7 @@ docker network inspect <имя-сети>
 docker exec <jmx-exporter-container> sh -c "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/clickstack/4318' && echo 'Connected' || echo 'Failed'"
 ```
 
-## Переход в продакшн {#going-to-production}
+## Переход в продакшн \\{#going-to-production\\}
 
 В этом руководстве метрики отправляются напрямую из JMX Metric Gatherer в OTLP-эндпоинт ClickStack, что хорошо подходит для тестирования и небольших развертываний. 
 

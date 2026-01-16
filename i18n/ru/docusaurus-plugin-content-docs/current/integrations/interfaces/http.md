@@ -11,16 +11,16 @@ import PlayUI from '@site/static/images/play.png';
 import Image from '@theme/IdealImage';
 
 
-# HTTP-интерфейс {#http-interface}
+# HTTP-интерфейс \{#http-interface\}
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \\{#prerequisites\\}
 
 Для примеров, приведённых в этой статье, вам потребуется:
 
 - работающий сервер ClickHouse
 - установленный `curl`. В Ubuntu или Debian выполните команду `sudo apt install curl` или обратитесь к этой [документации](https://curl.se/download.html) за инструкциями по установке.
 
-## Обзор {#overview}
+## Обзор \{#overview\}
 
 HTTP-интерфейс позволяет использовать ClickHouse на любой платформе и из любого языка программирования в виде REST API. HTTP-интерфейс более ограничен, чем нативный интерфейс, но обладает более широкой поддержкой языков программирования.
 
@@ -41,7 +41,7 @@ Ok.
 См. также: [Особенности кодов ответа HTTP](#http_response_codes_caveats).
 
 
-## Веб-интерфейс {#web-ui}
+## Веб-интерфейс \{#web-ui\}
 
 ClickHouse включает веб-интерфейс, доступ к которому можно получить по следующему адресу:
 
@@ -68,7 +68,7 @@ Ok.
 ```
 
 
-## Выполнение запросов по HTTP/HTTPS {#querying}
+## Выполнение запросов по HTTP/HTTPS \{#querying\}
 
 Для выполнения запросов по HTTP/HTTPS есть три варианта:
 
@@ -220,11 +220,11 @@ $ curl -X POST -F 'query=select {p1:UInt8} + {p2:UInt8}' -F "param_p1=3" -F "par
 ```
 
 
-## Запросы `INSERT` по HTTP/HTTPS {#insert-queries}
+## Запросы `INSERT` по HTTP/HTTPS \\{#insert-queries\\}
 
 Для запросов `INSERT` используется метод `POST`. В этом случае вы можете записать начальную часть запроса в параметр URL, а данные для вставки передать через POST. Данные для вставки могут представлять собой, например, дамп из MySQL с разделителем табуляции. Таким образом, запрос `INSERT` заменяет в MySQL команду `LOAD DATA LOCAL INFILE`.
 
-### Примеры {#examples}
+### Примеры \{#examples\}
 
 Чтобы создать таблицу:
 
@@ -287,7 +287,7 @@ $ echo 'DROP TABLE t' | curl 'http://localhost:8123/' --data-binary @-
 Для успешных запросов, не возвращающих таблицу данных, возвращается пустое тело ответа.
 
 
-## Сжатие {#compression}
+## Сжатие \\{#compression\\}
 
 Сжатие можно использовать для уменьшения сетевого трафика при передаче больших объёмов данных или для создания дампов, которые сразу сохраняются в сжатом виде.
 
@@ -318,7 +318,7 @@ $ echo 'DROP TABLE t' | curl 'http://localhost:8123/' --data-binary @-
 Некоторые HTTP-клиенты могут по умолчанию распаковывать данные с сервера (для `gzip` и `deflate`), и вы можете получить распакованные данные, даже если используете настройки сжатия корректно.
 :::
 
-## Примеры {#examples-compression}
+## Примеры \{#examples-compression\}
 
 Чтобы отправить сжатые данные на сервер:
 
@@ -350,7 +350,7 @@ curl -sS "http://localhost:8123/?enable_http_compression=1" \
 ```
 
 
-## База данных по умолчанию {#default-database}
+## База данных по умолчанию \{#default-database\}
 
 Вы можете использовать параметр URL `database` или заголовок `X-ClickHouse-Database`, чтобы указать базу данных, используемую по умолчанию.
 
@@ -371,7 +371,7 @@ echo 'SELECT number FROM numbers LIMIT 10' | curl 'http://localhost:8123/?databa
 По умолчанию используется база данных, указанная в настройках сервера. Изначально это база данных `default`. При необходимости вы можете явно указать базу данных, добавив её имя перед именем таблицы через точку.
 
 
-## Аутентификация {#authentication}
+## Аутентификация \{#authentication\}
 
 Имя пользователя и пароль можно указать одним из трёх способов:
 
@@ -432,7 +432,7 @@ $ echo 'SELECT number FROM system.numbers LIMIT 10' | curl 'http://localhost:812
 * [SET](/sql-reference/statements/set)
 
 
-## Использование сессий ClickHouse в протоколе HTTP {#using-clickhouse-sessions-in-the-http-protocol}
+## Использование сессий ClickHouse в протоколе HTTP \{#using-clickhouse-sessions-in-the-http-protocol\}
 
 В протоколе HTTP также можно использовать сессии ClickHouse. Для этого необходимо добавить к запросу параметр `session_id` в `GET`. В качестве идентификатора сессии можно использовать любую строку.
 
@@ -474,7 +474,7 @@ X-ClickHouse-Progress: {"read_rows":"1000000","read_bytes":"8000000","total_rows
 HTTP‑интерфейс позволяет передавать внешние данные (внешние временные таблицы) для обработки запросов. Дополнительные сведения см. в разделе [«External data for query processing»](/engines/table-engines/special/external-data).
 
 
-## Буферизация ответа {#response-buffering}
+## Буферизация ответа \{#response-buffering\}
 
 Буферизацию ответа можно включить на стороне сервера. Для этого предусмотрены следующие параметры URL:
 
@@ -501,7 +501,7 @@ curl -sS 'http://localhost:8123/?max_result_bytes=4000000&buffer_size=3000000&wa
 :::
 
 
-## Установка роли с помощью параметров запроса {#setting-role-with-query-parameters}
+## Установка роли с помощью параметров запроса \{#setting-role-with-query-parameters\}
 
 Эта функция была добавлена в ClickHouse 24.4.
 
@@ -535,7 +535,7 @@ curl -sS "http://localhost:8123?role=my_role&role=my_other_role" --data-binary "
 В этом случае `?role=my_role&role=my_other_role` работает аналогично выполнению `SET ROLE my_role, my_other_role` перед выполнением запроса.
 
 
-## Особенности кодов ответа HTTP {#http_response_codes_caveats}
+## Особенности кодов ответа HTTP \{#http_response_codes_caveats\}
 
 Из-за ограничений протокола HTTP код ответа 200 не гарантирует, что запрос был выполнен успешно.
 
@@ -628,18 +628,18 @@ __exception__
 ```
 
 
-## Запросы с параметрами {#cli-queries-with-parameters}
+## Запросы с параметрами \\{#cli-queries-with-parameters\\}
 
 Вы можете создавать запросы с параметрами и передавать для них значения из соответствующих параметров HTTP-запроса. Для получения дополнительной информации см. раздел [Запросы с параметрами для CLI](../../interfaces/cli.md#cli-queries-with-parameters).
 
-### Пример {#example-3}
+### Пример \{#example-3\}
 
 ```bash
 $ curl -sS "<address>?param_id=2&param_phrase=test" -d "SELECT * FROM table WHERE int_column = {id:UInt8} and string_column = {phrase:String}"
 ```
 
 
-### Табуляция в параметрах URL {#tabs-in-url-parameters}
+### Табуляция в параметрах URL \{#tabs-in-url-parameters\}
 
 Параметры запроса интерпретируются в «экранированном» формате. Это даёт некоторые преимущества, например возможность однозначно интерпретировать `\N` как null. Это означает, что символ табуляции должен быть закодирован как `\t` (либо как `\` и символ табуляции). Например, в следующем примере между `abc` и `123` содержится фактический символ табуляции, и входная строка разбивается на два значения:
 
@@ -669,7 +669,7 @@ curl -sS "http://localhost:8123?param_arg1=abc%5C%09123" -d "SELECT splitByChar(
 ```
 
 
-## Предопределённый HTTP-интерфейс {#predefined_http_interface}
+## Предопределённый HTTP-интерфейс \{#predefined_http_interface\}
 
 ClickHouse поддерживает выполнение ряда специфических запросов через HTTP-интерфейс. Например, вы можете записать данные в таблицу следующим образом:
 
@@ -796,7 +796,7 @@ $ curl -v 'http://localhost:8123/predefined_query'
 
 Способы конфигурирования для разных значений `type` рассматриваются далее.
 
-### predefined&#95;query&#95;handler {#predefined&#95;query&#95;handler}
+### predefined&#95;query&#95;handler \\{#predefined&#95;query&#95;handler\\}
 
 `predefined_query_handler` поддерживает установку значений параметров `Settings` и `query_params`. В типе `predefined_query_handler` можно задать параметр `query`.
 
@@ -838,7 +838,7 @@ max_threads    1
 ```
 
 
-#### Виртуальный параметр `_request_body` {#virtual-param-request-body}
+#### Виртуальный параметр `_request_body` \\{#virtual-param-request-body\\}
 
 Кроме параметров URL, заголовков и параметров запроса `predefined_query_handler` поддерживает специальный виртуальный параметр `_request_body`.
 Он содержит исходное тело HTTP-запроса в виде строки.
@@ -876,7 +876,7 @@ curl -X POST 'http://localhost:8123/api/events?id=123' \
 :::
 
 
-### dynamic&#95;query&#95;handler {#dynamic_query_handler}
+### dynamic&#95;query&#95;handler \{#dynamic_query_handler\}
 
 В `dynamic_query_handler` запрос передаётся в параметре HTTP‑запроса. В отличие от `predefined_query_handler`, где запрос задаётся в конфигурационном файле. Параметр `query_param_name` можно настроить в `dynamic_query_handler`.
 
@@ -907,7 +907,7 @@ max_final_threads   2
 ```
 
 
-### static {#static}
+### static \{#static\}
 
 `static` может возвращать [`content_type`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type), [status](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) и `response_content`. `response_content` может возвращать указанное содержимое.
 
@@ -1102,7 +1102,7 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
 ```
 
 
-### redirect {#redirect}
+### redirect \{#redirect\}
 
 `redirect` выполнит перенаправление с кодом `302` на `location`.
 
@@ -1124,7 +1124,7 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
 ```
 
 
-## Заголовки HTTP-ответа {#http-response-headers}
+## Заголовки HTTP-ответа \{#http-response-headers\}
 
 ClickHouse позволяет настраивать произвольные заголовки HTTP-ответов, которые могут быть применены к любым обработчикам, доступным для конфигурирования. Эти заголовки можно задавать с помощью настройки `http_response_headers`, которая принимает пары ключ-значение, представляющие имена заголовков и их значения. Эта возможность особенно полезна для реализации пользовательских заголовков безопасности, политик CORS или любых других требований к HTTP-заголовкам во всем HTTP-интерфейсе ClickHouse.
 
@@ -1161,7 +1161,7 @@ ClickHouse позволяет настраивать произвольные з
 ```
 
 
-## Корректный JSON/XML‑ответ при возникновении исключения во время HTTP‑потоковой передачи {#valid-output-on-exception-http-streaming}
+## Корректный JSON/XML‑ответ при возникновении исключения во время HTTP‑потоковой передачи \{#valid-output-on-exception-http-streaming\}
 
 Во время выполнения запроса по HTTP может произойти исключение, когда часть данных уже была отправлена. Обычно исключение отправляется клиенту в виде обычного текста.
 Даже если для вывода данных использовался определённый формат, результат может оказаться некорректным с точки зрения заданного формата данных.

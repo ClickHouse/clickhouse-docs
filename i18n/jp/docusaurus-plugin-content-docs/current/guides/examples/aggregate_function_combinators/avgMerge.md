@@ -9,11 +9,11 @@ doc_type: 'reference'
 
 
 
-# avgMerge {#avgMerge}
+# avgMerge \\{#avgMerge\\}
 
 
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 [`Merge`](/sql-reference/aggregate-functions/combinators#-state) コンビネータを
 [`avg`](/sql-reference/aggregate-functions/reference/avg)
@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
 `Merge` コンビネータは `State` コンビネータと密接に関係しています。`avgMerge` および `avgState` の両方の使用例については、
 ["avgState の使用例"](/examples/aggregate-function-combinators/avgState/#example-usage)
@@ -29,7 +29,7 @@ doc_type: 'reference'
 
 
 
-## 関連項目 {#see-also}
+## 関連項目 \\{#see-also\\}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`Merge`](/sql-reference/aggregate-functions/combinators#-merge)
 - [`MergeState`](/sql-reference/aggregate-functions/combinators#-mergestate)

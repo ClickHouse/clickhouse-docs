@@ -8,9 +8,9 @@ doc_type: 'guide'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# 事务（ACID）支持 {#transactional-acid-support}
+# 事务（ACID）支持 \\{#transactional-acid-support\\}
 
-## 案例 1：对 MergeTree* 系列中某张表的一个分区执行 INSERT {#case-1-insert-into-one-partition-of-one-table-of-the-mergetree-family}
+## 案例 1：对 MergeTree* 系列中某张表的一个分区执行 INSERT \\{#case-1-insert-into-one-partition-of-one-table-of-the-mergetree-family\\}
 
 当插入的行被打包并作为单个数据块插入时（参见备注），该操作具备事务（ACID）特性：
 - 原子性（Atomic）：一次 INSERT 要么整体成功，要么整体被拒绝：如果向客户端发送了确认，则说明所有行都已插入；如果向客户端发送了错误，则说明没有任何行被插入。
@@ -19,26 +19,26 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - 持久性（Durable）：成功的 INSERT 在响应客户端之前会被写入文件系统，可以只写入单个副本，也可以写入多个副本（由 `insert_quorum` 设置控制），并且 ClickHouse 可以请求操作系统将文件系统数据同步到存储介质（由 `fsync_after_insert` 设置控制）。
 - 如果涉及物化视图，则可以通过一个语句向多个表执行 INSERT（即客户端的 INSERT 目标是一张带有关联物化视图的表）。
 
-## 情况 2：对 MergeTree* 系列中的一个表执行跨多个分区的 INSERT {#case-2-insert-into-multiple-partitions-of-one-table-of-the-mergetree-family}
+## 情况 2：对 MergeTree* 系列中的一个表执行跨多个分区的 INSERT \\{#case-2-insert-into-multiple-partitions-of-one-table-of-the-mergetree-family\\}
 
 与上述情况 1 相同，补充细节如下：
 - 如果表包含多个分区且 INSERT 涵盖多个分区，那么对每个分区的插入在各自分区内单独具备事务性
 
-## 情况 3：向 MergeTree* 系列的一个分布式表执行 INSERT {#case-3-insert-into-one-distributed-table-of-the-mergetree-family}
+## 情况 3：向 MergeTree* 系列的一个分布式表执行 INSERT \\{#case-3-insert-into-one-distributed-table-of-the-mergetree-family\\}
 
 与上述情况 1 相同，但有以下区别：
 - 向 Distributed 表执行 INSERT 时，整体操作不具备事务性，而对每个分片的插入则是事务性的
 
-## 案例 4：使用 Buffer 表 {#case-4-using-a-buffer-table}
+## 案例 4：使用 Buffer 表 \\{#case-4-using-a-buffer-table\\}
 
 - 对 Buffer 表的插入操作不具备原子性、隔离性、一致性或持久性
 
-## 案例 5：使用 async_insert {#case-5-using-async_insert}
+## 案例 5：使用 async_insert \\{#case-5-using-async_insert\\}
 
 与上面的案例 1 相同，但有以下差异：
 - 即使启用了 `async_insert` 且 `wait_for_async_insert` 设置为 1（默认值），也可以保证原子性；但如果将 `wait_for_async_insert` 设置为 0，则不再保证原子性。
 
-## 说明 {#notes}
+## 说明 \\{#notes\\}
 - 在以下情况下，客户端以某种数据格式插入的多行会被打包到同一个数据块中：
   - 插入格式是行式的（例如 CSV、TSV、Values、JSONEachRow 等），并且数据包含的行数少于 `max_insert_block_size`（默认约 1 000 000 行）；如果启用了并行解析（默认启用），当数据大小少于 `min_chunk_bytes_for_parallel_parsing` 字节（默认 10 MB）时也会被打包为单个数据块
   - 插入格式是列式的（例如 Native、Parquet、ORC 等），并且数据只包含一个数据块
@@ -50,7 +50,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - ACID 语境下的“consistency”并不涵盖分布式系统的语义，参见 https://jepsen.io/consistency；这类语义由不同的设置（select_sequential_consistency）控制
 - 本说明未涵盖新的事务特性，该特性允许在多张表、物化视图上以及针对多个 SELECT 等执行完整功能的事务（参见下一节 “Transactions, Commit, and Rollback”）
 
-## 事务、提交和回滚 {#transactions-commit-and-rollback}
+## 事务、提交和回滚 \\{#transactions-commit-and-rollback\\}
 
 <ExperimentalBadge />
 
@@ -58,7 +58,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 除了本文件前文描述的功能之外，ClickHouse 还对事务、提交和回滚提供实验性支持。
 
-### 要求 {#requirements}
+### 要求 \\{#requirements\\}
 
 * 部署 ClickHouse Keeper 或 ZooKeeper 用于跟踪事务
 * 仅支持 Atomic 数据库（默认）
@@ -70,17 +70,17 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
   </clickhouse>
   ```
 
-### 注意事项 {#notes-1}
+### 注意事项 \\{#notes-1\\}
 
 * 这是一个实验性特性，未来可能会发生变化。
 * 如果在事务期间发生异常，则无法提交该事务。这包括所有异常，包括由于拼写错误导致的 `UNKNOWN_FUNCTION` 异常。
 * 不支持嵌套事务；请先完成当前事务，然后再启动一个新事务。
 
-### 配置 {#configuration}
+### 配置 \\{#configuration\\}
 
 以下示例基于启用了 ClickHouse Keeper 的单节点 ClickHouse 服务器。
 
-#### 启用实验性事务支持 {#enable-experimental-transaction-support}
+#### 启用实验性事务支持 \\{#enable-experimental-transaction-support\\}
 
 ```xml title=/etc/clickhouse-server/config.d/transactions.xml
 <clickhouse>
@@ -88,7 +88,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 </clickhouse>
 ```
 
-#### 启用 ClickHouse Keeper 的单个 ClickHouse 服务器节点的基本配置 {#basic-configuration-for-a-single-clickhouse-server-node-with-clickhouse-keeper-enabled}
+#### 启用 ClickHouse Keeper 的单个 ClickHouse 服务器节点的基本配置 \\{#basic-configuration-for-a-single-clickhouse-server-node-with-clickhouse-keeper-enabled\\}
 
 :::note
 有关部署 ClickHouse 服务器以及配置合适数量的 ClickHouse Keeper 节点以形成法定节点数的详细信息，请参阅 [deployment](/deployment-guides/terminology.md) 文档。此处展示的配置仅供实验使用。
@@ -134,9 +134,9 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 </clickhouse>
 ```
 
-### 示例 {#example}
+### 示例 \\{#example\\}
 
-#### 验证实验性事务是否已启用 {#verify-that-experimental-transactions-are-enabled}
+#### 验证实验性事务是否已启用 \\{#verify-that-experimental-transactions-are-enabled\\}
 
 执行一次 `BEGIN TRANSACTION` 或 `START TRANSACTION`，随后执行 `ROLLBACK`，以验证实验性事务是否已启用，并确认 ClickHouse Keeper 已启用，因为它用于跟踪事务。
 
@@ -173,7 +173,7 @@ ROLLBACK
 确认。
 ```
 
-#### 创建用于测试的表 {#create-a-table-for-testing}
+#### 创建用于测试的表 \\{#create-a-table-for-testing\\}
 
 :::tip
 建表操作不具备事务性。请在事务之外执行此 DDL 语句。
@@ -192,7 +192,7 @@ ORDER BY n
 确认。
 ```
 
-#### 开始一个事务并插入一行数据 {#begin-a-transaction-and-insert-a-row}
+#### 开始一个事务并插入一行数据 \\{#begin-a-transaction-and-insert-a-row\\}
 
 ```sql
 BEGIN TRANSACTION
@@ -225,7 +225,7 @@ FROM mergetree_table
 你可以在事务内部查询该表，会发现该行已经被插入，即使该事务尚未提交。
 :::
 
-#### 回滚事务，然后再次查询该表 {#rollback-the-transaction-and-query-the-table-again}
+#### 回滚事务，然后再次查询该表 \\{#rollback-the-transaction-and-query-the-table-again\\}
 
 确认事务已被回滚：
 
@@ -248,7 +248,7 @@ Ok.
 结果集包含 0 行。耗时：0.002 秒。
 ```
 
-#### 完成事务并再次查询该表 {#complete-a-transaction-and-query-the-table-again}
+#### 完成事务并再次查询该表 \\{#complete-a-transaction-and-query-the-table-again\\}
 
 ```sql
 BEGIN TRANSACTION
@@ -285,7 +285,7 @@ FROM mergetree_table
 └────┘
 ```
 
-### 事务查看 {#transactions-introspection}
+### 事务查看 \\{#transactions-introspection\\}
 
 你可以通过查询 `system.transactions` 表来检查事务，但请注意，处于事务中的会话无法查询该表。请另开一个 `clickhouse client` 会话来查询该表。
 
@@ -305,6 +305,6 @@ is_readonly: 1
 state:       RUNNING
 ```
 
-## 更多详情 {#more-details}
+## 更多详情 \\{#more-details\\}
 
 请参阅此 [meta issue](https://github.com/ClickHouse/ClickHouse/issues/48794)，以了解更全面的测试内容，并及时跟进最新进展。

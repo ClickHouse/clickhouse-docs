@@ -6,7 +6,7 @@ title: 'Интеграция библиотек на Rust'
 doc_type: 'guide'
 ---
 
-# Библиотеки Rust {#rust-libraries}
+# Библиотеки Rust \\{#rust-libraries\\}
 
 Интеграция библиотеки Rust будет описана на примере интеграции хеш-функции BLAKE3.
 

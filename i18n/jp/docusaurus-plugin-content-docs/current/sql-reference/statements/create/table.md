@@ -17,9 +17,9 @@ import TabItem from '@theme/TabItem';
 デフォルトでは、テーブルは現在のサーバー上にのみ作成されます。分散 DDL クエリは `ON CLUSTER` 句として実装されており、[別途説明されています](../../../sql-reference/distributed-ddl.md)。
 
 
-## 構文形式 {#syntax-forms}
+## 構文形式 \\{#syntax-forms\\}
 
-### 明示的なスキーマ指定 {#with-explicit-schema}
+### 明示的なスキーマ指定 \{#with-explicit-schema\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -43,7 +43,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 列およびテーブルにコメントを追加できます。
 
 
-### 他のテーブルと同様のスキーマを使用する場合 {#with-a-schema-similar-to-other-table}
+### 他のテーブルと同様のスキーマを使用する場合 \{#with-a-schema-similar-to-other-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine]
@@ -52,7 +52,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine]
 別のテーブルと同じ構造のテーブルを作成します。テーブルに別のエンジンを指定できます。エンジンを指定しない場合は、`db2.name2` テーブルと同じエンジンが使用されます。
 
 
-### 他のテーブルからスキーマとデータをクローンする場合 {#with-a-schema-and-data-cloned-from-another-table}
+### 他のテーブルからスキーマとデータをクローンする場合 \{#with-a-schema-and-data-cloned-from-another-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name CLONE AS [db2.]name2 [ENGINE = engine]
@@ -66,7 +66,7 @@ ALTER TABLE [db.]table_name ATTACH PARTITION ALL FROM [db2].name2;
 ```
 
 
-### テーブル関数から {#from-a-table-function}
+### テーブル関数から \{#from-a-table-function\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name AS table_function()
@@ -75,7 +75,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name AS table_function()
 指定した[テーブル関数](/sql-reference/table-functions)と同じ結果を返すテーブルを作成します。作成されたテーブルも、指定した対応するテーブル関数と同様に動作します。
 
 
-### SELECT クエリから {#from-select-query}
+### SELECT クエリから \{#from-select-query\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name[(name1 [type1], name2 [type2], ...)] ENGINE = engine AS SELECT ...
@@ -105,7 +105,7 @@ SELECT x, toTypeName(x) FROM t1;
 ```
 
 
-## NULL または NOT NULL 修飾子 {#null-or-not-null-modifiers}
+## NULL または NOT NULL 修飾子 \\{#null-or-not-null-modifiers\\}
 
 列定義におけるデータ型の後ろに付ける `NULL` および `NOT NULL` 修飾子は、その列を [Nullable](/sql-reference/data-types/nullable) 型にできるかどうかを指定します。
 
@@ -113,7 +113,7 @@ SELECT x, toTypeName(x) FROM t1;
 
 [data_type_default_nullable](../../../operations/settings/settings.md#data_type_default_nullable) 設定も参照してください。
 
-## デフォルト値 {#default_values}
+## デフォルト値 \\{#default_values\\}
 
 カラム定義では、`DEFAULT expr`、`MATERIALIZED expr`、`ALIAS expr` の形式でデフォルト値の式を指定できます。例: `URLDomain String DEFAULT domain(URL)`。
 
@@ -125,7 +125,7 @@ SELECT x, toTypeName(x) FROM t1;
 
 デフォルト値の式 `expr` では、任意のテーブルカラムおよび定数を参照できます。ClickHouse は、テーブル構造の変更によって式の計算にループが導入されないことを検証します。INSERT 時には、式が解決可能であること、つまり式の計算に必要となるすべてのカラムが指定されていることを確認します。
 
-### DEFAULT {#default}
+### DEFAULT \{#default\}
 
 `DEFAULT expr`
 
@@ -152,7 +152,7 @@ SELECT * FROM test;
 ```
 
 
-### MATERIALIZED {#materialized}
+### MATERIALIZED \{#materialized\}
 
 `MATERIALIZED expr`
 
@@ -191,7 +191,7 @@ SELECT * FROM test SETTINGS asterisk_include_materialized_columns=1;
 ```
 
 
-### EPHEMERAL {#ephemeral}
+### EPHEMERAL \{#ephemeral\}
 
 `EPHEMERAL [expr]`
 
@@ -228,7 +228,7 @@ hex(hexed): 5A90B714
 ```
 
 
-### ALIAS {#alias}
+### ALIAS \{#alias\}
 
 `ALIAS expr`
 
@@ -266,7 +266,7 @@ SELECT * FROM test SETTINGS asterisk_include_alias_columns=1;
 ```
 
 
-## プライマリキー {#primary-key}
+## プライマリキー \{#primary-key\}
 
 テーブル作成時に[プライマリキー](../../../engines/table-engines/mergetree-family/mergetree.md#primary-keys-and-indexes-in-queries)を定義できます。プライマリキーは次の 2 通りの方法で指定できます。
 
@@ -297,11 +297,11 @@ PRIMARY KEY(expr1[, expr2,...]);
 :::
 
 
-## 制約 {#constraints}
+## 制約 \\{#constraints\\}
 
 カラムの説明に加えて、制約を定義することもできます。
 
-### CONSTRAINT {#constraint}
+### CONSTRAINT \{#constraint\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -318,7 +318,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 大量の制約を追加すると、大規模な `INSERT` クエリのパフォーマンスに悪影響を与える可能性があります。
 
 
-### ASSUME {#assume}
+### ASSUME \{#assume\}
 
 `ASSUME` 句は、常に真であると仮定されるテーブル上の `CONSTRAINT` を定義するために使用されます。この制約は、その後オプティマイザによって SQL クエリのパフォーマンスを向上させるために利用できます。
 
@@ -343,11 +343,11 @@ ORDER BY (name_len, name);
 `ASSUME CONSTRAINT` は **制約を強制しません**。単にオプティマイザに対して、その制約が成り立つことを知らせるだけです。もし制約が実際には成り立たない場合、クエリ結果が不正確になる可能性があります。したがって、制約が正しいと確信できる場合にのみ `ASSUME CONSTRAINT` を使用すべきです。
 
 
-## TTL Expression {#ttl-expression}
+## TTL Expression \\{#ttl-expression\\}
 
 値の保持期間を定義します。MergeTree ファミリーのテーブルに対してのみ指定できます。詳細については、[列およびテーブルの TTL](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) を参照してください。
 
-## 列圧縮コーデック {#column_compression_codec}
+## 列圧縮コーデック \{#column_compression_codec\}
 
 デフォルトでは、セルフマネージド版の ClickHouse では `lz4` 圧縮が、ClickHouse Cloud では `zstd` 圧縮が適用されます。
 
@@ -393,59 +393,59 @@ Codec はパイプラインで組み合わせることができます。たと�
 ClickHouse は、汎用 codec と用途特化 codec の両方をサポートします。
 
 
-### 汎用コーデック {#general-purpose-codecs}
+### 汎用コーデック \\{#general-purpose-codecs\\}
 
-#### NONE {#none}
+#### NONE \\{#none\\}
 
 `NONE` — 圧縮しません。
 
-#### LZ4 {#lz4}
+#### LZ4 \\{#lz4\\}
 
 `LZ4` — デフォルトで使用されるロスレス[データ圧縮アルゴリズム](https://github.com/lz4/lz4)です。LZ4 の高速圧縮を適用します。
 
-#### LZ4HC {#lz4hc}
+#### LZ4HC \\{#lz4hc\\}
 
 `LZ4HC[(level)]` — 圧縮レベルを指定可能な LZ4 HC（高圧縮）アルゴリズムです。デフォルトレベル: 9。`level <= 0` を指定するとデフォルトレベルが適用されます。指定可能なレベル: [1, 12]。推奨レベル範囲: [4, 9]。
 
-#### ZSTD {#zstd}
+#### ZSTD \\{#zstd\\}
 
 `ZSTD[(level)]` — `level` を指定できる [ZSTD 圧縮アルゴリズム](https://en.wikipedia.org/wiki/Zstandard) です。指定可能なレベル: [1, 22]。デフォルトレベル: 1。
 
 高い圧縮レベルは、一度圧縮しておき、そのデータを繰り返し伸長するといった非対称なシナリオで有用です。レベルを上げると圧縮率は向上しますが、CPU 使用率も増加します。
 
-#### 廃止済み: ZSTD_QAT {#zstd_qat}
+#### 廃止済み: ZSTD_QAT \\{#zstd_qat\\}
 
 <CloudNotSupportedBadge/>
 
-#### 非推奨: DEFLATE_QPL {#deflate_qpl}
+#### 非推奨: DEFLATE_QPL \\{#deflate_qpl\\}
 
 <CloudNotSupportedBadge/>
 
-### Specialized Codecs {#specialized-codecs}
+### Specialized Codecs \\{#specialized-codecs\\}
 
 これらのコーデックは、データの特定の特徴を利用して圧縮をより効果的にするよう設計されています。これらのコーデックの一部は自分自身ではデータを圧縮せず、汎用コーデックを用いた第 2 段階の圧縮でより高い圧縮率を得られるように、あらかじめデータを前処理します。
 
-#### Delta {#delta}
+#### Delta \\{#delta\\}
 
 `Delta(delta_bytes)` — 生の値を、直前の値との差分で置き換える圧縮手法です。先頭の値だけは変更されません。`delta_bytes` は生の値の最大サイズであり、デフォルト値は `sizeof(type)` です。`delta_bytes` を引数として指定する方法は非推奨であり、将来のリリースでサポートは削除されます。Delta はデータ準備用コーデックであり、単独では使用できません。
 
-#### DoubleDelta {#doubledelta}
+#### DoubleDelta \\{#doubledelta\\}
 
 `DoubleDelta(bytes_size)` — 差分の差分を計算し、それをコンパクトなバイナリ形式で書き込みます。`bytes_size` は [Delta](#delta) コーデックにおける `delta_bytes` と同様の意味を持ちます。`bytes_size` を引数として指定する方法は非推奨であり、将来のリリースでサポートは削除されます。一定のステップ幅を持つ単調増加（または単調減少）系列、例えば時系列データに対して最適な圧縮率が得られます。任意の数値型で使用できます。Gorilla TSDB で使用されているアルゴリズムを実装し、64 ビット型をサポートするように拡張しています。32 ビットのデルタに対しては、4 ビット接頭辞ではなく 5 ビット接頭辞を使用するため、1 ビット余分に使用します。詳細については、[Gorilla: A Fast, Scalable, In-Memory Time Series Database](http://www.vldb.org/pvldb/vol8/p1816-teller.pdf) の「Compressing Time Stamps」を参照してください。DoubleDelta はデータ準備用コーデックであり、単独では使用できません。
 
-#### GCD {#gcd}
+#### GCD \\{#gcd\\}
 
 `GCD()` - - 列の値の最大公約数 (GCD) を計算し、各値をその GCD で割ります。整数型、Decimal 型、日付/時刻型の列で使用できます。このコーデックは、値が GCD の倍数で増減する列、例: 24, 28, 16, 24, 8, 24 (GCD = 4) に適しています。GCD はデータ準備用コーデックであり、単独では使用できません。
 
-#### Gorilla {#gorilla}
+#### Gorilla \\{#gorilla\\}
 
 `Gorilla(bytes_size)` — 現在の浮動小数点値と直前の浮動小数点値の XOR を計算し、それをコンパクトなバイナリ形式で書き込みます。連続する値同士の差、すなわち系列の値の変化が小さい（遅い）ほど、圧縮率は高くなります。Gorilla TSDB で使用されているアルゴリズムを実装し、64 ビット型をサポートするように拡張しています。`bytes_size` に指定可能な値は 1, 2, 4, 8 で、デフォルト値は 1, 2, 4, 8 のいずれかと等しい場合は `sizeof(type)` です。それ以外の場合は 1 になります。詳細は [Gorilla: A Fast, Scalable, In-Memory Time Series Database](https://doi.org/10.14778/2824032.2824078) の 4.1 節を参照してください。
 
-#### FPC {#fpc}
+#### FPC \\{#fpc\\}
 
 `FPC(level, float_size)` - 2種類の予測器のうち優れている方を用いて系列中の次の浮動小数点値を繰り返し予測し、その予測値と実際の値を XOR し、その結果を先頭ゼロ圧縮するコーデックです。Gorilla と同様に、ゆっくり変化する浮動小数点値の系列を保存する場合に効率的です。64ビット値（double）の場合、FPC は Gorilla より高速であり、32ビット値の場合は状況によって異なります。`level` に指定可能な値は 1-28 で、デフォルト値は 12 です。`float_size` に指定可能な値は 4, 8 で、型が Float の場合のデフォルト値は `sizeof(type)` です。それ以外のすべてのケースでは 4 になります。アルゴリズムの詳細な説明については [High Throughput Compression of Double-Precision Floating-Point Data](https://userweb.cs.txstate.edu/~burtscher/papers/dcc07a.pdf) を参照してください。
 
-#### T64 {#t64}
+#### T64 \{#t64\}
 
 `T64` — 整数データ型（`Enum`、`Date`、`DateTime` を含む）の値において未使用の上位ビットを切り詰める圧縮手法です。アルゴリズムの各ステップで、コーデックは 64 個の値のブロックを取り出し、それらを 64x64 ビット行列に配置して転置し、未使用ビットを切り詰め、残りをシーケンスとして返します。未使用ビットとは、この圧縮の対象となるデータ部分全体において、最大値と最小値の間で変化しないビットを指します。
 
@@ -461,17 +461,17 @@ ENGINE = MergeTree()
 ```
 
 
-### 暗号化コーデック {#encryption-codecs}
+### 暗号化コーデック \\{#encryption-codecs\\}
 
 これらのコーデックは実際にはデータを圧縮せず、代わりにディスク上のデータを暗号化します。これらは [encryption](/operations/server-configuration-parameters/settings#encryption) 設定で暗号化キーが指定されている場合にのみ利用可能です。暗号化されたデータは通常、有意義な形で圧縮することができないため、暗号化はコーデックパイプラインの末尾でのみ意味を持つことに注意してください。
 
 暗号化コーデック：
 
-#### AES_128_GCM_SIV {#aes_128_gcm_siv}
+#### AES_128_GCM_SIV \\{#aes_128_gcm_siv\\}
 
 `CODEC('AES-128-GCM-SIV')` — [RFC 8452](https://tools.ietf.org/html/rfc8452) で定義されている GCM-SIV モードの AES-128 でデータを暗号化します。
 
-#### AES-256-GCM-SIV {#aes-256-gcm-siv}
+#### AES-256-GCM-SIV \{#aes-256-gcm-siv\}
 
 `CODEC('AES-256-GCM-SIV')` — GCM-SIV モードの AES-256 でデータを暗号化します。
 
@@ -510,7 +510,7 @@ ENGINE = MergeTree ORDER BY x;
 ```
 
 
-## 一時テーブル {#temporary-tables}
+## 一時テーブル \{#temporary-tables\}
 
 :::note
 一時テーブルはレプリケートされない点に注意してください。そのため、一時テーブルに挿入されたデータが他のレプリカで利用可能であることは保証されません。一時テーブルが有用となる主なユースケースは、単一セッション中に小規模な外部データセットに対してクエリや結合を行う場合です。
@@ -541,7 +541,7 @@ CREATE [OR REPLACE] TEMPORARY TABLE [IF NOT EXISTS] table_name
 一時テーブルの代わりに、[ENGINE = Memory](../../../engines/table-engines/special/memory.md) を使用したテーブルを利用することもできます。
 
 
-## REPLACE TABLE {#replace-table}
+## REPLACE TABLE \{#replace-table\}
 
 `REPLACE` ステートメントを使用すると、テーブルを[アトミックに](/concepts/glossary#atomicity)更新できます。
 
@@ -579,7 +579,7 @@ WHERE CounterID <12345;
 ```
 
 
-### 構文 {#syntax}
+### 構文 \{#syntax\}
 
 ```sql
 {CREATE [OR REPLACE] | REPLACE} TABLE [db.]table_name
@@ -590,7 +590,7 @@ WHERE CounterID <12345;
 :::
 
 
-### 例: {#examples}
+### 例: \\{#examples\\}
 
 <Tabs>
   <TabItem value="clickhouse_replace_example" label="ローカル" default>
@@ -709,7 +709,7 @@ WHERE CounterID <12345;
   </TabItem>
 </Tabs>
 
-## COMMENT 句 {#comment-clause}
+## COMMENT 句 \{#comment-clause\}
 
 テーブル作成時にコメントを追加できます。
 
@@ -755,7 +755,7 @@ SELECT name, comment FROM system.tables WHERE name = 't1';
 ```
 
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \\{#related-content\\}
 
 - ブログ記事: [スキーマとコーデックによる ClickHouse の最適化](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)
 - ブログ記事: [ClickHouse における時系列データの取り扱い](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

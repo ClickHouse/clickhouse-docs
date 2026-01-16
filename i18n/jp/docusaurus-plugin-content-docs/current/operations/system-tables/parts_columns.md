@@ -6,7 +6,7 @@ title: 'system.parts_columns'
 doc_type: 'reference'
 ---
 
-# system.parts&#95;columns {#systemparts&#95;columns}
+# system.parts&#95;columns \\{#systemparts&#95;columns\\}
 
 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルのパーツおよび列に関する情報を含んでいます。
 

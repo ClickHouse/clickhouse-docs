@@ -18,13 +18,13 @@ import VersionHistory from '@theme/VersionHistory/VersionHistory';
 Все ниже перечисленные настройки также доступны в таблице [system.settings](/docs/operations/system-tables/settings). Эти настройки автоматически генерируются из [исходного кода](https://github.com/ClickHouse/ClickHouse/blob/master/src/Core/Settings.cpp).
 
 
-## add_http_cors_header {#add_http_cors_header} 
+## add_http_cors_header \\{#add_http_cors_header\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Добавлять HTTP-заголовок CORS.
 
-## additional_result_filter {#additional_result_filter}
+## additional_result_filter \{#additional_result_filter\}
 
 Дополнительное выражение фильтрации, применяемое к результату запроса `SELECT`.
 Этот параметр не применяется к подзапросам.
@@ -60,7 +60,7 @@ SETTINGS additional_result_filter = 'x != 2'
 ```
 
 
-## additional_table_filters {#additional_table_filters}
+## additional_table_filters \{#additional_table_filters\}
 
 <SettingsInfoBlock type="Map" default_value="{}" />
 
@@ -98,7 +98,7 @@ SETTINGS additional_table_filters = {'table_1': 'x != 2'}
 ```
 
 
-## aggregate_function_input_format {#aggregate_function_input_format}
+## aggregate_function_input_format \{#aggregate_function_input_format\}
 
 <SettingsInfoBlock type="AggregateFunctionInputFormat" default_value="state" />
 
@@ -140,7 +140,7 @@ INSERT INTO example FORMAT CSV
 Примечание: форматы `value` и `array` работают медленнее, чем формат по умолчанию `state`, так как при вставке требуется создавать значения и выполнять их агрегирование.
 
 
-## aggregate_functions_null_for_empty {#aggregate_functions_null_for_empty}
+## aggregate_functions_null_for_empty \{#aggregate_functions_null_for_empty\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -177,25 +177,25 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 ```
 
 
-## aggregation_in_order_max_block_bytes {#aggregation_in_order_max_block_bytes} 
+## aggregation_in_order_max_block_bytes \\{#aggregation_in_order_max_block_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="50000000" />
 
 Максимальный размер блока в байтах, накапливаемого во время агрегации в порядке первичного ключа. Меньший размер блока позволяет сильнее распараллелить финальную стадию слияния результатов агрегации.
 
-## aggregation_memory_efficient_merge_threads {#aggregation_memory_efficient_merge_threads} 
+## aggregation_memory_efficient_merge_threads \\{#aggregation_memory_efficient_merge_threads\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Количество потоков, используемых для слияния промежуточных результатов агрегации в режиме экономичного использования памяти. Чем больше значение, тем больше потребление памяти. 0 означает то же, что и `max_threads`.
 
-## allow_aggregate_partitions_independently {#allow_aggregate_partitions_independently} 
+## allow_aggregate_partitions_independently \\{#allow_aggregate_partitions_independently\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Включает независимую агрегацию партиций в отдельных потоках, когда ключ партиции совпадает с ключом `GROUP BY`. Полезно, когда количество партиций близко к количеству ядер и партиции имеют примерно одинаковый размер.
 
-## allow_archive_path_syntax {#allow_archive_path_syntax} 
+## allow_archive_path_syntax \\{#allow_archive_path_syntax\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -203,44 +203,44 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Движки File/S3 и табличная функция будут интерпретировать пути с `::` как `<archive> :: <file>`, если архив имеет корректное расширение.
 
-## allow_asynchronous_read_from_io_pool_for_merge_tree {#allow_asynchronous_read_from_io_pool_for_merge_tree} 
+## allow_asynchronous_read_from_io_pool_for_merge_tree \\{#allow_asynchronous_read_from_io_pool_for_merge_tree\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Использовать фоновый пул ввода-вывода для чтения из таблиц MergeTree. Этот параметр может повысить производительность для запросов, ограниченных скоростью операций ввода-вывода.
 
-## allow_changing_replica_until_first_data_packet {#allow_changing_replica_until_first_data_packet} 
+## allow_changing_replica_until_first_data_packet \\{#allow_changing_replica_until_first_data_packet\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Если параметр включён, при hedged-запросах можно устанавливать новое соединение до получения первого пакета данных, даже если уже есть некоторый прогресс
 (но он не обновлялся в течение таймаута `receive_data_timeout`), в противном случае смена реплики запрещается после первого момента, когда был достигнут прогресс.
 
-## allow_create_index_without_type {#allow_create_index_without_type} 
+## allow_create_index_without_type \\{#allow_create_index_without_type\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Разрешает выполнять запрос CREATE INDEX без TYPE. Такой запрос будет проигнорирован. Предназначено для тестов совместимости SQL.
 
-## allow_custom_error_code_in_throwif {#allow_custom_error_code_in_throwif} 
+## allow_custom_error_code_in_throwif \\{#allow_custom_error_code_in_throwif\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Разрешает использование пользовательского кода ошибки в функции throwIf(). Если установлено значение true, выбрасываемые исключения могут иметь неожиданные коды ошибок.
 
-## allow_ddl {#allow_ddl} 
+## allow_ddl \\{#allow_ddl\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Если параметр имеет значение `true`, пользователю разрешается выполнять DDL-запросы.
 
-## allow_deprecated_database_ordinary {#allow_deprecated_database_ordinary} 
+## allow_deprecated_database_ordinary \\{#allow_deprecated_database_ordinary\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Разрешает создание баз данных с устаревшим движком Ordinary
 
-## allow_deprecated_error_prone_window_functions {#allow_deprecated_error_prone_window_functions} 
+## allow_deprecated_error_prone_window_functions \\{#allow_deprecated_error_prone_window_functions\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -248,7 +248,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешить использование устаревших оконных функций, склонных к ошибкам (neighbor, runningAccumulate, runningDifferenceStartingWithFirstValue, runningDifference)
 
-## allow_deprecated_snowflake_conversion_functions {#allow_deprecated_snowflake_conversion_functions} 
+## allow_deprecated_snowflake_conversion_functions \\{#allow_deprecated_snowflake_conversion_functions\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -259,25 +259,25 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Чтобы повторно включить устаревшие функции (например, в переходный период), установите этот параметр в `true`.
 
-## allow_deprecated_syntax_for_merge_tree {#allow_deprecated_syntax_for_merge_tree} 
+## allow_deprecated_syntax_for_merge_tree \\{#allow_deprecated_syntax_for_merge_tree\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Разрешает создавать таблицы *MergeTree с устаревшим синтаксисом задания движка
 
-## allow_distributed_ddl {#allow_distributed_ddl} 
+## allow_distributed_ddl \\{#allow_distributed_ddl\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Если параметр установлен в значение `true`, пользователю разрешено выполнять распределённые DDL‑запросы.
 
-## allow_drop_detached {#allow_drop_detached} 
+## allow_drop_detached \\{#allow_drop_detached\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Разрешает запросы ALTER TABLE ... DROP DETACHED PART[ITION] ...
 
-## allow_dynamic_type_in_join_keys {#allow_dynamic_type_in_join_keys} 
+## allow_dynamic_type_in_join_keys \\{#allow_dynamic_type_in_join_keys\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -285,13 +285,13 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает использование типа Dynamic в ключах JOIN. Этот параметр добавлен для совместимости. Не рекомендуется использовать тип Dynamic в ключах JOIN, поскольку сравнение с другими типами может приводить к неожиданным результатам.
 
-## allow_execute_multiif_columnar {#allow_execute_multiif_columnar} 
+## allow_execute_multiif_columnar \\{#allow_execute_multiif_columnar\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Разрешает столбцовое выполнение функции multiIf
 
-## allow_experimental_alias_table_engine {#allow_experimental_alias_table_engine} 
+## allow_experimental_alias_table_engine \\{#allow_experimental_alias_table_engine\\}
 
 <ExperimentalBadge/>
 
@@ -301,7 +301,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Позволяет создавать таблицы с движком Alias.
 
-## allow_experimental_analyzer {#allow_experimental_analyzer} 
+## allow_experimental_analyzer \\{#allow_experimental_analyzer\\}
 
 **Псевдонимы**: `enable_analyzer`
 
@@ -311,7 +311,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает использование нового анализатора запросов.
 
-## allow_experimental_codecs {#allow_experimental_codecs} 
+## allow_experimental_codecs \\{#allow_experimental_codecs\\}
 
 <ExperimentalBadge/>
 
@@ -319,7 +319,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Если имеет значение true, позволяет указывать экспериментальные кодеки сжатия (но таких кодеков пока нет, поэтому эта опция ничего не делает).
 
-## allow_experimental_correlated_subqueries {#allow_experimental_correlated_subqueries} 
+## allow_experimental_correlated_subqueries \\{#allow_experimental_correlated_subqueries\\}
 
 <BetaBadge/>
 
@@ -329,7 +329,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает выполнение коррелированных подзапросов.
 
-## allow_experimental_database_glue_catalog {#allow_experimental_database_glue_catalog} 
+## allow_experimental_database_glue_catalog \\{#allow_experimental_database_glue_catalog\\}
 
 <BetaBadge/>
 
@@ -341,7 +341,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает использование экспериментального движка базы данных DataLakeCatalog с catalog_type = 'glue'
 
-## allow_experimental_database_hms_catalog {#allow_experimental_database_hms_catalog} 
+## allow_experimental_database_hms_catalog \\{#allow_experimental_database_hms_catalog\\}
 
 <ExperimentalBadge/>
 
@@ -351,7 +351,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает использование экспериментального движка базы данных DataLakeCatalog с catalog_type = 'hms'
 
-## allow_experimental_database_iceberg {#allow_experimental_database_iceberg} 
+## allow_experimental_database_iceberg \\{#allow_experimental_database_iceberg\\}
 
 <BetaBadge/>
 
@@ -363,7 +363,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает экспериментальный движок базы данных DataLakeCatalog с catalog_type = 'iceberg'
 
-## allow_experimental_database_materialized_postgresql {#allow_experimental_database_materialized_postgresql} 
+## allow_experimental_database_materialized_postgresql \\{#allow_experimental_database_materialized_postgresql\\}
 
 <ExperimentalBadge/>
 
@@ -371,7 +371,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включает возможность создания базы данных с движком Engine=MaterializedPostgreSQL(...).
 
-## allow_experimental_database_paimon_rest_catalog {#allow_experimental_database_paimon_rest_catalog} 
+## allow_experimental_database_paimon_rest_catalog \\{#allow_experimental_database_paimon_rest_catalog\\}
 
 <ExperimentalBadge/>
 
@@ -381,7 +381,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает использование экспериментального движка базы данных DataLakeCatalog с catalog_type = 'paimon_rest'
 
-## allow_experimental_database_unity_catalog {#allow_experimental_database_unity_catalog} 
+## allow_experimental_database_unity_catalog \\{#allow_experimental_database_unity_catalog\\}
 
 <BetaBadge/>
 
@@ -393,7 +393,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешить экспериментальный движок базы данных DataLakeCatalog с параметром catalog_type = 'unity'
 
-## allow_experimental_delta_kernel_rs {#allow_experimental_delta_kernel_rs} 
+## allow_experimental_delta_kernel_rs \\{#allow_experimental_delta_kernel_rs\\}
 
 <BetaBadge/>
 
@@ -403,7 +403,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешить использование экспериментальной реализации delta-kernel-rs.
 
-## allow_experimental_delta_lake_writes {#allow_experimental_delta_lake_writes} 
+## allow_experimental_delta_lake_writes \\{#allow_experimental_delta_lake_writes\\}
 
 <ExperimentalBadge/>
 
@@ -413,7 +413,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включает функцию записи delta-kernel.
 
-## allow_experimental_funnel_functions {#allow_experimental_funnel_functions} 
+## allow_experimental_funnel_functions \\{#allow_experimental_funnel_functions\\}
 
 <ExperimentalBadge/>
 
@@ -421,7 +421,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включает экспериментальные функции для анализа воронки.
 
-## allow_experimental_hash_functions {#allow_experimental_hash_functions} 
+## allow_experimental_hash_functions \\{#allow_experimental_hash_functions\\}
 
 <ExperimentalBadge/>
 
@@ -429,7 +429,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включить экспериментальные хеш-функции
 
-## allow_experimental_iceberg_compaction {#allow_experimental_iceberg_compaction} 
+## allow_experimental_iceberg_compaction \\{#allow_experimental_iceberg_compaction\\}
 
 <ExperimentalBadge/>
 
@@ -439,7 +439,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает явное использование команды `OPTIMIZE` для таблиц Iceberg.
 
-## allow_experimental_insert_into_iceberg {#allow_experimental_insert_into_iceberg} 
+## allow_experimental_insert_into_iceberg \\{#allow_experimental_insert_into_iceberg\\}
 
 <ExperimentalBadge/>
 
@@ -449,7 +449,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает выполнение запросов `insert` в Iceberg.
 
-## allow_experimental_join_right_table_sorting {#allow_experimental_join_right_table_sorting} 
+## allow_experimental_join_right_table_sorting \\{#allow_experimental_join_right_table_sorting\\}
 
 <ExperimentalBadge/>
 
@@ -459,7 +459,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Если параметр установлен в true и выполнены условия `join_to_sort_minimum_perkey_rows` и `join_to_sort_maximum_table_rows`, правая таблица пересортировывается по ключу для повышения производительности левого или внутреннего хеш-соединения.
 
-## allow_experimental_kafka_offsets_storage_in_keeper {#allow_experimental_kafka_offsets_storage_in_keeper} 
+## allow_experimental_kafka_offsets_storage_in_keeper \\{#allow_experimental_kafka_offsets_storage_in_keeper\\}
 
 <ExperimentalBadge/>
 
@@ -469,7 +469,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает экспериментальную функцию хранения смещений, связанных с Kafka, в ClickHouse Keeper. Когда параметр включен, для движка таблицы Kafka можно указать путь в ClickHouse Keeper и имя реплики. В результате вместо обычного движка Kafka будет использоваться новый тип движка хранения, который хранит зафиксированные смещения в первую очередь в ClickHouse Keeper.
 
-## allow_experimental_kusto_dialect {#allow_experimental_kusto_dialect} 
+## allow_experimental_kusto_dialect \\{#allow_experimental_kusto_dialect\\}
 
 <ExperimentalBadge/>
 
@@ -479,7 +479,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включает поддержку Kusto Query Language (KQL) — альтернативного варианта SQL.
 
-## allow_experimental_materialized_postgresql_table {#allow_experimental_materialized_postgresql_table} 
+## allow_experimental_materialized_postgresql_table \\{#allow_experimental_materialized_postgresql_table\\}
 
 <ExperimentalBadge/>
 
@@ -487,7 +487,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Позволяет использовать движок таблицы MaterializedPostgreSQL. По умолчанию отключено, так как эта функция является экспериментальной.
 
-## allow_experimental_nlp_functions {#allow_experimental_nlp_functions} 
+## allow_experimental_nlp_functions \\{#allow_experimental_nlp_functions\\}
 
 <ExperimentalBadge/>
 
@@ -495,7 +495,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включает экспериментальные функции обработки естественного языка.
 
-## allow_experimental_object_storage_queue_hive_partitioning {#allow_experimental_object_storage_queue_hive_partitioning} 
+## allow_experimental_object_storage_queue_hive_partitioning \\{#allow_experimental_object_storage_queue_hive_partitioning\\}
 
 <ExperimentalBadge/>
 
@@ -505,7 +505,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает использовать Hive‑партиционирование с движками S3Queue/AzureQueue
 
-## allow_experimental_parallel_reading_from_replicas {#allow_experimental_parallel_reading_from_replicas} 
+## allow_experimental_parallel_reading_from_replicas \\{#allow_experimental_parallel_reading_from_replicas\\}
 
 **Псевдонимы**: `enable_parallel_replicas`
 
@@ -513,7 +513,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Использует при выполнении SELECT-запроса до `max_parallel_replicas` реплик из каждого сегмента. Чтение выполняется параллельно и координируется динамически. 0 — отключено, 1 — включено, при сбое они молча отключаются, 2 — включено, при сбое выбрасывается исключение.
 
-## allow_experimental_prql_dialect {#allow_experimental_prql_dialect} 
+## allow_experimental_prql_dialect \\{#allow_experimental_prql_dialect\\}
 
 <ExperimentalBadge/>
 
@@ -523,7 +523,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включает поддержку PRQL — альтернативы SQL.
 
-## allow_experimental_query_deduplication {#allow_experimental_query_deduplication} 
+## allow_experimental_query_deduplication \\{#allow_experimental_query_deduplication\\}
 
 <ExperimentalBadge/>
 
@@ -531,7 +531,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Экспериментальное удаление дубликатов данных для SELECT-запросов на основе UUID частей таблицы
 
-## allow_experimental_statistics {#allow_experimental_statistics} 
+## allow_experimental_statistics \\{#allow_experimental_statistics\\}
 
 <ExperimentalBadge/>
 
@@ -543,7 +543,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает создавать столбцы со [статистикой](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-creating-a-table) и [управлять статистикой](../../engines/table-engines/mergetree-family/mergetree.md/#column-statistics).
 
-## allow_experimental_time_series_aggregate_functions {#allow_experimental_time_series_aggregate_functions} 
+## allow_experimental_time_series_aggregate_functions \\{#allow_experimental_time_series_aggregate_functions\\}
 
 <ExperimentalBadge/>
 
@@ -555,7 +555,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Экспериментальные агрегатные функции timeSeries* для ресемплирования, расчёта скорости изменения (rate) и дельты для временных рядов в стиле Prometheus.
 
-## allow_experimental_time_series_table {#allow_experimental_time_series_table} 
+## allow_experimental_time_series_table \\{#allow_experimental_time_series_table\\}
 
 <ExperimentalBadge/>
 
@@ -568,7 +568,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 - 0 — движок таблицы [TimeSeries](../../engines/table-engines/integrations/time-series.md) отключен.
 - 1 — движок таблицы [TimeSeries](../../engines/table-engines/integrations/time-series.md) включен.
 
-## allow_experimental_window_view {#allow_experimental_window_view} 
+## allow_experimental_window_view \\{#allow_experimental_window_view\\}
 
 <ExperimentalBadge/>
 
@@ -576,7 +576,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включить WINDOW VIEW. Функция пока недостаточно зрелая.
 
-## allow_experimental_ytsaurus_dictionary_source {#allow_experimental_ytsaurus_dictionary_source} 
+## allow_experimental_ytsaurus_dictionary_source \\{#allow_experimental_ytsaurus_dictionary_source\\}
 
 <ExperimentalBadge/>
 
@@ -586,7 +586,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Экспериментальный источник словаря для интеграции с YTsaurus.
 
-## allow_experimental_ytsaurus_table_engine {#allow_experimental_ytsaurus_table_engine} 
+## allow_experimental_ytsaurus_table_engine \\{#allow_experimental_ytsaurus_table_engine\\}
 
 <ExperimentalBadge/>
 
@@ -596,7 +596,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Экспериментальный движок таблицы для интеграции с YTsaurus.
 
-## allow_experimental_ytsaurus_table_function {#allow_experimental_ytsaurus_table_function} 
+## allow_experimental_ytsaurus_table_function \\{#allow_experimental_ytsaurus_table_function\\}
 
 <ExperimentalBadge/>
 
@@ -606,7 +606,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Экспериментальный табличный движок для интеграции с YTsaurus.
 
-## allow_general_join_planning {#allow_general_join_planning} 
+## allow_general_join_planning \\{#allow_general_join_planning\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -614,7 +614,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает использование более общего алгоритма планирования JOIN, который может обрабатывать более сложные условия, но работает только с hash join. Если hash join не включен, используется обычный алгоритм планирования JOIN независимо от значения этой настройки.
 
-## allow_get_client_http_header {#allow_get_client_http_header} 
+## allow_get_client_http_header \\{#allow_get_client_http_header\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -622,13 +622,13 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает использовать функцию `getClientHTTPHeader`, которая позволяет получить значение заголовка из текущего HTTP‑запроса. По соображениям безопасности по умолчанию она отключена, поскольку некоторые заголовки, такие как `Cookie`, могут содержать конфиденциальную информацию. Обратите внимание, что заголовки `X-ClickHouse-*` и `Authentication` всегда недоступны и не могут быть получены с помощью этой функции.
 
-## allow_hyperscan {#allow_hyperscan} 
+## allow_hyperscan \\{#allow_hyperscan\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Разрешает использование функций, которые используют библиотеку Hyperscan. Отключите, чтобы избежать потенциально длительного времени компиляции и чрезмерного использования ресурсов.
 
-## allow_introspection_functions {#allow_introspection_functions} 
+## allow_introspection_functions \\{#allow_introspection_functions\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -644,7 +644,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 - [Sampling Query Profiler](../../operations/optimizing-performance/sampling-query-profiler.md)
 - Системная таблица [trace_log](/operations/system-tables/trace_log)
 
-## allow_materialized_view_with_bad_select {#allow_materialized_view_with_bad_select} 
+## allow_materialized_view_with_bad_select \\{#allow_materialized_view_with_bad_select\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -652,19 +652,19 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает CREATE MATERIALIZED VIEW с запросом SELECT, который обращается к несуществующим таблицам или столбцам. При этом запрос должен оставаться синтаксически корректным. Не применяется к обновляемым materialized view. Не применяется, если схему materialized view необходимо выводить из запроса SELECT (то есть если в CREATE отсутствует список столбцов и не указана таблица TO). Может использоваться для создания materialized view до создания его исходной таблицы.
 
-## allow_named_collection_override_by_default {#allow_named_collection_override_by_default} 
+## allow_named_collection_override_by_default \\{#allow_named_collection_override_by_default\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Разрешает по умолчанию переопределять поля именованных коллекций.
 
-## allow_non_metadata_alters {#allow_non_metadata_alters} 
+## allow_non_metadata_alters \\{#allow_non_metadata_alters\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Разрешает выполнять ALTER-запросы, которые затрагивают не только метаданные таблиц, но и данные на диске
 
-## allow_nonconst_timezone_arguments {#allow_nonconst_timezone_arguments} 
+## allow_nonconst_timezone_arguments \\{#allow_nonconst_timezone_arguments\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -675,7 +675,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 Включение этого параметра создаёт неверное впечатление, что разные значения внутри столбца могут иметь разные часовые пояса.
 Поэтому не следует включать этот параметр.
 
-## allow_nondeterministic_mutations {#allow_nondeterministic_mutations}
+## allow_nondeterministic_mutations \{#allow_nondeterministic_mutations\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -699,7 +699,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 ```
 
 
-## allow_nondeterministic_optimize_skip_unused_shards {#allow_nondeterministic_optimize_skip_unused_shards} 
+## allow_nondeterministic_optimize_skip_unused_shards \\{#allow_nondeterministic_optimize_skip_unused_shards\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -710,19 +710,19 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 - 0 — Запрещено.
 - 1 — Разрешено.
 
-## allow_prefetched_read_pool_for_local_filesystem {#allow_prefetched_read_pool_for_local_filesystem} 
+## allow_prefetched_read_pool_for_local_filesystem \\{#allow_prefetched_read_pool_for_local_filesystem\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Предпочитать пул потоков с предварительной выборкой, если все части находятся в локальной файловой системе
 
-## allow_prefetched_read_pool_for_remote_filesystem {#allow_prefetched_read_pool_for_remote_filesystem} 
+## allow_prefetched_read_pool_for_remote_filesystem \\{#allow_prefetched_read_pool_for_remote_filesystem\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Предпочитать пул потоков с предварительной выборкой, если все части находятся в удалённой файловой системе
 
-## allow_push_predicate_ast_for_distributed_subqueries {#allow_push_predicate_ast_for_distributed_subqueries} 
+## allow_push_predicate_ast_for_distributed_subqueries \\{#allow_push_predicate_ast_for_distributed_subqueries\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -730,13 +730,13 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает проталкивание предиката на уровне AST для распределённых подзапросов при включённом анализаторе
 
-## allow_push_predicate_when_subquery_contains_with {#allow_push_predicate_when_subquery_contains_with} 
+## allow_push_predicate_when_subquery_contains_with \\{#allow_push_predicate_when_subquery_contains_with\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Разрешает проталкивание предикатов, если подзапрос содержит предложение WITH
 
-## allow_reorder_prewhere_conditions {#allow_reorder_prewhere_conditions} 
+## allow_reorder_prewhere_conditions \\{#allow_reorder_prewhere_conditions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -744,7 +744,7 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 При переносе условий из WHERE в PREWHERE позволяет изменять порядок условий для оптимизации фильтрации
 
-## allow_settings_after_format_in_insert {#allow_settings_after_format_in_insert}
+## allow_settings_after_format_in_insert \{#allow_settings_after_format_in_insert\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -775,13 +775,13 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 :::
 
 
-## allow_simdjson {#allow_simdjson} 
+## allow_simdjson \\{#allow_simdjson\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Разрешает использовать библиотеку simdjson в функциях `JSON*`, если доступны инструкции AVX2. Если параметр отключён, будет использоваться rapidjson.
 
-## allow_special_serialization_kinds_in_output_formats {#allow_special_serialization_kinds_in_output_formats} 
+## allow_special_serialization_kinds_in_output_formats \\{#allow_special_serialization_kinds_in_output_formats\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -790,7 +790,7 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 Позволяет выводить столбцы со специальными вариантами сериализации, такими как разреженный (Sparse) и Replicated, без преобразования их в полное представление столбца.
 Это позволяет избежать лишнего копирования данных при форматировании вывода.
 
-## allow_statistics_optimize {#allow_statistics_optimize} 
+## allow_statistics_optimize \\{#allow_statistics_optimize\\}
 
 <BetaBadge/>
 
@@ -802,7 +802,7 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 
 Разрешает использовать статистику для оптимизации запросов
 
-## allow_suspicious_codecs {#allow_suspicious_codecs} 
+## allow_suspicious_codecs \\{#allow_suspicious_codecs\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -810,13 +810,13 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 
 Если установлено значение true, позволяет указывать бессмысленные кодеки сжатия.
 
-## allow_suspicious_fixed_string_types {#allow_suspicious_fixed_string_types} 
+## allow_suspicious_fixed_string_types \\{#allow_suspicious_fixed_string_types\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 В операторе CREATE TABLE эта настройка позволяет создавать столбцы типа FixedString(n) с n > 256. FixedString с длиной >= 256 является подозрительным и, скорее всего, указывает на некорректное использование.
 
-## allow_suspicious_indices {#allow_suspicious_indices} 
+## allow_suspicious_indices \\{#allow_suspicious_indices\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -824,7 +824,7 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 
 Отклоняет первичные/вторичные индексы и ключи сортировки с идентичными выражениями
 
-## allow_suspicious_low_cardinality_types {#allow_suspicious_low_cardinality_types} 
+## allow_suspicious_low_cardinality_types \\{#allow_suspicious_low_cardinality_types\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -843,7 +843,7 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 - 1 — использование `LowCardinality` не ограничено.
 - 0 — использование `LowCardinality` ограничено.
 
-## allow_suspicious_primary_key {#allow_suspicious_primary_key} 
+## allow_suspicious_primary_key \\{#allow_suspicious_primary_key\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -851,7 +851,7 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 
 Разрешить подозрительные определения `PRIMARY KEY`/`ORDER BY` для MergeTree (например, с использованием SimpleAggregateFunction).
 
-## allow_suspicious_ttl_expressions {#allow_suspicious_ttl_expressions} 
+## allow_suspicious_ttl_expressions \\{#allow_suspicious_ttl_expressions\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -859,7 +859,7 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 
 Отклонять выражения TTL, которые не зависят ни от одного из столбцов таблицы. В большинстве случаев это указывает на ошибку пользователя.
 
-## allow_suspicious_types_in_group_by {#allow_suspicious_types_in_group_by} 
+## allow_suspicious_types_in_group_by \\{#allow_suspicious_types_in_group_by\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -867,7 +867,7 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 
 Разрешает или запрещает использование типов данных [Variant](../../sql-reference/data-types/variant.md) и [Dynamic](../../sql-reference/data-types/dynamic.md) в ключах GROUP BY.
 
-## allow_suspicious_types_in_order_by {#allow_suspicious_types_in_order_by} 
+## allow_suspicious_types_in_order_by \\{#allow_suspicious_types_in_order_by\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -875,7 +875,7 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 
 Разрешает или запрещает использование типов [Variant](../../sql-reference/data-types/variant.md) и [Dynamic](../../sql-reference/data-types/dynamic.md) в ключах ORDER BY.
 
-## allow_suspicious_variant_types {#allow_suspicious_variant_types} 
+## allow_suspicious_variant_types \\{#allow_suspicious_variant_types\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -883,19 +883,19 @@ INSERT INTO FUNCTION null('foo String') VALUES ('bar') SETTINGS max_threads=1;
 
 В операторе CREATE TABLE этот параметр позволяет задавать тип Variant с вариантами схожих типов (например, с разными числовыми типами или типами дат). Включение этого параметра может вносить неоднозначность при работе со значениями схожих типов.
 
-## allow_unrestricted_reads_from_keeper {#allow_unrestricted_reads_from_keeper} 
+## allow_unrestricted_reads_from_keeper \\{#allow_unrestricted_reads_from_keeper\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Разрешает неограниченное (без условия на путь) чтение из таблицы system.zookeeper; может быть полезным, но это небезопасно для ZooKeeper
 
-## alter_move_to_space_execute_async {#alter_move_to_space_execute_async} 
+## alter_move_to_space_execute_async \\{#alter_move_to_space_execute_async\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Выполнять ALTER TABLE MOVE ... TO [DISK|VOLUME] в асинхронном режиме
 
-## alter_partition_verbose_result {#alter_partition_verbose_result}
+## alter_partition_verbose_result \{#alter_partition_verbose_result\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -931,7 +931,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 ```
 
 
-## alter_sync {#alter_sync} 
+## alter_sync \\{#alter_sync\\}
 
 **Псевдонимы**: `replication_alter_partitions_sync`
 
@@ -951,7 +951,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 `alter_sync` применим только к таблицам `Replicated`; при ALTER таблиц, не являющихся `Replicated`, он не оказывает эффекта.
 :::
 
-## alter_update_mode {#alter_update_mode} 
+## alter_update_mode \\{#alter_update_mode\\}
 
 <SettingsInfoBlock type="AlterUpdateMode" default_value="heavy" />
 
@@ -965,13 +965,13 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 - `lightweight` — выполняет легковесное обновление, если возможно, в противном случае выполняет обычную мутацию.
 - `lightweight_force` — выполняет легковесное обновление, если возможно, в противном случае выбрасывает исключение.
 
-## analyze_index_with_space_filling_curves {#analyze_index_with_space_filling_curves} 
+## analyze_index_with_space_filling_curves \\{#analyze_index_with_space_filling_curves\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Если в индексе таблицы используется кривая, заполняющая пространство, например `ORDER BY mortonEncode(x, y)` или `ORDER BY hilbertEncode(x, y)`, и запрос содержит условия на её аргументы, например `x >= 10 AND x <= 20 AND y >= 20 AND y <= 30`, то для анализа индекса используется эта кривая, заполняющая пространство.
 
-## analyzer_compatibility_allow_compound_identifiers_in_unflatten_nested {#analyzer_compatibility_allow_compound_identifiers_in_unflatten_nested} 
+## analyzer_compatibility_allow_compound_identifiers_in_unflatten_nested \\{#analyzer_compatibility_allow_compound_identifiers_in_unflatten_nested\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -979,7 +979,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Разрешает добавлять составные идентификаторы в Nested. Это настройка совместимости, поскольку она изменяет результат запроса. Когда настройка отключена, `SELECT a.b.c FROM table ARRAY JOIN a` не работает, а `SELECT a FROM table` не включает столбец `a.b.c` в результат `Nested a`.
 
-## analyzer_compatibility_join_using_top_level_identifier {#analyzer_compatibility_join_using_top_level_identifier} 
+## analyzer_compatibility_join_using_top_level_identifier \\{#analyzer_compatibility_join_using_top_level_identifier\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -987,7 +987,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Принудительно разрешает идентификатор в JOIN USING по проекции (например, в `SELECT a + 1 AS b FROM t1 JOIN t2 USING (b)` соединение будет выполняться по условию `t1.a + 1 = t2.b`, а не `t1.b = t2.b`).
 
-## any_join_distinct_right_table_keys {#any_join_distinct_right_table_keys} 
+## any_join_distinct_right_table_keys \\{#any_join_distinct_right_table_keys\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1018,19 +1018,19 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 - [Строгость JOIN](/sql-reference/statements/select/join#settings)
 
-## apply_deleted_mask {#apply_deleted_mask} 
+## apply_deleted_mask \\{#apply_deleted_mask\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Включает фильтрацию строк, удалённых с помощью механизма легковесного удаления. Если отключено, запрос сможет читать эти строки. Это полезно для отладки и сценариев отмены удаления.
 
-## apply_mutations_on_fly {#apply_mutations_on_fly} 
+## apply_mutations_on_fly \\{#apply_mutations_on_fly\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Если значение равно `true`, мутации (`UPDATE` и `DELETE`), которые ещё не материализованы в части данных, будут применяться при выполнении запросов `SELECT`.
 
-## apply_patch_parts {#apply_patch_parts} 
+## apply_patch_parts \\{#apply_patch_parts\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1038,7 +1038,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Если имеет значение true, патч-части (части, представляющие легковесные обновления) применяются при выполнении запросов SELECT.
 
-## apply_patch_parts_join_cache_buckets {#apply_patch_parts_join_cache_buckets} 
+## apply_patch_parts_join_cache_buckets \\{#apply_patch_parts_join_cache_buckets\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="8" />
 
@@ -1046,7 +1046,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Количество бакетов во временном кэше для применения частей патча в режиме JOIN.
 
-## apply_prewhere_after_final {#apply_prewhere_after_final} 
+## apply_prewhere_after_final \\{#apply_prewhere_after_final\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1058,7 +1058,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 Примечание: если параметр apply_row_level_security_after_final включен и row policy использует столбцы, не входящие в ключ сортировки, применение PREWHERE также
 будет отложено для сохранения корректного порядка выполнения (row policy должна быть применена до PREWHERE).
 
-## apply_row_policy_after_final {#apply_row_policy_after_final} 
+## apply_row_policy_after_final \\{#apply_row_policy_after_final\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1076,7 +1076,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 - 0 — политика строк и PREWHERE применяются до FINAL (по умолчанию).
 - 1 — политика строк и PREWHERE применяются после FINAL.
 
-## apply_settings_from_server {#apply_settings_from_server} 
+## apply_settings_from_server \\{#apply_settings_from_server\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1090,7 +1090,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Обратите внимание, что изначально (24.12) существовала серверная настройка (`send_settings_to_client`), но позже её заменили этой клиентской настройкой для улучшения удобства использования.
 
-## archive_adaptive_buffer_max_size_bytes {#archive_adaptive_buffer_max_size_bytes} 
+## archive_adaptive_buffer_max_size_bytes \\{#archive_adaptive_buffer_max_size_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="8388608" />
 
@@ -1098,7 +1098,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Ограничивает максимальный размер адаптивного буфера, используемого при записи данных в архивные файлы (например, в tar-архивы).
 
-## arrow_flight_request_descriptor_type {#arrow_flight_request_descriptor_type} 
+## arrow_flight_request_descriptor_type \\{#arrow_flight_request_descriptor_type\\}
 
 <SettingsInfoBlock type="ArrowFlightDescriptorType" default_value="path" />
 
@@ -1111,7 +1111,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 - 'path' — использовать FlightDescriptor::Path (значение по умолчанию, работает с большинством серверов Arrow Flight)
 - 'command' — использовать FlightDescriptor::Command с запросом SELECT (требуется для Dremio)
 
-## asterisk_include_alias_columns {#asterisk_include_alias_columns} 
+## asterisk_include_alias_columns \\{#asterisk_include_alias_columns\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1122,7 +1122,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 - 0 - выключено
 - 1 - включено
 
-## asterisk_include_materialized_columns {#asterisk_include_materialized_columns} 
+## asterisk_include_materialized_columns \\{#asterisk_include_materialized_columns\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1133,13 +1133,13 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 - 0 - отключено
 - 1 - включено
 
-## async_insert {#async_insert} 
+## async_insert \\{#async_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Если значение равно true, данные из запроса INSERT помещаются в очередь и затем в фоновом режиме асинхронно записываются в таблицу. Если wait_for_async_insert имеет значение false, запрос INSERT выполняется практически мгновенно, в противном случае клиент будет ждать, пока данные не будут записаны в таблицу.
 
-## async_insert_busy_timeout_decrease_rate {#async_insert_busy_timeout_decrease_rate} 
+## async_insert_busy_timeout_decrease_rate \\{#async_insert_busy_timeout_decrease_rate\\}
 
 <SettingsInfoBlock type="Double" default_value="0.2" />
 
@@ -1147,7 +1147,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Экспоненциальный коэффициент, с которым уменьшается адаптивный тайм-аут асинхронной вставки
 
-## async_insert_busy_timeout_increase_rate {#async_insert_busy_timeout_increase_rate} 
+## async_insert_busy_timeout_increase_rate \\{#async_insert_busy_timeout_increase_rate\\}
 
 <SettingsInfoBlock type="Double" default_value="0.2" />
 
@@ -1155,7 +1155,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Коэффициент экспоненциального увеличения адаптивного таймаута асинхронной вставки
 
-## async_insert_busy_timeout_max_ms {#async_insert_busy_timeout_max_ms} 
+## async_insert_busy_timeout_max_ms \\{#async_insert_busy_timeout_max_ms\\}
 
 **Псевдонимы**: `async_insert_busy_timeout_ms`
 
@@ -1165,7 +1165,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Максимальное время ожидания перед выгрузкой собранных данных для запроса с момента появления первых данных.
 
-## async_insert_busy_timeout_min_ms {#async_insert_busy_timeout_min_ms} 
+## async_insert_busy_timeout_min_ms \\{#async_insert_busy_timeout_min_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="50" />
 
@@ -1173,13 +1173,13 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 При включенной автонастройке через async_insert_use_adaptive_busy_timeout это минимальное время ожидания перед сбросом накопленных данных для каждого запроса с момента появления первых данных. Оно также служит начальным значением для адаптивного алгоритма.
 
-## async_insert_deduplicate {#async_insert_deduplicate} 
+## async_insert_deduplicate \\{#async_insert_deduplicate\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Для асинхронных запросов INSERT в реплицируемой таблице определяет, должна ли выполняться дедупликация вставляемых блоков.
 
-## async_insert_max_data_size {#async_insert_max_data_size} 
+## async_insert_max_data_size \\{#async_insert_max_data_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10485760" />
 
@@ -1187,14 +1187,14 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Максимальный размер в байтах неразобранных данных, собираемых для одного запроса до вставки.
 
-## async_insert_max_query_number {#async_insert_max_query_number} 
+## async_insert_max_query_number \\{#async_insert_max_query_number\\}
 
 <SettingsInfoBlock type="UInt64" default_value="450" />
 
 Максимальное количество запросов INSERT перед вставкой.
 Применяется только, если настройка [`async_insert_deduplicate`](#async_insert_deduplicate) равна 1.
 
-## async_insert_poll_timeout_ms {#async_insert_poll_timeout_ms} 
+## async_insert_poll_timeout_ms \\{#async_insert_poll_timeout_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="10" />
 
@@ -1202,7 +1202,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Таймаут опроса данных из очереди асинхронных вставок
 
-## async_insert_use_adaptive_busy_timeout {#async_insert_use_adaptive_busy_timeout} 
+## async_insert_use_adaptive_busy_timeout \\{#async_insert_use_adaptive_busy_timeout\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1210,7 +1210,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Если установлено в true, используется адаптивный таймаут занятости для асинхронных вставок
 
-## async_query_sending_for_remote {#async_query_sending_for_remote} 
+## async_query_sending_for_remote \\{#async_query_sending_for_remote\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1220,7 +1220,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 По умолчанию включено.
 
-## async_socket_for_remote {#async_socket_for_remote} 
+## async_socket_for_remote \\{#async_socket_for_remote\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1230,7 +1230,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 По умолчанию включено.
 
-## automatic_parallel_replicas_min_bytes_per_replica {#automatic_parallel_replicas_min_bytes_per_replica} 
+## automatic_parallel_replicas_min_bytes_per_replica \\{#automatic_parallel_replicas_min_bytes_per_replica\\}
 
 <ExperimentalBadge/>
 
@@ -1240,7 +1240,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Порог количества байт для чтения на реплику, при котором автоматически включаются параллельные реплики (применяется только, когда `automatic_parallel_replicas_mode`=1). Значение 0 означает отсутствие порога.
 
-## automatic_parallel_replicas_mode {#automatic_parallel_replicas_mode} 
+## automatic_parallel_replicas_mode \\{#automatic_parallel_replicas_mode\\}
 
 <ExperimentalBadge/>
 
@@ -1251,7 +1251,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 Включает автоматическое переключение на выполнение с параллельными репликами на основе собранной статистики. Требуется включить `parallel_replicas_local_plan` и указать `cluster_for_parallel_replicas`.
 0 — отключено, 1 — включено, 2 — включен только сбор статистики (переключение на выполнение с параллельными репликами отключено).
 
-## azure_allow_parallel_part_upload {#azure_allow_parallel_part_upload} 
+## azure_allow_parallel_part_upload \\{#azure_allow_parallel_part_upload\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1259,7 +1259,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Использует несколько потоков для многосоставной загрузки в Azure.
 
-## azure_check_objects_after_upload {#azure_check_objects_after_upload} 
+## azure_check_objects_after_upload \\{#azure_check_objects_after_upload\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1267,7 +1267,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Проверять каждый загруженный объект в Azure Blob Storage, чтобы убедиться в успешном завершении загрузки
 
-## azure_connect_timeout_ms {#azure_connect_timeout_ms} 
+## azure_connect_timeout_ms \\{#azure_connect_timeout_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -1275,13 +1275,13 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Таймаут подключения к хосту при работе с дисками Azure.
 
-## azure_create_new_file_on_insert {#azure_create_new_file_on_insert} 
+## azure_create_new_file_on_insert \\{#azure_create_new_file_on_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Включает или отключает создание нового файла при каждой вставке данных в таблицы движка Azure
 
-## azure_ignore_file_doesnt_exist {#azure_ignore_file_doesnt_exist} 
+## azure_ignore_file_doesnt_exist \\{#azure_ignore_file_doesnt_exist\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1294,13 +1294,13 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 - 1 — `SELECT` возвращает пустой результат.
 - 0 — `SELECT` выбрасывает исключение.
 
-## azure_list_object_keys_size {#azure_list_object_keys_size} 
+## azure_list_object_keys_size \\{#azure_list_object_keys_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
 Максимальное количество файлов, которые может вернуть один пакетный ответ на запрос ListObject
 
-## azure_max_blocks_in_multipart_upload {#azure_max_blocks_in_multipart_upload} 
+## azure_max_blocks_in_multipart_upload \\{#azure_max_blocks_in_multipart_upload\\}
 
 <SettingsInfoBlock type="UInt64" default_value="50000" />
 
@@ -1308,7 +1308,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Максимальное количество блоков при multipart-загрузке в Azure.
 
-## azure_max_get_burst {#azure_max_get_burst} 
+## azure_max_get_burst \\{#azure_max_get_burst\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1316,7 +1316,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Максимальное число запросов, которые могут быть выполнены одновременно до достижения ограничения на число запросов в секунду. По умолчанию (0) равно `azure_max_get_rps`.
 
-## azure_max_get_rps {#azure_max_get_rps} 
+## azure_max_get_rps \\{#azure_max_get_rps\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1324,7 +1324,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Ограничение на число запросов Azure GET в секунду до начала ограничения скорости (throttling). Ноль означает отсутствие ограничений.
 
-## azure_max_inflight_parts_for_one_file {#azure_max_inflight_parts_for_one_file} 
+## azure_max_inflight_parts_for_one_file \\{#azure_max_inflight_parts_for_one_file\\}
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
@@ -1332,7 +1332,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Максимальное количество одновременно загружаемых частей в multipart-запросе на загрузку. 0 означает отсутствие ограничений.
 
-## azure_max_put_burst {#azure_max_put_burst} 
+## azure_max_put_burst \\{#azure_max_put_burst\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1340,7 +1340,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Максимальное количество запросов, которое может быть отправлено одновременно до достижения ограничения на количество запросов в секунду. По умолчанию значение 0 соответствует `azure_max_put_rps`.
 
-## azure_max_put_rps {#azure_max_put_rps} 
+## azure_max_put_rps \\{#azure_max_put_rps\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1348,7 +1348,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Ограничение на число запросов PUT к Azure в секунду перед началом ограничения частоты запросов. Ноль означает отсутствие лимита.
 
-## azure_max_redirects {#azure_max_redirects} 
+## azure_max_redirects \\{#azure_max_redirects\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -1356,7 +1356,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Максимальное допустимое число последовательных перенаправлений Azure.
 
-## azure_max_single_part_copy_size {#azure_max_single_part_copy_size} 
+## azure_max_single_part_copy_size \\{#azure_max_single_part_copy_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="268435456" />
 
@@ -1364,7 +1364,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Максимальный размер объекта при копировании одной частью в хранилище Azure Blob.
 
-## azure_max_single_part_upload_size {#azure_max_single_part_upload_size} 
+## azure_max_single_part_upload_size \\{#azure_max_single_part_upload_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="33554432" />
 
@@ -1372,13 +1372,13 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Максимальный размер объекта при загрузке в Azure Blob Storage с использованием одночастной загрузки (singlepart upload).
 
-## azure_max_single_read_retries {#azure_max_single_read_retries} 
+## azure_max_single_read_retries \\{#azure_max_single_read_retries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="4" />
 
 Максимальное количество повторных попыток при однократном чтении из Azure Blob Storage.
 
-## azure_max_unexpected_write_error_retries {#azure_max_unexpected_write_error_retries} 
+## azure_max_unexpected_write_error_retries \\{#azure_max_unexpected_write_error_retries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="4" />
 
@@ -1386,7 +1386,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Максимальное количество повторных попыток записи в случае неожиданных ошибок при записи в объектное хранилище Azure Blob Storage
 
-## azure_max_upload_part_size {#azure_max_upload_part_size} 
+## azure_max_upload_part_size \\{#azure_max_upload_part_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5368709120" />
 
@@ -1394,7 +1394,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Максимальный размер части, загружаемой при многокомпонентной загрузке в Azure Blob Storage.
 
-## azure_min_upload_part_size {#azure_min_upload_part_size} 
+## azure_min_upload_part_size \\{#azure_min_upload_part_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16777216" />
 
@@ -1402,7 +1402,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Минимальный размер части для загрузки при многочастичной загрузке в хранилище BLOB-объектов Azure.
 
-## azure_request_timeout_ms {#azure_request_timeout_ms} 
+## azure_request_timeout_ms \\{#azure_request_timeout_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="30000" />
 
@@ -1410,7 +1410,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Таймаут простоя при отправке данных в Azure и получении данных из Azure. Операция завершается с ошибкой, если один вызов чтения или записи по TCP остается заблокированным дольше этого времени.
 
-## azure_sdk_max_retries {#azure_sdk_max_retries} 
+## azure_sdk_max_retries \\{#azure_sdk_max_retries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -1418,7 +1418,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Максимальное число повторных попыток в Azure SDK
 
-## azure_sdk_retry_initial_backoff_ms {#azure_sdk_retry_initial_backoff_ms} 
+## azure_sdk_retry_initial_backoff_ms \\{#azure_sdk_retry_initial_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -1426,7 +1426,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Минимальная задержка между повторными попытками в Azure SDK
 
-## azure_sdk_retry_max_backoff_ms {#azure_sdk_retry_max_backoff_ms} 
+## azure_sdk_retry_max_backoff_ms \\{#azure_sdk_retry_max_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -1434,7 +1434,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Максимальная задержка между повторными попытками в Azure SDK
 
-## azure_skip_empty_files {#azure_skip_empty_files} 
+## azure_skip_empty_files \\{#azure_skip_empty_files\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1447,7 +1447,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 - 0 — `SELECT` выбрасывает исключение, если пустой файл не совместим с запрошенным форматом.
 - 1 — `SELECT` возвращает пустой результат для пустого файла.
 
-## azure_strict_upload_part_size {#azure_strict_upload_part_size} 
+## azure_strict_upload_part_size \\{#azure_strict_upload_part_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1455,7 +1455,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Точный размер части, загружаемой при многочастичной (multipart) загрузке в Azure Blob Storage.
 
-## azure_throw_on_zero_files_match {#azure_throw_on_zero_files_match} 
+## azure_throw_on_zero_files_match \\{#azure_throw_on_zero_files_match\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1468,13 +1468,13 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 - 1 — `SELECT` генерирует исключение.
 - 0 — `SELECT` возвращает пустой результат.
 
-## azure_truncate_on_insert {#azure_truncate_on_insert} 
+## azure_truncate_on_insert \\{#azure_truncate_on_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Включает или отключает усечение данных перед вставкой в таблицы движка Azure.
 
-## azure_upload_part_size_multiply_factor {#azure_upload_part_size_multiply_factor} 
+## azure_upload_part_size_multiply_factor \\{#azure_upload_part_size_multiply_factor\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
@@ -1482,7 +1482,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Умножайте azure_min_upload_part_size на этот коэффициент каждый раз, когда в результате одной операции записи в хранилище Azure Blob было загружено azure_multiply_parts_count_threshold частей.
 
-## azure_upload_part_size_multiply_parts_count_threshold {#azure_upload_part_size_multiply_parts_count_threshold} 
+## azure_upload_part_size_multiply_parts_count_threshold \\{#azure_upload_part_size_multiply_parts_count_threshold\\}
 
 <SettingsInfoBlock type="UInt64" default_value="500" />
 
@@ -1490,7 +1490,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Каждый раз при загрузке в Azure Blob Storage такого количества частей значение azure_min_upload_part_size умножается на azure_upload_part_size_multiply_factor.
 
-## azure_use_adaptive_timeouts {#azure_use_adaptive_timeouts} 
+## azure_use_adaptive_timeouts \\{#azure_use_adaptive_timeouts\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1499,19 +1499,19 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 Если установлено значение `true`, то для всех запросов к Azure первые две попытки выполняются с короткими тайм-аутами на отправку и получение.
 Если установлено значение `false`, то все попытки выполняются с одинаковыми тайм-аутами.
 
-## backup_restore_batch_size_for_keeper_multi {#backup_restore_batch_size_for_keeper_multi} 
+## backup_restore_batch_size_for_keeper_multi \\{#backup_restore_batch_size_for_keeper_multi\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
 Максимальный размер пакета для запроса multi к [Zoo]Keeper при создании или восстановлении резервной копии
 
-## backup_restore_batch_size_for_keeper_multiread {#backup_restore_batch_size_for_keeper_multiread} 
+## backup_restore_batch_size_for_keeper_multiread \\{#backup_restore_batch_size_for_keeper_multiread\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
 Максимальный размер пакета для запроса multiread к [Zoo]Keeper при выполнении резервного копирования или восстановления.
 
-## backup_restore_failure_after_host_disconnected_for_seconds {#backup_restore_failure_after_host_disconnected_for_seconds} 
+## backup_restore_failure_after_host_disconnected_for_seconds \\{#backup_restore_failure_after_host_disconnected_for_seconds\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3600" />
 
@@ -1521,7 +1521,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 Это значение должно быть больше любого разумного времени, которое может потребоваться хосту для повторного подключения к ZooKeeper после сбоя.
 Ноль означает отсутствие ограничения.
 
-## backup_restore_finish_timeout_after_error_sec {#backup_restore_finish_timeout_after_error_sec} 
+## backup_restore_finish_timeout_after_error_sec \\{#backup_restore_finish_timeout_after_error_sec\\}
 
 <SettingsInfoBlock type="UInt64" default_value="180" />
 
@@ -1529,19 +1529,19 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Как долго инициатор должен ждать, пока другой хост не отреагирует на узел `error` и не завершит выполнение текущей операции BACKUP ON CLUSTER или RESTORE ON CLUSTER.
 
-## backup_restore_keeper_fault_injection_probability {#backup_restore_keeper_fault_injection_probability} 
+## backup_restore_keeper_fault_injection_probability \\{#backup_restore_keeper_fault_injection_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
 Приблизительная вероятность отказа запроса к Keeper во время резервного копирования или восстановления. Допустимое значение — в интервале [0.0f, 1.0f].
 
-## backup_restore_keeper_fault_injection_seed {#backup_restore_keeper_fault_injection_seed} 
+## backup_restore_keeper_fault_injection_seed \\{#backup_restore_keeper_fault_injection_seed\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 0 - случайное начальное значение, в противном случае используется значение настройки
 
-## backup_restore_keeper_max_retries {#backup_restore_keeper_max_retries} 
+## backup_restore_keeper_max_retries \\{#backup_restore_keeper_max_retries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -1550,7 +1550,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 Максимальное число повторных попыток для операций [Zoo]Keeper во время выполнения операции BACKUP или RESTORE.
 Должно быть достаточно большим, чтобы вся операция не завершилась с ошибкой из‑за временного сбоя [Zoo]Keeper.
 
-## backup_restore_keeper_max_retries_while_handling_error {#backup_restore_keeper_max_retries_while_handling_error} 
+## backup_restore_keeper_max_retries_while_handling_error \\{#backup_restore_keeper_max_retries_while_handling_error\\}
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
@@ -1558,7 +1558,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Максимальное число повторных попыток операций [Zoo]Keeper при обработке ошибки операции BACKUP ON CLUSTER или RESTORE ON CLUSTER.
 
-## backup_restore_keeper_max_retries_while_initializing {#backup_restore_keeper_max_retries_while_initializing} 
+## backup_restore_keeper_max_retries_while_initializing \\{#backup_restore_keeper_max_retries_while_initializing\\}
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
@@ -1566,25 +1566,25 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Максимальное количество повторных попыток операций [Zoo]Keeper при инициализации операции BACKUP ON CLUSTER или RESTORE ON CLUSTER.
 
-## backup_restore_keeper_retry_initial_backoff_ms {#backup_restore_keeper_retry_initial_backoff_ms} 
+## backup_restore_keeper_retry_initial_backoff_ms \\{#backup_restore_keeper_retry_initial_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
 Начальная задержка (backoff) для операций [Zoo]Keeper во время резервного копирования или восстановления
 
-## backup_restore_keeper_retry_max_backoff_ms {#backup_restore_keeper_retry_max_backoff_ms} 
+## backup_restore_keeper_retry_max_backoff_ms \\{#backup_restore_keeper_retry_max_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000" />
 
 Максимальное время ожидания (backoff) для операций [Zoo]Keeper при резервном копировании или восстановлении
 
-## backup_restore_keeper_value_max_size {#backup_restore_keeper_value_max_size} 
+## backup_restore_keeper_value_max_size \\{#backup_restore_keeper_value_max_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
 
 Максимальный размер данных узла [Zoo]Keeper при создании резервной копии
 
-## backup_restore_s3_retry_attempts {#backup_restore_s3_retry_attempts} 
+## backup_restore_s3_retry_attempts \\{#backup_restore_s3_retry_attempts\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -1592,7 +1592,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Настройка для Aws::Client::RetryStrategy, Aws::Client самостоятельно выполняет повторы, 0 означает отсутствие повторов. Применяется только для операций резервного копирования и восстановления.
 
-## backup_restore_s3_retry_initial_backoff_ms {#backup_restore_s3_retry_initial_backoff_ms} 
+## backup_restore_s3_retry_initial_backoff_ms \\{#backup_restore_s3_retry_initial_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="25" />
 
@@ -1600,7 +1600,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Начальная задержка (в миллисекундах) перед первой попыткой повтора операции во время резервного копирования и восстановления. Каждая последующая попытка повтора увеличивает задержку экспоненциально, вплоть до максимального значения, заданного в `backup_restore_s3_retry_max_backoff_ms`.
 
-## backup_restore_s3_retry_jitter_factor {#backup_restore_s3_retry_jitter_factor} 
+## backup_restore_s3_retry_jitter_factor \\{#backup_restore_s3_retry_jitter_factor\\}
 
 <SettingsInfoBlock type="Float" default_value="0.1" />
 
@@ -1608,7 +1608,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Коэффициент джиттера, применяемый к задержке между повторными попытками (retry backoff delay) в Aws::Client::RetryStrategy во время операций резервного копирования и восстановления. Вычисленная задержка backoff умножается на случайный коэффициент в диапазоне [1.0, 1.0 + jitter], но не превышает значение `backup_restore_s3_retry_max_backoff_ms`. Значение должно находиться в интервале [0.0, 1.0].
 
-## backup_restore_s3_retry_max_backoff_ms {#backup_restore_s3_retry_max_backoff_ms} 
+## backup_restore_s3_retry_max_backoff_ms \\{#backup_restore_s3_retry_max_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000" />
 
@@ -1616,7 +1616,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Максимальная задержка в миллисекундах между повторными попытками во время операций резервного копирования и восстановления.
 
-## backup_slow_all_threads_after_retryable_s3_error {#backup_slow_all_threads_after_retryable_s3_error} 
+## backup_slow_all_threads_after_retryable_s3_error \\{#backup_slow_all_threads_after_retryable_s3_error\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1625,7 +1625,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 Если установлено в `true`, все потоки, выполняющие запросы к S3 к одной и той же конечной точке резервного копирования, замедляются после того, как любой отдельный запрос к S3 сталкивается с ошибкой S3, допускающей повторную попытку (retryable), такой как 'Slow Down'.
 Если установлено в `false`, каждый поток обрабатывает backoff запросов к S3 независимо от других.
 
-## cache_warmer_threads {#cache_warmer_threads} 
+## cache_warmer_threads \\{#cache_warmer_threads\\}
 
 <CloudOnlyBadge/>
 
@@ -1633,13 +1633,13 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Действует только в ClickHouse Cloud. Количество фоновых потоков для упреждающей загрузки новых частей данных в файловый кэш, когда включён [cache_populated_by_fetch](merge-tree-settings.md/#cache_populated_by_fetch). Ноль — чтобы отключить.
 
-## calculate_text_stack_trace {#calculate_text_stack_trace} 
+## calculate_text_stack_trace \\{#calculate_text_stack_trace\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Вычислять текстовый стек-трейс при возникновении исключений во время выполнения запроса. Это поведение по умолчанию. Для этого требуется поиск символов, что может замедлить фаззинг-тесты при выполнении очень большого количества ошибочных запросов. В обычных случаях не следует отключать эту настройку.
 
-## cancel_http_readonly_queries_on_client_close {#cancel_http_readonly_queries_on_client_close} 
+## cancel_http_readonly_queries_on_client_close \\{#cancel_http_readonly_queries_on_client_close\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1647,7 +1647,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Значение по умолчанию в Cloud: `0`.
 
-## cast_ipv4_ipv6_default_on_conversion_error {#cast_ipv4_ipv6_default_on_conversion_error} 
+## cast_ipv4_ipv6_default_on_conversion_error \\{#cast_ipv4_ipv6_default_on_conversion_error\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1655,7 +1655,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Оператор CAST в тип IPv4, оператор CAST в тип IPv6 и функции toIPv4, toIPv6 будут возвращать значение по умолчанию вместо выброса исключения при ошибке преобразования.
 
-## cast_keep_nullable {#cast_keep_nullable}
+## cast_keep_nullable \{#cast_keep_nullable\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1705,7 +1705,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 * Функция [CAST](/sql-reference/functions/type-conversion-functions#CAST)
 
 
-## cast_string_to_date_time_mode {#cast_string_to_date_time_mode} 
+## cast_string_to_date_time_mode \\{#cast_string_to_date_time_mode\\}
 
 <SettingsInfoBlock type="DateTimeInputFormat" default_value="basic" />
 
@@ -1730,7 +1730,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 - [Тип данных DateTime.](../../sql-reference/data-types/datetime.md)
 - [Функции для работы с датами и временем.](../../sql-reference/functions/date-time-functions.md)
 
-## cast_string_to_dynamic_use_inference {#cast_string_to_dynamic_use_inference} 
+## cast_string_to_dynamic_use_inference \\{#cast_string_to_dynamic_use_inference\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1738,7 +1738,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 Использовать вывод типов при преобразовании String в Dynamic
 
-## cast_string_to_variant_use_inference {#cast_string_to_variant_use_inference} 
+## cast_string_to_variant_use_inference \\{#cast_string_to_variant_use_inference\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1746,7 +1746,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 Использовать вывод типов при преобразовании String в Variant.
 
-## check_query_single_value_result {#check_query_single_value_result} 
+## check_query_single_value_result \\{#check_query_single_value_result\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1759,31 +1759,31 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 - 0 — запрос показывает статус проверки для каждой отдельной части данных таблицы.
 - 1 — запрос показывает общий статус проверки таблицы.
 
-## check_referential_table_dependencies {#check_referential_table_dependencies} 
+## check_referential_table_dependencies \\{#check_referential_table_dependencies\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Проверяет, что выполнение DDL-запроса (например, DROP TABLE или RENAME) не нарушит ссылочные зависимости
 
-## check_table_dependencies {#check_table_dependencies} 
+## check_table_dependencies \\{#check_table_dependencies\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Позволяет проверить, что DDL-запрос (например, DROP TABLE или RENAME) не приведёт к нарушению зависимостей
 
-## checksum_on_read {#checksum_on_read} 
+## checksum_on_read \\{#checksum_on_read\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Проверка контрольных сумм при чтении. По умолчанию настройка включена и всегда должна быть включена в production-среде. Не следует ожидать какой-либо выгоды от её отключения. Она может использоваться только для экспериментов и бенчмарков. Настройка применима только к таблицам семейства MergeTree. Для таблиц на других движках контрольные суммы всегда проверяются, а также при получении данных по сети.
 
-## cloud_mode {#cloud_mode} 
+## cloud_mode \\{#cloud_mode\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Режим Cloud
 
-## cloud_mode_database_engine {#cloud_mode_database_engine} 
+## cloud_mode_database_engine \\{#cloud_mode_database_engine\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
@@ -1791,7 +1791,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 Движок базы данных, допустимый в Cloud. 1 — переписывать DDL-запросы для использования базы данных Replicated, 2 — переписывать DDL-запросы для использования базы данных Shared
 
-## cloud_mode_engine {#cloud_mode_engine} 
+## cloud_mode_engine \\{#cloud_mode_engine\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
@@ -1805,11 +1805,11 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 Тип UInt64, чтобы минимизировать публичную часть
 
-## cluster_for_parallel_replicas {#cluster_for_parallel_replicas} 
+## cluster_for_parallel_replicas \\{#cluster_for_parallel_replicas\\}
 
 Кластер для сегмента, в котором находится текущий сервер
 
-## cluster_function_process_archive_on_multiple_nodes {#cluster_function_process_archive_on_multiple_nodes} 
+## cluster_function_process_archive_on_multiple_nodes \\{#cluster_function_process_archive_on_multiple_nodes\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1817,7 +1817,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 При значении `true` повышает производительность обработки архивов в кластерных функциях. Значение `false` следует использовать для обеспечения совместимости и во избежание ошибок при обновлении до версии 25.7+ при использовании кластерных функций с архивами в более ранних версиях.
 
-## cluster_table_function_buckets_batch_size {#cluster_table_function_buckets_batch_size} 
+## cluster_table_function_buckets_batch_size \\{#cluster_table_function_buckets_batch_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1825,7 +1825,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 Определяет приблизительный размер пакета (в байтах), используемого при распределённой обработке задач в табличных функциях кластера с гранулярностью разбиения `bucket`. Система накапливает данные, пока их объём не достигнет по крайней мере этого значения. Фактический размер может быть немного больше для выравнивания по границам данных.
 
-## cluster_table_function_split_granularity {#cluster_table_function_split_granularity} 
+## cluster_table_function_split_granularity \\{#cluster_table_function_split_granularity\\}
 
 <SettingsInfoBlock type="ObjectStorageGranularityLevel" default_value="file" />
 
@@ -1841,13 +1841,13 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 Выбор более мелкой гранулярности (например, `bucket`) может повысить параллелизм при работе с небольшим количеством крупных файлов.
 Например, если файл Parquet содержит несколько групп строк, включение гранулярности `bucket` позволяет каждой группе обрабатываться независимо разными рабочими процессами.
 
-## collect_hash_table_stats_during_aggregation {#collect_hash_table_stats_during_aggregation} 
+## collect_hash_table_stats_during_aggregation \\{#collect_hash_table_stats_during_aggregation\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Включает сбор статистики по хеш-таблицам для оптимизации выделения памяти.
 
-## collect_hash_table_stats_during_joins {#collect_hash_table_stats_during_joins} 
+## collect_hash_table_stats_during_joins \\{#collect_hash_table_stats_during_joins\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1855,7 +1855,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 Включает сбор статистики хеш-таблиц для оптимизации выделения памяти.
 
-## compatibility {#compatibility} 
+## compatibility \\{#compatibility\\}
 
 Настройка `compatibility` указывает ClickHouse использовать набор настроек по умолчанию из предыдущей версии ClickHouse, при этом предыдущая версия указывается как значение настройки.
 
@@ -1870,19 +1870,19 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 Однако настройка `compatibility` может быть переопределена на уровне пользователя, роли, профиля, запроса или сеанса с помощью стандартных механизмов настройки ClickHouse, например `SET compatibility = '22.3'` в сеансе или `SETTINGS compatibility = '22.3'` в запросе.
 :::
 
-## compatibility_ignore_auto_increment_in_create_table {#compatibility_ignore_auto_increment_in_create_table} 
+## compatibility_ignore_auto_increment_in_create_table \\{#compatibility_ignore_auto_increment_in_create_table\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Игнорировать ключевое слово AUTO_INCREMENT в объявлении столбца, если параметр установлен в true, в противном случае возвращать ошибку. Это упрощает миграцию с MySQL.
 
-## compatibility_ignore_collation_in_create_table {#compatibility_ignore_collation_in_create_table} 
+## compatibility_ignore_collation_in_create_table \\{#compatibility_ignore_collation_in_create_table\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Игнорировать collation при создании таблицы (для совместимости)
 
-## compatibility_s3_presigned_url_query_in_path {#compatibility_s3_presigned_url_query_in_path} 
+## compatibility_s3_presigned_url_query_in_path \\{#compatibility_s3_presigned_url_query_in_path\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1892,7 +1892,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 так что «?» действует как подстановочный знак в пути. При отключении (по умолчанию) параметры запроса предварительно подписанного URL остаются в части запроса URL,
 чтобы избежать интерпретации «?» как подстановочного знака.
 
-## compile_aggregate_expressions {#compile_aggregate_expressions} 
+## compile_aggregate_expressions \\{#compile_aggregate_expressions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1907,7 +1907,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 - [min_count_to_compile_aggregate_expression](#min_count_to_compile_aggregate_expression)
 
-## compile_expressions {#compile_expressions} 
+## compile_expressions \\{#compile_expressions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1915,19 +1915,19 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 Компилирует некоторые скалярные функции и операторы в нативный код.
 
-## compile_sort_description {#compile_sort_description} 
+## compile_sort_description \\{#compile_sort_description\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Компилирует описание сортировки в машинный код.
 
-## connect_timeout {#connect_timeout} 
+## connect_timeout \\{#connect_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="10" />
 
 Таймаут подключения при отсутствии реплик.
 
-## connect_timeout_with_failover_ms {#connect_timeout_with_failover_ms} 
+## connect_timeout_with_failover_ms \\{#connect_timeout_with_failover_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="1000" />
 
@@ -1936,7 +1936,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 Тайм-аут подключения в миллисекундах к удалённому серверу для движка distributed таблицы, если в определении кластера используются секции 'shard' и 'replica'.
 В случае неудачи выполняется несколько попыток подключения к различным репликам.
 
-## connect_timeout_with_failover_secure_ms {#connect_timeout_with_failover_secure_ms} 
+## connect_timeout_with_failover_secure_ms \\{#connect_timeout_with_failover_secure_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="1000" />
 
@@ -1944,7 +1944,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 Таймаут на установление соединения при выборе первой работоспособной реплики (для защищённых подключений).
 
-## connection_pool_max_wait_ms {#connection_pool_max_wait_ms} 
+## connection_pool_max_wait_ms \\{#connection_pool_max_wait_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="0" />
 
@@ -1955,13 +1955,13 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 - Положительное целое число.
 - 0 — бесконечное ожидание.
 
-## connections_with_failover_max_tries {#connections_with_failover_max_tries} 
+## connections_with_failover_max_tries \\{#connections_with_failover_max_tries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3" />
 
 Максимальное число попыток установления соединения с каждой репликой для движка distributed таблицы.
 
-## convert_query_to_cnf {#convert_query_to_cnf}
+## convert_query_to_cnf \{#convert_query_to_cnf\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2030,7 +2030,7 @@ SETTINGS convert_query_to_cnf = true;
 Допустимые значения: true, false
 
 
-## correlated_subqueries_default_join_kind {#correlated_subqueries_default_join_kind} 
+## correlated_subqueries_default_join_kind \\{#correlated_subqueries_default_join_kind\\}
 
 <SettingsInfoBlock type="DecorrelationJoinKind" default_value="right" />
 
@@ -2043,7 +2043,7 @@ SETTINGS convert_query_to_cnf = true;
 - `left` — в результате декорреляции будут выполняться операции LEFT JOIN, а входная таблица будет находиться слева.
 - `right` — в результате декорреляции будут выполняться операции RIGHT JOIN, а входная таблица будет находиться справа.
 
-## correlated_subqueries_substitute_equivalent_expressions {#correlated_subqueries_substitute_equivalent_expressions} 
+## correlated_subqueries_substitute_equivalent_expressions \\{#correlated_subqueries_substitute_equivalent_expressions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2051,7 +2051,7 @@ SETTINGS convert_query_to_cnf = true;
 
 Используйте фильтрующие выражения, чтобы выводить эквивалентные выражения и подставлять их вместо создания CROSS JOIN.
 
-## correlated_subqueries_use_in_memory_buffer {#correlated_subqueries_use_in_memory_buffer} 
+## correlated_subqueries_use_in_memory_buffer \\{#correlated_subqueries_use_in_memory_buffer\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2059,7 +2059,7 @@ SETTINGS convert_query_to_cnf = true;
 
 Использовать буфер в оперативной памяти для входных данных коррелированных подзапросов, чтобы избежать их повторного вычисления.
 
-## count_distinct_implementation {#count_distinct_implementation} 
+## count_distinct_implementation \\{#count_distinct_implementation\\}
 
 <SettingsInfoBlock type="String" default_value="uniqExact" />
 
@@ -2073,13 +2073,13 @@ SETTINGS convert_query_to_cnf = true;
 - [uniqHLL12](/sql-reference/aggregate-functions/reference/uniqhll12)
 - [uniqExact](/sql-reference/aggregate-functions/reference/uniqexact)
 
-## count_distinct_optimization {#count_distinct_optimization} 
+## count_distinct_optimization \\{#count_distinct_optimization\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Переписывает выражения COUNT DISTINCT в подзапрос с оператором GROUP BY
 
-## count_matches_stop_at_empty_match {#count_matches_stop_at_empty_match} 
+## count_matches_stop_at_empty_match \\{#count_matches_stop_at_empty_match\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2087,7 +2087,7 @@ SETTINGS convert_query_to_cnf = true;
 
 Прекращает подсчёт, как только шаблон даёт совпадение нулевой длины в функции `countMatches`.
 
-## create_if_not_exists {#create_if_not_exists} 
+## create_if_not_exists \\{#create_if_not_exists\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2095,19 +2095,19 @@ SETTINGS convert_query_to_cnf = true;
 
 Включает использование `IF NOT EXISTS` по умолчанию для оператора `CREATE`. Если либо эта настройка включена, либо явно указано `IF NOT EXISTS`, и таблица с заданным именем уже существует, исключение не генерируется.
 
-## create_index_ignore_unique {#create_index_ignore_unique} 
+## create_index_ignore_unique \\{#create_index_ignore_unique\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Игнорирует ключевое слово UNIQUE в операторе CREATE UNIQUE INDEX. Предназначена для тестов совместимости с SQL.
 
-## create_replicated_merge_tree_fault_injection_probability {#create_replicated_merge_tree_fault_injection_probability} 
+## create_replicated_merge_tree_fault_injection_probability \\{#create_replicated_merge_tree_fault_injection_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
 Вероятность инъекции ошибки при создании таблицы после создания метаданных в ZooKeeper
 
-## create_table_empty_primary_key_by_default {#create_table_empty_primary_key_by_default} 
+## create_table_empty_primary_key_by_default \\{#create_table_empty_primary_key_by_default\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2115,7 +2115,7 @@ SETTINGS convert_query_to_cnf = true;
 
 Позволяет создавать таблицы *MergeTree с пустым первичным ключом, если не указаны ORDER BY и PRIMARY KEY
 
-## cross_join_min_bytes_to_compress {#cross_join_min_bytes_to_compress} 
+## cross_join_min_bytes_to_compress \\{#cross_join_min_bytes_to_compress\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
@@ -2123,7 +2123,7 @@ SETTINGS convert_query_to_cnf = true;
 
 Минимальный размер блока для сжатия в CROSS JOIN. Нулевое значение означает отключение этого порога. Блок сжимается, когда достигнут хотя бы один из двух порогов (по строкам или по байтам).
 
-## cross_join_min_rows_to_compress {#cross_join_min_rows_to_compress} 
+## cross_join_min_rows_to_compress \\{#cross_join_min_rows_to_compress\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000000" />
 
@@ -2131,7 +2131,7 @@ SETTINGS convert_query_to_cnf = true;
 
 Минимальное число строк для сжатия блока при выполнении CROSS JOIN. Нулевое значение отключает этот порог. Блок сжимается, когда достигается любой из двух порогов — по строкам или по байтам.
 
-## cross_to_inner_join_rewrite {#cross_to_inner_join_rewrite} 
+## cross_to_inner_join_rewrite \\{#cross_to_inner_join_rewrite\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
@@ -2139,7 +2139,7 @@ SETTINGS convert_query_to_cnf = true;
 
 Использовать INNER JOIN вместо соединений через запятую/CROSS JOIN, если в секции WHERE есть условия соединения. Значения: 0 — не переписывать; 1 — по возможности применять для соединений через запятую и CROSS JOIN; 2 — принудительно переписывать все соединения через запятую, CROSS JOIN — по возможности.
 
-## data_type_default_nullable {#data_type_default_nullable} 
+## data_type_default_nullable \\{#data_type_default_nullable\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2150,7 +2150,7 @@ SETTINGS convert_query_to_cnf = true;
 - 1 — Типы данных в определениях столбцов по умолчанию считаются `Nullable`.
 - 0 — Типы данных в определениях столбцов по умолчанию считаются не `Nullable`.
 
-## database_atomic_wait_for_drop_and_detach_synchronously {#database_atomic_wait_for_drop_and_detach_synchronously} 
+## database_atomic_wait_for_drop_and_detach_synchronously \\{#database_atomic_wait_for_drop_and_detach_synchronously\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2161,7 +2161,7 @@ SETTINGS convert_query_to_cnf = true;
 - 0 — запросы выполняются с задержкой.
 - 1 — запросы выполняются без задержки.
 
-## database_replicated_allow_explicit_uuid {#database_replicated_allow_explicit_uuid} 
+## database_replicated_allow_explicit_uuid \\{#database_replicated_allow_explicit_uuid\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2169,7 +2169,7 @@ SETTINGS convert_query_to_cnf = true;
 
 0 — Не разрешать явное указание UUID для таблиц в реплицируемых базах данных. 1 — Разрешать. 2 — Разрешать, но игнорировать указанный UUID и вместо него генерировать случайный UUID.
 
-## database_replicated_allow_heavy_create {#database_replicated_allow_heavy_create} 
+## database_replicated_allow_heavy_create \\{#database_replicated_allow_heavy_create\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2177,13 +2177,13 @@ SETTINGS convert_query_to_cnf = true;
 
 Разрешает длительные DDL-запросы (CREATE AS SELECT и POPULATE) в движке базы данных Replicated. Имейте в виду, что это может надолго заблокировать очередь DDL.
 
-## database_replicated_allow_only_replicated_engine {#database_replicated_allow_only_replicated_engine} 
+## database_replicated_allow_only_replicated_engine \\{#database_replicated_allow_only_replicated_engine\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Разрешает создавать в базе данных с движком Replicated только таблицы Replicated
 
-## database_replicated_allow_replicated_engine_arguments {#database_replicated_allow_replicated_engine_arguments} 
+## database_replicated_allow_replicated_engine_arguments \\{#database_replicated_allow_replicated_engine_arguments\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2191,19 +2191,19 @@ SETTINGS convert_query_to_cnf = true;
 
 0 - Запрещает явное указание пути в ZooKeeper и имени реплики для таблиц *MergeTree в реплицируемых базах данных. 1 - Разрешает. 2 - Разрешает, но игнорирует указанный путь и вместо него использует путь по умолчанию. 3 - Разрешает и не записывает предупреждение в лог.
 
-## database_replicated_always_detach_permanently {#database_replicated_always_detach_permanently} 
+## database_replicated_always_detach_permanently \\{#database_replicated_always_detach_permanently\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Выполняет команду DETACH TABLE как DETACH TABLE PERMANENTLY, если используется движок базы данных Replicated
 
-## database_replicated_enforce_synchronous_settings {#database_replicated_enforce_synchronous_settings} 
+## database_replicated_enforce_synchronous_settings \\{#database_replicated_enforce_synchronous_settings\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Принудительно включает синхронное ожидание для некоторых запросов (см. также database_atomic_wait_for_drop_and_detach_synchronously, mutations_sync, alter_sync). Не рекомендуется включать эти настройки.
 
-## database_replicated_initial_query_timeout_sec {#database_replicated_initial_query_timeout_sec} 
+## database_replicated_initial_query_timeout_sec \\{#database_replicated_initial_query_timeout_sec\\}
 
 <SettingsInfoBlock type="UInt64" default_value="300" />
 
@@ -2214,7 +2214,7 @@ SETTINGS convert_query_to_cnf = true;
 - Положительное целое число.
 - 0 — без ограничений.
 
-## database_shared_drop_table_delay_seconds {#database_shared_drop_table_delay_seconds} 
+## database_shared_drop_table_delay_seconds \\{#database_shared_drop_table_delay_seconds\\}
 
 <SettingsInfoBlock type="UInt64" default_value="28800" />
 
@@ -2222,13 +2222,13 @@ SETTINGS convert_query_to_cnf = true;
 
 Задержка в секундах перед фактическим удалением таблицы из базы данных Shared после её удаления. Это позволяет восстановить таблицу в течение этого времени с помощью оператора `UNDROP TABLE`.
 
-## decimal_check_overflow {#decimal_check_overflow} 
+## decimal_check_overflow \\{#decimal_check_overflow\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Проверять переполнение при выполнении десятичных арифметических и сравнительных операций
 
-## deduplicate_blocks_in_dependent_materialized_views {#deduplicate_blocks_in_dependent_materialized_views} 
+## deduplicate_blocks_in_dependent_materialized_views \\{#deduplicate_blocks_in_dependent_materialized_views\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2246,7 +2246,7 @@ SETTINGS convert_query_to_cnf = true;
 
 - [Обработка NULL в операторах IN](/guides/developer/deduplicating-inserts-on-retries#insert-deduplication-with-materialized-views)
 
-## deduplicate_insert_select {#deduplicate_insert_select} 
+## deduplicate_insert_select \\{#deduplicate_insert_select\\}
 
 <SettingsInfoBlock type="DeduplicateInsertSelectMode" default_value="enable_when_possible" />
 
@@ -2261,7 +2261,7 @@ SETTINGS convert_query_to_cnf = true;
 - enable_when_possible — дедупликация включена, если `insert_deduplicate` включён и результат SELECT стабилен, иначе отключена.
 - enable_even_for_bad_queries — дедупликация включена, если `insert_deduplicate` включён. Если результат SELECT нестабилен, записывается предупреждение, но запрос выполняется с дедупликацией. Эта опция предназначена для обратной совместимости. Рассмотрите возможность использования других опций, так как это может привести к непредсказуемым результатам.
 
-## default_materialized_view_sql_security {#default_materialized_view_sql_security} 
+## default_materialized_view_sql_security \\{#default_materialized_view_sql_security\\}
 
 <SettingsInfoBlock type="SQLSecurityType" default_value="DEFINER" />
 
@@ -2271,13 +2271,13 @@ SETTINGS convert_query_to_cnf = true;
 
 Значение по умолчанию — `DEFINER`.
 
-## default_max_bytes_in_join {#default_max_bytes_in_join} 
+## default_max_bytes_in_join \\{#default_max_bytes_in_join\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000000" />
 
 Максимальный размер правой таблицы, если требуется ограничение по размеру, но `max_bytes_in_join` не установлен.
 
-## default_normal_view_sql_security {#default_normal_view_sql_security} 
+## default_normal_view_sql_security \\{#default_normal_view_sql_security\\}
 
 <SettingsInfoBlock type="SQLSecurityType" default_value="INVOKER" />
 
@@ -2287,7 +2287,7 @@ SETTINGS convert_query_to_cnf = true;
 
 Значение по умолчанию — `INVOKER`.
 
-## default_table_engine {#default_table_engine}
+## default_table_engine \{#default_table_engine\}
 
 <SettingsInfoBlock type="DefaultTableEngine" default_value="MergeTree" />
 
@@ -2346,7 +2346,7 @@ ENGINE = Log
 ```
 
 
-## default_temporary_table_engine {#default_temporary_table_engine}
+## default_temporary_table_engine \{#default_temporary_table_engine\}
 
 <SettingsInfoBlock type="DefaultTableEngine" default_value="Memory" />
 
@@ -2381,7 +2381,7 @@ ENGINE = Log
 ```
 
 
-## default_view_definer {#default_view_definer} 
+## default_view_definer \\{#default_view_definer\\}
 
 <SettingsInfoBlock type="String" default_value="CURRENT_USER" />
 
@@ -2391,7 +2391,7 @@ ENGINE = Log
 
 Значение по умолчанию — `CURRENT_USER`.
 
-## delta_lake_enable_engine_predicate {#delta_lake_enable_engine_predicate} 
+## delta_lake_enable_engine_predicate \\{#delta_lake_enable_engine_predicate\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2399,7 +2399,7 @@ ENGINE = Log
 
 Включает внутренний механизм отсечения данных в delta-kernel.
 
-## delta_lake_enable_expression_visitor_logging {#delta_lake_enable_expression_visitor_logging} 
+## delta_lake_enable_expression_visitor_logging \\{#delta_lake_enable_expression_visitor_logging\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2407,7 +2407,7 @@ ENGINE = Log
 
 Включает логи уровня Test для визитора выражений DeltaLake. Эти логи могут быть слишком подробными даже для тестового логирования.
 
-## delta_lake_insert_max_bytes_in_data_file {#delta_lake_insert_max_bytes_in_data_file} 
+## delta_lake_insert_max_bytes_in_data_file \\{#delta_lake_insert_max_bytes_in_data_file\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1073741824" />
 
@@ -2415,7 +2415,7 @@ ENGINE = Log
 
 Определяет максимальный размер в байтах для одного файла данных, вставляемого в Delta Lake.
 
-## delta_lake_insert_max_rows_in_data_file {#delta_lake_insert_max_rows_in_data_file} 
+## delta_lake_insert_max_rows_in_data_file \\{#delta_lake_insert_max_rows_in_data_file\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1000000" />
 
@@ -2423,7 +2423,7 @@ ENGINE = Log
 
 Определяет максимальное количество строк в одном вставляемом файле данных Delta Lake.
 
-## delta_lake_log_metadata {#delta_lake_log_metadata} 
+## delta_lake_log_metadata \\{#delta_lake_log_metadata\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2431,7 +2431,7 @@ ENGINE = Log
 
 Включает логирование файлов метаданных Delta Lake в системную таблицу.
 
-## delta_lake_snapshot_end_version {#delta_lake_snapshot_end_version} 
+## delta_lake_snapshot_end_version \\{#delta_lake_snapshot_end_version\\}
 
 <SettingsInfoBlock type="Int64" default_value="-1" />
 
@@ -2439,7 +2439,7 @@ ENGINE = Log
 
 Конечная версия снапшота Delta Lake для чтения. Значение -1 означает, что будет прочитана последняя версия (значение 0 является допустимой версией снапшота).
 
-## delta_lake_snapshot_start_version {#delta_lake_snapshot_start_version} 
+## delta_lake_snapshot_start_version \\{#delta_lake_snapshot_start_version\\}
 
 <SettingsInfoBlock type="Int64" default_value="-1" />
 
@@ -2447,7 +2447,7 @@ ENGINE = Log
 
 Начальная версия снимка Delta Lake для чтения. Значение -1 означает чтение последней доступной версии (значение 0 является допустимой версией снимка).
 
-## delta_lake_snapshot_version {#delta_lake_snapshot_version} 
+## delta_lake_snapshot_version \\{#delta_lake_snapshot_version\\}
 
 <SettingsInfoBlock type="Int64" default_value="-1" />
 
@@ -2455,7 +2455,7 @@ ENGINE = Log
 
 Версия снимка Delta Lake для чтения. Значение -1 означает чтение последней версии (значение 0 является допустимой версией снимка).
 
-## delta_lake_throw_on_engine_predicate_error {#delta_lake_throw_on_engine_predicate_error} 
+## delta_lake_throw_on_engine_predicate_error \\{#delta_lake_throw_on_engine_predicate_error\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2463,13 +2463,13 @@ ENGINE = Log
 
 Включает генерацию исключения, если при анализе предиката сканирования в delta-kernel возникает ошибка.
 
-## describe_compact_output {#describe_compact_output} 
+## describe_compact_output \\{#describe_compact_output\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Если установлено значение true, в результат запроса DESCRIBE включаются только имена и типы столбцов
 
-## describe_include_subcolumns {#describe_include_subcolumns} 
+## describe_include_subcolumns \\{#describe_include_subcolumns\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2484,25 +2484,25 @@ ENGINE = Log
 
 См. пример для команды [DESCRIBE](../../sql-reference/statements/describe-table.md).
 
-## describe_include_virtual_columns {#describe_include_virtual_columns} 
+## describe_include_virtual_columns \\{#describe_include_virtual_columns\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Если установлено значение true, виртуальные столбцы таблицы будут включены в результат запроса DESCRIBE.
 
-## dialect {#dialect} 
+## dialect \\{#dialect\\}
 
 <SettingsInfoBlock type="Dialect" default_value="clickhouse" />
 
 Диалект, используемый для разбора запроса
 
-## dictionary_use_async_executor {#dictionary_use_async_executor} 
+## dictionary_use_async_executor \\{#dictionary_use_async_executor\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Выполняет конвейер чтения данных из источника словаря в нескольких потоках. Поддерживается только для словарей с локальным источником CLICKHOUSE.
 
-## dictionary_validate_primary_key_type {#dictionary_validate_primary_key_type} 
+## dictionary_validate_primary_key_type \\{#dictionary_validate_primary_key_type\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2510,7 +2510,7 @@ ENGINE = Log
 
 Проверять тип первичного ключа для словарей. По умолчанию тип id для простых схем размещения неявно преобразуется в UInt64.
 
-## distinct_overflow_mode {#distinct_overflow_mode} 
+## distinct_overflow_mode \\{#distinct_overflow_mode\\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
@@ -2522,13 +2522,13 @@ ENGINE = Log
 - `break`: прекратить выполнение запроса и вернуть частичный результат, как если бы
 исходные данные закончились.
 
-## distributed_aggregation_memory_efficient {#distributed_aggregation_memory_efficient} 
+## distributed_aggregation_memory_efficient \\{#distributed_aggregation_memory_efficient\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Включает режим экономии памяти для распределённой агрегации.
 
-## distributed_background_insert_batch {#distributed_background_insert_batch} 
+## distributed_background_insert_batch \\{#distributed_background_insert_batch\\}
 
 **Псевдонимы**: `distributed_directory_monitor_batch_inserts`
 
@@ -2543,7 +2543,7 @@ ENGINE = Log
 - 1 — Включено.
 - 0 — Выключено.
 
-## distributed_background_insert_max_sleep_time_ms {#distributed_background_insert_max_sleep_time_ms} 
+## distributed_background_insert_max_sleep_time_ms \\{#distributed_background_insert_max_sleep_time_ms\\}
 
 **Псевдонимы**: `distributed_directory_monitor_max_sleep_time_ms`
 
@@ -2555,7 +2555,7 @@ ENGINE = Log
 
 - Положительное целое число миллисекунд.
 
-## distributed_background_insert_sleep_time_ms {#distributed_background_insert_sleep_time_ms} 
+## distributed_background_insert_sleep_time_ms \\{#distributed_background_insert_sleep_time_ms\\}
 
 **Псевдонимы**: `distributed_directory_monitor_sleep_time_ms`
 
@@ -2567,7 +2567,7 @@ ENGINE = Log
 
 - Положительное целое число миллисекунд.
 
-## distributed_background_insert_split_batch_on_failure {#distributed_background_insert_split_batch_on_failure} 
+## distributed_background_insert_split_batch_on_failure \\{#distributed_background_insert_split_batch_on_failure\\}
 
 **Псевдонимы**: `distributed_directory_monitor_split_batch_on_failure`
 
@@ -2592,7 +2592,7 @@ ENGINE = Log
 Не следует полагаться на автоматическое разбиение батчей, так как это может негативно сказаться на производительности.
 :::
 
-## distributed_background_insert_timeout {#distributed_background_insert_timeout} 
+## distributed_background_insert_timeout \\{#distributed_background_insert_timeout\\}
 
 **Псевдонимы**: `insert_distributed_timeout`
 
@@ -2600,7 +2600,7 @@ ENGINE = Log
 
 Таймаут для запроса INSERT в распределённую таблицу (Distributed). Настройка используется только при включённом insert_distributed_sync. Нулевое значение означает отсутствие таймаута.
 
-## distributed_cache_alignment {#distributed_cache_alignment} 
+## distributed_cache_alignment \\{#distributed_cache_alignment\\}
 
 <CloudOnlyBadge/>
 
@@ -2610,7 +2610,7 @@ ENGINE = Log
 
 Оказывается только в ClickHouse Cloud. Настройка предназначена для тестирования, не изменяйте её.
 
-## distributed_cache_bypass_connection_pool {#distributed_cache_bypass_connection_pool} 
+## distributed_cache_bypass_connection_pool \\{#distributed_cache_bypass_connection_pool\\}
 
 <CloudOnlyBadge/>
 
@@ -2620,7 +2620,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Позволяет обойти пул соединений распределённого кэша.
 
-## distributed_cache_connect_backoff_max_ms {#distributed_cache_connect_backoff_max_ms} 
+## distributed_cache_connect_backoff_max_ms \\{#distributed_cache_connect_backoff_max_ms\\}
 
 <CloudOnlyBadge/>
 
@@ -2630,7 +2630,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Максимальное время задержки (в миллисекундах) при установлении соединения для распределённого кэша.
 
-## distributed_cache_connect_backoff_min_ms {#distributed_cache_connect_backoff_min_ms} 
+## distributed_cache_connect_backoff_min_ms \\{#distributed_cache_connect_backoff_min_ms\\}
 
 <CloudOnlyBadge/>
 
@@ -2640,7 +2640,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Минимальная задержка (backoff) в миллисекундах при создании подключения к распределённому кэшу.
 
-## distributed_cache_connect_max_tries {#distributed_cache_connect_max_tries} 
+## distributed_cache_connect_max_tries \\{#distributed_cache_connect_max_tries\\}
 
 <CloudOnlyBadge/>
 
@@ -2650,7 +2650,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Количество попыток подключения к распределённому кэшу в случае неудачи
 
-## distributed_cache_connect_timeout_ms {#distributed_cache_connect_timeout_ms} 
+## distributed_cache_connect_timeout_ms \\{#distributed_cache_connect_timeout_ms\\}
 
 <CloudOnlyBadge/>
 
@@ -2660,7 +2660,7 @@ ENGINE = Log
 
 Применяется только в ClickHouse Cloud. Таймаут ожидания при подключении к серверу распределённого кэша.
 
-## distributed_cache_credentials_refresh_period_seconds {#distributed_cache_credentials_refresh_period_seconds} 
+## distributed_cache_credentials_refresh_period_seconds \\{#distributed_cache_credentials_refresh_period_seconds\\}
 
 <CloudOnlyBadge/>
 
@@ -2670,7 +2670,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Интервал обновления учетных данных.
 
-## distributed_cache_data_packet_ack_window {#distributed_cache_data_packet_ack_window} 
+## distributed_cache_data_packet_ack_window \\{#distributed_cache_data_packet_ack_window\\}
 
 <CloudOnlyBadge/>
 
@@ -2680,7 +2680,7 @@ ENGINE = Log
 
 Оказывает действие только в ClickHouse Cloud. Окно для отправки ACK для последовательности DataPacket в рамках одного запроса на чтение из распределённого кэша.
 
-## distributed_cache_discard_connection_if_unread_data {#distributed_cache_discard_connection_if_unread_data} 
+## distributed_cache_discard_connection_if_unread_data \\{#distributed_cache_discard_connection_if_unread_data\\}
 
 <CloudOnlyBadge/>
 
@@ -2690,7 +2690,7 @@ ENGINE = Log
 
 Оказывает действие только в ClickHouse Cloud. Разрывать соединение, если остались непрочитанные данные.
 
-## distributed_cache_fetch_metrics_only_from_current_az {#distributed_cache_fetch_metrics_only_from_current_az} 
+## distributed_cache_fetch_metrics_only_from_current_az \\{#distributed_cache_fetch_metrics_only_from_current_az\\}
 
 <CloudOnlyBadge/>
 
@@ -2700,7 +2700,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Получает метрики только из текущей зоны доступности в system.distributed_cache_metrics и system.distributed_cache_events.
 
-## distributed_cache_file_cache_name {#distributed_cache_file_cache_name} 
+## distributed_cache_file_cache_name \\{#distributed_cache_file_cache_name\\}
 
 <CloudOnlyBadge/>
 
@@ -2708,7 +2708,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Настройка используется только для CI‑тестов — имя кеша файловой системы, применяемого в распределённом кеше.
 
-## distributed_cache_log_mode {#distributed_cache_log_mode} 
+## distributed_cache_log_mode \\{#distributed_cache_log_mode\\}
 
 <CloudOnlyBadge/>
 
@@ -2718,7 +2718,7 @@ ENGINE = Log
 
 Применяется только в ClickHouse Cloud. Режим логирования в таблицу system.distributed_cache_log.
 
-## distributed_cache_max_unacked_inflight_packets {#distributed_cache_max_unacked_inflight_packets} 
+## distributed_cache_max_unacked_inflight_packets \\{#distributed_cache_max_unacked_inflight_packets\\}
 
 <CloudOnlyBadge/>
 
@@ -2728,7 +2728,7 @@ ENGINE = Log
 
 Применяется только в ClickHouse Cloud. Максимальное количество неподтверждённых пакетов в полёте в одном запросе чтения распределённого кэша.
 
-## distributed_cache_min_bytes_for_seek {#distributed_cache_min_bytes_for_seek} 
+## distributed_cache_min_bytes_for_seek \\{#distributed_cache_min_bytes_for_seek\\}
 
 <CloudOnlyBadge/>
 
@@ -2738,7 +2738,7 @@ ENGINE = Log
 
 Применяется только в ClickHouse Cloud. Минимальное количество байт, при котором выполняется операция seek в распределённом кэше.
 
-## distributed_cache_pool_behaviour_on_limit {#distributed_cache_pool_behaviour_on_limit} 
+## distributed_cache_pool_behaviour_on_limit \\{#distributed_cache_pool_behaviour_on_limit\\}
 
 <CloudOnlyBadge/>
 
@@ -2748,7 +2748,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Определяет поведение соединения распределённого кэша при достижении лимита пула подключений
 
-## distributed_cache_prefer_bigger_buffer_size {#distributed_cache_prefer_bigger_buffer_size} 
+## distributed_cache_prefer_bigger_buffer_size \\{#distributed_cache_prefer_bigger_buffer_size\\}
 
 <CloudOnlyBadge/>
 
@@ -2758,7 +2758,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. То же, что filesystem_cache_prefer_bigger_buffer_size, но для распределённого кэша.
 
-## distributed_cache_read_only_from_current_az {#distributed_cache_read_only_from_current_az} 
+## distributed_cache_read_only_from_current_az \\{#distributed_cache_read_only_from_current_az\\}
 
 <CloudOnlyBadge/>
 
@@ -2768,7 +2768,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Разрешает чтение только из текущей зоны доступности. Если параметр отключён, чтение будет происходить со всех кэш-серверов во всех зонах доступности.
 
-## distributed_cache_read_request_max_tries {#distributed_cache_read_request_max_tries} 
+## distributed_cache_read_request_max_tries \\{#distributed_cache_read_request_max_tries\\}
 
 <CloudOnlyBadge/>
 
@@ -2778,7 +2778,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Количество попыток выполнения запроса к распределённому кэшу при неудаче.
 
-## distributed_cache_receive_response_wait_milliseconds {#distributed_cache_receive_response_wait_milliseconds} 
+## distributed_cache_receive_response_wait_milliseconds \\{#distributed_cache_receive_response_wait_milliseconds\\}
 
 <CloudOnlyBadge/>
 
@@ -2788,7 +2788,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Время ожидания в миллисекундах для получения данных по запросу из распределённого кэша.
 
-## distributed_cache_receive_timeout_milliseconds {#distributed_cache_receive_timeout_milliseconds} 
+## distributed_cache_receive_timeout_milliseconds \\{#distributed_cache_receive_timeout_milliseconds\\}
 
 <CloudOnlyBadge/>
 
@@ -2798,7 +2798,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Время ожидания в миллисекундах для получения любого ответа от распределённого кэша.
 
-## distributed_cache_receive_timeout_ms {#distributed_cache_receive_timeout_ms} 
+## distributed_cache_receive_timeout_ms \\{#distributed_cache_receive_timeout_ms\\}
 
 <CloudOnlyBadge/>
 
@@ -2808,7 +2808,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Таймаут получения данных от сервера распределённого кэша, в миллисекундах. Если в течение этого интервала не было получено ни одного байта, генерируется исключение.
 
-## distributed_cache_send_timeout_ms {#distributed_cache_send_timeout_ms} 
+## distributed_cache_send_timeout_ms \\{#distributed_cache_send_timeout_ms\\}
 
 <CloudOnlyBadge/>
 
@@ -2818,7 +2818,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Таймаут отправки данных на сервер распределённого кэша в миллисекундах. Если клиенту нужно отправить данные, но он не может отправить ни одного байта в течение этого интервала, генерируется исключение.
 
-## distributed_cache_tcp_keep_alive_timeout_ms {#distributed_cache_tcp_keep_alive_timeout_ms} 
+## distributed_cache_tcp_keep_alive_timeout_ms \\{#distributed_cache_tcp_keep_alive_timeout_ms\\}
 
 <CloudOnlyBadge/>
 
@@ -2828,7 +2828,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Время в миллисекундах, в течение которого соединение с сервером распределённого кэша должно оставаться бездействующим, прежде чем TCP начнёт отправлять keepalive-пакеты.
 
-## distributed_cache_throw_on_error {#distributed_cache_throw_on_error} 
+## distributed_cache_throw_on_error \\{#distributed_cache_throw_on_error\\}
 
 <CloudOnlyBadge/>
 
@@ -2838,7 +2838,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Повторно генерирует исключение, возникшее при взаимодействии с распределённым кэшем, или исключение, полученное от распределённого кэша. В противном случае при ошибке выполняется обход распределённого кэша.
 
-## distributed_cache_use_clients_cache_for_read {#distributed_cache_use_clients_cache_for_read} 
+## distributed_cache_use_clients_cache_for_read \\{#distributed_cache_use_clients_cache_for_read\\}
 
 <CloudOnlyBadge/>
 
@@ -2848,7 +2848,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Использует клиентский кэш для запросов на чтение.
 
-## distributed_cache_use_clients_cache_for_write {#distributed_cache_use_clients_cache_for_write} 
+## distributed_cache_use_clients_cache_for_write \\{#distributed_cache_use_clients_cache_for_write\\}
 
 <CloudOnlyBadge/>
 
@@ -2858,7 +2858,7 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Использует клиентский кэш для запросов записи.
 
-## distributed_cache_wait_connection_from_pool_milliseconds {#distributed_cache_wait_connection_from_pool_milliseconds} 
+## distributed_cache_wait_connection_from_pool_milliseconds \\{#distributed_cache_wait_connection_from_pool_milliseconds\\}
 
 <CloudOnlyBadge/>
 
@@ -2868,19 +2868,19 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Время ожидания в миллисекундах для получения соединения из пула соединений, если distributed_cache_pool_behaviour_on_limit имеет значение wait.
 
-## distributed_connections_pool_size {#distributed_connections_pool_size} 
+## distributed_connections_pool_size \\{#distributed_connections_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1024" />
 
 Максимальное количество одновременных подключений к удалённым серверам для распределённой обработки всех запросов к одной distributed таблице. Рекомендуется указывать значение не меньше количества серверов в кластере.
 
-## distributed_ddl_entry_format_version {#distributed_ddl_entry_format_version} 
+## distributed_ddl_entry_format_version \\{#distributed_ddl_entry_format_version\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5" />
 
 Версия совместимости формата записей для распределённых запросов DDL (ON CLUSTER)
 
-## distributed_ddl_output_mode {#distributed_ddl_output_mode} 
+## distributed_ddl_output_mode \\{#distributed_ddl_output_mode\\}
 
 <SettingsInfoBlock type="DistributedDDLOutputMode" default_value="throw" />
 
@@ -2898,7 +2898,7 @@ ENGINE = Log
 
 Значение по умолчанию в Cloud: `throw`.
 
-## distributed_ddl_task_timeout {#distributed_ddl_task_timeout} 
+## distributed_ddl_task_timeout \\{#distributed_ddl_task_timeout\\}
 
 <SettingsInfoBlock type="Int64" default_value="180" />
 
@@ -2910,7 +2910,7 @@ ENGINE = Log
 - 0 — асинхронный режим.
 - Отрицательное целое число — бесконечный таймаут.
 
-## distributed_foreground_insert {#distributed_foreground_insert} 
+## distributed_foreground_insert \\{#distributed_foreground_insert\\}
 
 **Псевдонимы**: `insert_distributed_sync`
 
@@ -2932,7 +2932,7 @@ ENGINE = Log
 - [Distributed Table Engine](/engines/table-engines/special/distributed)
 - [Управление distributed таблицами](/sql-reference/statements/system#managing-distributed-tables)
 
-## distributed_group_by_no_merge {#distributed_group_by_no_merge}
+## distributed_group_by_no_merge \{#distributed_group_by_no_merge\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2974,7 +2974,7 @@ FORMAT PrettyCompactMonoBlock
 ```
 
 
-## distributed_insert_skip_read_only_replicas {#distributed_insert_skip_read_only_replicas} 
+## distributed_insert_skip_read_only_replicas \\{#distributed_insert_skip_read_only_replicas\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2987,7 +2987,7 @@ FORMAT PrettyCompactMonoBlock
 - 0 — INSERT выполняется как обычно; если он попадёт на реплику только для чтения, запрос завершится с ошибкой
 - 1 — Узел-инициатор будет пропускать реплики только для чтения перед отправкой данных на сегменты.
 
-## distributed_plan_default_reader_bucket_count {#distributed_plan_default_reader_bucket_count} 
+## distributed_plan_default_reader_bucket_count \\{#distributed_plan_default_reader_bucket_count\\}
 
 <ExperimentalBadge/>
 
@@ -2997,7 +2997,7 @@ FORMAT PrettyCompactMonoBlock
 
 Количество задач по умолчанию для параллельного чтения при выполнении распределённого запроса. Задачи распределяются между репликами.
 
-## distributed_plan_default_shuffle_join_bucket_count {#distributed_plan_default_shuffle_join_bucket_count} 
+## distributed_plan_default_shuffle_join_bucket_count \\{#distributed_plan_default_shuffle_join_bucket_count\\}
 
 <ExperimentalBadge/>
 
@@ -3007,7 +3007,7 @@ FORMAT PrettyCompactMonoBlock
 
 Число бакетов по умолчанию для распределённого shuffle-hash join.
 
-## distributed_plan_execute_locally {#distributed_plan_execute_locally} 
+## distributed_plan_execute_locally \\{#distributed_plan_execute_locally\\}
 
 <ExperimentalBadge/>
 
@@ -3017,7 +3017,7 @@ FORMAT PrettyCompactMonoBlock
 
 Выполняет все задачи распределённого плана запроса локально. Полезно для тестирования и отладки.
 
-## distributed_plan_force_exchange_kind {#distributed_plan_force_exchange_kind} 
+## distributed_plan_force_exchange_kind \\{#distributed_plan_force_exchange_kind\\}
 
 <ExperimentalBadge/>
 
@@ -3031,7 +3031,7 @@ FORMAT PrettyCompactMonoBlock
  - 'Persisted' - использовать временные файлы в объектном хранилище,
  - 'Streaming' - передавать данные обмена по сети в потоковом режиме.
 
-## distributed_plan_force_shuffle_aggregation {#distributed_plan_force_shuffle_aggregation} 
+## distributed_plan_force_shuffle_aggregation \\{#distributed_plan_force_shuffle_aggregation\\}
 
 <ExperimentalBadge/>
 
@@ -3041,7 +3041,7 @@ FORMAT PrettyCompactMonoBlock
 
 Использует стратегию агрегации Shuffle вместо PartialAggregation + Merge в распределённом плане запроса.
 
-## distributed_plan_max_rows_to_broadcast {#distributed_plan_max_rows_to_broadcast} 
+## distributed_plan_max_rows_to_broadcast \\{#distributed_plan_max_rows_to_broadcast\\}
 
 <ExperimentalBadge/>
 
@@ -3051,7 +3051,7 @@ FORMAT PrettyCompactMonoBlock
 
 Максимальное количество строк, при котором в распределённом плане запроса используется broadcast join, а не shuffle join.
 
-## distributed_plan_optimize_exchanges {#distributed_plan_optimize_exchanges} 
+## distributed_plan_optimize_exchanges \\{#distributed_plan_optimize_exchanges\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3059,7 +3059,7 @@ FORMAT PrettyCompactMonoBlock
 
 Удаляет лишние операции обмена данными в распределённом плане запроса. Отключите для отладки.
 
-## distributed_product_mode {#distributed_product_mode} 
+## distributed_product_mode \\{#distributed_product_mode\\}
 
 <SettingsInfoBlock type="DistributedProductMode" default_value="deny" />
 
@@ -3081,7 +3081,7 @@ ClickHouse применяет этот SETTING, когда запрос соде
 - `global` — заменяет запрос `IN`/`JOIN` на `GLOBAL IN`/`GLOBAL JOIN`.
 - `allow` — разрешает использование этих типов подзапросов.
 
-## distributed_push_down_limit {#distributed_push_down_limit} 
+## distributed_push_down_limit \\{#distributed_push_down_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
@@ -3111,7 +3111,7 @@ ClickHouse применяет этот SETTING, когда запрос соде
 - [optimize_skip_unused_shards](#optimize_skip_unused_shards)
 - [optimize_distributed_group_by_sharding_key](#optimize_distributed_group_by_sharding_key)
 
-## distributed_replica_error_cap {#distributed_replica_error_cap} 
+## distributed_replica_error_cap \\{#distributed_replica_error_cap\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -3127,7 +3127,7 @@ ClickHouse применяет этот SETTING, когда запрос соде
 - [distributed_replica_error_half_life](#distributed_replica_error_half_life)
 - [distributed_replica_max_ignored_errors](#distributed_replica_max_ignored_errors)
 
-## distributed_replica_error_half_life {#distributed_replica_error_half_life} 
+## distributed_replica_error_half_life \\{#distributed_replica_error_half_life\\}
 
 <SettingsInfoBlock type="Seconds" default_value="60" />
 
@@ -3143,7 +3143,7 @@ ClickHouse применяет этот SETTING, когда запрос соде
 - [distributed_replica_error_cap](#distributed_replica_error_cap)
 - [distributed_replica_max_ignored_errors](#distributed_replica_max_ignored_errors)
 
-## distributed_replica_max_ignored_errors {#distributed_replica_max_ignored_errors} 
+## distributed_replica_max_ignored_errors \\{#distributed_replica_max_ignored_errors\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -3159,25 +3159,25 @@ ClickHouse применяет этот SETTING, когда запрос соде
 - [distributed_replica_error_cap](#distributed_replica_error_cap)
 - [distributed_replica_error_half_life](#distributed_replica_error_half_life)
 
-## do_not_merge_across_partitions_select_final {#do_not_merge_across_partitions_select_final} 
+## do_not_merge_across_partitions_select_final \\{#do_not_merge_across_partitions_select_final\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Выполнять слияние частей только внутри одной партиции в запросах с `FINAL`
 
-## empty_result_for_aggregation_by_constant_keys_on_empty_set {#empty_result_for_aggregation_by_constant_keys_on_empty_set} 
+## empty_result_for_aggregation_by_constant_keys_on_empty_set \\{#empty_result_for_aggregation_by_constant_keys_on_empty_set\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Возвращать пустой результат при агрегации по константным ключам для пустого Set.
 
-## empty_result_for_aggregation_by_empty_set {#empty_result_for_aggregation_by_empty_set} 
+## empty_result_for_aggregation_by_empty_set \\{#empty_result_for_aggregation_by_empty_set\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Возвращает пустой результат при агрегации без ключей на пустом множестве.
 
-## enable_adaptive_memory_spill_scheduler {#enable_adaptive_memory_spill_scheduler} 
+## enable_adaptive_memory_spill_scheduler \\{#enable_adaptive_memory_spill_scheduler\\}
 
 <ExperimentalBadge/>
 
@@ -3187,7 +3187,7 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Запускает обработчик для адаптивного сброса данных из оперативной памяти во внешнее хранилище. В настоящее время поддерживается GRACE JOIN.
 
-## enable_add_distinct_to_in_subqueries {#enable_add_distinct_to_in_subqueries} 
+## enable_add_distinct_to_in_subqueries \\{#enable_add_distinct_to_in_subqueries\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3196,7 +3196,7 @@ ClickHouse применяет этот SETTING, когда запрос соде
 Включает использование `DISTINCT` в подзапросах `IN`. Это компромиссная настройка: её включение может существенно уменьшить размер временных таблиц, передаваемых для распределённых подзапросов IN, и значительно ускорить передачу данных между сегментами за счёт отправки только уникальных значений.
 Однако включение этой настройки добавляет дополнительные операции слияния на каждом узле, поскольку необходимо выполнять дедупликацию (DISTINCT). Используйте эту настройку, когда сетевая передача является узким местом и дополнительные накладные расходы на слияние приемлемы.
 
-## enable_blob_storage_log {#enable_blob_storage_log} 
+## enable_blob_storage_log \\{#enable_blob_storage_log\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3204,13 +3204,13 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Записывает сведения об операциях blob-хранилища в таблицу system.blob_storage_log
 
-## enable_early_constant_folding {#enable_early_constant_folding} 
+## enable_early_constant_folding \\{#enable_early_constant_folding\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Включает оптимизацию запроса, при которой анализируются результаты функций и подзапросов и запрос переписывается, если в них присутствуют константы
 
-## enable_extended_results_for_datetime_functions {#enable_extended_results_for_datetime_functions} 
+## enable_extended_results_for_datetime_functions \\{#enable_extended_results_for_datetime_functions\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3242,32 +3242,32 @@ ClickHouse применяет этот SETTING, когда запрос соде
 | `toStartOfMinute`         | Возвращает значение типа `DateTime`<br />*Примечание: Некорректные результаты для значений вне диапазона 1970–2149 годов*   | Возвращает `DateTime` для входных значений типа `Date`/`DateTime`<br />Возвращает `DateTime64` для входных значений типа `Date32`/`DateTime64`                   |
 | `timeSlot`                | Возвращает `DateTime`<br />*Примечание: некорректные результаты для значений вне диапазона 1970–2149 годов*                 | Возвращает `DateTime` для аргумента `Date`/`DateTime`<br />Возвращает `DateTime64` для аргумента `Date32`/`DateTime64`                                           |
 
-## enable_filesystem_cache {#enable_filesystem_cache} 
+## enable_filesystem_cache \\{#enable_filesystem_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Использовать кэш для удалённой файловой системы. Этот параметр не включает и не отключает кэш для дисков (это должно выполняться через конфигурацию дисков), но позволяет при необходимости обходить кэш для отдельных запросов.
 
-## enable_filesystem_cache_log {#enable_filesystem_cache_log} 
+## enable_filesystem_cache_log \\{#enable_filesystem_cache_log\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Разрешает вести журнал кеширования файловой системы для каждого запроса
 
-## enable_filesystem_cache_on_write_operations {#enable_filesystem_cache_on_write_operations} 
+## enable_filesystem_cache_on_write_operations \\{#enable_filesystem_cache_on_write_operations\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Включает или отключает кэш `write-through`. Если установлено значение `false`, кэш `write-through` отключён для операций записи. Если установлено значение `true`, кэш `write-through` включён, пока параметр `cache_on_write_operations` активирован в разделе конфигурации дискового кэша в конфиге сервера.
 См. раздел ["Использование локального кэша"](/operations/storing-data#using-local-cache) для получения более подробной информации.
 
-## enable_filesystem_read_prefetches_log {#enable_filesystem_read_prefetches_log} 
+## enable_filesystem_read_prefetches_log \\{#enable_filesystem_read_prefetches_log\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Записывать в system.filesystem prefetch_log во время выполнения запроса. Следует использовать только для тестирования или отладки; не рекомендуется включать по умолчанию
 
-## enable_full_text_index {#enable_full_text_index} 
+## enable_full_text_index \\{#enable_full_text_index\\}
 
 <BetaBadge/>
 
@@ -3279,7 +3279,7 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Если имеет значение true, разрешает использование текстового индекса.
 
-## enable_global_with_statement {#enable_global_with_statement} 
+## enable_global_with_statement \\{#enable_global_with_statement\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3287,7 +3287,7 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Распространяет команды WITH на запросы UNION и все подзапросы
 
-## enable_hdfs_pread {#enable_hdfs_pread} 
+## enable_hdfs_pread \\{#enable_hdfs_pread\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3295,7 +3295,7 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Включает или отключает использование `pread` для файлов HDFS. По умолчанию используется `hdfsPread`. Если параметр отключён, для чтения файлов HDFS будут использоваться `hdfsRead` и `hdfsSeek`.
 
-## enable_http_compression {#enable_http_compression} 
+## enable_http_compression \\{#enable_http_compression\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3310,7 +3310,7 @@ ClickHouse применяет этот SETTING, когда запрос соде
 - 0 — отключено.
 - 1 — включено.
 
-## enable_job_stack_trace {#enable_job_stack_trace} 
+## enable_job_stack_trace \\{#enable_job_stack_trace\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3318,7 +3318,7 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Выводит стек-трейс компонента, создавшего задание, если выполнение задания приводит к исключению. По умолчанию отключено, чтобы избежать накладных расходов по производительности.
 
-## enable_join_runtime_filters {#enable_join_runtime_filters} 
+## enable_join_runtime_filters \\{#enable_join_runtime_filters\\}
 
 <ExperimentalBadge/>
 
@@ -3328,7 +3328,7 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Фильтрует левую часть JOIN по множеству ключей, собранных из правой части во время выполнения запроса.
 
-## enable_lazy_columns_replication {#enable_lazy_columns_replication} 
+## enable_lazy_columns_replication \\{#enable_lazy_columns_replication\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3336,7 +3336,7 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Включает ленивую репликацию столбцов в JOIN и ARRAY JOIN, что позволяет избежать лишнего многократного копирования одинаковых строк в памяти.
 
-## enable_lightweight_delete {#enable_lightweight_delete} 
+## enable_lightweight_delete \\{#enable_lightweight_delete\\}
 
 **Псевдонимы**: `allow_experimental_lightweight_delete`
 
@@ -3344,7 +3344,7 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Включает мутации легковесного удаления (DELETE) для таблиц MergeTree.
 
-## enable_lightweight_update {#enable_lightweight_update} 
+## enable_lightweight_update \\{#enable_lightweight_update\\}
 
 <BetaBadge/>
 
@@ -3356,19 +3356,19 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Разрешает использование легковесных обновлений.
 
-## enable_memory_bound_merging_of_aggregation_results {#enable_memory_bound_merging_of_aggregation_results} 
+## enable_memory_bound_merging_of_aggregation_results \\{#enable_memory_bound_merging_of_aggregation_results\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Включает стратегию слияния результатов агрегации с ограничением по памяти.
 
-## enable_multiple_prewhere_read_steps {#enable_multiple_prewhere_read_steps} 
+## enable_multiple_prewhere_read_steps \\{#enable_multiple_prewhere_read_steps\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Переносит больше условий из WHERE в PREWHERE и выполняет чтение с диска и фильтрацию в несколько шагов, если есть несколько условий, объединённых оператором AND
 
-## enable_named_columns_in_function_tuple {#enable_named_columns_in_function_tuple} 
+## enable_named_columns_in_function_tuple \\{#enable_named_columns_in_function_tuple\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3376,7 +3376,7 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Генерировать именованные кортежи в функции tuple(), когда все имена уникальны и могут рассматриваться как идентификаторы без кавычек.
 
-## enable_optimize_predicate_expression {#enable_optimize_predicate_expression} 
+## enable_optimize_predicate_expression \\{#enable_optimize_predicate_expression\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3402,13 +3402,13 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Если `enable_optimize_predicate_expression = 0`, время выполнения второго запроса значительно больше, потому что предикат `WHERE` применяется ко всем данным после завершения подзапроса.
 
-## enable_optimize_predicate_expression_to_final_subquery {#enable_optimize_predicate_expression_to_final_subquery} 
+## enable_optimize_predicate_expression_to_final_subquery \\{#enable_optimize_predicate_expression_to_final_subquery\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Разрешает проталкивание предикатов в подзапрос с `FINAL`.
 
-## enable_order_by_all {#enable_order_by_all}
+## enable_order_by_all \{#enable_order_by_all\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3444,7 +3444,7 @@ SELECT * FROM TAB ORDER BY ALL SETTINGS enable_order_by_all = 0;
 ```
 
 
-## enable_parallel_blocks_marshalling {#enable_parallel_blocks_marshalling} 
+## enable_parallel_blocks_marshalling \\{#enable_parallel_blocks_marshalling\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3452,7 +3452,7 @@ SELECT * FROM TAB ORDER BY ALL SETTINGS enable_order_by_all = 0;
 
 Влияет только на распределённые запросы. Если параметр включён, блоки будут (де)сериализовываться и (де)сжиматься в потоках конвейера (то есть с более высоким уровнем параллелизма, чем по умолчанию) до/после отправки инициатору запроса.
 
-## enable_parsing_to_custom_serialization {#enable_parsing_to_custom_serialization} 
+## enable_parsing_to_custom_serialization \\{#enable_parsing_to_custom_serialization\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3460,7 +3460,7 @@ SELECT * FROM TAB ORDER BY ALL SETTINGS enable_order_by_all = 0;
 
 Если значение равно true, данные могут напрямую разбираться в столбцы с пользовательской сериализацией (например, разрежённой (Sparse)) в соответствии с подсказками по сериализации, полученными из таблицы.
 
-## enable_positional_arguments {#enable_positional_arguments}
+## enable_positional_arguments \{#enable_positional_arguments\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3496,7 +3496,7 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 ```
 
 
-## enable_positional_arguments_for_projections {#enable_positional_arguments_for_projections} 
+## enable_positional_arguments_for_projections \\{#enable_positional_arguments_for_projections\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3513,7 +3513,7 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 - 0 — позиционные аргументы не поддерживаются.
 - 1 — позиционные аргументы поддерживаются: можно использовать номера столбцов вместо их имён.
 
-## enable_producing_buckets_out_of_order_in_aggregation {#enable_producing_buckets_out_of_order_in_aggregation} 
+## enable_producing_buckets_out_of_order_in_aggregation \\{#enable_producing_buckets_out_of_order_in_aggregation\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3523,7 +3523,7 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 Это может повысить производительность при неравномерных размерах бакетов агрегации, позволяя реплике отправлять инициатору бакеты с более высокими ID, пока он всё ещё обрабатывает тяжёлые бакеты с более низкими ID.
 Недостатком может быть потенциально более высокое использование памяти.
 
-## enable_qbit_type {#enable_qbit_type} 
+## enable_qbit_type \\{#enable_qbit_type\\}
 
 <BetaBadge/>
 
@@ -3535,7 +3535,7 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 Позволяет создавать тип данных [QBit](../../sql-reference/data-types/qbit.md).
 
-## enable_reads_from_query_cache {#enable_reads_from_query_cache} 
+## enable_reads_from_query_cache \\{#enable_reads_from_query_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3546,13 +3546,13 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 - 0 — Отключено
 - 1 — Включено
 
-## enable_s3_requests_logging {#enable_s3_requests_logging} 
+## enable_s3_requests_logging \\{#enable_s3_requests_logging\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Включает очень подробное логирование запросов к S3. Имеет смысл включать только для отладки.
 
-## enable_scalar_subquery_optimization {#enable_scalar_subquery_optimization} 
+## enable_scalar_subquery_optimization \\{#enable_scalar_subquery_optimization\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3560,7 +3560,7 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 Если установлено значение true, предотвращает (де)сериализацию больших скалярных значений в скалярных подзапросах и, возможно, позволяет избежать многократного выполнения одного и того же подзапроса.
 
-## enable_scopes_for_with_statement {#enable_scopes_for_with_statement} 
+## enable_scopes_for_with_statement \\{#enable_scopes_for_with_statement\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3570,7 +3570,7 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 Обратите внимание, что это параметр совместимости для нового анализатора, который позволяет выполнять некоторые некорректные запросы, которые старый анализатор мог исполнять.
 
-## enable_shared_storage_snapshot_in_query {#enable_shared_storage_snapshot_in_query}
+## enable_shared_storage_snapshot_in_query \{#enable_shared_storage_snapshot_in_query\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3607,19 +3607,19 @@ WHERE (_part, _part_offset) IN (
 * 1 - включено
 
 
-## enable_sharing_sets_for_mutations {#enable_sharing_sets_for_mutations} 
+## enable_sharing_sets_for_mutations \\{#enable_sharing_sets_for_mutations\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Разрешает совместное использование объектов Set, создаваемых для подзапросов с IN, между разными задачами одной и той же мутации. Это снижает потребление памяти и нагрузку на ЦП.
 
-## enable_software_prefetch_in_aggregation {#enable_software_prefetch_in_aggregation} 
+## enable_software_prefetch_in_aggregation \\{#enable_software_prefetch_in_aggregation\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Включает использование программной предварительной выборки (software prefetch) при агрегации
 
-## enable_time_time64_type {#enable_time_time64_type} 
+## enable_time_time64_type \\{#enable_time_time64_type\\}
 
 **Псевдонимы**: `allow_experimental_time_time64_type`
 
@@ -3629,13 +3629,13 @@ WHERE (_part, _part_offset) IN (
 
 Позволяет создавать типы данных [Time](../../sql-reference/data-types/time.md) и [Time64](../../sql-reference/data-types/time64.md).
 
-## enable_unaligned_array_join {#enable_unaligned_array_join} 
+## enable_unaligned_array_join \\{#enable_unaligned_array_join\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Разрешает выполнять ARRAY JOIN с несколькими массивами разного размера. Когда эта настройка включена, массивы будут приведены к длине самого длинного.
 
-## enable_url_encoding {#enable_url_encoding} 
+## enable_url_encoding \\{#enable_url_encoding\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3645,7 +3645,7 @@ WHERE (_part, _part_offset) IN (
 
 По умолчанию параметр отключен.
 
-## enable_vertical_final {#enable_vertical_final} 
+## enable_vertical_final \\{#enable_vertical_final\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3653,7 +3653,7 @@ WHERE (_part, _part_offset) IN (
 
 Если включено, удалять дублирующиеся строки во время выполнения FINAL, помечая строки как удалённые и фильтруя их позже вместо объединения строк
 
-## enable_writes_to_query_cache {#enable_writes_to_query_cache} 
+## enable_writes_to_query_cache \\{#enable_writes_to_query_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3664,7 +3664,7 @@ WHERE (_part, _part_offset) IN (
 - 0 — отключено
 - 1 — включено
 
-## enforce_strict_identifier_format {#enforce_strict_identifier_format} 
+## enforce_strict_identifier_format \\{#enforce_strict_identifier_format\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3672,7 +3672,7 @@ WHERE (_part, _part_offset) IN (
 
 Если параметр включён, разрешаются только идентификаторы, состоящие из буквенно-цифровых символов и символов подчёркивания.
 
-## engine_file_allow_create_multiple_files {#engine_file_allow_create_multiple_files} 
+## engine_file_allow_create_multiple_files \\{#engine_file_allow_create_multiple_files\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3685,7 +3685,7 @@ WHERE (_part, _part_offset) IN (
 - 0 — запрос `INSERT` дописывает новые данные в конец файла.
 - 1 — запрос `INSERT` создает новый файл.
 
-## engine_file_empty_if_not_exists {#engine_file_empty_if_not_exists} 
+## engine_file_empty_if_not_exists \\{#engine_file_empty_if_not_exists\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3696,7 +3696,7 @@ WHERE (_part, _part_offset) IN (
 - 0 — `SELECT` выбрасывает исключение.
 - 1 — `SELECT` возвращает пустой результат.
 
-## engine_file_skip_empty_files {#engine_file_skip_empty_files} 
+## engine_file_skip_empty_files \\{#engine_file_skip_empty_files\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3707,7 +3707,7 @@ WHERE (_part, _part_offset) IN (
 - 0 — `SELECT` выбрасывает исключение, если пустой файл не совместим с запрошенным форматом.
 - 1 — `SELECT` возвращает пустой результат для пустого файла.
 
-## engine_file_truncate_on_insert {#engine_file_truncate_on_insert} 
+## engine_file_truncate_on_insert \\{#engine_file_truncate_on_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3718,7 +3718,7 @@ WHERE (_part, _part_offset) IN (
 - 0 — запрос `INSERT` дописывает новые данные в конец файла.
 - 1 — запрос `INSERT` заменяет существующее содержимое файла новыми данными.
 
-## engine_url_skip_empty_files {#engine_url_skip_empty_files} 
+## engine_url_skip_empty_files \\{#engine_url_skip_empty_files\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3729,19 +3729,19 @@ WHERE (_part, _part_offset) IN (
 - 0 — `SELECT` генерирует исключение, если пустой файл не совместим с запрошенным форматом.
 - 1 — `SELECT` возвращает пустой результат для пустого файла.
 
-## exact_rows_before_limit {#exact_rows_before_limit} 
+## exact_rows_before_limit \\{#exact_rows_before_limit\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Когда параметр включён, ClickHouse будет возвращать точное значение статистики rows_before_limit_at_least, но при этом данные до достижения лимита придётся полностью прочитать
 
-## except_default_mode {#except_default_mode} 
+## except_default_mode \\{#except_default_mode\\}
 
 <SettingsInfoBlock type="SetOperationMode" default_value="ALL" />
 
 Устанавливает режим по умолчанию для запросов EXCEPT. Возможные значения: пустая строка, 'ALL', 'DISTINCT'. Если задана пустая строка, запрос без указания режима завершится с исключением.
 
-## exclude_materialize_skip_indexes_on_insert {#exclude_materialize_skip_indexes_on_insert}
+## exclude_materialize_skip_indexes_on_insert \{#exclude_materialize_skip_indexes_on_insert\}
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": ""},{"label": "Новая настройка."}]}]} />
 
@@ -3776,7 +3776,7 @@ SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- reset setting to de
 ```
 
 
-## execute_exists_as_scalar_subquery {#execute_exists_as_scalar_subquery} 
+## execute_exists_as_scalar_subquery \\{#execute_exists_as_scalar_subquery\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3784,31 +3784,31 @@ SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- reset setting to de
 
 Выполняет некоррелированные подзапросы EXISTS как скалярные подзапросы. Аналогично скалярным подзапросам, используется кэш, а к результату применяется свёртка констант.
 
-## external_storage_connect_timeout_sec {#external_storage_connect_timeout_sec} 
+## external_storage_connect_timeout_sec \\{#external_storage_connect_timeout_sec\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
 Таймаут подключения в секундах. В настоящее время поддерживается только для MySQL.
 
-## external_storage_max_read_bytes {#external_storage_max_read_bytes} 
+## external_storage_max_read_bytes \\{#external_storage_max_read_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Ограничивает максимальный объём данных в байтах, при достижении которого таблица с внешним движком должна сбрасывать исторические данные. В настоящее время поддерживается только для движка таблиц MySQL, движка базы данных и словаря. Если равно 0, эта настройка отключена.
 
-## external_storage_max_read_rows {#external_storage_max_read_rows} 
+## external_storage_max_read_rows \\{#external_storage_max_read_rows\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Ограничивает максимальное количество строк, при достижении которого таблица с внешним движком должна сбросить исторические данные. В настоящее время поддерживается только для движка таблицы MySQL, движка базы данных и словаря. При значении 0 этот параметр отключён.
 
-## external_storage_rw_timeout_sec {#external_storage_rw_timeout_sec} 
+## external_storage_rw_timeout_sec \\{#external_storage_rw_timeout_sec\\}
 
 <SettingsInfoBlock type="UInt64" default_value="300" />
 
 Таймаут операций чтения и записи, в секундах. На данный момент поддерживается только для MySQL.
 
-## external_table_functions_use_nulls {#external_table_functions_use_nulls} 
+## external_table_functions_use_nulls \\{#external_table_functions_use_nulls\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3823,13 +3823,13 @@ SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- reset setting to de
 
 Если значение настройки равно `0`, табличная функция не делает столбцы типа Nullable и вставляет значения по умолчанию вместо NULL. Это также применимо к значениям NULL внутри массивов.
 
-## external_table_strict_query {#external_table_strict_query} 
+## external_table_strict_query \\{#external_table_strict_query\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Если установлено значение true, запрещается преобразовывать выражения в локальный фильтр для запросов к внешним таблицам.
 
-## extract_key_value_pairs_max_pairs_per_row {#extract_key_value_pairs_max_pairs_per_row} 
+## extract_key_value_pairs_max_pairs_per_row \\{#extract_key_value_pairs_max_pairs_per_row\\}
 
 **Псевдонимы**: `extract_kvp_max_pairs_per_row`
 
@@ -3839,14 +3839,14 @@ SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- reset setting to de
 
 Максимальное количество пар, которое может быть получено функцией `extractKeyValuePairs`. Используется как защита от чрезмерного потребления памяти.
 
-## extremes {#extremes} 
+## extremes \\{#extremes\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Определяет, нужно ли учитывать экстремальные значения (минимумы и максимумы в столбцах результата запроса). Принимает значения 0 или 1. По умолчанию — 0 (отключено).
 Дополнительные сведения см. в разделе «Экстремальные значения».
 
-## fallback_to_stale_replicas_for_distributed_queries {#fallback_to_stale_replicas_for_distributed_queries} 
+## fallback_to_stale_replicas_for_distributed_queries \\{#fallback_to_stale_replicas_for_distributed_queries\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3858,7 +3858,7 @@ ClickHouse выбирает наиболее актуальную среди у�
 
 По умолчанию — 1 (включено).
 
-## filesystem_cache_allow_background_download {#filesystem_cache_allow_background_download} 
+## filesystem_cache_allow_background_download \\{#filesystem_cache_allow_background_download\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3866,7 +3866,7 @@ ClickHouse выбирает наиболее актуальную среди у�
 
 Разрешает файловому кешу ставить в очередь фоновые загрузки данных, читаемых из удалённого хранилища. Отключите, чтобы выполнять загрузки в основном потоке для текущего запроса/сессии.
 
-## filesystem_cache_boundary_alignment {#filesystem_cache_boundary_alignment} 
+## filesystem_cache_boundary_alignment \\{#filesystem_cache_boundary_alignment\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -3874,7 +3874,7 @@ ClickHouse выбирает наиболее актуальную среди у�
 
 Выравнивание границ файлового кэша. Этот параметр применяется только для чтения, не выполняемого напрямую с диска (например, для кэша удалённых движков таблиц / табличных функций, но не для конфигурации хранилища таблиц MergeTree). Значение 0 означает отсутствие выравнивания.
 
-## filesystem_cache_enable_background_download_during_fetch {#filesystem_cache_enable_background_download_during_fetch} 
+## filesystem_cache_enable_background_download_during_fetch \\{#filesystem_cache_enable_background_download_during_fetch\\}
 
 <CloudOnlyBadge/>
 
@@ -3884,7 +3884,7 @@ ClickHouse выбирает наиболее актуальную среди у�
 
 Действует только в ClickHouse Cloud. Время ожидания при блокировке кэша для резервирования места в кэше файловой системы
 
-## filesystem_cache_enable_background_download_for_metadata_files_in_packed_storage {#filesystem_cache_enable_background_download_for_metadata_files_in_packed_storage} 
+## filesystem_cache_enable_background_download_for_metadata_files_in_packed_storage \\{#filesystem_cache_enable_background_download_for_metadata_files_in_packed_storage\\}
 
 <CloudOnlyBadge/>
 
@@ -3894,19 +3894,19 @@ ClickHouse выбирает наиболее актуальную среди у�
 
 Оказывает действие только в ClickHouse Cloud. Время ожидания при захвате блокировки кэша для резервирования пространства в файловом кэше
 
-## filesystem_cache_max_download_size {#filesystem_cache_max_download_size} 
+## filesystem_cache_max_download_size \\{#filesystem_cache_max_download_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="137438953472" />
 
 Максимальный объём данных в кэше удалённой файловой системы, который может быть загружен одним запросом
 
-## filesystem_cache_name {#filesystem_cache_name} 
+## filesystem_cache_name \\{#filesystem_cache_name\\}
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": ""},{"label": "Имя кэша файловой системы, используемое для табличных движков без состояния или озёр данных"}]}]}/>
 
 Имя кэша файловой системы, используемое для табличных движков без состояния или озёр данных
 
-## filesystem_cache_prefer_bigger_buffer_size {#filesystem_cache_prefer_bigger_buffer_size} 
+## filesystem_cache_prefer_bigger_buffer_size \\{#filesystem_cache_prefer_bigger_buffer_size\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3914,7 +3914,7 @@ ClickHouse выбирает наиболее актуальную среди у�
 
 При включенном кэше файловой системы использовать больший размер буфера, чтобы избежать записи небольших сегментов файла, ухудшающих производительность кэша. С другой стороны, включение этого параметра может увеличить потребление памяти.
 
-## filesystem_cache_reserve_space_wait_lock_timeout_milliseconds {#filesystem_cache_reserve_space_wait_lock_timeout_milliseconds} 
+## filesystem_cache_reserve_space_wait_lock_timeout_milliseconds \\{#filesystem_cache_reserve_space_wait_lock_timeout_milliseconds\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -3922,13 +3922,13 @@ ClickHouse выбирает наиболее актуальную среди у�
 
 Время ожидания при блокировке кэша для резервирования места в файловом кэше
 
-## filesystem_cache_segments_batch_size {#filesystem_cache_segments_batch_size} 
+## filesystem_cache_segments_batch_size \\{#filesystem_cache_segments_batch_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
 Ограничение на размер одного пакета файловых сегментов, которые буфер чтения может запрашивать из кэша. Слишком маленькое значение приведёт к избыточному числу запросов к кэшу, слишком большое — может замедлить вытеснение данных из кэша.
 
-## filesystem_cache_skip_download_if_exceeds_per_query_cache_write_limit {#filesystem_cache_skip_download_if_exceeds_per_query_cache_write_limit} 
+## filesystem_cache_skip_download_if_exceeds_per_query_cache_write_limit \\{#filesystem_cache_skip_download_if_exceeds_per_query_cache_write_limit\\}
 
 **Псевдонимы**: `skip_download_if_exceeds_query_cache`
 
@@ -3938,31 +3938,31 @@ ClickHouse выбирает наиболее актуальную среди у�
 
 Пропускать загрузку из удалённой файловой системы, если её размер превышает размер кэша запросов
 
-## filesystem_prefetch_max_memory_usage {#filesystem_prefetch_max_memory_usage} 
+## filesystem_prefetch_max_memory_usage \\{#filesystem_prefetch_max_memory_usage\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1073741824" />
 
 Максимальный объём памяти, используемый для предварительной выборки.
 
-## filesystem_prefetch_step_bytes {#filesystem_prefetch_step_bytes} 
+## filesystem_prefetch_step_bytes \\{#filesystem_prefetch_step_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Шаг предварительной выборки в байтах. Ноль означает `auto` — примерно наилучший шаг предварительной выборки будет определён автоматически, но может быть не на 100% оптимальным. Фактическое значение может отличаться из‑за параметра filesystem_prefetch_min_bytes_for_single_read_task.
 
-## filesystem_prefetch_step_marks {#filesystem_prefetch_step_marks} 
+## filesystem_prefetch_step_marks \\{#filesystem_prefetch_step_marks\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Шаг предвыборки в метках. Ноль означает `auto` — примерно оптимальный шаг предвыборки будет определён автоматически, но может быть не на 100% оптимальным. Фактическое значение может отличаться из‑за настройки filesystem_prefetch_min_bytes_for_single_read_task.
 
-## filesystem_prefetches_limit {#filesystem_prefetches_limit} 
+## filesystem_prefetches_limit \\{#filesystem_prefetches_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="200" />
 
 Максимальное число операций предварительного чтения. Ноль означает отсутствие ограничения. Если вы хотите ограничить количество таких операций, рекомендуется использовать параметр `filesystem_prefetches_max_memory_usage`.
 
-## final {#final}
+## final \{#final\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4008,7 +4008,7 @@ SELECT * FROM test;
 ```
 
 
-## flatten_nested {#flatten_nested}
+## flatten_nested \{#flatten_nested\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -4074,19 +4074,19 @@ SETTINGS index_granularity = 8192 │
 ```
 
 
-## force_aggregate_partitions_independently {#force_aggregate_partitions_independently} 
+## force_aggregate_partitions_independently \\{#force_aggregate_partitions_independently\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Принудительно включает оптимизацию, когда она применима, даже если эвристика решила её не использовать
 
-## force_aggregation_in_order {#force_aggregation_in_order} 
+## force_aggregation_in_order \\{#force_aggregation_in_order\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Этот параметр используется сервером для поддержки распределённых запросов. Не изменяйте его вручную, так как это может нарушить нормальную работу. (Задаёт принудительное использование агрегации по порядку на удалённых узлах при распределённой агрегации).
 
-## force_data_skipping_indices {#force_data_skipping_indices}
+## force_data_skipping_indices \{#force_data_skipping_indices\}
 
 Отключает выполнение запроса, если указанные индексы пропуска данных не были задействованы.
 
@@ -4114,7 +4114,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 ```
 
 
-## force_grouping_standard_compatibility {#force_grouping_standard_compatibility} 
+## force_grouping_standard_compatibility \\{#force_grouping_standard_compatibility\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -4122,7 +4122,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 Настраивает функцию GROUPING так, чтобы она возвращала 1, когда аргумент не используется как ключ агрегации
 
-## force_index_by_date {#force_index_by_date} 
+## force_index_by_date \\{#force_index_by_date\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4132,7 +4132,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 Если `force_index_by_date=1`, ClickHouse проверяет, содержит ли запрос условие по дате, которое может быть использовано для ограничения диапазонов данных. Если подходящего условия нет, генерируется исключение. Однако не проверяется, уменьшает ли это условие объём данных для чтения. Например, условие `Date != ' 2000-01-01 '` считается допустимым, даже если оно соответствует всем данным в таблице (то есть для выполнения запроса требуется полное сканирование). Для получения дополнительной информации о диапазонах данных в таблицах MergeTree см. раздел [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
 
-## force_optimize_projection {#force_optimize_projection} 
+## force_optimize_projection \\{#force_optimize_projection\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4143,7 +4143,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 - 0 — Оптимизация с использованием проекций не обязательна.
 - 1 — Оптимизация с использованием проекций обязательна.
 
-## force_optimize_projection_name {#force_optimize_projection_name} 
+## force_optimize_projection_name \\{#force_optimize_projection_name\\}
 
 Если параметр установлен в непустую строку, проверяется, что указанная PROJECTION используется в запросе хотя бы один раз.
 
@@ -4151,7 +4151,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 - string: имя PROJECTION, используемой в запросе
 
-## force_optimize_skip_unused_shards {#force_optimize_skip_unused_shards} 
+## force_optimize_skip_unused_shards \\{#force_optimize_skip_unused_shards\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -4163,7 +4163,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 - 1 — Включено. Выполнение запроса запрещается только в том случае, если у таблицы есть ключ шардинга.
 - 2 — Включено. Выполнение запроса запрещается независимо от того, определён ли для таблицы ключ шардинга.
 
-## force_optimize_skip_unused_shards_nesting {#force_optimize_skip_unused_shards_nesting} 
+## force_optimize_skip_unused_shards_nesting \\{#force_optimize_skip_unused_shards_nesting\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -4175,7 +4175,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 - 1 — Включает `force_optimize_skip_unused_shards` только для первого уровня.
 - 2 — Включает `force_optimize_skip_unused_shards` до второго уровня включительно.
 
-## force_primary_key {#force_primary_key} 
+## force_primary_key \\{#force_primary_key\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4185,13 +4185,13 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 Если `force_primary_key=1`, ClickHouse проверяет, есть ли в запросе условие по первичному ключу, которое может быть использовано для ограничения диапазонов данных. Если подходящего условия нет, выбрасывается исключение. Однако не проверяется, уменьшает ли это условие объем данных для чтения. Дополнительные сведения о диапазонах данных в таблицах MergeTree см. в разделе [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
 
-## force_remove_data_recursively_on_drop {#force_remove_data_recursively_on_drop} 
+## force_remove_data_recursively_on_drop \\{#force_remove_data_recursively_on_drop\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Рекурсивно удаляет данные в запросе DROP. Позволяет избежать ошибки "Directory not empty", но может без предупреждения удалить отсоединённые данные
 
-## formatdatetime_e_with_space_padding {#formatdatetime_e_with_space_padding} 
+## formatdatetime_e_with_space_padding \\{#formatdatetime_e_with_space_padding\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4199,7 +4199,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 Форматтер '%e' в функции 'formatDateTime' выводит дни месяца, записанные одной цифрой, с ведущим пробелом, например ' 2' вместо '2'.
 
-## formatdatetime_f_prints_scale_number_of_digits {#formatdatetime_f_prints_scale_number_of_digits} 
+## formatdatetime_f_prints_scale_number_of_digits \\{#formatdatetime_f_prints_scale_number_of_digits\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4207,7 +4207,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 Форматтер '%f' в функции 'formatDateTime' выводит количество цифр, соответствующее масштабу (scale) для DateTime64, вместо фиксированных 6 цифр.
 
-## formatdatetime_f_prints_single_zero {#formatdatetime_f_prints_single_zero} 
+## formatdatetime_f_prints_single_zero \\{#formatdatetime_f_prints_single_zero\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4215,13 +4215,13 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 Форматный спецификатор '%f' в функции 'formatDateTime' выводит один ноль вместо шести нулей, если форматируемое значение не содержит дробных секунд.
 
-## formatdatetime_format_without_leading_zeros {#formatdatetime_format_without_leading_zeros} 
+## formatdatetime_format_without_leading_zeros \\{#formatdatetime_format_without_leading_zeros\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Спецификаторы формата '%c', '%l' и '%k' в функции formatDateTime выводят месяцы и часы без ведущих нулей.
 
-## formatdatetime_parsedatetime_m_is_month_name {#formatdatetime_parsedatetime_m_is_month_name} 
+## formatdatetime_parsedatetime_m_is_month_name \\{#formatdatetime_parsedatetime_m_is_month_name\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -4229,7 +4229,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 Спецификатор формата '%M' в функциях 'formatDateTime' и 'parseDateTime' теперь выводит и парсит название месяца, а не минуты.
 
-## fsync_metadata {#fsync_metadata} 
+## fsync_metadata \\{#fsync_metadata\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -4237,7 +4237,7 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 Имеет смысл отключить эту настройку, если на сервере есть миллионы очень маленьких таблиц, которые постоянно создаются и удаляются.
 
-## function_date_trunc_return_type_behavior {#function_date_trunc_return_type_behavior} 
+## function_date_trunc_return_type_behavior \\{#function_date_trunc_return_type_behavior\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -4250,11 +4250,11 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 - 0 — Когда вторым аргументом является `DateTime64/Date32`, тип результата будет `DateTime64/Date32` независимо от временной единицы в первом аргументе.
 - 1 — Для `Date32` результатом всегда является `Date`. Для `DateTime64` результатом является `DateTime` для временных единиц `second` и выше.
 
-## function_implementation {#function_implementation} 
+## function_implementation \\{#function_implementation\\}
 
 Выберите реализацию функции для конкретной цели или варианта (экспериментально). Если не задано, включаются все реализации.
 
-## function_json_value_return_type_allow_complex {#function_json_value_return_type_allow_complex}
+## function_json_value_return_type_allow_complex \{#function_json_value_return_type_allow_complex\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4276,7 +4276,7 @@ SELECT JSON_VALUE('{"hello":{"world":"!"}}', '$.hello') settings function_json_v
 * false — запретить.
 
 
-## function_json_value_return_type_allow_nullable {#function_json_value_return_type_allow_nullable}
+## function_json_value_return_type_allow_nullable \{#function_json_value_return_type_allow_nullable\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4298,7 +4298,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 * false — запретить.
 
 
-## function_locate_has_mysql_compatible_argument_order {#function_locate_has_mysql_compatible_argument_order} 
+## function_locate_has_mysql_compatible_argument_order \\{#function_locate_has_mysql_compatible_argument_order\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -4311,7 +4311,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 - 0 — функция `locate` принимает аргументы `(haystack, needle[, start_pos])`.
 - 1 — функция `locate` принимает аргументы `(needle, haystack, [, start_pos])` (поведение, совместимое с MySQL).
 
-## function_range_max_elements_in_block {#function_range_max_elements_in_block} 
+## function_range_max_elements_in_block \\{#function_range_max_elements_in_block\\}
 
 <SettingsInfoBlock type="UInt64" default_value="500000000" />
 
@@ -4326,7 +4326,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 - [`max_block_size`](#max_block_size)
 - [`min_insert_block_size_rows`](#min_insert_block_size_rows)
 
-## function_sleep_max_microseconds_per_block {#function_sleep_max_microseconds_per_block} 
+## function_sleep_max_microseconds_per_block \\{#function_sleep_max_microseconds_per_block\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3000000" />
 
@@ -4334,7 +4334,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Максимальное количество микросекунд, в течение которых функция `sleep` может приостанавливать выполнение для каждого блока. Если пользователь вызывает её с большим значением, выбрасывается исключение. Это защитный порог.
 
-## function_visible_width_behavior {#function_visible_width_behavior} 
+## function_visible_width_behavior \\{#function_visible_width_behavior\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
@@ -4342,7 +4342,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Версия поведения `visibleWidth`. 0 — считать только количество кодовых точек; 1 — корректно учитывать символы нулевой ширины и комбинируемые символы, считать символы полной ширины за два, оценивать ширину табуляции, учитывать символы удаления.
 
-## geo_distance_returns_float64_on_float64_arguments {#geo_distance_returns_float64_on_float64_arguments} 
+## geo_distance_returns_float64_on_float64_arguments \\{#geo_distance_returns_float64_on_float64_arguments\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -4350,7 +4350,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Если все четыре аргумента функций `geoDistance`, `greatCircleDistance` и `greatCircleAngle` имеют тип Float64, эти функции возвращают значение типа Float64, а для внутренних вычислений используется двойная точность. В предыдущих версиях ClickHouse эти функции всегда возвращали Float32.
 
-## geotoh3_argument_order {#geotoh3_argument_order} 
+## geotoh3_argument_order \\{#geotoh3_argument_order\\}
 
 <BetaBadge/>
 
@@ -4360,13 +4360,13 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Функция `geoToH3` принимает аргументы в порядке (lon, lat), если задано значение `lon_lat`, и в порядке (lat, lon), если задано значение `lat_lon`.
 
-## glob_expansion_max_elements {#glob_expansion_max_elements} 
+## glob_expansion_max_elements \\{#glob_expansion_max_elements\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
 Максимальное допустимое количество адресов (для внешних хранилищ, табличных функций и т. д.).
 
-## grace_hash_join_initial_buckets {#grace_hash_join_initial_buckets} 
+## grace_hash_join_initial_buckets \\{#grace_hash_join_initial_buckets\\}
 
 <ExperimentalBadge/>
 
@@ -4374,7 +4374,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Начальное количество бакетов grace hash join
 
-## grace_hash_join_max_buckets {#grace_hash_join_max_buckets} 
+## grace_hash_join_max_buckets \\{#grace_hash_join_max_buckets\\}
 
 <ExperimentalBadge/>
 
@@ -4382,7 +4382,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Ограничение на максимальное количество бакетов в grace hash join
 
-## group_by_overflow_mode {#group_by_overflow_mode} 
+## group_by_overflow_mode \\{#group_by_overflow_mode\\}
 
 <SettingsInfoBlock type="OverflowModeGroupBy" default_value="throw" />
 
@@ -4395,19 +4395,19 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 Использование значения `any` позволяет выполнять приближённый вариант GROUP BY. Качество
 такого приближения зависит от статистических свойств данных.
 
-## group_by_two_level_threshold {#group_by_two_level_threshold} 
+## group_by_two_level_threshold \\{#group_by_two_level_threshold\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100000" />
 
 Начиная с какого количества ключей запускается двухуровневая агрегация. 0 — порог не установлен.
 
-## group_by_two_level_threshold_bytes {#group_by_two_level_threshold_bytes} 
+## group_by_two_level_threshold_bytes \\{#group_by_two_level_threshold_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="50000000" />
 
 Размер агрегатного состояния в байтах, при достижении которого используется двухуровневая агрегация. 0 — порог не установлен. Двухуровневая агрегация используется, когда срабатывает хотя бы один из порогов.
 
-## group_by_use_nulls {#group_by_use_nulls} 
+## group_by_use_nulls \\{#group_by_use_nulls\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4424,7 +4424,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 - [Предложение GROUP BY](/sql-reference/statements/select/group-by)
 
-## h3togeo_lon_lat_result_order {#h3togeo_lon_lat_result_order} 
+## h3togeo_lon_lat_result_order \\{#h3togeo_lon_lat_result_order\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4432,13 +4432,13 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Функция 'h3ToGeo' возвращает (lon, lat), если значение равно true, в противном случае — (lat, lon).
 
-## handshake_timeout_ms {#handshake_timeout_ms} 
+## handshake_timeout_ms \\{#handshake_timeout_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="10000" />
 
 Таймаут в миллисекундах на получение пакета Hello от реплик при установлении соединения.
 
-## hdfs_create_new_file_on_insert {#hdfs_create_new_file_on_insert} 
+## hdfs_create_new_file_on_insert \\{#hdfs_create_new_file_on_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4451,7 +4451,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 - 0 — запрос `INSERT` добавляет новые данные в конец файла.
 - 1 — запрос `INSERT` создает новый файл.
 
-## hdfs_ignore_file_doesnt_exist {#hdfs_ignore_file_doesnt_exist} 
+## hdfs_ignore_file_doesnt_exist \\{#hdfs_ignore_file_doesnt_exist\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4464,13 +4464,13 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 - 1 — `SELECT` возвращает пустой результат.
 - 0 — `SELECT` генерирует исключение.
 
-## hdfs_replication {#hdfs_replication} 
+## hdfs_replication \\{#hdfs_replication\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Фактическое количество реплик можно указать при создании файла HDFS.
 
-## hdfs_skip_empty_files {#hdfs_skip_empty_files} 
+## hdfs_skip_empty_files \\{#hdfs_skip_empty_files\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4481,7 +4481,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 - 0 — `SELECT` выбрасывает исключение, если пустой файл не соответствует запрошенному формату.
 - 1 — `SELECT` возвращает пустой результат для пустого файла.
 
-## hdfs_throw_on_zero_files_match {#hdfs_throw_on_zero_files_match} 
+## hdfs_throw_on_zero_files_match \\{#hdfs_throw_on_zero_files_match\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4494,7 +4494,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 - 1 — `SELECT` генерирует исключение.
 - 0 — `SELECT` возвращает пустой результат.
 
-## hdfs_truncate_on_insert {#hdfs_truncate_on_insert} 
+## hdfs_truncate_on_insert \\{#hdfs_truncate_on_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4505,7 +4505,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 - 0 — запрос `INSERT` дописывает новые данные в конец файла.
 - 1 — запрос `INSERT` заменяет существующее содержимое файла новыми данными.
 
-## hedged_connection_timeout_ms {#hedged_connection_timeout_ms} 
+## hedged_connection_timeout_ms \\{#hedged_connection_timeout_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="50" />
 
@@ -4513,7 +4513,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Таймаут при установлении соединения с репликой для hedged-запросов
 
-## hnsw_candidate_list_size_for_search {#hnsw_candidate_list_size_for_search} 
+## hnsw_candidate_list_size_for_search \\{#hnsw_candidate_list_size_for_search\\}
 
 <SettingsInfoBlock type="UInt64" default_value="256" />
 
@@ -4521,13 +4521,13 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Размер динамического списка кандидатов при поиске по индексу векторного сходства, также называемого `ef_search`.
 
-## hsts_max_age {#hsts_max_age} 
+## hsts_max_age \\{#hsts_max_age\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Срок действия HSTS. Значение 0 отключает HSTS.
 
-## http_connection_timeout {#http_connection_timeout} 
+## http_connection_timeout \\{#http_connection_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="1" />
 
@@ -4538,55 +4538,55 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 - Любое положительное целое число.
 - 0 — отключено (бесконечный таймаут).
 
-## http_headers_progress_interval_ms {#http_headers_progress_interval_ms} 
+## http_headers_progress_interval_ms \\{#http_headers_progress_interval_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
 Не отправлять HTTP-заголовки X-ClickHouse-Progress чаще, чем один раз за указанный интервал.
 
-## http_make_head_request {#http_make_head_request} 
+## http_make_head_request \\{#http_make_head_request\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Настройка `http_make_head_request` позволяет выполнять запрос `HEAD` при чтении данных по HTTP, чтобы получить сведения о считываемом файле, например его размер. Поскольку она включена по умолчанию, может потребоваться отключить эту настройку, если сервер не поддерживает запросы `HEAD`.
 
-## http_max_field_name_size {#http_max_field_name_size} 
+## http_max_field_name_size \\{#http_max_field_name_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="131072" />
 
 Максимальная длина имени поля в HTTP-заголовке
 
-## http_max_field_value_size {#http_max_field_value_size} 
+## http_max_field_value_size \\{#http_max_field_value_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="131072" />
 
 Максимальная длина значения поля заголовка HTTP
 
-## http_max_fields {#http_max_fields} 
+## http_max_fields \\{#http_max_fields\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />
 
 Максимальное количество полей в HTTP-заголовке
 
-## http_max_multipart_form_data_size {#http_max_multipart_form_data_size} 
+## http_max_multipart_form_data_size \\{#http_max_multipart_form_data_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
 Ограничение на размер содержимого multipart/form-data. Значение этого параметра не может быть получено из параметров URL и должно быть задано в пользовательском профиле. Обратите внимание, что содержимое разбирается, а внешние таблицы создаются в памяти до начала выполнения запроса. Это единственное ограничение, которое действует на этой стадии (ограничения на максимальное использование памяти и максимальное время выполнения не влияют на чтение данных формы HTTP).
 
-## http_max_request_param_data_size {#http_max_request_param_data_size} 
+## http_max_request_param_data_size \\{#http_max_request_param_data_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10485760" />
 
 Ограничение размера данных запроса, используемых в параметре запроса в предопределённых HTTP‑запросах.
 
-## http_max_tries {#http_max_tries} 
+## http_max_tries \\{#http_max_tries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
 Максимальное количество попыток чтения через HTTP.
 
-## http_max_uri_size {#http_max_uri_size} 
+## http_max_uri_size \\{#http_max_uri_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
 
@@ -4596,7 +4596,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 - Положительное целое число.
 
-## http_native_compression_disable_checksumming_on_decompress {#http_native_compression_disable_checksumming_on_decompress} 
+## http_native_compression_disable_checksumming_on_decompress \\{#http_native_compression_disable_checksumming_on_decompress\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4609,7 +4609,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 - 0 — Отключено.
 - 1 — Включено.
 
-## http_receive_timeout {#http_receive_timeout} 
+## http_receive_timeout \\{#http_receive_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="30" />
 
@@ -4622,13 +4622,13 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 - Любое положительное целое число.
 - 0 — отключено (бесконечный таймаут).
 
-## http_response_buffer_size {#http_response_buffer_size} 
+## http_response_buffer_size \\{#http_response_buffer_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Объём данных в байтах, который буферизуется в памяти сервера перед отправкой HTTP-ответа клиенту или записью на диск (когда включён `http_wait_end_of_query`).
 
-## http_response_headers {#http_response_headers} 
+## http_response_headers \\{#http_response_headers\\}
 
 <SettingsInfoBlock type="Map" default_value="{}" />
 
@@ -4649,19 +4649,19 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Пример: `SET http_response_headers = '{"Content-Type": "image/png"}'`
 
-## http_retry_initial_backoff_ms {#http_retry_initial_backoff_ms} 
+## http_retry_initial_backoff_ms \\{#http_retry_initial_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
 Минимальная длительность ожидания (backoff) в миллисекундах при повторной попытке чтения по HTTP
 
-## http_retry_max_backoff_ms {#http_retry_max_backoff_ms} 
+## http_retry_max_backoff_ms \\{#http_retry_max_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
 Максимальная задержка (backoff) в миллисекундах при повторной попытке чтения по HTTP
 
-## http_send_timeout {#http_send_timeout} 
+## http_send_timeout \\{#http_send_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="30" />
 
@@ -4678,19 +4678,19 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 Применяется только к профилю по умолчанию. Для вступления изменений в силу требуется перезапуск сервера.
 :::
 
-## http_skip_not_found_url_for_globs {#http_skip_not_found_url_for_globs} 
+## http_skip_not_found_url_for_globs \\{#http_skip_not_found_url_for_globs\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Пропускать URL, соответствующие glob-шаблонам, при ошибке HTTP_NOT_FOUND
 
-## http_wait_end_of_query {#http_wait_end_of_query} 
+## http_wait_end_of_query \\{#http_wait_end_of_query\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Включает буферизацию HTTP-ответов на стороне сервера.
 
-## http_write_exception_in_output_format {#http_write_exception_in_output_format} 
+## http_write_exception_in_output_format \\{#http_write_exception_in_output_format\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4698,7 +4698,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Записывает исключение в выходном формате, чтобы обеспечить корректный вывод. Работает с форматами JSON и XML.
 
-## http_zlib_compression_level {#http_zlib_compression_level} 
+## http_zlib_compression_level \\{#http_zlib_compression_level\\}
 
 <SettingsInfoBlock type="Int64" default_value="3" />
 
@@ -4706,7 +4706,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Возможные значения: числа от 1 до 9.
 
-## iceberg_delete_data_on_drop {#iceberg_delete_data_on_drop} 
+## iceberg_delete_data_on_drop \\{#iceberg_delete_data_on_drop\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4714,7 +4714,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Удалять ли все файлы Iceberg при выполнении операции DROP.
 
-## iceberg_insert_max_bytes_in_data_file {#iceberg_insert_max_bytes_in_data_file} 
+## iceberg_insert_max_bytes_in_data_file \\{#iceberg_insert_max_bytes_in_data_file\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
@@ -4722,7 +4722,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Максимальный размер в байтах Parquet-файла данных Iceberg при выполнении операции INSERT.
 
-## iceberg_insert_max_partitions {#iceberg_insert_max_partitions} 
+## iceberg_insert_max_partitions \\{#iceberg_insert_max_partitions\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
@@ -4730,7 +4730,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Максимально допустимое количество партиций для одной операции `INSERT` в таблицу с движком Iceberg.
 
-## iceberg_insert_max_rows_in_data_file {#iceberg_insert_max_rows_in_data_file} 
+## iceberg_insert_max_rows_in_data_file \\{#iceberg_insert_max_rows_in_data_file\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />
 
@@ -4738,7 +4738,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Максимальное число строк в файле данных Iceberg в формате Parquet при выполнении операции INSERT.
 
-## iceberg_metadata_compression_method {#iceberg_metadata_compression_method} 
+## iceberg_metadata_compression_method \\{#iceberg_metadata_compression_method\\}
 
 <ExperimentalBadge/>
 
@@ -4746,7 +4746,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Метод сжатия файла `.metadata.json`.
 
-## iceberg_metadata_log_level {#iceberg_metadata_log_level} 
+## iceberg_metadata_log_level \\{#iceberg_metadata_log_level\\}
 
 <SettingsInfoBlock type="IcebergMetadataLogLevel" default_value="none" />
 
@@ -4764,7 +4764,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 - manifest_file_metadata - Всё вышеперечисленное + метаданные из avro-файлов манифестов, проходящих при обходе.
 - manifest_file_entry - Всё вышеперечисленное + записи из avro-файлов манифестов, проходящих при обходе.
 
-## iceberg_snapshot_id {#iceberg_snapshot_id} 
+## iceberg_snapshot_id \\{#iceberg_snapshot_id\\}
 
 <SettingsInfoBlock type="Int64" default_value="0" />
 
@@ -4772,7 +4772,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Выполните запрос к таблице Iceberg с использованием заданного идентификатора snapshot.
 
-## iceberg_timestamp_ms {#iceberg_timestamp_ms} 
+## iceberg_timestamp_ms \\{#iceberg_timestamp_ms\\}
 
 <SettingsInfoBlock type="Int64" default_value="0" />
 
@@ -4780,7 +4780,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Позволяет выполнять запросы к таблице Iceberg, используя снимок, актуальный на заданный момент времени.
 
-## idle_connection_timeout {#idle_connection_timeout} 
+## idle_connection_timeout \\{#idle_connection_timeout\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3600" />
 
@@ -4790,7 +4790,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 - Положительное целое число (0 — закрыть немедленно, через 0 секунд).
 
-## ignore_cold_parts_seconds {#ignore_cold_parts_seconds} 
+## ignore_cold_parts_seconds \\{#ignore_cold_parts_seconds\\}
 
 <CloudOnlyBadge/>
 
@@ -4798,7 +4798,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Действует только в ClickHouse Cloud. Исключает новые части данных из запросов SELECT до тех пор, пока они не будут либо предварительно разогреты (см. [cache_populated_by_fetch](merge-tree-settings.md/#cache_populated_by_fetch)), либо не достигнут указанного возраста в секундах. Применяется только для Replicated-/SharedMergeTree.
 
-## ignore_data_skipping_indices {#ignore_data_skipping_indices}
+## ignore_data_skipping_indices \{#ignore_data_skipping_indices\}
 
 Игнорирует указанные индексы пропуска данных, если они используются запросом.
 
@@ -4886,7 +4886,7 @@ Expression ((Projection + Before ORDER BY))
 Работает с таблицами из семейства MergeTree.
 
 
-## ignore_drop_queries_probability {#ignore_drop_queries_probability} 
+## ignore_drop_queries_probability \\{#ignore_drop_queries_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
@@ -4894,7 +4894,7 @@ Expression ((Projection + Before ORDER BY))
 
 Если параметр включен, сервер будет с указанной вероятностью игнорировать все запросы DROP TABLE (для движков Memory и JOIN он заменит DROP на TRUNCATE). Используется для тестирования.
 
-## ignore_materialized_views_with_dropped_target_table {#ignore_materialized_views_with_dropped_target_table} 
+## ignore_materialized_views_with_dropped_target_table \\{#ignore_materialized_views_with_dropped_target_table\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4902,13 +4902,13 @@ Expression ((Projection + Before ORDER BY))
 
 Игнорировать materialized views с удалённой целевой таблицей при проталкивании данных в представления
 
-## ignore_on_cluster_for_replicated_access_entities_queries {#ignore_on_cluster_for_replicated_access_entities_queries} 
+## ignore_on_cluster_for_replicated_access_entities_queries \\{#ignore_on_cluster_for_replicated_access_entities_queries\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Игнорирует предложение ON CLUSTER при выполнении запросов управления реплицируемыми объектами доступа.
 
-## ignore_on_cluster_for_replicated_database {#ignore_on_cluster_for_replicated_database} 
+## ignore_on_cluster_for_replicated_database \\{#ignore_on_cluster_for_replicated_database\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4916,7 +4916,7 @@ Expression ((Projection + Before ORDER BY))
 
 Всегда игнорирует оператор ON CLUSTER в DDL-запросах с реплицируемыми базами данных.
 
-## ignore_on_cluster_for_replicated_named_collections_queries {#ignore_on_cluster_for_replicated_named_collections_queries} 
+## ignore_on_cluster_for_replicated_named_collections_queries \\{#ignore_on_cluster_for_replicated_named_collections_queries\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4924,13 +4924,13 @@ Expression ((Projection + Before ORDER BY))
 
 Игнорирует предложение ON CLUSTER в запросах управления реплицируемыми именованными коллекциями.
 
-## ignore_on_cluster_for_replicated_udf_queries {#ignore_on_cluster_for_replicated_udf_queries} 
+## ignore_on_cluster_for_replicated_udf_queries \\{#ignore_on_cluster_for_replicated_udf_queries\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Игнорировать предложение ON CLUSTER для запросов управления реплицируемыми UDF.
 
-## implicit_select {#implicit_select} 
+## implicit_select \\{#implicit_select\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4940,7 +4940,7 @@ Expression ((Projection + Before ORDER BY))
 
 В `clickhouse-local` этот параметр включён по умолчанию и может быть явно отключён.
 
-## implicit_table_at_top_level {#implicit_table_at_top_level} 
+## implicit_table_at_top_level \\{#implicit_table_at_top_level\\}
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": ""},{"label": "Новая настройка, используемая в clickhouse-local"}]}]}/>
 
@@ -4956,7 +4956,7 @@ SELECT на верхнем уровне цепочек UNION, INTERSECT, EXCEPT 
 Настройка принимает имя таблицы (в этом случае таблица берётся из текущей базы данных) или полное имя в форме 'database.table'.
 И имя базы данных, и имя таблицы должны указываться без кавычек — допускаются только простые идентификаторы.
 
-## implicit_transaction {#implicit_transaction} 
+## implicit_transaction \\{#implicit_transaction\\}
 
 <ExperimentalBadge/>
 
@@ -4964,7 +4964,7 @@ SELECT на верхнем уровне цепочек UNION, INTERSECT, EXCEPT 
 
 Если параметр включён и запрос ещё не выполняется в рамках транзакции, запрос автоматически оборачивается в полноценную транзакцию (begin + commit или rollback)
 
-## inject_random_order_for_select_without_order_by {#inject_random_order_for_select_without_order_by} 
+## inject_random_order_for_select_without_order_by \\{#inject_random_order_for_select_without_order_by\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -4975,13 +4975,13 @@ SELECT на верхнем уровне цепочек UNION, INTERSECT, EXCEPT 
 Если верхнеуровневая конструкция — UNION, `ORDER BY rand()` добавляется отдельно для всех дочерних частей.
 Полезно только для тестирования и разработки (отсутствие ORDER BY является источником недетерминированных результатов запросов).
 
-## insert_allow_materialized_columns {#insert_allow_materialized_columns} 
+## insert_allow_materialized_columns \\{#insert_allow_materialized_columns\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Если настройка включена, в `INSERT` можно использовать `MATERIALIZED`-столбцы.
 
-## insert_deduplicate {#insert_deduplicate} 
+## insert_deduplicate \\{#insert_deduplicate\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -4996,7 +4996,7 @@ SELECT на верхнем уровне цепочек UNION, INTERSECT, EXCEPT 
 Для реплицируемых таблиц по умолчанию дедуплицируются только 100 последних блоков для каждой партиции (см. [replicated_deduplication_window](merge-tree-settings.md/#replicated_deduplication_window), [replicated_deduplication_window_seconds](merge-tree-settings.md/#replicated_deduplication_window_seconds)).
 Для нереплицируемых таблиц см. [non_replicated_deduplication_window](merge-tree-settings.md/#non_replicated_deduplication_window).
 
-## insert_deduplication_token {#insert_deduplication_token}
+## insert_deduplication_token \{#insert_deduplication_token\}
 
 Настройка позволяет пользователю задать собственную логику дедупликации в MergeTree/ReplicatedMergeTree.
 Например, указывая уникальное значение для этой настройки в каждом операторе INSERT,
@@ -5044,19 +5044,19 @@ SELECT * FROM test_table
 ```
 
 
-## insert_keeper_fault_injection_probability {#insert_keeper_fault_injection_probability} 
+## insert_keeper_fault_injection_probability \\{#insert_keeper_fault_injection_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
 Приблизительная вероятность возникновения сбоя запроса к Keeper при вставке. Допустимые значения лежат в диапазоне [0.0f, 1.0f].
 
-## insert_keeper_fault_injection_seed {#insert_keeper_fault_injection_seed} 
+## insert_keeper_fault_injection_seed \\{#insert_keeper_fault_injection_seed\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 0 — случайное начальное значение генератора случайных чисел, иначе используется значение настройки
 
-## insert_keeper_max_retries {#insert_keeper_max_retries}
+## insert_keeper_max_retries \{#insert_keeper_max_retries\}
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
@@ -5083,7 +5083,7 @@ timeout = min(insert_keeper_retry_max_backoff_ms, latest_timeout * 2)
 Помимо повышения отказоустойчивости, повторные попытки призваны улучшить пользовательский опыт — они позволяют избежать возврата ошибки во время выполнения INSERT, если Keeper был перезапущен, например при обновлении.
 
 
-## insert_keeper_retry_initial_backoff_ms {#insert_keeper_retry_initial_backoff_ms} 
+## insert_keeper_retry_initial_backoff_ms \\{#insert_keeper_retry_initial_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
@@ -5094,7 +5094,7 @@ timeout = min(insert_keeper_retry_max_backoff_ms, latest_timeout * 2)
 - Положительное целое число.
 - 0 — без ожидания
 
-## insert_keeper_retry_max_backoff_ms {#insert_keeper_retry_max_backoff_ms} 
+## insert_keeper_retry_max_backoff_ms \\{#insert_keeper_retry_max_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -5105,7 +5105,7 @@ timeout = min(insert_keeper_retry_max_backoff_ms, latest_timeout * 2)
 - Положительное целое число.
 - 0 — максимальное время ожидания не ограничено
 
-## insert_null_as_default {#insert_null_as_default} 
+## insert_null_as_default \\{#insert_null_as_default\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -5119,7 +5119,7 @@ timeout = min(insert_keeper_retry_max_backoff_ms, latest_timeout * 2)
 - 0 — Вставка `NULL` в столбец с типом, который не является Nullable, вызывает исключение.
 - 1 — Вместо `NULL` вставляется значение столбца по умолчанию.
 
-## insert_quorum {#insert_quorum} 
+## insert_quorum \\{#insert_quorum\\}
 
 <SettingsInfoBlock type="UInt64Auto" default_value="0" />
 
@@ -5150,7 +5150,7 @@ ClickHouse выбрасывает исключение:
 - [insert_quorum_parallel](#insert_quorum_parallel)
 - [select_sequential_consistency](#select_sequential_consistency)
 
-## insert_quorum_parallel {#insert_quorum_parallel} 
+## insert_quorum_parallel \\{#insert_quorum_parallel\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -5173,7 +5173,7 @@ ClickHouse выбрасывает исключение:
 - [insert_quorum_timeout](#insert_quorum_timeout)
 - [select_sequential_consistency](#select_sequential_consistency)
 
-## insert_quorum_timeout {#insert_quorum_timeout} 
+## insert_quorum_timeout \\{#insert_quorum_timeout\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="600000" />
 
@@ -5185,7 +5185,7 @@ ClickHouse выбрасывает исключение:
 - [insert_quorum_parallel](#insert_quorum_parallel)
 - [select_sequential_consistency](#select_sequential_consistency)
 
-## insert_shard_id {#insert_shard_id}
+## insert_shard_id \{#insert_shard_id\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -5233,19 +5233,19 @@ SELECT * FROM x_dist ORDER BY number ASC;
 ```
 
 
-## interactive_delay {#interactive_delay} 
+## interactive_delay \\{#interactive_delay\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100000" />
 
 Интервал в микросекундах для проверки, не было ли выполнение запроса отменено, и для отправки информации о его прогрессе.
 
-## intersect_default_mode {#intersect_default_mode} 
+## intersect_default_mode \\{#intersect_default_mode\\}
 
 <SettingsInfoBlock type="SetOperationMode" default_value="ALL" />
 
 Устанавливает режим по умолчанию в запросе INTERSECT. Возможные значения: пустая строка, 'ALL', 'DISTINCT'. Если значение не задано, запрос без указания режима приведёт к исключению.
 
-## jemalloc_collect_profile_samples_in_trace_log {#jemalloc_collect_profile_samples_in_trace_log} 
+## jemalloc_collect_profile_samples_in_trace_log \\{#jemalloc_collect_profile_samples_in_trace_log\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5253,7 +5253,7 @@ SELECT * FROM x_dist ORDER BY number ASC;
 
 Собирать сэмплы операций выделения и освобождения памяти jemalloc в журнал трассировки.
 
-## jemalloc_enable_profiler {#jemalloc_enable_profiler} 
+## jemalloc_enable_profiler \\{#jemalloc_enable_profiler\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5264,7 +5264,7 @@ SELECT * FROM x_dist ORDER BY number ASC;
 Выборки также могут сохраняться в system.trace_log с помощью конфигурации jemalloc_collect_global_profile_samples_in_trace_log или с настройкой запроса jemalloc_collect_profile_samples_in_trace_log.
 См. [Профилирование выделений](/operations/allocation-profiling).
 
-## join_algorithm {#join_algorithm} 
+## join_algorithm \\{#join_algorithm\\}
 
 <SettingsInfoBlock type="JoinAlgorithm" default_value="direct,parallel_hash,hash" />
 
@@ -5330,7 +5330,7 @@ ClickHouse всегда пытается использовать соедине
 Устаревшее значение, больше не используйте.
  Эквивалентно `direct,hash`, то есть сначала пробуется direct join, затем hash join (в таком порядке).
 
-## join_any_take_last_row {#join_any_take_last_row} 
+## join_any_take_last_row \\{#join_any_take_last_row\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5351,7 +5351,7 @@ ClickHouse всегда пытается использовать соедине
 - [Движок таблицы Join](../../engines/table-engines/special/join.md)
 - [join_default_strictness](#join_default_strictness)
 
-## join_default_strictness {#join_default_strictness} 
+## join_default_strictness \\{#join_default_strictness\\}
 
 <SettingsInfoBlock type="JoinStrictness" default_value="ALL" />
 
@@ -5364,7 +5364,7 @@ ClickHouse всегда пытается использовать соедине
 - `ASOF` — Для объединения последовательностей с неопределённым соответствием.
 - `Empty string` — Если в запросе не указано `ALL` или `ANY`, ClickHouse генерирует исключение.
 
-## join_on_disk_max_files_to_merge {#join_on_disk_max_files_to_merge} 
+## join_on_disk_max_files_to_merge \\{#join_on_disk_max_files_to_merge\\}
 
 <SettingsInfoBlock type="UInt64" default_value="64" />
 
@@ -5376,7 +5376,7 @@ ClickHouse всегда пытается использовать соедине
 
 - Любое положительное целое число, начиная с 2.
 
-## join_output_by_rowlist_perkey_rows_threshold {#join_output_by_rowlist_perkey_rows_threshold} 
+## join_output_by_rowlist_perkey_rows_threshold \\{#join_output_by_rowlist_perkey_rows_threshold\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5" />
 
@@ -5384,7 +5384,7 @@ ClickHouse всегда пытается использовать соедине
 
 Нижний порог среднего количества строк на ключ в правой таблице для определения, следует ли выводить результат по списку строк в hash join.
 
-## join_overflow_mode {#join_overflow_mode} 
+## join_overflow_mode \\{#join_overflow_mode\\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
@@ -5405,7 +5405,7 @@ ClickHouse всегда пытается использовать соедине
 - [Оператор JOIN](/sql-reference/statements/select/join)
 - [Табличный движок Join](/engines/table-engines/special/join)
 
-## join_runtime_bloom_filter_bytes {#join_runtime_bloom_filter_bytes} 
+## join_runtime_bloom_filter_bytes \\{#join_runtime_bloom_filter_bytes\\}
 
 <ExperimentalBadge/>
 
@@ -5415,7 +5415,7 @@ ClickHouse всегда пытается использовать соедине
 
 Размер bloom-фильтра, используемого как runtime-фильтр для JOIN, в байтах (см. настройку enable_join_runtime_filters).
 
-## join_runtime_bloom_filter_hash_functions {#join_runtime_bloom_filter_hash_functions} 
+## join_runtime_bloom_filter_hash_functions \\{#join_runtime_bloom_filter_hash_functions\\}
 
 <ExperimentalBadge/>
 
@@ -5425,7 +5425,7 @@ ClickHouse всегда пытается использовать соедине
 
 Количество хэш-функций в фильтре Блума, используемом в качестве runtime-фильтра для JOIN (см. настройку enable_join_runtime_filters).
 
-## join_runtime_bloom_filter_max_ratio_of_set_bits {#join_runtime_bloom_filter_max_ratio_of_set_bits} 
+## join_runtime_bloom_filter_max_ratio_of_set_bits \\{#join_runtime_bloom_filter_max_ratio_of_set_bits\\}
 
 <ExperimentalBadge/>
 
@@ -5435,7 +5435,7 @@ ClickHouse всегда пытается использовать соедине
 
 Если доля установленных битов в runtime bloom-фильтре превышает это значение, фильтр полностью отключается, чтобы снизить накладные расходы.
 
-## join_runtime_filter_blocks_to_skip_before_reenabling {#join_runtime_filter_blocks_to_skip_before_reenabling} 
+## join_runtime_filter_blocks_to_skip_before_reenabling \\{#join_runtime_filter_blocks_to_skip_before_reenabling\\}
 
 <ExperimentalBadge/>
 
@@ -5445,7 +5445,7 @@ ClickHouse всегда пытается использовать соедине
 
 Количество блоков, которые пропускаются до попытки динамически повторно включить runtime-фильтр, ранее отключённый из-за низкой эффективности фильтрации.
 
-## join_runtime_filter_exact_values_limit {#join_runtime_filter_exact_values_limit} 
+## join_runtime_filter_exact_values_limit \\{#join_runtime_filter_exact_values_limit\\}
 
 <ExperimentalBadge/>
 
@@ -5455,7 +5455,7 @@ ClickHouse всегда пытается использовать соедине
 
 Максимальное количество элементов в runtime-фильтре, которые хранятся без изменений в Set; при превышении этого порога фильтр переключается на Bloom-фильтр.
 
-## join_runtime_filter_pass_ratio_threshold_for_disabling {#join_runtime_filter_pass_ratio_threshold_for_disabling} 
+## join_runtime_filter_pass_ratio_threshold_for_disabling \\{#join_runtime_filter_pass_ratio_threshold_for_disabling\\}
 
 <ExperimentalBadge/>
 
@@ -5465,7 +5465,7 @@ ClickHouse всегда пытается использовать соедине
 
 Если отношение числа прошедших строк к числу проверенных строк больше этого порога, runtime-фильтр считается неэффективным и отключается в течение следующих `join_runtime_filter_blocks_to_skip_before_reenabling` блоков для снижения накладных расходов.
 
-## join_to_sort_maximum_table_rows {#join_to_sort_maximum_table_rows} 
+## join_to_sort_maximum_table_rows \\{#join_to_sort_maximum_table_rows\\}
 
 <ExperimentalBadge/>
 
@@ -5475,7 +5475,7 @@ ClickHouse всегда пытается использовать соедине
 
 Максимальное количество строк в правой таблице для определения, нужно ли пересортировать правую таблицу по ключу в LEFT или INNER JOIN.
 
-## join_to_sort_minimum_perkey_rows {#join_to_sort_minimum_perkey_rows} 
+## join_to_sort_minimum_perkey_rows \\{#join_to_sort_minimum_perkey_rows\\}
 
 <ExperimentalBadge/>
 
@@ -5485,7 +5485,7 @@ ClickHouse всегда пытается использовать соедине
 
 Нижний предел среднего количества строк на ключ в правой таблице, используемый для определения, нужно ли пересортировать правую таблицу по ключу при left или inner join. Этот SETTING гарантирует, что оптимизация не применяется для разреженных ключей таблицы
 
-## join_use_nulls {#join_use_nulls} 
+## join_use_nulls \\{#join_use_nulls\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5496,7 +5496,7 @@ ClickHouse всегда пытается использовать соедине
 - 0 — пустые ячейки заполняются значением по умолчанию для соответствующего типа поля.
 - 1 — `JOIN` ведет себя так же, как в стандартном SQL. Тип соответствующего поля преобразуется в [Nullable](/sql-reference/data-types/nullable), а пустые ячейки заполняются значением [NULL](/sql-reference/syntax).
 
-## joined_block_split_single_row {#joined_block_split_single_row} 
+## joined_block_split_single_row \\{#joined_block_split_single_row\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5507,19 +5507,19 @@ ClickHouse всегда пытается использовать соедине
 Обратите внимание, что условие `max_joined_block_size_rows != 0` является обязательным, чтобы эта настройка имела эффект.
 Параметр `max_joined_block_size_bytes` в сочетании с этой настройкой помогает избежать чрезмерного потребления памяти в случае несбалансированных данных, когда некоторые большие строки имеют много совпадений в правой таблице.
 
-## joined_subquery_requires_alias {#joined_subquery_requires_alias} 
+## joined_subquery_requires_alias \\{#joined_subquery_requires_alias\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Обязывает указывать псевдонимы у соединённых подзапросов и табличных функций для корректной квалификации имён.
 
-## kafka_disable_num_consumers_limit {#kafka_disable_num_consumers_limit} 
+## kafka_disable_num_consumers_limit \\{#kafka_disable_num_consumers_limit\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Отключает ограничение на kafka_num_consumers, зависящее от числа доступных ядер CPU.
 
-## kafka_max_wait_ms {#kafka_max_wait_ms} 
+## kafka_max_wait_ms \\{#kafka_max_wait_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="5000" />
 
@@ -5534,13 +5534,13 @@ ClickHouse всегда пытается использовать соедине
 
 - [Apache Kafka](https://kafka.apache.org/)
 
-## keeper_map_strict_mode {#keeper_map_strict_mode} 
+## keeper_map_strict_mode \\{#keeper_map_strict_mode\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Принудительно выполнять дополнительные проверки во время операций с KeeperMap. Например, выбрасывать исключение при попытке вставки уже существующего ключа.
 
-## keeper_max_retries {#keeper_max_retries} 
+## keeper_max_retries \\{#keeper_max_retries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -5548,7 +5548,7 @@ ClickHouse всегда пытается использовать соедине
 
 Максимальное число повторных попыток для обычных операций Keeper
 
-## keeper_retry_initial_backoff_ms {#keeper_retry_initial_backoff_ms} 
+## keeper_retry_initial_backoff_ms \\{#keeper_retry_initial_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
@@ -5556,7 +5556,7 @@ ClickHouse всегда пытается использовать соедине
 
 Начальный таймаут бэкоффа для общих операций Keeper
 
-## keeper_retry_max_backoff_ms {#keeper_retry_max_backoff_ms} 
+## keeper_retry_max_backoff_ms \\{#keeper_retry_max_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000" />
 
@@ -5564,7 +5564,7 @@ ClickHouse всегда пытается использовать соедине
 
 Максимальное время ожидания (backoff) для операций Keeper общего назначения
 
-## least_greatest_legacy_null_behavior {#least_greatest_legacy_null_behavior} 
+## least_greatest_legacy_null_behavior \\{#least_greatest_legacy_null_behavior\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5572,7 +5572,7 @@ ClickHouse всегда пытается использовать соедине
 
 Если настройка включена, функции `least` и `greatest` возвращают NULL, если один из их аргументов равен NULL.
 
-## legacy_column_name_of_tuple_literal {#legacy_column_name_of_tuple_literal} 
+## legacy_column_name_of_tuple_literal \\{#legacy_column_name_of_tuple_literal\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5580,7 +5580,7 @@ ClickHouse всегда пытается использовать соедине
 
 Перечисляет все имена элементов больших литералов кортежей в имени столбца вместо хеша. Этот параметр существует только по соображениям совместимости. Имеет смысл установить значение 'true' при поэтапном (rolling) обновлении кластера с версии ниже 21.7 до более высокой версии.
 
-## lightweight_delete_mode {#lightweight_delete_mode} 
+## lightweight_delete_mode \\{#lightweight_delete_mode\\}
 
 <SettingsInfoBlock type="LightweightDeleteMode" default_value="alter_update" />
 
@@ -5594,7 +5594,7 @@ ClickHouse всегда пытается использовать соедине
 - `lightweight_update` — выполнить легковесное обновление, если это возможно, иначе выполнить `ALTER UPDATE`.
 - `lightweight_update_force` — выполнить легковесное обновление, если это возможно, в противном случае сгенерировать ошибку.
 
-## lightweight_deletes_sync {#lightweight_deletes_sync} 
+## lightweight_deletes_sync \\{#lightweight_deletes_sync\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
@@ -5616,7 +5616,7 @@ ClickHouse всегда пытается использовать соедине
 - [Синхронность запросов ALTER](../../sql-reference/statements/alter/index.md/#synchronicity-of-alter-queries)
 - [Мутации](../../sql-reference/statements/alter/index.md/#mutations)
 
-## limit {#limit} 
+## limit \\{#limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -5627,7 +5627,7 @@ ClickHouse всегда пытается использовать соедине
 - 0 — число строк не ограничено.
 - Положительное целое число.
 
-## load_balancing {#load_balancing} 
+## load_balancing \\{#load_balancing\\}
 
 <SettingsInfoBlock type="LoadBalancing" default_value="random" />
 
@@ -5646,7 +5646,7 @@ ClickHouse поддерживает следующие алгоритмы выб
 
 - [distributed_replica_max_ignored_errors](#distributed_replica_max_ignored_errors)
 
-### Случайный выбор (по умолчанию) {#load_balancing-random}
+### Случайный выбор (по умолчанию) \{#load_balancing-random\}
 
 ```sql
 load_balancing = random
@@ -5656,7 +5656,7 @@ load_balancing = random
 Недостатки: близость сервера не учитывается; если реплики содержат разные данные, вы также получите разные данные.
 
 
-### Ближайшее по расстоянию имя хоста {#load_balancing-nearest_hostname}
+### Ближайшее по расстоянию имя хоста \{#load_balancing-nearest_hostname\}
 
 ```sql
 load_balancing = nearest_hostname
@@ -5671,7 +5671,7 @@ load_balancing = nearest_hostname
 Мы также можем предположить, что при отправке запроса на один и тот же сервер при отсутствии сбоев распределённый запрос также будет обращаться к тем же серверам. Поэтому, даже если на репликах размещены разные данные, запрос в большинстве случаев вернёт практически одинаковые результаты.
 
 
-### Расстояние Левенштейна для имен хостов {#load_balancing-hostname_levenshtein_distance}
+### Расстояние Левенштейна для имен хостов \{#load_balancing-hostname_levenshtein_distance\}
 
 ```sql
 load_balancing = hostname_levenshtein_distance
@@ -5691,7 +5691,7 @@ example-clickhouse-0-0 example-clickhouse-12-0
 ```
 
 
-### По очереди {#load_balancing-in_order}
+### По очереди \{#load_balancing-in_order\}
 
 ```sql
 load_balancing = in_order
@@ -5701,7 +5701,7 @@ load_balancing = in_order
 Этот метод подходит, когда вы точно знаете, какая реплика предпочтительнее.
 
 
-### Первый или случайный выбор {#load_balancing-first_or_random}
+### Первый или случайный выбор \{#load_balancing-first_or_random\}
 
 ```sql
 load_balancing = first_or_random
@@ -5714,7 +5714,7 @@ load_balancing = first_or_random
 Можно явно задать, какая реплика считается первой, с помощью настройки `load_balancing_first_offset`. Это даёт больше контроля над перераспределением нагрузки запросов между репликами.
 
 
-### Циклическое (round-robin) распределение {#load_balancing-round_robin}
+### Циклическое (round-robin) распределение \{#load_balancing-round_robin\}
 
 ```sql
 load_balancing = round_robin
@@ -5723,19 +5723,19 @@ load_balancing = round_robin
 Этот алгоритм использует политику `round-robin` между репликами с одинаковым количеством ошибок (учитываются только запросы с политикой `round_robin`).
 
 
-## load_balancing_first_offset {#load_balancing_first_offset} 
+## load_balancing_first_offset \\{#load_balancing_first_offset\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Какую реплику предпочтительнее использовать для отправки запроса при стратегии балансировки нагрузки FIRST_OR_RANDOM.
 
-## load_marks_asynchronously {#load_marks_asynchronously} 
+## load_marks_asynchronously \\{#load_marks_asynchronously\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Загружать метки MergeTree асинхронно
 
-## local_filesystem_read_method {#local_filesystem_read_method} 
+## local_filesystem_read_method \\{#local_filesystem_read_method\\}
 
 <SettingsInfoBlock type="String" default_value="pread_threadpool" />
 
@@ -5744,13 +5744,13 @@ load_balancing = round_robin
 Метод `io_uring` является экспериментальным и не работает для Log, TinyLog, StripeLog, File, Set и Join, а также других таблиц с дописываемыми файлами при наличии одновременных операций чтения и записи.
 Если вы читаете различные статьи об `io_uring` в интернете, не поддавайтесь впечатлению от них. Это не лучший метод чтения файлов, за исключением случая большого количества мелких операций ввода-вывода, что не соответствует характеру нагрузки в ClickHouse. Нет причин включать метод `io_uring`.
 
-## local_filesystem_read_prefetch {#local_filesystem_read_prefetch} 
+## local_filesystem_read_prefetch \\{#local_filesystem_read_prefetch\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Использовать предварительную выборку при чтении данных с локальной файловой системы.
 
-## lock_acquire_timeout {#lock_acquire_timeout} 
+## lock_acquire_timeout \\{#lock_acquire_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="120" />
 
@@ -5763,7 +5763,7 @@ load_balancing = round_robin
 - Положительное целое число (в секундах).
 - 0 — без таймаута блокировки.
 
-## log_comment {#log_comment}
+## log_comment \{#log_comment\}
 
 Определяет значение поля `log_comment` таблицы [system.query&#95;log](../system-tables/query_log.md) и текст комментария для серверного лога.
 
@@ -5794,7 +5794,7 @@ SELECT type, query FROM system.query_log WHERE log_comment = 'log_comment test' 
 ```
 
 
-## log_formatted_queries {#log_formatted_queries} 
+## log_formatted_queries \\{#log_formatted_queries\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5805,7 +5805,7 @@ SELECT type, query FROM system.query_log WHERE log_comment = 'log_comment test' 
 - 0 — Форматированные запросы не записываются в системную таблицу.
 - 1 — Форматированные запросы записываются в системную таблицу.
 
-## log_processors_profiles {#log_processors_profiles} 
+## log_processors_profiles \\{#log_processors_profiles\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -5818,13 +5818,13 @@ SELECT type, query FROM system.query_log WHERE log_comment = 'log_comment test' 
 - [`system.processors_profile_log`](../../operations/system-tables/processors_profile_log.md)
 - [`EXPLAIN PIPELINE`](../../sql-reference/statements/explain.md/#explain-pipeline)
 
-## log_profile_events {#log_profile_events} 
+## log_profile_events \\{#log_profile_events\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Записывает статистику производительности запросов в query_log, query_thread_log и query_views_log.
 
-## log_queries {#log_queries}
+## log_queries \{#log_queries\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -5839,13 +5839,13 @@ log_queries=1
 ```
 
 
-## log_queries_cut_to_length {#log_queries_cut_to_length} 
+## log_queries_cut_to_length \\{#log_queries_cut_to_length\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100000" />
 
 Если длина запроса превышает заданный порог (в байтах), то запрос усекается при записи в журнал запросов. Также ограничивается длина выводимого запроса в обычном текстовом логе.
 
-## log_queries_min_query_duration_ms {#log_queries_min_query_duration_ms} 
+## log_queries_min_query_duration_ms \\{#log_queries_min_query_duration_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="0" />
 
@@ -5862,7 +5862,7 @@ log_queries=1
 - Тип: миллисекунды
 - Значение по умолчанию: 0 (любой запрос)
 
-## log_queries_min_type {#log_queries_min_type}
+## log_queries_min_type \{#log_queries_min_type\}
 
 <SettingsInfoBlock type="LogQueriesType" default_value="QUERY_START" />
 
@@ -5882,7 +5882,7 @@ log_queries_min_type='EXCEPTION_WHILE_PROCESSING'
 ```
 
 
-## log_queries_probability {#log_queries_probability} 
+## log_queries_probability \\{#log_queries_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="1" />
 
@@ -5894,13 +5894,13 @@ log_queries_min_type='EXCEPTION_WHILE_PROCESSING'
 - Положительное число с плавающей запятой в диапазоне [0..1]. Например, если значение настройки равно `0.5`, в системные таблицы будет записываться примерно половина запросов.
 - 1 — все запросы записываются в системные таблицы.
 
-## log_query_settings {#log_query_settings} 
+## log_query_settings \\{#log_query_settings\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Записывать настройки запроса в query_log и журнал спанов OpenTelemetry.
 
-## log_query_threads {#log_query_threads}
+## log_query_threads \{#log_query_threads\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5920,7 +5920,7 @@ log_query_threads=1
 ```
 
 
-## log_query_views {#log_query_views}
+## log_query_views \{#log_query_views\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -5935,7 +5935,7 @@ log_query_views=1
 ```
 
 
-## low_cardinality_allow_in_native_format {#low_cardinality_allow_in_native_format} 
+## low_cardinality_allow_in_native_format \\{#low_cardinality_allow_in_native_format\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -5950,7 +5950,7 @@ log_query_views=1
 - 1 — использование `LowCardinality` не ограничено.
 - 0 — использование `LowCardinality` ограничено.
 
-## low_cardinality_max_dictionary_size {#low_cardinality_max_dictionary_size} 
+## low_cardinality_max_dictionary_size \\{#low_cardinality_max_dictionary_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="8192" />
 
@@ -5960,7 +5960,7 @@ log_query_views=1
 
 - Любое положительное целое число.
 
-## low_cardinality_use_single_dictionary_for_part {#low_cardinality_use_single_dictionary_for_part} 
+## low_cardinality_use_single_dictionary_for_part \\{#low_cardinality_use_single_dictionary_for_part\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -5973,7 +5973,7 @@ log_query_views=1
 - 1 — Создание нескольких словарей для части данных запрещено.
 - 0 — Создание нескольких словарей для части данных не запрещено.
 
-## low_priority_query_wait_time_ms {#low_priority_query_wait_time_ms} 
+## low_priority_query_wait_time_ms \\{#low_priority_query_wait_time_ms\\}
 
 <BetaBadge/>
 
@@ -5983,7 +5983,7 @@ log_query_views=1
 
 Когда используется механизм приоритизации запросов (см. настройку `priority`), низкоприоритетные запросы ожидают завершения выполнения высокоприоритетных запросов. Эта настройка задаёт продолжительность ожидания.
 
-## make_distributed_plan {#make_distributed_plan} 
+## make_distributed_plan \\{#make_distributed_plan\\}
 
 <ExperimentalBadge/>
 
@@ -5993,7 +5993,7 @@ log_query_views=1
 
 Создаёт распределённый план запроса.
 
-## materialize_skip_indexes_on_insert {#materialize_skip_indexes_on_insert} 
+## materialize_skip_indexes_on_insert \\{#materialize_skip_indexes_on_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -6003,7 +6003,7 @@ log_query_views=1
 
 См. также [exclude_materialize_skip_indexes_on_insert](#exclude_materialize_skip_indexes_on_insert).
 
-## materialize_statistics_on_insert {#materialize_statistics_on_insert} 
+## materialize_statistics_on_insert \\{#materialize_statistics_on_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -6011,19 +6011,19 @@ log_query_views=1
 
 Определяет, будут ли операторы INSERT создавать и вставлять статистику. Если настройка отключена, статистика будет строиться и сохраняться во время слияний или явным выполнением MATERIALIZE STATISTICS.
 
-## materialize_ttl_after_modify {#materialize_ttl_after_modify} 
+## materialize_ttl_after_modify \\{#materialize_ttl_after_modify\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Применять TTL к ранее существующим данным после выполнения запроса ALTER MODIFY TTL
 
-## materialized_views_ignore_errors {#materialized_views_ignore_errors} 
+## materialized_views_ignore_errors \\{#materialized_views_ignore_errors\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Позволяет игнорировать ошибки в MATERIALIZED VIEW и передавать исходный блок в таблицу независимо от MVs.
 
-## materialized_views_squash_parallel_inserts {#materialized_views_squash_parallel_inserts} 
+## materialized_views_squash_parallel_inserts \\{#materialized_views_squash_parallel_inserts\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -6032,13 +6032,13 @@ log_query_views=1
 Объединяет параллельные вставки, выполняемые одним запросом INSERT, в целевую таблицу materialized view, чтобы уменьшить количество создаваемых частей.
 Если установлено значение false и включен `parallel_view_processing`, запрос INSERT будет создавать отдельную часть в целевой таблице для каждого потока `max_insert_thread`.
 
-## max_analyze_depth {#max_analyze_depth} 
+## max_analyze_depth \\{#max_analyze_depth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000" />
 
 Максимальное количество операций анализа, выполняемых интерпретатором.
 
-## max_ast_depth {#max_ast_depth} 
+## max_ast_depth \\{#max_ast_depth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -6050,7 +6050,7 @@ log_query_views=1
 но выполнение запроса завершится с ошибкой.
 :::
 
-## max_ast_elements {#max_ast_elements} 
+## max_ast_elements \\{#max_ast_elements\\}
 
 <SettingsInfoBlock type="UInt64" default_value="50000" />
 
@@ -6062,7 +6062,7 @@ log_query_views=1
 но запрос завершится с ошибкой.
 :::
 
-## max_autoincrement_series {#max_autoincrement_series} 
+## max_autoincrement_series \\{#max_autoincrement_series\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -6072,13 +6072,13 @@ log_query_views=1
 
 Поскольку каждая последовательность соответствует узлу в Keeper, рекомендуется иметь не более порядка двух миллионов таких узлов.
 
-## max_backup_bandwidth {#max_backup_bandwidth} 
+## max_backup_bandwidth \\{#max_backup_bandwidth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальная скорость чтения данных в байтах в секунду для конкретной операции резервного копирования на сервере. Ноль означает отсутствие ограничений.
 
-## max_block_size {#max_block_size} 
+## max_block_size \\{#max_block_size\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="65409" />
 
@@ -6088,7 +6088,7 @@ log_query_views=1
 
 Размер блока не должен быть слишком маленьким, чтобы избежать заметных накладных расходов при обработке каждого блока. Он также не должен быть слишком большим, чтобы запросы с оператором LIMIT выполнялись быстро после обработки первого блока. При задании `max_block_size` цель состоит в том, чтобы избежать чрезмерного потребления памяти при извлечении большого числа столбцов в нескольких потоках и сохранить хотя бы некоторую локальность кэша.
 
-## max_bytes_before_external_group_by {#max_bytes_before_external_group_by} 
+## max_bytes_before_external_group_by \\{#max_bytes_before_external_group_by\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6109,7 +6109,7 @@ log_query_views=1
 Рекомендуемое значение — половина доступной системной памяти.
 :::
 
-## max_bytes_before_external_sort {#max_bytes_before_external_sort} 
+## max_bytes_before_external_sort \\{#max_bytes_before_external_sort\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6124,20 +6124,20 @@ log_query_views=1
   Рекомендуемое значение — половина доступного объёма системной памяти.
 - `0` — `ORDER BY` во внешней памяти отключён.
 
-## max_bytes_before_remerge_sort {#max_bytes_before_remerge_sort} 
+## max_bytes_before_remerge_sort \\{#max_bytes_before_remerge_sort\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000000" />
 
 В случае использования ORDER BY с LIMIT, когда объем потребляемой памяти превышает указанный порог, выполняются дополнительные этапы слияния блоков перед финальным слиянием, чтобы сохранить только первые LIMIT строк.
 
-## max_bytes_in_distinct {#max_bytes_in_distinct} 
+## max_bytes_in_distinct \\{#max_bytes_in_distinct\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальное количество байт состояния (в несжатых байтах) в памяти, которое
 занимает хеш-таблица при использовании DISTINCT.
 
-## max_bytes_in_join {#max_bytes_in_join} 
+## max_bytes_in_join \\{#max_bytes_in_join\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6156,14 +6156,14 @@ log_query_views=1
 - Положительное целое число.
 - 0 — контроль памяти отключен.
 
-## max_bytes_in_set {#max_bytes_in_set} 
+## max_bytes_in_set \\{#max_bytes_in_set\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальное количество байт несжатых данных, используемых Set в условии IN,
 построенном на подзапросе.
 
-## max_bytes_ratio_before_external_group_by {#max_bytes_ratio_before_external_group_by} 
+## max_bytes_ratio_before_external_group_by \\{#max_bytes_ratio_before_external_group_by\\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />
 
@@ -6176,7 +6176,7 @@ log_query_views=1
 (для сервера/пользователя/слияний) в начале выполнения, после чего
 будет использоваться внешняя агрегация.
 
-## max_bytes_ratio_before_external_sort {#max_bytes_ratio_before_external_sort} 
+## max_bytes_ratio_before_external_sort \\{#max_bytes_ratio_before_external_sort\\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />
 
@@ -6188,7 +6188,7 @@ log_query_views=1
 
 Обратите внимание, что `max_bytes_before_external_sort` по‑прежнему учитывается: сброс на диск будет выполняться только если блок сортировки больше, чем `max_bytes_before_external_sort`.
 
-## max_bytes_to_read {#max_bytes_to_read} 
+## max_bytes_to_read \\{#max_bytes_to_read\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6196,7 +6196,7 @@ log_query_views=1
 Ограничение проверяется для каждого обрабатываемого фрагмента данных, применяется только к
 наиболее глубоко вложенному табличному выражению и при чтении с удалённого сервера проверяется только на удалённом сервере.
 
-## max_bytes_to_read_leaf {#max_bytes_to_read_leaf} 
+## max_bytes_to_read_leaf \\{#max_bytes_to_read_leaf\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6218,20 +6218,20 @@ log_query_views=1
 Эта настройка нестабильна при `prefer_localhost_replica=1`.
 :::
 
-## max_bytes_to_sort {#max_bytes_to_sort} 
+## max_bytes_to_sort \\{#max_bytes_to_sort\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальный объём данных в байтах перед сортировкой. Если для выполнения операции ORDER BY требуется обработать несжатые данные объёмом, превышающим указанное значение, поведение будет определяться параметром `sort_overflow_mode`, который по умолчанию установлен в `throw`.
 
-## max_bytes_to_transfer {#max_bytes_to_transfer} 
+## max_bytes_to_transfer \\{#max_bytes_to_transfer\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальное количество байт (несжатых данных), которое может быть передано на удалённый
 сервер или сохранено во временной таблице при выполнении оператора GLOBAL IN/JOIN.
 
-## max_columns_to_read {#max_columns_to_read} 
+## max_columns_to_read \\{#max_columns_to_read\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6244,7 +6244,7 @@ log_query_views=1
 
 Значение `0` означает отсутствие ограничений.
 
-## max_compress_block_size {#max_compress_block_size} 
+## max_compress_block_size \\{#max_compress_block_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
 
@@ -6256,7 +6256,7 @@ log_query_views=1
 
 Не путайте блоки для сжатия (фрагмент памяти, состоящий из байт) с блоками для обработки запросов (набор строк из таблицы).
 
-## max_concurrent_queries_for_all_users {#max_concurrent_queries_for_all_users}
+## max_concurrent_queries_for_all_users \{#max_concurrent_queries_for_all_users\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6282,7 +6282,7 @@ log_query_views=1
 * [max&#95;concurrent&#95;queries](/operations/server-configuration-parameters/settings#max_concurrent_queries)
 
 
-## max_concurrent_queries_for_user {#max_concurrent_queries_for_user}
+## max_concurrent_queries_for_user \{#max_concurrent_queries_for_user\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6300,7 +6300,7 @@ log_query_views=1
 ```
 
 
-## max_distributed_connections {#max_distributed_connections} 
+## max_distributed_connections \\{#max_distributed_connections\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1024" />
 
@@ -6308,7 +6308,7 @@ log_query_views=1
 
 Следующие параметры используются только при создании distributed таблиц (и при запуске сервера), поэтому нет смысла изменять их во время работы.
 
-## max_distributed_depth {#max_distributed_depth} 
+## max_distributed_depth \\{#max_distributed_depth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5" />
 
@@ -6321,19 +6321,19 @@ log_query_views=1
 - Положительное целое число.
 - 0 — неограниченная глубина.
 
-## max_download_buffer_size {#max_download_buffer_size} 
+## max_download_buffer_size \\{#max_download_buffer_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10485760" />
 
 Максимальный размер буфера для параллельной загрузки (например, для движка URL) для каждого потока.
 
-## max_download_threads {#max_download_threads} 
+## max_download_threads \\{#max_download_threads\\}
 
 <SettingsInfoBlock type="MaxThreads" default_value="4" />
 
 Максимальное количество потоков для загрузки данных (например, для движка URL).
 
-## max_estimated_execution_time {#max_estimated_execution_time} 
+## max_estimated_execution_time \\{#max_estimated_execution_time\\}
 
 <SettingsInfoBlock type="Seconds" default_value="0" />
 
@@ -6342,7 +6342,7 @@ log_query_views=1
 Максимальное предполагаемое время выполнения запроса в секундах. Проверяется для каждого блока данных,
 когда истекает [`timeout_before_checking_execution_speed`](/operations/settings/settings#timeout_before_checking_execution_speed).
 
-## max_execution_speed {#max_execution_speed} 
+## max_execution_speed \\{#max_execution_speed\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6350,7 +6350,7 @@ log_query_views=1
 [`timeout_before_checking_execution_speed`](/operations/settings/settings#timeout_before_checking_execution_speed).
 Если скорость выполнения слишком высока, она будет снижена.
 
-## max_execution_speed_bytes {#max_execution_speed_bytes} 
+## max_execution_speed_bytes \\{#max_execution_speed_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6358,7 +6358,7 @@ log_query_views=1
 [`timeout_before_checking_execution_speed`](/operations/settings/settings#timeout_before_checking_execution_speed)
 истекает. Если скорость выполнения слишком высокая, она будет снижена.
 
-## max_execution_time {#max_execution_time} 
+## max_execution_time \\{#max_execution_time\\}
 
 <SettingsInfoBlock type="Seconds" default_value="0" />
 
@@ -6385,7 +6385,7 @@ ClickHouse прервёт запрос, если прогнозируемое в
 и фактическое время выполнения будет больше значения этой настройки.
 :::
 
-## max_execution_time_leaf {#max_execution_time_leaf}
+## max_execution_time_leaf \{#max_execution_time_leaf\}
 
 <SettingsInfoBlock type="Seconds" default_value="0" />
 
@@ -6409,19 +6409,19 @@ FROM cluster(cluster, view(SELECT * FROM t)) SETTINGS max_execution_time_leaf = 
 ```
 
 
-## max_expanded_ast_elements {#max_expanded_ast_elements} 
+## max_expanded_ast_elements \\{#max_expanded_ast_elements\\}
 
 <SettingsInfoBlock type="UInt64" default_value="500000" />
 
 Максимальный размер синтаксического дерева запроса, измеряемый числом узлов, после разворачивания алиасов и звёздочки (`*`).
 
-## max_fetch_partition_retries_count {#max_fetch_partition_retries_count} 
+## max_fetch_partition_retries_count \\{#max_fetch_partition_retries_count\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5" />
 
 Число повторных попыток при получении партиции с другого узла.
 
-## max_final_threads {#max_final_threads} 
+## max_final_threads \\{#max_final_threads\\}
 
 <SettingsInfoBlock type="MaxThreads" default_value="'auto(N)'" />
 
@@ -6432,13 +6432,13 @@ FROM cluster(cluster, view(SELECT * FROM t)) SETTINGS max_execution_time_leaf = 
 - Положительное целое число.
 - 0 или 1 — отключено. Запросы `SELECT` выполняются в одном потоке.
 
-## max_http_get_redirects {#max_http_get_redirects} 
+## max_http_get_redirects \\{#max_http_get_redirects\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальное количество допустимых переходов при HTTP GET‑редиректах. Обеспечивает дополнительные меры безопасности, препятствуя тому, чтобы вредоносный сервер перенаправлял ваши запросы на неожиданные сервисы.\n\nРечь идет о ситуации, когда внешний сервер перенаправляет на другой адрес, но этот адрес оказывается внутренним для инфраструктуры компании, и, отправляя HTTP‑запрос на внутренний сервер, вы можете обратиться к внутреннему API из внутренней сети, обходя аутентификацию, или даже обратиться к другим сервисам, таким как Redis или Memcached. Если у вас нет внутренней инфраструктуры (включая что‑либо, работающее на вашем localhost), или вы доверяете серверу, разрешить редиректы безопасно. Однако имейте в виду, что если URL использует HTTP вместо HTTPS, вам придется доверять не только удаленному серверу, но также вашему интернет‑провайдеру и каждой сети по пути.
 
-## max_hyperscan_regexp_length {#max_hyperscan_regexp_length}
+## max_hyperscan_regexp_length \{#max_hyperscan_regexp_length\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6482,7 +6482,7 @@ Exception: Regexp length too large.
 * [max&#95;hyperscan&#95;regexp&#95;total&#95;length](#max_hyperscan_regexp_total_length)
 
 
-## max_hyperscan_regexp_total_length {#max_hyperscan_regexp_total_length}
+## max_hyperscan_regexp_total_length \{#max_hyperscan_regexp_total_length\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6526,7 +6526,7 @@ Exception: Total regexp lengths too large.
 * [max&#95;hyperscan&#95;regexp&#95;length](#max_hyperscan_regexp_length)
 
 
-## max_insert_block_size {#max_insert_block_size} 
+## max_insert_block_size \\{#max_insert_block_size\\}
 
 **Псевдонимы**: `max_insert_block_size_rows`
 
@@ -6548,7 +6548,7 @@ Exception: Total regexp lengths too large.
 
 - Положительное целое число.
 
-## max_insert_block_size_bytes {#max_insert_block_size_bytes} 
+## max_insert_block_size_bytes \\{#max_insert_block_size_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6563,13 +6563,13 @@ Exception: Total regexp lengths too large.
 - Положительное целое число.
 - 0 — параметр не участвует в формировании блоков.
 
-## max_insert_delayed_streams_for_parallel_write {#max_insert_delayed_streams_for_parallel_write} 
+## max_insert_delayed_streams_for_parallel_write \\{#max_insert_delayed_streams_for_parallel_write\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальное число потоков (столбцов), для которых откладывается сброс окончательной части данных. По умолчанию — auto (100, если базовое хранилище поддерживает параллельную запись, например S3, и отключено в противном случае).
 
-## max_insert_threads {#max_insert_threads} 
+## max_insert_threads \\{#max_insert_threads\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6589,7 +6589,7 @@ Exception: Total regexp lengths too large.
 Параллельный `INSERT SELECT` даёт эффект только в том случае, если часть `SELECT` выполняется параллельно, смотрите настройку [`max_threads`](#max_threads).
 Более высокие значения приводят к увеличению потребления памяти.
 
-## max_joined_block_size_bytes {#max_joined_block_size_bytes} 
+## max_joined_block_size_bytes \\{#max_joined_block_size_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="4194304" />
 
@@ -6597,13 +6597,13 @@ Exception: Total regexp lengths too large.
 
 Максимальный размер блока в байтах для результата операции JOIN (если алгоритм JOIN поддерживает этот параметр). 0 означает отсутствие ограничения.
 
-## max_joined_block_size_rows {#max_joined_block_size_rows} 
+## max_joined_block_size_rows \\{#max_joined_block_size_rows\\}
 
 <SettingsInfoBlock type="UInt64" default_value="65409" />
 
 Максимальный размер блока для результата JOIN (если алгоритм соединения поддерживает его). 0 означает отсутствие ограничений.
 
-## max_limit_for_vector_search_queries {#max_limit_for_vector_search_queries} 
+## max_limit_for_vector_search_queries \\{#max_limit_for_vector_search_queries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -6611,19 +6611,19 @@ Exception: Total regexp lengths too large.
 
 SELECT-запросы с LIMIT, превышающим это значение, не могут использовать индексы векторного сходства. Это помогает предотвратить переполнение памяти при использовании индексов векторного сходства.
 
-## max_local_read_bandwidth {#max_local_read_bandwidth} 
+## max_local_read_bandwidth \\{#max_local_read_bandwidth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальная скорость локального чтения в байтах в секунду.
 
-## max_local_write_bandwidth {#max_local_write_bandwidth} 
+## max_local_write_bandwidth \\{#max_local_write_bandwidth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальная скорость локальной записи в байтах в секунду.
 
-## max_memory_usage {#max_memory_usage} 
+## max_memory_usage \\{#max_memory_usage\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6652,7 +6652,7 @@ SELECT-запросы с LIMIT, превышающим это значение, 
 Потребление памяти также ограничивается параметрами [`max_memory_usage_for_user`](/operations/settings/settings#max_memory_usage_for_user)
 и [`max_server_memory_usage`](/operations/server-configuration-parameters/settings#max_server_memory_usage).
 
-## max_memory_usage_for_user {#max_memory_usage_for_user}
+## max_memory_usage_for_user \{#max_memory_usage_for_user\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6675,7 +6675,7 @@ SELECT getSetting('max_memory_usage_for_user');
 ```
 
 
-## max_network_bandwidth {#max_network_bandwidth} 
+## max_network_bandwidth \\{#max_network_bandwidth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6686,7 +6686,7 @@ SELECT getSetting('max_memory_usage_for_user');
 - Положительное целое число.
 - 0 — управление пропускной способностью отключено.
 
-## max_network_bandwidth_for_all_users {#max_network_bandwidth_for_all_users} 
+## max_network_bandwidth_for_all_users \\{#max_network_bandwidth_for_all_users\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6697,7 +6697,7 @@ SELECT getSetting('max_memory_usage_for_user');
 - Положительное целое число.
 - 0 — контроль скорости передачи данных отключён.
 
-## max_network_bandwidth_for_user {#max_network_bandwidth_for_user} 
+## max_network_bandwidth_for_user \\{#max_network_bandwidth_for_user\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6708,7 +6708,7 @@ SELECT getSetting('max_memory_usage_for_user');
 - Положительное целое число.
 - 0 — контроль скорости передачи данных отключён.
 
-## max_network_bytes {#max_network_bytes} 
+## max_network_bytes \\{#max_network_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6719,13 +6719,13 @@ SELECT getSetting('max_memory_usage_for_user');
 - Положительное целое число.
 - 0 — контроль объёма данных отключён.
 
-## max_number_of_partitions_for_independent_aggregation {#max_number_of_partitions_for_independent_aggregation} 
+## max_number_of_partitions_for_independent_aggregation \\{#max_number_of_partitions_for_independent_aggregation\\}
 
 <SettingsInfoBlock type="UInt64" default_value="128" />
 
 Максимальное количество партиций в таблице для применения оптимизации
 
-## max_os_cpu_wait_time_ratio_to_throw {#max_os_cpu_wait_time_ratio_to_throw} 
+## max_os_cpu_wait_time_ratio_to_throw \\{#max_os_cpu_wait_time_ratio_to_throw\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
@@ -6733,7 +6733,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Максимальное соотношение между временем ожидания CPU в ОС (метрика OSCPUWaitMicroseconds) и временем занятости CPU (метрика OSCPUVirtualTimeMicroseconds), при котором запросы могут быть отклонены. Для вычисления вероятности используется линейная интерполяция между минимальным и максимальным значениями этого соотношения; при достижении этого значения вероятность равна 1.
 
-## max_parallel_replicas {#max_parallel_replicas} 
+## max_parallel_replicas \\{#max_parallel_replicas\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1000" />
 
@@ -6753,7 +6753,7 @@ SELECT getSetting('max_memory_usage_for_user');
 Эта настройка приведёт к некорректным результатам, если используются объединения (JOIN) или подзапросы и все таблицы не удовлетворяют определённым требованиям. Подробнее см. [Distributed Subqueries and max_parallel_replicas](/operations/settings/settings#max_parallel_replicas).
 :::
 
-### Параллельная обработка с использованием ключа `SAMPLE` {#parallel-processing-using-sample-key}
+### Параллельная обработка с использованием ключа `SAMPLE` \{#parallel-processing-using-sample-key\}
 
 Запрос может выполняться быстрее, если он обрабатывается параллельно на нескольких серверах. Однако производительность запроса может снизиться в следующих случаях:
 
@@ -6762,11 +6762,11 @@ SELECT getSetting('max_memory_usage_for_user');
 - Ключ выборки представляет собой выражение, дорогое в вычислительном отношении.
 - Распределение задержек в кластере имеет «длинный хвост», поэтому выполнение запроса на большем числе серверов увеличивает его общую задержку.
 
-### Параллельная обработка с использованием [parallel_replicas_custom_key](#parallel_replicas_custom_key) {#parallel-processing-using-parallel_replicas_custom_keyparallel_replicas_custom_key}
+### Параллельная обработка с использованием [parallel_replicas_custom_key](#parallel_replicas_custom_key) \{#parallel-processing-using-parallel_replicas_custom_keyparallel_replicas_custom_key\}
 
 Эта настройка полезна для любых реплицированных таблиц.
 
-## max_parser_backtracks {#max_parser_backtracks} 
+## max_parser_backtracks \\{#max_parser_backtracks\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />
 
@@ -6774,7 +6774,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Максимальное число откатов парсера (сколько раз он пытается перебрать разные варианты в процессе рекурсивного нисходящего разбора).
 
-## max_parser_depth {#max_parser_depth} 
+## max_parser_depth \\{#max_parser_depth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -6785,7 +6785,7 @@ SELECT getSetting('max_memory_usage_for_user');
 - Положительное целое число.
 - 0 — глубина рекурсии не ограничена.
 
-## max_parsing_threads {#max_parsing_threads} 
+## max_parsing_threads \\{#max_parsing_threads\\}
 
 <SettingsInfoBlock type="MaxThreads" default_value="'auto(N)'" />
 
@@ -6793,7 +6793,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Максимальное количество потоков для парсинга данных во входных форматах, которые поддерживают параллельный парсинг. По умолчанию значение определяется автоматически.
 
-## max_partition_size_to_drop {#max_partition_size_to_drop} 
+## max_partition_size_to_drop \\{#max_partition_size_to_drop\\}
 
 <SettingsInfoBlock type="UInt64" default_value="50000000000" />
 
@@ -6805,7 +6805,7 @@ SELECT getSetting('max_memory_usage_for_user');
 Этот параметр запроса переопределяет одноимённый серверный параметр, см. [max_partition_size_to_drop](/operations/server-configuration-parameters/settings#max_partition_size_to_drop)
 :::
 
-## max_partitions_per_insert_block {#max_partitions_per_insert_block} 
+## max_partitions_per_insert_block \\{#max_partitions_per_insert_block\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
@@ -6837,7 +6837,7 @@ SELECT getSetting('max_memory_usage_for_user');
 Эта настройка является защитным порогом, поскольку использование большого количества партиций — распространённое заблуждение.
 :::
 
-## max_partitions_to_read {#max_partitions_to_read} 
+## max_partitions_to_read \\{#max_partitions_to_read\\}
 
 <SettingsInfoBlock type="Int64" default_value="-1" />
 
@@ -6854,7 +6854,7 @@ SELECT getSetting('max_memory_usage_for_user');
 Вы также можете указать настройку MergeTree [`max_partitions_to_read`](/operations/settings/settings#max_partitions_to_read) в параметрах таблицы.
 :::
 
-## max_parts_to_move {#max_parts_to_move} 
+## max_parts_to_move \\{#max_parts_to_move\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -6862,7 +6862,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Ограничивает количество частей, которые могут быть перемещены в одном запросе. Значение 0 означает отсутствие ограничений.
 
-## max_projection_rows_to_use_projection_index {#max_projection_rows_to_use_projection_index} 
+## max_projection_rows_to_use_projection_index \\{#max_projection_rows_to_use_projection_index\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />
 
@@ -6870,7 +6870,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Если количество строк, которое предстоит прочитать из индекса PROJECTION, меньше или равно этому пороговому значению, ClickHouse попытается применить индекс PROJECTION при выполнении запроса.
 
-## max_query_size {#max_query_size} 
+## max_query_size \\{#max_query_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="262144" />
 
@@ -6881,25 +6881,25 @@ SELECT getSetting('max_memory_usage_for_user');
 `max_query_size` нельзя задать внутри SQL-запроса (например, `SELECT now() SETTINGS max_query_size=10000`), потому что ClickHouse должен выделить буфер для разбора запроса, и размер этого буфера определяется настройкой `max_query_size`, которая должна быть настроена до выполнения запроса.
 :::
 
-## max_read_buffer_size {#max_read_buffer_size} 
+## max_read_buffer_size \\{#max_read_buffer_size\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1048576" />
 
 Максимальный размер буфера при чтении из файловой системы.
 
-## max_read_buffer_size_local_fs {#max_read_buffer_size_local_fs} 
+## max_read_buffer_size_local_fs \\{#max_read_buffer_size_local_fs\\}
 
 <SettingsInfoBlock type="UInt64" default_value="131072" />
 
 Максимальный размер буфера для чтения с локальной файловой системы. Если установлено значение 0, используется значение max_read_buffer_size.
 
-## max_read_buffer_size_remote_fs {#max_read_buffer_size_remote_fs} 
+## max_read_buffer_size_remote_fs \\{#max_read_buffer_size_remote_fs\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальный размер буфера для чтения из удалённой файловой системы. Если задано значение 0, будет использовано значение параметра max_read_buffer_size.
 
-## max_recursive_cte_evaluation_depth {#max_recursive_cte_evaluation_depth} 
+## max_recursive_cte_evaluation_depth \\{#max_recursive_cte_evaluation_depth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -6907,19 +6907,19 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Максимальный предел глубины вычисления рекурсивного CTE
 
-## max_remote_read_network_bandwidth {#max_remote_read_network_bandwidth} 
+## max_remote_read_network_bandwidth \\{#max_remote_read_network_bandwidth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальная скорость сетевого обмена данными при чтении, в байтах в секунду.
 
-## max_remote_write_network_bandwidth {#max_remote_write_network_bandwidth} 
+## max_remote_write_network_bandwidth \\{#max_remote_write_network_bandwidth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальная скорость сетевого обмена данными при записи, в байтах в секунду.
 
-## max_replica_delay_for_distributed_queries {#max_replica_delay_for_distributed_queries} 
+## max_replica_delay_for_distributed_queries \\{#max_replica_delay_for_distributed_queries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="300" />
 
@@ -6936,7 +6936,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Используется при выполнении `SELECT` из distributed таблицы, которая ссылается на реплицируемые таблицы.
 
-## max_result_bytes {#max_result_bytes} 
+## max_result_bytes \\{#max_result_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6954,7 +6954,7 @@ SELECT getSetting('max_memory_usage_for_user');
 Параметр достаточно низкоуровневый и должен использоваться с осторожностью
 :::
 
-## max_result_rows {#max_result_rows} 
+## max_result_rows \\{#max_result_rows\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -6967,7 +6967,7 @@ SELECT getSetting('max_memory_usage_for_user');
 последний блок результата не будет обрезан, поэтому размер результата может
 превышать пороговое значение.
 
-## max_reverse_dictionary_lookup_cache_size_bytes {#max_reverse_dictionary_lookup_cache_size_bytes} 
+## max_reverse_dictionary_lookup_cache_size_bytes \\{#max_reverse_dictionary_lookup_cache_size_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="104857600" />
 
@@ -6975,13 +6975,13 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Максимальный размер в байтах кэша обратного поиска по словарю для одного запроса, используемого функцией `dictGetKeys`. Кэш хранит сериализованные кортежи ключей для каждого значения атрибута, чтобы избежать повторного сканирования словаря в рамках одного запроса. При достижении лимита записи вытесняются по алгоритму LRU. Установите значение 0, чтобы отключить кэширование.
 
-## max_rows_in_distinct {#max_rows_in_distinct} 
+## max_rows_in_distinct \\{#max_rows_in_distinct\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальное количество уникальных строк при использовании DISTINCT.
 
-## max_rows_in_join {#max_rows_in_join} 
+## max_rows_in_join \\{#max_rows_in_join\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7000,13 +7000,13 @@ SELECT getSetting('max_memory_usage_for_user');
 - Положительное целое число.
 - `0` — Неограниченное количество строк.
 
-## max_rows_in_set {#max_rows_in_set} 
+## max_rows_in_set \\{#max_rows_in_set\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальное количество строк для набора данных в условии `IN`, созданного из подзапроса.
 
-## max_rows_in_set_to_optimize_join {#max_rows_in_set_to_optimize_join} 
+## max_rows_in_set_to_optimize_join \\{#max_rows_in_set_to_optimize_join\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7019,7 +7019,7 @@ SELECT getSetting('max_memory_usage_for_user');
 - 0 — отключить.
 - Любое положительное целое число.
 
-## max_rows_to_group_by {#max_rows_to_group_by} 
+## max_rows_to_group_by \\{#max_rows_to_group_by\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7027,7 +7027,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Если при агрегации с использованием GROUP BY генерируется больше строк (уникальных ключей GROUP BY), чем указано, поведение будет определяться параметром `group_by_overflow_mode`, который по умолчанию равен `throw`, но также может быть переведён в режим приблизительного GROUP BY.
 
-## max_rows_to_read {#max_rows_to_read} 
+## max_rows_to_read \\{#max_rows_to_read\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7036,7 +7036,7 @@ SELECT getSetting('max_memory_usage_for_user');
 самому глубокому табличному выражению, а при чтении с удалённого сервера проверяется только
 на удалённом сервере.
 
-## max_rows_to_read_leaf {#max_rows_to_read_leaf} 
+## max_rows_to_read_leaf \\{#max_rows_to_read_leaf\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7050,7 +7050,7 @@ SELECT getSetting('max_memory_usage_for_user');
 Эта настройка нестабильна при `prefer_localhost_replica=1`.
 :::
 
-## max_rows_to_sort {#max_rows_to_sort} 
+## max_rows_to_sort \\{#max_rows_to_sort\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7058,13 +7058,13 @@ SELECT getSetting('max_memory_usage_for_user');
 Если при выполнении операции ORDER BY требуется обработать больше строк, чем указано,
 поведение определяется параметром `sort_overflow_mode`, который по умолчанию имеет значение `throw`.
 
-## max_rows_to_transfer {#max_rows_to_transfer} 
+## max_rows_to_transfer \\{#max_rows_to_transfer\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальный размер (в строках), который может быть передан на удалённый сервер или сохранён во временной таблице при выполнении конструкции GLOBAL IN/JOIN.
 
-## max_sessions_for_user {#max_sessions_for_user}
+## max_sessions_for_user \{#max_sessions_for_user\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7106,7 +7106,7 @@ SELECT getSetting('max_memory_usage_for_user');
 * `0` - бесконечное число одновременных сеансов (по умолчанию)
 
 
-## max_size_to_preallocate_for_aggregation {#max_size_to_preallocate_for_aggregation} 
+## max_size_to_preallocate_for_aggregation \\{#max_size_to_preallocate_for_aggregation\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000000000" />
 
@@ -7114,7 +7114,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Максимальное количество элементов, для которых допускается предварительное выделение памяти во всех хеш-таблицах суммарно перед агрегацией
 
-## max_size_to_preallocate_for_joins {#max_size_to_preallocate_for_joins} 
+## max_size_to_preallocate_for_joins \\{#max_size_to_preallocate_for_joins\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000000000" />
 
@@ -7122,7 +7122,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Для какого количества элементов допускается предварительно выделить память во всех хеш-таблицах суммарно перед соедине
 
-## max_streams_for_files_processing_in_cluster_functions {#max_streams_for_files_processing_in_cluster_functions} 
+## max_streams_for_files_processing_in_cluster_functions \\{#max_streams_for_files_processing_in_cluster_functions\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7130,25 +7130,25 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Если значение не равно нулю, ограничивает количество потоков, читающих данные из файлов в *Cluster table functions.
 
-## max_streams_for_merge_tree_reading {#max_streams_for_merge_tree_reading} 
+## max_streams_for_merge_tree_reading \\{#max_streams_for_merge_tree_reading\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Если параметр не равен нулю, ограничивает количество потоков чтения для таблицы MergeTree.
 
-## max_streams_multiplier_for_merge_tables {#max_streams_multiplier_for_merge_tables} 
+## max_streams_multiplier_for_merge_tables \\{#max_streams_multiplier_for_merge_tables\\}
 
 <SettingsInfoBlock type="Float" default_value="5" />
 
 Запрашивать больше потоков при чтении из таблицы типа Merge. Потоки будут распределены между таблицами, которые использует таблица Merge. Это позволяет более равномерно распределять работу между потоками и особенно полезно, когда таблицы, входящие в Merge, различаются по размеру.
 
-## max_streams_to_max_threads_ratio {#max_streams_to_max_threads_ratio} 
+## max_streams_to_max_threads_ratio \\{#max_streams_to_max_threads_ratio\\}
 
 <SettingsInfoBlock type="Float" default_value="1" />
 
 Позволяет использовать больше источников, чем число потоков, чтобы более равномерно распределять работу между потоками. Предполагается, что это временное решение, так как в будущем можно будет сделать количество источников равным количеству потоков, но при этом для каждого источника динамически выбирать доступные ему задачи.
 
-## max_subquery_depth {#max_subquery_depth} 
+## max_subquery_depth \\{#max_subquery_depth\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
@@ -7160,7 +7160,7 @@ SELECT getSetting('max_memory_usage_for_user');
 кластера от написания чрезмерно сложных запросов.
 :::
 
-## max_table_size_to_drop {#max_table_size_to_drop} 
+## max_table_size_to_drop \\{#max_table_size_to_drop\\}
 
 <SettingsInfoBlock type="UInt64" default_value="50000000000" />
 
@@ -7172,7 +7172,7 @@ SELECT getSetting('max_memory_usage_for_user');
 Этот параметр запроса переопределяет одноимённый серверный параметр, см. [max_table_size_to_drop](/operations/server-configuration-parameters/settings#max_table_size_to_drop)
 :::
 
-## max_temporary_columns {#max_temporary_columns} 
+## max_temporary_columns \\{#max_temporary_columns\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7185,7 +7185,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Значение `0` означает отсутствие ограничения.
 
-## max_temporary_data_on_disk_size_for_query {#max_temporary_data_on_disk_size_for_query} 
+## max_temporary_data_on_disk_size_for_query \\{#max_temporary_data_on_disk_size_for_query\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7197,7 +7197,7 @@ SELECT getSetting('max_memory_usage_for_user');
 - Положительное целое число.
 - `0` — без ограничений (по умолчанию)
 
-## max_temporary_data_on_disk_size_for_user {#max_temporary_data_on_disk_size_for_user} 
+## max_temporary_data_on_disk_size_for_user \\{#max_temporary_data_on_disk_size_for_user\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7209,7 +7209,7 @@ SELECT getSetting('max_memory_usage_for_user');
 - Положительное целое число.
 - `0` — без ограничений (по умолчанию)
 
-## max_temporary_non_const_columns {#max_temporary_non_const_columns} 
+## max_temporary_non_const_columns \\{#max_temporary_non_const_columns\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7221,7 +7221,7 @@ SELECT getSetting('max_memory_usage_for_user');
 Константные столбцы образуются достаточно часто при выполнении запроса, но практически не требуют вычислительных ресурсов.
 :::
 
-## max_threads {#max_threads} 
+## max_threads \\{#max_threads\\}
 
 <SettingsInfoBlock type="MaxThreads" default_value="'auto(N)'" />
 
@@ -7240,19 +7240,19 @@ SELECT getSetting('max_memory_usage_for_user');
 Для пользователей ClickHouse Cloud значение по умолчанию будет отображаться как `auto(N)`, где N совпадает с размером vCPU вашего сервиса, например 2vCPU/8GiB, 4vCPU/16GiB и т. д.
 Список всех размеров сервисов см. на вкладке настроек в консоли ClickHouse Cloud.
 
-## max_threads_for_indexes {#max_threads_for_indexes} 
+## max_threads_for_indexes \\{#max_threads_for_indexes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальное количество потоков, используемых для обработки индексов.
 
-## max_untracked_memory {#max_untracked_memory} 
+## max_untracked_memory \\{#max_untracked_memory\\}
 
 <SettingsInfoBlock type="UInt64" default_value="4194304" />
 
 Небольшие выделения и освобождения памяти группируются в локальной для потока переменной и отслеживаются или профилируются только тогда, когда их общий объем (по абсолютному значению) становится больше указанного значения. Если это значение больше, чем `memory_profiler_step`, оно будет фактически уменьшено до `memory_profiler_step`.
 
-## memory_overcommit_ratio_denominator {#memory_overcommit_ratio_denominator} 
+## memory_overcommit_ratio_denominator \\{#memory_overcommit_ratio_denominator\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
@@ -7263,7 +7263,7 @@ SELECT getSetting('max_memory_usage_for_user');
 Ноль означает, что запрос будет пропущен.
 Подробнее см. в разделе [memory overcommit](memory-overcommit.md).
 
-## memory_overcommit_ratio_denominator_for_user {#memory_overcommit_ratio_denominator_for_user} 
+## memory_overcommit_ratio_denominator_for_user \\{#memory_overcommit_ratio_denominator_for_user\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
@@ -7274,25 +7274,25 @@ SELECT getSetting('max_memory_usage_for_user');
 Нулевое значение означает, что запрос будет пропущен.
 Подробнее см. в разделе [оверкоммит памяти](memory-overcommit.md).
 
-## memory_profiler_sample_max_allocation_size {#memory_profiler_sample_max_allocation_size} 
+## memory_profiler_sample_max_allocation_size \\{#memory_profiler_sample_max_allocation_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Собирать случайные выделения памяти размера, меньшего или равного указанному значению, с вероятностью, равной `memory_profiler_sample_probability`. 0 означает отключение. Рекомендуется установить `max_untracked_memory` в 0, чтобы этот порог работал ожидаемым образом.
 
-## memory_profiler_sample_min_allocation_size {#memory_profiler_sample_min_allocation_size} 
+## memory_profiler_sample_min_allocation_size \\{#memory_profiler_sample_min_allocation_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Собирать случайные выделения памяти размером не меньше заданного значения с вероятностью, равной `memory_profiler_sample_probability`. 0 — отключено. Возможно, вам потребуется установить параметр `max_untracked_memory` в 0, чтобы этот порог работал как ожидается.
 
-## memory_profiler_sample_probability {#memory_profiler_sample_probability} 
+## memory_profiler_sample_probability \\{#memory_profiler_sample_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
 Собирает случайные операции выделения и освобождения памяти и записывает их в таблицу system.trace_log с trace_type 'MemorySample'. Вероятность применяется к каждой операции alloc/free независимо от размера выделения (можно изменить с помощью `memory_profiler_sample_min_allocation_size` и `memory_profiler_sample_max_allocation_size`). Обратите внимание, что семплирование производится только тогда, когда объём неотслеживаемой памяти превышает значение 'max_untracked_memory'. Для более детализированного семплирования вы можете установить значение 'max_untracked_memory' равным 0.
 
-## memory_profiler_step {#memory_profiler_step} 
+## memory_profiler_step \\{#memory_profiler_step\\}
 
 <SettingsInfoBlock type="UInt64" default_value="4194304" />
 
@@ -7304,13 +7304,13 @@ SELECT getSetting('max_memory_usage_for_user');
 
 - 0 — для отключения профилировщика памяти.
 
-## memory_tracker_fault_probability {#memory_tracker_fault_probability} 
+## memory_tracker_fault_probability \\{#memory_tracker_fault_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
 Для тестирования `exception safety` — генерировать исключение при каждом выделении памяти с указанной вероятностью.
 
-## memory_usage_overcommit_max_wait_microseconds {#memory_usage_overcommit_max_wait_microseconds} 
+## memory_usage_overcommit_max_wait_microseconds \\{#memory_usage_overcommit_max_wait_microseconds\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000000" />
 
@@ -7318,7 +7318,7 @@ SELECT getSetting('max_memory_usage_for_user');
 Если время ожидания истекло и память не была освобождена, генерируется исключение.
 Подробнее см. в разделе [memory overcommit](memory-overcommit.md).
 
-## merge_table_max_tables_to_look_for_schema_inference {#merge_table_max_tables_to_look_for_schema_inference} 
+## merge_table_max_tables_to_look_for_schema_inference \\{#merge_table_max_tables_to_look_for_schema_inference\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -7327,7 +7327,7 @@ SELECT getSetting('max_memory_usage_for_user');
 При создании таблицы `Merge` без явной схемы или при использовании табличной функции `merge` схема определяется как объединение не более чем указанного количества подходящих таблиц.
 Если таблиц больше, чем это количество, схема будет определена по первым таблицам в количестве, указанном в этом параметре.
 
-## merge_tree_coarse_index_granularity {#merge_tree_coarse_index_granularity} 
+## merge_tree_coarse_index_granularity \\{#merge_tree_coarse_index_granularity\\}
 
 <SettingsInfoBlock type="UInt64" default_value="8" />
 
@@ -7337,7 +7337,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 - Любое положительное чётное целое число.
 
-## merge_tree_compact_parts_min_granules_to_multibuffer_read {#merge_tree_compact_parts_min_granules_to_multibuffer_read} 
+## merge_tree_compact_parts_min_granules_to_multibuffer_read \\{#merge_tree_compact_parts_min_granules_to_multibuffer_read\\}
 
 <CloudOnlyBadge/>
 
@@ -7345,13 +7345,13 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Действует только в ClickHouse Cloud. Количество гранул в полосе компактной части таблиц MergeTree, при котором используется multibuffer reader, поддерживающий параллельное чтение и предвыборку данных (prefetch). При чтении из удалённой файловой системы использование multibuffer reader увеличивает количество запросов чтения.
 
-## merge_tree_determine_task_size_by_prewhere_columns {#merge_tree_determine_task_size_by_prewhere_columns} 
+## merge_tree_determine_task_size_by_prewhere_columns \\{#merge_tree_determine_task_size_by_prewhere_columns\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Определяет, использовать ли только размер столбцов в PREWHERE для определения размера задачи чтения.
 
-## merge_tree_max_bytes_to_use_cache {#merge_tree_max_bytes_to_use_cache} 
+## merge_tree_max_bytes_to_use_cache \\{#merge_tree_max_bytes_to_use_cache\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2013265920" />
 
@@ -7363,7 +7363,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 - Любое положительное целое число.
 
-## merge_tree_max_rows_to_use_cache {#merge_tree_max_rows_to_use_cache} 
+## merge_tree_max_rows_to_use_cache \\{#merge_tree_max_rows_to_use_cache\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
 
@@ -7375,7 +7375,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 - Любое положительное целое число.
 
-## merge_tree_min_bytes_for_concurrent_read {#merge_tree_min_bytes_for_concurrent_read} 
+## merge_tree_min_bytes_for_concurrent_read \\{#merge_tree_min_bytes_for_concurrent_read\\}
 
 <SettingsInfoBlock type="UInt64" default_value="251658240" />
 
@@ -7385,7 +7385,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 - Положительное целое число.
 
-## merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem {#merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem} 
+## merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem \\{#merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7397,7 +7397,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 - Положительное целое число.
 
-## merge_tree_min_bytes_for_seek {#merge_tree_min_bytes_for_seek} 
+## merge_tree_min_bytes_for_seek \\{#merge_tree_min_bytes_for_seek\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7407,7 +7407,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 - Любое положительное целое число.
 
-## merge_tree_min_bytes_per_task_for_remote_reading {#merge_tree_min_bytes_per_task_for_remote_reading} 
+## merge_tree_min_bytes_per_task_for_remote_reading \\{#merge_tree_min_bytes_per_task_for_remote_reading\\}
 
 **Псевдонимы**: `filesystem_prefetch_min_bytes_for_single_read_task`
 
@@ -7417,7 +7417,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Минимальное количество байт, считываемое одной задачей.
 
-## merge_tree_min_read_task_size {#merge_tree_min_read_task_size} 
+## merge_tree_min_read_task_size \\{#merge_tree_min_read_task_size\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="8" />
 
@@ -7425,7 +7425,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Строгое нижнее ограничение на размер задачи (даже когда число гранул мало и число доступных потоков велико, мы не будем создавать задачи меньшего размера)
 
-## merge_tree_min_rows_for_concurrent_read {#merge_tree_min_rows_for_concurrent_read} 
+## merge_tree_min_rows_for_concurrent_read \\{#merge_tree_min_rows_for_concurrent_read\\}
 
 <SettingsInfoBlock type="UInt64" default_value="163840" />
 
@@ -7435,7 +7435,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 - Положительное целое число.
 
-## merge_tree_min_rows_for_concurrent_read_for_remote_filesystem {#merge_tree_min_rows_for_concurrent_read_for_remote_filesystem} 
+## merge_tree_min_rows_for_concurrent_read_for_remote_filesystem \\{#merge_tree_min_rows_for_concurrent_read_for_remote_filesystem\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7447,7 +7447,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 - Положительное целое число.
 
-## merge_tree_min_rows_for_seek {#merge_tree_min_rows_for_seek} 
+## merge_tree_min_rows_for_seek \\{#merge_tree_min_rows_for_seek\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7457,7 +7457,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 - Любое положительное целое число.
 
-## merge_tree_read_split_ranges_into_intersecting_and_non_intersecting_injection_probability {#merge_tree_read_split_ranges_into_intersecting_and_non_intersecting_injection_probability} 
+## merge_tree_read_split_ranges_into_intersecting_and_non_intersecting_injection_probability \\{#merge_tree_read_split_ranges_into_intersecting_and_non_intersecting_injection_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
@@ -7465,7 +7465,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Для тестирования `PartsSplitter`: при каждом чтении из MergeTree с указанной вероятностью разделяет диапазоны чтения на пересекающиеся и непересекающиеся.
 
-## merge_tree_storage_snapshot_sleep_ms {#merge_tree_storage_snapshot_sleep_ms} 
+## merge_tree_storage_snapshot_sleep_ms \\{#merge_tree_storage_snapshot_sleep_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7479,13 +7479,13 @@ SELECT getSetting('max_memory_usage_for_user');
 - 0 — без задержки (по умолчанию)
 - N — задержка в миллисекундах
 
-## merge_tree_use_const_size_tasks_for_remote_reading {#merge_tree_use_const_size_tasks_for_remote_reading} 
+## merge_tree_use_const_size_tasks_for_remote_reading \\{#merge_tree_use_const_size_tasks_for_remote_reading\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Использовать ли задачи фиксированного размера при чтении из удалённой таблицы.
 
-## merge_tree_use_deserialization_prefixes_cache {#merge_tree_use_deserialization_prefixes_cache} 
+## merge_tree_use_deserialization_prefixes_cache \\{#merge_tree_use_deserialization_prefixes_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -7493,7 +7493,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Включает кэширование метаданных столбцов из префиксов файлов при чтении с удалённых дисков в MergeTree.
 
-## merge_tree_use_prefixes_deserialization_thread_pool {#merge_tree_use_prefixes_deserialization_thread_pool} 
+## merge_tree_use_prefixes_deserialization_thread_pool \\{#merge_tree_use_prefixes_deserialization_thread_pool\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -7501,7 +7501,7 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Включает использование пула потоков для параллельной десериализации префиксов при чтении широких (Wide) частей в MergeTree. Размер этого пула потоков контролируется серверным параметром `max_prefixes_deserialization_thread_pool_size`.
 
-## merge_tree_use_v1_object_and_dynamic_serialization {#merge_tree_use_v1_object_and_dynamic_serialization} 
+## merge_tree_use_v1_object_and_dynamic_serialization \\{#merge_tree_use_v1_object_and_dynamic_serialization\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -7509,17 +7509,17 @@ SELECT getSetting('max_memory_usage_for_user');
 
 При включении в таблицах MergeTree будет использоваться версия V1 сериализации типов JSON и Dynamic вместо V2. Изменение этого параметра вступает в силу только после перезапуска сервера.
 
-## metrics_perf_events_enabled {#metrics_perf_events_enabled} 
+## metrics_perf_events_enabled \\{#metrics_perf_events_enabled\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Если параметр включён, некоторые perf-события будут измеряться во время выполнения запросов.
 
-## metrics_perf_events_list {#metrics_perf_events_list} 
+## metrics_perf_events_list \\{#metrics_perf_events_list\\}
 
 Список метрик `perf`, перечисленных через запятую, которые будут измеряться во время выполнения запросов. Пустое значение означает, что учитываются все события. Доступные события см. в `PerfEventInfo` в исходных кодах.
 
-## min_bytes_to_use_direct_io {#min_bytes_to_use_direct_io} 
+## min_bytes_to_use_direct_io \\{#min_bytes_to_use_direct_io\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7532,7 +7532,7 @@ ClickHouse использует эту настройку при чтении д
 - 0 — прямой ввод-вывод (Direct I/O) отключен.
 - Положительное целое число.
 
-## min_bytes_to_use_mmap_io {#min_bytes_to_use_mmap_io} 
+## min_bytes_to_use_mmap_io \\{#min_bytes_to_use_mmap_io\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7543,7 +7543,7 @@ ClickHouse использует эту настройку при чтении д
 - Положительное целое число.
 - 0 — крупные файлы читаются только с копированием данных из ядра в пространство пользователя.
 
-## min_chunk_bytes_for_parallel_parsing {#min_chunk_bytes_for_parallel_parsing} 
+## min_chunk_bytes_for_parallel_parsing \\{#min_chunk_bytes_for_parallel_parsing\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="10485760" />
 
@@ -7552,7 +7552,7 @@ ClickHouse использует эту настройку при чтении д
 
 Минимальный размер фрагмента в байтах, который каждый поток будет обрабатывать параллельно.
 
-## min_compress_block_size {#min_compress_block_size} 
+## min_compress_block_size \\{#min_compress_block_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="65536" />
 
@@ -7570,7 +7570,7 @@ ClickHouse использует эту настройку при чтении д
 Это настройка для экспертов, и вам не следует изменять её, если вы только начинаете работать с ClickHouse.
 :::
 
-## min_count_to_compile_aggregate_expression {#min_count_to_compile_aggregate_expression} 
+## min_count_to_compile_aggregate_expression \\{#min_count_to_compile_aggregate_expression\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3" />
 
@@ -7581,25 +7581,25 @@ ClickHouse использует эту настройку при чтении д
 - Положительное целое число.
 - 0 — идентичные агрегатные выражения всегда JIT-компилируются.
 
-## min_count_to_compile_expression {#min_count_to_compile_expression} 
+## min_count_to_compile_expression \\{#min_count_to_compile_expression\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3" />
 
 Минимальное количество выполнений одного и того же выражения, после которого оно компилируется.
 
-## min_count_to_compile_sort_description {#min_count_to_compile_sort_description} 
+## min_count_to_compile_sort_description \\{#min_count_to_compile_sort_description\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3" />
 
 Количество одинаковых описаний сортировки, необходимое для выполнения их JIT-компиляции
 
-## min_execution_speed {#min_execution_speed} 
+## min_execution_speed \\{#min_execution_speed\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Минимальная скорость выполнения, измеряемая в строках в секунду. Проверяется на каждом блоке данных, когда истекает значение параметра [`timeout_before_checking_execution_speed`](/operations/settings/settings#timeout_before_checking_execution_speed). Если скорость выполнения ниже, выбрасывается исключение.
 
-## min_execution_speed_bytes {#min_execution_speed_bytes} 
+## min_execution_speed_bytes \\{#min_execution_speed_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7607,7 +7607,7 @@ ClickHouse использует эту настройку при чтении д
 [`timeout_before_checking_execution_speed`](/operations/settings/settings#timeout_before_checking_execution_speed).
 Если скорость выполнения ниже, выбрасывается исключение.
 
-## min_external_table_block_size_bytes {#min_external_table_block_size_bytes} 
+## min_external_table_block_size_bytes \\{#min_external_table_block_size_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="268402944" />
 
@@ -7615,7 +7615,7 @@ ClickHouse использует эту настройку при чтении д
 
 Объединяет блоки, передаваемые во внешнюю таблицу, в блоки указанного размера в байтах, если исходные блоки слишком малы.
 
-## min_external_table_block_size_rows {#min_external_table_block_size_rows} 
+## min_external_table_block_size_rows \\{#min_external_table_block_size_rows\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048449" />
 
@@ -7623,7 +7623,7 @@ ClickHouse использует эту настройку при чтении д
 
 Сжимает блоки, передаваемые во внешнюю таблицу, до указанного размера в строках, если их размер меньше указанного.
 
-## min_free_disk_bytes_to_perform_insert {#min_free_disk_bytes_to_perform_insert} 
+## min_free_disk_bytes_to_perform_insert \\{#min_free_disk_bytes_to_perform_insert\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7631,7 +7631,7 @@ ClickHouse использует эту настройку при чтении д
 
 Минимальный объем свободного дискового пространства в байтах, необходимый для выполнения вставки.
 
-## min_free_disk_ratio_to_perform_insert {#min_free_disk_ratio_to_perform_insert} 
+## min_free_disk_ratio_to_perform_insert \\{#min_free_disk_ratio_to_perform_insert\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
@@ -7639,19 +7639,19 @@ ClickHouse использует эту настройку при чтении д
 
 Минимальная доля свободного дискового пространства, необходимая для выполнения операции вставки.
 
-## min_free_disk_space_for_temporary_data {#min_free_disk_space_for_temporary_data} 
+## min_free_disk_space_for_temporary_data \\{#min_free_disk_space_for_temporary_data\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Минимальный объем дискового пространства, который необходимо оставлять свободным при записи временных данных, используемых во внешней сортировке и агрегации.
 
-## min_hit_rate_to_use_consecutive_keys_optimization {#min_hit_rate_to_use_consecutive_keys_optimization} 
+## min_hit_rate_to_use_consecutive_keys_optimization \\{#min_hit_rate_to_use_consecutive_keys_optimization\\}
 
 <SettingsInfoBlock type="Float" default_value="0.5" />
 
 Минимальный коэффициент попаданий в кэш, при котором оптимизация последовательных ключей при агрегации остаётся включённой.
 
-## min_insert_block_size_bytes {#min_insert_block_size_bytes} 
+## min_insert_block_size_bytes \\{#min_insert_block_size_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="268402944" />
 
@@ -7664,7 +7664,7 @@ ClickHouse использует эту настройку при чтении д
 - Положительное целое число.
 - 0 — параметр не участвует в формировании блоков.
 
-## min_insert_block_size_bytes_for_materialized_views {#min_insert_block_size_bytes_for_materialized_views} 
+## min_insert_block_size_bytes_for_materialized_views \\{#min_insert_block_size_bytes_for_materialized_views\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7679,7 +7679,7 @@ ClickHouse использует эту настройку при чтении д
 
 - [min_insert_block_size_bytes](#min_insert_block_size_bytes)
 
-## min_insert_block_size_rows {#min_insert_block_size_rows} 
+## min_insert_block_size_rows \\{#min_insert_block_size_rows\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048449" />
 
@@ -7703,7 +7703,7 @@ ClickHouse использует эту настройку при чтении д
 - Положительное целое число.
 - 0 — параметр не участвует в формировании блоков.
 
-## min_insert_block_size_rows_for_materialized_views {#min_insert_block_size_rows_for_materialized_views} 
+## min_insert_block_size_rows_for_materialized_views \\{#min_insert_block_size_rows_for_materialized_views\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7718,7 +7718,7 @@ ClickHouse использует эту настройку при чтении д
 
 - [min_insert_block_size_rows](#min_insert_block_size_rows)
 
-## min_joined_block_size_bytes {#min_joined_block_size_bytes} 
+## min_joined_block_size_bytes \\{#min_joined_block_size_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="524288" />
 
@@ -7726,7 +7726,7 @@ ClickHouse использует эту настройку при чтении д
 
 Минимальный размер блока в байтах для входных и выходных блоков JOIN (если алгоритм JOIN это поддерживает). Маленькие блоки будут объединены. Значение 0 означает отсутствие ограничений.
 
-## min_joined_block_size_rows {#min_joined_block_size_rows} 
+## min_joined_block_size_rows \\{#min_joined_block_size_rows\\}
 
 <SettingsInfoBlock type="UInt64" default_value="65409" />
 
@@ -7734,7 +7734,7 @@ ClickHouse использует эту настройку при чтении д
 
 Минимальный размер блока в строках для входных и выходных блоков JOIN (если алгоритм JOIN это поддерживает). Мелкие блоки будут объединены. 0 означает отсутствие ограничений.
 
-## min_os_cpu_wait_time_ratio_to_throw {#min_os_cpu_wait_time_ratio_to_throw} 
+## min_os_cpu_wait_time_ratio_to_throw \\{#min_os_cpu_wait_time_ratio_to_throw\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
@@ -7742,7 +7742,7 @@ ClickHouse использует эту настройку при чтении д
 
 Минимальное отношение между временем ожидания CPU в ОС (метрика OSCPUWaitMicroseconds) и временем занятости (метрика OSCPUVirtualTimeMicroseconds), при котором начинается рассмотрение отклонения запросов. Для расчёта вероятности отклонения используется линейная интерполяция между минимальным и максимальным отношением; в этой точке вероятность равна 0.
 
-## min_outstreams_per_resize_after_split {#min_outstreams_per_resize_after_split} 
+## min_outstreams_per_resize_after_split \\{#min_outstreams_per_resize_after_split\\}
 
 <SettingsInfoBlock type="UInt64" default_value="24" />
 
@@ -7750,13 +7750,13 @@ ClickHouse использует эту настройку при чтении д
 
 Указывает минимальное количество выходных потоков процессора `Resize` или `StrictResize` после выполнения операции разделения при построении конвейера. Если результирующее количество потоков меньше этого значения, операция разделения не будет выполнена.
 
-### Что такое узел Resize {#what-is-a-resize-node}
+### Что такое узел Resize \{#what-is-a-resize-node\}
 
 Узел `Resize` — это процессор в конвейере обработки запросов, который регулирует количество потоков данных, проходящих через конвейер. Он может как увеличивать, так и уменьшать число потоков, чтобы сбалансировать нагрузку между несколькими рабочими потоками или процессорами. Например, если запросу требуется большая степень параллелизма, узел `Resize` может разделить один поток на несколько. И наоборот, он может объединить несколько потоков в меньшее число, чтобы консолидировать обработку данных.
 
 Узел `Resize` обеспечивает равномерное распределение данных по потокам, сохраняя структуру блоков данных. Это помогает оптимизировать использование ресурсов и повысить производительность выполнения запроса.
 
-### Почему узел `Resize` нужно разделить {#why-the-resize-node-needs-to-be-split}
+### Почему узел `Resize` нужно разделить \{#why-the-resize-node-needs-to-be-split\}
 
 Во время выполнения конвейера за мьютекс ExecutingGraph::Node::status_mutex централизованного узла `Resize` идёт серьёзная конкуренция, особенно в средах с большим количеством ядер, что приводит к следующему:
 
@@ -7764,25 +7764,25 @@ ClickHouse использует эту настройку при чтении д
 2. Чрезмерное количество циклов CPU тратится на ожидание спин-блокировки (native_queued_spin_lock_slowpath), что снижает эффективность.
 3. Снижается загрузка CPU, что ограничивает параллелизм и пропускную способность.
 
-### Как выполняется разбиение узла Resize {#how-the-resize-node-gets-split}
+### Как выполняется разбиение узла Resize \{#how-the-resize-node-gets-split\}
 
 1. Проверяется количество выходных потоков, чтобы убедиться, что разбиение можно выполнить: выходные потоки каждого процессора разбиения должны удовлетворять пороговому значению `min_outstreams_per_resize_after_split` или превышать его.
 2. Узел `Resize` разбивается на несколько меньших узлов `Resize` с одинаковым количеством портов, каждый из которых обрабатывает подмножество входных и выходных потоков.
 3. Каждая группа обрабатывается независимо, что снижает конкуренцию за блокировку.
 
-### Разделение узла Resize с произвольными входами/выходами {#splitting-resize-node-with-arbitrary-inputsoutputs}
+### Разделение узла Resize с произвольными входами/выходами \{#splitting-resize-node-with-arbitrary-inputsoutputs\}
 
 В некоторых случаях, когда число входов/выходов не кратно количеству узлов `Resize`, на которые выполняется разделение, часть входов подключается к `NullSource`, а часть выходов — к `NullSink`. Это позволяет выполнить разделение, не нарушая общий поток данных.
 
-### Назначение настройки {#purpose-of-the-setting}
+### Назначение настройки \{#purpose-of-the-setting\}
 
 Настройка `min_outstreams_per_resize_after_split` гарантирует, что разбиение узлов `Resize` действительно осмысленно и не приводит к появлению слишком малого числа потоков, что может вызвать неэффективную параллельную обработку. Обеспечивая минимальное количество выходных потоков, эта настройка помогает поддерживать баланс между параллелизмом и накладными расходами, оптимизируя выполнение запроса в сценариях, связанных с разбиением и слиянием потоков.
 
-### Отключение настройки {#disabling-the-setting}
+### Отключение настройки \{#disabling-the-setting\}
 
 Чтобы отключить разбиение узлов `Resize`, установите значение этой настройки в 0. Это предотвратит разбиение узлов `Resize` при генерации конвейера и позволит им сохранять свою исходную структуру без деления на более мелкие узлы.
 
-## min_table_rows_to_use_projection_index {#min_table_rows_to_use_projection_index} 
+## min_table_rows_to_use_projection_index \\{#min_table_rows_to_use_projection_index\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />
 
@@ -7790,7 +7790,7 @@ ClickHouse использует эту настройку при чтении д
 
 Если предполагаемое количество строк, читаемых из таблицы, больше или равно этому пороговому значению, ClickHouse попытается использовать индекс проекции при выполнении запроса.
 
-## mongodb_throw_on_unsupported_query {#mongodb_throw_on_unsupported_query} 
+## mongodb_throw_on_unsupported_query \\{#mongodb_throw_on_unsupported_query\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -7798,43 +7798,43 @@ ClickHouse использует эту настройку при чтении д
 
 Если параметр включен, таблицы MongoDB будут возвращать ошибку, когда не удаётся построить запрос MongoDB. В противном случае ClickHouse считывает всю таблицу и обрабатывает её локально. Этот параметр не применяется, когда `allow_experimental_analyzer=0`.
 
-## move_all_conditions_to_prewhere {#move_all_conditions_to_prewhere} 
+## move_all_conditions_to_prewhere \\{#move_all_conditions_to_prewhere\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Перемещать все применимые условия из WHERE в PREWHERE
 
-## move_primary_key_columns_to_end_of_prewhere {#move_primary_key_columns_to_end_of_prewhere} 
+## move_primary_key_columns_to_end_of_prewhere \\{#move_primary_key_columns_to_end_of_prewhere\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Перемещает условия PREWHERE, содержащие столбцы первичного ключа, в конец цепочки AND. Скорее всего, эти условия учитываются при анализе первичного ключа и поэтому не будут существенно влиять на фильтрацию PREWHERE.
 
-## multiple_joins_try_to_keep_original_names {#multiple_joins_try_to_keep_original_names} 
+## multiple_joins_try_to_keep_original_names \\{#multiple_joins_try_to_keep_original_names\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Не добавлять псевдонимы в список выражений верхнего уровня при переписывании запросов с несколькими JOIN
 
-## mutations_execute_nondeterministic_on_initiator {#mutations_execute_nondeterministic_on_initiator} 
+## mutations_execute_nondeterministic_on_initiator \\{#mutations_execute_nondeterministic_on_initiator\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Если установлено значение `true`, константные недетерминированные функции (например, функция `now()`) выполняются на инициаторе запроса и подставляются как литералы в запросы `UPDATE` и `DELETE`. Это помогает сохранять синхронизацию данных на репликах при выполнении мутаций с константными недетерминированными функциями. Значение по умолчанию: `false`.
 
-## mutations_execute_subqueries_on_initiator {#mutations_execute_subqueries_on_initiator} 
+## mutations_execute_subqueries_on_initiator \\{#mutations_execute_subqueries_on_initiator\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 При значении `true` скалярные подзапросы выполняются на сервере-инициаторе запроса и заменяются литералами в запросах `UPDATE` и `DELETE`. Значение по умолчанию: `false`.
 
-## mutations_max_literal_size_to_replace {#mutations_max_literal_size_to_replace} 
+## mutations_max_literal_size_to_replace \\{#mutations_max_literal_size_to_replace\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16384" />
 
 Максимальный размер сериализованного литерала в байтах, который будет заменён в запросах `UPDATE` и `DELETE`. Применяется только в том случае, если включена хотя бы одна из двух настроек выше. Значение по умолчанию: 16384 (16 KiB).
 
-## mutations_sync {#mutations_sync} 
+## mutations_sync \\{#mutations_sync\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7849,7 +7849,7 @@ ClickHouse использует эту настройку при чтении д
 | `2`   | Запрос ожидает завершения всех мутаций на всех репликах (если они есть).                                                                              |
 | `3`   | Запрос ожидает завершения мутаций только на активных репликах. Поддерживается только для `SharedMergeTree`. Для `ReplicatedMergeTree` ведёт себя так же, как `mutations_sync = 2`.|
 
-## mysql_datatypes_support_level {#mysql_datatypes_support_level} 
+## mysql_datatypes_support_level \\{#mysql_datatypes_support_level\\}
 
 Определяет, как типы MySQL преобразуются в соответствующие типы ClickHouse. Представляет собой список значений, разделённый запятыми, в любой комбинации `decimal`, `datetime64`, `date2Date32` или `date2String`.
 
@@ -7858,7 +7858,7 @@ ClickHouse использует эту настройку при чтении д
 - `date2Date32`: преобразовывать `DATE` в `Date32` вместо `Date`. Имеет приоритет над `date2String`.
 - `date2String`: преобразовывать `DATE` в `String` вместо `Date`. Переопределяется параметром `datetime64`.
 
-## mysql_map_fixed_string_to_text_in_show_columns {#mysql_map_fixed_string_to_text_in_show_columns} 
+## mysql_map_fixed_string_to_text_in_show_columns \\{#mysql_map_fixed_string_to_text_in_show_columns\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -7871,7 +7871,7 @@ ClickHouse использует эту настройку при чтении д
 - 0 - Использовать `BLOB`.
 - 1 - Использовать `TEXT`.
 
-## mysql_map_string_to_text_in_show_columns {#mysql_map_string_to_text_in_show_columns} 
+## mysql_map_string_to_text_in_show_columns \\{#mysql_map_string_to_text_in_show_columns\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -7884,13 +7884,13 @@ ClickHouse использует эту настройку при чтении д
 - 0 - использовать `BLOB`;
 - 1 - использовать `TEXT`.
 
-## mysql_max_rows_to_insert {#mysql_max_rows_to_insert} 
+## mysql_max_rows_to_insert \\{#mysql_max_rows_to_insert\\}
 
 <SettingsInfoBlock type="UInt64" default_value="65536" />
 
 Максимальное количество строк при пакетной вставке в MySQL для движка хранения MySQL
 
-## network_compression_method {#network_compression_method} 
+## network_compression_method \\{#network_compression_method\\}
 
 <SettingsInfoBlock type="String" default_value="LZ4" />
 
@@ -7907,7 +7907,7 @@ ClickHouse использует эту настройку при чтении д
 
 - [network_zstd_compression_level](#network_zstd_compression_level)
 
-## network_zstd_compression_level {#network_zstd_compression_level} 
+## network_zstd_compression_level \\{#network_zstd_compression_level\\}
 
 <SettingsInfoBlock type="Int64" default_value="1" />
 
@@ -7917,7 +7917,7 @@ ClickHouse использует эту настройку при чтении д
 
 - Положительное целое число от 1 до 15.
 
-## normalize_function_names {#normalize_function_names} 
+## normalize_function_names \\{#normalize_function_names\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -7925,31 +7925,31 @@ ClickHouse использует эту настройку при чтении д
 
 Приводить имена функций к их каноническому виду
 
-## number_of_mutations_to_delay {#number_of_mutations_to_delay} 
+## number_of_mutations_to_delay \\{#number_of_mutations_to_delay\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Если в изменяемой таблице содержится не меньше указанного количества незавершённых мутаций, мутации таблицы искусственно замедляются. 0 — отключено
 
-## number_of_mutations_to_throw {#number_of_mutations_to_throw} 
+## number_of_mutations_to_throw \\{#number_of_mutations_to_throw\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Если изменяемая таблица содержит как минимум указанное количество незавершённых мутаций, выбрасывается исключение 'Too many mutations ...'. 0 — отключено
 
-## odbc_bridge_connection_pool_size {#odbc_bridge_connection_pool_size} 
+## odbc_bridge_connection_pool_size \\{#odbc_bridge_connection_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16" />
 
 Размер пула подключений для каждой строки параметров подключения в мосте ODBC.
 
-## odbc_bridge_use_connection_pooling {#odbc_bridge_use_connection_pooling} 
+## odbc_bridge_use_connection_pooling \\{#odbc_bridge_use_connection_pooling\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Использовать пул соединений в ODBC Bridge. Если установлено значение false, каждый раз создаётся новое соединение.
 
-## offset {#offset}
+## offset \{#offset\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -7988,7 +7988,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 ```
 
 
-## opentelemetry_start_trace_probability {#opentelemetry_start_trace_probability} 
+## opentelemetry_start_trace_probability \\{#opentelemetry_start_trace_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
@@ -8000,7 +8000,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - Положительное число с плавающей запятой в диапазоне [0..1]. Например, если значение настройки равно `0.5`, ClickHouse может запускать трассировку в среднем для половины запросов.
 - 1 — трассировка для всех выполняемых запросов включена.
 
-## opentelemetry_trace_cpu_scheduling {#opentelemetry_trace_cpu_scheduling} 
+## opentelemetry_trace_cpu_scheduling \\{#opentelemetry_trace_cpu_scheduling\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8008,13 +8008,13 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 Собирает спаны OpenTelemetry при преемптивном планировании CPU рабочих нагрузок.
 
-## opentelemetry_trace_processors {#opentelemetry_trace_processors} 
+## opentelemetry_trace_processors \\{#opentelemetry_trace_processors\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Собирать спаны OpenTelemetry для процессоров.
 
-## optimize_aggregation_in_order {#optimize_aggregation_in_order} 
+## optimize_aggregation_in_order \\{#optimize_aggregation_in_order\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8029,13 +8029,13 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 - [Оптимизация `GROUP BY`](/sql-reference/statements/select/group-by#group-by-optimization-depending-on-table-sorting-key)
 
-## optimize_aggregators_of_group_by_keys {#optimize_aggregators_of_group_by_keys} 
+## optimize_aggregators_of_group_by_keys \\{#optimize_aggregators_of_group_by_keys\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Удаляет агрегирующие функции min/max/any/anyLast для ключей GROUP BY из секции SELECT
 
-## optimize_and_compare_chain {#optimize_and_compare_chain} 
+## optimize_and_compare_chain \\{#optimize_and_compare_chain\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8043,7 +8043,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 Добавляет константные сравнения в цепочки условий AND, чтобы повысить эффективность фильтрации. Поддерживает операторы `<`, `<=`, `>`, `>=`, `=` и их комбинации. Например, выражение `(a < b) AND (b < c) AND (c < 5)` будет преобразовано в `(a < b) AND (b < c) AND (c < 5) AND (b < 5) AND (a < 5)`.
 
-## optimize_append_index {#optimize_append_index} 
+## optimize_append_index \\{#optimize_append_index\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8053,13 +8053,13 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 - true, false
 
-## optimize_arithmetic_operations_in_aggregate_functions {#optimize_arithmetic_operations_in_aggregate_functions} 
+## optimize_arithmetic_operations_in_aggregate_functions \\{#optimize_arithmetic_operations_in_aggregate_functions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Выносит арифметические операции за пределы агрегатных функций
 
-## optimize_const_name_size {#optimize_const_name_size} 
+## optimize_const_name_size \\{#optimize_const_name_size\\}
 
 <SettingsInfoBlock type="Int64" default_value="256" />
 
@@ -8073,7 +8073,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - 0 — всегда,
 - отрицательное целое число — никогда.
 
-## optimize_count_from_files {#optimize_count_from_files} 
+## optimize_count_from_files \\{#optimize_count_from_files\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8084,13 +8084,13 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - 0 — оптимизация отключена.
 - 1 — оптимизация включена.
 
-## optimize_distinct_in_order {#optimize_distinct_in_order} 
+## optimize_distinct_in_order \\{#optimize_distinct_in_order\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Включает оптимизацию DISTINCT, если некоторые столбцы в DISTINCT образуют префикс сортировки. Например, префикс ключа сортировки в таблице семейства MergeTree или в выражении ORDER BY.
 
-## optimize_distributed_group_by_sharding_key {#optimize_distributed_group_by_sharding_key} 
+## optimize_distributed_group_by_sharding_key \\{#optimize_distributed_group_by_sharding_key\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8126,7 +8126,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 В настоящий момент эта настройка требует `optimize_skip_unused_shards` (причина в том, что однажды она может быть включена по умолчанию, и корректная работа будет гарантирована только в том случае, если данные вставлялись через distributed таблицу, то есть распределены в соответствии с sharding_key).
 :::
 
-## optimize_empty_string_comparisons {#optimize_empty_string_comparisons} 
+## optimize_empty_string_comparisons \\{#optimize_empty_string_comparisons\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8135,7 +8135,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 Преобразует выражения вида col = '' или '' = col в empty(col), а выражения col != '' или '' != col — в notEmpty(col),
 только если столбец col имеет тип String или FixedString.
 
-## optimize_extract_common_expressions {#optimize_extract_common_expressions} 
+## optimize_extract_common_expressions \\{#optimize_extract_common_expressions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8146,7 +8146,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - индексы в простых фильтрующих выражениях
 - оптимизацию преобразования CROSS в INNER JOIN
 
-## optimize_functions_to_subcolumns {#optimize_functions_to_subcolumns} 
+## optimize_functions_to_subcolumns \\{#optimize_functions_to_subcolumns\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8170,7 +8170,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - 0 — оптимизация отключена.
 - 1 — оптимизация включена.
 
-## optimize_group_by_constant_keys {#optimize_group_by_constant_keys} 
+## optimize_group_by_constant_keys \\{#optimize_group_by_constant_keys\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8178,25 +8178,25 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 Оптимизировать GROUP BY, если все ключи в блоке являются константами
 
-## optimize_group_by_function_keys {#optimize_group_by_function_keys} 
+## optimize_group_by_function_keys \\{#optimize_group_by_function_keys\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Устраняет функции от других ключей в секции GROUP BY
 
-## optimize_if_chain_to_multiif {#optimize_if_chain_to_multiif} 
+## optimize_if_chain_to_multiif \\{#optimize_if_chain_to_multiif\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Заменяет цепочки if(cond1, then1, if(cond2, ...)) на multiIf. В настоящее время это не даёт преимуществ по производительности для числовых типов.
 
-## optimize_if_transform_strings_to_enum {#optimize_if_transform_strings_to_enum} 
+## optimize_if_transform_strings_to_enum \\{#optimize_if_transform_strings_to_enum\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Заменяет строковые аргументы в функциях If и Transform на тип enum. По умолчанию отключена, поскольку может привести к неконсистентным изменениям в распределённом запросе и вызвать его сбой.
 
-## optimize_injective_functions_in_group_by {#optimize_injective_functions_in_group_by} 
+## optimize_injective_functions_in_group_by \\{#optimize_injective_functions_in_group_by\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8204,13 +8204,13 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 Заменяет инъективные функции на их аргументы в разделе GROUP BY
 
-## optimize_injective_functions_inside_uniq {#optimize_injective_functions_inside_uniq} 
+## optimize_injective_functions_inside_uniq \\{#optimize_injective_functions_inside_uniq\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Удаляет инъективные функции с одним аргументом внутри функций uniq*().
 
-## optimize_inverse_dictionary_lookup {#optimize_inverse_dictionary_lookup} 
+## optimize_inverse_dictionary_lookup \\{#optimize_inverse_dictionary_lookup\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8218,19 +8218,19 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 Позволяет избежать повторных обратных поисков в словаре, выполняя более быстрый поиск по предварительно вычисленному набору возможных значений ключей.
 
-## optimize_min_equality_disjunction_chain_length {#optimize_min_equality_disjunction_chain_length} 
+## optimize_min_equality_disjunction_chain_length \\{#optimize_min_equality_disjunction_chain_length\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3" />
 
 Минимальная длина выражения вида `expr = x1 OR ... expr = xN` для оптимизации
 
-## optimize_min_inequality_conjunction_chain_length {#optimize_min_inequality_conjunction_chain_length} 
+## optimize_min_inequality_conjunction_chain_length \\{#optimize_min_inequality_conjunction_chain_length\\}
 
 <SettingsInfoBlock type="UInt64" default_value="3" />
 
 Минимальная длина выражения `expr <> x1 AND ... expr <> xN`, при которой выполняется оптимизация
 
-## optimize_move_to_prewhere {#optimize_move_to_prewhere} 
+## optimize_move_to_prewhere \\{#optimize_move_to_prewhere\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8243,7 +8243,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - 0 — автоматическая оптимизация `PREWHERE` отключена.
 - 1 — автоматическая оптимизация `PREWHERE` включена.
 
-## optimize_move_to_prewhere_if_final {#optimize_move_to_prewhere_if_final} 
+## optimize_move_to_prewhere_if_final \\{#optimize_move_to_prewhere_if_final\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8260,13 +8260,13 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 - настройка [optimize_move_to_prewhere](#optimize_move_to_prewhere)
 
-## optimize_multiif_to_if {#optimize_multiif_to_if} 
+## optimize_multiif_to_if \\{#optimize_multiif_to_if\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Заменяет `multiIf` с единственным условием на `if`.
 
-## optimize_normalize_count_variants {#optimize_normalize_count_variants} 
+## optimize_normalize_count_variants \\{#optimize_normalize_count_variants\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8274,7 +8274,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 Переписывает агрегатные функции, семантически эквивалентные count(), в count().
 
-## optimize_on_insert {#optimize_on_insert}
+## optimize_on_insert \{#optimize_on_insert\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8331,13 +8331,13 @@ SELECT * FROM test2;
 Обратите внимание, что этот параметр влияет на поведение [materialized view](/sql-reference/statements/create/view#materialized-view).
 
 
-## optimize_or_like_chain {#optimize_or_like_chain} 
+## optimize_or_like_chain \\{#optimize_or_like_chain\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Объединяет несколько условий OR LIKE в вызов multiMatchAny. Эту оптимизацию не следует включать по умолчанию, поскольку в некоторых случаях она нарушает анализ индексов.
 
-## optimize_qbit_distance_function_reads {#optimize_qbit_distance_function_reads} 
+## optimize_qbit_distance_function_reads \\{#optimize_qbit_distance_function_reads\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8345,7 +8345,7 @@ SELECT * FROM test2;
 
 Заменяет функции расстояния для типа данных `QBit` на эквивалентные, которые считывают из хранилища только необходимые для вычисления столбцы.
 
-## optimize_read_in_order {#optimize_read_in_order} 
+## optimize_read_in_order \\{#optimize_read_in_order\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8360,25 +8360,25 @@ SELECT * FROM test2;
 
 - [Оператор ORDER BY](/sql-reference/statements/select/order-by#optimization-of-data-reading)
 
-## optimize_read_in_window_order {#optimize_read_in_window_order} 
+## optimize_read_in_window_order \\{#optimize_read_in_window_order\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Включает оптимизацию ORDER BY в оконной части запроса для чтения данных в соответствующем порядке в таблицах MergeTree.
 
-## optimize_redundant_functions_in_order_by {#optimize_redundant_functions_in_order_by} 
+## optimize_redundant_functions_in_order_by \\{#optimize_redundant_functions_in_order_by\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Удаляет функции из ORDER BY, если их аргумент также указан в ORDER BY
 
-## optimize_respect_aliases {#optimize_respect_aliases} 
+## optimize_respect_aliases \\{#optimize_respect_aliases\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Если установлено значение true, будут учитываться алиасы в предложениях WHERE/GROUP BY/ORDER BY, что помогает при отсечении партиций, использовании вторичных индексов и работе настроек optimize_aggregation_in_order/optimize_read_in_order/optimize_trivial_count.
 
-## optimize_rewrite_aggregate_function_with_if {#optimize_rewrite_aggregate_function_with_if} 
+## optimize_rewrite_aggregate_function_with_if \\{#optimize_rewrite_aggregate_function_with_if\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8389,13 +8389,13 @@ SELECT * FROM test2;
 Поддерживается только при использовании анализатора (`enable_analyzer = 1`).
 :::
 
-## optimize_rewrite_array_exists_to_has {#optimize_rewrite_array_exists_to_has} 
+## optimize_rewrite_array_exists_to_has \\{#optimize_rewrite_array_exists_to_has\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Переписывает вызовы функции arrayExists() на has(), когда это логически эквивалентно. Например, arrayExists(x -> x = 1, arr) может быть переписана как has(arr, 1).
 
-## optimize_rewrite_like_perfect_affix {#optimize_rewrite_like_perfect_affix} 
+## optimize_rewrite_like_perfect_affix \\{#optimize_rewrite_like_perfect_affix\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8403,7 +8403,7 @@ SELECT * FROM test2;
 
 Переписывает выражения LIKE с полным префиксом или суффиксом (например, `col LIKE 'ClickHouse%'`) в вызовы функций startsWith или endsWith (например, `startsWith(col, 'ClickHouse')`).
 
-## optimize_rewrite_regexp_functions {#optimize_rewrite_regexp_functions} 
+## optimize_rewrite_regexp_functions \\{#optimize_rewrite_regexp_functions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8411,7 +8411,7 @@ SELECT * FROM test2;
 
 Преобразует функции работы с регулярными выражениями в более простые и эффективные формы
 
-## optimize_rewrite_sum_if_to_count_if {#optimize_rewrite_sum_if_to_count_if} 
+## optimize_rewrite_sum_if_to_count_if \\{#optimize_rewrite_sum_if_to_count_if\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8419,7 +8419,7 @@ SELECT * FROM test2;
 
 Переписывать вызовы функций sumIf() и sum(if()) в countIf(), когда они логически эквивалентны
 
-## optimize_skip_merged_partitions {#optimize_skip_merged_partitions} 
+## optimize_skip_merged_partitions \\{#optimize_skip_merged_partitions\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8434,7 +8434,7 @@ SELECT * FROM test2;
 - 1 - Включить оптимизацию.
 - 0 - Отключить оптимизацию.
 
-## optimize_skip_unused_shards {#optimize_skip_unused_shards} 
+## optimize_skip_unused_shards \\{#optimize_skip_unused_shards\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8449,7 +8449,7 @@ SELECT * FROM test2;
 - 0 — Отключено.
 - 1 — Включено.
 
-## optimize_skip_unused_shards_limit {#optimize_skip_unused_shards_limit} 
+## optimize_skip_unused_shards_limit \\{#optimize_skip_unused_shards_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -8457,7 +8457,7 @@ SELECT * FROM test2;
 
 Слишком большое количество значений может потребовать значительных ресурсов на обработку, при этом выгода сомнительна, поскольку если у вас огромное количество значений в `IN (...)`, то, скорее всего, запрос всё равно будет отправлен на все сегменты.
 
-## optimize_skip_unused_shards_nesting {#optimize_skip_unused_shards_nesting} 
+## optimize_skip_unused_shards_nesting \\{#optimize_skip_unused_shards_nesting\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -8469,7 +8469,7 @@ SELECT * FROM test2;
 - 1 — Включает `optimize_skip_unused_shards` только для первого уровня вложенности.
 - 2 — Включает `optimize_skip_unused_shards` до второго уровня вложенности включительно.
 
-## optimize_skip_unused_shards_rewrite_in {#optimize_skip_unused_shards_rewrite_in} 
+## optimize_skip_unused_shards_rewrite_in \\{#optimize_skip_unused_shards_rewrite_in\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8480,13 +8480,13 @@ SELECT * FROM test2;
 - 0 — Отключено.
 - 1 — Включено.
 
-## optimize_sorting_by_input_stream_properties {#optimize_sorting_by_input_stream_properties} 
+## optimize_sorting_by_input_stream_properties \\{#optimize_sorting_by_input_stream_properties\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Оптимизировать сортировку с учётом свойств входного потока
 
-## optimize_substitute_columns {#optimize_substitute_columns} 
+## optimize_substitute_columns \\{#optimize_substitute_columns\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8496,7 +8496,7 @@ SELECT * FROM test2;
 
 - true, false
 
-## optimize_syntax_fuse_functions {#optimize_syntax_fuse_functions}
+## optimize_syntax_fuse_functions \{#optimize_syntax_fuse_functions\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8529,7 +8529,7 @@ FROM fuse_tbl
 ```
 
 
-## optimize_throw_if_noop {#optimize_throw_if_noop} 
+## optimize_throw_if_noop \\{#optimize_throw_if_noop\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8542,7 +8542,7 @@ FROM fuse_tbl
 - 1 — Генерация исключения включена.
 - 0 — Генерация исключения отключена.
 
-## optimize_time_filter_with_preimage {#optimize_time_filter_with_preimage} 
+## optimize_time_filter_with_preimage \\{#optimize_time_filter_with_preimage\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8550,7 +8550,7 @@ FROM fuse_tbl
 
 Оптимизирует предикаты типов Date и DateTime, преобразуя функции в эквивалентные сравнения без дополнительных преобразований (например, `toYear(col) = 2023 -> col >= '2023-01-01' AND col <= '2023-12-31'`)
 
-## optimize_trivial_approximate_count_query {#optimize_trivial_approximate_count_query} 
+## optimize_trivial_approximate_count_query \\{#optimize_trivial_approximate_count_query\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8561,7 +8561,7 @@ FROM fuse_tbl
 - 0 — Оптимизация отключена.
    - 1 — Оптимизация включена.
 
-## optimize_trivial_count_query {#optimize_trivial_count_query} 
+## optimize_trivial_count_query \\{#optimize_trivial_count_query\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8578,7 +8578,7 @@ FROM fuse_tbl
 
 - [optimize_functions_to_subcolumns](#optimize_functions_to_subcolumns)
 
-## optimize_trivial_insert_select {#optimize_trivial_insert_select} 
+## optimize_trivial_insert_select \\{#optimize_trivial_insert_select\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8586,19 +8586,19 @@ FROM fuse_tbl
 
 Оптимизировать тривиальные запросы вида `INSERT INTO table SELECT ... FROM TABLES`
 
-## optimize_uniq_to_count {#optimize_uniq_to_count} 
+## optimize_uniq_to_count \\{#optimize_uniq_to_count\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Переписывает uniq и его варианты (кроме uniqUpTo) на count, если подзапрос содержит предложение DISTINCT или GROUP BY.
 
-## optimize_use_implicit_projections {#optimize_use_implicit_projections} 
+## optimize_use_implicit_projections \\{#optimize_use_implicit_projections\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Автоматически выбирать неявные PROJECTION при выполнении запроса SELECT
 
-## optimize_use_projection_filtering {#optimize_use_projection_filtering} 
+## optimize_use_projection_filtering \\{#optimize_use_projection_filtering\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8606,7 +8606,7 @@ FROM fuse_tbl
 
 Включает использование проекций для фильтрации диапазонов партиций даже в тех случаях, когда проекции не задействованы при выполнении запроса SELECT.
 
-## optimize_use_projections {#optimize_use_projections} 
+## optimize_use_projections \\{#optimize_use_projections\\}
 
 **Псевдонимы**: `allow_experimental_projection_optimization`
 
@@ -8619,7 +8619,7 @@ FROM fuse_tbl
 - 0 — Оптимизация проекций отключена.
 - 1 — Оптимизация проекций включена.
 
-## optimize_using_constraints {#optimize_using_constraints} 
+## optimize_using_constraints \\{#optimize_using_constraints\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8629,7 +8629,7 @@ FROM fuse_tbl
 
 - true, false
 
-## os_threads_nice_value_materialized_view {#os_threads_nice_value_materialized_view} 
+## os_threads_nice_value_materialized_view \\{#os_threads_nice_value_materialized_view\\}
 
 <SettingsInfoBlock type="Int32" default_value="0" />
 
@@ -8641,7 +8641,7 @@ FROM fuse_tbl
 
 Возможные значения: от -20 до 19.
 
-## os_threads_nice_value_query {#os_threads_nice_value_query} 
+## os_threads_nice_value_query \\{#os_threads_nice_value_query\\}
 
 **Псевдонимы**: `os_thread_priority`
 
@@ -8655,7 +8655,7 @@ FROM fuse_tbl
 
 Возможные значения: от -20 до 19.
 
-## page_cache_block_size {#page_cache_block_size} 
+## page_cache_block_size \\{#page_cache_block_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
 
@@ -8667,7 +8667,7 @@ FROM fuse_tbl
 
 Большее значение, например 1 MiB, подходит для запросов с высоким объемом обработки, а меньшее значение, например 64 KiB, — для точечных запросов с низкой задержкой.
 
-## page_cache_inject_eviction {#page_cache_inject_eviction} 
+## page_cache_inject_eviction \\{#page_cache_inject_eviction\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8675,7 +8675,7 @@ FROM fuse_tbl
 
 Кэш страниц в пространстве пользователя иногда случайным образом сбрасывает некоторые страницы. Параметр предназначен для тестирования.
 
-## page_cache_lookahead_blocks {#page_cache_lookahead_blocks} 
+## page_cache_lookahead_blocks \\{#page_cache_lookahead_blocks\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16" />
 
@@ -8685,7 +8685,7 @@ FROM fuse_tbl
 
 Большее значение лучше подходит для высокопроизводительных запросов с большим объемом данных, тогда как точечные запросы с низкой задержкой будут работать лучше без предварительного чтения (readahead).
 
-## parallel_distributed_insert_select {#parallel_distributed_insert_select} 
+## parallel_distributed_insert_select \\{#parallel_distributed_insert_select\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
@@ -8703,7 +8703,7 @@ FROM fuse_tbl
 
 При использовании этого параметра необходимо включить настройку `enable_parallel_replicas = 1`.
 
-## parallel_hash_join_threshold {#parallel_hash_join_threshold} 
+## parallel_hash_join_threshold \\{#parallel_hash_join_threshold\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100000" />
 
@@ -8712,7 +8712,7 @@ FROM fuse_tbl
 При использовании алгоритма соединения по хэшу это пороговое значение помогает выбрать между `hash` и `parallel_hash` (только если доступна оценка размера правой таблицы).
 Вариант `hash` используется, когда известно, что размер правой таблицы меньше этого порогового значения.
 
-## parallel_replica_offset {#parallel_replica_offset} 
+## parallel_replica_offset \\{#parallel_replica_offset\\}
 
 <BetaBadge/>
 
@@ -8720,7 +8720,7 @@ FROM fuse_tbl
 
 Это внутренняя настройка, не предназначенная для прямого использования; она является деталью реализации режима parallel replicas. Это значение автоматически задаётся сервером-инициатором для распределённых запросов к индексу реплики, участвующей в обработке запроса среди параллельных реплик.
 
-## parallel_replicas_allow_in_with_subquery {#parallel_replicas_allow_in_with_subquery} 
+## parallel_replicas_allow_in_with_subquery \\{#parallel_replicas_allow_in_with_subquery\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8728,7 +8728,7 @@ FROM fuse_tbl
 
 Если параметр включён, подзапрос в выражении IN выполняется на каждой ведомой реплике.
 
-## parallel_replicas_allow_materialized_views {#parallel_replicas_allow_materialized_views} 
+## parallel_replicas_allow_materialized_views \\{#parallel_replicas_allow_materialized_views\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8736,7 +8736,7 @@ FROM fuse_tbl
 
 Разрешает использование materialized views с параллельными репликами
 
-## parallel_replicas_connect_timeout_ms {#parallel_replicas_connect_timeout_ms} 
+## parallel_replicas_connect_timeout_ms \\{#parallel_replicas_connect_timeout_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="300" />
 
@@ -8744,7 +8744,7 @@ FROM fuse_tbl
 
 Таймаут в миллисекундах для подключения к удалённой реплике во время выполнения запроса с параллельными репликами. Если таймаут истекает, соответствующая реплика не используется для выполнения запроса.
 
-## parallel_replicas_count {#parallel_replicas_count} 
+## parallel_replicas_count \\{#parallel_replicas_count\\}
 
 <BetaBadge/>
 
@@ -8752,7 +8752,7 @@ FROM fuse_tbl
 
 Это внутренняя настройка, которая не должна использоваться напрямую и представляет собой деталь реализации режима «parallel replicas». Это значение будет автоматически установлено инициирующим сервером для распределённых запросов в значение, равное количеству параллельных реплик, участвующих в обработке запроса.
 
-## parallel_replicas_custom_key {#parallel_replicas_custom_key} 
+## parallel_replicas_custom_key \\{#parallel_replicas_custom_key\\}
 
 <BetaBadge/>
 
@@ -8764,7 +8764,7 @@ FROM fuse_tbl
 Если настройка используется в кластере, состоящем из одного сегмента с несколькими репликами, эти реплики будут преобразованы в виртуальные сегменты.
 В остальных случаях параметр ведёт себя аналогично ключу `SAMPLE`: используются несколько реплик каждого сегмента.
 
-## parallel_replicas_custom_key_range_lower {#parallel_replicas_custom_key_range_lower} 
+## parallel_replicas_custom_key_range_lower \\{#parallel_replicas_custom_key_range_lower\\}
 
 <BetaBadge/>
 
@@ -8778,7 +8778,7 @@ FROM fuse_tbl
 
 Примечание: эта настройка не приводит к дополнительной фильтрации данных во время обработки запроса, а изменяет точки разбиения диапазона `[0, INT_MAX]` для параллельной обработки.
 
-## parallel_replicas_custom_key_range_upper {#parallel_replicas_custom_key_range_upper} 
+## parallel_replicas_custom_key_range_upper \\{#parallel_replicas_custom_key_range_upper\\}
 
 <BetaBadge/>
 
@@ -8792,7 +8792,7 @@ FROM fuse_tbl
 
 Примечание: Эта настройка не приводит к дополнительной фильтрации данных во время обработки запроса, а лишь изменяет точки, в которых фильтр диапазона разбивает диапазон `[0, INT_MAX]` для параллельной обработки.
 
-## parallel_replicas_for_cluster_engines {#parallel_replicas_for_cluster_engines} 
+## parallel_replicas_for_cluster_engines \\{#parallel_replicas_for_cluster_engines\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8800,13 +8800,13 @@ FROM fuse_tbl
 
 Заменяет движки табличных функций на их варианты с суффиксом -Cluster
 
-## parallel_replicas_for_non_replicated_merge_tree {#parallel_replicas_for_non_replicated_merge_tree} 
+## parallel_replicas_for_non_replicated_merge_tree \\{#parallel_replicas_for_non_replicated_merge_tree\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Если параметр включён, ClickHouse будет использовать алгоритм параллельных реплик также для нереплицированных таблиц MergeTree
 
-## parallel_replicas_index_analysis_only_on_coordinator {#parallel_replicas_index_analysis_only_on_coordinator} 
+## parallel_replicas_index_analysis_only_on_coordinator \\{#parallel_replicas_index_analysis_only_on_coordinator\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8814,7 +8814,7 @@ FROM fuse_tbl
 
 Анализ индексов выполняется только на реплике-координаторе и не выполняется на других репликах. Действует только при включённом parallel_replicas_local_pla
 
-## parallel_replicas_insert_select_local_pipeline {#parallel_replicas_insert_select_local_pipeline} 
+## parallel_replicas_insert_select_local_pipeline \\{#parallel_replicas_insert_select_local_pipeline\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8822,7 +8822,7 @@ FROM fuse_tbl
 
 Использовать локальный конвейер выполнения при распределённом INSERT SELECT с параллельными репликами
 
-## parallel_replicas_local_plan {#parallel_replicas_local_plan} 
+## parallel_replicas_local_plan \\{#parallel_replicas_local_plan\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8830,7 +8830,7 @@ FROM fuse_tbl
 
 Строить локальный план для локальной реплики
 
-## parallel_replicas_mark_segment_size {#parallel_replicas_mark_segment_size} 
+## parallel_replicas_mark_segment_size \\{#parallel_replicas_mark_segment_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -8838,13 +8838,13 @@ FROM fuse_tbl
 
 Части виртуально разбиваются на сегменты для распределения между репликами при параллельном чтении. Эта настройка управляет размером этих сегментов. Не рекомендуется изменять этот параметр, пока вы не будете абсолютно уверены в своих действиях. Значение должно быть в диапазоне [128; 16384].
 
-## parallel_replicas_min_number_of_rows_per_replica {#parallel_replicas_min_number_of_rows_per_replica} 
+## parallel_replicas_min_number_of_rows_per_replica \\{#parallel_replicas_min_number_of_rows_per_replica\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Ограничивает количество реплик, используемых в запросе, значением (оценочное количество строк, подлежащих чтению / min_number_of_rows_per_replica). Максимальное количество по‑прежнему ограничено параметром `max_parallel_replicas`.
 
-## parallel_replicas_mode {#parallel_replicas_mode} 
+## parallel_replicas_mode \\{#parallel_replicas_mode\\}
 
 <SettingsInfoBlock type="ParallelReplicasMode" default_value="read_tasks" />
 
@@ -8852,7 +8852,7 @@ FROM fuse_tbl
 
 Тип фильтра, используемый с пользовательским ключом для параллельных реплик. `default` — использовать операцию взятия по модулю над пользовательским ключом, `range` — использовать фильтр по диапазону по пользовательскому ключу, перебирая все возможные значения для типа значения пользовательского ключа.
 
-## parallel_replicas_only_with_analyzer {#parallel_replicas_only_with_analyzer} 
+## parallel_replicas_only_with_analyzer \\{#parallel_replicas_only_with_analyzer\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8860,7 +8860,7 @@ FROM fuse_tbl
 
 Для использования параллельных реплик должен быть включён analyzer. При отключённом analyzer выполнение запроса возвращается к локальному, даже если включено параллельное чтение с реплик. Использование параллельных реплик при выключенном analyzer не поддерживается.
 
-## parallel_replicas_prefer_local_join {#parallel_replicas_prefer_local_join} 
+## parallel_replicas_prefer_local_join \\{#parallel_replicas_prefer_local_join\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8868,7 +8868,7 @@ FROM fuse_tbl
 
 Если имеет значение true и JOIN может быть выполнен с использованием алгоритма параллельных реплик, а все хранилища правой части JOIN используют движок *MergeTree, будет выполнен локальный JOIN вместо GLOBAL JOIN.
 
-## parallel_replicas_support_projection {#parallel_replicas_support_projection} 
+## parallel_replicas_support_projection \\{#parallel_replicas_support_projection\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8876,13 +8876,13 @@ FROM fuse_tbl
 
 Оптимизацию проекций можно применять на параллельных репликах. Работает только при включенном parallel_replicas_local_plan и выключенном aggregation_in_order.
 
-## parallel_view_processing {#parallel_view_processing} 
+## parallel_view_processing \\{#parallel_view_processing\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Включает параллельную запись в присоединённые представления вместо последовательной.
 
-## parallelize_output_from_storages {#parallelize_output_from_storages} 
+## parallelize_output_from_storages \\{#parallelize_output_from_storages\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8890,7 +8890,7 @@ FROM fuse_tbl
 
 Параллелизует вывод на этапе чтения из хранилища. Включает параллельную обработку запроса непосредственно после чтения из хранилища, если это возможно.
 
-## parsedatetime_e_requires_space_padding {#parsedatetime_e_requires_space_padding} 
+## parsedatetime_e_requires_space_padding \\{#parsedatetime_e_requires_space_padding\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8898,7 +8898,7 @@ FROM fuse_tbl
 
 Спецификатор формата '%e' в функции 'parseDateTime' ожидает, что однозначные значения дня будут дополнены пробелом, например, ' 2' принимается, а '2' приводит к ошибке.
 
-## parsedatetime_parse_without_leading_zeros {#parsedatetime_parse_without_leading_zeros} 
+## parsedatetime_parse_without_leading_zeros \\{#parsedatetime_parse_without_leading_zeros\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8906,13 +8906,13 @@ FROM fuse_tbl
 
 Спецификаторы формата '%c', '%l' и '%k' в функции 'parseDateTime' разбирают значения месяцев и часов без ведущих нулей.
 
-## partial_merge_join_left_table_buffer_bytes {#partial_merge_join_left_table_buffer_bytes} 
+## partial_merge_join_left_table_buffer_bytes \\{#partial_merge_join_left_table_buffer_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Если не равно 0, объединяет блоки левой таблицы в более крупные при partial merge join. Может использовать до 2× указанного объёма памяти на каждый поток соединения.
 
-## partial_merge_join_rows_in_right_blocks {#partial_merge_join_rows_in_right_blocks} 
+## partial_merge_join_rows_in_right_blocks \\{#partial_merge_join_rows_in_right_blocks\\}
 
 <SettingsInfoBlock type="UInt64" default_value="65536" />
 
@@ -8928,25 +8928,25 @@ FROM fuse_tbl
 
 - Любое положительное целое число. Рекомендуемый диапазон значений: \[1000, 100000\].
 
-## partial_result_on_first_cancel {#partial_result_on_first_cancel} 
+## partial_result_on_first_cancel \\{#partial_result_on_first_cancel\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Позволяет запросу вернуть частичный результат после его отмены.
 
-## parts_to_delay_insert {#parts_to_delay_insert} 
+## parts_to_delay_insert \\{#parts_to_delay_insert\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Если в целевой таблице в одной партиции уже содержится как минимум столько активных частей, вставка в таблицу искусственно замедляется.
 
-## parts_to_throw_insert {#parts_to_throw_insert} 
+## parts_to_throw_insert \\{#parts_to_throw_insert\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Если активных частей в одной партиции таблицы назначения становится больше этого числа, выбрасывается исключение 'Too many parts ...'.
 
-## per_part_index_stats {#per_part_index_stats} 
+## per_part_index_stats \\{#per_part_index_stats\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -8954,13 +8954,13 @@ FROM fuse_tbl
 
 Логирует статистику индекса по каждому парту
 
-## poll_interval {#poll_interval} 
+## poll_interval \\{#poll_interval\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
 Блокирует цикл ожидания запросов на сервере на указанное количество секунд.
 
-## postgresql_connection_attempt_timeout {#postgresql_connection_attempt_timeout} 
+## postgresql_connection_attempt_timeout \\{#postgresql_connection_attempt_timeout\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
@@ -8969,13 +8969,13 @@ FROM fuse_tbl
 Тайм-аут (в секундах) для одной попытки установления соединения с конечной точкой PostgreSQL.
 Значение передается как параметр `connect_timeout` в URL подключения.
 
-## postgresql_connection_pool_auto_close_connection {#postgresql_connection_pool_auto_close_connection} 
+## postgresql_connection_pool_auto_close_connection \\{#postgresql_connection_pool_auto_close_connection\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Закрывать соединение перед возвратом его в пул.
 
-## postgresql_connection_pool_retries {#postgresql_connection_pool_retries} 
+## postgresql_connection_pool_retries \\{#postgresql_connection_pool_retries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
@@ -8983,19 +8983,19 @@ FROM fuse_tbl
 
 Количество повторных попыток операций push/pop в пуле соединений для табличного движка PostgreSQL и движка базы данных PostgreSQL.
 
-## postgresql_connection_pool_size {#postgresql_connection_pool_size} 
+## postgresql_connection_pool_size \\{#postgresql_connection_pool_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16" />
 
 Размер пула подключений для движка таблиц PostgreSQL и движка базы данных PostgreSQL.
 
-## postgresql_connection_pool_wait_timeout {#postgresql_connection_pool_wait_timeout} 
+## postgresql_connection_pool_wait_timeout \\{#postgresql_connection_pool_wait_timeout\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000" />
 
 Таймаут операций push/pop с пулом соединений при пустом пуле для движка таблицы PostgreSQL и движка базы данных PostgreSQL. По умолчанию при пустом пуле операции блокируются.
 
-## postgresql_fault_injection_probability {#postgresql_fault_injection_probability} 
+## postgresql_fault_injection_probability \\{#postgresql_fault_injection_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
@@ -9003,7 +9003,7 @@ FROM fuse_tbl
 
 Оценочная вероятность сбоя внутренних (репликационных) запросов PostgreSQL. Допустимое значение — в интервале [0.0f, 1.0f].
 
-## prefer_column_name_to_alias {#prefer_column_name_to_alias}
+## prefer_column_name_to_alias \{#prefer_column_name_to_alias\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9048,7 +9048,7 @@ SELECT avg(number) AS number, max(number) FROM numbers(10);
 ```
 
 
-## prefer_external_sort_block_bytes {#prefer_external_sort_block_bytes} 
+## prefer_external_sort_block_bytes \\{#prefer_external_sort_block_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16744704" />
 
@@ -9056,7 +9056,7 @@ SELECT avg(number) AS number, max(number) FROM numbers(10);
 
 Использовать максимально возможный размер блока для внешней сортировки, чтобы уменьшить потребление памяти при слиянии.
 
-## prefer_global_in_and_join {#prefer_global_in_and_join} 
+## prefer_global_in_and_join \\{#prefer_global_in_and_join\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9079,7 +9079,7 @@ SELECT avg(number) AS number, max(number) FROM numbers(10);
 
 - [Распределённые подзапросы](/sql-reference/operators/in#distributed-subqueries) для получения дополнительной информации об использовании `GLOBAL IN`/`GLOBAL JOIN`
 
-## prefer_localhost_replica {#prefer_localhost_replica} 
+## prefer_localhost_replica \\{#prefer_localhost_replica\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9096,7 +9096,7 @@ SELECT avg(number) AS number, max(number) FROM numbers(10);
 Если она используется в кластере с одним сегментом и несколькими репликами, отключение этой настройки негативно скажется на работе кластера.
 :::
 
-## prefer_warmed_unmerged_parts_seconds {#prefer_warmed_unmerged_parts_seconds} 
+## prefer_warmed_unmerged_parts_seconds \\{#prefer_warmed_unmerged_parts_seconds\\}
 
 <CloudOnlyBadge/>
 
@@ -9104,19 +9104,19 @@ SELECT avg(number) AS number, max(number) FROM numbers(10);
 
 Действует только в ClickHouse Cloud. Если слитая часть была создана менее чем указанное количество секунд назад и не была предварительно прогрета (см. [cache_populated_by_fetch](merge-tree-settings.md/#cache_populated_by_fetch)), но все её исходные части доступны и предварительно прогреты, запросы SELECT будут вместо этого читать из этих частей. Применяется только для Replicated-/SharedMergeTree. Учтите, что эта настройка лишь проверяет, обрабатывалась ли часть CacheWarmer: если часть была загружена в кэш чем‑то другим, она всё равно будет считаться «холодной», пока до неё не дойдёт CacheWarmer; если же она была прогрета, а затем вытеснена из кэша, она всё равно будет считаться «тёплой».
 
-## preferred_block_size_bytes {#preferred_block_size_bytes} 
+## preferred_block_size_bytes \\{#preferred_block_size_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />
 
 Этот параметр настраивает размер блока данных для обработки запроса и служит дополнительной тонкой настройкой по сравнению с более грубым параметром `max_block_size`. Если столбцы большие и при `max_block_size` строк размер блока, вероятно, будет больше заданного количества байт, его размер будет уменьшен для улучшения локальности кэша процессора.
 
-## preferred_max_column_in_block_size_bytes {#preferred_max_column_in_block_size_bytes} 
+## preferred_max_column_in_block_size_bytes \\{#preferred_max_column_in_block_size_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Ограничение максимального размера столбца в блоке при чтении. Помогает уменьшить количество промахов кэша. Значение должно быть близко к размеру кэша L2.
 
-## preferred_optimize_projection_name {#preferred_optimize_projection_name} 
+## preferred_optimize_projection_name \\{#preferred_optimize_projection_name\\}
 
 Если параметр установлен в непустую строку, ClickHouse попытается применить указанную проекцию в запросе.
 
@@ -9124,13 +9124,13 @@ SELECT avg(number) AS number, max(number) FROM numbers(10);
 
 - string: имя предпочтительной проекции
 
-## prefetch_buffer_size {#prefetch_buffer_size} 
+## prefetch_buffer_size \\{#prefetch_buffer_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
 
 Максимальный размер буфера опережающего чтения из файловой системы.
 
-## print_pretty_type_names {#print_pretty_type_names}
+## print_pretty_type_names \{#print_pretty_type_names\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9168,13 +9168,13 @@ a   Tuple(
 ```
 
 
-## priority {#priority} 
+## priority \\{#priority\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Приоритет запроса. 1 — наивысший, чем больше значение, тем ниже приоритет; 0 — не использовать приоритеты.
 
-## promql_database {#promql_database} 
+## promql_database \\{#promql_database\\}
 
 <ExperimentalBadge/>
 
@@ -9182,7 +9182,7 @@ a   Tuple(
 
 Указывает имя базы данных, используемой диалектом `promql`. Пустая строка означает текущую базу данных.
 
-## promql_evaluation_time {#promql_evaluation_time} 
+## promql_evaluation_time \\{#promql_evaluation_time\\}
 
 <ExperimentalBadge/>
 
@@ -9194,7 +9194,7 @@ a   Tuple(
 
 Задаёт момент времени, используемый при вычислении запросов в диалекте PromQL. Значение `auto` соответствует текущему времени.
 
-## promql_table {#promql_table} 
+## promql_table \\{#promql_table\\}
 
 <ExperimentalBadge/>
 
@@ -9202,7 +9202,7 @@ a   Tuple(
 
 Задает имя таблицы TimeSeries, используемой диалектом 'promql'.
 
-## push_external_roles_in_interserver_queries {#push_external_roles_in_interserver_queries} 
+## push_external_roles_in_interserver_queries \\{#push_external_roles_in_interserver_queries\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9210,7 +9210,7 @@ a   Tuple(
 
 Включает передачу пользовательских ролей от узла-инициатора к другим узлам кластера при выполнении запроса.
 
-## query_cache_compress_entries {#query_cache_compress_entries} 
+## query_cache_compress_entries \\{#query_cache_compress_entries\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9221,7 +9221,7 @@ a   Tuple(
 - 0 - Отключено
 - 1 - Включено
 
-## query_cache_max_entries {#query_cache_max_entries} 
+## query_cache_max_entries \\{#query_cache_max_entries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -9231,7 +9231,7 @@ a   Tuple(
 
 - Положительное целое число >= 0.
 
-## query_cache_max_size_in_bytes {#query_cache_max_size_in_bytes} 
+## query_cache_max_size_in_bytes \\{#query_cache_max_size_in_bytes\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -9241,7 +9241,7 @@ a   Tuple(
 
 - Целое число >= 0.
 
-## query_cache_min_query_duration {#query_cache_min_query_duration} 
+## query_cache_min_query_duration \\{#query_cache_min_query_duration\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="0" />
 
@@ -9251,7 +9251,7 @@ a   Tuple(
 
 - Положительное целое число >= 0.
 
-## query_cache_min_query_runs {#query_cache_min_query_runs} 
+## query_cache_min_query_runs \\{#query_cache_min_query_runs\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -9261,7 +9261,7 @@ a   Tuple(
 
 - Целое число, большее или равное 0.
 
-## query_cache_nondeterministic_function_handling {#query_cache_nondeterministic_function_handling} 
+## query_cache_nondeterministic_function_handling \\{#query_cache_nondeterministic_function_handling\\}
 
 <SettingsInfoBlock type="QueryResultCacheNondeterministicFunctionHandling" default_value="throw" />
 
@@ -9273,7 +9273,7 @@ a   Tuple(
 - `'save'` — Кэшировать результат запроса.
 - `'ignore'` — Не кэшировать результат запроса и не генерировать исключение.
 
-## query_cache_share_between_users {#query_cache_share_between_users} 
+## query_cache_share_between_users \\{#query_cache_share_between_users\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9285,7 +9285,7 @@ a   Tuple(
 - 0 — Отключено
 - 1 — Включено
 
-## query_cache_squash_partial_results {#query_cache_squash_partial_results} 
+## query_cache_squash_partial_results \\{#query_cache_squash_partial_results\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9296,7 +9296,7 @@ a   Tuple(
 - 0 - Отключено
 - 1 - Включено
 
-## query_cache_system_table_handling {#query_cache_system_table_handling} 
+## query_cache_system_table_handling \\{#query_cache_system_table_handling\\}
 
 <SettingsInfoBlock type="QueryResultCacheSystemTableHandling" default_value="throw" />
 
@@ -9310,7 +9310,7 @@ a   Tuple(
 - `'save'` — Кэшировать результат запроса.
 - `'ignore'` — Не кэшировать результат запроса и не генерировать исключение.
 
-## query_cache_tag {#query_cache_tag} 
+## query_cache_tag \\{#query_cache_tag\\}
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.8"},{"label": ""},{"label": "Новая настройка для пометки настроек кэша запросов."}]}]}/>
 
@@ -9321,7 +9321,7 @@ a   Tuple(
 
 - Любая строка
 
-## query_cache_ttl {#query_cache_ttl} 
+## query_cache_ttl \\{#query_cache_ttl\\}
 
 <SettingsInfoBlock type="Seconds" default_value="60" />
 
@@ -9331,7 +9331,7 @@ a   Tuple(
 
 - Положительное целое число >= 0.
 
-## query_condition_cache_store_conditions_as_plaintext {#query_condition_cache_store_conditions_as_plaintext} 
+## query_condition_cache_store_conditions_as_plaintext \\{#query_condition_cache_store_conditions_as_plaintext\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9346,7 +9346,7 @@ a   Tuple(
 - 0 - Отключено
 - 1 - Включено
 
-## query_metric_log_interval {#query_metric_log_interval} 
+## query_metric_log_interval \\{#query_metric_log_interval\\}
 
 <SettingsInfoBlock type="Int64" default_value="-1" />
 
@@ -9360,7 +9360,7 @@ a   Tuple(
 
 Значение по умолчанию: -1
 
-## query_plan_aggregation_in_order {#query_plan_aggregation_in_order} 
+## query_plan_aggregation_in_order \\{#query_plan_aggregation_in_order\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9378,7 +9378,7 @@ a   Tuple(
 - 0 - Отключить
 - 1 - Включить
 
-## query_plan_convert_any_join_to_semi_or_anti_join {#query_plan_convert_any_join_to_semi_or_anti_join} 
+## query_plan_convert_any_join_to_semi_or_anti_join \\{#query_plan_convert_any_join_to_semi_or_anti_join\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9386,7 +9386,7 @@ a   Tuple(
 
 Разрешает преобразовывать ANY JOIN в SEMI или ANTI JOIN, если фильтр после JOIN всегда принимает логическое значение false как для сопоставленных, так и для несопоставленных строк
 
-## query_plan_convert_join_to_in {#query_plan_convert_join_to_in} 
+## query_plan_convert_join_to_in \\{#query_plan_convert_join_to_in\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9394,7 +9394,7 @@ a   Tuple(
 
 Разрешает преобразовывать оператор `JOIN` в подзапрос с `IN`, если выходные столбцы ссылаются только на левую таблицу. Может приводить к неверным результатам для типов `JOIN`, отличных от `ANY` (например, `ALL JOIN`, используемый по умолчанию).
 
-## query_plan_convert_outer_join_to_inner_join {#query_plan_convert_outer_join_to_inner_join} 
+## query_plan_convert_outer_join_to_inner_join \\{#query_plan_convert_outer_join_to_inner_join\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9402,7 +9402,7 @@ a   Tuple(
 
 Разрешает преобразование `OUTER JOIN` в `INNER JOIN`, если фильтр после `JOIN` всегда отфильтровывает строки со значениями по умолчанию
 
-## query_plan_direct_read_from_text_index {#query_plan_direct_read_from_text_index} 
+## query_plan_direct_read_from_text_index \\{#query_plan_direct_read_from_text_index\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9410,7 +9410,7 @@ a   Tuple(
 
 Позволяет выполнять фильтрацию результатов полнотекстового поиска, используя в плане запроса только инвертированный текстовый индекс.
 
-## query_plan_display_internal_aliases {#query_plan_display_internal_aliases} 
+## query_plan_display_internal_aliases \\{#query_plan_display_internal_aliases\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9418,13 +9418,13 @@ a   Tuple(
 
 Отображать внутренние алиасы (например, __table1) в выводе EXPLAIN PLAN вместо тех, что указаны в исходном запросе.
 
-## query_plan_enable_multithreading_after_window_functions {#query_plan_enable_multithreading_after_window_functions} 
+## query_plan_enable_multithreading_after_window_functions \\{#query_plan_enable_multithreading_after_window_functions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Включает многопоточную обработку после вычисления оконных функций для параллельной обработки потоков
 
-## query_plan_enable_optimizations {#query_plan_enable_optimizations} 
+## query_plan_enable_optimizations \\{#query_plan_enable_optimizations\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9439,7 +9439,7 @@ a   Tuple(
 - 0 — Отключить все оптимизации на уровне плана запроса
 - 1 — Включить оптимизации на уровне плана запроса (но отдельные оптимизации всё ещё могут быть отключены их собственными настройками)
 
-## query_plan_execute_functions_after_sorting {#query_plan_execute_functions_after_sorting} 
+## query_plan_execute_functions_after_sorting \\{#query_plan_execute_functions_after_sorting\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9455,7 +9455,7 @@ a   Tuple(
 - 0 - Отключить
 - 1 - Включить
 
-## query_plan_filter_push_down {#query_plan_filter_push_down} 
+## query_plan_filter_push_down \\{#query_plan_filter_push_down\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9471,7 +9471,7 @@ a   Tuple(
 - 0 — Отключить
 - 1 — Включить
 
-## query_plan_join_shard_by_pk_ranges {#query_plan_join_shard_by_pk_ranges} 
+## query_plan_join_shard_by_pk_ranges \\{#query_plan_join_shard_by_pk_ranges\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9479,7 +9479,7 @@ a   Tuple(
 
 Применяет распределение по сегментам для JOIN, если ключи соединения содержат префикс PRIMARY KEY для обеих таблиц. Поддерживается для алгоритмов hash, parallel_hash и full_sorting_merge. Обычно не ускоряет выполнение запросов, но может снизить потребление памяти.
 
-## query_plan_join_swap_table {#query_plan_join_swap_table} 
+## query_plan_join_swap_table \\{#query_plan_join_swap_table\\}
 
 <SettingsInfoBlock type="BoolAuto" default_value="auto" />
 
@@ -9491,7 +9491,7 @@ a   Tuple(
     - 'false': никогда не менять таблицы местами (правая таблица — таблица построения).
     - 'true': всегда менять таблицы местами (левая таблица — таблица построения).
 
-## query_plan_lift_up_array_join {#query_plan_lift_up_array_join} 
+## query_plan_lift_up_array_join \\{#query_plan_lift_up_array_join\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9507,7 +9507,7 @@ a   Tuple(
 - 0 - Отключить
 - 1 - Включить
 
-## query_plan_lift_up_union {#query_plan_lift_up_union} 
+## query_plan_lift_up_union \\{#query_plan_lift_up_union\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9523,7 +9523,7 @@ a   Tuple(
 - 0 - Отключить
 - 1 - Включить
 
-## query_plan_max_limit_for_lazy_materialization {#query_plan_max_limit_for_lazy_materialization} 
+## query_plan_max_limit_for_lazy_materialization \\{#query_plan_max_limit_for_lazy_materialization\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -9531,7 +9531,7 @@ a   Tuple(
 
 Управляет максимальным значением лимита, при котором может использоваться план запроса для оптимизации ленивой материализации. Если значение равно нулю, лимит отсутствует.
 
-## query_plan_max_limit_for_top_k_optimization {#query_plan_max_limit_for_top_k_optimization} 
+## query_plan_max_limit_for_top_k_optimization \\{#query_plan_max_limit_for_top_k_optimization\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -9539,7 +9539,7 @@ a   Tuple(
 
 Управляет максимальным значением `LIMIT`, при котором можно рассчитывать план запроса для оптимизации TopK с использованием minmax skip-индекса и динамической фильтрации по пороговым значениям. Если установлено в 0, ограничение отсутствует.
 
-## query_plan_max_optimizations_to_apply {#query_plan_max_optimizations_to_apply} 
+## query_plan_max_optimizations_to_apply \\{#query_plan_max_optimizations_to_apply\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -9552,7 +9552,7 @@ a   Tuple(
 Это настройка экспертного уровня, которую следует использовать только для отладки разработчиками. Настройка может в будущем измениться несовместимым образом или быть удалена.
 :::
 
-## query_plan_max_step_description_length {#query_plan_max_step_description_length} 
+## query_plan_max_step_description_length \\{#query_plan_max_step_description_length\\}
 
 <SettingsInfoBlock type="UInt64" default_value="500" />
 
@@ -9560,7 +9560,7 @@ a   Tuple(
 
 Максимальная длина описания шага в EXPLAIN PLAN.
 
-## query_plan_merge_expressions {#query_plan_merge_expressions} 
+## query_plan_merge_expressions \\{#query_plan_merge_expressions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9576,7 +9576,7 @@ a   Tuple(
 - 0 — Отключить
 - 1 — Включить
 
-## query_plan_merge_filter_into_join_condition {#query_plan_merge_filter_into_join_condition} 
+## query_plan_merge_filter_into_join_condition \\{#query_plan_merge_filter_into_join_condition\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9584,7 +9584,7 @@ a   Tuple(
 
 Позволяет объединять фильтр с условием `JOIN` и преобразовывать `CROSS JOIN` в `INNER JOIN`.
 
-## query_plan_merge_filters {#query_plan_merge_filters} 
+## query_plan_merge_filters \\{#query_plan_merge_filters\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9592,7 +9592,7 @@ a   Tuple(
 
 Разрешает объединение фильтров в плане запроса.
 
-## query_plan_optimize_join_order_algorithm {#query_plan_optimize_join_order_algorithm} 
+## query_plan_optimize_join_order_algorithm \\{#query_plan_optimize_join_order_algorithm\\}
 
 <ExperimentalBadge/>
 
@@ -9607,7 +9607,7 @@ a   Tuple(
 
 Можно указать несколько алгоритмов, например 'dpsize,greedy'.
 
-## query_plan_optimize_join_order_limit {#query_plan_optimize_join_order_limit} 
+## query_plan_optimize_join_order_limit \\{#query_plan_optimize_join_order_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -9616,7 +9616,7 @@ a   Tuple(
 Оптимизирует порядок операций JOIN в пределах одного подзапроса. В настоящее время поддерживается только для очень ограниченного набора случаев.
     Значение задаёт максимальное количество таблиц, для которых выполняется оптимизация.
 
-## query_plan_optimize_lazy_materialization {#query_plan_optimize_lazy_materialization} 
+## query_plan_optimize_lazy_materialization \\{#query_plan_optimize_lazy_materialization\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9624,7 +9624,7 @@ a   Tuple(
 
 Использовать план выполнения запроса для оптимизации ленивой материализации.
 
-## query_plan_optimize_prewhere {#query_plan_optimize_prewhere} 
+## query_plan_optimize_prewhere \\{#query_plan_optimize_prewhere\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9632,7 +9632,7 @@ a   Tuple(
 
 Включает проталкивание фильтра в выражение PREWHERE для поддерживаемых хранилищ
 
-## query_plan_push_down_limit {#query_plan_push_down_limit} 
+## query_plan_push_down_limit \\{#query_plan_push_down_limit\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9648,7 +9648,7 @@ a   Tuple(
 - 0 - Отключить
 - 1 - Включить
 
-## query_plan_read_in_order {#query_plan_read_in_order} 
+## query_plan_read_in_order \\{#query_plan_read_in_order\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9664,7 +9664,7 @@ a   Tuple(
 - 0 - Отключить
 - 1 - Включить
 
-## query_plan_read_in_order_through_join {#query_plan_read_in_order_through_join} 
+## query_plan_read_in_order_through_join \\{#query_plan_read_in_order_through_join\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9672,7 +9672,7 @@ a   Tuple(
 
 Сохраняет чтение в упорядоченном виде из левой таблицы в операциях JOIN, чтобы его могли использовать последующие шаги.
 
-## query_plan_remove_redundant_distinct {#query_plan_remove_redundant_distinct} 
+## query_plan_remove_redundant_distinct \\{#query_plan_remove_redundant_distinct\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9690,7 +9690,7 @@ a   Tuple(
 - 0 - Отключить
 - 1 - Включить
 
-## query_plan_remove_redundant_sorting {#query_plan_remove_redundant_sorting} 
+## query_plan_remove_redundant_sorting \\{#query_plan_remove_redundant_sorting\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9708,7 +9708,7 @@ a   Tuple(
 - 0 - Отключить
 - 1 - Включить
 
-## query_plan_remove_unused_columns {#query_plan_remove_unused_columns} 
+## query_plan_remove_unused_columns \\{#query_plan_remove_unused_columns\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9726,7 +9726,7 @@ a   Tuple(
 - 0 - Отключить
 - 1 - Включить
 
-## query_plan_reuse_storage_ordering_for_window_functions {#query_plan_reuse_storage_ordering_for_window_functions} 
+## query_plan_reuse_storage_ordering_for_window_functions \\{#query_plan_reuse_storage_ordering_for_window_functions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9742,7 +9742,7 @@ a   Tuple(
 - 0 - Отключить
 - 1 - Включить
 
-## query_plan_split_filter {#query_plan_split_filter} 
+## query_plan_split_filter \\{#query_plan_split_filter\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9758,7 +9758,7 @@ a   Tuple(
 - 0 — отключить
 - 1 — включить
 
-## query_plan_text_index_add_hint {#query_plan_text_index_add_hint} 
+## query_plan_text_index_add_hint \\{#query_plan_text_index_add_hint\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9766,7 +9766,7 @@ a   Tuple(
 
 Позволяет добавлять подсказку (additional predicate) для фильтрации, выполняемой с использованием инвертированного текстового индекса в плане запроса.
 
-## query_plan_try_use_vector_search {#query_plan_try_use_vector_search} 
+## query_plan_try_use_vector_search \\{#query_plan_try_use_vector_search\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9784,7 +9784,7 @@ a   Tuple(
 - 0 — Отключить
 - 1 — Включить
 
-## query_plan_use_new_logical_join_step {#query_plan_use_new_logical_join_step} 
+## query_plan_use_new_logical_join_step \\{#query_plan_use_new_logical_join_step\\}
 
 **Псевдонимы**: `query_plan_use_logical_join_step`
 
@@ -9795,7 +9795,7 @@ a   Tuple(
 Использовать логический шаг JOIN в плане запроса.
 Примечание: настройка `query_plan_use_new_logical_join_step` устарела, вместо неё используйте `query_plan_use_logical_join_step`.
 
-## query_profiler_cpu_time_period_ns {#query_profiler_cpu_time_period_ns} 
+## query_profiler_cpu_time_period_ns \\{#query_profiler_cpu_time_period_ns\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000000" />
 
@@ -9816,7 +9816,7 @@ a   Tuple(
 
 - Системная таблица [trace_log](/operations/system-tables/trace_log)
 
-## query_profiler_real_time_period_ns {#query_profiler_real_time_period_ns} 
+## query_profiler_real_time_period_ns \\{#query_profiler_real_time_period_ns\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000000" />
 
@@ -9837,49 +9837,49 @@ a   Tuple(
 
 - Системная таблица [trace_log](/operations/system-tables/trace_log)
 
-## queue_max_wait_ms {#queue_max_wait_ms} 
+## queue_max_wait_ms \\{#queue_max_wait_ms\\}
 
 <SettingsInfoBlock type="Миллисекунды" default_value="0" />
 
 Время ожидания в очереди запросов, если количество одновременных запросов превышает установленный максимум.
 
-## rabbitmq_max_wait_ms {#rabbitmq_max_wait_ms} 
+## rabbitmq_max_wait_ms \\{#rabbitmq_max_wait_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="5000" />
 
 Время ожидания перед повторной попыткой чтения из RabbitMQ.
 
-## read_backoff_max_throughput {#read_backoff_max_throughput} 
+## read_backoff_max_throughput \\{#read_backoff_max_throughput\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
 
 Параметр для уменьшения числа потоков при медленном чтении. Подсчитывает события, когда пропускная способность чтения меньше указанного количества байт в секунду.
 
-## read_backoff_min_concurrency {#read_backoff_min_concurrency} 
+## read_backoff_min_concurrency \\{#read_backoff_min_concurrency\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
 Настройка, определяющая минимальное количество потоков, которое следует поддерживать при медленном чтении.
 
-## read_backoff_min_events {#read_backoff_min_events} 
+## read_backoff_min_events \\{#read_backoff_min_events\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
 Параметр для уменьшения числа потоков при медленном чтении. Количество событий, по истечении которого число потоков будет уменьшено.
 
-## read_backoff_min_interval_between_events_ms {#read_backoff_min_interval_between_events_ms} 
+## read_backoff_min_interval_between_events_ms \\{#read_backoff_min_interval_between_events_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="1000" />
 
 Параметр для уменьшения числа потоков в случае медленного чтения. Событие игнорируется, если с момента предыдущего прошло меньше заданного интервала времени.
 
-## read_backoff_min_latency_ms {#read_backoff_min_latency_ms} 
+## read_backoff_min_latency_ms \\{#read_backoff_min_latency_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="1000" />
 
 Настройка, уменьшающая число потоков в случае медленного чтения. Учитываются только операции чтения, которые длились не менее этого времени.
 
-## read_from_distributed_cache_if_exists_otherwise_bypass_cache {#read_from_distributed_cache_if_exists_otherwise_bypass_cache} 
+## read_from_distributed_cache_if_exists_otherwise_bypass_cache \\{#read_from_distributed_cache_if_exists_otherwise_bypass_cache\\}
 
 <CloudOnlyBadge/>
 
@@ -9889,13 +9889,13 @@ a   Tuple(
 
 Действует только в ClickHouse Cloud. Аналогичен read_from_filesystem_cache_if_exists_otherwise_bypass_cache, но для распределённого кэша.
 
-## read_from_filesystem_cache_if_exists_otherwise_bypass_cache {#read_from_filesystem_cache_if_exists_otherwise_bypass_cache} 
+## read_from_filesystem_cache_if_exists_otherwise_bypass_cache \\{#read_from_filesystem_cache_if_exists_otherwise_bypass_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Разрешает использовать кэш файловой системы в пассивном режиме — использовать уже существующие записи в кэше, но не добавлять в него новые. Если вы включите этот параметр для тяжёлых ad-hoc-запросов и оставите его отключённым для коротких запросов реального времени, это позволит избежать чрезмерного вытеснения данных из кэша тяжёлыми запросами и повысить общую эффективность системы.
 
-## read_from_page_cache_if_exists_otherwise_bypass_cache {#read_from_page_cache_if_exists_otherwise_bypass_cache} 
+## read_from_page_cache_if_exists_otherwise_bypass_cache \\{#read_from_page_cache_if_exists_otherwise_bypass_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9903,13 +9903,13 @@ a   Tuple(
 
 Использует кэш страниц в пространстве пользователя (userspace page cache) в пассивном режиме, аналогично read_from_filesystem_cache_if_exists_otherwise_bypass_cache.
 
-## read_in_order_two_level_merge_threshold {#read_in_order_two_level_merge_threshold} 
+## read_in_order_two_level_merge_threshold \\{#read_in_order_two_level_merge_threshold\\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
 Минимальное число частей, которые необходимо прочитать, чтобы выполнить предварительное слияние при многопоточном чтении в порядке первичного ключа.
 
-## read_in_order_use_buffering {#read_in_order_use_buffering} 
+## read_in_order_use_buffering \\{#read_in_order_use_buffering\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9917,7 +9917,7 @@ a   Tuple(
 
 Использовать буферизацию перед слиянием при чтении в порядке первичного ключа. Это повышает степень параллелизма выполнения запроса
 
-## read_in_order_use_virtual_row {#read_in_order_use_virtual_row} 
+## read_in_order_use_virtual_row \\{#read_in_order_use_virtual_row\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -9925,13 +9925,13 @@ a   Tuple(
 
 Использовать виртуальную строку при чтении в порядке первичного ключа или его монотонной функции. Полезно при поиске по нескольким частям таблицы, так как затрагиваются только соответствующие части.
 
-## read_overflow_mode {#read_overflow_mode} 
+## read_overflow_mode \\{#read_overflow_mode\\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
 Что делать при превышении лимита.
 
-## read_overflow_mode_leaf {#read_overflow_mode_leaf} 
+## read_overflow_mode_leaf \\{#read_overflow_mode_leaf\\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
@@ -9942,13 +9942,13 @@ a   Tuple(
 - `throw`: выбросить исключение (по умолчанию).
 - `break`: остановить выполнение запроса и вернуть частичный результат.
 
-## read_priority {#read_priority} 
+## read_priority \\{#read_priority\\}
 
 <SettingsInfoBlock type="Int64" default_value="0" />
 
 Приоритет при чтении данных из локальной или удалённой файловой системы. Поддерживается только для метода 'pread_threadpool' для локальной файловой системы и для метода `threadpool` для удалённой файловой системы.
 
-## read_through_distributed_cache {#read_through_distributed_cache} 
+## read_through_distributed_cache \\{#read_through_distributed_cache\\}
 
 <CloudOnlyBadge/>
 
@@ -9958,43 +9958,43 @@ a   Tuple(
 
 Имеет эффект только в ClickHouse Cloud. Разрешает чтение из распределённого кэша.
 
-## readonly {#readonly} 
+## readonly \\{#readonly\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 0 — без ограничений на чтение и запись. 1 — только запросы на чтение, а также изменение явно разрешённых настроек. 2 — только запросы на чтение, а также изменение настроек, за исключением настройки «readonly».
 
-## receive_data_timeout_ms {#receive_data_timeout_ms} 
+## receive_data_timeout_ms \\{#receive_data_timeout_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="2000" />
 
 Таймаут ожидания получения первого пакета данных или пакета с положительным прогрессом от реплики
 
-## receive_timeout {#receive_timeout} 
+## receive_timeout \\{#receive_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="300" />
 
 Таймаут ожидания получения данных из сети, в секундах. Если в течение этого интервала не было получено ни одного байта, будет сгенерировано исключение. Если вы задаёте этот параметр на клиенте, для сокета на сервере на соответствующем конце соединения также будет установлен `send_timeout`.
 
-## regexp_dict_allow_hyperscan {#regexp_dict_allow_hyperscan} 
+## regexp_dict_allow_hyperscan \\{#regexp_dict_allow_hyperscan\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Разрешает словарю regexp_tree использовать библиотеку Hyperscan.
 
-## regexp_dict_flag_case_insensitive {#regexp_dict_flag_case_insensitive} 
+## regexp_dict_flag_case_insensitive \\{#regexp_dict_flag_case_insensitive\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Использует регистронезависимое сопоставление для словаря regexp_tree. Может быть переопределено в отдельных выражениях с помощью флагов (?i) и (?-i).
 
-## regexp_dict_flag_dotall {#regexp_dict_flag_dotall} 
+## regexp_dict_flag_dotall \\{#regexp_dict_flag_dotall\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Разрешает символу «.» совпадать с символами новой строки в словаре regexp_tree.
 
-## regexp_max_matches_per_row {#regexp_max_matches_per_row} 
+## regexp_max_matches_per_row \\{#regexp_max_matches_per_row\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -10004,49 +10004,49 @@ a   Tuple(
 
 - Положительное целое число.
 
-## reject_expensive_hyperscan_regexps {#reject_expensive_hyperscan_regexps} 
+## reject_expensive_hyperscan_regexps \\{#reject_expensive_hyperscan_regexps\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Отклонять шаблоны, которые, вероятно, будут ресурсоёмкими при обработке с помощью Hyperscan (из-за взрывного роста числа состояний NFA)
 
-## remerge_sort_lowered_memory_bytes_ratio {#remerge_sort_lowered_memory_bytes_ratio} 
+## remerge_sort_lowered_memory_bytes_ratio \\{#remerge_sort_lowered_memory_bytes_ratio\\}
 
 <SettingsInfoBlock type="Float" default_value="2" />
 
 Если использование памяти после повторного слияния не уменьшится как минимум в этом соотношении, повторное слияние будет отключено.
 
-## remote_filesystem_read_method {#remote_filesystem_read_method} 
+## remote_filesystem_read_method \\{#remote_filesystem_read_method\\}
 
 <SettingsInfoBlock type="String" default_value="threadpool" />
 
 Метод чтения данных из удаленной файловой системы, один из следующих: read, threadpool.
 
-## remote_filesystem_read_prefetch {#remote_filesystem_read_prefetch} 
+## remote_filesystem_read_prefetch \\{#remote_filesystem_read_prefetch\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Следует использовать упреждающую выборку (prefetching) при чтении данных из удалённой файловой системы.
 
-## remote_fs_read_backoff_max_tries {#remote_fs_read_backoff_max_tries} 
+## remote_fs_read_backoff_max_tries \\{#remote_fs_read_backoff_max_tries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5" />
 
 Максимальное количество попыток чтения с применением механизма backoff
 
-## remote_fs_read_max_backoff_ms {#remote_fs_read_max_backoff_ms} 
+## remote_fs_read_max_backoff_ms \\{#remote_fs_read_max_backoff_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
 Максимальное время ожидания при попытке прочитать данные с удалённого диска.
 
-## remote_read_min_bytes_for_seek {#remote_read_min_bytes_for_seek} 
+## remote_read_min_bytes_for_seek \\{#remote_read_min_bytes_for_seek\\}
 
 <SettingsInfoBlock type="UInt64" default_value="4194304" />
 
 Минимальный объем данных (в байтах), при котором при удалённом чтении (URL, S3) выполняется seek вместо чтения с последующим игнорированием.
 
-## rename_files_after_processing {#rename_files_after_processing} 
+## rename_files_after_processing \\{#rename_files_after_processing\\}
 
 - **Тип:** String
 
@@ -10054,7 +10054,7 @@ a   Tuple(
 
 Этот параметр позволяет задать шаблон переименования файлов, обрабатываемых табличной функцией `file`. Если параметр задан, все файлы, прочитанные табличной функцией `file`, будут переименованы в соответствии с указанным шаблоном с плейсхолдерами, но только в случае их успешной обработки.
 
-### Подстановки {#placeholders}
+### Подстановки \{#placeholders\}
 
 - `%a` — Полное исходное имя файла (например, "sample.csv").
 - `%f` — Исходное имя файла без расширения (например, "sample").
@@ -10062,7 +10062,7 @@ a   Tuple(
 - `%t` — Временная метка (в микросекундах).
 - `%%` — Знак процента ("%").
 
-### Пример {#example}
+### Пример \{#example\}
 
 - Опция: `--rename_files_after_processing="processed_%f_%t%e"`
 
@@ -10070,7 +10070,7 @@ a   Tuple(
 
 Если чтение файла `sample.csv` прошло успешно, файл будет переименован в `processed_sample_1683473210851438.csv`
 
-## replace_running_query {#replace_running_query} 
+## replace_running_query \\{#replace_running_query\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10083,7 +10083,7 @@ a   Tuple(
 
 Установите для этого параметра значение `1` для реализации подсказок при задании условий сегментации. После ввода очередного символа, если старый запрос ещё не завершён, он должен быть отменён.
 
-## replace_running_query_max_wait_ms {#replace_running_query_max_wait_ms} 
+## replace_running_query_max_wait_ms \\{#replace_running_query_max_wait_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="5000" />
 
@@ -10094,7 +10094,7 @@ a   Tuple(
 - Положительное целое число.
 - 0 — выбрасывается исключение, не позволяющее запустить новый запрос, если сервер уже выполняет запрос с тем же `query_id`.
 
-## replication_wait_for_inactive_replica_timeout {#replication_wait_for_inactive_replica_timeout} 
+## replication_wait_for_inactive_replica_timeout \\{#replication_wait_for_inactive_replica_timeout\\}
 
 <SettingsInfoBlock type="Int64" default_value="120" />
 
@@ -10106,7 +10106,7 @@ a   Tuple(
 - Отрицательное целое число — Ждать неограниченное время.
 - Положительное целое число — Количество секунд ожидания.
 
-## restore_replace_external_dictionary_source_to_null {#restore_replace_external_dictionary_source_to_null} 
+## restore_replace_external_dictionary_source_to_null \\{#restore_replace_external_dictionary_source_to_null\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10114,7 +10114,7 @@ a   Tuple(
 
 Заменять внешние источники словаря на значение Null при восстановлении. Полезно для тестирования.
 
-## restore_replace_external_engines_to_null {#restore_replace_external_engines_to_null} 
+## restore_replace_external_engines_to_null \\{#restore_replace_external_engines_to_null\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10122,7 +10122,7 @@ a   Tuple(
 
 Для тестирования. Заменяет все внешние движки на Null, чтобы не устанавливать внешние подключения.
 
-## restore_replace_external_table_functions_to_null {#restore_replace_external_table_functions_to_null} 
+## restore_replace_external_table_functions_to_null \\{#restore_replace_external_table_functions_to_null\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10130,7 +10130,7 @@ a   Tuple(
 
 Для тестирования. Заменяет все внешние табличные функции на Null, чтобы не устанавливать внешние подключения.
 
-## restore_replicated_merge_tree_to_shared_merge_tree {#restore_replicated_merge_tree_to_shared_merge_tree} 
+## restore_replicated_merge_tree_to_shared_merge_tree \\{#restore_replicated_merge_tree_to_shared_merge_tree\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10138,7 +10138,7 @@ a   Tuple(
 
 Заменяет табличный движок Replicated*MergeTree на Shared*MergeTree при выполнении RESTORE.
 
-## result_overflow_mode {#result_overflow_mode}
+## result_overflow_mode \{#result_overflow_mode\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
@@ -10173,7 +10173,7 @@ FORMAT Null;
 ```
 
 
-## rewrite_count_distinct_if_with_count_distinct_implementation {#rewrite_count_distinct_if_with_count_distinct_implementation} 
+## rewrite_count_distinct_if_with_count_distinct_implementation \\{#rewrite_count_distinct_if_with_count_distinct_implementation\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10186,7 +10186,7 @@ FORMAT Null;
 - true — разрешить.
 - false — запретить.
 
-## rewrite_in_to_join {#rewrite_in_to_join} 
+## rewrite_in_to_join \\{#rewrite_in_to_join\\}
 
 <ExperimentalBadge/>
 
@@ -10196,7 +10196,7 @@ FORMAT Null;
 
 Переписывает выражения вида `x IN subquery` в JOIN. Это может быть полезно для оптимизации всего запроса за счёт изменения порядка выполнения JOIN.
 
-## rows_before_aggregation {#rows_before_aggregation} 
+## rows_before_aggregation \\{#rows_before_aggregation\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10204,7 +10204,7 @@ FORMAT Null;
 
 Если параметр включён, ClickHouse предоставляет точное значение статистики rows_before_aggregation, отражающей количество строк, прочитанных до агрегации.
 
-## s3_allow_multipart_copy {#s3_allow_multipart_copy} 
+## s3_allow_multipart_copy \\{#s3_allow_multipart_copy\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10212,19 +10212,19 @@ FORMAT Null;
 
 Разрешает многокомпонентное (multipart) копирование в S3.
 
-## s3_allow_parallel_part_upload {#s3_allow_parallel_part_upload} 
+## s3_allow_parallel_part_upload \\{#s3_allow_parallel_part_upload\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Использовать несколько потоков для multipart-загрузки в S3. Это может привести к немного большему расходу памяти.
 
-## s3_check_objects_after_upload {#s3_check_objects_after_upload} 
+## s3_check_objects_after_upload \\{#s3_check_objects_after_upload\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Проверять каждый загруженный объект в S3 с помощью HEAD-запроса, чтобы убедиться, что загрузка прошла успешно.
 
-## s3_connect_timeout_ms {#s3_connect_timeout_ms} 
+## s3_connect_timeout_ms \\{#s3_connect_timeout_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -10232,7 +10232,7 @@ FORMAT Null;
 
 Таймаут подключения к хосту для S3-дисков.
 
-## s3_create_new_file_on_insert {#s3_create_new_file_on_insert} 
+## s3_create_new_file_on_insert \\{#s3_create_new_file_on_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10247,13 +10247,13 @@ FORMAT Null;
 
 Подробнее см. [здесь](/integrations/s3#inserting-data).
 
-## s3_disable_checksum {#s3_disable_checksum} 
+## s3_disable_checksum \\{#s3_disable_checksum\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Не вычислять контрольную сумму при отправке файла в S3. Это ускоряет операции записи, поскольку исключаются лишние проходы обработки файла. В большинстве случаев это безопасно, поскольку данные таблиц MergeTree в любом случае проверяются контрольными суммами в ClickHouse, а при доступе к S3 по HTTPS уровень TLS уже обеспечивает целостность данных при передаче по сети. Дополнительные контрольные суммы на стороне S3 при этом обеспечивают дополнительный уровень (многоуровневой) защиты.
 
-## s3_ignore_file_doesnt_exist {#s3_ignore_file_doesnt_exist} 
+## s3_ignore_file_doesnt_exist \\{#s3_ignore_file_doesnt_exist\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10266,37 +10266,37 @@ FORMAT Null;
 - 1 — `SELECT` возвращает пустой результат.
 - 0 — `SELECT` выбрасывает исключение.
 
-## s3_list_object_keys_size {#s3_list_object_keys_size} 
+## s3_list_object_keys_size \\{#s3_list_object_keys_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
 Максимальное количество файлов, которое может быть возвращено одним пакетным запросом ListObject
 
-## s3_max_connections {#s3_max_connections} 
+## s3_max_connections \\{#s3_max_connections\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1024" />
 
 Максимальное количество соединений на один сервер.
 
-## s3_max_get_burst {#s3_max_get_burst} 
+## s3_max_get_burst \\{#s3_max_get_burst\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальное количество запросов, которые могут быть отправлены одновременно до достижения лимита по запросам в секунду. По умолчанию (0) — значение `s3_max_get_rps`.
 
-## s3_max_get_rps {#s3_max_get_rps} 
+## s3_max_get_rps \\{#s3_max_get_rps\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Порог по числу запросов S3 GET в секунду, после превышения которого включается троттлинг. Ноль означает отсутствие ограничения.
 
-## s3_max_inflight_parts_for_one_file {#s3_max_inflight_parts_for_one_file} 
+## s3_max_inflight_parts_for_one_file \\{#s3_max_inflight_parts_for_one_file\\}
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
 Максимальное количество одновременно загружаемых частей в multipart‑запросе на многокомпонентную загрузку. Значение 0 означает отсутствие ограничения.
 
-## s3_max_part_number {#s3_max_part_number} 
+## s3_max_part_number \\{#s3_max_part_number\\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -10304,19 +10304,19 @@ FORMAT Null;
 
 Максимальный номер части при многочастичной загрузке в S3.
 
-## s3_max_put_burst {#s3_max_put_burst} 
+## s3_max_put_burst \\{#s3_max_put_burst\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальное количество запросов, которые могут быть выполнены одновременно до достижения лимита на число запросов в секунду. По умолчанию (0) соответствует значению `s3_max_put_rps`.
 
-## s3_max_put_rps {#s3_max_put_rps} 
+## s3_max_put_rps \\{#s3_max_put_rps\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Лимит скорости S3 PUT-запросов в секунду до начала троттлинга. Ноль означает отсутствие ограничений.
 
-## s3_max_single_operation_copy_size {#s3_max_single_operation_copy_size} 
+## s3_max_single_operation_copy_size \\{#s3_max_single_operation_copy_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="33554432" />
 
@@ -10324,37 +10324,37 @@ FORMAT Null;
 
 Максимальный размер данных для однократной операции копирования в S3. Этот параметр используется только, если s3_allow_multipart_copy имеет значение true.
 
-## s3_max_single_part_upload_size {#s3_max_single_part_upload_size} 
+## s3_max_single_part_upload_size \\{#s3_max_single_part_upload_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="33554432" />
 
 Максимальный размер объекта для загрузки в S3 с использованием однократной (single-part) загрузки.
 
-## s3_max_single_read_retries {#s3_max_single_read_retries} 
+## s3_max_single_read_retries \\{#s3_max_single_read_retries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="4" />
 
 Максимальное количество повторных попыток при одном чтении из S3.
 
-## s3_max_unexpected_write_error_retries {#s3_max_unexpected_write_error_retries} 
+## s3_max_unexpected_write_error_retries \\{#s3_max_unexpected_write_error_retries\\}
 
 <SettingsInfoBlock type="UInt64" default_value="4" />
 
 Максимальное количество повторных попыток в случае непредвиденных ошибок при записи в S3.
 
-## s3_max_upload_part_size {#s3_max_upload_part_size} 
+## s3_max_upload_part_size \\{#s3_max_upload_part_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="5368709120" />
 
 Максимальный размер части при многокомпонентной загрузке (multipart upload) в S3.
 
-## s3_min_upload_part_size {#s3_min_upload_part_size} 
+## s3_min_upload_part_size \\{#s3_min_upload_part_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="16777216" />
 
 Минимальный размер части данных при многочастной (multipart) загрузке в S3.
 
-## s3_path_filter_limit {#s3_path_filter_limit} 
+## s3_path_filter_limit \\{#s3_path_filter_limit\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -10363,13 +10363,13 @@ FORMAT Null;
 Максимальное количество значений `_path`, которые могут быть извлечены из фильтров запроса и использованы для итерации по файлам
 вместо перечисления по glob-шаблону. 0 означает, что настройка отключена.
 
-## s3_request_timeout_ms {#s3_request_timeout_ms} 
+## s3_request_timeout_ms \\{#s3_request_timeout_ms\\}
 
 <SettingsInfoBlock type="UInt64" default_value="30000" />
 
 Таймаут бездействия при отправке и получении данных в S3 и из него. Запрос завершается с ошибкой, если один вызов чтения или записи по TCP блокируется дольше этого времени.
 
-## s3_skip_empty_files {#s3_skip_empty_files} 
+## s3_skip_empty_files \\{#s3_skip_empty_files\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10382,7 +10382,7 @@ FORMAT Null;
 - 0 — `SELECT` выбрасывает исключение, если пустой файл не совместим с запрошенным форматом.
 - 1 — `SELECT` возвращает пустой результат для пустого файла.
 
-## s3_slow_all_threads_after_network_error {#s3_slow_all_threads_after_network_error} 
+## s3_slow_all_threads_after_network_error \\{#s3_slow_all_threads_after_network_error\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10391,19 +10391,19 @@ FORMAT Null;
 Если имеет значение `true`, все потоки, выполняющие запросы к S3 к одной и той же конечной точке резервного копирования, замедляются после того, как любой отдельный запрос к S3 сталкивается с сетевой ошибкой, допускающей повторную попытку, например тайм-аутом сокета.
 Если имеет значение `false`, каждый поток обрабатывает замедление (backoff) S3‑запросов независимо от других.
 
-## s3_strict_upload_part_size {#s3_strict_upload_part_size} 
+## s3_strict_upload_part_size \\{#s3_strict_upload_part_size\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Точный размер части, которую необходимо загрузить при многокомпонентной (multipart) загрузке в S3 (некоторые реализации не поддерживают переменный размер частей).
 
-## s3_throw_on_zero_files_match {#s3_throw_on_zero_files_match} 
+## s3_throw_on_zero_files_match \\{#s3_throw_on_zero_files_match\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Возвращать ошибку, если запрос ListObjects не находит ни одного файла.
 
-## s3_truncate_on_insert {#s3_truncate_on_insert} 
+## s3_truncate_on_insert \\{#s3_truncate_on_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10416,26 +10416,26 @@ FORMAT Null;
 
 Подробнее см. [здесь](/integrations/s3#inserting-data).
 
-## s3_upload_part_size_multiply_factor {#s3_upload_part_size_multiply_factor} 
+## s3_upload_part_size_multiply_factor \\{#s3_upload_part_size_multiply_factor\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
 Умножайте s3_min_upload_part_size на этот коэффициент каждый раз, когда при одной операции записи в S3 загружается количество частей, равное s3_multiply_parts_count_threshold.
 
-## s3_upload_part_size_multiply_parts_count_threshold {#s3_upload_part_size_multiply_parts_count_threshold} 
+## s3_upload_part_size_multiply_parts_count_threshold \\{#s3_upload_part_size_multiply_parts_count_threshold\\}
 
 <SettingsInfoBlock type="UInt64" default_value="500" />
 
 Каждый раз, когда в S3 загружается такое количество частей, значение s3_min_upload_part_size умножается на s3_upload_part_size_multiply_factor.
 
-## s3_use_adaptive_timeouts {#s3_use_adaptive_timeouts} 
+## s3_use_adaptive_timeouts \\{#s3_use_adaptive_timeouts\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 При значении `true` для всех запросов к S3 первые две попытки выполняются с короткими тайм-аутами отправки и получения.
 При значении `false` все попытки выполняются с одинаковыми тайм-аутами.
 
-## s3_validate_request_settings {#s3_validate_request_settings} 
+## s3_validate_request_settings \\{#s3_validate_request_settings\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10447,19 +10447,19 @@ FORMAT Null;
 - 1 — проверять настройки.
 - 0 — не проверять настройки.
 
-## s3queue_default_zookeeper_path {#s3queue_default_zookeeper_path} 
+## s3queue_default_zookeeper_path \\{#s3queue_default_zookeeper_path\\}
 
 <SettingsInfoBlock type="String" default_value="/clickhouse/s3queue/" />
 
 Префикс пути ZooKeeper по умолчанию для движка S3Queue
 
-## s3queue_enable_logging_to_s3queue_log {#s3queue_enable_logging_to_s3queue_log} 
+## s3queue_enable_logging_to_s3queue_log \\{#s3queue_enable_logging_to_s3queue_log\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Включает логирование в system.s3queue_log. Значение может быть переопределено на уровне отдельной таблицы с помощью настроек таблицы.
 
-## s3queue_keeper_fault_injection_probability {#s3queue_keeper_fault_injection_probability} 
+## s3queue_keeper_fault_injection_probability \\{#s3queue_keeper_fault_injection_probability\\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
@@ -10467,7 +10467,7 @@ FORMAT Null;
 
 Вероятность инъекции сбоев в Keeper для S3Queue.
 
-## s3queue_migrate_old_metadata_to_buckets {#s3queue_migrate_old_metadata_to_buckets} 
+## s3queue_migrate_old_metadata_to_buckets \\{#s3queue_migrate_old_metadata_to_buckets\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10475,43 +10475,43 @@ FORMAT Null;
 
 Преобразовывать старую структуру метаданных таблицы S3Queue в новую
 
-## schema_inference_cache_require_modification_time_for_url {#schema_inference_cache_require_modification_time_for_url} 
+## schema_inference_cache_require_modification_time_for_url \\{#schema_inference_cache_require_modification_time_for_url\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Использовать схему из кэша для URL-адреса с проверкой времени последнего изменения (для URL-адресов с заголовком Last-Modified)
 
-## schema_inference_use_cache_for_azure {#schema_inference_use_cache_for_azure} 
+## schema_inference_use_cache_for_azure \\{#schema_inference_use_cache_for_azure\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Использовать кэш при выводе схемы с табличной функцией Azure
 
-## schema_inference_use_cache_for_file {#schema_inference_use_cache_for_file} 
+## schema_inference_use_cache_for_file \\{#schema_inference_use_cache_for_file\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Использует кэш при определении схемы при использовании табличной функции file
 
-## schema_inference_use_cache_for_hdfs {#schema_inference_use_cache_for_hdfs} 
+## schema_inference_use_cache_for_hdfs \\{#schema_inference_use_cache_for_hdfs\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Использовать кэш при определении схемы при использовании табличной функции hdfs
 
-## schema_inference_use_cache_for_s3 {#schema_inference_use_cache_for_s3} 
+## schema_inference_use_cache_for_s3 \\{#schema_inference_use_cache_for_s3\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Использовать кэш при выводе схемы при использовании табличной функции S3
 
-## schema_inference_use_cache_for_url {#schema_inference_use_cache_for_url} 
+## schema_inference_use_cache_for_url \\{#schema_inference_use_cache_for_url\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Использовать кэш для вывода схемы при использовании табличной функции url
 
-## secondary_indices_enable_bulk_filtering {#secondary_indices_enable_bulk_filtering} 
+## secondary_indices_enable_bulk_filtering \\{#secondary_indices_enable_bulk_filtering\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10519,7 +10519,7 @@ FORMAT Null;
 
 Включает алгоритм пакетной фильтрации для индексов. Ожидается, что он всегда будет эффективнее, но эта настройка предусмотрена для совместимости и контроля.
 
-## select_sequential_consistency {#select_sequential_consistency} 
+## select_sequential_consistency \\{#select_sequential_consistency\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -10546,17 +10546,17 @@ FORMAT Null;
 - [insert_quorum_timeout](#insert_quorum_timeout)
 - [insert_quorum_parallel](#insert_quorum_parallel)
 
-## send_logs_level {#send_logs_level} 
+## send_logs_level \\{#send_logs_level\\}
 
 <SettingsInfoBlock type="LogsLevel" default_value="fatal" />
 
 Отправляет текстовые логи сервера клиенту, начиная с указанного минимального уровня. Допустимые значения: 'trace', 'debug', 'information', 'warning', 'error', 'fatal', 'none'
 
-## send_logs_source_regexp {#send_logs_source_regexp} 
+## send_logs_source_regexp \\{#send_logs_source_regexp\\}
 
 Отправляет текстовые логи сервера, имя источника которых соответствует указанному регулярному выражению. Пустое значение означает все источники.
 
-## send_profile_events {#send_profile_events} 
+## send_profile_events \\{#send_profile_events\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10571,7 +10571,7 @@ FORMAT Null;
 - 0 — Отключено.
 - 1 — Включено.
 
-## send_progress_in_http_headers {#send_progress_in_http_headers} 
+## send_progress_in_http_headers \\{#send_progress_in_http_headers\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10584,13 +10584,13 @@ FORMAT Null;
 - 0 — Отключено.
 - 1 — Включено.
 
-## send_timeout {#send_timeout} 
+## send_timeout \\{#send_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="300" />
 
 Таймаут отправки данных в сеть, в секундах. Если клиенту нужно отправить данные, но в течение этого интервала не удаётся отправить ни одного байта, генерируется исключение. Если вы задаёте этот параметр на клиенте, то `receive_timeout` для сокета также будет установлен на соответствующей стороне соединения на сервере.
 
-## serialize_query_plan {#serialize_query_plan} 
+## serialize_query_plan \\{#serialize_query_plan\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10598,7 +10598,7 @@ FORMAT Null;
 
 Сериализовать план запроса для распределённой обработки
 
-## serialize_string_in_memory_with_zero_byte {#serialize_string_in_memory_with_zero_byte} 
+## serialize_string_in_memory_with_zero_byte \\{#serialize_string_in_memory_with_zero_byte\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10606,7 +10606,7 @@ FORMAT Null;
 
 Сериализует строковые значения (String) при агрегации, добавляя нулевой байт в конец. Включайте для сохранения совместимости при выполнении запросов к кластеру с несовместимыми версиями.
 
-## session_timezone {#session_timezone}
+## session_timezone \{#session_timezone\}
 
 <BetaBadge />
 
@@ -10670,7 +10670,7 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 * [timezone](../server-configuration-parameters/settings.md/#timezone)
 
 
-## set_overflow_mode {#set_overflow_mode} 
+## set_overflow_mode \\{#set_overflow_mode\\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
@@ -10682,7 +10682,7 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 - `break`: прекратить выполнение запроса и вернуть частичный результат, как если бы
 исходные данные закончились.
 
-## shared_merge_tree_sync_parts_on_partition_operations {#shared_merge_tree_sync_parts_on_partition_operations} 
+## shared_merge_tree_sync_parts_on_partition_operations \\{#shared_merge_tree_sync_parts_on_partition_operations\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10690,7 +10690,7 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 
 Автоматически синхронизирует набор частей данных после операций с партициями MOVE|REPLACE|ATTACH в таблицах SMT. Только для Cloud.
 
-## short_circuit_function_evaluation {#short_circuit_function_evaluation} 
+## short_circuit_function_evaluation \\{#short_circuit_function_evaluation\\}
 
 <SettingsInfoBlock type="ShortCircuitFunctionEvaluation" default_value="enable" />
 
@@ -10702,7 +10702,7 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 - `force_enable` — Включает сокращённое вычисление для всех функций.
 - `disable` — Отключает сокращённое вычисление функций.
 
-## short_circuit_function_evaluation_for_nulls {#short_circuit_function_evaluation_for_nulls} 
+## short_circuit_function_evaluation_for_nulls \\{#short_circuit_function_evaluation_for_nulls\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10710,7 +10710,7 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 
 Оптимизирует вычисление функций, которые возвращают NULL, если любой из аргументов равен NULL. Когда доля значений NULL в аргументах функции превышает short_circuit_function_evaluation_for_nulls_threshold, система пропускает вычисление функции по строкам. Вместо этого она сразу возвращает NULL для всех строк, избегая лишних вычислений.
 
-## short_circuit_function_evaluation_for_nulls_threshold {#short_circuit_function_evaluation_for_nulls_threshold} 
+## short_circuit_function_evaluation_for_nulls_threshold \\{#short_circuit_function_evaluation_for_nulls_threshold\\}
 
 <SettingsInfoBlock type="Double" default_value="1" />
 
@@ -10719,7 +10719,7 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 Порог доли значений NULL, при котором функции с аргументами типа Nullable выполняются только для строк, в которых все аргументы не содержат NULL. Применяется, когда включена настройка short_circuit_function_evaluation_for_nulls.
 Когда отношение количества строк, содержащих значения NULL, к общему количеству строк превышает этот порог, строки с такими значениями NULL не вычисляются.
 
-## show_data_lake_catalogs_in_system_tables {#show_data_lake_catalogs_in_system_tables} 
+## show_data_lake_catalogs_in_system_tables \\{#show_data_lake_catalogs_in_system_tables\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10727,7 +10727,7 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 
 Включает отображение каталогов озер данных в системных таблицах.
 
-## show_processlist_include_internal {#show_processlist_include_internal} 
+## show_processlist_include_internal \\{#show_processlist_include_internal\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10737,7 +10737,7 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 
 К внутренним процессам относятся перезагрузки словарей, перезагрузки refreshable materialized view, служебные запросы `SELECT`, выполняемые в запросах `SHOW ...`, служебные запросы `CREATE DATABASE ...`, выполняемые внутри сервера для устранения проблем с повреждёнными таблицами, и другие подобные операции.
 
-## show_table_uuid_in_table_create_query_if_not_nil {#show_table_uuid_in_table_create_query_if_not_nil} 
+## show_table_uuid_in_table_create_query_if_not_nil \\{#show_table_uuid_in_table_create_query_if_not_nil\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10750,13 +10750,13 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 - 0 — запрос будет отображаться без UUID таблицы.
 - 1 — запрос будет отображаться с UUID таблицы.
 
-## single_join_prefer_left_table {#single_join_prefer_left_table} 
+## single_join_prefer_left_table \\{#single_join_prefer_left_table\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Для одиночного JOIN при неоднозначности идентификаторов отдавать предпочтение левой таблице
 
-## skip_redundant_aliases_in_udf {#skip_redundant_aliases_in_udf}
+## skip_redundant_aliases_in_udf \{#skip_redundant_aliases_in_udf\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10804,7 +10804,7 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 ```
 
 
-## skip_unavailable_shards {#skip_unavailable_shards} 
+## skip_unavailable_shards \\{#skip_unavailable_shards\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10834,25 +10834,25 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 
     Если сегмент недоступен, ClickHouse выбрасывает исключение.
 
-## sleep_after_receiving_query_ms {#sleep_after_receiving_query_ms} 
+## sleep_after_receiving_query_ms \\{#sleep_after_receiving_query_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="0" />
 
 Время задержки после получения запроса в TCPHandler
 
-## sleep_in_send_data_ms {#sleep_in_send_data_ms} 
+## sleep_in_send_data_ms \\{#sleep_in_send_data_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="0" />
 
 Время задержки при отправке данных в TCPHandler
 
-## sleep_in_send_tables_status_ms {#sleep_in_send_tables_status_ms} 
+## sleep_in_send_tables_status_ms \\{#sleep_in_send_tables_status_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="0" />
 
 Время задержки перед отправкой ответа о статусе таблиц в TCPHandler
 
-## sort_overflow_mode {#sort_overflow_mode} 
+## sort_overflow_mode \\{#sort_overflow_mode\\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
@@ -10863,7 +10863,7 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 - `throw`: сгенерировать исключение.
 - `break`: остановить выполнение запроса и вернуть частичный результат.
 
-## split_intersecting_parts_ranges_into_layers_final {#split_intersecting_parts_ranges_into_layers_final} 
+## split_intersecting_parts_ranges_into_layers_final \\{#split_intersecting_parts_ranges_into_layers_final\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10871,7 +10871,7 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 
 Разбивать диапазоны пересекающихся частей на слои при оптимизации FINAL
 
-## split_parts_ranges_into_intersecting_and_non_intersecting_final {#split_parts_ranges_into_intersecting_and_non_intersecting_final} 
+## split_parts_ranges_into_intersecting_and_non_intersecting_final \\{#split_parts_ranges_into_intersecting_and_non_intersecting_final\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -10879,7 +10879,7 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 
 Разделять диапазоны частей на пересекающиеся и непересекающиеся во время оптимизации FINAL
 
-## splitby_max_substrings_includes_remaining_string {#splitby_max_substrings_includes_remaining_string} 
+## splitby_max_substrings_includes_remaining_string \\{#splitby_max_substrings_includes_remaining_string\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10890,7 +10890,7 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 - `0` - Оставшаяся часть строки не будет включена в последний элемент результирующего массива.
 - `1` - Оставшаяся часть строки будет включена в последний элемент результирующего массива. Это поведение функции [`split()`](https://spark.apache.org/docs/3.1.2/api/python/reference/api/pyspark.sql.functions.split.html) в Spark и метода ['string.split()'](https://docs.python.org/3/library/stdtypes.html#str.split) в Python.
 
-## stop_refreshable_materialized_views_on_startup {#stop_refreshable_materialized_views_on_startup} 
+## stop_refreshable_materialized_views_on_startup \\{#stop_refreshable_materialized_views_on_startup\\}
 
 <ExperimentalBadge/>
 
@@ -10898,19 +10898,19 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 
 При запуске сервера предотвращает планирование refreshable materialized views, аналогично `SYSTEM STOP VIEWS`. Позже вы можете запустить их вручную с помощью `SYSTEM START VIEWS` или `SYSTEM START VIEW <name>`. Также применяется к вновь создаваемым представлениям. Не влияет на materialized view, не являющиеся refreshable materialized views.
 
-## storage_file_read_method {#storage_file_read_method} 
+## storage_file_read_method \\{#storage_file_read_method\\}
 
 <SettingsInfoBlock type="LocalFSReadMethod" default_value="pread" />
 
 Метод чтения данных из файла хранилища. Возможные значения: `read`, `pread`, `mmap`. Метод `mmap` не применяется к clickhouse-server (он предназначен для clickhouse-local).
 
-## storage_system_stack_trace_pipe_read_timeout_ms {#storage_system_stack_trace_pipe_read_timeout_ms} 
+## storage_system_stack_trace_pipe_read_timeout_ms \\{#storage_system_stack_trace_pipe_read_timeout_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="100" />
 
 Максимальное время ожидания чтения из канала для получения информации от потоков при выполнении запроса к таблице `system.stack_trace`. Этот параметр используется для целей тестирования и не предназначен для изменения пользователями.
 
-## stream_flush_interval_ms {#stream_flush_interval_ms} 
+## stream_flush_interval_ms \\{#stream_flush_interval_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="7500" />
 
@@ -10920,7 +10920,7 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 
 Чем меньше значение, тем чаще данные записываются в таблицу. Слишком маленькое значение приводит к низкой производительности.
 
-## stream_like_engine_allow_direct_select {#stream_like_engine_allow_direct_select} 
+## stream_like_engine_allow_direct_select \\{#stream_like_engine_allow_direct_select\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10929,17 +10929,17 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 Разрешает выполнять прямой SELECT‑запрос для движков Kafka, RabbitMQ, FileLog, Redis Streams, S3Queue, AzureQueue и NATS. Если есть привязанные materialized view, запрос SELECT не разрешён, даже если этот параметр включён.
 Если привязанных materialized view нет, включение этого параметра позволяет читать данные. Имейте в виду, что обычно прочитанные данные удаляются из очереди. Чтобы избежать удаления прочитанных данных, необходимо корректно настроить соответствующие настройки движка.
 
-## stream_like_engine_insert_queue {#stream_like_engine_insert_queue} 
+## stream_like_engine_insert_queue \\{#stream_like_engine_insert_queue\\}
 
 Когда движок потокового типа читает из нескольких очередей, пользователю нужно будет выбрать одну очередь для записи данных. Используется в Redis Streams и NATS.
 
-## stream_poll_timeout_ms {#stream_poll_timeout_ms} 
+## stream_poll_timeout_ms \\{#stream_poll_timeout_ms\\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="500" />
 
 Таймаут для опроса данных из/в стриминговые хранилища.
 
-## system_events_show_zero_values {#system_events_show_zero_values}
+## system_events_show_zero_values \{#system_events_show_zero_values\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -10982,7 +10982,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 ```
 
 
-## table_engine_read_through_distributed_cache {#table_engine_read_through_distributed_cache} 
+## table_engine_read_through_distributed_cache \\{#table_engine_read_through_distributed_cache\\}
 
 <CloudOnlyBadge/>
 
@@ -10992,7 +10992,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 Действует только в ClickHouse Cloud. Разрешает чтение из распределённого кэша через табличные движки и табличные функции (S3, Azure и т. д.).
 
-## table_function_remote_max_addresses {#table_function_remote_max_addresses} 
+## table_function_remote_max_addresses \\{#table_function_remote_max_addresses\\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -11002,13 +11002,13 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 - Положительное целое число.
 
-## tcp_keep_alive_timeout {#tcp_keep_alive_timeout} 
+## tcp_keep_alive_timeout \\{#tcp_keep_alive_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="290" />
 
 Время простоя соединения (в секундах) перед тем, как TCP начнёт отправлять keepalive-пакеты
 
-## temporary_data_in_cache_reserve_space_wait_lock_timeout_milliseconds {#temporary_data_in_cache_reserve_space_wait_lock_timeout_milliseconds} 
+## temporary_data_in_cache_reserve_space_wait_lock_timeout_milliseconds \\{#temporary_data_in_cache_reserve_space_wait_lock_timeout_milliseconds\\}
 
 <SettingsInfoBlock type="UInt64" default_value="600000" />
 
@@ -11016,7 +11016,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 Время ожидания при блокировке кэша для резервирования места под временные данные в файловом кэше
 
-## temporary_files_buffer_size {#temporary_files_buffer_size} 
+## temporary_files_buffer_size \\{#temporary_files_buffer_size\\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1048576" />
 
@@ -11024,7 +11024,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 Размер буфера для записи во временные файлы. Увеличение размера буфера уменьшает число системных вызовов, но повышает потребление памяти.
 
-## temporary_files_codec {#temporary_files_codec} 
+## temporary_files_codec \\{#temporary_files_codec\\}
 
 <SettingsInfoBlock type="String" default_value="LZ4" />
 
@@ -11035,7 +11035,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 - LZ4 — применяется сжатие [LZ4](https://en.wikipedia.org/wiki/LZ4_(compression_algorithm)).
 - NONE — сжатие не применяется.
 
-## text_index_hint_max_selectivity {#text_index_hint_max_selectivity} 
+## text_index_hint_max_selectivity \\{#text_index_hint_max_selectivity\\}
 
 <SettingsInfoBlock type="Float" default_value="0.2" />
 
@@ -11043,7 +11043,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 Максимальная селективность фильтра для использования подсказки, основанной на инвертированном текстовом индексе.
 
-## text_index_use_bloom_filter {#text_index_use_bloom_filter} 
+## text_index_use_bloom_filter \\{#text_index_use_bloom_filter\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11051,19 +11051,19 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 Для тестирования позволяет включать или отключать использование bloom-фильтра в текстовом индексе.
 
-## throw_if_no_data_to_insert {#throw_if_no_data_to_insert} 
+## throw_if_no_data_to_insert \\{#throw_if_no_data_to_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Разрешает или запрещает пустые INSERT-запросы, по умолчанию включено (выбрасывает ошибку при попытке пустой вставки). Применяется только к INSERT-запросам с использованием [`clickhouse-client`](/interfaces/cli) или интерфейса [gRPC](/interfaces/grpc).
 
-## throw_on_error_from_cache_on_write_operations {#throw_on_error_from_cache_on_write_operations} 
+## throw_on_error_from_cache_on_write_operations \\{#throw_on_error_from_cache_on_write_operations\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Игнорировать ошибки, возникающие в кэше при кэшировании во время операций записи (INSERT, слияния)
 
-## throw_on_max_partitions_per_insert_block {#throw_on_max_partitions_per_insert_block} 
+## throw_on_max_partitions_per_insert_block \\{#throw_on_max_partitions_per_insert_block\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11078,7 +11078,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 Это может быть полезно, если вы пытаетесь оценить влияние на пользователей при изменении [`max_partitions_per_insert_block`](/operations/settings/settings#max_partitions_per_insert_block).
 :::
 
-## throw_on_unsupported_query_inside_transaction {#throw_on_unsupported_query_inside_transaction} 
+## throw_on_unsupported_query_inside_transaction \\{#throw_on_unsupported_query_inside_transaction\\}
 
 <ExperimentalBadge/>
 
@@ -11086,14 +11086,14 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 Выбрасывать исключение, если внутри транзакции используется неподдерживаемый запрос
 
-## timeout_before_checking_execution_speed {#timeout_before_checking_execution_speed} 
+## timeout_before_checking_execution_speed \\{#timeout_before_checking_execution_speed\\}
 
 <SettingsInfoBlock type="Seconds" default_value="10" />
 
 Проверяет, что скорость выполнения не становится слишком низкой (не ниже `min_execution_speed`),
 по истечении указанного времени в секундах.
 
-## timeout_overflow_mode {#timeout_overflow_mode} 
+## timeout_overflow_mode \\{#timeout_overflow_mode\\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
@@ -11106,7 +11106,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 - `break`: остановить выполнение запроса и вернуть частичный результат, как если бы
 исходные данные были исчерпаны.
 
-## timeout_overflow_mode_leaf {#timeout_overflow_mode_leaf} 
+## timeout_overflow_mode_leaf \\{#timeout_overflow_mode_leaf\\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
@@ -11118,21 +11118,21 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 - `break`: остановить выполнение запроса и вернуть частичный результат, как будто
 исходные данные закончились.
 
-## totals_auto_threshold {#totals_auto_threshold} 
+## totals_auto_threshold \\{#totals_auto_threshold\\}
 
 <SettingsInfoBlock type="Float" default_value="0.5" />
 
 Пороговое значение для `totals_mode = 'auto'`.
 См. раздел «Модификатор WITH TOTALS».
 
-## totals_mode {#totals_mode} 
+## totals_mode \\{#totals_mode\\}
 
 <SettingsInfoBlock type="TotalsMode" default_value="after_having_exclusive" />
 
 Как вычислять TOTALS при использовании HAVING, а также при установленных max_rows_to_group_by и group_by_overflow_mode = 'any'.
 См. раздел «WITH TOTALS modifier».
 
-## trace_profile_events {#trace_profile_events} 
+## trace_profile_events \\{#trace_profile_events\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11143,7 +11143,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 - 1 — трассировка событий профилирования включена.
 - 0 — трассировка событий профилирования отключена.
 
-## trace_profile_events_list {#trace_profile_events_list} 
+## trace_profile_events_list \\{#trace_profile_events_list\\}
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": ""},{"label": "New setting"}]}]}/>
 
@@ -11154,7 +11154,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 Использование этого параметра позволяет более точно собирать данные для большого количества запросов, так как в противном случае огромное количество событий может переполнить внутреннюю очередь системного журнала, и часть из них будет отброшена.
 
-## transfer_overflow_mode {#transfer_overflow_mode} 
+## transfer_overflow_mode \\{#transfer_overflow_mode\\}
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
@@ -11166,7 +11166,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 - `break`: прекратить выполнение запроса и вернуть частичный результат, как если бы
 исходные данные закончились.
 
-## transform_null_in {#transform_null_in}
+## transform_null_in \{#transform_null_in\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11225,7 +11225,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 * [Обработка NULL в операторах IN](/sql-reference/operators/in#null-processing)
 
 
-## traverse_shadow_remote_data_paths {#traverse_shadow_remote_data_paths} 
+## traverse_shadow_remote_data_paths \\{#traverse_shadow_remote_data_paths\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11233,7 +11233,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Обходить замороженные данные (теневой каталог) помимо фактических данных таблицы при выполнении запроса system.remote_data_paths
 
-## union_default_mode {#union_default_mode} 
+## union_default_mode \\{#union_default_mode\\}
 
 Задаёт режим объединения результатов запросов `SELECT`. Параметр используется только при совместном использовании с [UNION](../../sql-reference/statements/select/union.md) без явного указания `UNION ALL` или `UNION DISTINCT`.
 
@@ -11245,13 +11245,13 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Примеры см. в разделе [UNION](../../sql-reference/statements/select/union.md).
 
-## unknown_packet_in_send_data {#unknown_packet_in_send_data} 
+## unknown_packet_in_send_data \\{#unknown_packet_in_send_data\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Отправлять неизвестный пакет вместо N-го пакета данных
 
-## update_parallel_mode {#update_parallel_mode} 
+## update_parallel_mode \\{#update_parallel_mode\\}
 
 <SettingsInfoBlock type="UpdateParallelMode" default_value="auto" />
 
@@ -11265,7 +11265,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 - `auto` - выполнять последовательно только те запросы `UPDATE`, для которых есть зависимости между столбцами, обновляемыми в одном запросе, и столбцами, используемыми в выражениях другого запроса.
 - `async` - не синхронизировать выполнение запросов `UPDATE`.
 
-## update_sequential_consistency {#update_sequential_consistency} 
+## update_sequential_consistency \\{#update_sequential_consistency\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11273,7 +11273,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Если установлено значение true, набор частей обновляется до последней версии перед выполнением обновления.
 
-## use_async_executor_for_materialized_views {#use_async_executor_for_materialized_views} 
+## use_async_executor_for_materialized_views \\{#use_async_executor_for_materialized_views\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11281,7 +11281,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использование асинхронного и потенциально многопоточного выполнения запросов materialized view может ускорить обработку представлений во время INSERT, однако при этом потребляется больше памяти.
 
-## use_cache_for_count_from_files {#use_cache_for_count_from_files} 
+## use_cache_for_count_from_files \\{#use_cache_for_count_from_files\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11289,13 +11289,13 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Включено по умолчанию.
 
-## use_client_time_zone {#use_client_time_zone} 
+## use_client_time_zone \\{#use_client_time_zone\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Использовать часовой пояс клиента для интерпретации строковых значений DateTime вместо часового пояса сервера.
 
-## use_compact_format_in_distributed_parts_names {#use_compact_format_in_distributed_parts_names} 
+## use_compact_format_in_distributed_parts_names \\{#use_compact_format_in_distributed_parts_names\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11314,7 +11314,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 - при `use_compact_format_in_distributed_parts_names=1` изменение порядка узлов в определении кластера приведёт к изменению значений `shard_index`/`replica_index`, имейте это в виду.
 :::
 
-## use_concurrency_control {#use_concurrency_control} 
+## use_concurrency_control \\{#use_concurrency_control\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11322,7 +11322,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Учитывать контроль конкуренции сервера (см. глобальные настройки сервера `concurrent_threads_soft_limit_num` и `concurrent_threads_soft_limit_ratio_to_cores`). Если параметр отключён, можно использовать большее количество потоков, даже если сервер перегружен (не рекомендуется для обычного использования и в основном нужно для тестов).
 
-## use_hedged_requests {#use_hedged_requests} 
+## use_hedged_requests \\{#use_hedged_requests\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11337,7 +11337,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Значение по умолчанию в Cloud: `1`
 
-## use_hive_partitioning {#use_hive_partitioning} 
+## use_hive_partitioning \\{#use_hive_partitioning\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11345,7 +11345,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Если настройка включена, ClickHouse будет обнаруживать партиционирование в стиле Hive в пути (`/name=value/`) в табличных движках файлового типа [File](/sql-reference/table-functions/file#hive-style-partitioning)/[S3](/sql-reference/table-functions/s3#hive-style-partitioning)/[URL](/sql-reference/table-functions/url#hive-style-partitioning)/[HDFS](/sql-reference/table-functions/hdfs#hive-style-partitioning)/[AzureBlobStorage](/sql-reference/table-functions/azureBlobStorage#hive-style-partitioning) и позволит использовать столбцы партиций в качестве виртуальных столбцов в запросе. Эти виртуальные столбцы будут иметь те же имена, что и в пути партиционирования, но начинаться с `_`.
 
-## use_iceberg_metadata_files_cache {#use_iceberg_metadata_files_cache} 
+## use_iceberg_metadata_files_cache \\{#use_iceberg_metadata_files_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11358,7 +11358,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 - 0 - Отключено
 - 1 - Включено
 
-## use_iceberg_partition_pruning {#use_iceberg_partition_pruning} 
+## use_iceberg_partition_pruning \\{#use_iceberg_partition_pruning\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11366,19 +11366,19 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использует отсечение партиций Iceberg для таблиц Iceberg
 
-## use_index_for_in_with_subqueries {#use_index_for_in_with_subqueries} 
+## use_index_for_in_with_subqueries \\{#use_index_for_in_with_subqueries\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Пробовать использовать индекс, если в правой части оператора IN есть подзапрос или табличное выражение.
 
-## use_index_for_in_with_subqueries_max_values {#use_index_for_in_with_subqueries_max_values} 
+## use_index_for_in_with_subqueries_max_values \\{#use_index_for_in_with_subqueries_max_values\\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальный размер набора в правой части оператора IN, при котором для фильтрации используется индекс таблицы. Это позволяет избежать деградации производительности и повышенного расхода памяти из‑за подготовки дополнительных структур данных для больших запросов. Ноль означает отсутствие лимита.
 
-## use_join_disjunctions_push_down {#use_join_disjunctions_push_down} 
+## use_join_disjunctions_push_down \\{#use_join_disjunctions_push_down\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11388,7 +11388,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 Это позволяет движкам хранения выполнять фильтрацию раньше, что может сократить объём считываемых данных.
 Оптимизация не изменяет семантику запроса и применяется только в том случае, если каждая верхнеуровневая ветвь по OR даёт как минимум один детерминированный предикат для соответствующей стороны.
 
-## use_legacy_to_time {#use_legacy_to_time} 
+## use_legacy_to_time \\{#use_legacy_to_time\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11398,7 +11398,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 В противном случае используется новая функция toTime, которая преобразует разные типы данных в тип Time.
 Прежняя функция также всегда доступна как toTimeWithFixedDate.
 
-## use_page_cache_for_disks_without_file_cache {#use_page_cache_for_disks_without_file_cache} 
+## use_page_cache_for_disks_without_file_cache \\{#use_page_cache_for_disks_without_file_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11406,7 +11406,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использовать userspace page cache для удалённых дисков, на которых не включён кэш файловой системы.
 
-## use_page_cache_with_distributed_cache {#use_page_cache_with_distributed_cache} 
+## use_page_cache_with_distributed_cache \\{#use_page_cache_with_distributed_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11414,7 +11414,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использовать кэш страниц в пространстве пользователя при использовании распределённого кэша.
 
-## use_paimon_partition_pruning {#use_paimon_partition_pruning} 
+## use_paimon_partition_pruning \\{#use_paimon_partition_pruning\\}
 
 <ExperimentalBadge/>
 
@@ -11424,7 +11424,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использует отсечение партиций Paimon для табличных функций Paimon
 
-## use_primary_key {#use_primary_key} 
+## use_primary_key \\{#use_primary_key\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11437,7 +11437,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 - 0 — Отключено.
 - 1 — Включено.
 
-## use_query_cache {#use_query_cache} 
+## use_query_cache \\{#use_query_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11449,7 +11449,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 - 0 — отключено
 - 1 — включено
 
-## use_query_condition_cache {#use_query_condition_cache} 
+## use_query_condition_cache \\{#use_query_condition_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11463,7 +11463,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 - 0 - Отключено
 - 1 - Включено
 
-## use_roaring_bitmap_iceberg_positional_deletes {#use_roaring_bitmap_iceberg_positional_deletes} 
+## use_roaring_bitmap_iceberg_positional_deletes \\{#use_roaring_bitmap_iceberg_positional_deletes\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11471,7 +11471,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использовать roaring bitmap для позиционных удалений в формате Iceberg.
 
-## use_skip_indexes {#use_skip_indexes} 
+## use_skip_indexes \\{#use_skip_indexes\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11482,7 +11482,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 - 0 — Отключено.
 - 1 — Включено.
 
-## use_skip_indexes_for_disjunctions {#use_skip_indexes_for_disjunctions} 
+## use_skip_indexes_for_disjunctions \\{#use_skip_indexes_for_disjunctions\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11496,7 +11496,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 - 0 — Отключено.
 - 1 — Включено.
 
-## use_skip_indexes_for_top_k {#use_skip_indexes_for_top_k} 
+## use_skip_indexes_for_top_k \\{#use_skip_indexes_for_top_k\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11511,7 +11511,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 - 0 — отключено.
 - 1 — включено.
 
-## use_skip_indexes_if_final {#use_skip_indexes_if_final} 
+## use_skip_indexes_if_final \\{#use_skip_indexes_if_final\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11526,7 +11526,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 - 0 — Отключено.
 - 1 — Включено.
 
-## use_skip_indexes_if_final_exact_mode {#use_skip_indexes_if_final_exact_mode} 
+## use_skip_indexes_if_final_exact_mode \\{#use_skip_indexes_if_final_exact_mode\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11541,7 +11541,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 - 0 — Отключена.
 - 1 — Включена.
 
-## use_skip_indexes_on_data_read {#use_skip_indexes_on_data_read} 
+## use_skip_indexes_on_data_read \\{#use_skip_indexes_on_data_read\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11556,7 +11556,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 - 0 — Отключено.
 - 1 — Включено.
 
-## use_statistics_cache {#use_statistics_cache} 
+## use_statistics_cache \\{#use_statistics_cache\\}
 
 <ExperimentalBadge/>
 
@@ -11566,7 +11566,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использовать кэш статистики в запросе, чтобы избежать накладных расходов на загрузку статистики для каждой части.
 
-## use_structure_from_insertion_table_in_table_functions {#use_structure_from_insertion_table_in_table_functions} 
+## use_structure_from_insertion_table_in_table_functions \\{#use_structure_from_insertion_table_in_table_functions\\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
@@ -11574,7 +11574,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использовать структуру таблицы, в которую выполняется вставка, вместо определения схемы по данным. Возможные значения: 0 - отключено, 1 - включено, 2 - авто
 
-## use_text_index_dictionary_cache {#use_text_index_dictionary_cache} 
+## use_text_index_dictionary_cache \\{#use_text_index_dictionary_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11583,7 +11583,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 Определяет, использовать ли кэш десериализованного блока словаря текстового индекса.
 Использование кэша блока словаря текстового индекса может значительно уменьшить задержки и увеличить пропускную способность при выполнении большого числа запросов по текстовому индексу.
 
-## use_text_index_header_cache {#use_text_index_header_cache} 
+## use_text_index_header_cache \\{#use_text_index_header_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11592,7 +11592,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 Нужно ли использовать кэш десериализованного заголовка текстового индекса.
 Использование кэша заголовка текстового индекса может значительно уменьшить задержки и увеличить пропускную способность при работе с большим количеством запросов к текстовому индексу.
 
-## use_text_index_postings_cache {#use_text_index_postings_cache} 
+## use_text_index_postings_cache \\{#use_text_index_postings_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11601,7 +11601,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 Определяет, использовать ли кэш десериализованных списков вхождений текстового индекса.
 Использование кэша списков вхождений текстового индекса может существенно снизить задержку и повысить пропускную способность при работе с большим количеством запросов к текстовому индексу.
 
-## use_top_k_dynamic_filtering {#use_top_k_dynamic_filtering} 
+## use_top_k_dynamic_filtering \\{#use_top_k_dynamic_filtering\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11616,7 +11616,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 - 0 — Отключено.
 - 1 — Включено.
 
-## use_uncompressed_cache {#use_uncompressed_cache} 
+## use_uncompressed_cache \\{#use_uncompressed_cache\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11625,7 +11625,7 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Для запросов, которые читают хотя бы относительно большой объем данных (один миллион строк и более), uncompressed cache автоматически отключается, чтобы освободить место для действительно маленьких запросов. Это означает, что вы можете всегда оставлять настройку `use_uncompressed_cache` равной 1.
 
-## use_variant_as_common_type {#use_variant_as_common_type}
+## use_variant_as_common_type \{#use_variant_as_common_type\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11710,7 +11710,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 ```
 
 
-## use_variant_default_implementation_for_comparisons {#use_variant_default_implementation_for_comparisons} 
+## use_variant_default_implementation_for_comparisons \\{#use_variant_default_implementation_for_comparisons\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11718,7 +11718,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 
 Включает или отключает стандартную реализацию типа Variant в функциях сравнения.
 
-## use_with_fill_by_sorting_prefix {#use_with_fill_by_sorting_prefix} 
+## use_with_fill_by_sorting_prefix \\{#use_with_fill_by_sorting_prefix\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11726,7 +11726,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 
 Столбцы, предшествующие столбцам WITH FILL в предложении ORDER BY, образуют сортировочный префикс. Строки с разными значениями сортировочного префикса заполняются независимо.
 
-## validate_enum_literals_in_operators {#validate_enum_literals_in_operators} 
+## validate_enum_literals_in_operators \\{#validate_enum_literals_in_operators\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11734,7 +11734,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 
 Если параметр включён, проверяются литералы enum в операторах `IN`, `NOT IN`, `==`, `!=` на соответствие типу enum и выбрасывается исключение, если литерал не является допустимым значением enum.
 
-## validate_mutation_query {#validate_mutation_query} 
+## validate_mutation_query \\{#validate_mutation_query\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11744,7 +11744,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 
 Изменяйте эту настройку только в том случае, если вы столкнулись с ошибкой, несовместимой с предыдущими версиями.
 
-## validate_polygons {#validate_polygons} 
+## validate_polygons \\{#validate_polygons\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11757,7 +11757,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 - 0 — генерация исключения отключена. `pointInPolygon` принимает некорректные многоугольники и возвращает для них потенциально неверные результаты.
 - 1 — генерация исключения включена.
 
-## vector_search_filter_strategy {#vector_search_filter_strategy} 
+## vector_search_filter_strategy \\{#vector_search_filter_strategy\\}
 
 <SettingsInfoBlock type="VectorSearchFilterStrategy" default_value="auto" />
 
@@ -11769,7 +11769,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 - 'postfilter' — сначала использовать индекс векторного сходства для определения ближайших соседей, затем применять остальные фильтры.
 - 'prefilter' — сначала вычислять остальные фильтры, затем выполнять полный перебор (brute-force search) для определения ближайших соседей.
 
-## vector_search_index_fetch_multiplier {#vector_search_index_fetch_multiplier} 
+## vector_search_index_fetch_multiplier \\{#vector_search_index_fetch_multiplier\\}
 
 **Псевдонимы**: `vector_search_postfilter_multiplier`
 
@@ -11779,7 +11779,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 
 Умножает количество извлечённых ближайших соседей из индекса поиска по векторному сходству на это число. Применяется только при постфильтрации с другими предикатами или если установлена настройка `vector_search_with_rescoring = 1`.
 
-## vector_search_with_rescoring {#vector_search_with_rescoring} 
+## vector_search_with_rescoring \\{#vector_search_with_rescoring\\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -11791,7 +11791,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 В большинстве случаев перерасчет лишь незначительно улучшает точность, но при этом существенно ухудшает производительность запросов векторного поиска.
 Примечание: запрос, выполняемый без перерасчета и с включенными параллельными репликами, может автоматически перейти в режим с перерасчетом.
 
-## wait_changes_become_visible_after_commit_mode {#wait_changes_become_visible_after_commit_mode} 
+## wait_changes_become_visible_after_commit_mode \\{#wait_changes_become_visible_after_commit_mode\\}
 
 <ExperimentalBadge/>
 
@@ -11799,19 +11799,19 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 
 Ожидать, пока зафиксированные изменения не станут видимыми в последнем снимке
 
-## wait_for_async_insert {#wait_for_async_insert} 
+## wait_for_async_insert \\{#wait_for_async_insert\\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Если значение равно `true`, ожидает завершения обработки асинхронной вставки
 
-## wait_for_async_insert_timeout {#wait_for_async_insert_timeout} 
+## wait_for_async_insert_timeout \\{#wait_for_async_insert_timeout\\}
 
 <SettingsInfoBlock type="Seconds" default_value="120" />
 
 Таймаут ожидания обработки асинхронной вставки данных
 
-## wait_for_window_view_fire_signal_timeout {#wait_for_window_view_fire_signal_timeout} 
+## wait_for_window_view_fire_signal_timeout \\{#wait_for_window_view_fire_signal_timeout\\}
 
 <ExperimentalBadge/>
 
@@ -11819,7 +11819,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 
 Тайм-аут ожидания сигнала срабатывания window view при обработке по времени события
 
-## window_view_clean_interval {#window_view_clean_interval} 
+## window_view_clean_interval \\{#window_view_clean_interval\\}
 
 <ExperimentalBadge/>
 
@@ -11827,7 +11827,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 
 Интервал очистки оконного представления в секундах для удаления устаревших данных.
 
-## window_view_heartbeat_interval {#window_view_heartbeat_interval} 
+## window_view_heartbeat_interval \\{#window_view_heartbeat_interval\\}
 
 <ExperimentalBadge/>
 
@@ -11835,13 +11835,13 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 
 Интервал в секундах, показывающий, что watch‑запрос продолжает выполняться.
 
-## нагрузка {#workload} 
+## нагрузка \\{#workload\\}
 
 <SettingsInfoBlock type="String" default_value="default" />
 
 Имя рабочей нагрузки, которое будет использоваться для доступа к ресурсам
 
-## write_full_path_in_iceberg_metadata {#write_full_path_in_iceberg_metadata} 
+## write_full_path_in_iceberg_metadata \\{#write_full_path_in_iceberg_metadata\\}
 
 <ExperimentalBadge/>
 
@@ -11851,7 +11851,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 
 Записывать полные пути (включая s3://) в файлы метаданных формата Iceberg.
 
-## write_through_distributed_cache {#write_through_distributed_cache} 
+## write_through_distributed_cache \\{#write_through_distributed_cache\\}
 
 <CloudOnlyBadge/>
 
@@ -11861,7 +11861,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 
 Действует только в ClickHouse Cloud. Разрешает запись в распределённый кэш (при этом запись в S3 также будет выполняться через распределённый кэш).
 
-## write_through_distributed_cache_buffer_size {#write_through_distributed_cache_buffer_size} 
+## write_through_distributed_cache_buffer_size \\{#write_through_distributed_cache_buffer_size\\}
 
 <CloudOnlyBadge/>
 
@@ -11871,7 +11871,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 
 Имеет эффект только в ClickHouse Cloud. Задает размер буфера для сквозного (write-through) распределенного кэша. Если значение равно 0, используется размер буфера, который был бы использован, если бы распределенного кэша не было.
 
-## zstd_window_log_max {#zstd_window_log_max} 
+## zstd_window_log_max \\{#zstd_window_log_max\\}
 
 <SettingsInfoBlock type="Int64" default_value="0" />
 

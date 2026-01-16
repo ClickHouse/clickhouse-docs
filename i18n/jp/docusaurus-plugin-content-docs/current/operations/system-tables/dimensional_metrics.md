@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# dimensional&#95;metrics {#dimensional_metrics}
+# dimensional&#95;metrics \\{#dimensional_metrics\\}
 
 <SystemTableCloud />
 
@@ -37,15 +37,15 @@ FROM system.dimensional_metrics
 FORMAT Prometheus
 ```
 
-## メトリクスの説明 {#metric_descriptions}
+## メトリクスの説明 \\{#metric_descriptions\\}
 
-### merge_failures {#merge_failures}
+### merge_failures \\{#merge_failures\\}
 起動以降に失敗したマージの総数。
 
-### startup_scripts_failure_reason {#startup_scripts_failure_reason}
+### startup_scripts_failure_reason \\{#startup_scripts_failure_reason\\}
 エラー種別ごとに、起動スクリプトの失敗を示します。起動スクリプトが失敗した場合に 1 に設定され、エラー名でラベル付けされます。
 
-### merge_tree_parts {#merge_tree_parts}
+### merge_tree_parts \\{#merge_tree_parts\\}
 MergeTree のデータパーツ数。パーツの状態、パーツ種別、およびプロジェクションパーツかどうかでラベル付けされます。
 
 **参照**

@@ -18,7 +18,7 @@ import agent_output_settings from '@site/static/images/use-cases/observability/a
 import migrating_agents from '@site/static/images/use-cases/observability/clickstack-migrating-agents.png';
 
 
-## Elastic からのエージェント移行 {#migrating-agents-from-elastic}
+## Elastic からのエージェント移行 \\{#migrating-agents-from-elastic\\}
 
 Elastic Stack は、複数の Observability データ収集エージェントを提供しています。具体的には次のとおりです。
 
@@ -28,7 +28,7 @@ Elastic Stack は、複数の Observability データ収集エージェントを
 
 最適な移行パスは、現在使用しているエージェントに依存します。以降のセクションでは、代表的な各エージェントタイプごとに移行オプションを説明します。本ガイドの目的は、移行時の負担を最小限に抑え、可能な限り移行期間中も既存エージェントを継続利用していただけるようにすることです。
 
-## 推奨される移行パス {#prefered-migration-path}
+## 推奨される移行パス \\{#prefered-migration-path\\}
 
 可能な限り、すべてのログ・メトリクス・トレース収集について [OpenTelemetry (OTel) Collector](https://opentelemetry.io/docs/collector/) への移行を推奨します。Collector は [エージェントロールでエッジにデプロイ](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) してください。これがデータ送信の最も効率的な方法であり、アーキテクチャの複雑化やデータ変換を避けることができます。
 
@@ -36,7 +36,7 @@ Elastic Stack は、複数の Observability データ収集エージェントを
 OpenTelemetry Collector は、オブザーバビリティデータのインジェストに対して、持続可能かつベンダーニュートラルなソリューションを提供します。組織によっては、数千台、あるいは数万台規模の Elastic Agent 群を運用している場合があることを認識しています。これらのユーザーにとっては、既存のエージェント基盤との互換性を維持することが重要となる場合があります。本ドキュメントは、そのような要件を満たしつつ、チームが徐々に OpenTelemetry ベースの収集へ移行できるよう支援することを目的としています。
 :::
 
-## ClickHouse OpenTelemetry エンドポイント {#clickhouse-otel-endpoint}
+## ClickHouse OpenTelemetry エンドポイント \\{#clickhouse-otel-endpoint\\}
 
 すべてのデータは **OpenTelemetry (OTel) collector** インスタンスを経由して ClickStack に取り込まれます。このインスタンスが、ログ、メトリクス、トレース、およびセッションデータの主なエントリポイントとして機能します。このインスタンスには、[ClickStack ディストリビューション](/use-cases/observability/clickstack/ingesting-data/opentelemetry#installing-otel-collector) に含まれる公式 collector を使用することを推奨します（[ClickStack のデプロイメントモデルにすでにバンドルされていない場合](/use-cases/observability/clickstack/deployment)）。
 
@@ -44,7 +44,7 @@ OpenTelemetry Collector は、オブザーバビリティデータのインジ�
 
 **以降のすべてのエージェント移行手順において、この collector が利用可能であることを前提とします。**
 
-## Beats からの移行 {#migrating-to-beats}
+## Beats からの移行 \\{#migrating-to-beats\\}
 
 大規模な Beats デプロイメントを運用しているユーザーは、ClickStack への移行時にもそれらを引き続き利用したい場合があります。
 
@@ -321,7 +321,7 @@ Elastic Agent をデプロイしているユーザーには、いくつかの移
 
 以下で、これら 2 つのオプションについて順に説明します。
 
-### Vector 経由でデータを送信する {#sending-data-via-vector}
+### Vector 経由でデータを送信する \\{#sending-data-via-vector\\}
 
 <VerticalStepper headerLevel="h4">
 
@@ -361,7 +361,7 @@ sources:
 
 </VerticalStepper>
 
-### OpenTelemetry collector として Elastic Agent を実行する {#sending-data-via-vector}
+### OpenTelemetry collector として Elastic Agent を実行する \{#sending-data-via-vector\}
 
 Elastic Agent には EDOT Collector が組み込まれており、一度アプリケーションやインフラストラクチャを計装することで、複数のベンダーやバックエンドにデータを送信できます。
 

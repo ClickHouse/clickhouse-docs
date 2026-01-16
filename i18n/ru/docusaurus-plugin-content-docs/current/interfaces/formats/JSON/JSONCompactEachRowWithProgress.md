@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Этот формат объединяет компактный построчный вывод JSONCompactEachRow с потоковой
 информацией о ходе выполнения.
@@ -28,7 +28,7 @@ doc_type: 'reference'
 - Поддерживает `totals` и `extremes`
 - Значения сохраняют свои исходные типы (числа — как числа, строки — как строки)
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
 ```sql title="Query"
 SELECT *
@@ -48,4 +48,4 @@ FORMAT JSONCompactEachRowWithProgress
 {"rows_before_limit_at_least":5}
 ```
 
-## Параметры форматирования {#format-settings}
+## Параметры форматирования \\{#format-settings\\}

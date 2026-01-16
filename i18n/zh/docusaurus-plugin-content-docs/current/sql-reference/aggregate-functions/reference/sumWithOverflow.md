@@ -5,7 +5,7 @@ title: 'sumWithOverflow'
 doc_type: 'reference'
 ---
 
-# sumWithOverflow {#sumwithoverflow}
+# sumWithOverflow \{#sumwithoverflow\}
 
 计算一组数字的总和，结果的数据类型与输入参数相同。如果总和超过该数据类型的最大可表示值，则会发生溢出，并按该类型的溢出语义进行计算。
 

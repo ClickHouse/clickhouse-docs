@@ -8,12 +8,12 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 时序存储效率 {#time-series-storage-efficiency}
+# 时序存储效率 \\{#time-series-storage-efficiency\\}
 
 在前面学习了如何查询我们的 Wikipedia 统计数据集之后，接下来重点优化它在 ClickHouse 中的存储效率。
 本节将演示一些实用技巧，在保持查询性能的同时减少存储需求。
 
-## 类型优化 {#time-series-type-optimization}
+## 类型优化 \\{#time-series-type-optimization\\}
 
 提升存储效率的一般方法是使用最合适的数据类型。
 以 `project` 和 `subproject` 列为例。这些列的数据类型为 String，但其不同取值的数量相对较少：
@@ -61,7 +61,7 @@ MODIFY COLUMN `hits` UInt32;
 
 这将使该列在内存中的大小至少减少一半。请注意，由于压缩的原因，磁盘上的大小将保持不变。但要注意，不要选择过小的数据类型！
 
-## 专用编解码器 {#time-series-specialized-codecs}
+## 专用编解码器 \\{#time-series-specialized-codecs\\}
 
 在处理时间序列等序列型数据时，可以通过使用专用编解码器进一步提升存储效率。
 总体思路是存储数值之间的差值，而不是数值本身的绝对值，这样在处理缓慢变化的数据时，可以显著减少所需的存储空间：

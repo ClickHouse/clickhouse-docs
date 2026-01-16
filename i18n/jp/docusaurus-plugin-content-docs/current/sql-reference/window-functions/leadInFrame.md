@@ -7,7 +7,7 @@ title: 'leadInFrame'
 doc_type: 'reference'
 ---
 
-# leadInFrame {#leadinframe}
+# leadInFrame \\{#leadinframe\\}
 
 順序付けされたフレーム内で、現在の行から指定したオフセット行数だけ後方の行で評価された値を返します。
 

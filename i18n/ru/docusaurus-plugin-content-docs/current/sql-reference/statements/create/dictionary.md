@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 Создает новый [словарь](../../../sql-reference/dictionaries/index.md) с указанными [структурой](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields), [источником](../../../sql-reference/dictionaries/index.md#dictionary-sources), [схемой размещения](/sql-reference/dictionaries#storing-dictionaries-in-memory) и [временем жизни](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
 
-## Синтаксис {#syntax}
+## Синтаксис \\{#syntax\\}
 
 ```sql
 CREATE [OR REPLACE] DICTIONARY [IF NOT EXISTS] [db.]dictionary_name [ON CLUSTER cluster]
@@ -33,7 +33,7 @@ COMMENT 'Comment'
 
 В зависимости от [layout](/sql-reference/dictionaries#storing-dictionaries-in-memory) словаря один или несколько атрибутов могут использоваться в качестве ключей словаря.
 
-## ИСТОЧНИК {#source}
+## ИСТОЧНИК \\{#source\\}
 
 Источником словаря может быть:
 
@@ -42,7 +42,7 @@ COMMENT 'Comment'
 * файл, доступный по HTTP(S)
 * другая база данных
 
-### Создайте словарь из таблицы в текущем сервисе ClickHouse {#create-a-dictionary-from-a-table-in-the-current-clickhouse-service}
+### Создайте словарь из таблицы в текущем сервисе ClickHouse \\{#create-a-dictionary-from-a-table-in-the-current-clickhouse-service\\}
 
 Входная таблица `source_table`:
 
@@ -114,7 +114,7 @@ LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000);
 ```
 
-### Создание словаря из таблицы в удалённом сервисе ClickHouse {#create-a-dictionary-from-a-table-in-a-remote-clickhouse-service}
+### Создание словаря из таблицы в удалённом сервисе ClickHouse \\{#create-a-dictionary-from-a-table-in-a-remote-clickhouse-service\\}
 
 Входная таблица (в удалённом сервисе ClickHouse) `source_table`:
 
@@ -139,7 +139,7 @@ LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000)
 ```
 
-### Создать словарь из файла, доступного по HTTP(S) {#create-a-dictionary-from-a-file-available-by-https}
+### Создать словарь из файла, доступного по HTTP(S) \\{#create-a-dictionary-from-a-file-available-by-https\\}
 
 ```sql
 CREATE DICTIONARY default.taxi_zone_dictionary
@@ -155,7 +155,7 @@ LIFETIME(MIN 0 MAX 0)
 LAYOUT(HASHED())
 ```
 
-### Создание словаря на основе другой базы данных {#create-a-dictionary-from-another-database}
+### Создание словаря на основе другой базы данных \\{#create-a-dictionary-from-another-database\\}
 
 Подробности см. в разделе [Источники словарей](/sql-reference/dictionaries#dbms).
 

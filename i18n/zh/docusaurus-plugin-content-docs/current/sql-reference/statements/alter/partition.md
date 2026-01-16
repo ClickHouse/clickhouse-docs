@@ -30,7 +30,7 @@ doc_type: 'reference'
 {/* */ }
 
 
-## DETACH PARTITION|PART 分离分区/分片 {#detach-partitionpart}
+## DETACH PARTITION|PART 分离分区/分片 \{#detach-partitionpart\}
 
 ```sql
 ALTER TABLE table_name [ON CLUSTER cluster] DETACH PARTITION|PART partition_expr
@@ -52,7 +52,7 @@ ALTER TABLE mt DETACH PART 'all_2_2_0';
 该查询会在所有副本上被复制执行——它会将所有副本上的数据移动到 `detached` 目录。请注意，只能在 leader 副本上执行此查询。要确定某个副本是否为 leader 副本，请对 [system.replicas](/operations/system-tables/replicas) 表执行 `SELECT` 查询。或者，更简单的做法是在所有副本上执行 `DETACH` 查询——除 leader 副本外，所有副本都会抛出异常（因为允许存在多个 leader 副本）。
 
 
-## DROP PARTITION|PART {#drop-partitionpart}
+## DROP PARTITION|PART \{#drop-partitionpart\}
 
 ```sql
 ALTER TABLE table_name [ON CLUSTER cluster] DROP PARTITION|PART partition_expr
@@ -72,7 +72,7 @@ ALTER TABLE mt DROP PART 'all_4_4_0';
 ```
 
 
-## DROP DETACHED PARTITION|PART {#drop-detached-partitionpart}
+## DROP DETACHED PARTITION|PART \{#drop-detached-partitionpart\}
 
 ```sql
 ALTER TABLE table_name [ON CLUSTER cluster] DROP DETACHED PARTITION|PART ALL|partition_expr
@@ -82,7 +82,7 @@ ALTER TABLE table_name [ON CLUSTER cluster] DROP DETACHED PARTITION|PART ALL|par
 有关设置分区表达式的更多信息，请参见[如何设置分区表达式](#how-to-set-partition-expression)一节。
 
 
-## FORGET PARTITION 语句 {#forget-partition}
+## FORGET PARTITION 语句 \{#forget-partition\}
 
 ```sql
 ALTER TABLE table_name FORGET PARTITION partition_expr
@@ -99,7 +99,7 @@ ALTER TABLE mt FORGET PARTITION '20201121';
 ```
 
 
-## ATTACH PARTITION|PART（附加分区/部件） {#attach-partitionpart}
+## ATTACH PARTITION|PART（附加分区/部件） \{#attach-partitionpart\}
 
 ```sql
 ALTER TABLE table_name ATTACH PARTITION|PART partition_expr
@@ -123,7 +123,7 @@ ALTER TABLE visits ATTACH PART 201901_2_2_0;
 你可以先在某个副本的 `detached` 目录中放入数据，然后使用 `ALTER ... ATTACH` 查询将其添加到所有副本上的表中。
 
 
-## ATTACH PARTITION FROM 语句 {#attach-partition-from}
+## ATTACH PARTITION FROM 语句 \{#attach-partition-from\}
 
 ```sql
 ALTER TABLE table2 [ON CLUSTER cluster] ATTACH PARTITION partition_expr FROM table1
@@ -144,7 +144,7 @@ ALTER TABLE table2 [ON CLUSTER cluster] ATTACH PARTITION partition_expr FROM tab
 * 目标表必须包含源表中的所有索引和投影。如果在目标表中启用了 `enforce_index_structure_match_on_partition_manipulation` 设置，则索引和投影必须完全一致。否则，目标表可以具有源表索引和投影的超集。
 
 
-## REPLACE PARTITION（替换分区） {#replace-partition}
+## REPLACE PARTITION（替换分区） \{#replace-partition\}
 
 ```sql
 ALTER TABLE table2 [ON CLUSTER cluster] REPLACE PARTITION partition_expr FROM table1
@@ -165,7 +165,7 @@ ALTER TABLE table2 [ON CLUSTER cluster] REPLACE PARTITION partition_expr FROM ta
 * 目标表必须包含源表中的所有索引和投影。如果在目标表中启用了 `enforce_index_structure_match_on_partition_manipulation` 设置，则索引和投影必须完全相同。否则，目标表可以拥有源表索引和投影的超集。
 
 
-## 将分区移动到其他表 {#move-partition-to-table}
+## 将分区移动到其他表 \{#move-partition-to-table\}
 
 ```sql
 ALTER TABLE table_source [ON CLUSTER cluster] MOVE PARTITION partition_expr TO TABLE table_dest
@@ -182,7 +182,7 @@ ALTER TABLE table_source [ON CLUSTER cluster] MOVE PARTITION partition_expr TO T
 * 目标表必须包含源表的所有索引和投影。如果在目标表中启用了 `enforce_index_structure_match_on_partition_manipulation` 设置，则索引和投影必须完全一致。否则，目标表可以包含源表索引和投影的超集。
 
 
-## 清除分区中的列 {#clear-column-in-partition}
+## 清除分区中的列 \{#clear-column-in-partition\}
 
 ```sql
 ALTER TABLE table_name [ON CLUSTER cluster] CLEAR COLUMN column_name IN PARTITION partition_expr
@@ -197,7 +197,7 @@ ALTER TABLE visits CLEAR COLUMN hour in PARTITION 201902
 ```
 
 
-## 冻结分区 {#freeze-partition}
+## 冻结分区 \{#freeze-partition\}
 
 ```sql
 ALTER TABLE table_name [ON CLUSTER cluster] FREEZE [PARTITION partition_expr] [WITH NAME 'backup_name']
@@ -242,7 +242,7 @@ ALTER TABLE table_name [ON CLUSTER cluster] FREEZE [PARTITION partition_expr] [W
 有关备份和数据恢复的更多信息，请参阅 [《在 ClickHouse 中进行备份与恢复》](/operations/backup/overview) 一节。
 
 
-## 解冻分区 {#unfreeze-partition}
+## 解冻分区 \{#unfreeze-partition\}
 
 ```sql
 ALTER TABLE table_name [ON CLUSTER cluster] UNFREEZE [PARTITION 'part_expr'] WITH NAME 'backup_name'
@@ -251,7 +251,7 @@ ALTER TABLE table_name [ON CLUSTER cluster] UNFREEZE [PARTITION 'part_expr'] WIT
 从磁盘中删除名称为指定值的 `frozen` 分区。若省略 `PARTITION` 子句，则该查询将一次性删除所有分区的备份。
 
 
-## 清除分区索引 {#clear-index-in-partition}
+## 清除分区索引 \{#clear-index-in-partition\}
 
 ```sql
 ALTER TABLE table_name [ON CLUSTER cluster] CLEAR INDEX index_name IN PARTITION partition_expr
@@ -260,7 +260,7 @@ ALTER TABLE table_name [ON CLUSTER cluster] CLEAR INDEX index_name IN PARTITION 
 该查询的作用类似于 `CLEAR COLUMN`，但它重置的是索引而不是列数据。
 
 
-## FETCH PARTITION|PART 命令 {#fetch-partitionpart}
+## FETCH PARTITION|PART 命令 \{#fetch-partitionpart\}
 
 ```sql
 ALTER TABLE table_name [ON CLUSTER cluster] FETCH PARTITION|PART partition_expr FROM 'path-in-zookeeper'
@@ -299,7 +299,7 @@ ALTER TABLE users ATTACH PART 201901_2_2_0;
 虽然该查询名为 `ALTER TABLE`，但它不会更改表结构，也不会立即更改表中可用的数据。
 
 
-## MOVE PARTITION|PART {#move-partitionpart}
+## MOVE PARTITION|PART \{#move-partitionpart\}
 
 将 `MergeTree` 引擎表的分区或数据部分移动到其他卷或磁盘。参见 [使用多个块设备进行数据存储](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-multiple-volumes)。
 
@@ -321,7 +321,7 @@ ALTER TABLE hits MOVE PARTITION '2019-09-01' TO DISK 'fast_ssd'
 ```
 
 
-## 在分区中执行 UPDATE {#update-in-partition}
+## 在分区中执行 UPDATE \{#update-in-partition\}
 
 对匹配指定过滤表达式的目标分区中的数据进行修改。通过[变更（mutation）](/sql-reference/statements/alter/index.md#mutations)实现。
 
@@ -332,7 +332,7 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN P
 ```
 
 
-### 示例 {#example}
+### 示例 \{#example\}
 
 ```sql
 -- using partition name
@@ -343,11 +343,11 @@ ALTER TABLE mt UPDATE x = x + 1 IN PARTITION ID '2' WHERE p = 2;
 ```
 
 
-### 另请参阅 {#see-also}
+### 另请参阅 \\{#see-also\\}
 
 * [UPDATE](/sql-reference/statements/alter/partition#update-in-partition)
 
-## DELETE IN PARTITION {#delete-in-partition}
+## DELETE IN PARTITION \{#delete-in-partition\}
 
 删除指定分区中与给定过滤表达式匹配的数据。实现方式为一次[变更](/sql-reference/statements/alter/index.md#mutations)。
 
@@ -358,7 +358,7 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE [IN PARTITION partition_expr]
 ```
 
 
-### 示例 {#example-1}
+### 示例 \{#example-1\}
 
 ```sql
 -- using partition name
@@ -369,11 +369,11 @@ ALTER TABLE mt DELETE IN PARTITION ID '2' WHERE p = 2;
 ```
 
 
-## 重写分区片段 {#rewrite-parts}
+## 重写分区片段 \\{#rewrite-parts\\}
 
 这将使用所有新的设置，从头开始重写这些分区片段。这样做是合理的，因为像 `use_const_adaptive_granularity` 这样的表级设置，默认情况下只会应用于新写入的分区片段。
 
-### 示例 {#example-rewrite-parts}
+### 示例 \{#example-rewrite-parts\}
 
 ```sql
 ALTER TABLE mt REWRITE PARTS;
@@ -381,11 +381,11 @@ ALTER TABLE mt REWRITE PARTS IN PARTITION 2;
 ```
 
 
-### 另请参阅 {#see-also-1}
+### 另请参阅 \\{#see-also-1\\}
 
 * [DELETE](/sql-reference/statements/alter/delete)
 
-## 如何设置分区表达式 {#how-to-set-partition-expression}
+## 如何设置分区表达式 \{#how-to-set-partition-expression\}
 
 可以在 `ALTER ... PARTITION` 查询中通过多种方式指定分区表达式：
 

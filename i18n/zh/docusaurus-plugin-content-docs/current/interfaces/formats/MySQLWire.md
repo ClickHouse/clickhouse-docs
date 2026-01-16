@@ -8,12 +8,12 @@ doc_type: 'reference'
 
 
 
-## 说明 {#description}
+## 说明 \\{#description\\}
 
 
 
-## 示例用法 {#example-usage}
+## 示例用法 \\{#example-usage\\}
 
 
 
-## 格式设置 {#format-settings}
+## 格式设置 \\{#format-settings\\}

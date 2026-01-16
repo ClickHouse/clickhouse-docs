@@ -24,13 +24,13 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 ClickHouse Cloud を、コミット契約を通じて [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) から利用開始できます。コミット契約は Private Offer とも呼ばれ、一定期間にわたって ClickHouse Cloud に対してあらかじめ定めた金額の利用を約束する契約形態です。
 
 
-## 前提条件 {#prerequisites}
+## 前提条件 \\{#prerequisites\\}
 
 - 特定の契約条件に基づいた ClickHouse からの Private Offer。
 
 
 
-## サインアップ手順 {#steps-to-sign-up}
+## サインアップ手順 \\{#steps-to-sign-up\\}
 
 1. プライベートオファーを確認および承諾するためのリンクが記載されたメールを受け取っているはずです。
 

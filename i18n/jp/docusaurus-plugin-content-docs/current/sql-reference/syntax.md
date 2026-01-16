@@ -10,7 +10,7 @@ doc_type: 'reference'
 このセクションでは、ClickHouse の SQL 構文について説明します。
 ClickHouse は SQL をベースにした構文を採用していますが、多くの拡張と最適化を備えています。
 
-## クエリのパース {#query-parsing}
+## クエリのパース \{#query-parsing\}
 
 ClickHouse には 2 種類のパーサーがあります。
 
@@ -56,19 +56,19 @@ INSERT INTO t VALUES (1, 'Hello, world'), (2, 'abc'), (3, 'def')
 :::
 
 
-## 空白 {#spaces}
+## 空白 \\{#spaces\\}
 
 * 構文要素の間（クエリの先頭および末尾も含めて）には、任意の数の空白文字を入れることができます。
 * 空白文字には、スペース、タブ、ラインフィード、CR、フォームフィードが含まれます。
 
-## コメント {#comments}
+## コメント \\{#comments\\}
 
 ClickHouse は、SQL スタイルおよび C スタイルの両方のコメントをサポートしています。
 
 - SQL スタイルのコメントは `--`、`#!` または `# ` で始まり、その行末までがコメントになります。`--` および `#!` の後のスペースは省略可能です。
 - C スタイルのコメントは `/*` から `*/` までの範囲がコメントとなり、複数行にわたることもあります。スペースも不要です。
 
-## キーワード {#keywords}
+## キーワード \{#keywords\}
 
 ClickHouse のキーワードは、コンテキストに応じて *大文字小文字を区別する* 場合と *区別しない* 場合があります。
 
@@ -94,7 +94,7 @@ SELECT "FROM" FROM table_name
 ```
 
 
-## 識別子 {#identifiers}
+## 識別子 \\{#identifiers\\}
 
 識別子とは次のものを指します。
 
@@ -118,7 +118,7 @@ SELECT "FROM" FROM table_name
 クォート付き識別子におけるエスケープのルールは、文字列リテラルにも同様に適用されます。詳細は [文字列](#string) を参照してください。
 :::
 
-## リテラル {#literals}
+## リテラル \\{#literals\\}
 
 ClickHouse において、リテラルとはクエリ内に直接記述される値のことです。
 言い換えると、クエリの実行中に変化しない固定の値です。
@@ -133,7 +133,7 @@ ClickHouse において、リテラルとはクエリ内に直接記述される
 
 以下のセクションで、それぞれについてより詳しく見ていきます。
 
-### 文字列 {#string}
+### 文字列 \\{#string\\}
 
 文字列リテラルは必ずシングルクォートで囲む必要があります。ダブルクォートはサポートされていません。
 
@@ -171,7 +171,7 @@ ClickHouse において、リテラルとはクエリ内に直接記述される
 文字列リテラルでは、少なくとも `'` と `\` を、エスケープコード `\'`（または `''`）および `\\` を用いてエスケープする必要があります。
 :::
 
-### Numeric {#numeric}
+### Numeric \{#numeric\}
 
 数値リテラルは次のようにパースされます。
 
@@ -225,7 +225,7 @@ ClickHouse において、リテラルとはクエリ内に直接記述される
 :::
 
 
-### 複合リテラル {#compound}
+### 複合リテラル \\{#compound\\}
 
 配列は `[1, 2, 3]` のように角かっこで表記します。タプルは `(1, 'Hello, world!', 2)` のように丸かっこで表記します。
 厳密には、これらはリテラルではなく、それぞれ配列生成演算子およびタプル生成演算子を用いた式です。
@@ -236,7 +236,7 @@ ClickHouse において、リテラルとはクエリ内に直接記述される
 クエリ結果にはタプルを含めることができますが、タプルは（[Memory](../engines/table-engines/special/memory.md) エンジンを使用するテーブルを除き）データベースに保存できません。
 :::
 
-### NULL {#null}
+### NULL \\{#null\\}
 
 `NULL` は、値が存在しないことを示すために使用されます。
 テーブルのカラムに `NULL` を保存するには、そのカラムが [Nullable](../sql-reference/data-types/nullable.md) 型である必要があります。
@@ -249,7 +249,7 @@ ClickHouse において、リテラルとはクエリ内に直接記述される
 * クエリ内では、[`IS NULL`](/sql-reference/functions/functions-for-nulls#isNull) および [`IS NOT NULL`](/sql-reference/functions/functions-for-nulls#isNotNull) 演算子と、関連する関数 `isNull` および `isNotNull` を使用して `NULL` かどうかを判定できます。
 :::
 
-### ヒアドキュメント {#heredoc}
+### ヒアドキュメント \{#heredoc\}
 
 [heredoc](https://en.wikipedia.org/wiki/Here_document) は、元の書式を保ったまま文字列（多くの場合は複数行）を定義するための方法です。
 heredoc は、2 つの `$` 記号の間に置かれたカスタム文字列リテラルとして定義されます。
@@ -275,7 +275,7 @@ SELECT $heredoc$SHOW CREATE VIEW my_view$heredoc$;
   :::
 
 
-## クエリパラメータの定義と使用 {#defining-and-using-query-parameters}
+## クエリパラメータの定義と使用 \\{#defining-and-using-query-parameters\\}
 
 クエリパラメータを使用すると、具体的な識別子の代わりに抽象的なプレースホルダーを含む汎用的なクエリを記述できます。\
 クエリパラメータを含むクエリが実行されると、すべてのプレースホルダーが解釈され、実際のクエリパラメータ値に置き換えられます。
@@ -337,7 +337,7 @@ SELECT * FROM {mytablename:Identifier};
 主に、識別子やリテラルの代わりとして `SELECT` 文内で使用されることを想定して設計されています。
 :::
 
-## 関数 {#functions}
+## 関数 \{#functions\}
 
 関数呼び出しは、識別子に続けて、丸括弧で囲まれた引数リスト（空でも可）を記述します。
 標準 SQL とは異なり、引数リストが空の場合でも括弧は必須です。
@@ -366,7 +366,7 @@ quantile (0.9)(x)
 :::
 
 
-## 演算子 {#operators}
+## 演算子 \{#operators\}
 
 演算子は、優先順位と結合性を考慮して、クエリの構文解析時に対応する関数に変換されます。
 
@@ -383,7 +383,7 @@ plus(plus(1, multiply(2, 3)), 4)`
 ```
 
 
-## データ型とデータベーステーブルエンジン {#data-types-and-database-table-engines}
+## データ型とデータベーステーブルエンジン \\{#data-types-and-database-table-engines\\}
 
 `CREATE` クエリにおけるデータ型とテーブルエンジンは、識別子や関数と同じように記述します。
 言い換えると、丸括弧による引数リストを伴う場合もあれば、伴わない場合もあります。
@@ -394,7 +394,7 @@ plus(plus(1, multiply(2, 3)), 4)`
 * [テーブルエンジン](/engines/table-engines/index.md)
 * [CREATE](/sql-reference/statements/create/index.md)
 
-## Expressions {#expressions}
+## Expressions \\{#expressions\\}
 
 式 (expression) は次のいずれかです。
 
@@ -414,7 +414,7 @@ plus(plus(1, multiply(2, 3)), 4)`
 定数式は、その結果がクエリ解析中、すなわち実行前に既知である式です。
 たとえば、リテラルのみからなる式は定数式です。
 
-## 式のエイリアス {#expression-aliases}
+## 式のエイリアス \{#expression-aliases\}
 
 エイリアスは、クエリ内の[式](#expressions)に対してユーザーが定義する名前です。
 
@@ -431,7 +431,7 @@ expr AS alias
 | `alias` | `expr` に付ける名前です。エイリアスは [identifiers](#identifiers) の構文に従う必要があります。               | `SELECT "table t".column_name FROM table_name AS "table t"`            |                                                                                                            |
 
 
-### 使用上の注意 {#notes-on-usage}
+### 使用上の注意 \{#notes-on-usage\}
 
 * エイリアスはクエリまたはサブクエリ内でグローバルに有効であり、任意の式に対してクエリ内のどの位置でも定義できます。例えば次のとおりです。
 
@@ -481,7 +481,7 @@ ClickHouse は式 `argMax(a, b)` 内のリテラル `b` を式 `sum(b)` に置�
 :::
 
 
-## Asterisk {#asterisk}
+## Asterisk \\{#asterisk\\}
 
 `SELECT` クエリでは、アスタリスク（`*`）を式の代わりに使用できます。
 詳細は、[SELECT](/sql-reference/statements/select/index.md#asterisk) セクションを参照してください。

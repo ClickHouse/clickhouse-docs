@@ -7,7 +7,7 @@ title: 'ALTER'
 doc_type: 'reference'
 ---
 
-# ALTER {#alter}
+# ALTER \\{#alter\\}
 
 大多数 `ALTER TABLE` 查询用于修改表设置或数据：
 
@@ -49,7 +49,7 @@ doc_type: 'reference'
 | [ALTER TABLE ... MODIFY COMMENT](/sql-reference/statements/alter/comment.md)  | 无论之前是否设置过注释，都可以向表添加、修改或删除注释。 |
 | [ALTER NAMED COLLECTION](/sql-reference/statements/alter/named-collection.md) | 修改[命名集合](/operations/named-collections.md)。                   |
 
-## 变更 {#mutations}
+## 变更 \\{#mutations\\}
 
 用于操作表数据的 `ALTER` 查询是通过一种称为“变更（mutations）”的机制实现的，最典型的是 [ALTER TABLE ... DELETE](/sql-reference/statements/alter/delete.md) 和 [ALTER TABLE ... UPDATE](/sql-reference/statements/alter/update.md)。它们是类似于 [MergeTree](/engines/table-engines/mergetree-family/index.md) 表中合并操作的异步后台进程，用来生成新的“已变更”数据分片版本。
 
@@ -62,7 +62,7 @@ doc_type: 'reference'
 
 已完成变更的条目不会立即被删除（保留条目的数量由存储引擎参数 `finished_mutations_to_keep` 决定）。更旧的变更条目会被删除。
 
-## ALTER 查询的同步性 {#synchronicity-of-alter-queries}
+## ALTER 查询的同步性 \\{#synchronicity-of-alter-queries\\}
 
 对于非复制表，所有 `ALTER` 查询都会以同步方式执行。对于复制表，查询只是向 `ZooKeeper` 中添加相应操作的指令，而这些操作本身会尽快执行。不过，查询可以等待这些操作在所有副本上完成。
 
@@ -76,6 +76,6 @@ doc_type: 'reference'
 对于所有 `ALTER` 查询，如果 `alter_sync = 2`，并且某些副本处于非活动状态的时间超过 `replication_wait_for_inactive_replica_timeout` 设置中指定的时长，则会抛出 `UNFINISHED` 异常。
 :::
 
-## 相关内容 {#related-content}
+## 相关内容 \\{#related-content\\}
 
 - 博客：[在 ClickHouse 中处理更新和删除](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

@@ -5,7 +5,7 @@ title: 'maxMap'
 doc_type: 'reference'
 ---
 
-# maxMap {#maxmap}
+# maxMap \{#maxmap\}
 
 根据 `key` 数组中指定的键，在 `value` 数组中计算对应的最大值。
 

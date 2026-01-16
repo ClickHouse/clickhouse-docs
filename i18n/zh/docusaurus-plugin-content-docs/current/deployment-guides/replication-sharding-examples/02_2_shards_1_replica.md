@@ -33,7 +33,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
 <DedicatedKeeperServers />
 
-## 前置条件 {#pre-requisites}
+## 前置条件 \\{#pre-requisites\\}
 
 - 你已经在本地部署过 [ClickHouse 服务器](/install)
 - 你熟悉 ClickHouse 的基础配置概念，例如 [配置文件](/operations/configuration-files)
@@ -781,7 +781,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   遗憾的是,我们的集群不具备容错能力。如果其中一台主机发生故障,集群将被视为不健康状态,查询将会失败。这与我们在[前面示例](/architecture/replication)中看到的复制表不同——在复制表的情况下,即使其中一台主机发生故障,我们仍然能够插入数据。
 </VerticalStepper>
 
-## 结论 {#conclusion}
+## 结论 \\{#conclusion\\}
 
 这种集群拓扑结构的优势在于，数据被分布在不同的主机上，每个节点只使用一半的存储空间。更重要的是，查询会在两个分片上并行处理，这在内存利用率方面更高效，同时减少了每个主机的 I/O。
 

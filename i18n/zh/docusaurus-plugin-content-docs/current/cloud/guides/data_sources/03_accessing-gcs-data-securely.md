@@ -21,7 +21,7 @@ import clickpipes_hmac_key from '@site/static/images/cloud/guides/accessing-data
 本指南演示如何安全地对 Google Cloud Storage (GCS) 进行身份验证，并从 ClickHouse Cloud 访问您的数据。
 
 
-## 介绍 {#introduction}
+## 介绍 \\{#introduction\\}
 
 ClickHouse Cloud 使用与 Google Cloud 服务账号关联的 HMAC（基于哈希的消息认证码）密钥连接到 GCS。
 这种方式为访问 GCS 存储桶提供了安全机制，而无需在查询中直接嵌入凭证。
@@ -35,7 +35,7 @@ ClickHouse Cloud 使用与 Google Cloud 服务账号关联的 HMAC（基于哈�
 
 通过这种方式，可以通过服务账号上的 IAM 策略统一管理对 GCS 存储桶的所有访问，无需修改单个存储桶策略即可更方便地授予或撤销访问权限。
 
-## 前提条件 {#prerequisites}
+## 前提条件 \\{#prerequisites\\}
 
 要按照本指南进行操作，您需要准备：
 
@@ -43,7 +43,7 @@ ClickHouse Cloud 使用与 Google Cloud 服务账号关联的 HMAC（基于哈�
 - 一个已启用 Cloud Storage 的 Google Cloud 项目
 - 在您的 GCP 项目中创建服务账号并生成 HMAC 密钥的权限
 
-## 安装和配置 {#setup}
+## 安装和配置 \\{#setup\\}
 
 <VerticalStepper headerLevel="h3">
   ### 创建 Google Cloud 服务账号
@@ -200,7 +200,7 @@ ClickHouse Cloud 使用与 Google Cloud 服务账号关联的 HMAC（基于哈�
 
 ## 最佳实践 {#best-practices}
 
-### 为不同环境使用单独的服务账户 {#separate-service-accounts}
+### 为不同环境使用单独的服务账户 \\{#separate-service-accounts\\}
 
 为开发、预发布和生产环境创建单独的服务账户。例如：
 
@@ -231,7 +231,7 @@ ClickHouse Cloud 使用与 Google Cloud 服务账号关联的 HMAC（基于哈�
 Google Cloud 不强制 HMAC 密钥过期，因此需要自行制定并实施轮换策略。
 :::
 
-### 使用 Cloud Audit Logs 监控访问 {#monitor-access}
+### 使用 Cloud Audit Logs 监控访问 \\{#monitor-access\\}
 
 为 Cloud Storage 启用并监控 Cloud Audit Logs：
 

@@ -10,7 +10,7 @@ keywords: ['kafka', 'kafka connect', 'jdbc', '集成', '数据管道']
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# JDBC connector {#jdbc-connector}
+# JDBC connector \\{#jdbc-connector\\}
 
 :::note
 仅当你的数据较为简单且只包含基础数据类型（例如 `int`）时才应使用此 connector。像 ClickHouse 特有的 `map` 等类型目前不受支持。
@@ -22,14 +22,14 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 
 请注意，JDBC Connector 需要 schema（不能在 JDBC Connector 中直接使用原始 JSON 或 CSV）。虽然可以在每条消息中携带 schema，但[强烈建议使用 Confluent schema registry](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas) 以避免相关开销。我们提供的插入脚本会从消息中自动推断 schema 并将其写入 registry——因此该脚本可以复用于其他数据集。Kafka 的 key 假定为字符串（String）。关于 Kafka schema 的更多细节参见[这里](https://docs.confluent.io/platform/current/schema-registry/index.html)。
 
-### License {#license}
+### License \\{#license\\}
 JDBC Connector 基于 [Confluent Community License](https://www.confluent.io/confluent-community-license) 进行分发。
 
-### Steps {#steps}
-#### Gather your connection details {#gather-your-connection-details}
+### Steps \\{#steps\\}
+#### Gather your connection details \\{#gather-your-connection-details\\}
 <ConnectionDetails />
 
-#### 1. Install Kafka Connect and Connector {#1-install-kafka-connect-and-connector}
+#### 1. Install Kafka Connect and Connector \\{#1-install-kafka-connect-and-connector\\}
 
 我们假设你已经下载了 Confluent 安装包并在本地完成安装。请按照[这里](https://docs.confluent.io/kafka-connect-jdbc/current/#install-the-jdbc-connector)文档中关于安装 connector 的步骤进行操作。
 
@@ -37,7 +37,7 @@ JDBC Connector 基于 [Confluent Community License](https://www.confluent.io/con
 
 要将数据从 Kafka 发送到 ClickHouse，我们使用 connector 的 Sink 组件。
 
-#### 2. Download and install the JDBC Driver {#2-download-and-install-the-jdbc-driver}
+#### 2. Download and install the JDBC Driver \\{#2-download-and-install-the-jdbc-driver\\}
 
 从[这里](https://github.com/ClickHouse/clickhouse-java/releases)下载并安装 ClickHouse JDBC driver `clickhouse-jdbc-<version>-shaded.jar`。然后按照[这里](https://docs.confluent.io/kafka-connect-jdbc/current/#installing-jdbc-drivers)中的说明将其安装到 Kafka Connect 中。其他驱动可能也能工作，但尚未经过测试。
 
@@ -47,7 +47,7 @@ JDBC Connector 基于 [Confluent Community License](https://www.confluent.io/con
 
 :::
 
-#### 3. Prepare configuration {#3-prepare-configuration}
+#### 3. Prepare configuration \\{#3-prepare-configuration\\}
 
 请根据[这些说明](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install)来设置与你的安装类型相匹配的 Connect，注意 standalone 集群与 distributed 集群之间的差异。如果使用 Confluent Cloud，则需要参考分布式（distributed）部署方式。
 
@@ -77,7 +77,7 @@ JDBC Connector 基于 [Confluent Community License](https://www.confluent.io/con
 
 适用于 GitHub 示例数据的配置文件示例可在[此处](https://github.com/ClickHouse/kafka-samples/tree/main/github_events/jdbc_sink)找到，假定 Connect 以 standalone 模式运行且 Kafka 部署在 Confluent Cloud 上。
 
-#### 4. Create the ClickHouse table {#4-create-the-clickhouse-table}
+#### 4. Create the ClickHouse table \\{#4-create-the-clickhouse-table\\}
 
 请确保该表已创建；如果之前的示例中已存在，则先将其删除。下面展示了一个与精简版 GitHub 数据集兼容的示例。请注意其中不包含当前尚不支持的 Array 或 Map 类型：
 
@@ -109,7 +109,7 @@ CREATE TABLE github
 ) ENGINE = MergeTree ORDER BY (event_type, repo_name, created_at)
 ```
 
-#### 5. 启动 Kafka Connect {#5-start-kafka-connect}
+#### 5. 启动 Kafka Connect \\{#5-start-kafka-connect\\}
 
 以 [standalone](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#standalone-cluster) 或 [distributed](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#distributed-cluster) 模式启动 Kafka Connect。
 
@@ -117,7 +117,7 @@ CREATE TABLE github
 ./bin/connect-standalone connect.properties.ini github-jdbc-sink.properties.ini
 ```
 
-#### 6. 向 Kafka 添加数据 {#6-add-data-to-kafka}
+#### 6. 向 Kafka 添加数据 \\{#6-add-data-to-kafka\\}
 
 使用提供的[脚本和配置](https://github.com/ClickHouse/kafka-samples/tree/main/producer)向 Kafka 插入消息。您需要修改 github.config 并填入您的 Kafka 凭证。该脚本目前已配置为在 Confluent Cloud 上使用。
 
@@ -143,7 +143,7 @@ SELECT count() FROM default.github;
 | 10000 |
 ```
 
-### 推荐阅读 {#recommended-further-reading}
+### 推荐阅读 \\{#recommended-further-reading\\}
 
 * [Kafka Sink 配置参数](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/sink_config_options.html#sink-config-options)
 * [Kafka Connect 深入解析：JDBC Source Connector](https://www.confluent.io/blog/kafka-connect-deep-dive-jdbc-source-connector)

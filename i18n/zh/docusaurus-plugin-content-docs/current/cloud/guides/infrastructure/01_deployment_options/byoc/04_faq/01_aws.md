@@ -9,9 +9,9 @@ doc_type: 'reference'
 
 
 
-## 常见问题解答 {#faq}
+## 常见问题解答 \\{#faq\\}
 
-### 计算 {#compute}
+### 计算 \\{#compute\\}
 
 <details>
 <summary>我可以在同一个 EKS 集群中创建多个服务吗？</summary>
@@ -36,7 +36,7 @@ BYOC 支持与 ClickHouse Cloud 相同的一组[区域](/cloud/reference/support
 
 </details>
 
-### 网络和安全 {#network-and-security}
+### 网络和安全 \\{#network-and-security\\}
 
 <details>
 <summary>在安装完成后，我们可以撤销安装过程中设置的权限吗？</summary>
@@ -67,7 +67,7 @@ BYOC 支持与 ClickHouse Cloud 相同的一组[区域](/cloud/reference/support
 
 </details>
 
-### 正常运行时间 SLA {#uptime-sla}
+### 正常运行时间 SLA \\{#uptime-sla\\}
 
 <details>
 <summary>ClickHouse 是否为 BYOC 提供正常运行时间 SLA？</summary>

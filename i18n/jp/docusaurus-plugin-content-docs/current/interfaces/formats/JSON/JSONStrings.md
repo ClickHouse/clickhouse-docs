@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 [JSON](./JSON.md) 形式との違いは、データ フィールドが型付きの JSON 値ではなく、文字列として出力される点だけです。
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
-### データの挿入 {#inserting-data}
+### データの挿入 \\{#inserting-data\\}
 
 次のデータを含んだ JSON ファイルを `football.json` という名前で用意します：
 
@@ -200,7 +200,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStrings;
 ```
 
-### データの読み込み {#reading-data}
+### データの読み込み \\{#reading-data\\}
 
 `JSONStrings` 形式を使用してデータを読み込みます。
 
@@ -393,4 +393,4 @@ FORMAT JSONStrings
 }
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \\{#format-settings\\}

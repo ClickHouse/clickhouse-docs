@@ -13,12 +13,12 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✗      |       |
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 `One` フォーマットは、ファイルから一切データを読み込まず、[`UInt8`](../../sql-reference/data-types/int-uint.md) 型の `dummy` という名前のカラムを 1 列だけ持つ 1 行（値は `0`）だけを返す、特別な入力フォーマットです（`system.one` テーブルと同様）。
 仮想カラム `_file/_path` と組み合わせることで、実際のデータを読み込まずにすべてのファイルを一覧表示するために使用できます。
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
 例：
 
@@ -41,4 +41,4 @@ SELECT _file FROM file('path/to/files/data*', One);
 └──────────────┘
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \\{#format-settings\\}

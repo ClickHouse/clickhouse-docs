@@ -7,7 +7,7 @@ title: 'Replicated* テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# Replicated* table engines {#replicated-table-engines}
+# Replicated* table engines \\{#replicated-table-engines\\}
 
 :::note
 ClickHouse Cloud ではレプリケーションは ClickHouse Cloud が管理します。テーブルを作成する際は、引数を追加せずに作成してください。たとえば、以下のテキストでは次のように書き換えてください。
@@ -139,7 +139,7 @@ ZooKeeper は `SELECT` クエリでは使用されません。これは、レプ
 
 システムはレプリカ間のデータ同期状態を監視し、障害発生後に復旧することができます。フェイルオーバーは自動（データの差分が小さい場合）または半自動（データ差分が大きく、設定ミスを示している可能性がある場合）で行われます。
 
-## レプリケートテーブルの作成 {#creating-replicated-tables}
+## レプリケートテーブルの作成 \\{#creating-replicated-tables\\}
 
 :::note
 ClickHouse Cloud では、レプリケーションは自動的に処理されます。
@@ -150,7 +150,7 @@ ClickHouse Cloud では、レプリケーションは自動的に処理されま
 
 :::
 
-### Replicated*MergeTree のパラメータ {#replicatedmergetree-parameters}
+### Replicated*MergeTree のパラメータ \\{#replicatedmergetree-parameters\\}
 
 | Parameter          | Description                                                                   |
 | ------------------ | ----------------------------------------------------------------------------- |
@@ -249,7 +249,7 @@ ORDER BY x;
 
 レプリカを削除するには、`DROP TABLE` を実行します。ただし、削除されるレプリカは 1 つだけであり、クエリを実行したサーバー上に存在するレプリカのみが削除されます。
 
-## 障害発生後のリカバリ {#recovery-after-failures}
+## 障害発生後のリカバリ \\{#recovery-after-failures\\}
 
 サーバー起動時に ClickHouse Keeper が使用できない場合、レプリケーテッドテーブルは読み取り専用モードに切り替わります。システムは定期的に ClickHouse Keeper への接続を試行します。
 
@@ -273,7 +273,7 @@ sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data
 
 その後、サーバーを再起動します。起動時にサーバーはこれらのフラグを削除して、リカバリを開始します。
 
-## 完全なデータ損失からの復旧 {#recovery-after-complete-data-loss}
+## 完全なデータ損失からの復旧 \\{#recovery-after-complete-data-loss\\}
 
 あるサーバーからデータとメタデータがすべて消失した場合は、次の手順で復旧します。
 
@@ -288,7 +288,7 @@ sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data
 
 復旧中のネットワーク帯域幅には制限がありません。同時に多くのレプリカを復旧する場合は、この点に注意してください。
 
-## MergeTree から ReplicatedMergeTree への変換 {#converting-from-mergetree-to-replicatedmergetree}
+## MergeTree から ReplicatedMergeTree への変換 \\{#converting-from-mergetree-to-replicatedmergetree\\}
 
 `MergeTree` という用語は、`MergeTree family` に属するすべてのテーブルエンジンを指すために使用しており、`ReplicatedMergeTree` についても同様に用います。
 
@@ -320,7 +320,7 @@ SELECT zookeeper_path FROM system.replicas WHERE table = 'table_name';
 古いテーブルから、新しいテーブルデータのディレクトリ（`/var/lib/clickhouse/data/db_name/table_name/`）内にある `detached` サブディレクトリへデータを移動します。
 その後、いずれか 1 つのレプリカで `ALTER TABLE ATTACH PARTITION` を実行して、これらのデータのパーツをワーキングセットに追加します。
 
-## ReplicatedMergeTree から MergeTree への変換 {#converting-from-replicatedmergetree-to-mergetree}
+## ReplicatedMergeTree から MergeTree への変換 \\{#converting-from-replicatedmergetree-to-mergetree\\}
 
 単一サーバー上のデタッチされた `ReplicatedMergeTree` テーブルを `MergeTree` としてアタッチするには、[ATTACH TABLE ... AS NOT REPLICATED](/sql-reference/statements/attach.md#attach-mergetree-table-as-replicatedmergetree) 文を使用します。
 
@@ -333,7 +333,7 @@ SELECT zookeeper_path FROM system.replicas WHERE table = 'table_name';
 
 これらの操作の後、サーバーを起動し、`MergeTree` テーブルを CREATE してデータをそのディレクトリに移動し、サーバーを再起動できます。
 
-## ClickHouse Keeper クラスター内のメタデータが失われたり破損した場合の復旧 {#recovery-when-metadata-in-the-zookeeper-cluster-is-lost-or-damaged}
+## ClickHouse Keeper クラスター内のメタデータが失われたり破損した場合の復旧 \\{#recovery-when-metadata-in-the-zookeeper-cluster-is-lost-or-damaged\\}
 
 ClickHouse Keeper 内のデータが失われたり破損した場合は、上記で説明したように、データを非レプリケートテーブルに移動することで保全できます。
 

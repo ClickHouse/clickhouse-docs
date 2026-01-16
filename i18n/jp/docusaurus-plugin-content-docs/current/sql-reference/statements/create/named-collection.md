@@ -10,7 +10,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />
 
-# CREATE NAMED COLLECTION {#create-named-collection}
+# CREATE NAMED COLLECTION \\{#create-named-collection\\}
 
 新しい名前付きコレクションを作成します。
 

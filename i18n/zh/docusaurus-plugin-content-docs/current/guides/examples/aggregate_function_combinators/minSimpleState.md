@@ -7,14 +7,14 @@ sidebar_label: 'minSimpleState'
 doc_type: 'reference'
 ---
 
-# minSimpleState {#minsimplestate}
+# minSimpleState \\{#minsimplestate\\}
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) 组合器可以应用于 [`min`](/sql-reference/aggregate-functions/reference/min)
 函数，用于返回所有输入值中的最小值。它返回的结果类型为 [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction)。
 
-## 示例用法 {#example-usage}
+## 示例用法 \\{#example-usage\\}
 
 来看一个使用表来跟踪每日温度读数的实际示例。对于每个地点，我们希望维护记录到的最低温度。使用带有 `min` 的 `SimpleAggregateFunction` 类型，在遇到更低的温度时会自动更新存储的值。
 
@@ -157,7 +157,7 @@ ORDER BY location_id;
 使用 `SimpleState` 时，就不需要再使用 `Merge` 组合器来合并部分聚合状态。
 :::
 
-## 另请参阅 {#see-also}
+## 另请参阅 \\{#see-also\\}
 - [`min`](/sql-reference/aggregate-functions/reference/min)
 - [`SimpleState 组合器`](/sql-reference/aggregate-functions/combinators#-simplestate)
 - [`SimpleAggregateFunction 类型`](/sql-reference/data-types/simpleaggregatefunction)

@@ -6,13 +6,13 @@ title: 'PREWHERE 句'
 doc_type: 'reference'
 ---
 
-# PREWHERE 句 {#prewhere-clause}
+# PREWHERE 句 \\{#prewhere-clause\\}
 
 `PREWHERE` は、フィルタリングをより効率的に適用するための最適化です。`PREWHERE` 句が明示的に指定されていない場合でも、デフォルトで有効になっています。これは、[WHERE](../../../sql-reference/statements/select/where.md) 条件の一部を自動的に PREWHERE ステージへ移動することで機能します。`PREWHERE` 句の役割は、このデフォルトの最適化よりも適切に制御できると考える場合に、その挙動を明示的にコントロールすることだけです。
 
 PREWHERE 最適化では、まず PREWHERE 式を評価するために必要な列だけが読み込まれます。その後、クエリの残りの部分を実行するために必要な他の列が読み込まれますが、これは PREWHERE 式が少なくとも一部の行で `true` となるブロックに対してのみ行われます。すべての行に対して PREWHERE 式が `false` となるブロックが多数存在し、かつ PREWHERE がクエリの他の部分より少ない列しか必要としない場合には、クエリ実行時にディスクから読み取るデータ量を大幅に削減できることがよくあります。
 
-## PREWHERE を手動で制御する {#controlling-prewhere-manually}
+## PREWHERE を手動で制御する \\{#controlling-prewhere-manually\\}
 
 この句は `WHERE` 句と同じ意味を持ちます。違いは、テーブルからどのデータが読み込まれるかという点です。クエリ内の列のうち一部の列でしか使われないものの、強力なデータフィルタリングを提供する条件について `PREWHERE` を手動で制御すると、読み取るデータ量を削減できます。
 
@@ -26,11 +26,11 @@ PREWHERE 最適化では、まず PREWHERE 式を評価するために必要な�
 `PREWHERE` セクションは `FINAL` より前に実行されるため、テーブルの `ORDER BY` セクションに含まれないフィールドと併用して `PREWHERE` を使うと、`FROM ... FINAL` クエリの結果が偏る可能性があります。
 :::
 
-## 制限事項 {#limitations}
+## 制限事項 \\{#limitations\\}
 
 `PREWHERE` は、[*MergeTree](../../../engines/table-engines/mergetree-family/index.md) ファミリーに属するテーブルでのみ使用できます。
 
-## 例 {#example}
+## 例 \\{#example\\}
 
 ```sql
 CREATE TABLE mydata

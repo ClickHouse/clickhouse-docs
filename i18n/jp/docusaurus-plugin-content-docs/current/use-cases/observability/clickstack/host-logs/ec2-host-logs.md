@@ -23,7 +23,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# ClickStack を使用した EC2 ホストログの監視 {#ec2-host-logs-clickstack}
+# ClickStack を使用した EC2 ホストログの監視 \\{#ec2-host-logs-clickstack\\}
 
 :::note[要約]
 EC2 インスタンスに OpenTelemetry Collector をインストールして、ClickStack で EC2 システムログを監視します。Collector はログに、インスタンス ID、リージョン、アベイラビリティーゾーン、インスタンスタイプといった EC2 メタデータを自動的に付与します。このガイドでは次の内容を学びます:
@@ -38,7 +38,7 @@ EC2 インスタンスに OpenTelemetry Collector をインストールして、
 所要時間: 10〜15 分
 :::
 
-## 既存の EC2 インスタンスとの統合 {#existing-ec2}
+## 既存の EC2 インスタンスとの統合 \\{#existing-ec2\\}
 
 このセクションでは、EC2 インスタンス上に OpenTelemetry Collector をインストールしてシステムログを収集し、EC2 メタデータを自動付加しながら ClickStack へ送信する方法を説明します。この分散アーキテクチャは本番運用に対応しており、複数インスタンスへのスケールにも対応できます。
 
@@ -48,7 +48,7 @@ EC2 インスタンスに OpenTelemetry Collector をインストールして、
 
 本番インスタンスを設定する前に EC2 ホストログ連携を試したい場合は、["Demo dataset"](/use-cases/observability/clickstack/integrations/host-logs/ec2#demo-dataset) セクションにある事前構成済みセットアップとサンプルデータを使ってテストできます。
 
-##### 前提条件 {#prerequisites}
+##### 前提条件 \\{#prerequisites\\}
 
 - ClickStack インスタンスが稼働していること（オンプレミス、Cloud、ローカルのいずれでも可）
 - EC2 インスタンスが稼働していること（Ubuntu、Amazon Linux、その他の Linux ディストリビューション）
@@ -448,9 +448,9 @@ ClickStack で EC2 ホストログのモニタリングを始めやすくする�
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.ec2_host_logs_monitoring.dashboard_download">ダウンロード</TrackedLink> ダッシュボード設定ファイル {#download}
+#### <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.ec2_host_logs_monitoring.dashboard_download">ダウンロード</TrackedLink> ダッシュボード設定ファイル \\{#download\\}
 
-#### 事前に用意されたダッシュボードをインポートする {#import-dashboard}
+#### 事前に用意されたダッシュボードをインポートする \\{#import-dashboard\\}
 
 1. HyperDX を開き、Dashboards セクションに移動します
 2. 右上の三点リーダー（省略記号）メニューから **Import Dashboard** をクリックします
@@ -461,7 +461,7 @@ ClickStack で EC2 ホストログのモニタリングを始めやすくする�
 
 <Image img={finish_import} alt="インポートの完了"/>
 
-#### ダッシュボードを表示する {#created-dashboard}
+#### ダッシュボードを表示する \\{#created-dashboard\\}
 
 ダッシュボードは、すべての可視化があらかじめ設定された状態で作成されます:
 

@@ -23,7 +23,7 @@ Microsoft OneLake 的 lakehouse 支持多种表格式。借助 ClickHouse，你�
 `SET allow_database_iceberg = 1;`
 :::
 
-## 收集 OneLake 所需信息 {#gathering-requirements}
+## 收集 OneLake 所需信息 \\{#gathering-requirements\\}
 
 在 Microsoft Fabric 中查询数据表之前，你需要收集以下信息：
 
@@ -34,7 +34,7 @@ Microsoft OneLake 的 lakehouse 支持多种表格式。借助 ClickHouse，你�
 
 如需帮助查找这些值，请参阅 [Microsoft OneLake 的文档](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites)。
 
-## 在 OneLake 和 ClickHouse 之间创建连接 {#creating-a-connection-between-unity-catalog-and-clickhouse}
+## 在 OneLake 和 ClickHouse 之间创建连接 \\{#creating-a-connection-between-unity-catalog-and-clickhouse\\}
 
 借助上面准备好的信息，现在可以在 Microsoft OneLake 和 ClickHouse 之间创建连接，但在此之前需要先启用目录（catalog）：
 
@@ -42,7 +42,7 @@ Microsoft OneLake 的 lakehouse 支持多种表格式。借助 ClickHouse，你�
 SET allow_database_iceberg=1
 ```
 
-### 连接 OneLake {#connect-onelake}
+### 连接 OneLake \\{#connect-onelake\\}
 
 ```sql
 CREATE DATABASE onelake_catalog
@@ -57,7 +57,7 @@ onelake_client_id = '<client_id>',
 onelake_client_secret = '<client_secret>'
 ```
 
-## 使用 ClickHouse 查询 OneLake {#querying-onelake-using-clickhouse}
+## 使用 ClickHouse 查询 OneLake \\{#querying-onelake-using-clickhouse\\}
 
 连接已建立后，您就可以开始查询 OneLake 了：
 
@@ -151,7 +151,7 @@ Query id: 8bd5bd8e-83be-453e-9a88-32de12ba7f24
    └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## 将数据湖中的数据导入 ClickHouse {#loading-data-from-onelake-into-clickhouse}
+## 将数据湖中的数据导入 ClickHouse \\{#loading-data-from-onelake-into-clickhouse\\}
 
 如果您需要从 OneLake 向 ClickHouse 导入数据：
 

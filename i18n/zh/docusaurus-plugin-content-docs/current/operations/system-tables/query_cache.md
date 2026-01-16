@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.query&#95;cache {#systemquery&#95;cache}
+# system.query&#95;cache \\{#systemquery&#95;cache\\}
 
 <SystemTableCloud />
 

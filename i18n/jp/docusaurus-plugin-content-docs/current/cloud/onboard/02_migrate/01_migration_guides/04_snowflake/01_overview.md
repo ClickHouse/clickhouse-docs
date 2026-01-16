@@ -12,17 +12,17 @@ import snowflake_architecture from '@site/static/images/cloud/onboard/discover/u
 import cloud_architecture from '@site/static/images/cloud/onboard/discover/use_cases/cloud_architecture.png';
 import Image from '@theme/IdealImage';
 
-# Snowflake から ClickHouse への移行 {#snowflake-to-clickhouse-migration}
+# Snowflake から ClickHouse への移行 \\{#snowflake-to-clickhouse-migration\\}
 
 > このドキュメントでは、Snowflake から ClickHouse へのデータ移行の概要を説明します。
 
 Snowflake は、オンプレミスのレガシーなデータウェアハウス・ワークロードをクラウドへ移行することに主眼を置いたクラウド・データウェアハウスです。大規模な長時間実行レポートを実行するよう最適化されています。データセットがクラウドに移行されると、データ所有者は、このデータから他にどのような価値を引き出せるか、たとえば、これらのデータセットを用いて社内外向けのリアルタイム・アプリケーションを構築するといったことを考え始めます。そうした段階になると、しばしば ClickHouse のような、リアルタイム分析のために最適化されたデータベースが必要であることに気付きます。
 
-## 比較 {#comparison}
+## 比較 \\{#comparison\\}
 
 このセクションでは、ClickHouse と Snowflake の主要な機能を比較します。
 
-### 類似点 {#similarities}
+### 類似点 \\{#similarities\\}
 
 Snowflake はクラウドベースのデータウェアハウスプラットフォームであり、
 大規模なデータの保存、処理、および分析に対してスケーラブルかつ効率的なソリューションを提供します。
@@ -63,7 +63,7 @@ S3 のようなオブジェクトストアを使用し、すべてのコンピ�
 
 <Image img={cloud_architecture} size="md" alt="ClickHouse Cloud のアーキテクチャ" />
 
-### Differences {#differences}
+### Differences \\{#differences\\}
 
 基盤となるストレージ形式やクエリエンジン以外にも、これらのアーキテクチャには
 いくつか微妙な違いがあります。
@@ -115,7 +115,7 @@ S3 のようなオブジェクトストアを使用し、すべてのコンピ�
   非常に優れた体験を提供します。データウェアハウスおよびデータレイクのユースケースにおいて、
   これは他システムに対する優位性をもたらします。
 
-### リアルタイム分析 {#real-time-analytics}
+### リアルタイム分析 \\{#real-time-analytics\\}
 
 公開されている[ベンチマーク](https://benchmark.clickhouse.com/#system=+%E2%98%81w|%EF%B8%8Fr|C%20c|nfe&type=-&machine=-ca2|gl|6ax|6ale|3al&cluster_size=-&opensource=-&tuned=+n&metric=hot&queries=-)データに基づくと、
 ClickHouse はリアルタイム分析アプリケーションにおいて、以下の点で Snowflake を上回ります。

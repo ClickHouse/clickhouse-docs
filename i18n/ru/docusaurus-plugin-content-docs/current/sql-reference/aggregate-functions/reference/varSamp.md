@@ -7,7 +7,7 @@ doc_type: 'reference'
 
 
 
-## varSamp {#varsamp}
+## varSamp \\{#varsamp\\}
 
 Вычисляет выборочную дисперсию набора данных.
 

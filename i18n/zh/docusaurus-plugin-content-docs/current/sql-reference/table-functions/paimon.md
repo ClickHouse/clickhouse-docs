@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# paimon 表函数 {#paimon-table-function}
+# paimon 表函数 \\{#paimon-table-function\\}
 
 <ExperimentalBadge />
 
 为存储在 Amazon S3、Azure、HDFS 或本地的 Apache [Paimon](https://paimon.apache.org/) 表提供只读的类似表的接口。
 
-## 语法 {#syntax}
+## 语法 \\{#syntax\\}
 
 ```sql
 paimon(url [,access_key_id, secret_access_key] [,format] [,structure] [,compression])
@@ -29,16 +29,16 @@ paimonHDFS(path_to_table, [,format] [,compression_method])
 paimonLocal(path_to_table, [,format] [,compression_method])
 ```
 
-## 参数 {#arguments}
+## 参数 \\{#arguments\\}
 
 参数说明与表函数 `s3`、`azureBlobStorage`、`HDFS` 和 `file` 中参数的说明相同。
 `format` 表示 Paimon 表中数据文件的格式。
 
-### 返回值 {#returned-value}
+### 返回值 \\{#returned-value\\}
 
 一个具有指定结构的表，用于读取指定 Paimon 表中的数据。
 
-## 定义命名集合 {#defining-a-named-collection}
+## 定义命名集合 \\{#defining-a-named-collection\\}
 
 下面是一个示例，展示如何配置一个命名集合用于存储 URL 和凭证：
 
@@ -61,11 +61,11 @@ SELECT * FROM paimonS3(paimon_conf, filename = 'test_table')
 DESCRIBE paimonS3(paimon_conf, filename = 'test_table')
 ```
 
-## 别名 {#aliases}
+## 别名 \\{#aliases\\}
 
 表函数 `paimon` 现在是 `paimonS3` 的别名。
 
-## 虚拟列 {#virtual-columns}
+## 虚拟列 \\{#virtual-columns\\}
 
 - `_path` — 文件路径。类型：`LowCardinality(String)`。
 - `_file` — 文件名。类型：`LowCardinality(String)`。
@@ -73,7 +73,7 @@ DESCRIBE paimonS3(paimon_conf, filename = 'test_table')
 - `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，该值为 `NULL`。
 - `_etag` — 文件的 etag。类型：`LowCardinality(String)`。如果 etag 未知，该值为 `NULL`。
 
-## 支持的数据类型 {#data-types-supported}
+## 支持的数据类型 \\{#data-types-supported\\}
 
 | Paimon 数据类型 | ClickHouse 数据类型 
 |-------|--------|
@@ -95,7 +95,7 @@ DESCRIBE paimonS3(paimon_conf, filename = 'test_table')
 |ARRAY     |Array      |
 |MAP     |Map    |
 
-## 支持的分区 {#partition-supported}
+## 支持的分区 \\{#partition-supported\\}
 Paimon 分区键支持如下数据类型：
 * `CHAR`
 * `VARCHAR`
@@ -112,6 +112,6 @@ Paimon 分区键支持如下数据类型：
 * `FLOAT`
 * `DOUBLE`
 
-## 另请参阅 {#see-also}
+## 另请参阅 \\{#see-also\\}
 
 * [Paimon 集群表函数](/sql-reference/table-functions/paimonCluster.md)

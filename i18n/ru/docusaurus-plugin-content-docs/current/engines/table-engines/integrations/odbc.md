@@ -10,7 +10,7 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Движок таблицы ODBC {#odbc-table-engine}
+# Движок таблицы ODBC \{#odbc-table-engine\}
 
 <CloudNotSupportedBadge/>
 
@@ -20,7 +20,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 Этот движок поддерживает тип данных [Nullable](../../../sql-reference/data-types/nullable.md).
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -49,7 +49,7 @@ ENGINE = ODBC(datasource, external_database, external_table)
 Эти параметры также можно передавать с помощью [именованных коллекций](operations/named-collections.md).
 
 
-## Пример использования {#usage-example}
+## Пример использования \{#usage-example\}
 
 **Получение данных из локального экземпляра MySQL через ODBC**
 
@@ -139,7 +139,7 @@ SELECT * FROM odbc_t
 ```
 
 
-## Смотрите также {#see-also}
+## Смотрите также \\{#see-also\\}
 
 - [Словари ODBC](/sql-reference/dictionaries#mysql)
 - [Табличная функция ODBC](../../../sql-reference/table-functions/odbc.md)

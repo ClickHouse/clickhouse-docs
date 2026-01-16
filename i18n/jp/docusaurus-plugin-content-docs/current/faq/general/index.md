@@ -8,7 +8,7 @@ description: 'ClickHouse に関する一般的な質問をまとめたインデ�
 doc_type: 'landing-page'
 ---
 
-# ClickHouse に関する一般的な質問 {#general-questions-about-clickhouse}
+# ClickHouse に関する一般的な質問 \\{#general-questions-about-clickhouse\\}
 
 * [ClickHouse とは何ですか？](../../intro.md)
 * [なぜ ClickHouse はそんなに高速なのですか？](../../concepts/why-clickhouse-is-so-fast.mdx)

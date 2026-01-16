@@ -10,7 +10,7 @@ doc_type: 'reference'
 |-------|--------|------------------------------------------------|
 |     ✔    |     ✔     | `TSVWithNamesAndTypes`, `RawWithNamesAndTypes` |
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 [`TabSeparated`](./TabSeparated.md) 形式とは異なり、最初の行にはカラム名が、2 行目にはカラム型が書き込まれます。
 
@@ -22,9 +22,9 @@ doc_type: 'reference'
 入力データの型はテーブル内の対応するカラムの型と比較されます。それ以外の場合、2 行目はスキップされます。
 :::
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
-### データの挿入 {#inserting-data}
+### データの挿入 \\{#inserting-data\\}
 
 次の内容の `football.tsv` という tsv ファイルを使用します。
 
@@ -56,7 +56,7 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedWithNamesAndTypes;
 ```
 
-### データの読み込み {#reading-data}
+### データの読み込み \\{#reading-data\\}
 
 `TabSeparatedWithNamesAndTypes` フォーマットを使用してデータを読み込みます。
 
@@ -90,4 +90,4 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \\{#format-settings\\}

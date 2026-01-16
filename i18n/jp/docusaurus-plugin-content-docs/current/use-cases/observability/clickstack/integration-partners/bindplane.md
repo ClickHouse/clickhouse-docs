@@ -16,7 +16,7 @@ import bindplane_configuration from '@site/static/images/clickstack/bindplane/bi
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# Bindplane を使って OpenTelemetry を ClickStack に送信する {#bindplane-clickstack}
+# Bindplane を使って OpenTelemetry を ClickStack に送信する \\{#bindplane-clickstack\\}
 
 <PartnerBadge/>
 
@@ -33,11 +33,11 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 所要時間: 10〜15 分
 :::
 
-## Bindplane とは {#what-is-bindplane}
+## Bindplane とは \\{#what-is-bindplane\\}
 
 Bindplane は、OpenTelemetry Collector を集中管理するための、OpenTelemetry ネイティブなテレメトリパイプラインです。設定のビジュアル編集、安全なロールアウト、およびパイプラインインテリジェンスを提供することで、大規模な Collector 群の運用を簡素化します。
 
-## なぜ Bindplane + ClickStack なのか {#why-bindplane-clickstack}
+## なぜ Bindplane + ClickStack なのか \\{#why-bindplane-clickstack\\}
 
 大規模環境では、多数の OpenTelemetry Collector 群の管理が運用上のボトルネックになります。ClickStack は極めて大きなインジェスト量を処理できることが実証されており、実際にお客様は毎秒ギガバイト単位のテレメトリを取り込み、数百 PB を保存しています。課題はクエリ性能から、ClickHouse にデータを送り込む Collector 基盤をいかに安定して運用するかへとシフトします。
 
@@ -55,7 +55,7 @@ Bindplane は次の方法でこの課題を解決します:
 - **Bindplane はインジェストパイプラインと、Collector 群を運用する際の複雑さを管理する**
 :::
 
-## 前提条件 {#prerequisites}
+## 前提条件 \\{#prerequisites\\}
 
 - ClickStack インスタンスが実行中であること（ローカル、Server、または ClickHouse Cloud）
 - Bindplane アカウント（[`app.bindplane.com` でアカウントを作成](https://app.bindplane.com)）
@@ -64,11 +64,11 @@ Bindplane は次の方法でこの課題を解決します:
 - ClickStack API Ingestion Key（ClickStack の Team Settings > API Keys にあります。参考として[こちらのドキュメント](/docs/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data)を参照）
 - 適切なネットワークポートが開いていること（HTTP(S) 用に `4318`、gRPC 用に `4317`）
 
-## Bindplane と ClickStack を統合する {#integrate-bindplane-clickstack}
+## Bindplane と ClickStack を統合する \\{#integrate-bindplane-clickstack\\}
 
 <VerticalStepper headerLevel="h4">
 
-#### ClickStack を宛先として構成する {#configure-destination}
+#### ClickStack を宛先として構成する \\{#configure-destination\\}
 
 1. Bindplane アカウントにログインします
 2. **Library** に移動します
@@ -86,7 +86,7 @@ Bindplane は次の方法でこの課題を解決します:
 ClickStack 宛先は HTTP と gRPC の両方のプロトコルをサポートしています。高ボリュームなシナリオでは、圧縮 (gzip、zstd、snappy) を伴う gRPC を使用することで、より高いパフォーマンスが期待できます。
 :::
 
-#### 構成を作成する {#create-configuration}
+#### 構成を作成する \\{#create-configuration\\}
 
 ClickStack 宛先を構成したら、テレメトリを処理およびルーティングするための構成を作成します:
 
@@ -106,7 +106,7 @@ ClickStack 宛先を構成したら、テレメトリを処理およびルーテ
 ClickStack に到達する前にテレメトリを整形するために、フィルタリング、サンプリング、マスキング、エンリッチメント、バッチ処理などのプロセッサを追加できます。これにより、一貫性のある構造化データが ClickHouse に到達することが保証されます。
 :::
 
-#### プロセッサを追加する (オプション) {#add-processors}
+#### プロセッサを追加する (オプション) \\{#add-processors\\}
 
 Bindplane はパイプラインインテリジェンスを備えており、プロセッサの推奨も提供します。次の目的でプロセッサを追加できます:
 
@@ -118,7 +118,7 @@ Bindplane はパイプラインインテリジェンスを備えており、プ�
 
 これらのプロセッサは、データが ClickStack に到達する前に、コレクタフリート全体に対して一貫して適用されます。
 
-#### コレクタをデプロイしてロールアウトを開始する {#deploy-collectors}
+#### コレクタをデプロイしてロールアウトを開始する \\{#deploy-collectors\\}
 
 1. 構成にコレクタ (BDOT Collector) を追加します:
    - Bindplane で **Agents** に移動します
@@ -140,7 +140,7 @@ Bindplane は検証付きの安全なワンクリックロールアウトを提�
 
 <Image img={bindplane_configuration} alt="Bindplane 経由で ClickStack に送信されるテレメトリシグナル" size="lg"/>
 
-#### ClickStack でテレメトリを検証する {#verify-telemetry}
+#### ClickStack でテレメトリを検証する \\{#verify-telemetry\\}
 
 構成がロールアウトされると、管理されたコレクタフリートから ClickStack へのテレメトリのフローが開始されます:
 
@@ -153,9 +153,9 @@ Bindplane は検証付きの安全なワンクリックロールアウトを提�
 
 </VerticalStepper>
 
-## 高度な設定 {#advanced-configuration}
+## 高度な設定 \\{#advanced-configuration\\}
 
-### ファンアウトルーティング {#fan-out-routing}
+### ファンアウトルーティング \\{#fan-out-routing\\}
 
 Bindplane はファンアウトルーティングをサポートしており、同じテレメトリストリームを複数の宛先に同時に送信できます。次のことが可能です:
 
@@ -165,7 +165,7 @@ Bindplane はファンアウトルーティングをサポートしており、�
 
 これは、Bindplane の設定に複数の宛先を追加することで構成します。
 
-### 圧縮とパフォーマンス {#compression}
+### 圧縮とパフォーマンス \\{#compression\\}
 
 高トラフィックな環境では、ClickStack の送信先で圧縮を設定します：
 
@@ -174,7 +174,7 @@ Bindplane はファンアウトルーティングをサポートしており、�
 
 圧縮を有効にすると、特に大規模環境で ClickStack にテレメトリを送信する際の帯域幅使用量を削減できます。
 
-## 次のステップ {#next-steps}
+## 次のステップ \\{#next-steps\\}
 
 Bindplane から ClickStack へテレメトリが流れるようになったので、次のことを実行できます:
 
@@ -183,7 +183,7 @@ Bindplane から ClickStack へテレメトリが流れるようになったの�
 - **デプロイメントをスケールする**: オブザーバビリティのニーズの増加に応じてコレクターやソースを追加する
 - **パイプラインを最適化する**: Bindplane のパイプラインインテリジェンスを使用して最適化の機会を特定する
 
-## さらに詳しく学ぶ {#read-more}
+## さらに詳しく学ぶ \{#read-more\}
 
 * [Bindplane ドキュメントの ClickStack 連携](https://docs.bindplane.com/integrations/destinations/clickstack)
 

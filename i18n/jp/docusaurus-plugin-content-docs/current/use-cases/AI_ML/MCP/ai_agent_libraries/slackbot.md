@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# ClickHouse MCP Server を使用して SlackBot エージェントを構築する方法 {#how-to-build-a-slackbot-agent-using-clickhouse-mcp-server}
+# ClickHouse MCP Server を使用して SlackBot エージェントを構築する方法 \\{#how-to-build-a-slackbot-agent-using-clickhouse-mcp-server\\}
 
 このガイドでは、[SlackBot](https://slack.com/intl/en-gb/help/articles/202026038-An-introduction-to-Slackbot) エージェントの構築方法を解説します。
 このボットを使うと、自然言語で Slack から直接 ClickHouse のデータについて質問できます。内部的には
@@ -20,7 +20,7 @@ doc_type: 'guide'
 このサンプルのコードは [examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/slackbot/README.md) で参照できます。
 :::
 
-## 前提条件 {#prerequisites}
+## 前提条件 \\{#prerequisites\\}
 
 - [`uv`](https://docs.astral.sh/uv/getting-started/installation/)をインストールしておく必要があります
 - Slackワークスペースへのアクセス権が必要です
@@ -28,20 +28,20 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-## Slack アプリを作成する {#create-a-slack-app}
+## Slack アプリを作成する \\{#create-a-slack-app\\}
 
 1. [slack.com/apps](https://slack.com/apps) にアクセスし、`Create New App` をクリックします。
 2. `From scratch` を選択し、アプリに名前を付けます。
 3. Slack ワークスペースを選択します。
 
-## ワークスペースにアプリをインストールする {#install-the-app-to-your-workspace}
+## ワークスペースにアプリをインストールする \\{#install-the-app-to-your-workspace\\}
 
 次に、前の手順で作成したアプリをワークスペースに追加します。
 Slack のドキュメントにある
 「[Slack ワークスペースにアプリを追加する](https://slack.com/intl/en-gb/help/articles/202035138-Add-apps-to-your-Slack-workspace)」
 の手順に従ってください。
 
-## Slack アプリの設定を行う {#configure-slack-app-settings}
+## Slack アプリの設定を行う \\{#configure-slack-app-settings\\}
 
 - `App Home` に移動する
   - `Show Tabs` → `Messages Tab` の `Allow users to send Slash commands and messages from the messages tab` を有効にする
@@ -66,7 +66,7 @@ Slack のドキュメントにある
       - `message:im`
     - 変更を保存する
 
-## 環境変数を追加する (`.env`) {#add-env-vars}
+## 環境変数を追加する (`.env`) \\{#add-env-vars\\}
 
 プロジェクトのルートに `.env` ファイルを作成し、以下の環境変数を定義します。
 これにより、アプリケーションから [ClickHouse の SQL playground](https://sql.clickhouse.com/) に接続できるようになります。
@@ -84,7 +84,7 @@ CLICKHOUSE_SECURE=true
 
 必要に応じて、ClickHouse の変数を調整し、ご自身の ClickHouse サーバーまたは ClickHouse Cloud インスタンスを使用することもできます。
 
-## ボットの使用 {#using-the-bot}
+## ボットの使用 \\{#using-the-bot\\}
 
 1. **ボットを起動:**
 

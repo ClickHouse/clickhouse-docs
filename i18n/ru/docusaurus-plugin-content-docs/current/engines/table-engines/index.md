@@ -8,7 +8,7 @@ title: 'Движки таблиц'
 doc_type: 'reference'
 ---
 
-# Движки таблиц {#table-engines}
+# Движки таблиц \\{#table-engines\\}
 
 Движок таблицы (тип таблицы) определяет:
 
@@ -19,9 +19,9 @@ doc_type: 'reference'
 - Возможно ли многопоточное выполнение запросов.
 - Параметры репликации данных.
 
-## Семейства движков {#engine-families}
+## Семейства движков \\{#engine-families\\}
 
-### MergeTree {#mergetree}
+### MergeTree \\{#mergetree\\}
 
 Наиболее универсальные и функциональные движки таблиц для задач с высокой нагрузкой. Общим свойством этих движков является быстрая вставка данных с последующей фоновой обработкой. Движки семейства `MergeTree` поддерживают репликацию данных (через версии движков [Replicated\*](/engines/table-engines/mergetree-family/replication)), партиционирование, вторичные пропускающие индексы и другие возможности, которые недоступны в других движках.
 
@@ -38,7 +38,7 @@ doc_type: 'reference'
 | [GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree)                                  |
 | [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree)                                     |
 
-### Log {#log}
+### Log \\{#log\\}
 
 Облегчённые [движки](../../engines/table-engines/log-family/index.md) с минимальной функциональностью. Они наиболее эффективны, когда нужно быстро записать множество небольших таблиц (примерно до 1 миллиона строк) и затем читать их целиком.
 
@@ -50,7 +50,7 @@ doc_type: 'reference'
 | [StripeLog](/engines/table-engines/log-family/stripelog) |
 | [Log](/engines/table-engines/log-family/log)                   |
 
-### Интеграционные движки {#integration-engines}
+### Интеграционные движки \\{#integration-engines\\}
 
 Движки для взаимодействия с другими системами хранения и обработки данных.
 
@@ -72,7 +72,7 @@ doc_type: 'reference'
 | [S3Queue](../../engines/table-engines/integrations/s3queue.md)                  |
 | [TimeSeries](../../engines/table-engines/integrations/time-series.md)           |
 
-### Специальные движки {#special-engines}
+### Специальные движки \\{#special-engines\\}
 
 Движки в семействе:
 
@@ -95,7 +95,7 @@ doc_type: 'reference'
 | [KeeperMap](/engines/table-engines/special/keeper-map)        |
 | [FileLog](/engines/table-engines/special/filelog)             |
 
-## Виртуальные столбцы {#table_engines-virtual_columns}
+## Виртуальные столбцы \\{#table_engines-virtual_columns\\}
 
 Виртуальный столбец — это неотъемлемый атрибут движка таблицы, определённый в исходном коде движка.
 

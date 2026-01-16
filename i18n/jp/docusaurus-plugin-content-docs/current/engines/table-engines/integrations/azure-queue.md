@@ -7,11 +7,11 @@ title: 'AzureQueue テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# AzureQueue テーブルエンジン {#azurequeue-table-engine}
+# AzureQueue テーブルエンジン \\{#azurequeue-table-engine\\}
 
 このエンジンは [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) エコシステムとの統合を提供し、ストリーミングデータのインポートを可能にします。
 
-## テーブルの作成 {#creating-a-table}
+## テーブルの作成 \\{#creating-a-table\\}
 
 ```sql
 CREATE TABLE test (name String, value UInt32)
@@ -41,14 +41,14 @@ ENGINE = AzureQueue('DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;
 SETTINGS mode = 'unordered'
 ```
 
-## Settings {#settings}
+## Settings \\{#settings\\}
 
 サポートされている設定群は、基本的には `S3Queue` テーブルエンジンと同じですが、`s3queue_` というプレフィックスは付きません。設定の[完全な一覧](../../../engines/table-engines/integrations/s3queue.md#settings)を参照してください。
 テーブルに対して構成されている設定の一覧を取得するには、`system.azure_queue_settings` テーブルを使用します。`24.10` 以降のバージョンで利用可能です。
 
 以下は、AzureQueue にのみ対応し、S3Queue には適用されない設定です。
 
-### `after_processing_move_connection_string` {#after_processing_move_connection_string}
+### `after_processing_move_connection_string` \\{#after_processing_move_connection_string\\}
 
 宛先が別の Azure コンテナーである場合に、正常に処理されたファイルを移動するための Azure Blob Storage 接続文字列。
 
@@ -58,7 +58,7 @@ SETTINGS mode = 'unordered'
 
 デフォルト値: 空文字列。
 
-### `after_processing_move_container` {#after_processing_move_container}
+### `after_processing_move_container` \\{#after_processing_move_container\\}
 
 移動先が別の Azure コンテナである場合に、正常に処理されたファイルを移動する移動先コンテナ名。
 
@@ -84,13 +84,13 @@ SETTINGS
     after_processing_move_container = 'dst-container';
 ```
 
-## AzureQueue テーブルエンジンからの SELECT {#select}
+## AzureQueue テーブルエンジンからの SELECT \\{#select\\}
 
 AzureQueue テーブルでは、デフォルトで SELECT クエリは禁止されています。これは、データを一度読み取ったらキューから削除するという一般的なキューのパターンに従うためです。誤ってデータを失わないようにするため、SELECT は禁止されています。
 ただし、場合によっては SELECT が必要になることもあります。その場合は、`stream_like_engine_allow_direct_select` 設定を `True` にする必要があります。
 AzureQueue エンジンには、SELECT クエリ用の特別な設定 `commit_on_select` があります。キューから読み取った後もデータを保持したい場合は `False` に、読み取り後に削除したい場合は `True` に設定します。
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 `SELECT` は、各ファイルを 1 回しかインポートできないため（デバッグ用途を除き）ストリーミングインポートにはあまり有用ではありません。代わりに、[マテリアライズドビュー](../../../sql-reference/statements/create/view.md) を使用してリアルタイム処理フローを作成する方が実用的です。これを行うには、次のようにします。
 
@@ -117,14 +117,14 @@ CREATE MATERIALIZED VIEW consumer TO stats
 SELECT * FROM stats ORDER BY key;
 ```
 
-## 仮想カラム {#virtual-columns}
+## 仮想カラム \\{#virtual-columns\\}
 
 - `_path` — ファイルへのパス。
 - `_file` — ファイル名。
 
 仮想カラムの詳細については、[こちら](../../../engines/table-engines/index.md#table_engines-virtual_columns)を参照してください。
 
-## イントロスペクション {#introspection}
+## イントロスペクション \{#introspection\}
 
 テーブル設定 `enable_logging_to_queue_log=1` を有効にして、テーブルに対するログ記録を有効化します。
 

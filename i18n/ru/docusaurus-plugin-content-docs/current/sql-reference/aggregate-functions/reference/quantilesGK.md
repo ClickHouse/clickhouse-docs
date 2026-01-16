@@ -5,7 +5,7 @@ title: 'quantilesGK'
 doc_type: 'reference'
 ---
 
-# quantilesGK {#quantilesgk}
+# quantilesGK \{#quantilesgk\}
 
 `quantilesGK` работает аналогично `quantileGK`, но позволяет одновременно вычислять квантили для нескольких уровней и возвращает массив.
 

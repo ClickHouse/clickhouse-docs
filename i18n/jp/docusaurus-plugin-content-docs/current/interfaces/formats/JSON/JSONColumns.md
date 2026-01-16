@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 :::tip
 `JSONColumns*` フォーマットの出力では、最初に ClickHouse のフィールド名が表示され、そのフィールドに対応するテーブル内の各行の内容が続きます。
@@ -26,9 +26,9 @@ doc_type: 'reference'
 `JSONColumns` フォーマットは、すべてのデータをメモリ上にバッファしてから 1 つのブロックとして出力するため、メモリ使用量が増大する可能性があります。
 :::
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
-### データの挿入 {#inserting-data}
+### データの挿入 \\{#inserting-data\\}
 
 次のデータを含む `football.json` という名前の JSON ファイルを使用します。
 
@@ -49,7 +49,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONColumns;
 ```
 
-### データの読み込み {#reading-data}
+### データの読み込み \\{#reading-data\\}
 
 `JSONColumns` 形式を使用してデータを読み込みます。
 
@@ -72,7 +72,7 @@ FORMAT JSONColumns
 }
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \\{#format-settings\\}
 
 インポート時に、名前が不明な列は、設定 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) が `1` に設定されている場合はスキップされます。
 ブロック内に存在しない列はデフォルト値で埋められます（この場合、設定 [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) を使用できます）。

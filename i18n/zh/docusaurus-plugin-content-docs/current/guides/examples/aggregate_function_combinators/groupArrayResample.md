@@ -7,9 +7,9 @@ sidebar_label: 'groupArrayResample'
 doc_type: 'reference'
 ---
 
-# groupArrayResample {#grouparrayresample}
+# groupArrayResample \\{#grouparrayresample\\}
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 可以将 [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
 组合器应用于 [`groupArray`](/sql-reference/aggregate-functions/reference/sum) 聚合函数，
@@ -18,7 +18,7 @@ doc_type: 'reference'
 （对应最小键）来构造结果数组。
 它生成的是数据的降采样视图，而非收集所有取值。
 
-## 示例用法 {#example-usage}
+## 示例用法 \\{#example-usage\\}
 
 我们来看一个示例。我们将创建一个包含员工 `name`、`age` 和 `wage` 的表，并向其中插入一些数据：
 
@@ -54,6 +54,6 @@ SELECT groupArrayResample(30, 75, 30)(name, age) FROM employee_data
 └───────────────────────────────────────────────┘
 ```
 
-## 另请参阅 {#see-also}
+## 另请参阅 \\{#see-also\\}
 - [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
 - [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)

@@ -16,7 +16,7 @@ import finish_import from '@site/static/images/clickstack/jvm/jvm-metrics-import
 import example_dashboard from '@site/static/images/clickstack/jvm/jvm-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# ClickStack を使用した JVM メトリクスの監視 {#jvm-clickstack}
+# ClickStack を使用した JVM メトリクスの監視 \\{#jvm-clickstack\\}
 
 :::note[要約]
 このガイドでは、OpenTelemetry Java エージェントを使用してメトリクスを収集し、ClickStack で JVM アプリケーションを監視する方法を説明します。次の内容を学びます:
@@ -30,13 +30,13 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 所要時間: 5〜10 分
 :::
 
-## 既存の JVM アプリケーションとの統合 {#existing-jvm}
+## 既存の JVM アプリケーションとの統合 \\{#existing-jvm\\}
 
 このセクションでは、既存の JVM アプリケーションを設定し、OpenTelemetry Java エージェントを使用して ClickStack にメトリクスを送信する方法について説明します。
 
 本番環境を設定する前に統合をテストしたい場合は、[「デモデータセット」セクション](#demo-dataset)で提供しているデモデータセットを使用してテストできます。
 
-##### 前提条件 {#prerequisites}
+##### 前提条件 \\{#prerequisites\\}
 
 - 稼働中の ClickStack インスタンス
 - 既存の Java アプリケーション（Java 8 以上）
@@ -44,7 +44,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### ClickStack API key を取得する {#get-api-key}
+#### ClickStack API key を取得する \\{#get-api-key\\}
 
 OpenTelemetry Java agent は ClickStack の OTLP エンドポイントにデータを送信します。このエンドポイントには認証が必要です。
 
@@ -55,7 +55,7 @@ OpenTelemetry Java agent は ClickStack の OTLP エンドポイントにデー�
 
 <Image img={api_key} alt="ClickStack API Key"/>
 
-#### OpenTelemetry Java agent をダウンロードする {#download-agent}
+#### OpenTelemetry Java agent をダウンロードする \\{#download-agent\\}
 
 OpenTelemetry Java agent の JAR ファイルをダウンロードします:
 
@@ -65,11 +65,11 @@ curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/
 
 これにより、エージェントが現在のディレクトリにダウンロードされます。デプロイ環境に応じて、任意の場所（例: `/opt/opentelemetry/` やアプリケーション JAR と同じ場所）に配置できます。
 
-#### JVM 起動引数を設定する {#configure-jvm}
+#### JVM 起動引数を設定する \\{#configure-jvm\\}
 
 JVM の起動コマンドに Java agent を追加します。エージェントは JVM メトリクスを自動的に収集し、ClickStack に送信します。
 
-##### オプション 1: コマンドラインフラグ {#command-line-flags}
+##### オプション 1: コマンドラインフラグ \\{#command-line-flags\\}
 
 ```bash
 java -javaagent:opentelemetry-javaagent.jar \
@@ -90,7 +90,7 @@ java -javaagent:opentelemetry-javaagent.jar \
 - `my-application.jar` → アプリケーションの JAR ファイル名
 - `http://localhost:4318` → ClickStack のエンドポイント（ClickStack が同一マシン上で動作している場合は `localhost:4318` を使用し、それ以外の場合は `http://your-clickstack-host:4318` を使用）
 
-##### オプション 2: 環境変数 {#env-vars}
+##### オプション 2: 環境変数 \\{#env-vars\\}
 
 別の方法としては、環境変数を使用します:
 
@@ -123,7 +123,7 @@ OpenTelemetry Java agent は次の JVM メトリクスを自動的に収集し�
 - **CPU**: `jvm.cpu.time`, `jvm.cpu.count`
 :::
 
-#### HyperDX でメトリクスを確認する {#verifying-metrics}
+#### HyperDX でメトリクスを確認する \\{#verifying-metrics\\}
 
 アプリケーションをエージェント付きで起動したら、メトリクスが ClickStack に送信されていることを確認します。
 
@@ -133,13 +133,13 @@ OpenTelemetry Java agent は次の JVM メトリクスを自動的に収集し�
 
 </VerticalStepper>
 
-## デモ用データセット {#demo-dataset}
+## デモ用データセット \\{#demo-dataset\\}
 
 アプリケーションを計測する前に JVM メトリクス統合を試したいユーザー向けに、現実的な JVM の挙動を示す、あらかじめ生成したメトリクスを含むサンプルデータセットを提供します。このデータセットは、適度な一定トラフィックを持つ中規模マイクロサービスを想定しています。
 
 <VerticalStepper headerLevel="h4">
 
-#### サンプルデータセットをダウンロードする {#download-sample}
+#### サンプルデータセットをダウンロードする \\{#download-sample\\}
 
 ```bash
 # ゲージ系メトリクスをダウンロード（メモリ、スレッド、CPU、クラス）
@@ -156,7 +156,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - クラスロードのアクティビティ
 - CPU 使用率パターン
 
-#### ClickStack を起動する {#start-clickstack}
+#### ClickStack を起動する \\{#start-clickstack\\}
 
 まだ ClickStack を起動していない場合:
 
@@ -168,7 +168,7 @@ docker run -d --name clickstack \
 
 ClickStack が完全に起動するまで、しばらく待機します。
 
-#### デモ用データセットをインポートする {#import-demo-data}
+#### デモ用データセットをインポートする \\{#import-demo-data\\}
 
 ```bash
 # ゲージ系メトリクスをインポート（メモリ、スレッド、CPU、クラス）
@@ -184,7 +184,7 @@ docker exec -i clickstack clickhouse-client --query="
 
 これにより、メトリクスが ClickStack のメトリクステーブルに直接インポートされます。
 
-#### デモデータを検証する {#verify-demo-metrics}
+#### デモデータを検証する \\{#verify-demo-metrics\\}
 
 インポートが完了したら:
 
@@ -201,15 +201,15 @@ HyperDX はタイムスタンプをブラウザのローカルタイムゾーン
 
 </VerticalStepper>
 
-## ダッシュボードと可視化 {#dashboards}
+## ダッシュボードと可視化 \\{#dashboards\\}
 
 ClickStack で JVM アプリケーションを監視しやすくするために、JVM メトリクス向けの主要な可視化を備えたあらかじめ用意されたダッシュボードを提供しています。
 
 <VerticalStepper headerLevel="h4">
 
-#### ダッシュボード構成を <TrackedLink href={useBaseUrl('/examples/jvm-metrics-dashboard.json')} download="jvm-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">ダウンロード</TrackedLink> する {#download}
+#### ダッシュボード構成を <TrackedLink href={useBaseUrl('/examples/jvm-metrics-dashboard.json')} download="jvm-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">ダウンロード</TrackedLink> する \\{#download\\}
 
-#### あらかじめ用意されたダッシュボードをインポートする {#import-dashboard}
+#### あらかじめ用意されたダッシュボードをインポートする \\{#import-dashboard\\}
 
 1. HyperDX を開き、［Dashboards］セクションに移動します
 2. 右上の省略記号アイコン（⋯）の下にある **Import Dashboard** をクリックします
@@ -220,7 +220,7 @@ ClickStack で JVM アプリケーションを監視しやすくするために�
 
 <Image img={finish_import} alt="インポート完了画面"/>
 
-#### ダッシュボードを表示する {#created-dashboard}
+#### ダッシュボードを表示する \\{#created-dashboard\\}
 
 ダッシュボードは、すべての可視化があらかじめ構成された状態で作成されます。
 
@@ -232,9 +232,9 @@ ClickStack で JVM アプリケーションを監視しやすくするために�
 
 </VerticalStepper>
 
-## トラブルシューティング {#troubleshooting}
+## トラブルシューティング \\{#troubleshooting\\}
 
-### エージェントが起動しない {#troubleshooting-not-loading}
+### エージェントが起動しない \\{#troubleshooting-not-loading\\}
 
 **エージェントの JAR ファイルが存在することを確認する:**
 
@@ -255,7 +255,7 @@ java -version
 [otel.javaagent] OpenTelemetry Javaagent v2.22.0 started
 ```
 
-### HyperDX にメトリクスが表示されない {#no-metrics}
+### HyperDX にメトリクスが表示されない \\{#no-metrics\\}
 
 **ClickStack が稼働しており、アクセス可能であることを確認してください:**
 
@@ -281,14 +281,14 @@ ClickStack がリモートホスト上にある場合、ポート 4318 にアプ
 **エージェントのバージョンを確認する:**
 最新の安定版エージェントバージョン（現在は 2.22.0）を使用していることを確認します。新しいバージョンにはパフォーマンス改善が含まれていることが多いためです。
 
-## 次のステップ {#next-steps}
+## 次のステップ \\{#next-steps\\}
 
 JVM メトリクスが ClickStack に取り込まれるようになったので、次のことを検討してください：
 
 - ヒープ使用率の増加、GC 一時停止の頻発、スレッド枯渇などの重要なメトリクスに対して [アラート](/use-cases/observability/clickstack/alerts) を設定する
 - オブザーバビリティデータを統合するために、[他の ClickStack 連携機能](/use-cases/observability/clickstack/integration-guides) を活用する
 
-## 本番環境への移行 {#going-to-production}
+## 本番環境への移行 \\{#going-to-production\\}
 
 このガイドでは、ローカルテスト向けの OpenTelemetry Java エージェントの設定方法を説明しました。本番デプロイメントでは、エージェント JAR をコンテナイメージに含め、環境変数で設定することで管理を容易にしてください。多数の JVM インスタンスが存在する大規模な環境では、各アプリケーションから ClickStack に直接送信するのではなく、集中型の OpenTelemetry Collector をデプロイし、複数アプリケーションからのメトリクスをバッチ処理して転送するようにします。
 

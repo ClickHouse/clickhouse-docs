@@ -13,11 +13,11 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 `LineAsStringWithNames` フォーマットは、[`LineAsString`](./LineAsString.md) フォーマットに似ていますが、列名を含むヘッダー行を出力します。
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
 ```sql title="Query"
 CREATE TABLE example (
@@ -38,4 +38,4 @@ Jane    25
 Peter    35
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \\{#format-settings\\}

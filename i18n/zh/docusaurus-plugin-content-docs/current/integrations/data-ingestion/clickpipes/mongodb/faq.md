@@ -11,9 +11,9 @@ integration:
   - category: 'clickpipes'
 ---
 
-# ClickPipes for MongoDB 常见问题解答 {#clickpipes-for-mongodb-faq}
+# ClickPipes for MongoDB 常见问题解答 \{#clickpipes-for-mongodb-faq\}
 
-### 我可以查询 JSON 数据类型中的单个字段吗？ {#can-i-query-for-individual-fields-in-the-json-datatype}
+### 我可以查询 JSON 数据类型中的单个字段吗？ \\{#can-i-query-for-individual-fields-in-the-json-datatype\\}
 
 对于直接字段访问，例如 `{"user_id": 123}`，可以使用**点号语法（dot notation）**：
 
@@ -36,7 +36,7 @@ SELECT sum(doc.shipping.cost::Float32) AS total_shipping_cost FROM t1;
 要了解更多关于处理 JSON 的信息，请参阅我们的 [JSON 使用指南](./quickstart)。
 
 
-### 如何在 ClickHouse 中展平嵌套的 MongoDB 文档？ {#how-do-i-flatten-the-nested-mongodb-documents-in-clickhouse}
+### 如何在 ClickHouse 中展平嵌套的 MongoDB 文档？ \\{#how-do-i-flatten-the-nested-mongodb-documents-in-clickhouse\\}
 
 MongoDB 文档在 ClickHouse 中默认被复制为 JSON 类型，并保留其嵌套结构。你有多种方式可以对这些数据进行展平。如果你希望将数据展平成列，可以使用普通视图、物化视图，或者在查询时直接访问。
 
@@ -46,41 +46,41 @@ MongoDB 文档在 ClickHouse 中默认被复制为 JSON 类型，并保留其嵌
 
 有关详细示例，请参阅我们的 [JSON 使用指南](./quickstart)。
 
-### 我能否连接没有公网 IP 或位于私有网络中的 MongoDB 数据库？ {#can-i-connect-mongodb-databases-that-dont-have-a-public-ip-or-are-in-private-networks}
+### 我能否连接没有公网 IP 或位于私有网络中的 MongoDB 数据库？ \\{#can-i-connect-mongodb-databases-that-dont-have-a-public-ip-or-are-in-private-networks\\}
 
 我们支持使用 AWS PrivateLink 连接没有公网 IP 或位于私有网络中的 MongoDB 数据库。目前暂不支持 Azure Private Link 和 GCP Private Service Connect。
 
-### 如果我从 MongoDB 中删除数据库/表，会发生什么？ {#what-happens-if-i-delete-a-database-table-from-my-mongodb-database}
+### 如果我从 MongoDB 中删除数据库/表，会发生什么？ \\{#what-happens-if-i-delete-a-database-table-from-my-mongodb-database\\}
 
 当你从 MongoDB 中删除数据库/表时，ClickPipes 将继续运行，但已删除的数据库/表将不再同步变更。ClickHouse 中对应的表将被保留。
 
-### MongoDB CDC Connector 如何处理事务？ {#how-does-mongodb-cdc-connector-handle-transactions}
+### MongoDB CDC Connector 如何处理事务？ \\{#how-does-mongodb-cdc-connector-handle-transactions\\}
 
 事务中的每个文档变更都会单独写入 ClickHouse。变更会按照它们在 oplog 中出现的顺序应用；只有已提交的变更才会被复制到 ClickHouse。如果某个 MongoDB 事务被回滚，这些变更将不会出现在变更流（change stream）中。
 
 更多示例，请参阅我们的 [JSON 使用指南](./quickstart)。
 
-### 如何处理 `resume of change stream was not possible, as the resume point may no longer be in the oplog.` 错误？ {#resume-point-may-no-longer-be-in-the-oplog-error}
+### 如何处理 `resume of change stream was not possible, as the resume point may no longer be in the oplog.` 错误？ \\{#resume-point-may-no-longer-be-in-the-oplog-error\\}
 
 当 oplog 被截断且 ClickPipe 无法在预期位置恢复变更流时，通常会出现此错误。要解决此问题，请[重新同步 ClickPipe](./resync.md)。为避免此问题再次发生，我们建议延长 oplog 的保留时间。参见 [MongoDB Atlas](./source/atlas#enable-oplog-retention)、[自托管 MongoDB](./source/generic#enable-oplog-retention) 或 [Amazon DocumentDB](./source/documentdb#configure-change-stream-log-retention) 的相关说明。
 
-### 复制是如何管理的？ {#how-is-replication-managed}
+### 复制是如何管理的？ \\{#how-is-replication-managed\\}
 
 我们使用 MongoDB 原生的 Change Streams API 来跟踪数据库中的变更。Change Streams API 通过使用 MongoDB 的 oplog（操作日志）提供可恢复的数据库变更流。ClickPipe 使用 MongoDB 的恢复令牌（resume tokens）来跟踪在 oplog 中的位置，并确保每一条变更都被复制到 ClickHouse。
 
-### 我应该使用哪种 read preference？ {#which-read-preference-should-i-use}
+### 我应该使用哪种 read preference？ \\{#which-read-preference-should-i-use\\}
 
 应使用哪种 read preference 取决于你的具体用例。如果你希望尽量减轻主节点的负载，我们建议使用 `secondaryPreferred` read preference。如果你希望优化摄取延迟，我们建议使用 `primaryPreferred` read preference。更多详情请参阅 [MongoDB 文档](https://www.mongodb.com/docs/manual/core/read-preference/#read-preference-modes-1)。
 
-### MongoDB ClickPipe 是否支持分片集群（Sharded Cluster）？ {#does-the-mongodb-clickpipe-support-sharded-cluster}
+### MongoDB ClickPipe 是否支持分片集群（Sharded Cluster）？ \\{#does-the-mongodb-clickpipe-support-sharded-cluster\\}
 
 是的，MongoDB ClickPipe 同时支持副本集（Replica Set）和分片集群（Sharded Cluster）。
 
-### MongoDB ClickPipe 是否支持 Amazon DocumentDB？ {#documentdb-support}
+### MongoDB ClickPipe 是否支持 Amazon DocumentDB？ \\{#documentdb-support\\}
 
 是的，MongoDB ClickPipe 支持 Amazon DocumentDB 5.0。详情参见 [Amazon DocumentDB source setup guide](./source/documentdb.md)。
 
-### MongoDB ClickPipe 是否支持 PrivateLink？ {#privatelink-support}
+### MongoDB ClickPipe 是否支持 PrivateLink？ \\{#privatelink-support\\}
 
 目前仅在 AWS 上支持为 MongoDB（以及 DocumentDB）集群配置 PrivateLink。
 

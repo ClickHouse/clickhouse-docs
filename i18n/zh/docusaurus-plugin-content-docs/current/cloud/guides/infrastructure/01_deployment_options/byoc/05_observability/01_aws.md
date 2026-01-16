@@ -12,13 +12,13 @@ import byoc4 from '@site/static/images/cloud/reference/byoc-4.png';
 import byoc3 from '@site/static/images/cloud/reference/byoc-3.png';
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
-## 可观测性 {#observability}
+## 可观测性 \\{#observability\\}
 
-### 内置监控工具 {#built-in-monitoring-tools}
+### 内置监控工具 \\{#built-in-monitoring-tools\\}
 
 ClickHouse BYOC 为不同使用场景提供多种方案。
 
-#### 可观测性仪表板 {#observability-dashboard}
+#### 可观测性仪表板 \\{#observability-dashboard\\}
 
 ClickHouse Cloud 提供高级可观测性仪表板，用于展示内存使用量、查询速率以及 I/O 等指标。可以在 ClickHouse Cloud Web 控制台界面的 **Monitoring** 部分访问该仪表板。
 
@@ -28,7 +28,7 @@ ClickHouse Cloud 提供高级可观测性仪表板，用于展示内存使用量
 
 <br />
 
-#### 高级仪表板 {#advanced-dashboard}
+#### 高级仪表板 \\{#advanced-dashboard\\}
 
 可以使用来自 `system.metrics`、`system.events`、`system.asynchronous_metrics` 等系统表的指标，自定义仪表板，以更细粒度地监控服务器性能和资源使用情况。
 
@@ -38,7 +38,7 @@ ClickHouse Cloud 提供高级可观测性仪表板，用于展示内存使用量
 
 <br />
 
-#### 访问 BYOC Prometheus 栈 {#prometheus-access}
+#### 访问 BYOC Prometheus 栈 \\{#prometheus-access\\}
 
 ClickHouse BYOC 会在你的 Kubernetes 集群中部署一个 Prometheus 栈。你可以从该栈访问并抓取监控指标，并将其集成到你自己的监控栈中。
 
@@ -50,7 +50,7 @@ ClickHouse BYOC 会在你的 Kubernetes 集群中部署一个 Prometheus 栈。�
 https://prometheus-internal.<subdomain>.<region>.aws.clickhouse-byoc.com/query
 ```
 
-#### Prometheus 集成 {#prometheus-integration}
+#### Prometheus 集成 \\{#prometheus-integration\\}
 
 <DeprecatedBadge />
 

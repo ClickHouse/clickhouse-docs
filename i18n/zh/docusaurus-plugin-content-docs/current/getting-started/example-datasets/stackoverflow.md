@@ -22,7 +22,7 @@ import stackoverflow from '@site/static/images/getting-started/example-datasets/
 关于该数据 schema 的说明可以在[这里](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede)找到。
 
 
-## 预先准备的数据 {#pre-prepared-data}
+## 预先准备的数据 \{#pre-prepared-data\}
 
 我们提供了一份 Parquet 格式的数据副本，数据已更新至 2024 年 4 月。就 ClickHouse 的行数规模而言（6,000 万条帖子），该数据集相对较小，但其中包含大量文本以及体积较大的 String 列。
 
@@ -33,7 +33,7 @@ CREATE DATABASE stackoverflow
 以下时间统计结果基于一个位于 `eu-west-2` 的 96 GiB、24 vCPU ClickHouse Cloud 集群。数据集位于 `eu-west-3`。
 
 
-### 帖子 {#posts}
+### 帖子 \{#posts\}
 
 ```sql
 CREATE TABLE stackoverflow.posts
@@ -73,7 +73,7 @@ INSERT INTO stackoverflow.posts SELECT * FROM s3('https://datasets-documentation
 帖子数据也按年份提供，例如 [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
 
 
-### 投票 {#votes}
+### 投票 \{#votes\}
 
 ```sql
 CREATE TABLE stackoverflow.votes
@@ -96,7 +96,7 @@ INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation
 投票数据也可以按年份获取，例如：[https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
 
 
-### 备注 {#comments}
+### 备注 \{#comments\}
 
 ```sql
 CREATE TABLE stackoverflow.comments
@@ -120,7 +120,7 @@ INSERT INTO stackoverflow.comments SELECT * FROM s3('https://datasets-documentat
 评论数据也提供按年份划分的文件，例如：[https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
 
 
-### 用户 {#users}
+### 用户 \{#users\}
 
 ```sql
 CREATE TABLE stackoverflow.users
@@ -147,7 +147,7 @@ INSERT INTO stackoverflow.users SELECT * FROM s3('https://datasets-documentation
 ```
 
 
-### 徽章 {#badges}
+### 徽章 \{#badges\}
 
 ```sql
 CREATE TABLE stackoverflow.badges
@@ -168,7 +168,7 @@ INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentatio
 ```
 
 
-### PostLinks {#postlinks}
+### PostLinks \{#postlinks\}
 
 ```sql
 CREATE TABLE stackoverflow.postlinks
@@ -188,7 +188,7 @@ INSERT INTO stackoverflow.postlinks SELECT * FROM s3('https://datasets-documenta
 ```
 
 
-### PostHistory {#posthistory}
+### PostHistory \{#posthistory\}
 
 ```sql
 CREATE TABLE stackoverflow.posthistory
@@ -213,11 +213,11 @@ INSERT INTO stackoverflow.posthistory SELECT * FROM s3('https://datasets-documen
 ```
 
 
-## 原始数据集 {#original-dataset}
+## 原始数据集 \\{#original-dataset\\}
 
 原始数据集以压缩的 7-Zip XML 格式提供，可从 [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) 下载，对应文件的前缀为 `stackoverflow.com*`。
 
-### 下载 {#download}
+### 下载 \{#download\}
 
 ```bash
 wget https://archive.org/download/stackexchange/stackoverflow.com-Badges.7z
@@ -232,7 +232,7 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 这些文件的大小可达 35GB，下载时间可能需要大约 30 分钟，具体取决于网络连接情况——下载服务器会将速度限制在约 20MB/秒。
 
 
-### 转换为 JSON {#convert-to-json}
+### 转换为 JSON \{#convert-to-json\}
 
 在撰写本文时，ClickHouse 尚未对 XML 输入格式提供原生支持。要将数据加载到 ClickHouse，我们首先需要将其转换为 NDJSON。
 
@@ -279,11 +279,11 @@ clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int3
 ```
 
 
-## 示例查询 {#example-queries}
+## 示例查询 \\{#example-queries\\}
 
 下面是几个简单的查询示例，帮助你开始上手。
 
-### Stack Overflow 上最常用的标签 {#most-popular-tags-on-stack-overflow}
+### Stack Overflow 上最常用的标签 \{#most-popular-tags-on-stack-overflow\}
 
 ```sql
 
@@ -313,7 +313,7 @@ Peak memory usage: 224.03 MiB.
 ```
 
 
-### 回答最多的用户（活跃账号） {#user-with-the-most-answers-active-accounts}
+### 回答最多的用户（活跃账号） \{#user-with-the-most-answers-active-accounts\}
 
 账号需要具有 `UserId`。
 
@@ -340,7 +340,7 @@ Peak memory usage: 206.45 MiB.
 ```
 
 
-### 浏览量最高的 ClickHouse 相关帖子 {#clickhouse-related-posts-with-the-most-views}
+### 浏览量最高的 ClickHouse 相关帖子 \{#clickhouse-related-posts-with-the-most-views\}
 
 ```sql
 SELECT
@@ -371,7 +371,7 @@ Peak memory usage: 240.01 MiB.
 ```
 
 
-### 最具争议的帖子 {#most-controversial-posts}
+### 最具争议的帖子 \{#most-controversial-posts\}
 
 ```sql
 SELECT
@@ -406,6 +406,6 @@ Peak memory usage: 6.05 GiB.
 ```
 
 
-## 致谢 {#attribution}
+## 致谢 \\{#attribution\\}
 
 我们感谢 Stack Overflow 按 `cc-by-sa 4.0` 许可证提供这些数据，并在此对其付出以及位于 [https://archive.org/details/stackexchange](https://archive.org/details/stackexchange) 的数据原始来源一并致谢。

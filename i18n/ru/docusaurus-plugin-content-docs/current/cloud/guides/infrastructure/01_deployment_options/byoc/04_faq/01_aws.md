@@ -9,9 +9,9 @@ doc_type: 'reference'
 
 
 
-## FAQ {#faq}
+## FAQ \\{#faq\\}
 
-### Вычислительные ресурсы {#compute}
+### Вычислительные ресурсы \\{#compute\\}
 
 <details>
 <summary>Могу ли я создать несколько сервисов в этом кластере EKS?</summary>
@@ -36,7 +36,7 @@ BYOC поддерживает тот же набор [регионов](/cloud/r
 
 </details>
 
-### Сеть и безопасность {#network-and-security}
+### Сеть и безопасность \\{#network-and-security\\}
 
 <details>
 <summary>Можем ли мы отозвать права, настроенные во время установки, после завершения настройки?</summary>
@@ -68,7 +68,7 @@ BYOC поддерживает тот же набор [регионов](/cloud/r
 
 </details>
 
-### SLA по времени безотказной работы {#uptime-sla}
+### SLA по времени безотказной работы \\{#uptime-sla\\}
 
 <details>
 <summary>Предлагает ли ClickHouse SLA по времени безотказной работы для BYOC?</summary>

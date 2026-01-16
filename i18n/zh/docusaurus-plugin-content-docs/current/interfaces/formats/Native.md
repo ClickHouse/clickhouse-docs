@@ -15,7 +15,7 @@ doc_type: 'reference'
 
 
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 `Native` 格式是 ClickHouse 中最高效的格式，因为它是真正意义上的“列式”格式，
 不会将列转换为行。  
@@ -32,8 +32,8 @@ doc_type: 'reference'
 
 
 
-## 使用示例 {#example-usage}
+## 使用示例 \\{#example-usage\\}
 
 
 
-## 格式设置 {#format-settings}
+## 格式设置 \\{#format-settings\\}

@@ -19,7 +19,7 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 このページでは、公式の ClickStack OpenTelemetry (OTel) コレクターの設定に関する詳細を説明します。
 
-## コレクターのロール {#collector-roles}
+## コレクターのロール \\{#collector-roles\\}
 
 OpenTelemetry コレクターは、主に 2 つのロールでデプロイできます:
 
@@ -31,11 +31,11 @@ OpenTelemetry コレクターは、主に 2 つのロールでデプロイでき
 
 エージェントロールで OTel collector をデプロイするユーザーは、通常、ClickStack バージョンではなく [collector の default contrib distribution](https://github.com/open-telemetry/opentelemetry-collector-contrib) を使用しますが、[Fluentd](https://www.fluentd.org/) や [Vector](https://vector.dev/) など、他の OTLP 互換テクノロジーを自由に利用することもできます。
 
-## コレクターのデプロイ {#configuring-the-collector}
+## コレクターのデプロイ \\{#configuring-the-collector\\}
 
 HyperDX のみのディストリビューションを使用する場合など、スタンドアロンデプロイメントで独自の OpenTelemetry コレクターを管理している場合でも、可能であればゲートウェイとして[公式の ClickStack ディストリビューション版コレクターを使用することを推奨します](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector)。ただし独自のコレクターを利用する場合は、必ず [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter) が含まれていることを確認してください。
 
-### スタンドアロン {#standalone}
+### スタンドアロン \{#standalone\}
 
 ClickStack ディストリビューション版の OTel コネクタをスタンドアロンモードでデプロイするには、次の Docker コマンドを実行します。
 
@@ -56,9 +56,9 @@ Collector が OpAMP ポートに接続できるようにするには、そのポ
 本番環境では、[適切な認証情報](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) を持つユーザーを使用してください。
 
 
-### 構成の変更 {#modifying-otel-collector-configuration}
+### 構成の変更 \\{#modifying-otel-collector-configuration\\}
 
-#### docker を使用する {#using-docker}
+#### docker を使用する \{#using-docker\}
 
 OpenTelemetry collector を含むすべての docker イメージは、環境変数 `OPAMP_SERVER_URL`、`CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME`、`CLICKHOUSE_PASSWORD` を使用して ClickHouse インスタンスに接続するよう構成できます。
 
@@ -80,7 +80,7 @@ ClickStack のイメージは、現在 `clickhouse/clickstack-*`（以前は `do
 :::
 
 
-#### Docker Compose {#docker-compose-otel}
+#### Docker Compose \\{#docker-compose-otel\\}
 
 Docker Compose を使用する際は、上記と同じ環境変数を使用してコレクターの設定を変更します。
 
@@ -104,11 +104,11 @@ Docker Compose を使用する際は、上記と同じ環境変数を使用し�
       - internal
 ```
 
-### 高度な設定 {#advanced-configuration}
+### 高度な設定 \\{#advanced-configuration\\}
 
 ClickStack ディストリビューションの OTel collector では、カスタム設定ファイルをマウントし、環境変数を設定することで、基本設定を拡張できます。カスタム設定は、OpAMP を介して HyperDX によって管理されている基本設定とマージされます。
 
-#### コレクター設定の拡張 {#extending-collector-config}
+#### コレクター設定の拡張 \{#extending-collector-config\}
 
 カスタムの receiver、processor、または pipeline を追加するには:
 
@@ -200,11 +200,11 @@ docker run -d \
 より複雑な設定については、[デフォルトの ClickStack collector 設定](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml)および [ClickHouse exporter ドキュメント](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)を参照してください。
 
 
-#### 設定構造 {#configuration-structure}
+#### 設定構造 \\{#configuration-structure\\}
 
 [`receivers`](https://opentelemetry.io/docs/collector/transforming-telemetry/)、[`operators`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md)、[`processors`](https://opentelemetry.io/docs/collector/configuration/#processors) を含む OTel collector の構成方法の詳細については、[公式の OpenTelemetry Collector ドキュメント](https://opentelemetry.io/docs/collector/configuration) を参照してください。
 
-## コレクターのセキュリティ保護 {#securing-the-collector}
+## コレクターのセキュリティ保護 \\{#securing-the-collector\\}
 
 ClickStack ディストリビューションの OpenTelemetry collector には OpAMP (Open Agent Management Protocol) への組み込みサポートが含まれており、これを使用して OTLP エンドポイントを安全に構成および管理します。起動時には `OPAMP_SERVER_URL` 環境変数を指定する必要があり、これは OpAMP API を `/v1/opamp` でホストしている HyperDX アプリを指すように設定します。
 
@@ -218,7 +218,7 @@ ClickStack ディストリビューションの OpenTelemetry collector には O
 - 権限を制限したインジェスト専用ユーザーを作成する（詳細は以下を参照）。
 - OTLP エンドポイントに対して TLS を有効化し、SDK/エージェントと collector 間の通信を暗号化する。これは [カスタム collector 設定](#extending-collector-config) で構成できます。
 
-### インジェスト用ユーザーの作成 {#creating-an-ingestion-user}
+### インジェスト用ユーザーの作成 \\{#creating-an-ingestion-user\\}
 
 OTel collector が ClickHouse にデータをインジェストするための専用データベースとユーザーを作成することを推奨します。このユーザーには、[ClickStack によって作成・使用されるテーブル](/use-cases/observability/clickstack/ingesting-data/schemas)を作成し、そのテーブルにデータを挿入できる権限を付与してください。
 
@@ -230,7 +230,7 @@ GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hy
 
 ここでは、collector がデータベース `otel` を使用するように設定されていることを前提としています。これは環境変数 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` で制御できます。[他の環境変数と同様に](#modifying-otel-collector-configuration)、collector を実行しているコンテナイメージにこの値を渡してください。
 
-## 処理 - フィルタリング、変換、エンリッチメント {#processing-filtering-transforming-enriching}
+## 処理 - フィルタリング、変換、エンリッチメント \\{#processing-filtering-transforming-enriching\\}
 
 ユーザーは、インジェスト時にイベントメッセージをフィルタリング、変換、およびエンリッチしたくなることがほぼ確実です。ClickStack コネクタの設定は変更できないため、さらなるイベントフィルタリングおよび処理が必要なユーザーには、次のいずれかを推奨します。
 
@@ -253,7 +253,7 @@ OpenTelemetry は、ユーザーが活用できる以下の処理およびフィ
 
 ユーザーが Operator や [transform processors](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md) を用いて過度なイベント処理を行うことは避けることを推奨します。これらは、特に JSON パースでは、かなりのメモリおよび CPU のオーバーヘッドを招く可能性があります。いくつかの例外（具体的には、k8s メタデータの追加など、コンテキスト認識型のエンリッチ）を除き、ClickHouse ではマテリアライズドビューやカラムを用いて、挿入時にすべての処理を実行することが可能です。詳細については、[Extracting structure with SQL](/use-cases/observability/schema-design#extracting-structure-with-sql) を参照してください。
 
-### 例 {#example-processing}
+### 例 \\{#example-processing\\}
 
 次の構成は、この[非構造化ログファイル](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-unstructured.log.gz)を収集するための例です。この構成は、エージェントロールで動作するコレクターがデータを ClickStack ゲートウェイに送信する際に使用できます。
 
@@ -310,11 +310,11 @@ service:
 
 より高度な設定については、[OpenTelemetry Collector のドキュメント](https://opentelemetry.io/docs/collector/) を参照してください。
 
-## 挿入の最適化 {#optimizing-inserts}
+## 挿入の最適化 \\{#optimizing-inserts\\}
 
 ClickStack collector 経由で Observability データを ClickHouse に挿入する際に、高い挿入性能と強い一貫性保証を両立するには、いくつかの単純なルールに従う必要があります。OTel collector を正しく構成すれば、これらのルールに従うことは容易になります。これにより、ClickHouse を初めて利用するユーザーが直面しがちな[一般的な問題](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)も回避できます。
 
-### バッチ処理 {#batching}
+### バッチ処理 \\{#batching\\}
 
 デフォルトでは、ClickHouse に送信された各 insert に対して、ClickHouse はその insert のデータと、あわせて保存する必要があるその他のメタデータを含むストレージパーツを即座に作成します。したがって、各 insert に少量のデータしか含まない大量の insert を送信するよりも、各 insert により多くのデータを含めた少数の insert を送信するほうが、必要な書き込み回数を削減できます。データは一度に少なくとも 1,000 行以上の、十分に大きなバッチで挿入することを推奨します。詳細は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)を参照してください。
 
@@ -327,7 +327,7 @@ collector の視点からは、(1) と (2) を区別するのは難しい場合�
 
 このため、ClickStack に含まれる OTel collector では [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md) を使用しています。これにより、上記の要件を満たす行の一貫したバッチとして insert が送信されます。collector に高いスループット（毎秒イベント数）が想定されており、各 insert で少なくとも 5,000 イベントを送信できる場合、通常はパイプラインで必要となるバッチ処理はこれだけで十分です。この場合、collector は batch processor の `timeout` に達する前にバッチをフラッシュし、パイプライン全体のレイテンシを低く保ちつつ、バッチサイズの一貫性を確保します。
 
-### 非同期挿入を使用する {#use-asynchronous-inserts}
+### 非同期挿入を使用する \\{#use-asynchronous-inserts\\}
 
 通常、コレクターのスループットが低い場合、ユーザーはより小さなバッチを送信せざるを得ませんが、それでもエンドツーエンドのレイテンシーを最小限に抑えつつ、データが ClickHouse に届くことを期待します。このような場合、バッチプロセッサの `timeout` が切れると小さなバッチが送信されます。これが問題を引き起こすことがあり、その際に非同期挿入が必要となります。ClickStack コレクターを Gateway として動作させてそこにデータを送信している場合、この問題はまれです。アグリゲーターとして動作することでこの問題を緩和できるためです。詳細は [Collector roles](#collector-roles) を参照してください。
 
@@ -349,7 +349,7 @@ collector の視点からは、(1) と (2) を区別するのは難しい場合�
 
 この機能の設定方法の詳細は、この[ドキュメントページ](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)や、より詳しい[ブログ記事](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)を参照してください。
 
-## スケーリング {#scaling}
+## スケーリング \\{#scaling\\}
 
 ClickStack の OTel collector はゲートウェイ インスタンスとして動作します。詳細は [Collector roles](#collector-roles) を参照してください。これは通常、データセンターごと、あるいはリージョンごとに独立したサービスとして提供されます。これらはアプリケーション（またはエージェントロールの他の collector）から、単一の OTLP エンドポイント経由でイベントを受信します。一般的には複数の collector インスタンスをデプロイし、標準的なロードバランサーを使用して、それらの間で負荷を分散します。
 
@@ -357,7 +357,7 @@ ClickStack の OTel collector はゲートウェイ インスタンスとして�
 
 このアーキテクチャの目的は、計算負荷の高い処理をエージェントからオフロードし、エージェントのリソース使用量を最小限に抑えることです。これらの ClickStack ゲートウェイは、本来であればエージェント側で実行する必要がある変換処理を実行できます。さらに、多数のエージェントからイベントを集約することで、ゲートウェイは ClickHouse に対して大きなバッチを送信できるようになり、効率的な挿入が可能になります。エージェントや SDK ソースの追加やイベントスループットの増加に応じて、これらのゲートウェイ collector は容易にスケールアウトできます。 
 
-### Kafka の追加 {#adding-kafka}
+### Kafka の追加 \\{#adding-kafka\\}
 
 ここまでに示したアーキテクチャでは、メッセージキューとして Kafka を使用していないことに気付く読者もいるでしょう。
 
@@ -375,7 +375,7 @@ ClickStack の OTel collector はゲートウェイ インスタンスとして�
 ClickStack の OpenTelemetry collector ディストリビューションは、[custom collector configuration](#extending-collector-config) を使用して Kafka を組み込むように構成できます。
 :::
 
-## リソースの見積もり {#estimating-resources}
+## リソースの見積もり \\{#estimating-resources\\}
 
 OTel collector のリソース要件は、イベントのスループット、メッセージサイズ、および実行される処理量によって異なります。OpenTelemetry プロジェクトは、リソース要件を見積もる際に使用できる[ベンチマーク](https://opentelemetry.io/docs/collector/benchmarks/)を提供しています。
 
@@ -389,7 +389,7 @@ OTel collector のリソース要件は、イベントのスループット、�
 | 5k/秒        | 0.5 CPU, 0.5GiB             |
 | 10k/秒       | 1 CPU, 1GiB                 |
 
-## JSON サポート {#json-support}
+## JSON サポート \\{#json-support\\}
 
 <BetaBadge/>
 
@@ -399,7 +399,7 @@ OTel collector のリソース要件は、イベントのスループット、�
 
 ClickStack はバージョン `2.0.4` から [JSON 型](/interfaces/formats/JSON) のベータサポートを提供しています。
 
-### JSON 型の利点 {#benefits-json-type}
+### JSON 型の利点 \\{#benefits-json-type\\}
 
 JSON 型は、ClickStack ユーザーに対して次のような利点を提供します。
 
@@ -410,7 +410,7 @@ JSON 型は、ClickStack ユーザーに対して次のような利点を提供�
 - **より高速なクエリと低いメモリ消費** - `LogAttributes` のような属性に対する典型的な集計では、読み取るデータ量が 5〜10 倍少なくなり、クエリ速度が劇的に向上することで、クエリ時間とピークメモリ使用量の両方を削減できます。
 - **シンプルな管理** - 性能のためにカラムを事前にマテリアライズする必要はありません。各フィールドが独立したサブカラムとなり、ネイティブな ClickHouse カラムと同等の速度を実現します。
 
-### JSON サポートを有効化する {#enabling-json-support}
+### JSON サポートを有効化する \{#enabling-json-support\}
 
 コレクターでこのサポートを有効にするには、コレクターを含む任意のデプロイメントに対して環境変数 `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` を設定します。これにより、ClickHouse 上でスキーマが JSON 型として作成されます。
 
@@ -425,7 +425,7 @@ docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e O
 ```
 
 
-### Map ベースのスキーマから JSON 型への移行 {#migrating-from-map-based-schemas-to-json}
+### Map ベースのスキーマから JSON 型への移行 \\{#migrating-from-map-based-schemas-to-json\\}
 
 :::important 後方互換性
 [JSON type](/interfaces/formats/JSON) は既存の Map ベースのスキーマと **後方互換性がありません**。この機能を有効にすると、`JSON` 型を使用する新しいテーブルが作成されるため、データ移行を手動で実施する必要があります。
@@ -435,9 +435,9 @@ Map ベースのスキーマから移行するには、次の手順に従いま�
 
 <VerticalStepper headerLevel="h4">
 
-#### OTel collector を停止する {#stop-the-collector}
+#### OTel collector を停止する \\{#stop-the-collector\\}
 
-#### 既存のテーブル名を変更し、ソースを更新する {#rename-existing-tables-sources}
+#### 既存のテーブル名を変更し、ソースを更新する \\{#rename-existing-tables-sources\\}
 
 既存のテーブル名を変更し、HyperDX 内のデータソースを更新します。
 
@@ -448,23 +448,23 @@ RENAME TABLE otel_logs TO otel_logs_map;
 RENAME TABLE otel_metrics TO otel_metrics_map;
 ```
 
-#### OTel collector をデプロイする  {#deploy-the-collector}
+#### OTel collector をデプロイする  \\{#deploy-the-collector\\}
 
 `OTEL_AGENT_FEATURE_GATE_ARG` を設定した状態で OTel collector をデプロイします。
 
-#### JSON スキーマ対応の HyperDX コンテナを再起動する {#restart-the-hyperdx-container}
+#### JSON スキーマ対応の HyperDX コンテナを再起動する \\{#restart-the-hyperdx-container\\}
 
 ```shell
 export BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true
 ```
 
-#### 新しいデータソースを作成する {#create-new-data-sources}
+#### 新しいデータソースを作成する \\{#create-new-data-sources\\}
 
 JSON テーブルを参照する新しいデータソースを HyperDX 内に作成します。
 
 </VerticalStepper>
 
-#### 既存データの移行（任意） {#migrating-existing-data}
+#### 既存データの移行（任意） \\{#migrating-existing-data\\}
 
 既存のデータを新しい JSON テーブルに移行するには:
 

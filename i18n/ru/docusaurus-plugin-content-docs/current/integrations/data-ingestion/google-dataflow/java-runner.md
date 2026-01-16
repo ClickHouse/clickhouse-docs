@@ -11,13 +11,13 @@ keywords: ['Dataflow Java Runner', 'Google Dataflow ClickHouse', 'Apache Beam Ja
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Java-раннер Dataflow {#dataflow-java-runner}
+# Java-раннер Dataflow \\{#dataflow-java-runner\\}
 
 <ClickHouseSupportedBadge/>
 
 Java-раннер Dataflow позволяет выполнять пользовательские конвейеры Apache Beam в службе Dataflow в Google Cloud. Такой подход обеспечивает максимальную гибкость и хорошо подходит для сложных ETL‑процессов.
 
-## Как это работает {#how-it-works}
+## Как это работает \\{#how-it-works\\}
 
 1. **Реализация конвейера**
    Чтобы использовать Java Runner, вам нужно реализовать конвейер Beam с помощью `ClickHouseIO` — нашего официального коннектора Apache Beam. Примеры кода и инструкции по использованию `ClickHouseIO` доступны на странице [ClickHouse Apache Beam](/integrations/apache-beam).

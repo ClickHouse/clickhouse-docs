@@ -10,7 +10,7 @@ keywords: ['time series', '时间序列', 'temporal data', '时序数据', 'use 
 
 
 
-# 我可以将 ClickHouse 用作时序数据库吗？ {#can-i-use-clickhouse-as-a-time-series-database}
+# 我可以将 ClickHouse 用作时序数据库吗？ \\{#can-i-use-clickhouse-as-a-time-series-database\\}
 
 _注意：有关在 ClickHouse 中处理时序数据的更多示例，请参阅博客 [Working with Time series data in ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)。_
 

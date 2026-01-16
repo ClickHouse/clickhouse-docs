@@ -5,7 +5,7 @@ title: 'clickhouse_backupview'
 doc_type: 'reference'
 ---
 
-# clickhouse_backupview {#clickhouse_backupview}
+# clickhouse_backupview \\{#clickhouse_backupview\\}
 
 [BACKUP](/operations/backup/overview) コマンドによって作成されたバックアップを分析するための Python モジュールです。
 主な目的は、バックアップを実際にリストアすることなく、そのバックアップから情報を取得できるようにすることです。
@@ -17,7 +17,7 @@ doc_type: 'reference'
 - バックアップに含まれるデータベース、テーブル、パーツに関する有用な情報を可読な形式で取得する
 - バックアップの整合性をチェックする
 
-## 例: {#example}
+## 例: \{#example\}
 
 ```python
 from clickhouse_backupview import open_backup, S3, FileInfo

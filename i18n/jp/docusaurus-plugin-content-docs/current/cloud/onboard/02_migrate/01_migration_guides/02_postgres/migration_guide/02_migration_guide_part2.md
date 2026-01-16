@@ -11,13 +11,13 @@ doc_type: 'guide'
 
 PostgreSQL 環境で使用しているほとんどの SQL クエリは、変更なしで ClickHouse 上でも実行でき、多くの場合より高速に動作します。
 
-## CDC を使用した重複排除 {#deduplication-cdc}
+## CDC を使用した重複排除 \\{#deduplication-cdc\\}
 
 リアルタイムレプリケーションに CDC を用いる場合、更新や削除によって行が重複する可能性があることに注意してください。これに対処するために、ビューおよび Refreshable マテリアライズドビューを利用する手法が使えます。
 
 CDC を利用したリアルタイムレプリケーションで PostgreSQL から ClickHouse へアプリケーションをできるだけスムーズに移行する方法については、この[ガイド](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres)を参照してください。
 
-## ClickHouse でクエリを最適化する {#optimize-queries-in-clickhouse}
+## ClickHouse でクエリを最適化する \{#optimize-queries-in-clickhouse\}
 
 最小限のクエリ書き換えで移行することも可能ですが、クエリを大幅に単純化し、さらにクエリパフォーマンスを向上させるために、ClickHouse の機能を活用することを推奨します。
 

@@ -7,7 +7,7 @@ title: 'Linux で ClickHouse をビルドする方法'
 doc_type: 'guide'
 ---
 
-# Linux で ClickHouse をビルドする方法 {#how-to-build-clickhouse-on-linux}
+# Linux で ClickHouse をビルドする方法 \\{#how-to-build-clickhouse-on-linux\\}
 
 :::info 自分で ClickHouse をビルドする必要はありません！
 [Quick Start](https://clickhouse.com/#quick-start) に記載されている手順に従って、事前にビルド済みの ClickHouse をインストールできます。
@@ -21,14 +21,14 @@ ClickHouse は次のプラットフォーム上でビルドできます：
 - s390/x（実験的）
 - RISC-V 64（実験的）
 
-## 前提条件 {#assumptions}
+## 前提条件 \\{#assumptions\\}
 
 以下のチュートリアルは Ubuntu Linux を前提としていますが、適宜調整すれば他の Linux ディストリビューション上でも動作します。
 開発環境として推奨される Ubuntu の最低バージョンは 24.04 LTS です。
 
 このチュートリアルでは、ClickHouse のリポジトリとすべてのサブモジュールがローカルにチェックアウトされていることを前提としています。
 
-## 前提条件をインストールする {#install-prerequisites}
+## 前提条件をインストールする \\{#install-prerequisites\\}
 
 まず、共通の[前提条件ドキュメント](developer-instruction.md)を参照してください。
 
@@ -41,7 +41,7 @@ sudo apt-get update
 sudo apt-get install build-essential git cmake ccache python3 ninja-build nasm yasm gawk lsb-release wget software-properties-common gnupg
 ```
 
-## Clang コンパイラをインストールする {#install-the-clang-compiler}
+## Clang コンパイラをインストールする \\{#install-the-clang-compiler\\}
 
 Ubuntu/Debian に Clang をインストールするには、[こちら](https://apt.llvm.org/) から LLVM の自動インストールスクリプトを使用してください。
 
@@ -54,7 +54,7 @@ sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 2025 年 3 月時点では、Clang 19 以上が必要です。
 GCC などの他のコンパイラはサポートされていません。
 
-## Rust コンパイラのインストール（任意） {#install-the-rust-compiler-optional}
+## Rust コンパイラのインストール（任意） \\{#install-the-rust-compiler-optional\\}
 
 :::note
 Rust は ClickHouse のオプションの依存関係です。
@@ -73,7 +73,7 @@ rustup default nightly-2025-07-07
 rustup component add rust-src
 ```
 
-## ClickHouse をビルドする {#build-clickhouse}
+## ClickHouse をビルドする \{#build-clickhouse\}
 
 すべてのビルド成果物を格納するために、`ClickHouse` ディレクトリ内に専用の `build` ディレクトリを作成することを推奨します。
 
@@ -132,7 +132,7 @@ cmake --build build  # compile
 :::
 
 
-## ClickHouse 実行ファイルの起動 {#running-the-clickhouse-executable}
+## ClickHouse 実行ファイルの起動 \\{#running-the-clickhouse-executable\\}
 
 ビルドが正常に完了すると、`ClickHouse/<build_dir>/programs/` に実行ファイルが生成されます。
 
@@ -147,9 +147,9 @@ macOS または FreeBSD で `Connection refused` というメッセージが表�
 clickhouse client --host 127.0.0.1
 ```
 
-## 高度なオプション {#advanced-options}
+## 高度なオプション \\{#advanced-options\\}
 
-### 最小構成でのビルド {#minimal-build}
+### 最小構成でのビルド \\{#minimal-build\\}
 
 サードパーティ製ライブラリが提供する機能が不要な場合は、ビルドをさらに高速化できます。
 
@@ -165,7 +165,7 @@ Rust にはインターネット接続が必要です。Rust サポートを無�
 cmake -DENABLE_RUST=OFF
 ```
 
-### ClickHouse バイナリの実行 {#running-the-clickhouse-executable-1}
+### ClickHouse バイナリの実行 \\{#running-the-clickhouse-executable-1\\}
 
 システムにインストールされている本番用の ClickHouse バイナリを、コンパイル済みの ClickHouse バイナリに置き換えることができます。
 そのためには、まず公式サイトの手順に従ってマシンに ClickHouse をインストールします。
@@ -186,7 +186,7 @@ sudo service clickhouse-server stop
 sudo -u clickhouse ClickHouse/build/programs/clickhouse server --config-file /etc/clickhouse-server/config.xml
 ```
 
-### 任意の Linux 環境でのビルド {#building-on-any-linux}
+### 任意の Linux 環境でのビルド \\{#building-on-any-linux\\}
 
 openSUSE Tumbleweed に必要な前提パッケージをインストールします：
 
@@ -209,7 +209,7 @@ cmake -S . -B build
 cmake --build build
 ```
 
-### Docker でのビルド {#building-in-docker}
+### Docker でのビルド \\{#building-in-docker\\}
 
 次のコマンドを使用して、CI と同様の環境で任意のビルドをローカル環境で実行できます。
 

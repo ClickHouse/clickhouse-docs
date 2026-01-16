@@ -23,7 +23,7 @@ description: '查找 ClickHouse 中最常见问题的解决方案，包括慢查
 
 
 
-# 成功案例 {#breaking-the-rules}
+# 成功案例 \\{#breaking-the-rules\\}
 
 *本指南是社区交流活动中汇总实践经验的一部分。若想获取更多真实场景下的解决方案与洞见，你可以[按具体问题浏览](./community-wisdom.md)。*
 *需要一些在生产环境中调试问题的技巧？请查看社区指南：[Debugging Insights](./debugging-insights.md)。*
@@ -32,7 +32,7 @@ description: '查找 ClickHouse 中最常见问题的解决方案，包括慢查
 
 
 
-## 将 ClickHouse 用作限流器 {#clickhouse-rate-limiter}
+## 将 ClickHouse 用作限流器 \\{#clickhouse-rate-limiter\\}
 
 当 Craigslist 需要添加一级（tier-one）限流来保护用户时，他们遇到了每个工程团队都会面对的相同抉择——遵循常规做法使用 Redis，还是尝试不同的方案。Brad Lhotsky 在 Craigslist 工作时，很清楚 Redis 是标准选择——几乎所有限流教程和线上示例都在用 Redis，这是有充分理由的。它为限流操作提供了丰富的原语、成熟的模式以及经过验证的可靠实践。但 Craigslist 使用 Redis 的体验与教材中的示例并不一致。*“我们使用 Redis 的经历并不像你在电影里看到的那样……我们遇到了很多奇怪的运维问题，比如重启 Redis 集群中的某个节点时，前端会出现延迟尖峰。”* 对于一个追求简单易维护的小团队来说，这些运维上的麻烦正在变成真正的问题。
 
@@ -46,7 +46,7 @@ description: '查找 ClickHouse 中最常见问题的解决方案，包括慢查
 
 
 
-## 用于客户分析的 ClickHouse {#customer-analytics}
+## 用于客户分析的 ClickHouse \\{#customer-analytics\\}
 
 当 ServiceNow 需要升级其移动分析平台时，他们面临一个简单的问题：*“为什么要替换一个运转良好的系统？”* 来自 ServiceNow 的 Amir Vaza 很清楚他们现有的系统很可靠，但客户需求已经在超出现有系统的处理能力范围。*“驱动我们替换一个现有可靠模型的动力，其实来自产品层面的考量，”* Amir 解释道。ServiceNow 将移动分析作为其面向 Web、移动端和聊天机器人的整体解决方案的一部分提供，但客户希望获得超越预聚合数据的分析灵活性。
 
@@ -62,7 +62,7 @@ description: '查找 ClickHouse 中最常见问题的解决方案，包括慢查
 
 
 
-## 视频资源 {#video-sources}
+## 视频资源 \\{#video-sources\\}
 
 - **[Breaking the Rules - Building a Rate Limiter with ClickHouse](https://www.youtube.com/watch?v=wRwqrbUjRe4)** - Brad Lhotsky (Craigslist)
 - **[ClickHouse as an Analytical Solution in ServiceNow](https://www.youtube.com/watch?v=b4Pmpx3iRK4)** - Amir Vaza (ServiceNow)

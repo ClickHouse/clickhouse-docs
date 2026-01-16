@@ -7,11 +7,11 @@ title: 'Dictionary テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# Dictionary テーブルエンジン {#dictionary-table-engine}
+# Dictionary テーブルエンジン \\{#dictionary-table-engine\\}
 
 `Dictionary` エンジンは、[Dictionary](../../../sql-reference/dictionaries/index.md) のデータを ClickHouse のテーブルとして利用できるようにします。
 
-## 例 {#example}
+## 例 \\{#example\\}
 
 例として、次のように構成された `products` の Dictionary を考えます。
 

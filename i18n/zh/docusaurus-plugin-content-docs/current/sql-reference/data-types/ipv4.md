@@ -7,11 +7,11 @@ title: 'IPv4'
 doc_type: 'reference'
 ---
 
-## IPv4 {#ipv4}
+## IPv4 \\{#ipv4\\}
 
 IPv4 地址。占用 4 个字节，存储为 UInt32 类型。
 
-### 基本用法 {#basic-usage}
+### 基本用法 \\{#basic-usage\\}
 
 ```sql
 CREATE TABLE hits (url String, from IPv4) ENGINE = MergeTree() ORDER BY url;

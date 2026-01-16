@@ -7,7 +7,7 @@ title: '数据类型二进制编码规范'
 doc_type: 'reference'
 ---
 
-# 数据类型二进制编码规范 {#data-types-binary-encoding-specification}
+# 数据类型二进制编码规范 \\{#data-types-binary-encoding-specification\\}
 
 本规范描述了一种用于对 ClickHouse 数据类型进行二进制编码和解码的二进制格式。该格式用于 `Dynamic` 列的[二进制序列化](dynamic.md#binary-output-format)，并且在相应设置下可用于输入/输出格式 [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) 和 [Native](/interfaces/formats/Native)。
 
@@ -72,7 +72,7 @@ doc_type: 'reference'
 
 对于类型 `JSON`，字节 `uint8_serialization_version` 表示序列化版本。当前版本固定为 0，但如果将来为 `JSON` 类型引入新的参数，该值可能会发生变化。
 
-### Interval 间隔种类的二进制编码 {#interval-kind-binary-encoding}
+### Interval 间隔种类的二进制编码 \\{#interval-kind-binary-encoding\\}
 
 下表说明了 `Interval` 数据类型中不同间隔种类的二进制编码方式。
 
@@ -90,7 +90,7 @@ doc_type: 'reference'
 | `Quarter`                | `0x09`                       |
 | `Year`                   | `0x1A`                       |
 
-### 聚合函数参数的二进制编码 {#aggregate-function-parameter-binary-encoding}
+### 聚合函数参数的二进制编码 \\{#aggregate-function-parameter-binary-encoding\\}
 
 下表描述了 `AggregateFunction` 和 `SimpleAggregateFunction` 的参数是如何进行编码的。
 每个参数的编码由 1 个用于指示参数类型的字节和参数值本身组成。

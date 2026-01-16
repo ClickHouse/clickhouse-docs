@@ -11,13 +11,13 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# PTY 対応 SSH インターフェース {#ssh-interface-with-pty}
+# PTY 対応 SSH インターフェース \{#ssh-interface-with-pty\}
 
 <ExperimentalBadge />
 
 <CloudNotSupportedBadge />
 
-## 序文 {#preface}
+## 序文 \{#preface\}
 
 ClickHouse サーバーは、SSH プロトコルを使って自身への直接接続を受け付けます。任意のクライアントから接続できます。
 
@@ -53,7 +53,7 @@ SSH 経由でのコマンド実行（非対話モード）にも対応してい�
 1
 ```
 
-## サーバー設定 {#server-configuration}
+## サーバー設定 \{#server-configuration\}
 
 SSH サーバー機能を有効にするには、`config.xml` 内で次のセクションのコメントアウトを解除するか、追加する必要があります。
 
@@ -83,7 +83,7 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])?
 ssh -o "StrictHostKeyChecking no" user@host
 ```
 
-## 組み込みクライアントの設定 {#configuring-embedded-client}
+## 組み込みクライアントの設定 \{#configuring-embedded-client\}
 
 通常の `clickhouse-client` と同様に、組み込みクライアントにもオプションを渡すことができますが、いくつか制限があります。
 これは SSH プロトコルで動作するため、ターゲットホストにパラメータを渡す方法は環境変数経由しかありません。

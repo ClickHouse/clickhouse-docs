@@ -6,7 +6,7 @@ title: 'INTERSECT 句'
 doc_type: 'reference'
 ---
 
-# INTERSECT 句 {#intersect-clause}
+# INTERSECT 句 \\{#intersect-clause\\}
 
 `INTERSECT` 句は、1つ目と2つ目の両方のクエリ結果に共通して含まれる行のみを返します。クエリは列数、順序、および型が一致している必要があります。`INTERSECT` の結果には重複した行が含まれる場合があります。
 
@@ -27,7 +27,7 @@ FROM table2
 
 条件には、要件に応じた任意の式を指定できます。
 
-## 例 {#examples}
+## 例 \\{#examples\\}
 
 ここでは、1 から 10 までの数と 3 から 8 までの数の積集合を求める簡単な例を示します。
 
@@ -133,7 +133,7 @@ WHERE price > 100
 
 これは、ある時点で Bitcoin と Ethereum は 100ドルを上回る価格で取引された一方で、DOGEFI と Bitcoin Diamond は（少なくともこの例で用いているデータの範囲では）100ドルを上回って取引されたことが一度もないことを意味します。
 
-## INTERSECT DISTINCT {#intersect-distinct}
+## INTERSECT DISTINCT \\{#intersect-distinct\\}
 
 前のクエリでは、100ドルを超える価格で取引された Bitcoin と Ethereum の保有が複数行含まれていました。同じ内容が繰り返されているだけなので、重複行を取り除けると便利です。結果セットから重複行を排除するには、`INTERSECT` に `DISTINCT` を追加します。
 

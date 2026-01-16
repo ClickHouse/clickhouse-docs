@@ -7,17 +7,17 @@ title: 'fuzzJSON'
 doc_type: 'reference'
 ---
 
-# Табличная функция fuzzJSON {#fuzzjson-table-function}
+# Табличная функция fuzzJSON \\{#fuzzjson-table-function\\}
 
 Вносит случайные искажения в строку JSON.
 
-## Синтаксис {#syntax}
+## Синтаксис \\{#syntax\\}
 
 ```sql
 fuzzJSON({ named_collection [, option=value [,..]] | json_str[, random_seed] })
 ```
 
-## Аргументы {#arguments}
+## Аргументы \\{#arguments\\}
 
 | Аргумент                          | Описание                                                                                     |
 |-----------------------------------|----------------------------------------------------------------------------------------------|
@@ -36,11 +36,11 @@ fuzzJSON({ named_collection [, option=value [,..]] | json_str[, random_seed] })
 | `min_key_length` (UInt64)         | Минимальная длина ключа. Должна быть не менее 1.                                            |
 | `max_key_length` (UInt64)         | Максимальная длина ключа. Должна быть больше или равна `min_key_length`, если задана.       |
 
-## Возвращаемое значение {#returned_value}
+## Возвращаемое значение \\{#returned_value\\}
 
 Объект таблицы с одним столбцом, содержащим модифицированные JSON-строки.
 
-## Пример использования {#usage-example}
+## Пример использования \\{#usage-example\\}
 
 ```sql
 CREATE NAMED COLLECTION json_fuzzer AS json_str='{}';

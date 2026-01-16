@@ -18,7 +18,7 @@ import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# ClickHouse を Fabi.ai に接続する {#connecting-clickhouse-to-fabiai}
+# ClickHouse を Fabi.ai に接続する \{#connecting-clickhouse-to-fabiai\}
 
 <CommunityMaintainedBadge/>
 
@@ -26,11 +26,11 @@ import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/curr
 
 <Image size="md" img={fabi_01} alt="Fabi.ai のデータ探索およびワークフロープラットフォーム" border />
 
-## 接続情報を取得する {#gather-your-connection-details}
+## 接続情報を取得する \\{#gather-your-connection-details\\}
 
 <ConnectionDetails />
 
-## Fabi.ai アカウントを作成し、ClickHouse に接続する {#connect-to-clickhouse}
+## Fabi.ai アカウントを作成し、ClickHouse に接続する \\{#connect-to-clickhouse\\}
 
 Fabi.ai にログインするか、アカウントを作成します: https://app.fabi.ai/
 
@@ -44,13 +44,13 @@ Fabi.ai にログインするか、アカウントを作成します: https://ap
 
 3. これで完了です。ClickHouse が Fabi.ai に接続されました。
 
-## ClickHouse へのクエリ実行 {#querying-clickhouse}
+## ClickHouse へのクエリ実行 \\{#querying-clickhouse\\}
 
 Fabi.ai を ClickHouse に接続したら、任意の [Smartbook](https://docs.fabi.ai/analysis_and_reporting/smartbooks) を開き、SQL セルを作成します。Fabi.ai インスタンスに接続されているデータソースが 1 つだけの場合、SQL セルでは自動的に ClickHouse がデフォルトとして選択されます。複数のデータソースがある場合は、ソースのドロップダウンからクエリ対象のソースを選択できます。
 
    <Image size="lg" img={fabi_04} alt="ClickHouse へのクエリ実行" border />
 
-## 参考資料 {#additional-resources}
+## 参考資料 \\{#additional-resources\\}
 
 [Fabi.ai](https://www.fabi.ai) ドキュメント: https://docs.fabi.ai/introduction
 

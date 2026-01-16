@@ -9,7 +9,7 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import object_storage_01 from '@site/static/images/integrations/migration/object-storage-01.png';
 
-# 将数据从云对象存储迁移到 ClickHouse Cloud {#move-data-from-cloud-object-storage-to-clickhouse-cloud}
+# 将数据从云对象存储迁移到 ClickHouse Cloud \\{#move-data-from-cloud-object-storage-to-clickhouse-cloud\\}
 
 <Image img={object_storage_01} size="md" alt="迁移自管理 ClickHouse" />
 

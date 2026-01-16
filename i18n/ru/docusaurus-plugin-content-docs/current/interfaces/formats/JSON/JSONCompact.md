@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Отличается от [JSON](./JSON.md) только тем, что строки данных выводятся в виде массивов, а не объектов.
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
-### Вставка данных {#inserting-data}
+### Вставка данных \\{#inserting-data\\}
 
 Используйте JSON-файл со следующими данными в файле с именем `football.json`:
 
@@ -81,7 +81,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompact;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных \\{#reading-data\\}
 
 Считайте данные в формате `JSONCompact`:
 
@@ -155,4 +155,4 @@ FORMAT JSONCompact
 }
 ```
 
-## Параметры форматирования {#format-settings}
+## Параметры форматирования \\{#format-settings\\}

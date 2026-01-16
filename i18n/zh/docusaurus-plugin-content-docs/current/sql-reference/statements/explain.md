@@ -58,7 +58,7 @@ Union
                   ReadFromStorage (SystemNumbers)
 ```
 
-## EXPLAIN 类型 {#explain-types}
+## EXPLAIN 类型 \\{#explain-types\\}
 
 - `AST` — 抽象语法树。
 - `SYNTAX` — 经过 AST 级优化后的查询文本。
@@ -66,7 +66,7 @@ Union
 - `PLAN` — 查询执行计划。
 - `PIPELINE` — 查询执行流水线。
 
-### EXPLAIN AST {#explain-ast}
+### EXPLAIN AST \\{#explain-ast\\}
 
 输出查询的 AST。支持所有类型的查询，而不仅仅是 `SELECT`。
 
@@ -100,7 +100,7 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
         ExpressionList
 ```
 
-### EXPLAIN SYNTAX {#explain-syntax}
+### EXPLAIN SYNTAX \\{#explain-syntax\\}
 
 在语法分析之后显示查询的抽象语法树（AST）。
 
@@ -144,7 +144,7 @@ ALL INNER JOIN system.numbers AS __table2 ON __table1.number = __table2.number
 ALL INNER JOIN system.numbers AS __table3 ON __table2.number = __table3.number
 ```
 
-### EXPLAIN QUERY TREE {#explain-query-tree}
+### EXPLAIN QUERY TREE \\{#explain-query-tree\\}
 
 设置：
 
@@ -173,7 +173,7 @@ QUERY id: 0
     TABLE id: 3, table_name: default.test_table
 ```
 
-### EXPLAIN PLAN {#explain-plan}
+### EXPLAIN PLAN \\{#explain-plan\\}
 
 输出查询计划步骤。
 
@@ -500,7 +500,7 @@ Expression ((Project names + Projection))
 
 在这两个示例中，查询计划显示了整个执行流程，包括本地和远程步骤。
 
-### EXPLAIN PIPELINE {#explain-pipeline}
+### EXPLAIN PIPELINE \\{#explain-pipeline\\}
 
 设置：
 
@@ -532,7 +532,7 @@ ExpressionTransform
             NumbersRange × 2 0 → 1
 ```
 
-### EXPLAIN ESTIMATE {#explain-estimate}
+### EXPLAIN ESTIMATE \\{#explain-estimate\\}
 
 显示在处理查询时预计将从表中读取的行数、标记数和分区片段数。适用于 [MergeTree](/engines/table-engines/mergetree-family/mergetree) 系列表。
 
@@ -560,7 +560,7 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 └──────────┴───────┴───────┴──────┴───────┘
 ```
 
-### EXPLAIN TABLE OVERRIDE {#explain-table-override}
+### EXPLAIN TABLE OVERRIDE \\{#explain-table-override\\}
 
 显示通过 `table function` 访问的表，在应用 `table override` 之后的表结构结果。
 同时会执行一些校验，如果该 override 会导致某种失败，则会抛出异常。

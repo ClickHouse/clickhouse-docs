@@ -7,17 +7,17 @@ title: 'redis'
 doc_type: 'reference'
 ---
 
-# redis 表函数 {#redis-table-function}
+# redis 表函数 \\{#redis-table-function\\}
 
 此表函数用于将 ClickHouse 与 [Redis](https://redis.io/) 集成。
 
-## 语法 {#syntax}
+## 语法 \\{#syntax\\}
 
 ```sql
 redis(host:port, key, structure[, db_index[, password[, pool_size]]])
 ```
 
-## 参数 {#arguments}
+## 参数 \\{#arguments\\}
 
 | Argument    | Description                                                                                                |
 |-------------|------------------------------------------------------------------------------------------------------------|
@@ -34,11 +34,11 @@ redis(host:port, key, structure[, db_index[, password[, pool_size]]])
 
 目前 `redis` 表函数不支持使用 [Named collections](/operations/named-collections.md)。
 
-## 返回值 {#returned_value}
+## 返回值 \\{#returned_value\\}
 
 一个表对象，其键为 Redis 键，其余各列打包在一起作为 Redis 值。
 
-## 使用示例 {#usage-example}
+## 使用示例 \\{#usage-example\\}
 
 从 Redis 读取：
 
@@ -59,7 +59,7 @@ INSERT INTO TABLE FUNCTION redis(
     'key String, v1 String, v2 UInt32') values ('1', '1', 1);
 ```
 
-## 相关 {#related}
+## 相关 \\{#related\\}
 
 - [`Redis` 表引擎](/engines/table-engines/integrations/redis.md)
 - [将 Redis 用作字典源](/sql-reference/dictionaries/index.md#redis)

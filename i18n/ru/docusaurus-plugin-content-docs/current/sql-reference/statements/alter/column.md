@@ -32,7 +32,7 @@ ALTER [TEMPORARY] TABLE [db].name [ON CLUSTER cluster] ADD|DROP|RENAME|CLEAR|COM
 * [MATERIALIZE COLUMN](#materialize-column) — Материализует столбец в частях таблицы, где этот столбец отсутствует.
   Эти действия подробно описаны ниже.
 
-## ADD COLUMN {#add-column}
+## ADD COLUMN \\{#add-column\\}
 
 ```sql
 ADD COLUMN [IF NOT EXISTS] name [type] [default_expr] [codec] [AFTER name_after | FIRST]
@@ -68,7 +68,7 @@ ToDrop  UInt32
 Added3  UInt32
 ```
 
-## Удаление столбца {#drop-column}
+## Удаление столбца \\{#drop-column\\}
 
 ```sql
 DROP COLUMN [IF EXISTS] name
@@ -88,7 +88,7 @@ DROP COLUMN [IF EXISTS] name
 ALTER TABLE visits DROP COLUMN browser
 ```
 
-## ПЕРЕИМЕНОВАТЬ СТОЛБЕЦ {#rename-column}
+## ПЕРЕИМЕНОВАТЬ СТОЛБЕЦ \\{#rename-column\\}
 
 ```sql
 RENAME COLUMN [IF EXISTS] name to new_name
@@ -104,7 +104,7 @@ RENAME COLUMN [IF EXISTS] name to new_name
 ALTER TABLE visits RENAME COLUMN webBrowser TO browser
 ```
 
-## ОЧИСТИТЬ СТОЛБЕЦ {#clear-column}
+## ОЧИСТИТЬ СТОЛБЕЦ \\{#clear-column\\}
 
 ```sql
 CLEAR COLUMN [IF EXISTS] name IN PARTITION partition_name
@@ -120,7 +120,7 @@ CLEAR COLUMN [IF EXISTS] name IN PARTITION partition_name
 ALTER TABLE visits CLEAR COLUMN browser IN PARTITION tuple()
 ```
 
-## Столбец COMMENT {#comment-column}
+## Столбец COMMENT \\{#comment-column\\}
 
 ```sql
 COMMENT COLUMN [IF EXISTS] name 'Text comment'
@@ -138,7 +138,7 @@ COMMENT COLUMN [IF EXISTS] name 'Text comment'
 ALTER TABLE visits COMMENT COLUMN browser 'This column shows the browser used for accessing the site.'
 ```
 
-## ИЗМЕНЕНИЕ СТОЛБЦА {#modify-column}
+## ИЗМЕНЕНИЕ СТОЛБЦА \\{#modify-column\\}
 
 ```sql
 MODIFY COLUMN [IF EXISTS] name [type] [default_expr] [codec] [TTL] [settings] [AFTER name_after | FIRST]
@@ -217,7 +217,7 @@ DESCRIBE users;
 Будьте осторожны при изменении столбца типа Nullable на Non-Nullable. Убедитесь, что он не содержит значений NULL, в противном случае это приведёт к проблемам при чтении из него. В таком случае обходным решением будет остановить мутацию (KILL MUTATION) и вернуть столбец к типу Nullable.
 :::
 
-## MODIFY COLUMN REMOVE {#modify-column-remove}
+## MODIFY COLUMN REMOVE \\{#modify-column-remove\\}
 
 Удаляет одно из следующих свойств столбца: `DEFAULT`, `ALIAS`, `MATERIALIZED`, `CODEC`, `COMMENT`, `TTL`, `SETTINGS`.
 
@@ -239,7 +239,7 @@ ALTER TABLE table_with_ttl MODIFY COLUMN column_ttl REMOVE TTL;
 
 * [REMOVE TTL](ttl.md).
 
-## MODIFY COLUMN MODIFY SETTING {#modify-column-modify-setting}
+## MODIFY COLUMN MODIFY SETTING \\{#modify-column-modify-setting\\}
 
 Изменяет параметр столбца.
 
@@ -257,7 +257,7 @@ ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING name=value,...;
 ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING max_compress_block_size = 1048576;
 ```
 
-## MODIFY COLUMN RESET SETTING {#modify-column-reset-setting}
+## MODIFY COLUMN RESET SETTING \\{#modify-column-reset-setting\\}
 
 Сбрасывает настройку столбца и удаляет объявление этой настройки в определении столбца в запросе CREATE таблицы.
 
@@ -275,7 +275,7 @@ ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING name,...;
 ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING max_compress_block_size;
 ```
 
-## MATERIALIZE COLUMN {#materialize-column}
+## MATERIALIZE COLUMN \\{#materialize-column\\}
 
 Материализует столбец с выражением значения `DEFAULT` или `MATERIALIZED`. При добавлении материализованного столбца с помощью `ALTER TABLE table_name ADD COLUMN column_name MATERIALIZED` существующие строки без материализованных значений не заполняются автоматически. Инструкцию `MATERIALIZE COLUMN` можно использовать для перезаписи данных существующего столбца после того, как выражение `DEFAULT` или `MATERIALIZED` было добавлено или обновлено (что обновляет только метаданные, но не изменяет существующие данные). Обратите внимание, что материализация столбца в ключе сортировки является недопустимой операцией, поскольку это может нарушить порядок сортировки.
 Реализуется как [мутация](/sql-reference/statements/alter/index.md#mutations).
@@ -335,7 +335,7 @@ SELECT groupArray(x), groupArray(s) FROM tmp;
 
 * [MATERIALIZED](/sql-reference/statements/create/view#materialized-view).
 
-## Ограничения {#limitations}
+## Ограничения \\{#limitations\\}
 
 Запрос `ALTER` позволяет создавать и удалять отдельные элементы (столбцы) во вложенных структурах данных, но не целые вложенные структуры данных. Чтобы добавить вложенную структуру данных, вы можете добавить столбцы с именем вида `name.nested_name` и типом `Array(T)`. Вложенная структура данных эквивалентна нескольким столбцам-массивам с именами с одинаковым префиксом до точки.
 

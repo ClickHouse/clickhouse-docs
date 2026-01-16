@@ -7,9 +7,9 @@ title: 'gRPC 接口'
 doc_type: 'reference'
 ---
 
-# gRPC 接口 {#grpc-interface}
+# gRPC 接口 \{#grpc-interface\}
 
-## 介绍 {#grpc-interface-introduction}
+## 介绍 \\{#grpc-interface-introduction\\}
 
 ClickHouse 支持 [gRPC](https://grpc.io/) 接口。它是一个使用 HTTP/2 和 [Protocol Buffers](https://en.wikipedia.org/wiki/Protocol_Buffers) 的开源远程过程调用系统。ClickHouse 中 gRPC 的实现支持：
 
@@ -24,7 +24,7 @@ ClickHouse 支持 [gRPC](https://grpc.io/) 接口。它是一个使用 HTTP/2 �
 
 该接口的规范定义在 [clickhouse_grpc.proto](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto) 中。
 
-## gRPC 配置 {#grpc-interface-configuration}
+## gRPC 配置 \{#grpc-interface-configuration\}
 
 要使用 gRPC 接口，请在主[服务器配置](../../operations/configuration-files.md)中设置 `grpc_port`。其他配置选项请参考以下示例：
 
@@ -61,7 +61,7 @@ ClickHouse 支持 [gRPC](https://grpc.io/) 接口。它是一个使用 HTTP/2 �
 ```
 
 
-## 内置客户端 {#grpc-client}
+## 内置客户端 \{#grpc-client\}
 
 可以使用 gRPC 支持的任意编程语言，基于提供的[规范](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto)编写客户端。
 也可以使用内置的 Python 客户端。它位于代码仓库中的 [utils/grpc-client/clickhouse-grpc-client.py](https://github.com/ClickHouse/ClickHouse/blob/master/utils/grpc-client/clickhouse-grpc-client.py)。内置客户端依赖 [grpcio 和 grpcio-tools](https://grpc.io/docs/languages/python/quickstart) 这两个 Python 模块。

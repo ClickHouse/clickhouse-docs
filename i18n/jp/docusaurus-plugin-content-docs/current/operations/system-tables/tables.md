@@ -6,7 +6,7 @@ title: 'system.tables'
 doc_type: 'reference'
 ---
 
-# system.tables {#systemtables}
+# system.tables \\{#systemtables\\}
 
 サーバーが把握している各テーブルのメタデータを含みます。
 

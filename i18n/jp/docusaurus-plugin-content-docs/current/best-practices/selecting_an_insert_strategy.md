@@ -22,7 +22,7 @@ import BulkInserts from '@site/i18n/jp/docusaurus-plugin-content-docs/current/be
 :::
 
 
-## デフォルトでは同期インサート {#synchronous-inserts-by-default}
+## デフォルトでは同期インサート \\{#synchronous-inserts-by-default\\}
 
 デフォルトでは、ClickHouse へのインサートは同期的に行われます。各インサートクエリは、メタデータおよびインデックスを含むストレージパーツを即座にディスク上に作成します。
 
@@ -34,7 +34,7 @@ import BulkInserts from '@site/i18n/jp/docusaurus-plugin-content-docs/current/be
 
 <Image img={insert_process} size="lg" alt="Insert processes" background="black"/>
 
-#### クライアント側のステップ {#client-side-steps}
+#### クライアント側のステップ \\{#client-side-steps\\}
 
 最適なパフォーマンスのためには、データを①[バッチ化](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)する必要があり、バッチサイズが**最初の検討事項**になります。
 
@@ -46,17 +46,17 @@ ClickHouse はインサートされたデータを、テーブルの主キー列
 
 データは⑤ ClickHouse のネットワークインターフェイス、すなわち [native](/interfaces/tcp) または[ HTTP](/interfaces/http) インターフェイスのいずれかに送信されます（これらはこの記事の後半で[比較](https://clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient#clickhouse-client-defaults)します）。
 
-#### サーバー側のステップ {#server-side-steps}
+#### サーバー側のステップ \\{#server-side-steps\\}
 
 ⑥ データを受信したあと、ClickHouse は圧縮が使用されていた場合に ⑦ それを解凍し、その後 ⑧ 元の送信フォーマットからパースします。
 
 そのフォーマット済みデータの値と対象テーブルの [DDL](/sql-reference/statements/create/table) ステートメントを用いて、ClickHouse は MergeTree 形式のインメモリ[ブロック](/development/architecture#block)を ⑨ 構築し、事前にソートされていない場合は主キー列で行を ⑩ [ソート](/parts#what-are-table-parts-in-clickhouse)し、⑪ [疎な主キーインデックス](/guides/best-practices/sparse-primary-indexes)を作成し、⑫ [列単位の圧縮](/parts#what-are-table-parts-in-clickhouse)を適用し、最後にデータをディスクに ⑬ 書き込み、新しい ⑭ [データパーツ](/parts)を作成します。
 
-### 同期インサート時はデータをバッチ化する {#batch-inserts-if-synchronous}
+### 同期インサート時はデータをバッチ化する \\{#batch-inserts-if-synchronous\\}
 
 <BulkInserts/>
 
-### 冪等なリトライを確保する {#ensure-idempotent-retries}
+### 冪等なリトライを確保する \\{#ensure-idempotent-retries\\}
 
 同期インサートは**冪等**でもあります。MergeTree エンジンを使用する場合、ClickHouse はデフォルトでインサートの重複排除を行います。これにより、次のようなあいまいな障害ケースから保護されます。
 
@@ -65,7 +65,7 @@ ClickHouse はインサートされたデータを、テーブルの主キー列
 
 いずれの場合も、バッチの内容と順序が同一である限り、**インサートをリトライ**しても安全です。このため、クライアントはデータを変更したり並べ替えたりせず、一貫した方法でリトライすることが極めて重要です。
 
-### 適切なインサート先を選択する {#choose-the-right-insert-target}
+### 適切なインサート先を選択する \\{#choose-the-right-insert-target\\}
 
 シャード構成のクラスタでは、次の 2 つの選択肢があります。
 
@@ -74,7 +74,7 @@ ClickHouse はインサートされたデータを、テーブルの主キー列
 
 **ClickHouse Cloud では、すべてのノードが同じ単一の分片に対して読み書きを行います。インサートはノード間で自動的にバランスされるため、公開されているエンドポイントに対してインサートを送信するだけでかまいません。**
 
-### 適切なフォーマットを選択する {#choose-the-right-format}
+### 適切なフォーマットを選択する \\{#choose-the-right-format\\}
 
 ClickHouse における効率的なデータのインジェストには、適切な入力フォーマットの選択が重要です。70 以上のフォーマットがサポートされているため、最も高性能なオプションを選ぶことで、INSERT の速度、CPU およびメモリ使用量、そしてシステム全体の効率に大きな影響を与えられます。
 
@@ -84,7 +84,7 @@ ClickHouse における効率的なデータのインジェストには、適切
 * **RowBinary**：効率的な行指向フォーマット。クライアント側でカラム指向への変換が難しい場合に最適。Java クライアントで使用されます。
 * **JSONEachRow**：扱いやすい一方で、パースコストが高いフォーマット。低ボリュームなユースケースや、迅速な連携用途に適しています。
 
-### 圧縮を使用する {#use-compression}
+### 圧縮を使用する \\{#use-compression\\}
 
 圧縮は、ネットワークオーバーヘッドを削減し、INSERT を高速化し、ClickHouse におけるストレージコストを抑えるうえで重要な役割を果たします。効果的に利用することで、データフォーマットやスキーマを変更することなく、インジェスト性能を向上できます。
 
@@ -92,7 +92,7 @@ INSERT データを圧縮すると、ネットワーク越しに送信される�
 
 INSERT において圧縮は、すでに ClickHouse の内部カラムナストレージモデルに整合している Native フォーマットと組み合わせた場合に特に効果的です。この構成では、サーバーはデータを効率的に伸長し、最小限の変換で直接保存できます。
 
-#### 速度重視には LZ4、圧縮率重視には ZSTD を使用する {#use-lz4-for-speed-zstd-for-compression-ratio}
+#### 速度重視には LZ4、圧縮率重視には ZSTD を使用する \\{#use-lz4-for-speed-zstd-for-compression-ratio\\}
 
 ClickHouse はデータ送信時に複数の圧縮コーデックをサポートしています。代表的な 2 つの選択肢は次のとおりです。
 
@@ -105,7 +105,7 @@ ClickHouse はデータ送信時に複数の圧縮コーデックをサポート
 [FastFormats ベンチマーク](https://clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient) のテストでは、LZ4 圧縮された Native の INSERT によりデータサイズが 50% 以上削減され、5.6 GiB のデータセットに対してインジェスト時間が 150 秒から 131 秒に短縮されました。ZSTD に切り替えると、同じデータセットは 1.69 GiB まで圧縮されましたが、サーバー側の処理時間はわずかに増加しました。
 :::
 
-#### 圧縮によりリソース使用量が削減される {#compression-reduces-resource-usage}
+#### 圧縮によりリソース使用量が削減される \\{#compression-reduces-resource-usage\\}
 
 圧縮はネットワークトラフィックを削減するだけでなく、サーバー側の CPU およびメモリ効率も向上させます。圧縮データであれば、ClickHouse が受信するバイト数が少なくなり、大きな入力をパースする時間も短縮されます。この利点は、オブザーバビリティのように多数のクライアントから同時にインジェストを行うシナリオで特に重要です。
 
@@ -117,7 +117,7 @@ ClickHouse はデータ送信時に複数の圧縮コーデックをサポート
 
 [HTTP インターフェイス](/interfaces/http) を使用する場合は、`Content-Encoding` ヘッダーを使用して圧縮を適用します（例：`Content-Encoding: lz4`）。送信前にペイロード全体を圧縮しておく必要があります。
 
-### 低コストであれば事前ソートを行う {#pre-sort-if-low-cost}
+### 低コストであれば事前ソートを行う \\{#pre-sort-if-low-cost\\}
 
 挿入前にデータを主キーで事前ソートしておくと、特に大きなバッチの場合に ClickHouse でのインジェスト効率を向上できます。
 
@@ -127,19 +127,19 @@ ClickHouse はデータ送信時に複数の圧縮コーデックをサポート
 
 **事前ソートは、データがすでにほぼソート済みである場合や、クライアント側リソース（CPU、メモリ）に十分な余裕があり有効活用できていない場合にのみ推奨します。** オブザーバビリティのように、レイテンシに厳しい、あるいは高スループットなユースケースで、データが順不同で到着したり多数のエージェントから到着したりする場合には、事前ソートは行わず、ClickHouse による組み込みの高パフォーマンスに任せる方がよいことが多くあります。
 
-## 非同期 INSERT {#asynchronous-inserts}
+## 非同期 INSERT \\{#asynchronous-inserts\\}
 
 <AsyncInserts />
 
-## インターフェースを選択する — HTTP かネイティブか {#choose-an-interface}
+## インターフェースを選択する — HTTP かネイティブか \\{#choose-an-interface\\}
 
-### ネイティブ {#choose-an-interface-native}
+### ネイティブ \\{#choose-an-interface-native\\}
 
 ClickHouse はデータのインジェスト用に 2 つの主要なインターフェース、**ネイティブインターフェース** と **HTTP インターフェース** を提供しており、それぞれにパフォーマンスと柔軟性のトレードオフがあります。[clickhouse-client](/interfaces/cli) や Go、C++ などの一部の言語クライアントで使用されるネイティブインターフェースは、パフォーマンスを重視して設計されています。常に ClickHouse の高効率な Native 形式でデータを送信し、LZ4 または ZSTD によるブロック単位の圧縮をサポートし、パースやフォーマット変換などの処理をクライアント側にオフロードすることでサーバー側の処理を最小限に抑えます。 
 
 さらに、MATERIALIZED および DEFAULT 列値をクライアント側で計算できるため、サーバーはこれらのステップを完全に省略できます。これにより、効率性が重要となる高スループットなインジェストシナリオにおいて、ネイティブインターフェースは理想的な選択となります。
 
-### HTTP {#choose-an-interface-http}
+### HTTP \\{#choose-an-interface-http\\}
 
 多くの従来型データベースとは異なり、ClickHouse は HTTP インターフェースもサポートしています。**こちらは対照的に、互換性と柔軟性を優先します。** [サポートされている任意の形式](/integrations/data-formats) — JSON、CSV、Parquet など — でデータを送信でき、Python、Java、JavaScript、Rust を含むほとんどの ClickHouse クライアントで広くサポートされています。
 

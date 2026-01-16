@@ -9,11 +9,11 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.delta_lake_metadata_log {#systemdelta_lake_metadata_log}
+# system.delta_lake_metadata_log \\{#systemdelta_lake_metadata_log\\}
 
 Таблица `system.delta_lake_metadata_log` фиксирует события доступа к метаданным и их разбора для таблиц Delta Lake, которые читает ClickHouse. Она предоставляет подробную информацию о каждом файле метаданных, что полезно для отладки, аудита и понимания эволюции структуры таблиц Delta Lake.
 
-## Назначение {#purpose}
+## Назначение \\{#purpose\\}
 
 Эта таблица регистрирует каждый файл метаданных, прочитанный из таблиц Delta Lake. Она помогает пользователям отследить, как ClickHouse интерпретирует метаданные таблиц Delta, и диагностировать проблемы, связанные с эволюцией схемы, выбором снимка (snapshot) или планированием выполнения запросов.
 
@@ -21,7 +21,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 Эта таблица предназначена в первую очередь для целей отладки.
 :::
 
-## Столбцы {#columns}
+## Столбцы \\{#columns\\}
 | Имя           | Тип      | Описание                                                                                   |
 |----------------|-----------|----------------------------------------------------------------------------------------------|
 | `event_date`   | [Date](../../sql-reference/data-types/date.md)      | Дата файла журнала.                                                                       |
@@ -33,7 +33,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-## Управление уровнем детализации журналирования {#controlling-log-verbosity}
+## Управление уровнем детализации журналирования \\{#controlling-log-verbosity\\}
 
 Вы можете управлять тем, какие события, связанные с метаданными, записываются в журнал с помощью настройки [`delta_lake_log_metadata`](../../operations/settings/settings.md#delta_lake_log_metadata).
 

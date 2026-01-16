@@ -19,9 +19,9 @@ import create_new_role from '@site/static/images/cloud/onboard/migrate/oss_to_cl
 import backup_s3_bucket from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/backup_in_s3_bucket.png';
 
 
-# Миграция с самоуправляемого ClickHouse на ClickHouse Cloud с использованием команд резервного копирования {#migrating-from-self-managed-clickhouse-to-clickhouse-cloud-using-backup-commands}
+# Миграция с самоуправляемого ClickHouse на ClickHouse Cloud с использованием команд резервного копирования \{#migrating-from-self-managed-clickhouse-to-clickhouse-cloud-using-backup-commands\}
 
-## Обзор {#overview-migration-approaches}
+## Обзор \\{#overview-migration-approaches\\}
 
 Существует два основных способа миграции данных из самоуправляемого ClickHouse (OSS) в ClickHouse Cloud:
 
@@ -45,7 +45,7 @@ import backup_s3_bucket from '@site/static/images/cloud/onboard/migrate/oss_to_c
 Если вы запускаете одиночный экземпляр, вместо этого выполните шаги из раздела ["Migrating between self-managed ClickHouse and ClickHouse Cloud using remoteSecure"](/cloud/migration/clickhouse-to-cloud).
 :::
 
-## Подготовка OSS {#oss-setup}
+## Подготовка OSS \{#oss-setup\}
 
 Сначала мы развернём кластер ClickHouse с использованием конфигурации Docker Compose из нашего репозитория с примерами.
 Вы можете пропустить развертывание кластера ClickHouse, если он у вас уже запущен.
@@ -78,7 +78,7 @@ docker exec -it clickhouse-01 clickhouse-client
 ```
 
 
-### Создание демонстрационных данных {#create-sample-data}
+### Создание демонстрационных данных \{#create-sample-data\}
 
 ClickHouse Cloud работает с [`SharedMergeTree`](/cloud/reference/shared-merge-tree).
 При восстановлении резервной копии ClickHouse автоматически преобразует таблицы с `ReplicatedMergeTree` в таблицы `SharedMergeTree`.
@@ -178,34 +178,34 @@ WHERE name = 'trips_small' AND database = 'nyc_taxi';
 восстановлению резервной копии из вашего S3-бакета.
 
 
-## Подготовка Cloud {#cloud-setup}
+## Подготовка Cloud \\{#cloud-setup\\}
 
 Вы будете восстанавливать данные в новый сервис в Cloud.
 Выполните шаги ниже, чтобы создать новый сервис в Cloud.
 
 <VerticalStepper headerLevel="h4">
 
-#### Откройте Cloud Console {#open-cloud-console}
+#### Откройте Cloud Console \\{#open-cloud-console\\}
 
 Перейдите по адресу [https://console.clickhouse.cloud/](https://console.clickhouse.cloud/)
 
-#### Создайте новый сервис {#create-new-service}
+#### Создайте новый сервис \\{#create-new-service\\}
 
 <Image img={create_service} size="md" alt="создание нового сервиса"/> 
 
-#### Настройте и создайте сервис {#configure-and-create}
+#### Настройте и создайте сервис \\{#configure-and-create\\}
 
 Выберите нужный регион и конфигурацию, затем нажмите `Create service`.
 
 <Image img={service_details} size="md" alt="настройка параметров сервиса"/> 
 
-#### Создайте роль доступа {#create-an-access-role}
+#### Создайте роль доступа \\{#create-an-access-role\\}
 
 Откройте SQL‑консоль.
 
 <Image img={open_console} size="md" alt="настройка параметров сервиса"/>
 
-### Настройка доступа к S3 {#set-up-s3-access}
+### Настройка доступа к S3 \\{#set-up-s3-access\\}
 
 Чтобы восстановить резервную копию из S3, необходимо настроить защищённый доступ между ClickHouse Cloud и вашим бакетом S3.
 
@@ -247,7 +247,7 @@ WHERE name = 'trips_small' AND database = 'nyc_taxi';
 
 </VerticalStepper>
 
-## Создание резервной копии (в самоуправляемом развертывании) {#taking-a-backup-on-oss}
+## Создание резервной копии (в самоуправляемом развертывании) \{#taking-a-backup-on-oss\}
 
 Чтобы создать резервную копию одной базы данных, выполните следующую команду из clickhouse-client,
 подключённого к вашему развертыванию OSS:
@@ -339,7 +339,7 @@ WHERE id = 'abc123-def456-789'
 За более подробной информацией о резервном копировании в целом обратитесь к документации по [резервному копированию и восстановлению](/operations/backup).
 
 
-## Восстановление в ClickHouse Cloud {#restore-to-clickhouse-cloud}
+## Восстановление в ClickHouse Cloud \{#restore-to-clickhouse-cloud\}
 
 Чтобы восстановить одну базу данных, выполните следующий запрос из вашего сервиса в ClickHouse Cloud, подставив ниже свои учётные данные AWS и задав `ROLE_ARN` равным значению, которое вы получили в результате выполнения шагов, описанных в разделе «Безопасный доступ к данным в S3» ([@link](/cloud/data-sources/secure-s3))
 

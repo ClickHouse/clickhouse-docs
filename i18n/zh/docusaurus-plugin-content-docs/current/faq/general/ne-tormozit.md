@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# "Не тормозит" 是什么意思？ {#what-does-ne-tormozit-mean}
+# "Не тормозит" 是什么意思？ \\{#what-does-ne-tormozit-mean\\}
 
 当人们看到复古（限量版）的 ClickHouse T 恤时，我们经常会被问到这个问题。T 恤正面用醒目的粗体大字写着 **"ClickHouse не тормозит"**。
 

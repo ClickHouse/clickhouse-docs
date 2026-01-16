@@ -22,7 +22,7 @@ ClickHouse は標準的な SQL の結合を完全にサポートしており、�
 このガイドでは、よく利用される代表的な結合の種類とその使い方を、ベン図と、[relational dataset repository](https://relational.fit.cvut.cz/dataset/IMDb) に由来する正規化済みの [IMDb](https://en.wikipedia.org/wiki/IMDb) データセットに対するクエリ例を用いて説明します。
 
 
-## テストデータとリソース {#test-data-and-resources}
+## テストデータとリソース \\{#test-data-and-resources\\}
 
 テーブルの作成とロード手順は[こちら](/integrations/dbt/guides)に記載されています。
 テーブルをローカルで作成およびロードしたくない場合は、データセットを [playground](https://sql.clickhouse.com?query_id=AACTS8ZBT3G7SSGN8ZJBJY) から利用することもできます。
@@ -40,7 +40,7 @@ ClickHouse は標準的な SQL の結合を完全にサポートしており、�
 この多対多のリレーションシップは、`roles` テーブルを使用して 2 つの [一対多のリレーションシップ](https://en.wikipedia.org/wiki/One-to-many_(data_model)) に正規化されています。
 `roles` テーブルの各行には、`movies` テーブルおよび `actors` テーブルの `id` カラムの値が含まれます。
 
-## ClickHouse でサポートされている結合の種類 {#join-types-supported-in-clickhouse}
+## ClickHouse でサポートされている結合の種類 \\{#join-types-supported-in-clickhouse\\}
 
 ClickHouse は、次の結合の種類をサポートしています。
 
@@ -54,7 +54,7 @@ ClickHouse は、次の結合の種類をサポートしています。
 
 以降のセクションでは、上記の各 JOIN 種類ごとにサンプルクエリを示します。
 
-## INNER JOIN {#inner-join}
+## INNER JOIN \{#inner-join\}
 
 `INNER JOIN` は、結合キーが一致する各行ペアごとに、左側のテーブルの行のカラム値と右側のテーブルの行のカラム値を組み合わせた結果を返します。
 ある行に複数の一致がある場合は、それらの一致行がすべて返されます（つまり、結合キーが一致した行に対しては [cartesian product](https://en.wikipedia.org/wiki/Cartesian_product) が生成されます）。
@@ -98,7 +98,7 @@ LIMIT 10;
 以下の他の種類の結合を使用することで、`INNER JOIN` の挙動を拡張または変更できます。
 
 
-## (LEFT / RIGHT / FULL) OUTER JOIN {#left--right--full-outer-join}
+## (LEFT / RIGHT / FULL) OUTER JOIN \{#left--right--full-outer-join\}
 
 `LEFT OUTER JOIN` は `INNER JOIN` と同様に動作しますが、左側テーブルのうち結合相手が存在しない行に対しては、右側テーブルのカラムに [デフォルト値](/sql-reference/statements/create/table#default_values) を返します。
 
@@ -145,7 +145,7 @@ LIMIT 10;
 :::
 
 
-## CROSS JOIN {#cross-join}
+## CROSS JOIN \{#cross-join\}
 
 `CROSS JOIN` は、結合キーを考慮せずに 2 つのテーブルの完全なデカルト積を生成します。
 左側のテーブルの各行は、右側のテーブルの各行と組み合わされます。
@@ -242,7 +242,7 @@ ALL
 また、前述のとおり、`RIGHT OUTER JOIN` では `OUTER` キーワードを省略でき、さらにオプションの `ALL` キーワードを追加できるため、`ALL RIGHT JOIN` と記述しても問題なく動作します。
 
 
-## (LEFT / RIGHT) SEMI JOIN {#left--right-semi-join}
+## (LEFT / RIGHT) SEMI JOIN \{#left--right-semi-join\}
 
 `LEFT SEMI JOIN` クエリは、右テーブルで少なくとも 1 つの結合キーが一致する左テーブルの各行について、そのカラム値を返します。
 最初に見つかった一致のみが返されます（デカルト積は無効化されています）。
@@ -281,7 +281,7 @@ LIMIT 10;
 ```
 
 
-## (LEFT / RIGHT) ANTI JOIN {#left--right-anti-join}
+## (LEFT / RIGHT) ANTI JOIN \{#left--right-anti-join\}
 
 `LEFT ANTI JOIN` は、左側のテーブルで結合条件に一致しないすべての行のカラム値を返します。
 
@@ -317,7 +317,7 @@ LIMIT 10;
 ```
 
 
-## (LEFT / RIGHT / INNER) ANY JOIN {#left--right--inner-any-join}
+## (LEFT / RIGHT / INNER) ANY JOIN \{#left--right--inner-any-join\}
 
 `LEFT ANY JOIN` は、`LEFT OUTER JOIN` と `LEFT SEMI JOIN` を組み合わせたものであり、ClickHouse は左テーブルの各行に対してカラム値を返します。このとき、右テーブルにマッチする行が存在する場合はその行のカラム値と結合し、マッチする行が存在しない場合は右テーブルのデフォルトのカラム値と結合します。
 左テーブルの 1 行に対して右テーブル側に複数のマッチが存在する場合、ClickHouse は最初に見つかったマッチからの結合されたカラム値のみを返します（デカルト積は無効化されます）。
@@ -393,7 +393,7 @@ INNER ANY JOIN right_table AS r ON l.c = r.c;
 ```
 
 
-## ASOF JOIN {#asof-join}
+## ASOF JOIN \{#asof-join\}
 
 `ASOF JOIN` は、完全一致ではないマッチングを行うための機能です。
 左側のテーブルの行が右側のテーブルに完全一致の行を持たない場合、右側のテーブルから最も近い値を持つ行が代わりにマッチとして使用されます。
@@ -451,7 +451,7 @@ final_price:        9645
 :::
 
 
-## まとめ {#summary}
+## まとめ \\{#summary\\}
 
 このガイドでは、ClickHouse がすべての標準的な SQL の JOIN 型に加え、分析クエリを強化するための特殊な JOIN もどのようにサポートしているかを説明します。
 JOIN の詳細については、[JOIN](/sql-reference/statements/select/join) 文に関するドキュメントを参照してください。

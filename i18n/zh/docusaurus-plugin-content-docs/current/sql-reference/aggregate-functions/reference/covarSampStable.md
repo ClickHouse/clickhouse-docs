@@ -5,7 +5,7 @@ title: 'covarSampStable'
 doc_type: 'reference'
 ---
 
-# covarSampStable {#covarsampstable}
+# covarSampStable \{#covarsampstable\}
 
 计算 `Σ((x - x̅)(y - y̅)) / (n - 1)` 的值。与 [covarSamp](../reference/covarSamp.md) 类似，但计算速度较慢，不过能提供更低的计算误差。
 

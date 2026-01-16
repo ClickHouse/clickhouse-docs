@@ -7,7 +7,7 @@ title: 'Перестановка координат'
 doc_type: 'reference'
 ---
 
-## flipCoordinates {#flipcoordinates}
+## flipCoordinates \\{#flipcoordinates\\}
 
 Функция `flipCoordinates` меняет местами координаты точки, кольца, полигона или мультиполигона. Это полезно, например, при преобразовании между системами координат, в которых порядок следования широты и долготы отличается.
 
@@ -15,7 +15,7 @@ doc_type: 'reference'
 flipCoordinates(coordinates)
 ```
 
-### Входные параметры {#input-parameters}
+### Входные параметры \\{#input-parameters\\}
 
 * `coordinates` — кортеж, представляющий точку `(x, y)`, или массив таких кортежей, который представляет кольцо, полигон или мультиполигон. Поддерживаемые типы входных данных:
   * [**Point**](../../data-types/geo.md#point): кортеж `(x, y)`, где `x` и `y` — значения типа [Float64](../../data-types/float.md).
@@ -23,7 +23,7 @@ flipCoordinates(coordinates)
   * [**Polygon**](../../data-types/geo.md#polygon): массив колец `[ring1, ring2, ...]`, где каждое кольцо — это массив точек.
   * [**Multipolygon**](../../data-types/geo.md#multipolygon): массив полигонов `[polygon1, polygon2, ...]`.
 
-### Возвращаемое значение {#returned-value}
+### Возвращаемое значение \\{#returned-value\\}
 
 Функция возвращает входные данные с переставленными координатами. Например:
 
@@ -31,9 +31,9 @@ flipCoordinates(coordinates)
 * Кольцо `[(x1, y1), (x2, y2)]` становится `[(y1, x1), (y2, x2)]`.
 * Вложенные структуры, такие как полигоны и мультиполигоны, обрабатываются рекурсивно.
 
-### Примеры {#examples}
+### Примеры \\{#examples\\}
 
-#### Пример 1: Перестановка координат одной точки {#example-1}
+#### Пример 1: Перестановка координат одной точки \\{#example-1\\}
 
 ```sql
 SELECT flipCoordinates((10, 20)) AS flipped_point
@@ -45,7 +45,7 @@ SELECT flipCoordinates((10, 20)) AS flipped_point
 └───────────────┘
 ```
 
-#### Пример 2: Разворот массива точек (кольцо) {#example-2}
+#### Пример 2: Разворот массива точек (кольцо) \\{#example-2\\}
 
 ```sql
 SELECT flipCoordinates([(10, 20), (30, 40)]) AS flipped_ring
@@ -57,7 +57,7 @@ SELECT flipCoordinates([(10, 20), (30, 40)]) AS flipped_ring
 └───────────────────────────┘
 ```
 
-#### Пример 3: Отражение многоугольника {#example-3}
+#### Пример 3: Отражение многоугольника \\{#example-3\\}
 
 ```sql
 SELECT flipCoordinates([[(10, 20), (30, 40)], [(50, 60), (70, 80)]]) AS flipped_polygon
@@ -69,7 +69,7 @@ SELECT flipCoordinates([[(10, 20), (30, 40)], [(50, 60), (70, 80)]]) AS flipped_
 └──────────────────────────────────────────────┘
 ```
 
-#### Пример 4: Отражение мультиполигона {#example-4}
+#### Пример 4: Отражение мультиполигона \\{#example-4\\}
 
 ```sql
 SELECT flipCoordinates([[[10, 20], [30, 40]], [[50, 60], [70, 80]]]) AS flipped_multipolygon

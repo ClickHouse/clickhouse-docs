@@ -7,7 +7,7 @@ title: 'C++ クライアントライブラリ'
 doc_type: 'reference'
 ---
 
-# C++ クライアントライブラリ {#c-client-library}
+# C++ クライアントライブラリ \{#c-client-library\}
 
 `clickhouse-cpp` は ClickHouse 用の公式 C++ クライアントライブラリであり、ClickHouse のネイティブバイナリプロトコルを用いて、高速かつ型安全なインターフェースを提供します。
 
@@ -23,7 +23,7 @@ doc_type: 'reference'
 [https://github.com/ClickHouse/clickhouse-cpp/issues](https://github.com/ClickHouse/clickhouse-cpp/issues)
 :::
 
-## ライブラリをプロジェクトに組み込む {#including-library-into-project}
+## ライブラリをプロジェクトに組み込む \{#including-library-into-project\}
 
 ライブラリをプロジェクトに組み込む最も簡単な方法は、CMakeの`FetchContent`
 モジュールを使用することです。この方法により、ライブラリの特定のバージョンに固定し、通常の
@@ -52,9 +52,9 @@ target_link_libraries(your-target PRIVATE clickhouse-cpp-lib)
 ```
 
 
-## 使用例 {#examples}
+## 使用例 \\{#examples\\}
 
-### クライアントオブジェクトの設定 {#example-setup-client}
+### クライアントオブジェクトの設定 \{#example-setup-client\}
 
 ClickHouse に接続するために `Client` インスタンスを作成します。次の例では、パスワードが不要で SSL も有効化されていないローカルの ClickHouse インスタンスに接続する方法を示します。
 
@@ -81,7 +81,7 @@ clickhouse::Client client{
 ```
 
 
-### データを返さないテーブル作成とクエリの実行 {#example-create-table}
+### データを返さないテーブル作成とクエリの実行 \{#example-create-table\}
 
 テーブル作成など、データを返さないクエリを実行するには、`Execute` メソッドを使用します。
 同様に、`ALTER TABLE` や `DROP` などの他の文にも使用できます。
@@ -96,7 +96,7 @@ client.Execute(R"(
 ```
 
 
-### データの挿入 {#example-insert-data}
+### データの挿入 \{#example-insert-data\}
 
 テーブルにデータを挿入するには、`Block` を作成し、テーブルスキーマに対応するカラムオブジェクトで埋めます。データはカラム単位で追加され、その後、バッチ書き込みを効率化するよう最適化された `Insert` メソッドを用いて、1 回の操作で挿入されます。
 
@@ -126,7 +126,7 @@ client.Insert("greetings", block);
 ```
 
 
-### データの選択 {#example-select}
+### データの選択 \{#example-select\}
 
 データを返すクエリを実行するには、`Select` メソッドを使用し、結果を処理するためのコールバックを指定します。クエリ結果は、ClickHouse のネイティブなカラム指向データ表現を反映した `Block` オブジェクトとして返されます。
 
@@ -144,7 +144,7 @@ client.Select(
 ```
 
 
-## サポートされているデータ型 {#supported-data-types}
+## サポートされているデータ型 \\{#supported-data-types\\}
 
 - `UInt8`, `UInt16`, `UInt32`, `UInt64`, `Int8`, `Int16`, `Int32`, `Int64`
 - `UInt128`, `Int128`

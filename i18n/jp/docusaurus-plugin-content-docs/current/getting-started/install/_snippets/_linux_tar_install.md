@@ -1,10 +1,10 @@
-# tgzアーカイブを使用したClickHouseのインストール {#install-clickhouse-using-tgz-archives}
+# tgzアーカイブを使用したClickHouseのインストール \\{#install-clickhouse-using-tgz-archives\\}
 
 > `deb`または`rpm`パッケージのインストールができないすべてのLinuxディストリビューションでは、公式のプリコンパイル済み`tgz`アーカイブの使用を推奨します。
 
 <VerticalStepper>
 
-## 最新の安定版をダウンロードしてインストールする {#install-latest-stable}
+## 最新の安定版をダウンロードしてインストールする \\{#install-latest-stable\\}
 
 必要なバージョンは、リポジトリ https://packages.clickhouse.com/tgz/ から `curl` または `wget` を使ってダウンロードできます。
 その後、ダウンロードしたアーカイブを展開し、付属のインストールスクリプトでインストールします。
@@ -16,7 +16,7 @@
 `-stable` の接尾辞が付いたリリース番号は、この [GitHub ページ](https://github.com/ClickHouse/ClickHouse/tags) で確認できます。
 :::
 
-## 最新の ClickHouse バージョンを取得する {#get-latest-version}
+## 最新の ClickHouse バージョンを取得する \\{#get-latest-version\\}
 
 GitHub から最新の ClickHouse バージョンを取得し、`LATEST_VERSION` 変数に設定します。
 
@@ -26,7 +26,7 @@ LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse
 export LATEST_VERSION
 ```
 
-## システムアーキテクチャを特定する {#detect-system-architecture}
+## システムアーキテクチャを特定する \\{#detect-system-architecture\\}
 
 システムアーキテクチャを特定し、それに応じて `ARCH` 変数を設定します。
 
@@ -38,7 +38,7 @@ case $(uname -m) in
 esac
 ```
 
-## 各 ClickHouse コンポーネント用の tarball をダウンロードする {#download-tarballs}
+## 各 ClickHouse コンポーネント用の tarball をダウンロードする \\{#download-tarballs\\}
 
 各 ClickHouse コンポーネント用の tarball をダウンロードします。ループではまずアーキテクチャ固有のパッケージを試し、なければ汎用パッケージにフォールバックします。
 
@@ -50,7 +50,7 @@ do
 done
 ```
 
-## パッケージの展開とインストール {#extract-and-install}
+## パッケージの展開とインストール \\{#extract-and-install\\}
 
 以下のパッケージを展開してインストールするには、次のコマンドを実行します：
 - `clickhouse-common-static`

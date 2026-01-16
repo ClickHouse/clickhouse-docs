@@ -23,7 +23,7 @@ import Image from '@theme/IdealImage';
 
 高级仪表盘同时适用于 ClickHouse OSS（开源软件）和 Cloud。本文将介绍如何在 Cloud 中使用高级仪表盘。
 
-## 访问高级仪表板 {#accessing-the-advanced-dashboard}
+## 访问高级仪表板 \\{#accessing-the-advanced-dashboard\\}
 
 可以通过以下路径访问高级仪表板：
 
@@ -32,7 +32,7 @@ import Image from '@theme/IdealImage';
 
 <Image img={AdvancedDashboard} size="lg" alt="Advanced dashboard"/>
 
-## 访问原生高级仪表盘 {#accessing-the-native-advanced-dashboard}
+## 访问原生高级仪表盘 \\{#accessing-the-native-advanced-dashboard\\}
 
 可以通过以下路径访问原生高级仪表盘：
 
@@ -48,11 +48,11 @@ import Image from '@theme/IdealImage';
 
 <Image img={EditVisualization} size="lg" alt="Advanced dashboard"/>
 
-## 开箱即用的可视化 {#out-of-box-visualizations}
+## 开箱即用的可视化 \\{#out-of-box-visualizations\\}
 
 Advanced Dashboard 中的默认图表旨在帮助你实时了解 ClickHouse 系统的运行状况。下面列出了每个图表及其说明，并分为三大类，便于浏览和查找。
 
-### ClickHouse 专用 {#clickhouse-specific}
+### ClickHouse 专用 \\{#clickhouse-specific\\}
 
 这些指标专门用于监控 ClickHouse 实例的健康状况和性能。
 
@@ -66,7 +66,7 @@ Advanced Dashboard 中的默认图表旨在帮助你实时了解 ClickHouse 系�
 | Queries Running           | 显示当前正在执行的查询数量                                                                    |
 | Selected Bytes Per Second | 指示查询每秒正在读取的数据量                                                                  |
 
-### 系统健康状况专用 {#system-health-specific}
+### 系统健康状况专用 \\{#system-health-specific\\}
 
 监控底层系统与监控 ClickHouse 本身同样重要。
 
@@ -81,7 +81,7 @@ Advanced Dashboard 中的默认图表旨在帮助你实时了解 ClickHouse 系�
 | OS CPU Usage (Userspace)  | 运行用户态代码的 CPU 使用率                                                |
 | OS CPU Usage (Kernel)     | 运行内核代码的 CPU 使用率                                                  |
 
-## ClickHouse Cloud 特有指标 {#clickhouse-cloud-specific}
+## ClickHouse Cloud 特有指标 \\{#clickhouse-cloud-specific\\}
 
 ClickHouse Cloud 使用对象存储（S3 类型）来保存数据。监控该接口有助于发现潜在问题。
 
@@ -99,12 +99,12 @@ ClickHouse Cloud 使用对象存储（S3 类型）来保存数据。监控该接
 | Network receive bytes/sec      | 跟踪当前入站网络流量速率                  |
 | Concurrent network connections | 跟踪当前并发网络连接的数量                |
 
-## 使用高级仪表板识别问题 {#identifying-issues-with-the-advanced-dashboard}
+## 使用高级仪表板识别问题 \\{#identifying-issues-with-the-advanced-dashboard\\}
 
 通过这种对 ClickHouse 服务健康状况的实时视图，可以在问题影响业务之前大大
 缓解或解决问题。下面是一些可以通过高级仪表板识别的问题。
 
-### 未批量插入 {#unbatched-inserts}
+### 未批量插入 \\{#unbatched-inserts\\}
 
 如[最佳实践文档](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous)中所述，推荐在可以同步执行的情况下，
 始终将数据批量插入 ClickHouse。
@@ -124,7 +124,7 @@ ClickHouse Cloud 使用对象存储（S3 类型）来保存数据。监控该接
 **Inserted Rows/sec** 的速度却非常慢。创建了大量 part，但生成的数据量却很少，
 这表明这些 part 的大小并不理想。
 
-### 资源密集型查询 {#resource-intensive-query}
+### 资源密集型查询 \\{#resource-intensive-query\\}
 
 运行会消耗大量资源（例如 CPU 或内存）的 SQL 查询是很常见的。然而，监控这些查询并了解
 它们对部署整体性能的影响非常重要。
@@ -137,7 +137,7 @@ ClickHouse Cloud 使用对象存储（S3 类型）来保存数据。监控该接
 
 <Image img={ResourceIntensiveQuery} size="lg" alt="资源密集型查询" />
 
-### 不良的主键设计 {#bad-primary-key-design}
+### 不良的主键设计 \\{#bad-primary-key-design\\}
 
 你可以使用高级仪表板识别的另一个问题是不良的主键设计。
 正如 [&quot;A practical introduction to primary indexes in ClickHouse&quot;](/guides/best-practices/sparse-primary-indexes#a-table-with-a-primary-key)

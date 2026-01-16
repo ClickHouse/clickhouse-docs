@@ -6,9 +6,9 @@ title: 'TCP 接続制限'
 doc_type: 'reference'
 ---
 
-# TCP 接続制限 {#tcp-connection-limits}
+# TCP 接続制限 \\{#tcp-connection-limits\\}
 
-## 概要 {#overview}
+## 概要 \\{#overview\\}
 
 ClickHouse の TCP 接続（たとえば [コマンドラインクライアント](https://clickhouse.com/docs/interfaces/cli) を通したもの）が、
 一定回数のクエリ実行または一定時間の経過後に自動的に切断されることがあります。
@@ -23,7 +23,7 @@ ClickHouse の TCP 接続（たとえば [コマンドラインクライアン�
 制限に達して切断されると、クライアントは
 `TCP_CONNECTION_LIMIT_REACHED` 例外を受け取り、**切断を引き起こしたクエリが処理されることは決してありません**。
 
-## クエリ制限 {#query-limits}
+## クエリ制限 \\{#query-limits\\}
 
 `tcp_close_connection_after_queries_num` が N に設定されていると仮定すると、その接続では
 N 回のクエリが正常に実行できます。その後、N + 1 回目のクエリでクライアントが切断されます。
@@ -36,7 +36,7 @@ TCP 接続がアイドル状態（つまり、ある一定期間クエリを処�
 これは、アイドル状態が発生した場合、1 つの接続における合計クエリ数が
 `tcp_close_connection_after_queries_num` を超える可能性があることを意味します。
 
-## 接続時間の制限 {#duration-limits}
+## 接続時間の制限 \\{#duration-limits\\}
 
 接続時間は、クライアントが接続した直後から計測されます。
 `tcp_close_connection_after_queries_seconds` 秒が経過した後に実行された最初のクエリで、クライアントは切断されます。

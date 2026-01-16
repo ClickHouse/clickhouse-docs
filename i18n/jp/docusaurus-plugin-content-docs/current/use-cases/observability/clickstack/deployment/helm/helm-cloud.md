@@ -11,11 +11,11 @@ keywords: ['ClickStack GKE', 'ClickStack EKS', 'ClickStack AKS', 'Kubernetes clo
 
 このガイドでは、マネージド Kubernetes サービス上に ClickStack をデプロイするためのクラウド特有の設定について説明します。基本的なインストール手順については、[Helm デプロイメントのメインガイド](/docs/use-cases/observability/clickstack/deployment/helm)を参照してください。
 
-## Google Kubernetes Engine (GKE) {#google-kubernetes-engine-gke}
+## Google Kubernetes Engine (GKE) \\{#google-kubernetes-engine-gke\\}
 
 GKE へデプロイする場合は、クラウド特有のネットワークの挙動により、いくつかの設定値を上書き（オーバーライド）する必要が生じることがあります。
 
-### LoadBalancer の DNS 解決に関する問題 {#loadbalancer-dns-resolution-issue}
+### LoadBalancer の DNS 解決に関する問題 \\{#loadbalancer-dns-resolution-issue\\}
 
 GKE の LoadBalancer サービスが原因で、ポッド間通信における内部 DNS 解決がクラスターネットワーク内にとどまらず、外部 IP に名前解決されてしまう問題が発生することがあります。これは特に、OTel collector から OpAMP サーバーへの接続に影響します。
 
@@ -34,7 +34,7 @@ helm install my-clickstack clickstack/clickstack \
   --set otel.opampServerUrl="http://my-clickstack-clickstack-app.default.svc.cluster.local:4320"
 ```
 
-### GKE に関するその他の考慮事項 {#other-gke-considerations}
+### GKE に関するその他の考慮事項 \\{#other-gke-considerations\\}
 
 ```yaml
 # values-gke.yaml
@@ -52,7 +52,7 @@ clickhouse:
       - "10.0.0.0/8"   # Fallback for other configurations
 ```
 
-## Amazon EKS {#amazon-eks}
+## Amazon EKS \\{#amazon-eks\\}
 
 EKS にデプロイする場合は、次の一般的な構成を検討してください。
 
@@ -77,7 +77,7 @@ hyperdx:
       enabled: true
 ```
 
-## Azure AKS {#azure-aks}
+## Azure AKS \\{#azure-aks\\}
 
 AKS にデプロイする場合:
 
@@ -94,7 +94,7 @@ clickhouse:
       - "10.0.0.0/8"
 ```
 
-## 本番環境向けクラウド デプロイメント チェックリスト {#production-cloud-deployment-checklist}
+## 本番環境向けクラウド デプロイメント チェックリスト \\{#production-cloud-deployment-checklist\\}
 
 任意のクラウドプロバイダー上の本番環境に ClickStack をデプロイする前に、次を実施してください。
 
@@ -108,9 +108,9 @@ clickhouse:
 - [ ] バックアップと障害復旧を構成する
 - [ ] 適切なシークレット管理を実装する
 
-## 本番環境におけるベストプラクティス {#production-best-practices}
+## 本番環境におけるベストプラクティス \\{#production-best-practices\\}
 
-### リソース管理 {#resource-management}
+### リソース管理 \\{#resource-management\\}
 
 ```yaml
 hyperdx:
@@ -123,7 +123,7 @@ hyperdx:
       memory: 4Gi
 ```
 
-### 高可用性 {#high-availability}
+### 高可用性 \\{#high-availability\\}
 
 ```yaml
 hyperdx:
@@ -143,7 +143,7 @@ hyperdx:
             topologyKey: kubernetes.io/hostname
 ```
 
-### 永続ストレージ {#persistent-storage}
+### 永続ストレージ \\{#persistent-storage\\}
 
 データを保持できるよう、PersistentVolume（永続ボリューム）が適切に構成されていることを確認します。
 
@@ -161,13 +161,13 @@ clickhouse:
 * **EKS**: `gp3` または `io2`
 * **AKS**: `managed-premium` または `managed-csi`
 
-### ブラウザ互換性に関する注意事項 {#browser-compatibility-notes}
+### ブラウザ互換性に関する注意事項 \\{#browser-compatibility-notes\\}
 
 HTTP のみでデプロイしている場合（開発／テスト用途）、一部のブラウザでは「セキュアコンテキスト」の要件により crypto API のエラーが表示されることがあります。本番環境向けのデプロイメントでは、必ずイングレス構成を利用し、適切な TLS 証明書付きの HTTPS を使用してください。
 
 TLS のセットアップ手順については、[イングレス構成](/docs/use-cases/observability/clickstack/deployment/helm-configuration#ingress-setup) を参照してください。
 
-## 次のステップ {#next-steps}
+## 次のステップ \\{#next-steps\\}
 
 - [構成ガイド](/docs/use-cases/observability/clickstack/deployment/helm-configuration) - API キー、シークレット、およびイングレス
 - [デプロイオプション](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) - 外部システムの構成

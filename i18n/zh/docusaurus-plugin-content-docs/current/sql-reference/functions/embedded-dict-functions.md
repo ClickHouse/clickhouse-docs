@@ -6,7 +6,7 @@ title: '用于操作嵌入式字典的函数'
 doc_type: 'reference'
 ---
 
-# 使用内嵌字典的函数 {#functions-for-working-with-embedded-dictionaries}
+# 使用内嵌字典的函数 \\{#functions-for-working-with-embedded-dictionaries\\}
 
 :::note
 要使下面的函数正常工作，服务器配置中必须指定获取所有内嵌字典的路径和地址。这些字典会在首次调用任意一个相关函数时加载。如果参考列表无法加载，则会抛出异常。
@@ -16,7 +16,7 @@ doc_type: 'reference'
 
 关于如何创建参考列表的更多信息，请参见章节 [&quot;Dictionaries&quot;](../dictionaries#embedded-dictionaries)。
 
-## 多个地理库（Geobase） {#multiple-geobases}
+## 多个地理库（Geobase） \\{#multiple-geobases\\}
 
 ClickHouse 支持同时使用多个不同的地理库（区域层级结构），以支持对某些地区应划归哪些国家的不同视角。
 

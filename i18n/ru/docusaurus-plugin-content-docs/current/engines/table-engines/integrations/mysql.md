@@ -7,11 +7,11 @@ title: 'Табличный движок MySQL'
 doc_type: 'reference'
 ---
 
-# Движок таблицы MySQL {#mysql-table-engine}
+# Движок таблицы MySQL \\{#mysql-table-engine\\}
 
 Движок MySQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, которые хранятся на удалённом сервере MySQL.
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \\{#creating-a-table\\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -62,7 +62,7 @@ SETTINGS
 CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) ENGINE = MySQL(`mysql{2|3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
 
-## Пример использования {#usage-example}
+## Пример использования \\{#usage-example\\}
 
 Создайте таблицу в MySQL:
 
@@ -127,11 +127,11 @@ SELECT * FROM mysql_table
 └────────────────┴────────┘
 ```
 
-## Настройки {#mysql-settings}
+## Настройки \\{#mysql-settings\\}
 
 Настройки по умолчанию не очень эффективны, поскольку соединения при этом даже не переиспользуются. Эти настройки позволяют увеличить число запросов, выполняемых сервером в секунду.
 
-### `connection_auto_close` {#connection-auto-close}
+### `connection_auto_close` \\{#connection-auto-close\\}
 
 Позволяет автоматически закрывать соединение после выполнения запроса, то есть отключать повторное использование соединения.
 
@@ -142,7 +142,7 @@ SELECT * FROM mysql_table
 
 Значение по умолчанию: `1`.
 
-### `connection_max_tries` {#connection-max-tries}
+### `connection_max_tries` \\{#connection-max-tries\\}
 
 Задаёт число попыток для пула с отказоустойчивостью (failover).
 
@@ -153,7 +153,7 @@ SELECT * FROM mysql_table
 
 Значение по умолчанию: `3`.
 
-### `connection_pool_size` {#connection-pool-size}
+### `connection_pool_size` \\{#connection-pool-size\\}
 
 Размер пула соединений (если все соединения используются, запрос будет ждать, пока какое-либо соединение не освободится).
 
@@ -163,7 +163,7 @@ SELECT * FROM mysql_table
 
 Значение по умолчанию: `16`.
 
-### `connection_wait_timeout` {#connection-wait-timeout}
+### `connection_wait_timeout` \\{#connection-wait-timeout\\}
 
 Таймаут ожидания свободного соединения (в секундах) при уже активных `connection_pool_size` соединениях; 0 — не ждать.
 
@@ -173,7 +173,7 @@ SELECT * FROM mysql_table
 
 Значение по умолчанию: `5`.
 
-### `connect_timeout` {#connect-timeout}
+### `connect_timeout` \\{#connect-timeout\\}
 
 Таймаут установки соединения (в секундах).
 
@@ -183,7 +183,7 @@ SELECT * FROM mysql_table
 
 Значение по умолчанию: `10`.
 
-### `read_write_timeout` {#read-write-timeout}
+### `read_write_timeout` \\{#read-write-timeout\\}
 
 Таймаут чтения/записи (в секундах).
 
@@ -193,7 +193,7 @@ SELECT * FROM mysql_table
 
 Значение по умолчанию: `300`.
 
-## См. также {#see-also}
+## См. также \\{#see-also\\}
 
 - [Табличная функция MySQL](../../../sql-reference/table-functions/mysql.md)
 - [Использование MySQL в качестве источника словаря](/sql-reference/dictionaries#mysql)

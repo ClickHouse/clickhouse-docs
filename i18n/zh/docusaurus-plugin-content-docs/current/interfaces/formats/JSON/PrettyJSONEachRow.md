@@ -13,12 +13,12 @@ doc_type: 'guide'
 |-------|--------|-----------------------------------|
 | ✗     | ✔      | `PrettyJSONLines`, `PrettyNDJSON` |
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 与 [JSONEachRow](./JSONEachRow.md) 的唯一区别在于，JSON 采用带换行符和四个空格缩进的美化格式。
 
-## 使用示例 {#example-usage}
-### 插入数据 {#inserting-data}
+## 使用示例 \\{#example-usage\\}
+### 插入数据 \\{#inserting-data\\}
 
 使用包含以下数据的 JSON 文件，并将其命名为 `football.json`：
 
@@ -167,7 +167,7 @@ doc_type: 'guide'
 INSERT INTO football FROM INFILE 'football.json' FORMAT PrettyJSONEachRow;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据 \\{#reading-data\\}
 
 以 `PrettyJSONEachRow` 格式读取数据：
 
@@ -320,4 +320,4 @@ FORMAT PrettyJSONEachRow
 
 
 
-## 格式设置 {#format-settings}
+## 格式设置 \\{#format-settings\\}

@@ -5,7 +5,7 @@ title: 'distinctJSONPaths'
 doc_type: 'reference'
 ---
 
-# distinctJSONPaths {#distinctjsonpaths}
+# distinctJSONPaths \{#distinctjsonpaths\}
 
 [JSON](../../data-types/newjson.md) カラムに格納されている重複のないパスの一覧を返します。
 
@@ -45,7 +45,7 @@ SELECT distinctJSONPaths(json) FROM test_json;
 └───────────────────────────┘
 ```
 
-# distinctJSONPathsAndTypes {#distinctjsonpathsandtypes}
+# distinctJSONPathsAndTypes \{#distinctjsonpathsandtypes\}
 
 [JSON](../../data-types/newjson.md) カラムに格納されているパスおよびその型の、重複のない一覧を計算します。
 

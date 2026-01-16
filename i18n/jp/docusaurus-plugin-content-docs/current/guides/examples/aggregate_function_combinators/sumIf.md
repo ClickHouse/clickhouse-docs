@@ -7,15 +7,15 @@ sidebar_label: 'sumIf'
 doc_type: 'reference'
 ---
 
-# sumIf {#sumif}
+# sumIf \\{#sumif\\}
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターは [`sum`](/sql-reference/aggregate-functions/reference/sum)
 関数に適用でき、条件が真となる行の値だけを合計する
 `sumIf` 集約コンビネーター関数を使用して計算できます。
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
 この例では、成功フラグ付きの売上データを保存するテーブルを作成し、
 `sumIf` を使用して成功したトランザクションの総売上金額を計算します。
@@ -49,7 +49,7 @@ FROM sales;
    └───────────────────────┘
 ```
 
-### 価格方向別に出来高を計算する {#calculate-trading-vol-price-direction}
+### 価格方向別に出来高を計算する \\{#calculate-trading-vol-price-direction\\}
 
 この例では、[ClickHouse playground](https://sql.clickhouse.com/) で利用可能な `stock` テーブルを使用して、
 2002 年前半における価格方向別の出来高を計算します。
@@ -84,7 +84,7 @@ ORDER BY month;
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
 ```
 
-### 株式銘柄別の取引量を計算する {#calculate-trading-volume}
+### 株式銘柄別の取引量を計算する \\{#calculate-trading-volume\\}
 
 この例では、[ClickHouse playground](https://sql.clickhouse.com/) で利用可能な `stock` テーブルを使用し、
 2006 年における当時の大手テクノロジー企業 3 社の銘柄シンボルごとの取引量を算出します。
@@ -120,6 +120,6 @@ ORDER BY month;
     └────────────┴────────────────┴──────────────────┴────────────────┴──────────────┴───────────────────────┘
 ```
 
-## 関連項目 {#see-also}
+## 関連項目 \\{#see-also\\}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`If` コンビネーター](/sql-reference/aggregate-functions/combinators#-if)

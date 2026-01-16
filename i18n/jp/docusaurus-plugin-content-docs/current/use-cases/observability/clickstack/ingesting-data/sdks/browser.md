@@ -27,7 +27,7 @@ ClickStack ブラウザ SDK を使用すると、フロントエンドアプリ�
 * **XHR/Fetch/Websocket リクエスト**
 * **例外**
 
-## はじめに {#getting-started}
+## はじめに \\{#getting-started\\}
 
 <br/>
 
@@ -82,7 +82,7 @@ npm でインストールする代わりに、スクリプトタグ経由でス�
 </TabItem>
 </Tabs>
 
-### オプション {#options}
+### オプション \\{#options\\}
 
 - `apiKey` - あなたの ClickStack インジェスト API key。
 - `service` - イベントが HyperDX UI 上で表示される際のサービス名。
@@ -95,9 +95,9 @@ npm でインストールする代わりに、スクリプトタグ経由でス�
 - `disableIntercom` - （オプション）Intercom 連携を無効にするかどうか（デフォルトは `false`）
 - `disableReplay` - （オプション）セッションリプレイを無効にするかどうか（デフォルトは `false`）
 
-## 追加の設定 {#additional-configuration}
+## 追加の設定 \\{#additional-configuration\\}
 
-### ユーザー情報またはメタデータを付与する {#attach-user-information-or-metadata}
+### ユーザー情報またはメタデータを付与する \\{#attach-user-information-or-metadata\\}
 
 ユーザー情報を付与すると、HyperDX UI 内でセッションやイベントを検索・フィルタリングできるようになります。これはクライアントセッション中の任意のタイミングで呼び出せます。現在のクライアントセッションと、その呼び出し以降に送信されるすべてのイベントは、指定したユーザー情報と関連付けられます。
 
@@ -113,7 +113,7 @@ HyperDX.setGlobalAttributes({
 });
 ```
 
-### React のエラーバウンダリで発生したエラーを自動捕捉する {#auto-capture-react-error-boundary-errors}
+### React のエラーバウンダリで発生したエラーを自動捕捉する \\{#auto-capture-react-error-boundary-errors\\}
 
 React を使用している場合は、エラーバウンダリコンポーネントを `attachToReactErrorBoundary` 関数に渡すことで、そのエラーバウンダリ内で発生したエラーを自動的に捕捉できます。
 
@@ -126,7 +126,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 HyperDX.attachToReactErrorBoundary(ErrorBoundary);
 ```
 
-### カスタムアクションの送信 {#send-custom-actions}
+### カスタムアクションの送信 \\{#send-custom-actions\\}
 
 特定のアプリケーションイベント（例: サインアップ、フォーム送信など）を明示的に追跡するには、イベント名と任意のイベントメタデータを引数として `addAction` 関数を呼び出します。
 
@@ -140,7 +140,7 @@ HyperDX.addAction('Form-Completed', {
 });
 ```
 
-### ネットワークキャプチャを動的に有効にする {#enable-network-capture-dynamically}
+### ネットワークキャプチャを動的に有効にする \\{#enable-network-capture-dynamically\\}
 
 ネットワークキャプチャを動的に有効または無効にするには、必要に応じて `enableAdvancedNetworkCapture` または `disableAdvancedNetworkCapture` 関数を呼び出してください。
 
@@ -148,7 +148,7 @@ HyperDX.addAction('Form-Completed', {
 HyperDX.enableAdvancedNetworkCapture();
 ```
 
-### CORS リクエスト向けのリソースタイミングを有効化する {#enable-resource-timing-for-cors-requests}
+### CORS リクエスト向けのリソースタイミングを有効化する \\{#enable-resource-timing-for-cors-requests\\}
 
 フロントエンドアプリケーションが別ドメインに API リクエストを送信する場合、
 任意で、リクエストに `Timing-Allow-Origin` [ヘッダー](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Timing-Allow-Origin) を付与するように設定できます。これにより、ClickStack は [`PerformanceResourceTiming`](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming) を通じて、そのリクエストに対する DNS ルックアップやレスポンスのダウンロードなどのきめ細かなリソースタイミング情報を取得できるようになります。

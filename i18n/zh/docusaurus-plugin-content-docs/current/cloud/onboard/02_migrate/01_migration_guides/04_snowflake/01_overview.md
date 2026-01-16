@@ -12,17 +12,17 @@ import snowflake_architecture from '@site/static/images/cloud/onboard/discover/u
 import cloud_architecture from '@site/static/images/cloud/onboard/discover/use_cases/cloud_architecture.png';
 import Image from '@theme/IdealImage';
 
-# 从 Snowflake 迁移到 ClickHouse {#snowflake-to-clickhouse-migration}
+# 从 Snowflake 迁移到 ClickHouse \\{#snowflake-to-clickhouse-migration\\}
 
 > 本文档介绍如何将数据从 Snowflake 迁移到 ClickHouse。
 
 Snowflake 是一个云数据仓库，主要专注于将传统的本地部署数据仓库负载迁移到云端。它针对大规模执行长时间运行的报表进行了充分优化。随着数据集迁移到云端，数据所有者开始思考还能如何从这些数据中提取价值，包括利用这些数据集为内部和外部场景提供实时应用支持。此时，他们往往会意识到自己需要一款针对实时分析进行了优化的数据库，例如 ClickHouse。
 
-## 对比 {#comparison}
+## 对比 \\{#comparison\\}
 
 在本节中，我们将比较 ClickHouse 和 Snowflake 的关键特性。
 
-### 相似之处 {#similarities}
+### 相似之处 \\{#similarities\\}
 
 Snowflake 是一个基于云的数据仓库平台，为存储、处理和分析海量数据提供可扩展且高效的解决方案。
 与 ClickHouse 一样，Snowflake 并不是构建在现有技术之上，而是依赖其自身的 SQL 查询引擎和定制架构。
@@ -42,7 +42,7 @@ Snowflake 的架构被描述为共享存储（共享磁盘）架构与共享无�
 
 <Image img={cloud_architecture} size="md" alt="ClickHouse Cloud 架构" />
 
-### 差异 {#differences}
+### 差异 \\{#differences\\}
 
 除了底层存储格式和查询引擎之外，这些架构在一些细微之处也有所不同：
 
@@ -89,7 +89,7 @@ Snowflake 的架构被描述为共享存储（共享磁盘）架构与共享无�
   使其在临时（ad hoc）查询场景下提供了极佳的使用体验。
   对于数据仓库和数据湖用例，这相比其他系统是一大优势。
 
-### 实时分析 {#real-time-analytics}
+### 实时分析 \\{#real-time-analytics\\}
 
 基于公开的[基准测试](https://benchmark.clickhouse.com/#system=+%E2%98%81w|%EF%B8%8Fr|C%20c|nfe&type=-&machine=-ca2|gl|6ax|6ale|3al&cluster_size=-&opensource=-&tuned=+n&metric=hot&queries=-)数据，
 在实时分析应用的以下几个方面，ClickHouse 的表现优于 Snowflake：

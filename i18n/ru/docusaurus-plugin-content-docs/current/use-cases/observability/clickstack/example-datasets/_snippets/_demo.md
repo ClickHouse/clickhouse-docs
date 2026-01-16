@@ -1,7 +1,7 @@
 import Image from '@theme/IdealImage';
 import architecture from '@site/static/images/use-cases/observability/hyperdx-demo/architecture.png';
 
-### Архитектура демо {#demo-architecture}
+### Архитектура демо \\{#demo-architecture\\}
 
 Демо состоит из микросервисов, написанных на разных языках программирования, которые взаимодействуют друг с другом по gRPC и HTTP, а также генератора нагрузки, использующего Locust для имитации пользовательского трафика. Исходный код этого демо был изменён для использования [инструментации ClickStack](/use-cases/observability/clickstack/sdks).
 

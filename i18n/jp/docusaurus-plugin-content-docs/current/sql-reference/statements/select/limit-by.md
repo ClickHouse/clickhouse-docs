@@ -6,7 +6,7 @@ title: 'LIMIT BY 句'
 doc_type: 'reference'
 ---
 
-# LIMIT BY 句 {#limit-by-clause}
+# LIMIT BY 句 \\{#limit-by-clause\\}
 
 `LIMIT n BY expressions` 句を含むクエリは、`expressions` のそれぞれの異なる値ごとに先頭の `n` 行を選択します。`LIMIT BY` のキーには任意個数の[式](/sql-reference/syntax#expressions)を含めることができます。
 
@@ -23,7 +23,7 @@ ClickHouse は次の構文バリエーションをサポートします。
 
 `LIMIT BY` 句でカラム名の代わりにカラム番号を使用したい場合は、設定 [enable&#95;positional&#95;arguments](/operations/settings/settings#enable_positional_arguments) を有効にしてください。
 
-## 例 {#examples}
+## 例 \\{#examples\\}
 
 サンプルテーブル:
 
@@ -76,7 +76,7 @@ LIMIT 5 BY domain, device_type
 LIMIT 100
 ```
 
-## LIMIT BY ALL {#limit-by-all}
+## LIMIT BY ALL \\{#limit-by-all\\}
 
 `LIMIT BY ALL` は、集約関数ではない、SELECT で指定したすべての式を列挙するのと同等です。
 
@@ -106,7 +106,7 @@ SELECT substring(a, 4, 2), substring(substring(a, 1, 2), 1, count(b)) FROM t LIM
 SELECT substring(a, 4, 2), substring(substring(a, 1, 2), 1, count(b)) FROM t LIMIT 2 BY substring(a, 4, 2), substring(a, 1, 2)
 ```
 
-## 例 {#examples-limit-by-all}
+## 例 \\{#examples-limit-by-all\\}
 
 サンプルテーブル：
 

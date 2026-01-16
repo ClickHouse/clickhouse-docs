@@ -43,7 +43,7 @@ import update_query_name from '@site/static/images/cloud/sqlconsole/update-query
 import update_subtitle_etc from '@site/static/images/cloud/sqlconsole/update-subtitle-etc.png';
 import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-scale.png';
 
-# SQL 控制台 {#sql-console}
+# SQL 控制台 \\{#sql-console\\}
 
 SQL 控制台是在 ClickHouse Cloud 中浏览和查询数据库的最快、最简便方式。您可以使用 SQL 控制台来：
 
@@ -52,9 +52,9 @@ SQL 控制台是在 ClickHouse Cloud 中浏览和查询数据库的最快、最�
 - 只需点击几下即可执行查询并可视化结果数据
 - 与团队成员共享查询并更高效地协作。
 
-### 浏览数据表 {#exploring-tables}
+### 浏览数据表 \\{#exploring-tables\\}
 
-### 查看数据表列表和 schema 信息 {#viewing-table-list-and-schema-info}
+### 查看数据表列表和 schema 信息 \\{#viewing-table-list-and-schema-info\\}
 
 左侧边栏区域展示了 ClickHouse 实例中包含的数据表概览。使用左侧栏顶部的数据库选择器可以查看特定数据库中的数据表。
 
@@ -63,21 +63,21 @@ SQL 控制台是在 ClickHouse Cloud 中浏览和查询数据库的最快、最�
 
 <Image img={view_columns} size="md" alt="view columns" />
 
-### 浏览表数据 {#exploring-table-data}
+### 浏览表数据 \\{#exploring-table-data\\}
 
 单击列表中的某个表即可在新选项卡中打开它。在表视图中，可以轻松地查看、选择和复制数据。注意，当复制并粘贴到 Microsoft Excel 和 Google Sheets 等电子表格应用程序时，其结构和格式都会被保留。可以使用页脚中的导航在表数据各页之间切换（每页 30 行分页）。
 
 <Image img={abc} size="md" alt="abc" />
 
-### 检查单元格数据 {#inspecting-cell-data}
+### 检查单元格数据 \\{#inspecting-cell-data\\}
 
 可以使用“单元格检查器”工具来查看单个单元格中包含的大量数据。要打开它，在单元格上单击鼠标右键并选择“Inspect Cell”。通过单击检查器内容右上角的复制图标即可复制单元格检查器中的内容。
 
 <Image img={inspecting_cell_content} size="md" alt="inspecting cell content" />
 
-## 过滤和排序表 {#filtering-and-sorting-tables}
+## 过滤和排序表 \\{#filtering-and-sorting-tables\\}
 
-### 对表进行排序 {#sorting-a-table}
+### 对表进行排序 \\{#sorting-a-table\\}
 
 要在 SQL 控制台中对表进行排序，打开表并选择工具栏中的“Sort”按钮。该按钮会打开一个菜单，用于配置排序条件。可以选择要排序的列，并配置排序顺序（升序或降序）。选择“Apply”或按 Enter 键即可对表进行排序。
 
@@ -89,7 +89,7 @@ SQL 控制台还允许为同一张表添加多个排序条件。再次单击“S
 排序会按照它们在排序面板中出现的顺序（从上到下）依次应用。要移除某个排序，只需单击该排序旁边的“x”按钮。
 :::
 
-### 过滤表 {#filtering-a-table}
+### 过滤表 \\{#filtering-a-table\\}
 
 要在 SQL 控制台中过滤表，打开表并选择“Filter”按钮。与排序类似，该按钮会打开一个菜单，用于配置过滤条件。可以选择要过滤的列并设置所需的条件。SQL 控制台会智能地显示与该列数据类型相匹配的过滤选项。
 
@@ -101,13 +101,13 @@ SQL 控制台还允许为同一张表添加多个排序条件。再次单击“S
 
 与排序功能类似，单击过滤条件旁边的“x”按钮即可将其移除。
 
-### 同时过滤和排序 {#filtering-and-sorting-together}
+### 同时过滤和排序 \\{#filtering-and-sorting-together\\}
 
 SQL 控制台允许在同一张表上同时进行过滤和排序。为此，请按照上述步骤添加所有需要的过滤条件和排序条件，然后单击“Apply”按钮。
 
 <Image img={filtering_and_sorting_together} size="md" alt='添加一个大于 2000 的区间过滤条件' />
 
-### 从过滤和排序创建查询 {#creating-a-query-from-filters-and-sorts}
+### 从过滤和排序创建查询 \\{#creating-a-query-from-filters-and-sorts\\}
 
 SQL 控制台可以一键将排序和过滤条件直接转换为查询。只需在工具栏中选择“Create Query”按钮，并使用所选的排序和过滤参数。单击“Create query”后，会打开一个新的查询选项卡，其中预填充了与当前表视图数据相对应的 SQL 命令。
 
@@ -119,9 +119,9 @@ SQL 控制台可以一键将排序和过滤条件直接转换为查询。只需�
 
 可以通过阅读 (link) 查询文档，进一步了解如何在 SQL 控制台中执行查询。
 
-## 创建和运行查询 {#creating-and-running-a-query}
+## 创建和运行查询 \\{#creating-and-running-a-query\\}
 
-### 创建查询 {#creating-a-query}
+### 创建查询 \\{#creating-a-query\\}
 
 在 SQL 控制台中有两种方式创建新查询：
 
@@ -130,7 +130,7 @@ SQL 控制台可以一键将排序和过滤条件直接转换为查询。只需�
 
 <Image img={creating_a_query} size="md" alt="创建查询" />
 
-### 运行查询 {#running-a-query}
+### 运行查询 \\{#running-a-query\\}
 
 要运行查询，请在 SQL 编辑器中输入 SQL 命令，然后点击 “Run” 按钮，或使用快捷键 `cmd / ctrl + enter`。要按顺序编写并运行多个命令，请确保在每条命令后添加分号。
 
@@ -158,13 +158,13 @@ SQL 控制台可以一键将排序和过滤条件直接转换为查询。只需�
 执行时，光标所在位置的命令会短暂闪烁为黄色。
 :::
 
-### 取消查询 {#canceling-a-query}
+### 取消查询 \\{#canceling-a-query\\}
 
 在查询运行期间，查询编辑器工具栏中的 “Run” 按钮会被 “Cancel” 按钮替代。只需点击该按钮或按下 `Esc` 即可取消查询。注意：任何已经返回的结果在取消后仍会保留。
 
 <Image img={cancel_a_query} size="md" alt="取消查询" />
 
-### 保存查询 {#saving-a-query}
+### 保存查询 \\{#saving-a-query\\}
 
 保存查询可以帮助你在之后轻松找到它们，并与团队成员共享。SQL 控制台还允许你将查询组织到文件夹中。
 
@@ -180,7 +180,7 @@ SQL 控制台可以一键将排序和过滤条件直接转换为查询。只需�
 
 <Image img={sql_console_rename} size="md" alt="重命名查询" />
 
-### 查询共享 {#query-sharing}
+### 查询共享 \\{#query-sharing\\}
 
 SQL 控制台允许你轻松将查询与团队成员共享。SQL 控制台支持四种访问级别，这些级别既可以全局调整，也可以按用户单独设置：
 
@@ -207,21 +207,21 @@ SQL 控制台允许你轻松将查询与团队成员共享。SQL 控制台支持
 
 <Image img={sql_console_edit_member} size="md" alt="编辑团队成员访问权限" />
 
-### 访问共享查询 {#accessing-shared-queries}
+### 访问共享查询 \\{#accessing-shared-queries\\}
 
 如果有查询已与你共享，它会显示在 SQL 控制台左侧边栏的 “Queries” 选项卡中：
 
 <Image img={sql_console_access_queries} size="md" alt="访问查询" />
 
-### 链接到查询（永久链接） {#linking-to-a-query-permalinks}
+### 链接到查询（永久链接） \\{#linking-to-a-query-permalinks\\}
 
 已保存的查询也会生成永久链接，这意味着你可以将共享查询的链接发送给他人或从他人处接收，并直接打开这些查询。
 
 查询中可能存在的任何参数的取值都会自动作为查询参数添加到已保存查询的 URL 中。例如，如果查询包含 `{start_date: Date}` 和 `{end_date: Date}` 这两个参数，则永久链接可能如下所示：`https://console.clickhouse.cloud/services/:serviceId/console/query/:queryId?param_start_date=2015-01-01&param_end_date=2016-01-01`。
 
-## 高级查询功能 {#advanced-querying-features}
+## 高级查询功能 \\{#advanced-querying-features\\}
 
-### 搜索查询结果 {#searching-query-results}
+### 搜索查询结果 \\{#searching-query-results\\}
 
 查询执行完成后，你可以使用结果面板中的搜索框快速在返回的结果集中进行搜索。此功能有助于预览额外添加 `WHERE` 子句后的结果，或简单检查特定数据是否包含在结果集中。在搜索框中输入值后，结果面板会更新，并返回包含与输入值匹配条目的记录。在此示例中，我们将查找 `hackernews` 表中所有评论内容包含 `ClickHouse`（不区分大小写）且包含 `breakfast` 的实例：
 
@@ -231,7 +231,7 @@ SQL 控制台允许你轻松将查询与团队成员共享。SQL 控制台支持
 
 <Image img={match_in_body} size="md" alt="在正文中的匹配" />
 
-### 调整分页设置 {#adjusting-pagination-settings}
+### 调整分页设置 \\{#adjusting-pagination-settings\\}
 
 默认情况下，查询结果面板会在单个页面上显示所有结果记录。对于较大的结果集，为了更易于查看，可以对结果进行分页。你可以使用结果面板右下角的分页选择器来完成此操作：
 
@@ -241,13 +241,13 @@ SQL 控制台允许你轻松将查询与团队成员共享。SQL 控制台支持
 
 <Image img={pagination_nav} size="md" alt="分页导航" />
 
-### 导出查询结果数据 {#exporting-query-result-data}
+### 导出查询结果数据 \\{#exporting-query-result-data\\}
 
 可以直接从 SQL 控制台将查询结果集轻松导出为 CSV 格式。要执行此操作，请打开结果面板工具栏右侧的 `•••` 菜单并选择“Download as CSV”。
 
 <Image img={download_as_csv} size="md" alt="下载为 CSV" />
 
-## 可视化查询数据 {#visualizing-query-data}
+## 可视化查询数据 \\{#visualizing-query-data\\}
 
 某些数据以图表形式呈现更便于理解。你可以在 SQL 控制台中，直接基于查询结果快速生成可视化图表，只需点击几下即可。作为示例，我们将使用一个计算纽约市出租车行程周度统计的查询：
 
@@ -269,7 +269,7 @@ ORDER BY
 
 如果不进行可视化，这些结果很难理解。我们来把它们转换成图表。
 
-### 创建图表 {#creating-charts}
+### 创建图表 \\{#creating-charts\\}
 
 要开始构建可视化，请在查询结果面板的工具栏中选择 `Chart` 选项。此时会出现图表配置面板：
 
@@ -283,7 +283,7 @@ ORDER BY
 
 <Image img={bar_chart} size="md" alt="柱状图" />
 
-### 自定义图表 {#customizing-charts}
+### 自定义图表 \\{#customizing-charts\\}
 
 SQL 控制台支持十种图表类型，可以在图表配置面板中的图表类型选择器中进行选择。例如，我们可以轻松地将前一个图表的类型从柱状图切换为面积图：
 

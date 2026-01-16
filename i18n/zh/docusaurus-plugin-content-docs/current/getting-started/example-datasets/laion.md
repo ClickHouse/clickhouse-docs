@@ -11,7 +11,7 @@ keywords: ['示例数据集', 'laion', '图像嵌入', '示例数据', '机器�
 
 该数据集包含图像 URL、图像及其英文描述各自的嵌入向量、图像与图像描述之间的相似度得分，以及元数据，例如图像宽度/高度、许可证类型和 NSFW 标记。我们可以使用该数据集在 ClickHouse 中演示[近似最近邻搜索](../../engines/table-engines/mergetree-family/annindexes.md)。
 
-## 数据准备 {#data-preparation}
+## 数据准备 \{#data-preparation\}
 
 在原始数据中，嵌入向量和元数据分别存储在不同的文件中。数据准备步骤会下载数据、合并这些文件，
 将其转换为 CSV 格式，并将其导入 ClickHouse。可以使用以下 `download.sh` 脚本来完成这些操作：
@@ -76,7 +76,7 @@ seq 0 409 | xargs -P1 -I{} bash -c './download.sh {}'
 （上面的 Python 脚本非常慢（每个文件约需 2–10 分钟），占用大量内存（每个文件约 41 GB），并且生成的 CSV 文件很大（每个约 10 GB），因此请谨慎使用。如果你的 RAM 足够，可以增大 `-P1` 的数值以提高并行度。如果这依然太慢，考虑设计更好的摄取流程——例如先将 .npy 文件转换为 Parquet，然后使用 ClickHouse 完成所有后续处理。）
 
 
-## 创建表 {#create-table}
+## 创建表 \{#create-table\}
 
 要首先创建一个不含索引的表，运行：
 
@@ -104,7 +104,7 @@ INSERT INTO laion FROM INFILE '{path_to_csv_files}/*.csv'
 请注意，`id` 列仅作示例，由脚本填充为非唯一值。
 
 
-## 运行穷举式向量相似度搜索 {#run-a-brute-force-vector-similarity-search}
+## 运行穷举式向量相似度搜索 \{#run-a-brute-force-vector-similarity-search\}
 
 要运行穷举式近似向量搜索，请执行：
 
@@ -136,7 +136,7 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 ```
 
 
-## 使用向量相似度索引执行近似向量相似度搜索 {#run-an-approximate-vector-similarity-search-with-a-vector-similarity-index}
+## 使用向量相似度索引执行近似向量相似度搜索 \{#run-an-approximate-vector-similarity-search-with-a-vector-similarity-index\}
 
 现在让我们在表上定义两个向量相似度索引。
 
@@ -189,11 +189,11 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 通过仔细选择 HNSW 参数并评估索引质量，HNSW 索引有可能实现接近 1 的召回率（与暴力搜索具有相同的准确度）。
 
 
-## 使用 UDF 创建嵌入 {#creating-embeddings-with-udfs}
+## 使用 UDF 创建嵌入 \\{#creating-embeddings-with-udfs\\}
 
 通常情况下，我们希望为新的图像或图像描述创建嵌入，并在数据中搜索相似的图像/图像描述对。我们可以使用 [UDF](/sql-reference/functions/udf)，直接在客户端侧创建 `target` 向量。需要确保在生成原始数据和为搜索创建新的嵌入时使用同一个模型。下面的脚本使用了 `ViT-B/32` 模型，它也是该数据集所使用的底层模型。
 
-### 文本嵌入 {#text-embeddings}
+### 文本嵌入 \{#text-embeddings\}
 
 首先，将以下 Python 脚本保存到 ClickHouse 数据路径下的 `user_scripts/` 目录中，并使其可执行（`chmod +x encode_text.py`）。
 
@@ -255,7 +255,7 @@ LIMIT 10
 请注意，`encode_text()` UDF 本身在计算并生成嵌入向量时可能需要几秒钟。
 
 
-### 图像嵌入 {#image-embeddings}
+### 图像嵌入 \{#image-embeddings\}
 
 图像嵌入可以以类似的方式创建，我们提供了一个 Python 脚本，可为本地文件中的图像生成嵌入向量。
 

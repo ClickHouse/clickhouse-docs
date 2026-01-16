@@ -9,7 +9,7 @@ title: 'ClickHouse Keeper'
 doc_type: 'guide'
 ---
 
-# ClickHouse Keeper (clickhouse-keeper) {#clickhouse-keeper-clickhouse-keeper}
+# ClickHouse Keeper (clickhouse-keeper) \{#clickhouse-keeper-clickhouse-keeper\}
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 
@@ -17,7 +17,7 @@ import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_s
 
 ClickHouse Keeperは、データの[レプリケーション](/engines/table-engines/mergetree-family/replication.md)と[分散DDL](/sql-reference/distributed-ddl.md)クエリ実行のための調整システムを提供します。ClickHouse KeeperはZooKeeperと互換性があります。
 
-### 実装の詳細 {#implementation-details}
+### 実装の詳細 \\{#implementation-details\\}
 
 ZooKeeperは、最初によく知られたオープンソース調整システムの1つです。Javaで実装されており、非常にシンプルで強力なデータモデルを持っています。ZooKeeperの調整アルゴリズムであるZooKeeper Atomic Broadcast（ZAB）は、各ZooKeeperノードがローカルで読み取りを処理するため、読み取りの線形化可能性の保証を提供しません。ZooKeeperとは異なり、ClickHouse KeeperはC++で記述されており、[RAFTアルゴリズム](https://raft.github.io/)の[実装](https://github.com/eBay/NuRaft)を使用します。このアルゴリズムは、読み取りと書き込みの線形化可能性を可能にし、さまざまな言語でいくつかのオープンソース実装があります。
 
@@ -29,11 +29,11 @@ ClickHouse Keeperは、[ZooKeeper](https://zookeeper.apache.org/doc/r3.1.2/zooke
 外部統合はサポートされていません。
 :::
 
-### 設定 {#configuration}
+### 設定 \\{#configuration\\}
 
 ClickHouse KeeperはZooKeeperのスタンドアロン代替として、またはClickHouseサーバーの内部部分として使用できます。どちらの場合も、設定はほぼ同じ`.xml`ファイルです。
 
-#### Keeper設定項目 {#keeper-configuration-settings}
+#### Keeper設定項目 \\{#keeper-configuration-settings\\}
 
 主なClickHouse Keeper設定タグは`<keeper_server>`で、次のパラメータがあります：
 
@@ -57,7 +57,7 @@ ClickHouse KeeperはZooKeeperのスタンドアロン代替として、または
 
 その他の一般的なパラメータはClickHouseサーバー設定（`listen_host`、`logger`など）から継承されます。
 
-#### 内部調整設定 {#internal-coordination-settings}
+#### 内部調整設定 \\{#internal-coordination-settings\\}
 
 内部調整設定は`<keeper_server>.<coordination_settings>`セクションにあり、次のパラメータがあります：
 
@@ -146,7 +146,7 @@ Keeperインスタンスのホストが変更される可能性がある場合�
 </keeper_server>
 ```
 
-### 実行方法 {#how-to-run}
+### 実行方法 \\{#how-to-run\\}
 
 ClickHouse KeeperはClickHouseサーバーパッケージにバンドルされています。`/etc/your_path_to_config/clickhouse-server/config.xml`に`<keeper_server>`の設定を追加して、いつものようにClickHouseサーバーを起動するだけです。スタンドアロンのClickHouse Keeperを実行したい場合は、次のような方法で起動できます：
 
@@ -160,7 +160,7 @@ clickhouse-keeper --config /etc/your_path_to_config/config.xml
 clickhouse keeper --config /etc/your_path_to_config/config.xml
 ```
 
-### 4文字ワードコマンド {#four-letter-word-commands}
+### 4文字ワードコマンド \\{#four-letter-word-commands\\}
 
 ClickHouse Keeperは、Zookeeperとほぼ同じ4lwコマンドも提供します。各コマンドは`mntr`、`stat`などの4文字で構成されています。いくつかのより興味深いコマンドがあります：`stat`はサーバーと接続されたクライアントに関する一般的な情報を提供し、`srvr`と`cons`はそれぞれサーバーと接続に関する拡張詳細を提供します。
 
@@ -408,7 +408,7 @@ AIOWriteBytes   0       Number of bytes written with Linux or FreeBSD AIO interf
 ...
 ```
 
-### HTTP制御 {#http-control}
+### HTTP制御 \\{#http-control\\}
 
 ClickHouse Keeperは、レプリカがトラフィックを受信する準備ができているかどうかをチェックするためのHTTPインターフェースを提供します。これは、[Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)などのクラウド環境で使用できます。
 
@@ -427,7 +427,7 @@ ClickHouse Keeperは、レプリカがトラフィックを受信する準備が
 </clickhouse>
 ```
 
-### 機能フラグ {#feature-flags}
+### 機能フラグ \\{#feature-flags\\}
 
 KeeperはZooKeeperとそのクライアントと完全に互換性がありますが、ClickHouseクライアントで使用できるいくつかのユニークな機能とリクエストタイプも導入しています。
 これらの機能は後方互換性のない変更を導入する可能性があるため、ほとんどがデフォルトで無効になっており、`keeper_server.feature_flags`設定を使用して有効にできます。
@@ -462,7 +462,7 @@ Keeperクラスターの新しい機能を有効にする場合は、まずク�
 Keeperを25.7+にアップグレードする推奨方法は、まずバージョン24.9+にアップグレードすることです。
 :::
 
-### ZooKeeperからの移行 {#migration-from-zookeeper}
+### ZooKeeperからの移行 \\{#migration-from-zookeeper\\}
 
 ZooKeeperからClickHouse Keeperへのシームレスな移行は不可能です。ZooKeeperクラスターを停止し、データを変換してから、ClickHouse Keeperを起動する必要があります。`clickhouse-keeper-converter`ツールを使用すると、ZooKeeperのログとスナップショットをClickHouse Keeperスナップショットに変換できます。ZooKeeper > 3.4でのみ機能します。移行の手順：
 
@@ -489,7 +489,7 @@ clickhouse keeper-converter ...
 それ以外の場合は、[バイナリをダウンロード](/getting-started/quick-start/oss#download-the-binary)して、ClickHouseをインストールせずに上記のようにツールを実行できます。
 :::
 
-### クォーラムを失った後の回復 {#recovering-after-losing-quorum}
+### クォーラムを失った後の回復 \\{#recovering-after-losing-quorum\\}
 
 ClickHouse KeeperはRaftを使用するため、クラスターサイズに応じて一定量のノードクラッシュに耐えることができます。\
 例えば、3ノードクラスターの場合、1つのノードがクラッシュしても正しく動作し続けます。
@@ -512,7 +512,7 @@ ClickHouse KeeperはRaftを使用するため、クラスターサイズに応�
 6. 回復モード中、リーダーノードは新しいノードとクォーラムを達成するまで`mntr`コマンドに対してエラーメッセージを返し、クライアントとフォロワーからのすべてのリクエストを拒否します。
 7. クォーラムが達成された後、リーダーノードは通常の操作モードに戻り、Raftを使用してすべてのリクエストを受け入れます。`mntr`で確認します。これは`zk_server_state`に対して`leader`を返すはずです。
 
-## Keeperでディスクを使用する {#using-disks-with-keeper}
+## Keeperでディスクを使用する \\{#using-disks-with-keeper\\}
 
 Keeperは、スナップショット、ログファイル、状態ファイルを保存するための[外部ディスク](/operations/storing-data.md)のサブセットをサポートしています。
 
@@ -590,7 +590,7 @@ Keeperインスタンスの可能なストレージ設定は次のようにな�
 このインスタンスは、最新のログを除くすべてのログを`log_s3_plain`ディスクに保存し、最新のログは`log_local`ディスクにあります。
 スナップショットにも同じロジックが適用され、最新のスナップショットを除くすべてのスナップショットは`snapshot_s3_plain`に保存され、最新のスナップショットは`snapshot_local`ディスクにあります。
 
-### ディスク設定の変更 {#changing-disk-setup}
+### ディスク設定の変更 \\{#changing-disk-setup\\}
 
 :::important
 新しいディスク設定を適用する前に、すべてのKeeperログとスナップショットを手動でバックアップしてください。
@@ -620,7 +620,7 @@ Keeperインスタンスの可能なストレージ設定は次のようにな�
 起動時に、すべてのログファイルは`log_local`と`log_s3_plain`から`log_local2`ディスクに移動されます。
 また、すべてのスナップショットファイルは`snapshot_local`と`snapshot_s3_plain`から`snapshot_local2`ディスクに移動されます。
 
-## ログキャッシュの設定 {#configuring-logs-cache}
+## ログキャッシュの設定 \\{#configuring-logs-cache\\}
 
 ディスクから読み取るデータ量を最小化するために、Keeperはログエントリをメモリにキャッシュします。
 リクエストが大きい場合、ログエントリはあまりにも多くのメモリを消費するため、キャッシュされるログの量は上限が設定されています。
@@ -635,7 +635,7 @@ Keeperインスタンスの可能なストレージ設定は次のようにな�
 Prometheusエンドポイントからのメトリクスを使用して、両方のキャッシュの現在のサイズを追跡することもできます。
 :::
 
-## Prometheus {#prometheus}
+## Prometheus \\{#prometheus\\}
 
 Keeperは、[Prometheus](https://prometheus.io)サーバーによるスクレイピングのためにメトリクスデータを公開できます。
 
@@ -673,11 +673,11 @@ curl 127.0.0.1:9363/metrics
 
 ClickHouse Cloudの[Prometheus統合](/integrations/prometheus)も参照してください。
 
-## ClickHouse Keeperユーザーガイド {#clickhouse-keeper-user-guide}
+## ClickHouse Keeperユーザーガイド \\{#clickhouse-keeper-user-guide\\}
 
 このガイドは、ClickHouse Keeperを設定するためのシンプルで最小限の設定を提供し、分散操作をテストする方法の例を示します。この例は、Linux上の3つのノードを使用して実行されます。
 
-### 1. Keeper設定でノードを構成する {#1-configure-nodes-with-keeper-settings}
+### 1. Keeper設定でノードを構成する \\{#1-configure-nodes-with-keeper-settings\\}
 
 1. 3つのホスト（`chnode1`、`chnode2`、`chnode3`）に3つのClickHouseインスタンスをインストールします。（ClickHouseのインストールの詳細については、[クイックスタート](/getting-started/install/install.mdx)を参照してください。）
 
@@ -781,7 +781,7 @@ ClickHouse Cloudの[Prometheus統合](/integrations/prometheus)も参照して�
     └────────────┴───────┴───────┴───────┴─────────────────────┴─────────────────────┴─────────┴──────────┴──────────┴────────────────┴────────────┴─────────────┴───────┴─────────────┘
     ```
 
-### 2.  ClickHouseでクラスターを設定する {#2--configure-a-cluster-in-clickhouse}
+### 2.  ClickHouseでクラスターを設定する \\{#2--configure-a-cluster-in-clickhouse\\}
 
 1. 2つのノードに2つのシャードと1つのレプリカのみを持つシンプルなクラスターを設定しましょう。3番目のノードは、ClickHouse Keeperの要件のためのクォーラムを達成するために使用されます。`chnode1`と`chnode2`の設定を更新します。次のクラスターは、各ノードに1つのシャードを定義し、レプリケーションなしで合計2つのシャードを定義します。この例では、データの一部がノードに、一部が他のノードにあります：
     ```xml
@@ -828,7 +828,7 @@ ClickHouse Cloudの[Prometheus統合](/integrations/prometheus)も参照して�
     └───────────────┘
     ```
 
-### 3. 分散テーブルの作成とテスト {#3-create-and-test-distributed-table}
+### 3. 分散テーブルの作成とテスト \\{#3-create-and-test-distributed-table\\}
 
 1.  `chnode1`でClickHouseクライアントを使用して、新しいクラスターに新しいデータベースを作成します。`ON CLUSTER`句は両方のノードでデータベースを自動的に作成します。
     ```sql
@@ -927,19 +927,19 @@ ClickHouse Cloudの[Prometheus統合](/integrations/prometheus)も参照して�
     4 rows in set. Elapsed: 0.018 sec.
     ```
 
-### まとめ {#summary}
+### まとめ \\{#summary\\}
 
 このガイドは、ClickHouse Keeperを使用してクラスターをセットアップする方法を示しました。ClickHouse Keeperを使用すると、クラスターを設定し、シャード全体でレプリケートできる分散テーブルを定義できます。
 
-## ユニークパスでClickHouse Keeperを設定する {#configuring-clickhouse-keeper-with-unique-paths}
+## ユニークパスでClickHouse Keeperを設定する \\{#configuring-clickhouse-keeper-with-unique-paths\\}
 
 <SelfManaged />
 
-### 説明 {#description}
+### 説明 \\{#description\\}
 
 この記事では、組み込みの`{uuid}`マクロ設定を使用して、ClickHouse KeeperまたはZooKeeperでユニークなエントリを作成する方法について説明します。ユニークパスは、頻繁にテーブルを作成および削除する場合に役立ちます。これは、Keeperガベージコレクションがパスエントリを削除するために数分待つ必要がないためです。パスが作成されるたびに新しい`uuid`が使用されるため、パスは再利用されません。
 
-### 環境例 {#example-environment}
+### 環境例 \\{#example-environment\\}
 3つすべてのノードでClickHouse Keeperを設定し、ノードの2つでClickHouseを設定する3ノードクラスター。これにより、ClickHouse Keeperに3つのノード（タイブレーカーノードを含む）と、2つのレプリカで構成される単一のClickHouseシャードが提供されます。
 
 |node|description|
@@ -972,7 +972,7 @@ ClickHouse Cloudの[Prometheus統合](/integrations/prometheus)も参照して�
     </remote_servers>
 ```
 
-### `{uuid}`を使用するようにテーブルをセットアップする手順 {#procedures-to-set-up-tables-to-use-uuid}
+### `{uuid}`を使用するようにテーブルをセットアップする手順 \\{#procedures-to-set-up-tables-to-use-uuid\\}
 
 1. 各サーバーでマクロを設定する
 サーバー1の例：
@@ -1062,7 +1062,7 @@ Query id: 3bc7f339-ab74-4c7d-a752-1ffe54219c0e
 └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
-### テスト {#testing}
+### テスト \\{#testing\\}
 1.  最初のノードにデータを挿入する（例：`chnode1`）
 ```sql
 INSERT INTO db_uuid.uuid_table1
@@ -1120,7 +1120,7 @@ Query id: 6cbab449-9e7f-40fe-b8c2-62d46ba9f5c8
 2 rows in set. Elapsed: 0.007 sec.
 ```
 
-### 代替案 {#alternatives}
+### 代替案 \\{#alternatives\\}
 デフォルトのレプリケーションパスは、マクロと`{uuid}`を使用して事前に定義できます
 
 1. 各ノードでテーブルのデフォルトを設定する
@@ -1181,7 +1181,7 @@ ORDER BY id
 1 row in set. Elapsed: 0.003 sec.
 ```
 
-### トラブルシューティング {#troubleshooting}
+### トラブルシューティング \\{#troubleshooting\\}
 
 テーブル情報とUUIDを取得するコマンドの例：
 ```sql
@@ -1224,11 +1224,11 @@ Query id: b047d459-a1d2-4016-bcf9-3e97e30e49c2
 1 row in set. Elapsed: 0.004 sec.
 ```
 
-## ClickHouse Keeper動的再構成 {#reconfiguration}
+## ClickHouse Keeper動的再構成 \\{#reconfiguration\\}
 
 <SelfManaged />
 
-### 説明 {#description-1}
+### 説明 \\{#description-1\\}
 
 ClickHouse Keeperは、`keeper_server.enable_reconfiguration`がオンになっている場合、動的クラスター再構成用のZooKeeper [`reconfig`](https://zookeeper.apache.org/doc/r3.5.3-beta/zookeeperReconfig.html#sc_reconfig_modifying)コマンドを部分的にサポートします。
 
@@ -1305,7 +1305,7 @@ Keeper再構成実装にはいくつかの注意事項があります：
   新しい設定は_最終的に_適用されますが、時間保証はありません。
 - `reconfig`コマンドはさまざまな理由で失敗する可能性があります。クラスターの状態を確認して、更新が適用されたかどうかを確認できます。
 
-## 単一ノードのkeeperをクラスターに変換する {#converting-a-single-node-keeper-into-a-cluster}
+## 単一ノードのkeeperをクラスターに変換する \\{#converting-a-single-node-keeper-into-a-cluster\\}
 
 場合によっては、実験的なkeeperノードをクラスターに拡張する必要があります。ここに、3ノードクラスターでこれを段階的に行う方法のスキームがあります：
 
@@ -1319,7 +1319,7 @@ Keeper再構成実装にはいくつかの注意事項があります：
 
 プロセスに自信を持つために、[サンドボックスリポジトリ](https://github.com/ClickHouse/keeper-extend-cluster)があります。
 
-## サポートされていない機能 {#unsupported-features}
+## サポートされていない機能 \\{#unsupported-features\\}
 
 ClickHouse KeeperはZooKeeperと完全に互換性があることを目指していますが、現在実装されていない機能がいくつかあります（ただし、開発は継続中です）：
 

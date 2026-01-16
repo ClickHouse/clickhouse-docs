@@ -11,11 +11,11 @@ import denormalizationSchema from '@site/static/images/data-modeling/denormaliza
 import Image from '@theme/IdealImage';
 
 
-# データの非正規化 {#denormalizing-data}
+# データの非正規化 \\{#denormalizing-data\\}
 
 データの非正規化は、フラット化されたテーブルを使用して `JOIN` を回避し、クエリのレイテンシーを最小限に抑えるために ClickHouse で用いられる手法です。
 
-## 正規化スキーマと非正規化スキーマの比較 {#comparing-normalized-vs-denormalized-schemas}
+## 正規化スキーマと非正規化スキーマの比較 \\{#comparing-normalized-vs-denormalized-schemas\\}
 
 データの非正規化とは、特定のクエリパターンに対してデータベースのパフォーマンスを最適化するために、あえて正規化プロセスを意図的に元に戻すことを指します。正規化されたデータベースでは、冗長性を最小化しデータ整合性を確保するために、データは複数の関連テーブルに分割されます。非正規化では、テーブルを結合したりデータを重複させたり、計算済みフィールドを単一または少数のテーブルに取り込むことで冗長性を再導入し、実質的に `JOIN` をクエリ時から挿入時へと移すことになります。
 
@@ -27,7 +27,7 @@ import Image from '@theme/IdealImage';
 
 NoSQL ソリューションによって一般的になった手法として、`JOIN` をサポートしない場合にデータを非正規化し、すべての統計情報や関連行を親行上の列およびネストされたオブジェクトとして保存する、というものがあります。例えばブログ用のサンプルスキーマでは、すべての `Comments` を、それぞれの投稿上のオブジェクトの `Array` として保存できます。
 
-## 非正規化を行うタイミング {#when-to-use-denormalization}
+## 非正規化を行うタイミング \\{#when-to-use-denormalization\\}
 
 一般的には、次のようなケースで非正規化を行うことを推奨します。
 
@@ -40,7 +40,7 @@ NoSQL ソリューションによって一般的になった手法として、`J
 
 非正規化の処理は、ClickHouse 内で行うことも、上流のシステム（例: Apache Flink）で行うこともできます。
 
-## 頻繁に更新されるデータでの非正規化は避ける {#avoid-denormalization-on-frequently-updated-data}
+## 頻繁に更新されるデータでの非正規化は避ける \\{#avoid-denormalization-on-frequently-updated-data\\}
 
 ClickHouse では、非正規化はクエリ性能を最適化するために利用できる選択肢のひとつですが、慎重に使用する必要があります。データが頻繁に更新され、ほぼリアルタイムに更新する必要がある場合、この手法は避けてください。メインテーブルがほぼ追記専用であるか、たとえば毎日などバッチとして定期的に再ロードできる場合にのみ、この手法を使用してください。
 
@@ -55,7 +55,7 @@ ClickHouse では、非正規化はクエリ性能を最適化するために利
 
 そのため、すべての非正規化済みオブジェクトを定期的に再ロードするバッチ更新プロセスのほうが一般的です。
 
-## 非正規化の実用的なケース {#practical-cases-for-denormalization}
+## 非正規化の実用的なケース \\{#practical-cases-for-denormalization\\}
 
 非正規化が妥当となるいくつかの実用的な例と、別のアプローチのほうが望ましいケースを考えてみます。
 
@@ -65,7 +65,7 @@ ClickHouse では、非正規化はクエリ性能を最適化するために利
 
 *以下の各例について、両方のテーブルを結合で使用する必要があるクエリが存在すると仮定してください。*
 
-### Posts と Votes {#posts-and-votes}
+### Posts と Votes \{#posts-and-votes\}
 
 投稿に対する Votes は別テーブルで表現されています。このために最適化されたスキーマを以下に示し、あわせてデータをロードするための INSERT コマンドも示します。
 
@@ -131,7 +131,7 @@ LIMIT 5
 ここでの主なポイントは、各投稿ごとの投票の集計統計があれば、ほとんどの分析には十分であり、すべての投票情報を非正規化する必要はないということです。たとえば、現在の `Score` 列はそのような統計量、すなわち賛成票の合計から反対票の合計を引いた値を表しています。理想的には、クエリ時に簡単なルックアップでこれらの統計を取得できるのが望ましいでしょう（[dictionaries](/dictionary) を参照）。
 
 
-### Users と Badges {#users-and-badges}
+### Users と Badges \{#users-and-badges\}
 
 ここでは `Users` と `Badges` について考えてみましょう。
 
@@ -204,7 +204,7 @@ SELECT UserId, count() AS c FROM badges GROUP BY UserId ORDER BY c DESC LIMIT 5
 > たとえば、バッジからユーザーへ統計情報（バッジ数など）を非正規化して持たせたくなるかもしれません。このデータセットでは、挿入時に辞書を使用する例として、そのようなケースを取り上げます。
 
 
-### Posts と PostLinks {#posts-and-postlinks}
+### Posts と PostLinks \{#posts-and-postlinks\}
 
 `PostLinks` は、ユーザーが関連しているまたは重複していると判断した `Posts` を関連付けます。次のクエリは、スキーマとロードコマンドを示しています。
 
@@ -278,7 +278,7 @@ FROM
 以降、このケースを非正規化の例として扱います。
 
 
-### 簡単な統計の例 {#simple-statistic-example}
+### 簡単な統計の例 \{#simple-statistic-example\}
 
 ほとんどの場合、非正規化では、親行に単一のカラムまたは統計値を追加するだけで十分です。たとえば、投稿に重複投稿数の情報を付与したいだけであれば、カラムを 1 つ追加するだけで済みます。
 
@@ -308,7 +308,7 @@ LEFT JOIN
 ```
 
 
-### 一対多リレーションのための複合型の活用 {#exploiting-complex-types-for-one-to-many-relationships}
+### 一対多リレーションのための複合型の活用 \{#exploiting-complex-types-for-one-to-many-relationships\}
 
 非正規化を行うためには、複合型を活用する必要があることがよくあります。少数のカラムを持つ一対一リレーションを非正規化する場合は、上記のように元の型のまま行として追加すれば十分です。しかし、オブジェクトが大きい場合にはこれは望ましくないことが多く、一対多リレーションではそもそも不可能です。
 
@@ -376,9 +376,9 @@ DuplicatePosts: [('2017-04-11 12:18:37.260',3922739),('2017-04-11 12:18:37.260',
 ```
 
 
-## 非正規化のオーケストレーションとスケジューリング {#orchestrating-and-scheduling-denormalization}
+## 非正規化のオーケストレーションとスケジューリング \\{#orchestrating-and-scheduling-denormalization\\}
 
-### バッチ {#batch}
+### バッチ \\{#batch\\}
 
 非正規化を活用するには、それを実行し、その処理をオーケストレーションするための変換プロセスが必要です。
 
@@ -389,6 +389,6 @@ DuplicatePosts: [('2017-04-11 12:18:37.260',3922739),('2017-04-11 12:18:37.260',
 - **[リフレッシャブルmaterialized view](/materialized-view/refreshable-materialized-view)** - リフレッシャブルmaterialized view を使用して、結果をターゲットテーブルに送信するクエリを定期的にスケジュールできます。クエリ実行時、ビューはターゲットテーブルがアトミックに更新されることを保証します。これにより、この作業をスケジューリングするための ClickHouse ネイティブの手段が提供されます。
 - **外部ツール** - [dbt](https://www.getdbt.com/) や [Airflow](https://airflow.apache.org/) などのツールを利用して、変換処理を定期的にスケジュールします。[dbt 向け ClickHouse インテグレーション](/integrations/dbt) により、新しいバージョンのターゲットテーブルが作成され、その後、現在クエリを受け付けているバージョンとアトミックに入れ替えられることで（[EXCHANGE](/sql-reference/statements/exchange) コマンド経由）、この処理がアトミックに実行されることが保証されます。
 
-### ストリーミング {#streaming}
+### ストリーミング \\{#streaming\\}
 
 ユーザーは、代わりに ClickHouse の外部で、挿入前に [Apache Flink](https://flink.apache.org/) などのストリーミング技術を使用してこの処理を行いたい場合もあります。あるいは、インクリメンタルな [マテリアライズドビュー](/guides/developer/cascading-materialized-views) を使用して、データの挿入と同時にこのプロセスを実行することもできます。

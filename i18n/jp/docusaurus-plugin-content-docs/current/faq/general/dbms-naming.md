@@ -10,7 +10,7 @@ keywords: ['ClickHouse の名前', 'クリックストリーム', 'データウ�
 
 
 
-# 「ClickHouse」とはどういう意味ですか？ {#what-does-clickhouse-mean}
+# 「ClickHouse」とはどういう意味ですか？ \\{#what-does-clickhouse-mean\\}
 
 「**Click**stream」と「Data ware**House**」を組み合わせた名前です。これはもともと Yandex.Metrica におけるユースケースに由来しており、ClickHouse はインターネット全体のユーザーによるすべてのクリックの記録を保持することを意図していました。そして現在も、その役割を果たし続けています。このユースケースの詳細は、[ClickHouse history](../../about-us/history.md) ページで確認できます。
 

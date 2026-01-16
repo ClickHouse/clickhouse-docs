@@ -7,14 +7,14 @@ title: 'MongoDB テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# MongoDB テーブルエンジン {#mongodb-table-engine}
+# MongoDB テーブルエンジン \\{#mongodb-table-engine\\}
 
 MongoDB エンジンは、リモートの [MongoDB](https://www.mongodb.com/) コレクションからデータを読み取るための、読み取り専用のテーブルエンジンです。
 
 MongoDB v3.6 以降のサーバーのみがサポートされています。
 [シードリスト（`mongodb+srv`）](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list) は現在サポートされていません。
 
-## テーブルを作成する {#creating-a-table}
+## テーブルを作成する \\{#creating-a-table\\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -56,7 +56,7 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 | `collection`  | リモートコレクション名。                                      |
 | `oid_columns` | WHERE 句で `oid` として扱う列をカンマ区切りで指定します。既定では `_id` です。 |
 
-## 型マッピング {#types-mappings}
+## 型マッピング \\{#types-mappings\\}
 
 | MongoDB                 | ClickHouse                                          |
 | ----------------------- | --------------------------------------------------- |
@@ -73,7 +73,7 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 
 キーが MongoDB ドキュメント内に存在しない場合 (たとえばカラム名が一致しない場合)、デフォルト値または (カラムが Nullable の場合は) `NULL` が挿入されます。
 
-### OID {#oid}
+### OID \\{#oid\\}
 
 WHERE 句で `String` を `oid` として扱いたい場合は、テーブルエンジンの最後の引数にそのカラム名を指定します。
 これは、MongoDB でデフォルトで `oid` 型を持つ `_id` カラムでレコードをクエリする際に必要になる場合があります。
@@ -126,7 +126,7 @@ CREATE TABLE sample_oid
 SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; -- will output 1 now
 ```
 
-## サポートされている句 {#supported-clauses}
+## サポートされている句 \\{#supported-clauses\\}
 
 単純な式を含むクエリのみがサポートされます（例: `WHERE field = <constant> ORDER BY field2 LIMIT <constant>`）。
 このような式は MongoDB のクエリ言語に変換され、サーバー側で実行されます。
@@ -151,7 +151,7 @@ SELECT * FROM mongo_table WHERE date = '2024-01-01'::Date OR date = toDate('2024
 
 :::
 
-## 使用例 {#usage-example}
+## 使用例 \\{#usage-example\\}
 
 MongoDB に [sample&#95;mflix](https://www.mongodb.com/docs/atlas/sample-data/sample-mflix) データセットが読み込まれていることを前提とします
 
@@ -231,7 +231,7 @@ LIMIT 3;
    └────────────────────────┴────────┘
 ```
 
-## トラブルシューティング {#troubleshooting}
+## トラブルシューティング \\{#troubleshooting\\}
 DEBUG レベルのログで生成された MongoDB クエリを確認できます。
 
 実装の詳細については、[mongocxx](https://github.com/mongodb/mongo-cxx-driver) および [mongoc](https://github.com/mongodb/mongo-c-driver) のドキュメントを参照してください。

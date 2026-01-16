@@ -6,16 +6,16 @@ title: '备份或恢复的替代方法'
 doc_type: 'reference'
 ---
 
-# 其他备份方法 {#alternative-backup-methods}
+# 其他备份方法 \\{#alternative-backup-methods\\}
 
 ClickHouse 将数据存储在磁盘上，而对磁盘进行备份的方法有很多。  
 下面是过去使用过的一些替代方案，可能适合你的使用场景。
 
-### 在其他位置复制源数据 {#duplicating-source-data-somewhere-else}
+### 在其他位置复制源数据 \\{#duplicating-source-data-somewhere-else\\}
 
 通常摄取到 ClickHouse 的数据是通过某种持久化队列传递的，例如 [Apache Kafka](https://kafka.apache.org)。在这种情况下，可以配置一组额外的订阅者，在数据写入 ClickHouse 的同时读取相同的数据流，并将其存储到某个冷存储中。大多数公司已经有默认推荐的冷存储方案，可以是对象存储，或像 [HDFS](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) 这样的分布式文件系统。
 
-### 文件系统快照 {#filesystem-snapshots}
+### 文件系统快照 \\{#filesystem-snapshots\\}
 
 某些本地文件系统提供快照功能（例如 [ZFS](https://en.wikipedia.org/wiki/ZFS)），
 但它们可能并不是服务在线查询的最佳选择。一个可行的方案是使用这种文件系统创建额外副本，并将这些副本从用于 `SELECT` 查询的 [Distributed](/engines/table-engines/special/distributed) 表中排除。  
@@ -24,7 +24,7 @@ ClickHouse 将数据存储在磁盘上，而对磁盘进行备份的方法有很
 
 对于较小数据量，一个简单的 `INSERT INTO ... SELECT ...` 到远程表的方式也可能可行。
 
-### 分区操作 {#manipulations-with-parts}
+### 分区操作 \\{#manipulations-with-parts\\}
 
 ClickHouse 允许使用 `ALTER TABLE ... FREEZE PARTITION ...` 查询来创建表分区的本地副本。  
 该功能是通过对 `/var/lib/clickhouse/shadow/` 目录创建硬链接来实现的，因此通常不会为旧数据额外占用磁盘空间。  

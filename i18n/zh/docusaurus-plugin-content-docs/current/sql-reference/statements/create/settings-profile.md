@@ -21,7 +21,7 @@ CREATE SETTINGS PROFILE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]]
 
 `ON CLUSTER` 子句允许在集群上创建 SETTINGS PROFILE，参见 [Distributed DDL](../../../sql-reference/distributed-ddl.md)。
 
-## 示例 {#example}
+## 示例 \\{#example\\}
 
 创建用户：
 

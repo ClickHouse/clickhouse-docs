@@ -8,11 +8,11 @@ doc_type: 'reference'
 keywords: ['データ削除', 'TTL', 'データ保持', 'クリーンアップ', 'データライフサイクル']
 ---
 
-# ClickHouse テーブルから古いレコードを削除することは可能ですか？ {#is-it-possible-to-delete-old-records-from-a-clickhouse-table}
+# ClickHouse テーブルから古いレコードを削除することは可能ですか？ \\{#is-it-possible-to-delete-old-records-from-a-clickhouse-table\\}
 
 簡潔に言えば「はい」です。ClickHouse には、古いデータを削除してディスク容量を解放するための複数の仕組みがあります。それぞれ異なるシナリオに対応しています。
 
-## TTL {#ttl}
+## TTL \\{#ttl\\}
 
 ClickHouse では、特定の条件が満たされたときに値を自動的に削除できます。この条件は任意のカラム（通常はタイムスタンプカラムに対する静的なオフセット）に基づく式として設定します。
 
@@ -24,7 +24,7 @@ TTL は、データを [/dev/null](https://en.wikipedia.org/wiki/Null_device) �
 
 詳細は、[TTL の設定](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl)を参照してください。
 
-## DELETE FROM {#delete-from}
+## DELETE FROM \\{#delete-from\\}
 
 [DELETE FROM](/sql-reference/statements/delete.md) を使用すると、ClickHouse で標準的な DELETE クエリを実行できます。フィルター句で対象となった行は削除済みとしてマークされ、今後の結果セットには含まれません。行のクリーンアップは非同期に行われます。
 
@@ -37,7 +37,7 @@ SET allow_experimental_lightweight_delete = true;
 
 :::
 
-## ALTER DELETE {#alter-delete}
+## ALTER DELETE \\{#alter-delete\\}
 
 ALTER DELETE は、非同期バッチ処理を使用して行を削除します。`DELETE FROM` と異なり、ALTER DELETE の実行後からバッチ処理の完了までの間に実行されたクエリには、削除対象の行も含まれたままになります。詳細については [ALTER DELETE](/sql-reference/statements/alter/delete.md) のドキュメントを参照してください。
 
@@ -47,13 +47,13 @@ ALTER DELETE は、非同期バッチ処理を使用して行を削除します�
 
 [mutation](/sql-reference/statements/alter#mutations) の詳細についてはこちらを参照してください。
 
-## DROP PARTITION {#drop-partition}
+## DROP PARTITION \\{#drop-partition\\}
 
 `ALTER TABLE ... DROP PARTITION` は、パーティション全体を削除するためのコスト効率の高い方法です。柔軟性はそれほど高くなく、テーブル作成時に適切なパーティション方式を設定しておく必要がありますが、一般的なケースのほとんどはカバーできます。通常運用では、ミューテーションと同様に外部システムから実行する必要があります。
 
 [パーティションの操作](/sql-reference/statements/alter/partition)の詳細を参照してください。
 
-## TRUNCATE {#truncate}
+## TRUNCATE \\{#truncate\\}
 
 テーブルからすべてのデータを削除するのはかなり極端な操作ですが、状況によってはまさにそれが必要になる場合もあります。
 

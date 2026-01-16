@@ -14,7 +14,7 @@ import supabase_commands from '@site/static/images/integrations/data-ingestion/c
 import supabase_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-connection-details.jpg'
 import Image from '@theme/IdealImage';
 
-# Supabase 源配置指南 {#supabase-source-setup-guide}
+# Supabase 源配置指南 \\{#supabase-source-setup-guide\\}
 
 本文档介绍如何为在 ClickPipes 中使用而配置 Supabase Postgres。
 
@@ -24,7 +24,7 @@ ClickPipes 原生通过 IPv6 支持 Supabase，可实现无缝复制。
 
 :::
 
-## 创建具有权限和复制槽的用户 {#creating-a-user-with-permissions-and-replication-slot}
+## 创建具有权限和复制槽的用户 \\{#creating-a-user-with-permissions-and-replication-slot\\}
 
 以管理员用户身份连接到你的 Supabase 实例，并执行以下命令：
 
@@ -68,7 +68,7 @@ ClickPipes 原生通过 IPv6 支持 Supabase，可实现无缝复制。
 
    `clickpipes` publication 将包含由这些指定表生成的一组变更事件，并将在后续用于摄取复制流。
 
-## 增加 `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
+## 增加 `max_slot_wal_keep_size` \\{#increase-max_slot_wal_keep_size\\}
 
 :::warning
 
@@ -80,7 +80,7 @@ ClickPipes 原生通过 IPv6 支持 Supabase，可实现无缝复制。
 
 :::
 
-## 在 Supabase 中使用的连接信息 {#connection-details-to-use-for-supabase}
+## 在 Supabase 中使用的连接信息 \\{#connection-details-to-use-for-supabase\\}
 
 进入你的 Supabase 项目的 `Project Settings` -> `Database`（位于 `Configuration` 下）。
 
@@ -94,7 +94,7 @@ ClickPipes 原生通过 IPv6 支持 Supabase，可实现无缝复制。
 
 :::
 
-## 关于 RLS 的说明 {#note-on-rls}
+## 关于 RLS 的说明 \{#note-on-rls\}
 
 ClickPipes 使用的 Postgres 用户不能受到 RLS 策略的限制，否则可能会导致数据缺失。您可以通过运行下列命令来为该用户禁用 RLS 策略：
 
@@ -103,7 +103,7 @@ ALTER USER clickpipes_user BYPASSRLS;
 ```
 
 
-## 下一步？ {#whats-next}
+## 下一步？ \\{#whats-next\\}
 
 你现在可以[创建 ClickPipe](../index.md)，并开始将 Postgres 实例中的数据摄取到 ClickHouse Cloud 中。
 请务必记录在配置 Postgres 实例时使用的连接参数，因为在创建 ClickPipe 的过程中你将需要这些信息。

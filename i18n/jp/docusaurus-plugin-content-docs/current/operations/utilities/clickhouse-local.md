@@ -7,9 +7,9 @@ title: 'clickhouse-local'
 doc_type: 'reference'
 ---
 
-# clickhouse-local {#clickhouse-local}
+# clickhouse-local \\{#clickhouse-local\\}
 
-## clickhouse-local を使うときと ClickHouse を使うとき {#when-to-use-clickhouse-local-vs-clickhouse}
+## clickhouse-local を使うときと ClickHouse を使うとき \\{#when-to-use-clickhouse-local-vs-clickhouse\\}
 
 `clickhouse-local` は、フル機能のデータベースサーバーをインストールすることなく、SQL を使ってローカルおよびリモートファイルに対して高速な処理を行いたい開発者に最適な、使いやすい ClickHouse のバージョンです。`clickhouse-local` を使用すると、開発者はコマンドラインから直接 [ClickHouse SQL dialect](../../sql-reference/index.md) を用いた SQL コマンドを実行でき、フルの ClickHouse をインストールすることなく ClickHouse の機能にシンプルかつ効率的にアクセスできます。`clickhouse-local` の主な利点の 1 つは、[clickhouse-client](/operations/utilities/clickhouse-local) をインストールする際に同梱されていることです。これにより、複雑なインストール手順なしに、開発者はすぐに `clickhouse-local` を使い始めることができます。
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 以下のドキュメントでは、[ローカルファイルのクエリ](#query_data_in_file) や [S3 上の Parquet ファイルの読み取り](#query-data-in-a-parquet-file-in-aws-s3) など、`clickhouse-local` の代表的なユースケースを示していますので、参照してください。
 
-## clickhouse-local をダウンロードする {#download-clickhouse-local}
+## clickhouse-local をダウンロードする \\{#download-clickhouse-local\\}
 
 `clickhouse-local` は、ClickHouse サーバーや `clickhouse-client` と同じ `clickhouse` バイナリで実行されます。最新バージョンをダウンロードする最も簡単な方法は、次のコマンドを使用することです。
 
@@ -29,7 +29,7 @@ curl https://clickhouse.com/ | sh
 ダウンロードしたばかりのバイナリは、さまざまな ClickHouse ツールやユーティリティを実行できます。ClickHouse をデータベースサーバーとして実行したい場合は、[クイックスタート](/get-started/quick-start)を参照してください。
 :::
 
-## SQL を使用してファイル内のデータをクエリする {#query_data_in_file}
+## SQL を使用してファイル内のデータをクエリする \\{#query_data_in_file\\}
 
 `clickhouse-local` の一般的な用途は、データをテーブルに挿入することなく、ファイルに対してアドホックなクエリを実行することです。`clickhouse-local` はファイルから一時テーブルへデータをストリーミングし、その一時テーブルに対して SQL を実行できます。
 
@@ -101,7 +101,7 @@ FROM file('reviews.tsv')"
 Monopoly Junior Board Game    5
 ```
 
-## AWS S3 内の Parquet ファイルをクエリする {#query-data-in-a-parquet-file-in-aws-s3}
+## AWS S3 内の Parquet ファイルをクエリする \\{#query-data-in-a-parquet-file-in-aws-s3\\}
 
 S3 にファイルがある場合は、`clickhouse-local` と `s3` テーブル関数を使用して、データを ClickHouse のテーブルに挿入せずに、そのファイルをその場でクエリできます。ここでは、英国で売却された不動産の住宅価格を含む `house_0.parquet` という名前のファイルが、パブリックなバケット内にあります。このファイルに何行含まれているかを確認してみましょう。
 
@@ -176,7 +176,7 @@ NORTHWOOD    THREE RIVERS    184    731609    ███████████�
 ファイルを ClickHouse に取り込む準備ができたら、ClickHouse サーバーを起動して、`file` および `s3` テーブル関数の結果を `MergeTree` テーブルに挿入します。詳細については [Quick Start](/get-started/quick-start) を参照してください。
 :::
 
-## フォーマット変換 {#format-conversions}
+## フォーマット変換 \\{#format-conversions\\}
 
 `clickhouse-local` を使用して、異なるフォーマット間でデータを変換できます。例：
 
@@ -196,7 +196,7 @@ $ clickhouse-local --query "SELECT * FROM table" < data.json > data.csv
 $ clickhouse-local --copy < data.json > data.csv
 ```
 
-## 使用方法 {#usage}
+## 使用方法 \\{#usage\\}
 
 デフォルトでは、`clickhouse-local` は同一ホスト上の ClickHouse サーバーのデータにアクセスでき、サーバーの設定には依存しません。`--config-file` 引数を使用してサーバーの設定を読み込むこともできます。一時データ用には、デフォルトで一意の一時データディレクトリが作成されます。
 
@@ -241,7 +241,7 @@ $ ./clickhouse local --structure "table_structure" --input-format "format_of_inc
 
 また、`--config-file` の代わりによく用いられる、各 ClickHouse 設定変数に対応する引数も用意されています。
 
-## 例 {#examples}
+## 例 \\{#examples\\}
 
 ```bash
 $ echo -e "1,2\n3,4" | clickhouse-local --structure "a Int64, b Int64" \
@@ -303,7 +303,7 @@ Read 186 rows, 4.15 KiB in 0.035 sec., 5302 rows/sec., 118.34 KiB/sec.
 ...
 ```
 
-## 関連コンテンツ {#related-content-1}
+## 関連コンテンツ \\{#related-content-1\\}
 
 - [clickhouse-local を使用してローカルファイル内のデータを抽出、変換、クエリする](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)
 - [ClickHouse へのデータ取り込み - パート 1](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1)

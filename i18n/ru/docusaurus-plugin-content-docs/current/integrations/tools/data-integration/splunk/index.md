@@ -23,7 +23,7 @@ import splunk_012 from '@site/static/images/integrations/tools/data-integration/
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# Сохранение журналов аудита ClickHouse Cloud в Splunk {#storing-clickhouse-cloud-audit-logs-into-splunk}
+# Сохранение журналов аудита ClickHouse Cloud в Splunk \\{#storing-clickhouse-cloud-audit-logs-into-splunk\\}
 
 <PartnerBadge/>
 
@@ -33,9 +33,9 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 Это дополнение содержит только модульный ввод (modular input); никаких дополнительных пользовательских интерфейсов оно не предоставляет.
 
-# Установка {#installation}
+# Установка \\{#installation\\}
 
-## Для Splunk Enterprise {#for-splunk-enterprise}
+## Для Splunk Enterprise \\{#for-splunk-enterprise\\}
 
 Загрузите ClickHouse Cloud Audit Add-on for Splunk с [Splunkbase](https://splunkbase.splunk.com/app/7709).
 
@@ -51,14 +51,14 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 Если всё прошло успешно, вы должны увидеть установленное приложение ClickHouse Audit logs. В противном случае проверьте логи Splunkd на наличие ошибок.
 
-# Модульная конфигурация входных данных {#modular-input-configuration}
+# Модульная конфигурация входных данных \{#modular-input-configuration\}
 
 Чтобы настроить модульный ввод, вам сначала понадобится информация из вашего развертывания ClickHouse Cloud:
 
 - Идентификатор организации
 - Административный [API Key](/cloud/manage/openapi)
 
-## Получение информации из ClickHouse Cloud {#getting-information-from-clickhouse-cloud}
+## Получение информации из ClickHouse Cloud \\{#getting-information-from-clickhouse-cloud\\}
 
 Войдите в [консоль ClickHouse Cloud](https://console.clickhouse.cloud/).
 
@@ -78,7 +78,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <Image img={splunk_007} size="lg" alt="Консоль ClickHouse Cloud с отображаемыми сгенерированными API Key и секретом, которые необходимо сохранить" border />
 
-## Настройка источника данных в Splunk {#configure-data-input-in-splunk}
+## Настройка источника данных в Splunk \\{#configure-data-input-in-splunk\\}
 
 Вернувшись в Splunk, перейдите в Settings -> Data inputs.
 
@@ -98,7 +98,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 Источник данных настроен, можно приступать к просмотру журналов аудита.
 
-# Использование {#usage}
+# Использование \\{#usage\\}
 
 Модульный ввод данных сохраняет данные в Splunk. Для их просмотра используйте стандартный интерфейс поиска Splunk.
 

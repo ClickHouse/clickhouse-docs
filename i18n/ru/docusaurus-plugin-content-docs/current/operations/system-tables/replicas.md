@@ -6,7 +6,7 @@ title: 'system.replicas'
 doc_type: 'reference'
 ---
 
-# system.replicas {#systemreplicas}
+# system.replicas \\{#systemreplicas\\}
 
 Содержит информацию и состояние реплицируемых таблиц, расположенных на локальном сервере.
 Эту таблицу можно использовать для мониторинга. Таблица содержит по одной строке для каждой таблицы Replicated*.

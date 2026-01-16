@@ -7,11 +7,11 @@ title: '集約関数コンビネータ'
 doc_type: 'reference'
 ---
 
-# 集約関数のコンビネーター {#aggregate-function-combinators}
+# 集約関数のコンビネーター \\{#aggregate-function-combinators\\}
 
 集約関数の名前には、接尾辞を付けることができます。これにより、その集約関数の挙動が変化します。
 
-## -If {#-if}
+## -If \\{#-if\\}
 
 サフィックス -If は、任意の集約関数名に付与できます。この場合、集約関数は追加の引数として条件（`UInt8` 型）を受け取ります。集約関数は、その条件が真となる行だけを処理します。条件が一度も真とならなかった場合、デフォルト値（通常はゼロまたは空文字列）を返します。
 
@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 条件付き集約関数を使用すると、サブクエリや `JOIN` を使わずに、複数の条件に対する集約値を同時に計算できます。たとえば、条件付き集約関数を用いてセグメント比較機能を実装できます。
 
-## -Array {#-array}
+## -Array \\{#-array\\}
 
 -Array サフィックスは、任意の集約関数に付加できます。この場合、集約関数は引数として型 'T' ではなく、型 'Array(T)'（配列）を取ります。集約関数が複数の引数を受け取る場合、これらの引数はすべて長さが等しい配列でなければなりません。配列を処理する際、集約関数は、すべての配列要素に対して元の集約関数と同様に動作します。
 
@@ -29,7 +29,7 @@ doc_type: 'reference'
 
 -If と -Array は組み合わせて使用できます。ただし、'Array' を先に、次に 'If' を付ける必要があります。例: `uniqArrayIf(arr, cond)`, `quantilesTimingArrayIf(level1, level2)(arr, cond)`。この順序により、'cond' 引数は配列型の引数にはなりません。
 
-## -Map {#-map}
+## -Map \\{#-map\\}
 
 `-Map` サフィックスは、任意の集約関数に付加して使用できます。これにより、引数として `Map` 型を受け取り、指定した集約関数を用いてマップ内の各キーに対応する値を個別に集約する集約関数が作成されます。結果も `Map` 型となります。
 
@@ -62,7 +62,7 @@ GROUP BY timeslot;
 └─────────────────────┴──────────────────────────────────────┴──────────────────────────────────────┴──────────────────────────────────────┘
 ```
 
-## -SimpleState {#-simplestate}
+## -SimpleState \\{#-simplestate\\}
 
 このコンビネータを適用すると、集約関数は同じ値を返しますが、型が異なるようになります。これは、テーブルに保存して [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) テーブルで使用できる [SimpleAggregateFunction(...)](../../sql-reference/data-types/simpleaggregatefunction.md) 型です。
 
@@ -96,7 +96,7 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 └──────────────────────────────────────┴───┘
 ```
 
-## -State {#-state}
+## -State \\{#-state\\}
 
 このコンビネータを適用すると、集約関数は結果の値（[uniq](/sql-reference/aggregate-functions/reference/uniq) 関数における一意な値の個数など）ではなく、集約の中間状態（`uniq` では、一意な値の数を計算するためのハッシュテーブル）を返します。これは `AggregateFunction(...)` 型であり、さらなる処理に利用したり、テーブルに保存して後から集約処理を完了させたりできます。
 
@@ -112,24 +112,24 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 - [-Merge](#-merge) コンビネータ
 - [-MergeState](#-mergestate) コンビネータ
 
-## -Merge {#-merge}
+## -Merge \\{#-merge\\}
 
 このコンビネータを適用すると、集約関数は引数として中間集約状態を受け取り、それらを結合して集約を完了し、その結果の値を返します。
 
-## -MergeState {#-mergestate}
+## -MergeState \\{#-mergestate\\}
 
 `-Merge` コンビネータと同様に中間集約状態をマージします。ただし、結果の値は返さず、`-State` コンビネータと同様に中間集約状態を返します。
 
-## -ForEach {#-foreach}
+## -ForEach \\{#-foreach\\}
 
 テーブルに対する集約関数を、対応する配列要素ごとに集約を行い、その結果を配列で返す配列向けの集約関数に変換します。たとえば、配列 `[1, 2]`、`[3, 4, 5]`、`[6, 7]` に対する `sumForEach` は、対応する配列要素を加算した結果として `[10, 13, 5]` を返します。
 
-## -Distinct {#-distinct}
+## -Distinct \\{#-distinct\\}
 
 引数の一意な組み合わせごとに、集約は 1 回だけ行われます。重複する値は無視されます。
 例: `sum(DISTINCT x)`（または `sumDistinct(x)`）、`groupArray(DISTINCT x)`（または `groupArrayDistinct(x)`）、`corrStable(DISTINCT x, y)`（または `corrStableDistinct(x, y)`）など。
 
-## -OrDefault {#-ordefault}
+## -OrDefault \\{#-ordefault\\}
 
 集約関数の動作を変更します。
 
@@ -189,7 +189,7 @@ FROM
 └───────────────────────────────────┘
 ```
 
-## -OrNull {#-ornull}
+## -OrNull \\{#-ornull\\}
 
 集約関数の動作を変更します。
 
@@ -252,7 +252,7 @@ FROM
 └────────────────────────────────┘
 ```
 
-## -Resample {#-resample}
+## -Resample \\{#-resample\\}
 
 データをグループに分割し、その各グループ内で個別にデータを集計できるようにします。グループは、1 列の値を区間ごとに分割することで作成されます。
 
@@ -320,16 +320,16 @@ FROM people
 └────────┴───────────────────────────┘
 ```
 
-## -ArgMin {#-argmin}
+## -ArgMin \\{#-argmin\\}
 
 接尾辞 -ArgMin は、任意の集約関数の名前に付加できます。この場合、その集約関数は追加の引数を 1 つ受け取り、この引数には任意の比較可能な式を指定できます。集約関数は、指定された追加の式が最小値となる行だけを処理します。
 
 例: `sumArgMin(column, expr)`, `countArgMin(expr)`, `avgArgMin(x, expr)` など。
 
-## -ArgMax {#-argmax}
+## -ArgMax \\{#-argmax\\}
 
 サフィックス -ArgMin と同様ですが、指定された追加の式に対して最大値を持つ行だけを処理します。
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \\{#related-content\\}
 
 - ブログ記事: [Using Aggregate Combinators in ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)

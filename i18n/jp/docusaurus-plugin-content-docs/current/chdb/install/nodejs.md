@@ -7,21 +7,21 @@ keywords: ['chdb', 'nodejs', 'javascript', 'embedded', 'clickhouse', 'sql', 'ola
 doc_type: 'guide'
 ---
 
-# Node.js 向け chDB {#chdb-for-nodejs}
+# Node.js 向け chDB \\{#chdb-for-nodejs\\}
 
 chDB-node は chDB の Node.js バインディングを提供し、外部依存なしで Node.js アプリケーション内から直接 ClickHouse クエリを実行できるようにします。
 
-## インストール {#installation}
+## インストール \\{#installation\\}
 
 ```bash
 npm install chdb
 ```
 
-## 使用方法 {#usage}
+## 使用方法 \\{#usage\\}
 
 chDB-node は 2 つのクエリモードをサポートしています。単純な操作向けのスタンドアロン クエリと、データベース状態を維持するためのセッションベースのクエリです。
 
-### スタンドアロン クエリ {#standalone-queries}
+### スタンドアロン クエリ \\{#standalone-queries\\}
 
 永続的な状態を必要としない、単発のクエリの場合:
 
@@ -45,7 +45,7 @@ const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "Pretty");
 console.log("System functions:", systemInfo);
 ```
 
-### セッション単位のクエリ {#session-based-queries}
+### セッション単位のクエリ \\{#session-based-queries\\}
 
 ```javascript
 const { Session } = require("chdb");
@@ -96,7 +96,7 @@ try {
 }
 ```
 
-### 外部データの処理 {#processing-external-data}
+### 外部データの処理 \\{#processing-external-data\\}
 
 ```javascript
 const { Session } = require("chdb");
@@ -141,7 +141,7 @@ try {
 }
 ```
 
-## エラー処理 {#error-handling}
+## エラー処理 \\{#error-handling\\}
 
 chDB を使用する際は、常にエラーを適切に処理してください。
 
@@ -186,7 +186,7 @@ function safeSessionQuery() {
 safeSessionQuery();
 ```
 
-## GitHub リポジトリ {#github-repository}
+## GitHub リポジトリ \\{#github-repository\\}
 
 - **GitHub リポジトリ**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
 - **Issue およびサポート**: [GitHub リポジトリ](https://github.com/chdb-io/chdb-node/issues) で Issue を報告してください

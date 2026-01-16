@@ -9,7 +9,7 @@ doc_type: 'reference'
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
-# histogram&#95;metrics {#histogram&#95;metrics}
+# histogram&#95;metrics \\{#histogram&#95;metrics\\}
 
 <SystemTableCloud/>
 
@@ -42,17 +42,17 @@ FORMAT Prometheus
 ```
 
 
-## メトリクスの説明 {#metric_descriptions}
+## メトリクスの説明 \\{#metric_descriptions\\}
 
-### keeper_response_time_ms_bucket {#keeper_response_time_ms_bucket}
+### keeper_response_time_ms_bucket \\{#keeper_response_time_ms_bucket\\}
 
 Keeper の応答時間（ミリ秒単位）。
 
-### keeper_batch_size_elements_bucket {#keeper_batch_size_elements_bucket}
+### keeper_batch_size_elements_bucket \\{#keeper_batch_size_elements_bucket\\}
 
 Raft に送信されるバッチの要素数。
 
-### keeper_batch_size_bytes_bucket {#keeper_batch_size_bytes_bucket}
+### keeper_batch_size_bytes_bucket \\{#keeper_batch_size_bytes_bucket\\}
 
 Raft に送信されるバッチのサイズ（バイト単位）。
 

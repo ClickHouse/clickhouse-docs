@@ -20,7 +20,7 @@ import security_group_in_rds_mysql from '@site/static/images/integrations/data-i
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-# RDS MariaDB 源配置指南 {#rds-mariadb-source-setup-guide}
+# RDS MariaDB 源配置指南 \\{#rds-mariadb-source-setup-guide\\}
 
 本文将逐步介绍如何配置 RDS MariaDB 实例，使其能够通过 MySQL ClickPipe 复制数据。
 <br/>
@@ -28,11 +28,11 @@ import Image from '@theme/IdealImage';
 我们也建议你阅读位于[此处](/integrations/data-ingestion/clickpipes/mysql/faq.md)的 MySQL 常见问题解答。该常见问题页面会持续更新。
 :::
 
-## 启用二进制日志保留 {#enable-binlog-retention-rds}
+## 启用二进制日志保留 \\{#enable-binlog-retention-rds\\}
 
 二进制日志是一组日志文件，其中包含对 MySQL 服务器实例所做数据修改的信息。二进制日志文件是实现复制所必需的。必须完成以下两个步骤：
 
-### 1. 通过自动备份启用二进制日志 {#enable-binlog-logging-rds}
+### 1. 通过自动备份启用二进制日志 \\{#enable-binlog-logging-rds\\}
 
 是否为 MySQL 启用二进制日志由自动备份功能决定。可以在 AWS 控制台中进行设置：
 
@@ -40,7 +40,7 @@ import Image from '@theme/IdealImage';
 
 建议根据复制的具体使用场景，将备份保留期设置为相对较长且合理的值。
 
-### 2. Binlog 保留时间（小时）{#binlog-retention-hours-rds}
+### 2. Binlog 保留时间（小时）\\{#binlog-retention-hours-rds\\}
 
 Amazon RDS for MariaDB 采用不同的方法来设置 binlog 的保留时长，即包含变更的 binlog 文件被保留的时间。如果在 binlog 文件被删除之前，某些变更尚未被读取，复制将无法继续。binlog 保留时间的默认值为 NULL，这意味着不会保留二进制日志。
 
@@ -51,7 +51,7 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 ```
 
 
-## 在参数组中配置 binlog 设置 {#binlog-parameter-group-rds}
+## 在参数组中配置 binlog 设置 \\{#binlog-parameter-group-rds\\}
 
 在 RDS 控制台中点击您的 MariaDB 实例，然后进入 `Configurations` 选项卡，可以找到参数组。
 
@@ -83,11 +83,11 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 如果您使用的是 MariaDB 集群，上述参数会在 [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) 参数组中，而不是 DB 实例参数组中。
 :::
 
-## 启用 GTID 模式 {#gtid-mode-rds}
+## 启用 GTID 模式 \\{#gtid-mode-rds\\}
 
 全局事务标识（GTID，Global Transaction Identifiers）是在 MySQL/MariaDB 中为每个已提交事务分配的唯一 ID。它可以简化二进制日志（binlog）复制，并让故障排查更加简单。MariaDB 默认启用 GTID 模式，因此用户无需执行任何操作即可使用它。
 
-## 配置数据库用户 {#configure-database-user-rds}
+## 配置数据库用户 \\{#configure-database-user-rds\\}
 
 以管理员用户身份连接到 RDS MariaDB 实例，并执行以下命令：
 

@@ -34,7 +34,7 @@ import s3_20 from '@site/static/images/_snippets/s3/2025/s3-20.png';
 > для хранения данных в S3
 
 
-## Создание пользователя AWS IAM {#create-an-aws-iam-user}
+## Создание пользователя AWS IAM \\{#create-an-aws-iam-user\\}
 
 В этой процедуре мы создадим служебную учетную запись (service account), а не пользователя для интерактивного входа.
 
@@ -79,7 +79,7 @@ import s3_20 from '@site/static/images/_snippets/s3/2025/s3-20.png';
 
 <Image size="lg" img={s3_9} alt="AWS IAM Management Console - Добавление нового пользователя" />
 
-## Создание бакета S3 {#create-an-s3-bucket}
+## Создание бакета S3 \{#create-an-s3-bucket\}
 
 1. В разделе бакетов S3 выберите **Create bucket**
 

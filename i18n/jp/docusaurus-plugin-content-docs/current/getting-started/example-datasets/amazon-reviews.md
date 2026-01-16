@@ -15,7 +15,7 @@ keywords: ['Amazon レビュー', 'カスタマーレビュー データセッ�
 を参照してください。
 :::
 
-## データセットの読み込み {#loading-the-dataset}
+## データセットの読み込み \\{#loading-the-dataset\\}
 
 1. データを ClickHouse に挿入しなくても、元の場所に対して直接クエリを実行できます。どのようなデータか確認するために、いくつか行を取得してみましょう。
 
@@ -152,7 +152,7 @@ ORDER BY size DESC
 
 The original data was about 70G, but compressed in ClickHouse it takes up about 30G.
 
-## Example queries {#example-queries}
+## Example queries \\{#example-queries\\}
 
 7. Let's run some queries. Here are the top 10 most-helpful reviews in the dataset:
 

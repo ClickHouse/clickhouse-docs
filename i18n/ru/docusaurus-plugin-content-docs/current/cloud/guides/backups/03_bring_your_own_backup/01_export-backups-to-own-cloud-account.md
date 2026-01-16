@@ -20,11 +20,11 @@ ClickHouse Cloud поддерживает создание резервных к
 :::
 
 
-## Требования {#requirements}
+## Требования \\{#requirements\\}
 
 Для экспорта и восстановления резервных копий в собственный бакет в хранилище CSP вам потребуются следующие параметры.
 
-### AWS {#aws}
+### AWS \{#aws\}
 
 1. Endpoint AWS S3 в формате:
 
@@ -50,13 +50,13 @@ ClickHouse Cloud поддерживает создание резервных к
 :::
 
 
-### Azure {#azure}
+### Azure \\{#azure\\}
 
 1. Строка подключения к хранилищу Azure.
 2. Имя контейнера Azure в учетной записи хранилища.
 3. Объект (blob) Azure внутри контейнера.
 
-### Google Cloud Storage (GCS) {#google-cloud-storage-gcs}
+### Google Cloud Storage (GCS) \\{#google-cloud-storage-gcs\\}
 
 1. Endpoint GCS в формате:
 
@@ -67,11 +67,11 @@ ClickHouse Cloud поддерживает создание резервных к
 
 <hr/>
 
-# Резервное копирование / Восстановление {#backup-restore}
+# Резервное копирование / Восстановление \{#backup-restore\}
 
-## Резервное копирование в бакет AWS S3 и восстановление из него {#backup--restore-to-aws-s3-bucket}
+## Резервное копирование в бакет AWS S3 и восстановление из него \\{#backup--restore-to-aws-s3-bucket\\}
 
-### Создание резервной копии БД {#take-a-db-backup}
+### Создание резервной копии БД \{#take-a-db-backup\}
 
 **Полная резервная копия**
 
@@ -96,7 +96,7 @@ SETTINGS base_backup = S3('https://testchbackups.s3.amazonaws.com/backups/<base-
 ```
 
 
-### Восстановление из резервной копии {#restore-from-a-backup}
+### Восстановление из резервной копии \{#restore-from-a-backup\}
 
 ```sql
 RESTORE DATABASE test_backups 
@@ -107,9 +107,9 @@ FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<k
 См. раздел [Настройка BACKUP/RESTORE для использования конечной точки S3](/operations/backup/s3_endpoint) для получения дополнительной информации.
 
 
-## Резервное копирование и восстановление в Azure Blob Storage {#backup--restore-to-azure-blob-storage}
+## Резервное копирование и восстановление в Azure Blob Storage \\{#backup--restore-to-azure-blob-storage\\}
 
-### Создание резервной копии базы данных {#take-a-db-backup-1}
+### Создание резервной копии базы данных \{#take-a-db-backup-1\}
 
 **Полная резервная копия**
 
@@ -129,7 +129,7 @@ SETTINGS base_backup = AzureBlobStorage('<AzureBlobStorage endpoint connection s
 ```
 
 
-### Восстановление из резервной копии {#restore-from-a-backup-1}
+### Восстановление из резервной копии \{#restore-from-a-backup-1\}
 
 ```sql
 RESTORE DATABASE test_backups 
@@ -140,9 +140,9 @@ FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<contain
 См. раздел [Настройка BACKUP/RESTORE для использования конечной точки AzureBlobStorage](/operations/backup/azure#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) для получения дополнительной информации.
 
 
-## Резервное копирование и восстановление в Google Cloud Storage (GCS) {#backup--restore-to-google-cloud-storage-gcs}
+## Резервное копирование и восстановление в Google Cloud Storage (GCS) \\{#backup--restore-to-google-cloud-storage-gcs\\}
 
-### Создание резервной копии базы данных {#take-a-db-backup-2}
+### Создание резервной копии базы данных \{#take-a-db-backup-2\}
 
 **Полная резервная копия**
 
@@ -162,7 +162,7 @@ SETTINGS base_backup = S3('https://storage.googleapis.com/test_gcs_backups/<uuid
 ```
 
 
-### Восстановление из резервной копии {#restore-from-a-backup-2}
+### Восстановление из резервной копии \{#restore-from-a-backup-2\}
 
 ```sql
 RESTORE DATABASE test_backups 

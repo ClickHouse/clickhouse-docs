@@ -11,14 +11,14 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# YTsaurus 表引擎 {#ytsaurus-table-engine}
+# YTsaurus 表引擎 \\{#ytsaurus-table-engine\\}
 
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
 
 YTsaurus 表引擎用于从 YTsaurus 集群导入数据。
 
-## 创建数据表 {#creating-a-table}
+## 创建数据表 \\{#creating-a-table\\}
 
 ```sql
     CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -44,7 +44,7 @@ YTsaurus 表引擎用于从 YTsaurus 集群导入数据。
 * `cypress_path` — 指向数据源的 Cypress 路径。
 * `oauth_token` — OAuth 令牌。
 
-## 使用示例 {#usage-example}
+## 使用示例 \\{#usage-example\\}
 
 以下是一个用于创建 YTsaurus 表的查询：
 
@@ -73,9 +73,9 @@ SELECT * FROM yt_saurus;
  └────┴────┘
 ```
 
-## 数据类型 {#data-types}
+## 数据类型 \\{#data-types\\}
 
-### 基本数据类型 {#primitive-data-types}
+### 基本数据类型 \\{#primitive-data-types\\}
 
 | YTsaurus 数据类型 | ClickHouse 数据类型     |
 | ------------------ | ----------------------- |
@@ -108,7 +108,7 @@ SELECT * FROM yt_saurus;
 | `void`             | `Nothing`               |
 | `T` 且 `required = False` | `Nullable(T)`   |
 
-### 复合类型 {#composite-data-types}
+### 复合类型 \\{#composite-data-types\\}
 
 | YTsaurus 数据类型 | ClickHouse 数据类型 |
 | ------------------ | -------------------- |

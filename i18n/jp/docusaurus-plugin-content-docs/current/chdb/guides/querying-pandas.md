@@ -12,7 +12,7 @@ doc_type: 'guide'
 chDB のバージョン 2 では、Pandas DataFrame をクエリする際のパフォーマンスを向上し、`Python` テーブル関数を導入しました。
 このガイドでは、`Python` テーブル関数を使用して Pandas をクエリする方法を説明します。
 
-## セットアップ {#setup}
+## セットアップ \\{#setup\\}
 
 まずは仮想環境を作成します。
 
@@ -42,7 +42,7 @@ ipython
 
 このコードは Python スクリプトやお使いのノートブックでも使用できます。
 
-## URL から Pandas DataFrame を作成する {#creating-a-pandas-dataframe-from-a-url}
+## URL から Pandas DataFrame を作成する \\{#creating-a-pandas-dataframe-from-a-url\\}
 
 [StatsBomb の GitHub リポジトリ](https://github.com/statsbomb/open-data/tree/master?tab=readme-ov-file)からデータを取得してみましょう。
 まず `requests` と `pandas` をインポートします。
@@ -155,7 +155,7 @@ match_id                                                          3943077
 Name: 0, dtype: object
 ```
 
-## Pandas DataFrame をクエリする {#querying-pandas-dataframes}
+## Pandas DataFrame をクエリする \\{#querying-pandas-dataframes\\}
 
 次に、これらの DataFrame を chDB でどのようにクエリするかを見ていきます。
 まずはライブラリをインポートします。
@@ -279,7 +279,7 @@ LIMIT 10
 9  Carlos Eccehomo Cuesta Figueroa       50
 ```
 
-## Pandas の DataFrame を結合する {#joining-pandas-dataframes}
+## Pandas の DataFrame を結合する \\{#joining-pandas-dataframes\\}
 
 クエリ内で DataFrame 同士を結合することもできます。
 たとえば、試合の概要を取得するには、次のようなクエリを書くことができます。
@@ -310,7 +310,7 @@ away_shots                         19
 Name: 0, dtype: object
 ```
 
-## DataFrame からテーブルにデータを投入する {#populating-a-table-from-a-dataframe}
+## DataFrame からテーブルにデータを投入する \\{#populating-a-table-from-a-dataframe\\}
 
 DataFrame から ClickHouse のテーブルを作成してデータを投入することもできます。
 chDB でテーブルを作成する場合は、Stateful Session API を使用する必要があります。
@@ -370,7 +370,7 @@ LIMIT 10
 9  Carlos Eccehomo Cuesta Figueroa       50
 ```
 
-## Pandas DataFrame とテーブルの結合 {#joining-a-pandas-dataframe-and-table}
+## Pandas DataFrame とテーブルの結合 \\{#joining-a-pandas-dataframe-and-table\\}
 
 最後に、`matches_df` DataFrame と `statsbomb.events` テーブルを結合するように、結合クエリを更新することもできます。
 

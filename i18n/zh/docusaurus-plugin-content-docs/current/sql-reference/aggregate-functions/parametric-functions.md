@@ -7,11 +7,11 @@ title: '参数化聚合函数'
 doc_type: 'reference'
 ---
 
-# 参数化聚合函数 {#parametric-aggregate-functions}
+# 参数化聚合函数 \\{#parametric-aggregate-functions\\}
 
 某些聚合函数不仅可以接受参数列（用于压缩），还可以接受一组参数（用于初始化的常量）。其语法是使用两对括号而不是一对：第一对用于参数，第二对用于参数列。
 
-## histogram {#histogram}
+## histogram \{#histogram\}
 
 计算自适应直方图。不保证结果精确。
 
@@ -86,7 +86,7 @@ FROM
 在这种情况下，你需要注意，此时你并不知道直方图各个箱的边界。
 
 
-## sequenceMatch {#sequencematch}
+## sequenceMatch \{#sequencematch\}
 
 检查序列中是否存在符合指定模式的事件链。
 
@@ -118,7 +118,7 @@ sequenceMatch(pattern)(timestamp, cond1, cond2, ...)
 类型：`UInt8`。
 
 
-#### 模式语法 {#pattern-syntax}
+#### 模式语法 \{#pattern-syntax\}
 
 * `(?N)` — 匹配位置 `N` 处的条件参数。条件的编号范围为 `[1, 32]`。例如，`(?1)` 匹配传递给 `cond1` 参数的参数。
 
@@ -179,7 +179,7 @@ SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 4) FROM 
 * [sequenceCount](#sequencecount)
 
 
-## sequenceCount {#sequencecount}
+## sequenceCount \{#sequencecount\}
 
 统计匹配该模式的事件链数量。该函数会搜索互不重叠的事件链。在当前事件链匹配完成后，才会开始搜索下一个事件链。
 
@@ -237,7 +237,7 @@ SELECT sequenceCount('(?1).*(?2)')(time, number = 1, number = 2) FROM t
 ```
 
 
-## sequenceMatchEvents {#sequencematchevents}
+## sequenceMatchEvents \{#sequencematchevents\}
 
 返回与模式匹配的最长事件链中各事件的时间戳。
 
@@ -299,7 +299,7 @@ SELECT sequenceMatchEvents('(?1).*(?2).*(?1)(?3)')(time, number = 1, number = 2,
 * [sequenceMatch](#sequencematch)
 
 
-## windowFunnel {#windowfunnel}
+## windowFunnel \{#windowfunnel\}
 
 在滑动时间窗口中搜索事件链，并计算该事件链中发生事件的最大数量。
 
@@ -429,7 +429,7 @@ ORDER BY level ASC;
 ```
 
 
-## retention {#retention}
+## retention \{#retention\}
 
 该函数接收一组 1 到 32 个 `UInt8` 类型的参数，这些参数指示事件是否满足某个条件。
 任意条件都可以作为参数指定（类似于 [WHERE](/sql-reference/statements/select/where) 子句中的条件）。
@@ -590,7 +590,7 @@ Where:
 * `r3`- 在 2020-01-01 和 2020-01-03 某一特定时间段内访问该站点的独立访客数量（同时满足 `cond1` 和 `cond3` 条件）。
 
 
-## uniqUpTo(N)(x) {#uniquptonx}
+## uniqUpTo(N)(x) \{#uniquptonx\}
 
 计算参数的不同取值数量，最多计算到指定的上限 `N`。如果不同取值的数量大于 `N`，则该函数返回 `N` + 1，否则返回精确值。
 
@@ -611,7 +611,7 @@ HAVING uniqUpTo(4)(UserID) >= 5
 `uniqUpTo(4)(UserID)` 会为每个 `SearchPhrase` 计算不同 `UserID` 的数量，但最多只统计 4 个。如果某个 `SearchPhrase` 对应的不同 `UserID` 数量超过 4，该函数会返回 5（4 + 1）。随后，`HAVING` 子句会过滤掉那些不同 `UserID` 数量小于 5 的 `SearchPhrase`。这样就可以得到一份至少被 5 个不同用户使用过的搜索关键词列表。
 
 
-## sumMapFiltered {#summapfiltered}
+## sumMapFiltered \{#summapfiltered\}
 
 此函数的行为与 [sumMap](/sql-reference/aggregate-functions/reference/summap) 相同，只是它还额外接受一个用于过滤的键数组作为参数。在处理高基数键时尤其有用。
 
@@ -662,7 +662,7 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_
 ```
 
 
-## sumMapFilteredWithOverflow {#summapfilteredwithoverflow}
+## sumMapFilteredWithOverflow \{#summapfilteredwithoverflow\}
 
 此函数的行为与 [sumMap](/sql-reference/aggregate-functions/reference/summap) 相同，但额外接受一个用于过滤的键数组作为参数。当键的基数很高时，这尤其有用。它与 [sumMapFiltered](#summapfiltered) 函数的不同之处在于，它执行的是允许溢出的求和运算——即求和结果的数据类型与参数的数据类型相同。
 
@@ -725,7 +725,7 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) as summap
 ```
 
 
-## sequenceNextNode {#sequencenextnode}
+## sequenceNextNode \{#sequencenextnode\}
 
 返回匹配到的事件链中下一个事件的值。
 

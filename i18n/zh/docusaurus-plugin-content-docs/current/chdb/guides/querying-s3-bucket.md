@@ -10,7 +10,7 @@ doc_type: 'guide'
 世界上大量数据都存储在 Amazon S3 存储桶中。
 在本指南中，我们将学习如何使用 chDB 查询这些数据。
 
-## 环境准备 {#setup}
+## 环境准备 \\{#setup\\}
 
 先创建一个虚拟环境：
 
@@ -40,7 +40,7 @@ ipython
 
 你也可以在 Python 脚本或你常用的笔记本环境中使用这段代码。
 
-## 列出 S3 bucket 中的文件 {#listing-files-in-an-s3-bucket}
+## 列出 S3 bucket 中的文件 \\{#listing-files-in-an-s3-bucket\\}
 
 我们先从列出[包含 Amazon reviews 的 S3 bucket](/getting-started/example-datasets/amazon-reviews) 中的所有文件做起。
 为此，我们可以使用 [`s3` 表函数](/sql-reference/table-functions/s3)，并传入文件路径，或者使用通配符来匹配一组文件。
@@ -78,7 +78,7 @@ SETTINGS output_format_pretty_row_numbers=0
 
 此存储桶仅包含 Parquet 文件。
 
-## 在 S3 存储桶中查询文件 {#querying-files-in-an-s3-bucket}
+## 在 S3 存储桶中查询文件 \\{#querying-files-in-an-s3-bucket\\}
 
 接下来，让我们学习如何查询这些文件。
 如果我们想统计每个文件中的行数，可以运行以下查询：
@@ -177,7 +177,7 @@ LIMIT 10
     └──────────────────┴──────────┴──────┘
 ```
 
-## 在私有 S3 存储桶中查询文件 {#querying-files-in-a-private-s3-bucket}
+## 在私有 S3 存储桶中查询文件 \\{#querying-files-in-a-private-s3-bucket\\}
 
 如果我们要在私有 S3 存储桶中查询文件，就需要提供访问密钥（access key）和私有密钥（secret）。
 我们可以将这些凭证传递给 `s3` 表函数：

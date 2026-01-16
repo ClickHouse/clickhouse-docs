@@ -8,17 +8,17 @@ title: 'mergeTreeIndex'
 doc_type: 'reference'
 ---
 
-# Табличная функция mergeTreeIndex {#mergetreeindex-table-function}
+# Табличная функция mergeTreeIndex \\{#mergetreeindex-table-function\\}
 
 Предоставляет доступ к содержимому файлов индексов и меток таблиц MergeTree. Может использоваться для интроспекции.
 
-## Синтаксис {#syntax}
+## Синтаксис \\{#syntax\\}
 
 ```sql
 mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
 ```
 
-## Аргументы {#arguments}
+## Аргументы \\{#arguments\\}
 
 | Аргумент      | Описание                                                   |
 |---------------|------------------------------------------------------------|
@@ -27,7 +27,7 @@ mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
 | `with_marks`  | Включать ли в результат столбцы с метками.                |
 | `with_minmax` | Включать ли в результат индекс min-max.                   |
 
-## Возвращаемое значение {#returned_value}
+## Возвращаемое значение \\{#returned_value\\}
 
 Объект-таблица со столбцами, содержащими значения первичного индекса и индекса min-max (если включён) исходной таблицы, столбцы со значениями меток (если включены) для всех возможных файлов в частях данных исходной таблицы и виртуальные столбцы:
 
@@ -37,7 +37,7 @@ mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
 
 Столбец меток может содержать значение `(NULL, NULL)`, если столбец отсутствует в части данных или метки для одного из его подпотоков не записаны (например, в компактных частях).
 
-## Пример использования {#usage-example}
+## Пример использования \\{#usage-example\\}
 
 ```sql
 CREATE TABLE test_table

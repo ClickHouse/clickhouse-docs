@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['サポート', 'ヘルプ', 'カスタマーサービス', '技術サポート', 'サービスレベル契約 (SLA)']
 ---
 
-# ClickHouse Cloud のサポートサービス {#clickhouse-cloud-support-services}
+# ClickHouse Cloud のサポートサービス \\{#clickhouse-cloud-support-services\\}
 
 ClickHouse は、ClickHouse Cloud のユーザーおよびお客様向けにサポートサービスを提供しています。私たちの目標は、ClickHouse 製品を体現するサポートサービスチームとなることです。すなわち、比類のないパフォーマンス、使いやすさ、そして非常に高速かつ高品質な結果を提供することです。詳細については、[ClickHouse サポートプログラム](https://clickhouse.com/support/program/)のページをご覧ください。
 

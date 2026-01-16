@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# Kafka テーブルエンジン {#kafka-table-engine}
+# Kafka テーブルエンジン \\{#kafka-table-engine\\}
 
 :::tip
 ClickHouse Cloud をご利用の場合は、代わりに [ClickPipes](/integrations/clickpipes) の利用を推奨します。ClickPipes は、プライベートネットワーク接続のネイティブサポート、インジェスト処理とクラスタリソースを独立してスケールさせる機能、そして Kafka のストリーミングデータを ClickHouse に取り込むための包括的なモニタリング機能を提供します。
@@ -20,7 +20,7 @@ ClickHouse Cloud をご利用の場合は、代わりに [ClickPipes](/integrati
 - フォールトトレラントなストレージの構成。
 - ストリームを利用可能になり次第処理。
 
-## テーブルを作成する {#creating-a-table}
+## テーブルを作成する \\{#creating-a-table\\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -134,7 +134,7 @@ Examples:
 Kafka テーブルエンジンは、[default value](/sql-reference/statements/create/table#default_values) を持つカラムをサポートしていません。default value を持つカラムが必要な場合は、materialized view 側で追加できます（下記参照）。
 :::
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 配信されたメッセージは自動的に追跡されるため、グループ内の各メッセージは 1 回だけカウントされます。データを 2 回取得したい場合は、別のグループ名でテーブルのコピーを作成してください。
 
@@ -184,7 +184,7 @@ Kafka テーブルエンジンは、[default value](/sql-reference/statements/cr
 
 `ALTER` を使用してターゲットテーブルを変更する場合は、ターゲットテーブルとビューからのデータとの不整合を避けるため、マテリアライズドビューを無効化することを推奨します。
 
-## 設定 {#configuration}
+## 設定 \\{#configuration\\}
 
 GraphiteMergeTree と同様に、Kafka エンジンは ClickHouse の設定ファイルを用いた詳細な設定をサポートしています。使用できる設定キーは 2 種類あり、グローバル（`<kafka>` の下）とトピックレベル（`<kafka><kafka_topic>` の下）です。まずグローバル設定が適用され、その後にトピックレベルの設定（存在する場合）が適用されます。
 
@@ -230,7 +230,7 @@ GraphiteMergeTree と同様に、Kafka エンジンは ClickHouse の設定フ�
 
 利用可能な設定オプションの一覧については、[librdkafka の configuration reference](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md) を参照してください。ClickHouse の設定では、ドットの代わりにアンダースコア（`_`）を使用します。たとえば、`check.crcs=true` は `<check_crcs>true</check_crcs>` に対応します。
 
-### Kerberos サポート {#kafka-kerberos-support}
+### Kerberos サポート \\{#kafka-kerberos-support\\}
 
 Kerberos 対応の Kafka を扱うには、`security_protocol` の子要素として `sasl_plaintext` を追加します。Kerberos のチケット授与チケット (TGT) が OS の機能によって取得・キャッシュされていれば十分です。
 ClickHouse は keytab ファイルを使用して Kerberos 資格情報を管理できます。`sasl_kerberos_service_name`、`sasl_kerberos_keytab`、`sasl_kerberos_principal` の子要素を指定します。
@@ -246,7 +246,7 @@ ClickHouse は keytab ファイルを使用して Kerberos 資格情報を管理
 </kafka>
 ```
 
-## 仮想カラム {#virtual-columns}
+## 仮想カラム \\{#virtual-columns\\}
 
 - `_topic` — Kafka のトピック。データ型: `LowCardinality(String)`。
 - `_key` — メッセージのキー。データ型: `String`。
@@ -264,7 +264,7 @@ ClickHouse は keytab ファイルを使用して Kerberos 資格情報を管理
 
 注意: `_raw_message` と `_error` の仮想カラムに値が入るのは、パース中に例外が発生した場合のみです。メッセージが正常にパースされた場合は常に空になります。
 
-## データ形式のサポート {#data-formats-support}
+## データ形式のサポート \\{#data-formats-support\\}
 
 Kafka エンジンは、ClickHouse でサポートされているすべての[フォーマット](../../../interfaces/formats.md)をサポートします。
 1 つの Kafka メッセージ内の行数は、フォーマットが行ベースかブロックベースかによって異なります。
@@ -272,7 +272,7 @@ Kafka エンジンは、ClickHouse でサポートされているすべての[�
 - 行ベースのフォーマットでは、1 つの Kafka メッセージ内の行数は `kafka_max_rows_per_message` の設定で制御できます。
 - ブロックベースのフォーマットでは、ブロックをより小さな部分に分割することはできませんが、1 ブロック内の行数は共通設定 [max_block_size](/operations/settings/settings#max_block_size) によって制御できます。
 
-## ClickHouse Keeper にコミット済みオフセットを保存するエンジン {#engine-to-store-committed-offsets-in-clickhouse-keeper}
+## ClickHouse Keeper にコミット済みオフセットを保存するエンジン \\{#engine-to-store-committed-offsets-in-clickhouse-keeper\\}
 
 <ExperimentalBadge />
 
@@ -294,7 +294,7 @@ SETTINGS
 SETTINGS allow_experimental_kafka_offsets_storage_in_keeper=1;
 ```
 
-### 既知の制限事項 {#known-limitations}
+### 既知の制限事項 \\{#known-limitations\\}
 
 新しいエンジンは実験的なものであり、まだ本番運用の準備ができていません。実装には、いくつか既知の制限があります。
 

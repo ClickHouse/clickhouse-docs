@@ -20,9 +20,9 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 Это руководство предназначено для пользователей с ролью Organization Admin в ClickHouse Cloud.
 
 
-## Добавление пользователей в организацию {#add-users}
+## Добавление пользователей в организацию \\{#add-users\\}
 
-### Приглашение пользователей {#invite-users}
+### Приглашение пользователей \\{#invite-users\\}
 
 Администраторы могут приглашать до трёх (3) пользователей одновременно и назначать им роли уровня организации и сервиса в момент приглашения. 
 
@@ -36,7 +36,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 Пользователи получат электронное письмо, из которого они смогут присоединиться к организации. Дополнительные сведения о принятии приглашений см. в разделе [Управление учётной записью](/cloud/security/manage-my-account).
 
-### Добавление пользователей через поставщика удостоверений SAML {#add-users-via-saml}
+### Добавление пользователей через поставщика удостоверений SAML \\{#add-users-via-saml\\}
 
 <EnterprisePlanFeatureBadge feature="SAML SSO"/>
 
@@ -46,37 +46,37 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 2. Когда пользователь входит в ClickHouse Cloud, ему автоматически назначается роль `Member`, которая позволяет только вход в систему и не предоставляет никаких других прав доступа
 3. Чтобы предоставить разрешения, выполните инструкции в разделе `Manage user role assignments` ниже
 
-### Принудительное использование аутентификации только через SAML {#enforce-saml}
+### Принудительное использование аутентификации только через SAML \\{#enforce-saml\\}
 
 После того как в организации будет как минимум один пользователь SAML с ролью Organization Admin, удалите из организации пользователей, использующих другие методы аутентификации, чтобы обеспечить использование в организации только аутентификации SAML.
 
 
 
-## Управление назначениями ролей пользователей {#manage-role-assignments}
+## Управление назначениями ролей пользователей \\{#manage-role-assignments\\}
 
 Пользователи с ролью Organization Admin могут в любое время обновлять разрешения для других пользователей.
 
 <VerticalStepper headerLevel="h3">
 
-### Доступ к настройкам организации {#access-organization-settings}
+### Доступ к настройкам организации \\{#access-organization-settings\\}
 
 На странице сервисов выберите название вашей организации:
 
 <Image img={step_1} size="md"/>
 
-### Доступ к пользователям и ролям {#access-users-and-roles}
+### Доступ к пользователям и ролям \\{#access-users-and-roles\\}
 
 Выберите пункт `Users and roles` во всплывающем меню.
 
 <Image img={step_2} size="md"/>
 
-### Выбор пользователя для обновления {#select-user-to-update}
+### Выбор пользователя для обновления \\{#select-user-to-update\\}
 
 Выберите пункт меню в конце строки пользователя, для которого вы хотите изменить доступ:
 
 <Image img={step_3} size="lg"/>
 
-### Выберите `edit` {#select-edit}
+### Выберите `edit` \\{#select-edit\\}
 
 <Image img={step_4} size="lg"/>
 
@@ -84,7 +84,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 <Image img={step_5} size="lg"/>
 
-### Обновление разрешений {#update-permissions}
+### Обновление разрешений \\{#update-permissions\\}
 
 Выберите значения в раскрывающихся списках, чтобы настроить глобальные разрешения доступа к консоли и указать, к каким функциям пользователь может получать доступ из консоли ClickHouse. Список ролей и связанных с ними разрешений см. в разделе [Console roles and permissions](/cloud/security/console-roles).
 
@@ -92,7 +92,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 <Image img={step_6} size="md"/>
 
-### Сохранение изменений {#save-changes}
+### Сохранение изменений \\{#save-changes\\}
 
 Сохраните изменения с помощью кнопки `Save changes` внизу вкладки:
 
@@ -102,7 +102,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 
 
-## Удаление пользователя {#remove-user}
+## Удаление пользователя \\{#remove-user\\}
 :::note Удаление пользователей SAML
 Пользователи SAML, для которых в вашем провайдере идентификации была отменена привязка к приложению ClickHouse, не могут войти в ClickHouse Cloud. При этом учетная запись не удаляется из консоли и должна быть удалена вручную.
 :::

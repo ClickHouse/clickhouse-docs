@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 与 [JSON](./JSON.md) 格式的唯一不同之处在于，数据字段以字符串形式输出，而不是输出为带类型的 JSON 值。
 
-## 示例用法 {#example-usage}
+## 示例用法 \\{#example-usage\\}
 
-### 插入数据 {#inserting-data}
+### 插入数据 \\{#inserting-data\\}
 
 使用包含以下数据的 JSON 文件，并将其命名为 `football.json`：
 
@@ -200,7 +200,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStrings;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据 \\{#reading-data\\}
 
 使用 `JSONStrings` 格式来读取数据：
 
@@ -393,4 +393,4 @@ FORMAT JSONStrings
 }
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \\{#format-settings\\}

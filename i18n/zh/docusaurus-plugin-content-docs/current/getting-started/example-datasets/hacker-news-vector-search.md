@@ -7,20 +7,20 @@ keywords: ['语义搜索', '向量相似性', '近似最近邻', '向量嵌入']
 doc_type: 'guide'
 ---
 
-## 介绍 {#introduction}
+## 介绍 \\{#introduction\\}
 
 [Hacker News 数据集](https://news.ycombinator.com/) 包含 2874 万条
 帖子及其向量嵌入。这些嵌入是使用 [SentenceTransformers](https://sbert.net/) 模型 [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) 生成的。每个嵌入向量的维度为 `384`。
 
 该数据集可用于讲解在用户生成的文本数据之上构建的大规模、真实世界向量搜索应用的设计、容量规划和性能等方面的实践。
 
-## 数据集详情 {#dataset-details}
+## 数据集详情 \\{#dataset-details\\}
 
 包含向量嵌入的完整数据集由 ClickHouse 以单个 `Parquet` 文件的形式提供，存储在一个 [S3 存储桶](https://clickhouse-datasets.s3.amazonaws.com/hackernews-miniLM/hackernews_part_1_of_1.parquet) 中。
 
 我们建议用户先进行容量评估，以预估该数据集的存储和内存需求，可参考[文档](../../engines/table-engines/mergetree-family/annindexes.md)。
 
-## 步骤 {#steps}
+## 步骤 \\{#steps\\}
 
 <VerticalStepper headerLevel="h3">
   ### 创建表

@@ -7,7 +7,7 @@ title: 'URL 表引擎'
 doc_type: 'reference'
 ---
 
-# URL 表引擎 {#url-table-engine}
+# URL 表引擎 \\{#url-table-engine\\}
 
 对远程 HTTP/HTTPS 服务器进行数据查询和写入。该引擎类似于 [File](../../../engines/table-engines/special/file.md) 引擎。
 
@@ -39,14 +39,14 @@ doc_type: 'reference'
 
 例如，对于引擎表达式 `URL('http://localhost/test.gzip')`，会应用 `gzip` 压缩方法；而对于 `URL('http://localhost/test.fr')`，不会启用压缩，因为后缀 `fr` 不匹配上述任何压缩方法。
 
-## 使用方法 {#using-the-engine-in-the-clickhouse-server}
+## 使用方法 \\{#using-the-engine-in-the-clickhouse-server\\}
 
 `INSERT` 和 `SELECT` 查询分别会被转换为 `POST` 和 `GET` 请求。处理 `POST` 请求时，远程服务器必须支持
 [分块传输编码（Chunked transfer encoding）](https://en.wikipedia.org/wiki/Chunked_transfer_encoding)。
 
 你可以使用 [max_http_get_redirects](/operations/settings/settings#max_http_get_redirects) 设置来限制 HTTP GET 重定向的最大次数。
 
-## 示例 {#example}
+## 示例 \\{#example\\}
 
 **1.** 在服务器上创建一个 `url_engine_table` 表：
 
@@ -90,7 +90,7 @@ SELECT * FROM url_engine_table
 └───────┴───────┘
 ```
 
-## 实现细节 {#details-of-implementation}
+## 实现细节 \\{#details-of-implementation\\}
 
 - 读写可以并行进行
 - 不支持：
@@ -98,7 +98,7 @@ SELECT * FROM url_engine_table
   - 索引。
   - 复制。
 
-## 虚拟列 {#virtual-columns}
+## 虚拟列 \\{#virtual-columns\\}
 
 - `_path` — `URL` 的路径。类型：`LowCardinality(String)`。
 - `_file` — `URL` 的资源名。类型：`LowCardinality(String)`。
@@ -106,7 +106,7 @@ SELECT * FROM url_engine_table
 - `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则值为 `NULL`。
 - `_headers` - HTTP 响应头部。类型：`Map(LowCardinality(String), LowCardinality(String))`。
 
-## 存储设置 {#storage-settings}
+## 存储设置 \\{#storage-settings\\}
 
 - [engine_url_skip_empty_files](/operations/settings/settings.md#engine_url_skip_empty_files) - 在读取时跳过空文件。默认禁用。
 - [enable_url_encoding](/operations/settings/settings.md#enable_url_encoding) - 控制是否对 URI 中的路径进行编码/解码。默认启用。

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import TableOfContents from '@site/i18n/jp/docusaurus-plugin-content-docs/current/guides/best-practices/_snippets/_performance_optimizations_table_of_contents.md';
 
-# パフォーマンスと最適化 {#performance-and-optimizations}
+# パフォーマンスと最適化 \\{#performance-and-optimizations\\}
 
 このセクションでは、ClickHouse のパフォーマンスを向上させるためのヒントとベストプラクティスを紹介します。
 パフォーマンス向上に必要な基本概念を解説している [Core Concepts](/parts) を、このセクションを読む前に参照することを推奨します。

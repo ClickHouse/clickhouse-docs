@@ -7,20 +7,20 @@ keywords: ['セマンティック検索', 'ベクトル類似度', '近似最近
 doc_type: 'guide'
 ---
 
-## はじめに {#introduction}
+## はじめに \\{#introduction\\}
 
 [Hacker News データセット](https://news.ycombinator.com/)には、2,874 万件の
 投稿とそれらのベクトル埋め込みが含まれています。埋め込みは、[SentenceTransformers](https://sbert.net/) のモデル [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) を使用して生成されています。各埋め込みベクトルの次元は `384` です。
 
 このデータセットを用いることで、ユーザー生成テキストデータを基盤にした大規模な実世界のベクトル検索アプリケーションにおける設計、サイジング、およびパフォーマンスの各側面を一通り検討できます。
 
-## データセットの詳細 {#dataset-details}
+## データセットの詳細 \\{#dataset-details\\}
 
 ベクトル埋め込みを含む完全なデータセットは、ClickHouse により単一の `Parquet` ファイルとして [S3 バケット](https://clickhouse-datasets.s3.amazonaws.com/hackernews-miniLM/hackernews_part_1_of_1.parquet) で提供されています。
 
 このデータセットのストレージおよびメモリ要件を見積もるため、まずは [ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md) を参照してサイジングを行うことを推奨します。
 
-## 手順 {#steps}
+## 手順 \\{#steps\\}
 
 <VerticalStepper headerLevel="h3">
   ### テーブルの作成

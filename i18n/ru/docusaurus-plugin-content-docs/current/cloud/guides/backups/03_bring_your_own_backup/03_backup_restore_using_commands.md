@@ -12,12 +12,12 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# Создание и восстановление резервной копии с помощью команд {#commands-experience}
+# Создание и восстановление резервной копии с помощью команд \\{#commands-experience\\}
 
 Помимо создания и восстановления резервных копий [через пользовательский интерфейс](/cloud/manage/backups/backup-restore-via-ui), вы можете использовать команды `BACKUP` и `RESTORE` для экспорта резервных копий в свои бакеты хранилища.
 В этом руководстве приведены команды для всех трех облачных провайдеров (CSP).
 
-## Требования {#requirements}
+## Требования \\{#requirements\\}
 
 Вам понадобятся следующие данные, чтобы экспортировать и восстанавливать резервные копии в/из собственного бакета в хранилище CSP:
 
@@ -44,12 +44,12 @@ import TabItem from '@theme/TabItem';
   </TabItem>
 </Tabs>
 
-## Резервное копирование / восстановление отдельной БД {#backup_restore_db}
+## Резервное копирование / восстановление отдельной БД \\{#backup_restore_db\\}
 
 Ниже показано резервное копирование и восстановление *одной* базы данных.
 Полные команды резервного копирования и восстановления смотрите в разделе [сводка команд резервного копирования](/operations/backup/overview#command-summary).
 
-### AWS S3 {#aws-s3-bucket}
+### AWS S3 \\{#aws-s3-bucket\\}
 
 <Tabs>
   <TabItem value="Backup" label="BACKUP" default>
@@ -83,7 +83,7 @@ FROM S3(
   </TabItem>
 </Tabs>
 
-### Google Cloud Storage (GCS) {#google-cloud-storage}
+### Google Cloud Storage (GCS) \\{#google-cloud-storage\\}
 
 <Tabs>
   <TabItem value="Backup" label="BACKUP" default>
@@ -116,7 +116,7 @@ FROM S3(
   </TabItem>
 </Tabs>
 
-### Azure Blob Storage {#azure-blob-storage}
+### Azure Blob Storage \\{#azure-blob-storage\\}
 
 <Tabs>
   <TabItem value="Backup" label="BACKUP" default>
@@ -148,7 +148,7 @@ FROM AzureBlobStorage(
   </TabItem>
 </Tabs>
 
-## Резервное копирование и восстановление всего сервиса {#backup_restore_entire_service}
+## Резервное копирование и восстановление всего сервиса \\{#backup_restore_entire_service\\}
 
 Для резервного копирования всего сервиса используйте команды ниже.
 Эта резервная копия будет содержать все пользовательские и системные данные созданных сущностей, профилей настроек, политик ролей, квот и функций.
@@ -190,7 +190,7 @@ FROM S3(
 </TabItem>
 </Tabs>
 
-## FAQ {#backups-faq}
+## FAQ \\{#backups-faq\\}
 
 <details>
 <summary>Что происходит с резервными копиями в моем объектном облачном хранилище? Очищает ли их ClickHouse когда‑нибудь?</summary>

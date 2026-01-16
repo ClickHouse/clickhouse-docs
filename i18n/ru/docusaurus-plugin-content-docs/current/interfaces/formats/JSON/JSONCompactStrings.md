@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Формат `JSONCompactStrings` отличается от [JSONStrings](./JSONStrings.md) лишь тем, что строки данных выводятся как массивы, а не как объекты.
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
-### Чтение данных {#reading-data}
+### Чтение данных \\{#reading-data\\}
 
 Считайте данные в формате `JSONCompactStrings`:
 
@@ -93,4 +93,4 @@ FORMAT JSONCompactStrings
 }
 ```
 
-## Настройки форматирования {#format-settings}
+## Настройки форматирования \\{#format-settings\\}

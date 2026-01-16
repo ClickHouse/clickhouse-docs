@@ -12,7 +12,7 @@ import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merg
 import Image from '@theme/IdealImage';
 
 
-# SharedMergeTree テーブルエンジン {#sharedmergetree-table-engine}
+# SharedMergeTree テーブルエンジン \\{#sharedmergetree-table-engine\\}
 
 SharedMergeTree テーブルエンジンファミリーは、共有ストレージ（例: Amazon S3、Google Cloud Storage、MinIO、Azure Blob Storage）上で動作するように最適化された、クラウドネイティブな ReplicatedMergeTree エンジンの代替です。あらゆる種類の MergeTree エンジンに対応する SharedMergeTree が用意されており、たとえば SharedReplacingMergeTree は ReplicatedReplacingMergeTree の代わりとなります。
 
@@ -34,7 +34,7 @@ SharedMergeTree の大きな改善点の 1 つは、ReplicatedMergeTree と比�
 
 ReplicatedMergeTree と異なり、SharedMergeTree ではレプリカ同士が直接通信する必要はありません。代わりに、すべての通信は共有ストレージと clickhouse-keeper を通じて行われます。SharedMergeTree は非同期のリーダーレスレプリケーションを実装し、clickhouse-keeper をコーディネーションおよびメタデータの保存に利用します。これは、サービスをスケールアップおよびスケールダウンしても、メタデータをレプリケートする必要がないことを意味します。その結果、レプリケーション、ミューテーション、マージ、およびスケールアップ操作が高速になります。SharedMergeTree はテーブルごとに数百のレプリカをサポートし、シャードを用いずに動的なスケーリングを可能にします。ClickHouse Cloud では、クエリに対してより多くのコンピュートリソースを活用するために、分散クエリ実行アプローチが採用されています。
 
-## 内部情報の確認 {#introspection}
+## 内部情報の確認 \\{#introspection\\}
 
 ReplicatedMergeTree の内部情報確認に利用されるほとんどの system テーブルは SharedMergeTree にも存在しますが、データおよびメタデータのレプリケーションが行われないため、`system.replication_queue` と `system.replicated_fetches` は存在しません。ただし、SharedMergeTree にはこれら 2 つのテーブルに対応する代替テーブルが用意されています。
 
@@ -46,7 +46,7 @@ ReplicatedMergeTree の内部情報確認に利用されるほとんどの syste
 
 このテーブルは、SharedMergeTree における `system.replicated_fetches` の代替です。プライマリキーおよびチェックサムをメモリにフェッチしている、進行中の取得処理に関する情報を保持します。
 
-## SharedMergeTree の有効化 {#enabling-sharedmergetree}
+## SharedMergeTree の有効化 \{#enabling-sharedmergetree\}
 
 `SharedMergeTree` はデフォルトで有効になっています。
 
@@ -100,7 +100,7 @@ ORDER BY key
 ```
 
 
-## 設定 {#settings}
+## 設定 \\{#settings\\}
 
 一部の設定の挙動が大きく変更されています。
 
@@ -108,7 +108,7 @@ ORDER BY key
 - `insert_quorum_parallel` -- SharedMergeTree へのすべての挿入はクォーラム挿入（共有ストレージへの書き込み）となるため、SharedMergeTree テーブルエンジンを使用する場合、この設定は不要です。
 - `select_sequential_consistency` -- クォーラム挿入を必要とせず、`SELECT` クエリ実行時に clickhouse-keeper への追加負荷を発生させます。
 
-## 一貫性 {#consistency}
+## 一貫性 \\{#consistency\\}
 
 SharedMergeTree は、ReplicatedMergeTree よりも軽量な一貫性モデルを提供します。SharedMergeTree に対して挿入を行う場合、`insert_quorum` や `insert_quorum_parallel` のような設定を指定する必要はありません。挿入はクォーラム挿入となり、メタデータは ClickHouse-Keeper に保存され、そのメタデータは少なくともクォーラムを満たす数の ClickHouse-Keeper ノードにレプリケートされます。クラスタ内の各レプリカは、ClickHouse-Keeper から新しい情報を非同期に取得します。
 

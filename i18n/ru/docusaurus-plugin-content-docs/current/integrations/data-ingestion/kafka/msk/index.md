@@ -14,7 +14,7 @@ integration:
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
-# Интеграция Amazon MSK с ClickHouse {#integrating-amazon-msk-with-clickhouse}
+# Интеграция Amazon MSK с ClickHouse \\{#integrating-amazon-msk-with-clickhouse\\}
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/6lKI_WlQ3-s"
@@ -30,20 +30,20 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 
 > Примечание: политика доступа, показанная в видео, является слишком разрешительной и предназначена только для быстрого начала работы. См. ниже рекомендации по настройке IAM по принципу наименьших привилегий.
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \\{#prerequisites\\}
 
 Мы предполагаем:
 
 * вы знакомы с [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md),
 * вы знакомы с Amazon MSK и коннекторами MSK. Рекомендуем руководства Amazon MSK: [Getting Started guide](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) и [MSK Connect guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html).
 
-## Официальный коннектор Kafka от ClickHouse для Amazon MSK {#the-official-kafka-connector-from-clickhouse-with-amazon-msk}
+## Официальный коннектор Kafka от ClickHouse для Amazon MSK \\{#the-official-kafka-connector-from-clickhouse-with-amazon-msk\\}
 
-### Соберите сведения для подключения {#gather-your-connection-details}
+### Соберите сведения для подключения \\{#gather-your-connection-details\\}
 
 <ConnectionDetails />
 
-### Шаги {#steps}
+### Шаги \{#steps\}
 
 1. Ознакомьтесь с [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md).
 2. [Создайте экземпляр MSK](https://docs.aws.amazon.com/msk/latest/developerguide/create-cluster.html).
@@ -72,7 +72,7 @@ schemas.enable=false
 ```
 
 
-## Рекомендуемые разрешения IAM (минимально необходимые привилегии) {#iam-least-privilege}
+## Рекомендуемые разрешения IAM (минимально необходимые привилегии) \{#iam-least-privilege\}
 
 Используйте наименьший набор разрешений, необходимых для вашей конфигурации. Начните с базового набора ниже и добавляйте дополнительные службы только в том случае, если вы их используете.
 
@@ -143,7 +143,7 @@ schemas.enable=false
 См. также: [Рекомендации по работе с Kafka – IAM](../../clickpipes/kafka/04_best_practices.md#iam).
 
 
-## Настройка производительности {#performance-tuning}
+## Настройка производительности \{#performance-tuning\}
 
 Один из способов повысить производительность — изменить размер пакета и количество записей, извлекаемых из Kafka, добавив следующее в конфигурацию **worker**:
 
@@ -163,7 +163,7 @@ consumer.max.partition.fetch.bytes=1048576
 [Amazon MSK](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-workers.html#msk-connect-create-custom-worker-config).
 
 
-## Заметки по сетевой конфигурации для MSK Connect {#notes-on-networking-for-msk-connect}
+## Заметки по сетевой конфигурации для MSK Connect \\{#notes-on-networking-for-msk-connect\\}
 
 Чтобы MSK Connect мог подключаться к ClickHouse, мы рекомендуем размещать ваш кластер MSK в приватной подсети с подключённым Private NAT для доступа в интернет. Инструкции по настройке приведены ниже. Обратите внимание, что публичные подсети поддерживаются, но не рекомендуются из‑за необходимости постоянно назначать Elastic IP-адрес вашему ENI, [подробнее об этом см. в документации AWS](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-internet-access.html)
 

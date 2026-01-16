@@ -24,18 +24,18 @@ HyperDX はスタックの他のコンポーネントとは独立して使用で
 このモードでは、データのインジェストは完全にユーザー側の管理となります。独自にホストした OpenTelemetry collector、クライアントライブラリからの直接インジェスト、ClickHouse ネイティブのテーブルエンジン（Kafka や S3 など）、ETL パイプライン、あるいは ClickPipes のようなマネージドインジェストサービスを使用して、データを ClickHouse に取り込むことができます。このアプローチは最大限の柔軟性を提供し、すでに ClickHouse を運用していて、その上に HyperDX をレイヤーとして重ねて可視化、検索、アラートを実現したいチームに適しています。
 
 
-### 適用対象 {#suitable-for}
+### 適用対象 \\{#suitable-for\\}
 
 - 既存の ClickHouse ユーザー
 - カスタムイベントパイプライン
 
-## デプロイ手順 {#deployment-steps}
+## デプロイ手順 \\{#deployment-steps\\}
 
 <br/>
 
 <VerticalStepper headerLevel="h3">
 
-### Docker を使用してデプロイする {#deploy-hyperdx-with-docker}
+### Docker を使用してデプロイする \\{#deploy-hyperdx-with-docker\\}
 
 必要に応じて `YOUR_MONGODB_URI` を書き換え、次のコマンドを実行します。 
 
@@ -43,7 +43,7 @@ HyperDX はスタックの他のコンポーネントとは独立して使用で
 docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx
 ```
 
-### HyperDX UI にアクセスする {#navigate-to-hyperdx-ui}
+### HyperDX UI にアクセスする \\{#navigate-to-hyperdx-ui\\}
 
 [http://localhost:8080](http://localhost:8080) にアクセスして HyperDX UI を開きます。
 
@@ -53,7 +53,7 @@ docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.i
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
-### 接続情報を入力する {#complete-connection-details}
+### 接続情報を入力する \\{#complete-connection-details\\}
 
 ClickHouse Cloud などの外部 ClickHouse クラスターに接続します。
 
@@ -67,11 +67,11 @@ ClickHouse Cloud などの外部 ClickHouse クラスターに接続します。
 
 </VerticalStepper>
 
-## Docker Compose を使用する {#using-docker-compose}
+## Docker Compose を使用する \\{#using-docker-compose\\}
 
 [Docker Compose 構成](/use-cases/observability/clickstack/deployment/docker-compose) を変更することで、本ガイドと同等の効果を得つつ、マニフェストから OTel collector と ClickHouse インスタンスを削除できます。
 
-## ClickStack OpenTelemetry collector {#otel-collector}
+## ClickStack OpenTelemetry collector \\{#otel-collector\\}
 
 スタック内の他のコンポーネントとは独立して独自の OpenTelemetry collector を運用している場合でも、ClickStack 提供の collector ディストリビューションを使用することを推奨します。これにより、デフォルトのスキーマが使用され、インジェストに関するベストプラクティスが適用されます。
 

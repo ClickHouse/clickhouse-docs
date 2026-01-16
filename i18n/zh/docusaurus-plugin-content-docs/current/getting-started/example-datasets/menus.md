@@ -15,7 +15,7 @@ keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 这些数据来自图书馆馆藏档案，可能不完整，也不一定适合严格的统计分析。不过它也非常有趣且“美味”。  
 数据规模仅为关于菜单菜品的 130 万条记录——对 ClickHouse 来说，这个数据量非常小，但仍然是一个很好的示例。
 
-## 下载数据集 {#download-dataset}
+## 下载数据集 \\{#download-dataset\\}
 
 运行以下命令：
 
@@ -29,7 +29,7 @@ md5sum 2021_08_01_07_01_17_data.tgz
 如有需要，请将链接替换为来自 [http://menus.nypl.org/data](http://menus.nypl.org/data) 的最新更新链接。
 下载大小约为 35 MB。
 
-## 解压数据集 {#unpack-dataset}
+## 解压数据集 \\{#unpack-dataset\\}
 
 ```bash
 tar xvf 2021_08_01_07_01_17_data.tgz
@@ -44,7 +44,7 @@ tar xvf 2021_08_01_07_01_17_data.tgz
 * `MenuPage` — 关于菜单中各页面的信息，因为每个页面都属于某个菜单。
 * `MenuItem` — 菜单中的一项。某个菜单页面上的一道菜及其价格，并包含指向菜品和菜单页面的链接。
 
-## 创建表 {#create-tables}
+## 创建表 \\{#create-tables\\}
 
 我们使用 [Decimal](../../sql-reference/data-types/decimal.md) 数据类型存储价格。
 
@@ -111,7 +111,7 @@ CREATE TABLE menu_item
 ) ENGINE = MergeTree ORDER BY id;
 ```
 
-## 导入数据 {#import-data}
+## 导入数据 \\{#import-data\\}
 
 将数据上传到 ClickHouse，请运行：
 
@@ -130,7 +130,7 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 
 设置 [date&#95;time&#95;input&#95;format best&#95;effort](/operations/settings/formats#date_time_input_format) 允许以多种格式解析 [DateTime](../../sql-reference/data-types/datetime.md) 字段。例如，不带秒的 ISO-8601 时间（如 `2000-01-01 01:02`）也会被识别。如果不启用此设置，则只允许固定格式的 DateTime。
 
-## 数据反规范化 {#denormalize-data}
+## 数据反规范化 \\{#denormalize-data\\}
 
 数据以[规范化形式](https://en.wikipedia.org/wiki/Database_normalization#Normal_forms)分布在多个表中。这意味着，如果你想查询例如菜单项对应的菜品名称，就必须执行 [JOIN](/sql-reference/statements/select/join)。
 对于典型的分析任务，预先对数据进行 JOIN 合并，以避免每次查询都执行 `JOIN`，要高效得多。这被称为“反规范化”数据。
@@ -182,7 +182,7 @@ FROM menu_item
     JOIN menu ON menu_page.menu_id = menu.id;
 ```
 
-## 验证数据 {#validate-data}
+## 验证数据 \\{#validate-data\\}
 
 查询：
 
@@ -198,9 +198,9 @@ SELECT count() FROM menu_item_denorm;
 └─────────┘
 ```
 
-## 执行一些查询 {#run-queries}
+## 执行一些查询 \\{#run-queries\\}
 
-### 菜品历史价格平均值 {#query-averaged-historical-prices}
+### 菜品历史价格平均值 \\{#query-averaged-historical-prices\\}
 
 查询：
 
@@ -242,7 +242,7 @@ ORDER BY d ASC;
 
 请谨慎看待，仅供参考。
 
-### 汉堡价格 {#query-burger-prices}
+### 汉堡价格 \\{#query-burger-prices\\}
 
 查询：
 
@@ -279,7 +279,7 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴───────────────────────────────────────┘
 ```
 
-### 伏特加 {#query-vodka}
+### 伏特加 \\{#query-vodka\\}
 
 查询：
 
@@ -313,7 +313,7 @@ ORDER BY d ASC;
 
 为了查到 vodka，我们就得写 `ILIKE '%vodka%'`，本身就很能说明问题。
 
-### 鱼子酱 {#query-caviar}
+### 鱼子酱 \\{#query-caviar\\}
 
 我们来打印鱼子酱的价格，同时打印任意一道包含鱼子酱的菜肴名称。
 
@@ -356,6 +356,6 @@ ORDER BY d ASC;
 
 好在他们还有鱼子酱配伏特加。挺不错的。
 
-## 在线 Playground {#playground}
+## 在线 Playground \\{#playground\\}
 
 数据已上传至 ClickHouse Playground，参见[示例](https://sql.clickhouse.com?query_id=KB5KQJJFNBKHE5GBUJCP1B)。

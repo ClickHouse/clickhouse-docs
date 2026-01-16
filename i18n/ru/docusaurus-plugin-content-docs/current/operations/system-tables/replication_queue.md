@@ -7,7 +7,7 @@ title: 'system.replication_queue'
 doc_type: 'reference'
 ---
 
-# system.replication&#95;queue {#systemreplication&#95;queue}
+# system.replication&#95;queue \\{#systemreplication&#95;queue\\}
 
 Содержит информацию о задачах из очередей репликации, хранящихся в ClickHouse Keeper или ZooKeeper, для таблиц семейства `ReplicatedMergeTree`.
 

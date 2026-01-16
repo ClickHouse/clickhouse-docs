@@ -7,7 +7,7 @@ title: 'ClickHouse 与 ZooKeeper 之间可选的安全通信'
 doc_type: 'guide'
 ---
 
-# 可选的 ClickHouse 与 Zookeeper 之间的安全通信 {#optional-secured-communication-between-clickhouse-and-zookeeper}
+# 可选的 ClickHouse 与 Zookeeper 之间的安全通信 \\{#optional-secured-communication-between-clickhouse-and-zookeeper\\}
 
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 

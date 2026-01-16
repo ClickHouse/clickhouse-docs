@@ -10,11 +10,11 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# Форматы входных и выходных данных {#formats-for-input-and-output-data}
+# Форматы входных и выходных данных \\{#formats-for-input-and-output-data\\}
 
 ClickHouse поддерживает большинство известных текстовых и бинарных форматов данных. Это обеспечивает простую интеграцию практически в любой существующий конвейер данных и позволяет в полной мере использовать преимущества ClickHouse.
 
-## Форматы ввода {#input-formats}
+## Форматы ввода \\{#input-formats\\}
 
 Форматы ввода используются для:
 - Разбора данных, передаваемых в операторы `INSERT`
@@ -31,14 +31,14 @@ ClickHouse поддерживает большинство известных т
 Для детального разбора результатов и рекомендаций по лучшим практикам ознакомьтесь с полной [аналитикой бенчмарка](https://www.clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient).
 Все результаты тестов доступны в онлайн-дашборде [FastFormats](https://fastformats.clickhouse.com/).
 
-## Форматы вывода {#output-formats}
+## Форматы вывода \\{#output-formats\\}
 
 Поддерживаемые форматы вывода используются для:
 
 - Представления результатов запроса `SELECT`
 - Выполнения операций `INSERT` в таблицы с файловой поддержкой
 
-## Обзор форматов {#formats-overview}
+## Обзор форматов \\{#formats-overview\\}
 
 Поддерживаемые форматы:
 
@@ -134,7 +134,7 @@ ClickHouse поддерживает большинство известных т
 
 Вы можете управлять некоторыми параметрами обработки форматов с помощью настроек ClickHouse. Подробнее см. раздел [Настройки](/operations/settings/settings-formats.md).
 
-## Схема формата {#formatschema}
+## Схема формата \\{#formatschema\\}
 
 Имя файла, содержащего схему формата, задаётся настройкой `format_schema`.
 Эту настройку необходимо задать при использовании одного из форматов `Cap'n Proto` или `Protobuf`.
@@ -151,7 +151,7 @@ ClickHouse поддерживает большинство известных т
 должно находиться в каталоге, указанном в [format_schema_path](/operations/server-configuration-parameters/settings.md/#format_schema_path)
 в конфигурации сервера.
 
-## Пропуск ошибок {#skippingerrors}
+## Пропуск ошибок \\{#skippingerrors\\}
 
 Некоторые форматы, такие как `CSV`, `TabSeparated`, `TSKV`, `JSONEachRow`, `Template`, `CustomSeparated` и `Protobuf`, могут пропускать некорректную строку при возникновении ошибки парсинга и продолжать разбор начиная со следующей строки. См. настройки [input_format_allow_errors_num](/operations/settings/settings-formats.md/#input_format_allow_errors_num) и
 [input_format_allow_errors_ratio](/operations/settings/settings-formats.md/#input_format_allow_errors_ratio).

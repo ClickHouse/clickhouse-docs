@@ -5,7 +5,7 @@ title: 'quantileExactExclusive'
 doc_type: 'reference'
 ---
 
-# quantileExactExclusive {#quantileexactexclusive}
+# quantileExactExclusive \{#quantileexactexclusive\}
 
 Точно вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных.
 

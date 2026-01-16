@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Движок базы данных MySQL {#mysql-database-engine}
+# Движок базы данных MySQL \\{#mysql-database-engine\\}
 
 <CloudNotSupportedBadge />
 
@@ -24,7 +24,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - `CREATE TABLE`
 - `ALTER`
 
-## Создание базы данных {#creating-a-database}
+## Создание базы данных \\{#creating-a-database\\}
 
 ```sql
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster]
@@ -38,7 +38,7 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 * `user` — пользователь MySQL.
 * `password` — пароль пользователя.
 
-## Поддержка типов данных {#data_types-support}
+## Поддержка типов данных \\{#data_types-support\\}
 
 | MySQL                            | ClickHouse                                                   |
 |----------------------------------|--------------------------------------------------------------|
@@ -60,7 +60,7 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 
 Поддерживается тип [Nullable](../../sql-reference/data-types/nullable.md).
 
-## Поддержка глобальных переменных {#global-variables-support}
+## Поддержка глобальных переменных \\{#global-variables-support\\}
 
 Для лучшей совместимости вы можете обращаться к глобальным переменным в стиле MySQL — через `@@identifier`.
 
@@ -79,7 +79,7 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 SELECT @@version;
 ```
 
-## Примеры использования {#examples-of-use}
+## Примеры использования \\{#examples-of-use\\}
 
 Таблица в MySQL:
 

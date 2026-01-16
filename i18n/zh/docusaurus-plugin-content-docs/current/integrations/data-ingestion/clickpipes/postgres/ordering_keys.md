@@ -16,7 +16,7 @@ integration:
 
 在默认的 CDC（变更数据捕获）配置下，选择与 Postgres 主键不同的排序键可能会在 ClickHouse 中导致数据去重问题。这是因为 ClickHouse 中的排序键具有双重角色：既控制数据的索引和排序，又充当去重键。解决此问题的最简单方法是定义可刷新materialized view。
 
-## 使用可刷新的物化视图 {#use-refreshable-materialized-views}
+## 使用可刷新的物化视图 \\{#use-refreshable-materialized-views\\}
 
 定义自定义排序键（ORDER BY）的一个简单方法是使用[可刷新物化视图](/materialized-view/refreshable-materialized-view)（MV）。使用它们可以定期（例如每 5 或 10 分钟）按所需的排序键复制整张表。
 
@@ -32,17 +32,17 @@ WHERE _peerdb_is_deleted = 0; -- this does the deduplication
 ```
 
 
-## 在不使用可刷新物化视图时自定义排序键 {#custom-ordering-keys-without-refreshable-materialized-views}
+## 在不使用可刷新物化视图时自定义排序键 \\{#custom-ordering-keys-without-refreshable-materialized-views\\}
 
 如果由于数据规模问题无法使用可刷新物化视图，可以参考下面的一些建议，在更大的表上定义自定义排序键，并解决与去重相关的问题。
 
-### 选择对给定行不会变化的排序键列 {#choose-ordering-key-columns-that-dont-change-for-a-given-row}
+### 选择对给定行不会变化的排序键列 \\{#choose-ordering-key-columns-that-dont-change-for-a-given-row\\}
 
 在 ClickHouse 中为排序键（除了来自 Postgres 的主键）包含额外列时，我们建议选择对每一行来说都不会发生变化的列。这有助于避免在使用 ReplacingMergeTree 时出现数据一致性和去重问题。
 
 例如，在多租户 SaaS 应用中，将 (`tenant_id`, `id`) 作为排序键是一个不错的选择。这些列可以唯一标识每一行，并且即使其他列发生变化，对于某个给定的 `id`，其对应的 `tenant_id` 始终保持不变。由于按 `id` 去重与按 (`tenant_id`, `id`) 去重是一致的，这有助于避免在 `tenant_id` 发生变化时可能出现的数据[去重问题](https://docs.peerdb.io/mirror/ordering-key-different)。
 
-### 在 Postgres 表上将 Replica Identity 设置为自定义排序键 {#set-replica-identity-on-postgres-tables-to-custom-ordering-key}
+### 在 Postgres 表上将 Replica Identity 设置为自定义排序键 \\{#set-replica-identity-on-postgres-tables-to-custom-ordering-key\\}
 
 为了让 Postgres CDC 按预期工作，一个重要步骤是修改表上的 `REPLICA IDENTITY`，以包含排序键列。这对于准确处理 DELETE 操作至关重要。
 

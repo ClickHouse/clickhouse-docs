@@ -7,7 +7,7 @@ description: 'Cloud リファレンスセクション用ランディングペー
 doc_type: 'landing-page'
 ---
 
-# Cloud リファレンス {#cloud-reference}
+# Cloud リファレンス \\{#cloud-reference\\}
 
 このセクションは ClickHouse Cloud のより技術的な詳細に関するリファレンスガイドで、次のページで構成されています:
 

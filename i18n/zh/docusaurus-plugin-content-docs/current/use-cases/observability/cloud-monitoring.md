@@ -14,11 +14,11 @@ import ObservabilityIntegrations from '@site/i18n/zh/docusaurus-plugin-content-d
 import DirectIntegrations from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
 import CommunityMonitoring from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
-# ClickHouse Cloud 监控 {#cloud-monitoring}
+# ClickHouse Cloud 监控 \\{#cloud-monitoring\\}
 
 本指南为正在评估 ClickHouse Cloud 的企业团队提供有关生产环境部署中监控与可观测性能力的全面信息。企业客户经常询问开箱即用的监控功能、与现有可观测性技术栈（包括 Datadog 和 AWS CloudWatch 等工具）的集成方式，以及 ClickHouse 的监控能力与自托管部署之间的对比。
 
-## 高级可观测性仪表板 {#advanced-observability}
+## 高级可观测性仪表板 \\{#advanced-observability\\}
 
 ClickHouse Cloud 通过 Monitoring 部分中可访问的内置仪表板界面提供全面监控。这些仪表板无需额外配置即可实时可视化系统与性能指标，是在 ClickHouse Cloud 中进行生产环境实时监控的主要工具。
 
@@ -40,7 +40,7 @@ ClickHouse Cloud 通过 Monitoring 部分中可访问的内置仪表板界面提
 
 有关仪表板功能和可用指标的详细信息，请参阅[高级仪表板文档](/cloud/manage/monitor/advanced-dashboard)。
 
-## 查询洞察与资源监控 {#query-insights}
+## 查询洞察与资源监控 \\{#query-insights\\}
 
 ClickHouse Cloud 提供了额外的监控能力：
 
@@ -49,7 +49,7 @@ ClickHouse Cloud 提供了额外的监控能力：
 
 有关功能的详细说明，请参阅 [query insights](/cloud/get-started/query-insights) 和 [resource utilization](/operations/monitoring#resource-utilization) 文档。
 
-## 兼容 Prometheus 的指标端点 {#prometheus}
+## 兼容 Prometheus 的指标端点 \\{#prometheus\\}
 
 ClickHouse Cloud 提供一个 Prometheus 端点。这样可以让用户延续现有工作流、利用团队既有经验，并将 ClickHouse 指标集成到包括 Grafana、Datadog 在内的企业级监控平台以及其他兼容 Prometheus 的工具中。 
 
@@ -64,7 +64,7 @@ ClickHouse Cloud 提供一个 Prometheus 端点。这样可以让用户延续现
 
 <ObservabilityIntegrations/>
 
-### ClickStack 部署选项 {#clickstack-deployment}
+### ClickStack 部署选项 \\{#clickstack-deployment\\}
 
 - **HyperDX in ClickHouse Cloud**（私有预览）：可以在任何 ClickHouse Cloud 服务上启动 HyperDX。
 - [Helm](/use-cases/observability/clickstack/deployment/helm)：推荐用于基于 Kubernetes 的调试环境。支持与 ClickHouse Cloud 集成，并允许通过 `values.yaml` 进行环境特定配置、资源限制和扩缩容。
@@ -81,7 +81,7 @@ ClickHouse Cloud 提供一个 Prometheus 端点。这样可以让用户延续现
 
 <CommunityMonitoring/>
 
-## 系统影响考量 {#system-impact}
+## 系统影响考量 \\{#system-impact\\}
 
 以上所有方法都以不同方式组合了以下途径：依赖 Prometheus 端点、由 ClickHouse Cloud 管理，或直接查询系统表。
 其中最后一种方式依赖于查询生产环境中的 ClickHouse 服务。这会为受监控系统增加查询负载，并阻止 ClickHouse Cloud 实例进入空闲状态，从而影响成本优化。此外，如果生产系统发生故障，由于二者是耦合的，监控也可能受到影响。该方法非常适合用于深入分析与调试，但不太适用于生产环境的实时监控。在评估直接与 Grafana 集成，还是采用下一节讨论的外部工具集成方案时，应权衡系统细粒度分析能力与运维开销之间的取舍。

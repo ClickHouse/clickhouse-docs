@@ -22,7 +22,7 @@ import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# Lightdash {#lightdash}
+# Lightdash \{#lightdash\}
 
 <PartnerBadge/>
 
@@ -32,7 +32,7 @@ Lightdash 是一个为现代数据团队构建的 **AI 优先 BI 平台**，将 
 
 此次合作将 **ClickHouse 的极速性能** 与 **Lightdash 的开发者体验**相结合，使得借助 AI 进行数据探索、可视化和洞察自动化变得前所未有地轻松。
 
-## 使用 Lightdash 和 ClickHouse 构建交互式仪表板 {#build-an-interactive-dashboard}
+## 使用 Lightdash 和 ClickHouse 构建交互式仪表板 \\{#build-an-interactive-dashboard\\}
 
 本指南将介绍如何使用 **Lightdash** 连接 **ClickHouse** 来探索 dbt 模型并构建交互式仪表板。
 以下示例展示了一个由 ClickHouse 数据驱动的完整仪表板。

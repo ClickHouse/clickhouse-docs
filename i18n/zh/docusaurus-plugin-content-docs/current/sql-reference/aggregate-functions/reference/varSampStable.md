@@ -7,7 +7,7 @@ doc_type: 'reference'
 
 
 
-## varSampStable {#varsampstable}
+## varSampStable \\{#varsampstable\\}
 
 计算数据集的样本方差。与 [`varSamp`](../reference/varSamp.md) 不同,该函数使用数值稳定算法。运行速度较慢,但计算误差更小。
 

@@ -7,7 +7,7 @@ doc_type: 'landing-page'
 keywords: ['私有网络', '网络安全', 'VPC', '网络连接', '云功能']
 ---
 
-# 私有网络 {#private-networking}
+# 私有网络 \\{#private-networking\\}
 
 ClickHouse Cloud 支持将您的服务连接到云端虚拟网络。请根据您的云服务提供商，参考以下指南完成配置：
 

@@ -10,7 +10,7 @@ keywords: ['キー・バリュー', 'データモデル', 'ユースケース', 
 
 
 
-# ClickHouse をキー・バリュー型ストレージとして使用できますか？ {#can-i-use-clickhouse-as-a-key-value-storage}
+# ClickHouse をキー・バリュー型ストレージとして使用できますか？ \\{#can-i-use-clickhouse-as-a-key-value-storage\\}
 
 短い答えは **「いいえ」** です。キー・バリュー型ワークロードは、ClickHouse を<span class="text-danger">**使用すべきではない**</span>ケースの代表例のひとつです。結局のところ ClickHouse は [OLAP](../../faq/general/olap.md) システムであり、キー・バリュー型ストレージには他にも優れたシステムが多数存在します。
 

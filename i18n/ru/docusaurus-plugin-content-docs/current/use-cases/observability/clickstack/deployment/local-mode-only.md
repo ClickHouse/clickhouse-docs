@@ -23,13 +23,13 @@ import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/us
 
 **Однако в этой сборке HyperDX аутентификация пользователей отключена**
 
-### Подходит для {#suitable-for}
+### Подходит для \\{#suitable-for\\}
 
 * Демонстраций
 * Отладки
 * Разработки, где используется HyperDX
 
-## Этапы развертывания {#deployment-steps}
+## Этапы развертывания \\{#deployment-steps\\}
 
 <br />
 

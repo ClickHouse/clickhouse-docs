@@ -5,7 +5,7 @@ title: 'avg'
 doc_type: 'reference'
 ---
 
-# avg {#avg}
+# avg \{#avg\}
 
 Вычисляет среднее арифметическое.
 

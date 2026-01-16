@@ -8,7 +8,7 @@ title: 'timeSeriesTags'
 doc_type: 'reference'
 ---
 
-# Табличная функция timeSeriesTags {#timeseriestags-table-function}
+# Табличная функция timeSeriesTags \\{#timeseriestags-table-function\\}
 
 `timeSeriesTags(db_name.time_series_table)` — возвращает таблицу [tags](../../engines/table-engines/integrations/time-series.md#tags-table),
 используемую таблицей `db_name.time_series_table`, которая использует движок [TimeSeries](../../engines/table-engines/integrations/time-series.md).

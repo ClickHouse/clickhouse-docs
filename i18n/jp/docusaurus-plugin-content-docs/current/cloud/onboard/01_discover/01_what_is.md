@@ -7,7 +7,7 @@ hide_title: true
 doc_type: 'guide'
 ---
 
-## ClickHouse Cloud とは何ですか？ {#what-is-clickhouse-cloud}
+## ClickHouse Cloud とは何ですか？ \\{#what-is-clickhouse-cloud\\}
 
 ClickHouse Cloud は、世界最速かつ最も人気のあるオープンソースの列指向オンライン分析処理 (OLAP) データベースである ClickHouse の
 開発元によって提供される、フルマネージドな Cloud サービスです。
@@ -15,7 +15,7 @@ ClickHouse Cloud は、世界最速かつ最も人気のあるオープンソー
 ClickHouse Cloud ではインフラストラクチャ、メンテナンス、スケーリング、および運用がすべて管理されるため、
 組織や顧客に対してより迅速に価値を創出するという、最も重要な作業に集中できます。
 
-## ClickHouse Cloud の利点 {#benefits-of-clickhouse-cloud}
+## ClickHouse Cloud の利点 \\{#benefits-of-clickhouse-cloud\\}
 
 ClickHouse Cloud は、オープンソース版と比べていくつかの大きな利点があります。
 
@@ -26,7 +26,7 @@ ClickHouse Cloud は、オープンソース版と比べていくつかの大き
 - **総保有コスト**: 価格対性能比に優れ、運用管理の負荷も低く抑えられます。
 - **幅広いエコシステム**: お気に入りのデータコネクタ、可視化ツール、SQL および各種言語クライアントをそのまま利用できます。
 
-## セルフマネージド ClickHouse と ClickHouse Cloud の比較 {#oss-vs-clickhouse-cloud}
+## セルフマネージド ClickHouse と ClickHouse Cloud の比較 \\{#oss-vs-clickhouse-cloud\\}
 
 | 機能                           | 利点                                                                                                                                                                                                                                                                                                       | OSS ClickHouse  | ClickHouse Cloud  |
 |--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|-------------------|

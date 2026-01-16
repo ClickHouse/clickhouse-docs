@@ -13,7 +13,7 @@ integration:
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Embeddable を ClickHouse に接続する {#connecting-embeddable-to-clickhouse}
+# Embeddable を ClickHouse に接続する \\{#connecting-embeddable-to-clickhouse\\}
 
 <CommunityMaintainedBadge/>
 
@@ -23,11 +23,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 組み込みの行レベルセキュリティ機能により、各ユーザーは自分に閲覧権限があるデータだけを常に正確に確認できます。さらに、完全に構成可能な 2 段階のキャッシュにより、スケールさせながら高速なリアルタイムアナリティクスを提供できます。
 
-## 1. 接続情報を確認する {#1-gather-your-connection-details}
+## 1. 接続情報を確認する \\{#1-gather-your-connection-details\\}
 
 <ConnectionDetails />
 
-## 2. ClickHouse 接続タイプを作成する {#2-create-a-clickhouse-connection-type}
+## 2. ClickHouse 接続タイプを作成する \\{#2-create-a-clickhouse-connection-type\\}
 
 Embeddable API を使用してデータベース接続を追加します。この接続は ClickHouse サービスへの接続に使用されます。次の API 呼び出しを使用して接続を追加できます。
 

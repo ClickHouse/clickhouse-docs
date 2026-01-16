@@ -7,9 +7,9 @@ title: 'Прокси-серверы от сторонних разработчи
 doc_type: 'reference'
 ---
 
-# Прокси-серверы сторонних разработчиков {#proxy-servers-from-third-party-developers}
+# Прокси-серверы сторонних разработчиков \\{#proxy-servers-from-third-party-developers\\}
 
-## chproxy {#chproxy}
+## chproxy \\{#chproxy\\}
 
 [chproxy](https://github.com/Vertamedia/chproxy) — это HTTP‑прокси и балансировщик нагрузки для базы данных ClickHouse.
 
@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 Реализован на Go.
 
-## KittenHouse {#kittenhouse}
+## KittenHouse \\{#kittenhouse\\}
 
 [KittenHouse](https://github.com/VKCOM/kittenhouse) предназначен для использования в качестве локального прокси между ClickHouse и сервером приложения в тех случаях, когда буферизация данных INSERT на стороне приложения невозможна или неудобна.
 
@@ -33,7 +33,7 @@ doc_type: 'reference'
 
 Реализован на Go.
 
-## ClickHouse-Bulk {#clickhouse-bulk}
+## ClickHouse-Bulk \\{#clickhouse-bulk\\}
 
 [ClickHouse-Bulk](https://github.com/nikepan/clickhouse-bulk) — это простой коллектор для вставки данных в ClickHouse.
 

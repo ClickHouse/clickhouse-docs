@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 `JSON` フォーマットは、JSON 形式でデータの読み取りおよび出力を行います。
 
@@ -41,7 +41,7 @@ JavaScript との互換性のため、Int64 および UInt64 整数はデフォ�
 
 ClickHouse は [NULL](/sql-reference/syntax.md) をサポートしており、JSON 出力では `null` として表示されます。出力で `+nan`、`-nan`、`+inf`、`-inf` の値を有効にするには、[`output_format_json_quote_denormals`](/operations/settings/settings-formats.md/#output_format_json_quote_denormals) を `1` に設定します。
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
 例：
 
@@ -99,11 +99,11 @@ SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase WITH TOTA
 }
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \\{#format-settings\\}
 
 JSON 入力フォーマットの場合、[`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) 設定が `1` に設定されていると、入力データ内のメタデータに含まれる型が、テーブル内の対応する列の型と照合されます。
 
-## 関連項目 {#see-also}
+## 関連項目 \\{#see-also\\}
 
 - [JSONEachRow](/interfaces/formats/JSONEachRow) フォーマット
 - [output_format_json_array_of_rows](/operations/settings/settings-formats.md/#output_format_json_array_of_rows) 設定

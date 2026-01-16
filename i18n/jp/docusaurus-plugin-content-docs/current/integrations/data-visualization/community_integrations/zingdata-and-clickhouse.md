@@ -25,13 +25,13 @@ import zing_08 from '@site/static/images/integrations/data-visualization/zing_08
 import zing_09 from '@site/static/images/integrations/data-visualization/zing_09.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Zing Data を ClickHouse に接続する {#connect-zing-data-to-clickhouse}
+# Zing Data を ClickHouse に接続する \\{#connect-zing-data-to-clickhouse\\}
 
 <CommunityMaintainedBadge/>
 
 <a href="https://www.zingdata.com/" target="_blank">Zing Data</a> は、データ探索および可視化のためのプラットフォームです。Zing Data は、ClickHouse が提供する JS ドライバーを使用して ClickHouse に接続します。
 
-## 接続方法 {#how-to-connect}
+## 接続方法 \\{#how-to-connect\\}
 
 1. 接続情報を収集します。
 
@@ -64,7 +64,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 6. ClickHouse データソースが追加されると、Zing の組織内の全ユーザーが **Data Sources** / **Sources** タブから利用できるようになります。
 
-## Zing Data でチャートとダッシュボードを作成する {#creating-charts-and-dashboards-in-zing-data}
+## Zing Data でチャートとダッシュボードを作成する \\{#creating-charts-and-dashboards-in-zing-data\\}
 
 1. ClickHouse データソースを追加したら、Web では **Zing App** をクリックし、モバイルではそのデータソースをタップしてチャートの作成を開始します。
 
@@ -93,7 +93,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
     <Image size="md" img={zing_09} alt="複数の可視化がダッシュボードレイアウトに配置された Zing Data のダッシュボードビュー" border />
     <br/>
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \\{#related-content\\}
 
 - [ドキュメント](https://docs.getzingdata.com/docs/)
 - [クイックスタート](https://getzingdata.com/quickstart/)

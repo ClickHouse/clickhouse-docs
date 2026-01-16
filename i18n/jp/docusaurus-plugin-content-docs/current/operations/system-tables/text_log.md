@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.text&#95;log {#systemtext&#95;log}
+# system.text&#95;log \\{#systemtext&#95;log\\}
 
 <SystemTableCloud />
 

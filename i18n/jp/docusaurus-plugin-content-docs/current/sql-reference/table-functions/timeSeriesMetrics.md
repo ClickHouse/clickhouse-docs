@@ -7,7 +7,7 @@ title: 'timeSeriesMetrics'
 doc_type: 'reference'
 ---
 
-# timeSeriesMetrics テーブル関数 {#timeseriesmetrics-table-function}
+# timeSeriesMetrics テーブル関数 \\{#timeseriesmetrics-table-function\\}
 
 `timeSeriesMetrics(db_name.time_series_table)` — テーブルエンジンとして [TimeSeries](../../engines/table-engines/integrations/time-series.md) エンジンを使用するテーブル `db_name.time_series_table` が利用する [metrics](../../engines/table-engines/integrations/time-series.md#metrics-table) テーブルを返します。
 

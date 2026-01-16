@@ -7,14 +7,14 @@ sidebar_label: 'anyIf'
 doc_type: 'reference'
 ---
 
-# anyIf {#avgif}
+# anyIf \\{#avgif\\}
 
-## 描述 {#description}
+## 描述 \\{#description\\}
 
 可以将 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器应用于 [`any`](/sql-reference/aggregate-functions/reference/any)
 聚合函数，从给定列中选出首个满足指定条件的元素。
 
-## 示例用法 {#example-usage}
+## 示例用法 \\{#example-usage\\}
 
 在本示例中，我们将创建一个用于存储带有成功标志的销售数据的表，
 并使用 `anyIf` 分别选出金额大于 200 和小于 200 的首个 `transaction_id`。
@@ -52,6 +52,6 @@ FROM sales;
 └────────────┴────────────┘
 ```
 
-## 另请参阅 {#see-also}
+## 另请参阅 \\{#see-also\\}
 - [`any`](/sql-reference/aggregate-functions/reference/any)
 - [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

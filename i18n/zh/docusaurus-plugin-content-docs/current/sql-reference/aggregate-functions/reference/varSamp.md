@@ -7,7 +7,7 @@ doc_type: 'reference'
 
 
 
-## varSamp {#varsamp}
+## varSamp \\{#varsamp\\}
 
 计算数据集的样本方差。
 

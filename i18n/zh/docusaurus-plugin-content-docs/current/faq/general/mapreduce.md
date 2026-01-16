@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# 为什么不使用类似 MapReduce 的系统？ {#why-not-use-something-like-mapreduce}
+# 为什么不使用类似 MapReduce 的系统？ \\{#why-not-use-something-like-mapreduce\\}
 
 我们可以把类似 MapReduce 的系统称为分布式计算系统，其中的 reduce 操作是基于分布式排序实现的。这一类中最常见的开源解决方案是 [Apache Hadoop](http://hadoop.apache.org)。 
 

@@ -13,7 +13,7 @@ doc_type: 'reference'
 |----------------|-----------------|-----------|
 | ✔              | ✔               |           |
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 :::tip
 Вывод форматов JSONColumns* содержит имя поля ClickHouse, а затем содержимое каждой строки таблицы для этого поля;
@@ -26,9 +26,9 @@ doc_type: 'reference'
 Формат `JSONColumns` буферизует все данные в памяти и затем выводит их одним блоком, поэтому это может приводить к высокому потреблению памяти.
 :::
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
-### Вставка данных {#inserting-data}
+### Вставка данных \\{#inserting-data\\}
 
 Используйте JSON-файл со следующими данными под названием `football.json`:
 
@@ -49,7 +49,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONColumns;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных \\{#reading-data\\}
 
 Считывайте данные в формате `JSONColumns`:
 
@@ -72,7 +72,7 @@ FORMAT JSONColumns
 }
 ```
 
-## Настройки формата {#format-settings}
+## Настройки формата \\{#format-settings\\}
 
 При импорте столбцы с неизвестными именами будут пропущены, если настройка [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в значение `1`.
 Столбцы, которые отсутствуют в блоке, будут заполнены значениями по умолчанию (для этого можно использовать настройку [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields)).

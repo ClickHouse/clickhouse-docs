@@ -7,7 +7,7 @@ title: 'URL テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# URL テーブルエンジン {#url-table-engine}
+# URL テーブルエンジン \\{#url-table-engine\\}
 
 リモートの HTTP/HTTPS サーバーとの間でデータをクエリします。このエンジンは [File](../../../engines/table-engines/special/file.md) エンジンに類似しています。
 
@@ -39,13 +39,13 @@ doc_type: 'reference'
 
 たとえば、エンジン式 `URL('http://localhost/test.gzip')` の場合、`gzip` 圧縮方式が適用されますが、`URL('http://localhost/test.fr')` の場合、サフィックス `fr` が上記のいずれの圧縮方式とも一致しないため、圧縮は有効になりません。
 
-## 使用方法 {#using-the-engine-in-the-clickhouse-server}
+## 使用方法 \\{#using-the-engine-in-the-clickhouse-server\\}
 
 `INSERT` および `SELECT` クエリは、それぞれ `POST` および `GET` リクエストに変換されます。`POST` リクエストを処理するには、リモートサーバーが [チャンク転送エンコーディング](https://en.wikipedia.org/wiki/Chunked_transfer_encoding) をサポートしている必要があります。
 
 [max_http_get_redirects](/operations/settings/settings#max_http_get_redirects) 設定を使用して、HTTP GET リダイレクトの最大ホップ数を制限できます。
 
-## 例 {#example}
+## 例 \\{#example\\}
 
 **1.** サーバー上に `url_engine_table` テーブルを作成します：
 
@@ -90,7 +90,7 @@ SELECT * FROM url_engine_table
 └───────┴───────┘
 ```
 
-## 実装の詳細 {#details-of-implementation}
+## 実装の詳細 \\{#details-of-implementation\\}
 
 - 読み取りと書き込みは並行して実行できます
 - 以下はサポートされていません：
@@ -98,7 +98,7 @@ SELECT * FROM url_engine_table
   - インデックス
   - レプリケーション
 
-## 仮想カラム {#virtual-columns}
+## 仮想カラム \\{#virtual-columns\\}
 
 - `_path` — `URL` へのパス。型: `LowCardinality(String)`。
 - `_file` — `URL` のリソース名。型: `LowCardinality(String)`。
@@ -106,7 +106,7 @@ SELECT * FROM url_engine_table
 - `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL`。
 - `_headers` - HTTP レスポンスヘッダー。型: `Map(LowCardinality(String), LowCardinality(String))`。
 
-## ストレージ設定 {#storage-settings}
+## ストレージ設定 \\{#storage-settings\\}
 
 - [engine_url_skip_empty_files](/operations/settings/settings.md#engine_url_skip_empty_files) - 読み込み時に空のファイルをスキップできるようにします。既定では無効です。
 - [enable_url_encoding](/operations/settings/settings.md#enable_url_encoding) - URI パスのエンコード／デコード処理を有効／無効にできます。既定では有効です。

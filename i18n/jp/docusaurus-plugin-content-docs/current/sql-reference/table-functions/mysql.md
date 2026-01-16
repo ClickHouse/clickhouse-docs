@@ -7,17 +7,17 @@ title: 'mysql'
 doc_type: 'reference'
 ---
 
-# mysql テーブル関数 {#mysql-table-function}
+# mysql テーブル関数 \\{#mysql-table-function\\}
 
 リモートの MySQL サーバー上のデータに対して、`SELECT` および `INSERT` クエリを実行できるようにします。
 
-## 構文 {#syntax}
+## 構文 \\{#syntax\\}
 
 ```sql
 mysql({host:port, database, table, user, password[, replace_query, on_duplicate_clause] | named_collection[, option=value [,..]]})
 ```
 
-## 引数 {#arguments}
+## 引数 \\{#arguments\\}
 
 | Argument              | Description                                                                                                                                                                                                                                                                                                                                                                                                       |
 | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -47,7 +47,7 @@ SELECT name FROM mysql(`mysql{1|2|3}:3306`, 'mysql_database', 'mysql_table', 'us
 SELECT name FROM mysql(`mysql1:3306|mysql2:3306|mysql3:3306`, 'mysql_database', 'mysql_table', 'user', 'password');
 ```
 
-## 返される値 {#returned_value}
+## 返される値 \\{#returned_value\\}
 
 元の MySQL テーブルと同じカラムを持つテーブルオブジェクト。
 
@@ -59,7 +59,7 @@ MySQL の一部のデータ型は、異なる ClickHouse の型にマッピン�
 `INSERT` クエリでは、テーブル関数 `mysql(...)` と、カラム名リスト付きのテーブル名を区別するために、キーワード `FUNCTION` または `TABLE FUNCTION` を必ず使用する必要があります。以下の例を参照してください。
 :::
 
-## 例 {#examples}
+## 例 \\{#examples\\}
 
 MySQL のテーブル:
 
@@ -142,7 +142,7 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password')
 WHERE id > (SELECT max(id) FROM mysql_copy);
 ```
 
-## 関連項目 {#related}
+## 関連項目 \\{#related\\}
 
 - [MySQL テーブルエンジン](../../engines/table-engines/integrations/mysql.md)
 - [MySQL をディクショナリのソースとして使用する](/sql-reference/dictionaries#mysql)

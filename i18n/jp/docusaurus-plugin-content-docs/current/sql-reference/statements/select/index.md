@@ -7,11 +7,11 @@ title: 'SELECT クエリ'
 doc_type: 'reference'
 ---
 
-# SELECT クエリ {#select-query}
+# SELECT クエリ \\{#select-query\\}
 
 `SELECT` クエリはデータの取得を行います。デフォルトでは、要求されたデータはクライアントに返されますが、[INSERT INTO](../../../sql-reference/statements/insert-into.md) と組み合わせることで、別のテーブルに渡すこともできます。
 
-## 構文 {#syntax}
+## 構文 \\{#syntax\\}
 
 ```sql
 [WITH expr_list(subquery)]
@@ -60,13 +60,13 @@ SELECT [DISTINCT [ON (column1, column2, ...)]] expr_list
 - [INTO OUTFILE句](../../../sql-reference/statements/select/into-outfile.md)
 - [FORMAT句](../../../sql-reference/statements/select/format.md)
 
-## SELECT句 {#select-clause}
+## SELECT句 \\{#select-clause\\}
 
 `SELECT`句で指定された[式](/sql-reference/syntax#expressions)は、上記で説明したすべての句の操作が完了した後に計算されます。これらの式は、結果の各行に対して個別に適用されるかのように動作します。`SELECT`句の式に集約関数が含まれている場合、ClickHouseは[GROUP BY](/sql-reference/statements/select/group-by)集約の際に、集約関数とその引数として使用される式を処理します。
 
 結果にすべての列を含める場合は、アスタリスク(`*`)記号を使用します。例:`SELECT * FROM ...`
 
-### 動的列選択 {#dynamic-column-selection}
+### 動的列選択 \\{#dynamic-column-selection\\}
 
 動的列選択(COLUMNS式とも呼ばれます)を使用すると、[re2](<https://en.wikipedia.org/wiki/RE2_(software)>)正規表現によって結果内の一部の列を照合できます。
 
@@ -125,7 +125,7 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 
 `COLUMNS`式に一致した列は、異なるデータ型を持つことができます。`COLUMNS`がどの列にも一致せず、`SELECT`内の唯一の式である場合、ClickHouseは例外をスローします。
 
-### アスタリスク {#asterisk}
+### アスタリスク \\{#asterisk\\}
 
 式の代わりに、クエリの任意の部分にアスタリスクを配置できます。クエリが解析されると、アスタリスクはすべてのテーブル列のリストに展開されます(`MATERIALIZED`列と`ALIAS`列を除く)。アスタリスクの使用が正当化されるケースはわずかです:
 
@@ -137,7 +137,7 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 
 その他のすべてのケースでは、アスタリスクの使用は推奨されません。列指向DBMSの利点ではなく欠点のみをもたらすためです。言い換えれば、アスタリスクの使用は推奨されません。
 
-### 極値 {#extreme-values}
+### 極値 \\{#extreme-values\\}
 
 結果に加えて、結果列の最小値と最大値を取得することもできます。これを行うには、**extremes**設定を1に設定します。最小値と最大値は、数値型、日付、および日時に対して計算されます。その他の列については、デフォルト値が出力されます。
 
@@ -148,13 +148,13 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 
 極値は`LIMIT`の前、ただし`LIMIT BY`の後の行に対して計算されます。ただし、`LIMIT offset, size`を使用する場合、`offset`より前の行も`extremes`に含まれます。ストリームリクエストでは、結果に`LIMIT`を通過した少数の行が含まれる場合があります。
 
-### 注意事項 {#notes}
+### 注意事項 \\{#notes\\}
 
 クエリのあらゆる部分でシノニム(`AS`エイリアス)を使用できます。
 
 `GROUP BY`、`ORDER BY`、および`LIMIT BY`句は位置引数をサポートできます。これを有効にするには、[enable_positional_arguments](/operations/settings/settings#enable_positional_arguments)設定をオンにします。例えば、`ORDER BY 1,2`とすると、テーブルの行が第1列、次に第2列でソートされます。
 
-## 実装の詳細 {#implementation-details}
+## 実装の詳細 \\{#implementation-details\\}
 
 クエリが `DISTINCT`、`GROUP BY`、`ORDER BY` 句、および `IN` と `JOIN` サブクエリを省略している場合、クエリは完全にストリーム処理され、O(1) の RAM 量を使用します。それ以外の場合、適切な制限が指定されていないと、クエリは大量の RAM を消費する可能性があります:
 
@@ -174,7 +174,7 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 
 詳細については、「設定」のセクションを参照してください。外部ソート(一時テーブルをディスクに保存)および外部集約を使用することができます。
 
-## SELECT修飾子 {#select-modifiers}
+## SELECT修飾子 \\{#select-modifiers\\}
 
 `SELECT`クエリでは以下の修飾子を使用できます。
 
@@ -184,7 +184,7 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 | [`EXCEPT`](./except_modifier.md)   | 結果から除外する1つ以上のカラム名を指定します。一致するすべてのカラム名が出力から省略されます。                                                                                                                                                                                                                                                                                            |
 | [`REPLACE`](./replace_modifier.md) | 1つ以上の[式エイリアス](/sql-reference/syntax#expression-aliases)を指定します。各エイリアスは`SELECT *`文のカラム名と一致する必要があります。出力カラムリストでは、エイリアスと一致するカラムがその`REPLACE`内の式に置き換えられます。この修飾子はカラムの名前や順序を変更しませんが、値と値の型を変更することができます。 |
 
-### 修飾子の組み合わせ {#modifier-combinations}
+### 修飾子の組み合わせ \\{#modifier-combinations\\}
 
 各修飾子を個別に使用することも、組み合わせて使用することもできます。
 
@@ -214,7 +214,7 @@ SELECT * REPLACE(i + 1 AS i) EXCEPT (j) APPLY(sum) from columns_transformers;
 └─────────────────┴────────┘
 ```
 
-## SELECTクエリでのSETTINGS {#settings-in-select-query}
+## SELECTクエリでのSETTINGS \\{#settings-in-select-query\\}
 
 `SELECT`クエリ内で必要な設定を直接指定できます。設定値はこのクエリにのみ適用され、クエリ実行後はデフォルト値または以前の値にリセットされます。
 

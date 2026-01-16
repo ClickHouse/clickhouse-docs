@@ -6,7 +6,7 @@ title: 'system.licenses'
 doc_type: 'reference'
 ---
 
-# system.licenses {#systemlicenses}
+# system.licenses \\{#systemlicenses\\}
 
 包含 ClickHouse 源码中 [contrib](https://github.com/ClickHouse/ClickHouse/tree/master/contrib) 目录下第三方库的许可证信息。
 

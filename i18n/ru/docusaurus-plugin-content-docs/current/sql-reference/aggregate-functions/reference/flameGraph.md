@@ -5,18 +5,18 @@ title: 'flameGraph'
 doc_type: 'reference'
 ---
 
-# flameGraph {#flamegraph}
+# flameGraph \{#flamegraph\}
 
 Агрегатная функция, которая строит [flamegraph](https://www.brendangregg.com/flamegraphs.html) на основе списка стек-трейсов. Возвращает массив строк, который может быть использован утилитой [flamegraph.pl](https://github.com/brendangregg/FlameGraph) для построения SVG flamegraph.
 
-## Синтаксис {#syntax}
+## Синтаксис \{#syntax\}
 
 ```sql
 flameGraph(traces, [size], [ptr])
 ```
 
 
-## Параметры {#parameters}
+## Параметры \\{#parameters\\}
 
 - `traces` — стек вызовов. [Array](../../data-types/array.md)([UInt64](../../data-types/int-uint.md)).
 - `size` — размер выделения памяти для профилирования. (необязательный параметр, по умолчанию `1`). [UInt64](../../data-types/int-uint.md).
@@ -27,13 +27,13 @@ flameGraph(traces, [size], [ptr])
 Показываются только те выделения, которые не были освобождены. Несопоставленные операции освобождения игнорируются.
 :::
 
-## Возвращаемое значение {#returned-value}
+## Возвращаемое значение \\{#returned-value\\}
 
 - Массив строк, предназначенный для использования с [утилитой flamegraph.pl](https://github.com/brendangregg/FlameGraph). [Array](../../data-types/array.md)([String](../../data-types/string.md)).
 
-## Примеры {#examples}
+## Примеры \\{#examples\\}
 
-### Построение flamegraph на основе CPU‑профилировщика запросов {#building-a-flamegraph-based-on-a-cpu-query-profiler}
+### Построение flamegraph на основе CPU‑профилировщика запросов \{#building-a-flamegraph-based-on-a-cpu-query-profiler\}
 
 ```sql
 SET query_profiler_cpu_time_period_ns=10000000;
@@ -45,7 +45,7 @@ clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGr
 ```
 
 
-### Построение flame-графа на основе профилировщика памяти запросов, отображающего все выделения {#building-a-flamegraph-based-on-a-memory-query-profiler-showing-all-allocations}
+### Построение flame-графа на основе профилировщика памяти запросов, отображающего все выделения \{#building-a-flamegraph-based-on-a-memory-query-profiler-showing-all-allocations\}
 
 ```sql
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;
@@ -57,7 +57,7 @@ clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGr
 ```
 
 
-### Построение флеймграфа на основе профилировщика памяти запросов, показывающего выделения памяти, которые не были освобождены в контексте выполнения запроса {#building-a-flamegraph-based-on-a-memory-query-profiler-showing-allocations-which-were-not-deallocated-in-query-context}
+### Построение флеймграфа на основе профилировщика памяти запросов, показывающего выделения памяти, которые не были освобождены в контексте выполнения запроса \{#building-a-flamegraph-based-on-a-memory-query-profiler-showing-allocations-which-were-not-deallocated-in-query-context\}
 
 ```sql
 SET memory_profiler_sample_probability=1, max_untracked_memory=1, use_uncompressed_cache=1, merge_tree_max_rows_to_use_cache=100000000000, merge_tree_max_bytes_to_use_cache=1000000000000;
@@ -69,7 +69,7 @@ clickhouse client --allow_introspection_functions=1 -q "SELECT arrayJoin(flameGr
 ```
 
 
-### Построить флеймграф на основе профилировщика запросов по памяти, отображающий активные выделения памяти в определённый момент времени {#build-a-flamegraph-based-on-memory-query-profiler-showing-active-allocations-at-the-fixed-point-of-time}
+### Построить флеймграф на основе профилировщика запросов по памяти, отображающий активные выделения памяти в определённый момент времени \{#build-a-flamegraph-based-on-memory-query-profiler-showing-active-allocations-at-the-fixed-point-of-time\}
 
 ```sql
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;

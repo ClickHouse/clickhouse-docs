@@ -8,12 +8,12 @@ keywords: ['ClickHouse Cloud', '云数据库', '托管式 ClickHouse', 'Serverle
 doc_type: 'reference'
 ---
 
-# ClickHouse Cloud {#clickhouse-cloud}
+# ClickHouse Cloud \{#clickhouse-cloud\}
 
 ClickHouse Cloud 是由广受欢迎的开源 OLAP 数据库 ClickHouse 的原始作者打造的云服务。
 您可以通过[开始免费试用](https://console.clickhouse.cloud/signUp)来体验 ClickHouse Cloud。
 
-## ClickHouse Cloud 的优势 {#clickhouse-cloud-benefits}
+## ClickHouse Cloud 的优势 \{#clickhouse-cloud-benefits\}
 
 下面介绍使用 ClickHouse Cloud 的部分优势：
 
@@ -46,7 +46,7 @@ ClickHouse Cloud 是由广受欢迎的开源 OLAP 数据库 ClickHouse 的原始
   */ }
 
 
-## ClickHouse Cloud 使用的是哪个版本的 ClickHouse？ {#what-version-of-clickhouse-does-clickhouse-cloud-use}
+## ClickHouse Cloud 使用的是哪个版本的 ClickHouse？ \\{#what-version-of-clickhouse-does-clickhouse-cloud-use\\}
 
 ClickHouse Cloud 会定期将您的服务升级到包含修复、新特性和性能改进的较新版本。在开源社区发布一个核心数据库版本之后，我们会在云端预发布环境中进行额外验证，这通常需要 6–8 周时间，然后才会推送到生产环境。版本发布会按云服务提供商、服务类型和区域分阶段逐步进行。
 

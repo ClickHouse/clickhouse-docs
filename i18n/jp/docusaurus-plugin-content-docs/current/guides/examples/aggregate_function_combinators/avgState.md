@@ -7,16 +7,16 @@ sidebar_label: 'avgState'
 doc_type: 'reference'
 ---
 
-# avgState {#avgState}
+# avgState \\{#avgState\\}
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 [`State`](/sql-reference/aggregate-functions/combinators#-state) コンビネータは、
 [`avg`](/sql-reference/aggregate-functions/reference/avg) 関数に適用することで、
 `AggregateFunction(avg, T)` 型の中間状態を生成できます。ここで `T` は、
 平均の計算対象の型として指定された型です。
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
 この例では、`AggregateFunction` 型と `avgState` 関数を組み合わせて、
 ウェブサイトのトラフィックデータを集計する方法を見ていきます。
@@ -139,6 +139,6 @@ ORDER BY page_id;
 └─────────┴───────────┴──────────────────────────┘
 ```
 
-## 関連情報 {#see-also}
+## 関連情報 \\{#see-also\\}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`State`](/sql-reference/aggregate-functions/combinators#-state)

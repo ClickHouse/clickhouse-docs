@@ -7,12 +7,12 @@ title: 'ウィンドウ関数'
 doc_type: 'reference'
 ---
 
-# ウィンドウ関数 {#window-functions}
+# ウィンドウ関数 \\{#window-functions\\}
 
 ウィンドウ関数を使用すると、現在の行と関連する行の集合を対象に計算を実行できます。
 実行できる計算の一部は集約関数で行えるものと似ていますが、ウィンドウ関数では行が 1 つの結果行にグループ化されないため、各行は個別の行として返されます。
 
-## 標準ウィンドウ関数 {#standard-window-functions}
+## 標準ウィンドウ関数 \\{#standard-window-functions\\}
 
 ClickHouse は、ウィンドウおよびウィンドウ関数を定義するための標準的な文法をサポートしています。以下の表は、各機能が現在サポートされているかどうかを示します。
 
@@ -32,11 +32,11 @@ ClickHouse は、ウィンドウおよびウィンドウ関数を定義するた
 | `lag/lead(value, offset)`                                                          | ✅ <br/> 次のいずれかの回避策も使用できます:<br/> 1) `any(value) over (.... rows between &lt;offset&gt; preceding and &lt;offset&gt; preceding)`、または `lead` の場合は `following` を使用します。<br/> 2) ウィンドウフレームを考慮する、類似の `lagInFrame/leadInFrame` を使用します。`lag/lead` と同じ動作を得るには、`rows between unbounded preceding and unbounded following` を使用します。                                                                 |
 | ntile(buckets) | ✅ <br/> 次のようにウィンドウを指定します: (partition by x order by y rows between unbounded preceding and unbounded following)。 |
 
-## ClickHouse固有のウィンドウ関数 {#clickhouse-specific-window-functions}
+## ClickHouse固有のウィンドウ関数 \\{#clickhouse-specific-window-functions\\}
 
 以下のClickHouse固有のウィンドウ関数も提供されています：
 
-### nonNegativeDerivative(metric_column, timestamp_column[, INTERVAL X UNITS]) {#nonnegativederivativemetric_column-timestamp_column-interval-x-units}
+### nonNegativeDerivative(metric_column, timestamp_column[, INTERVAL X UNITS]) \\{#nonnegativederivativemetric_column-timestamp_column-interval-x-units\\}
 
 指定された`metric_column`の非負の微分値を`timestamp_column`に基づいて算出します。
 `INTERVAL`は省略可能で、デフォルトは`INTERVAL 1 SECOND`です。
@@ -45,7 +45,7 @@ ClickHouse は、ウィンドウおよびウィンドウ関数を定義するた
 - 1行目：`0`
 - $i$行目：${\text{metric}_i - \text{metric}_{i-1} \over \text{timestamp}_i - \text{timestamp}_{i-1}}  * \text{interval}$
 
-## 構文 {#syntax}
+## 構文 \\{#syntax\\}
 
 ```text
 aggregate_function (column_name)
@@ -77,7 +77,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 └─────────────────┘  <--- UNBOUNDED FOLLOWING (END of the PARTITION)
 ```
 
-### 関数 {#functions}
+### 関数 \\{#functions\\}
 
 これらの関数は、ウィンドウ関数としてのみ使用可能です。
 
@@ -90,11 +90,11 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 * [`lagInFrame(x)`](./lagInFrame.md) - 順序付けられたフレーム内で、現在の行から指定された物理オフセットだけ前の行で評価された値を返します。
 * [`leadInFrame(x)`](./leadInFrame.md) - 順序付けられたフレーム内で、現在の行から指定されたオフセットだけ後ろの行で評価された値を返します。
 
-## 例 {#examples}
+## 例 \\{#examples\\}
 
 ウィンドウ関数をどのように利用できるか、いくつかの例を見ていきます。
 
-### 行に番号を振る {#numbering-rows}
+### 行に番号を振る \\{#numbering-rows\\}
 
 ```sql
 CREATE TABLE salaries
@@ -152,7 +152,7 @@ FROM salaries;
 └─────────────────┴────────┴─────┴──────┴───────────┘
 ```
 
-### 集約関数 {#aggregation-functions}
+### 集約関数 \\{#aggregation-functions\\}
 
 各選手の年俸を、その所属チームの平均年俸と比較します。
 
@@ -198,7 +198,7 @@ FROM salaries;
 └─────────────────┴────────┴───────────────────────────┴─────────┴────────┘
 ```
 
-### 列によるパーティション分割 {#partitioning-by-column}
+### 列によるパーティション分割 \\{#partitioning-by-column\\}
 
 ```sql
 CREATE TABLE wf_partition
@@ -231,7 +231,7 @@ ORDER BY
 └──────────┴───────┴───────┴──────────────┘
 ```
 
-### フレーム境界 {#frame-bounding}
+### フレーム境界 \\{#frame-bounding\\}
 
 ```sql
 CREATE TABLE wf_frame
@@ -867,7 +867,7 @@ ORDER BY
 └──────────────┴─────────────────────┴───────┴─────────────────────────┘
 ```
 
-### 移動平均 / スライディング平均（10日ごと） {#moving--sliding-average-per-10-days}
+### 移動平均 / スライディング平均（10日ごと） \\{#moving--sliding-average-per-10-days\\}
 
 温度データは秒精度で保存されていますが、`Range` と `ORDER BY toDate(ts)` を使用することでサイズ 10 のフレームを作成し、`toDate(ts)` によってその単位は日になります。
 

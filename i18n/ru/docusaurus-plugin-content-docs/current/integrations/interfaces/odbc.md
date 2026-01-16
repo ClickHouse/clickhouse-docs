@@ -7,7 +7,7 @@ title: 'Драйвер ODBC'
 doc_type: 'reference'
 ---
 
-# ODBC-драйвер {#odbc-driver}
+# ODBC-драйвер \{#odbc-driver\}
 
 ODBC-драйвер ClickHouse предоставляет интерфейс, соответствующий стандартам, для подключения ODBC-совместимых приложений к
 ClickHouse. Он реализует ODBC API и позволяет приложениям, BI-инструментам и скриптовым средам выполнять SQL-запросы,
@@ -34,12 +34,12 @@ https://github.com/ClickHouse/clickhouse-odbc).
 на новые возможности через трекер задач по адресу https://github.com/ClickHouse/clickhouse-odbc/issues
 :::
 
-## Установка на Windows {#installation-on-windows}
+## Установка на Windows \\{#installation-on-windows\\}
 
 Последнюю версию драйвера можно найти по адресу https://github.com/ClickHouse/clickhouse-odbc/releases/latest. 
 Там вы можете скачать и запустить установщик MSI и выполнить простые шаги установки.
 
-## Тестирование {#testing}
+## Тестирование \{#testing\}
 
 Вы можете протестировать драйвер, запустив этот простой скрипт PowerShell. Скопируйте приведённый ниже текст, укажите URL, пользователя и пароль, затем вставьте текст в командную строку PowerShell — после выполнения $reader.GetValue(0) должна отобразиться версия сервера ClickHouse.
 
@@ -63,7 +63,7 @@ $conn.Close()
 ```
 
 
-## Параметры конфигурации {#configuration-parameters}
+## Параметры конфигурации \{#configuration-parameters\}
 
 Приведённые ниже параметры представляют собой наиболее часто используемые настройки для настройки соединения через
 драйвер ClickHouse ODBC. Они охватывают основные параметры аутентификации, поведения соединения и обработки данных.
@@ -98,7 +98,7 @@ Driver={ClickHouse ODBC Driver (Unicode)};Url=https://you-instance-url.gcp.click
 ```
 
 
-## Интеграция с Microsoft Power BI {#powerbi-Integration}
+## Интеграция с Microsoft Power BI \\{#powerbi-Integration\\}
 
 Вы можете использовать ODBC-драйвер для подключения Microsoft Power BI к серверу ClickHouse. Power BI предоставляет два варианта подключения: общий ODBC-коннектор и коннектор ClickHouse, оба входят в стандартную установку Power BI.
 

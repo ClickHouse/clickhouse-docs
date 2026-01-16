@@ -18,7 +18,7 @@ import csv_09 from '@site/static/images/cloud/migrate/csv_09.png';
 import csv_10 from '@site/static/images/cloud/migrate/csv_10.png';
 
 
-# Загрузка файлов в Cloud {#upload-files-to-cloud}
+# Загрузка файлов в Cloud \{#upload-files-to-cloud\}
 
 ClickHouse Cloud предоставляет простой способ импорта файлов и поддерживает
 следующие форматы:
@@ -35,7 +35,7 @@ ClickHouse Cloud предоставляет простой способ импо
 
 <VerticalStepper headerLevel="h2">
 
-## Загрузка файла {#upload-file}
+## Загрузка файла \\{#upload-file\\}
 
 На главной странице Cloud выберите свой сервис, как показано ниже:
 
@@ -56,7 +56,7 @@ ClickHouse Cloud предоставляет простой способ импо
 
 <Image img={csv_04} alt="upload_file_05" />
 
-## Настройка таблицы {#configure-table}
+## Настройка таблицы \\{#configure-table\\}
 
 После загрузки файла вы сможете настроить таблицу, в которую хотите
 вставить данные. Отобразится предварительный просмотр таблицы с первыми тремя строками.

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# Alias テーブルエンジン {#alias-table-engine}
+# Alias テーブルエンジン \\{#alias-table-engine\\}
 
 <ExperimentalBadge/>
 
@@ -22,7 +22,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 次のコマンドを実行します: `set allow_experimental_alias_table_engine = 1`。
 :::
 
-## テーブルの作成 {#creating-a-table}
+## テーブルの作成 \\{#creating-a-table\\}
 
 ```sql
 CREATE TABLE [db_name.]alias_name
@@ -40,16 +40,16 @@ ENGINE = Alias(target_db, target_table)
 `Alias` テーブルでは、明示的な列定義を行うことはできません。列はターゲットテーブルから自動的に継承されます。これにより、エイリアスは常にターゲットテーブルのスキーマと一致します。
 :::
 
-## エンジンパラメータ {#engine-parameters}
+## エンジンパラメータ \\{#engine-parameters\\}
 
 - **`target_db (optional)`** — 対象テーブルを含むデータベースの名前（省略可能）。
 - **`target_table`** — 対象テーブルの名前。
 
-## サポートされている操作 {#supported-operations}
+## サポートされている操作 \\{#supported-operations\\}
 
 `Alias` テーブルエンジンは、主要な操作をすべてサポートします。 
 
-### ターゲットテーブルに対する操作 {#operations-on-target}
+### ターゲットテーブルに対する操作 \\{#operations-on-target\\}
 
 これらの操作はターゲットテーブルに対してプロキシ経由で実行されます:
 
@@ -66,7 +66,7 @@ ENGINE = Alias(target_db, target_table)
 | `OPTIMIZE TABLE` | ✅ | ターゲットテーブルを最適化する (パートをマージ) |
 | `TRUNCATE TABLE` | ✅ | ターゲットテーブルを空にする |
 
-### エイリアス自体への操作 {#operations-on-alias}
+### エイリアス自体への操作 \\{#operations-on-alias\\}
 
 これらの操作はエイリアスのみに作用し、ターゲットテーブルには**影響しません**。
 
@@ -75,9 +75,9 @@ ENGINE = Alias(target_db, target_table)
 | `DROP TABLE` | ✅ | エイリアスのみを削除し、ターゲットテーブルには変更が加わらない |
 | `RENAME TABLE` | ✅ | エイリアスの名前だけを変更し、ターゲットテーブルには変更が加わらない |
 
-## 使用例 {#usage-examples}
+## 使用例 \\{#usage-examples\\}
 
-### 基本的なエイリアスの作成 {#basic-alias-creation}
+### 基本的なエイリアスの作成 \\{#basic-alias-creation\\}
 
 同一データベース内で簡単なエイリアスを作成します。
 
@@ -107,7 +107,7 @@ SELECT * FROM data_alias;
 └────┴──────┴───────┘
 ```
 
-### データベース間エイリアス {#cross-database-alias}
+### データベース間エイリアス \\{#cross-database-alias\\}
 
 別のデータベース内のテーブルを参照するエイリアスを作成します。
 
@@ -135,7 +135,7 @@ INSERT INTO db2.events_alias VALUES (now(), 'click', 100);
 SELECT * FROM db2.events_alias2;
 ```
 
-### エイリアス経由での書き込み操作 {#write-operations}
+### エイリアス経由での書き込み操作 \\{#write-operations\\}
 
 すべての書き込みはターゲットテーブルに転送されます。
 
@@ -165,7 +165,7 @@ SELECT count() FROM metrics;  -- Returns 7
 SELECT count() FROM metrics_alias;  -- Returns 7
 ```
 
-### スキーマの変更 {#schema-modification}
+### スキーマの変更 \\{#schema-modification\\}
 
 ALTER 操作は対象テーブルのスキーマを変更します。
 
@@ -193,7 +193,7 @@ DESCRIBE users;
 └───────┴────────┴──────────────┴────────────────────┘
 ```
 
-### データの変更 {#data-mutations}
+### データの変更 \\{#data-mutations\\}
 
 UPDATE 文および DELETE 文がサポートされています。
 
@@ -230,7 +230,7 @@ SELECT * FROM products ORDER BY id;
 └────┴──────────┴───────┴────────┘
 ```
 
-### パーティション操作 {#partition-operations}
+### パーティション操作 \\{#partition-operations\\}
 
 パーティション化されたテーブルでは、パーティション操作はそのまま伝播されます。
 
@@ -261,7 +261,7 @@ ALTER TABLE logs_alias ATTACH PARTITION '202402';
 SELECT count() FROM logs_alias;  -- Returns 3
 ```
 
-### テーブル最適化 {#table-optimization}
+### テーブル最適化 \\{#table-optimization\\}
 
 ターゲットテーブル内のパーツをマージする処理を最適化します。
 
@@ -295,7 +295,7 @@ WHERE database = currentDatabase()
   AND active;  -- Returns 1
 ```
 
-### エイリアスの管理 {#alias-management}
+### エイリアスの管理 \\{#alias-management\\}
 
 エイリアスはそれぞれ独立して名前を変更したり削除したりできます。
 

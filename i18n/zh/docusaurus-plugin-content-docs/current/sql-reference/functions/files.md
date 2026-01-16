@@ -6,7 +6,7 @@ title: '文件'
 doc_type: 'reference'
 ---
 
-## file {#file}
+## file \\{#file\\}
 
 将文件读取为字符串，并将数据加载到指定列中。文件内容不会被解析。
 

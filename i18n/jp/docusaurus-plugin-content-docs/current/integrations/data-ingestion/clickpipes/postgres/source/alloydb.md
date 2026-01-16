@@ -16,13 +16,13 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# AlloyDB Postgres ソース設定ガイド {#alloydb-postgres-source-setup-guide}
+# AlloyDB Postgres ソース設定ガイド \{#alloydb-postgres-source-setup-guide\}
 
-## サポートされているバージョン {#supported-versions}
+## サポートされているバージョン \\{#supported-versions\\}
 
 ClickPipes を使用して AlloyDB インスタンスから ClickHouse Cloud へデータをレプリケーションするには、インスタンスを **論理レプリケーション (logical replication)** 用に構成しておく必要があります。この機能は **AlloyDB バージョン 14 以降** でサポートされています。
 
-## 論理レプリケーションを有効にする {#enable-logical-replication}
+## 論理レプリケーションを有効にする \{#enable-logical-replication\}
 
 AlloyDB インスタンスで論理レプリケーションが有効になっているかを確認するには、プライマリ インスタンスで次のクエリを実行します。
 
@@ -62,7 +62,7 @@ SHOW  wal_level;
    <Image img={verify_logical_replication} alt="論理レプリケーションが有効になっていることを確認" size="lg" border />
 
 
-## ClickPipes ユーザーを作成し、レプリケーション権限を管理する {#create-a-clickpipes-user-and-manage-replication-permissions}
+## ClickPipes ユーザーを作成し、レプリケーション権限を管理する \\{#create-a-clickpipes-user-and-manage-replication-permissions\\}
 
 管理者ユーザーとして AlloyDB インスタンスに接続し、次のコマンドを実行します。
 
@@ -106,7 +106,7 @@ SHOW  wal_level;
 
    `clickpipes` publication は、指定したテーブルから生成される変更イベントのセットを保持し、後でレプリケーションストリームを取り込む際に使用されます。
 
-## ネットワークアクセスを構成する {#configure-network-access}
+## ネットワークアクセスを構成する \\{#configure-network-access\\}
 
 :::note
 ClickPipes は Private Service Connect (PSC) 接続をサポートしていません。AlloyDB インスタンスへのパブリックアクセスを許可しない場合は、安全に接続するために[SSH トンネルを使用](#configure-network-access)できます。PSC は今後サポートされる予定です。
@@ -149,7 +149,7 @@ AlloyDB インスタンスへのパブリックアクセスを許可しない場
 </TabItem>
 </Tabs>
 
-## 次のステップ {#whats-next}
+## 次のステップ \\{#whats-next\\}
 
 これで [ClickPipe を作成](../index.md) し、Postgres インスタンスから ClickHouse Cloud へのデータ取り込みを開始できます。
 Postgres インスタンスのセットアップ時に使用した接続情報は、ClickPipe 作成時にも必要になるため、必ずメモしておいてください。

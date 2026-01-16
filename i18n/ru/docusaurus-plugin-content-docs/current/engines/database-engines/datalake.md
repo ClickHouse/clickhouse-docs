@@ -6,14 +6,14 @@ title: 'DataLakeCatalog'
 doc_type: 'reference'
 ---
 
-# DataLakeCatalog {#datalakecatalog}
+# DataLakeCatalog \{#datalakecatalog\}
 
 Движок базы данных `DataLakeCatalog` позволяет подключить ClickHouse к внешним
 каталогам данных и выполнять запросы к данным в открытых табличных форматах без необходимости дублирования данных.
 Это превращает ClickHouse в мощный движок запросов, который бесшовно работает
 с инфраструктурой вашего существующего дата-лейка.
 
-## Поддерживаемые каталоги {#supported-catalogs}
+## Поддерживаемые каталоги \\{#supported-catalogs\\}
 
 Движок `DataLakeCatalog` поддерживает следующие каталоги данных:
 
@@ -22,7 +22,7 @@ doc_type: 'reference'
 - **Hive Metastore** — традиционный каталог экосистемы Hadoop
 - **REST Catalogs** — любой каталог, поддерживающий спецификацию Iceberg REST
 
-## Создание базы данных {#creating-a-database}
+## Создание базы данных \\{#creating-a-database\\}
 
 Чтобы использовать движок `DataLakeCatalog`, необходимо включить приведённые ниже настройки:
 
@@ -63,7 +63,7 @@ catalog_type,
 | `dlf_access_key_secret` | Секретный ключ доступа для DLF                                                                                              |
 
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 Ниже приведены примеры использования движка `DataLakeCatalog`:
 

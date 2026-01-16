@@ -8,7 +8,7 @@ description: 'Страница-индекс со списком общих во�
 doc_type: 'landing-page'
 ---
 
-# Общие вопросы о ClickHouse {#general-questions-about-clickhouse}
+# Общие вопросы о ClickHouse \\{#general-questions-about-clickhouse\\}
 
 * [Что такое ClickHouse?](../../intro.md)
 * [Почему ClickHouse такой быстрый?](../../concepts/why-clickhouse-is-so-fast.mdx)

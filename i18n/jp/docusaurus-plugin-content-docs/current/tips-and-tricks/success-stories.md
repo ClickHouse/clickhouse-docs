@@ -23,7 +23,7 @@ description: '低速クエリ、メモリエラー、接続障害、設定の問
 
 
 
-# 成功事例 {#breaking-the-rules}
+# 成功事例 \\{#breaking-the-rules\\}
 
 *このガイドは、コミュニティミートアップから得られた知見をまとめたコレクションの一部です。より多くの実践的なソリューションやインサイトについては、[問題ごとに絞り込んで閲覧](./community-wisdom.md)できます。*
 *本番環境で発生した問題をデバッグするためのヒントが必要ですか？[Debugging Insights](./debugging-insights.md) コミュニティガイドを参照してください。*
@@ -32,7 +32,7 @@ description: '低速クエリ、メモリエラー、接続障害、設定の問
 
 
 
-## レートリミッターとしての ClickHouse {#clickhouse-rate-limiter}
+## レートリミッターとしての ClickHouse \\{#clickhouse-rate-limiter\\}
 
 Craigslist がユーザーを保護するために Tier 1 のレート制限を追加する必要に迫られたとき、彼らはあらゆるエンジニアリングチームが直面するのと同じ選択を迫られました ―― 定石どおり Redis を使うか、それとも別の選択肢を探るかです。Craigslist に所属していた Brad Lhotsky は、Redis が標準的な選択肢であることを理解していました ―― 実際、ほとんどすべてのレート制限に関するチュートリアルやオンラインのサンプルが、もっともな理由から Redis を採用しています。レート制限処理向けの豊富なプリミティブがあり、よく確立されたパターンと実績があります。しかし、Craigslist における Redis の運用経験は、教科書どおりとはいきませんでした。*「私たちの Redis の経験は、皆さんが映画で見ているようなものとは違います…… Redis クラスター内のノードを再起動すると、フロントエンド側でレイテンシスパイクが発生するなど、変なメンテナンス問題にたくさん遭遇しました。」* メンテナンスの単純さを重視する少人数チームにとって、これらの運用上の頭痛のタネは深刻な問題になりつつありました。
 
@@ -46,7 +46,7 @@ Craigslist がユーザーを保護するために Tier 1 のレート制限を�
 
 
 
-## 顧客分析のための ClickHouse {#customer-analytics}
+## 顧客分析のための ClickHouse \\{#customer-analytics\\}
 
 ServiceNow がモバイル分析プラットフォームのアップグレードを検討した際、直面したのはきわめてシンプルな問いでした。*「問題なく動いているものを、なぜ置き換える必要があるのか？」* ServiceNow の Amir Vaza 氏は、既存システムが信頼できることは理解していましたが、顧客からの要求はすでにその処理能力を超えつつありました。*「既存の信頼性の高いモデルを置き換える動機は、実はプロダクト側の要請から生まれてくるものです」* と Amir 氏は説明します。ServiceNow は、Web、モバイル、チャットボット向けソリューションの一部としてモバイル分析を提供していましたが、顧客は事前集計済みデータを超えた、より柔軟な分析機能を求めていました。
 
@@ -62,7 +62,7 @@ ServiceNow がモバイル分析プラットフォームのアップグレード
 
 
 
-## 動画リソース {#video-sources}
+## 動画リソース \\{#video-sources\\}
 
 - **[Breaking the Rules - Building a Rate Limiter with ClickHouse](https://www.youtube.com/watch?v=wRwqrbUjRe4)** - Brad Lhotsky (Craigslist)
 - **[ClickHouse as an Analytical Solution in ServiceNow](https://www.youtube.com/watch?v=b4Pmpx3iRK4)** - Amir Vaza (ServiceNow)

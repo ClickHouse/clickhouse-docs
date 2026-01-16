@@ -7,7 +7,7 @@ title: 'Движок таблицы Distributed'
 doc_type: 'reference'
 ---
 
-# Движок распределённой таблицы {#distributed-table-engine}
+# Движок распределённой таблицы \\{#distributed-table-engine\\}
 
 :::warning Распределённый движок в Cloud
 Чтобы создать движок распределённой таблицы в ClickHouse Cloud, можно использовать табличные функции [`remote` и `remoteSecure`](../../../sql-reference/table-functions/remote). 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 Таблицы с движком Distributed не хранят собственные данные, но позволяют выполнять распределённую обработку запросов на нескольких серверах. 
 Чтение автоматически распараллеливается. Во время чтения используются индексы таблиц на удалённых серверах, если они есть.
 
-## Создание таблицы {#distributed-creating-a-table}
+## Создание таблицы \\{#distributed-creating-a-table\\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -29,7 +29,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 [SETTINGS name=value, ...]
 ```
 
-### Из таблицы {#distributed-from-a-table}
+### Из таблицы \\{#distributed-from-a-table\\}
 
 Когда таблица `Distributed` указывает на таблицу на текущем сервере, вы можете заимствовать её схему:
 
@@ -37,7 +37,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster] AS [db2.]name2 ENGINE = Distributed(cluster, database, table[, sharding_key[, policy_name]]) [SETTINGS name=value, ...]
 ```
 
-### Параметры движка Distributed {#distributed-parameters}
+### Параметры движка Distributed \\{#distributed-parameters\\}
 
 | Параметр                       | Описание                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -52,7 +52,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster] AS [db2.]name2
 * настройка [distributed&#95;foreground&#95;insert](../../../operations/settings/settings.md#distributed_foreground_insert)
 * [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-multiple-volumes) для примеров
 
-### Настройки движка Distributed {#distributed-settings}
+### Настройки движка Distributed \\{#distributed-settings\\}
 
 | Параметр                                   | Описание                                                                                                                                                                                                                        | Значение по умолчанию |
 | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
@@ -96,7 +96,7 @@ SETTINGS
 
 Вместо имени базы данных вы можете использовать константное выражение, которое возвращает строку. Например: `currentDatabase()`.
 
-## Кластеры {#distributed-clusters}
+## Кластеры \\{#distributed-clusters\\}
 
 Кластеры настраиваются в [конфигурационном файле сервера](../../../operations/configuration-files.md):
 
@@ -182,7 +182,7 @@ SETTINGS
 
 Если при каждом выполнении запроса нужно отправлять его в неизвестный заранее набор шардов и реплик, нет необходимости создавать таблицу `Distributed` — вместо этого используйте табличную функцию `remote`. См. раздел [Table functions](../../../sql-reference/table-functions/index.md).
 
-## Запись данных {#distributed-writing-data}
+## Запись данных \\{#distributed-writing-data\\}
 
 Существует два способа записи данных в кластер:
 
@@ -211,7 +211,7 @@ SETTINGS
 
 Если сервер был аварийно остановлен или пережил жёсткую перезагрузку (например, из‑за сбоя оборудования) после выполнения `INSERT` в таблицу `Distributed`, вставленные данные могут быть потеряны. Если в каталоге таблицы обнаруживается повреждённая часть данных, она переносится в подкаталог `broken` и больше не используется.
 
-## Чтение данных {#distributed-reading-data}
+## Чтение данных \\{#distributed-reading-data\\}
 
 При выполнении запроса к таблице `Distributed` запросы `SELECT` отправляются на все шарды и выполняются независимо от того, как распределены данные по шардам (они могут быть распределены полностью случайным образом). При добавлении нового шарда нет необходимости переносить в него старые данные. Вместо этого можно записывать в него новые данные, используя более высокий вес — данные будут распределены немного неравномерно, но запросы по-прежнему будут выполняться корректно и эффективно.
 
@@ -219,9 +219,9 @@ SETTINGS
 
 Чтобы узнать больше о том, как обрабатываются распределённые запросы `in` и `global in`, см. [документацию](/sql-reference/operators/in#distributed-subqueries).
 
-## Виртуальные столбцы {#virtual-columns}
+## Виртуальные столбцы \\{#virtual-columns\\}
 
-#### _shard_num {#_shard_num}
+#### _shard_num \\{#_shard_num\\}
 
 `_shard_num` — содержит значение `shard_num` из таблицы `system.clusters`. Тип: [UInt32](../../../sql-reference/data-types/int-uint.md).
 

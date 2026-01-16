@@ -10,7 +10,7 @@ doc_type: 'guide'
 import CommonUserRolesContent from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
 
 
-# よくあるアクセス管理クエリ {#common-access-management-queries}
+# よくあるアクセス管理クエリ \{#common-access-management-queries\}
 
 :::tip セルフマネージド
 セルフマネージド環境で ClickHouse を運用している場合は、[SQL ユーザーとロール](/guides/sre/user-management/index.md) を参照してください。
@@ -18,7 +18,7 @@ import CommonUserRolesContent from '@site/i18n/jp/docusaurus-plugin-content-docs
 
 この記事では、SQL ユーザーとロールの定義方法の基本と、それらの権限をデータベース、テーブル、行、カラムに適用する方法について説明します。
 
-## 管理ユーザー {#admin-user}
+## 管理ユーザー \{#admin-user\}
 
 ClickHouse Cloud サービスには、サービス作成時に作成される `default` という管理ユーザーが存在します。パスワードはサービス作成時に設定され、**Admin** ロールを持つ ClickHouse Cloud ユーザーによってリセットできます。
 
@@ -40,13 +40,13 @@ SQL Console を使用する場合、SQL 文は `default` ユーザーとして�
 :::
 
 
-## パスワードレス認証 {#passwordless-authentication}
+## パスワードレス認証 \\{#passwordless-authentication\\}
 
 SQL コンソールには 2 種類のロールが利用可能です。`sql_console_admin` は `default_role` と同一の権限を持ち、`sql_console_read_only` は読み取り専用の権限を持ちます。 
 
 管理者ユーザーにはデフォルトで `sql_console_admin` ロールが割り当てられるため、管理者側の挙動は従来と変わりません。一方で、`sql_console_read_only` ロールを使用すると、非管理者ユーザーにも任意のインスタンスに対する読み取り専用またはフルアクセス権を付与できます。このアクセスの設定は管理者が行う必要があります。ロールは `GRANT` または `REVOKE` コマンドを使用して調整でき、インスタンス固有の要件に合わせて柔軟に構成できます。これらのロールに対して行われた変更は永続化されます。
 
-### きめ細かなアクセス制御 {#granular-access-control}
+### きめ細かなアクセス制御 \{#granular-access-control\}
 
 このアクセス制御機能は、ユーザー単位で手動設定することも可能です。新しい `sql_console_*` ロールをユーザーに割り当てる前に、ネームスペース `sql-console-role:&lt;email&gt;` に一致する、SQL コンソール用のユーザー固有のデータベースロールを作成しておく必要があります。たとえば、次のとおりです。
 

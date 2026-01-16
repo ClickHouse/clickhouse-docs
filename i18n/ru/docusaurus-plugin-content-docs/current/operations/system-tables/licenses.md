@@ -6,7 +6,7 @@ title: 'system.licenses'
 doc_type: 'reference'
 ---
 
-# system.licenses {#systemlicenses}
+# system.licenses \\{#systemlicenses\\}
 
 Содержит лицензии сторонних библиотек, которые находятся в каталоге [contrib](https://github.com/ClickHouse/ClickHouse/tree/master/contrib) дерева исходных текстов ClickHouse.
 

@@ -7,7 +7,7 @@ title: '如何在 Linux 上构建 ClickHouse'
 doc_type: 'guide'
 ---
 
-# 如何在 Linux 上构建 ClickHouse {#how-to-build-clickhouse-on-linux}
+# 如何在 Linux 上构建 ClickHouse \\{#how-to-build-clickhouse-on-linux\\}
 
 :::info 无需自行构建 ClickHouse！
 你可以按照[快速开始](https://clickhouse.com/#quick-start)中的说明安装预编译的 ClickHouse。
@@ -21,14 +21,14 @@ ClickHouse 可以在以下平台上构建：
 - s390/x（实验性）
 - RISC-V 64（实验性）
 
-## 前提条件 {#assumptions}
+## 前提条件 \\{#assumptions\\}
 
 本教程基于 Ubuntu Linux 编写，但通过适当调整后，也应适用于其他任意 Linux 发行版。
 用于开发的 Ubuntu 最低推荐版本为 24.04 LTS。
 
 本教程假设你已在本地检出 ClickHouse 仓库及其所有子模块。
 
-## 安装前置条件 {#install-prerequisites}
+## 安装前置条件 \\{#install-prerequisites\\}
 
 首先，请参阅通用的[前置条件文档](developer-instruction.md)。
 
@@ -41,7 +41,7 @@ sudo apt-get update
 sudo apt-get install build-essential git cmake ccache python3 ninja-build nasm yasm gawk lsb-release wget software-properties-common gnupg
 ```
 
-## 安装 Clang 编译器 {#install-the-clang-compiler}
+## 安装 Clang 编译器 \\{#install-the-clang-compiler\\}
 
 要在 Ubuntu/Debian 上安装 Clang，请使用 LLVM 的自动安装脚本，详见[此页面](https://apt.llvm.org/)。
 
@@ -54,7 +54,7 @@ sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 截至 2025 年 3 月，需要使用 Clang 19 或更高版本。
 不支持 GCC 或其他编译器。
 
-## 安装 Rust 编译器（可选） {#install-the-rust-compiler-optional}
+## 安装 Rust 编译器（可选） \\{#install-the-rust-compiler-optional\\}
 
 :::note
 Rust 是 ClickHouse 的可选依赖。
@@ -73,7 +73,7 @@ rustup default nightly-2025-07-07
 rustup component add rust-src
 ```
 
-## 构建 ClickHouse {#build-clickhouse}
+## 构建 ClickHouse \{#build-clickhouse\}
 
 我们建议在 ClickHouse 项目中创建一个单独的 `build` 目录，用于存放所有构建产物：
 
@@ -132,7 +132,7 @@ cmake --build build  # compile
 :::
 
 
-## 运行 ClickHouse 可执行文件 {#running-the-clickhouse-executable}
+## 运行 ClickHouse 可执行文件 \\{#running-the-clickhouse-executable\\}
 
 构建成功后，你可以在 `ClickHouse/<build_dir>/programs/` 中找到可执行文件：
 
@@ -147,9 +147,9 @@ ClickHouse 服务器会尝试在当前目录查找配置文件 `config.xml`。
 clickhouse client --host 127.0.0.1
 ```
 
-## 高级选项 {#advanced-options}
+## 高级选项 \\{#advanced-options\\}
 
-### 最小构建 {#minimal-build}
+### 最小构建 \\{#minimal-build\\}
 
 如果不需要第三方库提供的功能，可以进一步提升构建速度：
 
@@ -165,7 +165,7 @@ Rust 需要网络连接。若要禁用 Rust 支持：
 cmake -DENABLE_RUST=OFF
 ```
 
-### 运行 ClickHouse 可执行文件 {#running-the-clickhouse-executable-1}
+### 运行 ClickHouse 可执行文件 \\{#running-the-clickhouse-executable-1\\}
 
 你可以将系统中安装的生产环境版本 ClickHouse 二进制文件替换为自己编译的 ClickHouse 二进制文件。
 为此，请按照官方文档网站上的说明在你的机器上安装 ClickHouse。
@@ -186,7 +186,7 @@ sudo service clickhouse-server stop
 sudo -u clickhouse ClickHouse/build/programs/clickhouse server --config-file /etc/clickhouse-server/config.xml
 ```
 
-### 在任何 Linux 上构建 {#building-on-any-linux}
+### 在任何 Linux 上构建 \\{#building-on-any-linux\\}
 
 在 OpenSUSE Tumbleweed 上安装依赖项：
 
@@ -209,7 +209,7 @@ cmake -S . -B build
 cmake --build build
 ```
 
-### 在 Docker 中构建 {#building-in-docker}
+### 在 Docker 中构建 \\{#building-in-docker\\}
 
 你可以使用以下命令，在与 CI 类似的环境中本地运行任何构建：
 

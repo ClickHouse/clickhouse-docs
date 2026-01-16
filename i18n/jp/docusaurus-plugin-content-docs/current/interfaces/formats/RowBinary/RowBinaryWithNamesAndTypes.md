@@ -16,7 +16,7 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 | ✔  | ✔  |    |
 
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 [RowBinary](./RowBinary.md) 形式と類似していますが、ヘッダーが追加されています。
 
@@ -26,11 +26,11 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 
 
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
 
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \\{#format-settings\\}
 
 <RowBinaryFormatSettings/>
 

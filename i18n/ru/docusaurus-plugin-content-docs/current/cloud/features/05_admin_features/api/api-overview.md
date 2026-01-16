@@ -8,9 +8,9 @@ doc_type: 'reference'
 keywords: ['ClickHouse Cloud', 'обзор API', 'облачный API', 'REST API', 'программный доступ']
 ---
 
-# API ClickHouse Cloud {#clickhouse-cloud-api}
+# API ClickHouse Cloud \\{#clickhouse-cloud-api\\}
 
-## Обзор {#overview}
+## Обзор \\{#overview\\}
 
 ClickHouse Cloud API — это REST API, предназначенный для разработчиков и упрощающий управление 
 организациями и сервисами в ClickHouse Cloud. С помощью Cloud API вы можете 
@@ -19,7 +19,7 @@ ClickHouse Cloud API — это REST API, предназначенный для 
 
 [Узнайте, как создать свой первый API-ключ и начать использовать ClickHouse Cloud API.](/cloud/manage/openapi)
 
-## Конечная точка и интерфейс Swagger (OpenAPI) {#swagger-openapi-endpoint-and-ui}
+## Конечная точка и интерфейс Swagger (OpenAPI) \\{#swagger-openapi-endpoint-and-ui\\}
 
 API ClickHouse Cloud построен на основе открытой [спецификации OpenAPI](https://www.openapis.org/),
 что обеспечивает предсказуемое использование на стороне клиента. Если вам нужно
@@ -34,11 +34,11 @@ API ClickHouse Cloud построен на основе открытой [спе
 Это повлияет на объекты, возвращаемые запросами `POST`, `GET` и `PATCH` для сервисов. Поэтому любой код, который использует этот API, может потребовать доработки для корректной обработки этих изменений.
 :::
 
-## Лимиты {#rate-limits}
+## Лимиты \\{#rate-limits\\}
 
 Для разработчиков установлено ограничение — не более 100 API‑ключей на организацию. Каждый API‑ключ имеет лимит в 10 запросов за 10 секунд. Если вы хотите увеличить количество API‑ключей или число запросов в 10‑секундное окно для вашей организации, свяжитесь с support@clickhouse.com.
 
-## Провайдер Terraform {#terraform-provider}
+## Провайдер Terraform \\{#terraform-provider\\}
 
 Официальный провайдер Terraform для ClickHouse позволяет использовать [инфраструктуру как код (Infrastructure as Code)](https://www.redhat.com/en/topics/automation/what-is-infrastructure-as-code-iac)
 для создания предсказуемых конфигураций с контролем версий, что делает развертывания
@@ -55,13 +55,13 @@ API ClickHouse Cloud построен на основе открытой [спе
 Теперь вы также сможете указывать поле `num_replicas` как свойство ресурса сервиса.
 :::
 
-## Terraform и OpenAPI: новое ценообразование и настройки реплик {#terraform-and-openapi-new-pricing---replica-settings-explained}
+## Terraform и OpenAPI: новое ценообразование и настройки реплик \\{#terraform-and-openapi-new-pricing---replica-settings-explained\\}
 
 Число реплик, с которым создаётся каждый сервис, по умолчанию равно 3 для тарифов Scale и Enterprise и 1 для тарифа Basic.
 Для тарифов Scale и Enterprise его можно изменить, передав поле `numReplicas` в запросе на создание сервиса. 
 Значение поля `numReplicas` для первого сервиса в хранилище должно быть от 2 до 20. Сервисы, которые создаются в уже существующем хранилище, могут иметь не менее 1 реплики.
 
-## Поддержка {#support}
+## Поддержка \\{#support\\}
 
 Мы рекомендуем сначала обратиться в [наш канал в Slack](https://clickhouse.com/slack), чтобы получить оперативную поддержку. Если 
 вам нужна дополнительная помощь или дополнительная информация о нашем API и его возможностях, 

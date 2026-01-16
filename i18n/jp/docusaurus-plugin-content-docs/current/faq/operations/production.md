@@ -10,7 +10,7 @@ keywords: ['本番環境', 'デプロイメント', 'バージョン', 'ベス�
 
 
 
-# 本番環境ではどの ClickHouse バージョンを使うべきか？ {#which-clickhouse-version-to-use-in-production}
+# 本番環境ではどの ClickHouse バージョンを使うべきか？ \\{#which-clickhouse-version-to-use-in-production\\}
 
 まず最初に、そもそもなぜこの質問が挙がるのかについて説明します。主な理由は 2 つあります。
 
@@ -21,7 +21,7 @@ keywords: ['本番環境', 'デプロイメント', 'バージョン', 'ベス�
 
 
 
-## 本番環境ではどの ClickHouse バージョンがおすすめですか？ {#which-clickhouse-version-do-you-recommend}
+## 本番環境ではどの ClickHouse バージョンがおすすめですか？ \\{#which-clickhouse-version-do-you-recommend\\}
 
 本番環境の責任を回避するために、コンサルタントを雇ったり、よく知られた専門家を信頼したくなることがあります。誰かに勧められた特定の ClickHouse バージョンをインストールしておけば、問題が起きても自分の責任ではなく、その人の責任だと考えられます。しかし、このような考え方は大きな落とし穴です。外部の人間は、あなたの会社の本番環境で何が起きているかを、あなた以上に理解していることはありません。
 
@@ -54,7 +54,7 @@ keywords: ['本番環境', 'デプロイメント', 'バージョン', 'ベス�
 
 
 
-## ClickHouse のリリースをどう選べばよいですか？ {#how-to-choose-between-clickhouse-releases}
+## ClickHouse のリリースをどう選べばよいですか？ \\{#how-to-choose-between-clickhouse-releases\\}
 
 ClickHouse のパッケージリポジトリの内容を見ると、次の 2 種類のパッケージがあることが分かります。
 

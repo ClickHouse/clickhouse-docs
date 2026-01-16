@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# MySQL データベースエンジン {#mysql-database-engine}
+# MySQL データベースエンジン \\{#mysql-database-engine\\}
 
 <CloudNotSupportedBadge />
 
@@ -23,7 +23,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - `CREATE TABLE`
 - `ALTER`
 
-## データベースの作成 {#creating-a-database}
+## データベースの作成 \\{#creating-a-database\\}
 
 ```sql
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster]
@@ -37,7 +37,7 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 * `user` — MySQL ユーザー。
 * `password` — ユーザーのパスワード。
 
-## データ型サポート {#data_types-support}
+## データ型サポート \\{#data_types-support\\}
 
 | MySQL                            | ClickHouse                                                   |
 |----------------------------------|--------------------------------------------------------------|
@@ -59,7 +59,7 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 
 [Nullable](../../sql-reference/data-types/nullable.md) をサポートします。
 
-## グローバル変数のサポート {#global-variables-support}
+## グローバル変数のサポート \\{#global-variables-support\\}
 
 互換性を高めるために、グローバル変数を MySQL 互換の `@@identifier` 形式で参照できます。
 
@@ -78,7 +78,7 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 SELECT @@version;
 ```
 
-## 使用例 {#examples-of-use}
+## 使用例 \\{#examples-of-use\\}
 
 MySQL のテーブル:
 

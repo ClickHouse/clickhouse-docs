@@ -15,7 +15,7 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 | ✔    | ✔     |           |
 
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Аналогично формату [`RowBinary`](./RowBinary.md), но с добавленным заголовком:
 
@@ -24,11 +24,11 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 
 
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
 
 
-## Настройки формата {#format-settings}
+## Настройки формата \\{#format-settings\\}
 
 <RowBinaryFormatSettings/>
 

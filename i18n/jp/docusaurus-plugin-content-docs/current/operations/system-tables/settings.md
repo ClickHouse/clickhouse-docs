@@ -6,7 +6,7 @@ title: 'system.settings'
 doc_type: 'reference'
 ---
 
-# system.settings {#systemsettings}
+# system.settings \\{#systemsettings\\}
 
 現在のユーザーのセッション設定に関する情報を含みます。
 

@@ -6,7 +6,7 @@ title: 'system.parts'
 doc_type: 'reference'
 ---
 
-# system.parts {#systemparts}
+# system.parts \\{#systemparts\\}
 
 包含关于 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表数据分片（parts）的信息。
 

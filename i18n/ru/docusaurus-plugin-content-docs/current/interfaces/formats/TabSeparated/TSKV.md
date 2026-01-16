@@ -13,7 +13,7 @@ doc_type: 'reference'
 |----------------|-----------------|-----------|
 | ✔              | ✔               |           |
 
-## Описание {#description}
+## Описание \\{#description\\}
 
 Аналогичен формату [`TabSeparated`](./TabSeparated.md), но выводит значение в формате `name=value`.
 Имена экранируются так же, как в формате [`TabSeparated`](./TabSeparated.md), и символ `=` также экранируется.
@@ -56,9 +56,9 @@ x=1    y=\N
 
 [NULL](/sql-reference/syntax.md) форматируется как `\N`.
 
-## Пример использования {#example-usage}
+## Пример использования \\{#example-usage\\}
 
-### Вставка данных {#inserting-data}
+### Вставка данных \\{#inserting-data\\}
 
 Используем следующий файл в формате TSKV с именем `football.tskv`:
 
@@ -88,7 +88,7 @@ date=2022-05-07 season=2021     home_team=Walsall       away_team=Swindon Town  
 INSERT INTO football FROM INFILE 'football.tskv' FORMAT TSKV;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных \\{#reading-data\\}
 
 Считайте данные в формате `TSKV`:
 
@@ -120,4 +120,4 @@ date=2022-05-07 season=2021     home_team=Stevenage Borough     away_team=Salfor
 date=2022-05-07 season=2021     home_team=Walsall       away_team=Swindon Town  home_team_goals=0       away_team_goals=3
 ```
 
-## Настройки форматирования {#format-settings}
+## Настройки форматирования \\{#format-settings\\}

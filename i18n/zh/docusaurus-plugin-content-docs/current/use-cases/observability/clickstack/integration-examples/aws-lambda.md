@@ -16,7 +16,7 @@ import log from '@site/static/images/clickstack/lambda/lambda-log.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# 使用 Rotel 在 ClickStack 中监控 AWS Lambda 日志 {#lambda-clickstack}
+# 使用 Rotel 在 ClickStack 中监控 AWS Lambda 日志 \\{#lambda-clickstack\\}
 
 <CommunityMaintainedBadge/>
 
@@ -32,11 +32,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 所需时间：5–10 分钟
 :::
 
-## 与现有 Lambda 函数集成 {#existing-lambda}
+## 与现有 Lambda 函数集成 \\{#existing-lambda\\}
 
 本节说明如何配置现有的 AWS Lambda 函数，使其通过 Rotel Lambda Extension 将日志和追踪发送到 ClickStack。
 
-### 前置条件 {#prerequisites}
+### 前置条件 \\{#prerequisites\\}
 
 - 已在运行的 ClickStack 实例
 - 一个或多个需要监控的 AWS Lambda 函数
@@ -236,7 +236,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <VerticalStepper headerLevel="h4">
 
-#### 从执行角色中移除 CloudWatch 权限 {#remove-permissions}
+#### 从执行角色中移除 CloudWatch 权限 \\{#remove-permissions\\}
 
 1. 打开 AWS 控制台并导航到 **AWS Lambda**
 2. 进入你的 Lambda 函数
@@ -282,7 +282,7 @@ AWS 为多种语言提供了 OpenTelemetry 自动插桩 layer：
 
 在 [AWS OpenTelemetry Lambda 仓库](https://github.com/aws-observability/aws-otel-lambda)中获取最新版本。
 
-#### 将两个 layer 都添加到函数中 {#add-both-layers}
+#### 将两个 layer 都添加到函数中 \\{#add-both-layers\\}
 
 将 **Rotel 扩展 layer** 和 **自动插桩 layer** 一并添加：
 

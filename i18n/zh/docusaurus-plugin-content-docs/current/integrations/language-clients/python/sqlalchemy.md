@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ClickHouse Connect 包含一个基于核心驱动程序构建的 SQLAlchemy 方言（`clickhousedb`）。它面向 SQLAlchemy Core API，并支持 SQLAlchemy 1.4.40+ 和 2.0.x。
 
-## 使用 SQLAlchemy 连接 {#sqlalchemy-connect}
+## 使用 SQLAlchemy 连接 \\{#sqlalchemy-connect\\}
 
 使用 `clickhousedb://` 或 `clickhousedb+connect://` URL 创建 Engine。URL 查询参数会映射为 ClickHouse 设置、客户端选项以及 HTTP/TLS 传输选项。
 
@@ -34,7 +34,7 @@ with engine.begin() as conn:
 
 在下文的 [Connection arguments and Settings](driver-api.md#connection-arguments) 一节可以查看支持参数的完整列表。这些参数也可以通过 SQLAlchemy DSN 进行配置。
 
-## 核心查询 {#sqlalchemy-core-queries}
+## 核心查询 \\{#sqlalchemy-core-queries\\}
 
 该方言支持 SQLAlchemy Core 的 `SELECT` 查询，包括联接、过滤、排序、限制/偏移以及 `DISTINCT`。
 
@@ -67,7 +67,7 @@ with engine.begin() as conn:
     conn.execute(delete(users).where(users.c.name.like("%temp%")))
 ```
 
-## DDL 和反射 {#sqlalchemy-ddl-reflection}
+## DDL 和反射 \\{#sqlalchemy-ddl-reflection\\}
 
 你可以使用提供的 DDL 辅助工具以及类型/引擎构造器来创建数据库和表。支持对表进行反射（包括列类型和引擎）。
 
@@ -101,7 +101,7 @@ with engine.begin() as conn:
 
 如果服务器上存在这些属性，则反射出的列会包含方言特定的属性，例如 `clickhousedb_default_type`、`clickhousedb_codec_expression` 和 `clickhousedb_ttl_expression`。
 
-## 插入（Core 和基础 ORM） {#sqlalchemy-inserts}
+## 插入（Core 和基础 ORM） \\{#sqlalchemy-inserts\\}
 
 插入既可以通过 SQLAlchemy Core 实现，也可以为方便起见使用简单的 ORM 模型来完成。
 
@@ -129,7 +129,7 @@ with Session(engine) as session:
     session.commit()
 ```
 
-## 范围和限制 {#scope-and-limitations}
+## 范围和限制 \\{#scope-and-limitations\\}
 
 - 核心重点：支持 SQLAlchemy Core 功能，例如带有 `JOIN`（`INNER`、`LEFT OUTER`、`FULL OUTER`、`CROSS`）的 `SELECT`，以及 `WHERE`、`ORDER BY`、`LIMIT`/`OFFSET` 和 `DISTINCT`。
 - 仅支持带 `WHERE` 的 `DELETE`：该方言支持轻量级 `DELETE`，但要求显式指定 `WHERE` 子句，以避免误删整张表。若需清空整张表，请使用 `TRUNCATE TABLE`。

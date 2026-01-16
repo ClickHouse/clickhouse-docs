@@ -21,17 +21,17 @@ import draxlr_06 from '@site/static/images/integrations/data-visualization/draxl
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Draxlr を ClickHouse に接続する {#connecting-draxlr-to-clickhouse}
+# Draxlr を ClickHouse に接続する \{#connecting-draxlr-to-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
 Draxlr は、ClickHouse データベースに接続するための直感的なインターフェースを提供し、チームが数分でデータの探索、可視化、インサイトの公開を行えるようにします。本ガイドでは、問題なく接続を確立するための手順を順を追って説明します。
 
-## 1. ClickHouse の認証情報を取得する {#1-get-your-clickhouse-credentials}
+## 1. ClickHouse の認証情報を取得する \\{#1-get-your-clickhouse-credentials\\}
 
 <ConnectionDetails />
 
-## 2.  Draxlr を ClickHouse に接続する {#2--connect-draxlr-to-clickhouse}
+## 2.  Draxlr を ClickHouse に接続する \\{#2--connect-draxlr-to-clickhouse\\}
 
 1. ナビゲーションバーの **Connect a Database** ボタンをクリックします。
 
@@ -47,7 +47,7 @@ Draxlr は、ClickHouse データベースに接続するための直感的な�
 
 6. **Next** ボタンをクリックし、接続が確立されるまで待ちます。接続に成功すると、テーブル一覧ページが表示されます。
 
-## 4. データを探索する {#4-explore-your-data}
+## 4. データを探索する \\{#4-explore-your-data\\}
 
 1. 一覧からいずれかのテーブルをクリックします。
 
@@ -61,7 +61,7 @@ Draxlr は、ClickHouse データベースに接続するための直感的な�
 
 <Image size="md" img={draxlr_05} alt="ClickHouse データ向けの Draxlr のグラフ可視化オプション" border />
 
-## 4. SQL クエリの使用 {#4-using-sql-queries}
+## 4. SQL クエリの使用 \\{#4-using-sql-queries\\}
 
 1. ナビゲーションバーの「Explore」ボタンをクリックします。
 
@@ -71,7 +71,7 @@ Draxlr は、ClickHouse データベースに接続するための直感的な�
 
 3. 「**Execute Query**」ボタンをクリックして結果を表示します。
 
-## 4. クエリの保存 {#4-saving-you-query}
+## 4. クエリの保存 \\{#4-saving-you-query\\}
 
 1. クエリを実行した後、**Save Query** ボタンをクリックします。
 
@@ -83,7 +83,7 @@ Draxlr は、ClickHouse データベースに接続するための直感的な�
 
 4. クエリを保存するには、**Save** ボタンをクリックします。
 
-## 5. ダッシュボードの作成 {#5-building-dashboards}
+## 5. ダッシュボードの作成 \\{#5-building-dashboards\\}
 
 1. ナビゲーションバーの **Dashboards** ボタンをクリックします。
 
@@ -95,6 +95,6 @@ Draxlr は、ClickHouse データベースに接続するための直感的な�
 
 4. 保存済みクエリの一覧からクエリを選択し、可視化の種類を選んでから **Add Dashboard Item** ボタンをクリックします。
 
-## 詳細はこちら {#learn-more}
+## 詳細はこちら \\{#learn-more\\}
 
 Draxlr についてさらに詳しく知るには、[Draxlr ドキュメント](https://draxlr.notion.site/draxlr/Draxlr-Docs-d228b23383f64d00a70836ff9643a928) サイトを参照してください。

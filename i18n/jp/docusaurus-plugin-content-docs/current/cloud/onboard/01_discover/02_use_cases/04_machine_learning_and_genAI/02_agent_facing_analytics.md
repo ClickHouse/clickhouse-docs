@@ -15,9 +15,9 @@ import ml_ai_08 from '@site/static/images/cloud/onboard/discover/use_cases/ml_ai
 import ml_ai_09 from '@site/static/images/cloud/onboard/discover/use_cases/ml_ai_09.png';
 
 
-## エージェント向けアナリティクスの基本概念 {#agent-facing-analytics}
+## エージェント向けアナリティクスの基本概念 \\{#agent-facing-analytics\\}
 
-### 「エージェント」とは何か？ {#agents}
+### 「エージェント」とは何か？ \\{#agents\\}
 
 AI エージェントは、単純なタスク実行（あるいは関数呼び出し）を超えて進化した
 デジタルアシスタントと考えることができます。コンテキストを理解し、
@@ -34,7 +34,7 @@ LLM によって、その「理解」やコミュニケーションの能力は�
 まるで突然「人間の言葉」により堪能になり、モデルの学習データから引き出した
 関連するコンテキスト情報を用いて、リクエストを把握し応答できるようになったかのようです。
 
-### AI エージェントの超能力: 「ツール」 {#tools}
+### AI エージェントの超能力: 「ツール」 \\{#tools\\}
 
 これらのエージェントが真価を発揮するのは、「ツール」へのアクセスを持つときです。
 ツールは、タスクを実行する能力を与えることで AI エージェントを強化します。
@@ -61,7 +61,7 @@ RAG がなければ、エージェントは一般的な事前学習に基づい�
 過去のサポートチケットを取得します。これにより、回答は
 AI モデルが利用できる最新情報にしっかりと根拠づけられるようになります。
 
-### 推論モデル {#reasoning-models}
+### 推論モデル \\{#reasoning-models\\}
 
 AI 分野のもう一つの発展であり、おそらく最も興味深いものの一つが、
 推論モデルの登場です。OpenAI o1、Anthropic Claude、DeepSeek-R1
@@ -83,7 +83,7 @@ Chain-of-Thought (CoT) のようなプロンプト手法を用いて問題を多
 
 
 
-## AI エージェント向けのリアルタイム分析 {#real-time-analytics-for-ai-agents}
+## AI エージェント向けのリアルタイム分析 \\{#real-time-analytics-for-ai-agents\\}
 
 会社の CRM データを含むリアルタイム分析データベースにアクセスできる
 エージェント型の AI アシスタントを例に考えてみます。ユーザーが
@@ -135,7 +135,7 @@ AI エージェントが高速なデータ駆動型の応答を提供できる�
 
 
 
-## 新たに現れつつあるユーザーペルソナとしての AI エージェント {#ai-agents-as-an-emerging-user-persona}
+## 新たに現れつつあるユーザーペルソナとしての AI エージェント \\{#ai-agents-as-an-emerging-user-persona\\}
 
 リアルタイム分析データベースを活用する AI エージェントについて考えるうえで有用な見方は、
 それらを新たな種類のユーザー、プロダクトマネージャー的な言い方をすれば
@@ -166,6 +166,6 @@ ClickHouse は、AI 向けの機能を一通り備えたエクスペリエンス
 
 
 
-## ClickHouse.ai {#clickhouse-ai}
+## ClickHouse.ai \\{#clickhouse-ai\\}
 
 今後 ClickHouse Cloud に追加される予定の機能の詳細については、[ClickHouse.ai](https://clickhouse.com/clickhouse-ai/) を参照してください。

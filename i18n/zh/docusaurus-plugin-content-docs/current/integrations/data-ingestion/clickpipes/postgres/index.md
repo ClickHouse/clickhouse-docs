@@ -21,11 +21,11 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-# 使用 CDC 将数据从 Postgres 摄取到 ClickHouse {#ingesting-data-from-postgres-to-clickhouse-using-cdc}
+# 使用 CDC 将数据从 Postgres 摄取到 ClickHouse \\{#ingesting-data-from-postgres-to-clickhouse-using-cdc\\}
 
 你可以使用 ClickPipes 将源 Postgres 数据库中的数据摄取到 ClickHouse Cloud。源 Postgres 数据库可以托管在本地环境或云端，例如 Amazon RDS、Google Cloud SQL、Azure Database for Postgres、Supabase 等。
 
-## 前提条件 {#prerequisites}
+## 前提条件 \\{#prerequisites\\}
 
 在开始之前，需要先确保您的 Postgres 数据库已正确配置。根据您使用的源端 Postgres 实例类型，可以参考以下任一指南：
 
@@ -55,7 +55,7 @@ PgBouncer、RDS Proxy、Supabase Pooler 等 Postgres 代理不支持基于 CDC�
 
 在完成源端 Postgres 数据库的配置之后，您就可以继续创建 ClickPipe 了。
 
-## 创建 ClickPipe {#creating-your-clickpipe}
+## 创建 ClickPipe \\{#creating-your-clickpipe\\}
 
 请确保你已登录到 ClickHouse Cloud 账号。如果你还没有账号，可以在[这里](https://cloud.clickhouse.com/)注册。
 
@@ -72,7 +72,7 @@ PgBouncer、RDS Proxy、Supabase Pooler 等 Postgres 代理不支持基于 CDC�
 
    <Image img={postgres_tile} alt="选择 Postgres" size="lg" border/>
 
-### 添加源 Postgres 数据库连接 {#adding-your-source-postgres-database-connection}
+### 添加源 Postgres 数据库连接 \\{#adding-your-source-postgres-database-connection\\}
 
 4. 填写你在前提条件步骤中已经配置好的源 Postgres 数据库连接信息。
 
@@ -85,12 +85,12 @@ PgBouncer、RDS Proxy、Supabase Pooler 等 Postgres 代理不支持基于 CDC�
 
    <Image img={postgres_connection_details} alt="填写连接信息" size="lg" border/>
 
-#### （可选）配置 AWS Private Link {#optional-setting-up-aws-private-link}
+#### （可选）配置 AWS Private Link \\{#optional-setting-up-aws-private-link\\}
 
 如果你的源 Postgres 数据库托管在 AWS 上，你可以使用 AWS Private Link 进行连接。这样可以让你的数据传输保持私有。
 你可以按照[此设置指南来配置连接](/integrations/clickpipes/aws-privatelink)。
 
-#### （可选）配置 SSH 隧道 {#optional-setting-up-ssh-tunneling}
+#### （可选）配置 SSH 隧道 \\{#optional-setting-up-ssh-tunneling\\}
 
 如果你的源 Postgres 数据库无法公开访问，你可以配置 SSH 隧道。
 
@@ -110,13 +110,13 @@ PgBouncer、RDS Proxy、Supabase Pooler 等 Postgres 代理不支持基于 CDC�
 
 填写完所有连接信息后，点击 “Next”。
 
-### 配置复制设置 {#configuring-the-replication-settings}
+### 配置复制设置 \\{#configuring-the-replication-settings\\}
 
 5. 确保从下拉列表中选择你在前提条件步骤中创建的 replication slot。
 
    <Image img={select_replication_slot} alt="选择 replication slot" size="lg" border/>
 
-#### 高级设置 {#advanced-settings}
+#### 高级设置 \\{#advanced-settings\\}
 
 如有需要，你可以配置高级设置。下面是每个设置项的简要说明：
 
@@ -126,7 +126,7 @@ PgBouncer、RDS Proxy、Supabase Pooler 等 Postgres 代理不支持基于 CDC�
 - **Snapshot number of rows per partition**：初始快照期间，每个分区要获取的行数。当你的表中有大量行，并希望控制每个分区中获取的行数时，此设置会很有用。
 - **Snapshot number of tables in parallel**：初始快照期间并行获取的表数量。当你有大量表，并希望控制并行获取的表数量时，此设置会很有用。
 
-### 配置表 {#configuring-the-tables}
+### 配置表 \\{#configuring-the-tables\\}
 
 6. 在这里你可以为 ClickPipe 选择目标数据库。你可以选择一个已有数据库，或者创建一个新数据库。
 
@@ -138,13 +138,13 @@ PgBouncer、RDS Proxy、Supabase Pooler 等 Postgres 代理不支持基于 CDC�
    如果你在 ClickHouse 中定义的排序键与 Postgres 中的主键不同，别忘了阅读与其相关的所有[注意事项](/integrations/clickpipes/postgres/ordering_keys)。
    :::
 
-### 检查权限并启动 ClickPipe {#review-permissions-and-start-the-clickpipe}
+### 检查权限并启动 ClickPipe \\{#review-permissions-and-start-the-clickpipe\\}
 
 8. 在权限下拉菜单中选择 “Full access” 角色，然后点击 “Complete Setup”。
 
    <Image img={ch_permissions} alt="检查权限" size="lg" border/>
 
-## 接下来是什么？ {#whats-next}
+## 接下来是什么？ \\{#whats-next\\}
 
 在您设置好 ClickPipe，将数据从 PostgreSQL 复制到 ClickHouse Cloud 之后，就可以专注于如何查询和建模数据以获得最佳性能。请参阅[迁移指南](/migrations/postgresql/overview)，评估哪种策略最适合您的需求，并参考[去重策略（使用 CDC）](/integrations/clickpipes/postgres/deduplication)和[排序键](/integrations/clickpipes/postgres/ordering_keys)页面，了解 CDC 工作负载的最佳实践。
 

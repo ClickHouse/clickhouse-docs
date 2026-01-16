@@ -11,14 +11,14 @@ keywords: ['ClickHouse Cloud', '料金', '課金', 'クラウドコスト', 'コ
 ClickHouse Cloud の課金は、コンピュート、ストレージ、[データ転送](/cloud/manage/network-data-transfer)（インターネットおよびリージョン間への送信）、および [ClickPipes](/integrations/clickpipes) の使用量に基づいて行われます。
 請求額に影響する要素や、コストを管理する方法について理解するには、以下を読み進めてください。
 
-## Amazon Web Services (AWS) の例 {#amazon-web-services-aws-example}
+## Amazon Web Services (AWS) の例 \\{#amazon-web-services-aws-example\\}
 
 :::note
 - 料金は AWS us-east-1 の価格を反映しています。
 - 該当するデータ転送料金および ClickPipes の料金は[こちら](/cloud/manage/network-data-transfer)をご覧ください。
 :::
 
-### Basic: 月額 $66.52 から {#basic-from-6652-per-month}
+### Basic: 月額 $66.52 から \\{#basic-from-6652-per-month\\}
 
 最適なユースケース: 厳密な信頼性保証を必要としない、小規模なデータ量の部門レベルのユースケース。
 
@@ -73,7 +73,7 @@ ClickHouse Cloud の課金は、コンピュート、ストレージ、[デー�
 </tbody>
 </table>
 
-### Scale (常時稼働・自動スケーリング): 月額 $499.38 から {#scale-always-on-auto-scaling-from-49938-per-month}
+### Scale (常時稼働・自動スケーリング): 月額 $499.38 から \\{#scale-always-on-auto-scaling-from-49938-per-month\\}
 
 最適なユースケース: 強化された SLA (2 つ以上のレプリカサービス)、スケーラビリティ、高度なセキュリティを必要とするワークロード。
 
@@ -126,7 +126,7 @@ ClickHouse Cloud の課金は、コンピュート、ストレージ、[デー�
 </tbody>
 </table>
 
-### エンタープライズ: 開始価格はプランにより異なります {#enterprise-starting-prices-vary}
+### エンタープライズ: 開始価格はプランにより異なります \\{#enterprise-starting-prices-vary\\}
 
 最適な用途: 厳格なセキュリティおよびコンプライアンス要件を持つ、大規模かつミッションクリティカルなデプロイメント
 
@@ -176,9 +176,9 @@ ClickHouse Cloud の課金は、コンピュート、ストレージ、[デー�
 </tbody>
 </table>
 
-## よくある質問 {#faqs}
+## よくある質問 \\{#faqs\\}
 
-### ClickHouse Credit (CHC) とは何ですか？ {#what-is-chc}
+### ClickHouse Credit (CHC) とは何ですか？ \\{#what-is-chc\\}
 
 ClickHouse Credit は、ClickHouse Cloud の利用に対するクレジットの単位であり、1 CHC は 1 米ドル (US$1) に相当します。これは、ClickHouse がその時点で公開している価格表に基づいて適用されます。
 
@@ -186,27 +186,27 @@ ClickHouse Credit は、ClickHouse Cloud の利用に対するクレジットの
 Stripe を通じて請求されている場合、Stripe の請求書上では 1 CHC は US$0.01 として表示されます。これは、当社の標準 SKU（1 CHC = US$1）について、Stripe 側の仕様上、端数数量を請求できないためであり、その制約の中で正確な請求を行うためのものです。
 :::
 
-### 旧プラン（レガシー）の料金はどこで確認できますか？ {#find-legacy-pricing}
+### 旧プラン（レガシー）の料金はどこで確認できますか？ \\{#find-legacy-pricing\\}
 
 旧プラン（レガシー）の料金情報は[こちら](https://clickhouse.com/pricing?legacy=true)で確認できます。
 
-### コンピュート（計算リソース）はどのように計測されますか？ {#how-is-compute-metered}
+### コンピュート（計算リソース）はどのように計測されますか？ \\{#how-is-compute-metered\\}
 
 ClickHouse Cloud は、コンピュートを 8GB RAM 単位で 1 分ごとに計測します。
 コンピュートコストはティア、リージョン、クラウドサービスプロバイダーによって異なります。
 
-### ディスク上のストレージはどのように算出されますか？ {#how-is-storage-on-disk-calculated}
+### ディスク上のストレージはどのように算出されますか？ \\{#how-is-storage-on-disk-calculated\\}
 
 ClickHouse Cloud はクラウドオブジェクトストレージを使用しており、ClickHouse のテーブルに保存されているデータの圧縮後サイズに基づいて使用量を計測します。
 ストレージコストはティア間で共通ですが、リージョンおよびクラウドサービスプロバイダーによって異なります。 
 
-### バックアップはストレージの合計に含まれますか？ {#do-backups-count-toward-total-storage}
+### バックアップはストレージの合計に含まれますか？ \\{#do-backups-count-toward-total-storage\\}
 
 ストレージとバックアップはいずれもストレージコストの対象となり、個別に請求されます。
 すべてのサービスは、デフォルトで 1 日間保持される 1 つのバックアップが有効になっています。
 追加のバックアップが必要なユーザーは、Cloud コンソールの設定タブで追加の[バックアップ](/cloud/manage/backups/overview)を構成することで対応できます。
 
-### 圧縮率はどのように見積もればよいですか？ {#how-do-i-estimate-compression}
+### 圧縮率はどのように見積もればよいですか？ \{#how-do-i-estimate-compression\}
 
 圧縮率はデータセットごとに大きく異なります。
 どの程度変動するかは、そもそもデータがどれだけ圧縮しやすいか（高カーディナリティと低カーディナリティのフィールドの数など）や、
@@ -224,12 +224,12 @@ WHERE name = <your table name>
 ```
 
 
-### セルフマネージドで運用している場合、クラウドでサービスを実行する際のコストを見積もるために ClickHouse はどのようなツールを提供していますか？ {#what-tools-does-clickhouse-offer-to-estimate-the-cost-of-running-a-service-in-the-cloud-if-i-have-a-self-managed-deployment}
+### セルフマネージドで運用している場合、クラウドでサービスを実行する際のコストを見積もるために ClickHouse はどのようなツールを提供していますか？ \\{#what-tools-does-clickhouse-offer-to-estimate-the-cost-of-running-a-service-in-the-cloud-if-i-have-a-self-managed-deployment\\}
 
 ClickHouse のクエリログは、ClickHouse Cloud でワークロードを実行するためのコストを見積もる際に利用できる[主要なメトリクス](/operations/system-tables/query_log)を記録します。 
 セルフマネージド環境から ClickHouse Cloud への移行の詳細については[移行ドキュメント](/cloud/migration/clickhouse-to-cloud)を参照し、さらに質問がある場合は [ClickHouse Cloud support](https://console.clickhouse.cloud/support) までお問い合わせください。
 
-### ClickHouse Cloud にはどのような課金オプションがありますか？ {#what-billing-options-are-available-for-clickhouse-cloud}
+### ClickHouse Cloud にはどのような課金オプションがありますか？ \\{#what-billing-options-are-available-for-clickhouse-cloud\\}
 
 ClickHouse Cloud は次の課金オプションをサポートしています：
 
@@ -241,15 +241,15 @@ ClickHouse Cloud は次の課金オプションをサポートしています：
 PAYG 向けの ClickHouse Cloud クレジットは 0.01 ドル単位で請求されるため、利用状況に応じてクレジットの端数も含めて課金できます。これは、事前購入するコミット型の ClickHouse クレジット（1 ドル単位の整数額で購入）とは異なります。
 :::
 
-### クレジットカードを削除できますか？ {#can-i-delete-my-credit-card}
+### クレジットカードを削除できますか？ \\{#can-i-delete-my-credit-card\\}
 
 Billing UI からクレジットカードを削除することはできませんが、いつでも更新することは可能です。これは、組織に常に有効な支払い方法が設定されている状態を確保するためです。クレジットカードの削除が必要な場合は、[ClickHouse Cloud support](https://console.clickhouse.cloud/support) までお問い合わせください。
 
-### 課金サイクルはどのくらいの期間ですか？ {#how-long-is-the-billing-cycle}
+### 課金サイクルはどのくらいの期間ですか？ \\{#how-long-is-the-billing-cycle\\}
 
 課金は月次サイクルで行われ、開始日は ClickHouse Cloud の組織が作成された日となります。
 
-### アクティブな PAYG マーケットプレイスサブスクリプションがある状態でコミットメント契約を締結した場合、先に消費されるのはコミット済みクレジットですか？ {#committed-credits-consumed-first-with-active-payg-subscription}
+### アクティブな PAYG マーケットプレイスサブスクリプションがある状態でコミットメント契約を締結した場合、先に消費されるのはコミット済みクレジットですか？ \\{#committed-credits-consumed-first-with-active-payg-subscription\\}
 
 はい。利用分は、次の支払い方法からこの順番で消費されます:
 
@@ -257,31 +257,31 @@ Billing UI からクレジットカードを削除することはできません
 - マーケットプレイスサブスクリプション（PAYG）
 - クレジットカード
 
-### ClickHouse Cloud の Scale および Enterprise サービスのコストを管理するためのコントロールには、どのようなものがありますか？ {#what-controls-doesclickhouse-cloud-offer-to-manage-costs-for-scale-and-enterprise-services}
+### ClickHouse Cloud の Scale および Enterprise サービスのコストを管理するためのコントロールには、どのようなものがありますか？ \\{#what-controls-doesclickhouse-cloud-offer-to-manage-costs-for-scale-and-enterprise-services\\}
 
 - Trial プランおよび Annual Commit のお客様には、消費量が `50%`、`75%`、`90%` のしきい値に達した際に、自動的にメールで通知されます。これにより、ユーザーは事前に利用量を管理できます。
 - ClickHouse Cloud では、分析ワークロードにおける主要なコスト要因であるコンピュートについて、[Advanced scaling control](/manage/scaling) を使用して自動スケーリングの最大上限を設定できます。
 - [Advanced scaling control](/manage/scaling) により、非アクティブ時の一時停止／アイドル状態の動作を制御するオプション付きでメモリ上限を設定できます。
 
-### ClickHouse Cloud の Basic サービスのコストを管理するためのコントロールには、どのようなものがありますか？ {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-basic-services}
+### ClickHouse Cloud の Basic サービスのコストを管理するためのコントロールには、どのようなものがありますか？ \\{#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-basic-services\\}
 
 - [Advanced scaling control](/manage/scaling) により、非アクティブ時の一時停止／アイドル状態の動作を制御できます。Basic サービスではメモリ割り当ての調整はサポートされていません。
 - 既定の設定では、一定期間アクティビティがないとサービスが一時停止される点に注意してください。
 
-### 複数のサービスがある場合、サービスごとに請求書が発行されますか、それとも統合された請求書になりますか？ {#if-i-have-multiple-services-do-i-get-an-invoice-per-service-or-a-consolidated-invoice}
+### 複数のサービスがある場合、サービスごとに請求書が発行されますか、それとも統合された請求書になりますか？ \\{#if-i-have-multiple-services-do-i-get-an-invoice-per-service-or-a-consolidated-invoice\\}
 
 特定の組織内のすべてのサービスに対し、その請求期間分をまとめた統合請求書が生成されます。
 
-### トライアル期間およびトライアルクレジットが失効する前にクレジットカードを追加してアップグレードした場合、課金されますか？ {#if-i-add-my-credit-card-and-upgrade-before-my-trial-period-and-credits-expire-will-i-be-charged}
+### トライアル期間およびトライアルクレジットが失効する前にクレジットカードを追加してアップグレードした場合、課金されますか？ \\{#if-i-add-my-credit-card-and-upgrade-before-my-trial-period-and-credits-expire-will-i-be-charged\\}
 
 ユーザーが 30 日間のトライアル期間終了前にトライアルから有償プランへ移行し、なおかつトライアルクレジットが残っている場合、
 最初の 30 日間のトライアル期間中は引き続きトライアルクレジットが優先的に消費され、その後にクレジットカードに課金されます。
 
-### 自分の支出状況をどのように把握できますか？ {#how-can-i-keep-track-of-my-spending}
+### 自分の支出状況をどのように把握できますか？ \\{#how-can-i-keep-track-of-my-spending\\}
 
 ClickHouse Cloud コンソールには、サービスごとの利用状況を詳細に表示する Usage 画面があります。利用ディメンションごとに整理されたこの内訳により、各メーターユニットごとのコストを把握できます。
 
-### ClickHouse Cloud サービスのサブスクリプションに対する請求書には、どのようにアクセスできますか？ {#how-do-i-access-my-invoice-for-my-subscription-to-the-clickhouse-cloud-service}
+### ClickHouse Cloud サービスのサブスクリプションに対する請求書には、どのようにアクセスできますか？ \\{#how-do-i-access-my-invoice-for-my-subscription-to-the-clickhouse-cloud-service\\}
 
 クレジットカードによる直接のサブスクリプションの場合:
 
@@ -291,7 +291,7 @@ ClickHouse Cloud UI の左側のナビゲーションバーから自分の組織
 
 すべてのマーケットプレイスサブスクリプションは、マーケットプレイスによって請求および請求書の発行が行われます。請求書は、各クラウドプロバイダのマーケットプレイスから直接確認できます。
 
-### Usage ステートメントの日付が、マーケットプレイスの請求書の日付と一致しないのはなぜですか？ {#why-do-the-dates-on-the-usage-statements-not-match-my-marketplace-invoice}
+### Usage ステートメントの日付が、マーケットプレイスの請求書の日付と一致しないのはなぜですか？ \\{#why-do-the-dates-on-the-usage-statements-not-match-my-marketplace-invoice\\}
 
 AWS Marketplace の課金は暦月ベースの月次サイクルに従います。
 たとえば、2024-12-01 から 2025-01-01 までの利用分については、
@@ -302,18 +302,18 @@ ClickHouse Cloud の Usage ステートメントは別の請求サイクルに�
 
 これらの日付が一致しない場合、Usage ステートメントと請求書の日付は異なります。Usage ステートメントは特定サービスの利用を日別に追跡しているため、コスト内訳を確認する際はステートメントを参照できます。
 
-### プリペイドクレジットの利用に関して、何か制限はありますか？ {#are-there-any-restrictions-around-the-usage-of-prepaid-credits}
+### プリペイドクレジットの利用に関して、何か制限はありますか？ \\{#are-there-any-restrictions-around-the-usage-of-prepaid-credits\\}
 
 ClickHouse Cloud のプリペイドクレジット（ClickHouse からの直接購入、またはクラウドプロバイダのマーケットプレイス経由のいずれの場合も）は、契約期間・条件の範囲内でのみ利用できます。
 つまり、契約受領日または将来の日付以降の利用に対して適用できますが、それ以前の期間の利用には適用できません。
 プリペイドクレジットでカバーされない超過分については、クレジットカードでの支払い、またはマーケットプレイスでの月次請求により支払う必要があります。
 
-### ClickHouse Cloud の料金は、クラウドプロバイダのマーケットプレイス経由で支払う場合と ClickHouse に直接支払う場合で違いはありますか？ {#is-there-a-difference-in-clickhouse-cloud-pricing-whether-paying-through-the-cloud-provider-marketplace-or-directly-to-clickhouse}
+### ClickHouse Cloud の料金は、クラウドプロバイダのマーケットプレイス経由で支払う場合と ClickHouse に直接支払う場合で違いはありますか？ \\{#is-there-a-difference-in-clickhouse-cloud-pricing-whether-paying-through-the-cloud-provider-marketplace-or-directly-to-clickhouse\\}
 
 マーケットプレイス課金と ClickHouse への直接サインアップのどちらを選んでも、料金に違いはありません。
 いずれの場合でも、ClickHouse Cloud の利用状況は ClickHouse Cloud Credits (CHC) をメーターユニットとして同一の方法で計測され、その結果に基づいて課金されます。
 
-### コンピュート分離はどのように課金されますか？ {#how-is-compute-compute-separation-billed}
+### コンピュート分離はどのように課金されますか？ \\{#how-is-compute-compute-separation-billed\\}
 
 既存のサービスに加えて新しいサービスを作成する際に、
 この新しいサービスが既存のサービスと同じデータを共有するかどうかを選択できます。
@@ -388,6 +388,6 @@ warehouse にはデータが保存されており、複数のコンピュート�
 warehouse を利用しない場合、データエンジニアがクエリに必要とするメモリ量に対して支払う必要があります。
 しかし、2 つのサービスを 1 つの warehouse にまとめ、そのうち片方をアイドル状態にできるようにすることで、コストを削減できます。
 
-## ClickPipes の料金 {#clickpipes-pricing}
+## ClickPipes の料金 \\{#clickpipes-pricing\\}
 
 ClickPipes の請求に関する情報は、専用の[「ClickPipes の課金」セクション](/cloud/reference/billing/clickpipes)を参照してください。

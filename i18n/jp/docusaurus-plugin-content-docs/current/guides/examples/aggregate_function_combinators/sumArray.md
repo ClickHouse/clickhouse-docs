@@ -7,9 +7,9 @@ sidebar_label: 'sumArray'
 doc_type: 'reference'
 ---
 
-# sumArray {#sumarray}
+# sumArray \\{#sumarray\\}
 
-## 説明 {#description}
+## 説明 \\{#description\\}
 
 [`Array`](/sql-reference/aggregate-functions/combinators#-array) コンビネータは、
 集約コンビネータ関数 `sumArray` を使用して配列内のすべての要素の合計を計算するために、
@@ -18,7 +18,7 @@ doc_type: 'reference'
 `sumArray` 関数は、データセット内の複数の配列にまたがるすべての要素の合計を
 計算する必要がある場合に有用です。
 
-## 使用例 {#example-usage}
+## 使用例 \\{#example-usage\\}
 
 この例では、さまざまな商品カテゴリにまたがる日次売上のサンプルデータセットを使って、`sumArray` がどのように動作するかを示します。各日について、すべてのカテゴリの合計売上を計算します。
 
@@ -47,7 +47,7 @@ GROUP BY date, category_sales;
 たとえば、`2024-01-01` の場合は、`100 + 200 + 150 = 450` となります。これは
 `arraySum` と同じ結果です。
 
-## 関連項目 {#see-also}
+## 関連項目 \\{#see-also\\}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`arraySum`](/sql-reference/functions/array-functions#arraySum)
 - [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)

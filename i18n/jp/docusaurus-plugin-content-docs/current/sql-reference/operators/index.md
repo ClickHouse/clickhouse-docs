@@ -7,23 +7,23 @@ title: '演算子'
 doc_type: 'reference'
 ---
 
-# 演算子 {#operators}
+# 演算子 \\{#operators\\}
 
 ClickHouse は、クエリのパース段階で、演算子の優先度、優先順位、および結合性に従って、それらを対応する関数に変換します。
 
-## アクセス演算子 {#access-operators}
+## アクセス演算子 \\{#access-operators\\}
 
 `a[N]` – 配列の要素へのアクセス。`arrayElement(a, N)` 関数。
 
 `a.N` – タプルの要素へのアクセス。`tupleElement(a, N)` 関数。
 
-## 数値の符号反転演算子 {#numeric-negation-operator}
+## 数値の符号反転演算子 \\{#numeric-negation-operator\\}
 
 `-a` – `negate(a)` 関数。
 
 タプルの符号反転: [tupleNegate](../../sql-reference/functions/tuple-functions.md#tupleNegate)。
 
-## 乗算および除算演算子 {#multiplication-and-division-operators}
+## 乗算および除算演算子 \\{#multiplication-and-division-operators\\}
 
 `a * b` – `multiply (a, b)` 関数。
 
@@ -35,7 +35,7 @@ ClickHouse は、クエリのパース段階で、演算子の優先度、優先
 
 `a % b` – `modulo(a, b)` 関数。
 
-## 加算および減算演算子 {#addition-and-subtraction-operators}
+## 加算および減算演算子 \\{#addition-and-subtraction-operators\\}
 
 `a + b` – `plus(a, b)` 関数。
 
@@ -45,55 +45,55 @@ ClickHouse は、クエリのパース段階で、演算子の優先度、優先
 
 タプルの減算: [tupleMinus](../../sql-reference/functions/tuple-functions.md#tupleMinus)。
 
-## 比較演算子 {#comparison-operators}
+## 比較演算子 \\{#comparison-operators\\}
 
-### equals 関数 {#equals-function}
+### equals 関数 \\{#equals-function\\}
 
 `a = b` – `equals(a, b)` 関数と同じです。
 
 `a == b` – `equals(a, b)` 関数と同じです。
 
-### notEquals 関数 {#notequals-function}
+### notEquals 関数 \\{#notequals-function\\}
 
 `a != b` – `notEquals(a, b)` 関数。
 
 `a <> b` – `notEquals(a, b)` 関数。
 
-### lessOrEquals関数 {#lessorequals-function}
+### lessOrEquals関数 \\{#lessorequals-function\\}
 
 `a <= b` – `lessOrEquals(a, b)` 関数を表します。
 
-### lessOrEquals関数 {#lessorequals-function}
+### lessOrEquals関数 \\{#lessorequals-function\\}
 
 `a >= b` – `greaterOrEquals(a, b)` 関数です。
 
-### greaterOrEquals関数 {#less-function}
+### greaterOrEquals関数 \\{#less-function\\}
 
 `a < b` – `less(a, b)` 関数。
 
-### less関数 {#greater-function}
+### less関数 \\{#greater-function\\}
 
 `a > b` – `less(a, b)` 関数。
 
-### like関数 {#like-function}
+### like関数 \\{#like-function\\}
 
 `a LIKE b` – `like(a, b)` 関数です。
 
-### notLike 関数 {#notlike-function}
+### notLike 関数 \\{#notlike-function\\}
 
 `a LIKE b` – `like(a, b)`関数
 
-### notLike関数 {#ilike-function}
+### notLike関数 \\{#ilike-function\\}
 
 `a NOT LIKE b` – `notLike(a, b)`関数。
 
-### ilike関数 {#between-function}
+### ilike関数 \\{#between-function\\}
 
 `a BETWEEN b AND c` – `a >= b AND a <= c` と同じ意味です。
 
 `a NOT BETWEEN b AND c` – `a < b OR a > c` と同じ意味です。
 
-### is not distinct from 演算子 (`<=>`) {#is-not-distinct-from}
+### is not distinct from 演算子 (`<=>`) \\{#is-not-distinct-from\\}
 
 :::note
 バージョン 25.10 以降では、`<=>` を他の演算子と同様に使用できます。
@@ -128,39 +128,39 @@ SELECT
 └──────────────────────────┴──────────────────────────┘
 ```
 
-## データセットを扱う演算子 {#operators-for-working-with-data-sets}
+## データセットを扱う演算子 \\{#operators-for-working-with-data-sets\\}
 
 [IN 演算子](../../sql-reference/operators/in.md)および[EXISTS 演算子](../../sql-reference/operators/exists.md)を参照してください。
 
-### in 関数 {#in-function}
+### in 関数 \\{#in-function\\}
 
 `a IN ...` は `in(a, b)` 関数です。
 
-### notIn 関数 {#notin-function}
+### notIn 関数 \\{#notin-function\\}
 
 `a NOT IN ...` – `notIn(a, b)` 関数に対応します。
 
-### globalIn 関数 {#globalin-function}
+### globalIn 関数 \\{#globalin-function\\}
 
 `a GLOBAL IN ...` – `globalIn(a, b)` 関数です。
 
-### globalNotIn 関数 {#globalnotin-function}
+### globalNotIn 関数 \\{#globalnotin-function\\}
 
 `a GLOBAL NOT IN ...` は `globalNotIn(a, b)` 関数です。
 
-### in サブクエリ用関数 {#in-subquery-function}
+### in サブクエリ用関数 \\{#in-subquery-function\\}
 
 `a = ANY (subquery)` – `in(a, subquery)` 関数です。  
 
-### notIn サブクエリ関数 {#notin-subquery-function}
+### notIn サブクエリ関数 \\{#notin-subquery-function\\}
 
 `a != ANY (subquery)` – `a NOT IN (SELECT singleValueOrNull(*) FROM subquery)` と同じ意味になります。
 
-### in subquery 関数 {#in-subquery-function-1}
+### in subquery 関数 \\{#in-subquery-function-1\\}
 
 `a = ALL (subquery)` は、`a IN (SELECT singleValueOrNull(*) FROM subquery)` と同じです。
 
-### notIn サブクエリ関数 {#notin-subquery-function-1}
+### notIn サブクエリ関数 \\{#notin-subquery-function-1\\}
 
 `a != ALL (subquery)` – `notIn(a, subquery)` 関数。
 
@@ -202,9 +202,9 @@ SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3,
 └───┘
 ```
 
-## 日付と時刻を扱う演算子 {#operators-for-working-with-dates-and-times}
+## 日付と時刻を扱う演算子 \\{#operators-for-working-with-dates-and-times\\}
 
-### EXTRACT {#extract}
+### EXTRACT \\{#extract\\}
 
 ```sql
 EXTRACT(part FROM date);
@@ -268,7 +268,7 @@ FROM test.Orders;
 
 さらに多くの例については、[tests](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00619_extract.sql) を参照してください。
 
-### INTERVAL {#interval}
+### INTERVAL \{#interval\}
 
 [Date](../../sql-reference/data-types/date.md) 型および [DateTime](../../sql-reference/data-types/datetime.md) 型の値との算術演算で使用するための [Interval](../../sql-reference/data-types/special-data-types/interval.md) 型の値を作成します。
 
@@ -343,19 +343,19 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 * [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 型変換関数
 
 
-## 論理AND演算子 {#logical-and-operator}
+## 論理AND演算子 \\{#logical-and-operator\\}
 
 構文 `SELECT a AND b` — 関数 [and](/sql-reference/functions/logical-functions#and) を用いて、`a` と `b` の論理積を計算します。
 
-## 論理OR演算子 {#logical-or-operator}
+## 論理OR演算子 \\{#logical-or-operator\\}
 
 構文 `SELECT a OR b` — 関数 [or](/sql-reference/functions/logical-functions#or) を使用して、`a` と `b` の論理和を計算します。
 
-## 論理否定演算子 {#logical-negation-operator}
+## 論理否定演算子 \\{#logical-negation-operator\\}
 
 構文 `SELECT NOT a` — 関数 [not](/sql-reference/functions/logical-functions#not) により、`a` の論理否定を計算します。
 
-## 条件演算子 {#conditional-operator}
+## 条件演算子 \\{#conditional-operator\\}
 
 `a ? b : c` – `if(a, b, c)` 関数です。
 
@@ -363,7 +363,7 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 
 条件演算子は、b と c の値を計算した後、条件 a が満たされているかを確認し、該当する値を返します。`b` または `c` が [arrayJoin()](/sql-reference/functions/array-join) 関数である場合、条件 `a` に関係なく、各行が複製されます。
 
-## 条件式 {#conditional-expression}
+## 条件式 \\{#conditional-expression\\}
 
 ```sql
 CASE [x]
@@ -379,36 +379,36 @@ END
 
 `transform` 関数は `NULL` を処理できません。
 
-## 連結演算子 {#concatenation-operator}
+## 連結演算子 \\{#concatenation-operator\\}
 
 `s1 || s2` – `concat(s1, s2)` 関数。
 
-## Lambda 作成演算子 {#lambda-creation-operator}
+## Lambda 作成演算子 \\{#lambda-creation-operator\\}
 
 `x -> expr` – `lambda(x, expr)` 関数です。
 
 次の演算子は括弧として扱われるため、優先順位は定義されていません。
 
-## 配列作成演算子 {#array-creation-operator}
+## 配列作成演算子 \\{#array-creation-operator\\}
 
 `[x1, ...]` – `array(x1, ...)` 関数を表します。
 
-## タプル作成演算子 {#tuple-creation-operator}
+## タプル作成演算子 \\{#tuple-creation-operator\\}
 
 `(x1, x2, ...)` – `tuple(x1, x2, ...)` 関数。
 
-## タプル生成演算子 {#associativity}
+## タプル生成演算子 \\{#associativity\\}
 
 すべての二項演算子は左結合です。例えば、`1 + 2 + 3` は `plus(plus(1, 2), 3)` に変換されます。
 場合によっては、これは期待どおりには動作しません。例えば、`SELECT 4 > 2 > 3` の結果は 0 になります。
 
 効率のために、`and` および `or` は任意個数の引数を受け取る関数です。対応する `AND` および `OR` 演算子の連なりは、これらの関数の 1 回の呼び出しに変換されます。
 
-## `NULL` のチェック {#checking-for-null}
+## `NULL` のチェック \\{#checking-for-null\\}
 
 ClickHouse は `IS NULL` および `IS NOT NULL` 演算子をサポートします。
 
-### IS NULL {#is_null}
+### IS NULL \\{#is_null\\}
 
 * [Nullable](../../sql-reference/data-types/nullable.md) 型の値に対しては、`IS NULL` 演算子は次の値を返します。
   * 値が `NULL` の場合は `1`
@@ -429,7 +429,7 @@ SELECT x+100 FROM t_null WHERE y IS NULL
 └──────────────┘
 ```
 
-### IS NOT NULL {#is_not_null}
+### IS NOT NULL \\{#is_not_null\\}
 
 * [Nullable](../../sql-reference/data-types/nullable.md) 型の値に対しては、`IS NOT NULL` 演算子は次を返します：
   * 値が `NULL` の場合は `0`

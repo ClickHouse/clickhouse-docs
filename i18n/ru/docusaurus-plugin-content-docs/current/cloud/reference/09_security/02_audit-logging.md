@@ -9,19 +9,19 @@ keywords: ['audit logging', 'security', 'compliance', 'logs', 'monitoring']
 
 
 
-## События журнала аудита консоли {#console-audit-log-events}
+## События журнала аудита консоли \\{#console-audit-log-events\\}
 
 Различные типы событий, фиксируемых для организации, делятся на три категории: **Organization**, **Service** и **User**. Для получения дополнительной информации о журнале аудита и о том, как экспортировать его или добавить интеграцию с API, ознакомьтесь с документацией [console audit log](/cloud/security/audit-logging/console-audit-log) в разделе «Guides» выше.
 
 В журнал аудита записываются следующие события.
 
-### Organization {#organization}
+### Organization \\{#organization\\}
 
 - Организация создана
 - Организация удалена
 - Имя организации изменено
 
-### Service {#service}
+### Service \\{#service\\}
 
 - Сервис создан
 - Сервис удалён
@@ -31,7 +31,7 @@ keywords: ['audit logging', 'security', 'compliance', 'logs', 'monitoring']
 - Список IP-адресов доступа к сервису изменён
 - Пароль сервиса сброшен
 
-### User {#user}
+### User \\{#user\\}
 
 - Роль пользователя изменена
 - Пользователь удалён из организации

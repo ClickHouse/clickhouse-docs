@@ -11,7 +11,7 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 
 <SelfManaged />
 
-## CPU 频率调节策略 {#cpu-scaling-governor}
+## CPU 频率调节策略 \\{#cpu-scaling-governor\\}
 
 应始终使用 `performance` 频率调节策略。`on-demand` 频率调节策略在持续高负载场景下的效果要差得多。
 
@@ -19,12 +19,12 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 $ echo 'performance' | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 ```
 
-## CPU 限制 {#cpu-limitations}
+## CPU 限制 \\{#cpu-limitations\\}
 
 处理器可能会过热。使用 `dmesg` 查看 CPU 的频率是否因过热而被限制。
 该限制也可能由数据中心层面的外部策略设置。可以在负载下使用 `turbostat` 对其进行监控。
 
-## RAM {#ram}
+## RAM \\{#ram\\}
 
 对于较小的数据量（压缩后最多约 200 GB），最好使用与数据量大致相当的内存。
 对于较大的数据量并且需要处理交互式（在线）查询时，应使用合理数量的 RAM（128 GB 或更多），以便热点数据子集能够装入页缓存中。
@@ -39,7 +39,7 @@ $ echo 0 | sudo tee /proc/sys/vm/overcommit_memory
 使用 `perf top` 观察内核在内存管理上的耗时。
 永久性 huge pages 也无需分配。
 
-### 使用少于 16GB 内存时 {#using-less-than-16gb-of-ram}
+### 使用少于 16GB 内存时 \\{#using-less-than-16gb-of-ram\\}
 
 推荐的内存大小为 32 GB 及以上。
 
@@ -59,7 +59,7 @@ $ echo 0 | sudo tee /proc/sys/vm/overcommit_memory
 - 为了释放由内存分配器缓存的内存，可以运行 `SYSTEM JEMALLOC PURGE` 命令。
 - 不建议在内存较小的机器上使用 S3 或 Kafka 集成，因为它们的缓冲区需要占用大量内存。
 
-## 存储子系统 {#storage-subsystem}
+## 存储子系统 \\{#storage-subsystem\\}
 
 如果预算允许，尽量使用 SSD。
 如果不允许，就使用 HDD。使用转速为 7200 RPM 的 SATA HDD 即可。
@@ -67,7 +67,7 @@ $ echo 0 | sudo tee /proc/sys/vm/overcommit_memory
 优先选择数量较多且带本地硬盘的服务器，而不是数量较少但连接外置磁盘柜的服务器。
 但对于仅偶尔被查询的归档数据，使用磁盘柜也是可行的。
 
-## RAID {#raid}
+## RAID \\{#raid\\}
 
 在使用 HDD 时，可以将其组合为 RAID-10、RAID-5、RAID-6 或 RAID-50。
 在 Linux 上，推荐使用软件 RAID（通过 `mdadm` 实现）。
@@ -97,7 +97,7 @@ $ echo 4096 | sudo tee /sys/block/md2/md/stripe_cache_size
 
 确保在操作系统中为 NVMe 和 SSD 磁盘启用了 [`fstrim`](https://en.wikipedia.org/wiki/Trim_\(computing\))（通常通过 cron 作业或 systemd 服务实现）。
 
-## 文件系统 {#file-system}
+## 文件系统 \\{#file-system\\}
 
 Ext4 是最可靠的选择。将挂载选项设置为 `noatime`。XFS 的表现也很好。
 大多数其他文件系统通常也可以正常工作。
@@ -109,18 +109,18 @@ Ext4 是最可靠的选择。将挂载选项设置为 `noatime`。XFS 的表现�
 
 虽然 ClickHouse 可以通过 NFS 工作，但这并不是最理想的选择。
 
-## Linux 内核 {#linux-kernel}
+## Linux 内核 \\{#linux-kernel\\}
 
 请勿使用已过时的 Linux 内核。
 
-## 网络 {#network}
+## 网络 \\{#network\\}
 
 如果使用 IPv6，请增大路由缓存的大小。
 3.2 之前版本的 Linux 内核在 IPv6 实现方面存在诸多问题。
 
 如果可能，请至少使用 10 Gb 的网络。1 Gb 也能用，但在为包含数十 TB 数据的副本进行补丁更新，或处理具有大量中间数据的分布式查询时，效果会差得多。
 
-## Huge Pages {#huge-pages}
+## Huge Pages \\{#huge-pages\\}
 
 如果你使用的是较旧的 Linux 内核，应禁用 Transparent Huge Pages（透明大页）。它会干扰内存分配器，从而导致明显的性能下降。
 在较新的 Linux 内核中，Transparent Huge Pages 可以正常使用。
@@ -137,7 +137,7 @@ $ GRUB_CMDLINE_LINUX_DEFAULT="transparent_hugepage=madvise ..."
 
 之后运行 `sudo update-grub` 命令，然后重启系统以使其生效。
 
-## 虚拟机管理程序配置 {#hypervisor-configuration}
+## 虚拟机管理程序配置 \\{#hypervisor-configuration\\}
 
 如果您使用 OpenStack，请设置
 
@@ -158,7 +158,7 @@ cpu_mode=host-passthrough
 这对于 ClickHouse 能够通过 `cpuid` 指令获取正确信息非常重要。
 否则，如果在较旧的 CPU 型号上运行虚拟机管理程序，可能会触发 `Illegal instruction` 崩溃。
 
-## ClickHouse Keeper 和 ZooKeeper {#zookeeper}
+## ClickHouse Keeper 和 ZooKeeper \\{#zookeeper\\}
 
 推荐在 ClickHouse 集群中使用 ClickHouse Keeper 替代 ZooKeeper。请参阅 [ClickHouse Keeper](../guides/sre/keeper/index.md) 文档。
 
@@ -315,10 +315,10 @@ script
 end script
 ```
 
-## Antivirus software {#antivirus-software}
+## Antivirus software \\{#antivirus-software\\}
 
 如果使用杀毒软件，请将其配置为忽略包含 ClickHouse 数据文件（`/var/lib/clickhouse`）的目录，否则可能会导致性能下降，并在数据摄取和后台合并任务过程中出现意外错误。
 
-## 相关内容 {#related-content}
+## 相关内容 \\{#related-content\\}
 
 - [刚开始接触 ClickHouse？这里有 13 个“致命错误”以及如何避免它们](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)

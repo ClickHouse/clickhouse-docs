@@ -7,7 +7,7 @@ title: 'FixedString(N)'
 doc_type: 'reference'
 ---
 
-# FixedString(N) {#fixedstringn}
+# FixedString(N) \\{#fixedstringn\\}
 
 Строка фиксированной длины из `N` байт (не в символах и не в кодовых точках).
 

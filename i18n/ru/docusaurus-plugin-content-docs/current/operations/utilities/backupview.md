@@ -5,7 +5,7 @@ title: 'clickhouse_backupview'
 doc_type: 'reference'
 ---
 
-# clickhouse_backupview {#clickhouse_backupview}
+# clickhouse_backupview \\{#clickhouse_backupview\\}
 
 Модуль Python для анализа бэкапов, созданных командой [BACKUP](/operations/backup/overview).
 Основная цель — получить информацию из бэкапа без его фактического восстановления.
@@ -16,7 +16,7 @@ doc_type: 'reference'
 - получения в удобном для чтения виде полезной информации о базах данных, таблицах и частях (parts), содержащихся в бэкапе
 - проверки целостности бэкапа
 
-## Пример: {#example}
+## Пример: \{#example\}
 
 ```python
 from clickhouse_backupview import open_backup, S3, FileInfo

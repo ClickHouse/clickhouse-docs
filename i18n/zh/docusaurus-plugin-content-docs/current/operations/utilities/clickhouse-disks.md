@@ -7,11 +7,11 @@ title: 'Clickhouse-disks'
 doc_type: 'reference'
 ---
 
-# Clickhouse-disks {#clickhouse-disks}
+# Clickhouse-disks \\{#clickhouse-disks\\}
 
 一个为 ClickHouse 磁盘提供类文件系统操作的实用工具。它同时支持交互式和非交互式模式。
 
-## 程序级通用选项 {#program-wide-options}
+## 程序级通用选项 \\{#program-wide-options\\}
 
 * `--config-file, -C` -- ClickHouse 配置文件路径，默认为 `/etc/clickhouse-server/config.xml`。
 * `--save-logs` -- 将已执行命令的进度记录到 `/var/log/clickhouse-server/clickhouse-disks.log`。
@@ -20,22 +20,22 @@ doc_type: 'reference'
 * `--query, -q` -- 可在不启动交互模式的情况下执行的一条查询。
 * `--help, -h` -- 显示所有选项和命令及其说明。
 
-## 延迟初始化 {#lazy-initialization}
+## 延迟初始化 \\{#lazy-initialization\\}
 配置中可用的所有磁盘都会采用延迟初始化方式。也就是说，只有在某个命令实际使用到某个磁盘时，才会为该磁盘初始化对应的对象。这样做是为了提高工具的健壮性，并避免去操作那些虽然在配置中声明、但用户并未使用、且可能在初始化过程中失败的磁盘。不过，在启动 clickhouse-disks 时，必须有一个磁盘会被立即初始化。该磁盘通过命令行参数 `--disk` 指定（默认值为 `default`）。
 
-## 默认磁盘 {#default-disks}
+## 默认磁盘 \\{#default-disks\\}
 启动后，会有两个未在配置中显式指定但可用于初始化的磁盘。
 
 1. **`local` 磁盘**：该磁盘用于模拟启动 `clickhouse-disks` 工具时所在的本地文件系统。它的初始路径为启动 `clickhouse-disks` 时所在的目录，并挂载在文件系统根目录。
 
 2. **`default` 磁盘**：该磁盘挂载到本地文件系统中由配置参数 `clickhouse/path` 指定的目录（默认值为 `/var/lib/clickhouse`）。它的初始路径被设置为 `/`。
 
-## Clickhouse-disks 状态 {#clickhouse-disks-state}
+## Clickhouse-disks 状态 \\{#clickhouse-disks-state\\}
 对于添加的每个磁盘，该工具都会存储当前目录（类似于普通文件系统）。用户可以更改当前目录并在各个磁盘之间切换。
 
 状态会显示在提示符中 "`disk_name`:`path_name`"
 
-## 命令 {#commands}
+## 命令 \\{#commands\\}
 
 在本说明文档中，所有必需的位置参数记作 `<parameter>`，具名参数记作 `[--parameter value]`。所有位置参数都可以使用对应名称作为具名参数来指定。
 

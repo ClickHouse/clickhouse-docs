@@ -14,7 +14,7 @@ import supabase_commands from '@site/static/images/integrations/data-ingestion/c
 import supabase_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-connection-details.jpg'
 import Image from '@theme/IdealImage';
 
-# Supabase ソースセットアップガイド {#supabase-source-setup-guide}
+# Supabase ソースセットアップガイド \\{#supabase-source-setup-guide\\}
 
 本ガイドでは、ClickPipes で利用するための Supabase の Postgres データベースのセットアップ方法について説明します。
 
@@ -24,7 +24,7 @@ ClickPipes は、シームレスなレプリケーションのために、Supaba
 
 :::
 
-## 権限およびレプリケーションスロットを持つユーザーの作成 {#creating-a-user-with-permissions-and-replication-slot}
+## 権限およびレプリケーションスロットを持つユーザーの作成 \\{#creating-a-user-with-permissions-and-replication-slot\\}
 
 管理者ユーザーとして Supabase インスタンスに接続し、次のコマンドを実行します。
 
@@ -68,7 +68,7 @@ ClickPipes は、シームレスなレプリケーションのために、Supaba
 
    `clickpipes` publication には、指定したテーブルから生成される変更イベントの一連の集合が含まれ、後でレプリケーションストリームを取り込む際に使用されます。
 
-## `max_slot_wal_keep_size` を増やす {#increase-max_slot_wal_keep_size}
+## `max_slot_wal_keep_size` を増やす \\{#increase-max_slot_wal_keep_size\\}
 
 :::warning
 
@@ -80,7 +80,7 @@ ClickPipes は、シームレスなレプリケーションのために、Supaba
 
 :::
 
-## Supabase で使用する接続情報 {#connection-details-to-use-for-supabase}
+## Supabase で使用する接続情報 \\{#connection-details-to-use-for-supabase\\}
 
 Supabase プロジェクトの `Project Settings` から、`Configuration` 配下の `Database` に移動します。
 
@@ -94,7 +94,7 @@ CDC（変更データキャプチャ）ベースのレプリケーションで�
 
 :::
 
-## RLS に関する注意 {#note-on-rls}
+## RLS に関する注意 \{#note-on-rls\}
 
 ClickPipes の Postgres ユーザーは RLS ポリシーで制限してはいけません。制限するとデータの欠損が発生するおそれがあります。以下のコマンドを実行して、このユーザーに対する RLS ポリシーを無効化できます。
 
@@ -103,7 +103,7 @@ ALTER USER clickpipes_user BYPASSRLS;
 ```
 
 
-## 次のステップ {#whats-next}
+## 次のステップ \\{#whats-next\\}
 
 これで、[ClickPipe を作成](../index.md)し、Postgres インスタンスから ClickHouse Cloud へのデータ取り込みを開始できます。
 Postgres インスタンスをセットアップする際に使用した接続情報は、ClickPipe の作成時にも必要になるため、必ず控えておいてください。

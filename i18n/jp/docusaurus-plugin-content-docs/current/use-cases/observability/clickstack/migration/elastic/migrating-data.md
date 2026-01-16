@@ -11,7 +11,7 @@ keywords: ['ClickStack']
 doc_type: 'guide'
 ---
 
-## 並行運用戦略 {#parallel-operation-strategy}
+## 並行運用戦略 \\{#parallel-operation-strategy\\}
 
 オブザーバビリティ用途で Elastic から ClickStack へ移行する際には、履歴データの移行を試みるのではなく、**並行運用** アプローチを推奨します。この戦略には次の利点があります。
 
@@ -25,7 +25,7 @@ doc_type: 'guide'
 ["Migrating data"](#migrating-data) セクションでは、Elasticsearch から ClickHouse に重要なデータを移行するためのアプローチを紹介します。これは、大規模なデータセットにはほとんどの場合パフォーマンス上適していません。Elasticsearch 側のエクスポート性能に制約されるうえ、サポートされる形式が JSON のみであるためです。
 :::
 
-### 実装手順 {#implementation-steps}
+### 実装手順 \\{#implementation-steps\\}
 
 1. **二重インジェストを構成する**
 
@@ -57,7 +57,7 @@ Elastic の TTL 設定を、希望する保持期間に合うように構成し�
 - データが Elastic から自然に期限切れを迎えるにつれて、徐々に ClickStack に依存するようになります
 - ClickStack に対する信頼が十分に確立されたら、クエリとダッシュボードのリダイレクトを開始できます
 
-### 長期保持 {#long-term-retention}
+### 長期保持 \\{#long-term-retention\\}
 
 より長い保持期間が必要な組織向け:
 
@@ -65,7 +65,7 @@ Elastic の TTL 設定を、希望する保持期間に合うように構成し�
 - ClickStack の [階層型ストレージ](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-multiple-volumes) 機能を利用すると、長期間保存するデータを効率的に管理できます。
 - 生データの保持期間を終了させつつ、集計済みまたはフィルタ済みの履歴データを維持するために、[マテリアライズドビュー](/materialized-view/incremental-materialized-view) の利用を検討してください。
 
-### 移行タイムライン {#migration-timeline}
+### 移行タイムライン \\{#migration-timeline\\}
 
 移行タイムラインは、データ保持要件によって異なります：
 
@@ -73,11 +73,11 @@ Elastic の TTL 設定を、希望する保持期間に合うように構成し�
 - **より長い保持期間**: Elastic からデータの保持期限が切れるまで、並行運用を継続します。
 - **履歴データ**: どうしても必要な場合は、特定の履歴データをインポートするために [データ移行](#migrating-data) の利用を検討してください。
 
-## 設定の移行 {#migration-settings}
+## 設定の移行 \\{#migration-settings\\}
 
 Elastic から ClickStack に移行する際は、インデックスおよびストレージ設定を ClickHouse のアーキテクチャに合わせて調整する必要があります。Elasticsearch はパフォーマンスとフォールトトレランスのために水平スケーリングとシャーディングに依存しており、そのためデフォルトで複数のシャードを持ちますが、ClickHouse は垂直スケーリングに最適化されており、通常は少数のシャード構成で最適なパフォーマンスを発揮します。
 
-### 推奨設定 {#recommended-settings}
+### 推奨設定 \\{#recommended-settings\\}
 
 まずは**単一シャード**構成から開始し、垂直方向にスケールさせることを推奨します。この構成は、ほとんどのオブザーバビリティ系ワークロードに適しており、運用管理とクエリパフォーマンスのチューニングの両方を簡素化できます。
 
@@ -89,7 +89,7 @@ Elastic から ClickStack に移行する際は、インデックスおよびス
   - 高可用性が必要な場合は、[`ReplicatedMergeTree`](/engines/table-engines/mergetree-family/replication) を使用する
   - 障害耐性の観点では、オブザーバビリティ系ワークロードでは通常、[シャードの 1 レプリカ](/engines/table-engines/mergetree-family/replication) で十分です。
 
-### シャーディングが必要な場合 {#when-to-shard}
+### シャーディングが必要な場合 \\{#when-to-shard\\}
 
 次のような場合、シャーディングが必要になることがあります：
 
@@ -99,7 +99,7 @@ Elastic から ClickStack に移行する際は、インデックスおよびス
 
 シャーディングが必要な場合は、シャードキーと分散テーブル構成に関するガイダンスとして、[Horizontal scaling](/architecture/horizontal-scaling) を参照してください。
 
-### 保持期間と TTL {#retention-and-ttl}
+### 保持期間と TTL \\{#retention-and-ttl\\}
 
 ClickHouse は MergeTree テーブルの [TTL 句](/use-cases/observability/clickstack/production#configure-ttl) を使用して、データの有効期限を管理します。TTL ポリシーにより、次のことが可能です。
 
@@ -109,7 +109,7 @@ ClickHouse は MergeTree テーブルの [TTL 句](/use-cases/observability/clic
 
 移行中も一貫したデータライフサイクルを維持するために、既存の Elastic の保持ポリシーと整合するように ClickHouse の TTL 設定を合わせることを推奨します。具体例については、[ClickStack 本番環境での TTL 設定](/use-cases/observability/clickstack/production#configure-ttl) を参照してください。
 
-## データの移行 {#migrating-data}
+## データの移行 \\{#migrating-data\\}
 
 ほとんどのオブザーバビリティデータについては併用運用を推奨しますが、Elasticsearch から ClickHouse へデータを直接移行する必要があるケースもあります。
 

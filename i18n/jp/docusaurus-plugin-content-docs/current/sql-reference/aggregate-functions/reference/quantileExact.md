@@ -6,7 +6,7 @@ title: 'quantileExact 関数群'
 doc_type: 'reference'
 ---
 
-# quantileExact {#quantileexact}
+# quantileExact \{#quantileexact\}
 
 数値データ列の[分位数](https://en.wikipedia.org/wiki/Quantile)を厳密に計算します。
 

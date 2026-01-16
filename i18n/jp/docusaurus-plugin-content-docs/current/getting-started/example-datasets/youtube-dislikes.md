@@ -21,11 +21,11 @@ keywords: ['サンプルデータセット', 'youtube', 'サンプルデータ',
 以下の手順は、ローカル環境にインストールした ClickHouse でも問題なく利用できます。唯一の違いは、`s3cluster` の代わりに `s3` 関数を使用する点です（クラスターを構成している場合はこの限りではなく、その場合は `default` をクラスター名に置き換えてください）。
 :::
 
-## 段階的な手順 {#step-by-step-instructions}
+## 段階的な手順 \\{#step-by-step-instructions\\}
 
 <VerticalStepper headerLevel="h3">
 
-### データ探索 {#data-exploration}
+### データ探索 \{#data-exploration\}
 
 データの構造を確認しましょう。`s3cluster`テーブル関数はテーブルを返すため、`DESCRIBE`で結果を確認できます：
 
@@ -64,7 +64,7 @@ ClickHouseはJSONファイルから次のスキーマを推論します：
 └─────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-### テーブルの作成 {#create-the-table}
+### テーブルの作成 \{#create-the-table\}
 
 推論されたスキーマに基づいて、データ型を整理し、プライマリキーを追加しました。
 次のテーブルを定義します：
@@ -98,7 +98,7 @@ ENGINE = MergeTree
 ORDER BY (uploader, upload_date)
 ```
 
-### データの挿入 {#insert-data}
+### データの挿入 \{#insert-data\}
 
 以下のコマンドは、S3ファイルからレコードを`youtube`テーブルにストリーミングします。
 
@@ -143,7 +143,7 @@ FROM s3(
 * `upload_date` 列には有効な日付が含まれていますが、&quot;4 hours ago&quot; のような文字列も含まれており、これは当然ながら有効な日付ではありません。そこで元の値は `upload_date_str` に保持しつつ、`toDate(parseDateTimeBestEffortUSOrZero(upload_date::String))` でパースを試みることにしました。パースに失敗した場合は単に `0` が返されます。
 * テーブル内で `NULL` 値が発生しないようにするために `ifNull` を使用しました。入力値が `NULL` の場合、`ifNull` 関数はその値を空文字列に置き換えます。
 
-### 行数をカウントする {#count-row-numbers}
+### 行数をカウントする \{#count-row-numbers\}
 
 ClickHouse CloudのSQLコンソールで新しいタブを開く(または新しい`clickhouse-client`ウィンドウを開く)か、カウントの増加を監視します。
 45.6億行の挿入には、サーバーリソースに応じて時間がかかります。(設定を調整しない場合、約4.5時間かかります。)
@@ -159,7 +159,7 @@ FROM youtube
 └─────────────────────────────────┘
 ```
 
-### データを探索する {#explore-the-data}
+### データを探索する \{#explore-the-data\}
 
 データが挿入されたら、お気に入りの動画やチャンネルの低評価数を集計してみましょう。ClickHouseがアップロードした動画の数を確認してみます:
 
@@ -241,9 +241,9 @@ view_count DESC;
 
 </VerticalStepper>
 
-## 質問 {#questions}
+## 質問 \\{#questions\\}
 
-### コメントが無効化されていると、高評価や低評価が押される可能性は下がりますか？ {#create-the-table}
+### コメントが無効化されていると、高評価や低評価が押される可能性は下がりますか？ \\{#create-the-table\\}
 
 コメントが無効化されている場合、視聴者は動画に対する気持ちを表そうとして、高評価や低評価を押す傾向が強くなるのでしょうか？
 
@@ -298,7 +298,7 @@ ORDER BY
 
 コメントを有効にすると、エンゲージメント率が高くなる傾向があります。
 
-### 時間の経過に伴う動画数の変化と主なイベント {#insert-data}
+### 時間の経過に伴う動画数の変化と主なイベント \\{#insert-data\\}
 
 ```sql
 SELECT
@@ -336,7 +336,7 @@ ORDER BY month ASC;
 
 アップローダー数の急増が、[新型コロナウイルス流行期のあたりで明確に見て取れます](https://www.theverge.com/2020/3/27/21197642/youtube-with-me-style-videos-views-coronavirus-cook-workout-study-home-beauty)。
 
-### 字幕はいつ頃からどのように増えてきたのか {#count-row-numbers}
+### 字幕はいつ頃からどのように増えてきたのか \\{#count-row-numbers\\}
 
 音声認識技術の進歩により、動画に字幕を付けることはいままでになく簡単になりました。YouTube では 2009 年末に自動キャプション機能が追加されましたが、あれが転換点だったのでしょうか？
 
@@ -373,7 +373,7 @@ ORDER BY month ASC;
 データの結果を見ると、2009年に急増があることがわかります。この時期、YouTube は他の人の動画に字幕をアップロードできる「コミュニティ字幕」機能を削除していました。
 これをきっかけに、難聴者やろう者の視聴者のために、クリエイターが自分の動画に字幕を追加することを促す、大きな成功を収めたキャンペーンが展開されました。
 
-### 時系列でのアップロード数上位ユーザー {#explore-the-data}
+### 時系列でのアップロード数上位ユーザー \\{#explore-the-data\\}
 
 ```sql
 WITH uploaders AS
@@ -416,7 +416,7 @@ ORDER BY
 │ 2008-09-01 │ WWE                        │     3717092 │   0.07872802579349912 │
 ```
 
-### 再生数が増えると、いいね率はどのように変化しますか？ {#how-do-like-ratio-changes-as-views-go-up}
+### 再生数が増えると、いいね率はどのように変化しますか？ \{#how-do-like-ratio-changes-as-views-go-up\}
 
 ```sql
 SELECT
@@ -464,7 +464,7 @@ ORDER BY
 └───────────────────┴─────────────────────┴────────────┘
 ```
 
-### ビューはどのように分散されますか？ {#if-someone-disables-comments-does-it-lower-the-chance-someone-will-actually-click-like-or-dislike}
+### ビューはどのように分散されますか？ \\{#if-someone-disables-comments-does-it-lower-the-chance-someone-will-actually-click-like-or-dislike\\}
 
 ```sql
 SELECT
