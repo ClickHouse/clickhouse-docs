@@ -97,7 +97,7 @@ Go back to the `ipython` shell and import the `session` module from chDB:
 from chdb import session as chs
 ```
 
-Initialize a session pointing to `demo..chdb`:
+Initialize a session pointing to `demo.chdb`:
 
 ```python
 sess = chs.Session("demo.chdb")
