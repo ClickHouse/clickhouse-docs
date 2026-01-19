@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
 import DOsvg from '@site/static/images/integrations/logos/digitalocean.svg';
-import OVHsvg from '@site/static/images/integrations/logos/ovh.svg';
+import OVHsvg from '@site/static/images/integrations/logos/ovh.png';
 import R2svg from '@site/static/images/integrations/logos/cloudflare.svg';
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
