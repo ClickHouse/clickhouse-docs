@@ -621,7 +621,6 @@ const sidebars = {
               collapsible: true,
               items: [
                 'integrations/data-ingestion/clickpipes/object-storage/azure-blob-storage/overview',
-                'integrations/data-ingestion/clickpipes/object-storage/azure-blob-storage/get-started',
               ],
             },
           ],
