@@ -11,7 +11,7 @@ tmp_dir="$target_dir/scripts/tmp"
 GENERATE_SETTINGS=true              # Set to true to enable settings documentation generation
 GENERATE_FUNCTIONS=true             # Set to true to enable regular function documentation generation
 GENERATE_SYSTEM_TABLES=true         # Set to true to enable system tables documentation generation
-GENERATE_AGGREGATE_FUNCTIONS=true   # Set to true to enable aggregate function generation
+GENERATE_AGGREGATE_FUNCTIONS=false   # Set to true to enable aggregate function generation
 
 # --- Parse Command Line Arguments ---
 CUSTOM_BINARY=""
