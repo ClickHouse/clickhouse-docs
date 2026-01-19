@@ -101,7 +101,7 @@ The ClickHouse Operator automatically replicates database definitions across all
 ### What Gets Replicated {#what-gets-replicated}
 
 The operator synchronizes:
-- [Replicated](https://clickhouse.com/docs/engines/database-engines/replicated) database definitions
+- [Replicated](/engines/database-engines/replicated) database definitions
 - Integration database engines (PostgreSQL, MySQL, etc.)
 
 The operator does **not** synchronize:
@@ -112,7 +112,7 @@ The operator does **not** synchronize:
 ### Recommended: Use Replicated database engine {#recommended-use-replicated-database-engine}
 
 :::tip Best practice
-Always use the [Replicated](https://clickhouse.com/docs/engines/database-engines/replicated) database engine for production deployments.
+Always use the [Replicated](/docs/engines/database-engines/replicated) database engine for production deployments.
 :::
 
 Benefits:
@@ -181,9 +181,9 @@ kubectl delete pvc -l app.kubernetes.io/instance=sample-cluster
 
 * **Pre-configured Cluster:** Cluster named 'default' containing all ClickHouse nodes.
 * **Default macros:** Some useful macros are pre-defined:
-- `{cluster}`: Cluster name (`default`)
-- `{shard}`: Shard number
-- `{replica}`: Replica number
+  - `{cluster}`: Cluster name (`default`)
+  - `{shard}`: Shard number
+  - `{replica}`: Replica number
 * **Replicated storage for Role Based Access Control(RBAC) entities**
 * **Replicated storage for User Defined Functions(UDF)**
 
