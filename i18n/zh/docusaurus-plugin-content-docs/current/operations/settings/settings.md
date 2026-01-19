@@ -2969,6 +2969,16 @@ FORMAT PrettyCompactMonoBlock
 ```
 
 
+## distributed_index_analysis \{#distributed_index_analysis\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "New experimental setting"}]}]}/>
+
+索引分析将在各副本之间分布式执行。需要启用 cluster_for_parallel_replicas。
+
 ## distributed_insert_skip_read_only_replicas \{#distributed_insert_skip_read_only_replicas\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -11506,9 +11516,9 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 ## use_skip_indexes_on_data_read \{#use_skip_indexes_on_data_read\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Default enable"}]}, {"id": "row-2","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 启用在读取数据时使用数据跳过索引。
 
@@ -11518,6 +11528,17 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 - 0 — 禁用。
 - 1 — 启用。
+
+## use_statistics \{#use_statistics\}
+
+<BetaBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "默认启用此优化。"}]}]}/>
+
+/// 建议优先使用 'use_statistics' 而不是 'allow_statistics_optimize'，以与 'use_primary_key' 和 'use_skip_indexes' 的命名保持一致
+允许使用统计信息来优化查询
 
 ## use_statistics_cache \{#use_statistics_cache\}
 

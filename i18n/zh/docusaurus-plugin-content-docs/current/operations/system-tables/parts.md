@@ -57,19 +57,21 @@ doc_type: 'reference'
 
 * `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 数据片段中未压缩数据的总大小。不包括所有辅助文件（例如标记文件）。
 
-* `primary_key_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 磁盘上 primary.idx/cidx 文件中主键值所占用的字节数。
+* `primary_key_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 主键值在磁盘上的 primary.idx/cidx 文件中占用的内存大小（字节）。
 
 * `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 标记文件的大小（字节）。
+
+* `files` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 数据部分中的文件数。
 
 * `secondary_indices_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 数据部分中二级索引压缩数据的总大小。不包括任何辅助文件（例如标记文件）。
 
 * `secondary_indices_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 数据部分中二级索引未压缩数据的总大小。不包括任何辅助文件（例如标记文件）。
 
-* `secondary_indices_marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 二级索引标记文件的大小（字节数）。
+* `secondary_indices_marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 二级索引标记文件的大小（字节）。
 
-* `modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – 数据部分所在目录的修改时间。该时间通常对应于数据部分的创建时间。
+* `modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – 包含该数据部分的目录的最后修改时间。该时间通常对应于数据部分的创建时间。
 
-* `remove_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – 数据片段变为非活跃状态的时间。
+* `remove_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – 数据部分变为非活动状态的时间。
 
 * `refcount` ([UInt32](../../sql-reference/data-types/int-uint.md)) – 该数据分片被使用的引用次数。大于 2 的值表示该数据分片正被查询或合并操作使用。
 
@@ -85,11 +87,11 @@ doc_type: 'reference'
 
 * `min_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 合并后构成当前部分的数据块的最小编号。
 
-* `max_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 合并后构成当前数据片段的最大数据块编号。
+* `max_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 合并后构成当前部分的数据块的最大编号。
 
 * `level` ([UInt32](../../sql-reference/data-types/int-uint.md)) – 合并树的层级深度。零表示当前数据部件是通过插入创建的，而不是由其他部件合并得到的。
 
-* `data_version` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 用于确定应对该数据部分应用哪些变更（会应用版本号高于当前 `data_version` 的变更）的数字。
+* `data_version` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 用于确定应对该数据部分应用哪些变更（会应用版本号高于当前 `data_version` 的变更）的数值。
 
 * `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 内存中主键值占用的字节数（当 `primary_key_lazy_load=1` 且 `use_primary_key_cache=1` 时，该值为 `0`）。
 
@@ -111,7 +113,7 @@ doc_type: 'reference'
 
 * `hash_of_uncompressed_files`（[String](../../sql-reference/data-types/string.md)）– 未压缩文件（标记文件、索引文件等）的 [sipHash128](/sql-reference/functions/hash-functions#sipHash128) 哈希值。
 
-* `uncompressed_hash_of_compressed_files` ([String](../../sql-reference/data-types/string.md)) – 将压缩文件中的数据视为未压缩时所计算的 [sipHash128](/sql-reference/functions/hash-functions#sipHash128) 哈希值。
+* `uncompressed_hash_of_compressed_files` ([String](../../sql-reference/data-types/string.md)) – 将压缩文件中的数据视为未压缩后计算得到的 [sipHash128](/sql-reference/functions/hash-functions#sipHash128) 哈希值。
 
 * `delete_ttl_info_min` ([DateTime](../../sql-reference/data-types/datetime.md)) — [TTL DELETE 规则](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl) 中日期时间键的最小值。
 

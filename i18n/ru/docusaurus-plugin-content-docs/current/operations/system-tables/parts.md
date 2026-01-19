@@ -34,7 +34,7 @@ doc_type: 'reference'
   * `level` — увеличивается на единицу при каждом дополнительном объединении части. Уровень 0 означает, что это новая часть, которая ещё не была объединена. Важно помнить, что все части в ClickHouse всегда неизменяемы
   * `data_version` — необязательное значение, увеличивается, когда часть изменяется (при этом изменённые данные всегда записываются только в новую часть, так как части неизменяемы)
 
-* `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — UUID части данных.
+* `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) -  UUID части данных.
 
 * `part_type` ([String](../../sql-reference/data-types/string.md)) — Формат хранения части данных.
 
@@ -59,11 +59,13 @@ doc_type: 'reference'
 
 * `primary_key_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Объем памяти (в байтах), используемый значениями первичного ключа в файле primary.idx/cidx на диске.
 
-* `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – размер файла меток.
+* `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – размер файла с метками.
+
+* `files` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Количество файлов в части данных.
 
 * `secondary_indices_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – общий размер сжатых данных вторичных индексов в части данных. Все вспомогательные файлы (например, файлы с метками) не учитываются.
 
-* `secondary_indices_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Общий размер несжатых данных для вторичных индексов в части данных. Все вспомогательные файлы (например, файлы с метками) не учитываются.
+* `secondary_indices_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – общий размер несжатых данных вторичных индексов в части данных. Все вспомогательные файлы (например, файлы с метками) не учитываются.
 
 * `secondary_indices_marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Размер файла с метками для вторичных индексов.
 
@@ -85,11 +87,11 @@ doc_type: 'reference'
 
 * `min_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – минимальный номер блока данных, который входит в состав текущей части после слияния.
 
-* `max_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Максимальный номер блока данных, входящего в состав текущей части после слияния.
+* `max_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – максимальный номер блока данных, который входит в состав текущей части после слияния.
 
 * `level` ([UInt32](../../sql-reference/data-types/int-uint.md)) – Глубина дерева MergeTree. Ноль означает, что текущая часть была создана операцией INSERT, а не в результате слияния других частей.
 
-* `data_version` ([UInt64](../../sql-reference/data-types/int-uint.md)) – число, которое используется для определения, какие мутации следует применить к части данных (мутации с версией, большей, чем `data_version`).
+* `data_version` ([UInt64](../../sql-reference/data-types/int-uint.md)) – число, которое используется для определения того, какие мутации следует применить к части данных (мутации с версией, большей, чем `data_version`).
 
 * `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/int-uint.md)) – Объём памяти (в байтах), занимаемый значениями первичного ключа (будет равен `0` при `primary_key_lazy_load=1` и `use_primary_key_cache=1`).
 

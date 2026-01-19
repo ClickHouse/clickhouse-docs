@@ -2971,6 +2971,16 @@ FORMAT PrettyCompactMonoBlock
 ```
 
 
+## distributed_index_analysis \{#distributed_index_analysis\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "New experimental setting"}]}]}/>
+
+索引の解析処理がレプリカ間で分散実行されます。`cluster_for_parallel_replicas` が必要です。
+
 ## distributed_insert_skip_read_only_replicas \{#distributed_insert_skip_read_only_replicas\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -11525,9 +11535,9 @@ TopK フィルタリングにデータスキッピングインデックスを使
 
 ## use_skip_indexes_on_data_read \{#use_skip_indexes_on_data_read\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Default enable"}]}, {"id": "row-2","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 データ読み取り時にデータスキッピングインデックスの使用を有効にします。
 
@@ -11537,6 +11547,17 @@ TopK フィルタリングにデータスキッピングインデックスを使
 
 - 0 — 無効。
 - 1 — 有効。
+
+## use_statistics \{#use_statistics\}
+
+<BetaBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "この最適化をデフォルトで有効にします。"}]}]}/>
+
+/// 'use_primary_key' および 'use_skip_indexes' と一貫性を保つため、'allow_statistics_optimize' より推奨
+統計を用いてクエリを最適化できるようにします
 
 ## use_statistics_cache \{#use_statistics_cache\}
 
