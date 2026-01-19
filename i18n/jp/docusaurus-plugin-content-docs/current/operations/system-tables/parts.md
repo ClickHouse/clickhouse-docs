@@ -47,11 +47,11 @@ doc_type: 'reference'
 
 * `active` ([UInt8](../../sql-reference/data-types/int-uint.md)) – データパーツがアクティブかどうかを示すフラグ。データパーツがアクティブな場合、そのパーツはテーブルで利用される。そうでない場合は削除される。非アクティブなデータパーツはマージ処理後も残る。
 
-* `marks` ([UInt64](../../sql-reference/data-types/int-uint.md)) – マーク数。データパート内のおおよその行数を求めるには、`marks` にインデックス粒度（通常は 8192）を掛けます（この目安はアダプティブ粒度を使用している場合には当てはまりません）。
+* `marks` ([UInt64](../../sql-reference/data-types/int-uint.md)) – マーク数。データパーツ内のおおよその行数を求めるには、`marks` にインデックス粒度（通常は 8192）を掛けます（この目安はアダプティブ粒度を使用している場合には当てはまりません）。
 
 * `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 行数。
 
-* `bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) – すべてのデータパーツファイルのサイズ合計（バイト単位）。
+* `bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) – すべてのデータパーツファイルの合計サイズ（バイト単位）。
 
 * `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – データパート内の圧縮済みデータの合計サイズ。すべての補助ファイル（たとえばマークファイル）は含まれません。
 
@@ -61,13 +61,15 @@ doc_type: 'reference'
 
 * `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – マークを含むファイルのサイズ。
 
+* `files` ([UInt64](../../sql-reference/data-types/int-uint.md)) – データパーツ内のファイル数。
+
 * `secondary_indices_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – データパーツ内のセカンダリインデックスに対する圧縮データの合計サイズ。マークファイルなどの補助ファイルは含まれません。
 
-* `secondary_indices_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – データパーツ内のセカンダリインデックスに対する非圧縮データの合計サイズです。すべての補助ファイル（たとえばマークのファイルなど）は含まれません。
+* `secondary_indices_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – データパーツ内のセカンダリインデックスに対する非圧縮データの合計サイズ。マークファイルなどの補助ファイルは含まれません。
 
 * `secondary_indices_marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – セカンダリインデックスのマークを含むファイルのサイズ。
 
-* `modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – データパーツのディレクトリが更新された時刻。通常はデータパーツの作成時刻に対応します。
+* `modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – データパーツのディレクトリが変更された時刻。通常はデータパーツの作成時刻に対応します。
 
 * `remove_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – データパーツが非アクティブになった時刻。
 
@@ -81,7 +83,7 @@ doc_type: 'reference'
 
 * `max_time`([DateTime](../../sql-reference/data-types/datetime.md)) – データパーツ内の日付時刻キーの最大値。
 
-* `partition_id` ([String](../../sql-reference/data-types/string.md)) – パーティション ID。
+* `partition_id` ([String](../../sql-reference/data-types/string.md)) – パーティションの ID。
 
 * `min_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – マージ後に形成される現在のパートを構成するデータブロック番号の最小値。
 
@@ -93,7 +95,7 @@ doc_type: 'reference'
 
 * `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/int-uint.md)) – プライマリキーの値によって使用されているメモリ量（バイト単位）。`primary_key_lazy_load=1` かつ `use_primary_key_cache=1` の場合は `0` になります。
 
-* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/int-uint.md)) – プライマリキー値のために確保されているメモリ容量（バイト単位）。`primary_key_lazy_load=1` かつ `use_primary_key_cache=1` の場合は `0` になります。
+* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/int-uint.md)) – プライマリキー値のために確保されているメモリ量（バイト単位）。`primary_key_lazy_load=1` かつ `use_primary_key_cache=1` の場合は `0` になります。
 
 * `is_frozen` ([UInt8](../../sql-reference/data-types/int-uint.md)) – パーティションデータのバックアップが存在するかを示すフラグ。1 の場合はバックアップが存在し、0 の場合はバックアップが存在しません。詳細は [FREEZE PARTITION](/sql-reference/statements/alter/partition#freeze-partition) を参照してください。
 
@@ -101,7 +103,7 @@ doc_type: 'reference'
 
 * `table` ([String](../../sql-reference/data-types/string.md)) – テーブルの名前。
 
-* `engine` ([String](../../sql-reference/data-types/string.md)) – パラメータなしのテーブルエンジン名。
+* `engine` ([String](../../sql-reference/data-types/string.md)) – パラメータを含まないテーブルエンジンの名前。
 
 * `path` ([String](../../sql-reference/data-types/string.md)) – データパーツのファイルが格納されているフォルダへの絶対パス。
 
@@ -109,9 +111,9 @@ doc_type: 'reference'
 
 * `hash_of_all_files` ([String](../../sql-reference/data-types/string.md)) – 圧縮ファイルの [sipHash128](/sql-reference/functions/hash-functions#sipHash128) 値。
 
-* `hash_of_uncompressed_files` ([String](../../sql-reference/data-types/string.md)) – 非圧縮ファイル（マークファイル、インデックスファイルなど）に対する [sipHash128](/sql-reference/functions/hash-functions#sipHash128) のハッシュ値。
+* `hash_of_uncompressed_files` ([String](../../sql-reference/data-types/string.md)) – 非圧縮ファイル（マークファイル、インデックスファイルなど）の [sipHash128](/sql-reference/functions/hash-functions#sipHash128) 値。
 
-* `uncompressed_hash_of_compressed_files` ([String](../../sql-reference/data-types/string.md)) – 圧縮ファイル内のデータを、非圧縮データとして扱った場合の [sipHash128](/sql-reference/functions/hash-functions#sipHash128)。
+* `uncompressed_hash_of_compressed_files` ([String](../../sql-reference/data-types/string.md)) – 圧縮ファイル内のデータを非圧縮であるかのように扱った場合の [sipHash128](/sql-reference/functions/hash-functions#sipHash128) 値。
 
 * `delete_ttl_info_min` ([DateTime](../../sql-reference/data-types/datetime.md)) — [TTL DELETE ルール](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl) における日付時刻キーの最小値。
 

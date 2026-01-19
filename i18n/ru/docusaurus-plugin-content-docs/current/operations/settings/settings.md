@@ -2974,6 +2974,16 @@ FORMAT PrettyCompactMonoBlock
 ```
 
 
+## distributed_index_analysis \{#distributed_index_analysis\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "New experimental setting"}]}]}/>
+
+Анализ индексов будет распределён между репликами. Требуется `cluster_for_parallel_replicas`.
+
 ## distributed_insert_skip_read_only_replicas \{#distributed_insert_skip_read_only_replicas\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -11551,9 +11561,9 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 ## use_skip_indexes_on_data_read \{#use_skip_indexes_on_data_read\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Default enable"}]}, {"id": "row-2","items": [{"label": "25.9"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 Включает использование индексов пропуска данных при чтении.
 
@@ -11563,6 +11573,17 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 - 0 — Отключено.
 - 1 — Включено.
+
+## use_statistics \{#use_statistics\}
+
+<BetaBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Эта оптимизация включена по умолчанию."}]}]}/>
+
+/// предпочтительна по сравнению с `allow_statistics_optimize`, поскольку согласуется с `use_primary_key` и `use_skip_indexes`
+Включает использование статистики для оптимизации запросов
 
 ## use_statistics_cache \{#use_statistics_cache\}
 

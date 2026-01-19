@@ -1118,7 +1118,7 @@ ENGINE = MergeTree
 ORDER BY a
 ```
 
-`ALTER` ステートメントを使用して統計情報を変更することもできます。
+`ALTER` 文を使用して統計情報を操作することもできます。
 
 ```sql
 ALTER TABLE tab ADD STATISTICS b TYPE TDigest, Uniq;
@@ -1126,7 +1126,8 @@ ALTER TABLE tab DROP STATISTICS a;
 ```
 
 これらの軽量な統計情報は、列内の値の分布に関する情報を集約します。統計情報は各パートごとに保存され、挿入のたびに更新されます。
-`set allow_statistics_optimize = 1` を有効にした場合にのみ、PREWHERE の最適化に利用できます。
+`set use_statistics = 1` を有効にした場合にのみ、PREWHERE の最適化に利用できます。
+
 
 ### 利用可能なカラム統計の種類 \{#available-types-of-column-statistics\}
 
