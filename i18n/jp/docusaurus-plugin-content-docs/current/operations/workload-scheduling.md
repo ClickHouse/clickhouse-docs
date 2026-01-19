@@ -67,7 +67,8 @@ ClickHouse の設定によるワークロードのスケジューリングは非
 </clickhouse>
 ```
 
-サーバー側の設定オプションのほうが、リソースを SQL で定義する方法よりも優先されることに注意してください。
+サーバー設定のオプションは、リソースを SQL で定義する方法よりも優先される点に注意してください。
+
 
 ## ワークロードのマーキング \{#workload_markup\}
 
@@ -81,6 +82,7 @@ ClickHouse の設定によるワークロードのスケジューリングは非
 SELECT count() FROM my_table WHERE value = 42 SETTINGS workload = 'production'
 SELECT count() FROM my_table WHERE value = 13 SETTINGS workload = 'development'
 ```
+
 
 ## リソーススケジューリング階層 \{#hierarchy\}
 
@@ -160,6 +162,7 @@ ClickHouse の設定を用いたワークロードスケジューリングは非
 </clickhouse>
 ```
 
+
 ## ワークロード分類子 \{#workload_classifiers\}
 
 :::warning
@@ -188,6 +191,7 @@ ClickHouse の設定を用いたワークロードスケジューリングは非
     </workload_classifiers>
 </clickhouse>
 ```
+
 
 ## ワークロード階層 \{#workloads\}
 
@@ -230,6 +234,7 @@ CREATE OR REPLACE WORKLOAD all SETTINGS max_io_requests = 100, max_bytes_per_sec
 :::note
 Workload の設定は、適切な一連のスケジューリングノードに変換されます。より低レイヤーの詳細については、スケジューリングノードの[種類とオプション](#hierarchy)の説明を参照してください。
 :::
+
 
 ## CPU scheduling \{#cpu_scheduling\}
 
@@ -282,6 +287,7 @@ CPU スケジューリングは、マージおよびミューテーションに�
 スロットスケジューリングは、[クエリの同時実行数](/operations/settings/settings.md#max_threads) を制御する手段を提供しますが、サーバー設定 `cpu_slot_preemption` が `true` に設定されていない限り、公平な CPU 時間割り当ては保証されません。その場合、公平性は競合するワークロード間の CPU スロット割り当て数に基づいてのみ提供されます。これは CPU 秒数が等しくなることを意味しません。プリエンプションがない場合、CPU スロットは無期限に保持される可能性があるためです。スレッドは開始時にスロットを取得し、処理が完了したときにスロットを解放します。
 :::
 
+
 :::note
 CPU リソースを宣言すると、[`concurrent_threads_soft_limit_num`](server-configuration-parameters/settings.md#concurrent_threads_soft_limit_num) および [`concurrent_threads_soft_limit_ratio_to_cores`](server-configuration-parameters/settings.md#concurrent_threads_soft_limit_ratio_to_cores) 設定の効果は無効になります。代わりに、特定のワークロードに割り当てられる CPU 数を制限するために、ワークロード設定 `max_concurrent_threads` が使用されます。従来の動作を再現するには、WORKER THREAD リソースのみを定義し、ワークロード `all` に対して `max_concurrent_threads` を `concurrent_threads_soft_limit_num` と同じ値に設定し、`workload = "all"` クエリ設定を使用してください。この構成は、[`concurrent_threads_scheduler`](server-configuration-parameters/settings.md#concurrent_threads_scheduler) 設定に "fair_round_robin" が指定されている状態に相当します。
 :::
@@ -325,6 +331,7 @@ CREATE WORKLOAD development IN all SETTINGS max_cpu_share = 0.3
 ClickHouse サーバー上で CPU 利用率を最大化したい場合は、ルートワークロード `all` に対して `max_cpus` と `max_cpu_share` を使用するのは避けてください。その代わり、`max_concurrent_threads` をより高い値に設定します。例えば、CPU が 8 個あるシステムでは、`max_concurrent_threads = 16` と設定します。これにより、8 スレッドが CPU タスクを実行し、残りの 8 スレッドが I/O 処理を担当できます。追加のスレッドによって CPU プレッシャーが生じ、スケジューリングルールが確実に適用されるようになります。対照的に、`max_cpus = 8` を設定すると、サーバーは利用可能な 8 個の CPU を超えて使用できないため、CPU プレッシャーが発生することはありません。
 :::
 
+
 ## クエリスロットスケジューリング \{#query_scheduling\}
 
 ワークロードに対してクエリスロットスケジューリングを有効化するには、QUERY リソースを作成し、同時実行されるクエリ数または 1 秒あたりのクエリ数の上限を設定します。
@@ -344,6 +351,7 @@ CREATE WORKLOAD all SETTINGS max_concurrent_queries = 100, max_queries_per_secon
 ブロックされたクエリは、すべての制約が満たされるまで無期限に待機し、その間は `SHOW PROCESSLIST` に表示されません。
 :::
 
+
 ## ワークロードおよびリソースのストレージ \{#workload_entity_storage\}
 
 `CREATE WORKLOAD` および `CREATE RESOURCE` クエリの形式で定義されたすべてのワークロードとリソースは、ディスク上の `workload_path`、または ZooKeeper 上の `workload_zookeeper_path` のいずれかに永続的に保存されます。ノード間の整合性を確保するには、ZooKeeper でのストレージを推奨します。代わりに、ディスクストレージと組み合わせて `ON CLUSTER` 句を使用することもできます。
@@ -357,15 +365,16 @@ SQL ベースの定義に加えて、ワークロードとリソースはサー�
 ```xml
 <clickhouse>
     <resources_and_workloads>
-        RESOURCE s3disk_read (READ DISK s3);
-        RESOURCE s3disk_write (WRITE DISK s3);
-        WORKLOAD all SETTINGS max_io_requests = 500 FOR s3disk_read, max_io_requests = 1000 FOR s3disk_write, max_bytes_per_second = 1342177280 FOR s3disk_read, max_bytes_per_second = 3355443200 FOR s3disk_write;
-        WORKLOAD production IN all SETTINGS weight = 3;
+        CREATE RESOURCE s3disk_read (READ DISK s3);
+        CREATE RESOURCE s3disk_write (WRITE DISK s3);
+        CREATE WORKLOAD all SETTINGS max_io_requests = 500 FOR s3disk_read, max_io_requests = 1000 FOR s3disk_write, max_bytes_per_second = 1342177280 FOR s3disk_read, max_bytes_per_second = 3355443200 FOR s3disk_write;
+        CREATE WORKLOAD production IN all SETTINGS weight = 3;
     </resources_and_workloads>
 </clickhouse>
 ```
 
-この設定は、`CREATE WORKLOAD` および `CREATE RESOURCE` ステートメントと同じ SQL 構文を使用します。すべてのクエリは有効でなければなりません。
+この設定は、`CREATE WORKLOAD` および `CREATE RESOURCE` 文と同じ SQL 構文を使用します。すべてのクエリは有効でなければなりません。
+
 
 ### 利用に関する推奨事項 \{#config_based_workloads_usage_recommendations\}
 
@@ -389,6 +398,7 @@ SQL ベースの定義に加えて、ワークロードとリソースはサー�
 :::
 
 ## 関連項目 \{#see-also\}
+
 - [system.scheduler](/operations/system-tables/scheduler.md)
 - [system.workloads](/operations/system-tables/workloads.md)
 - [system.resources](/operations/system-tables/resources.md)

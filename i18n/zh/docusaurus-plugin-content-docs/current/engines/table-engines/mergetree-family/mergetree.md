@@ -1125,7 +1125,8 @@ ALTER TABLE tab DROP STATISTICS a;
 ```
 
 这些轻量级统计信息汇总了列中值的分布情况。统计信息存储在每个数据片段中，并在每次插入时都会更新。
-只有在启用 `set allow_statistics_optimize = 1` 时，它们才会用于 `PREWHERE` 优化。
+只有在启用 `set use_statistics = 1` 时，它们才会用于 `PREWHERE` 优化。
+
 
 ### 可用的列统计类型 \{#available-types-of-column-statistics\}
 
