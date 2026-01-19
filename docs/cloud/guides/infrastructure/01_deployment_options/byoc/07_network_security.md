@@ -1,5 +1,11 @@
-
-
+---
+title: 'BYOC Network Security'
+slug: /cloud/reference/byoc/network_security
+sidebar_label: 'Network Security'
+keywords: ['BYOC', 'cloud', 'bring your own cloud', 'network security']
+description: 'Deploy ClickHouse on your own cloud infrastructure'
+doc_type: 'reference'
+---
 
 ## Network boundaries {#network-boundaries}
 
@@ -12,7 +18,7 @@ This section covers different network traffic to and from the customer BYOC VPC:
 
 **Istio ingress is deployed behind an AWS NLB to accept ClickHouse client traffic.**
 
-*Inbound, Public (can be Private)*
+*Inbound, Public or Private*
 
 The Istio ingress gateway terminates TLS. The certificate, provisioned by CertManager with Let's Encrypt, is stored as a secret within the EKS cluster. Traffic between Istio and ClickHouse is [encrypted by AWS](https://docs.aws.amazon.com/whitepapers/latest/logical-separation/encrypting-data-at-rest-and--in-transit.html#:~:text=All%20network%20traffic%20between%20AWS,supported%20Amazon%20EC2%20instance%20types) since they reside in the same VPC.
 
@@ -20,7 +26,7 @@ By default, ingress is publicly accessible with IP allow list filtering. Custome
 
 ### Troubleshooting access {#troubleshooting-access}
 
-*Inbound, Public (can be Private)*
+*Inbound, Private*
 
 ClickHouse Cloud engineers require troubleshooting access via Tailscale. They are provisioned with just-in-time certificate-based authentication for BYOC deployments.
 
@@ -42,6 +48,6 @@ Metrics and logs are stored within the customer's BYOC VPC. Logs are currently s
 
 ### Service state {#service-state}
 
-*Outbound*
+*Outbound, Public*
 
 State Exporter sends ClickHouse service state information to an SQS owned by ClickHouse Cloud.

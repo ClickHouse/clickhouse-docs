@@ -1,4 +1,13 @@
-## Upgrade process {#upgrade-process}
+---
+title: 'BYOC Operations and Maintainence'
+slug: /cloud/reference/byoc/operations
+sidebar_label: 'Operations and Maintainence'
+keywords: ['BYOC', 'cloud', 'bring your own cloud', 'operations', 'maintainence']
+description: 'Deploy ClickHouse on your own cloud infrastructure'
+doc_type: 'reference'
+---
+
+## ClickHouse Service Upgrade process {#upgrade-process}
 
 We regularly upgrade the software, including ClickHouse database version upgrades, ClickHouse Operator, EKS, and other components.
 

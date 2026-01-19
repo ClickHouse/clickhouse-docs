@@ -13,12 +13,11 @@ import byoc_vpcpeering2 from '@site/static/images/cloud/reference/byoc-vpcpeerin
 import byoc_vpcpeering3 from '@site/static/images/cloud/reference/byoc-vpcpeering-3.png';
 import byoc_vpcpeering4 from '@site/static/images/cloud/reference/byoc-vpcpeering-4.png';
 
-
 ClickHouse BYOC supports various private networking options to enhance security and enable direct connectivity for your services. This guide walks you through the recommended approaches for securely connecting ClickHouse Cloud deployments in your own AWS or GCP account to other networks or services, such as your internal applications or analytics tools. We cover options such as VPC Peering, AWS PrivateLink, and GCP Private Service Connect, and outline the main steps and considerations for each.
 
 If you require a private network connection to your ClickHouse BYOC deployment, follow the steps in this guide or consult ClickHouse Support for assistance with more advanced scenarios.
 
-## Setup VPC Peering {#optional-setup-vpc-peering}
+## Setup VPC Peering for AWS {#aws-vpc-peering}
 
 To create or delete VPC peering for ClickHouse BYOC, follow the steps:
 
@@ -74,7 +73,8 @@ To access ClickHouse privately, a private load balancer and endpoint are provisi
 
 Optional, after verifying that peering is working, you can request the removal of the public load balancer for ClickHouse BYOC.
 
-## Setup PrivateLink(AWS)
+## Setup PrivateLink(AWS) {#setup-privatelink}
+TODO
 
-
-## Setup Private Service Connect(GCP)
+## Setup Private Service Connect(GCP) {#setup-private-service-connect}
+TODO

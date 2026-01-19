@@ -1,4 +1,11 @@
-
+---
+title: 'BYOC Priviledge'
+slug: /cloud/reference/byoc/reference/priviledge
+sidebar_label: 'Priviledge'
+keywords: ['BYOC', 'cloud', 'bring your own cloud', 'priviledge']
+description: 'Deploy ClickHouse on your own cloud infrastructure'
+doc_type: 'reference'
+---
 ## CloudFormation IAM roles {#cloudformation-iam-roles}
 
 ### Bootstrap IAM role {#bootstrap-iam-role}
@@ -31,4 +38,3 @@ These roles are assumed by applications running within the customer's EKS cluste
 **K8s-control-plane** and **k8s-worker** roles are meant to be assumed by AWS EKS services.
 
 Lastly, **`data-plane-mgmt`** allows a ClickHouse Cloud Control Plane component to reconcile necessary custom resources, such as `ClickHouseCluster` and the Istio Virtual Service/Gateway.
-
