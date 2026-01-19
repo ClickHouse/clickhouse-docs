@@ -1,8 +1,8 @@
 ---
-title: 'BYOC on AWS FAQ'
-slug: /cloud/reference/byoc/faq/aws
-sidebar_label: 'AWS'
-keywords: ['BYOC', 'cloud', 'bring your own cloud', 'AWS']
+title: 'BYOC FAQ'
+slug: /cloud/reference/byoc/reference/faq
+sidebar_label: 'FAQ'
+keywords: ['BYOC', 'cloud', 'bring your own cloud', 'FAQ']
 description: 'Deploy ClickHouse on your own cloud infrastructure'
 doc_type: 'reference'
 ---
