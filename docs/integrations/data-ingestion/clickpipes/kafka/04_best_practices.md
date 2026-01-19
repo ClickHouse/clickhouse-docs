@@ -29,7 +29,7 @@ ClickPipes for Kafka provides `at-least-once` delivery semantics (as one of the 
 ## Authentication {#authentication}
 For Apache Kafka protocol data sources, ClickPipes supports [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption, as well as `SASL/SCRAM-SHA-256` and `SASL/SCRAM-SHA-512`. Depending on the streaming source (Redpanda, MSK, etc) will enable all or a subset of these auth mechanisms based on compatibility. If you auth needs differ please [give us feedback](https://clickhouse.com/company/contact?loc=clickpipes).
 
-## Warpstream Fetch Size
+## Warpstream Fetch Size {#warpstream-settings}
 ClickPipes rely on the Kafka setting `max.fetch_bytes` to limit the size of data processed in a single ClickPipes node at any one time.  In some circumstances
 Warpstream does not respect this setting, which can cause unexpected pipe failures.  We strongly recommend that the Warpstream specific setting `kafkaMaxFetchPartitionBytesUncompressedOverride`
 to 8MB (or lower) when configuring your Warpstreawm agent to prevent ClickPipes failures.
