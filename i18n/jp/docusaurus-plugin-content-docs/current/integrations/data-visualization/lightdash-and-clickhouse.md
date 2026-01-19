@@ -22,7 +22,7 @@ import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# Lightdash {#lightdash}
+# Lightdash \{#lightdash\}
 
 <PartnerBadge/>
 
@@ -32,7 +32,7 @@ Lightdash は、dbt のオープン性と ClickHouse のパフォーマンスを
 
 このパートナーシップにより、**ClickHouse の高速性** と **Lightdash の開発者エクスペリエンス** が組み合わさり、AI を活用してインサイトを探索・可視化・自動化することがこれまでになく容易になります。
 
-## Lightdash と ClickHouse でインタラクティブなダッシュボードを構築する {#build-an-interactive-dashboard}
+## Lightdash と ClickHouse でインタラクティブなダッシュボードを構築する \{#build-an-interactive-dashboard\}
 
 このガイドでは、**Lightdash** を **ClickHouse** に接続して dbt モデルを探索し、インタラクティブなダッシュボードを構築する方法を説明します。  
 以下の例は、ClickHouse のデータを基盤として構築された完成済みダッシュボードを示しています。

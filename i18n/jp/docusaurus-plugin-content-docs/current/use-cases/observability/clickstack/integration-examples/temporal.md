@@ -24,7 +24,7 @@ Temporal プラットフォームにおける OpenMetrics サポートは、現�
 Temporal は、シンプルかつ高度で高い耐障害性を備えたアプリケーションを構築するための抽象化を提供します。
 
 
-# ClickStack を使用した Temporal Cloud メトリクスの監視 {#temporal-metrics-clickstack}
+# ClickStack を使用した Temporal Cloud メトリクスの監視 \{#temporal-metrics-clickstack\}
 
 :::note[要約]
 このガイドでは、OpenTelemetry collector の Prometheus レシーバーを設定して、ClickStack で Temporal Cloud を監視する方法を説明します。以下の内容を学びます:
@@ -36,11 +36,11 @@ Temporal は、シンプルかつ高度で高い耐障害性を備えたアプ�
 所要時間: 約 5〜10 分
 :::
 
-## 既存の Temporal Cloud との統合 {#existing-temporal}
+## 既存の Temporal Cloud との統合 \{#existing-temporal\}
 
 このセクションでは、Prometheus receiver を使用するように ClickStack の OTel collector を設定することで、ClickStack を構成する方法について説明します。
 
-## 前提条件 {#prerequisites}
+## 前提条件 \{#prerequisites\}
 
 - 稼働中の ClickStack インスタンス
 - 既存の Temporal Cloud アカウント
@@ -170,9 +170,9 @@ ClickStack を使って Temporal Cloud の監視を始めやすくするため�
 
 <VerticalStepper headerLevel="h4">
 
-#### ダッシュボード構成を <TrackedLink href={useBaseUrl('/examples/temporal-metrics-dashboard.json')} download="temporal-metrics-dashboard.json" eventName="docs.temporal_metrics_monitoring.dashboard_download">ダウンロード</TrackedLink> {#download}
+#### ダッシュボード構成を <TrackedLink href={useBaseUrl('/examples/temporal-metrics-dashboard.json')} download="temporal-metrics-dashboard.json" eventName="docs.temporal_metrics_monitoring.dashboard_download">ダウンロード</TrackedLink> \{#download\}
 
-#### あらかじめ用意されたダッシュボードをインポートする {#import-dashboard}
+#### あらかじめ用意されたダッシュボードをインポートする \{#import-dashboard\}
 
 1. HyperDX を開き、Dashboards セクションに移動します
 2. 右上の三点リーダー（…）アイコンから **Import Dashboard** をクリックします

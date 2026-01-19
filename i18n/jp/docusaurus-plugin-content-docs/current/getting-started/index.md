@@ -9,7 +9,7 @@ title: 'チュートリアルとサンプルデータセット'
 doc_type: 'landing-page'
 ---
 
-# チュートリアルとサンプルデータセット {#tutorials-and-example-datasets}
+# チュートリアルとサンプルデータセット \{#tutorials-and-example-datasets\}
 
 ClickHouse の使い方を学び、すぐに使い始めるためのリソースを多数用意しています。
 

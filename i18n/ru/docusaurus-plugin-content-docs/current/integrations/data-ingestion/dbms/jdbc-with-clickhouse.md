@@ -16,7 +16,7 @@ import Jdbc02 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-02
 import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03.png';
 
 
-# Подключение ClickHouse к внешним источникам данных с помощью JDBC {#connecting-clickhouse-to-external-data-sources-with-jdbc}
+# Подключение ClickHouse к внешним источникам данных с помощью JDBC \{#connecting-clickhouse-to-external-data-sources-with-jdbc\}
 
 :::note
 Использование JDBC требует ClickHouse JDBC Bridge, поэтому вам понадобится использовать `clickhouse-local` на локальной машине, чтобы передавать данные из вашей базы данных в ClickHouse Cloud. Перейдите на страницу [**Using clickhouse-local**](/cloud/migration/clickhouse-local#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge) в разделе **Migrate** документации для получения подробной информации.
@@ -42,7 +42,7 @@ import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03
 5. установлена и запущена актуальная версия **ClickHouse** ([см. установку](/getting-started/install/install.mdx))
 :::
 
-## Установка ClickHouse JDBC Bridge локально {#install-the-clickhouse-jdbc-bridge-locally}
+## Установка ClickHouse JDBC Bridge локально \{#install-the-clickhouse-jdbc-bridge-locally\}
 
 Самый простой способ использовать ClickHouse JDBC Bridge — установить и запустить его на той же машине, где работает ClickHouse:<Image img={Jdbc02} size="lg" alt="Схема локального развертывания ClickHouse JDBC Bridge" background="white" />
 
@@ -105,7 +105,7 @@ wget https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v2.0
 :::
 
 
-## Использование JDBC-подключения из ClickHouse {#use-the-jdbc-connection-from-within-clickhouse}
+## Использование JDBC-подключения из ClickHouse \{#use-the-jdbc-connection-from-within-clickhouse\}
 
 Теперь ClickHouse может получать доступ к данным MySQL с помощью [табличной функции jdbc](/sql-reference/table-functions/jdbc.md) или [движка таблицы JDBC](/engines/table-engines/integrations/jdbc.md).
 
@@ -140,7 +140,7 @@ wget https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v2.0
 :::
 
 
-## Внешняя установка ClickHouse JDBC Bridge {#install-the-clickhouse-jdbc-bridge-externally}
+## Внешняя установка ClickHouse JDBC Bridge \{#install-the-clickhouse-jdbc-bridge-externally\}
 
 Для распределённого кластера ClickHouse (кластера с более чем одним хостом ClickHouse) имеет смысл установить и запускать ClickHouse JDBC Bridge отдельно, на выделенном хосте:
 

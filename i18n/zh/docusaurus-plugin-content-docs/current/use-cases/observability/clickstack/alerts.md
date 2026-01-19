@@ -23,7 +23,7 @@ import multiple_search_alerts from '@site/static/images/use-cases/observability/
 import remove_chart_alert from '@site/static/images/use-cases/observability/remove_chart_alert.png';
 
 
-## 在 ClickStack 中使用告警 {#alerting-in-clickstack}
+## 在 ClickStack 中使用告警 \{#alerting-in-clickstack\}
 
 ClickStack 内置了告警功能，使团队能够在日志、指标和链路追踪中实时发现并响应问题。
 
@@ -31,11 +31,11 @@ ClickStack 内置了告警功能，使团队能够在日志、指标和链路追
 
 告警功能可在您的 ClickStack 数据之上无缝工作，帮助您跟踪系统健康状况、捕获性能退化，并监控关键业务事件。
 
-## 告警类型 {#types-of-alerts}
+## 告警类型 \{#types-of-alerts\}
 
 ClickStack 支持两种互补的告警创建方式：**搜索告警** 和 **仪表盘图表告警**。告警创建后，会附加到相应的搜索或图表上。
 
-### 1. 搜索告警 {#search-alerts}
+### 1. 搜索告警 \{#search-alerts\}
 
 搜索告警允许根据已保存搜索的结果触发通知，帮助你检测特定事件或模式出现频率高于（或低于）预期的情况。
 
@@ -47,13 +47,13 @@ ClickStack 支持两种互补的告警创建方式：**搜索告警** 和 **仪�
 
 要为某个搜索创建告警，该搜索必须先被保存。你可以为现有的已保存搜索创建告警，或者在创建告警的过程中保存搜索。在下面的示例中，我们假设该搜索尚未保存。
 
-#### 打开告警创建对话框 {#open-dialog}
+#### 打开告警创建对话框 \{#open-dialog\}
 
 首先输入一个[搜索](/use-cases/observability/clickstack/search)，然后在 `Search` 页面右上角点击 `Alerts` 按钮。
 
 <Image img={alerts_search_view} alt="告警搜索视图" size="lg"/>
 
-#### 创建告警 {#create-the-alert}
+#### 创建告警 \{#create-the-alert\}
 
 在告警创建面板中，你可以：
 
@@ -72,7 +72,7 @@ ClickStack 支持两种互补的告警创建方式：**搜索告警** 和 **仪�
 
 <Image img={multiple_search_alerts} alt="多个告警" size="md"/>
 
-### 2. 仪表板图表告警 {#dashboard-alerts}
+### 2. 仪表板图表告警 \{#dashboard-alerts\}
 
 仪表板告警将告警能力扩展到图表层面。
 
@@ -90,19 +90,19 @@ ClickStack 支持两种互补的告警创建方式：**搜索告警** 和 **仪�
 
 可以在创建图表的过程中、将图表添加到仪表板时创建告警，或在现有图表上添加告警。下面的示例中，我们假设图表已经存在于仪表板中。
 
-#### 打开图表编辑对话框 {#open-chart-dialog}
+#### 打开图表编辑对话框 \{#open-chart-dialog\}
 
 打开图表的配置菜单并选择告警按钮。这将显示图表编辑对话框。
 
 <Image img={edit_chart_alert} alt="编辑图表告警" size="lg"/>
 
-#### 添加告警 {#add-chart-alert}
+#### 添加告警 \{#add-chart-alert\}
 
 选择 **Add Alert**。
 
 <Image img={add_chart_alert} alt="为图表添加告警" size="lg"/>
 
-#### 定义告警条件 {#define-alert-conditions}
+#### 定义告警条件 \{#define-alert-conditions\}
 
 定义条件（`>=`、`<`）、阈值、持续时间以及 webhook。此处的持续时间也将决定告警的触发频率。
 
@@ -112,7 +112,7 @@ ClickStack 支持两种互补的告警创建方式：**搜索告警** 和 **仪�
 
 </VerticalStepper>
 
-## 添加 webhook {#add-webhook}
+## 添加 webhook \{#add-webhook\}
 
 在创建告警时，你可以使用已有的 webhook，或创建一个新的。一旦创建，该 webhook 就可以在其他告警中复用。
 
@@ -130,7 +130,7 @@ webhook 名称为必填项，描述为可选项。其他必填设置取决于服
 
 请注意，ClickStack Open Source 与 ClickStack Cloud 所提供的服务类型不同。参见 [Service type integrations](#integrations)。
 
-### 服务类型集成 {#integrations}
+### 服务类型集成 \{#integrations\}
 
 ClickStack 警报开箱即用地支持与以下服务类型集成：
 
@@ -162,7 +162,7 @@ Slack API 和 PagerDuty 集成仅在 ClickHouse Cloud 中提供。
 - Webhook 请求头（可选）
 - Webhook 请求体（可选）。当前请求体支持模板变量 `{{title}}`、`{{body}}` 和 `{{link}}`。
 
-## 管理告警 {#managing-alerts}
+## 管理告警 \{#managing-alerts\}
 
 可以通过 HyperDX 左侧的告警面板集中管理告警。
 
@@ -183,14 +183,14 @@ Slack API 和 PagerDuty 集成仅在 ClickHouse Cloud 中提供。
 
 点击某个告警会跳转到该告警所关联的图表或搜索。
 
-### 删除告警 {#deleting-alerts}
+### 删除告警 \{#deleting-alerts\}
 
 要删除告警，请打开相关搜索或图表的编辑对话框，然后选择 **Remove Alert（删除告警）**。
 在下图示例中，`Remove Alert` 按钮会将该告警从图表中删除。
 
 <Image img={remove_chart_alert} alt="删除图表告警" size="lg"/>
 
-## 常见告警场景 {#common-alert-scenarios}
+## 常见告警场景 \{#common-alert-scenarios\}
 
 以下是一些可以使用 HyperDX 配置的常见告警场景：
 

@@ -5,7 +5,7 @@ title: 'topK'
 doc_type: 'reference'
 ---
 
-# topK {#topk}
+# topK \{#topk\}
 
 返回指定列中近似最高频的值组成的数组。结果数组按值的近似出现频率降序排序（而不是按值本身排序）。
 

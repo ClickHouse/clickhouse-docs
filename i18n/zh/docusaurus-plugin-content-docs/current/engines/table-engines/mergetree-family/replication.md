@@ -7,7 +7,7 @@ title: 'Replicated* 系列表引擎'
 doc_type: 'reference'
 ---
 
-# Replicated* 表引擎 {#replicated-table-engines}
+# Replicated* 表引擎 \{#replicated-table-engines\}
 
 :::note
 在 ClickHouse Cloud 中，复制由系统自动管理。请在创建表时不要添加这些参数。例如，在下面的文本中，你应将其替换为：
@@ -138,7 +138,7 @@ ZooKeeper 不参与 `SELECT` 查询，因为复制不会影响 `SELECT` 的性�
 
 系统会监控副本上的数据同步情况，并且能够在故障后恢复。对于数据差异较小的情况，故障转移是自动完成的；对于数据差异过大的情况（可能表明存在配置错误），故障转移是半自动完成的。
 
-## 创建复制表 {#creating-replicated-tables}
+## 创建复制表 \{#creating-replicated-tables\}
 
 :::note
 在 ClickHouse Cloud 中，复制由系统自动处理。
@@ -149,7 +149,7 @@ ZooKeeper 不参与 `SELECT` 查询，因为复制不会影响 `SELECT` 的性�
 
 :::
 
-### Replicated*MergeTree 参数 {#replicatedmergetree-parameters}
+### Replicated*MergeTree 参数 \{#replicatedmergetree-parameters\}
 
 | 参数                 | 描述                                                 |
 | ------------------ | -------------------------------------------------- |
@@ -247,7 +247,7 @@ ORDER BY x;
 
 要删除一个副本，请运行 `DROP TABLE`。但这只会删除一个副本——也就是你运行该查询所在服务器上的那个副本。
 
-## 故障后的恢复 {#recovery-after-failures}
+## 故障后的恢复 \{#recovery-after-failures\}
 
 如果在服务器启动时 ClickHouse Keeper 不可用，复制表会切换为只读模式。系统会定期尝试连接 ClickHouse Keeper。
 
@@ -271,7 +271,7 @@ sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data
 
 随后重启服务器。服务器在启动时会删除这些标志文件并开始恢复。
 
-## 完全数据丢失后的恢复 {#recovery-after-complete-data-loss}
+## 完全数据丢失后的恢复 \{#recovery-after-complete-data-loss\}
 
 如果某台服务器上的所有数据和元数据都丢失了，请按以下步骤进行恢复：
 
@@ -286,7 +286,7 @@ sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data
 
 恢复过程中对网络带宽没有限制。如果你同时恢复大量副本，请注意这一点。
 
-## 从 MergeTree 转换为 ReplicatedMergeTree {#converting-from-mergetree-to-replicatedmergetree}
+## 从 MergeTree 转换为 ReplicatedMergeTree \{#converting-from-mergetree-to-replicatedmergetree\}
 
 我们使用术语 `MergeTree` 指代 `MergeTree family` 中的所有表引擎，对 `ReplicatedMergeTree` 也采用相同的约定。
 
@@ -318,7 +318,7 @@ SELECT zookeeper_path FROM system.replicas WHERE table = 'table_name';
 将旧表中的数据移动到新表数据目录下的 `detached` 子目录中（`/var/lib/clickhouse/data/db_name/table_name/`）。
 然后在其中一个副本上运行 `ALTER TABLE ATTACH PARTITION`，将这些分区片段添加到正在使用的工作集中。
 
-## 从 ReplicatedMergeTree 转换为 MergeTree {#converting-from-replicatedmergetree-to-mergetree}
+## 从 ReplicatedMergeTree 转换为 MergeTree \{#converting-from-replicatedmergetree-to-mergetree\}
 
 使用 [ATTACH TABLE ... AS NOT REPLICATED](/sql-reference/statements/attach.md#attach-mergetree-table-as-replicatedmergetree) 语句，在单个服务器上将已分离的 `ReplicatedMergeTree` 表作为 `MergeTree` 表附加。
 
@@ -331,7 +331,7 @@ SELECT zookeeper_path FROM system.replicas WHERE table = 'table_name';
 
 完成上述操作后，可以启动服务器，创建一个 `MergeTree` 表，将数据移动到该表的数据目录中，然后重启服务器。
 
-## 当 ClickHouse Keeper 集群中的元数据丢失或损坏时的恢复 {#recovery-when-metadata-in-the-zookeeper-cluster-is-lost-or-damaged}
+## 当 ClickHouse Keeper 集群中的元数据丢失或损坏时的恢复 \{#recovery-when-metadata-in-the-zookeeper-cluster-is-lost-or-damaged\}
 
 如果 ClickHouse Keeper 中的数据丢失或损坏，可以按照上文所述，将数据迁移到未复制表中以进行保存。
 

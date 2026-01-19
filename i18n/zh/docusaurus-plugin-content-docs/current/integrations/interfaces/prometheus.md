@@ -7,9 +7,9 @@ title: 'Prometheus 协议'
 doc_type: 'reference'
 ---
 
-# Prometheus 协议 {#prometheus-protocols}
+# Prometheus 协议 \{#prometheus-protocols\}
 
-## 暴露指标 {#expose}
+## 暴露指标 \{#expose\}
 
 :::note
 如果您使用 ClickHouse Cloud，可以通过 [Prometheus 集成](/integrations/prometheus) 将指标暴露给 Prometheus。

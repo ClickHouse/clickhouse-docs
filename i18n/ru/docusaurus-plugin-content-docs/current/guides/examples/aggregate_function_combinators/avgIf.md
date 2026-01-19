@@ -7,15 +7,15 @@ sidebar_label: 'avgIf'
 doc_type: 'reference'
 ---
 
-# avgIf {#avgif}
+# avgIf \{#avgif\}
 
-## Описание {#description}
+## Описание \{#description\}
 
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`avg`](/sql-reference/aggregate-functions/reference/avg)
 для вычисления арифметического среднего значений в строках, для которых выполняется условие,
 с помощью агрегатной функции-комбинатора `avgIf`.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 В этом примере мы создадим таблицу, которая хранит данные о продажах и признак успешности,
 и используем `avgIf` для вычисления среднего размера продажи по успешным транзакциям.
@@ -49,6 +49,6 @@ FROM sales;
    └─────────────────────┘
 ```
 
-## См. также {#see-also}
+## См. также \{#see-also\}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

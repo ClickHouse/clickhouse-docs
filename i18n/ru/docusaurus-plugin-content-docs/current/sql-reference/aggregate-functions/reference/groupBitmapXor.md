@@ -5,7 +5,7 @@ title: 'groupBitmapXor'
 doc_type: 'reference'
 ---
 
-# groupBitmapXor {#groupbitmapxor}
+# groupBitmapXor \{#groupbitmapxor\}
 
 `groupBitmapXor` вычисляет XOR битмап-столбца и возвращает мощность множества типа UInt64, а при использовании с суффиксом `-State` возвращает [объект bitmap](../../../sql-reference/functions/bitmap-functions.md).
 

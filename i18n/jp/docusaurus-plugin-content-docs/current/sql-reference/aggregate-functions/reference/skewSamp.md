@@ -5,7 +5,7 @@ title: 'skewSamp'
 doc_type: 'reference'
 ---
 
-# skewSamp {#skewsamp}
+# skewSamp \{#skewsamp\}
 
 シーケンスの[標本歪度](https://en.wikipedia.org/wiki/Skewness)を計算します。
 

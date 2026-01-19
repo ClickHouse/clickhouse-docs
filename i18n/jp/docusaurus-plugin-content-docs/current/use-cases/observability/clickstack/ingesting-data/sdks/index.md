@@ -15,13 +15,13 @@ keywords: ['ClickStack SDKs', 'ClickStack 言語 SDKs', 'OpenTelemetry SDKs Clic
 
 ブラウザベースの環境では、SDK が **session data**（UI イベント、クリック、ナビゲーションを含む）の収集も担当し、ユーザーセッションのリプレイを可能にします。 
 
-## 動作の仕組み {#how-it-works}
+## 動作の仕組み \{#how-it-works\}
 
 1. アプリケーションは ClickStack SDK（例: Node.js、Python、Go）を使用します。これらの SDK は OpenTelemetry SDKs を基盤としており、追加機能と使いやすさの向上が行われています。
 2. SDK はトレースとログを収集し、OTLP（HTTP または gRPC）経由でエクスポートします。
 3. OpenTelemetry collector がテレメトリを受信し、設定されたエクスポーターを通じて ClickHouse に書き込みます。
 
-## サポートされている言語 {#supported-languages}
+## サポートされている言語 \{#supported-languages\}
 
 :::note OpenTelemetry 互換性
 ClickStack は強化されたテレメトリ機能を備えた独自の言語 SDK を提供しますが、既存の OpenTelemetry SDKS もそのままシームレスに利用できます。
@@ -44,7 +44,7 @@ ClickStack は強化されたテレメトリ機能を備えた独自の言語 SD
 | React Native | React Native モバイルアプリケーション | [Documentation](/use-cases/observability/clickstack/sdks/react-native) |
 | Ruby | Ruby on Rails アプリケーションおよび Web サービス | [Documentation](/use-cases/observability/clickstack/sdks/ruby-on-rails) |
 
-## API key による保護 {#securing-api-key}
+## API key による保護 \{#securing-api-key\}
 
 OTel collector 経由で ClickStack にデータを送信するには、SDK でインジェスト API key を指定する必要があります。これは SDK の `init` 関数で設定するか、`OTEL_EXPORTER_OTLP_HEADERS` 環境変数で指定します。
 
@@ -60,7 +60,7 @@ OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
 
-## Kubernetes integration {#kubernetes-integration}
+## Kubernetes integration \{#kubernetes-integration\}
 
 すべての SDK は、Kubernetes 環境で実行されている場合、Kubernetes メタデータ（ポッド名、ネームスペースなど）との自動的な相関付けをサポートします。これにより、次のことが可能になります。
 

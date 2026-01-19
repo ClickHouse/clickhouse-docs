@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-# 采样查询分析器 {#sampling-query-profiler}
+# 采样查询分析器 \{#sampling-query-profiler\}
 
 ClickHouse 运行一个采样分析器，用于分析查询的执行情况。通过该分析器，您可以找到在查询执行期间被最频繁调用的源代码函数/例程。您可以跟踪 CPU 时间以及包括空闲时间在内的实际耗时（wall-clock time）。
 
@@ -54,7 +54,7 @@ SETTINGS allow_introspection_functions = 1
 
 如果需要可视化 `trace_log` 信息，可尝试使用 [flamegraph](/interfaces/third-party/gui#clickhouse-flamegraph) 和 [speedscope](https://github.com/laplab/clickhouse-speedscope)。
 
-## 示例 {#example}
+## 示例 \{#example\}
 
 在本示例中，我们将：
 

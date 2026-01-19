@@ -17,7 +17,7 @@ import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
 import log from '@site/static/images/clickstack/redis/redis-log.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Мониторинг логов Redis с помощью ClickStack {#redis-clickstack}
+# Мониторинг логов Redis с помощью ClickStack \{#redis-clickstack\}
 
 :::note[Кратко]
 В этом руководстве показано, как мониторить Redis с помощью ClickStack, настроив OTel collector для приёма серверных логов Redis. Вы узнаете, как:
@@ -31,12 +31,12 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 Требуемое время: 5–10 минут
 :::
 
-## Интеграция с существующим Redis {#existing-redis}
+## Интеграция с существующим Redis \{#existing-redis\}
 
 В этом разделе описывается настройка вашей существующей установки Redis для отправки логов в ClickStack путём изменения конфигурации OTel collector в ClickStack.
 Если вы хотите протестировать интеграцию с Redis прежде чем настраивать собственную среду, вы можете воспользоваться нашей предварительно настроенной средой и демонстрационным набором данных в разделе ["Demo dataset"](/use-cases/observability/clickstack/integrations/redis#demo-dataset).
 
-### Предварительные требования {#prerequisites}
+### Предварительные требования \{#prerequisites\}
 
 - Развернутый экземпляр ClickStack
 - Установленный Redis версии 3.0 или новее
@@ -191,7 +191,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### Загрузка демонстрационного набора данных {#download-sample}
+#### Загрузка демонстрационного набора данных \{#download-sample\}
 
 Загрузите пример файла журнала:
 
@@ -199,7 +199,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-server.log
 ```
 
-#### Создание тестовой конфигурации коллектора {#test-config}
+#### Создание тестовой конфигурации коллектора \{#test-config\}
 
 Создайте файл с именем `redis-demo.yaml` со следующей конфигурацией:
 
@@ -284,7 +284,7 @@ HyperDX отображает временные метки в локальном
 
 #### <TrackedLink href={useBaseUrl('/examples/redis-logs-dashboard.json')} download="redis-logs-dashboard.json" eventName="docs.redis_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда {#download}
 
-#### Импорт готового дашборда {#import-dashboard}
+#### Импорт готового дашборда \{#import-dashboard\}
 
 1. Откройте HyperDX и перейдите в раздел Dashboards.
 2. Нажмите «Import Dashboard» в правом верхнем углу под значком с многоточием.
@@ -295,7 +295,7 @@ HyperDX отображает временные метки в локальном
 
 <Image img={finish_import} alt="Завершение импорта"/>
 
-#### Дашборд будет создан со всеми заранее настроенными визуализациями {#created-dashboard}
+#### Дашборд будет создан со всеми заранее настроенными визуализациями \{#created-dashboard\}
 
 :::note
 Для демонстрационного набора данных установите диапазон времени **2025-10-27 10:00:00 - 2025-10-28 10:00:00 (UTC)** (скорректируйте в соответствии с вашим часовым поясом). У импортированного дашборда по умолчанию не будет задан диапазон времени.

@@ -17,20 +17,20 @@ import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-bu
 import connection_details_csharp from '@site/static/images/_snippets/connection-details-csharp.png';
 
 
-# ClickHouse C# 客户端 {#clickhouse-c-client}
+# ClickHouse C# 客户端 \{#clickhouse-c-client\}
 
 用于连接 ClickHouse 的官方 C# 客户端。
 客户端源代码托管在 [GitHub 仓库](https://github.com/ClickHouse/clickhouse-cs) 中。
 最初由 [Oleg V. Kozlyuk](https://github.com/DarkWanderer) 开发。
 
-## 迁移指南 {#migration-guide}
+## 迁移指南 \{#migration-guide\}
 
 1. 在 `.csproj` 文件中将包名更新为 `ClickHouse.Driver`，并将版本更新为 [NuGet 上的最新版本](https://www.nuget.org/packages/ClickHouse.Driver)。
 2. 将代码库中所有对 `ClickHouse.Client` 的引用更新为 `ClickHouse.Driver`。
 
 ---
 
-## 支持的 .NET 版本 {#supported-net-versions}
+## 支持的 .NET 版本 \{#supported-net-versions\}
 
 `ClickHouse.Driver` 支持以下 .NET 版本：
 
@@ -42,7 +42,7 @@ import connection_details_csharp from '@site/static/images/_snippets/connection-
 * .NET 9.0
 * .NET 10.0
 
-## 安装 {#installation}
+## 安装 \{#installation\}
 
 从 NuGet 安装该软件包：
 
@@ -57,7 +57,7 @@ Install-Package ClickHouse.Driver
 ```
 
 
-## 快速入门 {#quick-start}
+## 快速入门 \{#quick-start\}
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -70,7 +70,7 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 ```
 
 
-## 配置 {#configuration}
+## 配置 \{#configuration\}
 
 配置与 ClickHouse 的连接有两种方式：
 
@@ -79,7 +79,7 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 
 下面是所有配置项的完整列表，包括它们的默认值及其作用。
 
-### 连接设置 {#connection-settings}
+### 连接设置 \{#connection-settings\}
 
 | 属性 | 类型 | 默认值 | 连接字符串键 | 描述 |
 |----------|------|---------|----------------------|-------------|
@@ -92,7 +92,7 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 | Path | `string` | `null` | `Path` | 用于反向代理场景的 URL 路径（例如 `/clickhouse`） |
 | Timeout | `TimeSpan` | 2 分钟 | `Timeout` | 操作超时时间（在连接字符串中以秒为单位存储） |
 
-### 数据格式与序列化 {#data-format-serialization}
+### 数据格式与序列化 \{#data-format-serialization\}
 
 | 属性 | 类型 | 默认值 | 连接字符串键名 | 描述 |
 |----------|------|---------|----------------------|-------------|
@@ -100,7 +100,7 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 | UseCustomDecimals | `bool` | `true` | `UseCustomDecimals` | 使用 `ClickHouseDecimal` 处理任意精度小数；如果为 false，则使用 .NET `decimal`（128 位上限） |
 | UseFormDataParameters | `bool` | `false` | `UseFormDataParameters` | 将参数以表单数据的形式发送，而不是作为 URL 查询字符串 |
 
-### 会话管理 {#session-management}
+### 会话管理 \{#session-management\}
 
 | 属性       | 类型     | 默认值   | 连接字符串键             | 描述                                             |
 |------------|----------|----------|--------------------------|--------------------------------------------------|
@@ -113,13 +113,13 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 `ClickHouseConnection` 类通常允许并行操作（多个线程可以并发执行查询）。但是，启用 `UseSession` 选项后，在任意时刻，每个连接只能有一个活动查询（这是服务器端限制）。
 :::
 
-### 安全 {#security}
+### 安全 \{#security\}
 
 | 属性 | 类型 | 默认值 | 连接字符串键 | 说明 |
 |----------|------|---------|----------------------|-------------|
 | SkipServerCertificateValidation | `bool` | `false` | — | 跳过 HTTPS 证书验证；**不应用于生产环境** |
 
-### HTTP 客户端配置 {#http-client-configuration}
+### HTTP 客户端配置 \{#http-client-configuration\}
 
 | 属性 | 类型 | 默认值 | 连接字符串键 | 说明 |
 |----------|------|---------|----------------------|-------------|
@@ -127,14 +127,14 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 | HttpClientFactory | `IHttpClientFactory` | `null` | — | 用于创建 HttpClient 实例的自定义工厂 |
 | HttpClientName | `string` | `null` | — | 供 HttpClientFactory 在创建特定客户端时使用的名称 |
 
-### 日志与调试 {#logging-debugging}
+### 日志与调试 \{#logging-debugging\}
 
 | 属性 | 类型 | 默认值 | 连接字符串键 | 描述 |
 |----------|------|---------|----------------------|-------------|
 | LoggerFactory | `ILoggerFactory` | `null` | — | 用于诊断日志记录的 LoggerFactory 工厂 |
 | EnableDebugMode | `bool` | `false` | — | 启用 .NET 网络跟踪（需要配置 LoggerFactory 且日志级别设置为 Trace）；**对性能有显著影响** |
 
-### 自定义设置与角色 {#custom-settings-roles}
+### 自定义设置与角色 \{#custom-settings-roles\}
 
 | Property | Type | Default | Connection String Key | Description |
 |----------|------|---------|----------------------|-------------|
@@ -149,25 +149,25 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 
 ---
 
-### 连接字符串示例 {#connection-string-examples}
+### 连接字符串示例 \{#connection-string-examples\}
 
-#### 基本连接 {#basic-connection}
+#### 基本连接 \{#basic-connection\}
 
 ```text
 Host=localhost;Port=8123;Username=default;Password=secret;Database=mydb
 ```
 
 
-#### 使用自定义 ClickHouse 配置 {#with-custom-clickhouse-settings}
+#### 使用自定义 ClickHouse 配置 \{#with-custom-clickhouse-settings\}
 
 ```text
 Host=localhost;set_max_threads=4;set_readonly=1;set_max_memory_usage=10000000000
 ```
 
 
-## 使用方法 {#usage}
+## 使用方法 \{#usage\}
 
-### 连接 {#connecting}
+### 连接 \{#connecting\}
 
 若要连接 ClickHouse，请通过连接字符串或 `ClickHouseClientSettings` 对象创建一个 `ClickHouseConnection`。有关可用选项，请参见 [Configuration](#configuration) 部分。
 
@@ -215,7 +215,7 @@ await connection2.OpenAsync();
 ***
 
 
-### 创建表 {#creating-a-table}
+### 创建表 \{#creating-a-table\}
 
 使用标准 SQL 语法创建表：
 
@@ -237,7 +237,7 @@ using (var connection = new ClickHouseConnection(connectionString))
 ***
 
 
-### 插入数据 {#inserting-data}
+### 插入数据 \{#inserting-data\}
 
 使用参数化查询插入数据：
 
@@ -261,7 +261,7 @@ using (var connection = new ClickHouseConnection(connectionString))
 ***
 
 
-### 批量插入 {#bulk-insert}
+### 批量插入 \{#bulk-insert\}
 
 使用 `ClickHouseBulkCopy` 来插入大量数据行。它使用 ClickHouse 的原生行二进制格式高效地流式传输数据，支持并行插入，并且可以将数据拆分为批次。同时，它还可以避免由于参数集过大而导致的“URL too long”错误。
 
@@ -306,7 +306,7 @@ Console.WriteLine($"Rows written: {bulkCopy.RowsWritten}");
 ***
 
 
-### 执行 SELECT 查询 {#performing-select-queries}
+### 执行 SELECT 查询 \{#performing-select-queries\}
 
 使用 `ExecuteReader()` 或 `ExecuteReaderAsync()` 执行 SELECT 查询。返回的 `DbDataReader` 通过 `GetInt64()`、`GetString()` 和 `GetFieldValue<T>()` 等方法，为结果列提供类型安全的访问。
 
@@ -336,7 +336,7 @@ using (var connection = new ClickHouseConnection(connectionString))
 ***
 
 
-### SQL 参数 {#sql-parameters}
+### SQL 参数 \{#sql-parameters\}
 
 在 ClickHouse 中，SQL 查询参数的标准格式为 `{parameter_name:DataType}`。
 
@@ -361,7 +361,7 @@ SQL `bind` 参数作为 HTTP URI 查询参数传递，因此如果使用过多�
 ***
 
 
-### 查询 ID {#query-id}
+### 查询 ID \{#query-id\}
 
 每个发起查询的方法都会在结果中包含一个 `query_id`。该唯一标识符由客户端为每个查询分配，可用于从 `system.query_log` 表中获取数据（如果已启用），或取消长时间运行的查询。如有需要，用户可以在 ClickHouseCommand 对象中自定义该查询 ID。
 
@@ -383,7 +383,7 @@ Console.WriteLine($"QueryId: {command.QueryId}");
 ***
 
 
-### 原始数据流 {#raw-streaming}
+### 原始数据流 \{#raw-streaming\}
 
 可以直接以特定格式对数据进行流式传输，从而绕过数据读取器。这在您希望以特定格式将数据保存到文件时非常有用。例如：
 
@@ -399,7 +399,7 @@ var json = await reader.ReadToEndAsync();
 ***
 
 
-### 原始流插入 {#raw-stream-insert}
+### 原始流插入 \{#raw-stream-insert\}
 
 使用 `InsertRawStreamAsync` 将数据直接从文件或内存流中插入，格式可以是 CSV、JSON，或任意[ClickHouse 支持的格式](/docs/interfaces/formats)。
 
@@ -422,13 +422,13 @@ using var response = await connection.InsertRawStreamAsync(
 ***
 
 
-### 更多示例 {#more-examples}
+### 更多示例 \{#more-examples\}
 
 有关更多实用示例，请参阅 GitHub 仓库中的 [examples 目录](https://github.com/ClickHouse/clickhouse-cs/tree/main/examples)。
 
-## 最佳实践 {#best-practices}
+## 最佳实践 \{#best-practices\}
 
-### 连接生命周期与连接池 {#best-practices-connection-lifetime}
+### 连接生命周期与连接池 \{#best-practices-connection-lifetime\}
 
 `ClickHouse.Driver` 在底层使用 `System.Net.Http.HttpClient`。`HttpClient` 会针对每个端点维护一个连接池。因此：
 
@@ -446,7 +446,7 @@ using var response = await connection.InsertRawStreamAsync(
 
 ---
 
-### DateTime 处理 {#best-practice-datetime}
+### DateTime 处理 \{#best-practice-datetime\}
 
 1. **尽可能使用 UTC。** 将时间戳存储为 `DateTime('UTC')` 列，并在代码中使用 `DateTimeKind.Utc`，以消除时区歧义。
 
@@ -459,7 +459,7 @@ using var response = await connection.InsertRawStreamAsync(
 
 ---
 
-### 异步插入 {#async-inserts}
+### 异步插入 \{#async-inserts\}
 
 [异步插入](/docs/optimize/asynchronous-inserts) 将批处理的职责从客户端转移到服务器。服务器无需客户端进行批处理，而是自行对传入数据进行缓冲，并根据可配置阈值将其写入存储。这对于高并发场景（例如可观测性负载中有许多代理程序发送小体量数据的情况）非常有用。
 
@@ -497,7 +497,7 @@ settings.CustomSettings["wait_for_async_insert"] = 1; // Recommended: wait for f
 ***
 
 
-### 会话 {#best-practices-sessions}
+### 会话 \{#best-practices-sessions\}
 
 仅在需要有状态的服务端功能时才启用会话，例如：
 
@@ -529,13 +529,13 @@ await using var reader = await cmd3.ExecuteReaderAsync();
 ```
 
 
-## 支持的数据类型 {#supported-data-types}
+## 支持的数据类型 \{#supported-data-types\}
 
 `ClickHouse.Driver` 支持所有 ClickHouse 数据类型。下表展示了从数据库读取数据时，ClickHouse 类型与原生 .NET 类型之间的映射关系。
 
-### 类型映射：从 ClickHouse 读取数据 {#clickhouse-native-type-map-reading}
+### 类型映射：从 ClickHouse 读取数据 \{#clickhouse-native-type-map-reading\}
 
-#### 整数类型 {#type-map-reading-integer}
+#### 整数类型 \{#type-map-reading-integer\}
 
 | ClickHouse 类型 | .NET 类型 |
 |-----------------|-----------|
@@ -554,7 +554,7 @@ await using var reader = await cmd3.ExecuteReaderAsync();
 
 ---
 
-#### 浮点数类型 {#type-map-reading-floating-points}
+#### 浮点数类型 \{#type-map-reading-floating-points\}
 
 | ClickHouse 类型 | .NET 类型 |
 |-----------------|-----------|
@@ -564,7 +564,7 @@ await using var reader = await cmd3.ExecuteReaderAsync();
 
 ---
 
-#### Decimal 类型 {#type-map-reading-decimal}
+#### Decimal 类型 \{#type-map-reading-decimal\}
 
 | ClickHouse Type | .NET Type |
 |-----------------|-----------|
@@ -580,7 +580,7 @@ Decimal 类型转换由 UseCustomDecimals 设置项控制。
 
 ---
 
-#### 布尔类型 {#type-map-reading-boolean}
+#### 布尔类型 \{#type-map-reading-boolean\}
 
 | ClickHouse 类型 | .NET 类型 |
 |-----------------|-----------|
@@ -588,7 +588,7 @@ Decimal 类型转换由 UseCustomDecimals 设置项控制。
 
 ---
 
-#### 字符串类型 {#type-map-reading-strings}
+#### 字符串类型 \{#type-map-reading-strings\}
 
 | ClickHouse 类型 | .NET 类型 |
 |-----------------|-----------|
@@ -597,7 +597,7 @@ Decimal 类型转换由 UseCustomDecimals 设置项控制。
 
 ---
 
-#### 日期和时间类型 {#type-map-reading-datetime}
+#### 日期和时间类型 \{#type-map-reading-datetime\}
 
 | ClickHouse Type | .NET Type  |
 | --------------- | ---------- |
@@ -640,7 +640,7 @@ var dto = reader.GetDateTimeOffset(0); // 2024-06-15 14:30:00 +02:00 (CEST)
 ***
 
 
-#### 其他类型 {#type-map-reading-other}
+#### 其他类型 \{#type-map-reading-other\}
 
 | ClickHouse 类型 | .NET 类型 |
 |-----------------|-----------|
@@ -668,7 +668,7 @@ Dynamic 和 Variant 类型会根据每一行中实际的底层类型转换为对
 
 ---
 
-#### 几何类型 {#type-map-reading-geometry}
+#### 几何类型 \{#type-map-reading-geometry\}
 
 | ClickHouse Type | .NET Type |
 |-----------------|-----------|
@@ -686,11 +686,11 @@ Geometry 类型是一个 Variant 类型，可以包含任意几何类型。它�
 
 ---
 
-### 类型映射：写入 ClickHouse {#clickhouse-native-type-map-writing}
+### 类型映射：写入 ClickHouse \{#clickhouse-native-type-map-writing\}
 
 在插入数据时，驱动会将 .NET 类型转换为相应的 ClickHouse 类型。下表展示了每种 ClickHouse 列类型可以接受的 .NET 类型。
 
-#### 整数类型 {#type-map-writing-integer}
+#### 整数类型 \{#type-map-writing-integer\}
 
 | ClickHouse 类型 | 可接受的 .NET 类型 | 备注 |
 |-----------------|---------------------|-------|
@@ -709,7 +709,7 @@ Geometry 类型是一个 Variant 类型，可以包含任意几何类型。它�
 
 ---
 
-#### 浮点类型 {#type-map-writing-floating-point}
+#### 浮点类型 \{#type-map-writing-floating-point\}
 
 | ClickHouse Type | 可接受的 .NET 类型 | 说明 |
 |-----------------|---------------------|-------|
@@ -719,7 +719,7 @@ Geometry 类型是一个 Variant 类型，可以包含任意几何类型。它�
 
 ---
 
-#### 布尔类型 {#type-map-writing-boolean}
+#### 布尔类型 \{#type-map-writing-boolean\}
 
 | ClickHouse 类型 | 可接受的 .NET 类型 | 备注 |
 |-----------------|---------------------|-------|
@@ -727,7 +727,7 @@ Geometry 类型是一个 Variant 类型，可以包含任意几何类型。它�
 
 ---
 
-#### 字符串类型 {#type-map-writing-strings}
+#### 字符串类型 \{#type-map-writing-strings\}
 
 | ClickHouse 类型 | 可接受的 .NET 类型 | 说明 |
 |-----------------|---------------------|-------|
@@ -736,7 +736,7 @@ Geometry 类型是一个 Variant 类型，可以包含任意几何类型。它�
 
 ---
 
-#### 日期和时间类型 {#type-map-writing-datetime}
+#### 日期和时间类型 \{#type-map-writing-datetime\}
 
 | ClickHouse Type | 可接受的 .NET 类型                                                      | 说明                                                                   |
 | --------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------- |
@@ -778,7 +778,7 @@ var wallClock = new DateTime(2024, 1, 15, 14, 30, 0, DateTimeKind.Unspecified);
 **建议：** 为获得最简单且最可预测的行为，请在所有与 DateTime 相关的操作中使用 `DateTimeKind.Utc` 或 `DateTimeOffset`。这样可以确保无论服务器时区、客户端时区还是列时区如何，代码都能保持一致的运行方式。
 
 
-#### HTTP 参数与批量复制 {#datetime-http-param-vs-bulkcopy}
+#### HTTP 参数与批量复制 \{#datetime-http-param-vs-bulkcopy\}
 
 在写入 `Unspecified` 的 DateTime 值时，通过 HTTP 参数绑定和通过批量复制之间存在一个重要区别：
 
@@ -808,7 +808,7 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 ***
 
 
-#### Decimal 类型 {#type-map-writing-decimal}
+#### Decimal 类型 \{#type-map-writing-decimal\}
 
 | ClickHouse 类型 | 可接受的 .NET 类型 | 说明 |
 |-----------------|--------------------|------|
@@ -820,7 +820,7 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 
 ---
 
-#### 其他类型 {#type-map-writing-other}
+#### 其他类型 \{#type-map-writing-other\}
 
 | ClickHouse 类型 | 可接受的 .NET 类型 | 说明 |
 |-----------------|---------------------|------|
@@ -844,7 +844,7 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 
 ---
 
-#### 几何类型 {#type-map-writing-geometry}
+#### 几何类型 \{#type-map-writing-geometry\}
 
 | ClickHouse Type | 接受的 .NET 类型 | 说明 |
 |-----------------|------------------|------|
@@ -858,7 +858,7 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 
 ---
 
-#### 不支持写入  {#type-map-writing-not-supported}
+#### 不支持写入  \{#type-map-writing-not-supported\}
 
 | ClickHouse 类型 | 说明 |
 |-----------------|-------|
@@ -867,7 +867,7 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 
 ---
 
-### 嵌套类型处理 {#nested-type-handling}
+### 嵌套类型处理 \{#nested-type-handling\}
 
 ClickHouse 嵌套类型（`Nested(...)`）可以按照数组语义进行读写。
 
@@ -891,13 +891,13 @@ await bulkCopy.WriteToServerAsync(new[] { row1, row2 });
 ```
 
 
-## 日志和诊断 {#logging-and-diagnostics}
+## 日志和诊断 \{#logging-and-diagnostics\}
 
 ClickHouse .NET 客户端与 `Microsoft.Extensions.Logging` 抽象层集成，提供轻量级、可选启用的日志记录功能。启用后，驱动程序会针对连接生命周期事件、命令执行、传输操作以及批量复制上传输出结构化消息。日志记录完全是可选的——未配置记录器的应用程序将继续正常运行，并且不会引入任何额外开销。
 
-### 快速开始 {#logging-quick-start}
+### 快速开始 \{#logging-quick-start\}
 
-#### 使用 ClickHouseConnection {#logging-clickhouseconnection}
+#### 使用 ClickHouseConnection \{#logging-clickhouseconnection\}
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -919,7 +919,7 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-#### 使用 appsettings.json {#logging-appsettings-config}
+#### 使用 appsettings.json \{#logging-appsettings-config\}
 
 可以使用标准的 .NET 配置来配置日志级别：
 
@@ -949,7 +949,7 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-#### 使用内存配置 {#logging-inmemory-config}
+#### 使用内存配置 \{#logging-inmemory-config\}
 
 你也可以在代码中按类别配置日志的详细程度：
 
@@ -985,7 +985,7 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-### 分类与发射源 {#logging-categories}
+### 分类与发射源 \{#logging-categories\}
 
 驱动程序使用专用日志分类，便于按组件精细调整日志级别：
 
@@ -997,7 +997,7 @@ await connection.OpenAsync();
 | `ClickHouse.Driver.BulkCopy` | `ClickHouseBulkCopy` | 元数据加载、批量操作、行计数以及上传完成情况。 |
 | `ClickHouse.Driver.NetTrace` | `TraceHelper` | 网络跟踪，仅在启用调试模式时生效。 |
 
-#### 示例：排查连接问题 {#logging-config-example}
+#### 示例：排查连接问题 \{#logging-config-example\}
 
 ```json
 {
@@ -1020,7 +1020,7 @@ await connection.OpenAsync();
 * 连接打开/关闭事件
 * 会话 ID 跟踪
 
-### 调试模式：网络跟踪与诊断 {#logging-debugmode}
+### 调试模式：网络跟踪与诊断 \{#logging-debugmode\}
 
 为帮助诊断网络问题，驱动程序库提供了一个辅助工具，可启用对 .NET 网络内部机制的底层跟踪。要启用它，必须传入一个 LoggerFactory，并将日志级别设置为 Trace，同时将 EnableDebugMode 设置为 true（或者通过 `ClickHouse.Driver.Diagnostic.TraceHelper` 类手动启用）。日志事件将记录到 `ClickHouse.Driver.NetTrace` 类别中。警告：这会生成极其冗长的日志，并影响性能。不建议在生产环境中启用调试模式。
 
@@ -1040,11 +1040,11 @@ var settings = new ClickHouseClientSettings()
 ```
 
 
-## OpenTelemetry {#opentelemetry}
+## OpenTelemetry \{#opentelemetry\}
 
 该驱动通过 .NET [`System.Diagnostics.Activity`](https://learn.microsoft.com/en-us/dotnet/core/diagnostics/distributed-tracing) API 提供对 OpenTelemetry 分布式追踪的内置支持。启用后，驱动会为数据库操作生成 spans，这些 spans 可以导出到 Jaeger 等可观测性后端系统，或者通过 [OpenTelemetry Collector](https://clickhouse.com/docs/observability/integrating-opentelemetry) 导出到 ClickHouse 本身。
 
-### 启用追踪 {#opentelemetry-enabling}
+### 启用追踪 \{#opentelemetry-enabling\}
 
 在 ASP.NET Core 应用程序中，将 ClickHouse 驱动程序的 `ActivitySource` 添加到 OpenTelemetry 配置中：
 
@@ -1069,7 +1069,7 @@ var tracerProvider = Sdk.CreateTracerProviderBuilder()
 ```
 
 
-### Span 属性 {#opentelemetry-attributes}
+### Span 属性 \{#opentelemetry-attributes\}
 
 每个 span 都包含标准的 OpenTelemetry 数据库属性，以及可用于调试的 ClickHouse 特有查询统计信息。
 
@@ -1085,7 +1085,7 @@ var tracerProvider = Sdk.CreateTracerProviderBuilder()
 | `db.clickhouse.written_bytes` | 查询写入的字节数 |
 | `db.clickhouse.elapsed_ns` | 服务器端执行时间（纳秒） |
 
-### 配置选项 {#opentelemetry-configuration}
+### 配置选项 \{#opentelemetry-configuration\}
 
 通过 `ClickHouseDiagnosticsOptions` 控制跟踪行为：
 
@@ -1104,11 +1104,11 @@ ClickHouseDiagnosticsOptions.StatementMaxLength = 500;
 :::
 
 
-## TLS 配置 {#tls-configuration}
+## TLS 配置 \{#tls-configuration\}
 
 通过 HTTPS 连接到 ClickHouse 时，可以使用多种方式配置 TLS/SSL 行为。
 
-### 自定义证书验证 {#custom-certificate-validation}
+### 自定义证书验证 \{#custom-certificate-validation\}
 
 在生产环境中如需自定义证书验证逻辑，请提供一个自定义的 `HttpClient` 实例，并配置 `ServerCertificateCustomValidationCallback` 处理程序：
 
@@ -1158,9 +1158,9 @@ await connection.OpenAsync();
   :::
 
 
-## ORM 支持 {#orm-support}
+## ORM 支持 \{#orm-support\}
 
-### Dapper {#orm-support-dapper}
+### Dapper \{#orm-support-dapper\}
 
 `ClickHouse.Driver` 可以与 Dapper 一起使用，但不支持匿名对象。
 
@@ -1183,7 +1183,7 @@ connection.QueryAsync<string>(
 ```
 
 
-### Linq2db {#orm-support-linq2db}
+### Linq2db \{#orm-support-linq2db\}
 
 此驱动程序兼容 [linq2db](https://github.com/linq2db/linq2db)，这是一个用于 .NET 的轻量级 ORM 和 LINQ 提供程序。有关详细文档，请参阅该项目主页。
 
@@ -1244,13 +1244,13 @@ await table.BulkCopyAsync(options, products);
 ```
 
 
-### Entity framework core {#orm-support-ef-core}
+### Entity framework core \{#orm-support-ef-core\}
 
 当前尚不支持 Entity Framework Core。
 
-## 限制 {#limitations}
+## 限制 \{#limitations\}
 
-### AggregateFunction 列 {#aggregatefunction-columns}
+### AggregateFunction 列 \{#aggregatefunction-columns\}
 
 类型为 `AggregateFunction(...)` 的列不能直接进行查询或插入操作。
 

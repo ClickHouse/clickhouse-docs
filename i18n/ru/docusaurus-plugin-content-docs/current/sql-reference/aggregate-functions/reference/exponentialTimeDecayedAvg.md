@@ -5,7 +5,7 @@ title: 'exponentialTimeDecayedAvg'
 doc_type: 'reference'
 ---
 
-## exponentialTimeDecayedAvg {#exponentialtimedecayedavg}
+## exponentialTimeDecayedAvg \{#exponentialtimedecayedavg\}
 
 Возвращает экспоненциально сглаженное взвешенное скользящее среднее значений временного ряда в момент времени `t`.
 

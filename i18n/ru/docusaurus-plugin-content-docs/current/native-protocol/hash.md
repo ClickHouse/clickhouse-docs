@@ -7,7 +7,7 @@ doc_type: 'reference'
 keywords: ['CityHash', 'хэш нативного протокола', 'хэш-функция', 'Google CityHash', 'хэширование протокола']
 ---
 
-# CityHash {#cityhash}
+# CityHash \{#cityhash\}
 
 ClickHouse использует **одну из предыдущих** версий [CityHash от Google](https://github.com/google/cityhash).
 
@@ -38,8 +38,8 @@ ClickHouse использует **одну из предыдущих** верс�
 См. также [Introducing CityHash](https://opensource.googleblog.com/2011/04/introducing-cityhash.html) для описания и
 обоснования его создания. TL;DR: **некриптографическая** хеш-функция, которая работает быстрее, чем [MurmurHash](http://en.wikipedia.org/wiki/MurmurHash), но при этом более сложная.
 
-## Реализации {#implementations}
+## Реализации \{#implementations\}
 
-### Go {#go}
+### Go \{#go\}
 
 Вы можете использовать пакет Go [go-faster/city](https://github.com/go-faster/city), который реализует оба варианта.

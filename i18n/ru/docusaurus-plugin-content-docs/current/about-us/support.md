@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['поддержка', 'помощь', 'обслуживание клиентов', 'техническая поддержка', 'соглашение об уровне обслуживания']
 ---
 
-# Службы поддержки ClickHouse Cloud {#clickhouse-cloud-support-services}
+# Службы поддержки ClickHouse Cloud \{#clickhouse-cloud-support-services\}
 
 ClickHouse предоставляет службы поддержки для наших пользователей и клиентов ClickHouse Cloud. Наша цель — команда поддержки, которая отражает продукт ClickHouse: непревзойдённая производительность, простота использования и исключительно быстрые, высококачественные результаты. Подробности см. на странице [ClickHouse Support Program](https://clickhouse.com/support/program/).
 

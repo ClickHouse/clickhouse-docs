@@ -13,7 +13,7 @@ keywords: ['estuary', '数据摄取', 'etl', '数据管道', '数据集成', 'cl
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# 将 Estuary 连接到 ClickHouse {#connect-estuary-with-clickhouse}
+# 将 Estuary 连接到 ClickHouse \{#connect-estuary-with-clickhouse\}
 
 <PartnerBadge/>
 
@@ -21,7 +21,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 Estuary 通过 Kafka ClickPipe 与 ClickHouse 进行连接。使用此集成时，您无需维护自己的 Kafka 生态系统。
 
-## 设置指南 {#setup-guide}
+## 设置指南 \{#setup-guide\}
 
 **先决条件**
 
@@ -31,7 +31,7 @@ Estuary 通过 Kafka ClickPipe 与 ClickHouse 进行连接。使用此集成时�
 
 <VerticalStepper headerLevel="h3">
 
-### 创建 Estuary materialization {#1-create-an-estuary-materialization}
+### 创建 Estuary materialization \{#1-create-an-estuary-materialization\}
 
 要将 Estuary 中源集合的数据同步到 ClickHouse，首先需要创建一个 **materialization**。
 
@@ -55,7 +55,7 @@ Estuary 通过 Kafka ClickPipe 与 ClickHouse 进行连接。使用此集成时�
 
 Estuary 会开始将所选集合作为 Kafka 消息进行流式传输。ClickHouse 可以使用 Estuary 的 broker 详情和你提供的 auth token，通过 Kafka ClickPipe 访问这些数据。
 
-### 输入 Kafka 连接信息 {#2-enter-kafka-connection-details}
+### 输入 Kafka 连接信息 \{#2-enter-kafka-connection-details\}
 
 在 ClickHouse 中创建一个新的 Kafka ClickPipe，并输入连接信息：
 
@@ -79,7 +79,7 @@ Estuary 会开始将所选集合作为 Kafka 消息进行流式传输。ClickHou
    * schema key 与 broker user 相同（你的 materialization 名称）
    * secret 与 broker password 相同（你的 auth token）
 
-### 配置传入数据 {#3-configure-incoming-data}
+### 配置传入数据 \{#3-configure-incoming-data\}
 
 1. 选择一个 Kafka **topic**（来自 Estuary 的某个数据集合）。
 
@@ -99,7 +99,7 @@ ClickHouse 会为你的新数据源进行预配，并开始从 Estuary 消费消
 
 </VerticalStepper>
 
-## 其他资源 {#additional-resources}
+## 其他资源 \{#additional-resources\}
 
 如需了解更多关于与 Estuary 集成的设置方法，请参阅 Estuary 的文档：
 

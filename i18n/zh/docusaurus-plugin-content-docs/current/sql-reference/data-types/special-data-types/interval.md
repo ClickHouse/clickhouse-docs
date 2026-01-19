@@ -7,7 +7,7 @@ title: 'Interval'
 doc_type: 'reference'
 ---
 
-# Interval {#interval}
+# Interval \{#interval\}
 
 表示时间和日期间隔的一类数据类型。[INTERVAL](/sql-reference/operators#interval) 运算符所产生的结果类型。
 
@@ -43,7 +43,7 @@ SELECT toTypeName(INTERVAL 4 DAY)
 ```
 
 
-## 使用注意事项 {#usage-remarks}
+## 使用注意事项 \{#usage-remarks\}
 
 可以将 `Interval` 类型的值与 [Date](../../../sql-reference/data-types/date.md) 和 [DateTime](../../../sql-reference/data-types/datetime.md) 类型的值一起用于算术运算。例如，可以在当前时间的基础上加 4 天：
 
@@ -82,7 +82,7 @@ SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
 ```
 
 
-## 另请参阅 {#see-also}
+## 另请参阅 \{#see-also\}
 
 - [INTERVAL](/sql-reference/operators#interval) 运算符
 - [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 类型转换函数

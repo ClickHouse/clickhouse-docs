@@ -5,7 +5,7 @@ title: 'kurtPop'
 doc_type: 'reference'
 ---
 
-# kurtPop {#kurtpop}
+# kurtPop \{#kurtpop\}
 
 シーケンスの[尖度](https://en.wikipedia.org/wiki/Kurtosis)を計算します。
 

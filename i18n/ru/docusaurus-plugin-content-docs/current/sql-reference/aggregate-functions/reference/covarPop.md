@@ -7,7 +7,7 @@ doc_type: 'reference'
 
 
 
-# covarPop {#covarpop}
+# covarPop \{#covarpop\}
 
 Вычисляет ковариацию для генеральной совокупности:
 

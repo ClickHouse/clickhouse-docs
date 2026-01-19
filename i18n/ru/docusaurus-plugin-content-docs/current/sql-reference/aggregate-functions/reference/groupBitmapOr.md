@@ -5,7 +5,7 @@ title: 'groupBitmapOr'
 doc_type: 'reference'
 ---
 
-# groupBitmapOr {#groupbitmapor}
+# groupBitmapOr \{#groupbitmapor\}
 
 Вычисляет операцию OR над битмап-столбцом и возвращает кардинальность множества (cardinality) типа UInt64. Если добавить суффикс -State, функция возвращает [объект bitmap](../../../sql-reference/functions/bitmap-functions.md). Эквивалентно `groupBitmapMerge`.
 

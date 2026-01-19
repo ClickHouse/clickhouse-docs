@@ -5,7 +5,7 @@ title: 'kurtPop'
 doc_type: 'reference'
 ---
 
-# kurtPop {#kurtpop}
+# kurtPop \{#kurtpop\}
 
 Вычисляет [эксцесс](https://en.wikipedia.org/wiki/Kurtosis) для последовательности значений.
 

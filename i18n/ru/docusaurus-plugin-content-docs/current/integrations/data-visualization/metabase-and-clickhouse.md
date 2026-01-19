@@ -24,13 +24,13 @@ import metabase_07 from '@site/static/images/integrations/data-visualization/met
 import metabase_08 from '@site/static/images/integrations/data-visualization/metabase_08.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Подключение Metabase к ClickHouse {#connecting-metabase-to-clickhouse}
+# Подключение Metabase к ClickHouse \{#connecting-metabase-to-clickhouse\}
 
 <PartnerBadge/>
 
 Metabase — это простой в использовании UI-инструмент с открытым исходным кодом для формирования запросов к вашим данным. Metabase — это Java-приложение, которое можно запустить, просто <a href="https://www.metabase.com/start/oss/jar" target="_blank">скачав JAR‑файл</a> и выполнив его командой `java -jar metabase.jar`. Metabase подключается к ClickHouse с помощью JDBC‑драйвера, который нужно загрузить и поместить в папку `plugins`:
 
-## Цель {#goal}
+## Цель \{#goal\}
 
 В этом руководстве вы зададите ряд вопросов к данным в ClickHouse с помощью Metabase и визуализируете полученные ответы. Один из результатов будет выглядеть так:
 
@@ -42,11 +42,11 @@ Metabase — это простой в использовании UI-инстру
 Если у вас нет набора данных для работы, вы можете добавить один из примеров. В этом руководстве используется набор данных [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md), поэтому вы можете выбрать его. В той же категории документации есть и несколько других вариантов.
 :::
 
-## 1. Соберите параметры подключения {#1-gather-your-connection-details}
+## 1. Соберите параметры подключения \{#1-gather-your-connection-details\}
 
 <ConnectionDetails />
 
-## 2.  Загрузка плагина ClickHouse для Metabase {#2--download-the-clickhouse-plugin-for-metabase}
+## 2.  Загрузка плагина ClickHouse для Metabase \{#2--download-the-clickhouse-plugin-for-metabase\}
 
 1. Если у вас нет папки `plugins`, создайте её как подпапку в том же каталоге, где сохранён файл `metabase.jar`.
 
@@ -58,7 +58,7 @@ Metabase — это простой в использовании UI-инстру
 
 5. Откройте Metabase по адресу <a href="http://localhost:3000/" target="_blank">http://hostname:3000</a>. При первом запуске вы увидите приветственный экран и вам нужно будет ответить на ряд вопросов. Если будет предложено выбрать базу данных, выберите "**I'll add my data later**":
 
-## 3.  Подключение Metabase к ClickHouse {#3--connect-metabase-to-clickhouse}
+## 3.  Подключение Metabase к ClickHouse \{#3--connect-metabase-to-clickhouse\}
 
 1. Нажмите на значок шестерёнки в правом верхнем углу и выберите **Admin Settings**, чтобы открыть <a href="http://localhost:3000/admin/settings/setup" target="_blank">административную страницу Metabase</a>.
 
@@ -76,7 +76,7 @@ Metabase — это простой в использовании UI-инстру
 
 6. Нажмите кнопку **Save**, и Metabase просканирует вашу базу данных на наличие таблиц.
 
-## 4. Выполните SQL-запрос {#4-run-a-sql-query}
+## 4. Выполните SQL-запрос \{#4-run-a-sql-query\}
 
 1. Выйдите из **Admin settings**, нажав кнопку **Exit admin** в правом верхнем углу.
 
@@ -88,7 +88,7 @@ Metabase — это простой в использовании UI-инстру
 
     <Image size="md" img={metabase_04} alt="Редактор SQL Metabase, показывающий запрос к данным UK price paid" border />
 
-## 5. Задайте вопрос {#5-ask-a-question}
+## 5. Задайте вопрос \{#5-ask-a-question\}
 
 1. Нажмите **+ New** и выберите **Question**. Обратите внимание, что вы можете создать вопрос, начав с базы данных и таблицы. Например, следующий запрос выполняется к таблице `uk_price_paid` в базе данных `default`. Вот простой запрос, который вычисляет среднюю цену по городам в графстве Большой Манчестер:
 
@@ -102,6 +102,6 @@ Metabase — это простой в использовании UI-инстру
 
     <Image size="md" img={metabase_08} alt="Круговая диаграмма Metabase со средними ценами по городам в Большом Манчестере" border />
 
-## Подробнее {#learn-more}
+## Подробнее \{#learn-more\}
 
 Вы можете найти дополнительную информацию о Metabase и о том, как создавать дашборды, в <a href="https://www.metabase.com/docs/latest/" target="_blank">документации Metabase</a>.

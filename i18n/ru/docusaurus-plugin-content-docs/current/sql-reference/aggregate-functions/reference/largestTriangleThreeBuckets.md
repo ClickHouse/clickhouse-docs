@@ -6,7 +6,7 @@ title: 'largestTriangleThreeBuckets'
 doc_type: 'reference'
 ---
 
-# largestTriangleThreeBuckets {#largesttrianglethreebuckets}
+# largestTriangleThreeBuckets \{#largesttrianglethreebuckets\}
 
 Применяет алгоритм [Largest-Triangle-Three-Buckets](https://skemman.is/bitstream/1946/15343/3/SS_MSthesis.pdf) к входным данным.
 Алгоритм используется для даунсэмплинга данных временного ряда при визуализации. Он предназначен для работы с рядами, отсортированными по координате x.

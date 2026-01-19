@@ -17,7 +17,7 @@ CREATE ROLE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
     [SETTINGS variable [= value] [MIN [=] min_value] [MAX [=] max_value] [CONST|READONLY|WRITABLE|CHANGEABLE_IN_READONLY] | PROFILE 'profile_name'] [,...]
 ```
 
-## ロールの管理 {#managing-roles}
+## ロールの管理 \{#managing-roles\}
 
 1人のユーザーには複数のロールを割り当てることができます。ユーザーは、[SET ROLE](../../../sql-reference/statements/set-role.md) ステートメントを使用して、自分に割り当てられたロールを任意の組み合わせで適用できます。最終的な権限の範囲は、適用されたすべてのロールが持つ権限を統合した集合になります。ユーザーアカウントに直接付与された権限がある場合、それらもロールによって付与された権限と統合されます。
 
@@ -27,7 +27,7 @@ CREATE ROLE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 
 ロールを削除するには、[DROP ROLE](/sql-reference/statements/drop#drop-role) ステートメントを使用します。削除されたロールは、それが割り当てられていたすべてのユーザーおよびロールから自動的に取り消されます。
 
-## 例 {#examples}
+## 例 \{#examples\}
 
 ```sql
 CREATE ROLE accountant;

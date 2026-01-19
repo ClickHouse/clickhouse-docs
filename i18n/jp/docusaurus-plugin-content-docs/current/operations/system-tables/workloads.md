@@ -6,7 +6,7 @@ title: 'system.workloads'
 doc_type: 'reference'
 ---
 
-# system.workloads {#systemworkloads}
+# system.workloads \{#systemworkloads\}
 
 ローカルサーバー上にある[ワークロード](/operations/workload-scheduling.md#workload_entity_storage)に関する情報を保持します。テーブルには各ワークロードにつき 1 行が格納されます。
 

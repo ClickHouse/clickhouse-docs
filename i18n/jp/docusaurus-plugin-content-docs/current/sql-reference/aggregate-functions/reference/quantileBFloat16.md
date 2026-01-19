@@ -5,7 +5,7 @@ title: 'quantileBFloat16'
 doc_type: 'reference'
 ---
 
-# quantileBFloat16Weighted {#quantilebfloat16weighted}
+# quantileBFloat16Weighted \{#quantilebfloat16weighted\}
 
 `quantileBFloat16` と同様ですが、シーケンスの各要素の重みを考慮します。
 

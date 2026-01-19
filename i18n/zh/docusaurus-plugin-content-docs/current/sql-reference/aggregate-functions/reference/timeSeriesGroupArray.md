@@ -5,7 +5,7 @@ title: 'timeSeriesGroupArray'
 doc_type: 'reference'
 ---
 
-# timeSeriesGroupArray {#timeseriesgrouparray}
+# timeSeriesGroupArray \{#timeseriesgrouparray\}
 
 按时间戳升序排序时间序列。
 

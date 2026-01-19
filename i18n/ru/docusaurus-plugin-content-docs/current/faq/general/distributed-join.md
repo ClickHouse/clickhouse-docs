@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['distributed', 'join']
 ---
 
-# Поддерживает ли ClickHouse распределённый JOIN? {#does-clickhouse-support-distributed-join}
+# Поддерживает ли ClickHouse распределённый JOIN? \{#does-clickhouse-support-distributed-join\}
 
 ClickHouse поддерживает распределённый JOIN на кластере.
 

@@ -7,11 +7,11 @@ title: 'LoongArch64 向け Linux 上でのビルド'
 doc_type: 'guide'
 ---
 
-# Linux 上での LoongArch64 向けビルド {#build-on-linux-for-loongarch64}
+# Linux 上での LoongArch64 向けビルド \{#build-on-linux-for-loongarch64\}
 
 ClickHouse は LoongArch64 を実験的にサポートしています
 
-## ClickHouse をビルドする {#build-clickhouse}
+## ClickHouse をビルドする \{#build-clickhouse\}
 
 ビルドに必要な LLVM のバージョンは 19.1.0 以上である必要があります。
 

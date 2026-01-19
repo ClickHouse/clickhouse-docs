@@ -16,7 +16,7 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
 
 В обоих этих случаях в конфигурации ClickHouse должен быть определён сервер LDAP с внутренним именем, чтобы на него можно было ссылаться из других частей конфигурации.
 
-## Определение сервера LDAP {#ldap-server-definition}
+## Определение сервера LDAP \{#ldap-server-definition\}
 
 Чтобы задать сервер LDAP, необходимо добавить раздел `ldap_servers` в файл `config.xml`.
 
@@ -90,7 +90,7 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
 * `tls_ca_cert_dir` — путь к каталогу, содержащему сертификаты CA.
 * `tls_cipher_suite` — разрешенный набор шифров (в нотации OpenSSL).
 
-## Внешний аутентификатор LDAP {#ldap-external-authenticator}
+## Внешний аутентификатор LDAP \{#ldap-external-authenticator\}
 
 Удалённый сервер LDAP может использоваться в качестве метода проверки паролей для локально определённых пользователей (пользователей, заданных в `users.xml` или в локальных путях управления доступом). Для этого укажите ранее определённое имя сервера LDAP вместо разделов `password` или аналогичных в определении пользователя.
 
@@ -123,7 +123,7 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
 CREATE USER my_user IDENTIFIED WITH ldap SERVER 'my_ldap_server';
 ```
 
-## Внешний пользовательский каталог LDAP {#ldap-external-user-directory}
+## Внешний пользовательский каталог LDAP \{#ldap-external-user-directory\}
 
 Помимо локально заданных пользователей, в качестве источника описаний пользователей может использоваться удалённый сервер LDAP. Для этого укажите ранее определённое имя сервера LDAP (см. [Определение сервера LDAP](#ldap-server-definition)) в секции `ldap` внутри секции `users_directories` файла `config.xml`.
 

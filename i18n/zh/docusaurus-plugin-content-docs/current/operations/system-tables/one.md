@@ -6,7 +6,7 @@ title: 'system.one'
 doc_type: 'reference'
 ---
 
-# system.one {#systemone}
+# system.one \{#systemone\}
 
 该表包含一行数据，只有一个名为 `dummy` 的 UInt8 列，列中的值为 0。
 

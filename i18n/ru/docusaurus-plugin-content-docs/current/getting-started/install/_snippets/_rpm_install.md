@@ -1,10 +1,10 @@
-# Установка ClickHouse на дистрибутивы на основе rpm {#from-rpm-packages}
+# Установка ClickHouse на дистрибутивы на основе rpm \{#from-rpm-packages\}
 
 > Рекомендуется использовать официальные предкомпилированные пакеты `rpm` для **CentOS**, **RedHat** и всех других дистрибутивов Linux на основе rpm.
 
 <VerticalStepper>
 
-## Настройка RPM-репозитория {#setup-the-rpm-repository}
+## Настройка RPM-репозитория \{#setup-the-rpm-repository\}
 
 Добавьте официальный репозиторий, выполнив следующую команду:
 
@@ -22,7 +22,7 @@ sudo zypper --gpg-auto-import-keys refresh clickhouse-stable
 
 В шагах ниже команду `yum install` можно заменить на `zypper install` в зависимости от используемого менеджера пакетов.
 
-## Установка сервера и клиента ClickHouse {#install-clickhouse-server-and-client-1}
+## Установка сервера и клиента ClickHouse \{#install-clickhouse-server-and-client-1\}
 
 Установите ClickHouse, выполнив следующие команды:
 
@@ -39,7 +39,7 @@ sudo yum install -y clickhouse-server clickhouse-client
 sudo yum install clickhouse-server-22.8.7.34
 ```
 
-## Запуск сервера ClickHouse {#start-clickhouse-server-1}
+## Запуск сервера ClickHouse \{#start-clickhouse-server-1\}
 
 Чтобы запустить сервер ClickHouse, выполните команду:
 
@@ -61,7 +61,7 @@ clickhouse-client
 clickhouse-client --password
 ```
 
-## Установка отдельного ClickHouse Keeper {#install-standalone-clickhouse-keeper-1}
+## Установка отдельного ClickHouse Keeper \{#install-standalone-clickhouse-keeper-1\}
 
 :::tip
 В производственных средах мы настоятельно рекомендуем запускать ClickHouse Keeper на выделенных узлах.
@@ -75,7 +75,7 @@ clickhouse-client --password
 sudo yum install -y clickhouse-keeper
 ```
 
-## Включение и запуск ClickHouse Keeper {#enable-and-start-clickhouse-keeper-1}
+## Включение и запуск ClickHouse Keeper \{#enable-and-start-clickhouse-keeper-1\}
 
 ```bash
 sudo systemctl enable clickhouse-keeper

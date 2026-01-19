@@ -5,7 +5,7 @@ title: 'uniqExact'
 doc_type: 'reference'
 ---
 
-# uniqExact {#uniqexact}
+# uniqExact \{#uniqexact\}
 
 Вычисляет точное количество различных значений аргумента.
 

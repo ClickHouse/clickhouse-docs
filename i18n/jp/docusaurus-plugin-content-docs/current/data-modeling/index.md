@@ -6,7 +6,7 @@ keywords: ['データモデリング', 'スキーマ設計', 'ディクショナ
 doc_type: 'landing-page'
 ---
 
-# データモデリング {#data-modeling}
+# データモデリング \{#data-modeling\}
 
 このセクションでは ClickHouse におけるデータモデリングについて説明し、次のトピックを扱います：
 

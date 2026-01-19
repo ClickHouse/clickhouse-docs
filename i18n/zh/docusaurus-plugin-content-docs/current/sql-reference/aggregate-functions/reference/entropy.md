@@ -5,7 +5,7 @@ title: 'entropy'
 doc_type: 'reference'
 ---
 
-# entropy {#entropy}
+# entropy \{#entropy\}
 
 计算某列数值的[香农熵](https://en.wikipedia.org/wiki/Entropy_\(information_theory\))。
 

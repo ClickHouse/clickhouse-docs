@@ -13,7 +13,7 @@ integration:
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# 将 Embeddable 连接到 ClickHouse {#connecting-embeddable-to-clickhouse}
+# 将 Embeddable 连接到 ClickHouse \{#connecting-embeddable-to-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
@@ -23,11 +23,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 内置的行级安全机制确保每个用户只会看到其被允许查看的精确数据。而两级、完全可配置的缓存机制则意味着你可以在大规模场景下提供快速的实时分析能力。
 
-## 1. 收集连接参数 {#1-gather-your-connection-details}
+## 1. 收集连接参数 \{#1-gather-your-connection-details\}
 
 <ConnectionDetails />
 
-## 2. 创建 ClickHouse 连接类型 {#2-create-a-clickhouse-connection-type}
+## 2. 创建 ClickHouse 连接类型 \{#2-create-a-clickhouse-connection-type\}
 
 您可以使用 Embeddable API 添加数据库连接。该连接用于访问您的 ClickHouse 服务。您可以使用以下 API 调用来添加连接：
 

@@ -5,7 +5,7 @@ title: 'argAndMax'
 doc_type: 'reference'
 ---
 
-# argAndMax {#argandmax}
+# argAndMax \{#argandmax\}
 
 Вычисляет значения `arg` и `val` для максимального значения `val`. Если существует несколько строк с одинаковым максимальным значением `val`, то какая из соответствующих пар `arg` и `val` будет возвращена, не определено.
 Обе части — `arg` и `max` — ведут себя как [агрегатные функции](/sql-reference/aggregate-functions/index.md), обе [пропускают `Null`](/sql-reference/aggregate-functions/index.md#null-processing) при обработке и возвращают не-`Null` значения, если доступны не-`Null` значения.

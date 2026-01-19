@@ -5,7 +5,7 @@ title: 'clickhouse-format'
 doc_type: 'reference'
 ---
 
-# Утилита clickhouse-format {#clickhouse-format-utility}
+# Утилита clickhouse-format \{#clickhouse-format-utility\}
 
 Позволяет форматировать входные запросы.
 
@@ -24,7 +24,7 @@ doc_type: 'reference'
 * `--backslash` — добавить обратный слэш в конец каждой строки форматированного запроса. Может быть полезно, когда вы копируете многострочный запрос из веба или ещё откуда-то и хотите выполнить его в командной строке.
 * `--semicolons_inline` — в режиме multiquery записывать точки с запятой в последней строке запроса вместо новой строки.
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 1. Форматирование запроса:
 

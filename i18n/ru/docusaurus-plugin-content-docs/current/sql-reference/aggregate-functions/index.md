@@ -7,7 +7,7 @@ title: 'Агрегатные функции'
 doc_type: 'reference'
 ---
 
-# Агрегатные функции {#aggregate-functions}
+# Агрегатные функции \{#aggregate-functions\}
 
 Агрегатные функции работают [стандартным](http://www.sql-tutorial.com/sql-aggregate-functions-sql-tutorial) образом, привычным для специалистов по базам данных.
 
@@ -16,7 +16,7 @@ ClickHouse также поддерживает:
 * [Параметрические агрегатные функции](/sql-reference/aggregate-functions/parametric-functions), которые, помимо столбцов, принимают дополнительные параметры.
 * [Комбинаторы](/sql-reference/aggregate-functions/combinators), которые изменяют поведение агрегатных функций.
 
-## Обработка NULL {#null-processing}
+## Обработка NULL \{#null-processing\}
 
 При агрегации все аргументы со значением `NULL` пропускаются. Если агрегатная функция имеет несколько аргументов, она игнорирует любую строку, в которой один или несколько из них равны NULL.
 

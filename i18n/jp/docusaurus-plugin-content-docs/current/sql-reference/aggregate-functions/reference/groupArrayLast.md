@@ -5,7 +5,7 @@ title: 'groupArrayLast'
 doc_type: 'reference'
 ---
 
-# groupArrayLast {#grouparraylast}
+# groupArrayLast \{#grouparraylast\}
 
 構文: `groupArrayLast(max_size)(x)`
 

@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## Описание {#description}
+## Описание \{#description\}
 
 Отличается от формата [JSON](./JSON.md) только тем, что поля данных выводятся в виде строк, а не типизированных значений JSON.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
-### Вставка данных {#inserting-data}
+### Вставка данных \{#inserting-data\}
 
 Используем JSON-файл со следующими данными, сохранённый как `football.json`:
 
@@ -200,7 +200,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStrings;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных \{#reading-data\}
 
 Считайте данные в формате `JSONStrings`:
 
@@ -393,4 +393,4 @@ FORMAT JSONStrings
 }
 ```
 
-## Параметры форматирования {#format-settings}
+## Параметры форматирования \{#format-settings\}

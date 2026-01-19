@@ -7,19 +7,19 @@ title: 'generateRandom'
 doc_type: 'reference'
 ---
 
-# generateRandom テーブル関数 {#generaterandom-table-function}
+# generateRandom テーブル関数 \{#generaterandom-table-function\}
 
 指定したスキーマでランダムなデータを生成します。
 そのデータを使用してテスト用テーブルを埋めることができます。
 すべての型がサポートされているわけではありません。
 
-## 構文 {#syntax}
+## 構文 \{#syntax\}
 
 ```sql
 generateRandom(['name TypeName[, name TypeName]...', [, 'random_seed'[, 'max_string_length'[, 'max_array_length']]]])
 ```
 
-## 引数 {#arguments}
+## 引数 \{#arguments\}
 
 | 引数                | 説明                                                                                              |
 |---------------------|---------------------------------------------------------------------------------------------------|
@@ -29,11 +29,11 @@ generateRandom(['name TypeName[, name TypeName]...', [, 'random_seed'[, 'max_str
 | `max_string_length` | 生成されるすべての文字列の最大文字数。デフォルトは `10`。                                        |
 | `max_array_length`  | 生成されるすべての配列またはマップの要素数の最大値。デフォルトは `10`。                          |
 
-## 戻り値 {#returned_value}
+## 戻り値 \{#returned_value\}
 
 指定されたスキーマを持つテーブルオブジェクト。
 
-## 使用例 {#usage-example}
+## 使用例 \{#usage-example\}
 
 ```sql
 SELECT * FROM generateRandom('a Array(Int8), d Decimal32(4), c Tuple(DateTime64(3), UUID)', 1, 10, 2) LIMIT 3;
@@ -106,5 +106,5 @@ SELECT * FROM generateRandom(11) LIMIT 3;
 `max_array_length` を十分に大きくして `generateRandom(generateRandomStructure(), [random seed], max_string_length, max_array_length)` を実行すると、複合型（`Array`、`Tuple`、`Map`、`Nested`）のネストの深さが最大 16 階層まで深くなることがあるため、非常に大きな出力が生成される可能性があります。
 :::
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \{#related-content\}
 - ブログ記事: [ClickHouse でランダムなデータを生成する](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)

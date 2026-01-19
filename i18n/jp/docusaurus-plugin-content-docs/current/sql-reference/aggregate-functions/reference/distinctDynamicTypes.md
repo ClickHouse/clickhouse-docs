@@ -5,7 +5,7 @@ title: 'distinctDynamicTypes'
 doc_type: 'reference'
 ---
 
-# distinctDynamicTypes {#distinctdynamictypes}
+# distinctDynamicTypes \{#distinctdynamictypes\}
 
 [Dynamic](../../data-types/dynamic.md) カラムに格納されているデータ型のうち、異なるものの一覧を返します。
 

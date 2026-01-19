@@ -10,11 +10,11 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     |        |       |
 
-## 概要 {#description}
+## 概要 \{#description\}
 
-## 使用例 {#example-usage}
+## 使用例 \{#example-usage\}
 
-### データの挿入 {#inserting-data}
+### データの挿入 \{#inserting-data\}
 
 次の txt ファイル `football.txt` を使用します。
 
@@ -38,4 +38,4 @@ SET format_custom_escaping_rule = 'Quoted';
 INSERT INTO football FROM INFILE 'football.txt' FORMAT CustomSeparatedIgnoreSpacesWithNames;
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \{#format-settings\}

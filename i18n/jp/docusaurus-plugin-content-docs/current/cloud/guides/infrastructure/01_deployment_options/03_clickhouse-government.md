@@ -10,7 +10,7 @@ import Image from '@theme/IdealImage';
 import private_gov_architecture from '@site/static/images/cloud/reference/private-gov-architecture.png';
 
 
-## 概要 {#overview}
+## 概要 \{#overview\}
 
 ClickHouse Government は、ClickHouse Cloud 上で動作するものと同じプロプライエタリ版の ClickHouse と、コンピュートとストレージの分離に対応し、政府機関および公共部門の組織の厳格な要件を満たすよう強化された ClickHouse Operator で構成される、セルフデプロイ型パッケージです。S3 互換ストレージを備えた Kubernetes 環境にデプロイされます。
 
@@ -22,23 +22,23 @@ ClickHouse Government は、政府機関、公共部門の組織、またはそ�
 
 
 
-## オープンソースに対するメリット {#benefits-over-os}
+## オープンソースに対するメリット \{#benefits-over-os\}
 
 以下の機能により、ClickHouse Government は自己管理のオープンソースデプロイメントとは一線を画します。
 
 <VerticalStepper headerLevel="h3">
 
-### 強化されたパフォーマンス {#enhanced-performance}
+### 強化されたパフォーマンス \{#enhanced-performance\}
 - コンピュートとストレージのネイティブな分離
 - [shared merge tree](/cloud/reference/shared-merge-tree) や [warehouse](/cloud/reference/warehouses) の機能などの独自のクラウド機能
 
-### 多様なユースケースおよび条件下で実証済み {#tested-proven}
+### 多様なユースケースおよび条件下で実証済み \{#tested-proven\}
 - ClickHouse Cloud で完全にテストおよび検証されています
 
-### コンプライアンスパッケージ {#compliance-package}
+### コンプライアンスパッケージ \{#compliance-package\}
 - Authorization to Operate (ATO) の取得を加速するための [NIST Risk Management Framework (RMF)](https://csrc.nist.gov/projects/risk-management/about-rmf) ドキュメント
 
-### 新機能が定期的に追加される充実したロードマップ {#full-featured-roadmap}
+### 新機能が定期的に追加される充実したロードマップ \{#full-featured-roadmap\}
 今後追加予定の機能には次のものが含まれます:
 - リソースをプログラム的に管理するための API
   - 自動バックアップ
@@ -49,7 +49,7 @@ ClickHouse Government は、政府機関、公共部門の組織、またはそ�
 
 
 
-## アーキテクチャ {#architecture}
+## アーキテクチャ \{#architecture\}
 
 ClickHouse Government は、デプロイ環境内で完全に自己完結して動作し、Kubernetes 上で管理されるコンピュートリソースと、S3 互換ストレージソリューション上のストレージから構成されています。
 
@@ -61,17 +61,17 @@ ClickHouse Government は、デプロイ環境内で完全に自己完結して�
 
 
 
-## オンボーディングプロセス {#onboarding-process}
+## オンボーディングプロセス \{#onboarding-process\}
 
 お客様は、[こちら](https://clickhouse.com/government)からお問い合わせいただくことで、オンボーディングを開始できます。条件を満たしたお客様には、詳細な環境構築ガイドと、デプロイ用のイメージおよび Helm チャートへのアクセスを提供します。
 
 
 
-## 一般要件 {#general-requirements}
+## 一般要件 \{#general-requirements\}
 
 このセクションでは、ClickHouse Government をデプロイするために必要なリソースの概要を示します。具体的なデプロイメントガイドはオンボーディング時に提供されます。インスタンス／サーバーの種類とサイズはユースケースによって異なります。
 
-### AWS 上の ClickHouse Government {#clickhouse-government-aws}
+### AWS 上の ClickHouse Government \{#clickhouse-government-aws\}
 
 必要なリソース：
 - イメージおよび Helm チャートを受け取るための [ECR](https://docs.aws.amazon.com/ecr/)

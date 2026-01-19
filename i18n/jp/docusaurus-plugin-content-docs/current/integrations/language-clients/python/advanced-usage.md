@@ -8,13 +8,13 @@ title: '高度な利用'
 doc_type: 'reference'
 ---
 
-# 高度な使い方 {#advanced-usage}
+# 高度な使い方 \{#advanced-usage\}
 
-## Raw API {#raw-api}
+## Raw API \{#raw-api\}
 
 ClickHouse データとネイティブまたはサードパーティのデータ型や構造との間で変換を行う必要がないユースケース向けに、ClickHouse Connect クライアントは ClickHouse 接続をそのまま利用するためのメソッドを提供します。
 
-### Client `raw_query` メソッド {#client-rawquery-method}
+### Client `raw_query` メソッド \{#client-rawquery-method\}
 
 `Client.raw_query` メソッドは、クライアント接続を使用して ClickHouse の HTTP クエリインターフェイスを直接利用できるようにします。戻り値は未処理の `bytes` オブジェクトです。パラメータバインディング、エラーハンドリング、リトライ、および設定管理を、最小限のインターフェイスで提供する便利なラッパーです。
 
@@ -29,11 +29,11 @@ ClickHouse データとネイティブまたはサードパーティのデータ
 
 呼び出し側は、返される `bytes` オブジェクトを適切に処理する責任があります。`Client.query_arrow` は、このメソッドに対して ClickHouse の `Arrow` 出力フォーマットを利用するだけの薄いラッパーであることに注意してください。
 
-### Client `raw_stream` メソッド {#client-rawstream-method}
+### Client `raw_stream` メソッド \{#client-rawstream-method\}
 
 `Client.raw_stream` メソッドは `raw_query` メソッドと同じ API を持ちますが、`bytes` オブジェクトのジェネレーターやストリームのソースとして使用できる `io.IOBase` オブジェクトを返します。現在は `query_arrow_stream` メソッドで利用されています。
 
-### クライアントの `raw_insert` メソッド {#client-rawinsert-method}
+### クライアントの `raw_insert` メソッド \{#client-rawinsert-method\}
 
 `Client.raw_insert` メソッドは、クライアント接続を使用して `bytes` オブジェクトまたは `bytes` オブジェクトのジェネレーターを直接挿入するためのものです。挿入ペイロードの処理を一切行わないため、非常に高いパフォーマンスを発揮します。このメソッドでは、設定および挿入フォーマットを指定するためのオプションを提供します。
 
@@ -47,7 +47,7 @@ ClickHouse データとネイティブまたはサードパーティのデータ
 
 指定されたフォーマットおよび圧縮方式に `insert_block` が従っていることを保証する責任は呼び出し側にあります。ClickHouse Connect は、ファイルアップロードや PyArrow Tables に対してこれらの `raw_insert` を使用し、パース処理を ClickHouse サーバーに委譲します。
 
-## クエリ結果をファイルとして保存する {#saving-query-results-as-files}
+## クエリ結果をファイルとして保存する \{#saving-query-results-as-files\}
 
 `raw_stream` メソッドを使用すると、ClickHouse からローカルファイルシステムへファイルを直接ストリーミングできます。たとえば、クエリ結果を CSV ファイルとして保存する場合は、次のコードスニペットを使用します。
 
@@ -77,7 +77,7 @@ if __name__ == '__main__':
 
 同様に、データを [TabSeparated](/interfaces/formats/TabSeparated) やその他の形式で保存することもできます。利用可能なすべてのフォーマットの概要については、[入力および出力データのフォーマット](/interfaces/formats) を参照してください。
 
-## マルチスレッド、マルチプロセス、および非同期／イベント駆動のユースケース {#multithreaded-multiprocess-and-asyncevent-driven-use-cases}
+## マルチスレッド、マルチプロセス、および非同期／イベント駆動のユースケース \{#multithreaded-multiprocess-and-asyncevent-driven-use-cases\}
 
 ClickHouse Connect は、マルチスレッド、マルチプロセス、さらにイベントループ駆動／非同期アプリケーションでも良好に動作します。すべてのクエリおよび INSERT の処理は単一スレッド内で実行されるため、操作は一般的にスレッドセーフです。（一部の処理を低レベルで並列化し、単一スレッドであることに起因する性能上のペナルティを解消する将来的な拡張の可能性はありますが、その場合でもスレッドセーフであることは維持されます。）
 
@@ -85,7 +85,7 @@ ClickHouse Connect は、マルチスレッド、マルチプロセス、さら�
 
 さらに、2 つ以上のクエリや INSERT が同時に実行中のアプリケーションでは、念頭に置くべき点が 2 つあります。1 つ目はクエリ／INSERT に関連付けられた ClickHouse の「セッション」であり、2 つ目は ClickHouse Connect クライアントインスタンスによって使用される HTTP 接続プールです。
 
-## AsyncClient ラッパー {#asyncclient-wrapper}
+## AsyncClient ラッパー \{#asyncclient-wrapper\}
 
 ClickHouse Connect は通常の `Client` に対する非同期ラッパーを提供しており、`asyncio` 環境でクライアントを使用できるようにします。
 
@@ -115,7 +115,7 @@ asyncio.run(main())
 
 関連項目: [run&#95;async の例](https://github.com/ClickHouse/clickhouse-connect/blob/main/examples/run_async.py)。
 
-## ClickHouse セッション ID の管理 {#managing-clickhouse-session-ids}
+## ClickHouse セッション ID の管理 \{#managing-clickhouse-session-ids\}
 
 各 ClickHouse クエリは、ClickHouse の「セッション」コンテキスト内で実行されます。セッションは現在、次の 2 つの目的で使用されています。
 
@@ -140,7 +140,7 @@ client = clickhouse_connect.get_client(host='somehost.com', user='dbuser', passw
 
 この場合、ClickHouse Connect は `session_id` を送信せず、サーバーは個々のリクエストを同じセッションに属するものとして扱いません。一時テーブルおよびセッションレベルの設定は、リクエスト間で保持されません。
 
-## HTTP コネクションプールのカスタマイズ {#customizing-the-http-connection-pool}
+## HTTP コネクションプールのカスタマイズ \{#customizing-the-http-connection-pool\}
 
 ClickHouse Connect は、サーバーへの下位レベルの HTTP 接続を処理するために `urllib3` のコネクションプールを使用します。デフォルトでは、すべてのクライアントインスタンスが同じコネクションプールを共有しており、これはほとんどのユースケースに対して十分です。このデフォルトプールは、アプリケーションで使用される各 ClickHouse サーバーごとに最大 8 個の HTTP Keep-Alive 接続を維持します。
 

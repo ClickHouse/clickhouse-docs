@@ -5,7 +5,7 @@ title: 'groupBitXor'
 doc_type: 'reference'
 ---
 
-# groupBitXor {#groupbitxor}
+# groupBitXor \{#groupbitxor\}
 
 数値列に対してビット単位の `XOR` を適用します。
 

@@ -10,7 +10,7 @@ import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-ca
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';
 
-# Dictionary {#dictionary}
+# Dictionary \{#dictionary\}
 
 ClickHouse における Dictionary は、さまざまな[内部および外部ソース](/sql-reference/dictionaries#dictionary-sources)からのデータをインメモリの[キー・バリュー](https://en.wikipedia.org/wiki/Key%E2%80%93value_database)形式で表現し、超低レイテンシーなルックアップクエリのために最適化されたものです。
 
@@ -21,7 +21,7 @@ Dictionary は次の用途に有用です:
 
 <Image img={dictionaryUseCases} size="lg" alt="ClickHouse における Dictionary のユースケース"/>
 
-## Dictionary を使用した結合の高速化 {#speeding-up-joins-using-a-dictionary}
+## Dictionary を使用した結合の高速化 \{#speeding-up-joins-using-a-dictionary\}
 
 Dictionary は、特定の種類の `JOIN`、すなわち結合キーが基盤となるキー・バリュー型ストレージのキー属性と一致している必要がある [`LEFT ANY` 型](/sql-reference/statements/select/join#supported-types-of-join) を高速化するために利用できます。
 
@@ -31,7 +31,7 @@ Dictionary は、特定の種類の `JOIN`、すなわち結合キーが基盤�
 
 Direct Join アルゴリズムでは、右側のテーブルが Dictionary をバックエンドとして使用しており、そのテーブルから結合対象となるデータが、低レイテンシーのキー・バリュー型データ構造として、すでにメモリ上に存在している必要があります。
 
-### 例 {#example}
+### 例 \{#example\}
 
 [Stack Overflow データセット](/getting-started/example-datasets/stackoverflow)を使って、次の質問に答えてみましょう：
 *Hacker News 上で、SQL に関して最も物議を醸している投稿はどれか？*
@@ -85,7 +85,7 @@ Controversial_ratio: 0
 
 このクエリは高速ですが、良好なパフォーマンスを得るには `JOIN` を慎重に記述する必要があります。本来であれば、「SQL」を含む投稿だけに単純にフィルタリングし、その投稿のサブセットに対して `UpVote` と `DownVote` のカウントを確認してメトリクスを計算できるのが理想的です。
 
-#### Dictionary の適用 {#applying-a-dictionary}
+#### Dictionary の適用 \{#applying-a-dictionary\}
 
 これらの概念を示すために、投票データに対して Dictionary を使用します。Dictionary は通常メモリ上に保持されるため（[ssd&#95;cache](/sql-reference/dictionaries#ssd_cache) は例外）、データサイズに留意しておく必要があります。ここで `votes` テーブルのサイズを確認します：
 
@@ -181,7 +181,7 @@ LIMIT 3
 
 このクエリははるかに単純なだけでなく、実行速度も2倍以上速くなります。さらに、Dictionary には賛成票・反対票がそれぞれ 10 を超える投稿だけを読み込み、あらかじめ計算しておいた物議度の値だけを保持するようにすれば、より最適化できます。
 
-## クエリ時のエンリッチメント {#query-time-enrichment}
+## クエリ時のエンリッチメント \{#query-time-enrichment\}
 
 Dictionary はクエリ実行時に値を参照するために使用できます。これらの値は結果として返したり、集約で利用したりできます。たとえば、ユーザー ID を所在地にマッピングする Dictionary を作成するとします。
 
@@ -245,7 +245,7 @@ LIMIT 5
 Peak memory usage: 248.84 MiB.
 ```
 
-## インデックス時のエンリッチメント {#index-time-enrichment}
+## インデックス時のエンリッチメント \{#index-time-enrichment\}
 
 上記の例では、クエリ時に Dictionary を使用して結合を回避しました。Dictionary は、挿入時に行をエンリッチするためにも使用できます。これは通常、エンリッチに用いる値が変化せず、Dictionary を埋めるために利用できる外部ソースに存在する場合に適しています。この場合、行を挿入時にエンリッチしておくことで、クエリ時に Dictionary を参照してルックアップする必要を回避できます。
 
@@ -314,24 +314,24 @@ LIMIT 4
 Peak memory usage: 666.82 MiB.
 ```
 
-## Dictionary の高度なトピック {#advanced-dictionary-topics}
+## Dictionary の高度なトピック \{#advanced-dictionary-topics\}
 
-### Dictionary の `LAYOUT` を選択する {#choosing-the-dictionary-layout}
+### Dictionary の `LAYOUT` を選択する \{#choosing-the-dictionary-layout\}
 
 `LAYOUT` 句は、Dictionary の内部データ構造を決定します。複数のオプションがあり、その詳細は[こちら](/sql-reference/dictionaries#ways-to-store-dictionaries-in-memory)に記載されています。適切なレイアウトを選択するためのヒントは[こちら](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)で確認できます。
 
-### Dictionary の更新 {#refreshing-dictionaries}
+### Dictionary の更新 \{#refreshing-dictionaries\}
 
 `LIFETIME` を `MIN 600 MAX 900` として Dictionary に指定しています。LIFETIME は Dictionary の更新間隔を表し、ここで指定した値により 600～900 秒のランダムな間隔で定期的に再読み込みが行われます。このランダムな間隔は、多数のサーバーで更新を行う際に、Dictionary のソースへの負荷を分散するために必要です。更新中も Dictionary の旧バージョンに対するクエリは引き続き実行可能であり、クエリがブロックされるのは初回ロード時のみです。`(LIFETIME(0))` を設定すると、Dictionary が更新されなくなる点に注意してください。  
 Dictionary は `SYSTEM RELOAD DICTIONARY` コマンドを使用して強制的に再読み込みできます。
 
 ClickHouse や Postgres のようなデータベースソースの場合、クエリのレスポンスに基づいて実際に変更があった場合にのみ Dictionary を更新するように設定でき、一定間隔での更新に代えてこの方式を利用できます。詳細は[こちら](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)を参照してください。
 
-### その他の Dictionary タイプ {#other-dictionary-types}
+### その他の Dictionary タイプ \{#other-dictionary-types\}
 
 ClickHouse では、[Hierarchical](/sql-reference/dictionaries#hierarchical-dictionaries)、[Polygon](/sql-reference/dictionaries#polygon-dictionaries)、および [Regular Expression](/sql-reference/dictionaries#regexp-tree-dictionary) の各 Dictionary もサポートしています。
 
-### 参考情報 {#more-reading}
+### 参考情報 \{#more-reading\}
 
 - [辞書を利用してクエリを高速化する](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
 - [辞書の高度な設定](/sql-reference/dictionaries)

@@ -6,7 +6,7 @@ title: '用于从地理数据生成 SVG 图像的函数'
 doc_type: 'reference'
 ---
 
-## Svg {#svg}
+## Svg \{#svg\}
 
 从 Geo 数据返回包含所选 SVG 元素标签的字符串。
 

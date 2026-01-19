@@ -5,7 +5,7 @@ title: 'uniqCombined'
 doc_type: 'reference'
 ---
 
-# uniqCombined {#uniqcombined}
+# uniqCombined \{#uniqcombined\}
 
 近似计算不同参数值的数量。
 

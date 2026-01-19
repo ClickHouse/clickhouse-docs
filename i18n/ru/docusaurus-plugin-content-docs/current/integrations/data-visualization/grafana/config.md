@@ -22,7 +22,7 @@ import alias_table_config_example from '@site/static/images/integrations/data-vi
 import alias_table_select_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_select_example.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Настройка источника данных ClickHouse в Grafana {#configuring-clickhouse-data-source-in-grafana}
+# Настройка источника данных ClickHouse в Grafana \{#configuring-clickhouse-data-source-in-grafana\}
 
 <ClickHouseSupportedBadge/>
 
@@ -32,7 +32,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 Для быстрого ознакомления со всеми параметрами полный список параметров конфигурации можно найти [здесь](#all-yaml-options).
 
-## Общие настройки {#common-settings}
+## Общие настройки \{#common-settings\}
 
 Пример экрана конфигурации:
 
@@ -64,13 +64,13 @@ secureJsonData:
 
 Обратите внимание, что свойство `version` добавляется, когда конфигурация сохраняется через пользовательский интерфейс. Оно показывает версию плагина, в которой была сохранена конфигурация.
 
-### Протокол HTTP {#http-protocol}
+### Протокол HTTP \{#http-protocol\}
 
 Если вы выберете подключение по протоколу HTTP, появятся дополнительные настройки.
 
 <Image size="md" img={config_http} alt="Дополнительные параметры настройки HTTP" border />
 
-#### HTTP path {#http-path}
+#### HTTP path \{#http-path\}
 
 Если ваш HTTP-сервер доступен по другому URL-пути, вы можете указать его здесь.
 
@@ -80,7 +80,7 @@ jsonData:
   path: additional/path/example
 ```
 
-#### Пользовательские HTTP-заголовки {#custom-http-headers}
+#### Пользовательские HTTP-заголовки \{#custom-http-headers\}
 
 Вы можете добавлять пользовательские заголовки к запросам, отправляемым на ваш сервер.
 
@@ -106,7 +106,7 @@ secureJsonData:
   secureHttpHeaders.X-Example-Secure-Header: secure header value
 ```
 
-## Дополнительные настройки {#additional-settings}
+## Дополнительные настройки \{#additional-settings\}
 
 Эти дополнительные настройки не являются обязательными.
 
@@ -124,7 +124,7 @@ jsonData:
   validateSql: false # when set to true, will validate the SQL in the SQL editor.
 ```
 
-### OpenTelemetry {#opentelemetry}
+### OpenTelemetry \{#opentelemetry\}
 
 OpenTelemetry (OTel) глубоко интегрирован в плагин.
 Данные OpenTelemetry могут экспортироваться в ClickHouse с помощью нашего [плагина-экспортера](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
@@ -132,7 +132,7 @@ OpenTelemetry (OTel) глубоко интегрирован в плагин.
 
 Также необходимо настроить эти параметры по умолчанию, чтобы включить [data links](./query-builder.md#data-links) — функцию, которая обеспечивает мощные сценарии наблюдаемости.
 
-### Логи {#logs}
+### Логи \{#logs\}
 
 Чтобы ускорить [построение запросов для логов](./query-builder.md#logs), вы можете задать базу данных/таблицу и столбцы по умолчанию для запроса по логам. Это предварительно заполнит конструктор запросов готовым к выполнению запросом по логам, что ускорит работу на странице Explore при решении задач наблюдаемости.
 
@@ -162,7 +162,7 @@ jsonData:
     messageColumn: <string> # the log's message/content.
 ```
 
-### Трейсы {#traces}
+### Трейсы \{#traces\}
 
 Чтобы ускорить [создание запросов для трейсов](./query-builder.md#traces), вы можете задать базу данных/таблицу по умолчанию, а также столбцы для запроса по трейсам. Это предварительно заполнит конструктор запросов исполняемым запросом поиска по трейсам, что делает работу на странице Explore быстрее для задач наблюдаемости.
 
@@ -198,7 +198,7 @@ jsonData:
     serviceTagsColumn:   <string>    # service tags column. This is expected to be a map type.
 ```
 
-### Псевдонимы столбцов {#column-aliases}
+### Псевдонимы столбцов \{#column-aliases\}
 
 Использование псевдонимов столбцов — удобный способ выполнять запросы к данным под другими именами и с другими типами.
 С их помощью вы можете преобразовать вложенную схему данных в плоскую структуру, чтобы упростить выборку в Grafana.
@@ -210,7 +210,7 @@ jsonData:
 - Вы храните JSON в виде строк
 - Вы часто применяете функции для преобразования выбираемых столбцов
 
-#### Столбцы-алиасы, определённые в таблице {#table-defined-alias-columns}
+#### Столбцы-алиасы, определённые в таблице \{#table-defined-alias-columns\}
 
 В ClickHouse встроена поддержка алиасов столбцов, и он «из коробки» работает с Grafana.
 Алиасы столбцов можно определять прямо в таблице.
@@ -228,7 +228,7 @@ CREATE TABLE alias_example (
 
 Для получения дополнительной информации см. документацию по типу столбца [ALIAS](/sql-reference/statements/create/table#alias).
 
-#### Таблицы с псевдонимами столбцов {#column-alias-tables}
+#### Таблицы с псевдонимами столбцов \{#column-alias-tables\}
 
 По умолчанию Grafana подсказывает столбцы на основе ответа `DESC table`.
 В некоторых случаях может потребоваться полностью переопределить столбцы, которые видит Grafana.
@@ -270,7 +270,7 @@ INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES
 
 Оба варианта псевдонимов можно использовать для выполнения сложных преобразований типов или извлечения полей из JSON.
 
-## Все параметры YAML {#all-yaml-options}
+## Все параметры YAML \{#all-yaml-options\}
 
 Ниже перечислены все параметры конфигурации YAML, доступные в этом плагине.
 Для некоторых полей приведены примеры значений, для других указаны только их типы.

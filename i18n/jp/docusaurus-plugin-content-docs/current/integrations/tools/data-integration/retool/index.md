@@ -19,14 +19,14 @@ import retool_04 from '@site/static/images/integrations/tools/data-integration/r
 import retool_05 from '@site/static/images/integrations/tools/data-integration/retool/retool_05.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Retool を ClickHouse に接続する {#connecting-retool-to-clickhouse}
+# Retool を ClickHouse に接続する \{#connecting-retool-to-clickhouse\}
 
 <PartnerBadge/>
 
-## 1. 接続情報を準備する {#1-gather-your-connection-details}
+## 1. 接続情報を準備する \{#1-gather-your-connection-details\}
 <ConnectionDetails />
 
-## 2. ClickHouse リソースを作成する {#2-create-a-clickhouse-resource}
+## 2. ClickHouse リソースを作成する \{#2-create-a-clickhouse-resource\}
 
 Retool アカウントにログインし、_Resources_ タブに移動します。「Create New」 -> 「Resource」を選択します:
 

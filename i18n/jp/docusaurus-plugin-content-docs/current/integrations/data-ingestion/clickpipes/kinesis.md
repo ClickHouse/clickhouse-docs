@@ -25,13 +25,13 @@ import cp_destination from '@site/static/images/integrations/data-ingestion/clic
 import cp_overview from '@site/static/images/integrations/data-ingestion/clickpipes/cp_overview.png';
 import Image from '@theme/IdealImage';
 
-# Amazon Kinesis を ClickHouse Cloud と統合する {#integrating-amazon-kinesis-with-clickhouse-cloud}
+# Amazon Kinesis を ClickHouse Cloud と統合する \{#integrating-amazon-kinesis-with-clickhouse-cloud\}
 
-## 前提条件 {#prerequisite}
+## 前提条件 \{#prerequisite\}
 
 事前に [ClickPipes intro](./index.md) に目を通し、[IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) または [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html) を設定しておいてください。ClickHouse Cloud で利用するロールの設定方法については、[Kinesis Role-Based Access guide](./secure-kinesis.md) を参照してください。
 
-## 最初の ClickPipe を作成する {#creating-your-first-clickpipe}
+## 最初の ClickPipe を作成する \{#creating-your-first-clickpipe\}
 
 1. 使用している ClickHouse Cloud サービスの SQL Console にアクセスします。
 
@@ -90,15 +90,15 @@ import Image from '@theme/IdealImage';
 
 13. **おめでとうございます！** これで最初の ClickPipe のセットアップが完了しました。ストリーミング ClickPipe の場合は、リモートデータソースからリアルタイムでデータを継続的に取り込み続けます。そうでない場合は、バッチを取り込んだあとに完了します。
 
-## サポートされているデータ形式 {#supported-data-formats}
+## サポートされているデータ形式 \{#supported-data-formats\}
 
 サポートされている形式は以下のとおりです:
 
 - [JSON](/interfaces/formats/JSON)
 
-## サポートされているデータ型 {#supported-data-types}
+## サポートされているデータ型 \{#supported-data-types\}
 
-### 標準データ型のサポート {#standard-types-support}
+### 標準データ型のサポート \{#standard-types-support\}
 
 ClickPipes で現在サポートされている ClickHouse のデータ型は次のとおりです。
 
@@ -119,17 +119,17 @@ ClickPipes で現在サポートされている ClickHouse のデータ型は次
 - 上記のいずれかの型（Nullable を含む、1 段階のネストのみ）を要素に使用する Tuple 型および Array 型
 - SimpleAggregateFunction 型（AggregatingMergeTree または SummingMergeTree を宛先とする場合）
 
-### Variant 型のサポート {#variant-type-support}
+### Variant 型のサポート \{#variant-type-support\}
 ソースデータストリーム内の任意の JSON フィールドに対して、`Variant(String, Int64, DateTime)` のような Variant 型を手動で指定できます。
 ClickPipes が使用する正しい Variant のサブタイプを判定する仕組み上、Variant 定義内で使用できる整数型または日時型は 1 種類のみです。
 たとえば、`Variant(Int64, UInt32)` はサポートされません。
 
-### JSON 型のサポート {#json-type-support}
+### JSON 型のサポート \{#json-type-support\}
 
 常に JSON オブジェクトである JSON フィールドは、JSON 型の宛先カラムに割り当てることができます。固定パスやスキップされたパスを含め、目的の JSON 型に
 宛先カラムを手動で変更する必要があります。 
 
-## Kinesis 仮想カラム {#kinesis-virtual-columns}
+## Kinesis 仮想カラム \{#kinesis-virtual-columns\}
 
 Kinesis ストリームでは、次の仮想カラムがサポートされています。新しい宛先テーブルを作成する際、`Add Column` ボタンを使用して仮想カラムを追加できます。
 
@@ -143,13 +143,13 @@ Kinesis ストリームでは、次の仮想カラムがサポートされてい
 
 _raw_message フィールドは、Kinesis JSON レコード全体のみが必要な場合（ClickHouse の [`JsonExtract*`](/sql-reference/functions/json-functions#jsonextract-functions) 関数を使用して下流のマテリアライズドビューを作成する場合など）に使用できます。そのようなパイプでは、「非仮想」カラムをすべて削除することで ClickPipes のパフォーマンスが向上する場合があります。
 
-## 制限事項 {#limitations}
+## 制限事項 \{#limitations\}
 
 - [DEFAULT](/sql-reference/statements/create/table#default) はサポートされていません。
 
-## パフォーマンス {#performance}
+## パフォーマンス \{#performance\}
 
-### バッチ処理 {#batching}
+### バッチ処理 \{#batching\}
 
 ClickPipes はデータを ClickHouse にバッチ単位で挿入します。これは、データベース内に過度に多くのパーツが作成されてクラスターのパフォーマンス問題につながることを防ぐためです。
 
@@ -157,13 +157,13 @@ ClickPipes はデータを ClickHouse にバッチ単位で挿入します。こ
 - バッチサイズが最大サイズ（レプリカメモリ 1GB あたり 100,000 行または 32MB）に達した場合
 - バッチが開かれている時間が最大値（5 秒）に達した場合
 
-### レイテンシ {#latency}
+### レイテンシ \{#latency\}
 
 レイテンシ（Kinesis メッセージがストリームに送信されてから、そのメッセージが ClickHouse で利用可能になるまでの時間として定義）は、複数の要因（Kinesis のレイテンシ、ネットワークのレイテンシ、メッセージサイズ／フォーマットなど）に依存します。上記セクションで説明した [バッチ処理](#batching) もレイテンシに影響します。想定されるレイテンシを把握するために、必ずお客様のユースケースでテストすることを推奨します。
 
 低レイテンシの要件がある場合は、[お問い合わせ](https://clickhouse.com/company/contact?loc=clickpipes)ください。
 
-### スケーリング {#scaling}
+### スケーリング \{#scaling\}
 
 ClickPipes for Kinesis は、水平方向および垂直方向の両方にスケールするように設計されています。デフォルトでは、1 つのコンシューマを持つコンシューマグループを作成します。これは ClickPipe 作成時、またはそれ以降いつでも **Settings** -> **Advanced Settings** -> **Scaling** から設定できます。
 
@@ -174,6 +174,6 @@ ClickPipes は、アベイラビリティゾーンに分散したアーキテク
 コンシューマまたはその基盤インフラストラクチャに障害が発生した場合でも、
 ClickPipe はコンシューマを自動的に再起動し、メッセージ処理を継続します。
 
-## 認証 {#authentication}
+## 認証 \{#authentication\}
 
 Amazon Kinesis ストリームにアクセスするには、[IAM 認証情報](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html)または [IAM ロール](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)を使用できます。IAM ロールの設定方法の詳細については、ClickHouse Cloud で利用できるロールの設定方法を説明した[このガイド](./secure-kinesis.md)を参照してください。

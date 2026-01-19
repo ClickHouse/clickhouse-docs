@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-# Профилировщик запросов с выборочным сбором данных {#sampling-query-profiler}
+# Профилировщик запросов с выборочным сбором данных \{#sampling-query-profiler\}
 
 ClickHouse запускает профилировщик с выборочным сбором данных, который позволяет анализировать выполнение запросов. С помощью профилировщика вы можете найти участки исходного кода, которые использовались чаще всего во время выполнения запроса. Вы можете отслеживать затраченное процессорное время (CPU time) и реальное время (wall-clock time), включая периоды простоя.
 
@@ -54,7 +54,7 @@ SETTINGS allow_introspection_functions = 1
 
 Если вам нужно визуализировать информацию из `trace_log`, попробуйте [flamegraph](/interfaces/third-party/gui#clickhouse-flamegraph) и [speedscope](https://github.com/laplab/clickhouse-speedscope).
 
-## Пример {#example}
+## Пример \{#example\}
 
 В этом примере мы:
 

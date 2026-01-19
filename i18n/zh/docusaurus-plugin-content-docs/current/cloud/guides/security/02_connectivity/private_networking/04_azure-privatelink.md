@@ -27,7 +27,7 @@ import azure_pe_remove_private_endpoint from '@site/static/images/cloud/security
 import azure_privatelink_pe_filter from '@site/static/images/cloud/security/azure-privatelink-pe-filter.png';
 import azure_privatelink_pe_dns from '@site/static/images/cloud/security/azure-privatelink-pe-dns.png';
 
-# Azure Private Link {#azure-private-link}
+# Azure Private Link \{#azure-private-link\}
 
 <ScalePlanFeatureBadge feature="Azure Private Link"/>
 
@@ -53,15 +53,15 @@ Azure 通过 Private Link 支持跨区域连接。这使您能够在部署了 Cl
 ClickHouse Cloud Azure Private Link 已从使用 resourceGUID 切换为使用 Resource ID 筛选器。您仍然可以使用 resourceGUID（其具有向后兼容性），但我们建议切换到 Resource ID 筛选器。要迁移，只需使用 Resource ID 创建新的终结点，将其关联到服务，然后移除旧的基于 resourceGUID 的终结点。
 :::
 
-## 注意 {#attention}
+## 注意 \{#attention\}
 ClickHouse 会尝试对您的服务进行分组，以便在同一 Azure 区域内复用同一个已发布的 [Private Link 服务](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview)。但无法保证始终能够实现这种分组，尤其是在您将服务分散到多个 ClickHouse 组织时。
 如果您已经在 ClickHouse 组织中的其他服务上配置了 Private Link，那么通常可以利用这一分组跳过大部分步骤，直接进行最后一步：[将 Private Endpoint Resource ID 添加到服务的允许列表](#add-private-endpoint-id-to-services-allow-list)。
 
 您可以在 ClickHouse 的 [Terraform Provider 仓库](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/)中找到 Terraform 示例。
 
-## 获取用于 Private Link 的 Azure 连接别名 {#obtain-azure-connection-alias-for-private-link}
+## 获取用于 Private Link 的 Azure 连接别名 \{#obtain-azure-connection-alias-for-private-link\}
 
-### 选项 1：ClickHouse Cloud 控制台 {#option-1-clickhouse-cloud-console}
+### 选项 1：ClickHouse Cloud 控制台 \{#option-1-clickhouse-cloud-console\}
 
 在 ClickHouse Cloud 控制台中，打开您希望通过 Private Link 连接的服务，然后打开 **Settings** 菜单。点击 **Set up private endpoint** 按钮。记录用于配置 Private Link 的 `Service name` 和 `DNS name`。
 
@@ -69,7 +69,7 @@ ClickHouse 会尝试对您的服务进行分组，以便在同一 Azure 区域�
 
 请记录下 `Service name` 和 `DNS name`，它们将在后续步骤中使用。
 
-### 选项 2：API {#option-2-api}
+### 选项 2：API \{#option-2-api\}
 
 在开始之前，您需要一个 ClickHouse Cloud API 密钥。您可以[创建一个新的密钥](/cloud/manage/openapi)或使用已有的密钥。
 
@@ -104,7 +104,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 
 记录下 `endpointServiceId`。您将在下一步中用到它。
 
-## 在 Azure 中创建专用终结点 {#create-private-endpoint-in-azure}
+## 在 Azure 中创建专用终结点 \{#create-private-endpoint-in-azure\}
 
 :::important
 本节介绍通过 Azure Private Link 配置 ClickHouse 时与 ClickHouse 相关的特定细节。文中给出的 Azure 相关操作步骤仅作为参考，帮助你了解需要在何处进行配置；这些步骤可能会随着 Azure 云服务提供商的调整而变更且恕不另行通知。请根据你的具体使用场景自行评估并规划 Azure 的配置。
@@ -116,7 +116,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 
 在本节中，我们将在 Azure 中创建一个 Private Endpoint（专用终结点）。你可以使用 Azure Portal 或 Terraform 完成此操作。
 
-### 选项 1：使用 Azure Portal 在 Azure 中创建专用终结点 {#option-1-using-azure-portal-to-create-a-private-endpoint-in-azure}
+### 选项 1：使用 Azure Portal 在 Azure 中创建专用终结点 \{#option-1-using-azure-portal-to-create-a-private-endpoint-in-azure\}
 
 在 Azure Portal 中，打开 **Private Link Center → Private Endpoints**。
 
@@ -185,7 +185,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 
 <Image img={azure_pe_ip} size="lg" alt="Private Endpoint IP 地址" border />
 
-### 选项 2：使用 Terraform 在 Azure 中创建专用终结点 {#option-2-using-terraform-to-create-a-private-endpoint-in-azure}
+### 选项 2：使用 Terraform 在 Azure 中创建专用终结点 \{#option-2-using-terraform-to-create-a-private-endpoint-in-azure\}
 
 使用如下模板，通过 Terraform 创建一个 Private Endpoint：
 
@@ -204,7 +204,7 @@ resource "azurerm_private_endpoint" "example_clickhouse_cloud" {
 }
 ```
 
-### 获取专用终结点资源 ID {#obtaining-private-endpoint-resourceid}
+### 获取专用终结点资源 ID \{#obtaining-private-endpoint-resourceid\}
 
 要使用 Private Link，你需要将专用终结点连接的资源 ID 添加到服务的允许列表中。
 
@@ -222,11 +222,11 @@ resource "azurerm_private_endpoint" "example_clickhouse_cloud" {
 
 <Image img={azure_pe_resource_guid} size="lg" alt="Private Endpoint Resource GUID" border />
 
-## 为 Private Link 配置 DNS {#setting-up-dns-for-private-link}
+## 为 Private Link 配置 DNS \{#setting-up-dns-for-private-link\}
 
 您需要创建一个专用 DNS 区域 (`${location_code}.privatelink.azure.clickhouse.cloud`)，并将其关联到您的虚拟网络 (VNet)，以便通过 Private Link 访问资源。
 
-### 创建专用 DNS 区域 {#create-private-dns-zone}
+### 创建专用 DNS 区域 \{#create-private-dns-zone\}
 
 **选项 1：使用 Azure 门户**
 
@@ -243,7 +243,7 @@ resource "azurerm_private_dns_zone" "clickhouse_cloud_private_link_zone" {
 }
 ```
 
-### 创建通配符 DNS 记录 {#create-a-wildcard-dns-record}
+### 创建通配符 DNS 记录 \{#create-a-wildcard-dns-record\}
 
 创建一个通配符记录并将其指向你的 Private Endpoint：
 
@@ -271,7 +271,7 @@ resource "azurerm_private_dns_a_record" "example" {
 }
 ```
 
-### 创建虚拟网络链接 {#create-a-virtual-network-link}
+### 创建虚拟网络链接 \{#create-a-virtual-network-link\}
 
 要将专用 DNS 区域链接到虚拟网络，你需要创建一个虚拟网络链接。
 
@@ -287,7 +287,7 @@ resource "azurerm_private_dns_a_record" "example" {
 
 你需要将从[获取用于 Private Link 的 Azure 连接别名](#obtain-azure-connection-alias-for-private-link)步骤中得到的 “DNS name” 指向 Private Endpoint 的 IP 地址。这样可以确保你的 VPC/网络中的服务或组件能够正确解析它。
 
-### 验证 DNS 设置 {#verify-dns-setup}
+### 验证 DNS 设置 \{#verify-dns-setup\}
 
 `xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud` 域名应解析到 Private Endpoint 的 IP（本示例中为 10.0.0.4）。
 
@@ -301,9 +301,9 @@ Name: xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud
 Address: 10.0.0.4
 ```
 
-## 将专用终结点资源 ID 添加到你的 ClickHouse Cloud 组织 {#add-the-private-endpoint-id-to-your-clickhouse-cloud-organization}
+## 将专用终结点资源 ID 添加到你的 ClickHouse Cloud 组织 \{#add-the-private-endpoint-id-to-your-clickhouse-cloud-organization\}
 
-### 选项 1：ClickHouse Cloud 控制台 {#option-1-clickhouse-cloud-console-1}
+### 选项 1：ClickHouse Cloud 控制台 \{#option-1-clickhouse-cloud-console-1\}
 
 若要向组织添加终结点，请继续执行[将专用终结点资源 ID 添加到你的服务允许列表](#add-private-endpoint-id-to-services-allow-list)步骤。通过 ClickHouse Cloud 控制台将专用终结点资源 ID 添加到服务允许列表时，会自动将其添加到组织中。
 
@@ -311,7 +311,7 @@ Address: 10.0.0.4
 
 <Image img={azure_pe_remove_private_endpoint} size="lg" alt="移除专用终结点" border />
 
-### 选项 2：API {#option-2-api-1}
+### 选项 2：API \{#option-2-api-1\}
 
 在运行任何命令之前，先设置以下环境变量：
 
@@ -369,11 +369,11 @@ EOF
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}" -d @pl_config_org.json
 ```
 
-## 将 Private Endpoint Resource ID 添加到服务的允许列表 {#add-private-endpoint-id-to-services-allow-list}
+## 将 Private Endpoint Resource ID 添加到服务的允许列表 \{#add-private-endpoint-id-to-services-allow-list\}
 
 默认情况下，即使 Private Link 连接已获批准并建立，ClickHouse Cloud 服务也无法通过 Private Link 连接访问。你需要为每个需要通过 Private Link 访问的服务显式添加对应的 Private Endpoint Resource ID。
 
-### 选项 1：通过 ClickHouse Cloud 控制台 {#option-1-clickhouse-cloud-console-2}
+### 选项 1：通过 ClickHouse Cloud 控制台 \{#option-1-clickhouse-cloud-console-2\}
 
 在 ClickHouse Cloud 控制台中，打开你希望通过 PrivateLink 进行连接的服务，然后导航到 **Settings**。输入在[上一步](#obtaining-private-endpoint-resourceid)中获取的 `Resource ID`。
 
@@ -383,7 +383,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: ap
 
 <Image img={azure_privatelink_pe_filter} size="lg" alt="Private Endpoint 筛选器" border />
 
-### 选项 2：通过 API {#option-2-api-2}
+### 选项 2：通过 API \{#option-2-api-2\}
 
 在运行任何命令之前先设置以下环境变量：
 
@@ -432,19 +432,19 @@ EOF
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" -d @pl_config.json | jq
 ```
 
-## 使用 Private Link 访问 ClickHouse Cloud 服务 {#access-your-clickhouse-cloud-service-using-private-link}
+## 使用 Private Link 访问 ClickHouse Cloud 服务 \{#access-your-clickhouse-cloud-service-using-private-link\}
 
 每个启用了 Private Link 的服务都具有一个公共端点和一个私有端点。要通过 Private Link 进行连接，您需要使用私有端点，即从[获取用于 Private Link 的 Azure 连接别名](#obtain-azure-connection-alias-for-private-link)中取得的 `privateDnsHostname`<sup>API</sup> 或 `DNS name`<sup>console</sup>。
 
-### 获取私有 DNS 主机名 {#obtaining-the-private-dns-hostname}
+### 获取私有 DNS 主机名 \{#obtaining-the-private-dns-hostname\}
 
-#### 选项 1：ClickHouse Cloud 控制台 {#option-1-clickhouse-cloud-console-3}
+#### 选项 1：ClickHouse Cloud 控制台 \{#option-1-clickhouse-cloud-console-3\}
 
 在 ClickHouse Cloud 控制台中，进入 **Settings**。点击 **Set up private endpoint** 按钮。在打开的侧边面板中，复制 **DNS Name**。
 
 <Image img={azure_privatelink_pe_dns} size="lg" alt="私有端点 DNS 名称" border />
 
-#### 选项 2：API {#option-2-api-3}
+#### 选项 2：API \{#option-2-api-3\}
 
 在运行任何命令之前，先设置以下环境变量：
 
@@ -474,9 +474,9 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 
 使用 `privateDnsHostname` 通过 Private Link 连接到您的 ClickHouse Cloud 服务。
 
-## 故障排除 {#troubleshooting}
+## 故障排除 \{#troubleshooting\}
 
-### 测试 DNS 配置 {#test-dns-setup}
+### 测试 DNS 配置 \{#test-dns-setup\}
 
 运行以下命令：
 
@@ -494,15 +494,15 @@ Name: <dns name>
 Address: 10.0.0.4
 ```
 
-### 连接被对端重置 {#connection-reset-by-peer}
+### 连接被对端重置 \{#connection-reset-by-peer\}
 
 最有可能的原因是没有将 Private Endpoint Resource ID 添加到服务的允许列表中。请返回到 [*Add Private Endpoint Resource ID to your services allow-list* 步骤](#add-private-endpoint-id-to-services-allow-list)。
 
-### Private Endpoint 处于 pending 状态 {#private-endpoint-is-in-pending-state}
+### Private Endpoint 处于 pending 状态 \{#private-endpoint-is-in-pending-state\}
 
 最有可能的原因是没有将 Private Endpoint Resource ID 添加到服务的允许列表中。请返回到 [*Add Private Endpoint Resource ID to your services allow-list* 步骤](#add-private-endpoint-id-to-services-allow-list)。
 
-### 测试连通性 {#test-connectivity}
+### 测试连通性 \{#test-connectivity\}
 
 如果使用 Private Link 连接时遇到问题，请使用 `openssl` 检查连通性。请确保 Private Link endpoint 的状态为 `Accepted`。
 
@@ -533,7 +533,7 @@ Early data was not sent
 Verify return code: 0 (ok)
 ```
 
-### 检查私有端点过滤器 {#checking-private-endpoint-filters}
+### 检查私有端点过滤器 \{#checking-private-endpoint-filters\}
 
 在运行任何命令之前，先设置以下环境变量：
 
@@ -550,6 +550,6 @@ INSTANCE_ID=<Instance ID>
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X GET -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" | jq .result.privateEndpointIds
 ```
 
-## 更多信息 {#more-information}
+## 更多信息 \{#more-information\}
 
 如需了解有关 Azure Private Link 的更多信息，请访问 [azure.microsoft.com/en-us/products/private-link](https://azure.microsoft.com/en-us/products/private-link)。

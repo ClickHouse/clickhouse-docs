@@ -6,7 +6,7 @@ title: 'exponentialMovingAverage'
 doc_type: 'reference'
 ---
 
-## exponentialMovingAverage {#exponentialmovingaverage}
+## exponentialMovingAverage \{#exponentialmovingaverage\}
 
 Вычисляет экспоненциальное скользящее среднее значений за заданный интервал времени.
 

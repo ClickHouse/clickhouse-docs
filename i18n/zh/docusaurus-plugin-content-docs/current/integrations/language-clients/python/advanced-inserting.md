@@ -8,9 +8,9 @@ title: '高级插入'
 doc_type: 'reference'
 ---
 
-## 使用 ClickHouse Connect 插入数据：进阶用法 {#inserting-data-with-clickhouse-connect--advanced-usage}
+## 使用 ClickHouse Connect 插入数据：进阶用法 \{#inserting-data-with-clickhouse-connect--advanced-usage\}
 
-### InsertContexts {#insertcontexts}
+### InsertContexts \{#insertcontexts\}
 
 ClickHouse Connect 在执行所有插入操作时都会在一个 `InsertContext` 中完成。`InsertContext` 包含了作为参数传递给客户端 `insert` 方法的所有值。此外，在最初构造 `InsertContext` 时，ClickHouse Connect 会获取插入列的数据类型，以便高效地执行使用 Native 格式的插入操作。通过在多次插入中重用同一个 `InsertContext`，可以避免这一步“预查询”，从而更快速、更高效地执行插入。
 
@@ -31,13 +31,13 @@ assert qr[0][0] == 4
 
 `InsertContext` 包含在插入过程中会被更新的可变状态，因此并不是线程安全的。
 
-### 写入格式 {#write-formats}
+### 写入格式 \{#write-formats\}
 
 当前仅对少量类型实现了写入格式支持。在大多数情况下，ClickHouse Connect 会尝试通过检查首个（非空）数据值的类型，自动推断列的正确写入格式。举例来说，如果要向 `DateTime` 列插入数据，并且该列的第一个插入值是一个 Python 整数，ClickHouse Connect 会在假定该值实际表示 Unix epoch 秒数的前提下，直接插入该整数值。
 
 在大多数情况下，无需为某个数据类型显式指定写入格式，但可以使用 `clickhouse_connect.datatypes.format` 包中的相关方法在全局范围内进行重定义。
 
-#### 写入格式选项 {#write-format-options}
+#### 写入格式选项 \{#write-format-options\}
 
 | ClickHouse Type       | 原生 Python 类型        | 写入格式         | 备注                                                                                                        |
 |-----------------------|-------------------------|-------------------|-------------------------------------------------------------------------------------------------------------|
@@ -67,7 +67,7 @@ assert qr[0][0] == 4
 | Variant               | object                  |                   | 当前所有 Variant 值都以字符串形式插入，并由 ClickHouse 服务器解析                                          |
 | Dynamic               | object                  |                   | 警告 —— 当前对 Dynamic 列的任何插入都会以 ClickHouse String 类型持久化存储                                 |
 
-### 专用插入方法 {#specialized-insert-methods}
+### 专用插入方法 \{#specialized-insert-methods\}
 
 ClickHouse Connect 为常见数据格式提供了专用插入方法：
 
@@ -79,7 +79,7 @@ ClickHouse Connect 为常见数据格式提供了专用插入方法：
 NumPy 数组是一个有效的「序列的序列」（Sequence of Sequences），可以作为主 `insert` 方法的 `data` 参数使用，因此不需要专用方法。
 :::
 
-#### 在 Pandas DataFrame 中插入数据 {#pandas-dataframe-insert}
+#### 在 Pandas DataFrame 中插入数据 \{#pandas-dataframe-insert\}
 
 ```python
 import clickhouse_connect
@@ -96,7 +96,7 @@ df = pd.DataFrame({
 client.insert_df("users", df)
 ```
 
-#### PyArrow 表插入 {#pyarrow-table-insert}
+#### PyArrow 表插入 \{#pyarrow-table-insert\}
 
 ```python
 import clickhouse_connect
@@ -113,7 +113,7 @@ arrow_table = pa.table({
 client.insert_arrow("users", arrow_table)
 ```
 
-#### 基于 Arrow 的 DataFrame 插入（pandas 2.x）{#arrow-backed-dataframe-insert-pandas-2}
+#### 基于 Arrow 的 DataFrame 插入（pandas 2.x）\{#arrow-backed-dataframe-insert-pandas-2\}
 
 
 ```python
@@ -132,11 +132,11 @@ df = pd.DataFrame({
 client.insert_df_arrow("users", df)
 ```
 
-### 时区 {#time-zones}
+### 时区 \{#time-zones\}
 
 当将 Python 的 `datetime.datetime` 对象插入到 ClickHouse 的 `DateTime` 或 `DateTime64` 列中时，ClickHouse Connect 会自动处理时区信息。由于 ClickHouse 在内部将所有 DateTime 值存储为不带时区信息的 Unix 时间戳（自 Unix 纪元起的秒数或其小数部分），因此在插入时，时区转换会在客户端自动完成。
 
-#### 带有时区信息的 datetime 对象 {#timezone-aware-datetime-objects}
+#### 带有时区信息的 datetime 对象 \{#timezone-aware-datetime-objects\}
 
 如果插入一个带有时区信息的 Python `datetime.datetime` 对象，ClickHouse Connect 会自动调用 `.timestamp()` 将其转换为 Unix 时间戳，并正确处理时区偏移。也就是说，可以插入任意时区的 datetime 对象，它们都会以对应的 UTC 等效时间戳被正确存储。
 
@@ -173,7 +173,7 @@ print(*results.result_rows, sep="\n")
 使用 pytz 时，必须通过 `localize()` 方法为一个“朴素”（naive）的 datetime 对象附加时区信息。直接向 datetime 构造函数传入 `tzinfo=` 会导致使用错误的历史偏移量。对于 UTC，`tzinfo=pytz.UTC` 可以正常工作。更多信息请参阅 [pytz 文档](https://pythonhosted.org/pytz/#localized-times-and-date-arithmetic)。
 :::
 
-#### 不含时区信息的 datetime 对象 {#timezone-naive-datetime-objects}
+#### 不含时区信息的 datetime 对象 \{#timezone-naive-datetime-objects\}
 
 如果你插入一个不含时区信息的 Python `datetime.datetime` 对象（即没有 `tzinfo`），`.timestamp()` 方法会将其按系统本地时区进行解释。为避免歧义，建议：
 
@@ -198,7 +198,7 @@ epoch_timestamp = int(naive_time.replace(tzinfo=pytz.UTC).timestamp())
 client.insert('events', [[epoch_timestamp]], column_names=['event_time'])
 ```
 
-#### 带有时区元数据的 DateTime 列 {#datetime-columns-with-timezone-metadata}
+#### 带有时区元数据的 DateTime 列 \{#datetime-columns-with-timezone-metadata\}
 
 ClickHouse 列可以定义时区元数据（例如 `DateTime('America/Denver')` 或 `DateTime64(3, 'Asia/Tokyo')`）。这些元数据本身不会影响数据的存储方式（仍然以 UTC 时间戳存储），但会控制从 ClickHouse 查询数据时所使用的时区。
 
@@ -227,7 +227,7 @@ print(*results.result_rows, sep="\n")
 # (datetime.datetime(2023, 6, 15, 7, 30, tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day, 17:00:00 DST>),)
 ```
 
-## 文件插入 {#file-inserts}
+## 文件插入 \{#file-inserts\}
 
 `clickhouse_connect.driver.tools` 包中包含 `insert_file` 方法，可将数据直接从文件系统插入到现有的 ClickHouse 表中。数据解析由 ClickHouse 服务器负责。`insert_file` 接受以下参数：
 

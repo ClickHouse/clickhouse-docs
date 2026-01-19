@@ -5,7 +5,7 @@ title: 'corrMatrix'
 doc_type: 'reference'
 ---
 
-# corrMatrix {#corrmatrix}
+# corrMatrix \{#corrmatrix\}
 
 计算 N 个变量的相关矩阵。
 

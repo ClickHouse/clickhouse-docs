@@ -10,7 +10,7 @@ import CloudOnlyBadge from '@theme/badges/CloudOnlyBadge';
 
 <CloudOnlyBadge />
 
-# system.masking_policies {#systemmasking_policies}
+# system.masking_policies \{#systemmasking_policies\}
 
 包含系统中定义的所有脱敏策略的信息。
 

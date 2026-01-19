@@ -18,13 +18,13 @@ import notebook_connections_config from '@site/static/images/integrations/data-i
 import dependent_jars_path_option from '@site/static/images/integrations/data-ingestion/aws-glue/dependent_jars_path_option.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Интеграция Amazon Glue с ClickHouse и Spark {#integrating-amazon-glue-with-clickhouse-and-spark}
+# Интеграция Amazon Glue с ClickHouse и Spark \{#integrating-amazon-glue-with-clickhouse-and-spark\}
 
 <ClickHouseSupportedBadge/>
 
 [Amazon Glue](https://aws.amazon.com/glue/) — это полностью управляемый бессерверный сервис для интеграции данных от Amazon Web Services (AWS). Он упрощает процесс обнаружения, подготовки и преобразования данных для аналитики, машинного обучения и разработки приложений.
 
-## Установка {#installation}
+## Установка \{#installation\}
 
 Чтобы интегрировать ваш код Glue с ClickHouse, вы можете использовать наш официальный коннектор Spark в Glue одним из следующих способов:
 
@@ -64,7 +64,7 @@ JAR‑файлы, используемые в коннекторе Glue, соб�
 </TabItem>
 </Tabs>
 
-## Примеры {#example}
+## Примеры \{#example\}
 
 <Tabs>
   <TabItem value="Scala" label="Scala" default>

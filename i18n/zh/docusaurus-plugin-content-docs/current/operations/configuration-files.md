@@ -27,7 +27,7 @@ ClickHouse Keeper 的配置位于 `/etc/clickhouse-keeper/keeper_config.xml`。
 XML 配置文件应使用 `<clickhouse>...</clickhouse>` 作为顶层标签。
 在 YAML 配置文件中，`clickhouse:` 是可选的，如果缺失，解析器会自动插入该项。
 
-## 合并配置 {#merging}
+## 合并配置 \{#merging\}
 
 两个配置文件（通常是主配置文件和来自 `config.d/` 的另一个配置文件）按如下规则进行合并：
 
@@ -81,7 +81,7 @@ XML 配置文件应使用 `<clickhouse>...</clickhouse>` 作为顶层标签。
 </clickhouse>
 ```
 
-### 使用环境变量和 ZooKeeper 节点进行替换 {#from_env_zk}
+### 使用环境变量和 ZooKeeper 节点进行替换 \{#from_env_zk\}
 
 要指定某个元素的值由环境变量的值替换，可以使用属性 `from_env`。
 
@@ -133,7 +133,7 @@ XML 配置文件应使用 `<clickhouse>...</clickhouse>` 作为顶层标签。
 </clickhouse>
 ```
 
-#### 默认值 {#default-values}
+#### 默认值 \{#default-values\}
 
 带有 `from_env` 或 `from_zk` 属性的元素还可以带有属性 `replace="1"`（该属性必须出现在 `from_env`/`from_zk` 之前）。
 在这种情况下，元素可以定义一个默认值。
@@ -163,7 +163,7 @@ XML 配置文件应使用 `<clickhouse>...</clickhouse>` 作为顶层标签。
 </clickhouse>
 ```
 
-## 使用文件内容进行替换 {#substitution-with-file-content}
+## 使用文件内容进行替换 \{#substitution-with-file-content\}
 
 也可以使用文件内容来替换配置中的部分内容。这可以通过两种方式完成：
 
@@ -187,7 +187,7 @@ XML 配置文件应使用 `<clickhouse>...</clickhouse>` 作为顶层标签。
 
 如果你希望将替换内容与现有配置合并而不是追加，可以使用属性 `merge="true"`。例如：`<include from_zk="/some_path" merge="true">`。在这种情况下，现有配置会与替换内容合并，且现有配置中的设置会被替换内容中的值覆盖。
 
-## 加密和隐藏配置 {#encryption}
+## 加密和隐藏配置 \{#encryption\}
 
 可以使用对称加密来加密某个配置元素，例如明文密码或私钥。
 为此，先配置[加密编解码器（encryption codec）](../sql-reference/statements/create/table.md#encryption-codecs)，然后在要加密的元素上添加属性 `encrypted_by`，其值设为该加密编解码器的名称。
@@ -307,7 +307,7 @@ XML 配置文件应使用 `<clickhouse>...</clickhouse>` 作为顶层标签。
 </clickhouse>
 ```
 
-## 用户设置 {#user-settings}
+## 用户设置 \{#user-settings\}
 
 `config.xml` 文件可以指定一个单独的配置文件，用于定义用户设置、配置概要（profile）和配额（quota）。该配置文件的相对路径通过 `users_config` 元素进行设置，默认值为 `users.xml`。如果省略 `users_config`，则用户设置、配置概要和配额会直接在 `config.xml` 中指定。
 
@@ -317,7 +317,7 @@ XML 配置文件应使用 `<clickhouse>...</clickhouse>` 作为顶层标签。
 
 请注意，配置文件会首先根据设置进行[合并](#merging)，然后才会处理 include。
 
-## XML 示例 {#example}
+## XML 示例 \{#example\}
 
 例如，你可以为每个用户使用单独的配置文件，如下所示：
 
@@ -340,7 +340,7 @@ $ cat /etc/clickhouse-server/users.d/alice.xml
 </clickhouse>
 ```
 
-## YAML 示例 {#example-1}
+## YAML 示例 \{#example-1\}
 
 此处展示了用 YAML 编写的默认配置：[`config.yaml.example`](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.yaml.example)。
 
@@ -454,7 +454,7 @@ map_key:
 <map_key attr1="value1">value2</map>
 ```
 
-## 实现细节 {#implementation-details}
+## 实现细节 \{#implementation-details\}
 
 对于每个配置文件，服务器在启动时还会生成 `file-preprocessed.xml` 文件。这些文件包含所有已完成的替换和覆盖，仅供参考使用。如果在配置文件中使用了 ZooKeeper 替换，但在服务器启动时 ZooKeeper 不可用，服务器将从预处理文件中加载配置。
 

@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## Описание {#description}
+## Описание \{#description\}
 
 Отличается от формата [`JSONCompactEachRow`](./JSONCompactEachRow.md) тем, что также выводит две заголовочные строки с именами и типами столбцов, аналогично формату [TabSeparatedWithNamesAndTypes](../TabSeparated/TabSeparatedWithNamesAndTypes.md).
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
-### Вставка данных {#inserting-data}
+### Вставка данных \{#inserting-data\}
 
 Используйте JSON-файл со следующими данными под именем `football.json`:
 
@@ -51,7 +51,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactEachRowWithNamesAndTypes;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных \{#reading-data\}
 
 Считайте данные в формате `JSONCompactEachRowWithNamesAndTypes`:
 
@@ -85,7 +85,7 @@ FORMAT JSONCompactEachRowWithNamesAndTypes
 ["2022-05-07", 2021, "Walsall", "Swindon Town", 0, 3]
 ```
 
-## Настройки формата {#format-settings}
+## Настройки формата \{#format-settings\}
 
 :::note
 Если настройка [`input_format_with_names_use_header`](/operations/settings/settings-formats.md/#input_format_with_names_use_header) равна `1`,

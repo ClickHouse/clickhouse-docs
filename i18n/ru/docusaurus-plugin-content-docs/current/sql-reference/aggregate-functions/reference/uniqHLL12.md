@@ -5,7 +5,7 @@ title: 'uniqHLL12'
 doc_type: 'reference'
 ---
 
-# uniqHLL12 {#uniqhll12}
+# uniqHLL12 \{#uniqhll12\}
 
 Вычисляет приблизительное количество различных значений аргументов с использованием алгоритма [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog).
 

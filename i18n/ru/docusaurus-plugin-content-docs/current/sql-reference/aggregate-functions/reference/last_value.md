@@ -6,13 +6,13 @@ title: 'last_value'
 doc_type: 'reference'
 ---
 
-# last_value {#last_value}
+# last_value \{#last_value\}
 
 Выбирает последнее встреченное значение, аналогично `anyLast`, но допускает значение NULL.
 Чаще всего используется с [оконными функциями](../../window-functions/index.md).
 Без оконных функций результат будет случайным, если исходный поток не упорядочен.
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 ```sql
 CREATE TABLE test_data
@@ -25,7 +25,7 @@ ENGINE = Memory;
 INSERT INTO test_data (a, b) VALUES (1,null), (2,3), (4, 5), (6,null)
 ```
 
-### Пример 1 {#example1}
+### Пример 1 \{#example1\}
 
 По умолчанию значение NULL игнорируется.
 
@@ -39,7 +39,7 @@ SELECT last_value(b) FROM test_data
 └────────────────────────────┘
 ```
 
-### Пример 2 {#example2}
+### Пример 2 \{#example2\}
 
 Значение NULL игнорируется.
 
@@ -53,7 +53,7 @@ SELECT last_value(b) ignore nulls FROM test_data
 └────────────────────────────┘
 ```
 
-### Пример 3 {#example3}
+### Пример 3 \{#example3\}
 
 Допускается значение NULL.
 
@@ -67,7 +67,7 @@ SELECT last_value(b) respect nulls FROM test_data
 └─────────────────────────────┘
 ```
 
-### Пример 4 {#example4}
+### Пример 4 \{#example4\}
 
 Детерминированный результат при использовании подзапроса с `ORDER BY`.
 

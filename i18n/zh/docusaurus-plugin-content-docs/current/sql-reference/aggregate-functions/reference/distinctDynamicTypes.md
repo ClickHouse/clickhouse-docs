@@ -5,7 +5,7 @@ title: 'distinctDynamicTypes'
 doc_type: 'reference'
 ---
 
-# distinctDynamicTypes {#distinctdynamictypes}
+# distinctDynamicTypes \{#distinctdynamictypes\}
 
 计算 [Dynamic](../../data-types/dynamic.md) 列中存储的不同数据类型列表。
 

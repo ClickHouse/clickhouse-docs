@@ -49,7 +49,7 @@ ClickHouseは、**データスキッピングインデックス**と呼ばれる
 
 データスキッピングインデックスに関するより詳細なガイドについては、[こちら](/sql-reference/statements/alter/skipping-index)を参照してください。
 
-## 例 {#example}
+## 例 \{#example\}
 
 次の最適化されたテーブルを考えてみましょう。これには、投稿ごとに1行のStack Overflowデータが含まれています。
 
@@ -252,7 +252,7 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 
 <Image img={using_skipping_indices} size="lg" alt="Using skipping indices"/>
 
-## 関連ドキュメント {#related-docs}
+## 関連ドキュメント \{#related-docs\}
 - [データスキッピングインデックスガイド](/optimize/skipping-indexes)
 - [データスキッピングインデックスの例](/optimize/skipping-indexes/examples)
 - [データスキッピングインデックスの操作](/sql-reference/statements/alter/skipping-index)

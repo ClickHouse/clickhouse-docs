@@ -6,7 +6,7 @@ title: 'FROM 子句'
 doc_type: 'reference'
 ---
 
-# FROM 子句 {#from-clause}
+# FROM 子句 \{#from-clause\}
 
 `FROM` 子句指定要从哪些来源读取数据：
 
@@ -27,7 +27,7 @@ FROM table
 SELECT *
 ```
 
-## FINAL 修饰符 {#final-modifier}
+## FINAL 修饰符 \{#final-modifier\}
 
 当指定 `FINAL` 时，ClickHouse 会在返回结果之前对数据进行完全合并。这也会执行给定表引擎在合并过程中会进行的所有数据转换。
 
@@ -41,7 +41,7 @@ SELECT *
 
 带有 `FINAL` 的 `SELECT` 查询会并行执行。[max&#95;final&#95;threads](/operations/settings/settings#max_final_threads) 设置用于限制所使用的线程数。
 
-### 缺点 {#drawbacks}
+### 缺点 \{#drawbacks\}
 
 使用 `FINAL` 的查询比不使用 `FINAL` 的类似查询执行得稍慢，因为：
 
@@ -54,7 +54,7 @@ SELECT *
 
 可以使用 [FINAL](../../../operations/settings/settings.md#final) 设置，将 `FINAL` 自动应用到某个会话或用户配置文件中查询的所有表。
 
-### 使用示例 {#example-usage}
+### 使用示例 \{#example-usage\}
 
 使用 `FINAL` 关键字
 
@@ -75,7 +75,7 @@ SET final = 1;
 SELECT x, y FROM mytable WHERE x > 1;
 ```
 
-## 实现细节 {#implementation-details}
+## 实现细节 \{#implementation-details\}
 
 如果省略 `FROM` 子句，将会从 `system.one` 表中读取数据。
 `system.one` 表中只包含一行数据（该表与其他 DBMS 中的 DUAL 表用途相同）。

@@ -21,11 +21,11 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-# Приём данных из Postgres в ClickHouse (с использованием CDC) {#ingesting-data-from-postgres-to-clickhouse-using-cdc}
+# Приём данных из Postgres в ClickHouse (с использованием CDC) \{#ingesting-data-from-postgres-to-clickhouse-using-cdc\}
 
 Вы можете использовать ClickPipes для приёма данных из исходной базы данных Postgres в ClickHouse Cloud. Исходная база данных Postgres может быть развернута в локальной инфраструктуре (on-premises) или в облаке, включая Amazon RDS, Google Cloud SQL, Azure Database for Postgres, Supabase и другие.
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \{#prerequisites\}
 
 Прежде чем начать, необходимо убедиться, что ваша база данных Postgres корректно настроена. В зависимости от используемого экземпляра Postgres вы можете следовать одному из следующих руководств:
 
@@ -55,7 +55,7 @@ import Image from '@theme/IdealImage';
 
 После того как исходная база данных Postgres настроена, вы можете продолжить создание ClickPipe.
 
-## Создание вашего ClickPipe {#creating-your-clickpipe}
+## Создание вашего ClickPipe \{#creating-your-clickpipe\}
 
 Убедитесь, что вы вошли в свою учетную запись ClickHouse Cloud. Если у вас еще нет учетной записи, вы можете зарегистрироваться [здесь](https://cloud.clickhouse.com/).
 
@@ -72,7 +72,7 @@ import Image from '@theme/IdealImage';
 
    <Image img={postgres_tile} alt="Выбор Postgres" size="lg" border/>
 
-### Добавление подключения к исходной базе данных Postgres {#adding-your-source-postgres-database-connection}
+### Добавление подключения к исходной базе данных Postgres \{#adding-your-source-postgres-database-connection\}
 
 4. Заполните параметры подключения к вашей исходной базе данных Postgres, которую вы настроили на этапе предварительной настройки.
 
@@ -85,13 +85,13 @@ import Image from '@theme/IdealImage';
 
    <Image img={postgres_connection_details} alt="Заполнение параметров подключения" size="lg" border/>
 
-#### (Необязательно) Настройка AWS Private Link {#optional-setting-up-aws-private-link}
+#### (Необязательно) Настройка AWS Private Link \{#optional-setting-up-aws-private-link\}
 
 Вы можете использовать AWS Private Link для подключения к вашей исходной базе данных Postgres, если она размещена в AWS. Это полезно, если вы
 хотите, чтобы передача данных оставалась конфиденциальной.
 Вы можете следовать [руководству по настройке подключения](/integrations/clickpipes/aws-privatelink).
 
-#### (Необязательно) Настройка SSH-туннелирования {#optional-setting-up-ssh-tunneling}
+#### (Необязательно) Настройка SSH-туннелирования \{#optional-setting-up-ssh-tunneling\}
 
 Вы можете указать параметры SSH-туннелирования, если ваша исходная база данных Postgres недоступна из публичной сети.
 
@@ -111,13 +111,13 @@ import Image from '@theme/IdealImage';
 
 После заполнения параметров подключения нажмите «Next».
 
-### Настройка параметров репликации {#configuring-the-replication-settings}
+### Настройка параметров репликации \{#configuring-the-replication-settings\}
 
 5. Убедитесь, что вы выбрали слот репликации из раскрывающегося списка, который вы создали на этапе предварительной настройки.
 
    <Image img={select_replication_slot} alt="Выбор слота репликации" size="lg" border/>
 
-#### Дополнительные настройки {#advanced-settings}
+#### Дополнительные настройки \{#advanced-settings\}
 
 При необходимости вы можете настроить дополнительные параметры. Краткое описание каждого параметра приведено ниже:
 
@@ -127,7 +127,7 @@ import Image from '@theme/IdealImage';
 - **Snapshot number of rows per partition**: Количество строк, которые будут извлекаться в каждом разделе во время начального снимка. Это полезно, когда у вас много строк в таблицах и вы хотите контролировать количество строк, извлекаемых в каждом разделе.
 - **Snapshot number of tables in parallel**: Количество таблиц, которые будут загружаться параллельно во время начального снимка. Это полезно, когда у вас много таблиц и вы хотите контролировать количество таблиц, загружаемых параллельно.
 
-### Настройка таблиц {#configuring-the-tables}
+### Настройка таблиц \{#configuring-the-tables\}
 
 6. Здесь вы можете выбрать целевую базу данных для вашего ClickPipe. Вы можете либо выбрать существующую базу данных, либо создать новую.
 
@@ -139,13 +139,13 @@ import Image from '@theme/IdealImage';
    Если вы задаёте ключ упорядочивания в ClickHouse, отличающийся от первичного ключа в Postgres, не забудьте ознакомиться со всеми [рекомендациями](/integrations/clickpipes/postgres/ordering_keys), связанными с этим.
    :::
 
-### Проверьте права доступа и запустите ClickPipe {#review-permissions-and-start-the-clickpipe}
+### Проверьте права доступа и запустите ClickPipe \{#review-permissions-and-start-the-clickpipe\}
 
 8. Выберите роль "Full access" в раскрывающемся списке прав доступа и нажмите "Complete Setup".
 
    <Image img={ch_permissions} alt="Просмотр прав доступа" size="lg" border/>
 
-## Что дальше? {#whats-next}
+## Что дальше? \{#whats-next\}
 
 После того как вы настроите ClickPipe для репликации данных из PostgreSQL в ClickHouse Cloud, вы можете сосредоточиться на том, как выполнять запросы к данным и моделировать их для оптимальной производительности. Ознакомьтесь с [руководством по миграции](/migrations/postgresql/overview), чтобы оценить, какая стратегия лучше всего соответствует вашим требованиям, а также со страницами [Стратегии дедупликации (с использованием CDC)](/integrations/clickpipes/postgres/deduplication) и [Ключи упорядочивания](/integrations/clickpipes/postgres/ordering_keys), где описаны передовые практики для сценариев с нагрузками CDC.
 

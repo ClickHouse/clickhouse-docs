@@ -8,12 +8,12 @@ keywords: ['ClickHouse Cloud', 'облачная база данных', 'упр
 doc_type: 'reference'
 ---
 
-# ClickHouse Cloud {#clickhouse-cloud}
+# ClickHouse Cloud \{#clickhouse-cloud\}
 
 ClickHouse Cloud — это облачный сервис, созданный создателями популярной OLAP‑базы данных с открытым исходным кодом ClickHouse. 
 Вы можете опробовать ClickHouse Cloud, [оформив бесплатный пробный период](https://console.clickhouse.cloud/signUp).
 
-## Преимущества ClickHouse Cloud {#clickhouse-cloud-benefits}
+## Преимущества ClickHouse Cloud \{#clickhouse-cloud-benefits\}
 
 Ниже перечислены некоторые преимущества использования ClickHouse Cloud:
 
@@ -46,7 +46,7 @@ ClickHouse Cloud — это облачный сервис, созданный с
   */ }
 
 
-## Какую версию ClickHouse использует ClickHouse Cloud? {#what-version-of-clickhouse-does-clickhouse-cloud-use}
+## Какую версию ClickHouse использует ClickHouse Cloud? \{#what-version-of-clickhouse-does-clickhouse-cloud-use\}
 
 ClickHouse Cloud периодически обновляет ваш сервис до более новых версий, включающих исправления, новые функции и улучшения производительности. После публикации основной версии базы данных в open source мы выполняем дополнительное тестирование в нашей облачной staging-среде, что обычно занимает 6–8 недель до вывода версии в продакшен-среду. Внедрение обновлений выполняется поэтапно в зависимости от облачного провайдера, типа сервиса и региона.
 

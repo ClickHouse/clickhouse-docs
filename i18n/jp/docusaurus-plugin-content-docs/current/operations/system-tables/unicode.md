@@ -6,7 +6,7 @@ title: 'system.unicode'
 doc_type: 'reference'
 ---
 
-# system.unicode {#systemunicode}
+# system.unicode \{#systemunicode\}
 
 `system.unicode` テーブルは、Unicode 文字およびそのプロパティに関する情報を提供する仮想テーブルです（[https://unicode-org.github.io/icu/userguide/strings/properties.html](https://unicode-org.github.io/icu/userguide/strings/properties.html) を参照）。このテーブルは要求時に動的に生成されます。
 

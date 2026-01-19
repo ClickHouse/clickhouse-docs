@@ -5,7 +5,7 @@ title: 'kurtSamp'
 doc_type: 'reference'
 ---
 
-# kurtSamp {#kurtsamp}
+# kurtSamp \{#kurtsamp\}
 
 Вычисляет [выборочный эксцесс](https://en.wikipedia.org/wiki/Kurtosis) по последовательности.
 

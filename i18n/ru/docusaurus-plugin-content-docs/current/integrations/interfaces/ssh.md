@@ -11,13 +11,13 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# SSH-интерфейс с PTY {#ssh-interface-with-pty}
+# SSH-интерфейс с PTY \{#ssh-interface-with-pty\}
 
 <ExperimentalBadge />
 
 <CloudNotSupportedBadge />
 
-## Предисловие {#preface}
+## Предисловие \{#preface\}
 
 Сервер ClickHouse позволяет подключаться к себе напрямую по протоколу SSH. Можно использовать любой клиент.
 
@@ -53,7 +53,7 @@ Query id: cdd91b7f-215b-4537-b7df-86d19bf63f64
 1
 ```
 
-## Конфигурация сервера {#server-configuration}
+## Конфигурация сервера \{#server-configuration\}
 
 Чтобы включить SSH-сервер, необходимо раскомментировать или добавить следующий раздел в `config.xml`:
 
@@ -83,7 +83,7 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])?
 ssh -o "StrictHostKeyChecking no" user@host
 ```
 
-## Настройка встроенного клиента {#configuring-embedded-client}
+## Настройка встроенного клиента \{#configuring-embedded-client\}
 
 Вы можете передавать параметры встроенному клиенту аналогично тому, как это делается для обычного `clickhouse-client`, но с некоторыми ограничениями.
 Поскольку используется протокол SSH, единственный способ передать параметры на целевой хост — через переменные окружения.

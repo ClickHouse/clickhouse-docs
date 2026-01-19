@@ -30,7 +30,7 @@ import nifi14 from '@site/static/images/integrations/data-ingestion/etl-tools/ni
 import nifi15 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_15.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Подключение Apache NiFi к ClickHouse {#connect-apache-nifi-to-clickhouse}
+# Подключение Apache NiFi к ClickHouse \{#connect-apache-nifi-to-clickhouse\}
 
 <CommunityMaintainedBadge />
 
@@ -41,21 +41,21 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <VerticalStepper headerLevel="h2">
 
-## Соберите сведения о подключении {#1-gather-your-connection-details}
+## Соберите сведения о подключении \{#1-gather-your-connection-details\}
 
 <ConnectionDetails />
 
-## Загрузите и запустите Apache NiFi {#2-download-and-run-apache-nifi}
+## Загрузите и запустите Apache NiFi \{#2-download-and-run-apache-nifi\}
 
 Для нового развертывания скачайте двоичный файл с https://nifi.apache.org/download.html и запустите NiFi командой `./bin/nifi.sh start`
 
-## Загрузите драйвер ClickHouse JDBC {#3-download-the-clickhouse-jdbc-driver}
+## Загрузите драйвер ClickHouse JDBC \{#3-download-the-clickhouse-jdbc-driver\}
 
 1. Перейдите на <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">страницу релизов драйвера ClickHouse JDBC</a> на GitHub и найдите последнюю версию JDBC-драйвера
 2. В выбранной версии релиза нажмите «Show all xx assets» и найдите JAR-файл, содержащий ключевое слово `shaded` или `all`, например `clickhouse-jdbc-0.5.0-all.jar`
 3. Поместите JAR-файл в каталог, доступный Apache NiFi, и запомните абсолютный путь к нему
 
-## Добавьте службу контроллера `DBCPConnectionPool` и настройте её свойства {#4-add-dbcpconnectionpool-controller-service-and-configure-its-properties}
+## Добавьте службу контроллера `DBCPConnectionPool` и настройте её свойства \{#4-add-dbcpconnectionpool-controller-service-and-configure-its-properties\}
 
 1. Чтобы настроить Controller Service в Apache NiFi, перейдите на страницу NiFi Flow Configuration, нажав кнопку с иконкой шестерёнки
 
@@ -99,7 +99,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
     <Image img={nifi08} size="lg" border alt="Список Controller Services с включённым сервисом ClickHouse JDBC" />
 
-## Чтение из таблицы с помощью процессора `ExecuteSQL` {#5-read-from-a-table-using-the-executesql-processor}
+## Чтение из таблицы с помощью процессора `ExecuteSQL` \{#5-read-from-a-table-using-the-executesql-processor\}
 
 1. Добавьте процессор `ExecuteSQL` вместе с соответствующими входящими и последующими процессорами
 
@@ -124,7 +124,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
     <Image img={nifi12} size="lg" border alt="Просмотрщик содержимого FlowFile, показывающий результаты запроса в отформатированном виде" />
 
-## Запись в таблицу с использованием процессоров `MergeRecord` и `PutDatabaseRecord` {#6-write-to-a-table-using-mergerecord-and-putdatabaserecord-processor}
+## Запись в таблицу с использованием процессоров `MergeRecord` и `PutDatabaseRecord` \{#6-write-to-a-table-using-mergerecord-and-putdatabaserecord-processor\}
 
 1. Для записи нескольких строк в одной операции вставки необходимо сначала объединить несколько записей в одну. Это можно сделать с помощью процессора `MergeRecord`
 

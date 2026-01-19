@@ -16,15 +16,15 @@ import prometheus_datadog from '@site/static/images/integrations/prometheus-data
 import Image from '@theme/IdealImage';
 
 
-# Prometheus 連携 {#prometheus-integration}
+# Prometheus 連携 \{#prometheus-integration\}
 
 この機能により、[Prometheus](https://prometheus.io/) を利用して ClickHouse Cloud サービスを監視できます。Prometheus メトリクスへのアクセスは、[ClickHouse Cloud API](/cloud/manage/api/api-overview) エンドポイント経由で提供されており、Prometheus メトリクスコレクターに安全に接続してメトリクスをエクスポートできます。これらのメトリクスは、Grafana や Datadog などのダッシュボードと連携して可視化できます。
 
 開始するには、[API キーを生成](/cloud/manage/openapi)してください。
 
-## ClickHouse Cloud メトリクスを取得するための Prometheus エンドポイント API {#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics}
+## ClickHouse Cloud メトリクスを取得するための Prometheus エンドポイント API \{#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics\}
 
-### API リファレンス {#api-reference}
+### API リファレンス \{#api-reference\}
 
 | Method | Path                                                                                                               | Description                                                        |
 | ------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
@@ -39,7 +39,7 @@ import Image from '@theme/IdealImage';
 | Service ID       | エンドポイントアドレス | uuid (任意)               |
 | filtered_metrics | クエリパラメータ | boolean (任意) |
 
-### 認証 {#authentication}
+### 認証 \{#authentication\}
 
 Basic 認証には、ClickHouse Cloud の API キーを使用してください。
 
@@ -60,7 +60,7 @@ curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organiz
 ```
 
 
-### 応答例 {#sample-response}
+### 応答例 \{#sample-response\}
 
 ```response
 # HELP ClickHouse_ServiceInfo Information about service, including cluster status and ClickHouse version
@@ -122,7 +122,7 @@ ClickPipes_FetchedBytesCompressed_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-
 ClickPipes_FetchedEvents_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent"} 5535376
 ```
 
-### メトリクスラベル {#metric-labels}
+### メトリクスラベル \{#metric-labels\}
 
 すべてのメトリクスには次のラベルが付きます:
 
@@ -140,7 +140,7 @@ ClickPipes については、メトリクスに次のラベルも付きます:
 | clickpipe_name | ClickPipe 名|
 | clickpipe_source | ClickPipe ソース種別|
 
-### 情報メトリクス {#information-metrics}
+### 情報メトリクス \{#information-metrics\}
 
 ClickHouse Cloud は、常に値が `1` となる `gauge` 型の特別なメトリクス `ClickHouse_ServiceInfo` を提供します。このメトリクスには、すべての **Metric Labels** に加えて、次のラベルが含まれます。
 
@@ -160,7 +160,7 @@ ClickPipes については、同様に `ClickPipes_Info` という `gauge` メ�
 | --- | --- |
 | clickpipe_state | パイプの現在の状態 |
 
-### Prometheus の設定 {#configuring-prometheus}
+### Prometheus の設定 \{#configuring-prometheus\}
 
 Prometheus サーバーは、設定された対象から指定された間隔でメトリクスを収集します。以下は、ClickHouse Cloud の Prometheus エンドポイントを利用するための Prometheus サーバーの設定例です。
 
@@ -188,7 +188,7 @@ scrape_configs:
 `instance` ラベルを正しく設定するには、`honor_labels` 設定パラメータを `true` にする必要があります。さらに、上記の例では `filtered_metrics` が `true` に設定されていますが、これはユーザーの好みに応じて設定してください。
 
 
-## Grafana との連携 {#integrating-with-grafana}
+## Grafana との連携 \{#integrating-with-grafana\}
 
 Grafana と連携するには、主に次の 2 通りの方法があります。
 
@@ -197,7 +197,7 @@ Grafana と連携するには、主に次の 2 通りの方法があります。
 
 以下では、これらのオプションの使用方法について、ClickHouse Cloud Prometheus Endpoint に特有の詳細に焦点を当てて説明します。
 
-### Grafana Cloud とメトリクスエンドポイント {#grafana-cloud-with-metrics-endpoint}
+### Grafana Cloud とメトリクスエンドポイント \{#grafana-cloud-with-metrics-endpoint\}
 
 - Grafana Cloud アカウントにログインします
 - **Metrics Endpoint** を選択して新しい接続を追加します
@@ -216,7 +216,7 @@ Grafana と連携するには、主に次の 2 通りの方法があります。
 
 <Image img={prometheus_grafana_chart} size="md" alt="Grafana Metrics Explorer のチャート" border/>
 
-### Grafana Cloud と Alloy {#grafana-cloud-with-alloy}
+### Grafana Cloud と Alloy \{#grafana-cloud-with-alloy\}
 
 Grafana Cloud を使用している場合、Grafana 内の Alloy メニューに移動し、画面の指示に従うだけで Alloy をインストールできます。
 
@@ -261,7 +261,7 @@ prometheus.remote_write "metrics_service" {
 `honor_labels` 設定パラメータは、`instance` ラベルが正しく設定されるように `true` に設定する必要がある点に注意してください。
 
 
-### Alloy を用いたセルフマネージドの Grafana {#grafana-self-managed-with-alloy}
+### Alloy を用いたセルフマネージドの Grafana \{#grafana-self-managed-with-alloy\}
 
 セルフマネージド版 Grafana のユーザーは、Alloy エージェントのインストール手順を[こちら](https://grafana.com/docs/alloy/latest/get-started/install/)で確認できます。ここでは、ユーザーが Alloy を構成し、Prometheus のメトリクスを目的の送信先に送信するよう既に設定済みであることを前提とします。以下の `prometheus.scrape` コンポーネントにより、Alloy は ClickHouse Cloud のエンドポイントをスクレイプします。スクレイプされたメトリクスは `prometheus.remote_write` が受信することを想定しています。これが存在しない場合は、`forward_to` キーをターゲットの送信先に合わせて調整してください。
 
@@ -294,7 +294,7 @@ prometheus.scrape "clickhouse_cloud" {
 `honor_labels` 構成パラメータは、`instance` ラベルが正しく設定されるように `true` に設定しておく必要があることに注意してください。
 
 
-## Datadog との連携 {#integrating-with-datadog}
+## Datadog との連携 \{#integrating-with-datadog\}
 
 Datadog の [Agent](https://docs.datadoghq.com/agent/?tab=Linux) と [OpenMetrics インテグレーション](https://docs.datadoghq.com/integrations/openmetrics/) を使用して、ClickHouse Cloud エンドポイントからメトリクスを収集できます。以下は、この Agent とインテグレーションのためのシンプルなサンプル設定です。ただし、実運用では特に重要なメトリクスのみに絞り込むことを検討してください。下記の包括的な例では、数千ものメトリクスとインスタンスの組み合わせがエクスポートされ、Datadog によってカスタムメトリクスとして扱われます。
 

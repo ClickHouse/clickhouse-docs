@@ -28,7 +28,7 @@ CREATE MASKING POLICY [IF NOT EXISTS | OR REPLACE] policy_name ON [database.]tab
 ```
 
 
-## UPDATE 句 {#update-clause}
+## UPDATE 句 \{#update-clause\}
 
 `UPDATE` 句では、マスク対象となるカラムと、その変換方法を指定します。1 つのポリシーで複数のカラムをマスクできます。
 
@@ -39,7 +39,7 @@ CREATE MASKING POLICY [IF NOT EXISTS | OR REPLACE] policy_name ON [database.]tab
 - ハッシュベースのマスキング: `UPDATE email = concat('masked_', substring(hex(cityHash64(email)), 1, 8))`
 - 複数カラムのマスキング: `UPDATE email = '***@***.***', phone = '***-***-****'`
 
-## WHERE 句 {#where-clause}
+## WHERE 句 \{#where-clause\}
 
 オプションの `WHERE` 句を使用すると、行の値に基づいて条件付きでマスキングを適用できます。条件に一致する行だけにマスキングが適用されます。
 
@@ -53,7 +53,7 @@ TO analyst;
 ```
 
 
-## TO 句 {#to-clause}
+## TO 句 \{#to-clause\}
 
 `TO` セクションでは、そのポリシーを適用する対象のユーザーやロールを指定します。
 
@@ -65,7 +65,7 @@ TO analyst;
 行ポリシーと異なり、マスキングポリシーは、そのポリシーが適用されていないユーザーには影響しません。あるユーザーに適用されるマスキングポリシーがない場合、そのユーザーには元のデータが表示されます。
 :::
 
-## PRIORITY 句 {#priority-clause}
+## PRIORITY 句 \{#priority-clause\}
 
 複数のマスキングポリシーが同じユーザーに対して同じカラムを対象とする場合、`PRIORITY` 句によって適用順序が決まります。ポリシーは優先度の高いものから低いものへと順に適用されます。
 

@@ -12,7 +12,7 @@ import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedul
 ClickHouse Cloud では、安定性、新機能へのアクセス、アップグレードの予測可能性といったニーズに応じて、複数のリリースチャネルを提供しています。各チャネルごとにアップグレードスケジュールが異なり、新しいリリースにすぐアクセスしたいユーザーと、最も安定したリリース版を受け取れるようアップグレードを先送りしたいユーザーという、異なるユースケースに対応することを目的としています。
 
 
-## リリースチャネルの詳細 {#release-channel-details}
+## リリースチャネルの詳細 \{#release-channel-details\}
 
 <details>
 <summary>リリースチャネルについて詳しく知る</summary>
@@ -34,7 +34,7 @@ ClickHouse Cloud では、安定性、新機能へのアクセス、アップグ
 
 Enterprise ティアのサービスでは、すべてのリリースチャネルでスケジュールされたアップグレードを利用できます。この機能により、アップグレードを実施する曜日と時間帯の時間枠を設定できます。
 
-## リリーススケジュール {#release-schedule}
+## リリーススケジュール \{#release-schedule\}
 
 以下に記載のリリース日程は目安であり、変更される可能性があります。
 

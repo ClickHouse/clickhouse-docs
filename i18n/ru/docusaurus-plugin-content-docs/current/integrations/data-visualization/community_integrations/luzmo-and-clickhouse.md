@@ -18,11 +18,11 @@ import luzmo_02 from '@site/static/images/integrations/data-visualization/luzmo_
 import luzmo_03 from '@site/static/images/integrations/data-visualization/luzmo_03.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Интеграция Luzmo и ClickHouse {#integrating-luzmo-with-clickhouse}
+# Интеграция Luzmo и ClickHouse \{#integrating-luzmo-with-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
-## 1. Настройка подключения к ClickHouse {#1-setup-a-clickhouse-connection}
+## 1. Настройка подключения к ClickHouse \{#1-setup-a-clickhouse-connection\}
 
 Чтобы создать подключение к ClickHouse, перейдите на страницу **Connections**, выберите **New Connection**, затем выберите ClickHouse в диалоговом окне New Connection.
 
@@ -39,7 +39,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 Обратитесь к примерам в нашей документации для разработчиков, чтобы узнать, как [создать подключение к ClickHouse](https://developer.luzmo.com/api/createAccount?exampleSection=AccountCreateClickhouseRequestBody) через наш API.
 
-## 2. Добавьте наборы данных {#2-add-datasets}
+## 2. Добавьте наборы данных \{#2-add-datasets\}
 
 После подключения ClickHouse вы можете добавить наборы данных, как описано [здесь](https://academy.luzmo.com/article/ldx3iltg). Вы можете выбрать один или несколько наборов данных, доступных в вашем ClickHouse, и [связать](https://academy.luzmo.com/article/gkrx48x5) их в Luzmo, чтобы их можно было использовать вместе в одном дашборде. Также рекомендуем ознакомиться со статьёй [Подготовка данных к аналитике](https://academy.luzmo.com/article/u492qov0).
 
@@ -49,7 +49,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={luzmo_03} size="md" alt="Пример дашборда Luzmo, показывающего несколько визуализаций данных из ClickHouse" border />
 
-## Примечания по использованию {#usage-notes}
+## Примечания по использованию \{#usage-notes\}
 
 1. Коннектор Luzmo для ClickHouse использует HTTP‑интерфейс API (как правило, доступный на порту 8123) для подключения.
 2. Если вы используете таблицы с движком таблицы `Distributed`, некоторые диаграммы Luzmo могут завершаться с ошибкой, когда `distributed_product_mode` имеет значение `deny`. Однако это должно происходить только в том случае, если вы связываете таблицу с другой таблицей и используете эту связь в диаграмме. В таком случае убедитесь, что вы задали для `distributed_product_mode` другой режим, который подходит для вашего кластера ClickHouse. Если вы используете ClickHouse Cloud, вы можете спокойно игнорировать этот параметр.

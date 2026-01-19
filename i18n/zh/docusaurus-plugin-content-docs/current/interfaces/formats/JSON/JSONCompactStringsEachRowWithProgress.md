@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|---------|--------|
 | ✗     | ✔       |        |
 
-## Description {#description}
+## Description \{#description\}
 
 类似于 [`JSONCompactEachRowWithProgress`](/interfaces/formats/JSONCompactEachRowWithProgress)，但所有值都会被转换为字符串。
 当需要对所有数据类型进行统一的字符串表示时，此格式非常有用。
@@ -25,9 +25,9 @@ doc_type: 'reference'
 - 包含进度更新、汇总以及异常处理
 - 适用于偏好或要求基于字符串数据的客户端
 
-## 使用示例 {#example-usage}
+## 使用示例 \{#example-usage\}
 
-### 插入数据 {#inserting-data}
+### 插入数据 \{#inserting-data\}
 
 ```sql title="Query"
 SELECT *
@@ -47,4 +47,4 @@ FORMAT JSONCompactStringsEachRowWithProgress
 {"rows_before_limit_at_least":5}
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}

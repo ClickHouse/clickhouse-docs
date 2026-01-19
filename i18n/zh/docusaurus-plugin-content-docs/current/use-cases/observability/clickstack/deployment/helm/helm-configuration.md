@@ -11,7 +11,7 @@ keywords: ['ClickStack 配置', 'Helm Secrets', 'API 密钥设置', '入口配�
 
 本指南介绍 ClickStack Helm 部署的配置选项。有关基本安装，请参阅[主 Helm 部署指南](/docs/use-cases/observability/clickstack/deployment/helm)。
 
-## API 密钥设置 {#api-key-setup}
+## API 密钥设置 \{#api-key-setup\}
 
 成功部署 ClickStack 之后，配置 API 密钥以启用遥测数据采集：
 
@@ -19,7 +19,7 @@ keywords: ['ClickStack 配置', 'Helm Secrets', 'API 密钥设置', '入口配�
 2. **登录 HyperDX 仪表盘**，进入“Team settings”以生成或获取你的 API 密钥
 3. **使用以下任一方法在部署中配置 API 密钥**：
 
-### 方法一：通过带有 values 文件的 Helm upgrade 命令进行更新 {#api-key-values-file}
+### 方法一：通过带有 values 文件的 Helm upgrade 命令进行更新 \{#api-key-values-file\}
 
 将 API key 添加到 `values.yaml` 文件中：
 
@@ -34,13 +34,13 @@ hyperdx:
 helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 ```
 
-### 方法 2：通过带有 --set 参数的 helm upgrade 命令进行更新 {#api-key-set-flag}
+### 方法 2：通过带有 --set 参数的 helm upgrade 命令进行更新 \{#api-key-set-flag\}
 
 ```shell
 helm upgrade my-clickstack clickstack/clickstack --set hyperdx.apiKey="your-api-key-here"
 ```
 
-### 重启 Pod（容器组）以应用更改 {#restart-pods}
+### 重启 Pod（容器组）以应用更改 \{#restart-pods\}
 
 更新 API 密钥后，重启 Pod（容器组），使其加载新配置：
 
@@ -52,11 +52,11 @@ kubectl rollout restart deployment my-clickstack-clickstack-app my-clickstack-cl
 该 chart 会使用你的 API key 自动创建一个名为 `<release-name>-app-secrets` 的 Kubernetes Secret。除非你打算使用外部 Secret，否则无需进行额外的 Secret 配置。
 :::
 
-## Secret 管理 {#secret-management}
+## Secret 管理 \{#secret-management\}
 
 对于 API 密钥或数据库凭据等敏感数据，请使用 Kubernetes Secret 资源进行管理。
 
-### 使用预配置的 Secret {#using-pre-configured-secrets}
+### 使用预配置的 Secret \{#using-pre-configured-secrets\}
 
 Helm 图表包含一个默认的 Secret 模板，位于 [`charts/clickstack/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/clickstack/templates/secrets.yaml)。此文件提供了用于管理 Secret 的基础结构。
 
@@ -80,7 +80,7 @@ data:
 kubectl apply -f secrets.yaml
 ```
 
-### 创建自定义 Secret {#creating-a-custom-secret}
+### 创建自定义 Secret \{#creating-a-custom-secret\}
 
 手动创建一个自定义的 Kubernetes Secret：
 
@@ -89,7 +89,7 @@ kubectl create secret generic hyperdx-secret \
   --from-literal=API_KEY=my-secret-api-key
 ```
 
-### 在 values.yaml 中引用 Secret {#referencing-a-secret}
+### 在 values.yaml 中引用 Secret \{#referencing-a-secret\}
 
 ```yaml
 hyperdx:
@@ -100,11 +100,11 @@ hyperdx:
         key: API_KEY
 ```
 
-## 入口配置 {#ingress-setup}
+## 入口配置 \{#ingress-setup\}
 
 要通过域名对外暴露 HyperDX 的 UI 和 API，请在 `values.yaml` 中启用入口配置。
 
-### 常规入口配置 {#general-ingress-configuration}
+### 常规入口配置 \{#general-ingress-configuration\}
 
 ```yaml
 hyperdx:
@@ -118,7 +118,7 @@ hyperdx:
 `hyperdx.frontendUrl` 应当与入口（Ingress）的主机名匹配，并且包含协议（例如：`https://hyperdx.yourdomain.com`）。这样可以确保所有生成的链接、cookie 和重定向都能正常工作。
 :::
 
-### 启用 TLS（HTTPS） {#enabling-tls}
+### 启用 TLS（HTTPS） \{#enabling-tls\}
 
 要通过 HTTPS 保护你的部署：
 
@@ -142,7 +142,7 @@ hyperdx:
       tlsSecretName: "hyperdx-tls"
 ```
 
-### 入口配置示例 {#example-ingress-configuration}
+### 入口配置示例 \{#example-ingress-configuration\}
 
 供参考，下面是生成的入口资源：
 
@@ -173,7 +173,7 @@ spec:
       secretName: hyperdx-tls
 ```
 
-### 常见入口问题 {#common-ingress-pitfalls}
+### 常见入口问题 \{#common-ingress-pitfalls\}
 
 **路径与重写配置：**
 
@@ -198,7 +198,7 @@ spec:
 kubectl -n ingress-nginx get pods -l app.kubernetes.io/name=ingress-nginx -o jsonpath="{.items[0].spec.containers[0].image}"
 ```
 
-## OTel collector 入口 {#otel-collector-ingress}
+## OTel collector 入口 \{#otel-collector-ingress\}
 
 如果需要通过入口将 OTel collector 的端点（用于 traces、metrics、logs）暴露出去，请使用 `additionalIngresses` 配置。这在需要从集群外部发送遥测数据，或为 collector 使用自定义域名时非常有用。
 
@@ -234,7 +234,7 @@ hyperdx:
 如果不需要将 OTel collector 暴露到集群外部，可以跳过此配置。对于大多数用户，通用的入口配置已经足够。
 :::
 
-## 入口故障排查 {#troubleshooting-ingress}
+## 入口故障排查 \{#troubleshooting-ingress\}
 
 **检查入口资源：**
 
@@ -271,7 +271,7 @@ curl -I https://hyperdx.yourdomain.com/_next/static/chunks/main-xxxx.js
 
 * 变更之后，清理浏览器缓存以及任何 CDN/代理缓存，以避免使用陈旧的资源
 
-## 自定义配置 {#customizing-values}
+## 自定义配置 \{#customizing-values\}
 
 可以使用 `--set` 标志来自定义配置：
 
@@ -310,7 +310,7 @@ hyperdx:
 helm install my-clickstack clickstack/clickstack -f values.yaml
 ```
 
-## 后续步骤 {#next-steps}
+## 后续步骤 \{#next-steps\}
 
 - [部署选项](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) - 外部系统和最小部署方案
 - [云部署](/docs/use-cases/observability/clickstack/deployment/helm-cloud) - GKE、EKS 和 AKS 配置

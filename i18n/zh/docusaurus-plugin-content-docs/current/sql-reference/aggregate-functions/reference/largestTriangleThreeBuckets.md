@@ -6,7 +6,7 @@ title: 'largestTriangleThreeBuckets'
 doc_type: 'reference'
 ---
 
-# largestTriangleThreeBuckets {#largesttrianglethreebuckets}
+# largestTriangleThreeBuckets \{#largesttrianglethreebuckets\}
 
 将 [Largest-Triangle-Three-Buckets](https://skemman.is/bitstream/1946/15343/3/SS_MSthesis.pdf) 算法应用于输入数据。
 该算法用于对时间序列数据进行降采样，以便进行可视化。该算法设计用于在按 x 坐标排序的序列上运行。

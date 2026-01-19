@@ -8,7 +8,7 @@ toc_hidden: true
 doc_type: 'landing-page'
 ---
 
-# 集約関数 {#aggregate-functions}
+# 集約関数 \{#aggregate-functions\}
 
 ClickHouse は、標準的な SQL 集約関数（[sum](../reference/sum.md)、[avg](../reference/avg.md)、[min](../reference/min.md)、[max](../reference/max.md)、[count](../reference/count.md)）に加えて、さらに幅広い集約関数をサポートしています。
 

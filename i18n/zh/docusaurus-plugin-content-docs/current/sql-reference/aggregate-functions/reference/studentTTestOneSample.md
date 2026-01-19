@@ -6,7 +6,7 @@ title: 'studentTTestOneSample'
 doc_type: 'reference'
 ---
 
-# studentTTestOneSample {#studentttestonesample}
+# studentTTestOneSample \{#studentttestonesample\}
 
 用于对单个样本进行 Student&#39;s t 检验，以判断样本均值是否与已知总体均值存在差异。
 

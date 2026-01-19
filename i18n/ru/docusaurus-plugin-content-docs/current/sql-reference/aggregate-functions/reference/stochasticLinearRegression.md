@@ -5,11 +5,11 @@ title: 'stochasticLinearRegression'
 doc_type: 'reference'
 ---
 
-# stochasticLinearRegression {#agg_functions_stochasticlinearregression_parameters}
+# stochasticLinearRegression \{#agg_functions_stochasticlinearregression_parameters\}
 
 Эта функция реализует стохастическую линейную регрессию. В ней предусмотрены настраиваемые параметры скорости обучения, коэффициента L2‑регуляризации, размера мини‑батча, а также несколько методов обновления весов ([Adam](https://en.wikipedia.org/wiki/Stochastic_gradient_descent#Adam) (используется по умолчанию), [simple SGD](https://en.wikipedia.org/wiki/Stochastic_gradient_descent), [Momentum](https://en.wikipedia.org/wiki/Stochastic_gradient_descent#Momentum) и [Nesterov](https://mipt.ru/upload/medialibrary/d7e/41-91.pdf)).
 
-### Параметры {#parameters}
+### Параметры \{#parameters\}
 
 Существует четыре настраиваемых параметра. Они передаются в функцию последовательно, но нет необходимости указывать все четыре — будут использованы значения по умолчанию. Однако для получения качественной модели требуется некоторая настройка параметров.
 
@@ -23,7 +23,7 @@ stochasticLinearRegression(0.00001, 0.1, 15, 'Adam')
 4. `method for updating weights` — метод обновления весов; доступны следующие варианты: `Adam` (по умолчанию), `SGD`, `Momentum` и `Nesterov`. `Momentum` и `Nesterov` требуют несколько больше вычислений и памяти, однако на практике оказываются полезными с точки зрения скорости сходимости и устойчивости стохастических градиентных методов.
 
 
-### Использование {#usage}
+### Использование \{#usage\}
 
 `stochasticLinearRegression` используется в два этапа: сначала выполняется обучение модели, затем — предсказание на новых данных. Чтобы обучить модель и сохранить её состояние для последующего использования, мы используем комбинатор `-State`, который сохраняет состояние (например, веса модели).
 Для предсказания мы используем функцию [evalMLMethod](/sql-reference/functions/machine-learning-functions#evalmlmethod), которая принимает состояние в качестве аргумента, а также признаки, по которым нужно выполнить предсказание.
@@ -64,7 +64,7 @@ evalMLMethod(model, param1, param2) FROM test_data
 `test_data` — это таблица, аналогичная `train_data`, но может не содержать целевое значение.
 
 
-### Примечания {#notes}
+### Примечания \{#notes\}
 
 1. Для объединения двух моделей пользователь может создать такой запрос:
    `sql  SELECT state1 + state2 FROM your_models`

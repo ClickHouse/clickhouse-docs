@@ -6,7 +6,7 @@ title: 'kolmogorovSmirnovTest'
 doc_type: 'reference'
 ---
 
-# kolmogorovSmirnovTest {#kolmogorovsmirnovtest}
+# kolmogorovSmirnovTest \{#kolmogorovsmirnovtest\}
 
 将 Kolmogorov-Smirnov 检验应用于来自两个总体的样本。
 

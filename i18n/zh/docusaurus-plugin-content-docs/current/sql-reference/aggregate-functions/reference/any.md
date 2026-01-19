@@ -5,7 +5,7 @@ title: 'any'
 doc_type: 'reference'
 ---
 
-# any {#any}
+# any \{#any\}
 
 选择列中首次遇到的值。
 

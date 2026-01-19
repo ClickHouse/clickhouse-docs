@@ -5,7 +5,7 @@ title: 'count'
 doc_type: 'reference'
 ---
 
-# count {#count}
+# count \{#count\}
 
 Подсчитывает количество строк или значений, отличных от NULL.
 

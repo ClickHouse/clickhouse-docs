@@ -7,17 +7,17 @@ keywords: ['EXCEPT', 'modifier']
 doc_type: 'reference'
 ---
 
-# EXCEPT 修飾子 {#except}
+# EXCEPT 修飾子 \{#except\}
 
 > 結果から除外する 1 つ以上の列名を指定します。指定した名前に一致するすべての列は出力から除外されます。
 
-## 構文 {#syntax}
+## 構文 \{#syntax\}
 
 ```sql
 SELECT <expr> EXCEPT ( col_name1 [, col_name2, col_name3, ...] ) FROM [db.]table_name
 ```
 
-## 例 {#examples}
+## 例 \{#examples\}
 
 ```sql title="Query"
 SELECT * EXCEPT (i) from columns_transformers;

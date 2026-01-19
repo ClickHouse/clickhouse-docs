@@ -7,7 +7,7 @@ title: '第三方接口'
 doc_type: 'landing-page'
 ---
 
-# 第三方接口 {#third-party-interfaces}
+# 第三方接口 \{#third-party-interfaces\}
 
 这里汇总了一些第三方工具的链接，这些工具为 ClickHouse 提供各种形式的接口，包括可视化界面、命令行界面或 API：
 

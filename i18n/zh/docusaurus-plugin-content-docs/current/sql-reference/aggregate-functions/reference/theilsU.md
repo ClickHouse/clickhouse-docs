@@ -5,7 +5,7 @@ title: 'theilsU'
 doc_type: 'reference'
 ---
 
-# theilsU {#theilsu}
+# theilsU \{#theilsu\}
 
 `theilsU` 函数用于计算 [Theil&#39;s U 不确定性系数](https://en.wikipedia.org/wiki/Contingency_table#Uncertainty_coefficient)，该系数用于衡量表中两列之间的关联程度。其取值范围为 0.0（无关联）到 1.0（完全一致）。
 

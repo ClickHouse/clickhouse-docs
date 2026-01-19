@@ -5,7 +5,7 @@ title: 'first_value'
 doc_type: 'reference'
 ---
 
-# first_value {#first_value}
+# first_value \{#first_value\}
 
 它是 [`any`](../../../sql-reference/aggregate-functions/reference/any.md) 的别名，但之所以引入它，是为了兼容 [窗口函数](../../window-functions/index.md)，在这些场景下有时需要处理 `NULL` 值（默认情况下，所有 ClickHouse 聚合函数都会忽略 NULL 值）。
 
@@ -13,7 +13,7 @@ doc_type: 'reference'
 
 与 `any` 一样，如果不在窗口函数中使用且源数据流未排序，则结果是随机的，并且返回类型与输入类型一致（只有当输入是 Nullable 或者添加了 -OrNull 组合器时，才会返回 Null）。
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
 ```sql
 CREATE TABLE test_data
@@ -26,7 +26,7 @@ ENGINE = Memory;
 INSERT INTO test_data (a, b) VALUES (1,null), (2,3), (4, 5), (6,null);
 ```
 
-### 示例 1 {#example1}
+### 示例 1 \{#example1\}
 
 默认情况下，NULL 值会被忽略。
 
@@ -40,7 +40,7 @@ SELECT first_value(b) FROM test_data;
 └────────┘
 ```
 
-### 示例 2 {#example2}
+### 示例 2 \{#example2\}
 
 NULL 值会被忽略。
 
@@ -54,7 +54,7 @@ SELECT first_value(b) ignore nulls FROM test_data
 └──────────────────────┘
 ```
 
-### 示例 3 {#example3}
+### 示例 3 \{#example3\}
 
 允许 NULL 值。
 
@@ -68,7 +68,7 @@ SELECT first_value(b) respect nulls FROM test_data
 └───────────────────────┘
 ```
 
-### 示例 4 {#example4}
+### 示例 4 \{#example4\}
 
 通过在子查询中使用 `ORDER BY` 获得稳定的结果。
 

@@ -10,11 +10,11 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     |        |       |
 
-## 描述 {#description}
+## 描述 \{#description\}
 
-## 使用示例 {#example-usage}
+## 使用示例 \{#example-usage\}
 
-### 插入数据 {#inserting-data}
+### 插入数据 \{#inserting-data\}
 
 使用以下名为 `football.txt` 的 txt 文件：
 
@@ -38,4 +38,4 @@ SET format_custom_escaping_rule = 'Quoted';
 INSERT INTO football FROM INFILE 'football.txt' FORMAT CustomSeparatedIgnoreSpacesWithNames;
 ```
 
-## 格式配置 {#format-settings}
+## 格式配置 \{#format-settings\}

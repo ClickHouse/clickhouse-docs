@@ -5,7 +5,7 @@ title: 'anyHeavy'
 doc_type: 'reference'
 ---
 
-# anyHeavy {#anyheavy}
+# anyHeavy \{#anyheavy\}
 
 使用 [heavy hitters](https://doi.org/10.1145/762471.762473) 算法选择一个高频出现的值。如果在每个查询执行线程中，都存在某个值在超过一半的记录中出现，则返回该值。通常，该结果是非确定性的。
 

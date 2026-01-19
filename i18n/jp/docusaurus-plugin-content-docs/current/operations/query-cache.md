@@ -7,12 +7,12 @@ title: 'クエリキャッシュ'
 doc_type: 'guide'
 ---
 
-# クエリキャッシュ {#query-cache}
+# クエリキャッシュ \{#query-cache\}
 
 クエリキャッシュを使用すると、`SELECT` クエリを一度だけ実行して結果を保存し、同じクエリの後続の実行にはキャッシュから直接結果を返すことができます。
 クエリの種類によっては、これにより ClickHouse サーバーのレイテンシとリソース消費を劇的に削減できます。
 
-## 背景、設計、制限事項 {#background-design-and-limitations}
+## 背景、設計、制限事項 \{#background-design-and-limitations\}
 
 クエリキャッシュは、一般的にトランザクション整合性のあるものとないものに分類できます。
 
@@ -24,7 +24,7 @@ doc_type: 'guide'
 トランザクション整合性のないキャッシュは、従来はデータベースとやり取りするクライアントツールやプロキシパッケージ（例:
 [chproxy](https://www.chproxy.org/configuration/caching/)）によって提供されてきました。その結果、同じキャッシュロジックと設定が重複することがよくあります。ClickHouse のクエリキャッシュでは、キャッシュロジックがサーバー側に移されます。これにより、保守の手間が減り、冗長性も回避できます。
 
-## 設定と使用方法 {#configuration-settings-and-usage}
+## 設定と使用方法 \{#configuration-settings-and-usage\}
 
 :::note
 ClickHouse Cloud では、クエリキャッシュの設定を変更するには [クエリレベルの設定](/operations/settings/query-level) を使用する必要があります。[設定ファイルレベルの設定](/operations/configuration-files) の編集は現在サポートされていません。
@@ -186,6 +186,6 @@ system テーブルを含むクエリの結果を強制的にキャッシュし�
 [query_cache_share_between_users](/operations/settings/settings#query_cache_share_between_users) を指定することで、
 キャッシュエントリを他のユーザーからアクセス可能（すなわち共有）にすることができます。
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \{#related-content\}
 
 - ブログ記事: [Introducing the ClickHouse Query Cache](https://clickhouse.com/blog/introduction-to-the-clickhouse-query-cache-and-design)

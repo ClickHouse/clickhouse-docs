@@ -22,7 +22,7 @@ ClickStack の中核にあるのは、「すべてのオブザーバビリティ
 ClickStack は、ClickHouse のカラム指向アーキテクチャ、ネイティブな JSON サポート、完全に並列化された実行エンジンを活用することで、高カーディナリティなワークロードを効率的に処理できるように構築されています。これにより、巨大なデータセットに対するサブ秒レイテンシのクエリ、長期間にわたる高速な集計、個々のトレースの詳細な調査が可能になります。JSON は圧縮されたカラムナ形式で保存されるため、手動での対応や事前定義なしにスキーマを柔軟に進化させることができます。
 
 
-## 機能 {#features}
+## 機能 \{#features\}
 
 このスタックには、デバッグおよび根本原因分析のために設計された、主要な機能が複数含まれています。
 
@@ -40,7 +40,7 @@ ClickStack は、ClickHouse のカラム指向アーキテクチャ、ネイテ�
 - 異常やパフォーマンス回帰を特定するためのイベントの差分（event delta）
 - ログのパターン認識
 
-## コンポーネント {#components}
+## コンポーネント \{#components\}
 
 ClickStack は、次の3つのコアコンポーネントで構成されています。
 
@@ -52,35 +52,35 @@ ClickStack は、次の3つのコアコンポーネントで構成されてい�
 
 利用を開始するには、まず [Getting started guide](/use-cases/observability/clickstack/getting-started) を参照し、その後に [sample dataset](/use-cases/observability/clickstack/sample-datasets) を読み込みます。[deployment options](/use-cases/observability/clickstack/deployment) や [production best practices](/use-cases/observability/clickstack/production) に関するドキュメントもあわせて確認できます。
 
-## 原則 {#clickstack-principles}
+## 原則 \{#clickstack-principles\}
 
 ClickStackは、オブザーバビリティスタックのあらゆるレイヤーにおいて、使いやすさ、パフォーマンス、柔軟性を優先する一連の中核となる原則に基づいて設計されています。
 
-### 数分で簡単にセットアップ {#clickstack-easy-to-setup}
+### 数分で簡単にセットアップ \{#clickstack-easy-to-setup\}
 
 ClickStack は、あらゆる ClickHouse インスタンスおよびスキーマで導入直後から動作し、必要な設定は最小限です。新規導入でも既存環境との統合でも、数分で利用を開始できます。
 
-### 使いやすく用途に特化 {#user-friendly-purpose-built}
+### 使いやすく用途に特化 \{#user-friendly-purpose-built\}
 
 HyperDX UI は SQL と Lucene スタイルの両方の構文をサポートしており、ユーザーは自分のワークフローに適したクエリインターフェースを選択できます。オブザーバビリティ向けに特別に設計されたこの UI は、チームが根本原因を迅速に特定し、複雑なデータをスムーズに探索できるよう最適化されています。
 
-### エンドツーエンドのオブザーバビリティ {#end-to-end-observability}
+### エンドツーエンドのオブザーバビリティ \{#end-to-end-observability\}
 
 ClickStack は、フロントエンドのユーザーセッションから、バックエンドのインフラストラクチャのメトリクス、アプリケーションログ、分散トレースまでを対象としたフルスタックの可観測性を提供します。この統合されたビューにより、システム全体にわたる詳細な相関分析とインサイトの抽出が可能になります。
 
-### ClickHouse 向けに構築 {#built-for-clickhouse}
+### ClickHouse 向けに構築 \{#built-for-clickhouse\}
 
 スタックの全レイヤーが、ClickHouse の機能を最大限に活用できるよう設計されています。クエリは ClickHouse の分析関数とカラム型エンジンを活用するよう最適化されており、大規模なデータに対する高速な検索と集約を実現します。
 
-### OpenTelemetry ネイティブ {#open-telemetry-native}
+### OpenTelemetry ネイティブ \{#open-telemetry-native\}
 
 ClickStack は OpenTelemetry にネイティブ対応しており、すべてのデータを OpenTelemetry Collector のエンドポイント経由で取り込みます。上級ユーザー向けには、ネイティブなファイルフォーマット、カスタムパイプライン、Vector のようなサードパーティーツールを利用して、ClickHouse へデータを直接インジェストすることもサポートしています。
 
-### オープンソースで完全にカスタマイズ可能 {#open-source-and-customizable}
+### オープンソースで完全にカスタマイズ可能 \{#open-source-and-customizable\}
 
 ClickStack は完全にオープンソースであり、あらゆる環境にデプロイできます。スキーマは柔軟でユーザーが変更可能であり、UI は変更を加えることなくカスタムスキーマに対応できるよう設計されています。コレクター、ClickHouse、UI を含むすべてのコンポーネントは、それぞれ独立してスケールできるため、インジェスト、クエリ、ストレージの要件に対応できます。
 
-## アーキテクチャ概要 {#architectural-overview}
+## アーキテクチャ概要 \{#architectural-overview\}
 
 <Image img={architecture} alt="Simple architecture" size="lg"/>
 

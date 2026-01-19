@@ -5,7 +5,7 @@ title: 'argMax'
 doc_type: 'reference'
 ---
 
-# argMax {#argmax}
+# argMax \{#argmax\}
 
 Вычисляет значение `arg` для максимального значения `val`. Если существует несколько строк с одинаковым максимальным `val`, то выбор возвращаемого связанного значения `arg` недетерминирован.
 И `arg`, и `max` ведут себя как [агрегатные функции](/sql-reference/aggregate-functions/index.md), при обработке они обе [пропускают значения `Null`](/sql-reference/aggregate-functions/index.md#null-processing) и возвращают значения, отличные от `Null`, если такие значения доступны.

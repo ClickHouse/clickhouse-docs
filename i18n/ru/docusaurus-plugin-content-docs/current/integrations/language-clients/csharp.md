@@ -17,20 +17,20 @@ import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-bu
 import connection_details_csharp from '@site/static/images/_snippets/connection-details-csharp.png';
 
 
-# Клиент ClickHouse для C# {#clickhouse-c-client}
+# Клиент ClickHouse для C# \{#clickhouse-c-client\}
 
 Официальный клиент C# для подключения к ClickHouse.
 Исходный код клиента доступен в [репозитории GitHub](https://github.com/ClickHouse/clickhouse-cs).
 Изначально разработан [Oleg V. Kozlyuk](https://github.com/DarkWanderer).
 
-## Руководство по миграции {#migration-guide}
+## Руководство по миграции \{#migration-guide\}
 
 1. Обновите файл `.csproj`, указав новое имя пакета `ClickHouse.Driver` и [последнюю версию на NuGet](https://www.nuget.org/packages/ClickHouse.Driver).
 2. Замените все вхождения `ClickHouse.Client` на `ClickHouse.Driver` в вашей кодовой базе.
 
 ---
 
-## Поддерживаемые версии .NET {#supported-net-versions}
+## Поддерживаемые версии .NET \{#supported-net-versions\}
 
 `ClickHouse.Driver` поддерживает следующие версии .NET:
 
@@ -42,7 +42,7 @@ import connection_details_csharp from '@site/static/images/_snippets/connection-
 * .NET 9.0
 * .NET 10.0
 
-## Установка {#installation}
+## Установка \{#installation\}
 
 Установите пакет из NuGet:
 
@@ -57,7 +57,7 @@ Install-Package ClickHouse.Driver
 ```
 
 
-## Быстрый старт {#quick-start}
+## Быстрый старт \{#quick-start\}
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -70,7 +70,7 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 ```
 
 
-## Конфигурация {#configuration}
+## Конфигурация \{#configuration\}
 
 Существует два способа настройки подключения к ClickHouse:
 
@@ -79,7 +79,7 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 
 Ниже приведён полный список всех параметров, их значений по умолчанию и того, как они влияют на подключение.
 
-### Параметры подключения {#connection-settings}
+### Параметры подключения \{#connection-settings\}
 
 | Свойство | Тип | Значение по умолчанию | Ключ строки подключения | Описание |
 |----------|-----|-----------------------|-------------------------|----------|
@@ -92,7 +92,7 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 | Path | `string` | `null` | `Path` | Путь в URL для сценариев с обратным прокси (например, `/clickhouse`) |
 | Timeout | `TimeSpan` | 2 минуты | `Timeout` | Таймаут операции (в строке подключения хранится в секундах) |
 
-### Формат данных и сериализация {#data-format-serialization}
+### Формат данных и сериализация \{#data-format-serialization\}
 
 | Свойство | Тип | По умолчанию | Ключ строки подключения | Описание |
 |----------|------|---------|----------------------|-------------|
@@ -100,7 +100,7 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 | UseCustomDecimals | `bool` | `true` | `UseCustomDecimals` | Использовать `ClickHouseDecimal` для произвольной точности; если `false`, используется .NET `decimal` (ограничение 128 бит) |
 | UseFormDataParameters | `bool` | `false` | `UseFormDataParameters` | Отправлять параметры в виде form data вместо URL-строки запроса |
 
-### Управление сессиями {#session-management}
+### Управление сессиями \{#session-management\}
 
 | Свойство | Тип | Значение по умолчанию | Ключ строки подключения | Описание |
 |----------|------|-----------------------|-------------------------|----------|
@@ -113,13 +113,13 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 Класс `ClickHouseConnection` обычно поддерживает параллельную работу (несколько потоков могут выполнять запросы одновременно). Однако включение флага `UseSession` ограничит выполнение одним активным запросом на соединение в любой момент времени (это ограничение на стороне сервера).
 :::
 
-### Безопасность {#security}
+### Безопасность \{#security\}
 
 | Свойство | Тип | Значение по умолчанию | Ключ строки подключения | Описание |
 |----------|------|-----------------------|--------------------------|----------|
 | SkipServerCertificateValidation | `bool` | `false` | — | Отключить проверку HTTPS-сертификата; **не использовать в продуктивной среде** |
 
-### Конфигурация HTTP‑клиента {#http-client-configuration}
+### Конфигурация HTTP‑клиента \{#http-client-configuration\}
 
 | Свойство | Тип | Значение по умолчанию | Ключ строки подключения | Описание |
 |----------|------|-----------------------|-------------------------|----------|
@@ -127,14 +127,14 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 | HttpClientFactory | `IHttpClientFactory` | `null` | — | Пользовательская фабрика для создания экземпляров HttpClient |
 | HttpClientName | `string` | `null` | — | Имя, используемое HttpClientFactory для создания конкретного клиента |
 
-### Логирование и отладка {#logging-debugging}
+### Логирование и отладка \{#logging-debugging\}
 
 | Свойство | Тип | Значение по умолчанию | Ключ строки подключения | Описание |
 |----------|------|-----------------------|-------------------------|----------|
 | LoggerFactory | `ILoggerFactory` | `null` | — | Фабрика логгеров для диагностического логирования |
 | EnableDebugMode | `bool` | `false` | — | Включить .NET network tracing (требуется LoggerFactory с уровнем, установленным на Trace); **значительное влияние на производительность** |
 
-### Пользовательские настройки и роли {#custom-settings-roles}
+### Пользовательские настройки и роли \{#custom-settings-roles\}
 
 | Свойство | Тип | Значение по умолчанию | Ключ строки подключения | Описание |
 |----------|------|-----------------------|-------------------------|----------|
@@ -149,25 +149,25 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 
 ---
 
-### Примеры строк подключения {#connection-string-examples}
+### Примеры строк подключения \{#connection-string-examples\}
 
-#### Простое подключение {#basic-connection}
+#### Простое подключение \{#basic-connection\}
 
 ```text
 Host=localhost;Port=8123;Username=default;Password=secret;Database=mydb
 ```
 
 
-#### С пользовательскими настройками ClickHouse {#with-custom-clickhouse-settings}
+#### С пользовательскими настройками ClickHouse \{#with-custom-clickhouse-settings\}
 
 ```text
 Host=localhost;set_max_threads=4;set_readonly=1;set_max_memory_usage=10000000000
 ```
 
 
-## Использование {#usage}
+## Использование \{#usage\}
 
-### Подключение {#connecting}
+### Подключение \{#connecting\}
 
 Чтобы подключиться к ClickHouse, создайте `ClickHouseConnection` со строкой подключения или объект `ClickHouseClientSettings`. См. раздел [Configuration](#configuration) с описанием доступных параметров.
 
@@ -215,7 +215,7 @@ await connection2.OpenAsync();
 ***
 
 
-### Создание таблицы {#creating-a-table}
+### Создание таблицы \{#creating-a-table\}
 
 Создайте таблицу с использованием стандартного синтаксиса SQL:
 
@@ -237,7 +237,7 @@ using (var connection = new ClickHouseConnection(connectionString))
 ***
 
 
-### Вставка данных {#inserting-data}
+### Вставка данных \{#inserting-data\}
 
 Вставляйте данные с использованием параметризованных запросов:
 
@@ -261,7 +261,7 @@ using (var connection = new ClickHouseConnection(connectionString))
 ***
 
 
-### Массовая вставка {#bulk-insert}
+### Массовая вставка \{#bulk-insert\}
 
 Используйте `ClickHouseBulkCopy` для вставки большого количества строк. Он эффективно потоково передаёт данные, используя собственный бинарный построчный формат ClickHouse, работает в параллельном режиме и может разбивать данные на пакеты. Это также позволяет избежать ограничений, связанных с большими наборами параметров, которые вызывают ошибки «URL too long».
 
@@ -306,7 +306,7 @@ Console.WriteLine($"Rows written: {bulkCopy.RowsWritten}");
 ***
 
 
-### Выполнение запросов SELECT {#performing-select-queries}
+### Выполнение запросов SELECT \{#performing-select-queries\}
 
 Выполняйте запросы SELECT с помощью методов `ExecuteReader()` или `ExecuteReaderAsync()`. Возвращаемый `DbDataReader` предоставляет типизированный доступ к столбцам результата через методы, такие как `GetInt64()`, `GetString()` и `GetFieldValue<T>()`.
 
@@ -336,7 +336,7 @@ using (var connection = new ClickHouseConnection(connectionString))
 ***
 
 
-### Параметры SQL {#sql-parameters}
+### Параметры SQL \{#sql-parameters\}
 
 В ClickHouse стандартный формат параметров в SQL-запросах — `{parameter_name:DataType}`.
 
@@ -361,7 +361,7 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
 ***
 
 
-### Идентификатор запроса {#query-id}
+### Идентификатор запроса \{#query-id\}
 
 Каждый метод, который выполняет запрос, также возвращает `query_id` в результате. Этот уникальный идентификатор назначается клиентом для каждого запроса и может использоваться для получения данных из таблицы `system.query_log` (если она включена) или для отмены длительно выполняющихся запросов. При необходимости пользователь может задать идентификатор запроса явно в объекте ClickHouseCommand.
 
@@ -383,7 +383,7 @@ Console.WriteLine($"QueryId: {command.QueryId}");
 ***
 
 
-### Необработанный стриминг {#raw-streaming}
+### Необработанный стриминг \{#raw-streaming\}
 
 Можно передавать данные в определённом формате непосредственно, обходя `data reader`. Это может быть полезно, если вы хотите сохранить данные в файл в нужном формате. Например:
 
@@ -399,7 +399,7 @@ var json = await reader.ReadToEndAsync();
 ***
 
 
-### Вставка из необработанного потока {#raw-stream-insert}
+### Вставка из необработанного потока \{#raw-stream-insert\}
 
 Используйте `InsertRawStreamAsync`, чтобы вставлять данные непосредственно из файловых потоков или потоков памяти в форматах, таких как CSV, JSON или любой [поддерживаемый формат ClickHouse](/docs/interfaces/formats).
 
@@ -422,13 +422,13 @@ using var response = await connection.InsertRawStreamAsync(
 ***
 
 
-### Дополнительные примеры {#more-examples}
+### Дополнительные примеры \{#more-examples\}
 
 См. дополнительные практические примеры использования в [директории examples](https://github.com/ClickHouse/clickhouse-cs/tree/main/examples) репозитория GitHub.
 
-## Рекомендации {#best-practices}
+## Рекомендации \{#best-practices\}
 
-### Время жизни соединения и пул подключений {#best-practices-connection-lifetime}
+### Время жизни соединения и пул подключений \{#best-practices-connection-lifetime\}
 
 `ClickHouse.Driver` внутренне использует `System.Net.Http.HttpClient`. `HttpClient` имеет пул подключений для каждой конечной точки (endpoint). В результате:
 
@@ -446,7 +446,7 @@ using var response = await connection.InsertRawStreamAsync(
 
 ---
 
-### Обработка DateTime {#best-practice-datetime}
+### Обработка DateTime \{#best-practice-datetime\}
 
 1. **По возможности используйте UTC.** Храните метки времени в столбцах `DateTime('UTC')` и используйте `DateTimeKind.Utc` в коде. Это устраняет неоднозначность, связанную с часовыми поясами.
 
@@ -457,7 +457,7 @@ using var response = await connection.InsertRawStreamAsync(
    command.AddParameter("dt", value, "DateTime('Europe/Amsterdam')");
    ```
 
-### Асинхронные вставки {#async-inserts}
+### Асинхронные вставки \{#async-inserts\}
 
 [Асинхронные вставки](/docs/optimize/asynchronous-inserts) переносят ответственность за формирование батчей с клиента на сервер. Вместо необходимости группировать вставки на стороне клиента сервер буферизует входящие данные и сбрасывает их в хранилище при достижении настраиваемых пороговых значений. Это полезно в сценариях с высокой степенью параллелизма, например в нагрузках обсервабилити, когда множество агентов отправляют небольшие объемы данных.
 
@@ -495,7 +495,7 @@ settings.CustomSettings["wait_for_async_insert"] = 1; // Recommended: wait for f
 ***
 
 
-### Сессии {#best-practices-sessions}
+### Сессии \{#best-practices-sessions\}
 
 Включайте сессии только тогда, когда вам нужны серверные возможности с сохранением состояния, например:
 
@@ -527,13 +527,13 @@ await using var reader = await cmd3.ExecuteReaderAsync();
 ```
 
 
-## Поддерживаемые типы данных {#supported-data-types}
+## Поддерживаемые типы данных \{#supported-data-types\}
 
 `ClickHouse.Driver` поддерживает все типы данных ClickHouse. В приведённых ниже таблицах показаны сопоставления между типами ClickHouse и нативными типами .NET при чтении данных из базы данных.
 
-### Сопоставление типов: чтение из ClickHouse {#clickhouse-native-type-map-reading}
+### Сопоставление типов: чтение из ClickHouse \{#clickhouse-native-type-map-reading\}
 
-#### Целочисленные типы {#type-map-reading-integer}
+#### Целочисленные типы \{#type-map-reading-integer\}
 
 | Тип в ClickHouse | Тип в .NET |
 |------------------|------------|
@@ -552,7 +552,7 @@ await using var reader = await cmd3.ExecuteReaderAsync();
 
 ---
 
-#### Типы с плавающей запятой {#type-map-reading-floating-points}
+#### Типы с плавающей запятой \{#type-map-reading-floating-points\}
 
 | Тип ClickHouse | Тип .NET |
 |-----------------|-----------|
@@ -562,7 +562,7 @@ await using var reader = await cmd3.ExecuteReaderAsync();
 
 ---
 
-#### Типы Decimal {#type-map-reading-decimal}
+#### Типы Decimal \{#type-map-reading-decimal\}
 
 | Тип ClickHouse | Тип .NET |
 |-----------------|-----------|
@@ -578,7 +578,7 @@ await using var reader = await cmd3.ExecuteReaderAsync();
 
 ---
 
-#### Булев тип {#type-map-reading-boolean}
+#### Булев тип \{#type-map-reading-boolean\}
 
 | Тип ClickHouse | Тип .NET |
 |-----------------|-----------|
@@ -586,7 +586,7 @@ await using var reader = await cmd3.ExecuteReaderAsync();
 
 ---
 
-#### Строковые типы {#type-map-reading-strings}
+#### Строковые типы \{#type-map-reading-strings\}
 
 | Тип ClickHouse | Тип .NET |
 |----------------|----------|
@@ -595,7 +595,7 @@ await using var reader = await cmd3.ExecuteReaderAsync();
 
 ---
 
-#### Типы даты и времени {#type-map-reading-datetime}
+#### Типы даты и времени \{#type-map-reading-datetime\}
 
 | ClickHouse Type | .NET Type  |
 | --------------- | ---------- |
@@ -638,7 +638,7 @@ var dto = reader.GetDateTimeOffset(0); // 2024-06-15 14:30:00 +02:00 (CEST)
 ***
 
 
-#### Другие типы {#type-map-reading-other}
+#### Другие типы \{#type-map-reading-other\}
 
 | Тип ClickHouse | Тип .NET |
 |-----------------|-----------|
@@ -666,7 +666,7 @@ var dto = reader.GetDateTimeOffset(0); // 2024-06-15 14:30:00 +02:00 (CEST)
 
 ---
 
-#### Типы геометрии {#type-map-reading-geometry}
+#### Типы геометрии \{#type-map-reading-geometry\}
 
 | Тип ClickHouse | Тип .NET |
 |----------------|----------|
@@ -684,11 +684,11 @@ var dto = reader.GetDateTimeOffset(0); // 2024-06-15 14:30:00 +02:00 (CEST)
 
 ---
 
-### Сопоставление типов: запись в ClickHouse {#clickhouse-native-type-map-writing}
+### Сопоставление типов: запись в ClickHouse \{#clickhouse-native-type-map-writing\}
 
 При вставке данных драйвер преобразует типы .NET в соответствующие типы ClickHouse. В таблицах ниже показано, какие типы .NET поддерживаются для каждого типа столбца ClickHouse.
 
-#### Целочисленные типы {#type-map-writing-integer}
+#### Целочисленные типы \{#type-map-writing-integer\}
 
 | Тип ClickHouse | Принимаемые типы .NET | Примечания |
 |-----------------|---------------------|-------|
@@ -707,7 +707,7 @@ var dto = reader.GetDateTimeOffset(0); // 2024-06-15 14:30:00 +02:00 (CEST)
 
 ---
 
-#### Типы с плавающей запятой {#type-map-writing-floating-point}
+#### Типы с плавающей запятой \{#type-map-writing-floating-point\}
 
 | Тип ClickHouse | Поддерживаемые типы .NET | Примечания |
 |-----------------|---------------------|-------|
@@ -717,7 +717,7 @@ var dto = reader.GetDateTimeOffset(0); // 2024-06-15 14:30:00 +02:00 (CEST)
 
 ---
 
-#### Логический тип {#type-map-writing-boolean}
+#### Логический тип \{#type-map-writing-boolean\}
 
 | Тип ClickHouse | Допустимые типы .NET | Примечания |
 |----------------|----------------------|-----------|
@@ -725,7 +725,7 @@ var dto = reader.GetDateTimeOffset(0); // 2024-06-15 14:30:00 +02:00 (CEST)
 
 ---
 
-#### Строковые типы {#type-map-writing-strings}
+#### Строковые типы \{#type-map-writing-strings\}
 
 | Тип ClickHouse | Допустимые типы .NET | Примечания |
 |----------------|-----------------------|------------|
@@ -734,7 +734,7 @@ var dto = reader.GetDateTimeOffset(0); // 2024-06-15 14:30:00 +02:00 (CEST)
 
 ---
 
-#### Типы даты и времени {#type-map-writing-datetime}
+#### Типы даты и времени \{#type-map-writing-datetime\}
 
 | Тип ClickHouse | Допустимые типы .NET                                              | Примечания                                                                               |
 | -------------- | ----------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
@@ -776,7 +776,7 @@ var wallClock = new DateTime(2024, 1, 15, 14, 30, 0, DateTimeKind.Unspecified);
 **Рекомендация:** для наиболее простого и предсказуемого поведения используйте `DateTimeKind.Utc` или `DateTimeOffset` для всех операций с типом DateTime. Это позволит вашему коду работать одинаково независимо от часового пояса сервера, клиента или часового пояса столбца.
 
 
-#### HTTP-параметры vs bulk copy {#datetime-http-param-vs-bulkcopy}
+#### HTTP-параметры vs bulk copy \{#datetime-http-param-vs-bulkcopy\}
 
 Существует существенное отличие между привязкой HTTP-параметров и bulk copy при записи значений DateTime с Kind `Unspecified`:
 
@@ -806,7 +806,7 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 ***
 
 
-#### Типы Decimal {#type-map-writing-decimal}
+#### Типы Decimal \{#type-map-writing-decimal\}
 
 | Тип ClickHouse | Поддерживаемые типы .NET | Примечания |
 |-----------------|--------------------------|------------|
@@ -818,7 +818,7 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 
 ---
 
-#### Другие типы {#type-map-writing-other}
+#### Другие типы \{#type-map-writing-other\}
 
 | Тип ClickHouse | Принимаемые типы .NET | Примечания |
 |-----------------|---------------------|-------|
@@ -842,7 +842,7 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 
 ---
 
-#### Геометрические типы {#type-map-writing-geometry}
+#### Геометрические типы \{#type-map-writing-geometry\}
 
 | Тип ClickHouse | Допустимые типы .NET | Примечания |
 |-----------------|---------------------|-------|
@@ -856,7 +856,7 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 
 ---
 
-#### Запись не поддерживается  {#type-map-writing-not-supported}
+#### Запись не поддерживается  \{#type-map-writing-not-supported\}
 
 | Тип ClickHouse | Примечания |
 |-----------------|-------|
@@ -865,7 +865,7 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 
 ---
 
-### Обработка вложенных типов {#nested-type-handling}
+### Обработка вложенных типов \{#nested-type-handling\}
 
 Вложенные типы ClickHouse (`Nested(...)`) можно читать и записывать с использованием семантики массивов.
 
@@ -889,13 +889,13 @@ await bulkCopy.WriteToServerAsync(new[] { row1, row2 });
 ```
 
 
-## Журналирование и диагностика {#logging-and-diagnostics}
+## Журналирование и диагностика \{#logging-and-diagnostics\}
 
 Клиент ClickHouse для .NET интегрируется с абстракциями логирования `Microsoft.Extensions.Logging`, предоставляя легковесное журналирование, подключаемое по желанию. При его включении драйвер генерирует структурированные сообщения о событиях жизненного цикла подключения, выполнении команд, транспортных операциях и массовой загрузке данных. Журналирование полностью необязательно — приложения, которые не настраивают логгер, продолжают работать без дополнительных накладных расходов.
 
-### Быстрый старт {#logging-quick-start}
+### Быстрый старт \{#logging-quick-start\}
 
-#### Использование ClickHouseConnection {#logging-clickhouseconnection}
+#### Использование ClickHouseConnection \{#logging-clickhouseconnection\}
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -917,7 +917,7 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-#### Использование appsettings.json {#logging-appsettings-config}
+#### Использование appsettings.json \{#logging-appsettings-config\}
 
 Вы можете настроить уровни логирования с помощью стандартной системы конфигурации .NET:
 
@@ -947,7 +947,7 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-#### Использование конфигурации в оперативной памяти {#logging-inmemory-config}
+#### Использование конфигурации в оперативной памяти \{#logging-inmemory-config\}
 
 Вы также можете настроить детализацию логирования по категориям прямо в коде:
 
@@ -983,7 +983,7 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-### Категории и источники {#logging-categories}
+### Категории и источники \{#logging-categories\}
 
 Драйвер использует отдельные категории, чтобы вы могли точно настраивать уровни логирования для каждого компонента:
 
@@ -995,7 +995,7 @@ await connection.OpenAsync();
 | `ClickHouse.Driver.BulkCopy` | `ClickHouseBulkCopy` | Загрузка метаданных, пакетные операции, количество строк и завершение отправки. |
 | `ClickHouse.Driver.NetTrace` | `TraceHelper` | Отслеживание сетевых операций, только при включённом режиме отладки. |
 
-#### Пример: диагностика неполадок подключения {#logging-config-example}
+#### Пример: диагностика неполадок подключения \{#logging-config-example\}
 
 ```json
 {
@@ -1018,7 +1018,7 @@ await connection.OpenAsync();
 * события открытия и закрытия подключений
 * отслеживание идентификаторов сессий
 
-### Режим отладки: трассировка сети и диагностика {#logging-debugmode}
+### Режим отладки: трассировка сети и диагностика \{#logging-debugmode\}
 
 Чтобы упростить диагностику сетевых проблем, библиотека драйвера предоставляет вспомогательный инструмент, позволяющий включить низкоуровневую трассировку внутренних сетевых механизмов .NET. Чтобы включить её, необходимо передать `LoggerFactory` с уровнем `Trace` и установить `EnableDebugMode` в значение `true` (или включить её вручную через класс `ClickHouse.Driver.Diagnostic.TraceHelper`). События будут логироваться в категорию `ClickHouse.Driver.NetTrace`. Предупреждение: это приведёт к генерации чрезвычайно подробных логов и повлияет на производительность. Не рекомендуется включать режим отладки в продуктивной среде.
 
@@ -1038,11 +1038,11 @@ var settings = new ClickHouseClientSettings()
 ```
 
 
-## OpenTelemetry {#opentelemetry}
+## OpenTelemetry \{#opentelemetry\}
 
 Драйвер предоставляет встроенную поддержку распределённого трейсинга OpenTelemetry через API .NET [`System.Diagnostics.Activity`](https://learn.microsoft.com/en-us/dotnet/core/diagnostics/distributed-tracing). При его включении драйвер генерирует спаны для операций с базой данных, которые могут быть экспортированы в обсервабилити-бэкенды, такие как Jaeger или сам ClickHouse (через [OpenTelemetry Collector](https://clickhouse.com/docs/observability/integrating-opentelemetry)).
 
-### Включение трассировки {#opentelemetry-enabling}
+### Включение трассировки \{#opentelemetry-enabling\}
 
 В приложениях ASP.NET Core добавьте `ActivitySource` драйвера ClickHouse в конфигурацию OpenTelemetry:
 
@@ -1067,7 +1067,7 @@ var tracerProvider = Sdk.CreateTracerProviderBuilder()
 ```
 
 
-### Атрибуты спана {#opentelemetry-attributes}
+### Атрибуты спана \{#opentelemetry-attributes\}
 
 Каждый спан включает стандартные атрибуты базы данных OpenTelemetry, а также специфичные для ClickHouse статистические данные по запросу, которые можно использовать для отладки.
 
@@ -1083,7 +1083,7 @@ var tracerProvider = Sdk.CreateTracerProviderBuilder()
 | `db.clickhouse.written_bytes` | Количество байт, записанных запросом |
 | `db.clickhouse.elapsed_ns` | Время выполнения на стороне сервера в наносекундах |
 
-### Параметры конфигурации {#opentelemetry-configuration}
+### Параметры конфигурации \{#opentelemetry-configuration\}
 
 Настройте поведение трассировки с помощью `ClickHouseDiagnosticsOptions`:
 
@@ -1102,11 +1102,11 @@ ClickHouseDiagnosticsOptions.StatementMaxLength = 500;
 :::
 
 
-## Конфигурация TLS {#tls-configuration}
+## Конфигурация TLS \{#tls-configuration\}
 
 При подключении к ClickHouse по HTTPS вы можете по‑разному настроить работу TLS/SSL.
 
-### Пользовательская проверка сертификатов {#custom-certificate-validation}
+### Пользовательская проверка сертификатов \{#custom-certificate-validation\}
 
 Для продакшн-сред, где требуется собственная логика проверки сертификатов, используйте свой `HttpClient` с настроенным обработчиком `ServerCertificateCustomValidationCallback`:
 
@@ -1156,9 +1156,9 @@ await connection.OpenAsync();
   :::
 
 
-## Поддержка ORM {#orm-support}
+## Поддержка ORM \{#orm-support\}
 
-### Dapper {#orm-support-dapper}
+### Dapper \{#orm-support-dapper\}
 
 `ClickHouse.Driver` можно использовать с Dapper, но анонимные объекты при этом не поддерживаются.
 
@@ -1181,7 +1181,7 @@ connection.QueryAsync<string>(
 ```
 
 
-### Linq2db {#orm-support-linq2db}
+### Linq2db \{#orm-support-linq2db\}
 
 Этот драйвер совместим с [linq2db](https://github.com/linq2db/linq2db) — легковесным ORM и провайдером LINQ для .NET. Подробную документацию см. на сайте проекта.
 
@@ -1242,13 +1242,13 @@ await table.BulkCopyAsync(options, products);
 ```
 
 
-### Entity framework core {#orm-support-ef-core}
+### Entity framework core \{#orm-support-ef-core\}
 
 Entity Framework Core на данный момент не поддерживается.
 
-## Ограничения {#limitations}
+## Ограничения \{#limitations\}
 
-### Столбцы типа AggregateFunction {#aggregatefunction-columns}
+### Столбцы типа AggregateFunction \{#aggregatefunction-columns\}
 
 Столбцы типа `AggregateFunction(...)` нельзя напрямую использовать в запросах или при вставке данных.
 

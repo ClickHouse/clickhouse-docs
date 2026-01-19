@@ -12,11 +12,11 @@ integration:
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-# TimescaleDB 拡張付き Postgres ソースのセットアップガイド {#postgres-with-timescaledb-source-setup-guide}
+# TimescaleDB 拡張付き Postgres ソースのセットアップガイド \{#postgres-with-timescaledb-source-setup-guide\}
 
 <BetaBadge/>
 
-## 背景 {#background}
+## 背景 \{#background\}
 
 [TimescaleDB](https://github.com/timescale/timescaledb) は、Timescale Inc によって開発されたオープンソースの Postgres 拡張機能であり、
 Postgres から移行することなく分析クエリのパフォーマンスを向上させることを目的としています。これは、拡張機能によって管理される
@@ -35,11 +35,11 @@ Timescale のハイパーテーブルはいくつかの点で通常の Postgres 
 これはレプリケーション処理を複雑にするため、Timescale のハイパーテーブルをレプリケートする機能は
 **ベストエフォート**として扱うべきです。
 
-## サポートされている Postgres バージョン {#supported-postgres-versions}
+## サポートされている Postgres バージョン \{#supported-postgres-versions\}
 
 ClickPipes は Postgres バージョン 12 以降に対応しています。
 
-## 論理レプリケーションを有効化する {#enable-logical-replication}
+## 論理レプリケーションを有効化する \{#enable-logical-replication\}
 
 TimescaleDB を含む Postgres インスタンスのデプロイ方法によって、実施する手順が異なります。
 
@@ -53,7 +53,7 @@ Timescale Cloud は論理レプリケーションをサポートしていませ�
 そのため、Timescale Cloud のユーザーは Postgres ClickPipe を使用したデータの一度きりのロード（`Initial Load Only`）のみ実行できます。
 :::
 
-## 設定 {#configuration}
+## 設定 \{#configuration\}
 
 Timescale のハイパーテーブル自体には、挿入されたデータは保存されません。代わりに、データは `_timescaledb_internal` スキーマ内にある対応する複数の「チャンク」テーブルに保存されます。ハイパーテーブルに対してクエリを実行する場合、これは問題になりません。しかし論理レプリケーション中は、ハイパーテーブルの変更ではなく、チャンクテーブルの変更を検出します。Postgres ClickPipe には、チャンクテーブルから親ハイパーテーブルへの変更を自動的に再マッピングするロジックがありますが、これには追加の手順が必要です。
 
@@ -111,7 +111,7 @@ Timescale のハイパーテーブル自体には、挿入されたデータは�
 これらの手順が完了すると、[ClickPipe を作成](../index.md)できるようになります。
 
 
-## ネットワークアクセスの構成 {#configure-network-access}
+## ネットワークアクセスの構成 \{#configure-network-access\}
 
 Timescale インスタンスへのトラフィックを制限したい場合は、[ドキュメントに記載されている静的 NAT IP](../../index.md#list-of-static-ips) を許可リストに登録してください。
 具体的な手順はプロバイダーによって異なります。ご利用のプロバイダーがサイドバーに記載されている場合はその手順に従い、記載がない場合はプロバイダーに問い合わせチケットを送信して確認してください。

@@ -15,7 +15,7 @@ import remove_table from '@site/static/images/integrations/data-ingestion/clickp
 
 在某些情况下，将特定表从 MySQL ClickPipe 中排除是合理的，例如，如果某个表对你的分析工作负载并非必需，跳过它可以降低在 ClickHouse 中的存储和复制成本。
 
-## 移除特定表的步骤 {#remove-tables-steps}
+## 移除特定表的步骤 \{#remove-tables-steps\}
 
 第一步是将该表从 pipe 中移除。你可以按照以下步骤操作：
 

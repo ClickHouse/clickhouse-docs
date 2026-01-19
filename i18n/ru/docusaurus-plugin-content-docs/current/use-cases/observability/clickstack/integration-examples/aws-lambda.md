@@ -16,7 +16,7 @@ import log from '@site/static/images/clickstack/lambda/lambda-log.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Мониторинг логов AWS Lambda с ClickStack с использованием Rotel {#lambda-clickstack}
+# Мониторинг логов AWS Lambda с ClickStack с использованием Rotel \{#lambda-clickstack\}
 
 <CommunityMaintainedBadge/>
 
@@ -32,11 +32,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 Необходимое время: 5–10 минут
 :::
 
-## Интеграция с существующими функциями Lambda {#existing-lambda}
+## Интеграция с существующими функциями Lambda \{#existing-lambda\}
 
 В этом разделе описывается настройка ваших существующих функций AWS Lambda для отправки логов и трассировок в ClickStack с помощью расширения Rotel Lambda Extension.
 
-### Предварительные требования {#prerequisites}
+### Предварительные требования \{#prerequisites\}
 
 - Запущенный экземпляр ClickStack
 - Функции AWS Lambda для мониторинга
@@ -236,7 +236,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <VerticalStepper headerLevel="h4">
 
-#### Удаление прав CloudWatch из роли выполнения {#remove-permissions}
+#### Удаление прав CloudWatch из роли выполнения \{#remove-permissions\}
 
 1. Откройте AWS Console и перейдите в **AWS Lambda**
 2. Перейдите к своей функции Lambda
@@ -282,7 +282,7 @@ AWS предоставляет слои автоинструментирован
 
 Найдите последние версии в [репозитории AWS OpenTelemetry Lambda](https://github.com/aws-observability/aws-otel-lambda).
 
-#### Добавьте оба слоя в вашу функцию {#add-both-layers}
+#### Добавьте оба слоя в вашу функцию \{#add-both-layers\}
 
 Добавьте **оба** слоя: слой расширения Rotel и слой автоинструментирования:
 

@@ -7,14 +7,14 @@ title: 'Песочница ClickHouse'
 doc_type: 'guide'
 ---
 
-# Песочница ClickHouse {#clickhouse-playground}
+# Песочница ClickHouse \{#clickhouse-playground\}
 
 [ClickHouse Playground](https://sql.clickhouse.com) позволяет экспериментировать с ClickHouse, мгновенно выполняя запросы без необходимости развертывать собственный сервер или кластер.
 В Playground доступно несколько примерных наборов данных.
 
 Вы можете отправлять запросы в Playground с помощью любого HTTP‑клиента, например [curl](https://curl.haxx.se) или [wget](https://www.gnu.org/software/wget/), или настроить подключение с использованием драйверов [JDBC](/interfaces/jdbc) или [ODBC](/interfaces/odbc). Дополнительная информация о программном обеспечении, поддерживающем ClickHouse, доступна [здесь](../integrations/index.mdx).
 
-## Учетные данные {#credentials}
+## Учетные данные \{#credentials\}
 
 | Параметр              | Значение                           |
 |:----------------------|:-----------------------------------|
@@ -23,7 +23,7 @@ doc_type: 'guide'
 | Пользователь          | `explorer` или `play`              |
 | Пароль                | (пустой)                           |
 
-## Ограничения {#limitations}
+## Ограничения \{#limitations\}
 
 Запросы выполняются от имени пользователя только с правами чтения. Это накладывает некоторые ограничения:
 
@@ -32,7 +32,7 @@ doc_type: 'guide'
 
 Для использования сервиса также установлены квоты.
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 Пример HTTPS-эндпоинта с использованием `curl`:
 
@@ -47,7 +47,7 @@ clickhouse client --secure --host play.clickhouse.com --user explorer
 ```
 
 
-## Характеристики Playground {#specifications}
+## Характеристики Playground \{#specifications\}
 
 Наш ClickHouse Playground работает со следующими характеристиками:
 

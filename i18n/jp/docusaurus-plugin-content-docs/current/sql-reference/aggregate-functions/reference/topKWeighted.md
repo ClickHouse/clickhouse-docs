@@ -5,7 +5,7 @@ title: 'topKWeighted'
 doc_type: 'reference'
 ---
 
-# topKWeighted {#topkweighted}
+# topKWeighted \{#topkweighted\}
 
 指定されたカラム内で、おおよそ頻度が最も高い値の配列を返します。結果の配列は、値そのものではなく値のおおよその出現頻度に基づいて降順にソートされます。さらに、値の重みも考慮されます。
 

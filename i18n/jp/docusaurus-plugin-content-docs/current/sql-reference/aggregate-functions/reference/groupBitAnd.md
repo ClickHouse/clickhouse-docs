@@ -5,7 +5,7 @@ title: 'groupBitAnd'
 doc_type: 'reference'
 ---
 
-# groupBitAnd {#groupbitand}
+# groupBitAnd \{#groupbitand\}
 
 一連の数値に対してビット単位の論理積（`AND`）を適用します。
 

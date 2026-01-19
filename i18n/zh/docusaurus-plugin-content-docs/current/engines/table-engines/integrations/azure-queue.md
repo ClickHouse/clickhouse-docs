@@ -7,11 +7,11 @@ title: 'AzureQueue 表引擎'
 doc_type: 'reference'
 ---
 
-# AzureQueue 表引擎 {#azurequeue-table-engine}
+# AzureQueue 表引擎 \{#azurequeue-table-engine\}
 
 该引擎实现了与 [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 生态系统的集成，支持以流式方式导入数据。
 
-## 创建表 {#creating-a-table}
+## 创建表 \{#creating-a-table\}
 
 ```sql
 CREATE TABLE test (name String, value UInt32)
@@ -41,14 +41,14 @@ ENGINE = AzureQueue('DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;
 SETTINGS mode = 'unordered'
 ```
 
-## Settings {#settings}
+## Settings \{#settings\}
 
 支持的设置大部分与 `S3Queue` 表引擎相同，但不包含 `s3queue_` 前缀。请参阅[完整设置列表](../../../engines/table-engines/integrations/s3queue.md#settings)。
 要获取为该表配置的设置列表，请使用 `system.azure_queue_settings` 表。从 `24.10` 版本开始可用。
 
 下面列出的是仅与 AzureQueue 兼容、而不适用于 S3Queue 的设置。
 
-### `after_processing_move_connection_string` {#after_processing_move_connection_string}
+### `after_processing_move_connection_string` \{#after_processing_move_connection_string\}
 
 当目标是另一个 Azure 容器时，用于将已成功处理的文件移动到该容器的 Azure Blob Storage 连接字符串。
 
@@ -58,7 +58,7 @@ SETTINGS mode = 'unordered'
 
 默认值：空字符串。
 
-### `after_processing_move_container` {#after_processing_move_container}
+### `after_processing_move_container` \{#after_processing_move_container\}
 
 当目标是另一个 Azure 容器时，用于指定成功处理后文件要移动到的容器名称。
 
@@ -84,13 +84,13 @@ SETTINGS
     after_processing_move_container = 'dst-container';
 ```
 
-## 从 AzureQueue 表引擎中执行 SELECT 查询 {#select}
+## 从 AzureQueue 表引擎中执行 SELECT 查询 \{#select\}
 
 默认情况下，AzureQueue 表上禁止执行 SELECT 查询。这符合常见的队列模式：数据只被读取一次，随后便会从队列中移除。禁止 SELECT 是为了防止意外的数据丢失。
 不过，有时启用 SELECT 可能会很有用。要实现这一点，需要将设置 `stream_like_engine_allow_direct_select` 设为 `True`。
 AzureQueue 引擎针对 SELECT 查询有一个特殊设置：`commit_on_select`。将其设置为 `False` 可以在读取之后保留队列中的数据，而设置为 `True` 则会在读取后删除数据。
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 `SELECT` 对于流式导入并不是特别有用（除非用于调试），因为每个文件只能被导入一次。更实际的做法是使用[物化视图](../../../sql-reference/statements/create/view.md)来创建实时管道。为此：
 
@@ -117,14 +117,14 @@ CREATE MATERIALIZED VIEW consumer TO stats
 SELECT * FROM stats ORDER BY key;
 ```
 
-## 虚拟列 {#virtual-columns}
+## 虚拟列 \{#virtual-columns\}
 
 - `_path` — 文件路径。
 - `_file` — 文件名。
 
 关于虚拟列的更多信息，请参阅[此处](../../../engines/table-engines/index.md#table_engines-virtual_columns)。
 
-## 自省 {#introspection}
+## 自省 \{#introspection\}
 
 通过表设置 `enable_logging_to_queue_log=1` 启用该表的日志记录功能。
 

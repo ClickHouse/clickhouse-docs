@@ -14,23 +14,23 @@ import insights_recent from '@site/static/images/cloud/sqlconsole/insights_recen
 import insights_drilldown from '@site/static/images/cloud/sqlconsole/insights_drilldown.png';
 import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_query_info.png';
 
-# Query Insights {#query-insights}
+# Query Insights \{#query-insights\}
 
 **Query Insights** 機能は、さまざまな可視化やテーブルを通じて、ClickHouse の組み込みクエリログをより簡単に活用できるようにします。ClickHouse の `system.query_log` テーブルは、クエリ最適化、デバッグ、クラスタ全体の健全性とパフォーマンスの監視にとって重要な情報源です。
 
-## クエリ概要 {#query-overview}
+## クエリ概要 \{#query-overview\}
 
 サービスを選択すると、左サイドバーの **Monitoring** ナビゲーション項目が展開され、新たに **Query insights** というサブ項目が表示されます。このオプションをクリックすると、新しい Query insights ページが開きます。
 
 <Image img={insights_overview} size="md" alt="Query Insights UI Overview" border/>
 
-## トップレベルメトリクス {#top-level-metrics}
+## トップレベルメトリクス \{#top-level-metrics\}
 
 上部の統計ボックスは、選択した期間におけるいくつかの基本的なクエリのトップレベルメトリクスを表しています。その下には、クエリ種別（select、insert、other）ごとに分解されたクエリ数、レイテンシ、エラー率を、選択した時間範囲にわたって可視化する 3 つの時系列チャートが表示されます。レイテンシチャートではさらに、p50、p90、p99 のレイテンシを表示するように切り替えることができます。
 
 <Image img={insights_latency} size="md" alt="Query Insights UI Latency Chart" border/>
 
-## 最近のクエリ {#recent-queries}
+## 最近のクエリ \{#recent-queries\}
 
 トップレベルのメトリクスの下には、選択した時間範囲におけるクエリログのエントリ（正規化されたクエリハッシュとユーザーごとにグループ化）がテーブルで表示されます。
 
@@ -38,7 +38,7 @@ import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_q
 
 最近のクエリは、利用可能な任意のフィールドでフィルタおよびソートできます。テーブルでは、テーブル名や p90 / p99 レイテンシなどの追加フィールドを表示または非表示にするように設定することもできます。
 
-## クエリのドリルダウン {#query-drill-down}
+## クエリのドリルダウン \{#query-drill-down\}
 
 最近のクエリテーブルからクエリを選択すると、選択したクエリに固有のメトリクスと情報を含むフライアウトが開きます。
 

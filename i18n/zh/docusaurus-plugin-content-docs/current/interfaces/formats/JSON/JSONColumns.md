@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 :::tip
 JSONColumns* 格式的输出首先输出 ClickHouse 字段名，随后给出该字段在表中每一行的内容；直观上看，相当于将数据向左旋转了 90 度。
@@ -25,9 +25,9 @@ JSONColumns* 格式的输出首先输出 ClickHouse 字段名，随后给出该�
 `JSONColumns` 格式会将所有数据缓冲在内存中，并一次性作为单个数据块输出，因此可能会导致较高的内存消耗。
 :::
 
-## 使用示例 {#example-usage}
+## 使用示例 \{#example-usage\}
 
-### 插入数据 {#inserting-data}
+### 插入数据 \{#inserting-data\}
 
 使用包含以下数据的 JSON 文件，并将其命名为 `football.json`：
 
@@ -48,7 +48,7 @@ JSONColumns* 格式的输出首先输出 ClickHouse 字段名，随后给出该�
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONColumns;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据 \{#reading-data\}
 
 使用 `JSONColumns` 格式来读取数据：
 
@@ -71,7 +71,7 @@ FORMAT JSONColumns
 }
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}
 
 在导入过程中，如果将 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 `1`，则名称未知的列会被跳过。
 在数据块中不存在的列将用默认值填充（此处可以使用 [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) 设置）。

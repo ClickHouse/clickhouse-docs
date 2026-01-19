@@ -5,7 +5,7 @@ title: 'deltaSum'
 doc_type: 'reference'
 ---
 
-# deltaSum {#deltasum}
+# deltaSum \{#deltasum\}
 
 Суммирует арифметическую разность между последовательными строками. Если разность отрицательная, она не учитывается.
 
@@ -71,7 +71,7 @@ SELECT deltaSum(arrayJoin([2.25, 3, 4.5]));
 └─────────────────────────────────────┘
 ```
 
-## См. также {#see-also}
+## См. также \{#see-also\}
 
 * [runningDifference](/sql-reference/functions/other-functions#runningDifference)
 

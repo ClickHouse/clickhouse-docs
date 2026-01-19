@@ -21,12 +21,12 @@ keywords: ['пример набора данных', 'погода', 'тайва
     - RH — относительная влажность
     - Другие элементы, где они доступны
 
-## Загрузка данных {#downloading-the-data}
+## Загрузка данных \{#downloading-the-data\}
 
 - [Предварительно обработанная версия](#pre-processed-data) данных для ClickHouse, которые были очищены, переработаны и обогащены. Этот набор данных охватывает период с 1896 по 2023 год.
 - [Скачать исходные «сырые» данные](#original-raw-data) и преобразовать их в формат, требуемый ClickHouse. Пользователи, которые хотят добавить собственные столбцы, могут изучить или доработать свои подходы.
 
-### Предобработанные данные {#pre-processed-data}
+### Предобработанные данные \{#pre-processed-data\}
 
 Набор данных был преобразован из формата «одно измерение на строку» в формат «одна строка по идентификатору метеостанции и дате измерения», т.е.
 
@@ -59,11 +59,11 @@ md5sum daily_weather_preprocessed_1896_2023.csv
 # Checksum should be equal to: 1132248c78195c43d93f843753881754
 ```
 
-### Исходные сырые данные {#original-raw-data}
+### Исходные сырые данные \{#original-raw-data\}
 
 Далее приведены сведения о шагах по загрузке исходных необработанных данных, которые затем можно преобразовать и конвертировать по своему усмотрению.
 
-#### Загрузка {#download}
+#### Загрузка \{#download\}
 
 Чтобы скачать исходные сырые данные:
 
@@ -88,7 +88,7 @@ cat *.csv | md5sum
 # Checksum should be equal to: b26db404bf84d4063fac42e576464ce1
 ```
 
-#### Получение данных метеостанций Тайваня {#retrieve-the-taiwan-weather-stations}
+#### Получение данных метеостанций Тайваня \{#retrieve-the-taiwan-weather-stations\}
 
 ```bash
 wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw/main/data/weather_sta_list.csv
@@ -97,7 +97,7 @@ wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw
 sed -i '1s/^\xEF\xBB\xBF//' weather_sta_list.csv
 ```
 
-## Создание схемы таблицы {#create-table-schema}
+## Создание схемы таблицы \{#create-table-schema\}
 
 Создайте таблицу MergeTree в ClickHouse (через клиент ClickHouse).
 
@@ -138,9 +138,9 @@ ENGINE = MergeTree
 ORDER BY (MeasuredDate);
 ```
 
-## Вставка данных в ClickHouse {#inserting-into-clickhouse}
+## Вставка данных в ClickHouse \{#inserting-into-clickhouse\}
 
-### Вставка данных из локального файла {#inserting-from-local-file}
+### Вставка данных из локального файла \{#inserting-from-local-file\}
 
 Данные можно вставить из локального файла следующим образом (в клиенте ClickHouse):
 
@@ -160,7 +160,7 @@ Ok.
 Peak memory usage: 583.23 MiB.
 ```
 
-### Вставка из URL {#inserting-from-url}
+### Вставка из URL \{#inserting-from-url\}
 
 ```sql
 INSERT INTO tw_weather_data SELECT *
@@ -170,7 +170,7 @@ FROM url('https://storage.googleapis.com/taiwan-weather-observaiton-datasets/dai
 
 Чтобы узнать, как ускорить этот процесс, ознакомьтесь с нашей публикацией в блоге о [настройке загрузки больших объёмов данных](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2).
 
-## Проверка числа строк и объёма данных {#check-data-rows-and-sizes}
+## Проверка числа строк и объёма данных \{#check-data-rows-and-sizes\}
 
 1. Посмотрим, сколько строк было вставлено:
 
@@ -201,9 +201,9 @@ WHERE (`table` = 'tw_weather_data') AND active
 └───────────┴───────────────────┘
 ```
 
-## Примеры запросов {#sample-queries}
+## Примеры запросов \{#sample-queries\}
 
-### Q1: Получите максимальное значение температуры точки росы для каждой метеостанции за заданный год {#q1-retrieve-the-highest-dew-point-temperature-for-each-weather-station-in-the-specific-year}
+### Q1: Получите максимальное значение температуры точки росы для каждой метеостанции за заданный год \{#q1-retrieve-the-highest-dew-point-temperature-for-each-weather-station-in-the-specific-year\}
 
 ```sql
 SELECT
@@ -249,7 +249,7 @@ GROUP BY StationId
 30 rows in set. Elapsed: 0.045 sec. Processed 6.41 million rows, 187.33 MB (143.92 million rows/s., 4.21 GB/s.)
 ```
 
-### Q2: Выборка сырых данных за заданный интервал времени, по полям и метеостанции {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
+### Q2: Выборка сырых данных за заданный интервал времени, по полям и метеостанции \{#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station\}
 
 ```sql
 SELECT
@@ -287,7 +287,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.009 sec. Processed 91.70 thousand rows, 2.33 MB (9.67 million rows/s., 245.31 MB/s.)
 ```
 
-## Благодарности {#credits}
+## Благодарности \{#credits\}
 
 Мы хотели бы отметить работу Центрального метеорологического управления и сети агрометеорологических наблюдательных станций Совета по сельскому хозяйству по подготовке, очистке и распространению этого набора данных. Мы высоко ценим их усилия.
 

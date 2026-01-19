@@ -9,7 +9,7 @@ doc_type: 'reference'
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
-# system.metrics {#systemmetrics}
+# system.metrics \{#systemmetrics\}
 
 <SystemTableCloud />
 
@@ -49,7 +49,7 @@ SELECT * FROM system.metrics LIMIT 10
 ```
 
 
-## 指标说明 {#metric-descriptions}
+## 指标说明 \{#metric-descriptions\}
 
 | 指标                                              | 说明                                                                                          |
 | ----------------------------------------------- | ------------------------------------------------------------------------------------------- |

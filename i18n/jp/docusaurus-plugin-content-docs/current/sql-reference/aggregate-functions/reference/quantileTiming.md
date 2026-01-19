@@ -5,7 +5,7 @@ title: 'quantileTiming'
 doc_type: 'reference'
 ---
 
-# quantileTiming {#quantiletiming}
+# quantileTiming \{#quantiletiming\}
 
 指定された精度で数値データ列の[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 

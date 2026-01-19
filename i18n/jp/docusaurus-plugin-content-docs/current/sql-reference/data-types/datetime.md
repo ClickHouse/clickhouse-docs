@@ -7,7 +7,7 @@ title: 'DateTime'
 doc_type: 'reference'
 ---
 
-# DateTime {#datetime}
+# DateTime \{#datetime\}
 
 カレンダー形式の日付と一日の時刻で表現できる、時間上の瞬間を保存します。
 
@@ -21,13 +21,13 @@ DateTime([timezone])
 
 精度: 1秒。
 
-## 速度 {#speed}
+## 速度 \{#speed\}
 
 `Date` データ型は、_ほとんど_ の場合において `DateTime` より高速です。
 
 `Date` 型は 2 バイトのストレージを必要としますが、`DateTime` 型は 4 バイトを必要とします。ただし、圧縮時には、`Date` と `DateTime` のサイズ差はさらに大きくなります。これは、`DateTime` に含まれる分と秒が圧縮されにくいためです。`DateTime` ではなく `Date` でフィルタリングおよび集計を行う方が、高速です。
 
-## 使用上の注意 {#usage-remarks}
+## 使用上の注意 \{#usage-remarks\}
 
 時刻は、タイムゾーンや夏時間に関係なく [Unix タイムスタンプ](https://en.wikipedia.org/wiki/Unix_time) として保存されます。タイムゾーンは、`DateTime` 型の値がテキスト形式でどのように表示されるか、および文字列として指定された値（`'2020-01-01 05:00:01'`）がどのようにパースされるかに影響します。
 
@@ -43,7 +43,7 @@ ClickHouse は、[date_time_output_format](../../operations/settings/settings-fo
 
 ClickHouse にデータを挿入する際には、[date_time_input_format](../../operations/settings/settings-formats.md#date_time_input_format) 設定の値に応じて、さまざまな形式の日付および時刻文字列を使用できます。
 
-## 例 {#examples}
+## 例 \{#examples\}
 
 **1.** `DateTime` 型の列を持つテーブルを作成し、そのテーブルにデータを挿入する：
 
@@ -129,7 +129,7 @@ FROM dt
 
 タイムゾーン変換はメタデータのみを変更するため、この操作に計算コストは発生しません。
 
-## タイムゾーンサポートの制限事項 {#limitations-on-time-zones-support}
+## タイムゾーンサポートの制限事項 \{#limitations-on-time-zones-support\}
 
 一部のタイムゾーンは完全にはサポートされていない場合があります。次のようなケースがあります。
 
@@ -143,7 +143,7 @@ UTC からのオフセットが 15 分の倍数ではない場合、時と分の
 
 複数日にわたる時間のシフト。一部の太平洋の島々は、タイムゾーンのオフセットを UTC+14 から UTC-12 に変更しました。これは問題ありませんが、そのタイムゾーンを用いて、切り替えが行われた日の過去時点の計算を行うと、いくらかの不正確さが生じる可能性があります。
 
-## 夏時間（DST）の扱い {#handling-daylight-saving-time-dst}
+## 夏時間（DST）の扱い \{#handling-daylight-saving-time-dst\}
 
 タイムゾーン付きの ClickHouse の `DateTime` 型は、夏時間（Daylight Saving Time, DST）の切り替え時に、特に次のような場合に予期しない動作を示すことがあります。
 
@@ -184,7 +184,7 @@ SELECT '2023-03-26 01:30:00'::DateTime('Europe/London') AS time, time + toInterv
 
 この場合、ClickHouse は存在しない時刻 `2023-03-26 01:30:00` を、ひとつ前の時刻である `2023-03-26 00:30:00` にずらします。
 
-## 関連項目 {#see-also}
+## 関連項目 \{#see-also\}
 
 - [型変換関数](../../sql-reference/functions/type-conversion-functions.md)
 - [日付と時刻を扱う関数](../../sql-reference/functions/date-time-functions.md)

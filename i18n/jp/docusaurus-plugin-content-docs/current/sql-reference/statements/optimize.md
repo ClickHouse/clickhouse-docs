@@ -34,7 +34,7 @@ OPTIMIZE TABLE [db.]name [ON CLUSTER cluster] [PARTITION partition | PARTITION I
 `alter_sync` が `2` に設定されていて、`replication_wait_for_inactive_replica_timeout` 設定で指定された時間を超えても一部のレプリカがアクティブにならない場合、`UNFINISHED` という例外がスローされます。
 :::
 
-## BY 式 {#by-expression}
+## BY 式 \{#by-expression\}
 
 すべてのカラムではなく任意のカラム集合に対して重複排除を行いたい場合、カラムの一覧を明示的に指定するか、[`*`](../../sql-reference/statements/select/index.md#asterisk)、[`COLUMNS`](/sql-reference/statements/select#select-clause)、[`EXCEPT`](/sql-reference/statements/select/except-modifier) 式を任意に組み合わせて使用できます。明示的に記述した、または暗黙的に展開されたカラム一覧には、行の並び順を決める式（主キーとソートキーの両方）およびパーティション指定の式（パーティションキー）で指定されているすべてのカラムが含まれている必要があります。
 
@@ -103,7 +103,7 @@ SELECT * FROM example;
 
 以下のすべての例は、5 行を持つこの状態に対して実行されます。
 
-#### `DEDUPLICATE` {#deduplicate}
+#### `DEDUPLICATE` \{#deduplicate\}
 
 重複排除に使用するカラムが指定されていない場合、すべてのカラムが考慮されます。前の行の対応する値と、すべてのカラムにおいて値がすべて等しい場合にのみ、その行は削除されます。
 
@@ -130,7 +130,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY *` {#deduplicate-by-}
+#### `DEDUPLICATE BY *` \{#deduplicate-by-\}
 
 カラムが暗黙的に指定される場合、テーブルは `ALIAS` または `MATERIALIZED` ではないすべてのカラムで重複排除が行われます。上記のテーブルの場合、該当するのは `primary_key`、`secondary_key`、`value`、`partition_key` カラムです。
 
@@ -157,7 +157,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY * EXCEPT` {#deduplicate-by--except}
+#### `DEDUPLICATE BY * EXCEPT` \{#deduplicate-by--except\}
 
 `ALIAS` または `MATERIALIZED` ではなく、かつ明示的に `value` でもないすべてのカラム、すなわち `primary_key`、`secondary_key`、`partition_key` カラムを基準に重複排除を行います。
 
@@ -183,7 +183,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY <list of columns>` {#deduplicate-by-list-of-columns}
+#### `DEDUPLICATE BY <list of columns>` \{#deduplicate-by-list-of-columns\}
 
 `primary_key`、`secondary_key`、`partition_key` カラムを指定して明示的に重複排除します：
 
@@ -209,7 +209,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY COLUMNS(<regex>)` {#deduplicate-by-columnsregex}
+#### `DEDUPLICATE BY COLUMNS(<regex>)` \{#deduplicate-by-columnsregex\}
 
 `primary_key`、`secondary_key`、`partition_key` カラムなど、正規表現にマッチするすべてのカラムを対象に重複排除します。
 

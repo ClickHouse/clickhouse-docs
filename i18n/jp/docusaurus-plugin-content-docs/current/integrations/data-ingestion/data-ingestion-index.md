@@ -6,7 +6,7 @@ description: 'データインジェストセクション用ランディングペ
 doc_type: 'landing-page'
 ---
 
-# データインジェスト {#data-ingestion}
+# データインジェスト \{#data-ingestion\}
 
 ClickHouse は、データ統合および変換のために数多くのソリューションと連携しています。
 詳しくは、以下のページを参照してください。

@@ -8,7 +8,7 @@ description: 'Узнайте больше о визуализации данны
 doc_type: 'guide'
 ---
 
-# Визуализация данных в ClickHouse {#visualizing-data-in-clickhouse}
+# Визуализация данных в ClickHouse \{#visualizing-data-in-clickhouse\}
 
 <div class='vimeo-container'>
 <iframe
@@ -48,7 +48,7 @@ doc_type: 'guide'
 - [Zing Data](./community_integrations/zingdata-and-clickhouse.md)
 - [Holistics BI](./community_integrations/holistics-and-clickhouse.md)
 
-## Совместимость ClickHouse Cloud с инструментами визуализации данных {#clickhouse-cloud-compatibility-with-data-visualization-tools}
+## Совместимость ClickHouse Cloud с инструментами визуализации данных \{#clickhouse-cloud-compatibility-with-data-visualization-tools\}
 
 | Инструмент                                                             | Поддерживается через          | Протестировано | Документировано | Комментарий                                                                                                                             |
 |-------------------------------------------------------------------------|-------------------------------|----------------|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------|

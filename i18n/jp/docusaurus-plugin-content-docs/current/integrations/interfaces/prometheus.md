@@ -7,9 +7,9 @@ title: 'Prometheus プロトコル'
 doc_type: 'リファレンス'
 ---
 
-# Prometheus プロトコル {#prometheus-protocols}
+# Prometheus プロトコル \{#prometheus-protocols\}
 
-## メトリクスの公開 {#expose}
+## メトリクスの公開 \{#expose\}
 
 :::note
 ClickHouse Cloud を使用している場合は、[Prometheus Integration](/integrations/prometheus) を使って Prometheus にメトリクスを公開できます。

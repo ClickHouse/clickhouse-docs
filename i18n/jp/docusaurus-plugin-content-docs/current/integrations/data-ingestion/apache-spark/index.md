@@ -16,7 +16,7 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Apache Spark と ClickHouse の統合 {#integrating-apache-spark-with-clickhouse}
+# Apache Spark と ClickHouse の統合 \{#integrating-apache-spark-with-clickhouse\}
 
 <ClickHouseSupportedBadge />
 

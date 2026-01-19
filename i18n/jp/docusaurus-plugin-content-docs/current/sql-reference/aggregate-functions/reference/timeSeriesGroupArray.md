@@ -5,7 +5,7 @@ title: 'timeSeriesGroupArray'
 doc_type: 'reference'
 ---
 
-# timeSeriesGroupArray {#timeseriesgrouparray}
+# timeSeriesGroupArray \{#timeseriesgrouparray\}
 
 タイムスタンプ順に時系列データを昇順で並べ替えます。
 

@@ -11,11 +11,11 @@ import ObservabilityIntegrations from '@site/i18n/ru/docusaurus-plugin-content-d
 import DirectIntegrations from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
 import CommunityMonitoring from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
-# Самостоятельно управляемый мониторинг {#cloud-monitoring}
+# Самостоятельно управляемый мониторинг \{#cloud-monitoring\}
 
 В этом руководстве корпоративным командам, оценивающим open source-версию ClickHouse, предоставляется исчерпывающая информация о возможностях мониторинга и наблюдаемости для продакшн-развертываний. Корпоративных клиентов часто интересуют функции мониторинга «из коробки», интеграция с существующими стеками наблюдаемости, включая такие инструменты, как Datadog и AWS CloudWatch, а также то, как возможности мониторинга ClickHouse соотносятся с мониторингом в самостоятельно развернутых инсталляциях.
 
-### Архитектура интеграции на базе Prometheus {#prometheus}
+### Архитектура интеграции на базе Prometheus \{#prometheus\}
 
 ClickHouse предоставляет метрики, совместимые с Prometheus, через различные конечные точки в зависимости от вашей модели развертывания, каждая из которых имеет свои эксплуатационные особенности:
 
@@ -32,7 +32,7 @@ ClickHouse предоставляет метрики, совместимые с 
 
 <ObservabilityIntegrations/>
 
-### Варианты развертывания ClickStack {#clickstack-deployment}
+### Варианты развертывания ClickStack \{#clickstack-deployment\}
 
 - [Helm](/use-cases/observability/clickstack/deployment/helm): Рекомендуется для отладочных сред на базе Kubernetes. Позволяет настраивать параметры среды, задавать лимиты ресурсов и масштабирование через `values.yaml`.
 - [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose): Разворачивает каждый компонент (ClickHouse, HyperDX, OTel collector, MongoDB) отдельно.

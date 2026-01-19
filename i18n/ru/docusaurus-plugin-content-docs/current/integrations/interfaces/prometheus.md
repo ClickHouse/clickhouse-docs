@@ -7,9 +7,9 @@ title: 'Протоколы Prometheus'
 doc_type: 'reference'
 ---
 
-# Протоколы Prometheus {#prometheus-protocols}
+# Протоколы Prometheus \{#prometheus-protocols\}
 
-## Предоставление метрик {#expose}
+## Предоставление метрик \{#expose\}
 
 :::note
 Если вы используете ClickHouse Cloud, вы можете предоставить метрики Prometheus через [интеграцию Prometheus](/integrations/prometheus).

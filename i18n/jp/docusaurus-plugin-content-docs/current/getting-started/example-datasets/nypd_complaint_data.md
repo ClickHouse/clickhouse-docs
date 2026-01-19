@@ -22,12 +22,12 @@ Tab separated value（TSV）ファイルは一般的な形式であり、ファ�
 **出典**: [data.cityofnewyork.us](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243)
 **利用規約**: https://www1.nyc.gov/home/terms-of-use.page
 
-## 前提条件 {#prerequisites}
+## 前提条件 \{#prerequisites\}
 
 - [NYPD Complaint Data Current (Year To Date)](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243) ページを開き、Export ボタンをクリックして **TSV for Excel** を選択し、データセットをダウンロードします。
 - [ClickHouse server と client](../../getting-started/install/install.mdx) をインストールします
 
-### このガイドで説明しているコマンドについての注意事項 {#a-note-about-the-commands-described-in-this-guide}
+### このガイドで説明しているコマンドについての注意事項 \{#a-note-about-the-commands-described-in-this-guide\}
 
 このガイドに登場するコマンドは、次の 2 種類に分かれます。
 
@@ -38,11 +38,11 @@ Tab separated value（TSV）ファイルは一般的な形式であり、ファ�
 このガイドのサンプルでは、TSV ファイルを `${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv` に保存していることを前提としています。必要に応じてコマンド内のパスを調整してください。
 :::
 
-## TSV ファイルの内容を把握しましょう {#familiarize-yourself-with-the-tsv-file}
+## TSV ファイルの内容を把握しましょう \{#familiarize-yourself-with-the-tsv-file\}
 
 ClickHouse データベースを操作し始める前に、まずデータの内容を確認しておきましょう。
 
-### 元のTSVファイル内のフィールドを確認する {#look-at-the-fields-in-the-source-tsv-file}
+### 元のTSVファイル内のフィールドを確認する \{#look-at-the-fields-in-the-source-tsv-file\}
 
 これはTSVファイルに対してクエリを実行するコマンドの例ですが、まだ実行しないでください。
 
@@ -119,7 +119,7 @@ New Georeferenced Column Nullable(String)
 この時点で、TSV ファイル内のカラムが、[データセットのウェブページ](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243)の **Columns in this Dataset** セクションで指定されている名前と型に一致していることを確認してください。データ型はあまり厳密ではなく、数値フィールドはすべて `Nullable(Float64)` に、その他のフィールドはすべて `Nullable(String)` に設定されています。データを保存する ClickHouse テーブルを作成する際には、より適切でパフォーマンスに優れた型を指定できます。
 
 
-### 適切なスキーマを決定する {#determine-the-proper-schema}
+### 適切なスキーマを決定する \{#determine-the-proper-schema\}
 
 各フィールドにどの型を使用すべきかを判断するには、データがどのような内容なのかを把握しておく必要があります。例えば、フィールド `JURISDICTION_CODE` は数値ですが、これは `UInt8` とすべきでしょうか、`Enum` とすべきでしょうか、それとも `Float64` が適切でしょうか？
 
@@ -210,7 +210,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 本ドキュメント執筆時点で使用しているデータセットでは、`PARK_NM` カラム内に存在する公園と遊び場の名称の種類は数百件程度しかありません。これは、`LowCardinality(String)` フィールドに含める異なる文字列数を 10,000 未満に抑えることを推奨している [LowCardinality](/sql-reference/data-types/lowcardinality#description) のガイドラインから見ても、小さい数と言えます。
 
 
-### DateTime フィールド {#datetime-fields}
+### DateTime フィールド \{#datetime-fields\}
 
 [データセットのウェブページ](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243) の **Columns in this Dataset** セクションによると、報告されたイベントの開始と終了を表す日時フィールドがあります。`CMPLNT_FR_DT` と `CMPLT_TO_DT` の最小値と最大値を確認すると、それらのフィールドに常に値が入っているかどうかのおおよその見当がつきます。
 
@@ -279,7 +279,7 @@ FORMAT PrettyCompact"
 ```
 
 
-## 計画を立てる {#make-a-plan}
+## 計画を立てる \{#make-a-plan\}
 
 上記の調査結果に基づいて、次のようにします。
 
@@ -297,7 +297,7 @@ FORMAT PrettyCompact"
 型については、このほかにも多くの変更が必要ですが、いずれも同じ調査手順に従って決定できます。フィールド内のユニークな文字列の数や数値の最小値・最大値を確認し、そのうえで判断してください。後で示すテーブルスキーマでは、LowCardinality の文字列型と符号なし整数型が多く、浮動小数点数型はごくわずかです。
 :::
 
-## 日付フィールドと時刻フィールドを連結する {#concatenate-the-date-and-time-fields}
+## 日付フィールドと時刻フィールドを連結する \{#concatenate-the-date-and-time-fields\}
 
 日付フィールド `CMPLNT_FR_DT` と時刻フィールド `CMPLNT_FR_TM` を、`DateTime` にキャスト可能な単一の `String` に連結するには、連結演算子で 2 つのフィールドを結合した式を選択します: `CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM`。`CMPLNT_TO_DT` と `CMPLNT_TO_TM` フィールドも同様に扱います。
 
@@ -328,7 +328,7 @@ FORMAT PrettyCompact"
 ```
 
 
-## 日付と時刻の文字列を DateTime64 型に変換する {#convert-the-date-and-time-string-to-a-datetime64-type}
+## 日付と時刻の文字列を DateTime64 型に変換する \{#convert-the-date-and-time-string-to-a-datetime64-type\}
 
 このガイドの前のセクションで、TSV ファイル内に 1970 年 1 月 1 日より前の日付が含まれていることを確認しました。これは、日付に 64 ビットの DateTime 型が必要であることを意味します。加えて、日付を `MM/DD/YYYY` 形式から `YYYY/MM/DD` 形式に変換する必要があります。これらはどちらも、[`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parseDateTime64BestEffort) を使って行うことができます。
 
@@ -385,11 +385,11 @@ FORMAT PrettyCompact"
 :::
 
 
-## テーブルを作成する {#create-a-table}
+## テーブルを作成する \{#create-a-table\}
 
 上でカラムに使用するデータ型について行った決定は、以下のテーブルスキーマに反映されています。また、テーブルで使用する `ORDER BY` と `PRIMARY KEY` も決定する必要があります。`ORDER BY` と `PRIMARY KEY` の少なくともどちらか一方は指定しなければなりません。`ORDER BY` に含めるカラムを決定するためのガイドラインを以下に示します。さらに詳しい情報は、このドキュメント末尾の *Next Steps* セクションを参照してください。
 
-### `ORDER BY` と `PRIMARY KEY` 句 {#order-by-and-primary-key-clauses}
+### `ORDER BY` と `PRIMARY KEY` 句 \{#order-by-and-primary-key-clauses\}
 
 * `ORDER BY` タプルには、クエリのフィルタ条件で使用されるフィールドを含める必要があります
 * ディスク上での圧縮効率を最大化するには、`ORDER BY` タプルはカーディナリティが小さいものから大きいものへ昇順になるように並べるべきです
@@ -485,7 +485,7 @@ CREATE TABLE NYPD_Complaint (
 ```
 
 
-### テーブルの主キーを確認する {#finding-the-primary-key-of-a-table}
+### テーブルの主キーを確認する \{#finding-the-primary-key-of-a-table\}
 
 ClickHouse の `system` データベース、特に `system.table` には、作成したばかりのテーブルに関するすべての情報が含まれています。
 このクエリは `ORDER BY`（ソートキー）と `PRIMARY KEY` を表示します。
@@ -517,11 +517,11 @@ table:         NYPD_Complaint
 ```
 
 
-## データの前処理とインポート {#preprocess-import-data}
+## データの前処理とインポート \{#preprocess-import-data\}
 
 データの前処理には `clickhouse-local` ツールを使用し、インポートには `clickhouse-client` を使用します。
 
-### `clickhouse-local` で使用される引数 {#clickhouse-local-arguments-used}
+### `clickhouse-local` で使用される引数 \{#clickhouse-local-arguments-used\}
 
 :::tip
 `table='input'` は、以下の clickhouse-local の引数の中に含まれています。clickhouse-local は、指定された入力（`cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv`）を受け取り、その入力をテーブルに挿入します。デフォルトではテーブル名は `table` です。このガイドでは、データフローを分かりやすくするために、テーブル名を `input` に設定しています。clickhouse-local への最後の引数は、テーブル（`FROM input`）から選択するクエリであり、その結果がパイプで `clickhouse-client` に渡され、`NYPD_Complaint` テーブルにデータが投入されます。
@@ -572,7 +572,7 @@ cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv \
 ```
 
 
-## データを検証する {#validate-data}
+## データを検証する \{#validate-data\}
 
 :::note
 データセットは年に一度以上更新されるため、このドキュメントに記載されている件数と一致しない場合があります。
@@ -614,9 +614,9 @@ WHERE name = 'NYPD_Complaint'
 ```
 
 
-## クエリを実行する {#run-queries}
+## クエリを実行する \{#run-queries\}
 
-### クエリ 1. 月別の苦情件数を比較する {#query-1-compare-the-number-of-complaints-by-month}
+### クエリ 1. 月別の苦情件数を比較する \{#query-1-compare-the-number-of-complaints-by-month\}
 
 クエリ：
 
@@ -654,7 +654,7 @@ Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 ```
 
 
-### クエリ 2. 区ごとの総苦情件数の比較 {#query-2-compare-total-number-of-complaints-by-borough}
+### クエリ 2. 区ごとの総苦情件数の比較 \{#query-2-compare-total-number-of-complaints-by-borough\}
 
 クエリ：
 
@@ -686,6 +686,6 @@ Query id: 8cdcdfd4-908f-4be0-99e3-265722a2ab8d
 ```
 
 
-## 次のステップ {#next-steps}
+## 次のステップ \{#next-steps\}
 
 [A Practical Introduction to Sparse Primary Indexes in ClickHouse](/guides/best-practices/sparse-primary-indexes.md) では、従来のリレーショナルデータベースと比較した ClickHouse における索引の違い、ClickHouse がスパースなプライマリ索引をどのように構築・利用するか、そしてインデックス設計におけるベストプラクティスについて解説しています。

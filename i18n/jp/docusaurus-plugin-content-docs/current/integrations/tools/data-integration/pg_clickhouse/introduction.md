@@ -7,9 +7,9 @@ doc_type: 'landing-page'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', '拡張機能']
 ---
 
-# pg_clickhouse {#pg_clickhouse}
+# pg_clickhouse \{#pg_clickhouse\}
 
-## はじめに {#introduction}
+## はじめに \{#introduction\}
 
 [pg_clickhouse] はオープンソースの PostgreSQL 拡張機能であり、SQL を書き換えることなく、
 PostgreSQL から直接 ClickHouse 上で分析クエリを実行できます。PostgreSQL 13 以降および
@@ -20,7 +20,7 @@ pg_clickhouse を使って PostgreSQL スキーマに対して [import foreign t
 実行できます。あとは既存の PostgreSQL クエリをそれらのテーブルに対して実行するだけで、
 実行を ClickHouse 側へ委譲しつつ、既存のコードベースをそのまま維持できます。
 
-## はじめに {#getting-started}
+## はじめに \{#getting-started\}
 
 pg&#95;clickhouse を試す最も簡単な方法は [Docker image] を使うことです。
 このイメージは、標準的な PostgreSQL の Docker イメージに pg&#95;clickhouse 拡張機能を追加したものです。
@@ -34,7 +34,7 @@ docker exec -it pg_clickhouse psql -U postgres -c 'CREATE EXTENSION pg_clickhous
 ClickHouse テーブルのインポートやクエリのプッシュダウンを始めるには、[tutorial] を参照してください。
 
 
-## テストケース: TPC-H {#test-case-tpc-h}
+## テストケース: TPC-H \{#test-case-tpc-h\}
 
 この表は、スケールファクター 1 でロードした通常の PostgreSQL テーブルと、ClickHouse に接続した pg_clickhouse 間の [TPC-H] クエリ性能を比較したものです。✔︎ は完全なプッシュダウンを示し、ダッシュはクエリを 1 分後にキャンセルしたことを示します。すべてのテストは、メモリ 36 GB を搭載した MacBook Pro M4 Max 上で実行しました。
 
@@ -65,15 +65,15 @@ ClickHouse テーブルのインポートやクエリのプッシュダウンを
 | [Query 21] |    1349 ms |       4434 ms |                |
 | [Query 22] |     258 ms |       1415 ms |                |
 
-### ソースからビルドする {#compile-from-source}
+### ソースからビルドする \{#compile-from-source\}
 
-#### 一般的な Unix {#general-unix}
+#### 一般的な Unix \{#general-unix\}
 
 PostgreSQL と curl の開発用パッケージにはパス内に `pg_config` と
 `curl-config` が含まれているため、そのまま `make`（または
 `gmake`）を実行し、続けて `make install` を実行し、最後にデータベース上で `CREATE EXTENSION pg_clickhouse` を実行すれば十分です。
 
-#### Debian / Ubuntu / APT {#debian--ubuntu--apt}
+#### Debian / Ubuntu / APT \{#debian--ubuntu--apt\}
 
 PostgreSQL Apt リポジトリからパッケージを取得する方法の詳細については、[PostgreSQL Apt] を参照してください。
 
@@ -89,7 +89,7 @@ sudo apt install \
 ```
 
 
-#### RedHat / CentOS / Yum {#redhat--centos--yum}
+#### RedHat / CentOS / Yum \{#redhat--centos--yum\}
 
 ```sh
 sudo yum install \
@@ -105,7 +105,7 @@ sudo yum install \
 PostgreSQL Yum リポジトリから取得する方法の詳細については、[PostgreSQL Yum] を参照してください。
 
 
-#### PGXN からインストール {#install-from-pgxn}
+#### PGXN からインストール \{#install-from-pgxn\}
 
 上記の依存関係を満たしたら、[PGXN client]（[Homebrew]、[Apt]、および `pgxnclient` という名前の Yum パッケージとして利用可能）を使用して `pg_clickhouse` をダウンロード、コンパイル、インストールします。
 
@@ -114,7 +114,7 @@ pgxn install pg_clickhouse
 ```
 
 
-#### コンパイルとインストール {#compile-and-install}
+#### コンパイルとインストール \{#compile-and-install\}
 
 ClickHouse ライブラリと `pg_clickhouse` をビルドしてインストールするには、次のコマンドを実行します。
 
@@ -194,7 +194,7 @@ dynamic_library_path   = '/usr/local/extras/postgresql/lib:$libdir'
 ```
 
 
-#### テスト {#testing}
+#### テスト \{#testing\}
 
 拡張機能をインストールしたら、次のコマンドでテストスイートを実行します。
 
@@ -215,7 +215,7 @@ make installcheck PGUSER=postgres
 ```
 
 
-### ロード {#loading}
+### ロード \{#loading\}
 
 `pg_clickhouse` がインストールされたら、スーパーユーザー権限で接続し、次のコマンドを実行してデータベースに追加します。
 
@@ -231,11 +231,11 @@ CREATE EXTENSION pg_clickhouse SCHEMA env;
 ```
 
 
-## 依存関係 {#dependencies}
+## 依存関係 \{#dependencies\}
 
 `pg_clickhouse` 拡張には、[PostgreSQL] 13 以上、[libcurl]、[libuuid] が必要です。この拡張をビルドするには、C および C++ コンパイラ、[libSSL]、[GNU make]、[CMake] が必要です。
 
-## ロードマップ {#road-map}
+## ロードマップ \{#road-map\}
 
 現在の最優先事項は、DML 機能を追加する前に、分析ワークロード向けのプッシュダウン対応を完了することです。今後のロードマップは次のとおりです。
 
@@ -250,13 +250,13 @@ CREATE EXTENSION pg_clickhouse SCHEMA env;
 *   任意の ClickHouse クエリを実行し、その結果をテーブルとして返す関数を追加する
 *   すべてがリモートデータベースを対象としている場合に、UNION クエリのプッシュダウンをサポートする
 
-## 著者 {#authors}
+## 著者 \{#authors\}
 
 *   [David E. Wheeler](https://justatheory.com/)
 *   [Ildus Kurbangaliev](https://github.com/ildus)
 *   [Ibrar Ahmed](https://github.com/ibrarahmad)
 
-## 著作権 {#copyright}
+## 著作権 \{#copyright\}
 
 *   Copyright (c) 2025-2026, ClickHouse
 *   一部 Copyright (c) 2023-2025, Ildus Kurbangaliev

@@ -17,11 +17,11 @@ import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# 设置查询 API 端点 {#setting-up-query-api-endpoints}
+# 设置查询 API 端点 \{#setting-up-query-api-endpoints\}
 
 **Query API Endpoints** 功能允许您在 ClickHouse Cloud 控制台中直接基于任意已保存的 SQL 查询创建一个 API 端点。之后，您可以通过 HTTP 调用这些 API 端点来执行已保存的查询，而无需通过原生驱动连接到 ClickHouse Cloud 服务。
 
-## 先决条件 {#quick-start-guide}
+## 先决条件 \{#quick-start-guide\}
 
 在继续之前，请确保你已经具备：
 
@@ -36,7 +36,7 @@ import TabItem from '@theme/TabItem';
 
 <VerticalStepper headerLevel="h3">
 
-### 创建一个已保存查询 {#creating-a-saved-query}
+### 创建一个已保存查询 \{#creating-a-saved-query\}
 
 如果你已经有一个已保存查询，可以跳过此步骤。
 
@@ -83,7 +83,7 @@ SQL 控制台查询编辑器会自动检测 ClickHouse 查询参数表达式，�
 
 有关已保存查询的更多文档，请参见 ["Saving a query"](/cloud/get-started/sql-console#saving-a-query) 一节。
 
-### 配置查询 API endpoint {#configuring-the-query-api-endpoint}
+### 配置查询 API endpoint \{#configuring-the-query-api-endpoint\}
 
 可以在查询视图中直接配置 Query API endpoints，只需点击 **Share** 按钮并选择 `API Endpoint`。
 系统会提示你指定哪些 API key 可以访问该 endpoint：
@@ -107,11 +107,11 @@ SQL 控制台查询编辑器会自动检测 ClickHouse 查询参数表达式，�
 curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API-endpoint>?format=JSONEachRow&param_year=<value>'
 ```
 
-### Query API 参数 {#query-api-parameters}
+### Query API 参数 \{#query-api-parameters\}
 
 查询中的查询参数可以使用 `{parameter_name: type}` 这种语法来指定。这些参数会被自动检测到，示例请求载荷中会包含一个 `queryVariables` 对象，你可以通过该对象传递这些参数。
 
-### 测试与监控 {#testing-and-monitoring}
+### 测试与监控 \{#testing-and-monitoring\}
 
 创建 Query API endpoint 之后，你可以使用 `curl` 或任何其他 HTTP 客户端测试它是否正常工作：
 
@@ -123,7 +123,7 @@ curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API
 
 </VerticalStepper>
 
-## 实现细节 {#implementation-details}
+## 实现细节 \{#implementation-details\}
 
 该端点会在已保存的 Query API 端点上执行查询。
 它支持多版本、灵活的响应格式、参数化查询，以及可选的流式响应（仅限版本 2）。
@@ -135,7 +135,7 @@ GET /query-endpoints/{queryEndpointId}/run
 POST /query-endpoints/{queryEndpointId}/run
 ```
 
-### HTTP 方法 {#http-methods}
+### HTTP 方法 \{#http-methods\}
 
 | Method | Use Case | Parameters |
 |---------|----------|------------|
@@ -154,21 +154,21 @@ POST /query-endpoints/{queryEndpointId}/run
 - 出于安全/隐私考虑优先使用请求体时
 - 需要进行文件流式上传或大体量数据传输时
 
-### 身份验证 {#authentication}
+### 身份验证 \{#authentication\}
 
 **必需：** 是  
 **方法：** 使用 OpenAPI Key/Secret 的 Basic Auth  
 **权限：** 对查询端点具有相应权限
 
-### 请求配置 {#request-configuration}
+### 请求配置 \{#request-configuration\}
 
-#### URL 参数 {#url-params}
+#### URL 参数 \{#url-params\}
 
 | 参数 | 是否必需 | 描述 |
 |-----------|----------|-------------|
 | `queryEndpointId` | **是** | 要执行的查询端点的唯一标识符 |
 
-#### 查询参数 {#query-params}
+#### 查询参数 \{#query-params\}
 
 | 参数 | 是否必需 | 描述 | 示例 |
 |-----------|----------|-------------|---------|
@@ -177,7 +177,7 @@ POST /query-endpoints/{queryEndpointId}/run
 | `request_timeout` | 否 | 查询超时时间（毫秒）（默认值：30000） | `?request_timeout=60000` |
 | `:clickhouse_setting` | 否 | 任意受支持的 [ClickHouse 设置项](https://clickhouse.com/docs/operations/settings/settings) | `?max_threads=8` |
 
-#### 请求头 {#headers}
+#### 请求头 \{#headers\}
 
 | Header | Required | Description | Values |
 |--------|----------|-------------|--------|
@@ -186,16 +186,16 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ---
 
-### 请求体 {#request-body}
+### 请求体 \{#request-body\}
 
-#### 参数 {#params}
+#### 参数 \{#params\}
 
 | 参数 | 类型 | 是否必填 | 描述 |
 |-----------|------|----------|-------------|
 | `queryVariables` | object | 否 | 在查询中使用的变量 |
 | `format` | string | 否 | 响应格式 |
 
-#### 支持的格式 {#supported-formats}
+#### 支持的格式 \{#supported-formats\}
 
 | 版本                    | 支持的格式                                                                                                                                                   |
 |-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -204,14 +204,14 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ---
 
-### 响应 {#responses}
+### 响应 \{#responses\}
 
-#### 成功 {#success}
+#### 成功 \{#success\}
 
 **状态：** `200 OK`  
 查询已成功执行。
 
-#### 错误代码 {#error-codes}
+#### 错误代码 \{#error-codes\}
 
 | 状态码 | 描述 |
 |-------------|-------------|
@@ -219,7 +219,7 @@ POST /query-endpoints/{queryEndpointId}/run
 | `401 Unauthorized` | 缺少身份验证或权限不足 |
 | `404 Not Found` | 未找到指定的查询接口 |
 
-#### 错误处理最佳实践 {#error-handling-best-practices}
+#### 错误处理最佳实践 \{#error-handling-best-practices\}
 
 - 确保在请求中包含有效的身份验证凭据
 - 在发送前校验 `queryEndpointId` 和 `queryVariables`
@@ -227,7 +227,7 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ---
 
-### 升级端点版本 {#upgrading-endpoint-versions}
+### 升级端点版本 \{#upgrading-endpoint-versions\}
 
 要从版本 1 升级到版本 2：
 
@@ -240,9 +240,9 @@ POST /query-endpoints/{queryEndpointId}/run
 - 响应流式传输
 - 更高的性能和更丰富的功能
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
-### 基本请求 {#basic-request}
+### 基本请求 \{#basic-request\}
 
 **API 端点的 SQL 查询：**
 
@@ -250,7 +250,7 @@ POST /query-endpoints/{queryEndpointId}/run
 SELECT database, name AS num_tables FROM system.tables LIMIT 3;
 ```
 
-#### 版本 1 {#version-1}
+#### 版本 1 \{#version-1\}
 
 <Tabs>
 <TabItem value="cURL" label="cURL" default>
@@ -307,7 +307,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-#### 版本 2 {#version-2}
+#### 版本 2 \{#version-2\}
 
 <Tabs>
 <TabItem value="GET" label="GET（cURL）" default>
@@ -361,7 +361,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-### Request with query variables and version 2 on JSONCompactEachRow format {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
+### Request with query variables and version 2 on JSONCompactEachRow format \{#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format\}
 
 **Query API Endpoint SQL:**
 
@@ -429,7 +429,7 @@ SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: Stri
 </TabItem>
 </Tabs>
 
-### Request with array in the query variables that inserts data into a table {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
+### Request with array in the query variables that inserts data into a table \{#request-with-array-in-the-query-variables-that-inserts-data-into-a-table\}
 
 **Table SQL:**
 
@@ -495,7 +495,7 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
 </TabItem>
 </Tabs>
 
-### Request with ClickHouse settings `max_threads` set to 8 {#request-with-clickhouse-settings-max_threads-set-to-8}
+### Request with ClickHouse settings `max_threads` set to 8 \{#request-with-clickhouse-settings-max_threads-set-to-8\}
 
 **Query API Endpoint SQL:**
 
@@ -545,7 +545,7 @@ SELECT * FROM system.tables;
 </TabItem>
 </Tabs>
 
-### Request and parse the response as a stream` {#request-and-parse-the-response-as-a-stream}
+### Request and parse the response as a stream` \{#request-and-parse-the-response-as-a-stream\}
 
 **Query API Endpoint SQL:**
 
@@ -617,7 +617,7 @@ SELECT name, database FROM system.tables;
 </TabItem>
 </Tabs>
 
-### Insert a stream from a file into a table {#insert-a-stream-from-a-file-into-a-table}
+### Insert a stream from a file into a table \{#insert-a-stream-from-a-file-into-a-table\}
 
 Create a file `./samples/my_first_table_2024-07-11.csv` with the following content:
 

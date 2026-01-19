@@ -9,11 +9,11 @@ doc_type: 'reference'
 
 
 
-# avgMerge {#avgMerge}
+# avgMerge \{#avgMerge\}
 
 
 
-## Описание {#description}
+## Описание \{#description\}
 
 Комбинатор [`Merge`](/sql-reference/aggregate-functions/combinators#-state)
 можно применить к функции [`avg`](/sql-reference/aggregate-functions/reference/avg)
@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 Комбинатор `Merge` тесно связан с комбинатором `State`. См. 
 ["пример использования avgState"](/examples/aggregate-function-combinators/avgState/#example-usage)
@@ -29,7 +29,7 @@ doc_type: 'reference'
 
 
 
-## См. также {#see-also}
+## См. также \{#see-also\}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`Merge`](/sql-reference/aggregate-functions/combinators#-merge)
 - [`MergeState`](/sql-reference/aggregate-functions/combinators#-mergestate)

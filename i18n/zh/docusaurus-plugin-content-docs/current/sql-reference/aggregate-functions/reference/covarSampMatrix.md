@@ -5,7 +5,7 @@ title: 'covarSampMatrix'
 doc_type: 'reference'
 ---
 
-# covarSampMatrix {#covarsampmatrix}
+# covarSampMatrix \{#covarsampmatrix\}
 
 返回 N 个变量的样本协方差矩阵。
 

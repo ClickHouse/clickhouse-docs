@@ -16,11 +16,11 @@ import restart from '@site/static/images/integrations/data-ingestion/clickpipes/
 import firewall from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/firewall.png';
 import Image from '@theme/IdealImage';
 
-# Руководство по настройке источника Azure Flexible Server для Postgres {#azure-flexible-server-for-postgres-source-setup-guide}
+# Руководство по настройке источника Azure Flexible Server для Postgres \{#azure-flexible-server-for-postgres-source-setup-guide\}
 
 ClickPipes поддерживает Postgres версии 12 и новее.
 
-## Включение логической репликации {#enable-logical-replication}
+## Включение логической репликации \{#enable-logical-replication\}
 
 **Вам не нужно** выполнять следующие шаги, если параметр `wal_level` уже установлен в значение `logical`. Этот параметр, как правило, уже настроен, если вы мигрируете с другого инструмента репликации данных.
 
@@ -36,7 +36,7 @@ ClickPipes поддерживает Postgres версии 12 и новее.
 
 <Image img={restart} alt="Перезапуск сервера после изменения wal_level" size="lg" border/>
 
-## Создание пользователей ClickPipes и выдача прав доступа {#creating-clickpipes-user-and-granting-permissions}
+## Создание пользователей ClickPipes и выдача прав доступа \{#creating-clickpipes-user-and-granting-permissions\}
 
 Подключитесь к Azure Flexible Server Postgres под учетной записью администратора и выполните следующие команды:
 
@@ -86,7 +86,7 @@ ClickPipes поддерживает Postgres версии 12 и новее.
    ALTER ROLE clickpipes_user SET wal_sender_timeout to 0;
    ```
 
-## Добавьте IP-адреса ClickPipes в Firewall {#add-clickpipes-ips-to-firewall}
+## Добавьте IP-адреса ClickPipes в Firewall \{#add-clickpipes-ips-to-firewall\}
 
 Выполните следующие шаги, чтобы добавить [IP-адреса ClickPipes](../../index.md#list-of-static-ips) в вашу сеть.
 
@@ -95,7 +95,7 @@ ClickPipes поддерживает Postgres версии 12 и новее.
 
 <Image img={firewall} alt="Добавление IP-адресов ClickPipes в Firewall в Azure Flexible Server for Postgres" size="lg"/>
 
-## Что дальше? {#whats-next}
+## Что дальше? \{#whats-next\}
 
 Теперь вы можете [создать ClickPipe](../index.md) и начать приём данных из вашего экземпляра Postgres в ClickHouse Cloud.
 Обязательно сохраните параметры подключения, которые вы использовали при настройке экземпляра Postgres, так как они понадобятся вам при создании ClickPipe.

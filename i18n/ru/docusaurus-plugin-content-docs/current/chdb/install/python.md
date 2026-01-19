@@ -7,21 +7,21 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'install']
 doc_type: 'guide'
 ---
 
-## Требования {#requirements}
+## Требования \{#requirements\}
 
 - Python версии 3.8 и новее 
 - Поддерживаемые платформы: macOS и Linux (x86_64 и ARM64)
 
-## Установка {#install}
+## Установка \{#install\}
 
 ```bash
 pip install chdb
 ```
 
 
-## Использование {#usage} 
+## Использование \{#usage\}
 
-### Интерфейс командной строки {#command-line-interface}
+### Интерфейс командной строки \{#command-line-interface\}
 
 Выполняйте SQL-запросы непосредственно из командной строки:
 
@@ -34,7 +34,7 @@ python3 -m chdb "SELECT version()" JSON
 ```
 
 
-### Основы использования Python {#basic-python-usage}
+### Основы использования Python \{#basic-python-usage\}
 
 ```python
 import chdb
@@ -50,7 +50,7 @@ print(f"Execution time: {result.elapsed()} seconds")
 ```
 
 
-### API, основанный на соединении (рекомендуется) {#connection-based-api}
+### API, основанный на соединении (рекомендуется) \{#connection-based-api\}
 
 Для более рационального использования ресурсов и повышения производительности:
 
@@ -85,9 +85,9 @@ conn.close()
 ```
 
 
-## Способы загрузки данных {#data-input}
+## Способы загрузки данных \{#data-input\}
 
-### Файловые источники данных {#file-based-data-sources}
+### Файловые источники данных \{#file-based-data-sources\}
 
 chDB поддерживает более 70 форматов данных для прямого выполнения запросов к файлам:
 
@@ -119,7 +119,7 @@ result = chdb.query("""
 ```
 
 
-### Примеры форматов вывода {#output-format-examples}
+### Примеры форматов вывода \{#output-format-examples\}
 
 ```python
 # DataFrame for analysis
@@ -140,9 +140,9 @@ print(pretty_result)
 ```
 
 
-### Операции с DataFrame {#dataframe-operations}
+### Операции с DataFrame \{#dataframe-operations\}
 
-#### Устаревший API DataFrame {#legacy-dataframe-api}
+#### Устаревший API DataFrame \{#legacy-dataframe-api\}
 
 ```python
 import chdb.dataframe as cdf
@@ -165,7 +165,7 @@ print(summary)
 ```
 
 
-#### Движок таблиц Python (рекомендуется) {#python-table-engine-recommended}
+#### Движок таблиц Python (рекомендуется) \{#python-table-engine-recommended\}
 
 ```python
 import chdb
@@ -213,7 +213,7 @@ chdb.query("""
 ```
 
 
-### Сеансы с сохранением состояния {#stateful-sessions}
+### Сеансы с сохранением состояния \{#stateful-sessions\}
 
 Сеансы поддерживают состояние запроса между несколькими операциями, что позволяет создавать сложные рабочие процессы:
 
@@ -268,7 +268,7 @@ sess.close()  # Optional - auto-closed when object is deleted
 ```
 
 
-### Расширенные возможности работы с сессиями {#advanced-session-features}
+### Расширенные возможности работы с сессиями \{#advanced-session-features\}
 
 ```python
 # Session with custom settings
@@ -289,7 +289,7 @@ result = sess.query("""
 См. также: [test&#95;stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py).
 
 
-### Интерфейс Python DB-API 2.0 {#python-db-api-20}
+### Интерфейс Python DB-API 2.0 \{#python-db-api-20\}
 
 Стандартный интерфейс работы с базой данных для совместимости с уже существующими приложениями на Python:
 
@@ -338,11 +338,11 @@ cursor.executemany(
 ```
 
 
-### Пользовательские функции (UDF) {#user-defined-functions}
+### Пользовательские функции (UDF) \{#user-defined-functions\}
 
 Расширяйте SQL пользовательскими функциями на Python:
 
-#### Основы работы с UDF {#basic-udf-usage}
+#### Основы работы с UDF \{#basic-udf-usage\}
 
 ```python
 from chdb.udf import chdb_udf
@@ -379,7 +379,7 @@ print(result)
 ```
 
 
-#### Расширенные UDF с пользовательскими типами возвращаемых значений {#advanced-udf-custom-return-types}
+#### Расширенные UDF с пользовательскими типами возвращаемых значений \{#advanced-udf-custom-return-types\}
 
 ```python
 # UDF with specific return type
@@ -414,7 +414,7 @@ print(result)
 ```
 
 
-#### Рекомендации по использованию UDF {#udf-best-practices}
+#### Рекомендации по использованию UDF \{#udf-best-practices\}
 
 1. **Функции без состояния**: UDF должны быть чистыми функциями без побочных эффектов
 2. **Импорты внутри функций**: Все необходимые модули должны импортироваться внутри UDF
@@ -450,7 +450,7 @@ query("""
 ```
 
 
-### Потоковая обработка запросов {#streaming-queries}
+### Потоковая обработка запросов \{#streaming-queries\}
 
 Обрабатывайте большие наборы данных при неизменном объеме потребляемой памяти:
 
@@ -521,9 +521,9 @@ sess.close()
 ```
 
 
-### Движок таблицы Python {#python-table-engine}
+### Движок таблицы Python \{#python-table-engine\}
 
-#### Выполнение запросов к DataFrame в Pandas {#query-pandas-dataframes}
+#### Выполнение запросов к DataFrame в Pandas \{#query-pandas-dataframes\}
 
 ```python
 import chdb
@@ -579,7 +579,7 @@ print(window_result)
 ```
 
 
-#### Пользовательские источники данных с PyReader {#custom-data-sources-pyreader}
+#### Пользовательские источники данных с PyReader \{#custom-data-sources-pyreader\}
 
 Реализуйте пользовательские ридеры данных для специализированных источников:
 

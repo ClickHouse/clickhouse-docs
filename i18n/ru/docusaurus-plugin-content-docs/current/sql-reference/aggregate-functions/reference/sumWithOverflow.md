@@ -5,7 +5,7 @@ title: 'sumWithOverflow'
 doc_type: 'reference'
 ---
 
-# sumWithOverflow {#sumwithoverflow}
+# sumWithOverflow \{#sumwithoverflow\}
 
 Вычисляет сумму чисел, используя для результата тот же тип данных, что и для входных аргументов. Если сумма превышает максимальное значение для этого типа данных, результат вычисляется с переполнением.
 

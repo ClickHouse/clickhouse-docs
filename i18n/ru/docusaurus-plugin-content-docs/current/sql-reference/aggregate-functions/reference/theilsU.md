@@ -6,7 +6,7 @@ title: 'theilsU'
 doc_type: 'reference'
 ---
 
-# theilsU {#theilsu}
+# theilsU \{#theilsu\}
 
 Функция `theilsU` вычисляет [коэффициент неопределённости U Тейла](https://en.wikipedia.org/wiki/Contingency_table#Uncertainty_coefficient) — величину, которая измеряет степень связи между двумя столбцами в таблице. Её значения лежат в диапазоне от 0.0 (нет связи) до 1.0 (полное соответствие).
 

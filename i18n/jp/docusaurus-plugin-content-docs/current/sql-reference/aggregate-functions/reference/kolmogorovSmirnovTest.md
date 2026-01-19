@@ -6,7 +6,7 @@ title: 'kolmogorovSmirnovTest'
 doc_type: 'reference'
 ---
 
-# kolmogorovSmirnovTest {#kolmogorovsmirnovtest}
+# kolmogorovSmirnovTest \{#kolmogorovsmirnovtest\}
 
 2つの母集団からの標本に Kolmogorov-Smirnov 検定を適用します。
 

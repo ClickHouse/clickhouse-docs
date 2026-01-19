@@ -6,7 +6,7 @@ keywords: ['json', 'formats']
 doc_type: 'reference'
 ---
 
-# JSON をモデリングするその他のアプローチ {#other-approaches-to-modeling-json}
+# JSON をモデリングするその他のアプローチ \{#other-approaches-to-modeling-json\}
 
 **以下は、ClickHouse における JSON モデリングの別手法です。網羅性のために記載していますが、これらは JSON 型が登場する以前に有用だったものであり、現在では多くのユースケースにおいて推奨されず、ほとんどの場合適用されません。**
 
@@ -14,7 +14,7 @@ doc_type: 'reference'
 同じスキーマ内でも、オブジェクトごとに異なる手法を適用できます。たとえば、一部のオブジェクトには `String` 型が最適であり、別のものには `Map` 型が最適な場合があります。`String` 型を使用した場合、それ以降にスキーマに関する追加の決定を行う必要はない点に注意してください。逆に、以下で示すように、JSON を表す `String` を含め、サブオブジェクトを `Map` のキーに対応する値としてネストすることも可能です。
 :::
 
-## String 型の使用 {#using-string}
+## String 型の使用 \{#using-string\}
 
 オブジェクトが非常に動的で、予測可能な構造がなく、任意のネストされたオブジェクトを含む場合は、`String` 型を使用することが推奨されます。値は、以下で示すように、クエリ実行時に JSON 関数を使用して抽出できます。
 
@@ -153,7 +153,7 @@ Peak memory usage: 205.98 MiB.
 このアプローチは柔軟性が高い一方で、明確なパフォーマンスおよび構文上のコストを伴うため、スキーマ内で非常に動的なオブジェクトに対してのみ使用すべきです。
 
 
-### Simple JSON functions {#simple-json-functions}
+### Simple JSON functions \{#simple-json-functions\}
 
 上記の例では JSON* 系の関数を使用しています。これらは [simdjson](https://github.com/simdjson/simdjson) に基づく完全な JSON パーサーを利用しており、厳密なパースを行い、異なる階層にネストされた同名フィールドを区別します。これらの関数は、構文的には正しいものの体裁が整っていない JSON（例: キー間に二重スペースがあるなど）も扱うことができます。
 

@@ -5,7 +5,7 @@ title: 'maxIntersections'
 doc_type: 'reference'
 ---
 
-# maxIntersections {#maxintersections}
+# maxIntersections \{#maxintersections\}
 
 すべての区間同士が少なくとも 1 回は交差する場合に、その区間群における区間同士の交差回数の最大値を計算する集約関数です。
 

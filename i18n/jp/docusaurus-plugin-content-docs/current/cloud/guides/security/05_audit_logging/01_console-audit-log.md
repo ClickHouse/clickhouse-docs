@@ -13,15 +13,15 @@ import activity_log_2 from '@site/static/images/cloud/security/activity_log2.png
 import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png';
 
 
-# コンソール監査ログ {#console-audit-log}
+# コンソール監査ログ \{#console-audit-log\}
 
 コンソール上での操作は監査ログに記録されます。Admin または Developer の組織ロールを持つユーザーは、監査ログを確認したり、ログ収集システムと連携したりできます。
 
-## ユーザーインターフェースからコンソール監査ログにアクセスする {#console-audit-log-ui}
+## ユーザーインターフェースからコンソール監査ログにアクセスする \{#console-audit-log-ui\}
 
 <VerticalStepper>
 
-## 組織を選択する {#select-org}
+## 組織を選択する \{#select-org\}
 
 ClickHouse Cloud で、組織の詳細ページを表示します。 
 
@@ -29,7 +29,7 @@ ClickHouse Cloud で、組織の詳細ページを表示します。
 
 <br/>
 
-## 監査を選択する {#select-audit}
+## 監査を選択する \{#select-audit\}
 
 左側のメニューで **Audit** タブを選択すると、ClickHouse Cloud の組織に対してどのような変更が行われたか（誰がいつ変更を行ったかを含む）を確認できます。
 
@@ -44,7 +44,7 @@ ClickHouse Cloud で、組織の詳細ページを表示します。
 
 <br/>
 
-## 検索バーを使用する {#use-search-bar}
+## 検索バーを使用する \{#use-search-bar\}
 
 検索バーを使用して、サービス名や IP アドレスなどの条件に基づいてイベントを絞り込むことができます。また、この情報を CSV 形式でエクスポートして、外部ツールでの配布や分析に利用することもできます。
 
@@ -54,11 +54,11 @@ ClickHouse Cloud で、組織の詳細ページを表示します。
     <Image img={activity_log_3} size="lg" alt="ClickHouse Cloud アクティビティ CSV エクスポート" border />
 </div>
 
-## API 経由でコンソール監査ログにアクセスする {#console-audit-log-api}
+## API 経由でコンソール監査ログにアクセスする \{#console-audit-log-api\}
 
 ClickHouse Cloud API の `activity` エンドポイントを使用して、監査イベントのエクスポートを取得できます。詳細は [API リファレンス](https://clickhouse.com/docs/cloud/manage/api/swagger) を参照してください。
 
-## ログ連携 {#log-integrations}
+## ログ連携 \{#log-integrations\}
 
 API を使用して、任意のログプラットフォームと連携できます。以下のプラットフォーム向けには、標準で利用可能なコネクタが用意されています。
 - [ClickHouse Cloud Audit add-on for Splunk](/integrations/audit-splunk)

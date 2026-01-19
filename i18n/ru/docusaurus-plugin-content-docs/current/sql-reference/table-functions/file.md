@@ -10,19 +10,19 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Табличная функция file {#file-table-function}
+# Табличная функция file \{#file-table-function\}
 
 Табличный движок, который предоставляет табличный интерфейс для выполнения SELECT из файлов и INSERT в файлы, аналогично табличной функции [s3](/sql-reference/table-functions/url.md). Используйте `file()` при работе с локальными файлами и `s3()` при работе с бакетами в объектном хранилище, например S3, GCS или MinIO.
 
 Функция `file` может использоваться в запросах `SELECT` и `INSERT` для чтения из файлов или записи в файлы.
 
-## Синтаксис {#syntax}
+## Синтаксис \{#syntax\}
 
 ```sql
 file([path_to_archive ::] path [,format] [,structure] [,compression])
 ```
 
-## Аргументы {#arguments}
+## Аргументы \{#arguments\}
 
 | Параметр          | Описание                                                                                                                                                                                                                                                                                                       |
 |-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -32,13 +32,13 @@ file([path_to_archive ::] path [,format] [,structure] [,compression])
 | `structure`       | Структура таблицы. Формат: `'column1_name column1_type, column2_name column2_type, ...'`.                                                                                                                                                                                                                      |
 | `compression`     | Тип существующего сжатия при использовании в запросе `SELECT` или требуемый тип сжатия при использовании в запросе `INSERT`. Поддерживаемые типы сжатия: `gz`, `br`, `xz`, `zst`, `lz4` и `bz2`.                                                                                                               |
 
-## Возвращаемое значение {#returned_value}
+## Возвращаемое значение \{#returned_value\}
 
 Таблица для чтения данных из файла или записи в файл.
 
-## Примеры записи в файл {#examples-for-writing-to-a-file}
+## Примеры записи в файл \{#examples-for-writing-to-a-file\}
 
-### Запись в файл в формате TSV {#write-to-a-tsv-file}
+### Запись в файл в формате TSV \{#write-to-a-tsv-file\}
 
 ```sql
 INSERT INTO TABLE FUNCTION
@@ -55,7 +55,7 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 1    3    2
 ```
 
-### Партиционированная запись в несколько TSV-файлов {#partitioned-write-to-multiple-tsv-files}
+### Партиционированная запись в несколько TSV-файлов \{#partitioned-write-to-multiple-tsv-files\}
 
 Если при вставке данных в табличную функцию типа `file()` указать выражение `PARTITION BY`, то для каждого раздела создаётся отдельный файл. Разбиение данных на отдельные файлы помогает повысить производительность операций чтения.
 
@@ -147,7 +147,7 @@ SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
 SELECT count(*) FROM file('{some,another}_dir/some_file_{1..3}', 'TSV', 'name String, value UInt32');
 ```
 
-## Глоб-шаблоны в пути {#globs-in-path}
+## Глоб-шаблоны в пути \{#globs-in-path\}
 
 В путях можно использовать глоб-шаблоны. Файлы должны соответствовать всему шаблону пути, а не только суффиксу или префиксу. Есть одно исключение: если путь указывает на существующий каталог и не использует глоб-шаблоны, к пути неявно добавляется `*`, чтобы были выбраны все файлы в каталоге.
 
@@ -159,7 +159,7 @@ SELECT count(*) FROM file('{some,another}_dir/some_file_{1..3}', 'TSV', 'name St
 
 Конструкции с `{}` аналогичны табличным функциям [remote](remote.md) и [hdfs](hdfs.md).
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 **Пример**
 
@@ -218,14 +218,14 @@ SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt3
 SELECT * FROM file('data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
 ```
 
-## Виртуальные столбцы {#virtual-columns}
+## Виртуальные столбцы \{#virtual-columns\}
 
 - `_path` — путь к файлу. Тип: `LowCardinality(String)`.
 - `_file` — имя файла. Тип: `LowCardinality(String)`.
 - `_size` — размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение равно `NULL`.
 - `_time` — время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение равно `NULL`.
 
-## настройка use&#95;hive&#95;partitioning {#hive-style-partitioning}
+## настройка use&#95;hive&#95;partitioning \{#hive-style-partitioning\}
 
 Когда настройка `use_hive_partitioning` имеет значение 1, ClickHouse будет обнаруживать секционирование в стиле Hive в пути (`/name=value/`) и позволит использовать столбцы секций как виртуальные столбцы в запросе. Эти виртуальные столбцы будут иметь те же имена, что и в секционированном пути, но с префиксом `_`.
 

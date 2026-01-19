@@ -26,7 +26,7 @@ ClickHouse は多様な JOIN の種類とアルゴリズムをサポートして
 ClickHouse におけるデータ非正規化の詳細なガイドは [こちら](/data-modeling/denormalization) を参照してください。
 
 
-## JOIN が必要な場合 {#when-joins-are-required}
+## JOIN が必要な場合 \{#when-joins-are-required\}
 
 JOIN が必要な場合は、**少なくともバージョン 24.12、可能であれば最新バージョン**を使用していることを確認してください。JOIN のパフォーマンスは新しいリリースごとに継続的に改善されています。ClickHouse 24.12 以降では、クエリプランナーが、最適なパフォーマンスのために小さいテーブルを自動的に JOIN の右側に配置するようになりました。これは以前は手動で行う必要があった作業です。今後さらに、より積極的なフィルタのプッシュダウンや、複数の JOIN の自動並べ替えなど、多くの改善が予定されています。
 
@@ -48,7 +48,7 @@ ClickHouse で JOIN に辞書を使用する場合、設計上、辞書は重複
 
 
 
-## 正しい JOIN アルゴリズムの選択 {#choosing-the-right-join-algorithm}
+## 正しい JOIN アルゴリズムの選択 \{#choosing-the-right-join-algorithm\}
 
 ClickHouse は、速度とメモリ使用量のトレードオフが異なる複数の JOIN アルゴリズムをサポートしています。
 

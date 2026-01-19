@@ -5,7 +5,7 @@ title: 'estimateCompressionRatio'
 doc_type: 'reference'
 ---
 
-## estimateCompressionRatio {#estimatecompressionration}
+## estimateCompressionRatio \{#estimatecompressionration\}
 
 Оценивает коэффициент сжатия заданного столбца, не выполняя его сжатие.
 

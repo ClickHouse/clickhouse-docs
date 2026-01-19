@@ -32,7 +32,7 @@ import hyperdx_19 from '@site/static/images/use-cases/observability/hyperdx-19.p
 import copy_api_key from '@site/static/images/use-cases/observability/copy_api_key.png';
 
 
-# ClickStack - サンプルのログ、トレース、メトリクス {#clickstack-sample-dataset}
+# ClickStack - サンプルのログ、トレース、メトリクス \{#clickstack-sample-dataset\}
 
 以下の例では、[オールインワンイメージ用の手順](/use-cases/observability/clickstack/getting-started)に従って ClickStack を起動し、[ローカルの ClickHouse インスタンス](/use-cases/observability/clickstack/getting-started#complete-connection-credentials)または [ClickHouse Cloud インスタンス](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)に接続していることを前提とします。
 

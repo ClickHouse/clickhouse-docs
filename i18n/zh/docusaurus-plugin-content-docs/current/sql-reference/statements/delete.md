@@ -16,14 +16,14 @@ DELETE FROM [db.]table [ON CLUSTER cluster] [IN PARTITION partition_expr] WHERE 
 
 之所以称为「轻量级 `DELETE`」，是为了与 [ALTER TABLE ... DELETE](/sql-reference/statements/alter/delete) 命令区分开来，后者是一个重量级的操作。
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
 ```sql
 -- 删除 `hits` 表中所有 `Title` 列包含文本 `hello` 的行
 DELETE FROM hits WHERE Title LIKE '%hello%';
 ```
 
-## 轻量级 `DELETE` 不会立即删除数据 {#lightweight-delete-does-not-delete-data-immediately}
+## 轻量级 `DELETE` 不会立即删除数据 \{#lightweight-delete-does-not-delete-data-immediately\}
 
 轻量级 `DELETE` 是作为一种[变更（mutation）](/sql-reference/statements/alter#mutations)实现的，它会将行标记为已删除，但不会立即物理删除这些行。
 
@@ -33,19 +33,19 @@ DELETE FROM hits WHERE Title LIKE '%hello%';
 
 如果需要保证数据在可预测的时间内从存储中删除，可以考虑使用表设置 [`min_age_to_force_merge_seconds`](/operations/settings/merge-tree-settings#min_age_to_force_merge_seconds)。或者可以使用 [ALTER TABLE ... DELETE](/sql-reference/statements/alter/delete) 命令。请注意，使用 `ALTER TABLE ... DELETE` 删除数据可能会消耗大量资源，因为它会重新创建所有受影响的数据部分。
 
-## 删除大量数据 {#deleting-large-amounts-of-data}
+## 删除大量数据 \{#deleting-large-amounts-of-data\}
 
 大规模删除操作可能会对 ClickHouse 的性能产生负面影响。如果打算删除表中的所有行，请考虑使用 [`TRUNCATE TABLE`](/sql-reference/statements/truncate) 命令。
 
 如果预计需要频繁执行删除操作，请考虑使用[自定义分区键](/engines/table-engines/mergetree-family/custom-partitioning-key)。然后可以使用 [`ALTER TABLE ... DROP PARTITION`](/sql-reference/statements/alter/partition#drop-partitionpart) 命令快速删除与该分区关联的所有行。
 
-## 轻量级 `DELETE` 的限制 {#limitations-of-lightweight-delete}
+## 轻量级 `DELETE` 的限制 \{#limitations-of-lightweight-delete\}
 
-### 带有投影的轻量级 `DELETE` {#lightweight-deletes-with-projections}
+### 带有投影的轻量级 `DELETE` \{#lightweight-deletes-with-projections\}
 
 默认情况下，`DELETE` 不适用于包含投影的表。这是因为投影中的行也可能会受到 `DELETE` 操作的影响。不过，可以使用 [MergeTree 设置](/operations/settings/merge-tree-settings) `lightweight_mutation_projection_mode` 来更改此行为。
 
-## 使用轻量级 `DELETE` 时的性能注意事项 {#performance-considerations-when-using-lightweight-delete}
+## 使用轻量级 `DELETE` 时的性能注意事项 \{#performance-considerations-when-using-lightweight-delete\}
 
 **使用轻量级 `DELETE` 语句删除大量数据可能会对 `SELECT` 查询性能产生负面影响。**
 
@@ -56,7 +56,7 @@ DELETE FROM hits WHERE Title LIKE '%hello%';
 - 受影响的表包含非常多的数据分片（data parts）。
 - 在紧凑分片（Compact part）中存在大量数据。在紧凑分片中，所有列都存储在同一个文件中。
 
-## 删除权限 {#delete-permissions}
+## 删除权限 \{#delete-permissions\}
 
 `DELETE` 语句需要具有 `ALTER DELETE` 权限。要为指定用户在特定表上启用 `DELETE` 语句，请运行以下命令：
 
@@ -64,7 +64,7 @@ DELETE FROM hits WHERE Title LIKE '%hello%';
 授予 ALTER DELETE 权限 于 db.table 给 username;
 ```
 
-## ClickHouse 内部是如何实现轻量级 DELETE 的 {#how-lightweight-deletes-work-internally-in-clickhouse}
+## ClickHouse 内部是如何实现轻量级 DELETE 的 \{#how-lightweight-deletes-work-internally-in-clickhouse\}
 
 1. **对受影响的行应用“掩码”**
 
@@ -92,6 +92,6 @@ DELETE FROM hits WHERE Title LIKE '%hello%';
 
    从上述步骤可以看出，使用掩码技术的轻量级 `DELETE` 相比传统的 `ALTER TABLE ... DELETE` 性能更好，因为它不会为受影响的 part 重写所有列的文件。
 
-## 相关内容 {#related-content}
+## 相关内容 \{#related-content\}
 
 - 博客文章：[在 ClickHouse 中处理更新和删除](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

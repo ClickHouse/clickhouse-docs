@@ -8,14 +8,14 @@ doc_type: 'guide'
 
 ClickHouse は JSON データの構造を自動的に推論できます。これを利用すると、ディスク上のデータや S3 バケット上の JSON データを `clickhouse-local` などから直接クエリしたり、データを ClickHouse にロードする前にスキーマを自動生成したりできます。
 
-## 型推論を使用するタイミング {#when-to-use-type-inference}
+## 型推論を使用するタイミング \{#when-to-use-type-inference\}
 
 * **一貫した構造** - 型を推論しようとしているデータに、関心のあるすべてのキーが含まれていること。型推論は、[最大行数](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)または[バイト数](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)までデータをサンプリングすることで行われます。サンプル以降のデータで追加のカラムがあっても無視され、クエリすることはできません。
 * **一貫した型** - 特定のキーに対するデータ型は互換性がある必要があります。つまり、一方の型を他方の型へ自動的に変換できなければなりません。
 
 より動的な JSON の場合で、新しいキーが追加され、同じパスに対して複数の型が存在し得る場合は、「[半構造化データおよび動的データの扱い](/integrations/data-formats/json/inference#working-with-semi-structured-data)」を参照してください。
 
-## 型の検出 {#detecting-types}
+## 型の検出 \{#detecting-types\}
 
 以下では、JSON が一貫した構造を持ち、各パスごとに単一の型を持つことを前提とします。
 
@@ -102,7 +102,7 @@ SETTINGS describe_compact_output = 1
 日付および日時の自動検出は、それぞれ設定 [`input_format_try_infer_dates`](/operations/settings/formats#input_format_try_infer_dates) と [`input_format_try_infer_datetimes`](/operations/settings/formats#input_format_try_infer_datetimes) で制御できます（どちらもデフォルトで有効）。オブジェクトをタプルとして推論するかどうかは、設定 [`input_format_json_try_infer_named_tuples_from_objects`](/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects) で制御されます。数値の自動検出など、JSON のスキーマ推論を制御するその他の設定は[こちら](/interfaces/schema-inference#text-formats)で確認できます。
 :::
 
-## JSON のクエリ {#querying-json}
+## JSON のクエリ \{#querying-json\}
 
 以下では、JSON が一貫した構造を持ち、各パスごとに単一の型になっていることを前提とします。
 
@@ -149,7 +149,7 @@ LIMIT 1 BY year
 スキーマ推論を利用することで、スキーマを明示的に定義しなくても JSON ファイルに対してクエリを実行できるため、アドホックなデータ分析タスクを高速化できます。
 
 
-## テーブルの作成 {#creating-tables}
+## テーブルの作成 \{#creating-tables\}
 
 テーブルのスキーマを作成するために、スキーマ推論を利用できます。次の `CREATE AS EMPTY` コマンドは、テーブルの DDL を推論してテーブルを作成します。これはデータを一切読み込みません。
 
@@ -191,7 +191,7 @@ ORDER BY update_date
 上記は、このデータに対して正しいスキーマです。スキーマ推論は、データのサンプリングと、データを行単位で読み取る処理に基づいて実行されます。カラム値はフォーマットに従って抽出され、各値の型を決定するために再帰的なパーサーとヒューリスティクスが使用されます。スキーマ推論時にデータから読み取られる最大行数および最大バイト数は、設定 [`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)（デフォルトでは 25000）および [`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)（デフォルトでは 32MB）によって制御されます。検出結果が正しくない場合、[こちら](/operations/settings/formats#schema_inference_make_columns_nullable)で説明されているようにヒントを指定できます。
 
 
-### スニペットからテーブルを作成する {#creating-tables-from-snippets}
+### スニペットからテーブルを作成する \{#creating-tables-from-snippets\}
 
 上記の例では、S3 上のファイルを使用してテーブルスキーマを作成しました。1 行だけを含むスニペットからスキーマを作成したい場合もあるでしょう。これは、以下に示すように [format](/sql-reference/table-functions/format) 関数を使用することで実現できます。
 
@@ -225,7 +225,7 @@ ORDER BY update_date
 ```
 
 
-## JSON データの読み込み {#loading-json-data}
+## JSON データの読み込み \{#loading-json-data\}
 
 以下では、JSON が一貫した構造を持ち、各パスごとに単一の型を持つことを前提としています。
 
@@ -280,11 +280,11 @@ FORMAT PrettyJSONEachRow
 ```
 
 
-## エラーの処理 {#handling-errors}
+## エラーの処理 \{#handling-errors\}
 
 ときどき、不正な形式のデータが含まれていることがあります。たとえば、特定のカラムの型が正しくない場合や、JSON オブジェクトの形式が不適切な場合などです。このような場合には、設定 [`input_format_allow_errors_num`](/operations/settings/formats#input_format_allow_errors_num) と [`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio) を使用して、データ挿入エラーを引き起こした行について、一定数または一定割合まで無視することを許可できます。さらに、推論を支援するための [hints](/operations/settings/formats#schema_inference_hints) を指定することもできます。
 
-## 半構造化データと動的データの扱い {#working-with-semi-structured-data}
+## 半構造化データと動的データの扱い \{#working-with-semi-structured-data\}
 
 前の例では、キー名と型がよく知られた静的な JSON を使用しました。実際にはそうでないことが多く、キーが追加されたり、その型が変化したりします。これは Observability データなどのユースケースでよく見られます。
 
@@ -396,6 +396,6 @@ SETTINGS enable_json_type = 1, describe_compact_output = 1
 ```
 
 
-## さらに詳しく知る {#further-reading}
+## さらに詳しく知る \{#further-reading\}
 
 データ型推論の詳細については、[こちら](/interfaces/schema-inference)のドキュメントページを参照してください。

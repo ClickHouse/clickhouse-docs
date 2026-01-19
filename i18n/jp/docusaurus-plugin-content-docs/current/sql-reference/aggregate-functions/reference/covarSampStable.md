@@ -5,7 +5,7 @@ title: 'covarSampStable'
 doc_type: 'reference'
 ---
 
-# covarSampStable {#covarsampstable}
+# covarSampStable \{#covarsampstable\}
 
 `Σ((x - x̅)(y - y̅)) / (n - 1)` の値を計算します。[covarSamp](../reference/covarSamp.md) と同様ですが、計算誤差をより小さく抑えられる一方で、処理速度は遅くなります。
 

@@ -5,7 +5,7 @@ title: 'cramersVBiasCorrected'
 doc_type: 'reference'
 ---
 
-# cramersVBiasCorrected {#cramersvbiascorrected}
+# cramersVBiasCorrected \{#cramersvbiascorrected\}
 
 Cramer&#39;s V 是用于衡量表中两列之间关联程度的指标。[`cramersV` 函数](./cramersV.md) 的结果范围是从 0（表示变量之间没有关联）到 1，并且只有在每个值都完全由另一个值决定时才会达到 1。该函数可能存在较大偏差，因此此版本的 Cramer&#39;s V 使用了[偏差校正](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V#Bias_correction)。
 

@@ -7,11 +7,11 @@ title: 'ClickHouse Cloud と Amazon Redshift の比較'
 doc_type: 'guide'
 ---
 
-# Amazon Redshift から ClickHouse への移行 {#amazon-redshift-to-clickhouse-migration}
+# Amazon Redshift から ClickHouse への移行 \{#amazon-redshift-to-clickhouse-migration\}
 
 > このドキュメントでは、Amazon Redshift から ClickHouse へのデータ移行の概要を説明します。
 
-## はじめに {#introduction}
+## はじめに \{#introduction\}
 
 Amazon Redshift は、構造化データおよび半構造化データ向けにレポート作成と
 分析機能を提供するクラウドデータウェアハウスです。ClickHouse と類似した
@@ -26,7 +26,7 @@ Amazon エコシステムとの緊密な統合により既存の AWS ユーザ�
 Redshift ワークロードを置き換える、あるいは並行してデプロイする「スピードレイヤー」として、
 より優れたクエリ性能とデータ圧縮のメリットを得るために ClickHouse を選択するケースが増えています。
 
-## ClickHouse と Redshift の比較 {#clickhouse-vs-redshift}
+## ClickHouse と Redshift の比較 \{#clickhouse-vs-redshift\}
 
 AWS エコシステムへの投資比率が高いユーザーにとって、Redshift は
 データウェアハウスのニーズに直面した際の自然な選択肢となります。Redshift は

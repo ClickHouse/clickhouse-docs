@@ -7,7 +7,7 @@ doc_type: 'reference'
 keywords: ['WHERE']
 ---
 
-# WHERE 子句 {#where-clause}
+# WHERE 子句 \{#where-clause\}
 
 `WHERE` 子句允许您过滤来自 `SELECT` 的 [`FROM`](../../../sql-reference/statements/select/from.md) 子句的数据。
 
@@ -24,7 +24,7 @@ Prewhere 是一种更有效地应用过滤的优化。
 即使未显式指定 `PREWHERE` 子句,它也默认启用。
 :::
 
-## 测试 `NULL` {#testing-for-null}
+## 测试 `NULL` \{#testing-for-null\}
 
 如果您需要测试值是否为 [`NULL`](/sql-reference/syntax#null),请使用:
 - [`IS NULL`](/sql-reference/operators#is_null) 或 [`isNull`](../../../sql-reference/functions/functions-for-nulls.md#isNull)
@@ -32,7 +32,7 @@ Prewhere 是一种更有效地应用过滤的优化。
 
 否则,带有 `NULL` 的表达式永远不会通过。
 
-## 使用逻辑运算符过滤数据 {#filtering-data-with-logical-operators}
+## 使用逻辑运算符过滤数据 \{#filtering-data-with-logical-operators\}
 
 您可以将以下[逻辑函数](/sql-reference/functions/logical-functions#and)与 `WHERE` 子句一起使用来组合多个条件:
 
@@ -41,12 +41,12 @@ Prewhere 是一种更有效地应用过滤的优化。
 - [`or()`](/sql-reference/functions/logical-functions#or) 或 `OR`
 - [`xor()`](/sql-reference/functions/logical-functions#xor)
 
-## 将 UInt8 列用作条件 {#using-uint8-columns-as-a-condition}
+## 将 UInt8 列用作条件 \{#using-uint8-columns-as-a-condition\}
 
 在 ClickHouse 中,`UInt8` 列可以直接用作布尔条件,其中 `0` 为 `false`,任何非零值(通常为 `1`)为 `true`。
 [下面](#example-uint8-column-as-condition)的部分给出了一个示例。
 
-## 使用比较运算符 {#using-comparison-operators}
+## 使用比较运算符 \{#using-comparison-operators\}
 
 可以使用以下[比较运算符](/sql-reference/operators#comparison-operators):
 
@@ -66,7 +66,7 @@ Prewhere 是一种更有效地应用过滤的优化。
 | `a BETWEEN b AND c` | `a >= b AND a <= c` | 范围检查(包含) | `price BETWEEN 100 AND 500` |
 | `a NOT BETWEEN b AND c` | `a < b OR a > c` | 范围外检查 | `price NOT BETWEEN 100 AND 500` |
 
-## 模式匹配和条件表达式 {#pattern-matching-and-conditional-expressions}
+## 模式匹配和条件表达式 \{#pattern-matching-and-conditional-expressions\}
 
 除了比较运算符外,您还可以在 `WHERE` 子句中使用模式匹配和条件表达式。
 
@@ -80,7 +80,7 @@ Prewhere 是一种更有效地应用过滤的优化。
 
 有关使用示例,请参阅["模式匹配和条件表达式"](#examples-pattern-matching-and-conditional-expressions)。
 
-## 包含文字、列或子查询的表达式 {#expressions-with-literals-columns-subqueries}
+## 包含文字、列或子查询的表达式 \{#expressions-with-literals-columns-subqueries\}
 
 `WHERE` 子句后面的表达式还可以包括[文字](/sql-reference/syntax#literals)、列或子查询,这些是返回条件中使用的值的嵌套 `SELECT` 语句。
 
@@ -109,9 +109,9 @@ WHERE (price > 100 OR category IN (SELECT category FROM featured))
   AND in_stock = true
   AND name LIKE '%Special%'
 ```
-## 示例 {#examples}
+## 示例 \{#examples\}
 
-### 测试 `NULL` {#examples-testing-for-null}
+### 测试 `NULL` \{#examples-testing-for-null\}
 
 带有 `NULL` 值的查询:
 
@@ -132,7 +132,7 @@ SELECT * FROM t_null WHERE y != 0;
 └───┴───┘
 ```
 
-### 使用逻辑运算符过滤数据 {#example-filtering-with-logical-operators}
+### 使用逻辑运算符过滤数据 \{#example-filtering-with-logical-operators\}
 
 给定以下表和数据:
 
@@ -249,7 +249,7 @@ WHERE and(or(category = 'Electronics', price > 100), in_stock);
 
 SQL 关键字语法(`AND`、`OR`、`NOT`、`XOR`)通常更易读,但函数语法在复杂表达式或构建动态查询时很有用。
 
-### 将 UInt8 列用作条件 {#example-uint8-column-as-condition}
+### 将 UInt8 列用作条件 \{#example-uint8-column-as-condition\}
 
 使用[前面示例](#example-filtering-with-logical-operators)中的表,您可以直接使用列名作为条件:
 
@@ -267,7 +267,7 @@ WHERE in_stock
    └────┴─────────┴────────┴─────────────┴──────────┘
 ```
 
-### 使用比较运算符 {#example-using-comparison-operators}
+### 使用比较运算符 \{#example-using-comparison-operators\}
 
 以下示例使用上面[示例](#example-filtering-with-logical-operators)中的表和数据。为简洁起见,省略了结果。
 
@@ -342,11 +342,11 @@ SELECT * FROM products
 WHERE category = 'Electronics' AND in_stock = true;
 ```
 
-### 模式匹配和条件表达式 {#examples-pattern-matching-and-conditional-expressions}
+### 模式匹配和条件表达式 \{#examples-pattern-matching-and-conditional-expressions\}
 
 以下示例使用上面[示例](#example-filtering-with-logical-operators)中的表和数据。为简洁起见,省略了结果。
 
-#### LIKE 示例 {#like-examples}
+#### LIKE 示例 \{#like-examples\}
 
 ```sql
 -- 查找名称中包含 'o' 的产品
@@ -362,7 +362,7 @@ SELECT * FROM products WHERE name LIKE '____';
 -- 结果: Desk, Lamp
 ```
 
-#### ILIKE 示例 {#ilike-examples}
+#### ILIKE 示例 \{#ilike-examples\}
 
 ```sql
 -- 不区分大小写搜索 'LAPTOP'
@@ -374,7 +374,7 @@ SELECT * FROM products WHERE name ILIKE 'l%';
 -- 结果: Laptop, Lamp
 ```
 
-#### IF 示例 {#if-examples}
+#### IF 示例 \{#if-examples\}
 
 ```sql
 -- 按类别设置不同的价格阈值
@@ -390,7 +390,7 @@ WHERE if(in_stock, price > 100, true);
 -- (有库存的物品超过 $100 或所有缺货物品)
 ```
 
-#### multiIf 示例 {#multiif-examples}
+#### multiIf 示例 \{#multiif-examples\}
 
 ```sql
 -- 多个基于类别的条件
@@ -413,7 +413,7 @@ WHERE multiIf(
 -- 结果: Laptop, Chair, Monitor, Lamp
 ```
 
-#### CASE 示例 {#case-examples}
+#### CASE 示例 \{#case-examples\}
 
 **简单 CASE:**
 

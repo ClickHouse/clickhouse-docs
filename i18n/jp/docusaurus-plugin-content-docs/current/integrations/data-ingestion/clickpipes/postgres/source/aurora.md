@@ -19,13 +19,13 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-# Aurora Postgres ソースのセットアップガイド {#aurora-postgres-source-setup-guide}
+# Aurora Postgres ソースのセットアップガイド \{#aurora-postgres-source-setup-guide\}
 
-## サポートされている Postgres バージョン {#supported-postgres-versions}
+## サポートされている Postgres バージョン \{#supported-postgres-versions\}
 
 ClickPipes は Aurora PostgreSQL 互換エディションのバージョン 12 以降に対応しています。
 
-## 論理レプリケーションを有効にする {#enable-logical-replication}
+## 論理レプリケーションを有効にする \{#enable-logical-replication\}
 
 Aurora インスタンスですでに次の設定が行われている場合は、このセクションはスキップしてかまいません。
 
@@ -69,7 +69,7 @@ postgres=> SHOW wal_sender_timeout ;
 <Image img={reboot_rds} alt="Aurora PostgreSQL の再起動" size="lg" border />
 
 
-## データベースユーザーの設定 {#configure-database-user}
+## データベースユーザーの設定 \{#configure-database-user\}
 
 Aurora PostgreSQL の writer インスタンスに管理者ユーザーで接続し、次のコマンドを実行します。
 
@@ -113,9 +113,9 @@ Aurora PostgreSQL の writer インスタンスに管理者ユーザーで接続
 
    `clickpipes` publication には、指定したテーブルから生成される変更イベントの集合が含まれ、後でレプリケーションストリームを取り込むために使用されます。
 
-## ネットワークアクセスの設定 {#configure-network-access}
+## ネットワークアクセスの設定 \{#configure-network-access\}
 
-### IP ベースのアクセス制御 {#ip-based-access-control}
+### IP ベースのアクセス制御 \{#ip-based-access-control\}
 
 Aurora クラスターへのトラフィックを制限したい場合は、[ドキュメントに記載されている固定 NAT IP](../../index.md#list-of-static-ips) を Aurora セキュリティグループの `Inbound rules` に追加してください。
 
@@ -123,11 +123,11 @@ Aurora クラスターへのトラフィックを制限したい場合は、[ド
 
 <Image img={edit_inbound_rules} alt="上記セキュリティグループの inbound rules を編集" size="lg" border/>
 
-### AWS PrivateLink を使用したプライベートアクセス {#private-access-via-aws-privatelink}
+### AWS PrivateLink を使用したプライベートアクセス \{#private-access-via-aws-privatelink\}
 
 プライベートネットワーク経由で Aurora クラスターに接続するには、AWS PrivateLink を使用できます。接続を設定するには、ClickPipes 用の [AWS PrivateLink セットアップガイド](/knowledgebase/aws-privatelink-setup-for-clickpipes) に従ってください。
 
-### Aurora 固有の考慮事項 {#aurora-specific-considerations}
+### Aurora 固有の考慮事項 \{#aurora-specific-considerations\}
 
 Aurora PostgreSQL と ClickPipes を連携させる際は、次の点を考慮してください。
 
@@ -139,7 +139,7 @@ Aurora PostgreSQL と ClickPipes を連携させる際は、次の点を考慮�
 
 4. **ストレージに関する考慮事項**: Aurora のストレージレイヤーはクラスター内のすべてのインスタンスで共有されており、標準的な RDS と比較して、論理レプリケーションのパフォーマンスが向上する可能性があります。
 
-### 動的なクラスターエンドポイントへの対応 {#dealing-with-dynamic-cluster-endpoints}
+### 動的なクラスターエンドポイントへの対応 \{#dealing-with-dynamic-cluster-endpoints\}
 
 Aurora では、適切なインスタンスに自動的にルーティングされる安定したエンドポイントが提供されていますが、一貫した接続性を確保するために、次のような追加のアプローチがあります。
 
@@ -147,7 +147,7 @@ Aurora では、適切なインスタンスに自動的にルーティングさ�
 
 2. リージョン間レプリケーションを使用している場合は、レイテンシーを低減し、耐障害性を向上させるために、リージョンごとに個別の ClickPipes を設定することを検討してください。
 
-## 次のステップ {#whats-next}
+## 次のステップ \{#whats-next\}
 
 これで、[ClickPipeを作成](../index.md)し、Aurora PostgreSQL クラスターから ClickHouse Cloud へデータの取り込みを開始できます。
 Aurora PostgreSQL クラスターをセットアップした際に使用した接続情報は、ClickPipe の作成時にも必要になるため、必ず控えておいてください。

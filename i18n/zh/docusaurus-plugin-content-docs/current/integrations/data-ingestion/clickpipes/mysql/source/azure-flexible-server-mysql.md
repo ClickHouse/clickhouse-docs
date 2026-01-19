@@ -13,7 +13,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# Azure Flexible Server for MySQL 源端设置指南 {#azure-flexible-server-for-mysql-source-setup-guide}
+# Azure Flexible Server for MySQL 源端设置指南 \{#azure-flexible-server-for-mysql-source-setup-guide\}
 
 本分步指南将演示如何配置 Azure Flexible Server for MySQL，通过 [MySQL ClickPipe](../index.md) 将数据复制到 ClickHouse Cloud。此服务仅支持**一次性摄取**。关于 MySQL CDC 的常见问题，请参阅 [MySQL 常见问题页面](/integrations/data-ingestion/clickpipes/mysql/faq.md)。
 
@@ -23,7 +23,7 @@ import TabItem from '@theme/TabItem';
 请在 [Azure 反馈论坛](https://feedback.azure.com/d365community/forum/47b1e71d-ee24-ec11-b6e6-000d3a4f0da0)提交功能请求，为 [此问题](https://learn.microsoft.com/en-us/answers/questions/766047/setting-binlog-row-metadata-to-full-in-azure-db-fo)投票，或[联系 Azure 支持](https://azure.microsoft.com/en-us/support/create-ticket/)以请求此功能。
 :::
 
-## 配置数据库用户 {#configure-database-user}
+## 配置数据库用户 \{#configure-database-user\}
 
 以管理员用户身份连接到您的 Azure Flexible Server for MySQL 实例，并执行以下命令：
 
@@ -45,7 +45,7 @@ import TabItem from '@theme/TabItem';
    FLUSH PRIVILEGES;
    ```
 
-## 配置网络访问 {#configure-network-access}
+## 配置网络访问 \{#configure-network-access\}
 
 :::note
 ClickPipes 不支持 Azure Private Link 连接。如果不允许从公网访问 Azure Flexible Server for MySQL 实例，可以[使用 SSH 隧道](#configure-network-security)进行安全连接。Azure Private Link 将在未来得到支持。
@@ -82,6 +82,6 @@ ClickPipes 不支持 Azure Private Link 连接。如果不允许从公网访问 
 </TabItem>
 </Tabs>
 
-## 后续步骤 {#whats-next}
+## 后续步骤 \{#whats-next\}
 
 现在可以[创建 ClickPipe](../index.md)，并开始将 Azure Flexible Server for MySQL 实例中的数据摄取到 ClickHouse Cloud 中。请务必记录在设置实例时使用的连接信息，因为在创建 ClickPipe 的过程中将需要这些信息。

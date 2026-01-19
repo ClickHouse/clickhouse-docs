@@ -22,14 +22,14 @@ import Image from '@theme/IdealImage';
 [GCP Marketplace](https://console.cloud.google.com/marketplace) から提供される PAYG（従量課金）パブリックオファーで ClickHouse Cloud の利用を開始します。
 
 
-## 前提条件 {#prerequisites}
+## 前提条件 \{#prerequisites\}
 
 - 請求管理者によって購入権限が有効化されている GCP プロジェクト。
 - GCP Marketplace 上で ClickHouse Cloud を購読するには、購入権限を持つアカウントでログインし、適切なプロジェクトを選択する必要があります。
 
 
 
-## サインアップ手順 {#steps-to-sign-up}
+## サインアップ手順 \{#steps-to-sign-up\}
 
 1. [GCP Marketplace](https://cloud.google.com/marketplace) を開き、ClickHouse Cloud を検索します。対象となるプロジェクトが正しく選択されていることを確認します。
 

@@ -11,7 +11,7 @@ keywords: ['варианты развертывания ClickStack', 'внешн
 
 В этом руководстве рассматриваются расширенные варианты развертывания ClickStack с помощью Helm. Инструкции по базовой установке приведены в [основном руководстве по развертыванию с помощью Helm](/docs/use-cases/observability/clickstack/deployment/helm).
 
-## Обзор {#overview}
+## Обзор \{#overview\}
 
 Helm-чарт ClickStack поддерживает несколько вариантов развертывания:
 
@@ -20,11 +20,11 @@ Helm-чарт ClickStack поддерживает несколько вариа�
 - **Внешний OTel collector** — использовать существующую инфраструктуру OTel
 - **Минимальное развертывание** — только HyperDX, внешние зависимости
 
-## Внешний ClickHouse {#external-clickhouse}
+## Внешний ClickHouse \{#external-clickhouse\}
 
 Если у вас уже есть кластер ClickHouse (включая ClickHouse Cloud), вы можете отключить встроенный ClickHouse и подключиться к вашему внешнему экземпляру.
 
-### Вариант 1: Встроенная конфигурация (разработка/тестирование) {#external-clickhouse-inline}
+### Вариант 1: Встроенная конфигурация (разработка/тестирование) \{#external-clickhouse-inline\}
 
 Используйте этот подход для быстрого тестирования или в непродуктивных средах:
 
@@ -56,13 +56,13 @@ hyperdx:
 helm install my-clickstack clickstack/clickstack -f values-external-clickhouse.yaml
 ```
 
-### Вариант 2: Внешний секрет (рекомендуется для production) {#external-clickhouse-secret}
+### Вариант 2: Внешний секрет (рекомендуется для production) \{#external-clickhouse-secret\}
 
 Для production-развертываний, где вы хотите хранить учетные данные отдельно от конфигурации Helm:
 
 <VerticalStepper headerlevel='h4'>
 
-#### Создайте файлы конфигурации {#create-configuration}
+#### Создайте файлы конфигурации \{#create-configuration\}
 ```bash
 # Create connections.json
 cat <<EOF > connections.json
@@ -119,7 +119,7 @@ cat <<EOF > sources.json
 EOF
 ```
 
-#### Создайте секрет Kubernetes {#create-kubernetes-secret}
+#### Создайте секрет Kubernetes \{#create-kubernetes-secret\}
 ```bash
 kubectl create secret generic hyperdx-external-config \
   --from-file=connections.json=connections.json \
@@ -129,7 +129,7 @@ kubectl create secret generic hyperdx-external-config \
 rm connections.json sources.json
 ```
 
-#### Настройте Helm для использования секрета {#configure-helm-secret}
+#### Настройте Helm для использования секрета \{#configure-helm-secret\}
 ```yaml
 # values-external-clickhouse-secret.yaml
 clickhouse:
@@ -150,7 +150,7 @@ helm install my-clickstack clickstack/clickstack -f values-external-clickhouse-s
 ```
 </VerticalStepper>
 
-### Использование ClickHouse Cloud {#using-clickhouse-cloud}
+### Использование ClickHouse Cloud \{#using-clickhouse-cloud\}
 
 Для ClickHouse Cloud:
 
@@ -173,7 +173,7 @@ hyperdx:
 
 Подробный пример подключения к ClickHouse Cloud см. в разделе [«Создание подключения к ClickHouse Cloud»](/docs/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
-## Внешний OTel collector {#external-otel-collector}
+## Внешний OTel collector \{#external-otel-collector\}
 
 Если у вас уже есть инфраструктура OTel collector:
 
@@ -192,7 +192,7 @@ helm install my-clickstack clickstack/clickstack -f values-external-otel.yaml
 
 См. раздел [Настройка входного шлюза](/docs/use-cases/observability/clickstack/deployment/helm-configuration#otel-collector-ingress) для инструкций по публикации конечных точек OTel collector через входной шлюз.
 
-## Минимальное развертывание {#minimal-deployment}
+## Минимальное развертывание \{#minimal-deployment\}
 
 Для организаций с уже существующей инфраструктурой достаточно развернуть только HyperDX:
 
@@ -230,7 +230,7 @@ hyperdx:
 helm install my-clickstack clickstack/clickstack -f values-minimal.yaml
 ```
 
-## Следующие шаги {#next-steps}
+## Следующие шаги \{#next-steps\}
 
 - [Руководство по настройке](/docs/use-cases/observability/clickstack/deployment/helm-configuration) — ключи API, секреты и настройка входного шлюза
 - [Облачные развертывания](/docs/use-cases/observability/clickstack/deployment/helm-cloud) — конфигурации для GKE, EKS и AKS

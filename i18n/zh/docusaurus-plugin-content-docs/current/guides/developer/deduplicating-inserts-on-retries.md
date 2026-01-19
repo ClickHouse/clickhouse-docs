@@ -10,19 +10,19 @@ doc_type: 'guide'
 
 当插入被重试时，ClickHouse 会尝试判断这些数据是否已经成功插入。如果插入的数据被标记为重复，ClickHouse 不会将其再次写入目标表。不过，用户仍然会收到成功的操作状态反馈，就像数据已正常插入一样。
 
-## 限制 {#limitations}
+## 限制 \{#limitations\}
 
-### 不确定的插入状态 {#uncertain-insert-status}
+### 不确定的插入状态 \{#uncertain-insert-status\}
 
 用户必须重试插入操作直到成功为止。如果所有重试都失败，则无法确定数据是否已被插入。如果涉及物化视图，也无法确定数据可能出现在哪些表中。物化视图可能与源表不同步。
 
-### 去重窗口限制 {#deduplication-window-limit}
+### 去重窗口限制 \{#deduplication-window-limit\}
 
 如果在重试过程中发生的其他插入操作次数超过 `*_deduplication_window`，则去重可能无法按预期工作。在这种情况下，相同的数据可能会被多次插入。
 
-## 在重试插入时启用插入去重 {#enabling-insert-deduplication-on-retries}
+## 在重试插入时启用插入去重 \{#enabling-insert-deduplication-on-retries\}
 
-### 表级插入去重 {#insert-deduplication-for-tables}
+### 表级插入去重 \{#insert-deduplication-for-tables\}
 
 **只有 `*MergeTree` 引擎支持插入去重。**
 
@@ -30,11 +30,11 @@ doc_type: 'guide'
 
 上述设置决定了表去重日志的参数。去重日志存储有限数量的 `block_id`，这些 `block_id` 决定了去重的工作方式（见下文）。
 
-### 查询级插入去重 {#query-level-insert-deduplication}
+### 查询级插入去重 \{#query-level-insert-deduplication\}
 
 将 `insert_deduplicate` 设置为 `1` 可在查询级别启用去重。请注意，如果你使用 `insert_deduplicate=0` 插入数据，即使之后在重试插入时使用 `insert_deduplicate=1`，这些数据也无法被去重。这是因为在使用 `insert_deduplicate=0` 进行插入时，不会为数据块写入 `block_id`。
 
-## 插入去重的工作原理 {#how-insert-deduplication-works}
+## 插入去重的工作原理 \{#how-insert-deduplication-works\}
 
 当数据插入到 ClickHouse 时，ClickHouse 会根据行数和字节数将数据拆分为多个数据块（block）。
 
@@ -48,7 +48,7 @@ doc_type: 'guide'
 
 目前，`INSERT ... SELECT` 的行为由 [`insert_select_deduplicate`](/operations/settings/settings/#insert_select_deduplicate) 设置控制。该设置决定是否对使用 `INSERT ... SELECT` 查询插入的数据应用去重。有关详细信息和使用示例，请参阅链接的文档。
 
-## 使用物化视图进行插入去重 {#insert-deduplication-with-materialized-views}
+## 使用物化视图进行插入去重 \{#insert-deduplication-with-materialized-views\}
 
 当一个表存在一个或多个物化视图时，插入到该表中的数据会在应用定义好的转换后，同时插入到这些视图的目标表中。经过转换的数据在重试时同样会进行去重。ClickHouse 对物化视图执行去重的方式，与对插入到目标表中的数据进行去重的方式相同。
 
@@ -63,9 +63,9 @@ doc_type: 'guide'
 
 在向包含物化视图的表中插入数据块时，ClickHouse 会通过对一个字符串进行哈希来计算 `block_id`，该字符串由源表的 `block_id` 与其他标识符组合而成。这确保了在物化视图中的去重准确可靠，使得数据可以根据其最初的插入来进行区分，而不受在到达物化视图目标表之前所应用的任何转换的影响。
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
-### 物化视图转换后生成的相同数据块 {#identical-blocks-after-materialized-view-transformations}
+### 物化视图转换后生成的相同数据块 \{#identical-blocks-after-materialized-view-transformations\}
 
 在物化视图内部转换过程中生成的相同数据块不会被去重，因为它们是基于不同的插入数据生成的。
 
@@ -176,7 +176,7 @@ ORDER by all;
 在这里可以看到，当我们重试插入操作时，所有数据都会被去重。去重机制同时适用于 `dst` 和 `mv_dst` 表。
 
 
-### 插入操作中的相同数据块 {#identical-blocks-on-insertion}
+### 插入操作中的相同数据块 \{#identical-blocks-on-insertion\}
 
 ```sql
 CREATE TABLE dst
@@ -216,7 +216,7 @@ ORDER BY all;
 使用上述设置，select 查询会产生两个数据块，因此应该向表 `dst` 插入两个数据块。然而，我们看到只向表 `dst` 插入了一个数据块。这是因为第二个数据块被去重了。它具有相同的数据，以及用于去重的键 `block_id`，该键是根据插入数据计算得到的哈希值。这种行为不符合预期。此类情况虽较罕见，但在理论上是可能的。为了正确处理这类情况，用户需要提供 `insert_deduplication_token`。让我们通过以下示例来解决这个问题：
 
 
-### 插入相同数据块时使用 `insert_deduplication_token` {#identical-blocks-in-insertion-with-insert_deduplication_token}
+### 插入相同数据块时使用 `insert_deduplication_token` \{#identical-blocks-in-insertion-with-insert_deduplication_token\}
 
 ```sql
 CREATE TABLE dst
@@ -306,7 +306,7 @@ ORDER BY all;
 即使此次插入的数据内容不同，也会被去重。请注意，`insert_deduplication_token` 具有更高优先级：当提供 `insert_deduplication_token` 时，ClickHouse 不会使用数据的哈希值。
 
 
-### 不同插入操作在转换后会在物化视图的底层表中生成相同的数据 {#different-insert-operations-generate-the-same-data-after-transformation-in-the-underlying-table-of-the-materialized-view}
+### 不同插入操作在转换后会在物化视图的底层表中生成相同的数据 \{#different-insert-operations-generate-the-same-data-after-transformation-in-the-underlying-table-of-the-materialized-view\}
 
 ```sql
 CREATE TABLE dst
@@ -391,7 +391,7 @@ ORDER by all;
 我们每次插入的数据都不同。不过，插入到 `mv_dst` 表中的数据却是相同的。由于源数据不同，数据没有被去重。
 
 
-### 不同物化视图向同一底层表插入等效数据 {#different-materialized-view-inserts-into-one-underlying-table-with-equivalent-data}
+### 不同物化视图向同一底层表插入等效数据 \{#different-materialized-view-inserts-into-one-underlying-table-with-equivalent-data\}
 
 ```sql
 CREATE TABLE dst

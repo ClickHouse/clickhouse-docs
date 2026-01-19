@@ -24,11 +24,11 @@ CREATE [ROW] POLICY [IF NOT EXISTS | OR REPLACE] policy_name1 [ON CLUSTER cluste
     [TO {role1 [, role2 ...] | ALL | ALL EXCEPT role1 [, role2 ...]}]
 ```
 
-## Предложение USING {#using-clause}
+## Предложение USING \{#using-clause\}
 
 Позволяет задать условие для фильтрации строк. Пользователь увидит строку, если при вычислении условия для этой строки получается ненулевое значение.
 
-## Клауза TO {#to-clause}
+## Клауза TO \{#to-clause\}
 
 В секции `TO` вы можете указать список пользователей и ролей, для которых должна действовать эта политика. Например, `CREATE ROW POLICY ... TO accountant, john@localhost`.
 
@@ -46,7 +46,7 @@ CREATE [ROW] POLICY [IF NOT EXISTS | OR REPLACE] policy_name1 [ON CLUSTER cluste
 `CREATE ROW POLICY pol2 ON mydb.table1 USING 1 TO ALL EXCEPT mira, peter`
 :::
 
-## Оператор AS {#as-clause}
+## Оператор AS \{#as-clause\}
 
 Допускается одновременное включение нескольких политик для одной и той же таблицы и одного и того же пользователя. Поэтому нужен способ комбинировать условия из нескольких политик.
 
@@ -91,11 +91,11 @@ CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 AS RESTRICTIVE TO peter, antonio
 разрешить пользователю `peter` видеть строки таблицы table1 только при одновременном выполнении условий `b=1` И `c=2`, тогда как
 для всех остальных таблиц в mydb для этого пользователя будет применяться только политика `b=1`.
 
-## Предложение ON CLUSTER {#on-cluster-clause}
+## Предложение ON CLUSTER \{#on-cluster-clause\}
 
 Позволяет создавать политики доступа к строкам на кластере, см. [Distributed DDL](../../../sql-reference/distributed-ddl.md).
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 `CREATE ROW POLICY filter1 ON mydb.mytable USING a<1000 TO accountant, john@localhost`
 

@@ -8,7 +8,7 @@ keywords: ['cache']
 doc_type: 'reference'
 ---
 
-# キャッシュの種類 {#cache-types}
+# キャッシュの種類 \{#cache-types\}
 
 クエリを実行する際には、ClickHouse はさまざまなキャッシュを利用してクエリ処理を高速化し、
 ディスクからの読み取りやディスクへの書き込みの必要性を減らします。
