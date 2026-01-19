@@ -288,7 +288,8 @@ ORDER BY
     s_acctbal DESC,
     n_name,
     s_name,
-    p_partkey;
+    p_partkey
+LIMIT 100;
 ```
 
 **Q3**
@@ -315,7 +316,8 @@ GROUP BY
     o_shippriority
 ORDER BY
     revenue DESC,
-    o_orderdate;
+    o_orderdate
+LIMIT 10;
 ```
 
 **Q4**
@@ -559,7 +561,8 @@ GROUP BY
     c_address,
     c_comment
 ORDER BY
-    revenue DESC;
+    revenue DESC
+LIMIT 20;
 ```
 
 **Q11**
@@ -795,7 +798,8 @@ GROUP BY
     o_totalprice
 ORDER BY
     o_totalprice DESC,
-    o_orderdate;
+    o_orderdate
+LIMIT 100;
 ```
 
 **Q19**
@@ -921,7 +925,8 @@ GROUP BY
     s_name
 ORDER BY
     numwait DESC,
-    s_name;
+    s_name
+LIMIT 100;
 ```
 
 **Q22**
