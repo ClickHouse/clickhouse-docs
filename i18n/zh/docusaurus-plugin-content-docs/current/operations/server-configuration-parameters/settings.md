@@ -34,13 +34,13 @@ import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
 
 | Setting                                         | Description                                                                                                                                                                                                                                                                                 | Default |
 | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `users_without_row_policies_can_read_rows`      | 设置没有宽松 ROW POLICY 的用户是否仍然可以通过 `SELECT` 查询读取行。例如，如果有两个用户 A 和 B，并且只为 A 定义了 ROW POLICY，那么当此设置为 `true` 时，用户 B 将能看到所有行；当此设置为 `false` 时，用户 B 将看不到任何行。                                                                                                                                             | `true`  |
 | `on_cluster_queries_require_cluster_grant`      | 设置 `ON CLUSTER` 查询是否需要 `CLUSTER` 权限。                                                                                                                                                                                                                                                        | `true`  |
-| `select_from_system_db_requires_grant`          | 设置 `SELECT * FROM system.<table>` 是否需要任何权限，还是可以由任意用户执行。如果设置为 `true`，则该查询需要 `GRANT SELECT ON system.<table>`，与非 system 表相同。例外情况：部分 system 表（`tables`、`columns`、`databases`，以及一些常量表，如 `one`、`contributors`）仍对所有人可访问；并且如果授予了某个 `SHOW` 权限（例如 `SHOW USERS`），则相应的 system 表（即 `system.users`）将可访问。 | `true`  |
+| `role_cache_expiration_time_seconds`            | 设置角色自上次访问以来在 Role Cache 中保存的时间（秒）。                                                                                                                                                                                                                                                          | `600`   |
 | `select_from_information_schema_requires_grant` | 设置 `SELECT * FROM information_schema.<table>` 是否需要任何权限，还是可以由任意用户执行。如果设置为 `true`，则该查询需要 `GRANT SELECT ON information_schema.<table>`，与普通表相同。                                                                                                                                                 | `true`  |
+| `select_from_system_db_requires_grant`          | 设置 `SELECT * FROM system.<table>` 是否需要任何权限，还是可以由任意用户执行。如果设置为 `true`，则该查询需要 `GRANT SELECT ON system.<table>`，与非 system 表相同。例外情况：部分 system 表（`tables`、`columns`、`databases`，以及一些常量表，如 `one`、`contributors`）仍对所有人可访问；并且如果授予了某个 `SHOW` 权限（例如 `SHOW USERS`），则相应的 system 表（即 `system.users`）将可访问。 | `true`  |
 | `settings_constraints_replace_previous`         | 设置在某个 SETTINGS PROFILE 中针对某个设置定义的约束，是否会覆盖该设置上先前的约束（这些先前约束定义在其他 profile 中），包括新约束未显式设置的字段。该选项还会启用 `changeable_in_readonly` 约束类型。                                                                                                                                                              | `true`  |
 | `table_engines_require_grant`                   | 设置在使用特定表引擎创建表时，是否需要相应权限。                                                                                                                                                                                                                                                                    | `false` |
-| `role_cache_expiration_time_seconds`            | 设置角色自上次访问以来在 Role Cache 中保存的时间（秒）。                                                                                                                                                                                                                                                          | `600`   |
+| `users_without_row_policies_can_read_rows`      | 设置没有宽松 ROW POLICY 的用户是否仍然可以通过 `SELECT` 查询读取行。例如，如果有两个用户 A 和 B，并且只为 A 定义了 ROW POLICY，那么当此设置为 `true` 时，用户 B 将能看到所有行；当此设置为 `false` 时，用户 B 将看不到任何行。                                                                                                                                             | `true`  |
 
 示例：
 
@@ -697,25 +697,25 @@ ClickHouse 重新加载配置并检查新变更的时间间隔
 
 ## crash_log \{#crash_log\}
 
-用于配置 [crash&#95;log](../../operations/system-tables/crash_log.md) system 表的设置。
+[crash&#95;log](../../operations/system-tables/crash_log.md) 系统表操作的相关设置。
 
-可以通过子标签配置以下参数：
+以下设置可以通过子标签进行配置：
 
-| Setting                            | Description                                                                                                            | Default             | Note                                                                    |
-| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------- | ----------------------------------------------------------------------- |
-| `database`                         | 数据库名称。                                                                                                                 |                     |                                                                         |
-| `table`                            | system 表的名称。                                                                                                           |                     |                                                                         |
-| `engine`                           | system 表的 [MergeTree 引擎定义](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-creating-a-table)。 |                     | 如果定义了 `partition_by` 或 `order_by`，则不能使用。如果未指定，则默认选择 `MergeTree`         |
-| `partition_by`                     | system 表的[自定义分区键](/engines/table-engines/mergetree-family/custom-partitioning-key.md)。                                 |                     | 如果为 system 表指定了 `engine`，则应直接在 &#39;engine&#39; 内指定 `partition_by` 参数   |
-| `ttl`                              | 指定表的 [生存时间 (TTL)](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl)。                       |                     | 如果为 system 表指定了 `engine`，则应直接在 &#39;engine&#39; 内指定 `ttl` 参数            |
-| `order_by`                         | system 表的[自定义排序键](/engines/table-engines/mergetree-family/mergetree#order_by)。如果定义了 `engine`，则不能使用。                    |                     | 如果为 system 表指定了 `engine`，则应直接在 &#39;engine&#39; 内指定 `order_by` 参数       |
-| `storage_policy`                   | 表要使用的存储策略名称（可选）。                                                                                                       |                     | 如果为 system 表指定了 `engine`，则应直接在 &#39;engine&#39; 内指定 `storage_policy` 参数 |
-| `settings`                         | 控制 MergeTree 行为的[附加参数](/engines/table-engines/mergetree-family/mergetree/#settings)（可选）。                               |                     | 如果为 system 表指定了 `engine`，则应直接在 &#39;engine&#39; 内指定 `settings` 参数       |
-| `flush_interval_milliseconds`      | 将缓冲区中的内存数据刷新到表的时间间隔。                                                                                                   | `7500`              |                                                                         |
-| `max_size_rows`                    | 日志的最大行数。当未刷新的日志数量达到 `max_size_rows` 时，日志会被写入磁盘。                                                                        | `1024`              |                                                                         |
-| `reserved_size_rows`               | 为日志预分配的内存大小（按行数计）。                                                                                                     | `1024`              |                                                                         |
-| `buffer_size_rows_flush_threshold` | 行数阈值。如果达到该阈值，则会在后台触发将日志刷新到磁盘的操作。                                                                                       | `max_size_rows / 2` |                                                                         |
-| `flush_on_crash`                   | 是否在发生崩溃时将日志写入磁盘。                                                                                                       | `false`             |                                                                         |
+| Setting                            | Description                                                                                                       | Default             | Note                                                                |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------- | ------------------------------------------------------------------- |
+| `buffer_size_rows_flush_threshold` | 行数阈值。当达到该阈值时，会在后台触发将日志刷新到磁盘。                                                                                      | `max_size_rows / 2` |                                                                     |
+| `database`                         | 数据库名称。                                                                                                            |                     |                                                                     |
+| `engine`                           | 系统表的 [MergeTree 引擎定义](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-creating-a-table)。 |                     | 如果定义了 `partition_by` 或 `order_by`，则不能使用该设置。如果未指定，则默认选择 `MergeTree`。 |
+| `flush_interval_milliseconds`      | 将内存中缓冲区的数据刷新到表中的时间间隔（毫秒）。                                                                                         | `7500`              |                                                                     |
+| `flush_on_crash`                   | 设置在发生崩溃时是否应将日志转储到磁盘。                                                                                              | `false`             |                                                                     |
+| `max_size_rows`                    | 日志的最大大小（以行数计）。当尚未刷新的日志数量达到 `max_size_rows` 时，会将日志转储到磁盘。                                                           | `1024`              |                                                                     |
+| `order_by`                         | 系统表的 [自定义排序键](/engines/table-engines/mergetree-family/mergetree#order_by)。如果已定义 `engine`，则不能使用。                   |                     | 如果为系统表指定了 `engine`，则必须在 &#39;engine&#39; 内直接指定 `order_by` 参数。       |
+| `partition_by`                     | 系统表的 [自定义分区键](/engines/table-engines/mergetree-family/custom-partitioning-key.md)。                                |                     | 如果为系统表指定了 `engine`，则必须在 &#39;engine&#39; 内直接指定 `partition_by` 参数。   |
+| `reserved_size_rows`               | 为日志预先分配的内存行数。                                                                                                     | `1024`              |                                                                     |
+| `settings`                         | 控制 MergeTree 行为的 [附加参数](/engines/table-engines/mergetree-family/mergetree/#settings)（可选）。                         |                     | 如果为系统表指定了 `engine`，则必须在 &#39;engine&#39; 内直接指定 `settings` 参数。       |
+| `storage_policy`                   | 要用于该表的存储策略名称（可选）。                                                                                                 |                     | 如果为系统表指定了 `engine`，则必须在 &#39;engine&#39; 内直接指定 `storage_policy` 参数。 |
+| `table`                            | 系统表名称。                                                                                                            |                     |                                                                     |
+| `ttl`                              | 指定表的 [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl)。                         |                     | 如果为系统表指定了 `engine`，则必须在 &#39;engine&#39; 内直接指定 `ttl` 参数。            |
 
 默认的服务器配置文件 `config.xml` 包含以下设置部分：
 
@@ -1058,12 +1058,12 @@ ZooKeeper 中的副本名称。
 
 | Setting                | Description                                                     | Default Value             |
 | ---------------------- | --------------------------------------------------------------- | ------------------------- |
-| `path`                 | 在 Keeper 中为 DDL 查询的 `task_queue` 指定的路径                          |                           |
-| `profile`              | 用于执行 DDL 查询的 profile                                            |                           |
-| `pool_size`            | 可同时运行的 `ON CLUSTER` 查询数量                                        |                           |
-| `max_tasks_in_queue`   | 队列中可以存在的最大任务数。                                                  | `1,000`                   |
-| `task_max_lifetime`    | 如果节点存在时间超过该值则将其删除。                                              | `7 * 24 * 60 * 60`（一周的秒数） |
 | `cleanup_delay_period` | 在收到新节点事件后开始清理，如果距离上次清理的时间少于 `cleanup_delay_period` 秒，则不会执行本次清理。 | `60` 秒                    |
+| `max_tasks_in_queue`   | 队列中可以存在的最大任务数。                                                  | `1,000`                   |
+| `path`                 | 在 Keeper 中为 DDL 查询的 `task_queue` 指定的路径                          |                           |
+| `pool_size`            | 可同时运行的 `ON CLUSTER` 查询数量                                        |                           |
+| `profile`              | 用于执行 DDL 查询的 profile                                            |                           |
+| `task_max_lifetime`    | 如果节点存在时间超过该值则将其删除。                                              | `7 * 24 * 60 * 60`（一周的秒数） |
 
 **示例**
 
@@ -1318,18 +1318,6 @@ ZooKeeper 中的副本名称。
 ```
 
 
-## format_schema_path \{#format_schema_path\}
-
-包含输入数据 schema 的目录路径，例如用于 [CapnProto](/interfaces/formats/CapnProto) 格式的 schema。
-
-**示例**
-
-```xml
-<!-- Directory containing schema files for various input formats. -->
-<format_schema_path>format_schemas/</format_schema_path>
-```
-
-
 ## global_profiler_cpu_time_period_ns \{#global_profiler_cpu_time_period_ns\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000000000" />全局 profiler 的 CPU 时钟定时周期（单位：纳秒）。将该值设置为 0 可关闭全局 CPU 时钟 profiler。推荐取值：针对单个查询至少为 10000000（每秒 100 次），针对集群范围的 profiling 至少为 1000000000（每秒 1 次）。
@@ -1345,17 +1333,6 @@ ZooKeeper 中的副本名称。
 指定包含 Protobuf 类型所用 proto 文件的目录。
 
 **示例**
-
-```xml
-<google_protos_path>/usr/share/clickhouse/protos/</google_protos_path>
-```
-
-
-## google_protos_path \{#google_protos_path\}
-
-定义包含 Protobuf 类型所用 .proto 文件的目录。
-
-示例：
 
 ```xml
 <google_protos_path>/usr/share/clickhouse/protos/</google_protos_path>
@@ -1623,19 +1600,6 @@ HSTS 的失效时间（秒）。
 ```
 
 
-## include_from \{#include_from\}
-
-包含替换内容的文件路径。支持 XML 和 YAML 两种格式。
-
-有关更多信息，请参阅 [Configuration files](/operations/configuration-files) 章节。
-
-**示例**
-
-```xml
-<include_from>/etc/metrica.xml</include_from>
-```
-
-
 ## index_mark_cache_policy \{#index_mark_cache_policy\}
 
 <SettingsInfoBlock type="String" default_value="SLRU" />二级索引标记缓存策略的名称。
@@ -1747,37 +1711,11 @@ ClickHouse 支持在无需同时停止所有副本以更新配置的情况下，
 ```
 
 
-## interserver_http_host \{#interserver_http_host\}
-
-可供其他服务器访问此服务器所使用的主机名。
-
-如果省略，则与执行 `hostname -f` 命令时的确定方式相同。
-
-适用于摆脱对某个特定网络接口依赖的场景。
-
-**示例**
-
-```xml
-<interserver_http_host>example.clickhouse.com</interserver_http_host>
-```
-
-
 ## interserver_http_port \{#interserver_http_port\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 用于 ClickHouse 服务器之间数据交换的端口。
-
-**示例**
-
-```xml
-<interserver_http_port>9009</interserver_http_port>
-```
-
-
-## interserver_http_port \{#interserver_http_port\}
-
-在 ClickHouse 服务器之间进行数据交换的端口。
 
 **示例**
 
@@ -1797,33 +1735,11 @@ ClickHouse 支持在无需同时停止所有副本以更新配置的情况下，
 ```
 
 
-## interserver_https_host \{#interserver_https_host\}
-
-类似于 [`interserver_http_host`](#interserver_http_host)，但此主机名供其他服务器通过 `HTTPS` 访问此服务器。
-
-**示例**
-
-```xml
-<interserver_https_host>example.clickhouse.com</interserver_https_host>
-```
-
-
 ## interserver_https_port \{#interserver_https_port\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 在 ClickHouse 服务器之间通过 `<HTTPS>` 进行数据交换所使用的端口。
-
-**示例**
-
-```xml
-<interserver_https_port>9010</interserver_https_port>
-```
-
-
-## interserver_https_port \{#interserver_https_port\}
-
-用于 ClickHouse 服务器之间通过 `HTTPS` 进行数据交换的端口。
 
 **示例**
 
@@ -1932,19 +1848,19 @@ ClickHouse 在关闭 HTTP 连接之前等待传入请求的时间（秒）。
 
 | Setting                        | Description                                                                                                                                                                                                                                                                                                                                                                                                                              |
 |--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `host`                         | LDAP 服务器主机名或 IP，此参数为必填项且不能为空。                                                                                                                                                                                                                                                                                                                                                             |
-| `port`                         | LDAP 服务器端口，如果 `enable_tls` 设置为 true，则默认值为 636，否则为 `389`。                                                                                                                                                                                                                                                                                                                                                        |
-| `bind_dn`                      | 用于构造绑定 DN 的 Template。最终 DN 将在每次认证尝试期间，通过将模板中的所有 `\{user_name\}` 子串替换为实际用户名来构造。                                                                                                                                                                                                                               |
-| `user_dn_detection`            | 用于检测已绑定用户实际用户 DN 的 LDAP 搜索参数部分。当服务器是 Active Directory 时，这主要用于在后续角色映射的搜索过滤器中使用。得到的用户 DN 将在允许的位置用于替换 `\{user_dn\}` 子串。默认情况下，用户 DN 设置为与 bind DN 相同，但一旦执行搜索，它会更新为实际检测到的用户 DN 值。 |
-| `verification_cooldown`        | 在一次成功绑定尝试之后，在指定的秒数时间段内，对于所有连续请求，都会假定用户已成功认证，而无需联系 LDAP 服务器。指定 `0`（默认）以禁用缓存，并强制对每次认证请求都联系 LDAP 服务器。                                                                                                                  |
-| `enable_tls`                   | 用于启用与 LDAP 服务器安全连接的标志。指定 `no` 使用明文 (`ldap://`) 协议（不推荐）。指定 `yes` 使用基于 SSL/TLS 的 LDAP (`ldaps://`) 协议（推荐，也是默认）。指定 `starttls` 使用传统的 StartTLS 协议（先使用明文 (`ldap://`) 协议，再升级为 TLS）。                                                                                                               |
+| `bind_dn` | 用于构造绑定 DN 的 Template。最终 DN 将在每次认证尝试期间，通过将模板中的所有 `\{user_name\}` 子串替换为实际用户名来构造。                                                                                                                                                                                                                               |
+| `enable_tls` | 用于启用与 LDAP 服务器安全连接的标志。指定 `no` 使用明文 (`ldap://`) 协议（不推荐）。指定 `yes` 使用基于 SSL/TLS 的 LDAP (`ldaps://`) 协议（推荐，也是默认）。指定 `starttls` 使用传统的 StartTLS 协议（先使用明文 (`ldap://`) 协议，再升级为 TLS）。                                                                                                               |
+| `host` | LDAP 服务器主机名或 IP，此参数为必填项且不能为空。                                                                                                                                                                                                                                                                                                                                                             |
+| `port` | LDAP 服务器端口，如果 `enable_tls` 设置为 true，则默认值为 636，否则为 `389`。                                                                                                                                                                                                                                                                                                                                                        |
+| `tls_ca_cert_dir` | 包含 CA 证书的目录路径。                                                                                                                                                                                                                                                                                                                                                                                        |
+| `tls_ca_cert_file` | CA 证书文件路径。                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `tls_cert_file` | 证书文件路径。                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `tls_cipher_suite` | 允许的密码套件（OpenSSL 表示法）。                                                                                                                                                                                                                                                                                                                                                                                              |
+| `tls_key_file` | 证书密钥文件路径。                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `tls_minimum_protocol_version` | SSL/TLS 的最小协议版本。可接受的值为：`ssl2`、`ssl3`、`tls1.0`、`tls1.1`、`tls1.2`（默认）。                                                                                                                                                                                                                                                                                                                |
-| `tls_require_cert`             | SSL/TLS 对端证书验证行为。可接受的值为：`never`、`allow`、`try`、`demand`（默认）。                                                                                                                                                                                                                                                                                                                    |
-| `tls_cert_file`                | 证书文件路径。                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `tls_key_file`                 | 证书密钥文件路径。                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `tls_ca_cert_file`             | CA 证书文件路径。                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `tls_ca_cert_dir`              | 包含 CA 证书的目录路径。                                                                                                                                                                                                                                                                                                                                                                                        |
-| `tls_cipher_suite`             | 允许的密码套件（OpenSSL 表示法）。                                                                                                                                                                                                                                                                                                                                                                                              |
+| `tls_require_cert` | SSL/TLS 对端证书验证行为。可接受的值为：`never`、`allow`、`try`、`demand`（默认）。                                                                                                                                                                                                                                                                                                                    |
+| `user_dn_detection` | 用于检测已绑定用户实际用户 DN 的 LDAP 搜索参数部分。当服务器是 Active Directory 时，这主要用于在后续角色映射的搜索过滤器中使用。得到的用户 DN 将在允许的位置用于替换 `\{user_dn\}` 子串。默认情况下，用户 DN 设置为与 bind DN 相同，但一旦执行搜索，它会更新为实际检测到的用户 DN 值。 |
+| `verification_cooldown` | 在一次成功绑定尝试之后，在指定的秒数时间段内，对于所有连续请求，都会假定用户已成功认证，而无需联系 LDAP 服务器。指定 `0`（默认）以禁用缓存，并强制对每次认证请求都联系 LDAP 服务器。                                                                                                                  |
 
 `user_dn_detection` 设置可以通过子标签进行配置：
 
@@ -2020,27 +1936,6 @@ ClickHouse 企业版许可证文件内容
 ```
 
 
-## listen_backlog \{#listen_backlog\}
-
-监听套接字的 backlog（待处理连接队列大小）。默认值 `4096` 与 Linux [5.4+](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=19f92a030ca6d772ab44b22ee6a01378a8cb32d4)) 的默认值相同。
-
-通常不需要更改该值，因为：
-
-* 默认值已经足够大，
-* 接收客户端连接由服务器中的单独线程负责。
-
-因此，即使你在 `nstat` 中看到 ClickHouse 服务器的 `TcpExtListenOverflows` 为非零且该计数器在增长，也不意味着需要增大该值，因为：
-
-* 通常如果 `4096` 不够，这表明 ClickHouse 内部存在扩展性问题，因此最好提交一个 issue 报告问题。
-* 这并不意味着服务器之后可以处理更多连接（即使可以，到那时客户端可能已经消失或断开连接）。
-
-**示例**
-
-```xml
-<listen_backlog>4096</listen_backlog>
-```
-
-
 ## listen_host \{#listen_host\}
 
 限制允许来自哪些主机的请求。如果希望服务器接受来自所有主机的请求，请指定 `::`。
@@ -2066,37 +1961,11 @@ ClickHouse 企业版许可证文件内容
 ```
 
 
-## listen_reuse_port \{#listen_reuse_port\}
-
-允许多个服务器在同一地址和端口（address:port）上监听。请求将由操作系统随机分发到某个服务器。不建议启用此设置。
-
-**示例**
-
-```xml
-<listen_reuse_port>0</listen_reuse_port>
-```
-
-类型：
-
-默认值：
-
-
 ## listen_try \{#listen_try\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在尝试开始监听时，如果 IPv6 或 IPv4 网络不可用，服务器不会退出。
-
-**示例**
-
-```xml
-<listen_try>0</listen_try>
-```
-
-
-## listen_try \{#listen_try\}
-
-在尝试监听时，即使 IPv6 或 IPv4 网络不可用，服务器也不会退出。
 
 **示例**
 
@@ -2121,28 +1990,28 @@ ClickHouse 企业版许可证文件内容
 
 | Key                    | Description                                                                                                                                                        |
 |------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `level`                | 日志级别。可接受的值：`none`（关闭日志），`fatal`，`critical`，`error`，`warning`，`notice`，`information`，`debug`，`trace`，`test`                 |
-| `log`                  | 日志文件的路径。                                                                                                                                          |
-| `errorlog`             | 错误日志文件的路径。                                                                                                                                    |
-| `size`                 | 日志轮转策略：日志文件的最大大小（字节）。当日志文件大小超过该阈值时，会被重命名并归档，并创建一个新的日志文件。 |
-| `rotation`             | 日志轮转策略：控制何时轮转日志文件。轮转可以基于大小、时间或两者的组合。例如：100M、daily、100M,daily。当日志文件超过指定大小或达到指定时间间隔时，会被重命名并归档，并创建一个新的日志文件。 |
-| `count`                | 日志轮转策略：ClickHouse 最多保留多少个历史日志文件。                                                                                        |
-| `stream_compress`      | 使用 LZ4 压缩日志消息。设置为 `1` 或 `true` 以启用。                                                                                                   |
-| `console`              | 启用向控制台输出日志。设置为 `1` 或 `true` 以启用。如果 ClickHouse 不以守护进程模式运行，默认值为 `1`，否则为 `0`。                            |
-| `console_log_level`    | 控制台输出的日志级别。默认与 `level` 相同。                                                                                                                 |
-| `formatting.type`      | 控制台输出的日志格式。目前仅支持 `json`。                                                                                                 |
-| `use_syslog`           | 同时将日志输出转发到 syslog。                                                                                                                                 |
-| `syslog_level`         | 输出到 syslog 时使用的日志级别。                                                                                                                                   |
-| `async`                | 当为 `true`（默认）时，日志记录将异步进行（每个输出通道一个后台线程）。否则将在线程内（调用 LOG 的线程）进行日志记录。           |
-| `async_queue_max_size` | 使用异步日志记录时，队列中等待刷新的最大消息数量。超出的消息将被丢弃。                       |
-| `startup_level`        | 启动级别用于在服务器启动时设置根 logger 的级别。启动完成后，日志级别会恢复为 `level` 设置。                                   |
-| `shutdown_level`       | 关闭级别用于在服务器关闭时设置根 logger 的级别。                                                                                            |
+| `async` | 当为 `true`（默认）时，日志将异步记录（每个输出通道一个后台线程）。否则将在调用 LOG 的线程中记录日志。           |
+| `async_queue_max_size` | 使用异步日志时，队列中等待写入的最大消息数量。超出的消息将被丢弃。                       |
+| `console` | 启用输出到控制台的日志。设置为 `1` 或 `true` 以启用。如果 ClickHouse 不以守护进程模式运行，则默认值为 `1`，否则为 `0`。                            |
+| `console_log_level` | 控制台输出的日志级别。默认与 `level` 一致。                                                                                                                 |
+| `count` | 轮转策略：ClickHouse 最多保留的历史日志文件数量。                                                                                        |
+| `errorlog` | 错误日志文件的路径。                                                                                                                                    |
+| `formatting.type` | 控制台输出的日志格式。目前仅支持 `json`。                                                                                                 |
+| `level` | 日志级别。可接受的值：`none`（关闭日志）、`fatal`、`critical`、`error`、`warning`、`notice`、`information`,`debug`、`trace`、`test`。                 |
+| `log` | 日志文件的路径。                                                                                                                                          |
+| `rotation` | 轮转策略：控制何时轮转日志文件。轮转可以基于大小、时间或二者的组合。例如：100M、daily、100M,daily。当日志文件超过指定大小或达到指定时间间隔时，会被重命名并归档，并创建新的日志文件。 |
+| `shutdown_level` | 用于在服务器关闭时设置根 logger 的日志级别。                                                                                            |
+| `size` | 轮转策略：日志文件的最大字节大小。当日志文件大小超过该阈值时，会被重命名并归档，并创建新的日志文件。 |
+| `startup_level` | 用于在服务器启动时设置根 logger 的日志级别。启动完成后，日志级别会恢复为 `level` 设置。                                   |
+| `stream_compress` | 使用 LZ4 压缩日志消息。设置为 `1` 或 `true` 以启用。                                                                                                   |
+| `syslog_level` | 输出到 syslog 时使用的日志级别。                                                                                                                                   |
+| `use_syslog` | 同时将日志输出转发到 syslog。                                                                                                                                 |
 
 **日志格式说明符**
 
-`log` 和 `errorLog` 路径中的文件名部分支持以下格式说明符，用于生成最终的文件名（目录部分不支持这些说明符）。
+`log` 和 `errorLog` 路径中的文件名支持以下格式说明符，用于生成最终文件名（路径中的目录部分不支持这些说明符）。
 
-“Example” 列展示的是在 `2023-07-06 18:32:07` 时的输出。
+“Example” 列展示了在 `2023-07-06 18:32:07` 时的输出。
 
 | 格式说明符 | 说明                                                                                                     | 示例                         |
 | ----- | ------------------------------------------------------------------------------------------------------ | -------------------------- |
@@ -2682,21 +2551,6 @@ ClickHouse 使用 IO 线程池中的线程来执行部分 IO 操作（例如与 
 我们建议在 macOS 上使用该选项，因为 getrlimit() 函数返回的值不正确。
 :::
 
-## max_open_files \{#max_open_files\}
-
-最大允许打开的文件数。
-
-:::note
-我们建议在 macOS 上使用该选项，因为 `getrlimit()` 函数返回的值不正确。
-:::
-
-**示例**
-
-```xml
-<max_open_files>262144</max_open_files>
-```
-
-
 ## max_os_cpu_wait_time_ratio_to_drop_connection \{#max_os_cpu_wait_time_ratio_to_drop_connection\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
@@ -3185,22 +3039,6 @@ OS CPU 等待时间（`OSCPUWaitMicroseconds` 指标）与忙碌时间（`OSCPUV
 ```
 
 
-## mlock_executable \{#mlock_executable\}
-
-在启动后执行 `mlockall`，以降低首次查询的延迟，并防止 ClickHouse 可执行文件在高 IO 负载下被换出到磁盘。
-
-:::note
-建议启用此选项，但这会使启动时间增加最多几秒钟。
-请注意，如果没有授予 &quot;CAP&#95;IPC&#95;LOCK&quot; 权限，此 SETTING 将无法生效。
-:::
-
-**示例**
-
-```xml
-<mlock_executable>false</mlock_executable>
-```
-
-
 ## mlock_executable_min_total_memory_amount_bytes \{#mlock_executable_min_total_memory_amount_bytes\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000000000" />执行 `<mlockall>` 所需的最小总内存阈值
@@ -3253,10 +3091,6 @@ OS CPU 等待时间（`OSCPUWaitMicroseconds` 指标）与忙碌时间（`OSCPUV
 
 <SettingsInfoBlock type="Bool" default_value="0" />如果设置为 true，则要求客户端必须通过 [mysql_port](/operations/server-configuration-parameters/settings#mysql_port) 进行安全通信。使用 `--ssl-mode=none` 选项的连接将被拒绝。将其与 [OpenSSL](/operations/server-configuration-parameters/settings#openssl) 设置配合使用。
 
-## mysql_require_secure_transport \{#mysql_require_secure_transport\}
-
-当设置为 true 时，要求客户端必须通过 [mysql_port](#mysql_port) 使用安全连接进行通信。使用选项 `--ssl-mode=none` 的连接将被拒绝。应与 [OpenSSL](#openssl) 相关设置配合使用。
-
 ## oom_score \{#oom_score\}
 
 <SettingsInfoBlock type="Int32" default_value="0" />在 Linux 系统上，此设置可用于控制 OOM killer 的行为。
@@ -3269,28 +3103,28 @@ SSL 客户端/服务器配置。
 
 服务器/客户端配置的键：
 
-| 参数                            | 说明                                                                                                                                                                                                                                                                         | 默认值                                                                                        |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `privateKeyFile`              | PEM 证书对应私钥文件的路径。该文件可以同时包含私钥和证书。                                                                                                                                                                                                                                            |                                                                                            |
-| `certificateFile`             | PEM 格式的客户端/服务器证书文件路径。如果 `privateKeyFile` 已包含证书，则可以省略该选项。                                                                                                                                                                                                                   |                                                                                            |
-| `caConfig`                    | 包含受信任 CA 证书的文件或目录的路径。如果该路径指向文件，则该文件必须为 PEM 格式，并且可以包含多个 CA 证书。如果该路径指向目录，则该目录中必须为每个 CA 证书包含一个 .pem 文件。文件名将根据 CA 主题名的哈希值进行查找。更多详细信息可参见 [SSL&#95;CTX&#95;load&#95;verify&#95;locations](https://www.openssl.org/docs/man3.0/man3/SSL_CTX_load_verify_locations.html) 的 man 手册。 |                                                                                            |
-| `verificationMode`            | 用于验证节点证书的方式。详细信息参见 [Context](https://github.com/ClickHouse-Extras/poco/blob/master/NetSSL_OpenSSL/include/Poco/Net/Context.h) 类的描述。可选值：`none`、`relaxed`、`strict`、`once`。                                                                                                   | `relaxed`                                                                                  |
-| `verificationDepth`           | 验证链的最大长度。如果证书链长度超过设置的值，则验证将失败。                                                                                                                                                                                                                                             | `9`                                                                                        |
-| `loadDefaultCAFile`           | 是否使用 OpenSSL 的内置 CA 证书。ClickHouse 假定这些内置 CA 证书位于 `/etc/ssl/cert.pem` 文件（或 `/etc/ssl/certs` 目录）中，或者位于由环境变量 `SSL_CERT_FILE`（或 `SSL_CERT_DIR`）指定的文件（或目录）中。                                                                                                                    | `true`                                                                                     |
-| `cipherList`                  | 受支持的 OpenSSL 加密套件。                                                                                                                                                                                                                                                         | `ALL:!ADH:!LOW:!EXP:!MD5:!3DES:@STRENGTH`                                                  |
-| `cacheSessions`               | 启用或禁用会话缓存功能。必须与 `sessionIdContext` 配合使用。可接受的取值：`true`、`false`。                                                                                                                                                                                                             | `false`                                                                                    |
-| `sessionIdContext`            | 一组唯一的随机字符，服务器会将其追加到每个生成的标识符后面。字符串长度不得超过 `SSL_MAX_SSL_SESSION_ID_LENGTH`。始终建议设置此参数，因为无论是服务器缓存会话还是客户端请求缓存，它都有助于避免问题。                                                                                                                                                         | `$\{application.name\}`                                                                    |
-| `sessionCacheSize`            | 服务器可缓存的最大会话数。值为 `0` 表示会话数不受限制。                                                                                                                                                                                                                                             | [1024*20](https://github.com/ClickHouse/boringssl/blob/master/include/openssl/ssl.h#L1978) |
-| `sessionTimeout`              | 会话在服务器上的缓存时间（单位：小时）。                                                                                                                                                                                                                                                       | `2`                                                                                        |
-| `extendedVerification`        | 如果启用，则验证证书的 CN 或 SAN 是否与对端主机名一致。                                                                                                                                                                                                                                           | `false`                                                                                    |
-| `requireTLSv1`                | 必须使用 TLSv1 连接。可选值：`true`、`false`。                                                                                                                                                                                                                                          | `false`                                                                                    |
-| `requireTLSv1_1`              | 要求使用 TLSv1.1 连接。可接受的取值：`true`、`false`。                                                                                                                                                                                                                                     | `false`                                                                                    |
-| `requireTLSv1_2`              | 要求使用 TLSv1.2 连接。可接受的取值：`true`、`false`。                                                                                                                                                                                                                                     | `false`                                                                                    |
-| `fips`                        | 启用 OpenSSL 的 FIPS 模式。仅当该库使用的 OpenSSL 版本支持 FIPS 时才可用。                                                                                                                                                                                                                       | `false`                                                                                    |
-| `privateKeyPassphraseHandler` | 用于请求访问私钥所需口令的类（PrivateKeyPassphraseHandler 的子类）。例如：`<privateKeyPassphraseHandler>`、`<name>KeyFileHandler</name>`、`<options><password>test</password></options>`、`</privateKeyPassphraseHandler>`。                                                                          | `KeyConsoleHandler`                                                                        |
-| `invalidCertificateHandler`   | 用于验证无效证书的类（CertificateHandler 的子类）。例如：`<invalidCertificateHandler> <name>RejectCertificateHandler</name> </invalidCertificateHandler>`。                                                                                                                                    | `RejectCertificateHandler`                                                                 |
-| `disableProtocols`            | 禁止使用的协议。                                                                                                                                                                                                                                                                   |                                                                                            |
-| `preferServerCiphers`         | 以客户端优先级为准的服务器密码套件。                                                                                                                                                                                                                                                         | `false`                                                                                    |
+| 配置项                           | 说明                                                                                                                                                                                                                                                                          | 默认值                                                                                        |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `cacheSessions`               | 启用或禁用会话缓存功能。必须与 `sessionIdContext` 配合使用。允许的取值：`true`、`false`。                                                                                                                                                                                                               | `false`                                                                                    |
+| `caConfig`                    | 包含受信任 CA 证书的文件或目录的路径。如果指向文件，则该文件必须为 PEM 格式，并且可以包含多个 CA 证书。如果指向目录，则该目录中每个 CA 证书必须对应一个 .pem 文件。文件名会根据 CA subject name 的哈希值进行查找。更多详情请参考 [SSL&#95;CTX&#95;load&#95;verify&#95;locations](https://www.openssl.org/docs/man3.0/man3/SSL_CTX_load_verify_locations.html) 的 man 页面。 |                                                                                            |
+| `certificateFile`             | PEM 格式的客户端或服务器证书文件路径。如果 `privateKeyFile` 中已包含证书，则可以省略此项。                                                                                                                                                                                                                    |                                                                                            |
+| `cipherList`                  | OpenSSL 支持的加密套件。                                                                                                                                                                                                                                                            | `ALL:!ADH:!LOW:!EXP:!MD5:!3DES:@STRENGTH`                                                  |
+| `disableProtocols`            | 禁止使用的协议。                                                                                                                                                                                                                                                                    |                                                                                            |
+| `extendedVerification`        | 启用后，将验证证书中的 CN 或 SAN 是否与对端主机名一致。                                                                                                                                                                                                                                            | `false`                                                                                    |
+| `fips`                        | 激活 OpenSSL FIPS 模式。仅当该库所使用的 OpenSSL 版本支持 FIPS 时，此功能才可用。                                                                                                                                                                                                                     | `false`                                                                                    |
+| `invalidCertificateHandler`   | 用于在证书无效时执行验证处理的类（`CertificateHandler` 的子类）。例如：`<invalidCertificateHandler> <name>RejectCertificateHandler</name> </invalidCertificateHandler>`。                                                                                                                             | `RejectCertificateHandler`                                                                 |
+| `loadDefaultCAFile`           | 是否使用 OpenSSL 的内置 CA 证书。ClickHouse 假定内置 CA 证书位于文件 `/etc/ssl/cert.pem`（或目录 `/etc/ssl/certs`）中，或者位于由环境变量 `SSL_CERT_FILE`（分别为目录 `SSL_CERT_DIR`）指定的文件（目录）中。                                                                                                                      | `true`                                                                                     |
+| `preferServerCiphers`         | 客户端首选的服务器密码套件。                                                                                                                                                                                                                                                              | `false`                                                                                    |
+| `privateKeyFile`              | PEM 证书对应私钥文件的路径。该文件可以同时包含私钥和证书。                                                                                                                                                                                                                                             |                                                                                            |
+| `privateKeyPassphraseHandler` | 用于请求访问私钥所需密码短语的类（PrivateKeyPassphraseHandler 的子类）。例如：`<privateKeyPassphraseHandler>`、`<name>KeyFileHandler</name>`、`<options><password>test</password></options>`、`</privateKeyPassphraseHandler>`。                                                                         | `KeyConsoleHandler`                                                                        |
+| `requireTLSv1`                | 要求使用 TLSv1 连接。可接受的取值：`true`、`false`。                                                                                                                                                                                                                                        | `false`                                                                                    |
+| `requireTLSv1_1`              | 要求使用 TLSv1.1 进行连接。可接受的取值：`true`、`false`。                                                                                                                                                                                                                                    | `false`                                                                                    |
+| `requireTLSv1_2`              | 要求使用 TLSv1.2 连接。可接受的取值：`true`、`false`。                                                                                                                                                                                                                                      | `false`                                                                                    |
+| `sessionCacheSize`            | 服务器可缓存的最大会话数。值为 `0` 表示会话数不设上限。                                                                                                                                                                                                                                              | [1024*20](https://github.com/ClickHouse/boringssl/blob/master/include/openssl/ssl.h#L1978) |
+| `sessionIdContext`            | 一组唯一的随机字符，服务器会将其附加到每个生成的标识符后面。字符串长度不得超过 `SSL_MAX_SSL_SESSION_ID_LENGTH`。始终建议设置此参数，因为无论是服务器缓存会话还是客户端请求缓存会话，它都有助于避免相关问题。                                                                                                                                                      | `$\{application.name\}`                                                                    |
+| `sessionTimeout`              | 会话在服务器上的缓存时间（单位：小时）。                                                                                                                                                                                                                                                        | `2`                                                                                        |
+| `verificationDepth`           | 验证链的最大长度。如果证书链长度超过设置的值，则验证会失败。                                                                                                                                                                                                                                              | `9`                                                                                        |
+| `verificationMode`            | 用于验证节点证书的方法。详细信息请参见 [Context](https://github.com/ClickHouse-Extras/poco/blob/master/NetSSL_OpenSSL/include/Poco/Net/Context.h) 类的描述。可选值：`none`、`relaxed`、`strict`、`once`。                                                                                                   | `relaxed`                                                                                  |
 
 **设置示例：**
 
@@ -3626,21 +3460,6 @@ ZooKeeper 客户端中用于发送和接收线程的 Linux nice 值。值越低�
 ```
 
 
-## path \{#path\}
-
-包含数据的目录路径。
-
-:::note
-必须以斜杠结尾。
-:::
-
-**示例**
-
-```xml
-<path>/var/lib/clickhouse/</path>
-```
-
-
 ## postgresql_port \{#postgresql_port\}
 
 用于与客户端通过 PostgreSQL 协议进行通信的端口。
@@ -3661,10 +3480,6 @@ ZooKeeper 客户端中用于发送和接收线程的 Linux nice 值。值越低�
 ## postgresql_require_secure_transport \{#postgresql_require_secure_transport\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />如果设置为 true，则必须通过 [postgresql_port](/operations/server-configuration-parameters/settings#postgresql_port) 与客户端进行安全通信。带有 `<sslmode=disable>` 选项的连接将被拒绝。将其与 [OpenSSL](/operations/server-configuration-parameters/settings#openssl) 设置配合使用。
-
-## postgresql_require_secure_transport \{#postgresql_require_secure_transport\}
-
-当设置为 true 时，要求通过 [postgresql_port](#postgresql_port) 与客户端进行加密通信。带有 `sslmode=disable` 选项的连接将被拒绝。请结合 [OpenSSL](#openssl) 设置一起使用。
 
 ## prefetch_threadpool_pool_size \{#prefetch_threadpool_pool_size\}
 
@@ -3927,10 +3742,10 @@ ClickHouse 会根据请求协议，先检查优先级最高的解析器类型。
 
 | Setting                   | Description                       | Default Value |
 | ------------------------- | --------------------------------- | ------------- |
-| `max_size_in_bytes`       | 缓存的最大容量（字节）。`0` 表示禁用查询缓存。         | `1073741824`  |
 | `max_entries`             | 缓存中可存储的 `SELECT` 查询结果的最大数量。       | `1024`        |
 | `max_entry_size_in_bytes` | 可保存到缓存中的 `SELECT` 查询结果在字节数上的最大大小。 | `1048576`     |
 | `max_entry_size_in_rows`  | 可保存到缓存中的 `SELECT` 查询结果在行数上的最大行数。  | `30000000`    |
+| `max_size_in_bytes`       | 缓存的最大容量（字节）。`0` 表示禁用查询缓存。         | `1073741824`  |
 
 :::note
 
@@ -4146,21 +3961,6 @@ ClickHouse 会根据请求协议，先检查优先级最高的解析器类型。
 ```
 
 
-## remap_executable \{#remap_executable\}
-
-用于通过大页内存重新映射机器代码（“text”）所使用内存的设置。
-
-:::note
-此功能处于高度实验阶段。
-:::
-
-示例：
-
-```xml
-<remap_executable>false</remap_executable>
-```
-
-
 ## remote_servers \{#remote_servers\}
 
 用于 [Distributed](../../engines/table-engines/special/distributed.md) 表引擎和 `cluster` 表函数的集群配置。
@@ -4293,8 +4093,8 @@ Keys:
 | Key                   | Description                                                                      |
 | --------------------- | -------------------------------------------------------------------------------- |
 | `enabled`             | 启用该功能的布尔标志，默认为 `true`。将其设置为 `false` 可避免发送崩溃报告。                                   |
-| `send_logical_errors` | `LOGICAL_ERROR` 类似于 `assert`，表示 ClickHouse 中的一个 bug。此布尔标志用于启用发送这类异常（默认值：`true`）。 |
 | `endpoint`            | 可以覆盖用于发送崩溃报告的 endpoint URL。                                                      |
+| `send_logical_errors` | `LOGICAL_ERROR` 类似于 `assert`，表示 ClickHouse 中的一个 bug。此布尔标志用于启用发送这类异常（默认值：`true`）。 |
 
 **推荐用法**
 
@@ -4780,23 +4580,6 @@ SSH 服务器使用的端口，允许用户通过 PTY 使用嵌入式客户端�
 ```
 
 
-## tmp_path \{#tmp_path\}
-
-用于在处理大查询时存储临时数据的本地文件系统路径。
-
-:::note
-
-* 配置临时数据存储时，这几个选项中只能使用一个：`tmp_path`、`tmp_policy`、`temporary_data_in_cache`。
-* 路径末尾必须带有斜杠。
-  :::
-
-**示例**
-
-```xml
-<tmp_path>/var/lib/clickhouse/tmp/</tmp_path>
-```
-
-
 ## tmp_policy \{#tmp_policy\}
 
 用于存放临时数据的存储策略。所有以 `tmp` 作为前缀的文件会在启动时被删除。
@@ -5077,8 +4860,8 @@ ClickHouse 会对服务器上的所有表使用该设置。可以在任何时间
 
 | Setting  | Description                                                                                                        |
 | -------- | ------------------------------------------------------------------------------------------------------------------ |
-| `server` | 在 `ldap_servers` 配置节中定义的 LDAP 服务器名称之一。此参数为必填项，且不能为空。                                                               |
 | `roles`  | 包含本地定义角色列表的配置节，这些角色将被分配给从 LDAP 服务器检索到的每个用户。如果未指定任何角色，用户在完成认证后将无法执行任何操作。如果列出的任一角色在认证时尚未在本地定义，则认证尝试将失败，就像提供了错误的密码一样。 |
+| `server` | 在 `ldap_servers` 配置节中定义的 LDAP 服务器名称之一。此参数为必填项，且不能为空。                                                               |
 
 **示例**
 
@@ -5106,17 +4889,6 @@ ClickHouse 会对服务器上的所有表使用该设置。可以在任何时间
 ```
 
 
-## user_files_path \{#user_files_path\}
-
-存放用户文件的目录，供表函数 [file()](../../sql-reference/table-functions/file.md)、[fileCluster()](../../sql-reference/table-functions/fileCluster.md) 使用。
-
-**示例**
-
-```xml
-<user_files_path>/var/lib/clickhouse/user_files/</user_files_path>
-```
-
-
 ## user_scripts_path \{#user_scripts_path\}
 
 <SettingsInfoBlock type="String" default_value="/var/lib/clickhouse/user_scripts/" />
@@ -5128,21 +4900,6 @@ ClickHouse 会对服务器上的所有表使用该设置。可以在任何时间
 ```xml
 <user_scripts_path>/var/lib/clickhouse/user_scripts/</user_scripts_path>
 ```
-
-
-## user_scripts_path \{#user_scripts_path\}
-
-包含用户脚本文件的目录。供 Executable 用户定义函数使用，参见 [Executable User Defined Functions](/sql-reference/functions/udf#executable-user-defined-functions)。
-
-**示例**
-
-```xml
-<user_scripts_path>/var/lib/clickhouse/user_scripts/</user_scripts_path>
-```
-
-类型：
-
-默认值：
 
 
 ## users_config \{#users_config\}
@@ -5256,8 +5013,8 @@ ClickHouse 会对服务器上的所有表使用该设置。可以在任何时间
 | Setting                                    | Description                                                                                                                         |
 | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
 | `node`                                     | ZooKeeper 端点。可以设置多个端点。例如：`<node index="1"><host>example_host</host><port>2181</port></node>`。`index` 属性指定在尝试连接到 ZooKeeper 集群时节点的顺序。 |
-| `session_timeout_ms`                       | 客户端会话的最大超时时间（毫秒）。                                                                                                                   |
 | `operation_timeout_ms`                     | 单个操作的最大超时时间（毫秒）。                                                                                                                    |
+| `session_timeout_ms`                       | 客户端会话的最大超时时间（毫秒）。                                                                                                                   |
 | `root` (optional)                          | 作为 ClickHouse 服务器所使用各 znode 的根 znode。                                                                                               |
 | `fallback_session_lifetime.min` (optional) | 当主节点不可用时（负载均衡），到回退节点的 ZooKeeper 会话的最小存活时间下限。以秒为单位设置。默认值：3 小时。                                                                       |
 | `fallback_session_lifetime.max` (optional) | 当主节点不可用时（负载均衡），到回退节点的 ZooKeeper 会话的最大存活时间上限。以秒为单位设置。默认值：6 小时。                                                                       |
