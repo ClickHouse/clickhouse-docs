@@ -21,13 +21,13 @@ title: '实践经验 - 成本优化'
 description: '来自 ClickHouse 社区 meetup 的成本优化策略，包含真实生产环境示例和经过验证的技术手段。'
 ---
 
-# 成本优化：来自社区的策略 {#cost-optimization}
+# 成本优化：来自社区的策略 \{#cost-optimization\}
 
 *本指南是从社区线下交流活动中整理出的经验之一。本页内容汇集了社区成员在各自具体实践和部署环境中验证有效的 ClickHouse 成本优化经验与方法。若需了解更多真实场景下的解决方案与洞见，可以[按具体问题进行浏览](./community-wisdom.md)。*
 
 *了解 [ClickHouse Cloud 如何帮助管理运营成本](/cloud/overview)。*
 
-## 压缩策略：生产环境中的 LZ4 与 ZSTD 对比 {#compression-strategy}
+## 压缩策略：生产环境中的 LZ4 与 ZSTD 对比 \{#compression-strategy\}
 
 当 Microsoft Clarity 需要处理数百 TB 的数据时，他们发现压缩方案的选择会对成本产生巨大影响。在这种规模下，每一点存储节省都至关重要，他们面临的是一个经典的权衡：性能与存储成本之间的取舍。Microsoft Clarity 需要处理海量数据——在所有账户中，每月有 2 PB 的未压缩数据，在 8 个节点上每小时处理约 60,000 个查询，并为数百万个网站提供数十亿次页面浏览。在这一规模下，压缩策略就成为关键的成本因素。
 
@@ -39,7 +39,7 @@ description: '来自 ClickHouse 社区 meetup 的成本优化策略，包含真�
 - 对摄取和查询性能的影响可控
 - 在数百 TB 规模上实现显著成本降低
 
-## 基于列的保留策略 {#column-retention}
+## 基于列的保留策略 \{#column-retention\}
 
 最强大的成本优化技术之一，来自于分析哪些列真正被使用。Microsoft Clarity 利用 ClickHouse 内置的遥测能力，实现了精细的基于列的保留策略。ClickHouse 提供了按列统计的详细存储使用指标，以及全面的查询模式信息：包括访问了哪些列、访问频率、查询时长以及整体使用统计。
 
@@ -56,7 +56,7 @@ description: '来自 ClickHouse 社区 meetup 的成本优化策略，包含真�
 
 - [数据管理 - 列级 TTL](/observability/managing-data)
 
-## 基于分区的数据管理 {#partition-management}
+## 基于分区的数据管理 \{#partition-management\}
 
 Microsoft Clarity 发现，分区策略会同时影响性能和运维的简便性。他们采用的做法是：按日期分区，按小时 ORDER BY。该策略带来的收益远不止提升清理效率——它实现了近乎零成本的数据清理、简化了其面向客户服务的计费计算，并满足对行级删除的 GDPR 合规要求。
 
@@ -71,7 +71,7 @@ Microsoft Clarity 发现，分区策略会同时影响性能和运维的简便�
 
 - [数据管理 - 分区](/observability/managing-data#partitions)
 
-## 字符串到整数的转换策略 {#string-integer-conversion}
+## 字符串到整数的转换策略 \{#string-integer-conversion\}
 
 分析平台在处理在数百万行中反复出现的类别型数据时，经常会面临存储挑战。Microsoft 的工程团队在搜索分析数据中遇到了这一问题，并开发出一种有效的解决方案，使受影响数据集的存储量减少了 60%。
 
@@ -92,7 +92,7 @@ Microsoft 使用一个单独的 MySQL 数据库实现了字符串到整数的映
 这是专门针对 Microsoft Clarity 数据场景的示例。如果你的所有数据都在 ClickHouse 中，或者将数据迁移到 ClickHouse 没有约束，可以尝试使用 [dictionaries](/dictionary) 来替代。
 :::
 
-## 视频资源 {#video-sources}
+## 视频资源 \{#video-sources\}
 
 - **[Microsoft Clarity and ClickHouse](https://www.youtube.com/watch?v=rUVZlquVGw0)** - Microsoft Clarity 团队
 - **[ClickHouse journey in Contentsquare](https://www.youtube.com/watch?v=zvuCBAl2T0Q)** - Doron Hoffman & Guram Sigua（ContentSquare）

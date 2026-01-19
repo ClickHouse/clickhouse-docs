@@ -5,17 +5,20 @@ slug: /integrations/clickpipes/mysql/source/generic_maria
 title: 'Руководство по настройке произвольного источника MariaDB'
 doc_type: 'guide'
 keywords: ['произвольный mariadb', 'clickpipes', 'binary logging', 'ssl tls', 'самостоятельный хостинг']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
-# Общая инструкция по настройке источника MariaDB {#generic-mariadb-source-setup-guide}
+# Общая инструкция по настройке источника MariaDB \{#generic-mariadb-source-setup-guide\}
 
 :::info
 
-Если вы используете одного из поддерживаемых провайдеров (см. список в боковой панели), обратитесь к отдельной инструкции для этого провайдера.
+Если вы используете один из поддерживаемых провайдеров (см. список в боковой панели), обратитесь к отдельной инструкции для этого провайдера.
 
 :::
 
-## Включение хранения бинарных логов {#enable-binlog-retention}
+## Включение хранения бинарных логов \{#enable-binlog-retention\}
 
 Бинарные логи содержат информацию об изменениях данных, внесённых в экземпляр сервера MariaDB, и необходимы для репликации.
 
@@ -58,12 +61,11 @@ expire_logs_days = 1
 Вам НЕОБХОДИМО ПЕРЕЗАПУСТИТЬ экземпляр MariaDB, чтобы изменения вступили в силу.
 
 :::note
-
 Исключение столбцов не поддерживается для MariaDB &lt;= 10.4, так как настройка `binlog_row_metadata` ещё не была введена.
-
 :::
 
-## Настройка пользователя базы данных {#configure-database-user}
+
+## Настройка пользователя базы данных \{#configure-database-user\}
 
 Подключитесь к экземпляру MariaDB под пользователем root и выполните следующие команды:
 
@@ -92,7 +94,7 @@ expire_logs_days = 1
 
 :::
 
-## Конфигурация SSL/TLS (рекомендуется) {#ssl-tls-configuration}
+## Конфигурация SSL/TLS (рекомендуется) \{#ssl-tls-configuration\}
 
 Сертификаты SSL обеспечивают защищённые соединения с вашей базой данных MariaDB. Конфигурация зависит от типа сертификата:
 
@@ -106,7 +108,7 @@ expire_logs_days = 1
 
 Для получения дополнительной информации по вариантам настройки SSL/TLS см. наш [FAQ](https://clickhouse.com/docs/integrations/clickpipes/mysql/faq#tls-certificate-validation-error).
 
-## Что дальше? {#whats-next}
+## Что дальше? \{#whats-next\}
 
 Теперь вы можете [создать ClickPipe](../index.md) и начать приём данных из вашего экземпляра MariaDB в ClickHouse Cloud.
 Обязательно запишите параметры подключения, которые вы использовали при настройке экземпляра MariaDB, так как они понадобятся при создании ClickPipe.

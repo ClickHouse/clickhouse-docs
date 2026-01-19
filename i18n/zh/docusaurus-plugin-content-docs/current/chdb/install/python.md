@@ -7,21 +7,21 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'install']
 doc_type: 'guide'
 ---
 
-## 系统要求 {#requirements}
+## 系统要求 \{#requirements\}
 
 - Python 3.8+ 
 - 支持的平台：macOS 和 Linux（x86_64 和 ARM64）
 
-## 安装 {#install}
+## 安装 \{#install\}
 
 ```bash
 pip install chdb
 ```
 
 
-## 使用方法 {#usage} 
+## 使用方法 \{#usage\}
 
-### 命令行界面 {#command-line-interface}
+### 命令行界面 \{#command-line-interface\}
 
 通过命令行直接运行 SQL 查询：
 
@@ -34,7 +34,7 @@ python3 -m chdb "SELECT version()" JSON
 ```
 
 
-### Python 的基础用法 {#basic-python-usage}
+### Python 的基础用法 \{#basic-python-usage\}
 
 ```python
 import chdb
@@ -50,7 +50,7 @@ print(f"Execution time: {result.elapsed()} seconds")
 ```
 
 
-### 基于连接的 API（推荐） {#connection-based-api}
+### 基于连接的 API（推荐） \{#connection-based-api\}
 
 为了更好地进行资源管理和提升性能：
 
@@ -85,9 +85,9 @@ conn.close()
 ```
 
 
-## 数据输入方式 {#data-input}
+## 数据输入方式 \{#data-input\}
 
-### 基于文件的数据源 {#file-based-data-sources}
+### 基于文件的数据源 \{#file-based-data-sources\}
 
 chDB 支持 70 多种数据格式，可直接对文件执行查询：
 
@@ -119,7 +119,7 @@ result = chdb.query("""
 ```
 
 
-### 输出格式示例 {#output-format-examples}
+### 输出格式示例 \{#output-format-examples\}
 
 ```python
 # DataFrame for analysis
@@ -140,9 +140,9 @@ print(pretty_result)
 ```
 
 
-### DataFrame 操作 {#dataframe-operations}
+### DataFrame 操作 \{#dataframe-operations\}
 
-#### 旧版 DataFrame API {#legacy-dataframe-api}
+#### 旧版 DataFrame API \{#legacy-dataframe-api\}
 
 ```python
 import chdb.dataframe as cdf
@@ -165,7 +165,7 @@ print(summary)
 ```
 
 
-#### Python 表引擎（推荐使用） {#python-table-engine-recommended}
+#### Python 表引擎（推荐使用） \{#python-table-engine-recommended\}
 
 ```python
 import chdb
@@ -213,7 +213,7 @@ chdb.query("""
 ```
 
 
-### 有状态会话 {#stateful-sessions}
+### 有状态会话 \{#stateful-sessions\}
 
 会话在多次操作之间保留查询状态，从而支持复杂流程：
 
@@ -268,7 +268,7 @@ sess.close()  # Optional - auto-closed when object is deleted
 ```
 
 
-### 高级会话功能 {#advanced-session-features}
+### 高级会话功能 \{#advanced-session-features\}
 
 ```python
 # Session with custom settings
@@ -289,7 +289,7 @@ result = sess.query("""
 另请参阅：[test&#95;stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py)。
 
 
-### Python DB-API 2.0 接口 {#python-db-api-20}
+### Python DB-API 2.0 接口 \{#python-db-api-20\}
 
 用于兼容现有 Python 应用程序的标准数据库接口：
 
@@ -338,11 +338,11 @@ cursor.executemany(
 ```
 
 
-### 用户自定义函数 (UDF) {#user-defined-functions}
+### 用户自定义函数 (UDF) \{#user-defined-functions\}
 
 使用自定义 Python 函数扩展 SQL：
 
-#### UDF 的基础用法 {#basic-udf-usage}
+#### UDF 的基础用法 \{#basic-udf-usage\}
 
 ```python
 from chdb.udf import chdb_udf
@@ -379,7 +379,7 @@ print(result)
 ```
 
 
-#### 具有自定义返回类型的高级 UDF {#advanced-udf-custom-return-types}
+#### 具有自定义返回类型的高级 UDF \{#advanced-udf-custom-return-types\}
 
 ```python
 # UDF with specific return type
@@ -414,7 +414,7 @@ print(result)
 ```
 
 
-#### UDF 最佳实践 {#udf-best-practices}
+#### UDF 最佳实践 \{#udf-best-practices\}
 
 1. **无状态函数（Stateless Functions）**：UDF 应为纯函数，不应产生副作用
 2. **在函数内导入依赖**：所有所需模块必须在 UDF 内部导入
@@ -450,7 +450,7 @@ query("""
 ```
 
 
-### 流式查询处理 {#streaming-queries}
+### 流式查询处理 \{#streaming-queries\}
 
 在内存占用保持恒定的情况下处理大型数据集：
 
@@ -521,9 +521,9 @@ sess.close()
 ```
 
 
-### Python 表引擎 {#python-table-engine}
+### Python 表引擎 \{#python-table-engine\}
 
-#### 查询 Pandas DataFrame 数据 {#query-pandas-dataframes}
+#### 查询 Pandas DataFrame 数据 \{#query-pandas-dataframes\}
 
 ```python
 import chdb
@@ -579,7 +579,7 @@ print(window_result)
 ```
 
 
-#### 使用 PyReader 的自定义数据源 {#custom-data-sources-pyreader}
+#### 使用 PyReader 的自定义数据源 \{#custom-data-sources-pyreader\}
 
 针对特定数据源实现自定义数据读取器：
 

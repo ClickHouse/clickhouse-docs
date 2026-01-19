@@ -5,25 +5,28 @@ keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
 description: 'Java から ClickHouse へ接続するためのオプション'
 slug: /integrations/java
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-# Java クライアントの概要 {#java-clients-overview}
+# Java クライアントの概要 \{#java-clients-overview\}
 
-- [Client 0.8+](./client/client.mdx)
+- [クライアント 0.8+](./client/client.mdx)
 - [JDBC 0.8+](./jdbc/jdbc.mdx)
-- [R2DBC ドライバ](./r2dbc.md)
+- [R2DBC ドライバー](./r2dbc.md)
 
-## ClickHouse クライアント {#clickhouse-client}
+## ClickHouse クライアント \{#clickhouse-client\}
 
 Java クライアントは、独自の API を実装したライブラリであり、ClickHouse サーバーとのネットワーク通信の詳細を抽象化します。現在は HTTP インターフェイス経由のみをサポートしています。このライブラリは、さまざまな ClickHouse フォーマットを扱うためのユーティリティや、その他の関連機能を提供します。
 
 Java クライアントは 2015 年に開発されましたが、コードベースの保守が非常に困難になり、API も分かりづらく、さらなる最適化も難しくなっていました。そのため 2024 年にリファクタリングを行い、新しいコンポーネント `client-v2` として再構築しました。これにより、API が明確になり、コードベースは軽量化され、パフォーマンスも向上し、ClickHouse のフォーマット（主に RowBinary と Native）への対応も改善されています。JDBC は近い将来、このクライアントを利用する予定です。
 
-### サポートされているデータ型 {#supported-data-types}
+### サポートされているデータ型 \{#supported-data-types\}
 
 |**データ型**           |**Client V2 のサポート**|**Client V1 のサポート**|
 |-----------------------|------------------------|------------------------|
@@ -88,7 +91,7 @@ Java クライアントは 2015 年に開発されましたが、コードベー
 - UInt64 - Client V1 では `long` にマッピングされます
 :::
 
-### 機能 {#features}
+### 機能 \{#features\}
 
 クライアントの機能一覧:
 
@@ -117,14 +120,14 @@ Java クライアントは 2015 年に開発されましたが、コードベー
 
 JDBC ドライバーは、基盤となるクライアント実装と同じ機能を継承します。その他の JDBC 機能については、その[ページ](/integrations/language-clients/java/jdbc)を参照してください。
 
-### 互換性 {#compatibility}
+### 互換性 \{#compatibility\}
 
 - このリポジトリ内のすべてのプロジェクトは、ClickHouse の[アクティブな LTS バージョン](https://github.com/ClickHouse/ClickHouse/pulls?q=is%3Aopen+is%3Apr+label%3Arelease)すべてでテストされています。
 - [サポートポリシー](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md#security-change-log-and-support)
 - セキュリティ修正や新機能を見逃さないよう、クライアントは継続的にアップグレードすることを推奨します。
 - v2 API への移行で問題がある場合は、[Issue を作成](https://github.com/ClickHouse/clickhouse-java/issues/new?assignees=&labels=v2-feedback&projects=&template=v2-feedback.md&title=)してください。対応いたします。
 
-### ロギング {#logging}
+### ロギング \{#logging\}
 
 Java クライアントはロギングに [SLF4J](https://www.slf4j.org/) を使用します。`Logback` や `Log4j` など、任意の SLF4J 互換ロギングフレームワークを使用できます。
 たとえば、Maven を使用している場合は、次の依存関係を `pom.xml` ファイルに追加できます。
@@ -154,9 +157,9 @@ Java クライアントはロギングに [SLF4J](https://www.slf4j.org/) を使
 </dependencies>
 ```
 
-#### ロギングの設定 {#configuring-logging}
+#### ログ出力の設定 \{#configuring-logging\}
 
-ロギングの設定方法は、使用しているロギングフレームワークによって異なります。たとえば `Logback` を使用している場合は、`logback.xml` という名前のファイルでロギングを設定できます。
+この設定方法は、使用しているログフレームワークによって異なります。たとえば `Logback` を使用している場合は、`logback.xml` というファイルでログ出力を設定できます。
 
 ```xml title="logback.xml"
 <configuration>

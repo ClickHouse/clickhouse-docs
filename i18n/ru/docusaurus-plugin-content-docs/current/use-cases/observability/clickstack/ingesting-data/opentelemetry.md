@@ -15,7 +15,7 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 Пользователи отправляют данные в этот коллектор из [языковых SDK](/use-cases/observability/clickstack/sdks) или через агенты сбора данных, собирающие инфраструктурные метрики и логи (например, экземпляры OTel collector в [роли агента](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) или другие технологии, такие как [Fluentd](https://www.fluentd.org/) или [Vector](https://vector.dev/)).
 
-## Установка коллектора OpenTelemetry ClickStack {#installing-otel-collector}
+## Установка коллектора OpenTelemetry ClickStack \{#installing-otel-collector\}
 
 Коллектор OpenTelemetry ClickStack включён в большинство вариантов развёртывания ClickStack, включая:
 
@@ -23,7 +23,7 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 - [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)
 - [Helm](/use-cases/observability/clickstack/deployment/helm)
 
-### Автономный режим {#standalone}
+### Автономный режим \{#standalone\}
 
 OTel collector из ClickStack также может быть развернут автономно, независимо от других компонентов стека.
 
@@ -38,7 +38,7 @@ OTel collector из ClickStack также может быть развернут
 
 Для получения более подробной информации см. раздел «[Развертывание коллектора](/use-cases/observability/clickstack/ingesting-data/otel-collector)».
 
-## Отправка данных OpenTelemetry {#sending-otel-data}
+## Отправка данных OpenTelemetry \{#sending-otel-data\}
 
 Чтобы отправлять данные в ClickStack, направьте ваши инструментированные с помощью OpenTelemetry приложения на следующие конечные точки, предоставляемые коллектором OpenTelemetry:
 

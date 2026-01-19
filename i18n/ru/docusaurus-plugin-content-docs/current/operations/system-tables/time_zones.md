@@ -7,7 +7,7 @@ title: 'system.time_zones'
 doc_type: 'reference'
 ---
 
-# system.time&#95;zones {#systemtime&#95;zones}
+# system.time&#95;zones \{#systemtime&#95;zones\}
 
 Содержит список часовых поясов, поддерживаемых сервером ClickHouse. Этот список часовых поясов может различаться в зависимости от версии ClickHouse.
 

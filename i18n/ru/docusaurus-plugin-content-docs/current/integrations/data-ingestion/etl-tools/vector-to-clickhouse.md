@@ -18,7 +18,7 @@ import vector01 from '@site/static/images/integrations/data-ingestion/etl-tools/
 import vector02 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Integrating Vector with ClickHouse {#integrating-vector-with-clickhouse}
+# Integrating Vector with ClickHouse \{#integrating-vector-with-clickhouse\}
 
 <PartnerBadge />
 
@@ -36,7 +36,7 @@ ClickHouse превосходно справляется с хранением �
 
 <VerticalStepper headerLevel="h2">
 
-## Создайте базу данных и таблицу {#1-create-a-database-and-table}
+## Создайте базу данных и таблицу \{#1-create-a-database-and-table\}
 
 Создайте таблицу для хранения событий логов:
 
@@ -60,7 +60,7 @@ ORDER BY tuple()
 **ORDER BY** установлен в значение **tuple()** (пустой кортеж), так как пока нет необходимости задавать первичный ключ.
 :::
 
-## Настройка Nginx {#2--configure-nginx}
+## Настройка Nginx \{#2--configure-nginx\}
 
 На этом шаге будет показано, как настроить логирование Nginx.
 
@@ -89,7 +89,7 @@ http {
  192.168.208.1 - - [12/Oct/2021:03:31:49 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
  ```
 
-## Настройка Vector {#3-configure-vector}
+## Настройка Vector \{#3-configure-vector\}
 
 Vector собирает, преобразует и маршрутизирует логи, метрики и трейсы (далее — **sources**) в различные системы/клиентов (далее — **sinks**), включая поддержку ClickHouse «из коробки».
 Sources и sinks задаются в конфигурационном файле **vector.toml**.
@@ -121,7 +121,7 @@ SELECT * FROM nginxdb.access_logs
 
 <Image img={vector01} size="lg" border alt="Просмотр журналов ClickHouse в табличном виде" />
 
-## Разбор логов {#4-parse-the-logs}
+## Разбор логов \{#4-parse-the-logs\}
 
 Хранить логи в ClickHouse полезно, но сохранение каждого события в виде одной строки не дает больших возможностей для анализа данных.
 Далее мы рассмотрим, как разбирать события логов с помощью [материализованного представления](/materialized-view/incremental-materialized-view).

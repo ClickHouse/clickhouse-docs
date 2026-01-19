@@ -7,11 +7,11 @@ title: 'MySQL 表引擎'
 doc_type: 'reference'
 ---
 
-# MySQL 表引擎 {#mysql-table-engine}
+# MySQL 表引擎 \{#mysql-table-engine\}
 
 MySQL 引擎允许对存储在远程 MySQL 服务器上的数据执行 `SELECT` 和 `INSERT` 查询。
 
-## 创建表 {#creating-a-table}
+## 创建表 \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -62,7 +62,7 @@ SETTINGS
 CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) ENGINE = MySQL(`mysql{2|3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
 
-## 使用示例 {#usage-example}
+## 使用示例 \{#usage-example\}
 
 在 MySQL 中创建表：
 
@@ -127,11 +127,11 @@ SELECT * FROM mysql_table
 └────────────────┴────────┘
 ```
 
-## 设置 {#mysql-settings}
+## 设置 \{#mysql-settings\}
 
 默认设置的效率不高，因为它们甚至不会复用连接。可以通过这些设置来提升服务器每秒可执行的查询数量。
 
-### `connection_auto_close` {#connection-auto-close}
+### `connection_auto_close` \{#connection-auto-close\}
 
 允许在查询执行后自动关闭连接，即禁用连接复用。
 
@@ -142,7 +142,7 @@ SELECT * FROM mysql_table
 
 默认值：`1`。
 
-### `connection_max_tries` {#connection-max-tries}
+### `connection_max_tries` \{#connection-max-tries\}
 
 设置带故障转移的连接池的重试次数。
 
@@ -153,7 +153,7 @@ SELECT * FROM mysql_table
 
 默认值：`3`。
 
-### `connection_pool_size` {#connection-pool-size}
+### `connection_pool_size` \{#connection-pool-size\}
 
 连接池大小（如果所有连接都在使用中，查询将等待，直到有连接被释放）。
 
@@ -163,7 +163,7 @@ SELECT * FROM mysql_table
 
 默认值：`16`。
 
-### `connection_wait_timeout` {#connection-wait-timeout}
+### `connection_wait_timeout` \{#connection-wait-timeout\}
 
 等待空闲连接的超时时间（秒）（如果已存在 `connection_pool_size` 个活动连接），0 表示不等待。
 
@@ -173,7 +173,7 @@ SELECT * FROM mysql_table
 
 默认值：`5`。
 
-### `connect_timeout` {#connect-timeout}
+### `connect_timeout` \{#connect-timeout\}
 
 连接超时时间（秒）。
 
@@ -183,7 +183,7 @@ SELECT * FROM mysql_table
 
 默认值：`10`。
 
-### `read_write_timeout` {#read-write-timeout}
+### `read_write_timeout` \{#read-write-timeout\}
 
 读/写超时时间（秒）。
 
@@ -193,7 +193,7 @@ SELECT * FROM mysql_table
 
 默认值：`300`。
 
-## 另请参阅 {#see-also}
+## 另请参阅 \{#see-also\}
 
 - [MySQL 表函数](../../../sql-reference/table-functions/mysql.md)
 - [将 MySQL 用作字典源](/sql-reference/dictionaries#mysql)

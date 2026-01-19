@@ -1,12 +1,12 @@
 [
   {
-    "title": "Операторы",
-    "description": "Список доступных в ClickHouse SQL-операторов",
+    "title": "Команды",
+    "description": "Список доступных SQL-команд ClickHouse",
     "url": "/docs/sql-reference/statements/"
   },
   {
     "title": "Движки баз данных и таблиц",
-    "description": "Движки определяют, где и как будут храниться ваши данные",
+    "description": "Движки определяют, где и как хранятся ваши данные",
     "url": "/docs/engines/table-engines"
   }
 ]

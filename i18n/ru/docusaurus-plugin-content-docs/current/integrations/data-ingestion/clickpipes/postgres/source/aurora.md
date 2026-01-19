@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/source/aurora
 title: 'Руководство по настройке источника Aurora Postgres'
 doc_type: 'guide'
 keywords: ['Amazon Aurora', 'PostgreSQL', 'ClickPipes', 'база данных AWS', 'настройка логической репликации']
+integration:
+   - support_level: 'основной'
+   - category: 'clickpipes'
 ---
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
@@ -16,13 +19,13 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-# Руководство по настройке источника данных Aurora Postgres {#aurora-postgres-source-setup-guide}
+# Руководство по настройке источника данных Aurora Postgres \{#aurora-postgres-source-setup-guide\}
 
-## Поддерживаемые версии Postgres {#supported-postgres-versions}
+## Поддерживаемые версии Postgres \{#supported-postgres-versions\}
 
-ClickPipes поддерживает Aurora PostgreSQL-Compatible Edition версий 12 и выше.
+ClickPipes поддерживает Aurora PostgreSQL-Compatible Edition версии 12 и выше.
 
-## Включение логической репликации {#enable-logical-replication}
+## Включение логической репликации \{#enable-logical-replication\}
 
 Вы можете пропустить этот раздел, если в вашем экземпляре Aurora уже настроены следующие параметры:
 
@@ -65,9 +68,10 @@ postgres=> SHOW wal_sender_timeout ;
 
 <Image img={reboot_rds} alt="Перезагрузка Aurora PostgreSQL" size="lg" border />
 
-## Настройка пользователя базы данных {#configure-database-user}
 
-Подключитесь к экземпляру Aurora PostgreSQL writer с учетной записью с правами администратора и выполните следующие команды:
+## Настройте пользователя базы данных \{#configure-database-user\}
+
+Подключитесь к экземпляру записывающего узла Aurora PostgreSQL под администраторской учетной записью и выполните следующие команды:
 
 1. Создайте отдельного пользователя для ClickPipes:
 
@@ -75,7 +79,7 @@ postgres=> SHOW wal_sender_timeout ;
     CREATE USER clickpipes_user PASSWORD 'some-password';
     ```
 
-2. Назначьте права на схему. В следующем примере показаны права для схемы `public`. Повторите эти команды для каждой схемы, которую вы хотите реплицировать:
+2. Предоставьте на уровне схемы доступ только для чтения пользователю, созданному на предыдущем шаге. В следующем примере показаны права для схемы `public`. Повторите эти команды для каждой схемы, содержащей таблицы, которые вы хотите реплицировать:
 
     ```sql
     GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -83,21 +87,35 @@ postgres=> SHOW wal_sender_timeout ;
     ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
     ```
 
-3. Назначьте права на репликацию:
+3. Предоставьте пользователю права на репликацию:
 
     ```sql
     GRANT rds_replication TO clickpipes_user;
     ```
 
-4. Создайте публикацию для репликации:
+4. Создайте [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) с таблицами, которые вы хотите реплицировать. Настоятельно рекомендуется включать в публикацию только те таблицы, которые вам нужны, чтобы избежать лишних накладных расходов и деградации производительности.
 
-    ```sql
-    CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-    ```
+   :::warning
+   Любая таблица, включенная в публикацию, должна либо иметь определённый **первичный ключ**, _либо_ для неё должен быть настроен параметр **replica identity** со значением `FULL`. См. раздел [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) для получения рекомендаций по выбору области публикаций.
+   :::
 
-## Настройка сетевого доступа {#configure-network-access}
+   - Чтобы создать публикацию для конкретных таблиц:
 
-### Управление доступом по IP-адресам {#ip-based-access-control}
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - Чтобы создать публикацию для всех таблиц в конкретной схеме:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   Публикация `clickpipes` будет содержать набор событий изменений, генерируемых из указанных таблиц, и позже будет использоваться для приёма потока репликации.
+
+## Настройка сетевого доступа \{#configure-network-access\}
+
+### Управление доступом по IP-адресам \{#ip-based-access-control\}
 
 Если вы хотите ограничить трафик к кластеру Aurora, добавьте [задокументированные статические NAT IP-адреса](../../index.md#list-of-static-ips) в раздел `Inbound rules` группы безопасности Aurora.
 
@@ -105,11 +123,11 @@ postgres=> SHOW wal_sender_timeout ;
 
 <Image img={edit_inbound_rules} alt="Редактирование inbound rules для указанной выше группы безопасности" size="lg" border/>
 
-### Закрытый доступ через AWS PrivateLink {#private-access-via-aws-privatelink}
+### Закрытый доступ через AWS PrivateLink \{#private-access-via-aws-privatelink\}
 
 Чтобы подключиться к кластеру Aurora по приватной сети, вы можете использовать AWS PrivateLink. Следуйте нашему [руководству по настройке AWS PrivateLink для ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes), чтобы настроить подключение.
 
-### Особенности Aurora {#aurora-specific-considerations}
+### Особенности Aurora \{#aurora-specific-considerations\}
 
 При настройке ClickPipes с Aurora PostgreSQL учитывайте следующие моменты:
 
@@ -121,7 +139,7 @@ postgres=> SHOW wal_sender_timeout ;
 
 4. **Особенности хранилища**: Слой хранения Aurora является общим для всех инстансов в кластере, что может обеспечивать лучшую производительность логической репликации по сравнению со стандартным RDS.
 
-### Работа с динамическими endpoint'ами кластера {#dealing-with-dynamic-cluster-endpoints}
+### Работа с динамическими endpoint'ами кластера \{#dealing-with-dynamic-cluster-endpoints\}
 
 Хотя Aurora предоставляет стабильные endpoint'ы, которые автоматически маршрутизируют трафик к соответствующему инстансу, ниже приведены дополнительные подходы для обеспечения стабильного подключения:
 
@@ -129,7 +147,7 @@ postgres=> SHOW wal_sender_timeout ;
 
 2. При использовании межрегионной репликации рассмотрите возможность настройки отдельных ClickPipes для каждого региона, чтобы снизить задержки и повысить отказоустойчивость.
 
-## Что дальше? {#whats-next}
+## Что дальше? \{#whats-next\}
 
 Теперь вы можете [создать свой ClickPipe](../index.md) и начать приём данных из своего кластера Aurora PostgreSQL в ClickHouse Cloud.
 Обязательно запишите параметры подключения, которые вы использовали при его настройке, — они понадобятся вам при создании ClickPipe.

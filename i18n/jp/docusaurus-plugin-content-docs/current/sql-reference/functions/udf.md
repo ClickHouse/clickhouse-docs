@@ -10,7 +10,7 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# ユーザー定義関数 (UDF) {#executable-user-defined-functions}
+# ユーザー定義関数 (UDF) \{#executable-user-defined-functions\}
 
 <PrivatePreviewBadge/>
 
@@ -47,11 +47,11 @@ ClickHouse は、任意の外部実行可能プログラムやスクリプトを
 
 コマンドは `STDIN` から引数を読み込み、結果を `STDOUT` に出力しなければなりません。コマンドは引数を逐次的に処理する必要があります。つまり、あるチャンクの引数を処理した後、次のチャンクを待機しなければなりません。
 
-## 実行可能なユーザー定義関数 {#executable-user-defined-functions}
+## 実行可能なユーザー定義関数 \{#executable-user-defined-functions\}
 
-## 例 {#examples}
+## 例 \{#examples\}
 
-### インラインスクリプトを用いた UDF {#udf-inline}
+### インラインスクリプトを用いた UDF \{#udf-inline\}
 
 XML または YAML 設定を使用して、`execute_direct` を `0` に設定した `test_function_sum` を手動で作成します。
 
@@ -115,7 +115,7 @@ SELECT test_function_sum(2, 2);
 └─────────────────────────┘
 ```
 
-### Python スクリプトからの UDF {#udf-python}
+### Python スクリプトからの UDF \{#udf-python\}
 
 この例では、`STDIN` から値を読み取り、それを文字列として返す UDF を作成します。
 
@@ -184,7 +184,7 @@ SELECT test_function_python(toUInt64(2));
 └─────────────────────────┘
 ```
 
-### `STDIN` から 2 つの値を読み取り、その合計を JSON オブジェクトとして返す {#udf-stdin}
+### `STDIN` から 2 つの値を読み取り、その合計を JSON オブジェクトとして返す \{#udf-stdin\}
 
 XML または YAML の設定を使用して、名前付き引数を取り、フォーマットに [JSONEachRow](/interfaces/formats/JSONEachRow) を指定した `test_function_sum_json` を作成します。
 
@@ -264,7 +264,7 @@ SELECT test_function_sum_json(2, 2);
 └──────────────────────────────┘
 ```
 
-### `command` 設定でパラメータを使用する {#udf-parameters-in-command}
+### `command` 設定でパラメータを使用する \{#udf-parameters-in-command\}
 
 実行可能なユーザー定義関数は、`command` 設定で指定された定数パラメータを受け取ることができます（これは `executable` 型のユーザー定義関数でのみ動作します）。\
 また、シェルによる引数展開に起因する脆弱性を防ぐために、`execute_direct` オプションが必要です。
@@ -332,7 +332,7 @@ SELECT test_function_parameter_python(1)(2);
 └──────────────────────────────────────┘
 ```
 
-### シェルスクリプトを使った UDF {#udf-shell-script}
+### シェルスクリプトを使った UDF \{#udf-shell-script\}
 
 この例では、各値を 2 倍にするシェルスクリプトを作成します。
 
@@ -405,20 +405,20 @@ SELECT test_shell(number) FROM numbers(10);
     └────────────────────┘
 ```
 
-## エラー処理 {#error-handling}
+## エラー処理 \{#error-handling\}
 
 一部の関数は、データが無効な場合に例外をスローすることがあります。
 この場合、クエリは中断され、エラーメッセージがクライアントに返されます。
 分散処理では、いずれかのサーバーで例外が発生すると、他のサーバーもクエリの中断を試みます。
 
-## 引数式の評価 {#evaluation-of-argument-expressions}
+## 引数式の評価 \{#evaluation-of-argument-expressions\}
 
 ほとんどのプログラミング言語では、特定の演算子において、引数の一方が評価されないことがあります。
 通常、これは演算子 `&&`、`||`、および `?:` に当てはまります。
 ClickHouse では、関数（演算子）の引数は常に評価されます。
 これは、行ごとに個別に計算するのではなく、列の一部をまとめて一度に評価するためです。
 
-## 分散クエリ処理における関数の実行 {#performing-functions-for-distributed-query-processing}
+## 分散クエリ処理における関数の実行 \{#performing-functions-for-distributed-query-processing\}
 
 分散クエリ処理では、クエリ処理のできるだけ多くの段階をリモートサーバー上で実行し、残りの段階（中間結果のマージとそれ以降のすべて）はリクエスト元サーバーで実行します。
 
@@ -434,9 +434,9 @@ ClickHouse では、関数（演算子）の引数は常に評価されます。
 
 クエリ内の関数がリクエスト元サーバーで実行されるようになっていても、それをリモートサーバー上で実行する必要がある場合は、その関数を `any` 集約関数でラップするか、`GROUP BY` 句のキーに追加することができます。
 
-## SQL ユーザー定義関数 {#sql-user-defined-functions}
+## SQL ユーザー定義関数 \{#sql-user-defined-functions\}
 
 ラムダ式を用いてカスタム関数を作成するには、[CREATE FUNCTION](../statements/create/function.md) ステートメントを使用します。これらの関数を削除するには、[DROP FUNCTION](../statements/drop.md#drop-function) ステートメントを使用します。
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \{#related-content\}
 - [ClickHouse Cloudのユーザー定義関数](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs)

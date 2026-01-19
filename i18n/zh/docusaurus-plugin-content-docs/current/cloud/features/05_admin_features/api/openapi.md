@@ -14,7 +14,7 @@ import image_04 from '@site/static/images/cloud/manage/openapi4.png';
 import image_05 from '@site/static/images/cloud/manage/openapi5.png';
 import Image from '@theme/IdealImage';
 
-# 管理 API 密钥 {#managing-api-keys}
+# 管理 API 密钥 \{#managing-api-keys\}
 
 ClickHouse Cloud 提供了一个基于 OpenAPI 的 API，允许你以编程方式管理你的账号以及服务的各个方面。
 
@@ -67,7 +67,7 @@ $ curl --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations
 
 <Image img={image_05} size="md" alt="API Keys 管理页面" border />
 
-## 端点 {#endpoints}
+## 端点 \{#endpoints\}
 
 有关端点的详细信息，请参阅 [API 参考](https://clickhouse.com/docs/cloud/manage/api/swagger)。  
 将您的 API Key 和 API Secret 与基础 URL `https://api.clickhouse.cloud/v1` 一起使用。

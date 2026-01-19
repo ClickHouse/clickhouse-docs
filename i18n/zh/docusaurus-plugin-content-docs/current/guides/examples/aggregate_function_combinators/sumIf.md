@@ -7,14 +7,14 @@ sidebar_label: 'sumIf'
 doc_type: 'reference'
 ---
 
-# sumIf {#sumif}
+# sumIf \{#sumif\}
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum)
 函数，使用 `sumIf` 聚合组合器函数计算条件为 true 的行的值之和。
 
-## 示例用法 {#example-usage}
+## 示例用法 \{#example-usage\}
 
 在这个示例中，我们将创建一个用于存储包含成功标记的销售数据表，
 并使用 `sumIf` 来计算所有成功交易的销售总金额。
@@ -48,7 +48,7 @@ FROM sales;
    └───────────────────────┘
 ```
 
-### 按价格走势计算交易量 {#calculate-trading-vol-price-direction}
+### 按价格走势计算交易量 \{#calculate-trading-vol-price-direction\}
 
 在本示例中，我们将使用 [ClickHouse playground](https://sql.clickhouse.com/) 中提供的 `stock` 表，
 来计算 2002 年上半年按价格走势划分的交易量。
@@ -83,7 +83,7 @@ ORDER BY month;
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
 ```
 
-### 按股票代码统计成交量 {#calculate-trading-volume}
+### 按股票代码统计成交量 \{#calculate-trading-volume\}
 
 在这个示例中，我们将使用 [ClickHouse playground](https://sql.clickhouse.com/) 中提供的 `stock` 表，
 来统计 2006 年三家当时规模最大的科技公司按股票代码划分的交易量。
@@ -119,6 +119,6 @@ ORDER BY month;
     └────────────┴────────────────┴──────────────────┴────────────────┴──────────────┴───────────────────────┘
 ```
 
-## 另请参阅 {#see-also}
+## 另请参阅 \{#see-also\}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`If` 组合器](/sql-reference/aggregate-functions/combinators#-if)

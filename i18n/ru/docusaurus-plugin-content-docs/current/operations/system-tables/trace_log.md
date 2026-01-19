@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.trace&#95;log {#systemtrace&#95;log}
+# system.trace&#95;log \{#systemtrace&#95;log\}
 
 <SystemTableCloud />
 
@@ -111,7 +111,7 @@ entry_type:              Exit
 duration_nanoseconds:   58435
 ```
 
-## Преобразование в формат трассировки событий Chrome {#chrome-event-trace-format}
+## Преобразование в формат трассировки событий Chrome \{#chrome-event-trace-format\}
 
 Данные профилирования можно преобразовать в формат трассировки событий Chrome с помощью следующего запроса. Сохраните запрос в файл `chrome_trace.sql`:
 

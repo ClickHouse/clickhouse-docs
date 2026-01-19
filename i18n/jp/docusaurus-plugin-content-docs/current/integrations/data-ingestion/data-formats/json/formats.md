@@ -7,7 +7,7 @@ keywords: ['json', 'formats', 'json 形式']
 doc_type: 'guide'
 ---
 
-# その他の JSON フォーマットの扱い方 {#handling-other-json-formats}
+# その他の JSON フォーマットの扱い方 \{#handling-other-json-formats\}
 
 これまでの JSON データの読み込み例では、[`JSONEachRow`](/interfaces/formats/JSONEachRow)（`NDJSON`）の利用を想定してきました。このフォーマットでは、各 JSON 行のキーを列として解釈します。例えば次のようになります。
 
@@ -31,7 +31,7 @@ LIMIT 5
 
 以下では、他の一般的な形式の JSON を読み取ったりロードしたりする例を示します。
 
-## JSON をオブジェクトとして読み込む {#reading-json-as-an-object}
+## JSON をオブジェクトとして読み込む \{#reading-json-as-an-object\}
 
 前の例では、`JSONEachRow` が改行区切りの JSON をどのように読み込み、各行をテーブルの 1 行に対応する個別のオブジェクトとして扱い、各キーをカラムに対応付けるかを示しました。これは、JSON の構造が予測可能で、各カラムに単一の型が対応しているケースに最適です。
 
@@ -111,7 +111,7 @@ FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.j
 1 row in set. Elapsed: 0.480 sec. Processed 1.00 million rows, 256.00 B (2.08 million rows/s., 533.76 B/s.)
 ```
 
-## JSON オブジェクトの配列 {#array-of-json-objects}
+## JSON オブジェクトの配列 \{#array-of-json-objects\}
 
 最も一般的な JSON データ形式の 1 つは、[この例](../assets/list.json) のように、JSON 配列の中に JSON オブジェクトのリストを持つ形式です。
 
@@ -168,7 +168,7 @@ FROM sometable
 └───────────────────────────┴────────────┴──────┘
 ```
 
-## JSON オブジェクトキー {#json-object-keys}
+## JSON オブジェクトキー \{#json-object-keys\}
 
 場合によっては、JSON オブジェクトのリストを、配列の要素ではなくオブジェクトのプロパティとしてエンコードすることもできます（例については [objects.json](../assets/objects.json) を参照してください）。
 
@@ -207,7 +207,7 @@ SELECT * FROM sometable;
 └─────────────────┴────────────┴──────┘
 ```
 
-### 親オブジェクトのキー値を指定する {#specifying-parent-object-key-values}
+### 親オブジェクトのキー値を指定する \{#specifying-parent-object-key-values\}
 
 テーブルに親オブジェクトのキー値も保存したいとします。この場合、キー値を保存する列名を定義するために、[次のオプション](/operations/settings/settings-formats.md/#format_json_object_each_row_column_for_object_name)を使用できます。
 
@@ -231,7 +231,7 @@ SELECT * FROM file('objects.json', JSONObjectEachRow)
 
 `id` カラムにキー値が正しく格納されていることに注目してください。
 
-## JSON 配列 {#json-arrays}
+## JSON 配列 \{#json-arrays\}
 
 場合によっては、容量を節約するために、JSON ファイルがオブジェクトではなく配列としてエンコードされていることがあります。この場合、[JSON 配列のリスト](../assets/arrays.json) を扱うことになります。
 
@@ -259,7 +259,7 @@ SELECT * FROM sometable
 └───────────────────────────┴────────────┴─────┘
 ```
 
-### JSON 配列から個々のカラムをインポートする {#importing-individual-columns-from-json-arrays}
+### JSON 配列から個々のカラムをインポートする \{#importing-individual-columns-from-json-arrays\}
 
 場合によっては、データが行単位ではなく列単位でエンコードされていることがあります。この場合、親 JSON オブジェクトに、値が格納されたカラムが含まれます。[次のファイル](../assets/columns.json)を参照してください。
 
@@ -303,7 +303,7 @@ SELECT * FROM file('columns-array.json', JSONCompactColumns)
 └─────────────────┴────────────┴────┘
 ```
 
-## JSON オブジェクトをパースせずに保存する {#saving-json-objects-instead-of-parsing}
+## JSON オブジェクトをパースせずに保存する \{#saving-json-objects-instead-of-parsing\}
 
 場合によっては、JSON オブジェクトをパースせずに、単一の `String`（または `JSON`）カラムに保存したい場合があります。これは、構造が異なる複数の JSON オブジェクトのリストを扱う際に有用です。例として、親リスト内に複数の異なる JSON オブジェクトが含まれている [このファイル](../assets/custom.json) を見てみましょう。
 
@@ -357,7 +357,7 @@ FROM events
 
 `JSONAsString` は、1 行につき 1 つの JSON オブジェクトが含まれる形式のファイル（通常は `JSONEachRow` フォーマットとともに使用されます）の場合にも、正常に動作することに注意してください。
 
-## ネストされたオブジェクト用のスキーマ {#schema-for-nested-objects}
+## ネストされたオブジェクト用のスキーマ \{#schema-for-nested-objects\}
 
 [ネストされた JSON オブジェクト](../assets/list-nested.json) を扱う場合には、明示的なスキーマをさらに定義し、複合型（[`Array`](/sql-reference/data-types/array.md)、[`JSON`](/integrations/data-formats/json/overview)、[`Tuple`](/sql-reference/data-types/tuple.md)）を使用してデータを読み込むことができます。
 
@@ -373,7 +373,7 @@ LIMIT 1
 └────────────────────────────────────────────────────┴────────────┴──────┘
 ```
 
-## ネストされた JSON オブジェクトへのアクセス {#accessing-nested-json-objects}
+## ネストされた JSON オブジェクトへのアクセス \{#accessing-nested-json-objects\}
 
 [ネストされた JSON キー](../assets/list-nested.json) には、[次の設定オプション](/operations/settings/settings-formats.md/#input_format_import_nested_json) を有効にすることでアクセスできます。
 
@@ -397,7 +397,7 @@ LIMIT 1
 
 この方法により、ネストされた JSON オブジェクトをフラット化したり、ネストされた値の一部を取り出して個別のカラムとして保存したりできます。
 
-## 未知のカラムをスキップする {#skipping-unknown-columns}
+## 未知のカラムをスキップする \{#skipping-unknown-columns\}
 
 デフォルトでは、ClickHouse は JSON データをインポートする際に、未知のカラムをスキップします。`month` カラムなしで元のファイルをテーブルにインポートしてみましょう。
 
@@ -441,7 +441,7 @@ Code: 117. DB::Exception: Unknown field found while parsing JSONEachRow format: 
 
 ClickHouse は、JSON とテーブルのカラム構造が一致しない場合、例外をスローします。
 
-## BSON {#bson}
+## BSON \{#bson\}
 
 ClickHouse は、[BSON](https://bsonspec.org/) 形式でエンコードされたファイルへのエクスポートおよびそこからのインポートをサポートしています。この形式は、[MongoDB](https://github.com/mongodb/mongo) データベースなど、いくつかの DBMS で使用されています。
 

@@ -16,7 +16,7 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 | ✔    | ✔     |           |
 
 
-## Описание {#description}
+## Описание \{#description\}
 
 Формат `RowBinary` разбирает данные по строкам в двоичном виде. 
 Строки и значения идут последовательно, без разделителей. 
@@ -52,10 +52,10 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 
 
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 
 
-## Параметры формата {#format-settings}
+## Параметры формата \{#format-settings\}
 
 <RowBinaryFormatSettings/>

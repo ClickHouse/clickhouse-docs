@@ -69,7 +69,7 @@ Connect to your AlloyDB instance as an admin user and execute the following comm
    CREATE USER clickpipes_user PASSWORD 'some-password';
    ```
 
-2. Grant the dedicated user permissions on the schema(s) you want to replicate.
+2. Grant schema-level, read-only access to the user you created in the previous step. The following example shows permissions for the `public` schema. Repeat these commands for each schema containing tables you want to replicate:
    
     ```sql
     GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -77,9 +77,7 @@ Connect to your AlloyDB instance as an admin user and execute the following comm
     ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
     ```
 
-   The example above shows permissions for the `public` schema. Repeat the sequence of commands for each schema you want to replicate using ClickPipes.
-
-3. Grant the dedicated user permissions to manage replication:
+3. Grant replication privileges to the user:
 
    ```sql
    ALTER ROLE clickpipes_user REPLICATION;
@@ -88,7 +86,7 @@ Connect to your AlloyDB instance as an admin user and execute the following comm
 4. Create a [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) with the tables you want to replicate. We strongly recommend only including the tables you need in the publication to avoid performance overhead.
 
    :::warning
-   All tables included in the publication must either have a **primary key** defined _or_ have its **replica identity** configured to `FULL`. See the [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) for guidance on scoping.
+   Any table included in the publication must either have a **primary key** defined _or_ have its **replica identity** configured to `FULL`. See the [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) for guidance on scoping.
    :::
 
    - To create a publication for specific tables:
@@ -105,10 +103,10 @@ Connect to your AlloyDB instance as an admin user and execute the following comm
 
    The `clickpipes` publication will contain the set of change events generated from the specified tables, and will later be used to ingest the replication stream.
 
-## Configure network security {#configure-network-security}
+## Configure network access {#configure-network-access}
 
 :::note
-ClickPipes does not support Private Service Connect (PSC) connections. If you do not allow public access to your AlloyDB instance, you can [use an SSH tunnel](#configure-network-security) to connect securely. PSC will be supported in the future.
+ClickPipes does not support Private Service Connect (PSC) connections. If you do not allow public access to your AlloyDB instance, you can [use an SSH tunnel](#configure-network-access) to connect securely. PSC will be supported in the future.
 :::
 
 Next, you must allow connections to your AlloyDB instance from ClickPipes.

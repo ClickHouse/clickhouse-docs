@@ -1,4 +1,4 @@
-# Docker を使用して ClickHouse をインストールする {#install-clickhouse-using-docker}
+# Docker を使用して ClickHouse をインストールする \{#install-clickhouse-using-docker\}
 
 [Docker Hub](https://hub.docker.com/r/clickhouse/clickhouse-server/) のガイドを、
 便宜上、以下に再掲します。提供されている Docker イメージは、
@@ -10,7 +10,8 @@ Docker pull コマンド:
 docker pull clickhouse/clickhouse-server
 ```
 
-## バージョン {#versions}
+
+## バージョン \{#versions\}
 
 - `latest` タグは、最新の安定ブランチの最新リリースを指します。
 - `22.2` のようなブランチタグは、対応するブランチの最新リリースを指します。
@@ -18,7 +19,7 @@ docker pull clickhouse/clickhouse-server
 - `head` タグは、デフォルトブランチへの最新コミットからビルドされます。
 - 各タグにはオプションで `-alpine` の接尾辞が付き、`alpine` をベースにビルドされていることを表します。
 
-### 互換性 {#compatibility}
+### 互換性 \{#compatibility\}
 
 - amd64 イメージには [SSE3 命令](https://en.wikipedia.org/wiki/SSE3) のサポートが必要です。
   事実上、2005 年以降のほぼすべての x86 CPU は SSE3 をサポートしています。
@@ -30,9 +31,9 @@ docker pull clickhouse/clickhouse-server
   [パッチ](https://github.com/moby/moby/commit/977283509f75303bc6612665a04abf76ff1d2468) を含む Docker バージョン `20.10.10` 以上を必要とします。
   回避策としては、代わりに `docker run --security-opt seccomp=unconfined` を使用することもできますが、セキュリティ上のリスクがあります。
 
-## このイメージの使い方 {#how-to-use-image}
+## このイメージの使い方 \{#how-to-use-image\}
 
-### サーバーインスタンスを起動する {#start-server-instance}
+### サーバーインスタンスを起動する \{#start-server-instance\}
 
 ```bash
 docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 clickhouse/clickhouse-server
@@ -42,7 +43,8 @@ docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 clickh
 
 デフォルトでは、上記のサーバーインスタンスは、パスワードなしの `default` ユーザーとして実行されます。
 
-### ネイティブクライアントから接続する {#connect-to-it-from-native-client}
+
+### ネイティブクライアントを使って接続する \{#connect-to-it-from-native-client\}
 
 ```bash
 docker run -it --rm --network=container:some-clickhouse-server --entrypoint clickhouse-client clickhouse/clickhouse-server
@@ -52,7 +54,8 @@ docker exec -it some-clickhouse-server clickhouse-client
 
 ClickHouse クライアントの詳細については、[ClickHouse client](/interfaces/cli) を参照してください。
 
-### curl で接続する {#connect-to-it-using-curl}
+
+### curl で接続する \{#connect-to-it-using-curl\}
 
 ```bash
 echo "SELECT 'Hello, ClickHouse!'" | docker run -i --rm --network=container:some-clickhouse-server buildpack-deps:curl curl 'http://localhost:8123/?query=' -s --data-binary @-
@@ -60,14 +63,16 @@ echo "SELECT 'Hello, ClickHouse!'" | docker run -i --rm --network=container:some
 
 HTTP インターフェイスの詳細については、[ClickHouse HTTP Interface](/interfaces/http) を参照してください。
 
-### コンテナの停止と削除 {#stopping-removing-container}
+
+### コンテナの停止と削除 \{#stopping-removing-container\}
 
 ```bash
 docker stop some-clickhouse-server
 docker rm some-clickhouse-server
 ```
 
-### ネットワーキング {#networking}
+
+### ネットワーキング \{#networking\}
 
 :::note
 あらかじめ定義されているユーザー `default` は、パスワードが設定されていない限りネットワークにアクセスできません。
@@ -90,10 +95,11 @@ echo 'SELECT version()' | curl 'http://localhost:8123/' --data-binary @-
 ```
 
 :::note
-上記の例でのユーザーのデフォルト設定は、localhost からのリクエストに対してのみ利用可能です
+上記の例の `default` ユーザーは、localhost からのリクエストに対してのみ利用可能です。
 :::
 
-### ボリューム {#volumes}
+
+### ボリューム \{#volumes\}
 
 永続化を行うために、通常はコンテナ内に次のフォルダをマウントします:
 
@@ -113,7 +119,8 @@ docker run -d \
 * `/etc/clickhouse-server/users.d/*.xml` - ユーザー設定の調整用ファイル
 * `/docker-entrypoint-initdb.d/` - データベース初期化スクリプトを配置するフォルダー（後述）。
 
-## Linux capabilities {#linear-capabilities}
+
+## Linux capabilities \{#linear-capabilities\}
 
 ClickHouse には、複数の [Linux capabilities](https://man7.org/linux/man-pages/man7/capabilities.7.html) の有効化を必要とする高度な機能があります。
 
@@ -127,19 +134,21 @@ docker run -d \
 
 詳細は [&quot;Docker における CAP&#95;IPC&#95;LOCK および CAP&#95;SYS&#95;NICE ケーパビリティの設定&quot;](/knowledgebase/configure_cap_ipc_lock_and_cap_sys_nice_in_docker) を参照してください。
 
-## 設定 {#configuration}
+
+## 設定 \{#configuration\}
 
 コンテナは [HTTP インターフェイス](https://clickhouse.com/docs/interfaces/http_interface/) 用にポート 8123 を、[ネイティブクライアント](https://clickhouse.com/docs/interfaces/tcp/) 用にポート 9000 を公開します。
 
 ClickHouse の設定はファイル &quot;config.xml&quot;（[ドキュメント](https://clickhouse.com/docs/operations/configuration_files/)）で定義されます。
 
-### カスタム設定でサーバーインスタンスを起動する {#start-server-instance-with-custom-config}
+### カスタム設定でサーバーインスタンスを起動する \{#start-server-instance-with-custom-config\}
 
 ```bash
 docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 -v /path/to/your/config.xml:/etc/clickhouse-server/config.xml clickhouse/clickhouse-server
 ```
 
-### 任意のユーザーとしてサーバーを起動する {#start-server-custom-user}
+
+### 任意のユーザーでサーバーを起動する \{#start-server-custom-user\}
 
 ```bash
 # $PWD/data/clickhouse should exist and be owned by current user
@@ -148,7 +157,8 @@ docker run --rm --user "${UID}:${GID}" --name some-clickhouse-server --ulimit no
 
 ローカルディレクトリをマウントしてこのイメージを使用する場合、適切なファイル所有権を維持するためにユーザーを指定する必要があります。`--user` 引数を使用し、コンテナ内に `/var/lib/clickhouse` と `/var/log/clickhouse-server` をマウントしてください。そうしないと、コンテナイメージがエラーとなり起動しません。
 
-### root でサーバーを起動する {#start-server-from-root}
+
+### root でサーバーを起動する \{#start-server-from-root\}
 
 ユーザーネームスペースが有効になっている場合、root でサーバーを起動することが有効です。
 その場合は、次を実行します。
@@ -157,7 +167,8 @@ docker run --rm --user "${UID}:${GID}" --name some-clickhouse-server --ulimit no
 docker run --rm -e CLICKHOUSE_RUN_AS_ROOT=1 --name clickhouse-server-userns -v "$PWD/logs/clickhouse:/var/log/clickhouse-server" -v "$PWD/data/clickhouse:/var/lib/clickhouse" clickhouse/clickhouse-server
 ```
 
-### 起動時にデフォルトのデータベースとユーザーを作成する方法 {#how-to-create-default-db-and-user}
+
+### 起動時にデフォルトのデータベースとユーザーを作成する方法 \{#how-to-create-default-db-and-user\}
 
 コンテナの起動時にユーザー（デフォルトでは `default` という名前のユーザーが使用されます）とデータベースを作成したい場合には、環境変数 `CLICKHOUSE_DB`、`CLICKHOUSE_USER`、`CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT`、`CLICKHOUSE_PASSWORD` を使用して設定できます。
 
@@ -165,7 +176,8 @@ docker run --rm -e CLICKHOUSE_RUN_AS_ROOT=1 --name clickhouse-server-userns -v "
 docker run --rm -e CLICKHOUSE_DB=my_database -e CLICKHOUSE_USER=username -e CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1 -e CLICKHOUSE_PASSWORD=password -p 9000:9000/tcp clickhouse/clickhouse-server
 ```
 
-#### `default` ユーザーの管理 {#managing-default-user}
+
+#### `default` ユーザーの管理 \{#managing-default-user\}
 
 `CLICKHOUSE_USER`、`CLICKHOUSE_PASSWORD`、`CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT` のいずれも設定されていない場合、`default` ユーザーはデフォルトではネットワークアクセスが無効化されています。
 
@@ -175,9 +187,15 @@ docker run --rm -e CLICKHOUSE_DB=my_database -e CLICKHOUSE_USER=username -e CLIC
 docker run --rm -e CLICKHOUSE_SKIP_USER_SETUP=1 -p 9000:9000/tcp clickhouse/clickhouse-server
 ```
 
-## このイメージを拡張する方法 {#how-to-extend-image}
 
-このイメージを元にした派生イメージで追加の初期化処理を行うには、`/docker-entrypoint-initdb.d` 配下に `*.sql`、`*.sql.gz`、または `*.sh` スクリプトを 1 つ以上追加します。エントリポイントが `initdb` を呼び出した後、そのディレクトリ内にあるすべての `*.sql` ファイルを実行し、実行可能な `*.sh` スクリプトを実行し、実行可能でない `*.sh` スクリプトは読み込んで（source して）、サービスを起動する前にさらに初期化処理を行います。\
+## このイメージを拡張する方法 \{#how-to-extend-image\}
+
+このイメージを元にした派生イメージで追加の初期化処理を行うには、`/docker-entrypoint-initdb.d` 配下に `*.sql`、`*.sql.gz`、または `*.sh` スクリプトを 1 つ以上追加します。エントリポイントが `initdb` を呼び出した後、そのディレクトリ内にあるすべての `*.sql` ファイルを実行し、実行可能な `*.sh` スクリプトを実行し、実行可能でない `*.sh` スクリプトは読み込んで（source して）、サービスを起動する前にさらに初期化処理を行います。
+
+:::note
+`/docker-entrypoint-initdb.d` 配下のスクリプトは、ファイル名の**アルファベット順**で実行されます。スクリプト間に依存関係がある場合（たとえば、あるスクリプトで作成したテーブルを参照するビューを別のスクリプトで作成する必要がある場合など）、ファイル名が正しい順序になるように付けてください。
+:::
+
 また、初期化中に clickhouse-client で使用される環境変数 `CLICKHOUSE_USER` と `CLICKHOUSE_PASSWORD` を指定することもできます。
 
 たとえば、別のユーザーとデータベースを追加するには、次の内容を `/docker-entrypoint-initdb.d/init-db.sh` に追加します。

@@ -24,7 +24,7 @@ Elastic Stack は、アプリケーションを計装するための言語 SDK �
 標準の OpenTelemetry SDKs もサポートされていますが、各言語向けには [**ClickStack-distributed SDKs**](/use-cases/observability/clickstack/sdks) の使用を強く推奨します。これらのディストリビューションには、追加の計装、強化されたデフォルト設定、ClickStack パイプラインおよび HyperDX UI とシームレスに連携するよう設計されたカスタム拡張機能が含まれています。ClickStack SDKs を使用することで、プレーンな OpenTelemetry や EDOT SDKs では利用できない例外スタックトレースなどの高度な機能を活用できます。
 :::
 
-## EDOT SDK の移行 {#migrating-edot-sdks}
+## EDOT SDK の移行 \{#migrating-edot-sdks\}
 
 ClickStack の OpenTelemetry ベースの SDK と同様に、Elastic Distributions of the OpenTelemetry SDKs（EDOT SDK）は、公式の OpenTelemetry SDK をベースにしたカスタマイズ版です。たとえば、[EDOT Python SDK](https://www.elastic.co/docs/reference/opentelemetry/edot-sdks/python/) は、Elastic Observability とシームレスに連携するように設計された、[OpenTelemetry Python SDK](https://opentelemetry.io/docs/languages/python/) のベンダー独自ディストリビューションです。
 

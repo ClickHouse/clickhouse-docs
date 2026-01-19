@@ -18,7 +18,7 @@ import image_7 from '@site/static/images/use-cases/AI_ML/jupyter/7.png';
 import image_8 from '@site/static/images/use-cases/AI_ML/jupyter/8.png';
 import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
-# Исследование данных с помощью Jupyter Notebook и chDB {#exploring-data-with-jupyter-notebooks-and-chdb}
+# Исследование данных с помощью Jupyter Notebook и chDB \{#exploring-data-with-jupyter-notebooks-and-chdb\}
 
 В этом руководстве вы узнаете, как исследовать данные в ClickHouse Cloud в Jupyter Notebook с помощью [chDB](/chdb) — быстрого встроенного SQL OLAP-движка на базе ClickHouse.
 
@@ -42,7 +42,7 @@ import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 Мы будем использовать набор данных UK Property Price, который доступен в ClickHouse Cloud как один из стартовых наборов данных.
 Он содержит данные о ценах, по которым продавались дома в Великобритании с 1995 по 2024 год.
 
-## Настройка {#setup}
+## Настройка \{#setup\}
 
 Чтобы добавить этот набор данных в существующий сервис ClickHouse Cloud, войдите в [console.clickhouse.cloud](https://console.clickhouse.cloud/) с данными своей учетной записи.
 
@@ -111,7 +111,7 @@ result = chdb.query("SELECT 'Hello, ClickHouse!' as message")
 print(result)
 ```
 
-## Исследование данных {#exploring-the-data}
+## Исследование данных \{#exploring-the-data\}
 
 После того как набор данных UK price paid настроен, а chDB запущен в Jupyter Notebook, мы можем приступить к исследованию наших данных.
 
@@ -320,7 +320,7 @@ plt.show()
 После 2012 года рост существенно ускорился, резко поднявшись примерно с £400 000 до более чем £1 000 000 к 2019 году.
 В отличие от объёма продаж, цены испытали минимальное влияние кризиса 2008 года и сохранили восходящую тенденцию. Вот это да!
 
-## Итоги {#summary}
+## Итоги \{#summary\}
 
 В этом руководстве показано, как chDB обеспечивает удобное исследование данных в Jupyter-ноутбуках за счет подключения ClickHouse Cloud к локальным источникам данных.
 На примере набора данных UK Property Price мы продемонстрировали, как выполнять запросы к удаленным данным в ClickHouse Cloud с помощью функции `remoteSecure()`, читать локальные CSV-файлы с использованием движка таблиц `file()` и преобразовывать результаты непосредственно в объекты DataFrame библиотеки Pandas для анализа и визуализации.

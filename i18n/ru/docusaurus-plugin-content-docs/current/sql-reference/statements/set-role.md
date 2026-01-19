@@ -13,7 +13,7 @@ doc_type: 'reference'
 SET ROLE {DEFAULT | NONE | role [,...] | ALL | ALL EXCEPT role [,...]}
 ```
 
-## SET DEFAULT ROLE {#set-default-role}
+## SET DEFAULT ROLE \{#set-default-role\}
 
 Устанавливает роли по умолчанию для пользователя.
 
@@ -23,7 +23,7 @@ SET ROLE {DEFAULT | NONE | role [,...] | ALL | ALL EXCEPT role [,...]}
 SET DEFAULT ROLE {NONE | role [,...] | ALL | ALL EXCEPT role [,...]} TO {user|CURRENT_USER} [,...]
 ```
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 Назначение пользователю нескольких ролей по умолчанию:
 

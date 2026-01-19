@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['CBE', 'optimizer']
 ---
 
-# Есть ли у ClickHouse стоимостной оптимизатор? {#does-clickhouse-have-a-cost-based-optimizer}
+# Есть ли у ClickHouse стоимостной оптимизатор? \{#does-clickhouse-have-a-cost-based-optimizer\}
 
 В ClickHouse есть отдельные механизмы стоимостной оптимизации, например, порядок чтения столбцов определяется оценочной стоимостью чтения сжатых диапазонов данных с диска.
 

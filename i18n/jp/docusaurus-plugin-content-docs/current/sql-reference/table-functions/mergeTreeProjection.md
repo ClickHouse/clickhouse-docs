@@ -8,17 +8,17 @@ title: 'mergeTreeProjection'
 doc_type: 'reference'
 ---
 
-# mergeTreeProjection テーブル関数 {#mergetreeprojection-table-function}
+# mergeTreeProjection テーブル関数 \{#mergetreeprojection-table-function\}
 
 MergeTree テーブル内の特定のプロジェクションの内容を表します。内部の状態を調査・確認するために使用できます。
 
-## 構文 {#syntax}
+## 構文 \{#syntax\}
 
 ```sql
 mergeTreeProjection(database, table, projection)
 ```
 
-## 引数 {#arguments}
+## 引数 \{#arguments\}
 
 | 引数         | 説明                                         |
 |--------------|----------------------------------------------|
@@ -26,11 +26,11 @@ mergeTreeProjection(database, table, projection)
 | `table`      | プロジェクションを読み取るテーブル名。       |
 | `projection` | 読み取るプロジェクション。                   |
 
-## 返される値 {#returned_value}
+## 返される値 \{#returned_value\}
 
 指定されたプロジェクションで定義された列を持つテーブルオブジェクト。
 
-## 使用例 {#usage-example}
+## 使用例 \{#usage-example\}
 
 ```sql
 CREATE TABLE test

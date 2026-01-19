@@ -11,9 +11,9 @@ import projections_1 from '@site/static/images/data-modeling/projections_1.png';
 import projections_2 from '@site/static/images/data-modeling/projections_2.png';
 import Image from '@theme/IdealImage';
 
-# プロジェクション {#projections}
+# プロジェクション \{#projections\}
 
-## はじめに {#introduction}
+## はじめに \{#introduction\}
 
 ClickHouse は、リアルタイムなシナリオで大規模なデータに対する分析クエリを高速化するための、さまざまなメカニズムを提供します。その 1 つが、_Projection_ を利用してクエリを高速化する方法です。Projection は、関心のある属性でデータを並べ替えることでクエリを最適化します。これは次のような形を取ることができます。
 
@@ -25,7 +25,7 @@ ClickHouse は、リアルタイムなシナリオで大規模なデータに対
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6CdnUdZSEG0?si=1zUyrP-tCvn9tXse" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-## Projection はどのように動作しますか？ {#how-do-projections-work}
+## Projection はどのように動作しますか？ \{#how-do-projections-work\}
 
 実際には、Projection は元のテーブルに付随する追加の「不可視なテーブル」のようなものと考えることができます。Projection は元のテーブルとは異なる行の順序を持つことができ、その結果として異なるプライマリインデックスを持つことができ、さらに集約値を自動的かつインクリメンタルに事前計算できます。その結果、Projection を使用すると、クエリ実行を高速化するための 2 つの「チューニング手段」を得られます:
 
@@ -39,7 +39,7 @@ ClickHouse はプライマリキーを自動的にサンプリングし、同じ
 
 <Image img={projections_1} size="md" alt="ClickHouse における Projection"/>
 
-### `_part_offset` を用いたよりスマートなストレージ {#smarter_storage_with_part_offset}
+### `_part_offset` を用いたよりスマートなストレージ \{#smarter_storage_with_part_offset\}
 
 バージョン 25.5 以降、ClickHouse はプロジェクション内で仮想カラム `_part_offset` を
 サポートしており、プロジェクションの新しい定義方法を提供します。
@@ -58,7 +58,7 @@ ClickHouse はプライマリキーを自動的にサンプリングし、同じ
 上記のアプローチは組み合わせることもでき、プロジェクションに一部のカラムを直接保存し、
 その他のカラムを `_part_offset` を介して間接的に保存できます。
 
-## プロジェクションを使用するタイミング {#when-to-use-projections}
+## プロジェクションを使用するタイミング \{#when-to-use-projections\}
 
 プロジェクションは、新しいユーザーにとって魅力的な機能です。というのも、データ挿入時に自動的に
 維持されるためです。さらに、クエリは 1 つのテーブルに対して送信するだけでよく、可能な場合には
@@ -93,9 +93,9 @@ ClickHouse はプライマリキーを自動的にサンプリングし、同じ
   許容できる場合。挿入速度への影響をテストし、
   [ストレージオーバーヘッドを評価](/data-compression/compression-in-clickhouse)してください。
 
-## 例 {#examples}
+## 例 \{#examples\}
 
-### プライマリキーに含まれないカラムでのフィルタリング {#filtering-without-using-primary-keys}
+### プライマリキーに含まれないカラムでのフィルタリング \{#filtering-without-using-primary-keys\}
 
 この例では、テーブルに Projection を追加する方法を説明します。
 また、この Projection を使用して、テーブルのプライマリキーに含まれない
@@ -175,7 +175,7 @@ WHERE query_id='<query_id>'
    └───────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────┘
 ```
 
-### プロジェクションを使用してUK不動産価格データのクエリを高速化する {#using-projections-to-speed-up-UK-price-paid}
+### プロジェクションを使用してUK不動産価格データのクエリを高速化する \{#using-projections-to-speed-up-UK-price-paid\}
 
 プロジェクションを使用してクエリパフォーマンスを高速化する方法を実証するため、実際のデータセットを使用した例を見ていきます。この例では、3,003万行を含む[UK Property Price Paid](https://clickhouse.com/docs/getting-started/example-datasets/uk-price-paid)チュートリアルのテーブルを使用します。このデータセットは[sql.clickhouse.com](https://sql.clickhouse.com/?query_id=6IDMHK3OMR1C97J6M9EUQS)環境でも利用可能です。
 
@@ -351,7 +351,7 @@ projections:    ['uk.uk_price_paid_with_projections.prj_obj_town_price']
 2行のセット。経過時間: 0.006秒
 ```
 
-### さらに例を示します {#further-examples}
+### さらに例を示します \{#further-examples\}
 
 次の例では、同じ英国の価格データセットを使用し、プロジェクションを使用するクエリと使用しないクエリを比較します。
 
@@ -362,7 +362,7 @@ CREATE TABLE uk.uk_price_paid_with_projections_v2 AS uk.uk_price_paid;
 INSERT INTO uk.uk_price_paid_with_projections_v2 SELECT * FROM uk.uk_price_paid;
 ```
 
-#### プロジェクションを作成する {#build-projection}
+#### プロジェクションを作成する \{#build-projection\}
 
 `toYear(date)`、`district`、`town` をディメンションとする集約プロジェクションを作成します：
 
@@ -394,7 +394,7 @@ SETTINGS mutations_sync = 1
 
 次のクエリでは、プロジェクションあり／なしの場合のパフォーマンスを比較します。プロジェクションの使用を無効にするには、デフォルトで有効になっている設定 [`optimize_use_projections`](/operations/settings/settings#optimize_use_projections) を変更します。
 
-#### クエリ 1. 年ごとの平均価格 {#average-price-projections}
+#### クエリ 1. 年ごとの平均価格 \{#average-price-projections\}
 
 ```sql runnable
 SELECT
@@ -420,7 +420,7 @@ ORDER BY year ASC
 
 結果は同じになるはずですが、後者の例のほうがパフォーマンスは良くなります。
 
-#### クエリ 2. ロンドンにおける年ごとの平均価格 {#average-price-london-projections}
+#### クエリ 2. ロンドンにおける年ごとの平均価格 \{#average-price-london-projections\}
 
 ```sql runnable
 SELECT
@@ -445,7 +445,7 @@ GROUP BY year
 ORDER BY year ASC
 ```
 
-#### クエリ 3. 最も高価な地域 {#most-expensive-neighborhoods-projections}
+#### クエリ 3. 最も高価な地域 \{#most-expensive-neighborhoods-projections\}
 
 条件 (date &gt;= &#39;2020-01-01&#39;) を、プロジェクションのディメンション (`toYear(date) >= 2020)` と一致するように変更します。
 
@@ -486,7 +486,7 @@ LIMIT 100
 
 今回も結果は同じですが、2 番目のクエリではクエリ性能が向上している点に注目してください。
 
-### 1 つのクエリでプロジェクションを組み合わせる {#combining-projections}
+### 1 つのクエリでプロジェクションを組み合わせる \{#combining-projections\}
 
 バージョン 25.6 以降では、前のバージョンで導入された `_part_offset` のサポートに基づき、
 ClickHouse は複数のプロジェクションを使用して、複数のフィルター条件を持つ
@@ -607,7 +607,7 @@ SELECT * FROM page_views WHERE region = 'us_west' AND user_id = 107;
 複数の Projection に対するインデックス解析を組み合わせることで、ClickHouse はスキャンするデータ量を大幅に削減し、
 ストレージのオーバーヘッドを抑えつつパフォーマンスを向上させます。
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \{#related-content\}
 
 - [ClickHouse のプライマリインデックス実践入門](/guides/best-practices/sparse-primary-indexes#option-3-projections)
 - [マテリアライズドビュー](/docs/materialized-views)

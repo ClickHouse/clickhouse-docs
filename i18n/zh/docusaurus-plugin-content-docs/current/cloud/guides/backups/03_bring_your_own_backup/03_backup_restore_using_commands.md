@@ -12,13 +12,13 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# 使用命令备份或恢复备份 {#commands-experience}
+# 使用命令备份或恢复备份 \{#commands-experience\}
 
 您可以使用 `BACKUP` 和 `RESTORE` 命令将备份导出到各自的存储桶中，
 此外也可以通过[用户界面进行备份或恢复](/cloud/manage/backups/backup-restore-via-ui)。
 本指南提供了针对三大云服务提供商（CSP）的相关命令。
 
-## 要求 {#requirements}
+## 要求 \{#requirements\}
 
 要将备份导出到你自己的 CSP 存储 bucket 或从中恢复备份，你需要准备以下信息：
 
@@ -45,12 +45,12 @@ import TabItem from '@theme/TabItem';
   </TabItem>
 </Tabs>
 
-## 备份 / 恢复特定数据库 {#backup_restore_db}
+## 备份 / 恢复特定数据库 \{#backup_restore_db\}
 
 此处演示如何对 *单个* 数据库进行备份和恢复。
 完整的备份和恢复命令请参见[备份命令摘要](/operations/backup/overview#command-summary)。
 
-### AWS S3 {#aws-s3-bucket}
+### AWS S3 \{#aws-s3-bucket\}
 
 <Tabs>
   <TabItem value="Backup" label="BACKUP" default>
@@ -84,7 +84,7 @@ FROM S3(
   </TabItem>
 </Tabs>
 
-### Google Cloud Storage (GCS) {#google-cloud-storage}
+### Google Cloud Storage (GCS) \{#google-cloud-storage\}
 
 <Tabs>
   <TabItem value="Backup" label="BACKUP" default>
@@ -117,7 +117,7 @@ FROM S3(
   </TabItem>
 </Tabs>
 
-### Azure Blob Storage {#azure-blob-storage}
+### Azure Blob Storage \{#azure-blob-storage\}
 
 <Tabs>
   <TabItem value="Backup" label="BACKUP" default>
@@ -149,7 +149,7 @@ FROM AzureBlobStorage(
   </TabItem>
 </Tabs>
 
-## 备份 / 恢复整个服务 {#backup_restore_entire_service}
+## 备份 / 恢复整个服务 \{#backup_restore_entire_service\}
 
 要备份整个服务，请使用以下命令。
 该备份将包含已创建实体的所有用户数据和系统数据、设置配置文件、角色策略、配额和函数。
@@ -191,7 +191,7 @@ FROM S3(
 </TabItem>
 </Tabs>
 
-## 常见问题解答 {#backups-faq}
+## 常见问题解答 \{#backups-faq\}
 
 <details>
 <summary>我的云对象存储中的备份会怎样处理？ClickHouse 会在某个时间点自动清理它们吗？</summary>

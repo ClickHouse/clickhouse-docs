@@ -17,12 +17,12 @@ doc_type: 'reference'
 Кроме того, у пользователя должна быть привилегия [`displaySecretsInShowAndSelect`](grant.md/#displaysecretsinshowandselect).
 :::
 
-## SHOW CREATE TABLE | DICTIONARY | VIEW | DATABASE {#show-create-table--dictionary--view--database}
+## SHOW CREATE TABLE | DICTIONARY | VIEW | DATABASE \{#show-create-table--dictionary--view--database\}
 
 Эти операторы возвращают один столбец типа String,
 содержащий запрос `CREATE`, который был использован для создания указанного объекта.
 
-### Синтаксис {#syntax}
+### Синтаксис \{#syntax\}
 
 ```sql title="Syntax"
 SHOW [CREATE] TABLE | TEMPORARY TABLE | DICTIONARY | VIEW | DATABASE [db.]table|view [INTO OUTFILE filename] [FORMAT format]
@@ -35,11 +35,11 @@ SHOW [CREATE] TABLE | TEMPORARY TABLE | DICTIONARY | VIEW | DATABASE [db.]table|
 :::
 
 
-## SHOW DATABASES {#show-databases}
+## SHOW DATABASES \{#show-databases\}
 
 Эта команда выводит список всех баз данных.
 
-### Синтаксис {#syntax-1}
+### Синтаксис \{#syntax-1\}
 
 ```sql title="Syntax"
 SHOW DATABASES [[NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE filename] [FORMAT format]
@@ -52,7 +52,7 @@ SELECT name FROM system.databases [WHERE name [NOT] LIKE | ILIKE '<pattern>'] [L
 ```
 
 
-### Примеры {#examples}
+### Примеры \{#examples\}
 
 В этом примере мы используем `SHOW`, чтобы получить имена баз данных, в которых присутствует последовательность символов &#39;de&#39;:
 
@@ -107,15 +107,15 @@ SHOW DATABASES LIMIT 2
 ```
 
 
-### См. также {#see-also}
+### См. также \{#see-also\}
 
 * [`CREATE DATABASE`](/sql-reference/statements/create/database)
 
-## SHOW TABLES {#show-tables}
+## SHOW TABLES \{#show-tables\}
 
 Оператор `SHOW TABLES` отображает список таблиц.
 
-### Синтаксис {#syntax-2}
+### Синтаксис \{#syntax-2\}
 
 ```sql title="Syntax"
 SHOW [FULL] [TEMPORARY] TABLES [{FROM | IN} <db>] [[NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
@@ -130,7 +130,7 @@ SELECT name FROM system.tables [WHERE name [NOT] LIKE | ILIKE '<pattern>'] [LIMI
 ```
 
 
-### Примеры {#examples-1}
+### Примеры \{#examples-1\}
 
 В этом примере мы используем оператор `SHOW TABLES`, чтобы найти все таблицы, в именах которых содержится &#39;user&#39;:
 
@@ -186,16 +186,16 @@ SHOW TABLES FROM system LIMIT 2
 ```
 
 
-### См. также {#see-also-1}
+### См. также \{#see-also-1\}
 
 * [`CREATE TABLE`](/sql-reference/statements/create/table)
 * [`SHOW CREATE TABLE`](#show-create-table--dictionary--view--database)
 
-## SHOW COLUMNS {#show_columns}
+## SHOW COLUMNS \{#show_columns\}
 
 Оператор `SHOW COLUMNS` отображает список столбцов.
 
-### Синтаксис {#syntax-3}
+### Синтаксис \{#syntax-3\}
 
 ```sql title="Syntax"
 SHOW [EXTENDED] [FULL] COLUMNS {FROM | IN} <table> [{FROM | IN} <db>] [{[NOT] {LIKE | ILIKE} '<pattern>' | WHERE <expr>}] [LIMIT <N>] [INTO
@@ -224,7 +224,7 @@ OUTFILE <filename>] [FORMAT <format>]
 | `privilege` | (только если указано ключевое слово `FULL`) Права доступа к этому столбцу, в настоящее время недоступны                               | `String`           |
 
 
-### Примеры {#examples-2}
+### Примеры \{#examples-2\}
 
 В этом примере мы используем оператор `SHOW COLUMNS`, чтобы получить информацию обо всех столбцах в таблице &#39;orders&#39;,
 начиная с &#39;delivery&#95;&#39;:
@@ -241,15 +241,15 @@ SHOW COLUMNS FROM 'orders' LIKE 'delivery_%'
 ```
 
 
-### См. также {#see-also-2}
+### См. также \{#see-also-2\}
 
 - [`system.columns`](../../operations/system-tables/columns.md)
 
-## SHOW DICTIONARIES {#show-dictionaries}
+## SHOW DICTIONARIES \{#show-dictionaries\}
 
 Оператор `SHOW DICTIONARIES` отображает список [словарей](../../sql-reference/dictionaries/index.md).
 
-### Синтаксис {#syntax-4}
+### Синтаксис \{#syntax-4\}
 
 ```sql title="Syntax"
 SHOW DICTIONARIES [FROM <db>] [LIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
@@ -264,7 +264,7 @@ SELECT name FROM system.dictionaries WHERE database = <db> [AND name LIKE <patte
 ```
 
 
-### Примеры {#examples-3}
+### Примеры \{#examples-3\}
 
 Следующий запрос выбирает первые две строки из списка таблиц базы данных `system`, имена которых содержат `reg`.
 
@@ -280,7 +280,7 @@ SHOW DICTIONARIES FROM db LIKE '%reg%' LIMIT 2
 ```
 
 
-## SHOW INDEX {#show-index}
+## SHOW INDEX \{#show-index\}
 
 Отображает список первичных и индексов пропуска данных таблицы.
 
@@ -288,7 +288,7 @@ SHOW DICTIONARIES FROM db LIKE '%reg%' LIMIT 2
 первичных ключей) и [`system.data_skipping_indices`](../../operations/system-tables/data_skipping_indices.md) (для индексов пропуска данных)
 предоставляют эквивалентную информацию, но в более естественной для ClickHouse форме.
 
-### Синтаксис {#syntax-5}
+### Синтаксис \{#syntax-5\}
 
 ```sql title="Syntax"
 SHOW [EXTENDED] {INDEX | INDEXES | INDICES | KEYS } {FROM | IN} <table> [{FROM | IN} <db>] [WHERE <expr>] [INTO OUTFILE <filename>] [FORMAT <format>]
@@ -320,7 +320,7 @@ SHOW [EXTENDED] {INDEX | INDEXES | INDICES | KEYS } {FROM | IN} <table> [{FROM |
 | `expression`    | Для индекса пропуска данных — выражение индекса. Для индекса первичного ключа — `''` (пустая строка).                  | `String`           |
 
 
-### Примеры {#examples-4}
+### Примеры \{#examples-4\}
 
 В этом примере мы используем оператор `SHOW INDEX`, чтобы получить информацию обо всех индексах в таблице &#39;tbl&#39;.
 
@@ -340,16 +340,16 @@ SHOW INDEX FROM 'tbl'
 ```
 
 
-### См. также {#see-also-3}
+### См. также \{#see-also-3\}
 
 - [`system.tables`](../../operations/system-tables/tables.md)
 - [`system.data_skipping_indices`](../../operations/system-tables/data_skipping_indices.md)
 
-## SHOW PROCESSLIST {#show-processlist}
+## SHOW PROCESSLIST \{#show-processlist\}
 
 Выводит содержимое таблицы [`system.processes`](/operations/system-tables/processes), в которой хранится список запросов, обрабатываемых в данный момент, за исключением запросов `SHOW PROCESSLIST`.
 
-### Синтаксис {#syntax-6}
+### Синтаксис \{#syntax-6\}
 
 ```sql title="Syntax"
 SHOW PROCESSLIST [INTO OUTFILE filename] [FORMAT format]
@@ -367,11 +367,11 @@ $ watch -n1 "clickhouse-client --query='SHOW PROCESSLIST'"
 :::
 
 
-## SHOW GRANTS {#show-grants}
+## SHOW GRANTS \{#show-grants\}
 
 Оператор `SHOW GRANTS` отображает привилегии, предоставленные пользователю.
 
-### Синтаксис {#syntax-7}
+### Синтаксис \{#syntax-7\}
 
 ```sql title="Syntax"
 SHOW GRANTS [FOR user1 [, user2 ...]] [WITH IMPLICIT] [FINAL]
@@ -384,146 +384,146 @@ SHOW GRANTS [FOR user1 [, user2 ...]] [WITH IMPLICIT] [FINAL]
 Модификатор `FINAL` объединяет все привилегии, выданные пользователю и его ролям (с учетом наследования).
 
 
-## SHOW CREATE USER {#show-create-user}
+## SHOW CREATE USER \{#show-create-user\}
 
 Оператор `SHOW CREATE USER` выводит параметры, которые были заданы при [создании пользователя](../../sql-reference/statements/create/user.md).
 
-### Синтаксис {#syntax-8}
+### Синтаксис \{#syntax-8\}
 
 ```sql title="Syntax"
 SHOW CREATE USER [name1 [, name2 ...] | CURRENT_USER]
 ```
 
 
-## SHOW CREATE ROLE {#show-create-role}
+## SHOW CREATE ROLE \{#show-create-role\}
 
 Команда `SHOW CREATE ROLE` выводит параметры, использованные при [создании роли](../../sql-reference/statements/create/role.md).
 
-### Синтаксис {#syntax-9}
+### Синтаксис \{#syntax-9\}
 
 ```sql title="Syntax"
 SHOW CREATE ROLE name1 [, name2 ...]
 ```
 
 
-## SHOW CREATE ROW POLICY {#show-create-row-policy}
+## SHOW CREATE ROW POLICY \{#show-create-row-policy\}
 
 Оператор `SHOW CREATE ROW POLICY` выводит параметры, которые были использованы при [создании политики строк](../../sql-reference/statements/create/row-policy.md).
 
-### Синтаксис {#syntax-10}
+### Синтаксис \{#syntax-10\}
 
 ```sql title="Syntax"
 SHOW CREATE [ROW] POLICY name ON [database1.]table1 [, [database2.]table2 ...]
 ```
 
 
-## SHOW CREATE QUOTA {#show-create-quota}
+## SHOW CREATE QUOTA \{#show-create-quota\}
 
 Оператор `SHOW CREATE QUOTA` отображает параметры, использованные при [создании квоты](../../sql-reference/statements/create/quota.md).
 
-### Синтаксис {#syntax-11}
+### Синтаксис \{#syntax-11\}
 
 ```sql title="Syntax"
 SHOW CREATE QUOTA [name1 [, name2 ...] | CURRENT]
 ```
 
 
-## SHOW CREATE SETTINGS PROFILE {#show-create-settings-profile}
+## SHOW CREATE SETTINGS PROFILE \{#show-create-settings-profile\}
 
 Оператор `SHOW CREATE SETTINGS PROFILE` выводит параметры, которые были использованы при [создании профиля настроек](../../sql-reference/statements/create/settings-profile.md).
 
-### Синтаксис {#syntax-12}
+### Синтаксис \{#syntax-12\}
 
 ```sql title="Syntax"
 SHOW CREATE [SETTINGS] PROFILE name1 [, name2 ...]
 ```
 
 
-## SHOW USERS {#show-users}
+## SHOW USERS \{#show-users\}
 
 Оператор `SHOW USERS` возвращает список имен [учетных записей пользователей](../../guides/sre/user-management/index.md#user-account-management).
 Чтобы просмотреть параметры учетных записей пользователей, обратитесь к системной таблице [`system.users`](/operations/system-tables/users).
 
-### Синтаксис {#syntax-13}
+### Синтаксис \{#syntax-13\}
 
 ```sql title="Syntax"
 SHOW USERS
 ```
 
 
-## SHOW ROLES {#show-roles}
+## SHOW ROLES \{#show-roles\}
 
 Оператор `SHOW ROLES` возвращает список [ролей](../../guides/sre/user-management/index.md#role-management). 
 Для просмотра дополнительных параметров 
 см. системные таблицы [`system.roles`](/operations/system-tables/roles) и [`system.role_grants`](/operations/system-tables/role_grants).
 
-### Синтаксис {#syntax-14}
+### Синтаксис \{#syntax-14\}
 
 ```sql title="Syntax"
 SHOW [CURRENT|ENABLED] ROLES
 ```
 
 
-## SHOW PROFILES {#show-profiles}
+## SHOW PROFILES \{#show-profiles\}
 
 Оператор `SHOW PROFILES` возвращает список [профилей настроек](../../guides/sre/user-management/index.md#settings-profiles-management).
 Для просмотра параметров учетных записей пользователей см. системную таблицу [`settings_profiles`](/operations/system-tables/settings_profiles).
 
-### Синтаксис {#syntax-15}
+### Синтаксис \{#syntax-15\}
 
 ```sql title="Syntax"
 SHOW [SETTINGS] PROFILES
 ```
 
 
-## SHOW POLICIES {#show-policies}
+## SHOW POLICIES \{#show-policies\}
 
 Оператор `SHOW POLICIES` возвращает список [политик строк](../../guides/sre/user-management/index.md#row-policy-management) для указанной таблицы.
 Чтобы просмотреть параметры учетных записей пользователей, см. системную таблицу [`system.row_policies`](/operations/system-tables/row_policies).
 
-### Синтаксис {#syntax-16}
+### Синтаксис \{#syntax-16\}
 
 ```sql title="Syntax"
 SHOW [ROW] POLICIES [ON [db.]table]
 ```
 
 
-## SHOW QUOTAS {#show-quotas}
+## SHOW QUOTAS \{#show-quotas\}
 
 Оператор `SHOW QUOTAS` возвращает список [квот](../../guides/sre/user-management/index.md#quotas-management).
 Для просмотра параметров квот см. системную таблицу [`system.quotas`](/operations/system-tables/quotas).
 
-### Синтаксис {#syntax-17}
+### Синтаксис \{#syntax-17\}
 
 ```sql title="Syntax"
 SHOW QUOTAS
 ```
 
 
-## SHOW QUOTA {#show-quota}
+## SHOW QUOTA \{#show-quota\}
 
 Оператор `SHOW QUOTA` возвращает информацию об использовании [квот](../../operations/quotas.md) для всех пользователей или только для текущего пользователя. 
 Для просмотра дополнительных параметров используйте системные таблицы [`system.quotas_usage`](/operations/system-tables/quotas_usage) и [`system.quota_usage`](/operations/system-tables/quota_usage).
 
-### Синтаксис {#syntax-18}
+### Синтаксис \{#syntax-18\}
 
 ```sql title="Syntax"
 SHOW [CURRENT] QUOTA
 ```
 
 
-## SHOW ACCESS {#show-access}
+## SHOW ACCESS \{#show-access\}
 
 Оператор `SHOW ACCESS` отображает всех [пользователей](../../guides/sre/user-management/index.md#user-account-management), [роли](../../guides/sre/user-management/index.md#role-management), [профили](../../guides/sre/user-management/index.md#settings-profiles-management) и т.д., а также все их [права доступа](../../sql-reference/statements/grant.md#privileges).
 
-### Синтаксис {#syntax-19}
+### Синтаксис \{#syntax-19\}
 
 ```sql title="Syntax"
 SHOW ACCESS
 ```
 
 
-## SHOW CLUSTER(S) {#show-clusters}
+## SHOW CLUSTER(S) \{#show-clusters\}
 
 Оператор `SHOW CLUSTER(S)` возвращает список кластеров.
 Все доступные кластеры перечислены в таблице [`system.clusters`](../../operations/system-tables/clusters.md).
@@ -532,7 +532,7 @@ SHOW ACCESS
 Запрос `SHOW CLUSTER name` отображает поля `cluster`, `shard_num`, `replica_num`, `host_name`, `host_address` и `port` таблицы `system.clusters` для кластера с указанным именем.
 :::
 
-### Синтаксис {#syntax-20}
+### Синтаксис \{#syntax-20\}
 
 ```sql title="Syntax"
 SHOW CLUSTER '<name>'
@@ -540,7 +540,7 @@ SHOW CLUSTERS [[NOT] LIKE|ILIKE '<pattern>'] [LIMIT <N>]
 ```
 
 
-### Примеры {#examples-5}
+### Примеры \{#examples-5\}
 
 ```sql title="Query"
 SHOW CLUSTERS;
@@ -583,25 +583,25 @@ port:                    9000
 ```
 
 
-## SHOW SETTINGS {#show-settings}
+## SHOW SETTINGS \{#show-settings\}
 
 Оператор `SHOW SETTINGS` возвращает список системных настроек и их значений.
 Он запрашивает данные из таблицы [`system.settings`](../../operations/system-tables/settings.md).
 
-### Синтаксис {#syntax-21}
+### Синтаксис \{#syntax-21\}
 
 ```sql title="Syntax"
 SHOW [CHANGED] SETTINGS LIKE|ILIKE <name>
 ```
 
 
-### Условия {#clauses}
+### Условия \{#clauses\}
 
 `LIKE|ILIKE` позволяют задать шаблон для имени настройки. Он может содержать шаблонные символы, такие как `%` или `_`. Условие `LIKE` чувствительно к регистру, `ILIKE` — нечувствительно.
 
 Когда используется условие `CHANGED`, запрос возвращает только те настройки, которые были изменены по сравнению со значениями по умолчанию.
 
-### Примеры {#examples-6}
+### Примеры \{#examples-6\}
 
 Запрос с условием `LIKE`:
 
@@ -642,24 +642,24 @@ SHOW CHANGED SETTINGS ILIKE '%MEMORY%'
 ```
 
 
-## SHOW SETTING {#show-setting}
+## SHOW SETTING \{#show-setting\}
 
 Оператор `SHOW SETTING` выводит значение указанной настройки.
 
-### Синтаксис {#syntax-22}
+### Синтаксис \{#syntax-22\}
 
 ```sql title="Syntax"
 SHOW SETTING <name>
 ```
 
 
-### См. также {#see-also-4}
+### См. также \{#see-also-4\}
 
 * таблица [`system.settings`](../../operations/system-tables/settings.md)
 
-## Просмотр кэшей файловой системы {#show-filesystem-caches}
+## Просмотр кэшей файловой системы \{#show-filesystem-caches\}
 
-### Примеры {#examples-7}
+### Примеры \{#examples-7\}
 
 ```sql title="Query"
 SHOW FILESYSTEM CACHES
@@ -672,31 +672,31 @@ SHOW FILESYSTEM CACHES
 ```
 
 
-### См. также {#see-also-5}
+### См. также \{#see-also-5\}
 
 * таблица [`system.settings`](../../operations/system-tables/settings.md)
 
-## SHOW ENGINES {#show-engines}
+## SHOW ENGINES \{#show-engines\}
 
 Оператор `SHOW ENGINES` выводит содержимое таблицы [`system.table_engines`](../../operations/system-tables/table_engines.md),
 которая содержит описание движков таблиц, поддерживаемых сервером, и информацию о поддерживаемых ими возможностях.
 
-### Синтаксис {#syntax-23}
+### Синтаксис \{#syntax-23\}
 
 ```sql title="Syntax"
 SHOW ENGINES [INTO OUTFILE filename] [FORMAT format]
 ```
 
 
-### См. также {#see-also-6}
+### См. также \{#see-also-6\}
 
 * таблица [system.table&#95;engines](../../operations/system-tables/table_engines.md)
 
-## SHOW FUNCTIONS {#show-functions}
+## SHOW FUNCTIONS \{#show-functions\}
 
 Оператор `SHOW FUNCTIONS` выводит содержимое таблицы [`system.functions`](../../operations/system-tables/functions.md).
 
-### Синтаксис {#syntax-24}
+### Синтаксис \{#syntax-24\}
 
 ```sql title="Syntax"
 SHOW FUNCTIONS [LIKE | ILIKE '<pattern>']
@@ -705,11 +705,11 @@ SHOW FUNCTIONS [LIKE | ILIKE '<pattern>']
 Если указан оператор `LIKE` или `ILIKE`, запрос возвращает список системных функций, имена которых соответствуют указанному шаблону `<pattern>`.
 
 
-### См. также {#see-also-7}
+### См. также \{#see-also-7\}
 
 * Таблица [`system.functions`](../../operations/system-tables/functions.md)
 
-## SHOW MERGES {#show-merges}
+## SHOW MERGES \{#show-merges\}
 
 Оператор `SHOW MERGES` возвращает список слияний.
 Все слияния перечислены в таблице [`system.merges`](../../operations/system-tables/merges.md):
@@ -725,14 +725,14 @@ SHOW FUNCTIONS [LIKE | ILIKE '<pattern>']
 | `size_compressed`   | Общий размер сжатых данных объединённых частей.         |
 | `memory_usage`      | Потребление памяти процессом слияния.                   |
 
-### Синтаксис {#syntax-25}
+### Синтаксис \{#syntax-25\}
 
 ```sql title="Syntax"
 SHOW MERGES [[NOT] LIKE|ILIKE '<table_name_pattern>'] [LIMIT <N>]
 ```
 
 
-### Примеры {#examples-8}
+### Примеры \{#examples-8\}
 
 ```sql title="Query"
 SHOW MERGES;
@@ -755,11 +755,11 @@ SHOW MERGES LIKE 'your_t%' LIMIT 1;
 ```
 
 
-## SHOW CREATE MASKING POLICY {#show-create-masking-policy}
+## SHOW CREATE MASKING POLICY \{#show-create-masking-policy\}
 
 Оператор `SHOW CREATE MASKING POLICY` выводит параметры, которые были использованы при [создании политики маскирования](../../sql-reference/statements/create/masking-policy.md).
 
-### Синтаксис {#syntax-26}
+### Синтаксис \{#syntax-26\}
 
 ```sql title="Syntax"
 SHOW CREATE MASKING POLICY name ON [database.]table

@@ -2,12 +2,15 @@
 title: '在 ClickHouse 中处理 JSON'
 sidebar_label: '处理 JSON'
 slug: /integrations/clickpipes/mongodb/quickstart
-description: '通过 ClickPipes 将 MongoDB 中的数据复制到 ClickHouse 时处理 JSON 数据的常见模式'
+description: '通过 ClickPipes 将 MongoDB 中的 JSON 数据复制到 ClickHouse 时的常见处理模式'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
-# 在 ClickHouse 中处理 JSON {#working-with-json-in-clickhouse}
+# 在 ClickHouse 中处理 JSON \{#working-with-json-in-clickhouse\}
 
 本指南介绍了通过 ClickPipes 从 MongoDB 复制到 ClickHouse 的 JSON 数据的常见处理模式。
 
@@ -50,7 +53,8 @@ _peerdb_is_deleted: 0
 _peerdb_version:    0
 ```
 
-## 表结构 {#table-schema}
+
+## 表结构 \{#table-schema\}
 
 这些复制表使用以下标准表结构：
 
@@ -70,7 +74,8 @@ _peerdb_version:    0
 * `_peerdb_version`: 跟踪该行的版本；当该行被更新或删除时递增
 * `_peerdb_is_deleted`: 标记该行是否已被删除
 
-### ReplacingMergeTree 表引擎 {#replacingmergetree-table-engine}
+
+### ReplacingMergeTree 表引擎 \{#replacingmergetree-table-engine\}
 
 ClickPipes 使用 `ReplacingMergeTree` 表引擎族将 MongoDB 集合映射为 ClickHouse 中的表。使用该引擎时，更新会被建模为插入一条具有更高版本（`_peerdb_version`）的新文档记录（针对给定主键 `_id`），从而能够以版本化插入的方式高效处理更新、替换和删除操作。
 
@@ -80,7 +85,8 @@ ClickPipes 使用 `ReplacingMergeTree` 表引擎族将 MongoDB 集合映射为 C
 SELECT * FROM t1 FINAL;
 ```
 
-### 处理删除操作 {#handling-deletes}
+
+### 处理删除操作 \{#handling-deletes\}
 
 来自 MongoDB 的删除操作会以新行的形式传播，这些行会在 `_peerdb_is_deleted` 列中被标记为已删除。通常你会希望在查询中过滤掉这些行：
 
@@ -88,14 +94,15 @@ SELECT * FROM t1 FINAL;
 SELECT * FROM t1 FINAL WHERE _peerdb_is_deleted = 0;
 ```
 
-你也可以创建行级策略，从而自动过滤已删除的行，而不必在每个查询中都指定过滤条件：
+你也可以创建行级策略，自动过滤掉已删除的行，而无需在每个查询中都指定过滤条件：
 
 ```sql
 CREATE ROW POLICY policy_name ON t1
 FOR SELECT USING _peerdb_is_deleted = 0;
 ```
 
-## 查询 JSON 数据 {#querying-json-data}
+
+## 查询 JSON 数据 \{#querying-json-data\}
 
 你可以直接使用点语法查询 JSON 字段：
 
@@ -124,7 +131,8 @@ SELECT doc.^shipping as shipping_info FROM t1;
 └────────────────────────────────────────────────────┘
 ```
 
-### Dynamic 类型 {#dynamic-type}
+
+### Dynamic 类型 \{#dynamic-type\}
 
 在 ClickHouse 中，JSON 的每个字段都是 `Dynamic` 类型。Dynamic 类型允许 ClickHouse 在事先不知道具体类型的情况下存储任意类型的值。可以使用 `toTypeName` 函数进行验证：
 
@@ -138,7 +146,7 @@ SELECT toTypeName(doc.customer_id) AS type FROM t1;
 └─────────┘
 ```
 
-要查看某个字段的实际数据类型，可以使用 `dynamicType` 函数。请注意，在不同行中，同一字段名可能对应不同的数据类型：
+要查看某个字段的底层数据类型，可以使用 `dynamicType` 函数。请注意，在不同行中，同一字段名可能对应不同的数据类型：
 
 ```sql title="Query"
 SELECT dynamicType(doc.customer_id) AS type FROM t1;
@@ -192,9 +200,10 @@ SELECT length(doc.items) AS item_count FROM t1;
 └────────────┘
 ```
 
-### 字段类型转换 {#field-casting}
 
-ClickHouse 中的[聚合函数](https://clickhouse.com/docs/sql-reference/aggregate-functions/combinators)不能直接作用于 `dynamic` 类型。例如，如果你尝试在 `dynamic` 类型上直接使用 `sum` 函数，会收到如下错误：
+### 字段类型转换 \{#field-casting\}
+
+ClickHouse 中的[聚合函数](https://clickhouse.com/docs/sql-reference/aggregate-functions/combinators)不能直接作用于 `Dynamic` 类型。例如，如果你尝试在 `Dynamic` 类型上直接使用 `sum` 函数，会收到如下错误：
 
 ```sql
 SELECT sum(doc.shipping.cost) AS shipping_cost FROM t1;
@@ -214,12 +223,13 @@ SELECT sum(doc.shipping.cost::Float32) AS shipping_cost FROM t1;
 ```
 
 :::note
-从 dynamic 类型转换为其底层数据类型（由 `dynamicType` 决定）的操作非常高效，因为 ClickHouse 在内部已经以其底层类型存储了该值。
+从 Dynamic 类型转换为其底层数据类型（由 `dynamicType` 决定）的操作非常高效，因为 ClickHouse 在内部已经以该底层类型存储了该值。
 :::
 
-## 展平 JSON {#flattening-json}
 
-### 普通视图 {#normal-view}
+## 展平 JSON \{#flattening-json\}
+
+### 普通视图 \{#normal-view\}
 
 可以在 JSON 表之上创建普通视图，用于封装展平、类型转换和转换逻辑，从而以类似关系型表的方式查询数据。普通视图是轻量级的，因为它们只存储查询本身，而不存储底层数据。例如：
 
@@ -266,7 +276,8 @@ ORDER BY customer_id DESC
 LIMIT 10;
 ```
 
-### 可刷新物化视图 {#refreshable-materialized-view}
+
+### 可刷新物化视图 \{#refreshable-materialized-view\}
 
 可以创建[可刷新物化视图](https://clickhouse.com/docs/materialized-view/refreshable-materialized-view)，通过定期调度执行查询，对行进行去重，并将结果存储到一个扁平化的目标表中。每次按计划刷新时，目标表都会被最新的查询结果替换。
 
@@ -316,9 +327,10 @@ ORDER BY customer_id DESC
 LIMIT 10;
 ```
 
-### 增量物化视图 {#incremental-materialized-view}
 
-如果希望实时访问已扁平化的列，可以创建[增量物化视图](https://clickhouse.com/docs/materialized-view/incremental-materialized-view)。如果表存在频繁更新，则不建议在物化视图中使用 `FINAL` 修饰符，因为每次更新都会触发一次合并操作。相反，可以在该物化视图之上构建一个普通视图，在查询时对数据进行去重。
+### 增量materialized view \{#incremental-materialized-view\}
+
+如果希望实时访问扁平化后的列，可以创建 [Incremental Materialized Views](https://clickhouse.com/docs/materialized-view/incremental-materialized-view)。如果表会被频繁更新，不建议在 materialized view 中使用 `FINAL` 修饰符，因为每次更新都会触发一次合并操作。相反，可以在该 materialized view 之上再构建一个普通的 view，在查询时对数据进行去重。
 
 ```sql
 CREATE TABLE flattened_t1 (

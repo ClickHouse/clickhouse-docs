@@ -35,9 +35,9 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 :::
 
 
-## Хранение именованных коллекций в системной базе данных {#storing-named-collections-in-the-system-database}
+## Хранение именованных коллекций в системной базе данных \{#storing-named-collections-in-the-system-database\}
 
-### Пример DDL {#ddl-example}
+### Пример DDL \{#ddl-example\}
 
 ```sql
 CREATE NAMED COLLECTION name AS
@@ -53,7 +53,7 @@ url = 'https://connection.url/'
 * Возможность переопределения `url` зависит от значения `allow_named_collection_override_by_default`.
 
 
-### Права на создание именованных коллекций с помощью DDL {#permissions-to-create-named-collections-with-ddl}
+### Права на создание именованных коллекций с помощью DDL \{#permissions-to-create-named-collections-with-ddl\}
 
 Чтобы управлять именованными коллекциями с помощью DDL, пользователь должен иметь привилегию `named_collection_control`. Её можно назначить, добавив файл в `/etc/clickhouse-server/users.d/`. В примере пользователю `default` назначаются привилегии `access_management` и `named_collection_control`:
 
@@ -76,7 +76,7 @@ url = 'https://connection.url/'
 :::
 
 
-### Хранилище для именованных коллекций {#storage-for-named-collections}
+### Хранилище для именованных коллекций \{#storage-for-named-collections\}
 
 Именованные коллекции могут храниться либо на локальном диске, либо в ZooKeeper/Keeper. По умолчанию используется локальное хранилище.
 Их также можно хранить с использованием шифрования с теми же алгоритмами, что применяются для [шифрования диска](storing-data#encrypted-virtual-file-system),
@@ -103,9 +103,9 @@ url = 'https://connection.url/'
 Необязательный конфигурационный параметр `update_timeout_ms` по умолчанию равен `5000`.
 
 
-## Хранение именованных коллекций в конфигурационных файлах {#storing-named-collections-in-configuration-files}
+## Хранение именованных коллекций в конфигурационных файлах \{#storing-named-collections-in-configuration-files\}
 
-### Пример на XML {#xml-example}
+### Пример на XML \{#xml-example\}
 
 ```xml title='/etc/clickhouse-server/config.d/named_collections.xml'
 <clickhouse>
@@ -126,11 +126,11 @@ url = 'https://connection.url/'
 * `url` может быть как переопределён, так и нет, в зависимости от значения `allow_named_collection_override_by_default`.
 
 
-## Изменение именованных коллекций {#modifying-named-collections}
+## Изменение именованных коллекций \{#modifying-named-collections\}
 
 Именованные коллекции, созданные с помощью DDL-запросов, можно изменять или удалять с помощью DDL. Именованными коллекциями, созданными из XML-файлов, можно управлять, редактируя или удаляя соответствующие XML-файлы.
 
-### Изменение именованной коллекции, созданной через DDL {#alter-a-ddl-named-collection}
+### Изменение именованной коллекции, созданной через DDL \{#alter-a-ddl-named-collection\}
 
 Измените или добавьте ключи `key1` и `key3` коллекции `collection2`
 (это не изменит значение флага `overridable` для этих ключей):
@@ -165,18 +165,18 @@ ALTER NAMED COLLECTION collection2 SET key1=4;
 ```
 
 
-### Удалите именованную коллекцию DDL `collection2`: {#drop-the-ddl-named-collection-collection2}
+### Удалите именованную коллекцию DDL `collection2`: \{#drop-the-ddl-named-collection-collection2\}
 
 ```sql
 DROP NAMED COLLECTION collection2
 ```
 
 
-## Именованные коллекции для доступа к S3 {#named-collections-for-accessing-s3}
+## Именованные коллекции для доступа к S3 \{#named-collections-for-accessing-s3\}
 
 Описание параметров см. в разделе [табличной функции s3](../sql-reference/table-functions/s3.md).
 
-### Пример DDL {#ddl-example-1}
+### Пример DDL \{#ddl-example-1\}
 
 ```sql
 CREATE NAMED COLLECTION s3_mydata AS
@@ -187,7 +187,7 @@ url = 'https://s3.us-east-1.amazonaws.com/yourbucket/mydata/'
 ```
 
 
-### Пример XML {#xml-example-1}
+### Пример XML \{#xml-example-1\}
 
 ```xml
 <clickhouse>
@@ -203,11 +203,11 @@ url = 'https://s3.us-east-1.amazonaws.com/yourbucket/mydata/'
 ```
 
 
-### Примеры функции s3() и именованной коллекции таблицы S3 {#s3-function-and-s3-table-named-collection-examples}
+### Примеры функции s3() и именованной коллекции таблицы S3 \{#s3-function-and-s3-table-named-collection-examples\}
 
 Оба следующих примера используют одну и ту же именованную коллекцию `s3_mydata`:
 
-#### Функция s3() {#s3-function}
+#### Функция s3() \{#s3-function\}
 
 ```sql
 INSERT INTO FUNCTION s3(s3_mydata, filename = 'test_file.tsv.gz',
@@ -220,7 +220,7 @@ SELECT * FROM numbers(10000);
 :::
 
 
-#### Таблица S3 {#s3-table}
+#### Таблица S3 \{#s3-table\}
 
 ```sql
 CREATE TABLE s3_engine_table (number Int64)
@@ -236,11 +236,11 @@ SELECT * FROM s3_engine_table LIMIT 3;
 ```
 
 
-## Именованные коллекции для доступа к базе данных MySQL {#named-collections-for-accessing-mysql-database}
+## Именованные коллекции для доступа к базе данных MySQL \{#named-collections-for-accessing-mysql-database\}
 
 См. описание параметров в разделе [mysql](../sql-reference/table-functions/mysql.md).
 
-### Пример DDL {#ddl-example-2}
+### Пример DDL \{#ddl-example-2\}
 
 ```sql
 CREATE NAMED COLLECTION mymysql AS
@@ -254,7 +254,7 @@ replace_query = 1
 ```
 
 
-### Пример XML {#xml-example-2}
+### Пример XML \{#xml-example-2\}
 
 ```xml
 <clickhouse>
@@ -273,11 +273,11 @@ replace_query = 1
 ```
 
 
-### Примеры для функции mysql(), таблицы MySQL, базы данных MySQL и именованной коллекции Dictionary {#mysql-function-mysql-table-mysql-database-and-dictionary-named-collection-examples}
+### Примеры для функции mysql(), таблицы MySQL, базы данных MySQL и именованной коллекции Dictionary \{#mysql-function-mysql-table-mysql-database-and-dictionary-named-collection-examples\}
 
 Следующие четыре примера используют одну и ту же именованную коллекцию `mymysql`:
 
-#### Функция mysql() {#mysql-function}
+#### Функция mysql() \{#mysql-function\}
 
 ```sql
 SELECT count() FROM mysql(mymysql, table = 'test');
@@ -292,7 +292,7 @@ SELECT count() FROM mysql(mymysql, table = 'test');
 :::
 
 
-#### Таблица MySQL {#mysql-table}
+#### Таблица MySQL \{#mysql-table\}
 
 ```sql
 CREATE TABLE mytable(A Int64) ENGINE = MySQL(mymysql, table = 'test', connection_pool_size=3, replace_query=0);
@@ -308,7 +308,7 @@ SELECT count() FROM mytable;
 :::
 
 
-#### База данных MySQL {#mysql-database}
+#### База данных MySQL \{#mysql-database\}
 
 ```sql
 CREATE DATABASE mydatabase ENGINE = MySQL(mymysql);
@@ -322,7 +322,7 @@ SHOW TABLES FROM mydatabase;
 ```
 
 
-#### Словарь MySQL {#mysql-dictionary}
+#### Словарь MySQL \{#mysql-dictionary\}
 
 ```sql
 CREATE DICTIONARY dict (A Int64, B String)
@@ -339,7 +339,7 @@ SELECT dictGet('dict', 'B', 2);
 ```
 
 
-## Именованные коллекции для доступа к базе данных PostgreSQL {#named-collections-for-accessing-postgresql-database}
+## Именованные коллекции для доступа к базе данных PostgreSQL \{#named-collections-for-accessing-postgresql-database\}
 
 Описание параметров см. в разделе [postgresql](../sql-reference/table-functions/postgresql.md). Дополнительно доступны следующие синонимы:
 
@@ -386,7 +386,7 @@ schema = 'test_schema'
 ```
 
 
-### Пример использования именованных коллекций с табличной функцией `postgresql` {#example-of-using-named-collections-with-the-postgresql-function}
+### Пример использования именованных коллекций с табличной функцией `postgresql` \{#example-of-using-named-collections-with-the-postgresql-function\}
 
 ```sql
 SELECT * FROM postgresql(mypg, table = 'test');
@@ -405,7 +405,7 @@ SELECT * FROM postgresql(mypg, table = 'test', schema = 'public');
 ```
 
 
-### Пример использования именованных коллекций с базой данных на движке PostgreSQL {#example-of-using-named-collections-with-database-with-engine-postgresql}
+### Пример использования именованных коллекций с базой данных на движке PostgreSQL \{#example-of-using-named-collections-with-database-with-engine-postgresql\}
 
 ```sql
 CREATE TABLE mypgtable (a Int64) ENGINE = PostgreSQL(mypg, table = 'test', schema = 'public');
@@ -424,7 +424,7 @@ PostgreSQL копирует данные из именованной колле�
 :::
 
 
-### Пример использования именованных коллекций с базой данных на движке PostgreSQL {#example-of-using-named-collections-with-database-with-engine-postgresql-1}
+### Пример использования именованных коллекций с базой данных на движке PostgreSQL \{#example-of-using-named-collections-with-database-with-engine-postgresql-1\}
 
 ```sql
 CREATE DATABASE mydatabase ENGINE = PostgreSQL(mypg);
@@ -437,7 +437,7 @@ SHOW TABLES FROM mydatabase
 ```
 
 
-### Пример использования именованных коллекций со словарём, использующим PostgreSQL в качестве источника {#example-of-using-named-collections-with-a-dictionary-with-source-postgresql}
+### Пример использования именованных коллекций со словарём, использующим PostgreSQL в качестве источника \{#example-of-using-named-collections-with-a-dictionary-with-source-postgresql\}
 
 ```sql
 CREATE DICTIONARY dict (a Int64, b String)
@@ -454,7 +454,7 @@ SELECT dictGet('dict', 'b', 2);
 ```
 
 
-## Именованные коллекции для доступа к удалённой базе данных ClickHouse {#named-collections-for-accessing-a-remote-clickhouse-database}
+## Именованные коллекции для доступа к удалённой базе данных ClickHouse \{#named-collections-for-accessing-a-remote-clickhouse-database\}
 
 См. описание параметров в разделе [remote](../sql-reference/table-functions/remote.md/#parameters).
 
@@ -488,7 +488,7 @@ secure = 1
 `secure` не требуется для подключения из‑за использования `remoteSecure`, но его можно использовать для словарей.
 
 
-### Пример использования именованных коллекций с функциями `remote`/`remoteSecure` {#example-of-using-named-collections-with-the-remoteremotesecure-functions}
+### Пример использования именованных коллекций с функциями `remote`/`remoteSecure` \{#example-of-using-named-collections-with-the-remoteremotesecure-functions\}
 
 ```sql
 SELECT * FROM remote(remote1, table = one);
@@ -510,7 +510,7 @@ SELECT * FROM remote(remote1, database = default, table = test);
 ```
 
 
-### Пример использования именованных коллекций со словарём с источником ClickHouse {#example-of-using-named-collections-with-a-dictionary-with-source-clickhouse}
+### Пример использования именованных коллекций со словарём с источником ClickHouse \{#example-of-using-named-collections-with-a-dictionary-with-source-clickhouse\}
 
 ```sql
 CREATE DICTIONARY dict(a Int64, b String)
@@ -526,11 +526,11 @@ SELECT dictGet('dict', 'b', 1);
 ```
 
 
-## Именованные коллекции для доступа к Kafka {#named-collections-for-accessing-kafka}
+## Именованные коллекции для доступа к Kafka \{#named-collections-for-accessing-kafka\}
 
 См. описание параметров в разделе [Kafka](../engines/table-engines/integrations/kafka.md).
 
-### Пример DDL {#ddl-example-3}
+### Пример DDL \{#ddl-example-3\}
 
 ```sql
 CREATE NAMED COLLECTION my_kafka_cluster AS
@@ -543,7 +543,7 @@ kafka_max_block_size = '1048576';
 ```
 
 
-### Пример XML {#xml-example-3}
+### Пример XML \{#xml-example-3\}
 
 ```xml
 <clickhouse>
@@ -560,7 +560,7 @@ kafka_max_block_size = '1048576';
 ```
 
 
-### Пример использования именованных коллекций с таблицей Kafka {#example-of-using-named-collections-with-a-kafka-table}
+### Пример использования именованных коллекций с таблицей Kafka \{#example-of-using-named-collections-with-a-kafka-table\}
 
 Оба следующих примера используют одну и ту же именованную коллекцию `my_kafka_cluster`:
 
@@ -585,18 +585,18 @@ SETTINGS kafka_num_consumers = 4,
 ```
 
 
-## Именованные коллекции для резервных копий {#named-collections-for-backups}
+## Именованные коллекции для резервных копий \{#named-collections-for-backups\}
 
 Описание параметров см. в разделе [Резервное копирование и восстановление](/operations/backup/overview).
 
-### Пример DDL {#ddl-example-4}
+### Пример DDL \{#ddl-example-4\}
 
 ```sql
 BACKUP TABLE default.test to S3(named_collection_s3_backups, 'directory')
 ```
 
 
-### Пример XML {#xml-example-4}
+### Пример XML \{#xml-example-4\}
 
 ```xml
 <clickhouse>
@@ -611,11 +611,11 @@ BACKUP TABLE default.test to S3(named_collection_s3_backups, 'directory')
 ```
 
 
-## Именованные коллекции для доступа к таблице и словарю MongoDB {#named-collections-for-accessing-mongodb-table-and-dictionary}
+## Именованные коллекции для доступа к таблице и словарю MongoDB \{#named-collections-for-accessing-mongodb-table-and-dictionary\}
 
 Описание параметров см. в разделе [mongodb](../sql-reference/table-functions/mongodb.md).
 
-### Пример DDL {#ddl-example-5}
+### Пример DDL \{#ddl-example-5\}
 
 ```sql
 CREATE NAMED COLLECTION mymongo AS
@@ -629,7 +629,7 @@ options = 'connectTimeoutMS=10000'
 ```
 
 
-### Пример XML {#xml-example-5}
+### Пример XML \{#xml-example-5\}
 
 ```xml
 <clickhouse>
@@ -648,7 +648,7 @@ options = 'connectTimeoutMS=10000'
 ```
 
 
-#### Таблица MongoDB {#mongodb-table}
+#### Таблица MongoDB \{#mongodb-table\}
 
 ```sql
 CREATE TABLE mytable(log_type VARCHAR, host VARCHAR, command VARCHAR) ENGINE = MongoDB(mymongo, options='connectTimeoutMS=10000&compressors=zstd')
@@ -664,7 +664,7 @@ DDL переопределяет параметр `options`, заданный в
 :::
 
 
-#### Словарь MongoDB {#mongodb-dictionary}
+#### Словарь MongoDB \{#mongodb-dictionary\}
 
 ```sql
 CREATE DICTIONARY dict

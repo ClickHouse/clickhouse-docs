@@ -7,14 +7,14 @@ sidebar_label: 'groupArrayDistinct'
 doc_type: 'reference'
 ---
 
-# groupArrayDistinct {#sumdistinct}
+# groupArrayDistinct \{#sumdistinct\}
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 [`groupArrayDistinct`](/sql-reference/aggregate-functions/combinators#-foreach) 组合器
 可以应用于 [`groupArray`](/sql-reference/aggregate-functions/reference/sum) 聚合函数，以创建一个由唯一参数值组成的数组。
 
-## 示例用法 {#example-usage}
+## 示例用法 \{#example-usage\}
 
 在本示例中，我们将使用在我们的 [SQL playground](https://sql.clickhouse.com/) 中提供的 `hits` 数据集。
 
@@ -31,6 +31,6 @@ ORDER BY URLDomain ASC
 LIMIT 20;
 ```
 
-## 另请参阅 {#see-also}
+## 另请参阅 \{#see-also\}
 - [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
 - [`Distinct 组合器`](/sql-reference/aggregate-functions/combinators#-distinct)

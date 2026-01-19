@@ -32,12 +32,12 @@ import hyperdx_19 from '@site/static/images/use-cases/observability/hyperdx-19.p
 import copy_api_key from '@site/static/images/use-cases/observability/copy_api_key.png';
 
 
-# ClickStack - サンプルのログ、トレース、メトリクス {#clickstack-sample-dataset}
+# ClickStack - サンプルのログ、トレース、メトリクス \{#clickstack-sample-dataset\}
 
 以下の例では、[オールインワンイメージ用の手順](/use-cases/observability/clickstack/getting-started)に従って ClickStack を起動し、[ローカルの ClickHouse インスタンス](/use-cases/observability/clickstack/getting-started#complete-connection-credentials)または [ClickHouse Cloud インスタンス](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)に接続していることを前提とします。
 
 :::note ClickHouse Cloud における HyperDX
-このサンプルデータセットは、記載のとおり手順に対してごくわずかな調整を行うだけで、ClickHouse Cloud における HyperDX でも利用できます。ClickHouse Cloud で HyperDX を使用する場合は、[このデプロイメントモデルの入門ガイド](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)で説明されているように、ローカルで OpenTelemetry コレクターを実行しておく必要があります。
+このサンプルデータセットは、記載のとおり手順に対してごくわずかな調整を行うだけで、ClickHouse Cloud における HyperDX でも利用できます。ClickHouse Cloud で HyperDX を使用する場合は、[このデプロイメントモデルの入門ガイド](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud)で説明されているように、ローカルで OpenTelemetry コレクターを実行しておく必要があります。
 :::
 
 <VerticalStepper>

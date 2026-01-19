@@ -10,15 +10,15 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 如何使用 Chainlit 和 ClickHouse MCP Server 构建 AI 智能体 {#how-to-build-an-ai-agent-with-chainlit-and-the-clickhouse-mcp-server}
+# 如何使用 Chainlit 和 ClickHouse MCP Server 构建 AI 智能体 \{#how-to-build-an-ai-agent-with-chainlit-and-the-clickhouse-mcp-server\}
 
 本指南介绍如何将功能强大的 Chainlit 聊天界面框架与 ClickHouse Model Context Protocol (MCP) Server 相结合，以构建交互式数据应用程序。Chainlit 使你可以用最少的代码为 AI 应用构建对话式界面，而 ClickHouse MCP Server 则提供与 ClickHouse 高性能列式数据库的无缝集成。
 
-## 前提条件 {#prerequisites}
+## 前提条件 \{#prerequisites\}
 - 需要一个 Anthropic API 密钥
 - 需要已安装 [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
 
-## 基本 Chainlit 应用 {#basic-chainlit-app}
+## 基本 Chainlit 应用 \{#basic-chainlit-app\}
 
 你可以通过运行以下命令来查看一个简单聊天应用的示例：
 
@@ -28,7 +28,7 @@ uv run --with anthropic --with chainlit chainlit run chat_basic.py -w -h
 
 然后访问 `http://localhost:8000`
 
-## 添加 ClickHouse MCP Server {#adding-clickhouse-mcp-server}
+## 添加 ClickHouse MCP Server \{#adding-clickhouse-mcp-server\}
 
 在添加 ClickHouse MCP Server 后，事情会变得更有趣。
 你需要更新 `.chainlit/config.toml` 文件，以允许使用 `uv` 命令：

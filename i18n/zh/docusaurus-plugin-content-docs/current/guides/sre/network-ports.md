@@ -7,7 +7,7 @@ doc_type: 'reference'
 keywords: ['网络', '端口', '配置', '安全', '防火墙']
 ---
 
-# 网络端口 {#network-ports}
+# 网络端口 \{#network-ports\}
 
 :::note
 被标记为**默认**的端口表示该端口号在 `/etc/clickhouse-server/config.xml` 中进行了配置。要自定义设置，请在 `/etc/clickhouse-server/config.d/` 中添加一个文件。参见[配置文件](/operations/configuration-files)文档。

@@ -6,12 +6,12 @@ title: 'RawBLOB'
 doc_type: 'reference'
 ---
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 `RawBLOB` 格式会将所有输入数据读取为单个值。它只能用于解析仅包含一个 [`String`](/sql-reference/data-types/string.md) 类型或类似类型字段的表。
 结果以二进制格式输出，没有分隔符也没有转义。如果输出了多个值，该格式将变得不明确，并且无法将数据读回。
 
-### 原始格式对比 {#raw-formats-comparison}
+### 原始格式对比 \{#raw-formats-comparison\}
 
 下面是 `RawBLOB` 与 [`TabSeparatedRaw`](./TabSeparated/TabSeparatedRaw.md) 格式的比较。
 
@@ -43,7 +43,7 @@ doc_type: 'reference'
 Code: 108. DB::Exception: No data to insert
 ```
 
-## 使用示例 {#example-usage}
+## 使用示例 \{#example-usage\}
 
 ```bash title="Query"
 $ clickhouse-client --query "CREATE TABLE {some_table} (a String) ENGINE = Memory;"
@@ -55,4 +55,4 @@ $ clickhouse-client --query "SELECT * FROM {some_table} FORMAT RawBLOB" | md5sum
 f9725a22f9191e064120d718e26862a9  -
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}

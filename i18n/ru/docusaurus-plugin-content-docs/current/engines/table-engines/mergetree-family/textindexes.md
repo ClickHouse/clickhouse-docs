@@ -10,7 +10,7 @@ doc_type: 'reference'
 import BetaBadge from '@theme/badges/BetaBadge';
 
 
-# Полнотекстовый поиск с использованием текстовых индексов {#full-text-search-using-text-indexes}
+# Полнотекстовый поиск с использованием текстовых индексов \{#full-text-search-using-text-indexes\}
 
 <BetaBadge/>
 
@@ -20,7 +20,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 Например, по умолчанию ClickHouse разбивает английское предложение "All cat like mice." на токены ["All", "cat", "like", "mice"] (обратите внимание, что завершающая точка игнорируется).
 Также доступны более продвинутые токенизаторы, например для данных журналов (логов).
 
-## Создание текстового индекса {#creating-a-text-index}
+## Создание текстового индекса \{#creating-a-text-index\}
 
 Чтобы создать текстовый индекс, сначала включите соответствующую экспериментальную настройку:
 
@@ -28,7 +28,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 SET enable_full_text_index = true;
 ```
 
-Текстовый индекс можно определить для столбца следующих типов: [String](/sql-reference/data-types/string.md), [FixedString](/sql-reference/data-types/fixedstring.md), [Array(String)](/sql-reference/data-types/array.md), [Array(FixedString)](/sql-reference/data-types/array.md) и [Map](/sql-reference/data-types/map.md) (через функции работы с Map [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapkeys) и [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapvalues)) с помощью следующего синтаксиса:
+Текстовый индекс можно определить для столбца следующих типов: [String](/sql-reference/data-types/string.md), [FixedString](/sql-reference/data-types/fixedstring.md), [Array(String)](/sql-reference/data-types/array.md), [Array(FixedString)](/sql-reference/data-types/array.md) и [Map](/sql-reference/data-types/map.md) (через функции работы с Map [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) и [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues)) с помощью следующего синтаксиса:
 
 ```sql
 CREATE TABLE tab
@@ -47,9 +47,8 @@ CREATE TABLE tab
                                 -- Optional advanced parameters:
                                 [, dictionary_block_size = D]
                                 [, dictionary_block_frontcoding_compression = B]
-                                [, max_cardinality_for_embedded_postings = M]
-                                [, bloom_filter_false_positive_rate = R]
-                            ) [GRANULARITY 64]
+                                [, posting_list_block_size = C]
+                            )
 )
 ENGINE = MergeTree
 ORDER BY key
@@ -67,9 +66,9 @@ ORDER BY key
   Размер n-граммы по умолчанию, если он не задан явно (например, `tokenizer = ngrams`), — 3.
 * `sparseGrams(min_length, max_length, min_cutoff_length)` разбивает строки на n-граммы переменной длины не короче `min_length` и не длиннее `max_length` (включительно) символов (см. также функцию [sparseGrams](/sql-reference/functions/string-functions#sparseGrams)).
   Если явно не указаны иные значения, `min_length` и `max_length` по умолчанию равны 3 и 100.
-  Если параметр `min_cutoff_length` задан, в индекс сохраняются только n-граммы длиной не меньше `min_cutoff_length`.
+  Если параметр `min_cutoff_length` задан, возвращаются только n-граммы длиной не меньше `min_cutoff_length`.
   По сравнению с `ngrams(N)` токенизатор `sparseGrams` создаёт n-граммы переменной длины, что позволяет более гибко представлять исходный текст.
-  Например, при `tokenizer = sparseGrams(3, 5, 4)` внутренне создаются 3-, 4- и 5-граммы из входной строки, но в индекс сохраняются только 4- и 5-граммы.
+  Например, при `tokenizer = sparseGrams(3, 5, 4)` внутренне создаются 3-, 4- и 5-граммы из входной строки, но возвращаются только 4- и 5-граммы.
 * `array` не выполняет токенизацию, т. е. каждое значение строки является токеном (см. также функцию [array](/sql-reference/functions/array-functions.md/#array)).
 
 :::note
@@ -81,12 +80,12 @@ ORDER BY key
 Если строки-разделители образуют [префиксный код](https://en.wikipedia.org/wiki/Prefix_code), их можно передавать в произвольном порядке.
 :::
 
-
 :::warning
-В настоящее время не рекомендуется создавать текстовые индексы для текста на незападных языках, например китайском.
-Поддерживаемые в данный момент токенизаторы могут привести к значительному увеличению размера индекса и длительному времени выполнения запросов.
-В будущем планируется добавить специализированные языково-зависимые токенизаторы, которые будут лучше обрабатывать такие случаи.
+На данный момент не рекомендуется строить текстовые индексы поверх текста на не‑западных языках, например китайском.
+Поддерживаемые сейчас токенизаторы могут приводить к огромным размерам индекса и длительному выполнению запросов.
+В будущем мы планируем добавить специализированные токенизаторы для отдельных языков, которые будут лучше обрабатывать такие случаи.
 :::
+
 
 Чтобы проверить, как токенизаторы разбивают входную строку, можно использовать функцию [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) ClickHouse:
 
@@ -154,26 +153,25 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
 ```
 
 **Прочие аргументы (необязательные)**. Текстовые индексы в ClickHouse реализованы как [вторичные индексы](/engines/table-engines/mergetree-family/mergetree.md/#skip-index-types).
-Однако, в отличие от других индексов с пропуском данных, текстовые индексы имеют значение GRANULARITY по умолчанию равное 64.
+Однако, в отличие от других индексов с пропуском данных, текстовые индексы имеют бесконечную гранулярность, то есть текстовый индекс создаётся для всей части, а явно заданная гранулярность индекса игнорируется.
 Это значение было выбрано эмпирически и обеспечивает хороший баланс между скоростью и размером индекса для большинства случаев использования.
 Опытные пользователи могут указать другую гранулярность индекса (мы не рекомендуем этого делать).
 
 <details markdown="1">
   <summary>Необязательные расширенные параметры</summary>
 
-  Значения по умолчанию для следующих расширенных параметров подойдут практически во всех случаях.
-  Мы не рекомендуем их изменять.
+Значения по умолчанию для следующих расширенных параметров подойдут практически во всех случаях.
+Мы не рекомендуем их изменять.
 
-  Необязательный параметр `dictionary_block_size` (по умолчанию: 128) задаёт размер блоков словаря в строках.
+Необязательный параметр `dictionary_block_size` (по умолчанию: 512) задаёт размер блоков словаря в строках.
 
-  Необязательный параметр `dictionary_block_frontcoding_compression` (по умолчанию: 1) определяет, используют ли блоки словаря front coding в качестве метода сжатия.
+Необязательный параметр `dictionary_block_frontcoding_compression` (по умолчанию: 1) определяет, используют ли блоки словаря front coding в качестве метода сжатия.
 
-  Необязательный параметр `max_cardinality_for_embedded_postings` (по умолчанию: 16) задаёт порог кардинальности, ниже которого списки постингов должны встраиваться в блоки словаря.
+Необязательный параметр `posting_list_block_size` (по умолчанию: 1048576) задаёт размер блоков списков постингов в строках.
 
-  Необязательный параметр `bloom_filter_false_positive_rate` (по умолчанию: 0.1) задаёт вероятность ложных срабатываний фильтра Блума словаря.
 </details>
 
-Текстовые индексы можно добавлять в столбец или удалять из него уже после создания таблицы:
+Текстовые индексы можно добавить к столбцу или удалить из него после создания таблицы:
 
 ```sql
 ALTER TABLE tab DROP INDEX text_idx;
@@ -181,14 +179,14 @@ ALTER TABLE tab ADD INDEX text_idx(s) TYPE text(tokenizer = splitByNonAlpha);
 ```
 
 
-## Использование текстового индекса {#using-a-text-index}
+## Использование текстового индекса \{#using-a-text-index\}
 
 Использовать текстовый индекс в запросах SELECT достаточно просто, так как стандартные строковые функции поиска автоматически задействуют индекс.
 Если индекс отсутствует, приведённые ниже строковые функции поиска будут выполнять медленное полное (brute-force) сканирование.
 
-### Поддерживаемые функции {#functions-support}
+### Поддерживаемые функции \{#functions-support\}
 
-Текстовый индекс можно использовать, если в условии `WHERE` оператора SELECT используются текстовые функции:
+Текстовый индекс можно использовать, если в условиях `WHERE` или `PREWHERE` используются текстовые функции:
 
 ```sql
 SELECT [...]
@@ -197,7 +195,7 @@ WHERE string_search_function(column_with_text_index)
 ```
 
 
-#### `=` и `!=` {#functions-example-equals-notequals}
+#### `=` и `!=` \{#functions-example-equals-notequals\}
 
 `=` ([equals](/sql-reference/functions/comparison-functions.md/#equals)) и `!=` ([notEquals](/sql-reference/functions/comparison-functions.md/#notEquals)) проверяют полное совпадение с указанным поисковым термином.
 
@@ -210,9 +208,9 @@ SELECT * from tab WHERE str = 'Hello';
 Текстовый индекс поддерживает `=` и `!=`, однако поиск по условиям равенства и неравенства имеет смысл только с токенизатором `array` (он приводит к тому, что индекс хранит значения целых строк).
 
 
-#### `IN` и `NOT IN` {#functions-example-in-notin}
+#### `IN` и `NOT IN` \{#functions-example-in-notin\}
 
-`IN` ([in](/sql-reference/functions/in-functions)) и `NOT IN` ([notIn](/sql-reference/functions/in-functions)) аналогичны функциям `equals` и `notEquals`, но проверяют соответствие всем (`IN`) или ни одному (`NOT IN`) из искомых значений.
+`IN` ([in](/sql-reference/functions/in-functions)) и `NOT IN` ([notIn](/sql-reference/functions/in-functions)) аналогичны функциям `equals` и `notEquals`, но проверяют соответствие всем (`IN`) или ни одному (`NOT IN`) искомым значениям.
 
 Пример:
 
@@ -220,18 +218,19 @@ SELECT * from tab WHERE str = 'Hello';
 SELECT * from tab WHERE str IN ('Hello', 'World');
 ```
 
-Применимы те же ограничения, что и для `=` и `!=`, то есть `IN` и `NOT IN` имеют смысл только при использовании токенизатора `array`.
+Действуют те же ограничения, что и для `=` и `!=`, то есть `IN` и `NOT IN` имеют смысл только при использовании токенизатора `array`.
 
 
-#### `LIKE`, `NOT LIKE` и `match` {#functions-example-like-notlike-match}
+#### `LIKE`, `NOT LIKE` и `match` \{#functions-example-like-notlike-match\}
 
 :::note
-В настоящее время эти функции используют текстовый индекс для фильтрации только в том случае, если токенизатор индекса — `splitByNonAlpha` или `ngrams`.
+В настоящее время эти функции используют текстовый индекс для фильтрации только в том случае, если токенизатор индекса — `splitByNonAlpha`, `ngrams` или `sparseGrams`.
 :::
 
 Чтобы использовать `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like)), `NOT LIKE` ([notLike](/sql-reference/functions/string-search-functions.md/#notLike)) и функцию [match](/sql-reference/functions/string-search-functions.md/#match) с текстовыми индексами, ClickHouse должен иметь возможность извлечь полные токены из поискового запроса.
+Для индекса с токенизатором `ngrams` это условие выполняется, если длина искомых строк между символами подстановки не меньше длины n-граммы.
 
-Пример:
+Пример для текстового индекса с токенизатором `splitByNonAlpha`:
 
 ```sql
 SELECT count() FROM tab WHERE comment LIKE 'support%';
@@ -246,14 +245,15 @@ SELECT count() FROM tab WHERE comment LIKE 'support%';
 SELECT count() FROM tab WHERE comment LIKE ' support %'; -- or `% support %`
 ```
 
-Пробелы слева и справа от `support` обеспечивают извлечение этого термина как отдельного токена.
+Пробелы слева и справа от `support` обеспечивают, что этот термин будет распознан как отдельный токен.
 
 
-#### `startsWith` и `endsWith` {#functions-example-startswith-endswith}
+#### `startsWith` и `endsWith` \{#functions-example-startswith-endswith\}
 
 По аналогии с `LIKE`, функции [startsWith](/sql-reference/functions/string-functions.md/#startsWith) и [endsWith](/sql-reference/functions/string-functions.md/#endsWith) могут использовать текстовый индекс только в том случае, если из поискового термина можно извлечь целые токены.
+Для индекса с токенизатором `ngrams` это выполняется, если длина фрагментов искомой строки между подстановочными символами больше либо равна длине n-граммы.
 
-Пример:
+Пример для текстового индекса с токенизатором `splitByNonAlpha`:
 
 ```sql
 SELECT count() FROM tab WHERE startsWith(comment, 'clickhouse support');
@@ -275,7 +275,7 @@ SELECT count() FROM tab WHERE endsWith(comment, ' olap engine');
 ```
 
 
-#### `hasToken` и `hasTokenOrNull` {#functions-example-hastoken-hastokenornull}
+#### `hasToken` и `hasTokenOrNull` \{#functions-example-hastoken-hastokenornull\}
 
 Функции [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken) и [hasTokenOrNull](/sql-reference/functions/string-search-functions.md/#hasTokenOrNull) выполняют поиск по одному заданному токену.
 
@@ -290,7 +290,7 @@ SELECT count() FROM tab WHERE hasToken(comment, 'clickhouse');
 Функции `hasToken` и `hasTokenOrNull` являются наиболее производительными при использовании с индексом `text`.
 
 
-#### `hasAnyTokens` и `hasAllTokens` {#functions-example-hasanytokens-hasalltokens}
+#### `hasAnyTokens` и `hasAllTokens` \{#functions-example-hasanytokens-hasalltokens\}
 
 Функции [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) и [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens) используются для сопоставления с одним или со всеми из указанных токенов.
 
@@ -310,7 +310,7 @@ SELECT count() FROM tab WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 ```
 
 
-#### `has` {#functions-example-has}
+#### `has` \{#functions-example-has\}
 
 Функция работы с массивами [has](/sql-reference/functions/array-functions#has) выполняет сопоставление с отдельным токеном в массиве строк.
 
@@ -321,9 +321,11 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 ```
 
 
-#### `mapContains` {#functions-example-mapcontains}
+#### `mapContains` \{#functions-example-mapcontains\}
 
-Функция [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains) (псевдоним `mapContainsKey`) сопоставляет отдельный токен с ключами map.
+Функция [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains) (псевдоним `mapContainsKey`) сопоставляет токены, извлечённые из искомой строки, с ключами map.
+Поведение аналогично функции `equals` со столбцом типа `String`.
+Текстовый индекс используется только если он создан для выражения `mapKeys(map)`.
 
 Пример:
 
@@ -334,9 +336,32 @@ SELECT count() FROM tab WHERE mapContains(map, 'clickhouse');
 ```
 
 
-#### `operator[]` {#functions-example-access-operator}
+#### `mapContainsValue` \{#functions-example-mapcontainsvalue\}
 
-Оператор доступа [operator[]](/sql-reference/operators#access-operators) можно использовать с текстовым индексом для фильтрации по ключам и значениям.
+Функция [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapcontainsvalue) ищет совпадения между токенами, извлечёнными из искомой строки, и значениями в map. Поведение аналогично работе функции `equals` со столбцом типа `String`. Текстовый индекс используется только в том случае, если он создан на выражении `mapValues(map)`.
+
+Пример:
+
+```sql
+SELECT count() FROM tab WHERE mapContainsValue(map, 'clickhouse');
+```
+
+
+#### `mapContainsKeyLike` и `mapContainsValueLike` \{#functions-example-mapcontainslike\}
+
+Функции [mapContainsKeyLike](/sql-reference/functions/tuple-map-functions#mapContainsKeyLike) и [mapContainsValueLike](/sql-reference/functions/tuple-map-functions#mapContainsValueLike) сопоставляют заданный шаблон со всеми ключами или, соответственно, значениями отображения.
+
+Пример:
+
+```sql
+SELECT count() FROM tab WHERE mapContainsKeyLike(map, '% clickhouse %');
+SELECT count() FROM tab WHERE mapContainsValueLike(map, '% clickhouse %');
+```
+
+
+#### `operator[]` \{#functions-example-access-operator\}
+
+Оператор доступа [operator[]](/sql-reference/operators#access-operators) можно использовать с текстовым индексом для фильтрации по ключам и значениям. Текстовый индекс используется только в том случае, если он создан на основе выражений `mapKeys(map)` или `mapValues(map)`, либо на обоих.
 
 Пример:
 
@@ -347,9 +372,9 @@ SELECT count() FROM tab WHERE map['engine'] = 'clickhouse';
 См. следующие примеры использования столбцов типа `Array(T)` и `Map(K, V)` с текстовым индексом.
 
 
-### Примеры использования столбцов `Array` и `Map` с текстовыми индексами {#text-index-array-and-map-examples}
+### Примеры использования столбцов `Array` и `Map` с текстовыми индексами \{#text-index-array-and-map-examples\}
 
-#### Индексация столбцов Array(String) {#text-index-example-array}
+#### Индексация столбцов Array(String) \{#text-index-example-array\}
 
 Представим платформу для блогов, где авторы категоризуют свои записи с помощью ключевых слов.
 Мы хотим, чтобы пользователи могли находить связанный контент, выполняя поиск по темам или нажимая на них.
@@ -357,7 +382,8 @@ SELECT count() FROM tab WHERE map['engine'] = 'clickhouse';
 Рассмотрим следующее определение таблицы:
 
 ```sql
-CREATE TABLE posts (
+CREATE TABLE posts
+(
     post_id UInt64,
     title String,
     content String,
@@ -382,7 +408,7 @@ ALTER TABLE posts MATERIALIZE INDEX keywords_idx; -- Don't forget to rebuild the
 ```
 
 
-#### Индексирование столбцов типа Map {#text-index-example-map}
+#### Индексирование столбцов типа Map \{#text-index-example-map\}
 
 Во многих сценариях обсервабилити сообщения логов разбиваются на «компоненты» и сохраняются с соответствующими типами данных, например дата-время для временной метки, enum для уровня логирования и т. д.
 Поля метрик оптимально хранить в виде пар ключ-значение.
@@ -391,7 +417,8 @@ ALTER TABLE posts MATERIALIZE INDEX keywords_idx; -- Don't forget to rebuild the
 Рассмотрим следующую таблицу логов:
 
 ```sql
-CREATE TABLE logs (
+CREATE TABLE logs
+(
     id UInt64,
     timestamp DateTime,
     message String,
@@ -414,14 +441,14 @@ SELECT count() FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- slo
 По мере увеличения объёма логов такие запросы начинают работать медленно.
 
 Решение — создать текстовый индекс для ключей и значений [Map](/sql-reference/data-types/map.md).
-Используйте [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapkeys), чтобы создать текстовый индекс, когда нужно находить логи по именам полей или типам атрибутов:
+Используйте [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys), чтобы создать текстовый индекс, когда нужно находить логи по именам полей или типам атрибутов:
 
 ```sql
 ALTER TABLE logs ADD INDEX attributes_keys_idx mapKeys(attributes) TYPE text(tokenizer = array);
 ALTER TABLE posts MATERIALIZE INDEX attributes_keys_idx;
 ```
 
-Используйте [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapvalues), чтобы создать текстовый индекс, когда вам нужно выполнять поиск по собственному содержимому атрибутов:
+Используйте [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues), чтобы создать текстовый индекс, когда нужно выполнять поиск по самим значениям атрибутов:
 
 ```sql
 ALTER TABLE logs ADD INDEX attributes_vals_idx mapValues(attributes) TYPE text(tokenizer = array);
@@ -436,20 +463,22 @@ SELECT * FROM logs WHERE mapContainsKey(attributes, 'rate_limit'); -- fast
 
 -- Finds all logs from a specific IP:
 SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- fast
+
+-- Finds all logs where any attribute includes an error:
+SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 ```
 
 
-## Настройка производительности {#performance-tuning}
+## Настройка производительности \{#performance-tuning\}
 
-### Прямое чтение {#direct-read}
+### Прямое чтение \{#direct-read\}
 
 Некоторые типы текстовых запросов могут быть значительно ускорены с помощью оптимизации, называемой «прямое чтение».
-Более конкретно, эта оптимизация может быть применена, если в запросе SELECT текстовый столбец не включён в список выбираемых столбцов.
 
 Пример:
 
 ```sql
-SELECT column_a, column_b, ... -- not: column_with_text_index
+SELECT column_a, column_b, ...
 FROM [...]
 WHERE string_search_function(column_with_text_index)
 ```
@@ -465,9 +494,11 @@ WHERE string_search_function(column_with_text_index)
 Также текстовый индекс должен быть полностью материализован, чтобы использовать прямое чтение (для этого используйте `ALTER TABLE ... MATERIALIZE INDEX`).
 
 **Поддерживаемые функции**
+
 Оптимизация прямого чтения поддерживает функции `hasToken`, `hasAllTokens` и `hasAnyTokens`.
+Если текстовый индекс определён с токенизатором `array`, прямое чтение также поддерживается для функций `equals`, `has`, `mapContainsKey` и `mapContainsValue`.
 Эти функции также могут комбинироваться операторами AND, OR и NOT.
-Условие WHERE также может содержать дополнительные фильтры, не связанные с функциями полнотекстового поиска (для текстовых столбцов или других столбцов) — в этом случае оптимизация прямого чтения всё равно будет использоваться, но менее эффективно (она применяется только к поддерживаемым функциям текстового поиска).
+Условия `WHERE` или `PREWHERE` также могут содержать дополнительные фильтры, не связанные с функциями полнотекстового поиска (для текстовых столбцов или других столбцов) — в этом случае оптимизация прямого чтения всё равно будет использоваться, но менее эффективно (она применяется только к поддерживаемым функциям текстового поиска).
 
 Чтобы проверить, использует ли запрос прямое чтение, выполните его с `EXPLAIN PLAN actions = 1`.
 В качестве примера, запрос с отключённым прямым чтением
@@ -493,7 +524,7 @@ Actions: INPUT : 0 -> col String : 0
 [...]
 ```
 
-тогда как тот же запрос, выполняемый с параметром `query_plan_direct_read_from_text_index = 1`
+тогда как тот же запрос при `query_plan_direct_read_from_text_index = 1`
 
 ```sql
 EXPLAIN PLAN actions = 1
@@ -519,17 +550,75 @@ Positions:
 Второй результат EXPLAIN PLAN содержит виртуальный столбец `__text_index_<index_name>_<function_name>_<id>`.
 Если этот столбец присутствует, используется прямое чтение.
 
+Если условие WHERE содержит только функции текстового поиска, запрос может полностью избежать чтения данных столбца и получить наибольший выигрыш в производительности за счёт прямого чтения.
+Однако даже если текстовый столбец используется в других частях запроса, прямое чтение всё равно обеспечит прирост производительности.
 
-### Кэширование {#caching}
+**Прямое чтение как подсказка**
+
+Прямое чтение как подсказка основано на тех же принципах, что и обычное прямое чтение, но при этом добавляет дополнительный фильтр, построенный на основе данных текстового индекса, не удаляя базовый текстовый столбец.
+Оно используется для функций, при которых чтение только из текстового индекса может приводить к ложноположительным срабатываниям.
+
+Поддерживаются следующие функции: `like`, `startsWith`, `endsWith`, `equals`, `has`, `mapContainsKey` и `mapContainsValue`.
+
+Дополнительный фильтр может обеспечить дополнительную избирательность, чтобы ещё больше ограничить результирующий набор в сочетании с другими фильтрами, что помогает сократить объём данных, считываемых из других столбцов.
+
+
+Режим прямого чтения в качестве подсказки управляется с помощью настройки [query&#95;plan&#95;text&#95;index&#95;add&#95;hint](../../../operations/settings/settings#query_plan_text_index_add_hint) (по умолчанию — включена).
+
+Пример запроса без использования подсказки:
+
+```sql
+EXPLAIN actions = 1
+SELECT count()
+FROM tab
+WHERE (col LIKE '%some-token%') AND (d >= today())
+SETTINGS use_skip_indexes_on_data_read = 1, query_plan_text_index_add_hint = 0
+FORMAT TSV
+```
+
+возвращает
+
+```text
+[...]
+Prewhere filter column: and(like(__table1.col, \'%some-token%\'_String), greaterOrEquals(__table1.d, _CAST(20440_Date, \'Date\'_String))) (removed)
+[...]
+```
+
+а тот же запрос, выполненный с `query_plan_text_index_add_hint = 1`
+
+```sql
+EXPLAIN actions = 1
+SELECT count()
+FROM tab
+WHERE col LIKE '%some-token%'
+SETTINGS use_skip_indexes_on_data_read = 1, query_plan_text_index_add_hint = 1
+```
+
+возвращает
+
+```text
+[...]
+Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb7a3f74, like(__table1.col, \'%some-token%\'_String), greaterOrEquals(__table1.d, _CAST(20440_Date, \'Date\'_String))) (removed)
+[...]
+```
+
+Во втором выводе EXPLAIN PLAN видно, что к условию фильтрации добавлен дополнительный конъюнкт (`__text_index_...`).
+Благодаря оптимизации [PREWHERE](docs/sql-reference/statements/select/prewhere) условие фильтрации разбивается на три отдельных конъюнкта, которые применяются в порядке возрастания вычислительной сложности.
+Для этого запроса порядок применения таков: `__text_index_...`, затем `greaterOrEquals(...)` и, наконец, `like(...)`.
+Такой порядок позволяет пропустить ещё больше гранул данных, чем гранулы, пропущенные текстовым индексом и исходным фильтром, до чтения «тяжёлых» столбцов, используемых в запросе после оператора `WHERE`, что дополнительно уменьшает объём данных для чтения.
+
+
+### Кэширование \{#caching\}
 
 Для буферизации частей текстового индекса в памяти доступны различные кэши (см. раздел [Implementation Details](#implementation)).
 В настоящее время существуют кэши для десериализованных блоков словаря, заголовков и списков вхождений (posting lists) текстового индекса, позволяющие сократить количество операций ввода-вывода (I/O).
 Эти кэши включаются с помощью настроек [use_text_index_dictionary_cache](/operations/settings/settings#use_text_index_dictionary_cache), [use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache) и [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache).
 По умолчанию все кэши отключены.
+Для сброса кэшей используйте команду [SYSTEM DROP TEXT INDEX CACHES](../../../sql-reference/statements/system#drop-text-index-caches).
 
 Для их настройки воспользуйтесь следующими параметрами сервера.
 
-#### Настройки кэша блоков словаря {#caching-dictionary}
+#### Настройки кэша блоков словаря \{#caching-dictionary\}
 
 | Параметр                                                                                                                                                 | Описание                                                                                                       |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
@@ -538,7 +627,7 @@ Positions:
 | [text_index_dictionary_block_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_max_entries)      | Максимальное число десериализованных блоков словаря в кэше.                                                   |
 | [text_index_dictionary_block_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_dictionary_block_cache_size_ratio)        | Размер защищённой очереди в кэше блоков словаря текстового индекса относительно общего размера кэша.          |
 
-#### Настройки кэша заголовков {#caching-header}
+#### Настройки кэша заголовков \{#caching-header\}
 
 | Параметр                                                                                                                             | Описание                                                                                             |
 |--------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
@@ -547,7 +636,7 @@ Positions:
 | [text_index_header_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_header_cache_max_entries)      | Максимальное количество десериализованных заголовков в кэше.                                         |
 | [text_index_header_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_header_cache_size_ratio)        | Размер защищённой очереди в кэше заголовков текстового индекса по отношению к общему размеру кэша.  |
 
-#### Настройки кэша списков вхождений {#caching-posting-lists}
+#### Настройки кэша списков вхождений \{#caching-posting-lists\}
 
 | Настройка                                                                                                                             | Описание                                                                                               |
 |---------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
@@ -556,35 +645,43 @@ Positions:
 | [text_index_postings_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_postings_cache_max_entries)   | Максимальное количество десериализованных списков вхождений в кэше.                                     |
 | [text_index_postings_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_postings_cache_size_ratio)     | Размер защищённой очереди в кэше списков вхождений текстового индекса относительно общего размера кэша. |
 
-## Подробности реализации {#implementation}
+## Подробности реализации \{#implementation\}
 
 Каждый текстовый индекс состоит из двух (абстрактных) структур данных:
 
 - словаря, который отображает каждый токен на список вхождений, и
-- набора списков вхождений, каждый из которых представляет собой набор номеров строк.
+- набора списков вхождений, каждый из которых представляет набор номеров строк.
 
-Поскольку текстовый индекс является skip-индексом, эти структуры данных логически существуют для каждого гранула индекса.
+Текстовый индекс строится для всей части данных.
+В отличие от других пропускающих индексов, текстовый индекс при слиянии частей данных может быть объединён, а не перестроен (см. ниже).
 
-Во время создания индекса создаются три файла (на каждую часть):
+Во время создания индекса создаются три файла (на часть):
 
 **Файл блоков словаря (.dct)**
 
-Токены в грануле индекса сортируются и сохраняются в блоках словаря по 128 токенов в каждом (размер блока настраивается параметром `dictionary_block_size`).
-Файл блоков словаря (.dct) содержит все блоки словаря для всех гранул индекса в части.
+Токены в текстовом индексе сортируются и хранятся в блоках словаря по 512 токенов в каждом (размер блока настраивается параметром `dictionary_block_size`).
+Файл блоков словаря (.dct) содержит все блоки словаря всех гранул индекса в данной части.
 
-**Файл гранул индекса (.idx)**
+**Файл заголовка индекса (.idx)**
 
-Файл гранул индекса содержит для каждого блока словаря первый токен блока, его относительное смещение в файле блоков словаря и bloom-фильтр для всех токенов в блоке.
-Эта разреженная структура индекса аналогична разреженному индексу первичного ключа ClickHouse ([sparse primary key index](https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes)).
-Bloom-фильтр позволяет на раннем этапе отбрасывать блоки словаря, если искомый токен не содержится в блоке словаря.
+Файл заголовка индекса содержит для каждого блока словаря первый токен блока и его относительное смещение в файле блоков словаря.
+
+Эта разреженная структура индекса аналогична [разреженному индексу первичного ключа](https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes)) в ClickHouse.
 
 **Файл списков вхождений (.pst)**
 
 Списки вхождений для всех токенов размещаются последовательно в файле списков вхождений.
-Чтобы экономить место и при этом обеспечивать быстрые операции пересечения и объединения, списки вхождений хранятся как [roaring bitmaps](https://roaringbitmap.org/).
-Если кардинальность списка вхождений меньше 16 (настраивается параметром `max_cardinality_for_embedded_postings`), он встраивается в словарь.
+Чтобы экономить место и при этом позволять выполнять операции пересечения и объединения быстро, списки вхождений хранятся как [roaring bitmaps](https://roaringbitmap.org/).
+Если список вхождений больше, чем `posting_list_block_size`, он разбивается на несколько блоков, которые последовательно хранятся в файле списков вхождений.
 
-## Пример: датасет Hacker News {#hacker-news-dataset}
+**Слияние текстовых индексов**
+
+При слиянии частей данных текстовый индекс не нужно перестраивать с нуля; вместо этого его можно эффективно объединить на отдельном этапе процесса слияния.
+На этом этапе отсортированные словари текстовых индексов каждой входной части считываются и объединяются в новый единый словарь.
+Номера строк в списках вхождений также пересчитываются, чтобы отражать их новые позиции в объединённой части данных, с использованием отображения соответствия старых номеров строк новым, которое создаётся на начальной фазе слияния.
+Этот метод слияния текстовых индексов аналогичен тому, как сливаются [проекции](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field) со столбцом `_part_offset`. Если индекс не материализован в исходной части, он строится, записывается во временный файл, а затем сливается вместе с индексами из других частей и из других временных файлов индексов.
+
+## Пример: датасет Hacker News \{#hacker-news-dataset\}
 
 Рассмотрим, как текстовые индексы повышают производительность на большом наборе данных с большим объёмом текстов.
 Мы будем использовать 28,7 млн строк комментариев с популярного сайта Hacker News.
@@ -652,7 +749,7 @@ ALTER TABLE hackernews MATERIALIZE INDEX comment_idx SETTINGS mutations_sync = 2
 Следующие примеры покажут резкую разницу в производительности между стандартным сканированием индекса и оптимизацией прямого чтения.
 
 
-### 1. Использование `hasToken` {#using-hasToken}
+### 1. Использование `hasToken` \{#using-hasToken\}
 
 `hasToken` проверяет, содержит ли текст конкретный отдельный токен.
 Мы будем искать чувствительный к регистру токен «ClickHouse».
@@ -693,7 +790,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 Запрос с прямым чтением более чем в 45 раз быстрее (0,362 с против 0,008 с) и обрабатывает значительно меньше данных (9,51 ГБ против 3,15 МБ), считывая данные только из индекса.
 
 
-### 2. Использование `hasAnyTokens` {#using-hasAnyTokens}
+### 2. Использование `hasAnyTokens` \{#using-hasAnyTokens\}
 
 `hasAnyTokens` проверяет, содержит ли текст хотя бы один из переданных токенов.
 Будем искать комментарии, содержащие «love» или «ClickHouse».
@@ -732,7 +829,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 Запрос выполняется почти в 89 раз быстрее (1.329s против 0.015s), так как удаётся избежать полного сканирования столбца.
 
 
-### 3. Использование `hasAllTokens` {#using-hasAllTokens}
+### 3. Использование `hasAllTokens` \{#using-hasAllTokens\}
 
 `hasAllTokens` проверяет, содержит ли текст все заданные токены.
 Будем искать комментарии, содержащие и &#39;love&#39;, и &#39;ClickHouse&#39;.
@@ -773,7 +870,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 Для такого поиска по условию AND оптимизация прямого чтения более чем в 26 раз быстрее (0,184 с против 0,007 с), чем стандартное сканирование индекса-пропуска.
 
 
-### 4. Составной поиск: OR, AND, NOT, ... {#compound-search}
+### 4. Составной поиск: OR, AND, NOT, ... \{#compound-search\}
 
 Оптимизация прямого чтения также применяется к составным логическим выражениям.
 Здесь мы выполним поиск без учета регистра для &#39;ClickHouse&#39; ИЛИ &#39;clickhouse&#39;.
@@ -812,7 +909,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 Для этого конкретного случая `hasAnyTokens(comment, ['ClickHouse', 'clickhouse'])` будет предпочтительным, более эффективным синтаксисом.
 
 
-## Связанные материалы {#related-content}
+## Связанные материалы \{#related-content\}
 
 - Блог: [Introducing Inverted Indices in ClickHouse](https://clickhouse.com/blog/clickhouse-search-with-inverted-indices)
 - Блог: [Inside ClickHouse full-text search: fast, native, and columnar](https://clickhouse.com/blog/clickhouse-full-text-search)

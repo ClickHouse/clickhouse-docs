@@ -1,10 +1,10 @@
-# Установка ClickHouse с помощью tgz-архивов {#install-clickhouse-using-tgz-archives}
+# Установка ClickHouse с помощью tgz-архивов \{#install-clickhouse-using-tgz-archives\}
 
 > Рекомендуется использовать официальные предкомпилированные `tgz`-архивы для всех дистрибутивов Linux, где установка пакетов `deb` или `rpm` невозможна.
 
 <VerticalStepper>
 
-## Загрузка и установка последней стабильной версии {#install-latest-stable}
+## Загрузка и установка последней стабильной версии \{#install-latest-stable\}
 
 Необходимую версию можно скачать с помощью `curl` или `wget` из репозитория по адресу https://packages.clickhouse.com/tgz/.
 После этого загруженные архивы нужно распаковать и установить с помощью установочных скриптов.
@@ -17,7 +17,7 @@
 с постфиксом `-stable`.
 :::
 
-## Получите последнюю версию ClickHouse {#get-latest-version}
+## Получите последнюю версию ClickHouse \{#get-latest-version\}
 
 Получите последнюю версию ClickHouse с GitHub и сохраните её в переменной `LATEST_VERSION`.
 
@@ -27,7 +27,7 @@ LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse
 export LATEST_VERSION
 ```
 
-## Определите архитектуру системы {#detect-system-architecture}
+## Определите архитектуру системы \{#detect-system-architecture\}
 
 Определите архитектуру системы и задайте переменную ARCH соответствующим образом:
 
@@ -39,7 +39,7 @@ case $(uname -m) in
 esac
 ```
 
-## Загрузка tar-архивов для каждого компонента ClickHouse {#download-tarballs}
+## Загрузка tar-архивов для каждого компонента ClickHouse \{#download-tarballs\}
 
 Скачайте tar-архивы для каждого компонента ClickHouse. Цикл сначала пытается использовать пакеты, специфичные для архитектуры, затем при необходимости переходит к универсальным.
 
@@ -51,7 +51,7 @@ do
 done
 ```
 
-## Извлечение и установка пакетов {#extract-and-install}
+## Извлечение и установка пакетов \{#extract-and-install\}
 
 Выполните следующие команды для распаковки и установки этих пакетов:
 - `clickhouse-common-static`

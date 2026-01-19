@@ -21,13 +21,13 @@ title: '知見 - コスト最適化'
 description: 'ClickHouse コミュニティミートアップで共有された、実運用の事例と検証済みの手法に基づくコスト最適化戦略。'
 ---
 
-# コスト最適化: コミュニティからの戦略 {#cost-optimization}
+# コスト最適化: コミュニティからの戦略 \{#cost-optimization\}
 
 *このガイドは、コミュニティミートアップから得られた知見をまとめたコレクションの一部です。このページでは、特定の利用経験やセットアップにおいて有効だった、ClickHouse 利用時のコスト最適化に関するコミュニティの知見を紹介します。より実践的な解決策やインサイトについては、[具体的な課題別に閲覧](./community-wisdom.md)できます。*
 
 *[ClickHouse Cloud が運用コストの管理にどのように役立つか](/cloud/overview)について学びましょう*。
 
-## 圧縮戦略: 本番環境における LZ4 と ZSTD の比較 {#compression-strategy}
+## 圧縮戦略: 本番環境における LZ4 と ZSTD の比較 \{#compression-strategy\}
 
 Microsoft Clarity が数百テラバイト級のデータを扱う必要に迫られたとき、圧縮方式の選択がコストに劇的な影響を与えることが分かりました。この規模では、ストレージの節約はビット単位で重要となり、直面したのは、パフォーマンスとストレージコストの典型的なトレードオフでした。Microsoft Clarity では全アカウント合計で、非圧縮データ 2 ペタバイト/月という膨大なボリュームを扱い、8 ノードで 1 時間あたり約 60,000 件のクエリを処理し、数百万の Web サイトからの数十億ページビューに対応しています。この規模になると、圧縮戦略はコストに直結する重要な要因となります。
 
@@ -39,7 +39,7 @@ Microsoft Clarity が数百テラバイト級のデータを扱う必要に迫�
 - インジェストおよびクエリに対するパフォーマンス影響は許容範囲内
 - 数百 TB 規模での大幅なコスト削減
 
-## 列単位の保持戦略 {#column-retention}
+## 列単位の保持戦略 \{#column-retention\}
 
 最も強力なコスト最適化手法のひとつは、実際に使用されている列を分析することから得られます。Microsoft Clarity は、ClickHouse に組み込まれたテレメトリ機能を活用して、高度な列単位の保持戦略を実装しています。ClickHouse は、列ごとのストレージ使用量に関する詳細なメトリクスだけでなく、どの列にどの程度アクセスされているか、クエリ時間、全体的な使用状況統計といった包括的なクエリパターンも提供します。
 
@@ -56,7 +56,7 @@ Microsoft Clarity が数百テラバイト級のデータを扱う必要に迫�
 
 - [データ管理 - 列レベル TTL](/observability/managing-data)
 
-## パーティションベースのデータ管理 {#partition-management}
+## パーティションベースのデータ管理 \{#partition-management\}
 
 Microsoft Clarity では、パーティション戦略がパフォーマンスと運用のシンプルさの両方に影響することが分かっています。彼らのアプローチは「日付でパーティションを切り、時間で ORDER BY する」ことです。この戦略は、クリーンアップ効率の向上にとどまらず、パーティション単位での容易なデータクリーンアップを可能にし、顧客向けサービスにおける課金計算を単純化し、行単位削除に関する GDPR 準拠要件のサポートにも役立ちます。
 
@@ -71,7 +71,7 @@ Microsoft Clarity では、パーティション戦略がパフォーマンス�
 
 - [データ管理 - パーティション](/observability/managing-data#partitions)
 
-## 文字列から整数への変換戦略 {#string-integer-conversion}
+## 文字列から整数への変換戦略 \{#string-integer-conversion\}
 
 アナリティクスプラットフォームでは、数百万行にわたって繰り返し出現するカテゴリ型データの保存が課題となることがよくあります。Microsoft のエンジニアリングチームは、自社の検索分析データでこの問題に直面し、対象データセットでストレージ使用量を 60% 削減する効果的なソリューションを開発しました。
 
@@ -91,7 +91,7 @@ Microsoft は、別の MySQL データベースを用いた文字列から整数
 これは Microsoft Clarity のデータシナリオに特化した例です。すべてのデータが ClickHouse にある、またはデータを ClickHouse に移動することに制約がない場合は、代わりに [dictionaries](/dictionary) の利用を検討してください。
 :::
 
-## 動画リソース {#video-sources}
+## 動画リソース \{#video-sources\}
 
 - **[Microsoft Clarity and ClickHouse](https://www.youtube.com/watch?v=rUVZlquVGw0)** - Microsoft Clarity チーム
 - **[ClickHouse journey in Contentsquare](https://www.youtube.com/watch?v=zvuCBAl2T0Q)** - Doron Hoffman & Guram Sigua (ContentSquare)

@@ -7,12 +7,12 @@ doc_type: 'guide'
 keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデータ', 'テキスト分析', 'ベクトル検索']
 ---
 
-# Hacker News データセット {#hacker-news-dataset}
+# Hacker News データセット \{#hacker-news-dataset\}
 
 > このチュートリアルでは、Hacker News のデータ 2,800 万行を、CSV および Parquet 形式から ClickHouse
 > のテーブルに挿入し、そのデータを探索するための簡単なクエリを実行します。
 
-## CSV {#csv}
+## CSV \{#csv\}
 
 <VerticalStepper headerLevel="h3">
   ### CSVのダウンロード

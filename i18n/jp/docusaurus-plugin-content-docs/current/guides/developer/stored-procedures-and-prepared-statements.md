@@ -11,12 +11,12 @@ doc_type: 'guide'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# ClickHouse におけるストアドプロシージャとクエリパラメータ {#stored-procedures-and-query-parameters-in-clickhouse}
+# ClickHouse におけるストアドプロシージャとクエリパラメータ \{#stored-procedures-and-query-parameters-in-clickhouse\}
 
 従来のリレーショナルデータベースを使ってきた方は、ClickHouse にもストアドプロシージャやプリペアドステートメントがあるのか気になっているかもしれません。
 このガイドでは、これらの概念に対する ClickHouse の考え方を説明し、推奨される代替手段を紹介します。
 
-## ClickHouse におけるストアドプロシージャの代替手段 {#alternatives-to-stored-procedures}
+## ClickHouse におけるストアドプロシージャの代替手段 \{#alternatives-to-stored-procedures\}
 
 ClickHouse は、`IF`/`ELSE` やループなどの制御フローを含む、従来型のストアドプロシージャをサポートしていません。
 これは、分析データベースとしての ClickHouse のアーキテクチャに基づいた、意図的な設計上の判断です。
@@ -30,11 +30,11 @@ ClickHouse は次の用途向けに最適化されています:
 
 手続き型ロジックを伴うストアドプロシージャは、これらの最適化に反します。その代わりに、ClickHouse は自らの強みと整合する代替手段を提供しています。
 
-### ユーザー定義関数 (UDF) {#user-defined-functions}
+### ユーザー定義関数 (UDF) \{#user-defined-functions\}
 
 ユーザー定義関数を使うと、制御フローを用いずに再利用可能なロジックをカプセル化できます。ClickHouse は 2 種類のユーザー定義関数をサポートしています。
 
-#### ラムダベースの UDF {#lambda-based-udfs}
+#### ラムダベースの UDF \{#lambda-based-udfs\}
 
 SQL 式とラムダ構文を使って関数を作成します。
 
@@ -109,7 +109,7 @@ SELECT format_phone('5551234567');
 
 完全な構文については [`CREATE FUNCTION`](/sql-reference/statements/create/function) を参照してください。
 
-#### 実行可能 UDF {#executable-udfs}
+#### 実行可能 UDF \{#executable-udfs\}
 
 より複雑なロジックには、外部プログラムを呼び出す実行可能 UDF を使用します。
 
@@ -141,7 +141,7 @@ FROM customer_reviews;
 
 詳細については、[実行可能 UDF](/sql-reference/functions/udf) を参照してください。
 
-### パラメーター化ビュー {#parameterized-views}
+### パラメーター化ビュー \{#parameterized-views\}
 
 パラメーター化ビューは、データセットを返す関数のように振る舞います。
 動的フィルタリングを行う再利用可能なクエリに最適です。
@@ -198,7 +198,7 @@ FROM sales_by_date(start_date='2024-01-01', end_date='2024-01-31')
 WHERE product_id = 12345;
 ```
 
-#### 一般的なユースケース {#common-use-cases}
+#### 一般的なユースケース \{#common-use-cases\}
 
 * 動的な日付範囲によるフィルタリング
 * ユーザーごとのデータスライス
@@ -243,7 +243,7 @@ SELECT * FROM top_products_by_category(
 
 詳しくは、[Parameterized Views](/sql-reference/statements/create/view#parameterized-view) セクションを参照してください。
 
-### マテリアライズドビュー {#materialized-views}
+### マテリアライズドビュー \{#materialized-views\}
 
 マテリアライズドビューは、従来はストアドプロシージャで行っていたようなコストの高い集計処理を、事前に計算・集約しておくのに最適です。従来型のデータベースに慣れている場合、マテリアライズドビューは、ソーステーブルにデータが挿入されるタイミングで自動的にデータを変換・集計する **INSERT トリガー** と考えることができます。
 
@@ -296,7 +296,7 @@ WHERE date BETWEEN '2024-01-01' AND '2024-01-31'
 GROUP BY user_id;
 ```
 
-#### リフレッシュ可能なマテリアライズドビュー {#refreshable-materialized-views}
+#### リフレッシュ可能なマテリアライズドビュー \{#refreshable-materialized-views\}
 
 スケジュールされたバッチ処理（夜間に実行されるストアドプロシージャなど）の場合：
 
@@ -322,12 +322,12 @@ WHERE month = toStartOfMonth(today());
 
 高度なパターンについては、[カスケード型マテリアライズドビュー](/guides/developer/cascading-materialized-views)を参照してください。
 
-### 外部オーケストレーション {#external-orchestration}
+### 外部オーケストレーション \{#external-orchestration\}
 
 複雑なビジネスロジック、ETL ワークフロー、または複数ステップの処理が必要な場合は、ClickHouse の外側で
 言語クライアントを使用してロジックを実装することも可能です。
 
-#### アプリケーションコードを使用する {#using-application-code}
+#### アプリケーションコードを使用する \{#using-application-code\}
 
 ここでは、MySQL のストアドプロシージャを、ClickHouse を用いたアプリケーションコードに書き換えた場合の対応関係を、左右の比較で示します。
 
@@ -557,7 +557,7 @@ print(f"Status: {status}, Loyalty Points: {points}")
 
 <br/>
 
-#### 主な違い {#key-differences}
+#### 主な違い \{#key-differences\}
 
 1. **制御フロー** - MySQL のストアドプロシージャは `IF/ELSE` や `WHILE` ループを使用します。ClickHouse では、このロジックはアプリケーションコード（Python、Java など）側で実装します。
 2. **トランザクション** - MySQL は ACID トランザクション向けに `BEGIN/COMMIT/ROLLBACK` をサポートします。ClickHouse は追記専用ワークロード向けに最適化された分析用データベースであり、トランザクション的な更新処理には向きません。
@@ -573,7 +573,7 @@ print(f"Status: {status}, Loyalty Points: {points}")
 - **ハイブリッドアーキテクチャ** → 両方を使用。OLTP から ClickHouse へトランザクションデータをストリーミングし、分析に利用
 :::
 
-#### ワークフローオーケストレーションツールの利用 {#using-workflow-orchestration-tools}
+#### ワークフローオーケストレーションツールの利用 \{#using-workflow-orchestration-tools\}
 
 - **Apache Airflow** - 複雑な ClickHouse クエリの DAG のスケジューリングと監視を実行
 - **dbt** - SQL ベースのワークフローでデータを変換
@@ -589,15 +589,15 @@ print(f"Status: {status}, Loyalty Points: {points}")
 - モニタリングとアラート
 - より柔軟なスケジューリング
 
-## ClickHouse におけるプリペアドステートメントの代替手段 {#alternatives-to-prepared-statements-in-clickhouse}
+## ClickHouse におけるプリペアドステートメントの代替手段 \{#alternatives-to-prepared-statements-in-clickhouse\}
 
 ClickHouse には、RDBMS の意味での従来型の「プリペアドステートメント」はありませんが、同じ目的――SQL インジェクションを防ぐための安全なパラメータ化されたクエリ――を実現する **クエリパラメータ** が提供されています。
 
-### 構文 {#query-parameters-syntax}
+### 構文 \{#query-parameters-syntax\}
 
 クエリパラメータを指定する方法は 2 通りあります。
 
-#### 方法 1：`SET` を使用する {#method-1-using-set}
+#### 方法 1：`SET` を使用する \{#method-1-using-set\}
 
 <details>
   <summary>テーブルとデータの例</summary>
@@ -649,7 +649,7 @@ WHERE user_id = {user_id: UInt64}
 GROUP BY event_name;
 ```
 
-#### 方法 2：CLI パラメーターを使用する {#method-2-using-cli-parameters}
+#### 方法 2：CLI パラメーターを使用する \{#method-2-using-cli-parameters\}
 
 ```bash
 clickhouse-client \
@@ -661,14 +661,14 @@ clickhouse-client \
              AND event_date BETWEEN {start_date: Date} AND {end_date: Date}"
 ```
 
-### パラメータ構文 {#parameter-syntax}
+### パラメータ構文 \{#parameter-syntax\}
 
 パラメータは次の構文で指定します: `{parameter_name: DataType}`
 
 - `parameter_name` - パラメータ名（`param_` プレフィックスを除いた部分）
 - `DataType` - パラメータをキャストする ClickHouse のデータ型
 
-### データ型の例 {#data-type-examples}
+### データ型の例 \{#data-type-examples\}
 
 <details>
 <summary>例で使用するテーブルとサンプルデータ</summary>
@@ -790,7 +790,7 @@ SELECT count() FROM {table: Identifier};
 
 [言語クライアント](/integrations/language-clients)でのクエリパラメータの使用方法については、利用したい特定の言語クライアントのドキュメントを参照してください。
 
-### クエリパラメータの制約事項 {#parameter-syntax}
+### クエリパラメータの制約事項 \{#parameter-syntax\}
 
 クエリパラメータは**汎用的なテキスト置換ではありません**。次のような特有の制約があります。
 
@@ -830,7 +830,7 @@ ALTER TABLE {table: Identifier} ADD COLUMN new_col String;  -- NOT SUPPORTED
 {statements: String};  -- NOT SUPPORTED
 ```
 
-### セキュリティのベストプラクティス {#data-type-examples}
+### セキュリティのベストプラクティス \{#data-type-examples\}
 
 **ユーザーからの入力には必ずクエリパラメータを使用すること：**
 
@@ -866,7 +866,7 @@ def get_user_orders(user_id: int, start_date: str):
     )
 ```
 
-### MySQL プロトコルのプリペアドステートメント {#mysql-protocol-prepared-statements}
+### MySQL プロトコルのプリペアドステートメント \{#mysql-protocol-prepared-statements\}
 
 ClickHouse の [MySQL インターフェイス](/interfaces/mysql) は、プリペアドステートメント（`COM_STMT_PREPARE`、`COM_STMT_EXECUTE`、`COM_STMT_CLOSE`）に対して最小限のサポートのみを提供します。これは主に、クエリをプリペアドステートメントでラップする Tableau Online のようなツールとの接続性を確保するためのものです。
 
@@ -897,9 +897,9 @@ SELECT * FROM users WHERE id = {user_id: UInt64};
 
 詳細については、[MySQL インターフェイスのドキュメント](/interfaces/mysql) と [MySQL サポートに関するブログ記事](https://clickhouse.com/blog/mysql-support-in-clickhouse-the-journey) を参照してください。
 
-## 概要 {#summary}
+## 概要 \{#summary\}
 
-### ストアドプロシージャに対する ClickHouse の代替手段 {#summary-stored-procedures}
+### ストアドプロシージャに対する ClickHouse の代替手段 \{#summary-stored-procedures\}
 
 | 従来のストアドプロシージャのパターン | ClickHouse の代替手段                                                      |
 |--------------------------------------|-----------------------------------------------------------------------------|
@@ -910,7 +910,7 @@ SELECT * FROM users WHERE id = {user_id: UInt64};
 | 複雑な多段階の ETL | チェーン構成のマテリアライズドビューまたは外部オーケストレーション (Python, Airflow, dbt) |
 | 制御フローを伴うビジネスロジック | アプリケーションコード                                                            |
 
-### クエリパラメータの利用 {#summary-query-parameters}
+### クエリパラメータの利用 \{#summary-query-parameters\}
 
 クエリパラメータは次の用途に利用できます:
 
@@ -919,7 +919,7 @@ SELECT * FROM users WHERE id = {user_id: UInt64};
 - アプリケーションでの動的なフィルタリング
 - 再利用可能なクエリテンプレート
 
-## 関連ドキュメント {#related-documentation}
+## 関連ドキュメント \{#related-documentation\}
 
 - [`CREATE FUNCTION`](/sql-reference/statements/create/function) - ユーザー定義関数
 - [`CREATE VIEW`](/sql-reference/statements/create/view) - パラメータ化ビューおよびマテリアライズドビューを含むビュー

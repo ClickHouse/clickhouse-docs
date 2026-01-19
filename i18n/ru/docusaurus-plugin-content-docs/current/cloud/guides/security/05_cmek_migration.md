@@ -11,7 +11,7 @@ keywords: ['ClickHouse Cloud', 'encryption', 'CMEK']
 
 В рамках этого нового процесса поддерживаются как OpenAPI, так и Terraform. Дополнительную информацию см. в нашей документации ([Улучшенное шифрование](/docs/cloud/security/cmek), [Cloud API](/docs/cloud/manage/api/api-overview), [Официальный провайдер Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs)).
 
-## Ручная миграция {#manual-migration}
+## Ручная миграция \{#manual-migration\}
 
 Выполните следующие шаги, чтобы перейти на новый процесс:
 
@@ -62,7 +62,7 @@ keywords: ['ClickHouse Cloud', 'encryption', 'CMEK']
 
 9. Обновление завершено!
 
-## Миграция Terraform {#terraform-migration}
+## Миграция Terraform \{#terraform-migration\}
 
 1. Обновитесь до [Terraform версии 3.5.0 или выше](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs).
 2. Примените Terraform без изменений. В состоянии Terraform появится новое поле для transparent&#95;data&#95;encryption. Зафиксируйте здесь значение role&#95;id.

@@ -19,7 +19,7 @@ import samlAzureClaims from '@site/static/images/cloud/security/saml-azure-claim
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
 
-# SAML SSO のセットアップ {#saml-sso-setup}
+# SAML SSO のセットアップ \{#saml-sso-setup\}
 
 <EnterprisePlanFeatureBadge feature="SAML SSO"/>
 
@@ -29,13 +29,13 @@ ClickHouse Cloud は、Security Assertion Markup Language (SAML) を利用した
 
 SAML 連携を有効化することで、新規ユーザーに割り当てられるデフォルトロールを指定したり、セッションタイムアウト設定を調整したりすることもできます。
 
-## はじめる前に {#before-you-begin}
+## はじめる前に \{#before-you-begin\}
 
 IdP での管理者権限、自身のドメインの DNS 設定に TXT レコードを追加できる権限、および ClickHouse Cloud 組織での **Admin** ロールが必要です。ログインプロセスを簡素化するため、SAML 接続に加えて **組織への直接リンク** を設定することを推奨します。IdP ごとに扱い方が異なります。お使いの IdP での具体的な方法については、この先の説明を参照してください。
 
-## IdP を構成する方法 {#how-to-configure-your-idp}
+## IdP を構成する方法 \{#how-to-configure-your-idp\}
 
-### 手順 {#steps}
+### 手順 \{#steps\}
 
 <VerticalStepper headerLevel="h3">
   ### 組織設定へのアクセス
@@ -128,7 +128,7 @@ IdP での管理者権限、自身のドメインの DNS 設定に TXT レコー
   SAML 以外の方法を使用しているユーザーを削除し、アイデンティティプロバイダー接続から来るユーザーのみがアクセスできるようにして、統合を完了します。
 </VerticalStepper>
 
-### Okta SAMLの設定 {#configure-okta-saml}
+### Okta SAMLの設定 \{#configure-okta-saml\}
 
 各ClickHouse組織ごとに、Oktaで2つのApp Integration（1つのSAMLアプリと、直接リンク用のブックマークアプリ）を設定します。
 
@@ -210,7 +210,7 @@ IdP での管理者権限、自身のドメインの DNS 設定に TXT レコー
    
 </details>
 
-### Google SAMLの設定 {#configure-google-saml}
+### Google SAMLの設定 \{#configure-google-saml\}
 
 各組織ごとにGoogleで1つのSAMLアプリを設定し、マルチ組織SSOを使用する場合はユーザーにブックマーク用の直接リンク（`https://console.clickhouse.cloud/?connection={organizationId}`）を提供する必要があります。
 
@@ -257,7 +257,7 @@ IdP での管理者権限、自身のドメインの DNS 設定に TXT レコー
        
 </details>
 
-### Azure (Microsoft) SAML の設定 {#configure-azure-microsoft-saml}
+### Azure (Microsoft) SAML の設定 \{#configure-azure-microsoft-saml\}
 
 Azure (Microsoft) SAML は、Azure Active Directory (AD) または Microsoft Entra とも呼ばれます。
 
@@ -308,7 +308,7 @@ Azure (Microsoft) SAML は、Azure Active Directory (AD) または Microsoft Ent
 
 </details>
 
-### Duo SAML の設定 {#configure-duo-saml}
+### Duo SAML の設定 \{#configure-duo-saml\}
 
 <details>
    <summary> Duo 用の汎用 SAML サービスプロバイダーの作成 </summary>
@@ -335,15 +335,15 @@ Azure (Microsoft) SAML は、Azure Active Directory (AD) または Microsoft Ent
 
 ## 仕組み {#how-it-works}
 
-### SAML SSO を利用したユーザー管理 {#user-management-with-saml-sso}
+### SAML SSO を利用したユーザー管理 \{#user-management-with-saml-sso\}
 
 ユーザー権限の管理や、アクセスを SAML 接続のみに制限する方法の詳細については、[クラウドユーザーの管理](/cloud/security/manage-cloud-users) を参照してください。
 
-### サービスプロバイダー開始型 SSO {#service-provider-initiated-sso}
+### サービスプロバイダー開始型 SSO \{#service-provider-initiated-sso\}
 
 ClickHouse Cloud では、サービスプロバイダー開始型 SSO のみを利用しています。これは、ユーザーが `https://console.clickhouse.cloud` にアクセスしてメールアドレスを入力すると、認証のために IdP にリダイレクトされる方式であることを意味します。すでに IdP によって認証されているユーザーは、ログインページでメールアドレスを入力することなく、組織に自動的にログインできるダイレクトリンクを使用できます。
 
-### 複数組織向け SSO {#multi-org-sso}
+### 複数組織向け SSO \{#multi-org-sso\}
 
 ClickHouse Cloud は、組織ごとに個別の接続を提供することで、複数組織向け SSO をサポートします。各組織にログインするには、ダイレクトリンク (`https://console.clickhouse.cloud/?connection={organizationid}`) を使用してください。別の組織にログインする前に、現在ログインしている組織から必ずログアウトしてください。
 

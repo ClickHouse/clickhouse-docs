@@ -8,9 +8,9 @@ doc_type: 'guide'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Поддержка транзакционности (ACID) {#transactional-acid-support}
+# Поддержка транзакционности (ACID) \{#transactional-acid-support\}
 
-## Случай 1: INSERT в один раздел одной таблицы семейства MergeTree* {#case-1-insert-into-one-partition-of-one-table-of-the-mergetree-family}
+## Случай 1: INSERT в один раздел одной таблицы семейства MergeTree* \{#case-1-insert-into-one-partition-of-one-table-of-the-mergetree-family\}
 
 Операция является транзакционной (ACID), если вставляемые строки упакованы и вставляются одним блоком (см. примечания):
 - Atomic (атомарность): операция INSERT либо полностью завершается успешно, либо полностью отклоняется: если клиенту отправлено подтверждение, то вставлены все строки; если клиенту отправлена ошибка, то ни одна строка не вставлена.
@@ -19,26 +19,26 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - Durable (долговечность): успешный INSERT записывается в файловую систему до ответа клиенту, на одну реплику или несколько реплик (управляется настройкой `insert_quorum`), и ClickHouse может попросить ОС синхронизировать данные файловой системы с носителем (управляется настройкой `fsync_after_insert`).
 - INSERT в несколько таблиц одним оператором возможен, если задействованы материализованные представления (INSERT от клиента выполняется в таблицу, у которой есть связанные материализованные представления).
 
-## Случай 2: INSERT в несколько партиций одной таблицы семейства MergeTree* {#case-2-insert-into-multiple-partitions-of-one-table-of-the-mergetree-family}
+## Случай 2: INSERT в несколько партиций одной таблицы семейства MergeTree* \{#case-2-insert-into-multiple-partitions-of-one-table-of-the-mergetree-family\}
 
 Аналогично случаю 1 выше, с таким уточнением:
 - Если таблица имеет много партиций и INSERT затрагивает многие из них, то вставка в каждую партицию является самостоятельной транзакцией
 
-## Случай 3: INSERT в одну распределённую таблицу семейства MergeTree* {#case-3-insert-into-one-distributed-table-of-the-mergetree-family}
+## Случай 3: INSERT в одну распределённую таблицу семейства MergeTree* \{#case-3-insert-into-one-distributed-table-of-the-mergetree-family\}
 
 Аналогичен случаю 1 выше, но с одной особенностью:
 - операция INSERT в таблицу движка Distributed не является транзакционной в целом, тогда как вставка в каждый шард — транзакционная
 
-## Случай 4: Использование таблицы Buffer {#case-4-using-a-buffer-table}
+## Случай 4: Использование таблицы Buffer \{#case-4-using-a-buffer-table\}
 
 - вставка в таблицы Buffer не обладает свойствами атомарности, изолированности, согласованности и долговечности
 
-## Случай 5: Использование async_insert {#case-5-using-async_insert}
+## Случай 5: Использование async_insert \{#case-5-using-async_insert\}
 
 То же, что и в случае 1 выше, со следующим уточнением:
 - атомарность обеспечивается даже если `async_insert` включён и `wait_for_async_insert` установлен в 1 (значение по умолчанию), но если `wait_for_async_insert` установлен в 0, то атомарность не гарантируется.
 
-## Примечания {#notes}
+## Примечания \{#notes\}
 - строки, вставленные клиентом в некотором формате данных, упаковываются в один блок, когда:
   - формат вставки построчный (например, CSV, TSV, Values, JSONEachRow и т. д.), а данные содержат меньше, чем `max_insert_block_size` строк (~1 000 000 по умолчанию) или меньше, чем `min_chunk_bytes_for_parallel_parsing` байт (10 МБ по умолчанию), если используется параллельный разбор (он включён по умолчанию)
   - формат вставки столбцовый (например, Native, Parquet, ORC и т. д.), а данные содержат только один блок
@@ -50,7 +50,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - «согласованность» в терминах ACID не охватывает семантику распределённых систем, см. https://jepsen.io/consistency; она управляется другими настройками (select_sequential_consistency)
 - это объяснение не охватывает новую функциональность транзакций, которая позволяет использовать полнофункциональные транзакции над несколькими таблицами, материализованными представлениями, для нескольких SELECT и т. д. (см. следующий раздел о Transactions, Commit и Rollback)
 
-## Транзакции, фиксация (commit) и откат (rollback) {#transactions-commit-and-rollback}
+## Транзакции, фиксация (commit) и откат (rollback) \{#transactions-commit-and-rollback\}
 
 <ExperimentalBadge />
 
@@ -58,7 +58,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 В дополнение к функциональности, описанной в начале этого документа, ClickHouse экспериментально поддерживает транзакции, фиксацию (commit) и откат (rollback).
 
-### Требования {#requirements}
+### Требования \{#requirements\}
 
 * Разверните ClickHouse Keeper или ZooKeeper для отслеживания транзакций
 * Только база данных типа Atomic (по умолчанию)
@@ -70,17 +70,17 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
   </clickhouse>
   ```
 
-### Примечания {#notes-1}
+### Примечания \{#notes-1\}
 
 * Это экспериментальная функциональность, и следует ожидать изменений.
 * Если во время транзакции возникает исключение, вы не можете зафиксировать транзакцию. Это относится ко всем исключениям, включая исключения `UNKNOWN_FUNCTION`, вызванные опечатками.
 * Вложенные транзакции не поддерживаются; вместо этого завершите текущую транзакцию и начните новую.
 
-### Конфигурация {#configuration}
+### Конфигурация \{#configuration\}
 
 Эти примеры относятся к одноузловому серверу ClickHouse с включённым ClickHouse Keeper.
 
-#### Включение экспериментальной поддержки транзакций {#enable-experimental-transaction-support}
+#### Включение экспериментальной поддержки транзакций \{#enable-experimental-transaction-support\}
 
 ```xml title=/etc/clickhouse-server/config.d/transactions.xml
 <clickhouse>
@@ -88,7 +88,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 </clickhouse>
 ```
 
-#### Базовая конфигурация для одного серверного узла ClickHouse с включённым ClickHouse Keeper {#basic-configuration-for-a-single-clickhouse-server-node-with-clickhouse-keeper-enabled}
+#### Базовая конфигурация для одного серверного узла ClickHouse с включённым ClickHouse Keeper \{#basic-configuration-for-a-single-clickhouse-server-node-with-clickhouse-keeper-enabled\}
 
 :::note
 См. документацию по [развертыванию](/deployment-guides/terminology.md) для получения подробной информации о развертывании сервера ClickHouse и настройке корректного кворума узлов ClickHouse Keeper. Приведённая здесь конфигурация предназначена только для экспериментального использования.
@@ -134,9 +134,9 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 </clickhouse>
 ```
 
-### Пример {#example}
+### Пример \{#example\}
 
-#### Проверьте, что экспериментальные транзакции включены {#verify-that-experimental-transactions-are-enabled}
+#### Проверьте, что экспериментальные транзакции включены \{#verify-that-experimental-transactions-are-enabled\}
 
 Выполните `BEGIN TRANSACTION` или `START TRANSACTION`, а затем `ROLLBACK`, чтобы убедиться, что экспериментальные транзакции включены, а также что ClickHouse Keeper включён, поскольку он используется для отслеживания транзакций.
 
@@ -174,7 +174,7 @@ ROLLBACK
 ОК.
 ```
 
-#### Создание таблицы для тестирования {#create-a-table-for-testing}
+#### Создание таблицы для тестирования \{#create-a-table-for-testing\}
 
 :::tip
 Создание таблиц не является транзакционной операцией. Выполните этот DDL-запрос вне транзакции.
@@ -193,7 +193,7 @@ ORDER BY n
 Ok.
 ```
 
-#### Начните транзакцию и добавьте строку {#begin-a-transaction-and-insert-a-row}
+#### Начните транзакцию и добавьте строку \{#begin-a-transaction-and-insert-a-row\}
 
 ```sql
 BEGIN TRANSACTION
@@ -226,7 +226,7 @@ FROM mergetree_table
 Вы можете выполнить запрос к таблице в рамках транзакции и увидеть, что строка была вставлена, даже несмотря на то, что транзакция еще не была зафиксирована.
 :::
 
-#### Откатите транзакцию и снова выполните запрос к таблице {#rollback-the-transaction-and-query-the-table-again}
+#### Откатите транзакцию и снова выполните запрос к таблице \{#rollback-the-transaction-and-query-the-table-again\}
 
 Убедитесь, что транзакция была откатена:
 
@@ -249,7 +249,7 @@ Ok.
 0 строк в наборе. Прошло: 0.002 сек.
 ```
 
-#### Завершите транзакцию и выполните запрос к таблице ещё раз {#complete-a-transaction-and-query-the-table-again}
+#### Завершите транзакцию и выполните запрос к таблице ещё раз \{#complete-a-transaction-and-query-the-table-again\}
 
 ```sql
 BEGIN TRANSACTION
@@ -286,7 +286,7 @@ FROM mergetree_table
 └────┘
 ```
 
-### Анализ транзакций {#transactions-introspection}
+### Анализ транзакций \{#transactions-introspection\}
 
 Вы можете просматривать транзакции, выполняя запрос к таблице `system.transactions`, однако учтите, что выполнять запросы к этой таблице нельзя из сеанса, в котором уже открыта транзакция. Откройте второй сеанс `clickhouse client`, чтобы запрашивать эту таблицу.
 
@@ -306,6 +306,6 @@ is_readonly: 1
 state:       RUNNING
 ```
 
-## Подробности {#more-details}
+## Подробности \{#more-details\}
 
 Ознакомьтесь с этой [мета‑задачей](https://github.com/ClickHouse/ClickHouse/issues/48794), чтобы найти гораздо более обширные тесты и быть в курсе прогресса.

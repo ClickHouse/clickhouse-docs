@@ -14,7 +14,7 @@ import mysql2 from '@site/static/images/interfaces/mysql2.png';
 import mysql3 from '@site/static/images/interfaces/mysql3.png';
 
 
-# MySQL 接口 {#mysql-interface}
+# MySQL 接口 \{#mysql-interface\}
 
 ClickHouse 支持 MySQL 线协议（wire protocol）。这使得某些没有原生 ClickHouse 连接器的客户端可以改用 MySQL 协议，并且已经在以下 BI 工具中完成了验证：
 
@@ -36,7 +36,7 @@ ClickHouse 支持 MySQL 线协议（wire protocol）。这使得某些没有原�
 该行为无法关闭，在极少数边缘情况下，可能会导致发送到 ClickHouse 普通查询接口与 MySQL 查询接口的查询行为存在差异。
 ::::
 
-## 在 ClickHouse Cloud 上启用 MySQL 接口 {#enabling-the-mysql-interface-on-clickhouse-cloud}
+## 在 ClickHouse Cloud 上启用 MySQL 接口 \{#enabling-the-mysql-interface-on-clickhouse-cloud\}
 
 1. 创建好 ClickHouse Cloud 服务后，单击 `Connect` 按钮。
 
@@ -60,7 +60,7 @@ ClickHouse 支持 MySQL 线协议（wire protocol）。这使得某些没有原�
 
 <Image img={mysql3} alt="凭据界面 - 连接字符串" size="md"/>
 
-## 在 ClickHouse Cloud 中创建多个 MySQL 用户 {#creating-multiple-mysql-users-in-clickhouse-cloud}
+## 在 ClickHouse Cloud 中创建多个 MySQL 用户 \{#creating-multiple-mysql-users-in-clickhouse-cloud\}
 
 默认情况下，系统内置了一个 `mysql4<subdomain>` 用户，它使用与 `default` 用户相同的密码。`<subdomain>` 部分是你的 ClickHouse Cloud 主机名的第一部分。对于那些实现了安全连接，但在 TLS 握手中不提供 [SNI 信息](https://www.cloudflare.com/learning/ssl/what-is-sni) 的工具来说，这种格式是必需的；否则，如果不在用户名中加入额外提示，就无法进行内部路由（MySQL 控制台客户端就是其中一种工具）。
 
@@ -100,7 +100,7 @@ ClickHouse 支持 MySQL 线协议（wire protocol）。这使得某些没有原�
 
 4. 使用创建的该用户，通过 MySQL 接口连接到你的 ClickHouse Cloud 服务。
 
-### 在 ClickHouse Cloud 中对多个 MySQL 用户进行故障排查 {#troubleshooting-multiple-mysql-users-in-clickhouse-cloud}
+### 在 ClickHouse Cloud 中对多个 MySQL 用户进行故障排查 \{#troubleshooting-multiple-mysql-users-in-clickhouse-cloud\}
 
 如果您创建了一个新的 MySQL 用户，并且在通过 MySQL CLI 客户端连接时看到如下错误：
 
@@ -111,7 +111,7 @@ ERROR 2013 (HY000): Lost connection to MySQL server at 'reading authorization pa
 在这种情况下，请确保用户名遵循 `mysql4<subdomain>_<username>` 格式，如[上文](#creating-multiple-mysql-users-in-clickhouse-cloud)所述。
 
 
-## 在自管理 ClickHouse 上启用 MySQL 接口 {#enabling-the-mysql-interface-on-self-managed-clickhouse}
+## 在自管理 ClickHouse 上启用 MySQL 接口 \{#enabling-the-mysql-interface-on-self-managed-clickhouse\}
 
 在服务器配置文件中添加 [mysql&#95;port](../../operations/server-configuration-parameters/settings.md#mysql_port) 设置项。例如，可以在 `config.d/` [目录](/operations/configuration-files)中新建一个 XML 文件来定义该端口：
 
@@ -128,7 +128,7 @@ ERROR 2013 (HY000): Lost connection to MySQL server at 'reading authorization pa
 ```
 
 
-## 将 MySQL 连接到 ClickHouse {#connect-mysql-to-clickhouse}
+## 将 MySQL 连接到 ClickHouse \{#connect-mysql-to-clickhouse\}
 
 以下命令演示如何使用 MySQL 客户端 `mysql` 连接到 ClickHouse：
 

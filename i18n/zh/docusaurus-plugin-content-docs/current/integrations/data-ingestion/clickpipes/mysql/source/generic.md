@@ -5,9 +5,12 @@ slug: /integrations/clickpipes/mysql/source/generic
 title: '通用 MySQL 源设置指南'
 doc_type: 'guide'
 keywords: ['通用 MySQL', 'ClickPipes', '二进制日志', 'SSL/TLS', 'MySQL 8.x']
+integration:
+   - support_level: '核心'
+   - category: 'clickpipes'
 ---
 
-# 通用 MySQL 数据源配置指南 {#generic-mysql-source-setup-guide}
+# 通用 MySQL 数据源配置指南 \{#generic-mysql-source-setup-guide\}
 
 :::info
 
@@ -15,11 +18,11 @@ keywords: ['通用 MySQL', 'ClickPipes', '二进制日志', 'SSL/TLS', 'MySQL 8.
 
 :::
 
-## 启用二进制日志保留 {#enable-binlog-retention}
+## 启用二进制日志保留 \{#enable-binlog-retention\}
 
 二进制日志包含对 MySQL 服务器实例中数据修改的信息，是实现复制所必需的。
 
-### MySQL 8.x 及更高版本 {#binlog-v8-x}
+### MySQL 8.x 及更高版本 \{#binlog-v8-x\}
 
 要在 MySQL 实例上启用二进制日志，请确保已配置以下设置：
 
@@ -31,7 +34,7 @@ binlog_row_metadata = FULL
 binlog_expire_logs_seconds = 86400  -- 1 day or higher; default is 30 days
 ```
 
-要检查这些设置，请运行以下 SQL 命令：
+若要检查这些设置，请运行以下 SQL 命令：
 
 ```sql
 SHOW VARIABLES LIKE 'log_bin';
@@ -41,7 +44,7 @@ SHOW VARIABLES LIKE 'binlog_row_metadata';
 SHOW VARIABLES LIKE 'binlog_expire_logs_seconds';
 ```
 
-如果这些值不一致，你可以运行以下 SQL 命令进行设置：
+如果这些值不一致，可以运行以下 SQL 命令进行设置：
 
 ```sql
 SET PERSIST log_bin = ON;
@@ -55,7 +58,8 @@ SET PERSIST binlog_expire_logs_seconds = 86400;
 
 更改设置后，继续[配置数据库用户](#configure-database-user)。
 
-### MySQL 5.7 {#binlog-v5-x}
+
+### MySQL 5.7 \{#binlog-v5-x\}
 
 要在 MySQL 5.7 实例上启用二进制日志，请确保已配置以下设置：
 
@@ -67,7 +71,7 @@ binlog_row_image = FULL  -- default value
 expire_logs_days = 1     -- or higher; 0 would mean logs are preserved forever
 ```
 
-若要检查这些设置，请运行以下 SQL 命令：
+要检查这些设置，请运行以下 SQL 命令：
 
 ```sql
 SHOW VARIABLES LIKE 'server_id';
@@ -91,12 +95,11 @@ expire_logs_days = 1
 你必须重启 MySQL 实例才能使更改生效。
 
 :::note
-
 对于 MySQL 5.7，不支持列排除功能，因为当时还没有引入 `binlog_row_metadata` 设置。
-
 :::
 
-## 配置数据库用户 {#configure-database-user}
+
+## 配置数据库用户 \{#configure-database-user\}
 
 以 root 用户身份连接到你的 MySQL 实例，并执行以下命令：
 
@@ -125,7 +128,7 @@ expire_logs_days = 1
 
 :::
 
-## SSL/TLS 配置（推荐） {#ssl-tls-configuration}
+## SSL/TLS 配置（推荐） \{#ssl-tls-configuration\}
 
 SSL 证书可确保到 MySQL 数据库的连接安全。具体配置取决于证书类型：
 
@@ -139,7 +142,7 @@ SSL 证书可确保到 MySQL 数据库的连接安全。具体配置取决于证
 
 有关 SSL/TLS 选项的更多信息，请查看我们的[常见问题](https://clickhouse.com/docs/integrations/clickpipes/mysql/faq#tls-certificate-validation-error)。
 
-## 下一步 {#whats-next}
+## 下一步 \{#whats-next\}
 
 现在可以[创建 ClickPipe](../index.md)，并开始将 MySQL 实例中的数据摄取到 ClickHouse Cloud 中。
 请务必记录在设置 MySQL 实例时使用的连接信息，因为在创建 ClickPipe 的过程中将需要这些信息。

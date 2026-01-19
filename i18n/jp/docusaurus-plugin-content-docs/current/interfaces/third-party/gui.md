@@ -7,11 +7,11 @@ title: 'サードパーティ製ビジュアルインターフェイス'
 doc_type: 'reference'
 ---
 
-# サードパーティ開発のビジュアルインターフェース {#visual-interfaces-from-third-party-developers}
+# サードパーティ開発のビジュアルインターフェース \{#visual-interfaces-from-third-party-developers\}
 
-## オープンソース {#open-source}
+## オープンソース \{#open-source\}
 
-### agx {#agx}
+### agx \{#agx\}
 
 [agx](https://github.com/agnosticeng/agx) は、Tauri と SvelteKit で構築されたデスクトップアプリケーションで、ClickHouse の組み込みデータベースエンジン (chdb) を利用してデータを探索およびクエリするためのモダンなインターフェイスを提供します。
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 - Monaco エディタにより、なじみのある操作感を提供。
 - 多様で拡張可能なデータ可視化機能。
 
-### ch-ui {#ch-ui}
+### ch-ui \{#ch-ui\}
 
 [ch-ui](https://github.com/caioricciuti/ch-ui) は、ClickHouse データベース向けに設計されたシンプルな React.js アプリケーションインターフェイスで、クエリ実行とデータ可視化を行うことができます。React と Web 向け ClickHouse クライアントで構築されており、洗練された使いやすい UI により、データベースとのやり取りを容易にします。
 
@@ -31,7 +31,7 @@ Features:
 - パフォーマンス最適化: Indexed DB を利用した効率的なキャッシュおよび状態管理。
 - ローカルデータ保存: すべてのデータはブラウザ内にローカル保存され、外部には送信されません。
 
-### ChartDB {#chartdb}
+### ChartDB \{#chartdb\}
 
 [ChartDB](https://chartdb.io) は、ClickHouse を含むデータベーススキーマを単一のクエリで設計・可視化できる、無料かつオープンソースのツールです。React で構築されており、データベースの認証情報やサインアップを行うことなく、シームレスで使いやすい体験を提供します。
 
@@ -44,7 +44,7 @@ Features:
 
 [ChartDB Source Code](https://github.com/chartdb/chartdb).
 
-### DataPup {#datapup}
+### DataPup \{#datapup\}
 
 [DataPup](https://github.com/DataPupOrg/DataPup) は、ネイティブな ClickHouse サポートを備えた、モダンで AI 支援のクロスプラットフォームデータベースクライアントです。
 
@@ -58,7 +58,7 @@ Features:
 - 高速かつレスポンシブなパフォーマンス
 - オープンソースかつ MIT ライセンス
 
-### ClickHouse Schema Flow Visualizer {#clickhouse-schemaflow-visualizer}
+### ClickHouse Schema Flow Visualizer \{#clickhouse-schemaflow-visualizer\}
 
 [ClickHouse Schema Flow Visualizer](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer) は、Mermaid.js ダイアグラムを使用して ClickHouse のテーブル間リレーションシップを可視化する強力なオープンソース Web アプリケーションです。直感的なインターフェイスでデータベースやテーブルをブラウズし、オプションの行数やサイズ情報を含むテーブルメタデータを探索し、インタラクティブなスキーマダイアグラムをエクスポートできます。
 
@@ -75,7 +75,7 @@ Features:
 
 [ClickHouse Schema Flow Visualizer - source code](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer)
 
-### Tabix {#tabix}
+### Tabix \{#tabix\}
 
 [Tabix](https://github.com/tabixio/tabix) プロジェクトにおける ClickHouse 向け Web インターフェイス。
 
@@ -89,7 +89,7 @@ Features:
 
 [Tabix documentation](https://tabix.io/doc/).
 
-### HouseOps {#houseops}
+### HouseOps \{#houseops\}
 
 [HouseOps](https://github.com/HouseOps/HouseOps) は macOS、Linux、Windows 向けの UI/IDE です。
 
@@ -111,7 +111,7 @@ Features:
 - クラスター管理。
 - レプリケートテーブルおよび Kafka テーブルの監視。
 
-### LightHouse {#lighthouse}
+### LightHouse \{#lighthouse\}
 
 [LightHouse](https://github.com/VKCOM/lighthouse) は、ClickHouse 向けの軽量な Web インターフェイスです。
 
@@ -121,7 +121,7 @@ Features:
 - フィルタリングおよびソートが可能なテーブルプレビュー。
 - 読み取り専用クエリの実行。
 
-### Redash {#redash}
+### Redash \{#redash\}
 
 [Redash](https://github.com/getredash/redash) は、データ可視化のためのプラットフォームです。
 
@@ -133,7 +133,7 @@ ClickHouse を含む複数のデータソースをサポートしており、Red
 - データベースエクスプローラー。
 - データをさまざまな形式で表現できる可視化ツール。
 
-### Grafana {#grafana}
+### Grafana \{#grafana\}
 
 [Grafana](https://grafana.com/grafana/plugins/grafana-clickhouse-datasource/) は、モニタリングと可視化のためのプラットフォームです。
 
@@ -141,7 +141,7 @@ ClickHouse を含む複数のデータソースをサポートしており、Red
 
 ClickHouse data source プラグインにより、ClickHouse をバックエンドデータベースとして利用できます。
 
-### qryn {#qryn}
+### qryn \{#qryn\}
 
 [qryn](https://metrico.in) は、ClickHouse 向けの複数プロトコル対応・高性能なオブザーバビリティスタック _(旧称 cLoki)_ であり、ネイティブな Grafana 連携により、Loki/LogQL、Prometheus/PromQL、OTLP/Tempo、Elastic、InfluxDB などをサポートするあらゆるエージェントからログ、メトリクス、テレメトリトレースを取り込み、分析できます。
 
@@ -153,7 +153,7 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 - LogQL、PromQL、InfluxDB、Elastic などと透過的に互換性のあるインジェストおよび PUSH API
 - Promtail、Grafana-Agent、Vector、Logstash、Telegraf などのエージェントですぐに利用可能
 
-### DBeaver {#dbeaver}
+### DBeaver \{#dbeaver\}
 
 [DBeaver](https://dbeaver.io/) は、ClickHouse をサポートする汎用デスクトップデータベースクライアントです。
 
@@ -166,7 +166,7 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 
 デフォルトでは、DBeaver はセッションを使用して接続しません（CLI などは使用します）。セッションサポートが必要な場合（例: セッションに対して設定を行いたい場合）、ドライバーの接続プロパティを編集し、`session_id` をランダムな文字列に設定します（内部的には HTTP 接続を使用します）。その後、クエリウィンドウから任意の設定を使用できます。
 
-### clickhouse-cli {#clickhouse-cli}
+### clickhouse-cli \{#clickhouse-cli\}
 
 [clickhouse-cli](https://github.com/hatarist/clickhouse-cli) は、Python 3 で実装された ClickHouse 用の代替コマンドラインクライアントです。
 
@@ -177,27 +177,27 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 - データ出力のページャサポート。
 - PostgreSQL 風のカスタムコマンド。
 
-### clickhouse-flamegraph {#clickhouse-flamegraph}
+### clickhouse-flamegraph \{#clickhouse-flamegraph\}
 
 [clickhouse-flamegraph](https://github.com/Slach/clickhouse-flamegraph) は、`system.trace_log` を [flamegraph](http://www.brendangregg.com/flamegraphs.html) として可視化するための専用ツールです。
 
-### clickhouse-plantuml {#clickhouse-plantuml}
+### clickhouse-plantuml \{#clickhouse-plantuml\}
 
 [cickhouse-plantuml](https://pypi.org/project/clickhouse-plantuml/) は、テーブルスキーマの [PlantUML](https://plantuml.com/) 図を生成するためのスクリプトです。
 
-### ClickHouse table graph {#clickhouse-table-graph}
+### ClickHouse table graph \{#clickhouse-table-graph\}
 
 [ClickHouse table graph](https://github.com/mbaksheev/clickhouse-table-graph) は、ClickHouse テーブル間の依存関係を可視化するためのシンプルな CLI ツールです。このツールは `system.tables` テーブルからテーブル間の接続情報を取得し、[mermaid](https://mermaid.js.org/syntax/flowchart.html) 形式で依存関係のフローチャートを構築します。このツールを使用することで、テーブルの依存関係を簡単に可視化し、ClickHouse データベース内のデータフローを把握できます。mermaid により、生成されたフローチャートは見栄えが良く、Markdown ドキュメントにも容易に追加できます。
 
-### xeus-clickhouse {#xeus-clickhouse}
+### xeus-clickhouse \{#xeus-clickhouse\}
 
 [xeus-clickhouse](https://github.com/wangfenjin/xeus-clickhouse) は ClickHouse 用の Jupyter カーネルであり、Jupyter 上で SQL を使用して ClickHouse のデータをクエリできます。
 
-### MindsDB Studio {#mindsdb}
+### MindsDB Studio \{#mindsdb\}
 
 [MindsDB](https://mindsdb.com/) は、ClickHouse を含むデータベース向けのオープンソースの AI レイヤーであり、最先端の機械学習モデルを容易に開発・学習・デプロイできるようにします。MindsDB Studio（GUI）を使用すると、データベースから新しいモデルを学習させ、モデルによる予測結果を解釈し、潜在的なデータバイアスを特定し、Explainable AI 機能を用いてモデル精度を評価および可視化することで、機械学習モデルをより迅速に適応・チューニングできます。
 
-### DBM {#dbm}
+### DBM \{#dbm\}
 
 [DBM](https://github.com/devlive-community/dbm) DBM は ClickHouse 用のビジュアル管理ツールです。
 
@@ -213,7 +213,7 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 - モニタリングをサポート（プロセッサ、接続、クエリ）
 - データ移行をサポート
 
-### Bytebase {#bytebase}
+### Bytebase \{#bytebase\}
 
 [Bytebase](https://bytebase.com) は、チーム向けの Web ベースのオープンソースのスキーマ変更およびバージョン管理ツールです。ClickHouse を含む各種データベースをサポートします。
 
@@ -227,11 +227,11 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 - バックアップおよびリストア。
 - RBAC。
 
-### Zeppelin-Interpreter-for-ClickHouse {#zeppelin-interpreter-for-clickhouse}
+### Zeppelin-Interpreter-for-ClickHouse \{#zeppelin-interpreter-for-clickhouse\}
 
 [Zeppelin-Interpreter-for-ClickHouse](https://github.com/SiderZhang/Zeppelin-Interpreter-for-ClickHouse) は、ClickHouse 向けの [Zeppelin](https://zeppelin.apache.org) インタプリタです。JDBC インタプリタと比較して、長時間実行されるクエリに対してより優れたタイムアウト制御を提供します。
 
-### ClickCat {#clickcat}
+### ClickCat \{#clickcat\}
 
 [ClickCat](https://github.com/clickcat-project/ClickCat) は、ClickHouse データを検索、探索、および可視化できる、使いやすいユーザーインターフェースです。
 
@@ -241,7 +241,7 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 - すべてのプロセスおよびミューテーションを確認可能。未完了のプロセスについては、UI から強制終了できます。
 - メトリクスには、クラスター分析、データ分析、およびクエリ分析が含まれます。
 
-### ClickVisual {#clickvisual}
+### ClickVisual \{#clickvisual\}
 
 [ClickVisual](https://clickvisual.net/) ClickVisual は、軽量なオープンソースのログクエリ・分析・アラーム可視化プラットフォームです。
 
@@ -253,7 +253,7 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 - アラーム設定をサポート
 - ライブラリおよびテーブル単位のきめ細かな権限設定に対応
 
-### ClickHouse-Mate {#clickmate}
+### ClickHouse-Mate \{#clickmate\}
 
 [ClickHouse-Mate](https://github.com/metrico/clickhouse-mate) は、ClickHouse 内のデータを検索および探索するための Angular 製 Web クライアント + ユーザーインターフェースです。
 
@@ -268,7 +268,7 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 
 クライアントは GitHub Pages を通じてすぐに利用可能です: https://metrico.github.io/clickhouse-mate/
 
-### Uptrace {#uptrace}
+### Uptrace \{#uptrace\}
 
 [Uptrace](https://github.com/uptrace/uptrace) は、OpenTelemetry と ClickHouse を基盤とした分散トレーシングおよびメトリクスを提供する APM ツールです。
 
@@ -281,7 +281,7 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 - 事前構築済みのメトリクスダッシュボード。
 - YAML 設定による複数ユーザー/プロジェクトのサポート。
 
-### clickhouse-monitoring {#clickhouse-monitoring}
+### clickhouse-monitoring \{#clickhouse-monitoring\}
 
 [clickhouse-monitoring](https://github.com/duyet/clickhouse-monitoring) は、`system.*` テーブルに依存して ClickHouse クラスターの監視および概要把握を支援する、シンプルな Next.js ダッシュボードです。
 
@@ -293,7 +293,7 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 - 有用なツール: Zookeeper データ探索、クエリ EXPLAIN、クエリの強制終了など。
 - 可視化メトリクスチャート: クエリおよびリソース使用量、マージ/ミューテーション数、マージ性能、クエリ性能など。
 
-### CKibana {#ckibana}
+### CKibana \{#ckibana\}
 
 [CKibana](https://github.com/TongchengOpenSource/ckibana) は、ネイティブな Kibana UI を使用して ClickHouse のデータを手軽に検索・探索・可視化できる軽量なサービスです。
 
@@ -303,7 +303,7 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 - サンプリングやキャッシュなど、クエリ性能を向上させる高度な機能をサポートします。
 - Elasticsearch から ClickHouse への移行後も、ユーザーの学習コストを最小限に抑えます。
 
-### Telescope {#telescope}
+### Telescope \{#telescope\}
 
 [Telescope](https://iamtelescope.net/) は、ClickHouse に保存されたログを探索するためのモダンな Web インターフェースです。きめ細かなアクセス制御を備えた、ログデータのクエリ、可視化、管理を行うためのユーザーフレンドリーな UI を提供します。
 
@@ -319,9 +319,9 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 
 [Telescope ソースコード](https://github.com/iamtelescope/telescope) · [ライブデモ](https://demo.iamtelescope.net)
 
-## 商用 {#commercial}
+## 商用 \{#commercial\}
 
-### DataGrip {#datagrip}
+### DataGrip \{#datagrip\}
 
 [DataGrip](https://www.jetbrains.com/datagrip/) は、JetBrains が提供する ClickHouse をネイティブにサポートするデータベース IDE です。PyCharm、IntelliJ IDEA、GoLand、PhpStorm など他の IntelliJ ベースのツールにも組み込まれています。
 
@@ -334,7 +334,7 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 - リファクタリング。
 - 検索とナビゲーション。
 
-### Yandex DataLens {#yandex-datalens}
+### Yandex DataLens \{#yandex-datalens\}
 
 [Yandex DataLens](https://cloud.yandex.ru/services/datalens) は、データの可視化および分析のためのサービスです。
 
@@ -350,7 +350,7 @@ DataLens は、商用利用であっても、低負荷のプロジェクト向�
 - [DataLens のドキュメント](https://cloud.yandex.com/docs/datalens/)。
 - ClickHouse データベースのデータを可視化するための[チュートリアル](https://cloud.yandex.com/docs/solutions/datalens/data-from-ch-visualization)。
 
-### Holistics Software {#holistics-software}
+### Holistics Software \{#holistics-software\}
 
 [Holistics](https://www.holistics.io/) は、フルスタックのデータプラットフォーム兼ビジネスインテリジェンスツールです。
 
@@ -362,7 +362,7 @@ DataLens は、商用利用であっても、低負荷のプロジェクト向�
 - データ準備および ETL 機能。
 - データのリレーショナルマッピングを行う SQL データモデリングのサポート。
 
-### Looker {#looker}
+### Looker \{#looker\}
 
 [Looker](https://looker.com) は、ClickHouse を含む 50 以上のデータベースダイアレクトをサポートするデータプラットフォーム兼ビジネスインテリジェンスツールです。Looker は SaaS プラットフォームおよびセルフホストで利用できます。ユーザーはブラウザから Looker を利用してデータを探索し、ビジュアライゼーションやダッシュボードを作成し、レポートをスケジュールし、インサイトを同僚と共有できます。Looker はこれらの機能を他のアプリケーションに埋め込むための豊富なツールと、他のアプリケーションとデータ連携するための API を提供します。
 
@@ -374,7 +374,7 @@ DataLens は、商用利用であっても、低負荷のプロジェクト向�
 
 [Looker で ClickHouse を構成する方法。](https://docs.looker.com/setup-and-management/database-config/clickhouse)
 
-### SeekTable {#seektable}
+### SeekTable \{#seektable\}
 
 [SeekTable](https://www.seektable.com) は、データ探索および運用レポーティング向けのセルフサービス BI ツールです。クラウドサービスとセルフホスト版の両方が利用可能です。SeekTable のレポートは任意の Web アプリケーションに埋め込むことができます。
 
@@ -391,11 +391,11 @@ SeekTable は、個人／個人用途での利用については[無料](https:/
 
 [SeekTable で ClickHouse 接続を構成する方法。](https://www.seektable.com/help/clickhouse-pivot-table)
 
-### Chadmin {#chadmin}
+### Chadmin \{#chadmin\}
 
 [Chadmin](https://github.com/bun4uk/chadmin) は、ClickHouse クラスター上で現在実行中のクエリとその情報を可視化し、必要に応じてそれらを強制終了できるシンプルな UI です。
 
-### TABLUM.IO {#tablum_io}
+### TABLUM.IO \{#tablum_io\}
 
 [TABLUM.IO](https://tablum.io/) は、ETL と可視化のためのオンラインクエリおよび分析ツールです。ClickHouse へ接続し、柔軟な SQL コンソール経由でデータをクエリできるほか、静的ファイルやサードパーティサービスからデータをロードすることもできます。TABLUM.IO は、クエリ結果データをチャートやテーブルとして可視化できます。
 
@@ -415,7 +415,7 @@ TABLUM.IO は、セルフホスト型ソリューション（Docker イメージ
 [クラウド上](https://tablum.io/try)で無料で試すことができます。
 製品の詳細は [TABLUM.IO](https://tablum.io/) を参照してください。
 
-### CKMAN {#ckman}
+### CKMAN \{#ckman\}
 
 [CKMAN](https://www.github.com/housepower/ckman) は、ClickHouse クラスターの管理およびモニタリング用のツールです。
 

@@ -29,7 +29,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
 <DedicatedKeeperServers />
 
-## 前提条件 {#prerequisites}
+## 前提条件 \{#prerequisites\}
 
 - 已经搭建过[本地 ClickHouse 服务器](/install)
 - 熟悉 ClickHouse 的基本配置概念，例如[配置文件](/operations/configuration-files)
@@ -714,7 +714,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 </VerticalStepper>
 
-## 结论 {#conclusion}
+## 结论 \{#conclusion\}
 
 这种采用 2 个分片和 2 个副本的集群拓扑的优势在于，同时提供了可扩展性和容错能力。
 数据分布在不同主机上，降低了每个节点的存储和 I/O 需求，同时查询会在两个分片上并行处理，从而提升性能并提高内存使用效率。

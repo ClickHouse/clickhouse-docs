@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 import Image from '@theme/IdealImage';
 
-# 監視 {#monitoring}
+# 監視 \{#monitoring\}
 
 :::note
 このガイドで説明している監視データは、ClickHouse Cloud で参照できます。以下で説明する組み込みダッシュボードで表示できるだけでなく、基本および高度なパフォーマンスメトリクスの両方をメインのサービスコンソールで直接確認することもできます。
@@ -21,7 +21,7 @@ import Image from '@theme/IdealImage';
 - ハードウェアリソースの利用状況
 - ClickHouse サーバーのメトリクス
 
-## 組み込みの高度なオブザーバビリティダッシュボード {#built-in-advanced-observability-dashboard}
+## 組み込みの高度なオブザーバビリティダッシュボード \{#built-in-advanced-observability-dashboard\}
 
 <Image img="https://github.com/ClickHouse/ClickHouse/assets/3936029/2bd10011-4a47-4b94-b836-d44557c7fdc1" alt="Screenshot 2023-11-12 at 6 08 58 PM" size="md" />
 
@@ -42,7 +42,7 @@ ClickHouse には、`$HOST:$PORT/dashboard`（ユーザー名とパスワード�
 - Total MergeTree parts
 - Max parts for partition
 
-## リソース使用状況 {#resource-utilization}
+## リソース使用状況 \{#resource-utilization\}
 
 ClickHouse は、次のようなハードウェアリソースの状態も自動的に監視します。
 
@@ -51,7 +51,7 @@ ClickHouse は、次のようなハードウェアリソースの状態も自動
 
 このデータは `system.asynchronous_metric_log` テーブルに蓄積されます。
 
-## ClickHouse サーバーメトリクス {#clickhouse-server-metrics}
+## ClickHouse サーバーメトリクス \{#clickhouse-server-metrics\}
 
 ClickHouse サーバーには、自身の状態を監視するための組み込み機能があります。
 

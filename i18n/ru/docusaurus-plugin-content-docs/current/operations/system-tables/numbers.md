@@ -6,7 +6,7 @@ title: 'system.numbers'
 doc_type: 'reference'
 ---
 
-# system.numbers {#systemnumbers}
+# system.numbers \{#systemnumbers\}
 
 Эта таблица содержит единственный столбец типа UInt64 с именем `number`, в котором находятся почти все натуральные числа, начиная с нуля.
 

@@ -10,7 +10,7 @@ doc_type: 'guide'
 import {CardSecondary} from '@clickhouse/click-ui/bundled';
 import Link from '@docusaurus/Link'
 
-# クエリ API エンドポイント {#query-api-endpoints}
+# クエリ API エンドポイント \{#query-api-endpoints\}
 
 インタラクティブなデータ駆動型アプリケーションを構築するには、高速なデータベース、適切に構造化されたデータ、最適化されたクエリだけでは不十分です。
 フロントエンドやマイクロサービスもまた、クエリから返されるデータを、できれば適切に構造化された API を介して、簡単に利用できる必要があります。

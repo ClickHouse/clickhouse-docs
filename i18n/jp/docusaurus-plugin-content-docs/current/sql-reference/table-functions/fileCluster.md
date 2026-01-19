@@ -7,7 +7,7 @@ title: 'fileCluster'
 doc_type: 'reference'
 ---
 
-# fileCluster テーブル関数 {#filecluster-table-function}
+# fileCluster テーブル関数 \{#filecluster-table-function\}
 
 指定されたパスに一致するファイルを、クラスター内の複数ノードにまたがって同時に処理できるようにします。イニシエータはワーカーノードへの接続を確立し、ファイルパス内のグロブを展開し、ファイル読み取りタスクをワーカーノードに委譲します。各ワーカーノードは、処理すべき次のファイルを取得するためにイニシエータへ問い合わせを行い、すべてのタスクが完了する（すべてのファイルが読み込まれる）までこれを繰り返します。
 
@@ -16,13 +16,13 @@ doc_type: 'reference'
 これらのファイルがノード間で異なる場合、戻り値は事前には決定できず、どの順序でワーカーノードがイニシエータへタスクを要求するかに依存します。
 :::
 
-## 構文 {#syntax}
+## 構文 \{#syntax\}
 
 ```sql
 fileCluster(cluster_name, path[, format, structure, compression_method])
 ```
 
-## 引数 {#arguments}
+## 引数 \{#arguments\}
 
 | 引数                 | 説明                                                                                                                                                                               |
 |----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -32,7 +32,7 @@ fileCluster(cluster_name, path[, format, structure, compression_method])
 | `structure`          | `'UserID UInt64, Name String'` 形式のテーブル構造。列名と型を決定します。型: [String](../../sql-reference/data-types/string.md)。            |
 | `compression_method` | 圧縮方式。サポートされる圧縮形式は `gz`、`br`、`xz`、`zst`、`lz4`、`bz2` です。                                                                                                   |
 
-## 返される値 {#returned_value}
+## 返される値 \{#returned_value\}
 
 指定されたフォーマットと構造を持ち、指定されたパスに一致するファイルからのデータを含むテーブルが返されます。
 
@@ -81,10 +81,10 @@ SELECT * FROM fileCluster('my_cluster', 'file{1,2}.csv', 'CSV', 'i UInt32, s Str
 └────┴────────┘
 ```
 
-## パスのグロブ {#globs-in-path}
+## パスのグロブ \{#globs-in-path\}
 
 [File](../../sql-reference/table-functions/file.md#globs-in-path) テーブル関数でサポートされているすべてのパターンは、FileCluster でもサポートされています。
 
-## 関連項目 {#related}
+## 関連項目 \{#related\}
 
 - [file テーブル関数](../../sql-reference/table-functions/file.md)

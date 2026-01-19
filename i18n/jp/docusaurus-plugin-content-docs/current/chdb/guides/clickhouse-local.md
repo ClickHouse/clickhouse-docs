@@ -11,7 +11,7 @@ doc_type: 'guide'
 ClickHouse サーバーをインストールせずに、その機能を利用できます。
 このガイドでは、chDB から clickhouse-local データベースを使用する方法を説明します。
 
-## セットアップ {#setup}
+## セットアップ \{#setup\}
 
 まず仮想環境を作成します。
 
@@ -39,7 +39,7 @@ pip install ipython
 ipython
 ```
 
-## clickhouse-local のインストール {#installing-clickhouse-local}
+## clickhouse-local のインストール \{#installing-clickhouse-local\}
 
 clickhouse-local のダウンロードとインストールは、[ClickHouse のダウンロードとインストール](/install) と同じです。
 次のコマンドを実行してください。
@@ -54,7 +54,7 @@ curl https://clickhouse.com/ | sh
 ./clickhouse -m --path demo.chdb
 ```
 
-## clickhouse-local へのデータ取り込み {#ingesting-data-into-clickhouse-local}
+## clickhouse-local へのデータ取り込み \{#ingesting-data-into-clickhouse-local\}
 
 デフォルトのデータベースはメモリ上にのみデータを保存するため、取り込んだデータをディスクに永続的に保存できるよう、名前付きデータベースを作成する必要があります。
 
@@ -71,7 +71,7 @@ SELECT rand() AS number
 FROM numbers(10_000_000);
 ```
 
-どのようなデータがあるか確認するためのクエリを書きましょう：
+どのようなデータがあるか確認するクエリを書いてみましょう：
 
 ```sql
 SELECT quantilesExact(0, 0.5, 0.75, 0.99)(number) AS quants
@@ -89,7 +89,7 @@ FROM foo.randomNumbers
 ChdbError: Code: 76. DB::Exception: Cannot lock file demo.chdb/status. Another server instance in same directory is already running. (CANNOT_OPEN_FILE)
 ```
 
-## clickhouse-local データベースへの接続 {#connecting-to-a-clickhouse-local-database}
+## clickhouse-local データベースへの接続 \{#connecting-to-a-clickhouse-local-database\}
 
 `ipython` シェルに戻り、chDB の `session` モジュールをインポートします。
 
@@ -97,7 +97,7 @@ ChdbError: Code: 76. DB::Exception: Cannot lock file demo.chdb/status. Another s
 from chdb import session as chs
 ```
 
-`demo..chdb` を参照するセッションを初期化します:
+`demo.chdb` を対象としたセッションを初期化します:
 
 ```python
 sess = chs.Session("demo.chdb")
@@ -129,4 +129,4 @@ Row 1:
 quants: [0,9976599,2147776478,4209286886]
 ```
 
-その後、chDB または clickhouse-local から quantiles 関数のクエリを再実行できます。
+その後、chDB または clickhouse-local から、分位数を取得するクエリを再実行できます。

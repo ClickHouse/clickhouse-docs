@@ -17,11 +17,11 @@ doc_type: 'reference'
 さらに、ユーザーは [`displaySecretsInShowAndSelect`](grant.md/#displaysecretsinshowandselect) 権限を持っている必要があります。
 :::
 
-## SHOW CREATE TABLE | DICTIONARY | VIEW | DATABASE {#show-create-table--dictionary--view--database}
+## SHOW CREATE TABLE | DICTIONARY | VIEW | DATABASE \{#show-create-table--dictionary--view--database\}
 
 これらのステートメントは、指定したオブジェクトの作成に使用された `CREATE` クエリを含む、`String` 型の単一列を返します。
 
-### 構文 {#syntax}
+### 構文 \{#syntax\}
 
 ```sql title="Syntax"
 SHOW [CREATE] TABLE | TEMPORARY TABLE | DICTIONARY | VIEW | DATABASE [db.]table|view [INTO OUTFILE filename] [FORMAT format]
@@ -34,11 +34,11 @@ SHOW [CREATE] TABLE | TEMPORARY TABLE | DICTIONARY | VIEW | DATABASE [db.]table|
 :::
 
 
-## SHOW DATABASES {#show-databases}
+## SHOW DATABASES \{#show-databases\}
 
 このステートメントは、すべてのデータベースを一覧表示します。
 
-### 構文 {#syntax-1}
+### 構文 \{#syntax-1\}
 
 ```sql title="Syntax"
 SHOW DATABASES [[NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE filename] [FORMAT format]
@@ -51,7 +51,7 @@ SELECT name FROM system.databases [WHERE name [NOT] LIKE | ILIKE '<pattern>'] [L
 ```
 
 
-### 例 {#examples}
+### 例 \{#examples\}
 
 この例では、`SHOW` を使用して、名前に文字列 &#39;de&#39; を含むデータベース名を取得します。
 
@@ -106,15 +106,15 @@ SHOW DATABASES LIMIT 2
 ```
 
 
-### 関連項目 {#see-also}
+### 関連項目 \{#see-also\}
 
 * [`CREATE DATABASE`](/sql-reference/statements/create/database)
 
-## SHOW TABLES {#show-tables}
+## SHOW TABLES \{#show-tables\}
 
 `SHOW TABLES` ステートメントは、テーブルの一覧を表示します。
 
-### 構文 {#syntax-2}
+### 構文 \{#syntax-2\}
 
 ```sql title="Syntax"
 SHOW [FULL] [TEMPORARY] TABLES [{FROM | IN} <db>] [[NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
@@ -129,7 +129,7 @@ SELECT name FROM system.tables [WHERE name [NOT] LIKE | ILIKE '<pattern>'] [LIMI
 ```
 
 
-### 例 {#examples-1}
+### 例 \{#examples-1\}
 
 この例では、`SHOW TABLES` ステートメントを使用して、名前に&#39;user&#39; が含まれるすべてのテーブルを検索します。
 
@@ -185,16 +185,16 @@ SHOW TABLES FROM system LIMIT 2
 ```
 
 
-### 関連項目 {#see-also-1}
+### 関連項目 \{#see-also-1\}
 
 * [`Create Tables`](/sql-reference/statements/create/table)
 * [`SHOW CREATE TABLE`](#show-create-table--dictionary--view--database)
 
-## SHOW COLUMNS {#show_columns}
+## SHOW COLUMNS \{#show_columns\}
 
 `SHOW COLUMNS` ステートメントは、列の一覧を表示します。
 
-### 構文 {#syntax-3}
+### 構文 \{#syntax-3\}
 
 ```sql title="Syntax"
 SHOW [EXTENDED] [FULL] COLUMNS {FROM | IN} <table> [{FROM | IN} <db>] [{[NOT] {LIKE | ILIKE} '<pattern>' | WHERE <expr>}] [LIMIT <N>] [INTO
@@ -223,7 +223,7 @@ MySQL との互換性のために存在しています。`FULL` キーワード�
 | `privilege` | （`FULL` キーワードが指定された場合のみ）このカラムに対して持っている権限。現在は利用できません                        | `String`           |
 
 
-### Examples {#examples-2}
+### Examples \{#examples-2\}
 
 この例では、テーブル &#39;orders&#39; のすべてのカラムについて、
 &#39;delivery&#95;&#39; で始まるカラムの情報を取得するために `SHOW COLUMNS` 文を使用します。
@@ -240,15 +240,15 @@ SHOW COLUMNS FROM 'orders' LIKE 'delivery_%'
 ```
 
 
-### 関連項目 {#see-also-2}
+### 関連項目 \{#see-also-2\}
 
 - [`system.columns`](../../operations/system-tables/columns.md)
 
-## SHOW DICTIONARIES {#show-dictionaries}
+## SHOW DICTIONARIES \{#show-dictionaries\}
 
 `SHOW DICTIONARIES` ステートメントは、[Dictionaries](../../sql-reference/dictionaries/index.md) の一覧を表示します。
 
-### 構文 {#syntax-4}
+### 構文 \{#syntax-4\}
 
 ```sql title="Syntax"
 SHOW DICTIONARIES [FROM <db>] [LIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
@@ -263,7 +263,7 @@ SELECT name FROM system.dictionaries WHERE database = <db> [AND name LIKE <patte
 ```
 
 
-### 例 {#examples-3}
+### 例 \{#examples-3\}
 
 次のクエリは、`system` データベース内のテーブル一覧から、名前に `reg` を含む先頭の 2 行を選択します。
 
@@ -279,13 +279,13 @@ SHOW DICTIONARIES FROM db LIKE '%reg%' LIMIT 2
 ```
 
 
-## SHOW INDEX {#show-index}
+## SHOW INDEX \{#show-index\}
 
 テーブルのプライマリインデックスおよびデータスキッピングインデックスの一覧を表示します。
 
 このステートメントは主に MySQL との互換性のために存在します。システムテーブル [`system.tables`](../../operations/system-tables/tables.md)（プライマリキー用）および [`system.data_skipping_indices`](../../operations/system-tables/data_skipping_indices.md)（データスキッピングインデックス用）は、ClickHouse にとってより自然な形で同等の情報を提供します。
 
-### Syntax {#syntax-5}
+### Syntax \{#syntax-5\}
 
 ```sql title="Syntax"
 SHOW [EXTENDED] {INDEX | INDEXES | INDICES | KEYS } {FROM | IN} <table> [{FROM | IN} <db>] [WHERE <expr>] [INTO OUTFILE <filename>] [FORMAT <format>]
@@ -316,7 +316,7 @@ SHOW [EXTENDED] {INDEX | INDEXES | INDICES | KEYS } {FROM | IN} <table> [{FROM |
 | `expression`    | データスキップインデックスの場合、そのインデックス式。プライマリキーインデックスの場合は `''`（空文字列）。                   | `String`           |
 
 
-### 例 {#examples-4}
+### 例 \{#examples-4\}
 
 この例では、`SHOW INDEX` 文を使用して、テーブル &#39;tbl&#39; に存在するすべての索引に関する情報を取得します。
 
@@ -336,16 +336,16 @@ SHOW INDEX FROM 'tbl'
 ```
 
 
-### 関連項目 {#see-also-3}
+### 関連項目 \{#see-also-3\}
 
 * [`system.tables`](../../operations/system-tables/tables.md)
 * [`system.data_skipping_indices`](../../operations/system-tables/data_skipping_indices.md)
 
-## SHOW PROCESSLIST {#show-processlist}
+## SHOW PROCESSLIST \{#show-processlist\}
 
 現在処理中のクエリの一覧を含む [`system.processes`](/operations/system-tables/processes) テーブルの内容を出力します。ただし、`SHOW PROCESSLIST` クエリは除外されます。
 
-### 構文 {#syntax-6}
+### 構文 \{#syntax-6\}
 
 ```sql title="Syntax"
 SHOW PROCESSLIST [INTO OUTFILE filename] [FORMAT format]
@@ -363,11 +363,11 @@ $ watch -n1 "clickhouse-client --query='SHOW PROCESSLIST'"
 :::
 
 
-## SHOW GRANTS {#show-grants}
+## SHOW GRANTS \{#show-grants\}
 
 `SHOW GRANTS` ステートメントは、ユーザーの権限を表示します。
 
-### 構文 {#syntax-7}
+### 構文 \{#syntax-7\}
 
 ```sql title="Syntax"
 SHOW GRANTS [FOR user1 [, user2 ...]] [WITH IMPLICIT] [FINAL]
@@ -380,146 +380,146 @@ SHOW GRANTS [FOR user1 [, user2 ...]] [WITH IMPLICIT] [FINAL]
 `FINAL` 修飾子は、ユーザー自身の権限と、そのユーザーに付与されたロール（継承分を含む）からのすべての権限を統合します。
 
 
-## SHOW CREATE USER {#show-create-user}
+## SHOW CREATE USER \{#show-create-user\}
 
 `SHOW CREATE USER` 文は、[ユーザー作成](../../sql-reference/statements/create/user.md) 時に指定されたパラメータを表示します。
 
-### 構文 {#syntax-8}
+### 構文 \{#syntax-8\}
 
 ```sql title="Syntax"
 SHOW CREATE USER [name1 [, name2 ...] | CURRENT_USER]
 ```
 
 
-## SHOW CREATE ROLE {#show-create-role}
+## SHOW CREATE ROLE \{#show-create-role\}
 
 `SHOW CREATE ROLE` ステートメントは、[ロールの作成](../../sql-reference/statements/create/role.md)時に使用されたパラメータを表示します。
 
-### 構文 {#syntax-9}
+### 構文 \{#syntax-9\}
 
 ```sql title="Syntax"
 SHOW CREATE ROLE name1 [, name2 ...]
 ```
 
 
-## SHOW CREATE ROW POLICY {#show-create-row-policy}
+## SHOW CREATE ROW POLICY \{#show-create-row-policy\}
 
 `SHOW CREATE ROW POLICY` ステートメントは、[行ポリシーの作成](../../sql-reference/statements/create/row-policy.md) の際に使用されたパラメーターを表示します。
 
-### 構文 {#syntax-10}
+### 構文 \{#syntax-10\}
 
 ```sql title="Syntax"
 SHOW CREATE [ROW] POLICY name ON [database1.]table1 [, [database2.]table2 ...]
 ```
 
 
-## SHOW CREATE QUOTA {#show-create-quota}
+## SHOW CREATE QUOTA \{#show-create-quota\}
 
 `SHOW CREATE QUOTA` ステートメントは、[クォータ作成](../../sql-reference/statements/create/quota.md)時に指定されたパラメーターを表示します。
 
-### 構文 {#syntax-11}
+### 構文 \{#syntax-11\}
 
 ```sql title="Syntax"
 SHOW CREATE QUOTA [name1 [, name2 ...] | CURRENT]
 ```
 
 
-## SHOW CREATE SETTINGS PROFILE {#show-create-settings-profile}
+## SHOW CREATE SETTINGS PROFILE \{#show-create-settings-profile\}
 
 `SHOW CREATE SETTINGS PROFILE` ステートメントは、[設定プロファイルの作成](../../sql-reference/statements/create/settings-profile.md) で使用されたパラメーターを表示します。
 
-### 構文 {#syntax-12}
+### 構文 \{#syntax-12\}
 
 ```sql title="Syntax"
 SHOW CREATE [SETTINGS] PROFILE name1 [, name2 ...]
 ```
 
 
-## SHOW USERS {#show-users}
+## SHOW USERS \{#show-users\}
 
 `SHOW USERS` ステートメントは、[ユーザーアカウント](../../guides/sre/user-management/index.md#user-account-management)名の一覧を返します。
 ユーザーアカウントのパラメータを表示するには、システムテーブル [`system.users`](/operations/system-tables/users) を参照してください。
 
-### 構文 {#syntax-13}
+### 構文 \{#syntax-13\}
 
 ```sql title="Syntax"
 SHOW USERS
 ```
 
 
-## SHOW ROLES {#show-roles}
+## SHOW ROLES \{#show-roles\}
 
 `SHOW ROLES` ステートメントは、[ロール](../../guides/sre/user-management/index.md#role-management)の一覧を返します。
 他のパラメータを確認するには、
 システムテーブル [`system.roles`](/operations/system-tables/roles) および [`system.role_grants`](/operations/system-tables/role_grants) を参照してください。
 
-### 構文 {#syntax-14}
+### 構文 \{#syntax-14\}
 
 ```sql title="Syntax"
 SHOW [CURRENT|ENABLED] ROLES
 ```
 
 
-## SHOW PROFILES {#show-profiles}
+## SHOW PROFILES \{#show-profiles\}
 
 `SHOW PROFILES` ステートメントは、[設定プロファイル](../../guides/sre/user-management/index.md#settings-profiles-management)のリストを返します。
 ユーザーアカウントに関するパラメータを確認するには、システムテーブル [`settings_profiles`](/operations/system-tables/settings_profiles) を参照してください。
 
-### 構文 {#syntax-15}
+### 構文 \{#syntax-15\}
 
 ```sql title="Syntax"
 SHOW [SETTINGS] PROFILES
 ```
 
 
-## SHOW POLICIES {#show-policies}
+## SHOW POLICIES \{#show-policies\}
 
 `SHOW POLICIES` ステートメントは、指定したテーブルに対する [行ポリシー](../../guides/sre/user-management/index.md#row-policy-management) の一覧を返します。
 ユーザーアカウントのパラメータを表示するには、システムテーブル [`system.row_policies`](/operations/system-tables/row_policies) を参照してください。
 
-### 構文 {#syntax-16}
+### 構文 \{#syntax-16\}
 
 ```sql title="Syntax"
 SHOW [ROW] POLICIES [ON [db.]table]
 ```
 
 
-## SHOW QUOTAS {#show-quotas}
+## SHOW QUOTAS \{#show-quotas\}
 
 `SHOW QUOTAS` ステートメントは、[クオータ](../../guides/sre/user-management/index.md#quotas-management)の一覧を返します。
 クオータのパラメータを確認するには、システムテーブル [`system.quotas`](/operations/system-tables/quotas) を参照してください。
 
-### 構文 {#syntax-17}
+### 構文 \{#syntax-17\}
 
 ```sql title="Syntax"
 SHOW QUOTAS
 ```
 
 
-## SHOW QUOTA {#show-quota}
+## SHOW QUOTA \{#show-quota\}
 
 `SHOW QUOTA` ステートメントは、すべてのユーザーまたは現在のユーザーの[クオータ](../../operations/quotas.md)の消費状況を返します。
 その他のパラメータを表示するには、システムテーブル [`system.quotas_usage`](/operations/system-tables/quotas_usage) および [`system.quota_usage`](/operations/system-tables/quota_usage) を参照してください。
 
-### 構文 {#syntax-18}
+### 構文 \{#syntax-18\}
 
 ```sql title="Syntax"
 SHOW [CURRENT] QUOTA
 ```
 
 
-## SHOW ACCESS {#show-access}
+## SHOW ACCESS \{#show-access\}
 
 `SHOW ACCESS` ステートメントは、すべての[ユーザー](../../guides/sre/user-management/index.md#user-account-management)、[ロール](../../guides/sre/user-management/index.md#role-management)、[プロファイル](../../guides/sre/user-management/index.md#settings-profiles-management)などと、それらに付与されているすべての[権限](../../sql-reference/statements/grant.md#privileges)を表示します。
 
-### 構文 {#syntax-19}
+### 構文 \{#syntax-19\}
 
 ```sql title="Syntax"
 SHOW ACCESS
 ```
 
 
-## SHOW CLUSTER(S) {#show-clusters}
+## SHOW CLUSTER(S) \{#show-clusters\}
 
 `SHOW CLUSTER(S)` ステートメントは、クラスタの一覧を返します。
 利用可能なすべてのクラスタは、[`system.clusters`](../../operations/system-tables/clusters.md) テーブルに一覧されています。
@@ -528,7 +528,7 @@ SHOW ACCESS
 `SHOW CLUSTER name` クエリは、指定したクラスタ名に対応する `system.clusters` テーブルの `cluster`、`shard_num`、`replica_num`、`host_name`、`host_address`、`port` を表示します。
 :::
 
-### 構文 {#syntax-20}
+### 構文 \{#syntax-20\}
 
 ```sql title="Syntax"
 SHOW CLUSTER '<name>'
@@ -536,7 +536,7 @@ SHOW CLUSTERS [[NOT] LIKE|ILIKE '<pattern>'] [LIMIT <N>]
 ```
 
 
-### 例 {#examples-5}
+### 例 \{#examples-5\}
 
 ```sql title="Query"
 SHOW CLUSTERS;
@@ -579,25 +579,25 @@ port:                    9000
 ```
 
 
-## SHOW SETTINGS {#show-settings}
+## SHOW SETTINGS \{#show-settings\}
 
 `SHOW SETTINGS` ステートメントは、システム設定とその値の一覧を返します。
 [`system.settings`](../../operations/system-tables/settings.md) テーブルからデータを取得します。
 
-### 構文 {#syntax-21}
+### 構文 \{#syntax-21\}
 
 ```sql title="Syntax"
 SHOW [CHANGED] SETTINGS LIKE|ILIKE <name>
 ```
 
 
-### 句 {#clauses}
+### 句 \{#clauses\}
 
 `LIKE|ILIKE` は設定名に対してマッチパターンを指定できます。`%` や `_` といったワイルドカードを含めることができます。`LIKE` 句は大文字と小文字を区別し、`ILIKE` 句は大文字と小文字を区別しません。
 
 `CHANGED` 句を使用すると、クエリはデフォルト値から変更された設定のみを返します。
 
-### 例 {#examples-6}
+### 例 \{#examples-6\}
 
 `LIKE` 句を使用したクエリ：
 
@@ -638,24 +638,24 @@ SHOW CHANGED SETTINGS ILIKE '%MEMORY%'
 ```
 
 
-## SHOW SETTING {#show-setting}
+## SHOW SETTING \{#show-setting\}
 
 `SHOW SETTING` ステートメントは、指定した設定名の設定値を表示します。
 
-### 構文 {#syntax-22}
+### 構文 \{#syntax-22\}
 
 ```sql title="Syntax"
 SHOW SETTING <name>
 ```
 
 
-### 関連項目 {#see-also-4}
+### 関連項目 \{#see-also-4\}
 
 * [`system.settings`](../../operations/system-tables/settings.md) テーブル
 
-## SHOW FILESYSTEM CACHES {#show-filesystem-caches}
+## SHOW FILESYSTEM CACHES \{#show-filesystem-caches\}
 
-### 使用例 {#examples-7}
+### 使用例 \{#examples-7\}
 
 ```sql title="Query"
 SHOW FILESYSTEM CACHES
@@ -668,30 +668,30 @@ SHOW FILESYSTEM CACHES
 ```
 
 
-### 関連項目 {#see-also-5}
+### 関連項目 \{#see-also-5\}
 
 * [`system.settings`](../../operations/system-tables/settings.md) テーブル
 
-## SHOW ENGINES {#show-engines}
+## SHOW ENGINES \{#show-engines\}
 
 `SHOW ENGINES` ステートメントは、サーバーがサポートするテーブルエンジンの説明と、その機能のサポート状況が格納されている [`system.table_engines`](../../operations/system-tables/table_engines.md) テーブルの内容を出力します。
 
-### 構文 {#syntax-23}
+### 構文 \{#syntax-23\}
 
 ```sql title="Syntax"
 SHOW ENGINES [INTO OUTFILE filename] [FORMAT format]
 ```
 
 
-### 関連項目 {#see-also-6}
+### 関連項目 \{#see-also-6\}
 
 - [system.table_engines](../../operations/system-tables/table_engines.md) テーブル
 
-## SHOW FUNCTIONS {#show-functions}
+## SHOW FUNCTIONS \{#show-functions\}
 
 `SHOW FUNCTIONS` ステートメントは、[`system.functions`](../../operations/system-tables/functions.md) テーブルの内容を表示します。
 
-### 構文 {#syntax-24}
+### 構文 \{#syntax-24\}
 
 ```sql title="Syntax"
 SHOW FUNCTIONS [LIKE | ILIKE '<pattern>']
@@ -700,11 +700,11 @@ SHOW FUNCTIONS [LIKE | ILIKE '<pattern>']
 `LIKE` 句または `ILIKE` 句が指定されている場合、クエリは名前が指定された `<pattern>` に一致するシステム関数の一覧を返します。
 
 
-### 関連項目 {#see-also-7}
+### 関連項目 \{#see-also-7\}
 
 * [`system.functions`](../../operations/system-tables/functions.md) テーブル
 
-## SHOW MERGES {#show-merges}
+## SHOW MERGES \{#show-merges\}
 
 `SHOW MERGES` ステートメントは、マージの一覧を返します。
 すべてのマージは [`system.merges`](../../operations/system-tables/merges.md) テーブルに一覧表示されます。
@@ -720,14 +720,14 @@ SHOW FUNCTIONS [LIKE | ILIKE '<pattern>']
 | `size_compressed`   | マージされたパーツの圧縮データの合計サイズ。   |
 | `memory_usage`      | マージ処理のメモリ使用量。            |
 
-### 構文 {#syntax-25}
+### 構文 \{#syntax-25\}
 
 ```sql title="Syntax"
 SHOW MERGES [[NOT] LIKE|ILIKE '<table_name_pattern>'] [LIMIT <N>]
 ```
 
 
-### 例 {#examples-8}
+### 例 \{#examples-8\}
 
 ```sql title="Query"
 SHOW MERGES;
@@ -750,11 +750,11 @@ SHOW MERGES LIKE 'your_t%' LIMIT 1;
 ```
 
 
-## SHOW CREATE MASKING POLICY {#show-create-masking-policy}
+## SHOW CREATE MASKING POLICY \{#show-create-masking-policy\}
 
 `SHOW CREATE MASKING POLICY` ステートメントは、[マスキングポリシーの作成](../../sql-reference/statements/create/masking-policy.md) の際に使用されたパラメーターを表示します。
 
-### 構文 {#syntax-26}
+### 構文 \{#syntax-26\}
 
 ```sql title="Syntax"
 SHOW CREATE MASKING POLICY name ON [database.]table

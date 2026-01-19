@@ -22,7 +22,7 @@ ClickStack 的核心理念简单但强大：所有可观测性数据都应以宽
 ClickStack 利用 ClickHouse 的列式架构、原生 JSON 支持以及完全并行化的执行引擎，高效处理高基数工作负载。这使得在海量数据集上实现亚秒级查询、对大时间范围进行快速聚合，以及对单条追踪进行深度检查成为可能。JSON 以压缩的列式格式存储，从而允许在无需手动干预或预先定义模式的情况下进行模式演进。
 
 
-## 功能 {#features}
+## 功能 \{#features\}
 
 该技术栈包含多个专为调试和根因分析设计的关键功能：
 
@@ -40,7 +40,7 @@ ClickStack 利用 ClickHouse 的列式架构、原生 JSON 支持以及完全并
 - 使用事件差异（event deltas）识别异常和性能回归
 - 日志模式识别
 
-## 组件 {#components}
+## 组件 \{#components\}
 
 ClickStack 由三个核心组件组成：
 
@@ -52,35 +52,35 @@ ClickStack 由三个核心组件组成：
 
 开始之前，请先访问[入门指南](/use-cases/observability/clickstack/getting-started)，然后加载[示例数据集](/use-cases/observability/clickstack/sample-datasets)。你还可以查阅关于[部署选项](/use-cases/observability/clickstack/deployment)和[生产环境最佳实践](/use-cases/observability/clickstack/production)的文档。
 
-## 原则 {#clickstack-principles}
+## 原则 \{#clickstack-principles\}
 
 ClickStack 的设计基于一套核心原则，在可观测性栈的各个层面优先兼顾易用性、性能和灵活性：
 
-### 几分钟内即可轻松完成设置 {#clickstack-easy-to-setup}
+### 几分钟内即可轻松完成设置 \{#clickstack-easy-to-setup\}
 
 ClickStack 能与任意 ClickHouse 实例和 schema 开箱即用，仅需极少配置。无论是全新部署，还是集成到现有环境，都可以在几分钟内完成并投入使用。
 
-### 易用且为可观测性量身打造 {#user-friendly-purpose-built}
+### 易用且为可观测性量身打造 \{#user-friendly-purpose-built\}
 
 HyperDX UI 同时支持 SQL 和类 Lucene 语法，使用户可以选择最契合其工作流的查询界面。该 UI 专为可观测性打造，并经过优化，可帮助团队快速定位根因，顺畅地浏览和分析复杂数据。
 
-### 端到端可观测性 {#end-to-end-observability}
+### 端到端可观测性 \{#end-to-end-observability\}
 
 ClickStack 提供从前端用户会话到后端基础设施指标、应用日志以及分布式追踪的全栈可见性。这一统一视图有助于在整个系统范围内开展深度的关联分析。
 
-### 专为 ClickHouse 设计 {#built-for-clickhouse}
+### 专为 ClickHouse 设计 \{#built-for-clickhouse\}
 
 该技术栈的每一层都旨在充分发挥 ClickHouse 的能力。查询经过优化，以充分利用 ClickHouse 的分析函数和列式引擎，从而在海量数据上实现高速搜索与聚合。
 
-### 原生支持 OpenTelemetry {#open-telemetry-native}
+### 原生支持 OpenTelemetry \{#open-telemetry-native\}
 
 ClickStack 与 OpenTelemetry 原生集成，通过 OpenTelemetry Collector 端点摄取全部数据。对于高级用户，它还支持使用原生文件格式、自定义管道或 Vector 等第三方工具将数据直接摄取到 ClickHouse 中。
 
-### 开源且完全可自定义 {#open-source-and-customizable}
+### 开源且完全可自定义 \{#open-source-and-customizable\}
 
 ClickStack 完全开源，可部署在任何环境中。其 schema 灵活且可由用户修改，UI 在设计时就考虑了对自定义 schema 的支持，可在无需修改的情况下进行适配。所有组件——包括 collectors、ClickHouse 和 UI——都可以独立伸缩，以满足摄取、查询或存储方面的需求。
 
-## 架构概览 {#architectural-overview}
+## 架构概览 \{#architectural-overview\}
 
 <Image img={architecture} alt="简化架构" size="lg"/>
 

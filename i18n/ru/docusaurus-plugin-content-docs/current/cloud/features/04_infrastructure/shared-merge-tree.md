@@ -12,7 +12,7 @@ import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merg
 import Image from '@theme/IdealImage';
 
 
-# Движок таблиц SharedMergeTree {#sharedmergetree-table-engine}
+# Движок таблиц SharedMergeTree \{#sharedmergetree-table-engine\}
 
 Семейство движков таблиц SharedMergeTree — это облачный (cloud‑native) аналог движков ReplicatedMergeTree, оптимизированный для работы поверх общего хранилища (например, Amazon S3, Google Cloud Storage, MinIO, Azure Blob Storage). Для каждого конкретного типа движка MergeTree существует соответствующий SharedMergeTree, то есть SharedReplacingMergeTree заменяет ReplicatedReplacingMergeTree.
 
@@ -34,7 +34,7 @@ import Image from '@theme/IdealImage';
 
 В отличие от ReplicatedMergeTree, SharedMergeTree не требует, чтобы реплики напрямую обменивались данными друг с другом. Вместо этого весь обмен происходит через общее хранилище и clickhouse-keeper. SharedMergeTree реализует асинхронную репликацию без лидера и использует clickhouse-keeper для координации и хранения метаданных. Это означает, что метаданные не нужно реплицировать при изменении масштаба сервиса. Это приводит к более быстрой репликации, выполнению мутаций, слияниям и операциям масштабирования. SharedMergeTree поддерживает сотни реплик для каждой таблицы, что делает возможным динамическое масштабирование без шардов. В ClickHouse Cloud используется подход распределённого выполнения запросов для задействования большего количества вычислительных ресурсов на один запрос.
 
-## Интроспекция {#introspection}
+## Интроспекция \{#introspection\}
 
 Большинство системных таблиц, используемых для интроспекции ReplicatedMergeTree, доступны и для SharedMergeTree, за исключением `system.replication_queue` и `system.replicated_fetches`, так как в SharedMergeTree нет репликации данных и метаданных. Однако для этих двух таблиц в SharedMergeTree есть соответствующие альтернативы.
 
@@ -46,7 +46,7 @@ import Image from '@theme/IdealImage';
 
 Эта таблица является альтернативой `system.replicated_fetches` для SharedMergeTree. Она содержит информацию о текущих выполняющихся операциях выборки (fetches) первичных ключей и контрольных сумм в память.
 
-## Включение SharedMergeTree {#enabling-sharedmergetree}
+## Включение SharedMergeTree \{#enabling-sharedmergetree\}
 
 `SharedMergeTree` включён по умолчанию.
 
@@ -100,7 +100,7 @@ ORDER BY key
 ```
 
 
-## Настройки {#settings}
+## Настройки \{#settings\}
 
 Поведение некоторых настроек значительно изменилось:
 
@@ -108,7 +108,7 @@ ORDER BY key
 - `insert_quorum_parallel` -- все вставки в SharedMergeTree являются кворумными вставками (записываются в общее хранилище), поэтому эта настройка не требуется при использовании движка таблицы SharedMergeTree.
 - `select_sequential_consistency` -- не требует кворумных вставок, приведёт к дополнительной нагрузке на clickhouse-keeper при выполнении запросов `SELECT`
 
-## Согласованность {#consistency}
+## Согласованность \{#consistency\}
 
 SharedMergeTree обеспечивает более сильные (lightweight) гарантии согласованности, чем ReplicatedMergeTree. При вставке в SharedMergeTree вам не нужно указывать настройки, такие как `insert_quorum` или `insert_quorum_parallel`. Вставки являются кворумными, то есть метаданные будут сохранены в ClickHouse-Keeper, и эти метаданные реплицируются как минимум на кворум узлов ClickHouse-Keeper. Каждая реплика в вашем кластере будет асинхронно получать новую информацию из ClickHouse-Keeper.
 

@@ -7,11 +7,11 @@ title: 'Табличный движок Redis'
 doc_type: 'guide'
 ---
 
-# Табличный движок Redis {#redis-table-engine}
+# Табличный движок Redis \{#redis-table-engine\}
 
 Этот движок позволяет интегрировать ClickHouse с [Redis](https://redis.io/). Поскольку Redis использует модель ключ–значение (kv), настоятельно рекомендуется выполнять только точечные запросы, например `where k=xx` или `where k in (xx, xx)`.
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -42,7 +42,7 @@ PRIMARY KEY(primary_key_name);
 Запросы с `key equals` или `in filtering` будут оптимизированы до поиска по нескольким ключам в Redis. Если запросы выполняются без ключа фильтрации, будет выполнено полное сканирование таблицы, что является ресурсоёмкой операцией.
 :::
 
-## Пример использования {#usage-example}
+## Пример использования \{#usage-example\}
 
 Создайте таблицу в ClickHouse с движком `Redis`, явно указав аргументы:
 
@@ -150,7 +150,7 @@ Join:
 SELECT * FROM redis_table JOIN merge_tree_table ON merge_tree_table.key=redis_table.key;
 ```
 
-## Ограничения {#limitations}
+## Ограничения \{#limitations\}
 
 Движок Redis также поддерживает запросы сканирования, такие как `where k > xx`, но у него есть некоторые ограничения:
 1. Запрос сканирования может привести к появлению дублирующихся ключей в очень редких случаях, когда выполняется рехеширование. См. подробности в [Redis Scan](https://github.com/redis/redis/blob/e4d183afd33e0b2e6e8d1c79a832f678a04a7886/src/dict.c#L1186-L1269).

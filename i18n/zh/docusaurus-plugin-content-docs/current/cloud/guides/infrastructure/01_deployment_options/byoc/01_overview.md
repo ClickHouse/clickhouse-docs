@@ -11,7 +11,7 @@ import Image from '@theme/IdealImage';
 import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';
 
 
-## 概览 {#overview}
+## 概览 \{#overview\}
 
 BYOC（Bring Your Own Cloud，自有云环境）允许您在自己的云基础设施上部署 ClickHouse Cloud。若您有特定需求或限制，无法使用 ClickHouse Cloud 托管服务，此方式会非常有用。
 
@@ -27,13 +27,13 @@ BYOC 专为大规模部署设计，并要求客户签署具有使用承诺的合
 * GCP（Private Preview）。如果您感兴趣，请在[此处](https://clickhouse.com/cloud/bring-your-own-cloud)加入候补名单。
 * Azure（Roadmap）。如果您感兴趣，请在[此处](https://clickhouse.com/cloud/bring-your-own-cloud)加入候补名单。
 
-## 术语表 {#glossary}
+## 术语表 \{#glossary\}
 
 - **ClickHouse VPC：** ClickHouse Cloud 拥有的 VPC。
 - **Customer BYOC VPC：** 由客户云账户拥有、由 ClickHouse Cloud 预配和管理，并专用于 ClickHouse Cloud BYOC 部署的 VPC。
 - **Customer VPC：** 由客户云账户拥有、供需连接到 Customer BYOC VPC 的应用程序使用的其他 VPC。
 
-## 架构 {#architecture}
+## 架构 \{#architecture\}
 
 指标和日志存储在客户的 BYOC VPC 中。目前日志本地存储在 EBS 上。在未来的更新中，日志将存储在 LogHouse 中，它是在客户 BYOC VPC 内运行的 ClickHouse 服务。指标通过 Prometheus 和 Thanos 技术栈实现，并本地存储在客户的 BYOC VPC 中。
 
@@ -43,9 +43,9 @@ BYOC 专为大规模部署设计，并要求客户签署具有使用承诺的合
 
 <br />
 
-## 功能 {#features}
+## 功能 \{#features\}
 
-### 已支持的功能 {#supported-features}
+### 已支持的功能 \{#supported-features\}
 
 - **SharedMergeTree**：ClickHouse Cloud 和 BYOC 使用相同的二进制文件和配置。因此，来自 ClickHouse 核心的所有功能（如 SharedMergeTree）在 BYOC 中均受支持。
 - **用于管理服务状态的控制台访问**：
@@ -64,7 +64,7 @@ BYOC 专为大规模部署设计，并要求客户签署具有使用承诺的合
 - **安全的 S3 访问。**
 - **[AWS PrivateLink](https://aws.amazon.com/privatelink/)。**
 
-### 计划中的功能（当前不支持） {#planned-features-currently-unsupported}
+### 计划中的功能（当前不支持） \{#planned-features-currently-unsupported\}
 
 - [AWS KMS](https://aws.amazon.com/kms/)，即 CMEK（客户管理的加密密钥）
 - ClickPipes

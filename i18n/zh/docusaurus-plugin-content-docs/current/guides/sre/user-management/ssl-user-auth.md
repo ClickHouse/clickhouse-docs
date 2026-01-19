@@ -8,7 +8,7 @@ doc_type: 'guide'
 keywords: ['ssl', '身份验证', '安全', '证书', '用户管理']
 ---
 
-# 配置用于身份验证的 SSL 用户证书 {#configuring-ssl-user-certificate-for-authentication}
+# 配置用于身份验证的 SSL 用户证书 \{#configuring-ssl-user-certificate-for-authentication\}
 
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
@@ -27,7 +27,7 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 > :::
 
 
-## 1. 创建 SSL 用户证书 {#1-create-ssl-user-certificates}
+## 1. 创建 SSL 用户证书 \{#1-create-ssl-user-certificates\}
 
 :::note
 本示例使用由自签名 CA 签发的自签名证书。对于生产环境，请创建 CSR 并提交给 PKI 团队或证书提供商以获取正式证书。
@@ -54,7 +54,7 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
     openssl x509 -req -in chnode1_cert_user.csr -out chnode1_cert_user.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365
     ```
 
-## 2. 创建 SQL 用户并授予权限 {#2-create-a-sql-user-and-grant-permissions}
+## 2. 创建 SQL 用户并授予权限 \{#2-create-a-sql-user-and-grant-permissions\}
 
 :::note
 有关如何启用 SQL 用户和设置角色的详细信息，请参阅用户指南：[Defining SQL Users and Roles](index.md)。
@@ -92,7 +92,7 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
     ```
     :::
 
-## 3. 测试 {#3-testing}
+## 3. 测试 \{#3-testing\}
 
 1. 将用户证书、用户密钥和 CA 证书复制到某个远程节点。
 
@@ -116,7 +116,7 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
     请注意，当在配置中指定了证书时，传递给 clickhouse-client 的密码会被忽略。
     :::
 
-## 4. 测试 HTTP {#4-testing-http}
+## 4. 测试 HTTP \{#4-testing-http\}
 
 1. 将用户证书、用户私钥和 CA 证书复制到一个远程节点上。
 
@@ -139,6 +139,6 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
     请注意，这里没有指定密码。证书用来替代密码，这是 ClickHouse 对用户进行身份验证的方式。
     :::
 
-## 摘要 {#summary}
+## 摘要 \{#summary\}
 
 本文介绍了为 SSL 证书认证创建和配置用户的基本方法。此方法可用于 `clickhouse-client`，或任何支持 `https` 接口且可以设置 HTTP 头的客户端。由于生成的证书和密钥用于对用户在 ClickHouse 数据库上的操作进行身份验证和授权，因此必须妥善保管，并严格限制访问权限。请像对待密码一样对待该证书和密钥。

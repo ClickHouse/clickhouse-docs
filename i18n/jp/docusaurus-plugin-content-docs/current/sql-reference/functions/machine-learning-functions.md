@@ -6,21 +6,21 @@ title: '機械学習関数'
 doc_type: 'reference'
 ---
 
-# 機械学習関数 {#machine-learning-functions}
+# 機械学習関数 \{#machine-learning-functions\}
 
-## evalMLMethod {#evalmlmethod}
+## evalMLMethod \{#evalmlmethod\}
 
 学習済みの回帰モデルを用いた予測には `evalMLMethod` 関数を使用します。詳細は `linearRegression` を参照してください。
 
-## stochasticLinearRegression {#stochasticlinearregression}
+## stochasticLinearRegression \{#stochasticlinearregression\}
 
 [stochasticLinearRegression](/sql-reference/aggregate-functions/reference/stochasticlinearregression) 集約関数は、線形モデルと MSE 損失関数を用いる確率的勾配降下法を実装します。新しいデータに対する予測には `evalMLMethod` を使用します。
 
-## stochasticLogisticRegression {#stochasticlogisticregression}
+## stochasticLogisticRegression \{#stochasticlogisticregression\}
 
 [stochasticLogisticRegression](/sql-reference/aggregate-functions/reference/stochasticlogisticregression) 集約関数は、二値分類問題に対して確率的勾配降下法を実装したものです。新しいデータに対する予測には `evalMLMethod` を使用します。
 
-## naiveBayesClassifier {#naivebayesclassifier}
+## naiveBayesClassifier \{#naivebayesclassifier\}
 
 n-gram およびラプラス平滑化を用いる Naive Bayes モデルで入力テキストを分類します。モデルは使用前に ClickHouse 上で事前に設定されている必要があります。
 
@@ -60,7 +60,7 @@ SELECT naiveBayesClassifier('language', 'How are you?');
 
 ***
 
-### 実装の詳細 {#implementation-details}
+### 実装の詳細 \{#implementation-details\}
 
 **アルゴリズム**
 Naive Bayes 分類アルゴリズムを使用し、未出現の n-gram を扱うために [Laplace smoothing](https://en.wikipedia.org/wiki/Additive_smoothing) を用います。n-gram の確率は [この資料](https://web.stanford.edu/~jurafsky/slp3/4.pdf) に基づきます。
@@ -75,7 +75,7 @@ Naive Bayes 分類アルゴリズムを使用し、未出現の n-gram を扱う
 
 ***
 
-### モデル設定 {#model-configuration}
+### モデル設定 \{#model-configuration\}
 
 言語検出用の Naive Bayes モデルを作成するためのサンプルソースコードは[こちら](https://github.com/nihalzp/ClickHouse-NaiveBayesClassifier-Models)にあります。
 

@@ -23,7 +23,7 @@ description: 'ClickHouse コミュニティから、実際のユースケース�
 
 
 
-# ClickHouse コミュニティの知見：ミートアップから得たヒントとテクニック {#community-wisdom}
+# ClickHouse コミュニティの知見：ミートアップから得たヒントとテクニック \{#community-wisdom\}
 
 *これらのインタラクティブガイドは、数百件におよぶ本番環境でのデプロイメントから得られた集合知を表しています。各実行可能なサンプルは、実際の GitHub events データを用いて ClickHouse のパターンを理解するのに役立ちます。これらの概念を実践してよくあるミスを避け、成功までの道のりを加速しましょう。*
 
@@ -31,7 +31,7 @@ description: 'ClickHouse コミュニティから、実際のユースケース�
 
 
 
-## 問題別クイックジャンプ {#problem-specific-quick-jumps}
+## 問題別クイックジャンプ \{#problem-specific-quick-jumps\}
 
 | 課題 | ドキュメント | 説明 |
 |-------|---------|-------------|

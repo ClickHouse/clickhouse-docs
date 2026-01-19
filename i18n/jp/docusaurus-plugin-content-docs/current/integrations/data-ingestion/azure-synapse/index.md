@@ -5,6 +5,9 @@ description: 'ClickHouse と連携した Azure Synapse の概要'
 keywords: ['clickhouse', 'azure synapse', 'azure', 'synapse', 'microsoft', 'azure spark', 'data']
 title: 'Azure Synapse と ClickHouse の連携'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import TOCInline from '@theme/TOCInline';
@@ -13,8 +16,7 @@ import sparkConfigViaNotebook from '@site/static/images/integrations/data-ingest
 import sparkUICHSettings from '@site/static/images/integrations/data-ingestion/azure-synapse/spark_ui_ch_settings.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Azure Synapse と ClickHouse の連携 {#integrating-azure-synapse-with-clickhouse}
+# Azure Synapse と ClickHouse の連携 \{#integrating-azure-synapse-with-clickhouse\}
 
 <ClickHouseSupportedBadge/>
 
@@ -25,7 +27,7 @@ Synapse 内では、Spark プールがオンデマンドかつスケーラブル
 
 <TOCInline toc={toc}></TOCInline>
 
-## コネクタの依存関係を追加する {#add-connector-dependencies}
+## コネクタの依存関係を追加する \{#add-connector-dependencies\}
 Azure Synapse では、次の 3 つのレベルでの[パッケージ管理](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-portal-add-libraries)がサポートされています：
 1. 既定のパッケージ
 2. Spark プール レベル
@@ -39,7 +41,7 @@ Azure Synapse では、次の 3 つのレベルでの[パッケージ管理](htt
 
 どのバージョンが要件に適合するかを確認するには、[Spark Connector Compatibility Matrix](/integrations/apache-spark/spark-native-connector#compatibility-matrix) ドキュメントを参照してください。
 
-## ClickHouse をカタログとして追加する {#add-clickhouse-as-catalog}
+## ClickHouse をカタログとして追加する \{#add-clickhouse-as-catalog\}
 
 セッションに Spark の設定を追加する方法はいくつかあります。
 
@@ -78,14 +80,14 @@ ClickHouse Cloud を利用する場合は、必ず [必須の Spark 設定](/int
 :::
 
 
-## セットアップの検証 {#setup-verification}
+## セットアップの検証 \{#setup-verification\}
 
 依存関係および設定が正しく構成されていることを確認するには、該当セッションの Spark UI を開き、`Environment` タブを表示します。
 そこで、ClickHouse に関連する設定を探します。
 
 <Image img={sparkUICHSettings} size="xl" alt="Spark UI を使用した ClickHouse 設定の検証" border/>
 
-## 参考資料 {#additional-resources}
+## 参考資料 \{#additional-resources\}
 
 - [ClickHouse Spark Connector のドキュメント](/integrations/apache-spark)
 - [Azure Synapse Spark プールの概要](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-overview)

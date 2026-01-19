@@ -6,7 +6,7 @@ title: 'ARRAY JOIN 子句'
 doc_type: 'reference'
 ---
 
-# ARRAY JOIN 子句 {#array-join-clause}
+# ARRAY JOIN 子句 \{#array-join-clause\}
 
 对于包含数组列的表，一个常见操作是生成一个新表：在该新表中，原始数组列中的每个数组元素各占一行，而其他列的值会被复制重复。这是 `ARRAY JOIN` 子句的基本用例。
 
@@ -27,9 +27,9 @@ FROM <left_subquery>
 * `ARRAY JOIN` - 在默认情况下，`JOIN` 结果中不包含空数组。
 * `LEFT ARRAY JOIN` - `JOIN` 结果中会包含含有空数组的行。空数组的值被设置为数组元素类型的默认值（通常是 0、空字符串或 NULL）。
 
-## 基本 ARRAY JOIN 示例 {#basic-array-join-examples}
+## 基本 ARRAY JOIN 示例 \{#basic-array-join-examples\}
 
-### ARRAY JOIN 和 LEFT ARRAY JOIN {#array-join-left-array-join-examples}
+### ARRAY JOIN 和 LEFT ARRAY JOIN \{#array-join-left-array-join-examples\}
 
 下面的示例展示了 `ARRAY JOIN` 和 `LEFT ARRAY JOIN` 子句的用法。我们先创建一个包含 [Array](../../../sql-reference/data-types/array.md) 类型列的表，并向其中插入值：
 
@@ -89,7 +89,7 @@ LEFT ARRAY JOIN arr;
 └─────────────┴─────┘
 ```
 
-### ARRAY JOIN 和 arrayEnumerate 函数 {#array-join-arrayEnumerate}
+### ARRAY JOIN 和 arrayEnumerate 函数 \{#array-join-arrayEnumerate\}
 
 此函数通常与 `ARRAY JOIN` 一起使用。它可以在应用 `ARRAY JOIN` 之后，对每个数组只计数一次。示例：
 
@@ -127,7 +127,7 @@ WHERE (CounterID = 160656) AND notEmpty(GoalsReached)
 └─────────┴───────┘
 ```
 
-### ARRAY JOIN 和 arrayEnumerateUniq {#array_join_arrayEnumerateUniq}
+### ARRAY JOIN 和 arrayEnumerateUniq \{#array_join_arrayEnumerateUniq\}
 
 在使用 `ARRAY JOIN` 并对数组元素进行聚合时，此函数非常有用。
 
@@ -163,7 +163,7 @@ LIMIT 10
 └─────────┴─────────┴────────┘
 ```
 
-## 使用别名 {#using-aliases}
+## 使用别名 \{#using-aliases\}
 
 可以在 `ARRAY JOIN` 子句中为数组指定一个别名。在这种情况下，可以通过该别名访问数组元素，但数组本身仍通过原始名称访问。示例：
 
@@ -261,7 +261,7 @@ SETTINGS enable_unaligned_array_join = 1;
 └─────────┴─────────┴───┴───────────┘
 ```
 
-## ARRAY JOIN 与嵌套数据结构 {#array-join-with-nested-data-structure}
+## ARRAY JOIN 与嵌套数据结构 \{#array-join-with-nested-data-structure\}
 
 `ARRAY JOIN` 也可以用于[嵌套数据结构](../../../sql-reference/data-types/nested-data-structures/index.md)：
 
@@ -374,16 +374,16 @@ ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 └───────┴─────┴─────┴─────────┴────────────┴─────┘
 ```
 
-## 实现细节 {#implementation-details}
+## 实现细节 \{#implementation-details\}
 
 在运行 `ARRAY JOIN` 时，查询的执行顺序会被优化。尽管在查询中 `ARRAY JOIN` 必须始终写在 [WHERE](../../../sql-reference/statements/select/where.md)/[PREWHERE](../../../sql-reference/statements/select/prewhere.md) 子句之前，但从技术上讲，它们可以按任意顺序执行，除非需要使用 `ARRAY JOIN` 的结果进行过滤。具体执行顺序由查询优化器决定。
 
-### 与短路函数求值的不兼容性 {#incompatibility-with-short-circuit-function-evaluation}
+### 与短路函数求值的不兼容性 \{#incompatibility-with-short-circuit-function-evaluation\}
 
 [短路函数求值](/operations/settings/settings#short_circuit_function_evaluation) 是一项功能，用于在特定函数（如 `if`、`multiIf`、`and` 和 `or`）中优化复杂表达式的执行。它可以防止在执行这些函数时出现潜在异常，例如除以零错误。
 
 `arrayJoin` 始终会被执行，且不支持短路函数求值。这是因为它是一个在查询分析和执行过程中与其他所有函数分开处理的特殊函数，并且需要额外的逻辑，而这些逻辑无法与短路函数执行配合使用。原因在于结果中的行数取决于 `arrayJoin` 的结果，实现对 `arrayJoin` 的惰性执行过于复杂且代价高昂。
 
-## 相关内容 {#related-content}
+## 相关内容 \{#related-content\}
 
 - 博客文章：[在 ClickHouse 中处理时序数据](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

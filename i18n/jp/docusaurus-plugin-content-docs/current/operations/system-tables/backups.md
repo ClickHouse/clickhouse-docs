@@ -6,7 +6,7 @@ title: 'system.backups'
 doc_type: 'reference'
 ---
 
-# system.backups {#systembackups}
+# system.backups \{#systembackups\}
 
 すべての `BACKUP` または `RESTORE` 操作と、その現在の状態およびその他のプロパティの一覧を含みます。なお、このテーブルは永続化されず、最後にサーバーを再起動して以降に実行された操作のみが表示されます。
 

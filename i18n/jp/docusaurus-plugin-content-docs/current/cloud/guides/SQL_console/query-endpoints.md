@@ -17,11 +17,11 @@ import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# クエリ API エンドポイントのセットアップ {#setting-up-query-api-endpoints}
+# クエリ API エンドポイントのセットアップ \{#setting-up-query-api-endpoints\}
 
 **Query API Endpoints** 機能を使用すると、ClickHouse Cloud コンソールで任意の保存済み SQL クエリから、直接 API エンドポイントを作成できます。ClickHouse Cloud サービスにネイティブ ドライバーで接続する必要なく、HTTP 経由で API エンドポイントにアクセスして保存済みクエリを実行できるようになります。
 
-## 事前準備 {#quick-start-guide}
+## 事前準備 \{#quick-start-guide\}
 
 先に進む前に、次の準備ができていることを確認してください:
 
@@ -36,7 +36,7 @@ API エンドポイントに対してクエリを実行するには、API キー
 
 <VerticalStepper headerLevel="h3">
 
-### 保存済みクエリを作成する {#creating-a-saved-query}
+### 保存済みクエリを作成する \{#creating-a-saved-query\}
 
 すでに保存済みクエリがある場合は、このステップをスキップできます。
 
@@ -83,7 +83,7 @@ SQL コンソールのクエリエディタは ClickHouse のクエリパラメ�
 
 保存済みクエリに関する詳細なドキュメントは、「[クエリを保存する](/cloud/get-started/sql-console#saving-a-query)」セクションを参照してください。
 
-### クエリ API エンドポイントの設定 {#configuring-the-query-api-endpoint}
+### クエリ API エンドポイントの設定 \{#configuring-the-query-api-endpoint\}
 
 クエリビューから直接、**Share** ボタンをクリックし、`API Endpoint` を選択することで Query API エンドポイントを設定できます。
 どの API キーがこのエンドポイントへアクセスできるかを指定するよう促されます:
@@ -106,11 +106,11 @@ API キーを選択した後、次の項目を指定します:
 curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API-endpoint>?format=JSONEachRow&param_year=<value>'
 ```
 
-### Query API パラメータ {#query-api-parameters}
+### Query API パラメータ \{#query-api-parameters\}
 
 クエリ内のクエリパラメータは `{parameter_name: type}` という構文で指定できます。これらのパラメータは自動的に検出され、サンプルリクエストのペイロードには、これらのパラメータを渡すための `queryVariables` オブジェクトが含まれます。
 
-### テストとモニタリング {#testing-and-monitoring}
+### テストとモニタリング \{#testing-and-monitoring\}
 
 Query API エンドポイントを作成したら、`curl` やその他の HTTP クライアントを使用して動作をテストできます:
 
@@ -122,7 +122,7 @@ Query API エンドポイントを作成したら、`curl` やその他の HTTP 
 
 </VerticalStepper>
 
-## 実装の詳細 {#implementation-details}
+## 実装の詳細 \{#implementation-details\}
 
 このエンドポイントは、保存済みの Query API エンドポイントに対してクエリを実行します。
 複数バージョンへの対応、柔軟なレスポンス形式、パラメータ付きクエリ、およびオプションのストリーミングレスポンス（バージョン 2 のみ）をサポートします。
@@ -134,7 +134,7 @@ GET /query-endpoints/{queryEndpointId}/run
 POST /query-endpoints/{queryEndpointId}/run
 ```
 
-### HTTP メソッド {#http-methods}
+### HTTP メソッド \{#http-methods\}
 
 | メソッド | ユースケース | パラメータ |
 |---------|----------|------------|
@@ -153,21 +153,21 @@ POST /query-endpoints/{queryEndpointId}/run
 - セキュリティ／プライバシー上、リクエストボディで送信することが望ましい場合
 - ストリーミングによるファイルアップロードや大容量データを送信する場合
 
-### 認証 {#authentication}
+### 認証 \{#authentication\}
 
 **必須:** はい  
 **方式:** OpenAPI キー／シークレットを使用した Basic 認証  
 **権限:** クエリエンドポイントに対して適切な権限
 
-### リクエスト設定 {#request-configuration}
+### リクエスト設定 \{#request-configuration\}
 
-#### URL パラメータ {#url-params}
+#### URL パラメータ \{#url-params\}
 
 | パラメータ | 必須 | 説明 |
 |-----------|----------|-------------|
 | `queryEndpointId` | **はい** | 実行するクエリエンドポイントの一意の識別子 |
 
-#### クエリパラメータ {#query-params}
+#### クエリパラメータ \{#query-params\}
 
 | Parameter | Required | Description | Example |
 |-----------|----------|-------------|---------|
@@ -176,7 +176,7 @@ POST /query-endpoints/{queryEndpointId}/run
 | `request_timeout` | No | クエリのタイムアウト（ミリ秒単位、デフォルト: 30000） | `?request_timeout=60000` |
 | `:clickhouse_setting` | No | サポートされている任意の [ClickHouse 設定](https://clickhouse.com/docs/operations/settings/settings) | `?max_threads=8` |
 
-#### ヘッダー {#headers}
+#### ヘッダー \{#headers\}
 
 | ヘッダー | 必須 | 説明 | 値 |
 |--------|----------|-------------|--------|
@@ -185,16 +185,16 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ---
 
-### リクエストボディ {#request-body}
+### リクエストボディ \{#request-body\}
 
-#### パラメーター {#params}
+#### パラメーター \{#params\}
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `queryVariables` | object | No | クエリで使用する変数 |
 | `format` | string | No | レスポンス形式 |
 
-#### サポートされるフォーマット {#supported-formats}
+#### サポートされるフォーマット \{#supported-formats\}
 
 | バージョン             | サポートされるフォーマット                                                                                                                                      |
 |-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -203,14 +203,14 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ---
 
-### レスポンス {#responses}
+### レスポンス \{#responses\}
 
-#### 成功 {#success}
+#### 成功 \{#success\}
 
 **ステータス:** `200 OK`  
 クエリは正常に実行されました。
 
-#### エラーコード {#error-codes}
+#### エラーコード \{#error-codes\}
 
 | ステータスコード | 説明 |
 |-------------|-------------|
@@ -218,7 +218,7 @@ POST /query-endpoints/{queryEndpointId}/run
 | `401 Unauthorized` | 認証情報がないか、権限が不足しています |
 | `404 Not Found` | 指定されたクエリエンドポイントが見つかりませんでした |
 
-#### エラー処理のベストプラクティス {#error-handling-best-practices}
+#### エラー処理のベストプラクティス \{#error-handling-best-practices\}
 
 - リクエストに有効な認証情報が含まれていることを確認する
 - 送信前に `queryEndpointId` と `queryVariables` を検証する
@@ -226,7 +226,7 @@ POST /query-endpoints/{queryEndpointId}/run
 
 ---
 
-### エンドポイントバージョンのアップグレード {#upgrading-endpoint-versions}
+### エンドポイントバージョンのアップグレード \{#upgrading-endpoint-versions\}
 
 バージョン 1 からバージョン 2 にアップグレードするには、次のようにします。
 
@@ -239,9 +239,9 @@ POST /query-endpoints/{queryEndpointId}/run
 - レスポンスのストリーミング機能
 - パフォーマンスおよび機能の強化
 
-## 例 {#examples}
+## 例 \{#examples\}
 
-### 基本的なリクエスト {#basic-request}
+### 基本的なリクエスト \{#basic-request\}
 
 **クエリ API エンドポイント用の SQL:**
 
@@ -249,7 +249,7 @@ POST /query-endpoints/{queryEndpointId}/run
 SELECT database, name AS num_tables FROM system.tables LIMIT 3;
 ```
 
-#### バージョン 1 {#version-1}
+#### バージョン 1 \{#version-1\}
 
 <Tabs>
 <TabItem value="cURL" label="cURL" default>
@@ -306,7 +306,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-#### バージョン 2 {#version-2}
+#### バージョン 2 \{#version-2\}
 
 <Tabs>
 <TabItem value="GET" label="GET (cURL)" default>
@@ -360,7 +360,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-### Request with query variables and version 2 on JSONCompactEachRow format {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
+### Request with query variables and version 2 on JSONCompactEachRow format \{#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format\}
 
 **Query API Endpoint SQL:**
 
@@ -430,7 +430,7 @@ SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: Stri
 
 </Tabs>
 
-### クエリ変数に配列を含む、テーブルにデータを挿入するリクエスト {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
+### クエリ変数に配列を含む、テーブルにデータを挿入するリクエスト \{#request-with-array-in-the-query-variables-that-inserts-data-into-a-table\}
 
 **Table SQL:**
 
@@ -495,7 +495,7 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
   </TabItem>
 </Tabs>
 
-### ClickHouse の設定 `max_threads` を 8 にしたリクエスト {#request-with-clickhouse-settings-max_threads-set-to-8}
+### ClickHouse の設定 `max_threads` を 8 にしたリクエスト \{#request-with-clickhouse-settings-max_threads-set-to-8\}
 
 **クエリ API エンドポイントの SQL:**
 
@@ -541,7 +541,7 @@ SELECT * FROM system.tables;
   </TabItem>
 </Tabs>
 
-### レスポンスをストリームとしてリクエストしてパースする` {#request-and-parse-the-response-as-a-stream}
+### レスポンスをストリームとしてリクエストしてパースする` \{#request-and-parse-the-response-as-a-stream\}
 
 **クエリ API エンドポイントの SQL:**
 
@@ -612,7 +612,7 @@ SELECT name, database FROM system.tables;
   </TabItem>
 </Tabs>
 
-### ファイルからテーブルにストリーム挿入する {#insert-a-stream-from-a-file-into-a-table}
+### ファイルからテーブルにストリーム挿入する \{#insert-a-stream-from-a-file-into-a-table\}
 
 次の内容でファイル `./samples/my_first_table_2024-07-11.csv` を作成します：
 

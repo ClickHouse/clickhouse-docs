@@ -18,7 +18,7 @@ import search_view from '@site/static/images/clickstack/nginx-logs-search-view.p
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# Мониторинг логов Nginx с помощью ClickStack {#nginx-clickstack}
+# Мониторинг логов Nginx с помощью ClickStack \{#nginx-clickstack\}
 
 :::note[Кратко]
 В этом руководстве показано, как настроить мониторинг Nginx с помощью ClickStack, настроив OTel collector для приёма access-логов Nginx. Вы узнаете, как:
@@ -33,12 +33,12 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 Необходимое время: 5–10 минут
 :::
 
-## Интеграция с существующим Nginx {#existing-nginx}
+## Интеграция с существующим Nginx \{#existing-nginx\}
 
 В этом разделе описывается, как настроить ваш существующий Nginx для отправки логов в ClickStack путём изменения конфигурации OTel collector в ClickStack.
 Если вы хотите протестировать интеграцию до настройки собственной среды, вы можете воспользоваться нашей предварительно настроенной конфигурацией и тестовыми данными в [следующем разделе](/use-cases/observability/clickstack/integrations/nginx#demo-dataset).
 
-##### Предварительные условия {#prerequisites}
+##### Предварительные условия \{#prerequisites\}
 
 - Развёрнутый экземпляр ClickStack
 - Установленный Nginx
@@ -194,7 +194,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### Загрузка демонстрационного датасета {#download-sample}
+#### Загрузка демонстрационного датасета \{#download-sample\}
 
 ```bash
 # Скачать логи
@@ -207,7 +207,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - Смесь успешных запросов и ошибок
 - Реалистичное время отклика и объем переданных байт
 
-#### Создание тестовой конфигурации коллектора {#test-config}
+#### Создание тестовой конфигурации коллектора \{#test-config\}
 
 Создайте файл с именем `nginx-demo.yaml` со следующей конфигурацией:
 
@@ -283,7 +283,7 @@ HyperDX отображает временные метки в локальном
 
 #### <TrackedLink href={useBaseUrl('/examples/nginx-logs-dashboard.json')} download="nginx-logs-dashboard.json" eventName="docs.nginx_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда {#download}
 
-#### Импортируйте готовый дашборд {#import-dashboard}
+#### Импортируйте готовый дашборд \{#import-dashboard\}
 1. Откройте HyperDX и перейдите в раздел "Dashboards".
 2. Нажмите "Import Dashboard" в правом верхнем углу под значком с многоточием.
 
@@ -293,7 +293,7 @@ HyperDX отображает временные метки в локальном
 
 <Image img={finish_import} alt="Завершить импорт"/>
 
-#### Дашборд будет создан со всеми предварительно настроенными визуализациями {#created-dashboard}
+#### Дашборд будет создан со всеми предварительно настроенными визуализациями \{#created-dashboard\}
 
 :::note
 Для демонстрационного набора данных задайте диапазон времени **2025-10-20 11:00:00 – 2025-10-21 11:00:00 (UTC)** (при необходимости скорректируйте под ваш часовой пояс). У импортированного дашборда по умолчанию не будет задан диапазон времени.

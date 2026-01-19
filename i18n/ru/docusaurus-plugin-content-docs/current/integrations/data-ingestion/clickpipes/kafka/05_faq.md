@@ -6,13 +6,14 @@ sidebar_position: 1
 title: 'FAQ по Kafka ClickPipes'
 doc_type: 'guide'
 keywords: ['kafka faq', 'clickpipes', 'upstash', 'azure event hubs', 'private link']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
+## Часто задаваемые вопросы о Kafka ClickPipes \{#faq\}
 
-
-## Часто задаваемые вопросы о Kafka ClickPipes {#faq}
-
-### Общие сведения {#general}
+### Общие сведения \{#general\}
 
 <details>
 
@@ -79,7 +80,7 @@ AWS PrivateLink поддерживается. См. [документацию](/
 
 </details>
 
-### Azure Event Hubs {#azure-eventhubs}
+### Azure Event Hubs \{#azure-eventhubs\}
 
 <details>
 
@@ -121,23 +122,22 @@ AWS PrivateLink поддерживается. См. [документацию](/
 
 <summary>Нужно ли указывать номер порта для Azure Event Hubs?</summary>
 
-
-Да. В ClickPipes ожидается, что вы укажете номер порта для конечной точки Kafka; он должен быть `:9093`.
-
-</details>
-
-<details>
-
-<summary>Остаются ли IP‑адреса ClickPipes актуальными для Azure Event Hubs?</summary>
-
-Да. Чтобы ограничить трафик к вашему экземпляру Event Hubs, добавьте [задокументированные статические NAT‑IP‑адреса](../
-/index.md#list-of-static-ips) в .
+Да. ClickPipes ожидает, что вы укажете номер порта Kafka-интерфейса — `:9093`.
 
 </details>
 
 <details>
-<summary>Строка подключения предназначена для отдельного Event Hub или для пространства имен Event Hubs?</summary>
 
-Оба варианта работают. Мы настоятельно рекомендуем использовать политику совместного доступа на **уровне пространства имен**, чтобы получать данные из нескольких экземпляров Event Hubs.
+<summary>Остаются ли IP-адреса ClickPipes по-прежнему актуальными для Azure Event Hubs?</summary>
+
+Да. Чтобы ограничить трафик к вашему экземпляру Event Hubs, добавьте [задокументированные статические NAT IP-адреса](../
+/index.md#list-of-static-ips) в настройки контроля доступа по IP.
+
+</details>
+
+<details>
+<summary>Строка подключения предназначена для Event Hub или для пространства имён Event Hub?</summary>
+
+Подходят оба варианта. Мы настоятельно рекомендуем использовать политику совместного доступа на **уровне пространства имён**, чтобы получать выборки из нескольких Event Hubs.
 
 </details>

@@ -5,12 +5,15 @@ slug: /integrations/clickpipes/mongodb/resync
 sidebar_label: '重新同步 ClickPipe'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
 import Image from '@theme/IdealImage';
 
-### Resync 有什么作用？ {#what-mongodb-resync-do}
+### Resync 有什么作用？ \{#what-mongodb-resync-do\}
 
 Resync 按如下顺序执行以下操作：
 
@@ -21,20 +24,20 @@ Resync 按如下顺序执行以下操作：
 
 原始 ClickPipe 的所有设置都会在 resync ClickPipe 中保留。原始 ClickPipe 的统计信息会在 UI 中被清除。
 
-### 何时需要对 ClickPipe 进行 Resync {#use-cases-mongodb-resync}
+### 何时需要对 ClickPipe 进行 Resync \{#use-cases-mongodb-resync\}
 
 以下是一些典型场景：
 
 1. 你可能需要对源表进行较大的 schema 变更，这会破坏现有的 ClickPipe，并需要重新启动。在完成这些变更后，你可以直接点击 Resync。
 2. 尤其是对于 ClickHouse，可能需要更改目标表上的 ORDER BY 键。你可以通过 Resync 将数据重新填充到具有正确排序键的新表中。
 
-### Resync ClickPipe 指南 {#guide-mongodb-resync}
+### Resync ClickPipe 指南 \{#guide-mongodb-resync\}
 
 1. 在 **Data Sources** 选项卡中，点击你想要执行 Resync 的 MongoDB ClickPipe。
 2. 转到 **Settings** 选项卡。
 3. 点击 **Resync** 按钮。
 
-<Image img={resync_button} border size="md" />
+<Image img={resync_button} border size="md"/>
 
 4. 会弹出一个确认对话框。再次点击 Resync。
 5. 前往 **Metrics** 选项卡。

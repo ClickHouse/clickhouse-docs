@@ -10,13 +10,13 @@ doc_type: 'guide'
 
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-# Настройка ClickHouse для использования LDAP при аутентификации и сопоставлении ролей {#configuring-clickhouse-to-use-ldap-for-authentication-and-role-mapping}
+# Настройка ClickHouse для использования LDAP при аутентификации и сопоставлении ролей \{#configuring-clickhouse-to-use-ldap-for-authentication-and-role-mapping\}
 
 <SelfManaged />
 
 ClickHouse можно настроить на использование LDAP для аутентификации пользователей базы данных. В этом руководстве приведён простой пример интеграции ClickHouse с системой LDAP, которая аутентифицирует пользователей по общедоступному каталогу.
 
-## 1. Настройка параметров подключения LDAP в ClickHouse {#1-configure-ldap-connection-settings-in-clickhouse}
+## 1. Настройка параметров подключения LDAP в ClickHouse \{#1-configure-ldap-connection-settings-in-clickhouse\}
 
 1. Протестируйте подключение к этому публичному серверу LDAP:
     ```bash
@@ -114,7 +114,7 @@ ClickHouse можно настроить на использование LDAP д
 
 4. Перезапустите сервер ClickHouse, чтобы применить настройки.
 
-## 2. Настройте роли и разрешения базы данных ClickHouse {#2-configure-clickhouse-database-roles-and-permissions}
+## 2. Настройте роли и разрешения базы данных ClickHouse \{#2-configure-clickhouse-database-roles-and-permissions\}
 
 :::note
 В этом разделе предполагается, что в ClickHouse включены управление доступом на уровне SQL и управление учётными записями (SQL Access Control and Account Management). Инструкции по включению см. в руководстве [SQL Users and Roles](index.md).
@@ -130,7 +130,7 @@ ClickHouse можно настроить на использование LDAP д
     GRANT ALL ON *.* TO scientists_role;
     ```
 
-## 3. Тестирование конфигурации LDAP {#3-test-the-ldap-configuration}
+## 3. Тестирование конфигурации LDAP \{#3-test-the-ldap-configuration\}
 
 1. Войдите в систему с помощью клиента ClickHouse
     ```bash
@@ -169,5 +169,5 @@ ClickHouse можно настроить на использование LDAP д
     9 rows in set. Elapsed: 0.004 sec.
     ```
 
-## Итоги {#summary}
+## Итоги \{#summary\}
 В этой статье были продемонстрированы основы настройки ClickHouse для аутентификации через LDAP-сервер, а также для привязки к роли. Также доступны варианты настройки отдельных пользователей в ClickHouse, при этом аутентифицируя этих пользователей через LDAP без настройки автоматического сопоставления ролей. Модуль LDAP также можно использовать для подключения к Active Directory.

@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# dimensional&#95;metrics {#dimensional_metrics}
+# dimensional&#95;metrics \{#dimensional_metrics\}
 
 <SystemTableCloud />
 
@@ -37,15 +37,15 @@ FROM system.dimensional_metrics
 FORMAT Prometheus
 ```
 
-## 指标说明 {#metric_descriptions}
+## 指标说明 \{#metric_descriptions\}
 
-### merge_failures {#merge_failures}
+### merge_failures \{#merge_failures\}
 自启动以来所有合并失败的总次数。
 
-### startup_scripts_failure_reason {#startup_scripts_failure_reason}
+### startup_scripts_failure_reason \{#startup_scripts_failure_reason\}
 按错误类型指示启动脚本失败情况。当某个启动脚本失败时，该指标会被设置为 1，并使用错误名称进行标记。
 
-### merge_tree_parts {#merge_tree_parts}
+### merge_tree_parts \{#merge_tree_parts\}
 MergeTree 数据部分的数量，按部分状态、部分类型以及是否为投影部分进行标记。
 
 **另请参阅**

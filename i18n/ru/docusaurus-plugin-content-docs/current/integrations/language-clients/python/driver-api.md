@@ -8,7 +8,7 @@ title: 'API драйвера ClickHouse Connect'
 doc_type: 'reference'
 ---
 
-# API драйвера ClickHouse Connect {#clickhouse-connect-driver-api}
+# API драйвера ClickHouse Connect \{#clickhouse-connect-driver-api\}
 
 :::note
 Для большинства методов API рекомендуется передавать параметры в виде именованных аргументов, учитывая количество возможных аргументов, большинство из которых являются необязательными.
@@ -16,11 +16,11 @@ doc_type: 'reference'
 *Методы, не описанные здесь, не считаются частью API и могут быть удалены или изменены.*
 :::
 
-## Инициализация клиента {#client-initialization}
+## Инициализация клиента \{#client-initialization\}
 
 Класс `clickhouse_connect.driver.client` предоставляет основной интерфейс между Python‑приложением и сервером базы данных ClickHouse. Используйте функцию `clickhouse_connect.get_client` для получения экземпляра клиента; функция принимает следующие аргументы:
 
-### Аргументы подключения {#connection-arguments}
+### Аргументы подключения \{#connection-arguments\}
 
 | Parameter                | Type        | Default                       | Description                                                                                                                                                                                                                                           |
 |--------------------------|-------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -48,7 +48,7 @@ doc_type: 'reference'
 | form_encode_query_params | bool        | False                         | Отправлять параметры запроса как form-encoded данные в теле запроса вместо параметров URL. Полезно для запросов с большими наборами параметров, которые могут превысить ограничения длины URL.                                                       |
 | rename_response_column   | str         | *None*                        | Необязательная callback-функция или отображение имён столбцов для переименования столбцов ответа в результатах запроса.                                                                                                                              |
 
-### Параметры HTTPS/TLS {#httpstls-arguments}
+### Параметры HTTPS/TLS \{#httpstls-arguments\}
 
 | Parameter        | Type | Default | Description                                                                                                                                                                                                                                                                       |
 |------------------|------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -59,7 +59,7 @@ doc_type: 'reference'
 | server_host_name | str  | *None*  | Имя хоста сервера ClickHouse, указанное в CN или SNI его TLS-сертификата. Задайте это значение, чтобы избежать ошибок SSL при подключении через прокси или туннель с другим именем хоста.                                                                                       |
 | tls_mode         | str  | *None*  | Управляет расширенным поведением TLS. Режимы `proxy` и `strict` не устанавливают взаимное TLS-соединение с ClickHouse, но отправляют клиентский сертификат и ключ. Режим `mutual` предполагает взаимную TLS-аутентификацию ClickHouse с клиентским сертификатом. Поведение по умолчанию (*None*) — `mutual`.                     |
 
-### Аргумент settings {#settings-argument}
+### Аргумент settings \{#settings-argument\}
 
 Наконец, аргумент `settings` функции `get_client` используется для передачи дополнительных настроек ClickHouse серверу для каждого клиентского запроса. Обратите внимание, что в большинстве случаев пользователи с доступом *readonly*=*1* не могут изменять настройки, отправляемые вместе с запросом, поэтому ClickHouse Connect отбросит такие настройки в итоговом запросе и запишет предупреждение в журнал. Следующие настройки применяются только к HTTP‑запросам/сессиям, используемым ClickHouse Connect, и не документированы как общие настройки ClickHouse.
 
@@ -77,7 +77,7 @@ doc_type: 'reference'
 
 Для других настроек ClickHouse, которые могут быть отправлены с каждым запросом, см. [документацию ClickHouse](/operations/settings/settings.md).
 
-### Примеры создания клиента {#client-creation-examples}
+### Примеры создания клиента \{#client-creation-examples\}
 
 * Если не указывать параметры, клиент ClickHouse Connect подключится к HTTP-порту по умолчанию на `localhost` с пользователем по умолчанию и без пароля:
 
@@ -119,18 +119,18 @@ print(client.database)
 ```
 
 
-## Жизненный цикл клиента и лучшие практики {#client-lifecycle-and-best-practices}
+## Жизненный цикл клиента и лучшие практики \{#client-lifecycle-and-best-practices\}
 
 Создание клиента ClickHouse Connect — это затратная операция, включающая установление соединения, получение метаданных сервера и инициализацию настроек. Следуйте этим рекомендациям для обеспечения оптимальной производительности:
 
-### Основные принципы {#core-principles}
+### Основные принципы \{#core-principles\}
 
 - **Повторно используйте клиентов**: Создавайте клиентов один раз при старте приложения и используйте их на протяжении всего времени его работы
 - **Избегайте частого создания**: Не создавайте нового клиента для каждого запроса или обращения (это добавляет сотни миллисекунд к каждой операции)
 - **Корректно освобождайте ресурсы**: Всегда закрывайте клиентов при завершении работы, чтобы освободить ресурсы пула подключений
 - **По возможности используйте клиентов совместно**: Один клиент может обрабатывать множество одновременных запросов через свой пул подключений (см. примечания по многопоточности ниже)
 
-### Основные шаблоны {#basic-patterns}
+### Основные шаблоны \{#basic-patterns\}
 
 **✅ Хорошо: используйте один и тот же клиент**
 
@@ -159,7 +159,7 @@ for i in range(1000):
 ```
 
 
-### Многопоточные приложения {#multi-threaded-applications}
+### Многопоточные приложения \{#multi-threaded-applications\}
 
 :::warning
 Экземпляры клиента **НЕ потокобезопасны** при использовании идентификаторов сессии. По умолчанию у клиентов автоматически генерируется идентификатор сессии, и параллельные запросы в рамках одной и той же сессии вызовут `ProgrammingError`.
@@ -217,7 +217,7 @@ def worker(thread_id):
 ```
 
 
-### Корректное завершение работы {#proper-cleanup}
+### Корректное завершение работы \{#proper-cleanup\}
 
 Всегда закрывайте клиентов при завершении работы. Обратите внимание, что `client.close()` уничтожает клиент и закрывает HTTP‑соединения из пула только в том случае, если клиент владеет собственным менеджером пула (например, когда он создан с пользовательскими параметрами TLS/прокси). Для стандартного общего пула используйте `client.close_connections()` для принудительной очистки сокетов; в противном случае соединения автоматически освобождаются по истечении времени простоя и при завершении процесса.
 
@@ -237,7 +237,7 @@ with clickhouse_connect.get_client(host='my-host', username='default', password=
 ```
 
 
-### Когда использовать несколько клиентов {#when-to-use-multiple-clients}
+### Когда использовать несколько клиентов \{#when-to-use-multiple-clients\}
 
 Несколько клиентов оправданы в следующих случаях:
 
@@ -247,15 +247,15 @@ with clickhouse_connect.get_client(host='my-host', username='default', password=
 - **Изолированные сессии**: Когда нужны отдельные сессии для временных таблиц или настроек, специфичных для сессии
 - **Изоляция потоков**: Когда каждому потоку нужны независимые сессии (как показано выше)
 
-## Общие аргументы методов {#common-method-arguments}
+## Общие аргументы методов \{#common-method-arguments\}
 
 Некоторые методы клиента принимают один или оба общих аргумента `parameters` и `settings`. Эти именованные аргументы описаны ниже.
 
-### Аргумент parameters {#parameters-argument}
+### Аргумент parameters \{#parameters-argument\}
 
 Методы ClickHouse Connect Client `query*` и `command` принимают необязательный именованный аргумент `parameters`, используемый для привязки выражений Python к выражениям значений ClickHouse. Доступны два варианта привязки.
 
-#### Привязка на стороне сервера {#server-side-binding}
+#### Привязка на стороне сервера \{#server-side-binding\}
 
 ClickHouse поддерживает [привязку на стороне сервера](/interfaces/cli.md#cli-queries-with-parameters) для большинства значений запроса, при которой привязанное значение отправляется отдельно от запроса в виде параметра HTTP‑запроса. ClickHouse Connect добавит соответствующие параметры запроса, если обнаружит выражение привязки вида `{<name>:<datatype>}`. Для привязки на стороне сервера аргумент `parameters` должен быть словарём Python.
 
@@ -284,7 +284,7 @@ WHERE date >= '2022-10-01 15:20:05'
 :::
 
 
-#### Привязка на стороне клиента {#client-side-binding}
+#### Привязка на стороне клиента \{#client-side-binding\}
 
 ClickHouse Connect также поддерживает привязку параметров на стороне клиента, что обеспечивает большую гибкость при генерации шаблонных SQL‑запросов. Для привязки на стороне клиента аргумент `parameters` должен быть словарём или последовательностью. Привязка на стороне клиента использует форматирование строк в Python‑стиле [&quot;printf&quot;](https://docs.python.org/3/library/stdtypes.html#old-string-formatting) для подстановки параметров.
 
@@ -349,7 +349,7 @@ WHERE metric >= 35200.44
 :::
 
 
-### Аргумент settings {#settings-argument-1}
+### Аргумент settings \{#settings-argument-1\}
 
 Все основные методы ClickHouse Connect Client `insert` и `select` принимают необязательный именованный аргумент `settings` для передачи [пользовательских настроек](/operations/settings/settings.md) сервера ClickHouse для выполняемого SQL-выражения. Аргумент `settings` должен быть словарём. Каждый элемент должен содержать имя настройки ClickHouse и соответствующее ей значение. Обратите внимание, что значения будут преобразованы в строки при отправке на сервер в качестве параметров запроса.
 
@@ -365,7 +365,7 @@ client.query("SELECT event_type, sum(timeout) FROM event_errors WHERE event_time
 ```
 
 
-## Метод клиента `command` {#client-command-method}
+## Метод клиента `command` \{#client-command-method\}
 
 Используйте метод `Client.command` для отправки SQL‑запросов на сервер ClickHouse, которые обычно либо не возвращают данные, либо возвращают одно примитивное значение или массив значений, а не полный набор данных. Этот метод принимает следующие параметры:
 
@@ -378,9 +378,9 @@ client.query("SELECT event_type, sum(timeout) FROM event_errors WHERE event_time
 | use_database  | bool             | True       | Использовать базу данных клиента (указывается при создании клиента). False означает, что команда будет использовать базу данных сервера ClickHouse по умолчанию для подключенного пользователя. |
 | external_data | ExternalData     | *None*     | Объект `ExternalData`, содержащий файловые или бинарные данные для использования в запросе. См. [Расширенные запросы (External Data)](advanced-querying.md#external-data)     |
 
-### Примеры команд {#command-examples}
+### Примеры команд \{#command-examples\}
 
-#### DDL-команды {#ddl-statements}
+#### DDL-команды \{#ddl-statements\}
 
 ```python
 import clickhouse_connect
@@ -408,7 +408,7 @@ client.command("DROP TABLE test_command")
 ```
 
 
-#### Простые запросы, возвращающие одно значение {#simple-queries-returning-single-values}
+#### Простые запросы, возвращающие одно значение \{#simple-queries-returning-single-values\}
 
 ```python
 import clickhouse_connect
@@ -427,7 +427,7 @@ print(version)
 ```
 
 
-#### Команды с параметрами {#commands-with-parameters}
+#### Команды с параметрами \{#commands-with-parameters\}
 
 ```python
 import clickhouse_connect
@@ -449,7 +449,7 @@ result = client.command(
 ```
 
 
-#### Команды с параметрами {#commands-with-settings}
+#### Команды с параметрами \{#commands-with-settings\}
 
 ```python
 import clickhouse_connect
@@ -464,7 +464,7 @@ result = client.command(
 ```
 
 
-## Метод клиента `query` {#client-query-method}
+## Метод клиента `query` \{#client-query-method\}
 
 Метод `Client.query` является основным способом получения одного «пакетного» набора данных с сервера ClickHouse. Он использует нативный формат ClickHouse поверх HTTP для эффективной передачи больших наборов данных (до примерно одного миллиона строк). Этот метод принимает следующие параметры:
 
@@ -484,9 +484,9 @@ result = client.command(
 | external_data      | ExternalData     | *None*                 | Объект ExternalData, содержащий файловые или бинарные данные для использования в запросе. См. [Advanced Queries (External Data)](advanced-querying.md#external-data).             |
 | context            | QueryContext     | *None*                 | Повторно используемый объект QueryContext, который можно использовать для инкапсуляции аргументов метода, перечисленных выше. См. [Advanced Queries (QueryContexts)](advanced-querying.md#querycontexts). |
 
-### Примеры запросов {#query-examples}
+### Примеры запросов \{#query-examples\}
 
-#### Простой запрос {#basic-query}
+#### Простой запрос \{#basic-query\}
 
 ```python
 import clickhouse_connect
@@ -512,7 +512,7 @@ print([col_type.name for col_type in result.column_types])
 ```
 
 
-#### Доступ к результатам запроса {#accessing-query-results}
+#### Доступ к результатам запроса \{#accessing-query-results\}
 
 ```python
 import clickhouse_connect
@@ -547,7 +547,7 @@ print(result.first_row)
 ```
 
 
-#### Запрос с параметрами на стороне клиента {#query-with-client-side-parameters}
+#### Запрос с параметрами на стороне клиента \{#query-with-client-side-parameters\}
 
 ```python
 import clickhouse_connect
@@ -566,7 +566,7 @@ result = client.query(query, parameters=parameters)
 ```
 
 
-#### Запрос с серверными параметрами {#query-with-server-side-parameters}
+#### Запрос с серверными параметрами \{#query-with-server-side-parameters\}
 
 ```python
 import clickhouse_connect
@@ -581,7 +581,7 @@ result = client.query(query, parameters=parameters)
 ```
 
 
-#### Запрос с настройками {#query-with-settings}
+#### Запрос с настройками \{#query-with-settings\}
 
 ```python
 import clickhouse_connect
@@ -599,7 +599,7 @@ result = client.query(
 ```
 
 
-### Объект `QueryResult` {#the-queryresult-object}
+### Объект `QueryResult` \{#the-queryresult-object\}
 
 Базовый метод `query` возвращает объект `QueryResult` со следующими публичными свойствами:
 
@@ -620,15 +620,15 @@ result = client.query(
 
 Полные сведения о потоковой выборке результатов запросов (с использованием объектов StreamContext) приведены в разделе [Advanced Queries (Streaming Queries)](advanced-querying.md#streaming-queries).
 
-## Получение результатов запросов с помощью NumPy, Pandas или Arrow {#consuming-query-results-with-numpy-pandas-or-arrow}
+## Получение результатов запросов с помощью NumPy, Pandas или Arrow \{#consuming-query-results-with-numpy-pandas-or-arrow\}
 
 ClickHouse Connect предоставляет специализированные методы выполнения запросов для форматов данных NumPy, Pandas и Arrow. Подробную информацию об использовании этих методов, включая примеры, возможности потоковой обработки и расширенную работу с типами, см. в разделе [Расширенные запросы (запросы NumPy, Pandas и Arrow)](advanced-querying.md#numpy-pandas-and-arrow-queries).
 
-## Методы клиентских потоковых запросов {#client-streaming-query-methods}
+## Методы клиентских потоковых запросов \{#client-streaming-query-methods\}
 
 Для потоковой обработки больших наборов результатов ClickHouse Connect предоставляет несколько методов потоковой передачи данных. Подробности и примеры см. в разделе [Advanced Queries (Streaming Queries)](advanced-querying.md#streaming-queries).
 
-## Метод клиента `insert` {#client-insert-method}
+## Метод клиента `insert` \{#client-insert-method\}
 
 Для типичного случая вставки нескольких записей в ClickHouse используется метод `Client.insert`. Он принимает следующие параметры:
 
@@ -653,11 +653,11 @@ ClickHouse Connect предоставляет специализированны
 Массив NumPy является допустимой последовательностью последовательностей и может использоваться как аргумент `data` для основного метода `insert`, поэтому специализированный метод не требуется.
 :::
 
-### Примеры {#examples}
+### Примеры \{#examples\}
 
 В примерах ниже предполагается, что уже существует таблица `users` со схемой `(id UInt32, name String, age UInt8)`.
 
-#### Базовая строко-ориентированная вставка {#basic-row-oriented-insert}
+#### Базовая строко-ориентированная вставка \{#basic-row-oriented-insert\}
 
 ```python
 import clickhouse_connect
@@ -675,7 +675,7 @@ client.insert("users", data, column_names=["id", "name", "age"])
 ```
 
 
-#### Вставка по столбцам {#column-oriented-insert}
+#### Вставка по столбцам \{#column-oriented-insert\}
 
 ```python
 import clickhouse_connect
@@ -693,7 +693,7 @@ client.insert("users", data, column_names=["id", "name", "age"], column_oriented
 ```
 
 
-#### Вставка с явно указанными типами столбцов {#insert-with-explicit-column-types}
+#### Вставка с явно указанными типами столбцов \{#insert-with-explicit-column-types\}
 
 ```python
 import clickhouse_connect
@@ -716,7 +716,7 @@ client.insert(
 ```
 
 
-#### Вставка в указанную базу данных {#insert-into-specific-database}
+#### Вставка в указанную базу данных \{#insert-into-specific-database\}
 
 ```python
 import clickhouse_connect
@@ -738,38 +738,38 @@ client.insert(
 ```
 
 
-## Вставки из файлов {#file-inserts}
+## Вставки из файлов \{#file-inserts\}
 
 Для вставки данных напрямую из файлов в таблицы ClickHouse см. раздел [Расширенные способы вставки (вставки из файлов)](advanced-inserting.md#file-inserts).
 
-## Низкоуровневый API {#raw-api}
+## Низкоуровневый API \{#raw-api\}
 
 Для более сложных сценариев использования, требующих прямого доступа к HTTP-интерфейсам ClickHouse без преобразования типов, см. [Расширенное использование (низкоуровневый API)](advanced-usage.md#raw-api).
 
-## Вспомогательные классы и функции {#utility-classes-and-functions}
+## Вспомогательные классы и функции \{#utility-classes-and-functions\}
 
 Следующие классы и функции также считаются частью «публичного» API `clickhouse-connect` и, как и классы и методы, описанные выше, остаются стабильными в пределах минорных версий. Ломающие изменения в этих классах и функциях будут вноситься только в минорном (а не патч-) релизе и при этом будут помечены как устаревшие минимум на один минорный релиз.
 
-### Исключения {#exceptions}
+### Исключения \{#exceptions\}
 
 Все пользовательские исключения (включая те, что определены в спецификации DB API 2.0) объявлены в модуле `clickhouse_connect.driver.exceptions`. Исключения, фактически обнаруживаемые драйвером, имеют один из этих типов.
 
-### Утилиты ClickHouse SQL {#clickhouse-sql-utilities}
+### Утилиты ClickHouse SQL \{#clickhouse-sql-utilities\}
 
 Функции и класс DT64Param в модуле `clickhouse_connect.driver.binding` можно использовать для корректного формирования и экранирования SQL‑запросов ClickHouse. Аналогично, функции в модуле `clickhouse_connect.driver.parser` можно использовать для разбора названий типов данных ClickHouse.
 
-## Многопоточные, многопроцессные и асинхронные/событийно-ориентированные сценарии использования {#multithreaded-multiprocess-and-asyncevent-driven-use-cases}
+## Многопоточные, многопроцессные и асинхронные/событийно-ориентированные сценарии использования \{#multithreaded-multiprocess-and-asyncevent-driven-use-cases\}
 
 Информацию об использовании ClickHouse Connect в многопоточных, многопроцессных и асинхронных/событийно-ориентированных приложениях см. в разделе [Advanced Usage (Multithreaded, multiprocess, and async/event driven use cases)](advanced-usage.md#multithreaded-multiprocess-and-asyncevent-driven-use-cases).
 
-## Обертка AsyncClient {#asyncclient-wrapper}
+## Обертка AsyncClient \{#asyncclient-wrapper\}
 
 Подробности об использовании обертки AsyncClient в средах asyncio см. в разделе [Расширенное использование (обертка AsyncClient)](advanced-usage.md#asyncclient-wrapper).
 
-## Управление идентификаторами сеансов ClickHouse {#managing-clickhouse-session-ids}
+## Управление идентификаторами сеансов ClickHouse \{#managing-clickhouse-session-ids\}
 
 Подробнее об управлении идентификаторами сеансов ClickHouse в многопоточных или конкурентных приложениях см. раздел [Расширенное использование (управление идентификаторами сеансов ClickHouse)](advanced-usage.md#managing-clickhouse-session-ids).
 
-## Настройка пула HTTP‑подключений {#customizing-the-http-connection-pool}
+## Настройка пула HTTP‑подключений \{#customizing-the-http-connection-pool\}
 
 Подробнее о настройке пула HTTP‑подключений для крупных многопоточных приложений см. в разделе [Расширенное использование (настройка пула HTTP‑подключений)](advanced-usage.md#customizing-the-http-connection-pool).

@@ -5,6 +5,9 @@ sidebar_label: 'Пауза таблицы'
 slug: /integrations/clickpipes/mysql/pause_and_resume
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', 'ингестия данных', 'синхронизация в режиме реального времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import Image from '@theme/IdealImage';
@@ -16,8 +19,7 @@ import resume_dialog from '@site/static/images/integrations/data-ingestion/click
 
 Есть ситуации, когда полезно приостановить MySQL ClickPipe. Например, вы можете захотеть выполнить аналитику по существующим данным в неизменном состоянии. Или вы можете в этот момент обновлять MySQL. Ниже описано, как приостанавливать и возобновлять MySQL ClickPipe.
 
-
-## Шаги по приостановке MySQL ClickPipe {#pause-clickpipe-steps}
+## Шаги по приостановке MySQL ClickPipe \{#pause-clickpipe-steps\}
 
 1. На вкладке Data Sources выберите MySQL ClickPipe, который нужно приостановить.
 2. Перейдите на вкладку **Settings**.
@@ -34,9 +36,8 @@ import resume_dialog from '@site/static/images/integrations/data-ingestion/click
 
 <Image img={pause_status} border size="md"/>
 
+## Шаги по возобновлению работы MySQL ClickPipe \{#resume-clickpipe-steps\}
 
-
-## Шаги по возобновлению работы MySQL ClickPipe {#resume-clickpipe-steps}
 1. На вкладке **Data Sources** нажмите на MySQL ClickPipe, который вы хотите возобновить. Статус конвейера изначально должен быть **Paused**.
 2. Перейдите на вкладку **Settings**.
 3. Нажмите кнопку **Resume**.

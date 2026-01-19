@@ -13,7 +13,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
-# 字典 {#dictionaries}
+# 字典 \{#dictionaries\}
 
 字典是一种映射（`key -> attributes`），便于用于各种类型的参考列表。
 
@@ -48,7 +48,7 @@ ClickHouse：
 
 <CloudDetails />
 
-## 使用 DDL 查询创建字典 {#creating-a-dictionary-with-a-ddl-query}
+## 使用 DDL 查询创建字典 \{#creating-a-dictionary-with-a-ddl-query\}
 
 可以使用 [DDL 查询](../../sql-reference/statements/create/dictionary.md) 来创建字典，这是推荐的方法，因为通过 DDL 创建的字典具有以下优点：
 
@@ -57,7 +57,7 @@ ClickHouse：
 - 可以直接读取数据，使用熟悉的 SELECT 语句，而不是字典表函数。请注意，当通过 SELECT 语句直接访问字典时，已缓存的字典只会返回缓存的数据，而未缓存的字典会返回其存储的全部数据。
 - 字典可以轻松重命名。
 
-## 使用配置文件创建字典 {#creating-a-dictionary-with-a-configuration-file}
+## 使用配置文件创建字典 \{#creating-a-dictionary-with-a-configuration-file\}
 
 <CloudNotSupportedBadge />
 
@@ -89,7 +89,7 @@ ClickHouse：
 你可以通过在 `SELECT` 查询中以字典形式描述一个小型字典来转换其值（参见 [transform](../../sql-reference/functions/other-functions.md) 函数）。该功能与字典机制本身无关。
 :::
 
-## 配置字典 {#configuring-a-dictionary}
+## 配置字典 \{#configuring-a-dictionary\}
 
 <CloudDetails />
 
@@ -130,7 +130,7 @@ LAYOUT(...) -- 内存布局配置
 LIFETIME(...) -- 字典在内存中的存活时间
 ```
 
-## 在内存中存储字典 {#storing-dictionaries-in-memory}
+## 在内存中存储字典 \{#storing-dictionaries-in-memory\}
 
 有多种方式可以在内存中存储字典。
 
@@ -208,7 +208,7 @@ LAYOUT(LAYOUT_TYPE(param value)) -- 布局设置
 ...
 ```
 
-## 在内存中存储字典的方式 {#ways-to-store-dictionaries-in-memory}
+## 在内存中存储字典的方式 \{#ways-to-store-dictionaries-in-memory\}
 
 在内存中存储字典数据的不同方法，在 CPU 和 RAM 使用上各有权衡。字典相关[博客文章](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)中 [Choosing a Layout](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout) 段落给出的决策树，是选择使用哪种布局的良好起点。
 
@@ -229,7 +229,7 @@ LAYOUT(LAYOUT_TYPE(param value)) -- 布局设置
 - [complex_key_direct](#complex_key_direct)
 - [ip_trie](#ip_trie)
 
-### flat {#flat}
+### flat \{#flat\}
 
 字典以扁平数组的形式完全存储在内存中。字典会使用多少内存？该数量与最大键值的大小（所占空间）成正比。
 
@@ -256,7 +256,7 @@ LAYOUT(LAYOUT_TYPE(param value)) -- 布局设置
 LAYOUT(FLAT(INITIAL_ARRAY_SIZE 50000 MAX_ARRAY_SIZE 5000000))
 ```
 
-### hashed {#hashed}
+### hashed \{#hashed\}
 
 字典以哈希表的形式完全存储在内存中。字典可以包含任意数量、具有任意标识符的元素。实际使用中，键的数量可以达到数千万级。
 
@@ -312,7 +312,7 @@ LAYOUT(HASHED())
 LAYOUT(HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5]))
 ```
 
-### sparse&#95;hashed {#sparse_hashed}
+### sparse&#95;hashed \{#sparse_hashed\}
 
 与 `hashed` 类似，但更节省内存，以更高的 CPU 使用率为代价。
 
@@ -338,7 +338,7 @@ LAYOUT(SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTO
 
 对于此类字典也可以使用 `shards`，同理，这对 `sparse_hashed` 比对 `hashed` 更为重要，因为 `sparse_hashed` 更慢。
 
-### complex&#95;key&#95;hashed {#complex_key_hashed}
+### complex&#95;key&#95;hashed \{#complex_key_hashed\}
 
 这种存储类型用于具有复合[键](#dictionary-key-and-fields)的场景，其工作方式类似于 `hashed`。
 
@@ -360,7 +360,7 @@ LAYOUT(SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTO
 LAYOUT(COMPLEX_KEY_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5]))
 ```
 
-### complex&#95;key&#95;sparse&#95;hashed {#complex_key_sparse_hashed}
+### complex&#95;key&#95;sparse&#95;hashed \{#complex_key_sparse_hashed\}
 
 这种存储类型用于复合[键](#dictionary-key-and-fields)。与 [sparse&#95;hashed](#sparse_hashed) 类似。
 
@@ -382,7 +382,7 @@ LAYOUT(COMPLEX_KEY_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_
 LAYOUT(COMPLEX_KEY_SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5]))
 ```
 
-### hashed&#95;array {#hashed_array}
+### hashed&#95;array \{#hashed_array\}
 
 字典完全存储在内存中。每个属性都存储在一个数组中。键属性以哈希表的形式存储，其中值是属性数组中的索引。字典可以包含任意数量、具有任意标识符的元素。在实际使用中，键的数量可以达到数千万级。
 
@@ -405,7 +405,7 @@ LAYOUT(COMPLEX_KEY_SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MA
 LAYOUT(HASHED_ARRAY([SHARDS 1]))
 ```
 
-### complex&#95;key&#95;hashed&#95;array {#complex_key_hashed_array}
+### complex&#95;key&#95;hashed&#95;array \{#complex_key_hashed_array\}
 
 此类存储用于复合[键](#dictionary-key-and-fields)，类似于[hashed&#95;array](#hashed_array)。
 
@@ -423,7 +423,7 @@ LAYOUT(HASHED_ARRAY([SHARDS 1]))
 LAYOUT(COMPLEX_KEY_HASHED_ARRAY([SHARDS 1]))
 ```
 
-### range&#95;hashed {#range_hashed}
+### range&#95;hashed \{#range_hashed\}
 
 字典以哈希表的形式存储在内存中，包含一个有序的区间数组及其对应的值。
 
@@ -655,7 +655,7 @@ select dictGet('discounts_dict', 'amount', 3, toDate('2015-01-01')) res;
 └─────┘
 ```
 
-### complex&#95;key&#95;range&#95;hashed {#complex_key_range_hashed}
+### complex&#95;key&#95;range&#95;hashed \{#complex_key_range_hashed\}
 
 字典以哈希表的形式存储在内存中，包含一个有序的区间数组及其对应的值（参见 [range&#95;hashed](#range_hashed)）。这种存储类型适用于复合[键](#dictionary-key-and-fields)。
 
@@ -677,7 +677,7 @@ LAYOUT(COMPLEX_KEY_RANGE_HASHED())
 RANGE(MIN StartDate MAX EndDate);
 ```
 
-### cache {#cache}
+### cache \{#cache\}
 
 字典存储在一个具有固定数量单元格的缓存中。这些单元格中保存着经常使用的元素。
 
@@ -735,11 +735,11 @@ LAYOUT(CACHE(SIZE_IN_CELLS 1000000000))
 不要使用 ClickHouse 作为数据源，因为它在处理包含随机读取的查询时比较慢。
 :::
 
-### complex_key_cache {#complex_key_cache}
+### complex_key_cache \{#complex_key_cache\}
 
 此种存储类型用于复合[键](#dictionary-key-and-fields)，类似于 `cache`。
 
-### ssd&#95;cache {#ssd_cache}
+### ssd&#95;cache \{#ssd_cache\}
 
 类似于 `cache`，但将数据存储在 SSD 上，并将索引存储在 RAM 中。所有与更新队列相关的缓存字典设置也同样适用于 SSD 缓存字典。
 
@@ -769,11 +769,11 @@ LAYOUT(SSD_CACHE(BLOCK_SIZE 4096 FILE_SIZE 16777216 READ_BUFFER_SIZE 1048576
     PATH '/var/lib/clickhouse/user_files/test_dict'))
 ```
 
-### complex_key_ssd_cache {#complex_key_ssd_cache}
+### complex_key_ssd_cache \{#complex_key_ssd_cache\}
 
 这种存储类型用于复合[键](#dictionary-key-and-fields)，与 `ssd_cache` 类似。
 
-### direct {#direct}
+### direct \{#direct\}
 
 字典本身不驻留在内存中，在处理请求时会直接访问数据源。
 
@@ -795,11 +795,11 @@ LAYOUT(SSD_CACHE(BLOCK_SIZE 4096 FILE_SIZE 16777216 READ_BUFFER_SIZE 1048576
 LAYOUT(DIRECT())
 ```
 
-### complex_key_direct {#complex_key_direct}
+### complex_key_direct \{#complex_key_direct\}
 
 这种存储类型用于复合 [keys](#dictionary-key-and-fields)，类似于 `direct`。
 
-### ip&#95;trie {#ip_trie}
+### ip&#95;trie \{#ip_trie\}
 
 此字典专为通过网络前缀查找 IP 地址而设计。它以 CIDR 表示法存储 IP 范围，并可快速确定给定 IP 所属的前缀（例如子网或 ASN 段），非常适合用于基于 IP 的检索，如地理定位或网络分类。
 
@@ -909,7 +909,7 @@ SELECT dictGet('my_ip_trie_dictionary', ('asn', 'cca2'), IPv6StringToNum('2001:d
 
 数据必须完全载入 RAM。
 
-## 使用 LIFETIME 刷新字典数据 {#refreshing-dictionary-data-using-lifetime}
+## 使用 LIFETIME 刷新字典数据 \{#refreshing-dictionary-data-using-lifetime\}
 
 ClickHouse 根据 `LIFETIME` 标签(以秒为单位定义)定期更新字典。对于完全下载的字典,`LIFETIME` 是更新间隔;对于缓存字典,`LIFETIME` 是失效间隔。
 
@@ -1040,7 +1040,7 @@ SOURCE(CLICKHOUSE(... update_field 'added_time' update_lag 15))
 ...
 ```
 
-## 字典数据源 {#dictionary-sources}
+## 字典数据源 \{#dictionary-sources\}
 
 <CloudDetails />
 
@@ -1112,7 +1112,7 @@ SETTINGS(format_csv_allow_single_quotes = 0)
   * [YTsaurus](#ytsaurus)
 
 
-### 本地文件 {#local-file}
+### 本地文件 \{#local-file\}
 
 配置示例：
 
@@ -1142,7 +1142,7 @@ SOURCE(FILE(path './user_files/os.tsv' format 'TabSeparated'))
 
 * [Dictionary 函数](/sql-reference/table-functions/dictionary)
 
-### 可执行文件 {#executable-file}
+### 可执行文件 \{#executable-file\}
 
 对可执行文件的处理方式取决于[字典在内存中的存储方式](#storing-dictionaries-in-memory)。如果字典使用 `cache` 和 `complex_key_cache` 进行存储，ClickHouse 会通过向可执行文件的 STDIN 发送请求来获取所需的键。否则，ClickHouse 会启动可执行文件，并将其输出视为字典数据。
 
@@ -1171,7 +1171,7 @@ SOURCE(FILE(path './user_files/os.tsv' format 'TabSeparated'))
 
 这种字典数据源只能通过 XML 配置进行配置。通过 DDL 创建带可执行数据源的字典已被禁用；否则，DB 用户将能够在 ClickHouse 节点上执行任意二进制文件。
 
-### 可执行池 {#executable-pool}
+### 可执行池 \{#executable-pool\}
 
 可执行池允许从一组进程（pool of processes）中加载数据。此数据源不适用于需要从源加载全部数据的字典布局。仅当字典[存储](#ways-to-store-dictionaries-in-memory)方式使用 `cache`、`complex_key_cache`、`ssd_cache`、`complex_key_ssd_cache`、`direct` 或 `complex_key_direct` 布局时，可执行池才可工作。
 
@@ -1206,7 +1206,7 @@ Setting 字段：
 
 该字典源只能通过 XML 配置进行配置。禁止通过 DDL 创建使用 executable 源的字典，否则数据库用户将能够在 ClickHouse 节点上执行任意二进制程序。
 
-### HTTP(S) {#https}
+### HTTP(S) \{#https\}
 
 与 HTTP(S) 服务器配合使用时的行为取决于[字典在内存中的存储方式](#storing-dictionaries-in-memory)。如果字典使用 `cache` 和 `complex_key_cache` 进行存储，ClickHouse 会通过发送 `POST` 请求来获取所需的键。
 
@@ -1258,9 +1258,9 @@ SOURCE(HTTP(
 
 当使用 DDL 命令（`CREATE DICTIONARY ...`）创建字典时，会将 HTTP 字典的远程主机与配置中的 `remote_url_allow_hosts` 部分内容进行比对，以防止数据库用户访问任意 HTTP 服务器。
 
-### 数据库管理系统（DBMS） {#dbms}
+### 数据库管理系统（DBMS） \{#dbms\}
 
-#### ODBC {#odbc}
+#### ODBC \{#odbc\}
 
 你可以使用这种方式连接任何带有 ODBC 驱动的数据库。
 
@@ -1307,7 +1307,7 @@ ClickHouse 从 ODBC 驱动程序接收引号符号，并在发往驱动程序的
 
 如果在使用 Oracle 时遇到编码问题，请参阅相应的 [FAQ](/knowledgebase/oracle-odbc) 条目。
 
-##### ODBC 字典功能的已知漏洞 {#known-vulnerability-of-the-odbc-dictionary-functionality}
+##### ODBC 字典功能的已知漏洞 \{#known-vulnerability-of-the-odbc-dictionary-functionality\}
 
 :::note
 当通过 ODBC 驱动连接到数据库时，连接参数中的 `Servername` 可能被替换。在这种情况下，`odbc.ini` 中的 `USERNAME` 和 `PASSWORD` 的值会被发送到远程服务器，可能会被泄露。
@@ -1336,7 +1336,7 @@ SELECT * FROM odbc('DSN=gregtest;Servername=some-server.com', 'test_db');
 
 ODBC 驱动程序会将 `odbc.ini` 中的 `USERNAME` 和 `PASSWORD` 值发送到 `some-server.com`。
 
-##### 连接 PostgreSQL 的示例 {#example-of-connecting-postgresql}
+##### 连接 PostgreSQL 的示例 \{#example-of-connecting-postgresql\}
 
 在 Ubuntu 操作系统上：
 
@@ -1417,7 +1417,7 @@ LIFETIME(MIN 300 MAX 360)
 
 您可能需要编辑 `odbc.ini`，将驱动程序库的完整路径指定为：`DRIVER=/usr/local/lib/psqlodbcw.so`。
 
-##### 连接 MS SQL Server 的示例 {#example-of-connecting-ms-sql-server}
+##### 连接 MS SQL Server 的示例 \{#example-of-connecting-ms-sql-server\}
 
 在 Ubuntu 操作系统上。
 
@@ -1522,7 +1522,7 @@ LAYOUT(FLAT())
 LIFETIME(MIN 300 MAX 360)
 ```
 
-#### MySQL {#mysql}
+#### MySQL \{#mysql\}
 
 设置示例：
 
@@ -1639,7 +1639,7 @@ SOURCE(MYSQL(
 ))
 ```
 
-#### ClickHouse {#clickhouse}
+#### ClickHouse \{#clickhouse\}
 
 设置示例：
 
@@ -1692,7 +1692,7 @@ SOURCE(CLICKHOUSE(
 `table` 或 `where` 字段不能与 `query` 字段一起使用，并且必须声明 `table` 或 `query` 字段中的一个。
 :::
 
-#### MongoDB {#mongodb}
+#### MongoDB \{#mongodb\}
 
 配置示例：
 
@@ -1761,7 +1761,7 @@ SOURCE(MONGODB(
 
 [关于该引擎的更多信息](../../engines/table-engines/integrations/mongodb.md)
 
-#### Redis {#redis}
+#### Redis \{#redis\}
 
 配置示例：
 
@@ -1794,7 +1794,7 @@ SOURCE(REDIS(
 * `storage_type` – 用于处理键的 Redis 内部存储结构。`simple` 用于简单数据源以及对单个键进行哈希的数据源，`hash_map` 用于具有两个键的哈希数据源。不支持范围型数据源以及具有复杂键的缓存数据源。可以省略，默认值为 `simple`。
 * `db_index` – Redis 逻辑数据库的具体数值索引。可以省略，默认值为 0。
 
-#### Cassandra {#cassandra}
+#### Cassandra \{#cassandra\}
 
 配置示例：
 
@@ -1836,7 +1836,7 @@ SOURCE(REDIS(
 `column_family` 或 `where` 字段不能与 `query` 字段同时使用。同时必须至少声明 `column_family` 和 `query` 字段中的一个。
 :::
 
-#### PostgreSQL {#postgresql}
+#### PostgreSQL \{#postgresql\}
 
 配置示例：
 
@@ -1895,7 +1895,7 @@ SOURCE(POSTGRESQL(
 `table` 或 `where` 字段不能与 `query` 字段同时使用。同时，`table` 和 `query` 字段中必须至少声明一个。
 :::
 
-### YTsaurus {#ytsaurus}
+### YTsaurus \{#ytsaurus\}
 
 <ExperimentalBadge />
 
@@ -1937,7 +1937,7 @@ SOURCE(YTSAURUS(
 * `oauth_token` – OAuth 令牌。
 
 
-### Null {#null}
+### Null \{#null\}
 
 一种特殊的数据源，可用于创建占位（空）字典。此类字典在测试场景中，或在数据节点与查询节点分离且这些节点上使用分布式表的环境中会很有用。
 
@@ -1954,7 +1954,7 @@ LAYOUT(FLAT())
 LIFETIME(0);
 ```
 
-## 字典键和字段 {#dictionary-key-and-fields}
+## 字典键和字段 \{#dictionary-key-and-fields\}
 
 <CloudDetails />
 
@@ -2000,7 +2000,7 @@ PRIMARY KEY Id
 * `PRIMARY KEY` — 键列
 * `AttrName AttrType` — 数据列。可以有多个属性。
 
-## 键 {#key}
+## 键 \{#key\}
 
 ClickHouse 支持以下类型的键：
 
@@ -2013,7 +2013,7 @@ ClickHouse 支持以下类型的键：
 不能将键描述为属性。
 :::
 
-### 数值型键 {#numeric-key}
+### 数值型键 \{#numeric-key\}
 
 类型：`UInt64`。
 
@@ -2042,7 +2042,7 @@ PRIMARY KEY Id
 
 * `PRIMARY KEY` – 作为主键的列名。
 
-### 复合键 {#composite-key}
+### 复合键 \{#composite-key\}
 
 键可以是由任意类型字段组成的 `tuple`。在这种情况下，[layout](#storing-dictionaries-in-memory) 必须为 `complex_key_hashed` 或 `complex_key_cache`。
 
@@ -2082,7 +2082,7 @@ PRIMARY KEY field1, field2
 
 对于对 `dictGet*` 函数的查询，会传入一个 `tuple` 作为键。示例：`dictGetString('dict_name', 'attr_name', tuple('string for field1', num_for_field2))`。
 
-## 属性 {#attributes}
+## 属性 \{#attributes\}
 
 配置示例：
 
@@ -2121,7 +2121,7 @@ CREATE DICTIONARY somename (
 | `injective`                                          | 标记，用于指示 `id -> attribute` 映射是否为[单射](https://en.wikipedia.org/wiki/Injective_function)。<br/>如果为 `true`，ClickHouse 可以在 `GROUP BY` 子句之后自动执行对该字典的请求。通常这会显著减少此类请求的数量。<br/><br/>默认值：`false`。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | No       |
 | `is_object_id`                                       | 标记，用于指示查询是否通过 `ObjectID` 针对 MongoDB 文档执行。<br/><br/>默认值：`false`。 |
 
-## 层次字典 {#hierarchical-dictionaries}
+## 层次字典 \{#hierarchical-dictionaries\}
 
 ClickHouse 支持使用[数值键](#numeric-key)的层次字典。
 
@@ -2183,7 +2183,7 @@ ClickHouse 为外部字典属性提供层级（hierarchical）特性。借助这
 </dictionary>
 ```
 
-## 多边形字典 {#polygon-dictionaries}
+## 多边形字典 \{#polygon-dictionaries\}
 
 该字典针对点在多边形内的查询进行了优化，本质上对应于“反向地理编码”查询。给定一个坐标（纬度/经度），它可以高效地在大量多边形集合（例如国家或地区边界）中找出包含该点的多边形或区域。它非常适合将位置坐标映射到其所属区域。
 
@@ -2316,13 +2316,13 @@ SELECT * FROM polygons_test_dictionary;
 └─────────────────────────────────┴───────┘
 ```
 
-## 正则表达式树字典 {#regexp-tree-dictionary}
+## 正则表达式树字典 \{#regexp-tree-dictionary\}
 
 该字典允许基于分层的正则表达式模式，将键映射到相应的值。它针对模式匹配查询进行了优化（例如通过匹配正则表达式模式对用户代理字符串等进行分类），而不是针对精确键匹配进行优化。
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/ESlAhUJMoz8?si=sY2OVm-zcuxlDRaX" title="ClickHouse 正则表达式树字典简介" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-### 在 ClickHouse 开源版中使用正则表达式树字典 {#use-regular-expression-tree-dictionary-in-clickhouse-open-source}
+### 在 ClickHouse 开源版中使用正则表达式树字典 \{#use-regular-expression-tree-dictionary-in-clickhouse-open-source\}
 
 在 ClickHouse 开源版中，正则表达式树字典是通过 `YAMLRegExpTree` 源定义的，该源会接收一个指向包含正则表达式树的 YAML 文件的路径。
 
@@ -2386,7 +2386,7 @@ SELECT dictGet('regexp_dict', ('name', 'version'), '31/tclwebkit1024');
 
 借助功能强大的 YAML 配置文件，我们可以将正则树字典用作 User-Agent 字符串解析器。我们支持 [uap-core](https://github.com/ua-parser/uap-core)，并在功能测试用例 [02504&#95;regexp&#95;dictionary&#95;ua&#95;parser](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/02504_regexp_dictionary_ua_parser.sh) 中演示了其用法。
 
-#### 收集属性值 {#collecting-attribute-values}
+#### 收集属性值 \{#collecting-attribute-values\}
 
 有时，与其只返回叶子节点的值，不如返回所有匹配成功的多个正则表达式的值更有用。在这种情况下，可以使用专门的 [`dictGetAll`](../../sql-reference/functions/ext-dict-functions.md#dictGetAll) 函数。如果某个节点具有类型为 `T` 的属性值，`dictGetAll` 将返回一个包含零个或多个值的 `Array(T)`。
 
@@ -2447,14 +2447,14 @@ SELECT url, dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', '
 └────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-#### 匹配模式 {#matching-modes}
+#### 匹配模式 \{#matching-modes\}
 
 可以通过某些字典 SETTING 参数来修改模式匹配行为：
 
 - `regexp_dict_flag_case_insensitive`：使用大小写不敏感匹配（默认值为 `false`）。可以在单个表达式中使用 `(?i)` 和 `(?-i)` 覆盖此设置。
 - `regexp_dict_flag_dotall`：允许 `.` 匹配换行符（默认值为 `false`）。
 
-### 在 ClickHouse Cloud 中使用正则表达式树字典 {#use-regular-expression-tree-dictionary-in-clickhouse-cloud}
+### 在 ClickHouse Cloud 中使用正则表达式树字典 \{#use-regular-expression-tree-dictionary-in-clickhouse-cloud\}
 
 上述使用的 `YAMLRegExpTree` 源在 ClickHouse 开源版本中可用，但在 ClickHouse Cloud 中不可用。要在 ClickHouse Cloud 中使用正则表达式树字典，首先需要在本地运行的 ClickHouse 开源版本中基于一个 YAML 文件创建正则表达式树字典，然后使用 `dictionary` 表函数配合 [INTO OUTFILE](../statements/select/into-outfile.md) 子句将该字典导出为 CSV 文件。
 
@@ -2521,7 +2521,7 @@ LIFETIME(0)
 LAYOUT(regexp_tree);
 ```
 
-## 嵌入式字典 {#embedded-dictionaries}
+## 嵌入式字典 \{#embedded-dictionaries\}
 
 <SelfManaged />
 

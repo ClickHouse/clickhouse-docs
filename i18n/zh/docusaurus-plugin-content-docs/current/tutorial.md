@@ -9,19 +9,19 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 进阶教程 {#advanced-tutorial}
+# 进阶教程 \{#advanced-tutorial\}
 
-## 概述 {#overview}
+## 概述 \{#overview\}
 
 了解如何使用纽约市出租车示例数据集在 ClickHouse 中摄取和查询数据。
 
-### 前置条件 {#prerequisites}
+### 前置条件 \{#prerequisites\}
 
 您需要访问正在运行的 ClickHouse 服务才能完成本教程。有关说明,请参阅[快速入门](/get-started/quick-start)指南。
 
 <VerticalStepper>
 
-## 创建新表 {#create-a-new-table}
+## 创建新表 \{#create-a-new-table\}
 
 纽约市出租车数据集包含数百万次出租车行程的详细信息，其中的列包括小费金额、过路费、支付方式等。创建一个表来存储这些数据。
 
@@ -84,7 +84,7 @@ doc_type: 'guide'
     ORDER BY pickup_datetime;
     ```
 
-## 添加数据集 {#add-the-dataset}
+## 添加数据集 \{#add-the-dataset\}
 
 表已经创建好之后，接下来从 S3 中的 CSV 文件中添加纽约市出租车数据。
 
@@ -152,7 +152,7 @@ doc_type: 'guide'
 
     此查询应返回 1,999,657 行。
 
-## 分析数据 {#analyze-the-data}
+## 分析数据 \{#analyze-the-data\}
 
 运行查询以分析数据。您可以参考以下示例或尝试编写自己的 SQL 查询。
 
@@ -369,7 +369,7 @@ doc_type: 'guide'
     </p>
     </details>
 
-## 创建字典 {#create-a-dictionary}
+## 创建字典 \{#create-a-dictionary\}
 
 字典是在内存中存储的键值对映射。详情请参见 [Dictionaries](/sql-reference/dictionaries/index.md)
 
@@ -468,7 +468,7 @@ LAYOUT(HASHED_ARRAY())
 7 行数据。耗时：0.019 秒。处理了 2.00 百万行，4.00 MB（105.70 百万行/秒，211.40 MB/秒）。
 ```
 
-## 执行连接查询 {#perform-a-join}
+## 执行连接查询 \{#perform-a-join\}
 
 编写一些查询语句,将 `taxi_zone_dictionary` 与 `trips` 表进行连接。
 
@@ -520,7 +520,7 @@ LAYOUT(HASHED_ARRAY())
 
 </VerticalStepper>
 
-## 后续步骤 {#next-steps}
+## 后续步骤 \{#next-steps\}
 
 通过以下文档进一步了解 ClickHouse：
 

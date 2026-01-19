@@ -5,11 +5,14 @@ description: 'Загрузка данных из Azure в ClickHouse — обз�
 keywords: ['azure data factory', 'azure', 'microsoft', 'data']
 title: 'Загрузка данных из Azure в ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Импорт данных из Azure в ClickHouse {#bringing-azure-data-into-clickhouse}
+# Импорт данных из Azure в ClickHouse \{#bringing-azure-data-into-clickhouse\}
 
 <ClickHouseSupportedBadge />
 

@@ -14,9 +14,9 @@ import hyperdx_26 from '@site/static/images/use-cases/observability/hyperdx-26.p
 
 ClickStack の各コンポーネントには、以下の設定オプションがあります。
 
-## 設定の変更 {#modifying-settings}
+## 設定の変更 \{#modifying-settings\}
 
-### Docker {#docker}
+### Docker \{#docker\}
 
 [All in One](/use-cases/observability/clickstack/deployment/all-in-one)、[HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only)、または [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only) を使用している場合は、環境変数で必要な設定値を指定するだけで構いません。例：
 
@@ -25,7 +25,7 @@ docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 
 ```
 
 
-### Docker Compose {#docker-compose}
+### Docker Compose \{#docker-compose\}
 
 [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) のデプロイメントガイドを使用している場合は、[`.env`](https://github.com/hyperdxio/hyperdx/blob/main/.env) ファイルで設定を変更できます。
 
@@ -42,9 +42,9 @@ services:
       # ... その他の設定
 ```
 
-### Helm {#helm}
+### Helm \{#helm\}
 
-#### 値のカスタマイズ（任意） {#customizing-values}
+#### 値のカスタマイズ（任意） \{#customizing-values\}
 
 たとえば、`--set` フラグを使用して次のように設定をカスタマイズできます。
 
@@ -95,9 +95,9 @@ ingress:
       value: abc
 ```
 
-## HyperDX {#hyperdx}
+## HyperDX \{#hyperdx\}
 
-### データソース設定 {#datasource-settings}
+### データソース設定 \{#datasource-settings\}
 
 HyperDX は、各 Observability データタイプ/ピラーごとにソースをユーザーが定義することを前提としています:
 
@@ -120,7 +120,7 @@ ClickStack とともに配布されている ClickHouse のデフォルトスキ
 
 各ソースで利用可能な設定は以下のとおりです:
 
-#### ログ {#logs}
+#### ログ \{#logs\}
 
 | Setting                        | Description                                                                                                             | Required | Inferred in Default Schema       | Inferred Value                                      |
 |-------------------------------|-------------------------------------------------------------------------------------------------------------------------|----------|----------------------------------|-----------------------------------------------------|
@@ -142,7 +142,7 @@ ClickStack とともに配布されている ClickHouse のデフォルトスキ
 | `Span Id Expression`          | Span ID を抽出するための式またはカラム。                                                                                | はい     | はい                             | `SpanId`                                            |
 | `Implicit Column Expression`  | フィールドが指定されていない場合に全文検索（Lucene 形式）で使用されるカラム。通常はログ本文。                           | はい     | はい                             | `Body`                                              |
 
-#### トレース {#traces}
+#### トレース \{#traces\}
 
 | Setting                          | Description                                                                                                             | Required | Inferred in Default Schema | Inferred Value         |
 |----------------------------------|-------------------------------------------------------------------------------------------------------------------------|----------|-----------------------------|------------------------|
@@ -171,7 +171,7 @@ ClickStack とともに配布されている ClickHouse のデフォルトスキ
 | `Span Events Expression`        | スパンイベントを抽出するための式。通常は `Nested` 型カラムです。対応する言語 SDKs を使用している場合、例外スタックトレースのレンダリングが可能になります。 | Yes      | Yes                         | `Events`                 |
 | `Implicit Column Expression`   | フィールドが指定されていない場合に全文検索（Lucene 形式）に使用されるカラム。通常はログ本文です。  | Yes  | Yes  | `SpanName`|
 
-#### メトリクス {#metrics}
+#### メトリクス \{#metrics\}
 
 | Setting               | Description                                                   | Required | Inferred in Default Schema      | Inferred Value       |
 |------------------------|---------------------------------------------------------------|----------|----------------------------------|----------------------|
@@ -183,7 +183,7 @@ ClickStack とともに配布されている ClickHouse のデフォルトスキ
 | `Sum Table`            | 合計型（カウンタ）メトリクスを保存するテーブル。              | Yes      | No                               | `otel_metrics_sum`   |
 | `Correlated Log Source`| オプション。相関付けられたログソース（例: HyperDX ログ）。    | No       | No                               | –                    |
 
-#### セッション {#settings}
+#### セッション \{#settings\}
 
 | Setting                        | Description                                                                                         | Required | Inferred in Default Schema        | Inferred Value |
 |-------------------------------|-----------------------------------------------------------------------------------------------------|----------|-----------------------------------|----------------|
@@ -198,7 +198,7 @@ ClickStack とともに配布されている ClickHouse のデフォルトスキ
 | `Correlated Trace Source`     | オプション。セッションを相関付けるためにリンクするトレースソース。                                | No       | No                                | –              |
 | `Implicit Column Expression`  | フィールドが指定されていない場合に全文検索に使用されるカラム（例: Lucene 形式のクエリパース）。   | Yes      | Yes                               | `Body`         |
 
-### 相関ソース {#correlated-sources}
+### 相関ソース \{#correlated-sources\}
 
 ClickStack でソース間の完全な相関付けを有効にするには、ログ、トレース、メトリクス、セッションに対して相関ソースを設定する必要があります。これにより、HyperDX は関連するデータを相関付けて、イベントをレンダリングする際に豊富なコンテキストを提供できます。
 
@@ -213,7 +213,7 @@ ClickStack でソース間の完全な相関付けを有効にするには、ロ
 
 <Image img={hyperdx_26} alt="相関ソースが設定された HyperDX のソース" size="md"/>
 
-### アプリケーションの構成設定 {#application-configuration-settings}
+### アプリケーションの構成設定 \{#application-configuration-settings\}
 
 :::note ClickHouse Cloud での HyperDX
 HyperDX が ClickHouse Cloud 上で管理されている場合、これらの設定は変更できません。
@@ -348,7 +348,7 @@ HyperDX が ClickHouse Cloud 上で管理されている場合、これらの設
   * **Guidance:**
   * `true` に設定すると、ClickStack で JSON サポートが有効になります。
 
-## OpenTelemetry collector {#otel-collector}
+## OpenTelemetry collector \{#otel-collector\}
 
 詳しくは「[ClickStack OpenTelemetry Collector](/use-cases/observability/clickstack/ingesting-data/otel-collector)」を参照してください。
 
@@ -400,7 +400,7 @@ HyperDX が ClickHouse Cloud 上で管理されている場合、これらの設
   - **Guidance:**
     - ClickStack で JSON サポートを有効にするには `true` を設定します。
 
-## ClickHouse {#clickhouse}
+## ClickHouse \{#clickhouse\}
 
 ClickStack には、マルチテラバイト規模を想定したデフォルトの ClickHouse 構成が含まれていますが、ユーザーは自分たちのワークロードに合わせて自由に変更・最適化できます。
 

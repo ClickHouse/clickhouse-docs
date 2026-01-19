@@ -7,7 +7,7 @@ title: 'INSERT INTO ステートメント'
 doc_type: 'reference'
 ---
 
-# INSERT INTO ステートメント {#insert-into-statement}
+# INSERT INTO ステートメント \{#insert-into-statement\}
 
 テーブルにデータを挿入します。
 
@@ -104,11 +104,11 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 :::
 
 
-## 制約 {#constraints}
+## 制約 \{#constraints\}
 
 テーブルに[制約](../../sql-reference/statements/create/table.md#constraints)がある場合、それらの式は挿入されたデータの各行に対して評価されます。これらの制約のいずれかが満たされない場合、サーバーは制約名と式を含む例外をスローし、クエリの実行は中断されます。
 
-## SELECT の結果の挿入 {#inserting-the-results-of-select}
+## SELECT の結果の挿入 \{#inserting-the-results-of-select\}
 
 **構文**
 
@@ -135,7 +135,7 @@ WITH y AS (SELECT * FROM numbers(10)) INSERT INTO x SELECT * FROM y;
 ```
 
 
-## ファイルからのデータ挿入 {#inserting-data-from-a-file}
+## ファイルからのデータ挿入 \{#inserting-data-from-a-file\}
 
 **構文**
 
@@ -152,7 +152,7 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 **例**
 
 
-### FROM INFILE を用いた単一ファイル {#single-file-with-from-infile}
+### FROM INFILE を用いた単一ファイル \{#single-file-with-from-infile\}
 
 次のクエリを [command-line client](../../interfaces/cli.md) を使って実行します。
 
@@ -173,7 +173,7 @@ clickhouse-client --query="SELECT * FROM table_from_file FORMAT PrettyCompact;"
 ```
 
 
-### FROM INFILE でグロブを使用した複数ファイル {#multiple-files-with-from-infile-using-globs}
+### FROM INFILE でグロブを使用した複数ファイル \{#multiple-files-with-from-infile-using-globs\}
 
 この例は前の例と非常によく似ていますが、`FROM INFILE 'input_*.csv'` を使用して複数のファイルからデータを挿入します。
 
@@ -196,7 +196,7 @@ INSERT INTO infile_globs FROM INFILE 'input_?.csv' FORMAT CSV;
 :::
 
 
-## テーブル関数を使った挿入 {#inserting-using-a-table-function}
+## テーブル関数を使った挿入 \{#inserting-using-a-table-function\}
 
 [テーブル関数](../../sql-reference/table-functions/index.md)で参照されるテーブルにデータを挿入できます。
 
@@ -226,7 +226,7 @@ SELECT * FROM simple_table;
 ```
 
 
-## ClickHouse Cloud への挿入 {#inserting-into-clickhouse-cloud}
+## ClickHouse Cloud への挿入 \{#inserting-into-clickhouse-cloud\}
 
 デフォルトでは、ClickHouse Cloud のサービスでは高可用性を実現するために複数のレプリカが提供されています。サービスに接続すると、これらのレプリカのいずれかに接続が確立されます。
 
@@ -241,13 +241,13 @@ SELECT .... SETTINGS select_sequential_consistency = 1;
 `select_sequential_consistency` を使用すると、ClickHouse Keeper（ClickHouse Cloud で内部的に使用されます）への負荷が増加し、サービスの負荷状況によってはパフォーマンスが低下する可能性がある点に注意してください。必要な場合を除き、この設定を有効にすることは推奨しません。推奨されるアプローチは、同一セッション内で読み取り／書き込みを実行するか、ネイティブプロトコルを利用する（そのためスティッキー接続をサポートする）クライアントドライバを使用することです。
 
 
-## レプリケーション構成での挿入 {#inserting-into-a-replicated-setup}
+## レプリケーション構成での挿入 \{#inserting-into-a-replicated-setup\}
 
 レプリケーション構成では、データは複製が完了した後に他のレプリカ上で参照できるようになります。`INSERT` の直後から、データのレプリケーション（他のレプリカへのダウンロード）が開始されます。これは、データが即座に共有ストレージに書き込まれ、レプリカがメタデータの変更をサブスクライブする ClickHouse Cloud とは挙動が異なります。
 
 レプリケーション構成では、分散コンセンサスのために ClickHouse Keeper へのコミットが必要となるため、`INSERT` が完了するまでに比較的長い時間（1 秒程度）がかかる場合がある点に注意してください。ストレージに S3 を使用すると、さらに追加のレイテンシーが発生します。
 
-## パフォーマンス上の考慮事項 {#performance-considerations}
+## パフォーマンス上の考慮事項 \{#performance-considerations\}
 
 `INSERT` は、入力データを主キーでソートし、パーティションキーによってパーティションに分割します。複数のパーティションに対して一度にデータを挿入すると、`INSERT` クエリのパフォーマンスが大きく低下する可能性があります。これを避けるには、次のようにします。
 
@@ -259,13 +259,13 @@ SELECT .... SETTINGS select_sequential_consistency = 1;
 - データがリアルタイムに追加される場合。
 - 通常、時間順にソートされたデータをアップロードする場合。
 
-### 非同期挿入 {#asynchronous-inserts}
+### 非同期挿入 \{#asynchronous-inserts\}
 
 小さなデータを高頻度で非同期に挿入することができます。このような挿入によるデータはバッチにまとめられ、その後安全にテーブルに挿入されます。非同期挿入を使用するには、[`async_insert`](/operations/settings/settings#async_insert) 設定を有効にします。
 
 `async_insert` または [`Buffer` テーブルエンジン](/engines/table-engines/special/buffer) を使用すると、追加のバッファリングが行われます。
 
-### 大規模または長時間実行される挿入 {#large-or-long-running-inserts}
+### 大規模または長時間実行される挿入 \{#large-or-long-running-inserts\}
 
 大量のデータを挿入する場合、ClickHouse は「squashing」と呼ばれる処理により書き込みパフォーマンスを最適化します。メモリ上の小さな挿入データブロックはマージされて、より大きなブロックにまとめられてからディスクに書き込まれます。squashing により、各書き込み操作に関連するオーバーヘッドが削減されます。この処理では、ClickHouse が各 [`max_insert_block_size`](/operations/settings/settings#max_insert_block_size) 行の書き込みを完了するたびに、挿入されたデータがクエリで利用可能になります。
 

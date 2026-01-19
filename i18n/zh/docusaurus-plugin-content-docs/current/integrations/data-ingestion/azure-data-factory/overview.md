@@ -5,11 +5,14 @@ description: '将 Azure 数据导入 ClickHouse - 概览'
 keywords: ['Azure Data Factory', 'Azure', 'Microsoft', '数据']
 title: '将 Azure 数据导入 ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# 将 Azure 数据引入 ClickHouse {#bringing-azure-data-into-clickhouse}
+# 将 Azure 数据引入 ClickHouse \{#bringing-azure-data-into-clickhouse\}
 
 <ClickHouseSupportedBadge />
 

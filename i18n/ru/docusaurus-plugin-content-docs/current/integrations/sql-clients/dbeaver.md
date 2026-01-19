@@ -19,11 +19,11 @@ import dbeaver_test_connection from '@site/static/images/integrations/sql-client
 import dbeaver_download_driver from '@site/static/images/integrations/sql-clients/dbeaver-download-driver.png';
 import dbeaver_sql_editor from '@site/static/images/integrations/sql-clients/dbeaver-sql-editor.png';
 import dbeaver_query_log_select from '@site/static/images/integrations/sql-clients/dbeaver-query-log-select.png';
-import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Подключение DBeaver к ClickHouse {#connect-dbeaver-to-clickhouse}
+# Подключение DBeaver к ClickHouse \{#connect-dbeaver-to-clickhouse\}
 
-<ClickHouseSupportedBadge/>
+<PartnerBadge/>
 
 DBeaver доступен в нескольких редакциях. В этом руководстве используется [DBeaver Community](https://dbeaver.io/). С различными редакциями и их возможностями можно ознакомиться [здесь](https://dbeaver.com/edition/). DBeaver подключается к ClickHouse с помощью JDBC.
 
@@ -31,7 +31,7 @@ DBeaver доступен в нескольких редакциях. В этом
 Пожалуйста, используйте DBeaver версии 23.1.0 или новее для улучшенной поддержки столбцов `Nullable` в ClickHouse.
 :::
 
-## 1. Соберите информацию о вашем ClickHouse {#1-gather-your-clickhouse-details}
+## 1. Соберите информацию о вашем ClickHouse \{#1-gather-your-clickhouse-details\}
 
 DBeaver использует JDBC поверх HTTP(S) для подключения к ClickHouse; для этого вам потребуются:
 
@@ -40,11 +40,11 @@ DBeaver использует JDBC поверх HTTP(S) для подключен
 - имя пользователя
 - пароль
 
-## 2. Скачайте DBeaver {#2-download-dbeaver}
+## 2. Скачайте DBeaver \{#2-download-dbeaver\}
 
 DBeaver можно скачать по адресу https://dbeaver.io/download/
 
-## 3. Добавление базы данных {#3-add-a-database}
+## 3. Добавление базы данных \{#3-add-a-database\}
 
 - Используйте меню **Database > New Database Connection** или значок **New Database Connection** в **Database Navigator**, чтобы открыть диалоговое окно **Connect to a database**:
 
@@ -72,7 +72,7 @@ DBeaver можно скачать по адресу https://dbeaver.io/download/
 
 <Image img={dbeaver_test_connection} size="md" border alt="Протестировать подключение" />
 
-## 4. Запрос к ClickHouse {#4-query-clickhouse}
+## 4. Запрос к ClickHouse \{#4-query-clickhouse\}
 
 Откройте редактор SQL-запросов и выполните запрос.
 
@@ -84,6 +84,6 @@ DBeaver можно скачать по адресу https://dbeaver.io/download/
 
 <Image img={dbeaver_query_log_select} size="md" border alt="Пример запроса" />
 
-## Дальнейшие шаги {#next-steps}
+## Дальнейшие шаги \{#next-steps\}
 
 Подробную информацию о возможностях DBeaver см. в его [wiki](https://github.com/dbeaver/dbeaver/wiki), а о возможностях ClickHouse — в [документации ClickHouse](https://clickhouse.com/docs).

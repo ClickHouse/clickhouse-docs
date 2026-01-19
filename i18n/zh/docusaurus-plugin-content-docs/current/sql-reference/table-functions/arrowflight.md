@@ -7,7 +7,7 @@ title: 'arrowFlight'
 doc_type: 'reference'
 ---
 
-# arrowFlight 表函数 {#arrowflight-table-function}
+# arrowFlight 表函数 \{#arrowflight-table-function\}
 
 可对通过 [Apache Arrow Flight](/interfaces/arrowflight) 服务器公开的数据执行查询。
 

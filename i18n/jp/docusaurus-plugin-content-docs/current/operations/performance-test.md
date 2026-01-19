@@ -13,7 +13,7 @@ import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_s
 
 ClickHouse パッケージをインストールしなくても、どのサーバー上でも ClickHouse の基本的な性能テストを実行できます。
 
-## 自動実行 {#automated-run}
+## 自動実行 \{#automated-run\}
 
 ベンチマークは 1 つのスクリプトだけで実行できます。
 

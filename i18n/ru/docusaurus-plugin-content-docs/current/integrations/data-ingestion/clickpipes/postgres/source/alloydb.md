@@ -16,13 +16,13 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# Руководство по настройке источника данных AlloyDB Postgres {#alloydb-postgres-source-setup-guide}
+# Руководство по настройке источника данных AlloyDB Postgres \{#alloydb-postgres-source-setup-guide\}
 
-## Поддерживаемые версии {#supported-versions}
+## Поддерживаемые версии \{#supported-versions\}
 
 Чтобы передавать данные из экземпляра AlloyDB в ClickHouse Cloud с помощью ClickPipes, экземпляр должен быть настроен для **логической репликации**. Это поддерживается **начиная с AlloyDB версии 14**.
 
-## Включение логической репликации {#enable-logical-replication}
+## Включение логической репликации \{#enable-logical-replication\}
 
 Чтобы проверить, включена ли логическая репликация в вашем экземпляре AlloyDB, выполните следующий запрос на основном экземпляре:
 
@@ -62,7 +62,7 @@ SHOW  wal_level;
    <Image img={verify_logical_replication} alt="Проверка того, что логическая репликация включена" size="lg" border />
 
 
-## Создайте пользователя ClickPipes и настройте права для репликации {#create-a-clickpipes-user-and-manage-replication-permissions}
+## Создайте пользователя ClickPipes и настройте права для репликации \{#create-a-clickpipes-user-and-manage-replication-permissions\}
 
 Подключитесь к экземпляру AlloyDB под учётной записью администратора и выполните следующие команды:
 
@@ -72,15 +72,13 @@ SHOW  wal_level;
    CREATE USER clickpipes_user PASSWORD 'some-password';
    ```
 
-2. Предоставьте этому пользователю права на схемы, которые вы хотите реплицировать.
+2. Предоставьте пользователю, созданному на предыдущем шаге, права только на чтение на уровне схем. В следующем примере показаны права для схемы `public`. Повторите эту последовательность команд для каждой схемы, содержащей таблицы, которые вы хотите реплицировать:
    
     ```sql
     GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
     GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
     ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
     ```
-
-   В приведённом выше примере показаны права для схемы `public`. Повторите эту последовательность команд для каждой схемы, которую вы хотите реплицировать с помощью ClickPipes.
 
 3. Предоставьте этому пользователю права для управления репликацией:
 
@@ -108,10 +106,10 @@ SHOW  wal_level;
 
    Publication `clickpipes` будет содержать набор событий изменений, сформированных указанными таблицами, и позднее будет использоваться для приёма репликационного потока.
 
-## Настройка сетевой безопасности {#configure-network-security}
+## Настройка сетевого доступа \{#configure-network-access\}
 
 :::note
-ClickPipes не поддерживает подключения через Private Service Connect (PSC). Если у вас не разрешён публичный доступ к экземпляру AlloyDB, вы можете [использовать SSH-туннель](#configure-network-security) для безопасного подключения. Поддержка PSC будет добавлена в будущем.
+ClickPipes не поддерживает подключения через Private Service Connect (PSC). Если у вас не разрешён публичный доступ к экземпляру AlloyDB, вы можете [использовать SSH-туннель](#configure-network-access) для безопасного подключения. Поддержка PSC будет добавлена в будущем.
 :::
 
 Далее необходимо разрешить подключения к вашему экземпляру AlloyDB из ClickPipes.
@@ -151,7 +149,7 @@ ClickPipes не поддерживает подключения через Priva
 </TabItem>
 </Tabs>
 
-## Что дальше? {#whats-next}
+## Что дальше? \{#whats-next\}
 
 Теперь вы можете [создать ClickPipe](../index.md) и начать приём данных из вашего экземпляра Postgres в ClickHouse Cloud.
 Обязательно запишите параметры подключения, которые вы использовали при настройке Postgres, так как они понадобятся вам при создании ClickPipe.

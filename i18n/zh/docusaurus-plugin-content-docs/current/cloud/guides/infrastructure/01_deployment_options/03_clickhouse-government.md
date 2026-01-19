@@ -10,7 +10,7 @@ import Image from '@theme/IdealImage';
 import private_gov_architecture from '@site/static/images/cloud/reference/private-gov-architecture.png';
 
 
-## 概述 {#overview}
+## 概述 \{#overview\}
 
 ClickHouse Government 是一个自托管的软件包，由与 ClickHouse Cloud 相同的 ClickHouse 专有版本以及我们的 ClickHouse Operator 组成，配置为计算与存储分离的架构，并经过强化以满足政府机构和公共部门组织的严苛要求。它部署在使用 S3 兼容存储的 Kubernetes 环境中。
 
@@ -22,23 +22,23 @@ ClickHouse Government 专为政府机构、公共部门组织或向这些机构�
 
 
 
-## 相较于开源的优势 {#benefits-over-os}
+## 相较于开源的优势 \{#benefits-over-os\}
 
 以下特性使 ClickHouse Government 有别于自行运维的开源部署：
 
 <VerticalStepper headerLevel="h3">
 
-### 更高性能 {#enhanced-performance}
+### 更高性能 \{#enhanced-performance\}
 - 原生支持计算与存储分离
 - 专有云特性，例如 [shared merge tree](/cloud/reference/shared-merge-tree) 和 [warehouse](/cloud/reference/warehouses) 功能
 
-### 在多种使用场景与条件下经过验证 {#tested-proven}
+### 在多种使用场景与条件下经过验证 \{#tested-proven\}
 - 已在 ClickHouse Cloud 中经过全面测试与验证
 
-### 合规套件 {#compliance-package}
+### 合规套件 \{#compliance-package\}
 - 提供 [NIST 风险管理框架（Risk Management Framework，RMF）](https://csrc.nist.gov/projects/risk-management/about-rmf) 相关文档，有助于加速您获得运行授权（Authorization to Operate，ATO）的进程
 
-### 完备的产品路线图并定期加入新功能 {#full-featured-roadmap}
+### 完备的产品路线图并定期加入新功能 \{#full-featured-roadmap\}
 即将推出的其他特性包括：
 - 用于以编程方式管理资源的 API
   - 自动备份
@@ -49,7 +49,7 @@ ClickHouse Government 专为政府机构、公共部门组织或向这些机构�
 
 
 
-## 架构 {#architecture}
+## 架构 \{#architecture\}
 
 ClickHouse Government 完全运行在您的部署环境中，由 Kubernetes 管理的计算资源以及基于兼容 S3 的存储解决方案的存储组成。
 
@@ -61,17 +61,17 @@ ClickHouse Government 完全运行在您的部署环境中，由 Kubernetes 管�
 
 
 
-## 接入流程 {#onboarding-process}
+## 接入流程 \{#onboarding-process\}
 
 客户可以通过[联系我们](https://clickhouse.com/government)来开始接入流程。对于符合条件的客户，我们将提供详细的环境构建指南，以及用于部署的镜像和 Helm 图表的访问权限。
 
 
 
-## 通用要求 {#general-requirements}
+## 通用要求 \{#general-requirements\}
 
 本节旨在概述部署 ClickHouse Government 所需的资源。具体的部署指南将在接入（onboarding）过程中提供。实例/服务器的类型和规格取决于具体用例。
 
-### 在 AWS 上部署 ClickHouse Government {#clickhouse-government-aws}
+### 在 AWS 上部署 ClickHouse Government \{#clickhouse-government-aws\}
 
 所需资源：
 - 用于接收镜像和 Helm 图表的 [ECR](https://docs.aws.amazon.com/ecr/)

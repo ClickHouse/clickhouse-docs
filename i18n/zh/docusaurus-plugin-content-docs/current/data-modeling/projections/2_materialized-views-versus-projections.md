@@ -10,7 +10,7 @@ keywords: ['物化视图', '投影', '差异']
 
 > 用户经常会问：在什么情况下应该使用物化视图，而什么时候应该使用投影？在本文中，我们将探讨二者之间的关键差异，以及在某些场景下为何可能更适合选择其中之一。
 
-## 关键差异概览 {#key-differences}
+## 关键差异概览 \{#key-differences\}
 
 下表总结了在不同考量维度下，物化视图与投影之间的关键差异。
 
@@ -32,9 +32,9 @@ keywords: ['物化视图', '投影', '差异']
 | [`optimize_read_in_order`](/operations/settings/settings#optimize_read_in_order) | 支持。                                                                                                                                                                                                                                                                                                                                 | 支持。                                                                                                                                                                                                                                                                                                 |
 | Lightweight updates and deletes                                                  | 支持。                                                                                                                                                                                                                                                                                                                                 | 不支持。                                                                                                                                                                                                                                                                                               |
 
-## 对比物化视图和投影 {#choose-between}
+## 对比物化视图和投影 \{#choose-between\}
 
-### 何时选择物化视图 {#choosing-materialized-views}
+### 何时选择物化视图 \{#choosing-materialized-views\}
 
 在以下情况下，应考虑使用物化视图：
 
@@ -43,21 +43,21 @@ keywords: ['物化视图', '投影', '差异']
 - 希望获得 **显式的 schema 控制**：需要一个具有自己 schema 和引擎的独立目标表来存放预计算结果，从而在数据建模上获得更大的灵活性。
 - 希望在 **摄取时进行过滤**：需要在数据被物化之前对其进行过滤，从而减少写入目标表的数据量。
 
-### 何时应避免使用物化视图 {#avoid-materialized-views}
+### 何时应避免使用物化视图 \{#avoid-materialized-views\}
 
 在以下情况下，应考虑避免使用物化视图：
 
 - **源数据经常被更新或删除**：如果没有额外的策略来处理源表和目标表之间的一致性，增量物化视图可能会变得过时且不一致。
 - **更倾向于保持简单并依赖自动优化**：例如你希望避免管理单独的目标表时。
 
-### 何时选择使用投影（projections）{#choosing-projections}
+### 何时选择使用投影（projections）\{#choosing-projections\}
 
 在以下情况下，应当考虑使用 projections：
 
 - **为单个表优化查询**：你的主要目标是通过提供备用排序顺序、优化不属于主键的列上的过滤条件，或为单个表预先计算聚合，从而加速对单个基础表的查询。
 - 你希望实现**查询透明性（query transparency）**：你希望在不修改查询的情况下，始终针对原始表执行查询，并依赖 ClickHouse 为给定查询自动选择最优的数据布局。
 
-### 何时应避免使用 Projection {#avoid-projections}
+### 何时应避免使用 Projection \{#avoid-projections\}
 
 在以下情况下，应考虑避免使用 Projection：
 
@@ -67,7 +67,7 @@ keywords: ['物化视图', '投影', '差异']
 - **需要使用 `FINAL` 查询时**：Projection 无法与 `FINAL` 查询配合使用，而 `FINAL` 查询有时会用于去重。
 - **需要使用 [parallel replicas](/deployment-guides/parallel-replicas) 时**：Projection 不支持该特性。
 
-## 总结 {#summary}
+## 总结 \{#summary\}
 
 物化视图和投影（projection）都是用于优化查询和转换数据的强大工具，我们并不建议把它们看作非此即彼的二选一方案。相反，你可以将二者组合、互补使用，以最大化查询性能。因此，在 ClickHouse 中选择物化视图还是投影，很大程度上取决于你的具体用例和访问模式。
 

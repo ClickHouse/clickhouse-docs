@@ -12,7 +12,7 @@ import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedul
 ClickHouse Cloud では、安定性、新機能へのアクセス、アップグレードの予測可能性といったニーズに応じて、複数のリリースチャネルを提供しています。各チャネルごとにアップグレードスケジュールが異なり、新しいリリースにすぐアクセスしたいユーザーと、最も安定したリリース版を受け取れるようアップグレードを先送りしたいユーザーという、異なるユースケースに対応することを目的としています。
 
 
-## リリースチャネルの詳細 {#release-channel-details}
+## リリースチャネルの詳細 \{#release-channel-details\}
 
 <details>
 <summary>リリースチャネルについて詳しく知る</summary>
@@ -34,20 +34,31 @@ ClickHouse Cloud では、安定性、新機能へのアクセス、アップグ
 
 Enterprise ティアのサービスでは、すべてのリリースチャネルでスケジュールされたアップグレードを利用できます。この機能により、アップグレードを実施する曜日と時間帯の時間枠を設定できます。
 
-## リリーススケジュール {#release-schedule}
+## リリーススケジュール \{#release-schedule\}
 
 以下に記載のリリース日程は目安であり、変更される可能性があります。
 
 <ReleaseSchedule releases={[
    {
-    changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
-    version: '25.10',
-    fast_date: '2025-12-11（2025-12-15 に完了）',
-    regular_date: '2026-01-07',
-    slow_date: 'TBD',
+     changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
+     version: '25.10',
+     fast_date: '2025-12-11（2025-12-15 に完了）',
+     regular_date: '2026-01-13',
+     slow_date: 'TBD',
+     fast_progress: 'green',
+     regular_progress: 'green',
+     slow_progress: 'green',
+     fast_delay_note: 'アップグレードウィンドウが設定されているサービスは、1月12日の週に予定されているウィンドウ内で 25.10 にアップグレードされます',
+   },
+   {
+    changelog_link: 'https://clickhouse.com/docs/changelogs/25.8',
+    version: '25.8',
+    fast_date: '完了',
+    regular_date: '完了（2025-12-19）',
+    slow_date: '2026-01-15',
     fast_progress: 'green',
     regular_progress: 'green',
     slow_progress: 'green',
-    fast_delay_note: 'アップグレードウィンドウが設定されているサービスは、1月5日の週に予定されているウィンドウ内で 25.10 にアップグレードされます',
+    regular_delay_note: 'アップグレードウィンドウが設定されているサービスは、1月13日から順次アップグレードされます',
   }
 ]} />

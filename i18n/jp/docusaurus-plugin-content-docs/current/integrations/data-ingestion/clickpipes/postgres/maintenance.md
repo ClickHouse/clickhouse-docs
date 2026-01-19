@@ -4,10 +4,13 @@ description: 'Postgres 用 ClickPipes のメンテナンスウィンドウ。'
 slug: /integrations/clickpipes/postgres/maintenance
 title: 'Postgres 用 ClickPipes のメンテナンスウィンドウ'
 doc_type: 'reference'
-keywords: ['clickpipes', 'postgresql', 'cdc', 'データインジェスト', 'リアルタイム同期']
+keywords: ['clickpipes', 'postgresql', 'cdc', 'インジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
-# Postgres 用 ClickPipes のメンテナンス時間帯 {#maintenance-windows-for-clickpipes-for-postgres}
+# Postgres 用 ClickPipes のメンテナンス時間帯 \{#maintenance-windows-for-clickpipes-for-postgres\}
 
 Postgres ClickPipes のメンテナンス時間帯が次のとおり予定されています。
 

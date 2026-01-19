@@ -6,6 +6,9 @@ description: 'ClickHouse R2DBC Driver'
 slug: /integrations/java/r2dbc
 title: 'R2DBC driver'
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
 ---
 
 import Tabs from '@theme/Tabs';

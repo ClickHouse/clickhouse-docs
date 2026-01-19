@@ -20,9 +20,9 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 本ガイドは、ClickHouse Cloud で Organization Admin ロールを持つユーザーを対象としています。
 
 
-## 組織にユーザーを追加する {#add-users}
+## 組織にユーザーを追加する \{#add-users\}
 
-### ユーザーを招待する {#invite-users}
+### ユーザーを招待する \{#invite-users\}
 
 管理者は、一度に最大 3 名までのユーザーを招待でき、招待時に組織およびサービスレベルのロールを割り当てることができます。
 
@@ -36,7 +36,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 ユーザーには、組織への参加方法が記載されたメールが送信されます。招待の承諾についての詳細は、[Manage my account](/cloud/security/manage-my-account) を参照してください。
 
-### SAML アイデンティティプロバイダー経由でユーザーを追加する {#add-users-via-saml}
+### SAML アイデンティティプロバイダー経由でユーザーを追加する \{#add-users-via-saml\}
 
 <EnterprisePlanFeatureBadge feature="SAML SSO"/>
 
@@ -46,37 +46,37 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 2. ユーザーが ClickHouse Cloud にログインすると、自動的に `Member` ロールが割り当てられます。このロールはログインのみ可能で、それ以外のアクセス権はありません
 3. 権限を付与するには、以下の `Manage user role assignments` の手順に従ってください
 
-### SAML のみの認証を強制する {#enforce-saml}
+### SAML のみの認証を強制する \{#enforce-saml\}
 
 少なくとも 1 名の SAML ユーザーが Organization Admin ロールに割り当てられている状態になったら、その他の認証方法を使用するユーザーを組織から削除し、組織に対して SAML のみの認証を強制します。
 
 
 
-## ユーザーのロール割り当てを管理する {#manage-role-assignments}
+## ユーザーのロール割り当てを管理する \{#manage-role-assignments\}
 
 Organization Admin ロールが割り当てられているユーザーは、いつでも他のユーザーの権限を更新できます。
 
 <VerticalStepper headerLevel="h3">
 
-### 組織設定にアクセスする {#access-organization-settings}
+### 組織設定にアクセスする \{#access-organization-settings\}
 
 Services ページから、組織名を選択します:
 
 <Image img={step_1} size="md"/>
 
-### `Users and roles` にアクセスする {#access-users-and-roles}
+### `Users and roles` にアクセスする \{#access-users-and-roles\}
 
 ポップアップメニューから `Users and roles` メニュー項目を選択します。
 
 <Image img={step_2} size="md"/>
 
-### 更新するユーザーを選択する {#select-user-to-update}
+### 更新するユーザーを選択する \{#select-user-to-update\}
 
 アクセス権を変更したいユーザーの行の末尾にあるメニュー項目を選択します:
 
 <Image img={step_3} size="lg"/>
 
-### `edit` を選択する {#select-edit}
+### `edit` を選択する \{#select-edit\}
 
 <Image img={step_4} size="lg"/>
 
@@ -84,7 +84,7 @@ Services ページから、組織名を選択します:
 
 <Image img={step_5} size="lg"/>
 
-### 権限を更新する {#update-permissions}
+### 権限を更新する \{#update-permissions\}
 
 ドロップダウンメニューから項目を選択して、コンソール全体でのアクセス権限と、ユーザーが ClickHouse コンソール内でアクセスできる機能を調整します。ロールとそれに関連付けられた権限の一覧については、[Console roles and permissions](/cloud/security/console-roles) を参照してください。
 
@@ -92,7 +92,7 @@ Services ページから、組織名を選択します:
 
 <Image img={step_6} size="md"/>
 
-### 変更内容を保存する {#save-changes}
+### 変更内容を保存する \{#save-changes\}
 
 タブ下部にある `Save changes` ボタンを使用して、変更内容を保存します:
 
@@ -102,7 +102,7 @@ Services ページから、組織名を選択します:
 
 
 
-## ユーザーを削除する {#remove-user}
+## ユーザーを削除する \{#remove-user\}
 :::note SAML ユーザーの削除
 アイデンティティプロバイダーで ClickHouse アプリケーションから割り当て解除された SAML ユーザーは、ClickHouse Cloud にログインできません。アカウントはコンソールから自動的には削除されないため、手動で削除する必要があります。
 :::

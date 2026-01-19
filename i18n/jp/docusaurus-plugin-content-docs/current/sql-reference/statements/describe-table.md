@@ -32,7 +32,7 @@ DESC|DESCRIBE TABLE [db.]table [INTO OUTFILE filename] [FORMAT format]
 
 **例**
 
-クエリ:`
+クエリ:
 
 ```sql
 CREATE TABLE describe_example (
@@ -54,7 +54,7 @@ DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 └──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-2つ目のクエリでは、サブカラムも併せて表示されます。
+2つ目のクエリでは、サブカラムも追加で表示されます。
 
 ```text
 ┌─name──────┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┬─is_subcolumn─┐
@@ -65,6 +65,26 @@ DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 │ user.age  │ UInt8                         │              │                    │         │                  │                │            1 │
 └───────────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┴──────────────┘
 ```
+
+`DESCRIBE` ステートメントは、サブクエリやスカラー式に対しても使用できます。
+
+```SQL
+DESCRIBE SELECT 1 FORMAT TSV;
+```
+
+または
+
+```SQL
+DESCRIBE (SELECT 1) FORMAT TSV;
+```
+
+結果:
+
+```text
+1       UInt8
+```
+
+この用法では、指定したクエリまたはサブクエリの結果の列に関するメタデータを返します。実行前に複雑なクエリの構造を把握するのに役立ちます。
 
 **関連項目**
 

@@ -7,15 +7,15 @@ sidebar_label: 'minSimpleState'
 doc_type: 'reference'
 ---
 
-# minSimpleState {#minsimplestate}
+# minSimpleState \{#minsimplestate\}
 
-## Описание {#description}
+## Описание \{#description\}
 
 Комбинатор [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) может быть применён к функции [`min`](/sql-reference/aggregate-functions/reference/min)
 для получения минимального значения по всем входным значениям. Он возвращает 
 результат типа [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 Рассмотрим практический пример с таблицей, в которой хранятся ежедневные
 измерения температуры. Для каждой точки измерения нам нужно хранить
@@ -163,7 +163,7 @@ ORDER BY location_id;
 частичных агрегатных состояний.
 :::
 
-## См. также {#see-also}
+## См. также \{#see-also\}
 - [`min`](/sql-reference/aggregate-functions/reference/min)
 - [`комбинатор SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate)
 - [`тип SimpleAggregateFunction`](/sql-reference/data-types/simpleaggregatefunction)

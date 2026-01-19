@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-# 基于性能分析的优化 {#profile-guided-optimization}
+# 基于性能分析的优化 \{#profile-guided-optimization\}
 
 Profile-Guided Optimization（PGO，基于性能分析的优化）是一种编译器优化技术，它根据程序的运行时性能分析数据对程序进行优化。
 
@@ -17,7 +17,7 @@ Profile-Guided Optimization（PGO，基于性能分析的优化）是一种编�
 
 关于 ClickHouse 中 PGO 的更多信息，可在对应的 GitHub [issue](https://github.com/ClickHouse/ClickHouse/issues/44567) 中查阅。
 
-## 如何使用 PGO 构建 ClickHouse？ {#how-to-build-clickhouse-with-pgo}
+## 如何使用 PGO 构建 ClickHouse？ \{#how-to-build-clickhouse-with-pgo\}
 
 PGO 主要有两种类型：[Instrumentation](https://clang.llvm.org/docs/UsersManual.html#using-sampling-profilers) 和 [Sampling](https://clang.llvm.org/docs/UsersManual.html#using-sampling-profilers)（也称为 AutoFDO）。本指南介绍的是在 ClickHouse 中使用 Instrumentation PGO 的方法。
 

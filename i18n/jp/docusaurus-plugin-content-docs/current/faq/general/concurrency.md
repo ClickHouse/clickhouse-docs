@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['concurrency', 'QPS']
 ---
 
-# ClickHouse は高頻度かつ同時実行されるクエリをサポートしていますか？ {#does-clickhouse-support-frequent-concurrent-queries}
+# ClickHouse は高頻度かつ同時実行されるクエリをサポートしていますか？ \{#does-clickhouse-support-frequent-concurrent-queries\}
 
 ClickHouse は、外部ユーザーに直接応答するリアルタイム分析アプリケーション向けに設計されています。ペタバイト規模のデータベースに対して、履歴データとリアルタイム挿入データを組み合わせつつ、低レイテンシ（10 ミリ秒未満）かつ高い同時実行性（1 秒あたり 10,000 クエリ超）で分析クエリを処理できます。
 

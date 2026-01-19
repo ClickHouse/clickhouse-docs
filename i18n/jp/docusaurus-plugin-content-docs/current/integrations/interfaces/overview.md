@@ -8,7 +8,7 @@ title: 'ドライバとインターフェース'
 doc_type: 'reference'
 ---
 
-# ドライバーとインターフェース {#drivers-and-interfaces}
+# ドライバーとインターフェース \{#drivers-and-interfaces\}
 
 ClickHouse は 2 つのネットワークインターフェースを提供します（必要に応じて、追加のセキュリティのために TLS で保護できます）:
 

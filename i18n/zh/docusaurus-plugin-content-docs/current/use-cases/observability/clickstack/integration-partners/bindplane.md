@@ -16,7 +16,7 @@ import bindplane_configuration from '@site/static/images/clickstack/bindplane/bi
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# 使用 Bindplane 将 OpenTelemetry 发送到 ClickStack {#bindplane-clickstack}
+# 使用 Bindplane 将 OpenTelemetry 发送到 ClickStack \{#bindplane-clickstack\}
 
 <PartnerBadge/>
 
@@ -33,11 +33,11 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 所需时间：10–15 分钟
 :::
 
-## 什么是 Bindplane？ {#what-is-bindplane}
+## 什么是 Bindplane？ \{#what-is-bindplane\}
 
 Bindplane 是一个原生支持 OpenTelemetry 的遥测管道，用于对 OpenTelemetry Collector 进行集中化管理。它通过提供可视化配置编辑、安全的逐步发布（rollout）以及管道智能等能力，简化了大规模 Collector 集群的运维管理。
 
-## 为什么选择 Bindplane + ClickStack？ {#why-bindplane-clickstack}
+## 为什么选择 Bindplane + ClickStack？ \{#why-bindplane-clickstack\}
 
 在大规模场景下，管理大批量的 OpenTelemetry Collector 会成为运维瓶颈。ClickStack 已经证明其可以处理极端的摄取规模——客户以每秒数 GB 的速率摄取遥测数据，并存储数百 PB 的数据。此时，挑战从查询性能转变为如何可靠地运行向 ClickHouse 提供数据的 Collector 基础设施。
 
@@ -55,7 +55,7 @@ Bindplane 通过以下方式解决这一问题：
 - **Bindplane 管理摄取管道，并解决运行大规模 Collector 机群的运维复杂度**
 :::
 
-## 前置条件 {#prerequisites}
+## 前置条件 \{#prerequisites\}
 
 - 已运行的 ClickStack 实例（本地、服务器或 ClickHouse Cloud）
 - Bindplane 账号（[在 `app.bindplane.com` 创建账号](https://app.bindplane.com))
@@ -64,11 +64,11 @@ Bindplane 通过以下方式解决这一问题：
 - ClickStack API 摄取密钥（可在 ClickStack Team Settings > API Keys 中找到，[参考文档见此处](/docs/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data)）
 - 已开放相应的网络端口（`4318` 用于 HTTP(S)，`4317` 用于 gRPC）
 
-## 将 ClickStack 与 Bindplane 集成 {#integrate-bindplane-clickstack}
+## 将 ClickStack 与 Bindplane 集成 \{#integrate-bindplane-clickstack\}
 
 <VerticalStepper headerLevel="h4">
 
-#### 将 ClickStack 配置为目标 {#configure-destination}
+#### 将 ClickStack 配置为目标 \{#configure-destination\}
 
 1. 登录你的 Bindplane 账号
 2. 进入 **Library**
@@ -86,7 +86,7 @@ Bindplane 通过以下方式解决这一问题：
 ClickStack 目标支持 HTTP 和 gRPC 两种协议。对于高流量场景，推荐使用带压缩（gzip、zstd 或 snappy）的 gRPC 以获得更好的性能。
 :::
 
-#### 创建配置 {#create-configuration}
+#### 创建配置 \{#create-configuration\}
 
 在完成 ClickStack 目标配置后，创建一个配置来处理并路由遥测数据：
 
@@ -106,7 +106,7 @@ ClickStack 目标支持 HTTP 和 gRPC 两种协议。对于高流量场景，推
 你可以添加处理器，用于过滤、采样、脱敏/掩码、增强、批处理等，在遥测数据到达 ClickStack 之前对其进行整形。这可以确保进入 ClickHouse 的数据保持一致且结构化。
 :::
 
-#### 添加处理器（可选） {#add-processors}
+#### 添加处理器（可选） \{#add-processors\}
 
 Bindplane 提供 pipeline 智能能力和处理器推荐。你可以添加处理器来：
 
@@ -118,7 +118,7 @@ Bindplane 提供 pipeline 智能能力和处理器推荐。你可以添加处理
 
 这些处理器会在数据到达 ClickStack 之前，一致地应用到你的整个 collector 集群上。
 
-#### 部署 collectors 并开始滚动发布 {#deploy-collectors}
+#### 部署 collectors 并开始滚动发布 \{#deploy-collectors\}
 
 1. 向你的配置中添加一个 collector（BDOT Collector）：
    - 在 Bindplane 中进入 **Agents**
@@ -140,7 +140,7 @@ Bindplane 提供安全的一键滚动发布与验证。你可以通过 Bindplane
 
 <Image img={bindplane_configuration} alt="通过 Bindplane 进入 ClickStack 的遥测信号" size="lg"/>
 
-#### 在 ClickStack 中验证遥测数据 {#verify-telemetry}
+#### 在 ClickStack 中验证遥测数据 \{#verify-telemetry\}
 
 配置滚动发布完成后，遥测数据会从受管的 collector 集群流入 ClickStack：
 
@@ -153,9 +153,9 @@ Bindplane 提供安全的一键滚动发布与验证。你可以通过 Bindplane
 
 </VerticalStepper>
 
-## 高级配置 {#advanced-configuration}
+## 高级配置 \{#advanced-configuration\}
 
-### 扇出路由 {#fan-out-routing}
+### 扇出路由 \{#fan-out-routing\}
 
 Bindplane 支持扇出（fan-out）路由，允许你将同一遥测数据流同时发送到多个目标。你可以：
 
@@ -165,7 +165,7 @@ Bindplane 支持扇出（fan-out）路由，允许你将同一遥测数据流同
 
 这是通过在 Bindplane 配置中添加多个目标来实现的。
 
-### 压缩和性能 {#compression}
+### 压缩和性能 \{#compression\}
 
 对于高流量场景，请为 ClickStack 目标配置压缩：
 
@@ -174,7 +174,7 @@ Bindplane 支持扇出（fan-out）路由，允许你将同一遥测数据流同
 
 压缩在向 ClickStack 发送遥测数据时可以减少带宽占用，在大规模场景下尤为重要。
 
-## 后续步骤 {#next-steps}
+## 后续步骤 \{#next-steps\}
 
 现在你已经将遥测数据从 Bindplane 传输到 ClickStack，可以：
 
@@ -183,7 +183,7 @@ Bindplane 支持扇出（fan-out）路由，允许你将同一遥测数据流同
 - **扩展部署**：随着可观测性需求的增长，添加更多采集器和数据源
 - **优化管道**：利用 Bindplane 的管道智能功能识别优化机会
 
-## 延伸阅读 {#read-more}
+## 延伸阅读 \{#read-more\}
 
 * [Bindplane 文档中的 ClickStack 集成](https://docs.bindplane.com/integrations/destinations/clickstack)
 

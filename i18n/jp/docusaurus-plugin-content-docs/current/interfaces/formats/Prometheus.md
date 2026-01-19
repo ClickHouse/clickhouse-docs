@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 [Prometheus のテキストベースのエクスポジション形式](https://prometheus.io/docs/instrumenting/exposition_formats/#text-based-format)でメトリクスを公開します。
 
@@ -28,7 +28,7 @@ doc_type: 'reference'
 `histogram` と `summary` のラベルには特別な要件があります。詳細は [Prometheus のドキュメント](https://prometheus.io/docs/instrumenting/exposition_formats/#histograms-and-summaries)を参照してください。
 ラベル `{'count':''}` および `{'sum':''}` を持つ行には特別なルールが適用され、それぞれ `<metric_name>_count` および `<metric_name>_sum` に変換されます。
 
-## 使用例 {#example-usage}
+## 使用例 \{#example-usage\}
 
 ```yaml
 ┌─name────────────────────────────────┬─type──────┬─help──────────────────────────────────────┬─labels─────────────────────────┬────value─┬─────timestamp─┐
@@ -86,4 +86,4 @@ rpc_duration_seconds_count 2693
 something_weird{problem="division by zero"} +Inf -3982045
 ```
 
-## 書式設定 {#format-settings}
+## 書式設定 \{#format-settings\}

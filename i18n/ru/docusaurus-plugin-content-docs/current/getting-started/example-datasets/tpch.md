@@ -18,7 +18,7 @@ keywords: ['пример набора данных', 'tpch', 'бенчмарк',
 * [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
 * [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
 
-## Генерация и импорт данных {#data-generation-and-import}
+## Генерация и импорт данных \{#data-generation-and-import\}
 
 Сначала клонируйте репозиторий TPC-H и скомпилируйте генератор данных:
 
@@ -192,7 +192,7 @@ INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 
 :::
 
-## Запросы {#queries}
+## Запросы \{#queries\}
 
 :::note
 Для получения корректных результатов в соответствии со стандартом SQL необходимо включить настройку [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls).

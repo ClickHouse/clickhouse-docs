@@ -13,12 +13,12 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## Описание {#description}
+## Описание \{#description\}
 
 [Apache Arrow](https://arrow.apache.org/) включает два встроенных формата колоночного хранения данных. ClickHouse поддерживает операции чтения и записи для этих форматов.
 `Arrow` — это формат Apache Arrow в режиме «file mode». Он предназначен для произвольного доступа к данным в оперативной памяти.
 
-## Соответствие типов данных {#data-types-matching}
+## Соответствие типов данных \{#data-types-matching\}
 
 В таблице ниже показаны поддерживаемые типы данных и их соответствие [типам данных](/sql-reference/data-types/index.md) ClickHouse в запросах `INSERT` и `SELECT`.
 
@@ -62,9 +62,9 @@ doc_type: 'reference'
 
 Типы данных столбцов таблицы ClickHouse не обязаны совпадать с соответствующими полями Arrow. При вставке данных ClickHouse интерпретирует типы данных в соответствии с таблицей выше, а затем [приводит](/sql-reference/functions/type-conversion-functions#CAST) данные к типу, заданному для столбца таблицы ClickHouse.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
-### Вставка данных {#inserting-data}
+### Вставка данных \{#inserting-data\}
 
 Вы можете вставить данные Arrow из файла в таблицу ClickHouse с помощью следующей команды:
 
@@ -72,7 +72,7 @@ doc_type: 'reference'
 $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT Arrow"
 ```
 
-### Выбор данных {#selecting-data}
+### Выбор данных \{#selecting-data\}
 
 Вы можете выбрать данные из таблицы ClickHouse и сохранить их в файл формата Arrow с помощью следующей команды:
 
@@ -80,7 +80,7 @@ $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT 
 $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Arrow" > {filename.arrow}
 ```
 
-## Настройки формата {#format-settings}
+## Настройки формата \{#format-settings\}
 
 | Параметр                                                                                                                 | Описание                                                                                                                  | Значение по умолчанию |
 |--------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|------------------------|

@@ -125,7 +125,7 @@ Peak memory usage: 250.66 MiB.
 ```
 
 
-## 选择 JOIN 算法 {#choosing-a-join-algorithm}
+## 选择 JOIN 算法 \{#choosing-a-join-algorithm\}
 
 ClickHouse 支持多种 [JOIN 算法](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)。这些算法通常在内存使用与性能之间进行权衡。下文根据相对内存消耗和执行时间，对 ClickHouse 的 JOIN 算法进行概览：
 
@@ -149,7 +149,7 @@ ClickHouse 支持多种 [JOIN 算法](https://clickhouse.com/blog/clickhouse-ful
 
 选择合适的 JOIN 算法取决于是优先优化内存占用，还是优先优化性能。
 
-## 优化 JOIN 性能 {#optimizing-join-performance}
+## 优化 JOIN 性能 \{#optimizing-join-performance\}
 
 如果你的首要优化指标是性能，并且希望尽可能快地执行 join，可以使用下面的决策树来选择合适的 join 算法：
 
@@ -173,7 +173,7 @@ Grace hash join 是三种非内存绑定 join 算法中最灵活的一种，并�
 
 这三种非内存绑定算法中哪一种最快，取决于数据量、数据类型以及 join key 列的值分布。为了确定哪一种算法最快，最好始终在具有真实数据规模和真实数据特征的情况下进行基准测试。
 
-## 针对内存进行优化 {#optimizing-for-memory}
+## 针对内存进行优化 \{#optimizing-for-memory\}
 
 如果你希望在一次 join 中优先优化为尽可能低的内存占用，而不是追求最快的执行时间，那么可以使用下面这棵决策树：
 

@@ -10,19 +10,19 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# file テーブル関数 {#file-table-function}
+# file テーブル関数 \{#file-table-function\}
 
 `s3` テーブル関数と同様に、ファイルに対する `SELECT` や `INSERT` をテーブルと同じように扱えるインターフェイスを提供するテーブルエンジンです。ローカルファイルを扱う場合は `file()` を使用し、S3、GCS、MinIO などのオブジェクトストレージ内のバケットを扱う場合は [s3](/sql-reference/table-functions/url.md) のテーブル関数 `s3()` を使用します。
 
 `file` 関数は、`SELECT` および `INSERT` クエリで使用して、ファイルからの読み取りやファイルへの書き込みを行うことができます。
 
-## 構文 {#syntax}
+## 構文 \{#syntax\}
 
 ```sql
 file([path_to_archive ::] path [,format] [,structure] [,compression])
 ```
 
-## 引数 {#arguments}
+## 引数 \{#arguments\}
 
 | パラメータ        | 説明                                                                                                                                                                                                                                                                                                        |
 |-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -32,13 +32,13 @@ file([path_to_archive ::] path [,format] [,structure] [,compression])
 | `structure`       | テーブルの構造。形式：`'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                                                                       |
 | `compression`     | `SELECT` クエリで使用する場合は既存の圧縮形式、`INSERT` クエリで使用する場合は指定する圧縮形式。サポートされる圧縮形式は `gz`、`br`、`xz`、`zst`、`lz4`、`bz2` です。                                                                                                                                        |
 
-## 戻り値 {#returned_value}
+## 戻り値 \{#returned_value\}
 
 ファイル内のデータを読み書きするためのテーブル。
 
-## ファイルへの書き込み例 {#examples-for-writing-to-a-file}
+## ファイルへの書き込み例 \{#examples-for-writing-to-a-file\}
 
-### TSV ファイルへの書き込み {#write-to-a-tsv-file}
+### TSV ファイルへの書き込み \{#write-to-a-tsv-file\}
 
 ```sql
 INSERT INTO TABLE FUNCTION
@@ -55,7 +55,7 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 1    3    2
 ```
 
-### 複数の TSV ファイルへのパーティション分割書き込み {#partitioned-write-to-multiple-tsv-files}
+### 複数の TSV ファイルへのパーティション分割書き込み \{#partitioned-write-to-multiple-tsv-files\}
 
 `file()` 型のテーブル関数にデータを挿入する際に `PARTITION BY` 式を指定すると、パーティションごとに別々のファイルが作成されます。データを複数のファイルに分割することで、読み取り処理のパフォーマンスを向上できます。
 
@@ -147,7 +147,7 @@ SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
 SELECT count(*) FROM file('{some,another}_dir/some_file_{1..3}', 'TSV', 'name String, value UInt32');
 ```
 
-## パス内のグロブ {#globs-in-path}
+## パス内のグロブ \{#globs-in-path\}
 
 パスにはグロブを使用できます。ファイルは、接頭辞や接尾辞だけでなく、パターン全体に一致する必要があります。ただし 1 つだけ例外があり、パスが既存のディレクトリを指していて、かつグロブを使用していない場合は、そのディレクトリ内のすべてのファイルが選択されるように、パスの末尾に暗黙的に `*` が追加されます。
 
@@ -159,7 +159,7 @@ SELECT count(*) FROM file('{some,another}_dir/some_file_{1..3}', 'TSV', 'name St
 
 `{}` を用いる構文は、[remote](remote.md) および [hdfs](hdfs.md) テーブル関数と同様です。
 
-## 例 {#examples}
+## 例 \{#examples\}
 
 **例**
 
@@ -218,14 +218,14 @@ SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt3
 SELECT * FROM file('data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
 ```
 
-## 仮想カラム {#virtual-columns}
+## 仮想カラム \{#virtual-columns\}
 
 - `_path` — ファイルへのパス。型: `LowCardinality(String)`。
 - `_file` — ファイル名。型: `LowCardinality(String)`。
 - `_size` — ファイルサイズ（バイト単位）。型: `Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` です。
 - `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` です。
 
-## use&#95;hive&#95;partitioning 設定 {#hive-style-partitioning}
+## use&#95;hive&#95;partitioning 設定 \{#hive-style-partitioning\}
 
 `use_hive_partitioning` 設定を 1 にすると、ClickHouse はパス（`/name=value/`）内の Hive スタイルのパーティショニングを検出し、クエリ内でパーティション列を仮想列として使用できるようにします。これらの仮想列は、パーティションを表すパス内の名前と同じ名前を持ちますが、先頭に `_` が付きます。
 

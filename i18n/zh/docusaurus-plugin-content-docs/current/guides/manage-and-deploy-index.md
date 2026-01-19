@@ -6,7 +6,7 @@ doc_type: 'landing-page'
 keywords: ['部署', '管理', '管理与维护', '运维', '指南']
 ---
 
-# 管理与部署 {#manage-and-deploy}
+# 管理与部署 \{#manage-and-deploy\}
 
 本节包含以下主题：
 

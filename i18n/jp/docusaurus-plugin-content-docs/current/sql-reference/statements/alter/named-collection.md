@@ -10,7 +10,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />
 
-# ALTER NAMED COLLECTION {#alter-named-collection}
+# ALTER NAMED COLLECTION \{#alter-named-collection\}
 
 このクエリは、既存の名前付きコレクションを変更します。
 

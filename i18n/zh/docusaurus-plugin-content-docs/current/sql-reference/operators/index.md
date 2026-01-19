@@ -7,23 +7,23 @@ title: '运算符'
 doc_type: 'reference'
 ---
 
-# 运算符 {#operators}
+# 运算符 \{#operators\}
 
 在查询解析阶段，ClickHouse 会根据运算符的优先级、先后次序和结合性，将其转换为相应的函数。
 
-## 访问运算符 {#access-operators}
+## 访问运算符 \{#access-operators\}
 
 `a[N]` – 访问数组的某个元素。可使用 `arrayElement(a, N)` 函数。
 
 `a.N` – 访问元组的某个元素。可使用 `tupleElement(a, N)` 函数。
 
-## 数值取反运算符 {#numeric-negation-operator}
+## 数值取反运算符 \{#numeric-negation-operator\}
 
 `-a` – 等同于 `negate (a)` 函数。
 
 元组取反请参见：[tupleNegate](../../sql-reference/functions/tuple-functions.md#tupleNegate)。
 
-## 乘法和除法运算符 {#multiplication-and-division-operators}
+## 乘法和除法运算符 \{#multiplication-and-division-operators\}
 
 `a * b` – `multiply (a, b)` 函数。
 
@@ -35,7 +35,7 @@ doc_type: 'reference'
 
 `a % b` – `modulo (a, b)` 函数。
 
-## 加法和减法运算符 {#addition-and-subtraction-operators}
+## 加法和减法运算符 \{#addition-and-subtraction-operators\}
 
 `a + b` – `plus (a, b)` 函数。
 
@@ -45,55 +45,55 @@ doc_type: 'reference'
 
 元组减法请参见 [tupleMinus](../../sql-reference/functions/tuple-functions.md#tupleMinus)。
 
-## 比较运算符 {#comparison-operators}
+## 比较运算符 \{#comparison-operators\}
 
-### equals 函数 {#equals-function}
+### equals 函数 \{#equals-function\}
 
 `a = b` – 等同于 `equals (a, b)` 函数。
 
 `a == b` – 等同于 `equals (a, b)` 函数。
 
-### notEquals 函数 {#notequals-function}
+### notEquals 函数 \{#notequals-function\}
 
 `a != b` – 等同于 `notEquals (a, b)` 函数。
 
 `a <> b` – 等同于 `notEquals (a, b)` 函数。
 
-### lessOrEquals 函数 {#lessorequals-function}
+### lessOrEquals 函数 \{#lessorequals-function\}
 
 `a <= b` 等同于 `lessOrEquals (a, b)` 函数。
 
-### greaterOrEquals 函数 {#greaterorequals-function}
+### greaterOrEquals 函数 \{#greaterorequals-function\}
 
 `a >= b` – 等同于 `greaterOrEquals (a, b)` 函数。
 
-### less 函数 {#less-function}
+### less 函数 \{#less-function\}
 
 `a < b` – 等同于 `less (a, b)` 函数。
 
-### greater 函数 {#greater-function}
+### greater 函数 \{#greater-function\}
 
 `a > b` 等同于 `greater (a, b)` 函数。
 
-### like 函数 {#like-function}
+### like 函数 \{#like-function\}
 
 `a LIKE b` – 等同于 `like (a, b)` 函数。
 
-### notLike 函数 {#notlike-function}
+### notLike 函数 \{#notlike-function\}
 
 `a NOT LIKE b` – 等同于 `notLike (a, b)` 函数。
 
-### ilike 函数 {#ilike-function}
+### ilike 函数 \{#ilike-function\}
 
 `a ILIKE b` – 等同于 `ilike (a, b)` 函数。
 
-### BETWEEN 函数 {#between-function}
+### BETWEEN 函数 \{#between-function\}
 
 `a BETWEEN b AND c` – 等同于 `a >= b AND a <= c`。
 
 `a NOT BETWEEN b AND c` – 等同于 `a < b OR a > c`。
 
-### “is not distinct from” 运算符 (`<=>`) {#is-not-distinct-from}
+### “is not distinct from” 运算符 (`<=>`) \{#is-not-distinct-from\}
 
 :::note
 自 25.10 起，可以像使用其他运算符一样使用 `<=>`。
@@ -128,39 +128,39 @@ SELECT
 └──────────────────────────┴──────────────────────────┘
 ```
 
-## 用于处理数据集的运算符 {#operators-for-working-with-data-sets}
+## 用于处理数据集的运算符 \{#operators-for-working-with-data-sets\}
 
 请参阅 [IN 运算符](../../sql-reference/operators/in.md) 和 [EXISTS](../../sql-reference/operators/exists.md) 运算符。
 
-### IN 函数 {#in-function}
+### IN 函数 \{#in-function\}
 
 `a IN ...` – 等同于 `in (a, b)` 函数。
 
-### notIn 函数 {#notin-function}
+### notIn 函数 \{#notin-function\}
 
 `a NOT IN ...` – 等同于 `notIn (a, b)` 函数。
 
-### globalIn 函数 {#globalin-function}
+### globalIn 函数 \{#globalin-function\}
 
 `a GLOBAL IN ...` – 等同于 `globalIn (a, b)` 函数。
 
-### globalNotIn 函数 {#globalnotin-function}
+### globalNotIn 函数 \{#globalnotin-function\}
 
 `a GLOBAL NOT IN ...` – `globalNotIn(a, b)` 函数。
 
-### in 子查询函数 {#in-subquery-function}
+### in 子查询函数 \{#in-subquery-function\}
 
 `a = ANY (subquery)` 等同于 `in (a, subquery)` 函数。  
 
-### notIn subquery function {#notin-subquery-function}
+### notIn subquery function \{#notin-subquery-function\}
 
 `a != ANY (subquery)` – 等同于 `a NOT IN (SELECT singleValueOrNull(*) FROM subquery)`。
 
-### in 子查询函数 {#in-subquery-function-1}
+### in 子查询函数 \{#in-subquery-function-1\}
 
 `a = ALL (subquery)` – 等同于 `a IN (SELECT singleValueOrNull(*) FROM subquery)`。
 
-### notIn 子查询函数 {#notin-subquery-function-1}
+### notIn 子查询函数 \{#notin-subquery-function-1\}
 
 `a != ALL (subquery)` – 等同于 `notIn (a, subquery)` 子查询函数。
 
@@ -202,9 +202,9 @@ SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3,
 └───┘
 ```
 
-## 日期和时间运算符 {#operators-for-working-with-dates-and-times}
+## 日期和时间运算符 \{#operators-for-working-with-dates-and-times\}
 
-### EXTRACT {#extract}
+### EXTRACT \{#extract\}
 
 ```sql
 EXTRACT(part FROM date);
@@ -268,7 +268,7 @@ FROM test.Orders;
 
 更多示例请参见[测试用例](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00619_extract.sql)。
 
-### INTERVAL {#interval}
+### INTERVAL \{#interval\}
 
 创建一个 [Interval](../../sql-reference/data-types/special-data-types/interval.md) 类型的值，用于与 [Date](../../sql-reference/data-types/date.md) 和 [DateTime](../../sql-reference/data-types/datetime.md) 类型值进行算术运算。
 
@@ -343,19 +343,19 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 * [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 类型转换函数
 
 
-## 逻辑 AND 运算符 {#logical-and-operator}
+## 逻辑 AND 运算符 \{#logical-and-operator\}
 
 语法 `SELECT a AND b` — 通过函数 [and](/sql-reference/functions/logical-functions#and) 计算 `a` 与 `b` 的逻辑与结果。
 
-## 逻辑 OR 运算符 {#logical-or-operator}
+## 逻辑 OR 运算符 \{#logical-or-operator\}
 
 语法为 `SELECT a OR b` — 通过函数 [or](/sql-reference/functions/logical-functions#or) 计算 `a` 与 `b` 的逻辑析取。
 
-## 逻辑非运算符 {#logical-negation-operator}
+## 逻辑非运算符 \{#logical-negation-operator\}
 
 语法 `SELECT NOT a` — 通过函数 [not](/sql-reference/functions/logical-functions#not) 计算 `a` 的逻辑非。
 
-## 条件运算符 {#conditional-operator}
+## 条件运算符 \{#conditional-operator\}
 
 `a ? b : c` – 等同于 `if (a, b, c)` 函数。
 
@@ -363,7 +363,7 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 
 条件运算符会先计算 b 和 c 的值，然后检查条件 a 是否满足，最后返回相应的值。如果 `b` 或 `c` 是 [arrayJoin ()](/sql-reference/functions/array-join) 函数，则每一行都会被复制，与条件 `a` 是否成立无关。
 
-## 条件表达式 {#conditional-expression}
+## 条件表达式 \{#conditional-expression\}
 
 ```sql
 CASE [x]
@@ -379,36 +379,36 @@ END
 
 `transform` 函数不支持 `NULL`。
 
-## 连接运算符 {#concatenation-operator}
+## 连接运算符 \{#concatenation-operator\}
 
 `s1 || s2` – 等同于 `concat(s1, s2) function.`
 
-## Lambda 创建运算符 {#lambda-creation-operator}
+## Lambda 创建运算符 \{#lambda-creation-operator\}
 
 `x -> expr` – `lambda(x, expr)` FUNCTION。
 
 以下运算符没有优先级，因为它们是括号：
 
-## 数组创建运算符 {#array-creation-operator}
+## 数组创建运算符 \{#array-creation-operator\}
 
 `[x1, ...]` – 等同于 `array(x1, ...)` 函数。
 
-## 元组创建运算符 {#tuple-creation-operator}
+## 元组创建运算符 \{#tuple-creation-operator\}
 
 `(x1, x2, ...)` – 等同于 `tuple(x2, x2, ...)` 函数。
 
-## 元组创建运算符 {#associativity}
+## 元组创建运算符 \{#associativity\}
 
 所有二元运算符都具有左结合性。例如，`1 + 2 + 3` 会被转换为 `plus(plus(1, 2), 3)`。
 有时这并不会符合预期。例如，`SELECT 4 > 2 > 3` 的结果为 0。
 
 出于效率考虑，`and` 和 `or` 函数可以接受任意数量的参数。相应的 `AND` 和 `OR` 运算符链会被转换为对这些函数的一次调用。
 
-## 检查 `NULL` 值 {#checking-for-null}
+## 检查 `NULL` 值 \{#checking-for-null\}
 
 ClickHouse 支持 `IS NULL` 和 `IS NOT NULL` 运算符。
 
-### IS NULL {#is_null}
+### IS NULL \{#is_null\}
 
 * 对于 [Nullable](../../sql-reference/data-types/nullable.md) 类型的值,`IS NULL` 运算符返回:
   * `1`,如果值为 `NULL`。
@@ -429,7 +429,7 @@ SELECT x+100 FROM t_null WHERE y IS NULL
 └──────────────┘
 ```
 
-### IS NOT NULL {#is_not_null}
+### IS NOT NULL \{#is_not_null\}
 
 * 对于 [Nullable](../../sql-reference/data-types/nullable.md) 类型的值，`IS NOT NULL` 运算符返回：
   * 如果值为 `NULL`，则返回 `0`。

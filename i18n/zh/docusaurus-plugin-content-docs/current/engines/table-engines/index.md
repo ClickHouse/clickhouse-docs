@@ -8,7 +8,7 @@ title: '表引擎'
 doc_type: 'reference'
 ---
 
-# 表引擎 {#table-engines}
+# 表引擎 \{#table-engines\}
 
 表引擎（表的类型）决定：
 
@@ -19,9 +19,9 @@ doc_type: 'reference'
 - 是否可以进行多线程的请求执行。
 - 数据复制的相关参数。
 
-## 引擎家族 {#engine-families}
+## 引擎家族 \{#engine-families\}
 
-### MergeTree {#mergetree}
+### MergeTree \{#mergetree\}
 
 用于高负载任务的最通用且功能最全面的表引擎。这些引擎的共同特性是支持快速写入数据，并在后台对数据进行后续处理。`MergeTree` 系列引擎支持数据复制（通过引擎的 [Replicated\*](/engines/table-engines/mergetree-family/replication) 版本）、分区、二级数据跳过索引，以及其他在其他引擎中不支持的特性。
 
@@ -38,7 +38,7 @@ doc_type: 'reference'
 | [GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree)                                  |
 | [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree)                                     |
 
-### Log {#log}
+### Log \{#log\}
 
 轻量级的 [引擎](../../engines/table-engines/log-family/index.md)，仅提供最基础的功能。当需要快速写入许多小表（最多约 100 万行），并在之后整体读取它们时，这些引擎最为高效。
 
@@ -50,7 +50,7 @@ doc_type: 'reference'
 | [StripeLog](/engines/table-engines/log-family/stripelog) |
 | [Log](/engines/table-engines/log-family/log)                   |
 
-### 集成引擎 {#integration-engines}
+### 集成引擎 \{#integration-engines\}
 
 用于与其他数据存储和处理系统进行交互的引擎。
 
@@ -72,7 +72,7 @@ doc_type: 'reference'
 | [S3Queue](../../engines/table-engines/integrations/s3queue.md)                  |
 | [TimeSeries](../../engines/table-engines/integrations/time-series.md)           |
 
-### 特殊引擎 {#special-engines}
+### 特殊引擎 \{#special-engines\}
 
 该家族中的引擎：
 
@@ -95,7 +95,7 @@ doc_type: 'reference'
 | [KeeperMap](/engines/table-engines/special/keeper-map)        |
 | [FileLog](/engines/table-engines/special/filelog)             |
 
-## 虚拟列 {#table_engines-virtual_columns}
+## 虚拟列 \{#table_engines-virtual_columns\}
 
 虚拟列是表引擎的内置属性，在引擎的源代码中定义。
 

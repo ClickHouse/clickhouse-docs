@@ -7,12 +7,12 @@ title: '查询缓存'
 doc_type: 'guide'
 ---
 
-# 查询缓存 {#query-cache}
+# 查询缓存 \{#query-cache\}
 
 查询缓存允许某个 `SELECT` 查询只需计算一次，之后再次执行相同查询时可直接从缓存中返回结果。
 根据查询类型的不同，这可以显著降低 ClickHouse 服务器的延迟和资源消耗。
 
-## 背景、设计和限制 {#background-design-and-limitations}
+## 背景、设计和限制 \{#background-design-and-limitations\}
 
 查询缓存通常可以分为事务一致或事务不一致两种类型。
 
@@ -24,7 +24,7 @@ doc_type: 'guide'
 事务不一致的缓存传统上由与数据库交互的客户端工具或代理程序（例如
 [chproxy](https://www.chproxy.org/configuration/caching/)）提供。由此导致相同的缓存逻辑和配置往往会被重复实现。借助 ClickHouse 的查询缓存，缓存逻辑被移到了服务端，从而减少了维护工作量并避免了冗余。
 
-## 配置设置和使用方法 {#configuration-settings-and-usage}
+## 配置设置和使用方法 \{#configuration-settings-and-usage\}
 
 :::note
 在 ClickHouse Cloud 中，必须使用[查询级别设置](/operations/settings/query-level)来编辑查询缓存设置。目前不支持编辑[配置级别设置](/operations/configuration-files)。
@@ -175,6 +175,6 @@ ClickHouse 读取表数据时，以 [max_block_size](/operations/settings/settin
 最后，出于安全原因，查询缓存中的条目不会在用户之间共享。例如，用户 A 不应通过执行与用户 B 相同的查询而绕过表上的 ROW POLICY（而用户 B 上并不存在该策略）。但是，在必要时，可以通过设置
 [query_cache_share_between_users](/operations/settings/settings#query_cache_share_between_users) 将缓存条目标记为可被其他用户访问（即共享）。
 
-## 相关内容 {#related-content}
+## 相关内容 \{#related-content\}
 
 - 博客：[介绍 ClickHouse 查询缓存](https://clickhouse.com/blog/introduction-to-the-clickhouse-query-cache-and-design)

@@ -20,12 +20,12 @@ HyperDX — это специализированный фронтенд для 
 HyperDX в ClickHouse Cloud позволяет пользователям получить более готовое, «под ключ» решение ClickStack — без необходимости управлять инфраструктурой и настраивать отдельную аутентификацию. HyperDX запускается одним кликом и подключается к вашим данным, будучи полностью интегрированным с системой аутентификации ClickHouse Cloud для бесшовного и безопасного доступа к данным вашей наблюдаемости.
 
 
-## Развертывание {#main-concepts}
+## Развертывание \{#main-concepts\}
 
 HyperDX в ClickHouse Cloud в настоящее время находится на этапе закрытого предварительного просмотра и должен быть включен на уровне организации. После включения вы найдете HyperDX в основной левой панели навигации при выборе любого сервиса.
 
 <Image img={hyperdx_cloud} alt="HyperDX в ClickHouse Cloud" size="lg"/>
 
-Чтобы начать работу с HyperDX в ClickHouse Cloud, мы рекомендуем воспользоваться нашим отдельным [руководством по началу работы](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud).
+Чтобы начать работу с HyperDX в ClickHouse Cloud, мы рекомендуем воспользоваться нашим отдельным [руководством по началу работы](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud).
 
 Для получения дополнительной информации о ClickStack см. [полную документацию](/use-cases/observability/clickstack). 

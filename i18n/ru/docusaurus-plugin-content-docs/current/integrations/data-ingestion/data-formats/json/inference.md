@@ -8,14 +8,14 @@ doc_type: 'guide'
 
 ClickHouse может автоматически определять структуру данных в формате JSON. Это можно использовать для непосредственного выполнения запросов к JSON-данным, например на локальном диске с помощью `clickhouse-local` или в S3-бакетах, и/или для автоматического создания схем перед загрузкой данных в ClickHouse.
 
-## Когда использовать вывод типов {#when-to-use-type-inference}
+## Когда использовать вывод типов \{#when-to-use-type-inference\}
 
 * **Однородная структура** — данные, на основе которых вы собираетесь выводить типы, содержат все ключи, которые вас интересуют. Вывод типов основан на выборке данных до [максимального числа строк](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) или [байт](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference). Данные после выборки, с дополнительными столбцами, будут игнорироваться и будут недоступны для запросов.
 * **Однородные типы** — типы данных для конкретных ключей должны быть совместимы, то есть должна быть возможность автоматически привести один тип к другому.
 
 Если у вас более динамический JSON, в который добавляются новые ключи и для одного и того же пути возможны несколько типов, см. раздел ["Работа с полуструктурированными и динамическими данными"](/integrations/data-formats/json/inference#working-with-semi-structured-data).
 
-## Определение типов {#detecting-types}
+## Определение типов \{#detecting-types\}
 
 Далее предполагается, что JSON имеет согласованную структуру и один тип для каждого пути.
 
@@ -102,7 +102,7 @@ SETTINGS describe_compact_output = 1
 Автоопределение значений типов `date` и `datetime` настраивается с помощью параметров [`input_format_try_infer_dates`](/operations/settings/formats#input_format_try_infer_dates) и [`input_format_try_infer_datetimes`](/operations/settings/formats#input_format_try_infer_datetimes) соответственно (оба включены по умолчанию). Интерпретация объектов как кортежей контролируется параметром [`input_format_json_try_infer_named_tuples_from_objects`](/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects). Другие параметры, управляющие определением схемы для JSON (например, автоопределением чисел), можно найти [здесь](/interfaces/schema-inference#text-formats).
 :::
 
-## Запросы к JSON {#querying-json}
+## Запросы к JSON \{#querying-json\}
 
 Далее предполагается, что JSON имеет единообразную структуру и один тип данных для каждого пути.
 
@@ -149,7 +149,7 @@ LIMIT 1 BY year
 Автоматическое определение схемы позволяет выполнять запросы к JSON-файлам без необходимости явно её задавать, что ускоряет выполнение разовых задач по анализу данных.
 
 
-## Создание таблиц {#creating-tables}
+## Создание таблиц \{#creating-tables\}
 
 Мы можем использовать вывод схемы для автоматического создания структуры таблицы. Следующая команда `CREATE AS EMPTY` заставляет систему вывести DDL для таблицы и создать её. При этом данные не загружаются:
 
@@ -191,7 +191,7 @@ ORDER BY update_date
 Выше приведена корректная схема для этих данных. Определение схемы основано на выборочном построчном чтении данных. Значения столбцов извлекаются в соответствии с форматом, а для определения типа каждого значения используются рекурсивные парсеры и эвристики. Максимальное количество строк и байт, читаемых из данных при определении схемы, контролируется настройками [`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) (по умолчанию 25000) и [`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference) (по умолчанию 32 МБ). Если определение окажется некорректным, пользователи могут задать подсказки, как описано [здесь](/operations/settings/formats#schema_inference_make_columns_nullable).
 
 
-### Создание таблиц из фрагментов {#creating-tables-from-snippets}
+### Создание таблиц из фрагментов \{#creating-tables-from-snippets\}
 
 В приведённом выше примере используется файл на S3 для создания схемы таблицы. При необходимости можно создать схему из однострочного фрагмента данных. Это можно сделать с помощью функции [format](/sql-reference/table-functions/format), как показано ниже:
 
@@ -225,7 +225,7 @@ ORDER BY update_date
 ```
 
 
-## Загрузка JSON-данных {#loading-json-data}
+## Загрузка JSON-данных \{#loading-json-data\}
 
 Далее предполагается, что JSON имеет единообразную структуру и содержит один тип значений для каждого пути.
 
@@ -280,11 +280,11 @@ FORMAT PrettyJSONEachRow
 ```
 
 
-## Обработка ошибок {#handling-errors}
+## Обработка ошибок \{#handling-errors\}
 
 Иногда во входных данных могут встречаться ошибки. Например, отдельные столбцы могут иметь неверный тип или JSON-объект может быть некорректно отформатирован. Для таких случаев вы можете использовать настройки [`input_format_allow_errors_num`](/operations/settings/formats#input_format_allow_errors_num) и [`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio), чтобы разрешить игнорирование определённого числа строк, если данные вызывают ошибки операции вставки. Дополнительно можно задать [подсказки](/operations/settings/formats#schema_inference_hints), чтобы упростить вывод схемы.
 
-## Работа с полуструктурированными и динамическими данными {#working-with-semi-structured-data}
+## Работа с полуструктурированными и динамическими данными \{#working-with-semi-structured-data\}
 
 В нашем предыдущем примере использовался JSON с фиксированной схемой, с хорошо известными именами ключей и типами. На практике это часто не так — ключи могут добавляться, а их типы меняться. Это типично, например, для данных для наблюдаемости (Observability).
 
@@ -396,6 +396,6 @@ SETTINGS enable_json_type = 1, describe_compact_output = 1
 ```
 
 
-## Дополнительные материалы {#further-reading}
+## Дополнительные материалы \{#further-reading\}
 
 Подробнее о выводе типов данных см. на [этой странице документации](/interfaces/schema-inference).

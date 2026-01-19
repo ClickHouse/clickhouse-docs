@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 この形式では、すべてのデータは 1 つの JSON オブジェクトとして表され、そのオブジェクト内で各行が個別のフィールドとして表現されます。これは [`JSONEachRow`](./JSONEachRow.md) 形式と同様です。
 
-## 使用例 {#example-usage}
+## 使用例 \{#example-usage\}
 
-### 基本的な例 {#basic-example}
+### 基本的な例 \{#basic-example\}
 
 次のような JSON データがあるとします:
 
@@ -34,7 +34,7 @@ doc_type: 'reference'
 オブジェクト名をカラム値として使用するには、専用の設定 [`format_json_object_each_row_column_for_object_name`](/operations/settings/settings-formats.md/#format_json_object_each_row_column_for_object_name) を利用できます。
 この設定には、結果オブジェクト内の各行に対して JSON のキーとして使用するカラム名を指定します。
 
-#### 出力 {#output}
+#### 出力 \{#output\}
 
 テーブル `test` に 2 つのカラムがあるとします。
 
@@ -60,7 +60,7 @@ SELECT * FROM test SETTINGS format_json_object_each_row_column_for_object_name='
 }
 ```
 
-#### 入力 {#input}
+#### 入力 \{#input\}
 
 前の例の出力を `data.json` という名前のファイルに保存してあるとします。
 
@@ -89,7 +89,7 @@ DESCRIBE file('data.json', JSONObjectEachRow) SETTING format_json_object_each_ro
 └─────────────┴─────────────────┘
 ```
 
-### データの挿入 {#json-inserting-data}
+### データの挿入 \{#json-inserting-data\}
 
 ```sql title="Query"
 INSERT INTO UserActivity FORMAT JSONEachRow {"PageViews":5, "UserID":"4324182021466249494", "Duration":146,"Sign":-1} {"UserID":"4324182021466249494","PageViews":6,"Duration":185,"Sign":1}
@@ -102,7 +102,7 @@ ClickHouse では次のことができます:
 
 ClickHouse は要素間の空白や、オブジェクトの後に続くカンマを無視します。すべてのオブジェクトを 1 行で渡すことができます。改行で区切る必要はありません。
 
-#### 省略された値の処理 {#omitted-values-processing}
+#### 省略された値の処理 \{#omitted-values-processing\}
 
 ClickHouse は、省略された値を対応する[データ型](/sql-reference/data-types/index.md)のデフォルト値で補います。
 
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS example_table
 `input_format_defaults_for_omitted_fields = 1` を指定してデータを挿入すると、`input_format_defaults_for_omitted_fields = 0` の場合と比べて、ClickHouse はより多くの計算リソースを消費します。
 :::
 
-### データの選択 {#json-selecting-data}
+### データの選択 \{#json-selecting-data\}
 
 例として、`UserActivity` テーブルを使用します。
 
@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS example_table
 任意のバイト列を文字列として出力できます。テーブル内のデータを、情報を失うことなく JSON として整形できると確信できる場合は、[`JSONEachRow`](./JSONEachRow.md) フォーマットを使用してください。
 :::
 
-### ネスト構造の使用 {#jsoneachrow-nested}
+### ネスト構造の使用 \{#jsoneachrow-nested\}
 
 [`Nested`](/sql-reference/data-types/nested-data-structures/index.md) データ型のカラムを持つテーブルがある場合、同じ構造を持つ JSON データを挿入できます。この機能は、[input&#95;format&#95;import&#95;nested&#95;json](/operations/settings/settings-formats.md/#input_format_import_nested_json) 設定を有効にすることで使用できます。
 
@@ -208,7 +208,7 @@ SELECT * FROM json_each_row_nested
 └───────────────┴────────┘
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \{#format-settings\}
 
 | 設定                                                                                                                                                                           | 概要                                                                                                                     | デフォルト   | 注記                                                                                                                                                                |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |

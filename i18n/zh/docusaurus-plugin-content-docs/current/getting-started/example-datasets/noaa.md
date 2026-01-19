@@ -23,12 +23,12 @@ keywords: ['示例数据集', 'noaa', '天气数据', '样本数据', '气候']
 
 下面各节将简要概述把该数据集导入 ClickHouse 所涉及的步骤。如果您有兴趣更详细地了解每个步骤，建议阅读我们的博文《[探索海量真实世界数据集：在 ClickHouse 中分析 100+ 年天气记录](https://clickhouse.com/blog/real-world-data-noaa-climate-data)》。
 
-## 下载数据 {#downloading-the-data}
+## 下载数据 \{#downloading-the-data\}
 
 - 一个适用于 ClickHouse 的[预先准备好的版本](#pre-prepared-data)数据，已完成清洗、重组和富化。该数据覆盖 1900 年至 2022 年。
 - [下载原始数据](#original-data)并转换为 ClickHouse 所需的格式。希望添加自定义列的用户可以考虑采用这种方式。
 
-### 预先准备的数据 {#pre-prepared-data}
+### 预先准备的数据 \{#pre-prepared-data\}
 
 更具体地说，已经移除了所有在 NOAA 的质量检查中未出现任何失败的行。数据也从“每行一个观测值”重构为“每个测站 ID 与日期对应一行”，即：
 
@@ -50,11 +50,11 @@ keywords: ['示例数据集', 'noaa', '天气数据', '样本数据', '气候']
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enriched.parquet
 ```
 
-### 原始数据 {#original-data}
+### 原始数据 \{#original-data\}
 
 下面将说明下载并转换原始数据，以便将其加载到 ClickHouse 的步骤。
 
-#### 下载 {#download}
+#### 下载 \{#download\}
 
 下载原始数据：
 
@@ -62,7 +62,7 @@ wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enriche
 for i in {1900..2023}; do wget https://noaa-ghcn-pds.s3.amazonaws.com/csv.gz/${i}.csv.gz; done
 ```
 
-#### 数据采样 {#sampling-the-data}
+#### 数据采样 \{#sampling-the-data\}
 
 ```bash
 $ clickhouse-local --query "SELECT * FROM '2021.csv.gz' LIMIT 10" --format PrettyCompact
@@ -105,7 +105,7 @@ $ clickhouse-local --query "SELECT * FROM '2021.csv.gz' LIMIT 10" --format Prett
 
 每行一个测量值会在 ClickHouse 中产生稀疏的表结构。我们应当转换为每个时间点和测站一行的形式，将各测量项作为列。首先，我们将数据集限制为没有问题的行，即 `qFlag` 等于空字符串的记录。
 
-#### 清洗数据 {#clean-the-data}
+#### 清洗数据 \{#clean-the-data\}
 
 使用 [ClickHouse local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)，我们可以筛选出代表感兴趣测量数据并满足质量要求的行：
 
@@ -118,7 +118,7 @@ FROM file('*.csv.gz', CSV, 'station_id String, date String, measurement String, 
 
 由于数据量超过 26 亿行，这个查询执行得并不快，因为需要解析所有文件。在我们的 8 核机器上，这大约需要 160 秒。
 
-### 透视数据 {#pivot-data}
+### 透视数据 \{#pivot-data\}
 
 虽然“每行一条测量记录”的结构也可以在 ClickHouse 中使用，但会让后续查询不必要地变得复杂。理想情况下，我们希望每个站点 ID 和日期对应一行，其中每种测量类型及其对应的数值都是单独的一列，即：
 
@@ -156,7 +156,7 @@ done
 
 此查询会生成一个 50GB 的单个文件 `noaa.csv`。
 
-### 丰富数据 {#enriching-the-data}
+### 丰富数据 \{#enriching-the-data\}
 
 这些数据除了包含前缀为国家代码的站点 ID 外，不包含任何其他位置信息。理想情况下，每个站点都应关联有纬度和经度。为此，NOAA 贴心地将每个站点的详细信息单独提供在一个 [ghcnd-stations.txt](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn#format-of-ghcnd-stationstxt-file) 文件中。该文件包含[多列数据](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn#format-of-ghcnd-stationstxt-file)，其中有五列对后续分析很有用：id、latitude、longitude、elevation 和 name。
 
@@ -188,7 +188,7 @@ FROM file('noaa.csv', CSV,
 
 此查询运行需要几分钟时间，并生成一个大小为 6.4 GB 的文件 `noaa_enriched.parquet`。
 
-## 创建表 {#create-table}
+## 创建表 \{#create-table\}
 
 使用 ClickHouse 客户端在 ClickHouse 中创建一个 MergeTree 表。
 
@@ -214,9 +214,9 @@ CREATE TABLE noaa
 
 ```
 
-## 向 ClickHouse 写入数据 {#inserting-into-clickhouse}
+## 向 ClickHouse 写入数据 \{#inserting-into-clickhouse\}
 
-### 从本地文件插入 {#inserting-from-local-file}
+### 从本地文件插入 \{#inserting-from-local-file\}
 
 在 ClickHouse 客户端中，可以按如下方式从本地文件插入数据：
 
@@ -228,7 +228,7 @@ INSERT INTO noaa FROM INFILE '<path>/noaa_enriched.parquet'
 
 有关如何加快加载速度，请参见[此处](https://clickhouse.com/blog/real-world-data-noaa-climate-data#load-the-data)。
 
-### 从 S3 中导入数据 {#inserting-from-s3}
+### 从 S3 中导入数据 \{#inserting-from-s3\}
 
 ```sql
 INSERT INTO noaa SELECT *
@@ -238,9 +238,9 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enr
 
 如需了解如何加快这一过程，请参阅我们的博文：[优化大规模数据加载](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)。
 
-## 查询示例 {#sample-queries}
+## 查询示例 \{#sample-queries\}
 
-### 有史以来的最高气温 {#highest-temperature-ever}
+### 有史以来的最高气温 \{#highest-temperature-ever\}
 
 ```sql
 SELECT
@@ -268,7 +268,7 @@ LIMIT 5
 
 令人放心的是，其与截至 2023 年 [Furnace Creek](https://www.google.com/maps/place/36%C2%B027'00.0%22N+116%C2%B052'00.1%22W/@36.1329666,-116.1104099,8.95z/data=!4m5!3m4!1s0x0:0xf2ed901b860f4446!8m2!3d36.45!4d-116.8667) 的[官方记录](https://en.wikipedia.org/wiki/List_of_weather_records#Highest_temperatures_ever_recorded)高度一致。
 
-### 最佳滑雪胜地 {#best-ski-resorts}
+### 最佳滑雪胜地 \{#best-ski-resorts\}
 
 使用这份[美国滑雪胜地列表](https://gist.githubusercontent.com/gingerwizard/dd022f754fd128fdaf270e58fa052e35/raw/622e03c37460f17ef72907afe554cb1c07f91f23/ski_resort_stats.csv)及其各自位置，将其与过去 5 年中任意单月降雪量最高的前 1000 个气象站进行关联。按 [geoDistance](/sql-reference/functions/geo/coordinates/#geodistance) 对关联结果排序，并将距离限制在 20 公里以内，从中为每个滑雪胜地选取距离最近的一条记录，然后按总降雪量排序。注意，我们还将滑雪胜地限制在海拔 1800 米以上，将其作为良好滑雪条件的一个粗略指标。
 
@@ -337,7 +337,7 @@ LIMIT 5
 Peak memory usage: 67.66 MiB.
 ```
 
-## 致谢 {#credits}
+## 致谢 \{#credits\}
 
 我们谨此感谢全球历史气候学网络（Global Historical Climatology Network）在本数据的整理、清洗和分发过程中所作出的贡献。非常感谢你们的付出。
 

@@ -83,8 +83,8 @@ SELECT create_query FROM system.functions WHERE name = 'exampleReplaceFunction';
 ```
 
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \{#related-content\}
 
-### [実行可能な UDF](/sql-reference/functions/udf.md) {#executable-udfs}
+### [実行可能な UDF](/sql-reference/functions/udf.md) \{#executable-udfs\}
 
-### [ClickHouse Cloud におけるユーザー定義関数](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs) {#user-defined-functions-in-clickhouse-cloud}
+### [ClickHouse Cloud におけるユーザー定義関数](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs) \{#user-defined-functions-in-clickhouse-cloud\}

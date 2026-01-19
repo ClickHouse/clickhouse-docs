@@ -5,6 +5,9 @@ keywords: ['clickhouse', 'Fabi.ai', 'connect', 'integrate', 'notebook', 'ui', 'a
 description: 'Fabi.ai 是一体化的协作式数据分析平台。你可以借助 SQL、Python、AI 和无代码，比以往更快速地构建仪表盘和数据工作流'
 title: '将 ClickHouse 连接到 Fabi.ai'
 doc_type: 'guide'
+integration:
+   - support_level: 'community'
+   - category: 'data_visualization'
 ---
 
 import fabi_01 from '@site/static/images/integrations/data-visualization/fabi_01.png';
@@ -15,7 +18,7 @@ import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# 将 ClickHouse 连接到 Fabi.ai {#connecting-clickhouse-to-fabiai}
+# 将 ClickHouse 连接到 Fabi.ai \{#connecting-clickhouse-to-fabiai\}
 
 <CommunityMaintainedBadge/>
 
@@ -23,11 +26,11 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 
 <Image size="md" img={fabi_01} alt="Fabi.ai 数据探索与工作流平台" border />
 
-## 收集连接信息 {#gather-your-connection-details}
+## 收集连接信息 \{#gather-your-connection-details\}
 
 <ConnectionDetails />
 
-## 创建你的 Fabi.ai 账户并连接 ClickHouse {#connect-to-clickhouse}
+## 创建你的 Fabi.ai 账户并连接 ClickHouse \{#connect-to-clickhouse\}
 
 登录或创建你的 Fabi.ai 账户：https://app.fabi.ai/
 
@@ -41,14 +44,14 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 
 3. 恭喜！你已经将 ClickHouse 成功集成到 Fabi.ai 中。
 
-## 查询 ClickHouse。 {#querying-clickhouse}
+## 查询 ClickHouse。 \{#querying-clickhouse\}
 
 将 Fabi.ai 连接到 ClickHouse 之后，打开任意一个 [Smartbook](https://docs.fabi.ai/analysis_and_reporting/smartbooks) 并创建一个 SQL 单元格。如果你的 Fabi.ai 实例只连接了一个数据源，SQL 单元格会自动将 ClickHouse 设为默认数据源；否则，你可以在数据源下拉菜单中选择要查询的数据源。
 
    <Image size="lg" img={fabi_04} alt="Querying ClickHouse" border />
 
-## 更多资源 {#additional-resources}
+## 更多资源 \{#additional-resources\}
 
 [Fabi.ai](https://www.fabi.ai) 文档：https://docs.fabi.ai/introduction
 
-[Fabi.ai](https://www.fabi.ai) 入门教学视频：https://www.youtube.com/playlist?list=PLjxPRVnyBCQXxxByw2CLC0q7c-Aw6t2nl
+[Fabi.ai](https://www.fabi.ai) 入门教程视频：https://www.youtube.com/playlist?list=PLjxPRVnyBCQXxxByw2CLC0q7c-Aw6t2nl

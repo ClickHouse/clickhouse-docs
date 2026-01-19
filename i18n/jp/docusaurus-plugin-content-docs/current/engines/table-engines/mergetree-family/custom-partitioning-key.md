@@ -7,7 +7,7 @@ title: 'カスタムパーティショニングキー'
 doc_type: 'guide'
 ---
 
-# カスタムパーティションキー {#custom-partitioning-key}
+# カスタムパーティションキー \{#custom-partitioning-key\}
 
 :::note
 ほとんどの場合、パーティションキーは不要であり、それ以外の多くの場合でも、月単位より細かいパーティションキーは不要です。例外はオブザーバビリティ向けのユースケースで、この場合は日単位のパーティションが一般的です。
@@ -137,7 +137,7 @@ drwxr-xr-x 2 clickhouse clickhouse 4096 Feb  1 16:48 detached
 
 ClickHouse ではパーティションに対して操作を実行できます。削除したり、あるテーブルから別のテーブルへコピーしたり、バックアップを作成したりできます。すべての操作の一覧は、[パーティションおよびパーツの操作](/sql-reference/statements/alter/partition) セクションを参照してください。
 
-## パーティションキーを利用した Group By 最適化 {#group-by-optimisation-using-partition-key}
+## パーティションキーを利用した Group By 最適化 \{#group-by-optimisation-using-partition-key\}
 
 テーブルのパーティションキーとクエリの Group By キーの組み合わせによっては、
 各パーティションごとに独立して集約処理を実行できる場合があります。

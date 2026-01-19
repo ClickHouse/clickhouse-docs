@@ -19,7 +19,7 @@ import mp_committed_spend_7 from '@site/static/images/cloud/reference/mp_committ
 コミットメント契約は Private Offer（プライベートオファー）とも呼ばれ、一定期間にわたり、ClickHouse Cloud に対してあらかじめ定めた金額の利用を約束することができます。
 
 
-## 前提条件 {#prerequisites}
+## 前提条件 \{#prerequisites\}
 
 - 特定の契約条件に基づく ClickHouse からのプライベートオファー。
 - コミット済み支出オファーに ClickHouse の組織を紐付けるには、その組織の管理者である必要があります。
@@ -38,22 +38,22 @@ AWS 上でコミット済み契約を表示および受諾するために必要�
 
 
 
-## サインアップ手順 {#steps-to-sign-up}
+## サインアップ手順 \{#steps-to-sign-up\}
 
 <VerticalStepper headerLevel="h3">
 
-### プライベートオファーを承諾する {#private-offer-accept}
+### プライベートオファーを承諾する \{#private-offer-accept\}
 
 プライベートオファーを確認して承諾するためのリンクが記載されたメールを受信しているはずです。
 
 <Image img={mp_committed_spend_1} size="md" alt="AWS Marketplace のプライベートオファーのメール"/>
 
-### オファーリンクを確認する {#review-offer-link}
+### オファーリンクを確認する \{#review-offer-link\}
 
 メール内の「Review Offer」リンクをクリックします。
 AWS Marketplace ページが開き、プライベートオファーの詳細が表示されます。
 
-### アカウントをセットアップする {#setup-your-account}
+### アカウントをセットアップする \{#setup-your-account\}
 
 AWS ポータル上でサブスクライブの手順を完了し、**「Set up your account」** をクリックします。
 この時点で ClickHouse Cloud にリダイレクトされるので、新規アカウントを作成するか、既存アカウントでサインインしてください。
@@ -61,14 +61,14 @@ AWS ポータル上でサブスクライブの手順を完了し、**「Set up y
 
 <Image img={mp_committed_spend_2} size="md" alt="AWS Marketplace のプライベートオファーのメール"/>
 
-### ClickHouse Cloud にログインする {#login-cloud}
+### ClickHouse Cloud にログインする \{#login-cloud\}
 
 ClickHouse Cloud にリダイレクトされたら、既存アカウントでログインするか、新しいアカウントを登録できます。
 このステップは、ClickHouse Cloud の組織を AWS Marketplace の課金に関連付けるために必要です。
 
 <Image img={mp_committed_spend_3} size="md" alt="AWS Marketplace のプライベートオファーのメール"/>
 
-### 新規の場合は登録する {#register}
+### 新規の場合は登録する \{#register\}
 
 ClickHouse Cloud を初めて利用する場合は、ページ下部の「Register」をクリックします。
 新しいユーザーの作成とメールアドレスの確認を求められます。
@@ -83,7 +83,7 @@ ClickHouse Cloud を初めて利用する場合は、ページ下部の「Regist
 
 すでに ClickHouse Cloud を利用している場合は、認証情報を使ってログインするだけで構いません。
 
-### 請求先とする組織を作成または選択する {#create-select-org-to-bill}
+### 請求先とする組織を作成または選択する \{#create-select-org-to-bill\}
 
 ログインに成功したら、この Marketplace 契約の請求先とする新しい組織を作成するか、この契約の請求先とする既存の組織を選択できます。
 

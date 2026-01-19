@@ -7,7 +7,7 @@ title: 'Bool'
 doc_type: 'reference'
 ---
 
-# Bool {#bool}
+# Bool \{#bool\}
 
 型 `bool` は内部的に UInt8 型として保存されます。取りうる値は `true` (1) と `false` (0) です。
 

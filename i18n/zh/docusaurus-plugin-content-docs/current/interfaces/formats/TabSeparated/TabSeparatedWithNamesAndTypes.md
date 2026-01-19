@@ -10,7 +10,7 @@ doc_type: 'reference'
 |-------|--------|------------------------------------------------|
 |     ✔    |     ✔     | `TSVWithNamesAndTypes`, `RawWithNamesAndTypes` |
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 与 [`TabSeparated`](./TabSeparated.md) 格式的区别在于：第一行写入列名，第二行写入列类型。
 
@@ -22,9 +22,9 @@ doc_type: 'reference'
 则会将输入数据中的类型与表中对应列的类型进行比较。否则，第二行将被跳过。
 :::
 
-## 使用示例 {#example-usage}
+## 使用示例 \{#example-usage\}
 
-### 插入数据 {#inserting-data}
+### 插入数据 \{#inserting-data\}
 
 使用以下名为 `football.tsv` 的 TSV 文件：
 
@@ -56,7 +56,7 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedWithNamesAndTypes;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据 \{#reading-data\}
 
 以 `TabSeparatedWithNamesAndTypes` 格式读取数据：
 
@@ -90,4 +90,4 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}

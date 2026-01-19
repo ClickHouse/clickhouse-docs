@@ -43,6 +43,6 @@ CREATE QUOTA qB FOR INTERVAL 30 minute MAX execution_time = 0.5, FOR INTERVAL 5 
 
 XML 設定（ClickHouse Cloud ではサポートされていません）を使用したさらなる例は、[Quotas ガイド](/operations/quotas)を参照してください。
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \{#related-content\}
 
 - ブログ記事: [ClickHouse を使用したシングルページアプリケーションの構築](https://clickhouse.com/blog/building-single-page-applications-with-clickhouse-and-http)

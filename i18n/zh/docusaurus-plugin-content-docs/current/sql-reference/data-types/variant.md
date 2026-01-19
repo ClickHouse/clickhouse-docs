@@ -7,7 +7,7 @@ title: 'Variant(T1, T2, ...)'
 doc_type: 'reference'
 ---
 
-# Variant(T1, T2, ...) {#variantt1-t2}
+# Variant(T1, T2, ...) \{#variantt1-t2\}
 
 此类型表示由其他数据类型构成的联合类型。类型 `Variant(T1, T2, ..., TN)` 表示该类型的每一行都包含一个值，该值要么是类型 `T1`，要么是 `T2`，……，要么是 `TN`，或者都不是（即为 `NULL` 值）。
 
@@ -19,7 +19,7 @@ doc_type: 'reference'
 因为处理这类类型的值可能会导致歧义。默认情况下，创建此类 `Variant` 类型会抛出异常，但可以通过设置 `allow_suspicious_variant_types` 来放宽此限制。
 :::
 
-## 创建 Variant 类型 {#creating-variant}
+## 创建 Variant 类型 \{#creating-variant\}
 
 在表的列定义中使用 `Variant` 类型：
 
@@ -109,7 +109,8 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 └───────────────────────────────┘
 ```
 
-## 以子列形式读取 Variant 中的嵌套类型 {#reading-variant-nested-types-as-subcolumns}
+
+## 以子列形式读取 Variant 中的嵌套类型 \{#reading-variant-nested-types-as-subcolumns\}
 
 Variant 类型支持使用类型名作为子列，从 Variant 列中读取单个嵌套类型。
 因此，如果有列 `variant Variant(T1, T2, T3)`，可以使用语法 `variant.T2` 读取类型为 `T2` 的子列。
@@ -182,17 +183,19 @@ SELECT variantType(v) FROM test;
 SELECT toTypeName(variantType(v)) FROM test LIMIT 1;
 ```
 
+
 ```text
 ┌─toTypeName(variantType(v))──────────────────────────────────────────┐
 │ Enum8('None' = -1, 'Array(UInt64)' = 0, 'String' = 1, 'UInt64' = 2) │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-## 在 Variant 列与其他列之间进行转换 {#conversion-between-a-variant-column-and-other-columns}
+
+## 在 Variant 列与其他列之间进行转换 \{#conversion-between-a-variant-column-and-other-columns\}
 
 对于类型为 `Variant` 的列，可以执行 4 种转换。
 
-### 将 String 列转换为 Variant 列 {#converting-a-string-column-to-a-variant-column}
+### 将 String 列转换为 Variant 列 \{#converting-a-string-column-to-a-variant-column\}
 
 从 `String` 到 `Variant` 的转换是通过从字符串值中解析出一个 `Variant` 类型的值来完成的：
 
@@ -216,9 +219,9 @@ SELECT '[1, 2, 3]'::Variant(String, Array(UInt64)) as variant, variantType(varia
 └─────────┴───────────────┘
 ```
 
-```sql
+````sql
 SELECT CAST(map('key1', '42', 'key2', 'true', 'key3', '2020-01-01'), 'Map(String, Variant(UInt64, Bool, Date))') AS map_of_variants, mapApply((k, v) -> (k, variantType(v)), map_of_variants) AS map_of_variant_types```
-```
+````
 
 ```text
 ┌─map_of_variants─────────────────────────────┬─map_of_variant_types──────────────────────────┐
@@ -226,7 +229,7 @@ SELECT CAST(map('key1', '42', 'key2', 'true', 'key3', '2020-01-01'), 'Map(String
 └─────────────────────────────────────────────┴───────────────────────────────────────────────┘
 ```
 
-To disable parsing during conversion from `String` to `Variant` you can disable setting `cast_string_to_dynamic_use_inference`:
+要在从 `String` 到 `Variant` 的转换过程中禁用解析，可以关闭 `cast_string_to_dynamic_use_inference` 这一设置：
 
 ```sql
 SET cast_string_to_variant_use_inference = 0;
@@ -239,7 +242,8 @@ SELECT '[1, 2, 3]'::Variant(String, Array(UInt64)) as variant, variantType(varia
 └───────────┴──────────────┘
 ```
 
-### Converting an ordinary column to a Variant column {#converting-an-ordinary-column-to-a-variant-column}
+
+### Converting an ordinary column to a Variant column \{#converting-an-ordinary-column-to-a-variant-column\}
 
 It is possible to convert an ordinary column with type `T` to a `Variant` column containing this type:
 
@@ -254,6 +258,7 @@ SELECT toTypeName(variant) AS type_name, [1,2,3]::Array(UInt64)::Variant(UInt64,
 ```
 
 Note: converting from `String` type is always performed through parsing, if you need to convert `String` column to `String` variant of a `Variant` without parsing, you can do the following:
+
 ```sql
 SELECT '[1, 2, 3]'::Variant(String)::Variant(String, Array(UInt64), UInt64) as variant, variantType(variant) as variant_type
 ```
@@ -264,7 +269,8 @@ SELECT '[1, 2, 3]'::Variant(String)::Variant(String, Array(UInt64), UInt64) as v
 └───────────┴──────────────┘
 ```
 
-### Converting a Variant column to an ordinary column {#converting-a-variant-column-to-an-ordinary-column}
+
+### Converting a Variant column to an ordinary column \{#converting-a-variant-column-to-an-ordinary-column\}
 
 It is possible to convert a `Variant` column to an ordinary column. In this case all nested variants will be converted to a destination type:
 
@@ -282,7 +288,8 @@ SELECT v::Nullable(Float64) FROM test;
 └──────────────────────────────┘
 ```
 
-### Converting a Variant to another Variant {#converting-a-variant-to-another-variant}
+
+### 将一个 Variant 转换为另一个 Variant \{#converting-a-variant-to-another-variant\}
 
 It is possible to convert a `Variant` column to another `Variant` column, but only if the destination `Variant` column contains all nested types from the original `Variant`:
 
@@ -300,7 +307,8 @@ SELECT v::Variant(UInt64, String, Array(UInt64)) FROM test;
 └───────────────────────────────────────────────────┘
 ```
 
-## Reading Variant type from the data {#reading-variant-type-from-the-data}
+
+## Reading Variant type from the data \{#reading-variant-type-from-the-data\}
 
 All text formats (TSV, CSV, CustomSeparated, Values, JSONEachRow, etc) supports reading `Variant` type. During data parsing ClickHouse tries to insert value into most appropriate variant type.
 
@@ -333,16 +341,26 @@ $$)
 └─────────────────────┴───────────────┴──────┴───────┴─────────────────────┴─────────┘
 ```
 
-## Comparing values of Variant type {#comparing-values-of-variant-data}
+
+## Comparing values of Variant type \{#comparing-values-of-variant-data\}
 
 Values of a `Variant` type can be compared only with values with the same `Variant` type.
 
+默认情况下，比较运算符使用 [Variant 的默认实现](#functions-with-variant-arguments)，
+对每个 Variant 备选类型分别执行比较。可以通过将设置 `use_variant_default_implementation_for_comparisons = 0` 置为 0
+来禁用该行为，从而使用下文描述的 Variant 原生比较规则。**注意**：`ORDER BY` 始终使用原生比较。
+
+**Variant 原生比较规则：**
+
 The result of operator `<` for values `v1` with underlying type `T1` and `v2` with underlying type `T2`  of a type `Variant(..., T1, ... T2, ...)` is defined as follows:
-- If `T1 = T2 = T`, the result will be `v1.T < v2.T` (underlying values will be compared).
-- If `T1 != T2`, the result will be `T1 < T2` (type names will be compared).
+
+* If `T1 = T2 = T`, the result will be `v1.T < v2.T` (underlying values will be compared).
+* If `T1 != T2`, the result will be `T1 < T2` (type names will be compared).
 
 Examples:
+
 ```sql
+SET allow_suspicious_types_in_order_by = 1;
 CREATE TABLE test (v1 Variant(String, UInt64, Array(UInt32)), v2 Variant(String, UInt64, Array(UInt32))) ENGINE=Memory;
 INSERT INTO test VALUES (42, 42), (42, 43), (42, 'abc'), (42, [1, 2, 3]), (42, []), (42, NULL);
 ```
@@ -380,7 +398,7 @@ SELECT v1, variantType(v1) AS v1_type, v2, variantType(v2) AS v2_type, v1 = v2, 
 
 If you need to find the row with specific `Variant` value, you can do one of the following:
 
-- Cast value to the corresponding `Variant` type:
+* Cast value to the corresponding `Variant` type:
 
 ```sql
 SELECT * FROM test WHERE v2 == [1,2,3]::Array(UInt32)::Variant(String, UInt64, Array(UInt32));
@@ -392,10 +410,10 @@ SELECT * FROM test WHERE v2 == [1,2,3]::Array(UInt32)::Variant(String, UInt64, A
 └────┴─────────┘
 ```
 
-- Compare `Variant` subcolumn with required type:
+* 将 `Variant` 子列与所需类型进行比较：
 
 ```sql
-SELECT * FROM test WHERE v2.`Array(UInt32)` == [1,2,3] -- 或者使用 variantElement(v2, 'Array(UInt32)')
+SELECT * FROM test WHERE v2.`Array(UInt32)` == [1,2,3] -- or using variantElement(v2, 'Array(UInt32)')
 ```
 
 ```text
@@ -404,7 +422,8 @@ SELECT * FROM test WHERE v2.`Array(UInt32)` == [1,2,3] -- 或者使用 variantEl
 └────┴─────────┘
 ```
 
-Sometimes it can be useful to make additional check on variant type as subcolumns with complex types like `Array/Map/Tuple` cannot be inside `Nullable` and will have default values instead of `NULL` on rows with different types:
+
+有时，对 Variant 类型进行额外检查会很有用，因为像 `Array/Map/Tuple` 这样的复杂类型作为子列时不能包含在 `Nullable` 中，对于具有不同类型的行，这些子列会使用默认值而不是 `NULL`：
 
 ```sql
 SELECT v2, v2.`Array(UInt32)`, variantType(v2) FROM test WHERE v2.`Array(UInt32)` == [];
@@ -452,7 +471,8 @@ SELECT v, variantType(v) FROM test ORDER by v;
 
 **Note** by default `Variant` type is not allowed in `GROUP BY`/`ORDER BY` keys, if you want to use it consider its special comparison rule and enable `allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by` settings.
 
-## JSONExtract functions with Variant {#jsonextract-functions-with-variant}
+
+## JSONExtract functions with Variant \{#jsonextract-functions-with-variant\}
 
 All `JSONExtract*` functions support `Variant` type:
 
@@ -485,3 +505,71 @@ SELECT JSONExtractKeysAndValues('{"a" : 42, "b" : "Hello", "c" : [1,2,3]}', 'Var
 │ [('a',42),('b','Hello'),('c',[1,2,3])] │ [('a','UInt32'),('b','String'),('c','Array(UInt32)')] │
 └────────────────────────────────────────┴───────────────────────────────────────────────────────┘
 ```
+
+
+## 带有 Variant 参数的函数 \{#functions-with-variant-arguments\}
+
+ClickHouse 中的大多数函数会通过 **针对 Variant 的默认实现** 自动支持 `Variant` 类型参数。
+从 `26.1` 版本开始，当某个函数没有显式处理 Variant 类型却接收到一个 Variant 列时，ClickHouse 会：
+
+1. 从该 Variant 列中提取每种具体类型
+2. 针对每种类型分别执行该函数
+3. 根据结果类型适当地合并结果
+
+这样，你就可以在不做特殊处理的情况下，对 Variant 列使用常规函数。
+
+**示例：**
+
+```sql
+CREATE TABLE test (v Variant(UInt32, String)) ENGINE = Memory;
+INSERT INTO test VALUES (42), ('hello'), (NULL);
+SELECT *, toTypeName(v) FROM test WHERE v = 42;
+```
+
+```text
+   ┌─v──┬─toTypeName(v)───────────┐
+1. │ 42 │ Variant(String, UInt32) │
+   └────┴─────────────────────────┘
+```
+
+比较运算符会自动分别应用于每种 Variant 成员类型，从而允许对 Variant 列进行过滤。
+
+**结果类型行为：**
+
+结果类型取决于函数针对每个 Variant 成员返回的类型：
+
+* **不同的结果类型**：`Variant(T1, T2, ...)`
+
+  ```sql
+  CREATE TABLE test2 (v Variant(UInt64, Float64)) ENGINE = Memory;
+  INSERT INTO test2 VALUES (42::UInt64), (42.42);
+  SELECT v + 1 AS result, toTypeName(result) FROM test2;
+  ```
+
+  ```text
+  ┌─result─┬─toTypeName(plus(v, 1))──┐
+  │     43 │ Variant(Float64, UInt64) │
+  │  43.42 │ Variant(Float64, UInt64) │
+  └────────┴─────────────────────────┘
+  ```
+
+* **类型不兼容**：对于不兼容的 Variant 成员，结果为 `NULL`
+
+  ```sql
+  CREATE TABLE test3 (v Variant(Array(UInt32), UInt32)) ENGINE = Memory;
+  INSERT INTO test3 VALUES ([1,2,3]), (42);
+  SELECT v + 10 AS result, toTypeName(result) FROM test3;
+  ```
+
+  ```text
+  ┌─result─┬─toTypeName(plus(v, 10))─┐
+  │   ᴺᵁᴸᴸ │ Nullable(UInt64)        │
+  │     52 │ Nullable(UInt64)        │
+  └────────┴─────────────────────────┘
+  ```
+
+:::note
+**错误处理：** 当函数无法处理某个 Variant 成员类型时，只有与类型相关的错误（ILLEGAL&#95;TYPE&#95;OF&#95;ARGUMENT、
+TYPE&#95;MISMATCH、CANNOT&#95;CONVERT&#95;TYPE、NO&#95;COMMON&#95;TYPE）会被捕获，并使对应行的结果为 NULL。其他错误（例如
+除以零或内存不足）会照常抛出，以防止静默地隐藏真实问题。
+:::

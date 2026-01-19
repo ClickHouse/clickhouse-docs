@@ -9,19 +9,19 @@ keywords: ['監査ログ', 'セキュリティ', 'コンプライアンス', '�
 
 
 
-## コンソール監査ログイベント {#console-audit-log-events}
+## コンソール監査ログイベント \{#console-audit-log-events\}
 
 組織で記録されるイベントは、**Organization**、**Service**、**User** の 3 つのカテゴリに分類されます。監査ログの概要やエクスポート方法、API 連携の追加方法については、上記の Guides セクションにある [console audit log](/cloud/security/audit-logging/console-audit-log) ドキュメントを参照してください。
 
 以下のイベントが監査ログに記録されます。
 
-### Organization {#organization}
+### Organization \{#organization\}
 
 - Organization の作成
 - Organization の削除
 - Organization 名の変更
 
-### Service {#service}
+### Service \{#service\}
 
 - Service の作成
 - Service の削除
@@ -31,7 +31,7 @@ keywords: ['監査ログ', 'セキュリティ', 'コンプライアンス', '�
 - Service の IP アクセスリストの変更
 - Service パスワードのリセット
 
-### User {#user}
+### User \{#user\}
 
 - User のロール変更
 - Organization からの User の削除

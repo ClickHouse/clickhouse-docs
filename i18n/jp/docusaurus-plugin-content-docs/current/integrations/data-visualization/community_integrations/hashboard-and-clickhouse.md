@@ -6,6 +6,9 @@ keywords: ['clickhouse', 'Hashboard', 'connect', 'integrate', 'ui', 'analytics']
 description: 'Hashboard は、ClickHouse と容易に統合でき、リアルタイムでのデータ分析を行える堅牢なアナリティクスプラットフォームです。'
 title: 'ClickHouse を Hashboard に接続する'
 doc_type: 'guide'
+integration:
+  - support_level: 'community'
+  - category: 'data_visualization'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
@@ -13,7 +16,7 @@ import hashboard_01 from '@site/static/images/integrations/data-visualization/ha
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# ClickHouse を Hashboard に接続する {#connecting-clickhouse-to-hashboard}
+# ClickHouse を Hashboard に接続する \{#connecting-clickhouse-to-hashboard\}
 
 <CommunityMaintainedBadge/>
 
@@ -25,18 +28,18 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 このガイドでは、Hashboard を ClickHouse インスタンスに接続する手順を順を追って説明します。この情報は Hashboard の [ClickHouse 連携ドキュメント](https://docs.hashboard.com/docs/database-connections/clickhouse) にも掲載されています。
 
-## 前提条件 {#pre-requisites}
+## 前提条件 \{#pre-requisites\}
 
 - 自前のインフラストラクチャ上、または [ClickHouse Cloud](https://clickhouse.com/) 上でホストされている ClickHouse データベース。
 - [Hashboard のアカウント](https://hashboard.com/getAccess)とプロジェクト。
 
-## Hashboard を ClickHouse に接続する手順 {#steps-to-connect-hashboard-to-clickhouse}
+## Hashboard を ClickHouse に接続する手順 \{#steps-to-connect-hashboard-to-clickhouse\}
 
-### 1. 接続情報を収集する {#1-gather-your-connection-details}
+### 1. 接続情報を収集する \{#1-gather-your-connection-details\}
 
 <ConnectionDetails />
 
-### 2. Hashboard に新しいデータベース接続を追加する {#2-add-a-new-database-connection-in-hashboard}
+### 2. Hashboard に新しいデータベース接続を追加する \{#2-add-a-new-database-connection-in-hashboard\}
 
 1. [Hashboard プロジェクト](https://hashboard.com/app) に移動します。
 2. サイドナビゲーションバーの歯車アイコンをクリックして、Settings ページを開きます。
@@ -48,6 +51,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 これで ClickHouse データベースが Hashboard に接続され、[Data Models](https://docs.hashboard.com/docs/data-modeling/add-data-model)、[Explorations](https://docs.hashboard.com/docs/visualizing-data/explorations)、[Metrics](https://docs.hashboard.com/docs/metrics)、[Dashboards](https://docs.hashboard.com/docs/dashboards) の作成に進むことができます。これらの機能の詳細については、対応する Hashboard ドキュメントを参照してください。
 
-## 詳細情報 {#learn-more}
+## 詳細情報 \{#learn-more\}
 
 高度な機能やトラブルシューティングの詳細については、[Hashboard のドキュメント](https://docs.hashboard.com/)を参照してください。

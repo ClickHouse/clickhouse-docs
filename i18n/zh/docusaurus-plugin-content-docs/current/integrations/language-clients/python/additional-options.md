@@ -8,11 +8,11 @@ title: '附加选项'
 doc_type: 'reference'
 ---
 
-# 其他选项 {#additional-options}
+# 其他选项 \{#additional-options\}
 
 ClickHouse Connect 为高级使用场景提供了多种额外选项。
 
-## 全局设置 {#global-settings}
+## 全局设置 \{#global-settings\}
 
 有少量设置可以在全局范围内控制 ClickHouse Connect 的行为。这些设置可以通过顶层的 `common` 包访问：
 
@@ -45,7 +45,7 @@ common.get_setting('invalid_setting_action')
 | http&#95;buffer&#95;size                        | 10MB            |                                                 | 用于 HTTP 流式查询的“内存中”缓冲区大小（以字节为单位）。                                                                                                                                                     |
 | preserve&#95;pandas&#95;datetime&#95;resolution | False           | True, False                                     | 当为 True 且使用 pandas 2.x 时，会保留 datetime64/timedelta64 数据类型的分辨率（例如 &#39;s&#39;、&#39;ms&#39;、&#39;us&#39;、&#39;ns&#39;）。如果为 False（或在 pandas &lt;2.x 上），则为兼容性起见会强制转换为纳秒（&#39;ns&#39;）分辨率。 |
 
-## 压缩 {#compression}
+## 压缩 \{#compression\}
 
 ClickHouse Connect 支持对查询结果和插入数据使用 lz4、zstd、brotli 和 gzip 压缩。请始终牢记，启用压缩通常意味着在网络带宽/传输速度与 CPU 使用率（客户端和服务器端）之间进行权衡。
 
@@ -59,27 +59,27 @@ ClickHouse Connect 支持对查询结果和插入数据使用 lz4、zstd、brotl
 
 我们同样不建议使用 `gzip` 压缩，因为在数据压缩和解压缩方面，它都明显慢于其他可选方案。
 
-## HTTP 代理支持 {#http-proxy-support}
+## HTTP 代理支持 \{#http-proxy-support\}
 
 ClickHouse Connect 使用 `urllib3` 库提供基础的 HTTP 代理支持。它会识别标准的 `HTTP_PROXY` 和 `HTTPS_PROXY` 环境变量。请注意，设置这些环境变量后，通过 `clickhouse_connect.get_client` 方法创建的所有客户端都会应用这些代理设置。若需按客户端单独配置代理，可在调用 `get_client` 方法时使用 `http_proxy` 或 `https_proxy` 参数。关于 HTTP 代理支持的实现细节，请参阅 [urllib3](https://urllib3.readthedocs.io/en/stable/advanced-usage.html#http-and-https-proxies) 文档。
 
 要使用 SOCKS 代理，可以将 `urllib3` 的 `SOCKSProxyManager` 作为 `pool_mgr` 参数传递给 `get_client`。请注意，这需要安装 PySocks 库，可以直接安装，也可以在 `urllib3` 依赖中使用 `[socks]` 选项进行安装。
 
-## “旧版” JSON 数据类型 {#old-json-data-type}
+## “旧版” JSON 数据类型 \{#old-json-data-type\}
 
 实验性的 `Object`（或 `Object('json')`）数据类型已被弃用，应避免在生产环境中使用。ClickHouse Connect 仍为该数据类型提供有限支持，以保持向后兼容性。请注意，此支持不包括那些预期以字典或等价结构形式返回“顶层”或“父级” JSON 值的查询，此类查询将导致抛出异常。
 
-## “新” Variant/Dynamic/JSON 数据类型（实验性功能） {#new-variantdynamicjson-datatypes-experimental-feature}
+## “新” Variant/Dynamic/JSON 数据类型（实验性功能） \{#new-variantdynamicjson-datatypes-experimental-feature\}
 
 自 0.8.0 版本起，`clickhouse-connect` 为 ClickHouse 新增的 Variant、Dynamic 和 JSON 类型提供了实验性支持，这些类型本身也仍处于实验阶段。
 
-### 使用说明 {#usage-notes}
+### 使用说明 \{#usage-notes\}
 
 - JSON 数据可以以 Python 字典或包含 JSON 对象 `{}` 的 JSON 字符串形式插入。不支持其他形式的 JSON 数据。
 - 对这些类型使用子列/路径进行查询时，将返回子列的类型。
 - 有关其他使用说明，请参阅 ClickHouse 的[主文档](https://clickhouse.com/docs)。
 
-### 已知限制 {#known-limitations}
+### 已知限制 \{#known-limitations\}
 
 - 在使用之前，必须先在 ClickHouse 设置中启用上述各类型。
 - 新的 JSON 类型从 ClickHouse 24.8 版本开始可用。

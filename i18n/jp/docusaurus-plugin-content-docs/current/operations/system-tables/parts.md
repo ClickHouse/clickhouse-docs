@@ -6,7 +6,7 @@ title: 'system.parts'
 doc_type: 'reference'
 ---
 
-# system.parts {#systemparts}
+# system.parts \{#systemparts\}
 
 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルのパーツに関する情報を格納します。
 

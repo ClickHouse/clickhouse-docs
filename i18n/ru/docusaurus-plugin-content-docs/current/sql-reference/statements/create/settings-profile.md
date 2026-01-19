@@ -21,7 +21,7 @@ CREATE SETTINGS PROFILE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]]
 
 Клауза `ON CLUSTER` позволяет создавать профили настроек на кластере, см. [Distributed DDL](../../../sql-reference/distributed-ddl.md).
 
-## Пример {#example}
+## Пример \{#example\}
 
 Создайте пользователя:
 

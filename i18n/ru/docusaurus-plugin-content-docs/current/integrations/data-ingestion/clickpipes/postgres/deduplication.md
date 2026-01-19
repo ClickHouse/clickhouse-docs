@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/deduplication
 title: 'Стратегии дедупликации (на основе CDC)'
 keywords: ['deduplication', 'postgres', 'clickpipes', 'replacingmergetree', 'final']
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import clickpipes_initial_load from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-cdc-initial-load.png';
@@ -12,13 +15,13 @@ import Image from '@theme/IdealImage';
 
 Обновления и удаления, реплицируемые из Postgres в ClickHouse, приводят к дублированию строк в ClickHouse из‑за структуры хранения данных и процесса репликации. На этой странице объясняется, почему это происходит, и какие стратегии можно использовать в ClickHouse для обработки дубликатов.
 
-## Как происходит репликация данных? {#how-does-data-get-replicated}
+## Как происходит репликация данных? \{#how-does-data-get-replicated\}
 
-### Логическое декодирование PostgreSQL {#PostgreSQL-logical-decoding}
+### Логическое декодирование PostgreSQL \{#PostgreSQL-logical-decoding\}
 
 ClickPipes использует [Postgres Logical Decoding](https://www.pgedge.com/blog/logical-replication-evolution-in-chronological-order-clustering-solution-built-around-logical-replication) для считывания изменений по мере их возникновения в Postgres. Процесс логического декодирования в Postgres позволяет клиентам, таким как ClickPipes, получать изменения в человекочитаемом формате, то есть в виде последовательности команд INSERT, UPDATE и DELETE.
 
-### ReplacingMergeTree {#replacingmergetree}
+### ReplacingMergeTree \{#replacingmergetree\}
 
 ClickPipes сопоставляет таблицы Postgres с таблицами в ClickHouse, используя движок [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree). ClickHouse лучше всего работает с нагрузками только на добавление данных и не рекомендует частые операции UPDATE. Именно здесь ReplacingMergeTree особенно эффективен.
 
@@ -50,11 +53,12 @@ PRIMARY KEY id
 ORDER BY id;
 ```
 
-### Показательный пример {#illustrative-example}
+
+### Показательный пример \{#illustrative-example\}
 
 Ниже приведена иллюстрация базового примера синхронизации таблицы `users` между PostgreSQL и ClickHouse с использованием ClickPipes.
 
-<Image img={clickpipes_initial_load} alt="ClickPipes initial load" size="lg" />
+<Image img={clickpipes_initial_load} alt="ClickPipes initial load" size="lg"/>
 
 **Шаг 1** показывает начальный снимок с 2 строками в PostgreSQL и то, как ClickPipes выполняет их начальную загрузку в ClickHouse. Как видно, обе строки копируются в ClickHouse без изменений.
 
@@ -66,7 +70,7 @@ ORDER BY id;
 
 Как обеспечить идентичные результаты запросов и в ClickHouse, и в PostgreSQL?
 
-### Дедупликация с помощью ключевого слова FINAL {#deduplicate-using-final-keyword}
+### Дедупликация с помощью ключевого слова FINAL \{#deduplicate-using-final-keyword\}
 
 Рекомендуемый способ выполнять дедупликацию данных в запросах ClickHouse — использовать [модификатор FINAL.](/sql-reference/statements/select/from#final-modifier) Это гарантирует, что будут возвращены только дедуплицированные строки.
 
@@ -122,7 +126,8 @@ ORDER BY viewcount DESC
 LIMIT 10
 ```
 
-#### Настройка FINAL {#final-setting}
+
+#### Настройка FINAL \{#final-setting\}
 
 Вместо того чтобы добавлять модификатор FINAL к каждой таблице в запросе, вы можете использовать [настройку FINAL](/operations/settings/settings#final), чтобы применять его автоматически ко всем таблицам в запросе.
 
@@ -137,7 +142,8 @@ SET final = 1;
 SELECT count(*) FROM posts; 
 ```
 
-#### Политика строк (ROW policy) {#row-policy}
+
+#### Политика строк (ROW policy) \{#row-policy\}
 
 Простой способ скрыть избыточный фильтр `_peerdb_is_deleted = 0` — использовать [политику строк (ROW policy).](/docs/operations/access-rights#row-policy-management) Ниже приведён пример, который создаёт политику строк для исключения удалённых строк из всех запросов к таблице votes.
 
@@ -146,15 +152,16 @@ SELECT count(*) FROM posts;
 CREATE ROW POLICY cdc_policy ON votes FOR SELECT USING _peerdb_is_deleted = 0 TO ALL;
 ```
 
-> Политики на уровне строк применяются к списку пользователей и ролей. В этом примере они применяются ко всем пользователям и ролям. Это можно настроить так, чтобы они применялись только к конкретным пользователям или ролям.
+> Политики строк применяются к определённому списку пользователей и ролей. В этом примере политика применяется ко всем пользователям и ролям. Это можно настроить так, чтобы она применялась только к конкретным пользователям или ролям.
 
-### Запросы в стиле Postgres {#query-like-with-postgres}
 
-Миграция аналитического набора данных из PostgreSQL в ClickHouse часто требует модификации запросов приложения с учётом различий в обработке данных и выполнении запросов.
+### Запросы в стиле Postgres \{#query-like-with-postgres\}
+
+Миграция аналитического набора данных из PostgreSQL в ClickHouse часто требует модификации запросов приложения с учётом различий в обработке данных и выполнении запросов. 
 
 В этом разделе будут рассмотрены методы дедупликации данных при сохранении исходных запросов без изменений.
 
-#### Представления {#views}
+#### Представления \{#views\}
 
 [Представления](/sql-reference/statements/create/view#normal-view) — отличный способ скрыть ключевое слово FINAL из запроса, так как они не хранят данные и при каждом обращении просто читают их из другой таблицы.
 
@@ -167,7 +174,7 @@ CREATE VIEW votes_view AS SELECT * FROM votes FINAL WHERE _peerdb_is_deleted=0;
 CREATE VIEW comments_view AS SELECT * FROM comments FINAL WHERE _peerdb_is_deleted=0;
 ```
 
-Затем мы можем обращаться к представлениям тем же запросом, который использовали бы в PostgreSQL.
+Затем мы можем обращаться к представлениям тем же запросом, что и в PostgreSQL.
 
 ```sql
 -- Most viewed posts
@@ -181,7 +188,8 @@ ORDER BY viewcount DESC
 LIMIT 10
 ```
 
-#### Обновляемое материализованное представление {#refreshable-material-view}
+
+#### Обновляемое материализованное представление \{#refreshable-material-view\}
 
 Другой подход — использовать [обновляемое материализованное представление](/materialized-view/refreshable-materialized-view), которое позволяет планировать выполнение запроса для дедупликации строк и сохранения результатов в целевой таблице. При каждом запланированном обновлении целевая таблица полностью заменяется последними результатами запроса.
 
@@ -198,7 +206,7 @@ CREATE MATERIALIZED VIEW deduplicated_posts_mv REFRESH EVERY 1 HOUR TO deduplica
 SELECT * FROM posts FINAL WHERE _peerdb_is_deleted=0 
 ```
 
-После этого вы можете как обычно выполнять запросы к таблице `deduplicated_posts`.
+После этого вы можете выполнять запросы к таблице `deduplicated_posts` как обычно.
 
 ```sql
 SELECT

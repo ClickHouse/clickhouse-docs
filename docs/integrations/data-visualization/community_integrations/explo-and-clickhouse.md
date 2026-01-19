@@ -7,7 +7,7 @@ description: 'Explo is an easy-to-use, open source UI tool for asking questions 
 title: 'Connecting Explo to ClickHouse'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
 ---
 

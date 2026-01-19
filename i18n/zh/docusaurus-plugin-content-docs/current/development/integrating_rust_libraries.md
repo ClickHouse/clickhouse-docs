@@ -6,7 +6,7 @@ title: '集成 Rust 库'
 doc_type: 'guide'
 ---
 
-# Rust 库 {#rust-libraries}
+# Rust 库 \{#rust-libraries\}
 
 Rust 库的集成将以集成 BLAKE3 哈希函数为例进行说明。
 

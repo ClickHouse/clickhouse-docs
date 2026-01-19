@@ -39,7 +39,7 @@ doc_type: 'reference'
 SELECT * FROM test_fetch ORDER BY a OFFSET 1 ROW FETCH FIRST 3 ROWS ONLY;
 ```
 
-次のクエリと同じです
+次のクエリと同一です
 
 ```sql
 SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
@@ -55,7 +55,7 @@ SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
 実際のオフセットは、[`offset`](../../../operations/settings/settings.md#offset) 設定にも依存する可能性があります。
 :::
 
-## 例 {#examples}
+## 例 \{#examples\}
 
 入力テーブル：
 

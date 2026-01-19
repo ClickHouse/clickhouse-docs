@@ -5,6 +5,9 @@ sidebar_label: 'Удалить таблицу'
 slug: /integrations/clickpipes/mysql/removing_tables
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import Image from '@theme/IdealImage';
@@ -12,8 +15,7 @@ import remove_table from '@site/static/images/integrations/data-ingestion/clickp
 
 В некоторых случаях имеет смысл исключить отдельные таблицы из MySQL ClickPipe — например, если какая‑то таблица не используется в ваших аналитических задачах, её пропуск может снизить затраты на хранение и репликацию в ClickHouse.
 
-
-## Шаги по удалению отдельных таблиц {#remove-tables-steps}
+## Шаги по удалению отдельных таблиц \{#remove-tables-steps\}
 
 Первый шаг — удалить таблицу из конвейера. Это можно сделать следующим образом:
 
@@ -21,6 +23,7 @@ import remove_table from '@site/static/images/integrations/data-ingestion/clickp
 2. Нажмите **Edit Table Settings**.
 3. Найдите нужную таблицу — можно воспользоваться полем поиска.
 4. Снимите выделение с таблицы, нажав на установленный флажок.
+
 <br/>
 
 <Image img={remove_table} border size="md"/>

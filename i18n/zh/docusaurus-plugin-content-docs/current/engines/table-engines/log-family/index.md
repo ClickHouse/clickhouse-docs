@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Log 表引擎系列 {#log-table-engine-family}
+# Log 表引擎系列 \{#log-table-engine-family\}
 
 <CloudNotSupportedBadge/>
 
@@ -29,7 +29,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 尽管名称如此，*Log 表引擎并非用于存储日志数据。它们应仅用于需要快速写入的小规模数据量。*
 :::
 
-## 通用属性 {#common-properties}
+## 通用属性 \{#common-properties\}
 
 这些引擎：
 
@@ -51,7 +51,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
     如果写入操作被中断（例如服务器异常关闭），则可能会得到一个数据损坏的表。
 
-## 差异 {#differences}
+## 差异 \{#differences\}
 
 `TinyLog` 引擎是该系列中最简单的一个，提供的功能最少、效率也最低。`TinyLog` 引擎不支持在单个查询中由多个线程并行读取数据。与该系列中支持在单个查询中并行读取的其他引擎相比，它读取数据的速度更慢，并且由于将每一列存储在单独的文件中，它使用的文件描述符几乎与 `Log` 引擎一样多。应仅在简单场景中使用它。
 

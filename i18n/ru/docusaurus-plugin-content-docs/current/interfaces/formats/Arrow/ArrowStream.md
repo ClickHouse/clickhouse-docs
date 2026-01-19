@@ -13,10 +13,10 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## Описание {#description}
+## Описание \{#description\}
 
 `ArrowStream` — это формат «потокового режима» (stream mode) Apache Arrow. Он предназначен для потоковой обработки данных в памяти.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
-## Настройки формата {#format-settings}
+## Настройки формата \{#format-settings\}

@@ -7,14 +7,14 @@ title: 'ClickHouse Playground'
 doc_type: '指南'
 ---
 
-# ClickHouse playground {#clickhouse-playground}
+# ClickHouse playground \{#clickhouse-playground\}
 
 [ClickHouse Playground](https://sql.clickhouse.com) 允许用户无需自行搭建服务器或集群，即可通过即时运行查询来试用和探索 ClickHouse。
 Playground 中提供了若干示例数据集。
 
 您可以使用任意 HTTP 客户端向 Playground 发送查询，例如 [curl](https://curl.haxx.se) 或 [wget](https://www.gnu.org/software/wget/)，也可以通过 [JDBC](/interfaces/jdbc) 或 [ODBC](/interfaces/odbc) 驱动程序来建立连接。关于支持 ClickHouse 的软件产品的更多信息，请参见[此处](../integrations/index.mdx)。
 
-## 凭证 {#credentials}
+## 凭证 \{#credentials\}
 
 | 参数               | 值                                  |
 |:--------------------|:-----------------------------------|
@@ -23,7 +23,7 @@ Playground 中提供了若干示例数据集。
 | 用户               | `explorer` 或 `play`               |
 | 密码               | （空）                             |
 
-## 限制 {#limitations}
+## 限制 \{#limitations\}
 
 所有查询均以只读用户的身份执行。这意味着存在一些限制：
 
@@ -32,7 +32,7 @@ Playground 中提供了若干示例数据集。
 
 该服务的使用还受配额限制。
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
 使用 `curl` 访问 HTTPS 端点的示例：
 
@@ -47,7 +47,7 @@ clickhouse client --secure --host play.clickhouse.com --user explorer
 ```
 
 
-## Playground 规格 {#specifications}
+## Playground 规格 \{#specifications\}
 
 我们的 ClickHouse Playground 当前采用以下规格：
 

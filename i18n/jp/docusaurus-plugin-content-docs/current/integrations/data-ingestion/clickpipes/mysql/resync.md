@@ -5,12 +5,15 @@ slug: /integrations/clickpipes/mysql/resync
 sidebar_label: 'ClickPipe の再同期'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', 'データインジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
 import Image from '@theme/IdealImage';
 
-### Resync は何を行いますか？ {#what-mysql-resync-do}
+### Resync は何を行いますか？ \{#what-mysql-resync-do\}
 
 Resync では、次の処理が以下の順序で行われます。
 
@@ -21,7 +24,7 @@ Resync では、次の処理が以下の順序で行われます。
 
 元の ClickPipe のすべての設定は、resync ClickPipe に引き継がれます。元の ClickPipe の統計情報は UI 上でクリアされます。
 
-### ClickPipe を Resync するユースケース {#use-cases-mysql-resync}
+### ClickPipe を Resync するユースケース \{#use-cases-mysql-resync\}
 
 いくつかのシナリオを示します。
 
@@ -32,13 +35,13 @@ Resync では、次の処理が以下の順序で行われます。
 Resync を複数回実行することも可能ですが、その際にはソースデータベースへの負荷を考慮してください。
 :::
 
-### Resync ClickPipe ガイド {#guide-mysql-resync}
+### Resync ClickPipe ガイド \{#guide-mysql-resync\}
 
 1. **Data Sources** タブで、Resync を実行したい MySQL ClickPipe をクリックします。
 2. **Settings** タブに移動します。
 3. **Resync** ボタンをクリックします。
 
-<Image img={resync_button} border size="md" />
+<Image img={resync_button} border size="md"/>
 
 4. 確認用のダイアログボックスが表示されます。もう一度 Resync をクリックします。
 5. **Metrics** タブに移動します。

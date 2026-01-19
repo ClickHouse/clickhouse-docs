@@ -7,7 +7,7 @@ description: 'Astrato 将真正的自助式商务智能（BI）带入企业和�
 title: '将 Astrato 连接到 ClickHouse'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
 ---
 
@@ -25,13 +25,13 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# 将 Astrato 连接到 ClickHouse {#connecting-astrato-to-clickhouse}
+# 将 Astrato 连接到 ClickHouse \{#connecting-astrato-to-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
 Astrato 使用 Pushdown SQL 直接查询 ClickHouse Cloud 或本地部署的 ClickHouse。这意味着你可以在 ClickHouse 行业领先的性能加持下访问所需的全部数据。
 
-## 所需连接信息 {#connection-data-required}
+## 所需连接信息 \{#connection-data-required\}
 
 在设置数据连接时，您需要准备以下信息：
 
@@ -41,7 +41,7 @@ Astrato 使用 Pushdown SQL 直接查询 ClickHouse Cloud 或本地部署的 Cli
 
 <ConnectionDetails />
 
-## 在 Astrato 中创建到 ClickHouse 的数据连接 {#creating-the-data-connection-to-clickhouse}
+## 在 Astrato 中创建到 ClickHouse 的数据连接 \{#creating-the-data-connection-to-clickhouse\}
 
 - 在侧边栏中选择 **Data**，然后选择 **Data Connection** 选项卡
 （或者访问此链接：https://app.astrato.io/data/sources）
@@ -70,7 +70,7 @@ Astrato 使用 Pushdown SQL 直接查询 ClickHouse Cloud 或本地部署的 Cli
 如果创建了重复的数据源，会在数据源名称中添加时间戳。
 :::
 
-## 创建语义模型 / 数据视图 {#creating-a-semantic-model--data-view}
+## 创建语义模型 / 数据视图 \{#creating-a-semantic-model--data-view\}
 
 在我们的 Data View 编辑器中，您可以看到 ClickHouse 中的所有表（Tables）和模式（Schemas），请选择部分对象开始配置。
 
@@ -86,7 +86,7 @@ Astrato 使用 Pushdown SQL 直接查询 ClickHouse Cloud 或本地部署的 Cli
 
 <Image size="lg" img={astrato_4c_clickhouse_completed_data_view} alt="Astrato 连接到 ClickHouse 用户访问" border />
 
-## 创建仪表板 {#creating-a-dashboard}
+## 创建仪表板 \{#creating-a-dashboard\}
 
 只需几个步骤，您就可以在 Astrato 中构建第一个图表。
 1. 打开可视化面板
@@ -96,13 +96,13 @@ Astrato 使用 Pushdown SQL 直接查询 ClickHouse Cloud 或本地部署的 Cli
 
 <Image size="lg" img={astrato_5a_clickhouse_build_chart} alt="Astrato 连接 ClickHouse 用户访问" border />
 
-### 查看支持每个可视化的生成 SQL {#view-generated-sql-supporting-each-visualization}
+### 查看支持每个可视化的生成 SQL \{#view-generated-sql-supporting-each-visualization\}
 
 透明度和准确性是 Astrato 的核心。我们确保每一条自动生成的查询语句都是可见的，让您始终保持完全掌控。所有计算都直接在 ClickHouse 中完成，既充分利用其高速性能，又保持健全的安全性和治理能力。
 
 <Image size="lg" img={astrato_5b_clickhouse_view_sql} alt="Astrato 连接 ClickHouse 用户访问" border />
 
-### 完整仪表板示例 {#example-completed-dashboard}
+### 完整仪表板示例 \{#example-completed-dashboard\}
 
 一个精美完整的仪表板或数据应用已近在咫尺。要查看更多我们构建的内容，请访问我们网站上的演示图库：https://astrato.io/gallery
 

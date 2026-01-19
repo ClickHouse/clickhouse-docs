@@ -6,6 +6,9 @@ sidebar_position: 1
 title: 'Создание первого Kafka ClickPipe'
 doc_type: 'guide'
 keywords: ['создать kafka clickpipe', 'kafka', 'clickpipes', 'источники данных', 'руководство по настройке']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
@@ -18,50 +21,36 @@ import cp_overview from '@site/static/images/integrations/data-ingestion/clickpi
 import cp_table_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_table_settings.png';
 import Image from '@theme/IdealImage';
 
+# Создание вашего первого Kafka ClickPipe \{#creating-your-first-kafka-clickpipe\}
 
-# Создание первого Kafka ClickPipe {#creating-your-first-kafka-clickpipe}
-
-> В этом руководстве описан процесс создания первого Kafka ClickPipe.
+> В этом руководстве мы шаг за шагом рассмотрим процесс создания вашего первого Kafka ClickPipe.
 
 <VerticalStepper type="numbered" headerLevel="h2">
 
+## Перейдите к источникам данных \{#1-load-sql-console\}
+Выберите кнопку `Data Sources` в меню слева и нажмите кнопку «Set up a ClickPipe».
+<Image img={cp_step0} alt="Выбор импортируемых данных" size="md"/>
 
-## Перейдите к источникам данных {#1-load-sql-console}
-На панели слева нажмите кнопку `Data Sources` и выберите "Set up a ClickPipe".
-<Image img={cp_step0} alt="Select imports" size="md"/>
+## Выберите источник данных \{#2-select-data-source\}
+Выберите ваш источник данных Kafka из списка.
+<Image img={cp_step1} alt="Выбор типа источника данных" size="md"/>
 
+## Настройте источник данных \{#3-configure-data-source\}
+Заполните форму, указав для ClickPipe имя, описание (необязательно), учётные данные и другие параметры подключения.
+<Image img={cp_step2} alt="Заполнение параметров подключения" size="md"/>
 
+## Настройте реестр схем (необязательно) \{#4-configure-your-schema-registry\}
+Для потоков Avro требуется корректная схема. См. раздел [Schema registries](./02_schema-registries.md) для получения дополнительной информации о настройке реестра схем.
 
-## Выберите источник данных {#2-select-data-source}
-Выберите источник данных Kafka из списка.
-<Image img={cp_step1} alt="Выберите тип источника данных" size="md"/>
-
-
-
-## Настройте источник данных {#3-configure-data-source}
-Заполните форму, указав для ClickPipe имя, при необходимости описание, ваши учетные данные и другие параметры подключения.
-<Image img={cp_step2} alt="Заполните параметры подключения" size="md"/>
-
-
-
-## Настройте реестр схем (необязательно) {#4-configure-your-schema-registry}
-Для потоков Avro требуется корректная схема. См. раздел [Schema registries](./02_schema-registries.md) для получения подробной информации о том, как настроить реестр схем.
-
-
-
-## Настройка обратной приватной конечной точки (необязательно) {#5-configure-reverse-private-endpoint}
-Настройте обратную приватную конечную точку, чтобы ClickPipes могли подключаться к вашему кластеру Kafka через AWS PrivateLink.
+## Настройте reverse private endpoint (необязательно) \{#5-configure-reverse-private-endpoint\}
+Настройте Reverse Private Endpoint, чтобы разрешить ClickPipes подключаться к вашему кластеру Kafka с использованием AWS PrivateLink.
 Дополнительную информацию см. в нашей [документации по AWS PrivateLink](../aws-privatelink.md).
 
-
-
-## Выберите топик {#6-select-your-topic}
-Выберите топик, и в интерфейсе отобразится пример документа из этого топика.
+## Выберите топик \{#6-select-your-topic\}
+Выберите ваш топик, и в интерфейсе будет отображён пример сообщения из этого топика.
 <Image img={cp_step3} alt="Выбор топика" size="md"/>
 
-
-
-## Настройте целевую таблицу {#7-configure-your-destination-table}
+## Настройте целевую таблицу \{#7-configure-your-destination-table\}
 
 На следующем шаге вы можете выбрать, хотите ли вы настроить приём данных в новую таблицу ClickHouse или использовать существующую. Следуйте инструкциям на экране, чтобы изменить имя таблицы, схему и параметры. В верхней части экрана вы можете в реальном времени видеть предварительный просмотр изменений в образце таблицы.
 
@@ -71,21 +60,16 @@ import Image from '@theme/IdealImage';
 
 <Image img={cp_table_settings} alt="Настройка расширенных параметров" size="md"/>
 
-
-
-## Настройка прав доступа {#8-configure-permissions}
-ClickPipes создаёт отдельного пользователя для записи данных в целевую таблицу. Вы можете назначить этому внутреннему пользователю роль, выбрав пользовательскую или одну из предопределённых ролей:
-- `Full access`: с полным доступом к кластеру. Эта роль может быть полезна, если вы используете материализованное представление или словарь Dictionary с целевой таблицей.
-- `Only destination table`: с правом `INSERT` только для целевой таблицы.
+## Настройте права доступа \{#8-configure-permissions\}
+ClickPipes создаст выделенного пользователя для записи данных в целевую таблицу. Вы можете выбрать роль для этого внутреннего пользователя, используя пользовательскую роль или одну из предопределённых ролей:
+- `Full access`: с полным доступом к кластеру. Это может быть полезно, если вы используете Materialized View или словарь вместе с целевой таблицей.
+- `Only destination table`: только с правами `INSERT` на целевую таблицу.
 
 <Image img={cp_step5} alt="Права доступа" size="md"/>
 
+## Завершите настройку \{#9-complete-setup\}
+Нажатие кнопки «Create ClickPipe» создаст и запустит ваш ClickPipe. После этого он будет отображаться в разделе `Data Sources`.
 
-
-## Завершение настройки {#9-complete-setup}
-
-Нажмите «Create ClickPipe», чтобы создать и запустить ваш ClickPipe. Он появится в разделе Data Sources.
-
-<Image img={cp_overview} alt='Просмотр обзора' size='md' />
+<Image img={cp_overview} alt="Просмотр сводной информации" size="md"/>
 
 </VerticalStepper>

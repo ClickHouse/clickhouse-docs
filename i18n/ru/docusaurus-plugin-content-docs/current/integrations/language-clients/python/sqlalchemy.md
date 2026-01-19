@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ClickHouse Connect включает диалект SQLAlchemy (`clickhousedb`), построенный поверх базового драйвера. Он предназначен для работы с API SQLAlchemy Core и поддерживает версии SQLAlchemy 1.4.40+ и 2.0.x.
 
-## Подключение через SQLAlchemy {#sqlalchemy-connect}
+## Подключение через SQLAlchemy \{#sqlalchemy-connect\}
 
 Создайте движок, используя URL-адрес вида `clickhousedb://` или `clickhousedb+connect://`. Параметры запроса соответствуют настройкам ClickHouse, параметрам клиента и параметрам транспорта HTTP/TLS.
 
@@ -34,7 +34,7 @@ with engine.begin() as conn:
 
 Полный список поддерживаемых параметров см. в разделе [Connection arguments and Settings](driver-api.md#connection-arguments) ниже. Их также можно передавать через DSN SQLAlchemy.
 
-## Основные запросы {#sqlalchemy-core-queries}
+## Основные запросы \{#sqlalchemy-core-queries\}
 
 Диалект поддерживает `SELECT`-запросы SQLAlchemy Core с объединениями, фильтрацией, сортировкой, ограничениями и смещениями (LIMIT/OFFSET), а также `DISTINCT`.
 
@@ -67,7 +67,7 @@ with engine.begin() as conn:
     conn.execute(delete(users).where(users.c.name.like("%temp%")))
 ```
 
-## DDL и рефлексия {#sqlalchemy-ddl-reflection}
+## DDL и рефлексия \{#sqlalchemy-ddl-reflection\}
 
 Вы можете создавать базы данных и таблицы, используя предоставленные DDL‑помощники и конструкторы типов/движков. Поддерживается рефлексия таблиц (включая типы столбцов и движок).
 
@@ -101,7 +101,7 @@ with engine.begin() as conn:
 
 Отражённые столбцы включают атрибуты, специфичные для диалекта, такие как `clickhousedb_default_type`, `clickhousedb_codec_expression` и `clickhousedb_ttl_expression`, если они заданы на сервере.
 
-## Операции вставки (Core и базовый ORM) {#sqlalchemy-inserts}
+## Операции вставки (Core и базовый ORM) \{#sqlalchemy-inserts\}
 
 Операции вставки можно выполнять через SQLAlchemy Core, а также с помощью простых ORM-моделей для удобства.
 
@@ -129,7 +129,7 @@ with Session(engine) as session:
     session.commit()
 ```
 
-## Область применения и ограничения {#scope-and-limitations}
+## Область применения и ограничения \{#scope-and-limitations\}
 
 - Основное назначение: Поддержка возможностей SQLAlchemy Core, таких как `SELECT` с `JOIN` (`INNER`, `LEFT OUTER`, `FULL OUTER`, `CROSS`), `WHERE`, `ORDER BY`, `LIMIT`/`OFFSET` и `DISTINCT`.
 - `DELETE` только с `WHERE`: Диалект поддерживает упрощённый `DELETE`, но требует явного условия `WHERE`, чтобы избежать случайного удаления всей таблицы. Для очистки таблицы используйте `TRUNCATE TABLE`.

@@ -7,7 +7,7 @@ title: 'Memory 表引擎'
 doc_type: 'reference'
 ---
 
-# Memory 表引擎 {#memory-table-engine}
+# Memory 表引擎 \{#memory-table-engine\}
 
 :::note
 在 ClickHouse Cloud 上使用 Memory 表引擎时，数据出于设计原因不会在所有节点之间复制。若要保证所有查询都被路由到同一节点，并使 Memory 表引擎按预期工作，可以采用以下任一方式：
@@ -27,7 +27,7 @@ Memory 引擎被系统用于带有外部查询数据的临时表（参见“Exte
 
 可以指定上限和下限来限制 Memory 引擎表的大小，从而有效地使其充当一个环形缓冲区（参见 [Engine Parameters](#engine-parameters)）。
 
-## 引擎参数 {#engine-parameters}
+## 引擎参数 \{#engine-parameters\}
 
 - `min_bytes_to_keep` — 当内存表设置了大小上限时需要保留的最小字节数。
   - 默认值：`0`
@@ -42,7 +42,7 @@ Memory 引擎被系统用于带有外部查询数据的临时表（参见“Exte
 - `compress` - 是否在内存中对数据进行压缩。
   - 默认值：`false`
 
-## 使用说明 {#usage}
+## 使用说明 \{#usage\}
 
 **初始化配置**
 
@@ -58,7 +58,7 @@ ALTER TABLE memory MODIFY SETTING min_rows_to_keep = 100, max_rows_to_keep = 100
 
 **注意：** `bytes` 和 `rows` 的封顶参数可以同时设置，但会始终遵守由 `max` 和 `min` 所定义的最低限制。
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
 ```sql
 CREATE TABLE memory (i UInt32) ENGINE = Memory SETTINGS min_bytes_to_keep = 4096, max_bytes_to_keep = 16384;

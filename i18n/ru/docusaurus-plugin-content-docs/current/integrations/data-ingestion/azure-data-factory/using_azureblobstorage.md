@@ -5,13 +5,16 @@ description: 'Использование табличной функции Click
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'azureBlobStorage']
 title: 'Использование табличной функции ClickHouse azureBlobStorage для загрузки данных из Azure в ClickHouse'
 doc_type: 'guide'
+integration:
+   - support_level: 'core'
+   - category: 'data_ingestion'
 ---
 
 import Image from '@theme/IdealImage';
 import azureDataStoreSettings                   from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-settings.png';
 import azureDataStoreAccessKeys                 from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-access-keys.png';
 
-# Использование табличной функции azureBlobStorage в ClickHouse {#using-azureBlobStorage-function}
+# Использование табличной функции azureBlobStorage в ClickHouse \{#using-azureBlobStorage-function\}
 
 Это один из наиболее эффективных и простых способов копирования данных из
 Azure Blob Storage или Azure Data Lake Storage в ClickHouse. С помощью этой табличной
@@ -29,7 +32,7 @@ Azure Blob Storage или Azure Data Lake Storage в ClickHouse. С помощь
 обратитесь к официальной документации:
 странице документации табличной функции [`azureBlobStorage`](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
 
-## Получение ключей доступа к Azure Blob Storage {#acquiring-azure-blob-storage-access-keys}
+## Получение ключей доступа к Azure Blob Storage \{#acquiring-azure-blob-storage-access-keys\}
 
 Чтобы предоставить ClickHouse доступ к Azure Blob Storage, вам понадобится строка подключения с ключом доступа.
 
@@ -45,7 +48,7 @@ Azure Blob Storage или Azure Data Lake Storage в ClickHouse. С помощь
 
 4. Скопируйте строку подключения — вы будете использовать её в качестве параметра табличной функции azureBlobStorage.
 
-## Выполнение запросов к данным в Azure Blob Storage {#querying-the-data-from-azure-blob-storage}
+## Выполнение запросов к данным в Azure Blob Storage \{#querying-the-data-from-azure-blob-storage\}
 
 Откройте предпочитаемую консоль для выполнения запросов в ClickHouse — это может быть
 веб-интерфейс ClickHouse Cloud, клиент ClickHouse CLI или любой другой инструмент,
@@ -76,9 +79,10 @@ SELECT * FROM azureBlobStorage(
     'JSONEachRow');
 ```
 
-Это позволяет эффективно загружать внешние данные в ClickHouse без необходимости выполнения промежуточных ETL-этапов.
+Это позволяет эффективно загружать внешние данные в ClickHouse без необходимости промежуточных ETL-этапов.
 
-## Простой пример с использованием набора данных Environmental Sensors {#simple-example-using-the-environmental-sensors-dataset}
+
+## Простой пример с использованием набора данных Environmental Sensors \{#simple-example-using-the-environmental-sensors-dataset\}
 
 В качестве примера мы загрузим один файл из набора данных Environmental Sensors.
 
@@ -100,7 +104,7 @@ SELECT * FROM azureBlobStorage(
 
 Теперь, когда все настроено, вы можете выполнять запросы к данным напрямую из Azure Blob Storage:
 
-```sql
+````sql
     SELECT *
     FROM azureBlobStorage(
         '<YOUR CONNECTION STRING>', 
@@ -111,9 +115,9 @@ SELECT * FROM azureBlobStorage(
     SETTINGS format_csv_delimiter = ';'
     ```
 
-7. Чтобы загрузить данные в таблицу, создайте упрощённую версию
-   схемы, используемой в исходном наборе данных:
-   ```sql
+7. To load the data into a table, create a simplified version of the
+   schema used in the original dataset:
+    ```sql
     CREATE TABLE sensors
     (
         sensor_id UInt16,
@@ -127,14 +131,13 @@ SELECT * FROM azureBlobStorage(
     ```
 
 :::info
-Для получения дополнительной информации о параметрах конфигурации и
-автоматическом определении схемы при выполнении запросов к внешним
-источникам, таким как Azure Blob Storage, см. раздел [Automatic schema
+For more information on configuration options and schema inference when
+querying external sources like Azure Blob Storage, see [Automatic schema
 inference from input data](https://clickhouse.com/docs/interfaces/schema-inference)
 :::
 
-8. Теперь загрузите данные из Azure Blob Storage в таблицу sensors:
-   ```sql
+8. Now insert the data from Azure Blob Storage into the sensors table:
+    ```sql
     INSERT INTO sensors
     SELECT sensor_id, lat, lon, timestamp, temperature
     FROM azureBlobStorage(
@@ -145,10 +148,12 @@ inference from input data](https://clickhouse.com/docs/interfaces/schema-inferen
     SETTINGS format_csv_delimiter = ';'
     ```
 
-Теперь таблица sensors заполнена данными из файла `2019-06_bmp180.csv.zst`,
-хранящегося в Azure Blob Storage.
+Your sensors table is now populated with data from the `2019-06_bmp180.csv.zst`
+file stored in Azure Blob Storage.
+````
 
-## Дополнительные ресурсы {#additional-resources}
+
+## Дополнительные ресурсы \{#additional-resources\}
 
 Это лишь базовое введение в использование функции azureBlobStorage. Для более
 продвинутых вариантов и параметров конфигурации обратитесь к официальной

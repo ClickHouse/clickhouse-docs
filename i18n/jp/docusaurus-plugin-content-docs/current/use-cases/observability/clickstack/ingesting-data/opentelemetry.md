@@ -15,7 +15,7 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 ユーザーは、この collector に対して、[language SDKs](/use-cases/observability/clickstack/sdks) から、あるいはインフラストラクチャのメトリクスやログを収集するデータ収集エージェント経由でデータを送信します（[agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) ロールで動作する OTel collector や、[Fluentd](https://www.fluentd.org/)、[Vector](https://vector.dev/) などの他のテクノロジーなど）。
 
-## ClickStack OpenTelemetry コレクターのインストール {#installing-otel-collector}
+## ClickStack OpenTelemetry コレクターのインストール \{#installing-otel-collector\}
 
 ClickStack OpenTelemetry コレクターは、次のものを含むほとんどの ClickStack ディストリビューションに同梱されています：
 
@@ -23,7 +23,7 @@ ClickStack OpenTelemetry コレクターは、次のものを含むほとんど�
 - [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)
 - [Helm](/use-cases/observability/clickstack/deployment/helm)
 
-### スタンドアロン {#standalone}
+### スタンドアロン \{#standalone\}
 
 ClickStack の OTel collector は、スタック内の他のコンポーネントとは独立したスタンドアロンとしてもデプロイできます。
 
@@ -38,7 +38,7 @@ ClickStack の OTel collector は、スタック内の他のコンポーネン�
 
 詳細については「[Deploying the collector](/use-cases/observability/clickstack/ingesting-data/otel-collector)」を参照してください。
 
-## OpenTelemetry データの送信 {#sending-otel-data}
+## OpenTelemetry データの送信 \{#sending-otel-data\}
 
 ClickStack にデータを送信するには、OpenTelemetry Collector によって公開されている次のエンドポイントを OpenTelemetry 計装の送信先として指定してください。
 

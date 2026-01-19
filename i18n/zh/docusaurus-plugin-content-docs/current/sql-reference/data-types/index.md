@@ -7,7 +7,7 @@ title: 'ClickHouse 中的数据类型'
 doc_type: 'reference'
 ---
 
-# ClickHouse 中的数据类型 {#data-types-in-clickhouse}
+# ClickHouse 中的数据类型 \{#data-types-in-clickhouse\}
 
 本节介绍 ClickHouse 支持的数据类型，例如[整数](int-uint.md)、[浮点数](float.md)和[字符串](string.md)。
 

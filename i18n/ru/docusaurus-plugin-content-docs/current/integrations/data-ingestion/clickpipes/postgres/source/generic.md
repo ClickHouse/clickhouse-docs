@@ -5,9 +5,12 @@ slug: /integrations/clickpipes/postgres/source/generic
 title: 'Руководство по настройке произвольного источника Postgres'
 doc_type: 'guide'
 keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal level']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
-# Универсальное руководство по настройке источника Postgres {#generic-postgres-source-setup-guide}
+# Универсальное руководство по настройке источника Postgres \{#generic-postgres-source-setup-guide\}
 
 :::info
 
@@ -17,7 +20,7 @@ keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal 
 
 ClickPipes поддерживает Postgres версий 12 и выше.
 
-## Включение логической репликации {#enable-logical-replication}
+## Включение логической репликации \{#enable-logical-replication\}
 
 1. Чтобы включить репликацию на вашем экземпляре Postgres, необходимо убедиться, что заданы следующие настройки:
 
@@ -52,33 +55,51 @@ ClickPipes поддерживает Postgres версий 12 и выше.
     ```
 3. Если вы внесли какие-либо изменения в конфигурацию, как описано выше, вам НЕОБХОДИМО ПЕРЕЗАПУСТИТЬ экземпляр Postgres, чтобы изменения вступили в силу.
 
-## Создание пользователя с правами и публикацией {#creating-a-user-with-permissions-and-publication}
+## Создание пользователя с правами доступа и публикацией \{#creating-a-user-with-permissions-and-publication\}
 
-Создайте нового пользователя для ClickPipes с необходимыми правами, подходящими для CDC,
-а также создайте публикацию, которую мы будем использовать для репликации.
+Подключитесь к вашему экземпляру Postgres под учетной записью администратора и выполните следующие команды:
 
-Для этого подключитесь к вашему экземпляру PostgreSQL и выполните следующие SQL-команды:
+1. Создайте отдельного пользователя для ClickPipes:
 
-```sql
-  CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
-  GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-  GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-  ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+   ```sql
+   CREATE USER clickpipes_user PASSWORD 'some-password';
+   ```
 
--- Give replication permission to the USER
-  ALTER USER clickpipes_user REPLICATION;
+2. Предоставьте на уровне схемы доступ только для чтения пользователю, созданному на предыдущем шаге. В следующем примере показаны права для схемы `public`. Повторите эти команды для каждой схемы, содержащей таблицы, которые вы хотите реплицировать:
+   
+    ```sql
+    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+    ```
 
--- Create a publication. We will use this when creating the pipe
-  CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-```
+3. Предоставьте пользователю привилегии репликации:
 
-:::note
+   ```sql
+   ALTER ROLE clickpipes_user REPLICATION;
+   ```
 
-Обязательно замените `clickpipes_user` и `clickpipes_password` на выбранные вами имя пользователя и пароль.
+4. Создайте [публикацию](https://www.postgresql.org/docs/current/logical-replication-publication.html) с таблицами, которые вы хотите реплицировать. Настоятельно рекомендуется включать в публикацию только необходимые таблицы, чтобы избежать дополнительной нагрузки на производительность.
 
-:::
+   :::warning
+   Любая таблица, включённая в публикацию, должна либо иметь определённый **первичный ключ**, _либо_ иметь настроенную **replica identity** со значением `FULL`. См. раздел [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) для рекомендаций по определению области действия публикаций.
+   :::
 
-## Разрешение подключений в pg_hba.conf для пользователя ClickPipes {#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user}
+   - Чтобы создать публикацию для определённых таблиц:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - Чтобы создать публикацию для всех таблиц в определённой схеме:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   Публикация `clickpipes` будет содержать набор событий изменений, сгенерированных указанными таблицами, и позже будет использоваться для приёма потока репликации.
+
+## Разрешение подключений в pg_hba.conf для пользователя ClickPipes \{#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user\}
 
 Если вы развертываете всё самостоятельно, вам необходимо разрешить подключения к пользователю ClickPipes с IP-адресов ClickPipes, выполнив описанные ниже шаги. Если вы используете управляемый сервис, вы можете сделать то же самое, следуя документации провайдера.
 
@@ -92,7 +113,7 @@ ClickPipes поддерживает Postgres версий 12 и выше.
     SELECT pg_reload_conf();
     ```
 
-## Увеличение `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
+## Увеличение `max_slot_wal_keep_size` \{#increase-max_slot_wal_keep_size\}
 
 Это рекомендованное изменение конфигурации, которое позволяет предотвратить удаление слота репликации из‑за крупных транзакций и коммитов.
 
@@ -114,7 +135,8 @@ SELECT pg_reload_conf();
 
 :::
 
-## Что дальше? {#whats-next}
+
+## Что дальше? \{#whats-next\}
 
 Теперь вы можете [создать свой ClickPipe](../index.md) и начать приём данных из вашего экземпляра Postgres в ClickHouse Cloud.
 Обязательно сохраните параметры подключения, которые вы использовали при настройке экземпляра Postgres, — они понадобятся вам при создании ClickPipe.

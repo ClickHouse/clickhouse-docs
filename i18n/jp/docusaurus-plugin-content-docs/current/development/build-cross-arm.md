@@ -7,7 +7,7 @@ title: 'Linux 上で AARCH64 向け ClickHouse をビルドする方法'
 doc_type: 'guide'
 ---
 
-# Linux 上で AArch64 向けに ClickHouse をビルドする方法 {#how-to-build-clickhouse-on-linux-for-aarch64}
+# Linux 上で AArch64 向けに ClickHouse をビルドする方法 \{#how-to-build-clickhouse-on-linux-for-aarch64\}
 
 AArch64 マシン上で AArch64 向けに ClickHouse をビルドする場合、特別な手順は必要ありません。
 

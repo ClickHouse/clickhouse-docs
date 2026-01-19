@@ -18,7 +18,7 @@ import agent_output_settings from '@site/static/images/use-cases/observability/a
 import migrating_agents from '@site/static/images/use-cases/observability/clickstack-migrating-agents.png';
 
 
-## 从 Elastic 迁移代理 {#migrating-agents-from-elastic}
+## 从 Elastic 迁移代理 \{#migrating-agents-from-elastic\}
 
 Elastic Stack 提供了多种用于可观测性数据采集的代理。具体包括：
 
@@ -28,7 +28,7 @@ Elastic Stack 提供了多种用于可观测性数据采集的代理。具体包
 
 最佳迁移路径取决于当前正在使用的代理类型。在接下来的小节中，我们将分别介绍每种主要代理类型的迁移选项。我们的目标是尽量减少迁移阻力，并在可能的情况下允许你在过渡期间继续使用现有代理。
 
-## 首选迁移路径 {#prefered-migration-path}
+## 首选迁移路径 \{#prefered-migration-path\}
 
 在条件允许的情况下，我们建议将所有日志、指标和追踪数据的采集统一迁移到 [OpenTelemetry (OTel) Collector](https://opentelemetry.io/docs/collector/)，并将该 Collector 以[代理角色部署在边缘](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles)。这是发送数据的最高效方式，并能避免架构上的复杂性和数据转换开销。
 
@@ -36,7 +36,7 @@ Elastic Stack 提供了多种用于可观测性数据采集的代理。具体包
 OpenTelemetry Collector 为可观测性数据摄取提供了一种可持续、与厂商无关的解决方案。我们意识到，一些组织运行着成千上万，甚至数以万计的 Elastic Agent。对于这些用户来说，保持与现有代理基础设施的兼容性可能至关重要。本文档旨在支持这一需求，同时帮助团队逐步过渡到基于 OpenTelemetry 的数据采集方式。
 :::
 
-## ClickHouse OpenTelemetry endpoint {#clickhouse-otel-endpoint}
+## ClickHouse OpenTelemetry endpoint \{#clickhouse-otel-endpoint\}
 
 所有数据都会通过一个 **OpenTelemetry (OTel) collector** 实例摄取到 ClickStack 中，该实例作为日志、指标、跟踪和会话数据的主要入口点。我们建议在该实例上使用官方提供的 [ClickStack 发行版](/use-cases/observability/clickstack/ingesting-data/opentelemetry#installing-otel-collector) collector，如果它尚未[随您的 ClickStack 部署模型一同打包](/use-cases/observability/clickstack/deployment)。
 
@@ -44,7 +44,7 @@ OpenTelemetry Collector 为可观测性数据摄取提供了一种可持续、�
 
 **我们假定在所有 agent 迁移步骤中，该 collector 都是可用的**。
 
-## 从 Beats 迁移 {#migrating-to-beats}
+## 从 Beats 迁移 \{#migrating-to-beats\}
 
 拥有大规模 Beats 部署的用户在迁移到 ClickStack 时，可能希望保留这些现有部署。
 
@@ -321,7 +321,7 @@ Elastic Agent 将不同的 Elastic Beats 整合为一个单一软件包。该 Ag
 
 下面我们将演示这两种方案。
 
-### 通过 Vector 发送数据 {#sending-data-via-vector}
+### 通过 Vector 发送数据 \{#sending-data-via-vector\}
 
 <VerticalStepper headerLevel="h4">
 
@@ -361,7 +361,7 @@ sources:
 
 </VerticalStepper>
 
-### 将 Elastic Agent 作为 OpenTelemetry 收集器运行 {#sending-data-via-vector}
+### 将 Elastic Agent 作为 OpenTelemetry 收集器运行 \{#sending-data-via-vector\}
 
 Elastic Agent 包含一个内置的 EDOT Collector，使你可以一次性为应用和基础设施添加观测能力，并将数据发送到多个厂商和后端。
 

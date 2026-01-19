@@ -6,11 +6,11 @@ title: 'LIMIT 句'
 doc_type: 'reference'
 ---
 
-# LIMIT 句 {#limit-clause}
+# LIMIT 句 \{#limit-clause\}
 
 `LIMIT` 句は、クエリの結果として返される行数を制御します。
 
-## 基本構文 {#basic-syntax}
+## 基本構文 \{#basic-syntax\}
 
 **先頭の行を選択:**
 
@@ -42,7 +42,7 @@ LIMIT n, m
 
 どちらの形式でも、`n` と `m` は 0 以上の整数でなければなりません。
 
-## 負の LIMIT {#negative-limits}
+## 負の LIMIT \{#negative-limits\}
 
 負の値を使用して、結果セットの*末尾*から行を選択します。
 
@@ -55,7 +55,7 @@ LIMIT n, m
 
 `LIMIT -n, -m` 構文は `LIMIT -m OFFSET -n` と同等です。
 
-## 小数による LIMIT {#fractional-limits}
+## 小数による LIMIT \{#fractional-limits\}
 
 0 から 1 の間の小数値を使って、行の一定割合を選択できます:
 
@@ -68,10 +68,10 @@ LIMIT n, m
 :::note
 
 - 小数は 0 より大きく 1 より小さい [Float64](../../data-types/float.md) 型の値でなければなりません。
-- 小数で指定された行数は、最も近い整数に丸められます。
+- 小数で指定された行数は、次の整数に切り上げられます。
 :::
 
-## 制限タイプの組み合わせ {#combining-limit-types}
+## 制限タイプの組み合わせ \{#combining-limit-types\}
 
 標準の整数と小数や負のオフセットを組み合わせて使用できます。
 
@@ -80,7 +80,7 @@ LIMIT 10 OFFSET 0.5    -- 10 rows starting from the halfway point
 LIMIT 10 OFFSET -20    -- 10 rows after skipping the last 20
 ```
 
-## LIMIT ... WITH TIES {#limit--with-ties-modifier}
+## LIMIT ... WITH TIES \{#limit--with-ties-modifier\}
 
 `WITH TIES` 修飾子は、LIMIT 句で取得される最後の行と同じ `ORDER BY` の値を持つ行を、追加で結果に含めます。
 
@@ -127,12 +127,12 @@ SELECT * FROM (
 
 この修飾子は、[`ORDER BY ... WITH FILL`](/sql-reference/statements/select/order-by#order-by-expr-with-fill-modifier) 修飾子と組み合わせて使用できます。
 
-## 考慮事項 {#considerations}
+## 考慮事項 \{#considerations\}
 
 **非決定的な結果:** [`ORDER BY`](../../../sql-reference/statements/select/order-by.md) 句がない場合、返される行は任意のものとなり、クエリの実行ごとに結果が変わる可能性があります。
 
 **サーバー側の制限:** 返される行数は、[limit 設定](../../../operations/settings/settings.md#limit) によっても影響を受けます。
 
-## 関連項目 {#see-also}
+## 関連項目 \{#see-also\}
 
 - [LIMIT BY](/sql-reference/statements/select/limit-by) — 値のグループごとに行数を制限でき、各カテゴリ内で上位 N 件の結果を取得するのに便利です。
