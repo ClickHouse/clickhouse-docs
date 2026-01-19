@@ -322,7 +322,7 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 
 #### `mapContains` \{#functions-example-mapcontains\}
 
-函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains)（`mapContainsKey` 的别名）会在 map 的键中，匹配从待搜索字符串中提取的 token。
+函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapContains)（`mapContainsKey` 的别名）会在 map 的键中，匹配从待搜索字符串中提取的 token。
 其行为类似于在 `String` 列上使用 `equals` 函数。
 只有当文本索引是基于 `mapKeys(map)` 表达式创建时，才会被使用。
 
@@ -337,7 +337,7 @@ SELECT count() FROM tab WHERE mapContains(map, 'clickhouse');
 
 #### `mapContainsValue` \{#functions-example-mapcontainsvalue\}
 
-函数 [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapcontainsvalue) 会在 map 的值中，针对从被搜索的字符串中提取出的 token 进行匹配。
+函数 [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapContainsValue) 会在 map 的值中，针对从被搜索的字符串中提取出的 token 进行匹配。
 其行为类似在 `String` 列上使用 `equals` 函数。
 只有当文本索引是基于 `mapValues(map)` 表达式创建时才会被使用。
 

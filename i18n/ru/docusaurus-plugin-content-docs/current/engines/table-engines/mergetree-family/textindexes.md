@@ -322,7 +322,7 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 
 #### `mapContains` \{#functions-example-mapcontains\}
 
-Функция [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains) (псевдоним `mapContainsKey`) сопоставляет токены, извлечённые из искомой строки, с ключами в map.
+Функция [mapContains](/sql-reference/functions/tuple-map-functions#mapContains) (псевдоним `mapContainsKey`) сопоставляет токены, извлечённые из искомой строки, с ключами в map.
 Поведение аналогично функции `equals` со столбцом типа `String`.
 Текстовый индекс используется только в том случае, если он был создан для выражения `mapKeys(map)`.
 
@@ -337,7 +337,7 @@ SELECT count() FROM tab WHERE mapContains(map, 'clickhouse');
 
 #### `mapContainsValue` \{#functions-example-mapcontainsvalue\}
 
-Функция [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapcontainsvalue) сопоставляет токены, извлечённые из искомой строки, со значениями отображения (map).
+Функция [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapContainsValue) сопоставляет токены, извлечённые из искомой строки, со значениями отображения (map).
 Поведение похоже на функцию `equals` со столбцом типа `String`.
 Текстовый индекс используется только в том случае, если он был создан на выражении `mapValues(map)`.
 

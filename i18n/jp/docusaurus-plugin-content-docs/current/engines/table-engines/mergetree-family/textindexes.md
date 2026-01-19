@@ -322,7 +322,7 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 
 #### `mapContains` \{#functions-example-mapcontains\}
 
-[mapContains](/sql-reference/functions/tuple-map-functions#mapcontains) 関数（`mapContainsKey` のエイリアス）は、検索対象の文字列から抽出されたトークンを map のキーと照合します。
+[mapContains](/sql-reference/functions/tuple-map-functions#mapContains) 関数（`mapContainsKey` のエイリアス）は、検索対象の文字列から抽出されたトークンを map のキーと照合します。
 動作は、`String` カラムに対する `equals` 関数と同様です。
 テキストインデックスが使用されるのは、`mapKeys(map)` 式に対して作成されている場合のみです。
 
@@ -337,7 +337,7 @@ SELECT count() FROM tab WHERE mapContains(map, 'clickhouse');
 
 #### `mapContainsValue` \{#functions-example-mapcontainsvalue\}
 
-[mapContainsValue](/sql-reference/functions/tuple-map-functions#mapcontainsvalue) 関数は、検索対象文字列から抽出されたトークンがマップの値に含まれるかどうかを照合します。
+[mapContainsValue](/sql-reference/functions/tuple-map-functions#mapContainsValue) 関数は、検索対象文字列から抽出されたトークンがマップの値に含まれるかどうかを照合します。
 挙動は、`String` カラムに対する `equals` 関数と類似しています。
 テキストインデックスは、`mapValues(map)` 式に対して作成されている場合にのみ使用されます。
 
