@@ -58,6 +58,7 @@ The ClickHouse Spark connector supports two access patterns: the **Catalog API**
 | Version | Compatible Spark Versions | ClickHouse JDBC version |
 |---------|---------------------------|-------------------------|
 | main    | Spark 3.3, 3.4, 3.5, 4.0  | 0.9.4                   |
+| 0.10.0  | Spark 3.3, 3.4, 3.5, 4.0  | 0.9.5                   |
 | 0.9.0   | Spark 3.3, 3.4, 3.5, 4.0  | 0.9.4                   |
 | 0.8.1   | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
 | 0.7.3   | Spark 3.3, 3.4            | 0.4.6                   |
