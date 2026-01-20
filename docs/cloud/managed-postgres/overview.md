@@ -51,7 +51,7 @@ Managed Postgres provides the reliability and security features that production 
 
 ### High availability {#high-availability}
 
-Configure up to two standby replicas across different availability zones using quorum-based replication. These standbys are dedicated to high availability and automatic failover, ensuring your database recovers quickly from failures. For read scaling, you can provision separate [read replicas](/cloud/managed-postgres/read-replicas). See [High Availability](/cloud/managed-postgres/high-availability) for configuration details.
+Configure up to two standby replicas across different availability zones using quorum-based replication. These standbys are dedicated to high availability and automatic failover, ensuring your database recovers quickly from failures. For read scaling, you can provision separate [read replicas](/cloud/managed-postgres/read-replicas). See the [High availability](/cloud/managed-postgres/high-availability) page for configuration details.
 
 ### Backups and recovery {#backups}
 
