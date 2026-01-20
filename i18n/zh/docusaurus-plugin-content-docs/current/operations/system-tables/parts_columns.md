@@ -42,6 +42,10 @@ doc_type: 'reference'
 | `path`                                  | String   | 数据分区片段文件所在文件夹的绝对路径。                                                                                                  |
 | `column`                                | String   | 列名。                                                                                                                  |
 | `type`                                  | String   | 列类型。                                                                                                                 |
+| `statistics`                            | String   | 为该列创建的统计信息。                                                                                                          |
+| `estimates.min`                         | String   | 列的估计最小值。                                                                                                             |
+| `estimates.max`                         | String   | 列的估计最大值。                                                                                                             |
+| `estimates.cardinality`                 | String   | 列的估计基数。                                                                                                              |
 | `column_position`                       | UInt64   | 列在表中的序号位置，从 1 开始计数。                                                                                                  |
 | `default_kind`                          | String   | 默认值表达式类型（`DEFAULT`、`MATERIALIZED`、`ALIAS`），如果未定义则为空字符串。                                                              |
 | `default_expression`                    | String   | 默认值的表达式，如果未定义则为空字符串。                                                                                                 |

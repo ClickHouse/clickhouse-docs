@@ -322,7 +322,7 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 
 #### `mapContains` \{#functions-example-mapcontains\}
 
-Функция [mapContains](/sql-reference/functions/tuple-map-functions#mapContains) (псевдоним `mapContainsKey`) сопоставляет токены, извлечённые из искомой строки, с ключами в map.
+Функция [mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey) (псевдоним `mapContainsKey`) сопоставляет токены, извлечённые из искомой строки, с ключами в map.
 Поведение аналогично функции `equals` со столбцом типа `String`.
 Текстовый индекс используется только в том случае, если он был создан для выражения `mapKeys(map)`.
 
@@ -585,7 +585,7 @@ Prewhere filter column: and(like(__table1.col, \'%some-token%\'_String), greater
 [...]
 ```
 
-тогда как тот же запрос при `query_plan_text_index_add_hint = 1`
+тогда как тот же запрос с `query_plan_text_index_add_hint = 1`
 
 ```sql
 EXPLAIN actions = 1
@@ -604,7 +604,7 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 ```
 
 Во втором выводе EXPLAIN PLAN вы можете увидеть, что к условию фильтрации была добавлена дополнительная конъюнкция (`__text_index_...`).
-Благодаря оптимизации [PREWHERE](docs/sql-reference/statements/select/prewhere) условие фильтрации разбивается на три отдельные конъюнкции, которые применяются в порядке возрастания вычислительной сложности.
+Благодаря оптимизации [PREWHERE](/sql-reference/statements/select/prewhere) условие фильтрации разбивается на три отдельные конъюнкции, которые применяются в порядке возрастания вычислительной сложности.
 Для этого запроса порядок применения такой: сначала `__text_index_...`, затем `greaterOrEquals(...)` и, наконец, `like(...)`.
 Такой порядок позволяет пропускать ещё больше гранул данных по сравнению с теми, которые уже пропускаются текстовым индексом и исходным фильтром, ещё до чтения «тяжёлых» столбцов, используемых в запросе после предложения `WHERE`, что дополнительно уменьшает объём данных для чтения.
 
