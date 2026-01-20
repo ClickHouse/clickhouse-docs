@@ -2982,7 +2982,17 @@ FORMAT PrettyCompactMonoBlock
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "New experimental setting"}]}]}/>
 
-Анализ индексов будет распределён между репликами. Требуется `cluster_for_parallel_replicas`.
+Анализ индексов будет распределён между репликами.
+Полезно при использовании общей системы хранения и при очень больших объёмах данных в кластере.
+Использует реплики из `cluster_for_parallel_replicas`.
+
+## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+Включает распределённый анализ индексов даже для таблиц, не использующих SharedMergeTree (движок, доступный только в Cloud).
 
 ## distributed_insert_skip_read_only_replicas \{#distributed_insert_skip_read_only_replicas\}
 

@@ -2979,7 +2979,15 @@ FORMAT PrettyCompactMonoBlock
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "New experimental setting"}]}]}/>
 
-索引の解析処理がレプリカ間で分散実行されます。`cluster_for_parallel_replicas` が必要です。
+索引の解析処理がレプリカ間で分散実行されます。共有ストレージを使用している場合や、クラスター内のデータ量が非常に多い場合に有益です。`cluster_for_parallel_replicas` のレプリカを使用します。
+
+## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "新しい設定"}]}]}/>
+
+SharedMergeTree（Cloud 専用エンジン）以外の場合にも索引の分散解析を有効にします。
 
 ## distributed_insert_skip_read_only_replicas \{#distributed_insert_skip_read_only_replicas\}
 

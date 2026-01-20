@@ -2977,7 +2977,17 @@ FORMAT PrettyCompactMonoBlock
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "New experimental setting"}]}]}/>
 
-索引分析将在各副本之间分布式执行。需要启用 cluster_for_parallel_replicas。
+索引分析将在各副本之间分布式执行。
+对于共享存储以及集群中海量数据的场景非常有利。
+使用来自 cluster_for_parallel_replicas 的副本。
+
+## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+即使针对非 SharedMergeTree（SharedMergeTree 为仅在 Cloud 中提供的引擎），也启用分布式索引分析。
 
 ## distributed_insert_skip_read_only_replicas \{#distributed_insert_skip_read_only_replicas\}
 
