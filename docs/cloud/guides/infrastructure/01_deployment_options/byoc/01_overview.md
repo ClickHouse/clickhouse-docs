@@ -33,13 +33,37 @@ Supported Cloud Service Providers:
 
 ## Architecture {#architecture}
 
-Metrics and logs are stored within the customer's BYOC VPC. Logs are currently stored in locally in EBS. In a future update, logs will be stored in LogHouse, which is a ClickHouse service in the customer's BYOC VPC. Metrics are implemented via a Prometheus and Thanos stack stored locally in the customer's BYOC VPC.
+In the BYOC deployment model, all customer data is hosted in the Customer BYOC VPC on AWS, including data stored on disk, data processed via compute nodes (in memory and local disk cache), and backup data. The only components hosted in the ClickHouse VPC are the web and API interfaces used to manage the organization and services, which handle operations like user management, service start/stop, and scaling.
 
 <br />
 
 <Image img={byoc1} size="lg" alt="BYOC Architecture" background='black'/>
 
 <br />
+
+### Network connectivity {#network-connectivity}
+
+#### Control plane communication
+
+The ClickHouse VPC communicates with your Customer BYOC VPC over HTTPS (port 443) for service management operations including configuration changes, health checks, and deployment commands. This traffic carries only control plane data for orchestration. Critical telemetry and alerts flow from your Customer BYOC VPC to the ClickHouse VPC to enable resource utilization and health monitoring.
+
+#### Client connectivity to ClickHouse
+
+Your applications can connect to ClickHouse services in the Customer BYOC VPC through three methods:
+
+- **Public endpoint:** By default, ClickHouse services are accessible over the public internet using HTTPS (port 8443) or the native protocol with TLS (port 9440). Access is controlled through IP allow lists.
+- **VPC Peering:** For private connectivity between your Customer VPC and Customer BYOC VPC, you can establish VPC peering connections. This enables direct communication over all ClickHouse protocols using private IP addresses, providing the lowest latency option.
+- **AWS PrivateLink:** Provides secure connectivity without internet exposure, using the same ports as public endpoints (8443 for HTTPS, 9440 for native protocol with TLS) but over private connections.
+
+#### Storage and internal cluster communication
+
+Traffic between your Customer BYOC VPC and S3 uses HTTPS (port 443) via the AWS S3 API for table data, backups, and logs. When using S3 VPC endpoints, this traffic remains within the AWS network.
+
+Internal ClickHouse cluster communication within the Customer BYOC VPC uses the native ClickHouse protocol on port 9000, HTTP/HTTPS on ports 8123/8443, and interserver communication on port 9009 for replication and distributed queries.
+
+### Data storage and observability {#data-storage}
+
+Metrics and logs are stored within the customer's BYOC VPC. Logs are currently stored locally in EBS. In a future update, logs will be stored in LogHouse, which is a ClickHouse service in the customer's BYOC VPC. Metrics are implemented via a Prometheus and Thanos stack stored locally in the customer's BYOC VPC.
 
 ## Features {#features}
 
