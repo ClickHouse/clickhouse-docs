@@ -46,7 +46,7 @@ doc_type: 'guide'
 
 对于 `INSERT ... SELECT` 查询，关键在于查询的 `SELECT` 部分在每次执行时都返回相同顺序的相同数据。需要注意的是，这在实际使用中很难保证。为了在重试时确保数据顺序稳定，应当在查询的 `SELECT` 部分中定义 `ORDER BY ALL` 子句。目前你必须在查询中严格使用 `ORDER BY ALL`。对 `ORDER BY` 的支持尚未实现，在这种情况下查询的 `SELECT` 部分不会被视为稳定。请牢记，被选取的数据表在重试之间可能会被更新：结果数据可能发生变化，从而导致无法触发去重。此外，在插入大量数据的场景下，插入后产生的数据块数量有可能超出去重日志窗口的范围，此时 ClickHouse 将无法识别并对这些数据块进行去重。
 
-目前，`INSERT ... SELECT` 的行为由 [`insert_select_deduplicate`](/operations/settings/settings/#insert_select_deduplicate) 设置控制。该设置决定是否对使用 `INSERT ... SELECT` 查询插入的数据应用去重。有关详细信息和使用示例，请参阅链接的文档。
+目前，`INSERT ... SELECT` 的行为由 `insert_select_deduplicate` 设置控制。该设置决定是否对使用 `INSERT ... SELECT` 查询插入的数据应用去重。有关详细信息和使用示例，请参阅链接的文档。
 
 ## 使用物化视图进行插入去重 \{#insert-deduplication-with-materialized-views\}
 

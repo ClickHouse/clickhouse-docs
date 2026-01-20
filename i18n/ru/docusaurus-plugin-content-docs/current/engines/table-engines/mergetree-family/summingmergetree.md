@@ -188,7 +188,7 @@ ARRAY JOIN
 └──────┴─────────┴─────────────┴────────┘
 ```
 
-При запросе данных используйте функцию [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/sumMap.md) для агрегации `Map`.
+При запросе данных используйте функцию [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/sumMappedArrays.md) для агрегации `Map`.
 
 Для вложенной структуры данных не нужно указывать её столбцы в кортеже столбцов, по которым выполняется суммирование.
 
