@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/read-replicas
-sidebar_label: 'Read Replicas'
-title: 'Read Replicas'
+sidebar_label: 'Read replicas'
+title: 'Read replicas'
 description: 'Scale read-heavy workloads with read replicas in ClickHouse Managed Postgres'
 keywords: ['read replicas', 'scalability', 'read scaling', 'postgres replicas', 'horizontal scaling']
 doc_type: 'guide'

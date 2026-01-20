@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/high-availability
-sidebar_label: 'High Availability'
-title: 'High Availability'
+sidebar_label: 'High availability'
+title: 'High availability'
 description: 'Configure standby replicas and replication modes for high availability in ClickHouse Managed Postgres'
 keywords: ['high availability', 'ha', 'standby', 'replication', 'failover', 'postgres ha']
 doc_type: 'guide'

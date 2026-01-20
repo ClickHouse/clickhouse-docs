@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/backup-and-restore
-sidebar_label: 'Backup and Restore'
-title: 'Backup and Restore'
+sidebar_label: 'Backup and restore'
+title: 'Backup and restore'
 description: 'Understand backup strategies and point-in-time recovery for ClickHouse Managed Postgres'
 keywords: ['backup', 'restore', 'point-in-time recovery', 'pitr', 'disaster recovery', 'postgres backup']
 doc_type: 'guide'
