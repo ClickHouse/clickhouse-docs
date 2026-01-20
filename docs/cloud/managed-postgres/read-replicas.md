@@ -9,10 +9,20 @@ doc_type: 'guide'
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
+import warehouseView from '@site/static/images/managed-postgres/warehouse-view.png';
+import readReplicaDialog from '@site/static/images/managed-postgres/read-replica-dialog.png';
 
 <PrivatePreviewBadge/>
 
-Read replicas allow you to create one or more copies of your primary Managed Postgres database. These replicas continuously follow your primary database using PostgreSQL's native replication to stay up to date with changes. You can create read replicas from the **Read Replica** view of your instance.
+Read replicas allow you to create one or more copies of your primary Managed Postgres database. These replicas continuously follow your primary database using PostgreSQL's native replication to stay up to date with changes.
+
+To manage read replicas, click the edit icon on your warehouse:
+
+<Image img={warehouseView} alt="Warehouse view with edit icon" size="md" border/>
+
+This opens the warehouse dialog where you can view existing services and create new read replicas:
+
+<Image img={readReplicaDialog} alt="Read replica management dialog" size="md" border/>
 
 ## Why use read replicas {#why-use-read-replicas}
 
