@@ -186,7 +186,7 @@ ARRAY JOIN
 └──────┴─────────┴─────────────┴────────┘
 ```
 
-データを取得する際には、`Map` を集計するために [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/sumMap.md) 関数を使用します。
+データを取得する際には、`Map` を集計するために [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/sumMappedArrays.md) 関数を使用します。
 
 ネストしたデータ構造の場合は、合計対象カラムのタプル内で、その構造内のカラムを個別に指定する必要はありません。
 

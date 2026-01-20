@@ -9,6 +9,7 @@ doc_type: 'guide'
 
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
 import DOsvg from '@site/static/images/integrations/logos/digitalocean.svg';
+import OVHpng from '@site/static/images/integrations/logos/ovh.png';
 import R2svg from '@site/static/images/integrations/logos/cloudflare.svg';
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
@@ -22,11 +23,12 @@ S3 ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび�
 
 ## サポートされているデータソース \{#supported-data-sources\}
 
-| Name                 | Logo | Details           |
-|----------------------|------|-------------------|
-| **Amazon S3**            | <S3svg class="image" alt="Amazon S3 ロゴ" style={{width: '2.5rem', height: 'auto'}}/> | 継続的なインジェストはデフォルトでは[辞書式順序](#continuous-ingestion-lexicographical-order)が必要ですが、[任意の順序でファイルを取り込む](#continuous-ingestion-any-order)ように構成することもできます。 |
-| **Cloudflare R2** <br></br> _S3-compatible_ | <R2svg class="image" alt="Cloudflare R2 ロゴ" style={{width: '2.5rem', height: 'auto'}}/> | 継続的なインジェストには[辞書式順序](#continuous-ingestion-lexicographical-order)が必要です。 |
-| **DigitalOcean Spaces** <br></br> _S3-compatible_ | <DOsvg class="image" alt="Digital Ocean ロゴ" style={{width: '2.5rem', height: 'auto'}}/>|  継続的なインジェストには[辞書式順序](#continuous-ingestion-lexicographical-order)が必要です。 |
+| Name                 | Logo                                                                                      | Details           |
+|----------------------|-------------------------------------------------------------------------------------------|-------------------|
+| **Amazon S3**            | <S3svg class="image" alt="Amazon S3 ロゴ" style={{width: '2.5rem', height: 'auto'}}/>     | 継続的なインジェストはデフォルトでは[辞書式順序](#continuous-ingestion-lexicographical-order)が必要ですが、[任意の順序でファイルを取り込む](#continuous-ingestion-any-order)ように構成することもできます。 |
+| **Cloudflare R2** <br></br> _S3-compatible_ | <R2svg class="image" alt="Cloudflare R2 ロゴ" style={{width: '2.5rem', height: 'auto'}}/> | 継続的なインジェストには[辞書式順序](#continuous-ingestion-lexicographical-order)が必要です。順不同モードはサポートされていません。 |
+| **DigitalOcean Spaces** <br></br> _S3-compatible_ | <DOsvg class="image" alt="Digital Ocean ロゴ" style={{width: '2.5rem', height: 'auto'}}/> |  継続的なインジェストには[辞書式順序](#continuous-ingestion-lexicographical-order)が必要です。順不同モードはサポートされていません。 |
+| **OVH Object Storage** <br></br> _S3-compatible_ | <Image img={OVHpng} alt="Cloud Storage ロゴ" size="logo" border/>                         |  継続的なインジェストには[辞書式順序](#continuous-ingestion-lexicographical-order)が必要です。順不同モードはサポートされていません。 |
 
 :::tip
 オブジェクトストレージサービスプロバイダーごとに URL 形式や API 実装が異なるため、そのままではすべての S3 互換サービスがサポートされるわけではありません。上記に記載されていないサービスで問題が発生している場合は、[弊社チームまでお問い合わせ](https://clickhouse.com/company/contact?loc=clickpipes)ください。

@@ -186,7 +186,7 @@ ARRAY JOIN
 └──────┴─────────┴─────────────┴────────┘
 ```
 
-在查询数据时，对 `Map` 类型进行聚合请使用 [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/sumMap.md) 函数。
+在查询数据时，对 `Map` 类型进行聚合请使用 [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/sumMappedArrays.md) 函数。
 
 对于嵌套数据结构，无需在用于求和的列元组中显式指定其中的列。
 
