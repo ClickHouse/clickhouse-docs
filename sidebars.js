@@ -326,6 +326,21 @@ const sidebars = {
         },
       ],
     },
+    {
+      type: 'category',
+      label: 'Managed Postgres (Preview)',
+      collapsed: true,
+      collapsible: true,
+      className: 'top-nav-item',
+      link: { type: 'doc', id: 'cloud/managed-postgres/overview' },
+      items: [
+        'cloud/managed-postgres/overview',
+        'cloud/managed-postgres/quickstart',
+        'cloud/managed-postgres/connection',
+        'cloud/managed-postgres/high-availability',
+        'cloud/managed-postgres/read-replicas',
+      ],
+    },
   ],
 
   sqlreference: [

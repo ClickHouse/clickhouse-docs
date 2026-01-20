@@ -94,6 +94,12 @@ export const dropdownCategories = [
         description: <Translate id="sidebar.dropdownCategories.category.Cloud.Reference.description">Reference docs for ClickHouse Cloud</Translate>,
         href: "/cloud/reference/"
       },
+      {
+        type: "link",
+        label: <Translate id="sidebar.dropdownCategories.category.Cloud.Managed Postgres">Managed Postgres (Preview)</Translate>,
+        description: <Translate id="sidebar.dropdownCategories.category.Cloud.Managed Postgres.description">Managed PostgreSQL service</Translate>,
+        href: "/cloud/managed-postgres/overview"
+      },
     ]
   },
   {
