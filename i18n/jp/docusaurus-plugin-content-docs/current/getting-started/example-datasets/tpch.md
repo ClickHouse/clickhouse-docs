@@ -18,7 +18,7 @@ keywords: ['サンプルデータセット', 'tpch', 'ベンチマーク', 'サ�
 * [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
 * [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
 
-## データ生成とインポート {#data-generation-and-import}
+## データ生成とインポート \{#data-generation-and-import\}
 
 まず、TPC-H リポジトリを取得し、データ生成ツールをコンパイルします。
 
@@ -193,7 +193,7 @@ INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 
 :::
 
-## クエリ {#queries}
+## クエリ \{#queries\}
 
 :::note
 SQL 標準に従った正しい結果を得るために、[`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) の設定を有効にする必要があります。
@@ -288,7 +288,8 @@ ORDER BY
     s_acctbal DESC,
     n_name,
     s_name,
-    p_partkey;
+    p_partkey
+LIMIT 100;
 ```
 
 **Q3**
@@ -315,7 +316,8 @@ GROUP BY
     o_shippriority
 ORDER BY
     revenue DESC,
-    o_orderdate;
+    o_orderdate
+LIMIT 10;
 ```
 
 **Q4**
@@ -345,6 +347,7 @@ ORDER BY
 ```
 
 **Q5**
+
 
 ```sql
 SELECT
@@ -560,7 +563,8 @@ GROUP BY
     c_address,
     c_comment
 ORDER BY
-    revenue DESC;
+    revenue DESC
+LIMIT 20;
 ```
 
 **Q11**
@@ -674,39 +678,34 @@ WHERE
 **Q15**
 
 ```sql
-CREATE VIEW revenue0 (supplier_no, total_revenue) AS
+WITH revenue_view AS (
     SELECT
-        l_suppkey,
-        sum(l_extendedprice * (1 - l_discount))
+        l_suppkey AS supplier_no,
+        sum(l_extendedprice * (1 - l_discount)) AS total_revenue
     FROM
         lineitem
     WHERE
-        l_shipdate >= DATE '1996-01-01'
-        AND l_shipdate < DATE '1996-01-01' + INTERVAL '3' MONTH
+        l_shipdate >= '1996-01-01'
+      AND l_shipdate < '1996-04-01'
     GROUP BY
-        l_suppkey;
-
+        l_suppkey)
 SELECT
     s_suppkey,
     s_name,
-    s_address,
-    s_phone,
     total_revenue
 FROM
     supplier,
-    revenue0
+    revenue_view
 WHERE
     s_suppkey = supplier_no
     AND total_revenue = (
         SELECT
             max(total_revenue)
         FROM
-            revenue0
+            revenue_view
     )
 ORDER BY
     s_suppkey;
-
-DROP VIEW revenue0;
 ```
 
 **Q16**
@@ -801,7 +800,8 @@ GROUP BY
     o_totalprice
 ORDER BY
     o_totalprice DESC,
-    o_orderdate;
+    o_orderdate
+LIMIT 100;
 ```
 
 **Q19**
@@ -845,6 +845,7 @@ WHERE
 ```
 
 **Q20**
+
 
 ```sql
 SELECT
@@ -927,7 +928,8 @@ GROUP BY
     s_name
 ORDER BY
     numwait DESC,
-    s_name;
+    s_name
+LIMIT 100;
 ```
 
 **Q22**

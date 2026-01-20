@@ -8,7 +8,7 @@ doc_type: 'guide'
 
 Рекомендуем ознакомиться с [этим руководством](/guides/inserting-data), чтобы узнать рекомендации по вставке данных в ClickHouse и оптимизировать производительность вставок.
 
-Для массовой загрузки данных из PostgreSQL пользователи могут использовать:
+Для массовой загрузки данных из PostgreSQL вы можете использовать:
 
 - [ClickPipes](/integrations/clickpipes/postgres) — управляемый сервис интеграции для ClickHouse Cloud.
 - `PeerDB by ClickHouse` — ETL-инструмент, специально разработанный для репликации базы данных PostgreSQL как в самостоятельно развернутый ClickHouse, так и в ClickHouse Cloud.

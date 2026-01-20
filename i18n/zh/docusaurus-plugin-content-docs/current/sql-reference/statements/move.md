@@ -7,7 +7,7 @@ title: 'MOVE 访问实体语句'
 doc_type: 'reference'
 ---
 
-# MOVE access entity 语句 {#move-access-entity-statement}
+# MOVE access entity 语句 \{#move-access-entity-statement\}
 
 该语句用于将访问实体从一个访问存储移动到另一个访问存储。
 

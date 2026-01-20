@@ -29,3 +29,4 @@ Data Export
 chDB
 Errors and Exceptions
 Community
+Troubleshooting

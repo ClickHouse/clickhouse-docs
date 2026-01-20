@@ -20,8 +20,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# Мониторинг журналов хоста с помощью ClickStack {#host-logs-clickstack}
+# Мониторинг журналов хоста с помощью ClickStack \{#host-logs-clickstack\}
 
 :::note[Кратко]
 В этом руководстве показано, как отслеживать журналы хост-системы с помощью ClickStack, настроив OTel collector для сбора логов от systemd, ядра, SSH, cron и других системных сервисов. Вы узнаете, как:
@@ -35,13 +34,13 @@ import TabItem from '@theme/TabItem';
 Требуемое время: 5–10 минут
 :::
 
-## Интеграция с существующими хостами {#existing-hosts}
+## Интеграция с существующими хостами \{#existing-hosts\}
 
 В этом разделе описывается настройка ваших существующих хостов для отправки системных логов в ClickStack путем изменения конфигурации ClickStack OTel collector так, чтобы он считывал все файлы системных логов (syslog, auth, kernel, daemon и журналы приложений).
 
 Если вы хотите протестировать интеграцию с журналами хоста до настройки собственной среды, вы можете воспользоваться нашей предварительно настроенной конфигурацией и примеровыми данными в разделе ["Demo dataset"](/use-cases/observability/clickstack/integrations/host-logs#demo-dataset).
 
-##### Требования {#prerequisites}
+##### Требования \{#prerequisites\}
 
 - Запущенный экземпляр ClickStack
 - Система, на которой имеются файлы syslog
@@ -276,7 +275,7 @@ docker run --name clickstack \
 
 <VerticalStepper headerLevel="h4">
 
-#### Загрузите пример набора данных {#download-sample}
+#### Загрузите пример набора данных \{#download-sample\}
 
 Загрузите пример файла логов:
 
@@ -293,7 +292,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - Сообщения ядра и активность межсетевого экрана
 - Сочетание нормальной работы и заметных событий
 
-#### Создайте тестовую конфигурацию коллектора {#test-config}
+#### Создайте тестовую конфигурацию коллектора \{#test-config\}
 
 Создайте файл с именем `host-logs-demo.yaml` со следующей конфигурацией:
 
@@ -377,7 +376,7 @@ HyperDX отображает временные метки в локальном
 
 #### <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.host_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда {#download}
 
-#### Импорт готового дашборда {#import-dashboard}
+#### Импорт готового дашборда \{#import-dashboard\}
 
 1. Откройте HyperDX и перейдите в раздел Dashboards
 2. Нажмите **Import Dashboard** в правом верхнем углу под значком с многоточием
@@ -388,7 +387,7 @@ HyperDX отображает временные метки в локальном
 
 <Image img={finish_import} alt="Завершение импорта"/>
 
-#### Просмотр дашборда {#created-dashboard}
+#### Просмотр дашборда \{#created-dashboard\}
 
 Дашборд будет создан со всеми преднастроенными визуализациями:
 
@@ -423,7 +422,6 @@ docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 ```bash
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml | head -10
 ```
-
 
 ### В HyperDX не отображаются логи
 
@@ -461,7 +459,6 @@ docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i "filel
 docker exec <container> cat /tmp/host-demo/journal.log | wc -l
 ```
 
-
 ### Логи разбираются некорректно
 
 **Убедитесь, что формат сообщений syslog соответствует выбранной конфигурации:**
@@ -483,7 +480,6 @@ tail -5 /var/log/system.log
 ```
 
 Если ваш формат отличается, выберите соответствующую вкладку конфигурации в разделе [Создание пользовательской конфигурации OTel collector](#custom-otel).
-
 
 ## Дальнейшие шаги {#next-steps}
 

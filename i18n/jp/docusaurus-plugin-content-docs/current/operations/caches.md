@@ -8,7 +8,7 @@ keywords: ['cache']
 doc_type: 'reference'
 ---
 
-# キャッシュの種類 {#cache-types}
+# キャッシュの種類 \{#cache-types\}
 
 クエリを実行する際には、ClickHouse はさまざまなキャッシュを利用してクエリ処理を高速化し、
 ディスクからの読み取りやディスクへの書き込みの必要性を減らします。
@@ -25,7 +25,7 @@ doc_type: 'reference'
 * [Regexp](/interfaces/formats/Regexp) キャッシュ。
 * コンパイル済み式のキャッシュ。
 * [ベクトル類似性インデックス](../engines/table-engines/mergetree-family/annindexes.md) キャッシュ。
-* [テキストインデックス](../engines/table-engines/mergetree-family/invertedindexes.md#caching) キャッシュ。
+* [テキストインデックス](../engines/table-engines/mergetree-family/textindexes.md#caching) キャッシュ。
 * [Avro format](/interfaces/formats/Avro) スキーマキャッシュ。
 * [Dictionaries](../sql-reference/dictionaries/index.md) データキャッシュ。
 * スキーマ推論キャッシュ。

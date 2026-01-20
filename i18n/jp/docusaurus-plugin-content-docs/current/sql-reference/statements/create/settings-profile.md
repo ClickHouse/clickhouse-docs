@@ -21,7 +21,7 @@ CREATE SETTINGS PROFILE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]]
 
 `ON CLUSTER` 句を使用すると、クラスタ上に設定プロファイルを作成できます。詳しくは、[Distributed DDL](../../../sql-reference/distributed-ddl.md) を参照してください。
 
-## 例 {#example}
+## 例 \{#example\}
 
 ユーザーを作成する：
 

@@ -39,11 +39,11 @@ DELETE FROM posts WHERE toYear(CreationDate) = 2018
 削除ミューテーションは、例えば `ALTER TABLE ... DELETE` コマンドで実行できます。
 
 ```sql
--- ミューテーションを使用して2018年のすべてのデータを削除します。非推奨です。
+-- delete all data from 2018 with a mutation. Not recommended.
 ALTER TABLE posts DELETE WHERE toYear(CreationDate) = 2018
 ```
 
-これらは同期的（非レプリケートテーブルの場合はデフォルト）または非同期的（[mutations&#95;sync](/operations/settings/settings#mutations_sync) 設定によって決定）に実行できます。これらの処理は非常に I/O 負荷が高く、`WHERE` 句に一致するすべてのパーツを書き換えます。この処理にはアトミック性はありません。パーツはミューテーション後のパーツが準備でき次第順次置き換えられ、ミューテーションの実行中に開始された `SELECT` クエリは、すでにミューテーション済みのパーツと、まだミューテーションされていないパーツの両方からのデータを参照することになります。ユーザーは [systems.mutations](/operations/system-tables/mutations#monitoring-mutations) テーブルを通じて進捗状況を追跡できます。これらは I/O 負荷の高い操作であり、クラスタの `SELECT` パフォーマンスに影響を与える可能性があるため、利用は必要最小限に留める必要があります。
+これらは同期的（非レプリケートテーブルの場合はデフォルト）または非同期的（[mutations&#95;sync](/operations/settings/settings#mutations_sync) 設定によって決定）に実行できます。これらの処理は非常に I/O 負荷が高く、`WHERE` 句に一致するすべてのパーツを書き換えます。この処理にはアトミック性はありません。パーツはミューテーション後のパーツが準備でき次第順次置き換えられ、ミューテーションの実行中に開始された `SELECT` クエリは、すでにミューテーション済みのパーツと、まだミューテーションされていないパーツの両方からのデータを参照することになります。ユーザーは [system.mutations](/operations/system-tables/mutations#monitoring-mutations) テーブルを通じて進捗状況を追跡できます。これらは I/O 負荷の高い操作であり、クラスタの `SELECT` パフォーマンスに影響を与える可能性があるため、利用は必要最小限に留める必要があります。
 
 [delete mutations](/sql-reference/statements/alter/delete) の詳細を参照してください。
 
@@ -67,6 +67,6 @@ ALTER TABLE posts (DROP PARTITION '2008')
 
 [DROP PARTITION](/sql-reference/statements/alter/partition) の詳細については、こちらを参照してください。
 
-## 参考情報 \{#more-resources\}
+## 参考資料 \{#more-resources\}
 
-* [ClickHouse での更新と削除の扱い](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)
+* [ClickHouse における更新および削除の扱い方](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

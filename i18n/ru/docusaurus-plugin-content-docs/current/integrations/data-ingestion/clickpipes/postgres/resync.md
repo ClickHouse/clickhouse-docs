@@ -5,12 +5,15 @@ slug: /integrations/clickpipes/postgres/resync
 sidebar_label: 'Повторная синхронизация ClickPipe'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'ингестия данных', 'синхронизация в режиме реального времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
 import Image from '@theme/IdealImage';
 
-### Что делает Resync? {#what-postgres-resync-do}
+### Что делает Resync? \{#what-postgres-resync-do\}
 
 Resync выполняет следующие операции по порядку:
 
@@ -21,7 +24,7 @@ Resync выполняет следующие операции по порядк�
 
 Все настройки исходного ClickPipe сохраняются в ClickPipe resync. Статистика исходного ClickPipe очищается в UI.
 
-### Примеры использования повторной синхронизации ClickPipe {#use-cases-postgres-resync}
+### Примеры использования повторной синхронизации ClickPipe \{#use-cases-postgres-resync\}
 
 Вот несколько сценариев:
 
@@ -34,13 +37,13 @@ Resync выполняет следующие операции по порядк�
 поскольку каждый раз задействуется начальная загрузка с параллельными потоками.
 :::
 
-### Руководство по Resync ClickPipe {#guide-postgres-resync}
+### Руководство по Resync ClickPipe \{#guide-postgres-resync\}
 
 1. На вкладке Data Sources нажмите на Postgres ClickPipe, который вы хотите синхронизировать заново.
 2. Перейдите на вкладку **Settings**.
 3. Нажмите кнопку **Resync**.
 
-<Image img={resync_button} border size="md" />
+<Image img={resync_button} border size="md"/>
 
 4. Появится диалоговое окно для подтверждения. Нажмите Resync еще раз.
 5. Перейдите на вкладку **Metrics**.

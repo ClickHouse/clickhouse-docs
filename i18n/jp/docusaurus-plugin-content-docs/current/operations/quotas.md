@@ -110,7 +110,6 @@ doc_type: 'guide'
 
 `failed_sequential_authentications` - 連続して発生した認証エラーの合計回数。
 
-
 少なくとも 1 つの時間間隔で制限を超過した場合、どの制限がどの間隔で超過されたか、さらに新しい時間間隔（再びクエリを送信できるようになるタイミング）がいつ開始するかについてのメッセージを含む例外がスローされます。
 
 クォータは「quota key」機能を使用して、複数のキーごとにリソースを独立して集計・報告できます。以下はその例です。
@@ -136,7 +135,6 @@ doc_type: 'guide'
 
 サーバーを再起動すると、クォータはリセットされます。
 
-
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \{#related-content\}
 
 - ブログ記事: [ClickHouse でシングルページアプリケーションを構築する](https://clickhouse.com/blog/building-single-page-applications-with-clickhouse-and-http)

@@ -65,7 +65,7 @@ which clickhouse
 /opt/homebrew/bin/clickhouse
 ```
 
-前のコマンドで取得したパスを続けて指定して `xattr -d com.apple.quarantine` を実行し、`clickhouse` を隔離フォルダから削除します：
+前のコマンドで表示されたパスを続けて指定して `xattr -d com.apple.quarantine` を実行し、`clickhouse` を隔離フォルダから削除します：
 
 ```shell
 xattr -d com.apple.quarantine /opt/homebrew/bin/clickhouse
@@ -77,16 +77,17 @@ xattr -d com.apple.quarantine /opt/homebrew/bin/clickhouse
 clickhouse
 ```
 
-これを実行すると、次のような出力が得られます:
+これにより、次のような出力が得られます。
 
-```
-以下のいずれかのコマンドを使用します:
+```shell
+Use one of the following commands:
 clickhouse local [args]
 clickhouse client [args]
 clickhouse benchmark [args]
 ...
+```
 
-## ClickHouseの再インストールによる問題の解決
+## ClickHouseの再インストールによる問題の解決 \{#fix-the-issue-by-reinstalling-clickhouse\}
 
 Brewには、インストールされたバイナリが隔離されないようにするコマンドラインオプションがあります。
 

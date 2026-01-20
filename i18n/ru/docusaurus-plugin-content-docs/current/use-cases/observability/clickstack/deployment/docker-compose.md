@@ -33,20 +33,20 @@ Docker Compose открывает дополнительные порты для
 
 Эти порты обеспечивают интеграцию с широким набором источников телеметрии и делают коллектор OpenTelemetry готовым к промышленной эксплуатации для различных сценариев ингестии.
 
-### Подходит для {#suitable-for}
+### Подходит для \{#suitable-for\}
 
 * Локального тестирования
 * Создания прототипов и пилотных решений (proof of concept)
 * Боевых развертываний, где отказоустойчивость не требуется и одного сервера достаточно для размещения всех данных ClickHouse
 * При развертывании ClickStack, но отдельном размещении ClickHouse, например, с использованием ClickHouse Cloud.
 
-## Шаги развертывания {#deployment-steps}
+## Шаги развертывания \{#deployment-steps\}
 
 <br/>
 
 <VerticalStepper headerLevel="h3">
 
-### Клонирование репозитория {#clone-the-repo}
+### Клонирование репозитория \{#clone-the-repo\}
 
 Чтобы развернуть с помощью Docker Compose, клонируйте репозиторий ClickStack, перейдите в каталог и выполните `docker-compose up`:
 
@@ -55,7 +55,7 @@ git clone https://github.com/ClickHouse/ClickStack.git
 docker compose up
 ```
 
-### Переход к интерфейсу HyperDX {#navigate-to-hyperdx-ui}
+### Переход к интерфейсу HyperDX \{#navigate-to-hyperdx-ui\}
 
 Перейдите по адресу [http://localhost:8080](http://localhost:8080), чтобы открыть интерфейс HyperDX.
 
@@ -71,7 +71,7 @@ docker compose up
 
 Пример использования альтернативного экземпляра ClickHouse см. в разделе ["Создание подключения к ClickHouse Cloud"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
-### Заполнение сведений о подключении {#complete-connection-details}
+### Заполнение сведений о подключении \{#complete-connection-details\}
 
 Чтобы подключиться к развернутому экземпляру ClickHouse, просто нажмите **Create** и примите значения по умолчанию.  
 
@@ -83,9 +83,9 @@ docker compose up
 
 </VerticalStepper>
 
-## Изменение настроек Compose {#modifying-settings}
+## Изменение настроек Compose \{#modifying-settings\}
 
-Пользователи могут изменять настройки стека, например используемую версию, через файл с переменными окружения:
+Вы можете изменять настройки стека, например используемую версию, через файл с переменными окружения:
 
 ```shell
 user@example-host clickstack % cat .env
@@ -113,38 +113,38 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 ```
 
 
-### Настройка коллектора OTel {#configuring-collector}
+### Настройка коллектора OTel \{#configuring-collector\}
 
 Конфигурацию коллектора OTel можно изменить при необходимости — см. раздел ["Изменение конфигурации"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).
 
-## Использование ClickHouse Cloud {#using-clickhouse-cloud}
+## Использование ClickHouse Cloud \{#using-clickhouse-cloud\}
 
-Этот дистрибутив можно использовать с ClickHouse Cloud. Пользователям следует:
+Этот дистрибутив можно использовать с ClickHouse Cloud. Вам следует:
 
 * Удалить сервис ClickHouse из файла `docker-compose.yml`. Это необязательно при тестировании, так как развернутый экземпляр ClickHouse просто будет игнорироваться, хотя и будет расходовать локальные ресурсы. При удалении сервиса убедитесь, что удалены все ссылки на него, такие как `depends_on`.
 
 * Изменить OTel collector для использования экземпляра ClickHouse Cloud, задав переменные окружения `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` и `CLICKHOUSE_PASSWORD` в файле `docker-compose.yml`. В частности, добавьте переменные окружения в сервис OTel collector:
 
   ```shell
-    otel-collector:
-        image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
-        environment:
-          CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_ENDPOINT>' # https endpoint here
-          CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
-          CLICKHOUSE_PASSWORD: '<CLICKHOUSE_PASSWORD>'
-          HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE: ${HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE}
-          HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
-          OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
-        ports:
-          - '13133:13133' # health_check extension
-          - '24225:24225' # fluentd receiver
-          - '4317:4317' # OTLP gRPC receiver
-          - '4318:4318' # OTLP http receiver
-          - '8888:8888' # metrics extension
-        restart: always
-        networks:
-          - internal
-    ```
+  otel-collector:
+      image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
+      environment:
+        CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_ENDPOINT>' # https endpoint here
+        CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
+        CLICKHOUSE_PASSWORD: '<CLICKHOUSE_PASSWORD>'
+        HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE: ${HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE}
+        HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
+        OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
+      ports:
+        - '13133:13133' # health_check extension
+        - '24225:24225' # fluentd receiver
+        - '4317:4317' # OTLP gRPC receiver
+        - '4318:4318' # OTLP http receiver
+        - '8888:8888' # metrics extension
+      restart: always
+      networks:
+        - internal
+  ```
 
   Переменная `CLICKHOUSE_ENDPOINT` должна указывать на HTTPS-эндпоинт ClickHouse Cloud, включая порт `8443`, например `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
 

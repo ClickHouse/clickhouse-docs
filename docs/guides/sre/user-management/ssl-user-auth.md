@@ -13,7 +13,7 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-This guide provides simple and minimal settings to configure authentication with SSL user certificates. The tutorial builds on the [Configuring SSL-TLS user guide](../configuring-ssl.md).
+This guide provides simple and minimal settings to configure authentication with SSL user certificates. The tutorial builds on the [Configuring TLS user guide](../tls/configuring-tls.md).
 
 :::note
 SSL user authentication is supported when using the `https`, `native`, `mysql`, and `postgresql` interfaces.

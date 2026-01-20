@@ -77,16 +77,17 @@ xattr -d com.apple.quarantine /opt/homebrew/bin/clickhouse
 clickhouse
 ```
 
-В результате будет выведено примерно следующее:
+В результате вы должны увидеть примерно следующее:
 
-```
-Используйте одну из следующих команд:
+```shell
+Use one of the following commands:
 clickhouse local [args]
 clickhouse client [args]
 clickhouse benchmark [args]
 ...
+```
 
-## Устранение проблемы путём переустановки ClickHouse
+## Устранение проблемы путём переустановки ClickHouse \{#fix-the-issue-by-reinstalling-clickhouse\}
 
 В Brew есть параметр командной строки, который предотвращает помещение устанавливаемых бинарных файлов в карантин.
 

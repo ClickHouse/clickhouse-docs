@@ -7,9 +7,9 @@ title: 'SimpleAggregateFunction 型'
 doc_type: 'reference'
 ---
 
-# SimpleAggregateFunction 型 {#simpleaggregatefunction-type}
+# SimpleAggregateFunction 型 \{#simpleaggregatefunction-type\}
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 `SimpleAggregateFunction` データ型は、[`AggregateFunction`](../../sql-reference/data-types/aggregatefunction.md) 型が保持するような集約関数の完全な状態ではなく、集約関数の中間状態のみを格納します。
 
@@ -22,7 +22,7 @@ doc_type: 'reference'
 
 集約関数の値は通常、関数名に [`-SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) コンビネータを付与した集約関数を呼び出すことで生成されます。
 
-## 構文 {#syntax}
+## 構文 \{#syntax\}
 
 ```sql
 SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
@@ -33,42 +33,46 @@ SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
 * `aggregate_function_name` - 集約関数の名前。
 * `Type` - 集約関数の引数の型。
 
-## サポートされている関数 {#supported-functions}
 
-次の集約関数がサポートされています。
+## サポートされている関数 \{#supported-functions\}
 
-- [`any`](/sql-reference/aggregate-functions/reference/any)
-- [`any_respect_nulls`](/sql-reference/aggregate-functions/reference/any)
-- [`anyLast`](/sql-reference/aggregate-functions/reference/anylast)
-- [`anyLast_respect_nulls`](/sql-reference/aggregate-functions/reference/anylast)
-- [`min`](/sql-reference/aggregate-functions/reference/min)
-- [`max`](/sql-reference/aggregate-functions/reference/max)
-- [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`sumWithOverflow`](/sql-reference/aggregate-functions/reference/sumwithoverflow)
-- [`groupBitAnd`](/sql-reference/aggregate-functions/reference/groupbitand)
-- [`groupBitOr`](/sql-reference/aggregate-functions/reference/groupbitor)
-- [`groupBitXor`](/sql-reference/aggregate-functions/reference/groupbitxor)
-- [`groupArrayArray`](/sql-reference/aggregate-functions/reference/grouparray)
-- [`groupUniqArrayArray`](../../sql-reference/aggregate-functions/reference/groupuniqarray.md)
+次の集約関数がサポートされています：
+
+- [`any`](/sql-reference/aggregate-functions/reference/any.md)
+- [`any_respect_nulls`](/sql-reference/aggregate-functions/reference/any.md)
+- [`anyLast`](/sql-reference/aggregate-functions/reference/anyLast.md)
+- [`anyLast_respect_nulls`](/sql-reference/aggregate-functions/reference/anyLast.md)
+- [`min`](/sql-reference/aggregate-functions/reference/min.md)
+- [`max`](/sql-reference/aggregate-functions/reference/max.md)
+- [`sum`](/sql-reference/aggregate-functions/reference/sum.md)
+- [`sumWithOverflow`](/sql-reference/aggregate-functions/reference/sumWithOverflow.md)
+- [`groupBitAnd`](/sql-reference/aggregate-functions/reference/groupBitAnd.md)
+- [`groupBitOr`](/sql-reference/aggregate-functions/reference/groupBitOr.md)
+- [`groupBitXor`](/sql-reference/aggregate-functions/reference/groupBitXor.md)
+- [`groupArrayArray`](/sql-reference/aggregate-functions/reference/groupArrayArray.md)
+- [`groupUniqArrayArray`](../../sql-reference/aggregate-functions/reference/groupUniqArray.md)
 - [`groupUniqArrayArrayMap`](../../sql-reference/aggregate-functions/combinators#-map)
-- [`sumMap`](/sql-reference/aggregate-functions/reference/summap)
-- [`minMap`](/sql-reference/aggregate-functions/reference/minmap)
-- [`maxMap`](/sql-reference/aggregate-functions/reference/maxmap)
+- [`sumMap`](/sql-reference/aggregate-functions/reference/sumMap.md)
+- [`minMap`](/sql-reference/aggregate-functions/reference/minMap.md)
+- [`maxMap`](/sql-reference/aggregate-functions/reference/maxMap.md)
 
 :::note
-`SimpleAggregateFunction(func, Type)` の値は、すべて同じ `Type` を持ちます。  
-そのため、`AggregateFunction` 型とは異なり、`-Merge` / `-State` コンビネータを適用する必要はありません。
+`SimpleAggregateFunction(func, Type)` の値はすべて同じ `Type` であるため、
+`AggregateFunction` 型とは異なり `-Merge` / `-State` コンビネータを適用する
+必要はありません。
 
-`SimpleAggregateFunction` 型は、同じ集約関数に対して `AggregateFunction` 型よりも高いパフォーマンスを発揮します。
+同じ集約関数であれば、`SimpleAggregateFunction` 型のほうが
+`AggregateFunction` よりも高いパフォーマンスを発揮します。
 :::
 
-## 例 {#example}
+## 例 \{#example\}
 
 ```sql
 CREATE TABLE simple (id UInt64, val SimpleAggregateFunction(sum, Double)) ENGINE=AggregatingMergeTree ORDER BY id;
 ```
 
-## 関連コンテンツ {#related-content}
+
+## 関連コンテンツ \{#related-content\}
 
 * ブログ: [ClickHouse で集約関数コンビネータを使用する](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)    - ブログ: [ClickHouse で集約関数コンビネータを使用する](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
 * [AggregateFunction](/sql-reference/data-types/aggregatefunction) 型。

@@ -14,3 +14,4 @@
 # /\.temp\./
 
 /i18n\/.*/
+/whats-new\/changelog/.*/

@@ -7,9 +7,9 @@ title: '厳密および近似ベクトル検索'
 doc_type: 'guide'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-# 厳密ベクトル検索と近似ベクトル検索 {#exact-and-approximate-vector-search}
+# 厳密ベクトル検索と近似ベクトル検索 \{#exact-and-approximate-vector-search\}
 
 多次元（ベクトル）空間において、ある点に最も近い N 個の点を見つける問題は、[nearest neighbor search](https://en.wikipedia.org/wiki/Nearest_neighbor_search)（最近傍探索）、または略してベクトル検索と呼ばれます。
 ベクトル検索を行うための一般的なアプローチは 2 つあります:
@@ -30,17 +30,18 @@ LIMIT <N>
 
 ベクトル空間内の点は、配列型の `vectors` 列に格納されます。例えば [Array(Float64)](../../../sql-reference/data-types/array.md)、[Array(Float32)](../../../sql-reference/data-types/array.md)、または [Array(BFloat16)](../../../sql-reference/data-types/array.md) です。
 参照ベクトルは定数配列であり、共通テーブル式として与えられます。
-`&lt;DistanceFunction&gt;` は、参照点と格納されているすべての点との距離を計算します。
+`<DistanceFunction>` は、参照点と格納されているすべての点との距離を計算します。
 この処理には、利用可能な任意の [distance function](/sql-reference/functions/distance-functions) を使用できます。
-`&lt;N&gt;` は、返すべき近傍点の数を指定します。
+`<N>` は、返すべき近傍点の数を指定します。
 
-## 厳密なベクトル検索 {#exact-nearest-neighbor-search}
+
+## 厳密なベクトル検索 \{#exact-nearest-neighbor-search\}
 
 厳密なベクトル検索は、上記の SELECT クエリをそのまま使用して実行できます。
 このようなクエリの実行時間は、一般的に保存されているベクトル数とその次元数、つまり配列要素数に比例します。
 また、ClickHouse はすべてのベクトルに対して総当たりスキャンを行うため、クエリで使用されるスレッド数（設定項目 [max&#95;threads](../../../operations/settings/settings.md#max_threads) を参照）にも実行時間が依存します。
 
-### 例 {#exact-nearest-neighbor-search-example}
+### 例 \{#exact-nearest-neighbor-search-example\}
 
 ```sql
 CREATE TABLE tab(id Int32, vec Array(Float32)) ENGINE = MergeTree ORDER BY id;
@@ -64,9 +65,10 @@ LIMIT 3;
    └────┴─────────┘
 ```
 
-## 近似ベクトル検索 {#approximate-nearest-neighbor-search}
 
-### ベクトル類似度インデックス {#vector-similarity-index}
+## 近似ベクトル検索 \{#approximate-nearest-neighbor-search\}
+
+### ベクトル類似度インデックス \{#vector-similarity-index\}
 
 ClickHouse は、近似ベクトル検索を実行するための特別な「ベクトル類似度」インデックスを提供します。
 
@@ -75,7 +77,7 @@ ClickHouse は、近似ベクトル検索を実行するための特別な「ベ
 問題が発生した場合は、[ClickHouse リポジトリ](https://github.com/clickhouse/clickhouse/issues) に issue を作成してください。
 :::
 
-#### ベクトル類似度インデックスの作成 {#creating-a-vector-similarity-index}
+#### ベクトル類似度インデックスの作成 \{#creating-a-vector-similarity-index\}
 
 新しいテーブルに対して、次のようにベクトル類似度インデックスを作成できます。
 
@@ -90,7 +92,7 @@ ENGINE = MergeTree
 ORDER BY [...]
 ```
 
-別の方法として、既存のテーブルにベクトル類似インデックスを追加するには次のようにします。
+別の方法として、既存のテーブルにベクトル類似度インデックスを追加する場合は、次のようにします。
 
 ```sql
 ALTER TABLE table ADD INDEX <index_name> vectors TYPE vector_similarity(<type>, <distance_function>, <dimensions>) [GRANULARITY <N>];
@@ -136,14 +138,15 @@ ORDER BY [...]
 
 これらの HNSW 固有パラメータが利用可能です:
 
-* `<quantization>` は近傍グラフ内のベクトルの量子化方式を制御します。指定可能な値は `f64`、`f32`、`f16`、`bf16`、`i8`、`b1` です。デフォルト値は `bf16` です。このパラメータは、基盤となるカラム内でのベクトル表現には影響しない点に注意してください。
+* `<quantization>` は近接グラフ内のベクトルの量子化方式を制御します。指定可能な値は `f64`、`f32`、`f16`、`bf16`、`i8`、`b1` です。デフォルト値は `bf16` です。このパラメータは、基盤となるカラム内でのベクトル表現には影響しない点に注意してください。
 * `<hnsw_max_connections_per_layer>` は、グラフ内の各ノードあたりの近傍ノード数を制御します。これは HNSW のハイパーパラメータ `M` としても知られています。デフォルト値は `32` です。値 `0` はデフォルト値を使用することを意味します。
 * `<hnsw_candidate_list_size_for_construction>` は、HNSW グラフ構築時の動的候補リストのサイズを制御します。これは HNSW のハイパーパラメータ `ef_construction` としても知られています。デフォルト値は `128` です。値 `0` はデフォルト値を使用することを意味します。
 
 すべての HNSW 固有パラメータのデフォルト値は、ほとんどのユースケースで良好に機能します。
 したがって、HNSW 固有パラメータのカスタマイズは推奨しません。
 
-さらなる制限があります:
+さらに、次の制約が適用されます。
+
 
 * ベクター類似度インデックスは、[Array(Float32)](../../../sql-reference/data-types/array.md)、[Array(Float64)](../../../sql-reference/data-types/array.md)、または [Array(BFloat16)](../../../sql-reference/data-types/array.md) 型の列に対してのみ作成できます。`Array(Nullable(Float32))` や `Array(LowCardinality(Float32))` のような nullable や low-cardinality の浮動小数点数配列は使用できません。
 * ベクター類似度インデックスは単一列に対してのみ作成しなければなりません。
@@ -169,10 +172,10 @@ Storage consumption = Number of vectors * Dimension * Size of column data type
 Storage consumption = 1 million * 1536 * 4 (for Float32) = 6.1 GB
 ```
 
-ベクトル類似度インデックスで検索を行うには、ディスクから主メモリに完全に読み込まれている必要があります。
-同様に、ベクトルインデックスもメモリ上で完全に構築してからディスクに保存されます。
+ベクター類似度インデックスで検索を行うには、ディスクからメインメモリに完全に読み込まれている必要があります。
+同様に、ベクターインデックスもメモリ上で完全に構築してからディスクに保存されます。
 
-ベクトルインデックスをロードする際に必要なメモリ使用量:
+ベクターインデックスをロードする際に必要なメモリ使用量:
 
 ```text
 Memory for vectors in the index (mv) = Number of vectors * Dimension * Size of quantized data type
@@ -181,7 +184,7 @@ Memory for in-memory graph (mg) = Number of vectors * hnsw_max_connections_per_l
 Memory consumption: mv + mg
 ```
 
-[DBpedia データセット](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M) の例:
+[dbpedia データセット](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M) の例:
 
 ```text
 Memory for vectors in the index (mv) = 1 million * 1536 * 2 (for BFloat16) = 3072 MB
@@ -192,13 +195,14 @@ Memory consumption = 3072 + 512 = 3584 MB
 
 上記の式には、事前割り当てバッファやキャッシュなど、ベクトル類似性インデックスがランタイムのデータ構造を割り当てるために必要となる追加メモリは含まれていません。
 
-#### ベクトル類似性インデックスの使用 {#using-a-vector-similarity-index}
+
+#### ベクター類似性インデックスの使用 \{#using-a-vector-similarity-index\}
 
 :::note
-ベクトル類似性インデックスを使用するには、[compatibility](../../../operations/settings/settings.md) 設定を `''`（デフォルト値）、または `'25.1'` 以降に設定する必要があります。
+ベクター類似性インデックスを使用するには、設定 [compatibility](../../../operations/settings/settings.md) の値が `''`（デフォルト値）、または `'25.1'` 以降である必要があります。
 :::
 
-ベクトル類似性インデックスは、次の形式の SELECT クエリをサポートします。
+ベクター類似性インデックスは、次の形式の SELECT クエリをサポートします。
 
 ```sql
 WITH [...] AS reference_vector
@@ -209,12 +213,12 @@ ORDER BY <DistanceFunction>(vectors, reference_vector)
 LIMIT <N>
 ```
 
-ClickHouse のクエリオプティマイザは、上記のクエリテンプレートと照合し、利用可能なベクトル類似度インデックスを活用します。
-SELECT クエリ内の距離関数がインデックス定義で指定されている距離関数と同じである場合にのみ、そのクエリはベクトル類似度インデックスを使用できます。
+ClickHouse のクエリオプティマイザは、上記のクエリテンプレートに一致させ、利用可能なベクター類似性インデックスを活用しようとします。
+クエリがベクター類似性インデックスを使用できるのは、SELECT クエリ内の距離関数がインデックス定義の距離関数と同じ場合のみです。
 
-上級ユーザーは、検索時の候補リストのサイズを調整するために、[hnsw&#95;candidate&#95;list&#95;size&#95;for&#95;search](../../../operations/settings/settings.md#hnsw_candidate_list_size_for_search)（HNSW のハイパーパラメータ「ef&#95;search」としても知られる）に任意の値を設定できます（例: `SELECT [...] SETTINGS hnsw_candidate_list_size_for_search = <value>`）。
-この設定のデフォルト値である 256 は、ほとんどのユースケースで良好に機能します。
-この値を大きくすると精度は向上しますが、その分パフォーマンスが低下します。
+上級ユーザーは、検索時の候補リストのサイズを調整するために、設定 [hnsw&#95;candidate&#95;list&#95;size&#95;for&#95;search](../../../operations/settings/settings.md#hnsw_candidate_list_size_for_search)（HNSW ハイパーパラメータ「ef&#95;search」とも呼ばれます）にカスタム値を指定できます（例: `SELECT [...] SETTINGS hnsw_candidate_list_size_for_search = <value>`）。
+この設定のデフォルト値 256 は、ほとんどのユースケースで良好に動作します。
+設定値を高くすると精度は向上しますが、その代わりにパフォーマンスが低下します。
 
 クエリでベクター類似性インデックスを使用する場合、ClickHouse は SELECT クエリで指定された LIMIT `<N>` が妥当な範囲内かどうかをチェックします。
 より具体的には、`<N>` が設定値 [max&#95;limit&#95;for&#95;vector&#95;search&#95;queries](../../../operations/settings/settings.md#max_limit_for_vector_search_queries)（デフォルト値は 100）より大きい場合はエラーが返されます。
@@ -233,7 +237,7 @@ ORDER BY L2Distance(vec, reference_vec) ASC
 LIMIT 10;
 ```
 
-返す場合があります
+次のような結果を返すことがあります
 
 ```result
     ┌─explain─────────────────────────────────────────────────────────────────────────────────────────┐
@@ -278,15 +282,16 @@ ClickHouse は、post-filtering あるいは pre-filtering 戦略を用いてこ
 
 これらの戦略には、それぞれ異なるトレードオフがあります。
 
-* Post-filtering には、`LIMIT <N>` 句で要求された行数より少ない結果しか返せない可能性があるという一般的な問題があります。これは、ベクトル類似度インデックスから返された 1 行以上の結果行が、追加フィルターを満たさない場合に発生します。
-* Pre-filtering は、一般的には未解決の問題です。一部の特化したベクトルデータベースは pre-filtering アルゴリズムを提供していますが、ほとんどのリレーショナルデータベース（ClickHouse を含む）は、インデックスを使わない総当たり走査、すなわち厳密な近傍探索へフォールバックします。
 
-どの戦略が使用されるかは、フィルター条件に依存します。
+* ポストフィルタリングには、`LIMIT <N>` 句で要求された行数より少ない行しか返さない可能性がある、という一般的な問題があります。この状況は、ベクター類似性インデックスによって返された 1 行以上の結果行が追加フィルターを満たさない場合に発生します。
+* プリフィルタリングは、一般的に未解決の課題です。特定の専用ベクトルデータベースではプリフィルタリングアルゴリズムを提供していますが、ほとんどのリレーショナルデータベース（ClickHouse を含む）は厳密な近傍検索、すなわちインデックスなしの総当たりスキャンにフォールバックします。
 
-*追加フィルターがパーティションキーの一部である場合*
+どの戦略が使われるかは、フィルター条件に依存します。
+
+*追加のフィルターがパーティションキーの一部である*
 
 追加のフィルター条件がパーティションキーの一部である場合、ClickHouse はパーティションプルーニングを適用します。
-例として、テーブルが列 `year` によってレンジパーティションされており、次のクエリが実行されるとします。
+例として、テーブルがカラム `year` によってレンジパーティションされており、次のクエリが実行されるとします。
 
 ```sql
 WITH [0., 2.] AS reference_vec
@@ -297,11 +302,11 @@ ORDER BY L2Distance(vec, reference_vec) ASC
 LIMIT 3;
 ```
 
-ClickHouse は、2025 年のパーティション以外をすべてプルーニングします。
+ClickHouse は 2025 年のものを除くすべてのパーティションをプルーニングします。
 
-*追加フィルタはインデックスを使って評価できない場合があります*
+*追加のフィルターはインデックスを用いて評価できない*
 
-追加のフィルタ条件がインデックス（PRIMARY KEY インデックス、スキッピングインデックス）を使って評価できない場合、ClickHouse はポストフィルタリングを適用します。
+追加のフィルター条件がインデックス（プライマリキーインデックス、skipping index）を用いて評価できない場合、ClickHouse はポストフィルタリングを適用します。
 
 *追加のフィルターはプライマリキーインデックスを用いて評価できる*
 
@@ -348,11 +353,12 @@ SETTING vector_search_index_fetch_multiplier = 3.0;
 ```
 
 ClickHouse は各パーツのベクターインデックスから 3.0 x 10 = 30 個の最近傍を取得し、その後に追加のフィルタを評価します。
-最も近い 10 個の近傍だけが返されます。
+そのうち最も近い 10 個だけが返されます。
 `vector_search_index_fetch_multiplier` を設定することでこの問題を軽減できることに注意してください。
-しかし、極端なケース（非常に選択性の高い WHERE 条件）では、要求された行数 N 未満の行しか返されない可能性があります。
+しかし、極端なケース（非常に選択性の高い WHERE 条件）では、要求した行数 N 未満しか返されない可能性があります。
 
 **リスコアリング（再スコアリング）**
+
 
 ClickHouse のスキップインデックスは一般的にグラニュールレベルでフィルタリングします。つまり、スキップインデックスでのルックアップは（内部的に）一致する可能性のあるグラニュールのリストを返し、その後のスキャンで読み取るデータ量を削減します。
 これはスキップインデックス全般ではうまく機能しますが、ベクター類似性インデックスの場合には「粒度のミスマッチ」を引き起こします。
@@ -397,10 +403,11 @@ Query id: a2a9d0c8-a525-45c1-96ca-c5a11fa66f47
 ```
 
 :::note
-`vector_search_with_rescoring = 0` で再スコアリングなしのクエリを実行し、かつ並列レプリカを有効にしている場合、再スコアリングにフォールバックして実行されることがあります。
+`vector_search_with_rescoring = 0` でリスコアリングを無効にし、かつ parallel replicas を有効にして実行したクエリでも、リスコアリングにフォールバックする場合があります。
 :::
 
-#### パフォーマンスチューニング {#performance-tuning}
+
+#### パフォーマンスチューニング \{#performance-tuning\}
 
 **圧縮のチューニング**
 
@@ -437,19 +444,21 @@ CREATE TABLE tab(id Int32, vec Array(Float32) CODEC(NONE), INDEX idx vec TYPE ve
 
 **インデックス使用のチューニング**
 
-SELECT クエリでベクトル類似性インデックスを使用するには、それらをメインメモリにロードする必要があります。
-同じベクトル類似性インデックスが繰り返しメインメモリにロードされることを避けるため、ClickHouse はそのようなインデックス用の専用インメモリキャッシュを提供しています。
-このキャッシュが大きいほど、不要なロードの回数は少なくなります。
-キャッシュの最大サイズは、サーバー設定 [vector&#95;similarity&#95;index&#95;cache&#95;size](../../../operations/server-configuration-parameters/settings.md#vector_similarity_index_cache_size) で設定できます。
-デフォルトでは、このキャッシュは最大 5 GB まで拡張できます。
+SELECT クエリは、ベクトル類似度インデックスを利用するために、それらをメインメモリにロードする必要があります。
+同じベクトル類似度インデックスが繰り返しメインメモリにロードされるのを避けるために、ClickHouse はそのようなインデックス用の専用インメモリキャッシュを提供します。
+このキャッシュが大きいほど、不要なロードは少なくなります。
+キャッシュの最大サイズは、サーバー設定 [vector&#95;similarity&#95;index&#95;cache&#95;size](../../../operations/server-configuration-parameters/settings.md#vector_similarity_index_cache_size) を使用して設定できます。
+デフォルトでは、このキャッシュは最大 5 GB まで成長できます。
 
 :::note
-ベクトル類似性インデックスキャッシュには、ベクトルインデックスのグラニュールが保存されます。
+ベクトル類似度インデックスキャッシュは、ベクトルインデックスグラニュールを保存します。
 個々のベクトルインデックスグラニュールがキャッシュサイズより大きい場合、それらはキャッシュされません。
-そのため、「Estimating storage and memory consumption」の式、または [system.data&#95;skipping&#95;indices](../../../operations/system-tables/data_skipping_indices) に基づいてベクトルインデックスサイズを算出し、それに応じてキャッシュサイズを設定してください。
+したがって、「Estimating storage and memory consumption」に記載の式や [system.data&#95;skipping&#95;indices](../../../operations/system-tables/data_skipping_indices) を基にベクトルインデックスサイズを計算し、それに応じてキャッシュサイズを設定するようにしてください。
 :::
 
-ベクトル類似性インデックスキャッシュの現在のサイズは、[system.metrics](../../../operations/system-tables/metrics.md) に表示されます。
+*ベクトルインデックスキャッシュを確認し、必要に応じて増加させることは、ベクトル検索クエリの低速化を調査する際に最初に行うべきステップであることを、ここで改めて強調します。*
+
+ベクトル類似度インデックスキャッシュの現在のサイズは、[system.metrics](../../../operations/system-tables/metrics.md) に表示されます。
 
 ```sql
 SELECT metric, value
@@ -457,7 +466,7 @@ FROM system.metrics
 WHERE metric = 'VectorSimilarityIndexCacheBytes'
 ```
 
-特定のクエリ ID に対応するクエリのキャッシュヒットおよびミスは、[system.query&#95;log](../../../operations/system-tables/query_log.md) から取得できます。
+ある query&#95;id を持つクエリのキャッシュヒットおよびミスは、[system.query&#95;log](../../../operations/system-tables/query_log.md) から取得できます。
 
 ```sql
 SYSTEM FLUSH LOGS query_log;
@@ -468,12 +477,13 @@ WHERE type = 'QueryFinish' AND query_id = '<...>'
 ORDER BY event_time_microseconds;
 ```
 
-本番環境でのユースケースでは、すべてのベクトルインデックスが常にメモリ上に保持されるよう、十分な容量のキャッシュを確保することを推奨します。
+本番環境での利用においては、すべてのベクトルインデックスが常にメモリ上に保持されるよう、キャッシュを十分に大きく設定することを推奨します。
 
 **量子化のチューニング**
 
-[量子化](https://huggingface.co/blog/embedding-quantization) は、ベクトルのメモリ使用量と、ベクトルインデックスの構築および走査にかかる計算コストを削減するための手法です。
-ClickHouse のベクトルインデックスは、次の量子化オプションをサポートします:
+[Quantization](https://huggingface.co/blog/embedding-quantization) は、ベクトルのメモリフットプリントや、ベクトルインデックスの構築・走査にかかる計算コストを削減するための手法です。
+ClickHouse のベクトルインデックスは、次の量子化オプションをサポートしています。
+
 
 | Quantization   | Name              | Storage per dimension |
 | -------------- | ----------------- | --------------------- |
@@ -508,15 +518,15 @@ result = chclient.query(
     parameters = params)
 ```
 
-埋め込みベクトル（上記スニペットの `search_v`）は、非常に大きな次元数を持つ場合があります。
-たとえば、OpenAI は 1536 次元や 3072 次元の埋め込みベクトルを生成するモデルを提供しています。
-上記のコードでは、ClickHouse Python ドライバは埋め込みベクトルを人間が読める文字列に置き換え、その後 SELECT クエリ全体を文字列として送信します。
-埋め込みベクトルが 1536 個の単精度浮動小数点値で構成されているとすると、送信される文字列は長さが 20 kB に達します。
-これにより、トークナイズ、パース、および数千回におよぶ文字列から浮動小数点への変換で CPU 使用率が高くなります。
-また、ClickHouse サーバーログファイルにも多くのディスク容量が必要となり、`system.query_log` の肥大化も引き起こします。
+埋め込みベクトル（上記スニペット中の `search_v`）は、非常に大きな次元数を持つ場合があります。
+例えば、OpenAI は 1536 あるいは 3072 次元の埋め込みベクトルを生成するモデルを提供しています。
+上記のコードでは、ClickHouse の Python ドライバーは埋め込みベクトルを人間が読める文字列に置き換え、その後 SELECT クエリ全体を文字列として送信します。
+埋め込みベクトルが 1536 個の単精度浮動小数点値から構成されているとすると、送信される文字列長は 20 kB に達します。
+これにより、トークナイズやパース、および数千回におよぶ文字列から浮動小数点値への変換で CPU 使用率が高くなります。
+また、ClickHouse サーバーログファイルにかなりの領域が必要となり、`system.query_log` も肥大化します。
 
-ほとんどの LLM モデルは、埋め込みベクトルをネイティブな float のリストまたは NumPy 配列として返すことに注意してください。
-そのため、Python アプリケーションでは、参照ベクトルのパラメータを次のようなスタイルでバイナリ形式としてバインドすることを推奨します。
+ほとんどの LLM モデルは、ネイティブな float のリストまたは NumPy 配列として埋め込みベクトルを返す点に注意してください。
+そのため、Python アプリケーションでは、次のようなスタイルを用いて、参照ベクトルパラメータをバイナリ形式でバインドすることを推奨します。
 
 ```python
 search_v = openai_client.embeddings.create(input = "[Good Books]", model='text-embedding-3-large', dimensions=1536).data[0].embedding
@@ -524,17 +534,18 @@ search_v = openai_client.embeddings.create(input = "[Good Books]", model='text-e
 params = {'$search_v_binary$': np.array(search_v, dtype=np.float32).tobytes()}
 result = chclient.query(
    "SELECT id FROM items
-    ORDER BY cosineDistance(vector, (SELECT reinterpret($search_v_binary$, 'Array(Float32)')))
+    ORDER BY cosineDistance(vector, reinterpret($search_v_binary$, 'Array(Float32)'))
     LIMIT 10"
     parameters = params)
 ```
 
-この例では、参照ベクターはそのままバイナリ形式で送信され、サーバー側で浮動小数点数配列として再解釈されます。
-これにより、サーバー側の CPU 時間を節約し、サーバーログおよび `system.query_log` の肥大化を防ぐことができます。
+この例では、参照ベクトルはバイナリ形式のまま送信され、サーバー側で float の配列として再解釈されます。
+これによりサーバー側の CPU 時間を節約でき、サーバーログおよび `system.query_log` の肥大化も防止できます。
 
-#### 管理と監視 {#administration}
 
-ベクトル類似性インデックスのディスク上のサイズは、[system.data&#95;skipping&#95;indices](../../../operations/system-tables/data_skipping_indices) から取得できます。
+#### 管理と監視 \{#administration\}
+
+ベクトル類似度インデックスのディスク上のサイズは、[system.data&#95;skipping&#95;indices](../../../operations/system-tables/data_skipping_indices) から取得できます。
 
 ```sql
 SELECT database, table, name, formatReadableSize(data_compressed_bytes)
@@ -550,7 +561,8 @@ WHERE type = 'vector_similarity';
 └──────────┴───────┴──────┴──────────────────────────┘
 ```
 
-#### 通常のスキッピングインデックスとの違い {#differences-to-regular-skipping-indexes}
+
+#### 通常のスキッピングインデックスとの違い \{#differences-to-regular-skipping-indexes\}
 
 通常の[スキッピングインデックス](/optimize/skipping-indexes)と同様に、ベクトル類似度インデックスはグラニュール単位で構築され、各インデックスブロックは `GRANULARITY = [N]` 個のグラニュールで構成されます（通常のスキッピングインデックスではデフォルトで `[N]` = 1）。
 たとえば、テーブルのプライマリインデックスのグラニュラリティが 8192（`index_granularity = 8192` の設定）で `GRANULARITY = 2` の場合、各インデックスブロックには 16384 行が含まれます。
@@ -565,17 +577,17 @@ WHERE type = 'vector_similarity';
 しかし、ClickHouse はディスクからメモリへデータを読み込む際にグラニュールの粒度で処理するため、サブインデックスはマッチした行をグラニュール単位にまで拡張して扱います。
 これは、インデックスブロックの粒度でデータをスキップする通常のスキッピングインデックスとは異なります。
 
-`GRANULARITY` パラメータは、いくつのベクトル類似度サブインデックスを作成するかを決定します。
-より大きな `GRANULARITY` の値では、サブインデックスの数は少なくなる一方、それぞれのサブインデックスはより大きくなり、最終的にはあるカラム（またはカラムのデータパーツ）が単一のサブインデックスしか持たない状態になります。
-その場合、そのサブインデックスはカラム行全体に対する「グローバル」なビューを持ち、関連する行を含むカラム（パーツ）のすべてのグラニュールを直接返すことができます（そのようなグラニュールは最大でも `LIMIT [N]` 個です）。
-次のステップとして、ClickHouse はこれらのグラニュールを読み込み、グラニュール内のすべての行に対して総当たりの距離計算を行うことで、実際に最適な行を特定します。
-`GRANULARITY` の値が小さい場合、それぞれのサブインデックスは最大 `LIMIT N` 個のグラニュールを返します。
-その結果、より多くのグラニュールを読み込んで事後フィルタリングする必要が生じます。
-どちらの場合でも検索精度は同等であり、異なるのは処理パフォーマンスのみであることに注意してください。
-一般的には、ベクトル類似度インデックスに対しては大きな `GRANULARITY` を使用し、ベクトル類似度構造によるメモリ消費が過大になるなどの問題が発生した場合にのみ、より小さな `GRANULARITY` の値に切り替えることを推奨します。
-ベクトル類似度インデックスに対して `GRANULARITY` が指定されていない場合、デフォルト値は 1 億です。
+`GRANULARITY` パラメータは、作成されるベクトル類似度サブインデックスの数を決定します。
+`GRANULARITY` の値が大きいほどサブインデックスの数は少なくなりますが、それぞれのベクトル類似度サブインデックスは大きくなり、最終的にはカラム（またはカラムのデータパーツ）あたりサブインデックスが 1 つだけになる場合もあります。
+その場合、サブインデックスはカラムの全行に対する「グローバル」な視点を持ち、関連する行を含むカラム（パーツ）のグラニュールをすべて直接返すことができます（そのようなグラニュールは最大でも `LIMIT [N]` 個です）。
+第 2 段階として、ClickHouse はそれらのグラニュールをロードし、グラニュール内のすべての行に対して総当たりの距離計算を行うことで、実際に最も適した行を特定します。
+`GRANULARITY` の値が小さい場合、各サブインデックスは最大で `LIMIT N` 個のグラニュールを返します。
+その結果、より多くのグラニュールをロードし、後段でフィルタリングする必要が生じます。
+どちらの場合でも検索精度は同等であり、異なるのは処理性能だけであることに注意してください。
+一般的には、ベクトル類似度インデックスには大きな `GRANULARITY` を使用し、ベクトル類似度構造のメモリ使用量が過大になるなどの問題が発生した場合にのみ、より小さな `GRANULARITY` の値へ切り替えることが推奨されます。
+ベクトル類似度インデックスに対して `GRANULARITY` が明示的に指定されていない場合、デフォルト値は 1 億です。
 
-#### 例 {#approximate-nearest-neighbor-search-example}
+#### 例 \{#approximate-nearest-neighbor-search-example\}
 
 ```sql
 CREATE TABLE tab(id Int32, vec Array(Float32), INDEX idx vec TYPE vector_similarity('hnsw', 'L2Distance', 2)) ENGINE = MergeTree ORDER BY id;
@@ -589,7 +601,7 @@ ORDER BY L2Distance(vec, reference_vec) ASC
 LIMIT 3;
 ```
 
-戻り値
+次の結果を返します。
 
 ```result
    ┌─id─┬─vec─────┐
@@ -606,9 +618,10 @@ LIMIT 3;
 * [dbpedia](../../../getting-started/example-datasets/dbpedia-dataset)
 * [hackernews](../../../getting-started/example-datasets/hackernews-vector-search-dataset)
 
-### Quantized Bit (QBit) {#approximate-nearest-neighbor-search-qbit}
 
-<ExperimentalBadge />
+### Quantized Bit (QBit) \{#approximate-nearest-neighbor-search-qbit\}
+
+<BetaBadge/>
 
 厳密なベクトル検索を高速化する一般的な方法の 1 つは、低精度の [浮動小数点数型 (float data type)](../../../sql-reference/data-types/float.md) を使用することです。
 例えば、ベクトルを `Array(Float32)` ではなく `Array(BFloat16)` として保存すると、データサイズは半分になり、クエリ実行時間もそれに比例して短くなることが期待されます。
@@ -621,25 +634,26 @@ ClickHouse は、これらの制約を解決する Quantized Bit (`QBit`) デー
 1. 元のフル精度データを保存する。
 2. クエリ時に量子化精度を指定できるようにする。
 
-これは、データをビットグループ化形式（すべてのベクトルの i 番目のビットをまとめて保存する形式）で保存することで実現され、要求された精度レベルだけを読み出せるようにします。これにより、量子化による I/O と計算量の削減による高速化の恩恵を受けつつ、必要に応じて元のデータをすべて利用可能な状態に保てます。最大精度が選択された場合、検索は厳密なもの（完全一致）になります。
+これは、データをビット単位にグループ化した形式（すべてのベクトルについて i 番目のビットをまとめて保存する形式）で格納することで実現されており、要求された精度レベルだけを読み取ることができます。これにより、量子化による I/O と計算の削減による高速化の恩恵を受けつつ、必要に応じて元のすべてのデータを利用できます。最大精度が選択された場合、検索は厳密なものになります。
 
 :::note
-`QBit` データ型とそれに関連する距離関数は、現在実験的な機能です。これらを有効にするには、`SET allow_experimental_qbit_type = 1` を実行してください。
-問題が発生した場合は、[ClickHouse リポジトリ](https://github.com/clickhouse/clickhouse/issues) に Issue を作成してください。
+`QBit` データ型とそれに関連する距離関数は Beta 機能です。有効化するには、`SET enable_qbit_type = 1` を実行してください。
+問題が発生した場合は、[ClickHouse リポジトリ](https://github.com/clickhouse/clickhouse/issues) に issue を作成してください。
 :::
 
-`QBit` 型のカラムを宣言するには、次の構文を使用します。
+`QBit` 型のカラムを宣言するには、次の構文を使用します:
 
 ```sql
 column_name QBit(element_type, dimension)
 ```
 
-次のとおりです。
+ここで:
 
 * `element_type` – 各ベクトル要素の型。サポートされている型は `BFloat16`、`Float32`、`Float64` です
-* `dimension` – 各ベクトル内の要素数
+* `dimension` – 各ベクトル内の要素数です
 
-#### `QBit` テーブルの作成とデータの追加 {#qbit-create}
+
+#### `QBit` テーブルの作成とデータの追加 \{#qbit-create\}
 
 ```sql
 CREATE TABLE fruit_animal (
@@ -657,7 +671,8 @@ INSERT INTO fruit_animal VALUES
     ('horse', [-0.61435682, 0.48542571, 1.21091247, -0.62530446, -1.33082533]);
 ```
 
-#### `QBit` を使ったベクトル検索 {#qbit-search}
+
+#### `QBit` を使ったベクトル検索 \{#qbit-search\}
 
 L2 距離を用いて、単語 &#39;lemon&#39; を表すベクトルに最も近い近傍を検索します。距離関数の第 3 引数ではビット単位の精度を指定します。値を大きくすると精度は向上しますが、計算コストも増加します。
 
@@ -684,7 +699,7 @@ ORDER BY distance;
    └────────┴─────────────────────┘
 ```
 
-**精度を下げた検索:**
+**精度を落とした検索:**
 
 ```sql
 SELECT
@@ -705,21 +720,20 @@ ORDER BY distance;
    └────────┴────────────────────┘
 ```
 
-12 ビット量子化では、クエリ実行が高速化されつつ、距離を良好に近似できることに注目してください。相対的な順位付けも概ね一貫しており、依然として「apple」が最も近い一致となっています。
+12 ビット量子化では、クエリ実行を高速化しつつ、距離を良好に近似できていることに注目してください。相対的な順位付けは概ね維持されており、依然として &#39;apple&#39; が最も近い一致となっています。
 
-:::note
-現時点では、高速化の主な要因は、読み取るデータ量が減ることによる I/O の削減です。元のデータが `Float64` のようにビット幅の大きい型であっても、より低い精度を選択すると、同じ幅のデータに対して距離計算が行われますが、精度だけが下がります。
-:::
 
-#### パフォーマンス上の考慮事項 {#qbit-performance}
+#### パフォーマンス上の考慮事項 \{#qbit-performance\}
 
 `QBit` のパフォーマンス上の利点は、より低い精度を使用した場合に、ストレージから読み取る必要のあるデータ量が減ることによる I/O 操作の削減から生じます。さらに、`QBit` に格納されているデータが `Float32` であり、`precision` パラメータが 16 以下の場合は、計算量が減ることによる追加のメリットも得られます。`precision` パラメータは、精度と速度のトレードオフを直接制御します。
 
 - **精度が高い場合**（元のデータ幅に近い場合）: 結果はより正確だが、クエリは遅くなる
 - **精度が低い場合**: 近似結果になるがクエリは高速になり、メモリ使用量も削減される
 
-### 参考文献 {#references}
+### 参考文献 \{#references\}
 
 ブログ:
+
 - [Vector Search with ClickHouse - Part 1](https://clickhouse.com/blog/vector-search-clickhouse-p1)
 - [Vector Search with ClickHouse - Part 2](https://clickhouse.com/blog/vector-search-clickhouse-p2)
+- [We built a vector search engine that lets you choose precision at query time](https://clickhouse.com/blog/qbit-vector-search)

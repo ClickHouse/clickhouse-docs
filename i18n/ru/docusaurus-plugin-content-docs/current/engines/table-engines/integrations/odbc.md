@@ -9,7 +9,8 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Движок таблицы ODBC {#odbc-table-engine}
+
+# Движок таблицы ODBC \{#odbc-table-engine\}
 
 <CloudNotSupportedBadge/>
 
@@ -19,7 +20,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 Этот движок поддерживает тип данных [Nullable](../../../sql-reference/data-types/nullable.md).
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -36,7 +37,7 @@ ENGINE = ODBC(datasource, external_database, external_table)
 Структура таблицы может отличаться от структуры исходной таблицы:
 
 * Имена столбцов должны совпадать с именами в исходной таблице, но вы можете использовать только часть этих столбцов и в любом порядке.
-* Типы столбцов могут отличаться от типов в исходной таблице. ClickHouse пытается [привести](/sql-reference/functions/type-conversion-functions#cast) значения к типам данных ClickHouse.
+* Типы столбцов могут отличаться от типов в исходной таблице. ClickHouse пытается [привести](/sql-reference/functions/type-conversion-functions#CAST) значения к типам данных ClickHouse.
 * Настройка [external&#95;table&#95;functions&#95;use&#95;nulls](/operations/settings/settings#external_table_functions_use_nulls) определяет, как обрабатывать столбцы типа Nullable. Значение по умолчанию: 1. Если установлено 0, табличная функция не делает столбцы Nullable и вставляет значения по умолчанию вместо null. Это также относится к значениям NULL внутри массивов.
 
 **Параметры движка**
@@ -47,7 +48,8 @@ ENGINE = ODBC(datasource, external_database, external_table)
 
 Эти параметры также можно передавать с помощью [именованных коллекций](operations/named-collections.md).
 
-## Пример использования {#usage-example}
+
+## Пример использования \{#usage-example\}
 
 **Получение данных из локального экземпляра MySQL через ODBC**
 
@@ -79,7 +81,7 @@ USER = clickhouse
 PASSWORD = clickhouse
 ```
 
-Вы можете проверить соединение с помощью утилиты `isql`, входящей в состав unixODBC.
+Вы можете проверить соединение с помощью утилиты `isql`, поставляемой с unixODBC.
 
 ```bash
 $ isql -v mysqlconn
@@ -115,7 +117,7 @@ mysql> select * from test.test;
 1 row in set (0,00 sec)
 ```
 
-Таблица в ClickHouse, которая получает данные из таблицы MySQL:
+Таблица в ClickHouse, получающая данные из таблицы MySQL:
 
 ```sql
 CREATE TABLE odbc_t
@@ -136,7 +138,8 @@ SELECT * FROM odbc_t
 └────────┴────────────────┘
 ```
 
-## Смотрите также {#see-also}
+
+## Смотрите также \{#see-also\}
 
 - [Словари ODBC](/sql-reference/dictionaries#mysql)
 - [Табличная функция ODBC](../../../sql-reference/table-functions/odbc.md)

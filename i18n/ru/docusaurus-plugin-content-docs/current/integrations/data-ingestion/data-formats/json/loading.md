@@ -9,11 +9,11 @@ score: 15
 doc_type: 'guide'
 ---
 
-# Загрузка JSON {#loading-json}
+# Загрузка JSON \{#loading-json\}
 
 Ниже приведены очень простые примеры загрузки структурированных и полуструктурированных данных в формате JSON. Для более сложного JSON, включая вложенные структуры, см. руководство [**Проектирование схемы JSON**](/integrations/data-formats/json/schema).
 
-## Загрузка структурированного JSON {#loading-structured-json}
+## Загрузка структурированного JSON \{#loading-structured-json\}
 
 В этом разделе предполагается, что данные находятся в формате [`NDJSON`](https://github.com/ndjson/ndjson-spec) (Newline delimited JSON — JSON, где объекты разделены переводами строки), который в ClickHouse известен как [`JSONEachRow`](/interfaces/formats/JSONEachRow), и хорошо структурированы, то есть имена и типы столбцов фиксированы. Формат `NDJSON` является предпочтительным для загрузки JSON из‑за своей компактности и эффективного использования места, но поддерживаются и другие форматы как для [ввода, так и вывода](/interfaces/formats/JSON).
 
@@ -117,6 +117,7 @@ SELECT * FROM pypi LIMIT 2
 INSERT INTO pypi
 FORMAT JSONEachRow
 {"date":"2022-11-15","country_code":"CN","project":"clickhouse-connect","type":"bdist_wheel","installer":"bandersnatch","python_minor":"","system":"","version":"0.2.8"}
+
 ```sql
 INSERT INTO pypi
 FORMAT JSONEachRow

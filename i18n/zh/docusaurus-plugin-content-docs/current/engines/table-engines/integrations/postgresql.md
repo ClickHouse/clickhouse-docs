@@ -7,7 +7,7 @@ title: 'PostgreSQL 表引擎'
 doc_type: '指南'
 ---
 
-# PostgreSQL 表引擎 {#postgresql-table-engine}
+# PostgreSQL 表引擎 \{#postgresql-table-engine\}
 
 PostgreSQL 引擎允许对存储在远程 PostgreSQL 服务器上的数据执行 `SELECT` 和 `INSERT` 查询。
 
@@ -19,7 +19,7 @@ PostgreSQL 引擎允许对存储在远程 PostgreSQL 服务器上的数据执行
 建议 ClickHouse Cloud 用户使用 [ClickPipes](/integrations/clickpipes) 以流式方式将 PostgreSQL 数据导入 ClickHouse。该方式原生支持高性能插入，并通过可分别扩展摄取和集群资源，实现清晰的职责划分。
 :::
 
-## 创建数据表 {#creating-a-table}
+## 创建数据表 \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -68,7 +68,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 SELECT * FROM postgresql(postgres_creds, table='table1');
 ```
 
-## 实现细节 {#implementation-details}
+## 实现细节 \{#implementation-details\}
 
 PostgreSQL 端的 `SELECT` 查询在只读 PostgreSQL 事务中以 `COPY (SELECT ...) TO STDOUT` 的形式运行，每个 `SELECT` 查询结束后都会提交事务。
 
@@ -115,9 +115,9 @@ PostgreSQL 字典源支持副本优先级。映射中的数字越大，优先级
 </source>
 ```
 
-## 使用示例 {#usage-example}
+## 使用示例 \{#usage-example\}
 
-### PostgreSQL 中的表 {#table-in-postgresql}
+### PostgreSQL 中的表 \{#table-in-postgresql\}
 
 ```text
 postgres=# CREATE TABLE "public"."test" (
@@ -140,7 +140,7 @@ postgresql> SELECT * FROM test;
  (1 row)
 ```
 
-### 在 ClickHouse 中创建表并连接到上文创建的 PostgreSQL 表 {#creating-table-in-clickhouse-and-connecting-to--postgresql-table-created-above}
+### 在 ClickHouse 中创建表并连接到上文创建的 PostgreSQL 表 \{#creating-table-in-clickhouse-and-connecting-to--postgresql-table-created-above\}
 
 此示例使用 [PostgreSQL 表引擎](/engines/table-engines/integrations/postgresql.md)，将 ClickHouse 表连接到 PostgreSQL 表，并在 PostgreSQL 数据库上同时执行 SELECT 和 INSERT 查询：
 
@@ -154,7 +154,7 @@ CREATE TABLE default.postgresql_table
 ENGINE = PostgreSQL('localhost:5432', 'public', 'test', 'postgres_user', 'postgres_password');
 ```
 
-### 使用 SELECT 查询将 PostgreSQL 表中的初始数据插入到 ClickHouse 表中 {#inserting-initial-data-from-postgresql-table-into-clickhouse-table-using-a-select-query}
+### 使用 SELECT 查询将 PostgreSQL 表中的初始数据插入到 ClickHouse 表中 \{#inserting-initial-data-from-postgresql-table-into-clickhouse-table-using-a-select-query\}
 
 [postgresql table function](/sql-reference/table-functions/postgresql.md) 会将数据从 PostgreSQL 复制到 ClickHouse，通常用于在 ClickHouse 而非 PostgreSQL 中执行查询或分析，从而提升数据的查询性能，也可用于将数据从 PostgreSQL 迁移到 ClickHouse。由于我们将数据从 PostgreSQL 复制到 ClickHouse，因此会在 ClickHouse 中使用 MergeTree 表引擎，并将其命名为 postgresql&#95;copy：
 
@@ -174,7 +174,7 @@ INSERT INTO default.postgresql_copy
 SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postgres_user', 'postgres_password');
 ```
 
-### 将 PostgreSQL 表中的增量数据插入到 ClickHouse 表中 {#inserting-incremental-data-from-postgresql-table-into-clickhouse-table}
+### 将 PostgreSQL 表中的增量数据插入到 ClickHouse 表中 \{#inserting-incremental-data-from-postgresql-table-into-clickhouse-table\}
 
 如果在初始插入之后，随后需要在 PostgreSQL 表和 ClickHouse 表之间执行持续同步，可以在 ClickHouse 中使用 WHERE 子句，根据时间戳或唯一序列 ID，仅插入新增到 PostgreSQL 的数据。
 
@@ -192,7 +192,7 @@ SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postges_user', 'po
 WHERE int_id > maxIntID;
 ```
 
-### 从生成的 ClickHouse 表中查询数据 {#selecting-data-from-the-resulting-clickhouse-table}
+### 从生成的 ClickHouse 表中查询数据 \{#selecting-data-from-the-resulting-clickhouse-table\}
 
 ```sql
 SELECT * FROM postgresql_copy WHERE str IN ('test');
@@ -204,7 +204,7 @@ SELECT * FROM postgresql_copy WHERE str IN ('test');
 └────────────────┴──────┴────────┘
 ```
 
-### 使用非默认模式 {#using-non-default-schema}
+### 使用非默认模式 \{#using-non-default-schema\}
 
 ```text
 postgres=# CREATE SCHEMA "nice.schema";
@@ -224,7 +224,7 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 * [`postgresql` 表函数](../../../sql-reference/table-functions/postgresql.md)
 * [将 PostgreSQL 用作字典源](/sql-reference/dictionaries#mysql)
 
-## 相关内容 {#related-content}
+## 相关内容 \{#related-content\}
 
 - 博客：[ClickHouse 和 PostgreSQL——数据界的天作之合（第一部分）](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
 - 博客：[ClickHouse 和 PostgreSQL——数据界的天作之合（第二部分）](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)

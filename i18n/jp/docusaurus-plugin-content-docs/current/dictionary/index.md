@@ -10,7 +10,7 @@ import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-ca
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';
 
-# Dictionary {#dictionary}
+# Dictionary \{#dictionary\}
 
 ClickHouse における Dictionary は、さまざまな[内部および外部ソース](/sql-reference/dictionaries#dictionary-sources)からのデータをインメモリの[キー・バリュー](https://en.wikipedia.org/wiki/Key%E2%80%93value_database)形式で表現し、超低レイテンシーなルックアップクエリのために最適化されたものです。
 
@@ -21,7 +21,7 @@ Dictionary は次の用途に有用です:
 
 <Image img={dictionaryUseCases} size="lg" alt="ClickHouse における Dictionary のユースケース"/>
 
-## Dictionary を使用した結合の高速化 {#speeding-up-joins-using-a-dictionary}
+## Dictionary を使用した結合の高速化 \{#speeding-up-joins-using-a-dictionary\}
 
 Dictionary は、特定の種類の `JOIN`、すなわち結合キーが基盤となるキー・バリュー型ストレージのキー属性と一致している必要がある [`LEFT ANY` 型](/sql-reference/statements/select/join#supported-types-of-join) を高速化するために利用できます。
 
@@ -31,7 +31,7 @@ Dictionary は、特定の種類の `JOIN`、すなわち結合キーが基盤�
 
 Direct Join アルゴリズムでは、右側のテーブルが Dictionary をバックエンドとして使用しており、そのテーブルから結合対象となるデータが、低レイテンシーのキー・バリュー型データ構造として、すでにメモリ上に存在している必要があります。
 
-### 例 {#example}
+### 例 \{#example\}
 
 [Stack Overflow データセット](/getting-started/example-datasets/stackoverflow)を使って、次の質問に答えてみましょう：
 *Hacker News 上で、SQL に関して最も物議を醸している投稿はどれか？*
@@ -69,7 +69,7 @@ WHERE Id IN (PostIds)
 ORDER BY Controversial_ratio ASC
 LIMIT 1
 
-Row 1:
+行 1:
 ──────
 Id:                     25372161
 Title:                  How to add exception handling to SqlDataSource.UpdateCommand
@@ -77,17 +77,17 @@ UpVotes:                13
 DownVotes:              13
 Controversial_ratio: 0
 
-1 rows in set. Elapsed: 1.283 sec. Processed 418.44 million rows, 7.23 GB (326.07 million rows/s., 5.63 GB/s.)
-Peak memory usage: 3.18 GiB.
+1 行が返されました。経過時間: 1.283秒。処理された行数: 4億1844万行、7.23 GB (3億2607万行/秒、5.63 GB/秒)
+ピークメモリ使用量: 3.18 GiB。
 ```
 
 > **`JOIN` の右側には小さいデータセットを使用する**: このクエリでは、外側とサブクエリの両方で `PostId` によるフィルタリングを行っているため、必要以上に冗長に見えるかもしれません。これはクエリの応答時間を短く保つためのパフォーマンス最適化です。最適なパフォーマンスを得るには、常に `JOIN` の右側がより小さな集合となるようにし、可能な限り小さく保ってください。JOIN のパフォーマンス最適化のコツや利用可能なアルゴリズムの理解については、[このブログ記事シリーズ](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1) を参照することをおすすめします。
 
 このクエリは高速ですが、良好なパフォーマンスを得るには `JOIN` を慎重に記述する必要があります。本来であれば、「SQL」を含む投稿だけに単純にフィルタリングし、その投稿のサブセットに対して `UpVote` と `DownVote` のカウントを確認してメトリクスを計算できるのが理想的です。
 
-#### Dictionary の適用 {#applying-a-dictionary}
+#### Dictionary の適用 \{#applying-a-dictionary\}
 
-これらの概念を示すために、投票データに対して Dictionary を使用します。Dictionary は通常メモリ上に保持されるため（[ssd&#95;cache](/sql-reference/dictionaries#ssd_cache) は例外）、ユーザーはデータサイズに留意しておく必要があります。ここで、`votes` テーブルのサイズを確認します：
+これらの概念を示すために、投票データに対して Dictionary を使用します。Dictionary は通常メモリ上に保持されるため（[ssd&#95;cache](/sql-reference/dictionaries#ssd_cache) は例外）、データサイズに留意しておく必要があります。ここで `votes` テーブルのサイズを確認します：
 
 ```sql
 SELECT table,
@@ -117,7 +117,7 @@ FROM votes
 GROUP BY PostId
 ```
 
-Dictionary を作成するには、以下の DDL を実行します。先ほどのクエリが使われている点に注目してください。
+Dictionary を作成するには、以下の DDL を実行します。上記のクエリが使われている点に注目してください。
 
 ```sql
 CREATE DICTIONARY votes_dict
@@ -148,7 +148,8 @@ WHERE name = 'votes_dict'
 └──────────┘
 ```
 
-特定の`PostId`に対する賛成票数と反対票数は、シンプルな`dictGet`関数で取得できるようになりました。以下の例では、投稿`11227902`の値を取得しています。
+特定の `PostId` に対する賛成票数と反対票数は、シンプルな `dictGet` 関数で取得できるようになりました。以下の例では、投稿 `11227902` の値を取得しています。
+
 
 ```sql
 SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
@@ -157,7 +158,7 @@ SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
 │ (34999,32) │
 └────────────┘
 
-Exploiting this in our earlier query, we can remove the JOIN:
+これを先ほどのクエリに適用することで、JOINを削除できます：
 
 WITH PostIds AS
 (
@@ -174,13 +175,13 @@ WHERE (Id IN (PostIds)) AND (UpVotes > 10) AND (DownVotes > 10)
 ORDER BY Controversial_ratio ASC
 LIMIT 3
 
-3 rows in set. Elapsed: 0.551 sec. Processed 119.64 million rows, 3.29 GB (216.96 million rows/s., 5.97 GB/s.)
-Peak memory usage: 552.26 MiB.
+3行のセット。経過時間：0.551秒。処理：1億1964万行、3.29 GB（2億1696万行/秒、5.97 GB/秒）
+ピークメモリ使用量：552.26 MiB。
 ```
 
 このクエリははるかに単純なだけでなく、実行速度も2倍以上速くなります。さらに、Dictionary には賛成票・反対票がそれぞれ 10 を超える投稿だけを読み込み、あらかじめ計算しておいた物議度の値だけを保持するようにすれば、より最適化できます。
 
-## クエリ時のエンリッチメント {#query-time-enrichment}
+## クエリ時のエンリッチメント \{#query-time-enrichment\}
 
 Dictionary はクエリ実行時に値を参照するために使用できます。これらの値は結果として返したり、集約で利用したりできます。たとえば、ユーザー ID を所在地にマッピングする Dictionary を作成するとします。
 
@@ -216,8 +217,8 @@ FORMAT PrettyCompactMonoBlock
 │ 55758594 │ ClickHouse create temporary table                             │ Perm', Russia         │
 └──────────┴───────────────────────────────────────────────────────────────┴───────────────────────┘
 
-5 rows in set. Elapsed: 0.033 sec. Processed 4.25 million rows, 82.84 MB (130.62 million rows/s., 2.55 GB/s.)
-Peak memory usage: 249.32 MiB.
+5行が返されました。経過時間: 0.033秒。処理された行数: 425万行、82.84 MB (1億3062万行/秒、2.55 GB/秒)
+ピークメモリ使用量: 249.32 MiB。
 ```
 
 上記の結合例と同様に、同じ Dictionary を使用して、ほとんどの投稿がどこから投稿されているのかを効率的に判定できます。
@@ -244,7 +245,7 @@ LIMIT 5
 Peak memory usage: 248.84 MiB.
 ```
 
-## インデックス時のエンリッチメント {#index-time-enrichment}
+## インデックス時のエンリッチメント \{#index-time-enrichment\}
 
 上記の例では、クエリ時に Dictionary を使用して結合を回避しました。Dictionary は、挿入時に行をエンリッチするためにも使用できます。これは通常、エンリッチに用いる値が変化せず、Dictionary を埋めるために利用できる外部ソースに存在する場合に適しています。この場合、行を挿入時にエンリッチしておくことで、クエリ時に Dictionary を参照してルックアップする必要を回避できます。
 
@@ -313,24 +314,24 @@ LIMIT 4
 Peak memory usage: 666.82 MiB.
 ```
 
-## Dictionary の高度なトピック {#advanced-dictionary-topics}
+## Dictionary の高度なトピック \{#advanced-dictionary-topics\}
 
-### Dictionary の `LAYOUT` を選択する {#choosing-the-dictionary-layout}
+### Dictionary の `LAYOUT` を選択する \{#choosing-the-dictionary-layout\}
 
 `LAYOUT` 句は、Dictionary の内部データ構造を決定します。複数のオプションがあり、その詳細は[こちら](/sql-reference/dictionaries#ways-to-store-dictionaries-in-memory)に記載されています。適切なレイアウトを選択するためのヒントは[こちら](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)で確認できます。
 
-### Dictionary の更新 {#refreshing-dictionaries}
+### Dictionary の更新 \{#refreshing-dictionaries\}
 
 `LIFETIME` を `MIN 600 MAX 900` として Dictionary に指定しています。LIFETIME は Dictionary の更新間隔を表し、ここで指定した値により 600～900 秒のランダムな間隔で定期的に再読み込みが行われます。このランダムな間隔は、多数のサーバーで更新を行う際に、Dictionary のソースへの負荷を分散するために必要です。更新中も Dictionary の旧バージョンに対するクエリは引き続き実行可能であり、クエリがブロックされるのは初回ロード時のみです。`(LIFETIME(0))` を設定すると、Dictionary が更新されなくなる点に注意してください。  
 Dictionary は `SYSTEM RELOAD DICTIONARY` コマンドを使用して強制的に再読み込みできます。
 
 ClickHouse や Postgres のようなデータベースソースの場合、クエリのレスポンスに基づいて実際に変更があった場合にのみ Dictionary を更新するように設定でき、一定間隔での更新に代えてこの方式を利用できます。詳細は[こちら](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)を参照してください。
 
-### その他の Dictionary タイプ {#other-dictionary-types}
+### その他の Dictionary タイプ \{#other-dictionary-types\}
 
 ClickHouse では、[Hierarchical](/sql-reference/dictionaries#hierarchical-dictionaries)、[Polygon](/sql-reference/dictionaries#polygon-dictionaries)、および [Regular Expression](/sql-reference/dictionaries#regexp-tree-dictionary) の各 Dictionary もサポートしています。
 
-### 参考情報 {#more-reading}
+### 参考情報 \{#more-reading\}
 
 - [辞書を利用してクエリを高速化する](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
 - [辞書の高度な設定](/sql-reference/dictionaries)

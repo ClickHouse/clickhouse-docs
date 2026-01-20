@@ -11,11 +11,11 @@ keywords: ['ClickStack GKE', 'ClickStack EKS', 'ClickStack AKS', 'облачно
 
 В этом руководстве рассматриваются конфигурации, специфичные для облачных платформ, для развертывания ClickStack в управляемых Kubernetes‑сервисах. Для базовой установки см. [основное руководство по развертыванию с помощью Helm](/docs/use-cases/observability/clickstack/deployment/helm).
 
-## Google Kubernetes Engine (GKE) {#google-kubernetes-engine-gke}
+## Google Kubernetes Engine (GKE) \{#google-kubernetes-engine-gke\}
 
 При развертывании в GKE может потребоваться переопределить некоторые значения из‑за особенностей сетевой инфраструктуры облака.
 
-### Проблема с разрешением DNS для LoadBalancer {#loadbalancer-dns-resolution-issue}
+### Проблема с разрешением DNS для LoadBalancer \{#loadbalancer-dns-resolution-issue\}
 
 Сервис LoadBalancer в GKE может вызывать внутренние проблемы с разрешением DNS, при которых взаимодействие между подами осуществляется через внешние IP‑адреса вместо использования сетевого трафика внутри кластера. Это, в частности, влияет на подключение OTel collector к серверу OpAMP.
 
@@ -34,7 +34,7 @@ helm install my-clickstack clickstack/clickstack \
   --set otel.opampServerUrl="http://my-clickstack-clickstack-app.default.svc.cluster.local:4320"
 ```
 
-### Дополнительные соображения по GKE {#other-gke-considerations}
+### Дополнительные соображения по GKE \{#other-gke-considerations\}
 
 ```yaml
 # values-gke.yaml
@@ -52,7 +52,7 @@ clickhouse:
       - "10.0.0.0/8"   # Fallback for other configurations
 ```
 
-## Amazon EKS {#amazon-eks}
+## Amazon EKS \{#amazon-eks\}
 
 Для развертывания в EKS рассмотрите следующие распространённые конфигурации:
 
@@ -77,7 +77,7 @@ hyperdx:
       enabled: true
 ```
 
-## Azure AKS {#azure-aks}
+## Azure AKS \{#azure-aks\}
 
 Для развертывания в AKS:
 
@@ -94,7 +94,7 @@ clickhouse:
       - "10.0.0.0/8"
 ```
 
-## Контрольный список для продакшн-развертывания в облаке {#production-cloud-deployment-checklist}
+## Контрольный список для продакшн-развертывания в облаке \{#production-cloud-deployment-checklist\}
 
 Перед развертыванием ClickStack в продакшене у любого провайдера облачных услуг:
 
@@ -108,9 +108,9 @@ clickhouse:
 - [ ] Настройте резервное копирование и восстановление после сбоев
 - [ ] Реализуйте корректное управление секретами
 
-## Лучшие практики для продакшена {#production-best-practices}
+## Лучшие практики для продакшена \{#production-best-practices\}
 
-### Управление ресурсами {#resource-management}
+### Управление ресурсами \{#resource-management\}
 
 ```yaml
 hyperdx:
@@ -123,7 +123,7 @@ hyperdx:
       memory: 4Gi
 ```
 
-### Высокая доступность {#high-availability}
+### Высокая доступность \{#high-availability\}
 
 ```yaml
 hyperdx:
@@ -143,7 +143,7 @@ hyperdx:
             topologyKey: kubernetes.io/hostname
 ```
 
-### Персистентное хранилище {#persistent-storage}
+### Персистентное хранилище \{#persistent-storage\}
 
 Убедитесь, что для хранения данных настроены персистентные тома.
 
@@ -161,13 +161,13 @@ clickhouse:
 * **EKS**: `gp3` или `io2`
 * **AKS**: `managed-premium` или `managed-csi`
 
-### Примечания по совместимости с браузерами {#browser-compatibility-notes}
+### Примечания по совместимости с браузерами \{#browser-compatibility-notes\}
 
 Для развертываний, работающих только по HTTP (разработка/тестирование), некоторые браузеры могут показывать ошибки криптографического API из‑за требований к защищённому контексту. Для продуктивных развертываний всегда используйте HTTPS с корректными TLS‑сертификатами, настроенными через конфигурацию входного шлюза.
 
 См. раздел [Конфигурация входного шлюза](/docs/use-cases/observability/clickstack/deployment/helm-configuration#ingress-setup) с инструкциями по настройке TLS.
 
-## Следующие шаги {#next-steps}
+## Следующие шаги \{#next-steps\}
 
 - [Руководство по настройке](/docs/use-cases/observability/clickstack/deployment/helm-configuration) — API-ключи, секреты и входной шлюз
 - [Варианты развертывания](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) — настройка внешних систем

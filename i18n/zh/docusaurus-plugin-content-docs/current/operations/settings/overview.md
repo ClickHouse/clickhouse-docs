@@ -6,9 +6,9 @@ title: '设置概览'
 doc_type: 'reference'
 ---
 
-# 设置概览 {#settings-overview}
+# 设置概览 \{#settings-overview\}
 
-## 概览 {#overview}
+## 概览 \{#overview\}
 
 :::note
 基于 XML 的 Settings Profiles 和[配置文件](/operations/configuration-files) 目前在 ClickHouse Cloud 中不受支持。若要为 ClickHouse Cloud 服务指定设置，必须使用[基于 SQL 的 Settings Profiles](/operations/access-rights#settings-profiles-management)。
@@ -21,7 +21,7 @@ ClickHouse 的设置主要分为两大类：
 
 二者的主要区别在于，全局服务器设置作用于整个 ClickHouse 服务器，而会话设置则作用于用户会话，甚至可以细化到单个查询。
 
-## 查看非默认设置 {#see-non-default-settings}
+## 查看非默认设置 \{#see-non-default-settings\}
 
 要查看哪些设置已被修改为非默认值，可以查询
 `system.settings` 表：
@@ -48,7 +48,7 @@ SELECT name, value FROM system.settings WHERE name = 'max_threads'
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-## 延伸阅读 {#further-reading}
+## 延伸阅读 \{#further-reading\}
 
 - 参阅[全局服务器设置](/operations/server-configuration-parameters/settings.md)，以进一步了解如何在全局服务器层面配置 ClickHouse 服务器。
 - 参阅[会话设置](/operations/settings/settings-query-level.md)，以进一步了解如何在会话层面配置 ClickHouse 服务器。

@@ -11,23 +11,23 @@ import Image from '@theme/IdealImage';
 <details>
   <summary>GCS バケットと HMAC キーを作成する</summary>
 
-### ch_bucket_us_east1 {#ch_bucket_us_east1}
+### ch_bucket_us_east1 \{#ch_bucket_us_east1\}
 
 <Image size="md" img={GCS_bucket_1} alt="US East 1 に GCS バケットを作成する" border />
 
-### ch_bucket_us_east4 {#ch_bucket_us_east4}
+### ch_bucket_us_east4 \{#ch_bucket_us_east4\}
 
 <Image size="md" img={GCS_bucket_2} alt="US East 4 に GCS バケットを作成する" border />
 
-### アクセスキーを生成する {#generate-an-access-key}
+### アクセスキーを生成する \{#generate-an-access-key\}
 
-### サービスアカウントの HMAC キーとシークレットを作成する {#create-a-service-account-hmac-key-and-secret}
+### サービスアカウントの HMAC キーとシークレットを作成する \{#create-a-service-account-hmac-key-and-secret\}
 
 **Cloud Storage &gt; Settings &gt; Interoperability** を開き、既存の **Access key** を選択するか、**CREATE A KEY FOR A SERVICE ACCOUNT** を選択します。このガイドでは、新しいサービスアカウント用に新しいキーを作成する手順を説明します。
 
 <Image size="md" img={GCS_create_service_account_key} alt="GCS でサービスアカウントの HMAC キーを生成する" border />
 
-### 新しいサービスアカウントを追加する {#add-a-new-service-account}
+### 新しいサービスアカウントを追加する \{#add-a-new-service-account\}
 
 このプロジェクトに既存のサービスアカウントがない場合は、**CREATE NEW ACCOUNT** をクリックします。
 

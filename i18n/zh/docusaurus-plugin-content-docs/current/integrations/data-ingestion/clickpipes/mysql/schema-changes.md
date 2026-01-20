@@ -4,6 +4,9 @@ slug: /integrations/clickpipes/mysql/schema-changes
 description: '说明 ClickPipes 可在源表中检测到的表结构变更类型的页面'
 doc_type: 'reference'
 keywords: ['clickpipes', 'mysql', 'cdc', 'data ingestion', 'real-time sync']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 适用于 MySQL 的 ClickPipes 可以检测源表中的表结构变更，并且在某些情况下可以将这些变更自动传播到目标表。每种 DDL 操作的处理方式如下所述：

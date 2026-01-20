@@ -15,7 +15,7 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 ユーザーは、この collector に対して、[language SDKs](/use-cases/observability/clickstack/sdks) から、あるいはインフラストラクチャのメトリクスやログを収集するデータ収集エージェント経由でデータを送信します（[agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) ロールで動作する OTel collector や、[Fluentd](https://www.fluentd.org/)、[Vector](https://vector.dev/) などの他のテクノロジーなど）。
 
-## ClickStack OpenTelemetry コレクターのインストール {#installing-otel-collector}
+## ClickStack OpenTelemetry コレクターのインストール \{#installing-otel-collector\}
 
 ClickStack OpenTelemetry コレクターは、次のものを含むほとんどの ClickStack ディストリビューションに同梱されています：
 
@@ -23,11 +23,11 @@ ClickStack OpenTelemetry コレクターは、次のものを含むほとんど�
 - [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)
 - [Helm](/use-cases/observability/clickstack/deployment/helm)
 
-### スタンドアロン {#standalone}
+### スタンドアロン \{#standalone\}
 
 ClickStack の OTel collector は、スタック内の他のコンポーネントとは独立したスタンドアロンとしてもデプロイできます。
 
-[HyperDX-only](/use-cases/observability/clickstack/deployment/hyperdx-only) ディストリビューションを使用している場合、ClickHouse へのデータ取り込みは利用者自身で行う必要があります。これは次のいずれかの方法で行えます。
+[HyperDX-only](/use-cases/observability/clickstack/deployment/hyperdx-only) ディストリビューションを使用している場合、ClickHouse へのデータのインジェストは利用者自身で行う必要があります。これは次のいずれかの方法で行えます。
 
 - 独自の OpenTelemetry collector を実行し、ClickHouse を宛先として指定する — 以下を参照してください。
 - [Vector](https://vector.dev/)、[Fluentd](https://www.fluentd.org/) などの代替ツール、あるいはデフォルトの [OTel contrib collector distribution](https://github.com/open-telemetry/opentelemetry-collector-contrib) を使用して、直接 ClickHouse に送信する。
@@ -38,9 +38,9 @@ ClickStack の OTel collector は、スタック内の他のコンポーネン�
 
 詳細については「[Deploying the collector](/use-cases/observability/clickstack/ingesting-data/otel-collector)」を参照してください。
 
-## OpenTelemetry データの送信 {#sending-otel-data}
+## OpenTelemetry データの送信 \{#sending-otel-data\}
 
-ClickStack にデータを送信するには、OpenTelemetry Collector によって公開されている次のエンドポイントを、OpenTelemetry 計装の送信先として指定します。
+ClickStack にデータを送信するには、OpenTelemetry Collector によって公開されている次のエンドポイントを OpenTelemetry 計装の送信先として指定してください。
 
 * **HTTP (OTLP):** `http://localhost:4318`
 * **gRPC (OTLP):** `localhost:4317`
@@ -58,13 +58,13 @@ export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 言語別 SDK 向けには、`init` 関数で設定するか、`OTEL_EXPORTER_OTLP_HEADERS` 環境変数で設定できます。例えば次のように設定します:
 
 ```shell
-OTEL_EXPORTER_OTLP_HEADERS='authorization=<あなたのインジェストAPIキー>'
+OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
 エージェントも同様に、すべての OTLP 通信にこの Authorization ヘッダーを含める必要があります。たとえば、エージェントとして [OTel collector の contrib ディストリビューション](https://github.com/open-telemetry/opentelemetry-collector-contrib) をデプロイする場合、OTLP exporter を使用できます。次に、この [構造化ログファイル](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz) を取り込むエージェントの設定例を示します。Authorization 用のキーを指定する必要がある点に注意してください。`<YOUR_API_INGESTION_KEY>` を指定します。
 
 ```yaml
-# clickhouse-agent-config.yaml {#clickhouse-agent-configyaml}
+# clickhouse-agent-config.yaml
 receivers:
   filelog:
     include:
@@ -96,7 +96,7 @@ processors:
 service:
   telemetry:
     metrics:
-      address: 0.0.0.0:9888 # 同一ホスト上で2つのコレクターを実行しているため変更
+      address: 0.0.0.0:9888 # Modified as 2 collectors running on same host
   pipelines:
     logs:
       receivers: [filelog]

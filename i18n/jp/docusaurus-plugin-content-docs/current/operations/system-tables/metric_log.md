@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.metric&#95;log {#systemmetric&#95;log}
+# system.metric_log \{#systemmetric_log\}
 
 <SystemTableCloud />
 
@@ -59,8 +59,6 @@ CurrentMetric_DistributedFilesToInsert:                          0
 このテーブルは、XML タグ `<schema_type>` を使用して、異なるスキーマ種別に構成できます。デフォルトのスキーマ種別は `wide` であり、各メトリクスまたはプロファイルイベントが個別の列として保存されます。このスキーマは、単一列の読み取りに対して最も高いパフォーマンスと効率を発揮します。
 
 `transposed` スキーマは、メトリクスやイベントが行として保存される `system.asynchronous_metric_log` と類似した形式でデータを保存します。このスキーマは、マージ時のリソース消費を削減するため、リソースの限られた環境での利用に有効です。
-
-互換性のためのスキーマとして `transposed_with_wide_view` も存在します。これは、転置スキーマ（`system.transposed_metric_log`）を持つテーブルに実データを保存し、その上に wide スキーマを使用したビューを作成します。このビューは転置テーブルをクエリするため、`wide` スキーマから `transposed` スキーマへの移行に役立ちます。
 
 **関連項目**
 

@@ -8,13 +8,13 @@ doc_type: 'guide'
 keywords: ['ssl', 'authentication', 'security', 'certificates', 'user management']
 ---
 
-# SSL ユーザー証明書を使用した認証の設定 {#configuring-ssl-user-certificate-for-authentication}
+# SSL ユーザー証明書を使用した認証の設定 \{#configuring-ssl-user-certificate-for-authentication\}
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-このガイドでは、SSL ユーザー証明書を用いた認証を構成するための、シンプルで最小限の設定例を示します。このチュートリアルは [Configuring SSL-TLS user guide](../configuring-ssl.md) を前提としています。
+このガイドでは、SSL ユーザー証明書を用いた認証を構成するための、シンプルで最小限の設定例を示します。このチュートリアルは [Configuring TLS user guide](../tls/configuring-tls.md) を前提としています。
 
 :::note
 SSL ユーザー認証は、`https`、`native`、`mysql`、`postgresql` インターフェイスを使用する場合にサポートされています。
@@ -26,7 +26,8 @@ MySQL インターフェイスで AWS NLB を使用する場合、以下の非�
 > I would like to be able to configure our NLB proxy protocol v2 as below `proxy_protocol_v2.client_to_server.header_placement,Value=on_first_ack`.
 > :::
 
-## 1. SSL ユーザー証明書を作成する {#1-create-ssl-user-certificates}
+
+## 1. SSL ユーザー証明書を作成する \{#1-create-ssl-user-certificates\}
 
 :::note
 この例では、自己署名 CA が発行した自己署名証明書を使用します。本番環境では、CSR を作成して PKI チームまたは証明書プロバイダーに提出し、適切な証明書を取得してください。
@@ -53,10 +54,10 @@ MySQL インターフェイスで AWS NLB を使用する場合、以下の非�
     openssl x509 -req -in chnode1_cert_user.csr -out chnode1_cert_user.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365
     ```
 
-## 2. SQL ユーザーを作成して権限を付与する {#2-create-a-sql-user-and-grant-permissions}
+## 2. SQL ユーザーを作成して権限を付与する \{#2-create-a-sql-user-and-grant-permissions\}
 
 :::note
-SQL ユーザーを有効化する方法やロールの設定方法の詳細については、ユーザーガイドの [Defining SQL Users and Roles](index.md) を参照してください。
+SQL ユーザーを有効にする方法やロールの設定方法の詳細については、ユーザーガイドの [Defining SQL Users and Roles](index.md) を参照してください。
 :::
 
 1. 証明書ベースの認証を使用するように定義された SQL ユーザーを作成します:
@@ -69,7 +70,7 @@ SQL ユーザーを有効化する方法やロールの設定方法の詳細に�
     GRANT ALL ON *.* TO cert_user WITH GRANT OPTION;
     ```
     :::note
-    この演習ではデモ目的のため、このユーザーには管理者権限（フルアクセス）が付与されています。権限設定については ClickHouse の [RBAC ドキュメント](/guides/sre/user-management/index.md) を参照してください。
+    この演習ではデモ目的で、このユーザーには管理者権限（フルアクセス）が付与されています。権限設定については ClickHouse の [RBAC ドキュメント](/guides/sre/user-management/index.md) を参照してください。
     :::
 
     :::note
@@ -91,7 +92,7 @@ SQL ユーザーを有効化する方法やロールの設定方法の詳細に�
     ```
     :::
 
-## 3. テスト {#3-testing}
+## 3. テスト \{#3-testing\}
 
 1. ユーザー証明書、ユーザー鍵、および CA 証明書をリモートノードにコピーします。
 
@@ -115,7 +116,7 @@ SQL ユーザーを有効化する方法やロールの設定方法の詳細に�
     設定で証明書が指定されている場合、clickhouse-client に渡されたパスワードは無視されることに注意してください。
     :::
 
-## 4. HTTP をテストする {#4-testing-http}
+## 4. HTTP をテストする \{#4-testing-http\}
 
 1. ユーザー証明書、ユーザー秘密鍵、および CA 証明書をリモートノードにコピーします。
 
@@ -138,6 +139,6 @@ SQL ユーザーを有効化する方法やロールの設定方法の詳細に�
     パスワードを指定していない点に注意してください。証明書がパスワードの代わりとして使用され、ClickHouse はこれを用いてユーザーを認証します。
     :::
 
-## まとめ {#summary}
+## まとめ \{#summary\}
 
 この記事では、SSL 証明書認証用のユーザーを作成および設定するための基本的な手順を説明しました。この方法は、`clickhouse-client` や、`https` インターフェイスをサポートし、HTTP ヘッダーを設定できるあらゆるクライアントで使用できます。生成された証明書と鍵は、ClickHouse データベース上でユーザーを認証および認可するために使用されるため、秘匿し、アクセス権を制限する必要があります。証明書と鍵はパスワードと同様に扱ってください。

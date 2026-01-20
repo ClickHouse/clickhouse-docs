@@ -8,21 +8,21 @@ keywords: ['ClickHouse Cloud', '云数据库', '托管式 ClickHouse', 'Serverle
 doc_type: 'reference'
 ---
 
-# ClickHouse Cloud {#clickhouse-cloud}
+# ClickHouse Cloud \{#clickhouse-cloud\}
 
 ClickHouse Cloud 是由广受欢迎的开源 OLAP 数据库 ClickHouse 的原始作者打造的云服务。
 您可以通过[开始免费试用](https://console.clickhouse.cloud/signUp)来体验 ClickHouse Cloud。
 
-## ClickHouse Cloud 的优势 {#clickhouse-cloud-benefits}
+## ClickHouse Cloud 的优势 \{#clickhouse-cloud-benefits\}
 
-下面是使用 ClickHouse Cloud 的部分优势：
+下面介绍使用 ClickHouse Cloud 的部分优势：
 
-- **快速实现价值**：无需预先规划和扩展集群规模，即可立即开始构建。
-- **无缝扩展**：自动扩缩容以适配变化的工作负载，无需为峰值负载过度预留资源。
-- **无服务器运维体验**：我们负责容量规划、扩缩容、安全性、可靠性和升级，你可以专注于业务本身。
-- **透明定价**：只需为实际使用付费，并可通过资源预留和扩缩容控制来管理成本。
-- **总体拥有成本更低**：提供极佳的性价比，并将运维管理开销降至最低。
-- **广泛的生态系统**：可以继续使用你偏好的数据连接器、可视化工具、SQL 和各类语言客户端。
+* **价值实现速度快**：无需为集群进行容量规划和扩缩容，即刻开始构建。
+* **无缝扩展**：自动扩缩容可根据波动的工作负载进行调整，无需为峰值使用量预留过多资源。
+* **Serverless 运维**：我们为您处理容量规划、扩缩容、安全性、可靠性与升级，您可以专注于业务。
+* **透明定价**：只需为实际使用付费，并可通过资源预留和扩缩容控制来管理成本。
+* **总体拥有成本**：以最佳性价比和极低的运维开销运行您的工作负载。
+* **广泛的生态系统**：支持您使用偏好的数据连接器、可视化工具，以及 SQL 和各类语言客户端。
 
 {/*
   ## OSS 与 ClickHouse Cloud 对比                           
@@ -45,10 +45,11 @@ ClickHouse Cloud 是由广受欢迎的开源 OLAP 数据库 ClickHouse 的原始
   | **Managed services**           | 借助云托管服务，团队可以专注于业务成果、加速产品上市，而无需操心 ClickHouse 的容量规划、部署和维护等运维开销。                                                                                                   | ❌               | ✅                 |
   */ }
 
-## ClickHouse Cloud 使用的是哪个版本的 ClickHouse？ {#what-version-of-clickhouse-does-clickhouse-cloud-use}
 
-ClickHouse Cloud 会持续将您的服务升级到更新的版本。在开源社区发布一个核心数据库版本之后，我们会在云端预发布环境中进行额外验证，这通常需要 6–8 周时间，然后才会推送到生产环境。版本发布会按云服务提供商、服务类型和区域分阶段逐步进行。
+## ClickHouse Cloud 使用的是哪个版本的 ClickHouse？ \{#what-version-of-clickhouse-does-clickhouse-cloud-use\}
 
-我们提供一个 “Fast” 发布通道，允许您在常规发布节奏之前订阅更新。更多详情，请参阅 ["Fast Release Channel"](/manage/updates#fast-release-channel-early-upgrades)。
+ClickHouse Cloud 会定期将您的服务升级到包含修复、新特性和性能改进的较新版本。在开源社区发布一个核心数据库版本之后，我们会在云端预发布环境中进行额外验证，这通常需要 6–8 周时间，然后才会推送到生产环境。版本发布会按云服务提供商、服务类型和区域分阶段逐步进行。
 
-如果您依赖于早期版本中的某些功能，在某些情况下，可以通过服务的兼容性设置恢复到之前的行为。
+您可以通过订阅特定发布通道来指定 ClickHouse Cloud 服务的升级节奏。例如，我们提供 [“Fast” 发布通道](/manage/updates#fast-release-channel-early-upgrades)，允许您在常规发布节奏之前订阅更新，同时还提供 [“Slow” 发布通道](/manage/updates#slow-release-channel-deferred-upgrades) 以及其他更细粒度的延迟升级调度选项。
+
+有关 ClickHouse Cloud 升级流程（包括向后兼容性保证）的概览，请参阅 [Upgrades](/manage/updates) 参考文档。

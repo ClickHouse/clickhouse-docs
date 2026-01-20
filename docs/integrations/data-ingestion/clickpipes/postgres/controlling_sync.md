@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/sync_control
 sidebar_label: 'Controlling syncs'
 keywords: ['sync control', 'postgres', 'clickpipes', 'batch size', 'sync interval']
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'

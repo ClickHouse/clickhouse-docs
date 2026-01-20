@@ -22,8 +22,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# 使用 ClickStack 监控 EC2 主机日志 {#ec2-host-logs-clickstack}
+# 使用 ClickStack 监控 EC2 主机日志 \{#ec2-host-logs-clickstack\}
 
 :::note[TL;DR]
 通过在实例上安装 OpenTelemetry Collector，使用 ClickStack 监控 EC2 系统日志。Collector 会自动为日志添加 EC2 元数据（实例 ID、区域、可用区、实例类型）。本文将介绍如何：
@@ -38,7 +37,7 @@ import TabItem from '@theme/TabItem';
 所需时间：10–15 分钟
 :::
 
-## 与现有 EC2 实例集成 {#existing-ec2}
+## 与现有 EC2 实例集成 \{#existing-ec2\}
 
 本节介绍如何在 EC2 实例上安装 OpenTelemetry Collector，用于收集系统日志并将其发送到 ClickStack，并自动补充 EC2 元数据。此分布式架构已准备好用于生产环境，并可扩展到多个实例。
 
@@ -48,7 +47,7 @@ import TabItem from '@theme/TabItem';
 
 如果希望在为生产实例进行配置之前先测试 EC2 主机日志集成，可以在 ["Demo dataset"](/use-cases/observability/clickstack/integrations/host-logs/ec2#demo-dataset) 部分使用我们预配置的环境和示例数据进行测试。
 
-##### 前提条件 {#prerequisites}
+##### 前提条件 \{#prerequisites\}
 
 - 已有正在运行的 ClickStack 实例（可为本地数据中心部署、Cloud 或本地开发环境）
 - 已有正在运行的 EC2 实例（Ubuntu、Amazon Linux 或其他 Linux 发行版）
@@ -448,9 +447,9 @@ docker run --name clickstack-demo \
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.ec2_host_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表盘配置 {#download}
+#### <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.ec2_host_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表盘配置 \{#download\}
 
-#### 导入预构建的仪表盘 {#import-dashboard}
+#### 导入预构建的仪表盘 \{#import-dashboard\}
 
 1. 打开 HyperDX 并进入 Dashboards 页面
 2. 点击右上角省略号下的 **Import Dashboard**
@@ -461,7 +460,7 @@ docker run --name clickstack-demo \
 
 <Image img={finish_import} alt="完成导入"/>
 
-#### 查看仪表盘 {#created-dashboard}
+#### 查看仪表盘 \{#created-dashboard\}
 
 系统会创建一个仪表盘，其中所有可视化视图都已预先配置：
 
@@ -507,7 +506,6 @@ sudo journalctl -u otelcol-contrib -f | grep -i "ec2\|metadata\|resourcedetectio
 # If running in foreground, check stdout
 ```
 
-
 ### HyperDX 中未显示日志
 
 **检查 syslog 文件是否存在并正在写入：**
@@ -542,7 +540,6 @@ curl -v http://YOUR_CLICKSTACK_HOST:4318/v1/logs
 sudo journalctl -u otelcol-contrib -f | grep -i "error\|failed"
 ```
 
-
 ### 日志解析错误
 
 **检查你的 syslog 格式：**
@@ -563,7 +560,6 @@ tail -5 /var/log/messages
 
 如果你的格式不匹配，请根据你使用的发行版，在[创建 collector 配置](#create-config)部分中选择相应的配置标签页。
 
-
 ### Collector 作为 systemd 服务未启动
 
 **检查服务状态：**
@@ -583,7 +579,6 @@ sudo journalctl -u otelcol-contrib -n 50
 * 环境中未正确设置 API 密钥
 * 配置文件语法错误
 * 读取日志文件时的权限问题
-
 
 ## 后续步骤 {#next-steps}
 

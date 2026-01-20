@@ -21,6 +21,9 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 This guide covers how backups work in ClickHouse Cloud, what options you have to configure backups for your service, and how to restore from a backup.
 
+**Prerequisites**
+- You have read ["How backups work in ClickHouse Cloud"](/cloud/features/backups#how-backups-work-in-clickhouse-cloud) (Feature overview page)
+
 ## Backup status list {#backup-status-list}
 
 Your service will be backed up based on the set schedule, whether it is the default daily schedule or a [custom schedule](/cloud/manage/backups/configurable-backups) picked by you. All available backups can be viewed from the **Backups** tab of the service. From here, you can see the status of the backup, the duration, as well as the size of the backup. You can also restore a specific backup using the **Actions** column.
@@ -155,6 +158,24 @@ SYNC SETTINGS max_table_size_to_drop=2000000000000 -- increases the limit to 2TB
 :::note
 Legacy Plans: For customers on legacy plans, default daily backups retained for 24 hours, are included in the storage cost.
 :::
+
+## Backup durations {#backup-durations}
+
+Backup and restore durations depend on several factors such as the size of the database as well as the schema and the number of tables in the database.
+Incremental backups will usually complete much faster than a full backup as less data is being backed up.
+Restoring from an incremental backup will be slightly slower than restoring from a full backup as all incremental backups and the last full backup in the chain are included in the restore as explained above.
+
+In our testing, we have seen that smaller backups of ~1 TB could take around 10-15 minutes or longer to back up.
+Backups less than 20 TB should complete within an hour, and backing up 50 TB of data should take about 2-3 hours.
+Backups get economies of scale at larger sizes, and we have seen backups of up to 1 PB for some internal services complete in about 10 hours.
+
+:::note
+Backups to external buckets may be slower than backups to ClickHouse buckets
+:::
+
+Restore durations are about the same as the backup durations.
+
+We recommend testing with your own database or sample data to get better estimates as the actual duration depends on several factors as outlined above.
 
 ## Configurable backups {#configurable-backups}
 

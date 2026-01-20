@@ -16,17 +16,17 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | ✗    | ✔     |           |
 
 
-## Описание {#description}
+## Описание \{#description\}
 
 Отличается от формата [`PrettyCompact`](./PrettyCompact.md) тем, что [escape-последовательности ANSI](http://en.wikipedia.org/wiki/ANSI_escape_code) не используются. 
 Это необходимо для отображения формата в браузере, а также для использования утилиты командной строки `watch`.
 
 
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 
 
-## Настройки форматирования {#format-settings}
+## Настройки форматирования \{#format-settings\}
 
 <PrettyFormatSettings/>

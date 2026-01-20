@@ -14,4 +14,4 @@ Mutations 是**全序的（totally ordered）**：它们只会作用于 mutation
 
 一般来说，应**避免频繁或大规模的 mutation**，特别是在高吞吐量表上。应优先考虑使用其他表引擎，比如 [ReplacingMergeTree](/guides/replacing-merge-tree) 或 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)，这些引擎被设计为在查询时或 merge 过程中更高效地处理数据纠错。如果 mutation 确实不可避免，应通过 system.mutations 表对其进行密切监控，并在进程卡住或行为异常时使用 `KILL MUTATION`。错误使用 mutation 会导致性能下降、存储频繁 churn，以及潜在的服务不稳定——因此应谨慎且少量地使用。
 
-在删除数据时，用户还可以考虑使用 [轻量级删除（Lightweight deletes）](/guides/developer/lightweight-delete)，或者通过[分区](/best-practices/choosing-a-partitioning-key)来管理数据，这样可以高效地[删除整个 part](/sql-reference/statements/alter/partition#drop-partitionpart)。
+在删除数据时，你还可以考虑使用 [轻量级删除（Lightweight deletes）](/guides/developer/lightweight-delete)，或者通过[分区](/best-practices/choosing-a-partitioning-key)来管理数据，这样可以高效地[删除整个 part](/sql-reference/statements/alter/partition#drop-partitionpart)。

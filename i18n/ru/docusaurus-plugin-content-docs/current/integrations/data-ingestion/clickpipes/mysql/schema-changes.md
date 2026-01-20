@@ -4,6 +4,9 @@ slug: /integrations/clickpipes/mysql/schema-changes
 description: 'Страница, описывающая типы изменений схемы, обнаруживаемые ClickPipes в исходных таблицах'
 doc_type: 'reference'
 keywords: ['clickpipes', 'mysql', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 ClickPipes для MySQL могут обнаруживать изменения схемы в исходных таблицах и в некоторых случаях автоматически распространять эти изменения на таблицы назначения. Поведение для каждой операции DDL описано ниже:

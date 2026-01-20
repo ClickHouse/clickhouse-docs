@@ -10,7 +10,7 @@ doc_type: 'reference'
 このセクションでは、ClickHouse の SQL 構文について説明します。
 ClickHouse は SQL をベースにした構文を採用していますが、多くの拡張と最適化を備えています。
 
-## クエリのパース {#query-parsing}
+## クエリのパース \{#query-parsing\}
 
 ClickHouse には 2 種類のパーサーがあります。
 
@@ -55,19 +55,20 @@ INSERT INTO t VALUES (1, 'Hello, world'), (2, 'abc'), (3, 'def')
 フォーマットパーサーの詳細については、[Formats](../interfaces/formats.md) セクションを参照してください。
 :::
 
-## 空白 {#spaces}
+
+## 空白 \{#spaces\}
 
 * 構文要素の間（クエリの先頭および末尾も含めて）には、任意の数の空白文字を入れることができます。
 * 空白文字には、スペース、タブ、ラインフィード、CR、フォームフィードが含まれます。
 
-## コメント {#comments}
+## コメント \{#comments\}
 
 ClickHouse は、SQL スタイルおよび C スタイルの両方のコメントをサポートしています。
 
-* SQL スタイルのコメントは `--`、`#!` または `# ` で始まり、その行末までがコメントになります。`--` および `#!` の後のスペースは省略可能です。
-* C スタイルのコメントは `/*` から `*/` までの範囲がコメントとなり、複数行にわたることもあります。スペースも不要です。
+- SQL スタイルのコメントは `--`、`#!` または `# ` で始まり、その行末までがコメントになります。`--` および `#!` の後のスペースは省略可能です。
+- C スタイルのコメントは `/*` から `*/` までの範囲がコメントとなり、複数行にわたることもあります。スペースも不要です。
 
-## キーワード {#keywords}
+## キーワード \{#keywords\}
 
 ClickHouse のキーワードは、コンテキストに応じて *大文字小文字を区別する* 場合と *区別しない* 場合があります。
 
@@ -92,7 +93,8 @@ ClickHouse のキーワードは、コンテキストに応じて *大文字小�
 SELECT "FROM" FROM table_name
 ```
 
-## 識別子 {#identifiers}
+
+## 識別子 \{#identifiers\}
 
 識別子とは次のものを指します。
 
@@ -116,22 +118,22 @@ SELECT "FROM" FROM table_name
 クォート付き識別子におけるエスケープのルールは、文字列リテラルにも同様に適用されます。詳細は [文字列](#string) を参照してください。
 :::
 
-## リテラル {#literals}
+## リテラル \{#literals\}
 
 ClickHouse において、リテラルとはクエリ内に直接記述される値のことです。
 言い換えると、クエリの実行中に変化しない固定の値です。
 
 リテラルには次の種類があります:
 
-* [文字列](#string)
-* [数値](#numeric)
-* [複合リテラル](#compound)
-* [`NULL`](#null)
-* [ヒアドキュメント](#heredoc)（カスタム文字列リテラル）
+- [文字列](#string)
+- [数値](#numeric)
+- [複合リテラル](#compound)
+- [`NULL`](#null)
+- [ヒアドキュメント](#heredoc)（カスタム文字列リテラル）
 
 以下のセクションで、それぞれについてより詳しく見ていきます。
 
-### 文字列 {#string}
+### 文字列 \{#string\}
 
 文字列リテラルは必ずシングルクォートで囲む必要があります。ダブルクォートはサポートされていません。
 
@@ -169,7 +171,7 @@ ClickHouse において、リテラルとはクエリ内に直接記述される
 文字列リテラルでは、少なくとも `'` と `\` を、エスケープコード `\'`（または `''`）および `\\` を用いてエスケープする必要があります。
 :::
 
-### Numeric {#numeric}
+### Numeric \{#numeric\}
 
 数値リテラルは次のようにパースされます。
 
@@ -187,7 +189,7 @@ ClickHouse において、リテラルとはクエリ内に直接記述される
 * `256` は `UInt16` としてパースされます。
 
 :::note Important
-64 ビットより幅の広い整数値 (`UInt128`, `Int128`, `UInt256`, `Int256`) を正しくパースするには、より大きな型にキャストする必要があります。
+64 ビットより幅の広い整数値 (`UInt128`, `Int128`, `UInt256`, `Int256`) を正しくパースするには、より大きな型にキャストする必要があります:
 
 ```sql
 -170141183460469231731687303715884105728::Int128
@@ -222,7 +224,8 @@ ClickHouse において、リテラルとはクエリ内に直接記述される
 解釈時の偶発的なエラーを避けるため、8 進数リテラルはサポートされていません。
 :::
 
-### 複合リテラル {#compound}
+
+### 複合リテラル \{#compound\}
 
 配列は `[1, 2, 3]` のように角かっこで表記します。タプルは `(1, 'Hello, world!', 2)` のように丸かっこで表記します。
 厳密には、これらはリテラルではなく、それぞれ配列生成演算子およびタプル生成演算子を用いた式です。
@@ -233,7 +236,7 @@ ClickHouse において、リテラルとはクエリ内に直接記述される
 クエリ結果にはタプルを含めることができますが、タプルは（[Memory](../engines/table-engines/special/memory.md) エンジンを使用するテーブルを除き）データベースに保存できません。
 :::
 
-### NULL {#null}
+### NULL \{#null\}
 
 `NULL` は、値が存在しないことを示すために使用されます。
 テーブルのカラムに `NULL` を保存するには、そのカラムが [Nullable](../sql-reference/data-types/nullable.md) 型である必要があります。
@@ -244,12 +247,12 @@ ClickHouse において、リテラルとはクエリ内に直接記述される
 * データ形式（入力または出力）によっては、`NULL` の表現が異なる場合があります。詳細については、[data formats](/interfaces/formats) を参照してください。
 * `NULL` の処理には注意が必要です。たとえば、比較演算の引数の少なくとも一方が `NULL` の場合、その演算の結果も `NULL` になります。乗算、加算、その他の演算についても同様です。各演算のドキュメントを参照することを推奨します。
 * クエリ内では、[`IS NULL`](/sql-reference/functions/functions-for-nulls#isNull) および [`IS NOT NULL`](/sql-reference/functions/functions-for-nulls#isNotNull) 演算子と、関連する関数 `isNull` および `isNotNull` を使用して `NULL` かどうかを判定できます。
-  :::
+:::
 
-### ヒアドキュメント {#heredoc}
+### ヒアドキュメント \{#heredoc\}
 
 [heredoc](https://en.wikipedia.org/wiki/Here_document) は、元の書式を保ったまま文字列（多くの場合は複数行）を定義するための方法です。
-heredoc は、2つの `$` 記号の間に置かれたカスタム文字列リテラルとして定義されます。
+heredoc は、2 つの `$` 記号の間に置かれたカスタム文字列リテラルとして定義されます。
 
 例：
 
@@ -271,61 +274,62 @@ SELECT $heredoc$SHOW CREATE VIEW my_view$heredoc$;
 * ヒアドキュメントを使って、SQL、HTML、XML などのコードスニペットを埋め込むことができます。
   :::
 
-## クエリパラメータの定義と使用 {#defining-and-using-query-parameters}
+
+## クエリパラメータの定義と使用 \{#defining-and-using-query-parameters\}
 
 クエリパラメータを使用すると、具体的な識別子の代わりに抽象的なプレースホルダーを含む汎用的なクエリを記述できます。\
 クエリパラメータを含むクエリが実行されると、すべてのプレースホルダーが解釈され、実際のクエリパラメータ値に置き換えられます。
 
 クエリパラメータを定義する方法は 2 通りあります:
 
-* `SET param_<name>=<value>`
-* `--param_<name>='<value>'`
+- `SET param_<name>=<value>`
+- `--param_<name>='<value>'`
 
 2 つ目の形式を使用する場合は、コマンドラインで `clickhouse-client` に渡す引数として指定します。このとき:
 
-* `<name>` はクエリパラメータの名前です。
-* `<value>` はその値です。
+- `<name>` はクエリパラメータの名前です。
+- `<value>` はその値です。
 
 クエリパラメータは、クエリ内で `{<name>: <datatype>}` という形式で参照できます。ここで `<name>` はクエリパラメータ名、`<datatype>` はその値が変換されるデータ型です。
 
 <details>
-  <summary>SET コマンドの例</summary>
+<summary>SET コマンドの例</summary>
 
-  たとえば、次の SQL は `a`、`b`、`c`、`d` という名前のパラメータを定義しており、それぞれ異なるデータ型を持ちます:
+たとえば、次の SQL は `a`、`b`、`c`、`d` という名前のパラメータを定義しており、それぞれ異なるデータ型を持ちます:
 
-  ```sql
-  SET param_a = 13;
-  SET param_b = 'str';
-  SET param_c = '2022-08-04 18:30:53';
-  SET param_d = {'10': [11, 12], '13': [14, 15]};
+```sql
+SET param_a = 13;
+SET param_b = 'str';
+SET param_c = '2022-08-04 18:30:53';
+SET param_d = {'10': [11, 12], '13': [14, 15]};
 
-  SELECT
-     {a: UInt32},
-     {b: String},
-     {c: DateTime},
-     {d: Map(String, Array(UInt8))};
+SELECT
+   {a: UInt32},
+   {b: String},
+   {c: DateTime},
+   {d: Map(String, Array(UInt8))};
 
-  13    str    2022-08-04 18:30:53    {'10':[11,12],'13':[14,15]}
-  ```
+13    str    2022-08-04 18:30:53    {'10':[11,12],'13':[14,15]}
+```
 </details>
 
 <details>
-  <summary>clickhouse-client を用いた例</summary>
+<summary>clickhouse-client を用いた例</summary>
 
-  `clickhouse-client` を使用する場合、パラメータは `--param_name=value` という形式で指定します。たとえば、次のパラメータは名前が `message` であり、`String` として取得されます:
+`clickhouse-client` を使用する場合、パラメータは `--param_name=value` という形式で指定します。たとえば、次のパラメータは名前が `message` であり、`String` として取得されます:
 
-  ```bash
-  clickhouse-client --param_message='hello' --query="SELECT {message: String}"
+```bash
+clickhouse-client --param_message='hello' --query="SELECT {message: String}"
 
-  hello
-  ```
+hello
+```
 
-  クエリパラメータがデータベース、テーブル、関数などの識別子名を表す場合は、その型として `Identifier` を使用します。たとえば、次のクエリは `uk_price_paid` という名前のテーブルから行を返します:
+クエリパラメータがデータベース、テーブル、関数などの識別子名を表す場合は、その型として `Identifier` を使用します。たとえば、次のクエリは `uk_price_paid` という名前のテーブルから行を返します:
 
-  ```sql
-  SET param_mytablename = "uk_price_paid";
-  SELECT * FROM {mytablename:Identifier};
-  ```
+```sql
+SET param_mytablename = "uk_price_paid";
+SELECT * FROM {mytablename:Identifier};
+```
 </details>
 
 :::note
@@ -333,7 +337,7 @@ SELECT $heredoc$SHOW CREATE VIEW my_view$heredoc$;
 主に、識別子やリテラルの代わりとして `SELECT` 文内で使用されることを想定して設計されています。
 :::
 
-## 関数 {#functions}
+## 関数 \{#functions\}
 
 関数呼び出しは、識別子に続けて、丸括弧で囲まれた引数リスト（空でも可）を記述します。
 標準 SQL とは異なり、引数リストが空の場合でも括弧は必須です。
@@ -361,7 +365,8 @@ quantile (0.9)(x)
 パラメータを持たない集約関数の構文は、通常の関数と同じです。
 :::
 
-## 演算子 {#operators}
+
+## 演算子 \{#operators\}
 
 演算子は、優先順位と結合性を考慮して、クエリの構文解析時に対応する関数に変換されます。
 
@@ -377,7 +382,8 @@ quantile (0.9)(x)
 plus(plus(1, multiply(2, 3)), 4)`
 ```
 
-## データ型とデータベーステーブルエンジン {#data-types-and-database-table-engines}
+
+## データ型とデータベーステーブルエンジン \{#data-types-and-database-table-engines\}
 
 `CREATE` クエリにおけるデータ型とテーブルエンジンは、識別子や関数と同じように記述します。
 言い換えると、丸括弧による引数リストを伴う場合もあれば、伴わない場合もあります。
@@ -388,17 +394,17 @@ plus(plus(1, multiply(2, 3)), 4)`
 * [テーブルエンジン](/engines/table-engines/index.md)
 * [CREATE](/sql-reference/statements/create/index.md)
 
-## Expressions {#expressions}
+## Expressions \{#expressions\}
 
 式 (expression) は次のいずれかです。
 
-* 関数
-* 識別子
-* リテラル
-* 演算子の適用
-* 括弧で囲まれた式
-* サブクエリ
-* アスタリスク
+- 関数
+- 識別子
+- リテラル
+- 演算子の適用
+- 括弧で囲まれた式
+- サブクエリ
+- アスタリスク
 
 また、[エイリアス](#expression-aliases) を含むこともできます。
 
@@ -408,7 +414,7 @@ plus(plus(1, multiply(2, 3)), 4)`
 定数式は、その結果がクエリ解析中、すなわち実行前に既知である式です。
 たとえば、リテラルのみからなる式は定数式です。
 
-## 式のエイリアス {#expression-aliases}
+## 式のエイリアス \{#expression-aliases\}
 
 エイリアスは、クエリ内の[式](#expressions)に対してユーザーが定義する名前です。
 
@@ -420,13 +426,14 @@ expr AS alias
 
 | 構文要素    | 説明                                                                              | 例                                                                      | 補足                                                                                                         |
 | ------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `AS`    | エイリアスを定義するためのキーワードです。`SELECT` 句では、テーブル名やカラム名のエイリアスを、`AS` キーワードを使わずに定義することもできます。 | `SELECT table_name_alias.column_name FROM table_name table_name_alias` | [CAST](/sql-reference/functions/type-conversion-functions#cast) 関数では、`AS` キーワードには別の意味があります。関数の説明を参照してください。 |
+| `AS`    | エイリアスを定義するためのキーワードです。`SELECT` 句では、テーブル名やカラム名のエイリアスを、`AS` キーワードを使わずに定義することもできます。 | `SELECT table_name_alias.column_name FROM table_name table_name_alias` | [CAST](/sql-reference/functions/type-conversion-functions#CAST) 関数では、`AS` キーワードには別の意味があります。関数の説明を参照してください。 |
 | `expr`  | ClickHouse がサポートする任意の式です。                                                       | `SELECT column_name * 2 AS double FROM some_table`                     |                                                                                                            |
 | `alias` | `expr` に付ける名前です。エイリアスは [identifiers](#identifiers) の構文に従う必要があります。               | `SELECT "table t".column_name FROM table_name AS "table t"`            |                                                                                                            |
 
-### 使用上の注意 {#notes-on-usage}
 
-* エイリアスはクエリまたはサブクエリ内でグローバルに有効であり、任意の式に対してクエリ中のどの位置でも定義できます。例えば：
+### 使用上の注意 \{#notes-on-usage\}
+
+* エイリアスはクエリまたはサブクエリ内でグローバルに有効であり、任意の式に対してクエリ内のどの位置でも定義できます。例えば次のとおりです。
 
 ```sql
 SELECT (1 AS n) + 2, n`.
@@ -444,7 +451,7 @@ SELECT (1 AS n) + 2, n`.
 SELECT n + m FROM (SELECT 1 AS n, 2 AS m)`.
 ```
 
-* 列名やテーブル名と同じエイリアスを定義する場合には注意してください。次の例を見てみましょう。
+* カラム名やテーブル名と同じエイリアスを定義する場合には注意してください。次の例を見てみましょう。
 
 ```sql
 CREATE TABLE t
@@ -473,7 +480,8 @@ ClickHouse は式 `argMax(a, b)` 内のリテラル `b` を式 `sum(b)` に置�
 [prefer&#95;column&#95;name&#95;to&#95;alias](/operations/settings/settings#prefer_column_name_to_alias) を `1` に設定することで、このデフォルトの動作を変更できます。
 :::
 
-## Asterisk {#asterisk}
+
+## Asterisk \{#asterisk\}
 
 `SELECT` クエリでは、アスタリスク（`*`）を式の代わりに使用できます。
 詳細は、[SELECT](/sql-reference/statements/select/index.md#asterisk) セクションを参照してください。

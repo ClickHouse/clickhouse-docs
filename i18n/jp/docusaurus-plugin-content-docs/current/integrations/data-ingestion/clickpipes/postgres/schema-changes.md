@@ -4,6 +4,9 @@ slug: /integrations/clickpipes/postgres/schema-changes
 description: 'ClickPipes がソーステーブルで検出できるスキーマ変更タイプを説明するページ'
 doc_type: 'reference'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'データインジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 Postgres 用 ClickPipes は、ソーステーブルでのスキーマ変更を検出し、場合によってはその変更を自動的に宛先テーブルへ伝播します。各 DDL 操作がどのように処理されるかは、以下のとおりです。

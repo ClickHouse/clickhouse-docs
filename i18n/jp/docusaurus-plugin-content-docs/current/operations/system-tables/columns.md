@@ -48,7 +48,6 @@ doc_type: 'reference'
 SELECT * FROM system.columns LIMIT 2 FORMAT Vertical;
 ```
 
-
 ```text
 Row 1:
 ──────

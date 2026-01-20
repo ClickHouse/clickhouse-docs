@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## Description {#description}
+## Description \{#description\}
 
 `JSON` 格式以 JSON 格式读取和输出数据。
 
@@ -41,7 +41,7 @@ doc_type: 'reference'
 
 ClickHouse 支持 [NULL](/sql-reference/syntax.md)，在 JSON 输出中显示为 `null`。要在输出中启用 `+nan`、`-nan`、`+inf`、`-inf` 值，请将 [`output_format_json_quote_denormals`](/operations/settings/settings-formats.md/#output_format_json_quote_denormals) 设置为 `1`。
 
-## 示例用法 {#example-usage}
+## 示例用法 \{#example-usage\}
 
 示例：
 
@@ -99,12 +99,12 @@ SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase WITH TOTA
 }
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}
 
 对于 JSON 输入格式，如果将设置项 [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) 设为 `1`，
 则会将输入数据中元数据里的类型与表中对应列的类型进行比较。
 
-## 另请参阅 {#see-also}
+## 另请参阅 \{#see-also\}
 
 - [JSONEachRow](/interfaces/formats/JSONEachRow) 格式
 - [output_format_json_array_of_rows](/operations/settings/settings-formats.md/#output_format_json_array_of_rows) 设置

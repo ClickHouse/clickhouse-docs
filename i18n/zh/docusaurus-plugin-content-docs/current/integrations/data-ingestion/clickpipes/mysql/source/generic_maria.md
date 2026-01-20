@@ -5,9 +5,12 @@ slug: /integrations/clickpipes/mysql/source/generic_maria
 title: '通用 MariaDB 数据源配置指南'
 doc_type: '指南'
 keywords: ['通用 MariaDB', 'ClickPipes', '二进制日志', 'SSL/TLS', '自托管']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
-# 通用 MariaDB 源设置指南 {#generic-mariadb-source-setup-guide}
+# 通用 MariaDB 源设置指南 \{#generic-mariadb-source-setup-guide\}
 
 :::info
 
@@ -15,7 +18,7 @@ keywords: ['通用 MariaDB', 'ClickPipes', '二进制日志', 'SSL/TLS', '自托
 
 :::
 
-## 启用二进制日志保留 {#enable-binlog-retention}
+## 启用二进制日志保留 \{#enable-binlog-retention\}
 
 二进制日志包含对 MariaDB 服务器实例所做的数据修改的信息，是实现复制所必需的。
 
@@ -58,12 +61,11 @@ expire_logs_days = 1
 必须重启 MariaDB 实例才能使更改生效。
 
 :::note
-
 对于 MariaDB &lt;= 10.4，不支持列排除功能，因为这些版本尚未引入 `binlog_row_metadata` 设置。
-
 :::
 
-## 配置数据库用户 {#configure-database-user}
+
+## 配置数据库用户 \{#configure-database-user\}
 
 以 root 用户连接到你的 MariaDB 实例，并执行以下命令：
 
@@ -92,7 +94,7 @@ expire_logs_days = 1
 
 :::
 
-## SSL/TLS 配置（推荐） {#ssl-tls-configuration}
+## SSL/TLS 配置（推荐） \{#ssl-tls-configuration\}
 
 SSL 证书可确保与 MariaDB 数据库之间的连接安全。具体配置取决于您的证书类型：
 
@@ -106,7 +108,7 @@ SSL 证书可确保与 MariaDB 数据库之间的连接安全。具体配置取�
 
 有关 SSL/TLS 选项的更多信息，请参阅我们的[常见问题](https://clickhouse.com/docs/integrations/clickpipes/mysql/faq#tls-certificate-validation-error)。
 
-## 接下来 {#whats-next}
+## 接下来 \{#whats-next\}
 
 现在，您可以[创建 ClickPipe](../index.md)，并开始将 MariaDB 实例中的数据摄取到 ClickHouse Cloud。
 请务必记录在设置 MariaDB 实例时使用的连接参数，因为在创建 ClickPipe 的过程中将会用到这些信息。

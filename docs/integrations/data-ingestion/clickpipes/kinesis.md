@@ -4,10 +4,10 @@ description: 'Seamlessly connect your Amazon Kinesis data sources to ClickHouse 
 slug: /integrations/clickpipes/kinesis
 title: 'Integrating Amazon Kinesis with ClickHouse Cloud'
 doc_type: 'guide'
+keywords: ['clickpipes', 'kinesis', 'streaming', 'aws', 'data ingestion']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
-keywords: ['clickpipes', 'kinesis', 'streaming', 'aws', 'data ingestion']
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
@@ -141,6 +141,7 @@ view).  For such pipes, it may improve ClickPipes performance to delete all the 
 ## Limitations {#limitations}
 
 - [DEFAULT](/sql-reference/statements/create/table#default) is not supported.
+- Individual messages are limited to 8MB (uncompressed) by default when running with the smallest (XS) replica size, and 16MB (uncompressed) with larger replicas.  Messages that exceed this limit will be rejected with an error.  If you have a need for larger messages, please contact support.
 
 ## Performance {#performance}
 

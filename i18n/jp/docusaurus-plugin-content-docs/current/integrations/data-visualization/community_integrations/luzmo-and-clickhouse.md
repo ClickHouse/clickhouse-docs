@@ -7,7 +7,7 @@ title: 'Luzmo と ClickHouse の連携'
 sidebar: 'integrations'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
 ---
 
@@ -18,11 +18,11 @@ import luzmo_02 from '@site/static/images/integrations/data-visualization/luzmo_
 import luzmo_03 from '@site/static/images/integrations/data-visualization/luzmo_03.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Luzmo と ClickHouse の連携 {#integrating-luzmo-with-clickhouse}
+# Luzmo と ClickHouse の連携 \{#integrating-luzmo-with-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
-## 1. ClickHouse 接続をセットアップする {#1-setup-a-clickhouse-connection}
+## 1. ClickHouse 接続をセットアップする \{#1-setup-a-clickhouse-connection\}
 
 ClickHouse への接続を行うには、**Connections ページ**に移動し、**New Connection** を選択してから、New Connection モーダルで ClickHouse を選択します。
 
@@ -39,7 +39,7 @@ ClickHouse への接続を行うには、**Connections ページ**に移動し�
 
 API 経由で[ClickHouse への接続を作成する](https://developer.luzmo.com/api/createAccount?exampleSection=AccountCreateClickhouseRequestBody)方法については、開発者ドキュメントのサンプルを参照してください。
 
-## 2. データセットを追加する {#2-add-datasets}
+## 2. データセットを追加する \{#2-add-datasets\}
 
 ClickHouse への接続が完了したら、[こちら](https://academy.luzmo.com/article/ldx3iltg)で説明されている手順に従ってデータセットを追加できます。ClickHouse 上で利用可能な 1 つまたは複数のデータセットを選択し、それらを Luzmo 内で[リンク](https://academy.luzmo.com/article/gkrx48x5)して、ダッシュボード上で一緒に利用できるようにします。[分析向けのデータ準備](https://academy.luzmo.com/article/u492qov0)に関するこの記事も必ず参照してください。
 
@@ -49,7 +49,7 @@ API を使用してデータセットを追加する方法については、[開
 
 <Image img={luzmo_03} size="md" alt="ClickHouse のデータから複数の可視化を表示している Luzmo のダッシュボード例" border />
 
-## 使用上の注意事項 {#usage-notes}
+## 使用上の注意事項 \{#usage-notes\}
 
 1. Luzmo ClickHouse コネクタは、接続に HTTP API インターフェイス（通常はポート 8123 で稼働）を使用します。
 2. `Distributed` テーブルエンジンを使用するテーブルを利用している場合、`distributed_product_mode` が `deny` に設定されていると、一部の Luzmo チャートが失敗する可能性があります。ただし、この問題が発生するのは、テーブルを別のテーブルにリンクし、そのリンクをチャート内で使用している場合に限られるはずです。その場合は、ClickHouse クラスター内で要件に合った別のオプションに `distributed_product_mode` を設定してください。ClickHouse Cloud を使用している場合は、この設定は無視して問題ありません。

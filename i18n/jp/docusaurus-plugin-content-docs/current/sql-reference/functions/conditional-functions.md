@@ -6,11 +6,11 @@ title: '条件付き関数'
 doc_type: 'reference'
 ---
 
-# 条件付き関数 {#conditional-functions}
+# 条件付き関数 \{#conditional-functions\}
 
-## 概要 {#overview}
+## 概要 \{#overview\}
 
-### 条件式の結果を直接利用する {#using-conditional-results-directly}
+### 条件式の結果を直接利用する \{#using-conditional-results-directly\}
 
 条件式は常に `0`、`1`、または `NULL` を返します。そのため、次のように条件式の結果をそのまま利用できます。
 
@@ -27,7 +27,7 @@ FROM LEFT_RIGHT
 └──────────┘
 ```
 
-### 条件式における NULL 値 {#null-values-in-conditionals}
+### 条件式における NULL 値 \{#null-values-in-conditionals\}
 
 条件式に `NULL` 値が含まれている場合、その評価結果も `NULL` になります。
 
@@ -63,7 +63,7 @@ FROM LEFT_RIGHT
 └──────┴───────┴──────────────────┘
 ```
 
-### CASE ステートメント {#case-statement}
+### CASE ステートメント \{#case-statement\}
 
 ClickHouse の CASE 式は、SQL の CASE 演算子と同様の条件付きロジックを提供します。条件を評価し、最初に一致した条件に基づいて値を返します。
 

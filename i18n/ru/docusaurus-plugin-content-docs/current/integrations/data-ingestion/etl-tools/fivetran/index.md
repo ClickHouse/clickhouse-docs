@@ -2,7 +2,7 @@
 sidebar_label: 'Fivetran'
 slug: /integrations/fivetran
 sidebar_position: 2
-description: 'Пользователи могут преобразовывать и моделировать свои данные в ClickHouse с помощью dbt'
+description: 'Вы можете преобразовывать и моделировать свои данные в ClickHouse с помощью dbt'
 title: 'Fivetran и ClickHouse Cloud'
 doc_type: 'guide'
 integration:
@@ -13,11 +13,12 @@ keywords: ['fivetran', 'перемещение данных', 'etl', 'ClickHouse
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Fivetran и ClickHouse Cloud {#fivetran-and-clickhouse-cloud}
+
+# Fivetran и ClickHouse Cloud \{#fivetran-and-clickhouse-cloud\}
 
 <ClickHouseSupportedBadge/>
 
-## Обзор {#overview}
+## Обзор \{#overview\}
 
 [Fivetran](https://www.fivetran.com) — это платформа автоматизированного перемещения данных, обеспечивающая перенос данных из, в и между вашими облачными платформами для работы с данными.
 
@@ -39,13 +40,13 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
   </iframe>
 </div>
 
-## ClickHouse Cloud в качестве назначения {#clickhouse-cloud-destination}
+## ClickHouse Cloud в качестве назначения \{#clickhouse-cloud-destination\}
 
 См. официальную документацию на сайте Fivetran:
 
 - [Обзор назначения ClickHouse](https://fivetran.com/docs/destinations/clickhouse)
 - [Руководство по настройке назначения ClickHouse](https://fivetran.com/docs/destinations/clickhouse/setup-guide)
 
-## Свяжитесь с нами {#contact-us}
+## Свяжитесь с нами \{#contact-us\}
 
 Если у вас есть вопросы или предложения по новой функциональности, пожалуйста, создайте [запрос в службу поддержки](/about-us/support).

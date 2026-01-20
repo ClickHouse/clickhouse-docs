@@ -110,7 +110,6 @@ ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/stat
 
 `failed_sequential_authentications` - 连续身份验证错误的总次数。
 
-
 如果在至少一个时间间隔内超出限制，将抛出一个异常，异常文本会说明超出了哪个限制、对应的是哪个时间间隔，以及新的时间间隔何时开始（即何时可以再次发送查询）。
 
 配额可以使用“quota key”功能，对多个键的资源进行相互独立的统计和报告。下面是一个示例：
@@ -136,7 +135,6 @@ ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/stat
 
 当服务器重启时，配额会被重置。
 
-
-## 相关内容 {#related-content}
+## 相关内容 \{#related-content\}
 
 - 博文：[使用 ClickHouse 构建单页应用](https://clickhouse.com/blog/building-single-page-applications-with-clickhouse-and-http)

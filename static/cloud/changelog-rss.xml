@@ -5,8 +5,37 @@
     <link>https://clickhouse.com/docs/cloud/whats-new/cloud</link>
     <description>Latest updates and features in ClickHouse Cloud</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 26 Nov 2025 18:25:53 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 20 Jan 2026 11:26:20 +0100</lastBuildDate>
     <atom:link href="https://clickhouse.com/docs/cloud/changelog-rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ClickHouse Cloud - January 16, 2026</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#january-16-2026</link>
+      <description>- Service-level usage cost filtering via API:: Our API now supports filtering your organization’s usage costs by specific service tags, making it easier to analyze spend at a more granular level.
+- Data Catalog integration:: You can now connect an external data catalog as a data source. ClickHouse Cloud supports AWS Glue and Unity Catalog (with more coming soon). Once connected, the catalog appears as a database, allowing you to read Iceberg tables directly—without duplicating data. For access, contact support to request access.
+- ClickPipes:
+- The MongoDB connector has been promoted to Public Beta, and is now available to new and existing ClickHouse Cloud customers, in all service tiers. Read the blogpost for an overview of new features and head to the documentation to get started.
+- The S3 ClickPipe is now compatible with OVH Object Storage, the S3 API-compatible object storage service in OVHcloud.</description>
+      <pubDate>Fri, 16 Jan 2026 00:00:00 +0100</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#january-16-2026</guid>
+    </item>
+    <item>
+      <title>ClickHouse Cloud - December 19, 2025</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#december-19-2025</link>
+      <description>- AWS ap-south-1 now supports launching PCI compliant services.
+- Unified user identity private preview
+- Unordered mode now available in S3 ClickPipes: :
+- The Fivetran connector has recently moved to beta. If you’re using Fivetran and want to set up ClickHouse as a destination, check out these docs.</description>
+      <pubDate>Fri, 19 Dec 2025 00:00:00 +0100</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#december-19-2025</guid>
+    </item>
+    <item>
+      <title>ClickHouse Cloud - December 12, 2025</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#december-12-2025</link>
+      <description>- SAML SSO self-serve setup
+- Maximum replica size and scaling limits in Azure</description>
+      <pubDate>Fri, 12 Dec 2025 00:00:00 +0100</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#december-12-2025</guid>
+    </item>
     <item>
       <title>ClickHouse Cloud - November 21, 2025</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#november-21-2025</link>
@@ -55,7 +84,7 @@
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#august-22-2025</link>
       <description>- ClickHouse Connector for AWS Glue
 - Change to the minimum number of replicas in a service
-- ClickHouse Cloud will begin to send notifications related to service scaling and service version upgrades, by default for administrator roles. Users can adjust their notification preferences in their notification settings.</description>
+- ClickHouse Cloud will begin to send notifications related to service scaling and service version upgrades, by default for administrator roles. You can adjust their notification preferences in their notification settings.</description>
       <pubDate>Fri, 22 Aug 2025 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#august-22-2025</guid>
     </item>
@@ -69,7 +98,7 @@
     <item>
       <title>ClickHouse Cloud - August 8, 2025</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#august-08-2025</link>
-      <description>- Notifications: : Users will now receive a UI notification when their service starts upgrading to a new ClickHouse version. Additional Email and Slack notifications can be added via the notification center.
+      <description>- Notifications: : You will now receive a UI notification when their service starts upgrading to a new ClickHouse version. Additional Email and Slack notifications can be added via the notification center.
 - ClickPipes: : Azure Blob Storage (ABS) ClickPipes support was added to the ClickHouse Terraform provider. See the provider documentation for an example of how to programmatically create an ABS ClickPipe.
 - [Bug fix] Object storage ClickPipes writing to a destination table using the Null engine now report &quot;Total records&quot; and &quot;Data ingested&quot; metrics in the UI.
 - [Bug fix] The “Time period” selector for metrics in the UI defaulted to “24 hours” regardless of the selected time period. This has now been fixed, and the UI correctly updates the charts for the selected time period.
@@ -114,7 +143,7 @@
     <item>
       <title>ClickHouse Cloud - June 13, 2025</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#june-13-2025</link>
-      <description>- We&apos;re excited to announce that ClickHouse Cloud Dashboards are now generally available. Dashboards allow users to visualize queries on dashboards, interact with data via filters and query parameters, and manage sharing.
+      <description>- We&apos;re excited to announce that ClickHouse Cloud Dashboards are now generally available. Dashboards allow you to visualize queries on dashboards, interact with data via filters and query parameters, and manage sharing.
 - API key IP filters: we are introducing an additional layer of protection for your interactions with ClickHouse Cloud. When generating an API key, you may setup an IP allow list to limit where the API key may be used. Please refer to the documentation for details.</description>
       <pubDate>Fri, 13 Jun 2025 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#june-13-2025</guid>
@@ -363,9 +392,9 @@ Other features:
       <title>ClickHouse Cloud - June 13, 2024</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#june-13-2024</link>
       <description>Configurable offsets for Kafka ClickPipes Connector (Beta):
-- From the beginning: Start consuming data from the very beginning of the Kafka topic. This option is ideal for users who need to reprocess all historical data.
-- From latest: Begin consuming data from the most recent offset. This is useful for users who are only interested in new messages.
-- From a timestamp: Start consuming data from messages that were produced at or after a specific timestamp. This feature allows for more precise control, enabling users to resume processing from an exact point in time.
+- From the beginning: Start consuming data from the very beginning of the Kafka topic. This option is ideal if you need to reprocess all historical data.
+- From latest: Begin consuming data from the most recent offset. This is useful if you are only interested in new messages.
+- From a timestamp: Start consuming data from messages that were produced at or after a specific timestamp. This feature allows for more precise control, enabling you to resume processing from an exact point in time.
 
 Enroll services to the Fast release channel:
 
@@ -597,7 +626,7 @@ Reliability changes:
 - Enabled ability to set up AWS Private Link and GCP Private Service Connect via OpenAPI
 
 Console changes:
-- Enabled seamless login to SQL console for users with the Developer role
+- Enabled seamless login to SQL console if you have the Developer role
 - Streamlined workflow for setting idling controls during onboarding
 
 Integrations changes:

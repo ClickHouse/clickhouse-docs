@@ -24,13 +24,13 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 通过在 [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) 签订承诺合同开始使用 ClickHouse Cloud。承诺合同（也称为 Private Offer）允许客户在约定期限内承诺在 ClickHouse Cloud 上支出一定金额。
 
 
-## 先决条件 {#prerequisites}
+## 先决条件 \{#prerequisites\}
 
 - ClickHouse 基于特定合同条款提供的专属报价。
 
 
 
-## 注册步骤 {#steps-to-sign-up}
+## 注册步骤 \{#steps-to-sign-up\}
 
 1. 您应该已经收到一封包含链接的电子邮件，用于查看并接受您的专属私有优惠（private offer）。
 

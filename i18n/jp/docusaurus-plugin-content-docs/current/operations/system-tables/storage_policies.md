@@ -6,7 +6,7 @@ title: 'system.storage_policies'
 doc_type: 'reference'
 ---
 
-# system.storage&#95;policies {#systemstorage&#95;policies}
+# system.storage&#95;policies \{#systemstorage&#95;policies\}
 
 [サーバー構成](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-multiple-volumes_configure)で定義されたストレージポリシーおよびボリュームに関する情報を含みます。
 

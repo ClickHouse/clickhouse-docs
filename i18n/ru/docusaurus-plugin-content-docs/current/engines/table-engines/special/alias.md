@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# Движок таблицы Alias {#alias-table-engine}
+# Движок таблицы Alias \{#alias-table-engine\}
 
 <ExperimentalBadge/>
 
@@ -22,7 +22,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 Введите команду `set allow_experimental_alias_table_engine = 1`.
 :::
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [db_name.]alias_name
@@ -40,16 +40,16 @@ ENGINE = Alias(target_db, target_table)
 Таблица `Alias` не поддерживает явное определение столбцов. Столбцы автоматически наследуются от целевой таблицы. Это гарантирует, что таблица `Alias` всегда соответствует схеме целевой таблицы.
 :::
 
-## Параметры движка {#engine-parameters}
+## Параметры движка \{#engine-parameters\}
 
 - **`target_db (optional)`** — Имя базы данных, содержащей целевую таблицу.
 - **`target_table`** — Имя целевой таблицы.
 
-## Поддерживаемые операции {#supported-operations}
+## Поддерживаемые операции \{#supported-operations\}
 
 Движок таблицы `Alias` поддерживает все основные операции. 
 
-### Операции с целевой таблицей {#operations-on-target}
+### Операции с целевой таблицей \{#operations-on-target\}
 
 Эти операции проксируются на целевую таблицу:
 
@@ -66,7 +66,7 @@ ENGINE = Alias(target_db, target_table)
 | `OPTIMIZE TABLE` | ✅ | Оптимизация целевой таблицы (слияние частей) |
 | `TRUNCATE TABLE` | ✅ | Очистка целевой таблицы |
 
-### Операции с самим алиасом {#operations-on-alias}
+### Операции с самим алиасом \{#operations-on-alias\}
 
 Эти операции применяются только к алиасу, **а не** к целевой таблице:
 
@@ -75,9 +75,9 @@ ENGINE = Alias(target_db, target_table)
 | `DROP TABLE` | ✅ | Удаляет только алиас, целевая таблица остаётся без изменений |
 | `RENAME TABLE` | ✅ | Переименовывает только алиас, целевая таблица остаётся без изменений |
 
-## Примеры использования {#usage-examples}
+## Примеры использования \{#usage-examples\}
 
-### Создание простого алиаса {#basic-alias-creation}
+### Создание простого алиаса \{#basic-alias-creation\}
 
 Создайте простой алиас в этой же базе данных:
 
@@ -107,7 +107,7 @@ SELECT * FROM data_alias;
 └────┴──────┴───────┘
 ```
 
-### Межбазовый псевдоним {#cross-database-alias}
+### Межбазовый псевдоним \{#cross-database-alias\}
 
 Создайте псевдоним, ссылающийся на таблицу в другой базе данных:
 
@@ -135,7 +135,7 @@ INSERT INTO db2.events_alias VALUES (now(), 'click', 100);
 SELECT * FROM db2.events_alias2;
 ```
 
-### Операции записи через алиас {#write-operations}
+### Операции записи через алиас \{#write-operations\}
 
 Все операции записи перенаправляются в целевую таблицу:
 
@@ -165,7 +165,7 @@ SELECT count() FROM metrics;  -- Returns 7
 SELECT count() FROM metrics_alias;  -- Returns 7
 ```
 
-### Изменение схемы {#schema-modification}
+### Изменение схемы \{#schema-modification\}
 
 Операции ALTER изменяют схему целевой таблицы:
 
@@ -193,7 +193,7 @@ DESCRIBE users;
 └───────┴────────┴──────────────┴────────────────────┘
 ```
 
-### Мутации данных {#data-mutations}
+### Мутации данных \{#data-mutations\}
 
 Поддерживаются операции UPDATE и DELETE:
 
@@ -230,7 +230,7 @@ SELECT * FROM products ORDER BY id;
 └────┴──────────┴───────┴────────┘
 ```
 
-### Операции с партициями {#partition-operations}
+### Операции с партициями \{#partition-operations\}
 
 Для секционированных таблиц операции с партициями передаются далее:
 
@@ -261,7 +261,7 @@ ALTER TABLE logs_alias ATTACH PARTITION '202402';
 SELECT count() FROM logs_alias;  -- Returns 3
 ```
 
-### Оптимизация таблицы {#table-optimization}
+### Оптимизация таблицы \{#table-optimization\}
 
 Оптимизируйте операции по слиянию частей в целевой таблице:
 
@@ -295,7 +295,7 @@ WHERE database = currentDatabase()
   AND active;  -- Returns 1
 ```
 
-### Управление алиасами {#alias-management}
+### Управление алиасами \{#alias-management\}
 
 Алиасы можно переименовывать или удалять независимо:
 

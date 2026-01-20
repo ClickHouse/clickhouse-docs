@@ -12,17 +12,17 @@ import snowflake_architecture from '@site/static/images/cloud/onboard/discover/u
 import cloud_architecture from '@site/static/images/cloud/onboard/discover/use_cases/cloud_architecture.png';
 import Image from '@theme/IdealImage';
 
-# Миграция с Snowflake на ClickHouse {#snowflake-to-clickhouse-migration}
+# Миграция с Snowflake на ClickHouse \{#snowflake-to-clickhouse-migration\}
 
 > Этот документ содержит введение в миграцию данных из Snowflake в ClickHouse.
 
 Snowflake — это облачное хранилище данных, основное назначение которого — перенос легаси-нагрузок локальных (on‑premise) хранилищ данных в облако. Оно хорошо оптимизировано для выполнения долгих отчётных запросов в масштабах крупных нагрузок. По мере того как наборы данных мигрируют в облако, владельцы данных начинают задумываться о том, как ещё можно извлечь из них ценность, в том числе использовать эти датасеты для построения приложений реального времени для внутренних и внешних сценариев. В этот момент они часто понимают, что им нужна база данных, оптимизированная для аналитики в реальном времени, такая как ClickHouse.
 
-## Сравнение {#comparison}
+## Сравнение \{#comparison\}
 
 В этом разделе мы сравним ключевые возможности ClickHouse и Snowflake.
 
-### Сходства {#similarities}
+### Сходства \{#similarities\}
 
 Snowflake — это облачная платформа для хранилищ данных, обеспечивающая
 масштабируемое и эффективное решение для хранения, обработки и анализа больших
@@ -68,7 +68,7 @@ Snowflake — это облачная платформа для хранилищ
 
 <Image img={cloud_architecture} size="md" alt="Архитектура ClickHouse Cloud" />
 
-### Отличия {#differences}
+### Отличия \{#differences\}
 
 Помимо различий в используемых форматах хранения и движках запросов, эти архитектуры
 отличаются ещё и несколькими менее очевидными аспектами:
@@ -120,7 +120,7 @@ Snowflake — это облачная платформа для хранилищ
   запросов. Для сценариев использования в качестве data warehouse и data lake это даёт
   преимущество по сравнению с другими системами.
 
-### Аналитика в реальном времени {#real-time-analytics}
+### Аналитика в реальном времени \{#real-time-analytics\}
 
 Согласно общедоступным данным [бенчмарка](https://benchmark.clickhouse.com/#system=+%E2%98%81w|%EF%B8%8Fr|C%20c|nfe&type=-&machine=-ca2|gl|6ax|6ale|3al&cluster_size=-&opensource=-&tuned=+n&metric=hot&queries=-),
 ClickHouse превосходит Snowflake в задачах аналитики в реальном времени по следующим направлениям:

@@ -23,7 +23,7 @@ description: '通过真实场景和实践经验向 ClickHouse 社区学习'
 
 
 
-# ClickHouse 社区智慧：线下活动中的技巧与诀窍 {#community-wisdom}
+# ClickHouse 社区智慧：线下活动中的技巧与诀窍 \{#community-wisdom\}
 
 *这些交互式指南凝聚了数百次生产环境部署的集体经验。每个可运行示例都使用真实的 GitHub 事件数据，帮助你理解 ClickHouse 的使用模式与实践——通过练习这些概念，避免常见错误并加速取得成果。*
 
@@ -31,7 +31,7 @@ description: '通过真实场景和实践经验向 ClickHouse 社区学习'
 
 
 
-## 按问题快速跳转 {#problem-specific-quick-jumps}
+## 按问题快速跳转 \{#problem-specific-quick-jumps\}
 
 | 问题 | 文档 | 说明 |
 |-------|---------|-------------|

@@ -4,9 +4,9 @@ title: 'Helm'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 2
-description: 'Развертывание ClickStack с помощью Helm — стек наблюдаемости ClickHouse'
+description: 'Развертывание ClickStack с помощью Helm — стек обсервабилити ClickHouse'
 doc_type: 'guide'
-keywords: ['Helm-чарт ClickStack', 'развертывание ClickHouse с помощью Helm', 'установка HyperDX с помощью Helm', 'стек наблюдаемости Kubernetes', 'развертывание ClickStack в Kubernetes']
+keywords: ['Helm-чарт ClickStack', 'развертывание ClickHouse с помощью Helm', 'установка HyperDX с помощью Helm', 'стек обсервабилити Kubernetes', 'развертывание ClickStack в Kubernetes']
 ---
 
 import Image from '@theme/IdealImage';
@@ -18,7 +18,7 @@ import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/us
 Если вы в данный момент используете чарт `hdx-oss-v2`, перейдите на чарт `clickstack`. Чарт `hdx-oss-v2` находится в режиме сопровождения и больше не будет получать новые функции. Весь новый функционал разрабатывается для чарта `clickstack`, который обеспечивает ту же функциональность с более понятными названиями и улучшённой структурой.
 :::
 
-Helm-чарт для HyperDX можно найти [здесь](https://github.com/hyperdxio/helm-charts); это **рекомендованный** способ продакшен-развертываний.
+Helm-чарт для ClickStack можно найти [здесь](https://github.com/ClickHouse/ClickStack-helm-charts); это **рекомендованный** способ продакшен-развертываний.
 
 По умолчанию Helm-чарт разворачивает все основные компоненты, включая:
 
@@ -36,12 +36,13 @@ Helm-чарт для HyperDX можно найти [здесь](https://github.c
 * Настройку TLS и Входного шлюза
 * Управление секретами и настройку аутентификации
 
-### Подходит для {#suitable-for}
+
+### Подходит для \{#suitable-for\}
 
 * Пилотных проектов (proof of concept)
 * Продакшена (production)
 
-## Этапы развертывания {#deployment-steps}
+## Этапы развертывания \{#deployment-steps\}
 
 <br/>
 
@@ -57,25 +58,25 @@ Helm-чарт для HyperDX можно найти [здесь](https://github.c
   Добавьте Helm-репозиторий ClickStack:
 
   ```shell
-helm repo add clickstack https://hyperdxio.github.io/helm-charts
-helm repo update
-```
+  helm repo add clickstack https://clickhouse.github.io/ClickStack-helm-charts
+  helm repo update
+  ```
 
   ### Установка ClickStack
 
   Чтобы установить чарт ClickStack со значениями по умолчанию:
 
   ```shell
-helm install my-clickstack clickstack/clickstack
-```
+  helm install my-clickstack clickstack/clickstack
+  ```
 
   ### Проверка установки
 
   Проверьте установку:
 
   ```shell
-kubectl get pods -l "app.kubernetes.io/name=clickstack"
-```
+  kubectl get pods -l "app.kubernetes.io/name=clickstack"
+  ```
 
   Когда все поды будут готовы, продолжайте.
 
@@ -84,10 +85,10 @@ kubectl get pods -l "app.kubernetes.io/name=clickstack"
   Проброс портов позволяет получить доступ к HyperDX и выполнить его настройку. Пользователям, развертывающим систему в производственной среде, следует вместо этого предоставить доступ к сервису через входной шлюз или балансировщик нагрузки для обеспечения надлежащего сетевого доступа, терминации TLS и масштабируемости. Проброс портов оптимален для локальной разработки или разовых административных задач, но не подходит для долгосрочного использования или сред с высокими требованиями к доступности.
 
   ```shell
-kubectl port-forward \
-  pod/$(kubectl get pod -l app.kubernetes.io/name=clickstack -o jsonpath='{.items[0].metadata.name}') \
-  8080:3000
-```
+  kubectl port-forward \
+    pod/$(kubectl get pod -l app.kubernetes.io/name=clickstack -o jsonpath='{.items[0].metadata.name}') \
+    8080:3000
+  ```
 
   :::tip Настройка входного шлюза для production-окружения
   Для production-развертываний настройте входной шлюз с TLS вместо проброса портов. Подробные инструкции см. в [руководстве по настройке входного шлюза](/docs/use-cases/observability/clickstack/deployment/helm-configuration#ingress-setup).
@@ -97,7 +98,7 @@ kubectl port-forward \
 
   Откройте [http://localhost:8080](http://localhost:8080), чтобы получить доступ к интерфейсу HyperDX.
 
-  Создайте пользователя, указав имя пользователя и пароль, которые соответствуют требованиям.
+  Создайте пользователя, указав имя пользователя и пароль, соответствующие требованиям.
 
   <Image img={hyperdx_login} alt="Интерфейс HyperDX" size="lg" />
 
@@ -114,40 +115,40 @@ kubectl port-forward \
   Настройки можно изменить с помощью флагов `--set`. Например:
 
   ```shell
-helm install my-clickstack clickstack/clickstack --set key=value
-```
+  helm install my-clickstack clickstack/clickstack --set key=value
+  ```
 
-  Либо отредактируйте `values.yaml`. Для получения значений по умолчанию:
+  Либо отредактируйте `values.yaml`. Чтобы получить значения по умолчанию:
 
   ```shell
-helm show values clickstack/clickstack > values.yaml
-```
+  helm show values clickstack/clickstack > values.yaml
+  ```
 
   Пример конфигурации:
 
   ```yaml
-replicaCount: 2
-resources:
-  limits:
-    cpu: 500m
-    memory: 512Mi
-  requests:
-    cpu: 250m
-    memory: 256Mi
-ingress:
-  enabled: true
-  annotations:
-    kubernetes.io/ingress.class: nginx
-  hosts:
-    - host: hyperdx.example.com
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-```
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - host: hyperdx.example.com
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+  ```
 
   ```shell
-helm install my-clickstack clickstack/clickstack -f values.yaml
-```
+  helm install my-clickstack clickstack/clickstack -f values.yaml
+  ```
 
   ### Использование секретов (необязательно)
 
@@ -155,49 +156,49 @@ helm install my-clickstack clickstack/clickstack -f values.yaml
 
   #### Использование предварительно настроенных секретов
 
-  Helm-чарт содержит шаблон секрета по умолчанию, который находится в [`charts/clickstack/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/clickstack/templates/secrets.yaml). Этот файл определяет базовую структуру для управления секретами.
+  Helm-чарт содержит шаблон секрета по умолчанию, который находится в [`charts/clickstack/templates/secrets.yaml`](https://github.com/ClickHouse/ClickStack-helm-charts/blob/main/charts/clickstack/templates/secrets.yaml). Этот файл определяет базовую структуру для управления секретами.
 
   Если требуется применить секрет вручную, отредактируйте и примените предоставленный шаблон `secrets.yaml`:
 
   ```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: hyperdx-secret
-  annotations:
-    "helm.sh/resource-policy": keep
-type: Opaque
-data:
-  API_KEY: <base64-encoded-api-key>
-```
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: hyperdx-secret
+    annotations:
+      "helm.sh/resource-policy": keep
+  type: Opaque
+  data:
+    API_KEY: <base64-encoded-api-key>
+  ```
 
   Примените секрет к кластеру:
 
   ```shell
-kubectl apply -f secrets.yaml
-```
+  kubectl apply -f secrets.yaml
+  ```
 
   #### Создание пользовательского секрета
 
   При необходимости можно создать пользовательский секрет Kubernetes вручную:
 
   ```shell
-kubectl create secret generic hyperdx-secret \
-  --from-literal=API_KEY=my-secret-api-key
-```
+  kubectl create secret generic hyperdx-secret \
+    --from-literal=API_KEY=my-secret-api-key
+  ```
 
   #### Ссылка на секрет
 
-  Для ссылки на секрет в `values.yaml`:
+  Чтобы сослаться на секрет в `values.yaml`:
 
   ```yaml
-hyperdx:
-  apiKey:
-    valueFrom:
-      secretKeyRef:
-        name: hyperdx-secret
-        key: API_KEY
-```
+  hyperdx:
+    apiKey:
+      valueFrom:
+        secretKeyRef:
+          name: hyperdx-secret
+          key: API_KEY
+  ```
 
   :::tip Управление API-ключами
   Подробные инструкции по настройке API-ключей, включая различные методы конфигурации и процедуры перезапуска подов, см. в [руководстве по настройке API-ключей](/docs/use-cases/observability/clickstack/deployment/helm-configuration#api-key-setup).
@@ -209,12 +210,12 @@ hyperdx:
 Если вы используете ClickHouse Cloud, отключите экземпляр ClickHouse, развернутый с помощью Helm-чарта, и укажите учетные данные ClickHouse Cloud:
 
 ```shell
-# specify ClickHouse Cloud credentials
-export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # full https url
+# укажите учетные данные ClickHouse Cloud
+export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # полный https-адрес
 export CLICKHOUSE_USER=<CLICKHOUSE_USER>
 export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 
-# how to overwrite default connection
+# как переопределить подключение по умолчанию
 helm install my-clickstack clickstack/clickstack \
   --set clickhouse.enabled=false \
   --set clickhouse.persistence.enabled=false \
@@ -242,18 +243,18 @@ hyperdx:
   defaultConnections: |
     [
       {
-        "name": "External ClickHouse",
-        "host": "http://your-clickhouse-server:8123",
+        "name": "Внешний ClickHouse",
+        "host": "http://ваш-clickhouse-сервер:8123",
         "port": 8123,
-        "username": "your-username",
-        "password": "your-password"
+        "username": "ваше-имя-пользователя",
+        "password": "ваш-пароль"
       }
     ]
 ```
 
 ```shell
 helm install my-clickstack clickstack/clickstack -f values.yaml
-# or if installed...
+# или, если уже установлен...
 # helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 ```
 
@@ -317,13 +318,13 @@ helm uninstall my-clickstack
 
 ## Устранение неполадок {#troubleshooting}
 
-### Проверка логов {#customizing-values}
+### Проверка логов \{#customizing-values\}
 
 ```shell
 kubectl logs -l app.kubernetes.io/name=clickstack
 ```
 
-### Устранение неполадок при неудачной установке {#using-secrets}
+### Устранение неполадок при неудачной установке \{#using-secrets\}
 
 ```shell
 helm install my-clickstack clickstack/clickstack --debug --dry-run
@@ -372,6 +373,7 @@ helm install my-clickstack clickstack/clickstack \
   --set "otel.env[0].value=--feature-gates=clickhouse.json"
 ```
 
+
 ## См. также {#related-documentation}
 
 ### Руководства по развертыванию {#deployment-guides}
@@ -383,6 +385,6 @@ helm install my-clickstack clickstack/clickstack \
 ### Дополнительные ресурсы {#additional-resources}
 
 - [Руководство по началу работы с ClickStack](/docs/use-cases/observability/clickstack/getting-started) — введение в ClickStack
-- [Репозиторий Helm-чартов ClickStack](https://github.com/hyperdxio/helm-charts) — исходный код чарта и справочная информация по параметрам values
+- [Репозиторий Helm-чартов ClickStack](https://github.com/ClickHouse/ClickStack-helm-charts) — исходный код чарта и справочная информация по параметрам values
 - [Документация по Kubernetes](https://kubernetes.io/docs/) — справочник по Kubernetes
 - [Документация по Helm](https://helm.sh/docs/) — справочник по Helm

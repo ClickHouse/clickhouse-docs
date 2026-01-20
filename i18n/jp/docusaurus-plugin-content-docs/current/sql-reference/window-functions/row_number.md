@@ -7,7 +7,7 @@ title: 'row_number'
 doc_type: 'reference'
 ---
 
-# row&#95;number {#row&#95;number}
+# row&#95;number \{#row&#95;number\}
 
 現在のパーティション内の行に対して、1 から始まる連番を振ります。
 

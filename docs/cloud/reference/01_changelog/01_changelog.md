@@ -39,6 +39,24 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
   </a>
 :::
 
+## January 16, 2026 {#january-16-2026}
+- **Service-level usage cost filtering via API:** Our API now supports filtering your organization’s usage costs by specific service tags, making it easier to analyze spend at a more granular level.
+- **Data Catalog integration:** You can now connect an external data catalog as a data source. ClickHouse Cloud supports AWS Glue and Unity Catalog (with more coming soon). Once connected, the catalog appears as a database, allowing you to read Iceberg tables directly—without duplicating data. For access, contact support to request access.
+- **ClickPipes:**
+  - The MongoDB connector has been promoted to Public Beta, and is now available to new and existing ClickHouse Cloud customers, in all service tiers. Read the [blogpost](https://clickhouse.com/blog/mongodb-cdc-connector-clickpipes-beta) for an overview of new features and head to the [documentation](/integrations/clickpipes/mongodb) to get started.
+  - The [S3 ClickPipe](/integrations/clickpipes/object-storage/s3/overview) is now compatible with OVH Object Storage, the S3 API-compatible object storage service in OVHcloud.
+
+## December 19, 2025 {#december-19-2025}
+
+- AWS ap-south-1 now supports launching PCI compliant services.
+- **Unified user identity private preview**
+  Customers interested in managing database users from the console may enable a new authentication method for SQL console.
+  This allows customers to try out the new authentication method while we continue work to bring database user management to the console.
+- **Unordered mode now available in S3 ClickPipes**:
+  Customers can now ingest data from Amazon S3 into ClickHouse Cloud in any order for even-driven analytics.
+  Files are no longer required to be in lexicographical order for consumption. More details available in the announcement [blog](https://clickhouse.com/blog/clickpipes-s3-unordered-mode).
+- The Fivetran connector has recently moved to beta. If you’re using Fivetran and want to set up ClickHouse as a destination, check out these [docs](https://fivetran.com/docs/destinations/clickhouse/setup-guide).
+
 ## December 12, 2025 {#december-12-2025}
 
 - **SAML SSO self-serve setup**

@@ -4,6 +4,9 @@ description: '将 Azure 数据引入 ClickHouse'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data']
 title: '将 Azure 数据引入 ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 | Page                                                                              | Description                                                                                                                                                                 |

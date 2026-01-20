@@ -103,7 +103,7 @@ We started the ClickHouse JDBC Bridge in foreground mode. In order to stop the B
 
 ClickHouse can now access MySQL data by either using the [jdbc table function](/sql-reference/table-functions/jdbc.md) or the [JDBC table engine](/engines/table-engines/integrations/jdbc.md).
 
-The easiest way to execute the following examples is to copy and paste them into the [`clickhouse-client`](/interfaces/cli.md) or into the [Play UI](/interfaces/http.md).
+The easiest way to execute the following examples is to copy and paste them into the [`clickhouse-client`](/interfaces/cli.md) or into the [Play UI](/interfaces/http).
 
 - jdbc Table Function:
 

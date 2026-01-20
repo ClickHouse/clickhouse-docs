@@ -9,9 +9,9 @@ title: 'Тип AggregateFunction'
 doc_type: 'reference'
 ---
 
-# Тип AggregateFunction {#aggregatefunction-type}
+# Тип AggregateFunction \{#aggregatefunction-type\}
 
-## Описание {#description}
+## Описание \{#description\}
 
 Все [агрегатные функции](/sql-reference/aggregate-functions) в ClickHouse имеют
 промежуточное состояние, зависящее от реализации, которое может быть
@@ -25,7 +25,7 @@ doc_type: 'reference'
 - Комбинатор агрегатной функции [`-Merge`](/sql-reference/aggregate-functions/combinators#-merge), который используется для получения
   конечного результата агрегации из промежуточных состояний.
 
-## Синтаксис {#syntax}
+## Синтаксис \{#syntax\}
 
 ```sql
 AggregateFunction(aggregate_function_name, types_of_arguments...)
@@ -48,9 +48,9 @@ CREATE TABLE t
 ) ENGINE = ...
 ```
 
-## Использование {#usage}
+## Использование \{#usage\}
 
-### Вставка данных {#data-insertion}
+### Вставка данных \{#data-insertion\}
 
 Чтобы вставить данные в таблицу со столбцами типа `AggregateFunction`, вы можете
 использовать `INSERT SELECT` с агрегатными функциями и
@@ -82,7 +82,7 @@ quantilesState(0.5, 0.9)(SendTiming)
 * `value` — формат будет ожидать одно значение аргумента агрегатной функции или, в случае нескольких аргументов, кортеж из них; это значение будет десериализовано для формирования соответствующего состояния.
 * `array` — формат будет ожидать Array значений, как описано в варианте `value` выше; все элементы массива будут агрегированы для формирования состояния.
 
-### Выборка данных {#data-selection}
+### Выборка данных \{#data-selection\}
 
 При выборке данных из таблицы `AggregatingMergeTree` используйте предложение `GROUP BY`
 и те же агрегатные функции, что и при вставке данных, но с комбинатором
@@ -99,11 +99,11 @@ SELECT uniq(UserID) FROM table
 SELECT uniqMerge(state) FROM (SELECT uniqState(UserID) AS state FROM table GROUP BY RegionID)
 ```
 
-## Пример использования {#usage-example}
+## Пример использования \{#usage-example\}
 
 См. описание табличного движка [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md).
 
-## Связанные материалы {#related-content}
+## Связанные материалы \{#related-content\}
 
 - Запись в блоге: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
 - [MergeState](/sql-reference/aggregate-functions/combinators#-mergestate)

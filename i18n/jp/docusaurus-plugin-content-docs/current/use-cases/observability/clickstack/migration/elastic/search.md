@@ -15,7 +15,7 @@ import hyperdx_search from '@site/static/images/use-cases/observability/hyperdx-
 import hyperdx_sql from '@site/static/images/use-cases/observability/hyperdx-sql.png';
 
 
-## ClickStack と Elastic における検索 {#search-in-clickstack-and-elastic}
+## ClickStack と Elastic における検索 \{#search-in-clickstack-and-elastic\}
 
 ClickHouse は SQL ネイティブなエンジンであり、ハイパフォーマンスな分析ワークロード向けにゼロから設計されています。対照的に、Elasticsearch は SQL ライクなインターフェースを提供しますが、SQL を内部の Elasticsearch query DSL にトランスパイルしているだけであり、SQL は第一級の機能として扱われておらず、[機能パリティ](https://www.elastic.co/docs/explore-analyze/query-filter/languages/sql-limitations) も限定的です。
 
@@ -31,7 +31,7 @@ HyperDX の検索インターフェースは、この馴染みのある構文を
 
 以下では、ClickStack と Elasticsearch の Lucene クエリ言語を比較します。
 
-## ClickStack の検索構文と Elasticsearch query string の比較 {#hyperdx-vs-elasticsearch-query-string}
+## ClickStack の検索構文と Elasticsearch query string の比較 \{#hyperdx-vs-elasticsearch-query-string\}
 
 HyperDX と Elasticsearch はどちらも、ログやトレースを直感的にフィルタリングできる柔軟なクエリ言語を提供しています。Elasticsearch の query string は DSL とインデックスエンジンに強く統合されていますが、HyperDX は Lucene 風の構文をサポートしており、内部的には ClickHouse の SQL に変換されます。以下の表では、代表的な検索パターンが両システムでどのように動作するかを示し、構文上の類似点とバックエンド実行の違いを強調しています。
 
@@ -50,14 +50,14 @@ HyperDX と Elasticsearch はどちらも、ログやトレースを直感的に
 | Unbounded ranges (numeric/date)   | `duration:>10` or `duration:>=10` | `duration:>10` or `duration:>=10` | HyperDX は標準的な SQL 演算子を使用します。|
 | Inclusive/exclusive     | `duration:{100 TO 200}` (exclusive)    | Same                                   | 波括弧は排他的な境界を表します。範囲内での `*` はサポートされません (例: `duration:[100 TO *]`)。|
 | Exists check            | N/A                       | `_exists_:user` or `field:*` | `_exists_` はサポートされていません。`LogAttributes` のような `Map` カラムに対しては `LogAttributes.log.file.path: *` を使用してください。ルートカラムについては、イベントに含まれていない場合でも必ず存在しており、デフォルト値が設定されます。デフォルト値や欠損カラムを検索する場合は Elasticsearch と同じ構文 `ServiceName:*` や `ServiceName != ''` を使用してください。 |
-| Regex                   |      `match` function          | `name:/joh?n(ath[oa]n)/` | 現在、Lucene 構文ではサポートされていません。ユーザーは SQL と [`match`](/sql-reference/functions/string-search-functions#match) 関数、もしくはその他の [文字列検索関数](/sql-reference/functions/string-search-functions) を使用できます。|
+| Regex                   |      `match` function          | `name:/joh?n(ath[oa]n)/` | 現在、Lucene 構文ではサポートされていません。SQL と [`match`](/sql-reference/functions/string-search-functions#match) 関数、もしくはその他の [文字列検索関数](/sql-reference/functions/string-search-functions) を使用できます。|
 | Fuzzy match             |      `editDistance('quikc', field) = 1` | `quikc~` | 現在、Lucene 構文ではサポートされていません。SQL では距離関数を使用できます (例: `editDistance('rror', SeverityText) = 1`) や [その他の類似度関数](/sql-reference/functions/string-functions#jaroSimilarity) を利用できます。 |
 | Proximity search        | Not supported                       | `"fox quick"~5` | 現在、Lucene 構文ではサポートされていません。 |
 | Boosting                | `quick^2 fox` | `quick^2 fox` | 現時点では HyperDX ではサポートされていません。 |
 | Field wildcard          | `service.*:error` | `service.*:error` | 現時点では HyperDX ではサポートされていません。 |
 | Escaped special chars   | Escape reserved characters with `\` | Same      | 予約済みの記号は `\` でエスケープする必要があります。 |
 
-## 存在/欠落の違い {#empty-value-differences}
+## 存在/欠落の違い \{#empty-value-differences\}
 
 フィールドがイベントから完全に省略され、文字どおり「存在しない」状態になり得る Elasticsearch と異なり、ClickHouse ではテーブルスキーマに定義されたすべてのカラムが必ず存在している必要があります。INSERT イベントでフィールドが指定されなかった場合は、次のように扱われます。
 
@@ -68,6 +68,6 @@ ClickStack では、[`Nullable`](/sql-reference/data-types/nullable) は[推奨�
 
 この挙動により、Elasticsearch における意味でフィールドが「存在する」かどうかをチェックすることは、直接的にはサポートされません。
 
-代わりに、ユーザーは `field:*` や `field != ''` を使用して、空でない値が存在するかどうかを確認できます。そのため、真に欠落しているフィールドと、明示的に空にされているフィールドを区別することはできません。
+代わりに、`field:*` や `field != ''` を使用して、空でない値が存在するかどうかを確認できます。そのため、真に欠落しているフィールドと、明示的に空にされているフィールドを区別することはできません。
 
 実際のオブザーバビリティ用途においては、この違いが問題になることはまれですが、システム間でクエリを変換する際には念頭に置いておく必要があります。

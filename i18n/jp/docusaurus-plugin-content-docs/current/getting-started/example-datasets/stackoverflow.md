@@ -1,8 +1,8 @@
 ---
-description: 'ClickHouse を使って Stack Overflow データを分析する'
+description: 'ClickHouse を使った Stack Overflow データの分析'
 sidebar_label: 'Stack Overflow'
 slug: /getting-started/example-datasets/stackoverflow
-title: 'ClickHouse を使って Stack Overflow データを分析する'
+title: 'ClickHouse を使った Stack Overflow データの分析'
 keywords: ['StackOverflow']
 show_related_blogs: true
 doc_type: 'guide'
@@ -11,27 +11,29 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import stackoverflow from '@site/static/images/getting-started/example-datasets/stackoverflow.png'
 
-このデータセットには、Stack Overflow 上で発生したすべての `Posts`、`Users`、`Votes`、`Comments`、`Badges`、`PostHistory`、`PostLinks` が含まれています。
+このデータセットには、Stack Overflow 上で発生したすべての `Posts`、`Users`、`Votes`、`Comments`、`Badges`、`PostHistory`、および `PostLinks` が含まれています。
 
-ユーザーは、2024 年 4 月までのすべての投稿を含むあらかじめ用意された Parquet 形式のデータをダウンロードするか、最新データを XML 形式でダウンロードして取り込むことができます。Stack Overflow では、このデータの更新版が定期的に公開されており、これまでのところおおむね 3 か月ごとに更新されています。
+2024 年 4 月までの全投稿を含む、事前に用意された Parquet 形式のデータをダウンロードするか、最新のデータを XML 形式でダウンロードして読み込むことができます。Stack Overflow はこのデータを定期的に更新しており、これまでのところおおよそ 3 か月ごとに公開されています。
 
-次の図は、Parquet 形式を前提とした利用可能なテーブルのスキーマを示しています。
+以下の図は、Parquet 形式を前提とした利用可能なテーブルのスキーマを示しています。
 
-<Image img={stackoverflow} alt="Stack Overflow スキーマ" size="md" />
+<Image img={stackoverflow} alt="Stack Overflow schema" size="md" />
 
-このデータのスキーマの説明は[こちら](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede)で確認できます。
+このデータのスキーマの説明は[こちら](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede)にあります。
 
-## あらかじめ用意されたデータ {#pre-prepared-data}
 
-このデータのコピーを Parquet 形式で提供しており、内容は 2024 年 4 月時点のものです。行数（6,000 万件の投稿）の点では ClickHouse にとっては小規模ですが、このデータセットには大量のテキストと大きな String 型カラムが含まれています。
+## 事前に用意されたデータ \{#pre-prepared-data\}
+
+このデータのコピーを Parquet 形式で提供しており、内容は 2024 年 4 月時点のものです。行数（投稿 6,000 万件）だけを見れば ClickHouse にとっては小規模ですが、このデータセットには大量のテキストとサイズの大きい String 型カラムが含まれています。
 
 ```sql
 CREATE DATABASE stackoverflow
 ```
 
-以下の計測結果は、`eu-west-2` に配置された 96 GiB・24 vCPU 構成の ClickHouse Cloud クラスターに対するものです。データセットは `eu-west-3` にあります。
+以下の計測値は、`eu-west-2` にある 96 GiB、24 vCPU の ClickHouse Cloud クラスターに対するものです。データセットは `eu-west-3` にあります。
 
-### 投稿 {#posts}
+
+### 投稿 \{#posts\}
 
 ```sql
 CREATE TABLE stackoverflow.posts
@@ -70,7 +72,8 @@ INSERT INTO stackoverflow.posts SELECT * FROM s3('https://datasets-documentation
 
 投稿データは年別のファイルとしても利用できます。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
 
-### 投票 {#votes}
+
+### 投票 \{#votes\}
 
 ```sql
 CREATE TABLE stackoverflow.votes
@@ -90,9 +93,10 @@ INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation
 0 rows in set. Elapsed: 21.605 sec. Processed 238.98 million rows, 2.13 GB (11.06 million rows/s., 98.46 MB/s.)
 ```
 
-投票データも年ごとに利用できます。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
+投票データは年ごとのファイルも利用可能です。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
 
-### コメント {#comments}
+
+### コメント \{#comments\}
 
 ```sql
 CREATE TABLE stackoverflow.comments
@@ -113,9 +117,10 @@ INSERT INTO stackoverflow.comments SELECT * FROM s3('https://datasets-documentat
 0 rows in set. Elapsed: 56.593 sec. Processed 90.38 million rows, 11.14 GB (1.60 million rows/s., 196.78 MB/s.)
 ```
 
-コメントについても年ごとのデータが利用可能です。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
+コメントデータは年ごとにも利用できます。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
 
-### ユーザー {#users}
+
+### ユーザー \{#users\}
 
 ```sql
 CREATE TABLE stackoverflow.users
@@ -141,7 +146,8 @@ INSERT INTO stackoverflow.users SELECT * FROM s3('https://datasets-documentation
 0 rows in set. Elapsed: 10.988 sec. Processed 22.48 million rows, 1.36 GB (2.05 million rows/s., 124.10 MB/s.)
 ```
 
-### バッジ {#badges}
+
+### バッジ \{#badges\}
 
 ```sql
 CREATE TABLE stackoverflow.badges
@@ -161,7 +167,8 @@ INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentatio
 0 rows in set. Elapsed: 6.635 sec. Processed 51.29 million rows, 797.05 MB (7.73 million rows/s., 120.13 MB/s.)
 ```
 
-### PostLinks {#postlinks}
+
+### PostLinks \{#postlinks\}
 
 ```sql
 CREATE TABLE stackoverflow.postlinks
@@ -180,7 +187,8 @@ INSERT INTO stackoverflow.postlinks SELECT * FROM s3('https://datasets-documenta
 0 rows in set. Elapsed: 1.534 sec. Processed 6.55 million rows, 129.70 MB (4.27 million rows/s., 84.57 MB/s.)
 ```
 
-### PostHistory {#posthistory}
+
+### PostHistory（投稿履歴） \{#posthistory\}
 
 ```sql
 CREATE TABLE stackoverflow.posthistory
@@ -204,11 +212,12 @@ INSERT INTO stackoverflow.posthistory SELECT * FROM s3('https://datasets-documen
 0 rows in set. Elapsed: 422.795 sec. Processed 160.79 million rows, 67.08 GB (380.30 thousand rows/s., 158.67 MB/s.)
 ```
 
-## 元のデータセット {#original-dataset}
 
-元のデータセットは、7zip 形式で圧縮された XML ファイルとして [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) から入手できます。`stackoverflow.com*` というプレフィックスを持つファイルが対象です。
+## 元のデータセット \{#original-dataset\}
 
-### ダウンロード {#download}
+元のデータセットは、圧縮済みの (7zip) XML 形式で [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) から入手できます（`stackoverflow.com*` というプレフィックスが付いたファイル）。
+
+### ダウンロード \{#download\}
 
 ```bash
 wget https://archive.org/download/stackexchange/stackoverflow.com-Badges.7z
@@ -220,32 +229,33 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Users.7z
 wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 ```
 
-これらのファイルは最大 35GB あり、インターネット接続状況によってはダウンロードに約 30 分かかる場合があります。ダウンロードサーバー側で帯域が制限されており、おおよそ 20MB/秒が上限となります。
+これらのファイルのサイズは最大 35GB あり、インターネット接続状況によってはダウンロードに約 30 分かかる場合があります。ダウンロードサーバー側で帯域制限がかけられており、速度はおおよそ 20MB/秒が上限です。
 
-### JSON への変換 {#convert-to-json}
 
-本ドキュメント執筆時点では、ClickHouse は入力フォーマットとして XML をネイティブにサポートしていません。ClickHouse にデータをロードするため、まず NDJSON に変換します。
+### JSON への変換 \{#convert-to-json\}
 
-XML を JSON に変換するには、XML ドキュメント向けのシンプルな `jq` ラッパーである [`xq`](https://github.com/kislyuk/yq) という Linux 用ツールを使用することを推奨します。
+本稿執筆時点では、ClickHouse は入力フォーマットとしての XML をネイティブにサポートしていません。データを ClickHouse にロードするには、まずデータを NDJSON に変換します。
 
-xq と jq をインストールします：
+XML を JSON に変換するには、XML ドキュメント向けのシンプルな `jq` ラッパーである [`xq`](https://github.com/kislyuk/yq) Linux ツールを使用することを推奨します。
+
+xq と jq をインストールします:
 
 ```bash
 sudo apt install jq
 pip install yq
 ```
 
-上記のいずれのファイルにも、次の手順が適用されます。ここでは例として `stackoverflow.com-Posts.7z` ファイルを使用します。必要に応じて読み替えてください。
+以下の手順は、上記のいずれのファイルにも適用されます。ここでは例として `stackoverflow.com-Posts.7z` ファイルを使用します。必要に応じて読み替えてください。
 
-[p7zip](https://p7zip.sourceforge.net/) を使ってファイルを解凍します。これにより単一の XML ファイルが生成されます。この例では `Posts.xml` になります。
+[p7zip](https://p7zip.sourceforge.net/) を使ってファイルを展開します。これにより、単一の XML ファイルが生成されます。この例では `Posts.xml` です。
 
-> ファイルサイズはおよそ 4.5 分の 1 に圧縮されています。圧縮サイズが 22GB の場合、Posts ファイルは解凍後に約 97GB を必要とします。
+> ファイルはおよそ 4.5 倍に圧縮されています。圧縮サイズが 22GB の場合、`Posts` ファイルの展開後のサイズは約 97GB になります。
 
 ```bash
 p7zip -d stackoverflow.com-Posts.7z
 ```
 
-次の処理では、XML ファイルを 1 万行ごとの複数ファイルに分割します。
+次のクエリは XML ファイルを、各ファイルに 10000 行ずつになるよう分割します。
 
 ```bash
 mkdir posts
@@ -254,25 +264,26 @@ cd posts
 tail +3 ../Posts.xml | head -n -1 | split -l 10000 --filter='{ printf "<rows>\n"; cat - ; printf "</rows>\n"; } > $FILE' -
 ```
 
-上記を実行すると、1 ファイルあたり 10000 行のファイルが複数作成されます。これは、次のコマンドのメモリオーバーヘッドが大きくなりすぎないようにするためです（XML から JSON への変換はメモリ上で行われます）。
+上記を実行すると、1 万行ずつのファイルが複数生成されます。これにより、次のコマンドのメモリオーバーヘッドが過大にならないようにしています（XML から JSON への変換はメモリ上で実行されます）。
 
 ```bash
 find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' > posts_v2.json
 ```
 
-上記のコマンドにより、1つの `posts.json` ファイルが生成されます。
+上記のコマンドにより、単一の `posts.json` ファイルが生成されます。
 
-次のコマンドで ClickHouse に読み込みます。`posts.json` ファイル用のスキーマが指定されている点に注意してください。これはデータ型に応じて調整し、対象テーブルと整合するようにする必要があります。
+次のコマンドで ClickHouse にロードします。`posts.json` ファイルに対してスキーマを指定している点に注意してください。ターゲットのテーブルと整合するよう、データ型ごとに調整する必要があります。
 
 ```bash
 clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int32, PostTypeId UInt8, AcceptedAnswerId UInt32, CreationDate DateTime64(3, \'UTC\'), Score Int32, ViewCount UInt32, Body String, OwnerUserId Int32, OwnerDisplayName String, LastEditorUserId Int32, LastEditorDisplayName String, LastEditDate DateTime64(3, \'UTC\'), LastActivityDate DateTime64(3, \'UTC\'), Title String, Tags String, AnswerCount UInt16, CommentCount UInt8, FavoriteCount UInt8, ContentLicense String, ParentId String, CommunityOwnedDate DateTime64(3, \'UTC\'), ClosedDate DateTime64(3, \'UTC\')') FORMAT Native" | clickhouse client --host <host> --secure --password <password> --query "INSERT INTO stackoverflow.posts_v2 FORMAT Native"
 ```
 
-## クエリ例 {#example-queries}
 
-ここから始めるための、いくつかの簡単なクエリです。
+## クエリ例 \{#example-queries\}
 
-### Stack Overflowで最も人気の高いタグ {#most-popular-tags-on-stack-overflow}
+最初の一歩として試せる、いくつかの簡単なクエリ例です。
+
+### Stack Overflow で最もよく使われているタグ \{#most-popular-tags-on-stack-overflow\}
 
 ```sql
 
@@ -301,7 +312,8 @@ LIMIT 10
 Peak memory usage: 224.03 MiB.
 ```
 
-### 最も多く回答しているユーザー（アクティブなアカウント） {#user-with-the-most-answers-active-accounts}
+
+### 回答数が最も多いユーザー（アクティブアカウント） \{#user-with-the-most-answers-active-accounts\}
 
 アカウントには `UserId` が必要です。
 
@@ -327,7 +339,8 @@ LIMIT 5
 Peak memory usage: 206.45 MiB.
 ```
 
-### 閲覧数が多い ClickHouse 関連記事 {#clickhouse-related-posts-with-the-most-views}
+
+### ビュー数が最も多い ClickHouse 関連投稿 \{#clickhouse-related-posts-with-the-most-views\}
 
 ```sql
 SELECT
@@ -357,7 +370,8 @@ LIMIT 10
 Peak memory usage: 240.01 MiB.
 ```
 
-### 最も物議を醸した投稿 {#most-controversial-posts}
+
+### 最も物議を醸した投稿 \{#most-controversial-posts\}
 
 ```sql
 SELECT
@@ -391,6 +405,7 @@ LIMIT 3
 Peak memory usage: 6.05 GiB.
 ```
 
-## 謝辞 {#attribution}
 
-`cc-by-sa 4.0` ライセンスの下でこのデータを提供している Stack Overflow に感謝するとともに、その尽力およびデータの元の出典である [https://archive.org/details/stackexchange](https://archive.org/details/stackexchange) を明記します。
+## 帰属表示 \{#attribution\}
+
+このデータを `cc-by-sa 4.0` ライセンスの下で提供している Stack Overflow に感謝するとともに、その貢献と、このデータの元となる情報源である [https://archive.org/details/stackexchange](https://archive.org/details/stackexchange) をここに明記します。

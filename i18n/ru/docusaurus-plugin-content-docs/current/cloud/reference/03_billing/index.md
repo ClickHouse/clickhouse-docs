@@ -14,5 +14,3 @@ doc_type: 'landing-page'
 | [Payment Thresholds](/cloud/billing/payment-thresholds)             | Узнайте, как устроены пороги оплаты и как их настроить. |
 | [Troubleshooting Billing Issues](/manage/clickhouse-cloud-billing-compliance) | Диагностика и устранение распространённых проблем с биллингом.                                  |
 | [Marketplace](/cloud/manage/marketplace/)                    | Стартовая страница для других тем, связанных с Marketplace.                 |
-
-https://clickhouse.com/docs/cloud/

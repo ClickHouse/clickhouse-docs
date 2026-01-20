@@ -37,7 +37,7 @@ The selected data is then [dynamically](#load-balancing-across-processing-lanes)
 <Image img={visual02} size="md" alt="4 parallel processing lanes"/>
 
 <br/><br/>
-The number of `n` parallel processing lanes is controlled by the [max_threads](/operations/settings/settings#max_threads) setting, which by default matches the number of CPU cores available to ClickHouse on the server. In the example above, we assume `4` cores. 
+The number of `n` parallel processing lanes is controlled by the [`max_threads`](/operations/settings/settings#max_threads) setting, which by default matches the number of cores (threads) of a single CPU available to ClickHouse on the server. In the example above, we assume `4` cores. 
 
 On a machine with `8` cores, query processing throughput would roughly double (but memory usage would also increase accordingly), as more lanes process data in parallel:
 

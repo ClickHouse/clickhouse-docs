@@ -5,9 +5,9 @@ title: 'GROUPING'
 doc_type: 'reference'
 ---
 
-# Группировка {#grouping}
+# Группировка \{#grouping\}
 
-## GROUPING {#grouping}
+## GROUPING \{#grouping\}
 
 [ROLLUP](../statements/select/group-by.md/#rollup-modifier) и [CUBE](../statements/select/group-by.md/#cube-modifier) являются модификаторами GROUP BY. Оба модификатора вычисляют промежуточные итоги. ROLLUP принимает упорядоченный список столбцов, например `(day, month, year)`, и вычисляет промежуточные итоги на каждом уровне агрегации, а затем общий итог. CUBE вычисляет промежуточные итоги для всех возможных комбинаций указанных столбцов. GROUPING определяет, какие строки, возвращённые ROLLUP или CUBE, являются сверхагрегатами, а какие — строками, которые были бы возвращены немодифицированным GROUP BY.
 
@@ -15,13 +15,13 @@ doc_type: 'reference'
 - `1` указывает, что строка, возвращённая модификатором `ROLLUP` или `CUBE` к `GROUP BY`, является промежуточным итогом
 - `0` указывает, что строка, возвращённая `ROLLUP` или `CUBE`, не является промежуточным итогом
 
-## GROUPING SETS {#grouping-sets}
+## GROUPING SETS \{#grouping-sets\}
 
 По умолчанию модификатор CUBE вычисляет промежуточные итоги для всех возможных комбинаций переданных в CUBE столбцов. GROUPING SETS позволяет задать конкретные комбинации, для которых будут вычисляться итоги.
 
 Анализ иерархических данных — хороший сценарий применения модификаторов ROLLUP, CUBE и GROUPING SETS. В этом примере используется таблица с данными о том, какие дистрибутивы Linux и какие версии этих дистрибутивов установлены в двух дата-центрах. Может быть полезно просматривать эти данные по дистрибутиву, версии и дата-центру.
 
-### Загрузка примера данных {#load-sample-data}
+### Загрузка примера данных \{#load-sample-data\}
 
 ```sql
 CREATE TABLE servers ( datacenter VARCHAR(255),
@@ -70,7 +70,7 @@ FROM
 10 rows in set. Elapsed: 0.409 sec.
 ```
 
-### Простые запросы {#simple-queries}
+### Простые запросы \{#simple-queries\}
 
 Получите число серверов в каждом дата-центре в разбивке по дистрибутивам:
 
@@ -151,7 +151,7 @@ FROM
 1 row in set. Elapsed: 0.244 sec. 
 ```
 
-### Сравнение нескольких предложений GROUP BY и GROUPING SETS {#comparing-multiple-group-by-statements-with-grouping-sets}
+### Сравнение нескольких предложений GROUP BY и GROUPING SETS \{#comparing-multiple-group-by-statements-with-grouping-sets\}
 
 Разбиение данных без использования CUBE, ROLLUP или GROUPING SETS:
 
@@ -254,7 +254,7 @@ GROUP BY
 9 rows in set. Elapsed: 0.427 sec.
 ```
 
-### Сравнение CUBE с GROUPING SETS {#comparing-cube-with-grouping-sets}
+### Сравнение CUBE с GROUPING SETS \{#comparing-cube-with-grouping-sets\}
 
 CUBE в следующем запросе `CUBE(datacenter, distro, version)` создает иерархию, которая логически не имеет смысла. Некорректно рассматривать `version` одновременно для двух дистрибутивов (так как Arch и RHEL имеют разные циклы релизов и стандарты именования версий). Пример с GROUPING SETS, приведённый далее, более уместен, так как он группирует `distro` и `version` в одном наборе.
 

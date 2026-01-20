@@ -55,7 +55,6 @@ LIMIT 100;
 
 ここで注目してほしいのは、`url` 関数を使うと CSV ファイルからデータを簡単に読み取れる点です。
 
-
 ```response
 ┌─c1─────────┬─c2───────────┬─c3────────────┬─c4───────────┬─c5────────────┬─c6─────────┬─c7───────────────────┬─c8──────────────────┬─c9───────────────────┬─c10───────────────┐
 │ date       │ location_key │ new_confirmed │ new_deceased │ new_recovered │ new_tested │ cumulative_confirmed │ cumulative_deceased │ cumulative_recovered │ cumulative_tested │
@@ -134,7 +133,6 @@ FROM covid19;
 │ 1.39 billion                               │
 └────────────────────────────────────────────┘
 ```
-
 
 7. データを見ると、日付の値が 0 になっている箇所が多いことに気づくはずです。これは週末であったり、数値が毎日報告されなかった日であったりします。ウィンドウ関数を使って、新規症例数の日次平均を平滑化できます。
 
@@ -232,7 +230,6 @@ WHERE location_key = 'US_DC';
 ```
 
 結果は次のようになります。
-
 
 ```response
 ┌───────date─┬─new_confirmed─┬─percent_change─┬─trend─────┐

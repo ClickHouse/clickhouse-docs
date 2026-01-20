@@ -9,7 +9,7 @@ doc_type: 'landing-page'
 
 import TableOfContents from '@site/i18n/zh/docusaurus-plugin-content-docs/current/best-practices/_snippets/_table_of_contents.md';
 
-# ClickHouse Cloud 中的最佳实践 {#best-practices-in-clickhouse-cloud}
+# ClickHouse Cloud 中的最佳实践 \{#best-practices-in-clickhouse-cloud\}
 
 本节介绍一些最佳实践，帮助您最大限度地发挥 ClickHouse Cloud 的价值。
 

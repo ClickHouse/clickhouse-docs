@@ -6,11 +6,14 @@ sidebar_position: 2
 title: 'Часто задаваемые вопросы по ClickPipes для MongoDB'
 doc_type: 'reference'
 keywords: ['clickpipes', 'mongodb', 'CDC', 'ингестия данных', 'синхронизация в режиме реального времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
-# ClickPipes для MongoDB: часто задаваемые вопросы {#clickpipes-for-mongodb-faq}
+# ClickPipes для MongoDB: часто задаваемые вопросы \{#clickpipes-for-mongodb-faq\}
 
-### Могу ли я выполнять запросы к отдельным полям JSON? {#can-i-query-for-individual-fields-in-the-json-datatype}
+### Могу ли я выполнять запросы к отдельным полям JSON? \{#can-i-query-for-individual-fields-in-the-json-datatype\}
 
 Для прямого обращения к полям, таким как `{"user_id": 123}`, вы можете использовать **точечную нотацию**:
 
@@ -32,9 +35,10 @@ SELECT sum(doc.shipping.cost::Float32) AS total_shipping_cost FROM t1;
 
 Чтобы узнать больше о работе с JSON, см. наше руководство [Работа с JSON](./quickstart).
 
-### Как мне развернуть (flatten) вложенные документы MongoDB в ClickHouse? {#how-do-i-flatten-the-nested-mongodb-documents-in-clickhouse}
 
-Документы MongoDB по умолчанию реплицируются в ClickHouse как тип JSON с сохранением вложенной структуры. У вас есть несколько вариантов для их развёртывания. Если вы хотите развернуть данные в колонки, вы можете использовать обычные представления, материализованные представления или доступ во время выполнения запроса.
+### Как мне развернуть (flatten) вложенные документы MongoDB в ClickHouse? \{#how-do-i-flatten-the-nested-mongodb-documents-in-clickhouse\}
+
+Документы MongoDB по умолчанию реплицируются в ClickHouse как тип JSON с сохранением вложенной структуры. У вас есть несколько вариантов для их развёртывания. Если вы хотите развернуть данные в столбцы, вы можете использовать обычные представления, материализованные представления или доступ во время выполнения запроса.
 
 1. **Обычные представления**: Используйте обычные представления для инкапсуляции логики развёртывания.
 2. **Материализованные представления**: Для небольших наборов данных вы можете использовать обновляемые материализованные представления с [модификатором `FINAL`](/sql-reference/statements/select/from#final-modifier) для периодического развёртывания и дедупликации данных. Для больших наборов данных мы рекомендуем использовать инкрементальные материализованные представления без `FINAL` для развёртывания данных в реальном времени, а затем выполнять дедупликацию данных во время выполнения запроса.
@@ -42,41 +46,41 @@ SELECT sum(doc.shipping.cost::Float32) AS total_shipping_cost FROM t1;
 
 Подробные примеры приведены в нашем руководстве [Работа с JSON](./quickstart).
 
-### Могу ли я подключить базы данных MongoDB без публичного IP или в приватных сетях? {#can-i-connect-mongodb-databases-that-dont-have-a-public-ip-or-are-in-private-networks}
+### Могу ли я подключить базы данных MongoDB без публичного IP-адреса или в приватных сетях? \{#can-i-connect-mongodb-databases-that-dont-have-a-public-ip-or-are-in-private-networks\}
 
-Мы поддерживаем AWS PrivateLink для подключения к базам данных MongoDB, у которых нет публичного IP или которые находятся в приватных сетях. Azure Private Link и GCP Private Service Connect в данный момент не поддерживаются.
+Мы поддерживаем AWS PrivateLink для подключения к базам данных MongoDB, у которых нет публичного IP-адреса или которые находятся в приватных сетях. Azure Private Link и GCP Private Service Connect на данный момент не поддерживаются.
 
-### Что происходит, если я удаляю базу данных или таблицу из моей базы данных MongoDB? {#what-happens-if-i-delete-a-database-table-from-my-mongodb-database}
+### Что происходит, если я удалю базу данных или таблицу из базы данных MongoDB? \{#what-happens-if-i-delete-a-database-table-from-my-mongodb-database\}
 
-Когда вы удаляете базу данных или таблицу из MongoDB, ClickPipes продолжит работу, но удалённая база данных или таблица перестанет реплицировать изменения. Соответствующие таблицы в ClickHouse сохраняются.
+Когда вы удаляете базу данных или таблицу из MongoDB, ClickPipes продолжит работу, но удалённая база данных или таблица перестанет реплицироваться. Соответствующие таблицы в ClickHouse будут сохранены.
 
-### Как коннектор MongoDB CDC обрабатывает транзакции? {#how-does-mongodb-cdc-connector-handle-transactions}
+### Как коннектор MongoDB CDC обрабатывает транзакции? \{#how-does-mongodb-cdc-connector-handle-transactions\}
 
-Каждое изменение документа внутри транзакции обрабатывается в ClickHouse как отдельное изменение. Изменения применяются в том порядке, в котором они появляются в oplog, и только зафиксированные изменения реплицируются в ClickHouse. Если транзакция MongoDB откатывается, эти изменения не появятся в потоке изменений (change stream).
+Каждое изменение документа внутри транзакции обрабатывается в ClickHouse как отдельная операция. Изменения применяются в том порядке, в котором они появляются в oplog, и только зафиксированные изменения реплицируются в ClickHouse. Если транзакция MongoDB была откатена, эти изменения не появятся в потоке изменений (change stream).
 
 Для дополнительных примеров см. наше руководство [Работа с JSON](./quickstart).
 
-### Как обрабатывать ошибку `resume of change stream was not possible, as the resume point may no longer be in the oplog.`? {#resume-point-may-no-longer-be-in-the-oplog-error}
+### Как обрабатывать ошибку `resume of change stream was not possible, as the resume point may no longer be in the oplog.`? \{#resume-point-may-no-longer-be-in-the-oplog-error\}
 
 Эта ошибка обычно возникает, когда oplog был усечён, и ClickPipe не может возобновить поток изменений в ожидаемой точке. Чтобы устранить эту проблему, [повторно синхронизируйте ClickPipe](./resync.md). Чтобы избежать повторения этой проблемы, мы рекомендуем увеличить период хранения oplog. См. инструкции для [MongoDB Atlas](./source/atlas#enable-oplog-retention), [самостоятельно управляемой MongoDB](./source/generic#enable-oplog-retention) или [Amazon DocumentDB](./source/documentdb#configure-change-stream-log-retention).
 
-### Как управляется репликация? {#how-is-replication-managed}
+### Как управляется репликация? \{#how-is-replication-managed\}
 
-Мы используем родной API MongoDB Change Streams для отслеживания изменений в базе данных. Change Streams API предоставляет возобновляемый поток изменений базы данных, используя oplog MongoDB (журнал операций). ClickPipe использует токены возобновления MongoDB для отслеживания позиции в oplog и обеспечивает репликацию каждого изменения в ClickHouse.
+Мы используем встроенный в MongoDB API Change Streams для отслеживания изменений в базе данных. Change Streams API предоставляет возобновляемый поток изменений базы данных, используя oplog MongoDB (журнал операций). ClickPipe использует токены возобновления MongoDB для отслеживания позиции в oplog и гарантирует, что каждое изменение будет реплицировано в ClickHouse.
 
-### Какой read preference мне следует использовать? {#which-read-preference-should-i-use}
+### Какой read preference мне следует использовать? \{#which-read-preference-should-i-use\}
 
-Выбор режима read preference зависит от вашего конкретного варианта использования. Если вы хотите минимизировать нагрузку на основной (primary) узел, мы рекомендуем использовать режим `secondaryPreferred`. Если вы хотите оптимизировать задержку ингестии, мы рекомендуем использовать режим `primaryPreferred`. Подробности см. в [документации MongoDB](https://www.mongodb.com/docs/manual/core/read-preference/#read-preference-modes-1).
+Выбор режима read preference зависит от вашего конкретного варианта использования. Если вы хотите минимизировать нагрузку на основной (primary) узел, мы рекомендуем использовать режим `secondaryPreferred`. Если вы хотите оптимизировать задержку при ингестии, мы рекомендуем использовать режим `primaryPreferred`. Подробности см. в [документации MongoDB](https://www.mongodb.com/docs/manual/core/read-preference/#read-preference-modes-1).
 
-### Поддерживает ли MongoDB ClickPipe шардированный кластер? {#does-the-mongodb-clickpipe-support-sharded-cluster}
+### Поддерживает ли MongoDB ClickPipe шардированный кластер? \{#does-the-mongodb-clickpipe-support-sharded-cluster\}
 
 Да, MongoDB ClickPipe поддерживает как Replica Set, так и шардированный кластер.
 
-### Поддерживает ли MongoDB ClickPipe Amazon DocumentDB? {#documentdb-support}
+### Поддерживает ли MongoDB ClickPipe Amazon DocumentDB? \{#documentdb-support\}
 
 Да, MongoDB ClickPipe поддерживает Amazon DocumentDB 5.0. Подробности см. в разделе [руководство по настройке источника Amazon DocumentDB](./source/documentdb.md).
 
-### Поддерживает ли MongoDB ClickPipe PrivateLink? {#privatelink-support}
+### Поддерживает ли MongoDB ClickPipe PrivateLink? \{#privatelink-support\}
 
 Мы поддерживаем PrivateLink для кластеров MongoDB (и DocumentDB) только в AWS. 
 

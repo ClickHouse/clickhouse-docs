@@ -48,13 +48,14 @@ import DemoArchitecture from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 当 HyperDX 托管在 ClickHouse Cloud 中时，不支持远程数据库。因此，在该环境中无法使用此数据集。
 :::
 
+
 其中包含了大约 40 小时的数据，这些数据捕获自官方 OpenTelemetry (OTel) 演示的 ClickHouse 版本。数据会在每晚重放，并将时间戳调整到当前时间窗口，使用户能够通过 HyperDX 中集成的日志、链路追踪和指标来探索系统行为。
 
 :::note 数据差异
 由于数据集会从每天的午夜开始重放，因此具体的可视化结果可能会因您查看演示的时间不同而有所变化。
 :::
 
-## 演示场景 {#demo-scenario}
+## 演示场景 \{#demo-scenario\}
 
 在本次演示中，我们将调查一个与销售天文望远镜及相关配件的电商网站有关的故障事件。
 
@@ -62,13 +63,13 @@ import DemoArchitecture from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 SRE 团队将使用 HyperDX 分析日志、追踪和指标，以诊断并解决该问题，随后再审查会话数据，以确认他们的结论是否与真实的用户行为一致。
 
-## OpenTelemetry 演示 {#otel-demo}
+## OpenTelemetry 演示 \{#otel-demo\}
 
 本演示使用了官方 OpenTelemetry 演示的一个 [由 ClickStack 维护的分支](https://github.com/ClickHouse/opentelemetry-demo)。
 
 <DemoArchitecture/>
 
-## 演示步骤 {#demo-steps}
+## 演示步骤 \{#demo-steps\}
 
 **我们已使用 [ClickStack SDKS](/use-cases/observability/clickstack/sdks) 对本演示进行了观测性埋点，将各个服务部署在 Kubernetes 中，并从中采集指标和日志。**
 

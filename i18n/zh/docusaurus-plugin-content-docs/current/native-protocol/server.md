@@ -7,7 +7,7 @@ doc_type: 'reference'
 keywords: ['原生协议', 'TCP 协议', '客户端-服务器', '协议规范', '网络']
 ---
 
-# 服务器数据包 {#server-packets}
+# 服务器数据包 \{#server-packets\}
 
 | value | name                             | description                                                     |
 |-------|----------------------------------|-----------------------------------------------------------------|
@@ -29,7 +29,7 @@ keywords: ['原生协议', 'TCP 协议', '客户端-服务器', '协议规范', 
 
 `Data`、`Totals` 和 `Extremes` 可以压缩。
 
-## Hello {#hello}
+## Hello \{#hello\}
 
 对[客户端 hello](./client.md#hello) 的响应。
 
@@ -43,7 +43,7 @@ keywords: ['原生协议', 'TCP 协议', '客户端-服务器', '协议规范', 
 | display_name  | String  | `ClickHouse`    | UI 中显示的服务器名称 |
 | version_patch | UVarInt | `3`             | 服务器补丁版本号     |
 
-## 异常 {#exception}
+## 异常 \{#exception\}
 
 查询处理期间的服务器异常。
 
@@ -59,7 +59,7 @@ keywords: ['原生协议', 'TCP 协议', '客户端-服务器', '协议规范', 
 
 [codes]: https://clickhouse.com/codebrowser/ClickHouse/src/Common/ErrorCodes.cpp.html "错误代码列表"
 
-## 进度 {#progress}
+## 进度 \{#progress\}
 
 服务器会定期上报查询执行的进度。
 
@@ -75,17 +75,17 @@ keywords: ['原生协议', 'TCP 协议', '客户端-服务器', '协议规范', 
 | wrote_rows  | UVarInt | `0`      | 来自客户端的行数    |
 | wrote_bytes | UVarInt | `0`      | 来自客户端的字节数  |
 
-## Pong {#pong}
+## Pong \{#pong\}
 
 对 [客户端 ping](./client.md#ping) 的响应，无数据包正文。
 
-## 流结束 {#end-of-stream}
+## 流结束 \{#end-of-stream\}
 
 不再发送任何 **Data** 数据包，查询结果已从服务器完整地流式传输到客户端。
 
 无数据包主体。
 
-## 概要信息 {#profile-info}
+## 概要信息 \{#profile-info\}
 
 | 字段                         | 类型    |
 |------------------------------|---------|
@@ -96,7 +96,7 @@ keywords: ['原生协议', 'TCP 协议', '客户端-服务器', '协议规范', 
 | rows_before_limit            | UVarInt |
 | calculated_rows_before_limit | Bool    |
 
-## 日志 {#log}
+## 日志 \{#log\}
 
 包含服务器日志的 **数据块**。
 
@@ -115,7 +115,7 @@ keywords: ['原生协议', 'TCP 协议', '客户端-服务器', '协议规范', 
 | source     | String   |
 | text       | String   |
 
-## Profile events {#profile-events}
+## Profile events \{#profile-events\}
 
 包含 **profile events** 的数据块。
 

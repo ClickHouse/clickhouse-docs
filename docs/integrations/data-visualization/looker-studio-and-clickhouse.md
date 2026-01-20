@@ -6,7 +6,7 @@ description: 'Looker Studio, formerly Google Data Studio, is an online tool for 
 title: 'Looker Studio'
 doc_type: 'guide'
 integration:
-  - support_level: 'core'
+  - support_level: 'partner'
   - category: 'data_visualization'
 ---
 

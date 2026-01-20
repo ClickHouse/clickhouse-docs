@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 KILL ステートメントには 2 種類あります。クエリを KILL するものと、ミューテーションを KILL するものです。
 
-## KILL QUERY {#kill-query}
+## KILL QUERY \{#kill-query\}
 
 ```sql
 KILL QUERY [ON CLUSTER cluster]
@@ -80,7 +80,7 @@ ClickHouse Cloud または自己管理クラスタでクエリを強制終了す
 
 テストクエリ（`TEST`）は、ユーザーの権限のみを確認し、停止対象となるクエリの一覧を表示します。
 
-## KILL MUTATION {#kill-mutation}
+## KILL MUTATION \{#kill-mutation\}
 
 長時間実行している、または未完了の `MUTATION` が存在する場合、多くの場合は ClickHouse サービスが正常に動作していないことを示しています。`MUTATION` の非同期的な性質により、システム上の利用可能なリソースをすべて消費してしまうことがあります。次のいずれかの対応が必要になる場合があります:
 

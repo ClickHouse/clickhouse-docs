@@ -4,6 +4,9 @@ slug: /integrations/clickpipes/mongodb/datatypes
 description: 'MongoDB ClickPipe における MongoDB から ClickHouse へのデータ型マッピングを説明するページ'
 doc_type: 'reference'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'データインジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 MongoDB はデータレコードを BSON ドキュメントとして保存します。ClickPipes では、BSON ドキュメントを JSON または JSON String として ClickHouse に取り込むように設定できます。次の表は、サポートされている BSON から JSON へのフィールド型のマッピングを示しています。

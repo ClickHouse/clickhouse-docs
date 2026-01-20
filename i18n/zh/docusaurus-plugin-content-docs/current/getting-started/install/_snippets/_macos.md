@@ -3,19 +3,25 @@ import dev_error from "@site/static/images/knowledgebase/fix-the-developer-verif
 import privacy_default from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-default-view.png";
 import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-screen-allow-anyway.png";
 
-# 使用 Homebrew 安装 ClickHouse {#install-clickhouse-using-homebrew}
+# 使用 Homebrew 安装 ClickHouse \{#install-clickhouse-using-homebrew\}
+
+:::warning
+通过 Homebrew Formulae 安装的方式现已被弃用，并将于 2026-09-01 起停用。
+我们推荐使用适用于任何平台的[快速安装](/install/quick-install-curl)方式。
+:::
 
 <VerticalStepper>
 
-## 使用社区 Homebrew 配方进行安装 {#install-using-community-homebrew-formula}
+## 使用社区 Homebrew formula 安装 \{#install-using-community-homebrew-formula\}
 
-要在 macOS 上使用 [Homebrew](https://brew.sh/) 安装 ClickHouse，可以使用 ClickHouse 社区提供的 [Homebrew 配方](https://formulae.brew.sh/cask/clickhouse)。
+要在 macOS 上使用 [Homebrew](https://brew.sh/) 安装 ClickHouse，可以使用
+ClickHouse 社区提供的 [homebrew formula](https://formulae.brew.sh/cask/clickhouse)。
 
 ```bash
 brew install --cask clickhouse
 ```
 
-## 在 macOS 中修复开发者验证错误 {#fix-developer-verification-error-macos}
+## 在 macOS 中修复开发者验证错误 \{#fix-developer-verification-error-macos\}
 
 如果你使用 `brew` 安装 ClickHouse，可能会遇到来自 macOS 的错误提示。
 默认情况下，macOS 不会运行由无法验证身份的开发者创建的应用程序或工具。
@@ -26,7 +32,7 @@ brew install --cask clickhouse
 
 要绕过此验证错误，你需要将该应用从 macOS 的隔离区中移除，可以通过以下任一方式完成：在系统设置窗口中找到相应设置、使用终端，或者重新安装 ClickHouse。
 
-### 系统设置流程 {#system-settings-process}
+### 系统设置流程 \{#system-settings-process\}
 
 将 `clickhouse` 可执行文件从隔离区移除的最简单方式是：
 
@@ -46,7 +52,7 @@ brew install --cask clickhouse
 
 现在你应该可以在终端中运行 `clickhouse` 命令了。
 
-### 终端流程 {#terminal-process}
+### 终端流程 \{#terminal-process\}
 
 有时点击 `Allow Anyway` 按钮并不能解决该问题，在这种情况下，你也可以通过命令行来完成这一流程。
 或者你可能只是更喜欢使用命令行！
@@ -84,20 +90,19 @@ clickhouse client [args]
 clickhouse benchmark [args]
 ```
 
-## 通过重新安装 ClickHouse 来解决此问题 {#fix-issue}
+## 通过重新安装 ClickHouse 来修复问题 \{#fix-issue\}
 
-Brew 提供了一个命令行选项,可以在首次安装时避免对二进制文件进行隔离检查。
+Homebrew 提供了一个命令行选项，可以从一开始就避免对已安装的二进制文件进行隔离。
 
-首先,卸载 ClickHouse:
+首先卸载 ClickHouse：
 
 ```shell
 brew uninstall clickhouse
 ```
 
-现在使用 `--no-quarantine` 重新安装 ClickHouse:
+现在使用 `--no-quarantine` 选项重新安装 ClickHouse：
 
 ```shell
 brew install --no-quarantine clickhouse
 ```
-
 </VerticalStepper>

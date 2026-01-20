@@ -33,7 +33,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
 <DedicatedKeeperServers />
 
-## 前提条件 {#pre-requisites}
+## 前提条件 \{#pre-requisites\}
 
 - 以前に [ローカル ClickHouse サーバー](/install) をセットアップしたことがある
 - ClickHouse の [設定ファイル](/operations/configuration-files) など、基本的な設定に関する概念に慣れている
@@ -775,7 +775,7 @@ FROM system.clusters;
   残念ながら、このクラスタには耐障害性がありません。ホストの1つに障害が発生すると、クラスタは異常状態と見なされ、クエリは失敗します。これは、[前の例](/architecture/replication)で見たレプリケーテッドテーブルとは対照的です。レプリケーテッドテーブルでは、ホストの1つに障害が発生してもデータを挿入できました。
 </VerticalStepper>
 
-## 結論 {#conclusion}
+## 結論 \{#conclusion\}
 
 このクラスタトポロジーの利点は、データが複数のホストに分散され、ノードあたりのストレージ使用量が半分になる点です。さらに重要な点として、クエリは両方のシャードにまたがって処理されるため、メモリ使用効率が高くなり、ホストあたりの I/O が削減されます。
 

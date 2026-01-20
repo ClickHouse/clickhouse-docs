@@ -84,9 +84,9 @@ Please see the [Billing overview page](/cloud/manage/billing).
 
 There is no difference in pricing between marketplace billing and signing up directly with ClickHouse. In either case, your usage of  ClickHouse Cloud is tracked in terms of ClickHouse Cloud Credits (CHCs), which are metered in the same way and billed accordingly.
 
-### Can I set up multiple ClickHouse Organizations to bill to a single cloud marketplace billing account or sub account (AWS, GCP, or Azure)? {#multiple-organizations-to-bill-to-single-cloud-marketplace-account}
+### Can I set up multiple ClickHouse Organizations to bill to a single cloud marketplace billing account (AWS, GCP, or Azure)? {#multiple-organizations-to-bill-to-single-cloud-marketplace-account}
 
-A single ClickHouse organization can only be configured to bill to a single Cloud marketplace billing account or sub account.
+Yes. Multiple ClickHouse organizations can be configured to bill usage in arrears to the same cloud marketplace billing account (AWS, GCP, or Azure). However, prepaid credits are not shared across organizations by default. If you need to share credits between organizations, please contact [ClickHouse Cloud Support](https://clickhouse.com/support/program).
 
 ### If my ClickHouse Organization is billed through a cloud marketplace committed spend agreement will I automatically move to PAYG billing when I run out of credits? {#automatically-move-to-PAYG-when-running-out-of-credit}
 

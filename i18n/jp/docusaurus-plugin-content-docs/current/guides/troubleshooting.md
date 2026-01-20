@@ -6,13 +6,13 @@ doc_type: 'guide'
 keywords: ['トラブルシューティング', 'デバッグ', '問題解決', 'エラー', '診断']
 ---
 
-## インストール {#installation}
+## インストール \{#installation\}
 
-### apt-key を使用して keyserver.ubuntu.com から GPG キーをインポートできない {#cannot-import-gpg-keys-from-keyserverubuntucom-with-apt-key}
+### apt-key を使用して keyserver.ubuntu.com から GPG キーをインポートできない \{#cannot-import-gpg-keys-from-keyserverubuntucom-with-apt-key\}
 
 [Advanced Package Tool (APT) の `apt-key` 機能は非推奨になりました](https://manpages.debian.org/bookworm/apt/apt-key.8.en.html)。代わりに `gpg` コマンドを使用する必要があります。[インストールガイド](../getting-started/install/install.mdx)を参照してください。
 
-### gpg を使用して keyserver.ubuntu.com から GPG キーをインポートできない {#cannot-import-gpg-keys-from-keyserverubuntucom-with-gpg}
+### gpg を使用して keyserver.ubuntu.com から GPG キーをインポートできない \{#cannot-import-gpg-keys-from-keyserverubuntucom-with-gpg\}
 
 1. `gpg` がインストールされているか確認します。
 
@@ -20,18 +20,19 @@ keywords: ['トラブルシューティング', 'デバッグ', '問題解決', 
 sudo apt-get install gnupg
 ```
 
-### apt-get で ClickHouse リポジトリから deb パッケージを取得できない {#cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
+
+### apt-get で ClickHouse リポジトリから deb パッケージを取得できない \{#cannot-get-deb-packages-from-clickhouse-repository-with-apt-get\}
 
 1. ファイアウォール設定を確認します。
 2. 何らかの理由でリポジトリにアクセスできない場合は、[インストールガイド](../getting-started/install/install.mdx)の記事に記載されている方法でパッケージをダウンロードし、`sudo dpkg -i <packages>` コマンドを使用して手動でインストールしてください。`tzdata` パッケージも必要になります。
 
-### apt-get で ClickHouse リポジトリから deb パッケージを更新できない {#cannot-update-deb-packages-from-clickhouse-repository-with-apt-get}
+### apt-get で ClickHouse リポジトリから deb パッケージを更新できない \{#cannot-update-deb-packages-from-clickhouse-repository-with-apt-get\}
 
-この問題は、GPG キーが変更された際に発生する可能性があります。
+この問題は、GPG キーが変更された場合に発生する可能性があります。
 
 リポジトリ設定を更新するには、[セットアップ](/install/debian_ubuntu) ページの手順に従ってください。
 
-### `apt-get update` でさまざまな警告が表示される {#you-get-different-warnings-with-apt-get-update}
+### `apt-get update` でさまざまな警告が表示される \{#you-get-different-warnings-with-apt-get-update\}
 
 表示される警告メッセージは、次のいずれかになります。
 
@@ -63,7 +64,8 @@ sudo apt-get clean
 sudo apt-get autoclean
 ```
 
-### 署名エラーにより Yum でパッケージを取得できない {#cant-get-packages-with-yum-because-of-wrong-signature}
+
+### 署名エラーにより Yum でパッケージを取得できない \{#cant-get-packages-with-yum-because-of-wrong-signature\}
 
 考えられる原因: キャッシュが不正です。2022-09 に GPG キーを更新した後に破損した可能性があります。
 
@@ -74,30 +76,32 @@ sudo find /var/lib/yum/repos/ /var/cache/yum/ -name 'clickhouse-*' -type d -exec
 sudo rm -f /etc/yum.repos.d/clickhouse.repo
 ```
 
-その後は、[インストールガイド](/install/redhat)に従ってください
+その後は、[インストールガイド](/install/redhat)に従ってください。
 
-## サーバーへの接続 {#connecting-to-the-server}
+
+## サーバーへの接続 \{#connecting-to-the-server\}
 
 考えられる問題:
 
-* サーバーが起動していない。
-* 想定外または誤った設定パラメータ。
+- サーバーが起動していない。
+- 想定外または誤った設定パラメータ。
 
-### サーバーが起動していない {#server-is-not-running}
+### サーバーが起動していない \{#server-is-not-running\}
 
-#### サーバーが起動しているか確認する {#check-if-server-is-running}
+#### サーバーが起動しているか確認する \{#check-if-server-is-running\}
 
 ```shell
 sudo service clickhouse-server status
 ```
 
-サーバーが起動していない場合は、次のコマンドで起動してください。
+サーバーが起動していない場合は、次のコマンドを実行して起動してください。
 
 ```shell
 sudo service clickhouse-server start
 ```
 
-#### ログを確認する {#check-the-logs}
+
+#### ログを確認する \{#check-the-logs\}
 
 `clickhouse-server` のメインログは、デフォルトで `/var/log/clickhouse-server/clickhouse-server.log` に出力されます。
 
@@ -112,7 +116,7 @@ sudo service clickhouse-server start
 2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
 ```
 
-ファイルの末尾にエラーが表示されていない場合は、次の文字列以降についてファイル全体を確認してください。
+ファイルの末尾にエラーが表示されていない場合は、次の文字列が出力されている箇所からファイル全体を確認してください。
 
 ```plaintext
 <Information> Application: starting up.
@@ -134,23 +138,26 @@ Revision: 54413
 2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: Stop SignalListener thread
 ```
 
-#### system.d ログの確認 {#see-systemd-logs}
 
-`clickhouse-server` のログに有用な情報が含まれていない場合、またはログ自体が出力されていない場合は、次のコマンドを使用して `system.d` のログを確認できます。
+#### systemd ログの確認 \{#see-systemd-logs\}
+
+`clickhouse-server` のログに有用な情報が含まれていない場合、またはログ自体が出力されていない場合は、次のコマンドを使用して `systemd` のログを確認できます。
 
 ```shell
 sudo journalctl -u clickhouse-server
 ```
 
-#### インタラクティブ モードで clickhouse-server を起動する {#start-clickhouse-server-in-interactive-mode}
+
+#### 対話モードで clickhouse-server を起動する \{#start-clickhouse-server-in-interactive-mode\}
 
 ```shell
 sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-server/config.xml
 ```
 
-このコマンドは、自動起動スクリプトの標準パラメータでサーバーを対話型アプリケーションとして起動します。このモードでは、`clickhouse-server` はすべてのイベントメッセージをコンソールに出力します。
+このコマンドは、自動起動スクリプトと同じ標準パラメータでサーバーをインタラクティブ アプリケーションとして起動します。このモードでは、`clickhouse-server` はすべてのイベントメッセージをコンソールに出力します。
 
-### 設定パラメータ {#configuration-parameters}
+
+### 設定パラメータ \{#configuration-parameters\}
 
 次を確認してください。
 
@@ -177,7 +184,7 @@ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-serv
 
    * ユーザー名またはパスワードが間違っている可能性があります。
 
-## クエリ処理 {#query-processing}
+## クエリ処理 \{#query-processing\}
 
 ClickHouse がクエリを処理できない場合、エラー内容をクライアントに送信します。`clickhouse-client` では、コンソール上にエラー内容が表示されます。HTTP インターフェイスを使用している場合、ClickHouse はレスポンスボディ内にエラー内容を返します。例えば、次のようになります。
 
@@ -190,7 +197,8 @@ Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that ther
 
 接続が切断されたことを示すメッセージが表示されることがあります。この場合は、クエリを再実行してみてください。クエリを実行するたびに接続が切断される場合は、サーバーログにエラーがないか確認してください。
 
-## クエリ処理の効率 {#efficiency-of-query-processing}
+
+## クエリ処理の効率 \{#efficiency-of-query-processing\}
 
 ClickHouse のクエリ実行が遅すぎると感じた場合は、クエリがサーバーリソースやネットワークに与える負荷をプロファイルする必要があります。
 

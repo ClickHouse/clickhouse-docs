@@ -1,12 +1,21 @@
 ---
 sidebar_label: 'Ingesting Data from MySQL to ClickHouse'
-description: 'Describes how to seamlessly connect your MySQL to ClickHouse Cloud.'
+description: 'Seamlessly ingest data from your MySQL or MariaDB database to ClickHouse Cloud.'
 slug: /integrations/clickpipes/mysql
 title: 'Ingesting data from MySQL to ClickHouse (using CDC)'
 doc_type: 'guide'
 keywords: ['MySQL', 'ClickPipes', 'CDC', 'change data capture', 'database replication']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
+import Aurorasvg from '@site/static/images/integrations/logos/amazon_aurora.svg';
+import AFSsvg from '@site/static/images/integrations/logos/azure_database_mysql.svg';
+import CloudSQLsvg from '@site/static/images/integrations/logos/gcp_cloudsql.svg';
+import MariaDBsvg from '@site/static/images/integrations/logos/mariadb.svg';
+import MySQLsvg from '@site/static/images/integrations/logos/mysql.svg';
+import RDSsvg from '@site/static/images/integrations/logos/amazon_rds.svg';
 import BetaBadge from '@theme/badges/BetaBadge';
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
@@ -25,23 +34,27 @@ import Image from '@theme/IdealImage';
 Ingesting data from MySQL to ClickHouse Cloud via ClickPipes is in public beta.
 :::
 
-You can use ClickPipes to ingest data from your source MySQL database into ClickHouse Cloud. The source MySQL database can be hosted on-premises or in the cloud using services like Amazon RDS, Google Cloud SQL, and others.
+The MySQL ClickPipe provides a fully-managed and resilient way to ingest data from MySQL and MariaDB databases into ClickHouse Cloud. It supports both **bulk loads** for one-time ingestion and **Change Data Capture (CDC)** for continuous ingestion.
+
+MySQL ClickPipes can be deployed and managed manually using the ClickPipes UI. In the future, it'll be possible to deploy and manage MySQL ClickPipes programatically using [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) and [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.8.1-alpha1/docs/resources/clickpipe).
 
 ## Prerequisites {#prerequisites}
 
+[//]: # "TODO Binlog replication configuration is not needed for one-time ingestion pipes. This has been a source of confusion in the past, so we should also provide the bare minimum requirements for bulk loads to avoid scaring users off."
+
 To get started, you first need to ensure that your MySQL database is correctly configured for binlog replication. The configuration steps depend on how you're deploying MySQL, so please follow the relevant guide below:
 
-1. [Amazon RDS MySQL](./mysql/source/rds)
+### Supported data sources {#supported-data-sources}
 
-2. [Amazon Aurora MySQL](./mysql/source/aurora)
-
-3. [Cloud SQL for MySQL](./mysql/source/gcp)
-
-4. [Generic MySQL](./mysql/source/generic)
-
-5. [Amazon RDS MariaDB](./mysql/source/rds_maria)
-
-6. [Generic MariaDB](./mysql/source/generic_maria)
+| Name                 | Logo | Details           |
+|----------------------|------|-------------------|
+| **Amazon RDS MySQL** <br></br> _One-time load, CDC_ | <RDSsvg class="image" alt="Amazon RDS logo" style={{width: '2.5rem', height: 'auto'}}/> | Follow the [Amazon RDS MySQL](./mysql/source/rds) configuration guide. |
+| **Amazon Aurora MySQL** <br></br> _One-time load, CDC_ | <Aurorasvg class="image" alt="Amazon Aurora logo" style={{width: '2.5rem', height: 'auto'}}/> | Follow the [Amazon Aurora MySQL](./mysql/source/aurora) configuration guide. |
+| **Cloud SQL for MySQL** <br></br> _One-time load, CDC_ | <CloudSQLsvg class="image" alt="Cloud SQL logo" style={{width: '2.5rem', height: 'auto'}}/>|  Follow the [Cloud SQL for MySQL](./mysql/source/gcp) configuration guide. |
+| **Azure Flexible Server for MySQL** <br></br> _One-time load_ | <AFSsvg class="image" alt="Azure Flexible Server for MySQL logo" style={{width: '2.5rem', height: 'auto'}}/> | Follow the [Azure Flexible Server for MySQL](./mysql/source/azure-flexible-server-mysql) configuration guide. |
+| **Self-hosted MySQL** <br></br> _One-time load, CDC_ | <MySQLsvg class="image" alt="MySQL logo" style={{width: '2.5rem', height: 'auto'}}/>|  Follow the [Generic MySQL](./mysql/source/generic) configuration guide. |
+| **Amazon RDS MariaDB** <br></br> _One-time load, CDC_ | <RDSsvg class="image" alt="Amazon RDS logo" style={{width: '2.5rem', height: 'auto'}}/> | Follow the [Amazon RDS MariaDB](./mysql/source/rds_maria) configuration guide. |
+| **Self-hosted MariaDB** <br></br> _One-time load, CDC_ | <MariaDBsvg class="image" alt="MariaDB logo" style={{width: '2.5rem', height: 'auto'}}/>|  Follow the [Generic MariaDB](./mysql/source/generic_maria) configuration guide. |
 
 Once your source MySQL database is set up, you can continue creating your ClickPipe.
 

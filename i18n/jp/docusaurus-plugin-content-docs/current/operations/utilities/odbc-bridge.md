@@ -14,7 +14,7 @@ clickhouse-server のプロセス全体がクラッシュしてしまう可能�
 - デバッグがより簡単である
 - jdbc-bridge も同様の方法で実装できる
 
-## 使用方法 {#usage}
+## 使用方法 \{#usage\}
 
 `clickhouse-server` は、このツールを ODBC テーブル関数および StorageODBC 内で使用します。
 ただし、POST リクエストの URL に以下のパラメータを指定することで、コマンドラインからスタンドアロンのツールとして使用することもできます:
@@ -24,7 +24,7 @@ clickhouse-server のプロセス全体がクラッシュしてしまう可能�
 - `max_block_size` -- オプションのパラメータで、1 ブロックあたりの最大サイズを設定します。
 クエリは POST リクエストのボディで送信されます。応答は RowBinary 形式で返されます。
 
-## 例： {#example}
+## 例： \{#example\}
 
 ```bash
 $ clickhouse-odbc-bridge --http-port 9018 --daemon

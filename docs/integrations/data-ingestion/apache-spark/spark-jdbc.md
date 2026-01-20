@@ -6,6 +6,9 @@ description: 'Introduction to Apache Spark with ClickHouse'
 keywords: ['clickhouse', 'Apache Spark', 'jdbc', 'migrating', 'data']
 title: 'Spark JDBC'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -342,5 +345,6 @@ on [JDBC configurations](https://spark.apache.org/docs/latest/sql-data-sources-j
 
 ## JDBC limitations {#jdbc-limitations}
 
-* As of today, you can insert data using JDBC only into existing tables (currently there is no way to auto create the
+*  Spark JDBC lacks support for complex types (MAP, ARRAY, STRUCT) due to missing ClickHouse dialect - use the native Spark-ClickHouse connector for full complex type support.
+*  As of today, you can insert data using JDBC only into existing tables (currently, there is no way to auto-create the
   table on DF insertion, as Spark does with other connectors).

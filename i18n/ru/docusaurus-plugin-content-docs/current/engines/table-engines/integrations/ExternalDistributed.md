@@ -1,7 +1,7 @@
 ---
 description: 'Движок `ExternalDistributed` позволяет выполнять запросы `SELECT`
   к данным, которые хранятся на удалённых серверах MySQL или PostgreSQL. Использует
-  табличные движки MySQL или PostgreSQL в качестве аргумента, что позволяет реализовать шардинг.'
+  табличные движки MySQL или PostgreSQL в качестве аргумента, что позволяет реализовать сегментацию данных.'
 sidebar_label: 'ExternalDistributed'
 sidebar_position: 55
 slug: /engines/table-engines/integrations/ExternalDistributed
@@ -9,11 +9,11 @@ title: 'Табличный движок ExternalDistributed'
 doc_type: 'reference'
 ---
 
-# Движок таблицы ExternalDistributed {#externaldistributed-table-engine}
+# Движок таблицы ExternalDistributed \{#externaldistributed-table-engine\}
 
 Движок `ExternalDistributed` позволяет выполнять запросы `SELECT` к данным, которые хранятся на удалённых серверах с MySQL или PostgreSQL. Принимает в качестве аргумента движки [MySQL](../../../engines/table-engines/integrations/mysql.md) или [PostgreSQL](../../../engines/table-engines/integrations/postgresql.md), поэтому возможен шардинг.
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -29,7 +29,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 Структура таблицы может отличаться от структуры исходной таблицы:
 
 * Имена столбцов должны совпадать с именами в исходной таблице, но вы можете использовать только часть этих столбцов и в любом порядке.
-* Типы столбцов могут отличаться от типов в исходной таблице. ClickHouse пытается [привести](/sql-reference/functions/type-conversion-functions#cast) значения к типам данных ClickHouse.
+* Типы столбцов могут отличаться от типов в исходной таблице. ClickHouse пытается [привести](/sql-reference/functions/type-conversion-functions#CAST) значения к типам данных ClickHouse.
 
 **Параметры движка**
 
@@ -40,7 +40,8 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 * `user` — Имя пользователя.
 * `password` — Пароль пользователя.
 
-## Детали реализации {#implementation-details}
+
+## Детали реализации \{#implementation-details\}
 
 Поддерживаются несколько реплик; их необходимо перечислять через `|`, а шарды — через `,`. Например:
 

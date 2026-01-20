@@ -18,16 +18,16 @@ import looker_03 from '@site/static/images/integrations/data-visualization/looke
 import looker_04 from '@site/static/images/integrations/data-visualization/looker_04.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Looker {#looker}
+# Looker \{#looker\}
 
 <PartnerBadge/>
 
 Looker は公式の ClickHouse データソースを通じて、ClickHouse Cloud またはオンプレミス環境の ClickHouse デプロイメントに接続できます。
 
-## 1. 接続情報を確認する {#1-gather-your-connection-details}
+## 1. 接続情報を確認する \{#1-gather-your-connection-details\}
 <ConnectionDetails />
 
-## 2. ClickHouse データソースを作成する {#2-create-a-clickhouse-data-source}
+## 2. ClickHouse データソースを作成する \{#2-create-a-clickhouse-data-source\}
 
 Admin -> Database -> Connections ページに移動し、右上の「Add Connection」ボタンをクリックします。
 
@@ -51,7 +51,7 @@ ClickHouse Cloud を使用している場合、またはデプロイメントで
 
 これで、Looker プロジェクトに ClickHouse データソースを関連付けられるようになります。
 
-## 3. 既知の制限事項 {#3-known-limitations}
+## 3. 既知の制限事項 \{#3-known-limitations\}
 
 1. 次のデータ型は、デフォルトで文字列として扱われます:
    * Array - JDBC ドライバーの制限により、シリアル化が期待どおりに動作しません

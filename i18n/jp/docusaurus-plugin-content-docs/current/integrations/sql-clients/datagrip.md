@@ -5,7 +5,7 @@ description: 'DataGrip は、ClickHouse を標準でサポートするデータ�
 title: 'DataGrip から ClickHouse へ接続する'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'sql_client'
   - website: 'https://www.jetbrains.com/datagrip/'
 keywords: ['DataGrip', 'データベース IDE', 'JetBrains', 'SQL クライアント', '統合開発環境']
@@ -19,18 +19,19 @@ import datagrip_6 from '@site/static/images/integrations/sql-clients/datagrip-6.
 import datagrip_7 from '@site/static/images/integrations/sql-clients/datagrip-7.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# DataGrip から ClickHouse へ接続する {#connecting-datagrip-to-clickhouse}
+# DataGrip から ClickHouse へ接続する \{#connecting-datagrip-to-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
-## DataGrip の起動またはダウンロード {#start-or-download-datagrip}
+## DataGrip の起動またはダウンロード \{#start-or-download-datagrip\}
 
 DataGrip は https://www.jetbrains.com/datagrip/ からダウンロードできます。
 
-## 1. 接続情報を確認する {#1-gather-your-connection-details}
+## 1. 接続情報を確認する \{#1-gather-your-connection-details\}
+
 <ConnectionDetails />
 
-## 2. ClickHouse ドライバを読み込む {#2-load-the-clickhouse-driver}
+## 2. ClickHouse ドライバを読み込む \{#2-load-the-clickhouse-driver\}
 
 1. DataGrip を起動し、**Data Sources and Drivers** ダイアログの **Data Sources** タブで **+** アイコンをクリックします。
 
@@ -38,7 +39,7 @@ DataGrip は https://www.jetbrains.com/datagrip/ からダウンロードでき�
 
   **ClickHouse** を選択します。
 
-  :::tip
+:::tip
   接続を追加していくと並び順が変わるため、ClickHouse がまだリストの先頭に表示されていない場合があります。
   :::
 
@@ -51,7 +52,7 @@ DataGrip は https://www.jetbrains.com/datagrip/ からダウンロードでき�
 
 <Image img={datagrip_1} size="lg" border alt="ClickHouse ドライバのインストールを表示している DataGrip の Drivers タブ" />
 
-## 3. ClickHouse に接続する {#3-connect-to-clickhouse}
+## 3. ClickHouse に接続する \{#3-connect-to-clickhouse\}
 
 - データベース接続情報を入力し、**Test Connection** をクリックします。  
 ステップ 1 で接続情報を取得しているので、ホスト URL、ポート、ユーザー名、パスワード、データベース名を入力し、その後に接続テストを実行します。
@@ -70,6 +71,6 @@ JDBC URL の設定の詳細については、[ClickHouse JDBC driver](https://gi
 
 <Image img={datagrip_7} border alt="ClickHouse の設定が入力された DataGrip の接続詳細フォーム" />
 
-## さらに詳しく {#learn-more}
+## さらに詳しく \{#learn-more\}
 
-詳しくは DataGrip のドキュメントを参照してください。
+DataGrip についての詳細な情報は、DataGrip のドキュメントを参照してください。

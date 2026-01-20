@@ -5,6 +5,11 @@ import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-v
 
 # Install ClickHouse using Homebrew
 
+:::warning
+Installation using the Homebrew Formulae has now been deprecated and will be disabled on 2026-09-01.
+We recommend using the [quick install](/install/quick-install-curl) method which works on any platform instead.
+:::
+
 <VerticalStepper>
 
 ## Install using the community Homebrew formula {#install-using-community-homebrew-formula}

@@ -106,7 +106,8 @@ _Fig. 6 - Read-write and Read-only services in a warehouse_
 
 :::note
 1. Read-only services currently allow user management operations (create, drop, etc). This behavior may be changed in the future.
-2. Currently, refreshable materialized views are executed on all services in the warehouse, including read-only services. This behavior will be changed in the future, however, and they will be executed on RW services only.
+2. Refreshable materialized views run **only** on read-write (RW) services in a warehouse. They are **not** executed on read-only (RO) services.
+
 :::
 
 ## Scaling {#scaling}

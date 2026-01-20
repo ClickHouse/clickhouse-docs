@@ -9,11 +9,12 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# 入力および出力データのフォーマット {#formats-for-input-and-output-data}
+
+# 入力および出力データのフォーマット \{#formats-for-input-and-output-data\}
 
 ClickHouse は、一般的なテキスト形式およびバイナリ形式のほとんどをサポートしています。これにより、運用中のほぼあらゆるデータパイプラインに容易に統合し、ClickHouse の利点を活用できます。
 
-## 入力フォーマット {#input-formats}
+## 入力フォーマット \{#input-formats\}
 
 入力フォーマットは次の用途に使用されます:
 - `INSERT` ステートメントに渡されたデータのパース
@@ -31,13 +32,14 @@ ClickHouse にデータを効率的にインジェストするには、適切な
 完全版の [ベンチマーク分析](https://www.clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient) を参照してください。
 テスト結果の全体像は、[FastFormats](https://fastformats.clickhouse.com/) のオンラインダッシュボードで確認できます。
 
-## 出力形式 {#output-formats}
+## 出力形式 \{#output-formats\}
 
 出力としてサポートされている形式は、次の用途に使用されます:
+
 - `SELECT` クエリ結果の整形
 - ファイルベースのテーブルへの `INSERT` 操作の実行
 
-## フォーマットの概要 {#formats-overview}
+## フォーマットの概要 \{#formats-overview\}
 
 サポートされているフォーマットは以下のとおりです。
 
@@ -115,6 +117,7 @@ ClickHouse にデータを効率的にインジェストするには、適切な
 | [RowBinaryWithNamesAndTypes](./formats/RowBinary/RowBinaryWithNamesAndTypes.md)                            | ✔  | ✔  |
 | [RowBinaryWithDefaults](./formats/RowBinary/RowBinaryWithDefaults.md)                                      | ✔  | ✗  |
 | [Native](./formats/Native.md)                                                                              | ✔  | ✔  |
+| [Buffers](./formats/Buffers.md)                                                                            | ✔  | ✔  |
 | [Null](./formats/Null.md)                                                                                  | ✗  | ✔  |
 | [Hash](./formats/Hash.md)                                                                                  | ✗  | ✔  |
 | [XML](./formats/XML.md)                                                                                    | ✗  | ✔  |
@@ -132,7 +135,7 @@ ClickHouse にデータを効率的にインジェストするには、適切な
 
 ClickHouse の設定を使用して、一部のフォーマット処理パラメータを制御できます。詳細については、[Settings](/operations/settings/settings-formats.md) セクションを参照してください。
 
-## フォーマットスキーマ {#formatschema}
+## フォーマットスキーマ \{#formatschema\}
 
 フォーマットスキーマを格納したファイル名は、設定 `format_schema` で指定します。
 この設定は、`Cap'n Proto` または `Protobuf` のいずれかのフォーマットを使用する場合に必須です。
@@ -144,13 +147,14 @@ ClickHouse の設定を使用して、一部のフォーマット処理パラメ
 クライアント側のカレントディレクトリからの相対パス、または絶対パスを指定できます。
 クライアントを[バッチモード](/interfaces/cli.md/#batch-mode)で使用する場合、セキュリティ上の理由から、スキーマへのパスは相対パスでなければなりません。
 
-[HTTP インターフェイス](/interfaces/http.md)経由でデータを入力または出力する場合、フォーマットスキーマで指定するファイル名は、
+[HTTP インターフェイス](/interfaces/http)経由でデータを入力または出力する場合、フォーマットスキーマで指定するファイル名は、
 サーバー設定の [format_schema_path](/operations/server-configuration-parameters/settings.md/#format_schema_path) で指定されたディレクトリ内に存在している必要があります。
 
-## エラーのスキップ {#skippingerrors}
+## エラーのスキップ \{#skippingerrors\}
 
 `CSV`、`TabSeparated`、`TSKV`、`JSONEachRow`、`Template`、`CustomSeparated`、`Protobuf` などの一部の形式では、パースエラーが発生した場合に不正な行をスキップし、次の行の先頭からパースを継続できます。詳細は [input_format_allow_errors_num](/operations/settings/settings-formats.md/#input_format_allow_errors_num) および
 [input_format_allow_errors_ratio](/operations/settings/settings-formats.md/#input_format_allow_errors_ratio) 設定を参照してください。
 制限事項:
+
 - パースエラーが発生した場合、`JSONEachRow` は改行（または EOF）までのすべてのデータをスキップするため、エラーを正しくカウントするには、行を `\n` で区切る必要があります。
 - `Template` と `CustomSeparated` は、次の行の先頭を見つけるために、最後の列の後の区切り文字と行間の区切り文字を使用するため、少なくとも一方が空でない場合にのみエラーをスキップできます。

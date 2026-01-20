@@ -12,13 +12,13 @@ import byoc4 from '@site/static/images/cloud/reference/byoc-4.png';
 import byoc3 from '@site/static/images/cloud/reference/byoc-3.png';
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
-## オブザーバビリティ {#observability}
+## オブザーバビリティ \{#observability\}
 
-### 組み込みの監視ツール {#built-in-monitoring-tools}
+### 組み込みの監視ツール \{#built-in-monitoring-tools\}
 
 ClickHouse BYOC は、さまざまなユースケースに対応する複数のアプローチを提供しています。
 
-#### オブザーバビリティダッシュボード {#observability-dashboard}
+#### オブザーバビリティダッシュボード \{#observability-dashboard\}
 
 ClickHouse Cloud には、メモリ使用量、クエリレート、I/O などのメトリクスを表示する高度なオブザーバビリティダッシュボードが用意されています。ClickHouse Cloud の Web コンソールの **Monitoring** セクションからアクセスできます。
 
@@ -28,7 +28,7 @@ ClickHouse Cloud には、メモリ使用量、クエリレート、I/O など�
 
 <br />
 
-#### 高度なダッシュボード {#advanced-dashboard}
+#### 高度なダッシュボード \{#advanced-dashboard\}
 
 `system.metrics`、`system.events`、`system.asynchronous_metrics` などのシステムテーブルからメトリクスを取得してダッシュボードをカスタマイズすることで、サーバーのパフォーマンスやリソース使用状況を詳細に監視できます。
 
@@ -38,7 +38,7 @@ ClickHouse Cloud には、メモリ使用量、クエリレート、I/O など�
 
 <br />
 
-#### BYOC Prometheus スタックへのアクセス {#prometheus-access}
+#### BYOC Prometheus スタックへのアクセス \{#prometheus-access\}
 
 ClickHouse BYOC は、Prometheus スタックを Kubernetes クラスター上にデプロイします。そこからメトリクスへアクセスしてスクレイプし、お使いの監視スタックと統合できます。
 
@@ -50,7 +50,7 @@ ClickHouse BYOC は、Prometheus スタックを Kubernetes クラスター上�
 https://prometheus-internal.<subdomain>.<region>.aws.clickhouse-byoc.com/query
 ```
 
-#### Prometheus 連携 {#prometheus-integration}
+#### Prometheus 連携 \{#prometheus-integration\}
 
 <DeprecatedBadge />
 

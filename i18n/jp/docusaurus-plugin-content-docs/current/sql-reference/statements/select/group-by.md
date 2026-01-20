@@ -6,7 +6,7 @@ title: 'GROUP BY 句'
 doc_type: 'reference'
 ---
 
-# GROUP BY 句 {#group-by-clause}
+# GROUP BY 句 \{#group-by-clause\}
 
 `GROUP BY` 句は `SELECT` クエリを集約モードに切り替え、その動作は次のようになります。
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 テーブルに対して集約を実行する別の方法もあります。クエリ内でテーブルのカラムが集約関数の内部にしか現れない場合、`GROUP BY` 句は省略でき、その場合は空のキー集合（キーをまったく指定しない）での集約が行われるとみなされます。このようなクエリは常にちょうど 1 行だけを返します。
 :::
 
-## NULL の処理 {#null-processing}
+## NULL の処理 \{#null-processing\}
 
 グループ化では、ClickHouse は [NULL](/sql-reference/syntax#null) を値として解釈し、`NULL==NULL` とみなします。これは、ほとんどの他のコンテキストにおける `NULL` の処理とは異なります。
 
@@ -52,7 +52,7 @@ doc_type: 'reference'
 
 `GROUP BY` に複数のキーを渡すと、結果は選択された値のあらゆる組み合わせを返し、あたかも `NULL` が特定の値であるかのように扱われます。
 
-## ROLLUP 修飾子 {#rollup-modifier}
+## ROLLUP 修飾子 \{#rollup-modifier\}
 
 `ROLLUP` 修飾子は、`GROUP BY` 句のリスト内での順序に基づいて、キー式ごとの小計を計算するために使用されます。小計の行は結果テーブルの末尾に追加されます。
 
@@ -125,7 +125,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 
 * SQL 標準との互換性を確保するための [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) 設定。
 
-## CUBE 修飾子 {#cube-modifier}
+## CUBE 修飾子 \{#cube-modifier\}
 
 `CUBE` 修飾子は、`GROUP BY` 句内のキー式のあらゆる組み合わせに対する小計を計算するために使用されます。小計行は結果テーブルの末尾に追加されます。
 
@@ -222,7 +222,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 
 * SQL 標準との互換性を確保するための設定については、[group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) を参照してください。
 
-## WITH TOTALS 句修飾子 {#with-totals-modifier}
+## WITH TOTALS 句修飾子 \{#with-totals-modifier\}
 
 `WITH TOTALS` 句修飾子が指定されている場合、追加の行が計算されます。この行では、キー列にはデフォルト値（ゼロまたは空文字列）が入り、集約関数の列にはすべての行に対して計算された値（`totals` 値）が入ります。
 
@@ -240,7 +240,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 
 [HAVING](/sql-reference/statements/select/having.md) が存在する場合、`WITH TOTALS` はさまざまな方法で実行できます。挙動は `totals_mode` 設定に依存します。
 
-### 合計処理の設定 {#configuring-totals-processing}
+### 合計処理の設定 \{#configuring-totals-processing\}
 
 デフォルトでは、`totals_mode = 'before_having'` です。この場合、HAVING および `max_rows_to_group_by` を通過しない行も含めて、すべての行に対して `totals` が計算されます。
 
@@ -258,7 +258,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 
 `WITH TOTALS` はサブクエリ内で使用でき、[JOIN](/sql-reference/statements/select/join.md) 句内のサブクエリでも使用できます（この場合、対応する合計値は結合されます）。
 
-## GROUP BY ALL {#group-by-all}
+## GROUP BY ALL \{#group-by-all\}
 
 `GROUP BY ALL` は、集約関数ではないすべての SELECT 句の式を列挙することと同等です。
 
@@ -306,7 +306,7 @@ FROM t
 GROUP BY substring(a, 4, 2), substring(a, 1, 2)
 ```
 
-## 使用例 {#examples}
+## 使用例 \{#examples\}
 
 例：
 
@@ -333,7 +333,7 @@ GROUP BY domain
 
 出現した異なるキー値ごとに、`GROUP BY` は集約関数の結果セットを計算します。
 
-## GROUPING SETS 修飾子 {#grouping-sets-modifier}
+## GROUPING SETS 修飾子 \{#grouping-sets-modifier\}
 
 これは最も汎用的な修飾子です。
 この修飾子を使用すると、複数の集約キーの集合（グルーピングセット）を手動で指定できます。
@@ -370,15 +370,15 @@ GROUPING SETS
 
 * SQL 標準との互換性に関する [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) 設定。
 
-## 実装の詳細 {#implementation-details}
+## 実装の詳細 \{#implementation-details\}
 
 集約はカラム指向 DBMS において最も重要な機能の一つであり、このためその実装部分は ClickHouse の中でも特に高度に最適化されています。デフォルトでは、集約はハッシュテーブルを用いてメモリ内で実行されます。ハッシュテーブルには 40 以上の特殊化があり、「グルーピングキー」のデータ型に応じて自動的に選択されます。
 
-### テーブルのソートキーに依存した GROUP BY の最適化 {#group-by-optimization-depending-on-table-sorting-key}
+### テーブルのソートキーに依存した GROUP BY の最適化 \{#group-by-optimization-depending-on-table-sorting-key\}
 
 テーブルがあるキーでソートされており、`GROUP BY` 式がそのソートキーの少なくとも先頭部分（プレフィックス）、もしくはそれに対する単射関数を含んでいる場合、集約はより効率的に実行できます。この場合、テーブルから新しいキーが読み込まれるたびに、それまでの中間集約結果を確定させてクライアントに送信できます。この動作は [optimize_aggregation_in_order](../../../operations/settings/settings.md#optimize_aggregation_in_order) 設定によって有効になります。このような最適化により集約中のメモリ使用量が削減されますが、場合によってはクエリ実行が遅くなることがあります。
 
-### 外部メモリでの GROUP BY {#group-by-in-external-memory}
+### 外部メモリでの GROUP BY \{#group-by-in-external-memory\}
 
 `GROUP BY` 実行中のメモリ使用量を制限するため、一時データをディスクにダンプすることを有効にできます。
 [max_bytes_before_external_group_by](/operations/settings/settings#max_bytes_before_external_group_by) 設定は、`GROUP BY` の一時データをファイルシステムにダンプする際の RAM 消費の閾値を決定します。0（デフォルト）に設定されている場合は無効です。

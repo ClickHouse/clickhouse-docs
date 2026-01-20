@@ -8,7 +8,7 @@ title: 'Date32'
 doc_type: 'reference'
 ---
 
-# Date32 {#date32}
+# Date32 \{#date32\}
 
 Дата. Поддерживает тот же диапазон дат, что и [DateTime64](../../sql-reference/data-types/datetime64.md). Хранится как знаковое 32-битное целое число в нативном порядке байтов, значение которого равно количеству дней, прошедших с `1900-01-01`. **Важно!** 0 соответствует `1970-01-01`, а отрицательные значения — дням до `1970-01-01`.
 
@@ -45,6 +45,6 @@ SELECT * FROM dt32;
 
 **Смотрите также**
 
-* [toDate32](../../sql-reference/functions/type-conversion-functions.md#todate32)
+* [toDate32](../../sql-reference/functions/type-conversion-functions.md#toDate32)
 * [toDate32OrZero](/sql-reference/functions/type-conversion-functions#toDate32OrZero)
 * [toDate32OrNull](/sql-reference/functions/type-conversion-functions#toDate32OrNull)

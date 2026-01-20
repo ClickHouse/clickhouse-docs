@@ -14,7 +14,7 @@ ClickHouse supports a wide range of [data formats for input and output](/interfa
 
 ## Examples {#examples}
 
-Using [HTTP interface](../../interfaces/http.md):
+Using [HTTP interface](/interfaces/http):
 
 ``` bash
 $ echo '{"foo":"bar"}' | curl 'http://localhost:8123/?query=INSERT%20INTO%20test%20FORMAT%20JSONEachRow' --data-binary @-

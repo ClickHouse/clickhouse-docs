@@ -26,20 +26,20 @@ import ToolsCalled from '@site/static/images/use-cases/AI_ML/MCP/8_janai_tools_c
 import ToolsCalledExpanded from '@site/static/images/use-cases/AI_ML/MCP/9_janai_tools_called_expanded.png';  
 import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png';
 
-# Использование MCP-сервера ClickHouse с Jan.ai {#using-clickhouse-mcp-server-with-janai}
+# Использование MCP-сервера ClickHouse с Jan.ai \{#using-clickhouse-mcp-server-with-janai\}
 
 > В этом руководстве описывается использование MCP-сервера ClickHouse с [Jan.ai](https://jan.ai/docs).
 
 <VerticalStepper headerLevel="h2">
 
-## Установка Jan.ai {#install-janai}
+## Установка Jan.ai \{#install-janai\}
 
 Jan.ai — это открытое приложение, являющееся альтернативой ChatGPT и работающее на 100 % офлайн.
 Вы можете скачать Jan.ai для [Mac](https://jan.ai/docs/desktop/mac), [Windows](https://jan.ai/docs/desktop/windows) или [Linux](https://jan.ai/docs/desktop/linux).
 
 Это нативное приложение, поэтому после загрузки вы можете просто запустить его.
 
-## Добавить LLM в Jan.ai {#add-llm-to-janai}
+## Добавить LLM в Jan.ai \{#add-llm-to-janai\}
 
 Мы можем включить модели через меню настроек. 
 
@@ -47,7 +47,7 @@ Jan.ai — это открытое приложение, являющееся а
 
 <Image img={OpenAIModels} alt="Включение моделей OpenAI" size="md"/>
 
-## Включение MCP Servers {#enable-mcp-servers}
+## Включение MCP Servers \{#enable-mcp-servers\}
 
 На момент написания этой инструкции MCP Servers являются экспериментальной функцией в Jan.ai.
 Их можно включить, переключив экспериментальные функции:
@@ -56,7 +56,7 @@ Jan.ai — это открытое приложение, являющееся а
 
 После переключения этого переключателя в левом меню появится пункт `MCP Servers`.
 
-## Настройка ClickHouse MCP Server {#configure-clickhouse-mcp-server}
+## Настройка ClickHouse MCP Server \{#configure-clickhouse-mcp-server\}
 
 Если нажать на меню `MCP Servers`, откроется список MCP-серверов, к которым можно подключиться:
 
@@ -76,7 +76,7 @@ Jan.ai — это открытое приложение, являющееся а
 
 <Image img={MCPTool} alt="Инструменты ClickHouse MCP Server" size="md"/>
 
-## Общение с ClickHouse MCP Server через Jan.ai {#chat-to-clickhouse-mcp-server}
+## Общение с ClickHouse MCP Server через Jan.ai \{#chat-to-clickhouse-mcp-server\}
 
 Пришло время обсудить данные, хранящиеся в ClickHouse!
 Задайте вопрос:

@@ -10,7 +10,7 @@ keywords: ['key-value', 'data model', 'use case', 'schema design', 'storage patt
 
 
 
-# 我可以把 ClickHouse 用作键值存储吗？ {#can-i-use-clickhouse-as-a-key-value-storage}
+# 我可以把 ClickHouse 用作键值存储吗？ \{#can-i-use-clickhouse-as-a-key-value-storage\}
 
 简短的回答是：**“不可以”**。键值型负载是在<strong class="text-danger">**不要**</strong>使用 ClickHouse 的场景列表中名列前茅的。毕竟它是一个 [OLAP](../../faq/general/olap.md) 系统，而市面上已经有许多出色的键值存储系统可供选择。
 

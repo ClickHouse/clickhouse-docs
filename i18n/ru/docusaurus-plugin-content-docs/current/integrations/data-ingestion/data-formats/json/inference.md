@@ -8,14 +8,14 @@ doc_type: 'guide'
 
 ClickHouse может автоматически определять структуру данных в формате JSON. Это можно использовать для непосредственного выполнения запросов к JSON-данным, например на локальном диске с помощью `clickhouse-local` или в S3-бакетах, и/или для автоматического создания схем перед загрузкой данных в ClickHouse.
 
-## Когда использовать вывод типов {#when-to-use-type-inference}
+## Когда использовать вывод типов \{#when-to-use-type-inference\}
 
 * **Однородная структура** — данные, на основе которых вы собираетесь выводить типы, содержат все ключи, которые вас интересуют. Вывод типов основан на выборке данных до [максимального числа строк](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) или [байт](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference). Данные после выборки, с дополнительными столбцами, будут игнорироваться и будут недоступны для запросов.
 * **Однородные типы** — типы данных для конкретных ключей должны быть совместимы, то есть должна быть возможность автоматически привести один тип к другому.
 
 Если у вас более динамический JSON, в который добавляются новые ключи и для одного и того же пути возможны несколько типов, см. раздел ["Работа с полуструктурированными и динамическими данными"](/integrations/data-formats/json/inference#working-with-semi-structured-data).
 
-## Определение типов {#detecting-types}
+## Определение типов \{#detecting-types\}
 
 Далее предполагается, что JSON имеет согласованную структуру и один тип для каждого пути.
 
@@ -59,7 +59,7 @@ ClickHouse может автоматически определять струк
 
 Этот набор данных хранится в публичном бакете S3 по адресу `s3://datasets-documentation/arxiv/arxiv.json.gz`.
 
-Как видно, приведённый выше набор данных содержит вложенные объекты JSON. Хотя пользователям следует разрабатывать и версионировать свои схемы, механизм вывода типов позволяет автоматически определять типы по самим данным. Это даёт возможность автоматически генерировать DDL-описание схемы, устраняя необходимость создавать её вручную и ускоряя процесс разработки.
+Как видно, приведённый выше набор данных содержит вложенные объекты JSON. Хотя вам следует разрабатывать и версионировать свои схемы, механизм вывода типов позволяет автоматически определять типы по самим данным. Это даёт возможность автоматически генерировать DDL-описание схемы, устраняя необходимость создавать её вручную и ускоряя процесс разработки.
 
 :::note Автоопределение формата
 Помимо определения схемы, механизм вывода схемы JSON автоматически определит формат данных по расширению файла и его содержимому. В результате приведённый выше файл автоматически распознаётся как NDJSON.
@@ -97,11 +97,12 @@ SETTINGS describe_compact_output = 1
 
 Мы видим, что большинство столбцов были автоматически определены как `String`, при этом столбец `update_date` корректно определён как `Date`. Столбец `versions` был создан как `Array(Tuple(created String, version String))` для хранения списка объектов, а `authors_parsed` определён как `Array(Array(String))` для вложенных массивов.
 
+
 :::note Контроль определения типов
 Автоопределение значений типов `date` и `datetime` настраивается с помощью параметров [`input_format_try_infer_dates`](/operations/settings/formats#input_format_try_infer_dates) и [`input_format_try_infer_datetimes`](/operations/settings/formats#input_format_try_infer_datetimes) соответственно (оба включены по умолчанию). Интерпретация объектов как кортежей контролируется параметром [`input_format_json_try_infer_named_tuples_from_objects`](/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects). Другие параметры, управляющие определением схемы для JSON (например, автоопределением чисел), можно найти [здесь](/interfaces/schema-inference#text-formats).
 :::
 
-## Запросы к JSON {#querying-json}
+## Запросы к JSON \{#querying-json\}
 
 Далее предполагается, что JSON имеет единообразную структуру и один тип данных для каждого пути.
 
@@ -147,7 +148,8 @@ LIMIT 1 BY year
 
 Автоматическое определение схемы позволяет выполнять запросы к JSON-файлам без необходимости явно её задавать, что ускоряет выполнение разовых задач по анализу данных.
 
-## Создание таблиц {#creating-tables}
+
+## Создание таблиц \{#creating-tables\}
 
 Мы можем использовать вывод схемы для автоматического создания структуры таблицы. Следующая команда `CREATE AS EMPTY` заставляет систему вывести DDL для таблицы и создать её. При этом данные не загружаются:
 
@@ -188,7 +190,8 @@ ORDER BY update_date
 
 Выше приведена корректная схема для этих данных. Определение схемы основано на выборочном построчном чтении данных. Значения столбцов извлекаются в соответствии с форматом, а для определения типа каждого значения используются рекурсивные парсеры и эвристики. Максимальное количество строк и байт, читаемых из данных при определении схемы, контролируется настройками [`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) (по умолчанию 25000) и [`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference) (по умолчанию 32 МБ). Если определение окажется некорректным, пользователи могут задать подсказки, как описано [здесь](/operations/settings/formats#schema_inference_make_columns_nullable).
 
-### Создание таблиц из фрагментов {#creating-tables-from-snippets}
+
+### Создание таблиц из фрагментов \{#creating-tables-from-snippets\}
 
 В приведённом выше примере используется файл на S3 для создания схемы таблицы. При необходимости можно создать схему из однострочного фрагмента данных. Это можно сделать с помощью функции [format](/sql-reference/table-functions/format), как показано ниже:
 
@@ -221,7 +224,8 @@ ENGINE = MergeTree
 ORDER BY update_date
 ```
 
-## Загрузка JSON-данных {#loading-json-data}
+
+## Загрузка JSON-данных \{#loading-json-data\}
 
 Далее предполагается, что JSON имеет единообразную структуру и содержит один тип значений для каждого пути.
 
@@ -275,11 +279,12 @@ FORMAT PrettyJSONEachRow
 1 row in set. Elapsed: 0.009 sec.
 ```
 
-## Обработка ошибок {#handling-errors}
+
+## Обработка ошибок \{#handling-errors\}
 
 Иногда во входных данных могут встречаться ошибки. Например, отдельные столбцы могут иметь неверный тип или JSON-объект может быть некорректно отформатирован. Для таких случаев вы можете использовать настройки [`input_format_allow_errors_num`](/operations/settings/formats#input_format_allow_errors_num) и [`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio), чтобы разрешить игнорирование определённого числа строк, если данные вызывают ошибки операции вставки. Дополнительно можно задать [подсказки](/operations/settings/formats#schema_inference_hints), чтобы упростить вывод схемы.
 
-## Работа с полуструктурированными и динамическими данными {#working-with-semi-structured-data}
+## Работа с полуструктурированными и динамическими данными \{#working-with-semi-structured-data\}
 
 В нашем предыдущем примере использовался JSON с фиксированной схемой, с хорошо известными именами ключей и типами. На практике это часто не так — ключи могут добавляться, а их типы меняться. Это типично, например, для данных для наблюдаемости (Observability).
 
@@ -306,7 +311,7 @@ ClickHouse обрабатывает такие случаи с помощью с
 }
 ```
 
-Образец этих данных общедоступен в формате JSON, где каждая запись находится на отдельной строке. Если попытаться автоматически вывести схему для этого файла, вы обнаружите, что производительность окажется низкой, а ответ — крайне объёмным:
+Образец этих данных публично доступен в формате JSON с разделением по строкам. Если выполнить вывод схемы для этого файла, вы обнаружите, что производительность низкая, а ответ — крайне подробный:
 
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample_rows.json.gz')
@@ -366,6 +371,7 @@ SETTINGS describe_compact_output = 1
 
 В этом случае невозможно выполнить какое-либо приведение типов. Команда `DESCRIBE` завершится с ошибкой:
 
+
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json')
 
@@ -376,19 +382,8 @@ Code: 636. DB::Exception: Received from sql-clickhouse.clickhouse.com:9440. DB::
 Code: 53. DB::Exception: Automatically defined type Tuple(b Int64) for column 'a' in row 1 differs from type defined by previous rows: Int64. You can specify the type for this column using setting schema_inference_hints.
 ```
 
-Получено исключение от сервера (версия 24.12.1):
-Код: 636. DB::Exception: Получено от sql-clickhouse.clickhouse.com:9440. DB::Exception: Не удаётся извлечь структуру таблицы из файла в формате JSON. Ошибка:
-Код: 53. DB::Exception: Тип Tuple(b Int64), автоматически определённый для столбца &#39;a&#39; в строке 1, отличается от типа, определённого в предыдущих строках: Int64. Вы можете явно указать тип для этого столбца с помощью настройки schema&#95;inference&#95;hints.
+В данном случае `JSONAsObject` рассматривает каждую строку как единый тип [`JSON`](/sql-reference/data-types/newjson) (который поддерживает использование нескольких типов в одном столбце). Это важно:
 
-```sql
-DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json', JSONAsObject)
-SETTINGS enable_json_type = 1, describe_compact_output = 1
-
-┌─name─┬─type─┐
-│ json │ JSON │
-└──────┴──────┘
-
-1 row in set. Elapsed: 0.010 sec.
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json', JSONAsObject)
 SETTINGS enable_json_type = 1, describe_compact_output = 1
@@ -400,6 +395,7 @@ SETTINGS enable_json_type = 1, describe_compact_output = 1
 1 row in set. Elapsed: 0.010 sec.
 ```
 
-## Дополнительные материалы {#further-reading}
+
+## Дополнительные материалы \{#further-reading\}
 
 Подробнее о выводе типов данных см. на [этой странице документации](/interfaces/schema-inference).

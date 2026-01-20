@@ -7,7 +7,7 @@ title: 'Date32'
 doc_type: 'reference'
 ---
 
-# Date32 {#date32}
+# Date32 \{#date32\}
 
 日付型です。[DateTime64](../../sql-reference/data-types/datetime64.md) と同じ日付範囲をサポートします。ネイティブバイトオーダーの符号付き 32 ビット整数として保存され、その値は `1900-01-01` からの経過日数を表します。**重要!** 0 は `1970-01-01` を表し、負の値は `1970-01-01` より前の日付を表します。
 
@@ -44,6 +44,6 @@ SELECT * FROM dt32;
 
 **関連項目**
 
-* [toDate32](../../sql-reference/functions/type-conversion-functions.md#todate32)
+* [toDate32](../../sql-reference/functions/type-conversion-functions.md#toDate32)
 * [toDate32OrZero](/sql-reference/functions/type-conversion-functions#toDate32OrZero)
 * [toDate32OrNull](/sql-reference/functions/type-conversion-functions#toDate32OrNull)

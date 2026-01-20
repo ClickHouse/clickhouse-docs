@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mongodb/source/generic
 title: 'Generic MongoDB source setup guide'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'data ingestion', 'real-time sync']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # Generic MongoDB source setup guide

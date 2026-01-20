@@ -4,6 +4,9 @@ slug: /integrations/clickpipes/postgres/schema-changes
 description: 'Страница, описывающая типы изменений схемы, обнаруживаемые ClickPipes в исходных таблицах'
 doc_type: 'reference'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 ClickPipes для Postgres может обнаруживать изменения схемы в исходных таблицах и в некоторых случаях автоматически распространять эти изменения на таблицы назначения. То, как обрабатывается каждая операция DDL, описано ниже:

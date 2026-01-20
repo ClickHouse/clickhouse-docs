@@ -7,7 +7,7 @@ keywords: ['EXCEPT', 'clause']
 doc_type: 'reference'
 ---
 
-# Клауза EXCEPT {#except-clause}
+# Клауза EXCEPT \{#except-clause\}
 
 > Клауза `EXCEPT` возвращает только те строки, которые получены из первого запроса, исключая результаты второго.
 
@@ -16,7 +16,7 @@ doc_type: 'reference'
 * Несколько операторов `EXCEPT` выполняются слева направо, если не используются скобки.
 * Оператор `EXCEPT` имеет такой же приоритет, как и оператор `UNION`, и более низкий приоритет, чем оператор `INTERSECT`.
 
-## Синтаксис {#syntax}
+## Синтаксис \{#syntax\}
 
 ```sql
 SELECT column1 [, column2 ]
@@ -40,11 +40,11 @@ FROM table1
 [WHERE condition]
 ```
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 Примеры в этом разделе демонстрируют использование оператора `EXCEPT`.
 
-### Фильтрация чисел с использованием оператора `EXCEPT` {#filtering-numbers-using-the-except-clause}
+### Фильтрация чисел с использованием оператора `EXCEPT` \{#filtering-numbers-using-the-except-clause\}
 
 Вот простой пример, который возвращает числа от 1 до 10, которые *не* входят в диапазон от 3 до 8:
 
@@ -65,7 +65,7 @@ FROM numbers(3, 6)
 └────────┘
 ```
 
-### Исключение определённых столбцов с помощью `EXCEPT()` {#excluding-specific-columns-using-except}
+### Исключение определённых столбцов с помощью `EXCEPT()` \{#excluding-specific-columns-using-except\}
 
 `EXCEPT()` можно использовать для быстрого исключения столбцов из результата. Например, если мы хотим выбрать все столбцы из таблицы, кроме нескольких выбранных столбцов, как показано в примере ниже:
 
@@ -159,6 +159,7 @@ SELECT * FROM crypto_prices
 WHERE crypto_name = 'Bitcoin'
 ORDER BY trade_date DESC
 LIMIT 10;
+
 ```response title="Response"
 ┌─trade_date─┬─crypto_name─┬──────volume─┬────price─┬───market_cap─┬──change_1_day─┐
 │ 2020-11-02 │ Bitcoin     │ 30771456000 │ 13550.49 │ 251119860000 │  -0.013585099 │

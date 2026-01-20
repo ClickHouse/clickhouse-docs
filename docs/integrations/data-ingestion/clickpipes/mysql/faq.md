@@ -6,6 +6,9 @@ sidebar_position: 2
 title: 'ClickPipes for MySQL FAQ'
 doc_type: 'reference'
 keywords: ['MySQL ClickPipes FAQ', 'ClickPipes MySQL troubleshooting', 'MySQL ClickHouse replication', 'ClickPipes MySQL support', 'MySQL CDC ClickHouse']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # ClickPipes for MySQL FAQ
@@ -48,3 +51,6 @@ Due to how MySQL [handles cascading deletes](https://dev.mysql.com/doc/refman/8.
 ### Why can I not replicate my table which has a dot in it? {#replicate-table-dot}
 PeerDB has a limitation currently where dots in source table identifiers - aka either schema name or table name - is not supported for replication as PeerDB cannot discern, in that case, what is the schema and what is the table as it splits on dot.
 Effort is being made to support input of schema and table separately to get around this limitation.
+
+### Can I include columns I initially excluded from replication? {#include-excluded-columns}
+This is not yet supported, an alternative would be to [resync the table](./table_resync.md) whose columns you want to include.

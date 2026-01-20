@@ -7,11 +7,11 @@ title: 'Параметрические агрегатные функции'
 doc_type: 'reference'
 ---
 
-# Параметрические агрегатные функции {#parametric-aggregate-functions}
+# Параметрические агрегатные функции \{#parametric-aggregate-functions\}
 
 Некоторые агрегатные функции могут принимать не только столбцы-аргументы (используемые для сжатия), но и набор параметров — констант для инициализации. В синтаксисе для этого используются две пары круглых скобок вместо одной: первая — для параметров, вторая — для аргументов.
 
-## histogram {#histogram}
+## histogram \{#histogram\}
 
 Вычисляет адаптивную гистограмму. Не гарантирует точных результатов.
 
@@ -34,8 +34,8 @@ histogram(number_of_bins)(values)
 * [Массив](../../sql-reference/data-types/array.md) [кортежей](../../sql-reference/data-types/tuple.md) следующего формата:
 
   ```
-        [(lower_1, upper_1, height_1), ... (lower_N, upper_N, height_N)]
-        ```
+  [(lower_1, upper_1, height_1), ... (lower_N, upper_N, height_N)]
+  ```
 
   * `lower` — нижняя граница корзины.
   * `upper` — верхняя граница корзины.
@@ -58,7 +58,7 @@ FROM (
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-Вы можете построить гистограмму с помощью функции [bar](/sql-reference/functions/other-functions#bar), например:
+Можно, например, визуализировать гистограмму с помощью функции [bar](/sql-reference/functions/other-functions#bar):
 
 ```sql
 WITH histogram(5)(rand() % 100) AS hist
@@ -85,7 +85,8 @@ FROM
 
 В этом случае следует помнить, что вы не знаете границы интервалов гистограммы.
 
-## sequenceMatch {#sequencematch}
+
+## sequenceMatch \{#sequencematch\}
 
 Проверяет, содержит ли последовательность цепочку событий, соответствующую заданному шаблону.
 
@@ -116,7 +117,8 @@ sequenceMatch(pattern)(timestamp, cond1, cond2, ...)
 
 Тип: `UInt8`.
 
-#### Синтаксис шаблона {#pattern-syntax}
+
+#### Синтаксис шаблона \{#pattern-syntax\}
 
 * `(?N)` — Соответствует аргументу-условию в позиции `N`. Условия нумеруются в диапазоне `[1, 32]`. Например, `(?1)` соответствует аргументу, переданному параметру `cond1`.
 
@@ -148,7 +150,7 @@ SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2) FROM t
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
-Функция нашла цепочку событий, в которой число 2 следует за числом 1. Она пропустила число 3 между ними, потому что оно не задано как событие. Если мы хотим учитывать это число при поиске цепочки событий, приведённой в примере, нужно задать для него условие.
+Функция нашла цепочку событий, в которой число 2 следует за числом 1. Она пропустила число 3 между ними, потому что для него не задано условие события. Если мы хотим учитывать это число при поиске цепочки событий из примера, нужно задать для него условие.
 
 ```sql
 SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 3) FROM t
@@ -176,7 +178,8 @@ SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 4) FROM 
 
 * [sequenceCount](#sequencecount)
 
-## sequenceCount {#sequencecount}
+
+## sequenceCount \{#sequencecount\}
 
 Подсчитывает количество цепочек событий, соответствующих шаблону. Функция ищет цепочки событий, которые не перекрываются: после сопоставления текущей цепочки она начинает поиск следующей.
 
@@ -233,7 +236,8 @@ SELECT sequenceCount('(?1).*(?2)')(time, number = 1, number = 2) FROM t
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-## sequenceMatchEvents {#sequencematchevents}
+
+## sequenceMatchEvents \{#sequencematchevents\}
 
 Возвращает временные метки событий для наиболее длинных цепочек, соответствующих шаблону.
 
@@ -278,7 +282,7 @@ sequenceMatchEvents(pattern)(timestamp, cond1, cond2, ...)
 └──────┴────────┘
 ```
 
-Возвращает временные метки событий для самой длинной цепочки
+Возвращает временные метки событий для наиболее длинной цепочки
 
 ```sql
 SELECT sequenceMatchEvents('(?1).*(?2).*(?1)(?3)')(time, number = 1, number = 2, number = 4) FROM t
@@ -294,7 +298,8 @@ SELECT sequenceMatchEvents('(?1).*(?2).*(?1)(?3)')(time, number = 1, number = 2,
 
 * [sequenceMatch](#sequencematch)
 
-## windowFunnel {#windowfunnel}
+
+## windowFunnel \{#windowfunnel\}
 
 Ищет цепочки событий в скользящем временном окне и вычисляет максимальное число событий из цепочки, произошедших в этом окне.
 
@@ -325,6 +330,7 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
   * `'strict_order'` — не допускать вклинивания других событий. Например, в случае `A->B->D->C` поиск `A->B->C` останавливается на `D`, и максимальный уровень события равен 2.
   * `'strict_increase'` — применять условия только к событиям со строго возрастающими метками времени.
   * `'strict_once'` — учитывать каждое событие в цепочке только один раз, даже если оно удовлетворяет условию несколько раз.
+  * `'allow_reentry'` — игнорировать события, нарушающие строгий порядок. Например, в случае `A->A->B->C` будет найдено `A->B->C` за счёт игнорирования лишнего `A`, и максимальный уровень события равен 3.
 
 **Возвращаемое значение**
 
@@ -345,6 +351,7 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
 4. Пользователь оформил повторный заказ (`eventID = 1010`).
 
 Входная таблица:
+
 
 ```text
 ┌─event_date─┬─user_id─┬───────────timestamp─┬─eventID─┬─product─┐
@@ -390,7 +397,39 @@ ORDER BY level ASC;
 └───────┴───┘
 ```
 
-## retention {#retention}
+**Пример с режимом allow&#95;reentry**
+
+Этот пример демонстрирует, как режим `allow_reentry` работает с шаблонами повторных входов пользователей.
+
+```sql
+-- Sample data: user visits checkout -> product detail -> checkout again -> payment
+-- Without allow_reentry: stops at level 2 (product detail page)
+-- With allow_reentry: reaches level 4 (payment completion)
+
+SELECT
+    level,
+    count() AS users
+FROM
+(
+    SELECT
+        user_id,
+        windowFunnel(3600, 'strict_order', 'allow_reentry')(
+            timestamp,
+            action = 'begin_checkout',      -- Step 1: Begin checkout
+            action = 'view_product_detail', -- Step 2: View product detail  
+            action = 'begin_checkout',      -- Step 3: Begin checkout again (reentry)
+            action = 'complete_payment'     -- Step 4: Complete payment
+        ) AS level
+    FROM user_events
+    WHERE event_date = today()
+    GROUP BY user_id
+)
+GROUP BY level
+ORDER BY level ASC;
+```
+
+
+## retention \{#retention\}
 
 Функция принимает в качестве аргументов набор из 1–32 условий типа `UInt8`, которые указывают, было ли выполнено определённое условие для события.
 Любое условие может быть указано в качестве аргумента (как в [WHERE](/sql-reference/statements/select/where)).
@@ -495,6 +534,7 @@ ORDER BY uid ASC
 
 Результат:
 
+
 ```text
 ┌─uid─┬─r───────┐
 │   0 │ [1,1,1] │
@@ -549,7 +589,8 @@ FROM
 * `r2` — количество уникальных посетителей, которые посетили сайт в течение определённого периода времени между 2020-01-01 и 2020-01-02 (условия `cond1` и `cond2`).
 * `r3` — количество уникальных посетителей, которые посетили сайт в течение определённого периода времени в даты 2020-01-01 и 2020-01-03 (условия `cond1` и `cond3`).
 
-## uniqUpTo(N)(x) {#uniquptonx}
+
+## uniqUpTo(N)(x) \{#uniquptonx\}
 
 Вычисляет количество различных значений аргумента до заданного предела `N`. Если количество различных значений аргумента больше `N`, функция возвращает `N` + 1, в противном случае вычисляет точное значение.
 
@@ -569,7 +610,8 @@ HAVING uniqUpTo(4)(UserID) >= 5
 
 `uniqUpTo(4)(UserID)` вычисляет количество уникальных значений `UserID` для каждого `SearchPhrase`, но считает только до 4 уникальных значений. Если для какого-либо `SearchPhrase` существует более 4 уникальных значений `UserID`, функция возвращает 5 (4 + 1). Затем условие `HAVING` отфильтровывает значения `SearchPhrase`, для которых количество уникальных значений `UserID` меньше 5. В результате вы получите список поисковых запросов, которые использовались как минимум 5 уникальными пользователями.
 
-## sumMapFiltered {#summapfiltered}
+
+## sumMapFiltered \{#summapfiltered\}
 
 Эта функция ведёт себя так же, как [sumMap](/sql-reference/aggregate-functions/reference/summap), за исключением того, что она также принимает в качестве параметра массив ключей для фильтрации. Это может быть особенно полезно при работе с высокой кардинальностью ключей.
 
@@ -619,7 +661,8 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_
    └─────────────────────────────────────────────────────────────────┘
 ```
 
-## sumMapFilteredWithOverflow {#summapfilteredwithoverflow}
+
+## sumMapFilteredWithOverflow \{#summapfilteredwithoverflow\}
 
 Эта функция ведёт себя так же, как [sumMap](/sql-reference/aggregate-functions/reference/summap), за исключением того, что она дополнительно принимает в качестве параметра массив ключей для фильтрации. Это может быть особенно полезно при работе с высокой кардинальностью ключей. Она отличается от функции [sumMapFiltered](#summapfiltered) тем, что выполняет суммирование с переполнением, то есть возвращает для результата суммирования тот же тип данных, что и тип данных аргумента.
 
@@ -681,7 +724,8 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) as summap
    └──────────────────────┴────────────────────────────────────┘
 ```
 
-## sequenceNextNode {#sequencenextnode}
+
+## sequenceNextNode \{#sequencenextnode\}
 
 Возвращает значение следующего события, которое соответствует цепочке событий.
 
@@ -747,7 +791,7 @@ SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'A', page = 'A',
 └────┴───────────┘
 ```
 
-**Поведение `forward` и `head`**
+**Поведение значений `forward` и `head`**
 
 ```sql
 ALTER TABLE test_flow DELETE WHERE 1 = 1 settings mutations_sync = 1;
@@ -756,6 +800,7 @@ INSERT INTO test_flow VALUES (1, 1, 'Home') (2, 1, 'Gift') (3, 1, 'Exit');
 INSERT INTO test_flow VALUES (1, 2, 'Home') (2, 2, 'Home') (3, 2, 'Gift') (4, 2, 'Basket');
 INSERT INTO test_flow VALUES (1, 3, 'Gift') (2, 3, 'Home') (3, 3, 'Gift') (4, 3, 'Basket');
 ```
+
 
 ```sql
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'Home', page = 'Home', page = 'Gift') FROM test_flow GROUP BY id;
@@ -776,10 +821,7 @@ SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'Home', page = '
  1970-01-01 09:00:04    3   Basket
 ```
 
-1970-01-01 09:00:01    3   Gift // Опорная точка, не сопоставлена с Home
-1970-01-01 09:00:02    3   Home
-1970-01-01 09:00:03    3   Gift
-1970-01-01 09:00:04    3   Basket
+**Поведение `backward` и `tail`**
 
 ```sql
 SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page = 'Basket', page = 'Gift') FROM test_flow GROUP BY id;
@@ -798,23 +840,10 @@ SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page 
 1970-01-01 09:00:02    3   Home // The result
 1970-01-01 09:00:03    3   Gift // Base point, Matched with Gift
 1970-01-01 09:00:04    3   Basket // Base point, Matched with Basket
-```sql
-SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page = 'Basket', page = 'Gift') FROM test_flow GROUP BY id;
+```
 
-                 dt   id   page
-1970-01-01 09:00:01    1   Home
-1970-01-01 09:00:02    1   Gift
-1970-01-01 09:00:03    1   Exit // Базовая точка, не соответствует Basket
+**Поведение параметров `forward` и `first_match`**
 
-1970-01-01 09:00:01    2   Home
-1970-01-01 09:00:02    2   Home // Результат
-1970-01-01 09:00:03    2   Gift // Соответствует Gift
-1970-01-01 09:00:04    2   Basket // Базовая точка, соответствует Basket
-
-1970-01-01 09:00:01    3   Gift
-1970-01-01 09:00:02    3   Home // Результат
-1970-01-01 09:00:03    3   Gift // Базовая точка, соответствует Gift
-1970-01-01 09:00:04    3   Basket // Базовая точка, соответствует Basket
 ```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
 
@@ -832,23 +861,9 @@ SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:02    3   Home // The result
 1970-01-01 09:00:03    3   Gift
 1970-01-01 09:00:04    3   Basket
-```sql
-SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
+```
 
-                 dt   id   page
-1970-01-01 09:00:01    1   Home
-1970-01-01 09:00:02    1   Gift // Базовая точка
-1970-01-01 09:00:03    1   Exit // Результат
 
-1970-01-01 09:00:01    2   Home
-1970-01-01 09:00:02    2   Home
-1970-01-01 09:00:03    2   Gift // Базовая точка
-1970-01-01 09:00:04    2   Basket  // Результат
-
-1970-01-01 09:00:01    3   Gift // Базовая точка
-1970-01-01 09:00:02    3   Home // Результат
-1970-01-01 09:00:03    3   Gift
-1970-01-01 09:00:04    3   Basket
 ```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
 
@@ -866,23 +881,10 @@ SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:02    3   Home // Matched with Home
 1970-01-01 09:00:03    3   Gift // The result
 1970-01-01 09:00:04    3   Basket
-```sql
-SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
+```
 
-                 dt   id   page
-1970-01-01 09:00:01    1   Home
-1970-01-01 09:00:02    1   Gift // Базовая точка
-1970-01-01 09:00:03    1   Exit // Не совпадает с Home
+**Поведение параметров `backward` и `last_match`**
 
-1970-01-01 09:00:01    2   Home
-1970-01-01 09:00:02    2   Home
-1970-01-01 09:00:03    2   Gift // Базовая точка
-1970-01-01 09:00:04    2   Basket // Не совпадает с Home
-
-1970-01-01 09:00:01    3   Gift // Базовая точка
-1970-01-01 09:00:02    3   Home // Совпадает с Home
-1970-01-01 09:00:03    3   Gift // Результат
-1970-01-01 09:00:04    3   Basket
 ```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
 
@@ -900,8 +902,8 @@ SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:02    3   Home // The result
 1970-01-01 09:00:03    3   Gift // Base point
 1970-01-01 09:00:04    3   Basket
-```sql
-SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
+```
+
 ```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
 
@@ -921,6 +923,8 @@ SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:04    3   Basket
 ```
 
+**Поведение параметра `base_condition`**
+
 ```sql
 CREATE TABLE test_flow_basecond
 (
@@ -936,7 +940,6 @@ ORDER BY id;
 INSERT INTO test_flow_basecond VALUES (1, 1, 'A', 'ref4') (2, 1, 'A', 'ref3') (3, 1, 'B', 'ref2') (4, 1, 'B', 'ref1');
 ```
 
-**Поведение параметра `base_condition`**
 
 ```sql
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, ref = 'ref1', page = 'A') FROM test_flow_basecond GROUP BY id;
@@ -946,7 +949,7 @@ SELECT id, sequenceNextNode('forward', 'head')(dt, page, ref = 'ref1', page = 'A
  1970-01-01 09:00:02    1   A      ref3
  1970-01-01 09:00:03    1   B      ref2
  1970-01-01 09:00:04    1   B      ref1
- ```
+```
 
 ```sql
 SELECT id, sequenceNextNode('backward', 'tail')(dt, page, ref = 'ref4', page = 'B') FROM test_flow_basecond GROUP BY id;
@@ -976,22 +979,4 @@ SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, ref = 'ref2', pa
  1970-01-01 09:00:02    1   A      ref3 // The result
  1970-01-01 09:00:03    1   B      ref2 // Base point
  1970-01-01 09:00:04    1   B      ref1 // This row can not be base point because the ref column unmatched with 'ref2'.
-```
-
-dt   id   page   ref
-1970-01-01 09:00:01    1   A      ref4 // Эта строка не может быть опорной точкой, потому что значение в столбце ref не совпадает с &#39;ref3&#39;.
-1970-01-01 09:00:02    1   A      ref3 // Опорная точка
-1970-01-01 09:00:03    1   B      ref2 // Результат
-1970-01-01 09:00:04    1   B      ref1
-
-```
-
-```sql
-SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, ref = 'ref2', page = 'B') FROM test_flow_basecond GROUP BY id;
-
-                  dt   id   page   ref
- 1970-01-01 09:00:01    1   A      ref4
- 1970-01-01 09:00:02    1   A      ref3 // Результат
- 1970-01-01 09:00:03    1   B      ref2 // Базовая точка
- 1970-01-01 09:00:04    1   B      ref1 // Эта строка не может быть базовой точкой, поскольку значение столбца ref не совпадает с 'ref2'.
 ```

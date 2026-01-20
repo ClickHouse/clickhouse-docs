@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.session&#95;log {#systemsession&#95;log}
+# system.session_log \{#systemsession_log\}
 
 <SystemTableCloud />
 
@@ -22,7 +22,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
   * `LoginSuccess` — Успешный вход.
   * `Logout` — Выход из системы.
 * `auth_id` ([UUID](../../sql-reference/data-types/uuid.md)) — Идентификатор аутентификации (UUID), который автоматически генерируется при каждом входе пользователя в систему.
-* `session_id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор сеанса, который передаётся клиентом через интерфейс [HTTP](../../interfaces/http.md).
+* `session_id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор сеанса, который передаётся клиентом через интерфейс [HTTP](/interfaces/http).
 * `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата входа/выхода.
 * `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время входа/выхода.
 * `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время начала входа/выхода с точностью до микросекунд.

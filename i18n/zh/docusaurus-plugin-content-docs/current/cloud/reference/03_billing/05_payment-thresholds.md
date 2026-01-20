@@ -7,7 +7,7 @@ keywords: ['计费', '支付阈值', '自动开票', '发票']
 doc_type: 'guide'
 ---
 
-# 付款阈值 {#payment-thresholds}
+# 付款阈值 \{#payment-thresholds\}
 
 当你在某一 ClickHouse Cloud 计费周期内的应付金额达到 10,000 美元（USD）或等值金额时，系统将会自动从你的付款方式中扣款。扣款失败将在宽限期结束后导致你的服务被暂停或终止。
 

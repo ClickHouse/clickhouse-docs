@@ -7,7 +7,7 @@ title: 'timeSeriesData'
 doc_type: 'reference'
 ---
 
-# Табличная функция timeSeriesData {#timeseriesdata-table-function}
+# Табличная функция timeSeriesData \{#timeseriesdata-table-function\}
 
 `timeSeriesData(db_name.time_series_table)` — возвращает таблицу [data](../../engines/table-engines/integrations/time-series.md#data-table),
 используемую таблицей `db_name.time_series_table`, которая использует движок таблицы [TimeSeries](../../engines/table-engines/integrations/time-series.md):

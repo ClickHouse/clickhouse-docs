@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/scaling
 sidebar_label: 'スケーリング'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'データインジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 :::caution ほとんどのユーザーはこの API を必要としません
@@ -25,14 +28,14 @@ DB ClickPipes のデフォルト構成は、ほとんどのワークロードを
 
 **スケールを増やすと、それに比例して ClickPipes のコンピュートコストも増加します。** 初回ロードのみのためにスケールアップする場合は、スナップショット完了後にスケールダウンして予期しない課金を避けることが重要です。料金の詳細については、[Postgres CDC の料金](/cloud/reference/billing/clickpipes) を参照してください。
 
-## この手順の前提条件 {#prerequisites}
+## この手順の前提条件 \{#prerequisites\}
 
 開始する前に、次のものが必要です。
 
 1. 対象の ClickHouse Cloud サービスに対して Admin 権限を持つ [ClickHouse API key](/cloud/manage/openapi)。
 2. サービス内で過去のいずれかの時点にプロビジョニングされた DB ClickPipe（Postgres、MySQL、または MongoDB）。CDC インフラストラクチャは最初の ClickPipe の作成時に合わせて構築され、それ以降はスケーリング用エンドポイントが利用可能になります。
 
-## DB ClickPipes のスケーリング手順 {#cdc-scaling-steps}
+## DB ClickPipes のスケーリング手順 \{#cdc-scaling-steps\}
 
 コマンドを実行する前に、以下の環境変数を設定します。
 

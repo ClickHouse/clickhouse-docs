@@ -10,11 +10,11 @@ ClickHouse может автоматически определять струк
 В этом документе описано, когда используется автоматическое определение схемы, как оно работает с различными входными форматами и какие настройки
 его контролируют.
 
-## Использование {#usage}
+## Использование \{#usage\}
 
 Автоматическое определение схемы используется, когда ClickHouse должен прочитать данные в определённом формате, но их структура неизвестна.
 
-## Табличные функции [file](../sql-reference/table-functions/file.md), [s3](../sql-reference/table-functions/s3.md), [url](../sql-reference/table-functions/url.md), [hdfs](../sql-reference/table-functions/hdfs.md), [azureBlobStorage](../sql-reference/table-functions/azureBlobStorage.md). {#table-functions-file-s3-url-hdfs-azureblobstorage}
+## Табличные функции [file](../sql-reference/table-functions/file.md), [s3](../sql-reference/table-functions/s3.md), [url](../sql-reference/table-functions/url.md), [hdfs](../sql-reference/table-functions/hdfs.md), [azureBlobStorage](../sql-reference/table-functions/azureBlobStorage.md). \{#table-functions-file-s3-url-hdfs-azureblobstorage\}
 
 Эти табличные функции имеют необязательный аргумент `structure`, задающий структуру входных данных. Если этот аргумент не указан или имеет значение `auto`, структура будет выведена из данных.
 
@@ -61,7 +61,7 @@ DESCRIBE file('hobbies.jsonl')
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-## Движки таблиц [File](../engines/table-engines/special/file.md), [S3](../engines/table-engines/integrations/s3.md), [URL](../engines/table-engines/special/url.md), [HDFS](../engines/table-engines/integrations/hdfs.md), [azureBlobStorage](../engines/table-engines/integrations/azureBlobStorage.md) {#table-engines-file-s3-url-hdfs-azureblobstorage}
+## Движки таблиц [File](../engines/table-engines/special/file.md), [S3](../engines/table-engines/integrations/s3.md), [URL](../engines/table-engines/special/url.md), [HDFS](../engines/table-engines/integrations/hdfs.md), [azureBlobStorage](../engines/table-engines/integrations/azureBlobStorage.md) \{#table-engines-file-s3-url-hdfs-azureblobstorage\}
 
 Если в запросе `CREATE TABLE` не указан список столбцов, структура таблицы будет автоматически определена по данным.
 
@@ -103,7 +103,7 @@ DESCRIBE TABLE hobbies
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-## clickhouse-local {#clickhouse-local}
+## clickhouse-local \{#clickhouse-local\}
 
 У `clickhouse-local` есть необязательный параметр `-S/--structure`, задающий структуру входных данных. Если этот параметр не указан или имеет значение `auto`, структура будет определена по данным.
 
@@ -133,7 +133,7 @@ clickhouse-local --file='hobbies.jsonl' --table='hobbies' --query='SELECT * FROM
 4    47    Brayan    ['movies','skydiving']
 ```
 
-## Использование структуры из таблицы-вставки {#using-structure-from-insertion-table}
+## Использование структуры из таблицы-вставки \{#using-structure-from-insertion-table\}
 
 Когда табличные функции `file/s3/url/hdfs` используются для вставки данных в таблицу,
 можно использовать структуру из таблицы-вставки вместо извлечения её из данных.
@@ -241,7 +241,7 @@ INSERT INTO hobbies4 SELECT id, empty(hobbies) ? NULL : hobbies[1] FROM file(hob
 
 В этом случае в запросе `SELECT` выполняются некоторые операции со столбцом `hobbies` перед его вставкой в таблицу, поэтому ClickHouse не может использовать структуру целевой таблицы и будет использовано автоматическое определение схемы.
 
-## Кэш автоопределения схемы {#schema-inference-cache}
+## Кэш автоопределения схемы \{#schema-inference-cache\}
 
 Для большинства форматов ввода автоопределение схемы читает часть данных, чтобы определить их структуру, и этот процесс может занять некоторое время.
 Чтобы не определять одну и ту же схему каждый раз, когда ClickHouse читает данные из одного и того же файла, полученная схема кэшируется, и при повторном обращении к тому же файлу ClickHouse использует схему из кэша.
@@ -406,6 +406,7 @@ SELECT count() FROM system.schema_inference_cache WHERE storage='S3'
 ┌─count()─┐
 │       0 │
 └─────────┘
+
 ```response
 ┌─count()─┐
 │       0 │
@@ -466,6 +467,7 @@ DESC format(JSONEachRow, '{"arr" : [null, 42, null]}')
 ┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ arr  │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+
 ```response
 ┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ arr  │ Array(Nullable(Int64)) │              │                    │         │                  │                │
@@ -530,6 +532,7 @@ DESC format(JSONEachRow, $$
 ┌─name──┬─type─────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ tuple │ Tuple(Nullable(Int64), Nullable(String), Array(Nullable(Int64))) │              │                    │         │                  │                │
 └───────┴──────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+
 ```response
 ┌─name──┬─type─────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ tuple │ Tuple(Nullable(Int64), Nullable(String), Array(Nullable(Int64))) │              │                    │         │                  │                │
@@ -609,6 +612,7 @@ DESC format(JSONEachRow, $$
 ```sql
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 43, "c" : [1, 2, 3]}}, {"obj" : {"d" : {"e" : 42}}}')
+
 ```sql
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 43, "c" : [1, 2, 3]}}, {"obj" : {"d" : {"e" : 42}}}')
@@ -668,6 +672,7 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : 
 │ ('42')              │
 │ ('{"b" : "Hello"}') │
 └─────────────────────┘
+
 ```response
 ┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Tuple(a Nullable(String))     │              │                    │         │                  │                │
@@ -766,6 +771,7 @@ SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow
 ┌─arr───────────────────┬─toTypeName(arr)─┬─arrayElement(JSONExtractArrayRaw(arr), 3)─┐
 │ [1, "Hello", [1,2,3]] │ String          │ [1,2,3]                                   │
 └───────────────────────┴─────────────────┴───────────────────────────────────────────┘
+
 ```response
 ┌─arr───────────────────┬─toTypeName(arr)─┬─arrayElement(JSONExtractArrayRaw(arr), 3)─┐
 │ [1, "Hello", [1,2,3]] │ String          │ [1,2,3]                                   │
@@ -821,6 +827,7 @@ DESC format(CSV, 'Hello world!,World hello!')
 │ c1   │ Nullable(String) │              │                    │         │                  │                │
 │ c2   │ Nullable(String) │              │                    │         │                  │                │
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(String) │              │                    │         │                  │                │
@@ -902,6 +909,7 @@ DESC format(CSV, $$"[{'key1' : [[42, 42], []], 'key2' : [[null], [42]]}]"$$)
 ┌─name─┬─type──────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Map(String, Array(Array(Nullable(Int64))))) │              │                    │         │                  │                │
 └──────┴───────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+
 ```response
 ┌─name─┬─type──────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Map(String, Array(Array(Nullable(Int64))))) │              │                    │         │                  │                │
@@ -1019,6 +1027,7 @@ DESC format(CSV, '42,42.42');
 │ c1   │ Nullable(Int64)   │              │                    │         │                  │                │
 │ c2   │ Nullable(Float64) │              │                    │         │                  │                │
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+
 ```response
 ┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Int64)   │              │                    │         │                  │                │
@@ -1070,6 +1079,7 @@ DESC format(TSV, '2020-01-01    2020-01-01 00:00:00    2022-01-01 00:00:00.000')
 │ c2   │ Nullable(DateTime)      │              │                    │         │                  │                │
 │ c3   │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
 └──────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+
 ```response
 ┌─name─┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Date)          │              │                    │         │                  │                │
@@ -1148,6 +1158,7 @@ DESC format(TSV, $$[{'key1' : [(42, 'Hello'), (24, NULL)], 'key2' : [(NULL, ',')
 ┌─name─┬─type────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Map(String, Array(Tuple(Nullable(Int64), Nullable(String))))) │              │                    │         │                  │                │
 └──────┴─────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+
 ```response
 ┌─name─┬─type────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Map(String, Array(Tuple(Nullable(Int64), Nullable(String))))) │              │                    │         │                  │                │
@@ -1248,6 +1259,7 @@ $$)
 │ Hello        │ World         │
 │ World        │ Hello         │
 └──────────────┴───────────────┘
+
 ```response
 ┌─c1───────────┬─c2────────────┐
 │ first_column │ second_column │
@@ -1334,6 +1346,7 @@ DESC format(Values, $$({'key1' : 42, 'key2' : 24})$$)
 ┌─name─┬─type─────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Map(String, Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+
 ```response
 ┌─name─┬─type─────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Map(String, Nullable(Int64)) │              │                    │         │                  │                │
@@ -1418,6 +1431,7 @@ $$)
 │ c2   │ Nullable(String)       │              │                    │         │                  │                │
 │ c3   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+
 ```response
 ┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Float64)      │              │                    │         │                  │                │
@@ -1545,7 +1559,7 @@ DESC format(TSV, 'Hello, World!    42    [1, 2, 3]') settings column_names_for_s
 * `25000` для `input_format_max_rows_to_read_for_schema_inference`.
 * `33554432` (32 МБ) для `input_format_max_bytes_to_read_for_schema_inference`.
 
-#### column&#95;names&#95;for&#95;schema&#95;inference {#column-names-for-schema-inference}
+#### column&#95;names&#95;for&#95;schema&#95;inference \{#column-names-for-schema-inference\}
 
 Список имён столбцов, используемых при определении схемы для форматов без явных имён столбцов. Указанные имена будут использованы вместо значений по умолчанию `c1,c2,c3,...`. Формат: `column1,column2,column3,...`.
 
@@ -1940,7 +1954,7 @@ DESC format(JSON, $$
 $$)
 ```
 
-### Форматы JSON с метаданными {#json-with-metadata}
+### Форматы JSON с метаданными \{#json-with-metadata\}
 
 Некоторые входные форматы JSON ([JSON](/interfaces/formats/JSON), [JSONCompact](/interfaces/formats/JSONCompact), [JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)) содержат метаданные с именами и типами столбцов.
 При определении схемы для таких форматов ClickHouse использует эти метаданные.
@@ -2012,7 +2026,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 
 Другие типы Parquet не поддерживаются.
 
-### Arrow {#arrow}
+### Arrow \{#arrow\}
 
 В формате Arrow ClickHouse считывает схему из данных и преобразует её в схему ClickHouse, используя следующие соответствия типов:
 
@@ -2040,7 +2054,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 
 Другие типы Arrow не поддерживаются.
 
-### ORC {#orc}
+### ORC \{#orc\}
 
 В формате ORC ClickHouse считывает схему из данных и преобразует её в схему ClickHouse, используя следующие соответствия типов:
 
@@ -2063,7 +2077,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 
 Другие типы ORC не поддерживаются.
 
-### Native {#native}
+### Native \{#native\}
 
 Формат Native используется внутри ClickHouse и содержит схему непосредственно в данных.
 При определении схемы ClickHouse считывает её из данных без каких-либо преобразований.
@@ -2073,7 +2087,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 Такие форматы требуют наличия схемы, описывающей данные, в отдельном файле на определённом языке описания схем.
 Чтобы автоматически определить схему по файлам в таких форматах, ClickHouse считывает внешнюю схему из отдельного файла и преобразует её в схему таблицы ClickHouse.
 
-### Protobuf {#protobuf}
+### Protobuf \{#protobuf\}
 
 При определении схемы для формата Protobuf ClickHouse использует следующие соответствия типов:
 
@@ -2091,7 +2105,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 | `repeated T`                     | [Array(T)](../sql-reference/data-types/array.md)     |
 | `message`, `group`               | [Tuple](../sql-reference/data-types/tuple.md)        |
 
-### CapnProto {#capnproto}
+### CapnProto \{#capnproto\}
 
 При определении схемы для формата CapnProto ClickHouse использует следующие соответствия типов:
 

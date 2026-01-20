@@ -20,7 +20,7 @@ This getting started guide allows you to collect local logs and metrics from you
 **This example works on OSX and Linux systems only**
 
 :::note HyperDX in ClickHouse Cloud
-This sample dataset can also be used with HyperDX in ClickHouse Cloud, with only minor adjustments to the flow as noted. If using HyperDX in ClickHouse Cloud, you will require an OpenTelemetry collector to be running locally as described in the [getting started guide for this deployment model](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud).
+This sample dataset can also be used with HyperDX in ClickHouse Cloud, with only minor adjustments to the flow as noted. If using HyperDX in ClickHouse Cloud, you will require an OpenTelemetry collector to be running locally as described in the [getting started guide for this deployment model](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud).
 :::
 
 <VerticalStepper>

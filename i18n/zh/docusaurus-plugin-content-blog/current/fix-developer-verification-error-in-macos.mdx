@@ -53,7 +53,7 @@ import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-v
 有时即使点击 `Allow Anyway` 按钮也无法解决此问题，在这种情况下，您也可以通过命令行来完成这一操作。
 或者，您可能只是更喜欢使用命令行！
 
-首先，先确认 Homebrew 将 `clickhouse` 可执行文件安装在何处：
+首先，确认 Homebrew 将 `clickhouse` 可执行文件安装在何处：
 
 ```shell
 which clickhouse
@@ -65,7 +65,7 @@ which clickhouse
 /opt/homebrew/bin/clickhouse
 ```
 
-运行 `xattr -d com.apple.quarantine` 命令，并在其后接上上一个命令返回的路径，将 `clickhouse` 从隔离区中移除：
+运行 `xattr -d com.apple.quarantine` 命令，并在其后追加上一个命令输出的路径，将 `clickhouse` 从隔离区中移除：
 
 ```shell
 xattr -d com.apple.quarantine /opt/homebrew/bin/clickhouse
@@ -77,16 +77,17 @@ xattr -d com.apple.quarantine /opt/homebrew/bin/clickhouse
 clickhouse
 ```
 
-这会输出类似如下的结果：
+这将输出类似如下的结果：
 
-```
-使用以下命令之一：
+```shell
+Use one of the following commands:
 clickhouse local [args]
 clickhouse client [args]
 clickhouse benchmark [args]
 ...
+```
 
-## 通过重新安装 ClickHouse 解决问题
+## 通过重新安装 ClickHouse 解决问题 \{#fix-the-issue-by-reinstalling-clickhouse\}
 
 Brew 提供了命令行选项，可以在安装时避免对二进制文件进行隔离。
 

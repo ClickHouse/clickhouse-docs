@@ -97,7 +97,6 @@ You don't have to stop here - you can use `clickhouse-local` to pull data from P
 
 If ClickHouse can not determine the output type by the filename extension, or if you want to specifically choose a format, add the `FOMRAT` clause:
 
-```sql
 ```bash
 ./clickhouse local -q "SELECT * FROM
    postgresql(

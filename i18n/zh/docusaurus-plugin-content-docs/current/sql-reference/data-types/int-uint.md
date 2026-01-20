@@ -14,7 +14,7 @@ ClickHouse 提供了多种固定长度的整数类型，
 
 
 
-## 整数范围 {#integer-ranges}
+## 整数范围 \{#integer-ranges\}
 
 整数类型的取值范围如下：
 
@@ -40,7 +40,7 @@ ClickHouse 提供了多种固定长度的整数类型，
 
 
 
-## 整数类型别名 {#integer-aliases}
+## 整数类型别名 \{#integer-aliases\}
 
 整数类型有以下别名：
 

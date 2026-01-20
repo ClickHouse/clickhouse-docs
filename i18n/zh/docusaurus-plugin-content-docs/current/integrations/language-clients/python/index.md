@@ -16,7 +16,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# 介绍 {#introduction}
+# 介绍 \{#introduction\}
 
 ClickHouse Connect 是一个核心数据库驱动，为各类 Python 应用程序提供互操作能力。
 
@@ -32,7 +32,7 @@ ClickHouse Connect 是一个核心数据库驱动，为各类 Python 应用程�
 官方 ClickHouse Connect Python 驱动使用 HTTP 协议与 ClickHouse 服务器通信。这使其能够支持 HTTP 负载均衡器，并且在包含防火墙和代理的企业环境中运行良好，但与原生基于 TCP 的协议相比，其压缩率和性能略低，且不支持某些高级特性，例如查询取消。在某些使用场景下，可以考虑使用基于原生 TCP 协议的 [社区 Python 驱动](/interfaces/third-party/client-libraries.md)。
 :::
 
-## 要求和兼容性 {#requirements-and-compatibility}
+## 要求和兼容性 \{#requirements-and-compatibility\}
 
 |       Python |   |       平台¹ |   |      ClickHouse |    | SQLAlchemy² |   | Apache Superset |   |  Pandas |   | Polars |   |
 |-------------:|:--|------------:|:--|----------------:|:---|------------:|:--|----------------:|:--|--------:|:--|-------:|:--|
@@ -50,7 +50,7 @@ ClickHouse Connect 是一个核心数据库驱动，为各类 Python 应用程�
 
 ³ClickHouse Connect 在官方支持范围之外的版本上通常也能良好运行。
 
-## 安装 {#installation}
+## 安装 \{#installation\}
 
 通过 pip 从 [PyPI](https://pypi.org/project/clickhouse-connect/) 安装 ClickHouse Connect：
 
@@ -62,24 +62,24 @@ ClickHouse Connect 也可以从源代码安装：
 * （可选）运行 `pip install cython` 以构建并启用 C/Cython 优化
 * 使用 `cd` 切换到项目根目录并运行 `pip install .`
 
-## 支持策略 {#support-policy}
+## 支持策略 \{#support-policy\}
 
 在报告任何问题之前，请先升级到最新版本的 ClickHouse Connect。请在 [GitHub 项目](https://github.com/ClickHouse/clickhouse-connect/issues) 中提交问题。ClickHouse Connect 的后续版本会尽量与发布时仍处于主动支持状态的 ClickHouse 版本保持兼容。当前处于主动支持状态的 ClickHouse 服务器版本列表见[此处](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md)。如果不确定应使用哪个版本的 ClickHouse 服务器，请阅读[此处](https://clickhouse.com/docs/knowledgebase/production#how-to-choose-between-clickhouse-releases)的讨论。我们的 CI 测试矩阵会针对最新的两个 LTS 版本和最新的三个稳定版本进行测试。不过，由于使用 HTTP 协议且 ClickHouse 各发行版本之间的破坏性变更极少，ClickHouse Connect 通常在超出官方支持范围的服务器版本上也能正常工作，但对某些高级数据类型的兼容性可能会有所差异。
 
-## 基本用法 {#basic-usage}
+## 基本用法 \{#basic-usage\}
 
-### 收集连接信息 {#gather-your-connection-details}
+### 收集连接信息 \{#gather-your-connection-details\}
 
 <ConnectionDetails />
 
-### 建立连接 {#establish-a-connection}
+### 建立连接 \{#establish-a-connection\}
 
 如下示例演示了两种连接 ClickHouse 的方式：
 
 - 连接到本地主机上的 ClickHouse 服务器。
 - 连接到 ClickHouse Cloud 服务。
 
-#### 使用 ClickHouse Connect 客户端实例连接到本地 ClickHouse 服务器： {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-server-on-localhost}
+#### 使用 ClickHouse Connect 客户端实例连接到本地 ClickHouse 服务器： \{#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-server-on-localhost\}
 
 ```python
 import clickhouse_connect
@@ -87,7 +87,7 @@ import clickhouse_connect
 client = clickhouse_connect.get_client(host='localhost', username='default', password='password')
 ```
 
-#### 使用 ClickHouse Connect 客户端实例连接到 ClickHouse Cloud 服务： {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-cloud-service}
+#### 使用 ClickHouse Connect 客户端实例连接到 ClickHouse Cloud 服务： \{#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-cloud-service\}
 
 :::tip
 使用之前获取的连接信息。ClickHouse Cloud 服务需要 TLS，因此请使用端口 8443。
@@ -99,7 +99,7 @@ import clickhouse_connect
 client = clickhouse_connect.get_client(host='HOSTNAME.clickhouse.cloud', port=8443, username='default', password='your password')
 ```
 
-### 与数据库交互 {#interact-with-your-database}
+### 与数据库交互 \{#interact-with-your-database\}
 
 要执行 ClickHouse SQL 命令，请使用客户端的 `command` 方法：
 

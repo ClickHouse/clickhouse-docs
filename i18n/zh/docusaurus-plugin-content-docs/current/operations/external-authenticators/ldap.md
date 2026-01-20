@@ -16,7 +16,7 @@ LDAP 服务器可用于对 ClickHouse 用户进行身份验证。实现这一点
 
 对于这两种方法，必须在 ClickHouse 配置中定义一个具有内部名称的 LDAP 服务器，以便配置的其他部分可以引用它。
 
-## LDAP 服务器定义 {#ldap-server-definition}
+## LDAP 服务器定义 \{#ldap-server-definition\}
 
 要定义 LDAP 服务器，必须在 `config.xml` 中添加 `ldap_servers` 配置节。
 
@@ -90,7 +90,7 @@ LDAP 服务器可用于对 ClickHouse 用户进行身份验证。实现这一点
 * `tls_ca_cert_dir` — 包含 CA 证书的目录路径。
 * `tls_cipher_suite` — 允许的密码套件（使用 OpenSSL 表示法）。
 
-## LDAP 外部认证器 {#ldap-external-authenticator}
+## LDAP 外部认证器 \{#ldap-external-authenticator\}
 
 可以使用远程 LDAP 服务器作为验证本地定义用户（在 `users.xml` 或本地访问控制路径中定义的用户）密码的一种方式。为此，在用户定义中，将原本的 `password` 或类似字段替换为之前定义的 LDAP 服务器名称。
 
@@ -123,7 +123,7 @@ LDAP 服务器可用于对 ClickHouse 用户进行身份验证。实现这一点
 CREATE USER my_user IDENTIFIED WITH ldap SERVER 'my_ldap_server';
 ```
 
-## LDAP 外部用户目录 {#ldap-external-user-directory}
+## LDAP 外部用户目录 \{#ldap-external-user-directory\}
 
 除了本地定义的用户之外，还可以使用远程 LDAP 服务器作为用户定义的来源。为此，需要在 `config.xml` 文件的 `users_directories` 部分中的 `ldap` 部分里，指定之前定义好的 LDAP 服务器名称（参见 [LDAP Server Definition](#ldap-server-definition)）。
 

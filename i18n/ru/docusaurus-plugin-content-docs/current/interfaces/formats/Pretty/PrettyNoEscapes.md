@@ -15,12 +15,13 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | ---- | ----- | --------- |
 | ✗    | ✔     |           |
 
-## Описание {#description}
+
+## Описание \{#description\}
 
 Отличается от [Pretty](/interfaces/formats/Pretty) тем, что не используются [последовательности управляющих кодов ANSI](http://en.wikipedia.org/wiki/ANSI_escape_code).  
 Это необходимо для отображения этого формата в браузере, а также для использования с утилитой командной строки `watch`.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 Пример:
 
@@ -29,9 +30,10 @@ $ watch -n1 "clickhouse-client --query='SELECT event, value FROM system.events F
 ```
 
 :::note
-[HTTP-интерфейс](../../../interfaces/http.md) можно использовать для отображения данного формата в браузере.
+[HTTP-интерфейс](/interfaces/http) можно использовать для отображения данного формата в браузере.
 :::
 
-## Параметры форматирования {#format-settings}
+
+## Параметры форматирования \{#format-settings\}
 
 <PrettyFormatSettings/>

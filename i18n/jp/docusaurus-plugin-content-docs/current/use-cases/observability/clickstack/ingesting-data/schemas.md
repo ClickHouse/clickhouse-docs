@@ -11,9 +11,9 @@ keywords: ['clickstack', 'schema', 'data model', 'table design', 'logs']
 
 ClickStack の OpenTelemetry (OTel) collector は、[ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) を使用して ClickHouse にテーブルを作成し、データを挿入します。
 
-各データタイプごとに、`default` データベース内に次のテーブルが作成されます。ユーザーは、OTel collector を実行しているコンテナイメージの環境変数 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` を変更することで、この対象データベースを変更できます。
+各データタイプごとに、`default` データベース内に次のテーブルが作成されます。OTel collector を実行しているコンテナイメージの環境変数 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` を変更することで、この対象データベースを変更できます。
 
-## ログ {#logs}
+## ログ \{#logs\}
 
 ```sql
 CREATE TABLE otel_logs
@@ -49,7 +49,7 @@ PRIMARY KEY (ServiceName, TimestampTime)
 ORDER BY (ServiceName, TimestampTime, Timestamp)
 ```
 
-## トレース {#traces}
+## トレース \{#traces\}
 
 ```sql
 CREATE TABLE otel_traces
@@ -88,9 +88,9 @@ PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SpanName, toDateTime(Timestamp))
 ```
 
-## メトリクス {#metrics}
+## メトリクス \{#metrics\}
 
-### ゲージ型メトリクス {#gauge}
+### ゲージ型メトリクス \{#gauge\}
 
 ```sql
 CREATE TABLE otel_metrics_gauge
@@ -128,7 +128,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### Sum 型メトリクス {#sum}
+### Sum 型メトリクス \{#sum\}
 
 ```sql
 CREATE TABLE otel_metrics_sum
@@ -168,7 +168,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### ヒストグラム・メトリクス {#histogram}
+### ヒストグラム・メトリクス \{#histogram\}
 
 ```sql
 CREATE TABLE otel_metrics_histogram
@@ -212,10 +212,10 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### 指数ヒストグラム {#exponential-histograms}
+### 指数ヒストグラム \{#exponential-histograms\}
 
 :::note
-HyperDX は、指数ヒストグラムのメトリクスの取得および表示をまだサポートしていません。メトリクスの送信元でそれらを設定することはできますが、将来的なサポートが予定されています。
+HyperDX は、指数ヒストグラムのメトリクスの取得および表示をまだサポートしていません。メトリクスソース側でそれらを設定することはできますが、将来的なサポートが予定されています。
 :::
 
 ```sql
@@ -265,7 +265,8 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### 概要表 {#summary-table}
+
+### 概要表 \{#summary-table\}
 
 ```sql
 CREATE TABLE otel_metrics_summary
@@ -301,7 +302,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-## セッション {#sessions}
+## セッション \{#sessions\}
 
 ```sql
 CREATE TABLE hyperdx_sessions

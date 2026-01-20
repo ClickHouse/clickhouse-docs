@@ -7,13 +7,13 @@ keywords: ['クラウドサービスティア', 'サービスプラン', 'クラ
 doc_type: 'reference'
 ---
 
-# ClickHouse Cloud のティア {#clickhouse-cloud-tiers}
+# ClickHouse Cloud のティア \{#clickhouse-cloud-tiers\}
 
 ClickHouse Cloud には複数のティアが用意されています。 
 ティアは任意の組織レベルで割り当てられるため、その組織内のサービスは同じティアに属します。
 このページでは、特定のユースケースに対してどのティアが適しているかを説明します。
 
-**クラウドティアの概要:**
+**Cloud ティアの概要:**
 
 <table>
   <thead>
@@ -218,9 +218,7 @@ ClickHouse Cloud には複数のティアが用意されています。
   </tbody>
 </table>
 
-
-
-## Basic {#basic}
+## Basic \{#basic\}
 
 - 単一レプリカのデプロイメントをサポートするコスト効率の高いオプションです。
 - 厳密な信頼性保証を必要としない、小規模なデータ量の部門レベルのユースケースに最適です。
@@ -230,23 +228,23 @@ Basic ティアのサービスは、あらかじめ固定されたサイズで�
 スケーリングが必要な場合は、Scale または Enterprise ティアへアップグレードできます。
 :::
 
-## Scale {#scale}
+## Scale \{#scale\}
 
-高い SLA（2 つ以上のレプリカを持つデプロイメント）、スケーラビリティ、高度なセキュリティを必要とするワークロード向けに設計されています。
+強化された SLA（2 つ以上のレプリカを持つデプロイメント）、スケーラビリティ、高度なセキュリティを必要とするワークロード向けに設計されています。
 
 - 次のような機能をサポートします:
   - [プライベートネットワーキング](/cloud/security/connectivity/private-networking)
-  - [コンピュート間の分離 (compute-compute separation)](../reference/warehouses#what-is-compute-compute-separation)
+  - [コンピュート間の分離（compute-compute separation）](../reference/warehouses#what-is-compute-compute-separation)
   - [柔軟なスケーリング](/manage/scaling) オプション（スケールアップ/ダウン、スケールイン/アウト）
   - [設定可能なバックアップ](/cloud/manage/backups/configurable-backups)
 
-## エンタープライズ {#enterprise}
+## エンタープライズ \{#enterprise\}
 
 厳格なセキュリティおよびコンプライアンス要件を持つ、大規模でミッションクリティカルなデプロイメント向けのプランです。
 
 - Scale に含まれるすべてに加えて、**さらに**
 - 柔軟なスケーリング: 標準プロファイル（`1:4 vCPU:memory ratio`）に加え、`HighMemory (1:8 ratio)` および `HighCPU (1:2 ratio)` のカスタムプロファイルを利用可能。
-- 最高レベルのパフォーマンスと信頼性を保証。
+- 最高レベルのパフォーマンスとレジリエンスを保証。
 - エンタープライズグレードのセキュリティに対応:
   - シングルサインオン (SSO)
   - 強化された暗号化: AWS および GCP サービス向け。サービスはデフォルトで当社のキーにより暗号化されており、ユーザーのキーにローテーションして Customer Managed Encryption Keys (CMEK) を有効化可能。
@@ -258,7 +256,7 @@ Basic ティアのサービスは、あらかじめ固定されたサイズで�
 3 つすべてのティアにおいて、単一レプリカのサービスはサイズを固定（`8 GiB`、`12 GiB`）とするよう設計されています。
 :::
 
-## 別のプランへのアップグレード {#upgrading-to-a-different-tier}
+## 別のプランへのアップグレード \{#upgrading-to-a-different-tier\}
 
 Basic から Scale へ、または Scale から Enterprise へは、いつでもアップグレードできます。プランをダウングレードする場合は、プレミアム機能を無効にする必要があります。
 

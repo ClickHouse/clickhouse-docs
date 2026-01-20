@@ -2,7 +2,7 @@
 description: 'Данные о миллиардах поездок такси и заказных автомобилей (Uber, Lyft и др.), начинавшихся в Нью-Йорке с 2009 года'
 sidebar_label: 'Данные о нью-йоркском такси'
 slug: /getting-started/example-datasets/nyc-taxi
-title: 'Данные о нью-йоркском такси'
+title: 'Данные о нью-Йоркском такси'
 doc_type: 'guide'
 keywords: ['пример набора данных', 'nyc taxi', 'учебник', 'образцы данных', 'начало работы']
 ---
@@ -16,14 +16,15 @@ import TabItem from '@theme/TabItem';
 
 * вставить данные непосредственно в ClickHouse Cloud из S3 или GCS
 * скачать подготовленные партиции
-* либо выполнять запросы ко всему набору данных в нашей демо-среде на [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19).
+* либо вы можете выполнять запросы ко всему набору данных в нашей демо-среде на [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19).
 
 :::note
 Приведённые ниже примерные запросы выполнялись на **Production**‑экземпляре ClickHouse Cloud. Для получения дополнительной информации см. раздел
 [«Характеристики Playground»](/getting-started/playground#specifications).
 :::
 
-## Создайте таблицу trips {#create-the-table-trips}
+
+## Создайте таблицу trips \{#create-the-table-trips\}
 
 Сначала создайте таблицу для поездок на такси:
 
@@ -54,7 +55,7 @@ ENGINE = MergeTree
 PRIMARY KEY (pickup_datetime, dropoff_datetime);
 ```
 
-## Загрузка данных напрямую из объектного хранилища {#load-the-data-directly-from-object-storage}
+## Загрузка данных напрямую из объектного хранилища \{#load-the-data-directly-from-object-storage\}
 
 Вы можете взять небольшой поднабор данных (3 миллиона строк), чтобы познакомиться с ним. Данные хранятся в TSV-файлах в объектном хранилище, откуда их можно легко потоково загрузить в
 ClickHouse Cloud с помощью табличной функции `s3`. 
@@ -124,9 +125,9 @@ FROM gcs(
 </TabItem>
 </Tabs>
 
-## Примеры запросов {#sample-queries}
+## Примеры запросов \{#sample-queries\}
 
-Следующие запросы выполняются для описанного выше примера. Пользователи могут запускать эти примерные запросы на полном наборе данных в [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19), изменив приведённые ниже запросы для использования таблицы `nyc_taxi.trips`.
+Следующие запросы выполняются для описанного выше примера. Вы можете запускать эти примерные запросы на полном наборе данных в [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19), изменив приведённые ниже запросы для использования таблицы `nyc_taxi.trips`.
 
 Посмотрим, сколько строк было вставлено:
 
@@ -135,7 +136,7 @@ SELECT count()
 FROM nyc_taxi.trips_small;
 ```
 
-Каждый TSV-файл содержит около 1 млн строк, а три файла вместе — 3 000 317 строк. Давайте посмотрим на несколько строк:
+Каждый TSV-файл содержит примерно 1 млн строк, а три файла в сумме — 3 000 317 строк. Давайте посмотрим на несколько строк:
 
 ```sql runnable
 SELECT *
@@ -168,7 +169,7 @@ WHERE passenger_count < 10
 GROUP BY passenger_count;
 ```
 
-Вот зависимость между количеством пассажиров и расстоянием поездки:
+Ниже показана зависимость между количеством пассажиров и расстоянием поездки:
 
 ```sql runnable chart_config='eyJ0eXBlIjoiaG9yaXpvbnRhbCBiYXIiLCJjb25maWciOnsieGF4aXMiOiJwYXNzZW5nZXJfY291bnQiLCJ5YXhpcyI6ImRpc3RhbmNlIiwic2VyaWVzIjoiY291bnRyeSIsInRpdGxlIjoiQXZnIGZhcmUgYnkgcGFzc2VuZ2VyIGNvdW50In19'
 SELECT
@@ -180,7 +181,8 @@ GROUP BY passenger_count
 ORDER BY passenger_count ASC
 ```
 
-## Скачивание подготовленных партиций {#download-of-prepared-partitions}
+
+## Скачивание подготовленных партиций \{#download-of-prepared-partitions\}
 
 :::note
 Следующие шаги содержат информацию об исходном наборе данных и метод загрузки подготовленных партиций в самостоятельно управляемую среду сервера ClickHouse.
@@ -206,7 +208,7 @@ $ clickhouse-client --query "select count(*) from datasets.trips_mergetree"
 Если вы собираетесь выполнять запросы, описанные ниже, вы должны использовать полное имя таблицы — `datasets.trips_mergetree`.
 :::
 
-## Результаты на одном сервере {#results-on-single-server}
+## Результаты на одном сервере \{#results-on-single-server\}
 
 Q1:
 
@@ -290,7 +292,7 @@ Q4: 0.072 сек.
 В этом случае время обработки запросов определяется прежде всего сетевыми задержками.
 Мы выполняли запросы с клиента, расположенного в другом дата-центре, чем кластер, что добавило порядка 20 мс задержки.
 
-## Сводка {#summary}
+## Сводка \{#summary\}
 
 | серверы | Q1    | Q2    | Q3    | Q4    |
 |---------|-------|-------|-------|-------|

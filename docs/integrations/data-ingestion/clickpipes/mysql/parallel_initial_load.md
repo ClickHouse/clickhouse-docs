@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/parallel_initial_load
 sidebar_label: 'How parallel snapshot works'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', 'data ingestion', 'real-time sync']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import snapshot_params from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/snapshot_params.png'

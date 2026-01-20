@@ -17,7 +17,7 @@ import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashb
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# ClickStack を使った Nginx トレースのモニタリング {#nginx-traces-clickstack}
+# ClickStack を使った Nginx トレースのモニタリング \{#nginx-traces-clickstack\}
 
 :::note[TL;DR]
 このガイドでは、既存の Nginx インストールから分散トレースを収集し、ClickStack で可視化する方法を説明します。次の内容を学びます：
@@ -32,12 +32,12 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 所要時間：5〜10 分
 ::::
 
-## 既存の Nginx との統合 {#existing-nginx}
+## 既存の Nginx との統合 \{#existing-nginx\}
 
 このセクションでは、OpenTelemetry モジュールをインストールし、ClickStack にトレースを送信するように設定することで、既存の Nginx 環境に分散トレーシングを追加する方法を説明します。
 既存の環境を設定する前に統合を試してみたい場合は、[次のセクション](/use-cases/observability/clickstack/integrations/nginx-traces#demo-dataset)にある事前構成済みのセットアップとサンプルデータを使ってテストできます。
 
-##### 前提条件 {#prerequisites}
+##### 前提条件 \{#prerequisites\}
 
 - OTLP エンドポイントにアクセス可能な ClickStack インスタンスが稼働していること（ポート 4317/4318）
 - 既存の Nginx インストール（バージョン 1.18 以上）
@@ -46,11 +46,11 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### OpenTelemetry Nginx モジュールをインストールする {#install-module}
+#### OpenTelemetry Nginx モジュールをインストールする \{#install-module\}
 
 Nginx にトレース機能を追加する最も簡単な方法は、OpenTelemetry 対応が組み込まれた公式 Nginx イメージを使用することです。
 
-##### nginx:otel イメージを使用する {#using-otel-image}
+##### nginx:otel イメージを使用する \{#using-otel-image\}
 
 現在使用している Nginx イメージを、OpenTelemetry 対応バージョンに置き換えます:
 
@@ -65,7 +65,7 @@ image: nginx:1.27-otel
 Docker 以外で Nginx を実行している場合は、手動インストール手順について [OpenTelemetry Nginx ドキュメント](https://github.com/open-telemetry/opentelemetry-cpp-contrib/tree/main/instrumentation/nginx) を参照してください。
 :::
 
-#### Nginx を ClickStack へトレースを送信するように構成する {#configure-nginx}
+#### Nginx を ClickStack へトレースを送信するように構成する \{#configure-nginx\}
 
 `nginx.conf` ファイルに OpenTelemetry の設定を追加します。この設定でモジュールを読み込み、トレースを ClickStack の OTLP エンドポイントへ送信します。
 
@@ -137,7 +137,7 @@ services:
 - HyperDX で識別しやすくするために、環境に合わせて **otel_service_name** を変更してください
 :::
 
-##### 設定内容の理解 {#understanding-configuration}
+##### 設定内容の理解 \{#understanding-configuration\}
 
 **トレースされる内容:**
 Nginx への各リクエストごとに、次を示すトレーススパンが作成されます:
@@ -163,7 +163,7 @@ docker-compose restart nginx
 sudo systemctl reload nginx
 ```
 
-#### HyperDX でトレースを検証する {#verifying-traces}
+#### HyperDX でトレースを検証する \{#verifying-traces\}
 
 設定が完了したら、HyperDX にログインしてトレースが送信されていることを確認します。次のような表示が見えるはずです。トレースが表示されない場合は、時間範囲の調整を試してください:
 
@@ -171,13 +171,13 @@ sudo systemctl reload nginx
 
 </VerticalStepper>
 
-## デモ用データセット {#demo-dataset}
+## デモ用データセット \{#demo-dataset\}
 
 本番環境を設定する前に nginx トレース連携をテストしたいユーザー向けに、実際のトラフィックパターンに近い事前生成済みの Nginx トレースのサンプルデータセットを提供しています。
 
 <VerticalStepper headerLevel="h4">
 
-#### ClickStack を起動する {#start-clickstack}
+#### ClickStack を起動する \{#start-clickstack\}
 
 まだ ClickStack を起動していない場合は、次のコマンドで起動します:
 
@@ -193,7 +193,7 @@ docker run --name clickstack-demo \
 - ポート 4317: OTLP gRPC エンドポイント (nginx モジュールで使用)
 - ポート 4318: OTLP HTTP エンドポイント (デモトレースで使用)
 
-#### サンプルデータセットをダウンロードする {#download-sample}
+#### サンプルデータセットをダウンロードする \{#download-sample\}
 
 サンプルトレースファイルをダウンロードし、タイムスタンプを現在時刻に更新します:
 
@@ -209,7 +209,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - 10ms から 800ms までのレイテンシ
 - 元のトラフィックパターンを保持したまま、現在時刻にシフト済み
 
-#### トレースを ClickStack に送信する {#send-traces}
+#### トレースを ClickStack に送信する \{#send-traces\}
 
 API key を環境変数として設定します (まだ設定していない場合):
 
@@ -237,7 +237,7 @@ curl -X POST http://localhost:4318/v1/traces \
 
 `{"partialSuccess":{}}` のようなレスポンスが表示されれば、トレースが正常に送信されたことを示します。1,000 件すべてのトレースが ClickStack にインジェストされます。
 
-#### HyperDX でトレースを確認する {#verify-demo-traces}
+#### HyperDX でトレースを確認する \{#verify-demo-traces\}
 
 1. [HyperDX](http://localhost:8080/) を開き、アカウントにログインします (必要に応じて先にアカウントを作成します)
 2. Search ビューに移動し、source を `Traces` に設定します
@@ -253,15 +253,15 @@ HyperDX はタイムスタンプをブラウザのローカルタイムゾーン
 
 </VerticalStepper>
 
-## ダッシュボードと可視化 {#dashboards}
+## ダッシュボードと可視化 \{#dashboards\}
 
 ClickStack でトレースの監視を始めやすくするために、トレースデータ向けの基本的な可視化を提供しています。
 
 <VerticalStepper headerLevel="h4">
 
-#### ダッシュボード設定を<TrackedLink href={useBaseUrl('/examples/nginx-traces-dashboard.json')} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">ダウンロード</TrackedLink> {#download}
+#### ダッシュボード設定を<TrackedLink href={useBaseUrl('/examples/nginx-traces-dashboard.json')} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">ダウンロード</TrackedLink> \{#download\}
 
-#### あらかじめ用意されたダッシュボードをインポートする {#import-dashboard}
+#### あらかじめ用意されたダッシュボードをインポートする \{#import-dashboard\}
 1. HyperDX を開き、［Dashboards］セクションに移動します。
 2. 右上の三点リーダーアイコンから「Import Dashboard」をクリックします。
 
@@ -271,7 +271,7 @@ ClickStack でトレースの監視を始めやすくするために、トレー
 
 <Image img={finish_import} alt="インポートの完了"/>
 
-#### すべての可視化が事前設定された状態でダッシュボードが作成されます。 {#created-dashboard}
+#### すべての可視化が事前設定された状態でダッシュボードが作成されます。 \{#created-dashboard\}
 
 :::note
 デモデータセットを使用する場合、時間範囲を **2025-10-26 13:00:00 - 2025-10-27 13:00:00 (UTC)** に設定します（ローカルタイムゾーンに応じて調整してください）。インポートしたダッシュボードには、デフォルトでは時間範囲が指定されていません。
@@ -281,9 +281,9 @@ ClickStack でトレースの監視を始めやすくするために、トレー
 
 </VerticalStepper>
 
-## トラブルシューティング {#troubleshooting}
+## トラブルシューティング \{#troubleshooting\}
 
-### HyperDX にトレースが表示されない {#no-traces}
+### HyperDX にトレースが表示されない \{#no-traces\}
 
 **nginx モジュールがロードされていることを確認してください:**
 
@@ -328,7 +328,7 @@ OpenTelemetry 関連のエラーが発生していないか確認します。
 tail -f /var/log/nginx/access.log
 ```
 
-## 次のステップ {#next-steps}
+## 次のステップ \{#next-steps\}
 
 さらに深く活用したい場合は、ダッシュボードで次のようなことを試してみてください。
 

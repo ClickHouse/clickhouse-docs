@@ -60,5 +60,9 @@ During the configuration of the ClickHouse Sink Connector, you will need to prov
 
 The Confluent Cloud UI supports advanced configuration options to adjust poll intervals, batch sizes, and other parameters to optimize performance.
 
+:::note  
+On Confluent Cloud, adjustment of certain settings such as [fetch settings](/integrations/kafka/clickhouse-kafka-connect-sink/#fetch-settings) and [poll settings](/integrations/kafka/clickhouse-kafka-connect-sink/#poll-settings) requires opening a support case through Confluent Cloud.
+:::  
+
 #### Known limitations {#known-limitations}
 * See the list of [Connectors limitations in the official docs](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html#limitations)

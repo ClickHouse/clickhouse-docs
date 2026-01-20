@@ -13,12 +13,12 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 [Apache Arrow](https://arrow.apache.org/) には、組み込みのカラムナ型ストレージフォーマットが 2 つ用意されています。ClickHouse はこれらのフォーマットに対する読み書き処理をサポートしています。
 `Arrow` は Apache Arrow の「ファイルモード」フォーマットです。メモリ上でのランダムアクセス向けに設計されています。
 
-## データ型の対応関係 {#data-types-matching}
+## データ型の対応関係 \{#data-types-matching\}
 
 次の表は、サポートされているデータ型と、それらが `INSERT` および `SELECT` クエリで ClickHouse の [データ型](/sql-reference/data-types/index.md) にどのように対応するかを示しています。
 
@@ -51,7 +51,7 @@ doc_type: 'reference'
 
 配列は入れ子（ネスト）にすることができ、引数として `Nullable` 型の値を持つことができます。`Tuple` 型および `Map` 型も入れ子にすることができます。
 
-`DICTIONARY` 型は `INSERT` クエリでサポートされており、`SELECT` クエリに対しては、[LowCardinality](/sql-reference/data-types/lowcardinality.md) 型を `DICTIONARY` 型として出力できるようにする [`output_format_arrow_low_cardinality_as_dictionary`](/operations/settings/formats#output_format_arrow_low_cardinality_as_dictionary) 設定があります。
+`DICTIONARY` 型は `INSERT` クエリでサポートされており、`SELECT` クエリに対しては、[LowCardinality](/sql-reference/data-types/lowcardinality.md) 型を `DICTIONARY` 型として出力できるようにする [`output_format_arrow_low_cardinality_as_dictionary`](/operations/settings/formats#output_format_arrow_low_cardinality_as_dictionary) 設定があります。なお、`LowCardinality` の Dictionary には未使用の値が含まれている場合があり、その結果、出力される Arrow の `DICTIONARY` にも未使用の値が含まれる可能性があります。
 
 サポートされていない Arrow データ型は次のとおりです:
 
@@ -60,11 +60,11 @@ doc_type: 'reference'
 - `UUID`
 - `ENUM`.
 
-ClickHouse テーブル列のデータ型は、対応する Arrow データフィールドと一致している必要はありません。データを挿入する際、ClickHouse はまず上記の表に従ってデータ型を解釈し、その後、ClickHouse テーブル列に設定されているデータ型へデータを[キャスト](/sql-reference/functions/type-conversion-functions#cast)します。
+ClickHouse テーブル列のデータ型は、対応する Arrow データフィールドと一致している必要はありません。データを挿入する際、ClickHouse はまず上記の表に従ってデータ型を解釈し、その後、ClickHouse テーブル列に設定されているデータ型へデータを[キャスト](/sql-reference/functions/type-conversion-functions#CAST)します。
 
-## 使用例 {#example-usage}
+## 使用例 \{#example-usage\}
 
-### データの挿入 {#inserting-data}
+### データの挿入 \{#inserting-data\}
 
 次のコマンドを使用して、ファイルから ClickHouse テーブルに Arrow 形式のデータを挿入できます。
 
@@ -72,7 +72,7 @@ ClickHouse テーブル列のデータ型は、対応する Arrow データフ�
 $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT Arrow"
 ```
 
-### データの選択 {#selecting-data}
+### データの選択 \{#selecting-data\}
 
 次のコマンドを使用して、ClickHouse のテーブルからデータを抽出し、Arrow 形式のファイルに保存できます。
 
@@ -80,7 +80,7 @@ $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT 
 $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Arrow" > {filename.arrow}
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \{#format-settings\}
 
 | 設定                                                                                                                      | 説明                                                                                               | デフォルト   |
 |--------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|--------------|

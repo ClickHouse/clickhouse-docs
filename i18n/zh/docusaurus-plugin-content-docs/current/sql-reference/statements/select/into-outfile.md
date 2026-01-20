@@ -6,7 +6,7 @@ title: 'INTO OUTFILE 子句'
 doc_type: 'reference'
 ---
 
-# INTO OUTFILE 子句 {#into-outfile-clause}
+# INTO OUTFILE 子句 \{#into-outfile-clause\}
 
 `INTO OUTFILE` 子句会将 `SELECT` 查询的结果重定向到**客户端**本地的文件中。
 
@@ -22,9 +22,9 @@ SELECT <expr_list> INTO OUTFILE file_name [AND STDOUT] [APPEND | TRUNCATE] [COMP
 
 `level` 是数值字面量。支持的正整数范围为：`lz4` 类型为 `1-12`，`zstd` 类型为 `1-22`，其他压缩类型为 `1-9`。
 
-## 实现细节 {#implementation-details}
+## 实现细节 \{#implementation-details\}
 
-* 此功能可在[命令行客户端](../../../interfaces/cli.md)和 [clickhouse-local](../../../operations/utilities/clickhouse-local.md) 中使用。因此，通过 [HTTP 接口](../../../interfaces/http.md) 发送的查询将会失败。
+* 此功能可在[命令行客户端](../../../interfaces/cli.md)和 [clickhouse-local](../../../operations/utilities/clickhouse-local.md) 中使用。因此，通过 [HTTP 接口](/interfaces/http) 发送的查询将会失败。
 * 如果已存在同名文件，查询将会失败。
 * 默认的[输出格式](../../../interfaces/formats.md)为 `TabSeparated`（与命令行客户端批处理模式相同）。使用 [FORMAT](format.md) 子句来更改输出格式。
 * 如果在查询中包含 `AND STDOUT`，则写入文件的输出也会同时显示到标准输出上。如果启用了压缩，标准输出上显示的是未压缩的明文。

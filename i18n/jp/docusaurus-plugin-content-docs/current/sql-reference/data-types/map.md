@@ -7,7 +7,7 @@ title: 'Map(K, V)'
 doc_type: 'reference'
 ---
 
-# Map(K, V) {#mapk-v}
+# Map(K, V) \{#mapk-v\}
 
 データ型 `Map(K, V)` はキーと値のペアを格納します。
 
@@ -19,7 +19,7 @@ map `m` からキー `k` に対応する値を取得するには、構文 `m[k]`
 
 **パラメータ**
 
-* `K` — Map のキーの型。[Nullable](../../sql-reference/data-types/nullable.md) および [Nullable](../../sql-reference/data-types/nullable.md) 型をネストした [LowCardinality](../../sql-reference/data-types/lowcardinality.md) を除く任意の型。
+* `K` — Map のキーの型。[Nullable](../../sql-reference/data-types/nullable.md) と、[Nullable](../../sql-reference/data-types/nullable.md) 型をネストした [LowCardinality](../../sql-reference/data-types/lowcardinality.md) を除く任意の型。
 * `V` — Map の値の型。任意の型。
 
 **例**
@@ -37,7 +37,7 @@ INSERT INTO tab VALUES ({'key1':1, 'key2':10}), ({'key1':2,'key2':20}), ({'key1'
 SELECT m['key2'] FROM tab;
 ```
 
-結果：
+結果:
 
 ```text
 ┌─arrayElement(m, 'key2')─┐
@@ -48,7 +48,7 @@ SELECT m['key2'] FROM tab;
 ```
 
 指定したキー `k` がマップ内に含まれていない場合、`m[k]` は値型のデフォルト値を返します。例えば、整数型なら `0`、文字列型なら `''` です。
-マップ内にキーが存在するかどうかを確認するには、[mapContains](../../sql-reference/functions/tuple-map-functions#mapcontains) 関数を使用します。
+マップ内にキーが存在するかどうかを確認するには、[mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey) 関数を使用します。
 
 ```sql
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE=Memory;
@@ -65,9 +65,10 @@ SELECT m['key1'] FROM tab;
 └─────────────────────────┘
 ```
 
-## Tuple から Map への変換 {#converting-tuple-to-map}
 
-`Tuple()` 型の値は、[CAST](/sql-reference/functions/type-conversion-functions#cast) 関数を使用して `Map()` 型にキャストできます。
+## Tuple から Map への変換 \{#converting-tuple-to-map\}
+
+`Tuple()` 型の値は、[CAST](/sql-reference/functions/type-conversion-functions#CAST) 関数を使用して `Map()` 型にキャストできます。
 
 **例**
 
@@ -85,7 +86,8 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 └───────────────────────────────┘
 ```
 
-## Map のサブカラムの読み取り {#reading-subcolumns-of-map}
+
+## Map のサブカラムの読み取り \{#reading-subcolumns-of-map\}
 
 Map 全体を読み出さずに済むように、場合によってはサブカラム `keys` と `values` を使用できます。
 
@@ -116,9 +118,10 @@ SELECT m.values FROM tab; -- same as mapValues(m)
 **関連項目**
 
 * [map()](/sql-reference/functions/tuple-map-functions#map) 関数
-* [CAST()](/sql-reference/functions/type-conversion-functions#cast) 関数
+* [CAST()](/sql-reference/functions/type-conversion-functions#CAST) 関数
 * [Map データ型用 -Map コンビネータ](../aggregate-functions/combinators.md#-map)
 
-## 関連コンテンツ {#related-content}
+
+## 関連コンテンツ \{#related-content\}
 
 - ブログ記事: [Building an Observability Solution with ClickHouse - Part 2 - Traces](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)

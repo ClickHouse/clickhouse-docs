@@ -6,7 +6,7 @@ title: 'GROUP BY 子句'
 doc_type: 'reference'
 ---
 
-# GROUP BY 子句 {#group-by-clause}
+# GROUP BY 子句 \{#group-by-clause\}
 
 `GROUP BY` 子句会将 `SELECT` 查询切换到聚合模式，其工作方式如下：
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 还有另一种方式可以对表进行聚合。如果查询中只在聚合函数内部使用了表列，则可以省略 `GROUP BY` 子句，此时会假定按空键集进行聚合。此类查询总是恰好返回一行。
 :::
 
-## NULL 处理 {#null-processing}
+## NULL 处理 \{#null-processing\}
 
 在分组操作中，ClickHouse 将 [NULL](/sql-reference/syntax#null) 视为一个具体值，并且认为 `NULL==NULL`。这与在大多数其他上下文中的 `NULL` 处理方式不同。
 
@@ -52,7 +52,7 @@ doc_type: 'reference'
 
 如果你向 `GROUP BY` 传入多个键列，结果会给出所选数据的所有组合，就好像把 `NULL` 当作一个特定的取值一样。
 
-## ROLLUP 修饰符 {#rollup-modifier}
+## ROLLUP 修饰符 \{#rollup-modifier\}
 
 `ROLLUP` 修饰符用于根据 `GROUP BY` 列表中键表达式的顺序计算各级小计。小计行会追加在结果表的末尾。
 
@@ -125,7 +125,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 
 * 用于实现 SQL 标准兼容性的 [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) 设置。
 
-## CUBE 修饰符 {#cube-modifier}
+## CUBE 修饰符 \{#cube-modifier\}
 
 `CUBE` 修饰符用于对 `GROUP BY` 列表中键表达式的每一种组合计算小计。这些小计行会追加在结果表的末尾。
 
@@ -222,7 +222,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 
 * 有关 SQL 标准兼容性，请参见 [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) 设置。
 
-## WITH TOTALS 修饰符 {#with-totals-modifier}
+## WITH TOTALS 修饰符 \{#with-totals-modifier\}
 
 如果指定了 `WITH TOTALS` 修饰符，将会额外计算一行数据。该行的键列包含默认值（零或空字符串），聚合函数列则包含在所有行上的聚合结果（即「总计」值）。
 
@@ -240,7 +240,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 
 在存在 [HAVING](/sql-reference/statements/select/having.md) 时，`WITH TOTALS` 的行为可以有不同方式，取决于 `totals_mode` 设置。
 
-### 配置 Totals 处理方式 {#configuring-totals-processing}
+### 配置 Totals 处理方式 \{#configuring-totals-processing\}
 
 默认情况下，`totals_mode = 'before_having'`。在这种情况下，`totals` 会基于所有行计算，包括那些未通过 HAVING 和 `max_rows_to_group_by` 限制的行。
 
@@ -258,7 +258,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 
 你可以在子查询中使用 `WITH TOTALS`，包括位于 [JOIN](/sql-reference/statements/select/join.md) 子句中的子查询（在这种情况下，相应的总计值会被合并）。
 
-## GROUP BY ALL {#group-by-all}
+## GROUP BY ALL \{#group-by-all\}
 
 `GROUP BY ALL` 等同于在 GROUP BY 中列出所有在 SELECT 子句中出现且不是聚合函数的表达式。
 
@@ -306,7 +306,7 @@ FROM t
 GROUP BY substring(a, 4, 2), substring(a, 1, 2)
 ```
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
 示例：
 
@@ -333,7 +333,7 @@ GROUP BY domain
 
 对于遇到的每个不同的键值，`GROUP BY` 会计算一组聚合函数的结果。
 
-## GROUPING SETS 修饰符 {#grouping-sets-modifier}
+## GROUPING SETS 修饰符 \{#grouping-sets-modifier\}
 
 这是最通用的修饰符。
 该修饰符允许手动指定多个聚合键集合（grouping set）。
@@ -370,15 +370,15 @@ GROUPING SETS
 
 * 有关 SQL 标准兼容性，请参见 [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) 设置。
 
-## 实现细节 {#implementation-details}
+## 实现细节 \{#implementation-details\}
 
 聚合是列式 DBMS 最重要的特性之一，因此它的实现也是 ClickHouse 中优化最充分的部分之一。默认情况下，聚合在内存中使用哈希表完成。它有 40 多种特化实现，会根据“分组键”的数据类型自动选择。
 
-### 基于表排序键的 GROUP BY 优化 {#group-by-optimization-depending-on-table-sorting-key}
+### 基于表排序键的 GROUP BY 优化 \{#group-by-optimization-depending-on-table-sorting-key\}
 
 如果表按某个键排序，并且 `GROUP BY` 表达式至少包含排序键的前缀或单射函数，那么聚合可以更高效地执行。在这种情况下，当从表中读取到一个新的键时，聚合的中间结果可以被最终化并发送给客户端。此行为由 [optimize_aggregation_in_order](../../../operations/settings/settings.md#optimize_aggregation_in_order) 设置控制。该优化在聚合过程中可以降低内存使用，但在某些情况下可能会减慢查询执行。
 
-### 外部内存中的 GROUP BY {#group-by-in-external-memory}
+### 外部内存中的 GROUP BY \{#group-by-in-external-memory\}
 
 可以启用将临时数据写入磁盘，以限制执行 `GROUP BY` 时的内存使用。
 [max_bytes_before_external_group_by](/operations/settings/settings#max_bytes_before_external_group_by) 设置决定了将 `GROUP BY` 临时数据写入文件系统时的 RAM 消耗阈值。如果设置为 0（默认值），则表示禁用。

@@ -2,7 +2,7 @@
 sidebar_label: 'Fivetran'
 slug: /integrations/fivetran
 sidebar_position: 2
-description: '用户可以使用 dbt 在 ClickHouse 中对其数据进行转换和建模'
+description: '您可以使用 dbt 在 ClickHouse 中对您的数据进行转换和建模'
 title: 'Fivetran 与 ClickHouse Cloud'
 doc_type: 'guide'
 integration:
@@ -13,11 +13,12 @@ keywords: ['fivetran', '数据迁移', 'etl', 'ClickHouse 目标端', '自动化
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Fivetran 与 ClickHouse Cloud {#fivetran-and-clickhouse-cloud}
+
+# Fivetran 与 ClickHouse Cloud \{#fivetran-and-clickhouse-cloud\}
 
 <ClickHouseSupportedBadge/>
 
-## 概览 {#overview}
+## 概览 \{#overview\}
 
 [Fivetran](https://www.fivetran.com) 是一款自动化数据迁移平台，可用于在云数据平台之间，以及从云数据平台中导出或导入数据。
 
@@ -39,13 +40,13 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
   </iframe>
 </div>
 
-## ClickHouse Cloud 目标 {#clickhouse-cloud-destination}
+## ClickHouse Cloud 目标 \{#clickhouse-cloud-destination\}
 
 请参阅 Fivetran 官网上的官方文档：
 
 - [ClickHouse 目标概览](https://fivetran.com/docs/destinations/clickhouse)
 - [ClickHouse 目标设置指南](https://fivetran.com/docs/destinations/clickhouse/setup-guide)
 
-## 联系我们 {#contact-us}
+## 联系我们 \{#contact-us\}
 
 如果您有任何问题，或希望提出新功能需求，请提交[支持工单](/about-us/support)。
