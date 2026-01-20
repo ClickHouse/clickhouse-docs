@@ -7,7 +7,6 @@ doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';
-import BetaBadge from '@theme/badges/BetaBadge';
 import image_1 from '@site/static/images/deployment-guides/parallel-replicas-1.png'
 import image_2 from '@site/static/images/deployment-guides/parallel-replicas-2.png'
 import image_3 from '@site/static/images/deployment-guides/parallel-replicas-3.png'
@@ -321,11 +320,11 @@ the label `comp-parallel-replicas`.
 
 | Setting                                            | Description                                                                                                                                                                                                                                                         |
 |----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `enable_parallel_replicas`                         | `0`: disabled<br/> `1`: enabled <br/>`2`: Force the usage of parallel replica, will throw an exception if not used.                                                                                                                                                          |
+| `enable_parallel_replicas`                         | `0`: disabled<br/> `1`: enabled <br/>`2`: Force the usage of parallel replica, will throw an exception if not used.                                                                                                                                                 |
 | `cluster_for_parallel_replicas`                    | The cluster name to use for parallel replication; if you are using ClickHouse Cloud, use `default`.                                                                                                                                                                 |
 | `max_parallel_replicas`                            | Maximum number of replicas to use for the query execution on multiple replicas, if a number lower than the number of replicas in the cluster is specified, nodes will be selected randomly. This value can also be overcommitted to account for horizontal scaling. |
-| `parallel_replicas_min_number_of_rows_per_replica` | Help limiting the number of replicas used based on the number of rows that need to be processed the number of replicas used is defined by: <br/> `estimated rows to read` / `min_number_of_rows_per_replica`.                                                               |
-| `allow_experimental_analyzer`                      | `0`: use the old analyzer<br/> `1`: use the new analyzer. <br/><br/>The behavior of parallel replicas might change based on the analyzer used.                                                                                                                                    |
+| `parallel_replicas_min_number_of_rows_per_replica` | Help limiting the number of replicas used based on the number of rows that need to be processed the number of replicas used is defined by: <br/> `estimated rows to read` / `min_number_of_rows_per_replica`.                                                       |
+| `enable_analyzer`                                  | Query execution with parallel replicas is supported only with enabled analyzer                                                                                                                                                                                      |
 
 ## Investigating issues with parallel replicas \{#investigating-issues-with-parallel-replicas\}
 
