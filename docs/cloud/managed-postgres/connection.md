@@ -60,6 +60,8 @@ To use connection pooling, click the **via PgBouncer** toggle at the top of the 
 
 :::tip When to use PgBouncer
 Use PgBouncer when your application opens many short-lived connections. For long-running connections or applications that use PostgreSQL features incompatible with connection pooling (like prepared statements across transactions), connect directly.
+
+Moving data to ClickHouse using ClickPipes is not supported via PgBouncer. 
 :::
 
 ## TLS configuration {#tls}

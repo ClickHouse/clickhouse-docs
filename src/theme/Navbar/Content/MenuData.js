@@ -98,7 +98,7 @@ export const dropdownCategories = [
         type: "link",
         label: <Translate id="sidebar.dropdownCategories.category.Cloud.Managed Postgres">Managed Postgres (Preview)</Translate>,
         description: <Translate id="sidebar.dropdownCategories.category.Cloud.Managed Postgres.description">Managed PostgreSQL service</Translate>,
-        href: "/cloud/managed-postgres/overview"
+        href: "/cloud/managed-postgres"
       },
     ]
   },
