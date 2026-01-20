@@ -11,6 +11,7 @@ import Image from '@theme/IdealImage';
 import byoc_onboarding_1 from '@site/static/images/cloud/reference/byoc-onboarding-1.png'
 import byoc_onboarding_2 from '@site/static/images/cloud/reference/byoc-onboarding-2.png'
 import byoc_onboarding_3 from '@site/static/images/cloud/reference/byoc-onboarding-3.png'
+import byoc_new_service_1 from '@site/static/images/cloud/reference/byoc-new-service-1.png' 
 
 ## What is Standard Onboarding? {#what-is-standard-onboarding}
 
@@ -68,3 +69,16 @@ You will be prompted to set up the infrastructure, including S3 buckets, VPC, an
 - **Availability Zones**: If you plan to use VPC peering, aligning availability zones between the source and BYOC accounts can help reduce cross-AZ traffic costs. For example, in AWS, availability zone suffixes (`a`, `b`, `c`) may represent different physical zone IDs across accounts. See the [AWS guide](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html) for details.
 
 <Image img={byoc_onboarding_3} size="lg" alt="BYOC setup infra" background='black'/>
+
+### Create Your First BYOC ClickHouse Service {#create-clickhouse-service}
+
+After your BYOC infrastructure has been provisioned, you're ready to launch your initial ClickHouse service. Open the ClickHouse Cloud console, select your BYOC environment, and follow the prompts to create a new service.
+
+<Image img={byoc_new_service_1} size="lg" alt="BYOC create new service" background='black'/>
+
+During service creation, you’ll configure the following options:
+
+- **Service name**: Enter a clear, descriptive name for your ClickHouse service.
+- **BYOC infrastructure**: Select the BYOC environment, including the cloud account and region, where your service will run.
+- **Resource configuration**: Choose the amount of CPU and memory allocated to your ClickHouse replicas.
+- **Replica count**: Set the number of replicas for enhanced high availability.

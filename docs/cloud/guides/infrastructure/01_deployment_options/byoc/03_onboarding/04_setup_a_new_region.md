@@ -1,9 +1,9 @@
 ---
-title: 'Setup new BYOC infrastructure'
+title: 'Deploying Additional Infrastructure'
 slug: /cloud/reference/byoc/onboarding/new_region
-sidebar_label: 'New BYOC Setup'
-keywords: ['BYOC', 'cloud', 'bring your own cloud', 'onboarding', 'new region']
-description: 'Deploy ClickHouse on your own cloud infrastructure'
+sidebar_label: 'Additional Infrastructure'
+keywords: ['BYOC', 'cloud', 'bring your own cloud', 'onboarding', 'additional infrastructure', 'multi-region', 'multi-account']
+description: 'Deploy additional BYOC infrastructure in new regions or accounts'
 doc_type: 'reference'
 ---
 

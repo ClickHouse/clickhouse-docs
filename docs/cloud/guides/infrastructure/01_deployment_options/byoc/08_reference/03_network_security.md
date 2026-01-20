@@ -1,6 +1,6 @@
 ---
 title: 'BYOC Network Security'
-slug: /cloud/reference/byoc/network_security
+slug: /cloud/reference/byoc/reference/network_security
 sidebar_label: 'Network Security'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'network security']
 description: 'Deploy ClickHouse on your own cloud infrastructure'

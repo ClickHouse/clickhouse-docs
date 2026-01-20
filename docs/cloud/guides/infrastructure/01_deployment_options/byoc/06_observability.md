@@ -1,8 +1,8 @@
 ---
 title: 'BYOC on AWS Observability'
 slug: /cloud/reference/byoc/observability
-sidebar_label: 'AWS'
-keywords: ['BYOC', 'cloud', 'bring your own cloud', 'AWS']
+sidebar_label: 'Observability'
+keywords: ['BYOC', 'cloud', 'bring your own cloud', 'observability']
 description: 'Deploy ClickHouse on your own cloud infrastructure'
 doc_type: 'reference'
 ---
@@ -12,30 +12,7 @@ import byoc4 from '@site/static/images/cloud/reference/byoc-4.png';
 import byoc3 from '@site/static/images/cloud/reference/byoc-3.png';
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 
-## Observability {#observability}
-
-### Built-in monitoring tools {#built-in-monitoring-tools}
-ClickHouse BYOC provides several approaches for various use cases.
-
-#### Observability dashboard {#observability-dashboard}
-
-ClickHouse Cloud includes an advanced observability dashboard that displays metrics such as memory usage, query rates, and I/O. This can be accessed in the **Monitoring** section of ClickHouse Cloud web console interface.
-
-<br />
-
-<Image img={byoc3} size="lg" alt="Observability dashboard" border />
-
-<br />
-
-#### Advanced dashboard {#advanced-dashboard}
-
-You can customize a dashboard using metrics from system tables like `system.metrics`, `system.events`, and `system.asynchronous_metrics` and more to monitor server performance and resource utilization in detail.
-
-<br />
-
-<Image img={byoc4} size="lg" alt="Advanced dashboard" border />
-
-<br />
+## Prometheus metrics {#observability}
 
 #### Access the BYOC Prometheus stack {#prometheus-access}
 ClickHouse BYOC deploys a Prometheus stack on your Kubernetes cluster. You may access and scrape the metrics from there and integrate them with your own monitoring stack.
@@ -134,3 +111,13 @@ scrape_configs:
 ```
 
 Please also see [this blog post](https://clickhouse.com/blog/clickhouse-cloud-now-supports-prometheus-monitoring) and the [Prometheus setup docs for ClickHouse](/integrations/prometheus).
+
+## ClickHouse Mixin
+
+
+
+#### Advanced dashboard {#advanced-dashboard}
+
+You can customize a dashboard using metrics from system tables like `system.metrics`, `system.events`, and `system.asynchronous_metrics` and more to monitor server performance and resource utilization in detail.
+
+<Image img={byoc4} size="lg" alt="Advanced dashboard" border />

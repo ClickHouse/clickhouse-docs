@@ -32,7 +32,7 @@ Applications and users connect to ClickHouse through either a public or private 
 
 <br />
 
-Based on the architecture described above, you will need to provide a cloud account and grant ClickHouse Cloud the minimum required permissions to access it. The main cloud resources ClickHouse Cloud will deploy in your account are:
+The main cloud resources ClickHouse Cloud will deploy in your account are:
 
 * **VPC:** A Virtual Private Cloud dedicated to your ClickHouse deployment. This can be managed either by ClickHouse or by you, the customer, and is typically peered with your application VPCs.
 * **IAM roles and policies:** Roles and permissions necessary for Kubernetes, ClickHouse services, and the monitoring stack. These can be provisioned by ClickHouse or supplied by the customer.
@@ -41,11 +41,13 @@ Based on the architecture described above, you will need to provide a cloud acco
 
 By default, ClickHouse Cloud provisions a new, dedicated VPC and sets up the necessary IAM roles to ensure secure operation of Kubernetes services. For organizations with advanced networking or security needs, there is also the option to manage the VPC and IAM roles independently. This approach allows for greater customization of network configurations and more precise control over permissions. However, choosing to self-manage these resources will increase your operational responsibilities.
 
+Based on the architecture described above, you will need to provide a cloud account and grant ClickHouse Cloud the minimum required permissions via a cross account IAM role/service account to access it. The detailed permissions required can be found [here](https://clickhouse.com/docs/cloud/reference/byoc/reference/priviledge).
+
 **Additional recommendations and considerations:**
 - Ensure that network CIDR ranges for your BYOC VPC do not overlap with any existing VPCs you plan to peer with.
 - Tag your resources clearly to simplify management and support.
 - Plan for adequate subnet sizing and distribution across availability zones for high availability.
-- Consult the [security playbook](/cloud/security/audit-logging/byoc-security-playbook) to understand shared responsibility and best practices when ClickHouse Cloud operates within your environment.
+- Consult the [security playbook](https://clickhouse.com/docs/cloud/security/audit-logging/byoc-security-playbook) to understand shared responsibility and best practices when ClickHouse Cloud operates within your environment.
 - Review the full onboarding guide for step-by-step instructions on initial account setup, VPC configuration, network connectivity (for example, VPC peering), and IAM role delegation.
 
 If you have unique requirements or constraints, contact ClickHouse Support for guidance on advanced network configurations or custom IAM policies.

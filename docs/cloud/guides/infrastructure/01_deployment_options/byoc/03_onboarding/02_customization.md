@@ -45,13 +45,14 @@ Ensure your VPC has working DNS resolution and does not block, interfere with, o
 
 ### Configure your AWS account {#configure-aws-account}
 
-Before deploying ClickHouse BYOC into your existing VPC, you must set up the necessary IAM permissions to allow ClickHouse Cloud to manage resources in your AWS account. This is done by deploying the initial CloudFormation stack or Terraform module, similar to the standard onboarding process.
+To allow ClickHouse Cloud to deploy into your existing VPC, you need to grant the necessary IAM permissions within your AWS account. This is accomplished by launching a bootstrap CloudFormation stack or Terraform module, similar to the process used for standard onboarding.
 
-1. Deploy the [CloudFormation template](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml) or [Terraform module](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/tf/byoc.tar.gz) to create the bootstrap IAM role.
-2. This creates the `ClickHouseManagementRole`, which grants ClickHouse Cloud the minimum permissions needed to provision and manage your BYOC deployment.
+1. Deploy the [CloudFormation template](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc_v2.yaml) or [Terraform module](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/tf/byoc.tar.gz) to create the required IAM role.
+2. Set the `IncludeVPCWritePermissions` parameter to `false` to ensure ClickHouse Cloud does not receive permissions to modify your customer-managed VPC.
+3. This will create the `ClickHouseManagementRole` in your AWS account, granting ClickHouse Cloud only the minimum permissions needed to provision and manage your BYOC deployment.
 
 :::note
-Even when using a customer-managed VPC, ClickHouse Cloud still requires IAM permissions to create and manage the Kubernetes cluster, IAM roles for service accounts, S3 buckets, and other supporting resources within your AWS account.
+While you control your VPC, ClickHouse Cloud still requires IAM permissions to create and manage the Kubernetes cluster, IAM roles for service accounts, S3 buckets, and other essential resources in your AWS account.
 :::
 
 ### Contact ClickHouse Support {#contact-clickhouse-support}
@@ -64,22 +65,18 @@ After completing the above configuration steps, create a support ticket with the
 * The Private Subnet IDs you've allocated for ClickHouse
 * The availability zones these subnets are in
 
-Our team will review your configuration and guide you through the remaining deployment steps.
+Our team will review your configuration and complete the provisioning from our side. 
 
 ## Customer-managed IAM roles {#customer-managed-iam-roles}
-
-:::note
-This is only supported in **AWS** currently. GCP support is on the roadmap.
-:::
 
 For organizations with advanced security requirements or strict compliance policies, you can provide your own IAM roles instead of having ClickHouse Cloud create them. This approach gives you complete control over IAM permissions and allows you to enforce your organization's security policies.
 
 :::info
-Customer-managed IAM roles are currently in development. If you require this capability, please [contact ClickHouse Support](https://clickhouse.com/cloud/bring-your-own-cloud) to discuss your specific requirements and timeline.
+Customer-managed IAM roles are currently in private preview. If you require this capability, please contact ClickHouse Support to discuss your specific requirements and timeline.
 
 When available, this feature will allow you to:
 * Provide pre-configured IAM roles for ClickHouse Cloud to use
-* Customize IAM policies according to your security requirements
+* Remove write permissions to IAM related permissions for `ClickHouseManagementRole` used for cross-account access
 * Maintain full control over role permissions and trust relationships
 :::
 
