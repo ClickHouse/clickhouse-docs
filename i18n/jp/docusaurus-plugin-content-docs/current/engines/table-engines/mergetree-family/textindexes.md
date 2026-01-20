@@ -322,7 +322,7 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 
 #### `mapContains` \{#functions-example-mapcontains\}
 
-[mapContains](/sql-reference/functions/tuple-map-functions#mapContains) 関数（`mapContainsKey` のエイリアス）は、検索対象の文字列から抽出されたトークンを map のキーと照合します。
+[mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey) 関数（`mapContainsKey` のエイリアス）は、検索対象の文字列から抽出されたトークンを map のキーと照合します。
 動作は、`String` カラムに対する `equals` 関数と同様です。
 テキストインデックスが使用されるのは、`mapKeys(map)` 式に対して作成されている場合のみです。
 
@@ -604,7 +604,7 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 ```
 
 2つ目の EXPLAIN PLAN の出力では、フィルター条件に追加の連言条件（`__text_index_...`）が加えられていることが分かります。
-[PREWHERE](docs/sql-reference/statements/select/prewhere) 最適化により、フィルター条件は3つの個別の連言条件に分解され、計算コストが低いものから順に適用されます。
+[PREWHERE](/sql-reference/statements/select/prewhere) 最適化により、フィルター条件は3つの個別の連言条件に分解され、計算コストが低いものから順に適用されます。
 このクエリでは、適用順序は `__text_index_...`、次に `greaterOrEquals(...)`、最後に `like(...)` となります。
 この順序付けにより、テキスト索引と元のフィルター条件でスキップされるグラニュールに加えて、クエリの `WHERE` 句以降で使用される重いカラムを読み込む前に、さらに多くのデータグラニュールをスキップできるため、読み取るデータ量を一層削減できます。
 

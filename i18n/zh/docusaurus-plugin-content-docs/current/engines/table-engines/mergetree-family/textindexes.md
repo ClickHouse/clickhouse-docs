@@ -322,7 +322,7 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 
 #### `mapContains` \{#functions-example-mapcontains\}
 
-函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapContains)（`mapContainsKey` 的别名）会在 map 的键中，匹配从待搜索字符串中提取的 token。
+函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey)（`mapContainsKey` 的别名）会在 map 的键中，匹配从待搜索字符串中提取的 token。
 其行为类似于在 `String` 列上使用 `equals` 函数。
 只有当文本索引是基于 `mapKeys(map)` 表达式创建时，才会被使用。
 
@@ -586,7 +586,7 @@ Prewhere filter column: and(like(__table1.col, \'%some-token%\'_String), greater
 [...]
 ```
 
-而将相同的查询在 `query_plan_text_index_add_hint = 1` 时运行
+而在将 `query_plan_text_index_add_hint` 设为 1 时运行相同的查询
 
 ```sql
 EXPLAIN actions = 1
@@ -596,7 +596,7 @@ WHERE col LIKE '%some-token%'
 SETTINGS use_skip_indexes_on_data_read = 1, query_plan_text_index_add_hint = 1
 ```
 
-返回结果
+返回
 
 ```text
 [...]
@@ -605,7 +605,7 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 ```
 
 在第二个 EXPLAIN PLAN 输出中，你可以看到在过滤条件中被添加了一个额外的合取项（`__text_index_...`）。
-得益于 [PREWHERE](docs/sql-reference/statements/select/prewhere) 优化，过滤条件被拆分为三个独立的合取项，并按照计算复杂度从低到高的顺序依次应用。
+得益于 [PREWHERE](/sql-reference/statements/select/prewhere) 优化，过滤条件被拆分为三个独立的合取项，并按照计算复杂度从低到高的顺序依次应用。
 对于这个查询，应用顺序是先 `__text_index_...`，然后是 `greaterOrEquals(...)`，最后是 `like(...)`。
 这种顺序使得在读取 `WHERE` 子句中使用的开销较大的列之前，就能在文本索引和原始过滤条件已经跳过的数据粒度基础上，进一步跳过更多数据粒度，从而减少需要读取的数据量。
 

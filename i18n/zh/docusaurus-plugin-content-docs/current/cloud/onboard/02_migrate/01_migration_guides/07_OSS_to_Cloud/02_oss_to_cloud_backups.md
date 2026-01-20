@@ -333,7 +333,7 @@ WHERE id = 'abc123-def456-789'
 ```
 
 还可以执行增量备份。
-有关备份的一般信息，请参阅[备份与恢复](/operations/backup)文档。
+有关备份的一般信息，请参阅[备份与恢复](/operations/backup/overview)文档。
 
 
 ## 恢复到 ClickHouse Cloud \{#restore-to-clickhouse-cloud\}

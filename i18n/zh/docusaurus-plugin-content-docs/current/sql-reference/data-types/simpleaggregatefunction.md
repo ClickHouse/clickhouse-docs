@@ -51,9 +51,9 @@ SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
 - [`groupArrayArray`](/sql-reference/aggregate-functions/reference/groupArrayArray.md)
 - [`groupUniqArrayArray`](../../sql-reference/aggregate-functions/reference/groupUniqArray.md)
 - [`groupUniqArrayArrayMap`](../../sql-reference/aggregate-functions/combinators#-map)
-- [`sumMap`](/sql-reference/aggregate-functions/reference/sumMap.md)
-- [`minMap`](/sql-reference/aggregate-functions/reference/minMap.md)
-- [`maxMap`](/sql-reference/aggregate-functions/reference/maxMap.md)
+- [`sumMap` (`sumMappedArrays`)](/sql-reference/aggregate-functions/reference/sumMappedArrays.md)
+- [`minMap` (`minMappedArrays`)](/sql-reference/aggregate-functions/reference/minMappedArrays.md)
+- [`maxMap` (`maxMappedArrays`)](/sql-reference/aggregate-functions/reference/maxMappedArrays.md)
 
 :::note
 `SimpleAggregateFunction(func, Type)` 的值具有与 `Type` 相同的类型，
