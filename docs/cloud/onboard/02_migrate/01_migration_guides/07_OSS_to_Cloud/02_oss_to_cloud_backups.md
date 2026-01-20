@@ -331,7 +331,7 @@ WHERE id = 'abc123-def456-789'
 ```
 
 It is also possible to take incremental backups.
-For more detail on backups in general, the reader is referred to the documentation for [backup and restore](/operations/backup).
+For more detail on backups in general, the reader is referred to the documentation for [backup and restore](/operations/backup/overview).
 
 ## Restore to ClickHouse Cloud {#restore-to-clickhouse-cloud}
 
