@@ -9,6 +9,7 @@ doc_type: 'guide'
 
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
 import DOsvg from '@site/static/images/integrations/logos/digitalocean.svg';
+import OVHpng from '@site/static/images/integrations/logos/ovh.png';
 import R2svg from '@site/static/images/integrations/logos/cloudflare.svg';
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
@@ -22,11 +23,12 @@ S3 ClickPipe 提供了一种完全托管且高可用的方式，将数据从 Ama
 
 ## 支持的数据源 \{#supported-data-sources\}
 
-| 名称                 | 标志 | 详情           |
-|----------------------|------|-------------------|
-| **Amazon S3**            | <S3svg class="image" alt="Amazon S3 徽标" style={{width: '2.5rem', height: 'auto'}}/> | 持续摄取默认要求按[词典序](#continuous-ingestion-lexicographical-order)排序，但可以配置为[以任意顺序摄取文件](#continuous-ingestion-any-order)。 |
-| **Cloudflare R2** <br></br> _兼容 S3_ | <R2svg class="image" alt="Cloudflare R2 徽标" style={{width: '2.5rem', height: 'auto'}}/> | 持续摄取要求按[词典序](#continuous-ingestion-lexicographical-order)排序。 |
-| **DigitalOcean Spaces** <br></br> _兼容 S3_ | <DOsvg class="image" alt="Digital Ocean 徽标" style={{width: '2.5rem', height: 'auto'}}/>|  持续摄取要求按[词典序](#continuous-ingestion-lexicographical-order)排序。 |
+| 名称                 | 标志                                                                                      | 详情           |
+|----------------------|-------------------------------------------------------------------------------------------|-------------------|
+| **Amazon S3**            | <S3svg class="image" alt="Amazon S3 徽标" style={{width: '2.5rem', height: 'auto'}}/>     | 持续摄取默认要求按[词典序](#continuous-ingestion-lexicographical-order)排序，但可以配置为[以任意顺序摄取文件](#continuous-ingestion-any-order)。 |
+| **Cloudflare R2** <br></br> _兼容 S3_ | <R2svg class="image" alt="Cloudflare R2 徽标" style={{width: '2.5rem', height: 'auto'}}/> | 持续摄取要求按[词典序](#continuous-ingestion-lexicographical-order)排序。不支持无序模式。 |
+| **DigitalOcean Spaces** <br></br> _兼容 S3_ | <DOsvg class="image" alt="Digital Ocean 徽标" style={{width: '2.5rem', height: 'auto'}}/> |  持续摄取要求按[词典序](#continuous-ingestion-lexicographical-order)排序。不支持无序模式。 |
+| **OVH Object Storage** <br></br> _兼容 S3_ | <Image img={OVHpng} alt="Cloud Storage 徽标" size="logo" border/>                         |  持续摄取要求按[词典序](#continuous-ingestion-lexicographical-order)排序。不支持无序模式。 |
 
 :::tip
 由于各对象存储服务提供商在 URL 格式和 API 实现上的差异，并非所有兼容 S3 的服务都能直接获得支持。如果您在使用上面未列出的服务时遇到问题，请[联系我们的团队](https://clickhouse.com/company/contact?loc=clickpipes)。
