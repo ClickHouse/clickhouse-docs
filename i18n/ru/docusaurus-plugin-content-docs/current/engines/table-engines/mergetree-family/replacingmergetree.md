@@ -8,7 +8,7 @@ title: 'Движок таблицы ReplacingMergeTree'
 doc_type: 'reference'
 ---
 
-# Движок таблиц ReplacingMergeTree {#replacingmergetree-table-engine}
+# Движок таблиц ReplacingMergeTree \{#replacingmergetree-table-engine\}
 
 Этот движок отличается от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) тем, что удаляет дублирующиеся записи с одинаковым значением [ключа сортировки](../../../engines/table-engines/mergetree-family/mergetree.md) (раздел `ORDER BY` в определении таблицы, а не `PRIMARY KEY`).
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 Подробное руководство по ReplacingMergeTree, включая лучшие практики и способы оптимизации производительности, доступно [здесь](/guides/replacing-merge-tree).
 :::
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -42,9 +42,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 Уникальность строк определяется разделом таблицы `ORDER BY`, а не `PRIMARY KEY`.
 :::
 
-## Параметры ReplacingMergeTree {#replacingmergetree-parameters}
+## Параметры ReplacingMergeTree \{#replacingmergetree-parameters\}
 
-### `ver` {#ver}
+### `ver` \{#ver\}
 
 `ver` — столбец с номером версии. Тип `UInt*`, `Date`, `DateTime` или `DateTime64`. Необязательный параметр.
 
@@ -96,7 +96,7 @@ SELECT * FROM mySecondReplacingMT FINAL;
 └─────┴─────────┴─────────────────────┘
 ```
 
-### `is_deleted` {#is_deleted}
+### `is_deleted` \{#is_deleted\}
 
 `is_deleted` — имя столбца, используемого во время слияния для определения, представляет ли строка состояние или подлежит удалению; `1` — строка-удаление, `0` — строка-состояние.
 
@@ -175,7 +175,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE [=] ReplacingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [ver])
 ```
 
-## Части запроса {#query-clauses}
+## Части запроса \{#query-clauses\}
 
 При создании таблицы `ReplacingMergeTree` необходимо указывать те же [части запроса](../../../engines/table-engines/mergetree-family/mergetree.md), что и при создании таблицы `MergeTree`.
 
@@ -207,7 +207,7 @@ FROM numbers(1000000000)
 
 </details>
 
-## Дедупликация при выполнении запроса &amp; FINAL {#query-time-de-duplication--final}
+## Дедупликация при выполнении запроса &amp; FINAL \{#query-time-de-duplication--final\}
 
 Во время слияния ReplacingMergeTree определяет дублирующиеся строки, используя значения столбцов `ORDER BY` (указанных при создании таблицы) в качестве уникального идентификатора и сохраняя только самую позднюю версию. Однако это обеспечивает лишь корректность «в конечном счёте» — нет гарантии, что строки будут дедуплицированы, и полагаться на это не следует. Поэтому запросы могут возвращать некорректные результаты, так как строки с обновлениями и удалениями учитываются в запросах.
 

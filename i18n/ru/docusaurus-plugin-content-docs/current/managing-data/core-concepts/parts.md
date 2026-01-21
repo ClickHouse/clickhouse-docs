@@ -10,7 +10,7 @@ import merges from '@site/static/images/managing-data/core-concepts/merges.png';
 import part from '@site/static/images/managing-data/core-concepts/part.png';
 import Image from '@theme/IdealImage';
 
-## Что такое части таблицы в ClickHouse? {#what-are-table-parts-in-clickhouse}
+## Что такое части таблицы в ClickHouse? \{#what-are-table-parts-in-clickhouse\}
 
 <br />
 
@@ -52,7 +52,7 @@ ORDER BY (town, street);
 
 Части ^^данных^^ являются самодостаточными и включают все метаданные, необходимые для интерпретации их содержимого без обращения к центральному каталогу. Помимо разреженного первичного индекса, ^^части^^ содержат дополнительные метаданные, такие как вторичные [индексы пропуска данных](/optimize/skipping-indexes), [статистика столбцов](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere), контрольные суммы, min-max индексы (если используется [partitioning](/partitions)) и [другое](https://github.com/ClickHouse/ClickHouse/blob/a065b11d591f22b5dd50cb6224fab2ca557b4989/src/Storages/MergeTree/MergeTreeData.h#L104).
 
-## Слияния частей {#part-merges}
+## Слияния частей \{#part-merges\}
 
 Чтобы управлять числом ^^parts^^ в таблице, фоновый процесс [background merge](/merges) периодически объединяет меньшие ^^parts^^ в более крупные до тех пор, пока они не достигнут [настраиваемого](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool) сжатого размера (обычно около 150 ГБ). Слитые ^^parts^^ помечаются как неактивные и удаляются по истечении [настраиваемого](/operations/settings/merge-tree-settings#old_parts_lifetime) временного интервала. Со временем этот процесс создаёт иерархическую структуру слитых ^^parts^^, поэтому таблица и называется ^^MergeTree^^:
 
@@ -62,7 +62,7 @@ ORDER BY (town, street);
 
 Чтобы минимизировать количество исходных ^^parts^^ и накладные расходы на слияния, клиентским приложениям базы данных [рекомендуется](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance) либо выполнять пакетные вставки данных, например по 20 000 строк за раз, либо использовать [режим асинхронной вставки](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse), при котором ClickHouse буферизует строки из нескольких входящих операторов INSERT в одну и ту же таблицу и создаёт новую ^^part^^ только после того, как размер буфера превысит настраиваемый порог или истечёт таймаут.
 
-## Мониторинг частей таблицы {#monitoring-table-parts}
+## Мониторинг частей таблицы \{#monitoring-table-parts\}
 
 Вы можете [выполнить запрос](https://sql.clickhouse.com/?query=U0VMRUNUIF9wYXJ0CkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKR1JPVVAgQlkgX3BhcnQKT1JERVIgQlkgX3BhcnQgQVNDOw\&run_query=true\&tab=results), чтобы получить список всех существующих в данный момент активных ^^частей^^ нашей таблицы-примера, используя [виртуальный столбец](/engines/table-engines#table_engines-virtual_columns) `_part`:
 

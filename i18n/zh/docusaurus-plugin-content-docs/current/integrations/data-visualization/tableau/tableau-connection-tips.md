@@ -14,11 +14,11 @@ integration:
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# 连接建议 {#connection-tips}
+# 连接建议 \{#connection-tips\}
 
 <ClickHouseSupportedBadge/>
 
-## 初始 SQL 选项卡 {#initial-sql-tab}
+## 初始 SQL 选项卡 \{#initial-sql-tab\}
 
 如果在“高级”选项卡中勾选了 *Set Session ID* 复选框（默认勾选），就可以自由设置会话级[设置](/operations/settings/settings/)。
 
@@ -27,7 +27,7 @@ SET my_setting=value;
 ```
 
 
-## 高级选项卡 {#advanced-tab}
+## 高级选项卡 \{#advanced-tab\}
 
 在 99% 的情况下你不需要使用高级选项卡，只有在剩下的 1% 情况下才可能需要使用以下设置：
 
@@ -42,7 +42,7 @@ SET my_setting=value;
 - **JDBC Driver URL Parameters**。你可以在此字段中传递其他[驱动参数](https://github.com/ClickHouse/clickhouse-jdbc#configuration)，例如 `jdbcCompliance`。请注意，参数值必须以 URL 编码格式传递；并且如果在此字段以及高级选项卡前两个字段中同时传递了 `custom_http_params` 或 `typeMappings`，则高级选项卡中前两个字段的取值优先级更高。
 - **Set Session ID** 复选框。用于在 Initial SQL 选项卡中设置会话级别的设置，它会生成一个带有时间戳和伪随机数的 `session_id`，格式为 `"tableau-jdbc-connector-*{timestamp}*-*{number}*"`。
 
-## 对 UInt64、Int128、(U)Int256 数据类型的有限支持 {#limited-support-for-uint64-int128-uint256-data-types}
+## 对 UInt64、Int128、(U)Int256 数据类型的有限支持 \{#limited-support-for-uint64-int128-uint256-data-types\}
 
 默认情况下，驱动会将 *UInt64、Int128、(U)Int256* 类型的字段显示为字符串，**只是显示而非转换**。这意味着当您尝试编写如下计算字段时，将会报错。
 

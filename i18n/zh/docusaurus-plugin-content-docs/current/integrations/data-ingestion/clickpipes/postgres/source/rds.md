@@ -19,13 +19,13 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-# RDS Postgres 数据源配置指南 {#rds-postgres-source-setup-guide}
+# RDS Postgres 数据源配置指南 \{#rds-postgres-source-setup-guide\}
 
-## 支持的 Postgres 版本 {#supported-postgres-versions}
+## 支持的 Postgres 版本 \{#supported-postgres-versions\}
 
 ClickPipes 支持 Postgres 12 及以上版本。
 
-## 启用逻辑复制 {#enable-logical-replication}
+## 启用逻辑复制 \{#enable-logical-replication\}
 
 如果您的 RDS 实例已配置以下设置，则可以跳过本节：
 
@@ -69,7 +69,7 @@ postgres=> SHOW wal_sender_timeout ;
 <Image img={reboot_rds} alt="重启 RDS Postgres" size="lg" border />
 
 
-## 配置数据库用户 {#configure-database-user}
+## 配置数据库用户 \{#configure-database-user\}
 
 以管理员身份连接到你的 RDS Postgres 实例，并执行以下命令：
 
@@ -113,9 +113,9 @@ postgres=> SHOW wal_sender_timeout ;
 
    `clickpipes` publication 将包含由指定表生成的一组变更事件，之后会被用来摄取复制流。
 
-## 配置网络访问 {#configure-network-access}
+## 配置网络访问 \{#configure-network-access\}
 
-### 基于 IP 的访问控制 {#ip-based-access-control}
+### 基于 IP 的访问控制 \{#ip-based-access-control\}
 
 如果你想限制到 RDS 实例的访问流量，请将[文档中列出的静态 NAT IP](../../index.md#list-of-static-ips)添加到 RDS 安全组的 `Inbound rules` 中。
 
@@ -123,11 +123,11 @@ postgres=> SHOW wal_sender_timeout ;
 
 <Image img={edit_inbound_rules} alt="编辑上述安全组的入站规则" size="lg" border/>
 
-### 通过 AWS PrivateLink 的私有访问 {#private-access-via-aws-privatelink}
+### 通过 AWS PrivateLink 的私有访问 \{#private-access-via-aws-privatelink\}
 
 要通过私有网络连接到 RDS 实例，可以使用 AWS PrivateLink。请按照我们的[适用于 ClickPipes 的 AWS PrivateLink 配置指南](/knowledgebase/aws-privatelink-setup-for-clickpipes)来完成连接设置。
 
-### RDS Proxy 的变通方案 {#workarounds-for-rds-proxy}
+### RDS Proxy 的变通方案 \{#workarounds-for-rds-proxy\}
 
 RDS Proxy 不支持逻辑复制类型的连接。如果你在 RDS 中使用动态 IP 地址且无法使用 DNS 名称或 Lambda 函数，可以考虑以下替代方案：
 
@@ -136,7 +136,7 @@ RDS Proxy 不支持逻辑复制类型的连接。如果你在 RDS 中使用动�
 3. 固定的 EC2 实例：部署一个 EC2 实例，作为轮询服务或基于 IP 的代理。
 4. 使用 Terraform 或 CloudFormation 等工具实现 IP 地址管理自动化。
 
-## 下一步 {#whats-next}
+## 下一步 \{#whats-next\}
 
 现在你可以[创建 ClickPipe](../index.md)，并开始将 Postgres 实例中的数据摄取到 ClickHouse Cloud 中。
 请务必记录下在设置 Postgres 实例时使用的连接信息，因为在创建 ClickPipe 时将会用到这些信息。

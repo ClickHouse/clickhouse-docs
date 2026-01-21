@@ -7,7 +7,7 @@ title: 'percent_rank'
 doc_type: 'reference'
 ---
 
-# percent&#95;rank {#percent&#95;rank}
+# percent&#95;rank \{#percent&#95;rank\}
 
 ウィンドウパーティション内の行の相対順位（パーセンタイル）を返します。
 

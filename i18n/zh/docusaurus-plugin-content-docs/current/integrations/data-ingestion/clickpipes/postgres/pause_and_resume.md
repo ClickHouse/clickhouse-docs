@@ -19,7 +19,7 @@ import resume_dialog from '@site/static/images/integrations/data-ingestion/click
 
 在某些场景下，暂停 Postgres ClickPipe 会很有用。例如，你可能希望在数据保持静态时对现有数据进行分析，或者正在对 Postgres 进行升级。下面介绍如何暂停和恢复 Postgres ClickPipe。
 
-## 暂停 Postgres ClickPipe 的步骤 {#pause-clickpipe-steps}
+## 暂停 Postgres ClickPipe 的步骤 \{#pause-clickpipe-steps\}
 
 1. 在 **Data Sources** 选项卡中，点击你想暂停的 Postgres ClickPipe。
 2. 前往 **Settings** 选项卡。
@@ -40,7 +40,7 @@ import resume_dialog from '@site/static/images/integrations/data-ingestion/click
 
 <Image img={pause_status} border size="md"/>
 
-## 恢复 Postgres ClickPipe 的步骤 {#resume-clickpipe-steps}
+## 恢复 Postgres ClickPipe 的步骤 \{#resume-clickpipe-steps\}
 
 1. 在 **Data Sources** 选项卡中，点击要恢复的 Postgres ClickPipe。此时对应镜像的状态应为 **Paused**。
 2. 前往 **Settings** 选项卡。

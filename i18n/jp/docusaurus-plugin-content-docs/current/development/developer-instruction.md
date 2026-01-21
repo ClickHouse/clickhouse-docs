@@ -7,12 +7,12 @@ title: '開発者向け前提条件'
 doc_type: 'guide'
 ---
 
-# 前提条件 {#prerequisites}
+# 前提条件 \{#prerequisites\}
 
 ClickHouse は Linux、FreeBSD、macOS 上でビルドできます。
 Windows を使用している場合でも、Linux を実行している仮想マシン上で ClickHouse をビルドできます。たとえば、Ubuntu を実行する [VirtualBox](https://www.virtualbox.org/) などです。
 
-## GitHub にリポジトリを作成する {#create-a-repository-on-github}
+## GitHub にリポジトリを作成する \{#create-a-repository-on-github\}
 
 ClickHouse の開発を開始するには、[GitHub](https://www.github.com/) アカウントが必要です。
 まだ SSH キーをお持ちでない場合はローカルで SSH キーを生成し、その公開鍵を GitHub にアップロードしてください。これはパッチをコントリビュートするための前提条件です。
@@ -31,7 +31,7 @@ sudo apt install git
 Git チートシートは [こちら](https://education.github.com/git-cheat-sheet-education.pdf) から入手できます。
 より詳細な Git マニュアルは [こちら](https://git-scm.com/book/en/v2) にあります。
 
-## リポジトリを開発マシンにクローンする {#clone-the-repository-to-your-development-machine}
+## リポジトリを開発マシンにクローンする \{#clone-the-repository-to-your-development-machine\}
 
 まず、作業用マシンにソースファイルを取得するため、リポジトリをクローンします。
 
@@ -91,7 +91,7 @@ git remote add upstream git@github.com:ClickHouse/ClickHouse.git
 `git push origin my_branch_name` のように、リモート名とブランチ名を明示的に指定することを推奨します。
 :::
 
-## コードを書く {#writing-code}
+## コードを書く \{#writing-code\}
 
 以下は、ClickHouse 向けのコードを記述する際に役立つクイックリンクです。
 
@@ -101,7 +101,7 @@ git remote add upstream git@github.com:ClickHouse/ClickHouse.git
 - [テストの作成](/development/tests/)
 - [未解決の課題](https://github.com/ClickHouse/ClickHouse/issues?q=is%3Aopen+is%3Aissue+label%3A%22easy+task%22)
 
-### IDE {#ide}
+### IDE \{#ide\}
 
 [Visual Studio Code](https://code.visualstudio.com/) と [Neovim](https://neovim.io/) は、ClickHouse の開発環境としてこれまで実績のある 2 つの選択肢です。VS Code を使用する場合は、パフォーマンスが大幅に高いため、IntelliSense の代わりに [clangd extension](https://marketplace.visualstudio.com/items?itemName=llvm-vs-code-extensions.vscode-clangd) を使用することを推奨します。
 
@@ -113,7 +113,7 @@ git remote add upstream git@github.com:ClickHouse/ClickHouse.git
 
 使用可能なその他の IDE としては、[Sublime Text](https://www.sublimetext.com/)、[Qt Creator](https://www.qt.io/product/development-tools)、[Kate](https://kate-editor.org/) があります。
 
-## プルリクエストを作成する {#create-a-pull-request}
+## プルリクエストを作成する \{#create-a-pull-request\}
 
 GitHub の UI で自分の fork リポジトリを開きます。
 ブランチで開発している場合は、そのブランチを選択する必要があります。
@@ -134,7 +134,7 @@ ClickHouse のメンバーがあなたのプルリクエスト（PR）に「can 
 これらのビルドを取得するには、チェック一覧で「Builds」項目の横にある「Details」リンクをクリックします。
 そこから ClickHouse のビルド済み .deb パッケージへの直接リンクにアクセスでき、それらは（問題なければ）本番サーバーにそのままデプロイすることもできます。
 
-## ドキュメントを作成する {#write-documentation}
+## ドキュメントを作成する \{#write-documentation\}
 
 新機能を追加するプルリクエストには、必ずそれに対応するドキュメントを含めてください。
 ドキュメントの変更内容をプレビューしたい場合は、ドキュメントページをローカルでビルドする手順が README.md ファイル内の[こちら](https://github.com/ClickHouse/clickhouse-docs)に記載されています。
@@ -182,7 +182,7 @@ Response:
 \```
 ```
 
-## テストデータの利用 {#using-test-data}
+## テストデータの利用 \{#using-test-data\}
 
 ClickHouse の開発では、実運用に近いデータセットを読み込む必要があります。
 これは特にパフォーマンステストにおいて重要です。

@@ -7,17 +7,17 @@ title: 'fuzzJSON'
 doc_type: 'reference'
 ---
 
-# fuzzJSON 表函数 {#fuzzjson-table-function}
+# fuzzJSON 表函数 \{#fuzzjson-table-function\}
 
 对 JSON 字符串进行随机扰动。
 
-## 语法 {#syntax}
+## 语法 \{#syntax\}
 
 ```sql
 fuzzJSON({ named_collection [, option=value [,..]] | json_str[, random_seed] })
 ```
 
-## 参数 {#arguments}
+## 参数 \{#arguments\}
 
 | 参数                               | 说明                                                                                       |
 |------------------------------------|---------------------------------------------------------------------------------------------|
@@ -36,11 +36,11 @@ fuzzJSON({ named_collection [, option=value [,..]] | json_str[, random_seed] })
 | `min_key_length` (UInt64)          | 最小键长度。应至少为 1。                                               |
 | `max_key_length` (UInt64)          | 最大键长度。如果已指定，应大于或等于 `min_key_length`。 |
 
-## 返回值 {#returned_value}
+## 返回值 \{#returned_value\}
 
 一个表对象，包含一列经过扰动的 JSON 字符串。
 
-## 用法示例 {#usage-example}
+## 用法示例 \{#usage-example\}
 
 ```sql
 CREATE NAMED COLLECTION json_fuzzer AS json_str='{}';

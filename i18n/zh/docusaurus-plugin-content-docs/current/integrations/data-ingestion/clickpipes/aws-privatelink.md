@@ -21,14 +21,14 @@ import cp_rpe_settings0 from '@site/static/images/integrations/data-ingestion/cl
 import cp_rpe_settings1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_rpe_settings1.png';
 import Image from '@theme/IdealImage';
 
-# ClickPipes 的 AWS PrivateLink {#aws-privatelink-for-clickpipes}
+# ClickPipes 的 AWS PrivateLink \{#aws-privatelink-for-clickpipes\}
 
 你可以使用 [AWS PrivateLink](https://aws.amazon.com/privatelink/) 在 VPC、AWS 服务、本地部署系统和 ClickHouse Cloud 之间建立安全连接，而无需将流量暴露到公共互联网。
 
 本文档概述了 ClickPipes 的反向私有终端节点功能，
 该功能允许你配置 AWS PrivateLink VPC 终端节点。
 
-## 支持的 ClickPipes 数据源 {#supported-sources}
+## 支持的 ClickPipes 数据源 \{#supported-sources\}
 
 ClickPipes 反向 PrivateLink 终端节点功能目前仅适用于以下数据源类型：
 
@@ -37,7 +37,7 @@ ClickPipes 反向 PrivateLink 终端节点功能目前仅适用于以下数据�
 - MySQL
 - MongoDB
 
-## 支持的 AWS PrivateLink 端点类型 {#aws-privatelink-endpoint-types}
+## 支持的 AWS PrivateLink 端点类型 \{#aws-privatelink-endpoint-types\}
 
 ClickPipes 反向私有端点可以通过以下任一 AWS PrivateLink 方案进行配置：
 
@@ -45,7 +45,7 @@ ClickPipes 反向私有端点可以通过以下任一 AWS PrivateLink 方案进�
 - [用于 MSK ClickPipe 的 MSK 多 VPC 连接](#msk-multi-vpc)
 - [VPC 端点服务](#vpc-endpoint-service)
 
-### VPC 资源 {#vpc-resource}
+### VPC 资源 \{#vpc-resource\}
 
 :::info
 不支持跨 Region。
@@ -65,7 +65,7 @@ ClickPipes 反向私有端点可以通过以下任一 AWS PrivateLink 方案进�
 
 <VerticalStepper headerLevel="h4">
 
-#### 创建资源网关 {#create-resource-gateway}
+#### 创建资源网关 \{#create-resource-gateway\}
 
 资源网关是在 VPC 中为指定资源接收入站流量的端点。
 
@@ -96,7 +96,7 @@ aws vpc-lattice get-resource-gateway \
     --resource-gateway-identifier <RESOURCE_GATEWAY_ID>
 ```
 
-#### 创建 VPC 资源配置 {#create-resource-configuration}
+#### 创建 VPC 资源配置 \{#create-resource-configuration\}
 
 资源配置与资源网关关联，用于使你的资源可访问。
 
@@ -132,7 +132,7 @@ aws vpc-lattice create-resource-configuration \
 
 输出中会包含一个 Resource-Configuration ARN，你在下一步中需要用到它。输出中还会包含一个 Resource-Configuration ID，你在为 VPC 资源设置 ClickPipe 连接时需要用到它。
 
-#### 创建 Resource-Share {#create-resource-share}
+#### 创建 Resource-Share \{#create-resource-share\}
 
 要共享资源，需要先创建一个 Resource-Share。这是通过 Resource Access Manager (RAM) 实现的。
 
@@ -158,7 +158,7 @@ aws ram create-resource-share \
 </VerticalStepper>
 
 
-### MSK 多 VPC 连接 {#msk-multi-vpc}
+### MSK 多 VPC 连接 \{#msk-multi-vpc\}
 
 [Multi-VPC connectivity](https://docs.aws.amazon.com/msk/latest/developerguide/aws-access-mult-vpc.html) 是 AWS MSK 的一项内置功能，允许你将多个 VPC 连接到同一个 MSK 集群。
 默认支持 Private DNS，且不需要任何额外配置。
@@ -174,7 +174,7 @@ aws ram create-resource-share \
 
 请参阅我们的 [ClickPipes 的 MSK 设置指南](/knowledgebase/aws-privatelink-setup-for-msk-clickpipes) 以了解如何配置该连接。
 
-### VPC 终端节点服务 {#vpc-endpoint-service}
+### VPC 终端节点服务 \{#vpc-endpoint-service\}
 
 [VPC 终端节点服务](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html) 是向 ClickPipes 暴露你的数据源的另一种方式。
 它需要在你的数据源前部署一个 NLB（Network Load Balancer），
@@ -200,7 +200,7 @@ VPC 终端节点服务可以[配置私有 DNS](https://docs.aws.amazon.com/vpc/l
 在你的 VPC 终端节点服务中，将[你的 ClickPipe 区域](#aws-privatelink-regions)添加到允许的区域列表中。
 :::
 
-## 使用反向私有终端节点创建 ClickPipe {#creating-clickpipe}
+## 使用反向私有终端节点创建 ClickPipe \{#creating-clickpipe\}
 
 <VerticalStepper headerLevel="list">
 
@@ -263,7 +263,7 @@ VPC endpoint service 可能需要您在 AWS 控制台中接受连接请求。
 </VerticalStepper>
 
 
-## 管理现有反向私有端点 {#managing-existing-endpoints}
+## 管理现有反向私有端点 \{#managing-existing-endpoints\}
 
 您可以在 ClickHouse Cloud 的服务设置中管理现有的反向私有端点：
 
@@ -283,14 +283,14 @@ VPC endpoint service 可能需要您在 AWS 控制台中接受连接请求。
 
 </VerticalStepper>
 
-## 支持的 AWS 区域 {#aws-privatelink-regions}
+## 支持的 AWS 区域 \{#aws-privatelink-regions\}
 
 对于 ClickPipes，AWS PrivateLink 目前仅限于特定的 AWS 区域。
 请参阅 [ClickPipes 区域列表](/integrations/clickpipes#list-of-static-ips) 以查看可用区域。
 
 此限制不适用于已启用跨区域连接的 PrivateLink VPC 终端节点服务（endpoint service）。
 
-## 限制 {#limitations}
+## 限制 \{#limitations\}
 
 在 ClickHouse Cloud 中为 ClickPipes 创建的 AWS PrivateLink 端点无法保证与 ClickHouse Cloud 服务位于同一 AWS 区域。
 

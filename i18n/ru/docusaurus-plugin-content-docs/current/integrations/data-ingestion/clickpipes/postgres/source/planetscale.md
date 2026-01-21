@@ -14,17 +14,17 @@ import planetscale_wal_level_logical from '@site/static/images/integrations/data
 import planetscale_max_slot_wal_keep_size from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_max_slot_wal_keep_size.png';
 import Image from '@theme/IdealImage';
 
-# Руководство по настройке источника данных PlanetScale for Postgres {#planetscale-for-postgres-source-setup-guide}
+# Руководство по настройке источника данных PlanetScale for Postgres \{#planetscale-for-postgres-source-setup-guide\}
 
 :::info
 В настоящее время PlanetScale for Postgres находится в [программе раннего доступа](https://planetscale.com/postgres).
 :::
 
-## Поддерживаемые версии Postgres {#supported-postgres-versions}
+## Поддерживаемые версии Postgres \{#supported-postgres-versions\}
 
 ClickPipes поддерживает Postgres, начиная с версии 12.
 
-## Включение логической репликации {#enable-logical-replication}
+## Включение логической репликации \{#enable-logical-replication\}
 
 1. Чтобы включить репликацию в вашем инстансе Postgres, необходимо убедиться, что задан следующий параметр:
 
@@ -48,7 +48,7 @@ ClickPipes поддерживает Postgres, начиная с версии 12.
 
 <Image img={planetscale_max_slot_wal_keep_size} alt="Настройка max_slot_wal_keep_size в консоли PlanetScale" size="md" border/>
 
-## Создание пользователя с правами доступа и публикацией {#creating-a-user-with-permissions-and-publication}
+## Создание пользователя с правами доступа и публикацией \{#creating-a-user-with-permissions-and-publication\}
 
 Подключитесь к экземпляру PlanetScale Postgres, используя пользователя по умолчанию `postgres.<...>`, и выполните следующие команды:
 
@@ -92,12 +92,12 @@ ClickPipes поддерживает Postgres, начиная с версии 12.
 
    Публикация `clickpipes` будет содержать набор событий изменений, сгенерированных из указанных таблиц, и впоследствии будет использоваться для приёма потока репликации.
 
-## Особенности и ограничения {#caveats}
+## Особенности и ограничения \{#caveats\}
 1. Для подключения к PlanetScale Postgres к имени пользователя, созданному выше, необходимо добавить текущую ветку. Например, если созданный пользователь назывался `clickpipes_user`, фактическое имя пользователя, указываемое при создании ClickPipe, должно быть `clickpipes_user`.`branch`, где `branch` — это `id` текущей [ветки](https://planetscale.com/docs/postgres/branching) PlanetScale Postgres. Чтобы быстро определить это значение, вы можете посмотреть на имя пользователя `postgres`, под которым вы создавали этого пользователя ранее, — часть после точки и будет идентификатором ветки.
 2. Не используйте порт `PSBouncer` (сейчас `6432`) для CDC-конвейеров, подключающихся к PlanetScale Postgres, необходимо использовать стандартный порт `5432`. Любой из портов может использоваться только для конвейеров, выполняющих только начальную загрузку (initial-load only).
 3. Убедитесь, что вы подключаетесь только к основной (primary) инстанции, так как [подключение к репликам](https://planetscale.com/docs/postgres/scaling/replicas#how-to-query-postgres-replicas) в настоящее время не поддерживается. 
 
-## Что дальше? {#whats-next}
+## Что дальше? \{#whats-next\}
 
 Теперь вы можете [создать свой ClickPipe](../index.md) и начать приём данных из вашего экземпляра Postgres в ClickHouse Cloud.
 Обязательно запишите параметры подключения, которые вы использовали при его настройке, так как они понадобятся вам при создании ClickPipe.

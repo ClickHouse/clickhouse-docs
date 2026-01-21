@@ -7,12 +7,12 @@ title: 'HTTP API ClickHouse Keeper и панель мониторинга'
 doc_type: 'reference'
 ---
 
-# HTTP API и панель управления Keeper {#keeper-http-api-and-dashboard}
+# HTTP API и панель управления Keeper \{#keeper-http-api-and-dashboard\}
 
 ClickHouse Keeper предоставляет HTTP API и встроенную веб-панель для мониторинга, проверки работоспособности и управления хранилищем. 
 Этот интерфейс позволяет операторам просматривать состояние кластера, выполнять команды и управлять хранилищем Keeper через веб-браузер или HTTP‑клиенты.
 
-## Конфигурация {#configuration}
+## Конфигурация \{#configuration\}
 
 Чтобы включить HTTP API, добавьте раздел `http_control` в конфигурацию `keeper_server`:
 
@@ -28,7 +28,7 @@ ClickHouse Keeper предоставляет HTTP API и встроенную в
 ```
 
 
-### Параметры конфигурации {#configuration-options}
+### Параметры конфигурации \{#configuration-options\}
 
 | Параметр                                 | По умолчанию | Описание                                      |
 |------------------------------------------|--------------|-----------------------------------------------|
@@ -37,9 +37,9 @@ ClickHouse Keeper предоставляет HTTP API и встроенную в
 | `http_control.readiness.endpoint`        | `/ready`     | Настраиваемый путь для пробы готовности       |
 | `http_control.storage.session_timeout_ms`| `30000`      | Тайм-аут сеанса для операций API хранилища    |
 
-## Эндпоинты {#endpoints}
+## Эндпоинты \{#endpoints\}
 
-### Панель мониторинга {#dashboard}
+### Панель мониторинга \{#dashboard\}
 
 - **Path**: `/dashboard`
 - **Method**: GET
@@ -52,7 +52,7 @@ ClickHouse Keeper предоставляет HTTP API и встроенную в
 - Браузер хранилища
 - Интерфейс для выполнения команд
 
-### Проверка готовности (readiness probe) {#readiness-probe}
+### Проверка готовности (readiness probe) \{#readiness-probe\}
 
 * **Путь**: `/ready` (можно изменить)
 * **Метод**: GET
@@ -71,7 +71,7 @@ ClickHouse Keeper предоставляет HTTP API и встроенную в
 ```
 
 
-### API команд {#commands-api}
+### API команд \{#commands-api\}
 
 * **Path**: `/api/v1/commands/{command}`
 * **Methods**: GET, POST
@@ -93,7 +93,7 @@ curl "http://localhost:9182/api/v1/commands/ls?command=ls%20'/'&cwd=/"
 ```
 
 
-### Storage API {#storage-api}
+### Storage API \{#storage-api\}
 
 - **Базовый путь**: `/api/v1/storage`
 - **Описание**: REST API для операций с хранилищем Keeper

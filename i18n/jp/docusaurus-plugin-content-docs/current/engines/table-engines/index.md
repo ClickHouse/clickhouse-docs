@@ -8,7 +8,7 @@ title: 'テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# テーブルエンジン {#table-engines}
+# テーブルエンジン \{#table-engines\}
 
 テーブルエンジン（テーブルの種類）は、次の点を決定します。
 
@@ -19,9 +19,9 @@ doc_type: 'reference'
 - リクエストをマルチスレッドで実行できるかどうか。
 - データレプリケーションの設定。
 
-## エンジンファミリー {#engine-families}
+## エンジンファミリー \{#engine-families\}
 
-### MergeTree {#mergetree}
+### MergeTree \{#mergetree\}
 
 高負荷ワークロード向けの、最も汎用的かつ高機能なテーブルエンジンです。これらのエンジンに共通する特性は、高速なデータ挿入と、その後のバックグラウンドでのデータ処理です。`MergeTree` ファミリーのエンジンは、データレプリケーション（エンジンの [Replicated\*](/engines/table-engines/mergetree-family/replication) バージョンによる）、パーティショニング、セカンダリのデータスキップインデックス、その他のエンジンではサポートされない機能をサポートします。
 
@@ -38,7 +38,7 @@ doc_type: 'reference'
 | [GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree)                                  |
 | [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree)                                     |
 
-### Log {#log}
+### Log \{#log\}
 
 最小限の機能を持つ軽量な [エンジン](../../engines/table-engines/log-family/index.md) です。多数の小さなテーブル（最大で約 100 万行）をすばやく書き込み、その後にテーブル全体をまとめて読み出す必要がある場合に最も効果的です。
 
@@ -50,7 +50,7 @@ doc_type: 'reference'
 | [StripeLog](/engines/table-engines/log-family/stripelog) |
 | [Log](/engines/table-engines/log-family/log)                   |
 
-### 統合エンジン {#integration-engines}
+### 統合エンジン \{#integration-engines\}
 
 他のデータストレージおよび処理システムと連携するためのエンジンです。
 
@@ -72,7 +72,7 @@ doc_type: 'reference'
 | [S3Queue](../../engines/table-engines/integrations/s3queue.md)                  |
 | [TimeSeries](../../engines/table-engines/integrations/time-series.md)           |
 
-### 特殊エンジン {#special-engines}
+### 特殊エンジン \{#special-engines\}
 
 このファミリーに含まれるエンジン:
 
@@ -95,7 +95,7 @@ doc_type: 'reference'
 | [KeeperMap](/engines/table-engines/special/keeper-map)        |
 | [FileLog](/engines/table-engines/special/filelog)             |
 
-## 仮想列 {#table_engines-virtual_columns}
+## 仮想列 \{#table_engines-virtual_columns\}
 
 仮想列は、テーブルエンジンのソースコード内で定義されている、そのテーブルエンジンに本質的な属性です。
 

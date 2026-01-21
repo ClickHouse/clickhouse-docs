@@ -14,11 +14,11 @@ keywords: ['fivetran', 'データ移動', 'ETL', 'ClickHouse 宛先', '自動化
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# Fivetran と ClickHouse Cloud {#fivetran-and-clickhouse-cloud}
+# Fivetran と ClickHouse Cloud \{#fivetran-and-clickhouse-cloud\}
 
 <ClickHouseSupportedBadge/>
 
-## 概要 {#overview}
+## 概要 \{#overview\}
 
 [Fivetran](https://www.fivetran.com) は、クラウドデータプラットフォームからのデータ抽出、プラットフォームへの取り込み、およびプラットフォーム間でのデータ移動を自動化するデータ移動プラットフォームです。
 
@@ -40,13 +40,13 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
   </iframe>
 </div>
 
-## ClickHouse Cloud 宛先 {#clickhouse-cloud-destination}
+## ClickHouse Cloud 宛先 \{#clickhouse-cloud-destination\}
 
 Fivetran の公式ドキュメントをご覧ください：
 
 - [ClickHouse 宛先の概要](https://fivetran.com/docs/destinations/clickhouse)
 - [ClickHouse 宛先のセットアップガイド](https://fivetran.com/docs/destinations/clickhouse/setup-guide)
 
-## お問い合わせ {#contact-us}
+## お問い合わせ \{#contact-us\}
 
 ご不明な点や機能に関するご要望がある場合は、[サポートチケット](/about-us/support)を作成してください。

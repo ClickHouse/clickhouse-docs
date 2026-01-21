@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 与 [`JSONCompactEachRow`](./JSONCompactEachRow.md) 的唯一区别在于，数据字段以字符串形式输出，而不是以带类型的 JSON 值输出。
 
-## 示例用法 {#example-usage}
+## 示例用法 \{#example-usage\}
 
-### 插入数据 {#inserting-data}
+### 插入数据 \{#inserting-data\}
 
 使用一个名为 `football.json`、包含以下数据的 JSON 文件：
 
@@ -49,7 +49,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactStringsEachRow;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据 \{#reading-data\}
 
 使用 `JSONCompactStringsEachRow` 格式读取数据：
 
@@ -81,4 +81,4 @@ FORMAT JSONCompactStringsEachRow
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}

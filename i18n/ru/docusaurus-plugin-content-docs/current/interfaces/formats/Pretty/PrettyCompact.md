@@ -16,7 +16,7 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | ✗    | ✔     |           |
 
 
-## Описание {#description}
+## Описание \{#description\}
 
 Отличается от формата [`Pretty`](./Pretty.md) тем, что таблица отображается с сеткой между строками. 
 Благодаря этому результат получается более компактным.
@@ -27,10 +27,10 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 
 
-## Параметры форматирования {#format-settings}
+## Параметры форматирования \{#format-settings\}
 
 <PrettyFormatSettings />

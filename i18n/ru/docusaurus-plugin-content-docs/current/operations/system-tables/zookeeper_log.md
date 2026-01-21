@@ -6,7 +6,7 @@ title: 'system.zookeeper_log'
 doc_type: 'reference'
 ---
 
-# system.zookeeper&#95;log {#systemzookeeper&#95;log}
+# system.zookeeper&#95;log \{#systemzookeeper&#95;log\}
 
 Эта таблица содержит информацию о параметрах запроса к серверу ZooKeeper и его ответе.
 

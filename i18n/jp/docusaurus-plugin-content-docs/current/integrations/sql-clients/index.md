@@ -6,7 +6,7 @@ title: 'SQL クライアント連携'
 doc_type: 'landing-page'
 ---
 
-# SQL クライアント連携 {#sql-client-integrations}
+# SQL クライアント連携 \{#sql-client-integrations\}
 
 このセクションでは、ClickHouse をさまざまなデータベース管理・分析・可視化ツールと連携させる方法について説明します。
 

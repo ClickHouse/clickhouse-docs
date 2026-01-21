@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Движок таблицы JDBC {#jdbc-table-engine}
+# Движок таблицы JDBC \{#jdbc-table-engine\}
 
 <CloudNotSupportedBadge/>
 
@@ -24,7 +24,7 @@ ClickHouse рекомендует использовать встроенные 
 
 Этот движок поддерживает тип данных [Nullable](../../../sql-reference/data-types/nullable.md).
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -47,7 +47,7 @@ ENGINE = JDBC(datasource, external_database, external_table)
 
 * Эти параметры также можно передавать с использованием [именованных коллекций](operations/named-collections.md).
 
-## Пример использования {#usage-example}
+## Пример использования \{#usage-example\}
 
 Создание таблицы на сервере MySQL, подключившись к нему напрямую через консольный клиент:
 
@@ -102,6 +102,6 @@ SELECT toInt32(number), toFloat32(number * 1.0)
 FROM system.numbers
 ```
 
-## См. также {#see-also}
+## См. также \{#see-also\}
 
 - [табличная функция JDBC](../../../sql-reference/table-functions/jdbc.md).

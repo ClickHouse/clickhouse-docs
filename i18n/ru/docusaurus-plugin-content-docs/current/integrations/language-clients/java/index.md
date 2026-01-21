@@ -14,19 +14,19 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-# Обзор Java‑клиентов {#java-clients-overview}
+# Обзор Java‑клиентов \{#java-clients-overview\}
 
 - [Клиент 0.8+](./client/client.mdx)
 - [JDBC 0.8+](./jdbc/jdbc.mdx)
 - [Драйвер R2DBC](./r2dbc.md)
 
-## ClickHouse client {#clickhouse-client}
+## ClickHouse client \{#clickhouse-client\}
 
 Java client — это библиотека, реализующая собственный API, который абстрагирует детали сетевого взаимодействия с сервером ClickHouse. В настоящее время поддерживается только HTTP‑интерфейс. Библиотека предоставляет утилиты для работы с различными форматами ClickHouse и другими связанными функциями.
 
 Java Client был разработан ещё в 2015 году. Его кодовая база со временем стала очень сложной для сопровождения, API — запутанным, а дальнейшая оптимизация — затруднительной. Поэтому в 2024 году мы переработали его в новый компонент `client-v2`. У него понятный API, более лёгкая кодовая база, дополнительные улучшения производительности и лучшая поддержка форматов ClickHouse (в основном RowBinary и Native). В ближайшем будущем JDBC будет использовать этот клиент.
 
-### Поддерживаемые типы данных {#supported-data-types}
+### Поддерживаемые типы данных \{#supported-data-types\}
 
 |**Тип данных**         |**Поддержка в Client V2**|**Поддержка в Client V1**|
 |-----------------------|-------------------------|-------------------------|
@@ -91,7 +91,7 @@ Java Client был разработан ещё в 2015 году. Его кодо
 - UInt64 — соответствует типу `long` в client-v1
 :::
 
-### Возможности {#features}
+### Возможности \{#features\}
 
 Таблица возможностей клиентов:
 
@@ -120,14 +120,14 @@ Java Client был разработан ещё в 2015 году. Его кодо
 
 JDBC-драйвер наследует те же возможности, что и базовая реализация клиента. Другие возможности JDBC перечислены на этой [странице](/integrations/language-clients/java/jdbc).
 
-### Совместимость {#compatibility}
+### Совместимость \{#compatibility\}
 
 - Все проекты в этом репозитории тестируются со всеми [активными LTS-версиями](https://github.com/ClickHouse/ClickHouse/pulls?q=is%3Aopen+is%3Apr+label%3Arelease) ClickHouse.
 - [Политика поддержки](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md#security-change-log-and-support)
 - Мы рекомендуем регулярно обновлять клиент, чтобы не пропускать исправления уязвимостей и новые улучшения.
 - Если у вас возникла проблема с миграцией на API v2 — [создайте issue](https://github.com/ClickHouse/clickhouse-java/issues/new?assignees=&labels=v2-feedback&projects=&template=v2-feedback.md&title=), и мы вам ответим!
 
-### Логирование {#logging}
+### Логирование \{#logging\}
 
 Наш Java‑клиент использует [SLF4J](https://www.slf4j.org/) для логирования. Вы можете использовать любой совместимый с SLF4J фреймворк для логирования, например `Logback` или `Log4j`.
 Если вы используете Maven, добавьте следующую зависимость в файл `pom.xml`:
@@ -157,7 +157,7 @@ JDBC-драйвер наследует те же возможности, что 
 </dependencies>
 ```
 
-#### Настройка логирования {#configuring-logging}
+#### Настройка логирования \{#configuring-logging\}
 
 Это зависит от используемого фреймворка логирования. Например, если вы используете `Logback`, вы можете настроить логирование в файле `logback.xml`:
 

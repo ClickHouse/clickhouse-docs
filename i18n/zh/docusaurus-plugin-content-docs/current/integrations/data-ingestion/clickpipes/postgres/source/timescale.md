@@ -12,11 +12,11 @@ integration:
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-# 基于 TimescaleDB 的 Postgres 数据源配置指南 {#postgres-with-timescaledb-source-setup-guide}
+# 基于 TimescaleDB 的 Postgres 数据源配置指南 \{#postgres-with-timescaledb-source-setup-guide\}
 
 <BetaBadge/>
 
-## 背景 {#background}
+## 背景 \{#background\}
 
 [TimescaleDB](https://github.com/timescale/timescaledb) 是由 Timescale Inc 开发的开源 Postgres 扩展，
 旨在在无需迁移出 Postgres 的情况下提升分析查询性能。其实现方式是创建由该扩展管理的
@@ -34,11 +34,11 @@ Timescale Inc 还为 TimescaleDB 提供两种托管服务：
 Timescale hypertable 在多个方面的行为与常规 Postgres 表不同。这会给复制它们的过程带来一定的复杂性，
 因此对 Timescale hypertable 的复制能力应被视为**尽力而为（best effort）**。
 
-## 支持的 Postgres 版本 {#supported-postgres-versions}
+## 支持的 Postgres 版本 \{#supported-postgres-versions\}
 
 ClickPipes 支持 Postgres 12 及以上版本。
 
-## 启用逻辑复制 {#enable-logical-replication}
+## 启用逻辑复制 \{#enable-logical-replication\}
 
 后续步骤取决于你是如何部署包含 TimescaleDB 的 Postgres 实例的。 
 
@@ -52,7 +52,7 @@ Timescale Cloud 不支持逻辑复制，而逻辑复制是以 CDC 模式使用 P
 因此，Timescale Cloud 的用户只能通过 Postgres ClickPipe 对其数据执行一次性加载（`Initial Load Only`）。
 :::
 
-## 配置 {#configuration}
+## 配置 \{#configuration\}
 
 Timescale 超表本身并不存储插入到其中的任何数据。相反，数据存储在 `_timescaledb_internal` 模式中多个对应的 “chunk” 表里。对于在超表上运行查询而言，这不是问题。但在逻辑复制过程中，变更不是在超表上被检测到，而是在 chunk 表上被检测到。Postgres ClickPipe 内置了将 chunk 表中的变更自动重新映射回父超表的逻辑，但这需要额外的步骤。
 
@@ -110,7 +110,7 @@ Timescale 超表本身并不存储插入到其中的任何数据。相反，数�
 完成以上步骤后，即可[创建 ClickPipe](../index.md)。
 
 
-## 配置网络访问 {#configure-network-access}
+## 配置网络访问 \{#configure-network-access\}
 
 如果你想限制到 Timescale 实例的流量，请将[文档中列出的静态 NAT IP](../../index.md#list-of-static-ips) 加入允许列表。
 不同云服务商的具体操作步骤会有所不同，如果你的服务商在侧边栏中列出，请参阅对应说明，否则请向他们提交工单进行咨询。

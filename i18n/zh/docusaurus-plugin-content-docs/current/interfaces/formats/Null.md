@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 在 `Null` 格式下，不会输出任何内容。  
 乍一看可能有些奇怪，但需要注意的是，尽管没有任何输出，查询仍然会被处理，  
@@ -23,9 +23,9 @@ doc_type: 'reference'
 `Null` 格式可用于性能测试。
 :::
 
-## 示例用法 {#example-usage}
+## 示例用法 \{#example-usage\}
 
-### 读取数据 {#reading-data}
+### 读取数据 \{#reading-data\}
 
 假设有一个名为 `football` 的表，其中包含以下数据：
 
@@ -65,4 +65,4 @@ FORMAT Null
 0 rows in set. Elapsed: 0.154 sec.
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}

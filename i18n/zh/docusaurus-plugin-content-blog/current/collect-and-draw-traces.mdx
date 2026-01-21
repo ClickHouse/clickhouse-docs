@@ -1,0 +1,195 @@
+---
+date: 2025-12-30
+title: 如何收集和可视化查询跟踪
+tags: ['工具和实用程序']
+keywords: ['查询跟踪', 'OTel', 'Grafana']
+description: "本指南将介绍如何在自管理 ClickHouse 中使用内置方法或 Grafana 来收集和可视化查询跟踪。这在处理复杂查询并需要理解超出 EXPLAIN 所提供信息范围的内部执行机制时尤其有用。"
+---
+
+import Image from '@theme/IdealImage';
+import trace_visualizer from '@site/static/images/knowledgebase/trace-visualizer-example.png';
+import trace_visualization_grafana from '@site/static/images/knowledgebase/trace-visualization-grafana.png';
+import trace_visualization_diagram from '@site/static/images/knowledgebase/trace-visualization-diagram.png';
+
+{frontMatter.description}
+
+{/* truncate */}
+
+<br />
+
+<br />
+
+**先决条件**：
+
+* 熟悉 ClickHouse [配置文件](/operations/configuration-files)
+* 一个正在运行的 [ClickHouse 服务器](/install) 实例
+* （可选）一个正在运行的本地 [Grafana 实例](https://grafana.com/docs/grafana/latest/fundamentals/getting-started/)
+
+<VerticalStepper headerLevel="h2">
+  ## 检查 `opentelemetry_span_log` 系统表是否已启用 \{#enable-system-table\}
+
+  如果您没有修改 `config.xml` 中的 `opentelemetry_span_log` 部分,可以跳过此步骤。
+
+  打开默认的 ClickHouse `config.xml` 文件,找到以下部分:
+
+  ```yaml
+  <!--
+      OpenTelemetry log contains OpenTelemetry trace spans.
+
+      NOTE: this table does not use standard schema with event_date and event_time!
+  -->
+  <opentelemetry_span_log>
+      <!--
+          The default table creation code is insufficient, this <engine> spec
+          is a workaround. There is no 'event_time' for this log, but two times,
+          start and finish. It is sorted by finish time, to avoid inserting
+          data too far away in the past (probably we can sometimes insert a span
+          that is seconds earlier than the last span in the table, due to a race
+          between several spans inserted in parallel). This gives the spans a
+          global order that we can use to e.g. retry insertion into some external
+          system.
+      -->
+      <engine>
+          engine MergeTree
+          partition by toYYYYMM(finish_date)
+          order by (finish_date, finish_time_us, trace_id)
+      </engine>
+      <database>system</database>
+      <table>opentelemetry_span_log</table>
+      <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+      <max_size_rows>1048576</max_size_rows>
+      <reserved_size_rows>8192</reserved_size_rows>
+      <buffer_size_rows_flush_threshold>524288</buffer_size_rows_flush_threshold>
+      <flush_on_crash>false</flush_on_crash>
+  </opentelemetry_span_log>
+  ```
+
+  确保该配置未被注释,否则在后续步骤中将无法看到 `system.opentelemetry_span_log`。
+  如果 ClickHouse 服务器未使用默认配置文件,也可能出现此情况。
+
+  检查服务器日志中是否有类似以下内容:
+
+  ```text
+  Processing configuration file 'config.xml'.
+  There is no file 'config.xml', will use embedded config.
+  ```
+
+  :::tip
+  在标准安装中,该文件位于 `/etc/clickhouse-server/config.xml`
+  :::
+
+  ## 启用 OpenTelemetry 追踪 \{#enable-otel-tracing\}
+
+  在 ClickHouse 服务器运行的情况下,打开 ClickHouse 客户端并使用以下查询启用跟踪收集:
+
+  ```bash
+  SET opentelemetry_trace_processors=1;
+  ```
+
+  运行以下命令后,您应该能看到 `opentelemetry_span_log` 系统表:
+
+  ```sql
+  SHOW TABLES IN system
+  ```
+
+  接下来运行:
+
+  ```
+  SET opentelemetry_start_trace_probability=1;
+  ```
+
+  此设置用于配置 ClickHouse 启动已执行查询追踪的概率,其中
+  `1` 表示对所有已执行查询启用追踪。
+
+  ## 获取查询 ID \{#obtain-query-id\}
+
+  运行以下示例查询,或您需要追踪的查询:
+
+  ```sql
+  SELECT pow(number, 2) FROM numbers(10E4);
+  ```
+
+  复制查询 ID:
+
+  ```sql
+  :) SELECT pow(number, 2) FROM numbers(10E4);
+
+  SELECT pow(number, 2)
+  FROM numbers(100000.)
+
+  --highlight-next-line
+  Query id: a9241258-a0c4-4776-a00b-e6a1d9bec4a1
+  ```
+
+  ## 生成跟踪文件 \{#generate-trace-file\}
+
+  运行以下查询，将查询 ID 替换为上一步中获得的 ID：
+
+  ```sql
+  WITH 'a9241258-a0c4-4776-a00b-e6a1d9bec4a1' AS my_query_id
+  SELECT
+      concat(substring(hostName(), length(hostName()), 1), leftPad(greatest(attribute['clickhouse.thread_id'], attribute['thread_number']), 5, '0')) AS group,
+      operation_name,
+      start_time_us,
+      finish_time_us,
+      sipHash64(operation_name) AS color,
+      attribute
+  FROM system.opentelemetry_span_log
+  WHERE (trace_id IN (
+      SELECT trace_id
+      FROM system.opentelemetry_span_log
+      WHERE (attribute['clickhouse.query_id']) = my_query_id
+  )) AND (operation_name != 'query') AND (operation_name NOT LIKE 'Query%')
+  ORDER BY
+      hostName() ASC,
+      group ASC,
+      parent_span_id ASC,
+      start_time_us ASC
+  INTO OUTFILE 'trace.json'
+  FORMAT JSON
+  SETTINGS output_format_json_named_tuples_as_objects = 1
+  ```
+
+  这将把跟踪数据写入名为 `trace.json` 的文件中。
+  默认情况下,该文件会在运行 clickhouse-client 或 clickhouse-local 工具的当前工作目录中创建。
+
+  ## 使用内置工具可视化追踪 \{#visualize-trace-using-built-in-tooling\}
+
+  使用托管的跟踪可视化工具:[https://trace-visualizer.clickhouse.com/](https://trace-visualizer.clickhouse.com/)。
+  加载上一步中的 `trace.json` 文件以可视化跟踪数据。
+
+  <Image img={trace_visualizer} size="md" alt="ClickHouse 追踪可视化示例" />
+
+  ## 使用 Grafana 可视化追踪 \{#using-grafana\}
+
+  我们推荐使用 Grafana 配合官方 ClickHouse 插件来可视化和探索追踪数据。
+  该插件已增强,支持使用 Trace Panel 对追踪数据进行可视化。
+  该功能既支持作为可视化面板使用,也支持作为 Explore 中的组件使用。
+
+  按照[&quot;使用 Grafana 和 ClickHouse 实现可观测性&quot;](https://clickhouse.com/docs/observability/grafana)中描述的步骤，
+  使用 ClickHouse 插件配置 Grafana。
+
+  在 Explore 选项卡中,您可以运行以下查询,将 `trace_id` 替换为您自己的:
+
+  ```sql
+  SELECT
+      toString(trace_id) AS traceID,
+      toString(span_id) AS spanID,
+      if(toString(parent_span_id)='0', '', toString(parent_span_id)) AS parentSpanID,
+      'ClickHouse' AS serviceName,
+      operation_name AS operationName,
+      start_time_us/1000000 AS startTime,
+      (finish_time_us - start_time_us)/1000 AS duration,
+      arrayMap(key -> map('key', key, 'value', attribute[key]), mapKeys(attribute)) AS serviceTags
+  FROM system.opentelemetry_span_log
+  WHERE trace_id = '68a14b27-a61f-596d-3746-2b03d2530e42' ORDER BY startTime ASC
+  ```
+
+  确保将 `Query type` 设置为 `Traces`：
+
+  <Image img={trace_visualization_grafana} size="md" alt="Grafana 中的 ClickHouse 追踪可视化" />
+
+  点击&quot;运行查询&quot;并查看追踪图:
+
+  <Image img={trace_visualization_diagram} size="md" alt="在 Grafana 中可视化 ClickHouse 跟踪数据" />
+</VerticalStepper>

@@ -7,7 +7,7 @@ title: 'Variant(T1, T2, ...)'
 doc_type: 'reference'
 ---
 
-# Variant(T1, T2, ...) {#variantt1-t2}
+# Variant(T1, T2, ...) \{#variantt1-t2\}
 
 この型は、他のデータ型のユニオン（共用体）を表します。型 `Variant(T1, T2, ..., TN)` は、この型の各行が
 `T1`、`T2`、…、`TN` のいずれか、またはいずれでもない（`NULL` 値）であることを意味します。
@@ -20,7 +20,7 @@ doc_type: 'reference'
 そのような型の値を扱うと曖昧さを招く可能性があるためです。デフォルトでは、このような `Variant` 型を作成しようとすると例外がスローされますが、設定 `allow_suspicious_variant_types` を使用して有効化できます。
 :::
 
-## Variant の作成 {#creating-variant}
+## Variant の作成 \{#creating-variant\}
 
 テーブル列を定義する際に `Variant` 型を使用する:
 
@@ -111,7 +111,7 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 ```
 
 
-## Variant のネストされた型をサブカラムとして読み取る {#reading-variant-nested-types-as-subcolumns}
+## Variant のネストされた型をサブカラムとして読み取る \{#reading-variant-nested-types-as-subcolumns\}
 
 `Variant` 型は、`Variant` 列から型名をサブカラムとして指定することで、単一のネストされた型を読み取ることをサポートします。
 そのため、列 `variant Variant(T1, T2, T3)` がある場合、`variant.T2` という構文を使って型 `T2` のサブカラムを読み取ることができます。
@@ -191,11 +191,11 @@ SELECT toTypeName(variantType(v)) FROM test LIMIT 1;
 ```
 
 
-## Variant 列と他の列との変換 {#conversion-between-a-variant-column-and-other-columns}
+## Variant 列と他の列との変換 \{#conversion-between-a-variant-column-and-other-columns\}
 
 `Variant` 型の列では、4 種類の変換を行うことができます。
 
-### String 列を Variant 列に変換する {#converting-a-string-column-to-a-variant-column}
+### String 列を Variant 列に変換する \{#converting-a-string-column-to-a-variant-column\}
 
 `String` から `Variant` への変換は、文字列値を解析して `Variant` 型の値を生成することで行われます。
 
@@ -243,7 +243,7 @@ SELECT '[1, 2, 3]'::Variant(String, Array(UInt64)) as variant, variantType(varia
 ```
 
 
-### 通常のカラムを Variant カラムに変換する {#converting-an-ordinary-column-to-a-variant-column}
+### 通常のカラムを Variant カラムに変換する \{#converting-an-ordinary-column-to-a-variant-column\}
 
 型 `T` を持つ通常のカラムを、その型を含む `Variant` カラムに変換できます。
 
@@ -270,7 +270,7 @@ SELECT '[1, 2, 3]'::Variant(String)::Variant(String, Array(UInt64), UInt64) as v
 ```
 
 
-### Variant列を通常の列に変換する {#converting-a-variant-column-to-an-ordinary-column}
+### Variant列を通常の列に変換する \{#converting-a-variant-column-to-an-ordinary-column\}
 
 `Variant` 列を通常の列に変換できます。この場合、すべてのネストされた Variant は指定した変換先の型に変換されます。
 
@@ -289,7 +289,7 @@ SELECT v::Nullable(Float64) FROM test;
 ```
 
 
-### Variant を別の Variant に変換する {#converting-a-variant-to-another-variant}
+### Variant を別の Variant に変換する \{#converting-a-variant-to-another-variant\}
 
 `Variant` 列を別の `Variant` 列に変換することも可能ですが、変換先の `Variant` 列が元の `Variant` 列に含まれるすべてのネストされた型を含んでいる場合に限られます。
 
@@ -308,7 +308,7 @@ SELECT v::Variant(UInt64, String, Array(UInt64)) FROM test;
 ```
 
 
-## データからの Variant 型の読み取り {#reading-variant-type-from-the-data}
+## データからの Variant 型の読み取り \{#reading-variant-type-from-the-data\}
 
 すべてのテキスト形式 (TSV、CSV、CustomSeparated、Values、JSONEachRow など) は `Variant` 型での読み取りをサポートしています。データの解析時に、ClickHouse は値を最も適切な Variant 型の要素に挿入しようとします。
 
@@ -342,7 +342,7 @@ $$)
 ```
 
 
-## Variant 型の値の比較 {#comparing-values-of-variant-data}
+## Variant 型の値の比較 \{#comparing-values-of-variant-data\}
 
 `Variant` 型の値は、同じ `Variant` 型の値とのみ比較できます。
 
@@ -472,7 +472,7 @@ SELECT v, variantType(v) FROM test ORDER by v;
 **注記** デフォルトでは `Variant` 型は `GROUP BY`/`ORDER BY` のキーとしては許可されていません。使用したい場合は、その特殊な比較ルールを考慮した上で、`allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by` 設定を有効にしてください。
 
 
-## Variant における JSONExtract 関数 {#jsonextract-functions-with-variant}
+## Variant における JSONExtract 関数 \{#jsonextract-functions-with-variant\}
 
 すべての `JSONExtract*` 関数は `Variant` 型をサポートします。
 
@@ -507,7 +507,7 @@ SELECT JSONExtractKeysAndValues('{"a" : 42, "b" : "Hello", "c" : [1,2,3]}', 'Var
 ```
 
 
-## Variant 型引数を取る関数 {#functions-with-variant-arguments}
+## Variant 型引数を取る関数 \{#functions-with-variant-arguments\}
 
 ClickHouse のほとんどの関数は、`Variant` 型の引数を **Variant 用のデフォルト実装** を通じて自動的にサポートします。
 バージョン `26.1` 以降では、Variant 型を明示的に扱わない関数が Variant カラムを受け取った場合、ClickHouse は次のように動作します:

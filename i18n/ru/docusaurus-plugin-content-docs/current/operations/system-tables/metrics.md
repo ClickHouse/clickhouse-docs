@@ -10,7 +10,7 @@ doc_type: 'reference'
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
-# system.metrics {#systemmetrics}
+# system.metrics \{#systemmetrics\}
 
 <SystemTableCloud />
 
@@ -50,7 +50,7 @@ SELECT * FROM system.metrics LIMIT 10
 ```
 
 
-## Описание метрик {#metric-descriptions}
+## Описание метрик \{#metric-descriptions\}
 
 | Метрика                                         | Описание                                                                                                                                                                                                                           |
 | ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

@@ -7,7 +7,7 @@ title: 'GraphiteMergeTree 表引擎'
 doc_type: 'guide'
 ---
 
-# GraphiteMergeTree 表引擎 {#graphitemergetree-table-engine}
+# GraphiteMergeTree 表引擎 \{#graphitemergetree-table-engine\}
 
 该引擎用于对 [Graphite](http://graphite.readthedocs.io/en/latest/index.html) 数据进行稀疏化和聚合/平均（rollup）处理。它对希望使用 ClickHouse 作为 Graphite 数据存储的开发者非常有用。
 
@@ -15,7 +15,7 @@ doc_type: 'guide'
 
 该引擎继承自 [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) 的属性。
 
-## 创建表 {#creating-table}
+## 创建表 \{#creating-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -78,7 +78,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   * `config_section` — 配置文件中定义 rollup 规则的节名称。
 </details>
 
-## Rollup 配置 {#rollup-configuration}
+## Rollup 配置 \{#rollup-configuration\}
 
 Rollup 的配置由服务器配置中的 [graphite&#95;rollup](../../../operations/server-configuration-parameters/settings.md#graphite) 参数定义。该参数的名称可以任意。你可以创建多个配置，并将它们用于不同的表。
 
@@ -87,25 +87,25 @@ Rollup 配置结构：
 required-columns
 patterns
 
-### 必需列 {#required-columns}
+### 必需列 \{#required-columns\}
 
-#### `path_column_name` {#path&#95;column&#95;name}
+#### `path_column_name` \{#path&#95;column&#95;name\}
 
 `path_column_name` — 存储指标名称（Graphite 指标）的列名。默认值：`Path`。
 
-#### `time_column_name` {#time&#95;column&#95;name}
+#### `time_column_name` \{#time&#95;column&#95;name\}
 
 `time_column_name` — 存储该指标采集时间的列名。默认值：`Time`。
 
-#### `value_column_name` {#value&#95;column&#95;name}
+#### `value_column_name` \{#value&#95;column&#95;name\}
 
 `value_column_name` — 存储在 `time_column_name` 中指定时间点的指标值的列名。默认值：`Value`。
 
-#### `version_column_name` {#version&#95;column&#95;name}
+#### `version_column_name` \{#version&#95;column&#95;name\}
 
 `version_column_name` — 存储指标版本的列名。默认值：`Timestamp`。
 
-### 模式（Patterns） {#patterns}
+### 模式（Patterns） \{#patterns\}
 
 `patterns` 部分的结构：
 
@@ -158,7 +158,7 @@ default
 * `precision` – 以秒为单位定义数据年龄的精度。应当是 86400（一天的秒数）的约数。
 * `function` – 要应用于其年龄落在 `[age, age + precision]` 区间内数据的聚合函数名称。可用函数：min / max / any / avg。平均值的计算是近似的，即“平均的平均值”。
 
-### 没有规则类型的配置示例 {#configuration-example}
+### 没有规则类型的配置示例 \{#configuration-example\}
 
 ```xml
 <graphite_rollup>
@@ -193,7 +193,7 @@ default
 </graphite_rollup>
 ```
 
-### 不同规则类型的配置示例 {#configuration-typed-example}
+### 不同规则类型的配置示例 \{#configuration-typed-example\}
 
 ```xml
 <graphite_rollup>

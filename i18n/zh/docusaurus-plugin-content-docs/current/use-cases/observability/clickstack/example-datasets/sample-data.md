@@ -32,7 +32,7 @@ import hyperdx_19 from '@site/static/images/use-cases/observability/hyperdx-19.p
 import copy_api_key from '@site/static/images/use-cases/observability/copy_api_key.png';
 
 
-# ClickStack - 示例日志、链路追踪和指标 {#clickstack-sample-dataset}
+# ClickStack - 示例日志、链路追踪和指标 \{#clickstack-sample-dataset\}
 
 以下示例假定你已经按照[一体化镜像的使用说明](/use-cases/observability/clickstack/getting-started)启动了 ClickStack，并已连接到[本地 ClickHouse 实例](/use-cases/observability/clickstack/getting-started#complete-connection-credentials)或 [ClickHouse Cloud 实例](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)。 
 

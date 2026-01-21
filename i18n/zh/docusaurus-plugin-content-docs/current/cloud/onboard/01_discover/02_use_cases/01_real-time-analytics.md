@@ -15,7 +15,7 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 
 <iframe width="758" height="426" src="https://www.youtube.com/embed/SnFff0KYwuo?si=aNpGzSobzFhUlyX5" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-## 什么是实时分析？ {#what-is-real-time-analytics}
+## 什么是实时分析？ \{#what-is-real-time-analytics\}
 
 实时分析是指一种数据处理方式，可以在数据生成后几乎立刻向终端用户
 和客户提供洞察。它不同于传统分析或批处理分析，后者会先批量收集数据，
@@ -45,7 +45,7 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 传统上，这通常是通过批量分析来完成的，在下一节中我们将比较
 批量分析与实时分析。
 
-## 实时分析 vs 批量分析 {#real-time-analytics-vs-batch-analytics}
+## 实时分析 vs 批量分析 \{#real-time-analytics-vs-batch-analytics\}
 
 下图展示了从单个事件的角度来看，一个典型的批量分析系统的样子：
 
@@ -59,12 +59,12 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 
 现在，我们几乎可以在事件生成的同时从中获得洞见。那么，这有什么用呢？
 
-## 实时分析的优势 {#benefits-of-real-time-analytics}
+## 实时分析的优势 \{#benefits-of-real-time-analytics\}
 
 在当今快节奏的世界中，组织依赖实时分析在不断变化的环境下保持
 敏捷和快速响应。实时分析系统可以通过多种方式为业务带来收益。
 
-### 更好的决策制定 {#better-decision-making}
+### 更好的决策制定 \{#better-decision-making\}
 
 通过实时分析获取可付诸行动的洞察，可以改进决策过程。当业务运营人员
 能够在事件发生时实时看到它们，就可以更轻松地进行及时干预。
@@ -74,7 +74,7 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 回滚更改。在缺乏实时性的情况下，我们可能不得不等到第二天才能进行这项
 分析，等到那个时候，可能已经有大量不满的用户了。
 
-### 新产品和收入来源 {#new-products-and-revenue-streams}
+### 新产品和收入来源 \{#new-products-and-revenue-streams\}
 
 实时分析可以帮助企业创造新的收入来源。组织可以开发以数据为核心的
 新产品和服务，为用户提供分析查询能力的使用权。这类产品往往足够有吸引力，
@@ -83,16 +83,16 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 此外，还可以提高现有应用的“黏性”，从而提升用户参与度和留存率。这将带来更多
 的应用使用量，为组织创造更多收入。
 
-### 改善客户体验 {#improved-customer-experience}
+### 改善客户体验 \{#improved-customer-experience\}
 
 借助实时分析，企业可以即时洞察客户行为、偏好和需求。这使企业能够提供及时
 的支持、个性化交互，并打造更具吸引力的体验，从而让客户持续回访。
 
-## 实时分析用例 {#real-time-analytics-use-cases}
+## 实时分析用例 \{#real-time-analytics-use-cases\}
 
 当我们考虑实时分析的实际应用场景时，它的真正价值才会显现出来。下面来看几个典型用例。
 
-### 欺诈检测 {#fraud-detection}
+### 欺诈检测 \{#fraud-detection\}
 
 欺诈检测是指发现各种欺诈模式，从虚假账户到支付欺诈。我们希望尽可能快速地检测到这些欺诈行为，标记可疑活动，在必要时拦截交易并禁用账户。
 
@@ -110,7 +110,7 @@ import rta_3 from '@site/static/images/cloud/onboard/discover/use_cases/3_rta.pn
 > ClickHouse 是专门为分析型查询设计并优化的。  
 > 这与那些需要持续分析数据以发现潜在欺诈模式的应用需求完全契合。
 
-### 时间敏感型决策 {#ftime-sensitive-decision-making}
+### 时间敏感型决策 \{#ftime-sensitive-decision-making\}
 
 时间敏感型决策是指用户或组织需要基于当前最新信息，快速做出明智选择的场景。实时分析使用户能够在动态环境中做出有依据的决策，无论是应对市场波动的交易员、做出购买决策的消费者，还是需要根据实时运营变化及时调整的专业人员。
 

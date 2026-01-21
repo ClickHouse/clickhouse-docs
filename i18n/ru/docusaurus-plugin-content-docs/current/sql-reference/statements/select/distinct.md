@@ -6,7 +6,7 @@ title: 'Оператор DISTINCT'
 doc_type: 'reference'
 ---
 
-# Оператор DISTINCT {#distinct-clause}
+# Оператор DISTINCT \{#distinct-clause\}
 
 Если указан `SELECT DISTINCT`, в результате запроса останутся только уникальные строки. Таким образом, для каждого набора полностью совпадающих строк в результате останется только одна строка.
 
@@ -54,7 +54,7 @@ SELECT DISTINCT ON (a,b) * FROM t1;
 └───┴───┴───┘
 ```
 
-## DISTINCT и ORDER BY {#distinct-and-order-by}
+## DISTINCT и ORDER BY \{#distinct-and-order-by\}
 
 ClickHouse поддерживает использование конструкций `DISTINCT` и `ORDER BY` для разных столбцов в одном запросе. Конструкция `DISTINCT` выполняется раньше, чем `ORDER BY`.
 
@@ -101,11 +101,11 @@ SELECT DISTINCT a FROM t1 ORDER BY b DESC;
 
 При написании запросов учитывайте эту особенность реализации.
 
-## Обработка NULL {#null-processing}
+## Обработка NULL \{#null-processing\}
 
 `DISTINCT` работает с [NULL](/sql-reference/syntax#null) так, как будто `NULL` является обычным конкретным значением и при этом `NULL == NULL`. Другими словами, в результатах `DISTINCT` каждая комбинация с `NULL` появляется только один раз. Это отличается от обработки `NULL` в большинстве других контекстов.
 
-## Альтернативы {#alternatives}
+## Альтернативы \{#alternatives\}
 
 Тот же результат можно получить, применяя [GROUP BY](/sql-reference/statements/select/group-by) к тому же набору значений, который указан в предложении `SELECT`, без использования агрегатных функций. Но есть несколько отличий по сравнению с подходом, основанным на `GROUP BY`:
 

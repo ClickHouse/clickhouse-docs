@@ -13,7 +13,7 @@ doc_type: 'reference'
 |----------------|-----------------|-----------|
 | ✗              | ✔               |           |
 
-## Описание {#description}
+## Описание \{#description\}
 
 Аналогичен [`JSONCompactEachRowWithProgress`](/interfaces/formats/JSONCompactEachRowWithProgress), но все значения преобразуются в строки.
 Это полезно, когда требуется единообразное строковое представление всех типов данных.
@@ -25,9 +25,9 @@ doc_type: 'reference'
 - Включает обновления прогресса, итоговые значения и обработку исключений
 - Полезен для клиентов, которым предпочтителен или необходим строковый формат данных
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
-### Добавление данных {#inserting-data}
+### Добавление данных \{#inserting-data\}
 
 ```sql title="Query"
 SELECT *
@@ -47,4 +47,4 @@ FORMAT JSONCompactStringsEachRowWithProgress
 {"rows_before_limit_at_least":5}
 ```
 
-## Параметры формата {#format-settings}
+## Параметры формата \{#format-settings\}

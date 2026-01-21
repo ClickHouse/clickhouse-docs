@@ -16,17 +16,17 @@ import omni_01 from '@site/static/images/integrations/data-visualization/omni_01
 import omni_02 from '@site/static/images/integrations/data-visualization/omni_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Omni {#omni}
+# Omni \{#omni\}
 
 <PartnerBadge/>
 
 Omni 可以通过官方 ClickHouse 数据源连接到 ClickHouse Cloud 或本地自建部署的 ClickHouse。
 
-## 1. 收集连接信息 {#1-gather-your-connection-details}
+## 1. 收集连接信息 \{#1-gather-your-connection-details\}
 
 <ConnectionDetails />
 
-## 2. 创建 ClickHouse 数据源 {#2-create-a-clickhouse-data-source}
+## 2. 创建 ClickHouse 数据源 \{#2-create-a-clickhouse-data-source\}
 
 进入 Admin -> Connections，然后点击右上角的“Add Connection”按钮。
 

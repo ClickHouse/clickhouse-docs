@@ -7,7 +7,7 @@ title: 'Null テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# Null テーブルエンジン {#null-table-engine}
+# Null テーブルエンジン \{#null-table-engine\}
 
 `Null` テーブルにデータを書き込むと、そのデータは無視されます。
 `Null` テーブルから読み出すと、レスポンスは空になります。

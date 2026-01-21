@@ -21,12 +21,12 @@ keywords: ['示例数据集', 'weather', 'taiwan', '示例数据', '气候数据
     - RH，相对湿度
     - 其他可用的气象要素
 
-## 下载数据 {#downloading-the-data}
+## 下载数据 \{#downloading-the-data\}
 
 - 为 ClickHouse 准备的[预处理数据版本](#pre-processed-data)，已经过清洗、重构和富化。该数据集覆盖 1896 年至 2023 年。
 - [下载原始数据](#original-raw-data)并转换为 ClickHouse 所需的格式。希望添加自定义列的用户可以在此基础上探索或完善自己的方案。
 
-### 预处理数据 {#pre-processed-data}
+### 预处理数据 \{#pre-processed-data\}
 
 该数据集也已经从“每行一条测量记录”的结构重组为“每个气象站 ID 与测量日期对应一行”的结构，即：
 
@@ -59,11 +59,11 @@ md5sum daily_weather_preprocessed_1896_2023.csv
 # Checksum should be equal to: 1132248c78195c43d93f843753881754
 ```
 
-### 原始数据 {#original-raw-data}
+### 原始数据 \{#original-raw-data\}
 
 以下内容介绍如何下载原始数据，以便按需进行转换和处理。
 
-#### 下载 {#download}
+#### 下载 \{#download\}
 
 要下载原始数据：
 
@@ -88,7 +88,7 @@ cat *.csv | md5sum
 # Checksum should be equal to: b26db404bf84d4063fac42e576464ce1
 ```
 
-#### 获取台湾地区气象站列表 {#retrieve-the-taiwan-weather-stations}
+#### 获取台湾地区气象站列表 \{#retrieve-the-taiwan-weather-stations\}
 
 ```bash
 wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw/main/data/weather_sta_list.csv
@@ -97,7 +97,7 @@ wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw
 sed -i '1s/^\xEF\xBB\xBF//' weather_sta_list.csv
 ```
 
-## 创建表结构 {#create-table-schema}
+## 创建表结构 \{#create-table-schema\}
 
 使用 ClickHouse 客户端在 ClickHouse 中创建 MergeTree 表。
 
@@ -138,9 +138,9 @@ ENGINE = MergeTree
 ORDER BY (MeasuredDate);
 ```
 
-## 向 ClickHouse 插入数据 {#inserting-into-clickhouse}
+## 向 ClickHouse 插入数据 \{#inserting-into-clickhouse\}
 
-### 从本地文件插入 {#inserting-from-local-file}
+### 从本地文件插入 \{#inserting-from-local-file\}
 
 可以在 ClickHouse 客户端中通过以下方式从本地文件插入数据：
 
@@ -160,7 +160,7 @@ Ok.
 Peak memory usage: 583.23 MiB.
 ```
 
-### 从 URL 插入数据 {#inserting-from-url}
+### 从 URL 插入数据 \{#inserting-from-url\}
 
 ```sql
 INSERT INTO tw_weather_data SELECT *
@@ -170,7 +170,7 @@ FROM url('https://storage.googleapis.com/taiwan-weather-observaiton-datasets/dai
 
 如需了解如何加快这一过程，请参阅我们关于[优化大规模数据加载](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)的博文。
 
-## 检查数据行和大小 {#check-data-rows-and-sizes}
+## 检查数据行和大小 \{#check-data-rows-and-sizes\}
 
 1. 先查看已插入了多少行：
 
@@ -201,9 +201,9 @@ WHERE (`table` = 'tw_weather_data') AND active
 └───────────┴───────────────────┘
 ```
 
-## 查询示例 {#sample-queries}
+## 查询示例 \{#sample-queries\}
 
-### Q1: 查询指定年份中每个气象站的最高露点温度 {#q1-retrieve-the-highest-dew-point-temperature-for-each-weather-station-in-the-specific-year}
+### Q1: 查询指定年份中每个气象站的最高露点温度 \{#q1-retrieve-the-highest-dew-point-temperature-for-each-weather-station-in-the-specific-year\}
 
 ```sql
 SELECT
@@ -249,7 +249,7 @@ GROUP BY StationId
 30 rows in set. Elapsed: 0.045 sec. Processed 6.41 million rows, 187.33 MB (143.92 million rows/s., 4.21 GB/s.)
 ```
 
-### Q2: 在特定时间范围内按字段和气象站获取原始数据 {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
+### Q2: 在特定时间范围内按字段和气象站获取原始数据 \{#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station\}
 
 ```sql
 SELECT
@@ -287,7 +287,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.009 sec. Processed 91.70 thousand rows, 2.33 MB (9.67 million rows/s., 245.31 MB/s.)
 ```
 
-## 致谢 {#credits}
+## 致谢 \{#credits\}
 
 我们谨此感谢行政院农业委员会中央气象署及农业气象观测网（测站）在本数据集的准备、清洗和发布过程中所作出的贡献，谨致谢忱。
 

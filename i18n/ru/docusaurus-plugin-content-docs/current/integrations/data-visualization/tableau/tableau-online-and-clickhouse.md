@@ -24,19 +24,19 @@ import tableau_desktop_03 from '@site/static/images/integrations/data-visualizat
 import tableau_desktop_04 from '@site/static/images/integrations/data-visualization/tableau_desktop_04.png';
 import tableau_desktop_05 from '@site/static/images/integrations/data-visualization/tableau_desktop_05.png';
 
-# Tableau Online {#tableau-online}
+# Tableau Online \{#tableau-online\}
 
 Tableau Online может подключаться к ClickHouse Cloud или локальному развертыванию ClickHouse через интерфейс MySQL, используя официальный источник данных MySQL.
 
-## Настройка ClickHouse Cloud {#clickhouse-cloud-setup}
+## Настройка ClickHouse Cloud \{#clickhouse-cloud-setup\}
 
 <MySQLCloudSetup />
 
-## Настройка сервера ClickHouse в локальной инфраструктуре {#on-premise-clickhouse-server-setup}
+## Настройка сервера ClickHouse в локальной инфраструктуре \{#on-premise-clickhouse-server-setup\}
 
 <MySQLOnPremiseSetup />
 
-## Подключение Tableau Online к ClickHouse (on-premise, без SSL) {#connecting-tableau-online-to-clickhouse-on-premise-without-ssl}
+## Подключение Tableau Online к ClickHouse (on-premise, без SSL) \{#connecting-tableau-online-to-clickhouse-on-premise-without-ssl\}
 
 Войдите в свою учетную запись Tableau Cloud и добавьте новый источник данных (Published Data Source).
 
@@ -66,7 +66,7 @@ Tableau Online проанализирует базу данных и предо�
 
 NB: если вы хотите использовать Tableau Online в сочетании с Tableau Desktop и делиться наборами данных ClickHouse между ними, убедитесь, что вы используете Tableau Desktop с тем же стандартным коннектором MySQL, следуя руководству по настройке, которое отображается [здесь](https://www.tableau.com/support/drivers), если выбрать MySQL в выпадающем списке Data Source. Если у вас Mac на процессоре M1, ознакомьтесь с [этой темой по устранению неполадок](https://community.tableau.com/s/question/0D58b0000Ar6OhvCQE/unable-to-install-mysql-driver-for-m1-mac) для обходного варианта установки драйвера.
 
-## Подключение Tableau Online к ClickHouse (облачное или локальное развертывание с SSL) {#connecting-tableau-online-to-clickhouse-cloud-or-on-premise-setup-with-ssl}
+## Подключение Tableau Online к ClickHouse (облачное или локальное развертывание с SSL) \{#connecting-tableau-online-to-clickhouse-cloud-or-on-premise-setup-with-ssl\}
 
 Так как невозможно указать SSL-сертификаты через мастер настройки подключения MySQL в Tableau Online, 
 единственный способ — использовать Tableau Desktop для настройки подключения, а затем опубликовать его в Tableau Online. Однако этот процесс довольно простой.
@@ -108,6 +108,6 @@ SSL-сертификат ClickHouse Cloud подписан центром сер
 
 Наконец, нажмите "Publish", и ваш источник данных со встроенными учетными данными будет автоматически открыт в Tableau Online.
 
-## Известные ограничения (ClickHouse 23.11) {#known-limitations-clickhouse-2311}
+## Известные ограничения (ClickHouse 23.11) \{#known-limitations-clickhouse-2311\}
 
 Все известные ограничения были исправлены в ClickHouse `23.11`. Если вы столкнётесь с другими проблемами совместимости, [свяжитесь с нами](https://clickhouse.com/company/contact) или создайте [новый запрос](https://github.com/ClickHouse/ClickHouse/issues).

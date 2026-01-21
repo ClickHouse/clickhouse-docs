@@ -11,7 +11,7 @@ import Image from '@theme/IdealImage';
 import restore_backup from '@site/static/images/cloud/guides/restore_backup.png';
 
 
-# データのレジリエンス {#clickhouse-cloud-data-resiliency}
+# データのレジリエンス \{#clickhouse-cloud-data-resiliency\}
 
 このページでは、ClickHouse Cloud におけるディザスタリカバリの推奨事項と、障害発生時にお客様が復旧するための指針を説明します。
 現在、ClickHouse Cloud は自動フェイルオーバーや、複数の地理的リージョン間での自動同期をサポートしていません。
@@ -22,7 +22,7 @@ import restore_backup from '@site/static/images/cloud/guides/restore_backup.png'
 
 
 
-## 用語の定義 {#definitions}
+## 用語の定義 \{#definitions\}
 
 まずはいくつかの用語を定義しておくと役に立ちます。
 
@@ -34,7 +34,7 @@ import restore_backup from '@site/static/images/cloud/guides/restore_backup.png'
 
 
 
-## データベースバックアップ {#database-backups}
+## データベースバックアップ \{#database-backups\}
 
 プライマリサービスのバックアップを保持しておくことは、プライマリサービスにダウンタイムが発生した場合に、そのバックアップからリストアするための有効な手段です。
 ClickHouse Cloud は、バックアップに関して次の機能をサポートしています。
@@ -65,14 +65,14 @@ Enterprise Tier のお客様は、自身のアカウント内のオブジェク�
 
 
 
-## バックアップからの復元 {#restoring-from-a-backup}
+## バックアップからの復元 \{#restoring-from-a-backup\}
 
 1. ClickHouse Cloud バケット内のデフォルト バックアップは、同じリージョン内の新しいサービスに復元できます。
 2. 外部バックアップ（お客様のオブジェクトストレージ内）は、同じリージョンまたは別のリージョンの新しいサービスに復元できます。
 
 
 
-## バックアップおよびリストア所要時間の目安 {#backup-and-restore-duration-guidance}
+## バックアップおよびリストア所要時間の目安 \{#backup-and-restore-duration-guidance\}
 
 バックアップおよびリストアにかかる時間は、データベースのサイズに加え、スキーマやテーブル数など、複数の要因によって変動します。
 
@@ -92,16 +92,16 @@ Enterprise Tier のお客様は、自身のアカウント内のオブジェク�
 
 
 
-## 復旧プロセス {#recovery-process}
+## 復旧プロセス \{#recovery-process\}
 
 このセクションでは、さまざまな復旧オプションと、それぞれのケースで実行できる手順について説明します。
 
-### プライマリサービスのデータ破損 {#primary-service-data-corruption}
+### プライマリサービスのデータ破損 \{#primary-service-data-corruption\}
 
 この場合、同一リージョン内の別のサービスに対して、バックアップからデータを[復元できます](/cloud/manage/backups/overview#restore-a-backup)。
 デフォルトのバックアップポリシーを使用している場合、利用可能なバックアップは最大で 24 時間前の時点までさかのぼります。6 時間間隔で取得する設定可能なバックアップを使用している場合は、最大で 6 時間前のものまで復元できます。
 
-#### 復元手順 {#restoration-steps}
+#### 復元手順 \{#restoration-steps\}
 
 既存のバックアップから復元するには
 
@@ -115,7 +115,7 @@ Enterprise Tier のお客様は、自身のアカウント内のオブジェク�
 
 </VerticalStepper>
 
-### プライマリリージョンのダウンタイム {#primary-region-downtime}
+### プライマリリージョンのダウンタイム \{#primary-region-downtime\}
 
 Enterprise Tier のお客様は、バックアップを自身のクラウドプロバイダのバケットに[エクスポートできます](/cloud/manage/backups/export-backups-to-own-cloud-account)。
 リージョン障害が懸念される場合は、バックアップを別リージョンにエクスポートすることを推奨します。
@@ -135,7 +135,7 @@ Enterprise Tier のお客様は、バックアップを自身のクラウドプ�
 
 
 
-## 追加オプション {#additional-options}
+## 追加オプション \{#additional-options\}
 
 検討すべき追加オプションがいくつかあります。
 

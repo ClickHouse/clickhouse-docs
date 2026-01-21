@@ -7,7 +7,7 @@ title: 'system.s3_queue_settings'
 doc_type: 'reference'
 ---
 
-# system.s3&#95;queue&#95;settings {#systems3&#95;queue&#95;settings}
+# system.s3&#95;queue&#95;settings \{#systems3&#95;queue&#95;settings\}
 
 包含有关 [S3Queue](../../engines/table-engines/integrations/s3queue.md) 表设置的信息。从服务器 24.10 版本起可用。
 

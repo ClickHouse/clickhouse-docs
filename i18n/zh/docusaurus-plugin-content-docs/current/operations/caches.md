@@ -8,7 +8,7 @@ keywords: ['cache']
 doc_type: 'reference'
 ---
 
-# 缓存类型 {#cache-types}
+# 缓存类型 \{#cache-types\}
 
 在执行查询时，ClickHouse 使用不同类型的缓存来加速查询，
 并减少对磁盘的读写需求。

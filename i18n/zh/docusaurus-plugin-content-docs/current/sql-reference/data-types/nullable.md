@@ -7,7 +7,7 @@ title: 'Nullable(T)'
 doc_type: 'reference'
 ---
 
-# Nullable(T) {#nullablet}
+# Nullable(T) \{#nullablet\}
 
 允许在 `T` 类型的正常值之外，额外存储表示“缺失值”的特殊标记（[NULL](../../sql-reference/syntax.md)）。例如，类型为 `Nullable(Int8)` 的列既可以存储 `Int8` 类型的值，而没有值的行则会存储 `NULL`。
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 除非在 ClickHouse 服务器配置中另有指定，对于任意 `Nullable` 类型，`NULL` 是其默认值。
 
-## 存储特性 {#storage-features}
+## 存储特性 \{#storage-features\}
 
 为了在表的列中存储 `Nullable` 类型的值，ClickHouse 除了用于存储实际值的普通文件外，还会使用一个单独的 `NULL` 掩码文件。掩码文件中的条目使 ClickHouse 能够区分每一行中该数据类型的 `NULL` 值和其默认值。由于需要额外的文件，`Nullable` 列相比类似的普通列会消耗更多的存储空间。
 
@@ -25,7 +25,7 @@ doc_type: 'reference'
 使用 `Nullable` 几乎总是会对性能产生负面影响，在设计数据库时请牢记这一点。
 :::
 
-## 查找 NULL {#finding-null}
+## 查找 NULL \{#finding-null\}
 
 可以通过使用 `null` 子列，在无需读取整个列的情况下查找列中的 `NULL` 值。当对应的值为 `NULL` 时返回 `1`，否则返回 `0`。
 
@@ -52,7 +52,7 @@ SELECT n.null FROM nullable;
 └────────┘
 ```
 
-## 使用示例 {#usage-example}
+## 使用示例 \{#usage-example\}
 
 ```sql
 CREATE TABLE t_null(x Int8, y Nullable(Int8)) ENGINE TinyLog

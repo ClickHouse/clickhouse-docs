@@ -19,11 +19,11 @@ import Image from '@theme/IdealImage';
 我们建议正在从 Postgres 迁移的用户阅读[在 ClickHouse 中进行数据建模的指南](/data-modeling/schema-design)。本指南使用相同的 Stack Overflow 数据集，并基于 ClickHouse 的功能探索多种建模方案。
 
 
-## ClickHouse 中的主键（排序键） {#primary-ordering-keys-in-clickhouse}
+## ClickHouse 中的主键（排序键） \{#primary-ordering-keys-in-clickhouse\}
 
 来自 OLTP 数据库的用户通常会在 ClickHouse 中寻找对应的概念。注意到 ClickHouse 支持 `PRIMARY KEY` 语法后，用户可能会倾向于直接沿用源 OLTP 数据库中的同一组键来定义表模式。这种做法并不合适。
 
-### ClickHouse 的主键有何不同？ {#how-are-clickhouse-primary-keys-different}
+### ClickHouse 的主键有何不同？ \{#how-are-clickhouse-primary-keys-different\}
 
 要理解为什么在 ClickHouse 中直接使用 OLTP 的主键是不合适的，首先需要了解 ClickHouse 索引的一些基础知识。这里以 Postgres 作为对比示例，但这些通用概念同样适用于其他 OLTP 数据库。
 
@@ -41,13 +41,13 @@ import Image from '@theme/IdealImage';
 
 > 表中的所有列都会根据指定排序键的值进行排序，而不论这些列本身是否包含在该键中。例如，如果使用 `CreationDate` 作为键，则所有其他列的值顺序都会与 `CreationDate` 列中的值顺序相对应。可以指定多个排序键——排序语义与 `SELECT` 查询中的 `ORDER BY` 子句相同。
 
-### 选择排序键 {#choosing-an-ordering-key}
+### 选择排序键 \{#choosing-an-ordering-key\}
 
 关于选择排序键时的考虑因素与步骤，并以 posts 表为示例，请参阅[此处](/data-modeling/schema-design#choosing-an-ordering-key)。
 
 在使用 CDC 实时复制时，还需要考虑额外的约束条件。有关在 CDC 场景下如何自定义排序键的技术，请参考该[文档](/integrations/clickpipes/postgres/ordering_keys)。
 
-## 分区 {#partitions}
+## 分区 \{#partitions\}
 
 如果你来自 Postgres，你应该已经很熟悉表分区这一概念：通过将表拆分为更小、更易管理的片段（称为分区），以提升大型数据库的性能和可管理性。分区可以通过在指定列（例如日期）上使用范围、指定列表，或基于键的哈希来实现。这使管理员可以基于特定条件（如日期范围或地理位置）来组织数据。分区有助于通过分区裁剪和更高效的索引来提升查询性能，从而实现更快速的数据访问。同时，它也有助于维护任务，例如备份和数据清理，因为可以针对单个分区而不是整个表执行操作。此外，通过将负载分布到多个分区，分区还能显著提高 PostgreSQL 数据库的可扩展性。
 
@@ -75,7 +75,7 @@ PARTITION BY toYear(CreationDate)
 有关分区的完整介绍，请参阅 [&quot;Table partitions&quot;](/partitions)。
 
 
-### 分区的应用场景 {#applications-of-partitions}
+### 分区的应用场景 \{#applications-of-partitions\}
 
 ClickHouse 中的分区与 Postgres 有类似的应用场景，但也存在一些细微差异。更具体来说：
 
@@ -119,7 +119,7 @@ Ok.
 * **查询优化** - 分区虽然可以帮助提升查询性能，但这在很大程度上取决于访问模式。如果查询只会命中少量分区（理想情况下是一个），性能有可能得到提升。只有在分区键不在主键中且你按该分区键进行过滤时，这才通常有用。然而，如果查询需要覆盖大量分区，其性能可能会比完全不使用分区时更差（因为分区可能会导致产生更多的 part）。如果分区键已经是主键中的前置列，则只针对单个分区的性能收益会大幅降低，甚至可以忽略不计。如果每个分区中的值是唯一的，分区还可以用于[优化 GROUP BY 查询](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)。但总体而言，你应首先确保主键已得到优化，只在极少数情况下将分区作为查询优化手段——仅当访问模式只会访问一天中某个可预测的特定时间子集时才考虑，例如按天分区且大部分查询都是针对最近一天的数据。
 
 
-### 分区使用建议 {#recommendations-for-partitions}
+### 分区使用建议 \{#recommendations-for-partitions\}
 
 用户应将分区视为一种数据管理技术。当在处理时序数据并需要从集群中淘汰数据时，它非常理想，例如可以[直接删除](/sql-reference/statements/alter/partition#drop-partitionpart)最老的分区。
 
@@ -129,7 +129,7 @@ Ok.
 
 > 由于 part 是在每个分区内独立创建的，增加分区数量会导致 part 数量相应增加，即 part 数量是分区数量的倍数。因此，高基数的分区键可能会导致上述错误，应当避免。
 
-## 物化视图与投影 {#materialized-views-vs-projections}
+## 物化视图与投影 \{#materialized-views-vs-projections\}
 
 Postgres 允许在单个表上创建多个索引，从而可以针对多种访问模式进行优化。这种灵活性使管理员和开发人员能够根据特定查询和运维需求定制数据库性能。ClickHouse 的投影（projections）概念虽然与此并非完全等价，但允许用户为一张表指定多个 `ORDER BY` 子句。
 
@@ -246,7 +246,7 @@ WHERE UserId = 8592047
 ```
 
 
-### 何时使用投影 {#when-to-use-projections}
+### 何时使用投影 \{#when-to-use-projections\}
 
 投影对新用户来说是一个极具吸引力的特性,因为它们会在数据插入时自动维护。此外,查询只需发送到单个表,投影会在可能的情况下自动被利用以加快响应时间。
 
@@ -267,7 +267,7 @@ WHERE UserId = 8592047
 有关更多详细信息,请参阅["投影"](/data-modeling/projections)
 :::
 
-## 反规范化 {#denormalization}
+## 反规范化 \{#denormalization\}
 
 由于 Postgres 是关系型数据库，其数据模型高度[规范化](https://en.wikipedia.org/wiki/Database_normalization)，通常会涉及数百张表。在 ClickHouse 中，为了优化 JOIN 性能，在某些情况下进行反规范化会更有利。
 

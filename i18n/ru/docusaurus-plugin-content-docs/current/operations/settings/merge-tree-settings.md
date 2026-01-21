@@ -45,26 +45,26 @@ ALTER TABLE tab MODIFY SETTING max_suspicious_broken_parts = 100;
 ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 ```
 
-## Настройки MergeTree {#mergetree-settings}
+## Настройки MergeTree \{#mergetree-settings\}
 
 {/* Нижеуказанные настройки автоматически создаются скриптом по адресу 
   https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/settings/autogenerate-settings.sh
   */ }
 
-## adaptive_write_buffer_initial_size {#adaptive_write_buffer_initial_size} 
+## adaptive_write_buffer_initial_size \{#adaptive_write_buffer_initial_size\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="16384" />
 
 Начальный размер адаптивного буфера записи
 
-## add_implicit_sign_column_constraint_for_collapsing_engine {#add_implicit_sign_column_constraint_for_collapsing_engine} 
+## add_implicit_sign_column_constraint_for_collapsing_engine \{#add_implicit_sign_column_constraint_for_collapsing_engine\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Если установлено значение `true`, добавляет неявное ограничение для столбца `sign` таблицы CollapsingMergeTree
 или VersionedCollapsingMergeTree, чтобы допускать только корректные значения (`1` и `-1`).
 
-## add_minmax_index_for_numeric_columns {#add_minmax_index_for_numeric_columns} 
+## add_minmax_index_for_numeric_columns \{#add_minmax_index_for_numeric_columns\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -72,7 +72,7 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 
 Когда параметр включён, для всех числовых столбцов таблицы добавляются min-max (пропускающие) индексы.
 
-## add_minmax_index_for_string_columns {#add_minmax_index_for_string_columns} 
+## add_minmax_index_for_string_columns \{#add_minmax_index_for_string_columns\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -80,7 +80,7 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 
 При включении параметра для всех строковых столбцов таблицы добавляются минимально-максимальные (пропускающие) индексы.
 
-## allow_coalescing_columns_in_partition_or_order_key {#allow_coalescing_columns_in_partition_or_order_key} 
+## allow_coalescing_columns_in_partition_or_order_key \{#allow_coalescing_columns_in_partition_or_order_key\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -88,7 +88,7 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 
 При включении разрешает использовать объединяемые столбцы в таблице CoalescingMergeTree в качестве ключа партиционирования или сортировки.
 
-## allow_experimental_replacing_merge_with_cleanup {#allow_experimental_replacing_merge_with_cleanup} 
+## allow_experimental_replacing_merge_with_cleanup \{#allow_experimental_replacing_merge_with_cleanup\}
 
 <ExperimentalBadge/>
 
@@ -103,7 +103,7 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 `min_age_to_force_merge_on_partition_only` и
 `enable_replacing_merge_with_cleanup_for_min_age_to_force_merge`.
 
-## allow&#95;experimental&#95;reverse&#95;key {#allow_experimental_reverse_key}
+## allow&#95;experimental&#95;reverse&#95;key \{#allow_experimental_reverse_key\}
 
 <ExperimentalBadge />
 
@@ -140,7 +140,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 **Значение по умолчанию:** false
 
-## allow_floating_point_partition_key {#allow_floating_point_partition_key} 
+## allow_floating_point_partition_key \{#allow_floating_point_partition_key\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -151,13 +151,13 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 - `0` — Ключ партиции с плавающей запятой не допускается.
 - `1` — Ключ партиции с плавающей запятой допускается.
 
-## allow_nullable_key {#allow_nullable_key} 
+## allow_nullable_key \{#allow_nullable_key\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Разрешает использование типов Nullable в качестве первичных ключей.
 
-## allow_part_offset_column_in_projections {#allow_part_offset_column_in_projections} 
+## allow_part_offset_column_in_projections \{#allow_part_offset_column_in_projections\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -165,7 +165,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 Разрешает использование столбца `_part_offset` в запросах SELECT с проекциями.
 
-## allow_reduce_blocking_parts_task {#allow_reduce_blocking_parts_task} 
+## allow_reduce_blocking_parts_task \{#allow_reduce_blocking_parts_task\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -174,7 +174,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 Фоновая задача, которая уменьшает количество блокирующих частей для таблиц SharedMergeTree.
 Только в ClickHouse Cloud.
 
-## allow_remote_fs_zero_copy_replication {#allow_remote_fs_zero_copy_replication} 
+## allow_remote_fs_zero_copy_replication \{#allow_remote_fs_zero_copy_replication\}
 
 <ExperimentalBadge/>
 
@@ -182,7 +182,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 Не используйте этот параметр в производственной среде, так как он ещё не готов.
 
-## allow_summing_columns_in_partition_or_order_key {#allow_summing_columns_in_partition_or_order_key} 
+## allow_summing_columns_in_partition_or_order_key \{#allow_summing_columns_in_partition_or_order_key\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -190,19 +190,19 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 При включении разрешает использовать суммируемые столбцы в таблице SummingMergeTree в ключе партиции или сортировки.
 
-## allow_suspicious_indices {#allow_suspicious_indices} 
+## allow_suspicious_indices \{#allow_suspicious_indices\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Отклонять первичные/вторичные индексы и ключи сортировки с одинаковыми выражениями
 
-## allow_vertical_merges_from_compact_to_wide_parts {#allow_vertical_merges_from_compact_to_wide_parts} 
+## allow_vertical_merges_from_compact_to_wide_parts \{#allow_vertical_merges_from_compact_to_wide_parts\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Разрешает вертикальные слияния из компактных частей в широкие части. Этот параметр должен иметь одинаковое значение на всех репликах.
 
-## alter_column_secondary_index_mode {#alter_column_secondary_index_mode} 
+## alter_column_secondary_index_mode \{#alter_column_secondary_index_mode\}
 
 <SettingsInfoBlock type="AlterColumnSecondaryIndexMode" default_value="rebuild" />
 
@@ -218,7 +218,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 - `compatibility`: Соответствует исходному поведению: `throw` для `ALTER ... MODIFY COLUMN` и `rebuild` для `ALTER ... UPDATE/DELETE`.
 - `ignore`: Предназначен для опытных пользователей. Оставляет индексы в неконсистентном состоянии, что может привести к некорректным результатам запросов.
 
-## always_fetch_merged_part {#always_fetch_merged_part} 
+## always_fetch_merged_part \{#always_fetch_merged_part\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -229,13 +229,13 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 - true, false
 
-## always_use_copy_instead_of_hardlinks {#always_use_copy_instead_of_hardlinks} 
+## always_use_copy_instead_of_hardlinks \{#always_use_copy_instead_of_hardlinks\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Всегда копирует данные вместо создания жёстких ссылок при выполнении мутаций, замен, отсоединений и так далее.
 
-## apply_patches_on_merge {#apply_patches_on_merge} 
+## apply_patches_on_merge \{#apply_patches_on_merge\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -243,39 +243,39 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 Если установлено значение true, части‑патчи применяются при слиянии
 
-## assign_part_uuids {#assign_part_uuids} 
+## assign_part_uuids \{#assign_part_uuids\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 При включении каждой новой части будет присвоен уникальный идентификатор.
 Перед включением проверьте, что все реплики поддерживают UUID версии 4.
 
-## async_block_ids_cache_update_wait_ms {#async_block_ids_cache_update_wait_ms} 
+## async_block_ids_cache_update_wait_ms \{#async_block_ids_cache_update_wait_ms\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="100" />
 
 Как долго каждая итерация вставки будет ждать обновления async_block_ids_cache.
 
-## async_insert {#async_insert} 
+## async_insert \{#async_insert\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Если имеет значение true, данные из запроса INSERT помещаются в очередь и позже в фоновом режиме записываются в таблицу.
 
-## auto_statistics_types {#auto_statistics_types} 
+## auto_statistics_types \{#auto_statistics_types\}
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": ""},{"label": "New setting"}]}]}/>
 
 Список типов статистики, разделённый запятыми, которые автоматически рассчитываются для всех соответствующих столбцов.
 Поддерживаемые типы статистики: tdigest, countmin, minmax, uniq.
 
-## background_task_preferred_step_execution_time_ms {#background_task_preferred_step_execution_time_ms} 
+## background_task_preferred_step_execution_time_ms \{#background_task_preferred_step_execution_time_ms\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="50" />
 
 Целевое время выполнения одного шага операции слияния или мутации. Может быть превышено, если один шаг выполняется дольше.
 
-## cache_populated_by_fetch {#cache_populated_by_fetch} 
+## cache_populated_by_fetch \{#cache_populated_by_fetch\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -297,7 +297,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 - [prefer_warmed_unmerged_parts_seconds](/operations/settings/settings#prefer_warmed_unmerged_parts_seconds)
 - [cache_warmer_threads](/operations/settings/settings#cache_warmer_threads)
 
-## cache_populated_by_fetch_filename_regexp {#cache_populated_by_fetch_filename_regexp} 
+## cache_populated_by_fetch_filename_regexp \{#cache_populated_by_fetch_filename_regexp\}
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": ""},{"label": "New setting"}]}]}/>
 
@@ -307,13 +307,13 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 Если значение не пустое, в кэш после операции fetch (если включен `cache_populated_by_fetch`) будут предварительно загружены только те файлы, которые соответствуют этому регулярному выражению.
 
-## check_delay_period {#check_delay_period} 
+## check_delay_period \{#check_delay_period\}
 
 <SettingsInfoBlock type="UInt64" default_value="60" />
 
 Устаревший параметр, ничего не делает.
 
-## check_sample_column_is_correct {#check_sample_column_is_correct} 
+## check_sample_column_is_correct \{#check_sample_column_is_correct\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -333,19 +333,19 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 некорректным выражением сэмплирования и вы не хотите, чтобы сервер генерировал исключение
 во время запуска, установите `check_sample_column_is_correct` в значение `false`.
 
-## clean_deleted_rows {#clean_deleted_rows} 
+## clean_deleted_rows \{#clean_deleted_rows\}
 
 <SettingsInfoBlock type="CleanDeletedRows" default_value="Never" />
 
 Устаревшая настройка, не выполняет никаких действий.
 
-## cleanup_delay_period {#cleanup_delay_period} 
+## cleanup_delay_period \{#cleanup_delay_period\}
 
 <SettingsInfoBlock type="UInt64" default_value="30" />
 
 Минимальный интервал очистки старых логов очереди, хешей блоков и частей.
 
-## cleanup_delay_period_random_add {#cleanup_delay_period_random_add} 
+## cleanup_delay_period_random_add \{#cleanup_delay_period_random_add\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -353,20 +353,20 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 чтобы избежать эффекта «стада» (thundering herd) и последующей DoS-атаки на ZooKeeper при
 очень большом числе таблиц.
 
-## cleanup_thread_preferred_points_per_iteration {#cleanup_thread_preferred_points_per_iteration} 
+## cleanup_thread_preferred_points_per_iteration \{#cleanup_thread_preferred_points_per_iteration\}
 
 <SettingsInfoBlock type="UInt64" default_value="150" />
 
 Предпочитаемый размер пакета для фоновой очистки (points — абстрактная единица, но 1 point
 приблизительно соответствует одному вставленному блоку).
 
-## cleanup_threads {#cleanup_threads} 
+## cleanup_threads \{#cleanup_threads\}
 
 <SettingsInfoBlock type="UInt64" default_value="128" />
 
 Устаревшая настройка, не оказывает никакого эффекта.
 
-## columns_and_secondary_indices_sizes_lazy_calculation {#columns_and_secondary_indices_sizes_lazy_calculation} 
+## columns_and_secondary_indices_sizes_lazy_calculation \{#columns_and_secondary_indices_sizes_lazy_calculation\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -375,55 +375,55 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 Вычислять размеры столбцов и вторичных индексов лениво при первом запросе
 вместо вычисления при инициализации таблицы.
 
-## columns_to_prewarm_mark_cache {#columns_to_prewarm_mark_cache} 
+## columns_to_prewarm_mark_cache \{#columns_to_prewarm_mark_cache\}
 
 Список столбцов, для которых нужно предварительно прогреть кэш меток (если включено). Пустое значение означает, что будут использоваться все столбцы.
 
-## compact_parts_max_bytes_to_buffer {#compact_parts_max_bytes_to_buffer} 
+## compact_parts_max_bytes_to_buffer \{#compact_parts_max_bytes_to_buffer\}
 
 <SettingsInfoBlock type="UInt64" default_value="134217728" />
 
 Доступен только в ClickHouse Cloud. Максимальное количество байт для записи в
 один страйп в компактных частях.
 
-## compact_parts_max_granules_to_buffer {#compact_parts_max_granules_to_buffer} 
+## compact_parts_max_granules_to_buffer \{#compact_parts_max_granules_to_buffer\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="128" />
 
 Доступен только в ClickHouse Cloud. Максимальное число гранул, которые можно записать в одну полосу компактных частей.
 
-## compact_parts_merge_max_bytes_to_prefetch_part {#compact_parts_merge_max_bytes_to_prefetch_part} 
+## compact_parts_merge_max_bytes_to_prefetch_part \{#compact_parts_merge_max_bytes_to_prefetch_part\}
 
 <SettingsInfoBlock type="UInt64" default_value="16777216" />
 
 Доступен только в ClickHouse Cloud. Максимальный размер компактной части, которая может быть целиком прочитана в память во время слияния.
 
-## compatibility_allow_sampling_expression_not_in_primary_key {#compatibility_allow_sampling_expression_not_in_primary_key} 
+## compatibility_allow_sampling_expression_not_in_primary_key \{#compatibility_allow_sampling_expression_not_in_primary_key\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Разрешает создавать таблицу, в которой выражение выборки (sampling expression) не входит в первичный ключ. Параметр нужен только для временного запуска сервера с некорректными таблицами ради обеспечения обратной совместимости.
 
-## compress_marks {#compress_marks} 
+## compress_marks \{#compress_marks\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Метки поддерживают сжатие, что уменьшает размер файлов меток и ускоряет их передачу по сети.
 
-## compress_primary_key {#compress_primary_key} 
+## compress_primary_key \{#compress_primary_key\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Включает сжатие первичного ключа. Это уменьшает размер файла первичного ключа и ускоряет передачу данных по сети.
 
-## concurrent_part_removal_threshold {#concurrent_part_removal_threshold} 
+## concurrent_part_removal_threshold \{#concurrent_part_removal_threshold\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
 Включает одновременное удаление частей (см. `max_part_removal_threads`) только если
 количество неактивных частей данных не меньше этого значения.
 
-## deduplicate_merge_projection_mode {#deduplicate_merge_projection_mode} 
+## deduplicate_merge_projection_mode \{#deduplicate_merge_projection_mode\}
 
 <SettingsInfoBlock type="DeduplicateMergeProjectionMode" default_value="throw" />
 
@@ -445,7 +445,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 - `drop`
 - `rebuild`
 
-## default_compression_codec {#default_compression_codec} 
+## default_compression_codec \{#default_compression_codec\}
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": ""},{"label": "New setting"}]}]}/>
 
@@ -458,7 +458,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 Значение по умолчанию: пустая строка (не задано).
 
-## detach_not_byte_identical_parts {#detach_not_byte_identical_parts} 
+## detach_not_byte_identical_parts \{#detach_not_byte_identical_parts\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -475,7 +475,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 - `0` — части удаляются;
 - `1` — части отсоединяются.
 
-## detach_old_local_parts_when_cloning_replica {#detach_old_local_parts_when_cloning_replica} 
+## detach_old_local_parts_when_cloning_replica \{#detach_old_local_parts_when_cloning_replica\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -486,29 +486,29 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 - `true`
 - `false`
 
-## disable_detach_partition_for_zero_copy_replication {#disable_detach_partition_for_zero_copy_replication} 
+## disable_detach_partition_for_zero_copy_replication \{#disable_detach_partition_for_zero_copy_replication\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Отключает запрос DETACH PARTITION для репликации без копирования данных.
 
-## disable_fetch_partition_for_zero_copy_replication {#disable_fetch_partition_for_zero_copy_replication} 
+## disable_fetch_partition_for_zero_copy_replication \{#disable_fetch_partition_for_zero_copy_replication\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Отключает выполнение запроса FETCH PARTITION для репликации без копирования данных.
 
-## disable_freeze_partition_for_zero_copy_replication {#disable_freeze_partition_for_zero_copy_replication} 
+## disable_freeze_partition_for_zero_copy_replication \{#disable_freeze_partition_for_zero_copy_replication\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Отключает выполнение запроса FREEZE PARTITION при репликации без копирования данных.
 
-## disk {#disk} 
+## disk \{#disk\}
 
 Имя диска для хранения данных. Можно указать вместо политики хранения.
 
-## dynamic_serialization_version {#dynamic_serialization_version} 
+## dynamic_serialization_version \{#dynamic_serialization_version\}
 
 <SettingsInfoBlock type="MergeTreeDynamicSerializationVersion" default_value="v3" />
 
@@ -522,25 +522,25 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 - `v2`
 - `v3`
 
-## enable_block_number_column {#enable_block_number_column} 
+## enable_block_number_column \{#enable_block_number_column\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Включить сохранение столбца _block_number для каждой строки.
 
-## enable_block_offset_column {#enable_block_offset_column} 
+## enable_block_offset_column \{#enable_block_offset_column\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Сохраняет виртуальный столбец `_block_number` во время слияний.
 
-## enable_index_granularity_compression {#enable_index_granularity_compression} 
+## enable_index_granularity_compression \{#enable_index_granularity_compression\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Сжимать значения гранулярности индекса в памяти, если это возможно
 
-## enable_max_bytes_limit_for_min_age_to_force_merge {#enable_max_bytes_limit_for_min_age_to_force_merge} 
+## enable_max_bytes_limit_for_min_age_to_force_merge \{#enable_max_bytes_limit_for_min_age_to_force_merge\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -555,7 +555,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 - `true`
 - `false`
 
-## enable_mixed_granularity_parts {#enable_mixed_granularity_parts} 
+## enable_mixed_granularity_parts \{#enable_mixed_granularity_parts\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -567,7 +567,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 Если у вас есть таблицы с большими строками, вы можете включить эту настройку для таблиц,
 чтобы повысить эффективность запросов `SELECT`.
 
-## enable_replacing_merge_with_cleanup_for_min_age_to_force_merge {#enable_replacing_merge_with_cleanup_for_min_age_to_force_merge} 
+## enable_replacing_merge_with_cleanup_for_min_age_to_force_merge \{#enable_replacing_merge_with_cleanup_for_min_age_to_force_merge\}
 
 <ExperimentalBadge/>
 
@@ -584,19 +584,19 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 - `true`
 - `false`
 
-## enable_the_endpoint_id_with_zookeeper_name_prefix {#enable_the_endpoint_id_with_zookeeper_name_prefix} 
+## enable_the_endpoint_id_with_zookeeper_name_prefix \{#enable_the_endpoint_id_with_zookeeper_name_prefix\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Включает использование идентификатора endpoint с префиксом имени Zookeeper для реплицируемой таблицы MergeTree.
 
-## enable_vertical_merge_algorithm {#enable_vertical_merge_algorithm} 
+## enable_vertical_merge_algorithm \{#enable_vertical_merge_algorithm\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
 Включает использование вертикального алгоритма слияния.
 
-## enforce_index_structure_match_on_partition_manipulation {#enforce_index_structure_match_on_partition_manipulation} 
+## enforce_index_structure_match_on_partition_manipulation \{#enforce_index_structure_match_on_partition_manipulation\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -606,7 +606,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 (`ATTACH/MOVE/REPLACE PARTITION`), то индексы и проекции в исходной и целевой таблицах должны совпадать.
 В противном случае целевая таблица может содержать надмножество индексов и проекций по сравнению с исходной таблицей.
 
-## escape_variant_subcolumn_filenames {#escape_variant_subcolumn_filenames} 
+## escape_variant_subcolumn_filenames \{#escape_variant_subcolumn_filenames\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -614,7 +614,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 Экранирует специальные символы в именах файлов, создаваемых для подстолбцов типа данных Variant в Wide-частях таблицы MergeTree. Необходимо для обеспечения совместимости.
 
-## exclude_deleted_rows_for_part_size_in_merge {#exclude_deleted_rows_for_part_size_in_merge} 
+## exclude_deleted_rows_for_part_size_in_merge \{#exclude_deleted_rows_for_part_size_in_merge\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -632,7 +632,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 - [load_existing_rows_count_for_old_parts](#load_existing_rows_count_for_old_parts)
 настройки
 
-## exclude&#95;materialize&#95;skip&#95;indexes&#95;on&#95;merge {#exclude_materialize_skip_indexes_on_merge}
+## exclude&#95;materialize&#95;skip&#95;indexes&#95;on&#95;merge \{#exclude_materialize_skip_indexes_on_merge\}
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": ""},{"label": "Новая настройка."}]}]} />
 
@@ -666,7 +666,7 @@ ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = 'idx_
 ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = '';
 ```
 
-## execute_merges_on_single_replica_time_threshold {#execute_merges_on_single_replica_time_threshold} 
+## execute_merges_on_single_replica_time_threshold \{#execute_merges_on_single_replica_time_threshold\}
 
 <SettingsInfoBlock type="Seconds" default_value="0" />
 
@@ -680,25 +680,25 @@ ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = '';
 
 - Любое положительное целое число.
 
-## fault_probability_after_part_commit {#fault_probability_after_part_commit} 
+## fault_probability_after_part_commit \{#fault_probability_after_part_commit\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
 Используется для тестирования. Не изменяйте его.
 
-## fault_probability_before_part_commit {#fault_probability_before_part_commit} 
+## fault_probability_before_part_commit \{#fault_probability_before_part_commit\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
 Для тестирования. Не изменяйте это значение.
 
-## finished_mutations_to_keep {#finished_mutations_to_keep} 
+## finished_mutations_to_keep \{#finished_mutations_to_keep\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
 Сколько записей о завершённых мутациях хранить. Если значение равно нулю, сохраняются все записи.
 
-## force_read_through_cache_for_merges {#force_read_through_cache_for_merges} 
+## force_read_through_cache_for_merges \{#force_read_through_cache_for_merges\}
 
 <ExperimentalBadge/>
 
@@ -706,32 +706,32 @@ ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = '';
 
 Принудительное чтение через файловый кеш при выполнении слияний
 
-## fsync_after_insert {#fsync_after_insert} 
+## fsync_after_insert \{#fsync_after_insert\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Выполнять fsync для каждой вставленной части. Существенно снижает производительность
 операций вставки, не рекомендуется использовать с широкими частями.
 
-## fsync_part_directory {#fsync_part_directory} 
+## fsync_part_directory \{#fsync_part_directory\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Выполнять fsync для каталога части после выполнения всех операций с частью (записи, переименования и т. д.).
 
-## in_memory_parts_enable_wal {#in_memory_parts_enable_wal} 
+## in_memory_parts_enable_wal \{#in_memory_parts_enable_wal\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Устаревшая настройка, не оказывает никакого эффекта.
 
-## in_memory_parts_insert_sync {#in_memory_parts_insert_sync} 
+## in_memory_parts_insert_sync \{#in_memory_parts_insert_sync\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Устаревшая настройка, не имеет эффекта.
 
-## inactive_parts_to_delay_insert {#inactive_parts_to_delay_insert} 
+## inactive_parts_to_delay_insert \{#inactive_parts_to_delay_insert\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -747,7 +747,7 @@ ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = '';
 
 - Любое положительное целое число.
 
-## inactive_parts_to_throw_insert {#inactive_parts_to_throw_insert} 
+## inactive_parts_to_throw_insert \{#inactive_parts_to_throw_insert\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -762,13 +762,13 @@ slower than inserts".
 
 - Любое положительное целое число.
 
-## index_granularity {#index_granularity} 
+## index_granularity \{#index_granularity\}
 
 <SettingsInfoBlock type="UInt64" default_value="8192" />
 
 Максимальное количество строк данных между метками индекса. То есть, сколько строк приходится на одно значение первичного ключа.
 
-## index_granularity_bytes {#index_granularity_bytes} 
+## index_granularity_bytes \{#index_granularity_bytes\}
 
 <SettingsInfoBlock type="UInt64" default_value="10485760" />
 
@@ -776,31 +776,31 @@ slower than inserts".
 
 Чтобы ограничить размер гранулы только количеством строк, установите значение `0` (не рекомендуется).
 
-## initialization_retry_period {#initialization_retry_period} 
+## initialization_retry_period \{#initialization_retry_period\}
 
 <SettingsInfoBlock type="Seconds" default_value="60" />
 
 Период между повторными попытками инициализации таблицы, в секундах.
 
-## kill_delay_period {#kill_delay_period} 
+## kill_delay_period \{#kill_delay_period\}
 
 <SettingsInfoBlock type="UInt64" default_value="30" />
 
 Устаревшая настройка, не используется.
 
-## kill_delay_period_random_add {#kill_delay_period_random_add} 
+## kill_delay_period_random_add \{#kill_delay_period_random_add\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
 Устаревшая настройка, ни на что не влияет.
 
-## kill_threads {#kill_threads} 
+## kill_threads \{#kill_threads\}
 
 <SettingsInfoBlock type="UInt64" default_value="128" />
 
 Эта настройка устарела и ни на что не влияет.
 
-## lightweight_mutation_projection_mode {#lightweight_mutation_projection_mode} 
+## lightweight_mutation_projection_mode \{#lightweight_mutation_projection_mode\}
 
 <SettingsInfoBlock type="LightweightMutationProjectionMode" default_value="throw" />
 
@@ -823,7 +823,7 @@ drop или rebuild.
 - `drop`
 - `rebuild`
 
-## load_existing_rows_count_for_old_parts {#load_existing_rows_count_for_old_parts} 
+## load_existing_rows_count_for_old_parts \{#load_existing_rows_count_for_old_parts\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -840,25 +840,25 @@ drop или rebuild.
 
 - настройка [exclude_deleted_rows_for_part_size_in_merge](#exclude_deleted_rows_for_part_size_in_merge)
 
-## lock_acquire_timeout_for_background_operations {#lock_acquire_timeout_for_background_operations} 
+## lock_acquire_timeout_for_background_operations \{#lock_acquire_timeout_for_background_operations\}
 
 <SettingsInfoBlock type="Seconds" default_value="120" />
 
 Для фоновых операций, таких как слияния, мутации и т. д. Определяет, сколько секунд ожидать, прежде чем признать попытку получения блокировок таблицы неудачной.
 
-## marks_compress_block_size {#marks_compress_block_size} 
+## marks_compress_block_size \{#marks_compress_block_size\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="65536" />
 
 Размер блока сжатия меток; фактический размер сжимаемого блока.
 
-## marks_compression_codec {#marks_compression_codec} 
+## marks_compression_codec \{#marks_compression_codec\}
 
 <SettingsInfoBlock type="String" default_value="ZSTD(3)" />
 
 Кодек сжатия, используемый для меток. Метки достаточно малы и кэшируются, поэтому по умолчанию используется ZSTD(3).
 
-## materialize_skip_indexes_on_merge {#materialize_skip_indexes_on_merge} 
+## materialize_skip_indexes_on_merge \{#materialize_skip_indexes_on_merge\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -870,7 +870,7 @@ drop или rebuild.
 
 См. также [exclude_materialize_skip_indexes_on_merge](#exclude_materialize_skip_indexes_on_merge) для более точного управления.
 
-## materialize_statistics_on_merge {#materialize_statistics_on_merge} 
+## materialize_statistics_on_merge \{#materialize_statistics_on_merge\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -880,13 +880,13 @@ drop или rebuild.
 В противном случае её можно создать и сохранить явным вызовом [MATERIALIZE STATISTICS](/sql-reference/statements/alter/statistics.md)
 или [во время операций INSERT](/operations/settings/settings.md#materialize_statistics_on_insert)
 
-## materialize_ttl_recalculate_only {#materialize_ttl_recalculate_only} 
+## materialize_ttl_recalculate_only \{#materialize_ttl_recalculate_only\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Пересчитывать информацию о TTL только при выполнении MATERIALIZE TTL
 
-## max_avg_part_size_for_too_many_parts {#max_avg_part_size_for_too_many_parts} 
+## max_avg_part_size_for_too_many_parts \{#max_avg_part_size_for_too_many_parts\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
@@ -898,7 +898,7 @@ drop или rebuild.
 одном сервере, если части успешно объединяются в более крупные части. Это
 не влияет на пороги для неактивных частей или общего количества частей.
 
-## max_bytes_to_merge_at_max_space_in_pool {#max_bytes_to_merge_at_max_space_in_pool} 
+## max_bytes_to_merge_at_max_space_in_pool \{#max_bytes_to_merge_at_max_space_in_pool\}
 
 <SettingsInfoBlock type="UInt64" default_value="161061273600" />
 
@@ -915,7 +915,7 @@ drop или rebuild.
 Слияния, инициированные командой [OPTIMIZE FINAL](/sql-reference/statements/optimize),
 игнорируют `max_bytes_to_merge_at_max_space_in_pool` (учитывается только свободное место на диске).
 
-## max_bytes_to_merge_at_min_space_in_pool {#max_bytes_to_merge_at_min_space_in_pool} 
+## max_bytes_to_merge_at_min_space_in_pool \{#max_bytes_to_merge_at_min_space_in_pool\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
 
@@ -936,13 +936,13 @@ drop или rebuild.
 поэтому другие слияния не могут запускаться, и количество мелких частей растёт
 с каждой вставкой.
 
-## max_cleanup_delay_period {#max_cleanup_delay_period} 
+## max_cleanup_delay_period \{#max_cleanup_delay_period\}
 
 <SettingsInfoBlock type="UInt64" default_value="300" />
 
 Максимальный интервал для очистки старых журналов очереди, хэшей блоков и частей.
 
-## max_compress_block_size {#max_compress_block_size} 
+## max_compress_block_size \{#max_compress_block_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -952,7 +952,7 @@ drop или rebuild.
 Значение, указанное при создании таблицы, переопределяет глобальное
 значение этого параметра.
 
-## max&#95;concurrent&#95;queries {#max_concurrent_queries}
+## max&#95;concurrent&#95;queries \{#max_concurrent_queries\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -972,7 +972,7 @@ drop или rebuild.
 <max_concurrent_queries>50</max_concurrent_queries>
 ```
 
-## max&#95;delay&#95;to&#95;insert {#max_delay_to_insert}
+## max&#95;delay&#95;to&#95;insert \{#max_delay_to_insert\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
@@ -1011,14 +1011,14 @@ delay_milliseconds = max(min_delay_to_insert_ms, (max_delay_to_insert * 1000)
 min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается на `max( 10, 1 * 1000 *
 (224 - 150 + 1) / (300 - 150) ) = 500` миллисекунд.
 
-## max_delay_to_mutate_ms {#max_delay_to_mutate_ms} 
+## max_delay_to_mutate_ms \{#max_delay_to_mutate_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
 Максимальная задержка мутации таблицы MergeTree в миллисекундах при большом количестве
 незавершённых мутаций
 
-## max_digestion_size_per_segment {#max_digestion_size_per_segment} 
+## max_digestion_size_per_segment \{#max_digestion_size_per_segment\}
 
 <SettingsInfoBlock type="UInt64" default_value="268435456" />
 
@@ -1026,7 +1026,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 Устаревшая настройка, ни на что не влияет.
 
-## max_file_name_length {#max_file_name_length} 
+## max_file_name_length \{#max_file_name_length\}
 
 <SettingsInfoBlock type="UInt64" default_value="127" />
 
@@ -1036,7 +1036,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 рекомендуется задавать его меньше максимальной длины имени файла (обычно 255
 байт) с некоторым запасом, чтобы избежать ошибок файловой системы.
 
-## max_files_to_modify_in_alter_columns {#max_files_to_modify_in_alter_columns} 
+## max_files_to_modify_in_alter_columns \{#max_files_to_modify_in_alter_columns\}
 
 <SettingsInfoBlock type="UInt64" default_value="75" />
 
@@ -1049,7 +1049,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 Значение по умолчанию: 75
 
-## max_files_to_remove_in_alter_columns {#max_files_to_remove_in_alter_columns} 
+## max_files_to_remove_in_alter_columns \{#max_files_to_remove_in_alter_columns\}
 
 <SettingsInfoBlock type="UInt64" default_value="50" />
 
@@ -1060,7 +1060,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 - Любое положительное целое число.
 
-## max_merge_delayed_streams_for_parallel_write {#max_merge_delayed_streams_for_parallel_write} 
+## max_merge_delayed_streams_for_parallel_write \{#max_merge_delayed_streams_for_parallel_write\}
 
 <SettingsInfoBlock type="UInt64" default_value="40" />
 
@@ -1070,38 +1070,38 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 (аналог max_insert_delayed_streams_for_parallel_write при слияниях). Работает
 только для вертикальных слияний.
 
-## max_merge_selecting_sleep_ms {#max_merge_selecting_sleep_ms} 
+## max_merge_selecting_sleep_ms \{#max_merge_selecting_sleep_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="60000" />
 
 Максимальное время ожидания перед повторной попыткой выбрать части для слияния после того, как не была выбрана ни одна часть. Меньшее значение приводит к более частому выбору задач в background_schedule_pool, что в крупномасштабных кластерах приводит к большому количеству запросов к ZooKeeper.
 
-## max_number_of_merges_with_ttl_in_pool {#max_number_of_merges_with_ttl_in_pool} 
+## max_number_of_merges_with_ttl_in_pool \{#max_number_of_merges_with_ttl_in_pool\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
 Когда количество слияний с записями TTL в пуле превышает указанное значение, новые слияния с TTL не назначаются. Это позволяет сохранить свободные потоки для обычных слияний и избежать ошибки «Too many parts».
 
-## max_number_of_mutations_for_replica {#max_number_of_mutations_for_replica} 
+## max_number_of_mutations_for_replica \{#max_number_of_mutations_for_replica\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Ограничивает количество мутаций частей на одну реплику до указанного значения.
 Ноль означает отсутствие ограничения на число мутаций на реплику (выполнение всё равно может быть ограничено другими настройками).
 
-## max_part_loading_threads {#max_part_loading_threads} 
+## max_part_loading_threads \{#max_part_loading_threads\}
 
 <SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
 Устаревшая настройка, не оказывает никакого эффекта.
 
-## max_part_removal_threads {#max_part_removal_threads} 
+## max_part_removal_threads \{#max_part_removal_threads\}
 
 <SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
 Устаревший параметр, не оказывает эффекта.
 
-## max_partitions_to_read {#max_partitions_to_read} 
+## max_partitions_to_read \{#max_partitions_to_read\}
 
 <SettingsInfoBlock type="Int64" default_value="-1" />
 
@@ -1117,7 +1117,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 Вы также можете задать настройку сложности запроса [max_partitions_to_read](/operations/settings/settings#max_partitions_to_read)
 на уровне запроса / сессии / профиля.
 
-## max_parts_in_total {#max_parts_in_total} 
+## max_parts_in_total \{#max_parts_in_total\}
 
 <SettingsInfoBlock type="UInt64" default_value="100000" />
 
@@ -1133,19 +1133,19 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 некорректного проектирования (ошибки при выборе стратегии партиционирования — слишком маленькие
 партиции).
 
-## max_parts_to_merge_at_once {#max_parts_to_merge_at_once} 
+## max_parts_to_merge_at_once \{#max_parts_to_merge_at_once\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
 Максимальное количество частей, которые могут быть объединены одновременно (0 — отключено). Не влияет на запрос OPTIMIZE FINAL.
 
-## max_postpone_time_for_failed_mutations_ms {#max_postpone_time_for_failed_mutations_ms} 
+## max_postpone_time_for_failed_mutations_ms \{#max_postpone_time_for_failed_mutations_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="300000" />
 
 Максимальное время откладывания неудавшихся мутаций.
 
-## max_postpone_time_for_failed_replicated_fetches_ms {#max_postpone_time_for_failed_replicated_fetches_ms} 
+## max_postpone_time_for_failed_replicated_fetches_ms \{#max_postpone_time_for_failed_replicated_fetches_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="60000" />
 
@@ -1153,7 +1153,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 Максимальное время откладывания неуспешных операций выборки в процессе репликации.
 
-## max_postpone_time_for_failed_replicated_merges_ms {#max_postpone_time_for_failed_replicated_merges_ms} 
+## max_postpone_time_for_failed_replicated_merges_ms \{#max_postpone_time_for_failed_replicated_merges_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="60000" />
 
@@ -1161,7 +1161,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 Максимальное время откладывания неуспешных операций слияния в реплицируемых таблицах.
 
-## max_postpone_time_for_failed_replicated_tasks_ms {#max_postpone_time_for_failed_replicated_tasks_ms} 
+## max_postpone_time_for_failed_replicated_tasks_ms \{#max_postpone_time_for_failed_replicated_tasks_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="300000" />
 
@@ -1169,13 +1169,13 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 Максимальное время откладывания выполнения задачи репликации, завершившейся с ошибкой. Это значение применяется, если задача не является операцией fetch, merge или mutation.
 
-## max_projections {#max_projections} 
+## max_projections \{#max_projections\}
 
 <SettingsInfoBlock type="UInt64" default_value="25" />
 
 Максимальное количество проекций для таблиц MergeTree.
 
-## max_replicated_fetches_network_bandwidth {#max_replicated_fetches_network_bandwidth} 
+## max_replicated_fetches_network_bandwidth \{#max_replicated_fetches_network_bandwidth\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1204,7 +1204,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 Может использоваться для ограничения скорости репликации данных при добавлении
 или замене узлов.
 
-## max_replicated_logs_to_keep {#max_replicated_logs_to_keep} 
+## max_replicated_logs_to_keep \{#max_replicated_logs_to_keep\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -1215,26 +1215,26 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 - Любое положительное целое число.
 
-## max_replicated_merges_in_queue {#max_replicated_merges_in_queue} 
+## max_replicated_merges_in_queue \{#max_replicated_merges_in_queue\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
 Сколько задач по слиянию и мутации частей может одновременно находиться в очереди ReplicatedMergeTree.
 
-## max_replicated_merges_with_ttl_in_queue {#max_replicated_merges_with_ttl_in_queue} 
+## max_replicated_merges_with_ttl_in_queue \{#max_replicated_merges_with_ttl_in_queue\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
 Сколько задач по слиянию частей с TTL одновременно допускается в очереди ReplicatedMergeTree.
 
-## max_replicated_mutations_in_queue {#max_replicated_mutations_in_queue} 
+## max_replicated_mutations_in_queue \{#max_replicated_mutations_in_queue\}
 
 <SettingsInfoBlock type="UInt64" default_value="8" />
 
 Сколько задач по модификации частей может одновременно находиться в
 очереди ReplicatedMergeTree.
 
-## max_replicated_sends_network_bandwidth {#max_replicated_sends_network_bandwidth} 
+## max_replicated_sends_network_bandwidth \{#max_replicated_sends_network_bandwidth\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1262,7 +1262,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 Может использоваться для ограничения скорости репликации данных при
 добавлении или замене узлов.
 
-## max_suspicious_broken_parts {#max_suspicious_broken_parts} 
+## max_suspicious_broken_parts \{#max_suspicious_broken_parts\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
@@ -1273,7 +1273,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 - Любое положительное целое число.
 
-## max_suspicious_broken_parts_bytes {#max_suspicious_broken_parts_bytes} 
+## max_suspicious_broken_parts_bytes \{#max_suspicious_broken_parts_bytes\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
@@ -1283,7 +1283,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 - Любое положительное целое число.
 
-## max_uncompressed_bytes_in_patches {#max_uncompressed_bytes_in_patches} 
+## max_uncompressed_bytes_in_patches \{#max_uncompressed_bytes_in_patches\}
 
 <SettingsInfoBlock type="UInt64" default_value="32212254720" />
 
@@ -1293,7 +1293,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 Если объём данных во всех патч-частях превышает это значение, легковесные обновления отклоняются.
 0 — без ограничений.
 
-## merge_max_block_size {#merge_max_block_size} 
+## merge_max_block_size \{#merge_max_block_size\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="8192" />
 
@@ -1311,14 +1311,14 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 (100 KB * 10 * 8192) = ~ 8 GB оперативной памяти). Уменьшая `merge_max_block_size`,
 вы можете сократить объем оперативной памяти, необходимый для слияния, но при этом замедлите его.
 
-## merge_max_block_size_bytes {#merge_max_block_size_bytes} 
+## merge_max_block_size_bytes \{#merge_max_block_size_bytes\}
 
 <SettingsInfoBlock type="UInt64" default_value="10485760" />
 
 Сколько байт должно быть в блоках, формируемых при операциях слияния. По умолчанию
 имеет то же значение, что и `index_granularity_bytes`.
 
-## merge_max_bytes_to_prewarm_cache {#merge_max_bytes_to_prewarm_cache} 
+## merge_max_bytes_to_prewarm_cache \{#merge_max_bytes_to_prewarm_cache\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
@@ -1326,7 +1326,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 Доступен только в ClickHouse Cloud. Максимальный размер части (compact или packed) для предварительного прогрева кэша во время слияния.
 
-## merge_max_dynamic_subcolumns_in_wide_part {#merge_max_dynamic_subcolumns_in_wide_part} 
+## merge_max_dynamic_subcolumns_in_wide_part \{#merge_max_dynamic_subcolumns_in_wide_part\}
 
 <SettingsInfoBlock type="UInt64Auto" default_value="auto" />
 
@@ -1338,20 +1338,20 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 Например, если таблица имеет столбец типа JSON(max_dynamic_paths=1024), а значение merge_max_dynamic_subcolumns_in_wide_part установлено в 128,
 после слияния в Wide-часть данных количество динамических путей в этой части будет уменьшено до 128, и только 128 путей будет записано как динамические подстолбцы.
 
-## merge_selecting_sleep_ms {#merge_selecting_sleep_ms} 
+## merge_selecting_sleep_ms \{#merge_selecting_sleep_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000" />
 
 Минимальное время ожидания перед повторной попыткой выбрать части для слияния после того, как не были выбраны никакие части. Более низкое значение может привести к более частому запуску задач в background_schedule_pool, что в крупных кластерах приводит к большому количеству запросов к ZooKeeper.
 
-## merge_selecting_sleep_slowdown_factor {#merge_selecting_sleep_slowdown_factor} 
+## merge_selecting_sleep_slowdown_factor \{#merge_selecting_sleep_slowdown_factor\}
 
 <SettingsInfoBlock type="Float" default_value="1.2" />
 
 Время ожидания задачи выбора частей для слияния умножается на этот коэффициент, когда
 нет частей для слияния, и делится на него, когда операция слияния назначена.
 
-## merge_selector_algorithm {#merge_selector_algorithm} 
+## merge_selector_algorithm \{#merge_selector_algorithm\}
 
 <ExperimentalBadge/>
 
@@ -1359,7 +1359,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 Алгоритм выбора частей для выполнения слияний
 
-## merge_selector_base {#merge_selector_base} 
+## merge_selector_base \{#merge_selector_base\}
 
 <SettingsInfoBlock type="Float" default_value="5" />
 
@@ -1367,14 +1367,14 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 назначенных слияний (настройка для экспертов, не изменяйте её, если не понимаете,
 как она работает). Работает для селекторов слияний Simple и StochasticSimple
 
-## merge_selector_blurry_base_scale_factor {#merge_selector_blurry_base_scale_factor} 
+## merge_selector_blurry_base_scale_factor \{#merge_selector_blurry_base_scale_factor\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Определяет, когда срабатывает логика по отношению к количеству частей в
 партиции. Чем больше коэффициент, тем позже будет реакция.
 
-## merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once {#merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once} 
+## merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once \{#merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once\}
 
 <ExperimentalBadge/>
 
@@ -1386,7 +1386,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 Таким образом, число одновременных слияний увеличится, что может помочь с ошибками TOO_MANY_PARTS,
 но при этом увеличится write amplification.
 
-## merge_selector_enable_heuristic_to_remove_small_parts_at_right {#merge_selector_enable_heuristic_to_remove_small_parts_at_right} 
+## merge_selector_enable_heuristic_to_remove_small_parts_at_right \{#merge_selector_enable_heuristic_to_remove_small_parts_at_right\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -1394,7 +1394,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 границы диапазона, если их размер меньше заданного соотношения (0.01) от sum_size.
 Работает для селекторов слияний Simple и StochasticSimple.
 
-## merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent {#merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent} 
+## merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent \{#merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent\}
 
 <ExperimentalBadge/>
 
@@ -1404,13 +1404,13 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 Управляет значением показателя степени, используемым в формулах, описывающих нисходящую кривую. Уменьшение показателя степени приведёт к уменьшению ширины слияний, что увеличит коэффициент усиления записи. Обратное также верно.
 
-## merge_selector_window_size {#merge_selector_window_size} 
+## merge_selector_window_size \{#merge_selector_window_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
 Сколько частей рассматривать за один раз.
 
-## merge_total_max_bytes_to_prewarm_cache {#merge_total_max_bytes_to_prewarm_cache} 
+## merge_total_max_bytes_to_prewarm_cache \{#merge_total_max_bytes_to_prewarm_cache\}
 
 <SettingsInfoBlock type="UInt64" default_value="16106127360" />
 
@@ -1418,13 +1418,13 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 Параметр доступен только в ClickHouse Cloud. Максимальный суммарный размер частей, подлежащих предварительному прогреву кэша во время слияния.
 
-## merge_tree_clear_old_broken_detached_parts_ttl_timeout_seconds {#merge_tree_clear_old_broken_detached_parts_ttl_timeout_seconds} 
+## merge_tree_clear_old_broken_detached_parts_ttl_timeout_seconds \{#merge_tree_clear_old_broken_detached_parts_ttl_timeout_seconds\}
 
 <SettingsInfoBlock type="UInt64" default_value="2592000" />
 
 Устаревшая настройка, ничего не делает.
 
-## merge_tree_clear_old_parts_interval_seconds {#merge_tree_clear_old_parts_interval_seconds} 
+## merge_tree_clear_old_parts_interval_seconds \{#merge_tree_clear_old_parts_interval_seconds\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
@@ -1435,7 +1435,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 - Любое положительное целое число.
 
-## merge_tree_clear_old_temporary_directories_interval_seconds {#merge_tree_clear_old_temporary_directories_interval_seconds} 
+## merge_tree_clear_old_temporary_directories_interval_seconds \{#merge_tree_clear_old_temporary_directories_interval_seconds\}
 
 <SettingsInfoBlock type="UInt64" default_value="60" />
 
@@ -1446,25 +1446,25 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 - Любое положительное целое число.
 
-## merge_tree_enable_clear_old_broken_detached {#merge_tree_enable_clear_old_broken_detached} 
+## merge_tree_enable_clear_old_broken_detached \{#merge_tree_enable_clear_old_broken_detached\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Устаревшая настройка, не используется.
 
-## merge_with_recompression_ttl_timeout {#merge_with_recompression_ttl_timeout} 
+## merge_with_recompression_ttl_timeout \{#merge_with_recompression_ttl_timeout\}
 
 <SettingsInfoBlock type="Int64" default_value="14400" />
 
 Минимальная задержка в секундах перед повторным выполнением операции слияния с TTL-рекомпрессией.
 
-## merge_with_ttl_timeout {#merge_with_ttl_timeout} 
+## merge_with_ttl_timeout \{#merge_with_ttl_timeout\}
 
 <SettingsInfoBlock type="Int64" default_value="14400" />
 
 Минимальная задержка в секундах перед повторным слиянием с TTL на удаление.
 
-## merge_workload {#merge_workload} 
+## merge_workload \{#merge_workload\}
 
 Используется для регулирования того, как ресурсы используются и распределяются между операциями слияния и
 другими рабочими нагрузками. Указанное значение используется в качестве значения настройки `workload` для
@@ -1474,13 +1474,13 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 - [Планирование рабочих нагрузок](/operations/workload-scheduling.md)
 
-## min_absolute_delay_to_close {#min_absolute_delay_to_close} 
+## min_absolute_delay_to_close \{#min_absolute_delay_to_close\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Минимальная абсолютная задержка до закрытия, остановки обработки запросов и прекращения возврата Ok во время проверки статуса.
 
-## min_age_to_force_merge_on_partition_only {#min_age_to_force_merge_on_partition_only} 
+## min_age_to_force_merge_on_partition_only \{#min_age_to_force_merge_on_partition_only\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -1494,7 +1494,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 - true, false
 
-## min_age_to_force_merge_seconds {#min_age_to_force_merge_seconds} 
+## min_age_to_force_merge_seconds \{#min_age_to_force_merge_seconds\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1508,26 +1508,26 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 - Положительное целое число.
 
-## min_bytes_for_compact_part {#min_bytes_for_compact_part} 
+## min_bytes_for_compact_part \{#min_bytes_for_compact_part\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Устаревшая настройка, ни на что не влияет.
 
-## min_bytes_for_full_part_storage {#min_bytes_for_full_part_storage} 
+## min_bytes_for_full_part_storage \{#min_bytes_for_full_part_storage\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Доступен только в ClickHouse Cloud. Минимальный несжатый размер в байтах для
 использования полного типа хранилища для части данных вместо упакованного.
 
-## min_bytes_for_wide_part {#min_bytes_for_wide_part} 
+## min_bytes_for_wide_part \{#min_bytes_for_wide_part\}
 
 <SettingsInfoBlock type="UInt64" default_value="10485760" />
 
 Минимальное количество байт/строк в части данных, которая может быть сохранена в формате `Wide`. Вы можете задать одну, обе или ни одну из этих настроек.
 
-## min_bytes_to_prewarm_caches {#min_bytes_to_prewarm_caches} 
+## min_bytes_to_prewarm_caches \{#min_bytes_to_prewarm_caches\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1535,7 +1535,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 Минимальный размер данных (в несжатых байтах) для предварительного прогрева кэша меток и кэша первичного индекса для новых частей
 
-## min_bytes_to_rebalance_partition_over_jbod {#min_bytes_to_rebalance_partition_over_jbod} 
+## min_bytes_to_rebalance_partition_over_jbod \{#min_bytes_to_rebalance_partition_over_jbod\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1554,7 +1554,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 [max_bytes_to_merge_at_max_space_in_pool](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool)
 / 1024. В противном случае ClickHouse выбрасывает исключение.
 
-## min_columns_to_activate_adaptive_write_buffer {#min_columns_to_activate_adaptive_write_buffer} 
+## min_columns_to_activate_adaptive_write_buffer \{#min_columns_to_activate_adaptive_write_buffer\}
 
 <SettingsInfoBlock type="UInt64" default_value="500" />
 
@@ -1567,7 +1567,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 - 0 — без ограничений
 - 1 — всегда включено
 
-## min_compress_block_size {#min_compress_block_size} 
+## min_compress_block_size \{#min_compress_block_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1577,33 +1577,33 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 Значение, заданное при создании таблицы, имеет приоритет над глобальным значением
 этой настройки.
 
-## min_compressed_bytes_to_fsync_after_fetch {#min_compressed_bytes_to_fsync_after_fetch} 
+## min_compressed_bytes_to_fsync_after_fetch \{#min_compressed_bytes_to_fsync_after_fetch\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Минимальное число сжатых байт, после загрузки которых выполняется fsync для части (0 — отключено)
 
-## min_compressed_bytes_to_fsync_after_merge {#min_compressed_bytes_to_fsync_after_merge} 
+## min_compressed_bytes_to_fsync_after_merge \{#min_compressed_bytes_to_fsync_after_merge\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Минимальный объём сжатых данных для выполнения fsync части после слияния (0 — отключено)
 
-## min_delay_to_insert_ms {#min_delay_to_insert_ms} 
+## min_delay_to_insert_ms \{#min_delay_to_insert_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
 Минимальная задержка вставки данных в таблицу MergeTree в миллисекундах, если
 в одной партиции имеется много неслитых частей.
 
-## min_delay_to_mutate_ms {#min_delay_to_mutate_ms} 
+## min_delay_to_mutate_ms \{#min_delay_to_mutate_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
 Минимальная задержка мутаций таблицы MergeTree в миллисекундах при большом количестве
 незавершённых мутаций
 
-## min_free_disk_bytes_to_perform_insert {#min_free_disk_bytes_to_perform_insert} 
+## min_free_disk_bytes_to_perform_insert \{#min_free_disk_bytes_to_perform_insert\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1627,7 +1627,7 @@ ClickHouse будет ориентироваться на то значение,
 вставки при большем объёме свободного места на диске.
 :::
 
-## min_free_disk_ratio_to_perform_insert {#min_free_disk_ratio_to_perform_insert} 
+## min_free_disk_ratio_to_perform_insert \{#min_free_disk_ratio_to_perform_insert\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
 
@@ -1648,7 +1648,7 @@ ClickHouse будет ориентироваться на то значение,
 на значение, которое позволит выполнять вставки при большем объёме свободного
 пространства.
 
-## min_index_granularity_bytes {#min_index_granularity_bytes} 
+## min_index_granularity_bytes \{#min_index_granularity_bytes\}
 
 <SettingsInfoBlock type="UInt64" default_value="1024" />
 
@@ -1657,7 +1657,7 @@ ClickHouse будет ориентироваться на то значение,
 Служит защитой от случайного создания таблиц со слишком малым значением
 `index_granularity_bytes`.
 
-## min_level_for_full_part_storage {#min_level_for_full_part_storage} 
+## min_level_for_full_part_storage \{#min_level_for_full_part_storage\}
 
 <SettingsInfoBlock type="UInt32" default_value="0" />
 
@@ -1665,7 +1665,7 @@ ClickHouse будет ориентироваться на то значение,
 
 Доступна только в ClickHouse Cloud. Минимальный уровень парта, начиная с которого для парта данных используется полный тип хранения вместо упакованного.
 
-## min_level_for_wide_part {#min_level_for_wide_part} 
+## min_level_for_wide_part \{#min_level_for_wide_part\}
 
 <SettingsInfoBlock type="UInt32" default_value="0" />
 
@@ -1673,7 +1673,7 @@ ClickHouse будет ориентироваться на то значение,
 
 Минимальный уровень парта, начиная с которого часть данных создаётся в формате `Wide` вместо `Compact`.
 
-## min&#95;marks&#95;to&#95;honor&#95;max&#95;concurrent&#95;queries {#min_marks_to_honor_max_concurrent_queries}
+## min&#95;marks&#95;to&#95;honor&#95;max&#95;concurrent&#95;queries \{#min_marks_to_honor_max_concurrent_queries\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1694,7 +1694,7 @@ ClickHouse будет ориентироваться на то значение,
 <min_marks_to_honor_max_concurrent_queries>10</min_marks_to_honor_max_concurrent_queries>
 ```
 
-## min_merge_bytes_to_use_direct_io {#min_merge_bytes_to_use_direct_io} 
+## min_merge_bytes_to_use_direct_io \{#min_merge_bytes_to_use_direct_io\}
 
 <SettingsInfoBlock type="UInt64" default_value="10737418240" />
 
@@ -1705,7 +1705,7 @@ ClickHouse будет ориентироваться на то значение,
 данные на диск хранения, используя интерфейс прямого ввода-вывода (опция `O_DIRECT`).
 Если `min_merge_bytes_to_use_direct_io = 0`, прямой ввод-вывод отключается.
 
-## min_parts_to_merge_at_once {#min_parts_to_merge_at_once} 
+## min_parts_to_merge_at_once \{#min_parts_to_merge_at_once\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1713,25 +1713,25 @@ ClickHouse будет ориентироваться на то значение,
 (настройка экспертного уровня, не изменяйте, если вы не понимаете, что она делает).
 0 — отключено. Работает для селекторов слияния Simple и StochasticSimple.
 
-## min_relative_delay_to_close {#min_relative_delay_to_close} 
+## min_relative_delay_to_close \{#min_relative_delay_to_close\}
 
 <SettingsInfoBlock type="UInt64" default_value="300" />
 
 Минимальная задержка реплики относительно других, после превышения которой она закрывается, прекращает обслуживать запросы и перестаёт возвращать Ok при проверке статуса.
 
-## min_relative_delay_to_measure {#min_relative_delay_to_measure} 
+## min_relative_delay_to_measure \{#min_relative_delay_to_measure\}
 
 <SettingsInfoBlock type="UInt64" default_value="120" />
 
 Вычислять относительную задержку реплики только в том случае, если абсолютная задержка не меньше этого значения.
 
-## min_relative_delay_to_yield_leadership {#min_relative_delay_to_yield_leadership} 
+## min_relative_delay_to_yield_leadership \{#min_relative_delay_to_yield_leadership\}
 
 <SettingsInfoBlock type="UInt64" default_value="120" />
 
 Устаревший параметр, не используется.
 
-## min_replicated_logs_to_keep {#min_replicated_logs_to_keep} 
+## min_replicated_logs_to_keep \{#min_replicated_logs_to_keep\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -1743,31 +1743,31 @@ ZooKeeper перед очисткой.
 
 - Любое положительное целое число.
 
-## min_rows_for_compact_part {#min_rows_for_compact_part} 
+## min_rows_for_compact_part \{#min_rows_for_compact_part\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Устаревшая настройка, не используется.
 
-## min_rows_for_full_part_storage {#min_rows_for_full_part_storage} 
+## min_rows_for_full_part_storage \{#min_rows_for_full_part_storage\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Доступен только в ClickHouse Cloud. Минимальное количество строк, при котором для части данных используется полный тип хранения вместо упакованного
 
-## min_rows_for_wide_part {#min_rows_for_wide_part} 
+## min_rows_for_wide_part \{#min_rows_for_wide_part\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Минимальное число строк, при котором часть данных создаётся в формате `Wide` вместо `Compact`.
 
-## min_rows_to_fsync_after_merge {#min_rows_to_fsync_after_merge} 
+## min_rows_to_fsync_after_merge \{#min_rows_to_fsync_after_merge\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Минимальное количество строк, при котором выполняется fsync парта после слияния (0 — отключено)
 
-## mutation_workload {#mutation_workload} 
+## mutation_workload \{#mutation_workload\}
 
 Используется для регулирования того, как ресурсы расходуются и распределяются между мутациями и другими типами нагрузки. Указанное значение используется как значение параметра `workload` для фоновых мутаций этой таблицы. Если не задано (пустая строка), вместо него используется серверный параметр `mutation_workload`.
 
@@ -1775,7 +1775,7 @@ ZooKeeper перед очисткой.
 
 - [Планирование нагрузки](/operations/workload-scheduling.md)
 
-## non_replicated_deduplication_window {#non_replicated_deduplication_window} 
+## non_replicated_deduplication_window \{#non_replicated_deduplication_window\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -1792,7 +1792,7 @@ ZooKeeper перед очисткой.
 настройку [replicated_deduplication_window](#replicated_deduplication_window)).
 Хэш-суммы созданных частей записываются в локальный файл на диске.
 
-## notify_newest_block_number {#notify_newest_block_number} 
+## notify_newest_block_number \{#notify_newest_block_number\}
 
 <ExperimentalBadge/>
 
@@ -1802,7 +1802,7 @@ ZooKeeper перед очисткой.
 
 Уведомляет SharedJoin или SharedSet о самом последнем номере блока. Только в ClickHouse Cloud.
 
-## nullable_serialization_version {#nullable_serialization_version} 
+## nullable_serialization_version \{#nullable_serialization_version\}
 
 <SettingsInfoBlock type="MergeTreeNullableSerializationVersion" default_value="basic" />
 
@@ -1816,7 +1816,7 @@ ZooKeeper перед очисткой.
 
 - allow_sparse — Разрешить использовать разреженное кодирование для `Nullable(T)`.
 
-## number_of_free_entries_in_pool_to_execute_mutation {#number_of_free_entries_in_pool_to_execute_mutation} 
+## number_of_free_entries_in_pool_to_execute_mutation \{#number_of_free_entries_in_pool_to_execute_mutation\}
 
 <SettingsInfoBlock type="UInt64" default_value="20" />
 
@@ -1834,7 +1834,7 @@ ZooKeeper перед очисткой.
 * [background_merges_mutations_concurrency_ratio](/operations/server-configuration-parameters/settings.md/#background_merges_mutations_concurrency_ratio).
 В противном случае, ClickHouse выбросит исключение.
 
-## number_of_free_entries_in_pool_to_execute_optimize_entire_partition {#number_of_free_entries_in_pool_to_execute_optimize_entire_partition} 
+## number_of_free_entries_in_pool_to_execute_optimize_entire_partition \{#number_of_free_entries_in_pool_to_execute_optimize_entire_partition\}
 
 <SettingsInfoBlock type="UInt64" default_value="25" />
 
@@ -1854,7 +1854,7 @@ ZooKeeper перед очисткой.
 * умноженного на значение параметра [background_merges_mutations_concurrency_ratio](/operations/server-configuration-parameters/settings.md/#background_merges_mutations_concurrency_ratio).
 В противном случае ClickHouse генерирует исключение.
 
-## number_of_free_entries_in_pool_to_lower_max_size_of_merge {#number_of_free_entries_in_pool_to_lower_max_size_of_merge} 
+## number_of_free_entries_in_pool_to_lower_max_size_of_merge \{#number_of_free_entries_in_pool_to_lower_max_size_of_merge\}
 
 <SettingsInfoBlock type="UInt64" default_value="8" />
 
@@ -1869,7 +1869,7 @@ ZooKeeper перед очисткой.
 
 - Любое положительное целое число.
 
-## number_of_mutations_to_delay {#number_of_mutations_to_delay} 
+## number_of_mutations_to_delay \{#number_of_mutations_to_delay\}
 
 <SettingsInfoBlock type="UInt64" default_value="500" />
 
@@ -1877,13 +1877,13 @@ ZooKeeper перед очисткой.
 столько незавершённых мутаций, выполнение мутаций для этой таблицы искусственно замедляется.
 Параметр отключён, если установлено значение 0
 
-## number_of_mutations_to_throw {#number_of_mutations_to_throw} 
+## number_of_mutations_to_throw \{#number_of_mutations_to_throw\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
 Если в таблице есть как минимум столько незавершённых мутаций, выбрасывается исключение `Too many mutations`. При значении 0 параметр отключён.
 
-## number_of_partitions_to_consider_for_merge {#number_of_partitions_to_consider_for_merge} 
+## number_of_partitions_to_consider_for_merge \{#number_of_partitions_to_consider_for_merge\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -1891,7 +1891,7 @@ ZooKeeper перед очисткой.
 
 Доступно только в ClickHouse Cloud. До top N партиций, которые будут рассматриваться для слияния. Партиции выбираются случайным взвешенным образом, где вес — это количество частей, которые можно слить в данной партиции.
 
-## object_serialization_version {#object_serialization_version} 
+## object_serialization_version \{#object_serialization_version\}
 
 <SettingsInfoBlock type="MergeTreeObjectSerializationVersion" default_value="v3" />
 
@@ -1907,7 +1907,7 @@ ZooKeeper перед очисткой.
 
 Только версия `v3` поддерживает изменение версии сериализации общих данных.
 
-## object_shared_data_buckets_for_compact_part {#object_shared_data_buckets_for_compact_part} 
+## object_shared_data_buckets_for_compact_part \{#object_shared_data_buckets_for_compact_part\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="8" />
 
@@ -1915,7 +1915,7 @@ ZooKeeper перед очисткой.
 
 Количество бакетов общих данных при JSON-сериализации в компактных частях (Compact). Работает с вариантами сериализации общих данных `map_with_buckets` и `advanced`.
 
-## object_shared_data_buckets_for_wide_part {#object_shared_data_buckets_for_wide_part} 
+## object_shared_data_buckets_for_wide_part \{#object_shared_data_buckets_for_wide_part\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="32" />
 
@@ -1923,7 +1923,7 @@ ZooKeeper перед очисткой.
 
 Количество бакетов для общей JSON-сериализации данных в широких (Wide) частях. Используется с режимами сериализации общих данных `map_with_buckets` и `advanced`.
 
-## object_shared_data_serialization_version {#object_shared_data_serialization_version} 
+## object_shared_data_serialization_version \{#object_shared_data_serialization_version\}
 
 <SettingsInfoBlock type="MergeTreeObjectSharedDataSerializationVersion" default_value="advanced" />
 
@@ -1941,7 +1941,7 @@ ZooKeeper перед очисткой.
 Количество бакетов для сериализаций `map_with_buckets` и `advanced` определяется настройками
 [object_shared_data_buckets_for_compact_part](#object_shared_data_buckets_for_compact_part)/[object_shared_data_buckets_for_wide_part](#object_shared_data_buckets_for_wide_part).
 
-## object_shared_data_serialization_version_for_zero_level_parts {#object_shared_data_serialization_version_for_zero_level_parts} 
+## object_shared_data_serialization_version_for_zero_level_parts \{#object_shared_data_serialization_version_for_zero_level_parts\}
 
 <SettingsInfoBlock type="MergeTreeObjectSharedDataSerializationVersion" default_value="map_with_buckets" />
 
@@ -1950,7 +1950,7 @@ ZooKeeper перед очисткой.
 Эта настройка позволяет задать отдельную версию сериализации общих данных внутри типа JSON для частей нулевого уровня, которые создаются при вставке данных.
 Не рекомендуется использовать `advanced` сериализацию общих данных для частей нулевого уровня, поскольку это может значительно увеличить время вставки.
 
-## old_parts_lifetime {#old_parts_lifetime} 
+## old_parts_lifetime \{#old_parts_lifetime\}
 
 <SettingsInfoBlock type="Seconds" default_value="480" />
 
@@ -1985,7 +1985,7 @@ ZooKeeper перед очисткой.
 `old_parts_lifetime`, в течение которых новая часть гарантированно будет
 записана на диск.
 
-## optimize_row_order {#optimize_row_order} 
+## optimize_row_order \{#optimize_row_order\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2059,7 +2059,7 @@ ZooKeeper перед очисткой.
 Первичные ключи с высокой кардинальностью, например включающие столбцы меток
 времени типа `DateTime64`, как правило, не дают заметного выигрыша от этого SETTING.
 
-## part_moves_between_shards_delay_seconds {#part_moves_between_shards_delay_seconds} 
+## part_moves_between_shards_delay_seconds \{#part_moves_between_shards_delay_seconds\}
 
 <ExperimentalBadge/>
 
@@ -2067,7 +2067,7 @@ ZooKeeper перед очисткой.
 
 Время ожидания перед и после перемещения частей между сегментами.
 
-## part_moves_between_shards_enable {#part_moves_between_shards_enable} 
+## part_moves_between_shards_enable \{#part_moves_between_shards_enable\}
 
 <ExperimentalBadge/>
 
@@ -2075,7 +2075,7 @@ ZooKeeper перед очисткой.
 
 Экспериментальная/незавершённая функция перемещения частей между сегментами. Не учитывает выражения для сегментирования.
 
-## parts_to_delay_insert {#parts_to_delay_insert} 
+## parts_to_delay_insert \{#parts_to_delay_insert\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -2088,7 +2088,7 @@ ZooKeeper перед очисткой.
 
 ClickHouse искусственно выполняет `INSERT` дольше (добавляет задержку `sleep`), чтобы фоновый процесс слияния мог сливать части быстрее, чем они добавляются.
 
-## parts_to_throw_insert {#parts_to_throw_insert} 
+## parts_to_throw_insert \{#parts_to_throw_insert\}
 
 <SettingsInfoBlock type="UInt64" default_value="3000" />
 
@@ -2110,7 +2110,7 @@ parts (N). Merges are processing significantly slower than inserts`.
 проблем со слияниями (например, из-за недостаточного дискового пространства)
 вы обнаружите их позже, чем с исходным значением 300.
 
-## prefer_fetch_merged_part_size_threshold {#prefer_fetch_merged_part_size_threshold} 
+## prefer_fetch_merged_part_size_threshold \{#prefer_fetch_merged_part_size_threshold\}
 
 <SettingsInfoBlock type="UInt64" default_value="10737418240" />
 
@@ -2124,7 +2124,7 @@ parts (N). Merges are processing significantly slower than inserts`.
 
 - Любое положительное целое число.
 
-## prefer_fetch_merged_part_time_threshold {#prefer_fetch_merged_part_time_threshold} 
+## prefer_fetch_merged_part_time_threshold \{#prefer_fetch_merged_part_time_threshold\}
 
 <SettingsInfoBlock type="Seconds" default_value="3600" />
 
@@ -2137,7 +2137,7 @@ parts (N). Merges are processing significantly slower than inserts`.
 
 - Любое положительное целое число.
 
-## prewarm_mark_cache {#prewarm_mark_cache} 
+## prewarm_mark_cache \{#prewarm_mark_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2145,7 +2145,7 @@ parts (N). Merges are processing significantly slower than inserts`.
 предварительно заполняться путём сохранения меток в кэш меток при вставках, слияниях, выборках и при
 запуске сервера.
 
-## prewarm_primary_key_cache {#prewarm_primary_key_cache} 
+## prewarm_primary_key_cache \{#prewarm_primary_key_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2155,26 +2155,26 @@ parts (N). Merges are processing significantly slower than inserts`.
 будет предварительно прогрет за счёт сохранения меток в кэше меток при вставках, слияниях,
 выборках и при запуске сервера
 
-## primary_key_compress_block_size {#primary_key_compress_block_size} 
+## primary_key_compress_block_size \{#primary_key_compress_block_size\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="65536" />
 
 Размер блока при первичном сжатии — фактический размер блока, подлежащего сжатию.
 
-## primary_key_compression_codec {#primary_key_compression_codec} 
+## primary_key_compression_codec \{#primary_key_compression_codec\}
 
 <SettingsInfoBlock type="String" default_value="ZSTD(3)" />
 
 Кодек сжатия, используемый для первичного ключа. Первичный ключ достаточно мал и кэшируется,
 поэтому по умолчанию используется сжатие ZSTD(3).
 
-## primary_key_lazy_load {#primary_key_lazy_load} 
+## primary_key_lazy_load \{#primary_key_lazy_load\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Загружать первичный ключ в память при первом обращении, а не при инициализации таблицы. Это может сэкономить память при наличии большого количества таблиц.
 
-## primary_key_ratio_of_unique_prefix_values_to_skip_suffix_columns {#primary_key_ratio_of_unique_prefix_values_to_skip_suffix_columns} 
+## primary_key_ratio_of_unique_prefix_values_to_skip_suffix_columns \{#primary_key_ratio_of_unique_prefix_values_to_skip_suffix_columns\}
 
 <SettingsInfoBlock type="Float" default_value="0.9" />
 
@@ -2182,7 +2182,7 @@ parts (N). Merges are processing significantly slower than inserts`.
 такой доле случаев, то последующие столбцы не загружаются в память. Это позволяет экономить
 память за счёт незагрузки ненужных столбцов первичного ключа.
 
-## ratio&#95;of&#95;defaults&#95;for&#95;sparse&#95;serialization {#ratio_of_defaults_for_sparse_serialization}
+## ratio&#95;of&#95;defaults&#95;for&#95;sparse&#95;serialization \{#ratio_of_defaults_for_sparse_serialization\}
 
 <SettingsInfoBlock type="Float" default_value="0.9375" />
 
@@ -2297,7 +2297,7 @@ WHERE table LIKE 'my_sparse_table';
 └────────┴────────────────────┘
 ```
 
-## reduce_blocking_parts_sleep_ms {#reduce_blocking_parts_sleep_ms} 
+## reduce_blocking_parts_sleep_ms \{#reduce_blocking_parts_sleep_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000" />
 
@@ -2309,7 +2309,7 @@ WHERE table LIKE 'my_sparse_table';
 в background_schedule_pool, что приводит к большому количеству запросов к
 ZooKeeper в крупных кластерах.
 
-## refresh_parts_interval {#refresh_parts_interval} 
+## refresh_parts_interval \{#refresh_parts_interval\}
 
 <SettingsInfoBlock type="Seconds" default_value="0" />
 
@@ -2318,7 +2318,7 @@ ZooKeeper в крупных кластерах.
 Если значение больше нуля, список частей данных обновляется из базовой файловой системы, чтобы проверить, были ли данные обновлены в фоновом режиме.
 Этот параметр можно задать только в том случае, если таблица расположена на дисках, доступных только для чтения (что означает, что это реплика только для чтения, в то время как данные записываются другой репликой).
 
-## refresh_statistics_interval {#refresh_statistics_interval} 
+## refresh_statistics_interval \{#refresh_statistics_interval\}
 
 <SettingsInfoBlock type="Seconds" default_value="0" />
 
@@ -2326,7 +2326,7 @@ ZooKeeper в крупных кластерах.
 
 Интервал обновления кэша статистики в секундах. Если значение равно нулю, обновление будет отключено.
 
-## remote_fs_execute_merges_on_single_replica_time_threshold {#remote_fs_execute_merges_on_single_replica_time_threshold} 
+## remote_fs_execute_merges_on_single_replica_time_threshold \{#remote_fs_execute_merges_on_single_replica_time_threshold\}
 
 <SettingsInfoBlock type="Seconds" default_value="10800" />
 
@@ -2345,7 +2345,7 @@ Zero-copy replication по умолчанию отключена в ClickHouse �
 
 - Любое положительное целое число.
 
-## remote_fs_zero_copy_path_compatible_mode {#remote_fs_zero_copy_path_compatible_mode} 
+## remote_fs_zero_copy_path_compatible_mode \{#remote_fs_zero_copy_path_compatible_mode\}
 
 <ExperimentalBadge/>
 
@@ -2353,7 +2353,7 @@ Zero-copy replication по умолчанию отключена в ClickHouse �
 
 Выполняет zero-copy в режиме совместимости во время конвертации.
 
-## remote_fs_zero_copy_zookeeper_path {#remote_fs_zero_copy_zookeeper_path} 
+## remote_fs_zero_copy_zookeeper_path \{#remote_fs_zero_copy_zookeeper_path\}
 
 <ExperimentalBadge/>
 
@@ -2361,13 +2361,13 @@ Zero-copy replication по умолчанию отключена в ClickHouse �
 
 Путь в ZooKeeper для информации о zero-copy, не зависящей от таблиц.
 
-## remove_empty_parts {#remove_empty_parts} 
+## remove_empty_parts \{#remove_empty_parts\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Удалять пустые части после того, как они были очищены TTL, мутациями или алгоритмом схлопывающего слияния.
 
-## remove_rolled_back_parts_immediately {#remove_rolled_back_parts_immediately} 
+## remove_rolled_back_parts_immediately \{#remove_rolled_back_parts_immediately\}
 
 <ExperimentalBadge/>
 
@@ -2375,7 +2375,7 @@ Zero-copy replication по умолчанию отключена в ClickHouse �
 
 Параметр для незавершённой экспериментальной функции.
 
-## remove_unused_patch_parts {#remove_unused_patch_parts} 
+## remove_unused_patch_parts \{#remove_unused_patch_parts\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2383,14 +2383,14 @@ Zero-copy replication по умолчанию отключена в ClickHouse �
 
 Удаляет в фоновом режиме патч-части, которые применены ко всем активным частям.
 
-## replace_long_file_name_to_hash {#replace_long_file_name_to_hash} 
+## replace_long_file_name_to_hash \{#replace_long_file_name_to_hash\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Если имя файла для столбца слишком длинное (более 'max_file_name_length'
 байт), оно заменяется на SipHash128
 
-## replicated_can_become_leader {#replicated_can_become_leader} 
+## replicated_can_become_leader \{#replicated_can_become_leader\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2401,7 +2401,7 @@ Zero-copy replication по умолчанию отключена в ClickHouse �
 - `true`
 - `false`
 
-## replicated_deduplication_window {#replicated_deduplication_window} 
+## replicated_deduplication_window \{#replicated_deduplication_window\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -2426,7 +2426,7 @@ Zero-copy replication по умолчанию отключена в ClickHouse �
 поскольку требуется сравнивать больше записей. Хэш-сумма вычисляется
 из совокупности имен и типов полей и данных вставляемой части (потока байт).
 
-## replicated_deduplication_window_for_async_inserts {#replicated_deduplication_window_for_async_inserts} 
+## replicated_deduplication_window_for_async_inserts \{#replicated_deduplication_window_for_async_inserts\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -2449,7 +2449,7 @@ Async Insert, потому что нужно сравнивать больше �
 Хэш-сумма вычисляется на основе комбинации имён и типов полей
 и данных вставки (потока байтов).
 
-## replicated_deduplication_window_seconds {#replicated_deduplication_window_seconds} 
+## replicated_deduplication_window_seconds \{#replicated_deduplication_window_seconds\}
 
 <SettingsInfoBlock type="UInt64" default_value="3600" />
 
@@ -2471,7 +2471,7 @@ Async Insert, потому что нужно сравнивать больше �
 Время отсчитывается относительно времени самой последней записи, а не
 реального (настенного) времени. Если это единственная запись, она будет храниться неограниченное время.
 
-## replicated_deduplication_window_seconds_for_async_inserts {#replicated_deduplication_window_seconds_for_async_inserts} 
+## replicated_deduplication_window_seconds_for_async_inserts \{#replicated_deduplication_window_seconds_for_async_inserts\}
 
 <SettingsInfoBlock type="UInt64" default_value="604800" />
 
@@ -2493,62 +2493,62 @@ Async Insert, потому что нужно сравнивать больше �
 реального времени. Если это единственная запись, она будет храниться
 бессрочно.
 
-## replicated_fetches_http_connection_timeout {#replicated_fetches_http_connection_timeout} 
+## replicated_fetches_http_connection_timeout \{#replicated_fetches_http_connection_timeout\}
 
 <SettingsInfoBlock type="Seconds" default_value="0" />
 
 Устаревшая настройка, ни на что не влияет.
 
-## replicated_fetches_http_receive_timeout {#replicated_fetches_http_receive_timeout} 
+## replicated_fetches_http_receive_timeout \{#replicated_fetches_http_receive_timeout\}
 
 <SettingsInfoBlock type="Seconds" default_value="0" />
 
 Устаревшая настройка, ничего не делает.
 
-## replicated_fetches_http_send_timeout {#replicated_fetches_http_send_timeout} 
+## replicated_fetches_http_send_timeout \{#replicated_fetches_http_send_timeout\}
 
 <SettingsInfoBlock type="Seconds" default_value="0" />
 
 Устаревшая настройка, не оказывает никакого эффекта.
 
-## replicated_max_mutations_in_one_entry {#replicated_max_mutations_in_one_entry} 
+## replicated_max_mutations_in_one_entry \{#replicated_max_mutations_in_one_entry\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
 Максимальное количество команд мутации, которые могут быть объединены и выполнены
 в одной записи MUTATE_PART (0 означает отсутствие ограничений)
 
-## replicated_max_parallel_fetches {#replicated_max_parallel_fetches} 
+## replicated_max_parallel_fetches \{#replicated_max_parallel_fetches\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Устаревшая настройка, не оказывает никакого эффекта.
 
-## replicated_max_parallel_fetches_for_host {#replicated_max_parallel_fetches_for_host} 
+## replicated_max_parallel_fetches_for_host \{#replicated_max_parallel_fetches_for_host\}
 
 <SettingsInfoBlock type="UInt64" default_value="15" />
 
 Устаревшая настройка, не оказывает эффекта.
 
-## replicated_max_parallel_fetches_for_table {#replicated_max_parallel_fetches_for_table} 
+## replicated_max_parallel_fetches_for_table \{#replicated_max_parallel_fetches_for_table\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Устаревшая настройка, ни на что не влияет.
 
-## replicated_max_parallel_sends {#replicated_max_parallel_sends} 
+## replicated_max_parallel_sends \{#replicated_max_parallel_sends\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Устаревшая настройка, не используется.
 
-## replicated_max_parallel_sends_for_table {#replicated_max_parallel_sends_for_table} 
+## replicated_max_parallel_sends_for_table \{#replicated_max_parallel_sends_for_table\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Устаревший параметр настройки. Ничего не делает.
 
-## replicated_max_ratio_of_wrong_parts {#replicated_max_ratio_of_wrong_parts} 
+## replicated_max_ratio_of_wrong_parts \{#replicated_max_ratio_of_wrong_parts\}
 
 <SettingsInfoBlock type="Float" default_value="0.5" />
 
@@ -2559,7 +2559,7 @@ Async Insert, потому что нужно сравнивать больше �
 
 - Float, 0.0 - 1.0
 
-## search_orphaned_parts_disks {#search_orphaned_parts_disks} 
+## search_orphaned_parts_disks \{#search_orphaned_parts_disks\}
 
 <SettingsInfoBlock type="SearchOrphanedPartsDisks" default_value="any" />
 
@@ -2576,7 +2576,7 @@ ClickHouse сканирует все диски на наличие осирот
 - local — область поиска ограничена локальными дисками.
 - none — пустая область, поиск не выполняется.
 
-## serialization_info_version {#serialization_info_version} 
+## serialization_info_version \{#serialization_info_version\}
 
 <SettingsInfoBlock type="MergeTreeSerializationInfoVersion" default_value="with_types" />
 
@@ -2595,7 +2595,7 @@ ClickHouse сканирует все диски на наличие осирот
 части данных, совместимые со старыми серверами. После завершения обновления
 переключитесь на `WITH_TYPES`, чтобы включить версии сериализации для каждого типа.
 
-## shared_merge_tree_activate_coordinated_merges_tasks {#shared_merge_tree_activate_coordinated_merges_tasks} 
+## shared_merge_tree_activate_coordinated_merges_tasks \{#shared_merge_tree_activate_coordinated_merges_tasks\}
 
 <BetaBadge/>
 
@@ -2607,7 +2607,7 @@ ClickHouse сканирует все диски на наличие осирот
 shared_merge_tree_enable_coordinated_merges=0, поскольку в этом случае будет собираться статистика координатора слияний
 и это поможет при холодном запуске.
 
-## shared_merge_tree_create_per_replica_metadata_nodes {#shared_merge_tree_create_per_replica_metadata_nodes} 
+## shared_merge_tree_create_per_replica_metadata_nodes \{#shared_merge_tree_create_per_replica_metadata_nodes\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2616,13 +2616,13 @@ shared_merge_tree_enable_coordinated_merges=0, поскольку в этом с
 Включает создание узлов /metadata и /columns в ZooKeeper для каждой реплики.
 Доступно только в ClickHouse Cloud.
 
-## shared_merge_tree_disable_merges_and_mutations_assignment {#shared_merge_tree_disable_merges_and_mutations_assignment} 
+## shared_merge_tree_disable_merges_and_mutations_assignment \{#shared_merge_tree_disable_merges_and_mutations_assignment\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Отключает назначение слияний для shared merge tree. Доступно только в ClickHouse Cloud.
 
-## shared_merge_tree_empty_partition_lifetime {#shared_merge_tree_empty_partition_lifetime} 
+## shared_merge_tree_empty_partition_lifetime \{#shared_merge_tree_empty_partition_lifetime\}
 
 <SettingsInfoBlock type="Seconds" default_value="86400" />
 
@@ -2630,7 +2630,7 @@ shared_merge_tree_enable_coordinated_merges=0, поскольку в этом с
 
 В течение какого времени в секундах партиция будет храниться в Keeper, если у неё нет частей.
 
-## shared_merge_tree_enable_automatic_empty_partitions_cleanup {#shared_merge_tree_enable_automatic_empty_partitions_cleanup} 
+## shared_merge_tree_enable_automatic_empty_partitions_cleanup \{#shared_merge_tree_enable_automatic_empty_partitions_cleanup\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2638,7 +2638,7 @@ shared_merge_tree_enable_coordinated_merges=0, поскольку в этом с
 
 Включает очистку записей Keeper для пустых партиций.
 
-## shared_merge_tree_enable_coordinated_merges {#shared_merge_tree_enable_coordinated_merges} 
+## shared_merge_tree_enable_coordinated_merges \{#shared_merge_tree_enable_coordinated_merges\}
 
 <BetaBadge/>
 
@@ -2648,7 +2648,7 @@ shared_merge_tree_enable_coordinated_merges=0, поскольку в этом с
 
 Включает стратегию координированных слияний
 
-## shared_merge_tree_enable_keeper_parts_extra_data {#shared_merge_tree_enable_keeper_parts_extra_data} 
+## shared_merge_tree_enable_keeper_parts_extra_data \{#shared_merge_tree_enable_keeper_parts_extra_data\}
 
 <BetaBadge/>
 
@@ -2658,7 +2658,7 @@ shared_merge_tree_enable_coordinated_merges=0, поскольку в этом с
 
 Включает запись атрибутов в виртуальные части и фиксацию блоков в Keeper
 
-## shared_merge_tree_enable_outdated_parts_check {#shared_merge_tree_enable_outdated_parts_check} 
+## shared_merge_tree_enable_outdated_parts_check \{#shared_merge_tree_enable_outdated_parts_check\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2666,7 +2666,7 @@ shared_merge_tree_enable_coordinated_merges=0, поскольку в этом с
 
 Включает проверку на наличие устаревших частей. Доступна только в ClickHouse Cloud.
 
-## shared_merge_tree_idle_parts_update_seconds {#shared_merge_tree_idle_parts_update_seconds} 
+## shared_merge_tree_idle_parts_update_seconds \{#shared_merge_tree_idle_parts_update_seconds\}
 
 <SettingsInfoBlock type="UInt64" default_value="3600" />
 
@@ -2675,7 +2675,7 @@ shared_merge_tree_enable_coordinated_merges=0, поскольку в этом с
 Интервал в секундах для обновления частей, не инициированного срабатыванием watch-события ZooKeeper
 в shared merge tree. Доступно только в ClickHouse Cloud.
 
-## shared_merge_tree_initial_parts_update_backoff_ms {#shared_merge_tree_initial_parts_update_backoff_ms} 
+## shared_merge_tree_initial_parts_update_backoff_ms \{#shared_merge_tree_initial_parts_update_backoff_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="50" />
 
@@ -2683,7 +2683,7 @@ shared_merge_tree_enable_coordinated_merges=0, поскольку в этом с
 
 Начальная задержка для обновления частей. Доступно только в ClickHouse Cloud
 
-## shared_merge_tree_interserver_http_connection_timeout_ms {#shared_merge_tree_interserver_http_connection_timeout_ms} 
+## shared_merge_tree_interserver_http_connection_timeout_ms \{#shared_merge_tree_interserver_http_connection_timeout_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
@@ -2691,7 +2691,7 @@ shared_merge_tree_enable_coordinated_merges=0, поскольку в этом с
 
 Таймауты для межсерверных HTTP‑соединений. Доступно только в ClickHouse Cloud.
 
-## shared_merge_tree_interserver_http_timeout_ms {#shared_merge_tree_interserver_http_timeout_ms} 
+## shared_merge_tree_interserver_http_timeout_ms \{#shared_merge_tree_interserver_http_timeout_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
 
@@ -2700,7 +2700,7 @@ shared_merge_tree_enable_coordinated_merges=0, поскольку в этом с
 Таймаут для межсерверного HTTP-взаимодействия. Доступно только в ClickHouse
 Cloud
 
-## shared_merge_tree_leader_update_period_random_add_seconds {#shared_merge_tree_leader_update_period_random_add_seconds} 
+## shared_merge_tree_leader_update_period_random_add_seconds \{#shared_merge_tree_leader_update_period_random_add_seconds\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -2708,7 +2708,7 @@ Cloud
 
 Добавляет к shared_merge_tree_leader_update_period равномерно распределённую случайную величину в диапазоне от 0 до x секунд, чтобы избежать эффекта «thundering herd». Параметр доступен только в ClickHouse Cloud
 
-## shared_merge_tree_leader_update_period_seconds {#shared_merge_tree_leader_update_period_seconds} 
+## shared_merge_tree_leader_update_period_seconds \{#shared_merge_tree_leader_update_period_seconds\}
 
 <SettingsInfoBlock type="UInt64" default_value="30" />
 
@@ -2716,7 +2716,7 @@ Cloud
 
 Максимальный интервал повторной проверки статуса лидера при обновлении частей. Доступно только в ClickHouse Cloud
 
-## shared_merge_tree_max_outdated_parts_to_process_at_once {#shared_merge_tree_max_outdated_parts_to_process_at_once} 
+## shared_merge_tree_max_outdated_parts_to_process_at_once \{#shared_merge_tree_max_outdated_parts_to_process_at_once\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
@@ -2724,7 +2724,7 @@ Cloud
 
 Максимальное количество устаревших частей, которые лидер попытается подтвердить для удаления за один HTTP-запрос. Доступно только в ClickHouse Cloud.
 
-## shared_merge_tree_max_parts_update_backoff_ms {#shared_merge_tree_max_parts_update_backoff_ms} 
+## shared_merge_tree_max_parts_update_backoff_ms \{#shared_merge_tree_max_parts_update_backoff_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000" />
 
@@ -2732,7 +2732,7 @@ Cloud
 
 Максимальная задержка между попытками обновления частей. Доступен только в ClickHouse Cloud.
 
-## shared_merge_tree_max_parts_update_leaders_in_total {#shared_merge_tree_max_parts_update_leaders_in_total} 
+## shared_merge_tree_max_parts_update_leaders_in_total \{#shared_merge_tree_max_parts_update_leaders_in_total\}
 
 <SettingsInfoBlock type="UInt64" default_value="6" />
 
@@ -2740,7 +2740,7 @@ Cloud
 
 Максимальное количество лидеров обновления частей. Параметр доступен только в ClickHouse Cloud.
 
-## shared_merge_tree_max_parts_update_leaders_per_az {#shared_merge_tree_max_parts_update_leaders_per_az} 
+## shared_merge_tree_max_parts_update_leaders_per_az \{#shared_merge_tree_max_parts_update_leaders_per_az\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
@@ -2748,7 +2748,7 @@ Cloud
 
 Максимальное количество лидеров обновления частей. Доступно только в ClickHouse Cloud.
 
-## shared_merge_tree_max_replicas_for_parts_deletion {#shared_merge_tree_max_replicas_for_parts_deletion} 
+## shared_merge_tree_max_replicas_for_parts_deletion \{#shared_merge_tree_max_replicas_for_parts_deletion\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -2756,7 +2756,7 @@ Cloud
 
 Максимальное число реплик, которые могут участвовать в удалении частей (поток-«убийца»). Доступно только в ClickHouse Cloud.
 
-## shared_merge_tree_max_replicas_to_merge_parts_for_each_parts_range {#shared_merge_tree_max_replicas_to_merge_parts_for_each_parts_range} 
+## shared_merge_tree_max_replicas_to_merge_parts_for_each_parts_range \{#shared_merge_tree_max_replicas_to_merge_parts_for_each_parts_range\}
 
 <SettingsInfoBlock type="UInt64" default_value="5" />
 
@@ -2764,7 +2764,7 @@ Cloud
 
 Максимальное число реплик, которые могут пытаться назначить потенциально конфликтующие слияния (это позволяет избежать лишних конфликтов при назначении слияний). 0 — отключено. Доступно только в ClickHouse Cloud.
 
-## shared_merge_tree_max_suspicious_broken_parts {#shared_merge_tree_max_suspicious_broken_parts} 
+## shared_merge_tree_max_suspicious_broken_parts \{#shared_merge_tree_max_suspicious_broken_parts\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2772,7 +2772,7 @@ Cloud
 
 Максимальное количество повреждённых частей для SMT; если их больше — запретить автоматическое отсоединение.
 
-## shared_merge_tree_max_suspicious_broken_parts_bytes {#shared_merge_tree_max_suspicious_broken_parts_bytes} 
+## shared_merge_tree_max_suspicious_broken_parts_bytes \{#shared_merge_tree_max_suspicious_broken_parts_bytes\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2780,7 +2780,7 @@ Cloud
 
 Максимальный суммарный размер всех повреждённых частей для SMT; при превышении автоматическое отсоединение запрещается.
 
-## shared_merge_tree_memo_ids_remove_timeout_seconds {#shared_merge_tree_memo_ids_remove_timeout_seconds} 
+## shared_merge_tree_memo_ids_remove_timeout_seconds \{#shared_merge_tree_memo_ids_remove_timeout_seconds\}
 
 <SettingsInfoBlock type="Int64" default_value="1800" />
 
@@ -2789,7 +2789,7 @@ Cloud
 Как долго хранятся идентификаторы мемоизации вставок, чтобы избежать некорректных действий во время
 повторных попыток вставки. Эта настройка доступна только в ClickHouse Cloud.
 
-## shared_merge_tree_merge_coordinator_election_check_period_ms {#shared_merge_tree_merge_coordinator_election_check_period_ms} 
+## shared_merge_tree_merge_coordinator_election_check_period_ms \{#shared_merge_tree_merge_coordinator_election_check_period_ms\}
 
 <BetaBadge/>
 
@@ -2799,7 +2799,7 @@ Cloud
 
 Интервал между запусками потока выборов координатора слияний
 
-## shared_merge_tree_merge_coordinator_factor {#shared_merge_tree_merge_coordinator_factor} 
+## shared_merge_tree_merge_coordinator_factor \{#shared_merge_tree_merge_coordinator_factor\}
 
 <BetaBadge/>
 
@@ -2809,7 +2809,7 @@ Cloud
 
 Коэффициент изменения задержки потока координатора во времени
 
-## shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms {#shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms} 
+## shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms \{#shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms\}
 
 <BetaBadge/>
 
@@ -2819,7 +2819,7 @@ Cloud
 
 Как часто координатор слияний должен синхронизироваться с ZooKeeper, чтобы получать актуальные метаданные.
 
-## shared_merge_tree_merge_coordinator_max_merge_request_size {#shared_merge_tree_merge_coordinator_max_merge_request_size} 
+## shared_merge_tree_merge_coordinator_max_merge_request_size \{#shared_merge_tree_merge_coordinator_max_merge_request_size\}
 
 <BetaBadge/>
 
@@ -2829,7 +2829,7 @@ Cloud
 
 Максимальное количество слияний, которые координатор может одновременно запросить у MergerMutator
 
-## shared_merge_tree_merge_coordinator_max_period_ms {#shared_merge_tree_merge_coordinator_max_period_ms} 
+## shared_merge_tree_merge_coordinator_max_period_ms \{#shared_merge_tree_merge_coordinator_max_period_ms\}
 
 <BetaBadge/>
 
@@ -2839,7 +2839,7 @@ Cloud
 
 Максимальное время между запусками потока координатора слияний
 
-## shared_merge_tree_merge_coordinator_merges_prepare_count {#shared_merge_tree_merge_coordinator_merges_prepare_count} 
+## shared_merge_tree_merge_coordinator_merges_prepare_count \{#shared_merge_tree_merge_coordinator_merges_prepare_count\}
 
 <BetaBadge/>
 
@@ -2849,7 +2849,7 @@ Cloud
 
 Количество записей о слиянии, которые координатор должен подготовить и распределить между рабочими узлами.
 
-## shared_merge_tree_merge_coordinator_min_period_ms {#shared_merge_tree_merge_coordinator_min_period_ms} 
+## shared_merge_tree_merge_coordinator_min_period_ms \{#shared_merge_tree_merge_coordinator_min_period_ms\}
 
 <BetaBadge/>
 
@@ -2859,7 +2859,7 @@ Cloud
 
 Минимальное время между запусками потока координатора слияния
 
-## shared_merge_tree_merge_worker_fast_timeout_ms {#shared_merge_tree_merge_worker_fast_timeout_ms} 
+## shared_merge_tree_merge_worker_fast_timeout_ms \{#shared_merge_tree_merge_worker_fast_timeout_ms\}
 
 <BetaBadge/>
 
@@ -2869,7 +2869,7 @@ Cloud
 
 Таймаут, который поток-обработчик слияний использует для обновления своего состояния после выполнения немедленного действия
 
-## shared_merge_tree_merge_worker_regular_timeout_ms {#shared_merge_tree_merge_worker_regular_timeout_ms} 
+## shared_merge_tree_merge_worker_regular_timeout_ms \{#shared_merge_tree_merge_worker_regular_timeout_ms\}
 
 <BetaBadge/>
 
@@ -2879,7 +2879,7 @@ Cloud
 
 Интервал между запусками рабочего потока слияния
 
-## shared_merge_tree_outdated_parts_group_size {#shared_merge_tree_outdated_parts_group_size} 
+## shared_merge_tree_outdated_parts_group_size \{#shared_merge_tree_outdated_parts_group_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
@@ -2888,7 +2888,7 @@ Cloud
 Сколько реплик будет входить в одну группу rendezvous-хеширования при очистке устаревших частей.
 Параметр доступен только в ClickHouse Cloud.
 
-## shared_merge_tree_partitions_hint_ratio_to_reload_merge_pred_for_mutations {#shared_merge_tree_partitions_hint_ratio_to_reload_merge_pred_for_mutations} 
+## shared_merge_tree_partitions_hint_ratio_to_reload_merge_pred_for_mutations \{#shared_merge_tree_partitions_hint_ratio_to_reload_merge_pred_for_mutations\}
 
 <SettingsInfoBlock type="Float" default_value="0.5" />
 
@@ -2896,14 +2896,14 @@ Cloud
 partitions for mutations only (partitions that cannot be merged)>/<candidate
 partitions for mutations>` становится больше значения настройки. Доступно только в ClickHouse Cloud
 
-## shared_merge_tree_parts_load_batch_size {#shared_merge_tree_parts_load_batch_size} 
+## shared_merge_tree_parts_load_batch_size \{#shared_merge_tree_parts_load_batch_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="32" />
 
 Количество одновременно планируемых задач по загрузке метаданных частей. Доступно только в
 ClickHouse Cloud
 
-## shared_merge_tree_postpone_next_merge_for_locally_merged_parts_ms {#shared_merge_tree_postpone_next_merge_for_locally_merged_parts_ms} 
+## shared_merge_tree_postpone_next_merge_for_locally_merged_parts_ms \{#shared_merge_tree_postpone_next_merge_for_locally_merged_parts_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2913,7 +2913,7 @@ ClickHouse Cloud
 эту часть. Даёт другим репликам возможность забрать эту часть и запустить это слияние.
 Доступно только в ClickHouse Cloud.
 
-## shared_merge_tree_postpone_next_merge_for_locally_merged_parts_rows_threshold {#shared_merge_tree_postpone_next_merge_for_locally_merged_parts_rows_threshold} 
+## shared_merge_tree_postpone_next_merge_for_locally_merged_parts_rows_threshold \{#shared_merge_tree_postpone_next_merge_for_locally_merged_parts_rows_threshold\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />
 
@@ -2921,7 +2921,7 @@ ClickHouse Cloud
 
 Минимальный размер части (в строках), при котором откладывается назначение следующего слияния непосредственно после её локального слияния. Доступно только в ClickHouse Cloud.
 
-## shared_merge_tree_range_for_merge_window_size {#shared_merge_tree_range_for_merge_window_size} 
+## shared_merge_tree_range_for_merge_window_size \{#shared_merge_tree_range_for_merge_window_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -2930,7 +2930,7 @@ ClickHouse Cloud
 Время, в течение которого локально слитая часть хранится без запуска нового слияния, содержащего эту часть. Даёт другим репликам возможность получить эту часть и запустить это слияние.
 Доступна только в ClickHouse Cloud.
 
-## shared_merge_tree_read_virtual_parts_from_leader {#shared_merge_tree_read_virtual_parts_from_leader} 
+## shared_merge_tree_read_virtual_parts_from_leader \{#shared_merge_tree_read_virtual_parts_from_leader\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2939,7 +2939,7 @@ ClickHouse Cloud
 Читать виртуальные части с лидера, если это возможно. Доступно только в ClickHouse
 Cloud
 
-## shared_merge_tree_try_fetch_part_in_memory_data_from_replicas {#shared_merge_tree_try_fetch_part_in_memory_data_from_replicas} 
+## shared_merge_tree_try_fetch_part_in_memory_data_from_replicas \{#shared_merge_tree_try_fetch_part_in_memory_data_from_replicas\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2947,7 +2947,7 @@ Cloud
 
 Если включено, все реплики пытаются получить данные части, находящиеся в памяти (такие как первичный ключ, информация о партиции и т. д.), из других реплик, где они уже существуют.
 
-## shared_merge_tree_update_replica_flags_delay_ms {#shared_merge_tree_update_replica_flags_delay_ms} 
+## shared_merge_tree_update_replica_flags_delay_ms \{#shared_merge_tree_update_replica_flags_delay_ms\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="30000" />
 
@@ -2955,7 +2955,7 @@ Cloud
 
 Как часто реплика пытается обновлять свои флаги в соответствии с фоновым расписанием.
 
-## shared_merge_tree_use_metadata_hints_cache {#shared_merge_tree_use_metadata_hints_cache} 
+## shared_merge_tree_use_metadata_hints_cache \{#shared_merge_tree_use_metadata_hints_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2963,7 +2963,7 @@ Cloud
 
 Позволяет запрашивать подсказки для кеша файловой системы из кеша в памяти на других репликах. Доступно только в ClickHouse Cloud.
 
-## shared_merge_tree_use_outdated_parts_compact_format {#shared_merge_tree_use_outdated_parts_compact_format} 
+## shared_merge_tree_use_outdated_parts_compact_format \{#shared_merge_tree_use_outdated_parts_compact_format\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -2972,7 +2972,7 @@ Cloud
 Использовать компактный формат для устаревших частей: снижает нагрузку на Keeper, улучшает
 обработку устаревших частей. Доступна только в ClickHouse Cloud.
 
-## shared_merge_tree_use_too_many_parts_count_from_virtual_parts {#shared_merge_tree_use_too_many_parts_count_from_virtual_parts} 
+## shared_merge_tree_use_too_many_parts_count_from_virtual_parts \{#shared_merge_tree_use_too_many_parts_count_from_virtual_parts\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -2980,7 +2980,7 @@ Cloud
 
 Если параметр включён, счётчик избыточного количества частей будет опираться на общие данные в Keeper, а не на локальное состояние реплики. Доступно только в ClickHouse Cloud.
 
-## shared_merge_tree_virtual_parts_discovery_batch {#shared_merge_tree_virtual_parts_discovery_batch} 
+## shared_merge_tree_virtual_parts_discovery_batch \{#shared_merge_tree_virtual_parts_discovery_batch\}
 
 <ExperimentalBadge/>
 
@@ -2990,7 +2990,7 @@ Cloud
 
 Сколько обнаружений партиций должно быть объединено в один пакет
 
-## simultaneous_parts_removal_limit {#simultaneous_parts_removal_limit} 
+## simultaneous_parts_removal_limit \{#simultaneous_parts_removal_limit\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -2998,25 +2998,25 @@ Cloud
 `simultaneous_parts_removal_limit` частей за одну итерацию.
 Значение `simultaneous_parts_removal_limit`, установленное в `0`, означает отсутствие ограничения.
 
-## sleep_before_commit_local_part_in_replicated_table_ms {#sleep_before_commit_local_part_in_replicated_table_ms} 
+## sleep_before_commit_local_part_in_replicated_table_ms \{#sleep_before_commit_local_part_in_replicated_table_ms\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="0" />
 
 Для тестирования. Не изменяйте этот параметр.
 
-## sleep_before_loading_outdated_parts_ms {#sleep_before_loading_outdated_parts_ms} 
+## sleep_before_loading_outdated_parts_ms \{#sleep_before_loading_outdated_parts_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Только для тестирования. Не изменяйте этот параметр.
 
-## storage_policy {#storage_policy} 
+## storage_policy \{#storage_policy\}
 
 <SettingsInfoBlock type="String" default_value="default" />
 
 Имя политики хранения на диске
 
-## string_serialization_version {#string_serialization_version} 
+## string_serialization_version \{#string_serialization_version\}
 
 <SettingsInfoBlock type="MergeTreeStringSerializationVersion" default_value="with_size_stream" />
 
@@ -3037,7 +3037,7 @@ Cloud
 - `single_stream` — использовать стандартный формат сериализации с inline-размерами.
 - `with_size_stream` — использовать отдельный поток для размеров для столбцов верхнего уровня типа `String`.
 
-## table_disk {#table_disk} 
+## table_disk \{#table_disk\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3046,7 +3046,7 @@ Cloud
 Это диск таблицы; путь/endpoint должен указывать на данные таблицы, а не на
 данные базы данных. Может быть задан только для s3_plain/s3_plain_rewritable/web.
 
-## temporary_directories_lifetime {#temporary_directories_lifetime} 
+## temporary_directories_lifetime \{#temporary_directories_lifetime\}
 
 <SettingsInfoBlock type="Seconds" default_value="86400" />
 
@@ -3054,7 +3054,7 @@ Cloud
 так как слияния и мутации могут работать некорректно при слишком низком
 значении этого SETTING.
 
-## try_fetch_recompressed_part_timeout {#try_fetch_recompressed_part_timeout} 
+## try_fetch_recompressed_part_timeout \{#try_fetch_recompressed_part_timeout\}
 
 <SettingsInfoBlock type="Seconds" default_value="7200" />
 
@@ -3070,7 +3070,7 @@ Cloud
 
 - Любое положительное целое число.
 
-## ttl_only_drop_parts {#ttl_only_drop_parts} 
+## ttl_only_drop_parts \{#ttl_only_drop_parts\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3080,13 +3080,13 @@ Cloud
 
 Когда `ttl_only_drop_parts` включён, вся часть удаляется, если срок действия всех строк в этой части истёк в соответствии с их настройками `TTL`.
 
-## use_adaptive_write_buffer_for_dynamic_subcolumns {#use_adaptive_write_buffer_for_dynamic_subcolumns} 
+## use_adaptive_write_buffer_for_dynamic_subcolumns \{#use_adaptive_write_buffer_for_dynamic_subcolumns\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Позволяет использовать адаптивные буферы записи при записи динамических подстолбцов для уменьшения расхода памяти
 
-## use_async_block_ids_cache {#use_async_block_ids_cache} 
+## use_async_block_ids_cache \{#use_async_block_ids_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3104,7 +3104,7 @@ Cloud
 обнаруживаются обновления, кэш обновится как можно быстрее, чтобы можно было
 отфильтровывать дублированные вставки в памяти.
 
-## use_compact_variant_discriminators_serialization {#use_compact_variant_discriminators_serialization} 
+## use_compact_variant_discriminators_serialization \{#use_compact_variant_discriminators_serialization\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3112,32 +3112,32 @@ Cloud
 Этот режим позволяет значительно сократить использование памяти для хранения дискриминаторов
 в частях, когда в данных в основном присутствует один вариант или много значений NULL.
 
-## use_const_adaptive_granularity {#use_const_adaptive_granularity} 
+## use_const_adaptive_granularity \{#use_const_adaptive_granularity\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Всегда использовать постоянную зернистость для всей части. Это позволяет сжимать в памяти значения зернистости индекса. Может быть полезно при экстремально больших нагрузках с «тонкими» таблицами.
 
-## use_metadata_cache {#use_metadata_cache} 
+## use_metadata_cache \{#use_metadata_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Устаревший параметр, не оказывает никакого эффекта.
 
-## use_minimalistic_checksums_in_zookeeper {#use_minimalistic_checksums_in_zookeeper} 
+## use_minimalistic_checksums_in_zookeeper \{#use_minimalistic_checksums_in_zookeeper\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Использовать компактный формат (десятки байт) для контрольных сумм частей в ZooKeeper вместо обычного (десятки КБ). Перед включением убедитесь, что все реплики поддерживают новый формат.
 
-## use_minimalistic_part_header_in_zookeeper {#use_minimalistic_part_header_in_zookeeper} 
+## use_minimalistic_part_header_in_zookeeper \{#use_minimalistic_part_header_in_zookeeper\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Способ хранения заголовков частей данных в ZooKeeper. Если параметр включён, ZooKeeper
 хранит меньше данных. Подробности см. [здесь](/operations/server-configuration-parameters/settings#use_minimalistic_part_header_in_zookeeper).
 
-## use_primary_key_cache {#use_primary_key_cache} 
+## use_primary_key_cache \{#use_primary_key_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
@@ -3146,26 +3146,26 @@ Cloud
 Использовать кэш для первичного индекса
 вместо хранения всех индексов в памяти. Может быть полезно для очень больших таблиц.
 
-## vertical_merge_algorithm_min_bytes_to_activate {#vertical_merge_algorithm_min_bytes_to_activate} 
+## vertical_merge_algorithm_min_bytes_to_activate \{#vertical_merge_algorithm_min_bytes_to_activate\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Минимальный (приблизительный) несжатый размер объединяемых частей в байтах, при котором активируется вертикальный алгоритм слияния.
 
-## vertical_merge_algorithm_min_columns_to_activate {#vertical_merge_algorithm_min_columns_to_activate} 
+## vertical_merge_algorithm_min_columns_to_activate \{#vertical_merge_algorithm_min_columns_to_activate\}
 
 <SettingsInfoBlock type="UInt64" default_value="11" />
 
 Минимальное количество столбцов, не входящих в первичный ключ (PK), при котором активируется вертикальный алгоритм слияния.
 
-## vertical_merge_algorithm_min_rows_to_activate {#vertical_merge_algorithm_min_rows_to_activate} 
+## vertical_merge_algorithm_min_rows_to_activate \{#vertical_merge_algorithm_min_rows_to_activate\}
 
 <SettingsInfoBlock type="UInt64" default_value="131072" />
 
 Минимальное (приблизительное) суммарное количество строк в
 сливаемых частях для активации алгоритма вертикального слияния.
 
-## vertical_merge_optimize_lightweight_delete {#vertical_merge_optimize_lightweight_delete} 
+## vertical_merge_optimize_lightweight_delete \{#vertical_merge_optimize_lightweight_delete\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3173,13 +3173,13 @@ Cloud
 
 Если включено, легковесное удаление оптимизируется при вертикальных слияниях.
 
-## vertical_merge_remote_filesystem_prefetch {#vertical_merge_remote_filesystem_prefetch} 
+## vertical_merge_remote_filesystem_prefetch \{#vertical_merge_remote_filesystem_prefetch\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Если значение равно `true`, используется предзагрузка данных из удалённой файловой системы для следующего столбца при слиянии.
 
-## wait_for_unique_parts_send_before_shutdown_ms {#wait_for_unique_parts_send_before_shutdown_ms} 
+## wait_for_unique_parts_send_before_shutdown_ms \{#wait_for_unique_parts_send_before_shutdown_ms\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="0" />
 
@@ -3187,31 +3187,31 @@ Cloud
 (существующие только на текущей реплике) были загружены другими репликами (0 означает,
 что ожидание отключено).
 
-## write_ahead_log_bytes_to_fsync {#write_ahead_log_bytes_to_fsync} 
+## write_ahead_log_bytes_to_fsync \{#write_ahead_log_bytes_to_fsync\}
 
 <SettingsInfoBlock type="UInt64" default_value="104857600" />
 
 Устаревшая настройка, ничего не делает.
 
-## write_ahead_log_interval_ms_to_fsync {#write_ahead_log_interval_ms_to_fsync} 
+## write_ahead_log_interval_ms_to_fsync \{#write_ahead_log_interval_ms_to_fsync\}
 
 <SettingsInfoBlock type="UInt64" default_value="100" />
 
 Устаревшая настройка, не оказывает эффекта.
 
-## write_ahead_log_max_bytes {#write_ahead_log_max_bytes} 
+## write_ahead_log_max_bytes \{#write_ahead_log_max_bytes\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
 Устаревшая настройка, не оказывает никакого эффекта.
 
-## write_final_mark {#write_final_mark} 
+## write_final_mark \{#write_final_mark\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Устаревшая настройка, ни на что не влияет.
 
-## write_marks_for_substreams_in_compact_parts {#write_marks_for_substreams_in_compact_parts} 
+## write_marks_for_substreams_in_compact_parts \{#write_marks_for_substreams_in_compact_parts\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -3233,27 +3233,27 @@ Cloud
 подпотоков `t.c.size0`, `t.c.null` и `t.c`, и не будут читаться данные из подпотоков `t.a` и `t.b`. Когда эта настройка отключена,
 метка записывается только для столбца верхнего уровня `t`, что означает, что из гранулы всегда будет читаться весь столбец целиком, даже если нужны только данные некоторых подпотоков.
 
-## zero_copy_concurrent_part_removal_max_postpone_ratio {#zero_copy_concurrent_part_removal_max_postpone_ratio} 
+## zero_copy_concurrent_part_removal_max_postpone_ratio \{#zero_copy_concurrent_part_removal_max_postpone_ratio\}
 
 <SettingsInfoBlock type="Float" default_value="0.05" />
 
 Максимальный процент частей верхнего уровня, удаление которых можно отложить, чтобы получить меньшие независимые диапазоны. Рекомендуется не изменять.
 
-## zero_copy_concurrent_part_removal_max_split_times {#zero_copy_concurrent_part_removal_max_split_times} 
+## zero_copy_concurrent_part_removal_max_split_times \{#zero_copy_concurrent_part_removal_max_split_times\}
 
 <SettingsInfoBlock type="UInt64" default_value="5" />
 
 Максимальная глубина рекурсии для разбиения независимых диапазонов устаревших частей на
 более мелкие поддиапазоны. Не рекомендуется изменять.
 
-## zero_copy_merge_mutation_min_parts_size_sleep_before_lock {#zero_copy_merge_mutation_min_parts_size_sleep_before_lock} 
+## zero_copy_merge_mutation_min_parts_size_sleep_before_lock \{#zero_copy_merge_mutation_min_parts_size_sleep_before_lock\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
 Если zero-copy репликация включена, выполнение приостанавливается на случайный промежуток времени перед попыткой
 получения блокировки в зависимости от размера частей для слияния или мутации
 
-## zero_copy_merge_mutation_min_parts_size_sleep_no_scale_before_lock {#zero_copy_merge_mutation_min_parts_size_sleep_no_scale_before_lock} 
+## zero_copy_merge_mutation_min_parts_size_sleep_no_scale_before_lock \{#zero_copy_merge_mutation_min_parts_size_sleep_no_scale_before_lock\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
@@ -3262,7 +3262,7 @@ Cloud
 Если zero-copy репликация включена, делать случайную паузу до 500 мс
 перед попыткой получить блокировку на слияние или мутацию.
 
-## zookeeper_session_expiration_check_period {#zookeeper_session_expiration_check_period} 
+## zookeeper_session_expiration_check_period \{#zookeeper_session_expiration_check_period\}
 
 <SettingsInfoBlock type="Seconds" default_value="60" />
 

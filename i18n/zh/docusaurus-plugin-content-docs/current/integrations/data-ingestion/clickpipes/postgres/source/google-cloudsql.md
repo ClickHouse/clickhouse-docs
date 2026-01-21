@@ -20,7 +20,7 @@ import firewall1 from '@site/static/images/integrations/data-ingestion/clickpipe
 import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall2.png';
 import Image from '@theme/IdealImage';
 
-# Google Cloud SQL Postgres 源端设置指南 {#google-cloud-sql-postgres-source-setup-guide}
+# Google Cloud SQL Postgres 源端设置指南 \{#google-cloud-sql-postgres-source-setup-guide\}
 
 :::info
 
@@ -28,11 +28,11 @@ import Image from '@theme/IdealImage';
 
 :::
 
-## 支持的 Postgres 版本 {#supported-postgres-versions}
+## 支持的 Postgres 版本 \{#supported-postgres-versions\}
 
 Postgres 12 及更高版本
 
-## 启用逻辑复制 {#enable-logical-replication}
+## 启用逻辑复制 \{#enable-logical-replication\}
 
 **如果** `cloudsql. logical_decoding` 已开启且 `wal_sender_timeout` 为 0，**则无需**执行以下步骤。若你是从其他数据复制工具迁移过来，这些设置通常已经预先配置好。
 
@@ -48,7 +48,7 @@ Postgres 12 及更高版本
 
 <Image img={cloudsql_logical_decoding3} alt="重启服务器" size="lg" border/>
 
-## 创建 ClickPipes 用户并授予权限 {#creating-clickpipes-user-and-granting-permissions}
+## 创建 ClickPipes 用户并授予权限 \{#creating-clickpipes-user-and-granting-permissions\}
 
 使用管理员用户连接到 Cloud SQL Postgres，并运行以下命令：
 
@@ -94,7 +94,7 @@ Postgres 12 及更高版本
 
 [//]: # (TODO 添加 SSH 隧道)
 
-## 将 ClickPipes IP 添加到防火墙 {#add-clickpipes-ips-to-firewall}
+## 将 ClickPipes IP 添加到防火墙 \{#add-clickpipes-ips-to-firewall\}
 
 请按照以下步骤将 ClickPipes 的 IP 添加到您的网络中。
 
@@ -117,7 +117,7 @@ Postgres 12 及更高版本
 <Image img={firewall1} alt="将 ClickPipes 网络添加到防火墙" size="lg" border/>
 <Image img={firewall2} alt="已将 ClickPipes 网络添加到防火墙" size="lg" border/>
 
-## 下一步 {#whats-next}
+## 下一步 \{#whats-next\}
 
 现在你可以[创建你的 ClickPipe](../index.md)，并开始将你的 Postgres 实例中的数据摄取到 ClickHouse Cloud 中。
 请务必记录在设置 Postgres 实例时使用的连接信息，因为在创建 ClickPipe 的过程中你将需要这些信息。

@@ -9,7 +9,7 @@ show_related_blogs: false
 doc_type: 'guide'
 ---
 
-# Обновление и удаление данных ClickHouse с помощью мутаций {#updating-and-deleting-clickhouse-data-with-mutations}
+# Обновление и удаление данных ClickHouse с помощью мутаций \{#updating-and-deleting-clickhouse-data-with-mutations\}
 
 Хотя ClickHouse ориентирован на аналитические нагрузки с большим объемом данных, в некоторых ситуациях можно изменять
 или удалять уже существующие данные. Эти операции называются «мутациями» и выполняются с помощью команды `ALTER TABLE`.
@@ -20,7 +20,7 @@ doc_type: 'guide'
 или [lightweight deletes](/guides/developer/lightweight-delete)
 :::
 
-## Обновление данных {#updating-data}
+## Обновление данных \{#updating-data\}
 
 Используйте команду `ALTER TABLE...UPDATE` для обновления строк в таблице:
 
@@ -60,7 +60,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 Нельзя обновлять столбцы, которые входят в первичный или сортировочный ключ.
 :::
 
-## Удаление данных {#deleting-data}
+## Удаление данных \{#deleting-data\}
 
 Используйте команду `ALTER TABLE`, чтобы удалить строки:
 
@@ -88,7 +88,7 @@ ALTER TABLE [<database>.]<table> DELETE WHERE <filter_expr>
 
 См. страницу документации по оператору [`DELETE`](/sql-reference/statements/delete.md) для получения дополнительных сведений.
 
-## Легковесные удаления {#lightweight-deletes}
+## Легковесные удаления \{#lightweight-deletes\}
 
 Другой вариант удаления строк — использование команды `DELETE FROM`, которая называется **легковесным удалением**. Удалённые строки помечаются как удалённые немедленно и будут автоматически исключаться из всех последующих запросов, поэтому вам не нужно ждать слияния частей или использовать ключевое слово `FINAL`. Очистка данных выполняется асинхронно в фоновом режиме.
 

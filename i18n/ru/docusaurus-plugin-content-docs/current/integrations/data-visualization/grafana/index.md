@@ -22,7 +22,7 @@ import valid_ds from '@site/static/images/integrations/data-visualization/grafan
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Плагин источника данных ClickHouse для Grafana {#clickhouse-data-source-plugin-for-grafana}
+# Плагин источника данных ClickHouse для Grafana \{#clickhouse-data-source-plugin-for-grafana\}
 
 <ClickHouseSupportedBadge/>
 
@@ -41,11 +41,11 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
   </iframe>
 </div>
 
-## 1. Соберите сведения о подключении {#1-gather-your-connection-details}
+## 1. Соберите сведения о подключении \{#1-gather-your-connection-details\}
 
 <ConnectionDetails />
 
-## 2. Создание пользователя только для чтения {#2-making-a-read-only-user}
+## 2. Создание пользователя только для чтения \{#2-making-a-read-only-user\}
 
 При подключении ClickHouse к инструменту визуализации данных, например Grafana, рекомендуется создать пользователя только для чтения, чтобы защитить данные от нежелательных изменений.
 
@@ -57,7 +57,7 @@ Grafana не проверяет, что выполняемые запросы б
 2. Убедитесь, что у пользователя `readonly` достаточно прав для изменения настройки `max_execution_time`, требуемой используемым [клиентом clickhouse-go](https://github.com/ClickHouse/clickhouse-go).
 3. Если вы используете публичный экземпляр ClickHouse, не рекомендуется устанавливать `readonly=2` в профиле `readonly`. Вместо этого оставьте `readonly=1` и установите тип ограничения параметра `max_execution_time` в значение [changeable_in_readonly](/operations/settings/constraints-on-settings), чтобы разрешить изменение этой настройки.
 
-## 3.  Установите плагин ClickHouse для Grafana {#3--install-the-clickhouse-plugin-for-grafana}
+## 3.  Установите плагин ClickHouse для Grafana \{#3--install-the-clickhouse-plugin-for-grafana\}
 
 Прежде чем Grafana сможет подключиться к ClickHouse, необходимо установить соответствующий плагин Grafana. Если вы уже вошли в Grafana, выполните следующие шаги:
 
@@ -71,7 +71,7 @@ Grafana не проверяет, что выполняемые запросы б
 
     <Image size="md" img={install} alt="Установите плагин ClickHouse" border />
 
-## 4. Определите источник данных ClickHouse {#4-define-a-clickhouse-data-source}
+## 4. Определите источник данных ClickHouse \{#4-define-a-clickhouse-data-source\}
 
 1. После завершения установки нажмите кнопку **Add new data source**. (Вы также можете добавить источник данных на вкладке **Data sources** на странице **Connections**.)
 
@@ -95,7 +95,7 @@ Grafana не проверяет, что выполняемые запросы б
 
     <Image size="md" img={valid_ds} alt="Выбор Save & test" border />
 
-## 5. Следующие шаги {#5-next-steps}
+## 5. Следующие шаги \{#5-next-steps\}
 
 Ваш источник данных готов к использованию! Узнайте больше о том, как составлять запросы с помощью [конструктора запросов](./query-builder.md).
 
@@ -103,7 +103,7 @@ Grafana не проверяет, что выполняемые запросы б
 
 Если вы ищете информацию, которая не включена в эту документацию, ознакомьтесь с [репозиторием плагина на GitHub](https://github.com/grafana/clickhouse-datasource).
 
-## Обновление версий плагина {#upgrading-plugin-versions}
+## Обновление версий плагина \{#upgrading-plugin-versions\}
 
 Начиная с v4, конфигурации и запросы можно обновлять по мере выхода новых версий.
 

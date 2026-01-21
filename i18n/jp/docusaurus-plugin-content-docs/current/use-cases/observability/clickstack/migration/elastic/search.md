@@ -15,7 +15,7 @@ import hyperdx_search from '@site/static/images/use-cases/observability/hyperdx-
 import hyperdx_sql from '@site/static/images/use-cases/observability/hyperdx-sql.png';
 
 
-## ClickStack と Elastic における検索 {#search-in-clickstack-and-elastic}
+## ClickStack と Elastic における検索 \{#search-in-clickstack-and-elastic\}
 
 ClickHouse は SQL ネイティブなエンジンであり、ハイパフォーマンスな分析ワークロード向けにゼロから設計されています。対照的に、Elasticsearch は SQL ライクなインターフェースを提供しますが、SQL を内部の Elasticsearch query DSL にトランスパイルしているだけであり、SQL は第一級の機能として扱われておらず、[機能パリティ](https://www.elastic.co/docs/explore-analyze/query-filter/languages/sql-limitations) も限定的です。
 
@@ -31,7 +31,7 @@ HyperDX の検索インターフェースは、この馴染みのある構文を
 
 以下では、ClickStack と Elasticsearch の Lucene クエリ言語を比較します。
 
-## ClickStack の検索構文と Elasticsearch query string の比較 {#hyperdx-vs-elasticsearch-query-string}
+## ClickStack の検索構文と Elasticsearch query string の比較 \{#hyperdx-vs-elasticsearch-query-string\}
 
 HyperDX と Elasticsearch はどちらも、ログやトレースを直感的にフィルタリングできる柔軟なクエリ言語を提供しています。Elasticsearch の query string は DSL とインデックスエンジンに強く統合されていますが、HyperDX は Lucene 風の構文をサポートしており、内部的には ClickHouse の SQL に変換されます。以下の表では、代表的な検索パターンが両システムでどのように動作するかを示し、構文上の類似点とバックエンド実行の違いを強調しています。
 
@@ -57,7 +57,7 @@ HyperDX と Elasticsearch はどちらも、ログやトレースを直感的に
 | Field wildcard          | `service.*:error` | `service.*:error` | 現時点では HyperDX ではサポートされていません。 |
 | Escaped special chars   | Escape reserved characters with `\` | Same      | 予約済みの記号は `\` でエスケープする必要があります。 |
 
-## 存在/欠落の違い {#empty-value-differences}
+## 存在/欠落の違い \{#empty-value-differences\}
 
 フィールドがイベントから完全に省略され、文字どおり「存在しない」状態になり得る Elasticsearch と異なり、ClickHouse ではテーブルスキーマに定義されたすべてのカラムが必ず存在している必要があります。INSERT イベントでフィールドが指定されなかった場合は、次のように扱われます。
 

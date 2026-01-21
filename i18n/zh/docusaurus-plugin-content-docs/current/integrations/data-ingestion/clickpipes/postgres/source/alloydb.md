@@ -16,13 +16,13 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# AlloyDB Postgres 数据源配置指南 {#alloydb-postgres-source-setup-guide}
+# AlloyDB Postgres 数据源配置指南 \{#alloydb-postgres-source-setup-guide\}
 
-## 支持的版本 {#supported-versions}
+## 支持的版本 \{#supported-versions\}
 
 要使用 ClickPipes 将数据从 AlloyDB 实例传输到 ClickHouse Cloud，必须将该实例配置为使用 **逻辑复制（logical replication）**。该功能自 **AlloyDB 14 版本** 起受到支持。
 
-## 启用逻辑复制 {#enable-logical-replication}
+## 启用逻辑复制 \{#enable-logical-replication\}
 
 要检查您的 AlloyDB 实例是否已启用逻辑复制，请在主实例上运行以下查询：
 
@@ -62,7 +62,7 @@ SHOW  wal_level;
    <Image img={verify_logical_replication} alt="验证逻辑复制已启用" size="lg" border />
 
 
-## 创建 ClickPipes 用户并管理复制权限 {#create-a-clickpipes-user-and-manage-replication-permissions}
+## 创建 ClickPipes 用户并管理复制权限 \{#create-a-clickpipes-user-and-manage-replication-permissions\}
 
 以管理员用户连接到 AlloyDB 实例并执行以下命令：
 
@@ -106,7 +106,7 @@ SHOW  wal_level;
 
    `clickpipes` publication 将包含由指定表生成的一组变更事件，稍后将用于摄取复制流。
 
-## 配置网络访问 {#configure-network-access}
+## 配置网络访问 \{#configure-network-access\}
 
 :::note
 ClickPipes 不支持 Private Service Connect (PSC) 连接。如果你不允许对 AlloyDB 实例的公共访问，可以[使用 SSH 隧道](#configure-network-access)以安全方式连接。PSC 将在未来提供支持。
@@ -149,7 +149,7 @@ ClickPipes 不支持 Private Service Connect (PSC) 连接。如果你不允许�
 </TabItem>
 </Tabs>
 
-## 下一步 {#whats-next}
+## 下一步 \{#whats-next\}
 
 现在可以[创建 ClickPipe](../index.md)，并开始将 Postgres 实例中的数据摄取到 ClickHouse Cloud 中。
 请务必记录在设置 Postgres 实例时使用的连接信息，因为在创建 ClickPipe 时需要用到这些信息。

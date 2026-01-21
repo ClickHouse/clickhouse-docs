@@ -13,11 +13,11 @@ import json_offsets from '@site/static/images/integrations/data-ingestion/data-f
 import shared_json_column from '@site/static/images/integrations/data-ingestion/data-formats/json_shared_column.png';
 
 
-# スキーマ設計 {#designing-your-schema}
+# スキーマ設計 \{#designing-your-schema\}
 
 JSON データの初期スキーマを確立したり、たとえば S3 上の JSON データファイルに対してそのままクエリを実行するために [schema inference](/integrations/data-formats/json/inference) を利用することはできますが、最終的にはデータに対して最適化されたバージョン付きスキーマを確立することを目指すべきです。以下では、JSON 構造をモデリングするための推奨アプローチについて説明します。
 
-## 静的 JSON と動的 JSON {#static-vs-dynamic-json}
+## 静的 JSON と動的 JSON \{#static-vs-dynamic-json\}
 
 JSON のスキーマを定義する際の主な作業は、各キーの値に対して適切な型を決定することです。JSON の階層内の各キーに対して、以下のルールを再帰的に適用し、各キーに対する適切な型を決定することを推奨します。
 
@@ -92,7 +92,7 @@ JSON のスキーマを定義する際の主な作業は、各キーの値に対
 数百から数千もの静的キーを持つ構造は、それらに対応するカラムを静的に宣言するのは現実的でない場合が多いため、動的なものと見なすことができます。ただし、可能な限り不要なパスは[スキップ](#using-type-hints-and-skipping-paths)して、ストレージと推論の両方のオーバーヘッドを削減してください。
 :::
 
-## 静的な構造の扱い方 {#handling-static-structures}
+## 静的な構造の扱い方 \{#handling-static-structures\}
 
 静的な構造は名前付きタプル、すなわち `Tuple` を使用して扱うことを推奨します。オブジェクトの配列は、タプルの配列、つまり `Array(Tuple)` として保持できます。タプル内のカラムとその型も、同じルールに従って定義する必要があります。これにより、以下のように、入れ子になったオブジェクトを表現するために入れ子の `Tuple` を使用できます。
 
@@ -203,7 +203,7 @@ ORDER BY company.name
 ```
 
 
-### デフォルト値の扱い {#handling-default-values}
+### デフォルト値の扱い \{#handling-default-values\}
 
 JSON オブジェクトは構造化されていても、多くの場合は既知のキーの一部しか含まれないスパースな形になります。幸い、`Tuple` 型では JSON ペイロード内のすべてのカラムが存在する必要はありません。指定されていない場合は、デフォルト値が使用されます。
 
@@ -282,7 +282,7 @@ FORMAT PrettyJSONEachRow
 :::
 
 
-### 新しいカラムの扱い {#handling-new-columns}
+### 新しいカラムの扱い \{#handling-new-columns\}
 
 JSON のキーが固定されている場合には構造化されたアプローチが最も簡単ですが、スキーマ変更を事前に計画できる、つまり新しいキーがあらかじめ分かっており、それに応じてスキーマを変更できるのであれば、このアプローチはその場合でも引き続き利用できます。
 
@@ -360,7 +360,7 @@ SELECT id, nickname FROM people
 ```
 
 
-## 半構造化／動的な構造の扱い方 {#handling-semi-structured-dynamic-structures}
+## 半構造化／動的な構造の扱い方 \{#handling-semi-structured-dynamic-structures\}
 
 キーが動的に追加されたり、複数の型を取り得るような半構造化された JSON データの場合は、[`JSON`](/sql-reference/data-types/newjson) 型を推奨します。
 
@@ -491,7 +491,7 @@ SELECT id, nickname FROM people
 - **カラムの爆発的増加リスクの回避** - JSON 型は、サブカラムが専用のカラムとして保存されることにより潜在的には数千のカラムまでスケール可能ですが、その結果として過剰な数のカラムファイルが作成され、パフォーマンスに影響する「カラムファイルの爆発」が発生する可能性があります。これを軽減するために、JSON で使用される基盤となる [Dynamic 型](/sql-reference/data-types/dynamic) は [`max_dynamic_paths`](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) パラメータを提供しており、個別のカラムファイルとして保存される一意のパスの数を制限します。このしきい値に達すると、追加のパスはコンパクトなエンコード形式を用いた共有カラムファイルに保存され、柔軟なデータインジェストを可能にしつつ、パフォーマンスとストレージ効率を維持します。ただし、この共有カラムファイルへのアクセスは、専用カラムほど高性能ではありません。また、JSON カラムは [type hints](#using-type-hints-and-skipping-paths) と併用できる点に注意してください。「ヒント付き」のカラムは専用カラムと同等のパフォーマンスを提供します。
 - **パスと型のより単純なイントロスペクション** - JSON 型は、推論された型やパスを判定するための [イントロスペクション関数](/sql-reference/data-types/newjson#introspection-functions) をサポートしていますが、`DESCRIBE` などを用いて静的な構造を探索する方が簡単な場合もあります。
 
-### 単一の JSON カラム {#single-json-column}
+### 単一の JSON カラム \{#single-json-column\}
 
 このアプローチは、プロトタイピングやデータエンジニアリングのタスクに有用です。本番環境では、必要な場合にのみ動的なサブ構造に対して `JSON` を使用するようにしてください。
 
@@ -667,7 +667,7 @@ FROM people
 ```
 
 
-### ターゲットを絞った JSON カラム {#targeted-json-column}
+### ターゲットを絞った JSON カラム \{#targeted-json-column\}
 
 プロトタイプ作成やデータエンジニアリング上の課題の解決には有用ですが、本番環境では可能な限り明示的なスキーマを使用することを推奨します。
 
@@ -767,7 +767,7 @@ FORMAT PrettyJsonEachRow
 ```
 
 
-### 型ヒントの利用とパスのスキップ {#using-type-hints-and-skipping-paths}
+### 型ヒントの利用とパスのスキップ \{#using-type-hints-and-skipping-paths\}
 
 型ヒントを使うと、あるパスおよびそのサブカラムの型を指定できるため、不要な型推論処理を防ぐことができます。次の例では、JSON カラム `company.labels` 内の JSON キー `dissolved`、`employees`、`founded` に対して型を指定する場合を考えます。
 
@@ -926,7 +926,7 @@ FORMAT PrettyJSONEachRow
 ```
 
 
-#### 型ヒントによるパフォーマンス最適化 {#optimizing-performance-with-type-hints}  
+#### 型ヒントによるパフォーマンス最適化 \{#optimizing-performance-with-type-hints\}
 
 型ヒントは、不要な型推論を回避する手段以上のものを提供します。ストレージおよび処理における間接参照を完全になくし、さらに[最適なプリミティブ型](/data-modeling/schema-design#optimizing-types)を指定できるようにします。型ヒント付きの JSON パスは常に従来のカラムと同様のかたちで格納されるため、[**判別カラム (discriminator columns)**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data) や、クエリ実行時の動的な解決が不要になります。 
 
@@ -934,7 +934,7 @@ FORMAT PrettyJSONEachRow
 
 そのため、ほとんどが一貫しているものの、なお JSON の柔軟性も活かしたいデータセットに対して、型ヒントはスキーマやデータ取り込みパイプラインを再構成することなくパフォーマンスを維持するための便利な手段となります。
 
-### 動的パスの設定 {#configuring-dynamic-paths}
+### 動的パスの設定 \{#configuring-dynamic-paths\}
 
 ClickHouse は各 JSON パスを真の列指向レイアウト内のサブカラムとして保存し、圧縮や SIMD による高速処理、最小限のディスク I/O など、従来のカラムで得られるのと同じパフォーマンス上の利点を実現します。JSON データ内の各一意なパスと型の組み合わせは、ディスク上で独立したカラムファイルになります。
 

@@ -6,7 +6,7 @@ title: 'Функции uniqTheta'
 doc_type: 'reference'
 ---
 
-# Функции uniqTheta {#uniqtheta-functions}
+# Функции uniqTheta \{#uniqtheta-functions\}
 
 Функции uniqTheta работают с двумя объектами uniqThetaSketch для выполнения вычислений операций над множествами, таких как ∪ / ∩ / × (объединение/пересечение/отрицание), и возвращают новый объект uniqThetaSketch, содержащий результат.
 
@@ -15,7 +15,7 @@ doc_type: 'reference'
 UniqThetaSketch — это структура данных для хранения приближённого множества значений.
 Для дополнительной информации о RoaringBitmap см.: [Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketchFramework.html).
 
-## uniqThetaUnion {#uniqthetaunion}
+## uniqThetaUnion \{#uniqthetaunion\}
 
 Принимает два объекта uniqThetaSketch и выполняет операцию объединения множеств (∪); результатом является новый uniqThetaSketch.
 
@@ -41,7 +41,7 @@ FROM
 └───────────┴───────────────┴───────────────┘
 ```
 
-## uniqThetaIntersect {#uniqthetaintersect}
+## uniqThetaIntersect \{#uniqthetaintersect\}
 
 Выполняет вычисление пересечения (операция над множествами ∩) двух объектов uniqThetaSketch; результатом является новый uniqThetaSketch.
 
@@ -67,7 +67,7 @@ FROM
 └───────────────┴───────────────┴───────────────┘
 ```
 
-## uniqThetaNot {#uniqthetanot}
+## uniqThetaNot \{#uniqthetanot\}
 
 Два объекта uniqThetaSketch используются для выполнения операции a&#95;not&#95;b (операция над множествами ×), результатом является новый uniqThetaSketch.
 

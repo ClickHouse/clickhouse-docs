@@ -8,9 +8,9 @@ title: 'CollapsingMergeTree テーブルエンジン'
 doc_type: 'guide'
 ---
 
-# CollapsingMergeTree テーブルエンジン {#collapsingmergetree-table-engine}
+# CollapsingMergeTree テーブルエンジン \{#collapsingmergetree-table-engine\}
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 `CollapsingMergeTree` エンジンは [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md)
 を継承し、マージ処理中に行を折りたたむ（コラプスする）ためのロジックを追加します。
@@ -25,14 +25,14 @@ doc_type: 'guide'
 その結果として `SELECT` クエリの効率を高めることができます。
 :::
 
-## パラメータ {#parameters}
+## パラメータ \{#parameters\}
 
 このテーブルエンジンのすべてのパラメータは、`Sign` パラメータを除き、
 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree) における同名パラメータと同じ意味を持ちます。
 
 - `Sign` — 行の種別を示す列に付ける名前で、`1` は「状態」行、`-1` は「取消」行を表します。型: [Int8](/sql-reference/data-types/int-uint)。
 
-## テーブルの作成 {#creating-a-table}
+## テーブルの作成 \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -72,9 +72,9 @@ ENGINE [=] CollapsingMergeTree(date-column [, sampling_expression], (primary, ke
 * クエリパラメータの説明については、[クエリの説明](../../../sql-reference/statements/create/table.md)を参照してください。
 * `CollapsingMergeTree` テーブルを作成する場合は、`MergeTree` テーブルを作成する場合と同じ [クエリ句](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table) が必要です。
 
-## Collapsing {#table_engine-collapsingmergetree-collapsing}
+## Collapsing \{#table_engine-collapsingmergetree-collapsing\}
 
-### Data {#data}
+### Data \{#data\}
 
 あるオブジェクトに対して、継続的に変化するデータを保存する必要がある状況を考えます。
 各オブジェクトにつき 1 行だけを持ち、何か変更があるたびにその行を更新する、というのは論理的に思えますが、
@@ -131,7 +131,7 @@ ENGINE [=] CollapsingMergeTree(date-column [, sampling_expression], (primary, ke
 2. カラム内で長く伸び続ける配列は、書き込み負荷の増大によりエンジンの効率を低下させます。データが単純であればあるほど効率は高くなります。
 3. `SELECT` の結果は、オブジェクト変更履歴の一貫性に大きく依存します。挿入用データを準備する際には注意してください。一貫性のないデータでは予測不能な結果が生じる可能性があります。たとえば、セッション深度のような非負のメトリクスに対して負の値が出力されることがあります。
 
-### Algorithm {#table_engine-collapsingmergetree-collapsing-algorithm}
+### Algorithm \{#table_engine-collapsingmergetree-collapsing-algorithm\}
 
 ClickHouse がデータ[パーツ](/concepts/glossary#parts)をマージする際、
 同じソートキー（`ORDER BY`）を持つ連続した行の各グループは、高々 2 行にまでまとめられます。
@@ -174,9 +174,9 @@ collapsing を最終確定させるには、`GROUP BY` 句と、`Sign` を考慮
 `CollapsingMergeTree` では、各キーごとに最新の「state」行のみが返されます。
 :::
 
-## 例 {#examples}
+## 例 \{#examples\}
 
-### 使用例 {#example-of-use}
+### 使用例 \{#example-of-use\}
 
 次のサンプルデータを前提とします。
 
@@ -277,7 +277,7 @@ SELECT * FROM UAct FINAL
 このようなデータの選択方法は効率が悪く、スキャン対象データが多い場合（数百万行規模）には使用しないことを推奨します。
 :::
 
-### 別のアプローチの例 {#example-of-another-approach}
+### 別のアプローチの例 \{#example-of-another-approach\}
 
 このアプローチの考え方は、マージ処理がキー列のみを考慮するという点にあります。
 そのため「cancel」行では、`Sign` 列を使用せずに集計したときにその行の以前のバージョンと相殺されるような

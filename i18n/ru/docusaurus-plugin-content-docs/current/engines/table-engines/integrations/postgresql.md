@@ -7,7 +7,7 @@ title: 'Табличный движок PostgreSQL'
 doc_type: 'guide'
 ---
 
-# Движок таблиц PostgreSQL {#postgresql-table-engine}
+# Движок таблиц PostgreSQL \{#postgresql-table-engine\}
 
 Движок PostgreSQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, хранящимся на удалённом сервере PostgreSQL.
 
@@ -19,7 +19,7 @@ doc_type: 'guide'
 Пользователям ClickHouse Cloud рекомендуется использовать [ClickPipes](/integrations/clickpipes) для потоковой передачи данных из Postgres в ClickHouse. Это обеспечивает встроенную поддержку высокопроизводительной вставки, при этом сохраняя разделение зон ответственности за счёт возможности независимо масштабировать ингестию и ресурсы кластера.
 :::
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -68,7 +68,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 SELECT * FROM postgresql(postgres_creds, table='table1');
 ```
 
-## Особенности реализации {#implementation-details}
+## Особенности реализации \{#implementation-details\}
 
 Запросы `SELECT` на стороне PostgreSQL выполняются как `COPY (SELECT ...) TO STDOUT` внутри транзакции PostgreSQL только для чтения с фиксацией (commit) после каждого запроса `SELECT`.
 
@@ -115,9 +115,9 @@ CREATE TABLE test_replicas (id UInt32, name String) ENGINE = PostgreSQL(`postgre
 </source>
 ```
 
-## Пример использования {#usage-example}
+## Пример использования \{#usage-example\}
 
-### Таблица в PostgreSQL {#table-in-postgresql}
+### Таблица в PostgreSQL \{#table-in-postgresql\}
 
 ```text
 postgres=# CREATE TABLE "public"."test" (
@@ -140,7 +140,7 @@ postgresql> SELECT * FROM test;
  (1 row)
 ```
 
-### Создание таблицы в ClickHouse и подключение к таблице PostgreSQL, созданной выше {#creating-table-in-clickhouse-and-connecting-to--postgresql-table-created-above}
+### Создание таблицы в ClickHouse и подключение к таблице PostgreSQL, созданной выше \{#creating-table-in-clickhouse-and-connecting-to--postgresql-table-created-above\}
 
 В этом примере используется [движок таблицы PostgreSQL](/engines/table-engines/integrations/postgresql.md) для подключения таблицы ClickHouse к таблице PostgreSQL и выполнения операторов SELECT и INSERT над базой данных PostgreSQL:
 
@@ -154,7 +154,7 @@ CREATE TABLE default.postgresql_table
 ENGINE = PostgreSQL('localhost:5432', 'public', 'test', 'postgres_user', 'postgres_password');
 ```
 
-### Вставка начальных данных из таблицы PostgreSQL в таблицу ClickHouse с использованием запроса SELECT {#inserting-initial-data-from-postgresql-table-into-clickhouse-table-using-a-select-query}
+### Вставка начальных данных из таблицы PostgreSQL в таблицу ClickHouse с использованием запроса SELECT \{#inserting-initial-data-from-postgresql-table-into-clickhouse-table-using-a-select-query\}
 
 [Табличная функция postgresql](/sql-reference/table-functions/postgresql.md) копирует данные из PostgreSQL в ClickHouse. Её часто используют для повышения производительности запросов за счёт выполнения запросов и аналитики в ClickHouse, а не в PostgreSQL, а также для миграции данных из PostgreSQL в ClickHouse. Поскольку мы будем копировать данные из PostgreSQL в ClickHouse, мы используем в ClickHouse табличный движок MergeTree и назовём таблицу postgresql&#95;copy:
 
@@ -174,7 +174,7 @@ INSERT INTO default.postgresql_copy
 SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postgres_user', 'postgres_password');
 ```
 
-### Вставка инкрементальных данных из таблицы PostgreSQL в таблицу ClickHouse {#inserting-incremental-data-from-postgresql-table-into-clickhouse-table}
+### Вставка инкрементальных данных из таблицы PostgreSQL в таблицу ClickHouse \{#inserting-incremental-data-from-postgresql-table-into-clickhouse-table\}
 
 Если после первоначальной вставки вы выполняете дальнейшую синхронизацию между таблицей PostgreSQL и таблицей ClickHouse, вы можете использовать предложение WHERE в ClickHouse, чтобы вставлять только данные, добавленные в PostgreSQL, на основе метки времени или уникального последовательного идентификатора.
 
@@ -192,7 +192,7 @@ SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postges_user', 'po
 WHERE int_id > maxIntID;
 ```
 
-### Выбор данных из полученной таблицы ClickHouse {#selecting-data-from-the-resulting-clickhouse-table}
+### Выбор данных из полученной таблицы ClickHouse \{#selecting-data-from-the-resulting-clickhouse-table\}
 
 ```sql
 SELECT * FROM postgresql_copy WHERE str IN ('test');
@@ -204,7 +204,7 @@ SELECT * FROM postgresql_copy WHERE str IN ('test');
 └────────────────┴──────┴────────┘
 ```
 
-### Использование схемы, отличной от схемы по умолчанию {#using-non-default-schema}
+### Использование схемы, отличной от схемы по умолчанию \{#using-non-default-schema\}
 
 ```text
 postgres=# CREATE SCHEMA "nice.schema";
@@ -224,7 +224,7 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 * [Табличная функция `postgresql`](../../../sql-reference/table-functions/postgresql.md)
 * [Использование PostgreSQL как источника словаря](/sql-reference/dictionaries#mysql)
 
-## Связанные материалы {#related-content}
+## Связанные материалы \{#related-content\}
 
 - Блог: [ClickHouse и PostgreSQL — союз, заключённый в раю данных — часть 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
 - Блог: [ClickHouse и PostgreSQL — союз, заключённый в раю данных — часть 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)

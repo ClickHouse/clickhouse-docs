@@ -22,7 +22,7 @@ MCP формирует универсальный интерфейс между 
 Ключевое преимущество MCP заключается в том, что библиотекам для ИИ нужно реализовать поддержку протокола только один раз.
 После этого все сервисы, совместимые с MCP, становятся сразу доступными, что значительно экономит время разработчикам и сопровождающим библиотеки ИИ.
 
-## Какова архитектура MCP?  {#mcp-architecture}
+## Какова архитектура MCP?  \{#mcp-architecture\}
 
 MCP использует клиент-серверную архитектуру:
 
@@ -34,7 +34,7 @@ MCP использует клиент-серверную архитектуру:
 
 <Image img={overview} alt="Обзор MCP" size="lg"/>
 
-## Есть ли у ClickHouse сервер MCP? {#clickhouse-mcp-server}
+## Есть ли у ClickHouse сервер MCP? \{#clickhouse-mcp-server\}
 
 Да!
 [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) предоставляет следующие инструменты:
@@ -45,7 +45,7 @@ MCP использует клиент-серверную архитектуру:
 
 Если вы ищете удалённый сервер MCP в ClickHouse Cloud, см. страницу [«Remote MCP server in Cloud»](/cloud/features/ai-ml/remote-mcp).
 
-## Руководства по использованию ClickHouse MCP Server {#clickhouse-mcp-server-guides}
+## Руководства по использованию ClickHouse MCP Server \{#clickhouse-mcp-server-guides\}
 
 Ниже приведены руководства, показывающие, как использовать ClickHouse MCP Server.
 

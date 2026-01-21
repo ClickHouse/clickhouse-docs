@@ -7,7 +7,7 @@ title: 'サードパーティインターフェース'
 doc_type: 'landing-page'
 ---
 
-# サードパーティインターフェイス {#third-party-interfaces}
+# サードパーティインターフェイス \{#third-party-interfaces\}
 
 これは、ClickHouse へのインターフェイスを提供するサードパーティ製ツールへのリンク集です。グラフィカルインターフェイス、コマンドラインインターフェイス、API などがあります。
 

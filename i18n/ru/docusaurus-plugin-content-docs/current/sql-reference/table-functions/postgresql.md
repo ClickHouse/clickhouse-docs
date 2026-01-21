@@ -7,17 +7,17 @@ title: 'postgresql'
 doc_type: 'reference'
 ---
 
-# Табличная функция PostgreSQL {#postgresql-table-function}
+# Табличная функция PostgreSQL \{#postgresql-table-function\}
 
 Позволяет выполнять запросы `SELECT` и `INSERT` к данным, которые хранятся на удалённом сервере PostgreSQL.
 
-## Синтаксис {#syntax}
+## Синтаксис \{#syntax\}
 
 ```sql
 postgresql({host:port, database, table, user, password[, schema, [, on_conflict]] | named_collection[, option=value [,..]]})
 ```
 
-## Аргументы {#arguments}
+## Аргументы \{#arguments\}
 
 | Аргумент      | Описание                                                                  |
 |---------------|----------------------------------------------------------------------------|
@@ -31,7 +31,7 @@ postgresql({host:port, database, table, user, password[, schema, [, on_conflict]
 
 Аргументы также могут быть переданы с использованием [именованных коллекций](operations/named-collections.md). В этом случае `host` и `port` должны быть указаны отдельно. Такой подход рекомендуется для продакшен-среды.
 
-## Возвращаемое значение {#returned_value}
+## Возвращаемое значение \{#returned_value\}
 
 Объект таблицы с теми же столбцами, что и исходная таблица PostgreSQL.
 
@@ -39,7 +39,7 @@ postgresql({host:port, database, table, user, password[, schema, [, on_conflict]
 В запросе `INSERT`, чтобы отличить табличную функцию `postgresql(...)` от имени таблицы со списком имён столбцов, необходимо использовать ключевые слова `FUNCTION` или `TABLE FUNCTION`. См. примеры ниже.
 :::
 
-## Детали реализации {#implementation-details}
+## Детали реализации \{#implementation-details\}
 
 Запросы `SELECT` на стороне PostgreSQL выполняются в виде `COPY (SELECT ...) TO STDOUT` внутри транзакции PostgreSQL только для чтения с фиксацией (commit) после каждого запроса `SELECT`.
 
@@ -69,7 +69,7 @@ SELECT name FROM postgresql(`postgres1:5431|postgres2:5432`, 'postgres_database'
 
 Поддерживаются приоритеты реплик для источника словаря PostgreSQL. Чем больше число в отображении, тем ниже приоритет. Наивысший приоритет — `0`.
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 Таблица в PostgreSQL:
 
@@ -147,11 +147,11 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
         ENGINE PostgreSQL('localhost:5432', 'clickhouse', 'nice.table', 'postgrsql_user', 'password', 'nice.schema');
 ```
 
-## Связанные материалы {#related}
+## Связанные материалы \{#related\}
 
 - [Движок таблиц PostgreSQL](../../engines/table-engines/integrations/postgresql.md)
 - [Использование PostgreSQL как источника словаря](/sql-reference/dictionaries#postgresql)
 
-### Репликация или миграция данных Postgres с помощью PeerDB {#replicating-or-migrating-postgres-data-with-with-peerdb}
+### Репликация или миграция данных Postgres с помощью PeerDB \{#replicating-or-migrating-postgres-data-with-with-peerdb\}
 
 > В дополнение к табличным функциям вы всегда можете использовать [PeerDB](https://docs.peerdb.io/introduction) от ClickHouse для настройки непрерывного конвейера передачи данных из Postgres в ClickHouse. PeerDB — это специализированный инструмент, разработанный для репликации данных из Postgres в ClickHouse с использованием фиксации изменений данных (CDC).

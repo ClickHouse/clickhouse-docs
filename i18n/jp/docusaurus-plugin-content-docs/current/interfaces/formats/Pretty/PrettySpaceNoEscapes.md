@@ -16,17 +16,17 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | ✗  | ✔  |       |
 
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 [`PrettySpace`](./PrettySpace.md) 形式とは、[ANSI エスケープシーケンス](http://en.wikipedia.org/wiki/ANSI_escape_code) を使用しない点が異なります。
 これは、この形式をブラウザで表示したり、`watch` コマンドラインユーティリティで使用したりするために必要です。
 
 
 
-## 使用例 {#example-usage}
+## 使用例 \{#example-usage\}
 
 
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \{#format-settings\}
 
 <PrettyFormatSettings/>

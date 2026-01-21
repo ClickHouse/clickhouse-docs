@@ -7,11 +7,11 @@ title: 'MySQL テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# MySQL テーブルエンジン {#mysql-table-engine}
+# MySQL テーブルエンジン \{#mysql-table-engine\}
 
 MySQL エンジンを使用すると、リモートの MySQL サーバー上に保存されているデータに対して `SELECT` および `INSERT` クエリを実行できます。
 
-## テーブルを作成する {#creating-a-table}
+## テーブルを作成する \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -62,7 +62,7 @@ SETTINGS
 CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) ENGINE = MySQL(`mysql{2|3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
 
-## 使用例 {#usage-example}
+## 使用例 \{#usage-example\}
 
 MySQL でテーブルを作成します:
 
@@ -127,11 +127,11 @@ SELECT * FROM mysql_table
 └────────────────┴────────┘
 ```
 
-## 設定 {#mysql-settings}
+## 設定 \{#mysql-settings\}
 
 デフォルト設定は接続の再利用も行わないため、効率的とは言えません。以下の設定により、サーバーが 1 秒あたりに処理できるクエリ数を増やすことができます。
 
-### `connection_auto_close` {#connection-auto-close}
+### `connection_auto_close` \{#connection-auto-close\}
 
 クエリ実行後に接続を自動的にクローズするかどうか、つまり接続の再利用を無効にするかどうかを制御します。
 
@@ -142,7 +142,7 @@ SELECT * FROM mysql_table
 
 デフォルト値: `1`。
 
-### `connection_max_tries` {#connection-max-tries}
+### `connection_max_tries` \{#connection-max-tries\}
 
 フェイルオーバー対応プールにおけるリトライ回数を設定します。
 
@@ -153,7 +153,7 @@ SELECT * FROM mysql_table
 
 デフォルト値: `3`。
 
-### `connection_pool_size` {#connection-pool-size}
+### `connection_pool_size` \{#connection-pool-size\}
 
 接続プールのサイズです（すべての接続が使用中の場合、いずれかの接続が解放されるまでクエリは待機します）。
 
@@ -163,7 +163,7 @@ SELECT * FROM mysql_table
 
 デフォルト値: `16`。
 
-### `connection_wait_timeout` {#connection-wait-timeout}
+### `connection_wait_timeout` \{#connection-wait-timeout\}
 
 空き接続を待機するタイムアウト時間（秒）です（すでに `connection_pool_size` 個の接続がアクティブな場合に適用されます）。0 の場合は待機しません。
 
@@ -173,7 +173,7 @@ SELECT * FROM mysql_table
 
 デフォルト値: `5`。
 
-### `connect_timeout` {#connect-timeout}
+### `connect_timeout` \{#connect-timeout\}
 
 接続のタイムアウト時間（秒）です。
 
@@ -183,7 +183,7 @@ SELECT * FROM mysql_table
 
 デフォルト値: `10`。
 
-### `read_write_timeout` {#read-write-timeout}
+### `read_write_timeout` \{#read-write-timeout\}
 
 読み取り／書き込みのタイムアウト時間（秒）です。
 
@@ -193,7 +193,7 @@ SELECT * FROM mysql_table
 
 デフォルト値: `300`。
 
-## 関連項目 {#see-also}
+## 関連項目 \{#see-also\}
 
 - [MySQL テーブル関数](../../../sql-reference/table-functions/mysql.md)
 - [MySQL を辞書のソースとして使用する](/sql-reference/dictionaries#mysql)

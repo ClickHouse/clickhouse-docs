@@ -7,14 +7,14 @@ sidebar_label: 'maxMap'
 doc_type: 'reference'
 ---
 
-# maxMap {#maxmap}
+# maxMap \{#maxmap\}
 
-## Описание {#description}
+## Описание \{#description\}
 
 Комбинатор [`Map`](/sql-reference/aggregate-functions/combinators#-map) можно применить к функции [`max`](/sql-reference/aggregate-functions/reference/max),
 чтобы вычислять максимальное значение в Map по каждому ключу с использованием агрегатной функции-комбинатора `maxMap`.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 В этом примере мы создадим таблицу, которая хранит коды статусов и число их вхождений для разных временных интервалов,
 где каждая строка содержит `Map` кодов статусов и соответствующих им количеств. Мы будем использовать
@@ -61,6 +61,6 @@ GROUP BY timeslot;
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
-## См. также {#see-also}
+## См. также \{#see-also\}
 - [`max`](/sql-reference/aggregate-functions/reference/max)
 - [`Комбинатор Map`](/sql-reference/aggregate-functions/combinators#-map)

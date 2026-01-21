@@ -8,7 +8,7 @@ title: 'zeros'
 doc_type: 'reference'
 ---
 
-# zeros テーブル関数 {#zeros-table-function}
+# zeros テーブル関数 \{#zeros-table-function\}
 
 * `zeros(N)` – 整数 0 を `N` 回含む、単一の「zero」列 (UInt8 型) を持つテーブルを返します
 * `zeros_mt(N)` – `zeros` と同じですが、マルチスレッドで実行されます。

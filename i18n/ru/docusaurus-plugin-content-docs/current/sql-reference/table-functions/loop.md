@@ -5,9 +5,9 @@ title: 'loop'
 doc_type: 'reference'
 ---
 
-# Табличная функция loop {#loop-table-function}
+# Табличная функция loop \{#loop-table-function\}
 
-## Синтаксис {#syntax}
+## Синтаксис \{#syntax\}
 
 ```sql
 SELECT ... FROM loop(database, table);
@@ -16,7 +16,7 @@ SELECT ... FROM loop(table);
 SELECT ... FROM loop(other_table_function(...));
 ```
 
-## Аргументы {#arguments}
+## Аргументы \{#arguments\}
 
 | Аргумент                    | Описание                                                                                                            |
 |-----------------------------|----------------------------------------------------------------------------------------------------------------------|
@@ -24,11 +24,11 @@ SELECT ... FROM loop(other_table_function(...));
 | `table`                     | имя таблицы.                                                                                                         |
 | `other_table_function(...)` | другая табличная функция. Пример: `SELECT * FROM loop(numbers(10));` здесь `other_table_function(...)` — это `numbers(10)`. |
 
-## Возвращаемые значения {#returned_values}
+## Возвращаемые значения \{#returned_values\}
 
 Бесконечный цикл, возвращающий результаты запроса.
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 Получение данных из ClickHouse:
 

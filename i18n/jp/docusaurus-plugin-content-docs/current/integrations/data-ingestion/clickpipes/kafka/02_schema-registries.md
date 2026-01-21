@@ -11,11 +11,11 @@ integration:
    - category: 'clickpipes'
 ---
 
-# スキーマレジストリ {#schema-registries}
+# スキーマレジストリ \{#schema-registries\}
 
 ClickPipes は Avro データストリーム用のスキーマレジストリをサポートします。
 
-## Kafka ClickPipes でサポートされているレジストリ {#supported-schema-registries}
+## Kafka ClickPipes でサポートされているレジストリ \{#supported-schema-registries\}
 
 Confluent Schema Registry と API 互換のスキーマレジストリがサポート対象です。これには次のものが含まれます。
 
@@ -24,7 +24,7 @@ Confluent Schema Registry と API 互換のスキーマレジストリがサポ�
 
 ClickPipes は、現時点では AWS Glue Schema Registry および Azure Schema Registry をサポートしていません。これらのスキーマレジストリのサポートが必要な場合は、[こちらから弊社チームまでお問い合わせください](https://clickhouse.com/company/contact?loc=clickpipes)。
 
-## 設定 {#schema-registry-configuration}
+## 設定 \{#schema-registry-configuration\}
 
 Avro データを使用する ClickPipes では、スキーマレジストリが必要です。これは次の 3 通りのいずれかで設定できます。
 
@@ -33,7 +33,7 @@ Avro データを使用する ClickPipes では、スキーマレジストリが
 2. スキーマ ID への完全なパスを指定する（例: `https://registry.example.com/schemas/ids/1000`）
 3. スキーマレジストリのルート URL を指定する（例: `https://registry.example.com`）
 
-## 仕組み {#how-schema-registries-work}
+## 仕組み \{#how-schema-registries-work\}
 
 ClickPipes は、設定されているスキーマレジストリから Avro スキーマを動的に取得して適用します。
 
@@ -42,7 +42,7 @@ ClickPipes は、設定されているスキーマレジストリから Avro ス
 - メッセージが埋め込みスキーマ ID なしで送信され、かつ ClickPipe の設定でスキーマ ID またはサブジェクト名が指定されていない場合、スキーマは取得されず、そのメッセージはスキップされ、`SOURCE_SCHEMA_ERROR` が ClickPipes のエラーテーブルに記録されます。
 - メッセージがスキーマに準拠していない場合、そのメッセージはスキップされ、`DATA_PARSING_ERROR` が ClickPipes のエラーテーブルに記録されます。
 
-## スキーママッピング {#schema-mapping}
+## スキーママッピング \{#schema-mapping\}
 
 取得した Avro スキーマと ClickHouse の宛先テーブルとのマッピングには、次のルールが適用されます。
 

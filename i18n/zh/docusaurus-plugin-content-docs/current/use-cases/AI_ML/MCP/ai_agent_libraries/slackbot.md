@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 如何使用 ClickHouse MCP Server 构建 SlackBot 代理 {#how-to-build-a-slackbot-agent-using-clickhouse-mcp-server}
+# 如何使用 ClickHouse MCP Server 构建 SlackBot 代理 \{#how-to-build-a-slackbot-agent-using-clickhouse-mcp-server\}
 
 在本指南中，您将学习如何构建一个 [SlackBot](https://slack.com/intl/en-gb/help/articles/202026038-An-introduction-to-Slackbot) 代理。
 这个机器人允许您在 Slack 中使用自然语言直接查询您的 ClickHouse 数据。它基于
@@ -20,7 +20,7 @@ doc_type: 'guide'
 此示例的代码可以在 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/slackbot/README.md) 中找到。
 :::
 
-## 前置条件 {#prerequisites}
+## 前置条件 \{#prerequisites\}
 
 - 您需要安装 [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
 - 您需要具有 Slack 工作区的访问权限
@@ -28,18 +28,18 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-## 创建 Slack 应用 {#create-a-slack-app}
+## 创建 Slack 应用 \{#create-a-slack-app\}
 
 1. 前往 [slack.com/apps](https://slack.com/apps) 并点击 `Create New App`。
 2. 选择 `From scratch` 选项，并为您的应用命名。
 3. 选择您的 Slack 工作区。
 
-## 将应用安装到你的工作区 {#install-the-app-to-your-workspace}
+## 将应用安装到你的工作区 \{#install-the-app-to-your-workspace\}
 
 接下来，你需要将上一步创建的应用添加到你的工作区。
 你可以参考 Slack 文档中的说明：[“Add apps to your Slack workspace”](https://slack.com/intl/en-gb/help/articles/202035138-Add-apps-to-your-Slack-workspace)。
 
-## 配置 Slack 应用设置 {#configure-slack-app-settings}
+## 配置 Slack 应用设置 \{#configure-slack-app-settings\}
 
 - 前往 `App Home`
   - 在 `Show Tabs` → `Messages Tab` 中，启用 `Allow users to send Slash commands and messages from the messages tab`
@@ -64,7 +64,7 @@ doc_type: 'guide'
       - `message:im`
     - 保存更改
 
-## 添加环境变量 (`.env`) {#add-env-vars}
+## 添加环境变量 (`.env`) \{#add-env-vars\}
 
 在项目根目录创建一个 `.env` 文件，并加入以下环境变量，
 这些变量将使你的应用能够连接到 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/)。
@@ -82,7 +82,7 @@ CLICKHOUSE_SECURE=true
 
 如果您愿意，可以调整这些 ClickHouse 变量，以使用您自己的 ClickHouse 服务器或 ClickHouse Cloud 实例。
 
-## 使用机器人 {#using-the-bot}
+## 使用机器人 \{#using-the-bot\}
 
 1. **启动机器人：**
 

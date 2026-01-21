@@ -288,7 +288,8 @@ ORDER BY
     s_acctbal DESC,
     n_name,
     s_name,
-    p_partkey;
+    p_partkey
+LIMIT 100;
 ```
 
 **Q3**
@@ -315,7 +316,8 @@ GROUP BY
     o_shippriority
 ORDER BY
     revenue DESC,
-    o_orderdate;
+    o_orderdate
+LIMIT 10;
 ```
 
 **Q4**
@@ -559,7 +561,8 @@ GROUP BY
     c_address,
     c_comment
 ORDER BY
-    revenue DESC;
+    revenue DESC
+LIMIT 20;
 ```
 
 **Q11**
@@ -673,33 +676,33 @@ WHERE
 **Q15**
 
 ```sql
-with revenue_view as (
-    select
-        l_suppkey as supplier_no,
-        sum(l_extendedprice * (1 - l_discount)) as total_revenue
-    from
+WITH revenue_view AS (
+    SELECT
+        l_suppkey AS supplier_no,
+        sum(l_extendedprice * (1 - l_discount)) AS total_revenue
+    FROM
         lineitem
-    where
+    WHERE
         l_shipdate >= '1996-01-01'
-      and l_shipdate < '1996-04-01'
-    group by
+      AND l_shipdate < '1996-04-01'
+    GROUP BY
         l_suppkey)
-select
+SELECT
     s_suppkey,
     s_name,
     total_revenue
-from
+FROM
     supplier,
     revenue_view
-where
+WHERE
     s_suppkey = supplier_no
-    and total_revenue = (
-        select
+    AND total_revenue = (
+        SELECT
             max(total_revenue)
-        from
+        FROM
             revenue_view
     )
-order by
+ORDER BY
     s_suppkey;
 ```
 
@@ -795,7 +798,8 @@ GROUP BY
     o_totalprice
 ORDER BY
     o_totalprice DESC,
-    o_orderdate;
+    o_orderdate
+LIMIT 100;
 ```
 
 **Q19**
@@ -921,7 +925,8 @@ GROUP BY
     s_name
 ORDER BY
     numwait DESC,
-    s_name;
+    s_name
+LIMIT 100;
 ```
 
 **Q22**

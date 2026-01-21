@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Как создать AI-агента с помощью Microsoft Agent Framework и ClickHouse MCP Server {#how-to-build-an-ai-agent-with-microsoft-agent-framework-and-the-clickhouse-mcp-server}
+# Как создать AI-агента с помощью Microsoft Agent Framework и ClickHouse MCP Server \{#how-to-build-an-ai-agent-with-microsoft-agent-framework-and-the-clickhouse-mcp-server\}
 
 В этом руководстве вы узнаете, как создать AI-агента на основе [Microsoft Agent Framework](https://github.com/microsoft/agent-framework), который может взаимодействовать с 
 [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) с помощью [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
@@ -19,7 +19,7 @@ doc_type: 'guide'
 Этот пример представлен в виде ноутбука в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/microsoft-agent-framework/microsoft-agent-framework.ipynb).
 :::
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \{#prerequisites\}
 
 - На вашей системе должен быть установлен интерпретатор Python.
 - На вашей системе должен быть установлен менеджер пакетов `pip`.

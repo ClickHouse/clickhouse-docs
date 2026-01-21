@@ -8,7 +8,7 @@ description: '介绍 ClickHouse Cloud 中的访问控制和账户管理'
 doc_type: 'guide'
 ---
 
-# 在 ClickHouse 中创建用户和角色 {#creating-users-and-roles-in-clickhouse}
+# 在 ClickHouse 中创建用户和角色 \{#creating-users-and-roles-in-clickhouse\}
 
 ClickHouse 支持基于 [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) 方法的访问控制管理。
 
@@ -39,7 +39,7 @@ ClickHouse 访问控制实体：
 
 要查看所有用户、角色、配置文件等以及它们被授予的所有权限，请使用 [`SHOW ACCESS`](/sql-reference/statements/show#show-access) 语句。
 
-## 概览 {#access-control-usage}
+## 概览 \{#access-control-usage\}
 
 默认情况下，ClickHouse 服务器提供 `default` 用户账户。该账户不受基于 SQL 的访问控制和账户管理机制约束，但拥有全部权限。在任何未显式指定用户名的情况下都会使用 `default` 用户账户，例如从客户端登录或执行分布式查询时。在分布式查询处理中，如果服务器或集群配置中未指定 [user 和 password](/engines/table-engines/special/distributed.md) 属性，则会使用默认用户账户。
 
@@ -49,13 +49,13 @@ ClickHouse 访问控制实体：
 2.  以 `default` 用户账户登录并创建所有需要的用户。不要忘记创建一个管理员账户（`GRANT ALL ON *.* TO admin_user_account WITH GRANT OPTION`）。
 3.  为 `default` 用户[收紧权限](/operations/settings/permissions-for-queries)，并为其禁用基于 SQL 的访问控制和账户管理。
 
-### 当前方案的特性 {#access-control-properties}
+### 当前方案的特性 \{#access-control-properties\}
 
 - 即使数据库和表尚不存在，你也可以为它们授予权限。
 - 如果一个表被删除，与该表对应的所有权限不会自动被收回。这意味着即使你之后创建了同名的新表，所有这些权限仍然有效。要撤销与已删除表对应的权限，你需要执行例如 `REVOKE ALL PRIVILEGES ON db.table FROM ALL` 这样的查询。
 - 权限没有生存期相关的设置。
 
-### 用户账户 {#user-account-management}
+### 用户账户 \{#user-account-management\}
 
 用户账户是一种访问实体，用于在 ClickHouse 中对某个主体进行授权。一个用户账户包含：
 
@@ -76,7 +76,7 @@ ClickHouse 访问控制实体：
 - [SHOW CREATE USER](/sql-reference/statements/show#show-create-user)
 - [SHOW USERS](/sql-reference/statements/show#show-users)
 
-### 设置的生效顺序 {#access-control-settings-applying}
+### 设置的生效顺序 \{#access-control-settings-applying\}
 
 设置可以通过不同方式进行配置：在用户账户中、在授予给该用户的角色中，以及在设置配置文件中。在用户登录时，如果同一项设置在不同的访问实体中都有配置，其值和约束按如下优先级（从高到低）生效：
 
@@ -85,7 +85,7 @@ ClickHouse 访问控制实体：
 3.  分配给用户或其默认角色的设置配置文件中的设置。如果某个设置在多个配置文件中都有配置，则该设置的应用顺序未定义。
 4.  默认应用于整个服务器的设置，或来自 [default profile](/operations/server-configuration-parameters/settings#default_profile) 的设置。
 
-### 角色 {#role-management}
+### 角色 \{#role-management\}
 
 角色是一个访问实体容器，可以授予给用户账户。
 
@@ -107,7 +107,7 @@ ClickHouse 访问控制实体：
 
 可以通过 [GRANT](/sql-reference/statements/grant.md) 查询向角色授予权限。要从角色撤销权限，ClickHouse 提供 [REVOKE](/sql-reference/statements/revoke.md) 查询。
 
-#### 行策略 {#row-policy-management}
+#### 行策略 \{#row-policy-management\}
 
 行策略是一种过滤器，用于定义某个用户或角色可以访问哪些行。行策略包含针对某个特定表的过滤条件，以及应使用此行策略的角色和/或用户列表。
 
@@ -123,7 +123,7 @@ ClickHouse 访问控制实体：
 - [SHOW CREATE ROW POLICY](/sql-reference/statements/show#show-create-row-policy)
 - [SHOW POLICIES](/sql-reference/statements/show#show-policies)
 
-### 设置配置文件 {#settings-profiles-management}
+### 设置配置文件 \{#settings-profiles-management\}
 
 设置配置文件是[设置](/operations/settings/index.md)的集合。设置配置文件包含设置和约束，以及应用此配置文件的角色和/或用户列表。
 
@@ -135,7 +135,7 @@ ClickHouse 访问控制实体：
 - [SHOW CREATE SETTINGS PROFILE](/sql-reference/statements/show#show-create-settings-profile)
 - [SHOW PROFILES](/sql-reference/statements/show#show-profiles)
 
-### 配额 {#quotas-management}
+### 配额 \{#quotas-management\}
 
 配额用于限制资源使用。参见[配额](/operations/quotas.md)。
 
@@ -150,7 +150,7 @@ ClickHouse 访问控制实体：
 - [SHOW QUOTA](/sql-reference/statements/show#show-quota)
 - [SHOW QUOTAS](/sql-reference/statements/show#show-quotas)
 
-### 启用基于 SQL 的访问控制和账户管理 {#enabling-access-control}
+### 启用基于 SQL 的访问控制和账户管理 \{#enabling-access-control\}
 
 - 为配置存储设置一个目录。
 
@@ -160,7 +160,7 @@ ClickHouse 访问控制实体：
 
     默认情况下，基于 SQL 的访问控制和账户管理对所有用户均处于禁用状态。你需要在 `users.xml` 配置文件中至少配置一个用户，并将 [`access_management`](/operations/settings/settings-users.md#access_management-user-setting)、`named_collection_control`、`show_named_collections` 和 `show_named_collections_secrets` 设置的值设为 1。
 
-## 定义 SQL 用户和角色 {#defining-sql-users-and-roles}
+## 定义 SQL 用户和角色 \{#defining-sql-users-and-roles\}
 
 :::tip
 如果你在使用 ClickHouse Cloud，请参阅 [Cloud access management](/cloud/security/console-roles)。
@@ -168,7 +168,7 @@ ClickHouse 访问控制实体：
 
 本文介绍如何在基础层面定义 SQL 用户和角色，并将这些权限和许可应用到数据库、表、行和列上。
 
-### 启用 SQL 用户模式 {#enabling-sql-user-mode}
+### 启用 SQL 用户模式 \{#enabling-sql-user-mode\}
 
 1.  在 `users.xml` 文件中为 `<default>` 用户启用 SQL 用户模式：
     ```xml
@@ -191,7 +191,7 @@ ClickHouse 访问控制实体：
     clickhouse-client --user default --password <password>
     ```
 
-### 定义用户 {#defining-users}
+### 定义用户 \{#defining-users\}
 
 1. 创建一个 SQL 管理员账户：
     ```sql
@@ -202,7 +202,7 @@ ClickHouse 访问控制实体：
     GRANT ALL ON *.* TO clickhouse_admin WITH GRANT OPTION;
     ```
 
-## ALTER 权限 {#alter-permissions}
+## ALTER 权限 \{#alter-permissions\}
 
 本文旨在帮助您更好地理解如何定义权限，以及在特权用户执行 `ALTER` 语句时权限是如何生效的。
 

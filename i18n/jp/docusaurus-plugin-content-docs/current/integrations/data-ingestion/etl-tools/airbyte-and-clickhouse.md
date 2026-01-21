@@ -24,7 +24,7 @@ import airbyte08 from '@site/static/images/integrations/data-ingestion/etl-tools
 import airbyte09 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_09.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# AirbyteをClickHouseに接続する {#connect-airbyte-to-clickhouse}
+# AirbyteをClickHouseに接続する \{#connect-airbyte-to-clickhouse\}
 
 <PartnerBadge />
 
@@ -46,7 +46,7 @@ ClickHouse用のAirbyteソースおよびデスティネーションは現在ア
 
 <VerticalStepper headerLevel="h2">
 
-## Airbyte をダウンロードして実行する {#1-download-and-run-airbyte}
+## Airbyte をダウンロードして実行する \{#1-download-and-run-airbyte\}
 
 1. Airbyte は Docker 上で動作し、`docker-compose` を使用します。最新版の Docker をダウンロードしてインストールしてください。
 
@@ -66,7 +66,7 @@ ClickHouse用のAirbyteソースおよびデスティネーションは現在ア
         代わりに、<a href="https://docs.airbyte.com/deploying-airbyte/on-cloud" target="_blank">Airbyte Cloud</a> にサインアップして利用することもできます。
         :::
 
-## ClickHouse を送信先として追加する {#2-add-clickhouse-as-a-destination}
+## ClickHouse を送信先として追加する \{#2-add-clickhouse-as-a-destination\}
 
 このセクションでは、ClickHouse インスタンスを送信先として追加する方法を説明します。
 
@@ -97,7 +97,7 @@ GRANT CREATE ON * TO my_airbyte_user;
 
 :::
 
-## データセットをソースとして追加する {#3-add-a-dataset-as-a-source}
+## データセットをソースとして追加する \{#3-add-a-dataset-as-a-source\}
 
 このチュートリアルで使用するサンプルデータセットは、<a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">New York City Taxi Data</a>（<a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">Github</a> 上）です。このチュートリアルでは、このデータセットのうち 2022 年 1 月に対応するサブセットを使用します。
 
@@ -115,7 +115,7 @@ GRANT CREATE ON * TO my_airbyte_user;
 
 3. これで完了です。Airbyte にソースファイルを追加できました。
 
-## ClickHouse への接続を作成し、データセットをロードする {#4-create-a-connection-and-load-the-dataset-into-clickhouse}
+## ClickHouse への接続を作成し、データセットをロードする \{#4-create-a-connection-and-load-the-dataset-into-clickhouse\}
 
 1. Airbyte 内の「Connections」ページを開き、新しい接続を追加します。
 

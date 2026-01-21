@@ -22,14 +22,14 @@ import Image from '@theme/IdealImage';
 通过 [GCP Marketplace](https://console.cloud.google.com/marketplace) 上的按需付费（PAYG，Pay-as-you-go）公共方案开始使用 ClickHouse Cloud。
 
 
-## 前提条件 {#prerequisites}
+## 前提条件 \{#prerequisites\}
 
 - 一个已由计费管理员开通购买权限的 GCP 项目。
 - 在 GCP Marketplace 订阅 ClickHouse Cloud 时，您必须使用具有购买权限的账号登录，并选择相应的项目。
 
 
 
-## 注册步骤 {#steps-to-sign-up}
+## 注册步骤 \{#steps-to-sign-up\}
 
 1. 前往 [GCP Marketplace](https://cloud.google.com/marketplace)，搜索 ClickHouse Cloud。请确保已选择正确的 GCP 项目。
 

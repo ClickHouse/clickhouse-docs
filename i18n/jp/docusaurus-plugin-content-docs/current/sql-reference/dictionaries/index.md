@@ -12,7 +12,7 @@ import CloudDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/s
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# Dictionaries {#dictionaries}
+# Dictionaries \{#dictionaries\}
 
 Dictionary は、さまざまな種類の参照リストに便利なマッピング（`key -> attributes`）です。
 
@@ -47,7 +47,7 @@ Dictionary は、[dictionaries_lazy_load](../../operations/server-configuration-
 
 <CloudDetails />
 
-## DDL クエリによる Dictionary の作成 {#creating-a-dictionary-with-a-ddl-query}
+## DDL クエリによる Dictionary の作成 \{#creating-a-dictionary-with-a-ddl-query\}
 
 Dictionary は [DDL クエリ](../../sql-reference/statements/create/dictionary.md) で作成できます。この方法が推奨されます。DDL クエリで作成された Dictionary には次のような利点があります。
 
@@ -56,7 +56,7 @@ Dictionary は [DDL クエリ](../../sql-reference/statements/create/dictionary.
 - Dictionary テーブル関数ではなく、`SELECT` といった馴染みのある構文を使ってデータを直接読み取ることができます。`SELECT` 文を通じて Dictionary に直接アクセスする場合、キャッシュされる Dictionary はキャッシュ済みデータのみを返し、キャッシュされない Dictionary は保持している全データを返すことに注意してください。
 - Dictionary の名前を容易に変更できます。
 
-## 設定ファイルを使用して Dictionary を作成する {#creating-a-dictionary-with-a-configuration-file}
+## 設定ファイルを使用して Dictionary を作成する \{#creating-a-dictionary-with-a-configuration-file\}
 
 <CloudNotSupportedBadge />
 
@@ -88,7 +88,7 @@ Dictionary の設定ファイルは次の形式です。
 `SELECT` クエリで記述することで、小規模な Dictionary の値を変換できます（[transform](../../sql-reference/functions/other-functions.md) 関数を参照）。この機能は Dictionary 機能とは無関係です。
 :::
 
-## Dictionary の設定 {#configuring-a-dictionary}
+## Dictionary の設定 \{#configuring-a-dictionary\}
 
 <CloudDetails />
 
@@ -129,7 +129,7 @@ LAYOUT(...) -- Memory layout configuration
 LIFETIME(...) -- Lifetime of dictionary in memory
 ```
 
-## メモリ内における Dictionary の保存 {#storing-dictionaries-in-memory}
+## メモリ内における Dictionary の保存 \{#storing-dictionaries-in-memory\}
 
 Dictionary をメモリ内に保存する方法はいくつかあります。
 
@@ -207,7 +207,7 @@ XML 辞書における [UInt64](../../sql-reference/data-types/int-uint.md) キ�
 ...
 ```
 
-## メモリ内に Dictionary を格納する方法 {#ways-to-store-dictionaries-in-memory}
+## メモリ内に Dictionary を格納する方法 \{#ways-to-store-dictionaries-in-memory\}
 
 Dictionary データをメモリ内に格納する方法には、それぞれ CPU および RAM の使用量に関するトレードオフがあります。どのレイアウトを使用するかを判断する際の出発点としては、Dictionary 関連の[ブログ記事](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)内の「[Choosing a Layout](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)」セクションに掲載されている決定木が有用です。
 
@@ -228,7 +228,7 @@ Dictionary データをメモリ内に格納する方法には、それぞれ CP
 - [complex_key_direct](#complex_key_direct)
 - [ip_trie](#ip_trie)
 
-### flat {#flat}
+### flat \{#flat\}
 
 Dictionary は、flat 配列の形式で完全にメモリ上に格納されます。Dictionary はどの程度のメモリを使用するのでしょうか？使用量は、（使用領域における）最大キー値のサイズに比例します。
 
@@ -255,7 +255,7 @@ Dictionary のキーは [UInt64](../../sql-reference/data-types/int-uint.md) 型
 LAYOUT(FLAT(INITIAL_ARRAY_SIZE 50000 MAX_ARRAY_SIZE 5000000))
 ```
 
-### hashed {#hashed}
+### hashed \{#hashed\}
 
 Dictionary はハッシュテーブルの形式で、完全にメモリ上に格納されます。Dictionary には、任意の識別子を持つ要素をいくつでも含めることができます。実際には、キーの数が数千万件に達することもあります。
 
@@ -314,7 +314,7 @@ LAYOUT(HASHED())
 LAYOUT(HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5]))
 ```
 
-### sparse&#95;hashed {#sparse_hashed}
+### sparse&#95;hashed \{#sparse_hashed\}
 
 `hashed` に似ていますが、メモリ消費量を抑える代わりに CPU 使用量が増加します。
 
@@ -340,7 +340,7 @@ LAYOUT(SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTO
 
 この種類の Dictionary でも `shards` を使用できます。また、`sparse_hashed` は `hashed` よりも遅いため、`hashed` よりも `sparse_hashed` で `shards` を使うことのほうが重要になります。
 
-### complex&#95;key&#95;hashed {#complex_key_hashed}
+### complex&#95;key&#95;hashed \{#complex_key_hashed\}
 
 この種のストレージは、複合[キー](#dictionary-key-and-fields)と併せて使用します。`hashed` と同様です。
 
@@ -362,7 +362,7 @@ LAYOUT(SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTO
 LAYOUT(COMPLEX_KEY_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5]))
 ```
 
-### complex&#95;key&#95;sparse&#95;hashed {#complex_key_sparse_hashed}
+### complex&#95;key&#95;sparse&#95;hashed \{#complex_key_sparse_hashed\}
 
 このストレージタイプは、複合[キー](#dictionary-key-and-fields)用です。[sparse&#95;hashed](#sparse_hashed)と同様です。
 
@@ -384,7 +384,7 @@ LAYOUT(COMPLEX_KEY_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_
 LAYOUT(COMPLEX_KEY_SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5]))
 ```
 
-### hashed&#95;array {#hashed_array}
+### hashed&#95;array \{#hashed_array\}
 
 Dictionary は完全にメモリ内に格納されます。各 attribute は配列として格納されます。キーとなる attribute は、値が attributes 配列内のインデックスであるハッシュテーブルの形式で格納されます。Dictionary には、任意の識別子を持つ任意数の要素を含めることができます。実際には、キー数が数千万件に達することがあります。
 
@@ -407,7 +407,7 @@ Dictionary のキーは [UInt64](../../sql-reference/data-types/int-uint.md) 型
 LAYOUT(HASHED_ARRAY([SHARDS 1]))
 ```
 
-### complex&#95;key&#95;hashed&#95;array {#complex_key_hashed_array}
+### complex&#95;key&#95;hashed&#95;array \{#complex_key_hashed_array\}
 
 このストレージタイプは、複合[キー](#dictionary-key-and-fields)で使用するためのものです。[hashed&#95;array](#hashed_array)と同様です。
 
@@ -425,7 +425,7 @@ LAYOUT(HASHED_ARRAY([SHARDS 1]))
 LAYOUT(COMPLEX_KEY_HASHED_ARRAY([SHARDS 1]))
 ```
 
-### range&#95;hashed {#range_hashed}
+### range&#95;hashed \{#range_hashed\}
 
 Dictionary は、範囲とそれに対応する値の順序付き配列を持つハッシュテーブル形式でメモリ上に保持されます。
 
@@ -657,7 +657,7 @@ select dictGet('discounts_dict', 'amount', 3, toDate('2015-01-01')) res;
 └─────┘
 ```
 
-### complex&#95;key&#95;range&#95;hashed {#complex_key_range_hashed}
+### complex&#95;key&#95;range&#95;hashed \{#complex_key_range_hashed\}
 
 Dictionary は、範囲とそれに対応する値の順序付き配列を持つハッシュテーブルの形式でメモリ上に保存されます（[range&#95;hashed](#range_hashed) を参照）。このストレージ形式は、複合 [キー](#dictionary-key-and-fields) と共に使用するためのものです。
 
@@ -679,7 +679,7 @@ LAYOUT(COMPLEX_KEY_RANGE_HASHED())
 RANGE(MIN StartDate MAX EndDate);
 ```
 
-### cache {#cache}
+### cache \{#cache\}
 
 Dictionary は、固定数のセルを持つキャッシュ内に保存されます。これらのセルには、頻繁に使用される要素が格納されます。
 
@@ -737,11 +737,11 @@ LAYOUT(CACHE(SIZE_IN_CELLS 1000000000))
 ClickHouse をデータソースとして使用しないでください。ランダムリードを伴うクエリの処理が遅くなるためです。
 :::
 
-### complex_key_cache {#complex_key_cache}
+### complex_key_cache \{#complex_key_cache\}
 
 このタイプのストレージは、複合[キー](#dictionary-key-and-fields)で使用します。`cache` と同様です。
 
-### ssd&#95;cache {#ssd_cache}
+### ssd&#95;cache \{#ssd_cache\}
 
 `cache` と同様ですが、データを SSD 上に、インデックスを RAM 上に保存します。更新キューに関連するすべてのキャッシュ Dictionary 設定は、SSD キャッシュ Dictionary にも適用できます。
 
@@ -771,11 +771,11 @@ LAYOUT(SSD_CACHE(BLOCK_SIZE 4096 FILE_SIZE 16777216 READ_BUFFER_SIZE 1048576
     PATH '/var/lib/clickhouse/user_files/test_dict'))
 ```
 
-### complex_key_ssd_cache {#complex_key_ssd_cache}
+### complex_key_ssd_cache \{#complex_key_ssd_cache\}
 
 このタイプのストレージは、複合[キー](#dictionary-key-and-fields)向けに使用します。`ssd_cache` と同様のものです。
 
-### direct {#direct}
+### direct \{#direct\}
 
 Dictionary はメモリに常駐せず、リクエストの処理中にソースへ直接アクセスします。
 
@@ -797,11 +797,11 @@ Dictionary のキーは [UInt64](../../sql-reference/data-types/int-uint.md) 型
 LAYOUT(DIRECT())
 ```
 
-### complex_key_direct {#complex_key_direct}
+### complex_key_direct \{#complex_key_direct\}
 
 このストレージタイプは、複合[キー](#dictionary-key-and-fields)で使用します。`direct` と同様です。
 
-### ip&#95;trie {#ip_trie}
+### ip&#95;trie \{#ip_trie\}
 
 この Dictionary は、ネットワークプレフィックスによる IP アドレス検索向けに設計されています。CIDR 表記で IP 範囲を保持し、特定の IP がどのプレフィックス（例: サブネットや ASN の範囲）に属するかを高速に判別できるため、ジオロケーションやネットワーク分類といった IP ベースの検索に最適です。
 
@@ -911,7 +911,7 @@ SELECT dictGet('my_ip_trie_dictionary', ('asn', 'cca2'), IPv6StringToNum('2001:d
 
 データはすべて RAM に収まっている必要があります。
 
-## LIFETIMEを使用したDictionaryデータの更新 {#refreshing-dictionary-data-using-lifetime}
+## LIFETIMEを使用したDictionaryデータの更新 \{#refreshing-dictionary-data-using-lifetime\}
 
 ClickHouseは`LIFETIME`タグ（秒単位で定義）に基づいて辞書を定期的に更新します。`LIFETIME`は、完全にダウンロードされた辞書の更新間隔、およびキャッシュされた辞書の無効化間隔を指定します。
 
@@ -1042,7 +1042,7 @@ SOURCE(CLICKHOUSE(... update_field 'added_time' update_lag 15))
 ...
 ```
 
-## Dictionary のソース {#dictionary-sources}
+## Dictionary のソース \{#dictionary-sources\}
 
 <CloudDetails />
 
@@ -1114,7 +1114,7 @@ SETTINGS(format_csv_allow_single_quotes = 0)
   * [PostgreSQL](#postgresql)
   * [YTsaurus](#ytsaurus)
 
-### ローカル ファイル {#local-file}
+### ローカル ファイル \{#local-file\}
 
 設定例:
 
@@ -1144,7 +1144,7 @@ DDL コマンド（`CREATE DICTIONARY ...`）でソースに `FILE` を指定し
 
 * [Dictionary function](/sql-reference/table-functions/dictionary)
 
-### 実行可能ファイル {#executable-file}
+### 実行可能ファイル \{#executable-file\}
 
 実行可能ファイルの扱いは、[Dictionary がメモリ上にどのように格納されているか](#storing-dictionaries-in-memory) に依存します。Dictionary が `cache` および `complex_key_cache` を使って格納されている場合、ClickHouse は必要なキーを取得するためのリクエストを実行可能ファイルの STDIN に送信します。そうでない場合、ClickHouse は実行可能ファイルを起動し、その出力を Dictionary データとして扱います。
 
@@ -1173,7 +1173,7 @@ DDL コマンド（`CREATE DICTIONARY ...`）でソースに `FILE` を指定し
 
 この Dictionary ソースは XML 設定によってのみ構成できます。DDL を使用して executable ソースを持つ Dictionary を作成することは無効化されています。そうしないと、DB ユーザーが ClickHouse ノード上で任意のバイナリを実行できてしまうためです。
 
-### Executable プール {#executable-pool}
+### Executable プール \{#executable-pool\}
 
 Executable プールを使用すると、プロセスのプールからデータを読み込むことができます。このソースは、ソースからすべてのデータをロードする必要がある Dictionary レイアウトでは動作しません。Executable プールは、Dictionary が `cache`、`complex_key_cache`、`ssd_cache`、`complex_key_ssd_cache`、`direct`、または `complex_key_direct` レイアウトを使用して[メモリ内に保存されている](#ways-to-store-dictionaries-in-memory)場合に動作します。
 
@@ -1208,7 +1208,7 @@ Setting fields:
 
 この Dictionary のソースは XML 設定でのみ構成できます。実行可能ソースを持つ Dictionary を DDL で作成することはできません。そうしないと、DB ユーザーが ClickHouse ノード上で任意のバイナリを実行できてしまうためです。
 
-### HTTP(S) {#https}
+### HTTP(S) \{#https\}
 
 HTTP(S) サーバーとの連携は、[Dictionary がメモリ上にどのように保存されているか](#storing-dictionaries-in-memory) に依存します。Dictionary が `cache` および `complex_key_cache` を使って保存されている場合、ClickHouse は必要なキーを取得するために `POST` メソッドでリクエストを送信します。
 
@@ -1260,9 +1260,9 @@ ClickHouse が HTTPS リソースにアクセスできるようにするには�
 
 DDL コマンド（`CREATE DICTIONARY ...`）を使用して Dictionary を作成する際、HTTP Dictionary 用のリモートホストは、データベースユーザーが任意の HTTP サーバーへアクセスできないようにするため、設定ファイルの `remote_url_allow_hosts` セクションの内容と照合してチェックされます。
 
-### DBMS（データベース管理システム） {#dbms}
+### DBMS（データベース管理システム） \{#dbms\}
 
-#### ODBC {#odbc}
+#### ODBC \{#odbc\}
 
 ODBC ドライバーを持つ任意のデータベースに接続するために、この方法を使用できます。
 
@@ -1309,7 +1309,7 @@ ClickHouse は ODBC ドライバーからクォート記号（引用符）を受
 
 Oracle を使用している際にエンコーディングに問題が発生する場合は、対応する [FAQ](/knowledgebase/oracle-odbc) の項目を参照してください。
 
-##### ODBC Dictionary 機能における既知の脆弱性 {#known-vulnerability-of-the-odbc-dictionary-functionality}
+##### ODBC Dictionary 機能における既知の脆弱性 \{#known-vulnerability-of-the-odbc-dictionary-functionality\}
 
 :::note
 ODBC ドライバーでデータベースに接続する際、接続パラメーター `Servername` は書き換えられる可能性があります。この場合、`odbc.ini` にある `USERNAME` と `PASSWORD` の値がリモートサーバーに送信され、漏えいするおそれがあります。
@@ -1338,7 +1338,7 @@ SELECT * FROM odbc('DSN=gregtest;Servername=some-server.com', 'test_db');
 
 ODBC ドライバーは、`odbc.ini` 内の `USERNAME` と `PASSWORD` の値を `some-server.com` に送信します。
 
-##### PostgreSQL への接続例 {#example-of-connecting-postgresql}
+##### PostgreSQL への接続例 \{#example-of-connecting-postgresql\}
 
 Ubuntu OS 上で。
 
@@ -1419,7 +1419,7 @@ LIFETIME(MIN 300 MAX 360)
 
 ドライバーのライブラリへのフルパスを指定するために、`odbc.ini` を編集する必要がある場合があります（例: `DRIVER=/usr/local/lib/psqlodbcw.so`）。
 
-##### MS SQL Server への接続例 {#example-of-connecting-ms-sql-server}
+##### MS SQL Server への接続例 \{#example-of-connecting-ms-sql-server\}
 
 Ubuntu OS。
 
@@ -1524,7 +1524,7 @@ LAYOUT(FLAT())
 LIFETIME(MIN 300 MAX 360)
 ```
 
-#### MySQL {#mysql}
+#### MySQL \{#mysql\}
 
 設定例:
 
@@ -1641,7 +1641,7 @@ SOURCE(MYSQL(
 ))
 ```
 
-#### ClickHouse {#clickhouse}
+#### ClickHouse \{#clickhouse\}
 
 設定例:
 
@@ -1694,7 +1694,7 @@ Setting fields:
 `table` または `where` フィールドは、`query` フィールドと同時には使用できません。また、`table` フィールドまたは `query` フィールドのいずれか一方は必ず指定する必要があります。
 :::
 
-#### MongoDB {#mongodb}
+#### MongoDB \{#mongodb\}
 
 設定例:
 
@@ -1763,7 +1763,7 @@ SOURCE(MONGODB(
 
 [エンジンの詳細情報](../../engines/table-engines/integrations/mongodb.md)
 
-#### Redis {#redis}
+#### Redis \{#redis\}
 
 設定例:
 
@@ -1796,7 +1796,7 @@ SOURCE(REDIS(
 * `storage_type` – キー操作に用いられる Redis の内部ストレージ構造。`simple` は単純なソースおよびハッシュ化された単一キーソース用、`hash_map` は 2 つのキーを持つハッシュ化されたソース用です。レンジ型ソースおよび複雑なキーを持つキャッシュソースはサポートされません。省略可能で、省略時のデフォルト値は `simple` です。
 * `db_index` – Redis 論理データベースの数値インデックス。省略可能で、省略時のデフォルト値は 0 です。
 
-#### Cassandra {#cassandra}
+#### Cassandra \{#cassandra\}
 
 設定例：
 
@@ -1838,7 +1838,7 @@ SOURCE(REDIS(
 `column_family` フィールドまたは `where` フィールドは、`query` フィールドと同時には使用できません。また、`column_family` フィールドか `query` フィールドのいずれか一方は必ず宣言する必要があります。
 :::
 
-#### PostgreSQL {#postgresql}
+#### PostgreSQL \{#postgresql\}
 
 設定例：
 
@@ -1897,7 +1897,7 @@ SOURCE(POSTGRESQL(
 `table` フィールドまたは `where` フィールドは、`query` フィールドと同時に使用することはできません。また、`table` フィールドまたは `query` フィールドのいずれか一方は必ず宣言する必要があります。
 :::
 
-### YTsaurus {#ytsaurus}
+### YTsaurus \{#ytsaurus\}
 
 <ExperimentalBadge />
 
@@ -1937,7 +1937,7 @@ SOURCE(YTSAURUS(
 * `cypress_path` – テーブルのソースとなる Cypress パス。
 * `oauth_token` – OAuth トークン。
 
-### Null {#null}
+### Null \{#null\}
 
 ダミー（空）のディクショナリを作成するために使用できる特別なソースです。このようなディクショナリは、テスト用途や、データノードとクエリノードを分離し、ノード上に Distributed テーブルを持つ構成で役立ちます。
 
@@ -1954,7 +1954,7 @@ LAYOUT(FLAT())
 LIFETIME(0);
 ```
 
-## Dictionary のキーとフィールド {#dictionary-key-and-fields}
+## Dictionary のキーとフィールド \{#dictionary-key-and-fields\}
 
 <CloudDetails />
 
@@ -2000,7 +2000,7 @@ PRIMARY KEY Id
 * `PRIMARY KEY` — キーカラム
 * `AttrName AttrType` — データカラム。属性は複数定義できます。
 
-## キー {#key}
+## キー \{#key\}
 
 ClickHouse は次の種類のキーをサポートします。
 
@@ -2013,7 +2013,7 @@ XML 構造では `<id>` か `<key>` のいずれか一方のみを含めるこ�
 キーを属性として記述してはいけません。
 :::
 
-### 数値キー {#numeric-key}
+### 数値キー \{#numeric-key\}
 
 型：`UInt64`。
 
@@ -2042,7 +2042,7 @@ PRIMARY KEY Id
 
 * `PRIMARY KEY` – 主キーとなるカラム名。
 
-### 複合キー {#composite-key}
+### 複合キー \{#composite-key\}
 
 キーは任意の型のフィールドからなる `tuple` とできます。この場合に使用できる [layout](#storing-dictionaries-in-memory) は `complex_key_hashed` または `complex_key_cache` のいずれかです。
 
@@ -2082,7 +2082,7 @@ PRIMARY KEY field1, field2
 
 `dictGet*` 関数を使用したクエリでは、キーとしてタプルが渡されます。例: `dictGetString('dict_name', 'attr_name', tuple('string for field1', num_for_field2))`。
 
-## 属性 {#attributes}
+## 属性 \{#attributes\}
 
 設定例：
 
@@ -2121,7 +2121,7 @@ CREATE DICTIONARY somename (
 | `injective`                                          | `id -> attribute` の写像が[単射](https://en.wikipedia.org/wiki/Injective_function)であるかどうかを示すフラグ。<br/>`true` の場合、ClickHouse は単射な Dictionary へのリクエストを `GROUP BY` 句の後に自動的に挿入できます。通常、これによりそのようなリクエストの数が大幅に削減されます。<br/><br/>デフォルト値: `false`。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | No       |
 | `is_object_id`                                       | クエリが `ObjectID` によって MongoDB ドキュメントに対して実行されるかどうかを示すフラグ。<br/><br/>デフォルト値: `false`。 | No       |
 
-## 階層型辞書 {#hierarchical-dictionaries}
+## 階層型辞書 \{#hierarchical-dictionaries\}
 
 ClickHouse は、[数値キー](#numeric-key) を持つ階層型辞書をサポートしています。
 
@@ -2183,7 +2183,7 @@ ClickHouse は、外部 Dictionary 属性に対して階層的なプロパティ
 </dictionary>
 ```
 
-## ポリゴン Dictionary {#polygon-dictionaries}
+## ポリゴン Dictionary \{#polygon-dictionaries\}
 
 この Dictionary は point-in-polygon クエリ、つまり本質的には「逆ジオコーディング」ルックアップ向けに最適化されています。ある座標（緯度・経度）が与えられると、多数のポリゴン（国境や地域境界など）の集合の中から、その点を含むポリゴン／リージョンを効率的に特定します。位置座標を、それを内包するリージョンへマッピングする用途に適しています。
 
@@ -2316,13 +2316,13 @@ SELECT * FROM polygons_test_dictionary;
 └─────────────────────────────────┴───────┘
 ```
 
-## 正規表現ツリー Dictionary {#regexp-tree-dictionary}
+## 正規表現ツリー Dictionary \{#regexp-tree-dictionary\}
 
 この Dictionary を使用すると、階層的な正規表現パターンに基づいてキーを値にマッピングできます。これは、キーの完全一致ではなく、正規表現パターンのマッチングに基づく検索（例: 正規表現パターンとの照合によってユーザーエージェント文字列などを分類する）向けに最適化されています。
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/ESlAhUJMoz8?si=sY2OVm-zcuxlDRaX" title="ClickHouse の regex tree dictionaries 入門" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-### ClickHouse オープンソースで Regular Expression Tree Dictionary を使用する {#use-regular-expression-tree-dictionary-in-clickhouse-open-source}
+### ClickHouse オープンソースで Regular Expression Tree Dictionary を使用する \{#use-regular-expression-tree-dictionary-in-clickhouse-open-source\}
 
 ClickHouse オープンソースでは、正規表現ツリーを含む YAML ファイルへのパスを指定した `YAMLRegExpTree` ソースを使用して Regular Expression Tree Dictionary を定義します。
 
@@ -2386,7 +2386,7 @@ SELECT dictGet('regexp_dict', ('name', 'version'), '31/tclwebkit1024');
 
 強力な YAML 設定ファイルを用いることで、regexp tree dictionaries をユーザーエージェント文字列パーサーとして使用できます。[uap-core](https://github.com/ua-parser/uap-core) をサポートしており、機能テスト [02504&#95;regexp&#95;dictionary&#95;ua&#95;parser](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/02504_regexp_dictionary_ua_parser.sh) でその使用方法を示しています。
 
-#### 属性値の収集 {#collecting-attribute-values}
+#### 属性値の収集 \{#collecting-attribute-values\}
 
 場合によっては、葉ノードの値だけでなく、マッチした複数の正規表現から値を返せると便利なことがあります。このようなケースでは、専用の [`dictGetAll`](../../sql-reference/functions/ext-dict-functions.md#dictGetAll) 関数を使用できます。あるノードが型 `T` の属性値を持つ場合、`dictGetAll` は 0 個以上の値を含む `Array(T)` を返します。
 
@@ -2447,14 +2447,14 @@ SELECT url, dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', '
 └────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-#### マッチングモード {#matching-modes}
+#### マッチングモード \{#matching-modes\}
 
 パターンマッチングの動作は、特定の Dictionary の設定によって変更できます。
 
 - `regexp_dict_flag_case_insensitive`: 大文字と小文字を区別しないマッチングを行います（デフォルトは `false`）。個々の正規表現内で `(?i)` および `(?-i)` を用いて上書きできます。
 - `regexp_dict_flag_dotall`: `.` が改行文字にもマッチするようにします（デフォルトは `false`）。
 
-### ClickHouse Cloud で Regular Expression Tree Dictionary を使用する {#use-regular-expression-tree-dictionary-in-clickhouse-cloud}
+### ClickHouse Cloud で Regular Expression Tree Dictionary を使用する \{#use-regular-expression-tree-dictionary-in-clickhouse-cloud\}
 
 上記で使用した `YAMLRegExpTree` ソースは ClickHouse オープンソース版では動作しますが、ClickHouse Cloud では動作しません。ClickHouse で regexp tree dictionaries を使用するには、まず ClickHouse オープンソース版でローカルの YAML ファイルから regexp tree dictionary を作成し、その後 `dictionary` テーブル関数と [INTO OUTFILE](../statements/select/into-outfile.md) 句を使用して、この dictionary を CSV ファイルに書き出します。
 
@@ -2521,7 +2521,7 @@ LIFETIME(0)
 LAYOUT(regexp_tree);
 ```
 
-## Embedded Dictionaries {#embedded-dictionaries}
+## Embedded Dictionaries \{#embedded-dictionaries\}
 
 <SelfManaged />
 

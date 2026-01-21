@@ -23,7 +23,7 @@ import trace_id_in_logs from '@site/static/images/integrations/data-visualizatio
 import demo_data_links from '@site/static/images/integrations/data-visualization/grafana/demo_data_links.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# クエリビルダー {#query-builder}
+# クエリビルダー \{#query-builder\}
 
 <ClickHouseSupportedBadge/>
 
@@ -40,12 +40,12 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 - [Traces](#traces): トレースの検索・閲覧に最適化されています。[デフォルトを設定](./config.md#traces)した Explore ビューで使用すると最も効果的です。
 - [SQL Editor](#sql-editor): クエリを完全に制御したい場合に使用できます。このモードでは、任意の SQL クエリを実行できます。
 
-## クエリタイプ {#query-types}
+## クエリタイプ \{#query-types\}
 
 *クエリタイプ* 設定を変更すると、作成するクエリの種類に合わせてクエリビルダーのレイアウトが変わります。
 クエリタイプは、データを可視化する際に使用されるパネルも決定します。
 
-### テーブル {#table}
+### テーブル \{#table\}
 
 最も柔軟なクエリタイプはテーブルクエリです。これは、シンプルクエリと集約クエリの両方を扱えるように設計された、他のクエリビルダーの汎用的なタイプです。
 
@@ -63,7 +63,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 このクエリタイプでは、データはテーブルとしてレンダリングされます。
 
-### ログ {#logs}
+### ログ \{#logs\}
 
 ログクエリタイプは、ログデータのクエリに特化したクエリビルダーを提供します。
 データソースの [ログ設定](./config.md#logs) でデフォルトを構成することで、クエリビルダーにデフォルトのデータベース／テーブルおよびカラムをあらかじめ読み込ませることができます。
@@ -95,7 +95,7 @@ OpenTelemetry を有効にすると、スキーマバージョンに応じてカ
 クエリで選択された追加カラムは、展開表示したログ行で確認できます:
 <Image size="md" img={demo_logs_query_fields} alt="ログクエリでの追加フィールドの例" border />
 
-### Time series {#time-series}
+### Time series \{#time-series\}
 
 Time series クエリタイプは [table](#table) と似ていますが、時系列データの扱いに特化しています。
 
@@ -127,7 +127,7 @@ Time series クエリタイプは [table](#table) と似ていますが、時系
 
 このクエリタイプでは、データが時系列パネルでレンダリングされます。
 
-### Traces {#traces}
+### Traces \{#traces\}
 
 Trace クエリタイプは、トレースを簡単に検索・閲覧するためのクエリビルダーを提供します。
 OpenTelemetry データ向けに設計されていますが、スキーマが異なる場合でもカラムを選択してトレースをレンダリングできます。
@@ -164,7 +164,7 @@ Trace クエリタイプは [data links](#data-links) をサポートします�
 
 このクエリタイプでは、Trace Search モードではテーブルビューでデータがレンダリングされ、Trace ID モードではトレースパネルでレンダリングされます。
 
-## SQL エディタ {#sql-editor}
+## SQL エディタ \{#sql-editor\}
 
 クエリビルダーでは扱いきれないような複雑なクエリには、SQL エディタを使用できます。
 生の ClickHouse SQL を記述して実行することで、クエリを完全に制御できます。
@@ -178,7 +178,7 @@ SQL エディタは、クエリエディタ上部の「SQL Editor」を選択し
 
 <Image size="md" img={demo_raw_sql_query} alt="生の SQL クエリの例" border />
 
-## データリンク {#data-links}
+## データリンク \{#data-links\}
 
 Grafana の [data links](https://grafana.com/docs/grafana/latest/panels-visualizations/configure-data-links)
 を使用して、新しいクエリへのリンクを作成できます。
@@ -194,7 +194,7 @@ Grafana の [data links](https://grafana.com/docs/grafana/latest/panels-visualiz
   <Image size="md" img={trace_id_in_logs} alt="Trace links in logs" border />
 </div>
 
-### データリンクの作成方法 {#how-to-make-a-data-link}
+### データリンクの作成方法 \{#how-to-make-a-data-link\}
 
 クエリ内で `traceID` という名前の列を選択することで、データリンクを作成できます。この名前は大文字小文字を区別せず、"ID" の前にアンダースコアを付けることもサポートします。たとえば、`traceId`、`TraceId`、`TRACE_ID`、`tracE_iD` はすべて有効です。
 
@@ -202,7 +202,7 @@ Grafana の [data links](https://grafana.com/docs/grafana/latest/panels-visualiz
 
 トレース ID 列を含めることで、「**View Trace**」および「**View Logs**」リンクがデータに付与されます。
 
-### リンクの機能 {#linking-abilities}
+### リンクの機能 \{#linking-abilities\}
 
 データリンクが存在する場合、付与されたトレース ID を使用してトレースおよびログを開くことができます。
 
@@ -216,14 +216,14 @@ Grafana の [data links](https://grafana.com/docs/grafana/latest/panels-visualiz
   <Image size="md" img={demo_data_links} alt="Example of data links linking" border />
 </div>
 
-## マクロ {#macros}
+## マクロ \{#macros\}
 
 マクロは、クエリに動的な SQL を追加するための簡単な方法です。
 クエリが ClickHouse サーバーに送信される前に、プラグインがマクロを展開し、完全な式に置き換えます。
 
 SQL Editor と Query Builder の両方で発行したクエリで、マクロを使用できます。
 
-### マクロの使用方法 {#using-macros}
+### マクロの使用方法 \{#using-macros\}
 
 マクロは、クエリ内の任意の位置に、必要に応じて複数回含めることができます。
 
@@ -250,7 +250,7 @@ WHERE log_time >= toDateTime(1415792726) AND log_time <= toDateTime(1447328726)
 プラグインは、波括弧 `{}` を用いた記法にも対応しています。[パラメーター](/sql-reference/syntax.md#defining-and-using-query-parameters) 内でクエリが必要な場合は、この記法を使用します。
 
 
-### マクロ一覧 {#list-of-macros}
+### マクロ一覧 \{#list-of-macros\}
 
 これは、プラグインで利用可能なすべてのマクロの一覧です。
 

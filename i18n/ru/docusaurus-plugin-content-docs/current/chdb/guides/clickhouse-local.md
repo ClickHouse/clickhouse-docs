@@ -11,7 +11,7 @@ doc_type: 'guide'
 Он предоставляет пользователям мощь ClickHouse без необходимости устанавливать сервер.
 В этом руководстве мы рассмотрим, как использовать базу данных clickhouse-local в chDB.
 
-## Настройка {#setup}
+## Настройка \{#setup\}
 
 Сначала создадим виртуальное окружение:
 
@@ -39,7 +39,7 @@ pip install ipython
 ipython
 ```
 
-## Установка clickhouse-local {#installing-clickhouse-local}
+## Установка clickhouse-local \{#installing-clickhouse-local\}
 
 Загрузка и установка clickhouse-local выполняется так же, как [загрузка и установка ClickHouse](/install).
 Сделать это можно, выполнив следующую команду:
@@ -54,7 +54,7 @@ curl https://clickhouse.com/ | sh
 ./clickhouse -m --path demo.chdb
 ```
 
-## Приём данных в clickhouse-local {#ingesting-data-into-clickhouse-local}
+## Приём данных в clickhouse-local \{#ingesting-data-into-clickhouse-local\}
 
 База данных по умолчанию хранит данные только в памяти, поэтому нам нужно создать именованную базу данных, чтобы гарантировать сохранение всех принимаемых данных на диск.
 
@@ -89,7 +89,7 @@ FROM foo.randomNumbers
 ChdbError: Code: 76. DB::Exception: Cannot lock file demo.chdb/status. Another server instance in same directory is already running. (CANNOT_OPEN_FILE)
 ```
 
-## Подключение к базе данных clickhouse-local {#connecting-to-a-clickhouse-local-database}
+## Подключение к базе данных clickhouse-local \{#connecting-to-a-clickhouse-local-database\}
 
 Вернитесь в оболочку `ipython` и импортируйте модуль `session` из chDB:
 
@@ -97,7 +97,7 @@ ChdbError: Code: 76. DB::Exception: Cannot lock file demo.chdb/status. Another s
 from chdb import session as chs
 ```
 
-Инициализируйте сессию, работающую с `demo..chdb`:
+Инициализируйте сессию для работы с `demo.chdb`:
 
 ```python
 sess = chs.Session("demo.chdb")

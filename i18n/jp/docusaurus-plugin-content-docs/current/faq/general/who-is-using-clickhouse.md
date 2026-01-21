@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# 誰が ClickHouse を使っているのか？ {#who-is-using-clickhouse}
+# 誰が ClickHouse を使っているのか？ \{#who-is-using-clickhouse\}
 
 オープンソース製品であるという性質上、この問いに対する答えはそれほど単純ではありません。ClickHouse を使い始めたいと思ったら、誰かに知らせる必要はなく、ソースコードや事前コンパイル済みパッケージを入手してくればそれで済みます。署名すべき契約もなく、[Apache License 2.0](https://github.com/ClickHouse/ClickHouse/blob/master/LICENSE) により、ソフトウェアを制限なく配布できます。
 

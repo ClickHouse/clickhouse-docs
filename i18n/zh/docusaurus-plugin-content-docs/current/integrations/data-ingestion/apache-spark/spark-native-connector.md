@@ -15,7 +15,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 
-# Spark 连接器 {#spark-connector}
+# Spark 连接器 \{#spark-connector\}
 
 此连接器利用 ClickHouse 特有的优化（例如高级分区和谓词下推），以提升查询性能和数据处理效率。
 该连接器基于 [ClickHouse 官方 JDBC 连接器](https://github.com/ClickHouse/clickhouse-java)，并管理其自身的 catalog。
@@ -28,13 +28,13 @@ Spark 的默认 catalog 是 `spark_catalog`，表通过 `{catalog name}.{databas
 
 <TOCInline toc={toc}></TOCInline>
 
-## 先决条件 {#requirements}
+## 先决条件 \{#requirements\}
 
 - Java 8 或 17（Spark 4.0 需要 Java 17 及以上版本）
 - Scala 2.12 或 2.13（Spark 4.0 仅支持 Scala 2.13）
 - Apache Spark 3.3、3.4、3.5 或 4.0
 
-## 兼容性矩阵 {#compatibility-matrix}
+## 兼容性矩阵 \{#compatibility-matrix\}
 
 | 版本    | 兼容的 Spark 版本         | ClickHouse JDBC 版本 |
 |---------|---------------------------|----------------------|
@@ -49,14 +49,14 @@ Spark 的默认 catalog 是 `spark_catalog`，表通过 `{catalog name}.{databas
 | 0.2.1   | Spark 3.2                 | 无需依赖             |
 | 0.1.2   | Spark 3.2                 | 无需依赖             |
 
-## 安装与设置 {#installation--setup}
+## 安装与设置 \{#installation--setup\}
 
 要将 ClickHouse 与 Spark 集成，有多种安装方式，可适配不同的项目配置。
 你可以在项目的构建文件中（例如 Maven 的 `pom.xml` 或 SBT 的 `build.sbt`）直接添加 ClickHouse Spark connector 作为依赖。
 或者，你也可以将所需的 JAR 文件放入 `$SPARK_HOME/jars/` 目录，或在运行 `spark-submit` 命令时通过 `--jars` 参数将它们作为 Spark 选项直接传入。
 这两种方式都能确保 ClickHouse connector 在你的 Spark 环境中可用。
 
-### 作为依赖导入 {#import-as-a-dependency}
+### 作为依赖导入 \{#import-as-a-dependency\}
 
 <Tabs>
 <TabItem value="Maven" label="Maven" default>
@@ -141,7 +141,7 @@ $SPARK_HOME/bin/spark-sql \
 </TabItem>
 </Tabs>
 
-### 下载库文件 {#download-the-library}
+### 下载库文件 \{#download-the-library\}
 
 二进制 JAR 的命名模式如下：
 
@@ -164,7 +164,7 @@ clickhouse-jdbc:all 中。
 [兼容性矩阵](#compatibility-matrix) 中的要求。
 :::
 
-## 注册 catalog（必需） {#register-the-catalog-required}
+## 注册 catalog（必需） \{#register-the-catalog-required\}
 
 要访问 ClickHouse 表，需要使用以下配置创建一个新的 Spark catalog：
 
@@ -213,7 +213,7 @@ spark.sql.catalog.clickhouse2.option.ssl     true
 
 :::
 
-## ClickHouse Cloud 配置 {#clickhouse-cloud-settings}
+## ClickHouse Cloud 配置 \{#clickhouse-cloud-settings\}
 
 连接到 [ClickHouse Cloud](https://clickhouse.com) 时，请务必启用 SSL，并设置相应的 SSL 模式。例如：
 
@@ -222,7 +222,7 @@ spark.sql.catalog.clickhouse.option.ssl        true
 spark.sql.catalog.clickhouse.option.ssl_mode   NONE
 ```
 
-## 读取数据 {#read-data}
+## 读取数据 \{#read-data\}
 
 <Tabs groupId="spark_apis">
 <TabItem value="Java" label="Java" default>
@@ -329,7 +329,7 @@ df.show()
 </TabItem>
 </Tabs>
 
-## 写入数据 {#write-data}
+## 写入数据 \{#write-data\}
 
 <Tabs groupId="spark_apis">
   <TabItem value="Java" label="Java" default>
@@ -455,7 +455,7 @@ df.writeTo("clickhouse.default.example_table").append()
   </TabItem>
 </Tabs>
 
-## DDL 操作 {#ddl-operations}
+## DDL 操作 \{#ddl-operations\}
 
 可以使用 Spark SQL 对 ClickHouse 实例执行 DDL 操作，所有更改都会立即持久化到 ClickHouse 中。
 Spark SQL 允许你以与在 ClickHouse 中相同的方式编写查询，
@@ -487,7 +487,7 @@ TBLPROPERTIES (
 
 上述示例展示了 Spark SQL 查询，您可以在应用程序中通过任意 API（Java、Scala、PySpark 或 shell）运行这些查询。
 
-## 配置 {#configurations}
+## 配置 \{#configurations\}
 
 以下是连接器中可配置的参数：
 
@@ -517,11 +517,11 @@ TBLPROPERTIES (
 | spark.clickhouse.write.retryInterval               | 10s                                              | 两次写入重试之间的时间间隔（以秒为单位）。                                                                                                                                                                              | 0.1.0 |
 | spark.clickhouse.write.retryableErrorCodes         | 241                                              | 在写入失败时由 ClickHouse 服务器返回的可重试的错误码。                                                                                                                                                                  | 0.1.0 |
 
-## 支持的数据类型 {#supported-data-types}
+## 支持的数据类型 \{#supported-data-types\}
 
 本节概述了 Spark 与 ClickHouse 之间的数据类型映射。下表为从 ClickHouse 读取数据到 Spark，以及将 Spark 中的数据插入 ClickHouse 时的数据类型转换提供快速参考。
 
-### 从 ClickHouse 读取数据到 Spark {#reading-data-from-clickhouse-into-spark}
+### 从 ClickHouse 读取数据到 Spark \{#reading-data-from-clickhouse-into-spark\}
 
 | ClickHouse 数据类型                                               | Spark 数据类型                 | 是否支持  | 是否为原始类型 | 说明                                               |
 |-------------------------------------------------------------------|--------------------------------|-----------|----------------|----------------------------------------------------|
@@ -560,7 +560,7 @@ TBLPROPERTIES (
 | `AggregateFunction`                                               |                                | ❌         |                |                                                    |
 | `SimpleAggregateFunction`                                         |                                | ❌         |                |                                                    |
 
-### 从 Spark 向 ClickHouse 插入数据 {#inserting-data-from-spark-into-clickhouse}
+### 从 Spark 向 ClickHouse 插入数据 \{#inserting-data-from-spark-into-clickhouse\}
 
 | Spark 数据类型                      | ClickHouse 数据类型 | 是否支持 | 是否为基本类型 | 说明                                  |
 |-------------------------------------|----------------------|-----------|--------------|----------------------------------------|
@@ -584,7 +584,7 @@ TBLPROPERTIES (
 | `Object`                            |                      | ❌         |              |                                        |
 | `Nested`                            |                      | ❌         |              |                                        |
 
-## 贡献与支持 {#contributing-and-support}
+## 贡献与支持 \{#contributing-and-support\}
 
 如果您希望为该项目做出贡献或报告任何问题，我们非常欢迎您的反馈！
 请访问我们的 [GitHub 仓库](https://github.com/ClickHouse/spark-clickhouse-connector) 来提交 issue、提出改进建议或发起 pull request。

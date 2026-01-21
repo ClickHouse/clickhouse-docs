@@ -1,27 +1,27 @@
 [
   {
     "title": "SQL 参考文档",
-    "description": "学习可用的语句、函数和数据类型",
+    "description": "了解可用的语句、函数和数据类型",
     "url": "/docs/sql-reference"
   },
   {
-    "title": "数据摄取",
-    "description": "探索将数据导入 ClickHouse 的多种途径",
+    "title": "摄取数据",
+    "description": "探索将数据摄取到 ClickHouse 的多种方式",
     "url": "/docs/integrations/data-ingestion/"
   },
   {
-    "title": "数据可视化",
-    "description": "现在数据已经进入 ClickHouse，是时候开始分析了",
+    "title": "可视化数据",
+    "description": "现在您的数据已经在 ClickHouse 中，可以开始对其进行分析",
     "url": "/docs/integrations/data-visualization/"
   },
   {
     "title": "优化数据",
-    "description": "提升 ClickHouse 服务性能的方法",
+    "description": "优化 ClickHouse 服务性能",
     "url": "/docs/optimize/"
   },
   {
     "title": "数据迁移",
-    "description": "将外部数据源的数据导入 ClickHouse",
+    "description": "将外部数据源中的数据导入 ClickHouse",
     "url": "/docs/integrations/migration/"
   }
 ]

@@ -25,13 +25,13 @@ ClickStack использует стандарт OpenTelemetry для сбора
   </tbody>
 </table>
 
-## Начало работы {#getting-started}
+## Начало работы \{#getting-started\}
 
 :::note
 В настоящее время интеграция поддерживает только **Java 8+**.
 :::
 
-### Загрузка Java-агента OpenTelemetry {#download-opentelemtry-java-agent}
+### Загрузка Java-агента OpenTelemetry \{#download-opentelemtry-java-agent\}
 
 Скачайте [`opentelemetry-javaagent.jar`](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar)
 и поместите JAR-файл в выбранный каталог. JAR-файл содержит агент
@@ -42,7 +42,7 @@ ClickStack использует стандарт OpenTelemetry для сбора
 curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
 ```
 
-### Настройте переменные окружения {#configure-environment-variables}
+### Настройте переменные окружения \{#configure-environment-variables\}
 
 Далее необходимо настроить в оболочке следующие переменные окружения для отправки телеметрии в ClickStack:
 
@@ -59,7 +59,7 @@ OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
 
 Переменная окружения `OTEL_EXPORTER_OTLP_HEADERS` содержит ключ API, доступный в приложении HyperDX в разделе `Team Settings → API Keys`.
 
-### Запустите приложение с Java-агентом OpenTelemetry {#run-the-application-with-otel-java-agent}
+### Запустите приложение с Java-агентом OpenTelemetry \{#run-the-application-with-otel-java-agent\}
 
 ```shell
 java -jar target/<APPLICATION_JAR_FILE>

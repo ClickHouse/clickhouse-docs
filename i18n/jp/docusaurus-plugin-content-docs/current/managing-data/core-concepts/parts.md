@@ -10,7 +10,7 @@ import merges from '@site/static/images/managing-data/core-concepts/merges.png';
 import part from '@site/static/images/managing-data/core-concepts/part.png';
 import Image from '@theme/IdealImage';
 
-## ClickHouse におけるテーブルパーツとは？ {#what-are-table-parts-in-clickhouse}
+## ClickHouse におけるテーブルパーツとは？ \{#what-are-table-parts-in-clickhouse\}
 
 <br />
 
@@ -52,7 +52,7 @@ ClickHouse サーバーが、上の図に示した 4 行の INSERT（[INSERT INT
 
 データ^^パーツ^^は自己完結しており、中央のカタログを必要とせずにその内容を解釈するために必要な、すべてのメタデータを含みます。スパース主キーインデックスに加えて、^^パーツ^^には、副次的な [data skipping インデックス](/optimize/skipping-indexes)、[カラム統計](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere)、チェックサム、（[パーティション](/partitions) が使われている場合の）min-max インデックス、そして[その他の情報](https://github.com/ClickHouse/ClickHouse/blob/a065b11d591f22b5dd50cb6224fab2ca557b4989/src/Storages/MergeTree/MergeTreeData.h#L104)が含まれます。
 
-## パーツのマージ {#part-merges}
+## パーツのマージ \{#part-merges\}
 
 テーブルごとの ^^パーツ^^ 数を管理するために、[バックグラウンドマージ](/merges) ジョブが一定間隔で小さな ^^パーツ^^ をより大きなものへと順次まとめ、[設定可能な](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool) 圧縮サイズ（通常は約 150 GB）に達するまでマージを行います。マージされた ^^パーツ^^ は非アクティブとしてマークされ、[設定可能な](/operations/settings/merge-tree-settings#old_parts_lifetime) 時間が経過すると削除されます。時間の経過とともに、この処理によってマージ済み ^^パーツ^^ の階層構造が形成されるため、これを ^^MergeTree^^ テーブルと呼びます。
 
@@ -62,7 +62,7 @@ ClickHouse サーバーが、上の図に示した 4 行の INSERT（[INSERT INT
 
 初期 ^^パーツ^^ 数とマージ処理のオーバーヘッドを最小限に抑えるために、データベースクライアントは、20,000 行をまとめて挿入するといった形でタプルをバルク挿入するか、あるいは [非同期挿入モード](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) を使用することが[推奨されています](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)。非同期挿入モードでは、ClickHouse は同一テーブルに対する複数の INSERT リクエストから行をバッファリングし、バッファサイズが設定可能なしきい値を超えるか、タイムアウトが発生した時点でのみ新しいパーツを作成します。
 
-## テーブルパーツの監視 {#monitoring-table-parts}
+## テーブルパーツの監視 \{#monitoring-table-parts\}
 
 [仮想列](/engines/table-engines#table_engines-virtual_columns) `_part` を使用して、サンプルテーブルに現在存在するすべてのアクティブな ^^parts^^ の一覧を[クエリ](https://sql.clickhouse.com/?query=U0VMRUNUIF9wYXJ0CkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKR1JPVVAgQlkgX3BhcnQKT1JERVIgQlkgX3BhcnQgQVNDOw\&run_query=true\&tab=results)できます。
 

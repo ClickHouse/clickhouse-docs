@@ -21,7 +21,7 @@ import cp_rpe_settings0 from '@site/static/images/integrations/data-ingestion/cl
 import cp_rpe_settings1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_rpe_settings1.png';
 import Image from '@theme/IdealImage';
 
-# AWS PrivateLink для ClickPipes {#aws-privatelink-for-clickpipes}
+# AWS PrivateLink для ClickPipes \{#aws-privatelink-for-clickpipes\}
 
 Вы можете использовать [AWS PrivateLink](https://aws.amazon.com/privatelink/) для организации защищённого соединения между VPC,
 сервисами AWS, вашей локальной инфраструктурой и ClickHouse Cloud, не выводя трафик в общедоступный Интернет.
@@ -29,7 +29,7 @@ import Image from '@theme/IdealImage';
 В этом документе описывается функциональность reverse private endpoint в ClickPipes,
 которая позволяет настроить конечную точку VPC (VPC endpoint) AWS PrivateLink.
 
-## Поддерживаемые источники данных ClickPipes {#supported-sources}
+## Поддерживаемые источники данных ClickPipes \{#supported-sources\}
 
 Функциональность reverse private endpoint в ClickPipes поддерживается только для следующих
 типов источников данных:
@@ -39,7 +39,7 @@ import Image from '@theme/IdealImage';
 - MySQL
 - MongoDB
 
-## Поддерживаемые типы конечных точек AWS PrivateLink {#aws-privatelink-endpoint-types}
+## Поддерживаемые типы конечных точек AWS PrivateLink \{#aws-privatelink-endpoint-types\}
 
 Обратную приватную конечную точку ClickPipes можно настроить с использованием одного из следующих вариантов AWS PrivateLink:
 
@@ -47,7 +47,7 @@ import Image from '@theme/IdealImage';
 - [Multi-VPC‑подключение MSK для MSK ClickPipe](#msk-multi-vpc)
 - [Сервис конечной точки VPC](#vpc-endpoint-service)
 
-### Ресурс VPC {#vpc-resource}
+### Ресурс VPC \{#vpc-resource\}
 
 :::info
 Кросс-региональные подключения не поддерживаются.
@@ -67,7 +67,7 @@ import Image from '@theme/IdealImage';
 
 <VerticalStepper headerLevel="h4">
 
-#### Создайте шлюз ресурсов {#create-resource-gateway}
+#### Создайте шлюз ресурсов \{#create-resource-gateway\}
 
 Шлюз ресурсов — это точка входа, принимающая трафик для указанных ресурсов в вашей VPC.
 
@@ -98,7 +98,7 @@ aws vpc-lattice get-resource-gateway \
     --resource-gateway-identifier <RESOURCE_GATEWAY_ID>
 ```
 
-#### Создайте Resource-Configuration {#create-resource-configuration}
+#### Создайте Resource-Configuration \{#create-resource-configuration\}
 
 Resource-Configuration ассоциируется со шлюзом ресурсов (resource gateway), чтобы обеспечить доступ к вашему ресурсу.
 
@@ -134,7 +134,7 @@ aws vpc-lattice create-resource-configuration \
 
 Вывод команды будет содержать Resource-Configuration ARN, который понадобится вам на следующем шаге. Он также будет содержать Resource-Configuration ID, который потребуется для настройки подключения ClickPipe к ресурсу VPC.
 
-#### Создайте Resource-Share {#create-resource-share}
+#### Создайте Resource-Share \{#create-resource-share\}
 
 Чтобы предоставить общий доступ к ресурсу, требуется Resource-Share. Это осуществляется с помощью Resource Access Manager (RAM).
 
@@ -160,7 +160,7 @@ aws ram create-resource-share \
 </VerticalStepper>
 
 
-### Мульти-VPC-подключение MSK {#msk-multi-vpc}
+### Мульти-VPC-подключение MSK \{#msk-multi-vpc\}
 
 [Мульти-VPC-подключение](https://docs.aws.amazon.com/msk/latest/developerguide/aws-access-mult-vpc.html) — это встроенная функция AWS MSK, которая позволяет подключать несколько VPC к одному кластеру MSK.
 Поддержка частного DNS доступна «из коробки» и не требует дополнительной конфигурации.
@@ -176,7 +176,7 @@ aws ram create-resource-share \
 
 Следуйте нашему [руководству по настройке MSK для ClickPipes](/knowledgebase/aws-privatelink-setup-for-msk-clickpipes), чтобы узнать, как настроить подключение.
 
-### Служба конечной точки VPC {#vpc-endpoint-service}
+### Служба конечной точки VPC \{#vpc-endpoint-service\}
 
 [Служба конечной точки VPC](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html) — это альтернативный способ предоставить доступ к вашему источнику данных для ClickPipes.
 Для этого требуется развернуть NLB (Network Load Balancer) перед вашим источником данных
@@ -202,7 +202,7 @@ aws ram create-resource-share \
 может быть настроен для ClickPipes. Добавьте [ваш регион ClickPipe](#aws-privatelink-regions) в список разрешённых регионов в вашей службе конечной точки VPC.
 :::
 
-## Создание ClickPipe с reverse private endpoint {#creating-clickpipe}
+## Создание ClickPipe с reverse private endpoint \{#creating-clickpipe\}
 
 <VerticalStepper headerLevel="list">
 
@@ -265,7 +265,7 @@ aws ram create-resource-share \
 </VerticalStepper>
 
 
-## Управление существующими обратными приватными endpoint-ами {#managing-existing-endpoints}
+## Управление существующими обратными приватными endpoint-ами \{#managing-existing-endpoints\}
 
 Вы можете управлять существующими обратными приватными endpoint-ами в настройках сервиса ClickHouse Cloud:
 
@@ -285,14 +285,14 @@ aws ram create-resource-share \
 
 </VerticalStepper>
 
-## Поддерживаемые регионы AWS {#aws-privatelink-regions}
+## Поддерживаемые регионы AWS \{#aws-privatelink-regions\}
 
 Поддержка AWS PrivateLink для ClickPipes ограничена определёнными регионами AWS.
 Список доступных регионов см. в [списке регионов ClickPipes](/integrations/clickpipes#list-of-static-ips).
 
 Это ограничение не распространяется на службу конечных точек VPC PrivateLink с включённым межрегиональным подключением.
 
-## Ограничения {#limitations}
+## Ограничения \{#limitations\}
 
 Для конечных точек AWS PrivateLink для ClickPipes, создаваемых в ClickHouse Cloud, нет гарантии, что они будут находиться
 в том же регионе AWS, что и сервис ClickHouse Cloud.

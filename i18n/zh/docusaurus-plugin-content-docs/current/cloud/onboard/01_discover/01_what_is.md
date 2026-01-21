@@ -7,13 +7,13 @@ hide_title: true
 doc_type: 'guide'
 ---
 
-## 什么是 ClickHouse Cloud？ {#what-is-clickhouse-cloud}
+## 什么是 ClickHouse Cloud？ \{#what-is-clickhouse-cloud\}
 
 ClickHouse Cloud 是由 ClickHouse 的原始创建团队打造的、完全托管的云服务，而 ClickHouse 是目前最快、最流行的开源列式联机分析处理数据库。
 
 使用 Cloud 时，基础设施、维护、扩缩容和运维都由平台代为处理，因此你可以专注于对你最重要的事情——更快速地为你的组织和客户创造价值。
 
-## ClickHouse Cloud 的优势 {#benefits-of-clickhouse-cloud}
+## ClickHouse Cloud 的优势 \{#benefits-of-clickhouse-cloud\}
 
 与开源版本相比，ClickHouse Cloud 具有以下主要优势：
 
@@ -24,7 +24,7 @@ ClickHouse Cloud 是由 ClickHouse 的原始创建团队打造的、完全托管
 - **总体拥有成本更低**：具备优秀的价格/性能比，并显著降低管理开销。
 - **广泛的生态系统**：可继续使用您熟悉的数据连接器、可视化工具、SQL 以及各类多语言客户端。
 
-## 自管理 ClickHouse 与 ClickHouse Cloud 的比较 {#oss-vs-clickhouse-cloud}
+## 自管理 ClickHouse 与 ClickHouse Cloud 的比较 \{#oss-vs-clickhouse-cloud\}
 
 | Feature                        | Benefits                                                                                                                                                                                                                                                                                                   | OSS ClickHouse  | ClickHouse Cloud  |
 |--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|-------------------|
