@@ -43,11 +43,11 @@ In the BYOC deployment model, all customer data is hosted in the Customer BYOC V
 
 ### Network connectivity {#network-connectivity}
 
-#### Control plane communication
+#### Control plane communication {#control-plane}
 
 The ClickHouse VPC communicates with your Customer BYOC VPC over HTTPS (port 443) for service management operations including configuration changes, health checks, and deployment commands. This traffic carries only control plane data for orchestration. Critical telemetry and alerts flow from your Customer BYOC VPC to the ClickHouse VPC to enable resource utilization and health monitoring.
 
-#### Client connectivity to ClickHouse
+#### Client connectivity to ClickHouse {#client-connectivity}
 
 Your applications can connect to ClickHouse services in the Customer BYOC VPC through three methods:
 
@@ -55,7 +55,7 @@ Your applications can connect to ClickHouse services in the Customer BYOC VPC th
 - **VPC Peering:** For private connectivity between your Customer VPC and Customer BYOC VPC, you can establish VPC peering connections. This enables direct communication over all ClickHouse protocols using private IP addresses, providing the lowest latency option.
 - **AWS PrivateLink:** Provides secure connectivity without internet exposure, using the same ports as public endpoints (8443 for HTTPS, 9440 for native protocol with TLS) but over private connections.
 
-#### Storage and internal cluster communication
+#### Storage and internal cluster communication {#storage-and-internal-cluster}
 
 Traffic between your Customer BYOC VPC and S3 uses HTTPS (port 443) via the AWS S3 API for table data, backups, and logs. When using S3 VPC endpoints, this traffic remains within the AWS network.
 
