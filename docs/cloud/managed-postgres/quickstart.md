@@ -171,7 +171,7 @@ Done! You can now see all the ClickHouse tables in your Postgres client:
 ```sql
 postgres=# \det+ organization.*
 ```
-## Analytics after integration
+## Analytics after integration {#analytics-after-integration}
 Let's check back in on the integration page. You should see that the initial replication is complete. You can click on the name of the integration to view more details on it.
 <Image img={analyticsList} alt="Managed Postgres analytics list" size="md" border/>
 
