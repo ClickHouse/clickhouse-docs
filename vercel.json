@@ -1,4 +1,7 @@
 {
+  "buildCommand": "yarn build",
+  "outputDirectory": "build",
+  "framework": "docusaurus",
   "rewrites": [
     { "source": "/docs/jp/:path*", "destination": "/:path*" },
     { "source": "/docs/zh/:path*", "destination": "/:path*" },
