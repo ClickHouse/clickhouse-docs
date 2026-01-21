@@ -282,7 +282,7 @@ Once ClickStack is running:
 
 <Image img={log_view} alt="Log view"/>
 
-:::note[Timezone Display]
+:::note[Timezone display]
 HyperDX displays timestamps in your browser's local timezone. The demo data spans **2025-11-15 00:00:00 - 2025-11-16 00:00:00 (UTC)**. The wide time range ensures you'll see the demo logs regardless of your location.
 :::
 
