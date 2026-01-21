@@ -1230,9 +1230,9 @@ Cloud 默认值：`1`。
 
 <ExperimentalBadge/>
 
-<SettingsInfoBlock type="UInt64" default_value="0" />
+<SettingsInfoBlock type="UInt64" default_value="1048576" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1048576"},{"label": "基于测试结果得出的更优默认值"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置"}]}]}/>
 
 用于自动启用并行副本时的每个副本最小读取字节数阈值（仅在 `automatic_parallel_replicas_mode`=1 时生效）。0 表示不设阈值。
 
@@ -9703,7 +9703,11 @@ a   Tuple(
 
 ## query_plan_reuse_storage_ordering_for_window_functions \{#query_plan_reuse_storage_ordering_for_window_functions\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+**别名**: `optimize_read_in_window_order`
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "默认禁用此逻辑。"}]}]}/>
 
 切换一种查询计划级别的优化，在为窗口函数排序时复用存储的排序结果。
 仅当 [`query_plan_enable_optimizations`](#query_plan_enable_optimizations) 设置为 1 时生效。
