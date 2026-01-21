@@ -18,6 +18,7 @@ import tablePicker from '@site/static/images/managed-postgres/table-picker.png';
 import getClickHouseHost from '@site/static/images/managed-postgres/get-clickhouse-host.png';
 import analyticsList from '@site/static/images/managed-postgres/analytics-list.png';
 import replicatedTables from '@site/static/images/managed-postgres/replicated-tables.png';
+import createSampleData from '@site/static/images/managed-postgres/create-sample-data.png';
 
 # Quickstart for Managed Postgres
 This is a quickstart guide to help you create your first Managed Postgres service and integrate it with ClickHouse. Having an existing ClickHouse instance will help you explore the full capabilities of Managed Postgres.
@@ -36,94 +37,12 @@ Enter a name for your database instance and click on **Create service**. You wil
 
 Your Managed Postgres instance will be provisioned and ready for use in a few minutes.
 
-## Connect and have some data ready {#connect-and-data}
-In the sidebar on the left, you will see a [**Connect** button](/cloud/managed-postgres/connection). Click on it to view your connection details and connection strings in multiple formats.
-
-<Image img={connectModal} alt="Managed Postgres connect modal" size="md" border/>
-
-You can copy the connection string in your preferred format and use it to connect to your database using any Postgres-compatible client such as `psql`, DBeaver, or any application  library.
-
-To get started quickly, you can use the following SQL commands to create two sample tables and insert some data:
-
-```sql
-CREATE TABLE events (
-   event_id SERIAL PRIMARY KEY,
-   event_name VARCHAR(255) NOT NULL,
-   event_type VARCHAR(100),
-   event_timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-   event_data JSONB,
-   user_id INT,
-   user_ip INET,
-   is_active BOOLEAN DEFAULT TRUE,
-   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-CREATE TABLE users (
-   user_id SERIAL PRIMARY KEY,
-   name VARCHAR(100),
-   country VARCHAR(50),
-   platform VARCHAR(50)
-);
-```
-
-Let's insert into the events table:
-```sql
-INSERT INTO events (event_name, event_type, event_timestamp, event_data, user_id, user_ip)
-SELECT
-   'Event ' || gs::text AS event_name,
-   CASE
-       WHEN random() < 0.5 THEN 'click'          -- 50% chance
-       WHEN random() < 0.75 THEN 'view'          -- 25% chance
-       WHEN random() < 0.9 THEN 'purchase'       -- 15% chance
-       WHEN random() < 0.98 THEN 'signup'        -- 8% chance
-       ELSE 'logout'                             -- 2% chance
-   END AS event_type,
-   NOW() - INTERVAL '1 day' * (gs % 365) AS event_timestamp,
-   jsonb_build_object('key', 'value' || gs::text, 'additional_info', 'info_' || (gs % 100)::text) AS event_data,
-   GREATEST(1, LEAST(1000, FLOOR(POWER(random(), 2) * 1000) + 1)) AS user_id,
-   ('192.168.1.' || ((gs % 254) + 1))::inet AS user_ip
-FROM
-   generate_series(1, 1000000) gs;
-```
-
-And then insert into the users table:
-```sql
-INSERT INTO
-    users (
-        NAME,
-        country,
-        platform
-    )
-SELECT
-    first_names [first_idx] || ' ' || last_names [last_idx] AS NAME,
-    CASE
-        WHEN random() < 0.25 THEN 'India'
-        WHEN random() < 0.5 THEN 'USA'
-        WHEN random() < 0.7 THEN 'Germany'
-        WHEN random() < 0.85 THEN 'China'
-        ELSE 'Other'
-    END AS country,
-    CASE
-        WHEN random() < 0.2 THEN 'iOS'
-        WHEN random() < 0.4 THEN 'Android'
-        WHEN random() < 0.6 THEN 'Web'
-        WHEN random() < 0.75 THEN 'Windows'
-        WHEN random() < 0.9 THEN 'MacOS'
-        ELSE 'Linux'
-    END AS platform
-FROM
-    generate_series(1, 1000) AS seq
-    CROSS JOIN lateral (
-        SELECT
-            array ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve', 'Frank', 'Grace', 'Hank', 'Ivy', 'Jack',                 'Liam', 'Olivia', 'Noah', 'Emma', 'Sophia', 'Benjamin', 'Isabella', 'Lucas', 'Mia', 'Amelia',                 'Aarav', 'Riya', 'Arjun', 'Ananya', 'Wei', 'Li', 'Huan', 'Mei', 'Hans', 'Klaus', 'Greta', 'Sofia'] AS first_names,
-            array ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Martinez', 'Taylor',                 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin', 'Thompson', 'Moore', 'Lee', 'Perez',                 'Sharma', 'Patel', 'Gupta', 'Reddy', 'Zhang', 'Wang', 'Chen', 'Liu', 'Schmidt', 'Müller', 'Weber', 'Fischer'] AS last_names,
-            1 + (seq % 32) AS first_idx,
-            1 + ((seq / 32) :: int % 32) AS last_idx
-    ) AS names;
-```
-
 ## Setup integration with ClickHouse {#setup-integrate-clickhouse}
-Now that we have tables and data in Postgres, let's replicate the tables to ClickHouse for analytics. We start by clicking on **ClickHouse integration** in the sidebar. Then you can click on **Replicate data in ClickHouse**.
+Now that we have tables and data in Postgres, let's replicate the tables to ClickHouse for analytics. We start by clicking on **ClickHouse integration** in the sidebar. First, to have some data in Postgres to move over, click on the dropdown in the button and click on **Create sample data in Postgres**. 
+<Image img={createSampleData} alt="Managed Postgres sample data" size="md" border/>
+You will see a success toast. This creates two tables, `users` and `events`, in the `public` schema with some sample data.
+
+Then, you can click on **Replicate data in ClickHouse**.
 <Image img={integrationLanding} alt="Managed Postgres integration empty" size="md" border/>
 In the form that follows, you can enter a name for your integration and select an existing ClickHouse instance to replicate to. If you don't have a ClickHouse instance yet, you can create one by following the [Quickstart for ClickHouse Cloud](/cloud/clickhouse-cloud/quickstart) guide.
 :::warning Important
