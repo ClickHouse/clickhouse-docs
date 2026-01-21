@@ -330,7 +330,7 @@ WHERE id = 'abc123-def456-789'
 ```
 
 増分バックアップを作成することも可能です。
-バックアップ全般の詳細については、[backup and restore](/operations/backup) ドキュメントを参照してください。
+バックアップ全般の詳細については、[backup and restore](/operations/backup/overview) ドキュメントを参照してください。
 
 
 ## ClickHouse Cloud へのリストア \{#restore-to-clickhouse-cloud\}

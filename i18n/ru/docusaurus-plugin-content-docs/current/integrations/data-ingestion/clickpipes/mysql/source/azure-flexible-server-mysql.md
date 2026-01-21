@@ -48,7 +48,7 @@ import TabItem from '@theme/TabItem';
 ## Настройте сетевой доступ \{#configure-network-access\}
 
 :::note
-ClickPipes не поддерживает подключения через Azure Private Link. Если вы не разрешаете публичный доступ к экземпляру Azure Flexible Server for MySQL, вы можете [использовать SSH‑туннель](#configure-network-security) для безопасного подключения. Поддержка Azure Private Link будет добавлена в будущем.
+ClickPipes не поддерживает подключения через Azure Private Link. Если вы не разрешаете публичный доступ к экземпляру Azure Flexible Server for MySQL, вы можете [использовать SSH‑туннель](/integrations/clickpipes/mysql/source/azure-flexible-server-mysql#configure-network-access) для безопасного подключения. Поддержка Azure Private Link будет добавлена в будущем.
 :::
 
 Далее необходимо разрешить подключения к вашему экземпляру Azure Flexible Server for MySQL из ClickPipes.

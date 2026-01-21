@@ -9,6 +9,7 @@ doc_type: 'guide'
 
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
 import DOsvg from '@site/static/images/integrations/logos/digitalocean.svg';
+import OVHpng from '@site/static/images/integrations/logos/ovh.png';
 import R2svg from '@site/static/images/integrations/logos/cloudflare.svg';
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
@@ -22,11 +23,12 @@ S3 ClickPipes можно разворачивать и управлять ими
 
 ## Поддерживаемые источники данных \{#supported-data-sources\}
 
-| Name                 | Logo | Details           |
-|----------------------|------|-------------------|
-| **Amazon S3**            | <S3svg class="image" alt="Amazon S3 logo" style={{width: '2.5rem', height: 'auto'}}/> | Для непрерывной ингестии по умолчанию требуется [лексикографический порядок](#continuous-ingestion-lexicographical-order), но её можно настроить на [приём файлов в произвольном порядке](#continuous-ingestion-any-order). |
-| **Cloudflare R2** <br></br> _S3-compatible_ | <R2svg class="image" alt="Cloudflare R2 logo" style={{width: '2.5rem', height: 'auto'}}/> | Непрерывная ингестия требует [лексикографического порядка](#continuous-ingestion-lexicographical-order). |
-| **DigitalOcean Spaces** <br></br> _S3-compatible_ | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '2.5rem', height: 'auto'}}/>|  Непрерывная ингестия требует [лексикографического порядка](#continuous-ingestion-lexicographical-order). |
+| Name                 | Logo                                                                                      | Details           |
+|----------------------|-------------------------------------------------------------------------------------------|-------------------|
+| **Amazon S3**            | <S3svg class="image" alt="Amazon S3 logo" style={{width: '2.5rem', height: 'auto'}}/>     | Для непрерывной ингестии по умолчанию требуется [лексикографический порядок](#continuous-ingestion-lexicographical-order), но её можно настроить на [приём файлов в произвольном порядке](#continuous-ingestion-any-order). |
+| **Cloudflare R2** <br></br> _S3-compatible_ | <R2svg class="image" alt="Cloudflare R2 logo" style={{width: '2.5rem', height: 'auto'}}/> | Непрерывная ингестия требует [лексикографического порядка](#continuous-ingestion-lexicographical-order). Неупорядоченный режим не поддерживается. |
+| **DigitalOcean Spaces** <br></br> _S3-compatible_ | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '2.5rem', height: 'auto'}}/> |  Непрерывная ингестия требует [лексикографического порядка](#continuous-ingestion-lexicographical-order). Неупорядоченный режим не поддерживается. |
+| **OVH Object Storage** <br></br> _S3-compatible_ | <Image img={OVHpng} alt="Cloud Storage logo" size="logo" border/>                         |  Непрерывная ингестия требует [лексикографического порядка](#continuous-ingestion-lexicographical-order). Неупорядоченный режим не поддерживается. |
 
 :::tip
 Из-за различий в форматах URL и реализациях API у разных провайдеров объектного хранилища не все S3-совместимые сервисы поддерживаются «из коробки». Если вы сталкиваетесь с проблемами при работе с сервисом, который не указан выше, [свяжитесь с нашей командой](https://clickhouse.com/company/contact?loc=clickpipes).
