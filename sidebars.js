@@ -340,6 +340,8 @@ const sidebars = {
           'cloud/managed-postgres/high-availability',
           'cloud/managed-postgres/read-replicas',
           'cloud/managed-postgres/backup-and-restore',
+          'cloud/managed-postgres/extensions',
+          'cloud/managed-postgres/settings',
       ],
     },
   ],
