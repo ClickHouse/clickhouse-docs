@@ -42,7 +42,15 @@ const config = {
   // Settings for Docusaurus Faster - build optimizations
   future: {
       v4: true,
-      experimental_faster: true,
+      experimental_faster: {
+        swcJsLoader: true,
+        swcJsMinimizer: true,
+        swcHtmlMinimizer: true,
+        lightningCssMinimizer: true,
+        rspackBundler: true,
+        rspackPersistentCache: false,  // Disable to avoid bug #10599
+        mdxCrossCompilerCache: true,
+      },
   },
   title: "ClickHouse Docs",
   tagline:
