@@ -13,6 +13,10 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />
 
+:::tip
+コンピュートと物理的に同一ラック内に配置された NVMe ストレージをバックエンドに採用した [Managed Postgres](/docs/cloud/managed-postgres) サービスをご確認ください。ネットワーク接続ストレージ（EBS など）を利用する代替手段と比較して、ディスクボトルネックとなるワークロードで最大 10 倍の高いパフォーマンスを実現し、さらに ClickPipes の Postgres CDC（変更データキャプチャ）コネクタを使用して、Postgres データを ClickHouse にレプリケートできます。
+:::
+
 ClickHouse は PostgreSQL ワイヤープロトコルをサポートしており、Postgres クライアントを使用して ClickHouse に接続できます。言い換えると、ClickHouse は PostgreSQL インスタンスとして振る舞うことができるため、ClickHouse でまだ直接サポートされていない PostgreSQL クライアントアプリケーション（例: Amazon Redshift）を ClickHouse に接続できます。
 
 PostgreSQL ワイヤープロトコルを有効にするには、[postgresql&#95;port](/operations/server-configuration-parameters/settings#postgresql_port) 設定をサーバーの構成ファイルに追加します。たとえば、`config.d` フォルダ内の新しい XML ファイルでポートを定義できます。
