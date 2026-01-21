@@ -37,7 +37,7 @@
     "@clickhouse/client-web": "^1.11.1",
     "@docusaurus/core": "3.9.2",
     "@docusaurus/faster": "^3.9.2",
-    "@docsearch/core": "^3.9.2",
+    "@docsearch/core": "^4.5.0",
     "@docusaurus/plugin-client-redirects": "^3.9.2",
     "@docusaurus/plugin-google-tag-manager": "^3.9.2",
     "@docusaurus/plugin-ideal-image": "^3.9.2",
