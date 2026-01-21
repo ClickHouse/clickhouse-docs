@@ -1234,9 +1234,9 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 <ExperimentalBadge/>
 
-<SettingsInfoBlock type="UInt64" default_value="0" />
+<SettingsInfoBlock type="UInt64" default_value="1048576" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1048576"},{"label": "Улучшенное значение по умолчанию, полученное на основе результатов тестирования"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 Порог количества байт для чтения на реплику, при котором автоматически включаются параллельные реплики (применяется только, когда `automatic_parallel_replicas_mode`=1). Значение 0 означает отсутствие порога.
 
@@ -9742,7 +9742,11 @@ a   Tuple(
 
 ## query_plan_reuse_storage_ordering_for_window_functions \{#query_plan_reuse_storage_ordering_for_window_functions\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+**Псевдонимы**: `optimize_read_in_window_order`
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "Отключить эту логику по умолчанию."}]}]}/>
 
 Включает или отключает оптимизацию на уровне плана запроса, которая использует сортировку данных в хранилище при сортировке для оконных функций.
 Влияет на поведение только в том случае, если настройка [`query_plan_enable_optimizations`](#query_plan_enable_optimizations) установлена в 1.

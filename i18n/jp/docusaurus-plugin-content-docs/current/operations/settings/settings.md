@@ -1232,9 +1232,9 @@ true に設定すると、非同期挿入に対して適応型ビジータイム
 
 <ExperimentalBadge/>
 
-<SettingsInfoBlock type="UInt64" default_value="0" />
+<SettingsInfoBlock type="UInt64" default_value="1048576" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1048576"},{"label": "テスト結果に基づいて導出された、より適切なデフォルト値"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 `automatic_parallel_replicas_mode`=1 の場合に、parallel replicas を自動的に有効化するための、レプリカごとの読み取りバイト数のしきい値です。0 を指定すると、しきい値はありません。
 
@@ -9722,7 +9722,11 @@ JOIN 操作で左テーブルからの読み取り順序を維持し、その順
 
 ## query_plan_reuse_storage_ordering_for_window_functions \{#query_plan_reuse_storage_ordering_for_window_functions\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+**別名**: `optimize_read_in_window_order`
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "このロジックをデフォルトで無効化します。"}]}]}/>
 
 ウィンドウ関数のためのソート時に、ストレージの並び順を利用するクエリプランレベルの最適化を切り替えます。
 設定 [`query_plan_enable_optimizations`](#query_plan_enable_optimizations) が 1 の場合にのみ有効です。
