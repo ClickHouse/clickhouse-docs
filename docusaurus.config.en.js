@@ -41,6 +41,7 @@ const config = {
   ],
   // Settings for Docusaurus Faster - build optimizations
   future: {
+    v4: true,
     experimental_faster: {
       ssgWorkerThreads: true,
       swcJsLoader: true,
