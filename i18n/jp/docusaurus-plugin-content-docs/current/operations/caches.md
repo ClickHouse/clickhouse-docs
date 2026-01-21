@@ -36,5 +36,5 @@ doc_type: 'reference'
 * フォーマットスキーマキャッシュ。
 
 パフォーマンスチューニング、トラブルシューティング、またはデータ整合性の観点から
-これらのキャッシュのいずれかを削除したい場合は、
-[`SYSTEM DROP ... CACHE`](../sql-reference/statements/system.md) ステートメントを使用できます。
+これらのキャッシュのいずれかをクリアしたい場合は、
+[`SYSTEM CLEAR ... CACHE`](../sql-reference/statements/system.md) ステートメントを使用できます。

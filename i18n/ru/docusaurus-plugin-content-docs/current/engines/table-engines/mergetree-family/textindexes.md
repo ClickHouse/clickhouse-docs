@@ -120,6 +120,24 @@ SELECT tokens('abc def', 'ngrams', 3);
 Также выражение препроцессора должно ссылаться только на столбец, для которого определён текстовый индекс.
 Использование недетерминированных функций не допускается.
 
+Препроцессор также может использоваться со столбцами типов [Array(String)](/sql-reference/data-types/array.md) и [Array(FixedString)](/sql-reference/data-types/array.md).
+В этом случае выражение препроцессора преобразует элементы массива по отдельности.
+
+Пример:
+
+```sql
+CREATE TABLE tab
+(
+    col Array(String),
+    INDEX idx col TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))
+
+    -- This is not legal:
+    INDEX idx_illegal col TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = arraySort(col))
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+```
+
 Функции [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken), [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens) и [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) используют препроцессор для предварительного преобразования поискового термина перед его токенизацией.
 
 Например,
@@ -156,6 +174,7 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
 Однако, в отличие от других пропускающих индексов, текстовые индексы имеют «бесконечно мелкую» гранулярность, т.е. текстовый индекс создаётся для всей части данных, а явно заданная гранулярность индекса игнорируется.
 Это значение было выбрано эмпирически и обеспечивает хороший баланс между скоростью и размером индекса для большинства сценариев использования.
 Опытные пользователи могут указать другую гранулярность индекса (мы этого не рекомендуем).
+
 
 <details markdown="1">
   <summary>Необязательные расширенные параметры</summary>

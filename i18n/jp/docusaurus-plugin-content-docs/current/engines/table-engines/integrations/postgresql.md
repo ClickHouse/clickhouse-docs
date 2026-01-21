@@ -12,11 +12,11 @@ doc_type: 'guide'
 PostgreSQLエンジンを使用すると、リモートのPostgreSQLサーバーに保存されたデータに対して `SELECT` および `INSERT` クエリを実行できます。
 
 :::note
-現在サポートされているのは、PostgreSQL 12以降のバージョンのみです。
+現在、テーブルエンジンとしてサポートされているのは、PostgreSQL 12以降のバージョンのみです。
 :::
 
 :::tip
-ClickHouse Cloud ユーザーには、Postgres データを ClickHouse にストリーミングする際に [ClickPipes](/integrations/clickpipes) の利用を推奨します。これは、インジェストとクラスタリソースをそれぞれ独立してスケールさせることで責務を分離しつつ、高パフォーマンスなデータ挿入をネイティブにサポートします。
+弊社の [Managed Postgres](/docs/cloud/managed-postgres) サービスをご確認ください。コンピュートと物理的に同一ロケーションに配置された NVMe ストレージを基盤としており、EBS のようなネットワーク接続ストレージを利用する代替手段と比較して、ディスクがボトルネックとなるワークロードで最大 10 倍のパフォーマンスを発揮します。また、ClickPipes の Postgres CDC（変更データキャプチャ）コネクタを使用して、Postgres データを ClickHouse にレプリケートすることもできます。
 :::
 
 ## テーブルの作成 \{#creating-a-table\}
@@ -62,11 +62,12 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 </named_collections>
 ```
 
-一部のパラメータは、キー値引数で上書きできます。
+一部のパラメータは、キー値形式の引数で上書きできます。
 
 ```sql
 SELECT * FROM postgresql(postgres_creds, table='table1');
 ```
+
 
 ## 実装の詳細 \{#implementation-details\}
 
@@ -115,6 +116,7 @@ PostgreSQL の辞書ソースではレプリカの優先度指定がサポート
 </source>
 ```
 
+
 ## 使用例 \{#usage-example\}
 
 ### PostgreSQL のテーブル \{#table-in-postgresql\}
@@ -140,6 +142,7 @@ postgresql> SELECT * FROM test;
  (1 row)
 ```
 
+
 ### ClickHouse でテーブルを作成し、前述の PostgreSQL テーブルに接続する \{#creating-table-in-clickhouse-and-connecting-to--postgresql-table-created-above\}
 
 この例では、[PostgreSQL table engine](/engines/table-engines/integrations/postgresql.md) を使用して、ClickHouse テーブルを PostgreSQL テーブルに接続し、PostgreSQL データベースに対して SELECT 文および INSERT 文を実行します。
@@ -153,6 +156,7 @@ CREATE TABLE default.postgresql_table
 )
 ENGINE = PostgreSQL('localhost:5432', 'public', 'test', 'postgres_user', 'postgres_password');
 ```
+
 
 ### SELECT クエリを使用して PostgreSQL テーブルから ClickHouse テーブルへ初期データを挿入する \{#inserting-initial-data-from-postgresql-table-into-clickhouse-table-using-a-select-query\}
 
@@ -174,6 +178,7 @@ INSERT INTO default.postgresql_copy
 SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postgres_user', 'postgres_password');
 ```
 
+
 ### PostgreSQL テーブルから ClickHouse テーブルへの増分データ挿入 \{#inserting-incremental-data-from-postgresql-table-into-clickhouse-table\}
 
 初回の挿入後に PostgreSQL テーブルと ClickHouse テーブルの間で継続的な同期を行う場合、ClickHouse 側で `WHERE` 句を使用して、タイムスタンプまたは一意のシーケンス ID に基づき、PostgreSQL に新たに追加されたデータのみを挿入できます。
@@ -184,7 +189,7 @@ SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postgres_user', 'p
 SELECT max(`int_id`) AS maxIntID FROM default.postgresql_copy;
 ```
 
-次に、PostgreSQL テーブルから最大値を超える値を挿入します
+次に、PostgreSQL テーブルから `int_id` がこの最大値を超える行のみを挿入します
 
 ```sql
 INSERT INTO default.postgresql_copy
@@ -192,7 +197,8 @@ SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postges_user', 'po
 WHERE int_id > maxIntID;
 ```
 
-### 生成された ClickHouse テーブルからデータを選択する \{#selecting-data-from-the-resulting-clickhouse-table\}
+
+### 生成された ClickHouse テーブルからデータを取得する \{#selecting-data-from-the-resulting-clickhouse-table\}
 
 ```sql
 SELECT * FROM postgresql_copy WHERE str IN ('test');
@@ -203,6 +209,7 @@ SELECT * FROM postgresql_copy WHERE str IN ('test');
 │           ᴺᵁᴸᴸ │ test │      1 │
 └────────────────┴──────┴────────┘
 ```
+
 
 ### デフォルト以外のスキーマを使用する \{#using-non-default-schema\}
 
@@ -223,6 +230,7 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 
 * [`postgresql` テーブル関数](../../../sql-reference/table-functions/postgresql.md)
 * [PostgreSQL をディクショナリのソースとして使用する](/sql-reference/dictionaries#mysql)
+
 
 ## 関連コンテンツ \{#related-content\}
 

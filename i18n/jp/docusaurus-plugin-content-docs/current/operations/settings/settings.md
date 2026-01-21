@@ -8362,12 +8362,6 @@ SELECT * FROM test2;
 
 - [ORDER BY 句](/sql-reference/statements/select/order-by#optimization-of-data-reading)
 
-## optimize_read_in_window_order \{#optimize_read_in_window_order\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-MergeTree テーブルでデータを指定された順序で読み取るために、ウィンドウ句における ORDER BY の最適化を有効にします。
-
 ## optimize_redundant_functions_in_order_by \{#optimize_redundant_functions_in_order_by\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

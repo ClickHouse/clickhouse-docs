@@ -12,11 +12,11 @@ doc_type: 'guide'
 Движок PostgreSQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, хранящимся на удалённом сервере PostgreSQL.
 
 :::note
-В настоящее время поддерживаются только версии PostgreSQL 12 и выше.
+В настоящее время для движка таблиц поддерживаются только версии PostgreSQL 12 и выше.
 :::
 
 :::tip
-Пользователям ClickHouse Cloud рекомендуется использовать [ClickPipes](/integrations/clickpipes) для потоковой передачи данных из Postgres в ClickHouse. Это обеспечивает встроенную поддержку высокопроизводительной вставки, при этом сохраняя разделение зон ответственности за счёт возможности независимо масштабировать ингестию и ресурсы кластера.
+Обратите внимание на наш сервис [Managed Postgres](/docs/cloud/managed-postgres). Благодаря NVMe-хранилищу, физически расположенному рядом с вычислительными ресурсами, он обеспечивает до 10-кратного ускорения для нагрузок, ограниченных производительностью дисковой подсистемы, по сравнению с альтернативами, использующими сетевые хранилища, такие как EBS, и позволяет реплицировать ваши данные Postgres в ClickHouse с помощью коннектора Postgres CDC в ClickPipes.
 :::
 
 ## Создание таблицы \{#creating-a-table\}
@@ -68,6 +68,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 SELECT * FROM postgresql(postgres_creds, table='table1');
 ```
 
+
 ## Особенности реализации \{#implementation-details\}
 
 Запросы `SELECT` на стороне PostgreSQL выполняются как `COPY (SELECT ...) TO STDOUT` внутри транзакции PostgreSQL только для чтения с фиксацией (commit) после каждого запроса `SELECT`.
@@ -90,7 +91,7 @@ SELECT * FROM postgresql(postgres_creds, table='table1');
 CREATE TABLE test_replicas (id UInt32, name String) ENGINE = PostgreSQL(`postgres{2|3|4}:5432`, 'clickhouse', 'test_replicas', 'postgres', 'mysecretpassword');
 ```
 
-Поддерживается приоритизация реплик для источника словаря PostgreSQL. Чем больше число в карте, тем ниже приоритет. Наивысший приоритет — `0`.
+Поддерживается приоритизация реплик для источника словаря PostgreSQL. Чем больше число в map, тем ниже приоритет. Наивысший приоритет — `0`.
 
 В примере ниже реплика `example01-1` имеет наивысший приоритет:
 
@@ -114,6 +115,7 @@ CREATE TABLE test_replicas (id UInt32, name String) ENGINE = PostgreSQL(`postgre
 </postgresql>
 </source>
 ```
+
 
 ## Пример использования \{#usage-example\}
 
@@ -140,6 +142,7 @@ postgresql> SELECT * FROM test;
  (1 row)
 ```
 
+
 ### Создание таблицы в ClickHouse и подключение к таблице PostgreSQL, созданной выше \{#creating-table-in-clickhouse-and-connecting-to--postgresql-table-created-above\}
 
 В этом примере используется [движок таблицы PostgreSQL](/engines/table-engines/integrations/postgresql.md) для подключения таблицы ClickHouse к таблице PostgreSQL и выполнения операторов SELECT и INSERT над базой данных PostgreSQL:
@@ -153,6 +156,7 @@ CREATE TABLE default.postgresql_table
 )
 ENGINE = PostgreSQL('localhost:5432', 'public', 'test', 'postgres_user', 'postgres_password');
 ```
+
 
 ### Вставка начальных данных из таблицы PostgreSQL в таблицу ClickHouse с использованием запроса SELECT \{#inserting-initial-data-from-postgresql-table-into-clickhouse-table-using-a-select-query\}
 
@@ -174,6 +178,7 @@ INSERT INTO default.postgresql_copy
 SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postgres_user', 'postgres_password');
 ```
 
+
 ### Вставка инкрементальных данных из таблицы PostgreSQL в таблицу ClickHouse \{#inserting-incremental-data-from-postgresql-table-into-clickhouse-table\}
 
 Если после первоначальной вставки вы выполняете дальнейшую синхронизацию между таблицей PostgreSQL и таблицей ClickHouse, вы можете использовать предложение WHERE в ClickHouse, чтобы вставлять только данные, добавленные в PostgreSQL, на основе метки времени или уникального последовательного идентификатора.
@@ -184,13 +189,14 @@ SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postgres_user', 'p
 SELECT max(`int_id`) AS maxIntID FROM default.postgresql_copy;
 ```
 
-Затем вставляем значения из таблицы PostgreSQL, которые больше текущего максимума
+Затем вставляем из таблицы PostgreSQL только те значения, которые больше найденного максимума
 
 ```sql
 INSERT INTO default.postgresql_copy
 SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postges_user', 'postgres_password');
 WHERE int_id > maxIntID;
 ```
+
 
 ### Выбор данных из полученной таблицы ClickHouse \{#selecting-data-from-the-resulting-clickhouse-table\}
 
@@ -204,7 +210,8 @@ SELECT * FROM postgresql_copy WHERE str IN ('test');
 └────────────────┴──────┴────────┘
 ```
 
-### Использование схемы, отличной от схемы по умолчанию \{#using-non-default-schema\}
+
+### Использование нестандартной схемы \{#using-non-default-schema\}
 
 ```text
 postgres=# CREATE SCHEMA "nice.schema";
@@ -223,6 +230,7 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 
 * [Табличная функция `postgresql`](../../../sql-reference/table-functions/postgresql.md)
 * [Использование PostgreSQL как источника словаря](/sql-reference/dictionaries#mysql)
+
 
 ## Связанные материалы \{#related-content\}
 

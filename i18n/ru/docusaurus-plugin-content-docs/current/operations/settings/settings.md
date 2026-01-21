@@ -8380,12 +8380,6 @@ SELECT * FROM test2;
 
 - [Оператор ORDER BY](/sql-reference/statements/select/order-by#optimization-of-data-reading)
 
-## optimize_read_in_window_order \{#optimize_read_in_window_order\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-Включает оптимизацию ORDER BY в оконной части запроса для чтения данных в соответствующем порядке в таблицах MergeTree.
-
 ## optimize_redundant_functions_in_order_by \{#optimize_redundant_functions_in_order_by\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
