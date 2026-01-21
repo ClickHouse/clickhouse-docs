@@ -1557,7 +1557,7 @@ HSTS 的失效时间（秒）。
 
 ## iceberg_catalog_threadpool_queue_size \{#iceberg_catalog_threadpool_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />iceberg catalog 线程池队列中可排队的最大任务数
+<SettingsInfoBlock type="UInt64" default_value="10000" />iceberg catalog 线程池队列中可排队的最大任务数
 
 ## iceberg_metadata_files_cache_max_entries \{#iceberg_metadata_files_cache_max_entries\}
 
@@ -1980,7 +1980,7 @@ ClickHouse 企业版许可证文件内容
 
 ## load_marks_threadpool_queue_size \{#load_marks_threadpool_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />可加入预取线程池队列的最大任务数
+<SettingsInfoBlock type="UInt64" default_value="10000" />可加入预取线程池队列的最大任务数
 
 ## logger \{#logger\}
 
@@ -3487,7 +3487,7 @@ ZooKeeper 客户端中用于发送和接收线程的 Linux nice 值。值越低�
 
 ## prefetch_threadpool_queue_size \{#prefetch_threadpool_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />可以推入预取线程池的任务数量上限
+<SettingsInfoBlock type="UInt64" default_value="10000" />可以推入预取线程池的任务数量上限
 
 ## prefixes_deserialization_thread_pool_thread_pool_queue_size \{#prefixes_deserialization_thread_pool_thread_pool_queue_size\}
 
@@ -4504,7 +4504,7 @@ SSH 服务器使用的端口，允许用户通过 PTY 使用嵌入式客户端�
 
 ## threadpool_local_fs_reader_queue_size \{#threadpool_local_fs_reader_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />用于从本地文件系统读取数据的线程池中可调度的最大作业数量。
+<SettingsInfoBlock type="UInt64" default_value="10000" />用于从本地文件系统读取数据的线程池中可调度的最大作业数量。
 
 ## threadpool_remote_fs_reader_pool_size \{#threadpool_remote_fs_reader_pool_size\}
 
@@ -4512,7 +4512,7 @@ SSH 服务器使用的端口，允许用户通过 PTY 使用嵌入式客户端�
 
 ## threadpool_remote_fs_reader_queue_size \{#threadpool_remote_fs_reader_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />用于从远程文件系统读取的线程池中可调度任务的最大数量。
+<SettingsInfoBlock type="UInt64" default_value="10000" />用于从远程文件系统读取的线程池中可调度任务的最大数量。
 
 ## threadpool_writer_pool_size \{#threadpool_writer_pool_size\}
 
@@ -4520,7 +4520,7 @@ SSH 服务器使用的端口，允许用户通过 PTY 使用嵌入式客户端�
 
 ## threadpool_writer_queue_size \{#threadpool_writer_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />可推送到用于对象存储写请求的后台线程池中的最大任务数
+<SettingsInfoBlock type="UInt64" default_value="10000" />可推送到用于对象存储写请求的后台线程池中的最大任务数
 
 ## throw_on_unknown_workload \{#throw_on_unknown_workload\}
 

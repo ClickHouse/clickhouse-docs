@@ -92,29 +92,29 @@ SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 ```
 
 
-## SYSTEM DROP DNS CACHE \{#drop-dns-cache\}
+## SYSTEM CLEAR|DROP DNS CACHE \{#drop-dns-cache\}
 
 清除 ClickHouse 的内部 DNS 缓存。在更改基础设施时（例如更改另一台 ClickHouse 服务器或字典所用服务器的 IP 地址），有时（对于较老的 ClickHouse 版本）需要使用此命令。
 
 若需要更方便的（自动）缓存管理，请参阅 `disable_internal_dns_cache`、`dns_cache_max_entries`、`dns_cache_update_period` 参数。
 
-## SYSTEM DROP MARK CACHE \{#drop-mark-cache\}
+## SYSTEM CLEAR|DROP MARK CACHE \{#drop-mark-cache\}
 
 清空标记缓存。
 
-## SYSTEM DROP ICEBERG METADATA CACHE \{#drop-iceberg-metadata-cache\}
+## SYSTEM CLEAR|DROP ICEBERG METADATA CACHE \{#drop-iceberg-metadata-cache\}
 
 清除 Iceberg 元数据缓存。
 
-## SYSTEM DROP TEXT INDEX CACHES \{#drop-text-index-caches\}
+## SYSTEM CLEAR|DROP TEXT INDEX CACHES \{#drop-text-index-caches\}
 
 清除文本索引头缓存、字典缓存和倒排索引缓存。
 
 如果你想单独清除其中某一个缓存，可以运行
 
-- `SYSTEM DROP TEXT INDEX HEADER CACHE`,
-- `SYSTEM DROP TEXT INDEX DICTIONARY CACHE`, 或
-- `SYSTEM DROP TEXT INDEX POSTINGS CACHE`
+- `SYSTEM CLEAR TEXT INDEX HEADER CACHE`,
+- `SYSTEM CLEAR TEXT INDEX DICTIONARY CACHE`, 或
+- `SYSTEM CLEAR TEXT INDEX POSTINGS CACHE`
 
 ## SYSTEM DROP REPLICA \{#drop-replica\}
 
@@ -147,32 +147,33 @@ SYSTEM DROP DATABASE REPLICA 'replica_name' [FROM SHARD 'shard_name'] FROM ZKPAT
 类似于 `SYSTEM DROP REPLICA`，但用于在没有数据库可执行 `DROP DATABASE` 时，从 ZooKeeper 中移除 `Replicated` 数据库副本的路径。请注意，它不会移除 `ReplicatedMergeTree` 副本（因此可能还需要执行 `SYSTEM DROP REPLICA`）。分片名称和副本名称是在创建数据库时于 `Replicated` 引擎参数中指定的名称。此外，也可以从 `system.clusters` 中的 `database_shard_name` 和 `database_replica_name` 列获取这些名称。如果缺少 `FROM SHARD` 子句，则 `replica_name` 必须是 `shard_name|replica_name` 格式的完整副本名称。
 
 
-## SYSTEM DROP UNCOMPRESSED CACHE \{#drop-uncompressed-cache\}
+## SYSTEM CLEAR|DROP UNCOMPRESSED CACHE \{#drop-uncompressed-cache\}
 
 清除未压缩数据缓存。  
 未压缩数据缓存可以在查询/USER/配置文件级别通过 [`use_uncompressed_cache`](../../operations/settings/settings.md#use_uncompressed_cache) 设置启用或禁用。  
 其大小可以通过服务器级别的设置 [`uncompressed_cache_size`](../../operations/server-configuration-parameters/settings.md#uncompressed_cache_size) 进行配置。
 
-## SYSTEM DROP COMPILED EXPRESSION CACHE \{#drop-compiled-expression-cache\}
+## SYSTEM CLEAR|DROP COMPILED EXPRESSION CACHE \{#drop-compiled-expression-cache\}
 
 清除编译表达式缓存。
 可以通过查询、用户或配置文件级别的设置 [`compile_expressions`](../../operations/settings/settings.md#compile_expressions) 启用或禁用编译表达式缓存。
 
-## SYSTEM DROP QUERY CONDITION CACHE \{#drop-query-condition-cache\}
+## SYSTEM CLEAR|DROP QUERY CONDITION CACHE \{#drop-query-condition-cache\}
 
 清空查询条件缓存。
 
-## SYSTEM DROP QUERY CACHE \{#drop-query-cache\}
+## SYSTEM CLEAR|DROP QUERY CACHE \{#drop-query-cache\}
 
 ```sql
-SYSTEM DROP QUERY CACHE;
-SYSTEM DROP QUERY CACHE TAG '<tag>'
+SYSTEM CLEAR QUERY CACHE;
+SYSTEM CLEAR QUERY CACHE TAG '<tag>'
 ```
 
 清空[查询缓存](../../operations/query-cache.md)。
 如果指定了标签，则只删除具有该标签的查询缓存项。
 
-## SYSTEM DROP FORMAT SCHEMA CACHE \{#system-drop-schema-format\}
+
+## SYSTEM CLEAR|DROP FORMAT SCHEMA CACHE \{#system-drop-schema-format\}
 
 清除从 [`format_schema_path`](../../operations/server-configuration-parameters/settings.md#format_schema_path) 加载的 schema 缓存。
 
@@ -183,7 +184,7 @@ SYSTEM DROP QUERY CACHE TAG '<tag>'
   注意：如果未指定目标类型，则会清除这两种缓存。
 
 ```sql
-SYSTEM DROP FORMAT SCHEMA CACHE [FOR Protobuf/Files]
+SYSTEM CLEAR|DROP FORMAT SCHEMA CACHE [FOR Protobuf/Files]
 ```
 
 
@@ -673,13 +674,14 @@ SYSTEM RESTORE REPLICA test ON CLUSTER cluster;
 
 用于为所有 `ReplicatedMergeTree` 表重新初始化 Zookeeper 会话状态，会将当前状态与作为权威来源的 Zookeeper 状态进行比较，并在需要时向 Zookeeper 队列添加任务
 
-### SYSTEM DROP FILESYSTEM CACHE \{#drop-filesystem-cache\}
+### SYSTEM CLEAR|DROP FILESYSTEM CACHE \{#drop-filesystem-cache\}
 
 用于清除文件系统缓存。
 
 ```sql
-SYSTEM DROP FILESYSTEM CACHE [ON CLUSTER cluster_name]
+SYSTEM CLEAR FILESYSTEM CACHE [ON CLUSTER cluster_name]
 ```
+
 
 ### SYSTEM SYNC FILE CACHE \{#sync-file-cache\}
 

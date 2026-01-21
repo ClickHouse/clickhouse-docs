@@ -92,29 +92,29 @@ SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 ```
 
 
-## SYSTEM DROP DNS CACHE \{#drop-dns-cache\}
+## SYSTEM CLEAR|DROP DNS CACHE \{#drop-dns-cache\}
 
 Очищает внутренний DNS‑кэш ClickHouse. Иногда, в старых версиях ClickHouse, при изменении инфраструктуры (например, при смене IP‑адреса другого сервера ClickHouse или сервера, используемого словарями) необходимо использовать эту команду.
 
 Для более удобного (автоматического) управления кэшем см. параметры `disable_internal_dns_cache`, `dns_cache_max_entries`, `dns_cache_update_period`.
 
-## SYSTEM DROP MARK CACHE \{#drop-mark-cache\}
+## SYSTEM CLEAR|DROP MARK CACHE \{#drop-mark-cache\}
 
 Очищает кеш меток.
 
-## SYSTEM DROP ICEBERG METADATA CACHE \{#drop-iceberg-metadata-cache\}
+## SYSTEM CLEAR|DROP ICEBERG METADATA CACHE \{#drop-iceberg-metadata-cache\}
 
 Очищает кеш метаданных Iceberg.
 
-## SYSTEM DROP TEXT INDEX CACHES \{#drop-text-index-caches\}
+## SYSTEM CLEAR|DROP TEXT INDEX CACHES \{#drop-text-index-caches\}
 
 Очищает кеш заголовков текстового индекса, кеш словаря и кеш постингов.
 
 Если вы хотите очистить один из этих кешей по отдельности, выполните:
 
-- `SYSTEM DROP TEXT INDEX HEADER CACHE`,
-- `SYSTEM DROP TEXT INDEX DICTIONARY CACHE` или
-- `SYSTEM DROP TEXT INDEX POSTINGS CACHE`
+- `SYSTEM CLEAR TEXT INDEX HEADER CACHE`,
+- `SYSTEM CLEAR TEXT INDEX DICTIONARY CACHE` или
+- `SYSTEM CLEAR TEXT INDEX POSTINGS CACHE`
 
 ## SYSTEM DROP REPLICA \{#drop-replica\}
 
@@ -147,32 +147,33 @@ SYSTEM DROP DATABASE REPLICA 'replica_name' [FROM SHARD 'shard_name'] FROM ZKPAT
 Аналогично `SYSTEM DROP REPLICA`, но удаляет путь реплики базы данных `Replicated` из ZooKeeper, когда нет базы данных, к которой можно применить `DROP DATABASE`. Обратите внимание, что эта команда не удаляет реплики `ReplicatedMergeTree` (поэтому вам также может понадобиться `SYSTEM DROP REPLICA`). Имена сегмента и реплики — это имена, которые были указаны в аргументах движка `Replicated` при создании базы данных. Также эти имена можно получить из столбцов `database_shard_name` и `database_replica_name` в `system.clusters`. Если предложение `FROM SHARD` отсутствует, то `replica_name` должен быть полным именем реплики в формате `shard_name|replica_name`.
 
 
-## SYSTEM DROP UNCOMPRESSED CACHE \{#drop-uncompressed-cache\}
+## SYSTEM CLEAR|DROP UNCOMPRESSED CACHE \{#drop-uncompressed-cache\}
 
 Очищает кэш несжатых данных.
 Кэш несжатых данных включается и отключается с помощью настройки на уровне запроса, USER или профиля [`use_uncompressed_cache`](../../operations/settings/settings.md#use_uncompressed_cache).
 Его размер можно настроить с помощью серверной настройки [`uncompressed_cache_size`](../../operations/server-configuration-parameters/settings.md#uncompressed_cache_size).
 
-## SYSTEM DROP COMPILED EXPRESSION CACHE \{#drop-compiled-expression-cache\}
+## SYSTEM CLEAR|DROP COMPILED EXPRESSION CACHE \{#drop-compiled-expression-cache\}
 
 Очищает кеш скомпилированных выражений.
 Кеш скомпилированных выражений включается и отключается с помощью настройки [`compile_expressions`](../../operations/settings/settings.md#compile_expressions) на уровне запроса, USER или профиля.
 
-## SYSTEM DROP QUERY CONDITION CACHE \{#drop-query-condition-cache\}
+## SYSTEM CLEAR|DROP QUERY CONDITION CACHE \{#drop-query-condition-cache\}
 
 Очищает кеш условий запроса.
 
-## SYSTEM DROP QUERY CACHE \{#drop-query-cache\}
+## SYSTEM CLEAR|DROP QUERY CACHE \{#drop-query-cache\}
 
 ```sql
-SYSTEM DROP QUERY CACHE;
-SYSTEM DROP QUERY CACHE TAG '<tag>'
+SYSTEM CLEAR QUERY CACHE;
+SYSTEM CLEAR QUERY CACHE TAG '<tag>'
 ```
 
 Очищает [кеш запросов](../../operations/query-cache.md).
 Если указан тег, удаляются только записи кеша запросов, помеченные этим тегом.
 
-## SYSTEM DROP FORMAT SCHEMA CACHE \{#system-drop-schema-format\}
+
+## SYSTEM CLEAR|DROP FORMAT SCHEMA CACHE \{#system-drop-schema-format\}
 
 Очищает кэш для схем, загруженных из [`format_schema_path`](../../operations/server-configuration-parameters/settings.md#format_schema_path).
 
@@ -183,7 +184,7 @@ SYSTEM DROP QUERY CACHE TAG '<tag>'
   Примечание: если вариант не указан, оба кэша очищаются.
 
 ```sql
-SYSTEM DROP FORMAT SCHEMA CACHE [FOR Protobuf/Files]
+SYSTEM CLEAR|DROP FORMAT SCHEMA CACHE [FOR Protobuf/Files]
 ```
 
 
@@ -674,13 +675,14 @@ SYSTEM RESTORE REPLICA test ON CLUSTER cluster;
 
 Позволяет переинициализировать состояние сессий ZooKeeper для всех таблиц `ReplicatedMergeTree`, сравнивает текущее состояние с ZooKeeper как источником истины и при необходимости добавляет задания в очередь ZooKeeper.
 
-### SYSTEM DROP FILESYSTEM CACHE \{#drop-filesystem-cache\}
+### SYSTEM CLEAR|DROP FILESYSTEM CACHE \{#drop-filesystem-cache\}
 
 Позволяет сбросить кеш файловой системы.
 
 ```sql
-SYSTEM DROP FILESYSTEM CACHE [ON CLUSTER cluster_name]
+SYSTEM CLEAR FILESYSTEM CACHE [ON CLUSTER cluster_name]
 ```
+
 
 ### SYSTEM SYNC FILE CACHE \{#sync-file-cache\}
 

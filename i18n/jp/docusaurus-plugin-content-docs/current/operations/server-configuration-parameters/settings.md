@@ -1560,7 +1560,7 @@ ClickHouse の HTTP(s) サーバーにアクセスしたときに、デフォル
 
 ## iceberg_catalog_threadpool_queue_size \{#iceberg_catalog_threadpool_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />Iceberg カタログプールにおいてキューに投入可能なタスクの数
+<SettingsInfoBlock type="UInt64" default_value="10000" />Iceberg カタログプールにおいてキューに投入可能なタスクの数
 
 ## iceberg_metadata_files_cache_max_entries \{#iceberg_metadata_files_cache_max_entries\}
 
@@ -1983,7 +1983,7 @@ listen ソケットのバックログ（保留中接続キューのサイズ）�
 
 ## load_marks_threadpool_queue_size \{#load_marks_threadpool_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />prefetch プールに投入できるタスクの数
+<SettingsInfoBlock type="UInt64" default_value="10000" />prefetch プールに投入できるタスクの数
 
 ## logger \{#logger\}
 
@@ -3486,7 +3486,7 @@ PostgreSQL プロトコルでクライアントと通信するためのポート
 
 ## prefetch_threadpool_queue_size \{#prefetch_threadpool_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />prefetch 用プールに投入できるタスクの最大数
+<SettingsInfoBlock type="UInt64" default_value="10000" />prefetch 用プールに投入できるタスクの最大数
 
 ## prefixes_deserialization_thread_pool_thread_pool_queue_size \{#prefixes_deserialization_thread_pool_thread_pool_queue_size\}
 
@@ -4506,7 +4506,7 @@ true に設定すると、ユーザーが特定のエンジンを使ってテー
 
 ## threadpool_local_fs_reader_queue_size \{#threadpool_local_fs_reader_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />ローカルファイルシステムからの読み取りのためにスレッドプール上でスケジュールできるタスクの最大数。
+<SettingsInfoBlock type="UInt64" default_value="10000" />ローカルファイルシステムからの読み取りのためにスレッドプール上でスケジュールできるタスクの最大数。
 
 ## threadpool_remote_fs_reader_pool_size \{#threadpool_remote_fs_reader_pool_size\}
 
@@ -4514,7 +4514,7 @@ true に設定すると、ユーザーが特定のエンジンを使ってテー
 
 ## threadpool_remote_fs_reader_queue_size \{#threadpool_remote_fs_reader_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />リモートファイルシステムからの読み取りのためにスレッドプールにスケジュールできるジョブの最大数。
+<SettingsInfoBlock type="UInt64" default_value="10000" />リモートファイルシステムからの読み取りのためにスレッドプールにスケジュールできるジョブの最大数。
 
 ## threadpool_writer_pool_size \{#threadpool_writer_pool_size\}
 
@@ -4522,7 +4522,7 @@ true に設定すると、ユーザーが特定のエンジンを使ってテー
 
 ## threadpool_writer_queue_size \{#threadpool_writer_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />オブジェクトストレージへの書き込みリクエスト用のバックグラウンドプールに投入できるタスクの最大数
+<SettingsInfoBlock type="UInt64" default_value="10000" />オブジェクトストレージへの書き込みリクエスト用のバックグラウンドプールに投入できるタスクの最大数
 
 ## throw_on_unknown_workload \{#throw_on_unknown_workload\}
 

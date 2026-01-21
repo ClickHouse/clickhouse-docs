@@ -8344,12 +8344,6 @@ SELECT * FROM test2;
 
 - [ORDER BY 子句](/sql-reference/statements/select/order-by#optimization-of-data-reading)
 
-## optimize_read_in_window_order \{#optimize_read_in_window_order\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-启用窗口子句中的 ORDER BY 优化，以便在 MergeTree 表中按对应顺序读取数据。
-
 ## optimize_redundant_functions_in_order_by \{#optimize_redundant_functions_in_order_by\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

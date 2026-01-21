@@ -13,6 +13,10 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />
 
+:::tip
+查看我们的 [Managed Postgres](/docs/cloud/managed-postgres) 服务。该服务基于与计算节点物理同机部署的 NVMe 存储，相比使用 EBS 等网络附加存储的替代方案，对于受磁盘 I/O 限制的工作负载可提供高达 10 倍的性能提升，并允许你通过 ClickPipes 中的 Postgres CDC（变更数据捕获）连接器将 Postgres 数据复制到 ClickHouse。
+:::
+
 ClickHouse 支持 PostgreSQL 线协议，这使你可以使用 PostgreSQL 客户端连接到 ClickHouse。在某种意义上，ClickHouse 可以充当一个 PostgreSQL 实例——从而允许你将 PostgreSQL 客户端应用程序连接到 ClickHouse，即便该应用程序本身并不直接支持 ClickHouse（例如 Amazon Redshift）。
 
 要启用 PostgreSQL 线协议，请在服务器的配置文件中添加 [postgresql&#95;port](/operations/server-configuration-parameters/settings#postgresql_port) 设置。例如，你可以在 `config.d` 目录中新建一个 XML 文件来定义该端口：

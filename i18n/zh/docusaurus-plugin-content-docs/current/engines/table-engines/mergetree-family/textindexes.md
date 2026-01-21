@@ -120,6 +120,24 @@ SELECT tokens('abc def', 'ngrams', 3);
 此外，预处理器表达式只能引用其上定义了该文本索引的列。
 不允许使用非确定性函数。
 
+预处理器也可以用于 [Array(String)](/sql-reference/data-types/array.md) 和 [Array(FixedString)](/sql-reference/data-types/array.md) 列。
+在这种情况下，预处理器表达式会对数组中的每个元素分别进行转换。
+
+示例：
+
+```sql
+CREATE TABLE tab
+(
+    col Array(String),
+    INDEX idx col TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))
+
+    -- This is not legal:
+    INDEX idx_illegal col TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = arraySort(col))
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+```
+
 函数 [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken)、[hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens) 和 [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) 会在对搜索词进行分词之前，先通过预处理器对其进行转换。
 
 例如，
@@ -156,6 +174,7 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
 但与其他跳过索引（skipping index）不同，文本索引具有“无限粒度”，即文本索引是为整个数据分片（part）创建的，显式指定的索引粒度会被忽略。
 该取值是通过经验选取的，在大多数使用场景下在速度和索引大小之间取得了良好的平衡。
 高级用户可以指定不同的索引粒度（我们不推荐这样做）。
+
 
 <details markdown="1">
   <summary>可选高级参数</summary>

@@ -120,6 +120,24 @@ SELECT tokens('abc def', 'ngrams', 3);
 また、`preprocessor` 式は、そのテキストインデックスが定義されているカラムのみを参照しなければなりません。
 非決定的な関数を使用することはできません。
 
+`preprocessor` は [Array(String)](/sql-reference/data-types/array.md) および [Array(FixedString)](/sql-reference/data-types/array.md) カラムでも使用できます。
+この場合、`preprocessor` 式は配列要素を個別に変換します。
+
+例:
+
+```sql
+CREATE TABLE tab
+(
+    col Array(String),
+    INDEX idx col TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))
+
+    -- This is not legal:
+    INDEX idx_illegal col TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = arraySort(col))
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+```
+
 [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken)、[hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)、[hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) 関数は、検索語をトークン化する前に `preprocessor` を使って検索語を変換します。
 
 例:
@@ -137,7 +155,7 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasToken(str, 'Foo');
 ```
 
-と同等になります:
+と同等です:
 
 ```sql
 CREATE TABLE tab
@@ -156,6 +174,7 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
 ただし、他のスキップ索引と異なり、テキスト索引は実質的に無限の粒度を持ちます。つまり、テキスト索引はパーツ全体に対して作成され、明示的に指定された索引粒度は無視されます。
 この既定値は経験的に選択されたもので、ほとんどのユースケースで速度と索引サイズの間の良好なトレードオフを提供します。
 上級ユーザーは別の索引粒度を指定できますが、推奨はしません。
+
 
 <details markdown="1">
   <summary>オプションの高度なパラメータ</summary>
