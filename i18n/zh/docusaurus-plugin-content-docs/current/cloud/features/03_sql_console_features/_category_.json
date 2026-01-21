@@ -1,5 +1,6 @@
 {
   "label": "SQL 控制台",
+  "key": "features-sql-console",
   "collapsible": true,
   "collapsed": true
 }
