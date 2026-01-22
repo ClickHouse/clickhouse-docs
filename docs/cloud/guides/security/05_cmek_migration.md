@@ -15,7 +15,6 @@ OpenAPI and Terraform are both supported for this new process. For more informat
 Customers utilizing CMEK v1 must migrate services no later than June 1st, 2026. After this date customer managed keys will be rotated to ClickHouse managed keys by default. Customers may rotate back to customer managed keys after the default migration.
 :::
 
-
 ## Manual migration {#manual-migration}
 
 Complete the following steps to migrate to the new process:
