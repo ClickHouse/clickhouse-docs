@@ -24,7 +24,6 @@ import replicatedTables from '@site/static/images/managed-postgres/replicated-ta
 Managed Postgres is now available in ClickHouse Cloud in Private Preview! Get started in minutes by clicking [here](https://clickhouse.com/cloud/postgres).
 :::
 
-
 ClickHouse Managed Postgres is enterprise-grade Postgres backed by NVMe storage, delivering up to 10x faster performance for disk-bound workloads compared to network-attached storage like EBS. This quickstart is divided into two parts:
 
 - **Part 1:** Get started with NVMe Postgres and experience its performance
