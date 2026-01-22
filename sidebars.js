@@ -337,6 +337,7 @@ const sidebars = {
           'cloud/managed-postgres/overview',
           'cloud/managed-postgres/quickstart',
           'cloud/managed-postgres/connection',
+          'cloud/managed-postgres/clickhouse-integration',
           'cloud/managed-postgres/high-availability',
           'cloud/managed-postgres/read-replicas',
           'cloud/managed-postgres/backup-and-restore',
