@@ -69,7 +69,7 @@ Connect to your PlanetScale Postgres instance using the default `postgres.<...>`
 3. Grant replication privileges to the user:
 
     ```sql
-    GRANT rds_replication TO clickpipes_user;
+    ALTER USER clickpipes_user WITH REPLICATION;
     ```
 
 4. Create a [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) with the tables you want to replicate. We strongly recommend only including the tables you need in the publication to avoid performance overhead.
