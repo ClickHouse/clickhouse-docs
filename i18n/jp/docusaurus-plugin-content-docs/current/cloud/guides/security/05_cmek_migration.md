@@ -11,6 +11,10 @@ ClickHouse では、Customer Managed Encryption Keys（CMEK）サービスのセ
 
 この新しいプロセスは、OpenAPI と Terraform の両方でサポートされています。詳細については、ドキュメント（[強化された暗号化](/docs/cloud/security/cmek)、[Cloud API](/docs/cloud/manage/api/api-overview)、[公式 Terraform Provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs)）を参照してください。
 
+:::warning
+CMEK v1 を利用しているお客様は、2026 年 6 月 1 日までにサービスの移行を完了する必要があります。この日以降は、カスタマー管理キーはデフォルトで ClickHouse 管理キーにローテーションされます。デフォルトの移行完了後に、再度カスタマー管理キーへローテーションすることもできます。
+:::
+
 ## 手動での移行 \{#manual-migration\}
 
 新しいプロセスに移行するには、次の手順を実行します。

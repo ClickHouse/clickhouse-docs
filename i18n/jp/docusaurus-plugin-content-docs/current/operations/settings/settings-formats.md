@@ -37,11 +37,25 @@ TSV/CSV/Vertical/Pretty フォーマットで、真のブール値を表す文�
 
 ## check_conversion_from_numbers_to_enum \{#check_conversion_from_numbers_to_enum\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
 Numbers から Enum への変換時に、その値が Enum に存在しない場合は例外を送出します。
 
-デフォルトでは無効です。
+取り得る値:
+
+* 0 — 無効。
+* 1 — 有効。
+
+**例**
+
+```text
+CREATE TABLE tab (
+  val Enum('first' = 1, 'second' = 2, 'third' = 3)
+) ENGINE = Memory;
+
+INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -- returns an error
+```
+
 
 ## column_names_for_schema_inference \{#column_names_for_schema_inference\}
 

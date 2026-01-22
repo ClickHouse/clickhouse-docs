@@ -83,7 +83,7 @@ SHOW  wal_level;
 3. ユーザーにレプリケーション権限を付与します:
 
    ```sql
-   ALTER ROLE clickpipes_user REPLICATION;
+   ALTER USER clickpipes_user WITH REPLICATION;
    ```
 
 4. レプリケーションしたいテーブルを含む [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) を作成します。パフォーマンスのオーバーヘッドを抑えるため、publication には必要なテーブルのみを含めることを強く推奨します。

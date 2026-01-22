@@ -83,7 +83,7 @@ SHOW  wal_level;
 3. Предоставьте этому пользователю права для управления репликацией:
 
    ```sql
-   ALTER ROLE clickpipes_user REPLICATION;
+   ALTER USER clickpipes_user WITH REPLICATION;
    ```
 
 4. Создайте [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) с таблицами, которые вы хотите реплицировать. Настоятельно рекомендуется включать в publication только необходимые таблицы, чтобы избежать лишней нагрузки на производительность.

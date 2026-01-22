@@ -493,6 +493,16 @@ MaterializedPostgreSQL テーブルエンジンの使用を許可します。こ
 
 自然言語処理向けの実験的関数を有効にします。
 
+## allow_experimental_nullable_tuple_type \{#allow_experimental_nullable_tuple_type\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "New experimental setting"}]}]}/>
+
+テーブルの [Nullable](../../sql-reference/data-types/nullable) [Tuple](../../sql-reference/data-types/tuple.md) カラムの作成を許可します。
+
 ## allow_experimental_object_storage_queue_hive_partitioning \{#allow_experimental_object_storage_queue_hive_partitioning\}
 
 <ExperimentalBadge/>

@@ -37,11 +37,25 @@ import VersionHistory from '@theme/VersionHistory/VersionHistory';
 
 ## check_conversion_from_numbers_to_enum \{#check_conversion_from_numbers_to_enum\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
 在将 Numbers 转换为 Enum 类型时，如果对应的值在 Enum 中不存在，则抛出异常。
 
-默认情况下禁用。
+可能的取值：
+
+* 0 — 禁用。
+* 1 — 启用。
+
+**示例**
+
+```text
+CREATE TABLE tab (
+  val Enum('first' = 1, 'second' = 2, 'third' = 3)
+) ENGINE = Memory;
+
+INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -- returns an error
+```
+
 
 ## column_names_for_schema_inference \{#column_names_for_schema_inference\}
 
