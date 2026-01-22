@@ -1771,7 +1771,7 @@ const sidebars = {
         },
         {
           type: 'category',
-          label: 'Integration quick start',
+          label: 'Integration quickstarts',
           link: {
             type: 'doc',
             id: 'use-cases/observability/clickstack/integration-examples/index',
