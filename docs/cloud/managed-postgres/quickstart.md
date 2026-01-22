@@ -20,6 +20,10 @@ import analyticsList from '@site/static/images/managed-postgres/analytics-list.p
 import replicatedTables from '@site/static/images/managed-postgres/replicated-tables.png';
 
 # Quickstart for Managed Postgres
+:::tip Now available!
+Managed Postgres is now available in ClickHouse Cloud in Private Preview! Get started in minutes by clicking [here](https://clickhouse.com/cloud/postgres).
+:::
+
 
 ClickHouse Managed Postgres is enterprise-grade Postgres backed by NVMe storage, delivering up to 10x faster performance for disk-bound workloads compared to network-attached storage like EBS. This quickstart is divided into two parts:
 
@@ -27,8 +31,6 @@ ClickHouse Managed Postgres is enterprise-grade Postgres backed by NVMe storage,
 - **Part 2:** Unlock real-time analytics by integrating with ClickHouse
 
 Managed Postgres is currently available on AWS in several regions and is free during private preview.
-
-<PrivatePreviewBadge/>
 
 **In this quickstart, you will:**
 - Create a Managed Postgres instance with NVMe-powered performance
@@ -243,7 +245,7 @@ This section shows you how to replicate your Postgres data to ClickHouse and que
 Now that we have tables and data in Postgres, let's replicate the tables to ClickHouse for analytics. We start by clicking on **ClickHouse integration** in the sidebar. Then you can click on **Replicate data in ClickHouse**.
 <Image img={integrationLanding} alt="Managed Postgres integration empty" size="md" border/>
 In the form that follows, you can enter a name for your integration and select an existing ClickHouse instance to replicate to. If you don't have a ClickHouse instance yet, you can create one directly from this form.
-:::warning Important
+:::info Important
 Make sure the ClickHouse service you select is Running before proceeding.
 :::
 <Image img={postgresAnalyticsForm} alt="Managed Postgres integration form" size="md" border/>
