@@ -20,7 +20,7 @@ import analyticsList from '@site/static/images/managed-postgres/analytics-list.p
 import replicatedTables from '@site/static/images/managed-postgres/replicated-tables.png';
 
 # Quickstart for Managed Postgres
-:::tip Now available!
+:::tip Now available
 Managed Postgres is now available in ClickHouse Cloud in Private Preview! Get started in minutes by clicking [here](https://clickhouse.com/cloud/postgres).
 :::
 
