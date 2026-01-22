@@ -23,7 +23,7 @@ doc_type: 'reference'
 tuple(T1, T2, ...)
 ```
 
-Пример создания tuple:
+Пример создания кортежа:
 
 ```sql
 SELECT tuple(1, 'a') AS x, toTypeName(x)
@@ -181,4 +181,39 @@ ORDER BY key ASC;
 │   1 │            42 │                                    70 │
 │   2 │             2 │                                     0 │
 └─────┴───────────────┴───────────────────────────────────────┘
+```
+
+## Nullable(Tuple(T1, T2, ...)) \{#nullable-tuple\}
+
+:::warning Экспериментальная возможность
+Требуется `SET allow_experimental_nullable_tuple_type = 1`
+Это экспериментальная возможность, и она может измениться в будущих версиях.
+:::
+
+Позволяет всему кортежу быть `NULL` в отличие от `Tuple(Nullable(T1), Nullable(T2), ...)`, где `NULL` могут быть только отдельные элементы.
+
+| Тип                                        | Кортеж может быть NULL | Элементы могут быть NULL |
+| ------------------------------------------ | ---------------------- | ------------------------ |
+| `Nullable(Tuple(String, Int64))`           | ✅                      | ❌                        |
+| `Tuple(Nullable(String), Nullable(Int64))` | ❌                      | ✅                        |
+
+Пример:
+
+```sql
+SET allow_experimental_nullable_tuple_type = 1;
+
+CREATE TABLE test (
+    id UInt32,
+    data Nullable(Tuple(String, Int64))
+) ENGINE = Memory;
+
+INSERT INTO test VALUES (1, ('hello', 42)), (2, NULL);
+
+SELECT * FROM test WHERE data IS NULL;
+```
+
+```txt
+ ┌─id─┬─data─┐
+ │  2 │ ᴺᵁᴸᴸ │
+ └────┴──────┘
 ```

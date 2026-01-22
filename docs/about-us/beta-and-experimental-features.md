@@ -127,6 +127,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [wait_for_window_view_fire_signal_timeout](/operations/settings/settings#wait_for_window_view_fire_signal_timeout) | `10` |
 | [stop_refreshable_materialized_views_on_startup](/operations/settings/settings#stop_refreshable_materialized_views_on_startup) | `0` |
 | [allow_experimental_database_materialized_postgresql](/operations/settings/settings#allow_experimental_database_materialized_postgresql) | `0` |
+| [allow_experimental_nullable_tuple_type](/operations/settings/settings#allow_experimental_nullable_tuple_type) | `0` |
 | [allow_experimental_query_deduplication](/operations/settings/settings#allow_experimental_query_deduplication) | `0` |
 | [allow_experimental_database_hms_catalog](/operations/settings/settings#allow_experimental_database_hms_catalog) | `0` |
 | [allow_experimental_kusto_dialect](/operations/settings/settings#allow_experimental_kusto_dialect) | `0` |
