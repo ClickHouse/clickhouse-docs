@@ -29,4 +29,5 @@ Several of these integration guides use ClickStack's built-in OpenTelemetry Coll
 | [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | Monitor Postgres performance |
 | [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Collect Redis server logs |
 | [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Monitor Redis performance |
+| [Systemd Logs](/use-cases/observability/clickstack/integrations/systemd-logs) | Collect Systemd/Journald logs |
 | [Temporal Metrics](/use-cases/observability/clickstack/integrations/temporal-metrics)| Monitor Temporal Cloud Metrics |
