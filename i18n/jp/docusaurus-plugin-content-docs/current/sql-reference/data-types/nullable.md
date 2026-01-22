@@ -11,7 +11,18 @@ doc_type: 'reference'
 
 `T` で許可されている通常の値に加えて、「値が存在しない」ことを示す特別なマーカー（[NULL](../../sql-reference/syntax.md)）を保存できます。例えば、`Nullable(Int8)` 型のカラムには `Int8` 型の値を保存でき、値を持たない行には `NULL` が保存されます。
 
-`T` としては、複合データ型である [Array](../../sql-reference/data-types/array.md)、[Map](../../sql-reference/data-types/map.md)、[Tuple](../../sql-reference/data-types/tuple.md) のいずれも指定できませんが、複合データ型の要素として `Nullable` 型の値を含めることはできます（例: `Array(Nullable(Int8))`）。
+`T` として、次の複合データ型を指定することはできません。
+
+- [Array](../../sql-reference/data-types/array.md) — サポートされていません
+- [Map](../../sql-reference/data-types/map.md) — サポートされていません
+- [Tuple](../../sql-reference/data-types/tuple.md) — 実験的サポートが利用可能*
+
+しかし、複合データ型の要素として `Nullable` 型の値を含めることはできます。例えば、`Array(Nullable(Int8))` や `Tuple(Nullable(String), Nullable(Int64))` などです。
+
+:::note 実験的機能: Nullable タプル
+
+* [Nullable(Tuple(...))](../../sql-reference/data-types/tuple.md#nullable-tuple) は、`allow_experimental_nullable_tuple_type = 1` が有効になっている場合にサポートされます。
+:::
 
 `Nullable` 型のフィールドはテーブルのインデックスに含めることはできません。
 
@@ -21,7 +32,7 @@ ClickHouse サーバーの設定で別途指定しない限り、任意の `Null
 
 テーブル列に `Nullable` 型の値を格納するために、ClickHouse は値を格納する通常のファイルとは別に、`NULL` マスクを含むファイルを使用します。マスクファイル内のエントリによって、ClickHouse は各テーブル行について、`NULL` と、そのデータ型に対応するデフォルト値とを区別できます。追加のファイルが必要になるため、`Nullable` 列は、同等の通常列と比較して、より多くのストレージ容量を消費します。
 
-:::note    
+:::note
 `Nullable` の使用は、ほとんど常にパフォーマンスを低下させます。この点を念頭に置いてデータベースを設計してください。
 :::
 
@@ -51,6 +62,7 @@ SELECT n.null FROM nullable;
 │      1 │
 └────────┘
 ```
+
 
 ## 使用例 \{#usage-example\}
 
