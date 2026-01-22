@@ -37,11 +37,25 @@ import VersionHistory from '@theme/VersionHistory/VersionHistory';
 
 ## check_conversion_from_numbers_to_enum \{#check_conversion_from_numbers_to_enum\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
 Генерировать исключение при преобразовании Numbers в Enum, если значение отсутствует в Enum.
 
-По умолчанию отключено.
+Возможные значения:
+
+* 0 — Отключено.
+* 1 — Включено.
+
+**Пример**
+
+```text
+CREATE TABLE tab (
+  val Enum('first' = 1, 'second' = 2, 'third' = 3)
+) ENGINE = Memory;
+
+INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -- returns an error
+```
+
 
 ## column_names_for_schema_inference \{#column_names_for_schema_inference\}
 

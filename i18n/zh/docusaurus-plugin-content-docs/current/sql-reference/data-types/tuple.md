@@ -63,6 +63,7 @@ SELECT (1, 'a') AS x, (today(), rand(), 'someString') AS y, ('a') AS not_a_tuple
 └─────────┴────────────────────────────────────────┴─────────────┘
 ```
 
+
 ## 数据类型检测 \{#data-type-detection\}
 
 在动态创建 tuple 时，ClickHouse 会将 tuple 参数的类型推断为能够容纳给定参数值的最小类型。 如果该值为 [NULL](/operations/settings/formats#input_format_null_as_default)，则推断出的类型为 [Nullable](../../sql-reference/data-types/nullable.md)。
@@ -78,6 +79,7 @@ SELECT tuple(1, NULL) AS x, toTypeName(x)
 │ (1, NULL) │ Tuple(UInt8, Nullable(Nothing)) │
 └───────────┴─────────────────────────────────┘
 ```
+
 
 ## 引用 Tuple 元素 \{#referring-to-tuple-elements\}
 
@@ -104,6 +106,7 @@ SELECT a.2 FROM named_tuples; -- by index
 │                -10 │
 └────────────────────┘
 ```
+
 
 ## 使用 Tuple 的比较操作 \{#comparison-operations-with-tuple\}
 
@@ -181,4 +184,40 @@ ORDER BY key ASC;
 │   1 │            42 │                                    70 │
 │   2 │             2 │                                     0 │
 └─────┴───────────────┴───────────────────────────────────────┘
+```
+
+
+## Nullable(Tuple(T1, T2, ...)) \{#nullable-tuple\}
+
+:::warning 实验性功能
+需要 `SET allow_experimental_nullable_tuple_type = 1`
+这是一个实验性功能，在未来版本中可能会发生变化。
+:::
+
+允许整个元组为 `NULL`，而不是像 `Tuple(Nullable(T1), Nullable(T2), ...)` 那样只有各个元素本身可以为 `NULL`。
+
+| Type                                       | 元组是否可以为 NULL | 元素是否可以为 NULL |
+| ------------------------------------------ | ------------ | ------------ |
+| `Nullable(Tuple(String, Int64))`           | ✅            | ❌            |
+| `Tuple(Nullable(String), Nullable(Int64))` | ❌            | ✅            |
+
+示例：
+
+```sql
+SET allow_experimental_nullable_tuple_type = 1;
+
+CREATE TABLE test (
+    id UInt32,
+    data Nullable(Tuple(String, Int64))
+) ENGINE = Memory;
+
+INSERT INTO test VALUES (1, ('hello', 42)), (2, NULL);
+
+SELECT * FROM test WHERE data IS NULL;
+```
+
+```txt
+ ┌─id─┬─data─┐
+ │  2 │ ᴺᵁᴸᴸ │
+ └────┴──────┘
 ```
