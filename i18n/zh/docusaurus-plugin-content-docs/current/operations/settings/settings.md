@@ -493,6 +493,16 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 启用自然语言处理相关的实验性函数。
 
+## allow_experimental_nullable_tuple_type \{#allow_experimental_nullable_tuple_type\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "新的实验性设置"}]}]}/>
+
+允许在表中创建 [Nullable](../../sql-reference/data-types/nullable) [Tuple](../../sql-reference/data-types/tuple.md) 类型的列。
+
 ## allow_experimental_object_storage_queue_hive_partitioning \{#allow_experimental_object_storage_queue_hive_partitioning\}
 
 <ExperimentalBadge/>
