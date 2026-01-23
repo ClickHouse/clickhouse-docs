@@ -23,7 +23,10 @@ This guide provides step-by-step instructions on how to migrate your PostgreSQL 
 ## Prerequisites {#migration-logical-replication-prerequisites}
 - Access to your source PostgreSQL database.
 - `psql`,`pg_dump` and `pg_restore` installed on your local machine. This is for creating empty tables in your target database. These are typically included with PostgreSQL installations. If not, you can download them from the [PostgreSQL official website](https://www.postgresql.org/download/).
-- Your source database must be reachable from ClickHouse Managed Postgres. Ensure that any necessary firewall rules or security group settings allow for this connectivity.
+- Your source database must be reachable from ClickHouse Managed Postgres. Ensure that any necessary firewall rules or security group settings allow for this connectivity. You can get the egress IP of your Managed Postgres instance by doing:
+```shell
+dig +short <your-managed-postgres-hostname>
+```
 
 ## The setup {#migration-logical-replication-setup}
 For logical replication to work, we need to ensure that the source database is set up correctly. Here are the key requirements:
