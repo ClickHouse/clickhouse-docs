@@ -13,7 +13,7 @@ import postgresParameters from '@site/static/images/managed-postgres/postgres-pa
 import serviceActions from '@site/static/images/managed-postgres/service-actions.png';
 import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
-<PrivatePreviewBadge/>
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="settings" />
 
 You can modify configuration parameters and manage instance settings for your Managed Postgres instance through the **Settings** tab in the sidebar.
 
