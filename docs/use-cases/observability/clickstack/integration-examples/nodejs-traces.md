@@ -27,7 +27,7 @@ This guide shows you how to capture distributed traces from your Node.js applica
 - Install and configure OpenTelemetry for Node.js with automatic instrumentation
 - Send traces to ClickStack's OTLP endpoint
 - Verify traces are appearing in HyperDX
-- Use a pre-built dashboard to visualize application performance (request latency, error rates, endpoint throughput)
+- Use a pre-built dashboard to visualize application performance
 
 A demo dataset with sample traces is available if you want to test the integration before instrumenting your production application.
 
@@ -205,7 +205,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 If you don't have ClickStack running yet, start it with:
 
 ```bash
-docker run --name -d clickstack-demo \
+docker run -d --name clickstack-demo \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
   clickhouse/clickstack-all-in-one:latest
 ```
@@ -339,3 +339,9 @@ Now that you have traces flowing from your Node.js application, consider:
 - **Set up alerts**: Create alerts for high error rates or latency spikes
 - **Custom instrumentation**: Add manual spans for business-critical operations
 - **Trace sampling**: For high-traffic applications, configure sampling strategies to reduce data volume
+
+## Going to production {#going-to-production}
+
+This guide uses the HyperDX SDK which sends traces directly to ClickStack's OTLP endpoint. This works well for development, testing, and small-to-medium production deployments.
+For larger production environments or if you need additional control over telemetry data, consider deploying your own OpenTelemetry Collector as an agent. 
+See [Ingesting with OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/opentelemetry) for production deployment patterns and collector configuration examples.
