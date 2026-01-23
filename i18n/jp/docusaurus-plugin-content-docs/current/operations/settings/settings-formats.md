@@ -1377,6 +1377,13 @@ INTO OUTFILE を使用する際に、存在しない親ディレクトリを自�
 
 有効にすると、JSON キー内に含まれるドットは、解析時にエスケープされます。
 
+## max_dynamic_subcolumns_in_json_type_parsing \{#max_dynamic_subcolumns_in_json_type_parsing\}
+
+<SettingsInfoBlock type="UInt64Auto" default_value="auto" />
+
+JSON カラムのパース時に、各カラムで作成できる動的サブカラムの最大数です。
+データ型で指定された動的パラメータに依存せず、パース時に作成される動的サブカラムの数を制御できます。
+
 ## output_format_arrow_compression_method \{#output_format_arrow_compression_method\}
 
 <SettingsInfoBlock type="ArrowCompression" default_value="lz4_frame" />

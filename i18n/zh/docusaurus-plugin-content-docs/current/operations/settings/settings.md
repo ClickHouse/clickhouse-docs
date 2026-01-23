@@ -2167,6 +2167,14 @@ SETTINGS convert_query_to_cnf = true;
 - 0 — 查询将以延迟方式执行。
 - 1 — 查询将同步执行（无延迟）。
 
+## database_datalake_require_metadata_access \{#database_datalake_require_metadata_access\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "New setting."}]}]}/>
+
+在使用 DataLakeCatalog 数据库引擎时，如果没有获取表元数据的权限，指定是否抛出错误。
+
 ## database_replicated_allow_explicit_uuid \{#database_replicated_allow_explicit_uuid\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />

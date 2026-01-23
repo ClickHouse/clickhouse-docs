@@ -2169,6 +2169,14 @@ WHERE 句に結合条件がある場合、カンマ結合 / CROSS JOIN の代わ
 - 0 — クエリは遅延を伴って実行されます。
 - 1 — クエリは遅延なく実行されます。
 
+## database_datalake_require_metadata_access \{#database_datalake_require_metadata_access\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "新しい設定。"}]}]}/>
+
+データベースエンジン DataLakeCatalog でテーブルのメタデータを取得する権限がない場合に、エラーをスローするかどうかを制御します。
+
 ## database_replicated_allow_explicit_uuid \{#database_replicated_allow_explicit_uuid\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />

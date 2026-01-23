@@ -599,6 +599,7 @@ ClickHouse 每隔 x 秒重新加载内置字典，这样就可以在无需重启
 
 - `round_robin` — 每个 `use_concurrency_control` = 1 的查询最多分配 `max_threads` 个 CPU 插槽，每个线程一个插槽。当发生竞争时，CPU 插槽会以轮询方式分配给各个查询。注意，第一个插槽是无条件授予的，这可能会导致不公平，并在存在大量 `max_threads` = 1 的查询时，增加具有较大 `max_threads` 的查询的延迟。
 - `fair_round_robin` — 每个 `use_concurrency_control` = 1 的查询最多分配 `max_threads - 1` 个 CPU 插槽。这是 `round_robin` 的一种变体，它不为每个查询的第一个线程分配 CPU 插槽。这样，`max_threads` = 1 的查询不需要任何插槽，也就无法不公平地独占所有插槽。不会无条件授予任何插槽。
+- `max_min_fair` — 每个 `use_concurrency_control` = 1 的查询最多分配 `max_threads - 1` 个 CPU 插槽。类似于 `fair_round_robin`，但释放的插槽总是优先授予当前已分配插槽数最少的查询。在高超售（oversubscription）场景下（即许多查询争抢有限 CPU 插槽）可以提供更好的公平性。短时运行的查询不会因长时间运行且随着时间累积了更多插槽的查询而受到惩罚。
 
 ## concurrent_threads_soft_limit_num \{#concurrent_threads_soft_limit_num\}
 
@@ -643,12 +644,12 @@ ClickHouse 重新加载配置并检查新变更的时间间隔
 
 ## cpu_slot_preemption \{#cpu_slot_preemption\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
 定义如何对 CPU 资源（MASTER THREAD 和 WORKER THREAD）进行工作负载调度。
 
-* 当为 `true`（推荐）时，核算基于实际消耗的 CPU 时间。会为相互竞争的工作负载分配公平的 CPU 时间。Slot（槽位）会在有限时间内被分配，到期后需要重新请求。在 CPU 资源过载的情况下，请求 slot 可能会阻塞线程执行，即可能发生抢占，从而确保 CPU 时间使用的公平性。
-* 当为 `false`（默认）时，核算基于分配的 CPU slot 数量。会为相互竞争的工作负载分配公平数量的 CPU slot。线程启动时分配一个 slot，在线程执行期间持续持有，并在线程结束执行时释放。为查询执行分配的线程数量只能从 1 增加到 `max_threads`，且不会减少。对此长时间运行的查询更有利，但可能导致短查询出现 CPU 资源饥饿。
+* 当为 `true`（默认）时，核算基于实际消耗的 CPU 时间。会为相互竞争的工作负载分配公平的 CPU 时间。Slot（槽位）会在有限时间内被分配，到期后需要重新请求。在 CPU 资源过载的情况下，请求 slot 可能会阻塞线程执行，即可能发生抢占，从而确保 CPU 时间使用的公平性。
+* 当为 `false` 时，核算基于分配的 CPU slot 数量。会为相互竞争的工作负载分配公平数量的 CPU slot。线程启动时分配一个 slot，在线程执行期间持续持有，并在线程结束执行时释放。为查询执行分配的线程数量只能从 1 增加到 `max_threads`，且不会减少。对此长时间运行的查询更有利，但可能导致短查询出现 CPU 资源饥饿。
 
 **示例**
 

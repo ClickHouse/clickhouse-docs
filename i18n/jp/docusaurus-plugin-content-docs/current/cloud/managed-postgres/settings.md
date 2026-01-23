@@ -13,7 +13,7 @@ import postgresParameters from '@site/static/images/managed-postgres/postgres-pa
 import serviceActions from '@site/static/images/managed-postgres/service-actions.png';
 import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
-<PrivatePreviewBadge />
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="settings" />
 
 サイドバーの **Settings** タブから、Managed Postgres インスタンスの構成パラメータを変更したり、インスタンス設定を管理したりできます。
 
@@ -55,7 +55,7 @@ IP フィルターを設定するには、次の手順に従います:
 3. 接続を許可する IP アドレスまたは CIDR 範囲を追加します
 4. 変更を適用するには **Save** をクリックします
 
-個々の IP アドレスを指定することも、CIDR 表記を使用して IP 範囲を指定することもできます (例: `192.168.1.0/24`)。
+個々の IP アドレスを指定することも、CIDR 表記を使用して IP 範囲を指定することもできます (例: `192.168.1.0/24`)。インスタンスをインターネットに対して完全に開放または遮断するためのショートカットとして、**Anywhere** または **Nowhere** を選択することもできます。
 
 :::note
 IP フィルターが設定されていない場合、すべての IP アドレスからの接続が許可されます。本番ワークロードでは、既知の IP アドレスのみにアクセスを制限することを推奨します。

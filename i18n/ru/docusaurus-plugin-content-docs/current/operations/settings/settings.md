@@ -2171,6 +2171,14 @@ SETTINGS convert_query_to_cnf = true;
 - 0 — запросы выполняются с задержкой.
 - 1 — запросы выполняются без задержки.
 
+## database_datalake_require_metadata_access \{#database_datalake_require_metadata_access\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "New setting."}]}]}/>
+
+Определяет, следует ли выдавать ошибку, если нет прав на получение метаданных таблицы в движке базы данных DataLakeCatalog.
+
 ## database_replicated_allow_explicit_uuid \{#database_replicated_allow_explicit_uuid\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
