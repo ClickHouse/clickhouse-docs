@@ -83,7 +83,7 @@ In our case, it looks like this:
 Once the restore process is complete, you can connect to your Managed Postgres instance and verify that all your data and objects have been migrated successfully. You can use any PostgreSQL client to connect and run queries.
 Here's what our Managed Postgres setup looks like after the migration:
 <Image img={targetSetup} alt="Target Managed Postgres Database Setup" size="xl" border />
-We see that we have all our tables, indexes, views, and sequences intact, along with the data.
+We see that we have all our tables, indexes, views, and sequences intact, along with the data counts matching.
 
 ## Considerations {#migration-pgdump-pg-restore-considerations}
 - Ensure that the PostgreSQL versions of the source and target databases are compatible.
