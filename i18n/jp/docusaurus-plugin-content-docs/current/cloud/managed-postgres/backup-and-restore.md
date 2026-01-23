@@ -11,7 +11,7 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 import backupAndRestore from '@site/static/images/managed-postgres/backup-and-restore.png';
 
-<PrivatePreviewBadge />
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="backup-and-restore" />
 
 Managed Postgres は、自動バックアップとポイントインタイム リカバリによって、データの安全性と可用性を確保します。インスタンスの **Backups** ビューから、バックアップ履歴の確認やリストアの開始ができます。
 

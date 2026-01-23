@@ -13,7 +13,7 @@ import postgresParameters from '@site/static/images/managed-postgres/postgres-pa
 import serviceActions from '@site/static/images/managed-postgres/service-actions.png';
 import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
-<PrivatePreviewBadge />
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="settings" />
 
 Вы можете изменять параметры конфигурации и управлять настройками экземпляра Managed Postgres на вкладке **Settings** в боковой панели.
 
@@ -55,7 +55,7 @@ IP-фильтры определяют, с каких исходных IP-адр
 3. Добавьте IP-адреса или диапазоны в формате CIDR, которым следует разрешить подключение
 4. Нажмите **Save**, чтобы применить изменения
 
-Вы можете указать отдельные IP-адреса или использовать нотацию CIDR для диапазонов IP-адресов (например, `192.168.1.0/24`).
+Вы можете указать отдельные IP-адреса или использовать нотацию CIDR для диапазонов IP-адресов (например, `192.168.1.0/24`). Вы также можете выбрать **Anywhere** или **Nowhere** как сокращённый способ полностью открыть или закрыть экземпляр для внешнего мира.
 
 :::note
 Если IP-фильтры не настроены, подключения разрешены с любых IP-адресов. Для production-нагрузок мы рекомендуем ограничить доступ только известными IP-адресами.

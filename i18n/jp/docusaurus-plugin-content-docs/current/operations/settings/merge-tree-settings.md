@@ -1253,6 +1253,18 @@ ReplicatedMergeTree のキュー内で、パーツに対する mutation タス�
 
 ClickHouse Cloud でのみ利用可能です。マージ処理中にキャッシュを事前ウォームアップする際の対象となるパーツ（compact または packed）の最大サイズ。
 
+## merge_max_dynamic_subcolumns_in_compact_part \{#merge_max_dynamic_subcolumns_in_compact_part\}
+
+<SettingsInfoBlock type="UInt64Auto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "auto"},{"label": "マージ後の Compact データパートにおいて、データ型で指定されたパラメータに関わらず、動的サブカラム数を制限する新しい設定を追加"}]}]}/>
+
+マージ後の Compact データパート内の各カラムで作成できる動的サブカラムの最大数を指定します。
+この設定により、データ型で指定された動的パラメータに関わらず、Compact データパート内の動的サブカラム数を制御できます。
+
+例えば、テーブルに JSON(max_dynamic_paths=1024) 型のカラムがあり、`merge_max_dynamic_subcolumns_in_compact_part` 設定が 128 に設定されている場合、
+Compact データパートへのマージ後、このパート内の動的パスの数は 128 に制限され、動的サブカラムとして書き込まれるパスも 128 個のみになります。
+
 ## merge_max_dynamic_subcolumns_in_wide_part \{#merge_max_dynamic_subcolumns_in_wide_part\}
 
 <SettingsInfoBlock type="UInt64Auto" default_value="auto" />

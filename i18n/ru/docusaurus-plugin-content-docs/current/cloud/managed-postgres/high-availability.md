@@ -10,11 +10,11 @@ doc_type: 'guide'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 
-<PrivatePreviewBadge />
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="high-availability" />
 
 В Managed Postgres доступны различные уровни высокой доступности в соответствии с вашими требованиями к надежности и производительности. Вы можете добавить одну или две резервные реплики при создании базы данных или при необходимости позже изменить эту конфигурацию на странице **Settings**.
 
-{/* TODO(kaushik-ubi): Скриншот экрана настройки высокой доступности
+{/* TODO(kaushik-ubi): Скриншот экрана конфигурации высокой доступности
     Path: /static/images/cloud/managed-postgres/high-availability-config.png */}
 
 

@@ -1326,6 +1326,18 @@ fetch-запросов. Этот параметр применяется к ко
 Параметр доступен только в ClickHouse Cloud. Максимальный размер части (compact или packed)
 для предварительного прогрева кэша при слиянии.
 
+## merge_max_dynamic_subcolumns_in_compact_part \{#merge_max_dynamic_subcolumns_in_compact_part\}
+
+<SettingsInfoBlock type="UInt64Auto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "auto"},{"label": "Добавлена новая настройка для ограничения числа динамических подстолбцов в части данных Compact после слияния, независимо от параметров, указанных в типе данных"}]}]}/>
+
+Максимальное количество динамических подстолбцов, которое может быть создано в каждом столбце части данных Compact после слияния.
+Эта настройка позволяет контролировать количество динамических подстолбцов в части данных Compact независимо от динамических параметров, указанных в типе данных.
+
+Например, если таблица имеет столбец типа JSON(max_dynamic_paths=1024), а настройка merge_max_dynamic_subcolumns_in_compact_part установлена в значение 128,
+после слияния в часть данных Compact количество динамических путей будет уменьшено до 128, и в этой части будет записано только 128 путей в виде динамических подстолбцов.
+
 ## merge_max_dynamic_subcolumns_in_wide_part \{#merge_max_dynamic_subcolumns_in_wide_part\}
 
 <SettingsInfoBlock type="UInt64Auto" default_value="auto" />

@@ -12,7 +12,7 @@ import Image from '@theme/IdealImage';
 import warehouseView from '@site/static/images/managed-postgres/warehouse-view.png';
 import readReplicaDialog from '@site/static/images/managed-postgres/read-replica-dialog.png';
 
-<PrivatePreviewBadge />
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="read-replicas" />
 
 読み取りレプリカを使用すると、プライマリ Managed Postgres データベースのコピーを 1 つ以上作成できます。これらのレプリカは、PostgreSQL のネイティブなレプリケーション機能を使用してプライマリデータベースを継続的に追随し、変更を常に最新の状態に保ちます。
 

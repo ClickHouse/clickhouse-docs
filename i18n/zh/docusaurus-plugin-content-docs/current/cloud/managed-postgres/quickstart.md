@@ -22,9 +22,7 @@ import replicatedTables from '@site/static/images/managed-postgres/replicated-ta
 
 # 托管 Postgres 快速入门 \{#quickstart-for-managed-postgres\}
 
-:::tip 现已可用
-托管 Postgres 现已在 ClickHouse Cloud 中以私有预览形式提供！点击[此处](https://clickhouse.com/cloud/postgres)即可在数分钟内开始使用。
-:::
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="quick-start" />
 
 ClickHouse 托管 Postgres 是企业级 Postgres，基于 NVMe 存储构建，与 EBS 等网络附加存储相比，可为磁盘受限的工作负载提供最高 10 倍的性能提升。本快速入门分为两个部分：
 

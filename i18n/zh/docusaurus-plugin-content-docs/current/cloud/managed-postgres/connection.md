@@ -13,7 +13,7 @@ import connectButton from '@site/static/images/managed-postgres/connect-button.p
 import connectModal from '@site/static/images/managed-postgres/connect-modal.png';
 import tlsCaBundle from '@site/static/images/managed-postgres/tls-ca-bundle.png';
 
-<PrivatePreviewBadge />
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="connection" />
 
 
 ## 访问连接详情 \{#accessing-connection-details\}
