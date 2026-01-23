@@ -20,9 +20,8 @@ import analyticsList from '@site/static/images/managed-postgres/analytics-list.p
 import replicatedTables from '@site/static/images/managed-postgres/replicated-tables.png';
 
 # Quickstart for Managed Postgres
-:::tip Now available
-Managed Postgres is now available in ClickHouse Cloud in Private Preview! Get started in minutes by clicking [here](https://clickhouse.com/cloud/postgres).
-:::
+
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="quick-start" />
 
 ClickHouse Managed Postgres is enterprise-grade Postgres backed by NVMe storage, delivering up to 10x faster performance for disk-bound workloads compared to network-attached storage like EBS. This quickstart is divided into two parts:
 

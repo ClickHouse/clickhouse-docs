@@ -1,5 +1,6 @@
 import React from "react"
 import styles from "./styles.module.css"
+import { galaxyOnClick } from '../../../lib/galaxy/galaxy'
 
 const Icon = () => {
     return (
@@ -13,10 +14,30 @@ const Icon = () => {
     )
 }
 
-const PrivatePreviewBadge = () => {
+const PrivatePreviewBadge = ({ link, galaxyTrack, slug }) => {
+    const content = (
+        <>
+            <Icon />{'Private preview in ClickHouse Cloud'}
+        </>
+    )
+
+    if (link) {
+        return (
+            <a
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.privatePreviewBadge}
+                onClick={galaxyTrack && slug ? galaxyOnClick(`docs.managed-postgres.${slug}-private-preview`) : undefined}
+            >
+                {content}
+            </a>
+        )
+    }
+
     return (
         <div classes className={styles.privatePreviewBadge}>
-            <Icon />{'Private preview in ClickHouse Cloud'}
+            {content}
         </div>
     )
 }

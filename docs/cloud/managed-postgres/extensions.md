@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
-<PrivatePreviewBadge/>
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="extensions" />
 
 Managed Postgres includes a curated set of extensions to extend the functionality of your database. Below is the list of available extensions.
 
