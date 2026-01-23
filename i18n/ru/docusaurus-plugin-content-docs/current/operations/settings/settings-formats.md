@@ -1377,6 +1377,13 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 
 Если параметр включен, точки в ключах JSON будут экранироваться при разборе.
 
+## max_dynamic_subcolumns_in_json_type_parsing \{#max_dynamic_subcolumns_in_json_type_parsing\}
+
+<SettingsInfoBlock type="UInt64Auto" default_value="auto" />
+
+Максимальное количество динамических подстолбцов, которые могут быть созданы в каждом столбце при разборе JSON-столбца.
+Этот параметр позволяет контролировать количество динамических подстолбцов при разборе независимо от динамических параметров, заданных в типе данных.
+
 ## output_format_arrow_compression_method \{#output_format_arrow_compression_method\}
 
 <SettingsInfoBlock type="ArrowCompression" default_value="lz4_frame" />

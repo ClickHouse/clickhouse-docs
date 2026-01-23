@@ -22,9 +22,7 @@ import replicatedTables from '@site/static/images/managed-postgres/replicated-ta
 
 # Быстрый старт с Managed Postgres \{#quickstart-for-managed-postgres\}
 
-:::tip Уже доступно
-Managed Postgres теперь доступен в ClickHouse Cloud в режиме Private Preview! Начните работу за несколько минут, нажав [сюда](https://clickhouse.com/cloud/postgres).
-:::
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="quick-start" />
 
 ClickHouse Managed Postgres — это Postgres корпоративного уровня на базе NVMe-хранилища, обеспечивающий до 10 раз более высокую производительность для нагрузок, зависящих от диска, по сравнению с сетевыми хранилищами, такими как EBS. Это руководство по быстрому старту разделено на две части:
 

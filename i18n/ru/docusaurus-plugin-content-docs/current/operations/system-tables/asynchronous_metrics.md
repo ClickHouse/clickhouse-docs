@@ -588,6 +588,10 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 
 Последний ZXID, зафиксированный в текущей сессии клиента ZooKeeper. Это значение монотонно возрастает по мере того, как клиент наблюдает транзакции ZooKeeper.
 
+### LongestRunningMerge \{#longestrunningmerge\}
+
+Длительность в секундах самой продолжительной фоновой операции слияния, выполняющейся в данный момент.
+
 ### jemalloc.active \{#jemallocactive\}
 
 Внутренняя метрика низкоуровневого распределителя памяти (jemalloc). Подробнее см. https://jemalloc.net/jemalloc.3.html
