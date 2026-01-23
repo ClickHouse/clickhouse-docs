@@ -343,6 +343,15 @@ const sidebars = {
           'cloud/managed-postgres/backup-and-restore',
           'cloud/managed-postgres/extensions',
           'cloud/managed-postgres/settings',
+          {
+            type: 'category',
+            label: 'Migrations',
+            collapsed: true,
+            collapsible: true,
+            items: [
+              'cloud/managed-postgres/migrations/pg_dump-pg_restore',
+            ],
+          },
       ],
     },
   ],
