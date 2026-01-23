@@ -100,9 +100,40 @@ Once a service is encrypted with TDE, customers may update the key to enable CME
     
 </details>
 
+<details>
+    <summary>Enable CMEK with Azure KMS</summary>
+
+1. In ClickHouse Cloud, select the encrypted service
+2. Click on the Settings on the left
+3. At the bottom of the screen, expand the Network security information
+4. Copy the `Cross Tenant App Client ID` - you will need this in the next step
+5. Sign into your Azure subscription and use the following command via the Azure CLI to create a new service principal; replace `{azure_cross_tenant_app_client_id}` with the value you copied in step 2 \
+    `az ad sp create --id {azure_cross_tenant_app_client_id}` 
+6. Copy the Name of the new service principal created - you will need this in a future step
+6. [Create an Azure Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/general/quick-create-portal)
+7. [Create a Key Vault key in Azure](https://learn.microsoft.com/en-us/azure/key-vault/keys/quick-create-portal)
+8. From the Key Vault key, select `Access control (IAM)` on the left
+9. Select `Role assignments` from the top menu
+10. Click `Add` then `Add role assignment` from the top menu
+11. Select the `Key Vault Crypto User` role, then click `Next`
+12. Leave the default selections on the `Add role assignment` screen and click `+Select members`
+13. Paste the service principal name you copied in step 6 (it starts with CH-TDE), select the service principal and click `Select`
+14. Click `Next` then `Review + assign`
+15. Return to your Azure Key Vault and copy the following values:
+    - From the Overview page, copy your Vault URI
+    - From the Overview page, copy your Directory ID
+    - From the Keys page, copy your key Name
+16. Return to your service settings in ClickHouse Cloud and paste the values from step 15 in the following fields:
+    - Key ID > paste your key Name
+    - Key Vault URI > paste your Vault URI
+    - Key Tenant ID > paste your Directory ID
+17. Click Rotate KMS, wait a few minutes as this will result in a rolling restart and verify your service is running
+
+</details>
+
 #### Key rotation {#key-rotation}
 
-Once you set up CMEK, rotate the key by following the procedures above for creating a new KMS key and granting permissions. Return to the service settings to paste the new ARN (AWS) or Key Resource Path (GCP) and save the settings. The service will restart to apply the new key.
+Once you set up CMEK, rotate the key by following the procedures above for creating a new KMS key and granting permissions. Return to the service settings to paste the new ARN (AWS), Key Resource Path (GCP) or Key Name (Azure) and save the settings. The service will restart to apply the new key.
 
 #### KMS key poller {#kms-key-poller}
 
