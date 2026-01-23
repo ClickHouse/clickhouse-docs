@@ -99,6 +99,12 @@ In our case, after setting up the subscription, the data flowed in:
 
 New rows inserted into the source database will now be replicated to the target ClickHouse Managed Postgres database in near real-time.
 
+## Caveats and considerations {#migration-logical-replication-caveats}
+- Logical replication only replicates data changes (INSERT, UPDATE, DELETE). Schema changes (like ALTER TABLE) need to be handled separately.
+- Ensure that the network connection between the source and target databases is stable to avoid replication interruptions.
+- Monitor the replication lag to ensure that the target database is keeping up with the source database. Setting a suitable value for `max_slot_wal_keep_size` on the source database can help manage a growing replication slot and prevent it from consuming too much disk space.
+- Depending on your use case, you might want to set up monitoring and alerting for the replication process.
+
 ## Next steps {#migration-pgdump-pg-restore-next-steps}
 Congratulations! You have successfully migrated your PostgreSQL database to ClickHouse Managed Postgres using pg_dump and pg_restore. You are now all set to explore Managed Postgres features and its integration with ClickHouse. Here's a 10 minute quickstart to get you going:
 - [Managed Postgres Quickstart Guide](../quickstart)
