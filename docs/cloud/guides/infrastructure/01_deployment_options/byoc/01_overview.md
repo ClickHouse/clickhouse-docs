@@ -52,11 +52,11 @@ All **public regions** listed in our [supported regions](https://clickhouse.com/
 - **Secure S3**
 - **[AWS PrivateLink](https://aws.amazon.com/privatelink/)**
 - **[GCP Private Service Connect](https://docs.cloud.google.com/vpc/docs/private-service-connect)**
-- **ClickPipes**: Kafka, S3(Private Priview)
 
 ### Planned features (currently unsupported) {#planned-features-currently-unsupported}
 
 - SQL Console
+- ClickPipes (Kafka, S3)
 - ClickPipes (CDC)
 - Autoscaling
 - MySQL interface

@@ -7,6 +7,9 @@ description: 'Connect to your BYOC ClickHouse services via public, private, or P
 doc_type: 'reference'
 ---
 
+import Image from '@theme/IdealImage';
+import byoc_connect_1 from '@site/static/images/cloud/reference/byoc-connect-1.png';
+
 This page describes the different ways to connect to your ClickHouse services in BYOC. You can choose from public load balancers, private load balancers, or PrivateLink/Private Service Connect endpoints based on your security and networking requirements.
 
 ## Public Load Balancer {#public-load-balancer}
@@ -23,12 +26,15 @@ A public load balancer provides internet-facing access to your ClickHouse servic
 
 To connect to your ClickHouse service using the public endpoint:
 
-1. **Obtain your service endpoint** from the ClickHouse Cloud console. The endpoint is displayed in the service overview page.
-2. **Use standard ClickHouse connection methods**:
-   - ClickHouse client: `clickhouse-client --host {endpoint} --port 9440 --secure --user {username} --password {password}`
-   - HTTP interface: `https://{endpoint}:8443`
-   - Native protocol: `{endpoint}:9440` (TLS encrypted)
-3. **Configure your application** to use the endpoint with appropriate authentication credentials.
+1. **Obtain your service endpoint** from the ClickHouse Cloud console. The endpoint is displayed in the "Connect" session of your service.
+
+<Image img={byoc_connect_1} size="lg" alt="BYOC connection" background='black'/>
+
+For example:
+```
+sb9jmrq2ne.asf3kcggao.ap-southeast-1.aws.clickhouse-byoc.com
+```
+
 
 ### IP Filtering {#public-ip-filtering}
 
@@ -50,15 +56,14 @@ A private load balancer provides internal access to your ClickHouse services, ac
 
 To connect using the private endpoint:
 
-1. **Enable private load balancer** (if not already enabled). Contact ClickHouse Support if you need to enable a private load balancer for your deployment.
+1. **Enable private load balancer** (if not already enabled). Contact ClickHouse Support if you need to [enable a private load balancer](/cloud/reference/byoc/configurations#load-balancers) for your deployment.
 2. **Ensure network connectivity**:
    - For VPC peering: Complete the VPC peering setup (see [Private Networking Setup](/cloud/reference/byoc/onboarding/network))
    - For other private networks: Ensure routing is configured to reach the BYOC VPC
-3. **Obtain your private endpoint** from the ClickHouse Cloud console. The private endpoint has a `-private` suffix.
-4. **Connect from your application** using the private endpoint:
-   ```bash
-   clickhouse-client --host {service-id}-private.{org-id}.{region}.{provider}.byoc.clickhouse.cloud --port 9440 --secure --user {username} --password {password}
-   ```
+3. **Obtain your private endpoint**: 
+   The private endpoint is available in the ClickHouse Cloud console in the "Connect" section of your service. The private endpoint follows the same format as the public endpoint, but with a `-private` suffix added to the service ID portion. For example:
+   - **Public endpoint**: `sb9jmrq2ne.asf3kcggao.ap-southeast-1.aws.clickhouse-byoc.com`
+   - **Private endpoint**: `sb9jmrq2ne-private.asf3kcggao.ap-southeast-1.aws.clickhouse-byoc.com`
 
 ### IP Filtering {#private-ip-filtering}
 
@@ -86,11 +91,12 @@ AWS PrivateLink and GCP Private Service Connect provide the most secure connecti
 
 ### Connecting via PrivateLink/Private Service Connect {#connecting-via-privatelink}
 
-Once configured, you can connect to your ClickHouse service using the same endpoint format. DNS resolution automatically routes traffic through the PrivateLink endpoint:
+Complete the PrivateLink or Private Service Connect setup (see [Private Networking Setup](/cloud/reference/byoc/onboarding/network)). Once configured, you can connect to your ClickHouse service using a PrivateLink-specific endpoint format. The PrivateLink endpoint includes a `vpce` subdomain to indicate it routes through the VPC endpoint. DNS resolution in your VPC automatically routes traffic through the PrivateLink endpoint.
 
-```bash
-clickhouse-client --host {service-id}.{org-id}.{region}.{provider}.byoc.clickhouse.cloud --port 9440 --secure --user {username} --password {password}
-```
+The PrivateLink endpoint format is similar to the public endpoint, but includes a `vpce` subdomain between the service subdomain and BYOC infrastructure subdomain. For example:
+
+- **Public endpoint**: `h5ju65kv87.mhp0y4dmph.us-west-2.aws.clickhouse-byoc.com`
+- **PrivateLink endpoint**: `h5ju65kv87.vpce.mhp0y4dmph.us-west-2.aws.clickhouse-byoc.com`
 
 ### Endpoint ID Allowlist
 

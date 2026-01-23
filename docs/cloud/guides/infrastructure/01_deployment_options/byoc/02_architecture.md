@@ -41,6 +41,8 @@ The main cloud resources ClickHouse Cloud will deploy in your account are:
 
 By default, ClickHouse Cloud provisions a new, dedicated VPC and sets up the necessary IAM roles to ensure secure operation of Kubernetes services. For organizations with advanced networking or security needs, there is also the option to manage the VPC and IAM roles independently. This approach allows for greater customization of network configurations and more precise control over permissions. However, choosing to self-manage these resources will increase your operational responsibilities.
 
+TODO: add highlight on tailscale connection and cross account IAM
+
 Based on the architecture described above, you will need to provide a cloud account and grant ClickHouse Cloud the minimum required permissions via a cross account IAM role/service account to access it. The detailed permissions required can be found [here](https://clickhouse.com/docs/cloud/reference/byoc/reference/priviledge).
 
 **Additional recommendations and considerations:**

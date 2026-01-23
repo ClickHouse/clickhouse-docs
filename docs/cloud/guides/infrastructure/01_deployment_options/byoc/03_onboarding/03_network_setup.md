@@ -73,8 +73,8 @@ To access ClickHouse privately, a private load balancer and endpoint are provisi
 
 Optional, after verifying that peering is working, you can request the removal of the public load balancer for ClickHouse BYOC.
 
-## Setup PrivateLink(AWS) {#setup-privatelink}
+## Setup PrivateLink (AWS) {#setup-privatelink}
 TODO
 
-## Setup Private Service Connect(GCP) {#setup-private-service-connect}
+## Setup Private Service Connect (GCP) {#setup-private-service-connect}
 TODO
