@@ -9,6 +9,7 @@ doc_type: 'guide'
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
+import createPgForMigrate from '@site/static/images/managed-postgres/pg_dump_restore/create-pg-for-migration.png';
 import sourceReplicationSetup from '@site/static/images/managed-postgres/logical_replication/source-setup.png';
 import targetInitialSetup from '@site/static/images/managed-postgres/logical_replication/target-initial-setup.png';
 import migrationResult from '@site/static/images/managed-postgres/logical_replication/migration-result.png';
@@ -55,6 +56,10 @@ Here:
 
 In our case, we have two tables - `events` and `users`. `events` has a million rows, and `users` has a thousand rows.
 <Image img={sourceSetup} alt="Source PostgreSQL Tables Setup" size="xl" border />
+
+### Create a Managed Postgres instance {#migration-pgdump-pg-restore-create-pg}
+First, ensure you have a Managed Postgres instance set up, preferably in the same region as the source. You can follow the quick guide [here](../quickstart#create-postgres-database). Here's what we are going to spin up for this guide:
+<Image img={createPgForMigrate} alt="Create ClickHouse Managed Postgres Instance" size="md" border />
 
 ## Restore the schema to ClickHouse Managed Postgres {#migration-logical-replication-restore-schema}
 Now that we have the schema dump, we can restore it to our ClickHouse Managed Postgres instance using `pg_restore`:
