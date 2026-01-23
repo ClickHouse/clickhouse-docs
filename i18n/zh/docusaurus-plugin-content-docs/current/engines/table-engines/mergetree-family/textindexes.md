@@ -48,6 +48,7 @@ CREATE TABLE tab
                                 [, dictionary_block_size = D]
                                 [, dictionary_block_frontcoding_compression = B]
                                 [, posting_list_block_size = C]
+                                [, posting_list_codec = 'none' | 'bitpacking' ]
                             )
 )
 ENGINE = MergeTree
@@ -80,12 +81,12 @@ ORDER BY key
 如果这些分隔字符串恰好构成一个 [prefix code](https://en.wikipedia.org/wiki/Prefix_code)，则可以以任意顺序传递。
 :::
 
-:::warning
-目前不推荐在非西方语言（例如中文）的文本上构建文本索引（text index）。
-当前支持的 tokenizer 可能会导致索引体积非常大以及查询耗时很长。
-我们计划未来添加针对特定语言优化的 tokenizer，以更好地处理这些场景。
-:::
 
+:::warning
+目前不建议在非西方语言（例如中文）的文本上构建文本索引。
+当前支持的分词器可能会导致索引体积巨大且查询耗时较长。
+我们计划在未来添加专门的、特定于语言的分词器，以更好地处理这些情况。
+:::
 
 要测试分词器如何切分输入字符串，可以使用 ClickHouse 的 [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) 函数：
 
@@ -187,6 +188,11 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
   可选参数 `dictionary_block_frontcoding_compression`（默认值：1）指定字典块是否使用 front coding 作为压缩方式。
 
   可选参数 `posting_list_block_size`（默认值：1048576）指定倒排列表（posting list）块的大小（以行数计）。
+
+  可选参数 `posting_list_codec`（默认值：`none`）指定倒排列表使用的编解码器：
+
+  * `none` - 倒排列表在存储时不进行额外压缩。
+  * `bitpacking` - 先应用[差分（delta）编码](https://en.wikipedia.org/wiki/Delta_encoding)，然后进行[bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70)（均在固定大小的块内完成）。
 </details>
 
 在创建表之后，可以为某个列添加或移除文本索引：
