@@ -11,7 +11,7 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 import backupAndRestore from '@site/static/images/managed-postgres/backup-and-restore.png';
 
-<PrivatePreviewBadge />
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="backup-and-restore" />
 
 Managed Postgres 通过自动备份和时间点恢复功能保障数据的安全性和可用性。你可以在实例的 **Backups** 视图中查看备份历史并发起恢复操作。
 

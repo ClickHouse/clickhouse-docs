@@ -22,9 +22,7 @@ import replicatedTables from '@site/static/images/managed-postgres/replicated-ta
 
 # マネージド Postgres クイックスタート \{#quickstart-for-managed-postgres\}
 
-:::tip 提供開始
-Managed Postgres が ClickHouse Cloud の Private Preview で利用可能になりました。[こちら](https://clickhouse.com/cloud/postgres)をクリックすると、数分で利用を開始できます。
-:::
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="quick-start" />
 
 ClickHouse Managed Postgres は、NVMe ストレージを基盤としたエンタープライズグレードの Postgres であり、EBS などのネットワーク接続ストレージと比較して、ディスクボトルネックのあるワークロードに対して最大 10 倍の高いパフォーマンスを提供します。このクイックスタートは次の 2 部構成です。
 

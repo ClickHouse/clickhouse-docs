@@ -9,7 +9,7 @@ doc_type: 'guide'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 
-<PrivatePreviewBadge />
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="overview" />
 
 ClickHouse Managed Postgres は、パフォーマンスとスケールを重視して構築されたエンタープライズグレードのマネージド Postgres サービスです。コンピュートと物理的に同一ラック内に配置された NVMe ストレージを採用しており、EBS のようなネットワーク接続ストレージを用いる代替手段と比べて、ディスクがボトルネックとなるワークロードに対して最大 10 倍の高いパフォーマンスを実現します。
 

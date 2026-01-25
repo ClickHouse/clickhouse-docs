@@ -9,7 +9,7 @@ doc_type: '指南'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 
-<PrivatePreviewBadge />
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="overview" />
 
 ClickHouse Managed Postgres 是一款面向企业的托管 Postgres 服务，专为高性能和高可扩展性而构建。依托与计算节点物理同机部署的 NVMe 存储，相比使用 EBS 等网络附加存储的替代方案，对于受磁盘限制的工作负载，最高可提供 10 倍的性能提升。
 

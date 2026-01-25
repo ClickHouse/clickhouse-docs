@@ -10,7 +10,7 @@ doc_type: 'guide'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 
-<PrivatePreviewBadge />
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="high-availability" />
 
 Managed Postgres は、耐久性およびパフォーマンス要件に応じた複数レベルの高可用性を提供します。データベースのプロビジョニング時に 1 つまたは 2 つのスタンバイレプリカを追加できるほか、必要に応じて後から **Settings** ページでこの設定を調整できます。
 

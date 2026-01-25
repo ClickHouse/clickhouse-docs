@@ -2171,6 +2171,14 @@ SETTINGS convert_query_to_cnf = true;
 - 0 — запросы выполняются с задержкой.
 - 1 — запросы выполняются без задержки.
 
+## database_datalake_require_metadata_access \{#database_datalake_require_metadata_access\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "New setting."}]}]}/>
+
+Определяет, следует ли выдавать ошибку, если нет прав на получение метаданных таблицы в движке базы данных DataLakeCatalog.
+
 ## database_replicated_allow_explicit_uuid \{#database_replicated_allow_explicit_uuid\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -11674,9 +11682,9 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 ## use_variant_as_common_type \{#use_variant_as_common_type\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "Разрешить использование Variant в if/multiIf при отсутствии общего типа"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Улучшает удобство использования."}]}, {"id": "row-2","items": [{"label": "24.1"},{"label": "0"},{"label": "Разрешить использование Variant в if/multiIf при отсутствии общего типа"}]}]} />
 
 Позволяет использовать тип `Variant` в качестве результирующего типа для функций [if](../../sql-reference/functions/conditional-functions.md/#if)/[multiIf](../../sql-reference/functions/conditional-functions.md/#multiIf)/[array](../../sql-reference/functions/array-functions.md)/[map](../../sql-reference/functions/tuple-map-functions.md), если для аргументов не существует общего типа.
 
