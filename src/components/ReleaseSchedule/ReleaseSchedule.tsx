@@ -61,9 +61,21 @@ export default function ReleaseSchedule({ releases }: ReleaseScheduleProps) {
         <thead>
           <tr>
             <th>Version</th>
-            <th>Fast Channel (Estimated)</th>
-            <th>Regular Channel (Estimated)</th>
-            <th>Slow Channel (Estimated)</th>
+            <th>
+              <a href="/docs/manage/updates#fast-release-channel-early-upgrades">
+                Fast Channel (Rollout Start)
+              </a>
+            </th>
+            <th>
+              <a href="/docs/manage/updates#regular-release-channel">
+                Regular Channel (Rollout Start)
+              </a>
+            </th>
+            <th>
+              <a href="/docs/manage/updates#slow-release-channel-deferred-upgrades">
+                Slow Channel (Rollout Start)
+              </a>
+            </th>
           </tr>
         </thead>
         <tbody>

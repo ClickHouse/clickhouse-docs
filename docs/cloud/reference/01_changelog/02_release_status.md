@@ -35,7 +35,7 @@ Scheduled upgrades are available for all release channels for services in the En
 
 ## Release schedule {#release-schedule}
 
-:::note Understanding release dates
+:::important Understanding release dates
 The dates shown below indicate when ClickHouse **begins the rollout** to each release channel, not when your individual service will be upgraded.
 
 - Rollouts are automated and occur gradually over multiple weeks
@@ -49,8 +49,8 @@ For advance testing before production upgrades, use the Fast or Regular channel 
    {
      changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
      version: '25.10',
-     fast_date: '2025-12-11 (completed 2025-12-15)',
-     regular_date: '2026-01-13',
+     fast_date: 'Rollout started 2025-12-11 (completed 2025-12-15)',
+     regular_date: 'Rollout started 2026-01-13',
      slow_date: 'TBD',
      fast_progress: 'green',
      regular_progress: 'green',
@@ -60,9 +60,9 @@ For advance testing before production upgrades, use the Fast or Regular channel 
    {
     changelog_link: 'https://clickhouse.com/docs/changelogs/25.8',
     version: '25.8',
-    fast_date: 'Completed',
-    regular_date: 'Completed (2025-12-19)',
-    slow_date: '2026-01-15',
+    fast_date: 'Rollout completed',
+    regular_date: 'Rollout started 2025-12-19 (completed)',
+    slow_date: 'Rollout started 2026-01-15',
     fast_progress: 'green',
     regular_progress: 'green',
     slow_progress: 'green',
