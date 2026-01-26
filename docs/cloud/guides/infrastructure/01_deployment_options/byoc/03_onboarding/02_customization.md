@@ -26,14 +26,14 @@ If you prefer to use an existing VPC to deploy ClickHouse BYOC instead of having
 3. Ensure each subnet has a minimum CIDR range of `/23` (e.g., 10.0.0.0/23) to provide sufficient IP addresses for the ClickHouse deployment.
 4. Add the tag `kubernetes.io/role/internal-elb=1` and `clickhouse-byoc="true"` to each subnet to enable proper load balancer configuration.
 
-<Image img={byoc_subnet_1} size="lg" alt="BYOC VPC Subnet" background='black'/>
+<Image img={byoc_subnet_1} size="lg" alt="BYOC VPC Subnet" />
 
-<Image img={byoc_subnet_2} size="lg" alt="BYOC VPC Subnet Tags" background='black'/>
+<Image img={byoc_subnet_2} size="lg" alt="BYOC VPC Subnet Tags" />
 
 ### Configure S3 Gateway Endpoint {#configure-s3-endpoint}
 If your VPC doesn't already have an S3 Gateway Endpoint configured, you'll need to create one to enable secure, private communication between your VPC and Amazon S3. This endpoint allows your ClickHouse services to access S3 without going through the public internet. Please refer to the screenshot below for an example configuration.
 
-<Image img={byoc_s3_endpoint} size="lg" alt="BYOC S3 Endpoint" background='black'/>
+<Image img={byoc_s3_endpoint} size="lg" alt="BYOC S3 Endpoint" />
 
 ### Ensure Network Connectivity {#ensure-network-connectivity}
 

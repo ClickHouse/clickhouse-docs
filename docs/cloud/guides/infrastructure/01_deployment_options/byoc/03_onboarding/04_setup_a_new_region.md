@@ -16,10 +16,13 @@ After completing the initial onboarding, you may wish to deploy additional BYOC 
 
 To add a new BYOC deployment:
 
+<VerticalStepper headerLevel="list">
 1. Navigate to your organization's "Infrastructure" page in the ClickHouse Cloud console.
 
-<Image img={byoc_new_infra_1} size="lg" alt="BYOC infra page" background='black'/>
+<Image img={byoc_new_infra_1} size="lg" alt="BYOC infra page" />
 
 2. Select "Add new account" or "Add new infrastructure" and follow the guided interface to complete the setup process.
 
-<Image img={byoc_new_infra_2} size="lg" alt="BYOC infra page" background='black'/>
+<Image img={byoc_new_infra_2} size="lg" alt="BYOC infra page" />
+
+</VerticalStepper>

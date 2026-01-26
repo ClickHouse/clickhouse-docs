@@ -23,10 +23,12 @@ If you require a private network connection to your ClickHouse BYOC deployment, 
 
 To create or delete VPC peering for ClickHouse BYOC, follow the steps:
 
-### Step 1: Enable private load balancer for ClickHouse BYOC {#step-1-enable-private-load-balancer-for-clickhouse-byoc}
+<VerticalStepper headerLevel="h3">
+
+### Enable private load balancer for ClickHouse BYOC {#step-1-enable-private-load-balancer-for-clickhouse-byoc}
 Contact ClickHouse Support to enable Private Load Balancer.
 
-### Step 2 Create a peering connection {#step-2-create-a-peering-connection}
+### Create a peering connection {#step-2-create-a-peering-connection}
 1. Navigate to the VPC Dashboard in ClickHouse BYOC account.
 2. Select Peering Connections.
 3. Click Create Peering Connection
@@ -36,12 +38,12 @@ Contact ClickHouse Support to enable Private Load Balancer.
 
 <Image img={byoc_vpcpeering} size="lg" alt="BYOC Create Peering Connection" border />
 
-### Step 3 Accept the peering connection request {#step-3-accept-the-peering-connection-request}
+### Accept the peering connection request {#step-3-accept-the-peering-connection-request}
 Go to the peering account, in the (VPC -> Peering connections -> Actions -> Accept request) page customer can approve this VPC peering request.
 
 <Image img={byoc_vpcpeering2} size="lg" alt="BYOC Accept Peering Connection" border />
 
-### Step 4 Add destination to ClickHouse VPC route tables {#step-4-add-destination-to-clickhouse-vpc-route-tables}
+### Add destination to ClickHouse VPC route tables {#step-4-add-destination-to-clickhouse-vpc-route-tables}
 In ClickHouse BYOC account,
 1. Select Route Tables in the VPC Dashboard.
 2. Search for the ClickHouse VPC ID. Edit each route table attached to the private subnets.
@@ -52,7 +54,7 @@ In ClickHouse BYOC account,
 
 <Image img={byoc_vpcpeering3} size="lg" alt="BYOC Add route table" border />
 
-### Step 5 Add destination to the target VPC route tables {#step-5-add-destination-to-the-target-vpc-route-tables}
+### Add destination to the target VPC route tables {#step-5-add-destination-to-the-target-vpc-route-tables}
 In the peering AWS account,
 1. Select Route Tables in the VPC Dashboard.
 2. Search for the target VPC ID.
@@ -63,11 +65,13 @@ In the peering AWS account,
 
 <Image img={byoc_vpcpeering4} size="lg" alt="BYOC Add route table" border />
 
-### Step 6: Edit security group to allow peered VPC access {#step-6-edit-security-group-to-allow-peered-vpc-access}
+### Edit security group to allow peered VPC access {#step-6-edit-security-group-to-allow-peered-vpc-access}
+
 In the ClickHouse BYOC account, you need to update the Security Group settings to allow traffic from your peered VPC. Please contact ClickHouse Support to request the addition of inbound rules that include the CIDR ranges of your peered VPC.
 
 ---
 The ClickHouse service should now be accessible from the peered VPC.
+</VerticalStepper>
 
 To access ClickHouse privately, a private load balancer and endpoint are provisioned for secure connectivity from the user's peered VPC. The private endpoint follows the public endpoint format with a `-private` suffix. For example:
 - **Public endpoint**: `h5ju65kv87.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`
@@ -79,13 +83,15 @@ Optional, after verifying that peering is working, you can request the removal o
 
 AWS PrivateLink provides secure, private connectivity to your ClickHouse BYOC services without requiring VPC peering or internet gateways. Traffic flows entirely within the AWS network, never traversing the public internet.
 
-### Step 1: Request PrivateLink Setup {#step-1-request-privatelink-setup}
+<VerticalStepper headerLevel="h3">
+
+### Request PrivateLink Setup {#step-1-request-privatelink-setup}
 
 Contact [ClickHouse Support](https://clickhouse.com/cloud/bring-your-own-cloud) to request PrivateLink setup for your BYOC deployment. No specific information is required at this stage—simply indicate that you want to set up PrivateLink connectivity.
 
 ClickHouse Support will enable the necessary infrastructure components, including **the private load balancer** and **PrivateLink service endpoint**.
 
-### Step 2: Create an Endpoint in Your VPC {#step-2-create-endpoint}
+### Create an Endpoint in Your VPC {#step-2-create-endpoint}
 
 After ClickHouse Support has enabled PrivateLink on their side, you need to create a VPC endpoint in your client application VPC to connect to the ClickHouse PrivateLink service.
 
@@ -118,7 +124,7 @@ These settings are required for the PrivateLink DNS to function correctly.
 
 <Image img={byoc_privatelink_2} size="lg" alt="BYOC PrivateLink Approve" border />
 
-### Step 3: Add Endpoint ID to Service Allowlist {#step-3-add-endpoint-id-allowlist}
+### Add Endpoint ID to Service Allowlist {#step-3-add-endpoint-id-allowlist}
 
 Once your VPC endpoint is created and the connection is approved, you need to add the Endpoint ID to the allowlist for each ClickHouse service you want to access via PrivateLink.
 
@@ -132,7 +138,7 @@ Once your VPC endpoint is created and the connection is approved, you need to ad
    - Specify which ClickHouse service(s) should allow access from this endpoint
    - ClickHouse Support will add the Endpoint ID to the service allowlist
 
-### Step 4: Connect to ClickHouse via PrivateLink {#step-4-connect-via-privatelink}
+### Connect to ClickHouse via PrivateLink {#step-4-connect-via-privatelink}
 
 After the Endpoint ID is added to the allowlist, you can connect to your ClickHouse service using the PrivateLink endpoint.
 
@@ -142,6 +148,8 @@ The PrivateLink endpoint format is similar to the public endpoint, but includes 
 - **PrivateLink endpoint**: `h5ju65kv87.vpce.mhp0y4dmph.us-west-2.aws.clickhouse-byoc.com`
 
 DNS resolution in your VPC will automatically route traffic through the PrivateLink endpoint when you use the `vpce` subdomain format.
+
+</VerticalStepper>
 
 ### PrivateLink Access Control {#privatelink-access-control}
 

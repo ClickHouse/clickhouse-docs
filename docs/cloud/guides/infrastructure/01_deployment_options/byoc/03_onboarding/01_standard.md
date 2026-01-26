@@ -33,11 +33,13 @@ To start the onboarding process, please [contact us](https://clickhouse.com/clou
 
 Prepare a fresh AWS account or GCP project under your organization. Visit our web console: https://console.clickhouse.cloud/byocOnboarding to continue the setup. 
 
-### Choose a Cloud Provider - Step 1 {#choose-cloud-provider}
+<VerticalStepper headerLevel="h3">
+
+### Choose a Cloud Provider {#choose-cloud-provider}
 
 <Image img={byoc_onboarding_1} size="lg" alt="BYOC choose CSP" background='black'/>
 
-### Account/Project setup - Step 2 & 3 {#account-setup}
+### Account/Project setup {#account-setup}
 
 The initial BYOC setup can be performed using either a [CloudFormation template(AWS)](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml) or a [Terraform module(GCP)](https://github.com/ClickHouse/terraform-byoc-onboarding/tree/main/modules/gcp). It creates a high priviledged IAM role, enabling BYOC controllers from ClickHouse Cloud to manage your infrastructure. 
 
@@ -58,7 +60,7 @@ module "clickhouse_onboarding" {
 }
 ```
 
-### Set up BYOC infrastructure - Step 4 {#setup-byoc-infrastructure}
+### Set up BYOC infrastructure {#setup-byoc-infrastructure}
 
 You will be prompted to set up the infrastructure, including S3 buckets, VPC, and the Kubernetes cluster, from the ClickHouse Cloud console. Certain configurations must be determined at this stage, as they cannot be changed later. Specifically:
 
@@ -70,11 +72,13 @@ You will be prompted to set up the infrastructure, including S3 buckets, VPC, an
 
 <Image img={byoc_onboarding_3} size="lg" alt="BYOC setup infra" background='black'/>
 
+</VerticalStepper>
+
 ### Create Your First BYOC ClickHouse Service {#create-clickhouse-service}
 
 After your BYOC infrastructure has been provisioned, you're ready to launch your initial ClickHouse service. Open the ClickHouse Cloud console, select your BYOC environment, and follow the prompts to create a new service.
 
-<Image img={byoc_new_service_1} size="lg" alt="BYOC create new service" background='black'/>
+<Image img={byoc_new_service_1} size="md" alt="BYOC create new service"/>
 
 During service creation, you’ll configure the following options:
 
