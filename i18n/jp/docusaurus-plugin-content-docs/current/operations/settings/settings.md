@@ -2169,6 +2169,14 @@ WHERE 句に結合条件がある場合、カンマ結合 / CROSS JOIN の代わ
 - 0 — クエリは遅延を伴って実行されます。
 - 1 — クエリは遅延なく実行されます。
 
+## database_datalake_require_metadata_access \{#database_datalake_require_metadata_access\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "新しい設定。"}]}]}/>
+
+データベースエンジン DataLakeCatalog でテーブルのメタデータを取得する権限がない場合に、エラーをスローするかどうかを制御します。
+
 ## database_replicated_allow_explicit_uuid \{#database_replicated_allow_explicit_uuid\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -11646,9 +11654,9 @@ TopK フィルタリングにデータスキッピングインデックスを使
 
 ## use_variant_as_common_type \{#use_variant_as_common_type\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "共通の型がない場合に if/multiIf で Variant を使用できるようにする"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "利便性が向上する"}]}, {"id": "row-2","items": [{"label": "24.1"},{"label": "0"},{"label": "共通の型がない場合に if/multiIf で Variant を使用できるようにする"}]}]} />
 
 引数の型に共通の型が存在しない場合に、[if](../../sql-reference/functions/conditional-functions.md/#if)/[multiIf](../../sql-reference/functions/conditional-functions.md/#multiIf)/[array](../../sql-reference/functions/array-functions.md)/[map](../../sql-reference/functions/tuple-map-functions.md) 関数の結果型として `Variant` 型を使用できるようにします。
 

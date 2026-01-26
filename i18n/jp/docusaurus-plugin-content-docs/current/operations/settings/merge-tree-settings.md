@@ -580,6 +580,14 @@ Vertical merge アルゴリズムの利用を有効化します。
 索引および PROJECTION は完全に一致していなければなりません。そうでない場合は、
 宛先テーブルはソーステーブルの索引および PROJECTION のスーパーセットであってもかまいません。
 
+## escape_index_filenames \{#escape_index_filenames\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "索引用に作成されるファイル名内の非 ASCII 文字をエスケープ"}]}]}/>
+
+26.1 より前のバージョンでは、二次索引用に作成されるファイル名内の特殊文字をエスケープしていなかったため、索引名に含まれる一部の文字によってパーツが破損する問題が発生する可能性がありました。この設定は互換性維持のためだけに追加されたものです。名前に非 ASCII 文字を含む索引を持つ古いパーツを読み込む場合を除き、この設定を変更すべきではありません。
+
 ## escape_variant_subcolumn_filenames \{#escape_variant_subcolumn_filenames\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -1252,6 +1260,18 @@ ReplicatedMergeTree のキュー内で、パーツに対する mutation タス�
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1073741824"},{"label": "Cloud sync"}]}]}/>
 
 ClickHouse Cloud でのみ利用可能です。マージ処理中にキャッシュを事前ウォームアップする際の対象となるパーツ（compact または packed）の最大サイズ。
+
+## merge_max_dynamic_subcolumns_in_compact_part \{#merge_max_dynamic_subcolumns_in_compact_part\}
+
+<SettingsInfoBlock type="UInt64Auto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "auto"},{"label": "マージ後の Compact データパートにおいて、データ型で指定されたパラメータに関わらず、動的サブカラム数を制限する新しい設定を追加"}]}]}/>
+
+マージ後の Compact データパート内の各カラムで作成できる動的サブカラムの最大数を指定します。
+この設定により、データ型で指定された動的パラメータに関わらず、Compact データパート内の動的サブカラム数を制御できます。
+
+例えば、テーブルに JSON(max_dynamic_paths=1024) 型のカラムがあり、`merge_max_dynamic_subcolumns_in_compact_part` 設定が 128 に設定されている場合、
+Compact データパートへのマージ後、このパート内の動的パスの数は 128 に制限され、動的サブカラムとして書き込まれるパスも 128 個のみになります。
 
 ## merge_max_dynamic_subcolumns_in_wide_part \{#merge_max_dynamic_subcolumns_in_wide_part\}
 

@@ -13,7 +13,7 @@ import postgresParameters from '@site/static/images/managed-postgres/postgres-pa
 import serviceActions from '@site/static/images/managed-postgres/service-actions.png';
 import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
-<PrivatePreviewBadge />
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="settings" />
 
 您可以通过侧边栏中的 **Settings** 选项卡修改配置参数并管理托管 Postgres 实例的设置。
 
@@ -55,7 +55,7 @@ IP 过滤器控制哪些源 IP 地址被允许连接到托管的 Postgres 实例
 3. 添加允许连接的 IP 地址或 CIDR 范围
 4. 点击 **Save** 以应用更改
 
-你可以指定单个 IP 地址，或使用 CIDR 表示法来指定 IP 网段（例如，`192.168.1.0/24`）。
+你可以指定单个 IP 地址，或使用 CIDR 表示法来指定 IP 网段（例如，`192.168.1.0/24`）。你也可以选择 **Anywhere** 或 **Nowhere** 作为快捷选项，将实例完全对外开放或完全关闭。
 
 :::note
 如果未配置任何 IP 过滤器，将允许来自所有 IP 地址的连接。对于生产环境的工作负载，建议将访问限制为已知 IP 地址。

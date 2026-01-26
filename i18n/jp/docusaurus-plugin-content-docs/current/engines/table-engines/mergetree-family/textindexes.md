@@ -48,6 +48,7 @@ CREATE TABLE tab
                                 [, dictionary_block_size = D]
                                 [, dictionary_block_frontcoding_compression = B]
                                 [, posting_list_block_size = C]
+                                [, posting_list_codec = 'none' | 'bitpacking' ]
                             )
 )
 ENGINE = MergeTree
@@ -80,12 +81,12 @@ ORDER BY key
 区切り文字列が [prefix code](https://en.wikipedia.org/wiki/Prefix_code) を形成している場合には、任意の順序で渡しても問題ありません。
 :::
 
-:::warning
-現在のところ、中国語のような非西洋言語のテキストに対してテキストインデックスを構築することは推奨されません。
-現時点でサポートされているトークナイザーでは、索引サイズやクエリ時間が非常に大きくなる可能性があります。
-これらのケースをより適切に扱うため、将来的には言語別に特化したトークナイザーを追加する予定です。
-:::
 
+:::warning
+現時点では、中国語などの非西洋言語のテキストに対してテキスト索引を作成することは推奨されません。
+現在サポートされているトークナイザでは、索引サイズが非常に大きくなり、クエリの実行時間が長くなる可能性があります。
+今後、これらのケースをより適切に処理できる、言語ごとに特化したトークナイザを追加する予定です。
+:::
 
 トークナイザが入力文字列をどのように分割するかをテストするには、ClickHouse の [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) 関数を使用できます。
 
@@ -187,6 +188,11 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
   オプションのパラメータ `dictionary_block_frontcoding_compression` (デフォルト: 1) は、Dictionary ブロックで圧縮方式として front coding を使用するかどうかを指定します。
 
   オプションのパラメータ `posting_list_block_size` (デフォルト: 1048576) は、posting list ブロックのサイズを行数で指定します。
+
+  オプションのパラメータ `posting_list_codec` (デフォルト: `none`) は、posting list のコーデックを指定します:
+
+  * `none` - posting list を追加の圧縮なしで保存します。
+  * `bitpacking` - [差分 (デルタ) 符号化](https://en.wikipedia.org/wiki/Delta_encoding) を適用し、その後に [bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70) を適用します (いずれも固定サイズのブロックごと)。
 </details>
 
 テキスト索引は、テーブル作成後にカラムへ追加したり、カラムから削除したりできます。

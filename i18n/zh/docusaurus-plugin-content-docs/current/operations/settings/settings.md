@@ -2167,6 +2167,14 @@ SETTINGS convert_query_to_cnf = true;
 - 0 — 查询将以延迟方式执行。
 - 1 — 查询将同步执行（无延迟）。
 
+## database_datalake_require_metadata_access \{#database_datalake_require_metadata_access\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "New setting."}]}]}/>
+
+在使用 DataLakeCatalog 数据库引擎时，如果没有获取表元数据的权限，指定是否抛出错误。
+
 ## database_replicated_allow_explicit_uuid \{#database_replicated_allow_explicit_uuid\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -11629,9 +11637,9 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 ## use_variant_as_common_type \{#use_variant_as_common_type\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "允许在 if/multiIf 中在没有公共类型时使用 Variant"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "提升可用性。"}]}, {"id": "row-2","items": [{"label": "24.1"},{"label": "0"},{"label": "允许在 if/multiIf 中在没有公共类型时使用 Variant"}]}]} />
 
 允许在参数类型之间不存在公共类型时，将 `Variant` 类型作为 [if](../../sql-reference/functions/conditional-functions.md/#if)/[multiIf](../../sql-reference/functions/conditional-functions.md/#multiIf)/[array](../../sql-reference/functions/array-functions.md)/[map](../../sql-reference/functions/tuple-map-functions.md) 函数的结果类型。
 

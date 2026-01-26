@@ -12,7 +12,7 @@ import Image from '@theme/IdealImage';
 import warehouseView from '@site/static/images/managed-postgres/warehouse-view.png';
 import readReplicaDialog from '@site/static/images/managed-postgres/read-replica-dialog.png';
 
-<PrivatePreviewBadge />
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="read-replicas" />
 
 Реплики для чтения позволяют создать одну или несколько копий вашей основной базы данных Managed Postgres. Эти реплики непрерывно синхронизируются с основной базой данных, используя встроенную репликацию PostgreSQL, чтобы своевременно получать все изменения.
 
