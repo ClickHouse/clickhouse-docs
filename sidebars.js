@@ -350,6 +350,7 @@ const sidebars = {
             collapsible: true,
             items: [
               'cloud/managed-postgres/migrations/pg_dump-pg_restore',
+              'cloud/managed-postgres/migrations/logical-replication',
             ],
           },
       ],
