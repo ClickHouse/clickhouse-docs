@@ -489,6 +489,24 @@ select a,b,c from {{ source('raw', 'table_2') }}
 > `Warning - Table <previous table name> was detected with the same pattern as model name <your model name> but was not found in this run. In case it is a renamed mv that was previously part of this model, drop it manually (!!!) `
 
 
+#### ターゲットテーブルのスキーマをどのように反映させるか \{#how-to-iterate-the-target-table-schema\}
+
+dbt-clickhouse バージョン 1.9.8 から、`dbt run` が MV の SQL 内で異なるカラムを検出した場合に、ターゲットテーブルのスキーマをどのように反映させるかを制御できるようになりました。
+
+デフォルトでは、dbt はターゲットテーブルに対して一切変更を適用しません（`ignore` 設定値）。ただし、この設定を変更することで、[インクリメンタルモデル](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change) の `on_schema_change` 設定と同じ動作をさせることができます。
+
+また、この設定を安全策として使用することもできます。`fail` に設定した場合、最初の `dbt run` によって作成されたターゲットテーブルと MV の SQL 内のカラムが異なっていると、ビルドは失敗します。
+
+```jinja2
+{{config(
+    materialized='materialized_view',
+    engine='MergeTree()',
+    order_by='(id)',
+    on_schema_change='fail'
+)}}
+```
+
+
 #### データのキャッチアップ \{#data-catch-up\}
 
 現在、materialized view (MV) を作成する際は、MV 自体が作成される前に、まずターゲットテーブルが履歴データで満たされます。

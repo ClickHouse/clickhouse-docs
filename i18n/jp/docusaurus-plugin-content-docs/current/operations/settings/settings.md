@@ -2266,7 +2266,7 @@ Replicated\* テーブルからデータを受け取る materialized view に対
 
 <SettingsInfoBlock type="DeduplicateInsertSelectMode" default_value="enable_when_possible" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "deduplicate_insert_select のデフォルト動作を ENABLE_WHEN_PROSSIBLE に変更"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "新しい設定。insert_select_deduplicate を置き換えます。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "deduplicate_insert_select のデフォルト動作を ENABLE_WHEN_POSSIBLE に変更"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "新しい設定。insert_select_deduplicate を置き換えます。"}]}]}/>
 
 `INSERT SELECT`（Replicated\* テーブル向け）のブロック単位の重複排除を有効または無効にします。
 この設定は、`INSERT SELECT` クエリに対して `insert_deduplicate` を上書きします。
@@ -3196,7 +3196,15 @@ ClickHouse は、クエリに分散テーブルの積（product）が含まれ�
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-SELECT FINAL で、単一のパーティション内にあるパーツのみをマージします
+異なるパーティション間でのマージを回避して、FINAL クエリを効率化します。
+
+有効にすると、SELECT FINAL クエリの実行時に、異なるパーティションに属するパーツはマージされません。代わりに、各パーティション内だけでマージが行われます。パーティション化されたテーブルを扱う場合、これによりクエリ性能が大きく向上する可能性があります。
+
+明示的に設定しない場合でも、パーティションキー式が決定的であり、そのパーティションキー式で使用されているすべてのカラムがプライマリキーに含まれているときは、ClickHouse がこの最適化を自動的に有効化します。
+
+この自動判定により、同じプライマリキー値を持つ行は必ず同じパーティションに属することが保証されるため、パーティションをまたいだマージを行わなくても安全になります。
+
+**デフォルト値:** `false`（ただし、明示的に設定しない場合はテーブル構造に基づいて自動的に有効化されることがあります）
 
 ## empty_result_for_aggregation_by_constant_keys_on_empty_set \{#empty_result_for_aggregation_by_constant_keys_on_empty_set\}
 

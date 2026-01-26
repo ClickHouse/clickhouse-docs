@@ -2923,7 +2923,13 @@ ClickHouse はクエリを処理するためにグローバルスレッドプー
 
 <SettingsInfoBlock type="Double" default_value="0.2" />
 
-ClickHouse サーバーで利用可能なメモリに対する、jemalloc のダーティページのしきい値となる比率です。ダーティページのサイズがこの比率を超えると、バックグラウンドのメモリワーカーがダーティページのパージを強制的に実行します。0 に設定すると、強制パージは無効になります。
+ClickHouse サーバーで利用可能なメモリに対する、jemalloc のダーティページのしきい値となる比率です。ダーティページのサイズがこの比率を超えると、バックグラウンドのメモリワーカーがダーティページのパージを強制的に実行します。0 に設定すると、ダーティページ比率に基づく強制パージは無効になります。
+
+## memory_worker_purge_total_memory_threshold_ratio \{#memory_worker_purge_total_memory_threshold_ratio\}
+
+<SettingsInfoBlock type="Double" default_value="0.9" />
+
+ClickHouse サーバーで利用可能なメモリに対する、jemalloc をパージするためのしきい値となる比率です。合計メモリ使用量がこの比率を超えると、バックグラウンドのメモリワーカーがダーティページのパージを強制的に実行します。0 に設定すると、合計メモリに基づく強制パージは無効になります。
 
 ## memory_worker_use_cgroup \{#memory_worker_use_cgroup\}
 

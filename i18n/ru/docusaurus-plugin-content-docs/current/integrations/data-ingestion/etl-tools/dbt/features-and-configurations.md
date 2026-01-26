@@ -505,6 +505,24 @@ select a,b,c from {{ source('raw', 'table_2') }}
 > `Warning - Table <previous table name> was detected with the same pattern as model name <your model name> but was not found in this run. In case it is a renamed mv that was previously part of this model, drop it manually (!!!) `
 
 
+#### Как обрабатывать схему целевой таблицы \{#how-to-iterate-the-target-table-schema\}
+
+Начиная с версии dbt-clickhouse 1.9.8, вы можете управлять тем, как обрабатываются изменения схемы целевой таблицы, когда `dbt run` обнаруживает отличающиеся столбцы в SQL материализованного представления (MV).
+
+По умолчанию dbt не будет применять какие-либо изменения к целевой таблице (значение настройки `ignore`), но вы можете изменить эту настройку, чтобы использовать то же поведение, что и конфигурация `on_schema_change` [в инкрементальных моделях](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change).
+
+Также вы можете использовать эту настройку как механизм безопасности: если вы установите её в значение `fail`, сборка завершится с ошибкой, если столбцы в SQL материализованного представления (MV) будут отличаться от целевой таблицы, созданной при первом запуске `dbt run`.
+
+```jinja2
+{{config(
+    materialized='materialized_view',
+    engine='MergeTree()',
+    order_by='(id)',
+    on_schema_change='fail'
+)}}
+```
+
+
 #### Догрузка данных \{#data-catch-up\}
 
 В настоящее время при создании materialized view (MV) целевая таблица сначала заполняется историческими данными, а уже затем создаётся сама MV.

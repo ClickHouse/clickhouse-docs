@@ -478,6 +478,24 @@ select a,b,c from {{ source('raw', 'table_2') }}
 > `Warning - Table <previous table name> was detected with the same pattern as model name <your model name> but was not found in this run. In case it is a renamed mv that was previously part of this model, drop it manually (!!!) `
 
 
+#### 如何迭代目标表的 schema \{#how-to-iterate-the-target-table-schema\}
+
+从 dbt-clickhouse 1.9.8 版本开始，当 `dbt run` 在物化视图（MV）的 SQL 中遇到与目标表不同的列时，可以控制如何迭代目标表的 schema。
+
+默认情况下，dbt 不会对目标表应用任何更改（设置值为 `ignore`），但可以更改此设置，使其遵循与[增量模型中的 `on_schema_change` 配置](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change)相同的行为。
+
+另外，也可以将此设置用作安全机制。如果将其设置为 `fail`，则当 MV 的 SQL 中的列与首次执行 `dbt run` 时创建的目标表不一致时，构建将会失败。
+
+```jinja2
+{{config(
+    materialized='materialized_view',
+    engine='MergeTree()',
+    order_by='(id)',
+    on_schema_change='fail'
+)}}
+```
+
+
 #### 历史数据回补 \{#data-catch-up\}
 
 当前，在创建 materialized view（MV）时，会先将历史数据写入目标表，然后才创建 MV 本身。
