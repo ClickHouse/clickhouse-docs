@@ -19,8 +19,8 @@ ClickHouse Cloud offers different release channels to cater to different user ne
 | Channel Name | Description | Key Considerations | Tiers Supported |
 | :--- | :--- | :--- | :--- |
 | **Fast (Early Release)** | Recommended for non production environments. This is the first release channel for every database version upgrade | New feature access over stability.<br/>Ability to test releases in non production environments ahead of production upgrade | Basic (default)<br/>Scale, Enterprise tiers |
-| **Regular** | Default release channel for all multi replica services.<br/>Updates on this channel typically happen two weeks post the Fast release channel. | Default/ fleetwide upgrades.<br/>Upgrades on this channel are usually done two weeks post the Fast release channel upgrade | Scale and Enterprise |
-| **Slow (Deferred)** | Recommended for those more risk averse users that want their services to be upgraded towards the end of the release schedule.<br/>Updates on this channel typically happen two weeks post the Regular release channel. | Maximum stability and predictability.<br/>Meant for those that need more testing of new releases on either the Fast/Regular channel | Enterprise |
+| **Regular** | Default release channel for all multi replica services.<br/>Rollout on this channel typically begins two weeks after the Fast release channel starts. | Default/ fleetwide upgrades.<br/>Services are upgraded gradually over multiple weeks | Scale and Enterprise |
+| **Slow (Deferred)** | Recommended for those more risk averse users that want their services to be upgraded towards the end of the release schedule.<br/>Rollout on this channel typically begins two weeks after the Regular release channel starts. | Maximum stability and predictability.<br/>Meant for those that need more testing of new releases on either the Fast/Regular channel | Enterprise |
 
 <br/>
 <br/>
@@ -35,7 +35,15 @@ Scheduled upgrades are available for all release channels for services in the En
 
 ## Release schedule {#release-schedule}
 
-The release dates given below are an estimate and may be subject to change.
+:::note Understanding release dates
+The dates shown below indicate when ClickHouse **begins the rollout** to each release channel, not when your individual service will be upgraded.
+
+- Rollouts are automated and occur gradually over multiple weeks
+- Services with configured upgrade windows are upgraded during their scheduled window after the channel rollout begins
+- Rollout completion may be delayed due to rollout pauses (e.g., holiday freezes) or health monitoring
+
+For advance testing before production upgrades, use the Fast or Regular channel for non-production services and the Slow channel for production services.
+:::
 
 <ReleaseSchedule releases={[
    {
