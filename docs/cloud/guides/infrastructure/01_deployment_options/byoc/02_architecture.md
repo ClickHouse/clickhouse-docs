@@ -41,9 +41,51 @@ The main cloud resources ClickHouse Cloud will deploy in your account are:
 
 By default, ClickHouse Cloud provisions a new, dedicated VPC and sets up the necessary IAM roles to ensure secure operation of Kubernetes services. For organizations with advanced networking or security needs, there is also the option to manage the VPC and IAM roles independently. This approach allows for greater customization of network configurations and more precise control over permissions. However, choosing to self-manage these resources will increase your operational responsibilities.
 
-TODO: add highlight on tailscale connection and cross account IAM
+## Key Requirements for BYOC {#key-requirements}
 
-Based on the architecture described above, you will need to provide a cloud account and grant ClickHouse Cloud the minimum required permissions via a cross account IAM role/service account to access it. The detailed permissions required can be found [here](https://clickhouse.com/docs/cloud/reference/byoc/reference/priviledge).
+The BYOC deployment model requires two essential components to ensure reliable operations, ease of maintenance, and security:
+
+### Cross-Account IAM Permissions {#cross-account-iam-permissions}
+
+ClickHouse Cloud needs cross-account IAM permissions to provision and manage resources within your cloud account. This enables ClickHouse to:
+
+- **Provision infrastructure**: Create and configure VPCs, subnets, security groups, and other networking components
+- **Manage Kubernetes clusters**: Deploy and maintain EKS/GKE clusters, node groups, and cluster components
+- **Create storage resources**: Provision S3 buckets or equivalent object storage for data and backups
+- **Manage IAM roles**: Create and configure IAM roles for Kubernetes service accounts and supporting services
+- **Operate supporting services**: Deploy and manage monitoring stacks, ingress controllers, and other infrastructure components
+
+These permissions are granted through a cross-account IAM role (AWS) or service account (GCP) that you create during the initial onboarding process. The role follows the principle of least privilege, with permissions scoped to only what's necessary for BYOC operations.
+
+For detailed information about the specific permissions required, see the [BYOC Privilege Reference](/cloud/reference/byoc/reference/priviledge).
+
+### Tailscale Private Network Connection {#tailscale-private-network}
+
+Tailscale provides a secure, zero-trust private network connection between ClickHouse Cloud's management services and your BYOC deployment. This connection enables:
+
+- **Continuous monitoring**: ClickHouse engineers can access the Prometheus monitoring stack deployed in your BYOC VPC to monitor service health and performance
+- **Proactive maintenance**: Engineers can perform routine maintenance, upgrades, and troubleshooting operations
+- **Emergency support**: In case of service issues, engineers can quickly access your environment to diagnose and resolve problems
+- **Infrastructure management**: Management services can coordinate with your BYOC infrastructure for automated operations
+
+The Tailscale connection is **outbound-only** from your BYOC VPC—no inbound connections are required, reducing your security exposure. All access is:
+- **Approved and audited**: Engineers must request access through an internal approval system
+- **Time-bound**: Access automatically expires after a set period
+- **Restricted**: Engineers can only access system tables and infrastructure components, never customer data
+- **Encrypted**: All communication is encrypted end-to-end
+
+For detailed information about how Tailscale works in BYOC and security controls, see the [Network Security documentation](/cloud/reference/byoc/reference/network_security#tailscale-private-network).
+
+### Why These Requirements Matter {#why-requirements-matter}
+
+Together, these two components enable ClickHouse Cloud to:
+
+- **Maintain reliability**: Proactively monitor and maintain your deployment to prevent issues
+- **Ensure security**: Use least-privilege access with full auditability
+- **Simplify operations**: Automate infrastructure management while you maintain control
+- **Provide support**: Quickly respond to and resolve issues when they occur
+
+All customer data remains within your cloud account and is never accessed or transmitted through these management channels.
 
 **Additional recommendations and considerations:**
 - Ensure that network CIDR ranges for your BYOC VPC do not overlap with any existing VPCs you plan to peer with.
