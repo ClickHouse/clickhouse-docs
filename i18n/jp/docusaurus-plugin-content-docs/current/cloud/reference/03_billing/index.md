@@ -14,5 +14,3 @@ doc_type: 'landing-page'
 | [Payment Thresholds](/cloud/billing/payment-thresholds)             | 支払いしきい値の仕組みとその調整方法について説明します。 |
 | [Troubleshooting Billing Issues](/manage/clickhouse-cloud-billing-compliance) | よくある請求関連の問題のトラブルシューティング。                                  |
 | [Marketplace](/cloud/manage/marketplace/)                    | マーケットプレイス関連トピックのランディングページ。                 |
-
-https://clickhouse.com/docs/cloud/

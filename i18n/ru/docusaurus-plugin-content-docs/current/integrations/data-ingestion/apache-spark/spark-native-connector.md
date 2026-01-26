@@ -6,13 +6,16 @@ description: 'Введение в Apache Spark с ClickHouse'
 keywords: ['clickhouse', 'Apache Spark', 'миграция данных']
 title: 'Коннектор Spark'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 
-# Коннектор Spark {#spark-connector}
+# Коннектор Spark \{#spark-connector\}
 
 Этот коннектор использует оптимизации, специфичные для ClickHouse, такие как продвинутое разбиение на партиции и проталкивание предикатов (predicate pushdown), чтобы
 улучшить производительность запросов и обработку данных.
@@ -30,13 +33,13 @@ Hive Metastore или AWS Glue.
 
 <TOCInline toc={toc}></TOCInline>
 
-## Требования {#requirements}
+## Требования \{#requirements\}
 
 - Java 8 или 17 (для Spark 4.0 требуется Java 17+)
 - Scala 2.12 или 2.13 (Spark 4.0 поддерживает только Scala 2.13)
 - Apache Spark 3.3, 3.4, 3.5 или 4.0
 
-## Матрица совместимости {#compatibility-matrix}
+## Матрица совместимости \{#compatibility-matrix\}
 
 | Версия | Совместимые версии Spark | Версия JDBC-драйвера ClickHouse |
 |---------|---------------------------|----------------------------------|
@@ -51,7 +54,7 @@ Hive Metastore или AWS Glue.
 | 0.2.1   | Spark 3.2                 | Нет зависимости                  |
 | 0.1.2   | Spark 3.2                 | Нет зависимости                  |
 
-## Установка и настройка {#installation--setup}
+## Установка и настройка \{#installation--setup\}
 
 Для интеграции ClickHouse со Spark доступно несколько вариантов установки, подходящих для разных конфигураций проектов.
 Вы можете добавить коннектор ClickHouse для Spark как зависимость непосредственно в файл сборки вашего проекта (например, в `pom.xml`
@@ -60,7 +63,7 @@ Hive Metastore или AWS Glue.
 с помощью флага `--jars` в команде `spark-submit`.
 Оба подхода обеспечивают доступность коннектора ClickHouse в вашей среде Spark.
 
-### Импорт как зависимость {#import-as-a-dependency}
+### Импорт как зависимость \{#import-as-a-dependency\}
 
 <Tabs>
 <TabItem value="Maven" label="Maven" default>
@@ -146,7 +149,7 @@ $SPARK_HOME/bin/spark-sql \
 </TabItem>
 </Tabs>
 
-### Скачайте библиотеку {#download-the-library}
+### Скачайте библиотеку \{#download-the-library\}
 
 Шаблон имени бинарного JAR-файла:
 
@@ -172,7 +175,7 @@ clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${versi
 [матрицей совместимости](#compatibility-matrix).
 :::
 
-## Зарегистрируйте каталог (обязательно) {#register-the-catalog-required}
+## Зарегистрируйте каталог (обязательно) \{#register-the-catalog-required\}
 
 Чтобы получить доступ к своим таблицам ClickHouse, необходимо настроить новый каталог Spark со следующими параметрами:
 
@@ -221,7 +224,7 @@ spark.sql.catalog.clickhouse2.option.ssl     true
 
 :::
 
-## Настройки ClickHouse Cloud {#clickhouse-cloud-settings}
+## Настройки ClickHouse Cloud \{#clickhouse-cloud-settings\}
 
 При подключении к [ClickHouse Cloud](https://clickhouse.com) обязательно включите SSL и задайте необходимый режим SSL. Например:
 
@@ -230,7 +233,7 @@ spark.sql.catalog.clickhouse.option.ssl        true
 spark.sql.catalog.clickhouse.option.ssl_mode   NONE
 ```
 
-## Чтение данных {#read-data}
+## Чтение данных \{#read-data\}
 
 <Tabs groupId="spark_apis">
 <TabItem value="Java" label="Java" default>
@@ -337,7 +340,7 @@ df.show()
 </TabItem>
 </Tabs>
 
-## Запись данных {#write-data}
+## Запись данных \{#write-data\}
 
 <Tabs groupId="spark_apis">
   <TabItem value="Java" label="Java" default>
@@ -463,7 +466,7 @@ df.show()
   </TabItem>
 </Tabs>
 
-## Операции DDL {#ddl-operations}
+## Операции DDL \{#ddl-operations\}
 
 Вы можете выполнять операции DDL в экземпляре ClickHouse с помощью Spark SQL, при этом все изменения немедленно сохраняются
 в ClickHouse.
@@ -496,7 +499,7 @@ TBLPROPERTIES (
 
 Приведённые выше примеры демонстрируют запросы Spark SQL, которые вы можете выполнять в своём приложении с использованием любого из API — Java, Scala, PySpark или оболочки.
 
-## Конфигурации {#configurations}
+## Конфигурации \{#configurations\}
 
 Ниже приведены настраиваемые параметры, доступные в коннекторе:
 
@@ -526,12 +529,12 @@ TBLPROPERTIES (
 | spark.clickhouse.write.retryInterval               | 10s                                                              | Интервал в секундах между повторными попытками записи.                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | 0.1.0     |
 | spark.clickhouse.write.retryableErrorCodes         | 241                                                              | Коды ошибок, допускающих повторную попытку, возвращаемые сервером ClickHouse при сбое записи.                                                                                                                                                                                                                                                                                                                                                                                                                                      | 0.1.0     |
 
-## Поддерживаемые типы данных {#supported-data-types}
+## Поддерживаемые типы данных \{#supported-data-types\}
 
 В этом разделе описывается соответствие типов данных между Spark и ClickHouse. Таблицы ниже служат быстрым справочником
 по преобразованию типов данных при чтении из ClickHouse в Spark и при вставке данных из Spark в ClickHouse.
 
-### Чтение данных из ClickHouse в Spark {#reading-data-from-clickhouse-into-spark}
+### Чтение данных из ClickHouse в Spark \{#reading-data-from-clickhouse-into-spark\}
 
 | Тип данных ClickHouse                                             | Тип данных Spark               | Поддерживается | Примитивный тип | Примечания                                        |
 |-------------------------------------------------------------------|--------------------------------|----------------|-----------------|---------------------------------------------------|
@@ -570,7 +573,7 @@ TBLPROPERTIES (
 | `AggregateFunction`                                               |                                | ❌              |                 |                                                   |
 | `SimpleAggregateFunction`                                         |                                | ❌              |                 |                                                   |
 
-### Вставка данных из Spark в ClickHouse {#inserting-data-from-spark-into-clickhouse}
+### Вставка данных из Spark в ClickHouse \{#inserting-data-from-spark-into-clickhouse\}
 
 | Тип данных Spark                    | Тип данных ClickHouse | Поддерживается | Примитивный | Примечания                             |
 |-------------------------------------|------------------------|----------------|-------------|----------------------------------------|
@@ -594,7 +597,7 @@ TBLPROPERTIES (
 | `Object`                            |                        | ❌             |             |                                        |
 | `Nested`                            |                        | ❌             |             |                                        |
 
-## Участие и поддержка {#contributing-and-support}
+## Участие и поддержка \{#contributing-and-support\}
 
 Если вы хотите внести вклад в проект или сообщить о каких-либо проблемах, мы будем рады вашей обратной связи!
 Посетите наш [репозиторий на GitHub](https://github.com/ClickHouse/spark-clickhouse-connector), чтобы создать issue, предложить

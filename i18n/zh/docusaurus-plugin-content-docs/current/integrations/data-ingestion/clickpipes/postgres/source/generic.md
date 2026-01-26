@@ -5,26 +5,29 @@ slug: /integrations/clickpipes/postgres/source/generic
 title: '通用 Postgres 源配置指南'
 doc_type: 'guide'
 keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal level']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
-# 通用 Postgres 源设置指南 {#generic-postgres-source-setup-guide}
+# 通用 Postgres 源配置指南 \{#generic-postgres-source-setup-guide\}
 
 :::info
 
-如果你使用的是侧边栏中列出的受支持提供方之一，请参考该提供方的专用指南。
+如果您使用的是侧边栏中列出的受支持提供商之一，请参考该提供商的专用指南。
 
 :::
 
-ClickPipes 支持 Postgres 12 及更高版本。
+ClickPipes 支持 Postgres 12 及以上版本。
 
-## 启用逻辑复制 {#enable-logical-replication}
+## 启用逻辑复制 \{#enable-logical-replication\}
 
-1. 要在你的 Postgres 实例上启用复制，需要确保设置以下参数：
+1. 要在 Postgres 实例上启用复制，需要确保配置了以下参数：
 
     ```sql
     wal_level = logical
     ```
-   要检查该设置，你可以运行以下 SQL 命令：
+   要检查该参数的值，可以运行以下 SQL 命令：
     ```sql
     SHOW wal_level;
     ```
@@ -34,55 +37,73 @@ ClickPipes 支持 Postgres 12 及更高版本。
     ALTER SYSTEM SET wal_level = logical;
     ```
 
-2. 此外，建议在 Postgres 实例上配置以下参数：
+2. 此外，建议在 Postgres 实例上设置以下参数：
     ```sql
     max_wal_senders > 1
     max_replication_slots >= 4
     ```
-   要检查这些设置，你可以运行以下 SQL 命令：
+   要检查这些参数的值，可以运行以下 SQL 命令：
     ```sql
     SHOW max_wal_senders;
     SHOW max_replication_slots;
     ```
 
-   如果这些值与推荐值不一致，可以运行以下 SQL 命令进行设置：
+   如果参数值与推荐值不一致，可以运行以下 SQL 命令进行设置：
     ```sql
     ALTER SYSTEM SET max_wal_senders = 10;
     ALTER SYSTEM SET max_replication_slots = 10;
     ```
-3. 如果你对上述配置做了任何更改，必须重启 Postgres 实例，更改才会生效。
+3. 如果根据上述说明修改了任何配置，则必须重启 Postgres 实例，以使更改生效。
 
-## 创建具备权限的用户和发布 {#creating-a-user-with-permissions-and-publication}
+## 创建具有权限和 publication 的用户 \{#creating-a-user-with-permissions-and-publication\}
 
-让我们为 ClickPipes 创建一个具备 CDC 所需权限的新用户，
-并创建一个我们将用于复制的发布。
+以管理员用户身份连接到你的 Postgres 实例，并执行以下命令：
 
-为此，可以连接到你的 Postgres 实例并运行以下 SQL 命令：
+1. 为 ClickPipes 创建一个专用用户：
 
-```sql
-  CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
-  GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-  GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-  ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+   ```sql
+   CREATE USER clickpipes_user PASSWORD 'some-password';
+   ```
 
--- Give replication permission to the USER
-  ALTER USER clickpipes_user REPLICATION;
+2. 为你在上一步创建的用户授予 schema 级只读访问权限。以下示例展示了对 `public` schema 的权限设置。对于每个包含你希望复制的表的 schema，都需要重复执行这些命令：
+   
+    ```sql
+    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+    ```
 
--- Create a publication. We will use this when creating the pipe
-  CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-```
+3. 为该用户授予复制权限：
 
-:::note
+   ```sql
+   ALTER USER clickpipes_user WITH REPLICATION;
+   ```
 
-请务必将 `clickpipes_user` 和 `clickpipes_password` 替换为你希望使用的用户名和密码。
+4. 使用你想要复制的表创建一个 [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html)。强烈建议仅在 publication 中包含必需的表，以避免额外的性能开销。
 
-:::
+   :::warning
+   包含在 publication 中的任何表必须定义有 **primary key**，_或者_ 将其 **replica identity** 配置为 `FULL`。有关 publication 作用域设置的指导，请参阅 [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
+   :::
 
-## 在 pg_hba.conf 中为 ClickPipes 用户启用连接 {#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user}
+   - 若要为特定表创建 publication：
 
-如果您是自托管环境，则需要按照以下步骤，允许来自 ClickPipes 的 IP 地址对 ClickPipes 用户的连接。如果您使用的是托管服务，可以参考服务提供商的文档完成相同的配置。
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
 
-1. 修改 `pg_hba.conf` 文件，使其允许来自 ClickPipes 的 IP 地址对 ClickPipes 用户的连接。`pg_hba.conf` 文件中的示例条目如下：
+   - 若要为特定 schema 中的所有表创建 publication：
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   `clickpipes` publication 将包含从指定表生成的一组变更事件，并将在后续用于摄取复制流。
+
+## 在 pg_hba.conf 中为 ClickPipes 用户启用连接 \{#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user\}
+
+如果你是自托管部署，则需要按照以下步骤允许来自 ClickPipes IP 地址的 ClickPipes 用户连接。如果你使用的是托管服务，可以参考服务提供商的文档完成相同的配置。
+
+1. 对 `pg_hba.conf` 文件进行必要修改，以允许来自 ClickPipes IP 地址的 ClickPipes 用户连接。`pg_hba.conf` 文件中的示例条目如下所示：
     ```response
     host    all   clickpipes_user     0.0.0.0/0          scram-sha-256
     ```
@@ -92,17 +113,17 @@ ClickPipes 支持 Postgres 12 及更高版本。
     SELECT pg_reload_conf();
     ```
 
-## 增大 `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
+## 增大 `max_slot_wal_keep_size` \{#increase-max_slot_wal_keep_size\}
 
-这是一个推荐的配置调整，用于确保大型事务或提交不会导致复制槽被丢弃。
+这是一个推荐的配置调整，用于确保大型事务/提交不会导致复制槽被删除。
 
-您可以通过更新 `postgresql.conf` 文件，将 PostgreSQL 实例的 `max_slot_wal_keep_size` 参数提高到更大的值（至少 100GB 或 `102400`）。
+你可以通过更新 `postgresql.conf` 文件，将 PostgreSQL 实例中的 `max_slot_wal_keep_size` 参数提高到更大的值（至少 100GB 或 `102400`）。
 
 ```sql
 max_slot_wal_keep_size = 102400
 ```
 
-您可以重新加载 PostgreSQL 实例以使更改生效：
+可以重新加载 Postgres 实例，使更改生效：
 
 ```sql
 SELECT pg_reload_conf();
@@ -110,11 +131,12 @@ SELECT pg_reload_conf();
 
 :::note
 
-如需获取该数值的更佳配置建议，请联系 ClickPipes 团队。
+如需获得该数值更合理的取值建议，您可以联系 ClickPipes 团队。
 
 :::
 
-## 接下来是什么？ {#whats-next}
 
-现在你可以[创建 ClickPipe](../index.md)，并开始将 Postgres 实例中的数据摄取到 ClickHouse Cloud 中。
-请务必记录下在设置 Postgres 实例时使用的连接信息，因为在创建 ClickPipe 的过程中将需要这些信息。
+## 下一步是什么？ \{#whats-next\}
+
+现在可以[创建 ClickPipe](../index.md)，并开始将 Postgres 实例中的数据摄取到 ClickHouse Cloud 中。
+请务必记录在设置 Postgres 实例时使用的连接详细信息，因为在创建 ClickPipe 的过程中将需要这些信息。

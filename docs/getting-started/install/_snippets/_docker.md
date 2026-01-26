@@ -178,7 +178,12 @@ docker run --rm -e CLICKHOUSE_SKIP_USER_SETUP=1 -p 9000:9000/tcp clickhouse/clic
 
 ## How to extend this image {#how-to-extend-image}
 
-To perform additional initialization in an image derived from this one, add one or more `*.sql`, `*.sql.gz`, or `*.sh` scripts under `/docker-entrypoint-initdb.d`. After the entrypoint calls `initdb`, it will run any `*.sql` files, run any executable `*.sh` scripts, and source any non-executable `*.sh` scripts found in that directory to do further initialization before starting the service.  
+To perform additional initialization in an image derived from this one, add one or more `*.sql`, `*.sql.gz`, or `*.sh` scripts under `/docker-entrypoint-initdb.d`. After the entrypoint calls `initdb`, it will run any `*.sql` files, run any executable `*.sh` scripts, and source any non-executable `*.sh` scripts found in that directory to do further initialization before starting the service.
+
+:::note
+Scripts under `/docker-entrypoint-initdb.d` are executed in **alphabetical order** by filename. If your scripts have dependencies on each other (for example, a script that creates views must run after the script that creates the referenced tables), ensure your filenames sort in the correct order.
+:::
+
 Also, you can provide environment variables `CLICKHOUSE_USER` & `CLICKHOUSE_PASSWORD` that will be used for clickhouse-client during initialization.
 
 For example, to add another user and database, add the following to `/docker-entrypoint-initdb.d/init-db.sh`:

@@ -11,7 +11,7 @@ import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_s
 
 <SelfManaged />
 
-## CPU スケーリングガバナー {#cpu-scaling-governor}
+## CPU スケーリングガバナー \{#cpu-scaling-governor\}
 
 常に `performance` スケーリングガバナーを使用してください。`on-demand` スケーリングガバナーは、常時高負荷のワークロードではパフォーマンスが大きく低下します。
 
@@ -19,12 +19,12 @@ import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_s
 $ echo 'performance' | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 ```
 
-## CPU の制限事項 {#cpu-limitations}
+## CPU の制限事項 \{#cpu-limitations\}
 
 プロセッサは過熱する場合があります。CPU のクロック周波数が過熱によって制限されたかどうかを確認するには、`dmesg` を使用します。
 この制限はデータセンター側の設定として外部から課されている場合もあります。負荷をかけた状態で監視するには、`turbostat` を使用できます。
 
-## RAM {#ram}
+## RAM \{#ram\}
 
 少量のデータ（圧縮後で最大約 200 GB）の場合は、データ量と同程度のメモリを搭載するのが理想的です。
 大量のデータを扱い、かつインタラクティブ（オンライン）クエリを処理する場合は、ページキャッシュにホットデータのサブセットが収まるよう、妥当な量の RAM（128 GB 以上）を使用することを推奨します。
@@ -39,7 +39,7 @@ $ echo 0 | sudo tee /proc/sys/vm/overcommit_memory
 メモリ管理に費やされるカーネル時間を観測するには、`perf top` を使用します。
 恒久的なヒュージページを割り当てる必要もありません。
 
-### 16GB 未満の RAM を使用する場合 {#using-less-than-16gb-of-ram}
+### 16GB 未満の RAM を使用する場合 \{#using-less-than-16gb-of-ram\}
 
 推奨される RAM 容量は 32 GB 以上です。
 
@@ -60,7 +60,7 @@ $ echo 0 | sudo tee /proc/sys/vm/overcommit_memory
 コマンドを実行します。
 - バッファ用に多くのメモリを必要とするため、メモリ量の少ないマシンでは S3 や Kafka との連携機能の使用は推奨しません。
 
-## ストレージサブシステム {#storage-subsystem}
+## ストレージサブシステム \{#storage-subsystem\}
 
 予算が許して SSD を使用できるなら、SSD を使用してください。
 そうでなければ HDD を使用してください。7200RPM の SATA HDD で十分です。
@@ -68,7 +68,7 @@ $ echo 0 | sudo tee /proc/sys/vm/overcommit_memory
 ディスクシェルフを接続した少数のサーバーよりも、ローカルハードディスクを搭載した多数のサーバー構成を優先してください。
 ただし、滅多にクエリされないアーカイブを保存する用途であれば、ディスクシェルフでも問題ありません。
 
-## RAID {#raid}
+## RAID \{#raid\}
 
 HDD を使用する場合は、RAID-10、RAID-5、RAID-6、RAID-50 のいずれかの RAID 構成を組むことができます。
 Linux では、ソフトウェア RAID（`mdadm` を使用）が望ましいです。
@@ -99,7 +99,7 @@ HDD ではライトキャッシュを有効にします。
 
 OS で NVMe および SSD ディスクに対して [`fstrim`](https://en.wikipedia.org/wiki/Trim_\(computing\)) が有効になっていることを確認してください (通常は cron ジョブまたは systemd サービスとして実装されています)。
 
-## ファイルシステム {#file-system}
+## ファイルシステム \{#file-system\}
 
 Ext4 が最も信頼性の高い選択肢です。マウントオプションとして `noatime` を設定してください。XFS も同様に問題なく動作します。
 その他のほとんどのファイルシステムも概ね正常に動作するはずです。
@@ -111,18 +111,18 @@ FAT-32 および exFAT はハードリンクをサポートしていないため
 
 ClickHouse は NFS 上でも動作しますが、最適な選択肢とは言えません。
 
-## Linux Kernel {#linux-kernel}
+## Linux Kernel \{#linux-kernel\}
 
 古い Linux カーネルの使用は避けてください。
 
-## ネットワーク {#network}
+## ネットワーク \{#network\}
 
 IPv6 を使用している場合は、ルートキャッシュのサイズを増やしてください。
 Linux カーネル 3.2 以前には、IPv6 実装に多くの問題がありました。
 
 可能であれば、少なくとも 10 GB のネットワークを使用してください。1 Gb でも動作しますが、数十テラバイトのデータを持つレプリカへのパッチ適用や、大量の中間データを伴う分散クエリの処理では、性能が大きく低下します。
 
-## ヒュージページ {#huge-pages}
+## ヒュージページ \{#huge-pages\}
 
 古い Linux カーネルを使用している場合は、Transparent Huge Pages を無効化してください。メモリアロケータと干渉し、著しいパフォーマンス低下を招きます。
 より新しい Linux カーネルでは、Transparent Huge Pages を有効にしたままで問題ありません。
@@ -139,7 +139,7 @@ $ GRUB_CMDLINE_LINUX_DEFAULT="transparent_hugepage=madvise ..."
 
 その後、`sudo update-grub` コマンドを実行し、反映させるためにシステムを再起動してください。
 
-## ハイパーバイザーの構成 {#hypervisor-configuration}
+## ハイパーバイザーの構成 \{#hypervisor-configuration\}
 
 OpenStack を使用している場合は、以下を設定します。
 
@@ -160,7 +160,7 @@ XML 設定で指定します。
 これは、ClickHouse が `cpuid` 命令によって正しい情報を取得できるようにするために重要です。
 そうしていない場合、古い CPU モデル上でハイパーバイザーを実行していると `Illegal instruction` エラーによりクラッシュする可能性があります。
 
-## ClickHouse Keeper と ZooKeeper {#zookeeper}
+## ClickHouse Keeper と ZooKeeper \{#zookeeper\}
 
 ClickHouse Keeper は、ClickHouse クラスターにおいて ZooKeeper を置き換えることが推奨されます。[ClickHouse Keeper](../guides/sre/keeper/index.md) のドキュメントを参照してください。
 
@@ -317,10 +317,10 @@ script
 end script
 ```
 
-## アンチウイルスソフトウェア {#antivirus-software}
+## アンチウイルスソフトウェア \{#antivirus-software\}
 
 アンチウイルスソフトウェアを使用している場合は、ClickHouse のデータファイル（`/var/lib/clickhouse`）が格納されているディレクトリをスキャン対象から除外するように設定してください。そうしない場合、パフォーマンスが低下し、データのインジェストやバックグラウンドマージ中に予期しないエラーが発生する可能性があります。
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \{#related-content\}
 
 - [ClickHouse を使い始めるときの 13 の「大罪」とその回避方法](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)

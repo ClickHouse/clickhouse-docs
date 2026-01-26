@@ -32,7 +32,7 @@ ALTER [TEMPORARY] TABLE [db].name [ON CLUSTER cluster] ADD|DROP|RENAME|CLEAR|COM
 * [MATERIALIZE COLUMN](#materialize-column) — 在缺少该列的数据部分中物化该列。
   这些操作的详细说明见下文。
 
-## ADD COLUMN {#add-column}
+## ADD COLUMN \{#add-column\}
 
 ```sql
 ADD COLUMN [IF NOT EXISTS] name [type] [default_expr] [codec] [AFTER name_after | FIRST]
@@ -68,7 +68,7 @@ ToDrop  UInt32
 Added3  UInt32
 ```
 
-## 删除列（DROP COLUMN） {#drop-column}
+## 删除列（DROP COLUMN） \{#drop-column\}
 
 ```sql
 DROP COLUMN [IF EXISTS] name
@@ -88,7 +88,7 @@ DROP COLUMN [IF EXISTS] name
 ALTER TABLE visits DROP COLUMN browser
 ```
 
-## 重命名列 {#rename-column}
+## 重命名列 \{#rename-column\}
 
 ```sql
 RENAME COLUMN [IF EXISTS] name to new_name
@@ -104,7 +104,7 @@ RENAME COLUMN [IF EXISTS] name to new_name
 ALTER TABLE visits RENAME COLUMN webBrowser TO browser
 ```
 
-## CLEAR COLUMN（清空列） {#clear-column}
+## CLEAR COLUMN（清空列） \{#clear-column\}
 
 ```sql
 CLEAR COLUMN [IF EXISTS] name IN PARTITION partition_name
@@ -120,7 +120,7 @@ CLEAR COLUMN [IF EXISTS] name IN PARTITION partition_name
 ALTER TABLE visits CLEAR COLUMN browser IN PARTITION tuple()
 ```
 
-## 备注列 {#comment-column}
+## 备注列 \{#comment-column\}
 
 ```sql
 COMMENT COLUMN [IF EXISTS] name 'Text comment'
@@ -138,7 +138,7 @@ COMMENT COLUMN [IF EXISTS] name 'Text comment'
 ALTER TABLE visits COMMENT COLUMN browser 'This column shows the browser used for accessing the site.'
 ```
 
-## 修改列 {#modify-column}
+## 修改列 \{#modify-column\}
 
 ```sql
 MODIFY COLUMN [IF EXISTS] name [type] [default_expr] [codec] [TTL] [settings] [AFTER name_after | FIRST]
@@ -217,7 +217,7 @@ DESCRIBE users;
 在将 Nullable 列更改为 Non-Nullable 时请务必小心。请确保其中没有任何 NULL 值，否则在读取该列时会导致问题。在这种情况下，可以通过 Kill 该 mutation，并将该列恢复为 Nullable 类型来规避问题。
 :::
 
-## MODIFY COLUMN REMOVE {#modify-column-remove}
+## MODIFY COLUMN REMOVE \{#modify-column-remove\}
 
 移除某个列属性：`DEFAULT`、`ALIAS`、`MATERIALIZED`、`CODEC`、`COMMENT`、`TTL`、`SETTINGS`。
 
@@ -239,7 +239,7 @@ ALTER TABLE table_with_ttl MODIFY COLUMN column_ttl REMOVE TTL;
 
 * [REMOVE TTL](ttl.md)
 
-## MODIFY COLUMN MODIFY SETTING {#modify-column-modify-setting}
+## MODIFY COLUMN MODIFY SETTING \{#modify-column-modify-setting\}
 
 修改列的设置。
 
@@ -257,7 +257,7 @@ ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING name=value,...;
 ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING max_compress_block_size = 1048576;
 ```
 
-## MODIFY COLUMN RESET SETTING {#modify-column-reset-setting}
+## MODIFY COLUMN RESET SETTING \{#modify-column-reset-setting\}
 
 重置列的设置，同时从该表的 CREATE 查询中的列表达式里移除该设置的声明。
 
@@ -275,7 +275,7 @@ ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING name,...;
 ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING max_compress_block_size;
 ```
 
-## MATERIALIZE COLUMN {#materialize-column}
+## MATERIALIZE COLUMN \{#materialize-column\}
 
 对具有 `DEFAULT` 或 `MATERIALIZED` 值表达式的列进行物化（materialize）。当使用 `ALTER TABLE table_name ADD COLUMN column_name MATERIALIZED` 添加物化列时，现有行中缺少物化值的部分不会被自动填充。在添加或更新 `DEFAULT` 或 `MATERIALIZED` 表达式之后（这只会更新元数据而不会更改现有数据），可以使用 `MATERIALIZE COLUMN` 语句重写已有列数据。请注意，对排序键中的列进行物化是无效操作，因为这可能破坏排序顺序。
 其实现方式为一次[变更（mutation）](/sql-reference/statements/alter/index.md#mutations)。
@@ -335,7 +335,7 @@ SELECT groupArray(x), groupArray(s) FROM tmp;
 
 * [MATERIALIZED](/sql-reference/statements/create/view#materialized-view).
 
-## 限制 {#limitations}
+## 限制 \{#limitations\}
 
 `ALTER` 查询允许在嵌套数据结构中创建和删除单个元素（列），但不能整体创建或删除整个嵌套数据结构。要添加一个嵌套数据结构，可以添加名称类似于 `name.nested_name` 且类型为 `Array(T)` 的列。一个嵌套数据结构等价于多个数组列，这些列在点号之前具有相同的前缀名称。
 

@@ -7,7 +7,7 @@ title: 'Map(K, V)'
 doc_type: 'reference'
 ---
 
-# Map(K, V) {#mapk-v}
+# Map(K, V) \{#mapk-v\}
 
 数据类型 `Map(K, V)` 用于存储键值对。
 
@@ -31,7 +31,7 @@ CREATE TABLE tab (m Map(String, UInt64)) ENGINE=Memory;
 INSERT INTO tab VALUES ({'key1':1, 'key2':10}), ({'key1':2,'key2':20}), ({'key1':3,'key2':30});
 ```
 
-若要选择 `key2` 的值：
+要查询 `key2` 的值：
 
 ```sql
 SELECT m['key2'] FROM tab;
@@ -48,7 +48,7 @@ SELECT m['key2'] FROM tab;
 ```
 
 如果访问的键 `k` 不在 map 中，`m[k]` 会返回该值类型的默认值，例如整数类型为 `0`，字符串类型为 `''`。
-要检查某个键是否存在于 map 中，可以使用函数 [mapContains](../../sql-reference/functions/tuple-map-functions#mapcontains)。
+要检查某个键是否存在于 map 中，可以使用函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey)。
 
 ```sql
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE=Memory;
@@ -66,7 +66,7 @@ SELECT m['key1'] FROM tab;
 ```
 
 
-## 将 Tuple 转换为 Map {#converting-tuple-to-map}
+## 将 Tuple 转换为 Map \{#converting-tuple-to-map\}
 
 类型为 `Tuple()` 的值可以通过函数 [CAST](/sql-reference/functions/type-conversion-functions#CAST) 转换为 `Map()` 类型的值：
 
@@ -87,7 +87,7 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 ```
 
 
-## 读取 Map 的子列 {#reading-subcolumns-of-map}
+## 读取 Map 的子列 \{#reading-subcolumns-of-map\}
 
 在某些情况下，为了避免读取整个 Map，你可以使用 `keys` 和 `values` 这两个子列。
 
@@ -122,6 +122,6 @@ SELECT m.values FROM tab; -- same as mapValues(m)
 * [用于 Map 数据类型的 -Map 组合器](../aggregate-functions/combinators.md#-map)
 
 
-## 相关内容 {#related-content}
+## 相关内容 \{#related-content\}
 
 - 博客：[使用 ClickHouse 构建可观测性解决方案 - 第 2 部分 - 链路追踪](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)

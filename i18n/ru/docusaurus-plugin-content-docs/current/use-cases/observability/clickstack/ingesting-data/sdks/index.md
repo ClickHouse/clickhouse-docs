@@ -15,13 +15,13 @@ keywords: ['ClickStack SDKs', 'языковые SDK ClickStack', 'OpenTelemetry 
 
 В браузерных окружениях SDK также могут отвечать за сбор **данных сеансов**, включая события пользовательского интерфейса, клики и навигацию, что позволяет воспроизводить пользовательские сеансы. 
 
-## Как это работает {#how-it-works}
+## Как это работает \{#how-it-works\}
 
 1. Ваше приложение использует SDK ClickStack (например, для Node.js, Python, Go). Эти SDKs основаны на OpenTelemetry SDKs с дополнительными возможностями и повышенным удобством использования.
 2. SDK собирает и экспортирует трассы и логи через OTLP (HTTP или gRPC).
 3. Коллектор OpenTelemetry получает телеметрию и записывает её в ClickHouse с помощью настроенных экспортеров.
 
-## Поддерживаемые языки {#supported-languages}
+## Поддерживаемые языки \{#supported-languages\}
 
 :::note Совместимость с OpenTelemetry
 Хотя ClickStack предлагает собственные языковые SDK с расширенной телеметрией и дополнительными возможностями, вы также можете бесшовно использовать существующие SDK OpenTelemetry.
@@ -44,7 +44,7 @@ keywords: ['ClickStack SDKs', 'языковые SDK ClickStack', 'OpenTelemetry 
 | React Native | Мобильные приложения на React Native | [Документация](/use-cases/observability/clickstack/sdks/react-native) |
 | Ruby | Приложения и веб‑сервисы на Ruby on Rails | [Документация](/use-cases/observability/clickstack/sdks/ruby-on-rails) |
 
-## Защита с помощью ключа API {#securing-api-key}
+## Защита с помощью ключа API \{#securing-api-key\}
 
 Для отправки данных в ClickStack через OTel collector SDK должны указывать ключ API для приёма данных (ingestion API key). Его можно задать либо с помощью функции `init` в SDK, либо через переменную окружения `OTEL_EXPORTER_OTLP_HEADERS`:
 
@@ -60,7 +60,7 @@ OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
 
-## Интеграция с Kubernetes {#kubernetes-integration}
+## Интеграция с Kubernetes \{#kubernetes-integration\}
 
 Все SDKs поддерживают автоматическую корреляцию с метаданными Kubernetes (имя пода, пространство имен и т. д.) при работе в среде Kubernetes. Это позволяет вам:
 

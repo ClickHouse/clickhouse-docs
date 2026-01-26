@@ -8,7 +8,7 @@ keywords: ['варианты использования ClickHouse', 'база �
 doc_type: 'landing-page'
 ---
 
-# Вопросы по использованию ClickHouse {#questions-about-clickhouse-use-cases}
+# Вопросы по использованию ClickHouse \{#questions-about-clickhouse-use-cases\}
 
 * [Могу ли я использовать ClickHouse в качестве базы данных временных рядов?](/knowledgebase/time-series)
 * [Могу ли я использовать ClickHouse в качестве хранилища ключ-значение?](/knowledgebase/key-value)

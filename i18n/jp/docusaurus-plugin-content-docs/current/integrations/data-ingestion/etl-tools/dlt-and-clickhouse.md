@@ -9,25 +9,25 @@ doc_type: 'guide'
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# dlt を ClickHouse に接続する {#connect-dlt-to-clickhouse}
+# dlt を ClickHouse に接続する \{#connect-dlt-to-clickhouse\}
 
 <PartnerBadge/>
 
 <a href="https://dlthub.com/docs/intro" target="_blank">dlt</a> は、Python スクリプトに組み込むことで、さまざまな（しばしば扱いづらい）データソースから、よく構造化されたライブデータセットへデータをロードできるオープンソースライブラリです。
 
-## ClickHouse と併せて dlt をインストールする {#install-dlt-with-clickhouse}
+## ClickHouse と併せて dlt をインストールする \{#install-dlt-with-clickhouse\}
 
-### ClickHouse の依存関係付きで `dlt` ライブラリをインストールするには: {#to-install-the-dlt-library-with-clickhouse-dependencies}
+### ClickHouse の依存関係付きで `dlt` ライブラリをインストールするには: \{#to-install-the-dlt-library-with-clickhouse-dependencies\}
 
 ```bash
 pip install "dlt[clickhouse]"
 ```
 
-## セットアップガイド {#setup-guide}
+## セットアップガイド \{#setup-guide\}
 
 <VerticalStepper headerLevel="h3">
 
-### dltプロジェクトの初期化 {#1-initialize-the-dlt-project}
+### dltプロジェクトの初期化 \{#1-initialize-the-dlt-project\}
 
 まず、以下のコマンドで新しい`dlt`プロジェクトを初期化します。
 
@@ -47,7 +47,7 @@ pip install -r requirements.txt
 
 または`pip install dlt[clickhouse]`を使用することで、`dlt`ライブラリとClickHouseをデスティネーションとして使用するために必要な依存関係をインストールできます。
 
-### ClickHouseデータベースのセットアップ {#2-setup-clickhouse-database}
+### ClickHouseデータベースのセットアップ \{#2-setup-clickhouse-database\}
 
 ClickHouseにデータをロードするには、ClickHouseデータベースを作成する必要があります。以下は実行すべき手順の概要です。
 
@@ -65,7 +65,7 @@ GRANT SELECT ON INFORMATION_SCHEMA.COLUMNS TO dlt;
 GRANT CREATE TEMPORARY TABLE, S3 ON *.* TO dlt;
 ```
 
-### 認証情報の追加 {#3-add-credentials}
+### 認証情報の追加 \{#3-add-credentials\}
 
 次に、以下のように`.dlt/secrets.toml`ファイルにClickHouseの認証情報を設定します。
 
@@ -100,7 +100,7 @@ destination.clickhouse.credentials="clickhouse://dlt:Dlt*12345789234567@localhos
 
 </VerticalStepper>
 
-## 書き込みディスポジション {#write-disposition}
+## 書き込みディスポジション \{#write-disposition\}
 
 すべての[書き込みディスポジション](https://dlthub.com/docs/general-usage/incremental-loading#choosing-a-write-disposition)
 がサポートされています。
@@ -113,17 +113,17 @@ dlt ライブラリの書き込みディスポジションは、データを宛�
 
 **Append**: これはデフォルトのディスポジションです。`primary_key` フィールドを無視し、宛先にすでに存在するデータに対してデータを追記します。
 
-## データロード {#data-loading}
+## データロード \{#data-loading\}
 データは、データソースに応じて最も効率的な方法で ClickHouse にロードします。
 
 - ローカルファイルの場合、`clickhouse-connect` ライブラリを使用し、`INSERT` コマンドでファイルを ClickHouse のテーブルに直接ロードします。
 - `S3`、`Google Cloud Storage`、`Azure Blob Storage` などのリモートストレージ上のファイルの場合、ClickHouse の s3、gcs、azureBlobStorage などのテーブル関数を使用してファイルを読み込み、テーブルにデータを挿入します。
 
-## データセット {#datasets}
+## データセット \{#datasets\}
 
 `Clickhouse` は 1 つのデータベース内で複数のデータセットをサポートしていませんが、`dlt` はさまざまな理由からデータセットに依存しています。`Clickhouse` を `dlt` と連携させるために、`Clickhouse` データベース内で `dlt` によって生成されるテーブル名には、設定可能な `dataset_table_separator` で区切られたデータセット名が接頭辞として付与されます。さらに、データを含まない特別なセンチネルテーブルが作成され、`dlt` が `Clickhouse` のデスティネーションに既に存在する仮想データセットを認識できるようにします。
 
-## サポートされているファイル形式 {#supported-file-formats}
+## サポートされているファイル形式 \{#supported-file-formats\}
 
 - <a href="https://dlthub.com/docs/dlt-ecosystem/file-formats/jsonl">jsonl</a> は、直接ロードとステージングの両方で推奨される形式です。
 - <a href="https://dlthub.com/docs/dlt-ecosystem/file-formats/parquet">parquet</a> は、直接ロードとステージングの両方でサポートされています。
@@ -136,12 +136,12 @@ dlt ライブラリの書き込みディスポジションは、データを宛�
 5. `Clickhouse` は、既にデータが存在するテーブルに対して、NOT NULL のカラムを追加することを許可します。
 6. `Clickhouse` は、`float` または `double` データ型を使用した場合、特定の条件下で丸め誤差を生じることがあります。丸め誤差が許容できない場合は、必ず `decimal` データ型を使用してください。たとえば、ローダーのファイル形式を `jsonl` に設定した状態で値 12.7001 を `double` カラムにロードすると、必ず丸め誤差が発生します。
 
-## サポートされているカラムヒント {#supported-column-hints}
+## サポートされているカラムヒント \{#supported-column-hints\}
 ClickHouse は、以下の<a href="https://dlthub.com/docs/general-usage/schema#tables-and-columns">カラムヒント</a>をサポートしています。
 
 - `primary_key` - カラムがプライマリキーの一部であることを示します。複数のカラムにこのヒントを指定して、複合プライマリキーを作成できます。
 
-## テーブルエンジン {#table-engine}
+## テーブルエンジン \{#table-engine\}
 
 デフォルトでは、ClickHouse ではテーブルは `ReplicatedMergeTree` テーブルエンジンを使用して作成されます。ClickHouse アダプターで `table_engine_type` を使用することで、別のテーブルエンジンを指定できます。
 
@@ -160,7 +160,7 @@ clickhouse_adapter(my_resource, table_engine_type="merge_tree")
 * `merge_tree` - `MergeTree` エンジンを使用してテーブルを作成します
 * `replicated_merge_tree` (デフォルト) - `ReplicatedMergeTree` エンジンを使用してテーブルを作成します
 
-## ステージングサポート {#staging-support}
+## ステージングサポート \{#staging-support\}
 
 ClickHouse は、ファイルのステージング先として Amazon S3、Google Cloud Storage、Azure Blob Storage をサポートしています。
 
@@ -183,7 +183,7 @@ pipeline = dlt.pipeline(
 )
 ```
 
-### ステージング領域として Google Cloud Storage を使用する {#using-google-cloud-storage-as-a-staging-area}
+### ステージング領域として Google Cloud Storage を使用する \{#using-google-cloud-storage-as-a-staging-area\}
 
 dlt では、データを ClickHouse にロードする際のステージング領域として Google Cloud Storage (GCS) を使用できます。これは、dlt が内部的に利用している ClickHouse の <a href="https://clickhouse.com/docs/sql-reference/table-functions/gcs">GCS テーブル関数</a> によって自動的に処理されます。
 
@@ -224,10 +224,10 @@ dlt はこれらの認証情報を ClickHouse に渡し、認証および GCS �
 * filesystem destination を S3 互換モードで GCS と<a href="https://github.com/dlt-hub/dlt/issues/1272">連携できるようにする</a>
 * Google Cloud Storage ステージングエリアの<a href="https://github.com/dlt-hub/dlt/issues/1181">サポート</a>
 
-### dbt サポート {#dbt-support}
+### dbt サポート \{#dbt-support\}
 
 <a href="https://dlthub.com/docs/dlt-ecosystem/transformations/dbt/">dbt</a> との連携は、一般に dbt-clickhouse を通じてサポートされています。
 
-### `dlt` state の同期 {#syncing-of-dlt-state}
+### `dlt` state の同期 \{#syncing-of-dlt-state\}
 
 この destination は、<a href="https://dlthub.com/docs/general-usage/state#syncing-state-with-destination">dlt</a> state の同期を完全にサポートしています。

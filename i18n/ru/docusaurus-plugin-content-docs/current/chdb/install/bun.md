@@ -7,27 +7,27 @@ keywords: ['chdb', 'bun', 'javascript', 'typescript', 'embedded', 'clickhouse', 
 doc_type: 'guide'
 ---
 
-# chDB для Bun {#chdb-for-bun}
+# chDB для Bun \{#chdb-for-bun\}
 
 chDB-bun предоставляет экспериментальные FFI (Foreign Function Interface) привязки для chDB, позволяя запускать запросы ClickHouse напрямую в ваших Bun-приложениях без внешних зависимостей.
 
-## Установка {#installation}
+## Установка \{#installation\}
 
-### Шаг 1: Установка системных зависимостей {#install-system-dependencies}
+### Шаг 1: Установка системных зависимостей \{#install-system-dependencies\}
 
 Сначала установите необходимые системные зависимости:
 
-#### Установка libchdb {#install-libchdb}
+#### Установка libchdb \{#install-libchdb\}
 
 ```bash
 curl -sL https://lib.chdb.io | bash
 ```
 
-#### Установка инструментов сборки {#install-build-tools}
+#### Установка инструментов сборки \{#install-build-tools\}
 
 Вам потребуется установить либо `gcc`, либо `clang` в вашей системе:
 
-### Шаг 2: Установка chDB-bun {#install-chdb-bun}
+### Шаг 2: Установка chDB-bun \{#install-chdb-bun\}
 
 ```bash
 # Установка из репозитория GitHub
@@ -40,11 +40,11 @@ bun install
 bun run build
 ```
 
-## Использование {#usage}
+## Использование \{#usage\}
 
 chDB-bun поддерживает два режима запросов: эфемерные запросы для одноразовых операций и постоянные сессии для поддержания состояния базы данных.
 
-### Эфемерные запросы {#ephemeral-queries}
+### Эфемерные запросы \{#ephemeral-queries\}
 
 Для простых одноразовых запросов, не требующих постоянного состояния:
 
@@ -68,7 +68,7 @@ const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "CSV");
 console.log(systemInfo);
 ```
 
-### Постоянные сессии {#persistent-sessions}
+### Постоянные сессии \{#persistent-sessions\}
 
 Для сложных операций, требующих сохранения состояния между запросами:
 

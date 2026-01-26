@@ -5,6 +5,9 @@ description: 'ClickHouse の HTTP インターフェイスを使用して Azure 
 keywords: ['Azure Data Factory', 'Azure', 'Microsoft', 'データ', 'HTTP インターフェイス']
 title: 'ClickHouse HTTP インターフェイスを使用して Azure のデータを ClickHouse に取り込む'
 doc_type: 'guide'
+integration:
+   - support_level: 'core'
+   - category: 'data_ingestion'
 ---
 
 import Image from '@theme/IdealImage';
@@ -35,7 +38,7 @@ import adfCopyDataSource                        from '@site/static/images/integr
 import adfCopyDataSinkSelectPost                from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-sink-select-post.png';
 import adfCopyDataDebugSuccess                  from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-debug-success.png';
 
-# Azure Data Factory で ClickHouse HTTP インターフェイスを使用する {#using-clickhouse-http-interface-in-azure-data-factory}
+# Azure Data Factory で ClickHouse HTTP インターフェイスを使用する \{#using-clickhouse-http-interface-in-azure-data-factory\}
 
 [`azureBlobStorage` Table Function](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
 は、Azure Blob Storage から ClickHouse にデータを取り込むための、高速かつ便利な方法です。
@@ -61,7 +64,7 @@ ClickHouse インスタンスをインターネットに公開せずに済ませ
 runtime](https://learn.microsoft.com/en-us/azure/data-factory/create-self-hosted-integration-runtime?tabs=data-factory)
 :::
 
-## ClickHouse を REST サービスとして利用する {#turning-clickhouse-to-a-rest-service}
+## ClickHouse を REST サービスとして利用する \{#turning-clickhouse-to-a-rest-service\}
 
 Azure Data Factory は、JSON 形式で HTTP 経由により外部システムへデータを送信することをサポートしています。この機能を利用して、[ClickHouse HTTP interface](https://clickhouse.com/docs/interfaces/http) を用い、データを直接 ClickHouse に挿入できます。
 詳細については、[ClickHouse HTTP Interface documentation](https://clickhouse.com/docs/interfaces/http) を参照してください。
@@ -76,7 +79,7 @@ SETTINGS
 FORMAT JSONEachRow
 ```
 
-このクエリを HTTP リクエストの一部として送信するには、単に URL エンコードした文字列として ClickHouse エンドポイントの `query` パラメータに渡します。
+このクエリを HTTP リクエストの一部として送信するには、URL エンコードした文字列として ClickHouse エンドポイントの `query` パラメータに渡すだけです。
 
 ```text
 https://your-clickhouse-url.com?query=INSERT%20INTO%20my_table%20SETTINGS%20date_time_input_format%3D%27best_effort%27%2C%20input_format_json_read_objects_as_strings%3D1%20FORMAT%20JSONEachRow%0A
@@ -104,7 +107,8 @@ ClickHouse を REST エンドポイントのように動作させられたので
 [REST sink](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest) 用の Dataset を定義し、
 Azure から ClickHouse へデータを送信する Copy Data アクティビティを作成します。
 
-## Azure Data Factory インスタンスの作成 {#create-an-azure-data-factory-instance}
+
+## Azure Data Factory インスタンスの作成 \{#create-an-azure-data-factory-instance\}
 
 このガイドでは、Microsoft Azure アカウントにアクセスでき、すでにサブスクリプションとリソース グループが設定済みであることを前提とします。すでに Azure Data Factory を構成済みの場合は、この手順は省略し、既存のサービスを使用して次のステップに進んで構いません。
 
@@ -124,7 +128,7 @@ Azure から ClickHouse へデータを送信する Copy Data アクティビテ
 
 デプロイが正常に完了したら、新しい Azure Data Factory インスタンスの利用を開始できます。
 
-## 新しい REST ベースのリンク サービスを作成する {#-creating-new-rest-based-linked-service}
+## 新しい REST ベースのリンク サービスを作成する \{#-creating-new-rest-based-linked-service\}
 
 1. Microsoft Azure ポータルにログインし、Data Factory インスタンスを開きます。
    <Image img={azureHomeWithDataFactory} size="lg" alt="Data Factory が表示されている Azure ポータルのホーム ページ" border/>
@@ -174,7 +178,7 @@ Azure から ClickHouse へデータを送信する Copy Data アクティビテ
 
 これで、新しく登録した REST ベースのリンク サービスが一覧に表示されます。
 
-## ClickHouse HTTP インターフェイス用の新しいデータセットを作成する {#creating-a-new-dataset-for-the-clickhouse-http-interface}
+## ClickHouse HTTP インターフェイス用の新しいデータセットを作成する \{#creating-a-new-dataset-for-the-clickhouse-http-interface\}
 
 ClickHouse HTTP インターフェイス用のリンク済みサービスの設定が完了したので、
 Azure Data Factory から ClickHouse にデータを送信するために使用する
@@ -239,7 +243,7 @@ Data](https://clickhouse.com/docs/getting-started/example-datasets/environmental
    画面上部の Publish all をクリックして変更内容を保存します。
    <Image img={adfNewDatasetConnectionSuccessful} size="xl" alt="新規データセット接続成功" border/>
 
-### サンプルデータセットのセットアップ {#setting-up-an-example-dataset}
+### サンプルデータセットのセットアップ \{#setting-up-an-example-dataset\}
 
 この例では、Environmental Sensors Dataset 全体ではなく、
 [Sensors Dataset Sample](https://datasets-documentation.s3.eu-west-3.amazonaws.com/environmental/sensors.csv)
@@ -258,7 +262,7 @@ Azure Data Factory がサポートしている別のファイル形式などで�
 アップロードしたデータを参照する新しいデータセットを作成します。
 最後に Publish all をクリックして変更内容を保存します。
 
-## ClickHouse へデータを転送する Copy アクティビティの作成 {#creating-the-copy-activity-to-transfer-data-to-clickhouse}
+## ClickHouse へデータを転送する Copy アクティビティの作成 \{#creating-the-copy-activity-to-transfer-data-to-clickhouse\}
 
 入力データセットと出力データセットの両方の設定が完了したので、サンプルデータセットから ClickHouse の `sensors` テーブルへデータを転送する **Copy Data** アクティビティを作成します。
 
@@ -287,7 +291,8 @@ Azure Data Factory がサポートしている別のファイル形式などで�
 
 6. 完了したら、**Publish all** をクリックして、パイプラインおよびデータセットの変更を保存します。
 
-## 追加リソース {#additional-resources-1}
+## 追加リソース \{#additional-resources-1\}
+
 - [HTTP インターフェイス](https://clickhouse.com/docs/interfaces/http)
 - [Azure Data Factory を使用して REST エンドポイントとの間でデータをコピーおよび変換する](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest?tabs=data-factory)
 - [挿入戦略の選択](https://clickhouse.com/docs/best-practices/selecting-an-insert-strategy)

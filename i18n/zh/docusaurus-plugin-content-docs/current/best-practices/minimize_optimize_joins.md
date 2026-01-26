@@ -26,7 +26,7 @@ ClickHouse 支持多种 JOIN 类型和算法，并且在近期版本中 JOIN 性
 关于在 ClickHouse 中对数据进行反规范化的完整指南，请参见[此处](/data-modeling/denormalization)。
 
 
-## 何时需要使用 JOIN {#when-joins-are-required}
+## 何时需要使用 JOIN \{#when-joins-are-required\}
 
 在需要使用 JOIN 时，请确保使用**至少 24.12 版本，且最好是最新版本**，因为每个新版本都会持续改进 JOIN 性能。从 ClickHouse 24.12 开始，查询规划器会自动将较小的表放在 JOIN 的右侧以获得最佳性能——这一任务此前需要手动完成。后续还会有更多增强功能推出，包括更激进的过滤下推以及对多表 JOIN 的自动重排序。
 
@@ -47,7 +47,7 @@ ClickHouse 支持多种 JOIN 类型和算法，并且在近期版本中 JOIN 性
 
 
 
-## 选择合适的 JOIN 算法 {#choosing-the-right-join-algorithm}
+## 选择合适的 JOIN 算法 \{#choosing-the-right-join-algorithm\}
 
 ClickHouse 支持多种在速度与内存之间进行权衡的 JOIN 算法：
 

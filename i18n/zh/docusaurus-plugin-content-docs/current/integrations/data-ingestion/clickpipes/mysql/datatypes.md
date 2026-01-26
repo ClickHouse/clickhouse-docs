@@ -4,6 +4,9 @@ slug: /integrations/clickpipes/mysql/datatypes
 description: '用于说明 MySQL ClickPipe 将 MySQL 数据类型映射到 ClickHouse 的页面'
 doc_type: 'reference'
 keywords: ['MySQL ClickPipe 数据类型', 'MySQL 到 ClickHouse 数据类型', 'ClickPipe 数据类型映射', 'MySQL ClickHouse 类型转换', '数据库类型兼容性']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 下面是 MySQL ClickPipe 支持的数据类型映射：

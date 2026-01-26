@@ -13,7 +13,7 @@ keywords: ['示例数据集', '英国房产', '示例数据', '房地产', '入�
 - 字段说明: https://www.gov.uk/guidance/about-the-price-paid-data
 - 包含 HM Land Registry 数据 © Crown copyright and database right 2021。本数据依据 Open Government Licence v3.0 授权许可使用。
 
-## 创建数据表 {#create-table}
+## 创建数据表 \{#create-table\}
 
 ```sql
 CREATE DATABASE uk;
@@ -39,7 +39,7 @@ ENGINE = MergeTree
 ORDER BY (postcode1, postcode2, addr1, addr2);
 ```
 
-## 预处理并插入数据 {#preprocess-import-data}
+## 预处理并插入数据 \{#preprocess-import-data\}
 
 我们将使用 `url` 函数将数据流式写入 ClickHouse。首先需要对部分传入数据进行预处理，包括：
 
@@ -93,7 +93,7 @@ FROM url(
 
 等待数据插入完成；根据网络速度，这可能需要一到两分钟。
 
-## 验证数据 {#validate-data}
+## 验证数据 \{#validate-data\}
 
 通过查看插入了多少行来验证是否生效：
 
@@ -112,11 +112,11 @@ WHERE name = 'uk_price_paid'
 
 Notice the size of the table is just 221.43 MiB!
 
-## Run some queries {#run-queries}
+## Run some queries \{#run-queries\}
 
 Let's run some queries to analyze the data:
 
-### Query 1. Average price per year {#average-price}
+### Query 1. Average price per year \{#average-price\}
 
 ```sql runnable
 SELECT
@@ -129,7 +129,7 @@ GROUP BY year
 ORDER BY year
 ```
 
-### Query 2. average price per year in London {#average-price-london}
+### Query 2. average price per year in London \{#average-price-london\}
 
 ```sql runnable
 SELECT
@@ -145,7 +145,7 @@ ORDER BY year
 
 Something happened to home prices in 2020! But that is probably not a surprise...
 
-### Query 3. The most expensive neighborhoods {#most-expensive-neighborhoods}
+### Query 3. The most expensive neighborhoods \{#most-expensive-neighborhoods\}
 
 ```sql runnable
 SELECT
@@ -164,10 +164,10 @@ ORDER BY price DESC
 LIMIT 100
 ```
 
-## 使用投影（Projections）加速查询 {#speeding-up-queries-with-projections}
+## 使用投影（Projections）加速查询 \{#speeding-up-queries-with-projections\}
 
 我们可以通过使用投影（Projections）来加速这些查询。参见[《投影（Projections）》](/data-modeling/projections)以查看针对该数据集的示例。
 
-### 在 Playground 中测试 {#playground}
+### 在 Playground 中测试 \{#playground\}
 
 该数据集也可在 [在线 Playground](https://sql.clickhouse.com?query_id=TRCWH5ZETY4SEEK8ISCCAX) 中使用。

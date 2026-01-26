@@ -21,11 +21,11 @@ title: 'レッスン - パーツ数が多すぎる問題'
 description: 'Too Many Parts の解決策と防止策'
 ---
 
-# パーツが多すぎる問題 {#the-too-many-parts-problem}
+# パーツが多すぎる問題 \{#the-too-many-parts-problem\}
 *このガイドは、コミュニティミートアップから得られた知見をまとめたコレクションの一部です。より実践的なソリューションやインサイトについては、[問題別に閲覧](./community-wisdom.md)できます。*
 *さらにパフォーマンス最適化のヒントが必要な場合は、[パフォーマンス最適化](./performance-optimization.md) に関するコミュニティインサイトガイドを参照してください。*
 
-## 問題の理解 {#understanding-the-problem}
+## 問題の理解 \{#understanding-the-problem\}
 
 ClickHouse は深刻なパフォーマンス低下を防ぐため、「Too many parts」エラーを発生させます。小さな part が多いと、さまざまな問題を引き起こします。クエリ処理時に読み込み・マージすべきファイルが増えることによるクエリパフォーマンスの低下、各 part ごとにメモリ上でメタデータを保持する必要があることによるメモリ使用量の増加、小さなデータブロックは圧縮効率が低いため圧縮率が悪化すること、より多くのファイルハンドルとシーク処理が必要になることによる I/O オーバーヘッドの増加、そしてマージスケジューラの負荷増大によるバックグラウンドマージの低速化です。
 
@@ -34,7 +34,7 @@ ClickHouse は深刻なパフォーマンス低下を防ぐため、「Too many 
 - [Parts](/parts)
 - [Parts システムテーブル](/operations/system-tables/parts)
 
-## 問題を早期に把握する {#recognize-parts-problem}
+## 問題を早期に把握する \{#recognize-parts-problem\}
 
 このクエリは、すべてのアクティブなテーブルに対してパーツ数とサイズを分析することで、テーブルのフラグメンテーションを監視します。マージの最適化が必要となる可能性がある、サイズが大きすぎる／小さすぎるパーツを持つテーブルを特定します。クエリパフォーマンスに影響が出る前にフラグメンテーションの問題を検出できるよう、これを定期的に実行してください。
 
@@ -70,7 +70,7 @@ ORDER BY total_parts DESC
 LIMIT 20;
 ```
 
-## 動画リソース {#video-sources}
+## 動画リソース \{#video-sources\}
 
 - [ClickHouse における高速・並列・一貫性のある非同期 INSERT](https://www.youtube.com/watch?v=AsMPEfN5QtM) - ClickHouse チームメンバーが非同期 INSERT と「too many parts」問題について解説
 - [大規模な本番環境での ClickHouse 運用](https://www.youtube.com/watch?v=liTgGiTuhJE) - オブザーバビリティプラットフォームにおける実践的なバッチ処理戦略

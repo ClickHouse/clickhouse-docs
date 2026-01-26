@@ -6,6 +6,9 @@ description: '在 ClickHouse Grafana 插件中使用查询构建器'
 title: '查询构建器'
 doc_type: 'guide'
 keywords: ['grafana', '查询构建器', '可视化', '仪表板', '插件']
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
 ---
 
 import Image from '@theme/IdealImage';
@@ -20,7 +23,7 @@ import trace_id_in_logs from '@site/static/images/integrations/data-visualizatio
 import demo_data_links from '@site/static/images/integrations/data-visualization/grafana/demo_data_links.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# 查询构建器 {#query-builder}
+# 查询构建器 \{#query-builder\}
 
 <ClickHouseSupportedBadge/>
 
@@ -30,18 +33,19 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 在查询构建器中的所有查询都有一个 [查询类型](#query-types)，并且至少需要选择一列。
 
 可用的查询类型包括：
+
 - [表](#table)：最简单的查询类型，以表格形式显示数据。适合作为包含聚合函数的简单和复杂查询的通用选项。
 - [日志](#logs)：针对构建日志查询进行了优化。在配置了[默认值](./config.md#logs)的探索视图中效果最佳。
 - [时间序列](#time-series)：最适合构建时间序列查询。允许选择专用的时间列并添加聚合函数。
 - [追踪](#traces)：针对搜索和查看追踪数据进行了优化。在配置了[默认值](./config.md#traces)的探索视图中效果最佳。
 - [SQL 编辑器](#sql-editor)：当你需要对查询进行完全控制时，可以使用 SQL 编辑器。在此模式下，可以执行任意 SQL 查询。
 
-## 查询类型 {#query-types}
+## 查询类型 \{#query-types\}
 
 *Query Type* 设置会更改查询构建器的布局，以匹配正在构建的查询类型。
 查询类型还决定在可视化数据时使用哪个面板。
 
-### 表格 {#table}
+### 表格 \{#table\}
 
 最灵活的查询类型是表格查询。它是一个通用查询构建器，用于处理简单查询和聚合查询。
 
@@ -59,7 +63,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 此查询类型会将数据渲染为表格。
 
-### 日志 {#logs}
+### 日志 \{#logs\}
 
 日志查询类型提供了一个专注于查询日志数据的查询构建器。
 可以在数据源的[日志配置](./config.md#logs)中配置默认值，使查询构建器预加载默认数据库/表和列。
@@ -86,25 +90,28 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 <Image size="md" img={demo_logs_query} alt="OTel 日志查询示例" border />
 
 <br/>
+
 此查询类型会在日志面板中渲染数据，并在顶部显示一个日志直方图面板。
 
 在查询中选取的额外列可以在展开的日志行中查看：
+
 <Image size="md" img={demo_logs_query_fields} alt="日志查询中额外字段示例" border />
 
-### 时间序列 {#time-series}
+### 时间序列 \{#time-series\}
 
-时间序列查询类型与 [table](#table) 类似，但重点针对时间序列数据。
+时间序列查询类型与 [table](#table) 类似，但更侧重于时间序列数据。
 
-两种视图大体相同，主要差异包括：
-- 专用的 *Time* 字段。
-- 在 Aggregate 模式下，会自动应用时间间隔宏，并对 Time 字段添加 Group By。
-- 在 Aggregate 模式下会隐藏 "Columns" 字段。
+两种视图大体相同，但有以下显著差异：
+
+- 独立的 *Time* 字段。
+- 在 Aggregate 模式下，会自动对 Time 字段应用时间区间宏，并执行 Group By。
+- 在 Aggregate 模式下，“Columns” 字段会被隐藏。
 - 会为 **Time** 字段自动添加时间范围过滤器和 Order By。
 
-:::important 可视化中是否缺少数据？
-在某些情况下，时间序列面板看起来会被截断，因为 limit 默认值为 `1000`。
+:::important 你的可视化是否缺少数据？
+在某些情况下，时间序列面板看起来会被截断，这是因为 LIMIT 的默认值是 `1000`。
 
-如果数据集允许，请尝试通过将其设置为 `0` 来移除 `LIMIT` 子句。
+如果数据集允许，可以尝试将 `LIMIT` 子句设置为 `0` 以移除该限制。
 :::
 
 | Field | Description |
@@ -120,9 +127,9 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <Image size="md" img={demo_time_series_query} alt="时间序列查询示例" border />
 
-此查询类型会使用时间序列面板来渲染数据。
+该查询类型会使用时间序列面板来渲染数据。
 
-### Traces {#traces}
+### Traces \{#traces\}
 
 Trace 查询类型提供了一个查询构建器，用于便捷地搜索和查看 traces。
 它是为 OpenTelemetry 数据设计的，但也可以选择不同 schema 中的列来渲染 traces。
@@ -159,7 +166,7 @@ Trace 查询类型支持 [data links](#data-links)。
 
 此查询类型会在 Trace Search 模式下使用表格视图渲染数据，在 Trace ID 模式下使用 trace 面板渲染数据。
 
-## SQL 编辑器 {#sql-editor}
+## SQL 编辑器 \{#sql-editor\}
 
 对于过于复杂而无法通过查询构建器完成的查询，你可以使用 SQL 编辑器。
 这使你能够直接编写并运行原生 ClickHouse SQL，从而完全掌控查询。
@@ -173,7 +180,7 @@ Trace 查询类型支持 [data links](#data-links)。
 
 <Image size="md" img={demo_raw_sql_query} alt="原始 SQL 查询示例" border />
 
-## 数据链接 {#data-links}
+## 数据链接 \{#data-links\}
 
 Grafana 的 [data links](https://grafana.com/docs/grafana/latest/panels-visualizations/configure-data-links)
 可用于跳转到新的查询。
@@ -189,15 +196,15 @@ Grafana 的 [data links](https://grafana.com/docs/grafana/latest/panels-visualiz
   <Image size="md" img={trace_id_in_logs} alt="日志中的 trace 链接" border />
 </div>
 
-### 如何创建数据链接 {#how-to-make-a-data-link}
+### 如何创建数据链接 \{#how-to-make-a-data-link\}
 
-您可以在查询中选择名为 `traceID` 的列来创建数据链接。该名称不区分大小写，并且支持在 “ID” 前添加下划线。例如：`traceId`、`TraceId`、`TRACE_ID` 和 `tracE_iD` 都是有效的。
+您可以在查询中选择名为 `traceID` 的列来创建数据链接。该名称不区分大小写，并且支持在“ID”前添加下划线。例如：`traceId`、`TraceId`、`TRACE_ID` 和 `tracE_iD` 都是有效的。
 
 如果在 [log](#logs) 或 [trace](#traces) 查询中启用了 OpenTelemetry，将会自动包含一个 trace ID 列。
 
-通过包含 trace ID 列，数据上会自动附加 “**View Trace**” 和 “**View Logs**” 链接。
+通过包含 trace ID 列，会自动在数据上附加 **View Trace** 和 **View Logs** 链接。
 
-### 链接功能 {#linking-abilities}
+### 链接功能 \{#linking-abilities\}
 
 在配置了数据链接后，可以使用提供的 trace ID 打开 trace 和日志。
 
@@ -211,14 +218,14 @@ Grafana 的 [data links](https://grafana.com/docs/grafana/latest/panels-visualiz
   <Image size="md" img={demo_data_links} alt="数据链接跳转示例" border />
 </div>
 
-## 宏 {#macros}
+## 宏 \{#macros\}
 
 宏是一种在查询中添加动态 SQL 的简单方式。
 在查询被发送到 ClickHouse 服务器之前，插件会展开宏并将其替换为完整的表达式。
 
 来自 SQL Editor 和 Query Builder 的查询都可以使用宏。
 
-### 使用宏 {#using-macros}
+### 使用宏 \{#using-macros\}
 
 宏可以出现在查询中的任意位置，必要时可以多次使用。
 
@@ -244,7 +251,8 @@ WHERE log_time >= toDateTime(1415792726) AND log_time <= toDateTime(1447328726)
 
 该插件还支持使用花括号 `{}` 的语法。当需要在[参数](/sql-reference/syntax.md#defining-and-using-query-parameters)中编写查询时，请使用这种语法。
 
-### 宏列表 {#list-of-macros}
+
+### 宏列表 \{#list-of-macros\}
 
 下面列出了插件中可用的所有宏：
 
@@ -261,4 +269,4 @@ WHERE log_time >= toDateTime(1415792726) AND log_time <= toDateTime(1447328726)
 | `$__timeInterval(columnName)`                | 替换为一个根据窗口大小（以秒为单位）计算时间区间的函数。                                                                        | `toStartOfInterval(toDateTime(columnName), INTERVAL 20 second)`                                                   |
 | `$__timeInterval_ms(columnName)`             | 替换为一个根据窗口大小（以毫秒为单位）计算时间区间的函数。                                                                       | `toStartOfInterval(toDateTime64(columnName, 3), INTERVAL 20 millisecond)`                                         |
 | `$__interval_s`                              | 替换为仪表板时间区间的秒数。                                                                                      | `20`                                                                                                              |
-| `$__conditionalAll(condition, $templateVar)` | 当第二个参数中的模板变量未选择所有值时，替换为第一个参数；当模板变量选择了所有值时，替换为 `1=1`。                                                | `condition` 或 `1=1`                                                                                               |
+| `$__conditionalAll(condition, $templateVar)` | 当第二个参数中的模板变量未选择所有值时，替换为第一个参数；当模板变量选择了所有值时，替换为 `1=1`。                                                | `condition` 或 `1=1`                                                                                              |

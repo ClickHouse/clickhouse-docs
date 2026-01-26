@@ -16,11 +16,11 @@ import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# dbt と ClickHouse の連携 {#integrate-dbt-clickhouse}
+# dbt と ClickHouse の連携 \{#integrate-dbt-clickhouse\}
 
 <ClickHouseSupportedBadge/>
 
-## dbt-clickhouse アダプター {#dbt-clickhouse-adapter}
+## dbt-clickhouse アダプター \{#dbt-clickhouse-adapter\}
 
 **dbt**（data build tool）は、アナリティクスエンジニアが `SELECT` 文を書くことで、データウェアハウス内のデータを変換できるようにします。dbt は、これらの `SELECT` 文をテーブルやビューという形のデータベースオブジェクトとしてマテリアライズし、[Extract, Load, and Transform (ELT)](https://en.wikipedia.org/wiki/Extract,_load,_transform) のうち T（Transform）の役割を担います。`SELECT` 文で定義されたモデルを作成することができます。
 
@@ -30,7 +30,7 @@ dbt は、[ClickHouse がサポートするアダプター](https://github.com/C
 
 <TOCInline toc={toc}  maxHeadingLevel={2} />
 
-## サポートされている機能 {#supported-features}
+## サポートされている機能 \{#supported-features\}
 
 サポートされている機能の一覧:
 
@@ -56,7 +56,7 @@ dbt は、[ClickHouse がサポートするアダプター](https://github.com/C
 
 このアダプターは、現時点では [dbt Cloud](https://docs.getdbt.com/docs/dbt-cloud/cloud-overview) 内では利用できませんが、近いうちに利用可能にする予定です。詳細については、サポートまでお問い合わせください。
 
-## dbt のコンセプトとサポートされるマテリアライゼーション {#concepts-and-supported-materializations}
+## dbt のコンセプトとサポートされるマテリアライゼーション \{#concepts-and-supported-materializations\}
 
 dbt は「モデル」という概念を導入します。これは、複数のテーブルを結合することもある SQL 文として定義されます。モデルは複数の方法で「マテリアライズ」できます。マテリアライゼーションは、そのモデルの SELECT クエリに対するビルド戦略を表します。マテリアライゼーションの裏側にあるコードは、SELECT クエリを別の文でラップして、新しいリレーションを作成するか既存のリレーションを更新するための定型的な SQL です。
 
@@ -81,9 +81,9 @@ ClickHouse 向けの[現行のアダプタ](https://github.com/silentsokolov/dbt
 | Distributed incremental materialization | はい（Experimental） | distributed table と同じ考え方に基づく incremental モデルです。すべての strategy がサポートされているわけではない点に注意してください。詳細は[こちら](https://github.com/ClickHouse/dbt-clickhouse?tab=readme-ov-file#distributed-incremental-materialization)を参照してください。 |
 | Dictionary materialization              | はい（Experimental） | [dictionary](https://clickhouse.com/docs/en/engines/table-engines/special/dictionary) を作成します。                                                                                                                                            |
 
-## dbt と ClickHouse アダプターのセットアップ {#setup-of-dbt-and-the-clickhouse-adapter}
+## dbt と ClickHouse アダプターのセットアップ \{#setup-of-dbt-and-the-clickhouse-adapter\}
 
-### dbt-core と dbt-clickhouse をインストールする {#install-dbt-core-and-dbt-clickhouse}
+### dbt-core と dbt-clickhouse をインストールする \{#install-dbt-core-and-dbt-clickhouse\}
 
 dbt にはコマンドラインインターフェイス (CLI) のインストール方法がいくつかあり、詳細は[こちら](https://docs.getdbt.com/dbt-cli/install/overview)に記載されています。dbt と dbt-clickhouse の両方をインストールするには、`pip` を使用することを推奨します。
 
@@ -92,7 +92,7 @@ pip install dbt-core dbt-clickhouse
 ```
 
 
-### dbt に ClickHouse インスタンスへの接続情報を設定します。 {#provide-dbt-with-the-connection-details-for-our-clickhouse-instance}
+### dbt に ClickHouse インスタンスへの接続情報を設定します。 \{#provide-dbt-with-the-connection-details-for-our-clickhouse-instance\}
 
 `~/.dbt/profiles.yml` ファイル内で `clickhouse-service` プロファイルを設定し、schema、host、port、user、password の各プロパティを指定します。利用可能な接続設定オプションの一覧は、[機能と設定](/integrations/dbt/features-and-configurations) ページを参照してください。
 
@@ -113,7 +113,7 @@ clickhouse-service:
 ```
 
 
-### dbt プロジェクトを作成する {#create-a-dbt-project}
+### dbt プロジェクトを作成する \{#create-a-dbt-project\}
 
 これで、このプロファイルを既存のいずれかのプロジェクトで使用するか、次のコマンドを実行して新しいプロジェクトを作成できます。
 
@@ -128,17 +128,17 @@ profile: 'clickhouse-service'
 ```
 
 
-### 接続テスト {#test-connection}
+### 接続テスト \{#test-connection\}
 
 dbt CLI で `dbt debug` を実行し、dbt が ClickHouse に接続できるかどうかを確認します。出力に `Connection test: [OK connection ok]` が含まれていれば、接続が成功していることを示しています。
 
 ClickHouse と組み合わせた dbt の使い方について詳しくは、[ガイドページ](/integrations/dbt/guides) を参照してください。
 
-### モデルのテストとデプロイ (CI/CD) {#testing-and-deploying-your-models-ci-cd}
+### モデルのテストとデプロイ (CI/CD) \{#testing-and-deploying-your-models-ci-cd\}
 
 dbt プロジェクトをテストおよびデプロイする方法には、さまざまなパターンがあります。dbt では、[ベストプラクティスに沿ったワークフロー](https://docs.getdbt.com/best-practices/best-practice-workflows#pro-tips-for-workflows)や [CI ジョブ](https://docs.getdbt.com/docs/deploy/ci-jobs)に関する推奨事項が提供されています。ここではいくつかの戦略について説明しますが、実際のユースケースに適合させるには大きく調整する必要がある場合があることに留意してください。
 
-#### シンプルなデータテストとユニットテストを用いた CI/CD {#ci-with-simple-data-tests-and-unit-tests}
+#### シンプルなデータテストとユニットテストを用いた CI/CD \{#ci-with-simple-data-tests-and-unit-tests\}
 
 CI パイプラインを始動させる簡単な方法の 1 つは、ジョブ内で ClickHouse クラスターを立ち上げ、そのクラスターに対してモデルを実行することです。モデルを実行する前に、このクラスターにデモデータを投入しておけます。[seed](https://docs.getdbt.com/reference/commands/seed) を使用して、本番データのサブセットをステージング環境に投入することもできます。
 
@@ -146,7 +146,7 @@ CI パイプラインを始動させる簡単な方法の 1 つは、ジョブ�
 
 CD ステップは、本番の ClickHouse クラスターに対して `dbt build` を実行するだけ、という非常にシンプルなものにできます。
 
-#### より完全な CI/CD ステージ: 最新データを使用し、影響を受けたモデルのみをテストする {#more-complete-ci-stage}
+#### より完全な CI/CD ステージ: 最新データを使用し、影響を受けたモデルのみをテストする \{#more-complete-ci-stage\}
 
 よく使われる戦略の 1 つは、変更されたモデル（およびその上流・下流の依存関係）のみを再デプロイする [Slim CI](https://docs.getdbt.com/best-practices/best-practice-workflows#run-only-modified-models-to-test-changes-slim-ci) ジョブを使用することです。このアプローチでは、本番実行からのアーティファクト（つまり [dbt manifest](https://docs.getdbt.com/reference/artifacts/manifest-json)）を使用して、プロジェクトの実行時間を短縮し、環境間でスキーマドリフトが発生しないようにします。
 
@@ -161,9 +161,9 @@ CI テスト用に専用環境を用意すると、本番環境に影響を与�
 
 デプロイメント（つまり CD ステップ）については、本番デプロイメントのアーティファクトを使用して、変更されたモデルのみを更新することを推奨します。これには、dbt アーティファクト用の中間ストレージとしてオブジェクトストレージ（例: S3）を設定する必要があります。設定が完了したら、`dbt build --select state:modified+ --state path/to/last/deploy/state.json` のようなコマンドを実行して、本番での前回の実行以降に変更された内容に基づき、必要最小限のモデルだけを選択的に再ビルドできます。
 
-## よくある問題のトラブルシューティング {#troubleshooting-common-issues}
+## よくある問題のトラブルシューティング \{#troubleshooting-common-issues\}
 
-### 接続 {#troubleshooting-connections}
+### 接続 \{#troubleshooting-connections\}
 
 dbt から ClickHouse への接続で問題が発生する場合は、次の要件を満たしていることを確認してください。
 
@@ -171,11 +171,11 @@ dbt から ClickHouse への接続で問題が発生する場合は、次の要�
 - データベースにアクセスするための十分な権限を持っている必要があります。
 - データベースのデフォルトのテーブルエンジンを使用していない場合は、モデル構成でテーブルエンジンを指定する必要があります。
 
-### 長時間実行される処理を理解する {#understanding-long-running-operations}
+### 長時間実行される処理を理解する \{#understanding-long-running-operations\}
 
 一部の処理は、特定の ClickHouse クエリが原因で予想以上に時間がかかる場合があります。どのクエリに時間がかかっているかを詳しく把握するには、[log level](https://docs.getdbt.com/reference/global-configs/logs#log-level) を `debug` に引き上げてください。これにより、各クエリに要した時間が出力されます。たとえば、dbt コマンドに `--log-level debug` を指定することで有効にできます。
 
-## 制限事項 {#limitations}
+## 制限事項 \{#limitations\}
 
 現在の dbt 用 ClickHouse adapter には、認識しておくべき制限がいくつかあります。
 
@@ -186,6 +186,6 @@ dbt から ClickHouse への接続で問題が発生する場合は、次の要�
 - dbt がデータベース内にリレーション（table/view）を作成する場合、通常は `{{ database }}.{{ schema }}.{{ table/view id }}` のように作成します。ClickHouse には schema の概念がありません。そのため、この adapter は `{{schema}}.{{ table/view id }}` を使用し、ここでの `schema` は ClickHouse のデータベースを指します。
 - ephemeral モデル / CTE は、ClickHouse の INSERT 文内で `INSERT INTO` より前に配置した場合は動作しません。https://github.com/ClickHouse/ClickHouse/issues/30323 を参照してください。これはほとんどのモデルには影響しないはずですが、ephemeral モデルをモデル定義やその他の SQL 文のどこに配置するかには注意が必要です。 <!-- TODO この制限事項を再確認すること。issue はすでにクローズされ、24.10 で修正が導入されたように見える -->
 
-## Fivetran {#fivetran}
+## Fivetran \{#fivetran\}
 
 `dbt-clickhouse` コネクタは [Fivetran transformations](https://fivetran.com/docs/transformations/dbt) でも利用可能であり、Fivetran プラットフォーム上で `dbt` を用いたシームレスな統合および変換を直接実行できます。

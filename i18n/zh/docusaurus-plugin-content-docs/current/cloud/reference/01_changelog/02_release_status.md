@@ -12,7 +12,7 @@ import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedul
 ClickHouse Cloud 提供不同的发布通道，以满足用户在稳定性、新功能获取速度和升级可预测性方面的不同需求。每个通道都有各自明确的升级周期，分别针对不同的使用场景——既适用于希望即时获取新版本的用户，也适用于希望推迟升级以确保获得该版本中最稳定发布的用户。
 
 
-## 发布通道详情 {#release-channel-details}
+## 发布通道详情 \{#release-channel-details\}
 
 <details>
 <summary>了解更多发布通道信息</summary>
@@ -34,20 +34,31 @@ ClickHouse Cloud 提供不同的发布通道，以满足用户在稳定性、新
 
 对于 Enterprise 层级中的服务，所有发布通道都支持计划升级。该功能允许用户在一周中的指定日期配置升级时间窗口。
 
-## 发布计划 {#release-schedule}
+## 发布计划 \{#release-schedule\}
 
 下列发布时间仅为预估，可能会有所变动。
 
 <ReleaseSchedule releases={[
    {
-    changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
-    version: '25.10',
-    fast_date: '2025-12-11（于 2025-12-15 完成）',
-    regular_date: '2026-01-07',
-    slow_date: 'TBD',
+     changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
+     version: '25.10',
+     fast_date: '2025-12-11（于 2025-12-15 完成）',
+     regular_date: '2026-01-13',
+     slow_date: 'TBD',
+     fast_progress: 'green',
+     regular_progress: 'green',
+     slow_progress: 'green',
+     fast_delay_note: '具有升级窗口的服务将在 1 月 12 日当周的预定窗口期间升级到 25.10 版本',
+   },
+   {
+    changelog_link: 'https://clickhouse.com/docs/changelogs/25.8',
+    version: '25.8',
+    fast_date: '已完成',
+    regular_date: '已完成（2025-12-19）',
+    slow_date: '2026-01-15',
     fast_progress: 'green',
     regular_progress: 'green',
     slow_progress: 'green',
-    fast_delay_note: '具有升级窗口的服务将在 1 月 5 日当周的预定窗口期间升级到 25.10 版本',
+    regular_delay_note: '具有升级窗口的服务将自 1 月 13 日起开始升级。',
   }
 ]} />

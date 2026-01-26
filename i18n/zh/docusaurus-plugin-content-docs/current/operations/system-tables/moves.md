@@ -6,7 +6,7 @@ title: 'system.moves'
 doc_type: 'reference'
 ---
 
-# system.moves {#systemmoves}
+# system.moves \{#systemmoves\}
 
 该表包含 [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) 表中正在进行的 [数据部分移动](/sql-reference/statements/alter/partition#move-partitionpart) 的相关信息。每个数据部分移动对应一行记录。
 

@@ -9,22 +9,22 @@ keywords: ['ClickHouse Cloud', 'SOC 2 Type II', 'ISO 27001', 'HIPAA', 'U.S. DPF'
 import BetaBadge from '@theme/badges/BetaBadge';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
 
-# セキュリティおよびコンプライアンスレポート {#security-and-compliance-reports}
+# セキュリティおよびコンプライアンスレポート \{#security-and-compliance-reports\}
 ClickHouse はお客様のセキュリティおよびコンプライアンスに関するニーズを評価し、追加のレポートに対するご要望に応じてプログラムの拡充を継続しています。詳細やレポートのダウンロードは、[Trust Center](https://trust.clickhouse.com) をご覧ください。
 
-## SOC 2 Type II（2022年以降） {#soc-2-type-ii-since-2022}
+## SOC 2 Type II（2022年以降） \{#soc-2-type-ii-since-2022\}
 
 System and Organization Controls（SOC）2 は、Trust Services Criteria（TSC）で定められたセキュリティ、可用性、機密性、処理の完全性およびプライバシーに関する基準を、組織のシステムに適用したものに焦点を当てた報告書であり、これらの管理策について依拠当事者（当社のお客様）に保証を提供することを目的としています。ClickHouse は、独立した外部監査人と協力し、少なくとも年に一度、当社システムのセキュリティ、可用性および処理の完全性、ならびに当社システムによって処理されるデータの機密性およびプライバシーに関する監査を受けています。本報告書は、当社の ClickHouse Cloud と Bring Your Own Cloud（BYOC）の両方のサービスを対象としています。 
 
-## ISO 27001（2023年以降） {#iso-27001-since-2023}
+## ISO 27001（2023年以降） \{#iso-27001-since-2023\}
 
 国際標準化機構（ISO）27001は、情報セキュリティに関する国際規格です。この規格では、企業に対して、リスク管理、ポリシーの策定・周知、セキュリティコントロールの実装、ならびに各構成要素が常に適切かつ有効であり続けることを確認するための監視プロセスを含む情報セキュリティマネジメントシステム（ISMS）の導入を求めています。ClickHouseは内部監査を実施するとともに、独立した外部監査人と連携し、認証書の発行から2年間にわたり監査および中間審査を受けています。 
 
-## 米国 DPF（2024 年以降） {#us-dpf-since-2024}
+## 米国 DPF（2024 年以降） \{#us-dpf-since-2024\}
 
 U.S. Data Privacy Framework は、EU／欧州経済領域（EEA）、英国、およびスイスから米国への個人データ移転について、EU、英国、スイスの法令と整合する信頼性の高いメカニズムを米国の組織に提供するために策定された枠組みです (https://dataprivacyframework.gov/Program-Overview)。ClickHouse はこの枠組みに自己適合宣言を行っており、[Data Privacy Framework List](https://dataprivacyframework.gov/list) に掲載されています。
 
-## HIPAA（2024年以降） {#hipaa-since-2024}
+## HIPAA（2024年以降） \{#hipaa-since-2024\}
 
 <EnterprisePlanFeatureBadge feature="HIPAA"/>
 
@@ -32,7 +32,7 @@ U.S. Data Privacy Framework は、EU／欧州経済領域（EEA）、英国、�
 
 Business Associate Agreement（BAA）の締結および HIPAA 準拠サービスのデプロイ手順については、[HIPAA オンボーディング](//cloud/security/compliance/hipaa-onboarding)を参照してください。
 
-## PCI サービスプロバイダ（2025 年以降） {#pci-service-provider-since-2025}
+## PCI サービスプロバイダ（2025 年以降） \{#pci-service-provider-since-2025\}
 
 <EnterprisePlanFeatureBadge feature="PCI compliance"/>
 
@@ -40,10 +40,10 @@ Business Associate Agreement（BAA）の締結および HIPAA 準拠サービス
 
 PCI に準拠したサービスをデプロイする手順については、[PCI onboarding](//cloud/security/compliance/pci-onboarding) を参照してください。
 
-## プライバシーコンプライアンス {#privacy-compliance}
+## プライバシーコンプライアンス \{#privacy-compliance\}
 
 上記の項目に加えて、ClickHouse は一般データ保護規則 (GDPR)、カリフォルニア消費者プライバシー法 (CCPA) およびその他の関連するプライバシーフレームワークに対応する内部コンプライアンスプログラムを運用しています。 
 
-## 決済コンプライアンス {#payment-compliance}
+## 決済コンプライアンス \{#payment-compliance\}
 
 ClickHouse は、[PCI SAQ A v4.0](https://www.pcisecuritystandards.org/document_library/) に準拠した、安全なクレジットカード決済方法を提供します。 

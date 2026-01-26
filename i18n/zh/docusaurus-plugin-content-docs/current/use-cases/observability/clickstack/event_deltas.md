@@ -27,7 +27,7 @@ ClickStack 中的 Event Deltas 是一项以 trace 为中心的功能，会自动
 <Image img={event_deltas} alt="Event Deltas" size="lg" />
 
 
-## 使用 Event Deltas {#using-event-deltas}
+## 使用 Event Deltas \{#using-event-deltas\}
 
 在 ClickStack 的 **Search** 面板中，当选择 `Trace` 类型的来源（source）时，可以直接使用 Event Deltas。
 
@@ -53,11 +53,11 @@ ClickStack 中的 Event Deltas 是一项以 trace 为中心的功能，会自动
 
 相反，仅与内群点相关联的取值同样可能具有分析价值。在上方示例中，错误 `Visa Cash Full` 只出现在内群点中，在离群 span 中完全不存在。在这种情况下，延迟始终小于约 50 毫秒，这表明该错误与较低延迟相关联。
 
-## Event Deltas 的工作原理 {#how-event-deltas-work}
+## Event Deltas 的工作原理 \{#how-event-deltas-work\}
 
 Event Deltas 通过执行两个查询来工作：一个针对选定的离群区域，另一个针对内群区域。每个查询都限制在相应的持续时间和时间窗口内。随后会对两个结果集中事件的样本进行检查，并识别出那些其取值高度集中出现在离群结果中的列。对于某个取值 100% 仅出现在离群子集中的列会优先显示，以突出最可能导致观测差异的属性。
 
-## 自定义图表 {#customizing-the-graph}
+## 自定义图表 \{#customizing-the-graph\}
 
 在图表上方，你会看到一些控件，用于自定义热力图的生成方式。随着你调整这些参数，热力图会实时更新，帮助你可视化并比较任意可度量数值与其随时间变化的频率之间的关系。
 
@@ -79,7 +79,7 @@ Event Deltas 通过执行两个查询来工作：一个针对选定的离群区�
 
 <Image img={event_deltas_customization} alt="事件差值自定义" size="lg"/>
 
-## 建议 {#recommendations}
+## 建议 \{#recommendations\}
 
 当分析聚焦在某个特定服务时，Event Deltas 的效果最佳。多个服务之间的延迟可能差异很大，从而更难识别对离群值影响最大的列和取值。在启用 Event Deltas 之前，请先将 spans 过滤到一组预期延迟分布相近的数据上。优先分析那些在业务上不应出现大幅延迟差异的数据集，以获取更有价值的洞察，避免在延迟高度可变（例如两个不同服务）的场景下使用。
 

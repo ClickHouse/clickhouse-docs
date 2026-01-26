@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 [`JSONCompactEachRow`](./JSONCompactEachRow.md) とは、データフィールドが型付きの JSON 値ではなく文字列として出力される点のみが異なります。
 
-## 使用例 {#example-usage}
+## 使用例 \{#example-usage\}
 
-### データの挿入 {#inserting-data}
+### データの挿入 \{#inserting-data\}
 
 次のデータを含む JSON ファイル `football.json` を用意します。
 
@@ -49,7 +49,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactStringsEachRow;
 ```
 
-### データの読み込み {#reading-data}
+### データの読み込み \{#reading-data\}
 
 `JSONCompactStringsEachRow` 形式を使用してデータを読み込みます。
 
@@ -81,4 +81,4 @@ FORMAT JSONCompactStringsEachRow
 ["2022-05-07", "2021", "Walsall", "Swindon Town", "0", "3"]
 ```
 
-## 形式設定 {#format-settings}
+## 形式設定 \{#format-settings\}

@@ -7,7 +7,7 @@ title: 'UUID'
 doc_type: 'reference'
 ---
 
-# UUID {#uuid}
+# UUID \{#uuid\}
 
 通用唯一标识符（UUID）是一种用于标识记录的 16 字节值。有关 UUID 的详细信息，请参阅 [维基百科](https://en.wikipedia.org/wiki/Universally_unique_identifier)。
 
@@ -83,11 +83,11 @@ SELECT * FROM tab ORDER BY toUInt128(uuid);
 └──────────────────────────────────────┘
 ```
 
-## 生成 UUID {#generating-uuids}
+## 生成 UUID \{#generating-uuids\}
 
 ClickHouse 提供了 [generateUUIDv4](../../sql-reference/functions/uuid-functions.md) 函数，用于生成随机的第 4 版 UUID 值。
 
-## 使用示例 {#usage-example}
+## 使用示例 \{#usage-example\}
 
 **示例 1**
 
@@ -126,7 +126,7 @@ SELECT * FROM t_uuid
 └──────────────────────────────────────┴───────────┘
 ```
 
-## 限制 {#restrictions}
+## 限制 \{#restrictions\}
 
 `UUID` 数据类型只支持 [`String`](../../sql-reference/data-types/string.md) 数据类型也支持的函数（例如 [`min`](/sql-reference/aggregate-functions/reference/min)、[`max`](/sql-reference/aggregate-functions/reference/max) 和 [`count`](/sql-reference/aggregate-functions/reference/count)）。
 

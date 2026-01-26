@@ -7,14 +7,14 @@ doc_type: 'guide'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'обёртка внешних данных', 'pg_clickhouse', 'расширение', 'руководство', 'такси']
 ---
 
-# Руководство по pg_clickhouse {#pg_clickhouse-tutorial}
+# Руководство по pg_clickhouse \{#pg_clickhouse-tutorial\}
 
-## Обзор {#overview}
+## Обзор \{#overview\}
 
 В этом руководстве повторяется [ClickHouse tutorial], но все запросы выполняются через
 pg_clickhouse.
 
-## Запустите ClickHouse {#start-clickhouse}
+## Запустите ClickHouse \{#start-clickhouse\}
 
 Сначала создайте базу данных ClickHouse, если у вас её ещё нет. Быстрый способ
 начать — воспользоваться Docker-образом:
@@ -25,7 +25,7 @@ docker exec -it clickhouse clickhouse-client
 ```
 
 
-## Создайте таблицу {#create-a-table}
+## Создайте таблицу \{#create-a-table\}
 
 Воспользуемся примером из [ClickHouse tutorial], чтобы создать простую базу данных с датасетом нью‑йоркского такси:
 
@@ -90,7 +90,7 @@ ORDER BY pickup_datetime;
 ```
 
 
-## Добавление набора данных {#add-the-data-set}
+## Добавление набора данных \{#add-the-data-set\}
 
 Затем импортируйте данные:
 
@@ -160,21 +160,27 @@ quit
 ```
 
 
-### Установите pg&#95;clickhouse {#install-pg_clickhouse}
+### Установите pg&#95;clickhouse \{#install-pg&#95;clickhouse\}
 
 Соберите и установите pg&#95;clickhouse из [PGXN] или [GitHub]. Или разверните
 контейнер Docker, используя образ [pg&#95;clickhouse image], который просто добавляет
 pg&#95;clickhouse к Docker-образу [Postgres image]:
 
 ```sh
-docker run --network host --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
-       -d ghcr.io/clickhouse/pg_clickhouse:18 -U postgres
+docker run -d --network host --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
+       -d ghcr.io/clickhouse/pg_clickhouse:18
 ```
 
 
-### Подключите pg&#95;clickhouse {#connect-pg_clickhouse}
+### Подключите pg&#95;clickhouse \{#connect-pg&#95;clickhouse\}
 
-Теперь подключитесь к Postgres и создайте pg&#95;clickhouse:
+Теперь подключитесь к Postgres:
+
+```sh
+docker exec -it pg_clickhouse psql -U postgres
+```
+
+И создайте pg&#95;clickhouse:
 
 ```sql
 CREATE EXTENSION pg_clickhouse;
@@ -212,65 +218,65 @@ IMPORT FOREIGN SCHEMA taxi FROM SERVER taxi_srv INTO taxi;
 ```pgsql
 taxi=# \det+ taxi.*
                                        List of foreign tables
- Schema | Table |  Server  |                        FDW options                        | Description 
+ Schema | Table |  Server  |                        FDW options                        | Description
 --------+-------+----------+-----------------------------------------------------------+-------------
  taxi   | trips | taxi_srv | (database 'taxi', table_name 'trips', engine 'MergeTree') | [null]
 (1 row)
 ```
 
-Готово! Используйте `\d`, чтобы вывести все столбцы:
+Готово! Используйте `\d`, чтобы отобразить все столбцы:
 
 
 ```pgsql
 taxi=# \d taxi.trips
                                      Foreign table "taxi.trips"
-        Column         |            Type             | Collation | Nullable | Default | FDW options 
+        Column         |            Type             | Collation | Nullable | Default | FDW options
 -----------------------+-----------------------------+-----------+----------+---------+-------------
- trip_id               | bigint                      |           | not null |         | 
- vendor_id             | text                        |           | not null |         | 
- pickup_date           | date                        |           | not null |         | 
- pickup_datetime       | timestamp without time zone |           | not null |         | 
- dropoff_date          | date                        |           | not null |         | 
- dropoff_datetime      | timestamp without time zone |           | not null |         | 
- store_and_fwd_flag    | smallint                    |           | not null |         | 
- rate_code_id          | smallint                    |           | not null |         | 
- pickup_longitude      | double precision            |           | not null |         | 
- pickup_latitude       | double precision            |           | not null |         | 
- dropoff_longitude     | double precision            |           | not null |         | 
- dropoff_latitude      | double precision            |           | not null |         | 
- passenger_count       | smallint                    |           | not null |         | 
- trip_distance         | double precision            |           | not null |         | 
- fare_amount           | numeric(10,2)               |           | not null |         | 
- extra                 | numeric(10,2)               |           | not null |         | 
- mta_tax               | numeric(10,2)               |           | not null |         | 
- tip_amount            | numeric(10,2)               |           | not null |         | 
- tolls_amount          | numeric(10,2)               |           | not null |         | 
- ehail_fee             | numeric(10,2)               |           | not null |         | 
- improvement_surcharge | numeric(10,2)               |           | not null |         | 
- total_amount          | numeric(10,2)               |           | not null |         | 
- payment_type          | text                        |           | not null |         | 
- trip_type             | smallint                    |           | not null |         | 
- pickup                | character varying(25)       |           | not null |         | 
- dropoff               | character varying(25)       |           | not null |         | 
- cab_type              | text                        |           | not null |         | 
- pickup_nyct2010_gid   | smallint                    |           | not null |         | 
- pickup_ctlabel        | real                        |           | not null |         | 
- pickup_borocode       | smallint                    |           | not null |         | 
- pickup_ct2010         | text                        |           | not null |         | 
- pickup_boroct2010     | text                        |           | not null |         | 
- pickup_cdeligibil     | text                        |           | not null |         | 
- pickup_ntacode        | character varying(4)        |           | not null |         | 
- pickup_ntaname        | text                        |           | not null |         | 
- pickup_puma           | integer                     |           | not null |         | 
- dropoff_nyct2010_gid  | smallint                    |           | not null |         | 
- dropoff_ctlabel       | real                        |           | not null |         | 
- dropoff_borocode      | smallint                    |           | not null |         | 
- dropoff_ct2010        | text                        |           | not null |         | 
- dropoff_boroct2010    | text                        |           | not null |         | 
- dropoff_cdeligibil    | text                        |           | not null |         | 
- dropoff_ntacode       | character varying(4)        |           | not null |         | 
- dropoff_ntaname       | text                        |           | not null |         | 
- dropoff_puma          | integer                     |           | not null |         | 
+ trip_id               | bigint                      |           | not null |         |
+ vendor_id             | text                        |           | not null |         |
+ pickup_date           | date                        |           | not null |         |
+ pickup_datetime       | timestamp without time zone |           | not null |         |
+ dropoff_date          | date                        |           | not null |         |
+ dropoff_datetime      | timestamp without time zone |           | not null |         |
+ store_and_fwd_flag    | smallint                    |           | not null |         |
+ rate_code_id          | smallint                    |           | not null |         |
+ pickup_longitude      | double precision            |           | not null |         |
+ pickup_latitude       | double precision            |           | not null |         |
+ dropoff_longitude     | double precision            |           | not null |         |
+ dropoff_latitude      | double precision            |           | not null |         |
+ passenger_count       | smallint                    |           | not null |         |
+ trip_distance         | double precision            |           | not null |         |
+ fare_amount           | numeric(10,2)               |           | not null |         |
+ extra                 | numeric(10,2)               |           | not null |         |
+ mta_tax               | numeric(10,2)               |           | not null |         |
+ tip_amount            | numeric(10,2)               |           | not null |         |
+ tolls_amount          | numeric(10,2)               |           | not null |         |
+ ehail_fee             | numeric(10,2)               |           | not null |         |
+ improvement_surcharge | numeric(10,2)               |           | not null |         |
+ total_amount          | numeric(10,2)               |           | not null |         |
+ payment_type          | text                        |           | not null |         |
+ trip_type             | smallint                    |           | not null |         |
+ pickup                | character varying(25)       |           | not null |         |
+ dropoff               | character varying(25)       |           | not null |         |
+ cab_type              | text                        |           | not null |         |
+ pickup_nyct2010_gid   | smallint                    |           | not null |         |
+ pickup_ctlabel        | real                        |           | not null |         |
+ pickup_borocode       | smallint                    |           | not null |         |
+ pickup_ct2010         | text                        |           | not null |         |
+ pickup_boroct2010     | text                        |           | not null |         |
+ pickup_cdeligibil     | text                        |           | not null |         |
+ pickup_ntacode        | character varying(4)        |           | not null |         |
+ pickup_ntaname        | text                        |           | not null |         |
+ pickup_puma           | integer                     |           | not null |         |
+ dropoff_nyct2010_gid  | smallint                    |           | not null |         |
+ dropoff_ctlabel       | real                        |           | not null |         |
+ dropoff_borocode      | smallint                    |           | not null |         |
+ dropoff_ct2010        | text                        |           | not null |         |
+ dropoff_boroct2010    | text                        |           | not null |         |
+ dropoff_cdeligibil    | text                        |           | not null |         |
+ dropoff_ntacode       | character varying(4)        |           | not null |         |
+ dropoff_ntaname       | text                        |           | not null |         |
+ dropoff_puma          | integer                     |           | not null |         |
 Server: taxi_srv
 FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 ```
@@ -279,7 +285,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 
 ```pgsql
  SELECT count(*) FROM taxi.trips;
-   count  
+   count
  ---------
   1999657
  (1 row)
@@ -289,21 +295,20 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 передает весь запрос, включая агрегатную функцию `COUNT()`, поэтому он выполняется в ClickHouse и
 возвращает в Postgres только одну строку. Используйте [EXPLAIN], чтобы это увидеть:
 
-
 ```pgsql
  EXPLAIN select count(*) from taxi.trips;
-                    QUERY PLAN                    
+                    QUERY PLAN
  -------------------------------------------------
   Foreign Scan  (cost=1.00..-0.90 rows=1 width=8)
     Relations: Aggregate on (trips)
  (2 rows)
 ```
 
-Обратите внимание, что «Foreign Scan» показан в корне плана, что означает, что
-весь запрос был целиком передан на исполнение в ClickHouse.
+Обратите внимание, что в корне плана появляется &quot;Foreign Scan&quot;, что означает, что
+весь запрос был полностью передан на выполнение в ClickHouse.
 
 
-## Анализ данных {#analyze-the-data}
+## Анализ данных \{#analyze-the-data\}
 
 Выполните несколько запросов, чтобы проанализировать данные. Ознакомьтесь со следующими примерами или попробуйте выполнить собственный SQL‑запрос.
 
@@ -313,7 +318,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   taxi=# \timing
   Timing is on.
   taxi=# SELECT round(avg(tip_amount), 2) FROM taxi.trips;
-   round 
+   round
   -------
     1.68
   (1 row)
@@ -321,7 +326,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 9.438 ms
   ```
 
-* Рассчитайте среднюю стоимость на основе количества пассажиров:
+* Рассчитайте среднюю стоимость в зависимости от количества пассажиров:
 
   ```pgsql
   taxi=# SELECT
@@ -329,7 +334,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
           avg(total_amount)::NUMERIC(10, 2) AS average_total_amount
       FROM taxi.trips
       GROUP BY passenger_count;
-   passenger_count | average_total_amount 
+   passenger_count | average_total_amount
   -----------------+----------------------
                  0 |                22.68
                  1 |                15.96
@@ -356,7 +361,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   FROM taxi.trips
   GROUP BY pickup_date, pickup_ntaname
   ORDER BY pickup_date ASC LIMIT 10;
-   pickup_date |         pickup_ntaname         | number_of_trips 
+   pickup_date |         pickup_ntaname         | number_of_trips
   -------------+--------------------------------+-----------------
    2015-07-01  | Williamsburg                   |               1
    2015-07-01  | park-cemetery-etc-Queens       |               6
@@ -373,7 +378,8 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 30.978 ms
   ```
 
-* Вычислите продолжительность каждой поездки в минутах, затем сгруппируйте результаты по её продолжительности:
+* Вычислите продолжительность каждой поездки в минутах, затем сгруппируйте результаты по
+  её продолжительности:
 
   ```pgsql
   taxi=# SELECT
@@ -387,7 +393,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   GROUP BY trip_minutes
   ORDER BY trip_minutes DESC
   LIMIT 5;
-        avg_tip      |     avg_fare     |  avg_passenger   | count | trip_minutes 
+        avg_tip      |     avg_fare     |  avg_passenger   | count | trip_minutes
   -------------------+------------------+------------------+-------+--------------
                 1.96 |                8 |                1 |     1 |        27512
                    0 |               12 |                2 |     1 |        27500
@@ -411,7 +417,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   GROUP BY pickup_ntaname, pickup_hour
   ORDER BY pickup_ntaname, date_part('hour', pickup_datetime)
   LIMIT 5;
-   pickup_ntaname | pickup_hour | pickups 
+   pickup_ntaname | pickup_hour | pickups
   ----------------+-------------+---------
    Airport        |           0 |    3509
    Airport        |           1 |    1184
@@ -423,7 +429,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 36.895 ms
   ```
 
-* Выведите поездки в аэропорты LaGuardia или JFK:
+* Выведите поездки до аэропортов LaGuardia или JFK:
 
   ```pgsql
   taxi=# SELECT
@@ -443,7 +449,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   WHERE dropoff_nyct2010_gid IN (132, 138)
   ORDER BY pickup_datetime
   LIMIT 5;
-     pickup_datetime   |  dropoff_datetime   | total_amount | pickup_nyct2010_gid | dropoff_nyct2010_gid | airport_code | year | day | hour 
+     pickup_datetime   |  dropoff_datetime   | total_amount | pickup_nyct2010_gid | dropoff_nyct2010_gid | airport_code | year | day | hour
   ---------------------+---------------------+--------------+---------------------+----------------------+--------------+------+-----+------
    2015-07-01 00:04:14 | 2015-07-01 00:15:29 |        13.30 |                 -34 |                  132 | JFK          | 2015 |   1 |    0
    2015-07-01 00:09:42 | 2015-07-01 00:12:55 |         6.80 |                  50 |                  138 | LGA          | 2015 |   1 |    0
@@ -455,7 +461,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 17.450 ms
   ```
 
-## Создайте словарь {#create-a-dictionary}
+## Создайте словарь \{#create-a-dictionary\}
 
 Создайте словарь, связанный с таблицей в вашем сервисе ClickHouse. Таблица и
 словарь основаны на CSV-файле, который содержит строку для каждого
@@ -495,7 +501,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
         LAYOUT(HASHED_ARRAY())
     $$, 'host=localhost dbname=taxi');
     ```
-    
+
     :::note
     Установка `LIFETIME` в 0 отключает автоматические обновления, чтобы избежать лишнего
     трафика к нашему бакету S3. В других случаях вы можете настроить это
@@ -504,14 +510,14 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
     :::
 
     2.  Теперь импортируйте его:
-    
+
     ```sql
     IMPORT FOREIGN SCHEMA taxi LIMIT TO (taxi_zone_dictionary)
     FROM SERVER taxi_srv INTO taxi;
     ```
-    
+
     3.  Убедитесь, что к нему можно выполнять запросы:
-    
+
     ```pgsql
     taxi=# SELECT * FROM taxi.taxi_zone_dictionary limit 3;
      LocationID |  Borough  |                     Zone                      | service_zone 
@@ -521,11 +527,11 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
             103 | Manhattan | Governor's Island/Ellis Island/Liberty Island | Yellow Zone
     (3 rows)
     ```
-    
+
     4.  Отлично. Теперь используйте функцию `dictGet`, чтобы получить
         название боро в запросе. В этом запросе подсчитывается количество поездок
         на такси по боро, которые заканчиваются либо в аэропорту LaGuardia, либо в аэропорту JFK:
-    
+
     ```pgsql
     taxi=# SELECT
             count(1) AS total,
@@ -547,7 +553,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
        554 | Staten Island
         53 | EWR
     (7 rows)
-    
+
     Time: 66.245 ms
     ```
 
@@ -555,14 +561,14 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
     в аэропорту LaGuardia, либо в аэропорту JFK. Обратите внимание, что существует довольно много поездок,
     у которых район отправления неизвестен.
 
-## Выполнение JOIN {#perform-a-join}
+## Выполнение JOIN \{#perform-a-join\}
 
 Напишите несколько запросов, которые выполняют `JOIN` таблицы `taxi_zone_dictionary` с таблицей `trips`.
 
 1.  Начните с простого `JOIN`, который работает аналогично предыдущему
     запросу по аэропортам:
 
-    ```sql
+    ```pgsql
     taxi=# SELECT
         count(1) AS total,
         "Borough"
@@ -573,7 +579,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
       AND dropoff_nyct2010_gid IN (132, 138)
     GROUP BY "Borough"
     ORDER BY total DESC;
-     total | borough_name  
+     total | borough_name
     -------+---------------
       7053 | Manhattan
       6828 | Brooklyn
@@ -606,7 +612,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
           AND dropoff_nyct2010_gid IN (132, 138)
         GROUP BY "Borough"
         ORDER BY total DESC;
-                                  QUERY PLAN                               
+                                  QUERY PLAN
     -----------------------------------------------------------------------
      Foreign Scan  (cost=1.00..5.10 rows=1000 width=40)
        Relations: Aggregate on ((trips) INNER JOIN (taxi_zone_dictionary))

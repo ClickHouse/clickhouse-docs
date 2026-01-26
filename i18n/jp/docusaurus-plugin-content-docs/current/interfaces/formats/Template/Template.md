@@ -13,7 +13,7 @@ doc_type: 'guide'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 他の標準フォーマットでは対応できない、より高度なカスタマイズが必要な場合に、  
 `Template` フォーマットを使用すると、値のプレースホルダーを含む独自のカスタムフォーマット文字列と、  
@@ -30,9 +30,9 @@ doc_type: 'guide'
 | `format_template_resultset_format`                                                                       | 結果セットのフォーマット文字列を[インライン](#inline_specification)で指定します。                                           |
 | 他のフォーマットの一部の設定（例: `JSON` エスケープを使用する場合の `output_format_json_quote_64bit_integers` |                                                                                                                              |
 
-## 設定とエスケープ規則 {#settings-and-escaping-rules}
+## 設定とエスケープ規則 \{#settings-and-escaping-rules\}
 
-### format&#95;template&#95;row {#format_template_row}
+### format&#95;template&#95;row \{#format_template_row\}
 
 `format_template_row` 設定は、次の構文で行用のフォーマット文字列が記述されたファイルへのパスを指定します。
 
@@ -84,11 +84,11 @@ Search phrase: ${s:Quoted}, count: ${c:Escaped}, ad price: $$${p:JSON};
 Search phrase: 'bathroom interior design', count: 2166, ad price: $3;
 ```
 
-### format&#95;template&#95;rows&#95;between&#95;delimiter {#format_template_rows_between_delimiter}
+### format&#95;template&#95;rows&#95;between&#95;delimiter \{#format_template_rows_between_delimiter\}
 
 `format_template_rows_between_delimiter` 設定は、行と行の間に出力（または入力として期待）される区切り文字列を指定します。最後の行を除くすべての行の後に出力され、デフォルトは `\n` です。
 
-### format&#95;template&#95;resultset {#format_template_resultset}
+### format&#95;template&#95;resultset \{#format_template_resultset\}
 
 `format_template_resultset` 設定は、結果セット用のフォーマット文字列を含むファイルへのパスを指定します。
 
@@ -113,7 +113,7 @@ Search phrase: 'bathroom interior design', count: 2166, ad price: $3;
 
 挿入クエリでは、先頭または末尾を省略する場合（例を参照）、一部の列やフィールドをスキップできるフォーマットを利用できます。
 
-### インライン指定 {#inline_specification}
+### インライン指定 \{#inline_specification\}
 
 クラスター内のすべてのノード上のディレクトリに、テンプレートフォーマットの設定（`format_template_row`、`format_template_resultset` で設定）をデプロイすることが困難、あるいは不可能な場合がよくあります。  
 さらに、そのフォーマットが非常に単純で、ファイルとして配置する必要がない場合もあります。
@@ -126,11 +126,11 @@ Search phrase: 'bathroom interior design', count: 2166, ad price: $3;
 - `format_template_resultset_format` を使用する場合は [`format_template_resultset`](#format_template_resultset)。
 :::
 
-## 使用例 {#example-usage}
+## 使用例 \{#example-usage\}
 
 まずは `Template` 形式の利用例として、データの選択と挿入の 2 つのケースを見ていきます。
 
-### データの選択 {#selecting-data}
+### データの選択 \{#selecting-data\}
 
 ```sql
 SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase ORDER BY c DESC LIMIT 5 FORMAT Template SETTINGS
@@ -179,7 +179,7 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 </html>
 ```
 
-### データの挿入 {#inserting-data}
+### データの挿入 \{#inserting-data\}
 
 ```text
 Some header
@@ -205,7 +205,7 @@ Page views: ${PageViews:CSV}, User id: ${UserID:CSV}, Useless field: ${:CSV}, Du
 プレースホルダー内の `PageViews`、`UserID`、`Duration` および `Sign` は、テーブル内の列名です。行中の `Useless field` 以降の値と、サフィックス中の `\nTotal rows:` 以降の値は無視されます。
 入力データ内のすべての区切り文字は、指定されたフォーマット文字列内の区切り文字と厳密に一致している必要があります。
 
-### インライン指定 {#in-line-specification}
+### インライン指定 \{#in-line-specification\}
 
 Markdown テーブルを手作業で整形するのにうんざりしていませんか？この例では、`Template` フォーマットとインライン指定の設定を使って、簡単なタスクをどのように実現できるかを見ていきます。ここでは、`system.formats` テーブルからいくつかの ClickHouse フォーマット名を `SELECT` し、それらを Markdown テーブルとして整形します。これは、`Template` フォーマットと `format_template_row_format` および `format_template_resultset_format` 設定を使うことで容易に実現できます。
 

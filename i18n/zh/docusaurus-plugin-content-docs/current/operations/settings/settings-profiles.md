@@ -7,7 +7,7 @@ title: '设置配置集'
 doc_type: 'reference'
 ---
 
-# 设置配置文件 {#settings-profiles}
+# 设置配置文件 \{#settings-profiles\}
 
 设置配置文件是按同一名称分组的一组设置。
 

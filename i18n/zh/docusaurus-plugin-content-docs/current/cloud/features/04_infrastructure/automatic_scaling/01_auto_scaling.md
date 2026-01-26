@@ -17,7 +17,7 @@ import scaling_memory_allocation from '@site/static/images/cloud/manage/scaling-
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 
-# 自动伸缩 {#automatic-scaling}
+# 自动伸缩 \{#automatic-scaling\}
 
 伸缩是指根据客户端需求调整可用资源的能力。Scale 和 Enterprise 层级（标准 1:4 配置）的服务可以通过以编程方式调用 API，或在 UI 中更改设置来进行水平伸缩，从而调整系统资源。这些服务也可以进行**自动垂直伸缩**，以满足应用程序的需求。
 
@@ -27,7 +27,7 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 Scale 和 Enterprise 层级同时支持单副本和多副本服务，而 Basic 层级仅支持单副本服务。单副本服务的规格是固定的，不支持垂直或水平伸缩。你可以升级到 Scale 或 Enterprise 层级来对你的服务进行伸缩。
 :::
 
-## ClickHouse Cloud 中的扩缩容工作原理 {#how-scaling-works-in-clickhouse-cloud}
+## ClickHouse Cloud 中的扩缩容工作原理 \{#how-scaling-works-in-clickhouse-cloud\}
 
 目前，ClickHouse Cloud 在 Scale 层级服务上支持垂直自动扩缩容和手动水平扩缩容。
 
@@ -45,13 +45,9 @@ ClickHouse Cloud 中的扩缩容采用我们称之为 ["先建后拆" (Make Befo
 在扩容场景中，MBB 尤其有用：当高资源利用率触发额外容量需求时，如果过早移除副本只会进一步加剧资源紧张。
 作为这一机制的一部分，我们会最多等待一小时，让旧副本上已有的查询执行完成后才将其移除。
 这样既保证了现有查询有机会完成，又能避免旧副本长时间滞留。
-
-请注意，作为此次变更的一部分：
-1. 在扩缩容事件中，系统表的历史数据最多保留 30 天。此外，作为向新的组织层级迁移的一部分，AWS 或 GCP 上服务在 2024 年 12 月 19 日之前的系统表数据，以及 Azure 上服务在 2025 年 1 月 14 日之前的系统表数据将不会被保留。
-2. 对于启用了 TDE（Transparent Data Encryption，透明数据加密）的服务，目前在 MBB 操作后不会保留系统表数据。我们正在努力消除这一限制。
 :::
 
-### 垂直自动扩缩容 {#vertical-auto-scaling}
+### 垂直自动扩缩容 \{#vertical-auto-scaling\}
 
 <ScalePlanFeatureBadge feature="自动垂直扩缩容"/>
 
@@ -65,7 +61,7 @@ Scale 和 Enterprise 服务支持基于 CPU 和内存使用情况的自动扩缩
 
 会从 CPU 和内存的扩缩容建议中选择**较大**的那个，同时为服务分配的 CPU 和内存会以 `1` CPU 和 `4 GiB` 内存为步长同步调整。
 
-### 配置垂直自动扩缩容 {#configuring-vertical-auto-scaling}
+### 配置垂直自动扩缩容 \{#configuring-vertical-auto-scaling\}
 
 拥有 **Admin** 角色的组织成员可以调整 ClickHouse Cloud Scale 或 Enterprise 服务的扩缩容配置。要配置垂直自动扩缩容，请进入服务的 **Settings** 选项卡，并按如下所示调整最小和最大内存以及 CPU 设置。
 
@@ -87,7 +83,7 @@ Scale 和 Enterprise 服务支持基于 CPU 和内存使用情况的自动扩缩
 不过，仍然可以通过联系支持团队对这些服务进行垂直扩缩容。
 :::
 
-## 手动水平扩展 {#manual-horizontal-scaling}
+## 手动水平扩展 \{#manual-horizontal-scaling\}
 
 <ScalePlanFeatureBadge feature="Manual horizontal scaling"/>
 
@@ -99,7 +95,7 @@ Scale 和 Enterprise 服务支持基于 CPU 和内存使用情况的自动扩缩
 服务在水平方向最多可以扩展到 20 个副本。如果需要更多副本，请联系我们的支持团队。
 :::
 
-### 通过 API 进行水平扩展 {#horizontal-scaling-via-api}
+### 通过 API 进行水平扩展 \{#horizontal-scaling-via-api\}
 
 要对集群进行水平扩展，可通过 API 发出 `PATCH` 请求来调整副本数量。下面的截图展示了一个将 `3` 副本集群扩容到 `6` 副本的 API 调用以及对应的响应。
 
@@ -113,7 +109,7 @@ Scale 和 Enterprise 服务支持基于 CPU 和内存使用情况的自动扩缩
 
 如果在已有扩展操作正在进行时再次发起新的扩展请求或连续发起多个请求，伸缩服务将忽略中间状态，并收敛到最终的副本数量。
 
-### 通过 UI 进行水平扩展 {#horizontal-scaling-via-ui}
+### 通过 UI 进行水平扩展 \{#horizontal-scaling-via-ui\}
 
 要在 UI 中对服务进行水平扩展，可以在 **Settings** 页面中调整该服务的副本数量。
 
@@ -125,12 +121,33 @@ Scale 和 Enterprise 服务支持基于 CPU 和内存使用情况的自动扩缩
 
 <Image img={scaling_memory_allocation} size="md" alt="内存扩展分配" border />
 
-## 自动空闲 {#automatic-idling}
-在 **Settings** 页面中，你还可以选择是否允许在服务处于非活动状态时自动进入空闲，如上图所示（即服务当前未执行任何用户提交的查询时）。自动空闲可以降低服务成本，因为当服务暂停时，你无需为计算资源付费。
+## 自动空闲 \{#automatic-idling\}
+
+在 **Settings** 页面中，你还可以选择是否允许在服务处于非活动状态持续一段时间后自动进入空闲（即服务当前未执行任何用户提交的查询时）。自动空闲可以降低服务成本，因为当服务暂停时，你无需为计算资源付费。
 
 :::note
 在某些特殊情况下，例如当服务包含大量数据片段（parts）时，服务不会被自动置为空闲。
 
+服务可能进入一种空闲状态，在该状态下会暂停刷新可刷新的物化视图、从 S3Queue 中消费数据，以及调度新的合并操作。现有的合并操作会在服务转换为空闲状态之前完成。若要确保可刷新的物化视图和 S3Queue 消费能够持续运行，请禁用自动空闲功能。
+:::
+
+:::danger 不应使用自动空闲的场景
+仅当你的使用场景可以接受查询开始响应前的一段延迟时，才应使用自动空闲，因为当服务被暂停时，与服务的连接会超时。自动空闲非常适合不经常使用、且可以容忍一定延迟的服务。不建议在为高频使用的、面向客户的功能提供支撑的服务上启用自动空闲。
+:::
+
+### 自适应空闲 \{#adaptive-idling\}
+
+ClickHouse Cloud 实现了自适应空闲机制，在控制成本的同时防止服务中断。系统会在将服务切换为空闲状态之前评估多项条件。当满足以下任一条件时，自适应空闲会覆盖原先配置的空闲时长设置：
+
+- 当分区片段（parts）数量超过最大空闲分区片段阈值（默认：10,000）时，为了使后台维护任务得以继续进行，服务不会被置为空闲
+- 当存在正在进行的合并操作时，在这些合并完成之前，服务不会被置为空闲，以避免中断关键的数据合并
+- 此外，服务还会根据服务器初始化时间调整空闲超时时间：
+  - 如果服务器初始化时间少于 15 分钟，则不会应用自适应超时，使用用户配置的默认空闲超时时间
+  - 如果服务器初始化时间在 15 至 30 分钟之间，则空闲超时时间设为 15 分钟
+  - 如果服务器初始化时间在 30 至 60 分钟之间，则空闲超时时间设为 30 分钟
+  - 如果服务器初始化时间超过 60 分钟，则空闲超时时间设为 1 小时
+
+:::note
 服务可能进入一种空闲状态，在该状态下会暂停刷新[可刷新的物化视图](/materialized-view/refreshable-materialized-view)、从 [S3Queue](/engines/table-engines/integrations/s3queue) 中消费数据，以及调度新的合并操作。现有的合并操作会在服务转换为空闲状态之前完成。若要确保可刷新的物化视图和 S3Queue 消费能够持续运行，请禁用自动空闲功能。
 :::
 
@@ -138,7 +155,7 @@ Scale 和 Enterprise 服务支持基于 CPU 和内存使用情况的自动扩缩
 仅当你的使用场景可以接受查询开始响应前的一段延迟时，才应使用自动空闲，因为当服务被暂停时，与服务的连接会超时。自动空闲非常适合不经常使用、且可以容忍一定延迟的服务。不建议在为高频使用的、面向客户的功能提供支撑的服务上启用自动空闲。
 :::
 
-## 处理工作负载峰值 {#handling-bursty-workloads}
+## 处理工作负载峰值 \{#handling-bursty-workloads\}
 
 如果您预期即将出现工作负载峰值，可以使用
 [ClickHouse Cloud API](/cloud/manage/api/api-overview)

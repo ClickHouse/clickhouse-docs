@@ -6,6 +6,9 @@ slug: /integrations/sql-clients/sql-console
 description: '了解 SQL 控制台'
 doc_type: 'guide'
 keywords: ['sql 控制台', '查询界面', 'Web UI', 'SQL 编辑器', 'Cloud 控制台']
+integration:
+   - support_level: 'community'
+   - category: 'sql_client'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
@@ -47,8 +50,7 @@ import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-
 import give_a_query_a_name from '@site/static/images/cloud/sqlconsole/give-a-query-a-name.png'
 import save_the_query from '@site/static/images/cloud/sqlconsole/save-the-query.png'
 
-
-# SQL 控制台 {#sql-console}
+# SQL 控制台 \{#sql-console\}
 
 SQL 控制台是在 ClickHouse Cloud 中探索和查询数据库的最快、最便捷方式。可以使用 SQL 控制台：
 
@@ -57,9 +59,9 @@ SQL 控制台是在 ClickHouse Cloud 中探索和查询数据库的最快、最�
 - 执行查询，并只需几次点击即可将结果数据可视化
 - 与团队成员共享查询，更高效地协作
 
-## 浏览表 {#exploring-tables}
+## 浏览表 \{#exploring-tables\}
 
-### 查看表列表和表结构信息 {#viewing-table-list-and-schema-info}
+### 查看表列表和表结构信息 \{#viewing-table-list-and-schema-info\}
 
 可以在左侧边栏区域查看 ClickHouse 实例中包含的表的概览。使用左侧边栏顶部的数据库选择器来查看特定数据库中的表。
 
@@ -69,21 +71,21 @@ SQL 控制台是在 ClickHouse Cloud 中探索和查询数据库的最快、最�
 
 <Image img={view_columns} size="lg" border alt="展开的表视图，显示列名和数据类型"/>
 
-### 浏览表数据 {#exploring-table-data}
+### 浏览表数据 \{#exploring-table-data\}
 
 在列表中点击某个表，会在新标签页中打开它。在表视图（Table View）中，可以轻松查看、选择和复制数据。请注意，将数据复制粘贴到 Microsoft Excel、Google Sheets 等电子表格应用程序时，表的结构和格式都会被保留。你可以使用页脚中的导航在各页表数据之间切换（每页 30 行）。
   
 <Image img={abc} size="lg" border alt="显示可选择和复制数据的表视图"/>
 
-### 检查单元格数据 {#inspecting-cell-data}
+### 检查单元格数据 \{#inspecting-cell-data\}
 
 可以使用 Cell Inspector 工具查看单个单元格中包含的大量数据。要打开该工具，在某个单元格上单击鼠标右键并选择“Inspect Cell”。要复制单元格检查器中的内容，单击检查器内容区域右上角的复制图标即可。
 
 <Image img={inspecting_cell_content} size="lg" border alt="单元格检查器对话框，显示所选单元格的内容"/>
 
-## 筛选和排序数据表 {#filtering-and-sorting-tables}
+## 筛选和排序数据表 \{#filtering-and-sorting-tables\}
 
-### 对表进行排序 {#sorting-a-table}
+### 对表进行排序 \{#sorting-a-table\}
 
 要在 SQL 控制台中对表进行排序，打开一个表并在工具栏中选择“Sort”按钮。此按钮会打开一个菜单，你可以在其中配置排序。你可以选择要用于排序的列，并配置排序顺序（升序或降序）。选择“Apply”或按 Enter 键即可对表进行排序。
 
@@ -91,7 +93,7 @@ SQL 控制台是在 ClickHouse Cloud 中探索和查询数据库的最快、最�
 
 SQL 控制台还允许你为一个表添加多个排序条件。再次单击“Sort”按钮即可添加另一个排序。注意：排序会按照它们在排序面板中出现的顺序（从上到下）依次应用。要删除某个排序，只需单击该排序旁边的“x”按钮即可。
 
-### 筛选表格 {#filtering-a-table}
+### 筛选表格 \{#filtering-a-table\}
 
 要在 SQL 控制台中筛选表数据，打开一个表并选择 “Filter” 按钮。与排序类似，该按钮会打开一个菜单，用于配置筛选条件。可以选择要作为筛选依据的列，并设置相应条件。SQL 控制台会智能显示与该列数据类型相匹配的筛选选项。
 
@@ -103,13 +105,13 @@ SQL 控制台还允许你为一个表添加多个排序条件。再次单击“S
 
 与排序功能类似，点击筛选条件旁边的 “x” 按钮即可将其移除。
 
-### 同时进行筛选和排序 {#filtering-and-sorting-together}
+### 同时进行筛选和排序 \{#filtering-and-sorting-together\}
 
 SQL 控制台允许你同时对表进行筛选和排序。要实现这一点，请按照上文所述步骤添加所有需要的筛选条件和排序规则，然后点击 “Apply” 按钮。
 
 <Image img={filtering_and_sorting_together} size="lg" border alt="界面显示同时应用了筛选和排序"/>
 
-### 通过筛选和排序创建查询 {#creating-a-query-from-filters-and-sorts}
+### 通过筛选和排序创建查询 \{#creating-a-query-from-filters-and-sorts\}
 
 SQL 控制台可以一键将当前的排序和筛选条件直接转换为查询。只需在工具栏中设置好所需的排序和筛选条件，然后点击 “Create Query” 按钮。点击 “Create Query” 后，会打开一个新的查询选项卡，并预先填充与当前表视图中数据对应的 SQL 命令。
 
@@ -121,9 +123,9 @@ SQL 控制台可以一键将当前的排序和筛选条件直接转换为查询�
 
 你可以通过阅读 (link) 查询文档，进一步了解如何在 SQL 控制台中进行查询。
 
-## 编写并运行查询 {#creating-and-running-a-query}
+## 编写并运行查询 \{#creating-and-running-a-query\}
 
-### 创建查询 {#creating-a-query}
+### 创建查询 \{#creating-a-query\}
 
 在 SQL 控制台中有两种方式可以创建新查询。
 
@@ -132,7 +134,7 @@ SQL 控制台可以一键将当前的排序和筛选条件直接转换为查询�
 
 <Image img={creating_a_query} size="lg" border alt="界面展示如何通过 “+” 按钮或 “New Query” 按钮创建新查询"/>
 
-### 运行查询 {#running-a-query}
+### 运行查询 \{#running-a-query\}
 
 要运行查询，在 SQL 编辑器中输入 SQL 命令，然后点击 “Run” 按钮或使用快捷键 `cmd / ctrl + enter`。要按顺序编写并运行多个命令，请确保在每个命令后添加分号。
 
@@ -160,13 +162,13 @@ SQL 控制台可以一键将当前的排序和筛选条件直接转换为查询�
 执行时，光标位置处的命令会短暂以黄色闪烁。
 :::
 
-### 取消查询 {#canceling-a-query}
+### 取消查询 \{#canceling-a-query\}
 
 当查询正在执行时，查询编辑器工具栏中的“Run”按钮会被替换为“Cancel”按钮。只需单击此按钮或按下 `Esc` 键即可取消该查询。注意：在取消之前已经返回的任何结果在取消后仍将保留。
 
 <Image img={cancel_a_query} size="lg" border alt="查询执行期间显示的取消按钮"/>
 
-### 保存查询 {#saving-a-query}
+### 保存查询 \{#saving-a-query\}
 
 如果尚未命名，你的查询会被称为“Untitled Query”。单击查询名称即可修改。重命名查询时会自动保存该查询。
 
@@ -176,13 +178,13 @@ SQL 控制台可以一键将当前的排序和筛选条件直接转换为查询�
 
 <Image img={save_the_query} size="lg" border alt="查询编辑器工具栏中的保存按钮"/>
 
-## 使用 GenAI 管理查询 {#using-genai-to-manage-queries}
+## 使用 GenAI 管理查询 \{#using-genai-to-manage-queries\}
 
 此功能允许你以自然语言问句的形式编写查询，由查询控制台根据可用表的上下文生成相应的 SQL 查询。GenAI 也可以帮助你调试查询。
 
 有关 GenAI 的更多信息，请参阅 [Announcing GenAI powered query suggestions in ClickHouse Cloud blog post](https://clickhouse.com/blog/announcing-genai-powered-query-suggestions-clickhouse-cloud)。
 
-### 表设置 {#table-setup}
+### 表设置 \{#table-setup\}
 
 我们先导入英国房产成交价格示例数据集，并基于该数据集创建一些 GenAI 查询。
 
@@ -259,7 +261,7 @@ SQL 控制台可以一键将当前的排序和筛选条件直接转换为查询�
 
 此查询会从 `gov.uk` 网站获取数据集。该文件大小约为 4GB，因此此查询将需要几分钟才能完成。ClickHouse 处理完查询后，您将在 `uk_price_paid` 表中获得完整的数据集。
 
-#### 创建查询 {#query-creation}
+#### 创建查询 \{#query-creation\}
 
 让我们使用自然语言来创建一个查询。
 
@@ -280,7 +282,7 @@ SQL 控制台可以一键将当前的排序和筛选条件直接转换为查询�
 
 1. 在您确认查询无误之后，点击 **Run** 运行它。
 
-### 调试 {#debugging}
+### 调试 \{#debugging\}
 
 现在，让我们测试一下 GenAI 的查询调试功能。
 
@@ -300,9 +302,9 @@ SQL 控制台可以一键将当前的排序和筛选条件直接转换为查询�
 
 请注意，GenAI 是一项实验性功能。在针对任何数据集运行由 GenAI 生成的查询时，请谨慎操作。
 
-## 高级查询功能 {#advanced-querying-features}
+## 高级查询功能 \{#advanced-querying-features\}
 
-### 搜索查询结果 {#searching-query-results}
+### 搜索查询结果 \{#searching-query-results\}
 
 在查询执行完成后，你可以使用结果面板中的搜索输入框快速搜索返回的结果集。此功能有助于预览额外 `WHERE` 子句的结果，或简单检查结果集中是否包含特定数据。在搜索输入框中输入一个值后，结果面板会更新并返回所有包含与该输入值匹配条目的记录。在本示例中，我们在 `hackernews` 表中查询出评论内容中（不区分大小写）包含 `ClickHouse` 的记录，然后在结果中查找所有出现 `breakfast` 的实例：
 
@@ -312,7 +314,7 @@ SQL 控制台可以一键将当前的排序和筛选条件直接转换为查询�
 
 <Image img={match_in_body} size="lg" border alt="Match in body"/>
 
-### 调整分页设置 {#adjusting-pagination-settings}
+### 调整分页设置 \{#adjusting-pagination-settings\}
 
 默认情况下，查询结果窗格会在单个页面上显示所有结果记录。对于较大的结果集，为了更便于查看，可以对结果进行分页。可以使用结果窗格右下角的分页选择器来完成此操作：
 
@@ -322,13 +324,13 @@ SQL 控制台可以一键将当前的排序和筛选条件直接转换为查询�
 
 <Image img={pagination_nav} size="lg" border alt="分页导航"/>
 
-### 导出查询结果数据 {#exporting-query-result-data}
+### 导出查询结果数据 \{#exporting-query-result-data\}
 
 在 SQL 控制台中，你可以直接将查询结果集导出为 CSV 格式。具体操作是在结果窗格工具栏右侧点击 `•••` 菜单，然后选择“Download as CSV”。
 
 <Image img={download_as_csv} size="lg" border alt="Download as CSV"/>
 
-## 可视化查询数据 {#visualizing-query-data}
+## 可视化查询数据 \{#visualizing-query-data\}
 
 有些数据以图表形式展示更便于理解。你可以在 SQL 控制台中直接基于查询结果数据，通过几次点击就快速创建可视化图表。下面以一个示例查询为例，该查询用于计算纽约市出租车行程的每周统计数据：
 
@@ -351,7 +353,7 @@ ORDER BY
 如果没有可视化，这些结果不易解读。让我们把它们转换成图表。
 
 
-### 创建图表 {#creating-charts}
+### 创建图表 \{#creating-charts\}
 
 要开始构建可视化，从查询结果面板的工具栏中选择 “Chart” 选项。此时会出现一个图表配置面板：
 
@@ -365,7 +367,7 @@ ORDER BY
 
 <Image img={bar_chart} size="lg" border alt="条形图"/>
 
-### 自定义图表 {#customizing-charts}
+### 自定义图表 \{#customizing-charts\}
 
 SQL 控制台支持十种图表类型，可以在图表配置面板中的图表类型选择器中进行选择。比如，我们可以轻松地将前一个图表的类型从柱状图（Bar）更改为面积图（Area）：
 
@@ -389,7 +391,7 @@ SQL 控制台支持十种图表类型，可以在图表配置面板中的图表�
 
 <Image img={adjust_axis_scale} size="lg" border alt="调整坐标轴刻度"/>
 
-## 共享查询 {#sharing-queries}
+## 共享查询 \{#sharing-queries\}
 
 SQL 控制台允许您与团队共享查询。查询共享后，团队中的所有成员都可以查看和编辑该查询。共享查询是与团队协作的有效方式。
 

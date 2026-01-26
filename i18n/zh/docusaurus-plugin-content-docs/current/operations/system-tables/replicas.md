@@ -6,7 +6,7 @@ title: 'system.replicas'
 doc_type: 'reference'
 ---
 
-# system.replicas {#systemreplicas}
+# system.replicas \{#systemreplicas\}
 
 包含本地服务器上所有复制表的相关信息和状态。
 此表可用于监控。表中每个使用 Replicated* 引擎的表对应一行记录。

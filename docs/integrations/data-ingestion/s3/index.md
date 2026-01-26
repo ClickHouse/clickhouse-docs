@@ -686,9 +686,7 @@ The following notes cover the implementation of S3 interactions with ClickHouse.
 
 ## Use S3 object storage as a ClickHouse disk {#configuring-s3-for-clickhouse-use}
 
-If you need step-by-step instructions to create buckets and an IAM role, then expand **Create S3 buckets and an IAM role** and follow along:
-
-<BucketDetails />
+If you need step-by-step instructions to create buckets and an IAM role, please refer to ["How to create an AWS IAM user and S3 bucket"](/integrations/s3/creating-iam-user-and-s3-bucket)
 
 ### Configure ClickHouse to use the S3 bucket as a disk {#configure-clickhouse-to-use-the-s3-bucket-as-a-disk}
 The following example is based on a Linux Deb package installed as a service with default ClickHouse directories.

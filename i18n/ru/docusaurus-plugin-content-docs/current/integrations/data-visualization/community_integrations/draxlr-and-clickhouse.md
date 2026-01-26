@@ -7,7 +7,7 @@ description: 'Draxlr — инструмент бизнес-аналитики д
 title: 'Подключение Draxlr к ClickHouse'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
 ---
 
@@ -21,16 +21,17 @@ import draxlr_06 from '@site/static/images/integrations/data-visualization/draxl
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Подключение Draxlr к ClickHouse {#connecting-draxlr-to-clickhouse}
+# Подключение Draxlr к ClickHouse \{#connecting-draxlr-to-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
-Draxlr предоставляет интуитивно понятный интерфейс для подключения к вашей базе данных ClickHouse, позволяя вашей команде исследовать данные, визуализировать их и публиковать полученные инсайты за считанные минуты. В этом руководстве вы по шагам настроите успешное подключение.
+Draxlr предоставляет интуитивно понятный интерфейс для подключения к вашей базе данных ClickHouse, позволяя вашей команде исследовать данные, визуализировать их и публиковать полученные аналитические материалы за считанные минуты. В этом руководстве пошагово описан процесс настройки успешного подключения.
 
-## 1. Получите учетные данные для доступа к ClickHouse {#1-get-your-clickhouse-credentials}
+## 1. Получите учетные данные для доступа к ClickHouse \{#1-get-your-clickhouse-credentials\}
+
 <ConnectionDetails />
 
-## 2.  Подключение Draxlr к ClickHouse {#2--connect-draxlr-to-clickhouse}
+## 2.  Подключение Draxlr к ClickHouse \{#2--connect-draxlr-to-clickhouse\}
 
 1. Нажмите кнопку **Connect a Database** на панели навигации.
 
@@ -42,11 +43,11 @@ Draxlr предоставляет интуитивно понятный инте
 
 5. Заполните форму параметрами подключения.
 
-  <Image size="md" img={draxlr_01} alt="Форма подключения Draxlr с параметрами конфигурации базы данных ClickHouse" border />
+<Image size="md" img={draxlr_01} alt="Форма подключения Draxlr с параметрами конфигурации базы данных ClickHouse" border />
 
 6. Нажмите кнопку **Next** и дождитесь установления подключения. При успешном подключении откроется страница таблиц.
 
-## 4. Исследуйте данные {#4-explore-your-data}
+## 4. Исследуйте данные \{#4-explore-your-data\}
 
 1. Нажмите на одну из таблиц в списке.
 
@@ -54,27 +55,27 @@ Draxlr предоставляет интуитивно понятный инте
 
 3. Вы можете добавлять фильтры, выполнять операции `JOIN` и настраивать сортировку данных.
 
-  <Image size="md" img={draxlr_02} alt="Интерфейс исследования данных Draxlr с параметрами фильтрации и сортировки" border />
+<Image size="md" img={draxlr_02} alt="Интерфейс исследования данных Draxlr с параметрами фильтрации и сортировки" border />
 
 4. Вы также можете использовать кнопку **Graph** и выбрать тип графика для визуализации данных.
 
-  <Image size="md" img={draxlr_05} alt="Варианты визуализации графиков Draxlr для данных ClickHouse" border />
+<Image size="md" img={draxlr_05} alt="Варианты визуализации графиков Draxlr для данных ClickHouse" border />
 
-## 4. Использование SQL-запросов {#4-using-sql-queries}
+## 4. Использование SQL-запросов \{#4-using-sql-queries\}
 
 1. Нажмите кнопку Explore на панели навигации.
 
 2. Нажмите кнопку **Raw Query** и введите запрос в текстовое поле.
 
-  <Image size="md" img={draxlr_03} alt="Интерфейс выполнения SQL-запросов Draxlr для ClickHouse" border />
+<Image size="md" img={draxlr_03} alt="Интерфейс выполнения SQL-запросов Draxlr для ClickHouse" border />
 
 3. Нажмите кнопку **Execute Query**, чтобы увидеть результаты.
 
-## 4. Сохранение запроса {#4-saving-you-query}
+## 4. Сохранение запроса \{#4-saving-you-query\}
 
 1. После выполнения запроса нажмите кнопку **Save Query**.
 
-  <Image size="md" img={draxlr_04} alt="Диалоговое окно сохранения запроса Draxlr с параметрами панели мониторинга" border />
+<Image size="md" img={draxlr_04} alt="Диалоговое окно сохранения запроса Draxlr с параметрами панели мониторинга" border />
 
 2. В текстовом поле **Query Name** вы можете задать имя запросу и выбрать папку для его размещения.
 
@@ -82,11 +83,11 @@ Draxlr предоставляет интуитивно понятный инте
 
 4. Нажмите кнопку **Save**, чтобы сохранить запрос.
 
-## 5. Создание дашбордов {#5-building-dashboards}
+## 5. Создание дашбордов \{#5-building-dashboards\}
 
 1. Нажмите кнопку **Dashboards** на панели навигации.
 
-  <Image size="md" img={draxlr_06} alt="Интерфейс управления дашбордами Draxlr" border />
+<Image size="md" img={draxlr_06} alt="Интерфейс управления дашбордами Draxlr" border />
 
 2. Чтобы добавить новый дашборд, нажмите кнопку **Add +** на левой боковой панели.
 
@@ -94,5 +95,6 @@ Draxlr предоставляет интуитивно понятный инте
 
 4. Выберите запрос из списка сохранённых запросов, укажите тип визуализации, затем нажмите кнопку **Add Dashboard Item**.
 
-## Подробнее {#learn-more}
+## Подробнее \{#learn-more\}
+
 Дополнительную информацию о Draxlr можно найти в [документации Draxlr](https://draxlr.notion.site/draxlr/Draxlr-Docs-d228b23383f64d00a70836ff9643a928).

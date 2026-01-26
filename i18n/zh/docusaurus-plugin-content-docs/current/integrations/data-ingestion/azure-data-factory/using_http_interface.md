@@ -5,6 +5,9 @@ description: '使用 ClickHouse 的 HTTP 接口将 Azure Data Factory 中的数�
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'http interface']
 title: '使用 ClickHouse HTTP 接口将 Azure 数据导入 ClickHouse'
 doc_type: 'guide'
+integration:
+   - support_level: 'core'
+   - category: 'data_ingestion'
 ---
 
 import Image from '@theme/IdealImage';
@@ -35,7 +38,7 @@ import adfCopyDataSource                        from '@site/static/images/integr
 import adfCopyDataSinkSelectPost                from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-sink-select-post.png';
 import adfCopyDataDebugSuccess                  from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-debug-success.png';
 
-# 在 Azure Data Factory 中使用 ClickHouse HTTP 接口 {#using-clickhouse-http-interface-in-azure-data-factory}
+# 在 Azure Data Factory 中使用 ClickHouse HTTP 接口 \{#using-clickhouse-http-interface-in-azure-data-factory\}
 
 [`azureBlobStorage` Table Function](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
 是一种将数据从 Azure Blob Storage 摄取到
@@ -60,7 +63,7 @@ ClickHouse 的快速且便捷的方式。但在以下情况下，它可能并不
 runtime](https://learn.microsoft.com/en-us/azure/data-factory/create-self-hosted-integration-runtime?tabs=data-factory)
 :::
 
-## 将 ClickHouse 打造成 REST 服务 {#turning-clickhouse-to-a-rest-service}
+## 将 ClickHouse 打造成 REST 服务 \{#turning-clickhouse-to-a-rest-service\}
 
 Azure Data Factory 支持以 JSON 格式通过 HTTP 将数据发送到外部系统。我们可以利用这一能力，通过 [ClickHouse HTTP 接口](https://clickhouse.com/docs/interfaces/http) 将数据直接写入 ClickHouse。您可以在 [ClickHouse HTTP 接口文档](https://clickhouse.com/docs/interfaces/http) 中了解更多信息。
 
@@ -108,7 +111,8 @@ Service，为
 [REST sink](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest)
 定义一个 Dataset，并创建一个 Copy Data 活动，将数据从 Azure 发送到 ClickHouse。
 
-## 创建 Azure Data Factory 实例 {#create-an-azure-data-factory-instance}
+
+## 创建 Azure Data Factory 实例 \{#create-an-azure-data-factory-instance\}
 
 本指南假定您已拥有 Microsoft Azure 帐户，并且
 已经配置好订阅和资源组。如果您已经
@@ -135,7 +139,7 @@ Service，为
 部署成功完成后，您就可以开始使用新的 Azure
 Data Factory 实例了。
 
-## 创建新的基于 REST 的 linked service {#-creating-new-rest-based-linked-service}
+## 创建新的基于 REST 的 linked service \{#-creating-new-rest-based-linked-service\}
 
 1. 登录 Microsoft Azure Portal，并打开你的 Data Factory 实例。
    <Image img={azureHomeWithDataFactory} size="lg" alt="带有 Data Factory 的 Azure Portal 主页" border/>
@@ -184,7 +188,7 @@ Data Factory 实例了。
 
 现在，你应该可以在列表中看到新注册的基于 REST 的 linked service。
 
-## 为 ClickHouse HTTP 接口创建新数据集 {#creating-a-new-dataset-for-the-clickhouse-http-interface}
+## 为 ClickHouse HTTP 接口创建新数据集 \{#creating-a-new-dataset-for-the-clickhouse-http-interface\}
 
 现在我们已经为 ClickHouse HTTP 接口配置好了链接服务，
 可以创建一个数据集，让 Azure Data Factory 使用它向
@@ -248,7 +252,7 @@ Data](https://clickhouse.com/docs/getting-started/example-datasets/environmental
    all 保存更改。
    <Image img={adfNewDatasetConnectionSuccessful} size="xl" alt="New Dataset Connection Successful" border/>
 
-### 设置示例数据集 {#setting-up-an-example-dataset}
+### 设置示例数据集 \{#setting-up-an-example-dataset\}
 
 在此示例中，我们不会使用完整的 Environmental Sensors Dataset，而是
 只使用一个可在
@@ -266,7 +270,7 @@ Server，或 Azure Data Factory 支持的其他文件格式。
 创建一个新的数据集，指向已上传的数据。点击 Publish all
 保存更改。
 
-## 创建用于将数据传输到 ClickHouse 的 Copy Data 活动 {#creating-the-copy-activity-to-transfer-data-to-clickhouse}
+## 创建用于将数据传输到 ClickHouse 的 Copy Data 活动 \{#creating-the-copy-activity-to-transfer-data-to-clickhouse\}
 
 现在我们已经配置好了输入和输出数据集，可以设置一个 **Copy Data**
 活动，将示例数据集中的数据传输到 ClickHouse 中的 `sensors` 表。
@@ -300,7 +304,8 @@ Server，或 Azure Data Factory 支持的其他文件格式。
 
 6. 完成后，点击 **Publish all** 以保存 pipeline 和数据集的更改。
 
-## 其他资源 {#additional-resources-1}
+## 其他资源 \{#additional-resources-1\}
+
 - [HTTP 接口](https://clickhouse.com/docs/interfaces/http)
 - [使用 Azure Data Factory 从/向 REST 终结点复制和转换数据](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest?tabs=data-factory)
 - [选择插入策略](https://clickhouse.com/docs/best-practices/selecting-an-insert-strategy)

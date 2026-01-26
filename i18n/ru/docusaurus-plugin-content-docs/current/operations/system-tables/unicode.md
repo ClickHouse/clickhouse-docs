@@ -6,7 +6,7 @@ title: 'system.unicode'
 doc_type: 'reference'
 ---
 
-# system.unicode {#systemunicode}
+# system.unicode \{#systemunicode\}
 
 Таблица `system.unicode` — это виртуальная таблица, которая предоставляет информацию о символах Unicode и их свойствах ([https://unicode-org.github.io/icu/userguide/strings/properties.html](https://unicode-org.github.io/icu/userguide/strings/properties.html)). Эта таблица генерируется на лету.
 

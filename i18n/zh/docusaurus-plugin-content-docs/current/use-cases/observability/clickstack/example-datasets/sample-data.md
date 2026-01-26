@@ -32,12 +32,12 @@ import hyperdx_19 from '@site/static/images/use-cases/observability/hyperdx-19.p
 import copy_api_key from '@site/static/images/use-cases/observability/copy_api_key.png';
 
 
-# ClickStack - 示例日志、链路追踪和指标 {#clickstack-sample-dataset}
+# ClickStack - 示例日志、链路追踪和指标 \{#clickstack-sample-dataset\}
 
 以下示例假定你已经按照[一体化镜像的使用说明](/use-cases/observability/clickstack/getting-started)启动了 ClickStack，并已连接到[本地 ClickHouse 实例](/use-cases/observability/clickstack/getting-started#complete-connection-credentials)或 [ClickHouse Cloud 实例](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)。 
 
 :::note ClickHouse Cloud 中的 HyperDX
-此示例数据集也可以配合 ClickHouse Cloud 中的 HyperDX 使用，只需对流程进行少量调整，具体如文中所述。如果在 ClickHouse Cloud 中使用 HyperDX，你需要按照[该部署模型的入门指南](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)在本地运行一个 OpenTelemetry 收集器。
+此示例数据集也可以配合 ClickHouse Cloud 中的 HyperDX 使用，只需对流程进行少量调整，具体如文中所述。如果在 ClickHouse Cloud 中使用 HyperDX，你需要按照[该部署模型的入门指南](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud)在本地运行一个 OpenTelemetry 收集器。
 :::
 
 <VerticalStepper>

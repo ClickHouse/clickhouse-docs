@@ -9,7 +9,7 @@ keywords: ['计费', 'ClickPipes', 'CDC 定价', '成本', '价格']
 
 
 
-# 用于 PostgreSQL CDC 的 ClickPipes {#clickpipes-for-postgresql-cdc}
+# 用于 PostgreSQL CDC 的 ClickPipes \{#clickpipes-for-postgresql-cdc\}
 
 本节介绍 ClickPipes 中 Postgres Change Data Capture（CDC）连接器的定价模型。在设计该模型时，我们的目标是在保持价格高度具备竞争力的同时，始终坚持我们的核心愿景：
 
@@ -23,14 +23,14 @@ keywords: ['计费', 'ClickPipes', 'CDC 定价', '成本', '价格']
 
 
 
-## 定价维度 {#pricing-dimensions}
+## 定价维度 \{#pricing-dimensions\}
 
 定价包含两个主要维度：
 
 1. **摄取数据**：来自 Postgres 并摄取到 ClickHouse 的原始未压缩字节数。
 2. **计算资源**：每个服务配置的计算单元用于管理多个 Postgres CDC（变更数据捕获）ClickPipes，与 ClickHouse Cloud 服务使用的计算单元相互独立。这些额外的计算资源专门用于 Postgres CDC ClickPipes。计算资源按服务级别计费，而非按单个管道计费。每个计算单元包含 2 个 vCPU 和 8 GB 内存。
 
-### 摄取数据 {#ingested-data}
+### 摄取数据 \{#ingested-data\}
 
 Postgres CDC 连接器分为两个主要阶段运行：
 
@@ -44,7 +44,7 @@ Postgres CDC 连接器分为两个主要阶段运行：
 | **初始加载/重新同步**        | 每 GB $0.10 |
 | **持续复制（CDC）** | 每 GB $0.20 |
 
-### 计算资源 {#compute}
+### 计算资源 \{#compute\}
 
 此维度涵盖专门为 Postgres ClickPipes 按服务配置的计算单元。计算资源在服务内的所有 Postgres 管道之间共享。**在创建第一个 Postgres 管道时配置，当不再有 Postgres CDC 管道时释放**。配置的计算资源量取决于您组织的层级：
 
@@ -53,7 +53,7 @@ Postgres CDC 连接器分为两个主要阶段运行：
 | **基础层级**               | 每个服务 0.5 个计算单元 — 每小时 $0.10 |
 | **扩展层级或企业层级** | 每个服务 1 个计算单元 — 每小时 $0.20   |
 
-### 示例 {#example}
+### 示例 \{#example\}
 
 假设您的服务处于扩展层级并具有以下配置：
 
@@ -61,7 +61,7 @@ Postgres CDC 连接器分为两个主要阶段运行：
 - 每个管道每月摄取 500 GB 的数据变更（CDC）
 - 当第一个管道启动时，服务为 Postgres CDC 配置**扩展层级下的 1 个计算单元**
 
-#### 月度费用明细 {#cost-breakdown}
+#### 月度费用明细 \{#cost-breakdown\}
 
 **摄取数据（CDC）**：
 
@@ -82,7 +82,7 @@ $$1 \text{ 个计算单元} \times \$0.20/\text{小时} \times 730 \text{ 小时
 $$\$200 \text{ (摄取)} + \$146 \text{ (计算资源)} = \$346$$
 
 
-## Postgres CDC ClickPipes 常见问题解答 {#faq-postgres-cdc-clickpipe}
+## Postgres CDC ClickPipes 常见问题解答 \{#faq-postgres-cdc-clickpipe\}
 
 <details>
 

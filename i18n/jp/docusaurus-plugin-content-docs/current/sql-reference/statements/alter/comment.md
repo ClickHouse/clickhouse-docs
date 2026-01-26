@@ -8,17 +8,17 @@ keywords: ['ALTER TABLE', 'MODIFY COMMENT']
 doc_type: 'reference'
 ---
 
-# ALTER TABLE ... MODIFY COMMENT {#alter-table-modify-comment}
+# ALTER TABLE ... MODIFY COMMENT \{#alter-table-modify-comment\}
 
 テーブルコメントを、コメントが事前に設定されていたかどうかに関係なく追加、変更、または削除します。コメントの変更は、[`system.tables`](../../../operations/system-tables/tables.md) と `SHOW CREATE TABLE` クエリの両方に反映されます。
 
-## 構文 {#syntax}
+## 構文 \{#syntax\}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
 
-## 例 {#examples}
+## 例 \{#examples\}
 
 コメント付きテーブルを作成するには、次のようにします。
 
@@ -73,14 +73,14 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 └─────────┘
 ```
 
-## 注意事項 {#caveats}
+## 注意事項 \{#caveats\}
 
 Replicated テーブルの場合、コメントはレプリカごとに異なる場合があります。
 コメントの変更は 1 つのレプリカにのみ適用されます。
 
 この機能はバージョン 23.9 以降で利用可能です。以前の ClickHouse のバージョンでは使用できません。
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \{#related-content\}
 
 - [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 句
 - [`ALTER DATABASE ... MODIFY COMMENT`](./database-comment.md)

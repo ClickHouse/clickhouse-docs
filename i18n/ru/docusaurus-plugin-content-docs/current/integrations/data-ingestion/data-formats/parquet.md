@@ -8,7 +8,7 @@ doc_type: 'guide'
 keywords: ['parquet', 'колоночный формат', 'формат данных', 'сжатие', 'apache parquet']
 ---
 
-# Работа с Parquet в ClickHouse {#working-with-parquet-in-clickhouse}
+# Работа с Parquet в ClickHouse \{#working-with-parquet-in-clickhouse\}
 
 Parquet — это эффективный файловый формат для хранения данных в колоночном формате.
 ClickHouse поддерживает как чтение, так и запись файлов Parquet.
@@ -20,7 +20,7 @@ ClickHouse поддерживает как чтение, так и запись 
 Если вы используете ClickHouse Server или ClickHouse Cloud через `clickhouse client`, чтение будет выполняться из пути, относительно директории `/var/lib/clickhouse/user_files/` на сервере.
 :::
 
-## Импорт из Parquet {#importing-from-parquet}
+## Импорт из Parquet \{#importing-from-parquet\}
 
 Перед загрузкой данных мы можем использовать функцию [file()](/sql-reference/functions/files.md/#file), чтобы изучить структуру [примерного файла формата Parquet](assets/data.parquet):
 
@@ -59,7 +59,7 @@ LIMIT 3;
 В этом случае ClickHouse автоматически определит формат по расширению файла.
 :::
 
-## Импорт в существующую таблицу {#importing-to-an-existing-table}
+## Импорт в существующую таблицу \{#importing-to-an-existing-table\}
 
 Создадим таблицу, в которую будем импортировать данные в формате Parquet:
 
@@ -97,7 +97,7 @@ LIMIT 5;
 
 Обратите внимание, что ClickHouse автоматически преобразовал строки формата Parquet (в столбце `date`) в тип `Date`. Это происходит потому, что ClickHouse выполняет приведение типов на основе типов в целевой таблице.
 
-## Загрузка локального файла на удалённый сервер {#inserting-a-local-file-to-remote-server}
+## Загрузка локального файла на удалённый сервер \{#inserting-a-local-file-to-remote-server\}
 
 Если вы хотите загрузить локальный файл Parquet на удалённый сервер ClickHouse, вы можете сделать это, передав его содержимое в `clickhouse-client` через pipe, как показано ниже:
 
@@ -105,7 +105,7 @@ LIMIT 5;
 clickhouse client -q "INSERT INTO sometable FORMAT Parquet" < data.parquet
 ```
 
-## Создание новых таблиц из файлов Parquet {#creating-new-tables-from-parquet-files}
+## Создание новых таблиц из файлов Parquet \{#creating-new-tables-from-parquet-files\}
 
 Поскольку ClickHouse читает схему файлов Parquet, мы можем динамически создавать таблицы:
 
@@ -133,7 +133,7 @@ DESCRIBE TABLE imported_from_parquet;
 
 По умолчанию ClickHouse строго проверяет имена столбцов, их типы и значения. Но иногда при импорте можно игнорировать несуществующие столбцы или неподдерживаемые значения. Это можно настроить с помощью [настроек Parquet](/interfaces/formats/Parquet#format-settings).
 
-## Экспорт в формат Parquet {#exporting-to-parquet-format}
+## Экспорт в формат Parquet \{#exporting-to-parquet-format\}
 
 :::tip
 При использовании `INTO OUTFILE` с ClickHouse Cloud команды в `clickhouse client` нужно запускать на той машине (хосте), на которую будет записан файл.
@@ -150,7 +150,7 @@ FORMAT Parquet
 
 В результате в текущем рабочем каталоге будет создан файл `export.parquet`.
 
-## Типы данных ClickHouse и Parquet {#clickhouse-and-parquet-data-types}
+## Типы данных ClickHouse и Parquet \{#clickhouse-and-parquet-data-types\}
 
 Типы данных ClickHouse и Parquet в основном совпадают, но всё же [имеют некоторые отличия](/interfaces/formats/Parquet#data-types-matching-parquet). Например, ClickHouse экспортирует тип `DateTime` как значение типа `int64` в формате Parquet. Если затем импортировать его обратно в ClickHouse, мы увидим числа ([файл time.parquet](assets/time.parquet)):
 
@@ -187,7 +187,7 @@ FROM file('time.parquet', Parquet);
 └───┴─────────────────────┘
 ```
 
-## Дополнительные материалы {#further-reading}
+## Дополнительные материалы \{#further-reading\}
 
 ClickHouse поддерживает множество форматов, как текстовых, так и бинарных, для самых разных сценариев и платформ. Подробнее о форматах и работе с ними см. в следующих статьях:
 

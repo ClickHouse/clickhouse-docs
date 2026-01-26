@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 如何使用 CrewAI 和 ClickHouse MCP Server 构建 AI 代理 {#how-to-build-an-ai-agent-with-crewai-and-the-clickhouse-mcp-server}
+# 如何使用 CrewAI 和 ClickHouse MCP Server 构建 AI 代理 \{#how-to-build-an-ai-agent-with-crewai-and-the-clickhouse-mcp-server\}
 
 在本指南中，您将学习如何构建一个使用 [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse SQL playground](https://sql.clickhouse.com/) 进行交互的 [mcp-agent](https://github.com/lastmile-ai/mcp-agent) AI 代理。
 
@@ -18,7 +18,7 @@ doc_type: 'guide'
 该示例可以在 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/mcp-agent/mcp-agent.ipynb) 中找到对应的示例笔记本。
 :::
 
-## 前提条件 {#prerequisites}
+## 前提条件 \{#prerequisites\}
 
 - 需要在系统上安装 Python。
 - 需要在系统上安装 `pip`。

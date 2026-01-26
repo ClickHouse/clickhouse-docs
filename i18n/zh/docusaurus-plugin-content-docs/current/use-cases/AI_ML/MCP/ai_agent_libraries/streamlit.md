@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 如何使用 Streamlit 构建基于 ClickHouse 的 AI 代理 {#how-to-build-a-clickhouse-backed-ai-agent-with-streamlit}
+# 如何使用 Streamlit 构建基于 ClickHouse 的 AI 代理 \{#how-to-build-a-clickhouse-backed-ai-agent-with-streamlit\}
 
 在本指南中，您将学习如何使用 [Streamlit](https://streamlit.io/) 构建一个基于 Web 的 AI 代理，它可以通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 和 [Agno](https://github.com/agno-agi/agno) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 进行交互。
 
@@ -19,7 +19,7 @@ doc_type: 'guide'
 您可以在 [示例仓库](https://github.com/ClickHouse/examples/tree/main/ai/mcp/streamlit) 中找到该示例的源代码。
 :::
 
-## 前置条件 {#prerequisites}
+## 前置条件 \{#prerequisites\}
 
 - 您需要在系统上安装 Python。
   您需要安装 [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
@@ -29,7 +29,7 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-## 安装库 {#install-libraries}
+## 安装库 \{#install-libraries\}
 
 通过运行以下命令来安装所需的库：
 
@@ -37,7 +37,7 @@ doc_type: 'guide'
 pip install streamlit agno ipywidgets
 ```
 
-## 创建工具文件 {#create-utilities}
+## 创建工具文件 \{#create-utilities\}
 
 创建一个名为 `utils.py` 的文件，其中包含两个工具函数。第一个是一个用于处理来自 Agno 代理的流式响应的异步函数生成器，第二个是一个用于为 Streamlit 应用程序设置样式的函数：
 
@@ -62,7 +62,7 @@ def apply_styles():
   <hr class='divider' />""", unsafe_allow_html=True)
 ```
 
-## 设置凭证 {#setup-credentials}
+## 设置凭证 \{#setup-credentials\}
 
 将 Anthropic API 密钥设置为环境变量：
 
@@ -75,7 +75,7 @@ export ANTHROPIC_API_KEY="your_api_key_here"
 可以在 [Agno「Integrations（集成）」文档](https://docs.agentops.ai/v2/integrations/ag2) 中找到配置凭据的相关说明。
 :::
 
-## 导入所需的库 {#import-libraries}
+## 导入所需的库 \{#import-libraries\}
 
 首先创建主 Streamlit 应用程序文件（例如 `app.py`），并添加如下导入：
 
@@ -99,7 +99,7 @@ import threading
 from queue import Queue
 ```
 
-## 定义代理的流式函数 {#define-agent-function}
+## 定义代理的流式函数 \{#define-agent-function\}
 
 添加主代理函数，该函数连接到 [ClickHouse 的 SQL Playground](https://sql.clickhouse.com/)，并以流式方式输出响应：
 
@@ -149,7 +149,7 @@ async def stream_clickhouse_agent(message):
                     yield chunk.content
 ```
 
-## 添加同步包装函数 {#add-wrapper-functions}
+## 添加同步包装函数 \{#add-wrapper-functions\}
 
 在 Streamlit 中添加用于处理异步流式传输的帮助函数：
 
@@ -171,7 +171,7 @@ async def _agent_stream_to_queue(message, queue):
         queue.put(chunk)
 ```
 
-## 创建 Streamlit 界面 {#create-interface}
+## 创建 Streamlit 界面 \{#create-interface\}
 
 添加 Streamlit 界面组件和聊天功能：
 
@@ -200,7 +200,7 @@ if prompt := st.chat_input("What is up?"):
   st.session_state.messages.append({"role": "assistant", "content": response})
 ```
 
-## 运行应用程序 {#run-application}
+## 运行应用程序 \{#run-application\}
 
 要启动您的 ClickHouse AI 代理 Web 应用程序,请在终端中运行以下命令:
 

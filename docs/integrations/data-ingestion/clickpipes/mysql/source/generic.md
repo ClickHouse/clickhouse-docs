@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/source/generic
 title: 'Generic MySQL source setup guide'
 doc_type: 'guide'
 keywords: ['generic mysql', 'clickpipes', 'binary logging', 'ssl tls', 'mysql 8.x']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 # Generic MySQL source setup guide

@@ -25,7 +25,7 @@ ClickStack 的 NestJS 集成允许你创建一个 logger，或使用默认的 lo
 
 *若要发送指标或 APM/链路追踪（traces），你还需要为应用程序添加对应语言的集成。*
 
-## 入门 {#getting-started}
+## 入门 \{#getting-started\}
 
 将 `HyperDXNestLoggerModule` 导入根 `AppModule`，并使用 `forRoot()` 方法进行配置。
 
@@ -64,7 +64,7 @@ export class CatsController {
 }
 ```
 
-### 替换 Nest 日志记录器（也适用于启动阶段） {#replacing-the-nest-logger}
+### 替换 Nest 日志记录器（也适用于启动阶段） \{#replacing-the-nest-logger\}
 
 :::note 重要
 这样做会放弃使用依赖注入机制，这意味着 `forRoot` 和 `forRootAsync` 不再需要，也不应被使用。请将它们从主模块中移除。

@@ -1,26 +1,12 @@
 {
   "defaultLocale": "en",
   "files": {
-    "md": {
-      "include": [
-        "docs/**/*.md",
-        "knowledgebase/**/*.md"
-      ],
-      "transform": [
-        {
-          "match": "^docs/(.*)\\.md$",
-          "replace": "i18n/{locale}/docusaurus-plugin-content-docs/current/$1.md"
-        },
-        {
-          "match": "^knowledgebase/(.*)\\.md$",
-          "replace": "i18n/{locale}/docusaurus-plugin-content-blog/current/$1.md"
-        }
-      ]
-    },
     "mdx": {
       "include": [
         "docs/**/*.mdx",
-        "knowledgebase/**/*.mdx"
+        "knowledgebase/**/*.mdx",
+        "docs/**/*.md",
+        "knowledgebase/**/*.md"
       ],
       "transform": [
         {
@@ -30,6 +16,14 @@
         {
           "match": "^knowledgebase/(.*)\\.mdx$",
           "replace": "i18n/{locale}/docusaurus-plugin-content-blog/current/$1.mdx"
+        },
+        {
+          "match": "^docs/(.*)\\.md$",
+          "replace": "i18n/{locale}/docusaurus-plugin-content-docs/current/$1.md"
+        },
+        {
+          "match": "^knowledgebase/(.*)\\.md$",
+          "replace": "i18n/{locale}/docusaurus-plugin-content-blog/current/$1.md"
         }
       ]
     },
@@ -73,6 +67,9 @@
         "replace": "@site/i18n/[locale]/docusaurus-plugin-content-docs/current"
       }
     ],
+    "skipFileValidation": {
+      "mdx": true
+    },
     "experimentalAddHeaderAnchorIds": "default",
     "experimentalClearLocaleDirs": true
   }

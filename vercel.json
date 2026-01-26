@@ -3710,6 +3710,11 @@
       "source": "/docs/guides/sre/configuring-ssl",
       "destination": "/docs/guides/sre/tls/configuring-tls",
       "permanent": true
+    },
+    {
+      "source": "/docs/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud",
+      "destination": "/docs/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud",
+      "permanent": true
     }
   ]
 }

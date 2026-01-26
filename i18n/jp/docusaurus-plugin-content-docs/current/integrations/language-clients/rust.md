@@ -6,13 +6,16 @@ slug: /integrations/rust
 description: 'ClickHouse 用公式 Rust クライアント。'
 title: 'ClickHouse Rust クライアント'
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
 ---
 
-# ClickHouse Rust クライアント {#clickhouse-rust-client}
+# ClickHouse Rust クライアント \{#clickhouse-rust-client\}
 
 [Paul Loyd](https://github.com/loyd) によって当初開発された、ClickHouse に接続するための公式の Rust クライアントです。クライアントのソースコードは [GitHub リポジトリ](https://github.com/ClickHouse/clickhouse-rs) で公開されています。
 
-## 概要 {#overview}
+## 概要 \{#overview\}
 
 * 行のエンコード／デコードには `serde` を使用します。
 * `serde` 属性 `skip_serializing`、`skip_deserializing`、`rename` をサポートします。
@@ -23,7 +26,7 @@ doc_type: 'reference'
 * データの SELECT／INSERT、DDL の実行、およびクライアント側のバッチ処理用 API を提供します。
 * ユニットテスト用の便利なモック機能を提供します。
 
-## インストール {#installation}
+## インストール \{#installation\}
 
 このクレートを使用するには、`Cargo.toml` に以下を追加してください:
 
@@ -37,7 +40,7 @@ clickhouse = { version = "0.12.2", features = ["test-util"] }
 
 あわせて [crates.io のページ](https://crates.io/crates/clickhouse) も参照してください。
 
-## Cargo features {#cargo-features}
+## Cargo features \{#cargo-features\}
 
 * `lz4`（デフォルトで有効） — `Compression::Lz4` と `Compression::Lz4Hc(_)` バリアントを有効にします。有効な場合、`Compression::Lz4` は `WATCH` を除くすべてのクエリでデフォルトとして使用されます。
 * `native-tls` — OpenSSL にリンクする `hyper-tls` を通じて、`HTTPS` スキームの URL をサポートします。
@@ -53,26 +56,26 @@ clickhouse = { version = "0.12.2", features = ["test-util"] }
 両方が有効な場合は、`rustls-tls` feature が優先されます。
 :::
 
-## ClickHouse のバージョン互換性 {#clickhouse-versions-compatibility}
+## ClickHouse のバージョン互換性 \{#clickhouse-versions-compatibility\}
 
 このクライアントは、LTS もしくはそれ以降のバージョンの ClickHouse および ClickHouse Cloud と互換性があります。
 
 v22.6 より古い ClickHouse サーバーは、RowBinary を[まれなケースで誤って処理します](https://github.com/ClickHouse/ClickHouse/issues/37420)。 
 この問題を解決するには、v0.11 以降を使用し、`wa-37420` 機能を有効にしてください。なお、この機能は新しいバージョンの ClickHouse では使用しないでください。
 
-## 例 {#examples}
+## 例 \{#examples\}
 
 クライアントリポジトリ内の [examples](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples) で、クライアント利用のさまざまなシナリオをカバーすることを目指しています。概要は [examples README](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/README.md#overview) で確認できます。
 
 examples や以下のドキュメントに不明な点や不足している点がある場合は、遠慮なく[お問い合わせ](./rust.md#contact-us)ください。
 
-## 使い方 {#usage}
+## 使い方 \{#usage\}
 
 :::note
 [ch2rs](https://github.com/ClickHouse/ch2rs) クレートは、ClickHouse から行の型を生成するのに役立ちます。
 :::
 
-### クライアントインスタンスの作成 {#creating-a-client-instance}
+### クライアントインスタンスの作成 \{#creating-a-client-instance\}
 
 :::tip
 作成済みのクライアントを再利用するか、クローンして、基盤となる hyper のコネクションプールを共有するようにしてください。
@@ -89,7 +92,7 @@ let client = Client::default()
     .with_database("test");
 ```
 
-### HTTPS または ClickHouse Cloud への接続 {#https-or-clickhouse-cloud-connection}
+### HTTPS または ClickHouse Cloud への接続 \{#https-or-clickhouse-cloud-connection\}
 
 HTTPS 接続は、`rustls-tls` または `native-tls` のいずれかの Cargo 機能で動作します。
 
@@ -114,7 +117,7 @@ let client = Client::default()
 
 * クライアントリポジトリにある [ClickHouse Cloud を利用した HTTPS のサンプル](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/clickhouse_cloud.rs)。これはオンプレミス環境での HTTPS 接続にも利用できます。
 
-### 行を選択する {#selecting-rows}
+### 行を選択する \{#selecting-rows\}
 
 ```rust
 use serde::Deserialize;
@@ -149,7 +152,7 @@ while let Some(row) = cursor.next().await? { .. }
 行を選択する際に `wait_end_of_query` を使用する場合は注意してください。サーバー側でのメモリ使用量が増加し、全体的なパフォーマンスが低下する可能性が高くなります。
 :::
 
-### 行を挿入する {#inserting-rows}
+### 行を挿入する \{#inserting-rows\}
 
 ```rust
 use serde::Serialize;
@@ -171,7 +174,7 @@ insert.end().await?;
 * 行はネットワーク負荷を分散するために、ストリームとして順次送信されます。
 * ClickHouse は、すべての行が同じパーティションに収まり、かつ行数が [`max_insert_block_size`](https://clickhouse.tech/docs/operations/settings/settings/#settings-max_insert_block_size) 未満である場合にのみ、バッチをアトミックに挿入します。
 
-### 非同期挿入（サーバー側バッチ処理） {#async-insert-server-side-batching}
+### 非同期挿入（サーバー側バッチ処理） \{#async-insert-server-side-batching\}
 
 受信データをクライアント側でバッチ処理しないようにするには、[ClickHouse asynchronous inserts](/optimize/asynchronous-inserts) を利用できます。これは、`insert` メソッドに `async_insert` オプションを指定する（あるいは `Client` インスタンス自体に指定して、すべての `insert` 呼び出しに適用する）だけで実現できます。
 
@@ -186,7 +189,7 @@ let client = Client::default()
 
 * クライアントリポジトリの [非同期インサートの例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/async_insert.rs)。
 
-### Inserter 機能（クライアント側バッチ処理） {#inserter-feature-client-side-batching}
+### Inserter 機能（クライアント側バッチ処理） \{#inserter-feature-client-side-batching\}
 
 `inserter` Cargo フィーチャが必要です。
 
@@ -227,7 +230,7 @@ inserter.end().await?;
 
 :::
 
-### DDL の実行 {#executing-ddls}
+### DDL の実行 \{#executing-ddls\}
 
 シングルノードデプロイメント環境では、DDL は次のように実行するだけで十分です。
 
@@ -245,7 +248,7 @@ client
     .await?;
 ```
 
-### ClickHouse の設定 {#clickhouse-settings}
+### ClickHouse の設定 \{#clickhouse-settings\}
 
 `with_option` メソッドを使用して、さまざまな [ClickHouse の設定](/operations/settings/settings) を適用できます。例:
 
@@ -261,7 +264,7 @@ let numbers = client
 
 `query` だけでなく、`insert` および `inserter` メソッドでも同様に動作します。さらに、同じメソッドを `Client` インスタンスに対して呼び出すことで、すべてのクエリに適用されるグローバル設定を行うことができます。
 
-### クエリ ID {#query-id}
+### クエリ ID \{#query-id\}
 
 `.with_option` を使用すると、ClickHouse のクエリログでクエリを識別するための `query_id` オプションを設定できます。
 
@@ -281,7 +284,7 @@ let numbers = client
 
 参考: クライアントリポジトリ内の [query&#95;id のサンプル](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/query_id.rs) も参照してください。
 
-### セッション ID {#session-id}
+### セッション ID \{#session-id\}
 
 `query_id` と同様に、同じセッションでステートメントを実行するために `session_id` を設定できます。`session_id` はクライアントレベルでグローバルに設定することも、`query`、`insert`、`inserter` の各呼び出しごとに個別に設定することもできます。
 
@@ -297,7 +300,7 @@ let client = Client::default()
 
 関連項目: クライアントリポジトリ内の [session&#95;id の例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/session_id.rs) を参照してください。
 
-### カスタム HTTP ヘッダー {#custom-http-headers}
+### カスタム HTTP ヘッダー \{#custom-http-headers\}
 
 プロキシ認証を使用している場合やカスタムヘッダーを渡す必要がある場合は、次のように指定できます。
 
@@ -309,7 +312,7 @@ let client = Client::default()
 
 参考: クライアントリポジトリ内の [カスタム HTTP ヘッダーの例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_headers.rs) も参照してください。
 
-### カスタム HTTP クライアント {#custom-http-client}
+### カスタム HTTP クライアント \{#custom-http-client\}
 
 これは、内部の HTTP 接続プールの設定を調整する際に役立ちます。
 
@@ -337,7 +340,7 @@ let client = Client::with_http_client(hyper_client).with_url("http://localhost:8
 
 あわせて、クライアントリポジトリ内の [custom HTTP client example](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_client.rs) も参照してください。
 
-## データ型 {#data-types}
+## データ型 \{#data-types\}
 
 :::info
 追加のサンプルも参照してください:
@@ -521,15 +524,15 @@ struct MyRow {
 
 * `Variant`、`Dynamic`、（新しい）`JSON` データ型は現在まだサポートされていません。
 
-## モック機能 {#mocking}
+## モック機能 \{#mocking\}
 
 このクレートは、ClickHouse サーバーのモックや DDL、`SELECT`、`INSERT`、`WATCH` クエリのテスト用ユーティリティを提供します。この機能は `test-util` フィーチャーを有効にすると利用できます。**開発時の依存関係（dev-dependency）としてのみ**使用してください。
 
 [サンプルコード](https://github.com/ClickHouse/clickhouse-rs/tree/main/examples/mock.rs)を参照してください。
 
-## トラブルシューティング {#troubleshooting}
+## トラブルシューティング \{#troubleshooting\}
 
-### CANNOT&#95;READ&#95;ALL&#95;DATA {#cannot_read_all_data}
+### CANNOT&#95;READ&#95;ALL&#95;DATA \{#cannot_read_all_data\}
 
 `CANNOT_READ_ALL_DATA` エラーの最も一般的な原因は、アプリケーション側の行定義が ClickHouse の定義と一致していないことです。
 
@@ -565,11 +568,11 @@ struct EventLog {
 }
 ```
 
-## 既知の制限事項 {#known-limitations}
+## 既知の制限事項 \{#known-limitations\}
 
 * `Variant`、`Dynamic`、（新しい）`JSON` データ型にはまだ対応していません。
 * サーバーサイドでのパラメータバインディングにはまだ対応していません。進捗は [この Issue](https://github.com/ClickHouse/clickhouse-rs/issues/142) を参照してください。
 
-## お問い合わせ {#contact-us}
+## お問い合わせ \{#contact-us\}
 
 ご質問やサポートが必要な場合は、[Community Slack](https://clickhouse.com/slack) または [GitHub の issue](https://github.com/ClickHouse/clickhouse-rs/issues) からお気軽にお問い合わせください。

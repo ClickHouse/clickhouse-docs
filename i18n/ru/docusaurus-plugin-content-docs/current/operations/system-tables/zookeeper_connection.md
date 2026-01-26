@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.zookeeper&#95;connection {#systemzookeeper&#95;connection}
+# system.zookeeper_connection \{#systemzookeeper_connection\}
 
 <SystemTableCloud />
 

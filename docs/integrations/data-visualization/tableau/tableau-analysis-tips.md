@@ -6,9 +6,13 @@ keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', '
 description: 'Tableau analysis tips when using ClickHouse official connector.'
 title: 'Analysis tips'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
 ---
 
 # Analysis tips
+
 ## MEDIAN() and PERCENTILE() functions {#median-and-percentile-functions}
 - In Live mode the MEDIAN() and PERCENTILE() functions (since connector v0.1.3 release) use the [ClickHouse quantile()() function](/sql-reference/aggregate-functions/reference/quantile/), which significantly speeds up the calculation, but uses sampling. If you want to get accurate calculation results, then use functions `MEDIAN_EXACT()` and `PERCENTILE_EXACT()` (based on [quantileExact()()](/sql-reference/aggregate-functions/reference/quantileexact/)).
 - In Extract mode you can't use MEDIAN_EXACT() and PERCENTILE_EXACT() because MEDIAN() and PERCENTILE() are always accurate (and slow).
@@ -39,9 +43,9 @@ ClickHouse has a huge number of functions that can be used for data analysis —
 - **`HEX([my_string])`** *(added in v0.2.1)* — Returns a string containing the argument's hexadecimal representation. Equivalent of [`hex()`](/sql-reference/functions/encoding-functions/#hex).
 - **`KURTOSIS([my_number])`** — Computes the sample kurtosis of a sequence. Equivalent of [`kurtSamp()`](/sql-reference/aggregate-functions/reference/kurtsamp).
 - **`KURTOSISP([my_number])`** — Computes the kurtosis of a sequence. The equivalent of [`kurtPop()`](/sql-reference/aggregate-functions/reference/kurtpop).
-- **`MEDIAN_EXACT([my_number])`** *(added in v0.1.3)* — Exactly computes the median of a numeric data sequence. Equivalent of [`quantileExact(0.5)(...)`](/sql-reference/aggregate-functions/reference/quantileexact/#quantileexact).
+- **`MEDIAN_EXACT([my_number])`** *(added in v0.1.3)* — Exactly computes the median of a numeric data sequence. Equivalent of [`quantileExact(0.5)(...)`](/sql-reference/aggregate-functions/reference/quantileexact).
 - **`MOD([my_number_1], [my_number_2])`** — Calculates the remainder after division. If arguments are floating-point numbers, they are pre-converted to integers by dropping the decimal portion. Equivalent of [`modulo()`](/sql-reference/functions/arithmetic-functions/#modulo).
-- **`PERCENTILE_EXACT([my_number], [level_float])`** *(added in v0.1.3)* — Exactly computes the percentile of a numeric data sequence. The recommended level range is [0.01, 0.99]. Equivalent of [`quantileExact()()`](/sql-reference/aggregate-functions/reference/quantileexact/#quantileexact).
+- **`PERCENTILE_EXACT([my_number], [level_float])`** *(added in v0.1.3)* — Exactly computes the percentile of a numeric data sequence. The recommended level range is [0.01, 0.99]. Equivalent of [`quantileExact()()`](/sql-reference/aggregate-functions/reference/quantileexact).
 - **`PROPER([my_string])`** *(added in v0.2.5)* - Converts a text string so the first letter of each word is capitalized and the remaining letters are in lowercase. Spaces and non-alphanumeric characters such as punctuation also act as separators. For example:
     ```text
     PROPER("PRODUCT name") => "Product Name"

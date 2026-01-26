@@ -119,7 +119,7 @@ provider "clickhouse" {
 }
 ```
 
-The Terraform provider supports service provisioning, IP access lists, and user management. Note that the provider does not currently support importing existing services or explicit backup configuration. For features not covered by the provider, manage them through the console or contact ClickHouse support.
+The Terraform provider supports service provisioning, IP access lists, and user management. For features not covered by the provider, manage them through the console or contact ClickHouse support.
 
 For comprehensive examples including service configuration and network access controls, see [Terraform example on how to use Cloud API](/knowledgebase/terraform_example).
 

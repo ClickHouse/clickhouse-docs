@@ -25,13 +25,6 @@ These benefits come as a result of architectural choices underlying ClickHouse C
 ## Capabilities {#capabilities}
 ClickHouse Cloud provides access to a curated set of capabilities in the open source distribution of ClickHouse. Tables below describe some features that are disabled in ClickHouse Cloud at this time.
 
-### DDL syntax {#ddl-syntax}
-For the most part, the DDL syntax of ClickHouse Cloud should match what is available in self-managed installs. A few notable exceptions:
-- Support for `CREATE AS SELECT`, which is currently not available. As a workaround, we suggest using `CREATE ... EMPTY ... AS SELECT` and then inserting into that table (see [this blog](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1) for an example).
-- Some experimental syntax may be disabled, for instance, `ALTER TABLE ... MODIFY QUERY` statement.
-- Some introspection functionality may be disabled for security purposes, for example, the `addressToLine` SQL function.
-- Do not use `ON CLUSTER` parameters in ClickHouse Cloud - these are not needed. While these are mostly no-op functions, they can still cause an error if you are trying to use [macros](/operations/server-configuration-parameters/settings#macros). Macros often do not work and are not needed in ClickHouse Cloud.
-
 ### Database and table engines {#database-and-table-engines}
 
 ClickHouse Cloud provides a highly-available, replicated service by default. As a result, all database and table engines are "Replicated". You do not need to specify "Replicated"–for example, `ReplicatedMergeTree` and `MergeTree` are identical when used in ClickHouse Cloud.
@@ -65,6 +58,7 @@ ClickHouse Cloud provides a highly-available, replicated service by default. As 
 - RabbitMQ
 - PostgreSQL
 - S3
+- Kafka
 
 ### Interfaces {#interfaces}
 ClickHouse Cloud supports HTTPS, native interfaces, and the [MySQL wire protocol](/interfaces/mysql). Support for more interfaces such as Postgres is coming soon.
@@ -87,7 +81,7 @@ Federated queries with some external database and table engines, such as SQLite,
 
 ### User defined functions {#user-defined-functions}
 
-User-defined functions are a recent feature in ClickHouse. ClickHouse Cloud currently supports SQL UDFs only.
+User-defined functions in ClickHouse Cloud are in [private preview](https://clickhouse.com/docs/sql-reference/functions/udf).
 
 #### Settings behavior {#udf-settings-behavior}
 
@@ -103,10 +97,6 @@ This means:
 ### Experimental features {#experimental-features}
 
 Experimental features are disabled in ClickHouse Cloud services to ensure the stability of service deployments.
-
-### Kafka {#kafka}
-
-The [Kafka Table Engine](/integrations/data-ingestion/kafka/index.md) is not generally available in ClickHouse Cloud. Instead, we recommend relying on architectures that decouple the Kafka connectivity components from the ClickHouse service to achieve a separation of concerns. We recommend [ClickPipes](https://clickhouse.com/cloud/clickpipes) for pulling data from a Kafka stream. Alternatively, consider the push-based alternatives listed in the [Kafka User Guide](/integrations/data-ingestion/kafka/index.md).
 
 ### Named collections {#named-collections}
 
@@ -137,4 +127,4 @@ As part of creating the ClickHouse service, we create a default database, and th
 
 ## Roadmap {#roadmap}
 
-We are introducing support for executable UDFs in the Cloud and evaluating demand for many other features. If you have feedback and would like to ask for a specific feature, please [submit it here](https://console.clickhouse.cloud/support).
+We are evaluating demand for many other features in ClickHouse Cloud. If you have feedback and would like to ask for a specific feature, please [submit it here](https://console.clickhouse.cloud/support).

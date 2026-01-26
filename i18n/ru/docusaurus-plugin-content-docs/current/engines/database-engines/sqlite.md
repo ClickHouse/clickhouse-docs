@@ -8,11 +8,11 @@ title: 'SQLite'
 doc_type: 'reference'
 ---
 
-# SQLite {#sqlite}
+# SQLite \{#sqlite\}
 
 Позволяет подключаться к базе данных [SQLite](https://www.sqlite.org/index.html) и выполнять запросы `INSERT` и `SELECT` для обмена данными между ClickHouse и SQLite.
 
-## Создание базы данных {#creating-a-database}
+## Создание базы данных \{#creating-a-database\}
 
 ```sql
     CREATE DATABASE sqlite_database
@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 * `db_path` — Путь к файлу с базой данных SQLite.
 
-## Поддерживаемые типы данных {#data_types-support}
+## Поддерживаемые типы данных \{#data_types-support\}
 
 |  SQLite   | ClickHouse                                              |
 |---------------|---------------------------------------------------------|
@@ -32,12 +32,12 @@ doc_type: 'reference'
 | TEXT          | [String](../../sql-reference/data-types/string.md)      |
 | BLOB          | [String](../../sql-reference/data-types/string.md)      |
 
-## Особенности и рекомендации {#specifics-and-recommendations}
+## Особенности и рекомендации \{#specifics-and-recommendations\}
 
 SQLite хранит всю базу данных (определения, таблицы, индексы и сами данные) в одном кроссплатформенном файле на хосте. Во время записи SQLite блокирует весь файл базы данных, поэтому операции записи выполняются последовательно. Операции чтения могут выполняться параллельно.
 SQLite не требует отдельного управления службой (например, скриптов запуска) или управления доступом на основе `GRANT` и паролей. Контроль доступа осуществляется с помощью разрешений файловой системы, заданных непосредственно для файла базы данных.
 
-## Пример использования {#usage-example}
+## Пример использования \{#usage-example\}
 
 База данных в ClickHouse, подключённая к SQLite:
 

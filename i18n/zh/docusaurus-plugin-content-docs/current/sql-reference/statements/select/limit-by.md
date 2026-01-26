@@ -6,7 +6,7 @@ title: 'LIMIT BY 子句'
 doc_type: 'reference'
 ---
 
-# LIMIT BY 子句 {#limit-by-clause}
+# LIMIT BY 子句 \{#limit-by-clause\}
 
 带有 `LIMIT n BY expressions` 子句的查询会为 `expressions` 的每个不同取值组合选取前 `n` 行。`LIMIT BY` 的键可以包含任意数量的[表达式](/sql-reference/syntax#expressions)。
 
@@ -23,7 +23,7 @@ ClickHouse 支持以下语法形式：
 
 如果希望在 `LIMIT BY` 子句中使用列编号而不是列名，请启用 [enable&#95;positional&#95;arguments](/operations/settings/settings#enable_positional_arguments) 设置。
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
 示例表格：
 
@@ -76,7 +76,7 @@ LIMIT 5 BY domain, device_type
 LIMIT 100
 ```
 
-## LIMIT BY ALL {#limit-by-all}
+## LIMIT BY ALL \{#limit-by-all\}
 
 `LIMIT BY ALL` 等价于列出 SELECT 子句中所有不是聚合函数的表达式。
 
@@ -106,7 +106,7 @@ SELECT substring(a, 4, 2), substring(substring(a, 1, 2), 1, count(b)) FROM t LIM
 SELECT substring(a, 4, 2), substring(substring(a, 1, 2), 1, count(b)) FROM t LIMIT 2 BY substring(a, 4, 2), substring(a, 1, 2)
 ```
 
-## 示例 {#examples-limit-by-all}
+## 示例 \{#examples-limit-by-all\}
 
 示例表：
 

@@ -13,7 +13,7 @@ import Image from '@theme/IdealImage';
 効果的なスキーマ設計を理解することは、ClickHouse のパフォーマンス最適化の要となります。スキーマ設計にはしばしばトレードオフを伴う選択が含まれ、最適なアプローチは、実行されるクエリに加えて、データの更新頻度、レイテンシ要件、データ量といった要因によって異なります。本ガイドでは、ClickHouse のパフォーマンスを最適化するためのスキーマ設計におけるベストプラクティスとデータモデリング手法の概要を説明します。
 
 
-## Stack Overflow dataset {#stack-overflow-dataset}
+## Stack Overflow dataset \{#stack-overflow-dataset\}
 
 このガイドのサンプルでは、Stack Overflow データセットのサブセットを使用します。これは、2008 年から 2024 年 4 月までに Stack Overflow 上で行われたすべての投稿、投票、ユーザー、コメント、およびバッジを含みます。このデータは、以下のスキーマに従った Parquet 形式として、S3 バケット `s3://datasets-documentation/stackoverflow/parquet/` から利用できます。
 
@@ -27,7 +27,7 @@ Stack Overflow データセットには複数の関連テーブルが含まれ�
 
 上記のスキーマは、このガイドの目的上、あえて最適化されていません。
 
-## 初期スキーマの定義 {#establish-initial-schema}
+## 初期スキーマの定義 \{#establish-initial-schema\}
 
 `posts` テーブルは大半の分析クエリのターゲットとなるため、このテーブルのスキーマ定義に注力します。このデータは、パブリックな S3 バケット `s3://datasets-documentation/stackoverflow/parquet/posts/*.parquet` に、1 年ごとに 1 ファイルという構成で保存されています。
 
@@ -129,7 +129,7 @@ INSERT INTO posts SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.
 > 上記のクエリは 6,000 万行をロードします。ClickHouse にとっては小規模な件数ですが、インターネット接続が遅いユーザーはデータの一部のみをロードしたい場合があるかもしれません。これは、ロードしたい年を glob パターンで指定するだけで実現できます。例: `https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2008.parquet` または `https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/{2008, 2009}.parquet`。一部のファイルのみを対象とするための glob パターンの使い方は[こちら](/sql-reference/table-functions/file#globs-in-path)を参照してください。
 
 
-## Optimizing Types {#optimizing-types}
+## Optimizing Types \{#optimizing-types\}
 
 ClickHouse のクエリ性能を高めるための秘訣の 1 つは圧縮です。
 
@@ -225,7 +225,7 @@ ClickHouse におけるプライマリ（並び替え）キー
 OLTP データベースから来たユーザーは、ClickHouse における同等の概念を探すことがよくあります。
 
 
-## 順序キーの選択 {#choosing-an-ordering-key}
+## 順序キーの選択 \{#choosing-an-ordering-key\}
 
 ClickHouse がよく利用されるようなスケールでは、メモリとディスクの効率性が最重要となります。データは ClickHouse のテーブルに、パーツと呼ばれるチャンク単位で書き込まれ、バックグラウンドでこれらパーツをマージするためのルールが適用されます。ClickHouse では、それぞれのパーツが独自のプライマリインデックスを持ちます。パーツがマージされると、マージ後のパーツのプライマリインデックスも同様にマージされます。パーツのプライマリインデックスは、行グループごとに 1 つのインデックスエントリを持ち、この手法はスパースインデックスと呼ばれます。
 
@@ -244,7 +244,7 @@ ClickHouse で選択したキーは、索引だけでなく、ディスク上に
 
 順序キーに用いるカラムのサブセットを決定する際には、カラムを特定の順番で宣言します。この順番は、クエリにおけるセカンダリキーとなるカラムのフィルタリング効率や、テーブルのデータファイルに対する圧縮率に大きな影響を与えます。一般的には、カーディナリティ（値の種類の多さ）が小さいものから大きいものへと昇順に並べるのが最適です。ただし、順序キーの後ろの方に現れるカラムに対するフィルタリングは、先頭のカラムに対するフィルタリングほど効率的ではないという事実とのバランスを取る必要があります。これらの振る舞いをバランスさせ、自身のアクセスパターンを考慮しつつ（そして何よりもバリエーションを実際にテストしながら）決定してください。
 
-### 例 {#example}
+### 例 \{#example\}
 
 上記のガイドラインを `posts` テーブルに適用すると、ユーザーは日付と投稿タイプでフィルタリングする分析を行いたいと仮定します。たとえば、
 
@@ -332,7 +332,7 @@ LIMIT 3
 特定の型や適切なオーダーキーの利用によって得られる圧縮効率の向上に関心があるユーザーは、[Compression in ClickHouse](/data-compression/compression-in-clickhouse) を参照してください。圧縮をさらに高める必要がある場合は、[Choosing the right column compression codec](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec) のセクションも参照することを推奨します。
 
 
-## 次へ: データモデリング手法 {#next-data-modeling-techniques}
+## 次へ: データモデリング手法 \{#next-data-modeling-techniques\}
 
 ここまでは、1 つのテーブルだけを移行してきました。これにより、いくつかの中核となる ClickHouse の概念を紹介することはできましたが、残念ながら現実のスキーマの多くはここまで単純ではありません。
 

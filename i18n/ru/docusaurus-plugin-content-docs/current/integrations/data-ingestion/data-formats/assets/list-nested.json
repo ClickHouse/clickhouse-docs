@@ -2,7 +2,7 @@
   {
     "page": {
       "path": "Akiba_Hebrew_Academy",
-      "title": "Еврейская академия Акиба",
+      "title": "Еврейская академия Акибы",
       "owner_id": 12
     },
     "month": "2017-08-01",
@@ -19,8 +19,8 @@
   },
   {
     "page": {
-      "path": "1971–72_сезон_Utah_Stars",
-      "title": "Utah Stars: сезон 1971/72",
+      "path": "1971-72_Utah_Stars_season",
+      "title": "Utah Stars: сезон 1971–72",
       "owner_id": 432
     },
     "month": "2016-10-01",

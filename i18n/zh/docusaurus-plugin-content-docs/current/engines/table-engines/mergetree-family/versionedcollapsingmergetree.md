@@ -7,7 +7,7 @@ title: 'VersionedCollapsingMergeTree 表引擎'
 doc_type: 'reference'
 ---
 
-# VersionedCollapsingMergeTree 表引擎 {#versionedcollapsingmergetree-table-engine}
+# VersionedCollapsingMergeTree 表引擎 \{#versionedcollapsingmergetree-table-engine\}
 
 该引擎：
 
@@ -18,7 +18,7 @@ doc_type: 'reference'
 
 该引擎继承自 [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree)，并在数据部分合并算法中增加了对行进行折叠的逻辑。`VersionedCollapsingMergeTree` 与 [CollapsingMergeTree](../../../engines/table-engines/mergetree-family/collapsingmergetree.md) 具有相同用途，但使用了不同的折叠算法，允许在多线程环境下以任意顺序插入数据。特别是，`Version` 列有助于在插入顺序不正确时仍能正确折叠行。相比之下，`CollapsingMergeTree` 只允许严格按顺序插入。
 
-## 创建表 {#creating-a-table}
+## 创建表 \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -35,7 +35,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 有关查询参数的详细说明，请参阅[查询说明](../../../sql-reference/statements/create/table.md)。
 
-### 引擎参数 {#engine-parameters}
+### 引擎参数 \{#engine-parameters\}
 
 ```sql
 VersionedCollapsingMergeTree(sign, version)
@@ -46,7 +46,7 @@ VersionedCollapsingMergeTree(sign, version)
 | `sign`    | 行类型列的列名：`1` 表示“state”行，`-1` 表示“cancel”行。 | [`Int8`](/sql-reference/data-types/int-uint)                                                                                                                                                                                                                                                 |
 | `version` | 对象状态版本列的列名。                              | [`Int*`](/sql-reference/data-types/int-uint), [`UInt*`](/sql-reference/data-types/int-uint), [`Date`](/sql-reference/data-types/date), [`Date32`](/sql-reference/data-types/date32), [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) |
 
-### 查询子句 {#query-clauses}
+### 查询子句 \{#query-clauses\}
 
 在创建 `VersionedCollapsingMergeTree` 表时，需要与创建 `MergeTree` 表时相同的[子句](../../../engines/table-engines/mergetree-family/mergetree.md)。
 
@@ -77,9 +77,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
     列数据类型应为 `UInt*`。
 </details>
 
-## 折叠 {#table_engines_versionedcollapsingmergetree}
+## 折叠 \{#table_engines_versionedcollapsingmergetree\}
 
-### 数据 {#data}
+### 数据 \{#data\}
 
 考虑这样一种情况：你需要为某个对象保存不断变化的数据。为某个对象仅保留一行记录，并在有变化时更新这一行是合理的。然而，对于 DBMS 来说，执行 `UPDATE` 操作代价高且速度慢，因为这需要在存储中重写数据。如果你需要快速写入数据，则不适合使用 `UPDATE`，但可以按如下方式顺序写入对象的变更。
 
@@ -125,13 +125,13 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 2. 列中持续增长的长数组会因为写入负载而降低引擎效率。数据越简单直接，引擎效率越高。
 3. `SELECT` 结果高度依赖于对象变更历史的一致性。在准备要插入的数据时要非常谨慎。对于不一致的数据，你可能会得到不可预测的结果，例如本应为非负指标（如会话深度）的负值。
 
-### 算法 {#table_engines-versionedcollapsingmergetree-algorithm}
+### 算法 \{#table_engines-versionedcollapsingmergetree-algorithm\}
 
 当 ClickHouse 合并数据分片时，会删除每一对具有相同主键和版本、但 `Sign` 不同的行。行的顺序无关紧要。
 
 当 ClickHouse 插入数据时，会按主键对行进行排序。如果 `Version` 列不在主键中，ClickHouse 会隐式地将其作为最后一个字段加入主键，并使用它进行排序。
 
-## 选择数据 {#selecting-data}
+## 选择数据 \{#selecting-data\}
 
 ClickHouse 不保证具有相同主键的所有行会位于同一个结果数据部件中，甚至不保证在同一台物理服务器上。这对于数据写入以及之后的数据部件合并都成立。此外，ClickHouse 会使用多个线程处理 `SELECT` 查询，因此无法预测结果集中各行的顺序。这意味着，如果需要从 `VersionedCollapsingMergeTree` 表中获取完全“折叠”的数据，就必须进行聚合。
 
@@ -141,7 +141,7 @@ ClickHouse 不保证具有相同主键的所有行会位于同一个结果数据
 
 如果需要在不进行聚合的情况下以“折叠”的方式提取数据（例如，检查是否存在其最新值满足某些条件的行），可以在 `FROM` 子句中使用 `FINAL` 修饰符。这种方法效率较低，不应在大表上使用。
 
-## 使用示例 {#example-of-use}
+## 使用示例 \{#example-of-use\}
 
 示例数据：
 

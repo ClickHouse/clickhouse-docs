@@ -31,7 +31,7 @@ ClickStack 支持对事件进行可视化，并在 HyperDX 中内置了图表功
 
 可视化可以基于 traces、metrics、logs，或任意用户自定义的宽表事件 schema 创建。
 
-## 创建可视化图表 {#creating-visualizations}
+## 创建可视化图表 \{#creating-visualizations\}
 
 HyperDX 中的 **Chart Explorer** 界面允许你在时间维度上可视化指标、追踪和日志，从而轻松创建用于数据分析的快速可视化图表。该界面在创建仪表板时也会复用。下文将演示如何使用 Chart Explorer 创建一个可视化图表的完整流程。
 
@@ -43,13 +43,13 @@ HyperDX 中的 **Chart Explorer** 界面允许你在时间维度上可视化指�
 
 <VerticalStepper headerLevel="h3">
 
-### 进入 Chart Explorer {#navigate-chart-explorer}
+### 进入 Chart Explorer \{#navigate-chart-explorer\}
 
 从左侧菜单中选择 `Chart Explorer`。
 
 <Image img={visualization_1} alt="Chart Explorer" size="lg"/>
 
-### 创建可视化图表 {#create-visualization}
+### 创建可视化图表 \{#create-visualization\}
 
 在下面的示例中，我们按服务名称绘制一段时间内的平均请求耗时。这需要你指定一个 metric、一列（可以是 SQL 表达式）以及一个聚合字段。
 
@@ -77,7 +77,7 @@ HyperDX 中的 **Chart Explorer** 界面允许你在时间维度上可视化指�
 
 </VerticalStepper>
 
-## 创建仪表盘 {#creating-dashboards}
+## 创建仪表盘 \{#creating-dashboards\}
 
 仪表盘提供了一种将相关可视化进行分组的方式，使用户能够将指标并排对比、挖掘模式，从而识别系统中的潜在根本原因。这些仪表盘既可用于临时排查，也可以保存下来用于持续监控。
 
@@ -87,7 +87,7 @@ HyperDX 中的 **Chart Explorer** 界面允许你在时间维度上可视化指�
 
 <VerticalStepper headerLevel="h3">
 
-### 导航到 Dashboards {#navigate-dashboards}
+### 导航到 Dashboards \{#navigate-dashboards\}
 
 从左侧菜单中选择 `Dashboards`。
 
@@ -97,7 +97,7 @@ HyperDX 中的 **Chart Explorer** 界面允许你在时间维度上可视化指�
 
 如果你使用的是自己的 HyperDX 实例，可以点击 `Create New Saved Dashboard`，以确保该仪表盘之后可以被保存。若使用只读环境 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)，该选项将不可用。
 
-### 创建可视化 – 按服务的平均请求时间 {#create-a-tile}
+### 创建可视化 – 按服务的平均请求时间 \{#create-a-tile\}
 
 选择 `Add New Tile` 打开可视化创建面板。
 
@@ -118,7 +118,7 @@ HyperDX 中的 **Chart Explorer** 界面允许你在时间维度上可视化指�
 
 <Image img={dashboard_3} alt="包含可视化的仪表盘" size="lg"/>
 
-### 创建可视化 – 按服务的事件随时间分布 {#create-a-tile-2}
+### 创建可视化 – 按服务的事件随时间分布 \{#create-a-tile-2\}
 
 选择 `Add New Tile` 打开可视化创建面板。
 
@@ -138,7 +138,7 @@ HyperDX 中的 **Chart Explorer** 界面允许你在时间维度上可视化指�
 
 <Image img={dashboard_5} alt="包含可视化的仪表盘 2" size="lg"/>
 
-### 筛选仪表盘 {#filter-dashboards}
+### 筛选仪表盘 \{#filter-dashboards\}
 
 可以在仪表盘级别应用 Lucene 或 SQL 过滤器，以及时间范围设置，这些会自动作用于所有可视化。
 
@@ -152,27 +152,27 @@ HyperDX 中的 **Chart Explorer** 界面允许你在时间维度上可视化指�
 
 </VerticalStepper>
 
-## 仪表板 - 编辑可视化 {#dashboards-editing-visualizations}
+## 仪表板 - 编辑可视化 \{#dashboards-editing-visualizations\}
 
 要删除、编辑或复制可视化，将鼠标悬停其上，然后使用相应的操作按钮。
 
 <Image img={dashboard_edit} alt="编辑仪表板" size="lg"/>
 
-## 仪表板 - 列表与搜索 {#dashboard-listing-search}
+## 仪表板 - 列表与搜索 \{#dashboard-listing-search\}
 
 可以通过左侧菜单访问仪表板，并使用内置搜索功能快速查找特定仪表板。
 
 <Image img={dashboard_search} alt="Dashboard search" size="sm"/>
 
-## 仪表板 - 标签 {#tagging}
+## 仪表板 - 标签 \{#tagging\}
 
 <Tagging />
 
-## 预设 {#presets}
+## 预设 \{#presets\}
 
 HyperDX 部署时即提供开箱即用的仪表板。
 
-### ClickHouse 仪表盘 {#clickhouse-dashboard}
+### ClickHouse 仪表盘 \{#clickhouse-dashboard\}
 
 此仪表盘提供用于监控 ClickHouse 的可视化界面。要打开该仪表盘，请在左侧菜单中选择它。
 
@@ -192,7 +192,7 @@ HyperDX 部署时即提供开箱即用的仪表板。
 `GRANT SHOW COLUMNS, SELECT(event_date, event_time, hostname, metric, value) ON system.transposed_metric_log`
 :::
 
-### Services 仪表板 {#services-dashboard}
+### Services 仪表板 \{#services-dashboard\}
 
 Services 仪表板会基于链路追踪数据展示当前处于活动状态的服务。使用该功能前，用户需要先采集 traces 并配置一个有效的 Traces 数据源。
 
@@ -202,7 +202,7 @@ Services 仪表板会基于链路追踪数据展示当前处于活动状态的�
 
 <Image img={dashboard_services} alt="ClickHouse services" size="lg"/>
 
-### Kubernetes 仪表盘 {#kubernetes-dashboard}
+### Kubernetes 仪表盘 \{#kubernetes-dashboard\}
 
 此仪表盘允许你探索通过 OpenTelemetry 收集的 Kubernetes 事件。它提供高级筛选选项，使你能够按 Kubernetes pod（容器组）、Deployment（部署）、节点名称、命名空间和集群进行筛选，并执行自由文本搜索。
 

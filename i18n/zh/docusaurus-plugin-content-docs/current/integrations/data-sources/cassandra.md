@@ -7,6 +7,6 @@ keywords: ['cassandra', 'integration', 'dictionary']
 doc_type: 'reference'
 ---
 
-# Cassandra 集成 {#cassandra-integration}
+# Cassandra 集成 \{#cassandra-integration\}
 
 可以通过字典与 Cassandra 集成。更多详情请参阅[此处](/sql-reference/dictionaries#cassandra)。

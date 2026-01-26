@@ -40,9 +40,9 @@ import image_8 from '@site/static/images/use-cases/AI_ML/Marimo/8.gif';
 ここでは、スターターデータセットの 1 つとして ClickHouse Cloud 上で利用可能な UK Property Price データセットを使用します。
 このデータセットには、1995 年から 2024 年までのイギリスにおける住宅の売却価格に関するデータが含まれています。
 
-## セットアップ {#setup}
+## セットアップ \{#setup\}
 
-### データセットの読み込み {#loading-the-dataset}
+### データセットの読み込み \{#loading-the-dataset\}
 
 既存の ClickHouse Cloud サービスにこのデータセットを追加するには、アカウントで [console.clickhouse.cloud](https://console.clickhouse.cloud/) にログインします。
 
@@ -62,7 +62,7 @@ ClickHouse は自動的に `pp_complete` テーブルを `default` データベ�
 
 認証情報が漏洩する可能性を減らすため、ClickHouse Cloud のユーザー名とパスワードをローカルマシンの環境変数として登録することをお勧めします。ターミナルから次のコマンドを実行して、ユーザー名とパスワードを環境変数として追加します:
 
-### 認証情報の設定 {#setting-up-credentials}
+### 認証情報の設定 \{#setting-up-credentials\}
 
 ```bash
 export CLICKHOUSE_CLOUD_HOSTNAME=<HOSTNAME>
@@ -75,7 +75,7 @@ export CLICKHOUSE_CLOUD_PASSWORD=your_actual_password
 永続的に設定するには、シェルの設定ファイルに追加してください。
 :::
 
-### Marimo のインストール {#installing-marimo}
+### Marimo のインストール \{#installing-marimo\}
 
 まず仮想環境を有効にします。
 仮想環境を有効にした状態で、このガイドで使用する次のパッケージをインストールします。
@@ -96,7 +96,7 @@ marimo edit clickhouse_exploration.py
 
 Marimo ノートブックは純粋な Python ファイルとして保存されるため、バージョン管理や他者との共有が容易です。
 
-## 依存関係のインストール {#installing-dependencies}
+## 依存関係のインストール \{#installing-dependencies\}
 
 新しいセルで必要なパッケージをインポートします。
 
@@ -123,14 +123,14 @@ result
 
 <Image size="md" img={image_5} alt="Marimo hello world" />
 
-## データの探索 {#exploring-the-data}
+## データの探索 \{#exploring-the-data\}
 
 UK price paid データセットをセットアップし、Marimo ノートブック上で chDB が稼働していれば、データの探索を始めることができます。
 首都ロンドンのような、UK の特定エリアにおける価格が時間とともにどのように変化したかを確認したいとします。
 ClickHouse の [`remoteSecure`](/docs/sql-reference/table-functions/remote) 関数を使うと、ClickHouse Cloud からデータを簡単に取得できます。
 chDB に対して、このデータを同一プロセス内で Pandas のデータフレームとして返すよう指示できます。これはデータを扱ううえで便利でなじみのある形式です。
 
-### ClickHouse Cloud データのクエリ実行 {#querying-clickhouse-cloud-data}
+### ClickHouse Cloud データのクエリ実行 \{#querying-clickhouse-cloud-data\}
 
 新しいセルを作成し、次のクエリを使用して ClickHouse Cloud サービスから UK price paid データを取得し、それを `pandas.DataFrame` に変換します。
 
@@ -174,7 +174,7 @@ df.head()
 この例では、年ごとの平均価格を返し、`town='LONDON'` でフィルタリングしています。
 結果は `df` という変数の DataFrame に保存されます。
 
-### データの可視化 {#visualizing-the-data}
+### データの可視化 \{#visualizing-the-data\}
 
 データが扱い慣れた形式で利用可能になったので、ロンドンの不動産価格が時間とともにどのように変化したかを見ていきます。
 
@@ -201,7 +201,7 @@ fig
 
 Marimo の大きな強みの 1 つは、そのリアクティブな実行モデルです。さまざまな町を動的に選択できるインタラクティブなウィジェットを作成しましょう。
 
-### インタラクティブな町の選択 {#interactive-town-selection}
+### インタラクティブな町の選択 \{#interactive-town-selection\}
 
 新しいセルで、さまざまな町を選択するためのドロップダウンを作成します。
 
@@ -257,7 +257,7 @@ fig_reactive
 
 <Image size="md" img={image_7} alt="Marimo の動的チャート" />
 
-### インタラクティブな箱ひげ図で価格分布を探索する {#exploring-price-distributions}
+### インタラクティブな箱ひげ図で価格分布を探索する \{#exploring-price-distributions\}
 
 ロンドンの物件価格について、年ごとの分布を調べて、データをさらに深掘りしてみましょう。
 箱ひげ図を使うと、中央値や四分位数、外れ値を確認でき、単なる平均価格よりもはるかに深い理解が得られます。

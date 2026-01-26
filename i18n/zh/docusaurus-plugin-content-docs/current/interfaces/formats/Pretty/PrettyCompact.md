@@ -16,7 +16,7 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | ✗  | ✔  |    |
 
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 与 [`Pretty`](./Pretty.md) 格式的区别在于，该格式会在表格的行之间绘制网格线。
 因此，输出更加紧凑。
@@ -27,10 +27,10 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 
 
-## 示例用法 {#example-usage}
+## 示例用法 \{#example-usage\}
 
 
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}
 
 <PrettyFormatSettings />

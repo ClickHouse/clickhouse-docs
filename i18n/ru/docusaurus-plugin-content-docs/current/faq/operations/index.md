@@ -8,7 +8,7 @@ doc_type: 'landing-page'
 keywords: ['эксплуатация', 'администрирование', 'развертывание', 'управление кластерами', 'частые вопросы']
 ---
 
-# Вопросы по эксплуатации серверов и кластеров ClickHouse {#question-about-operating-clickhouse-servers-and-clusters}
+# Вопросы по эксплуатации серверов и кластеров ClickHouse \{#question-about-operating-clickhouse-servers-and-clusters\}
 
 * [Какую версию ClickHouse использовать в продакшене?](/faq/operations/production.md)
 * [Можно ли развернуть ClickHouse с раздельными хранилищем и вычислительными ресурсами?](/faq/operations/separate_storage.md)

@@ -18,7 +18,7 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 本番環境に ClickStack をデプロイする際は、セキュリティ、安定性、および適切な構成を確保するために、いくつかの追加の考慮事項があります。
 
 
-## ネットワークとポートのセキュリティ {#network-security}
+## ネットワークとポートのセキュリティ \{#network-security\}
 
 デフォルトでは、Docker Compose はホスト上でポートを公開するため、`ufw` (Uncomplicated Firewall) のようなツールが有効になっている場合でも、コンテナ外部からアクセス可能な状態になります。これは Docker のネットワークスタックの挙動によるもので、明示的に設定しない限り、ホストレベルのファイアウォールルールをバイパスしてしまうことがあります。
 
@@ -39,7 +39,7 @@ ports:
 コンテナの分離やアクセス保護の強化に関する詳細は、[Docker ネットワークのドキュメント](https://docs.docker.com/network/)を参照してください。
 
 
-## セッションシークレットの設定 {#session-secret}
+## セッションシークレットの設定 \{#session-secret\}
 
 本番環境では、セッションデータを保護し改ざんを防ぐために、環境変数 `EXPRESS_SESSION_SECRET` に強力なランダム値を必ず設定する必要があります。
 
@@ -80,7 +80,7 @@ openssl rand -hex 32
 シークレットをソースコード管理にコミットしないでください。本番環境では、環境変数管理ツール（例: Docker Secrets、HashiCorp Vault、または環境ごとの CI/CD 設定）の利用を検討してください。
 
 
-## セキュアなインジェスト {#secure-ingestion}
+## セキュアなインジェスト \{#secure-ingestion\}
 
 すべてのインジェストは、ClickStack ディストリビューションに含まれる OpenTelemetry (OTel) コレクターが公開する OTLP ポート経由で行う必要があります。デフォルトでは、これには起動時に生成されるセキュアなインジェスト API key が必要です。このキーは OTel ポートへデータを送信する際に必須であり、HyperDX UI の `Team Settings → API Keys` から確認できます。
 
@@ -88,13 +88,13 @@ openssl rand -hex 32
 
 さらに、OTLP エンドポイント向けに TLS を有効化し、[ClickHouse インジェスト専用のユーザー](#database-ingestion-user)を作成することを推奨します。
 
-## ClickHouse {#clickhouse}
+## ClickHouse \{#clickhouse\}
 
 本番環境でのデプロイメントには、標準的な[セキュリティプラクティス](/cloud/security)（強化された暗号化・認証・接続性や、マネージドなアクセス制御を含む）がデフォルトで適用される [ClickHouse Cloud](https://clickhouse.com/cloud) の利用を推奨します。ClickHouse Cloud をベストプラクティスに沿って利用するためのステップバイステップガイドについては、「[ClickHouse Cloud](#clickhouse-cloud-production)」を参照してください。
 
-### ユーザー権限 {#user-permissions}
+### ユーザー権限 \{#user-permissions\}
 
-#### HyperDX ユーザー {#hyperdx-user}
+#### HyperDX ユーザー \{#hyperdx-user\}
 
 HyperDX 用の ClickHouse ユーザーは、以下の設定を変更できる権限を持つ `readonly` ユーザーであれば十分です:
 
@@ -105,11 +105,11 @@ HyperDX 用の ClickHouse ユーザーは、以下の設定を変更できる権
 
 既定では、OSS と ClickHouse Cloud の両方で `default` ユーザーがこれらの権限を持っていますが、これらの権限を持つ新しいユーザーを作成することを推奨します。
 
-#### データベースとインジェスト用ユーザー {#database-ingestion-user}
+#### データベースとインジェスト用ユーザー \{#database-ingestion-user\}
 
 OTel collector が ClickHouse にインジェストするための専用ユーザーを作成し、インジェスト先を特定のデータベース（例：`otel`）にすることを推奨します。詳細については、「[インジェスト用ユーザーの作成](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)」を参照してください。
 
-### セルフマネージド環境でのセキュリティ {#self-managed-security}
+### セルフマネージド環境でのセキュリティ \{#self-managed-security\}
 
 自前で ClickHouse インスタンスを運用している場合は、**TLS** を有効化し、認証を強制し、アクセス保護強化のベストプラクティスに従うことが不可欠です。実際の設定ミスの事例とその回避方法については、[このブログ記事](https://www.wiz.io/blog/clickhouse-and-wiz)を参照してください。
 
@@ -128,25 +128,25 @@ ClickHouse OSS は、標準で堅牢なセキュリティ機能を提供して�
 
 ユーザー管理およびクエリ／リソース制限の管理には、[external authenticators](/operations/external-authenticators) および [query complexity settings](/operations/settings/query-complexity) も参照してください。
 
-### 有効期限 (TTL) を設定する {#configure-ttl}
+### 有効期限 (TTL) を設定する \{#configure-ttl\}
 
 ClickStack デプロイメントに対して [有効期限 (TTL)](/use-cases/observability/clickstack/ttl) が[適切に設定されている](/use-cases/observability/clickstack/ttl#modifying-ttl)ことを確認します。これはデータの保持期間を制御するものであり、デフォルトの 3 日は変更が必要になることが多いです。
 
-## MongoDB ガイドライン {#mongodb-guidelines}
+## MongoDB ガイドライン \{#mongodb-guidelines\}
 
 公式の [MongoDB セキュリティチェックリスト](https://www.mongodb.com/docs/manual/administration/security-checklist/) に従ってください。
 
-## ClickHouse Cloud {#clickhouse-cloud-production}
+## ClickHouse Cloud \{#clickhouse-cloud-production\}
 
 以下は、ベストプラクティスを満たす ClickHouse Cloud を用いたシンプルな ClickStack のデプロイメント例です。
 
 <VerticalStepper headerLevel="h3">
 
-### サービスを作成する {#create-a-service}
+### サービスを作成する \{#create-a-service\}
 
 サービスを作成するには、[ClickHouse Cloud のクイックスタートガイド](/getting-started/quick-start/cloud/#1-create-a-clickhouse-service)に従ってください。
 
-### 接続情報をコピーする {#copy-connection-details}
+### 接続情報をコピーする \{#copy-connection-details\}
 
 HyperDX 用の接続情報を確認するには、ClickHouse Cloud コンソールを開き、サイドバーの <b>Connect</b> ボタンをクリックし、HTTP 接続情報、特に URL を控えてください。
 
@@ -154,7 +154,7 @@ HyperDX 用の接続情報を確認するには、ClickHouse Cloud コンソー�
 
 <Image img={connect_cloud} alt="ClickHouse Cloud への接続" size="md" background/>
 
-### HyperDX 用ユーザーを作成する {#create-a-user}
+### HyperDX 用ユーザーを作成する \{#create-a-user\}
 
 HyperDX 専用のユーザーを作成することを推奨します。[Cloud SQL コンソール](/cloud/get-started/sql-console)で次の SQL コマンドを実行し、複雑性要件を満たす安全なパスワードを指定してください。
 
@@ -163,7 +163,7 @@ CREATE USER hyperdx IDENTIFIED WITH sha256_password BY '<YOUR_PASSWORD>' SETTING
 GRANT sql_console_read_only TO hyperdx;
 ```
 
-### インジェスト用ユーザーを準備する {#prepare-for-ingestion}
+### インジェスト用ユーザーを準備する \{#prepare-for-ingestion\}
 
 データ用の `otel` データベースと、限定された権限でインジェストを行う `hyperdx_ingest` ユーザーを作成します。
 
@@ -173,7 +173,7 @@ CREATE USER hyperdx_ingest IDENTIFIED WITH sha256_password BY 'ClickH0u3eRocks12
 GRANT SELECT, INSERT, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
 ```
 
-### ClickStack をデプロイする {#deploy-clickstack}
+### ClickStack をデプロイする \{#deploy-clickstack\}
 
 ClickStack をデプロイします。[Helm](/use-cases/observability/clickstack/deployment/helm) または [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)（ClickHouse を除外するように修正したもの）のデプロイメントモデルを利用することを推奨します。 
 
@@ -183,7 +183,7 @@ ClickStack をデプロイします。[Helm](/use-cases/observability/clickstack
 
 ClickHouse Cloud を Helm チャートと組み合わせて利用する手順は[こちら](/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud)を参照してください。Docker Compose 向けの同等の手順は[こちら](/use-cases/observability/clickstack/deployment/docker-compose)にあります。
 
-### HyperDX UI にアクセスする {#navigate-to-hyperdx-ui}
+### HyperDX UI にアクセスする \{#navigate-to-hyperdx-ui\}
 
 [http://localhost:8080](http://localhost:8080) にアクセスして HyperDX UI を開きます。
 
@@ -193,13 +193,13 @@ ClickHouse Cloud を Helm チャートと組み合わせて利用する手順は
 
 `Create` をクリックすると、接続情報の入力を求められます。
 
-### ClickHouse Cloud に接続する {#connect-to-clickhouse-cloud}
+### ClickHouse Cloud に接続する \{#connect-to-clickhouse-cloud\}
 
 先ほど作成した認証情報を使用して接続情報を入力し、`Create` をクリックします。
 
 <Image img={hyperdx_cloud} alt="HyperDX Cloud" size="md"/>
 
-### ClickStack にデータを送信する {#send-data}
+### ClickStack にデータを送信する \{#send-data\}
 
 ClickStack にデータを送信する方法については、["Sending OpenTelemetry data"](/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data) を参照してください。
 

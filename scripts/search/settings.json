@@ -106,6 +106,21 @@
     {
       "conditions": [
         {
+          "anchoring": "is",
+          "pattern": "catalog"
+        }
+      ],
+      "consequence": {
+        "params": {
+          "query": "DataLakeCatalog catalog"
+        }
+      },
+      "enabled": true,
+      "objectID": "catalog-datalake-boost"
+    },
+    {
+      "conditions": [
+        {
           "anchoring": "contains",
           "pattern": "how to scale"
         }

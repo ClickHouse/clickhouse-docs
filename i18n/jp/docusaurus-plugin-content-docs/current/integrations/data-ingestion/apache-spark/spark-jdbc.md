@@ -6,6 +6,9 @@ description: 'ClickHouseとApache Sparkの紹介'
 keywords: ['clickhouse', 'Apache Spark', 'jdbc', 'migrating', 'data']
 title: 'Spark JDBC'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -13,7 +16,7 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Spark JDBC {#spark-jdbc}
+# Spark JDBC \{#spark-jdbc\}
 
 <ClickHouseSupportedBadge/>
 
@@ -22,7 +25,7 @@ JDBCは、Sparkで最もよく使用されるデータソースの1つです。
 
 <TOCInline toc={toc}></TOCInline>
 
-## データの読み取り {#read-data}
+## データの読み取り \{#read-data\}
 
 <Tabs groupId="spark_apis">
 <TabItem value="Java" label="Java" default>
@@ -123,8 +126,8 @@ spark = SparkSession.builder \
     .getOrCreate()
 
 url = "jdbc:ch://localhost:8123/default"
-user = "your_user"
-password = "your_password"
+user = "your_user" 
+password = "your_password"  
 query = "select * from example_table where id > 2"
 driver = "com.clickhouse.jdbc.ClickHouseDriver"
 
@@ -147,20 +150,21 @@ df.show()
    CREATE TEMPORARY VIEW jdbcTable
            USING org.apache.spark.sql.jdbc
            OPTIONS (
-                   url "jdbc:ch://localhost:8123/default",
+                   url "jdbc:ch://localhost:8123/default", 
                    dbtable "schema.tablename",
                    user "username",
                    password "password",
-                   driver "com.clickhouse.jdbc.ClickHouseDriver"
+                   driver "com.clickhouse.jdbc.ClickHouseDriver" 
            );
-
+           
    SELECT * FROM jdbcTable;
 ```
 
 </TabItem>
 </Tabs>
 
-## データの書き込み {#write-data}
+
+## データの書き込み \{#write-data\}
 
 <Tabs groupId="spark_apis">
 <TabItem value="Java" label="Java" default>
@@ -241,7 +245,7 @@ object WriteData extends App {
     spark.sparkContext.parallelize(rows),
     StructType(schema)
   )
-
+  
   //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
   // Write the df to ClickHouse using the jdbc method
   //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
@@ -292,8 +296,8 @@ data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
 df = spark.createDataFrame(data)
 
 url = "jdbc:ch://localhost:8123/default"
-user = "your_user"
-password = "your_password"
+user = "your_user" 
+password = "your_password"  
 driver = "com.clickhouse.jdbc.ClickHouseDriver"
 
 # Write DataFrame to ClickHouse
@@ -316,27 +320,28 @@ df.write \
    CREATE TEMPORARY VIEW jdbcTable
            USING org.apache.spark.sql.jdbc
            OPTIONS (
-                   url "jdbc:ch://localhost:8123/default",
+                   url "jdbc:ch://localhost:8123/default", 
                    dbtable "schema.tablename",
                    user "username",
                    password "password",
-                   driver "com.clickhouse.jdbc.ClickHouseDriver"
+                   driver "com.clickhouse.jdbc.ClickHouseDriver" 
            );
    -- resultTable could be created with df.createTempView or with Spark SQL
    INSERT INTO TABLE jdbcTable
                 SELECT * FROM resultTable;
-
+                
 ```
 
 </TabItem>
 </Tabs>
 
-## 並列処理 {#parallelism}
+## 並列処理 \{#parallelism\}
 
 Spark JDBCを使用する場合、Sparkは単一のパーティションを使用してデータを読み取ります。より高い並行性を実現するには、
 `partitionColumn`、`lowerBound`、`upperBound`、`numPartitions`を指定する必要があります。これらは、複数のワーカーから並列に読み取る際にテーブルをパーティション化する方法を説明します。
 [JDBC設定](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option)の詳細については、Apache Sparkの公式ドキュメントを参照してください。
 
-## JDBCの制限 {#jdbc-limitations}
+## JDBCの制限 \{#jdbc-limitations\}
 
-* 現在、JDBCを使用してデータを挿入できるのは既存のテーブルのみです（現在、他のコネクタでSparkが行うように、DF挿入時にテーブルを自動作成する方法はありません）。
+*  Spark JDBC は、ClickHouse 用のダイアレクトが存在しないため、複合データ型（MAP、ARRAY、STRUCT）をサポートしていません。複合型を完全にサポートするには、ネイティブな Spark-ClickHouse コネクタを使用してください。
+*  現在、JDBCを使用してデータを挿入できるのは既存のテーブルのみです（現在、他のコネクタでSparkが行うように、DF挿入時にテーブルを自動作成する方法はありません）。

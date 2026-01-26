@@ -7,13 +7,13 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
 doc_type: 'guide'
 ---
 
-# Начало работы с chDB {#getting-started-with-chdb}
+# Начало работы с chDB \{#getting-started-with-chdb\}
 
 В этом руководстве мы разберёмся, как быстро начать работу с вариантом chDB для Python.
 Мы начнём с выполнения запроса к JSON‑файлу в S3, затем создадим таблицу в chDB на основе этого JSON‑файла и выполним несколько запросов к данным.
 Мы также посмотрим, как возвращать результаты запросов в различных форматах, включая Apache Arrow и Pandas, и, наконец, узнаем, как выполнять запросы к DataFrame библиотеки Pandas. 
 
-## Настройка {#setup}
+## Настройка \{#setup\}
 
 Сначала создадим виртуальное окружение:
 
@@ -47,7 +47,7 @@ ipython
 pip install pandas pyarrow
 ```
 
-## Запрос к JSON‑файлу в S3 {#querying-a-json-file-in-s3}
+## Запрос к JSON‑файлу в S3 \{#querying-a-json-file-in-s3\}
 
 Теперь рассмотрим, как выполнять запросы к JSON‑файлу, который хранится в бакете S3.
 Набор данных [YouTube dislikes dataset](/getting-started/example-datasets/youtube-dislikes) содержит более 4 миллиардов строк о дизлайках под видео на YouTube до 2021 года.
@@ -144,7 +144,7 @@ chdb.query(
 Это допустимо делать с переменными, определёнными в вашей программе, но не делайте этого с пользовательским вводом, иначе ваш запрос будет подвержен SQL‑инъекциям.
 :::
 
-## Настройка формата вывода {#configuring-the-output-format}
+## Настройка формата вывода \{#configuring-the-output-format\}
 
 Формат вывода по умолчанию — `CSV`, но его можно изменить с помощью параметра `output_format`.
 chDB поддерживает форматы данных ClickHouse, а также [собственные форматы](/chdb/reference/data-formats.md), включая `DataFrame`, который возвращает объект Pandas DataFrame:
@@ -196,7 +196,7 @@ is_live_content: [[false,true]]
 count(): [[315746,20686]]
 ```
 
-## Создание таблицы из JSON-файла {#creating-a-table-from-json-file}
+## Создание таблицы из JSON-файла \{#creating-a-table-from-json-file\}
 
 Теперь рассмотрим, как создать таблицу в chDB.
 Для этого нам нужно использовать другой API, поэтому сначала импортируем его:
@@ -302,7 +302,7 @@ sess.query(f"""
 )
 ```
 
-## Выполнение запроса к таблице {#querying-a-table}
+## Выполнение запроса к таблице \{#querying-a-table\}
 
 Теперь давайте сделаем запрос к таблице:
 
@@ -340,7 +340,7 @@ df
 df["likeDislikeRatio"] = df["likeCount"] / df["dislikeCount"]
 ```
 
-## Выполнение запросов к DataFrame Pandas {#querying-a-pandas-dataframe}
+## Выполнение запросов к DataFrame Pandas \{#querying-a-pandas-dataframe\}
 
 Затем мы можем выполнять запросы к этому DataFrame из chDB:
 
@@ -370,7 +370,7 @@ chdb.query(
 
 Также вы можете подробнее узнать о выполнении запросов к DataFrame в Pandas в [руководстве для разработчиков по запросам в Pandas](guides/querying-pandas.md).
 
-## Дальнейшие шаги {#next-steps}
+## Дальнейшие шаги \{#next-steps\}
 
 Надеемся, это руководство дало вам хорошее общее представление о chDB. 
 Чтобы узнать больше о том, как его использовать, см. следующие руководства для разработчиков:

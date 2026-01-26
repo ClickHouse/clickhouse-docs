@@ -6,23 +6,29 @@ slug: /integrations/clickpipes/mongodb/add_table
 show_title: false
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import Image from '@theme/IdealImage';
 import add_table from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/add_table.png'
 
-# 向 ClickPipe 添加指定表 {#adding-specific-tables-to-a-clickpipe}
+# 向 ClickPipe 添加指定表 \{#adding-specific-tables-to-a-clickpipe\}
 
 在某些场景下，将特定表添加到 ClickPipe 中会很有用。随着事务型或分析型工作负载的增长，这一需求会变得越来越普遍。
 
-## 将特定表添加到 ClickPipe 的步骤 {#add-tables-steps}
+## 将特定表添加到 ClickPipe 的步骤 \{#add-tables-steps\}
 
 请按以下步骤操作：
+
 1. [暂停](./pause_and_resume.md) 该 pipe。
 2. 点击 **Edit Table settings**。
 3. 找到您的表——可以在搜索栏中搜索表名。
 4. 通过勾选复选框来选择该表。
+
 <br/>
+
 <Image img={add_table} border size="md"/>
 
 5. 点击 **update**。

@@ -8,7 +8,7 @@ description: '汇总与 ClickHouse 集成到其他系统相关问题的落地页
 doc_type: 'landing-page'
 ---
 
-# 关于将 ClickHouse 与其他系统集成的问题 {#questions-about-integrating-clickhouse-and-other-systems}
+# 关于将 ClickHouse 与其他系统集成的问题 \{#questions-about-integrating-clickhouse-and-other-systems\}
 
 * [如何将 ClickHouse 中的数据导出到文件？](https://clickhouse.com/docs/knowledgebase/file-export)
 * [如何将 JSON 导入 ClickHouse？](/integrations/data-ingestion/data-formats/json/intro.md)

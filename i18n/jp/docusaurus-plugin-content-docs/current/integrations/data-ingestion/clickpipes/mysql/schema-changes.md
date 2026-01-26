@@ -4,6 +4,9 @@ slug: /integrations/clickpipes/mysql/schema-changes
 description: 'ソーステーブルで ClickPipes が検出可能なスキーマ変更の種類を説明するページ'
 doc_type: 'reference'
 keywords: ['clickpipes', 'mysql', 'cdc', 'データインジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 MySQL 向け ClickPipes は、ソーステーブルのスキーマ変更を検出し、場合によっては変更を自動的に宛先テーブルへ伝播します。各 DDL 操作の扱いは以下のとおりです。

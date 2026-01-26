@@ -16,14 +16,14 @@ DELETE FROM [db.]table [ON CLUSTER cluster] [IN PARTITION partition_expr] WHERE 
 
 [ALTER TABLE ... DELETE](/sql-reference/statements/alter/delete) コマンドが重い処理であるのと対比して、これは「軽量な `DELETE`」と呼ばれます。
 
-## 例 {#examples}
+## 例 \{#examples\}
 
 ```sql
 -- Deletes all rows from the `hits` table where the `Title` column contains the text `hello`
 DELETE FROM hits WHERE Title LIKE '%hello%';
 ```
 
-## 軽量 `DELETE` は即座にデータを削除しない {#lightweight-delete-does-not-delete-data-immediately}
+## 軽量 `DELETE` は即座にデータを削除しない \{#lightweight-delete-does-not-delete-data-immediately\}
 
 軽量 `DELETE` は、行を削除済みとしてマークするだけで、即座に物理削除は行わない [mutation](/sql-reference/statements/alter#mutations) として実装されています。
 
@@ -33,19 +33,19 @@ mutation は削除済みとマークされた行を物理的には削除せず�
 
 予測可能な時間内にストレージからデータが削除されることを保証する必要がある場合は、テーブル設定 [`min_age_to_force_merge_seconds`](/operations/settings/merge-tree-settings#min_age_to_force_merge_seconds) の利用を検討してください。あるいは、[ALTER TABLE ... DELETE](/sql-reference/statements/alter/delete) コマンドを使用することもできます。`ALTER TABLE ... DELETE` を使用してデータを削除する場合、影響を受けるすべてのパーツを再作成するため、多くのリソースを消費し得る点に注意してください。
 
-## 大量のデータの削除 {#deleting-large-amounts-of-data}
+## 大量のデータの削除 \{#deleting-large-amounts-of-data\}
 
 大規模な削除操作は ClickHouse のパフォーマンスに悪影響を与える可能性があります。テーブルからすべての行を削除する場合は、[`TRUNCATE TABLE`](/sql-reference/statements/truncate) コマンドの使用を検討してください。
 
 頻繁に削除を行うことが想定される場合は、[カスタムパーティションキー](/engines/table-engines/mergetree-family/custom-partitioning-key) の利用を検討してください。その場合は、[`ALTER TABLE ... DROP PARTITION`](/sql-reference/statements/alter/partition#drop-partitionpart) コマンドを使用して、そのパーティションに属するすべての行を高速に削除できます。
 
-## 軽量な `DELETE` の制限事項 {#limitations-of-lightweight-delete}
+## 軽量な `DELETE` の制限事項 \{#limitations-of-lightweight-delete\}
 
-### プロジェクションを持つ軽量な `DELETE` {#lightweight-deletes-with-projections}
+### プロジェクションを持つ軽量な `DELETE` \{#lightweight-deletes-with-projections\}
 
 デフォルトでは、プロジェクションを持つテーブルでは `DELETE` は動作しません。これは、プロジェクション内の行が `DELETE` 操作の影響を受ける可能性があるためです。ただし、この挙動を変更するための [MergeTree 設定](/operations/settings/merge-tree-settings) `lightweight_mutation_projection_mode` が用意されています。
 
-## 軽量な `DELETE` を使用する際のパフォーマンス上の考慮事項 {#performance-considerations-when-using-lightweight-delete}
+## 軽量な `DELETE` を使用する際のパフォーマンス上の考慮事項 \{#performance-considerations-when-using-lightweight-delete\}
 
 **軽量な `DELETE` 文で大量のデータを削除すると、SELECT クエリのパフォーマンスに悪影響を及ぼす可能性があります。**
 
@@ -56,7 +56,7 @@ mutation は削除済みとマークされた行を物理的には削除せず�
 - 対象のテーブルが非常に多くのデータパートを持っている場合。
 - Compact パート内に大量のデータがある場合。Compact パートでは、すべてのカラムが 1 つのファイルに格納されます。
 
-## 削除権限 {#delete-permissions}
+## 削除権限 \{#delete-permissions\}
 
 `DELETE` には `ALTER DELETE` 権限が必要です。特定のユーザーに対して特定のテーブルで `DELETE` 文を有効化するには、次のコマンドを実行します。
 
@@ -64,7 +64,7 @@ mutation は削除済みとマークされた行を物理的には削除せず�
 GRANT ALTER DELETE ON db.table TO username;
 ```
 
-## ClickHouse における軽量な DELETE の内部動作 {#how-lightweight-deletes-work-internally-in-clickhouse}
+## ClickHouse における軽量な DELETE の内部動作 \{#how-lightweight-deletes-work-internally-in-clickhouse\}
 
 1. **影響を受ける行に「マスク」が適用される**
 
@@ -92,6 +92,6 @@ GRANT ALTER DELETE ON db.table TO username;
 
    上記のステップからわかるように、マスキング手法を用いた軽量な `DELETE` は、影響を受けるパーツについてすべてのカラムファイルを書き直さないため、従来の `ALTER TABLE ... DELETE` と比べてパフォーマンスが向上します。
 
-## 関連情報 {#related-content}
+## 関連情報 \{#related-content\}
 
 - ブログ: [ClickHouse における更新と削除の処理](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

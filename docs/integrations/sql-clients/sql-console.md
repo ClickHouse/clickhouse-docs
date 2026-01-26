@@ -6,6 +6,9 @@ slug: /integrations/sql-clients/sql-console
 description: 'Learn about SQL Console'
 doc_type: 'guide'
 keywords: ['sql console', 'query interface', 'web ui', 'sql editor', 'cloud console']
+integration:
+   - support_level: 'community'
+   - category: 'sql_client'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';

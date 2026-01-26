@@ -18,7 +18,7 @@ import JSONSupport from '@site/docs/use-cases/observability/clickstack/deploymen
 If you are currently using the `hdx-oss-v2` chart, please migrate to the `clickstack` chart. The `hdx-oss-v2` chart is in maintenance mode and will no longer receive new features. All new development is focused on the `clickstack` chart, which provides the same functionality with improved naming and better organization.
 :::
 
-The helm chart for HyperDX can be found [here](https://github.com/hyperdxio/helm-charts) and is the **recommended** method for production deployments.
+The helm chart for ClickStack can be found [here](https://github.com/ClickHouse/ClickStack-helm-charts) and is the **recommended** method for production deployments.
 
 By default, the Helm chart provisions all core components, including:
 
@@ -56,7 +56,7 @@ The chart supports standard Kubernetes best practices, including:
 
 Add the ClickStack Helm repository:
 ```shell
-helm repo add clickstack https://hyperdxio.github.io/helm-charts
+helm repo add clickstack https://clickhouse.github.io/ClickStack-helm-charts
 helm repo update
 ```
 
@@ -147,7 +147,7 @@ For handling sensitive data such as API keys or database credentials, use Kubern
 
 #### Using pre-configured secrets {#using-pre-configured-secrets}
 
-The Helm chart includes a default secret template located at [`charts/clickstack/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/clickstack/templates/secrets.yaml). This file provides a base structure for managing secrets.
+The Helm chart includes a default secret template located at [`charts/clickstack/templates/secrets.yaml`](https://github.com/ClickHouse/ClickStack-helm-charts/blob/main/charts/clickstack/templates/secrets.yaml). This file provides a base structure for managing secrets.
 
 If you need to manually apply a secret, modify and apply the provided `secrets.yaml` template:
 ```yaml
@@ -356,6 +356,6 @@ helm install my-clickstack clickstack/clickstack \
 
 ### Additional resources {#additional-resources}
 - [ClickStack getting started guide](/docs/use-cases/observability/clickstack/getting-started) - Introduction to ClickStack
-- [ClickStack Helm charts repository](https://github.com/hyperdxio/helm-charts) - Chart source code and values reference
+- [ClickStack Helm charts repository](https://github.com/ClickHouse/ClickStack-helm-charts) - Chart source code and values reference
 - [Kubernetes documentation](https://kubernetes.io/docs/) - Kubernetes reference
 - [Helm documentation](https://helm.sh/docs/) - Helm reference

@@ -16,7 +16,7 @@ import log from '@site/static/images/clickstack/lambda/lambda-log.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Rotel を使って ClickStack で AWS Lambda のログを監視する {#lambda-clickstack}
+# Rotel を使って ClickStack で AWS Lambda のログを監視する \{#lambda-clickstack\}
 
 <CommunityMaintainedBadge/>
 
@@ -32,11 +32,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 所要時間: 約 5〜10 分
 :::
 
-## 既存の Lambda 関数との統合 {#existing-lambda}
+## 既存の Lambda 関数との統合 \{#existing-lambda\}
 
 このセクションでは、既存の AWS Lambda 関数を設定し、Rotel Lambda Extension を使用してログとトレースを ClickStack に送信する方法について説明します。
 
-### 前提条件 {#prerequisites}
+### 前提条件 \{#prerequisites\}
 
 - ClickStack インスタンスが稼働していること
 - 監視対象となる AWS Lambda 関数が存在すること
@@ -236,7 +236,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <VerticalStepper headerLevel="h4">
 
-#### 実行ロールから CloudWatch 権限を削除する {#remove-permissions}
+#### 実行ロールから CloudWatch 権限を削除する \{#remove-permissions\}
 
 1. AWS マネジメントコンソールを開き、**AWS Lambda** に移動します
 2. 対象の Lambda 関数に移動します
@@ -282,7 +282,7 @@ AWS は複数の言語向けに OpenTelemetry の自動計装レイヤーを提�
 
 最新バージョンは [AWS OpenTelemetry Lambda リポジトリ](https://github.com/aws-observability/aws-otel-lambda)で確認してください。
 
-#### 両方のレイヤーを関数に追加する {#add-both-layers}
+#### 両方のレイヤーを関数に追加する \{#add-both-layers\}
 
 Rotel Extension レイヤーと計装レイヤーの **両方** を追加します：
 

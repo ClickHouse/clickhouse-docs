@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/aws-privatelink
 title: 'AWS PrivateLink for ClickPipes'
 doc_type: 'guide'
 keywords: ['aws privatelink', 'ClickPipes security', 'vpc endpoint', 'private connectivity', 'vpc resource']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
@@ -292,3 +295,5 @@ cross-region connectivity.
 
 Private endpoints are linked to a specific ClickHouse service and are not transferable between services.
 Multiple ClickPipes for a single ClickHouse service can reuse the same endpoint.
+
+AWS MSK supports only one PrivateLink (VPC endpoint) per MSK cluster per authentication type (SASL_IAM or SASL_SCRAM). As a result, multiple ClickHouse Cloud services or organizations cannot create separate PrivateLink connections to the same MSK cluster using the same auth type.

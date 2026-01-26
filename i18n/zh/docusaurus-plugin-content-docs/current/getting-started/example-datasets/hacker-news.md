@@ -7,11 +7,11 @@ doc_type: 'guide'
 keywords: ['示例数据集', 'Hacker News', '样本数据', '文本分析', '向量搜索']
 ---
 
-# Hacker News 数据集 {#hacker-news-dataset}
+# Hacker News 数据集 \{#hacker-news-dataset\}
 
 > 在本教程中，你将把 2800 万行 Hacker News 数据（来自 CSV 和 Parquet 两种格式）插入到一个 ClickHouse 表中，并运行一些简单的查询来探索这些数据。
 
-## CSV {#csv}
+## CSV \{#csv\}
 
 <VerticalStepper headerLevel="h3">
   ### 下载 CSV

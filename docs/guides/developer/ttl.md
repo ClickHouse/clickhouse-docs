@@ -49,6 +49,17 @@ ORDER BY tuple()
 TTL rules can be altered or deleted. See the [Manipulations with Table TTL](/sql-reference/statements/alter/ttl.md) page for more details.
 :::
 
+:::tip Best practice
+When using table-level TTL to remove old rows, we recommend to **partition your table by the date or month** of the same time field used in your TTL expression.
+
+ClickHouse can drop entire partitions much more efficiently than deleting individual rows.
+When your partition key aligns with your TTL expression, ClickHouse can drop whole partitions at once when they expire, rather than rewriting data parts to remove expired rows.
+
+Choose your partition granularity based on your TTL period:
+- For TTL of days/weeks: partition by day using `toYYYYMMDD(date_field)`
+- For TTL of months/years: partition by month using `toYYYYMM(date_field)` or `toStartOfMonth(date_field)`
+:::
+
 ## Triggering TTL events {#triggering-ttl-events}
 
 The deleting or aggregating of expired rows is not immediate - it only occurs during table merges. If you have a table that's not actively merging (for whatever reason), there are two settings that trigger TTL events:

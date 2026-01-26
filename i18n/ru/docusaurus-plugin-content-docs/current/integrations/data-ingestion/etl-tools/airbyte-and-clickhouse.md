@@ -24,7 +24,7 @@ import airbyte08 from '@site/static/images/integrations/data-ingestion/etl-tools
 import airbyte09 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_09.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Подключение Airbyte к ClickHouse {#connect-airbyte-to-clickhouse}
+# Подключение Airbyte к ClickHouse \{#connect-airbyte-to-clickhouse\}
 
 <PartnerBadge />
 
@@ -48,7 +48,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <VerticalStepper headerLevel="h2">
 
-## Загрузка и запуск Airbyte {#1-download-and-run-airbyte}
+## Загрузка и запуск Airbyte \{#1-download-and-run-airbyte\}
 
 1. Airbyte работает в Docker и использует `docker-compose`. Убедитесь, что у вас установлены последние версии Docker.
 
@@ -68,7 +68,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
         В качестве альтернативы вы можете зарегистрироваться и использовать <a href="https://docs.airbyte.com/deploying-airbyte/on-cloud" target="_blank">Airbyte Cloud</a>
         :::
 
-## Добавьте ClickHouse в качестве приемника данных {#2-add-clickhouse-as-a-destination}
+## Добавьте ClickHouse в качестве приемника данных \{#2-add-clickhouse-as-a-destination\}
 
 В этом разделе мы покажем, как добавить экземпляр ClickHouse в качестве приемника данных.
 
@@ -99,7 +99,7 @@ GRANT CREATE ON * TO my_airbyte_user;
 
 :::
 
-## Добавьте датасет в качестве источника {#3-add-a-dataset-as-a-source}
+## Добавьте датасет в качестве источника \{#3-add-a-dataset-as-a-source\}
 
 В качестве примерного датасета мы будем использовать <a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">New York City Taxi Data</a> (на <a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">GitHub</a>). В этом руководстве мы используем подмножество этого датасета за январь 2022 года.
 
@@ -117,7 +117,7 @@ GRANT CREATE ON * TO my_airbyte_user;
 
 3. Поздравляем! Теперь вы добавили файл-источник в Airbyte.
 
-## Создайте подключение и загрузите набор данных в ClickHouse {#4-create-a-connection-and-load-the-dataset-into-clickhouse}
+## Создайте подключение и загрузите набор данных в ClickHouse \{#4-create-a-connection-and-load-the-dataset-into-clickhouse\}
 
 1. В Airbyte перейдите на страницу "Connections" и добавьте новое подключение.
 

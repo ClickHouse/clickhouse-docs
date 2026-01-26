@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/source/aurora
 title: 'Aurora Postgres 数据源配置指南'
 doc_type: 'guide'
 keywords: ['Amazon Aurora', 'PostgreSQL', 'ClickPipes', 'AWS 数据库', '逻辑复制配置']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
@@ -16,13 +19,13 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-# Aurora Postgres 源端配置指南 {#aurora-postgres-source-setup-guide}
+# Aurora Postgres 源端配置指南 \{#aurora-postgres-source-setup-guide\}
 
-## 支持的 Postgres 版本 {#supported-postgres-versions}
+## 支持的 Postgres 版本 \{#supported-postgres-versions\}
 
 ClickPipes 支持 Aurora PostgreSQL-Compatible Edition 12 及以上版本。
 
-## 启用逻辑复制 {#enable-logical-replication}
+## 启用逻辑复制 \{#enable-logical-replication\}
 
 如果您的 Aurora 实例已经配置了以下设置，则可以跳过本节：
 
@@ -65,9 +68,10 @@ postgres=> SHOW wal_sender_timeout ;
 
 <Image img={reboot_rds} alt="重启 Aurora PostgreSQL" size="lg" border />
 
-## 配置数据库用户 {#configure-database-user}
 
-以管理员用户连接到你的 Aurora PostgreSQL writer 实例，并执行以下命令：
+## 配置数据库用户 \{#configure-database-user\}
+
+以管理员用户身份连接到你的 Aurora PostgreSQL 写入实例，并执行以下命令：
 
 1. 为 ClickPipes 创建一个专用用户：
 
@@ -75,7 +79,7 @@ postgres=> SHOW wal_sender_timeout ;
     CREATE USER clickpipes_user PASSWORD 'some-password';
     ```
 
-2. 授予 schema 权限。以下示例演示如何为 `public` schema 授权。对于每个你希望复制的 schema，重复执行这些命令：
+2. 为你在上一步创建的用户授予 schema 级别的只读访问权限。以下示例展示了为 `public` schema 授予的权限。对于每个包含你希望复制的表的 schema，都需要重复这些命令：
 
     ```sql
     GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -83,21 +87,35 @@ postgres=> SHOW wal_sender_timeout ;
     ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
     ```
 
-3. 授予复制权限：
+3. 为该用户授予复制相关权限：
 
     ```sql
     GRANT rds_replication TO clickpipes_user;
     ```
 
-4. 为复制创建一个 publication：
+4. 创建一个仅包含你希望复制的表的 [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html)。强烈建议只在 publication 中包含实际需要的表，以避免额外的性能开销。
 
-    ```sql
-    CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-    ```
+   :::warning
+   任何包含在 publication 中的表必须定义有**主键（primary key）**，_或者_其 **replica identity** 被配置为 `FULL`。关于 publication 范围的指导，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
+   :::
 
-## 配置网络访问 {#configure-network-access}
+   - 为特定表创建 publication：
 
-### 基于 IP 的访问控制 {#ip-based-access-control}
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - 为特定 schema 中的所有表创建 publication：
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   `clickpipes` publication 将包含由指定表生成的一组变更事件，稍后将用于摄取复制流。
+
+## 配置网络访问 \{#configure-network-access\}
+
+### 基于 IP 的访问控制 \{#ip-based-access-control\}
 
 如果希望限制访问 Aurora 集群的入站流量，请将[文档中列出的静态 NAT IP](../../index.md#list-of-static-ips) 添加到 Aurora 安全组的 `Inbound rules` 中。
 
@@ -105,11 +123,11 @@ postgres=> SHOW wal_sender_timeout ;
 
 <Image img={edit_inbound_rules} alt="为上述安全组编辑入站规则" size="lg" border/>
 
-### 通过 AWS PrivateLink 的私有访问 {#private-access-via-aws-privatelink}
+### 通过 AWS PrivateLink 的私有访问 \{#private-access-via-aws-privatelink\}
 
 要通过私有网络连接到 Aurora 集群，可以使用 AWS PrivateLink。请按照我们的 [ClickPipes 的 AWS PrivateLink 配置指南](/knowledgebase/aws-privatelink-setup-for-clickpipes) 来完成连接设置。
 
-### Aurora 专用注意事项 {#aurora-specific-considerations}
+### Aurora 专用注意事项 \{#aurora-specific-considerations\}
 
 在为 Aurora PostgreSQL 配置 ClickPipes 时，请注意以下事项：
 
@@ -121,7 +139,7 @@ postgres=> SHOW wal_sender_timeout ;
 
 4. **存储注意事项**：Aurora 的存储层在集群中的所有实例之间共享，与标准 RDS 相比，这可以为逻辑复制提供更好的性能。
 
-### 处理动态集群端点 {#dealing-with-dynamic-cluster-endpoints}
+### 处理动态集群端点 \{#dealing-with-dynamic-cluster-endpoints\}
 
 虽然 Aurora 提供的端点是稳定的，并会自动路由到合适的实例，但以下是一些确保连接稳定性的一般做法：
 
@@ -129,7 +147,7 @@ postgres=> SHOW wal_sender_timeout ;
 
 2. 如果使用跨区域复制，建议为每个区域分别配置独立的 ClickPipes，以降低延迟并提升容错能力。
 
-## 接下来 {#whats-next}
+## 接下来 \{#whats-next\}
 
 现在，你可以[创建 ClickPipe](../index.md)，并开始将 Aurora PostgreSQL 集群中的数据摄取到 ClickHouse Cloud 中。
 请务必记录你在设置 Aurora PostgreSQL 集群时使用的连接信息，因为在创建 ClickPipe 的过程中你将需要这些信息。

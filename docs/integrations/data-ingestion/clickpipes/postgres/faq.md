@@ -6,6 +6,9 @@ sidebar_position: 2
 title: 'ClickPipes for Postgres FAQ'
 keywords: ['postgres faq', 'clickpipes', 'toast columns', 'replication slot', 'publications']
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import failover_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/failover_slot.png'
@@ -360,4 +363,4 @@ This error suggests a transient issue with the logical decoding of aborted sub-t
 Postgres sends information about changes in the form of messages that have a fixed protocol. These errors arise when the ClickPipe receives a message that it is unable to parse, either due to corruption in transit or invalid messages being sent. While the exact issue tends to vary, we've seen several cases from Neon Postgres sources. In case you are seeing this issue with Neon as well, please raise a support ticket with them. In other cases, please reach out to our support team for guidance.
 
 ### Can I include columns I initially excluded from replication? {#include-excluded-columns}
-This is not yet supported and is in our roadmap, an alternative would be to [resync the table](./table_resync.md) whose columns you want to include.
+This is not yet supported, an alternative would be to [resync the table](./table_resync.md) whose columns you want to include.

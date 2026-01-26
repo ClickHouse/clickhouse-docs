@@ -10,7 +10,7 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# MaterializedPostgreSQL {#materializedpostgresql}
+# MaterializedPostgreSQL \{#materializedpostgresql\}
 
 <ExperimentalBadge />
 
@@ -33,7 +33,7 @@ SET allow_experimental_database_materialized_postgresql=1
 
 :::
 
-## Создание базы данных {#creating-a-database}
+## Создание базы данных \{#creating-a-database\}
 
 ```sql
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster]
@@ -47,7 +47,7 @@ ENGINE = MaterializedPostgreSQL('host:port', 'database', 'user', 'password') [SE
 * `user` — пользователь PostgreSQL.
 * `password` — пароль пользователя.
 
-## Пример использования {#example-of-use}
+## Пример использования \{#example-of-use\}
 
 ```sql
 CREATE DATABASE postgres_db
@@ -62,7 +62,7 @@ SHOW TABLES FROM postgres_db;
 SELECT * FROM postgresql_db.postgres_table;
 ```
 
-## Динамическое добавление новых таблиц в репликацию {#dynamically-adding-table-to-replication}
+## Динамическое добавление новых таблиц в репликацию \{#dynamically-adding-table-to-replication\}
 
 После создания базы данных `MaterializedPostgreSQL` она не будет автоматически обнаруживать новые таблицы в соответствующей базе данных PostgreSQL. Такие таблицы можно добавить вручную:
 
@@ -74,7 +74,7 @@ ATTACH TABLE postgres_database.new_table;
 До версии 22.1 добавление таблицы в репликацию оставляло неудалённый временный слот репликации (с именем `{db_name}_ch_replication_slot_tmp`). Если вы подключаете таблицы в ClickHouse версии ниже 22.1, обязательно удалите этот слот вручную (`SELECT pg_drop_replication_slot('{db_name}_ch_replication_slot_tmp')`). В противном случае будет расти использование дискового пространства. Эта проблема исправлена в версии 22.1.
 :::
 
-## Динамическое исключение таблиц из репликации {#dynamically-removing-table-from-replication}
+## Динамическое исключение таблиц из репликации \{#dynamically-removing-table-from-replication\}
 
 Можно исключить отдельные таблицы из репликации:
 
@@ -82,7 +82,7 @@ ATTACH TABLE postgres_database.new_table;
 DETACH TABLE postgres_database.table_to_remove PERMANENTLY;
 ```
 
-## Схема PostgreSQL {#schema}
+## Схема PostgreSQL \{#schema\}
 
 Схемы PostgreSQL ([schema](https://www.postgresql.org/docs/9.1/ddl-schemas.html)) можно настраивать тремя способами (начиная с версии 21.12).
 
@@ -129,7 +129,7 @@ SELECT * FROM database1.`schema2.table2`;
 
 Предупреждение: в данном случае точки в имени таблицы не допускаются.
 
-## Требования {#requirements}
+## Требования \{#requirements\}
 
 1. Параметр [wal&#95;level](https://www.postgresql.org/docs/current/runtime-config-wal.html) должен иметь значение `logical`, а параметр `max_replication_slots` — значение не менее `2` в конфигурационном файле PostgreSQL.
 
@@ -163,9 +163,9 @@ WHERE oid = 'postgres_table'::regclass;
 Репликация значений [**TOAST**](https://www.postgresql.org/docs/9.5/storage-toast.html) не поддерживается. Будет использоваться значение по умолчанию для данного типа данных.
 :::
 
-## Настройки {#settings}
+## Настройки \{#settings\}
 
-### `materialized_postgresql_tables_list` {#materialized-postgresql-tables-list}
+### `materialized_postgresql_tables_list` \{#materialized-postgresql-tables-list\}
 
 Задает список таблиц базы данных PostgreSQL, разделенный запятыми, которые будут реплицироваться с помощью движка базы данных [MaterializedPostgreSQL](../../engines/database-engines/materialized-postgresql.md).
 
@@ -177,15 +177,15 @@ materialized_postgresql_tables_list = 'table1(co1, col2),table2,table3(co3, col5
 
 Значение по умолчанию: пустой список — означает, что будет реплицирована вся база данных PostgreSQL.
 
-### `materialized_postgresql_schema` {#materialized-postgresql-schema}
+### `materialized_postgresql_schema` \{#materialized-postgresql-schema\}
 
 Значение по умолчанию: пустая строка (используется схема по умолчанию).
 
-### `materialized_postgresql_schema_list` {#materialized-postgresql-schema-list}
+### `materialized_postgresql_schema_list` \{#materialized-postgresql-schema-list\}
 
 Значение по умолчанию: пустой список (используется схема по умолчанию).
 
-### `materialized_postgresql_max_block_size` {#materialized-postgresql-max-block-size}
+### `materialized_postgresql_max_block_size` \{#materialized-postgresql-max-block-size\}
 
 Задаёт количество строк, собираемых в памяти перед сбросом данных в таблицу базы данных PostgreSQL.
 
@@ -195,11 +195,11 @@ materialized_postgresql_tables_list = 'table1(co1, col2),table2,table3(co3, col5
 
 Значение по умолчанию: `65536`.
 
-### `materialized_postgresql_replication_slot` {#materialized-postgresql-replication-slot}
+### `materialized_postgresql_replication_slot` \{#materialized-postgresql-replication-slot\}
 
 Слот репликации, созданный пользователем. Должен использоваться вместе с `materialized_postgresql_snapshot`.
 
-### `materialized_postgresql_snapshot` {#materialized-postgresql-snapshot}
+### `materialized_postgresql_snapshot` \{#materialized-postgresql-snapshot\}
 
 Текстовая строка, идентифицирующая снимок, из которого будет выполнен [начальный дамп таблиц PostgreSQL](../../engines/database-engines/materialized-postgresql.md). Должен использоваться вместе с `materialized_postgresql_replication_slot`.
 
@@ -217,14 +217,14 @@ SELECT * FROM database1.table1;
 ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_block_size = <новый_размер>;
 ```
 
-### `materialized_postgresql_use_unique_replication_consumer_identifier` {#materialized_postgresql_use_unique_replication_consumer_identifier}
+### `materialized_postgresql_use_unique_replication_consumer_identifier` \{#materialized_postgresql_use_unique_replication_consumer_identifier\}
 
 Использует уникальный идентификатор потребителя при репликации. Значение по умолчанию — `0`.
 Если установлено в `1`, позволяет настроить несколько таблиц `MaterializedPostgreSQL`, указывающих на одну и ту же таблицу `PostgreSQL`.
 
-## Заметки {#notes}
+## Заметки \{#notes\}
 
-### Переключение (failover) логического слота репликации {#logical-replication-slot-failover}
+### Переключение (failover) логического слота репликации \{#logical-replication-slot-failover\}
 
 Логические слоты репликации, которые существуют на первичном сервере, недоступны на резервных репликах.
 Поэтому при переключении ролей новый первичный (бывший физический standby) не будет знать о слотах, которые существовали на старом первичном сервере. Это приведёт к нарушению репликации из PostgreSQL.
@@ -278,7 +278,7 @@ ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_bloc
     kubectl exec acid-demo-cluster-0 -c postgres -- su postgres -c 'patronictl failover --candidate acid-demo-cluster-1 --force'
     ```
 
-### Необходимые привилегии {#required-permissions}
+### Необходимые привилегии \{#required-permissions\}
 
 1. [CREATE PUBLICATION](https://postgrespro.ru/docs/postgresql/14/sql-createpublication) — привилегия на выполнение оператора создания публикации.
 

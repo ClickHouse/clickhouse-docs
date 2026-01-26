@@ -34,7 +34,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
 <DedicatedKeeperServers />
 
-## Предварительные требования {#pre-requisites}
+## Предварительные требования \{#pre-requisites\}
 
 - Ранее вы уже развернули [локальный сервер ClickHouse](/install)
 - Вы знакомы с базовыми принципами настройки ClickHouse, в частности с [файлами конфигурации](/operations/configuration-files)
@@ -781,7 +781,7 @@ SELECT count(*) FROM uk.uk_price_paid_local;
 ```
 </VerticalStepper>
 
-## Заключение {#conclusion}
+## Заключение \{#conclusion\}
 
 Преимущество такой топологии кластера заключается в том, что при наличии двух реплик 
 ваши данные находятся на двух отдельных хостах. Если один хост выходит из строя, другая реплика 

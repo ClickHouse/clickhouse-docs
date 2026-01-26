@@ -22,3 +22,4 @@ interfaces/ssh
 interfaces/grpc
 interfaces/arrowflight
 interfaces/overview
+operations/utilities/clickhouse-keeper-http-api.md

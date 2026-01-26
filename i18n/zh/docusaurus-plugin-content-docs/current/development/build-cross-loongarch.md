@@ -7,11 +7,11 @@ title: '在 Linux 上为 LoongArch64 构建'
 doc_type: 'guide'
 ---
 
-# 在 Linux 上为 LoongArch64 构建 {#build-on-linux-for-loongarch64}
+# 在 Linux 上为 LoongArch64 构建 \{#build-on-linux-for-loongarch64\}
 
 ClickHouse 对 LoongArch64 提供了实验性支持
 
-## 构建 ClickHouse {#build-clickhouse}
+## 构建 ClickHouse \{#build-clickhouse\}
 
 用于构建的 LLVM 版本必须不低于 19.1.0。
 

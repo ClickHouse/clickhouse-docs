@@ -6,7 +6,7 @@ title: 'system.settings'
 doc_type: 'reference'
 ---
 
-# system.settings {#systemsettings}
+# system.settings \{#systemsettings\}
 
 Содержит информацию о настройках сессии для текущего пользователя.
 

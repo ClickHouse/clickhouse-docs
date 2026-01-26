@@ -12,7 +12,7 @@ import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedul
 ClickHouse Cloud предлагает разные каналы релизов, чтобы удовлетворить различные потребности пользователей с точки зрения стабильности, доступа к новым функциям и предсказуемости обновлений. Каждый канал имеет собственный график обновлений и предназначен для разных сценариев использования — как для пользователей, которым нужен мгновенный доступ к новым релизам, так и для тех, кто предпочитает откладывать обновления, чтобы получать наиболее стабильную версию.
 
 
-## Подробности о каналах релизов {#release-channel-details}
+## Подробности о каналах релизов \{#release-channel-details\}
 
 <details>
 <summary>Подробнее о каналах релизов</summary>
@@ -34,20 +34,31 @@ ClickHouse Cloud предлагает разные каналы релизов, 
 
 Плановые обновления доступны для всех каналов релизов для сервисов в тарифе Enterprise. Эта функция позволяет вам задать временное окно в определённый день недели для выполнения обновлений.
 
-## График релизов {#release-schedule}
+## График релизов \{#release-schedule\}
 
 Указанные ниже даты релизов являются предварительными и могут быть изменены.
 
 <ReleaseSchedule releases={[
    {
-    changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
-    version: '25.10',
-    fast_date: '2025-12-11 (завершено 2025-12-15)',
-    regular_date: '2026-01-07',
-    slow_date: 'TBD',
+     changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
+     version: '25.10',
+     fast_date: '2025-12-11 (завершено 2025-12-15)',
+     regular_date: '2026-01-13',
+     slow_date: 'TBD',
+     fast_progress: 'green',
+     regular_progress: 'green',
+     slow_progress: 'green',
+     fast_delay_note: 'Сервисы с окном обновления получат версию 25.10 в своё запланированное окно в течение недели, начинающейся 12 января',
+   },
+   {
+    changelog_link: 'https://clickhouse.com/docs/changelogs/25.8',
+    version: '25.8',
+    fast_date: 'Завершено',
+    regular_date: 'Завершено (2025-12-19)',
+    slow_date: '2026-01-15',
     fast_progress: 'green',
     regular_progress: 'green',
     slow_progress: 'green',
-    fast_delay_note: 'Сервисы с окном обновления получат версию 25.10 в своё запланированное окно в течение недели, начинающейся 5 января',
+    regular_delay_note: 'Сервисы с окном обновления будут обновлены начиная с 13 января.',
   }
 ]} />

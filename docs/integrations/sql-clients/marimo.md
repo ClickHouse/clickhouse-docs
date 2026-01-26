@@ -5,6 +5,9 @@ description: 'marimo is a next-generation Python notebook for interacting with d
 title: 'Using marimo with ClickHouse'
 doc_type: 'guide'
 keywords: ['marimo', 'notebook', 'data analysis', 'python', 'visualization']
+integration:
+  - support_level: 'community'
+  - category: 'sql_client'
 ---
 
 import Image from '@theme/IdealImage';

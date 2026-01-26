@@ -1,10 +1,10 @@
-# curl でスクリプトを実行して ClickHouse をインストールする {#install-clickhouse-via-script-using-curl}
+# curl でスクリプトを実行して ClickHouse をインストールする \{#install-clickhouse-via-script-using-curl\}
 
 本番環境向けに ClickHouse をインストールする必要がない場合、最も手早くセットアップする方法は、curl を使ってインストールスクリプトを実行することです。このスクリプトは、利用中の OS に適したバイナリを自動的に判別します。
 
 <VerticalStepper>
 
-## curl を使用して ClickHouse をインストールする {#install-clickhouse-using-curl}
+## curl を使用して ClickHouse をインストールする \{#install-clickhouse-using-curl\}
 
 以下のコマンドを実行して、使用しているオペレーティングシステム向けの単一のバイナリをダウンロードします。
 
@@ -16,7 +16,7 @@ curl https://clickhouse.com/ | sh
 Mac をお使いの方へ: バイナリの開発元を検証できないというエラーが発生する場合は、[こちら](/knowledgebase/fix-developer-verification-error-in-macos) を参照してください。
 :::
 
-## clickhouse-local を起動する {#start-clickhouse-local}
+## clickhouse-local を起動する \{#start-clickhouse-local\}
 
 `clickhouse-local` を使用すると、ClickHouse の強力な SQL 構文を利用して、
 ローカルおよびリモートファイルを事前の設定なしに処理できます。テーブルデータは一時領域に保存されるため、
@@ -28,7 +28,7 @@ Mac をお使いの方へ: バイナリの開発元を検証できないとい�
 ./clickhouse
 ```
 
-## clickhouse-server を起動する {#start-clickhouse-server}
+## clickhouse-server を起動する \{#start-clickhouse-server\}
 
 データを永続化する場合は、`clickhouse-server` を起動します。ClickHouse サーバーは、次のコマンドで起動できます。
 
@@ -36,7 +36,7 @@ Mac をお使いの方へ: バイナリの開発元を検証できないとい�
 ./clickhouse server
 ```
 
-## clickhouse-client を起動する {#start-clickhouse-client}
+## clickhouse-client を起動する \{#start-clickhouse-client\}
 
 サーバーが起動して稼働している状態で、新しいターミナルウィンドウを開き、`clickhouse-client` を起動するために次のコマンドを実行します：
 

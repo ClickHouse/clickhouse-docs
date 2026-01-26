@@ -7,11 +7,11 @@ title: 'TRUNCATE 语句'
 doc_type: 'reference'
 ---
 
-# TRUNCATE 语句 {#truncate-statements}
+# TRUNCATE 语句 \{#truncate-statements\}
 
 ClickHouse 中的 `TRUNCATE` 语句用于在保留表或数据库结构的前提下，快速删除其中的所有数据。
 
-## TRUNCATE TABLE {#truncate-table}
+## TRUNCATE TABLE \{#truncate-table\}
 
 ```sql
 TRUNCATE TABLE [IF EXISTS] [db.]name [ON CLUSTER cluster] [SYNC]
@@ -42,7 +42,7 @@ TRUNCATE TABLE [IF EXISTS] [db.]name [ON CLUSTER cluster] [SYNC]
 * [`Buffer`](../../engines/table-engines/special/buffer.md)
 * [`Null`](../../engines/table-engines/special/null.md)
 
-## 清空所有表 {#truncate-all-tables}
+## 清空所有表 \{#truncate-all-tables\}
 
 ```sql
 TRUNCATE [ALL] TABLES FROM [IF EXISTS] db [LIKE | ILIKE | NOT LIKE '<pattern>'] [ON CLUSTER cluster]
@@ -60,7 +60,7 @@ TRUNCATE [ALL] TABLES FROM [IF EXISTS] db [LIKE | ILIKE | NOT LIKE '<pattern>'] 
 
 从数据库中的所有表中删除所有数据。
 
-## TRUNCATE DATABASE 语句 {#truncate-database}
+## TRUNCATE DATABASE 语句 \{#truncate-database\}
 
 ```sql
 TRUNCATE DATABASE [IF EXISTS] db [ON CLUSTER cluster]

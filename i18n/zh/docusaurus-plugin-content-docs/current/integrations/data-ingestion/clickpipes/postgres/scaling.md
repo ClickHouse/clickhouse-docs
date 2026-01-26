@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/scaling
 sidebar_label: '扩展'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 :::caution 大多数用户不需要使用此 API
@@ -25,14 +28,14 @@ keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
 
 **提升扩展级别会按比例增加 ClickPipes 的计算成本。** 如果你仅为初始加载而扩容，务必在快照完成后及时缩容，以避免产生意外费用。有关定价的更多信息，请参阅 [Postgres CDC 定价](/cloud/reference/billing/clickpipes)。
 
-## 此流程的先决条件 {#prerequisites}
+## 此流程的先决条件 \{#prerequisites\}
 
 在开始之前，您需要：
 
 1. 在目标 ClickHouse Cloud 服务上具有管理员权限的 [ClickHouse API key](/cloud/manage/openapi)。
 2. 在该服务中已经预配好的一个 DB ClickPipe（Postgres、MySQL 或 MongoDB）。CDC 基础设施会在创建第一个 ClickPipe 时一并创建，从那一刻起扩缩容相关端点即可使用。
 
-## 扩展数据库 ClickPipes 的步骤 {#cdc-scaling-steps}
+## 扩展数据库 ClickPipes 的步骤 \{#cdc-scaling-steps\}
 
 在执行任何命令之前，先设置以下环境变量：
 
