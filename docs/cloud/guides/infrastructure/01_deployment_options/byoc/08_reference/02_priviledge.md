@@ -6,6 +6,7 @@ keywords: ['BYOC', 'cloud', 'bring your own cloud', 'priviledge']
 description: 'Deploy ClickHouse on your own cloud infrastructure'
 doc_type: 'reference'
 ---
+
 ## CloudFormation IAM roles {#cloudformation-iam-roles}
 
 ### Bootstrap IAM role {#bootstrap-iam-role}
