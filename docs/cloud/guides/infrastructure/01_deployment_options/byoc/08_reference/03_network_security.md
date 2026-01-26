@@ -7,6 +7,128 @@ description: 'Deploy ClickHouse on your own cloud infrastructure'
 doc_type: 'reference'
 ---
 
+import Image from '@theme/IdealImage';
+import byoc_tailscale from '@site/static/images/cloud/reference/byoc-tailscale-1.png';
+
+## Tailscale Private Network {#tailscale-private-network}
+
+Tailscale provides a zero-trust, private network connection between ClickHouse Cloud's management services and your BYOC deployment. This secure channel enables ClickHouse engineers to perform troubleshooting and management operations without requiring public internet access or complex VPN configurations.
+
+### Overview {#tailscale-overview}
+
+Tailscale creates an encrypted, private network tunnel between the ClickHouse control plane (in ClickHouse's VPC) and your BYOC data plane (in your VPC). This connection is used exclusively for:
+
+- **Management operations**: ClickHouse management services coordinating with your BYOC infrastructure
+- **Troubleshooting access**: ClickHouse engineers accessing Kubernetes API servers and ClickHouse system tables for diagnostics
+- **Metrics access**: ClickHouse’s centralized monitoring dashboards access metrics from the Prometheus stack deployed within your BYOC VPC, providing ClickHouse engineers observability into the environment.
+
+:::important
+Tailscale is used **only for management and troubleshooting operations**. It is **never used for query traffic** or customer data access. All customer data remains within your VPC and is never transmitted through Tailscale connections.
+:::
+
+### How Tailscale Works in BYOC {#how-tailscale-works}
+
+<Image img={byoc_tailscale} size="lg" alt="BYOC Tailscale" border />
+
+For each service or endpoint that needs to be accessed via Tailscale, ClickHouse BYOC deploys:
+
+1. **Tailnet Address Registration**: Each endpoint registers a unique tailnet address (e.g., `k8s.xxxx.us-east-1.aws.byoc.clickhouse-prd.com` for the Kubernetes API server)
+
+2. **Tailscale Agent Container**: A Tailscale agent container runs in your EKS cluster, responsible for:
+   - Connecting to the Tailscale coordination server
+   - Registering services to make them discoverable
+   - Coordinating network setup with Nginx pods
+
+3. **Nginx Pod**: An Nginx pod that:
+   - Terminates TLS traffic from Tailscale
+   - Routes traffic to the appropriate IPs within your EKS cluster
+
+### Network Connection Process {#tailscale-connection-process}
+
+The Tailscale connection establishment follows these steps:
+
+1. **Initial Connection**:
+   - Tailscale agents on both ends (ClickHouse engineer's environment and your BYOC EKS cluster) connect to the Tailscale coordination server
+   - The EKS cluster agent registers the Kubernetes service to make it discoverable
+   - ClickHouse engineers must escalate internally to gain visibility to the service
+
+2. **Connection Mode**:
+   - **Direct Mode**: Agents attempt to establish a direct connection via NAT traversal tunnel
+   - **Relay Mode**: If direct mode fails, communication falls back to relay mode through a Tailscale DERP (Distributed Encrypted Relay Protocol) server
+
+3. **Encryption**:
+   - All communication is encrypted end-to-end
+   - Each Tailscale agent generates its own public-private key pair (similar to PKI)
+   - Traffic remains encrypted regardless of whether it uses direct or relay mode
+
+### Security Features {#tailscale-security}
+
+**Outbound-Only Connections**:
+- Tailscale agents in your EKS cluster initiate outbound connections to the Tailscale coordination/relay servers
+- **No inbound connections are required**—no security group rules need to allow inbound traffic to Tailscale agents
+- This reduces the attack surface and simplifies network security configuration
+
+**Access Control**:
+- Access is controlled through ClickHouse's internal approval system
+- Engineers must request access through designated approval workflows
+- Access is time-bound and automatically expires
+- All access is audited and logged
+
+**Certificate-Based Authentication**:
+- For ClickHouse system table access, engineers use temporary, time-bound certificates
+- Certificate-based authentication replaces password-based access for all human access in BYOC
+- Access is restricted to system tables only (not customer data)
+- All access attempts are logged in ClickHouse's `query_log` table
+
+### Troubleshooting Access via Tailscale {#troubleshooting-access-tailscale}
+
+When ClickHouse engineers need to troubleshoot issues in your BYOC deployment, they use Tailscale to access:
+
+- **Kubernetes API Server**: For diagnosing EBS mount failures, node-level network issues, and cluster health problems
+- **ClickHouse System Tables**: For query performance analysis and diagnostic queries (read-only access to system tables only)
+
+The troubleshooting access process:
+
+1. **Access Request**: On-call engineers within a designated group request access to the customer ClickHouse instance
+2. **Approval**: The request goes through an internal approval system with designated approvers
+3. **Certificate Generation**: A time-bound certificate is generated for the approved engineer
+4. **ClickHouse Configuration**: The ClickHouse operator configures ClickHouse to accept the certificate
+5. **Connection**: Engineers access the instance via Tailscale using the certificate
+6. **Automatic Expiration**: Access automatically expires after the set time period
+
+### Management Services Access {#management-services-access}
+
+By default, ClickHouse management services access your BYOC Kubernetes cluster via the EKS API server's public IP address, which is restricted to ClickHouse's NAT gateway IP addresses only.
+
+**Optional Private Endpoint Configuration**:
+- You can configure the EKS API server to use only a private endpoint
+- In this case, management services access the API server via Tailscale (similar to human troubleshooting access)
+- Public access is kept as a backup mechanism for emergency investigation and support needs
+
+### Network Traffic Flow {#tailscale-traffic-flow}
+
+**Tailscale Connection Flow**:
+1. Tailscale agent in EKS cluster → Tailscale coordination server (outbound)
+2. Tailscale agent on engineer's machine → Tailscale coordination server (outbound)
+3. Direct or relayed connection established between agents
+4. Encrypted traffic flows through the established tunnel
+5. Nginx pod in EKS terminates TLS and routes to internal services
+
+**No Customer Data Transmission**:
+- Tailscale connections are used only for management and troubleshooting
+- Query traffic and customer data never flow through Tailscale
+- All customer data remains within your VPC
+
+### Monitoring and Auditing {#tailscale-monitoring}
+
+Both ClickHouse and customers can audit Tailscale access activity:
+
+- **ClickHouse Monitoring**: ClickHouse monitors access requests and logs all Tailscale connections
+- **Customer Auditing**: Customers can track activity from ClickHouse engineers within their own systems
+- **Query Logs**: All system table access via Tailscale is logged in ClickHouse's `query_log` table
+
+For more technical details about how Tailscale is implemented in BYOC, see the [Building ClickHouse BYOC on AWS blog post](https://clickhouse.com/blog/building-clickhouse-byoc-on-aws#tailscale-connection).
+
 ## Network boundaries {#network-boundaries}
 
 This section covers different network traffic to and from the customer BYOC VPC:
