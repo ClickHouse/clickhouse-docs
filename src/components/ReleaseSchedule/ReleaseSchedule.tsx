@@ -6,9 +6,12 @@ type ProgressStatus = 'green' | 'orange' | 'red';
 interface ReleaseRow {
   version: string;
   changelog_link?: string;
-  fast_date: string;
-  regular_date: string;
-  slow_date: string;
+  fast_start_date: string;
+  fast_end_date: string;
+  regular_start_date: string;
+  regular_end_date: string;
+  slow_start_date: string;
+  slow_end_date: string;
   fast_delay_note?: string;
   regular_delay_note?: string;
   slow_delay_note?: string;
@@ -60,22 +63,30 @@ export default function ReleaseSchedule({ releases }: ReleaseScheduleProps) {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Version</th>
-            <th>
+            <th rowSpan={2}>Version</th>
+            <th colSpan={2}>
               <a href="/docs/manage/updates#fast-release-channel-early-upgrades">
-                Fast Channel (Rollout Start)
+                Fast Channel
               </a>
             </th>
-            <th>
+            <th colSpan={2}>
               <a href="/docs/manage/updates#regular-release-channel">
-                Regular Channel (Rollout Start)
+                Regular Channel
               </a>
             </th>
-            <th>
+            <th colSpan={2}>
               <a href="/docs/manage/updates#slow-release-channel-deferred-upgrades">
-                Slow Channel (Rollout Start)
+                Slow Channel
               </a>
             </th>
+          </tr>
+          <tr>
+            <th>Rollout Start</th>
+            <th>Rollout End</th>
+            <th>Rollout Start</th>
+            <th>Rollout End</th>
+            <th>Rollout Start</th>
+            <th>Rollout End</th>
           </tr>
         </thead>
         <tbody>
@@ -92,22 +103,40 @@ export default function ReleaseSchedule({ releases }: ReleaseScheduleProps) {
               </td>
               <td>
                 <DateCell
-                  date={release.fast_date}
+                  date={release.fast_start_date}
                   note={release.fast_delay_note}
                   status={release.fast_progress}
                 />
               </td>
               <td>
                 <DateCell
-                  date={release.regular_date}
+                  date={release.fast_end_date}
+                  status={release.fast_progress}
+                />
+              </td>
+              <td>
+                <DateCell
+                  date={release.regular_start_date}
                   note={release.regular_delay_note}
                   status={release.regular_progress}
                 />
               </td>
               <td>
                 <DateCell
-                  date={release.slow_date}
+                  date={release.regular_end_date}
+                  status={release.regular_progress}
+                />
+              </td>
+              <td>
+                <DateCell
+                  date={release.slow_start_date}
                   note={release.slow_delay_note}
+                  status={release.slow_progress}
+                />
+              </td>
+              <td>
+                <DateCell
+                  date={release.slow_end_date}
                   status={release.slow_progress}
                 />
               </td>
