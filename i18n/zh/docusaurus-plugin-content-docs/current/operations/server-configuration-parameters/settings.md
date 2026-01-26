@@ -2920,7 +2920,13 @@ ClickHouse 使用全局线程池中的线程来处理查询。如果没有空闲
 
 <SettingsInfoBlock type="Double" default_value="0.2" />
 
-相对于 ClickHouse 服务器可用内存的 jemalloc 脏页阈值比例。当脏页大小超过该比例时，后台内存工作线程会强制回收脏页。若设置为 0，则禁用强制回收。
+相对于 ClickHouse 服务器可用内存的 jemalloc 脏页阈值比例。当脏页大小超过该比例时，后台内存工作线程会强制回收脏页。若设置为 0，则禁用基于脏页比例的强制回收。
+
+## memory_worker_purge_total_memory_threshold_ratio \{#memory_worker_purge_total_memory_threshold_ratio\}
+
+<SettingsInfoBlock type="Double" default_value="0.9" />
+
+相对于 ClickHouse 服务器可用内存的 jemalloc 清理触发阈值比例。当总内存占用超过该比例时，后台内存工作线程会强制回收脏页。若设置为 0，则禁用基于总内存的强制回收。
 
 ## memory_worker_use_cgroup \{#memory_worker_use_cgroup\}
 
