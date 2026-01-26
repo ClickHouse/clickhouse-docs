@@ -1,8 +1,8 @@
 ---
-title: 'BYOC on AWS FAQ'
-slug: /cloud/reference/byoc/faq/aws
-sidebar_label: 'AWS'
-keywords: ['BYOC', 'cloud', 'bring your own cloud', 'AWS']
+title: 'BYOC FAQ'
+slug: /cloud/reference/byoc/reference/faq
+sidebar_label: 'FAQ'
+keywords: ['BYOC', 'cloud', 'bring your own cloud', 'FAQ']
 description: 'Deploy ClickHouse on your own cloud infrastructure'
 doc_type: 'reference'
 ---
@@ -63,6 +63,23 @@ to 30 server pods.
 <summary>Can I decide maintenance frequency?</summary>
 
 Contact support to schedule maintenance windows. Please expect a minimum of a weekly update schedule.
+
+</details>
+
+<details>
+<summary>How does storage communication work between BYOC VPC and S3?</summary>
+
+Traffic between your Customer BYOC VPC and S3 uses HTTPS (port 443) via the AWS S3 API for table data, backups, and logs. When using S3 VPC endpoints, this traffic remains within the AWS network and does not traverse the public internet.
+
+</details>
+
+<details>
+<summary>What ports are used for internal ClickHouse cluster communication?</summary>
+
+Internal ClickHouse cluster communication within the Customer BYOC VPC uses:
+- Native ClickHouse protocol on port 9000
+- HTTP/HTTPS on ports 8123/8443
+- Interserver communication on port 9009 for replication and distributed queries
 
 </details>
 
