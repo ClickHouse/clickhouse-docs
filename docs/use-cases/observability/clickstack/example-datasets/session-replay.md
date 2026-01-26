@@ -56,6 +56,10 @@ git clone https://github.com/ClickHouse/clickstack-session-replay-demo
 cd clickstack-session-replay-demo
 ```
 
+:::tip[Pre-instrumented version]
+The `main` branch includes a fully instrumented app ready for immediate session replay. To try instrumenting the app yourself, checkout the `pre-instrumented` branch (code comments indicate where to add instrumentation) and see the [instrumentation](#instrumentation) section for details.
+:::
+
 ### Start ClickStack {#start-clickstack}
 
 ```shell
@@ -109,14 +113,16 @@ Switch between `Highlighted` and `All Events` modes to adjust timeline detail.
 
 ## The instrumentation {#instrumentation}
 
-The demo application shows how minimal session replay instrumentation can be. View the code in the cloned repository:
+The demo application shows how minimal session replay instrumentation can be.
 
-**Include the SDK (`app/public/index.html` line 11):**
+1. **Include the SDK (`app/public/index.html`):**
+
 ```html
 <script src="https://unpkg.com/@hyperdx/browser@0.21.0/build/index.js"></script>
 ```
 
-**Initialize ClickStack (`app/public/js/app.js` lines 1-17):**
+2. **Initialize ClickStack (`app/public/js/app.js`):**
+
 ```javascript
 window.HyperDX.init({
   url: 'http://localhost:4318',
