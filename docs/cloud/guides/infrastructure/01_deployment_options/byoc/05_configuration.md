@@ -37,9 +37,10 @@ If you choose to use a private load balancer for your BYOC deployment, you must 
 To set up the security group for your private load balancer:
 
 **Contact ClickHouse Support** to request inbound security group rule changes that allow traffic from your specific source networks:
-  - **VPC Peering**: Request rules to permit traffic from your peered VPCs’ CIDR ranges.
-  - **PrivateLink**: No security group changes required, as traffic is not governed by the load balancer's security group.
-  - **Other network setups**: Specify your scenario so support can assist accordingly.
+
+- **VPC Peering**: Request rules to permit traffic from your peered VPCs’ CIDR ranges.
+- **PrivateLink**: No security group changes required, as traffic is not governed by the load balancer's security group.
+- **Other network setups**: Specify your scenario so support can assist accordingly.
 
 :::note
 All changes to private load balancer security groups must be performed by ClickHouse Support. This ensures configuration consistency and avoids conflicts within the ClickHouse Cloud-managed environment.
@@ -101,4 +102,3 @@ Cluster node groups scale automatically through the cluster autoscaler, accordin
 - ClickHouse service scaling demands
 
 No manual intervention is needed. ClickHouse Cloud handles ongoing resource and scaling management for your deployment.
-

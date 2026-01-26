@@ -18,7 +18,7 @@ import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';
 
 ## Architecture {#architecture}
 
-BYOC separates the **ClickHouse control plane**, which runs in the ClickHouse VPC, from the **data plane**, which runs entirely in your cloud account. The ClickHouse VPC hosts the ClickHouse Cloud Console, authentication and user management, APIs, billing, and infrastructure management components such as the BYOC controller and alerting/incident tooling. These services orchestrate and monitor your deployment, but they do not store your data.
+BYOC separates the **ClickHouse control plane**, which runs in the ClickHouse VPC, from the **data plane**, which runs entirely in your cloud account. The ClickHouse VPC hosts the ClickHouse Cloud Console, authentication and user management, APIs, billing, and infrastructure management components such as the BYOC controller, and alerting/incident tooling. These services orchestrate and monitor your deployment, but they don't store your data.
 
 In your **Customer BYOC VPC**, ClickHouse provisions a Kubernetes cluster (for example, Amazon EKS) that runs the ClickHouse data plane. As shown in the diagram, this includes the ClickHouse cluster itself, the ClickHouse operator, and supporting services such as ingress, DNS, certificate management, and state exporters and scrapers. A dedicated monitoring stack (Prometheus, Grafana, Alertmanager, and Thanos) also runs within your VPC, ensuring that metrics and alerts originate from and remain in your environment.
 
@@ -92,7 +92,7 @@ Together, these two components enable ClickHouse Cloud to:
 All customer data remains within your cloud account and is never accessed or transmitted through these management channels.
 
 **Additional recommendations and considerations:**
-- Ensure that network CIDR ranges for your BYOC VPC do not overlap with any existing VPCs you plan to peer with.
+- Ensure that network CIDR ranges for your BYOC VPC does not overlap with any existing VPCs you plan to peer with.
 - Tag your resources clearly to simplify management and support.
 - Plan for adequate subnet sizing and distribution across availability zones for high availability.
 - Consult the [security playbook](https://clickhouse.com/docs/cloud/security/audit-logging/byoc-security-playbook) to understand shared responsibility and best practices when ClickHouse Cloud operates within your environment.

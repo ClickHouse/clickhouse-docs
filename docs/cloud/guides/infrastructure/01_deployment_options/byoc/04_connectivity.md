@@ -31,10 +31,9 @@ To connect to your ClickHouse service using the public endpoint:
 <Image img={byoc_connect_1} size="lg" alt="BYOC connection" background='black'/>
 
 For example:
-```
+```text
 sb9jmrq2ne.asf3kcggao.ap-southeast-1.aws.clickhouse-byoc.com
 ```
-
 
 ### IP Filtering {#public-ip-filtering}
 
@@ -98,7 +97,7 @@ The PrivateLink endpoint format is similar to the public endpoint, but includes 
 - **Public endpoint**: `h5ju65kv87.mhp0y4dmph.us-west-2.aws.clickhouse-byoc.com`
 - **PrivateLink endpoint**: `h5ju65kv87.vpce.mhp0y4dmph.us-west-2.aws.clickhouse-byoc.com`
 
-### Endpoint ID Allowlist
+### Endpoint ID Allowlist {#endpoint-id-allowlist}
 
 In order to use PrivateLink or Private Service Connect, the Endpoint ID of your client connection must be explicitly allowed for each ClickHouse service. Please contact ClickHouse Support and provide your Endpoint ID(s) so they can be added to the service allowlist.
 

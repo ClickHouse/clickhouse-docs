@@ -72,7 +72,7 @@ You can utilize the BYOC Prometheus stack in your monitoring ecosystem in severa
 - Ideal for building bespoke dashboards or alerting pipelines.
 
 Prometheus query endpoint:
-```
+```text
 https://prometheus-internal.<subdomain>.<region>.<cloud>.clickhouse-byoc.com/query
 ```
 
@@ -176,7 +176,6 @@ Replace:
 ## ClickHouse Mixin {#clickhouse-mixin}
 
 For teams that want a ready-made set of dashboards, ClickHouse provides a Prometheus **ClickHouse Mixin**. This is a pre-built  Grafana dashboard designed specifically for monitoring ClickHouse clusters.
-
 
 ### Setting up Grafana & Importing the ClickHouse Mix-in {#setup-grafana-mixin}
 
