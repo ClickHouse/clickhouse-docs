@@ -307,6 +307,44 @@ try (Connection conn = DriverManager.getConnection(url, properties)) {
     // Database: default
 }
 ```
+
+### Data Types Changes {#data-types-changes}
+
+| ClickHouse Type             | Changed | JDBC Type (V2)              | Java Class (V2)             | JDBC Type (V1)              | Java Class (V1)          |
+|-----------------------------|---------|----------------------------|----------------------------|----------------------------|----------------------------|
+| Int8                        | No      | TINYINT                    | java.lang.Byte             | TINYINT                    | java.lang.Byte              |
+| Int16                       | No      | SMALLINT                   | java.lang.Short            | SMALLINT                   | java.lang.Short             |
+| Int32                       | No      | INTEGER                    | java.lang.Integer          | INTEGER                    | java.lang.Integer           |
+| Int64                       | No      | BIGINT                     | java.lang.Long             | BIGINT                     | java.lang.Long              |
+| UInt8                       | Yes     | OTHER                      | java.lang.Short            | OTHER                      | com.clickhouse.data.value.UnsignedByte |
+| UInt16                      | Yes     | OTHER                      | java.lang.Integer          | OTHER                      | com.clickhouse.data.value.UnsignedShort |
+| UInt32                      | Yes     | OTHER                      | java.lang.Long             | OTHER                      | com.clickhouse.data.value.UnsignedInteger |
+| UInt64                      | Yes     | OTHER                      | java.math.BigInteger       | OTHER                      | com.clickhouse.data.value.UnsignedLong |
+| Int128                      | No      | OTHER                      | java.math.BigInteger       | OTHER                      | java.math.BigInteger        |
+| UInt128                     | No      | OTHER                      | java.math.BigInteger       | OTHER                      | java.math.BigInteger        |
+| Int256                      | No      | OTHER                      | java.math.BigInteger       | OTHER                      | java.math.BigInteger        |
+| UInt256                     | No      | OTHER                      | java.math.BigInteger       | OTHER                      | java.math.BigInteger        |
+| Float32                     | No      | REAL                       | java.lang.Float            | REAL                       | java.lang.Float             |
+| Float64                     | No      | DOUBLE                     | java.lang.Double           | DOUBLE                     | java.lang.Double            |
+| Decimal32                   | No      | DECIMAL                    | java.math.BigDecimal       | DECIMAL                    | java.math.BigDecimal        |
+| Decimal64                   | No      | DECIMAL                    | java.math.BigDecimal       | DECIMAL                    | java.math.BigDecimal        |
+| Decimal128                  | No      | DECIMAL                    | java.math.BigDecimal       | DECIMAL                    | java.math.BigDecimal        |
+| Decimal256                  | No      | DECIMAL                    | java.math.BigDecimal       | DECIMAL                    | java.math.BigDecimal        |
+| Bool                        | No      | BOOLEAN                    | java.lang.Boolean          | BOOLEAN                    | java.lang.Boolean           |
+| String                      | No      | VARCHAR                    | java.lang.String           | VARCHAR                    | java.lang.String            |
+| FixedString                 | No      | CHAR                       | java.lang.String           | CHAR                       | java.lang.String            |
+| Date                        | Yes     | DATE                       | java.sql.Date              | DATE                       | java.time.LocalDate         |
+| Date32                      | Yes     | DATE                       | java.sql.Date              | DATE                       | java.time.LocalDate         |
+| DateTime                    | Yes     | TIMESTAMP                  | java.sql.Timestamp         | TIMESTAMP                  | java.time.OffsetDateTime    |
+| DateTime64                  | Yes     | TIMESTAMP                  | java.sql.Timestamp         | TIMESTAMP                  | java.time.OffsetDateTime    |
+| UUID                        | No      | OTHER                      | java.util.UUID              | OTHER                      | java.util.UUID              |
+| IPv4                        | No      | OTHER                      | java.net.Inet4Address       | OTHER                      | java.net.Inet4Address       |
+| IPv6                        | No      | OTHER                      | java.net.Inet6Address       | OTHER                      | java.net.Inet6Address       |
+
+- Unsigned types are mapped to java types for better portability. 
+- `Date` and `Date32` are mapped to `java.sql.Date` for better compatibility with JDBC. However getting `java.time.LocalDate` is possible by using `ResultSet.getObject(int, Class<T>)` with `java.time.LocalDate.class` as the second argument.
+
+
 </Version>
 
 <Version>
