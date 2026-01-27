@@ -48,6 +48,7 @@ CREATE TABLE tab
                                 [, dictionary_block_size = D]
                                 [, dictionary_block_frontcoding_compression = B]
                                 [, posting_list_block_size = C]
+                                [, posting_list_codec = 'none' | 'bitpacking' ]
                             )
 )
 ENGINE = MergeTree
@@ -80,12 +81,12 @@ ORDER BY key
 Если строки‑разделители образуют [префиксный код](https://en.wikipedia.org/wiki/Prefix_code), их можно передавать в произвольном порядке.
 :::
 
+
 :::warning
-В настоящий момент не рекомендуется строить текстовые индексы поверх текста на незападных языках, например китайском.
-Поддерживаемые сейчас токенизаторы могут приводить к огромному размеру индекса и большому времени выполнения запросов.
+В данный момент не рекомендуется строить текстовые индексы по тексту на незападных языках, например на китайском языке.
+Поддерживаемые сейчас токенизаторы могут приводить к огромным размерам индекса и большим временам выполнения запросов.
 Мы планируем в будущем добавить специализированные токенизаторы для конкретных языков, которые будут лучше обрабатывать такие случаи.
 :::
-
 
 Чтобы проверить, как токенизаторы разбивают входную строку на токены, вы можете использовать функцию [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) в ClickHouse:
 
@@ -119,6 +120,24 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 Также выражение препроцессора должно ссылаться только на столбец, для которого определён текстовый индекс.
 Использование недетерминированных функций не допускается.
+
+Препроцессор также может использоваться со столбцами типов [Array(String)](/sql-reference/data-types/array.md) и [Array(FixedString)](/sql-reference/data-types/array.md).
+В этом случае выражение препроцессора преобразует элементы массива по отдельности.
+
+Пример:
+
+```sql
+CREATE TABLE tab
+(
+    col Array(String),
+    INDEX idx col TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))
+
+    -- This is not legal:
+    INDEX idx_illegal col TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = arraySort(col))
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+```
 
 Функции [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken), [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens) и [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) используют препроцессор для предварительного преобразования поискового термина перед его токенизацией.
 
@@ -157,6 +176,7 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
 Это значение было выбрано эмпирически и обеспечивает хороший баланс между скоростью и размером индекса для большинства сценариев использования.
 Опытные пользователи могут указать другую гранулярность индекса (мы этого не рекомендуем).
 
+
 <details markdown="1">
   <summary>Необязательные расширенные параметры</summary>
 
@@ -168,6 +188,11 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
   Необязательный параметр `dictionary_block_frontcoding_compression` (по умолчанию: 1) указывает, используют ли блоки словаря front coding для сжатия.
 
   Необязательный параметр `posting_list_block_size` (по умолчанию: 1048576) указывает размер блоков списка вхождений в строках.
+
+  Необязательный параметр `posting_list_codec` (по умолчанию: `none`) указывает кодек для списка вхождений:
+
+  * `none` - списки вхождений сохраняются без дополнительного сжатия.
+  * `bitpacking` - применяется [дифференциальное (дельта) кодирование](https://en.wikipedia.org/wiki/Delta_encoding), за которым следует [bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70) (каждое в пределах блоков фиксированного размера).
 </details>
 
 Текстовые индексы могут быть добавлены к столбцу или удалены из него после создания таблицы:
@@ -322,7 +347,7 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 
 #### `mapContains` \{#functions-example-mapcontains\}
 
-Функция [mapContains](/sql-reference/functions/tuple-map-functions#mapContains) (псевдоним `mapContainsKey`) сопоставляет токены, извлечённые из искомой строки, с ключами в map.
+Функция [mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey) (псевдоним `mapContainsKey`) сопоставляет токены, извлечённые из искомой строки, с ключами в map.
 Поведение аналогично функции `equals` со столбцом типа `String`.
 Текстовый индекс используется только в том случае, если он был создан для выражения `mapKeys(map)`.
 
@@ -585,7 +610,7 @@ Prewhere filter column: and(like(__table1.col, \'%some-token%\'_String), greater
 [...]
 ```
 
-тогда как тот же запрос при `query_plan_text_index_add_hint = 1`
+тогда как тот же запрос с `query_plan_text_index_add_hint = 1`
 
 ```sql
 EXPLAIN actions = 1
@@ -604,7 +629,7 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 ```
 
 Во втором выводе EXPLAIN PLAN вы можете увидеть, что к условию фильтрации была добавлена дополнительная конъюнкция (`__text_index_...`).
-Благодаря оптимизации [PREWHERE](docs/sql-reference/statements/select/prewhere) условие фильтрации разбивается на три отдельные конъюнкции, которые применяются в порядке возрастания вычислительной сложности.
+Благодаря оптимизации [PREWHERE](/sql-reference/statements/select/prewhere) условие фильтрации разбивается на три отдельные конъюнкции, которые применяются в порядке возрастания вычислительной сложности.
 Для этого запроса порядок применения такой: сначала `__text_index_...`, затем `greaterOrEquals(...)` и, наконец, `like(...)`.
 Такой порядок позволяет пропускать ещё больше гранул данных по сравнению с теми, которые уже пропускаются текстовым индексом и исходным фильтром, ещё до чтения «тяжёлых» столбцов, используемых в запросе после предложения `WHERE`, что дополнительно уменьшает объём данных для чтения.
 

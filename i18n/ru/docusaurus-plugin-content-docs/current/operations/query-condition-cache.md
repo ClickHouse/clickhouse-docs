@@ -55,11 +55,12 @@ SETTINGS use_query_condition_cache = true;
 кэш будет сохранять диапазоны таблицы, которые не удовлетворяют предикату.
 Последующие выполнения того же запроса, также с параметром `use_query_condition_cache = true`, будут использовать кэш условий запроса для сканирования меньшего объёма данных.
 
+
 ## Администрирование \{#administration\}
 
 Кэш условий запросов не сохраняется между перезапусками ClickHouse.
 
-Чтобы очистить кэш условий запросов, выполните команду [`SYSTEM DROP QUERY CONDITION CACHE`](../sql-reference/statements/system.md#drop-query-condition-cache).
+Чтобы очистить кэш условий запросов, выполните команду [`SYSTEM CLEAR QUERY CONDITION CACHE`](../sql-reference/statements/system.md#drop-query-condition-cache).
 
 Содержимое кэша отображается в системной таблице [system.query_condition_cache](system-tables/query_condition_cache.md).
 Чтобы вычислить текущий размер кэша условий запросов в МБ, выполните `SELECT formatReadableSize(sum(entry_size)) FROM system.query_condition_cache`.

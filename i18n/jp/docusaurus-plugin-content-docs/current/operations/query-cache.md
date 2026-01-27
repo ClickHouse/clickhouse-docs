@@ -65,7 +65,7 @@ SETTINGS use_query_cache = true, enable_writes_to_query_cache = false;
 
 最大限の制御を行うため、通常は `use_query_cache`、`enable_writes_to_query_cache`、`enable_reads_from_query_cache` の各設定は、特定のクエリに対してのみ指定することが推奨されます。`SET use_query_cache = true` のように、USER またはプロファイル単位でキャッシュを有効化することも可能ですが、その場合、すべての `SELECT` クエリがキャッシュされた結果を返す可能性があることに留意する必要があります。
 
-クエリキャッシュは `SYSTEM DROP QUERY CACHE` ステートメントでクリアできます。クエリキャッシュの内容はシステムテーブル
+クエリキャッシュは `SYSTEM CLEAR QUERY CACHE` ステートメントでクリアできます。クエリキャッシュの内容はシステムテーブル
 [system.query&#95;cache](system-tables/query_cache.md) に表示されます。データベース起動以降のクエリキャッシュのヒット数とミス数は、システムテーブル [system.events](system-tables/events.md) のイベント &quot;QueryCacheHits&quot; および &quot;QueryCacheMisses&quot; として表示されます。両カウンタは、`use_query_cache = true` が有効な状態で実行される `SELECT` クエリに対してのみ更新され、それ以外のクエリは &quot;QueryCacheMisses&quot; に影響しません。システムテーブル [system.query&#95;log](system-tables/query_log.md) のフィールド `query_cache_usage` は、各実行クエリについて、その結果がクエリキャッシュに書き込まれたか、あるいはクエリキャッシュから読み出されたかを示します。システムテーブル
 [system.metrics](system-tables/metrics.md) にあるメトリクス `QueryCacheEntries` および `QueryCacheBytes` は、クエリキャッシュに現在含まれているエントリ数およびバイト数を示します。
 
@@ -76,6 +76,7 @@ SETTINGS use_query_cache = true, enable_writes_to_query_cache = false;
 クエリが例外やユーザーによるキャンセルにより中止された場合、そのエントリはクエリキャッシュに書き込まれません。
 
 クエリキャッシュのサイズ（バイト単位）、キャッシュエントリの最大数、および個々のキャッシュエントリの最大サイズ（バイト数およびレコード数）は、さまざまな[サーバー設定オプション](/operations/server-configuration-parameters/settings#query_cache)を使用して構成できます。
+
 
 ```xml
 <query_cache>
@@ -138,7 +139,8 @@ SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 1';
 SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 2';
 ```
 
-クエリキャッシュからタグ `tag` が付いたエントリのみを削除するには、`SYSTEM DROP QUERY CACHE TAG 'tag'` 文を使用します。
+クエリキャッシュからタグ `tag` が付いたエントリのみを削除するには、`SYSTEM CLEAR QUERY CACHE TAG 'tag'` 文を使用します。
+
 
 ClickHouse はテーブルデータを [max_block_size](/operations/settings/settings#max_block_size) 行ずつのブロック単位で読み取ります。フィルタリングや集約などの処理の結果、
 結果ブロックは通常は `max_block_size` よりかなり小さくなりますが、逆に `max_block_size` より大きくなる場合もあります。

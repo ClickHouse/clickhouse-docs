@@ -48,6 +48,7 @@ CREATE TABLE tab
                                 [, dictionary_block_size = D]
                                 [, dictionary_block_frontcoding_compression = B]
                                 [, posting_list_block_size = C]
+                                [, posting_list_codec = 'none' | 'bitpacking' ]
                             )
 )
 ENGINE = MergeTree
@@ -80,12 +81,12 @@ ORDER BY key
 如果这些分隔字符串恰好构成一个 [prefix code](https://en.wikipedia.org/wiki/Prefix_code)，则可以以任意顺序传递。
 :::
 
-:::warning
-目前不推荐在非西方语言（例如中文）的文本上构建文本索引（text index）。
-当前支持的 tokenizer 可能会导致索引体积非常大以及查询耗时很长。
-我们计划未来添加针对特定语言优化的 tokenizer，以更好地处理这些场景。
-:::
 
+:::warning
+目前不建议在非西方语言（例如中文）的文本上构建文本索引。
+当前支持的分词器可能会导致索引体积巨大且查询耗时较长。
+我们计划在未来添加专门的、特定于语言的分词器，以更好地处理这些情况。
+:::
 
 要测试分词器如何切分输入字符串，可以使用 ClickHouse 的 [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) 函数：
 
@@ -119,6 +120,24 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 此外，预处理器表达式只能引用其上定义了该文本索引的列。
 不允许使用非确定性函数。
+
+预处理器也可以用于 [Array(String)](/sql-reference/data-types/array.md) 和 [Array(FixedString)](/sql-reference/data-types/array.md) 列。
+在这种情况下，预处理器表达式会对数组中的每个元素分别进行转换。
+
+示例：
+
+```sql
+CREATE TABLE tab
+(
+    col Array(String),
+    INDEX idx col TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))
+
+    -- This is not legal:
+    INDEX idx_illegal col TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = arraySort(col))
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+```
 
 函数 [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken)、[hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens) 和 [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) 会在对搜索词进行分词之前，先通过预处理器对其进行转换。
 
@@ -157,6 +176,7 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
 该取值是通过经验选取的，在大多数使用场景下在速度和索引大小之间取得了良好的平衡。
 高级用户可以指定不同的索引粒度（我们不推荐这样做）。
 
+
 <details markdown="1">
   <summary>可选高级参数</summary>
 
@@ -168,6 +188,11 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
   可选参数 `dictionary_block_frontcoding_compression`（默认值：1）指定字典块是否使用 front coding 作为压缩方式。
 
   可选参数 `posting_list_block_size`（默认值：1048576）指定倒排列表（posting list）块的大小（以行数计）。
+
+  可选参数 `posting_list_codec`（默认值：`none`）指定倒排列表使用的编解码器：
+
+  * `none` - 倒排列表在存储时不进行额外压缩。
+  * `bitpacking` - 先应用[差分（delta）编码](https://en.wikipedia.org/wiki/Delta_encoding)，然后进行[bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70)（均在固定大小的块内完成）。
 </details>
 
 在创建表之后，可以为某个列添加或移除文本索引：
@@ -322,7 +347,7 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 
 #### `mapContains` \{#functions-example-mapcontains\}
 
-函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapContains)（`mapContainsKey` 的别名）会在 map 的键中，匹配从待搜索字符串中提取的 token。
+函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey)（`mapContainsKey` 的别名）会在 map 的键中，匹配从待搜索字符串中提取的 token。
 其行为类似于在 `String` 列上使用 `equals` 函数。
 只有当文本索引是基于 `mapKeys(map)` 表达式创建时，才会被使用。
 
@@ -586,7 +611,7 @@ Prewhere filter column: and(like(__table1.col, \'%some-token%\'_String), greater
 [...]
 ```
 
-而将相同的查询在 `query_plan_text_index_add_hint = 1` 时运行
+而在将 `query_plan_text_index_add_hint` 设为 1 时运行相同的查询
 
 ```sql
 EXPLAIN actions = 1
@@ -596,7 +621,7 @@ WHERE col LIKE '%some-token%'
 SETTINGS use_skip_indexes_on_data_read = 1, query_plan_text_index_add_hint = 1
 ```
 
-返回结果
+返回
 
 ```text
 [...]
@@ -605,7 +630,7 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 ```
 
 在第二个 EXPLAIN PLAN 输出中，你可以看到在过滤条件中被添加了一个额外的合取项（`__text_index_...`）。
-得益于 [PREWHERE](docs/sql-reference/statements/select/prewhere) 优化，过滤条件被拆分为三个独立的合取项，并按照计算复杂度从低到高的顺序依次应用。
+得益于 [PREWHERE](/sql-reference/statements/select/prewhere) 优化，过滤条件被拆分为三个独立的合取项，并按照计算复杂度从低到高的顺序依次应用。
 对于这个查询，应用顺序是先 `__text_index_...`，然后是 `greaterOrEquals(...)`，最后是 `like(...)`。
 这种顺序使得在读取 `WHERE` 子句中使用的开销较大的列之前，就能在文本索引和原始过滤条件已经跳过的数据粒度基础上，进一步跳过更多数据粒度，从而减少需要读取的数据量。
 

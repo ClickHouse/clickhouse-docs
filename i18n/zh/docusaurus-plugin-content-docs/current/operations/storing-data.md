@@ -9,6 +9,7 @@ doc_type: 'guide'
 
 在 ClickHouse 中处理的数据通常存储在运行 ClickHouse 服务器的
 机器的本地文件系统中。这需要大容量磁盘，而这可能比较昂贵。为了避免在本地存储数据，ClickHouse 支持多种存储选项：
+
 1. [Amazon S3](https://aws.amazon.com/s3/) 对象存储。
 2. [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs)。
 3. 不受支持：Hadoop 分布式文件系统（[HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html)）
@@ -54,7 +55,7 @@ ClickHouse 还支持外部表引擎，它们与本页所描述的外部存储选
 </s3>
 ```
 
-相当于以下配置（自 `24.1` 版本起）：
+等价于以下配置（自 `24.1` 版本起）：
 
 ```xml
 <s3>
@@ -140,6 +141,7 @@ ClickHouse 还支持外部表引擎，它们与本页所描述的外部存储选
 </clickhouse>
 ```
 
+
 要将特定类型的存储设为所有 `MergeTree` 表的默认选项，
 请在配置文件中添加以下配置段：
 
@@ -166,6 +168,7 @@ CREATE TABLE test (a Int32, b String)
 ENGINE = MergeTree() ORDER BY a
 SETTINGS disk = 's3';
 ```
+
 
 ## 动态配置 \{#dynamic-configuration\}
 
@@ -284,6 +287,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 
 其中的 `web` 来自服务器配置文件：
 
+
 ```xml
 <storage_configuration>
     <disks>
@@ -294,6 +298,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
     </disks>
 </storage_configuration>
 ```
+
 
 ### 使用 S3 存储 \{#s3-storage\}
 
@@ -340,7 +345,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 也支持使用类型 `s3` 的 Google Cloud Storage (GCS)。参见[基于 GCS 的 MergeTree](/integrations/gcs)。
 :::
 
-### 使用 Plain Storage \{#plain-storage\}
+### 使用 Plain 存储 \{#plain-storage\}
 
 在 `22.10` 中引入了一种新的磁盘类型 `s3_plain`，它提供只写一次的存储。
 其配置参数与 `s3` 磁盘类型相同。
@@ -381,6 +386,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 </s3_plain>
 ```
 
+
 ### 使用 S3 Plain Rewritable 存储 \{#s3-plain-rewritable-storage\}
 
 在 `24.4` 中引入了一种新的磁盘类型 `s3_plain_rewritable`。
@@ -405,7 +411,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 </s3_plain_rewritable>
 ```
 
-等于
+等同于
 
 ```xml
 <s3_plain_rewritable>
@@ -419,9 +425,10 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 
 从 `24.5` 版本起，可以使用 `plain_rewritable` 元数据类型来配置任意对象存储磁盘（`s3`、`azure`、`local`）。
 
+
 ### 使用 Azure Blob Storage \{#azure-blob-storage\}
 
-`MergeTree` 系列的表引擎可以使用类型为 `azure_blob_storage` 的磁盘将数据存储到 [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)。
+`MergeTree` 系列表引擎可以使用类型为 `azure_blob_storage` 的磁盘将数据存储到 [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/) 中。
 
 配置示例：
 
@@ -443,6 +450,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
     ...
 </storage_configuration>
 ```
+
 
 #### 连接参数 \{#azure-blob-storage-connection-parameters\}
 
@@ -481,7 +489,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 | `write_resource`                 | 用于[调度](/operations/workload-scheduling.md)写入请求的资源名称。 | 空字符串（禁用）                                 |
 | `metadata_keep_free_space_bytes` | 需要预留的元数据磁盘空闲空间大小。                                    | -                                        |
 
-在集成测试目录中可以找到工作配置示例（例如 [test&#95;merge&#95;tree&#95;azure&#95;blob&#95;storage](https://github.com/ClickHouse/ClickHouse/blob/master/tests/integration/test_merge_tree_azure_blob_storage/configs/config.d/storage_conf.xml) 或 [test&#95;azure&#95;blob&#95;storage&#95;zero&#95;copy&#95;replication](https://github.com/ClickHouse/ClickHouse/blob/master/tests/integration/test_azure_blob_storage_zero_copy_replication/configs/config.d/storage_conf.xml)）。
+在集成测试目录中可以找到工作配置示例（例如 [test_merge_tree_azure_blob_storage](https://github.com/ClickHouse/ClickHouse/blob/master/tests/integration/test_merge_tree_azure_blob_storage/configs/config.d/storage_conf.xml) 或 [test_azure_blob_storage_zero_copy_replication](https://github.com/ClickHouse/ClickHouse/blob/master/tests/integration/test_azure_blob_storage_zero_copy_replication/configs/config.d/storage_conf.xml)）。
 
 :::note 零拷贝复制尚未准备好用于生产环境
 在 ClickHouse 22.8 及更高版本中，零拷贝复制默认禁用。该功能不建议在生产环境中使用。
@@ -526,7 +534,8 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 </clickhouse>
 ```
 
-请注意，HDFS 在某些极端情况下可能无法正常工作。
+请注意，HDFS 在某些边缘场景下可能无法正常工作。
+
 
 ### 使用数据加密 \{#encrypted-virtual-file-system\}
 
@@ -552,6 +561,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 例如，当 ClickHouse 将某个表中的数据写入文件 `store/all_1_1_0/data.bin` 到 `disk1` 时，该文件实际会写入物理磁盘路径 `/path1/store/all_1_1_0/data.bin`。
 
 当将同一个文件写入 `disk2` 时，实际上会以加密方式写入物理磁盘路径 `/path1/path2/store/all_1_1_0/data.bin`。
+
 
 ### 必需参数 \{#required-parameters-encrypted-disk\}
 
@@ -592,12 +602,13 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 </clickhouse>
 ```
 
+
 ### 使用本地缓存 \{#using-local-cache\}
 
 从 22.3 版本开始，可以在存储配置中为磁盘配置本地缓存。
-在 22.3 - 22.7 版本中，缓存仅支持 `s3` 磁盘类型。对于 &gt;= 22.8 版本，缓存支持任意磁盘类型：S3、Azure、本地、加密等。
-对于 &gt;= 23.5 版本，缓存仅支持远程磁盘类型：S3、Azure、HDFS（暂不支持）。
-缓存使用 `LRU` 缓存策略。
+在 22.3 - 22.7 版本中，缓存仅支持 `s3` 磁盘类型。对于 &gt;= 22.8 版本，缓存支持所有磁盘类型：S3、Azure、Local、Encrypted 等。
+对于 &gt;= 23.5 版本，缓存仅支持远程磁盘类型：S3、Azure、HDFS（当前不支持）。
+缓存使用 `LRU` 策略。
 
 适用于 22.8 及以上版本的配置示例：
 
@@ -629,7 +640,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
     </storage_configuration>
 ```
 
-22.8 之前的版本配置示例：
+适用于 22.8 之前版本的配置示例：
 
 ```xml
 <clickhouse>
@@ -655,25 +666,26 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
     </storage_configuration>
 ```
 
-文件缓存 **磁盘配置参数**：
+File Cache **磁盘配置设置**：
 
-这些参数应在磁盘配置部分中定义。
+这些设置应在磁盘配置部分中进行定义。
 
-| Parameter                             | Type    | Default    | Description                                                                                                                                                                                  |
-|---------------------------------------|---------|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `path`                                | String  | -          | **必需**。用于存储缓存的目录路径。                                                                                                                                                          |
-| `max_size`                            | Size    | -          | **必需**。缓存的最大大小，可以是字节数或可读格式（例如 `10Gi`）。达到限制时，会使用 LRU 策略淘汰文件。支持 `ki`、`Mi`、`Gi` 格式（自 v22.10 起）。                                        |
-| `cache_on_write_operations`           | Boolean | `false`    | 为 `INSERT` 查询和后台合并启用写穿缓存。可以通过 `enable_filesystem_cache_on_write_operations` 在每个查询级别进行覆盖。                                                                    |
-| `enable_filesystem_query_cache_limit` | Boolean | `false`    | 基于 `max_query_cache_size` 启用按查询的缓存大小限制。                                                                                                                                      |
-| `enable_cache_hits_threshold`         | Boolean | `false`    | 启用后，仅在数据被多次读取后才会将其缓存。                                                                                                                                                  |
-| `cache_hits_threshold`                | Integer | `0`        | 将数据写入缓存前所需的读取次数（需要启用 `enable_cache_hits_threshold`）。                                                                                                                  |
-| `enable_bypass_cache_with_threshold`  | Boolean | `false`    | 对大范围读取跳过缓存。                                                                                                                                                                      |
-| `bypass_cache_threshold`              | Size    | `256Mi`    | 触发跳过缓存的读取范围大小（需要启用 `enable_bypass_cache_with_threshold`）。                                                                                                              |
-| `max_file_segment_size`               | Size    | `8Mi`      | 单个缓存文件的最大大小，可以是字节数或可读格式。                                                                                                                                            |
-| `max_elements`                        | Integer | `10000000` | 最大缓存文件数量。                                                                                                                                                                           |
-| `load_metadata_threads`               | Integer | `16`       | 启动时用于加载缓存元数据的线程数。                                                                                                                                                          |
+| Parameter                             | Type    | Default    | Description                                                                                  |
+| ------------------------------------- | ------- | ---------- | -------------------------------------------------------------------------------------------- |
+| `path`                                | String  | -          | **必需**。用于存储缓存的目录路径。                                                                          |
+| `max_size`                            | Size    | -          | **必需**。缓存的最大大小，可以是字节数或可读格式（例如 `10Gi`）。达到限制时，会使用 LRU 策略淘汰文件。支持 `ki`、`Mi`、`Gi` 格式（自 v22.10 起）。 |
+| `cache_on_write_operations`           | Boolean | `false`    | 为 `INSERT` 查询和后台合并启用写穿缓存。可以通过 `enable_filesystem_cache_on_write_operations` 在每个查询级别进行覆盖。     |
+| `enable_filesystem_query_cache_limit` | Boolean | `false`    | 基于 `max_query_cache_size` 启用按查询的缓存大小限制。                                                      |
+| `enable_cache_hits_threshold`         | Boolean | `false`    | 启用后，仅在数据被多次读取后才会将其缓存。                                                                        |
+| `cache_hits_threshold`                | Integer | `0`        | 将数据写入缓存前所需的读取次数（需要启用 `enable_cache_hits_threshold`）。                                         |
+| `enable_bypass_cache_with_threshold`  | Boolean | `false`    | 对大范围读取跳过缓存。                                                                                  |
+| `bypass_cache_threshold`              | Size    | `256Mi`    | 触发跳过缓存的读取范围大小（需要启用 `enable_bypass_cache_with_threshold`）。                                    |
+| `max_file_segment_size`               | Size    | `8Mi`      | 单个缓存文件的最大大小，可以是字节数或可读格式。                                                                     |
+| `max_elements`                        | Integer | `10000000` | 最大缓存文件数量。                                                                                    |
+| `load_metadata_threads`               | Integer | `16`       | 启动时用于加载缓存元数据的线程数。                                                                            |
 
 > **注意**：Size 值支持 `ki`、`Mi`、`Gi` 等单位（例如 `10Gi`）。
+
 
 ## 文件缓存查询/配置文件设置 \{#file-cache-query-profile-settings\}
 
@@ -695,19 +707,19 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 #### 缓存系统表 \{#cache-system-tables-file-cache\}
 
 | Table Name                    | Description        | Requirements                            |
-| ----------------------------- | ------------------ | --------------------------------------- |
+|-------------------------------|--------------------|-----------------------------------------|
 | `system.filesystem_cache`     | 显示文件系统缓存的当前状态。     | 无                                       |
 | `system.filesystem_cache_log` | 提供每个查询的详细缓存使用统计信息。 | 需要 `enable_filesystem_cache_log = true` |
 
 #### 缓存命令 \{#cache-commands-file-cache\}
 
-##### `SYSTEM DROP FILESYSTEM CACHE (<cache_name>) (ON CLUSTER)` -- `ON CLUSTER` \{#system-drop-filesystem-cache-on-cluster\}
+##### `SYSTEM CLEAR|DROP FILESYSTEM CACHE (<cache_name>) (ON CLUSTER)` -- `ON CLUSTER` \{#system-clear-filesystem-cache-on-cluster\}
 
 仅当未提供 `<cache_name>` 时才支持此命令。
 
 ##### `SHOW FILESYSTEM CACHES` \{#show-filesystem-caches\}
 
-显示服务器上已配置的文件系统缓存列表。\
+显示服务器上已配置的文件系统缓存列表。
 （对于版本小于或等于 `22.8`，该命令名称为 `SHOW CACHES`）
 
 ```sql title="Query"
@@ -719,6 +731,7 @@ SHOW FILESYSTEM CACHES
 │ s3_cache  │
 └───────────┘
 ```
+
 
 ##### `DESCRIBE FILESYSTEM CACHE '<cache_name>'` \{#describe-filesystem-cache\}
 
@@ -735,12 +748,13 @@ DESCRIBE FILESYSTEM CACHE 's3_cache'
 └─────────────┴──────────────┴───────────────────────┴────────────────────┴───────────────────────────┴──────────────────────┴──────────────┴──────────────────┴────────────┴─────────────────────────────┴────────────────────────────────────┘
 ```
 
-| 缓存当前指标                    | 缓存异步指标                 | 缓存 Profile 事件                                                                             |
+| 缓存当前指标                    | 缓存异步指标                 | 缓存相关 Profile Events                                                                       |
 | ------------------------- | ---------------------- | ----------------------------------------------------------------------------------------- |
 | `FilesystemCacheSize`     | `FilesystemCacheBytes` | `CachedReadBufferReadFromSourceBytes`, `CachedReadBufferReadFromCacheBytes`               |
 | `FilesystemCacheElements` | `FilesystemCacheFiles` | `CachedReadBufferReadFromSourceMicroseconds`, `CachedReadBufferReadFromCacheMicroseconds` |
 |                           |                        | `CachedReadBufferCacheWriteBytes`, `CachedReadBufferCacheWriteMicroseconds`               |
 |                           |                        | `CachedWriteBufferCacheWriteBytes`, `CachedWriteBufferCacheWriteMicroseconds`             |
+
 
 ### 使用静态 Web 存储（只读） \{#web-storage\}
 
@@ -827,7 +841,8 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
   -- highlight-end
 ```
 
-一个现成的测试用例。你需要将如下配置添加到 config 中：
+下面是一个现成的测试用例。你需要将此配置添加到配置文件中：
+
 
 ```xml
 <clickhouse>
@@ -852,6 +867,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 ```
 
 然后执行此查询：
+
 
 ```sql
 ATTACH TABLE test_hits UUID '1ae36516-d62d-4218-9ae3-6516d62da218'
@@ -997,6 +1013,7 @@ ORDER BY (CounterID, EventDate, intHash32(UserID))
 SAMPLE BY intHash32(UserID)
 SETTINGS storage_policy='web';
 ```
+
 
 #### 必填参数 \{#static-web-storage-required-parameters\}
 

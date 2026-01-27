@@ -29,4 +29,5 @@ ClickStack は、オブザーバビリティデータを ClickHouse インスタ
 | [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | Postgres のパフォーマンスを監視する |
 | [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Redis サーバーログを収集する |
 | [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Redis のパフォーマンスを監視する |
+| [Systemd Logs](/use-cases/observability/clickstack/integrations/systemd-logs) | Systemd/Journald のログを収集する |
 | [Temporal Metrics](/use-cases/observability/clickstack/integrations/temporal-metrics)| Temporal Cloud のメトリクスを監視する |

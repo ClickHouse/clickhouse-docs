@@ -493,6 +493,16 @@ MaterializedPostgreSQL テーブルエンジンの使用を許可します。こ
 
 自然言語処理向けの実験的関数を有効にします。
 
+## allow_experimental_nullable_tuple_type \{#allow_experimental_nullable_tuple_type\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "New experimental setting"}]}]}/>
+
+テーブルの [Nullable](../../sql-reference/data-types/nullable) [Tuple](../../sql-reference/data-types/tuple.md) カラムの作成を許可します。
+
 ## allow_experimental_object_storage_queue_hive_partitioning \{#allow_experimental_object_storage_queue_hive_partitioning\}
 
 <ExperimentalBadge/>
@@ -1232,9 +1242,9 @@ true に設定すると、非同期挿入に対して適応型ビジータイム
 
 <ExperimentalBadge/>
 
-<SettingsInfoBlock type="UInt64" default_value="0" />
+<SettingsInfoBlock type="UInt64" default_value="1048576" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1048576"},{"label": "テスト結果に基づいて導出された、より適切なデフォルト値"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 `automatic_parallel_replicas_mode`=1 の場合に、parallel replicas を自動的に有効化するための、レプリカごとの読み取りバイト数のしきい値です。0 を指定すると、しきい値はありません。
 
@@ -2158,6 +2168,14 @@ WHERE 句に結合条件がある場合、カンマ結合 / CROSS JOIN の代わ
 
 - 0 — クエリは遅延を伴って実行されます。
 - 1 — クエリは遅延なく実行されます。
+
+## database_datalake_require_metadata_access \{#database_datalake_require_metadata_access\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "新しい設定。"}]}]}/>
+
+データベースエンジン DataLakeCatalog でテーブルのメタデータを取得する権限がない場合に、エラーをスローするかどうかを制御します。
 
 ## database_replicated_allow_explicit_uuid \{#database_replicated_allow_explicit_uuid\}
 
@@ -8362,12 +8380,6 @@ SELECT * FROM test2;
 
 - [ORDER BY 句](/sql-reference/statements/select/order-by#optimization-of-data-reading)
 
-## optimize_read_in_window_order \{#optimize_read_in_window_order\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-MergeTree テーブルでデータを指定された順序で読み取るために、ウィンドウ句における ORDER BY の最適化を有効にします。
-
 ## optimize_redundant_functions_in_order_by \{#optimize_redundant_functions_in_order_by\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9728,7 +9740,11 @@ JOIN 操作で左テーブルからの読み取り順序を維持し、その順
 
 ## query_plan_reuse_storage_ordering_for_window_functions \{#query_plan_reuse_storage_ordering_for_window_functions\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+**別名**: `optimize_read_in_window_order`
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "このロジックをデフォルトで無効化します。"}]}]}/>
 
 ウィンドウ関数のためのソート時に、ストレージの並び順を利用するクエリプランレベルの最適化を切り替えます。
 設定 [`query_plan_enable_optimizations`](#query_plan_enable_optimizations) が 1 の場合にのみ有効です。
@@ -11638,9 +11654,9 @@ TopK フィルタリングにデータスキッピングインデックスを使
 
 ## use_variant_as_common_type \{#use_variant_as_common_type\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "共通の型がない場合に if/multiIf で Variant を使用できるようにする"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "利便性が向上する"}]}, {"id": "row-2","items": [{"label": "24.1"},{"label": "0"},{"label": "共通の型がない場合に if/multiIf で Variant を使用できるようにする"}]}]} />
 
 引数の型に共通の型が存在しない場合に、[if](../../sql-reference/functions/conditional-functions.md/#if)/[multiIf](../../sql-reference/functions/conditional-functions.md/#multiIf)/[array](../../sql-reference/functions/array-functions.md)/[map](../../sql-reference/functions/tuple-map-functions.md) 関数の結果型として `Variant` 型を使用できるようにします。
 

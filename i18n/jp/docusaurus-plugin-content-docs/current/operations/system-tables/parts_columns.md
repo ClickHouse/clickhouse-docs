@@ -42,6 +42,10 @@ doc_type: 'reference'
 | `path`                                  | String   | データパートファイルが格納されているフォルダへの絶対パス。                                                                                                                   |
 | `column`                                | String   | カラム名。                                                                                                                                           |
 | `type`                                  | String   | カラムの型。                                                                                                                                          |
+| `statistics`                            | String   | カラムに対して作成された統計情報。                                                                                                                               |
+| `estimates.min`                         | String   | カラムの最小値の推定値。                                                                                                                                    |
+| `estimates.max`                         | String   | カラムの最大値の推定値。                                                                                                                                    |
+| `estimates.cardinality`                 | String   | カラムのカーディナリティの推定値。                                                                                                                               |
 | `column_position`                       | UInt64   | テーブル内でのカラムの位置（1 から始まる序数）。                                                                                                                       |
 | `default_kind`                          | String   | デフォルト値の式の種類（`DEFAULT`、`MATERIALIZED`、`ALIAS`）、または未定義の場合は空文字列。                                                                                   |
 | `default_expression`                    | String   | デフォルト値の式、または未定義の場合は空文字列。                                                                                                                        |

@@ -5,8 +5,15 @@
     <link>https://clickhouse.com/docs/cloud/whats-new/cloud</link>
     <description>Latest updates and features in ClickHouse Cloud</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 21 Jan 2026 16:07:37 +0100</lastBuildDate>
+    <lastBuildDate>Fri, 23 Jan 2026 12:20:01 -0600</lastBuildDate>
     <atom:link href="https://clickhouse.com/docs/cloud/changelog-rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ClickHouse Cloud - January 30, 2026</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#january-30-2026</link>
+      <description>- ClickPipes is now available in AWS eu-west-1. For new ClickHouse Cloud services created from January 20 in that region, the matching region will be used for ClickPipes. For older services, ClickPipes defaults to eu-central-1. See the documentation for more details.</description>
+      <pubDate>Fri, 30 Jan 2026 00:00:00 -0600</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#january-30-2026</guid>
+    </item>
     <item>
       <title>ClickHouse Cloud - January 16, 2026</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#january-16-2026</link>

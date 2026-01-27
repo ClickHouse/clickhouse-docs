@@ -493,6 +493,16 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 启用自然语言处理相关的实验性函数。
 
+## allow_experimental_nullable_tuple_type \{#allow_experimental_nullable_tuple_type\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "新的实验性设置"}]}]}/>
+
+允许在表中创建 [Nullable](../../sql-reference/data-types/nullable) [Tuple](../../sql-reference/data-types/tuple.md) 类型的列。
+
 ## allow_experimental_object_storage_queue_hive_partitioning \{#allow_experimental_object_storage_queue_hive_partitioning\}
 
 <ExperimentalBadge/>
@@ -1230,9 +1240,9 @@ Cloud 默认值：`1`。
 
 <ExperimentalBadge/>
 
-<SettingsInfoBlock type="UInt64" default_value="0" />
+<SettingsInfoBlock type="UInt64" default_value="1048576" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1048576"},{"label": "基于测试结果得出的更优默认值"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置"}]}]}/>
 
 用于自动启用并行副本时的每个副本最小读取字节数阈值（仅在 `automatic_parallel_replicas_mode`=1 时生效）。0 表示不设阈值。
 
@@ -2156,6 +2166,14 @@ SETTINGS convert_query_to_cnf = true;
 
 - 0 — 查询将以延迟方式执行。
 - 1 — 查询将同步执行（无延迟）。
+
+## database_datalake_require_metadata_access \{#database_datalake_require_metadata_access\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "New setting."}]}]}/>
+
+在使用 DataLakeCatalog 数据库引擎时，如果没有获取表元数据的权限，指定是否抛出错误。
 
 ## database_replicated_allow_explicit_uuid \{#database_replicated_allow_explicit_uuid\}
 
@@ -8344,12 +8362,6 @@ SELECT * FROM test2;
 
 - [ORDER BY 子句](/sql-reference/statements/select/order-by#optimization-of-data-reading)
 
-## optimize_read_in_window_order \{#optimize_read_in_window_order\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-启用窗口子句中的 ORDER BY 优化，以便在 MergeTree 表中按对应顺序读取数据。
-
 ## optimize_redundant_functions_in_order_by \{#optimize_redundant_functions_in_order_by\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9709,7 +9721,11 @@ a   Tuple(
 
 ## query_plan_reuse_storage_ordering_for_window_functions \{#query_plan_reuse_storage_ordering_for_window_functions\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+**别名**: `optimize_read_in_window_order`
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "默认禁用此逻辑。"}]}]}/>
 
 切换一种查询计划级别的优化，在为窗口函数排序时复用存储的排序结果。
 仅当 [`query_plan_enable_optimizations`](#query_plan_enable_optimizations) 设置为 1 时生效。
@@ -11621,9 +11637,9 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 ## use_variant_as_common_type \{#use_variant_as_common_type\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "允许在 if/multiIf 中在没有公共类型时使用 Variant"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "提升可用性。"}]}, {"id": "row-2","items": [{"label": "24.1"},{"label": "0"},{"label": "允许在 if/multiIf 中在没有公共类型时使用 Variant"}]}]} />
 
 允许在参数类型之间不存在公共类型时，将 `Variant` 类型作为 [if](../../sql-reference/functions/conditional-functions.md/#if)/[multiIf](../../sql-reference/functions/conditional-functions.md/#multiIf)/[array](../../sql-reference/functions/array-functions.md)/[map](../../sql-reference/functions/tuple-map-functions.md) 函数的结果类型。
 

@@ -83,7 +83,7 @@ SHOW  wal_level;
 3. 为该用户授予复制权限：
 
    ```sql
-   ALTER ROLE clickpipes_user REPLICATION;
+   ALTER USER clickpipes_user WITH REPLICATION;
    ```
 
 4. 使用你希望复制的表创建一个 [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html)。强烈建议仅在 publication 中包含实际需要的表，以避免额外的性能开销。

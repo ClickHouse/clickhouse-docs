@@ -37,11 +37,25 @@ import VersionHistory from '@theme/VersionHistory/VersionHistory';
 
 ## check_conversion_from_numbers_to_enum \{#check_conversion_from_numbers_to_enum\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
 在将 Numbers 转换为 Enum 类型时，如果对应的值在 Enum 中不存在，则抛出异常。
 
-默认情况下禁用。
+可能的取值：
+
+* 0 — 禁用。
+* 1 — 启用。
+
+**示例**
+
+```text
+CREATE TABLE tab (
+  val Enum('first' = 1, 'second' = 2, 'third' = 3)
+) ENGINE = Memory;
+
+INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -- returns an error
+```
+
 
 ## column_names_for_schema_inference \{#column_names_for_schema_inference\}
 
@@ -1361,6 +1375,13 @@ Parquet 读取器输出的平均块大小（字节）
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 启用后，在解析过程中会对 JSON 键名中的点号进行转义。
+
+## max_dynamic_subcolumns_in_json_type_parsing \{#max_dynamic_subcolumns_in_json_type_parsing\}
+
+<SettingsInfoBlock type="UInt64Auto" default_value="auto" />
+
+在解析 JSON 列时，每一列中可以创建的动态子列的最大数量。  
+它允许在解析过程中控制动态子列的数量，而不受数据类型中指定的动态参数限制。
 
 ## output_format_arrow_compression_method \{#output_format_arrow_compression_method\}
 

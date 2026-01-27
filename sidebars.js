@@ -326,6 +326,35 @@ const sidebars = {
         },
       ],
     },
+    {
+      type: 'category',
+      label: 'Managed Postgres (Preview)',
+      collapsed: true,
+      collapsible: true,
+      className: 'top-nav-item',
+      link: { type: 'doc', id: 'cloud/managed-postgres/overview' },
+      items: [
+          'cloud/managed-postgres/overview',
+          'cloud/managed-postgres/quickstart',
+          'cloud/managed-postgres/connection',
+          'cloud/managed-postgres/clickhouse-integration',
+          'cloud/managed-postgres/high-availability',
+          'cloud/managed-postgres/read-replicas',
+          'cloud/managed-postgres/backup-and-restore',
+          'cloud/managed-postgres/extensions',
+          'cloud/managed-postgres/settings',
+          {
+            type: 'category',
+            label: 'Data migration',
+            collapsed: true,
+            collapsible: true,
+            items: [
+              'cloud/managed-postgres/migrations/pg_dump-pg_restore',
+              'cloud/managed-postgres/migrations/logical-replication',
+            ],
+          },
+      ],
+    },
   ],
 
   sqlreference: [
@@ -974,6 +1003,7 @@ const sidebars = {
           items: [
             'integrations/data-ingestion/apache-spark/index',
             'integrations/data-ingestion/apache-spark/spark-native-connector',
+            'integrations/data-ingestion/apache-spark/databricks',
             'integrations/data-ingestion/apache-spark/spark-jdbc',
           ],
         },
@@ -1759,7 +1789,7 @@ const sidebars = {
         },
         {
           type: 'category',
-          label: 'Integration quick start',
+          label: 'Integration quickstarts',
           link: {
             type: 'doc',
             id: 'use-cases/observability/clickstack/integration-examples/index',

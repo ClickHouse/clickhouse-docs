@@ -93,29 +93,29 @@ SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 ```
 
 
-## SYSTEM DROP DNS CACHE \{#drop-dns-cache\}
+## SYSTEM CLEAR|DROP DNS CACHE \{#drop-dns-cache\}
 
 ClickHouse の内部 DNS キャッシュをクリアします。インフラストラクチャを変更する場合（別の ClickHouse サーバーやディクショナリで使用されるサーバーの IP アドレスを変更する場合など）、古い ClickHouse バージョンではこのコマンドを使用する必要が生じることがあります。
 
 より便利な（自動的な）キャッシュ管理については、`disable_internal_dns_cache`、`dns_cache_max_entries`、`dns_cache_update_period` パラメータを参照してください。
 
-## SYSTEM DROP MARK CACHE \{#drop-mark-cache\}
+## SYSTEM CLEAR|DROP MARK CACHE \{#drop-mark-cache\}
 
 マークキャッシュをクリアします。
 
-## SYSTEM DROP ICEBERG METADATA CACHE \{#drop-iceberg-metadata-cache\}
+## SYSTEM CLEAR|DROP ICEBERG METADATA CACHE \{#drop-iceberg-metadata-cache\}
 
 Icebergメタデータキャッシュをクリアします。
 
-## SYSTEM DROP TEXT INDEX POSTINGS CACHE \{#drop-text-index-caches\}
+## SYSTEM CLEAR|DROP TEXT INDEX CACHES \{#drop-text-index-caches\}
 
 テキスト索引ヘッダーキャッシュ、Dictionaryキャッシュおよびポスティングキャッシュをクリアします。
 
 これらのキャッシュを個別に削除したい場合は、次のコマンドを実行できます。
 
-- `SYSTEM DROP TEXT INDEX HEADER CACHE`,
-- `SYSTEM DROP TEXT INDEX DICTIONARY CACHE`, または
-- `SYSTEM DROP TEXT INDEX POSTINGS CACHE`
+- `SYSTEM CLEAR TEXT INDEX HEADER CACHE`,
+- `SYSTEM CLEAR TEXT INDEX DICTIONARY CACHE`, または
+- `SYSTEM CLEAR TEXT INDEX POSTINGS CACHE`
 
 ## SYSTEM DROP REPLICA \{#drop-replica\}
 
@@ -148,34 +148,33 @@ SYSTEM DROP DATABASE REPLICA 'replica_name' [FROM SHARD 'shard_name'] FROM ZKPAT
 `SYSTEM DROP REPLICA` に似ていますが、`DROP DATABASE` を実行できるデータベースが存在しない場合に使用され、ZooKeeper から `Replicated` データベースのレプリカパスを削除します。なお、これは `ReplicatedMergeTree` のレプリカは削除しないため、必要に応じて `SYSTEM DROP REPLICA` も実行する必要があります。分片名とレプリカ名は、データベース作成時に `Replicated` エンジンの引数で指定した名前です。また、これらの名前は `system.clusters` の `database_shard_name` および `database_replica_name` カラムから取得することもできます。`FROM SHARD` 句が省略されている場合、`replica_name` には `shard_name|replica_name` 形式の完全なレプリカ名を指定する必要があります。
 
 
-## SYSTEM DROP UNCOMPRESSED CACHE \{#drop-uncompressed-cache\}
+## SYSTEM CLEAR|DROP UNCOMPRESSED CACHE \{#drop-uncompressed-cache\}
 
 非圧縮データキャッシュをクリアします。
 非圧縮データキャッシュは、クエリ／USER／プロファイルレベルの設定 [`use_uncompressed_cache`](../../operations/settings/settings.md#use_uncompressed_cache) によって有効化／無効化を切り替えられます。
 キャッシュのサイズは、サーバーレベルの設定 [`uncompressed_cache_size`](../../operations/server-configuration-parameters/settings.md#uncompressed_cache_size) を使用して構成できます。
 
-## SYSTEM DROP COMPILED EXPRESSION CACHE \{#drop-compiled-expression-cache\}
+## SYSTEM CLEAR|DROP COMPILED EXPRESSION CACHE \{#drop-compiled-expression-cache\}
 
 コンパイル済み式キャッシュをクリアします。
 コンパイル済み式キャッシュは、クエリ/ユーザー/プロファイルレベルの設定 [`compile_expressions`](../../operations/settings/settings.md#compile_expressions) によって有効化/無効化されます。
 
-## SYSTEM DROP QUERY CONDITION CACHE \{#drop-query-condition-cache\}
+## SYSTEM CLEAR|DROP QUERY CONDITION CACHE \{#drop-query-condition-cache\}
 
 クエリ条件キャッシュを消去します。
 
-クエリ条件キャッシュをクリアします。
-
-## SYSTEM DROP QUERY CACHE \{#drop-query-cache\}
+## SYSTEM CLEAR|DROP QUERY CACHE \{#drop-query-cache\}
 
 ```sql
-SYSTEM DROP QUERY CACHE;
-SYSTEM DROP QUERY CACHE TAG '<tag>'
+SYSTEM CLEAR QUERY CACHE;
+SYSTEM CLEAR QUERY CACHE TAG '<tag>'
 ```
 
 [query cache](../../operations/query-cache.md) をクリアします。
 タグを指定した場合は、指定されたタグを持つクエリキャッシュエントリのみが削除されます。
 
-## SYSTEM DROP FORMAT SCHEMA CACHE \{#system-drop-schema-format\}
+
+## SYSTEM CLEAR|DROP FORMAT SCHEMA CACHE \{#system-drop-schema-format\}
 
 [`format_schema_path`](../../operations/server-configuration-parameters/settings.md#format_schema_path) から読み込まれたスキーマのキャッシュをクリアします。
 
@@ -183,10 +182,10 @@ SYSTEM DROP QUERY CACHE TAG '<tag>'
 
 * Protobuf: メモリ上のインポート済み Protobuf メッセージ定義を削除します。
 * Files: `format_schema_source` が `query` に設定されている場合に生成され、ローカルの [`format_schema_path`](../../operations/server-configuration-parameters/settings.md#format_schema_path) に保存されているスキーマファイルのキャッシュを削除します。
-  注: 対象を指定しない場合、両方のキャッシュがクリアされます。
+  Note: 対象を指定しない場合、両方のキャッシュがクリアされます。
 
 ```sql
-SYSTEM DROP FORMAT SCHEMA CACHE [FOR Protobuf/Files]
+SYSTEM CLEAR|DROP FORMAT SCHEMA CACHE [FOR Protobuf/Files]
 ```
 
 
@@ -676,13 +675,14 @@ SYSTEM RESTORE REPLICA test ON CLUSTER cluster;
 
 すべての `ReplicatedMergeTree` テーブルについて ZooKeeper セッションの状態を再初期化する機能です。現在の状態を唯一の正とみなす ZooKeeper 上の状態と比較し、必要に応じて ZooKeeper のキューにタスクを追加します。
 
-### SYSTEM DROP FILESYSTEM CACHE \{#drop-filesystem-cache\}
+### SYSTEM CLEAR|DROP FILESYSTEM CACHE \{#drop-filesystem-cache\}
 
 このコマンドにより、ファイルシステムキャッシュを削除できます。
 
 ```sql
-SYSTEM DROP FILESYSTEM CACHE [ON CLUSTER cluster_name]
+SYSTEM CLEAR FILESYSTEM CACHE [ON CLUSTER cluster_name]
 ```
+
 
 ### SYSTEM SYNC FILE CACHE \{#sync-file-cache\}
 
