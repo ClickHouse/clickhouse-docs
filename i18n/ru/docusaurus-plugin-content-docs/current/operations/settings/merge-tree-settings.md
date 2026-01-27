@@ -83,6 +83,14 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 
 При включении для всех строковых столбцов таблицы добавляются пропускающие индексы min-max.
 
+## add_minmax_index_for_temporal_columns \{#add_minmax_index_for_temporal_columns\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
+
+Если настройка включена, для всех столбцов таблицы типов Date, Date32, Time, Time64, DateTime и DateTime64 добавляются индексы min-max (skipping).
+
 ## allow_coalescing_columns_in_partition_or_order_key \{#allow_coalescing_columns_in_partition_or_order_key\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -537,7 +545,7 @@ MergeTree будет игнорировать этот параметр. Эта 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "Новая настройка"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "Добавлена новая настройка для ограничения максимального объёма данных (в байтах) для min_age_to_force_merge."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "Добавлена новая настройка для ограничения максимального объёма данных (в байтах) для min_age_to_force_merge."}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
 
 Определяет, должны ли настройки `min_age_to_force_merge_seconds` и
 `min_age_to_force_merge_on_partition_only` учитывать настройку

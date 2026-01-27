@@ -81,6 +81,14 @@ true の場合、CollapsingMergeTree または VersionedCollapsingMergeTree テ�
 
 有効にすると、テーブルのすべての文字列カラムに対して、min-max（スキップ）索引が追加されます。
 
+## add_minmax_index_for_temporal_columns \{#add_minmax_index_for_temporal_columns\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "新しい設定"}]}]}/>
+
+有効にすると、テーブル内のすべての Date、Date32、Time、Time64、DateTime、DateTime64 カラムに対して、min-max（スキップ）索引が追加されます。
+
 ## allow_coalescing_columns_in_partition_or_order_key \{#allow_coalescing_columns_in_partition_or_order_key\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -525,7 +533,7 @@ Dynamic データ型のシリアライズバージョン。互換性を維持す
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}]}/>
 
 設定 `min_age_to_force_merge_seconds` および
 `min_age_to_force_merge_on_partition_only` が、
