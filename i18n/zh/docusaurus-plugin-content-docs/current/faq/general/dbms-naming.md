@@ -10,7 +10,7 @@ keywords: ['ClickHouse 名称', '点击流', '数据仓库', '数据库命名', 
 
 
 
-# “ClickHouse”是什么意思？ {#what-does-clickhouse-mean}
+# “ClickHouse”是什么意思？ \{#what-does-clickhouse-mean\}
 
 它是“**Click**stream”（点击流）和“Data ware**House**”（数据仓库）的组合。这个名字源自 ClickHouse 在 Yandex.Metrica 中的最初用例：ClickHouse 需要保存来自整个互联网、所有用户的点击记录，而它至今仍然胜任这项工作。你可以在 [ClickHouse 历史](../../about-us/history.md) 页面了解更多相关用例。
 

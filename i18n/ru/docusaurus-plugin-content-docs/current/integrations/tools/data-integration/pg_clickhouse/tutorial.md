@@ -7,14 +7,14 @@ doc_type: 'guide'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'обёртка внешних данных', 'pg_clickhouse', 'расширение', 'руководство', 'такси']
 ---
 
-# Руководство по pg_clickhouse {#pg_clickhouse-tutorial}
+# Руководство по pg_clickhouse \{#pg_clickhouse-tutorial\}
 
-## Обзор {#overview}
+## Обзор \{#overview\}
 
 В этом руководстве повторяется [ClickHouse tutorial], но все запросы выполняются через
 pg_clickhouse.
 
-## Запустите ClickHouse {#start-clickhouse}
+## Запустите ClickHouse \{#start-clickhouse\}
 
 Сначала создайте базу данных ClickHouse, если у вас её ещё нет. Быстрый способ
 начать — воспользоваться Docker-образом:
@@ -25,7 +25,7 @@ docker exec -it clickhouse clickhouse-client
 ```
 
 
-## Создайте таблицу {#create-a-table}
+## Создайте таблицу \{#create-a-table\}
 
 Воспользуемся примером из [ClickHouse tutorial], чтобы создать простую базу данных с датасетом нью‑йоркского такси:
 
@@ -90,7 +90,7 @@ ORDER BY pickup_datetime;
 ```
 
 
-## Добавление набора данных {#add-the-data-set}
+## Добавление набора данных \{#add-the-data-set\}
 
 Затем импортируйте данные:
 
@@ -160,7 +160,7 @@ quit
 ```
 
 
-### Установите pg&#95;clickhouse {#install-pg&#95;clickhouse}
+### Установите pg&#95;clickhouse \{#install-pg&#95;clickhouse\}
 
 Соберите и установите pg&#95;clickhouse из [PGXN] или [GitHub]. Или разверните
 контейнер Docker, используя образ [pg&#95;clickhouse image], который просто добавляет
@@ -172,7 +172,7 @@ docker run -d --network host --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
 ```
 
 
-### Подключите pg&#95;clickhouse {#connect-pg&#95;clickhouse}
+### Подключите pg&#95;clickhouse \{#connect-pg&#95;clickhouse\}
 
 Теперь подключитесь к Postgres:
 
@@ -308,7 +308,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 весь запрос был полностью передан на выполнение в ClickHouse.
 
 
-## Анализ данных {#analyze-the-data}
+## Анализ данных \{#analyze-the-data\}
 
 Выполните несколько запросов, чтобы проанализировать данные. Ознакомьтесь со следующими примерами или попробуйте выполнить собственный SQL‑запрос.
 
@@ -461,7 +461,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 17.450 ms
   ```
 
-## Создайте словарь {#create-a-dictionary}
+## Создайте словарь \{#create-a-dictionary\}
 
 Создайте словарь, связанный с таблицей в вашем сервисе ClickHouse. Таблица и
 словарь основаны на CSV-файле, который содержит строку для каждого
@@ -561,7 +561,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
     в аэропорту LaGuardia, либо в аэропорту JFK. Обратите внимание, что существует довольно много поездок,
     у которых район отправления неизвестен.
 
-## Выполнение JOIN {#perform-a-join}
+## Выполнение JOIN \{#perform-a-join\}
 
 Напишите несколько запросов, которые выполняют `JOIN` таблицы `taxi_zone_dictionary` с таблицей `trips`.
 

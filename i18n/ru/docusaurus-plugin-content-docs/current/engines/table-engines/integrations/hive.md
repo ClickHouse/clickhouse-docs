@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Движок таблиц Hive {#hive-table-engine}
+# Движок таблиц Hive \{#hive-table-engine\}
 
 <CloudNotSupportedBadge/>
 
@@ -21,7 +21,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 - Parquet: поддерживает все простые скалярные типы колонок; поддерживает только сложные типы, такие как `array`
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -47,9 +47,9 @@ PARTITION BY expr
 
 - `table` — имя удаленной таблицы.
 
-## Пример использования {#usage-example}
+## Пример использования \{#usage-example\}
 
-### Как использовать локальное кеширование для файловой системы HDFS {#how-to-use-local-cache-for-hdfs-filesystem}
+### Как использовать локальное кеширование для файловой системы HDFS \{#how-to-use-local-cache-for-hdfs-filesystem\}
 
 Мы настоятельно рекомендуем включить локальное кеширование для удаленных файловых систем. Бенчмарки показывают, что с кешем работа происходит почти в 2 раза быстрее.
 
@@ -68,9 +68,9 @@ PARTITION BY expr
 - limit_size: Обязательно. Максимальный размер (в байтах) локальных файлов кеша.
 - bytes_read_before_flush: Управляет количеством байтов перед сбросом в локальную файловую систему при загрузке файла из удаленной файловой системы. Значение по умолчанию — 1MB.
 
-### Запрос к таблице Hive с форматом входных данных ORC  {#query-hive-table-with-orc-input-format}
+### Запрос к таблице Hive с форматом входных данных ORC  \{#query-hive-table-with-orc-input-format\}
 
-#### Создание таблицы в Hive {#create-table-in-hive}
+#### Создание таблицы в Hive \{#create-table-in-hive\}
 
 ```text
 hive > CREATE TABLE `test`.`test_orc`(
@@ -118,7 +118,7 @@ OK
 Time taken: 0.295 seconds, Fetched: 1 row(s)
 ```
 
-#### Создание таблицы в ClickHouse  {#create-table-in-clickhouse}
+#### Создание таблицы в ClickHouse  \{#create-table-in-clickhouse\}
 
 Таблица в ClickHouse, получающая данные из таблицы Hive, созданной выше:
 ```sql
@@ -190,9 +190,9 @@ day:                  2021-09-18
 1 rows in set. Elapsed: 0.078 sec.
 ```
 
-### Запрос к таблице Hive с форматом входных данных Parquet {#query-hive-table-with-parquet-input-format}
+### Запрос к таблице Hive с форматом входных данных Parquet \{#query-hive-table-with-parquet-input-format\}
 
-#### Создание таблицы в Hive {#create-table-in-hive-1}
+#### Создание таблицы в Hive \{#create-table-in-hive-1\}
 
 ```text
 hive >
@@ -241,7 +241,7 @@ OK
 Time taken: 0.766 seconds, Fetched: 1 row(s)
 ```
 
-#### Создание таблицы в ClickHouse {#create-table-in-clickhouse-1}
+#### Создание таблицы в ClickHouse \{#create-table-in-clickhouse-1\}
 
 Таблица в ClickHouse, получающая данные из таблицы Hive, созданной выше:
 ```sql
@@ -313,9 +313,9 @@ day:                  2021-09-18
 1 rows in set. Elapsed: 0.357 sec.
 ```
 
-### Запрос к таблице Hive с форматом входных данных Text {#query-hive-table-with-text-input-format}
+### Запрос к таблице Hive с форматом входных данных Text \{#query-hive-table-with-text-input-format\}
 
-#### Создание таблицы в Hive {#create-table-in-hive-2}
+#### Создание таблицы в Hive \{#create-table-in-hive-2\}
 
 ```text
 hive >
@@ -364,7 +364,7 @@ OK
 Time taken: 0.624 seconds, Fetched: 1 row(s)
 ```
 
-#### Создание таблицы в ClickHouse {#create-table-in-clickhouse-2}
+#### Создание таблицы в ClickHouse \{#create-table-in-clickhouse-2\}
 
 Таблица в ClickHouse, получающая данные из таблицы Hive, созданной выше:
 ```sql

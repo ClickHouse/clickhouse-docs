@@ -7,12 +7,12 @@ title: 'Оконные функции'
 doc_type: 'reference'
 ---
 
-# Оконные функции  {#window-functions}
+# Оконные функции  \{#window-functions\}
 
 Оконные функции позволяют выполнять вычисления над набором строк, связанных с текущей строкой.
 Часть таких вычислений аналогична тем, что можно выполнить с агрегатной функцией, но оконная функция не приводит к объединению строк в единый результирующий набор — отдельные строки по‑прежнему возвращаются.
 
-## Стандартные оконные функции {#standard-window-functions}
+## Стандартные оконные функции \{#standard-window-functions\}
 
 ClickHouse поддерживает стандартную грамматику для определения окон и оконных функций. В таблице ниже указано, поддерживается ли та или иная возможность.
 
@@ -32,11 +32,11 @@ ClickHouse поддерживает стандартную грамматику 
 | `lag/lead(value, offset)`                                                          | ✅ <br/> Вы также можете использовать один из следующих обходных решений:<br/> 1) `any(value) over (.... rows between <offset> preceding and <offset> preceding)`, или `following` для `lead` <br/> 2) `lagInFrame/leadInFrame`, которые являются аналогами, но учитывают оконный фрейм. Чтобы получить поведение, идентичное `lag/lead`, используйте `rows between unbounded preceding and unbounded following`                                                                 |
 | ntile(buckets) | ✅ <br/> Задайте окно следующим образом: (partition by x order by y rows between unbounded preceding and unbounded following). |
 
-## Оконные функции ClickHouse {#clickhouse-specific-window-functions}
+## Оконные функции ClickHouse \{#clickhouse-specific-window-functions\}
 
 Также доступна следующая оконная функция ClickHouse:
 
-### nonNegativeDerivative(metric_column, timestamp_column[, INTERVAL X UNITS]) {#nonnegativederivativemetric_column-timestamp_column-interval-x-units}
+### nonNegativeDerivative(metric_column, timestamp_column[, INTERVAL X UNITS]) \{#nonnegativederivativemetric_column-timestamp_column-interval-x-units\}
 
 Вычисляет неотрицательную производную для заданного столбца `metric_column` по столбцу `timestamp_column`.
 Параметр `INTERVAL` можно опустить, по умолчанию используется `INTERVAL 1 SECOND`.
@@ -45,7 +45,7 @@ ClickHouse поддерживает стандартную грамматику 
 - `0` для первой строки,
 - ${\text{metric}_i - \text{metric}_{i-1} \over \text{timestamp}_i - \text{timestamp}_{i-1}}  * \text{interval}$ для $i$-й строки.
 
-## Синтаксис {#syntax}
+## Синтаксис \{#syntax\}
 
 ```text
 aggregate_function (column_name)
@@ -77,7 +77,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 └─────────────────┘  <--- UNBOUNDED FOLLOWING (END of the PARTITION)
 ```
 
-### Функции {#functions}
+### Функции \{#functions\}
 
 Эти функции можно использовать только как оконные функции.
 
@@ -90,11 +90,11 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 * [`lagInFrame(x)`](./lagInFrame.md) - Возвращает значение, вычисленное для строки, которая находится на заданное количество строк раньше текущей строки в упорядоченном фрейме.
 * [`leadInFrame(x)`](./leadInFrame.md) - Возвращает значение, вычисленное для строки, которая находится на заданное количество строк позже текущей строки в упорядоченном фрейме.
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 Рассмотрим несколько примеров использования оконных функций.
 
-### Нумерация строк {#numbering-rows}
+### Нумерация строк \{#numbering-rows\}
 
 ```sql
 CREATE TABLE salaries
@@ -152,7 +152,7 @@ FROM salaries;
 └─────────────────┴────────┴─────┴──────┴───────────┘
 ```
 
-### Функции агрегации {#aggregation-functions}
+### Функции агрегации \{#aggregation-functions\}
 
 Сравните зарплату каждого игрока со средней зарплатой по его команде.
 
@@ -198,7 +198,7 @@ FROM salaries;
 └─────────────────┴────────┴───────────────────────────┴─────────┴────────┘
 ```
 
-### Партиционирование по столбцу {#partitioning-by-column}
+### Партиционирование по столбцу \{#partitioning-by-column\}
 
 ```sql
 CREATE TABLE wf_partition
@@ -231,7 +231,7 @@ ORDER BY
 └──────────┴───────┴───────┴──────────────┘
 ```
 
-### Границы фрейма {#frame-bounding}
+### Границы фрейма \{#frame-bounding\}
 
 ```sql
 CREATE TABLE wf_frame
@@ -867,7 +867,7 @@ ORDER BY
 └──────────────┴─────────────────────┴───────┴─────────────────────────┘
 ```
 
-### Скользящее среднее (за 10 дней) {#moving--sliding-average-per-10-days}
+### Скользящее среднее (за 10 дней) \{#moving--sliding-average-per-10-days\}
 
 Температура хранится с точностью до секунды, но, используя `Range` и `ORDER BY toDate(ts)`, мы формируем окно размером 10 единиц, и благодаря `toDate(ts)` единицей является день.
 

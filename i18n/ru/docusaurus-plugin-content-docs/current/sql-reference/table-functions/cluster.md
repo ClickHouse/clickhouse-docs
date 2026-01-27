@@ -8,7 +8,7 @@ title: 'clusterAllReplicas'
 doc_type: 'reference'
 ---
 
-# Табличная функция clusterAllReplicas {#clusterallreplicas-table-function}
+# Табличная функция clusterAllReplicas \{#clusterallreplicas-table-function\}
 
 Позволяет обращаться ко всем шардам кластера (настроенным в разделе `remote_servers`) без создания таблицы [Distributed](../../engines/table-engines/special/distributed.md). Запрашивается только одна реплика каждого шарда.
 
@@ -18,7 +18,7 @@ doc_type: 'reference'
 Все доступные кластеры перечислены в таблице [system.clusters](../../operations/system-tables/clusters.md).
 :::
 
-## Синтаксис {#syntax}
+## Синтаксис \{#syntax\}
 
 ```sql
 cluster(['cluster_name', db.table, sharding_key])
@@ -27,7 +27,7 @@ clusterAllReplicas(['cluster_name', db.table, sharding_key])
 clusterAllReplicas(['cluster_name', db, table, sharding_key])
 ```
 
-## Аргументы {#arguments}
+## Аргументы \{#arguments\}
 
 | Аргументы                    | Тип                                                                                                                                                               |
 | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -35,11 +35,11 @@ clusterAllReplicas(['cluster_name', db, table, sharding_key])
 | `db.table` или `db`, `table` | Имя базы данных и таблицы.                                                                                                                                        |
 | `sharding_key`               | Ключ шардинга. Необязательный параметр. Должен быть указан, если кластер содержит более одного шарда.                                                             |
 
-## Возвращаемое значение {#returned_value}
+## Возвращаемое значение \{#returned_value\}
 
 Набор данных, полученный из кластеров.
 
-## Использование макросов {#using_macros}
+## Использование макросов \{#using_macros\}
 
 `cluster_name` может содержать макросы — подстановки в фигурных скобках. Значение подстановки берётся из раздела [macros](../../operations/server-configuration-parameters/settings.md#macros) файла конфигурации сервера.
 
@@ -49,7 +49,7 @@ clusterAllReplicas(['cluster_name', db, table, sharding_key])
 SELECT * FROM cluster('{cluster}', default.example_table);
 ```
 
-## Использование и рекомендации {#usage_recommendations}
+## Использование и рекомендации \{#usage_recommendations\}
 
 Использование табличных функций `cluster` и `clusterAllReplicas` менее эффективно, чем создание таблицы `Distributed`, потому что в этом случае соединение с сервером заново устанавливается для каждого запроса. При обработке большого количества запросов всегда заранее создавайте таблицу `Distributed` и не используйте табличные функции `cluster` и `clusterAllReplicas`.
 
@@ -61,7 +61,7 @@ SELECT * FROM cluster('{cluster}', default.example_table);
 
 Параметры подключения, такие как `host`, `port`, `user`, `password`, `compression`, `secure`, берутся из секции конфигурации `<remote_servers>`. Подробности см. в описании [движка Distributed](../../engines/table-engines/special/distributed.md).
 
-## См. также {#related}
+## См. также \{#related\}
 
 - [skip_unavailable_shards](../../operations/settings/settings.md#skip_unavailable_shards)
 - [load_balancing](../../operations/settings/settings.md#load_balancing)

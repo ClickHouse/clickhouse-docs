@@ -6,20 +6,20 @@
 - [Обработка запросов](#troubleshooting-does-not-process-queries)
 - [Эффективность обработки запросов](#troubleshooting-too-slow)
 
-## Установка {#troubleshooting-installation-errors}
+## Установка \{#troubleshooting-installation-errors\}
 
-### Невозможно получить пакеты .deb из репозитория ClickHouse с помощью apt-get {#you-cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
+### Невозможно получить пакеты .deb из репозитория ClickHouse с помощью apt-get \{#you-cannot-get-deb-packages-from-clickhouse-repository-with-apt-get\}
 
 * Проверьте настройки брандмауэра.
 * Если вы по какой-либо причине не можете получить доступ к репозиторию, скачайте пакеты, как описано в статье [install guide](../getting-started/install.md), и установите их вручную с помощью команды `sudo dpkg -i <packages>`. Вам также понадобится пакет `tzdata`.
 
-### Невозможно обновить пакеты .deb из репозитория ClickHouse с помощью apt-get {#you-cannot-update-deb-packages-from-clickhouse-repository-with-apt-get}
+### Невозможно обновить пакеты .deb из репозитория ClickHouse с помощью apt-get \{#you-cannot-update-deb-packages-from-clickhouse-repository-with-apt-get\}
 
 * Проблема может возникать, если ключ GPG был изменён.
 
 Используйте руководство со страницы [setup](../getting-started/install.md#setup-the-debian-repository) для обновления конфигурации репозитория.
 
-### При выполнении `apt-get update` появляются различные предупреждения {#you-get-different-warnings-with-apt-get-update}
+### При выполнении `apt-get update` появляются различные предупреждения \{#you-get-different-warnings-with-apt-get-update\}
 
 * Полные тексты предупреждений могут быть следующими:
 
@@ -51,7 +51,7 @@ sudo apt-get clean
 sudo apt-get autoclean
 ```
 
-### Не удаётся установить пакеты через yum из‑за неверной подписи {#you-cant-get-packages-with-yum-because-of-wrong-signature}
+### Не удаётся установить пакеты через yum из‑за неверной подписи \{#you-cant-get-packages-with-yum-because-of-wrong-signature\}
 
 Возможная причина: кэш повреждён, возможно, он сломался после обновления ключа GPG в сентябре 2022 года.
 
@@ -64,7 +64,7 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 
 После этого следуйте [руководству по установке](../getting-started/install.md#from-rpm-packages)
 
-### Не удаётся запустить Docker-контейнер {#you-cant-run-docker-container}
+### Не удаётся запустить Docker-контейнер \{#you-cant-run-docker-container\}
 
 Вы выполняете простой `docker run clickhouse/clickhouse-server`, и он аварийно завершается, выводя трассировку стека, похожую на следующую:
 

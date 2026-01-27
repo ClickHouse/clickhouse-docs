@@ -7,7 +7,7 @@ title: 'system.replication_queue'
 doc_type: 'reference'
 ---
 
-# system.replication&#95;queue {#systemreplication&#95;queue}
+# system.replication&#95;queue \{#systemreplication&#95;queue\}
 
 ClickHouse Keeper または ZooKeeper に保存されている、`ReplicatedMergeTree` ファミリーのテーブル用のレプリケーションキュー内のタスクに関する情報が含まれます。
 

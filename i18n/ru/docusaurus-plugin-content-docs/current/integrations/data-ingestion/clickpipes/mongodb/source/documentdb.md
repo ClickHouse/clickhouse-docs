@@ -13,17 +13,17 @@ import docdb_apply_parameter_group from '@site/static/images/integrations/data-i
 import docdb_parameter_group_status from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/docdb-parameter-group-status.png'
 import Image from '@theme/IdealImage';
 
-# Руководство по настройке источника данных Amazon DocumentDB {#amazon-documentdb-source-setup-guide}
+# Руководство по настройке источника данных Amazon DocumentDB \{#amazon-documentdb-source-setup-guide\}
 
-## Поддерживаемые версии DocumentDB {#supported-documentdb-versions}
+## Поддерживаемые версии DocumentDB \{#supported-documentdb-versions\}
 
 ClickPipes поддерживает DocumentDB версии 5.0.
 
-## Настройка периода хранения журналов потока изменений {#configure-change-stream-log-retention}
+## Настройка периода хранения журналов потока изменений \{#configure-change-stream-log-retention\}
 
 По умолчанию в Amazon DocumentDB период хранения журналов потока изменений составляет 3 часа, тогда как первоначальная загрузка может занять значительно больше времени в зависимости от объёма имеющихся данных в вашем DocumentDB. Рекомендуется установить период хранения журналов потока изменений на 72 часа или дольше, чтобы журналы не были усечены до завершения создания первоначального снимка.
 
-### Обновление периода хранения журналов потока изменений через AWS Console {#update-change-stream-log-retention-via-aws-console}
+### Обновление периода хранения журналов потока изменений через AWS Console \{#update-change-stream-log-retention-via-aws-console\}
 
 1. Нажмите `Parameter groups` в левой панели и найдите группу параметров, используемую вашим кластером DocumentDB (если вы используете группу параметров по умолчанию, вам сначала нужно создать новую группу параметров, чтобы иметь возможность её изменить).
 
@@ -39,7 +39,7 @@ ClickPipes поддерживает DocumentDB версии 5.0.
 
 <Image img={docdb_parameter_group_status} alt="Статус группы параметров" size="lg" border />
 
-### Обновление периода хранения журналов потока изменений через AWS CLI {#update-change-stream-log-retention-via-aws-cli}
+### Обновление периода хранения журналов потока изменений через AWS CLI \{#update-change-stream-log-retention-via-aws-cli\}
 
 Также вы можете настроить это через AWS CLI.
 
@@ -55,7 +55,7 @@ aws docdb describe-db-cluster-parameters --db-cluster-parameter-group-name <PARA
 aws docdb modify-db-cluster-parameter-group --db-cluster-parameter-group-name <PARAMETER_GROUP_NAME> --parameters "ParameterName=change_stream_log_retention_duration,ParameterValue=259200,ApplyMethod=immediate"
 ```
 
-## Настройте пользователя базы данных {#configure-database-user}
+## Настройте пользователя базы данных \{#configure-database-user\}
 
 Подключитесь к своему кластеру DocumentDB с учетной записью администратора и выполните следующую команду, чтобы создать пользователя базы данных для MongoDB CDC ClickPipes:
 
@@ -71,7 +71,7 @@ db.getSiblingDB("admin").createUser({
 Обязательно замените `clickpipes_user` и `some_secure_password` на выбранные вами имя пользователя и пароль.
 :::
 
-## Что дальше? {#whats-next}
+## Что дальше? \{#whats-next\}
 
 Теперь вы можете [создать ClickPipe](../index.md) и начать приём данных из экземпляра DocumentDB в ClickHouse Cloud.
 Обязательно запишите параметры подключения, которые вы использовали при настройке кластера DocumentDB, так как они понадобятся вам при создании ClickPipe.

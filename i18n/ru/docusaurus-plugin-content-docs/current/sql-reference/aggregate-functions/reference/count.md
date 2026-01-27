@@ -5,79 +5,81 @@ title: 'count'
 doc_type: 'reference'
 ---
 
-# count {#count}
+{/*АВТОГЕНЕРАЦИЯ_НАЧАЛО*/ }
 
-Подсчитывает количество строк или значений, отличных от NULL.
+## count \{#count\}
+
+Введено в: v1.1
+
+Подсчитывает количество строк или ненулевых (not NULL) значений.
 
 ClickHouse поддерживает следующие варианты синтаксиса для `count`:
 
 * `count(expr)` или `COUNT(DISTINCT expr)`.
-* `count()` или `COUNT(*)`. Синтаксис `count()` специфичен для ClickHouse.
-
-**Аргументы**
-
-Функция может принимать:
-
-* Ноль параметров.
-* Одно [выражение](/sql-reference/syntax#expressions).
-
-**Возвращаемое значение**
-
-* Если функция вызывается без параметров, она подсчитывает количество строк.
-* Если передано [выражение](/sql-reference/syntax#expressions), то функция считает, сколько раз это выражение вернуло не NULL. Если выражение возвращает значение типа [Nullable](../../../sql-reference/data-types/nullable.md), то результат `count` остаётся типом, не `Nullable`. Функция возвращает 0, если выражение вернуло `NULL` для всех строк.
-
-В обоих случаях тип возвращаемого значения — [UInt64](../../../sql-reference/data-types/int-uint.md).
+* `count()` или `COUNT(*)`. Синтаксис `count()` является специфичным для ClickHouse.
 
 **Подробности**
 
-ClickHouse поддерживает синтаксис `COUNT(DISTINCT ...)`. Поведение этой конструкции зависит от настройки [count&#95;distinct&#95;implementation](../../../operations/settings/settings.md#count_distinct_implementation). Она определяет, какая из функций семейства [uniq*](/sql-reference/aggregate-functions/reference/uniq) используется для выполнения операции. По умолчанию используется функция [uniqExact](../../../sql-reference/aggregate-functions/reference/uniqExact.md).
+ClickHouse поддерживает синтаксис `COUNT(DISTINCT ...)`.
+Поведение этой конструкции зависит от настройки [`count_distinct_implementation`](../../../operations/settings/settings.md#count_distinct_implementation).
+Она определяет, какая из функций семейства [uniq*](/sql-reference/aggregate-functions/reference/uniq) используется для выполнения операции.
+По умолчанию используется функция [uniqExact](/sql-reference/aggregate-functions/reference/uniqexact).
 
-Запрос `SELECT count() FROM table` по умолчанию оптимизируется с использованием метаданных из MergeTree. Если вам нужно использовать построчную безопасность (row-level security), отключите эту оптимизацию с помощью настройки [optimize&#95;trivial&#95;count&#95;query](/operations/settings/settings#optimize_trivial_count_query).
+Запрос `SELECT count() FROM table` по умолчанию оптимизируется с использованием метаданных движка MergeTree.
+Если вам нужно использовать построчную (row-level) модель безопасности, отключите эту оптимизацию с помощью настройки [`optimize_trivial_count_query`](/operations/settings/settings#optimize_trivial_count_query).
 
-Однако запрос `SELECT count(nullable_column) FROM table` может быть оптимизирован путём включения настройки [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns). При `optimize_functions_to_subcolumns = 1` функция читает только подстолбец [null](../../../sql-reference/data-types/nullable.md#finding-null) вместо чтения и обработки всех данных столбца. Запрос `SELECT count(n) FROM table` преобразуется в `SELECT sum(NOT n.null) FROM table`.
+Однако запрос `SELECT count(nullable_column) FROM table` может быть оптимизирован за счёт включения настройки [`optimize_functions_to_subcolumns`](/operations/settings/settings#optimize_functions_to_subcolumns).
+При `optimize_functions_to_subcolumns = 1` функция читает только подстолбец [`null`](../../../sql-reference/data-types/nullable.md#finding-null) вместо чтения и обработки всех данных столбца.
+Запрос `SELECT count(n) FROM table` преобразуется в `SELECT sum(NOT n.null) FROM table`.
 
-**Повышение производительности COUNT(DISTINCT expr)**
+:::tip Повышение производительности COUNT(DISTINCT expr)
+Если ваш запрос `COUNT(DISTINCT expr)` выполняется медленно, рассмотрите возможность добавления оператора [`GROUP BY`](/sql-reference/statements/select/group-by), так как это улучшает параллелизацию.
+Вы также можете использовать [проекцию](../../../sql-reference/statements/alter/projection.md) для создания индекса на целевом столбце, который используется с `COUNT(DISTINCT target_col)`.
+:::
 
-Если ваш запрос `COUNT(DISTINCT expr)` выполняется медленно, рассмотрите возможность добавления предложения [`GROUP BY`](/sql-reference/statements/select/group-by), так как это улучшает распараллеливание. Вы также можете использовать [проекцию](../../../sql-reference/statements/alter/projection.md) для создания индекса по целевому столбцу, используемому с `COUNT(DISTINCT target_col)`.
+**Синтаксис**
+
+```sql
+count([expr])
+```
+
+**Аргументы**
+
+* `expr` — необязательный параметр. Выражение. Функция считает, сколько раз это выражение вернуло значение, отличное от NULL. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+
+**Возвращаемое значение**
+
+Возвращает количество строк, если функция вызывается без параметров, в противном случае — количество раз, когда переданное выражение вернуло значение, отличное от NULL. [`UInt64`](/sql-reference/data-types/int-uint)
 
 **Примеры**
 
-Пример 1:
+**Базовый подсчёт строк**
 
-```sql
+```sql title=Query
 SELECT count() FROM t
 ```
 
-```text
+```response title=Response
 ┌─count()─┐
 │       5 │
 └─────────┘
 ```
 
-Пример 2:
+**Пример использования COUNT(DISTINCT)**
 
-```sql
-SELECT name, value FROM system.settings WHERE name = 'count_distinct_implementation'
-```
-
-```text
-┌─name──────────────────────────┬─value─────┐
-│ count_distinct_implementation │ uniqExact │
-└───────────────────────────────┴───────────┘
-```
-
-```sql
+```sql title=Query
+-- This example shows that `count(DISTINCT num)` is performed by the `uniqExact` function according to the `count_distinct_implementation` setting value.
+SELECT name, value FROM system.settings WHERE name = 'count_distinct_implementation';
 SELECT count(DISTINCT num) FROM t
 ```
 
-```text
+```response title=Response
+┌─name──────────────────────────┬─value─────┐
+│ count_distinct_implementation │ uniqExact │
+└───────────────────────────────┴───────────┘
 ┌─uniqExact(num)─┐
 │              3 │
 └────────────────┘
 ```
-
-Этот пример показывает, что `count(DISTINCT num)` выполняется функцией `uniqExact` в соответствии со значением настройки `count_distinct_implementation`.
-
-{/*AUTOGENERATED_START*/ }
 
 {/*AUTOGENERATED_END*/ }

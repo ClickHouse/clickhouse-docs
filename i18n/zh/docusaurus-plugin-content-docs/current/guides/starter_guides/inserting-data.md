@@ -12,7 +12,7 @@ import postgres_inserts from '@site/static/images/guides/postgres-inserts.png';
 import Image from '@theme/IdealImage';
 
 
-## 将数据写入 ClickHouse 与 OLTP 数据库的对比 {#inserting-into-clickhouse-vs-oltp-databases}
+## 将数据写入 ClickHouse 与 OLTP 数据库的对比 \{#inserting-into-clickhouse-vs-oltp-databases\}
 
 作为一款 OLAP（联机分析处理，Online Analytical Processing）数据库，ClickHouse 针对高性能和可扩展性进行了优化，最高可支持每秒插入数百万行数据。
 这是通过高度并行化的架构与高效的列式压缩相结合实现的，但代价是对立即一致性的妥协。
@@ -25,9 +25,9 @@ PostgreSQL 使用 MVCC（多版本并发控制，Multi-Version Concurrency Contr
 为了在保持强一致性保证的同时获得高插入性能，你在向 ClickHouse 插入数据时应遵循下文所述的一些简单规则。
 遵循这些规则将有助于避免用户在首次使用 ClickHouse 时，尝试照搬适用于 OLTP 数据库的插入策略而常见的问题。
 
-## 插入操作最佳实践 {#best-practices-for-inserts}
+## 插入操作最佳实践 \{#best-practices-for-inserts\}
 
-### 使用较大的批量进行插入 {#insert-in-large-batch-sizes}
+### 使用较大的批量进行插入 \{#insert-in-large-batch-sizes\}
 
 默认情况下，发送到 ClickHouse 的每个插入操作都会使 ClickHouse 立即创建一个存储部件（part），其中包含该次插入的数据以及需要存储的其他元数据。
 因此，与其发送大量每次只包含少量数据的插入操作，不如发送次数更少但每次包含更多数据的插入操作，这样可以减少所需的写入次数。
@@ -36,7 +36,7 @@ PostgreSQL 使用 MVCC（多版本并发控制，Multi-Version Concurrency Contr
 
 如果无法使用大批量插入，请使用下文描述的异步插入。
 
-### 确保批次一致以支持幂等重试 {#ensure-consistent-batches-for-idempotent-retries}
+### 确保批次一致以支持幂等重试 \{#ensure-consistent-batches-for-idempotent-retries\}
 
 默认情况下，对 ClickHouse 的插入是同步且幂等的（即多次执行相同的插入操作，其效果与执行一次相同）。
 对于 MergeTree 引擎系列的表，ClickHouse 默认会自动[在插入时去重](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time)。
@@ -49,7 +49,7 @@ PostgreSQL 使用 MVCC（多版本并发控制，Multi-Version Concurrency Contr
 从客户端的角度来看，（1）和（2）可能难以区分。然而，在这两种情况下，未被确认的插入都可以立即重试。
 只要重试的插入查询包含相同顺序的相同数据，如果（未确认的）原始插入实际上已成功，ClickHouse 将自动忽略这次重试插入。
 
-### 插入到 MergeTree 表或分布式表中 {#insert-to-a-mergetree-table-or-a-distributed-table}
+### 插入到 MergeTree 表或分布式表中 \{#insert-to-a-mergetree-table-or-a-distributed-table\}
 
 我们建议直接插入到 MergeTree（或 Replicated 表）中；如果数据被分片，则在一组节点之间对请求进行负载均衡，并设置 `internal_replication=true`。
 这样可以让 ClickHouse 将数据复制到任意可用的副本分片，并确保数据最终一致。
@@ -57,7 +57,7 @@ PostgreSQL 使用 MVCC（多版本并发控制，Multi-Version Concurrency Contr
 如果客户端侧负载均衡不方便，用户也可以通过[分布式表](/engines/table-engines/special/distributed)进行插入，由其负责将写入分发到各个节点。同样建议设置 `internal_replication=true`。
 但需要注意，这种方式的性能会略差一些，因为写入必须先在拥有分布式表的本地节点上完成，然后再发送到各个分片。
 
-### 对小批量使用异步插入 {#use-asynchronous-inserts-for-small-batches}
+### 对小批量使用异步插入 \{#use-asynchronous-inserts-for-small-batches\}
 
 在某些场景下，客户端侧批量聚合不可行，例如可观测性场景中存在数百或数千个单一用途的代理发送日志、指标、追踪等数据。
 在这种场景中，数据的实时传输是尽快检测问题和异常的关键。
@@ -84,14 +84,14 @@ PostgreSQL 使用 MVCC（多版本并发控制，Multi-Version Concurrency Contr
 有关配置异步插入的完整详细信息请参见[此处](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)，更深入的解析参见[此处](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)。
 :::
 
-### 使用官方 ClickHouse 客户端 {#use-official-clickhouse-clients}
+### 使用官方 ClickHouse 客户端 \{#use-official-clickhouse-clients\}
 
 ClickHouse 为最流行的编程语言提供了客户端。
 这些客户端经过优化，以确保插入被正确执行，并且对异步插入提供了原生支持：要么像 [Go 客户端](/integrations/go#async-insert)那样直接支持，要么通过在查询、用户或连接级别启用相关设置而间接支持。
 
 有关可用 ClickHouse 客户端和驱动程序的完整列表，请参见 [Clients and Drivers](/interfaces/cli)。
 
-### 优先使用 Native 格式 {#prefer-the-native-format}
+### 优先使用 Native 格式 \{#prefer-the-native-format\}
 
 ClickHouse 在插入（以及查询）时支持多种[输入格式](/interfaces/formats)。
 这与 OLTP 数据库有显著差异，使得从外部来源加载数据更加容易——尤其是在结合[表函数](/sql-reference/table-functions)以及从磁盘文件加载数据的能力时。
@@ -105,7 +105,7 @@ ClickHouse 在插入（以及查询）时支持多种[输入格式](/interfaces/
 与其他行格式（如 [JSON](/interfaces/formats/JSON)）相比，它在压缩、网络开销以及服务器端处理方面更高效。
 如果你的写入吞吐量要求较低、希望快速集成，可以考虑使用 [JSONEachRow](/interfaces/formats/JSONEachRow) 格式。需要注意的是，此格式会在 ClickHouse 中引入额外的 CPU 解析开销。
 
-### 使用 HTTP 接口 {#use-the-http-interface}
+### 使用 HTTP 接口 \{#use-the-http-interface\}
 
 与许多传统数据库不同，ClickHouse 支持 HTTP 接口。
 用户可以使用该接口以任意上述格式进行数据插入和查询。
@@ -116,7 +116,7 @@ ClickHouse 在插入（以及查询）时支持多种[输入格式](/interfaces/
 
 更多详情请参见 [HTTP 接口](/interfaces/http)。
 
-## 基本示例 {#basic-example}
+## 基本示例 \{#basic-example\}
 
 你可以在 ClickHouse 中使用熟悉的 `INSERT INTO TABLE` 命令。现在让我们向在入门指南[“在 ClickHouse 中创建表”](./creating-tables)中创建的表插入一些数据。
 
@@ -145,7 +145,7 @@ user_id message                                             timestamp           
 ```
 
 
-## 从 Postgres 加载数据 {#loading-data-from-postgres}
+## 从 Postgres 加载数据 \{#loading-data-from-postgres\}
 
 要从 Postgres 加载数据，用户可以使用：
 
@@ -159,7 +159,7 @@ user_id message                                             timestamp           
 如果您在插入大型数据集时需要帮助，或在向 ClickHouse Cloud 导入数据时遇到任何错误，请通过 support@clickhouse.com 联系我们，我们会提供协助。
 :::
 
-## 从命令行插入数据 {#inserting-data-from-command-line}
+## 从命令行插入数据 \{#inserting-data-from-command-line\}
 
 **前提条件**
 - 您已经[安装](/install)了 ClickHouse
@@ -172,7 +172,7 @@ user_id message                                             timestamp           
 
 <VerticalStepper headerLevel="h3">
     
-### 下载 CSV {#download-csv}
+### 下载 CSV \{#download-csv\}
 
 运行以下命令，从我们的公共 S3 存储桶中下载该数据集的 CSV 版本：
 
@@ -182,7 +182,7 @@ wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hackne
 
 该压缩文件大小为 4.6GB，包含 2800 万行数据，下载大约需要 5–10 分钟。
 
-### 创建表 {#create-table}
+### 创建表 \{#create-table\}
 
 在 `clickhouse-server` 运行的情况下，您可以在命令行中使用批处理模式的 `clickhouse-client`，直接按照以下表结构创建一个空表：
 
@@ -212,7 +212,7 @@ _EOF
 
 如果没有报错，则说明表已成功创建。上面命令中在 heredoc 分隔符（`_EOF`）外使用了单引号，以避免任何变量替换。如果不使用单引号，则需要对列名周围的反引号进行转义。 
 
-### 从命令行插入数据 {#insert-data-via-cmd}
+### 从命令行插入数据 \{#insert-data-via-cmd\}
 
 接下来运行下面的命令，将之前下载的文件中的数据插入到您的表中：
 
@@ -239,7 +239,7 @@ clickhouse-client --query "SELECT formatReadableQuantity(count(*)) FROM hackerne
 28.74 million
 ```
 
-### 使用 curl 从命令行插入数据 {#insert-using-curl}
+### 使用 curl 从命令行插入数据 \{#insert-using-curl\}
 
 在前面的步骤中，您首先使用 `wget` 将 CSV 文件下载到本地机器。您也可以通过一条命令，直接从远程 URL 插入数据。
 

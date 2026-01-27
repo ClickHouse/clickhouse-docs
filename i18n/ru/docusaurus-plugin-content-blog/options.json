@@ -1,7 +1,7 @@
 {
   "title": {
     "message": "База знаний ClickHouse",
-    "description": "Заголовок записи блога, используемый для SEO"
+    "description": "Заголовок блога для SEO"
   },
   "description": {
     "message": "База знаний",

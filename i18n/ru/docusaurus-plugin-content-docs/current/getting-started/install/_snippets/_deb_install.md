@@ -1,13 +1,13 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Установка ClickHouse на Debian/Ubuntu {#install-from-deb-packages}
+# Установка ClickHouse на Debian/Ubuntu \{#install-from-deb-packages\}
 
 > Рекомендуется использовать официальные предкомпилированные пакеты `deb` для **Debian** или **Ubuntu**.
 
 <VerticalStepper>
 
-## Настройка репозитория Debian {#setup-the-debian-repository}
+## Настройка репозитория Debian \{#setup-the-debian-repository\}
 
 Чтобы установить ClickHouse, выполните следующие команды:
 
@@ -61,13 +61,13 @@ clickhouse-client # or "clickhouse-client --password" if you set up a password.
 
 </details>
 
-## Установка сервера и клиента ClickHouse {#install-clickhouse-server-and-client}
+## Установка сервера и клиента ClickHouse \{#install-clickhouse-server-and-client\}
 
 ```bash
 sudo apt-get install -y clickhouse-server clickhouse-client
 ```
 
-## Запуск ClickHouse {#start-clickhouse-server}
+## Запуск ClickHouse \{#start-clickhouse-server\}
 
 Чтобы запустить сервер ClickHouse, выполните следующую команду:
 
@@ -87,7 +87,7 @@ clickhouse-client
 clickhouse-client --password
 ```
 
-## Установка автономного ClickHouse Keeper {#install-standalone-clickhouse-keeper}
+## Установка автономного ClickHouse Keeper \{#install-standalone-clickhouse-keeper\}
 
 :::tip
 В производственных средах настоятельно рекомендуется запускать ClickHouse Keeper на выделенных узлах.
@@ -101,7 +101,7 @@ clickhouse-client --password
 sudo apt-get install -y clickhouse-keeper
 ```
 
-## Включение и запуск ClickHouse Keeper {#enable-and-start-clickhouse-keeper}
+## Включение и запуск ClickHouse Keeper \{#enable-and-start-clickhouse-keeper\}
 
 ```bash
 sudo systemctl enable clickhouse-keeper
@@ -111,7 +111,7 @@ sudo systemctl status clickhouse-keeper
 
 </VerticalStepper>
 
-## Пакеты {#packages}
+## Пакеты \{#packages\}
 
 Доступные deb-пакеты описаны ниже:
 

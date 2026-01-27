@@ -16,7 +16,7 @@ import finish_import from '@site/static/images/clickstack/import-redis-metrics-d
 import example_dashboard from '@site/static/images/clickstack/redis-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# 使用 ClickStack 监控 Redis 指标 {#redis-metrics-clickstack}
+# 使用 ClickStack 监控 Redis 指标 \{#redis-metrics-clickstack\}
 
 :::note[TL;DR]
 本指南演示如何通过配置 OpenTelemetry collector 的 Redis receiver，使用 ClickStack 监控 Redis 性能指标。你将学会如何：
@@ -30,13 +30,13 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 预计耗时：5–10 分钟
 :::
 
-## 集成现有 Redis {#existing-redis}
+## 集成现有 Redis \{#existing-redis\}
 
 本节介绍如何通过为 ClickStack OTel collector 配置 Redis receiver，将你现有的 Redis 实例配置为向 ClickStack 发送指标数据。
 
 如果你希望在为自己的现有环境进行配置之前先测试 Redis 指标集成，可以使用我们预配置的演示数据集进行测试，详见[下一节](#demo-dataset)。
 
-##### 前提条件 {#prerequisites}
+##### 前提条件 \{#prerequisites\}
 
 - 正在运行的 ClickStack 实例
 - 已部署的 Redis（版本 3.0 或更高）
@@ -235,7 +235,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### 下载示例指标数据集 {#download-sample}
+#### 下载示例指标数据集 \{#download-sample\}
 
 下载预先生成的指标文件（包含 24 小时的、具有真实模式特征的 Redis Metrics）：
 ```bash
@@ -252,7 +252,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - **内存压力（20:00）** - 键淘汰和缓存性能下降
 - **日常流量模式** - 工作时间流量高峰、晚间回落、随机微小突发
 
-#### 启动 ClickStack {#start-clickstack}
+#### 启动 ClickStack \{#start-clickstack\}
 
 启动一个 ClickStack 实例：
 ```bash
@@ -301,7 +301,7 @@ cat redis-metrics-sum.csv | docker exec -i clickstack-demo \
 
 #### <TrackedLink href={useBaseUrl('/examples/redis-metrics-dashboard.json')} download="redis-metrics-dashboard.json" eventName="docs.redis_metrics_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 {#download}
 
-#### 导入预构建的仪表板 {#import-dashboard}
+#### 导入预构建的仪表板 \{#import-dashboard\}
 
 1. 打开 HyperDX 并导航到 **Dashboards** 部分
 2. 点击右上角省略号中的 **Import Dashboard**
@@ -312,7 +312,7 @@ cat redis-metrics-sum.csv | docker exec -i clickstack-demo \
 
 <Image img={finish_import} alt="完成导入对话框"/>
 
-#### 查看仪表板 {#created-dashboard}
+#### 查看仪表板 \{#created-dashboard\}
 
 系统会创建一个仪表板，并预先配置好所有可视化组件：
 

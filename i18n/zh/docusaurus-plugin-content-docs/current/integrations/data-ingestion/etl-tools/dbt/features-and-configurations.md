@@ -12,7 +12,7 @@ import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 
-# 功能与配置 {#features-and-configurations}
+# 功能与配置 \{#features-and-configurations\}
 
 <ClickHouseSupportedBadge/>
 
@@ -20,7 +20,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <TOCInline toc={toc}  maxHeadingLevel={3} />
 
-## Profile.yml 配置 {#profile-yml-configurations}
+## Profile.yml 配置 \{#profile-yml-configurations\}
 
 要从 dbt 连接到 ClickHouse，您需要在 `profiles.yml` 文件中添加一个 [profile](https://docs.getdbt.com/docs/core/connect-data-platform/connection-profiles)。ClickHouse 的 profile 遵循以下语法格式：
 
@@ -64,12 +64,12 @@ your_profile_name:
 ```
 
 
-### Schema 与 Database 的区别 {#schema-vs-database}
+### Schema 与 Database 的区别 \{#schema-vs-database\}
 
 dbt 模型的关系标识符 `database.schema.table` 与 ClickHouse 不兼容，因为 ClickHouse 不支持 `schema`。
 因此我们采用简化形式 `schema.table`，其中 `schema` 实际上对应的是 ClickHouse 的数据库。不推荐使用 `default` 数据库。
 
-### SET 语句警告 {#set-statement-warning}
+### SET 语句警告 \{#set-statement-warning\}
 
 在许多环境中，使用 SET 语句在所有 dbt 查询中持久化某个 ClickHouse 设置并不可靠，
 且可能导致意外失败。尤其是在通过负载均衡器使用 HTTP 连接、将查询分发到多个节点
@@ -77,7 +77,7 @@ dbt 模型的关系标识符 `database.schema.table` 与 ClickHouse 不兼容，
 因此，我们建议将所有必需的 ClickHouse 设置配置在 dbt profile 的 `custom_settings` 属性中，
 将其作为推荐实践，而不是依赖作为 pre-hook 执行的 `SET` 语句（尽管偶尔会有人这样建议）。
 
-### 设置 `quote_columns` {#setting-quote_columns}
+### 设置 `quote_columns` \{#setting-quote_columns\}
 
 为避免出现警告，请确保在 `dbt_project.yml` 中显式设置 `quote_columns` 的值。有关详细信息，请参阅 [quote&#95;columns 文档](https://docs.getdbt.com/reference/resource-configs/quote_columns)。
 
@@ -87,14 +87,14 @@ seeds:
 ```
 
 
-### 关于 ClickHouse 集群 {#about-the-clickhouse-cluster}
+### 关于 ClickHouse 集群 \{#about-the-clickhouse-cluster\}
 
 在使用 ClickHouse 集群时，需要考虑两点：
 
 - 设置 `cluster` 参数。
 - 确保写后读一致性，尤其是在使用多个 `threads` 时。
 
-#### 集群设置 {#cluster-setting}
+#### 集群设置 \{#cluster-setting\}
 
 profile 中的 `cluster` 设置允许 dbt-clickhouse 连接并运行在一个 ClickHouse 集群上。如果在 profile 中设置了 `cluster`，则**默认情况下所有模型都会带有 `ON CLUSTER` 子句创建**——使用 **Replicated** 引擎的模型除外。这包括：
 
@@ -124,16 +124,16 @@ Replicated 引擎**不会**包含 `ON CLUSTER` 子句，因为它们被设计为
 如果某个模型是在未使用 `cluster` 设置的情况下创建的，dbt-clickhouse 会检测到这种情况，并在针对该模型执行所有 DDL/DML 时，不使用 `on cluster` 子句。
 
 
-#### 写后读一致性 {#read-after-write-consistency}
+#### 写后读一致性 \{#read-after-write-consistency\}
 
 dbt 依赖写入后读取（read-after-insert）一致性模型。如果你无法保证所有操作都落在同一个副本上，那么这与包含多个副本的 ClickHouse 集群不兼容。日常使用 dbt 时你可能不会遇到问题，但可以根据集群配置采用以下策略来确保这一点：
 
 - 如果你使用的是 ClickHouse Cloud 集群，只需在 profile 的 `custom_settings` 属性中设置 `select_sequential_consistency: 1`。你可以在[这里](/operations/settings/settings#select_sequential_consistency)找到有关该设置的更多信息。
 - 如果你使用的是自托管集群，请确保所有 dbt 请求都发送到同一个 ClickHouse 副本。如果其上方有负载均衡器，尝试使用某种 `replica aware routing` / `sticky sessions` 机制，以便始终访问同一个副本。在 ClickHouse Cloud 之外的集群中添加 `select_sequential_consistency = 1` 这个设置是[不推荐的](/operations/settings/settings#select_sequential_consistency)。
 
-## 功能概览 {#general-information-about-features}
+## 功能概览 \{#general-information-about-features\}
 
-### 通用模型配置 {#general-model-configurations}
+### 通用模型配置 \{#general-model-configurations\}
 
 下表展示了一些物化方式共享的配置。有关 dbt 通用模型配置的详细信息，请参阅 [dbt 文档](https://docs.getdbt.com/category/general-configs)：
 
@@ -151,7 +151,7 @@ dbt 依赖写入后读取（read-after-insert）一致性模型。如果你无�
 | definer                | 如果 `sql_security` 设为 `definer`，则必须在 `definer` 子句中指定任意已存在的用户或 `CURRENT_USER`。                                                                                                                                                                                                              |                |
 | projections            | 要创建的 [projections](/data-modeling/projections) 列表。详情参见 [关于 projections](#projections)。                                                                                                                                                                                                              |                |
 
-#### 关于数据跳过索引 {#data-skipping-indexes}
+#### 关于数据跳过索引 \{#data-skipping-indexes\}
 
 数据跳过索引仅在 `table` 物化类型下可用。要为表添加一组数据跳过索引，请使用 `indexes` 配置：
 
@@ -166,7 +166,7 @@ dbt 依赖写入后读取（read-after-insert）一致性模型。如果你无�
 ```
 
 
-#### 关于投影 {#projections}
+#### 关于投影 \{#projections\}
 
 你可以使用 `projections` 配置，为 `table` 和 `distributed_table` 物化形式添加[投影](/data-modeling/projections)：
 
@@ -185,7 +185,7 @@ dbt 依赖写入后读取（read-after-insert）一致性模型。如果你无�
 **注意**：对于分布式表，投影只应用于 `_local` 表，而不会应用于分布式代理表本身。
 
 
-### 支持的表引擎 {#supported-table-engines}
+### 支持的表引擎 \{#supported-table-engines\}
 
 | 类型                   | 详情                                                                                      |
 |------------------------|-------------------------------------------------------------------------------------------|
@@ -198,7 +198,7 @@ dbt 依赖写入后读取（read-after-insert）一致性模型。如果你无�
 
 **注意**：对于 materialized view，支持所有 *MergeTree 引擎。
 
-### 实验性支持的表引擎 {#experimental-supported-table-engines}
+### 实验性支持的表引擎 \{#experimental-supported-table-engines\}
 
 | 类型              | 详情                                                                      |
 |-------------------|---------------------------------------------------------------------------|
@@ -207,14 +207,14 @@ dbt 依赖写入后读取（read-after-insert）一致性模型。如果你无�
 
 如果你在使用上述任一引擎时，通过 dbt 连接 ClickHouse 遇到问题，请在[此处](https://github.com/ClickHouse/dbt-clickhouse/issues)报告问题。
 
-### 关于模型设置的说明 {#a-note-on-model-settings}
+### 关于模型设置的说明 \{#a-note-on-model-settings\}
 
 ClickHouse 提供多种类型/层级的“settings”。在上面的模型配置中，其中两类是可配置的。`settings` 指的是在 `CREATE TABLE/VIEW` 这类 DDL 语句中使用的 `SETTINGS` 子句，因此通常是特定于某个 ClickHouse 表引擎的设置。新的
 `query_settings` 用于在用于模型物化（包括增量物化）的 `INSERT` 和 `DELETE` 查询中添加 `SETTINGS` 子句。
 ClickHouse 中有数百个设置，并不总是很清楚哪些是“表”设置，哪些是“用户”
 设置（尽管后者通常可以在 `system.settings` 表中查看）。通常推荐使用默认值，在使用这些属性前应进行充分的研究和测试。
 
-### 列配置 {#column-configuration}
+### 列配置 \{#column-configuration\}
 
 > **_注意：_** 使用下面的列配置选项前，必须启用并强制执行 [model contracts](https://docs.getdbt.com/docs/collaborate/govern/model-contracts)。
 
@@ -223,7 +223,7 @@ ClickHouse 中有数百个设置，并不总是很清楚哪些是“表”设置
 | codec  | 一个字符串，由传递给列 DDL 中 `CODEC()` 的参数组成。例如：`codec: "Delta, ZSTD"` 将被编译为 `CODEC(Delta, ZSTD)`。    |    
 | ttl    | 一个字符串，包含一个 [TTL（生存时间）表达式](https://clickhouse.com/docs/guides/developer/ttl)，用于在列的 DDL 中定义生存时间 (TTL) 规则。例如：`ttl: ts + INTERVAL 1 DAY` 将被编译为 `TTL ts + INTERVAL 1 DAY`。 |
 
-#### 模式配置示例 {#example-of-schema-configuration}
+#### 模式配置示例 \{#example-of-schema-configuration\}
 
 ```yaml
 models:
@@ -242,7 +242,7 @@ models:
 ```
 
 
-#### 添加复杂类型 {#adding-complex-types}
+#### 添加复杂类型 \{#adding-complex-types\}
 
 dbt 会通过分析用于创建模型的 SQL 语句来自动确定每一列的数据类型。但在某些情况下，此过程可能无法准确确定数据类型，从而与契约中 `data_type` 属性指定的类型发生冲突。为了解决这一问题，我们建议在模型 SQL 中使用 `CAST()` 函数显式定义所需的类型。例如：
 
@@ -267,9 +267,9 @@ group by event_type
 ```
 
 
-## 功能 {#features}
+## 功能 \{#features\}
 
-### 物化方式：view {#materialization-view}
+### 物化方式：view \{#materialization-view\}
 
 可以将 dbt 模型创建为 [ClickHouse view](/sql-reference/table-functions/view/)，
 并按以下语法进行配置：
@@ -289,7 +289,7 @@ models:
 ```
 
 
-### 物化：表 {#materialization-table}
+### 物化：表 \{#materialization-table\}
 
 可以将 dbt 模型创建为一个 [ClickHouse 表](/operations/system-tables/tables/)，并使用以下语法进行配置：
 
@@ -318,7 +318,7 @@ models:
 ```
 
 
-### 物化：增量 {#materialization-incremental}
+### 物化：增量 \{#materialization-incremental\}
 
 在每次执行 dbt 时，表模型都会被重新构建。对于较大的结果集或复杂转换，这可能不可行且成本极高。为了解决这一问题并缩短构建时间，可以将 dbt 模型创建为增量的 ClickHouse 表，并使用以下语法进行配置：
 
@@ -351,7 +351,7 @@ models:
 ```
 
 
-#### 配置 {#incremental-configurations}
+#### 配置 \{#incremental-configurations\}
 
 针对此物化类型特有的配置如下所示：
 
@@ -362,11 +362,11 @@ models:
 | `incremental_strategy`   | 用于增量物化的策略。支持 `delete+insert`、`append`、`insert_overwrite` 或 `microbatch`。有关策略的更多详细信息，请参见[此处](/integrations/dbt/features-and-configurations#incremental-model-strategies) | 可选（默认值：'default'）                                                        |
 | `incremental_predicates` | 应用于增量物化的附加条件（仅在使用 `delete+insert` 策略时生效）                                                                                                                                                                                    | 可选                      
 
-#### 增量模型策略 {#incremental-model-strategies}
+#### 增量模型策略 \{#incremental-model-strategies\}
 
 `dbt-clickhouse` 支持三种增量模型策略。
 
-##### 默认（旧版）策略 {#default-legacy-strategy}
+##### 默认（旧版）策略 \{#default-legacy-strategy\}
 
 过去，ClickHouse 对更新和删除仅提供有限支持，其形式是异步的 “mutations”。
 为了模拟预期的 dbt 行为，
@@ -375,7 +375,7 @@ models:
 然后将这个临时表与现有的增量模型关系进行交换或替换。这是唯一一种能够在操作完成前出现问题时，
 仍然保留原始关系对象的策略；然而，由于它涉及对原始表进行完整拷贝，因此执行成本可能相当高且速度较慢。
 
-##### Delete+Insert 策略 {#delete-insert-strategy}
+##### Delete+Insert 策略 \{#delete-insert-strategy\}
 
 ClickHouse 在 22.8 版本中引入了“轻量级删除”这一实验性特性。轻量级删除比 `ALTER TABLE ... DELETE`
 操作快得多，因为它不需要重写 ClickHouse 分区片段。增量策略 `delete+insert`
@@ -394,7 +394,7 @@ ClickHouse 在 22.8 版本中引入了“轻量级删除”这一实验性特性
   为了确保结果一致，
   增量谓词应只包含针对在增量物化期间不会被修改的数据的子查询。
 
-##### 微批策略（需要 dbt-core >= 1.9） {#microbatch-strategy}
+##### 微批策略（需要 dbt-core >= 1.9） \{#microbatch-strategy\}
 
 增量策略 `microbatch` 自 dbt-core 1.9 版本起提供，旨在高效处理大规模
 时序数据转换。在 dbt-clickhouse 中，它构建在现有的 `delete_insert`
@@ -408,7 +408,7 @@ ClickHouse 在 22.8 版本中引入了“轻量级删除”这一实验性特性
 
 关于微批的详细用法，请参考[官方文档](https://docs.getdbt.com/docs/build/incremental-microbatch)。
 
-###### 可用的微批配置 {#available-microbatch-configurations}
+###### 可用的微批配置 \{#available-microbatch-configurations\}
 
 | 选项               | 描述                                                                                                                                                                                                                                                                                                                                       | 默认值（如有） |
 |--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|
@@ -418,12 +418,12 @@ ClickHouse 在 22.8 版本中引入了“轻量级删除”这一实验性特性
 | lookback           | 在最新书签之前额外处理 X 个批次，以捕获延迟到达的记录。                                                                                                                                                                                                                                                                                     | 1              |
 | concurrent_batches | 覆盖 dbt 对并发（同时）运行批次的自动检测行为。阅读更多内容：[配置并发批次](https://docs.getdbt.com/docs/build/incremental-microbatch#configure-concurrent_batches)。设置为 true 时，将并发（并行）运行批次；设置为 false 时，则顺序（依次）运行批次。                                                 |                |
 
-##### Append 策略 {#append-strategy}
+##### Append 策略 \{#append-strategy\}
 
 此策略取代了 dbt-clickhouse 早期版本中的 `inserts_only` 设置。该方法只是将新行追加到现有关联中。
 因此不会消除重复行，也不会创建任何临时或中间表。如果数据中允许存在重复行，或者通过增量查询的 WHERE 子句/过滤条件排除了重复行，这是速度最快的方法。
 
-##### insert_overwrite 策略（实验性） {#insert-overwrite-strategy}
+##### insert_overwrite 策略（实验性） \{#insert-overwrite-strategy\}
 
 > [IMPORTANT]  
 > 目前，insert_overwrite 策略在分布式物化中尚未得到完整支持。
@@ -444,7 +444,7 @@ ClickHouse 在 22.8 版本中引入了“轻量级删除”这一实验性特性
 
 该策略要求在模型配置中设置 `partition_by`。模型配置中其他特定于策略的参数会被忽略。
 
-### 物化：materialized&#95;view（实验性） {#materialized-view}
+### 物化：materialized&#95;view（实验性） \{#materialized-view\}
 
 `materialized_view` 物化应当是对一个已存在的（源）表执行的 `SELECT`。Adapter 会创建一个以模型名命名的
 目标表，
@@ -478,7 +478,7 @@ select a,b,c from {{ source('raw', 'table_2') }}
 > `Warning - Table <previous table name> was detected with the same pattern as model name <your model name> but was not found in this run. In case it is a renamed mv that was previously part of this model, drop it manually (!!!) `
 
 
-#### 历史数据回补 {#data-catch-up}
+#### 历史数据回补 \{#data-catch-up\}
 
 当前，在创建 materialized view（MV）时，会先将历史数据写入目标表，然后才创建 MV 本身。
 
@@ -496,7 +496,7 @@ select a,b,c from {{ source('raw', 'table_2') }}
 ```
 
 
-#### 可刷新 materialized view {#refreshable-materialized-views}
+#### 可刷新 materialized view \{#refreshable-materialized-views\}
 
 要使用 [Refreshable Materialized View](/materialized-view/refreshable-materialized-view)，
 请在 MV 模型中根据需要调整以下配置项（这些配置项都应设置在一个
@@ -528,18 +528,18 @@ refreshable 配置对象中）：
 ```
 
 
-#### 限制 {#limitations}
+#### 限制 \{#limitations\}
 
 * 在 ClickHouse 中创建带有依赖关系的可刷新 materialized view (MV) 时，如果在创建时指定的依赖不存在，ClickHouse 不会抛出错误。相反，该可刷新 MV 将保持在非活动状态，等待依赖被满足后才开始处理更新或刷新。此行为是设计使然，但如果未及时处理所需依赖，可能会导致数据可用性延迟。建议用户在创建可刷新 materialized view 之前，确保所有依赖都已正确定义且已存在。
 * 截至目前，MV 与其依赖之间不存在实际的 “dbt linkage”，因此无法保证创建顺序。
 * 尚未在多个 MV 指向同一目标模型的场景下对可刷新功能进行测试。
 
-### 物化：字典（实验性） {#materialization-dictionary}
+### 物化：字典（实验性） \{#materialization-dictionary\}
 
 请参阅 https://github.com/ClickHouse/dbt-clickhouse/blob/main/tests/integration/adapter/dictionary/test_dictionary.py 中的测试，
 以了解如何为 ClickHouse 字典实现物化的示例
 
-### 物化：distributed_table（实验性） {#materialization-distributed-table}
+### 物化：distributed_table（实验性） \{#materialization-distributed-table\}
 
 通过以下步骤创建分布式表：
 
@@ -553,7 +553,7 @@ refreshable 配置对象中）：
 - dbt-clickhouse 查询现在会自动包含 `insert_distributed_sync = 1` 这一设置项，以确保下游增量物化操作能够正确执行。
   这可能会导致某些分布式表插入操作比预期更慢。
 
-#### 分布式表模型示例 {#distributed-table-model-example}
+#### 分布式表模型示例 \{#distributed-table-model-example\}
 
 ```sql
 {{
@@ -570,7 +570,7 @@ from {{ source('db', 'table') }}
 ```
 
 
-#### 自动生成的迁移 {#distributed-table-generated-migrations}
+#### 自动生成的迁移 \{#distributed-table-generated-migrations\}
 
 ```sql
 CREATE TABLE db.table_local on cluster cluster (
@@ -590,7 +590,7 @@ CREATE TABLE db.table on cluster cluster (
 ```
 
 
-#### 配置 {#distributed-table-configurations}
+#### 配置 \{#distributed-table-configurations\}
 
 本物化类型特有的配置如下：
 
@@ -598,7 +598,7 @@ CREATE TABLE db.table on cluster cluster (
 | ---------- | ------------------------------------------------------------------ | -------------- |
 | sharding_key | 在向分布式引擎表中插入数据时，分片键用于决定目标服务器。分片键可以是随机值，也可以是哈希函数的输出结果 | `rand()`)      |
 
-### materialization: distributed_incremental（实验性） {#materialization-distributed-incremental}
+### materialization: distributed_incremental（实验性） \{#materialization-distributed-incremental\}
 
 基于与分布式表相同理念构建的增量模型，主要难点在于正确处理所有增量策略。
 
@@ -609,7 +609,7 @@ CREATE TABLE db.table on cluster cluster (
 只会替换分片表，因为分布式表本身不存储数据。
 仅当启用了 `full_refresh` 模式或表结构可能发生变化时，才会重新加载分布式表。
 
-#### 分布式增量模型示例 {#distributed-incremental-model-example}
+#### 分布式增量模型示例 \{#distributed-incremental-model-example\}
 
 ```sql
 {{
@@ -626,7 +626,7 @@ from {{ source('db', 'table') }}
 ```
 
 
-#### 自动生成的迁移 {#distributed-incremental-generated-migrations}
+#### 自动生成的迁移 \{#distributed-incremental-generated-migrations\}
 
 ```sql
 CREATE TABLE db.table_local on cluster cluster (
@@ -645,7 +645,7 @@ CREATE TABLE db.table on cluster cluster (
 ```
 
 
-### 快照 {#snapshot}
+### 快照 \{#snapshot\}
 
 dbt 快照允许随着时间推移记录可变模型的变更。这样一来，就可以对模型执行时点查询，使分析师可以“回到过去”查看模型之前的状态。ClickHouse 连接器支持此功能，并可使用以下语法进行配置：
 
@@ -665,15 +665,15 @@ dbt 快照允许随着时间推移记录可变模型的变更。这样一来，�
 如需了解更多关于配置的信息，请参阅 [snapshot configs](https://docs.getdbt.com/docs/build/snapshots#snapshot-configs) 参考页面。
 
 
-### 约定与约束 {#contracts-and-constraints}
+### 约定与约束 \{#contracts-and-constraints\}
 
 仅支持精确匹配的列类型约定。例如，如果约定中指定的列类型为 UInt32，而模型返回的是 UInt64 或其他整数类型，则会执行失败。
 ClickHouse 也 _只_ 支持在整个表/模型级别定义的 `CHECK` 约束。不支持主键、外键、唯一约束以及列级别的 CHECK 约束。
 （参见 ClickHouse 关于主键 / ORDER BY 键的文档。）
 
-### 其他 ClickHouse 宏 {#additional-clickhouse-macros}
+### 其他 ClickHouse 宏 \{#additional-clickhouse-macros\}
 
-#### 模型物化实用宏 {#model-materialization-utility-macros}
+#### 模型物化实用宏 \{#model-materialization-utility-macros\}
 
 包含以下宏，用于简化创建 ClickHouse 特有的表和视图：
 
@@ -690,7 +690,7 @@ ClickHouse 也 _只_ 支持在整个表/模型级别定义的 `CHECK` 约束。�
 - `ttl_config` -- 使用 `ttl` 模型配置属性来指定 ClickHouse 表的生存时间 (TTL) 表达式。默认情况
   下不会配置生存时间 (TTL)。
 
-#### s3Source 辅助宏 {#s3source-helper-macro}
+#### s3Source 辅助宏 \{#s3source-helper-macro\}
 
 `s3source` 宏简化了使用 ClickHouse S3 表函数直接从 S3 中查询 ClickHouse 数据的过程。它通过
 从一个具名配置字典中为 S3 表函数填充参数来实现（该字典的名称必须以 `s3` 结尾）。该宏
@@ -711,20 +711,20 @@ ClickHouse 也 _只_ 支持在整个表/模型级别定义的 `CHECK` 约束。�
 有关如何使用此宏的示例，请参见
 [S3 测试文件](https://github.com/ClickHouse/dbt-clickhouse/blob/main/tests/integration/adapter/clickhouse/test_clickhouse_s3.py)。
 
-#### 跨数据库宏支持 {#cross-database-macro-support}
+#### 跨数据库宏支持 \{#cross-database-macro-support\}
 
 dbt-clickhouse 现在支持 `dbt Core` 中包含的大多数跨数据库宏，但有以下例外情况：
 
 * 在 ClickHouse 中，`split_part` SQL 函数是通过 splitByChar 函数实现的。该函数要求用于拆分的分隔符必须是常量字符串，因此在此宏中使用的 `delimeter` 参数会被解释为字符串，而不是列名
 * 同样地，ClickHouse 中的 `replace` SQL 函数要求 `old_chars` 和 `new_chars` 参数为常量字符串，因此在调用此宏时，这些参数会被解释为字符串，而不是列名。
 
-## 目录支持 {#catalog-support}
+## 目录支持 \{#catalog-support\}
 
-### dbt Catalog 集成状态 {#dbt-catalog-integration-status}
+### dbt Catalog 集成状态 \{#dbt-catalog-integration-status\}
 
 dbt Core v1.10 引入了对 Catalog 集成的支持，使适配器能够将模型物化到管理 Apache Iceberg 等开放表格式的外部 Catalog 中。**此特性目前尚未在 dbt-clickhouse 中原生实现。**你可以在 [GitHub issue #489](https://github.com/ClickHouse/dbt-clickhouse/issues/489) 中跟踪该特性的实现进度。
 
-### ClickHouse Catalog 支持 {#clickhouse-catalog-support}
+### ClickHouse Catalog 支持 \{#clickhouse-catalog-support\}
 
 ClickHouse 最近新增了对 Apache Iceberg 表和数据目录的原生支持。大多数功能目前仍标记为 `experimental`，但在较新的 ClickHouse 版本中已经可以开始使用。
 
@@ -732,7 +732,7 @@ ClickHouse 最近新增了对 Apache Iceberg 表和数据目录的原生支持�
 
 * 此外，ClickHouse 提供了 [DataLakeCatalog database engine](/engines/database-engines/datalakecatalog)，用于 **连接外部数据目录**，包括 AWS Glue Catalog、Databricks Unity Catalog、Hive Metastore 和 REST Catalog。借助该引擎，可以直接从外部目录查询开放表格式数据（Iceberg、Delta Lake），而无需产生数据副本。
 
-### 使用 Iceberg 和 Catalog 的变通方案 {#workarounds-iceberg-catalogs}
+### 使用 Iceberg 和 Catalog 的变通方案 \{#workarounds-iceberg-catalogs\}
 
 如果你已经在 ClickHouse 集群中通过上文介绍的工具定义了 Iceberg 表或 Catalog，那么你可以在 dbt 项目中读取这些 Iceberg 表或 Catalog 的数据。你可以利用 dbt 中的 `source` 功能在 dbt 项目中引用这些表。例如，如果你想访问 REST Catalog 中的表，可以执行以下操作：
 
@@ -776,7 +776,7 @@ INNER JOIN {{ source('external_catalog', 'customers') }} c
 ```
 
 
-### 关于变通方案的说明 {#benefits-workarounds}
+### 关于变通方案的说明 \{#benefits-workarounds\}
 
 这些变通方案的优点是：
 

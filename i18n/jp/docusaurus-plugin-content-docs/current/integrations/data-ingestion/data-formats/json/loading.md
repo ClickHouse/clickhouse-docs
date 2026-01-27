@@ -9,11 +9,11 @@ score: 15
 doc_type: 'guide'
 ---
 
-# JSONのロード {#loading-json}
+# JSONのロード \{#loading-json\}
 
 以下の例では、構造化および半構造化JSONデータをロードする非常にシンプルな例を示します。ネストされた構造を含むより複雑なJSONについては、ガイド[**JSONスキーマの設計**](/integrations/data-formats/json/schema)を参照してください。
 
-## 構造化JSONのロード {#loading-structured-json}
+## 構造化JSONのロード \{#loading-structured-json\}
 
 このセクションでは、JSONデータが[`NDJSON`](https://github.com/ndjson/ndjson-spec)(改行区切りJSON)形式であることを前提としています。ClickHouseでは[`JSONEachRow`](/interfaces/formats/JSONEachRow)として知られており、列名と型が固定されている、つまり適切に構造化されていることを前提としています。`NDJSON`は、その簡潔さと効率的なスペース使用のため、JSONをロードするのに好ましい形式ですが、[入力と出力](/interfaces/formats/JSON)の両方で他の形式もサポートされています。
 
@@ -116,7 +116,7 @@ FORMAT JSONEachRow
 
 これらの例は、`JSONEachRow`形式の使用を前提としています。他の一般的なJSON形式もサポートされており、これらのロード例は[こちら](/integrations/data-formats/json/other-formats)で提供されています。
 
-## 半構造化JSONのロード {#loading-semi-structured-json}
+## 半構造化JSONのロード \{#loading-semi-structured-json\}
 
 前の例では、既知のキー名と型を持つ静的なJSONをロードしました。これは必ずしもそうではありません - キーが追加されたり、型が変更されたりする可能性があります。これは、観測性データなどのユースケースで一般的です。
 
@@ -192,7 +192,7 @@ LIMIT 2
 
 データのロード時のパフォーマンスの違いに注意してください。JSON列は、挿入時に型推論を必要とし、複数の型を持つ列が存在する場合は追加のストレージも必要とします。JSON型は([JSONスキーマの設計](/integrations/data-formats/json/schema)を参照)、列を明示的に宣言するのと同等のパフォーマンスに設定できますが、デフォルトでは意図的に柔軟です。ただし、この柔軟性にはいくらかのコストが伴います。
 
-### JSON型を使用するタイミング {#when-to-use-the-json-type}
+### JSON型を使用するタイミング \{#when-to-use-the-json-type\}
 
 次の場合にJSON型を使用します:
 

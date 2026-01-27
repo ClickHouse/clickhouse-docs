@@ -7,7 +7,7 @@ keywords: ['json', 'formats', 'json formats']
 doc_type: 'guide'
 ---
 
-# 处理其他 JSON 格式 {#handling-other-json-formats}
+# 处理其他 JSON 格式 \{#handling-other-json-formats\}
 
 此前的 JSON 数据加载示例假定使用 [`JSONEachRow`](/interfaces/formats/JSONEachRow)（`NDJSON`）。这种格式会将每一行 JSON 中的键读取为列。例如：
 
@@ -31,7 +31,7 @@ LIMIT 5
 
 下面我们提供了一些示例，展示如何读取和加载其他常见格式的 JSON。
 
-## 将 JSON 读取为对象 {#reading-json-as-an-object}
+## 将 JSON 读取为对象 \{#reading-json-as-an-object\}
 
 之前的示例展示了 `JSONEachRow` 如何读取按行分隔的 JSON：每一行被读取为一个独立对象，并映射到一行表记录，每个键对应一列。对于各列类型单一且可预期的 JSON，这种方式非常理想。
 
@@ -111,7 +111,7 @@ FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.j
 1 row in set. Elapsed: 0.480 sec. Processed 1.00 million rows, 256.00 B (2.08 million rows/s., 533.76 B/s.)
 ```
 
-## JSON 对象数组 {#array-of-json-objects}
+## JSON 对象数组 \{#array-of-json-objects\}
 
 最常见的 JSON 数据形式之一，是在一个 JSON 数组中包含一系列 JSON 对象，就像[这个示例](../assets/list.json)中那样：
 
@@ -168,7 +168,7 @@ FROM sometable
 └───────────────────────────┴────────────┴──────┘
 ```
 
-## JSON 对象键 {#json-object-keys}
+## JSON 对象键 \{#json-object-keys\}
 
 在某些情况下，JSON 对象的列表可以表示为对象属性，而不是数组元素（示例参见 [objects.json](../assets/objects.json)）：
 
@@ -207,7 +207,7 @@ SELECT * FROM sometable;
 └─────────────────┴────────────┴──────┘
 ```
 
-### 指定父对象键的值 {#specifying-parent-object-key-values}
+### 指定父对象键的值 \{#specifying-parent-object-key-values\}
 
 假设我们还希望将父对象键对应的值保存到表中。在这种情况下，我们可以使用[以下选项](/operations/settings/settings-formats.md/#format_json_object_each_row_column_for_object_name)来定义用于保存键值的列名：
 
@@ -231,7 +231,7 @@ SELECT * FROM file('objects.json', JSONObjectEachRow)
 
 请注意，`id` 列已经被正确填充为键值。
 
-## JSON 数组 {#json-arrays}
+## JSON 数组 \{#json-arrays\}
 
 有时，为了节省空间，JSON 文件会被编码为数组形式而不是对象。在这种情况下，我们要处理的是一个由 JSON 数组组成的[列表](../assets/arrays.json)：
 
@@ -259,7 +259,7 @@ SELECT * FROM sometable
 └───────────────────────────┴────────────┴─────┘
 ```
 
-### 从 JSON 数组中导入单个列 {#importing-individual-columns-from-json-arrays}
+### 从 JSON 数组中导入单个列 \{#importing-individual-columns-from-json-arrays\}
 
 在某些情况下，数据可以按列编码，而不是按行编码。在这种情况下，父 JSON 对象中包含各列及其对应的值。请查看[以下文件](../assets/columns.json)：
 
@@ -303,7 +303,7 @@ SELECT * FROM file('columns-array.json', JSONCompactColumns)
 └─────────────────┴────────────┴────┘
 ```
 
-## 将 JSON 对象直接保存而不进行解析 {#saving-json-objects-instead-of-parsing}
+## 将 JSON 对象直接保存而不进行解析 \{#saving-json-objects-instead-of-parsing\}
 
 在某些情况下，可能希望将 JSON 对象保存到单个 `String`（或 `JSON`）列中，而不是对其进行解析。当处理结构各不相同的一组 JSON 对象时，这样做会很有用。以[这个文件](../assets/custom.json)为例，其中在一个父列表中包含多个不同的 JSON 对象：
 
@@ -357,7 +357,7 @@ FROM events
 
 请注意，对于每行一个 JSON 对象的文件（通常与 `JSONEachRow` 格式一起使用），`JSONAsString` 也可以很好地工作。
 
-## 嵌套对象的模式 {#schema-for-nested-objects}
+## 嵌套对象的模式 \{#schema-for-nested-objects\}
 
 在处理[嵌套 JSON 对象](../assets/list-nested.json)时，我们还可以显式定义模式，并使用复杂类型（[`Array`](/sql-reference/data-types/array.md)、[`JSON`](/integrations/data-formats/json/overview) 或 [`Tuple`](/sql-reference/data-types/tuple.md)）来加载数据：
 
@@ -373,7 +373,7 @@ LIMIT 1
 └────────────────────────────────────────────────────┴────────────┴──────┘
 ```
 
-## 访问嵌套 JSON 对象 {#accessing-nested-json-objects}
+## 访问嵌套 JSON 对象 \{#accessing-nested-json-objects\}
 
 我们可以通过启用[以下设置选项](/operations/settings/settings-formats.md/#input_format_import_nested_json)来访问[嵌套 JSON 键](../assets/list-nested.json)：
 
@@ -397,7 +397,7 @@ LIMIT 1
 
 通过这种方式，我们可以展开嵌套的 JSON 对象，或者利用其中的一些嵌套值，将它们保存为单独的列。
 
-## 跳过未知列 {#skipping-unknown-columns}
+## 跳过未知列 \{#skipping-unknown-columns\}
 
 默认情况下，ClickHouse 在导入 JSON 数据时会忽略未知列。我们来尝试在不包含 `month` 列的情况下，将原始文件导入该表中：
 
@@ -441,7 +441,7 @@ Code: 117. DB::Exception: Unknown field found while parsing JSONEachRow format: 
 
 当 JSON 结构与表的列结构不一致时，ClickHouse 会抛出异常。
 
-## BSON {#bson}
+## BSON \{#bson\}
 
 ClickHouse 允许将数据导出到 [BSON](https://bsonspec.org/) 编码文件，也支持从中导入数据。该格式被一些 DBMS 使用，例如 [MongoDB](https://github.com/mongodb/mongo) 数据库。
 

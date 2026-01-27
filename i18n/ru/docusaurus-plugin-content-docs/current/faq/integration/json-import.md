@@ -8,11 +8,11 @@ keywords: ['импорт JSON', 'формат JSONEachRow', 'импорт дан
 doc_type: 'guide'
 ---
 
-# Как импортировать JSON в ClickHouse? {#how-to-import-json-into-clickhouse}
+# Как импортировать JSON в ClickHouse? \{#how-to-import-json-into-clickhouse\}
 
 ClickHouse поддерживает широкий спектр [форматов данных для ввода и вывода](/interfaces/formats). Среди них есть несколько вариантов JSON, но наиболее часто для ингестии данных используется формат [JSONEachRow](/interfaces/formats/JSONEachRow). Он ожидает по одному JSON‑объекту в строке, при этом каждый объект должен быть разделён символом перевода строки.
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 С помощью [HTTP-интерфейса](/interfaces/http):
 
@@ -29,7 +29,7 @@ $ echo '{"foo":"bar"}'  | clickhouse-client --query="INSERT INTO test FORMAT JSO
 Вместо ручного ввода данных можно воспользоваться [инструментом интеграции](../../integrations/index.mdx).
 
 
-## Полезные настройки {#useful-settings}
+## Полезные настройки \{#useful-settings\}
 
 - `input_format_skip_unknown_fields` позволяет вставлять JSON, даже если в нём есть дополнительные поля, отсутствующие в схеме таблицы (такие поля отбрасываются).
 - `input_format_import_nested_json` позволяет вставлять вложенные JSON-объекты в столбцы типа [Nested](../../sql-reference/data-types/nested-data-structures/index.md).

@@ -6,7 +6,7 @@ title: 'system.replicas'
 doc_type: 'reference'
 ---
 
-# system.replicas {#systemreplicas}
+# system.replicas \{#systemreplicas\}
 
 ローカルサーバー上に存在するレプリケートテーブルの情報とステータスを含みます。
 このテーブルは監視用途に使用できます。テーブルには、すべての `Replicated*` テーブルごとに 1 行が格納されます。

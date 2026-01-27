@@ -9,7 +9,7 @@ keywords: ['路线图', '未来特性', '开发计划', '即将发布版本', '�
 
 
 
-## 当前路线图 {#current-roadmap}
+## 当前路线图 \{#current-roadmap\}
 
 当前路线图已发布，并开放讨论：
 
@@ -17,7 +17,7 @@ keywords: ['路线图', '未来特性', '开发计划', '即将发布版本', '�
 
 
 
-## 历史路线图 {#previous-roadmaps}
+## 历史路线图 \{#previous-roadmaps\}
 
 - [2024](https://github.com/ClickHouse/ClickHouse/issues/58392)
 - [2023](https://github.com/ClickHouse/ClickHouse/issues/44767)

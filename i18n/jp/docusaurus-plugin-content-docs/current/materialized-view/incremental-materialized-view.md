@@ -11,7 +11,7 @@ import materializedViewDiagram from '@site/static/images/materialized-view/mater
 import Image from '@theme/IdealImage';
 
 
-## 背景 {#background}
+## 背景 \{#background\}
 
 インクリメンタルmaterialized view（以下、materialized view）を使用すると、計算コストをクエリ実行時から挿入時に移し替えることで、`SELECT` クエリを高速化できます。
 
@@ -23,7 +23,7 @@ ClickHouse の materialized view は、ベースとなるテーブルにデー�
 
 <Image img={materializedViewDiagram} size="md" alt="Materialized view のダイアグラム"/>
 
-## 例 {#example}
+## 例 \{#example\}
 
 この例では、[&quot;Schema Design&quot;](/data-modeling/schema-design) で説明されている Stack Overflow データセットを使用します。
 
@@ -177,7 +177,7 @@ Peak memory usage: 567.61 KiB.
 :::
 
 
-### より複雑な例 {#a-more-complex-example}
+### より複雑な例 \{#a-more-complex-example\}
 
 上記の例では、1 日あたり 2 つの合計値を計算・維持するために Materialized Views を使用しています。合計値は中間状態を維持するための最も単純な集約形式であり、新しい値が到着したときに既存の値に加算するだけで済みます。ただし、ClickHouse の Materialized Views はあらゆる種類の集約に利用できます。
 
@@ -278,11 +278,11 @@ LIMIT 10
 ここでは `FINAL` ではなく `GROUP BY` を使用していることに注意してください。
 
 
-## その他の用途 {#other-applications}
+## その他の用途 \{#other-applications\}
 
 上記では主に、Materialized View を使用してデータの部分集計をインクリメンタルに更新し、計算処理をクエリ実行時から挿入時へと移す方法に焦点を当てました。この一般的なユースケースに加えて、Materialized View には他にもさまざまな用途があります。
 
-### フィルタリングと変換 {#filtering-and-transformation}
+### フィルタリングと変換 \{#filtering-and-transformation\}
 
 状況によっては、挿入時に行やカラムの一部だけを挿入したい場合があります。この場合、`posts_null` テーブルで挿入を受け付け、その後に `SELECT` クエリで行をフィルタリングしてから `posts` テーブルに挿入できます。例えば、`posts` テーブル内の `Tags` カラムを変換したいとします。これはタグ名をパイプ区切りで格納したリストです。これらを配列に変換することで、個々のタグ値ごとに集計しやすくなります。
 
@@ -296,7 +296,7 @@ CREATE MATERIALIZED VIEW posts_mv TO posts AS
 ```
 
 
-### ルックアップテーブル {#lookup-table}
+### ルックアップテーブル \{#lookup-table\}
 
 ClickHouse の ORDER BY キーを選択する際には、そのアクセスパターンを考慮する必要があります。フィルタや集約句で頻繁に使用されるカラムを利用するべきです。これは、ユーザーがより多様なアクセスパターンを持ち、それらを単一のカラム集合に収められないシナリオでは制約となり得ます。たとえば、次のような `comments` テーブルを考えてみます。
 
@@ -374,12 +374,12 @@ WHERE PostId IN (
 ```
 
 
-### materialized view のチェーン／カスケード {#chaining}
+### materialized view のチェーン／カスケード \{#chaining\}
 
 materialized view はチェーン（またはカスケード）させることができ、複雑なワークフローを構築できます。
 詳細は、ガイド「[Cascading materialized views](https://clickhouse.com/docs/guides/developer/cascading-materialized-views)」を参照してください。
 
-## materialized view と JOIN {#materialized-views-and-joins}
+## materialized view と JOIN \{#materialized-views-and-joins\}
 
 :::note リフレッシャブルmaterialized view
 以下の内容はインクリメンタルmaterialized view のみに適用されます。リフレッシャブルmaterialized view は、対象となる全データセットに対してクエリを定期的に実行し、JOIN を完全にサポートします。結果の鮮度がある程度低下しても許容できる場合は、複雑な JOIN にはリフレッシャブルmaterialized view の利用を検討してください。
@@ -393,7 +393,7 @@ ClickHouse におけるインクリメンタルmaterialized view は `JOIN` 操�
 
 これは、リファレンスまたはディメンションテーブルを用いたデータの付加（エンリッチ）には有効です。ただし、右側のテーブル（例: ユーザーメタデータ）に対する更新は、materialized view を遡って更新しません。更新後のデータを反映させるには、ソーステーブルに新たな挿入が行われる必要があります。
 
-### 例 {#materialized-views-and-joins-example}
+### 例 \{#materialized-views-and-joins-example\}
 
 [Stack Overflow データセット](/data-modeling/schema-design) を使った具体例を見ていきます。`users` テーブルからユーザーの表示名を含めて、**ユーザーごとの1日あたりのバッジ数** を計算するために materialized view を使用します。
 
@@ -566,7 +566,7 @@ WHERE DisplayName = 'brand_new_user'
 ただし、この結果は誤っています。
 
 
-### materialized view における JOIN のベストプラクティス {#join-best-practices}
+### materialized view における JOIN のベストプラクティス \{#join-best-practices\}
 
 - **左側のテーブルをトリガーとして使用する。** `SELECT` 文の左側にあるテーブルのみが materialized view をトリガーします。右側のテーブルへの変更では更新がトリガーされません。
 
@@ -584,11 +584,11 @@ WHERE DisplayName = 'brand_new_user'
 
 - **挿入量と頻度を考慮する。** JOIN は中程度の挿入ワークロードではうまく機能します。高スループットのインジェストが必要な場合は、ステージングテーブル、事前に JOIN を行う方式、あるいは Dictionary や [Refreshable Materialized Views](/materialized-view/refreshable-materialized-view) などの別手法の利用を検討してください。
 
-### フィルタおよび JOIN におけるソーステーブルの使用 {#using-source-table-in-filters-and-joins-in-materialized-views}
+### フィルタおよび JOIN におけるソーステーブルの使用 \{#using-source-table-in-filters-and-joins-in-materialized-views\}
 
 ClickHouse で materialized view を扱う際には、その materialized view のクエリ実行時にソーステーブルがどのように扱われるかを理解しておくことが重要です。具体的には、materialized view のクエリ内にあるソーステーブルは、挿入中のデータブロックで置き換えられます。この動作を正しく理解していないと、予期しない結果につながる可能性があります。
 
-#### シナリオ例 {#example-scenario}
+#### シナリオ例 \{#example-scenario\}
 
 次のような構成を考えます。
 
@@ -627,7 +627,7 @@ SELECT * FROM mvw2;
 ```
 
 
-#### 説明 {#explanation}
+#### 説明 \{#explanation\}
 
 上記の例では、`mvw1` と `mvw2` という 2 つの materialized view があり、どちらも似た処理を行いますが、ソーステーブル `t0` の参照方法にわずかな違いがあります。
 
@@ -637,7 +637,7 @@ SELECT * FROM mvw2;
 
 重要な違いは、ClickHouse が materialized view のクエリ内でソーステーブルをどのように扱うかにあります。materialized view が insert によってトリガーされると、ソーステーブル（この例では `t0`）は挿入されたデータブロックに置き換えられます。この挙動はクエリの最適化に活用できますが、一方で予期しない結果を避けるために注意深い検討も必要です。
 
-### ユースケースと注意点 {#use-cases-and-caveats}
+### ユースケースと注意点 \{#use-cases-and-caveats\}
 
 実運用では、この動作を利用して、ソーステーブルのデータの一部だけを処理すればよい materialized view を最適化できます。たとえば、他のテーブルと結合する前に、サブクエリを使ってソーステーブルをフィルタリングできます。これにより、materialized view が処理するデータ量を減らし、パフォーマンスを向上させられます。
 
@@ -658,7 +658,7 @@ ON t0.id = t1.id;
 この例では、`IN (SELECT id FROM t0)` サブクエリから構築される Set には新規に挿入された行のみが含まれており、その Set を使って `t1` を絞り込むことができます。
 
 
-#### スタックオーバーフローの例 {#example-with-stack-overflow}
+#### スタックオーバーフローの例 \{#example-with-stack-overflow\}
 
 `users` テーブルからユーザーの表示名を取得しつつ、**ユーザーごとの日次バッジ数** を計算するための [先ほどの materialized view の例](/materialized-view/incremental-materialized-view#example) を考えます。
 
@@ -734,7 +734,7 @@ INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
 上記の操作では、ユーザー ID が `2936484` の行が users テーブルから 1 行だけ取得されます。このルックアップは、テーブルの並び替えキーとして `Id` 列を使用することで最適化されています。
 
 
-## materialized view と UNION {#materialized-views-and-unions}
+## materialized view と UNION \{#materialized-views-and-unions\}
 
 `UNION ALL` クエリは、複数のソーステーブルにあるデータを 1 つの結果セットに結合するためによく使用されます。
 
@@ -961,7 +961,7 @@ GROUP BY UserId
 ```
 
 
-## 並列処理と逐次処理 {#materialized-views-parallel-vs-sequential}
+## 並列処理と逐次処理 \{#materialized-views-parallel-vs-sequential\}
 
 前の例で示したように、1 つのテーブルは複数の materialized view のソースとして機能できます。これらが実行される順序は、設定 [`parallel_view_processing`](/operations/settings/settings#parallel_view_processing) によって決まります。
 
@@ -1089,7 +1089,7 @@ ORDER BY now ASC
 
 各 VIEW から到着する行の順序は同じですが、保証されているわけではありません。各行の挿入時刻が非常に近いことからもそれが分かります。また、挿入処理のパフォーマンスが向上している点にも注目してください。
 
-### 並列処理をいつ有効化するか {#materialized-views-when-to-use-parallel}
+### 並列処理をいつ有効化するか \{#materialized-views-when-to-use-parallel\}
 
 `parallel_view_processing=1` を有効にすると、特に 1 つのテーブルに複数の Materialized Views がアタッチされている場合、上記のとおり挿入スループットが大きく向上する可能性があります。ただし、その際のトレードオフを理解しておくことが重要です。
 
@@ -1112,7 +1112,7 @@ ORDER BY now ASC
 - 予測可能で順序どおりの実行が必要な場合
 - 挿入動作のデバッグや監査を行っており、決定的なリプレイを行いたい場合
 
-## materialized view と共通テーブル式 (CTE) {#materialized-views-common-table-expressions-ctes}
+## materialized view と共通テーブル式 (CTE) \{#materialized-views-common-table-expressions-ctes\}
 
 **非再帰的な** 共通テーブル式 (CTE) は materialized view でサポートされています。
 

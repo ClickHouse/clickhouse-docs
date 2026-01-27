@@ -26,7 +26,7 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 
 Предложение `ON CLUSTER` позволяет создавать пользователей на кластере, см. [Распределённый DDL](../../../sql-reference/distributed-ddl.md).
 
-## Идентификация {#identification}
+## Идентификация \{#identification\}
 
 Существует несколько способов идентификации пользователя:
 
@@ -72,7 +72,7 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 * Содержать как минимум 1 специальный символ
   :::
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 1. Следующее имя пользователя — `name1`, и для него не требуется пароль — что, очевидно, практически не обеспечивает безопасность:
 
@@ -165,7 +165,7 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 2. `no_password` не может сосуществовать с другими методами аутентификации по соображениям безопасности. Поэтому вы можете указать
 `no_password` только если это единственный метод аутентификации в запросе. 
 
-## Хост пользователя {#user-host}
+## Хост пользователя \{#user-host\}
 
 Хост пользователя — это хост, с которого может быть установлено соединение с сервером ClickHouse. Хост может быть указан в секции запроса `HOST` следующими способами:
 
@@ -186,7 +186,7 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 ClickHouse рассматривает `user_name@'address'` как имя пользователя целиком. Таким образом, технически вы можете создать несколько пользователей с одинаковым `user_name` и разными конструкциями после `@`. Однако мы не рекомендуем делать это.
 :::
 
-## Оператор VALID UNTIL {#valid-until-clause}
+## Оператор VALID UNTIL \{#valid-until-clause\}
 
 Позволяет задать дату окончания срока действия и, при необходимости, время для метода аутентификации. В качестве параметра принимает строку. Рекомендуется использовать формат `YYYY-MM-DD [hh:mm:ss] [timezone]` для даты и времени. По умолчанию этот параметр имеет значение `'infinity'`.
 Оператор `VALID UNTIL` может быть указан только вместе с методом аутентификации, за исключением случая, когда в запросе не задан ни один метод аутентификации. В этом случае оператор `VALID UNTIL` будет применён ко всем существующим методам аутентификации.
@@ -199,7 +199,7 @@ ClickHouse рассматривает `user_name@'address'` как имя пол
 - ```CREATE USER name1 VALID UNTIL '2025-01-01 12:00:00 `Asia/Tokyo`'```
 - `CREATE USER name1 IDENTIFIED WITH plaintext_password BY 'no_expiration', bcrypt_password BY 'expiration_set' VALID UNTIL '2025-01-01''`
 
-## GRANTEES Clause {#grantees-clause}
+## GRANTEES Clause \{#grantees-clause\}
 
 Specifies users or roles which are allowed to receive [privileges](../../../sql-reference/statements/grant.md#privileges) from this user on the condition this user has also all required access granted with [GRANT OPTION](../../../sql-reference/statements/grant.md#granting-privilege-syntax). Options of the `GRANTEES` clause:
 
@@ -210,7 +210,7 @@ Specifies users or roles which are allowed to receive [privileges](../../../sql-
 
 You can exclude any user or role by using the `EXCEPT` expression. For example, `CREATE USER user1 GRANTEES ANY EXCEPT user2`. It means if `user1` has some privileges granted with `GRANT OPTION` it will be able to grant those privileges to anyone except `user2`.
 
-## Examples {#examples-1}
+## Examples \{#examples-1\}
 
 Create the user account `mira` protected by the password `qwerty`:
 

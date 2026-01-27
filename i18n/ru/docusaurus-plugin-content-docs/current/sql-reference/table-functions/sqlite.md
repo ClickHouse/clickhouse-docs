@@ -7,26 +7,26 @@ title: 'sqlite'
 doc_type: 'reference'
 ---
 
-# Табличная функция SQLite {#sqlite-table-function}
+# Табличная функция SQLite \{#sqlite-table-function\}
 
 Позволяет выполнять запросы к данным, хранящимся в базе данных [SQLite](../../engines/database-engines/sqlite.md).
 
-## Синтаксис {#syntax}
+## Синтаксис \{#syntax\}
 
 ```sql
 sqlite('db_path', 'table_name')
 ```
 
-## Аргументы {#arguments}
+## Аргументы \{#arguments\}
 
 - `db_path` — Путь к файлу базы данных SQLite. [String](../../sql-reference/data-types/string.md).
 - `table_name` — Имя таблицы в базе данных SQLite. [String](../../sql-reference/data-types/string.md).
 
-## Возвращаемое значение {#returned_value}
+## Возвращаемое значение \{#returned_value\}
 
 - Объект таблицы с теми же столбцами, что и в исходной таблице `SQLite`.
 
-## Пример {#example}
+## Пример \{#example\}
 
 Запрос:
 
@@ -44,6 +44,6 @@ SELECT * FROM sqlite('sqlite.db', 'table1') ORDER BY col2;
 └───────┴──────┘
 ```
 
-## См. также {#related}
+## См. также \{#related\}
 
 - [SQLite](../../engines/table-engines/integrations/sqlite.md) — движок таблиц

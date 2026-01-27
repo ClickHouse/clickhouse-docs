@@ -8,15 +8,15 @@ title: 'Составные протоколы'
 doc_type: 'reference'
 ---
 
-# Компонуемые протоколы {#composable-protocols}
+# Компонуемые протоколы \{#composable-protocols\}
 
-## Обзор {#overview}
+## Обзор \{#overview\}
 
 Составные протоколы позволяют более гибко настраивать TCP‑доступ к 
 серверу ClickHouse. Эта конфигурация может использоваться параллельно с традиционной 
 конфигурацией или полностью её заменять.
 
-## Настройка компонуемых протоколов {#composable-protocols-section-is-denoted-as-protocols-in-configuration-xml}
+## Настройка компонуемых протоколов \{#composable-protocols-section-is-denoted-as-protocols-in-configuration-xml\}
 
 Компонуемые протоколы настраиваются в конфигурационном XML-файле. Раздел протоколов
 обозначается тегами `protocols` в XML-файле конфигурации:
@@ -27,7 +27,7 @@ doc_type: 'reference'
 </protocols>
 ```
 
-### Настройка уровней протокола {#basic-modules-define-protocol-layers}
+### Настройка уровней протокола \{#basic-modules-define-protocol-layers\}
 
 Вы можете задавать уровни протокола с помощью базовых модулей. Например, чтобы задать
 уровень HTTP, вы можете добавить новый базовый модуль в раздел `protocols`:
@@ -61,7 +61,7 @@ doc_type: 'reference'
 Обработчик протокола `gRPC` не реализован для `Composable protocols`.
 :::
 
-### Настройка конечных точек {#endpoint-ie-listening-port-is-denoted-by-port-and-optional-host-tags}
+### Настройка конечных точек \{#endpoint-ie-listening-port-is-denoted-by-port-and-optional-host-tags\}
 
 Конечные точки (прослушивающие порты) задаются с помощью тегов `<port>` и
 необязательного `<host>`.
@@ -85,7 +85,7 @@ doc_type: 'reference'
 
 Если тег `<host>` опущен, используется `<listen_host>` из корневой конфигурации.
 
-### Настройка последовательностей слоёв {#layers-sequence-is-defined-by-impl-tag-referencing-another-module}
+### Настройка последовательностей слоёв \{#layers-sequence-is-defined-by-impl-tag-referencing-another-module\}
 
 Последовательности слоёв задаются с помощью тега `<impl>`, ссылающегося на другой
 модуль. Например, чтобы настроить слой TLS поверх нашего модуля plain&#95;http,
@@ -110,7 +110,7 @@ doc_type: 'reference'
 </protocols>
 ```
 
-### Привязка конечных точек к слоям {#endpoint-can-be-attached-to-any-layer}
+### Привязка конечных точек к слоям \{#endpoint-can-be-attached-to-any-layer\}
 
 Конечные точки можно привязывать к любому слою. Например, мы можем определить конечные точки для
 HTTP (порт 8123) и HTTPS (порт 8443):
@@ -134,7 +134,7 @@ HTTP (порт 8123) и HTTPS (порт 8443):
 </protocols>
 ```
 
-### Определение дополнительных конечных точек {#additional-endpoints-can-be-defined-by-referencing-any-module-and-omitting-type-tag}
+### Определение дополнительных конечных точек \{#additional-endpoints-can-be-defined-by-referencing-any-module-and-omitting-type-tag\}
 
 Дополнительные конечные точки можно задать, ссылаясь на любой модуль и опуская
 тег `<type>`. Например, мы можем задать конечную точку `another_http` для
@@ -165,7 +165,7 @@ HTTP (порт 8123) и HTTPS (порт 8443):
 </protocols>
 ```
 
-### Указание дополнительных параметров слоя {#some-modules-can-contain-specific-for-its-layer-parameters}
+### Указание дополнительных параметров слоя \{#some-modules-can-contain-specific-for-its-layer-parameters\}
 
 Некоторые модули могут иметь дополнительные параметры слоя. Например, слой TLS
 позволяет задать закрытый ключ (`privateKeyFile`) и файлы сертификатов (`certificateFile`)

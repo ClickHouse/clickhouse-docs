@@ -7,7 +7,7 @@ title: 'system.storage_policies'
 doc_type: 'reference'
 ---
 
-# system.storage&#95;policies {#systemstorage&#95;policies}
+# system.storage&#95;policies \{#systemstorage&#95;policies\}
 
 Содержит информацию о политиках хранения и томах, которые определены в [конфигурации сервера](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-multiple-volumes_configure).
 

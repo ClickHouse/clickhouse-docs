@@ -6,7 +6,7 @@ title: 'データソース'
 doc_type: 'landing-page'
 ---
 
-# データソース {#data-sources}
+# データソース \{#data-sources\}
 
 ClickHouse を使用すると、さまざまなソースからデータベースにデータを簡単に取り込むことができます。
 詳細については、以下のページを参照してください。

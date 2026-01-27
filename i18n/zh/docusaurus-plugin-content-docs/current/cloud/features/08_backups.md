@@ -16,9 +16,9 @@ import backup_chain from '@site/static/images/cloud/manage/backup-chain.png';
 这可以最大限度地减少停机时间，并防止关键业务数据被永久丢失。
 
 
-## 备份 {#backups}
+## 备份 \{#backups\}
 
-### ClickHouse Cloud 中备份的工作原理 {#how-backups-work-in-clickhouse-cloud}
+### ClickHouse Cloud 中备份的工作原理 \{#how-backups-work-in-clickhouse-cloud\}
 
 ClickHouse Cloud 的备份由“完整备份”和“增量备份”组合而成，它们共同构成一个备份链。备份链从一次完整备份开始，然后在接下来若干个预定时间点执行增量备份，从而形成一个按时间顺序排列的备份序列。一旦某个备份链的长度达到特定阈值，就会启动一个新的备份链。整个备份链随后可在需要时用于将数据恢复到一个新服务。当某个备份链中包含的所有备份都超出为该服务设置的保留时间范围（关于保留策略的更多信息见下文）后，该备份链会被丢弃。
 
@@ -28,7 +28,7 @@ ClickHouse Cloud 的备份由“完整备份”和“增量备份”组合而成
 
 <Image img={backup_chain} size="lg" alt="ClickHouse Cloud 中备份链示例" />
 
-### 默认备份策略 {#default-backup-policy}
+### 默认备份策略 \{#default-backup-policy\}
 
 在 Basic、Scale 和 Enterprise 级别中，备份会单独计量，并与存储分开计费。
 所有服务默认每天执行一次备份；从 Scale 级别开始，可以通过 Cloud 控制台的 Settings 选项卡配置更多备份。
@@ -36,7 +36,7 @@ ClickHouse Cloud 的备份由“完整备份”和“增量备份”组合而成
 
 有关更多详细信息，请参阅 ["查看和恢复备份"](/cloud/manage/backups/overview)。
 
-## 可配置备份 {#configurable-backups}
+## 可配置备份 \{#configurable-backups\}
 
 <ScalePlanFeatureBadge feature="Configurable Backups" linking_verb_are="True"/>
 
@@ -54,7 +54,7 @@ ClickHouse Cloud 允许您为 **Scale** 和 **Enterprise** 等级的服务配置
 
 有关配置备份计划的步骤，请参阅 ["Configure backup schedules"](/cloud/manage/backups/configurable-backups)。
 
-## 自有对象存储（BYOB）备份 {#byob}
+## 自有对象存储（BYOB）备份 \{#byob\}
 
 <EnterprisePlanFeatureBadge/>
 
@@ -74,20 +74,20 @@ ClickHouse Cloud 允许将备份导出到您自己的云服务提供商（CSP）
 
 有关如何对 AWS、GCP、Azure 对象存储执行完整和增量备份以及如何从这些备份中恢复的示例，请参阅 ["Export backups to your own Cloud account"](/cloud/manage/backups/export-backups-to-own-cloud-account)。
 
-### 备份选项 {#backup-options}
+### 备份选项 \{#backup-options\}
 
 要将备份导出到自有云账户，有两种方式：
 
 <VerticalStepper headerLevel="h5">
 
-##### 通过 Cloud 控制台 UI {#via-ui}
+##### 通过 Cloud 控制台 UI \{#via-ui\}
 
 可以在 [UI 中配置](/cloud/manage/backups/backup-restore-via-ui) 外部备份。
 默认情况下，随后会按日执行备份（如[默认备份策略](/cloud/features/backups#default-backup-policy)中所指定）。
 此外，我们也支持到自有云账户的[可配置](/cloud/manage/backups/configurable-backups)备份，以便设置自定义调度。
 需要特别注意的是，所有到您 bucket 的备份都是完整备份，彼此之间没有任何关联关系。
 
-##### 使用 SQL 命令 {#using-commands}
+##### 使用 SQL 命令 \{#using-commands\}
 
 您可以使用 [SQL 命令](/cloud/manage/backups/backup-restore-via-commands) 将备份导出到 bucket。
 

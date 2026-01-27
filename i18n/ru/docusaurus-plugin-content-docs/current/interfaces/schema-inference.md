@@ -10,11 +10,11 @@ ClickHouse может автоматически определять струк
 В этом документе описано, когда используется автоматическое определение схемы, как оно работает с различными входными форматами и какие настройки
 его контролируют.
 
-## Использование {#usage}
+## Использование \{#usage\}
 
 Автоматическое определение схемы используется, когда ClickHouse должен прочитать данные в определённом формате, но их структура неизвестна.
 
-## Табличные функции [file](../sql-reference/table-functions/file.md), [s3](../sql-reference/table-functions/s3.md), [url](../sql-reference/table-functions/url.md), [hdfs](../sql-reference/table-functions/hdfs.md), [azureBlobStorage](../sql-reference/table-functions/azureBlobStorage.md). {#table-functions-file-s3-url-hdfs-azureblobstorage}
+## Табличные функции [file](../sql-reference/table-functions/file.md), [s3](../sql-reference/table-functions/s3.md), [url](../sql-reference/table-functions/url.md), [hdfs](../sql-reference/table-functions/hdfs.md), [azureBlobStorage](../sql-reference/table-functions/azureBlobStorage.md). \{#table-functions-file-s3-url-hdfs-azureblobstorage\}
 
 Эти табличные функции имеют необязательный аргумент `structure`, задающий структуру входных данных. Если этот аргумент не указан или имеет значение `auto`, структура будет выведена из данных.
 
@@ -29,7 +29,7 @@ ClickHouse может автоматически определять струк
 {"id" :  4, "age" :  47, "name" :  "Brayan", "hobbies" :  ["movies", "skydiving"]}
 ```
 
-ClickHouse может читать эти данные без необходимости задавать их структуру:
+ClickHouse может читать эти данные без явного указания их структуры:
 
 ```sql
 SELECT * FROM file('hobbies.jsonl')
@@ -61,7 +61,8 @@ DESCRIBE file('hobbies.jsonl')
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-## Движки таблиц [File](../engines/table-engines/special/file.md), [S3](../engines/table-engines/integrations/s3.md), [URL](../engines/table-engines/special/url.md), [HDFS](../engines/table-engines/integrations/hdfs.md), [azureBlobStorage](../engines/table-engines/integrations/azureBlobStorage.md) {#table-engines-file-s3-url-hdfs-azureblobstorage}
+
+## Движки таблиц [File](../engines/table-engines/special/file.md), [S3](../engines/table-engines/integrations/s3.md), [URL](../engines/table-engines/special/url.md), [HDFS](../engines/table-engines/integrations/hdfs.md), [azureBlobStorage](../engines/table-engines/integrations/azureBlobStorage.md) \{#table-engines-file-s3-url-hdfs-azureblobstorage\}
 
 Если в запросе `CREATE TABLE` не указан список столбцов, структура таблицы будет автоматически определена по данным.
 
@@ -103,7 +104,8 @@ DESCRIBE TABLE hobbies
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-## clickhouse-local {#clickhouse-local}
+
+## clickhouse-local \{#clickhouse-local\}
 
 У `clickhouse-local` есть необязательный параметр `-S/--structure`, задающий структуру входных данных. Если этот параметр не указан или имеет значение `auto`, структура будет определена по данным.
 
@@ -133,7 +135,8 @@ clickhouse-local --file='hobbies.jsonl' --table='hobbies' --query='SELECT * FROM
 4    47    Brayan    ['movies','skydiving']
 ```
 
-## Использование структуры из таблицы-вставки {#using-structure-from-insertion-table}
+
+## Использование структуры из таблицы-вставки \{#using-structure-from-insertion-table\}
 
 Когда табличные функции `file/s3/url/hdfs` используются для вставки данных в таблицу,
 можно использовать структуру из таблицы-вставки вместо извлечения её из данных.
@@ -186,7 +189,7 @@ CREATE TABLE hobbies2
 ORDER BY id;
 ```
 
-А затем вставьте данные из файла `hobbies.jsonl`:
+И загрузите данные из файла `hobbies.jsonl`:
 
 ```sql
 INSERT INTO hobbies2 SELECT id, age, hobbies FROM file(hobbies.jsonl)
@@ -210,7 +213,7 @@ CREATE TABLE hobbies3
 ORDER BY identifier;
 ```
 
-Теперь вставьте данные из файла `hobbies.jsonl`:
+И загрузите данные из файла `hobbies.jsonl`:
 
 ```sql
 INSERT INTO hobbies3 SELECT id, age, hobbies FROM file(hobbies.jsonl)
@@ -233,22 +236,24 @@ CREATE TABLE hobbies4
 ORDER BY id;
 ```
 
-И вставьте данные из файла `hobbies.jsonl`:
+И загрузите данные из файла `hobbies.jsonl`:
 
 ```sql
 INSERT INTO hobbies4 SELECT id, empty(hobbies) ? NULL : hobbies[1] FROM file(hobbies.jsonl)
 ```
 
-В этом случае в запросе `SELECT` выполняются некоторые операции со столбцом `hobbies` перед его вставкой в таблицу, поэтому ClickHouse не может использовать структуру целевой таблицы и будет использовано автоматическое определение схемы.
+В этом случае в запросе `SELECT` выполняются некоторые операции со столбцом `hobbies` перед его вставкой в таблицу, поэтому ClickHouse не может использовать структуру таблицы, в которую выполняется вставка, и будет использовано автоматическое определение схемы.
 
-## Кэш автоопределения схемы {#schema-inference-cache}
+
+## Кэш автоопределения схемы \{#schema-inference-cache\}
 
 Для большинства форматов ввода автоопределение схемы читает часть данных, чтобы определить их структуру, и этот процесс может занять некоторое время.
 Чтобы не определять одну и ту же схему каждый раз, когда ClickHouse читает данные из одного и того же файла, полученная схема кэшируется, и при повторном обращении к тому же файлу ClickHouse использует схему из кэша.
 
 Существуют специальные настройки, управляющие этим кэшем:
-- `schema_inference_cache_max_elements_for_{file/s3/hdfs/url/azure}` — максимальное количество кэшируемых схем для соответствующей табличной функции. Значение по умолчанию — `4096`. Эти настройки следует задавать в конфигурации сервера.
-- `schema_inference_use_cache_for_{file,s3,hdfs,url,azure}` — позволяет включать/отключать использование кэша для автоопределения схемы. Эти настройки можно указывать в запросах.
+
+* `schema_inference_cache_max_elements_for_{file/s3/hdfs/url/azure}` — максимальное количество кэшируемых схем для соответствующей табличной функции. Значение по умолчанию — `4096`. Эти настройки следует задавать в конфигурации сервера.
+* `schema_inference_use_cache_for_{file,s3,hdfs,url,azure}` — позволяет включать/отключать использование кэша для автоопределения схемы. Эти настройки можно указывать в запросах.
 
 Схема файла может быть изменена путём модификации данных или изменением настроек формата.
 По этой причине кэш автоопределения схемы идентифицирует схему по источнику файла, имени формата, используемым настройкам формата и времени последней модификации файла.
@@ -256,7 +261,7 @@ INSERT INTO hobbies4 SELECT id, empty(hobbies) ? NULL : hobbies[1] FROM file(hob
 Примечание: некоторые файлы, к которым осуществляется доступ по URL в табличной функции `url`, могут не содержать информации о времени последней модификации; для этого случая существует специальная настройка
 `schema_inference_cache_require_modification_time_for_url`. Отключение этой настройки позволяет использовать схему из кэша без учёта времени последней модификации для таких файлов.
 
-Также существует системная таблица [schema_inference_cache](../operations/system-tables/schema_inference_cache.md) со всеми текущими схемами в кэше и системный запрос `SYSTEM DROP SCHEMA CACHE [FOR File/S3/URL/HDFS]`,
+Также существует системная таблица [schema&#95;inference&#95;cache](../operations/system-tables/schema_inference_cache.md) со всеми текущими схемами в кэше и системный запрос `SYSTEM CLEAR SCHEMA CACHE [FOR File/S3/URL/HDFS]`,
 который позволяет очистить кэш схем для всех источников или для конкретного источника.
 
 **Примеры:**
@@ -309,6 +314,7 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/git
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/github/github-2022.ndjson.gz')
 ```
 
+
 ```response
 ┌─name───────┬─type─────────────────────────────────────────┐
 │ type       │ Nullable(String)                             │
@@ -348,7 +354,9 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/git
 5 rows in set. Elapsed: 0.059 sec.
 ```
 
-5 строк в наборе. Затрачено: 0,059 сек.
+Как видите, второй запрос выполнен практически мгновенно.
+
+Давайте попробуем изменить некоторые настройки, которые могут повлиять на автоматически определяемую схему:
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/github/github-2022.ndjson.gz')
@@ -363,58 +371,70 @@ SETTINGS input_format_json_try_infer_named_tuples_from_objects=0, input_format_j
 └────────────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 
 5 rows in set. Elapsed: 0.611 sec
-```sql
-DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/github/github-2022.ndjson.gz')
-SETTINGS input_format_json_try_infer_named_tuples_from_objects=0, input_format_json_read_objects_as_strings = 1
+```
 
-┌─name───────┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ type       │ Nullable(String) │              │                    │         │                  │                │
-│ actor      │ Nullable(String) │              │                    │         │                  │                │
-│ repo       │ Nullable(String) │              │                    │         │                  │                │
-│ created_at │ Nullable(String) │              │                    │         │                  │                │
-│ payload    │ Nullable(String) │              │                    │         │                  │                │
-└────────────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+Как видно, схема из кэша не была использована для того же файла, потому что была изменена настройка, влияющая на определение схемы.
 
-Получено 5 строк. Затрачено: 0.611 сек
+Проверим содержимое таблицы `system.schema_inference_cache`:
+
 ```sql
 SELECT schema, format, source FROM system.schema_inference_cache WHERE storage='S3'
-```sql
-SELECT schema, format, source FROM system.schema_inference_cache WHERE storage='S3'
+```
+
+
 ```response
 ┌─schema──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─format─┬─source───────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ type Nullable(String), actor Tuple(avatar_url Nullable(String), display_login Nullable(String), id Nullable(Int64), login Nullable(String), url Nullable(String)), repo Tuple(id Nullable(Int64), name Nullable(String), url Nullable(String)), created_at Nullable(String), payload Tuple(action Nullable(String), distinct_size Nullable(Int64), pull_request Tuple(author_association Nullable(String), base Tuple(ref Nullable(String), sha Nullable(String)), head Tuple(ref Nullable(String), sha Nullable(String)), number Nullable(Int64), state Nullable(String), title Nullable(String), updated_at Nullable(String), user Tuple(login Nullable(String))), ref Nullable(String), ref_type Nullable(String), size Nullable(Int64)) │ NDJSON │ datasets-documentation.s3.eu-west-3.amazonaws.com443/datasets-documentation/github/github-2022.ndjson.gz │
 │ type Nullable(String), actor Nullable(String), repo Nullable(String), created_at Nullable(String), payload Nullable(String)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 │ NDJSON │ datasets-documentation.s3.eu-west-3.amazonaws.com443/datasets-documentation/github/github-2022.ndjson.gz │
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-```response
-┌─schema──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─format─┬─source───────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ type Nullable(String), actor Tuple(avatar_url Nullable(String), display_login Nullable(String), id Nullable(Int64), login Nullable(String), url Nullable(String)), repo Tuple(id Nullable(Int64), name Nullable(String), url Nullable(String)), created_at Nullable(String), payload Tuple(action Nullable(String), distinct_size Nullable(Int64), pull_request Tuple(author_association Nullable(String), base Tuple(ref Nullable(String), sha Nullable(String)), head Tuple(ref Nullable(String), sha Nullable(String)), number Nullable(Int64), state Nullable(String), title Nullable(String), updated_at Nullable(String), user Tuple(login Nullable(String))), ref Nullable(String), ref_type Nullable(String), size Nullable(Int64)) │ NDJSON │ datasets-documentation.s3.eu-west-3.amazonaws.com443/datasets-documentation/github/github-2022.ndjson.gz │
-│ type Nullable(String), actor Nullable(String), repo Nullable(String), created_at Nullable(String), payload Nullable(String)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 │ NDJSON │ datasets-documentation.s3.eu-west-3.amazonaws.com443/datasets-documentation/github/github-2022.ndjson.gz │
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+Как видите, для одного и того же файла существует две разные схемы.
+
+Очистить кэш схем можно с помощью системного запроса:
+
 ```sql
-SYSTEM DROP SCHEMA CACHE FOR S3
-```sql
-SYSTEM DROP SCHEMA CACHE FOR S3
+SYSTEM CLEAR SCHEMA CACHE FOR S3
+```
+
 ```response
 Ok.
-```response
-Готово.
+```
+
 ```sql
 SELECT count() FROM system.schema_inference_cache WHERE storage='S3'
-```sql
-SELECT count() FROM system.schema_inference_cache WHERE storage='S3'
-```response
-┌─count()─┐
-│       0 │
-└─────────┘
+```
 
 ```response
 ┌─count()─┐
 │       0 │
 └─────────┘
+```
+
+
+## Текстовые форматы \{#text-formats\}
+
+Для текстовых форматов ClickHouse считывает данные строка за строкой, извлекает значения столбцов в соответствии с форматом,
+а затем использует рекурсивные парсеры и эвристики, чтобы определить тип для каждого значения. Максимальное количество строк и байт, читаемых из данных при выведении схемы,
+контролируется настройками `input_format_max_rows_to_read_for_schema_inference` (по умолчанию 25000) и `input_format_max_bytes_to_read_for_schema_inference` (по умолчанию 32 МБ).
+По умолчанию все выведенные типы — [Nullable](../sql-reference/data-types/nullable.md), но вы можете изменить это, установив `schema_inference_make_columns_nullable` (см. примеры в разделе [настройки](#settings-for-text-formats)).
+
+### Форматы JSON \{#json-formats\}
+
+В форматах JSON ClickHouse разбирает значения согласно спецификации JSON, а затем пытается определить для них наиболее подходящий тип данных.
+
+Рассмотрим, как это работает, какие типы могут быть определены автоматически и какие специфические настройки можно использовать в форматах JSON.
+
+**Примеры**
+
+Здесь и далее в примерах будет использоваться табличная функция [format](../sql-reference/table-functions/format.md).
+
+Целые числа, числа с плавающей точкой, булевы значения, строки:
+
 ```sql
 DESC format(JSONEachRow, '{"int" : 42, "float" : 42.42, "string" : "Hello, World!"}');
-```sql
-DESC format(JSONEachRow, '{"int" : 42, "float" : 42.42, "string" : "Hello, World!"}');
+```
+
 ```response
 ┌─name───┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ int    │ Nullable(Int64)   │              │                    │         │                  │                │
@@ -422,98 +442,93 @@ DESC format(JSONEachRow, '{"int" : 42, "float" : 42.42, "string" : "Hello, World
 │ bool   │ Nullable(Bool)    │              │                    │         │                  │                │
 │ string │ Nullable(String)  │              │                    │         │                  │                │
 └────────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name───┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ int    │ Nullable(Int64)   │              │                    │         │                  │                │
-│ float  │ Nullable(Float64) │              │                    │         │                  │                │
-│ bool   │ Nullable(Bool)    │              │                    │         │                  │                │
-│ string │ Nullable(String)  │              │                    │         │                  │                │
-└────────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Даты, DateTime:
+
 ```sql
 DESC format(JSONEachRow, '{"date" : "2022-01-01", "datetime" : "2022-01-01 00:00:00", "datetime64" : "2022-01-01 00:00:00.000"}')
-```sql
-DESC format(JSONEachRow, '{"date" : "2022-01-01", "datetime" : "2022-01-01 00:00:00", "datetime64" : "2022-01-01 00:00:00.000"}')
+```
+
 ```response
 ┌─name───────┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ date       │ Nullable(Date)          │              │                    │         │                  │                │
 │ datetime   │ Nullable(DateTime)      │              │                    │         │                  │                │
 │ datetime64 │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
 └────────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name───────┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ date       │ Nullable(Date)          │              │                    │         │                  │                │
-│ datetime   │ Nullable(DateTime)      │              │                    │         │                  │                │
-│ datetime64 │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
-└────────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Массивы:
+
 ```sql
 DESC format(JSONEachRow, '{"arr" : [1, 2, 3], "nested_arrays" : [[1, 2, 3], [4, 5, 6], []]}')
-```sql
-DESC format(JSONEachRow, '{"arr" : [1, 2, 3], "nested_arrays" : [[1, 2, 3], [4, 5, 6], []]}')
+```
+
 ```response
 ┌─name──────────┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ arr           │ Array(Nullable(Int64))        │              │                    │         │                  │                │
 │ nested_arrays │ Array(Array(Nullable(Int64))) │              │                    │         │                  │                │
 └───────────────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name──────────┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ arr           │ Array(Nullable(Int64))        │              │                    │         │                  │                │
-│ nested_arrays │ Array(Array(Nullable(Int64))) │              │                    │         │                  │                │
-└───────────────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Если массив содержит `null`, ClickHouse будет использовать типы других элементов массива:
+
 ```sql
 DESC format(JSONEachRow, '{"arr" : [null, 42, null]}')
-```sql
-DESC format(JSONEachRow, '{"arr" : [null, 42, null]}')
-```response
-┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ arr  │ Array(Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ```response
 ┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ arr  │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Если массив содержит значения разных типов и параметр `input_format_json_infer_array_of_dynamic_from_array_of_different_types` включен (он включен по умолчанию), то массив будет иметь тип `Array(Dynamic)`:
+
 ```sql
 SET input_format_json_infer_array_of_dynamic_from_array_of_different_types=1;
 DESC format(JSONEachRow, '{"arr" : [42, "hello", [1, 2, 3]]}');
-```sql
-SET input_format_json_infer_array_of_dynamic_from_array_of_different_types=1;
-DESC format(JSONEachRow, '{"arr" : [42, "hello", [1, 2, 3]]}');
+```
+
 ```response
 ┌─name─┬─type───────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ arr  │ Array(Dynamic) │              │                    │         │                  │                │
 └──────┴────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type───────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ arr  │ Array(Dynamic) │              │                    │         │                  │                │
-└──────┴────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Именованные кортежи:
+
+При включённой настройке `input_format_json_try_infer_named_tuples_from_objects` ClickHouse при определении схемы будет пытаться выводить именованный Tuple из объектов JSON.
+Получившийся именованный Tuple будет содержать все элементы из всех соответствующих JSON-объектов в выборке данных.
+
 ```sql
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 43, "c" : [1, 2, 3]}}, {"obj" : {"d" : {"e" : 42}}}')
-```sql
-SET input_format_json_try_infer_named_tuples_from_objects = 1;
-DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 43, "c" : [1, 2, 3]}}, {"obj" : {"d" : {"e" : 42}}}')
+```
+
 ```response
 ┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Tuple(e Nullable(Int64))) │              │                    │         │                  │                │
 └──────┴────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ obj  │ Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Tuple(e Nullable(Int64))) │              │                    │         │                  │                │
-└──────┴────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Неименованные кортежи:
+
+Если настройка `input_format_json_infer_array_of_dynamic_from_array_of_different_types` отключена, массивы, содержащие элементы разных типов, рассматриваются как неименованные кортежи в JSON-форматах.
+
 ```sql
 SET input_format_json_infer_array_of_dynamic_from_array_of_different_types = 0;
 DESC format(JSONEachRow, '{"tuple" : [1, "Hello, World!", [1, 2, 3]]}')
-```sql
-SET input_format_json_infer_array_of_dynamic_from_array_of_different_types = 0;
-DESC format(JSONEachRow, '{"tuple" : [1, "Hello, World!", [1, 2, 3]]}')
+```
+
 ```response
 ┌─name──┬─type─────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ tuple │ Tuple(Nullable(Int64), Nullable(String), Array(Nullable(Int64))) │              │                    │         │                  │                │
 └───────┴──────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name──┬─type─────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ tuple │ Tuple(Nullable(Int64), Nullable(String), Array(Nullable(Int64))) │              │                    │         │                  │                │
-└───────┴──────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Если некоторые значения равны `null` или являются пустыми, то используем типы соответствующих значений из других строк:
+
 ```sql
 SET input_format_json_infer_array_of_dynamic_from_array_of_different_types=0;
 DESC format(JSONEachRow, $$
@@ -521,157 +536,163 @@ DESC format(JSONEachRow, $$
                               {"tuple" : [null, "Hello, World!", []]}
                               {"tuple" : [null, null, [1, 2, 3]]}
                          $$)
-```sql
-SET input_format_json_infer_array_of_dynamic_from_array_of_different_types=0;
-DESC format(JSONEachRow, $$
-                              {"tuple" : [1, null, null]}
-                              {"tuple" : [null, "Hello, World!", []]}
-                              {"tuple" : [null, null, [1, 2, 3]]}
-                         $$)
-```response
-┌─name──┬─type─────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ tuple │ Tuple(Nullable(Int64), Nullable(String), Array(Nullable(Int64))) │              │                    │         │                  │                │
-└───────┴──────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ```response
 ┌─name──┬─type─────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ tuple │ Tuple(Nullable(Int64), Nullable(String), Array(Nullable(Int64))) │              │                    │         │                  │                │
 └───────┴──────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Карты (Map):
+
+В формате JSON объекты, все значения которых имеют один и тот же тип, могут считываться как тип Map.
+Примечание: это будет работать только в том случае, если параметры `input_format_json_read_objects_as_strings` и `input_format_json_try_infer_named_tuples_from_objects` отключены.
+
 ```sql
 SET input_format_json_read_objects_as_strings = 0, input_format_json_try_infer_named_tuples_from_objects = 0;
 DESC format(JSONEachRow, '{"map" : {"key1" : 42, "key2" : 24, "key3" : 4}}')
-```sql
-SET input_format_json_read_objects_as_strings = 0, input_format_json_try_infer_named_tuples_from_objects = 0;
-DESC format(JSONEachRow, '{"map" : {"key1" : 42, "key2" : 24, "key3" : 4}}')
+```
+
 ```response
 ┌─name─┬─type─────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ map  │ Map(String, Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ map  │ Map(String, Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Вложенные составные типы:
+
 ```sql
 DESC format(JSONEachRow, '{"value" : [[[42, 24], []], {"key1" : 42, "key2" : 24}]}')
-```sql
-DESC format(JSONEachRow, '{"value" : [[[42, 24], []], {"key1" : 42, "key2" : 24}]}')
+```
+
+
 ```response
 ┌─name──┬─type─────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ value │ Tuple(Array(Array(Nullable(String))), Tuple(key1 Nullable(Int64), key2 Nullable(Int64))) │              │                    │         │                  │                │
 └───────┴──────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name──┬─type─────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ value │ Tuple(Array(Array(Nullable(String))), Tuple(key1 Nullable(Int64), key2 Nullable(Int64))) │              │                    │         │                  │                │
-└───────┴──────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Если ClickHouse не может определить тип для какого-либо ключа, так как данные содержат только null/пустые объекты/пустые массивы, будет использован тип `String`, если настройка `input_format_json_infer_incomplete_types_as_strings` включена, в противном случае будет сгенерировано исключение:
+
 ```sql
 DESC format(JSONEachRow, '{"arr" : [null, null]}') SETTINGS input_format_json_infer_incomplete_types_as_strings = 1;
-```sql
-DESC format(JSONEachRow, '{"arr" : [null, null]}') SETTINGS input_format_json_infer_incomplete_types_as_strings = 1;
+```
+
 ```response
 ┌─name─┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ arr  │ Array(Nullable(String)) │              │                    │         │                  │                │
 └──────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ arr  │ Array(Nullable(String)) │              │                    │         │                  │                │
-└──────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
 ```sql
 DESC format(JSONEachRow, '{"arr" : [null, null]}') SETTINGS input_format_json_infer_incomplete_types_as_strings = 0;
-```sql
-DESC format(JSONEachRow, '{"arr" : [null, null]}') SETTINGS input_format_json_infer_incomplete_types_as_strings = 0;
+```
+
 ```response
 Code: 652. DB::Exception: Received from localhost:9000. DB::Exception:
 Cannot determine type for column 'arr' by first 1 rows of data,
 most likely this column contains only Nulls or empty Arrays/Maps.
 ...
-```response
-Код: 652. DB::Exception: Получено от localhost:9000. DB::Exception:
-Невозможно определить тип для столбца 'arr' по первой строке данных,
-вероятно, этот столбец содержит только значения Null или пустые массивы/словари.
-...
+```
+
+
+#### Параметры JSON \{#json-settings\}
+
+##### input_format_json_try_infer_numbers_from_strings \{#input_format_json_try_infer_numbers_from_strings\}
+
+Включение этого параметра позволяет определять числовые значения из строковых.
+
+По умолчанию этот параметр отключен.
+
+**Пример:**
+
 ```sql
 SET input_format_json_try_infer_numbers_from_strings = 1;
 DESC format(JSONEachRow, $$
                               {"value" : "42"}
                               {"value" : "424242424242"}
                          $$)
-```sql
-SET input_format_json_try_infer_numbers_from_strings = 1;
-DESC format(JSONEachRow, $$
-                              {"value" : "42"}
-                              {"value" : "424242424242"}
-                         $$)
+```
+
 ```response
 ┌─name──┬─type────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ value │ Nullable(Int64) │              │                    │         │                  │                │
 └───────┴─────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name──┬─type────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ value │ Nullable(Int64) │              │                    │         │                  │                │
-└───────┴─────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```sql
-SET input_format_json_try_infer_named_tuples_from_objects = 1;
-DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 43, "c" : [1, 2, 3]}}, {"obj" : {"d" : {"e" : 42}}}')
+```
+
+
+##### input_format_json_try_infer_named_tuples_from_objects \{#input_format_json_try_infer_named_tuples_from_objects\}
+
+Включение этого параметра позволяет выводить именованные Tuple из JSON-объектов. Получившийся именованный Tuple будет содержать все элементы из всех соответствующих JSON-объектов из выборки данных.
+Это может быть полезно, когда JSON-данные не являются разреженными, поэтому выборка данных будет содержать все возможные ключи объектов.
+
+Этот параметр включен по умолчанию.
+
+**Пример**
 
 ```sql
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 43, "c" : [1, 2, 3]}}, {"obj" : {"d" : {"e" : 42}}}')
+```
+
+Результат:
+
 ```response
 ┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Tuple(e Nullable(Int64))) │              │                    │         │                  │                │
 └──────┴────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ obj  │ Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Tuple(e Nullable(Int64))) │              │                    │         │                  │                │
-└──────┴────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
 ```sql
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 DESC format(JSONEachRow, '{"array" : [{"a" : 42, "b" : "Hello"}, {}, {"c" : [1,2,3]}, {"d" : "2020-01-01"}]}')
-```sql
-SET input_format_json_try_infer_named_tuples_from_objects = 1;
-DESC format(JSONEachRow, '{"array" : [{"a" : 42, "b" : "Hello"}, {}, {"c" : [1,2,3]}, {"d" : "2020-01-01"}]}')
+```
+
+Результат:
+
 ```markdown
 ┌─name──┬─type────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ array │ Array(Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Nullable(Date))) │              │                    │         │                  │                │
 └───────┴─────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```markdown
-┌─name──┬─type────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ array │ Array(Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Nullable(Date))) │              │                    │         │                  │                │
-└───────┴─────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+
+##### input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects \{#input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects\}
+
+Включение этого параметра позволяет использовать тип данных String для неоднозначных путей при выводе именованных кортежей (Tuples) из JSON-объектов (когда `input_format_json_try_infer_named_tuples_from_objects` включён) вместо генерации исключения.
+Это позволяет читать JSON-объекты как именованные кортежи (Tuples), даже если существуют неоднозначные пути.
+
+По умолчанию параметр отключён.
+
+**Примеры**
+
+При отключённом параметре:
+
 ```sql
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 SET input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects = 0;
 DESC format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : "Hello"}}}');
-```sql
-SET input_format_json_try_infer_named_tuples_from_objects = 1;
-SET input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects = 0;
-DESC format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : "Hello"}}}');
+```
+
+Результат:
+
 ```response
 Code: 636. DB::Exception: The table structure cannot be extracted from a JSONEachRow format file. Error:
 Code: 117. DB::Exception: JSON objects have ambiguous data: in some objects path 'a' has type 'Int64' and in some - 'Tuple(b String)'. You can enable setting input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects to use String type for path 'a'. (INCORRECT_DATA) (version 24.3.1.1).
 You can specify the structure manually. (CANNOT_EXTRACT_TABLE_STRUCTURE)
-```response
-Код: 636. DB::Exception: Не удалось извлечь структуру таблицы из файла формата JSONEachRow. Ошибка:
-Код: 117. DB::Exception: JSON-объекты содержат неоднозначные данные: в некоторых объектах путь 'a' имеет тип 'Int64', а в других — 'Tuple(b String)'. Вы можете включить параметр input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects, чтобы использовать тип String для пути 'a'. (INCORRECT_DATA) (версия 24.3.1.1).
-Структуру можно указать вручную. (CANNOT_EXTRACT_TABLE_STRUCTURE)
+```
+
+При включённом параметре:
+
 ```sql
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 SET input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects = 1;
 DESC format(JSONEachRow, '{"obj" : "a" : 42}, {"obj" : {"a" : {"b" : "Hello"}}}');
 SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : "Hello"}}}');
-```sql
-SET input_format_json_try_infer_named_tuples_from_objects = 1;
-SET input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects = 1;
-DESC format(JSONEachRow, '{"obj" : "a" : 42}, {"obj" : {"a" : {"b" : "Hello"}}}');
-SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : "Hello"}}}');
-```response
-┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ obj  │ Tuple(a Nullable(String))     │              │                    │         │                  │                │
-└──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-┌─obj─────────────────┐
-│ ('42')              │
-│ ('{"b" : "Hello"}') │
-└─────────────────────┘
+```
+
+Результат:
 
 ```response
 ┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -681,109 +702,138 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : 
 │ ('42')              │
 │ ('{"b" : "Hello"}') │
 └─────────────────────┘
+```
+
+
+##### input_format_json_read_objects_as_strings \{#input_format_json_read_objects_as_strings\}
+
+Включение этого параметра позволяет считывать вложенные объекты JSON как строки.
+Этот параметр можно использовать для чтения вложенных объектов JSON без использования типа объекта JSON.
+
+Этот параметр включен по умолчанию.
+
+Примечание: включение этого параметра будет действовать только в том случае, если параметр `input_format_json_try_infer_named_tuples_from_objects` отключен.
+
 ```sql
 SET input_format_json_read_objects_as_strings = 1, input_format_json_try_infer_named_tuples_from_objects = 0;
 DESC format(JSONEachRow, $$
                              {"obj" : {"key1" : 42, "key2" : [1,2,3,4]}}
                              {"obj" : {"key3" : {"nested_key" : 1}}}
                          $$)
-```sql
-SET input_format_json_read_objects_as_strings = 1, input_format_json_try_infer_named_tuples_from_objects = 0;
-DESC format(JSONEachRow, $$
-                             {"obj" : {"key1" : 42, "key2" : [1,2,3,4]}}
-                             {"obj" : {"key3" : {"nested_key" : 1}}}
-                         $$)
+```
+
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Nullable(String) │              │                    │         │                  │                │
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ obj  │ Nullable(String) │              │                    │         │                  │                │
-└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+
+##### input_format_json_read_numbers_as_strings \{#input_format_json_read_numbers_as_strings\}
+
+Включение этого параметра позволяет считывать числовые значения как строки.
+
+Этот параметр включён по умолчанию.
+
+**Пример**
+
 ```sql
 SET input_format_json_read_numbers_as_strings = 1;
 DESC format(JSONEachRow, $$
                                 {"value" : 1055}
                                 {"value" : "unknown"}
                          $$)
-```sql
-SET input_format_json_read_numbers_as_strings = 1;
-DESC format(JSONEachRow, $$
-                                {"value" : 1055}
-                                {"value" : "unknown"}
-                         $$)
+```
+
 ```response
 ┌─name──┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ value │ Nullable(String) │              │                    │         │                  │                │
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name──┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ value │ Nullable(String) │              │                    │         │                  │                │
-└───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+
+##### input_format_json_read_bools_as_numbers \{#input_format_json_read_bools_as_numbers\}
+
+Включение этого параметра позволяет читать логические значения Bool как числа.
+
+Этот параметр включен по умолчанию.
+
+**Пример:**
+
 ```sql
 SET input_format_json_read_bools_as_numbers = 1;
 DESC format(JSONEachRow, $$
                                 {"value" : true}
                                 {"value" : 42}
                          $$)
-```sql
-SET input_format_json_read_bools_as_numbers = 1;
-DESC format(JSONEachRow, $$
-                                {"value" : true}
-                                {"value" : 42}
-                         $$)
+```
+
 ```response
 ┌─name──┬─type────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ value │ Nullable(Int64) │              │                    │         │                  │                │
 └───────┴─────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name──┬─type────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ value │ Nullable(Int64) │              │                    │         │                  │                │
-└───────┴─────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+
+##### input_format_json_read_bools_as_strings \{#input_format_json_read_bools_as_strings\}
+
+Включение этого параметра позволяет читать значения типа Bool как строки.
+
+Этот параметр включен по умолчанию.
+
+**Пример:**
+
 ```sql
 SET input_format_json_read_bools_as_strings = 1;
 DESC format(JSONEachRow, $$
                                 {"value" : true}
                                 {"value" : "Hello, World"}
                          $$)
-```sql
-SET input_format_json_read_bools_as_strings = 1;
-DESC format(JSONEachRow, $$
-                                {"value" : true}
-                                {"value" : "Hello, World"}
-                         $$)
+```
+
 ```response
 ┌─name──┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ value │ Nullable(String) │              │                    │         │                  │                │
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name──┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ value │ Nullable(String) │              │                    │         │                  │                │
-└───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+
+##### input_format_json_read_arrays_as_strings \{#input_format_json_read_arrays_as_strings\}
+
+Включение этого параметра позволяет считывать значения JSON-массивов как строки.
+
+Этот параметр включен по умолчанию.
+
+**Пример**
+
 ```sql
 SET input_format_json_read_arrays_as_strings = 1;
 SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow, 'arr String', '{"arr" : [1, "Hello", [1,2,3]]}');
-```sql
-SET input_format_json_read_arrays_as_strings = 1;
-SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow, 'arr String', '{"arr" : [1, "Hello", [1,2,3]]}');
-```response
-┌─arr───────────────────┬─toTypeName(arr)─┬─arrayElement(JSONExtractArrayRaw(arr), 3)─┐
-│ [1, "Hello", [1,2,3]] │ String          │ [1,2,3]                                   │
-└───────────────────────┴─────────────────┴───────────────────────────────────────────┘
+```
 
 ```response
 ┌─arr───────────────────┬─toTypeName(arr)─┬─arrayElement(JSONExtractArrayRaw(arr), 3)─┐
 │ [1, "Hello", [1,2,3]] │ String          │ [1,2,3]                                   │
 └───────────────────────┴─────────────────┴───────────────────────────────────────────┘
+```
+
+
+##### input_format_json_infer_incomplete_types_as_strings \{#input_format_json_infer_incomplete_types_as_strings\}
+
+Включение этого SETTING позволяет использовать тип String для JSON-ключей, которые содержат только `Null`/`{}`/`[]` в выборке данных при выводе схемы.
+В JSON-форматах любое значение может быть прочитано как String, если включены все соответствующие настройки (по умолчанию они все включены), и мы можем избежать ошибок вида `Cannot determine type for column 'column_name' by first 25000 rows of data, most likely this column contains only Nulls or empty Arrays/Maps` при выводе схемы,
+используя тип String для ключей с неизвестными типами.
+
+Пример:
+
 ```sql
 SET input_format_json_infer_incomplete_types_as_strings = 1, input_format_json_try_infer_named_tuples_from_objects = 1;
 DESCRIBE format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" : null, "d" : {}, "e" : []}}');
 SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" : null, "d" : {}, "e" : []}}');
-```sql
-SET input_format_json_infer_incomplete_types_as_strings = 1, input_format_json_try_infer_named_tuples_from_objects = 1;
-DESCRIBE format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" : null, "d" : {}, "e" : []}}');
-SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" : null, "d" : {}, "e" : []}}');
+```
+
+Результат:
+
 ```markdown
 ┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Tuple(a Array(Nullable(Int64)), b Nullable(String), c Nullable(String), d Nullable(String), e Array(Nullable(String))) │              │                    │         │                  │                │
@@ -792,18 +842,28 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" :
 ┌─obj────────────────────────────┐
 │ ([1,2,3],'hello',NULL,'{}',[]) │
 └────────────────────────────────┘
-```markdown
-┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ obj  │ Tuple(a Array(Nullable(Int64)), b Nullable(String), c Nullable(String), d Nullable(String), e Array(Nullable(String))) │              │                    │         │                  │                │
-└──────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
-┌─obj────────────────────────────┐
-│ ([1,2,3],'hello',NULL,'{}',[]) │
-└────────────────────────────────┘
+
+### CSV \{#csv\}
+
+В формате CSV ClickHouse извлекает значения столбцов из строки в соответствии с разделителями. ClickHouse ожидает, что все типы, кроме чисел и строк, будут заключены в двойные кавычки. Если значение в двойных кавычках, ClickHouse пытается разобрать
+данные внутри кавычек с помощью рекурсивного парсера, а затем подобрать для них наиболее подходящий тип данных. Если значение не в двойных кавычках, ClickHouse пытается разобрать его как число,
+и если значение не является числом, ClickHouse трактует его как строку.
+
+Если вы не хотите, чтобы ClickHouse пытался определять сложные типы с использованием парсеров и эвристик, вы можете отключить настройку `input_format_csv_use_best_effort_in_schema_inference`,
+и тогда ClickHouse будет рассматривать все столбцы как строки.
+
+Если настройка `input_format_csv_detect_header` включена, ClickHouse попытается обнаружить заголовок с именами столбцов (и, возможно, типами) при выводе схемы. Эта настройка включена по умолчанию.
+
+**Примеры:**
+
+Целые числа, числа с плавающей запятой, булевы значения, строки:
+
 ```sql
 DESC format(CSV, '42,42.42,true,"Hello,World!"')
-```sql
-DESC format(CSV, '42,42.42,true,"Hello,World!"')
+```
+
 ```response
 ┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Int64)   │              │                    │         │                  │                │
@@ -811,161 +871,145 @@ DESC format(CSV, '42,42.42,true,"Hello,World!"')
 │ c3   │ Nullable(Bool)    │              │                    │         │                  │                │
 │ c4   │ Nullable(String)  │              │                    │         │                  │                │
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Int64)   │              │                    │         │                  │                │
-│ c2   │ Nullable(Float64) │              │                    │         │                  │                │
-│ c3   │ Nullable(Bool)    │              │                    │         │                  │                │
-│ c4   │ Nullable(String)  │              │                    │         │                  │                │
-└──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Строковые значения без кавычек:
+
 ```sql
 DESC format(CSV, 'Hello world!,World hello!')
-```sql
-DESC format(CSV, 'Hello world!,World hello!')
-```response
-┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(String) │              │                    │         │                  │                │
-│ c2   │ Nullable(String) │              │                    │         │                  │                │
-└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(String) │              │                    │         │                  │                │
 │ c2   │ Nullable(String) │              │                    │         │                  │                │
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Dates, DateTimes:
+
 ```sql
 DESC format(CSV, '"2020-01-01","2020-01-01 00:00:00","2022-01-01 00:00:00.000"')
-```sql
-DESC format(CSV, '"2020-01-01","2020-01-01 00:00:00","2022-01-01 00:00:00.000"')
+```
+
 ```response
 ┌─name─┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Date)          │              │                    │         │                  │                │
 │ c2   │ Nullable(DateTime)      │              │                    │         │                  │                │
 │ c3   │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
 └──────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Date)          │              │                    │         │                  │                │
-│ c2   │ Nullable(DateTime)      │              │                    │         │                  │                │
-│ c3   │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
-└──────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Массивы:
+
 ```sql
 DESC format(CSV, '"[1,2,3]","[[1, 2], [], [3, 4]]"')
-```sql
-DESC format(CSV, '"[1,2,3]","[[1, 2], [], [3, 4]]"')
+```
+
 ```response
 ┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Nullable(Int64))        │              │                    │         │                  │                │
 │ c2   │ Array(Array(Nullable(Int64))) │              │                    │         │                  │                │
 └──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Nullable(Int64))        │              │                    │         │                  │                │
-│ c2   │ Array(Array(Nullable(Int64))) │              │                    │         │                  │                │
-└──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
 ```sql
 DESC format(CSV, $$"['Hello', 'world']","[['Abc', 'Def'], []]"$$)
-```sql
-DESC format(CSV, $$"['Hello', 'world']","[['Abc', 'Def'], []]"$$)
+```
+
+
 ```response
 ┌─name─┬─type───────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Nullable(String))        │              │                    │         │                  │                │
 │ c2   │ Array(Array(Nullable(String))) │              │                    │         │                  │                │
 └──────┴────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type───────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Nullable(String))        │              │                    │         │                  │                │
-│ c2   │ Array(Array(Nullable(String))) │              │                    │         │                  │                │
-└──────┴────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Если массив содержит NULL, ClickHouse определит тип на основе других элементов массива:
+
 ```sql
 DESC format(CSV, '"[NULL, 42, NULL]"')
-```sql
-DESC format(CSV, '"[NULL, 42, NULL]"')
+```
+
 ```response
 ┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Maps:
+
 ```sql
 DESC format(CSV, $$"{'key1' : 42, 'key2' : 24}"$$)
-```sql
-DESC format(CSV, $$"{'key1' : 42, 'key2' : 24}"$$)
+```
+
 ```response
 ┌─name─┬─type─────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Map(String, Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Map(String, Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Вложенные массивы и отображения:
+
 ```sql
 DESC format(CSV, $$"[{'key1' : [[42, 42], []], 'key2' : [[null], [42]]}]"$$)
-```sql
-DESC format(CSV, $$"[{'key1' : [[42, 42], []], 'key2' : [[null], [42]]}]"$$)
-```response
-┌─name─┬─type──────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Map(String, Array(Array(Nullable(Int64))))) │              │                    │         │                  │                │
-└──────┴───────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ```response
 ┌─name─┬─type──────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Map(String, Array(Array(Nullable(Int64))))) │              │                    │         │                  │                │
 └──────┴───────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Если ClickHouse не может определить тип значения в кавычках, потому что данные содержат только NULL, он будет считать его типом String:
+
 ```sql
 DESC format(CSV, '"[NULL, NULL]"')
-```sql
-DESC format(CSV, '"[NULL, NULL]"')
+```
+
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(String) │              │                    │         │                  │                │
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(String) │              │                    │         │                  │                │
-└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Пример с отключённым параметром `input_format_csv_use_best_effort_in_schema_inference`:
+
 ```sql
 SET input_format_csv_use_best_effort_in_schema_inference = 0
 DESC format(CSV, '"[1,2,3]",42.42,Hello World!')
-```sql
-SET input_format_csv_use_best_effort_in_schema_inference = 0
-DESC format(CSV, '"[1,2,3]",42.42,Hello World!')
+```
+
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(String) │              │                    │         │                  │                │
 │ c2   │ Nullable(String) │              │                    │         │                  │                │
 │ c3   │ Nullable(String) │              │                    │         │                  │                │
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(String) │              │                    │         │                  │                │
-│ c2   │ Nullable(String) │              │                    │         │                  │                │
-│ c3   │ Nullable(String) │              │                    │         │                  │                │
-└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Примеры автоматического определения заголовков (когда `input_format_csv_detect_header` включена):
+
+Только имена:
+
 ```sql
 SELECT * FROM format(CSV,
 $$"number","string","array"
 42,"Hello","[1, 2, 3]"
 43,"World","[4, 5, 6]"
 $$)
-```sql
-SELECT * FROM format(CSV,
-$$"number","string","array"
-42,"Hello","[1, 2, 3]"
-43,"World","[4, 5, 6]"
-$$)
+```
+
+
 ```response
 ┌─number─┬─string─┬─array───┐
 │     42 │ Hello  │ [1,2,3] │
 │     43 │ World  │ [4,5,6] │
 └────────┴────────┴─────────┘
-```response
-┌─number─┬─string─┬─array───┐
-│     42 │ Hello  │ [1,2,3] │
-│     43 │ World  │ [4,5,6] │
-└────────┴────────┴─────────┘
+```
+
+Имена и типы:
+
 ```sql
 DESC format(CSV,
 $$"number","string","array"
@@ -973,70 +1017,74 @@ $$"number","string","array"
 42,"Hello","[1, 2, 3]"
 43,"World","[4, 5, 6]"
 $$)
-```sql
-DESC format(CSV,
-$$"number","string","array"
-"UInt32","String","Array(UInt16)"
-42,"Hello","[1, 2, 3]"
-43,"World","[4, 5, 6]"
-$$)
+```
+
 ```response
 ┌─name───┬─type──────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ number │ UInt32        │              │                    │         │                  │                │
 │ string │ String        │              │                    │         │                  │                │
 │ array  │ Array(UInt16) │              │                    │         │                  │                │
 └────────┴───────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name───┬─type──────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ number │ UInt32        │              │                    │         │                  │                │
-│ string │ String        │              │                    │         │                  │                │
-│ array  │ Array(UInt16) │              │                    │         │                  │                │
-└────────┴───────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Обратите внимание, что заголовок может быть распознан только в том случае, если есть хотя бы один столбец с типом, отличным от String. Если все столбцы имеют тип String, заголовок не распознаётся:
+
 ```sql
 SELECT * FROM format(CSV,
 $$"first_column","second_column"
 "Hello","World"
 "World","Hello"
 $$)
-```sql
-SELECT * FROM format(CSV,
-$$"first_column","second_column"
-"Hello","World"
-"World","Hello"
-$$)
+```
+
 ```response
 ┌─c1───────────┬─c2────────────┐
 │ first_column │ second_column │
 │ Hello        │ World         │
 │ World        │ Hello         │
 └──────────────┴───────────────┘
-```response
-┌─c1───────────┬─c2────────────┐
-│ first_column │ second_column │
-│ Hello        │ World         │
-│ World        │ Hello         │
-└──────────────┴───────────────┘
+```
+
+
+#### Настройки CSV \{#csv-settings\}
+
+##### input_format_csv_try_infer_numbers_from_strings \{#input_format_csv_try_infer_numbers_from_strings\}
+
+Включение этого параметра позволяет выводить числовые значения из строковых.
+
+По умолчанию этот параметр отключён.
+
+**Пример:**
+
 ```sql
 SET input_format_json_try_infer_numbers_from_strings = 1;
 DESC format(CSV, '42,42.42');
-```sql
-SET input_format_json_try_infer_numbers_from_strings = 1;
-DESC format(CSV, '42,42.42');
-```response
-┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Int64)   │              │                    │         │                  │                │
-│ c2   │ Nullable(Float64) │              │                    │         │                  │                │
-└──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ```response
 ┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Int64)   │              │                    │         │                  │                │
 │ c2   │ Nullable(Float64) │              │                    │         │                  │                │
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+
+### TSV/TSKV \{#tsv-tskv\}
+
+В форматах TSV/TSKV ClickHouse извлекает значение столбца из строки в соответствии с табуляцией, а затем разбирает извлечённое значение с помощью рекурсивного парсера, чтобы определить наиболее подходящий тип. Если тип не удаётся определить, ClickHouse рассматривает это значение как String.
+
+Если вы не хотите, чтобы ClickHouse пытался определять сложные типы с помощью различных парсеров и эвристик, вы можете отключить настройку `input_format_tsv_use_best_effort_in_schema_inference`, и ClickHouse будет рассматривать все столбцы как String.
+
+Если настройка `input_format_tsv_detect_header` включена, ClickHouse при определении схемы попытается обнаружить заголовок с именами столбцов (и, возможно, типами). Эта настройка включена по умолчанию.
+
+**Примеры:**
+
+Целые числа, числа с плавающей запятой, логические значения, строки:
+
 ```sql
 DESC format(TSV, '42    42.42    true    Hello,World!')
-```sql
-DESC format(TSV, '42    42.42    true    Hello,World!')
+```
+
 ```response
 ┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Int64)   │              │                    │         │                  │                │
@@ -1044,17 +1092,12 @@ DESC format(TSV, '42    42.42    true    Hello,World!')
 │ c3   │ Nullable(Bool)    │              │                    │         │                  │                │
 │ c4   │ Nullable(String)  │              │                    │         │                  │                │
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Int64)   │              │                    │         │                  │                │
-│ c2   │ Nullable(Float64) │              │                    │         │                  │                │
-│ c3   │ Nullable(Bool)    │              │                    │         │                  │                │
-│ c4   │ Nullable(String)  │              │                    │         │                  │                │
-└──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
 ```sql
 DESC format(TSKV, 'int=42    float=42.42    bool=true    string=Hello,World!\n')
-```sql
-DESC format(TSKV, 'int=42    float=42.42    bool=true    string=Hello,World!\n')
+```
+
 ```response
 ┌─name───┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ int    │ Nullable(Int64)   │              │                    │         │                  │                │
@@ -1062,23 +1105,13 @@ DESC format(TSKV, 'int=42    float=42.42    bool=true    string=Hello,World!\n')
 │ bool   │ Nullable(Bool)    │              │                    │         │                  │                │
 │ string │ Nullable(String)  │              │                    │         │                  │                │
 └────────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name───┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ int    │ Nullable(Int64)   │              │                    │         │                  │                │
-│ float  │ Nullable(Float64) │              │                    │         │                  │                │
-│ bool   │ Nullable(Bool)    │              │                    │         │                  │                │
-│ string │ Nullable(String)  │              │                    │         │                  │                │
-└────────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Date и DateTime:
+
 ```sql
 DESC format(TSV, '2020-01-01    2020-01-01 00:00:00    2022-01-01 00:00:00.000')
-```sql
-DESC format(TSV, '2020-01-01    2020-01-01 00:00:00    2022-01-01 00:00:00.000')
-```response
-┌─name─┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Date)          │              │                    │         │                  │                │
-│ c2   │ Nullable(DateTime)      │              │                    │         │                  │                │
-│ c3   │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
-└──────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ```response
 ┌─name─┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -1086,135 +1119,130 @@ DESC format(TSV, '2020-01-01    2020-01-01 00:00:00    2022-01-01 00:00:00.000')
 │ c2   │ Nullable(DateTime)      │              │                    │         │                  │                │
 │ c3   │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
 └──────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Массивы:
+
 ```sql
 DESC format(TSV, '[1,2,3]    [[1, 2], [], [3, 4]]')
-```sql
-DESC format(TSV, '[1,2,3]    [[1, 2], [], [3, 4]]')
+```
+
 ```response
 ┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Nullable(Int64))        │              │                    │         │                  │                │
 │ c2   │ Array(Array(Nullable(Int64))) │              │                    │         │                  │                │
 └──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Nullable(Int64))        │              │                    │         │                  │                │
-│ c2   │ Array(Array(Nullable(Int64))) │              │                    │         │                  │                │
-└──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
 ```sql
 DESC format(TSV, '[''Hello'', ''world'']    [[''Abc'', ''Def''], []]')
-```sql
-DESC format(TSV, '[''Hello'', ''world'']    [[''Abc'', ''Def''], []]')
+```
+
+
 ```response
 ┌─name─┬─type───────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Nullable(String))        │              │                    │         │                  │                │
 │ c2   │ Array(Array(Nullable(String))) │              │                    │         │                  │                │
 └──────┴────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type───────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Nullable(String))        │              │                    │         │                  │                │
-│ c2   │ Array(Array(Nullable(String))) │              │                    │         │                  │                │
-└──────┴────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Если массив содержит NULL, ClickHouse определяет тип на основе других элементов массива:
+
 ```sql
 DESC format(TSV, '[NULL, 42, NULL]')
-```sql
-DESC format(TSV, '[NULL, 42, NULL]')
+```
+
 ```response
 ┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Кортежи:
+
 ```sql
 DESC format(TSV, $$(42, 'Hello, world!')$$)
-```sql
-DESC format(TSV, $$(42, 'Hello, world!')$$)
+```
+
 ```response
 ┌─name─┬─type─────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Tuple(Nullable(Int64), Nullable(String)) │              │                    │         │                  │                │
 └──────┴──────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Tuple(Nullable(Int64), Nullable(String)) │              │                    │         │                  │                │
-└──────┴──────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Словари:
+
 ```sql
 DESC format(TSV, $${'key1' : 42, 'key2' : 24}$$)
-```sql
-DESC format(TSV, $${'key1' : 42, 'key2' : 24}$$)
+```
+
 ```response
 ┌─name─┬─type─────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Map(String, Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Map(String, Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Вложенные массивы, кортежи и Map:
+
 ```sql
 DESC format(TSV, $$[{'key1' : [(42, 'Hello'), (24, NULL)], 'key2' : [(NULL, ','), (42, 'world!')]}]$$)
-```sql
-DESC format(TSV, $$[{'key1' : [(42, 'Hello'), (24, NULL)], 'key2' : [(NULL, ','), (42, 'world!')]}]$$)
-```response
-┌─name─┬─type────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Map(String, Array(Tuple(Nullable(Int64), Nullable(String))))) │              │                    │         │                  │                │
-└──────┴─────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ```response
 ┌─name─┬─type────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Map(String, Array(Tuple(Nullable(Int64), Nullable(String))))) │              │                    │         │                  │                │
 └──────┴─────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Если ClickHouse не может определить тип, потому что данные содержат только null-значения, то ClickHouse будет трактовать эти данные как String:
+
 ```sql
 DESC format(TSV, '[NULL, NULL]')
-```sql
-DESC format(TSV, '[NULL, NULL]')
+```
+
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(String) │              │                    │         │                  │                │
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(String) │              │                    │         │                  │                │
-└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Пример с отключённым параметром `input_format_tsv_use_best_effort_in_schema_inference`:
+
 ```sql
 SET input_format_tsv_use_best_effort_in_schema_inference = 0
 DESC format(TSV, '[1,2,3]    42.42    Hello World!')
-```sql
-SET input_format_tsv_use_best_effort_in_schema_inference = 0
-DESC format(TSV, '[1,2,3]    42.42    Привет, мир!')
+```
+
+
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(String) │              │                    │         │                  │                │
 │ c2   │ Nullable(String) │              │                    │         │                  │                │
 │ c3   │ Nullable(String) │              │                    │         │                  │                │
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(String) │              │                    │         │                  │                │
-│ c2   │ Nullable(String) │              │                    │         │                  │                │
-│ c3   │ Nullable(String) │              │                    │         │                  │                │
-└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Примеры автоопределения заголовка (когда включён параметр `input_format_tsv_detect_header`):
+
+Только имена столбцов:
+
 ```sql
 SELECT * FROM format(TSV,
 $$number    string    array
 42    Hello    [1, 2, 3]
 43    World    [4, 5, 6]
 $$);
-```sql
-SELECT * FROM format(TSV,
-$$number    string    array
-42    Hello    [1, 2, 3]
-43    World    [4, 5, 6]
-$$);
+```
+
 ```response
 ┌─number─┬─string─┬─array───┐
 │     42 │ Hello  │ [1,2,3] │
 │     43 │ World  │ [4,5,6] │
 └────────┴────────┴─────────┘
-```response
-┌─number─┬─string─┬─array───┐
-│     42 │ Hello  │ [1,2,3] │
-│     43 │ World  │ [4,5,6] │
-└────────┴────────┴─────────┘
+```
+
+Имена и типы:
+
 ```sql
 DESC format(TSV,
 $$number    string    array
@@ -1222,43 +1250,25 @@ UInt32    String    Array(UInt16)
 42    Hello    [1, 2, 3]
 43    World    [4, 5, 6]
 $$)
-```sql
-DESC format(TSV,
-$$number    string    array
-UInt32    String    Array(UInt16)
-42    Hello    [1, 2, 3]
-43    World    [4, 5, 6]
-$$)
+```
+
 ```response
 ┌─name───┬─type──────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ number │ UInt32        │              │                    │         │                  │                │
 │ string │ String        │              │                    │         │                  │                │
 │ array  │ Array(UInt16) │              │                    │         │                  │                │
 └────────┴───────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name───┬─type──────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ number │ UInt32        │              │                    │         │                  │                │
-│ string │ String        │              │                    │         │                  │                │
-│ array  │ Array(UInt16) │              │                    │         │                  │                │
-└────────┴───────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Обратите внимание, что заголовок может быть распознан только в том случае, если имеется хотя бы один столбец с типом, отличным от String. Если все столбцы имеют тип String, заголовок не распознаётся:
+
 ```sql
 SELECT * FROM format(TSV,
 $$first_column    second_column
 Hello    World
 World    Hello
 $$)
-```sql
-SELECT * FROM format(TSV,
-$$first_column    second_column
-Hello    World
-World    Hello
-$$)
-```response
-┌─c1───────────┬─c2────────────┐
-│ first_column │ second_column │
-│ Hello        │ World         │
-│ World        │ Hello         │
-└──────────────┴───────────────┘
+```
 
 ```response
 ┌─c1───────────┬─c2────────────┐
@@ -1266,10 +1276,22 @@ $$)
 │ Hello        │ World         │
 │ World        │ Hello         │
 └──────────────┴───────────────┘
+```
+
+
+### Значения \{#values\}
+
+В формате Values ClickHouse извлекает значение столбца из строки и затем разбирает его с помощью
+рекурсивного парсера аналогично разбору литералов.
+
+**Примеры:**
+
+Целые числа, числа с плавающей точкой, логические значения, строки:
+
 ```sql
 DESC format(Values, $$(42, 42.42, true, 'Hello,World!')$$)
-```sql
-DESC format(Values, $$(42, 42.42, true, 'Hello,World!')$$)
+```
+
 ```response
 ┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Int64)   │              │                    │         │                  │                │
@@ -1277,124 +1299,121 @@ DESC format(Values, $$(42, 42.42, true, 'Hello,World!')$$)
 │ c3   │ Nullable(Bool)    │              │                    │         │                  │                │
 │ c4   │ Nullable(String)  │              │                    │         │                  │                │
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Int64)   │              │                    │         │                  │                │
-│ c2   │ Nullable(Float64) │              │                    │         │                  │                │
-│ c3   │ Nullable(Bool)    │              │                    │         │                  │                │
-│ c4   │ Nullable(String)  │              │                    │         │                  │                │
-└──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Даты, DateTime:
+
 ```sql
  DESC format(Values, $$('2020-01-01', '2020-01-01 00:00:00', '2022-01-01 00:00:00.000')$$)
- ```sql
- DESC format(Values, $$('2020-01-01', '2020-01-01 00:00:00', '2022-01-01 00:00:00.000')$$)
+```
+
 ```response
 ┌─name─┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Date)          │              │                    │         │                  │                │
 │ c2   │ Nullable(DateTime)      │              │                    │         │                  │                │
 │ c3   │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
 └──────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Date)          │              │                    │         │                  │                │
-│ c2   │ Nullable(DateTime)      │              │                    │         │                  │                │
-│ c3   │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
-└──────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Массивы:
+
 ```sql
 DESC format(Values, '([1,2,3], [[1, 2], [], [3, 4]])')
-```sql
-DESC format(Values, '([1,2,3], [[1, 2], [], [3, 4]])')
+```
+
 ```response
 ┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Nullable(Int64))        │              │                    │         │                  │                │
 │ c2   │ Array(Array(Nullable(Int64))) │              │                    │         │                  │                │
 └──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Nullable(Int64))        │              │                    │         │                  │                │
-│ c2   │ Array(Array(Nullable(Int64))) │              │                    │         │                  │                │
-└──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Если массив содержит null, ClickHouse будет использовать типы других элементов массива:
+
 ```sql
 DESC format(Values, '([NULL, 42, NULL])')
-```sql
-DESC format(Values, '([NULL, 42, NULL])')
+```
+
 ```response
 ┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Кортежи:
+
 ```sql
 DESC format(Values, $$((42, 'Hello, world!'))$$)
-```sql
-DESC format(Values, $$((42, 'Hello, world!'))$$)
+```
+
 ```response
 ┌─name─┬─type─────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Tuple(Nullable(Int64), Nullable(String)) │              │                    │         │                  │                │
 └──────┴──────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Tuple(Nullable(Int64), Nullable(String)) │              │                    │         │                  │                │
-└──────┴──────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Maps:
+
 ```sql
 DESC format(Values, $$({'key1' : 42, 'key2' : 24})$$)
-```sql
-DESC format(Values, $$({'key1' : 42, 'key2' : 24})$$)
-```response
-┌─name─┬─type─────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Map(String, Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ```response
 ┌─name─┬─type─────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Map(String, Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Вложенные массивы, кортежи и словари:
+
 ```sql
 DESC format(Values, $$([{'key1' : [(42, 'Hello'), (24, NULL)], 'key2' : [(NULL, ','), (42, 'world!')]}])$$)
-```sql
-DESC format(Values, $$([{'key1' : [(42, 'Hello'), (24, NULL)], 'key2' : [(NULL, ','), (42, 'world!')]}])$$)
+```
+
 ```response
 ┌─name─┬─type────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Map(String, Array(Tuple(Nullable(Int64), Nullable(String))))) │              │                    │         │                  │                │
 └──────┴─────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Map(String, Array(Tuple(Nullable(Int64), Nullable(String))))) │              │                    │         │                  │                │
-└──────┴─────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Если ClickHouse не может определить тип, так как данные содержат только значения NULL, будет сгенерировано исключение:
+
 ```sql
 DESC format(Values, '([NULL, NULL])')
-```sql
-DESC format(Values, '([NULL, NULL])')
+```
+
 ```response
 Code: 652. DB::Exception: Received from localhost:9000. DB::Exception:
 Cannot determine type for column 'c1' by first 1 rows of data,
 most likely this column contains only Nulls or empty Arrays/Maps.
 ...
-```response
-Код: 652. DB::Exception: Получено от localhost:9000. DB::Exception:
-Невозможно определить тип столбца 'c1' по первой строке данных,
-вероятно, этот столбец содержит только значения Null или пустые массивы/словари.
-...
+```
+
+Пример с отключенной настройкой `input_format_tsv_use_best_effort_in_schema_inference`:
+
 ```sql
 SET input_format_tsv_use_best_effort_in_schema_inference = 0
 DESC format(TSV, '[1,2,3]    42.42    Hello World!')
-```sql
-SET input_format_tsv_use_best_effort_in_schema_inference = 0
-DESC format(TSV, '[1,2,3]    42.42    Hello World!')
+```
+
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(String) │              │                    │         │                  │                │
 │ c2   │ Nullable(String) │              │                    │         │                  │                │
 │ c3   │ Nullable(String) │              │                    │         │                  │                │
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(String) │              │                    │         │                  │                │
-│ c2   │ Nullable(String) │              │                    │         │                  │                │
-│ c3   │ Nullable(String) │              │                    │         │                  │                │
-└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+
+### CustomSeparated \{#custom-separated\}
+
+В формате CustomSeparated ClickHouse сначала извлекает все значения столбцов из строки в соответствии с указанными разделителями, а затем пытается определить
+тип данных для каждого значения согласно правилу экранирования.
+
+Если настройка `input_format_custom_detect_header` включена, ClickHouse попытается обнаружить заголовок с именами столбцов (и, возможно, типами) при выводе схемы. Эта настройка включена по умолчанию.
+
+**Пример**
+
 ```sql
 SET format_custom_row_before_delimiter = '<row_before_delimiter>',
        format_custom_row_after_delimiter = '<row_after_delimiter>\n',
@@ -1410,27 +1429,7 @@ DESC format(CustomSeparated, $$<result_before_delimiter>
 <row_before_delimiter>NULL<field_delimiter>'Some string 3'<field_delimiter>[1, 2, NULL]<row_after_delimiter>
 <result_after_delimiter>
 $$)
-```sql
-SET format_custom_row_before_delimiter = '<row_before_delimiter>',
-       format_custom_row_after_delimiter = '<row_after_delimiter>\n',
-       format_custom_row_between_delimiter = '<row_between_delimiter>\n',
-       format_custom_result_before_delimiter = '<result_before_delimiter>\n',
-       format_custom_result_after_delimiter = '<result_after_delimiter>\n',
-       format_custom_field_delimiter = '<field_delimiter>',
-       format_custom_escaping_rule = 'Quoted'
-
-DESC format(CustomSeparated, $$<result_before_delimiter>
-<row_before_delimiter>42.42<field_delimiter>'Some string 1'<field_delimiter>[1, NULL, 3]<row_after_delimiter>
-<row_between_delimiter>
-<row_before_delimiter>NULL<field_delimiter>'Some string 3'<field_delimiter>[1, 2, NULL]<row_after_delimiter>
-<result_after_delimiter>
-$$)
-```response
-┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Float64)      │              │                    │         │                  │                │
-│ c2   │ Nullable(String)       │              │                    │         │                  │                │
-│ c3   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ```response
 ┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -1438,6 +1437,10 @@ $$)
 │ c2   │ Nullable(String)       │              │                    │         │                  │                │
 │ c3   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Пример автоматического определения заголовка (при включённой настройке `input_format_custom_detect_header`):
+
 ```sql
 SET format_custom_row_before_delimiter = '<row_before_delimiter>',
        format_custom_row_after_delimiter = '<row_after_delimiter>\n',
@@ -1455,43 +1458,38 @@ DESC format(CustomSeparated, $$<result_before_delimiter>
 <row_before_delimiter>NULL<field_delimiter>'Some string 3'<field_delimiter>[1, 2, NULL]<row_after_delimiter>
 <result_after_delimiter>
 $$)
-```sql
-SET format_custom_row_before_delimiter = '<row_before_delimiter>',
-       format_custom_row_after_delimiter = '<row_after_delimiter>\n',
-       format_custom_row_between_delimiter = '<row_between_delimiter>\n',
-       format_custom_result_before_delimiter = '<result_before_delimiter>\n',
-       format_custom_result_after_delimiter = '<result_after_delimiter>\n',
-       format_custom_field_delimiter = '<field_delimiter>',
-       format_custom_escaping_rule = 'Quoted'
+```
 
-DESC format(CustomSeparated, $$<result_before_delimiter>
-<row_before_delimiter>'number'<field_delimiter>'string'<field_delimiter>'array'<row_after_delimiter>
-<row_between_delimiter>
-<row_before_delimiter>42.42<field_delimiter>'Some string 1'<field_delimiter>[1, NULL, 3]<row_after_delimiter>
-<row_between_delimiter>
-<row_before_delimiter>NULL<field_delimiter>'Some string 3'<field_delimiter>[1, 2, NULL]<row_after_delimiter>
-<result_after_delimiter>
-$$)
 ```response
 ┌─number─┬─string────────┬─array──────┐
 │  42.42 │ Some string 1 │ [1,NULL,3] │
 │   ᴺᵁᴸᴸ │ Some string 3 │ [1,2,NULL] │
 └────────┴───────────────┴────────────┘
-```response
-┌─number─┬─string────────┬─array──────┐
-│  42.42 │ Some string 1 │ [1,NULL,3] │
-│   ᴺᵁᴸᴸ │ Some string 3 │ [1,2,NULL] │
-└────────┴───────────────┴────────────┘
+```
+
+
+### Template \{#template\}
+
+В формате Template ClickHouse сначала извлекает все значения столбцов из строки в соответствии с указанным шаблоном, а затем пытается определить
+тип данных для каждого значения согласно его правилу экранирования.
+
+**Пример**
+
+Допустим, у нас есть файл `resultset` со следующим содержимым:
+
 ```bash
 <result_before_delimiter>
 ${data}<result_after_delimiter>
-```bash
-<result_before_delimiter>
-${data}<result_after_delimiter>
+```
+
+И файл `row_format` со следующим содержимым:
+
 ```text
 <row_before_delimiter>${column_1:CSV}<field_delimiter_1>${column_2:Quoted}<field_delimiter_2>${column_3:JSON}<row_after_delimiter>
-```text
-<row_before_delimiter>${column_1:CSV}<field_delimiter_1>${column_2:Quoted}<field_delimiter_2>${column_3:JSON}<row_after_delimiter>
+```
+
+После этого можно выполнить следующие запросы:
+
 ```sql
 SET format_template_rows_between_delimiter = '<row_between_delimiter>\n',
        format_template_row = 'row_format',
@@ -1503,38 +1501,32 @@ DESC format(Template, $$<result_before_delimiter>
 <row_before_delimiter>\N<field_delimiter_1>'Some string 3'<field_delimiter_2>[1, 2, null]<row_after_delimiter>
 <result_after_delimiter>
 $$)
-```sql
-SET format_template_rows_between_delimiter = '<row_between_delimiter>\n',
-       format_template_row = 'row_format',
-       format_template_resultset = 'resultset_format'
+```
 
-DESC format(Template, $$<result_before_delimiter>
-<row_before_delimiter>42.42<field_delimiter_1>'Some string 1'<field_delimiter_2>[1, null, 2]<row_after_delimiter>
-<row_between_delimiter>
-<row_before_delimiter>\N<field_delimiter_1>'Some string 3'<field_delimiter_2>[1, 2, null]<row_after_delimiter>
-<result_after_delimiter>
-$$)
 ```response
 ┌─name─────┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ column_1 │ Nullable(Float64)      │              │                    │         │                  │                │
 │ column_2 │ Nullable(String)       │              │                    │         │                  │                │
 │ column_3 │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─────┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ column_1 │ Nullable(Float64)      │              │                    │         │                  │                │
-│ column_2 │ Nullable(String)       │              │                    │         │                  │                │
-│ column_3 │ Array(Nullable(Int64)) │              │                    │         │                  │                │
-└──────────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+
+### Regexp \{#regexp\}
+
+Аналогично Template, в формате Regexp ClickHouse сначала извлекает значения всех столбцов из строки в соответствии с указанным регулярным выражением, а затем пытается определить
+тип данных для каждого значения в соответствии с указанным правилом экранирования.
+
+**Пример**
+
 ```sql
 SET format_regexp = '^Line: value_1=(.+?), value_2=(.+?), value_3=(.+?)',
        format_regexp_escaping_rule = 'CSV'
 
 DESC format(Regexp, $$Line: value_1=42, value_2="Some string 1", value_3="[1, NULL, 3]"
 Line: value_1=2, value_2="Some string 2", value_3="[4, 5, NULL]"$$)
-```sql
-SET format_regexp = '^Line: value_1=(.+?), value_2=(.+?), value_3=(.+?)',
-       format_regexp_escaping_rule = 'CSV'
+```
+
 ```response
 ┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Int64)        │              │                    │         │                  │                │
@@ -1542,13 +1534,11 @@ SET format_regexp = '^Line: value_1=(.+?), value_2=(.+?), value_3=(.+?)',
 │ c3   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-```sql
-DESC format(TSV, 'Hello, World!    42    [1, 2, 3]') settings column_names_for_schema_inference = 'str,int,arr'
-```
 
-### Настройки для текстовых форматов {#settings-for-text-formats}
 
-#### input&#95;format&#95;max&#95;rows&#95;to&#95;read&#95;for&#95;schema&#95;inference/input&#95;format&#95;max&#95;bytes&#95;to&#95;read&#95;for&#95;schema&#95;inference {#input-format-max-rows-to-read-for-schema-inference}
+### Настройки для текстовых форматов \{#settings-for-text-formats\}
+
+#### input_format_max_rows_to_read_for_schema_inference/input_format_max_bytes_to_read_for_schema_inference \{#input-format-max-rows-to-read-for-schema-inference\}
 
 Эти настройки управляют объёмом данных, считываемых при автоматическом определении схемы.
 Чем больше строк/байт считывается, тем больше времени уходит на определение схемы, но тем выше шанс
@@ -1556,14 +1546,18 @@ DESC format(TSV, 'Hello, World!    42    [1, 2, 3]') settings column_names_for_s
 
 Значения по умолчанию:
 
-* `25000` для `input_format_max_rows_to_read_for_schema_inference`.
-* `33554432` (32 МБ) для `input_format_max_bytes_to_read_for_schema_inference`.
+-   `25000` для `input_format_max_rows_to_read_for_schema_inference`.
+-   `33554432` (32 МБ) для `input_format_max_bytes_to_read_for_schema_inference`.
 
-#### column&#95;names&#95;for&#95;schema&#95;inference {#column-names-for-schema-inference}
+#### column_names_for_schema_inference \{#column-names-for-schema-inference\}
 
 Список имён столбцов, используемых при определении схемы для форматов без явных имён столбцов. Указанные имена будут использованы вместо значений по умолчанию `c1,c2,c3,...`. Формат: `column1,column2,column3,...`.
 
 **Пример**
+
+```sql
+DESC format(TSV, 'Hello, World!    42    [1, 2, 3]') settings column_names_for_schema_inference = 'str,int,arr'
+```
 
 ```response
 ┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -1573,16 +1567,17 @@ DESC format(TSV, 'Hello, World!    42    [1, 2, 3]') settings column_names_for_s
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```sql
-DESC format(JSONEachRow, '{"id" : 1, "age" : 25, "name" : "Josh", "status" : null, "hobbies" : ["football", "cooking"]}') SETTINGS schema_inference_hints = 'age LowCardinality(UInt8), status Nullable(String)', allow_suspicious_low_cardinality_types=1
-```
 
-#### schema&#95;inference&#95;hints {#schema-inference-hints}
+#### schema_inference_hints \{#schema-inference-hints\}
 
-Список имен столбцов и их типов, используемых при определении схемы вместо автоматически определенных типов. Формат: «column&#95;name1 column&#95;type1, column&#95;name2 column&#95;type2, ...».
+Список имен столбцов и их типов, используемых при определении схемы вместо автоматически определенных типов. Формат: &#39;column&#95;name1 column&#95;type1, column&#95;name2 column&#95;type2, ...&#39;.
 Этот параметр можно использовать для указания типов столбцов, которые не удалось определить автоматически, или для оптимизации схемы.
 
 **Пример**
+
+```sql
+DESC format(JSONEachRow, '{"id" : 1, "age" : 25, "name" : "Josh", "status" : null, "hobbies" : ["football", "cooking"]}') SETTINGS schema_inference_hints = 'age LowCardinality(UInt8), status Nullable(String)', allow_suspicious_low_cardinality_types=1
+```
 
 ```response
 ┌─name────┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -1594,6 +1589,20 @@ DESC format(JSONEachRow, '{"id" : 1, "age" : 25, "name" : "Josh", "status" : nul
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
+
+#### schema_inference_make_columns_nullable $ \{#schema-inference-make-columns-nullable\}
+
+Управляет приведением выводимых типов к `Nullable` при выводе схемы для форматов без информации о nullability. Возможные значения:
+
+* 0 — выводимый тип никогда не будет `Nullable`,
+* 1 — все выводимые типы будут `Nullable`,
+* 2 или &#39;auto&#39; — для текстовых форматов выводимый тип будет `Nullable` только если столбец содержит `NULL` в образце данных, который разбирается при выводе схемы; для строго типизированных форматов (Parquet, ORC, Arrow) информация о nullability берётся из метаданных файла,
+* 3 — для текстовых форматов использовать `Nullable`, для строго типизированных форматов — метаданные файла.
+
+По умолчанию: 3.
+
+**Примеры**
+
 ```sql
 SET schema_inference_make_columns_nullable = 1;
 DESC format(JSONEachRow, $$
@@ -1601,19 +1610,6 @@ DESC format(JSONEachRow, $$
                                 {"id" :  2, "age" :  19, "name" :  "Alan", "status" : "married", "hobbies" :  ["tennis", "art"]}
                          $$)
 ```
-
-#### schema&#95;inference&#95;make&#95;columns&#95;nullable $ {#schema-inference-make-columns-nullable}
-
-Управляет приведением выводимых типов к `Nullable` при выводе схемы для форматов без информации о nullability. Возможные значения:
-
-* 0 — выводимый тип никогда не будет `Nullable`,
-* 1 — все выводимые типы будут `Nullable`,
-* 2 или &#39;auto&#39; — для текстовых форматов выводимый тип будет `Nullable` только если столбец содержит `NULL` в образце данных, который разбирается при выводе схемы; для строго типизированных форматов (Parquet, ORC, Arrow) информация о nullability берётся из метаданных файла,
-* 3 — для текстовых форматов использовать `Nullable`; для строго типизированных форматов использовать метаданные файла.
-
-По умолчанию: 3.
-
-**Примеры**
 
 ```response
 ┌─name────┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -1662,15 +1658,7 @@ DESC format(JSONEachRow, $$
 └─────────┴───────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```sql
-SET input_format_try_infer_integers = 0
-DESC format(JSONEachRow, $$
-                                {"number" : 1}
-                                {"number" : 2}
-                         $$)
-```
-
-#### input&#95;format&#95;try&#95;infer&#95;integers {#input-format-try-infer-integers}
+#### input_format_try_infer_integers \{#input-format-try-infer-integers\}
 
 :::note
 Этот параметр не применяется к типу данных `JSON`.
@@ -1683,6 +1671,14 @@ DESC format(JSONEachRow, $$
 По умолчанию параметр включён.
 
 **Примеры**
+
+```sql
+SET input_format_try_infer_integers = 0
+DESC format(JSONEachRow, $$
+                                {"number" : 1}
+                                {"number" : 2}
+                         $$)
+```
 
 ```response
 ┌─name───┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -1730,6 +1726,17 @@ DESC format(JSONEachRow, $$
 └────────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
+
+#### input_format_try_infer_datetimes \{#input-format-try-infer-datetimes\}
+
+Если включено, ClickHouse будет пытаться определять тип `DateTime` или `DateTime64` по строковым полям при выводе схемы для текстовых форматов.
+Если все значения столбца в выборке данных были успешно разобраны как значения даты и времени, результирующим типом будет `DateTime` или `DateTime64(9)` (если хотя бы одно значение даты и времени имело дробную часть),
+если хотя бы одно значение не было разобрано как дата и время, результирующим типом будет `String`.
+
+По умолчанию включено.
+
+**Примеры**
+
 ```sql
 SET input_format_try_infer_datetimes = 0;
 DESC format(JSONEachRow, $$
@@ -1737,16 +1744,6 @@ DESC format(JSONEachRow, $$
                                 {"datetime" : "2022-01-01 00:00:00", "datetime64" : "2022-01-01 00:00:00.000"}
                          $$)
 ```
-
-#### input&#95;format&#95;try&#95;infer&#95;datetimes {#input-format-try-infer-datetimes}
-
-Если параметр включён, ClickHouse будет пытаться определять тип `DateTime` или `DateTime64` по строковым полям при автоматическом выводе схемы для текстовых форматов.
-Если все значения столбца в образце данных были успешно распознаны как значения даты и времени, результирующим типом будет `DateTime` или `DateTime64(9)` (если хотя бы одно значение даты и времени содержало дробную часть),
-если хотя бы одно значение не удалось распознать как дату и время, результирующим типом будет `String`.
-
-По умолчанию параметр включён.
-
-**Примеры**
 
 ```response
 ┌─name───────┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -1784,6 +1781,15 @@ DESC format(JSONEachRow, $$
 └────────────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
+
+#### input_format_try_infer_datetimes_only_datetime64 \{#input-format-try-infer-datetimes-only-datetime64\}
+
+Если включено, ClickHouse будет всегда определять тип `DateTime64(9)`, когда параметр `input_format_try_infer_datetimes` включён, даже если значения даты и времени не содержат дробной части.
+
+По умолчанию отключено.
+
+**Примеры**
+
 ```sql
 SET input_format_try_infer_datetimes = 1;
 SET input_format_try_infer_datetimes_only_datetime64 = 1;
@@ -1793,14 +1799,6 @@ DESC format(JSONEachRow, $$
                          $$)
 ```
 
-#### input&#95;format&#95;try&#95;infer&#95;datetimes&#95;only&#95;datetime64 {#input-format-try-infer-datetimes-only-datetime64}
-
-Если включено, ClickHouse будет всегда определять тип `DateTime64(9)`, когда параметр `input_format_try_infer_datetimes` включён, даже если значения даты и времени не содержат дробной части.
-
-По умолчанию отключено.
-
-**Примеры**
-
 ```response
 ┌─name───────┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ datetime   │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
@@ -1808,17 +1806,10 @@ DESC format(JSONEachRow, $$
 └────────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```sql
-SET input_format_try_infer_datetimes = 0, input_format_try_infer_dates = 0
-DESC format(JSONEachRow, $$
-                                {"date" : "2021-01-01"}
-                                {"date" : "2022-01-01"}
-                         $$)
-```
-
 Примечание: При разборе значений типов DateTime при выводе схемы учитывается настройка [date&#95;time&#95;input&#95;format](/operations/settings/settings-formats.md#date_time_input_format)
 
-#### input&#95;format&#95;try&#95;infer&#95;dates {#input-format-try-infer-dates}
+
+#### input_format_try_infer_dates \{#input-format-try-infer-dates\}
 
 Если параметр включён, ClickHouse будет пытаться определить тип `Date` из строковых полей при автоматическом определении схемы для текстовых форматов.
 Если все значения в столбце в образце данных были успешно интерпретированы как даты, результирующим типом будет `Date`,
@@ -1827,6 +1818,14 @@ DESC format(JSONEachRow, $$
 Включено по умолчанию.
 
 **Примеры**
+
+```sql
+SET input_format_try_infer_datetimes = 0, input_format_try_infer_dates = 0
+DESC format(JSONEachRow, $$
+                                {"date" : "2021-01-01"}
+                                {"date" : "2022-01-01"}
+                         $$)
+```
 
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -1861,6 +1860,15 @@ DESC format(JSONEachRow, $$
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
+
+#### input_format_try_infer_exponent_floats \{#input-format-try-infer-exponent-floats\}
+
+Если включено, ClickHouse будет пытаться распознавать числа с плавающей запятой в экспоненциальной форме в текстовых форматах (кроме JSON, где числа в экспоненциальной форме всегда распознаются).
+
+По умолчанию отключено.
+
+**Пример**
+
 ```sql
 SET input_format_try_infer_exponent_floats = 1;
 DESC format(CSV,
@@ -1870,19 +1878,26 @@ $$1.1E10
 $$)
 ```
 
-#### input&#95;format&#95;try&#95;infer&#95;exponent&#95;floats {#input-format-try-infer-exponent-floats}
-
-Если включено, ClickHouse будет пытаться распознавать числа с плавающей запятой в экспоненциальной форме в текстовых форматах (кроме JSON, где числа в экспоненциальной форме всегда распознаются).
-
-По умолчанию отключено.
-
-**Пример**
-
 ```response
 ┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Float64) │              │                    │         │                  │                │
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
+
+
+## Самоописывающиеся форматы \{#self-describing-formats\}
+
+Самоописывающиеся форматы содержат информацию о структуре данных в самих данных:
+это может быть заголовок с описанием, бинарное дерево типов или таблица.
+Чтобы автоматически вывести схему по файлам в таких форматах, ClickHouse читает часть данных, содержащую
+информацию о типах, и преобразует её в схему таблицы ClickHouse.
+
+### Форматы с суффиксом -WithNamesAndTypes \{#formats-with-names-and-types\}
+
+ClickHouse поддерживает некоторые текстовые форматы с суффиксом -WithNamesAndTypes. Этот суффикс означает, что данные содержат две дополнительные строки с именами и типами столбцов перед основными данными.
+При автоматическом выводе схемы для таких форматов ClickHouse читает первые две строки и извлекает имена и типы столбцов.
+
+**Пример**
 
 ```sql
 DESC format(TSVWithNamesAndTypes,
@@ -1892,20 +1907,6 @@ UInt8    String    Array(UInt8)
 $$)
 ```
 
-## Самоописывающиеся форматы {#self-describing-formats}
-
-Самоописывающиеся форматы содержат информацию о структуре данных в самих данных:
-это может быть заголовок с описанием, бинарное дерево типов или таблица.
-Чтобы автоматически вывести схему по файлам в таких форматах, ClickHouse читает часть данных, содержащую
-информацию о типах, и преобразует её в схему таблицы ClickHouse.
-
-### Форматы с суффиксом -WithNamesAndTypes {#formats-with-names-and-types}
-
-ClickHouse поддерживает некоторые текстовые форматы с суффиксом -WithNamesAndTypes. Этот суффикс означает, что данные содержат две дополнительные строки с именами и типами столбцов перед основными данными.
-При автоматическом выводе схемы для таких форматов ClickHouse читает первые две строки и извлекает имена и типы столбцов.
-
-**Пример**
-
 ```response
 ┌─name─┬─type─────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ num  │ UInt8        │              │                    │         │                  │                │
@@ -1913,6 +1914,14 @@ ClickHouse поддерживает некоторые текстовые фор
 │ arr  │ Array(UInt8) │              │                    │         │                  │                │
 └──────┴──────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
+
+
+### Форматы JSON с метаданными \{#json-with-metadata\}
+
+Некоторые входные форматы JSON ([JSON](/interfaces/formats/JSON), [JSONCompact](/interfaces/formats/JSONCompact), [JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)) содержат метаданные с именами и типами столбцов.
+При определении схемы для таких форматов ClickHouse использует эти метаданные.
+
+**Пример**
 
 ```sql
 DESC format(JSON, $$
@@ -1954,13 +1963,6 @@ DESC format(JSON, $$
 $$)
 ```
 
-### Форматы JSON с метаданными {#json-with-metadata}
-
-Некоторые входные форматы JSON ([JSON](/interfaces/formats/JSON), [JSONCompact](/interfaces/formats/JSONCompact), [JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)) содержат метаданные с именами и типами столбцов.
-При определении схемы для таких форматов ClickHouse использует эти метаданные.
-
-**Пример**
-
 ```response
 ┌─name─┬─type─────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ num  │ UInt8        │              │                    │         │                  │                │
@@ -1969,11 +1971,8 @@ $$)
 └──────┴──────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```sql
-DESC format(LineAsString, 'Hello\nworld!')
-```
 
-### Avro {#avro}
+### Avro \{#avro\}
 
 В формате Avro ClickHouse считывает схему из данных и преобразует её в схему ClickHouse, используя следующие соответствия типов:
 
@@ -1998,7 +1997,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 
 Другие типы Avro не поддерживаются.
 
-### Parquet {#parquet}
+### Parquet \{#parquet\}
 
 В формате Parquet ClickHouse считывает схему из данных и преобразует её в схему ClickHouse, используя следующие соответствия типов:
 
@@ -2008,11 +2007,11 @@ DESC format(LineAsString, 'Hello\nworld!')
 | `UINT8`                        | [UInt8](../sql-reference/data-types/int-uint.md)       |
 | `INT8`                         | [Int8](../sql-reference/data-types/int-uint.md)        |
 | `UINT16`                       | [UInt16](../sql-reference/data-types/int-uint.md)      |
-| `INT16`                        | [Int16](../sql-reference/data-types/int-uint.md)       |
+| `INT16`                       | [Int16](../sql-reference/data-types/int-uint.md)       |
 | `UINT32`                       | [UInt32](../sql-reference/data-types/int-uint.md)      |
 | `INT32`                        | [Int32](../sql-reference/data-types/int-uint.md)       |
 | `UINT64`                       | [UInt64](../sql-reference/data-types/int-uint.md)      |
-| `INT64`                        | [Int64](../sql-reference/data-types/int-uint.md)       |
+| `INT64`                       | [Int64](../sql-reference/data-types/int-uint.md)       |
 | `FLOAT`                        | [Float32](../sql-reference/data-types/float.md)        |
 | `DOUBLE`                       | [Float64](../sql-reference/data-types/float.md)        |
 | `DATE`                         | [Date32](../sql-reference/data-types/date32.md)        |
@@ -2026,7 +2025,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 
 Другие типы Parquet не поддерживаются.
 
-### Arrow {#arrow}
+### Arrow \{#arrow\}
 
 В формате Arrow ClickHouse считывает схему из данных и преобразует её в схему ClickHouse, используя следующие соответствия типов:
 
@@ -2054,7 +2053,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 
 Другие типы Arrow не поддерживаются.
 
-### ORC {#orc}
+### ORC \{#orc\}
 
 В формате ORC ClickHouse считывает схему из данных и преобразует её в схему ClickHouse, используя следующие соответствия типов:
 
@@ -2077,17 +2076,17 @@ DESC format(LineAsString, 'Hello\nworld!')
 
 Другие типы ORC не поддерживаются.
 
-### Native {#native}
+### Native \{#native\}
 
 Формат Native используется внутри ClickHouse и содержит схему непосредственно в данных.
 При определении схемы ClickHouse считывает её из данных без каких-либо преобразований.
 
-## Форматы с внешней схемой {#formats-with-external-schema}
+## Форматы с внешней схемой \{#formats-with-external-schema\}
 
 Такие форматы требуют наличия схемы, описывающей данные, в отдельном файле на определённом языке описания схем.
 Чтобы автоматически определить схему по файлам в таких форматах, ClickHouse считывает внешнюю схему из отдельного файла и преобразует её в схему таблицы ClickHouse.
 
-### Protobuf {#protobuf}
+### Protobuf \{#protobuf\}
 
 При определении схемы для формата Protobuf ClickHouse использует следующие соответствия типов:
 
@@ -2105,7 +2104,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 | `repeated T`                     | [Array(T)](../sql-reference/data-types/array.md)     |
 | `message`, `group`               | [Tuple](../sql-reference/data-types/tuple.md)        |
 
-### CapnProto {#capnproto}
+### CapnProto \{#capnproto\}
 
 При определении схемы для формата CapnProto ClickHouse использует следующие соответствия типов:
 
@@ -2128,13 +2127,13 @@ DESC format(LineAsString, 'Hello\nworld!')
 | `struct`                             | [Tuple](../sql-reference/data-types/tuple.md)            |
 | `union(T, Void)`, `union(Void, T)`   | [Nullable(T)](../sql-reference/data-types/nullable.md)   |
 
-## Строго типизированные бинарные форматы {#strong-typed-binary-formats}
+## Строго типизированные бинарные форматы \{#strong-typed-binary-formats\}
 
 В таких форматах каждое сериализованное значение содержит информацию о своём типе (и, возможно, о своём имени), но нет информации о всей таблице.
 При выводе схемы для таких форматов ClickHouse считывает данные построчно (до `input_format_max_rows_to_read_for_schema_inference` строк или `input_format_max_bytes_to_read_for_schema_inference` байт) и извлекает
 тип (и, возможно, имя) каждого значения из данных, после чего преобразует эти типы в типы ClickHouse.
 
-### MsgPack {#msgpack}
+### MsgPack \{#msgpack\}
 
 В формате MsgPack нет разделителя между строками; чтобы использовать вывод схемы для этого формата, необходимо указать количество столбцов в таблице
 с помощью настройки `input_format_msgpack_number_of_columns`. ClickHouse использует следующие соответствия типов:
@@ -2154,7 +2153,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 
 По умолчанию все выведенные типы заключаются в `Nullable`, но это можно изменить с помощью настройки `schema_inference_make_columns_nullable`.
 
-### BSONEachRow {#bsoneachrow}
+### BSONEachRow \{#bsoneachrow\}
 
 В BSONEachRow каждая строка данных представлена как BSON-документ. При выводе схемы ClickHouse считывает BSON-документы один за другим и извлекает
 значения, имена и типы из данных, после чего преобразует эти типы в типы ClickHouse, используя следующие соответствия типов:
@@ -2174,15 +2173,19 @@ DESC format(LineAsString, 'Hello\nworld!')
 
 По умолчанию все выведенные типы заключаются в `Nullable`, но это можно изменить с помощью настройки `schema_inference_make_columns_nullable`.
 
-## Форматы с фиксированной схемой {#formats-with-constant-schema}
+## Форматы с фиксированной схемой \{#formats-with-constant-schema\}
 
 Данные в таких форматах всегда имеют одну и ту же схему.
 
-### LineAsString {#line-as-string}
+### LineAsString \{#line-as-string\}
 
 В этом формате ClickHouse считывает всю строку данных в один столбец с типом данных `String`. Выводимый тип для этого формата всегда `String`, а имя столбца — `line`.
 
 **Пример**
+
+```sql
+DESC format(LineAsString, 'Hello\nworld!')
+```
 
 ```response
 ┌─name─┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -2190,15 +2193,16 @@ DESC format(LineAsString, 'Hello\nworld!')
 └──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```sql
-DESC format(JSONAsString, '{"x" : 42, "y" : "Hello, World!"}')
-```
 
-### JSONAsString {#json-as-string}
+### JSONAsString \{#json-as-string\}
 
 В этом формате ClickHouse считывает весь JSON-объект из входных данных в один столбец с типом данных `String`. Определяемый для этого формата тип всегда `String`, а имя столбца — `json`.
 
 **Пример**
+
+```sql
+DESC format(JSONAsString, '{"x" : 42, "y" : "Hello, World!"}')
+```
 
 ```response
 ┌─name─┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -2206,15 +2210,16 @@ DESC format(JSONAsString, '{"x" : 42, "y" : "Hello, World!"}')
 └──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```sql
-DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
-```
 
-### JSONAsObject {#json-as-object}
+### JSONAsObject \{#json-as-object\}
 
 В этом формате ClickHouse считывает весь JSON-объект из входных данных в один столбец с типом данных `JSON`. Определяемый для этого формата тип данных всегда `JSON`, а имя столбца — `json`.
 
 **Пример**
+
+```sql
+DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
+```
 
 ```response
 ┌─name─┬─type─┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -2222,18 +2227,13 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 └──────┴──────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```json
-{"field1" :  1, "field2" :  null}
-{"field1" :  2, "field2" :  null}
-{"field1" :  3, "field2" :  null}
-```
 
-## Режимы определения схемы {#schema-inference-modes}
+## Режимы определения схемы \{#schema-inference-modes\}
 
 Определение схемы по набору файлов данных может работать в двух разных режимах: `default` и `union`.
 Режим задаётся настройкой `schema_inference_mode`.
 
-### Режим по умолчанию {#default-schema-inference-mode}
+### Режим по умолчанию \{#default-schema-inference-mode\}
 
 В режиме по умолчанию ClickHouse предполагает, что все файлы имеют одинаковую схему, и пытается определить её, последовательно читая файлы до тех пор, пока это не удастся.
 
@@ -2244,12 +2244,20 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 `data1.jsonl`:
 
 ```json
+{"field1" :  1, "field2" :  null}
+{"field1" :  2, "field2" :  null}
+{"field1" :  3, "field2" :  null}
+```
+
+`data2.jsonl`:
+
+```json
 {"field1" :  4, "field2" :  "Data4"}
 {"field1" :  5, "field2" :  "Data5"}
 {"field1" :  6, "field2" :  "Data5"}
 ```
 
-`data2.jsonl`:
+`data3.jsonl`:
 
 ```json
 {"field1" :  7, "field2" :  "Data7", "field3" :  [1, 2, 3]}
@@ -2257,13 +2265,13 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 {"field1" :  9, "field2" :  "Data9", "field3" :  [7, 8, 9]}
 ```
 
-`data3.jsonl`:
+Давайте попробуем применить автоматическое определение схемы к этим трём файлам:
 
 ```sql
 :) DESCRIBE file('data{1,2,3}.jsonl') SETTINGS schema_inference_mode='default'
 ```
 
-Давайте попробуем применить автоматическое определение схемы к этим трём файлам:
+Результат:
 
 ```response
 ┌─name───┬─type─────────────┐
@@ -2272,19 +2280,12 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 └────────┴──────────────────┘
 ```
 
-Результат:
-
-```json
-{"field1" :  1}
-{"field1" :  2}
-{"field1" :  3}
-```
-
 Как мы видим, у нас нет `field3` из файла `data3.jsonl`.
-Это происходит потому, что ClickHouse сначала попытался определить схему по файлу `data1.jsonl`, но не смог, так как для поля `field2` были только значения null,
-затем попытался определить схему по `data2.jsonl` и успешно это сделал, поэтому данные из файла `data3.jsonl` не были прочитаны.
+Это происходит потому, что ClickHouse сначала попытался определить схему по файлу `data1.jsonl`, но не смог, так как для поля `field2` были только значения NULL,
+затем попытался определить схему по `data2.jsonl` и успешно это сделал, поэтому данные из файла `data3.jsonl` так и не были прочитаны.
 
-### Режим union {#default-schema-inference-mode-1}
+
+### Режим union \{#default-schema-inference-mode-1\}
 
 В режиме union ClickHouse предполагает, что файлы могут иметь разные схемы, поэтому он определяет схемы всех файлов, а затем объединяет их в общую схему.
 
@@ -2293,12 +2294,20 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 `data1.jsonl`:
 
 ```json
+{"field1" :  1}
+{"field1" :  2}
+{"field1" :  3}
+```
+
+`data2.jsonl`:
+
+```json
 {"field2" :  "Data4"}
 {"field2" :  "Data5"}
 {"field2" :  "Data5"}
 ```
 
-`data2.jsonl`:
+`data3.jsonl`:
 
 ```json
 {"field3" :  [1, 2, 3]}
@@ -2306,13 +2315,13 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 {"field3" :  [7, 8, 9]}
 ```
 
-`data3.jsonl`:
+Попробуем определить схему по этим трём файлам:
 
 ```sql
 :) DESCRIBE file('data{1,2,3}.jsonl') SETTINGS schema_inference_mode='union'
 ```
 
-Давайте попробуем использовать автоматическое определение схемы для этих трёх файлов:
+Результат:
 
 ```response
 ┌─name───┬─type───────────────────┐
@@ -2320,15 +2329,6 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 │ field2 │ Nullable(String)       │
 │ field3 │ Array(Nullable(Int64)) │
 └────────┴────────────────────────┘
-```
-
-Результат:
-
-```csv
-"a","b"
-1,"Data1"
-2,"Data2"
-3,"Data3"
 ```
 
 Как мы видим, у нас есть все поля из всех файлов.
@@ -2339,7 +2339,8 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 * Если ClickHouse не может определить схему по одному из файлов, будет сгенерировано исключение.
 * Если у вас много файлов, чтение схемы из всех них может занять много времени.
 
-## Автоматическое определение формата {#automatic-format-detection}
+
+## Автоматическое определение формата \{#automatic-format-detection\}
 
 Если формат данных не указан и его нельзя определить по расширению файла, ClickHouse попытается определить формат файла по его содержимому.
 
@@ -2347,11 +2348,18 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 
 Предположим, у нас есть файл `data` со следующим содержимым:
 
-```sql
-:) desc file(data);
+```csv
+"a","b"
+1,"Data1"
+2,"Data2"
+3,"Data3"
 ```
 
 Мы можем изучать и выполнять запросы к этому файлу, не указывая формат или структуру:
+
+```sql
+:) desc file(data);
+```
 
 ```repsonse
 ┌─name─┬─type─────────────┐
@@ -2362,14 +2370,6 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 
 ```sql
 :) select * from file(data);
-```
-
-```response
-┌─a─┬─b─────┐
-│ 1 │ Data1 │
-│ 2 │ Data2 │
-│ 3 │ Data3 │
-└───┴───────┘
 ```
 
 ```response

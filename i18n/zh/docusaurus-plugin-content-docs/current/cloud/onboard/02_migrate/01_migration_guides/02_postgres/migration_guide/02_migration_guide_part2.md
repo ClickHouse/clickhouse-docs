@@ -11,13 +11,13 @@ doc_type: 'guide'
 
 在大多数情况下，现有 PostgreSQL 环境中的 SQL 查询无需修改即可在 ClickHouse 上运行，并且通常会执行得更快。
 
-## 使用 CDC 进行去重 {#deduplication-cdc}
+## 使用 CDC 进行去重 \{#deduplication-cdc\}
 
 在使用基于 CDC（变更数据捕获）的实时复制时，需要注意更新和删除操作可能会导致重复行。为解决这一问题，可以使用基于视图和可刷新物化视图的去重方案。
 
 请参考此[指南](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres)，了解在使用基于 CDC 的实时复制时，如何以尽可能小的改动将应用程序从 PostgreSQL 迁移到 ClickHouse。
 
-## 在 ClickHouse 中优化查询 {#optimize-queries-in-clickhouse}
+## 在 ClickHouse 中优化查询 \{#optimize-queries-in-clickhouse\}
 
 虽然可以在对查询做最少改写的情况下完成迁移，但建议充分利用 ClickHouse 的特性，以显著简化查询并进一步提升查询性能。
 

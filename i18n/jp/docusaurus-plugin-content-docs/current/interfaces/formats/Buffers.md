@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 `Buffers` は、コンシューマーとプロデューサーの両方が既にスキーマとカラム順序を把握していることを前提とした、**一時的な** データ交換向けの非常にシンプルなバイナリ形式です。
 
@@ -30,7 +30,7 @@ doc_type: 'reference'
 - シリアライズされたカラムデータの合計バイトサイズ (UInt64, リトルエンディアン)。
 - [Native](./Native.md) フォーマットと完全に同一のシリアライズ済みカラムデータのバイト列。
 
-## 使用例 {#example-usage}
+## 使用例 \{#example-usage\}
 
 ファイルに書き込む：
 
@@ -106,4 +106,4 @@ SELECT * FROM number_squares;
 ```
 
 
-## 書式設定 {#format-settings}
+## 書式設定 \{#format-settings\}

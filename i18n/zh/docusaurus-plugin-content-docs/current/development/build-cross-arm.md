@@ -7,7 +7,7 @@ title: '如何在 Linux 上面向 AARCH64 构建 ClickHouse'
 doc_type: 'guide'
 ---
 
-# 如何在 Linux 上为 AArch64 构建 ClickHouse {#how-to-build-clickhouse-on-linux-for-aarch64}
+# 如何在 Linux 上为 AArch64 构建 ClickHouse \{#how-to-build-clickhouse-on-linux-for-aarch64\}
 
 在 AArch64 机器上构建面向 AArch64 的 ClickHouse 时，无需执行任何特殊步骤。
 

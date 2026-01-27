@@ -1,0 +1,1363 @@
+---
+sidebar_label: 'Клиент'
+sidebar_position: 2
+keywords: ['clickhouse', 'java', 'client', 'integrate']
+description: 'Коннектор ClickHouse для Java'
+slug: /integrations/language-clients/java/client
+title: 'Java-клиент'
+doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
+---
+
+import ClientVersionDropdown from '@theme/ClientVersionDropdown/ClientVersionDropdown';
+import Version from '@theme/ClientVersionDropdown/Version';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWrapper';
+
+<ClientVersionDropdown
+  versions={[
+{
+'version': 'v0.8+'
+},
+{
+'version': 'v0.7.x'
+}
+]}
+>
+  <Version>
+    Клиентская библиотека Java для взаимодействия с сервером БД по его протоколам. Текущая реализация поддерживает только [HTTP-интерфейс](/interfaces/http).
+    Библиотека предоставляет собственный API для отправки запросов на сервер, а также инструменты для работы с различными форматами бинарных данных (RowBinary* &amp; Native*).
+
+    ## Настройка \{#setup\}
+
+    * Maven Central (страница проекта): https://mvnrepository.com/artifact/com.clickhouse/client-v2
+    * Ночные сборки (ссылка на репозиторий): https://central.sonatype.com/repository/maven-snapshots/
+    * Старый репозиторий Nightly-сборок в Artifactory (ссылка): https://s01.oss.sonatype.org/content/repositories/snapshots/
+
+    <br />
+
+    <Tabs groupId="client-setup">
+      <TabItem value="maven" label="Maven">
+        ```xml
+        <dependency>
+            <groupId>com.clickhouse</groupId>
+            <artifactId>client-v2</artifactId>
+            <version>0.9.4</version>
+        </dependency>
+        ```
+      </TabItem>
+
+      <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+        ```kotlin
+        // https://mvnrepository.com/artifact/com.clickhouse/client-v2
+        implementation("com.clickhouse:client-v2:0.9.4")
+        ```
+      </TabItem>
+
+      <TabItem value="gradle" label="Gradle">
+        ```groovy
+        // https://mvnrepository.com/artifact/com.clickhouse/client-v2
+        implementation 'com.clickhouse:client-v2:0.9.4'
+        ```
+      </TabItem>
+    </Tabs>
+
+    <br />
+
+    ## Инициализация \{#initialization\}
+
+    Объект Client инициализируется с помощью `com.clickhouse.client.api.Client.Builder#build()`. Каждый клиент имеет собственный контекст, объекты между клиентами не являются общими.
+    Builder предоставляет методы конфигурации для удобной настройки.
+
+    Пример:
+
+    ```java showLineNumbers
+     Client client = new Client.Builder()
+                    .addEndpoint("https://clickhouse-cloud-instance:8443/")
+                    .setUsername(user)
+                    .setPassword(password)
+                    .build();
+    ```
+
+    `Client` реализует интерфейс `AutoCloseable` и должен быть закрыт, когда он больше не нужен.
+
+    ### Аутентификация \{#authentication\}
+
+    Аутентификация настраивается для каждого клиента на этапе инициализации. Поддерживаются три метода аутентификации: по паролю, по токену доступа и по клиентскому SSL-сертификату.
+
+    Для аутентификации по паролю необходимо задать имя пользователя и пароль, вызвав методы `setUsername(String)` и `setPassword(String)`:
+
+    ```java showLineNumbers
+     Client client = new Client.Builder()
+            .addEndpoint("https://clickhouse-cloud-instance:8443/")
+            .setUsername(user)
+            .setPassword(password)
+            .build();
+    ```
+
+    Для аутентификации с помощью токена доступа необходимо установить токен доступа, вызвав `setAccessToken(String)`:
+
+    ```java showLineNumbers
+     Client client = new Client.Builder()
+            .addEndpoint("https://clickhouse-cloud-instance:8443/")
+            .setAccessToken(userAccessToken)
+            .build();
+    ```
+
+    Аутентификация по SSL-сертификату клиента требует указания имени пользователя, включения SSL-аутентификации, указания клиентского сертификата и клиентского ключа путем вызова методов `setUsername(String)`, `useSSLAuthentication(boolean)`, `setClientCertificate(String)` и `setClientKey(String)` соответственно:
+
+    ```java showLineNumbers
+    Client client = new Client.Builder()
+            .useSSLAuthentication(true)
+            .setUsername("some_user")
+            .setClientCertificate("some_user.crt")
+            .setClientKey("some_user.key")
+    ```
+
+    :::note
+    Аутентификацию SSL может быть сложно диагностировать в продакшене, поскольку многие ошибки из библиотек SSL не предоставляют достаточно информации. Например, если клиентский сертификат и ключ не совпадают, сервер немедленно разорвет соединение (в случае HTTP это произойдет на этапе инициализации соединения, когда HTTP-запросы еще не отправлены и ответ не будет отправлен).
+
+    Для проверки сертификатов и ключей используйте такие инструменты, как [openssl](https://docs.openssl.org/master/man1/openssl/):
+
+    * проверьте целостность ключа: `openssl rsa -in [key-file.key] -check -noout`
+    * убедитесь, что в клиентском сертификате значение CN совпадает с именем пользователя:
+      * получить CN из пользовательского сертификата — `openssl x509 -noout -subject -in [user.cert]`
+      * проверить, что то же значение указано в базе данных `select name, auth_type, auth_params from system.users where auth_type = 'ssl_certificate'` (запрос вернёт `auth_params` со значением вида ` {"common_names":["some_user"]}`)
+
+    :::
+
+    ## Конфигурация \{#configuration\}
+
+    Все настройки определяются методами экземпляра (также известными как методы конфигурации), которые четко определяют область видимости и контекст каждого значения.
+    Основные параметры конфигурации определяются в одной области видимости (клиент или операция) и не переопределяют друг друга.
+
+    Конфигурация задаётся при создании клиента. См. `com.clickhouse.client.api.Client.Builder`.
+
+    ## Настройка клиента \{#client-configuration\}
+
+    <Tabs groupId="client-config">
+      <TabItem value="подключение" label="Подключение и конечные точки">
+        | Method                                                                  | Arguments                                                                                                 | Description                                                                                                    | Default   | Key                         |
+        | ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------- | --------------------------- |
+        | `addEndpoint(String endpoint)`                                          | `endpoint` - адрес сервера в формате URL                                                                  | Добавляет endpoint сервера в список доступных серверов. В настоящее время поддерживается только один endpoint. | `none`    | `none`                      |
+        | `addEndpoint(Protocol protocol, String host, int port, boolean secure)` | `protocol` - протокол подключения<br />`host` - IP-адрес или имя хоста<br />`secure` - использовать HTTPS | Добавляет endpoint сервера в список доступных серверов. В настоящее время поддерживается только один endpoint. | `none`    | `none`                      |
+        | `enableConnectionPool(boolean enable)`                                  | `enable` - флаг включения/отключения                                                                      | Устанавливает, включен ли пул соединений                                                                       | `true`    | `connection_pool_enabled`   |
+        | `setMaxConnections(int maxConnections)`                                 | `maxConnections` - число соединений                                                                       | Устанавливает, сколько соединений клиент может открыть к каждому endpoint-у сервера.                           | `10`      | `max_open_connections`      |
+        | `setConnectionTTL(long timeout, ChronoUnit unit)`                       | `timeout` - значение тайм-аута<br />`unit` - единица времени                                              | Устанавливает TTL соединения, по истечении которого соединение будет считаться неактивным                      | `-1`      | `connection_ttl`            |
+        | `setKeepAliveTimeout(long timeout, ChronoUnit unit)`                    | `timeout` - значение тайм-аута<br />`unit` - единица времени                                              | Устанавливает тайм-аут Keep-Alive для HTTP-соединения. Установите `0`, чтобы отключить Keep-Alive.             | -         | `http_keep_alive_timeout`   |
+        | `setConnectionReuseStrategy(ConnectionReuseStrategy strategy)`          | `strategy` - `LIFO` или `FIFO`                                                                            | Выбирает стратегию повторного использования соединений, которую должен применять пул соединений                | `FIFO`    | `connection_reuse_strategy` |
+        | `setDefaultDatabase(String database)`                                   | `database` - имя базы данных                                                                              | Устанавливает базу данных по умолчанию.                                                                        | `default` | `database`                  |
+      </TabItem>
+
+      <TabItem value="аутентификация" label="Аутентификация">
+        | Метод                                                | Аргументы                                                      | Описание                                                                                                                                                             | По умолчанию | Ключ                  |
+        | ---------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------------- |
+        | `setUsername(String username)`                       | `username` - имя пользователя для аутентификации               | Задает имя пользователя для метода аутентификации, который будет выбран последующей конфигурацией                                                                    | `default`    | `user`                |
+        | `setPassword(String password)`                       | `password` - секретное значение                                | Задает секрет для аутентификации по паролю и фактически выбирает этот метод аутентификации                                                                           | -            | `password`            |
+        | `setAccessToken(String accessToken)`                 | `accessToken` - строка access-токена                           | Задает access-токен для аутентификации и тем самым выбирает соответствующий метод аутентификации                                                                     | -            | `access_token`        |
+        | `useSSLAuthentication(boolean useSSLAuthentication)` | `useSSLAuthentication` - флаг для включения SSL-аутентификации | Устанавливает клиентский SSL-сертификат как метод аутентификации.                                                                                                    | -            | `ssl_authentication`  |
+        | `useHTTPBasicAuth(boolean useBasicAuth)`             | `useBasicAuth` - флаг включения/отключения                     | Определяет, следует ли использовать базовую HTTP-аутентификацию для аутентификации по паре пользователь-пароль. Решает проблемы с паролями, содержащими спецсимволы. | `true`       | `http_use_basic_auth` |
+        | `useBearerTokenAuth(String bearerToken)`             | `bearerToken` - закодированный bearer-токен                    | Определяет, следует ли использовать Bearer-аутентификацию и какой токен использовать. Токен будет отправлен как есть.                                                | -            | `bearer_token`        |
+      </TabItem>
+
+      <TabItem value="тайм-ауты" label="Тайм-ауты и повторные попытки">
+        | Method                                                       | Arguments                                                        | Description                                                                                     | Default                                                      | Key                          |
+        | ------------------------------------------------------------ | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | ---------------------------- |
+        | `setConnectTimeout(long timeout, ChronoUnit unit)`           | `timeout` - значение тайм-аута<br />`unit` - единица времени     | Устанавливает тайм-аут установления соединения для любого исходящего подключения.               | -                                                            | `connection_timeout`         |
+        | `setConnectionRequestTimeout(long timeout, ChronoUnit unit)` | `timeout` - значение тайм-аута<br />`unit` - единица времени     | Устанавливает тайм-аут запроса соединения. Применяется только при получении соединения из пула. | `10000`                                                      | `connection_request_timeout` |
+        | `setSocketTimeout(long timeout, ChronoUnit unit)`            | `timeout` - значение тайм-аута<br />`unit` - единица времени     | Устанавливает тайм-аут сокета, который влияет на операции чтения и записи.                      | `0`                                                          | `socket_timeout`             |
+        | `setExecutionTimeout(long timeout, ChronoUnit timeUnit)`     | `timeout` - значение тайм-аута<br />`timeUnit` - единица времени | Устанавливает максимальное время выполнения запросов                                            | `0`                                                          | `max_execution_time`         |
+        | `retryOnFailures(ClientFaultCause ...causes)`                | `causes` - константа перечисления `ClientFaultCause`             | Задает типы ошибок, для которых будут выполняться повторные попытки.                            | `NoHttpResponse` `ConnectTimeout` `ConnectionRequestTimeout` | `client_retry_on_failures`   |
+        | `setMaxRetries(int maxRetries)`                              | `maxRetries` - количество повторных попыток                      | Устанавливает максимальное число повторных попыток для ошибок, определенных `retryOnFailures`.  | `3`                                                          | `retry`                      |
+      </TabItem>
+
+      <TabItem value="сокет" label="Параметры сокетов">
+        | Method                               | Arguments                               | Description                                                                                                                 | Default | Key                  |
+        | ------------------------------------ | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------- | -------------------- |
+        | `setSocketRcvbuf(long size)`         | `size` - размер в байтах                | Устанавливает размер буфера приёма TCP-сокета. Этот буфер находится вне памяти JVM.                                         | `8196`  | `socket_rcvbuf`      |
+        | `setSocketSndbuf(long size)`         | `size` - размер в байтах                | Устанавливает размер буфера отправки TCP-сокета. Этот буфер находится вне памяти JVM.                                       | `8196`  | `socket_sndbuf`      |
+        | `setSocketKeepAlive(boolean value)`  | `value` - флаг для включения/выключения | Устанавливает опцию `SO_KEEPALIVE` для каждого TCP-сокета. TCP Keep Alive включает механизм проверки активности соединения. | -       | `socket_keepalive`   |
+        | `setSocketTcpNodelay(boolean value)` | `value` - флаг для включения/выключения | Устанавливает опцию `SO_NODELAY` для каждого TCP-сокета. Эта опция TCP заставляет сокет отправлять данные как можно скорее. | -       | `socket_tcp_nodelay` |
+        | `setSocketLinger(int secondsToWait)` | `secondsToWait` - количество секунд     | Устанавливает время задержки (linger) для каждого TCP-сокета, созданного клиентом.                                          | -       | `socket_linger`      |
+      </TabItem>
+
+      <TabItem value="сжатие" label="Сжатие">
+        | Метод                                     | Аргументы                             | Описание                                                                                                                   | Значение по умолчанию | Ключ                                       |
+        | ----------------------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | --------------------- | ------------------------------------------ |
+        | `compressServerResponse(boolean enabled)` | `enabled` — флаг включения/выключения | Определяет, должен ли сервер сжимать свои ответы.                                                                          | `true`                | `compress`                                 |
+        | `compressClientRequest(boolean enabled)`  | `enabled` — флаг включения/выключения | Определяет, должен ли клиент сжимать свои запросы.                                                                         | `false`               | `decompress`                               |
+        | `useHttpCompression(boolean enabled)`     | `enabled` — флаг включения/выключения | Определяет, следует ли использовать HTTP‑сжатие для взаимодействия клиент/сервер, если соответствующие параметры включены. | -                     | -                                          |
+        | `appCompressedData(boolean enabled)`      | `enabled` — флаг включения/выключения | Сообщает клиенту, что сжатие будет обрабатываться приложением.                                                             | `false`               | `app_compressed_data`                      |
+        | `setLZ4UncompressedBufferSize(int size)`  | `size` — размер в байтах              | Устанавливает размер буфера, который будет получать несжатую часть потока данных.                                          | `65536`               | `compression.lz4.uncompressed_buffer_size` |
+        | `disableNativeCompression`                | `disable` — флаг отключения           | Отключает нативное сжатие. Если установлено в `true`, нативное сжатие будет отключено.                                     | `false`               | `disable_native_compression`               |
+      </TabItem>
+
+      <TabItem value="SSL" label="SSL/Безопасность">
+        | Method                                      | Arguments                                 | Description                                                                                                                   | Default | Key                  |
+        | ------------------------------------------- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------- | -------------------- |
+        | `setSSLTrustStore(String path)`             | `path` - путь к файлу в локальной системе | Указывает, должен ли клиент использовать SSL truststore для проверки подлинности хоста сервера.                               | -       | `trust_store`        |
+        | `setSSLTrustStorePassword(String password)` | `password` - секретное значение           | Указывает пароль, который будет использоваться для разблокировки SSL truststore, указанного с помощью `setSSLTrustStore`.     | -       | `key_store_password` |
+        | `setSSLTrustStoreType(String type)`         | `type` - имя типа truststore              | Указывает тип truststore, указанного с помощью `setSSLTrustStore`.                                                            | -       | `key_store_type`     |
+        | `setRootCertificate(String path)`           | `path` - путь к файлу в локальной системе | Указывает, должен ли клиент использовать указанный корневой (CA) сертификат для проверки подлинности хоста сервера.           | -       | `sslrootcert`        |
+        | `setClientCertificate(String path)`         | `path` - путь к файлу в локальной системе | Указывает путь к клиентскому сертификату, который будет использоваться при установке SSL-соединения и для SSL-аутентификации. | -       | `sslcert`            |
+        | `setClientKey(String path)`                 | `path` - путь к файлу в локальной системе | Указывает закрытый ключ клиента, который будет использоваться для шифрования SSL-взаимодействия с сервером.                   | -       | `ssl_key`            |
+        | `sslSocketSNI(String sni)`                  | `sni` - строка с именем сервера           | Указывает имя сервера, которое будет использоваться для SNI (Server Name Indication) в SSL/TLS-соединении.                    | -       | `ssl_socket_sni`     |
+      </TabItem>
+
+      <TabItem value="прокси" label="Прокси">
+        | Method                                            | Arguments                                                                           | Description                                                              | Default | Key                                      |
+        | ------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------- | ---------------------------------------- |
+        | `addProxy(ProxyType type, String host, int port)` | `type` - тип прокси<br />`host` - имя хоста прокси или IP<br />`port` - порт прокси | Устанавливает прокси-сервер, используемый для взаимодействия с сервером. | -       | `proxy_type`, `proxy_host`, `proxy_port` |
+        | `setProxyCredentials(String user, String pass)`   | `user` - имя пользователя прокси<br />`pass` - пароль                               | Задает учетные данные пользователя для аутентификации на прокси-сервере. | -       | `proxy_user`, `proxy_password`           |
+      </TabItem>
+
+      <TabItem value="http" label="HTTP и заголовки">
+        | Method                                      | Arguments                                                             | Description                                                                             | Default | Key    |
+        | ------------------------------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ------- | ------ |
+        | `setHttpCookiesEnabled(boolean enabled)`    | `enabled` - флаг включения/отключения                                 | Определяет, должны ли HTTP‑cookie сохраняться и отправляться обратно на сервер.         | -       | -      |
+        | `httpHeader(String key, String value)`      | `key` - ключ HTTP‑заголовка<br />`value` - строковое значение         | Устанавливает значение для одного HTTP‑заголовка. Предыдущее значение перезаписывается. | `none`  | `none` |
+        | `httpHeader(String key, Collection values)` | `key` - ключ HTTP‑заголовка<br />`values` - список строковых значений | Устанавливает значения для одного HTTP‑заголовка. Предыдущее значение перезаписывается. | `none`  | `none` |
+        | `httpHeaders(Map headers)`                  | `headers` - map с HTTP‑заголовками                                    | Устанавливает несколько значений HTTP‑заголовков одним вызовом.                         | `none`  | `none` |
+      </TabItem>
+
+      <TabItem value="настройки-сервера" label="Настройки сервера">
+        | Method                                          | Arguments                                                 | Description                                                                                                                                                                       | Default | Key    |
+        | ----------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------ |
+        | `serverSetting(String name, String value)`      | `name` - имя настройки<br />`value` - значение настройки  | Указывает, какие настройки передавать серверу вместе с каждым запросом. Настройки отдельных операций могут их переопределять. [Список настроек](/operations/settings/query-level) | `none`  | `none` |
+        | `serverSetting(String name, Collection values)` | `name` - имя настройки<br />`values` - значения настройки | Указывает, какие настройки с множественными значениями передавать серверу, например [роли](/interfaces/http#setting-role-with-query-parameters)                                   | `none`  | `none` |
+      </TabItem>
+
+      <TabItem value="часовой пояс" label="Часовой пояс">
+        | Method                                         | Arguments                                                   | Description                                                                                                                                           | Default | Key                    |
+        | ---------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ---------------------- |
+        | `useServerTimeZone(boolean useServerTimeZone)` | `useServerTimeZone` - флаг включения/выключения             | Определяет, должен ли клиент использовать часовой пояс сервера при декодировании значений столбцов DateTime и Date.                                   | `true`  | `use_server_time_zone` |
+        | `useTimeZone(String timeZone)`                 | `timeZone` - допустимый в Java идентификатор часового пояса | Определяет, должен ли использоваться указанный часовой пояс при декодировании значений столбцов DateTime и Date. Переопределяет часовой пояс сервера. | -       | `use_time_zone`        |
+        | `setServerTimeZone(String timeZone)`           | `timeZone` - допустимый в Java идентификатор часового пояса | Задает часовой пояс на стороне сервера. По умолчанию используется часовой пояс UTC.                                                                   | `UTC`   | `server_time_zone`     |
+      </TabItem>
+
+      <TabItem value="Дополнительно" label="Расширенные">
+        | Method                                                                    | Arguments                                                                 | Description                                                                                                                                                       | Default  | Key                          |
+        | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------------------------- |
+        | `setOption(String key, String value)`                                     | `key` - ключ параметра конфигурации<br />`value` - значение параметра     | Устанавливает сырое значение параметров клиента. Полезно при чтении конфигурации из property-файлов.                                                              | -        | -                            |
+        | `useAsyncRequests(boolean async)`                                         | `async` - флаг включения/выключения                                       | Определяет, должен ли клиент выполнять запросы в отдельном потоке. По умолчанию отключено, так как приложение лучше знает, как организовать многопоточные задачи. | `false`  | `async`                      |
+        | `setSharedOperationExecutor(ExecutorService executorService)`             | `executorService` - экземпляр ExecutorService                             | Задает ExecutorService для выполнения операционных задач.                                                                                                         | `none`   | `none`                       |
+        | `setClientNetworkBufferSize(int size)`                                    | `size` - размер в байтах                                                  | Устанавливает размер буфера в адресном пространстве памяти приложения, который используется для копирования данных между сокетом и приложением.                   | `300000` | `client_network_buffer_size` |
+        | `allowBinaryReaderToReuseBuffers(boolean reuse)`                          | `reuse` - флаг включения/выключения                                       | Если включено, двоичный читатель будет использовать заранее выделенные буферы для транскодирования чисел. Снижает нагрузку на GC для числовых данных.             | -        | -                            |
+        | `columnToMethodMatchingStrategy(ColumnToMethodMatchingStrategy strategy)` | `strategy` - реализация стратегии сопоставления                           | Задает пользовательскую стратегию, используемую для сопоставления полей класса DTO и столбцов БД при регистрации DTO.                                             | `none`   | `none`                       |
+        | `setClientName(String clientName)`                                        | `clientName` - строка с именем приложения                                 | Устанавливает дополнительную информацию о вызывающем приложении. Будет передана в заголовке `User-Agent`.                                                         | -        | `client_name`                |
+        | `registerClientMetrics(Object registry, String name)`                     | `registry` - экземпляр реестра Micrometer<br />`name` - имя группы метрик | Регистрирует метрики в экземпляре реестра Micrometer (https://micrometer.io/).                                                                                    | -        | -                            |
+        | `setServerVersion(String version)`                                        | `version` - строка с версией сервера                                      | Устанавливает версию сервера, чтобы избежать автоматического определения версии.                                                                                  | -        | `server_version`             |
+        | `typeHintMapping(Map typeHintMapping)`                                    | `typeHintMapping` - отображение (Map) подсказок типов                     | Устанавливает отображение подсказок типов для типов ClickHouse. Например, чтобы многомерные массивы представлялись в виде контейнеров Java.                       | -        | `type_hint_mapping`          |
+      </TabItem>
+    </Tabs>
+
+    <br />
+
+    ### Настройки сервера \{#server-settings\}
+
+    Настройки на стороне сервера можно задать на уровне клиента однократно при создании (см. метод `serverSetting` класса `Builder`) и на уровне операции (см. `serverSetting` для класса настроек операции).
+
+    ```java showLineNumbers
+     try (Client client = new Client.Builder().addEndpoint(Protocol.HTTP, "localhost", mockServer.port(), false)
+            .setUsername("default")
+            .setPassword(ClickHouseServerForTest.getPassword())
+            .compressClientRequest(true)
+
+            // Client level
+            .serverSetting("max_threads", "10")
+            .serverSetting("async_insert", "1")
+            .serverSetting("roles", Arrays.asList("role1", "role2"))
+
+            .build()) {
+
+    	// Operation level
+    	QuerySettings querySettings = new QuerySettings();
+    	querySettings.serverSetting("session_timezone", "Europe/Zurich");
+
+    	...
+    }
+    ```
+
+    ⚠️ При установке параметров через метод `setOption` (в `Client.Builder` или в классе настроек операции) имя настройки сервера должно иметь префикс `clickhouse_setting_`. В этом случае может быть полезен `com.clickhouse.client.api.ClientConfigProperties#serverSetting()`.
+
+    ### Пользовательский HTTP-заголовок \{#custom-http-header\}
+
+    Пользовательские HTTP-заголовки можно задать для всех операций (на уровне клиента) или для отдельной операции (на уровне операции).
+
+    ```java showLineNumbers
+
+    QuerySettings settings = new QuerySettings()
+        .httpHeader(HttpHeaders.REFERER, clientReferer)
+        .setQueryId(qId);
+
+    ```
+
+    Когда параметры задаются через метод `setOption` (в `Client.Builder` или в классе настроек операции), имя пользовательского заголовка должно начинаться с префикса `http_header_`. Для этого может быть полезен метод `com.clickhouse.client.api.ClientConfigProperties#httpHeader()`.
+
+    ## Общие определения \{#common-definitions\}
+
+    ### ClickHouseFormat \{#clickhouseformat\}
+
+    Перечисление [поддерживаемых форматов](/interfaces/formats). Включает все форматы, поддерживаемые ClickHouse.
+
+    * `raw` - пользователь должен перекодировать сырые данные
+    * `full` - клиент может самостоятельно выполнять транскодирование данных и принимает сырой поток данных
+    * `-` — операция не поддерживается ClickHouse для данного формата
+
+    Эта версия клиента поддерживает:
+
+    | Формат                                                                                                       |   Входные данные   | Выходные данные |
+    | ------------------------------------------------------------------------------------------------------------ | :----------------: | :-------------: |
+    | [TabSeparated](/interfaces/formats/TabSeparated)                                                             |         raw        |  без изменений  |
+    | [TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw)                                                       |         raw        |       raw       |
+    | [TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames)                                           |   необработанные   |       raw       |
+    | [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedWithNamesAndTypes)                           |         raw        |       raw       |
+    | [TabSeparatedRawWithNames](/interfaces/formats/TabSeparatedRawWithNames)                                     |         raw        |       raw       |
+    | [TabSeparatedRawWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes)                     |         raw        |       raw       |
+    | [Template](/interfaces/formats/Template)                                                                     |         raw        |       raw       |
+    | [TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces)                                             |         raw        |        *        |
+    | [CSV](/interfaces/formats/CSV)                                                                               |      как есть      |     как есть    |
+    | [CSVWithNames](/interfaces/formats/CSVWithNames)                                                             |         raw        |       raw       |
+    | [CSVWithNamesAndTypes](/interfaces/formats/CSVWithNamesAndTypes)                                             |      как есть      |       raw       |
+    | [CustomSeparated](/interfaces/formats/CustomSeparated)                                                       |         raw        |       raw       |
+    | [CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames)                                     |   необработанный   |       raw       |
+    | [CustomSeparatedWithNamesAndTypes](/interfaces/formats/CustomSeparatedWithNamesAndTypes)                     |         raw        |       raw       |
+    | [SQLInsert](/interfaces/formats/SQLInsert)                                                                   |          -         |     как есть    |
+    | [Values](/interfaces/formats/Values)                                                                         |         raw        |       raw       |
+    | [Vertical](/interfaces/formats/Vertical)                                                                     |          *         |  без изменений  |
+    | [JSON](/interfaces/formats/JSON)                                                                             |         raw        |  без изменений  |
+    | [JSONAsString](/interfaces/formats/JSONAsString)                                                             |      как есть      |        -        |
+    | [JSONAsObject](/interfaces/formats/JSONAsObject)                                                             |      исходный      |        *        |
+    | [JSONStrings](/interfaces/formats/JSONStrings)                                                               |      как есть      |     как есть    |
+    | [JSONColumns](/interfaces/formats/JSONColumns)                                                               | без преобразования |     как есть    |
+    | [JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)                                       |         raw        |     как есть    |
+    | [JSONCompact](/interfaces/formats/JSONCompact)                                                               |         raw        |       raw       |
+    | [JSONCompactStrings](/interfaces/formats/JSONCompactStrings)                                                 |          -         |     как есть    |
+    | [JSONCompactColumns](/interfaces/formats/JSONCompactColumns)                                                 |         raw        |     как есть    |
+    | [JSONEachRow](/interfaces/formats/JSONEachRow)                                                               |      как есть      |       raw       |
+    | [PrettyJSONEachRow](/interfaces/formats/PrettyJSONEachRow)                                                   |          *         |     как есть    |
+    | [JSONEachRowWithProgress](/interfaces/formats/JSONEachRowWithProgress)                                       |          -         |     как есть    |
+    | [JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow)                                                 |         raw        |     как есть    |
+    | [JSONStringsEachRowWithProgress](/interfaces/formats/JSONStringsEachRowWithProgress)                         |          *         |       raw       |
+    | [JSONCompactEachRow](/interfaces/formats/JSONCompactEachRow)                                                 |      как есть      |     как есть    |
+    | [JSONCompactEachRowWithNames](/interfaces/formats/JSONCompactEachRowWithNames)                               |         raw        |       raw       |
+    | [JSONCompactEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes)               |         raw        |     как есть    |
+    | [JSONCompactStringsEachRow](/interfaces/formats/JSONCompactStringsEachRow)                                   |         raw        |       raw       |
+    | [JSONCompactStringsEachRowWithNames](/interfaces/formats/JSONCompactStringsEachRowWithNames)                 |         raw        |     как есть    |
+    | [JSONCompactStringsEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes) |      как есть      |     как есть    |
+    | [JSONObjectEachRow](/interfaces/formats/JSONObjectEachRow)                                                   |         raw        |     как есть    |
+    | [BSONEachRow](/interfaces/formats/BSONEachRow)                                                               |      как есть      |     как есть    |
+    | [TSKV](/interfaces/formats/TSKV)                                                                             |         raw        |  без изменений  |
+    | [Pretty](/interfaces/formats/Pretty)                                                                         |          -         |       raw       |
+    | [PrettyNoEscapes](/interfaces/formats/PrettyNoEscapes)                                                       |          *         |       raw       |
+    | [PrettyMonoBlock](/interfaces/formats/PrettyMonoBlock)                                                       |          -         |       raw       |
+    | [PrettyNoEscapesMonoBlock](/interfaces/formats/PrettyNoEscapesMonoBlock)                                     |          *         |       raw       |
+    | [PrettyCompact](/interfaces/formats/PrettyCompact)                                                           |          -         |       raw       |
+    | [PrettyCompactNoEscapes](/interfaces/formats/PrettyCompactNoEscapes)                                         |          *         |       raw       |
+    | [PrettyCompactMonoBlock](/interfaces/formats/PrettyCompactMonoBlock)                                         |          -         |       raw       |
+    | [PrettyCompactNoEscapesMonoBlock](/interfaces/formats/PrettyCompactNoEscapesMonoBlock)                       |          *         |     как есть    |
+    | [PrettySpace](/interfaces/formats/PrettySpace)                                                               |          -         |  без изменений  |
+    | [PrettySpaceNoEscapes](/interfaces/formats/PrettySpaceNoEscapes)                                             |          *         |       raw       |
+    | [PrettySpaceMonoBlock](/interfaces/formats/PrettySpaceMonoBlock)                                             |          -         |       raw       |
+    | [PrettySpaceNoEscapesMonoBlock](/interfaces/formats/PrettySpaceNoEscapesMonoBlock)                           |          *         |  без изменений  |
+    | [Prometheus](/interfaces/formats/Prometheus)                                                                 |          -         |       raw       |
+    | [Protobuf](/interfaces/formats/Protobuf)                                                                     |         raw        |       raw       |
+    | [ProtobufSingle](/interfaces/formats/ProtobufSingle)                                                         |         raw        |       raw       |
+    | [ProtobufList](/interfaces/formats/ProtobufList)                                                             |   необработанный   |       raw       |
+    | [Avro](/interfaces/formats/Avro)                                                                             |         raw        |       raw       |
+    | [AvroConfluent](/interfaces/formats/AvroConfluent)                                                           |         raw        |        *        |
+    | [Parquet](/interfaces/formats/Parquet)                                                                       |         raw        |     как есть    |
+    | [ParquetMetadata](/interfaces/formats/ParquetMetadata)                                                       |         raw        |        -        |
+    | [Arrow](/interfaces/formats/Arrow)                                                                           |         raw        |  без изменений  |
+    | [ArrowStream](/interfaces/formats/ArrowStream)                                                               |         raw        |       raw       |
+    | [ORC](/interfaces/formats/ORC)                                                                               |         raw        |       raw       |
+    | [One](/interfaces/formats/One)                                                                               |      как есть      |        *        |
+    | [Npy](/interfaces/formats/Npy)                                                                               |   необработанный   |       raw       |
+    | [RowBinary](/interfaces/formats/RowBinary)                                                                   |        full        |       full      |
+    | [RowBinaryWithNames](/interfaces/formats/RowBinaryWithNamesAndTypes)                                         |        full        |      полная     |
+    | [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes)                                 |       полная       |      полный     |
+    | [RowBinaryWithDefaults](/interfaces/formats/RowBinaryWithDefaults)                                           |        full        |        -        |
+    | [Native](/interfaces/formats/Native)                                                                         |        full        |  необработанный |
+    | [Null](/interfaces/formats/Null)                                                                             |          *         |       raw       |
+    | [XML](/interfaces/formats/XML)                                                                               |          -         |       raw       |
+    | [CapnProto](/interfaces/formats/CapnProto)                                                                   |         raw        |       raw       |
+    | [LineAsString](/interfaces/formats/LineAsString)                                                             |      как есть      |       raw       |
+    | [Regexp](/interfaces/formats/Regexp)                                                                         |         raw        |        *        |
+    | [RawBLOB](/interfaces/formats/RawBLOB)                                                                       |         raw        |       raw       |
+    | [MsgPack](/interfaces/formats/MsgPack)                                                                       |         raw        |     как есть    |
+    | [MySQLDump](/interfaces/formats/MySQLDump)                                                                   |         raw        |        -        |
+    | [DWARF](/interfaces/formats/DWARF)                                                                           |         raw        |        *        |
+    | [Markdown](/interfaces/formats/Markdown)                                                                     |          -         |       raw       |
+    | [Form](/interfaces/formats/Form)                                                                             |      как есть      |        *        |
+
+    ## API вставки \{#insert-api\}
+
+    ### insert(String tableName, InputStream data, ClickHouseFormat format) \{#insertstring-tablename-inputstream-data-clickhouseformat-format\}
+
+    Принимает данные в виде `InputStream` байтов в указанном формате. Ожидается, что `data` закодированы в формате `format`.
+
+    **Подписи**
+
+    ```java
+    CompletableFuture<InsertResponse> insert(String tableName, InputStream data, ClickHouseFormat format, InsertSettings settings)
+    CompletableFuture<InsertResponse> insert(String tableName, InputStream data, ClickHouseFormat format)
+    ```
+
+    **Параметры**
+
+    `tableName` — имя целевой таблицы.
+
+    `data` — входной поток кодированных данных.
+
+    `format` — формат кодирования данных.
+
+    `settings` — настройки запроса.
+
+    **Возвращаемое значение**
+
+    Future типа `InsertResponse` — результат операции и дополнительная информация, например, метрики на стороне сервера.
+
+    **Примеры**
+
+    ```java showLineNumbers
+    try (InputStream dataStream = getDataStream()) {
+        try (InsertResponse response = client.insert(TABLE_NAME, dataStream, ClickHouseFormat.JSONEachRow,
+                insertSettings).get(3, TimeUnit.SECONDS)) {
+
+            log.info("Insert finished: {} rows written", response.getMetrics().getMetric(ServerMetrics.NUM_ROWS_WRITTEN).getLong());
+        } catch (Exception e) {
+            log.error("Failed to write JSONEachRow data", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    ```
+
+    ### insert(String tableName, List&lt;?&gt; data, InsertSettings settings) \{#insertstring-tablename-listlt-data-insertsettings-settings\}
+
+    Отправляет запрос на запись в базу данных. Список объектов преобразуется в эффективный формат, после чего отправляется на сервер. Класс элементов списка должен быть зарегистрирован заранее с помощью метода `register(Class, TableSchema)`.
+
+    **Подписи**
+
+    ```java
+    client.insert(String tableName, List<?> data, InsertSettings settings)
+    client.insert(String tableName, List<?> data)
+    ```
+
+    **Параметры**
+
+    `tableName` — имя целевой таблицы.
+
+    `data` — коллекция объектов DTO (объектов передачи данных).
+
+    `settings` — настройки запроса.
+
+    **Возвращаемое значение**
+
+    Future типа `InsertResponse` — результат операции и дополнительная информация, например, метрики на стороне сервера.
+
+    **Примеры**
+
+    ```java showLineNumbers
+    // Important step (done once) - register class to pre-compile object serializer according to the table schema.
+    client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
+
+    List<ArticleViewEvent> events = loadBatch();
+
+    try (InsertResponse response = client.insert(TABLE_NAME, events).get()) {
+        // handle response, then it will be closed and connection that served request will be released.
+    }
+    ```
+
+    ### InsertSettings \{#insertsettings\}
+
+    Параметры конфигурации для операций INSERT.
+
+    **Методы настройки**
+
+    | Метод                                           | Описание                                                                                                                                                                                      |
+    | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `setQueryId(String queryId)`                    | Устанавливает ID запроса, который будет присвоен операции. По умолчанию: `null`.                                                                                                              |
+    | `setDeduplicationToken(String token)`           | Устанавливает токен дедупликации. Этот токен будет отправлен на сервер и может использоваться для идентификации запроса. Значение по умолчанию: `null`.                                       |
+    | `setInputStreamCopyBufferSize(int size)`        | Размер буфера для копирования. Буфер используется во время операций записи для копирования данных из входного потока, предоставленного пользователем, в выходной поток. По умолчанию: `8196`. |
+    | `serverSetting(String name, String value)`      | Задает отдельный параметр сервера для операции.                                                                                                                                               |
+    | `serverSetting(String name, Collection values)` | Устанавливает отдельные серверные настройки с несколькими значениями для операции. Элементы коллекции должны быть значениями типа `String`.                                                   |
+    | `setDBRoles(Collection dbRoles)`                | Устанавливает роли БД, которые будут применены перед выполнением операции. Элементы коллекции должны быть значениями типа `String`.                                                           |
+    | `setOption(String option, Object value)`        | Устанавливает параметр конфигурации в «сыром» виде. Это не серверная настройка.                                                                                                               |
+
+    ### InsertResponse \{#insertresponse\}
+
+    Объект ответа, содержащий результат операции INSERT. Доступен только в том случае, если клиент получил ответ от сервера.
+
+    :::note
+    Этот объект необходимо закрыть как можно скорее для освобождения соединения, так как соединение не может быть использовано повторно до полного чтения всех данных предыдущего ответа.
+    :::
+
+    | Метод                           | Описание                                                                                                    |
+    | ------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+    | `OperationMetrics getMetrics()` | Возвращает объект с метриками операции.                                                                     |
+    | `String getQueryId()`           | Возвращает идентификатор запроса, назначенный операции приложением (через параметры операции) или сервером. |
+
+    ## API запросов \{#query-api\}
+
+    ### query(String sqlQuery) \{#querystring-sqlquery\}
+
+    Отправляет `sqlQuery` как есть. Формат ответа задается настройками запроса. `QueryResponse` будет содержать ссылку на поток ответа, который должен быть обработан читателем для соответствующего формата.
+
+    **Подписи**
+
+    ```java
+    CompletableFuture<QueryResponse> query(String sqlQuery, QuerySettings settings)
+    CompletableFuture<QueryResponse> query(String sqlQuery)
+    ```
+
+    **Параметры**
+
+    `sqlQuery` — один SQL-оператор. Запрос отправляется на сервер в исходном виде.
+
+    `settings` — настройки запроса.
+
+    **Возвращаемое значение**
+
+    Future типа `QueryResponse` — набор данных результата запроса и дополнительная информация, такая как метрики на стороне сервера. Объект Response должен быть закрыт после использования набора данных.
+
+    **Примеры**
+
+    ```java
+    final String sql = "select * from " + TABLE_NAME + " where title <> '' limit 10";
+
+    // Default format is RowBinaryWithNamesAndTypesFormatReader so reader have all information about columns
+    try (QueryResponse response = client.query(sql).get(3, TimeUnit.SECONDS);) {
+
+        // Create a reader to access the data in a convenient way
+        ClickHouseBinaryFormatReader reader = client.newBinaryFormatReader(response);
+
+        while (reader.hasNext()) {
+            reader.next(); // Read the next record from stream and parse it
+
+            // get values
+            double id = reader.getDouble("id");
+            String title = reader.getString("title");
+            String url = reader.getString("url");
+
+            // collecting data
+        }
+    } catch (Exception e) {
+        log.error("Failed to read data", e);
+    }
+
+    // put business logic outside of the reading block to release http connection asap.
+    ```
+
+    ### query(String sqlQuery, Map&lt;String, Object&gt; queryParams, QuerySettings settings) \{#querystring-sqlquery-mapltstring-object-queryparams-querysettings-settings\}
+
+    Отправляет `sqlQuery` как есть. Дополнительно отправляет параметры запроса, чтобы сервер мог скомпилировать SQL-выражение.
+
+    **Подписи**
+
+    ```java
+    CompletableFuture<QueryResponse> query(String sqlQuery, Map<String, Object> queryParams, QuerySettings settings)
+    ```
+
+    **Параметры**
+
+    `sqlQuery` - SQL-выражение с плейсхолдерами `{}`.
+
+    `queryParams` - словарь переменных для подстановки в SQL-выражение на сервере.
+
+    `settings` — настройки запроса.
+
+    **Возвращаемое значение**
+
+    Future типа `QueryResponse` — набор данных результата запроса и дополнительная информация, такая как метрики на стороне сервера. Объект Response должен быть закрыт после использования набора данных.
+
+    **Примеры**
+
+    ```java showLineNumbers
+
+    // define parameters. They will be sent to the server along with the request.
+    Map<String, Object> queryParams = new HashMap<>();
+    queryParams.put("param1", 2);
+
+    try (QueryResponse response =
+            client.query("SELECT * FROM " + table + " WHERE col1 >= {param1:UInt32}", queryParams, new QuerySettings()).get()) {
+
+        // Create a reader to access the data in a convenient way
+        ClickHouseBinaryFormatReader reader = client.newBinaryFormatReader(response);
+
+        while (reader.hasNext()) {
+            reader.next(); // Read the next record from stream and parse it
+
+            // reading data
+        }
+
+    } catch (Exception e) {
+        log.error("Failed to read data", e);
+    }
+
+    ```
+
+    ### queryAll(String sqlQuery) \{#queryallstring-sqlquery\}
+
+    Запрашивает данные в формате `RowBinaryWithNamesAndTypes`. Возвращает результат в виде коллекции. Производительность чтения такая же, как при использовании reader, но требуется больше памяти для хранения всего набора данных.
+
+    **Подписи**
+
+    ```java
+    List<GenericRecord> queryAll(String sqlQuery)
+    ```
+
+    **Параметры**
+
+    `sqlQuery` — SQL-выражение для выполнения запроса данных с сервера.
+
+    **Возвращаемое значение**
+
+    Полный набор данных, представленный списком объектов `GenericRecord`, которые обеспечивают построчный доступ к результирующим данным.
+
+    **Примеры**
+
+    ```java showLineNumbers
+    try {
+        log.info("Reading whole table and process record by record");
+        final String sql = "select * from " + TABLE_NAME + " where title <> ''";
+
+        // Read whole result set and process it record by record
+        client.queryAll(sql).forEach(row -> {
+            double id = row.getDouble("id");
+            String title = row.getString("title");
+            String url = row.getString("url");
+
+            log.info("id: {}, title: {}, url: {}", id, title, url);
+        });
+    } catch (Exception e) {
+        log.error("Failed to read data", e);
+    }
+    ```
+
+    ### QuerySettings \{#querysettings\}
+
+    Параметры конфигурации для операций с запросами.
+
+    **Методы настройки**
+
+    | Метод                                             | Описание                                                                                                                                                        |
+    | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `setQueryId(String queryId)`                      | Задает идентификатор запроса, который будет присвоен операции.                                                                                                  |
+    | `setFormat(ClickHouseFormat format)`              | Задаёт формат ответа. Полный список см. в `RowBinaryWithNamesAndTypes`.                                                                                         |
+    | `setMaxExecutionTime(Integer maxExecutionTime)`   | Устанавливает максимальное время выполнения операции на сервере. Не влияет на таймаут чтения.                                                                   |
+    | `waitEndOfQuery(Boolean waitEndOfQuery)`          | Указывает серверу дождаться завершения запроса перед отправкой ответа.                                                                                          |
+    | `setUseServerTimeZone(Boolean useServerTimeZone)` | Часовой пояс сервера (см. конфигурацию клиента) будет использоваться при разборе типов даты/времени в результате операции. По умолчанию `false`.                |
+    | `setUseTimeZone(String timeZone)`                 | Запрашивает у сервера использование значения `timeZone` для преобразования времени. См. [session&#95;timezone](/operations/settings/settings#session_timezone). |
+    | `serverSetting(String name, String value)`        | Задаёт отдельную настройку сервера для операции.                                                                                                                |
+    | `serverSetting(String name, Collection values)`   | Задает отдельные параметры сервера с несколькими значениями для операции. Элементы коллекции должны иметь тип `String`.                                         |
+    | `setDBRoles(Collection dbRoles)`                  | Указывает роли БД, которые нужно назначить перед выполнением операции. Элементы коллекции должны иметь тип `String`.                                            |
+    | `setOption(String option, Object value)`          | Устанавливает параметр конфигурации в необработанном виде. Это не параметр сервера.                                                                             |
+
+    ### QueryResponse \{#queryresponse\}
+
+    Объект ответа, содержащий результат выполнения запроса. Доступен только при получении ответа от сервера.
+
+    :::note
+    Этот объект необходимо закрыть как можно скорее для освобождения соединения, так как соединение не может быть использовано повторно до полного чтения всех данных предыдущего ответа.
+    :::
+
+    | Метод                           | Описание                                                                                                        |
+    | ------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+    | `ClickHouseFormat getFormat()`  | Возвращает формат, в котором закодированы данные ответа.                                                        |
+    | `InputStream getInputStream()`  | Возвращает поток несжатых байтов данных в заданном формате.                                                     |
+    | `OperationMetrics getMetrics()` | Возвращает объект с метриками операции.                                                                         |
+    | `String getQueryId()`           | Возвращает идентификатор запроса для операции, назначенный приложением (через настройки операции) или сервером. |
+    | `TimeZone getTimeZone()`        | Возвращает часовой пояс, который должен использоваться при обработке типов Date/DateTime в ответе.              |
+
+    ### Примеры \{#examples\}
+
+    * Примеры кода доступны в [репозитории](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2)
+    * См. реализацию сервиса Spring в репозитории [implementation](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service)
+
+    ## Общий API \{#common-api\}
+
+    ### getTableSchema(String table) \{#gettableschemastring-table\}
+
+    Получает схему таблицы `table`.
+
+    **Подписи**
+
+    ```java
+    TableSchema getTableSchema(String table)
+    TableSchema getTableSchema(String table, String database)
+    ```
+
+    **Параметры**
+
+    `table` — имя таблицы, для которой требуется получить данные схемы.
+
+    `database` — база данных, где определена целевая таблица.
+
+    **Возвращаемое значение**
+
+    Возвращает объект `TableSchema` со списком столбцов таблицы.
+
+    ### getTableSchemaFromQuery(String sql) \{#gettableschemafromquerystring-sql\}
+
+    Получает схему из SQL-выражения.
+
+    **Подписи**
+
+    ```java
+    TableSchema getTableSchemaFromQuery(String sql)
+    ```
+
+    **Параметры**
+
+    `sql` - SQL-оператор &quot;SELECT&quot;, для которого должна быть возвращена схема.
+
+    **Возвращаемое значение**
+
+    Возвращает объект `TableSchema` со столбцами, соответствующими SQL-выражению `sql`.
+
+    ### TableSchema \{#tableschema\}
+
+    ### register(Class&lt;?&gt; clazz, TableSchema schema) \{#registerclasslt-clazz-tableschema-schema\}
+
+    Компилирует слой сериализации и десериализации для Java-класса, используемого для записи и чтения данных с помощью `schema`. Метод создаёт сериализатор и десериализатор для пары getter/setter и соответствующего столбца.
+    Соответствие столбца находится путём извлечения его имени из имени метода. Например, `getFirstName` будет соответствовать столбцу `first_name` или `firstname`.
+
+    **Подписи**
+
+    ```java
+    void register(Class<?> clazz, TableSchema schema)
+    ```
+
+    **Параметры**
+
+    `clazz` - Класс, представляющий POJO для чтения и записи данных.
+
+    `schema` - Схема данных, используемая для сопоставления со свойствами POJO.
+
+    **Примеры**
+
+    ```java showLineNumbers
+    client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
+    ```
+
+    ## Примеры использования \{#usage-examples\}
+
+    Полные примеры кода хранятся в репозитории в [папке](https://github.com/ClickHouse/clickhouse-java/tree/main/examples) `example`:
+
+    * [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - основной набор примеров.
+    * [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - пример того, как использовать клиента в приложении Spring Boot.
+    * [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - пример того, как использовать клиент в приложении на Ktor (Kotlin).
+
+    ## Руководство по миграции \{#migration_guide\}
+
+    Старый клиент (V1) использовал `com.clickhouse.client.ClickHouseClient#builder` в качестве отправной точки. Новый клиент (V2) использует аналогичный паттерн с `com.clickhouse.client.api.Client.Builder`. Основные
+    отличия:
+
+    * загрузчик сервисов (service loader) не используется для выбора реализации. Класс `com.clickhouse.client.api.Client` является фасадом для всех вариантов реализаций в будущем.
+    * меньше источников конфигурации: одна передаётся билдеру и одна задаётся настройками операций (`QuerySettings`, `InsertSettings`). В предыдущей версии конфигурация задавалась на уровне каждого узла и в некоторых случаях загружала переменные окружения.
+
+    ### Соответствие параметров конфигурации \{#migration_from_v1_config\}
+
+    В V1 имеется 3 класса перечислений, связанных с конфигурацией:
+
+    * `com.clickhouse.client.config.ClickHouseDefaults` — параметры конфигурации, которые обычно задаются в большинстве случаев. Например, `USER` и `PASSWORD`.
+    * `com.clickhouse.client.config.ClickHouseClientOption` — параметры конфигурации, относящиеся к клиенту. Например, `HEALTH_CHECK_INTERVAL`.
+    * `com.clickhouse.client.http.config.ClickHouseHttpOption` — конфигурационные параметры, специфичные для HTTP-интерфейса. Например, `RECEIVE_QUERY_PROGRESS`.
+
+    Они были разработаны для группировки параметров и обеспечения четкого разделения. Однако в некоторых случаях это приводило к путанице (есть ли разница между `com.clickhouse.client.config.ClickHouseDefaults#ASYNC` и
+    `com.clickhouse.client.config.ClickHouseClientOption#ASYNC`). Новый клиент V2 использует `com.clickhouse.client.api.Client.Builder` в качестве единого словаря всех возможных параметров конфигурации клиента. Существует
+    `com.clickhouse.client.api.ClientConfigProperties`, где перечислены все имена параметров конфигурации.
+
+    В таблице ниже показано, какие старые параметры поддерживаются в новом клиенте и каково их новое значение.
+
+    **Условные обозначения:** ✔ = поддерживается, ✗ = не поддерживается
+
+    <Tabs groupId="v1-migration">
+      <TabItem value="аутентификация-подключений" label="Подключение и авторизация">
+        | Конфигурация V1                                                                  | Метод билдера V2                            | Комментарии                              |
+        | -------------------------------------------------------------------------------- | ------------------------------------------- | ---------------------------------------- |
+        | `ClickHouseDefaults#HOST`                                                        | `Client.Builder#addEndpoint`                |                                          |
+        | `ClickHouseDefaults#PROTOCOL`                                                    | ✗                                           | В V2 поддерживается только HTTP-протокол |
+        | `ClickHouseDefaults#DATABASE`<br />`ClickHouseClientOption#DATABASE`             | `Client.Builder#setDefaultDatabase`         |                                          |
+        | `ClickHouseDefaults#USER`                                                        | `Client.Builder#setUsername`                |                                          |
+        | `ClickHouseDefaults#PASSWORD`                                                    | `Client.Builder#setPassword`                |                                          |
+        | `ClickHouseClientOption#CONNECTION_TIMEOUT`                                      | `Client.Builder#setConnectTimeout`          |                                          |
+        | `ClickHouseClientOption#CONNECTION_TTL`                                          | `Client.Builder#setConnectionTTL`           |                                          |
+        | `ClickHouseHttpOption#MAX_OPEN_CONNECTIONS`                                      | `Client.Builder#setMaxConnections`          |                                          |
+        | `ClickHouseHttpOption#KEEP_ALIVE`<br />`ClickHouseHttpOption#KEEP_ALIVE_TIMEOUT` | `Client.Builder#setKeepAliveTimeout`        |                                          |
+        | `ClickHouseHttpOption#CONNECTION_REUSE_STRATEGY`                                 | `Client.Builder#setConnectionReuseStrategy` |                                          |
+        | `ClickHouseHttpOption#USE_BASIC_AUTHENTICATION`                                  | `Client.Builder#useHTTPBasicAuth`           |                                          |
+      </TabItem>
+
+      <TabItem value="SSL" label="SSL и безопасность">
+        | Конфигурация V1                                        | Метод Builder V2                          | Комментарии                                                              |
+        | ------------------------------------------------------ | ----------------------------------------- | ------------------------------------------------------------------------ |
+        | `ClickHouseDefaults#SSL_CERTIFICATE_TYPE`              | ✗                                         |                                                                          |
+        | `ClickHouseDefaults#SSL_KEY_ALGORITHM`                 | ✗                                         |                                                                          |
+        | `ClickHouseDefaults#SSL_PROTOCOL`                      | ✗                                         |                                                                          |
+        | `ClickHouseClientOption#SSL`                           | ✗                                         | См. `Client.Builder#addEndpoint`                                         |
+        | `ClickHouseClientOption#SSL_MODE`                      | ✗                                         |                                                                          |
+        | `ClickHouseClientOption#SSL_ROOT_CERTIFICATE`          | `Client.Builder#setRootCertificate`       | Аутентификация SSL должна быть включена с помощью `useSSLAuthentication` |
+        | `ClickHouseClientOption#SSL_CERTIFICATE`               | `Client.Builder#setClientCertificate`     |                                                                          |
+        | `ClickHouseClientOption#SSL_KEY`                       | `Client.Builder#setClientKey`             |                                                                          |
+        | `ClickHouseClientOption#KEY_STORE_TYPE`                | `Client.Builder#setSSLTrustStoreType`     |                                                                          |
+        | `ClickHouseClientOption#TRUST_STORE`                   | `Client.Builder#setSSLTrustStore`         |                                                                          |
+        | `ClickHouseClientOption#KEY_STORE_PASSWORD`            | `Client.Builder#setSSLTrustStorePassword` |                                                                          |
+        | `ClickHouseClientOption#SSL_SOCKET_SNI`                | `Client.Builder#sslSocketSNI`             |                                                                          |
+        | `ClickHouseClientOption#CUSTOM_SOCKET_FACTORY`         | ✗                                         |                                                                          |
+        | `ClickHouseClientOption#CUSTOM_SOCKET_FACTORY_OPTIONS` | ✗                                         | См. `Client.Builder#sslSocketSNI` для настройки SNI                      |
+      </TabItem>
+
+      <TabItem value="сокет" label="Параметры сокета">
+        | Конфигурация V1                             | Метод билдера V2                       | Комментарии |
+        | ------------------------------------------- | -------------------------------------- | ----------- |
+        | `ClickHouseClientOption#SOCKET_TIMEOUT`     | `Client.Builder#setSocketTimeout`      |             |
+        | `ClickHouseClientOption#SOCKET_REUSEADDR`   | `Client.Builder#setSocketReuseAddress` |             |
+        | `ClickHouseClientOption#SOCKET_KEEPALIVE`   | `Client.Builder#setSocketKeepAlive`    |             |
+        | `ClickHouseClientOption#SOCKET_LINGER`      | `Client.Builder#setSocketLinger`       |             |
+        | `ClickHouseClientOption#SOCKET_IP_TOS`      | ✗                                      |             |
+        | `ClickHouseClientOption#SOCKET_TCP_NODELAY` | `Client.Builder#setSocketTcpNodelay`   |             |
+        | `ClickHouseClientOption#SOCKET_RCVBUF`      | `Client.Builder#setSocketRcvbuf`       |             |
+        | `ClickHouseClientOption#SOCKET_SNDBUF`      | `Client.Builder#setSocketSndbuf`       |             |
+      </TabItem>
+
+      <TabItem value="сжатие" label="Сжатие">
+        | Конфигурация V1                               | Метод билдера V2                        | Комментарии                                                     |
+        | --------------------------------------------- | --------------------------------------- | --------------------------------------------------------------- |
+        | `ClickHouseClientOption#COMPRESS`             | `Client.Builder#compressServerResponse` | См. также `useHttpCompression`                                  |
+        | `ClickHouseClientOption#DECOMPRESS`           | `Client.Builder#compressClientRequest`  | См. также `useHttpCompression`                                  |
+        | `ClickHouseClientOption#COMPRESS_ALGORITHM`   | ✗                                       | `LZ4` для не-HTTP-протокола. HTTP использует `Accept-Encoding`  |
+        | `ClickHouseClientOption#DECOMPRESS_ALGORITHM` | ✗                                       | `LZ4` для не-HTTP-протокола. HTTP использует `Content-Encoding` |
+        | `ClickHouseClientOption#COMPRESS_LEVEL`       | ✗                                       |                                                                 |
+        | `ClickHouseClientOption#DECOMPRESS_LEVEL`     | ✗                                       |                                                                 |
+      </TabItem>
+
+      <TabItem value="прокси" label="Прокси-сервер">
+        | Параметры конфигурации V1               | Метод билдера V2                     | Комментарии |
+        | --------------------------------------- | ------------------------------------ | ----------- |
+        | `ClickHouseClientOption#PROXY_TYPE`     | `Client.Builder#addProxy`            |             |
+        | `ClickHouseClientOption#PROXY_HOST`     | `Client.Builder#addProxy`            |             |
+        | `ClickHouseClientOption#PROXY_PORT`     | `Client.Builder#addProxy`            |             |
+        | `ClickHouseClientOption#PROXY_USERNAME` | `Client.Builder#setProxyCredentials` |             |
+        | `ClickHouseClientOption#PROXY_PASSWORD` | `Client.Builder#setProxyCredentials` |             |
+      </TabItem>
+
+      <TabItem value="таймауты и повторы" label="Тайм-ауты и повторные попытки">
+        | Конфигурация V1                                 | Метод билдера V2                     | Комментарии                 |
+        | ----------------------------------------------- | ------------------------------------ | --------------------------- |
+        | `ClickHouseClientOption#MAX_EXECUTION_TIME`     | `Client.Builder#setExecutionTimeout` |                             |
+        | `ClickHouseClientOption#RETRY`                  | `Client.Builder#setMaxRetries`       | См. также `retryOnFailures` |
+        | `ClickHouseHttpOption#AHC_RETRY_ON_FAILURE`     | `Client.Builder#retryOnFailures`     |                             |
+        | `ClickHouseClientOption#FAILOVER`               | ✗                                    |                             |
+        | `ClickHouseClientOption#REPEAT_ON_SESSION_LOCK` | ✗                                    |                             |
+        | `ClickHouseClientOption#SESSION_ID`             | ✗                                    |                             |
+        | `ClickHouseClientOption#SESSION_CHECK`          | ✗                                    |                             |
+        | `ClickHouseClientOption#SESSION_TIMEOUT`        | ✗                                    |                             |
+      </TabItem>
+
+      <TabItem value="часовой пояс" label="Часовой пояс">
+        | Конфигурация в V1                                                                    | Метод Builder в V2                 | Комментарии |
+        | ------------------------------------------------------------------------------------ | ---------------------------------- | ----------- |
+        | `ClickHouseDefaults#SERVER_TIME_ZONE`<br />`ClickHouseClientOption#SERVER_TIME_ZONE` | `Client.Builder#setServerTimeZone` |             |
+        | `ClickHouseClientOption#USE_SERVER_TIME_ZONE`                                        | `Client.Builder#useServerTimeZone` |             |
+        | `ClickHouseClientOption#USE_SERVER_TIME_ZONE_FOR_DATES`                              |                                    |             |
+        | `ClickHouseClientOption#USE_TIME_ZONE`                                               | `Client.Builder#useTimeZone`       |             |
+      </TabItem>
+
+      <TabItem value="буферы" label="Буферы и производительность">
+        | Параметр V1                                     | Метод билдера V2                            | Комментарии |
+        | ----------------------------------------------- | ------------------------------------------- | ----------- |
+        | `ClickHouseClientOption#BUFFER_SIZE`            | `Client.Builder#setClientNetworkBufferSize` |             |
+        | `ClickHouseClientOption#BUFFER_QUEUE_VARIATION` | ✗                                           |             |
+        | `ClickHouseClientOption#READ_BUFFER_SIZE`       | ✗                                           |             |
+        | `ClickHouseClientOption#WRITE_BUFFER_SIZE`      | ✗                                           |             |
+        | `ClickHouseClientOption#REQUEST_CHUNK_SIZE`     | ✗                                           |             |
+        | `ClickHouseClientOption#REQUEST_BUFFERING`      | ✗                                           |             |
+        | `ClickHouseClientOption#RESPONSE_BUFFERING`     | ✗                                           |             |
+        | `ClickHouseClientOption#MAX_BUFFER_SIZE`        | ✗                                           |             |
+        | `ClickHouseClientOption#MAX_QUEUED_BUFFERS`     | ✗                                           |             |
+        | `ClickHouseClientOption#MAX_QUEUED_REQUESTS`    | ✗                                           |             |
+        | `ClickHouseClientOption#REUSE_VALUE_WRAPPER`    | ✗                                           |             |
+      </TabItem>
+
+      <TabItem value="многопоточность" label="Многопоточность и асинхронность">
+        | Конфигурация V1                                                | Метод билдера V2                  | Комментарии                      |
+        | -------------------------------------------------------------- | --------------------------------- | -------------------------------- |
+        | `ClickHouseDefaults#ASYNC`<br />`ClickHouseClientOption#ASYNC` | `Client.Builder#useAsyncRequests` |                                  |
+        | `ClickHouseDefaults#MAX_SCHEDULER_THREADS`                     | ✗                                 | см. `setSharedOperationExecutor` |
+        | `ClickHouseDefaults#MAX_THREADS`                               | ✗                                 | см. `setSharedOperationExecutor` |
+        | `ClickHouseDefaults#THREAD_KEEPALIVE_TIMEOUT`                  | см. `setSharedOperationExecutor`  |                                  |
+        | `ClickHouseClientOption#MAX_THREADS_PER_CLIENT`                | ✗                                 |                                  |
+        | `ClickHouseClientOption#MAX_CORE_THREAD_TTL`                   | ✗                                 |                                  |
+      </TabItem>
+
+      <TabItem value="HTTP-заголовки" label="HTTP и заголовки">
+        | Конфигурация V1                                      | Метод билдера V2               | Комментарии                                          |
+        | ---------------------------------------------------- | ------------------------------ | ---------------------------------------------------- |
+        | `ClickHouseHttpOption#CUSTOM_HEADERS`                | `Client.Builder#httpHeaders`   |                                                      |
+        | `ClickHouseHttpOption#CUSTOM_PARAMS`                 | ✗                              | См. `Client.Builder#serverSetting`                   |
+        | `ClickHouseClientOption#CLIENT_NAME`                 | `Client.Builder#setClientName` |                                                      |
+        | `ClickHouseHttpOption#CONNECTION_PROVIDER`           | ✗                              |                                                      |
+        | `ClickHouseHttpOption#DEFAULT_RESPONSE`              | ✗                              |                                                      |
+        | `ClickHouseHttpOption#SEND_HTTP_CLIENT_ID`           | ✗                              |                                                      |
+        | `ClickHouseHttpOption#AHC_VALIDATE_AFTER_INACTIVITY` | ✗                              | Всегда включено при использовании Apache Http Client |
+      </TabItem>
+
+      <TabItem value="формат-запрос" label="Формат и запрос">
+        | Конфигурация V1                                                  | Метод построителя V2 | Комментарии                                                                                                            |
+        | ---------------------------------------------------------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+        | `ClickHouseDefaults#FORMAT`<br />`ClickHouseClientOption#FORMAT` | ✗                    | Перемещено в настройки операций (`QuerySettings` и `InsertSettings`)                                                   |
+        | `ClickHouseClientOption#QUERY_ID`                                | ✗                    | См. `QuerySettings` и `InsertSettings`                                                                                 |
+        | `ClickHouseClientOption#LOG_LEADING_COMMENT`                     | ✗                    | См. `QuerySettings#logComment` и `InsertSettings#logComment`                                                           |
+        | `ClickHouseClientOption#MAX_RESULT_ROWS`                         | ✗                    | Это серверная настройка                                                                                                |
+        | `ClickHouseClientOption#RESULT_OVERFLOW_MODE`                    | ✗                    | Это серверная настройка                                                                                                |
+        | `ClickHouseHttpOption#RECEIVE_QUERY_PROGRESS`                    | ✗                    | Серверная настройка                                                                                                    |
+        | `ClickHouseHttpOption#WAIT_END_OF_QUERY`                         | ✗                    | Серверная настройка                                                                                                    |
+        | `ClickHouseHttpOption#REMEMBER_LAST_SET_ROLES`                   | `Client#setDBRoles`  | Теперь относится к конфигурации времени выполнения. См. также `QuerySettings#setDBRoles` и `InsertSettings#setDBRoles` |
+      </TabItem>
+
+      <TabItem value="обнаружение узлов" label="Обнаружение узлов и балансировка нагрузки">
+        | Конфигурация V1                                  | Метод билдера V2 | Комментарии |
+        | ------------------------------------------------ | ---------------- | ----------- |
+        | `ClickHouseClientOption#AUTO_DISCOVERY`          | ✗                |             |
+        | `ClickHouseClientOption#LOAD_BALANCING_POLICY`   | ✗                |             |
+        | `ClickHouseClientOption#LOAD_BALANCING_TAGS`     | ✗                |             |
+        | `ClickHouseClientOption#HEALTH_CHECK_INTERVAL`   | ✗                |             |
+        | `ClickHouseClientOption#HEALTH_CHECK_METHOD`     | ✗                |             |
+        | `ClickHouseClientOption#NODE_DISCOVERY_INTERVAL` | ✗                |             |
+        | `ClickHouseClientOption#NODE_DISCOVERY_LIMIT`    | ✗                |             |
+        | `ClickHouseClientOption#NODE_CHECK_INTERVAL`     | ✗                |             |
+        | `ClickHouseClientOption#NODE_GROUP_SIZE`         | ✗                |             |
+        | `ClickHouseClientOption#CHECK_ALL_NODES`         | ✗                |             |
+      </TabItem>
+
+      <TabItem value="разное" label="Прочее">
+        | Конфигурация V1                                                                  | Метод построителя V2              | Комментарии                         |
+        | -------------------------------------------------------------------------------- | --------------------------------- | ----------------------------------- |
+        | `ClickHouseDefaults#AUTO_SESSION`                                                | ✗                                 | Поддержка сессий будет пересмотрена |
+        | `ClickHouseDefaults#BUFFERING`                                                   | ✗                                 |                                     |
+        | `ClickHouseDefaults#MAX_REQUESTS`                                                | ✗                                 |                                     |
+        | `ClickHouseDefaults#ROUNDING_MODE`                                               |                                   |                                     |
+        | `ClickHouseDefaults#SERVER_VERSION`<br />`ClickHouseClientOption#SERVER_VERSION` | `Client.Builder#setServerVersion` |                                     |
+        | `ClickHouseDefaults#SRV_RESOLVE`                                                 | ✗                                 |                                     |
+        | `ClickHouseClientOption#CUSTOM_SETTINGS`                                         |                                   |                                     |
+        | `ClickHouseClientOption#PRODUCT_NAME`                                            | ✗                                 | Использовать имя клиента            |
+        | `ClickHouseClientOption#RENAME_RESPONSE_COLUMN`                                  | ✗                                 |                                     |
+        | `ClickHouseClientOption#SERVER_REVISION`                                         | ✗                                 |                                     |
+        | `ClickHouseClientOption#TRANSACTION_TIMEOUT`                                     | ✗                                 |                                     |
+        | `ClickHouseClientOption#WIDEN_UNSIGNED_TYPES`                                    | ✗                                 |                                     |
+        | `ClickHouseClientOption#USE_BINARY_STRING`                                       | ✗                                 |                                     |
+        | `ClickHouseClientOption#USE_BLOCKING_QUEUE`                                      | ✗                                 |                                     |
+        | `ClickHouseClientOption#USE_COMPILATION`                                         | ✗                                 |                                     |
+        | `ClickHouseClientOption#USE_OBJECTS_IN_ARRAYS`                                   | ✗                                 |                                     |
+        | `ClickHouseClientOption#MAX_MAPPER_CACHE`                                        | ✗                                 |                                     |
+        | `ClickHouseClientOption#MEASURE_REQUEST_TIME`                                    | ✗                                 |                                     |
+      </TabItem>
+    </Tabs>
+
+    ### Общие отличия \{#general-differences\}
+
+    * Клиент V2 использует меньше проприетарных классов, что повышает портируемость. Например, V2 работает с любой реализацией `java.io.InputStream` для записи данных на сервер.
+    * Настройка `async` в Client V2 по умолчанию отключена (`off`). Это означает отсутствие дополнительных потоков и больший контроль приложения над клиентом. В большинстве случаев эта настройка должна оставаться `off`. Включение `async` создаст отдельный поток для запроса. Это имеет смысл только при использовании управляемого приложением executor (см. `com.clickhouse.client.api.Client.Builder#setSharedOperationExecutor`)
+
+    ### Запись данных \{#writing-data\}
+
+    * Используйте любую реализацию интерфейса `java.io.InputStream`. Версия V1 `com.clickhouse.data.ClickHouseInputStream` поддерживается, но НЕ рекомендуется к использованию.
+    * После обнаружения конца входного потока он обрабатывается соответствующим образом. Перед этим должен быть закрыт выходной поток запроса.
+
+    **V1 Вставка данных в формате TSV.**
+
+    ```java
+    InputStream inData = getInData();
+    ClickHouseRequest.Mutation request = client.read(server)
+            .write()
+            .table(tableName)
+            .format(ClickHouseFormat.TSV);
+    ClickHouseConfig config = request.getConfig();
+    CompletableFuture<ClickHouseResponse> future;
+    try (ClickHousePipedOutputStream requestBody = ClickHouseDataStreamFactory.getInstance()
+            .createPipedOutputStream(config)) {
+        // start the worker thread which transfer data from the input into ClickHouse
+        future = request.data(requestBody.getInputStream()).execute();
+
+        // Copy data from inData stream to requestBody stream
+
+        // We need to close the stream before getting a response
+        requestBody.close();
+
+        try (ClickHouseResponse response = future.get()) {
+            ClickHouseResponseSummary summary = response.getSummary();
+            Assert.assertEquals(summary.getWrittenRows(), numRows, "Num of written rows");
+        }
+    }
+
+    ```
+
+    **V2 Вставка данных в формате TSV.**
+
+    ```java
+    InputStream inData = getInData();
+    InsertSettings settings = new InsertSettings().setInputStreamCopyBufferSize(8198 * 2); // set copy buffer size
+    try (InsertResponse response = client.insert(tableName, inData, ClickHouseFormat.TSV, settings).get(30, TimeUnit.SECONDS)) {
+
+      // Insert is complete at this point
+
+    } catch (Exception e) {
+     // Handle exception
+    }
+    ```
+
+    * достаточно вызвать один метод. Нет необходимости создавать дополнительный объект запроса.
+    * Поток тела запроса автоматически закрывается после копирования всех данных.
+    * Теперь доступен новый низкоуровневый API `com.clickhouse.client.api.Client#insert(java.lang.String, java.util.List<java.lang.String>, com.clickhouse.client.api.DataStreamWriter, com.clickhouse.data.ClickHouseFormat, com.clickhouse.client.api.insert.InsertSettings)`. `com.clickhouse.client.api.DataStreamWriter` предназначен для реализации пользовательской логики записи данных, например для чтения данных из
+      очереди.
+
+    ### Чтение данных \{#reading-data\}
+
+    * По умолчанию данные читаются в формате `RowBinaryWithNamesAndTypes`. В настоящий момент при необходимости привязки данных поддерживается только этот формат.
+    * Данные можно считывать как коллекцию записей с помощью метода `List<GenericRecord> com.clickhouse.client.api.Client#queryAll(java.lang.String)`. Он загружает данные в память и освобождает соединение, поэтому дополнительная обработка не требуется. `GenericRecord` предоставляет доступ к данным и реализует некоторые преобразования.
+
+    ```java
+    Collection<GenericRecord> records = client.queryAll("SELECT * FROM table");
+    for (GenericRecord record : records) {
+        int rowId = record.getInteger("rowID");
+        String name = record.getString("name");
+        LocalDateTime ts = record.getLocalDateTime("ts");
+    }
+
+    ```
+  </Version>
+
+  <Version>
+    Клиентская библиотека Java для взаимодействия с сервером БД через его протоколы. Текущая реализация поддерживает только [HTTP-интерфейс](/interfaces/http). Библиотека предоставляет собственный API для отправки запросов на сервер.
+
+    :::warning Устаревание
+    Эта библиотека скоро будет объявлена устаревшей. Для новых проектов используйте последнюю версию [Java Client](/integrations/language-clients/java/client/client.mdx)
+    :::
+
+    ## Настройка \{#v1-setup\}
+
+    <Tabs groupId="client-v1-setup">
+      <TabItem value="maven" label="Maven">
+        ```xml
+        <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client -->
+        <dependency>
+            <groupId>com.clickhouse</groupId>
+            <artifactId>clickhouse-http-client</artifactId>
+            <version>0.7.2</version>
+        </dependency>
+        ```
+      </TabItem>
+
+      <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+        ```kotlin
+        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
+        implementation("com.clickhouse:clickhouse-http-client:0.7.2")
+        ```
+      </TabItem>
+
+      <TabItem value="gradle" label="Gradle">
+        ```groovy
+        // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client
+        implementation 'com.clickhouse:clickhouse-http-client:0.7.2'
+        ```
+      </TabItem>
+    </Tabs>
+
+    Начиная с версии `0.5.0`, драйвер использует новую клиентскую HTTP-библиотеку, которую необходимо добавить как зависимость.
+
+    <Tabs groupId="client-v1-http-client">
+      <TabItem value="maven" label="Maven">
+        ```xml
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5 -->
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>5.3.1</version>
+        </dependency>
+        ```
+      </TabItem>
+
+      <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+        ```kotlin
+        // https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
+        implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
+        ```
+      </TabItem>
+
+      <TabItem value="gradle" label="Gradle">
+        ```groovy
+        // https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
+        implementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'
+        ```
+      </TabItem>
+    </Tabs>
+
+    ## Инициализация \{#v1-initialization\}
+
+    Формат URL-адреса подключения: `protocol://host[:port][/database][?param[=value][&param[=value]][#tag[,tag]]`, например:
+
+    * `http://localhost:8443?ssl=true&sslmode=NONE`
+    * `https://(https://explorer@play.clickhouse.com:443`
+
+    Подключитесь к одному узлу:
+
+    ```java showLineNumbers
+    ClickHouseNode server = ClickHouseNode.of("http://localhost:8123/default?compress=0");
+    ```
+
+    Подключение к кластеру с несколькими узлами:
+
+    ```java showLineNumbers
+    ClickHouseNodes servers = ClickHouseNodes.of(
+        "jdbc:ch:http://server1.domain,server2.domain,server3.domain/my_db"
+        + "?load_balancing_policy=random&health_check_interval=5000&failover=2");
+    ```
+
+    ## API запросов \{#v1-query-api\}
+
+    ```java showLineNumbers
+    try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+         ClickHouseResponse response = client.read(servers)
+            .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+            .query("select * from numbers limit :limit")
+            .params(1000)
+            .executeAndWait()) {
+                ClickHouseResponseSummary summary = response.getSummary();
+                long totalRows = summary.getTotalRowsToRead();
+    }
+    ```
+
+    ## API потоковых запросов \{#v1-streaming-query-api\}
+
+    ```java showLineNumbers
+    try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+         ClickHouseResponse response = client.read(servers)
+            .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+            .query("select * from numbers limit :limit")
+            .params(1000)
+            .executeAndWait()) {
+                for (ClickHouseRecord r : response.records()) {
+                int num = r.getValue(0).asInteger();
+                // type conversion
+                String str = r.getValue(0).asString();
+                LocalDate date = r.getValue(0).asDate();
+            }
+    }
+    ```
+
+    См. [полный пример кода](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L73) в [репозитории](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client).
+
+    ## API вставки \{#v1-insert-api\}
+
+    ```java showLineNumbers
+
+    try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+         ClickHouseResponse response = client.read(servers).write()
+            .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+            .query("insert into my_table select c2, c3 from input('c1 UInt8, c2 String, c3 Int32')")
+            .data(myInputStream) // `myInputStream` is source of data in RowBinary format
+            .executeAndWait()) {
+                ClickHouseResponseSummary summary = response.getSummary();
+                summary.getWrittenRows();
+    }
+    ```
+
+    См. [полный пример кода](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L39) в [репозитории](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client).
+
+    **Кодирование RowBinary**
+
+    Формат RowBinary описан на его [странице](/interfaces/formats/RowBinaryWithNamesAndTypes).
+
+    Пример доступен в [коде](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/src/main/java/com/clickhouse/kafka/connect/sink/db/ClickHouseWriter.java#L622).
+
+    ## Функциональные возможности \{#v1-features\}
+
+    ### Сжатие \{#v1-compression\}
+
+    По умолчанию клиент использует сжатие LZ4, что требует следующей зависимости:
+
+    <Tabs groupId="client-v1-compression-deps">
+      <TabItem value="maven" label="Maven">
+        ```xml
+        <!-- https://mvnrepository.com/artifact/org.lz4/lz4-java -->
+        <dependency>
+            <groupId>org.lz4</groupId>
+            <artifactId>lz4-java</artifactId>
+            <version>1.8.0</version>
+        </dependency>
+        ```
+      </TabItem>
+
+      <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+        ```kotlin
+        // https://mvnrepository.com/artifact/org.lz4/lz4-java
+        implementation("org.lz4:lz4-java:1.8.0")
+        ```
+      </TabItem>
+
+      <TabItem value="gradle" label="Gradle">
+        ```groovy
+        // https://mvnrepository.com/artifact/org.lz4/lz4-java
+        implementation 'org.lz4:lz4-java:1.8.0'
+        ```
+      </TabItem>
+    </Tabs>
+
+    Вы можете использовать gzip, указав `compress_algorithm=gzip` в URL подключения.
+
+    Также можно отключить сжатие несколькими способами.
+
+    1. Отключите, указав `compress=0` в URL подключения: `http://localhost:8123/default?compress=0`
+    2. Отключите в конфигурации клиента:
+
+    ```java showLineNumbers
+    ClickHouseClient client = ClickHouseClient.builder()
+       .config(new ClickHouseConfig(Map.of(ClickHouseClientOption.COMPRESS, false)))
+       .nodeSelector(ClickHouseNodeSelector.of(ClickHouseProtocol.HTTP))
+       .build();
+    ```
+
+    См. [документацию по сжатию](/data-compression/compression-modes) для получения дополнительной информации о различных параметрах сжатия.
+
+    ### Несколько запросов \{#v1-multiple-queries\}
+
+    Выполните несколько запросов в рабочем потоке последовательно в рамках одной сессии:
+
+    ```java showLineNumbers
+    CompletableFuture<List<ClickHouseResponseSummary>> future = ClickHouseClient.send(servers.apply(servers.getNodeSelector()),
+        "create database if not exists my_base",
+        "use my_base",
+        "create table if not exists test_table(s String) engine=Memory",
+        "insert into test_table values('1')('2')('3')",
+        "select * from test_table limit 1",
+        "truncate table test_table",
+        "drop table if exists test_table");
+    List<ClickHouseResponseSummary> results = future.get();
+    ```
+
+    ### Именованные параметры \{#v1-named-parameters\}
+
+    Параметры можно передавать по имени, не полагаясь исключительно на их позицию в списке параметров. Эта возможность доступна при использовании функции `params`.
+
+    ```java showLineNumbers
+    try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+         ClickHouseResponse response = client.read(servers)
+            .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+            .query("select * from my_table where name=:name limit :limit")
+            .params("Ben", 1000)
+            .executeAndWait()) {
+                //...
+            }
+    }
+    ```
+
+    :::note Параметры
+    Все сигнатуры `params`, включающие тип `String` (`String`, `String[]`, `Map<String, String>`), предполагают, что передаваемые ключи являются валидными SQL-строками ClickHouse. Например:
+
+    ```java showLineNumbers
+    try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+         ClickHouseResponse response = client.read(servers)
+            .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+            .query("select * from my_table where name=:name")
+            .params(Map.of("name","'Ben'"))
+            .executeAndWait()) {
+                //...
+            }
+    }
+    ```
+
+    Если вы не хотите вручную преобразовывать объекты String в ClickHouse SQL, можно использовать вспомогательную функцию `ClickHouseValues.convertToSqlExpression`, расположенную в `com.clickhouse.data`:
+
+    ```java showLineNumbers
+    try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+         ClickHouseResponse response = client.read(servers)
+            .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+            .query("select * from my_table where name=:name")
+            .params(Map.of("name", ClickHouseValues.convertToSqlExpression("Ben's")))
+            .executeAndWait()) {
+                //...
+            }
+    }
+    ```
+
+    В приведённом выше примере `ClickHouseValues.convertToSqlExpression` экранирует внутреннюю одинарную кавычку и заключает переменную в корректные одинарные кавычки.
+
+    Другие типы данных, такие как `Integer`, `UUID`, `Array` и `Enum`, будут автоматически преобразованы внутри `params`.
+    :::
+
+    ## Обнаружение узлов \{#v1-node-discovery\}
+
+    Java-клиент предоставляет возможность автоматического обнаружения узлов ClickHouse. Автообнаружение отключено по умолчанию. Чтобы включить его вручную, установите `auto_discovery` в `true`:
+
+    ```java
+    properties.setProperty("auto_discovery", "true");
+    ```
+
+    Или в URL-адресе подключения:
+
+    ```plaintext
+    jdbc:ch://my-server/system?auto_discovery=true
+    ```
+
+    При включенном автообнаружении нет необходимости указывать все узлы ClickHouse в URL подключения. Узлы, указанные в URL, будут использоваться в качестве начальных, и Java-клиент автоматически обнаружит остальные узлы из системных таблиц и/или clickhouse-keeper или zookeeper.
+
+    За настройку автоматического обнаружения отвечают следующие параметры:
+
+    | Параметр                        | Значение по умолчанию | Описание                                                                                                                                       |
+    | ------------------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+    | auto&#95;discovery              | `false`               | Должен ли клиент обнаруживать дополнительные узлы по системным таблицам и/или через clickhouse-keeper/zookeeper.                               |
+    | node&#95;discovery&#95;interval | `0`                   | Интервал обнаружения узлов в миллисекундах; нулевое или отрицательное значение означает однократное обнаружение.                               |
+    | node&#95;discovery&#95;limit    | `100`                 | Максимальное количество узлов, которые могут быть обнаружены одновременно; нулевое или отрицательное значение означает отсутствие ограничения. |
+
+    ### Балансировка нагрузки \{#v1-load-balancing\}
+
+    Java-клиент выбирает узел ClickHouse для отправки запросов согласно политике балансировки нагрузки. Политика балансировки нагрузки отвечает за следующее:
+
+    1. Получить узел из списка управляемых узлов.
+    2. Управление статусом узла.
+    3. При необходимости настройте фоновый процесс обнаружения узлов (если включено автообнаружение) и выполните проверку состояния.
+
+    Список параметров для настройки балансировки нагрузки:
+
+    | Свойство                      | Значение по умолчанию                    | Описание                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+    | ----------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | load&#95;balancing&#95;policy | `""`                                     | Политика балансировки нагрузки может иметь одно из следующих значений: <li>`firstAlive` - запрос отправляется первому работоспособному узлу из списка управляемых узлов</li><li>`random` - запрос отправляется случайному узлу из списка управляемых узлов</li><li>`roundRobin` - запросы по очереди отправляются каждому узлу из списка управляемых узлов</li><li>полностью квалифицированное имя класса, реализующего `ClickHouseLoadBalancingPolicy` — пользовательская политика балансировки нагрузки</li>Если она не указана, запрос отправляется на первый узел из списка управляемых узлов |
+    | load&#95;balancing&#95;tags   | `""`                                     | Теги балансировки нагрузки для фильтрации узлов. Запросы отправляются только на узлы с указанными тегами                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+    | health&#95;check&#95;interval | `0`                                      | Интервал проверки работоспособности в миллисекундах: нулевое или отрицательное значение означает однократную проверку.                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+    | health&#95;check&#95;method   | `ClickHouseHealthCheckMethod.SELECT_ONE` | Метод проверки работоспособности. Может быть одним из следующих: <li>`ClickHouseHealthCheckMethod.SELECT_ONE` - проверка запросом `select 1`</li> <li>`ClickHouseHealthCheckMethod.PING` - проверка на уровне протокола, как правило, более быстрая</li>                                                                                                                                                                                                                                                                                                                                          |
+    | node&#95;check&#95;interval   | `0`                                      | Интервал проверки узла в миллисекундах, отрицательное значение интерпретируется как ноль. Статус узла проверяется, если с момента последней проверки прошло указанное количество времени.<br />Разница между `health_check_interval` и `node_check_interval` заключается в том, что опция `health_check_interval` планирует фоновое задание, которое проверяет статус для списка узлов (всех или только проблемных), а `node_check_interval` задаёт интервал, который должен пройти с момента последней проверки конкретного узла.                                                                |
+    | check&#95;all&#95;nodes       | `false`                                  | Выполнять проверку работоспособности для всех узлов или только для проблемных узлов.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+
+    ### Отказоустойчивость и повторные попытки \{#v1-failover-and-retry\}
+
+    Java-клиент предоставляет параметры конфигурации для настройки отказоустойчивости и повторных попыток выполнения неудачных запросов:
+
+    | Параметр                           | Значение по умолчанию | Описание                                                                                                                                                                                                                                                                                     |
+    | ---------------------------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | переключение при отказе            | `0`                   | Максимальное количество переключений при обработке запроса. Нулевое или отрицательное значение означает, что переключение не выполняется. При переключении неуспешный запрос отправляется на другой узел (в соответствии с политикой балансировки нагрузки) для восстановления после отказа. |
+    | retry                              | `0`                   | Максимальное число повторных попыток для одного запроса. Нулевое или отрицательное значение означает отсутствие повторных попыток. Повторный запрос отправляется на тот же узел и выполняется только в том случае, если сервер ClickHouse возвращает код ошибки `NETWORK_ERROR`              |
+    | repeat&#95;on&#95;session&#95;lock | `true`                | Нужно ли повторять выполнение, если сеанс заблокирован, до истечения времени ожидания (согласно `session_timeout` или `connect_timeout`). Неудачный запрос повторяется, если сервер ClickHouse возвращает код ошибки `SESSION_IS_LOCKED`                                                     |
+
+    ### Добавление пользовательских HTTP-заголовков \{#v1-adding-custom-http-headers\}
+
+    Java-клиент поддерживает транспортный уровень HTTP/S для добавления пользовательских HTTP-заголовков к запросу.
+    Используйте свойство custom&#95;http&#95;headers. Заголовки должны быть разделены запятой `,`, а ключ и значение заголовка — знаком равенства `=`.
+
+    ## Поддержка Java-клиента \{#v1-java-client-support\}
+
+    ```java
+    options.put("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");
+    ```
+
+    ## Драйвер JDBC \{#v1-jdbc-driver\}
+
+    ```java
+    properties.setProperty("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");
+    ```
+  </Version>
+</ClientVersionDropdown>

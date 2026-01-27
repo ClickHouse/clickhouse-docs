@@ -7,16 +7,16 @@ sidebar_label: 'avgState'
 doc_type: 'reference'
 ---
 
-# avgState {#avgState}
+# avgState \{#avgState\}
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 [`State`](/sql-reference/aggregate-functions/combinators#-state) 组合器
 可以应用于 [`avg`](/sql-reference/aggregate-functions/reference/avg)
 函数，用于生成 `AggregateFunction(avg, T)` 类型的中间状态，其中
 `T` 是指定的平均值类型。
 
-## 示例用法 {#example-usage}
+## 示例用法 \{#example-usage\}
 
 在这个示例中，我们将演示如何将 `AggregateFunction` 类型与 `avgState` 函数结合使用来聚合网站流量数据。
 
@@ -136,6 +136,6 @@ ORDER BY page_id;
 └─────────┴───────────┴──────────────────────────┘
 ```
 
-## 另请参阅 {#see-also}
+## 另请参阅 \{#see-also\}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`State`](/sql-reference/aggregate-functions/combinators#-state)

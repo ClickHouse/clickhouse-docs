@@ -7,7 +7,7 @@ title: 'jdbc'
 doc_type: 'reference'
 ---
 
-# Табличная функция jdbc {#jdbc-table-function}
+# Табличная функция jdbc \{#jdbc-table-function\}
 
 :::note
 clickhouse-jdbc-bridge содержит экспериментальный код и больше не поддерживается. В нём могут быть проблемы с надёжностью и уязвимости в области безопасности. Используйте его на свой страх и риск.
@@ -19,7 +19,7 @@ ClickHouse рекомендует использовать встроенные 
 Для работы этой табличной функции требуется отдельная программа [clickhouse-jdbc-bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge).
 Она поддерживает типы Nullable (на основе DDL удалённой таблицы, к которой выполняется запрос).
 
-## Синтаксис {#syntax}
+## Синтаксис \{#syntax\}
 
 ```sql
 jdbc(datasource, external_database, external_table)
@@ -27,7 +27,7 @@ jdbc(datasource, external_table)
 jdbc(named_collection)
 ```
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 Вместо имени внешней базы данных можно указать схему:
 

@@ -10,7 +10,7 @@ integration:
   - category: 'clickpipes'
 ---
 
-# Окна обслуживания ClickPipes для Postgres {#maintenance-windows-for-clickpipes-for-postgres}
+# Окна обслуживания ClickPipes для Postgres \{#maintenance-windows-for-clickpipes-for-postgres\}
 
 Следующее окно обслуживания ClickPipes для Postgres запланировано на:
 

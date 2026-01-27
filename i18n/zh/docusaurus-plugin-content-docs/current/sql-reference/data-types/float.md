@@ -54,7 +54,7 @@ ClickHouse 中的浮点类型具有以下别名：
 在创建表时，可以为浮点数指定数值参数（例如 `FLOAT(12)`、`FLOAT(15, 22)`、`DOUBLE(12)`、`DOUBLE(4, 18)`），但 ClickHouse 会忽略这些参数。
 
 
-## 使用浮点数 {#using-floating-point-numbers}
+## 使用浮点数 \{#using-floating-point-numbers\}
 
 * 浮点数运算可能会产生舍入误差。
 
@@ -73,7 +73,7 @@ SELECT 1 - 0.9
 * 当从文本解析浮点数时，结果可能并不是最接近的机器可表示数值。
 
 
-## NaN 和 Inf {#nan-and-inf}
+## NaN 和 Inf \{#nan-and-inf\}
 
 与标准 SQL 相比，ClickHouse 支持以下几类浮点数：
 
@@ -116,7 +116,7 @@ SELECT 0 / 0
 请参阅 [ORDER BY 子句](../../sql-reference/statements/select/order-by.md) 部分中关于 `NaN` 排序的规则。
 
 
-## BFloat16 {#bfloat16}
+## BFloat16 \{#bfloat16\}
 
 `BFloat16` 是一种 16 位浮点数数据类型，包含 8 位指数、1 位符号位和 7 位尾数位。  
 它在机器学习和 AI 应用中非常实用。

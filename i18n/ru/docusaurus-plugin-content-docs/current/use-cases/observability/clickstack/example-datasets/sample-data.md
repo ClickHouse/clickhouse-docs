@@ -32,7 +32,7 @@ import hyperdx_19 from '@site/static/images/use-cases/observability/hyperdx-19.p
 import copy_api_key from '@site/static/images/use-cases/observability/copy_api_key.png';
 
 
-# ClickStack - примеры логов, трассировок и метрик {#clickstack-sample-dataset}
+# ClickStack - примеры логов, трассировок и метрик \{#clickstack-sample-dataset\}
 
 В следующем примере предполагается, что вы запустили ClickStack, используя [инструкции для образа «всё-в-одном»](/use-cases/observability/clickstack/getting-started) и подключились к [локальному экземпляру ClickHouse](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) или экземпляру [ClickHouse Cloud](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection). 
 

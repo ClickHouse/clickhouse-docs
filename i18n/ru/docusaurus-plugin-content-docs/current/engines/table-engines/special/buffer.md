@@ -7,7 +7,7 @@ title: 'Движок таблицы Buffer'
 doc_type: 'reference'
 ---
 
-# Движок таблицы Buffer {#buffer-table-engine}
+# Движок таблицы Buffer \{#buffer-table-engine\}
 
 Буферизует данные, подлежащие записи, в оперативной памяти и периодически сбрасывает их в другую таблицу. При чтении данные одновременно считываются из буфера и из другой таблицы.
 
@@ -19,27 +19,27 @@ doc_type: 'reference'
 Buffer(database, table, num_layers, min_time, max_time, min_rows, max_rows, min_bytes, max_bytes [,flush_time [,flush_rows [,flush_bytes]]])
 ```
 
-### Параметры движка {#engine-parameters}
+### Параметры движка \{#engine-parameters\}
 
-#### `database` {#database}
+#### `database` \{#database\}
 
 `database` – Имя базы данных. Можно использовать `currentDatabase()` или другое константное выражение, возвращающее строку.
 
-#### `table` {#table}
+#### `table` \{#table\}
 
 `table` – Таблица, в которую сбрасываются данные.
 
-#### `num_layers` {#num&#95;layers}
+#### `num_layers` \{#num&#95;layers\}
 
 `num_layers` – Уровень параллелизма. Физически таблица будет представлена как `num_layers` независимых буферов.
 
-#### `min_time`, `max_time`, `min_rows`, `max_rows`, `min_bytes` и `max_bytes` {#min&#95;time-max&#95;time-min&#95;rows-max&#95;rows-min&#95;bytes-and-max&#95;bytes}
+#### `min_time`, `max_time`, `min_rows`, `max_rows`, `min_bytes` и `max_bytes` \{#min&#95;time-max&#95;time-min&#95;rows-max&#95;rows-min&#95;bytes-and-max&#95;bytes\}
 
 Условия для сброса данных из буфера.
 
-### Необязательные параметры движка {#optional-engine-parameters}
+### Необязательные параметры движка \{#optional-engine-parameters\}
 
-#### `flush_time`, `flush_rows` и `flush_bytes` {#flush&#95;time-flush&#95;rows-and-flush&#95;bytes}
+#### `flush_time`, `flush_rows` и `flush_bytes` \{#flush&#95;time-flush&#95;rows-and-flush&#95;bytes\}
 
 Условия для фонового сброса данных из буфера (отсутствие параметра или значение 0 означает отсутствие параметров `flush*`).
 
@@ -47,15 +47,15 @@ Buffer(database, table, num_layers, min_time, max_time, min_rows, max_rows, min_
 
 Также, если выполнено хотя бы одно условие `flush*`, в фоновом режиме инициируется сброс. В отличие от параметров `max*`, параметры `flush*` позволяют настраивать фоновые сбросы отдельно, чтобы избежать добавления задержки для запросов `INSERT` в таблицы Buffer.
 
-#### `min_time`, `max_time` и `flush_time` {#min&#95;time-max&#95;time-and-flush&#95;time}
+#### `min_time`, `max_time` и `flush_time` \{#min&#95;time-max&#95;time-and-flush&#95;time\}
 
 Условие по времени в секундах с момента первой записи в буфер.
 
-#### `min_rows`, `max_rows` и `flush_rows` {#min&#95;rows-max&#95;rows-and-flush&#95;rows}
+#### `min_rows`, `max_rows` и `flush_rows` \{#min&#95;rows-max&#95;rows-and-flush&#95;rows\}
 
 Условие по количеству строк в буфере.
 
-#### `min_bytes`, `max_bytes` и `flush_bytes` {#min&#95;bytes-max&#95;bytes-and-flush&#95;bytes}
+#### `min_bytes`, `max_bytes` и `flush_bytes` \{#min&#95;bytes-max&#95;bytes-and-flush&#95;bytes\}
 
 Условие по количеству байт в буфере.
 

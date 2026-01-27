@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 プロジェクションの内部動作に関する、より技術的な詳細はこの[ページ](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections)を参照してください。
 
-## プライマリキーを使わずにフィルタリングする例 {#example-filtering-without-using-primary-keys}
+## プライマリキーを使わずにフィルタリングする例 \{#example-filtering-without-using-primary-keys\}
 
 テーブルの作成：
 
@@ -78,7 +78,7 @@ SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
 
-## 事前集計クエリの例 {#example-pre-aggregation-query}
+## 事前集計クエリの例 \{#example-pre-aggregation-query\}
 
 Projection を使用したテーブルの作成：
 
@@ -156,7 +156,7 @@ SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
 
-## `_part_offset` フィールドを用いた通常のプロジェクション {#normal-projection-with-part-offset-field}
+## `_part_offset` フィールドを用いた通常のプロジェクション \{#normal-projection-with-part-offset-field\}
 
 `_part_offset` フィールドを利用する通常のプロジェクションを持つテーブルを作成します。
 
@@ -185,7 +185,7 @@ INSERT INTO events SELECT * FROM generateRandom() LIMIT 100000;
 ```
 
 
-### `_part_offset` をセカンダリインデックスとして使用する {#normal-projection-secondary-index}
+### `_part_offset` をセカンダリインデックスとして使用する \{#normal-projection-secondary-index\}
 
 `_part_offset` フィールドはマージやミューテーション後も値が保持されるため、セカンダリインデックスとして有用です。クエリでこれを活用できます。
 
@@ -202,15 +202,15 @@ SETTINGS enable_shared_storage_snapshot_in_query = 1
 ```
 
 
-# プロジェクションの操作 {#manipulating-projections}
+# プロジェクションの操作 \{#manipulating-projections\}
 
 [プロジェクション](/engines/table-engines/mergetree-family/mergetree.md/#projections)に対して、次の操作を実行できます。
 
-## PROJECTION を追加する {#add-projection}
+## PROJECTION を追加する \{#add-projection\}
 
 `ALTER TABLE [db.]name [ON CLUSTER cluster] ADD PROJECTION [IF NOT EXISTS] name ( SELECT <COLUMN LIST EXPR> [GROUP BY] [ORDER BY] ) [WITH SETTINGS ( setting_name1 = setting_value1, setting_name2 = setting_value2, ...)]` - テーブルのメタデータに PROJECTION の定義を追加します。
 
-### `WITH SETTINGS` 句 {#with-settings}
+### `WITH SETTINGS` 句 \{#with-settings\}
 
 `WITH SETTINGS` は **PROJECTION レベルの設定**を定義し、`index_granularity` や `index_granularity_bytes` のような設定によって、PROJECTION がデータをどのように保存するかをカスタマイズします。
 これらは **MergeTree テーブル設定**に直接対応しますが、**この PROJECTION に対してのみ適用**されます。
@@ -230,15 +230,15 @@ ADD PROJECTION p (
 Projection の設定は、検証ルールに従う範囲で、その Projection に対して有効となるテーブル設定を上書きします（たとえば、無効または非互換な上書きは拒否されます）。
 
 
-## DROP PROJECTION {#drop-projection}
+## DROP PROJECTION \{#drop-projection\}
 
 `ALTER TABLE [db.]name [ON CLUSTER cluster] DROP PROJECTION [IF EXISTS] name` - テーブルのメタデータからプロジェクションの定義を削除し、ディスクからプロジェクションファイルを削除します。[mutation](/sql-reference/statements/alter/index.md#mutations) として実装されています。
 
-## MATERIALIZE PROJECTION {#materialize-projection}
+## MATERIALIZE PROJECTION \{#materialize-projection\}
 
 `ALTER TABLE [db.]table [ON CLUSTER cluster] MATERIALIZE PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` - このクエリは、パーティション `partition_name` 内でプロジェクション `name` を再構築します。[mutation](/sql-reference/statements/alter/index.md#mutations) として実装されています。
 
-## CLEAR PROJECTION {#clear-projection}
+## CLEAR PROJECTION \{#clear-projection\}
 
 `ALTER TABLE [db.]table [ON CLUSTER cluster] CLEAR PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` - 定義は削除せずに、ディスクからプロジェクションファイルを削除します。[mutation](/sql-reference/statements/alter/index.md#mutations)として実装されています。
 

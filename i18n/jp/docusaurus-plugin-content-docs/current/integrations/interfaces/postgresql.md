@@ -9,9 +9,13 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# PostgreSQL インターフェイス {#postgresql-interface}
+# PostgreSQL インターフェイス \{#postgresql-interface\}
 
 <CloudNotSupportedBadge />
+
+:::tip
+コンピュートと物理的に同一ラック内に配置された NVMe ストレージをバックエンドに採用した [Managed Postgres](/docs/cloud/managed-postgres) サービスをご確認ください。ネットワーク接続ストレージ（EBS など）を利用する代替手段と比較して、ディスクボトルネックとなるワークロードで最大 10 倍の高いパフォーマンスを実現し、さらに ClickPipes の Postgres CDC（変更データキャプチャ）コネクタを使用して、Postgres データを ClickHouse にレプリケートできます。
+:::
 
 ClickHouse は PostgreSQL ワイヤープロトコルをサポートしており、Postgres クライアントを使用して ClickHouse に接続できます。言い換えると、ClickHouse は PostgreSQL インスタンスとして振る舞うことができるため、ClickHouse でまだ直接サポートされていない PostgreSQL クライアントアプリケーション（例: Amazon Redshift）を ClickHouse に接続できます。
 
@@ -29,7 +33,7 @@ ClickHouse サーバーを起動し、**Listening for PostgreSQL compatibility p
 {} <Information> Application: Listening for PostgreSQL compatibility protocol: 127.0.0.1:9005
 ```
 
-## psql を ClickHouse に接続する {#connect-psql-to-clickhouse}
+## psql を ClickHouse に接続する \{#connect-psql-to-clickhouse\}
 
 以下のコマンドは、PostgreSQL クライアント `psql` を ClickHouse に接続する方法を示します。
 
@@ -65,7 +69,7 @@ default=>
 PostgreSQL プロトコルは現在、プレーンテキストのパスワードのみをサポートしています。
 :::
 
-## SSL の使用 {#using-ssl}
+## SSL の使用 \{#using-ssl\}
 
 ClickHouse インスタンスで SSL/TLS が構成されている場合、`postgresql_port` は同じ設定を使用します（ポートはセキュアクライアントと非セキュアクライアントの両方で共有されます）。
 
@@ -75,7 +79,7 @@ ClickHouse インスタンスで SSL/TLS が構成されている場合、`postg
 psql "port=9005 host=127.0.0.1 user=alice dbname=default sslcert=/path/to/certificate.pem sslkey=/path/to/key.pem sslrootcert=/path/to/rootcert.pem sslmode=verify-ca"
 ```
 
-## SCRAM-SHA-256 を使用した ClickHouse のユーザー認証設定 {#using-scram-sha256}
+## SCRAM-SHA-256 を使用した ClickHouse のユーザー認証設定 \{#using-scram-sha256\}
 
 ClickHouse でのユーザー認証を安全に行うには、SCRAM-SHA-256 プロトコルを使用することが推奨されます。`users.xml` ファイル内で `password_scram_sha256_hex` 要素を指定してユーザーを設定します。パスワードハッシュは num&#95;iterations=4096 で生成する必要があります。
 

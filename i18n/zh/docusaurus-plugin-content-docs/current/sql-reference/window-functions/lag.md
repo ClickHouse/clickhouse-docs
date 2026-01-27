@@ -7,7 +7,7 @@ title: 'lag'
 doc_type: 'reference'
 ---
 
-# lag {#lag}
+# lag \{#lag\}
 
 返回在有序窗口中，相对于当前行向前指定物理偏移量的那一行上计算得到的值。
 此函数类似于 [`lagInFrame`](./lagInFrame.md)，但始终使用 `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` 窗口。

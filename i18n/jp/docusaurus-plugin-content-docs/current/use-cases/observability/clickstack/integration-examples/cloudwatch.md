@@ -22,7 +22,7 @@ import error_log_column_values from '@site/static/images/clickstack/cloudwatch/e
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 
-# ClickStack を使用した AWS CloudWatch Logs の監視 {#cloudwatch-clickstack}
+# ClickStack を使用した AWS CloudWatch Logs の監視 \{#cloudwatch-clickstack\}
 
 :::note[要点まとめ]
 このガイドでは、OpenTelemetry Collector の AWS CloudWatch receiver を使用して、AWS CloudWatch のログを ClickStack に転送する方法を説明します。次の内容を学びます:
@@ -38,7 +38,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 所要時間の目安: 10〜15 分
 :::
 
-## 概要 {#overview}
+## 概要 \{#overview\}
 
 AWS CloudWatch は、AWS のリソースとアプリケーション向けの監視サービスです。CloudWatch はログの集約機能を提供しますが、ログを ClickStack に転送することで次のことが可能になります。
 
@@ -48,13 +48,13 @@ AWS CloudWatch は、AWS のリソースとアプリケーション向けの監�
 
 このガイドでは、OpenTelemetry Collector を使用して CloudWatch のログを ClickStack に転送する方法を説明します。
 
-## 既存の CloudWatch ロググループとの連携 {#existing-cloudwatch}
+## 既存の CloudWatch ロググループとの連携 \{#existing-cloudwatch\}
 
 このセクションでは、既存の CloudWatch ロググループからログを取得し、それらを ClickStack に転送するように OpenTelemetry Collector を設定する方法について説明します。
 
 本番環境の設定を行う前に連携を試したい場合は、[デモデータセットのセクション](#demo-dataset)にあるデモデータセットを使ってテストできます。
 
-### 前提条件 {#prerequisites}
+### 前提条件 \{#prerequisites\}
 
 - 稼働中の ClickStack インスタンス
 - CloudWatch ロググループがある AWS アカウント
@@ -291,7 +291,7 @@ AWS CloudWatch は、AWS のリソースとアプリケーション向けの監�
 
 <VerticalStepper headerLevel="h4">
 
-#### サンプルデータセットをダウンロードする {#download-sample}
+#### サンプルデータセットをダウンロードする \{#download-sample\}
 
 ```bash
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/aws/cloudwatch/cloudwatch-logs.jsonl
@@ -302,7 +302,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - **ECS services**: レート制限とタイムアウトを伴う API ゲートウェイ
 - **Background jobs**: リトライパターンを伴うバッチ処理
 
-#### ClickStack を起動する {#start-clickstack}
+#### ClickStack を起動する \{#start-clickstack\}
 
 まだ ClickStack を実行していない場合:
 
@@ -314,7 +314,7 @@ docker run -d --name clickstack \
 
 ClickStack が完全に起動するまで、少し待ちます。
 
-#### デモデータセットをインポートする {#import-demo-data}
+#### デモデータセットをインポートする \{#import-demo-data\}
 
 ```bash
 docker exec -i clickstack clickhouse-client --query="
@@ -324,7 +324,7 @@ docker exec -i clickstack clickhouse-client --query="
 
 これにより、ログが ClickStack のログテーブルに直接インポートされます。
 
-#### デモデータを確認する {#verify-demo-logs}
+#### デモデータを確認する \{#verify-demo-logs\}
 
 インポートが完了したら:
 
@@ -343,15 +343,15 @@ HyperDX はタイムスタンプをブラウザのローカルタイムゾーン
 
 </VerticalStepper>
 
-## ダッシュボードと可視化 {#dashboards}
+## ダッシュボードと可視化 \{#dashboards\}
 
 ClickStack で CloudWatch Logs を監視しやすくするために、主要な可視化を含んだあらかじめ用意されたダッシュボードを提供しています。
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/cloudwatch-logs-dashboard.json')} download="cloudwatch-logs-dashboard.json" eventName="docs.cloudwatch_logs_monitoring.dashboard_download">ダッシュボード構成をダウンロード</TrackedLink> {#download}
+#### <TrackedLink href={useBaseUrl('/examples/cloudwatch-logs-dashboard.json')} download="cloudwatch-logs-dashboard.json" eventName="docs.cloudwatch_logs_monitoring.dashboard_download">ダッシュボード構成をダウンロード</TrackedLink> \{#download\}
 
-#### ダッシュボードをインポートする {#import-dashboard}
+#### ダッシュボードをインポートする \{#import-dashboard\}
 
 1. HyperDX を開き、「Dashboards」セクションに移動します
 2. 右上の三点リーダー（…）メニューから **Import Dashboard** をクリックします
@@ -362,7 +362,7 @@ ClickStack で CloudWatch Logs を監視しやすくするために、主要な�
 
 <Image img={finish_import} alt="インポート完了ダイアログ"/>
 
-#### ダッシュボードを表示する {#created-dashboard}
+#### ダッシュボードを表示する \{#created-dashboard\}
 
 ダッシュボードは、すべての可視化が事前に設定された状態で作成されます。
 

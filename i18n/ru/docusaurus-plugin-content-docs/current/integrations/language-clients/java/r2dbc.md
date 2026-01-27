@@ -15,17 +15,17 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-# Драйвер R2DBC {#r2dbc-driver}
+# Драйвер R2DBC \{#r2dbc-driver\}
 
-## Драйвер R2DBC {#r2dbc-driver}
+## Драйвер R2DBC \{#r2dbc-driver\}
 
 [R2DBC](https://r2dbc.io/)‑обёртка над асинхронным Java‑клиентом ClickHouse.
 
-### Требования к окружению {#environment-requirements}
+### Требования к окружению \{#environment-requirements\}
 
 - [OpenJDK](https://openjdk.java.net) версии 8 и выше
 
-### Настройка {#setup}
+### Настройка \{#setup\}
 
 ```xml
 <dependency>
@@ -44,7 +44,7 @@ import CodeBlock from '@theme/CodeBlock';
 </dependency>
 ```
 
-### Подключение к ClickHouse {#connect-to-clickhouse}
+### Подключение к ClickHouse \{#connect-to-clickhouse\}
 
 ```java showLineNumbers
 ConnectionFactory connectionFactory = ConnectionFactories
@@ -54,7 +54,7 @@ ConnectionFactory connectionFactory = ConnectionFactories
         .flatMapMany(connection -> connection
 ```
 
-### Query {#query}
+### Query \{#query\}
 
 ```java showLineNumbers
 connection
@@ -71,7 +71,7 @@ connection
     .subscribe();
 ```
 
-### Insert {#insert}
+### Insert \{#insert\}
 
 ```java showLineNumbers
 connection

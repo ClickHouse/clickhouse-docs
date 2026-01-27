@@ -12,7 +12,7 @@ integration:
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# 将 Azure 数据引入 ClickHouse {#bringing-azure-data-into-clickhouse}
+# 将 Azure 数据引入 ClickHouse \{#bringing-azure-data-into-clickhouse\}
 
 <ClickHouseSupportedBadge />
 

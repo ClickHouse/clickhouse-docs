@@ -8,7 +8,7 @@ show_related_blogs: true
 doc_type: 'reference'
 ---
 
-# 时间序列分析函数 {#time-series-analysis-functions}
+# 时间序列分析函数 \{#time-series-analysis-functions\}
 
 在 ClickHouse 中，可以使用标准的 SQL 聚合函数和窗口函数来进行时间序列分析。\
 处理时间序列数据时，通常会遇到三种主要类型的指标：
@@ -20,7 +20,7 @@ doc_type: 'reference'
 针对这些指标的常见分析模式包括对比不同时期的数值、计算累计总量、确定变化速率以及分析分布。\
 这些都可以通过聚合操作、`sum() OVER` 之类的窗口函数，以及 `histogram()` 等专用函数的组合来实现。
 
-## 同期对比变化 {#time-series-period-over-period-changes}
+## 同期对比变化 \{#time-series-period-over-period-changes\}
 
 在分析时间序列数据时，我们经常需要了解数值在不同时间区间之间的变化情况。
 这对仪表（gauge）和计数器（counter）类型的指标都至关重要。
@@ -56,7 +56,7 @@ LIMIT 10;
 └────────────┴──────┴──────┴───────┘
 ```
 
-## 累积值 {#time-series-cumulative-values}
+## 累积值 \{#time-series-cumulative-values\}
 
 Counter 类型指标会随时间自然累积。
 要分析这种累积增长，可以使用窗口函数计算累积总和。
@@ -91,7 +91,7 @@ LIMIT 10;
 └────────────┴──────┴───────┴───────────────────┘
 ```
 
-## 速率计算 {#time-series-rate-calculations}
+## 速率计算 \{#time-series-rate-calculations\}
 
 在分析时序数据时，了解单位时间内事件发生的速率通常非常有用。
 此查询通过将每小时的页面浏览总数除以一小时的秒数（3600），来计算每秒的页面浏览速率。
@@ -124,7 +124,7 @@ LIMIT 10;
 └─────────────────────┴─────┴──────┴───────┘
 ```
 
-## 直方图 {#time-series-histograms}
+## 直方图 \{#time-series-histograms\}
 
 时间序列数据的一个常见用例是基于已跟踪的事件构建直方图。
 假设我们想根据页面的总访问次数来了解页面数量的分布，并且只包含访问次数超过 10,000 次的页面。

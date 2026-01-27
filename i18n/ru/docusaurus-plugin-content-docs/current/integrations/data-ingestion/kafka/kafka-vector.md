@@ -11,7 +11,7 @@ keywords: ['kafka', 'vector', 'сбор логов', 'обсервабилити
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
 
-## Использование Vector с Kafka и ClickHouse {#using-vector-with-kafka-and-clickhouse}
+## Использование Vector с Kafka и ClickHouse \{#using-vector-with-kafka-and-clickhouse\}
 
 Vector — это независимый от поставщиков конвейер обработки данных, который может читать из Kafka и отправлять события в ClickHouse.
 
@@ -23,15 +23,15 @@ Vector также поддерживает [transformation](https://vector.dev/d
 
 Обратите внимание, что текущая реализация приёмника ClickHouse использует HTTP-интерфейс. Приёмник ClickHouse в данный момент не поддерживает использование JSON-схемы. Данные должны публиковаться в Kafka либо в виде обычного JSON-формата, либо в виде строк (Strings).
 
-### Лицензия {#license}
+### Лицензия \{#license\}
 
 Vector распространяется по [лицензии MPL-2.0](https://github.com/vectordotdev/vector/blob/master/LICENSE)
 
-### Сбор параметров подключения {#gather-your-connection-details}
+### Сбор параметров подключения \{#gather-your-connection-details\}
 
 <ConnectionDetails />
 
-### Шаги {#steps}
+### Шаги \{#steps\}
 
 1. Создайте топик Kafka `github` и загрузите в него [набор данных GitHub](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson).
 

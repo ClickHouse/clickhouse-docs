@@ -54,7 +54,7 @@ ClickHouse の Float 型には、次のエイリアスがあります:
 テーブルを作成するときに、浮動小数点数の数値パラメータを設定できます（例: `FLOAT(12)`、`FLOAT(15, 22)`、`DOUBLE(12)`、`DOUBLE(4, 18)`）が、ClickHouse はそれらを無視します。
 
 
-## 浮動小数点数の使用 {#using-floating-point-numbers}
+## 浮動小数点数の使用 \{#using-floating-point-numbers\}
 
 * 浮動小数点数を使用した計算では、丸め誤差が発生する可能性があります。
 
@@ -73,7 +73,7 @@ SELECT 1 - 0.9
 * テキストから浮動小数点数を解析する場合、結果は最も近い機械表現可能な数値ではない可能性があります。
 
 
-## NaN と Inf {#nan-and-inf}
+## NaN と Inf \{#nan-and-inf\}
 
 標準 SQL とは対照的に、ClickHouse は次のカテゴリの浮動小数点数をサポートしています:
 
@@ -116,7 +116,7 @@ SELECT 0 / 0
 `NaN` のソートルールについては、[ORDER BY 句](../../sql-reference/statements/select/order-by.md)セクションを参照してください。
 
 
-## BFloat16 {#bfloat16}
+## BFloat16 \{#bfloat16\}
 
 `BFloat16` は、8 ビットの指数、符号、および 7 ビットの仮数を持つ 16 ビット浮動小数点データ型です。
 機械学習および AI アプリケーションに役立ちます。

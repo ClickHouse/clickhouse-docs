@@ -21,12 +21,18 @@ To learn more about message compression in Kafka, we recommend starting with thi
 ## Limitations {#limitations}
 
 - [`DEFAULT`](/sql-reference/statements/create/table#default) is not supported.
+- Individual messages are limited to 8MB (uncompressed) by default when running with the smallest (XS) replica size, and 16MB (uncompressed) with larger replicas.  Messages that exceed this limit will be rejected with an error.  If you have a need for larger messages, please contact support.
 
 ## Delivery semantics {#delivery-semantics}
 ClickPipes for Kafka provides `at-least-once` delivery semantics (as one of the most commonly used approaches). We'd love to hear your feedback on delivery semantics [contact form](https://clickhouse.com/company/contact?loc=clickpipes). If you need exactly-once semantics, we recommend using our official [`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse) sink.
 
 ## Authentication {#authentication}
 For Apache Kafka protocol data sources, ClickPipes supports [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption, as well as `SASL/SCRAM-SHA-256` and `SASL/SCRAM-SHA-512`. Depending on the streaming source (Redpanda, MSK, etc) will enable all or a subset of these auth mechanisms based on compatibility. If you auth needs differ please [give us feedback](https://clickhouse.com/company/contact?loc=clickpipes).
+
+## Warpstream Fetch Size {#warpstream-settings}
+ClickPipes rely on the Kafka setting `max.fetch_bytes` to limit the size of data processed in a single ClickPipes node at any one time.  In some circumstances
+Warpstream does not respect this setting, which can cause unexpected pipe failures.  We strongly recommend that the Warpstream specific setting `kafkaMaxFetchPartitionBytesUncompressedOverride`
+to 8MB (or lower) when configuring your Warpstreawm agent to prevent ClickPipes failures.
 
 ### IAM {#iam}
 

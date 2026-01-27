@@ -7,7 +7,7 @@ title: 'Interval'
 doc_type: 'reference'
 ---
 
-# Interval {#interval}
+# Interval \{#interval\}
 
 Семейство типов данных для представления временных и календарных интервалов. Типы, возвращаемые оператором [INTERVAL](/sql-reference/operators#interval).
 
@@ -43,7 +43,7 @@ SELECT toTypeName(INTERVAL 4 DAY)
 ```
 
 
-## Примечания по использованию {#usage-remarks}
+## Примечания по использованию \{#usage-remarks\}
 
 Вы можете использовать значения типа `Interval` в арифметических операциях над значениями типов [Date](../../../sql-reference/data-types/date.md) и [DateTime](../../../sql-reference/data-types/datetime.md). Например, вы можете прибавить 4 дня к текущему времени:
 
@@ -82,7 +82,7 @@ SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
 ```
 
 
-## См. также {#see-also}
+## См. также \{#see-also\}
 
 - [INTERVAL](/sql-reference/operators#interval) — оператор
 - [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) — функции преобразования типов

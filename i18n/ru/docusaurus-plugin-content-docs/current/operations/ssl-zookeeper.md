@@ -7,7 +7,7 @@ title: 'Опциональное защищённое взаимодействи
 doc_type: 'guide'
 ---
 
-# Опциональное защищённое взаимодействие между ClickHouse и ZooKeeper {#optional-secured-communication-between-clickhouse-and-zookeeper}
+# Опциональное защищённое взаимодействие между ClickHouse и ZooKeeper \{#optional-secured-communication-between-clickhouse-and-zookeeper\}
 
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 

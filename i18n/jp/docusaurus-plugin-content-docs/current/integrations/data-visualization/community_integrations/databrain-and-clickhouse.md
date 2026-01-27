@@ -18,7 +18,7 @@ import databrain_06 from '@site/static/images/integrations/data-visualization/da
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Databrain を ClickHouse に接続する {#connecting-databrain-to-clickhouse}
+# Databrain を ClickHouse に接続する \{#connecting-databrain-to-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
@@ -30,19 +30,19 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 このガイドでは、Databrain を ClickHouse インスタンスに接続する手順を説明します。
 
-## 前提条件 {#pre-requisites}
+## 前提条件 \{#pre-requisites\}
 
 - 独自のインフラストラクチャ上で、または [ClickHouse Cloud](https://clickhouse.com/) 上でホストされている ClickHouse データベース。
 - [Databrain アカウント](https://app.usedatabrain.com/users/sign-up)。
 - データソースを接続するための Databrain ワークスペース。
 
-## Databrain を ClickHouse に接続する手順 {#steps-to-connect-databrain-to-clickhouse}
+## Databrain を ClickHouse に接続する手順 \{#steps-to-connect-databrain-to-clickhouse\}
 
-### 1. 接続情報を準備する {#1-gather-your-connection-details}
+### 1. 接続情報を準備する \{#1-gather-your-connection-details\}
 
 <ConnectionDetails />
 
-### 2. Databrain の IP アドレスを許可する（必要な場合） {#2-allow-databrain-ip-addresses}
+### 2. Databrain の IP アドレスを許可する（必要な場合） \{#2-allow-databrain-ip-addresses\}
 
 ClickHouse インスタンスで IP フィルタリングが有効になっている場合は、Databrain の IP アドレスを許可リストに追加する必要があります。
 
@@ -56,7 +56,7 @@ ClickHouse Cloud をご利用の場合:
 最新の許可対象 IP アドレス一覧については、[Databrain の IP アドレス許可設定ドキュメント](https://docs.usedatabrain.com/guides/datasources/allow-access-to-our-ip)を参照してください。
 :::
 
-### 3. Databrain で ClickHouse をデータソースとして追加する {#3-add-clickhouse-as-a-data-source}
+### 3. Databrain で ClickHouse をデータソースとして追加する \{#3-add-clickhouse-as-a-data-source\}
 
 1. Databrain アカウントにログインし、データソースを追加したいワークスペースに移動します。
 
@@ -83,7 +83,7 @@ ClickHouse Cloud をご利用の場合:
 
 7. 接続が成功したら、**Save** または **Connect** をクリックしてデータソースを追加します。
 
-### 4. ユーザー権限を構成する {#4-configure-user-permissions}
+### 4. ユーザー権限を構成する \{#4-configure-user-permissions\}
 
 接続に使用する ClickHouse ユーザーに、必要な権限が付与されていることを確認します。
 
@@ -97,9 +97,9 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 
 `your_databrain_user` と `your_database` を、実際に使用するユーザー名とデータベース名に置き換えてください。
 
-## ClickHouse で Databrain を使用する {#using-databrain-with-clickhouse}
+## ClickHouse で Databrain を使用する \{#using-databrain-with-clickhouse\}
 
-### データを探索する {#explore-your-data}
+### データを探索する \{#explore-your-data\}
 
 1. 接続後、Databrain のワークスペースに移動します。
 
@@ -109,7 +109,7 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 
 3. テーブルをクリックして、そのスキーマを確認し、データをプレビューします。
 
-### メトリクスと可視化を作成する {#create-metrics-and-visualizations}
+### メトリクスと可視化を作成する \{#create-metrics-and-visualizations\}
 
 1. **Create Metric** をクリックして、ClickHouse データから可視化の作成を開始します。
 
@@ -123,7 +123,7 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 
 4. メトリクスを保存して、複数のダッシュボードで再利用できるようにします。
 
-### ダッシュボードを作成する {#build-dashboards}
+### ダッシュボードを作成する \{#build-dashboards\}
 
 1. **Create Dashboard** をクリックして、ダッシュボードの作成を開始します。
 
@@ -135,7 +135,7 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 
 4. ダッシュボードをチームと共有するか、アプリケーションに埋め込みます。
 
-### 高度な機能 {#advanced-features}
+### 高度な機能 \{#advanced-features\}
 
 Databrain は、ClickHouse を使用する際にいくつかの高度な機能を提供します。
 
@@ -146,9 +146,9 @@ Databrain は、ClickHouse を使用する際にいくつかの高度な機能�
 - **埋め込みアナリティクス**: ダッシュボードとメトリクスをアプリケーションに直接埋め込めます
 - **セマンティックレイヤー**: 再利用可能なデータモデルとビジネスロジックを作成できます
 
-## トラブルシューティング {#troubleshooting}
+## トラブルシューティング \{#troubleshooting\}
 
-### 接続に失敗する {#connection-fails}
+### 接続に失敗する \{#connection-fails\}
 
 ClickHouse に接続できない場合は、次の点を確認してください。
 
@@ -158,7 +158,7 @@ ClickHouse に接続できない場合は、次の点を確認してください
 4. **SSL/TLS**: HTTPS を使用している場合は SSL/TLS が正しく構成されていることを確認してください
 5. **ユーザー権限**: 対象ユーザーが `information_schema` および対象データベースに対する SELECT 権限を持っていることを確認してください
 
-### クエリのパフォーマンスが低い {#slow-query-performance}
+### クエリのパフォーマンスが低い \{#slow-query-performance\}
 
 クエリの実行が遅い場合は、次の点を検討してください。
 
@@ -167,7 +167,7 @@ ClickHouse に接続できない場合は、次の点を確認してください
 3. **適切なデータ型の使用**: ClickHouse のスキーマで最適なデータ型を使用していることを確認してください
 4. **インデックスの最適化**: ClickHouse のプライマリキーとスキップインデックスを活用してください
 
-## さらに詳しく {#learn-more}
+## さらに詳しく \{#learn-more\}
 
 Databrain の機能や、強力な分析機能を構築する方法の詳細については、以下を参照してください。
 

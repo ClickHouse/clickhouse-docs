@@ -28,7 +28,7 @@ ClickHouse 支持两种类型的物化视图：[**增量型**](/materialized-vie
 在增量物化视图和可刷新物化视图之间进行选择，在很大程度上取决于查询的性质、数据变更的频率，以及视图更新是否必须在每行插入时立即反映出来，还是可以接受定期刷新的方式。理解这些权衡对在 ClickHouse 中设计高性能、可扩展的物化视图至关重要。
 
 
-## 何时使用增量物化视图 {#when-to-use-incremental-materialized-views}
+## 何时使用增量物化视图 \{#when-to-use-incremental-materialized-views\}
 
 增量物化视图通常是首选方案，因为只要源表接收到新数据，它们就会自动实时更新。它们支持所有聚合函数，尤其适用于对单个表进行聚合。通过在插入时增量计算结果，查询只需处理小得多的数据子集，使这些视图即使在 PB 级数据规模下也能轻松扩展。在大多数情况下，它们对整个集群性能几乎没有明显影响。
 
@@ -40,7 +40,7 @@ ClickHouse 支持两种类型的物化视图：[**增量型**](/materialized-vie
 
 有关增量物化视图的示例，请参见[此处](/materialized-view/incremental-materialized-view)。
 
-## 何时使用可刷新的物化视图 {#when-to-use-refreshable-materialized-views}
+## 何时使用可刷新的物化视图 \{#when-to-use-refreshable-materialized-views\}
 
 可刷新的物化视图会以固定间隔而非增量方式执行查询，并将查询结果集存储起来以便快速检索。 
 
@@ -48,7 +48,7 @@ ClickHouse 支持两种类型的物化视图：[**增量型**](/materialized-vie
 
 应仔细调优执行频率，以避免对系统造成过高负载。消耗大量资源的极其复杂查询应谨慎调度——这些查询可能通过影响缓存并消耗 CPU 和内存而导致整个集群性能下降。查询的运行时间应明显短于刷新间隔，以避免使集群过载。例如，如果某个查询本身至少需要 10 秒才能计算完成，就不要将视图设置为每 10 秒更新一次。 
 
-## 总结 {#summary}
+## 总结 \{#summary\}
 
 总而言之，在以下场景中使用可刷新物化视图：
 
@@ -60,7 +60,7 @@ ClickHouse 支持两种类型的物化视图：[**增量型**](/materialized-vie
 
 有关可刷新物化视图的示例，请参见[此处](/materialized-view/refreshable-materialized-view)。
 
-### APPEND 与 REPLACE 模式对比 {#append-vs-replace-mode}
+### APPEND 与 REPLACE 模式对比 \{#append-vs-replace-mode\}
 
 可刷新物化视图在向目标表写入数据时支持两种模式：`APPEND` 和 `REPLACE`。这些模式定义了在刷新视图时，视图查询结果如何写入目标表。
 

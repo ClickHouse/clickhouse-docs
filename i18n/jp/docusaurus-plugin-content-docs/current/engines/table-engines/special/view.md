@@ -7,6 +7,6 @@ title: 'View テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# View テーブルエンジン {#view-table-engine}
+# View テーブルエンジン \{#view-table-engine\}
 
 ビューを実装するために使用されます（詳細は `CREATE VIEW query` を参照してください）。データ自体は保存せず、指定された `SELECT` クエリだけを保持します。テーブルから読み取る際には、このクエリを実行し（不要なカラムはクエリからすべて削除され）、結果を返します。

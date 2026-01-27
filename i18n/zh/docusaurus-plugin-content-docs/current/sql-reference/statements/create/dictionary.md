@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 根据给定的[结构](../../../sql-reference/dictionaries/index.md#dictionary-key-and-fields)、[数据源](../../../sql-reference/dictionaries/index.md#dictionary-sources)、[布局](/sql-reference/dictionaries#storing-dictionaries-in-memory)和[生命周期](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)创建一个新的[字典](../../../sql-reference/dictionaries/index.md)。
 
-## 语法 {#syntax}
+## 语法 \{#syntax\}
 
 ```sql
 CREATE [OR REPLACE] DICTIONARY [IF NOT EXISTS] [db.]dictionary_name [ON CLUSTER cluster]
@@ -33,7 +33,7 @@ COMMENT 'Comment'
 
 根据字典的 [layout](/sql-reference/dictionaries#storing-dictionaries-in-memory)，可以将一个或多个属性指定为字典键。
 
-## 源 {#source}
+## 源 \{#source\}
 
 字典的来源可以是：
 
@@ -42,7 +42,7 @@ COMMENT 'Comment'
 * 通过 HTTP(S) 访问的文件
 * 另一个数据库
 
-### 从当前 ClickHouse 服务中的表创建字典 {#create-a-dictionary-from-a-table-in-the-current-clickhouse-service}
+### 从当前 ClickHouse 服务中的表创建字典 \{#create-a-dictionary-from-a-table-in-the-current-clickhouse-service\}
 
 输入表 `source_table`：
 
@@ -114,7 +114,7 @@ LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000);
 ```
 
-### 基于远程 ClickHouse 服务中的表创建字典 {#create-a-dictionary-from-a-table-in-a-remote-clickhouse-service}
+### 基于远程 ClickHouse 服务中的表创建字典 \{#create-a-dictionary-from-a-table-in-a-remote-clickhouse-service\}
 
 输入表（位于远程 ClickHouse 服务中）`source_table`：
 
@@ -139,7 +139,7 @@ LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000)
 ```
 
-### 从可通过 HTTP(S) 访问的文件创建字典 {#create-a-dictionary-from-a-file-available-by-https}
+### 从可通过 HTTP(S) 访问的文件创建字典 \{#create-a-dictionary-from-a-file-available-by-https\}
 
 ```sql
 CREATE DICTIONARY default.taxi_zone_dictionary
@@ -155,7 +155,7 @@ LIFETIME(MIN 0 MAX 0)
 LAYOUT(HASHED())
 ```
 
-### 从另一个数据库创建字典 {#create-a-dictionary-from-another-database}
+### 从另一个数据库创建字典 \{#create-a-dictionary-from-another-database\}
 
 详细信息请参阅[字典源](/sql-reference/dictionaries#dbms)。
 

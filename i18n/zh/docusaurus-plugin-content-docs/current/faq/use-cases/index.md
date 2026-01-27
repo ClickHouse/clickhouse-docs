@@ -8,7 +8,7 @@ keywords: ['ClickHouse 使用场景', '时间序列数据库', '键值存储', '
 doc_type: 'landing-page'
 ---
 
-# 关于 ClickHouse 使用场景的常见问题 {#questions-about-clickhouse-use-cases}
+# 关于 ClickHouse 使用场景的常见问题 \{#questions-about-clickhouse-use-cases\}
 
 * [我可以将 ClickHouse 用作时序数据库吗？](/knowledgebase/time-series)
 * [我可以将 ClickHouse 用作键值存储吗？](/knowledgebase/key-value)

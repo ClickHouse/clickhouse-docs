@@ -15,7 +15,7 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | -- | -- | -- |
 | ✗  | ✔  |    |
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 `Pretty` 格式以 Unicode 绘制的字符表格形式输出数据，
 在终端中使用 ANSI 转义序列来显示颜色。
@@ -25,7 +25,7 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
 [NULL](/sql-reference/syntax.md) 会被输出为 `ᴺᵁᴸᴸ`。
 
-## 使用示例 {#example-usage}
+## 使用示例 \{#example-usage\}
 
 示例（以 [`PrettyCompact`](./PrettyCompact.md) 格式为例）：
 
@@ -94,6 +94,6 @@ Extremes:
 └────────────┴─────────┘
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}
 
 <PrettyFormatSettings/>

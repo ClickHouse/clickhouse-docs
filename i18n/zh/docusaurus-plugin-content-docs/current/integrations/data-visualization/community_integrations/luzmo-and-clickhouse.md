@@ -18,11 +18,11 @@ import luzmo_02 from '@site/static/images/integrations/data-visualization/luzmo_
 import luzmo_03 from '@site/static/images/integrations/data-visualization/luzmo_03.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Luzmo 与 ClickHouse 集成 {#integrating-luzmo-with-clickhouse}
+# Luzmo 与 ClickHouse 集成 \{#integrating-luzmo-with-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
-## 1. 设置 ClickHouse 连接 {#1-setup-a-clickhouse-connection}
+## 1. 设置 ClickHouse 连接 \{#1-setup-a-clickhouse-connection\}
 
 要建立与 ClickHouse 的连接，先进入 **Connections 页面**，选择 **New Connection**，然后在 New Connection 弹窗中选择 ClickHouse。
 
@@ -39,7 +39,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 请参考我们开发者文档中的示例，了解如何通过我们的 API [创建 ClickHouse 连接](https://developer.luzmo.com/api/createAccount?exampleSection=AccountCreateClickhouseRequestBody)。
 
-## 2. 添加数据集 {#2-add-datasets}
+## 2. 添加数据集 \{#2-add-datasets\}
 
 在您连接好 ClickHouse 之后，可以按照[这里](https://academy.luzmo.com/article/ldx3iltg)的说明添加数据集。您可以从 ClickHouse 中选择一个或多个可用的数据集，并在 Luzmo 中将它们[关联](https://academy.luzmo.com/article/gkrx48x5)，以确保它们可以在同一个仪表板中联合使用。同时，请务必查看这篇关于[为分析准备数据](https://academy.luzmo.com/article/u492qov0)的文章。
 
@@ -49,7 +49,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={luzmo_03} size="md" alt="Luzmo 仪表板示例，展示来自 ClickHouse 的多个数据可视化" border />
 
-## 使用说明 {#usage-notes}
+## 使用说明 \{#usage-notes\}
 
 1. Luzmo ClickHouse 连接器通过 HTTP API 接口（通常监听 8123 端口）进行连接。
 2. 如果你在使用 `Distributed` 表引擎的表，当 `distributed_product_mode` 设置为 `deny` 时，一些 Luzmo 图表可能会执行失败。不过，这通常只会在你将该表与另一张表建立关联并在图表中使用该关联时发生。在这种情况下，请确保在你的 ClickHouse 集群中将 `distributed_product_mode` 设置为对你而言更合适的其他选项。如果你使用的是 ClickHouse Cloud，可以放心忽略此设置。

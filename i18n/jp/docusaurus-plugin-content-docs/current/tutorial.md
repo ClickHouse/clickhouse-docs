@@ -9,19 +9,19 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 高度なチュートリアル {#advanced-tutorial}
+# 高度なチュートリアル \{#advanced-tutorial\}
 
-## Overview {#overview}
+## Overview \{#overview\}
 
 ニューヨーク市のタクシーサンプルデータセットを使用して、ClickHouseでデータを取り込み、クエリする方法を学習します。
 
-### Prerequisites {#prerequisites}
+### Prerequisites \{#prerequisites\}
 
 このチュートリアルを完了するには、稼働中のClickHouseサービスへのアクセスが必要です。手順については、[クイックスタート](/get-started/quick-start)ガイドを参照してください。
 
 <VerticalStepper>
 
-## 新しいテーブルを作成する {#create-a-new-table}
+## 新しいテーブルを作成する \{#create-a-new-table\}
 
 New York City のタクシーデータセットには、数百万件のタクシー乗車に関する詳細が含まれており、チップ額、通行料、支払い種別などのカラムがあります。このデータを保存するためのテーブルを作成します。
 
@@ -84,7 +84,7 @@ New York City のタクシーデータセットには、数百万件のタクシ
     ORDER BY pickup_datetime;
     ```
 
-## データセットを追加する {#add-the-dataset}
+## データセットを追加する \{#add-the-dataset\}
 
 テーブルを作成したので、S3 内の CSV ファイルからニューヨーク市タクシーデータを追加します。
 
@@ -152,7 +152,7 @@ New York City のタクシーデータセットには、数百万件のタクシ
 
     このクエリは 1,999,657 行を返すはずです。
 
-## データの分析 {#analyze-the-data}
+## データの分析 \{#analyze-the-data\}
 
 データを分析するためにいくつかのクエリを実行します。以下の例を参照するか、独自のSQLクエリを試してください。
 
@@ -369,7 +369,7 @@ New York City のタクシーデータセットには、数百万件のタクシ
     </p>
     </details>
 
-## 辞書を作成する {#create-a-dictionary}
+## 辞書を作成する \{#create-a-dictionary\}
 
 辞書は、メモリ内に保存されるキーと値のペアのマッピングです。詳細については [Dictionaries](/sql-reference/dictionaries/index.md) を参照してください。
 
@@ -468,7 +468,7 @@ LAYOUT(HASHED_ARRAY())
 7 rows in set. Elapsed: 0.019 sec. Processed 2.00 million rows, 4.00 MB (105.70 million rows/s., 211.40 MB/s.)
 ```
 
-## 結合を実行する {#perform-a-join}
+## 結合を実行する \{#perform-a-join\}
 
 `taxi_zone_dictionary`と`trips`テーブルを結合するクエリを記述します。
 
@@ -520,7 +520,7 @@ LAYOUT(HASHED_ARRAY())
 
 </VerticalStepper>
 
-## 次のステップ {#next-steps}
+## 次のステップ \{#next-steps\}
 
 ClickHouse についてさらに学ぶには、以下のドキュメントを参照してください：
 

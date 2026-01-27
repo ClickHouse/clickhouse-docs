@@ -21,13 +21,13 @@ import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage
 * [Azure Marketplace 承诺用量合约](/cloud/billing/marketplace/azure-marketplace-committed-contract)
 
 
-## 常见问题解答 {#faqs}
+## 常见问题解答 \{#faqs\}
 
-### 我如何验证我的组织是否已连接到 Marketplace 计费？​ {#how-can-i-verify-that-my-organization-is-connected-to-marketplace-billing}
+### 我如何验证我的组织是否已连接到 Marketplace 计费？​ \{#how-can-i-verify-that-my-organization-is-connected-to-marketplace-billing\}
 
 在 ClickHouse Cloud 控制台中，进入 **Billing** 页面。你应当在 **Payment details** 部分看到所使用 Marketplace 的名称及其链接。
 
-### 我是现有的 ClickHouse Cloud 用户。当我通过 AWS / GCP / Azure Marketplace 订阅 ClickHouse Cloud 时会发生什么？​ {#i-am-an-existing-clickhouse-cloud-user-what-happens-when-i-subscribe-to-clickhouse-cloud-via-aws--gcp--azure-marketplace}
+### 我是现有的 ClickHouse Cloud 用户。当我通过 AWS / GCP / Azure Marketplace 订阅 ClickHouse Cloud 时会发生什么？​ \{#i-am-an-existing-clickhouse-cloud-user-what-happens-when-i-subscribe-to-clickhouse-cloud-via-aws--gcp--azure-marketplace\}
 
 通过云服务商的 Marketplace 订阅 ClickHouse Cloud 包含两个步骤：
 
@@ -38,7 +38,7 @@ import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage
 
 你可以通过 ClickHouse Cloud 控制台左下角的菜单在不同组织之间切换。
 
-### 我是现有的 ClickHouse Cloud 用户。如果我希望将现有服务通过 Marketplace 计费，该怎么做？​ {#i-am-an-existing-clickhouse-cloud-user-what-should-i-do-if-i-want-my-existing-services-to-be-billed-via-marketplace}
+### 我是现有的 ClickHouse Cloud 用户。如果我希望将现有服务通过 Marketplace 计费，该怎么做？​ \{#i-am-an-existing-clickhouse-cloud-user-what-should-i-do-if-i-want-my-existing-services-to-be-billed-via-marketplace\}
 
 你需要通过云服务商的 Marketplace 订阅 ClickHouse Cloud。完成在 Marketplace 上的订阅并重定向回 ClickHouse Cloud 后，你将可以选择将一个现有的 ClickHouse Cloud 组织关联到 Marketplace 计费。从那一刻起，你的现有资源将通过 Marketplace 进行计费。 
 
@@ -50,13 +50,13 @@ import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage
 你之前任何一次 ClickHouse Cloud 注册所创建的现有服务和组织都会保留，并且不会连接到 Marketplace 计费。
 :::
 
-### 我作为 Marketplace 用户订阅了 ClickHouse Cloud。如何取消订阅？​ {#i-subscribed-to-clickhouse-cloud-as-a-marketplace-user-how-can-i-unsubscribe}
+### 我作为 Marketplace 用户订阅了 ClickHouse Cloud。如何取消订阅？​ \{#i-subscribed-to-clickhouse-cloud-as-a-marketplace-user-how-can-i-unsubscribe\}
 
 请注意，你可以直接停止使用 ClickHouse Cloud 并删除所有现有的 ClickHouse Cloud 服务。即使订阅仍然处于激活状态，由于 ClickHouse Cloud 没有任何固定的周期性费用，你也不会产生任何费用。
 
 如果你希望取消订阅，请前往云服务商控制台，在其中取消订阅续费。一旦订阅结束，所有现有服务将被停止，并会提示你添加信用卡。如果未添加信用卡，两周后所有现有服务将被删除。
 
-### 我作为 Marketplace 用户订阅了 ClickHouse Cloud，然后又取消了订阅。现在我想重新订阅，该如何操作？​ {#i-subscribed-to-clickhouse-cloud-as-a-marketplace-user-and-then-unsubscribed-now-i-want-to-subscribe-back-what-is-the-process}
+### 我作为 Marketplace 用户订阅了 ClickHouse Cloud，然后又取消了订阅。现在我想重新订阅，该如何操作？​ \{#i-subscribed-to-clickhouse-cloud-as-a-marketplace-user-and-then-unsubscribed-now-i-want-to-subscribe-back-what-is-the-process\}
 
 在这种情况下，请像往常一样订阅 ClickHouse Cloud（参见通过 Marketplace 订阅 ClickHouse Cloud 的相关章节）。
 
@@ -65,12 +65,12 @@ import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage
 
 如果在重新激活你的 Marketplace 组织时遇到任何问题，请联系 [ClickHouse Cloud 支持](https://clickhouse.com/support/program)。
 
-### 我如何访问我在 Marketplace 中订阅的 ClickHouse Cloud 服务的发票？​ {#how-do-i-access-my-invoice-for-my-marketplace-subscription-to-the-clickhouse-cloud-service}
+### 我如何访问我在 Marketplace 中订阅的 ClickHouse Cloud 服务的发票？​ \{#how-do-i-access-my-invoice-for-my-marketplace-subscription-to-the-clickhouse-cloud-service\}
 
 - [AWS billing Console](https://us-east-1.console.aws.amazon.com/billing/home)
 - [GCP Marketplace orders](https://console.cloud.google.com/marketplace/orders)（选择你用于订阅的计费账号）
 
-### 为什么用量报表上的日期与 Marketplace 发票上的日期不匹配？​ {#why-do-the-dates-on-the-usage-statements-not-match-my-marketplace-invoice}
+### 为什么用量报表上的日期与 Marketplace 发票上的日期不匹配？​ \{#why-do-the-dates-on-the-usage-statements-not-match-my-marketplace-invoice\}
 
 Marketplace 计费遵循自然月周期。例如，对于 12 月 1 日到次年 1 月 1 日之间的用量，将会在 1 月 3 日到 1 月 5 日之间生成发票。
 
@@ -78,18 +78,18 @@ ClickHouse Cloud 用量报表遵循不同的计费周期：从你注册当日开
 
 如果这两个日期不一致，用量和发票的日期就会不同。由于用量报表会按天统计某一服务的使用情况，你可以依靠这些报表来查看成本明细。
 
-### 在哪里可以找到通用计费信息？ {#where-can-i-find-general-billing-information}
+### 在哪里可以找到通用计费信息？ \{#where-can-i-find-general-billing-information\}
 
 请参阅 [计费概览页面](/cloud/manage/billing)。
 
-### 无论是通过云服务商 Marketplace 支付，还是直接向 ClickHouse 支付，ClickHouse Cloud 的价格有差别吗？ {#is-there-a-difference-in-clickhouse-cloud-pricing-whether-paying-through-the-cloud-provider-marketplace-or-directly-to-clickhouse}
+### 无论是通过云服务商 Marketplace 支付，还是直接向 ClickHouse 支付，ClickHouse Cloud 的价格有差别吗？ \{#is-there-a-difference-in-clickhouse-cloud-pricing-whether-paying-through-the-cloud-provider-marketplace-or-directly-to-clickhouse\}
 
 通过 Marketplace 计费与直接向 ClickHouse 注册在价格上没有差别。在这两种情况下，您对 ClickHouse Cloud 的使用量都以 ClickHouse Cloud Credits（CHC）计量，用量的计量方式相同，并据此计费。
 
-### 我可以设置多个 ClickHouse 组织，将其计费统一关联到同一个云市场计费账户（AWS、GCP 或 Azure）吗？ {#multiple-organizations-to-bill-to-single-cloud-marketplace-account}
+### 我可以设置多个 ClickHouse 组织，将其计费统一关联到同一个云市场计费账户（AWS、GCP 或 Azure）吗？ \{#multiple-organizations-to-bill-to-single-cloud-marketplace-account\}
 
 可以。可以将多个 ClickHouse 组织配置为将其后付费用量统一计入同一个云市场计费账户（AWS、GCP 或 Azure）。不过，预付费额度默认不会在不同组织之间共享。如果您需要在多个组织之间共享额度，请联系 [ClickHouse Cloud Support](https://clickhouse.com/support/program)。
 
-### 如果我的 ClickHouse Organization 通过云 Marketplace 承诺消费协议计费，在用完额度后会自动切换到 PAYG 计费吗？ {#automatically-move-to-PAYG-when-running-out-of-credit}
+### 如果我的 ClickHouse Organization 通过云 Marketplace 承诺消费协议计费，在用完额度后会自动切换到 PAYG 计费吗？ \{#automatically-move-to-PAYG-when-running-out-of-credit\}
 
 如果您的 Marketplace 承诺消费合同仍然有效，并且您用完了额度，我们会自动将您的 Organization 切换到按需付费（PAYG）计费模式。不过，当现有合同到期时，您需要将新的 Marketplace 合同关联到您的 Organization，或者将您的 Organization 切换为通过信用卡直接计费。 

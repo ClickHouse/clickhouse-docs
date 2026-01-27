@@ -6,7 +6,7 @@ title: 'system.projections'
 doc_type: 'reference'
 ---
 
-# system.projections {#systemprojections}
+# system.projections \{#systemprojections\}
 
 すべてのテーブルに存在するプロジェクションに関する情報を含みます。
 

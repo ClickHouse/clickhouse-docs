@@ -8,7 +8,7 @@ description: 'Страница, описывающая доступные вар
 doc_type: 'guide'
 ---
 
-# Миграция данных в ClickHouse {#migrating-data-into-clickhouse}
+# Миграция данных в ClickHouse \{#migrating-data-into-clickhouse\}
 
 <div class="vimeo-container">
   <iframe

@@ -28,19 +28,19 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 このガイドでは、[Postman](https://www.postman.com/product/what-is-postman/) を使用して ClickHouse Cloud API をテストする方法を説明します。
 Postman アプリケーションは Web ブラウザで利用できるほか、デスクトップアプリとしてダウンロードして利用することもできます。
 
-### アカウントを作成する {#create-an-account}
+### アカウントを作成する \{#create-an-account\}
 
 * 無料アカウントを [https://www.postman.com](https://www.postman.com) から作成できます。
 
 <Image img={postman1} size="md" alt="Postman サイト" border/>
 
-### ワークスペースを作成する {#create-a-workspace}
+### ワークスペースを作成する \{#create-a-workspace\}
 
 * ワークスペース名と可視性レベルを設定します。 
 
 <Image img={postman2} size="md" alt="ワークスペースの作成" border/>
 
-### コレクションを作成する {#create-a-collection}
+### コレクションを作成する \{#create-a-collection\}
 
 * 画面左上のメニューで「Explore」の下にある「Import」をクリックします。 
 
@@ -56,7 +56,7 @@ Postman アプリケーションは Web ブラウザで利用できるほか、�
 
 <Image img={postman6} size="md" alt="Collection > Import" border/>
 
-### ClickHouse Cloud API spec との連携 {#interface-with-the-clickhouse-cloud-api-spec}
+### ClickHouse Cloud API spec との連携 \{#interface-with-the-clickhouse-cloud-api-spec\}
 
 * 「API spec for ClickHouse Cloud」が、左側のナビゲーションの「Collections」に表示されます。
 
@@ -66,7 +66,7 @@ Postman アプリケーションは Web ブラウザで利用できるほか、�
 
 <Image img={postman8} size="md" alt="Import complete" border/>
 
-### 認証を設定する {#set-authorization}
+### 認証を設定する \{#set-authorization\}
 
 * ドロップダウンメニューを開き、「Basic Auth」を選択します：
 
@@ -76,20 +76,20 @@ Postman アプリケーションは Web ブラウザで利用できるほか、�
 
 <Image img={postman10} size="md" alt="credentials" border/>
 
-### 変数を有効にする {#enable-variables}
+### 変数を有効にする \{#enable-variables\}
 
 * [Variables](https://learning.postman.com/docs/sending-requests/variables/) を使用すると、Postman 内で値を保存して再利用できるため、API テストをより簡単に行えます。
 
-#### 組織 ID と Service ID を設定する {#set-the-organization-id-and-service-id}
+#### 組織 ID と Service ID を設定する \{#set-the-organization-id-and-service-id\}
 
 * 「Collection」内で、中央ペインの「Variable」タブをクリックします（Base URL は先ほどの API インポートで設定されています）。
 * `baseURL` の下にある「Add new value」という空フィールドをクリックし、自分の組織 ID と Service ID に置き換えて入力します。
 
 <Image img={postman11} size="md" alt="Organization ID and Service ID" border/>
 
-## ClickHouse Cloud API の機能をテストする {#test-the-clickhouse-cloud-api-functionalities}
+## ClickHouse Cloud API の機能をテストする \{#test-the-clickhouse-cloud-api-functionalities\}
 
-### 「GET list of available organizations」をテストする {#test-get-list-of-available-organizations}
+### 「GET list of available organizations」をテストする \{#test-get-list-of-available-organizations\}
 
 * 「OpenAPI spec for ClickHouse Cloud」で、フォルダー > V1 > organizations を展開します
 * 「GET list of available organizations」をクリックし、右側の青い「Send」ボタンを押します。
@@ -100,7 +100,7 @@ Postman アプリケーションは Web ブラウザで利用できるほか、�
 
 <Image img={postman13} size="md" alt="ステータス" border/>
 
-### 「GET organizational details」のテスト {#test-get-organizational-details}
+### 「GET organizational details」のテスト \{#test-get-organizational-details\}
 
 * `organizationid` フォルダの下で、「GET organizational details」に移動します。
 * 中央のフレームメニューの Params で、`organizationid` が必須項目になっています。
@@ -117,7 +117,7 @@ Postman アプリケーションは Web ブラウザで利用できるほか、�
 
 * 返却結果には `"status": 200` とともに組織の詳細が含まれているはずです（`"status"` が 400 で組織情報が何も返ってこない場合は、設定が正しくありません）。
 
-### 「GET service details」をテストする {#test-get-service-details}
+### 「GET service details」をテストする \{#test-get-service-details\}
 
 * 「GET service details」をクリックします
 * `organizationid` と `serviceid` の値を、それぞれ `{{orgid}}` と `{{serviceid}}` に編集します。

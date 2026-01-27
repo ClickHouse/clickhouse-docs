@@ -16,15 +16,15 @@ import prometheus_datadog from '@site/static/images/integrations/prometheus-data
 import Image from '@theme/IdealImage';
 
 
-# Prometheus 集成 {#prometheus-integration}
+# Prometheus 集成 \{#prometheus-integration\}
 
 此功能支持集成 [Prometheus](https://prometheus.io/) 以监控 ClickHouse Cloud 服务。通过 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 提供的 Prometheus 指标端点，您可以安全地连接并将指标导出到 Prometheus 指标采集器。这些指标可以集成到 Grafana、Datadog 等可视化仪表板中。
 
 要开始使用，请先[生成一个 API 密钥](/cloud/manage/openapi)。
 
-## 用于拉取 ClickHouse Cloud 指标的 Prometheus 端点 API {#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics}
+## 用于拉取 ClickHouse Cloud 指标的 Prometheus 端点 API \{#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics\}
 
-### API 参考 {#api-reference}
+### API 参考 \{#api-reference\}
 
 | Method | Path                                                                                                               | Description                                                        |
 | ------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
@@ -39,7 +39,7 @@ import Image from '@theme/IdealImage';
 | Service ID       | 端点地址        | uuid（可选）       |
 | filtered_metrics | 查询参数        | boolean（可选）    |
 
-### 身份验证 {#authentication}
+### 身份验证 \{#authentication\}
 
 使用 ClickHouse Cloud API 密钥进行基本身份验证：
 
@@ -60,7 +60,7 @@ curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organiz
 ```
 
 
-### 示例响应 {#sample-response}
+### 示例响应 \{#sample-response\}
 
 ```response
 # HELP ClickHouse_ServiceInfo Information about service, including cluster status and ClickHouse version
@@ -122,7 +122,7 @@ ClickPipes_FetchedBytesCompressed_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-
 ClickPipes_FetchedEvents_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent"} 5535376
 ```
 
-### 指标标签 {#metric-labels}
+### 指标标签 \{#metric-labels\}
 
 所有指标都包含以下标签：
 
@@ -140,7 +140,7 @@ ClickPipes_FetchedEvents_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf
 | clickpipe_name | ClickPipe 名称 |
 | clickpipe_source | ClickPipe 源类型 |
 
-### 信息指标 {#information-metrics}
+### 信息指标 \{#information-metrics\}
 
 ClickHouse Cloud 提供了一个特殊的指标 `ClickHouse_ServiceInfo`，它是一个 `gauge` 类型指标，其值始终为 `1`。该指标包含所有 **Metric Labels**，以及以下标签：
 
@@ -160,7 +160,7 @@ ClickHouse Cloud 提供了一个特殊的指标 `ClickHouse_ServiceInfo`，它�
 | --- | --- |
 | clickpipe_state | 当前管道的状态 |
 
-### 配置 Prometheus {#configuring-prometheus}
+### 配置 Prometheus \{#configuring-prometheus\}
 
 Prometheus 服务器会按指定的时间间隔从已配置的目标中收集指标。下面是一个 Prometheus 服务器的示例配置，用于对接 ClickHouse Cloud 的 Prometheus Endpoint：
 
@@ -188,7 +188,7 @@ scrape_configs:
 请注意，需要将 `honor_labels` 配置参数设置为 `true`，才能正确填充 `instance` 标签。另 外，在上述示例中 `filtered_metrics` 被设置为 `true`，但应根据用户的偏好和需求进行配置。
 
 
-## 集成 Grafana {#integrating-with-grafana}
+## 集成 Grafana \{#integrating-with-grafana\}
 
 用户可以通过两种主要方式与 Grafana 集成：
 
@@ -197,7 +197,7 @@ scrape_configs:
 
 下面我们提供使用这些选项的说明，重点介绍与 ClickHouse Cloud Prometheus Endpoint 相关的具体细节。
 
-### 使用 metrics endpoint 的 Grafana Cloud {#grafana-cloud-with-metrics-endpoint}
+### 使用 metrics endpoint 的 Grafana Cloud \{#grafana-cloud-with-metrics-endpoint\}
 
 - 登录到你的 Grafana Cloud 账户
 - 选择 **Metrics Endpoint** 以添加一个新的连接
@@ -216,7 +216,7 @@ scrape_configs:
 
 <Image img={prometheus_grafana_chart} size="md" alt="Grafana Metrics Explorer 图表" border/>
 
-### 使用 Grafana Cloud 搭配 Alloy {#grafana-cloud-with-alloy}
+### 使用 Grafana Cloud 搭配 Alloy \{#grafana-cloud-with-alloy\}
 
 如果您使用 Grafana Cloud，可以在 Grafana 中进入 Alloy 菜单，并按照屏幕上的指引安装 Alloy：
 
@@ -261,7 +261,7 @@ prometheus.remote_write "metrics_service" {
 请注意，需要将 `honor_labels` 配置参数设置为 `true`，才能正确填充 `instance` 标签的值。
 
 
-### 使用 Alloy 的自管理 Grafana {#grafana-self-managed-with-alloy}
+### 使用 Alloy 的自管理 Grafana \{#grafana-self-managed-with-alloy\}
 
 Grafana 的自管理用户可以在[此处](https://grafana.com/docs/alloy/latest/get-started/install/)找到安装 Alloy agent 的说明。我们假设用户已经将 Alloy 配置为将 Prometheus 指标发送到其期望的目标端。下面的 `prometheus.scrape` 组件会使 Alloy 抓取 ClickHouse Cloud 端点的指标。我们假设 `prometheus.remote_write` 会接收这些被抓取的指标。如果没有该目标，请将 `forward_to` 键调整为目标端。
 
@@ -294,7 +294,7 @@ prometheus.scrape "clickhouse_cloud" {
 请注意，需要将 `honor_labels` 配置参数设置为 `true`，才能正确写入 instance 标签。
 
 
-## 与 Datadog 集成 {#integrating-with-datadog}
+## 与 Datadog 集成 \{#integrating-with-datadog\}
 
 可以使用 Datadog 的 [Agent](https://docs.datadoghq.com/agent/?tab=Linux) 和 [OpenMetrics 集成](https://docs.datadoghq.com/integrations/openmetrics/) 从 ClickHouse Cloud 端点采集指标。下面是该 Agent 和集成的一个简单示例配置。请注意，实际使用时可能只需要选择对自己最重要的那部分指标。下面这个兜底式示例会导出成千上万种指标与实例的组合，Datadog 会将这些视为自定义指标。
 

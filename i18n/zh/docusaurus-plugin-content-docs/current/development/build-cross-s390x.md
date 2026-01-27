@@ -7,11 +7,11 @@ title: '在 Linux 上针对 s390x（zLinux）构建'
 doc_type: 'guide'
 ---
 
-# 在 Linux 上为 s390x（zLinux）进行构建 {#build-on-linux-for-s390x-zlinux}
+# 在 Linux 上为 s390x（zLinux）进行构建 \{#build-on-linux-for-s390x-zlinux\}
 
 ClickHouse 对 s390x 提供实验性支持。
 
-## 为 s390x 构建 ClickHouse {#building-clickhouse-for-s390x}
+## 为 s390x 构建 ClickHouse \{#building-clickhouse-for-s390x\}
 
 与其他平台一样，s390x 会将 OpenSSL 构建为静态库。如果你希望使用动态链接的 OpenSSL 进行构建，则需要向 CMake 传递 `-DENABLE_OPENSSL_DYNAMIC=1`。
 
@@ -31,7 +31,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE=cmake/linux/toolchain-s390x.cmake ..
 ninja
 ```
 
-## 运行 {#running}
+## 运行 \{#running\}
 
 要进行仿真，你需要适用于 s390x 的 QEMU user static 静态二进制文件。在 Ubuntu 上可以通过以下命令安装：
 
@@ -46,7 +46,7 @@ qemu-s390x-static -L /usr/s390x-linux-gnu ./programs/clickhouse local --query "S
 2
 ```
 
-## 调试 {#debugging}
+## 调试 \{#debugging\}
 
 安装 LLDB：
 
@@ -91,16 +91,16 @@ Process 1 stopped
    453      /// PHDR cache is required for query profiler to work reliably
 ```
 
-## Visual Studio Code 集成 {#visual-studio-code-integration}
+## Visual Studio Code 集成 \{#visual-studio-code-integration\}
 
 - 进行可视化调试需要安装 [CodeLLDB](https://github.com/vadimcn/vscode-lldb) 扩展。
 - 如果使用 [CMake Variants](https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/variants.md)，可以安装 [Command Variable](https://github.com/rioj7/command-variable) 扩展来辅助配置动态启动。
 - 请确保将后端设置为你的 LLVM 安装路径，例如：`"lldb.library": "/usr/lib/x86_64-linux-gnu/liblldb-21.so"`
 - 在启动之前，请确保以调试模式运行 ClickHouse 可执行文件。（也可以创建一个 `preLaunchTask` 来自动完成此操作）
 
-### 示例配置 {#example-configurations}
+### 示例配置 \{#example-configurations\}
 
-#### cmake-variants.yaml {#cmake-variantsyaml}
+#### cmake-variants.yaml \{#cmake-variantsyaml\}
 
 ```yaml
 buildType:
@@ -137,7 +137,7 @@ toolchain:
         CMAKE_TOOLCHAIN_FILE: cmake/linux/toolchain-s390x.cmake
 ```
 
-#### launch.json {#launchjson}
+#### launch.json \{#launchjson\}
 
 ```json
 {
@@ -155,7 +155,7 @@ toolchain:
 }
 ```
 
-#### settings.json {#settingsjson}
+#### settings.json \{#settingsjson\}
 
 这也会将不同的构建产物放在 `build` 文件夹下的不同子文件夹中。
 
@@ -166,7 +166,7 @@ toolchain:
 }
 ```
 
-#### run-debug.sh {#run-debugsh}
+#### run-debug.sh \{#run-debugsh\}
 
 ```sh
 #! /bin/sh
@@ -175,7 +175,7 @@ cd $1
 qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
 ```
 
-#### tasks.json {#tasksjson}
+#### tasks.json \{#tasksjson\}
 
 定义了一个任务，用于在与二进制文件同级的 `tmp` 目录下，以 `server` 模式运行已编译的可执行文件，并从 `programs/server/config.xml` 加载配置。
 

@@ -6,7 +6,7 @@ title: 'Предложение LIMIT BY'
 doc_type: 'справочник'
 ---
 
-# Клауза LIMIT BY {#limit-by-clause}
+# Клауза LIMIT BY \{#limit-by-clause\}
 
 Запрос с клаузой `LIMIT n BY expressions` выбирает первые `n` строк для каждого различного значения `expressions`. Ключ `LIMIT BY` может содержать любое количество [выражений](/sql-reference/syntax#expressions).
 
@@ -23,7 +23,7 @@ ClickHouse поддерживает следующие варианты синт
 
 Если вы хотите использовать номера столбцов вместо имён столбцов в клаузе `LIMIT BY`, включите настройку [enable&#95;positional&#95;arguments](/operations/settings/settings#enable_positional_arguments).
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 Пример таблицы:
 
@@ -76,7 +76,7 @@ LIMIT 5 BY domain, device_type
 LIMIT 100
 ```
 
-## LIMIT BY ALL {#limit-by-all}
+## LIMIT BY ALL \{#limit-by-all\}
 
 `LIMIT BY ALL` эквивалентно явному перечислению всех выражений из SELECT, которые не являются агрегатными функциями.
 
@@ -106,7 +106,7 @@ SELECT substring(a, 4, 2), substring(substring(a, 1, 2), 1, count(b)) FROM t LIM
 SELECT substring(a, 4, 2), substring(substring(a, 1, 2), 1, count(b)) FROM t LIMIT 2 BY substring(a, 4, 2), substring(a, 1, 2)
 ```
 
-## Примеры {#examples-limit-by-all}
+## Примеры \{#examples-limit-by-all\}
 
 Пример таблицы:
 

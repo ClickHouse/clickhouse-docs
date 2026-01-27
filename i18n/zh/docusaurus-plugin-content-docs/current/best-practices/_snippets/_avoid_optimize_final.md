@@ -24,9 +24,9 @@ OPTIMIZE TABLE <table> FINAL;
 如果查询在与主键相同的列上进行过滤，那么使用 `FINAL` 是可以接受的。
 :::
 
-## 为什么要避免？ {#why-avoid}
+## 为什么要避免？ \{#why-avoid\}
 
-### 成本高昂 {#its-expensive}
+### 成本高昂 \{#its-expensive\}
 
 运行 `OPTIMIZE FINAL` 会强制 ClickHouse 将**所有**活动的 part 合并成**单个 part**，即使之前已经执行过大型合并。这包括：
 
@@ -37,7 +37,7 @@ OPTIMIZE TABLE <table> FINAL;
 
 这些步骤**非常耗费 CPU 和 I/O**，在涉及大规模数据集时，可能会给系统带来显著压力。
 
-### 它会忽略安全限制 {#it-ignores-safety-limits}
+### 它会忽略安全限制 \{#it-ignores-safety-limits\}
 
 通常，ClickHouse 会避免合并大于约 150 GB 的 part（可通过 [max_bytes_to_merge_at_max_space_in_pool](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool) 进行配置）。但 `OPTIMIZE FINAL` **会忽略这一安全机制**，这意味着：
 
@@ -45,6 +45,6 @@ OPTIMIZE TABLE <table> FINAL;
 * 这可能导致**合并时间很长**、**内存压力增大**，甚至**内存耗尽错误**
 * 这些超大 part 后续可能难以再合并，即进一步尝试合并它们会因为上述原因而失败。在某些需要通过合并来保证查询行为正确的场景中，这可能会带来不良后果，例如 [ReplacingMergeTree 中重复数据不断累积](/guides/developer/deduplication#using-replacingmergetree-for-upserts)，从而降低查询时的性能。
 
-## 让后台合并完成这项工作 {#let-background-merges-do-the-work}
+## 让后台合并完成这项工作 \{#let-background-merges-do-the-work\}
 
 ClickHouse 已经会在后台执行智能合并，以优化存储和查询效率。这些合并是增量的、感知资源使用情况的，并且会遵循已配置的阈值。除非存在非常特定的需求（例如在冻结表或导出之前对数据进行最终定版），**否则通常应当让 ClickHouse 自行管理合并过程**。

@@ -43,9 +43,9 @@ ClickHouse has a huge number of functions that can be used for data analysis —
 - **`HEX([my_string])`** *(added in v0.2.1)* — Returns a string containing the argument's hexadecimal representation. Equivalent of [`hex()`](/sql-reference/functions/encoding-functions/#hex).
 - **`KURTOSIS([my_number])`** — Computes the sample kurtosis of a sequence. Equivalent of [`kurtSamp()`](/sql-reference/aggregate-functions/reference/kurtsamp).
 - **`KURTOSISP([my_number])`** — Computes the kurtosis of a sequence. The equivalent of [`kurtPop()`](/sql-reference/aggregate-functions/reference/kurtpop).
-- **`MEDIAN_EXACT([my_number])`** *(added in v0.1.3)* — Exactly computes the median of a numeric data sequence. Equivalent of [`quantileExact(0.5)(...)`](/sql-reference/aggregate-functions/reference/quantileexact/#quantileexact).
+- **`MEDIAN_EXACT([my_number])`** *(added in v0.1.3)* — Exactly computes the median of a numeric data sequence. Equivalent of [`quantileExact(0.5)(...)`](/sql-reference/aggregate-functions/reference/quantileexact).
 - **`MOD([my_number_1], [my_number_2])`** — Calculates the remainder after division. If arguments are floating-point numbers, they are pre-converted to integers by dropping the decimal portion. Equivalent of [`modulo()`](/sql-reference/functions/arithmetic-functions/#modulo).
-- **`PERCENTILE_EXACT([my_number], [level_float])`** *(added in v0.1.3)* — Exactly computes the percentile of a numeric data sequence. The recommended level range is [0.01, 0.99]. Equivalent of [`quantileExact()()`](/sql-reference/aggregate-functions/reference/quantileexact/#quantileexact).
+- **`PERCENTILE_EXACT([my_number], [level_float])`** *(added in v0.1.3)* — Exactly computes the percentile of a numeric data sequence. The recommended level range is [0.01, 0.99]. Equivalent of [`quantileExact()()`](/sql-reference/aggregate-functions/reference/quantileexact).
 - **`PROPER([my_string])`** *(added in v0.2.5)* - Converts a text string so the first letter of each word is capitalized and the remaining letters are in lowercase. Spaces and non-alphanumeric characters such as punctuation also act as separators. For example:
     ```text
     PROPER("PRODUCT name") => "Product Name"

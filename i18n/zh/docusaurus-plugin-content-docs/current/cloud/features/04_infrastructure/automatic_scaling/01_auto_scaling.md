@@ -17,7 +17,7 @@ import scaling_memory_allocation from '@site/static/images/cloud/manage/scaling-
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
 
-# 自动伸缩 {#automatic-scaling}
+# 自动伸缩 \{#automatic-scaling\}
 
 伸缩是指根据客户端需求调整可用资源的能力。Scale 和 Enterprise 层级（标准 1:4 配置）的服务可以通过以编程方式调用 API，或在 UI 中更改设置来进行水平伸缩，从而调整系统资源。这些服务也可以进行**自动垂直伸缩**，以满足应用程序的需求。
 
@@ -27,7 +27,7 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 Scale 和 Enterprise 层级同时支持单副本和多副本服务，而 Basic 层级仅支持单副本服务。单副本服务的规格是固定的，不支持垂直或水平伸缩。你可以升级到 Scale 或 Enterprise 层级来对你的服务进行伸缩。
 :::
 
-## ClickHouse Cloud 中的扩缩容工作原理 {#how-scaling-works-in-clickhouse-cloud}
+## ClickHouse Cloud 中的扩缩容工作原理 \{#how-scaling-works-in-clickhouse-cloud\}
 
 目前，ClickHouse Cloud 在 Scale 层级服务上支持垂直自动扩缩容和手动水平扩缩容。
 
@@ -47,7 +47,7 @@ ClickHouse Cloud 中的扩缩容采用我们称之为 ["先建后拆" (Make Befo
 这样既保证了现有查询有机会完成，又能避免旧副本长时间滞留。
 :::
 
-### 垂直自动扩缩容 {#vertical-auto-scaling}
+### 垂直自动扩缩容 \{#vertical-auto-scaling\}
 
 <ScalePlanFeatureBadge feature="自动垂直扩缩容"/>
 
@@ -61,7 +61,7 @@ Scale 和 Enterprise 服务支持基于 CPU 和内存使用情况的自动扩缩
 
 会从 CPU 和内存的扩缩容建议中选择**较大**的那个，同时为服务分配的 CPU 和内存会以 `1` CPU 和 `4 GiB` 内存为步长同步调整。
 
-### 配置垂直自动扩缩容 {#configuring-vertical-auto-scaling}
+### 配置垂直自动扩缩容 \{#configuring-vertical-auto-scaling\}
 
 拥有 **Admin** 角色的组织成员可以调整 ClickHouse Cloud Scale 或 Enterprise 服务的扩缩容配置。要配置垂直自动扩缩容，请进入服务的 **Settings** 选项卡，并按如下所示调整最小和最大内存以及 CPU 设置。
 
@@ -83,7 +83,7 @@ Scale 和 Enterprise 服务支持基于 CPU 和内存使用情况的自动扩缩
 不过，仍然可以通过联系支持团队对这些服务进行垂直扩缩容。
 :::
 
-## 手动水平扩展 {#manual-horizontal-scaling}
+## 手动水平扩展 \{#manual-horizontal-scaling\}
 
 <ScalePlanFeatureBadge feature="Manual horizontal scaling"/>
 
@@ -95,7 +95,7 @@ Scale 和 Enterprise 服务支持基于 CPU 和内存使用情况的自动扩缩
 服务在水平方向最多可以扩展到 20 个副本。如果需要更多副本，请联系我们的支持团队。
 :::
 
-### 通过 API 进行水平扩展 {#horizontal-scaling-via-api}
+### 通过 API 进行水平扩展 \{#horizontal-scaling-via-api\}
 
 要对集群进行水平扩展，可通过 API 发出 `PATCH` 请求来调整副本数量。下面的截图展示了一个将 `3` 副本集群扩容到 `6` 副本的 API 调用以及对应的响应。
 
@@ -109,7 +109,7 @@ Scale 和 Enterprise 服务支持基于 CPU 和内存使用情况的自动扩缩
 
 如果在已有扩展操作正在进行时再次发起新的扩展请求或连续发起多个请求，伸缩服务将忽略中间状态，并收敛到最终的副本数量。
 
-### 通过 UI 进行水平扩展 {#horizontal-scaling-via-ui}
+### 通过 UI 进行水平扩展 \{#horizontal-scaling-via-ui\}
 
 要在 UI 中对服务进行水平扩展，可以在 **Settings** 页面中调整该服务的副本数量。
 
@@ -121,7 +121,7 @@ Scale 和 Enterprise 服务支持基于 CPU 和内存使用情况的自动扩缩
 
 <Image img={scaling_memory_allocation} size="md" alt="内存扩展分配" border />
 
-## 自动空闲 {#automatic-idling}
+## 自动空闲 \{#automatic-idling\}
 
 在 **Settings** 页面中，你还可以选择是否允许在服务处于非活动状态持续一段时间后自动进入空闲（即服务当前未执行任何用户提交的查询时）。自动空闲可以降低服务成本，因为当服务暂停时，你无需为计算资源付费。
 
@@ -135,7 +135,7 @@ Scale 和 Enterprise 服务支持基于 CPU 和内存使用情况的自动扩缩
 仅当你的使用场景可以接受查询开始响应前的一段延迟时，才应使用自动空闲，因为当服务被暂停时，与服务的连接会超时。自动空闲非常适合不经常使用、且可以容忍一定延迟的服务。不建议在为高频使用的、面向客户的功能提供支撑的服务上启用自动空闲。
 :::
 
-### 自适应空闲 {#adaptive-idling}
+### 自适应空闲 \{#adaptive-idling\}
 
 ClickHouse Cloud 实现了自适应空闲机制，在控制成本的同时防止服务中断。系统会在将服务切换为空闲状态之前评估多项条件。当满足以下任一条件时，自适应空闲会覆盖原先配置的空闲时长设置：
 
@@ -155,7 +155,7 @@ ClickHouse Cloud 实现了自适应空闲机制，在控制成本的同时防止
 仅当你的使用场景可以接受查询开始响应前的一段延迟时，才应使用自动空闲，因为当服务被暂停时，与服务的连接会超时。自动空闲非常适合不经常使用、且可以容忍一定延迟的服务。不建议在为高频使用的、面向客户的功能提供支撑的服务上启用自动空闲。
 :::
 
-## 处理工作负载峰值 {#handling-bursty-workloads}
+## 处理工作负载峰值 \{#handling-bursty-workloads\}
 
 如果您预期即将出现工作负载峰值，可以使用
 [ClickHouse Cloud API](/cloud/manage/api/api-overview)

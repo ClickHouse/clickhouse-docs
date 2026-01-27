@@ -14,11 +14,11 @@ import architecture from '@site/static/images/use-cases/observability/clickstack
 ClickStack のアーキテクチャは、3 つの中核コンポーネントである **ClickHouse**、**HyperDX**、そして **OpenTelemetry (OTel) コレクター**を中心に構成されています。**MongoDB** インスタンスはアプリケーション状態のストレージとして機能します。これらを組み合わせることで、ログ、メトリクス、トレースに最適化された高性能なオープンソースのオブザーバビリティスタックが実現されます。
 
 
-## アーキテクチャの概要 {#architecture-overview}
+## アーキテクチャの概要 \{#architecture-overview\}
 
 <Image img={architecture} alt="アーキテクチャ" size="lg"/>
 
-## ClickHouse: データベースエンジン {#clickhouse}
+## ClickHouse: データベースエンジン \{#clickhouse\}
 
 ClickStack の中核となるのが ClickHouse であり、大規模なリアルタイム分析向けに設計されたカラム指向データベースです。オブザーバビリティデータのインジェストとクエリ処理を担い、次のことを可能にします:
 
@@ -30,7 +30,7 @@ ClickStack の中核となるのが ClickHouse であり、大規模なリアル
 
 ClickHouse はオブザーバビリティデータを「ワイドイベント」として扱うことで、ログ、メトリクス、トレース間の深い相関を、単一の統合された構造で実現します。
 
-## OpenTelemetry collector: data ingestion {#open-telemetry-collector}
+## OpenTelemetry collector: data ingestion \{#open-telemetry-collector\}
 
 ClickStack には、オープンで標準化された方法でテレメトリーを取り込むための、事前構成済みの OpenTelemetry (OTel) コレクターが含まれています。OTLP プロトコルを使用して、次のいずれかの経路でデータを送信できます：
 
@@ -39,7 +39,7 @@ ClickStack には、オープンで標準化された方法でテレメトリー
 
 コレクターはテレメトリーを効率的なバッチ単位で ClickHouse にエクスポートします。データソースごとに最適化されたテーブルスキーマをサポートし、すべてのシグナル種別にわたってスケーラブルなパフォーマンスを実現します。
 
-## HyperDX: the interface {#hyperdx}
+## HyperDX: the interface \{#hyperdx\}
 
 HyperDX は ClickStack のユーザーインターフェースです。次の機能を提供します。
 
@@ -52,7 +52,7 @@ HyperDX は ClickStack のユーザーインターフェースです。次の機
 
 ClickHouse 向けに専用設計された HyperDX は、強力な検索機能と直感的なワークフローを組み合わせることで、異常を検知し、問題を調査し、迅速にインサイトを得られるようにします。 
 
-## MongoDB: アプリケーション状態 {#mongo}
+## MongoDB: アプリケーション状態 \{#mongo\}
 
 ClickStack は MongoDB を使用して、次のようなアプリケーションレベルの状態を保存します。
 
