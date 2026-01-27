@@ -90,7 +90,7 @@ function ProgressiveSearchButton({ onClick, onMouseOver, onFocus, onTouchStart, 
 function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   const queryIDRef = useRef(null);
   const lastQueryRef = useRef('');
-  const { siteMetadata, i18n: { currentLocale } } = useDocusaurusContext();
+  const { siteMetadata, siteConfig, i18n: { currentLocale } } = useDocusaurusContext();
   const processSearchResultUrl = useSearchResultUrlProcessor();
   const contextualSearchFacetFilters = useAlgoliaContextualFacetFilters();
   const { isAskAIOpen } = useAskAI();
@@ -272,7 +272,7 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
         onMouseOver={importDocSearchModalIfNeeded}
         onClick={handleOnOpen}
         buttonRef={searchButtonRef}
-        searchPagePath={props.searchPagePath || 'search'}
+        searchPagePath={`${siteConfig.baseUrl}${props.searchPagePath}`}
       />
 
       {isOpen &&
