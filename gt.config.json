@@ -52,7 +52,9 @@
     "en",
     "zh",
     "ru",
-    "jp"
+    "jp",
+    "es",
+    "pt"
   ],
   "customMapping": {
     "jp": {
