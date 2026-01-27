@@ -45,6 +45,41 @@ PATH=<path to clickhouse-client>:$PATH tests/clickhouse-test 01428_hash_set_nan_
 すべてのテストを実行することも、テスト名に対するフィルターを指定して一部のテストのみを実行することもできます: `./clickhouse-test substring`。
 テストを並列で実行したり、ランダムな順序で実行したりするオプションもあります。
 
+
+### すべてのテストを実行する \{#running-all-tests\}
+
+すべてのテストを実行するには、そこそこの性能を備えたマシンが必要になる場合があります。以下の手順は、100 GB のストレージを備えた `t3.2xlarge` AWS amd64 Ubuntu インスタンスで動作確認されています。
+
+1. 前提条件をインストールし、再ログインします。
+
+```sh
+sudo apt-get update
+sudo apt-get install docker.io
+sudo usermod -aG docker ubuntu
+```
+
+2. ソースコードを取得します。
+
+```sh
+git clone --single-branch https://github.com/ClickHouse/ClickHouse
+cd ClickHouse
+```
+
+3. コードをビルドし、「Fast test」と名付けられたテストサブセットを実行します。
+
+```sh
+python3 -m ci.praktika run "Fast test"
+```
+
+4. 次のような結果になるはずです
+
+```sh
+Failed: 0, Passed: 7394, Skipped: 1795
+```
+
+処理をつきっきりで監視しない場合は、`ssh` 接続が切断された後も実行を継続させるために、`nohup` または `disown` を使用できます。
+
+
 ### 新しいテストの追加 \{#adding-a-new-test\}
 
 新しいテストを追加するには、まず `queries/0_stateless` ディレクトリに `.sql` または `.sh` ファイルを作成します。
@@ -72,9 +107,10 @@ sudo ./install.sh
 * 他のテストが同じ内容をテストしていないことを確認すること（つまり、まず grep して確認する）
   :::
 
+
 ### テスト実行の制限 \{#restricting-test-runs\}
 
-テストには 0 個以上の *タグ* を付けることができ、CI 上でどのコンテキストで実行されるかを制御できます。
+テストには 0 個以上の *タグ* を付与でき、CI でどのコンテキストでテストを実行するかを制限できます。
 
 `.sql` テストでは、タグは 1 行目に SQL コメントとして記述します:
 
@@ -86,7 +122,7 @@ sudo ./install.sh
 SELECT 1
 ```
 
-`.sh` のテストでは、タグは 2 行目のコメントとして記述します。
+`.sh` テストでは、タグは 2 行目のコメントとして記述します:
 
 ```bash
 #!/usr/bin/env bash
@@ -129,11 +165,12 @@ SELECT 1
 上記の設定に加えて、特定の ClickHouse 機能を使用するかどうかを指定するために、`system.build_options` の `USE_*` フラグを使用できます。
 たとえば、テストで MySQL テーブルを使用する場合は、タグ `use-mysql` を追加する必要があります。
 
-### ランダム設定の制限の指定 \{#specifying-limits-for-random-settings\}
 
-テストでは、テスト実行中にランダム化される可能性がある設定について、許可される最小値と最大値を指定できます。
+### ランダム化される設定に対する制限の指定 \{#specifying-limits-for-random-settings\}
 
-`.sh` テストでは、制限はタグの隣の行、またはタグが指定されていない場合は 2 行目のコメントとして記述します:
+テストでは、テスト実行中にランダムに変更される可能性のある設定について、許容される最小値と最大値を指定できます。
+
+`.sh` テストでは、上限／下限はタグ行の次の行、またはタグが指定されていない場合は 2 行目にコメントとして記述します。
 
 ```bash
 #!/usr/bin/env bash
@@ -149,7 +186,8 @@ SELECT 1
 SELECT 1
 ```
 
-片方の上限だけを指定する場合は、もう一方には `None` を指定できます。
+片方の制限だけを指定する場合は、もう一方には `None` を指定できます。
+
 
 ### テスト名の決め方 \{#choosing-the-test-name\}
 
@@ -161,6 +199,7 @@ ls tests/queries/0_stateless/[0-9]*.reference | tail -n 1
 ```
 
 その間に、同じ数値プレフィックスを持つ別のテストが追加されることもありますが、それでも問題はなく、そのままで構いません。後から変更する必要はありません。
+
 
 ### 必ず発生するエラーの確認 \{#checking-for-an-error-that-must-occur\}
 
@@ -177,6 +216,7 @@ SELECT x; -- { serverError 49 }
 エラーメッセージの特定の文言はチェックしないでください。将来変更される可能性があり、そのたびにテストが不要に壊れてしまいます。
 エラーコードのみを確認してください。
 既存のエラーコードが要件に対して十分に厳密でない場合は、新しいエラーコードの追加を検討してください。
+
 
 ### 分散クエリのテスト \{#testing-a-distributed-query\}
 
@@ -221,6 +261,7 @@ SELECT x; -- { serverError 49 }
 ```bash
 $ ./src/unit_tests_dbms --gtest_filter=LocalAddress*
 ```
+
 
 ## パフォーマンステスト \{#performance-tests\}
 
@@ -295,6 +336,7 @@ $ sudo -u clickhouse gdb --args /usr/bin/clickhouse server --config-file /etc/cl
 `clickhouse` バイナリにはほとんど依存関係がなく、幅広い Linux ディストリビューションで動作します。
 サーバー上で変更内容を簡易的にテストしたい場合は、新しくビルドした `clickhouse` バイナリを `scp` でサーバーにコピーし、上記の例のように実行するだけで十分です。
 
+
 ## ビルドテスト \{#build-tests\}
 
 ビルドテストにより、さまざまな代替構成や一部の異なるシステム環境で、ビルドが破綻していないことを確認できます。
@@ -324,6 +366,7 @@ $ sudo -u clickhouse gdb --args /usr/bin/clickhouse server --config-file /etc/cl
 ClickHouse のネットワークプロトコルを拡張する際には、古い clickhouse-client が新しい clickhouse-server で動作すること、および新しい clickhouse-client が古い clickhouse-server で動作することを、（対応するパッケージに含まれるバイナリを実行するだけで）手動でテストします。
 
 また、次のようなケースの一部は統合テストで自動的に検証します:
+
 - 古いバージョンの ClickHouse によって書き込まれたデータを、新しいバージョンの ClickHouse で正常に読み取れるかどうか。
 - 異なる ClickHouse バージョンが混在するクラスタで分散クエリが正しく動作するかどうか。
 
