@@ -22,7 +22,7 @@ import accelerated_visual from '@site/static/images/clickstack/materialized_view
 
 ## Introduction {#introduction}
 
-ClickStack can exploit [Incremental Materialized Views (IMT)](/materialized-view/incremental-materialized-view) to accelerate visualizations that rely on aggregation-heavy queries, such as computing average request duration per minute over time. This feature can dramatically improve query performance and is typically most beneficial for larger deployments, around 10 TB per day and above, while enabling scaling into the petabytes-per-day range. Incremental materialized views are in Beta and should be used with care.
+ClickStack can exploit [Incremental Materialized Views (IMV)](/materialized-view/incremental-materialized-view) to accelerate visualizations that rely on aggregation-heavy queries, such as computing average request duration per minute over time. This feature can dramatically improve query performance and is typically most beneficial for larger deployments, around 10 TB per day and above, while enabling scaling into the petabytes-per-day range. Incremental materialized views are in Beta and should be used with care.
 
 :::note
 Alerts can also benefit from materializations, materialized views, and will exploit them automatically. This can reduce the computational overhead of running many alerts, especially since these typically run very frequently, and reducing the execution time can be beneficial with respect to both responsiveness, and resource consumption.
@@ -36,7 +36,7 @@ Unlike transactional databases such as Postgres, a ClickHouse materialized view 
 
 The primary motivation for using materialized views is that the data written to the target table represents the result of an aggregation, filtering, or transformation. In ClickStack, they're used exclusively for aggregations. These results are typically much smaller than the raw input data, often representing partial aggregation states. Combined with the simplicity of querying the pre-aggregated target table, this leads to substantially lower query latency compared to performing the same computation on raw data at query time.
 
-Materialized views in ClickHouse are updated continuously as data flows into the source table, behaving more like always-up-to-date indexes. This differs from many other databases, where materialized views are static snapshots that must be periodically refreshed, similar to ClickHouse Refreshable Materialized Views (RMT).
+Materialized views in ClickHouse are updated continuously as data flows into the source table, behaving more like always-up-to-date indexes. This differs from many other databases, where materialized views are static snapshots that must be periodically refreshed, similar to ClickHouse Refreshable Materialized Views (RMV).
 
 <Image img={materializedViewDiagram} size="md" alt="Materialized view diagram"/>
 
