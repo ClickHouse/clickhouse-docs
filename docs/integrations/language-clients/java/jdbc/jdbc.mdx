@@ -75,20 +75,29 @@ We recommend using the latest java client directly if performance/direct access 
 
 **Driver Class**: `com.clickhouse.jdbc.ClickHouseDriver`
 
+:::note
+`com.clickhouse.jdbc.ClickHouseDriver` is a facade class for the new and old JDBC implementations. It uses the new JDBC implementation by default. 
+You can use the old JDBC implementation by setting the `clickhouse.jdbc.v1` property to `true` in the connection properties.
+
+`com.clickhouse.jdbc.Driver` is new JDBC implementation. 
+`com.clickhouse.jdbc.DriverV1` is old JDBC implementation.
+
+:::
+
 **URL Syntax**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`, for example:
 
 - `jdbc:clickhouse:http://localhost:8123`
 - `jdbc:clickhouse:https://localhost:8443?ssl=true`
 
 ### Connection Properties
+Main configuration parameters are defined in the [java client](/integrations/language-clients/java/client#client-configuration). They should be passed 
+as is to the driver. Driver has some own properties that are not part of the client configuration they are listed below.
 
-Beyond standard JDBC properties, the driver supports the ClickHouse-specific properties offered by the underlying [java client](/integrations/language-clients/java/client#client-configuration).
-Where possible methods will return an `SQLFeatureNotSupportedException` if the feature is not supported. Other custom properties include:
-
+**Driver properties**:
 | Property                         | Default | Description                                                    |
 |----------------------------------|---------|----------------------------------------------------------------|
 | `disable_frameworks_detection`   | `true`  | Disable frameworks detection for User-Agent                    |
-| `jdbc_ignore_unsupported_values` | `false` | Suppresses `SQLFeatureNotSupportedException`                   |
+| `jdbc_ignore_unsupported_values` | `false` | Suppresses `SQLFeatureNotSupportedException` where is doesn't affect the driver work |
 | `clickhouse.jdbc.v1`             | `false` | Use older JDBC implementation instead of new JDBC              |
 | `default_query_settings`         | `null`  | Allows passing of default query settings with query operations |
 | `jdbc_resultset_auto_close`      | `true`  | Automatically closes `ResultSet` when `Statement` is closed    |
@@ -114,6 +123,24 @@ config.put(ClientConfigProperties.serverSetting("allow_experimental_time_time64_
 Connection conn = Driver.connect("jdbc:ch:http://localhost:8123/", config);
 ```
 :::
+
+**Example configuration**:
+```java
+Properties properties = new Properties();
+properties.setProperty("user", "default");
+properties.setProperty("password", getPassword());
+properties.setProperty("client_name", "my-app-01"); // when http protocol is used it will be `http_user_agent` in the query log but not `client_name`.
+
+Connection conn = Driver.connect("jdbc:ch:http://localhost:8123/", properties);
+```
+
+what will be equivalent to the following JDBC URL:
+
+```sql
+jdbc:ch:http://localhost:8123/?user=default&password=password&client_name=my-app-01 
+// credentials shoud be passed in `Properties`. Here it is just for example.
+```
+Note: no need to url encode JDBC URL or properties, they will be automatically encoded.
 
 ## Supported data types {#supported-data-types}
 
@@ -343,7 +370,8 @@ try (Connection conn = DriverManager.getConnection(url, properties)) {
 
 - Unsigned types are mapped to java types for better portability. 
 - `Date` and `Date32` are mapped to `java.sql.Date` for better compatibility with JDBC. However getting `java.time.LocalDate` is possible by using `ResultSet.getObject(int, Class<T>)` with `java.time.LocalDate.class` as the second argument.
-
+- `Array` is mapped to an `java.sql.Array` object.
+- `Tuple` is mapped to an `java.sql.Struct` object. But can be used as `Array`.
 
 </Version>
 
