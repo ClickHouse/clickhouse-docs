@@ -1,9 +1,0 @@
-{
-  "label": "更新日志",
-  "collapsible": true,
-  "collapsed": true,
-  "link": {
-    "type": "文档",
-    "id": "cloud/reference/changelog/index"
-  }
-}
