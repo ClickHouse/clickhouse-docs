@@ -272,7 +272,7 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
         onMouseOver={importDocSearchModalIfNeeded}
         onClick={handleOnOpen}
         buttonRef={searchButtonRef}
-        searchPagePath={props.searchPagePath || 'docs/search'}
+        searchPagePath={props.searchPagePath || '/docs/search'}
       />
 
       {isOpen &&
