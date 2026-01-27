@@ -345,7 +345,7 @@ const sidebars = {
           'cloud/managed-postgres/settings',
           {
             type: 'category',
-            label: 'Migrations',
+            label: 'Data migration',
             collapsed: true,
             collapsible: true,
             items: [
