@@ -130,7 +130,9 @@ function updateLinks() {
             href = appendPagePathsToLink(href)
             href = appendGoogleAnalyticsCookieToLink(href)
             el.href = href
-        } catch {}
+        } catch (e) {
+            console.warn('Failed to update cloud link', e)
+        }
     });
 }
 

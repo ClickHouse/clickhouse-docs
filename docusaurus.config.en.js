@@ -247,7 +247,7 @@ const config = {
         apiKey: "4a7bf25cf3edbef29d78d5e1eecfdca5",
         indexName: "clickhouse",
         contextualSearch: false,
-        searchPagePath: "search",
+        searchPagePath: "/docs/search",
       },
       image: "img/docs_social_share.png",
       icon: "/img/gareth.png",

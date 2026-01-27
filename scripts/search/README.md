@@ -132,3 +132,21 @@ Note: exact scores may vary due to constant content changes.
 1. Better chunking - using a markdown chunker which respects code and table boundaries
 2. Skip pages
 3. Segment on case on h3s, h2s on numerics e.g. toInt8 -> to Int 8
+
+## Automated Indexing
+
+The search index is automatically updated through a GitHub Actions workflow (`.github/workflows/build-search.yml`) in three scenarios:
+
+### Daily Scheduled Updates
+- **When**: Every day at 4:00 AM UTC (11 PM CST / 12 AM EST)
+- **What**: Automatically re-indexes all documentation to keep search results fresh
+
+### PR-Triggered Updates  
+- **When**: A PR is merged to `main` with the `update search` label
+- **How to use**: Add the `update search` label to your PR before merging to trigger an immediate index update
+- **Use case**: Important for major documentation restructures or when search needs to reflect changes immediately
+
+### Manual Trigger
+- **When**: Via GitHub Actions UI (workflow_dispatch)
+- **How**: Go to Actions → Update Algolia Search → Run workflow
+- **Use case**: Emergency updates or testing

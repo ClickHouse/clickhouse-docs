@@ -45,12 +45,14 @@ This section covers configuring your existing AWS Lambda functions to send logs 
 
 #### Choose the appropriate Rotel Lambda Extension layer {#choose-layer}
 
-The [Rotel Lambda Extension](https://github.com/streamfold/rotel-lambda-extension) is available as a pre-built AWS Lambda layer. Choose the layer ARN that matches your Lambda function's architecture:
+Choose the Lambda layer that matches your Lambda runtime architecture. The `{version}` field
+is dependent on the AWS region that you are deploying into. Check the [releases](https://github.com/streamfold/rotel-lambda-extension/releases)
+page for the latest version numbers that correspond to your region.
 
-| Architecture | ARN Pattern | Latest Version |
-|--------------|-------------|----------------|
-| x86-64/amd64 | `arn:aws:lambda:{region}:418653438961:layer:rotel-extension-amd64-alpha:{version}` | ![Version](https://img.shields.io/github/v/release/streamfold/rotel-lambda-extension?filter=*alpha&label=version&labelColor=%2338BDF8&color=%23312E81&cacheSeconds=600) |
-| arm64        | `arn:aws:lambda:{region}:418653438961:layer:rotel-extension-arm64-alpha:{version}` | ![Version](https://img.shields.io/github/v/release/streamfold/rotel-lambda-extension?filter=*alpha&label=version&labelColor=%2338BDF8&color=%23312E81&cacheSeconds=600) |
+| Architecture | ARN                                                                          |
+| ------------ | ---------------------------------------------------------------------------- |
+| x86-64/amd64 | `arn:aws:lambda:{region}:418653438961:layer:rotel-extension-amd64:{version}` |
+| arm64        | `arn:aws:lambda:{region}:418653438961:layer:rotel-extension-arm64:{version}` |
 
 **Available regions:**
 - us-east-{1, 2}, us-west-{1, 2}
@@ -72,7 +74,7 @@ _In these examples replace `{arch}`, `{region}`, and `{version}` with the approp
 4. Select **Specify an ARN**
 5. Enter the Rotel layer ARN:
    ```text
-   arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+   arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version}
    ```
 6. Click **Add**
 
@@ -81,7 +83,7 @@ _In these examples replace `{arch}`, `{region}`, and `{version}` with the approp
 ```bash
 aws lambda update-function-configuration \
   --function-name my-function \
-  --layers arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+  --layers arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version}
 ```
 
 ##### Option 3: AWS SAM {#sam}
@@ -93,7 +95,7 @@ Resources:
     Properties:
       # ... other configuration ...
       Layers:
-        - arn:aws:lambda:{version}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+        - arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version}
 ```
 
 #### Configure the extension to export to ClickStack {#configure-extension}
@@ -281,7 +283,7 @@ Add **both** the Rotel extension layer and the instrumentation layer:
 aws lambda update-function-configuration \
   --function-name my-function \
   --layers \
-    arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version} \
+    arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version} \
     arn:aws:lambda:{region}:901920570463:layer:aws-otel-nodejs-{arch}-ver-1-30-2:1
 ```
 
