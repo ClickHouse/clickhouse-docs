@@ -23,6 +23,7 @@ ClickHouse is blazing fast, but understanding ClickHouse and using it effectivel
 - [About this repo](#about-this-repo)
 - [Run locally](#run-locally)
 - [Contributing](#contributing)
+- [Search](#search)
 - [Issues](#issues)
 - [License](#license)
 
@@ -199,6 +200,10 @@ Have you noticed a typo or found some wonky formatting? For small contributions 
 1. Click **Create pull request**.
 
 At this point, your pull request will be handed over to the docs team, who will review it and suggest or make changes where necessary.
+
+## Search
+
+This site uses Algolia for search functionality. The search index is automatically updated daily at 4 AM UTC and immediately when PRs with the `update search` label are merged. For details on how search indexing works, manual indexing, and troubleshooting, see the [Search README](./scripts/search/README.md).
 
 ## Issues
 
