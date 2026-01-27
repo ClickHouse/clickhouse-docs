@@ -6,6 +6,7 @@ description: 'Performance Tuning for ClickStack using Materialized Views'
 doc_type: 'guide'
 keywords: ['clickstack', 'observability', 'materialized views', 'performance', 'optimization', 'visualizations', 'aggregations']
 ---
+
 import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import materializedViewDiagram from '@site/static/images/materialized-view/materialized-view-diagram.png';
