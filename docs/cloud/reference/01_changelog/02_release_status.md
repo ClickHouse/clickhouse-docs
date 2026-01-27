@@ -51,7 +51,7 @@ For advance testing before production upgrades, use the Fast or Regular channel 
      version: '25.10',
      fast_start_date: '2025-12-11',
      fast_end_date: '2025-12-15',
-     regular_start_date: '2025-01-23',
+     regular_start_date: '2026-01-23',
      regular_end_date: 'TBD',
      slow_start_date: 'TBD',
      slow_end_date: 'TBD',
