@@ -9,7 +9,8 @@ check_aspell_dict_header() {
         return 1
     fi
 
-    local first_line=$(head -n 1 "$dict_file")
+    # Strip trailing whitespace before validating
+    local first_line=$(head -n 1 "$dict_file" | sed 's/[[:space:]]*$//')
 
     # Check if first line matches the expected format: personal_ws-1.1 LANG NUMBER
     if [[ ! "$first_line" =~ ^personal_ws-1\.1[[:space:]]+${expected_lang}[[:space:]]+[0-9]+$ ]]; then
@@ -177,8 +178,10 @@ if [[ ${1:-} == "-i" ]]; then
         echo "personal_ws-1.1 ${CHECK_LANG} $word_count" > "$temp_dict" # Add header with word count
         echo "$ignore_words" | tr ' ' '\n' >> "$temp_dict"            # Add words, one per line
 
-        # Run Aspell with the custom dictionary
+        # Run Aspell on the filtered/preprocessed file
         temp_file=$(mktemp)
+        temp_backup=$(mktemp)
+        cp "$fname" "$temp_backup"
         preprocess_file "$fname" > "$temp_file"
 
         aspell -c "$temp_file" \
@@ -191,8 +194,16 @@ if [[ ${1:-} == "-i" ]]; then
             --home-dir=${ASPELL_IGNORE_PATH} \
             --extra-dicts="$temp_dict"
 
-        # Replace the original file with the corrected content if modified
-        mv "$temp_file" "$fname"
+        # Intelligently merge corrections back using Python script
+        python3 "${ROOT_PATH}/scripts/merge_aspell_corrections.py" "$temp_backup" "$temp_file" "$fname"
+        
+        if [ $? -ne 0 ]; then
+            echo "Error: Failed to merge corrections. Restoring backup..."
+            mv "$temp_backup" "$fname"
+        fi
+        
+        # Clean up
+        rm -f "$temp_file" "$temp_backup"
 
         # Clean up the temporary dictionary file
         rm "${ROOT_PATH}/aspell.tmp.dict"

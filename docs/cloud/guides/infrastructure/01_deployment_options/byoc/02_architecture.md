@@ -20,7 +20,7 @@ import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';
 
 BYOC separates the **ClickHouse control plane**, which runs in the ClickHouse VPC, from the **data plane**, which runs entirely in your cloud account. The ClickHouse VPC hosts the ClickHouse Cloud Console, authentication and user management, APIs, billing, and infrastructure management components such as the BYOC controller, and alerting/incident tooling. These services orchestrate and monitor your deployment, but they don't store your data.
 
-In your **Customer BYOC VPC**, ClickHouse provisions a Kubernetes cluster (for example, Amazon EKS) that runs the ClickHouse data plane. As shown in the diagram, this includes the ClickHouse cluster itself, the ClickHouse operator, and supporting services such as ingress, DNS, certificate management, and state exporters and scrapers. A dedicated monitoring stack (Prometheus, Grafana, Alertmanager, and Thanos) also runs within your VPC, ensuring that metrics and alerts originate from and remain in your environment.
+In your **Customer BYOC VPC**, ClickHouse provisions a Kubernetes cluster (for example, Amazon EKS) that runs the ClickHouse data plane. As shown in the diagram, this includes the ClickHouse cluster itself, the ClickHouse operator, and supporting services such as ingress, DNS, certificate management, and state exporters and scrapers. A dedicated monitoring stack (Prometheus, Grafana, AlertManager, and Thanos) also runs within your VPC, ensuring that metrics and alerts originate from and remain in your environment.
 
 <br />
 

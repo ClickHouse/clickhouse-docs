@@ -395,7 +395,7 @@ Backfilling can be **computationally expensive**. Under normal operation, materi
 
 Backfilling compresses this work into a much shorter period, **significantly increasing CPU and memory usage per unit time.**
 
-Depending on the dataset sizeand retention window, this may require temporarily scaling the cluster, either vertically, or horizontally in ClickHouse Cloud, to complete the backfill in a reasonable timeframe.
+Depending on the dataset size and retention window, this may require temporarily scaling the cluster, either vertically, or horizontally in ClickHouse Cloud, to complete the backfill in a reasonable time frame.
 
 If additional resources aren't provisioned, backfilling can negatively impact production workloads, including query latency, and ingestion throughput. For **very large datasets or long historical ranges, backfilling may be impractical**, or infeasible altogether.
 

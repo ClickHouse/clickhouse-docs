@@ -140,7 +140,7 @@ LIMIT 10
 Peak memory usage: 1.50 GiB.
 ```
 
-### Create materialized view  {#time-series-create-materialized-view}
+### Create materialized view {#time-series-create-materialized-view}
 
 We can create the following materialized view:
 
