@@ -2910,6 +2910,12 @@ ClickHouse 使用全局线程池中的线程来处理查询。如果没有空闲
 
 后台内存工作线程是否应根据 jemalloc、cgroups 等外部来源的信息来校正内部内存跟踪器。
 
+## memory_worker_decay_adjustment_period_ms \{#memory_worker_decay_adjustment_period_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="5000" />
+
+内存压力必须持续的时间（毫秒），在超过该时间后才会对 jemalloc 的 `dirty_decay_ms` 进行动态调整。当内存使用在该时间段内持续高于清理阈值时，将禁用自动脏页衰减（`dirty_decay_ms=0`），以更积极地回收内存。当内存使用在该时间段内持续低于阈值时，将恢复默认的衰减行为。将其设置为 0 可禁用动态调整，并使用 jemalloc 的默认衰减设置。
+
 ## memory_worker_period_ms \{#memory_worker_period_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -2920,7 +2926,13 @@ ClickHouse 使用全局线程池中的线程来处理查询。如果没有空闲
 
 <SettingsInfoBlock type="Double" default_value="0.2" />
 
-相对于 ClickHouse 服务器可用内存的 jemalloc 脏页阈值比例。当脏页大小超过该比例时，后台内存工作线程会强制回收脏页。若设置为 0，则禁用强制回收。
+相对于 ClickHouse 服务器可用内存的 jemalloc 脏页阈值比例。当脏页大小超过该比例时，后台内存工作线程会强制回收脏页。若设置为 0，则禁用基于脏页比例的强制回收。
+
+## memory_worker_purge_total_memory_threshold_ratio \{#memory_worker_purge_total_memory_threshold_ratio\}
+
+<SettingsInfoBlock type="Double" default_value="0.9" />
+
+相对于 ClickHouse 服务器可用内存的 jemalloc 清理触发阈值比例。当总内存占用超过该比例时，后台内存工作线程会强制回收脏页。若设置为 0，则禁用基于总内存的强制回收。
 
 ## memory_worker_use_cgroup \{#memory_worker_use_cgroup\}
 
