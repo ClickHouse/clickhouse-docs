@@ -10,7 +10,7 @@ doc_type: 'guide'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 
-<PrivatePreviewBadge/>
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="high-availability" />
 
 Managed Postgres offers different levels of high availability to match your durability and performance requirements. You can add one or two standby replicas when provisioning your database, or adjust this configuration later from the **Settings** page as needed.
 
@@ -23,23 +23,17 @@ Managed Postgres offers different levels of high availability to match your dura
 
 With two standbys, two replica nodes are provisioned alongside your primary. Both standbys are the same size as the primary and either can take over if the primary fails.
 
-By default, this configuration uses **synchronous replication** where the primary waits for acknowledgement from at least one standby before confirming writes. This provides stronger durability guarantees than asynchronous replication. Because only one acknowledgement is required (not both), the performance impact is less severe than synchronous replication with a single standby.
-
-If you prefer higher write performance over the additional durability guarantee, you can switch to asynchronous replication.
+This configuration uses **synchronous replication** where the primary waits for acknowledgement from at least one standby before confirming writes. This provides stronger durability guarantees than asynchronous replication. Because only one acknowledgement is required (not both), the performance impact is less severe than synchronous replication with a single standby.
 
 ### 1 Standby {#one-standby}
 
-With one standby, a replica node is provisioned alongside your primary. The standby is the same size as the primary and waits ready to take over if the primary fails.
+With one standby, a replica node is provisioned alongside your primary. The standby is the same size as the primary and can take over if the primary fails.
 
-By default, data is replicated to the standby using **asynchronous replication**. This means writes commit to the primary without waiting for acknowledgement from the standby. Asynchronous replication ensures that high availability doesn't slow down your writes due to additional network latency. However, it also means the standby might not have received the most recent transactions at the moment of a primary failure.
-
-For most applications, this trade-off between performance and the small risk of losing very recent writes is worthwhile. If your application requires stronger durability guarantees, you can opt in to synchronous replication, though this will add latency to write operations.
+Data is replicated to the standby using **asynchronous replication**. This means writes commit to the primary without waiting for acknowledgement from the standby. Asynchronous replication ensures that high availability doesn't slow down your writes due to additional network latency. However, it also means the standby might not have received the most recent transactions at the moment of a primary failure. For most applications, this trade-off between performance and the small risk of losing very recent writes is worth it. If durability of writes is necessary, it is recommended to opt for 2 standbys.
 
 ### No Standby {#no-standby}
 
-With this option, only a primary node is provisioned in your selected size. No standby node is created. Your primary node is still monitored for failures, but recovery may take longer depending on the nature of the problem since there's no replica ready to take over.
-
-This configuration is best suited for development environments, testing, or non-critical workloads where some downtime is acceptable.
+With this option, only a primary node is provisioned in your selected size. No standby node is created. Your primary node is still monitored for failures, but recovery may take longer depending on the nature of the problem since there's no replica ready to take over. This configuration is best suited for development environments, testing, or non-critical workloads where some downtime is acceptable.
 
 ## Standbys vs read replicas {#standbys-vs-read-replicas}
 

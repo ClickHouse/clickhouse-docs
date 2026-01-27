@@ -1,6 +1,5 @@
 ---
-slug: /cloud/managed-postgres/overview
-sidebar_label: 'Overview'
+slug: /cloud/managed-postgres
 title: 'Managed Postgres'
 description: 'Fast, scalable, enterprise-grade Postgres backed by NVMe storage with native ClickHouse integration for real-time analytics'
 keywords: ['managed postgres', 'postgresql', 'cloud database', 'postgres service', 'nvme postgres', 'clickhouse integration']
@@ -10,9 +9,9 @@ doc_type: 'guide'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 
-<PrivatePreviewBadge/>
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="overview" />
 
-ClickHouse Managed Postgres is an enterprise-grade managed Postgres service built for performance and scale. Backed by NVMe storage that is physically colocated with compute, it delivers up to 10X faster performance for workloads that are disk-bound compared to alternatives using network-attached storage like EBS.
+ClickHouse Managed Postgres is an enterprise-grade managed Postgres service built for performance and scale. Backed by NVMe storage that is physically colocated with compute, it delivers up to 10x faster performance for workloads that are disk-bound compared to alternatives using network-attached storage like EBS.
 
 Built in partnership with [Ubicloud](https://www.ubicloud.com/), whose founding team has a track record of delivering world-class Postgres at Citus Data, Heroku, and Microsoft, Managed Postgres solves the performance challenges that fast-growing applications commonly face: slower ingestion and updates, slow vacuums, increased tail latency, and WAL spikes caused by limited disk IOPS.
 
@@ -27,7 +26,7 @@ Managed Postgres uses NVMe storage that is physically attached to the same serve
 
 - **Microsecond-level disk latency** instead of milliseconds
 - **Unlimited local IOPS** without network bottlenecks
-- **Up to 10X faster performance** for disk-bound workloads at the same cost
+- **Up to 10x faster performance** for disk-bound workloads at the same cost
 
 For Postgres workloads that are primarily throttled by disk IOPS and latency, this translates to faster ingestion, quicker vacuums, lower tail latency, and more predictable performance under load.
 

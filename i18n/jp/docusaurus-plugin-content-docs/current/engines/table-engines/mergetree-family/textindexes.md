@@ -48,6 +48,7 @@ CREATE TABLE tab
                                 [, dictionary_block_size = D]
                                 [, dictionary_block_frontcoding_compression = B]
                                 [, posting_list_block_size = C]
+                                [, posting_list_codec = 'none' | 'bitpacking' ]
                             )
 )
 ENGINE = MergeTree
@@ -80,12 +81,12 @@ ORDER BY key
 区切り文字列が [prefix code](https://en.wikipedia.org/wiki/Prefix_code) を形成している場合には、任意の順序で渡しても問題ありません。
 :::
 
-:::warning
-現在のところ、中国語のような非西洋言語のテキストに対してテキストインデックスを構築することは推奨されません。
-現時点でサポートされているトークナイザーでは、索引サイズやクエリ時間が非常に大きくなる可能性があります。
-これらのケースをより適切に扱うため、将来的には言語別に特化したトークナイザーを追加する予定です。
-:::
 
+:::warning
+現時点では、中国語などの非西洋言語のテキストに対してテキスト索引を作成することは推奨されません。
+現在サポートされているトークナイザでは、索引サイズが非常に大きくなり、クエリの実行時間が長くなる可能性があります。
+今後、これらのケースをより適切に処理できる、言語ごとに特化したトークナイザを追加する予定です。
+:::
 
 トークナイザが入力文字列をどのように分割するかをテストするには、ClickHouse の [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) 関数を使用できます。
 
@@ -120,6 +121,24 @@ SELECT tokens('abc def', 'ngrams', 3);
 また、`preprocessor` 式は、そのテキストインデックスが定義されているカラムのみを参照しなければなりません。
 非決定的な関数を使用することはできません。
 
+`preprocessor` は [Array(String)](/sql-reference/data-types/array.md) および [Array(FixedString)](/sql-reference/data-types/array.md) カラムでも使用できます。
+この場合、`preprocessor` 式は配列要素を個別に変換します。
+
+例:
+
+```sql
+CREATE TABLE tab
+(
+    col Array(String),
+    INDEX idx col TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))
+
+    -- This is not legal:
+    INDEX idx_illegal col TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = arraySort(col))
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+```
+
 [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken)、[hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)、[hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) 関数は、検索語をトークン化する前に `preprocessor` を使って検索語を変換します。
 
 例:
@@ -137,7 +156,7 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasToken(str, 'Foo');
 ```
 
-と同等になります:
+と同等です:
 
 ```sql
 CREATE TABLE tab
@@ -157,6 +176,7 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
 この既定値は経験的に選択されたもので、ほとんどのユースケースで速度と索引サイズの間の良好なトレードオフを提供します。
 上級ユーザーは別の索引粒度を指定できますが、推奨はしません。
 
+
 <details markdown="1">
   <summary>オプションの高度なパラメータ</summary>
 
@@ -168,6 +188,11 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
   オプションのパラメータ `dictionary_block_frontcoding_compression` (デフォルト: 1) は、Dictionary ブロックで圧縮方式として front coding を使用するかどうかを指定します。
 
   オプションのパラメータ `posting_list_block_size` (デフォルト: 1048576) は、posting list ブロックのサイズを行数で指定します。
+
+  オプションのパラメータ `posting_list_codec` (デフォルト: `none`) は、posting list のコーデックを指定します:
+
+  * `none` - posting list を追加の圧縮なしで保存します。
+  * `bitpacking` - [差分 (デルタ) 符号化](https://en.wikipedia.org/wiki/Delta_encoding) を適用し、その後に [bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70) を適用します (いずれも固定サイズのブロックごと)。
 </details>
 
 テキスト索引は、テーブル作成後にカラムへ追加したり、カラムから削除したりできます。
@@ -322,7 +347,7 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 
 #### `mapContains` \{#functions-example-mapcontains\}
 
-[mapContains](/sql-reference/functions/tuple-map-functions#mapContains) 関数（`mapContainsKey` のエイリアス）は、検索対象の文字列から抽出されたトークンを map のキーと照合します。
+[mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey) 関数（`mapContainsKey` のエイリアス）は、検索対象の文字列から抽出されたトークンを map のキーと照合します。
 動作は、`String` カラムに対する `equals` 関数と同様です。
 テキストインデックスが使用されるのは、`mapKeys(map)` 式に対して作成されている場合のみです。
 
@@ -604,7 +629,7 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 ```
 
 2つ目の EXPLAIN PLAN の出力では、フィルター条件に追加の連言条件（`__text_index_...`）が加えられていることが分かります。
-[PREWHERE](docs/sql-reference/statements/select/prewhere) 最適化により、フィルター条件は3つの個別の連言条件に分解され、計算コストが低いものから順に適用されます。
+[PREWHERE](/sql-reference/statements/select/prewhere) 最適化により、フィルター条件は3つの個別の連言条件に分解され、計算コストが低いものから順に適用されます。
 このクエリでは、適用順序は `__text_index_...`、次に `greaterOrEquals(...)`、最後に `like(...)` となります。
 この順序付けにより、テキスト索引と元のフィルター条件でスキップされるグラニュールに加えて、クエリの `WHERE` 句以降で使用される重いカラムを読み込む前に、さらに多くのデータグラニュールをスキップできるため、読み取るデータ量を一層削減できます。
 

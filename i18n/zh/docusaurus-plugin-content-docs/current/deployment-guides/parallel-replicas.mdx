@@ -7,7 +7,6 @@ doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';
-import BetaBadge from '@theme/badges/BetaBadge';
 import image_1 from '@site/static/images/deployment-guides/parallel-replicas-1.png'
 import image_2 from '@site/static/images/deployment-guides/parallel-replicas-2.png'
 import image_3 from '@site/static/images/deployment-guides/parallel-replicas-3.png'
@@ -17,8 +16,6 @@ import image_6 from '@site/static/images/deployment-guides/parallel-replicas-6.p
 import image_7 from '@site/static/images/deployment-guides/parallel-replicas-7.png'
 import image_8 from '@site/static/images/deployment-guides/parallel-replicas-8.png'
 import image_9 from '@site/static/images/deployment-guides/parallel-replicas-9.png'
-
-<BetaBadge />
 
 ## 简介 \{#introduction\}
 
@@ -276,7 +273,7 @@ Keeper 集群确保我们拥有元数据的唯一可信来源。各个副本可�
 | `cluster_for_parallel_replicas`                    | 用于并行副本的集群名称；如果你使用的是 ClickHouse Cloud，请使用 `default`。                                                                                                                                                                 |
 | `max_parallel_replicas`                            | 在多个副本上执行查询时可使用的最大副本数；如果指定的值小于集群中的副本数，则会随机选择节点。此值也可以设置得高于实际副本数，以预留水平扩展空间。 |
 | `parallel_replicas_min_number_of_rows_per_replica` | 用于根据需要处理的行数来限制所使用的副本数量，实际使用的副本数定义为：<br /> `estimated rows to read` / `min_number_of_rows_per_replica`。                                                               |
-| `allow_experimental_analyzer`                      | `0`: 使用旧分析器<br /> `1`: 使用新分析器。 <br /><br />并行副本的行为可能会因所使用的分析器不同而发生变化。                                                                                                                                    |
+| `enable_analyzer`                                  | 仅在启用分析器的情况下，才支持使用并行副本执行查询。                                                                                                                                                                                      |
 
 ## 排查并行副本相关问题 \{#investigating-issues-with-parallel-replicas\}
 

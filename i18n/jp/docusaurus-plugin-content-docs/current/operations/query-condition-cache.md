@@ -55,11 +55,12 @@ SETTINGS use_query_condition_cache = true;
 クエリ条件キャッシュは、述語を満たさないテーブルの範囲を保存します。
 以降に同じクエリを、パラメータ `use_query_condition_cache = true` を指定して実行した場合、クエリ条件キャッシュを利用してスキャン対象のデータ量を減らします。
 
+
 ## 管理 \{#administration\}
 
 クエリ条件キャッシュは、ClickHouse を再起動しても保持されません。
 
-クエリ条件キャッシュをクリアするには、[`SYSTEM DROP QUERY CONDITION CACHE`](../sql-reference/statements/system.md#drop-query-condition-cache) を実行します。
+クエリ条件キャッシュをクリアするには、[`SYSTEM CLEAR QUERY CONDITION CACHE`](../sql-reference/statements/system.md#drop-query-condition-cache) を実行します。
 
 キャッシュの内容は、システムテーブル [system.query_condition_cache](system-tables/query_condition_cache.md) に表示されます。
 現在のクエリ条件キャッシュのサイズを MB 単位で取得するには、`SELECT formatReadableSize(sum(entry_size)) FROM system.query_condition_cache` を実行します。

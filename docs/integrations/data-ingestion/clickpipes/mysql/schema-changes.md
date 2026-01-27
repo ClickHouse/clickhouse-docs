@@ -18,3 +18,5 @@ ClickPipes for MySQL can detect schema changes in the source tables and, in some
 | Adding a new column (`ALTER TABLE ADD COLUMN ...`)                                  | Propagated automatically. The new column(s) will be populated for all rows replicated after the schema change                                                                         |
 | Adding a new column with a default value (`ALTER TABLE ADD COLUMN ... DEFAULT ...`) | Propagated automatically. The new column(s) will be populated for all rows replicated after the schema change, but existing rows will not show the default value without a full table refresh |
 | Dropping an existing column (`ALTER TABLE DROP COLUMN ...`)                         | Detected, but **not** propagated. The dropped column(s) will be populated with `NULL` for all rows replicated after the schema change                                                                |
+
+**Schema changes are not supported for MySQL 5.7 and older versions**. Reliably tracking columns depends on on table metadata not available in the binlog prior to [MySQL 8.0.1](https://dev.mysql.com/blog-archive/more-metadata-is-written-into-binary-log/).

@@ -37,11 +37,25 @@ TSV/CSV/Vertical/Pretty フォーマットで、真のブール値を表す文�
 
 ## check_conversion_from_numbers_to_enum \{#check_conversion_from_numbers_to_enum\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
 Numbers から Enum への変換時に、その値が Enum に存在しない場合は例外を送出します。
 
-デフォルトでは無効です。
+取り得る値:
+
+* 0 — 無効。
+* 1 — 有効。
+
+**例**
+
+```text
+CREATE TABLE tab (
+  val Enum('first' = 1, 'second' = 2, 'third' = 3)
+) ENGINE = Memory;
+
+INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -- returns an error
+```
+
 
 ## column_names_for_schema_inference \{#column_names_for_schema_inference\}
 
@@ -1362,6 +1376,13 @@ INTO OUTFILE を使用する際に、存在しない親ディレクトリを自�
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 有効にすると、JSON キー内に含まれるドットは、解析時にエスケープされます。
+
+## max_dynamic_subcolumns_in_json_type_parsing \{#max_dynamic_subcolumns_in_json_type_parsing\}
+
+<SettingsInfoBlock type="UInt64Auto" default_value="auto" />
+
+JSON カラムのパース時に、各カラムで作成できる動的サブカラムの最大数です。
+データ型で指定された動的パラメータに依存せず、パース時に作成される動的サブカラムの数を制御できます。
 
 ## output_format_arrow_compression_method \{#output_format_arrow_compression_method\}
 

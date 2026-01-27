@@ -495,6 +495,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включает экспериментальные функции обработки естественного языка.
 
+## allow_experimental_nullable_tuple_type \{#allow_experimental_nullable_tuple_type\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "Новый экспериментальный параметр"}]}]}/>
+
+Разрешает создавать в таблицах столбцы типа [Nullable](../../sql-reference/data-types/nullable) [Tuple](../../sql-reference/data-types/tuple.md).
+
 ## allow_experimental_object_storage_queue_hive_partitioning \{#allow_experimental_object_storage_queue_hive_partitioning\}
 
 <ExperimentalBadge/>
@@ -1234,9 +1244,9 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 <ExperimentalBadge/>
 
-<SettingsInfoBlock type="UInt64" default_value="0" />
+<SettingsInfoBlock type="UInt64" default_value="1048576" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1048576"},{"label": "Улучшенное значение по умолчанию, полученное на основе результатов тестирования"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 Порог количества байт для чтения на реплику, при котором автоматически включаются параллельные реплики (применяется только, когда `automatic_parallel_replicas_mode`=1). Значение 0 означает отсутствие порога.
 
@@ -2160,6 +2170,14 @@ SETTINGS convert_query_to_cnf = true;
 
 - 0 — запросы выполняются с задержкой.
 - 1 — запросы выполняются без задержки.
+
+## database_datalake_require_metadata_access \{#database_datalake_require_metadata_access\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "New setting."}]}]}/>
+
+Определяет, следует ли выдавать ошибку, если нет прав на получение метаданных таблицы в движке базы данных DataLakeCatalog.
 
 ## database_replicated_allow_explicit_uuid \{#database_replicated_allow_explicit_uuid\}
 
@@ -8380,12 +8398,6 @@ SELECT * FROM test2;
 
 - [Оператор ORDER BY](/sql-reference/statements/select/order-by#optimization-of-data-reading)
 
-## optimize_read_in_window_order \{#optimize_read_in_window_order\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-Включает оптимизацию ORDER BY в оконной части запроса для чтения данных в соответствующем порядке в таблицах MergeTree.
-
 ## optimize_redundant_functions_in_order_by \{#optimize_redundant_functions_in_order_by\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9748,7 +9760,11 @@ a   Tuple(
 
 ## query_plan_reuse_storage_ordering_for_window_functions \{#query_plan_reuse_storage_ordering_for_window_functions\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+**Псевдонимы**: `optimize_read_in_window_order`
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "Отключить эту логику по умолчанию."}]}]}/>
 
 Включает или отключает оптимизацию на уровне плана запроса, которая использует сортировку данных в хранилище при сортировке для оконных функций.
 Влияет на поведение только в том случае, если настройка [`query_plan_enable_optimizations`](#query_plan_enable_optimizations) установлена в 1.
@@ -11666,9 +11682,9 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 ## use_variant_as_common_type \{#use_variant_as_common_type\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "Разрешить использование Variant в if/multiIf при отсутствии общего типа"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Улучшает удобство использования."}]}, {"id": "row-2","items": [{"label": "24.1"},{"label": "0"},{"label": "Разрешить использование Variant в if/multiIf при отсутствии общего типа"}]}]} />
 
 Позволяет использовать тип `Variant` в качестве результирующего типа для функций [if](../../sql-reference/functions/conditional-functions.md/#if)/[multiIf](../../sql-reference/functions/conditional-functions.md/#multiIf)/[array](../../sql-reference/functions/array-functions.md)/[map](../../sql-reference/functions/tuple-map-functions.md), если для аргументов не существует общего типа.
 

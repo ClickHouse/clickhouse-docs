@@ -49,7 +49,7 @@ SELECT tuple('a') AS x;
 └───────┘
 ```
 
-構文 `(tuple_element1, tuple_element2)` を使うと、`tuple()` 関数を呼び出さずに複数の要素から成るタプルを作成できます。
+構文 `(tuple_element1, tuple_element2)` を使うと、`tuple()` 関数を呼び出さずに複数の要素からなるタプルを作成できます。
 
 例:
 
@@ -62,6 +62,7 @@ SELECT (1, 'a') AS x, (today(), rand(), 'someString') AS y, ('a') AS not_a_tuple
 │ (1,'a') │ ('2022-09-21',2006973416,'someString') │ a           │
 └─────────┴────────────────────────────────────────┴─────────────┘
 ```
+
 
 ## データ型の自動判定 \{#data-type-detection\}
 
@@ -78,6 +79,7 @@ SELECT tuple(1, NULL) AS x, toTypeName(x)
 │ (1, NULL) │ Tuple(UInt8, Nullable(Nothing)) │
 └───────────┴─────────────────────────────────┘
 ```
+
 
 ## タプル要素の参照 \{#referring-to-tuple-elements\}
 
@@ -104,6 +106,7 @@ SELECT a.2 FROM named_tuples; -- by index
 │                -10 │
 └────────────────────┘
 ```
+
 
 ## Tuple による比較演算 \{#comparison-operations-with-tuple\}
 
@@ -167,7 +170,7 @@ SELECT * FROM test;
 │   2 │        2 │     0 │
 └─────┴──────────┴───────┘
 
--- 各キーについて最大のdurationを持つvalueを検索します。durationが同じ場合は最大のvalueを選択します
+-- Let's find a value for each key with the biggest duration, if durations are equal, select the biggest value
 
 SELECT
     key,
@@ -181,4 +184,40 @@ ORDER BY key ASC;
 │   1 │            42 │                                    70 │
 │   2 │             2 │                                     0 │
 └─────┴───────────────┴───────────────────────────────────────┘
+```
+
+
+## Nullable(Tuple(T1, T2, ...)) \{#nullable-tuple\}
+
+:::warning 実験的機能
+`SET allow_experimental_nullable_tuple_type = 1` が必要です。
+これは将来のバージョンで変更される可能性がある実験的機能です。
+:::
+
+`Tuple(Nullable(T1), Nullable(T2), ...)` のように個々の要素のみが `NULL` になり得る場合とは異なり、タプル全体を `NULL` にできます。
+
+| 型                                          | タプルが NULL になり得るか | 要素が NULL になり得るか |
+| ------------------------------------------ | ---------------- | --------------- |
+| `Nullable(Tuple(String, Int64))`           | ✅                | ❌               |
+| `Tuple(Nullable(String), Nullable(Int64))` | ❌                | ✅               |
+
+例:
+
+```sql
+SET allow_experimental_nullable_tuple_type = 1;
+
+CREATE TABLE test (
+    id UInt32,
+    data Nullable(Tuple(String, Int64))
+) ENGINE = Memory;
+
+INSERT INTO test VALUES (1, ('hello', 42)), (2, NULL);
+
+SELECT * FROM test WHERE data IS NULL;
+```
+
+```txt
+ ┌─id─┬─data─┐
+ │  2 │ ᴺᵁᴸᴸ │
+ └────┴──────┘
 ```

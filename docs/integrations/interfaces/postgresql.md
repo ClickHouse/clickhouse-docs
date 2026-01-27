@@ -13,6 +13,10 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge/>
 
+:::tip
+Check out our [Managed Postgres](/docs/cloud/managed-postgres) service. Backed by NVMe storage that is physically colocated with compute, it delivers up to 10x faster performance for workloads that are disk-bound compared to alternatives using network-attached storage like EBS and allows you to replicate your Postgres data to ClickHouse using the Postgres CDC connector in ClickPipes.
+:::
+
 ClickHouse supports the PostgreSQL wire protocol, which allows you to use Postgres clients to connect to ClickHouse. In a sense, ClickHouse can pretend to be a PostgreSQL instance - allowing you to connect a PostgreSQL client application to ClickHouse that is not already directly supported by ClickHouse (for example, Amazon Redshift).
 
 To enable the PostgreSQL wire protocol, add the [postgresql_port](/operations/server-configuration-parameters/settings#postgresql_port) setting to your server's configuration file. For example, you could define the port in a new XML file in your `config.d` folder:

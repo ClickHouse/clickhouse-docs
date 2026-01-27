@@ -589,6 +589,10 @@ MergeTree ファミリーに属するすべてのテーブルに格納されて�
 
 現在の ZooKeeper クライアントセッションで最後に確認された ZXID。クライアントが ZooKeeper からトランザクションを受信するたびに、この値は単調に増加します。
 
+### LongestRunningMerge \{#longestrunningmerge\}
+
+現在実行中のバックグラウンドマージのうち、最も長く実行されているものの経過時間（秒単位）。
+
 ### jemalloc.active \{#jemallocactive\}
 
 低レベルメモリアロケータ（jemalloc）の内部メトリクスです。詳細は https://jemalloc.net/jemalloc.3.html を参照してください。

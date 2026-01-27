@@ -42,6 +42,10 @@ import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.pn
 :::
 
 
+## 2026 年 1 月 23 日 \{#january-23-2026\}
+
+- ClickPipes 现已在 AWS `eu-west-1` 区域提供。对于从 1 月 20 日起在该区域创建的新 ClickHouse Cloud 服务，ClickPipes 将使用相同区域。对于更早创建的服务，ClickPipes 将默认使用 `eu-central-1`。更多详情请参阅[文档](/integrations/clickpipes#list-of-static-ips)。
+
 ## 2026 年 1 月 16 日 \{#january-16-2026\}
 
 - **通过 API 按服务级别过滤用量成本：** 我们的 API 现在支持按特定服务标签过滤组织的用量成本，从而更轻松地在更细粒度层面分析支出。
