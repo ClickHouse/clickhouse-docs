@@ -23,6 +23,10 @@ def has_image_tag(line):
     """Check if line contains an Image component."""
     return bool(re.search(r'<Image[^>]*\/?>', line))
 
+def has_svg_tag(line):
+    """Check if line contains an SVG component."""
+    return bool(re.search(r'<[A-Za-z0-9_]+svg[^>]*\/?>', line, re.IGNORECASE))
+
 def merge_corrections(original_file, corrected_file, output_file):
     """Merge corrections while preserving imports, Image tags, anchors, etc."""
     
@@ -65,8 +69,8 @@ def merge_corrections(original_file, corrected_file, output_file):
             if corr_idx < len(corrected_lines):
                 corr_line = corrected_lines[corr_idx]
                 
-                # If original has Image tag, always keep original
-                if has_image_tag(orig_line):
+                # If original has Image or SVG tag, always keep original
+                if has_image_tag(orig_line) or has_svg_tag(orig_line):
                     result.append(orig_line)
                 # Don't add blank corrected lines that came from stripping content
                 # unless the original was also blank
