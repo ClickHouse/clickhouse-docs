@@ -23,7 +23,7 @@ import accelerated_visual from '@site/static/images/clickstack/materialized_view
 
 ## Introduction {#introduction}
 
-ClickStack can exploit [Incremental Materialized Views (IMT)](/materialized-view/incremental-materialized-view) to accelerate visualizations that rely on aggregation-heavy queries, such as computing average request duration per minute over time. This feature can dramatically improve query performance and is typically most beneficial for larger deployments, around 10 TB per day and above, while enabling scaling into the petabytes-per-day range. Incremental materialized views are in Beta and should be used with care.
+ClickStack can exploit [Incremental Materialized Views (IMV)](/materialized-view/incremental-materialized-view) to accelerate visualizations that rely on aggregation-heavy queries, such as computing average request duration per minute over time. This feature can dramatically improve query performance and is typically most beneficial for larger deployments, around 10 TB per day and above, while enabling scaling into the petabytes-per-day range. Incremental materialized views are in Beta and should be used with care.
 
 :::note
 Alerts can also benefit from materialized views, and will exploit them automatically.
