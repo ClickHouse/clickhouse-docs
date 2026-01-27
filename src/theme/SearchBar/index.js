@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
-import { DocSearchButton, useDocSearchKeyboardEvents } from '@docsearch/react';
+import { useDocSearchKeyboardEvents } from '@docsearch/react';
 import Head from '@docusaurus/Head';
 import { useHistory } from '@docusaurus/router';
 import {
@@ -21,6 +21,71 @@ import {
 import { SearchHit } from './searchHit';
 import { SearchResultsFooter } from './searchResultsFooter';
 import { DocTypeSelector } from './docTypeSelector';
+
+/**
+ * Progressive enhancement search button.
+ * Before React hydrates: clicking navigates to the search page (works without JS).
+ * After React hydrates: clicking opens the DocSearch modal.
+ */
+function ProgressiveSearchButton({ onClick, onMouseOver, onFocus, onTouchStart, searchPagePath, buttonRef }) {
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
+  const handleClick = useCallback((e) => {
+    // After hydration, prevent navigation and use the modal instead
+    if (isHydrated) {
+      e.preventDefault();
+      onClick?.();
+    }
+    // Before hydration, the link naturally navigates to the search page
+  }, [isHydrated, onClick]);
+
+  // Detect OS for keyboard shortcut display
+  const isMac = typeof navigator !== 'undefined' && /Mac|iPod|iPhone|iPad/.test(navigator.platform);
+  const shortcutKey = isMac ? '⌘' : 'Ctrl';
+
+  return (
+    <a
+      href={searchPagePath}
+      ref={buttonRef}
+      className="DocSearch DocSearch-Button"
+      aria-label={translations.button?.buttonAriaLabel || 'Search'}
+      onClick={handleClick}
+      onMouseOver={onMouseOver}
+      onFocus={onFocus}
+      onTouchStart={onTouchStart}
+    >
+      <span className="DocSearch-Button-Container">
+        <svg
+          width="20"
+          height="20"
+          className="DocSearch-Search-Icon"
+          viewBox="0 0 20 20"
+          aria-hidden="true"
+        >
+          <path
+            d="M14.386 14.386l4.0877 4.0877-4.0877-4.0877c-2.9418 2.9419-7.7115 2.9419-10.6533 0-2.9419-2.9418-2.9419-7.7115 0-10.6533 2.9418-2.9419 7.7115-2.9419 10.6533 0 2.9419 2.9418 2.9419 7.7115 0 10.6533z"
+            stroke="currentColor"
+            fill="none"
+            fillRule="evenodd"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        <span className="DocSearch-Button-Placeholder">
+          {translations.button?.buttonText || 'Search'}
+        </span>
+      </span>
+      <span className="DocSearch-Button-Keys">
+        <kbd className="DocSearch-Button-Key">{shortcutKey}</kbd>
+        <kbd className="DocSearch-Button-Key">K</kbd>
+      </span>
+    </a>
+  );
+}
 
 function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   const queryIDRef = useRef(null);
@@ -201,13 +266,13 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
         />
       </Head>
 
-      <DocSearchButton
+      <ProgressiveSearchButton
         onTouchStart={importDocSearchModalIfNeeded}
         onFocus={importDocSearchModalIfNeeded}
         onMouseOver={importDocSearchModalIfNeeded}
-        onClick={onOpen}
-        ref={searchButtonRef}
-        translations={translations.button}
+        onClick={handleOnOpen}
+        buttonRef={searchButtonRef}
+        searchPagePath={props.searchPagePath || 'search'}
       />
 
       {isOpen &&
@@ -232,20 +297,6 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
               placeholder={translations.placeholder}
               translations={translations.modal}
             />
-
-            <div style={{
-              position: 'fixed',
-              top: window.innerWidth < 768 ? '55px' : '120px',
-              right: window.innerWidth < 768 ? 'calc(50% - 185px)' : 'calc(50% - 255px)',
-              zIndex: 10000,
-              backgroundColor: 'var(--docsearch-modal-background)',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-            }}>
-              <DocTypeSelector
-                selectedDocTypes={selectedDocTypes}
-                onSelectionChange={handleDocTypeChange}
-              />
-            </div>
           </>,
           searchContainer
         )}

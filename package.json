@@ -35,6 +35,7 @@
     "@algolia/client-search": "^5.35.0",
     "@clickhouse/click-ui": "^0.0.235",
     "@clickhouse/client-web": "^1.11.1",
+    "@docsearch/react": "^4.5.3",
     "@docusaurus/core": "3.7.0",
     "@docusaurus/faster": "^3.7.0",
     "@docusaurus/plugin-client-redirects": "^3.7.0",
