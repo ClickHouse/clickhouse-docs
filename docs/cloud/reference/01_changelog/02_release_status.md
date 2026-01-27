@@ -42,7 +42,7 @@ The release dates given below are an estimate and may be subject to change.
      changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
      version: '25.10',
      fast_date: 'Completed (2025-12-15)',
-     regular_date: 'In Progress (Started 2025-01-21)',
+     regular_date: 'In Progress (Started 2025-01-23)',
      slow_date: 'TBD',
      fast_progress: 'green',
      regular_progress: 'green',
