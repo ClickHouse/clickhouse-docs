@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 :::
 
 
-## trips テーブルを作成する {#create-the-table-trips}
+## trips テーブルを作成する \{#create-the-table-trips\}
 
 まずはタクシー乗車データ用のテーブルを作成します。
 
@@ -55,7 +55,7 @@ ENGINE = MergeTree
 PRIMARY KEY (pickup_datetime, dropoff_datetime);
 ```
 
-## オブジェクトストレージからデータを直接ロードする {#load-the-data-directly-from-object-storage}
+## オブジェクトストレージからデータを直接ロードする \{#load-the-data-directly-from-object-storage\}
 
 ユーザーは、データの一部（300 万行）を取得して内容に慣れることができます。データはオブジェクトストレージ上の TSV 形式のファイルとして格納されており、`s3` テーブル関数を使用することで ClickHouse Cloud に容易にストリーミングできます。
 
@@ -124,7 +124,7 @@ FROM gcs(
 </TabItem>
 </Tabs>
 
-## サンプルクエリ {#sample-queries}
+## サンプルクエリ \{#sample-queries\}
 
 以下のクエリは、前述のサンプルに対して実行されます。以下のクエリを修正してテーブル `nyc_taxi.trips` を使用することで、完全なデータセットに対してサンプルクエリを [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19) 上で実行できます。
 
@@ -181,7 +181,7 @@ ORDER BY passenger_count ASC
 ```
 
 
-## 準備済みパーティションのダウンロード {#download-of-prepared-partitions}
+## 準備済みパーティションのダウンロード \{#download-of-prepared-partitions\}
 
 :::note
 以下の手順では、元のデータセットに関する情報と、準備済みパーティションをセルフマネージドな ClickHouse サーバー環境にロードする方法を説明します。
@@ -207,7 +207,7 @@ $ clickhouse-client --query "select count(*) from datasets.trips_mergetree"
 以下のクエリを実行する場合は、完全修飾テーブル名 `datasets.trips_mergetree` を使用してください。
 :::
 
-## 単一サーバー環境での結果 {#results-on-single-server}
+## 単一サーバー環境での結果 \{#results-on-single-server\}
 
 Q1:
 
@@ -291,7 +291,7 @@ Q4: 0.072 秒。
 この場合、クエリ処理時間は主にネットワーク遅延によって決まります。
 クラスターとは別のデータセンターにあるクライアントからクエリを実行したため、約 20 ms のレイテンシが余分に発生しました。
 
-## 概要 {#summary}
+## 概要 \{#summary\}
 
 | サーバー構成 | Q1    | Q2    | Q3    | Q4    |
 |-------------|-------|-------|-------|-------|

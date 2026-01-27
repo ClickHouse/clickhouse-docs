@@ -7,7 +7,7 @@ title: '约束操作'
 doc_type: 'reference'
 ---
 
-# 操作约束条件 {#manipulating-constraints}
+# 操作约束条件 \{#manipulating-constraints\}
 
 可以使用以下语法添加或删除约束条件：
 

@@ -7,12 +7,12 @@ title: '窗口函数'
 doc_type: 'reference'
 ---
 
-# 窗口函数  {#window-functions}
+# 窗口函数  \{#window-functions\}
 
 窗口函数可以在与当前行相关的一组行上执行计算。
 其中有些计算类似于使用聚合函数所能完成的计算，但窗口函数不会将多行合并为单个结果——每一行仍然会单独返回。
 
-## 标准窗口函数 {#standard-window-functions}
+## 标准窗口函数 \{#standard-window-functions\}
 
 ClickHouse 支持用于定义窗口和窗口函数的标准语法。下表说明各功能当前是否受支持。
 
@@ -32,11 +32,11 @@ ClickHouse 支持用于定义窗口和窗口函数的标准语法。下表说明
 | `lag/lead(value, offset)`                                                          | ✅ <br/> 你还可以使用以下任一变通方式：<br/> 1) `any(value) over (.... rows between &lt;offset&gt; preceding and &lt;offset&gt; preceding)`，对于 `lead` 使用 `following` <br/> 2) 使用 `lagInFrame/leadInFrame`，其行为类似，但会遵循窗口帧定义。若要获得与 `lag/lead` 完全相同的行为，请使用 `rows between unbounded preceding and unbounded following`                                                                 |
 | `ntile(buckets)` | ✅ <br/> 以如下方式指定窗口：`partition by x order by y rows between unbounded preceding and unbounded following`。 |
 
-## ClickHouse 特定窗口函数 {#clickhouse-specific-window-functions}
+## ClickHouse 特定窗口函数 \{#clickhouse-specific-window-functions\}
 
 ClickHouse 还提供以下特定窗口函数:
 
-### nonNegativeDerivative(metric_column, timestamp_column[, INTERVAL X UNITS]) {#nonnegativederivativemetric_column-timestamp_column-interval-x-units}
+### nonNegativeDerivative(metric_column, timestamp_column[, INTERVAL X UNITS]) \{#nonnegativederivativemetric_column-timestamp_column-interval-x-units\}
 
 根据 `timestamp_column` 计算给定 `metric_column` 的非负导数。
 `INTERVAL` 可省略,默认为 `INTERVAL 1 SECOND`。
@@ -45,7 +45,7 @@ ClickHouse 还提供以下特定窗口函数:
 - 第 1 行为 `0`,
 - 第 $i$ 行为 ${\text{metric}_i - \text{metric}_{i-1} \over \text{timestamp}_i - \text{timestamp}_{i-1}}  * \text{interval}$。
 
-## 语法 {#syntax}
+## 语法 \{#syntax\}
 
 ```text
 aggregate_function (column_name)
@@ -77,7 +77,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 └─────────────────┘  <--- UNBOUNDED FOLLOWING (END of the PARTITION)
 ```
 
-### 函数 {#functions}
+### 函数 \{#functions\}
 
 这些函数只能用作窗口函数。
 
@@ -90,11 +90,11 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 * [`lagInFrame(x)`](./lagInFrame.md) - 返回在其有序窗口中，相对于当前行之前指定物理偏移量那一行计算得到的值。
 * [`leadInFrame(x)`](./leadInFrame.md) - 返回在其有序窗口中，相对于当前行之后指定偏移量那一行计算得到的值。
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
 我们来看一些使用窗口函数的示例。
 
-### 为行编号 {#numbering-rows}
+### 为行编号 \{#numbering-rows\}
 
 ```sql
 CREATE TABLE salaries
@@ -152,7 +152,7 @@ FROM salaries;
 └─────────────────┴────────┴─────┴──────┴───────────┘
 ```
 
-### 聚合函数 {#aggregation-functions}
+### 聚合函数 \{#aggregation-functions\}
 
 将每位球员的薪水与其所在球队的平均薪水进行比较。
 
@@ -198,7 +198,7 @@ FROM salaries;
 └─────────────────┴────────┴───────────────────────────┴─────────┴────────┘
 ```
 
-### 基于列的分区 {#partitioning-by-column}
+### 基于列的分区 \{#partitioning-by-column\}
 
 ```sql
 CREATE TABLE wf_partition
@@ -231,7 +231,7 @@ ORDER BY
 └──────────┴───────┴───────┴──────────────┘
 ```
 
-### 帧边界 {#frame-bounding}
+### 帧边界 \{#frame-bounding\}
 
 ```sql
 CREATE TABLE wf_frame
@@ -867,7 +867,7 @@ ORDER BY
 └──────────────┴─────────────────────┴───────┴─────────────────────────┘
 ```
 
-### 移动 / 滑动平均值（每 10 天） {#moving--sliding-average-per-10-days}
+### 移动 / 滑动平均值（每 10 天） \{#moving--sliding-average-per-10-days\}
 
 温度以秒级精度存储，但通过使用 `Range` 和 `ORDER BY toDate(ts)`，我们构建了一个大小为 10 的窗口帧，并且由于使用了 `toDate(ts)`，该单位为天。
 

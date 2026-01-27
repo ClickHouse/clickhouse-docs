@@ -17,7 +17,7 @@ keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'ClickStack Deno integra
 В настоящее время поддерживается только логирование OpenTelemetry. О поддержке трассировки [см. следующее руководство](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example).
 :::
 
-## Логирование {#logging}
+## Логирование \{#logging\}
 
 Логирование осуществляется посредством экспорта пользовательского логгера для модуля `std/log`.
 
@@ -43,7 +43,7 @@ log.setup({
 log.getLogger('my-otel-logger').info('Hello from Deno!');
 ```
 
-### Запуск приложения {#run-the-application}
+### Запуск приложения \{#run-the-application\}
 
 ```shell
 OTEL_EXPORTER_OTLP_HEADERS="authorization=<YOUR_INGESTION_API_KEY>" \

@@ -6,7 +6,7 @@ title: 'Оператор GROUP BY'
 doc_type: 'reference'
 ---
 
-# Оператор GROUP BY {#group-by-clause}
+# Оператор GROUP BY \{#group-by-clause\}
 
 Оператор `GROUP BY` переводит запрос `SELECT` в режим агрегации, который работает следующим образом:
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 Существует дополнительный способ выполнения агрегации над таблицей. Если в запросе столбцы таблицы встречаются только внутри агрегатных функций, оператор `GROUP BY` можно опустить, и будет подразумеваться агрегация по пустому набору ключей. Такие запросы всегда возвращают ровно одну строку.
 :::
 
-## Обработка NULL {#null-processing}
+## Обработка NULL \{#null-processing\}
 
 При группировке ClickHouse интерпретирует [NULL](/sql-reference/syntax#null) как значение, и `NULL == NULL`. Это отличается от обработки `NULL` в большинстве других контекстов.
 
@@ -52,7 +52,7 @@ doc_type: 'reference'
 
 Если указать в `GROUP BY` несколько ключей, в результате вы получите все комбинации выборки, как если бы `NULL` рассматривался как конкретное значение.
 
-## Модификатор ROLLUP {#rollup-modifier}
+## Модификатор ROLLUP \{#rollup-modifier\}
 
 Модификатор `ROLLUP` используется для вычисления промежуточных итогов для ключевых выражений в соответствии с их порядком в списке `GROUP BY`. Строки с промежуточными итогами добавляются после результирующей таблицы.
 
@@ -125,7 +125,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 
 * Параметр [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) для обеспечения совместимости со стандартом SQL.
 
-## Модификатор CUBE {#cube-modifier}
+## Модификатор CUBE \{#cube-modifier\}
 
 Модификатор `CUBE` используется для вычисления промежуточных итогов для каждой комбинации ключевых выражений в списке `GROUP BY`. Строки с промежуточными итогами добавляются после результирующей таблицы.
 
@@ -222,7 +222,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 
 * Настройка [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) для совместимости со стандартом SQL.
 
-## Модификатор WITH TOTALS {#with-totals-modifier}
+## Модификатор WITH TOTALS \{#with-totals-modifier\}
 
 Если указан модификатор `WITH TOTALS`, будет вычислена дополнительная строка. В этой строке ключевые столбцы будут содержать значения по умолчанию (нули или пустые строки), а столбцы с агрегирующими функциями — значения, вычисленные по всем строкам (итоговые значения).
 
@@ -240,7 +240,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 
 `WITH TOTALS` может работать по-разному, когда присутствует [HAVING](/sql-reference/statements/select/having.md). Поведение зависит от настройки `totals_mode`.
 
-### Настройка обработки `totals` {#configuring-totals-processing}
+### Настройка обработки `totals` \{#configuring-totals-processing\}
 
 По умолчанию `totals_mode = 'before_having'`. В этом случае `totals` вычисляется по всем строкам, включая те, которые не проходят по условиям HAVING и `max_rows_to_group_by`.
 
@@ -258,7 +258,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 
 Вы можете использовать `WITH TOTALS` во вложенных подзапросах, включая подзапросы в предложении [JOIN](/sql-reference/statements/select/join.md) (в этом случае соответствующие итоговые значения объединяются).
 
-## GROUP BY ALL {#group-by-all}
+## GROUP BY ALL \{#group-by-all\}
 
 `GROUP BY ALL` эквивалентен перечислению в предложении SELECT всех выражений, которые не являются агрегатными функциями.
 
@@ -306,7 +306,7 @@ FROM t
 GROUP BY substring(a, 4, 2), substring(a, 1, 2)
 ```
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 Пример:
 
@@ -333,7 +333,7 @@ GROUP BY domain
 
 Для каждого различного значения ключа оператор `GROUP BY` вычисляет набор значений агрегатных функций.
 
-## Модификатор GROUPING SETS {#grouping-sets-modifier}
+## Модификатор GROUPING SETS \{#grouping-sets-modifier\}
 
 Это самый общий модификатор.
 Он позволяет вручную задавать несколько наборов ключей агрегации (grouping sets).
@@ -370,15 +370,15 @@ GROUPING SETS
 
 * настройку [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) для обеспечения совместимости со стандартом SQL.
 
-## Подробности реализации {#implementation-details}
+## Подробности реализации \{#implementation-details\}
 
 Агрегация — одна из важнейших функций колоночной СУБД, и, следовательно, её реализация является одной из наиболее оптимизированных частей ClickHouse. По умолчанию агрегация выполняется в памяти с использованием хеш-таблицы. Для неё существует более 40 специализаций, которые выбираются автоматически в зависимости от типов данных «ключа группировки».
 
-### Оптимизация GROUP BY в зависимости от сортировочного ключа таблицы {#group-by-optimization-depending-on-table-sorting-key}
+### Оптимизация GROUP BY в зависимости от сортировочного ключа таблицы \{#group-by-optimization-depending-on-table-sorting-key\}
 
 Агрегацию можно выполнять более эффективно, если таблица отсортирована по некоторому ключу, а выражение `GROUP BY` содержит как минимум префикс сортировочного ключа или инъективные функции. В этом случае, когда из таблицы читается новый ключ, промежуточный результат агрегации может быть финализирован и отправлен клиенту. Такое поведение включается настройкой [optimize_aggregation_in_order](../../../operations/settings/settings.md#optimize_aggregation_in_order). Подобная оптимизация снижает потребление памяти во время агрегации, но в некоторых случаях может замедлить выполнение запроса.
 
-### GROUP BY во внешней памяти {#group-by-in-external-memory}
+### GROUP BY во внешней памяти \{#group-by-in-external-memory\}
 
 Вы можете включить сброс временных данных на диск, чтобы ограничить использование памяти во время `GROUP BY`.
 Настройка [max_bytes_before_external_group_by](/operations/settings/settings#max_bytes_before_external_group_by) определяет порог потребления ОЗУ, при достижении которого временные данные `GROUP BY` начинают сбрасываться в файловую систему. Если установлено значение 0 (по умолчанию), механизм отключён.

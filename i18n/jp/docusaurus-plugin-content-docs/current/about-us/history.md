@@ -8,7 +8,7 @@ title: 'ClickHouse の歴史'
 doc_type: 'reference'
 ---
 
-# ClickHouse の歴史 {#clickhouse-history}
+# ClickHouse の歴史 \{#clickhouse-history\}
 
 ClickHouse は当初、[Yandex.Metrica](https://metrica.yandex.com/)（[世界第 2 位の規模を持つウェブ解析プラットフォーム](http://w3techs.com/technologies/overview/traffic_analysis/all)）を支えるために開発され、現在もその中核コンポーネントとして利用されています。データベース内には 13 兆件を超えるレコードが存在し、1 日あたり 200 億件以上のイベントが蓄積されるという規模においても、ClickHouse は非集約データから直接、オンザフライでカスタムレポートを生成することを可能にします。本記事では、ClickHouse 開発初期段階における目標について簡潔に説明します。
 
@@ -16,7 +16,7 @@ Yandex.Metrica は、ヒットおよびセッションに基づき、ユーザ�
 
 2014 年 4 月時点で、Yandex.Metrica は 1 日あたり約 120 億件のイベント（ページビューおよびクリック）を追跡していました。これらすべてのイベントは、カスタムレポートを作成するために保存しておく必要があります。単一のクエリであっても、数百ミリ秒のうちに数百万行、あるいは数秒のうちに数億行をスキャンする必要がある場合がありました。
 
-## Yandex.Metrica およびその他の Yandex サービスでの利用 {#usage-in-yandex-metrica-and-other-yandex-services}
+## Yandex.Metrica およびその他の Yandex サービスでの利用 \{#usage-in-yandex-metrica-and-other-yandex-services\}
 
 ClickHouse は、Yandex.Metrica の中で複数の目的に利用されています。
 主な役割は、非集約データを用いてオンラインでレポートを生成することです。そのために 374 台のサーバーからなるクラスターを使用しており、データベースには 20.3 兆行を超えるデータが格納されています。重複やレプリカを除いた圧縮後のデータ量は約 2 PB です。非圧縮データ量（TSV 形式に展開した場合）はおよそ 17 PB になります。
@@ -31,7 +31,7 @@ ClickHouse は、次のプロセスにおいても重要な役割を果たして
 
 現在では、Yandex のその他のサービスや部門（検索バーティカル、e コマース、広告、ビジネスアナリティクス、モバイル開発、パーソナルサービスなど）においても、数十の ClickHouse インストール環境が稼働しています。
 
-## 集計済みデータと非集計データ {#aggregated-and-non-aggregated-data}
+## 集計済みデータと非集計データ \{#aggregated-and-non-aggregated-data\}
 
 統計を効率的に計算するには、データ量を削減するためにデータを集計しなければならない、という考え方が一般的です。
 

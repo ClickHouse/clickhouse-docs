@@ -11,7 +11,7 @@ keywords: ['サンプルデータセット', 'laion', '画像埋め込み', 'サ
 
 このデータセットには、画像 URL、画像および画像キャプションの両方の埋め込みベクトル、画像と画像キャプション間の類似度スコアに加え、画像の幅・高さ、ライセンス、NSFW フラグといったメタデータが含まれています。このデータセットを使って、ClickHouse における[近似最近傍探索](../../engines/table-engines/mergetree-family/annindexes.md)をデモに使用できます。
 
-## データの準備 {#data-preparation}
+## データの準備 \{#data-preparation\}
 
 生データでは、埋め込みベクトルとメタデータは別々のファイルに保存されています。データ準備ステップでは、データをダウンロードし、ファイルをマージして CSV に変換し、ClickHouse に取り込みます。そのために次の `download.sh` スクリプトを使用できます。
 
@@ -75,7 +75,7 @@ seq 0 409 | xargs -P1 -I{} bash -c './download.sh {}'
 （上記の Python スクリプトは非常に遅く（ファイルあたり約 2〜10 分）、大量のメモリを消費し（ファイルあたり 41 GB）、生成される CSV ファイルも大きいです（各 10 GB）ので注意してください。十分な RAM がある場合は、並列度を上げるために `-P1` の数値を増やしてください。それでもまだ遅い場合は、より効率的なインジェスト手順を検討してください。たとえば .npy ファイルを Parquet に変換し、その後の処理をすべて ClickHouse で行う方法などが考えられます。）
 
 
-## テーブルを作成する {#create-table}
+## テーブルを作成する \{#create-table\}
 
 まずは索引なしのテーブルを作成するために、次を実行します：
 
@@ -103,7 +103,7 @@ INSERT INTO laion FROM INFILE '{path_to_csv_files}/*.csv'
 `id` カラムは単なる例示用であり、スクリプトによって一意ではない値が設定されている点に注意してください。
 
 
-## 総当たりによるベクトル類似検索を実行する {#run-a-brute-force-vector-similarity-search}
+## 総当たりによるベクトル類似検索を実行する \{#run-a-brute-force-vector-similarity-search\}
 
 総当たり方式で近似ベクトル検索を行うには、次を実行します。
 
@@ -135,7 +135,7 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 ```
 
 
-## ベクトル類似インデックスを使って近似ベクトル類似検索を実行する {#run-an-approximate-vector-similarity-search-with-a-vector-similarity-index}
+## ベクトル類似インデックスを使って近似ベクトル類似検索を実行する \{#run-an-approximate-vector-similarity-search-with-a-vector-similarity-index\}
 
 次に、このテーブルに 2 つのベクトル類似インデックスを定義します。
 
@@ -188,11 +188,11 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 HNSW 索引は、HNSW パラメータを慎重に選択し、索引品質を評価することで、リコールが 1 に近い値（総当たり検索と同等の精度）を達成できる可能性があります。
 
 
-## UDF を使用した埋め込みの作成 {#creating-embeddings-with-udfs}
+## UDF を使用した埋め込みの作成 \{#creating-embeddings-with-udfs\}
 
 通常は、新しい画像や新しい画像キャプションに対して埋め込みを作成し、データ内から類似した画像／画像キャプションのペアを検索します。[UDF](/sql-reference/functions/udf) を使用すると、クライアントを離れることなく `target` ベクターを作成できます。データの作成と検索用の新しい埋め込みの作成には、同じモデルを使用することが重要です。次のスクリプトでは、データセットの基盤となっている `ViT-B/32` モデルを利用します。
 
-### テキストの埋め込み {#text-embeddings}
+### テキストの埋め込み \{#text-embeddings\}
 
 まず、次の Python スクリプトを ClickHouse のデータパス配下の `user_scripts/` ディレクトリに保存し、実行可能属性を付与します（`chmod +x encode_text.py`）。
 
@@ -254,7 +254,7 @@ LIMIT 10
 `encode_text()` UDF 自体の計算および埋め込みベクトルの出力には、数秒かかる場合がある点に注意してください。
 
 
-### 画像埋め込み {#image-embeddings}
+### 画像埋め込み \{#image-embeddings\}
 
 画像埋め込みも同様の方法で作成でき、ローカルにファイルとして保存されている画像から埋め込みを生成するための Python スクリプトを提供しています。
 

@@ -49,7 +49,7 @@ Connect to your Crunchy Bridge Postgres through the `postgres` user and run the 
 3. Grant replication privileges to the user:
 
     ```sql
-     ALTER ROLE clickpipes_user REPLICATION;
+     ALTER USER clickpipes_user WITH REPLICATION;
     ```
 
 4. Create a [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) with the tables you want to replicate. We strongly recommend only including the tables you need in the publication to avoid performance overhead.

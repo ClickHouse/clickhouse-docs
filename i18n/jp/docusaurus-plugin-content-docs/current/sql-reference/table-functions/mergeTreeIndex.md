@@ -8,17 +8,17 @@ title: 'mergeTreeIndex'
 doc_type: 'reference'
 ---
 
-# mergeTreeIndex テーブル関数 {#mergetreeindex-table-function}
+# mergeTreeIndex テーブル関数 \{#mergetreeindex-table-function\}
 
 MergeTree テーブルのインデックスおよびマークファイルの内容を表します。内部状態を調査する目的で使用できます。
 
-## 構文 {#syntax}
+## 構文 \{#syntax\}
 
 ```sql
 mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
 ```
 
-## 引数 {#arguments}
+## 引数 \{#arguments\}
 
 | 引数          | 説明                                                 |
 |---------------|------------------------------------------------------|
@@ -27,7 +27,7 @@ mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
 | `with_marks`  | 結果にマークを含むカラムを含めるかどうか。           |
 | `with_minmax` | 結果に min-max インデックスを含めるかどうか。       |
 
-## 返される値 {#returned_value}
+## 返される値 \{#returned_value\}
 
 次の列を持つテーブルオブジェクトです。ソーステーブルのプライマリインデックスおよび min-max インデックス（有効な場合）の値を持つ列、ソーステーブルのデータパーツ内の存在しうるすべてのファイルに対するマーク（有効な場合）の値を持つ列、さらに仮想列から構成されます。
 
@@ -37,7 +37,7 @@ mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
 
 Marks 列には、データパーツに対象の列が存在しない場合、またはそのサブストリームのいずれかについてマークが書き込まれていない場合（例：コンパクトパーツ）に、`(NULL, NULL)` の値が含まれることがあります。
 
-## 使用例 {#usage-example}
+## 使用例 \{#usage-example\}
 
 ```sql
 CREATE TABLE test_table

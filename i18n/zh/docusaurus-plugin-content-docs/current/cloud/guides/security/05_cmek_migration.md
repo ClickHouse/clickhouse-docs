@@ -11,7 +11,11 @@ keywords: ['ClickHouse Cloud', 'encryption', 'CMEK']
 
 此新流程同时支持 OpenAPI 和 Terraform。更多信息请参阅我们的文档（[增强加密](/docs/cloud/security/cmek)、[Cloud API](/docs/cloud/manage/api/api-overview)、[官方 Terraform Provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs)）。
 
-## 手动迁移 {#manual-migration}
+:::warning
+使用 CMEK v1 的客户必须在 2026 年 6 月 1 日之前完成服务迁移。此日期之后，客户托管密钥将默认轮换为 ClickHouse 托管密钥。客户可以在默认迁移完成后，将密钥再次轮换回客户托管密钥。
+:::
+
+## 手动迁移 \{#manual-migration\}
 
 完成以下步骤以迁移到新流程：
 
@@ -62,7 +66,7 @@ keywords: ['ClickHouse Cloud', 'encryption', 'CMEK']
 
 9. 更新完成！
 
-## Terraform 迁移 {#terraform-migration}
+## Terraform 迁移 \{#terraform-migration\}
 
 1. 升级到 [Terraform 版本 3.5.0 或更高](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs)
 2. 在不做任何更改的情况下应用 Terraform。Terraform 状态中会出现一个名为 transparent&#95;data&#95;encryption 的新字段。请在此记录下 role&#95;id。

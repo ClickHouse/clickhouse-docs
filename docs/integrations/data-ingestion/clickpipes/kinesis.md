@@ -141,6 +141,7 @@ view).  For such pipes, it may improve ClickPipes performance to delete all the 
 ## Limitations {#limitations}
 
 - [DEFAULT](/sql-reference/statements/create/table#default) is not supported.
+- Individual messages are limited to 8MB (uncompressed) by default when running with the smallest (XS) replica size, and 16MB (uncompressed) with larger replicas.  Messages that exceed this limit will be rejected with an error.  If you have a need for larger messages, please contact support.
 
 ## Performance {#performance}
 

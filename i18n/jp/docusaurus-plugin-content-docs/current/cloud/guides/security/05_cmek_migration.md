@@ -11,7 +11,11 @@ ClickHouse では、Customer Managed Encryption Keys（CMEK）サービスのセ
 
 この新しいプロセスは、OpenAPI と Terraform の両方でサポートされています。詳細については、ドキュメント（[強化された暗号化](/docs/cloud/security/cmek)、[Cloud API](/docs/cloud/manage/api/api-overview)、[公式 Terraform Provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs)）を参照してください。
 
-## 手動での移行 {#manual-migration}
+:::warning
+CMEK v1 を利用しているお客様は、2026 年 6 月 1 日までにサービスの移行を完了する必要があります。この日以降は、カスタマー管理キーはデフォルトで ClickHouse 管理キーにローテーションされます。デフォルトの移行完了後に、再度カスタマー管理キーへローテーションすることもできます。
+:::
+
+## 手動での移行 \{#manual-migration\}
 
 新しいプロセスに移行するには、次の手順を実行します。
 
@@ -62,7 +66,7 @@ ClickHouse では、Customer Managed Encryption Keys（CMEK）サービスのセ
 
 9. 更新が完了しました！
 
-## Terraform の移行 {#terraform-migration}
+## Terraform の移行 \{#terraform-migration\}
 
 1. [Terraform バージョン 3.5.0 以降](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) にアップグレードします
 2. 変更を加えずに Terraform を適用します。`transparent_data_encryption` 用の新しいフィールドが Terraform の state に追加されます。ここに表示される `role_id` を控えておきます。

@@ -7,9 +7,9 @@ title: '查询复杂度限制'
 doc_type: 'reference'
 ---
 
-# 对查询复杂度的限制 {#restrictions-on-query-complexity}
+# 对查询复杂度的限制 \{#restrictions-on-query-complexity\}
 
-## 概览 {#overview}
+## 概览 \{#overview\}
 
 作为[设置](/operations/settings/overview)的一部分，ClickHouse 支持
 对查询复杂度进行限制。这样有助于防止潜在的高资源消耗查询，
@@ -22,18 +22,18 @@ doc_type: 'reference'
 全部处理完成后才检查这些限制，而不是对每一行进行检查。这可能
 导致在处理某个片段的过程中就已经违反了限制条件。
 
-## `overflow_mode` 设置 {#overflow_mode_setting}
+## `overflow_mode` 设置 \{#overflow_mode_setting\}
 
 大多数限制项也有一个 `overflow_mode` 设置，用于定义在超过限制时的处理方式，其取值可以是以下两种之一：
 - `throw`：抛出异常（默认）。
 - `break`：停止执行查询并返回部分结果，就像源数据已经耗尽一样。
 
-## `group_by_overflow_mode` 设置 {#group_by_overflow_mode_settings}
+## `group_by_overflow_mode` 设置 \{#group_by_overflow_mode_settings\}
 
 `group_by_overflow_mode` 设置的一个取值为 `any`：
 - `any`: 对已进入集合的键继续进行聚合，但不再向集合中添加新的键。
 
-## 设置列表 {#relevant-settings}
+## 设置列表 \{#relevant-settings\}
 
 以下设置用于限制查询的复杂度。
 
@@ -101,12 +101,12 @@ doc_type: 'reference'
 
 
 
-## 已过时的设置 {#obsolete-settings}
+## 已过时的设置 \{#obsolete-settings\}
 
 :::note
 以下设置已过时
 :::
 
-### max_pipeline_depth {#max-pipeline-depth}
+### max_pipeline_depth \{#max-pipeline-depth\}
 
 最大管道深度。表示每个数据块在查询处理过程中经历的转换次数。仅在单个服务器内计算。如果管道深度过大，将抛出异常。

@@ -15,13 +15,13 @@ import Image from '@theme/IdealImage';
 
 从 Postgres 复制到 ClickHouse 的更新和删除操作，会由于 ClickHouse 的数据存储结构和复制过程而在 ClickHouse 中产生重复行。本页说明为何会出现这种情况，以及在 ClickHouse 中用于处理重复数据的策略。
 
-## 数据是如何复制的？ {#how-does-data-get-replicated}
+## 数据是如何复制的？ \{#how-does-data-get-replicated\}
 
-### PostgreSQL 逻辑解码 {#PostgreSQL-logical-decoding}
+### PostgreSQL 逻辑解码 \{#PostgreSQL-logical-decoding\}
 
 ClickPipes 使用 [Postgres Logical Decoding](https://www.pgedge.com/blog/logical-replication-evolution-in-chronological-order-clustering-solution-built-around-logical-replication) 来读取 Postgres 中发生的变更。Postgres 中的 Logical Decoding 过程使得像 ClickPipes 这样的客户端能够以人类可读的格式接收变更，即一系列 INSERT、UPDATE 和 DELETE 操作。
 
-### ReplacingMergeTree {#replacingmergetree}
+### ReplacingMergeTree \{#replacingmergetree\}
 
 ClickPipes 使用 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 引擎将 Postgres 表映射到 ClickHouse。ClickHouse 在仅追加写入（append-only）类型的工作负载下性能最佳，并且不建议频繁执行 UPDATE 操作。这正是 ReplacingMergeTree 发挥强大作用的典型场景。
 
@@ -54,7 +54,7 @@ ORDER BY id;
 ```
 
 
-### 示例说明 {#illustrative-example}
+### 示例说明 \{#illustrative-example\}
 
 下图演示了一个基础示例：使用 ClickPipes 在 PostgreSQL 与 ClickHouse 之间同步 `users` 表。
 
@@ -70,7 +70,7 @@ ORDER BY id;
 
 我们如何才能保证在 ClickHouse 和 PostgreSQL 中获得相同的查询结果？
 
-### 使用 FINAL 关键字去重 {#deduplicate-using-final-keyword}
+### 使用 FINAL 关键字去重 \{#deduplicate-using-final-keyword\}
 
 在 ClickHouse 查询中，推荐的去重方式是使用 [FINAL 修饰符。](/sql-reference/statements/select/from#final-modifier) 这可以确保只返回去重后的行。
 
@@ -127,7 +127,7 @@ LIMIT 10
 ```
 
 
-#### FINAL 设置 {#final-setting}
+#### FINAL 设置 \{#final-setting\}
 
 与其在查询中为每个表名都添加 FINAL 修饰符，不如使用 [FINAL 设置](/operations/settings/settings#final)，将其自动应用到查询中的所有表。
 
@@ -143,7 +143,7 @@ SELECT count(*) FROM posts;
 ```
 
 
-#### 行策略（ROW policy） {#row-policy}
+#### 行策略（ROW policy） \{#row-policy\}
 
 隐藏多余的 `_peerdb_is_deleted = 0` 过滤条件的一种简便方法是使用[行策略](/docs/operations/access-rights#row-policy-management)。下面是一个示例，演示如何创建行策略，使对 votes 表的所有查询自动排除已删除的行。
 
@@ -155,13 +155,13 @@ CREATE ROW POLICY cdc_policy ON votes FOR SELECT USING _peerdb_is_deleted = 0 TO
 > 行策略会应用到一组用户和角色。在本例中，它应用于所有用户和角色。也可以将其调整为仅应用于特定用户或角色。
 
 
-### 使用类似 Postgres 的查询 {#query-like-with-postgres}
+### 使用类似 Postgres 的查询 \{#query-like-with-postgres\}
 
 将分析型数据集从 PostgreSQL 迁移到 ClickHouse 时，通常需要修改应用的查询语句，以适配两者在数据处理和查询执行方面的差异。
 
 本节将探讨在保持原有查询不变的情况下，对数据进行去重的技术。
 
-#### 视图 {#views}
+#### 视图 \{#views\}
 
 [视图](/sql-reference/statements/create/view#normal-view) 是在查询中隐藏 FINAL 关键字的一种很好方式，因为视图本身不存储任何数据，而是在每次访问时从另一张表中读取数据。
 
@@ -189,7 +189,7 @@ LIMIT 10
 ```
 
 
-#### 可刷新的物化视图 {#refreshable-material-view}
+#### 可刷新的物化视图 \{#refreshable-material-view\}
 
 另一种方法是使用[可刷新的物化视图](/materialized-view/refreshable-materialized-view)，它允许你调度执行查询，对行进行去重，并将结果存储到目标表中。每次按计划刷新时，目标表都会被最新的查询结果替换。
 

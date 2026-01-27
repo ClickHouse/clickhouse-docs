@@ -11,7 +11,7 @@ doc_type: 'guide'
 它让用户无需安装服务器就能使用 ClickHouse 的强大功能。
 在本指南中，我们将学习如何在 chDB 中使用 clickhouse-local 数据库。
 
-## 设置 {#setup}
+## 设置 \{#setup\}
 
 我们首先创建一个虚拟环境：
 
@@ -39,7 +39,7 @@ pip install ipython
 ipython
 ```
 
-## 安装 clickhouse-local {#installing-clickhouse-local}
+## 安装 clickhouse-local \{#installing-clickhouse-local\}
 
 下载并安装 clickhouse-local 与[下载并安装 ClickHouse](/install) 的步骤相同。
 我们可以通过运行以下命令来完成安装：
@@ -54,7 +54,7 @@ curl https://clickhouse.com/ | sh
 ./clickhouse -m --path demo.chdb
 ```
 
-## 将数据摄取到 clickhouse-local 中 {#ingesting-data-into-clickhouse-local}
+## 将数据摄取到 clickhouse-local 中 \{#ingesting-data-into-clickhouse-local\}
 
 默认数据库只在内存中存储数据，因此我们需要创建一个命名数据库，以确保我们摄取的任何数据都会持久化到磁盘。
 
@@ -89,7 +89,7 @@ FROM foo.randomNumbers
 ChdbError: Code: 76. DB::Exception: Cannot lock file demo.chdb/status. Another server instance in same directory is already running. (CANNOT_OPEN_FILE)
 ```
 
-## 连接到 clickhouse-local 数据库 {#connecting-to-a-clickhouse-local-database}
+## 连接到 clickhouse-local 数据库 \{#connecting-to-a-clickhouse-local-database\}
 
 回到 `ipython` shell，并从 chDB 中导入 `session` 模块：
 
@@ -97,7 +97,7 @@ ChdbError: Code: 76. DB::Exception: Cannot lock file demo.chdb/status. Another s
 from chdb import session as chs
 ```
 
-初始化指向 `demo..chdb` 的会话：
+初始化指向 `demo.chdb` 的会话：
 
 ```python
 sess = chs.Session("demo.chdb")

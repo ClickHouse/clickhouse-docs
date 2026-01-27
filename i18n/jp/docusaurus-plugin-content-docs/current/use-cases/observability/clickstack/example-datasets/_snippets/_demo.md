@@ -1,7 +1,7 @@
 import Image from '@theme/IdealImage';
 import architecture from '@site/static/images/use-cases/observability/hyperdx-demo/architecture.png';
 
-### デモのアーキテクチャ {#demo-architecture}
+### デモのアーキテクチャ \{#demo-architecture\}
 
 このデモは、gRPC と HTTP を介して相互に通信する異なるプログラミング言語で書かれたマイクロサービス群と、Locust を使用してユーザートラフィックを模倣するロードジェネレータで構成されています。このデモのオリジナルのソースコードは、[ClickStack インストルメンテーション](/use-cases/observability/clickstack/sdks) を使用するように変更されています。
 

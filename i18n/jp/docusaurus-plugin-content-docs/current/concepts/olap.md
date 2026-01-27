@@ -8,7 +8,7 @@ keywords: ['OLAP']
 doc_type: 'reference'
 ---
 
-# OLAP とは何ですか？ {#what-is-olap}
+# OLAP とは何ですか？ \{#what-is-olap\}
 
 [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) は Online Analytical Processing（オンライン分析処理）の略です。これは広い意味を持つ用語で、技術的観点とビジネス的観点の 2 つの視点から捉えることができます。最も抽象的なレベルでは、これらの単語を逆から読むとイメージしやすくなります：
 
@@ -18,7 +18,7 @@ doc_type: 'reference'
 
 **Online（オンライン）** — …それがリアルタイムで行われます。
 
-## ビジネスの観点から見た OLAP {#olap-from-the-business-perspective}
+## ビジネスの観点から見た OLAP \{#olap-from-the-business-perspective\}
 
 近年では、ビジネスに携わる人々がデータの価値を理解し始めています。勘や経験だけに頼って意思決定を行う企業は、多くの場合、競合他社に遅れをとってしまいます。成功している企業のデータドリブンなアプローチは、ビジネス上の意思決定に少しでも役立つ可能性のあるあらゆるデータを収集することを促し、同時に、それらのデータをタイムリーに分析できる仕組みを必要とします。ここで役に立つのが OLAP データベース管理システム（DBMS）です。
 
@@ -26,7 +26,7 @@ doc_type: 'reference'
 
 ClickHouse は OLAP データベース管理システムであり、ドメイン固有データを分析するこれらの SaaS ソリューションのバックエンドとして利用されることがよくあります。しかし、一部の企業は依然として自社データをサードパーティプロバイダーと共有することをためらっており、そのため社内データウェアハウスという形態も依然として有力な選択肢です。
 
-## 技術的な観点から見た OLAP {#olap-from-the-technical-perspective}
+## 技術的な観点から見た OLAP \{#olap-from-the-technical-perspective\}
 
 すべてのデータベース管理システムは、OLAP（Online **Analytical** Processing、オンライン分析処理）と OLTP（Online **Transactional** Processing、オンライントランザクション処理）の 2 つのグループに分類できます。前者は、膨大な履歴データに基づくレポートを作成することに重点を置きますが、その実行頻度は低くなります。後者は通常、トランザクションの連続したストリームを処理し、データの現在の状態を絶えず変更し続けます。
 

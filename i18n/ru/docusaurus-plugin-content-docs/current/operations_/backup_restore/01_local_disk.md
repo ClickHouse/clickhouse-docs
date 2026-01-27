@@ -11,15 +11,15 @@ import S3Settings from '@site/i18n/ru/docusaurus-plugin-content-docs/current/ope
 import ExampleSetup from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-# Резервное копирование и восстановление на локальный диск {#backup-to-a-local-disk}
+# Резервное копирование и восстановление на локальный диск \{#backup-to-a-local-disk\}
 
-## Синтаксис {#syntax}
+## Синтаксис \{#syntax\}
 
 <Syntax/>
 
-## Настройка путей назначения резервного копирования для диска {#configure-backup-destinations-for-disk}
+## Настройка путей назначения резервного копирования для диска \{#configure-backup-destinations-for-disk\}
 
-### Настройка пути назначения резервного копирования для локального диска {#configure-a-backup-destination}
+### Настройка пути назначения резервного копирования для локального диска \{#configure-a-backup-destination\}
 
 В приведённых ниже примерах вы увидите, что путь назначения резервного копирования указан как `Disk('backups', '1.zip')`.\
 Чтобы использовать движок резервного копирования `Disk`, необходимо сначала создать файл, задающий путь назначения резервного копирования, по следующему пути:
@@ -50,7 +50,7 @@ import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operati
 </clickhouse>
 ```
 
-### Настройка назначения резервного копирования для диска S3 {#backuprestore-using-an-s3-disk}
+### Настройка назначения резервного копирования для диска S3 \{#backuprestore-using-an-s3-disk\}
 
 Также можно выполнять операции `BACKUP`/`RESTORE` в S3, настроив диск S3
 в настройках хранилища ClickHouse. Настройте диск следующим образом, добавив файл в
@@ -100,9 +100,9 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
   синтаксис `BACKUP ... TO S3(<endpoint>)` для этого сценария.
   :::
 
-## Примеры использования операций резервного копирования и восстановления на локальный диск {#usage-examples}
+## Примеры использования операций резервного копирования и восстановления на локальный диск \{#usage-examples\}
 
-### Резервное копирование и восстановление таблицы {#backup-and-restore-a-table}
+### Резервное копирование и восстановление таблицы \{#backup-and-restore-a-table\}
 
 <ExampleSetup />
 
@@ -167,7 +167,7 @@ RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backu
 Могут использоваться и другие форматы, помимо zip. См. раздел [&quot;Резервные копии в виде tar-архивов&quot;](#backups-as-tar-archives)
 ниже для получения дополнительной информации.
 
-### Инкрементные резервные копии на диск {#incremental-backups}
+### Инкрементные резервные копии на диск \{#incremental-backups\}
 
 Базовая резервная копия в ClickHouse — это начальная полная резервная копия, на основе которой
 создаются последующие инкрементные резервные копии. Инкрементные резервные копии содержат только изменения,
@@ -199,7 +199,7 @@ RESTORE TABLE test_db.test_table AS test_db.test_table2
 FROM Disk('backups', 'incremental-a.zip');
 ```
 
-### Защита резервной копии {#assign-a-password-to-the-backup}
+### Защита резервной копии \{#assign-a-password-to-the-backup\}
 
 К файлам резервных копий, записанным на диск, можно применить пароль.
 Пароль можно указать с помощью настройки `password`:
@@ -219,7 +219,7 @@ FROM Disk('backups', 'password-protected.zip')
 SETTINGS password='qwerty'
 ```
 
-### Резервные копии в виде tar-архивов {#backups-as-tar-archives}
+### Резервные копии в виде tar-архивов \{#backups-as-tar-archives\}
 
 Резервные копии могут храниться не только в виде zip-архивов, но и в виде tar-архивов.
 Функциональность аналогична zip, за исключением того, что защита паролем не
@@ -255,7 +255,7 @@ BACKUP TABLE test_db.test_table TO Disk('backups', '1.tar.gz')
 * `.tzst`
 * `.tar.xz`
 
-### Настройки сжатия {#compression-settings}
+### Настройки сжатия \{#compression-settings\}
 
 Метод сжатия и степень сжатия можно задать с помощью параметров `compression_method` и `compression_level` соответственно.
 
@@ -269,7 +269,7 @@ TO Disk('backups', 'filename.zip')
 SETTINGS compression_method='lzma', compression_level=3
 ```
 
-### Восстановление отдельных партиций {#restore-specific-partitions}
+### Восстановление отдельных партиций \{#restore-specific-partitions\}
 
 Если необходимо восстановить только определённые партиции, связанные с таблицей, их можно явно указать.
 

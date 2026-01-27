@@ -7,7 +7,7 @@ title: 'Команда EXCHANGE'
 doc_type: 'reference'
 ---
 
-# Оператор EXCHANGE {#exchange-statement}
+# Оператор EXCHANGE \{#exchange-statement\}
 
 Атомарно меняет местами имена двух таблиц или двух словарей.
 Эту задачу можно также выполнить с помощью запроса [`RENAME`](./rename.md) с использованием временного имени, но в этом случае операция не является атомарной.
@@ -22,7 +22,7 @@ doc_type: 'reference'
 EXCHANGE TABLES|DICTIONARIES [db0.]name_A AND [db1.]name_B [ON CLUSTER cluster]
 ```
 
-## EXCHANGE TABLES {#exchange-tables}
+## EXCHANGE TABLES \{#exchange-tables\}
 
 Обменивает имена двух таблиц.
 
@@ -32,7 +32,7 @@ EXCHANGE TABLES|DICTIONARIES [db0.]name_A AND [db1.]name_B [ON CLUSTER cluster]
 EXCHANGE TABLES [db0.]table_A AND [db1.]table_B [ON CLUSTER cluster]
 ```
 
-### ОБМЕН НЕСКОЛЬКИМИ ТАБЛИЦАМИ {#exchange-multiple-tables}
+### ОБМЕН НЕСКОЛЬКИМИ ТАБЛИЦАМИ \{#exchange-multiple-tables\}
 
 Вы можете поменять местами несколько пар таблиц в одном запросе, разделяя их запятыми.
 
@@ -92,7 +92,7 @@ SHOW TABLE d;
 └────────────────────────┘
 ```
 
-## EXCHANGE DICTIONARIES {#exchange-dictionaries}
+## EXCHANGE DICTIONARIES \{#exchange-dictionaries\}
 
 Меняет местами имена двух словарей.
 

@@ -12,12 +12,12 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# コマンドを使用してバックアップの取得および復元を行う {#commands-experience}
+# コマンドを使用してバックアップの取得および復元を行う \{#commands-experience\}
 
 `BACKUP` および `RESTORE` コマンドを使用してバックアップをストレージバケットにエクスポートできます。これは、[ユーザーインターフェイス経由](/cloud/manage/backups/backup-restore-via-ui)でバックアップや復元を行う方法に加えて利用できます。
 本ガイドでは、3 つすべての CSP 向けのコマンドを紹介します。
 
-## 必要条件 {#requirements}
+## 必要条件 \{#requirements\}
 
 ご自身の CSP ストレージバケットにバックアップをエクスポート／復元するには、次の情報が必要です：
 
@@ -44,12 +44,12 @@ import TabItem from '@theme/TabItem';
   </TabItem>
 </Tabs>
 
-## 特定のデータベースのバックアップ / リストア {#backup_restore_db}
+## 特定のデータベースのバックアップ / リストア \{#backup_restore_db\}
 
 ここでは、*単一* のデータベースのバックアップおよびリストアの方法を示します。
 完全なバックアップおよびリストアコマンドについては、[バックアップコマンドの概要](/operations/backup/overview#command-summary)を参照してください。
 
-### AWS S3 {#aws-s3-bucket}
+### AWS S3 \{#aws-s3-bucket\}
 
 <Tabs>
   <TabItem value="Backup" label="BACKUP" default>
@@ -83,7 +83,7 @@ FROM S3(
   </TabItem>
 </Tabs>
 
-### Google Cloud Storage (GCS) {#google-cloud-storage}
+### Google Cloud Storage (GCS) \{#google-cloud-storage\}
 
 <Tabs>
   <TabItem value="Backup" label="BACKUP" default>
@@ -116,7 +116,7 @@ FROM S3(
   </TabItem>
 </Tabs>
 
-### Azure Blob Storage {#azure-blob-storage}
+### Azure Blob Storage \{#azure-blob-storage\}
 
 <Tabs>
   <TabItem value="Backup" label="BACKUP" default>
@@ -148,7 +148,7 @@ FROM AzureBlobStorage(
   </TabItem>
 </Tabs>
 
-## サービス全体のバックアップ / リストア {#backup_restore_entire_service}
+## サービス全体のバックアップ / リストア \{#backup_restore_entire_service\}
 
 サービス全体をバックアップするには、以下のコマンドを使用します。
 このバックアップには、作成されたエンティティ、設定プロファイル、ロールポリシー、クォータ、関数に関するすべてのユーザーデータおよびシステムデータが含まれます。
@@ -190,7 +190,7 @@ FROM S3(
 </TabItem>
 </Tabs>
 
-## FAQ {#backups-faq}
+## FAQ \{#backups-faq\}
 
 <details>
 <summary>クラウドオブジェクトストレージ内のバックアップはどうなりますか？ClickHouse によって自動的にクリーンアップされますか？</summary>

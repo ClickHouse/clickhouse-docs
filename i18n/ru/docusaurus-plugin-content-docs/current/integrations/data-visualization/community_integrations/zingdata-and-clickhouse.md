@@ -25,13 +25,13 @@ import zing_08 from '@site/static/images/integrations/data-visualization/zing_08
 import zing_09 from '@site/static/images/integrations/data-visualization/zing_09.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Подключение Zing Data к ClickHouse {#connect-zing-data-to-clickhouse}
+# Подключение Zing Data к ClickHouse \{#connect-zing-data-to-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
 <a href="https://www.zingdata.com/" target="_blank">Zing Data</a> — это платформа для исследования и визуализации данных. Zing Data подключается к ClickHouse с помощью JS-драйвера, предоставляемого ClickHouse.
 
-## Как подключиться {#how-to-connect}
+## Как подключиться \{#how-to-connect\}
 
 1. Соберите сведения для подключения.
 
@@ -64,7 +64,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 6. После того как источник данных ClickHouse добавлен, он будет доступен всем пользователям в вашей организации Zing на вкладке **Data Sources** / **Sources**.
 
-## Создание графиков и дашбордов в Zing Data {#creating-charts-and-dashboards-in-zing-data}
+## Создание графиков и дашбордов в Zing Data \{#creating-charts-and-dashboards-in-zing-data\}
 
 1. После добавления источника данных ClickHouse нажмите **Zing App** в веб-интерфейсе или выберите источник данных в мобильном приложении, чтобы начать создавать графики.
 
@@ -93,7 +93,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
     <Image size="md" img={zing_09} alt="Представление дашборда Zing Data, показывающее несколько визуализаций, размещённых в макете дашборда" border />
     <br/>
 
-## Связанные материалы {#related-content}
+## Связанные материалы \{#related-content\}
 
 - [Документация](https://docs.getzingdata.com/docs/)
 - [Быстрый старт](https://getzingdata.com/quickstart/)

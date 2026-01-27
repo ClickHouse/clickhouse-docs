@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['federated', 'hybrid', 'postgres', 'mysql', 'sqlite', 'odbc', 'jdbc']
 ---
 
-# Поддерживает ли ClickHouse федеративные запросы? {#does-clickhouse-support-federated-queries}
+# Поддерживает ли ClickHouse федеративные запросы? \{#does-clickhouse-support-federated-queries\}
 
 ClickHouse имеет наиболее широкую поддержку федеративных запросов и гибридного выполнения запросов среди аналитических баз данных.
 

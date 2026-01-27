@@ -15,25 +15,25 @@ import Image from '@theme/IdealImage';
 import dbvisualizer_driver_manager from '@site/static/images/integrations/sql-clients/dbvisualizer-driver-manager.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Подключение DbVisualizer к ClickHouse {#connecting-dbvisualizer-to-clickhouse}
+# Подключение DbVisualizer к ClickHouse \{#connecting-dbvisualizer-to-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
-## Запустите или скачайте DbVisualizer {#start-or-download-dbvisualizer}
+## Запустите или скачайте DbVisualizer \{#start-or-download-dbvisualizer\}
 
 DbVisualizer можно скачать с сайта https://www.dbvis.com/download/
 
-## 1. Соберите параметры подключения {#1-gather-your-connection-details}
+## 1. Соберите параметры подключения \{#1-gather-your-connection-details\}
 
 <ConnectionDetails />
 
-## 2. Встроенное управление JDBC-драйверами {#2-built-in-jdbc-driver-management}
+## 2. Встроенное управление JDBC-драйверами \{#2-built-in-jdbc-driver-management\}
 
 DbVisualizer включает в себя самые актуальные JDBC-драйверы для ClickHouse. В нем реализовано полнофункциональное встроенное управление JDBC-драйверами, обеспечивающее доступ как к последним релизам, так и к предыдущим версиям драйверов.
 
 <Image img={dbvisualizer_driver_manager} size="lg" border alt="Интерфейс управления драйверами DbVisualizer с конфигурацией JDBC-драйвера ClickHouse" />
 
-## 3. Подключение к ClickHouse {#3-connect-to-clickhouse}
+## 3. Подключение к ClickHouse \{#3-connect-to-clickhouse\}
 
 Чтобы подключиться к базе данных с помощью DbVisualizer, сначала необходимо создать и настроить подключение к базе данных.
 
@@ -56,6 +56,6 @@ DbVisualizer включает в себя самые актуальные JDBC-�
 :::tip
 См. раздел [Fixing Connection Issues](https://www.dbvis.com/docs/ug/troubleshooting/fixing-connection-issues/) с рекомендациями по устранению проблем при подключении к базе данных.
 
-## Подробнее {#learn-more}
+## Подробнее \{#learn-more\}
 
 Дополнительные сведения о DbVisualizer см. в [документации DbVisualizer](https://www.dbvis.com/docs/ug/).

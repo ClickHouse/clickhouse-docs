@@ -1,6 +1,6 @@
 
 
-# ReplacingMergeTree テーブルエンジン {#replacingmergetree-table-engine}
+# ReplacingMergeTree テーブルエンジン \{#replacingmergetree-table-engine\}
 
 このエンジンは[MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree)と異なり、同一の[ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md)値を持つ重複エントリを削除します（`ORDER BY`テーブルセクションのキーであり、`PRIMARY KEY`ではありません）。
 
@@ -12,7 +12,7 @@
 ReplacingMergeTree の詳細ガイド（ベストプラクティスやパフォーマンス最適化方法を含む）は [こちら](/guides/replacing-merge-tree) で確認できます。
 :::
 
-## テーブルの作成 {#creating-a-table}
+## テーブルの作成 \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -34,9 +34,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 行の一意性は、`PRIMARY KEY`ではなく`ORDER BY`テーブルセクションによって決定されます。
 :::
 
-## ReplacingMergeTree パラメータ {#replacingmergetree-parameters}
+## ReplacingMergeTree パラメータ \{#replacingmergetree-parameters\}
 
-### `ver` {#ver}
+### `ver` \{#ver\}
 
 `ver` — バージョン番号を含む列。型は `UInt*`、`Date`、`DateTime` または `DateTime64`。オプションのパラメータ。
 
@@ -166,7 +166,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 </details>
 
-## クエリ実行時の重複排除 & 最終版 {#query-time-de-duplication--final}
+## クエリ実行時の重複排除 & 最終版 \{#query-time-de-duplication--final\}
 
 マージ処理時、ReplacingMergeTree は重複行を特定します。この際、テーブル作成に使用された `ORDER BY` 列の値を一意の識別子として用い、最高バージョンの行のみを保持します。ただし、これは最終的な正しさのみを提供します。行の重複排除を保証するものではなく、これに依存すべきではありません。したがって、更新や削除された行がクエリで考慮されるため、クエリは誤った結果を生成する可能性があります。
 

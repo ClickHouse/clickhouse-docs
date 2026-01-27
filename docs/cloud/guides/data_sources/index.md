@@ -11,10 +11,11 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 
 This section contains guides and references for integrating ClickHouse Cloud with external data sources that require additional configuration.
 
-| Page                                                            | Description                                                             |
-|-----------------------------------------------------------------|-------------------------------------------------------------------------|
-| [Cloud IP addresses](/manage/data-sources/cloud-endpoints-api)  | Networking information needed for some table functions and connections  |
-| [Accessing S3 data securely](/cloud/data-sources/secure-s3)     | Access external data sources in AWS S3 using role based access          |
+| Page                                                            | Description                                                            |
+|-----------------------------------------------------------------|------------------------------------------------------------------------|
+| [Cloud IP addresses](/manage/data-sources/cloud-endpoints-api)  | Networking information needed for some table functions and connections |
+| [Accessing S3 data securely](/cloud/data-sources/secure-s3)     | Access external data sources in AWS S3 using role based access         |
+| [Accessing GCS data securely](/cloud/data-sources/secure-gcs)   | Access external data sources in GCS securely using HMAC keys           |
 
 ## Additional connections for external data sources {#additional-connections-for-external-data-sources}
 

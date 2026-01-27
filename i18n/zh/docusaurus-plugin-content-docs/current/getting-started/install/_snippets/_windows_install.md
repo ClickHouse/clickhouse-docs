@@ -1,6 +1,6 @@
-# 在 Windows 上通过 WSL 安装 ClickHouse {#install-clickhouse-on-windows-with-wsl}
+# 在 Windows 上通过 WSL 安装 ClickHouse \{#install-clickhouse-on-windows-with-wsl\}
 
-## 要求 {#requirements}
+## 要求 \{#requirements\}
 
 :::note
 要在 Windows 上安装 ClickHouse，您需要 WSL（Windows Subsystem for Linux，适用于 Linux 的 Windows 子系统）。
@@ -8,7 +8,7 @@
 
 <VerticalStepper>
 
-## 安装 WSL {#install-wsl}
+## 安装 WSL \{#install-wsl\}
 
 以管理员身份打开 Windows PowerShell，并运行以下命令：
 
@@ -22,7 +22,7 @@ wsl --install
 Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
 ```
 
-## 使用 curl 脚本安装 ClickHouse {#install-clickhouse-via-script-using-curl}
+## 使用 curl 脚本安装 ClickHouse \{#install-clickhouse-via-script-using-curl\}
 
 运行以下命令，通过 curl 脚本安装 ClickHouse：
 
@@ -37,7 +37,7 @@ Successfully downloaded the ClickHouse binary, you can run it as:
   ./clickhouse
 ```
 
-## 启动 clickhouse-local {#start-clickhouse-local}
+## 启动 clickhouse-local \{#start-clickhouse-local\}
 
 `clickhouse-local` 可用于在无需任何配置的情况下，借助 ClickHouse 强大的 SQL 语法处理本地和远程文件。表数据会存储在临时位置，这意味着在重启 `clickhouse-local` 后，此前创建的表将不再可用。
 
@@ -47,7 +47,7 @@ Successfully downloaded the ClickHouse binary, you can run it as:
 ./clickhouse
 ```
 
-## 启动 clickhouse-server {#start-clickhouse-server}
+## 启动 clickhouse-server \{#start-clickhouse-server\}
 
 若要持久化数据，应运行 `clickhouse-server`。可以使用以下命令启动 ClickHouse 服务器：
 
@@ -55,7 +55,7 @@ Successfully downloaded the ClickHouse binary, you can run it as:
 ./clickhouse server
 ```
 
-## Start clickhouse-client {#start-clickhouse-client}
+## Start clickhouse-client \{#start-clickhouse-client\}
 
 服务器启动并运行后,打开新的终端窗口并运行以下命令以启动 `clickhouse-client`:
 

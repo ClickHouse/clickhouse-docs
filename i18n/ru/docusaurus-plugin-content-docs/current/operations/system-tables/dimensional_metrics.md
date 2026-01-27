@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# dimensional&#95;metrics {#dimensional_metrics}
+# dimensional&#95;metrics \{#dimensional_metrics\}
 
 <SystemTableCloud />
 
@@ -37,15 +37,15 @@ FROM system.dimensional_metrics
 FORMAT Prometheus
 ```
 
-## Описание метрик {#metric_descriptions}
+## Описание метрик \{#metric_descriptions\}
 
-### merge_failures {#merge_failures}
+### merge_failures \{#merge_failures\}
 Общее количество неудачных слияний с момента запуска.
 
-### startup_scripts_failure_reason {#startup_scripts_failure_reason}
+### startup_scripts_failure_reason \{#startup_scripts_failure_reason\}
 Отражает причины ошибок стартовых скриптов по типу ошибки. При неудачном выполнении стартового скрипта устанавливается в 1, при этом в метке указывается имя ошибки.
 
-### merge_tree_parts {#merge_tree_parts}
+### merge_tree_parts \{#merge_tree_parts\}
 Количество частей данных MergeTree с метками, указывающими состояние части, тип части и то, является ли она частью проекции.
 
 **См. также**

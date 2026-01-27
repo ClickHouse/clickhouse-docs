@@ -12,9 +12,9 @@ doc_type: 'guide'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# 使用 TTL（存活时间）管理数据 {#manage-data-with-ttl-time-to-live}
+# 使用 TTL（存活时间）管理数据 \{#manage-data-with-ttl-time-to-live\}
 
-## TTL 概述 {#overview-of-ttl}
+## TTL 概述 \{#overview-of-ttl\}
 
 TTL（time-to-live，生存时间）指的是在经过一定时间间隔后，将行或列移动、删除或进行汇总处理的能力。尽管 “time-to-live” 这个表达听起来好像只适用于删除旧数据，但 TTL 实际上有多种用法：
 
@@ -26,7 +26,7 @@ TTL（time-to-live，生存时间）指的是在经过一定时间间隔后，�
 TTL 可以应用于整张表或特定列。
 :::
 
-## TTL 语法 {#ttl-syntax}
+## TTL 语法 \{#ttl-syntax\}
 
 `TTL` 子句可以出现在列定义之后和/或表定义的末尾。使用 `INTERVAL` 子句来定义一段时间（其数据类型必须为 `Date` 或 `DateTime`）。例如，下表中有两列带有 `TTL` 子句：
 
@@ -62,7 +62,7 @@ ClickHouse 删除整个分区比删除单独的行要高效得多。
   :::
 
 
-## 触发 TTL 事件 {#triggering-ttl-events}
+## 触发 TTL 事件 \{#triggering-ttl-events\}
 
 过期行的删除或聚合并不会立即进行——它只会在表合并期间发生。如果你有一张由于某种原因没有主动进行合并的表，可以通过以下两个设置来触发 TTL 事件：
 
@@ -82,7 +82,7 @@ OPTIMIZE TABLE example1 FINAL
 :::
 
 
-## 删除行 {#removing-rows}
+## 删除行 \{#removing-rows\}
 
 要在经过一段时间后从表中删除整行，请在表级别定义 TTL 规则：
 
@@ -116,7 +116,7 @@ TTL time + INTERVAL 1 MONTH DELETE WHERE event != 'error',
 ```
 
 
-## 移除列 {#removing-columns}
+## 移除列 \{#removing-columns\}
 
 假设你并不想删除整行数据，而是只希望 `balance` 和 `address` 两列过期。让我们修改 `customers` 表，并为这两列都添加一个 2 小时的 TTL：
 
@@ -127,7 +127,7 @@ MODIFY COLUMN address String TTL timestamp + INTERVAL 2 HOUR
 ```
 
 
-## 实现汇总（rollup） {#implementing-a-rollup}
+## 实现汇总（rollup） \{#implementing-a-rollup\}
 
 假设我们希望在一定时间后删除行，但出于报表用途仍保留部分数据。我们并不需要所有明细——只需要一些历史数据的聚合结果。可以通过在 `TTL` 表达式中添加 `GROUP BY` 子句，并在表中添加一些列来存储这些聚合结果来实现这一点。
 
@@ -157,7 +157,7 @@ TTL timestamp + INTERVAL 1 DAY
 * 将 `max_hits` 和 `sum_hits` 的默认值设置为 `hits` 是保证我们的逻辑生效所必需的，这取决于 `SET` 子句的定义方式
 
 
-## 实现热/温/冷架构 {#implementing-a-hotwarmcold-architecture}
+## 实现热/温/冷架构 \{#implementing-a-hotwarmcold-architecture\}
 
 <CloudNotSupportedBadge />
 

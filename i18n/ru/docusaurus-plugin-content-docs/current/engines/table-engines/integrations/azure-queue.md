@@ -8,11 +8,11 @@ title: 'Табличный движок AzureQueue'
 doc_type: 'reference'
 ---
 
-# Табличный движок AzureQueue {#azurequeue-table-engine}
+# Табличный движок AzureQueue \{#azurequeue-table-engine\}
 
 Этот движок обеспечивает интеграцию с экосистемой [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) и поддерживает потоковый импорт данных.
 
-## Создание таблицы {#creating-a-table}
+## Создание таблицы \{#creating-a-table\}
 
 ```sql
 CREATE TABLE test (name String, value UInt32)
@@ -42,14 +42,14 @@ ENGINE = AzureQueue('DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;
 SETTINGS mode = 'unordered'
 ```
 
-## Settings {#settings}
+## Settings \{#settings\}
 
 Набор поддерживаемых настроек в основном совпадает с набором для движка таблиц `S3Queue`, но без префикса `s3queue_`. См. [полный список настроек](../../../engines/table-engines/integrations/s3queue.md#settings).
 Чтобы получить список настроек, заданных для таблицы, используйте таблицу `system.azure_queue_settings`. Доступно начиная с версии `24.10`.
 
 Ниже приведены настройки, совместимы только с AzureQueue и не применяются к S3Queue.
 
-### `after_processing_move_connection_string` {#after_processing_move_connection_string}
+### `after_processing_move_connection_string` \{#after_processing_move_connection_string\}
 
 Строка подключения к Azure Blob Storage, в которую будут перемещаться успешно обработанные файлы, если в качестве назначения используется другой контейнер Azure.
 
@@ -59,7 +59,7 @@ SETTINGS mode = 'unordered'
 
 Значение по умолчанию: пустая строка.
 
-### `after_processing_move_container` {#after_processing_move_container}
+### `after_processing_move_container` \{#after_processing_move_container\}
 
 Имя контейнера, в который необходимо переместить успешно обработанные файлы, если целевым контейнером является другой контейнер Azure.
 
@@ -85,13 +85,13 @@ SETTINGS
     after_processing_move_container = 'dst-container';
 ```
 
-## SELECT из движка таблицы AzureQueue {#select}
+## SELECT из движка таблицы AzureQueue \{#select\}
 
 Запросы SELECT по умолчанию запрещены для таблиц AzureQueue. Это соответствует распространённому шаблону работы с очередями, при котором данные читаются один раз и затем удаляются из очереди. SELECT запрещён для предотвращения случайной потери данных.
 Однако иногда это может быть полезно. Для этого необходимо установить параметр `stream_like_engine_allow_direct_select` в значение `True`.
 Движок AzureQueue имеет специальный параметр для запросов SELECT: `commit_on_select`. Установите его в `False`, чтобы сохранять данные в очереди после чтения, или в `True`, чтобы удалять их.
 
-## Описание {#description}
+## Описание \{#description\}
 
 `SELECT` не особенно полезен для потокового импорта (кроме отладки), потому что каждый файл можно импортировать только один раз. Гораздо практичнее создавать потоки в реальном времени с использованием [материализованных представлений](../../../sql-reference/statements/create/view.md). Для этого:
 
@@ -118,14 +118,14 @@ CREATE MATERIALIZED VIEW consumer TO stats
 SELECT * FROM stats ORDER BY key;
 ```
 
-## Виртуальные столбцы {#virtual-columns}
+## Виртуальные столбцы \{#virtual-columns\}
 
 - `_path` — путь к файлу.
 - `_file` — имя файла.
 
 Подробнее о виртуальных столбцах см. [здесь](../../../engines/table-engines/index.md#table_engines-virtual_columns).
 
-## Интроспекция {#introspection}
+## Интроспекция \{#introspection\}
 
 Включите логирование для таблицы с помощью настройки таблицы `enable_logging_to_queue_log=1`.
 

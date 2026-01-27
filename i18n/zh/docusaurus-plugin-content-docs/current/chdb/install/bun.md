@@ -7,27 +7,27 @@ keywords: ['chdb', 'bun', 'javascript', 'typescript', 'embedded', 'clickhouse', 
 doc_type: 'guide'
 ---
 
-# Bun 上的 chDB {#chdb-for-bun}
+# Bun 上的 chDB \{#chdb-for-bun\}
 
 chDB-bun 为 chDB 提供了实验性的 FFI（Foreign Function Interface，外部函数接口）绑定，使你能够在你的 Bun 应用中直接运行 ClickHouse 查询，而无需任何外部依赖。
 
-## 安装 {#installation}
+## 安装 \{#installation\}
 
-### 步骤 1：安装系统依赖项 {#install-system-dependencies}
+### 步骤 1：安装系统依赖项 \{#install-system-dependencies\}
 
 首先安装所需的系统依赖项：
 
-#### 安装 libchdb {#install-libchdb}
+#### 安装 libchdb \{#install-libchdb\}
 
 ```bash
 curl -sL https://lib.chdb.io | bash
 ```
 
-#### 安装构建工具 {#install-build-tools}
+#### 安装构建工具 \{#install-build-tools\}
 
 你需要在系统上安装 `gcc` 或 `clang` 中的一个：
 
-### 步骤 2：安装 chDB-bun {#install-chdb-bun}
+### 步骤 2：安装 chDB-bun \{#install-chdb-bun\}
 
 ```bash
 # Install from the GitHub repository
@@ -71,7 +71,7 @@ console.log(systemInfo);
 
 chDB-bun 支持两种查询模式：用于一次性操作的临时查询，以及用于维护数据库状态的持久会话。
 
-### 临时查询 {#persistent-sessions}
+### 临时查询 \{#persistent-sessions\}
 
 适用于不需要保留状态的简单一次性查询：
 

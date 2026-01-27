@@ -7,11 +7,11 @@ title: 'ExternalDistributed テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# ExternalDistributed テーブルエンジン {#externaldistributed-table-engine}
+# ExternalDistributed テーブルエンジン \{#externaldistributed-table-engine\}
 
 `ExternalDistributed` エンジンを使用すると、リモートサーバー上の MySQL または PostgreSQL に保存されているデータに対して `SELECT` クエリを実行できます。引数として [MySQL](../../../engines/table-engines/integrations/mysql.md) または [PostgreSQL](../../../engines/table-engines/integrations/postgresql.md) エンジンを指定できるため、シャーディングが可能です。
 
-## テーブルを作成する {#creating-a-table}
+## テーブルを作成する \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -38,7 +38,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 * `user` — ユーザー名。
 * `password` — ユーザーのパスワード。
 
-## 実装の詳細 {#implementation-details}
+## 実装の詳細 \{#implementation-details\}
 
 複数レプリカ構成をサポートしており、レプリカは `|` で、分片は `,` で区切って列挙する必要があります。例えば次のようになります。
 

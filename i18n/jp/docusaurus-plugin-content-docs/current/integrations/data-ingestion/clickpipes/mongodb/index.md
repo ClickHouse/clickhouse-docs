@@ -20,7 +20,7 @@ import ch_permissions from '@site/static/images/integrations/data-ingestion/clic
 import Image from '@theme/IdealImage';
 import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 
-# MongoDB から ClickHouse へのデータ取り込み（CDC の使用） {#ingesting-data-from-mongodb-to-clickhouse-using-cdc}
+# MongoDB から ClickHouse へのデータ取り込み（CDC の使用） \{#ingesting-data-from-mongodb-to-clickhouse-using-cdc\}
 
 <BetaBadge/>
 
@@ -34,7 +34,7 @@ ClickHouse Cloud のコンソールおよびドキュメントでは、MongoDB �
 
 ClickPipes を使用すると、MongoDB データベースから ClickHouse Cloud にデータを取り込むことができます。ソースとなる MongoDB データベースは、オンプレミス環境でホストすることも、MongoDB Atlas のようなサービスを利用してクラウド上にホストすることもできます。
 
-## 前提条件 {#prerequisites}
+## 前提条件 \{#prerequisites\}
 
 作業を開始する前に、MongoDB データベースがレプリケーション用に正しく構成されていることを確認する必要があります。構成手順は MongoDB のデプロイ方法によって異なるため、以下の該当するガイドに従ってください。
 
@@ -46,7 +46,7 @@ ClickPipes を使用すると、MongoDB データベースから ClickHouse Clou
 
 ソース MongoDB データベースのセットアップが完了したら、ClickPipe の作成に進みます。
 
-## ClickPipe を作成する {#create-your-clickpipe}
+## ClickPipe を作成する \{#create-your-clickpipe\}
 
 ClickHouse Cloud アカウントにログインしていることを確認してください。まだアカウントがない場合は、[こちら](https://cloud.clickhouse.com/)からサインアップできます。
 
@@ -62,7 +62,7 @@ ClickHouse Cloud アカウントにログインしていることを確認して
 
 <Image img={mongodb_tile} alt="MongoDB を選択" size="lg" border/>
 
-### ソース MongoDB データベース接続を追加する {#add-your-source-mongodb-database-connection}
+### ソース MongoDB データベース接続を追加する \{#add-your-source-mongodb-database-connection\}
 
 4. 事前準備のステップで設定したソース MongoDB データベースの接続情報を入力します。
 
@@ -73,7 +73,7 @@ ClickHouse Cloud アカウントにログインしていることを確認して
 
    <Image img={mongodb_connection_details} alt="接続情報を入力" size="lg" border/>
 
-#### （オプション）SSH トンネリングを設定する {#optional-set-up-ssh-tunneling}
+#### （オプション）SSH トンネリングを設定する \{#optional-set-up-ssh-tunneling\}
 
 ソース MongoDB データベースがインターネットから直接アクセスできない場合は、SSH トンネリングの詳細を指定できます。
 
@@ -91,7 +91,7 @@ ClickPipes が SSH トンネルを確立できるように、SSH バスティオ
 
 接続情報の入力が完了したら、`Next` をクリックします。
 
-#### 詳細設定を構成する {#advanced-settings}
+#### 詳細設定を構成する \{#advanced-settings\}
 
 必要に応じて詳細設定を構成できます。各設定の概要は次のとおりです。
 
@@ -99,7 +99,7 @@ ClickPipes が SSH トンネルを確立できるように、SSH バスティオ
 - **Pull batch size**: 1 回のバッチでフェッチする行数です。これはベストエフォートの設定であり、すべての場合で厳密に守られるとは限りません。
 - **Snapshot number of tables in parallel**: 初期スナップショット時に並列でフェッチするテーブル数です。多数のテーブルがある場合に、並列でフェッチするテーブル数を制御したいときに有用です。
 
-### テーブルを構成する {#configure-the-tables}
+### テーブルを構成する \{#configure-the-tables\}
 
 5. ここで ClickPipe の宛先データベースを選択できます。既存のデータベースを選択することも、新規に作成することもできます。
 
@@ -107,17 +107,17 @@ ClickPipes が SSH トンネルを確立できるように、SSH バスティオ
 
 6. ソース MongoDB データベースからレプリケートしたいテーブルを選択できます。テーブルを選択する際、宛先の ClickHouse データベースでテーブル名を変更することもできます。
 
-### 権限を確認して ClickPipe を開始する {#review-permissions-and-start-the-clickpipe}
+### 権限を確認して ClickPipe を開始する \{#review-permissions-and-start-the-clickpipe\}
 
 7. 権限のドロップダウンから "Full access" ロールを選択し、"Complete Setup" をクリックします。
 
    <Image img={ch_permissions} alt="権限を確認" size="lg" border/>
 
-## 次のステップ {#whats-next}
+## 次のステップ \{#whats-next\}
 
 MongoDB から ClickHouse Cloud へデータをレプリケートする ClickPipe のセットアップが完了したら、最適なパフォーマンスを得るために、データのクエリ方法とモデリング方法に集中できます。
 
-## 注意事項 {#caveats}
+## 注意事項 \{#caveats\}
 
 このコネクタを使用する際の注意事項は次のとおりです。
 

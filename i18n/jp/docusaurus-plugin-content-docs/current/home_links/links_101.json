@@ -1,27 +1,27 @@
 [
   {
     "title": "SQL リファレンス",
-    "description": "利用可能なステートメント、関数、データ型について学ぶ",
+    "description": "利用可能な文、関数、データ型について確認します",
     "url": "/docs/sql-reference"
   },
   {
     "title": "データを取り込む",
-    "description": "ClickHouse にデータを取り込むさまざまな方法を探る",
+    "description": "ClickHouse へのデータ取り込み方法を確認します",
     "url": "/docs/integrations/data-ingestion/"
   },
   {
     "title": "データを可視化する",
-    "description": "データが ClickHouse に取り込まれたので、次はその分析に進みましょう",
+    "description": "データが ClickHouse に取り込まれたら、次はそれを分析します",
     "url": "/docs/integrations/data-visualization/"
   },
   {
-    "title": "データの最適化",
-    "description": "ClickHouse サービスのパフォーマンスを改善する方法",
+    "title": "データを最適化する",
+    "description": "ClickHouse サービスのパフォーマンスを最適化する",
     "url": "/docs/optimize/"
   },
   {
-    "title": "データの移行",
-    "description": "外部ソースから ClickHouse へデータをインポートする",
+    "title": "データ移行",
+    "description": "外部ソースから ClickHouse へのデータ取り込み",
     "url": "/docs/integrations/migration/"
   }
 ]

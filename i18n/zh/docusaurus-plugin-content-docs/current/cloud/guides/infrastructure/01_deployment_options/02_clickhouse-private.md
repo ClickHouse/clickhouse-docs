@@ -10,7 +10,7 @@ import Image from '@theme/IdealImage';
 import private_gov_architecture from '@site/static/images/cloud/reference/private-gov-architecture.png';
 
 
-## 概览 {#overview}
+## 概览 \{#overview\}
 
 ClickHouse Private 是一个自托管的软件包，由与 ClickHouse Cloud 上运行的相同 ClickHouse 专有版本以及我们的 ClickHouse Operator 组成，并配置为实现计算与存储分离。它部署在使用 S3 兼容存储的 Kubernetes 环境中。
 
@@ -22,20 +22,20 @@ ClickHouse Private 专为具有最严格合规要求的大型企业设计，可�
 
 
 
-## 相较开源的优势 {#benefits-over-os}
+## 相较开源的优势 \{#benefits-over-os\}
 
 以下特性使 ClickHouse Private 有别于自管型开源部署：
 
 <VerticalStepper headerLevel="h3">
 
-### 性能优化 {#enhanced-performance}
+### 性能优化 \{#enhanced-performance\}
 - 原生支持计算与存储分离
 - 专有云端能力，例如 [shared merge tree](/cloud/reference/shared-merge-tree) 和 [warehouse](/cloud/reference/warehouses) 功能
 
-### 在多种用例和运行条件下充分验证 {#tested-proven-through-variety-of-use-cases}
+### 在多种用例和运行条件下充分验证 \{#tested-proven-through-variety-of-use-cases\}
 - 在 ClickHouse Cloud 中经过完整测试与验证
 
-### 完善的功能路线图并持续引入新特性 {#full-featured-roadmap}
+### 完善的功能路线图并持续引入新特性 \{#full-featured-roadmap\}
 即将推出的其他特性包括：
 - 用于以编程方式管理资源的 API
   - 自动备份
@@ -46,7 +46,7 @@ ClickHouse Private 专为具有最严格合规要求的大型企业设计，可�
 
 
 
-## 架构 {#architecture}
+## 架构 \{#architecture\}
 
 ClickHouse Private 在您的部署环境中完全自包含，由在 Kubernetes 中管理的计算资源以及使用 S3 兼容存储方案的存储组成。
 
@@ -58,17 +58,17 @@ ClickHouse Private 在您的部署环境中完全自包含，由在 Kubernetes �
 
 
 
-## 接入流程 {#onboarding-process}
+## 接入流程 \{#onboarding-process\}
 
 客户可以通过[联系我们](https://clickhouse.com/company/contact?loc=nav)来开始接入流程。对于符合条件的客户，我们将提供详细的环境搭建指南，以及用于部署的镜像和 Helm 图表的访问权限。
 
 
 
-## 一般要求 {#general-requirements}
+## 一般要求 \{#general-requirements\}
 
 本节旨在概述部署 ClickHouse Private 所需的资源。具体的部署指南将在接入过程中提供。实例/服务器类型和规格取决于具体使用场景。
 
-### 在 AWS 上运行 ClickHouse Private {#clickhouse-private-aws}
+### 在 AWS 上运行 ClickHouse Private \{#clickhouse-private-aws\}
 
 所需资源：
 - [ECR](https://docs.aws.amazon.com/ecr/) 用于接收镜像和 Helm 图表
@@ -79,7 +79,7 @@ ClickHouse Private 在您的部署环境中完全自包含，由在 Kubernetes �
 - 如需入口（Ingress），还需配置 NLB
 - 每个 ClickHouse 集群需要一个 AWS 角色，用于 clickhouse-server/keeper 操作
 
-### 在 IBM Cloud 上运行 ClickHouse Private {#clickhouse-private-ibm-cloud}
+### 在 IBM Cloud 上运行 ClickHouse Private \{#clickhouse-private-ibm-cloud\}
 
 所需资源：
 - [Container Registry](https://cloud.ibm.com/docs/Registry?topic=Registry-getting-started) 用于接收镜像和 Helm 图表

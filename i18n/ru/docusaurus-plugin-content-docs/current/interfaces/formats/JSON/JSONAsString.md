@@ -13,7 +13,7 @@ doc_type: 'reference'
 |------|--------|-----------|
 | ✔    | ✗      |           |
 
-## Описание {#description}
+## Описание \{#description\}
 
 В этом формате один JSON-объект интерпретируется как одно значение. 
 Если на вход передано несколько JSON-объектов (разделённых запятыми), они интерпретируются как отдельные строки. 
@@ -27,9 +27,9 @@ doc_type: 'reference'
 
 После того как вы сериализуете весь JSON-объект в значение типа String, вы можете использовать [JSON-функции](/sql-reference/functions/json-functions.md) для его обработки.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
-### Простой пример {#basic-example}
+### Простой пример \{#basic-example\}
 
 ```sql title="Query"
 DROP TABLE IF EXISTS json_as_string;
@@ -46,7 +46,7 @@ SELECT * FROM json_as_string;
 └───────────────────────────────────┘
 ```
 
-### Массив объектов JSON {#an-array-of-json-objects}
+### Массив объектов JSON \{#an-array-of-json-objects\}
 
 ```sql title="Query"
 CREATE TABLE json_square_brackets (field String) ENGINE = Memory;
@@ -62,4 +62,4 @@ SELECT * FROM json_square_brackets;
 └────────────────────────────┘
 ```
 
-## Параметры форматирования {#format-settings}
+## Параметры форматирования \{#format-settings\}

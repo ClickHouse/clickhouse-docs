@@ -11,13 +11,13 @@ doc_type: 'reference'
 |------|-------|----------------------|
 | ✔    | ✔     | `JSONLines`, `NDJSON` |
 
-## Описание {#description}
+## Описание \{#description\}
 
 В этом формате ClickHouse выводит каждую строку в виде отдельного JSON-объекта, отделённого символом новой строки.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
-### Вставка данных {#inserting-data}
+### Вставка данных \{#inserting-data\}
 
 Используйте JSON-файл со следующими данными с именем `football.json`:
 
@@ -47,7 +47,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONEachRow;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных \{#reading-data\}
 
 Прочитайте данные в формате `JSONEachRow`:
 
@@ -81,4 +81,4 @@ FORMAT JSONEachRow
 
 Импорт столбцов с неизвестными именами будет пропускаться, если параметр [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлен в 1.
 
-## Параметры форматирования {#format-settings}
+## Параметры форматирования \{#format-settings\}

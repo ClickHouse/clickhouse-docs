@@ -9,9 +9,13 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# PostgreSQL 接口 {#postgresql-interface}
+# PostgreSQL 接口 \{#postgresql-interface\}
 
 <CloudNotSupportedBadge />
+
+:::tip
+查看我们的 [Managed Postgres](/docs/cloud/managed-postgres) 服务。该服务基于与计算节点物理同机部署的 NVMe 存储，相比使用 EBS 等网络附加存储的替代方案，对于受磁盘 I/O 限制的工作负载可提供高达 10 倍的性能提升，并允许你通过 ClickPipes 中的 Postgres CDC（变更数据捕获）连接器将 Postgres 数据复制到 ClickHouse。
+:::
 
 ClickHouse 支持 PostgreSQL 线协议，这使你可以使用 PostgreSQL 客户端连接到 ClickHouse。在某种意义上，ClickHouse 可以充当一个 PostgreSQL 实例——从而允许你将 PostgreSQL 客户端应用程序连接到 ClickHouse，即便该应用程序本身并不直接支持 ClickHouse（例如 Amazon Redshift）。
 
@@ -29,7 +33,7 @@ ClickHouse 支持 PostgreSQL 线协议，这使你可以使用 PostgreSQL 客户
 {} <Information> Application: Listening for PostgreSQL compatibility protocol: 127.0.0.1:9005
 ```
 
-## 使用 psql 连接 ClickHouse {#connect-psql-to-clickhouse}
+## 使用 psql 连接 ClickHouse \{#connect-psql-to-clickhouse\}
 
 以下命令演示了如何使用 PostgreSQL 客户端 `psql` 连接到 ClickHouse：
 
@@ -65,7 +69,7 @@ default=>
 PostgreSQL 协议目前仅支持明文密码。
 :::
 
-## 使用 SSL {#using-ssl}
+## 使用 SSL \{#using-ssl\}
 
 如果你的 ClickHouse 实例已经配置了 SSL/TLS，那么 `postgresql_port` 将会使用相同的设置（该端口同时供加密和未加密客户端共享）。
 
@@ -75,7 +79,7 @@ PostgreSQL 协议目前仅支持明文密码。
 psql "port=9005 host=127.0.0.1 user=alice dbname=default sslcert=/path/to/certificate.pem sslkey=/path/to/key.pem sslrootcert=/path/to/rootcert.pem sslmode=verify-ca"
 ```
 
-## 使用 SCRAM-SHA-256 配置 ClickHouse 用户认证 {#using-scram-sha256}
+## 使用 SCRAM-SHA-256 配置 ClickHouse 用户认证 \{#using-scram-sha256\}
 
 为确保 ClickHouse 用户身份验证的安全性，建议使用 SCRAM-SHA-256 协议。通过在 users.xml 文件中指定 `password_scram_sha256_hex` 元素来配置用户。密码哈希必须使用 num&#95;iterations=4096 参数生成。
 

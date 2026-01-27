@@ -8,17 +8,17 @@ doc_type: 'guide'
 
 import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-# S3 エンドポイントを利用したバックアップ / リストア {#backup-to-a-local-disk}
+# S3 エンドポイントを利用したバックアップ / リストア \{#backup-to-a-local-disk\}
 
 この記事では、S3 エンドポイント経由で S3 バケットにバックアップを保存したり、S3 バケット上のバックアップからリストアしたりする方法について説明します。
 
-## 構文 {#syntax}
+## 構文 \{#syntax\}
 
 <Syntax/>
 
-## 使用例 {#usage-examples}
+## 使用例 \{#usage-examples\}
 
-### S3エンドポイントへの増分バックアップ {#incremental-backup-to-an-s3-endpoint}
+### S3エンドポイントへの増分バックアップ \{#incremental-backup-to-an-s3-endpoint\}
 
 この例では、S3エンドポイントへバックアップを作成し、そこから復元を行います。
 
@@ -47,7 +47,7 @@ S3('<s3 endpoint>/<directory>', '<access key id>', '<secret access key>', '<extr
 <br/>
 <VerticalStepper headerLevel="h4">
 
-#### セットアップ {#create-a-table}
+#### セットアップ \{#create-a-table\}
 
 以下のデータベースとテーブルを作成し、ランダムなデータを挿入します:
 
@@ -69,7 +69,7 @@ FROM generateRandom('key Int, value String, array Array(String)')
 LIMIT 1000
 ```
 
-#### ベースバックアップの作成 {#create-a-base-initial-backup}
+#### ベースバックアップの作成 \{#create-a-base-initial-backup\}
 
 増分バックアップには、開始点となる_ベース_バックアップが必要です。S3保存先の最初のパラメータはS3エンドポイントで、その後にこのバックアップに使用するバケット内のディレクトリが続きます。この例では、ディレクトリ名は`my_backup`です。
 
@@ -89,7 +89,7 @@ BACKUP TABLE test_db.test_table TO S3(
 └──────────────────────────────────────┴────────────────┘
 ```
 
-#### データの追加 {#add-more-data}
+#### データの追加 \{#add-more-data\}
 
 増分バックアップには、ベースバックアップとバックアップ対象テーブルの現在の内容との差分が格納されます。増分バックアップを取得する前に、さらにデータを追加します:
 
@@ -99,7 +99,7 @@ FROM generateRandom('key Int, value String, array Array(String)')
 LIMIT 100
 ```
 
-#### 増分バックアップの取得 {#take-an-incremental-backup}
+#### 増分バックアップの取得 \{#take-an-incremental-backup\}
 
 このバックアップコマンドはベースバックアップと似ていますが、`SETTINGS base_backup`とベースバックアップの場所が追加されています。増分バックアップの保存先はベースと同じディレクトリではなく、同じエンドポイントでバケット内の異なるターゲットディレクトリであることに注意してください。ベースバックアップは`my_backup`にあり、増分は`my_incremental`に書き込まれます:
 
@@ -122,7 +122,7 @@ SETTINGS base_backup = S3(
 └──────────────────────────────────────┴────────────────┘
 ```
 
-#### 増分バックアップからの復元 {#restore-from-the-incremental-backup}
+#### 増分バックアップからの復元 \{#restore-from-the-incremental-backup\}
 
 このコマンドは、増分バックアップを新しいテーブル`test_table_restored`に復元します。  
 増分バックアップを復元する際、ベースバックアップも含まれることに注意してください。
@@ -142,7 +142,7 @@ RESTORE TABLE data AS test_db.test_table_restored FROM S3(
 └──────────────────────────────────────┴──────────┘
 ```
 
-#### 件数の検証 {#verify-the-count}
+#### 件数の検証 \{#verify-the-count\}
 
 元のテーブル`data`には2回の挿入が行われ、1回目は1,000行、2回目は100行で、合計1,100行です。
 復元されたテーブルに1,100行が含まれていることを検証します:
@@ -158,7 +158,7 @@ FROM test_db.test_table_restored
 └─────────┘
 ```
 
-#### 内容の検証 {#verify-the-content}
+#### 内容の検証 \{#verify-the-content\}
 
 元のテーブル`test_table`の内容と復元されたテーブル`test_table_restored`の内容を比較します:
 

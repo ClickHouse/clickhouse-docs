@@ -7,11 +7,11 @@ title: 'Linux での E2K 向けビルド'
 doc_type: 'guide'
 ---
 
-# E2K 向け Linux 上でのビルド {#build-on-linux-for-e2k}
+# E2K 向け Linux 上でのビルド \{#build-on-linux-for-e2k\}
 
 ClickHouse は E2K (Elbrus-2000) を非常に実験的にサポートしており、boost、croaring、libunwind、zstd などの e2k 向けにカスタムビルドされたライブラリを使用した最小限の構成で、ネイティブモードでのみコンパイル可能です。
 
-## ClickHouse をビルドする {#build-clickhouse}
+## ClickHouse をビルドする \{#build-clickhouse\}
 
 ビルドに必要な LLVM のバージョンは 20.1.8 以上が必要です。
 

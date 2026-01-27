@@ -93,7 +93,7 @@ SELECT
 FROM s3Cluster('default','https://clickhouse-public-datasets.s3.amazonaws.com/youtube/original/files/*.zst', 'JSONLines')
 ```
 
-## initial&#95;query&#95;id VS query&#95;id \{#initial&#95;query&#95;id-vs-query&#95;id\}
+## initial_query_id VS query_id \{#initial_query_id-vs-query_id\}
 
 请注意，在 ClickHouse 集群环境（例如 ClickHouse Cloud）中，`initial_query_id` 表示在接收请求的节点上发起的分布式查询执行的初始查询 ID；此时 `query_id` 字段则包含在其他节点上执行的子查询 ID。
 
@@ -158,7 +158,7 @@ SELECT
     ProfileEvents.Values[indexOf(ProfileEvents.Names, 'SystemTimeMicroseconds')] AS systemCPU,
     normalizedQueryHash(query) AS normalized_query_hash
 FROM clusterAllReplicas(default, system.query_log)
-WHERE (query_id = initial_query_id) AND (initial_query_id = 'a7262fa2-bd8b-4b51-a359-621ccf282417')
+WHERE (query_id != initial_query_id) AND (initial_query_id = 'a7262fa2-bd8b-4b51-a359-621ccf282417')
 ORDER BY memory_usage DESC
 LIMIT 10 FORMAT Pretty;
 ```

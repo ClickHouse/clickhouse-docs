@@ -7,7 +7,7 @@ title: 'ClickHouse と ZooKeeper 間のセキュア通信（オプション）'
 doc_type: 'guide'
 ---
 
-# ClickHouse と Zookeeper 間のオプションのセキュア通信 {#optional-secured-communication-between-clickhouse-and-zookeeper}
+# ClickHouse と Zookeeper 間のオプションのセキュア通信 \{#optional-secured-communication-between-clickhouse-and-zookeeper\}
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 

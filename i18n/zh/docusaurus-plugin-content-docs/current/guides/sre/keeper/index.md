@@ -9,7 +9,7 @@ title: 'ClickHouse Keeper'
 doc_type: 'guide'
 ---
 
-# ClickHouse Keeper（clickhouse-keeper） {#clickhouse-keeper-clickhouse-keeper}
+# ClickHouse Keeper（clickhouse-keeper） \{#clickhouse-keeper-clickhouse-keeper\}
 
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 
@@ -17,7 +17,7 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 
 ClickHouse Keeper 为数据[复制](/engines/table-engines/mergetree-family/replication.md)和[分布式 DDL](/sql-reference/distributed-ddl.md) 查询执行提供协调系统。ClickHouse Keeper 与 ZooKeeper 兼容。
 
-### 实现细节 {#implementation-details}
+### 实现细节 \{#implementation-details\}
 
 ZooKeeper 是最早广为人知的开源协调系统之一。它用 Java 实现，具有相当简单而强大的数据模型。ZooKeeper 的协调算法 ZooKeeper Atomic Broadcast (ZAB) 不为读操作提供线性一致性保证，因为每个 ZooKeeper 节点本地提供读服务。与 ZooKeeper 不同，ClickHouse Keeper 使用 C++ 编写，并采用 [RAFT 算法](https://raft.github.io/)的[实现](https://github.com/eBay/NuRaft)。该算法允许对读写操作提供线性一致性，并且在不同语言中有多种开源实现。
 
@@ -29,11 +29,11 @@ ClickHouse Keeper 以与 [ZooKeeper](https://zookeeper.apache.org/doc/r3.1.2/zoo
 不支持外部集成。
 :::
 
-### 配置 {#configuration}
+### 配置 \{#configuration\}
 
 ClickHouse Keeper 可以作为 ZooKeeper 的独立替代品，或作为 ClickHouse 服务器的内部组件使用。在这两种情况下，配置文件几乎相同，都是 `.xml` 文件。
 
-#### Keeper 配置设置 {#keeper-configuration-settings}
+#### Keeper 配置设置 \{#keeper-configuration-settings\}
 
 ClickHouse Keeper 主要的配置标签是 `<keeper_server>`，并包含以下参数：
 
@@ -57,7 +57,7 @@ ClickHouse Keeper 主要的配置标签是 `<keeper_server>`，并包含以下�
 
 其他常用参数继承自 ClickHouse 服务器配置（`listen_host`、`logger` 等）。
 
-#### 内部协调设置 {#internal-coordination-settings}
+#### 内部协调设置 \{#internal-coordination-settings\}
 
 内部协调设置位于 `<keeper_server>.<coordination_settings>` 部分，并包含以下参数：
 
@@ -146,7 +146,7 @@ ClickHouse Keeper 主要的配置标签是 `<keeper_server>`，并包含以下�
 </keeper_server>
 ```
 
-### 如何运行 {#how-to-run}
+### 如何运行 \{#how-to-run\}
 
 ClickHouse Keeper 已打包在 ClickHouse 服务器安装包中，只需在 `/etc/your_path_to_config/clickhouse-server/config.xml` 中添加 `<keeper_server>` 的配置，然后像平常一样启动 ClickHouse 服务器即可。如果你想以独立方式运行 ClickHouse Keeper，可以通过类似的方式启动它：
 
@@ -160,7 +160,7 @@ clickhouse-keeper --config /etc/your_path_to_config/config.xml
 clickhouse keeper --config /etc/your_path_to_config/config.xml
 ```
 
-### 四字母命令 {#four-letter-word-commands}
+### 四字母命令 \{#four-letter-word-commands\}
 
 ClickHouse Keeper 也提供了与 ZooKeeper 基本相同的 4lw 命令。每个命令由四个字母组成，例如 `mntr`、`stat` 等。其中有一些更为实用的命令：`stat` 提供关于服务器及其已连接客户端的一些通用信息，而 `srvr` 和 `cons` 则分别提供关于服务器和连接的详细信息。
 
@@ -408,7 +408,7 @@ AIOWriteBytes   0       Number of bytes written with Linux or FreeBSD AIO interf
 ...
 ```
 
-### HTTP 控制接口 {#http-control}
+### HTTP 控制接口 \{#http-control\}
 
 ClickHouse Keeper 提供了一个 HTTP 接口，用于检查副本是否已准备好接收请求。它可用于云环境中，例如 [Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)。
 
@@ -427,7 +427,7 @@ ClickHouse Keeper 提供了一个 HTTP 接口，用于检查副本是否已准�
 </clickhouse>
 ```
 
-### 功能开关（Feature flags） {#feature-flags}
+### 功能开关（Feature flags） \{#feature-flags\}
 
 Keeper 与 ZooKeeper 及其客户端完全兼容，但它也为 ClickHouse 客户端引入了一些独特的功能和请求类型。
 由于这些功能可能会引入向后不兼容的变更，因此大多数功能默认处于禁用状态，可以通过 `keeper_server.feature_flags` 配置启用。
@@ -462,7 +462,7 @@ Keeper 与 ZooKeeper 及其客户端完全兼容，但它也为 ClickHouse 客�
 将 Keeper 升级到 25.7+ 的推荐方式是先升级到 24.9+ 版本。
 :::
 
-### 从 ZooKeeper 迁移 {#migration-from-zookeeper}
+### 从 ZooKeeper 迁移 \{#migration-from-zookeeper\}
 
 无法实现从 ZooKeeper 到 ClickHouse Keeper 的无缝迁移。需要先停止 ZooKeeper 集群、转换数据，然后再启动 ClickHouse Keeper。`clickhouse-keeper-converter` 工具可将 ZooKeeper 日志和快照转换为 ClickHouse Keeper 快照。它仅适用于 ZooKeeper 3.4 及以上版本。迁移步骤如下：
 
@@ -489,7 +489,7 @@ clickhouse keeper-converter ...
 Otherwise, you can [download the binary](/getting-started/quick-start/oss#download-the-binary) and run the tool as described above without installing ClickHouse.
 :::
 
-### 在丢失法定人数后的恢复 {#recovering-after-losing-quorum}
+### 在丢失法定人数后的恢复 \{#recovering-after-losing-quorum\}
 
 由于 ClickHouse Keeper 使用 Raft，它可以在一定程度上容忍节点宕机，具体取决于集群规模。\
 例如，对于一个 3 节点集群，如果只有 1 个节点宕机，它仍然可以正常工作。
@@ -516,7 +516,7 @@ Raft 将停止工作，并且不允许你通过常规方式重新配置集群。
 6. 在恢复模式下，leader 节点在与新节点达成法定人数之前，会对 `mntr` 命令返回错误信息，并拒绝来自客户端和 follower 的任何请求。
 7. 达成法定人数后，leader 节点会恢复到正常运行模式，使用 Raft 接受所有请求——可通过 `mntr` 进行验证，此时 `zk_server_state` 应返回 `leader`。
 
-## 在 Keeper 中使用磁盘 {#using-disks-with-keeper}
+## 在 Keeper 中使用磁盘 \{#using-disks-with-keeper\}
 
 Keeper 支持 [外部磁盘](/operations/storing-data.md) 类型中的一部分，用于存储快照、日志文件和状态文件。
 
@@ -595,7 +595,7 @@ Keeper 实例的一种可能存储配置如下所示：
 此实例会将除最新日志外的所有日志存储在 `log_s3_plain` 磁盘上，而最新日志将存储在 `log_local` 磁盘上。
 同样的逻辑也适用于快照：除最新快照外的所有快照将存储在 `snapshot_s3_plain` 磁盘上，而最新快照将存储在 `snapshot_local` 磁盘上。
 
-### 更改磁盘配置 {#changing-disk-setup}
+### 更改磁盘配置 \{#changing-disk-setup\}
 
 :::important
 在应用新的磁盘配置之前，请手动备份所有 Keeper 日志和快照。
@@ -625,7 +625,7 @@ Keeper 实例的一种可能存储配置如下所示：
 在启动时，所有日志文件都会从 `log_local` 和 `log_s3_plain` 移动到 `log_local2` 磁盘。
 同样，所有快照文件都会从 `snapshot_local` 和 `snapshot_s3_plain` 移动到 `snapshot_local2` 磁盘。
 
-## 配置日志缓存 {#configuring-logs-cache}
+## 配置日志缓存 \{#configuring-logs-cache\}
 
 为了尽量减少从磁盘读取的数据量，Keeper 会在内存中缓存日志条目。
 如果请求很大，日志条目会占用过多内存，因此缓存的日志数据量会被限制。
@@ -640,7 +640,7 @@ Keeper 实例的一种可能存储配置如下所示：
 也可以使用 Prometheus 端点中的指标来跟踪这两个缓存的当前大小。
 :::
 
-## Prometheus {#prometheus}
+## Prometheus \{#prometheus\}
 
 Keeper 可以对 [Prometheus](https://prometheus.io) 暴露指标数据，以供抓取。
 
@@ -678,11 +678,11 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
 
 另请参阅 ClickHouse Cloud 的 [Prometheus 集成](/integrations/prometheus)。
 
-## ClickHouse Keeper 用户指南 {#clickhouse-keeper-user-guide}
+## ClickHouse Keeper 用户指南 \{#clickhouse-keeper-user-guide\}
 
 本指南提供了一组简单且最小化的设置，用于配置 ClickHouse Keeper，并通过一个示例演示如何测试分布式操作。该示例在 Linux 上使用 3 个节点完成。
 
-### 1. 使用 Keeper 设置配置节点 {#1-configure-nodes-with-keeper-settings}
+### 1. 使用 Keeper 设置配置节点 \{#1-configure-nodes-with-keeper-settings\}
 
 1. 在 3 台主机（`chnode1`、`chnode2`、`chnode3`）上安装 3 个 ClickHouse 实例。（有关安装 ClickHouse 的详细信息，请参阅[快速开始](/getting-started/install/install.mdx)。）
 
@@ -767,7 +767,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
 1. Let's configure a simple cluster with 2 shards and only one replica on 2 of the nodes. The third node will be used to achieve a quorum for the requirement in ClickHouse Keeper. Update the configuration on `chnode1` and `chnode2`. The following cluster defines 1 shard on each node for a total of 2 shards with no replication. In this example, some of the data will be on node and some will be on the other node:
     ```
 
-### 2.  在 ClickHouse 中配置集群 {#2--configure-a-cluster-in-clickhouse}
+### 2.  在 ClickHouse 中配置集群 \{#2--configure-a-cluster-in-clickhouse\}
 
 1. 让我们在 2 个节点上配置一个包含 2 个分片且每个分片只有 1 个副本的简单集群。第三个节点将用于满足 ClickHouse Keeper 的仲裁（quorum）要求。在 `chnode1` 和 `chnode2` 上更新配置。下面的集群配置在每个节点上定义了 1 个分片，总计 2 个分片且无复制。在此示例中，一部分数据会位于一个节点上，另一部分数据会位于另一个节点上：
 
@@ -810,7 +810,7 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
 1.  Create a new database on the new cluster using ClickHouse client on `chnode1`. The `ON CLUSTER` clause automatically creates the database on both nodes.
     ```
 
-### 3. 创建并测试分布式表 {#3-create-and-test-distributed-table}
+### 3. 创建并测试分布式表 \{#3-create-and-test-distributed-table\}
 
 1. 使用 `chnode1` 上的 ClickHouse 客户端在新集群上创建一个新的数据库。`ON CLUSTER` 子句会自动在两个节点上创建该数据库。
    ```
@@ -903,15 +903,15 @@ a single ClickHouse shard made up of two replicas.
 Example config for cluster:
 ```
 
-### 总结 {#summary}
+### 总结 \{#summary\}
 
 本指南演示了如何使用 ClickHouse Keeper 来设置集群。借助 ClickHouse Keeper，可以配置集群并定义可以在分片间复制的分布式表。
 
-## 使用唯一路径配置 ClickHouse Keeper {#configuring-clickhouse-keeper-with-unique-paths}
+## 使用唯一路径配置 ClickHouse Keeper \{#configuring-clickhouse-keeper-with-unique-paths\}
 
 <SelfManaged />
 
-### 描述 {#description}
+### 描述 \{#description\}
 
 本文介绍如何使用内置的 `{uuid}` 宏配置项，
 在 ClickHouse Keeper 或 ZooKeeper 中创建唯一条目。唯一路径
@@ -920,7 +920,7 @@ Example config for cluster:
 去清理路径条目；每次创建路径时，都会在该路径中使用新的 `uuid`，
 路径从不复用。
 
-### 示例环境 {#example-environment}
+### 示例环境 \{#example-environment\}
 
 一个由三个节点组成的集群，将被配置为在所有三个节点上运行 ClickHouse Keeper，
 并在其中两个节点上运行 ClickHouse。这样为 ClickHouse Keeper 提供了三个节点（包括一个仲裁节点），
@@ -942,7 +942,7 @@ Example config for cluster:
 example for server 1:
 ```
 
-### 将表设置为使用 `{uuid}` 的步骤 {#procedures-to-set-up-tables-to-use-uuid}
+### 将表设置为使用 `{uuid}` 的步骤 \{#procedures-to-set-up-tables-to-use-uuid\}
 
 1. 在每台服务器上配置宏（Macros）\
    以服务器 1 为例：
@@ -1123,7 +1123,7 @@ Example command to get table information and UUID:
 Example command to get information about the table in zookeeper with UUID for the table above
 ```
 
-### 故障排查 {#troubleshooting}
+### 故障排查 \{#troubleshooting\}
 
 示例命令，用于获取表信息和 UUID：
 
@@ -1190,7 +1190,7 @@ Example:
 
 <SelfManaged />
 
-### 描述 {#description-1}
+### 描述 \{#description-1\}
 
 如果开启了 `keeper_server.enable_reconfiguration`，ClickHouse Keeper 对用于动态集群重新配置的 ZooKeeper [`reconfig`](https://zookeeper.apache.org/doc/r3.5.3-beta/zookeeperReconfig.html#sc_reconfig_modifying) 命令提供部分支持。
 
@@ -1285,7 +1285,7 @@ Keeper 重新配置实现中存在以下注意事项:
 
 为便于熟悉这一过程，这里提供了一个 [sandbox 仓库](https://github.com/ClickHouse/keeper-extend-cluster)。
 
-## 不支持的功能 {#unsupported-features}
+## 不支持的功能 \{#unsupported-features\}
 
 虽然 ClickHouse Keeper 旨在与 ZooKeeper 完全兼容，但目前仍有一些功能尚未实现（相关开发仍在进行中）：
 

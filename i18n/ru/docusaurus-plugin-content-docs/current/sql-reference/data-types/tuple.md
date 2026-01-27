@@ -7,7 +7,7 @@ title: 'Tuple(T1, T2, ...)'
 doc_type: 'reference'
 ---
 
-# Tuple(T1, T2, ...) {#tuplet1-t2}
+# Tuple(T1, T2, ...) \{#tuplet1-t2\}
 
 Кортеж элементов, каждый из которых имеет собственный [тип](/sql-reference/data-types). Кортеж должен содержать как минимум один элемент.
 
@@ -15,7 +15,7 @@ doc_type: 'reference'
 
 Кортежи могут быть результатом запроса. В этом случае в текстовых форматах, отличных от JSON, значения перечисляются через запятую в скобках. В форматах JSON кортежи выводятся как массивы (в квадратных скобках).
 
-## Создание кортежей {#creating-tuples}
+## Создание кортежей \{#creating-tuples\}
 
 Вы можете использовать функцию для создания кортежа:
 
@@ -23,7 +23,7 @@ doc_type: 'reference'
 tuple(T1, T2, ...)
 ```
 
-Пример создания tuple:
+Пример создания кортежа:
 
 ```sql
 SELECT tuple(1, 'a') AS x, toTypeName(x)
@@ -63,7 +63,7 @@ SELECT (1, 'a') AS x, (today(), rand(), 'someString') AS y, ('a') AS not_a_tuple
 └─────────┴────────────────────────────────────────┴─────────────┘
 ```
 
-## Определение типов данных {#data-type-detection}
+## Определение типов данных \{#data-type-detection\}
 
 При создании кортежей на лету ClickHouse определяет тип аргументов кортежа как наименьший возможный тип, который может вместить переданное значение аргумента. Если значение — [NULL](/operations/settings/formats#input_format_null_as_default), определённый тип — [Nullable](../../sql-reference/data-types/nullable.md).
 
@@ -79,7 +79,7 @@ SELECT tuple(1, NULL) AS x, toTypeName(x)
 └───────────┴─────────────────────────────────┘
 ```
 
-## Обращение к элементам кортежа (Tuple) {#referring-to-tuple-elements}
+## Обращение к элементам кортежа (Tuple) \{#referring-to-tuple-elements\}
 
 К элементам кортежа (Tuple) можно обращаться по имени или по индексу:
 
@@ -105,7 +105,7 @@ SELECT a.2 FROM named_tuples; -- by index
 └────────────────────┘
 ```
 
-## Операции сравнения для Tuple {#comparison-operations-with-tuple}
+## Операции сравнения для Tuple \{#comparison-operations-with-tuple\}
 
 Два кортежа сравниваются последовательным сравнением их элементов слева направо. Если первый элемент кортежа больше (меньше) соответствующего элемента второго кортежа, то первый кортеж больше (меньше) второго; иначе (если оба элемента равны) сравнивается следующий элемент.
 
@@ -181,4 +181,39 @@ ORDER BY key ASC;
 │   1 │            42 │                                    70 │
 │   2 │             2 │                                     0 │
 └─────┴───────────────┴───────────────────────────────────────┘
+```
+
+## Nullable(Tuple(T1, T2, ...)) \{#nullable-tuple\}
+
+:::warning Экспериментальная возможность
+Требуется `SET allow_experimental_nullable_tuple_type = 1`
+Это экспериментальная возможность, и она может измениться в будущих версиях.
+:::
+
+Позволяет всему кортежу быть `NULL` в отличие от `Tuple(Nullable(T1), Nullable(T2), ...)`, где `NULL` могут быть только отдельные элементы.
+
+| Тип                                        | Кортеж может быть NULL | Элементы могут быть NULL |
+| ------------------------------------------ | ---------------------- | ------------------------ |
+| `Nullable(Tuple(String, Int64))`           | ✅                      | ❌                        |
+| `Tuple(Nullable(String), Nullable(Int64))` | ❌                      | ✅                        |
+
+Пример:
+
+```sql
+SET allow_experimental_nullable_tuple_type = 1;
+
+CREATE TABLE test (
+    id UInt32,
+    data Nullable(Tuple(String, Int64))
+) ENGINE = Memory;
+
+INSERT INTO test VALUES (1, ('hello', 42)), (2, NULL);
+
+SELECT * FROM test WHERE data IS NULL;
+```
+
+```txt
+ ┌─id─┬─data─┐
+ │  2 │ ᴺᵁᴸᴸ │
+ └────┴──────┘
 ```

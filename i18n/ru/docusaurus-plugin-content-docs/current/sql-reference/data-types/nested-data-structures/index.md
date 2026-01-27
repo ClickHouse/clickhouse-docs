@@ -7,9 +7,9 @@ title: 'Nested'
 doc_type: 'guide'
 ---
 
-# Вложенные структуры {#nested}
+# Вложенные структуры \{#nested\}
 
-## Nested(name1 Type1, Name2 Type2, ...) {#nestedname1-type1-name2-type2-}
+## Nested(name1 Type1, Name2 Type2, ...) \{#nestedname1-type1-name2-type2-\}
 
 Вложенная структура данных похожа на таблицу внутри ячейки. Параметры вложенной структуры данных — имена столбцов и их типы — задаются так же, как в запросе [CREATE TABLE](../../../sql-reference/statements/create/table.md). Каждая строка таблицы может соответствовать произвольному количеству строк во вложенной структуре данных.
 

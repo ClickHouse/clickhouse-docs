@@ -5,7 +5,7 @@ title: 'EXISTS'
 doc_type: 'reference'
 ---
 
-# EXISTS {#exists}
+# EXISTS \{#exists\}
 
 `EXISTS` 运算符用于检查子查询结果中记录的数量。如果结果为空，则运算符返回 `0`；否则返回 `1`。
 

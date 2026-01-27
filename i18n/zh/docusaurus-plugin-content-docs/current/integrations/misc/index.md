@@ -6,7 +6,7 @@ description: '“工具”部分的概览页'
 doc_type: 'landing-page'
 ---
 
-# 工具 {#tools}
+# 工具 \{#tools\}
 
 | 页面              |
 |-------------------|

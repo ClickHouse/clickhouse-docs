@@ -19,20 +19,20 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# Шаблон Dataflow BigQuery to ClickHouse {#dataflow-bigquery-to-clickhouse-template}
+# Шаблон Dataflow BigQuery to ClickHouse \{#dataflow-bigquery-to-clickhouse-template\}
 
 Шаблон BigQuery to ClickHouse представляет собой пакетный конвейер обработки данных, который выполняет приём данных из таблицы BigQuery в таблицу ClickHouse.
 Шаблон может считывать всю таблицу или фильтровать определённые записи с помощью заданного SQL-запроса.
 
 <TOCInline toc={toc}   maxHeadingLevel={2}></TOCInline>
 
-## Требования к конвейеру {#pipeline-requirements}
+## Требования к конвейеру \{#pipeline-requirements\}
 
 * Исходная таблица BigQuery должна существовать.
 * Целевая таблица ClickHouse должна существовать.
 * Хост ClickHouse должен быть доступен с рабочих машин Dataflow.
 
-## Параметры шаблона {#template-parameters}
+## Параметры шаблона \{#template-parameters\}
 
 <br/>
 <br/>
@@ -60,7 +60,7 @@ import TabItem from '@theme/TabItem';
 Значения по умолчанию для всех параметров `ClickHouseIO` можно найти в [`ClickHouseIO` Apache Beam Connector](/integrations/apache-beam#clickhouseiowrite-parameters)
 :::
 
-## Схема исходных и целевых таблиц {#source-and-target-tables-schema}
+## Схема исходных и целевых таблиц \{#source-and-target-tables-schema\}
 
 Чтобы эффективно загрузить набор данных BigQuery в ClickHouse, конвейер выполняет процесс вывода схемы столбцов, состоящий из следующих этапов:
 
@@ -73,7 +73,7 @@ import TabItem from '@theme/TabItem';
 При этом ваш набор данных BigQuery (таблица или результат запроса) должен иметь точно такие же имена столбцов, как и целевая таблица ClickHouse.
 :::
 
-## Отображение типов данных {#data-types-mapping}
+## Отображение типов данных \{#data-types-mapping\}
 
 Типы BigQuery преобразуются на основе определения вашей таблицы ClickHouse. Поэтому в приведённой выше таблице перечислено
 рекомендуемое отображение, которое следует использовать в целевой таблице ClickHouse (для заданной таблицы/запроса BigQuery):
@@ -88,7 +88,7 @@ import TabItem from '@theme/TabItem';
 | [**Numeric - Integer Types**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types) | [**Integer Types**](../../../sql-reference/data-types/int-uint) | В BigQuery все типы Int (`INT`, `SMALLINT`, `INTEGER`, `BIGINT`, `TINYINT`, `BYTEINT`) являются синонимами типа `INT64`. Рекомендуется задать в ClickHouse корректный размер целочисленного типа, так как шаблон будет преобразовывать столбец на основе заданного типа столбца (`Int8`, `Int16`, `Int32`, `Int64`). Шаблон также будет преобразовывать беззнаковые целочисленные типы, если они используются в таблице ClickHouse (`UInt8`, `UInt16`, `UInt32`, `UInt64`). |
 | [**Numeric - Float Types**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types)   | [**Float Types**](../../../sql-reference/data-types/float)      | Поддерживаемые типы ClickHouse: `Float32` и `Float64`.                                                                                                                                                                                                                                                                                                                                                                 |
 
-## Запуск шаблона {#running-the-template}
+## Запуск шаблона \{#running-the-template\}
 
 Шаблон BigQuery to ClickHouse доступен для выполнения через Google Cloud CLI.
 
@@ -127,13 +127,13 @@ import TabItem from '@theme/TabItem';
   </TabItem>
   <TabItem value="cli" label="Google Cloud CLI">
 
-### Установка и настройка `gcloud` CLI {#install--configure-gcloud-cli}
+### Установка и настройка `gcloud` CLI \{#install--configure-gcloud-cli\}
 
 - Если `gcloud` CLI еще не установлен, установите его, следуя [этой инструкции](https://cloud.google.com/sdk/docs/install).
 - Выполните шаги из раздела `Before you begin`
   в [данном руководстве](https://cloud.google.com/dataflow/docs/guides/templates/using-flex-templates#before-you-begin), чтобы настроить необходимые конфигурации, параметры и разрешения для запуска шаблона Dataflow.
 
-### Запуск команды {#run-command}
+### Запуск команды \{#run-command\}
 
 Используйте команду [`gcloud dataflow flex-template run`](https://cloud.google.com/sdk/gcloud/reference/dataflow/flex-template/run)
 для запуска задания Dataflow, использующего Flex Template.
@@ -146,14 +146,14 @@ gcloud dataflow flex-template run "bigquery-clickhouse-dataflow-$(date +%Y%m%d-%
  --parameters inputTableSpec="<bigquery table id>",jdbcUrl="jdbc:clickhouse://<clickhouse host>:<clickhouse port>/<schema>?ssl=true&sslmode=NONE",clickHouseUsername="<username>",clickHousePassword="<password>",clickHouseTable="<clickhouse target table>"
 ```
 
-### Разбор команды {#command-breakdown}
+### Разбор команды \{#command-breakdown\}
 
 - **Job Name:** Текст, идущий после ключевого слова `run`, является уникальным именем задания.
 - **Template File:** JSON-файл, задаваемый параметром `--template-file-gcs-location`, определяет структуру шаблона и
   сведения о допустимых параметрах. Указанный путь к файлу является общедоступным и готов к использованию.
 - **Parameters:** Параметры разделяются запятыми. Для строковых параметров заключайте значения в двойные кавычки.
 
-### Ожидаемый ответ {#expected-response}
+### Ожидаемый ответ \{#expected-response\}
 
 После выполнения команды вы должны увидеть ответ, аналогичный следующему:
 
@@ -171,22 +171,22 @@ job:
   </TabItem>
 </Tabs>
 
-### Мониторинг задания {#monitor-the-job}
+### Мониторинг задания \{#monitor-the-job\}
 
 Перейдите на вкладку [Dataflow Jobs](https://console.cloud.google.com/dataflow/jobs) в Google Cloud Console,
 чтобы отслеживать статус задания. Там вы найдете подробную информацию о задании, включая прогресс и возможные ошибки:
 
 <Image img={dataflow_inqueue_job} size="lg" border alt="Консоль Dataflow с выполняющимся заданием BigQuery to ClickHouse" />
 
-## Устранение неполадок {#troubleshooting}
+## Устранение неполадок \{#troubleshooting\}
 
-### Ошибка Memory limit (total) exceeded (code 241) {#code-241-dbexception-memory-limit-total-exceeded}
+### Ошибка Memory limit (total) exceeded (code 241) \{#code-241-dbexception-memory-limit-total-exceeded\}
 
 Эта ошибка возникает, когда ClickHouse исчерпывает доступную память при обработке крупных пакетов данных. Чтобы устранить проблему:
 
 * Увеличьте ресурсы экземпляра: обновите сервер ClickHouse до более мощного экземпляра с большим объёмом памяти, чтобы справляться с нагрузкой на обработку данных.
 * Уменьшите размер пакета: настройте размер пакета в конфигурации задания Dataflow так, чтобы отправлять меньшие порции данных в ClickHouse, снижая потребление памяти на пакет. Эти изменения помогают сбалансировать использование ресурсов во время ингестии данных.
 
-## Исходный код шаблона {#template-source-code}
+## Исходный код шаблона \{#template-source-code\}
 
 Исходный код шаблона доступен в форке репозитория [DataflowTemplates](https://github.com/ClickHouse/DataflowTemplates) от ClickHouse.

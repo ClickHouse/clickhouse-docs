@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 还会输出两行表头，其中包含列名和类型，类似于 [TabSeparatedWithNamesAndTypes](../formats/TabSeparatedWithNamesAndTypes)。
 
-## 示例用法 {#example-usage}
+## 示例用法 \{#example-usage\}
 
-### 插入数据 {#inserting-data}
+### 插入数据 \{#inserting-data\}
 
 :::tip
 从 [版本](https://github.com/ClickHouse/ClickHouse/releases) 23.1 开始，ClickHouse 在使用 `CSV` 格式时会自动检测 CSV 文件中的标题行，因此不再需要使用 `CSVWithNames` 或 `CSVWithNamesAndTypes`。
@@ -71,7 +71,7 @@ ORDER BY (date, home_team);
 INSERT INTO football FROM INFILE 'football_types.csv' FORMAT CSVWithNamesAndTypes;
 ```
 
-### 读取数据 {#reading-data}
+### 读取数据 \{#reading-data\}
 
 使用 `CSVWithNamesAndTypes` 格式来读取数据：
 
@@ -105,7 +105,7 @@ FORMAT CSVWithNamesAndTypes
 "2022-05-07",2021,"Walsall","Swindon Town",0,3
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}
 
 :::note
 如果将 [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) 设置为 `1`，

@@ -13,13 +13,13 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## Описание {#description}
+## Описание \{#description\}
 
 Также выводит две заголовочные строки с именами и типами столбцов, аналогично формату [TabSeparatedWithNamesAndTypes](../formats/TabSeparatedWithNamesAndTypes).
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
-### Вставка данных {#inserting-data}
+### Вставка данных \{#inserting-data\}
 
 :::tip
 Начиная с [версии](https://github.com/ClickHouse/ClickHouse/releases) 23.1, ClickHouse автоматически распознаёт заголовки в CSV-файлах при использовании формата `CSV`, поэтому нет необходимости использовать `CSVWithNames` или `CSVWithNamesAndTypes`.
@@ -71,7 +71,7 @@ ORDER BY (date, home_team);
 INSERT INTO football FROM INFILE 'football_types.csv' FORMAT CSVWithNamesAndTypes;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных \{#reading-data\}
 
 Прочитайте данные в формате `CSVWithNamesAndTypes`:
 
@@ -105,7 +105,7 @@ FORMAT CSVWithNamesAndTypes
 "2022-05-07",2021,"Walsall","Swindon Town",0,3
 ```
 
-## Настройки формата {#format-settings}
+## Настройки формата \{#format-settings\}
 
 :::note
 Если параметр [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) установлен в значение `1`,

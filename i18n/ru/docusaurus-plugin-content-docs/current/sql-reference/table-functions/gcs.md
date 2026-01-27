@@ -8,7 +8,7 @@ title: 'gcs'
 doc_type: 'reference'
 ---
 
-# Табличная функция gcs {#gcs-table-function}
+# Табличная функция gcs \{#gcs-table-function\}
 
 Предоставляет табличный интерфейс для выполнения `SELECT` и `INSERT` данных из [Google Cloud Storage](https://cloud.google.com/storage/). Требуется роль IAM [`Storage Object User`](https://cloud.google.com/storage/docs/access-control/iam-roles).
 
@@ -16,7 +16,7 @@ doc_type: 'reference'
 
 Если в вашем кластере несколько реплик, вы можете использовать [функцию s3Cluster](../../sql-reference/table-functions/s3Cluster.md) (которая работает с GCS) для параллельной вставки данных.
 
-## Синтаксис {#syntax}
+## Синтаксис \{#syntax\}
 
 ```sql
 gcs(url [, NOSIGN | hmac_key, hmac_secret] [,format] [,structure] [,compression_method])
@@ -28,7 +28,7 @@ gcs(named_collection[, option=value [,..]])
 Дополнительные сведения об endpoint и HMAC см. в [документации по совместимости Google](https://cloud.google.com/storage/docs/interoperability).
 :::
 
-## Аргументы {#arguments}
+## Аргументы \{#arguments\}
 
 | Аргумент                     | Описание                                                                                                                                                                                     |
 | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -60,11 +60,11 @@ and not ~~[https://storage.cloud.google.com](https://storage.cloud.google.com)~~
 | `no_sign_request`             | Отключён по умолчанию.                                                                                                                                                                                                                               |
 | `expiration_window_seconds`   | Значение по умолчанию — 120.                                                                                                                                                                                                                         |
 
-## Возвращаемое значение {#returned_value}
+## Возвращаемое значение \{#returned_value\}
 
 Таблица с указанной структурой для чтения данных из указанного файла или записи данных в него.
 
-## Примеры {#examples}
+## Примеры \{#examples\}
 
 Выбор первых двух строк таблицы из файла в GCS `https://storage.googleapis.com/my-test-bucket-768/data.csv`:
 
@@ -96,7 +96,7 @@ LIMIT 2;
 └─────────┴─────────┴─────────┘
 ```
 
-## Использование {#usage}
+## Использование \{#usage\}
 
 Предположим, что у нас есть несколько файлов со следующими URI в GCS:
 
@@ -189,7 +189,7 @@ SELECT count(*)
 FROM gcs(creds, url='https://s3-object-url.csv')
 ```
 
-## Партиционированная запись {#partitioned-write}
+## Партиционированная запись \{#partitioned-write\}
 
 Если при вставке данных в таблицу `GCS` указано выражение `PARTITION BY`, для каждого значения партиции создаётся отдельный файл. Разделение данных на отдельные файлы помогает повысить эффективность операций чтения.
 
@@ -215,6 +215,6 @@ INSERT INTO TABLE FUNCTION
 
 В результате данные записываются в три файла в разных бакетах: `my_bucket_1/file.csv`, `my_bucket_10/file.csv` и `my_bucket_20/file.csv`.
 
-## См. также {#related}
+## См. также \{#related\}
 - [Табличная функция S3](s3.md)
 - [Движок таблицы S3](../../engines/table-engines/integrations/s3.md)

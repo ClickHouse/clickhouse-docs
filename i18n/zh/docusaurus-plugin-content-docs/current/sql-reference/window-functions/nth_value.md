@@ -7,7 +7,7 @@ title: 'nth_value'
 doc_type: 'reference'
 ---
 
-# nth&#95;value {#nth&#95;value}
+# nth&#95;value \{#nth&#95;value\}
 
 返回在其有序窗口帧中第 n 行（偏移量）对应的第一个非 NULL 值。
 

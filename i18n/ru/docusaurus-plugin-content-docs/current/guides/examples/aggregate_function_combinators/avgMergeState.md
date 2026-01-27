@@ -10,16 +10,16 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# avgMergeState {#avgMergeState}
+# avgMergeState \{#avgMergeState\}
 
-## Описание {#description}
+## Описание \{#description\}
 
 Комбинатор [`MergeState`](/sql-reference/aggregate-functions/combinators#-state)
 может быть применён к функции [`avg`](/sql-reference/aggregate-functions/reference/avg)
 для объединения частичных агрегатных состояний типа `AverageFunction(avg, T)` и
 формирования нового промежуточного агрегатного состояния.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 Комбинатор `MergeState` особенно полезен в сценариях многоуровневой агрегации,
 когда требуется объединять предварительно агрегированные состояния и сохранять их
@@ -213,7 +213,7 @@ ORDER BY datacenter;
 └────────────┴────────────────────┘
 ```
 
-## Смотрите также {#see-also}
+## Смотрите также \{#see-also\}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
 - [`Merge`](/sql-reference/aggregate-functions/combinators#-merge)

@@ -6,7 +6,7 @@ title: 'system.resources'
 doc_type: 'reference'
 ---
 
-# system.resources {#systemresources}
+# system.resources \{#systemresources\}
 
 ローカルサーバー上に存在する[リソース](/operations/workload-scheduling.md#workload_entity_storage)に関する情報が含まれます。テーブルには各リソースごとに 1 行が存在します。
 

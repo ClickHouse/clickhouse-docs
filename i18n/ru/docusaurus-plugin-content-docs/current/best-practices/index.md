@@ -9,7 +9,7 @@ doc_type: 'landing-page'
 
 import TableOfContents from '@site/i18n/ru/docusaurus-plugin-content-docs/current/best-practices/_snippets/_table_of_contents.md';
 
-# Лучшие практики работы с ClickHouse {#best-practices-in-clickhouse}
+# Лучшие практики работы с ClickHouse \{#best-practices-in-clickhouse\}
 
 В этом разделе описаны лучшие практики, которых стоит придерживаться, чтобы максимально эффективно использовать ClickHouse.
 

@@ -20,7 +20,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# 使用 ClickStack 监控主机日志 {#host-logs-clickstack}
+# 使用 ClickStack 监控主机日志 \{#host-logs-clickstack\}
 
 :::note[TL;DR]
 本指南介绍如何通过配置 OpenTelemetry collector，从 systemd、内核、SSH、cron 以及其他系统服务收集日志，从而使用 ClickStack 监控主机系统日志。主要内容包括：
@@ -34,13 +34,13 @@ import TabItem from '@theme/TabItem';
 所需时间：5–10 分钟
 :::
 
-## 与现有主机集成 {#existing-hosts}
+## 与现有主机集成 \{#existing-hosts\}
 
 本节介绍如何通过修改 ClickStack OTel collector 的配置，使其读取所有系统日志文件（包括 syslog、auth、kernel、daemon 以及应用程序日志），从而将您现有主机的系统日志发送到 ClickStack。
 
 如果您希望在配置自己的现有环境之前先测试主机日志集成，可以在「[演示数据集](/use-cases/observability/clickstack/integrations/host-logs#demo-dataset)」一节中使用我们预配置的环境和示例数据进行测试。
 
-##### 前置条件 {#prerequisites}
+##### 前置条件 \{#prerequisites\}
 
 - 正在运行的 ClickStack 实例
 - 带有 syslog 文件的系统
@@ -275,7 +275,7 @@ docker run --name clickstack \
 
 <VerticalStepper headerLevel="h4">
 
-#### 下载示例数据集 {#download-sample}
+#### 下载示例数据集 \{#download-sample\}
 
 下载示例日志文件：
 
@@ -292,7 +292,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - 内核消息和防火墙活动
 - 正常运行日志与重要事件的混合
 
-#### 创建测试 Collector 配置 {#test-config}
+#### 创建测试 Collector 配置 \{#test-config\}
 
 创建名为 `host-logs-demo.yaml` 的文件，并填入以下配置：
 
@@ -376,7 +376,7 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据覆盖的时
 
 #### <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.host_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 {#download}
 
-#### 导入预构建的仪表板 {#import-dashboard}
+#### 导入预构建的仪表板 \{#import-dashboard\}
 
 1. 打开 HyperDX 并导航到 **Dashboards** 部分
 2. 点击右上角省略号菜单中的 **Import Dashboard**
@@ -387,7 +387,7 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据覆盖的时
 
 <Image img={finish_import} alt="Finish import"/>
 
-#### 查看仪表板 {#created-dashboard}
+#### 查看仪表板 \{#created-dashboard\}
 
 系统会创建仪表板，并预先配置好所有可视化图表：
 

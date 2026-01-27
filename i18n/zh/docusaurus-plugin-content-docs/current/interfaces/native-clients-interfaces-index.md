@@ -6,7 +6,7 @@ title: '原生客户端和接口'
 doc_type: 'landing-page'
 ---
 
-# 原生客户端和接口 {#native-clients-interfaces}
+# 原生客户端和接口 \{#native-clients-interfaces\}
 
 ClickHouse 提供多种原生客户端和接口，可用于连接 ClickHouse。
 

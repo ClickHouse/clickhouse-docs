@@ -7,9 +7,9 @@ sidebar_label: 'uniqArrayIf'
 doc_type: 'reference'
 ---
 
-# uniqArrayIf {#uniqarrayif}
+# uniqArrayIf \{#uniqarrayif\}
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 [`Array`](/sql-reference/aggregate-functions/combinators#-array) と [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターは、[`uniq`](/sql-reference/aggregate-functions/reference/uniq)
 関数に適用して、条件が真である行について配列内の一意な値の数をカウントするための
@@ -21,9 +21,9 @@ doc_type: 'reference'
 
 これは、`arrayJoin` を使用せずに、特定の条件に基づいて配列内の一意な要素数をカウントしたい場合に有用です。
 
-## 使用例 {#example-usage}
+## 使用例 \{#example-usage\}
 
-### セグメント種別とエンゲージメントレベルごとのユニークな閲覧商品数を集計する {#count-unique-products}
+### セグメント種別とエンゲージメントレベルごとのユニークな閲覧商品数を集計する \{#count-unique-products\}
 
 この例では、ユーザーのショッピングセッションデータを含むテーブルを使用して、
 特定のユーザーセグメントに属し、かつセッション内での滞在時間をエンゲージメント指標とする
@@ -77,7 +77,7 @@ returning_customer_products: 2
 total_unique_products:       7
 ```
 
-## 関連項目 {#see-also}
+## 関連項目 \{#see-also\}
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
 - [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

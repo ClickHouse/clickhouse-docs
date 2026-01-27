@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# Kafka 表引擎 {#kafka-table-engine}
+# Kafka 表引擎 \{#kafka-table-engine\}
 
 :::tip
 如果您在使用 ClickHouse Cloud，我们推荐改用 [ClickPipes](/integrations/clickpipes)。ClickPipes 原生支持私有网络连接，可分别扩展摄取层和集群资源，并为将 Kafka 流式数据摄取到 ClickHouse 提供完善的监控能力。
@@ -20,7 +20,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 - 构建具备容错能力的存储。
 - 在数据流到达时进行处理。
 
-## 创建表 {#creating-a-table}
+## 创建表 \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -134,7 +134,7 @@ Kafka(kafka_broker_list, kafka_topic_list, kafka_group_name, kafka_format
 Kafka 表引擎不支持带有[默认值](/sql-reference/statements/create/table#default_values)的列。如果需要带默认值的列，可以在 materialized view 层添加（见下文）。
 :::
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 已投递的消息会被自动跟踪，因此每个组中的每条消息只会被计数一次。如果你希望获取同一批数据两次，请创建一个使用不同 group 名称的表副本。
 
@@ -184,7 +184,7 @@ Group 十分灵活，并且会在集群中同步。例如，如果你在一个�
 
 如果你想通过 `ALTER` 语句更改目标表，建议先禁用该物化视图，以避免目标表与视图产出的数据之间出现不一致。
 
-## 配置 {#configuration}
+## 配置 \{#configuration\}
 
 与 GraphiteMergeTree 类似，Kafka 引擎支持通过 ClickHouse 配置文件进行扩展配置。可以使用两个配置键：全局配置（位于 `<kafka>` 下）和主题级配置（位于 `<kafka><kafka_topic>` 下）。会先应用全局配置，然后再应用主题级配置（如果存在）。
 
@@ -230,7 +230,7 @@ Group 十分灵活，并且会在集群中同步。例如，如果你在一个�
 
 有关可用配置选项的列表，请参阅 [librdkafka 配置参考](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md)。在 ClickHouse 配置中，应使用下划线（`_`）而不是点号。例如，`check.crcs=true` 将写作 `<check_crcs>true</check_crcs>`。
 
-### Kerberos 支持 {#kafka-kerberos-support}
+### Kerberos 支持 \{#kafka-kerberos-support\}
 
 要与支持 Kerberos 的 Kafka 配合使用，请添加值为 `sasl_plaintext` 的 `security_protocol` 子元素。如果操作系统已经获取并缓存了 Kerberos 票据授予票（TGT，ticket-granting ticket），这就足够了。
 ClickHouse 可以使用 keytab 文件维护 Kerberos 凭证。请考虑配置 `sasl_kerberos_service_name`、`sasl_kerberos_keytab` 和 `sasl_kerberos_principal` 子元素。
@@ -246,7 +246,7 @@ ClickHouse 可以使用 keytab 文件维护 Kerberos 凭证。请考虑配置 `s
 </kafka>
 ```
 
-## 虚拟列 {#virtual-columns}
+## 虚拟列 \{#virtual-columns\}
 
 - `_topic` — Kafka 主题。数据类型：`LowCardinality(String)`。
 - `_key` — 消息的 key。数据类型：`String`。
@@ -264,7 +264,7 @@ ClickHouse 可以使用 keytab 文件维护 Kerberos 凭证。请考虑配置 `s
 
 注意：只有在解析过程中发生异常时，`_raw_message` 和 `_error` 虚拟列才会被填充；当消息成功解析时，这两个列始终为空。
 
-## 数据格式支持 {#data-formats-support}
+## 数据格式支持 \{#data-formats-support\}
 
 Kafka 引擎支持 ClickHouse 所支持的所有[格式](../../../interfaces/formats.md)。
 单个 Kafka 消息中的行数取决于所用格式是行级格式还是块级格式：
@@ -272,7 +272,7 @@ Kafka 引擎支持 ClickHouse 所支持的所有[格式](../../../interfaces/for
 - 对于行级格式，可以通过设置 `kafka_max_rows_per_message` 来控制单个 Kafka 消息中的行数。
 - 对于块级格式，我们无法将一个块再拆分为更小的部分，但可以通过通用设置 [max_block_size](/operations/settings/settings#max_block_size) 来控制单个块中的行数。
 
-## 在 ClickHouse Keeper 中存储已提交 offset 的引擎 {#engine-to-store-committed-offsets-in-clickhouse-keeper}
+## 在 ClickHouse Keeper 中存储已提交 offset 的引擎 \{#engine-to-store-committed-offsets-in-clickhouse-keeper\}
 
 <ExperimentalBadge />
 
@@ -294,7 +294,7 @@ SETTINGS
 SETTINGS allow_experimental_kafka_offsets_storage_in_keeper=1;
 ```
 
-### 已知限制 {#known-limitations}
+### 已知限制 \{#known-limitations\}
 
 由于新引擎仍处于实验阶段，目前尚未准备好用于生产环境。当前实现存在以下一些已知限制：
 

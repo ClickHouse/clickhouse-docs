@@ -1,92 +1,111 @@
 ---
 sidebar_position: 1
-sidebar_label: 'ベータ機能と実験的機能'
+sidebar_label: 'ベータ機能および実験的機能'
 title: 'ベータ機能および実験的機能'
-description: 'ClickHouse にはベータ機能および実験的機能があります。本ドキュメントページでは、それらの定義について説明します。'
+description: 'ClickHouse にはベータ機能と実験的機能があります。このドキュメントページではその定義について説明します。'
 slug: /beta-and-experimental-features
 doc_type: 'reference'
 ---
 
-ClickHouse はオープンソースであるため、ClickHouse の従業員だけでなくコミュニティからも多くのコントリビューションを受けています。これらのコントリビューションはしばしば異なるスピードで開発されます。特定の機能は、一般提供 (GA) と見なされるまでに、長期間にわたる試作フェーズや、コミュニティからの十分なフィードバックと反復のための時間を必要とする場合があります。
+ClickHouse はオープンソースであるため、ClickHouse の従業員だけでなくコミュニティからも多くの貢献を受けています。これらの貢献はそれぞれ異なるペースで開発されることが多く、ある機能は、一般提供 (GA) とみなされるまでに、長期にわたるプロトタイピング段階や、十分なコミュニティからのフィードバック収集と反復のための時間を必要とする場合があります。
 
-どの段階で機能が一般提供として分類されるかは明確ではないため、機能を **ベータ (Beta)** と **実験的 (Experimental)** の 2 つのカテゴリに区分しています。
+どの機能がいつ一般提供として分類されるかが不確実であるため、機能を **ベータ (Beta)** と **実験的 (Experimental)** の 2 つのカテゴリに分類しています。
 
-**ベータ (Beta)** 機能は、ClickHouse チームによって正式にサポートされます。**実験的 (Experimental)** 機能は、ClickHouse チームまたはコミュニティのいずれかによって開発される初期段階のプロトタイプであり、正式にはサポートされません。
+**ベータ (Beta)** 機能は ClickHouse チームによって公式にサポートされます。**実験的 (Experimental)** 機能は、ClickHouse チームまたはコミュニティによって推進される初期段階のプロトタイプであり、公式にはサポートされません。
 
 以下のセクションでは、**ベータ (Beta)** 機能および **実験的 (Experimental)** 機能の特性について説明します。
 
-## ベータ機能 {#beta-features}
+## ベータ機能 \{#beta-features\}
 
 - 一般提供 (GA) に向けて積極的に開発中
 - 主な既知の問題は GitHub で追跡可能
-- 将来的に機能が変更される可能性あり
-- ClickHouse Cloud で有効になっている場合があります
-- ClickHouse チームはベータ機能をサポートしています
+- 今後、機能が変更される可能性あり
+- ClickHouse Cloud で有効化されている場合がある
+- ClickHouse チームによるサポート対象
 
-以下に、ClickHouse Cloud においてベータと見なされており、お使いの ClickHouse Cloud サービスで利用可能な機能を示します。
+以下は、ClickHouse Cloud においてベータと見なされており、お客様の ClickHouse Cloud サービスで利用可能な機能です。
 
-注記: 最近追加された機能を利用するには、ClickHouse の [compatibility](/operations/settings/settings#compatibility) 設定を最新バージョンにしていることを必ず確認してください。
+注: 最近導入された機能を利用するには、ClickHouse の [compatibility](/operations/settings/settings#compatibility) 設定を最新バージョンにしていることを確認してください。
 
-## 実験的機能 {#experimental-features}
+## 実験的機能 \{#experimental-features\}
 
-* GA（一般提供）にならない可能性がある
-* 削除される可能性がある
-* 後方互換性のない変更を導入する可能性がある
-* 機能が将来的に変更される可能性がある
-* 明示的に有効化する必要がある
-* ClickHouse チームは実験的機能を**サポートしない**
-* 重要な機能やドキュメントが欠けている可能性がある
-* ClickHouse Cloud では有効化できない
+* GA にならない可能性があります
+* 削除される可能性があります
+* 破壊的な変更が導入される可能性があります
+* 機能が今後変更される可能性があります
+* 明示的に有効化する必要があります
+* ClickHouse チームは実験的機能を**サポートしません**
+* 重要な機能やドキュメントが不足している場合があります
+* ClickHouse Cloud では有効化できません
 
-注意: 上記で Beta として挙げたもの以外の実験的機能を ClickHouse Cloud で有効化することはできません。
+注意：上記で Beta として列挙されているもの以外の追加の実験的機能を ClickHouse Cloud で有効にすることはできません。
 
-{/* 以下のタグ内のコンテンツは、ビルド時にソースから生成されたテーブルに置き換えられます。
-     タグを変更または削除しないでください。
+{/* 以下のタグ内のコンテンツは、ビルド時にソースから生成されたテーブルで置き換えられます
+     タグを変更または削除しないでください
   */ }
 
 {/*AUTOGENERATED_START*/ }
 
-## ベータ設定 {#beta-settings}
 
-| 名前 | デフォルト |
+## ベータ版設定 \{#beta-settings\}
+
+| 名前 | デフォルト値 |
 |------|--------|
-| [shared&#95;merge&#95;tree&#95;activate&#95;coordinated&#95;merges&#95;tasks](/operations/settings/merge-tree-settings#shared_merge_tree_activate_coordinated_merges_tasks) | `0` |
-| [shared&#95;merge&#95;tree&#95;enable&#95;coordinated&#95;merges](/operations/settings/merge-tree-settings#shared_merge_tree_enable_coordinated_merges) | `0` |
-| [shared&#95;merge&#95;tree&#95;enable&#95;keeper&#95;parts&#95;extra&#95;data](/operations/settings/merge-tree-settings#shared_merge_tree_enable_keeper_parts_extra_data) | `0` |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;election&#95;check&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_election_check_period_ms) | `30000` |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;factor](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_factor) | `1.1` |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;fetch&#95;fresh&#95;metadata&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms) | `10000` |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;max&#95;merge&#95;request&#95;size](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_merge_request_size) | `20` |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;max&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_period_ms) | `10000` |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;merges&#95;prepare&#95;count](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_merges_prepare_count) | `100` |
-| [shared&#95;merge&#95;tree&#95;merge&#95;coordinator&#95;min&#95;period&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_min_period_ms) | `1` |
-| [shared&#95;merge&#95;tree&#95;merge&#95;worker&#95;fast&#95;timeout&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_fast_timeout_ms) | `100` |
-| [shared&#95;merge&#95;tree&#95;merge&#95;worker&#95;regular&#95;timeout&#95;ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_regular_timeout_ms) | `10000` |
-| [geotoh3&#95;argument&#95;order](/operations/settings/settings#geotoh3_argument_order) | `lat_lon` |
-| [enable&#95;lightweight&#95;update](/operations/settings/settings#enable_lightweight_update) | `1` |
-| [allow&#95;experimental&#95;correlated&#95;subqueries](/operations/settings/settings#allow_experimental_correlated_subqueries) | `1` |
-| [parallel&#95;replicas&#95;count](/operations/settings/settings#parallel_replicas_count) | `0` |
-| [parallel&#95;replica&#95;offset](/operations/settings/settings#parallel_replica_offset) | `0` |
-| [parallel&#95;replicas&#95;custom&#95;key](/operations/settings/settings#parallel_replicas_custom_key) | `` |
-| [parallel&#95;replicas&#95;custom&#95;key&#95;range&#95;lower](/operations/settings/settings#parallel_replicas_custom_key_range_lower) | `0` |
-| [parallel&#95;replicas&#95;custom&#95;key&#95;range&#95;upper](/operations/settings/settings#parallel_replicas_custom_key_range_upper) | `0` |
-| [allow&#95;experimental&#95;database&#95;iceberg](/operations/settings/settings#allow_experimental_database_iceberg) | `0` |
-| [allow&#95;experimental&#95;database&#95;unity&#95;catalog](/operations/settings/settings#allow_experimental_database_unity_catalog) | `0` |
-| [allow&#95;experimental&#95;database&#95;glue&#95;catalog](/operations/settings/settings#allow_experimental_database_glue_catalog) | `0` |
-| [session&#95;timezone](/operations/settings/settings#session_timezone) | `` |
-| [low&#95;priority&#95;query&#95;wait&#95;time&#95;ms](/operations/settings/settings#low_priority_query_wait_time_ms) | `1000` |
-| [allow&#95;statistics&#95;optimize](/operations/settings/settings#allow_statistics_optimize) | `1` |
-| [enable&#95;full&#95;text&#95;index](/operations/settings/settings#enable_full_text_index) | `0` |
-| [allow&#95;experimental&#95;delta&#95;kernel&#95;rs](/operations/settings/settings#allow_experimental_delta_kernel_rs) | `1` |
+| [geotoh3_argument_order](/operations/settings/settings#geotoh3_argument_order) | `lat_lon` |
+| [enable_lightweight_update](/operations/settings/settings#enable_lightweight_update) | `1` |
+| [allow_experimental_correlated_subqueries](/operations/settings/settings#allow_experimental_correlated_subqueries) | `1` |
+| [parallel_replicas_count](/operations/settings/settings#parallel_replicas_count) | `0` |
+| [parallel_replica_offset](/operations/settings/settings#parallel_replica_offset) | `0` |
+| [parallel_replicas_custom_key](/operations/settings/settings#parallel_replicas_custom_key) | `` |
+| [parallel_replicas_custom_key_range_lower](/operations/settings/settings#parallel_replicas_custom_key_range_lower) | `0` |
+| [parallel_replicas_custom_key_range_upper](/operations/settings/settings#parallel_replicas_custom_key_range_upper) | `0` |
+| [allow_experimental_database_iceberg](/operations/settings/settings#allow_experimental_database_iceberg) | `0` |
+| [allow_experimental_database_unity_catalog](/operations/settings/settings#allow_experimental_database_unity_catalog) | `0` |
+| [allow_experimental_database_glue_catalog](/operations/settings/settings#allow_experimental_database_glue_catalog) | `0` |
+| [session_timezone](/operations/settings/settings#session_timezone) | `` |
+| [low_priority_query_wait_time_ms](/operations/settings/settings#low_priority_query_wait_time_ms) | `1000` |
+| [enable_qbit_type](/operations/settings/settings#enable_qbit_type) | `1` |
+| [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize) | `1` |
+| [use_statistics](/operations/settings/settings#use_statistics) | `1` |
+| [enable_full_text_index](/operations/settings/settings#enable_full_text_index) | `0` |
+| [allow_experimental_delta_kernel_rs](/operations/settings/settings#allow_experimental_delta_kernel_rs) | `1` |
+| [shared_merge_tree_activate_coordinated_merges_tasks](/operations/settings/merge-tree-settings#shared_merge_tree_activate_coordinated_merges_tasks) | `0` |
+| [shared_merge_tree_enable_coordinated_merges](/operations/settings/merge-tree-settings#shared_merge_tree_enable_coordinated_merges) | `0` |
+| [shared_merge_tree_enable_keeper_parts_extra_data](/operations/settings/merge-tree-settings#shared_merge_tree_enable_keeper_parts_extra_data) | `0` |
+| [shared_merge_tree_merge_coordinator_election_check_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_election_check_period_ms) | `30000` |
+| [shared_merge_tree_merge_coordinator_factor](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_factor) | `1.1` |
+| [shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms) | `10000` |
+| [shared_merge_tree_merge_coordinator_max_merge_request_size](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_merge_request_size) | `20` |
+| [shared_merge_tree_merge_coordinator_max_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_period_ms) | `10000` |
+| [shared_merge_tree_merge_coordinator_merges_prepare_count](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_merges_prepare_count) | `100` |
+| [shared_merge_tree_merge_coordinator_min_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_min_period_ms) | `1` |
+| [shared_merge_tree_merge_worker_fast_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_fast_timeout_ms) | `100` |
+| [shared_merge_tree_merge_worker_regular_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_regular_timeout_ms) | `10000` |
 
-## 実験的設定 {#experimental-settings}
+## 実験的な設定 \{#experimental-settings\}
 
-| 名前                                                                                                                                                                                                                                  | デフォルト                   |
+| 名前                                                                                                                                                                                                                                  | 既定値                     |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| [allow&#95;experimental&#95;replacing&#95;merge&#95;with&#95;cleanup](/operations/settings/merge-tree-settings#allow_experimental_replacing_merge_with_cleanup)                                                                     | `0`                     |
+| [allow&#95;experimental&#95;reverse&#95;key](/operations/settings/merge-tree-settings#allow_experimental_reverse_key)                                                                                                               | `0`                     |
+| [allow&#95;remote&#95;fs&#95;zero&#95;copy&#95;replication](/operations/settings/merge-tree-settings#allow_remote_fs_zero_copy_replication)                                                                                         | `0`                     |
+| [enable&#95;replacing&#95;merge&#95;with&#95;cleanup&#95;for&#95;min&#95;age&#95;to&#95;force&#95;merge](/operations/settings/merge-tree-settings#enable_replacing_merge_with_cleanup_for_min_age_to_force_merge)                   | `0`                     |
+| [force&#95;read&#95;through&#95;cache&#95;for&#95;merges](/operations/settings/merge-tree-settings#force_read_through_cache_for_merges)                                                                                             | `0`                     |
+| [merge&#95;selector&#95;algorithm](/operations/settings/merge-tree-settings#merge_selector_algorithm)                                                                                                                               | `Simple`                |
+| [merge&#95;selector&#95;enable&#95;heuristic&#95;to&#95;lower&#95;max&#95;parts&#95;to&#95;merge&#95;at&#95;once](/operations/settings/merge-tree-settings#merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once)     | `0`                     |
+| [merge&#95;selector&#95;heuristic&#95;to&#95;lower&#95;max&#95;parts&#95;to&#95;merge&#95;at&#95;once&#95;exponent](/operations/settings/merge-tree-settings#merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent) | `5`                     |
+| [notify&#95;newest&#95;block&#95;number](/operations/settings/merge-tree-settings#notify_newest_block_number)                                                                                                                       | `0`                     |
+| [part&#95;moves&#95;between&#95;shards&#95;delay&#95;seconds](/operations/settings/merge-tree-settings#part_moves_between_shards_delay_seconds)                                                                                     | `30`                    |
+| [part&#95;moves&#95;between&#95;shards&#95;enable](/operations/settings/merge-tree-settings#part_moves_between_shards_enable)                                                                                                       | `0`                     |
+| [remote&#95;fs&#95;zero&#95;copy&#95;path&#95;compatible&#95;mode](/operations/settings/merge-tree-settings#remote_fs_zero_copy_path_compatible_mode)                                                                               | `0`                     |
+| [remote&#95;fs&#95;zero&#95;copy&#95;zookeeper&#95;path](/operations/settings/merge-tree-settings#remote_fs_zero_copy_zookeeper_path)                                                                                               | `/clickhouse/zero_copy` |
+| [remove&#95;rolled&#95;back&#95;parts&#95;immediately](/operations/settings/merge-tree-settings#remove_rolled_back_parts_immediately)                                                                                               | `1`                     |
+| [shared&#95;merge&#95;tree&#95;virtual&#95;parts&#95;discovery&#95;batch](/operations/settings/merge-tree-settings#shared_merge_tree_virtual_parts_discovery_batch)                                                                 | `1`                     |
 | [allow&#95;experimental&#95;kafka&#95;offsets&#95;storage&#95;in&#95;keeper](/operations/settings/settings#allow_experimental_kafka_offsets_storage_in_keeper)                                                                      | `0`                     |
 | [allow&#95;experimental&#95;delta&#95;lake&#95;writes](/operations/settings/settings#allow_experimental_delta_lake_writes)                                                                                                          | `0`                     |
 | [automatic&#95;parallel&#95;replicas&#95;mode](/operations/settings/settings#automatic_parallel_replicas_mode)                                                                                                                      | `0`                     |
-| [automatic&#95;parallel&#95;replicas&#95;min&#95;bytes&#95;per&#95;replica](/operations/settings/settings#automatic_parallel_replicas_min_bytes_per_replica)                                                                        | `0`                     |
+| [automatic&#95;parallel&#95;replicas&#95;min&#95;bytes&#95;per&#95;replica](/operations/settings/settings#automatic_parallel_replicas_min_bytes_per_replica)                                                                        | `1048576`               |
+| [distributed&#95;index&#95;analysis](/operations/settings/settings#distributed_index_analysis)                                                                                                                                      | `0`                     |
 | [allow&#95;experimental&#95;materialized&#95;postgresql&#95;table](/operations/settings/settings#allow_experimental_materialized_postgresql_table)                                                                                  | `0`                     |
 | [allow&#95;experimental&#95;funnel&#95;functions](/operations/settings/settings#allow_experimental_funnel_functions)                                                                                                                | `0`                     |
 | [allow&#95;experimental&#95;nlp&#95;functions](/operations/settings/settings#allow_experimental_nlp_functions)                                                                                                                      | `0`                     |
@@ -109,7 +128,7 @@ ClickHouse はオープンソースであるため、ClickHouse の従業員だ�
 | [wait&#95;for&#95;window&#95;view&#95;fire&#95;signal&#95;timeout](/operations/settings/settings#wait_for_window_view_fire_signal_timeout)                                                                                          | `10`                    |
 | [stop&#95;refreshable&#95;materialized&#95;views&#95;on&#95;startup](/operations/settings/settings#stop_refreshable_materialized_views_on_startup)                                                                                  | `0`                     |
 | [allow&#95;experimental&#95;database&#95;materialized&#95;postgresql](/operations/settings/settings#allow_experimental_database_materialized_postgresql)                                                                            | `0`                     |
-| [allow&#95;experimental&#95;qbit&#95;type](/operations/settings/settings#allow_experimental_qbit_type)                                                                                                                              | `0`                     |
+| [allow&#95;experimental&#95;nullable&#95;tuple&#95;type](/operations/settings/settings#allow_experimental_nullable_tuple_type)                                                                                                      | `0`                     |
 | [allow&#95;experimental&#95;query&#95;deduplication](/operations/settings/settings#allow_experimental_query_deduplication)                                                                                                          | `0`                     |
 | [allow&#95;experimental&#95;database&#95;hms&#95;catalog](/operations/settings/settings#allow_experimental_database_hms_catalog)                                                                                                    | `0`                     |
 | [allow&#95;experimental&#95;kusto&#95;dialect](/operations/settings/settings#allow_experimental_kusto_dialect)                                                                                                                      | `0`                     |
@@ -146,20 +165,5 @@ ClickHouse はオープンソースであるため、ClickHouse の従業員だ�
 | [allow&#95;experimental&#95;object&#95;storage&#95;queue&#95;hive&#95;partitioning](/operations/settings/settings#allow_experimental_object_storage_queue_hive_partitioning)                                                        | `0`                     |
 | [query&#95;plan&#95;optimize&#95;join&#95;order&#95;algorithm](/operations/settings/settings#query_plan_optimize_join_order_algorithm)                                                                                              | `greedy`                |
 | [allow&#95;experimental&#95;database&#95;paimon&#95;rest&#95;catalog](/operations/settings/settings#allow_experimental_database_paimon_rest_catalog)                                                                                | `0`                     |
-| [allow&#95;experimental&#95;replacing&#95;merge&#95;with&#95;cleanup](/operations/settings/merge-tree-settings#allow_experimental_replacing_merge_with_cleanup)                                                                     | `0`                     |
-| [allow&#95;experimental&#95;reverse&#95;key](/operations/settings/merge-tree-settings#allow_experimental_reverse_key)                                                                                                               | `0`                     |
-| [allow&#95;remote&#95;fs&#95;zero&#95;copy&#95;replication](/operations/settings/merge-tree-settings#allow_remote_fs_zero_copy_replication)                                                                                         | `0`                     |
-| [enable&#95;replacing&#95;merge&#95;with&#95;cleanup&#95;for&#95;min&#95;age&#95;to&#95;force&#95;merge](/operations/settings/merge-tree-settings#enable_replacing_merge_with_cleanup_for_min_age_to_force_merge)                   | `0`                     |
-| [force&#95;read&#95;through&#95;cache&#95;for&#95;merges](/operations/settings/merge-tree-settings#force_read_through_cache_for_merges)                                                                                             | `0`                     |
-| [merge&#95;selector&#95;algorithm](/operations/settings/merge-tree-settings#merge_selector_algorithm)                                                                                                                               | `Simple`                |
-| [merge&#95;selector&#95;enable&#95;heuristic&#95;to&#95;lower&#95;max&#95;parts&#95;to&#95;merge&#95;at&#95;once](/operations/settings/merge-tree-settings#merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once)     | `0`                     |
-| [merge&#95;selector&#95;heuristic&#95;to&#95;lower&#95;max&#95;parts&#95;to&#95;merge&#95;at&#95;once&#95;exponent](/operations/settings/merge-tree-settings#merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent) | `5`                     |
-| [notify&#95;newest&#95;block&#95;number](/operations/settings/merge-tree-settings#notify_newest_block_number)                                                                                                                       | `0`                     |
-| [part&#95;moves&#95;between&#95;shards&#95;delay&#95;seconds](/operations/settings/merge-tree-settings#part_moves_between_shards_delay_seconds)                                                                                     | `30`                    |
-| [part&#95;moves&#95;between&#95;shards&#95;enable](/operations/settings/merge-tree-settings#part_moves_between_shards_enable)                                                                                                       | `0`                     |
-| [remote&#95;fs&#95;zero&#95;copy&#95;path&#95;compatible&#95;mode](/operations/settings/merge-tree-settings#remote_fs_zero_copy_path_compatible_mode)                                                                               | `0`                     |
-| [remote&#95;fs&#95;zero&#95;copy&#95;zookeeper&#95;path](/operations/settings/merge-tree-settings#remote_fs_zero_copy_zookeeper_path)                                                                                               | `/clickhouse/zero_copy` |
-| [remove&#95;rolled&#95;back&#95;parts&#95;immediately](/operations/settings/merge-tree-settings#remove_rolled_back_parts_immediately)                                                                                               | `1`                     |
-| [shared&#95;merge&#95;tree&#95;virtual&#95;parts&#95;discovery&#95;batch](/operations/settings/merge-tree-settings#shared_merge_tree_virtual_parts_discovery_batch)                                                                 | `1`                     |
 
 {/*AUTOGENERATED_END*/ }

@@ -7,7 +7,7 @@ title: 'ALTER TABLE ... MODIFY QUERY ステートメント'
 doc_type: 'reference'
 ---
 
-# ALTER TABLE ... MODIFY QUERY ステートメント {#alter-table-modify-query-statement}
+# ALTER TABLE ... MODIFY QUERY ステートメント \{#alter-table-modify-query-statement\}
 
 `ALTER TABLE ... MODIFY QUERY` ステートメントを使用すると、インジェスト処理を中断することなく、[マテリアライズドビュー](/sql-reference/statements/create/view#materialized-view) 作成時に指定した `SELECT` クエリを変更できます。
 
@@ -197,6 +197,6 @@ SELECT * FROM mv;
 ```
 
 
-## ALTER TABLE ... MODIFY REFRESH ステートメント {#alter-table--modify-refresh-statement}
+## ALTER TABLE ... MODIFY REFRESH ステートメント \{#alter-table--modify-refresh-statement\}
 
 `ALTER TABLE ... MODIFY REFRESH` ステートメントは、[リフレッシャブルmaterialized view](../create/view.md#refreshable-materialized-view)のリフレッシュパラメーターを変更します。詳しくは[リフレッシュパラメーターの変更](../create/view.md#changing-refresh-parameters)を参照してください。

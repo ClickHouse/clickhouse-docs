@@ -8,7 +8,7 @@ description: 'ClickHouse を他のシステムと連携する際の質問を一�
 doc_type: 'landing-page'
 ---
 
-# ClickHouse と他のシステムの連携に関する質問 {#questions-about-integrating-clickhouse-and-other-systems}
+# ClickHouse と他のシステムの連携に関する質問 \{#questions-about-integrating-clickhouse-and-other-systems\}
 
 * [ClickHouse からファイルへデータをエクスポートするにはどうすればよいですか？](https://clickhouse.com/docs/knowledgebase/file-export)
 * [JSON を ClickHouse にインポートするにはどうすればよいですか？](/integrations/data-ingestion/data-formats/json/intro.md)

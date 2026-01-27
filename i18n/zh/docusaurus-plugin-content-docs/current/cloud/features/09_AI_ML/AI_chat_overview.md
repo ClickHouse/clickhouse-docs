@@ -6,7 +6,7 @@ description: '对 ClickHouse Cloud 中 Ask AI 聊天功能的说明'
 doc_type: 'reference'
 ---
 
-# 在 Cloud 中使用 Ask AI 代理 {#ask-ai-agent-in-cloud}
+# 在 Cloud 中使用 Ask AI 代理 \{#ask-ai-agent-in-cloud\}
 
 “Ask AI” 代理是一种开箱即用的体验，允许用户针对其 ClickHouse Cloud 服务中托管的数据发起复杂的分析任务。
 用户无需编写 SQL 或在各个仪表板之间来回切换，只需用自然语言描述他们想要查找的内容。

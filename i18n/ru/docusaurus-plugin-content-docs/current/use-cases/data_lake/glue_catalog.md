@@ -24,7 +24,7 @@ Glue поддерживает множество различных формат
 интеграции доступны только таблицы Iceberg.
 :::
 
-## Настройка Glue в AWS {#configuring}
+## Настройка Glue в AWS \{#configuring\}
 
 Чтобы подключиться к каталогу Glue, необходимо определить регион вашего 
 каталога и указать ключ доступа (access key) и секретный ключ (secret key).
@@ -33,7 +33,7 @@ Glue поддерживает множество различных формат
 В настоящее время каталог Glue поддерживает только аутентификацию с помощью access key и secret key, но в будущем мы добавим поддержку дополнительных методов аутентификации.
 :::
 
-## Создание подключения между каталогом данных Glue и ClickHouse {#connecting}
+## Создание подключения между каталогом данных Glue и ClickHouse \{#connecting\}
 
 После настройки Unity Catalog и аутентификации создайте
 подключение между ClickHouse и Unity Catalog.
@@ -48,7 +48,7 @@ SETTINGS
     aws_secret_access_key = '<secret-key>'
 ```
 
-## Выполнение запросов к каталогу данных Glue с помощью ClickHouse {#query-glue-catalog}
+## Выполнение запросов к каталогу данных Glue с помощью ClickHouse \{#query-glue-catalog\}
 
 Теперь, когда подключение установлено, можно приступать к выполнению запросов к Glue:
 
@@ -200,7 +200,7 @@ SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
   └─────────────────────────────────────────────────────────┘
 ```
 
-## Загрузка данных из вашего Data Lake в ClickHouse {#loading-data-into-clickhouse}
+## Загрузка данных из вашего Data Lake в ClickHouse \{#loading-data-into-clickhouse\}
 
 Если вам нужно загрузить данные из Databricks в ClickHouse, сначала создайте локальную таблицу ClickHouse:
 

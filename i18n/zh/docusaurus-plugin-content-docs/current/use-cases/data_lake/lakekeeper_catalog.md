@@ -32,16 +32,16 @@ Lakekeeper 是一个面向 Apache Iceberg 的开源 REST catalog 实现，提供
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
-## 本地开发环境设置 {#local-development-setup}
+## 本地开发环境设置 \{#local-development-setup\}
 
 在进行本地开发和测试时，你可以使用容器化的 Lakekeeper 环境。此方式非常适合用于学习、原型验证和开发环境。
 
-### 先决条件 {#local-prerequisites}
+### 先决条件 \{#local-prerequisites\}
 
 1. **Docker 和 Docker Compose**：确保已安装并正在运行 Docker 和 Docker Compose
 2. **示例环境**：可以使用 Lakekeeper 的 docker-compose 配置
 
-### 在本地设置 Lakekeeper Catalog {#setting-up-local-lakekeeper-catalog}
+### 在本地设置 Lakekeeper Catalog \{#setting-up-local-lakekeeper-catalog\}
 
 可以使用官方提供的 [Lakekeeper docker-compose 配置](https://github.com/lakekeeper/lakekeeper/tree/main/examples/minimal)，该配置提供了一个完整的环境，包括 Lakekeeper、用作元数据后端的 PostgreSQL，以及用于对象存储的 MinIO。
 
@@ -229,7 +229,7 @@ docker-compose logs -f
 Lakekeeper 的部署要求必须先将样例数据加载到 Iceberg 表中。请确保在通过 ClickHouse 查询这些表之前，环境中已经创建并填充好这些表。表是否可用取决于具体的 docker-compose 配置和样例数据加载脚本。
 :::
 
-### 连接到本地 Lakekeeper 目录 {#connecting-to-local-lakekeeper-catalog}
+### 连接到本地 Lakekeeper 目录 \{#connecting-to-local-lakekeeper-catalog\}
 
 连接到 ClickHouse 容器：
 
@@ -247,7 +247,7 @@ ENGINE = DataLakeCatalog('http://lakekeeper:8181/catalog', 'minio', 'ClickHouse_
 SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/warehouse-rest', warehouse = 'demo'
 ```
 
-## 使用 ClickHouse 查询 Lakekeeper 目录表 {#querying-lakekeeper-catalog-tables-using-clickhouse}
+## 使用 ClickHouse 查询 Lakekeeper 目录表 \{#querying-lakekeeper-catalog-tables-using-clickhouse\}
 
 现在连接已经建立，你可以开始通过 Lakekeeper 目录来查询数据。例如：
 
@@ -330,7 +330,7 @@ SHOW CREATE TABLE `default.taxis`;
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## 将数据湖中的数据加载到 ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
+## 将数据湖中的数据加载到 ClickHouse \{#loading-data-from-your-data-lake-into-clickhouse\}
 
 如需将 Lakekeeper 目录中的数据加载到 ClickHouse，请先创建一个本地 ClickHouse 表：
 

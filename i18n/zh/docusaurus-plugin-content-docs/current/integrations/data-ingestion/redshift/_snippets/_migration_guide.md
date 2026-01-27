@@ -6,7 +6,7 @@ import s3_1 from '@site/static/images/integrations/data-ingestion/redshift/s3-1.
 import s3_2 from '@site/static/images/integrations/data-ingestion/redshift/s3-2.png';
 import Image from '@theme/IdealImage';
 
-## 简介 {#introduction}
+## 简介 \{#introduction\}
 
 [Amazon Redshift](https://aws.amazon.com/redshift/) 是 Amazon Web Services 提供的一种流行的云数据仓库解决方案。本指南介绍了将数据从 Redshift 实例迁移到 ClickHouse 的不同方法。我们将介绍三种选项：
 
@@ -24,35 +24,35 @@ import Image from '@theme/IdealImage';
 在本教程中，我们使用 Redshift 作为数据源。不过，这里介绍的迁移方法并不局限于 Redshift，对于任何兼容的数据源，都可以推导出类似的步骤。
 :::
 
-## 将数据从 Redshift 推送到 ClickHouse {#push-data-from-redshift-to-clickhouse}
+## 将数据从 Redshift 推送到 ClickHouse \{#push-data-from-redshift-to-clickhouse\}
 
 在推送场景中，思路是利用第三方工具或服务（可以是自定义代码，或者是 [ETL/ELT](https://en.wikipedia.org/wiki/Extract,_transform,_load#ETL_vs._ELT)）将数据发送到 ClickHouse 实例。例如，你可以使用 [Airbyte](https://www.airbyte.com/) 之类的软件，在 Redshift 实例（作为源）和 ClickHouse（作为目标）之间迁移数据（[参见我们关于 Airbyte 的集成指南](/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md)）。
 
 <Image img={push} size="md" alt="将数据从 Redshift 推送到 ClickHouse 的 PUSH 模式示意图"/>
 
-### 优点 {#pros}
+### 优点 \{#pros\}
 
 * 可以利用 ETL/ELT 软件中现有的连接器库。
 * 内置功能可保持数据同步（支持追加/覆盖/增量更新逻辑）。
 * 支持数据转换场景（例如，参见我们的 [dbt 集成指南](/integrations/data-ingestion/etl-tools/dbt/index.md)）。
 
-### 缺点 {#cons}
+### 缺点 \{#cons\}
 
 * 你需要搭建并维护 ETL/ELT 基础设施。
 * 在架构中引入第三方组件，可能成为系统扩展性的潜在瓶颈。
 
-## 从 Redshift 拉取数据到 ClickHouse {#pull-data-from-redshift-to-clickhouse}
+## 从 Redshift 拉取数据到 ClickHouse \{#pull-data-from-redshift-to-clickhouse\}
 
 在拉取场景中，可以利用 ClickHouse JDBC Bridge，从 ClickHouse 实例直接连接到 Redshift 集群，并执行 `INSERT INTO ... SELECT` 查询语句：
 
 <Image img={pull} size="md" alt="从 Redshift 拉取数据到 ClickHouse 的 PULL 模式示意图"/>
 
-### 优点 {#pros-1}
+### 优点 \{#pros-1\}
 
 * 对所有兼容 JDBC 的工具通用的解决方案
 * 能够在 ClickHouse 内部查询多个外部数据源的优雅解决方案
 
-### 缺点 {#cons-1}
+### 缺点 \{#cons-1\}
 
 * 需要一个 ClickHouse JDBC Bridge 实例，这可能会成为潜在的可扩展性瓶颈
 
@@ -60,13 +60,13 @@ import Image from '@theme/IdealImage';
 尽管 Redshift 基于 PostgreSQL，但无法使用 ClickHouse 的 PostgreSQL 表函数或表引擎，因为 ClickHouse 要求 PostgreSQL 9 或更高版本，而 Redshift API 基于较早的版本（8.x）。
 :::
 
-### 教程 {#tutorial}
+### 教程 \{#tutorial\}
 
 要使用此选项，需要先部署 ClickHouse JDBC Bridge。ClickHouse JDBC Bridge 是一个独立的 Java 应用程序，用于处理 JDBC 连接，并在 ClickHouse 实例与数据源之间充当代理。在本教程中，我们使用了一个预置数据的 Redshift 实例，其中包含一个[示例数据库](https://docs.aws.amazon.com/redshift/latest/dg/c_sampledb.html)。
 
 <VerticalStepper headerLevel="h4">
 
-#### 部署 ClickHouse JDBC Bridge {#deploy-clickhouse-jdbc-bridge}
+#### 部署 ClickHouse JDBC Bridge \{#deploy-clickhouse-jdbc-bridge\}
 
 部署 ClickHouse JDBC Bridge。更多详细信息，请参阅我们的用户指南：[面向外部数据源的 JDBC](/integrations/data-ingestion/dbms/jdbc-with-clickhouse.md)
 
@@ -74,7 +74,7 @@ import Image from '@theme/IdealImage';
 如果您使用的是 ClickHouse Cloud，则需要在单独的环境中运行 ClickHouse JDBC Bridge，并使用 [remoteSecure](/sql-reference/table-functions/remote/) 函数连接到 ClickHouse Cloud
 :::
 
-#### 配置 Redshift 数据源 {#configure-your-redshift-datasource}
+#### 配置 Redshift 数据源 \{#configure-your-redshift-datasource\}
 
 为 ClickHouse JDBC Bridge 配置 Redshift 数据源。例如：`/etc/clickhouse-jdbc-bridge/config/datasources/redshift.json`
 
@@ -96,7 +96,7 @@ import Image from '@theme/IdealImage';
 }
 ```
 
-#### 从 ClickHouse 查询 Redshift 实例 {#query-your-redshift-instance-from-clickhouse}
+#### 从 ClickHouse 查询 Redshift 实例 \{#query-your-redshift-instance-from-clickhouse\}
 
 在 ClickHouse JDBC Bridge 部署并运行后，可以开始在 ClickHouse 中查询 Redshift 实例：
 
@@ -134,7 +134,7 @@ Query id: 2d0f957c-8f4e-43b2-a66a-cc48cc96237b
 结果包含 1 行。耗时：0.304 秒。
 ```
 
-#### 将数据从 Redshift 导入 ClickHouse {#import-data-from-redshift-to-clickhouse}
+#### 将数据从 Redshift 导入 ClickHouse \{#import-data-from-redshift-to-clickhouse\}
 
 下面展示如何使用 `INSERT INTO ... SELECT` 语句导入数据：
 
@@ -173,28 +173,28 @@ Ok.
 
 </VerticalStepper>
 
-## 使用 S3 将 Redshift 中的数据 PIVOT 到 ClickHouse {#pivot-data-from-redshift-to-clickhouse-using-s3}
+## 使用 S3 将 Redshift 中的数据 PIVOT 到 ClickHouse \{#pivot-data-from-redshift-to-clickhouse-using-s3\}
 
 在此场景中，我们先将数据以中间 PIVOT 格式导出到 S3，然后在第二步中再从 S3 将数据加载到 ClickHouse。
 
 <Image img={pivot} size="md" alt="使用 S3 从 Redshift 执行 PIVOT"/>
 
-### 优点 {#pros-2}
+### 优点 \{#pros-2\}
 
 * Redshift 和 ClickHouse 都具备强大的 S3 集成功能。
 * 可利用现有功能，例如 Redshift 的 `UNLOAD` 命令以及 ClickHouse 的 S3 表函数 / 表引擎。
 * 得益于 ClickHouse 针对 S3 的并行读写和高吞吐能力，可实现无缝扩展。
 * 可以利用 Apache Parquet 等复杂且高效压缩的格式。
 
-### 缺点 {#cons-2}
+### 缺点 \{#cons-2\}
 
 * 流程包含两个步骤（先从 Redshift 导出，再导入到 ClickHouse）。
 
-### 教程 {#tutorial-1}
+### 教程 \{#tutorial-1\}
 
 <VerticalStepper headerLevel="h4">
 
-#### 使用 UNLOAD 将数据导出到 S3 存储桶 {#export-data-into-an-s3-bucket-using-unload}
+#### 使用 UNLOAD 将数据导出到 S3 存储桶 \{#export-data-into-an-s3-bucket-using-unload\}
 
 使用 Redshift 的 [UNLOAD](https://docs.aws.amazon.com/redshift/latest/dg/r_UNLOAD.html) 功能，将数据导出到一个已有的私有 S3 存储桶中：
 
@@ -204,7 +204,7 @@ Ok.
 
 <Image img={s3_2} size="md" alt="S3 中的数据" background="white"/>
 
-#### 在 ClickHouse 中创建表 {#create-the-table-in-clickhouse}
+#### 在 ClickHouse 中创建表 \{#create-the-table-in-clickhouse\}
 
 在 ClickHouse 中创建表：
 
@@ -230,7 +230,7 @@ SELECT * FROM s3('https://your-bucket.s3.amazonaws.com/unload/users/*', '<aws_ac
 
 当数据采用包含数据类型信息的格式（例如 Parquet）时，这种方式尤其有效。
 
-#### 将 S3 文件加载到 ClickHouse 中 {#load-s3-files-into-clickhouse}
+#### 将 S3 文件加载到 ClickHouse 中 \{#load-s3-files-into-clickhouse\}
 
 使用 `INSERT INTO ... SELECT` 语句将 S3 文件加载到 ClickHouse 中：
 

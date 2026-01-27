@@ -20,9 +20,9 @@ import redpanda_logo from '@site/static/images/integrations/logos/logo_redpanda.
 import Image from '@theme/IdealImage';
 import ExperimentalBadge from '@site/src/theme/badges/ExperimentalBadge';
 
-# リファレンス {#reference}
+# リファレンス \{#reference\}
 
-## サポートされているデータソース {#supported-data-sources}
+## サポートされているデータソース \{#supported-data-sources\}
 
 | 名前                 |ロゴ|種類| ステータス      | 説明                                                                                                  |
 |----------------------|----|----|-----------------|------------------------------------------------------------------------------------------------------|
@@ -33,16 +33,16 @@ import ExperimentalBadge from '@site/src/theme/badges/ExperimentalBadge';
 | Azure Event Hubs     |<Azureeventhubssvg class="image" alt="Azure Event Hubsのロゴ" style={{width: '3rem'}}/>|ストリーミング| 安定版          | ClickPipes を構成して、Azure Event Hubs から ClickHouse Cloud へのストリーミングデータの取り込みを開始します。 |
 | WarpStream           |<Warpstreamsvg class="image" alt="WarpStreamのロゴ" style={{width: '3rem'}}/>|ストリーミング| 安定版          | ClickPipes を構成して、WarpStream から ClickHouse Cloud へのストリーミングデータの取り込みを開始します。       |
 
-## サポートされているデータ形式 {#supported-data-formats}
+## サポートされているデータ形式 \{#supported-data-formats\}
 
 サポートされている形式は次のとおりです。
 
 - [JSON](/integrations/data-formats/json/overview)
 - [AvroConfluent](/interfaces/formats/AvroConfluent)
 
-## サポートされるデータ型 {#supported-data-types}
+## サポートされるデータ型 \{#supported-data-types\}
 
-### 標準 {#standard-types-support}
+### 標準 \{#standard-types-support\}
 
 現在、ClickPipes では次の標準的な ClickHouse データ型がサポートされています。
 
@@ -63,14 +63,14 @@ import ExperimentalBadge from '@site/src/theme/badges/ExperimentalBadge';
 - 上記のいずれかの型（Nullable を含む、1 階層のみ）を要素に使用する Tuple および Array
 - SimpleAggregateFunction 型（AggregatingMergeTree または SummingMergeTree を出力先とする場合）
 
-### Avro {#avro}
+### Avro \{#avro\}
 
-#### サポートされている Avro データ型 {#supported-avro-data-types}
+#### サポートされている Avro データ型 \{#supported-avro-data-types\}
 
 ClickPipes は、すべての Avro プリミティブ型および複合型と、`time-millis`、`time-micros`、`local-timestamp-millis`、`local_timestamp-micros`、`duration` を除くすべての Avro 論理型をサポートします。Avro の `record` 型は Tuple に、`array` 型は Array に、`map` 型は Map（キーは文字列のみ）に変換されます。通常、[こちら](/interfaces/formats/Avro#data-type-mapping) に記載されている変換が利用可能です。ClickPipes は型変換時のオーバーフローや精度低下を検証しないため、Avro の数値型については型を厳密に一致させることを推奨します。
 また、すべての Avro 型を `String` カラムに挿入することもでき、その場合は有効な JSON 文字列として表現されます。
 
-#### Nullable 型と Avro ユニオン {#nullable-types-and-avro-unions}
+#### Nullable 型と Avro ユニオン \{#nullable-types-and-avro-unions\}
 
 Avro における Nullable 型は、ベースとなる Avro 型を T としたとき、`(T, null)` または `(null, T)` の Union スキーマを使用して定義されます。スキーマ推論時には、そのようなユニオンは ClickHouse の "Nullable" カラムにマッピングされます。なお、ClickHouse は
 `Nullable(Array)`、`Nullable(Map)`、`Nullable(Tuple)` 型をサポートしません。これらの型に対する Avro の null ユニオンは、非 Nullable 型にマッピングされます（Avro の Record 型は ClickHouse の名前付き Tuple にマッピングされます）。これらの型に対する Avro の "null" は次のように挿入されます：
@@ -79,7 +79,7 @@ Avro における Nullable 型は、ベースとなる Avro 型を T とした�
 - null の Avro Map には空の Map
 - null の Avro Record には、すべての要素がデフォルト値／ゼロ値の名前付き Tuple
 
-#### Variant 型のサポート {#variant-type-support}
+#### Variant 型のサポート \{#variant-type-support\}
 
 ClickPipes は、次の状況で Variant 型をサポートします:
 
@@ -90,7 +90,7 @@ ClickPipes は、次の状況で Variant 型をサポートします:
   使用する正しい Variant サブタイプを判定する方法の都合上、Variant の定義では整数型および datetime 型をそれぞれ 1 種類しか使用できません。
   たとえば、`Variant(Int64, UInt32)` はサポートされません。
 
-#### JSON 型のサポート {#json-type-support}
+#### JSON 型のサポート \{#json-type-support\}
 
 ClickPipes は、次のような場合に JSON 型をサポートします:
 
@@ -100,7 +100,7 @@ ClickPipes は、次のような場合に JSON 型をサポートします:
 
 なお、固定パスやスキップしたパスも含めて、宛先カラムを目的の JSON 型に手動で変更する必要があります。
 
-## Kafka 仮想カラム {#kafka-virtual-columns}
+## Kafka 仮想カラム \{#kafka-virtual-columns\}
 
 Kafka 互換ストリーミングデータソースでは、次の仮想カラムがサポートされています。新しい宛先テーブルを作成する際は、`Add Column` ボタンを使用して仮想カラムを追加できます。
 

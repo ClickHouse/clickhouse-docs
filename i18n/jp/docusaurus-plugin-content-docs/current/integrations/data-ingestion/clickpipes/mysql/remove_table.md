@@ -15,7 +15,7 @@ import remove_table from '@site/static/images/integrations/data-ingestion/clickp
 
 場合によっては、MySQL ClickPipe から特定のテーブルを除外したほうが適切なことがあります。たとえば、あるテーブルが分析ワークロードに不要であれば、そのテーブルをスキップすることで、ClickHouse におけるストレージやレプリケーションのコストを削減できます。
 
-## 特定のテーブルを削除する手順 {#remove-tables-steps}
+## 特定のテーブルを削除する手順 \{#remove-tables-steps\}
 
 最初の手順は、パイプからテーブルを除外することです。これは次の手順で実行できます。
 
