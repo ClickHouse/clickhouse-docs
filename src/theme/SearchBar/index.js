@@ -297,20 +297,6 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
               placeholder={translations.placeholder}
               translations={translations.modal}
             />
-
-            <div style={{
-              position: 'fixed',
-              top: window.innerWidth < 768 ? '55px' : '120px',
-              right: window.innerWidth < 768 ? 'calc(50% - 185px)' : 'calc(50% - 255px)',
-              zIndex: 10000,
-              backgroundColor: 'var(--docsearch-modal-background)',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-            }}>
-              <DocTypeSelector
-                selectedDocTypes={selectedDocTypes}
-                onSelectionChange={handleDocTypeChange}
-              />
-            </div>
           </>,
           searchContainer
         )}
