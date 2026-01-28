@@ -45,6 +45,41 @@ PATH=<path to clickhouse-client>:$PATH tests/clickhouse-test 01428_hash_set_nan_
 可以运行全部测试，或者通过为测试名称提供过滤字符串来运行部分测试：`./clickhouse-test substring`。
 也可以选择并行运行测试，或以随机顺序运行测试。
 
+
+### 运行全部测试 \{#running-all-tests\}
+
+要运行全部测试，你可能需要一台性能相对较强的机器。以下步骤已在 `t3.2xlarge` AWS amd64 Ubuntu 实例（100 GB 存储）上验证可行。
+
+1. 安装依赖并重新登录。
+
+```sh
+sudo apt-get update
+sudo apt-get install docker.io
+sudo usermod -aG docker ubuntu
+```
+
+2. 获取源代码。
+
+```sh
+git clone --single-branch https://github.com/ClickHouse/ClickHouse
+cd ClickHouse
+```
+
+3. 构建代码并运行一部分测试（称为“Fast test”）。
+
+```sh
+python3 -m ci.praktika run "Fast test"
+```
+
+4. 你应当得到
+
+```sh
+Failed: 0, Passed: 7394, Skipped: 1795
+```
+
+如果需要无人值守地运行，可以使用 `nohup` 或 `disown`，以便在 `ssh` 连接断开后进程仍能继续运行。
+
+
 ### 添加新测试 \{#adding-a-new-test\}
 
 要添加新测试，首先在 `queries/0_stateless` 目录中创建一个 `.sql` 或 `.sh` 文件。
@@ -72,11 +107,12 @@ sudo ./install.sh
 * 确保其他测试不会测试相同内容（即先用 grep 检查）。
   :::
 
+
 ### 限制测试运行 \{#restricting-test-runs\}
 
-一个测试可以具有零个或多个*标签*，用于指定该测试在 CI 中在哪些上下文中运行。
+一项测试可以带有零个或多个 *标签（tags）*，用于指定该测试在 CI 中运行时所受的上下文限制。
 
-对于 `.sql` 测试，标签以 SQL 注释的形式放在第一行：
+对于 `.sql` 测试，标签写在第一行，作为一行 SQL 注释：
 
 ```sql
 -- Tags: no-fasttest, no-replicated-database
@@ -129,11 +165,12 @@ SELECT 1
 除上述设置外，你还可以使用 `system.build_options` 中的 `USE_*` 标志来定义是否使用特定的 ClickHouse 特性。
 例如，如果你的测试使用了 MySQL 表，则应添加标签 `use-mysql`。
 
-### 为随机设置指定限制 \{#specifying-limits-for-random-settings\}
 
-测试可以为在测试运行期间被随机化的设置指定允许的最小值和最大值。
+### 为随机化的 settings 指定限制 \{#specifying-limits-for-random-settings\}
 
-对于 `.sh` 测试，限制写为一条注释，放在标签所在行的后面；如果没有指定标签，则放在第二行注释中：
+测试可以为在测试运行期间会被随机化的 settings 指定允许的最小值和最大值。
+
+对于 `.sh` 测试，限制以注释的形式写在标签所在行的后面一行；如果没有指定标签，则写在第二行：
 
 ```bash
 #!/usr/bin/env bash
@@ -151,6 +188,7 @@ SELECT 1
 
 如果你只需要指定其中一个限制值，可以将另一个设置为 `None`。
 
+
 ### 选择测试名称 \{#choosing-the-test-name\}
 
 测试名称以五位数字前缀开头，后面跟一个描述性名称，例如 `00422_hash_function_constexpr.sql`。
@@ -161,6 +199,7 @@ ls tests/queries/0_stateless/[0-9]*.reference | tail -n 1
 ```
 
 与此同时，可能会添加一些具有相同数字前缀的其他测试，但这没问题，不会导致任何问题，你之后也不需要对其进行修改。
+
 
 ### 检查必须出现的错误 \{#checking-for-an-error-that-must-occur\}
 
@@ -177,6 +216,7 @@ SELECT x; -- { serverError 49 }
 不要检查错误消息的具体措辞，因为它将来可能会改变，从而导致测试不必要地失败。
 只检查错误码。
 如果现有的错误码对你的需求不够精确，可以考虑新增一个错误码。
+
 
 ### 测试分布式查询 \{#testing-a-distributed-query\}
 
@@ -221,6 +261,7 @@ SELECT x; -- { serverError 49 }
 ```bash
 $ ./src/unit_tests_dbms --gtest_filter=LocalAddress*
 ```
+
 
 ## 性能测试 \{#performance-tests\}
 
@@ -295,6 +336,7 @@ $ sudo -u clickhouse gdb --args /usr/bin/clickhouse server --config-file /etc/cl
 `clickhouse` 二进制可执行文件几乎没有依赖，并且可以在各种 Linux 发行版上运行。
 为了在服务器上快速、临时地测试你的修改，你可以直接通过 `scp` 将新构建好的 `clickhouse` 二进制文件复制到服务器上，然后按上述示例的方式运行它。
 
+
 ## 构建测试 \{#build-tests\}
 
 构建测试用于检查在各种替代配置和某些其他系统上，构建是否正常、不出问题。
@@ -324,6 +366,7 @@ $ sudo -u clickhouse gdb --args /usr/bin/clickhouse server --config-file /etc/cl
 在对 ClickHouse 网络协议进行扩展时，我们会手动测试旧版本的 clickhouse-client 是否能与新版本的 clickhouse-server 一起工作，以及新版本的 clickhouse-client 是否能与旧版本的 clickhouse-server 一起工作（只需运行相应软件包中的二进制文件）。
 
 我们还通过集成测试自动验证部分情况：
+
 - 旧版本 ClickHouse 写入的数据是否可以被新版本成功读取；
 - 在包含不同 ClickHouse 版本的集群中，分布式查询是否可以正常工作。
 
@@ -399,6 +442,7 @@ LibFuzzer 专用的配置、字典和语料库存放在 `tests/fuzz` 中。
 不会对测试结果本身进行检查。
 
 会检查以下内容：
+
 - 服务器不会崩溃，不会触发任何调试或 sanitizer 断点/陷阱；
 - 不会出现死锁；
 - 数据库结构保持一致；

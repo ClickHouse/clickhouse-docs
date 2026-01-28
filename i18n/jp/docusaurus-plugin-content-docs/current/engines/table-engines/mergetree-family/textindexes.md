@@ -671,6 +671,14 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 | [text_index_postings_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_postings_cache_max_entries)   | キャッシュ内のデシリアライズ済みポスティングの最大数。                                                 |
 | [text_index_postings_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_postings_cache_size_ratio)     | テキストインデックスのポスティングリストキャッシュにおける保護キューのサイズが、キャッシュ全体サイズに占める割合。 |
 
+## 制限事項 \{#limitations\}
+
+テキストインデックスには、現在次のような制限があります。
+
+- トークン数が非常に多いテキストインデックス（例: 100億トークン）をマテリアライズすると、大量のメモリを消費する可能性があります。テキスト
+  インデックスのマテリアライズは、直接（`ALTER TABLE <table> MATERIALIZE INDEX <index>`）行われる場合もあれば、パーツのマージ時に間接的に行われる場合もあります。
+- 1つのパーツ内の行数が 4.294.967.296（= 2^32 ≒ 42億）を超える場合、そのパーツ上のテキストインデックスをマテリアライズすることはできません。テキストインデックスがマテリアライズされていない場合、クエリはそのパーツ内での低速な総当たり検索にフォールバックします。最悪の場合の見積もりとして、1つのパーツが String 型の単一カラムだけを持ち、MergeTree の設定項目 `max_bytes_to_merge_at_max_space_in_pool`（デフォルト: 150 GB）が変更されていないと仮定します。この場合、そのカラムの1行あたりの平均文字数が 29.5 文字未満であれば、上記の状況が発生します。実際には、テーブルは他のカラムも含んでいるため、閾値は（他のカラムの数、型、サイズに応じて）その何分の一にも小さくなります。
+
 ## 実装の詳細 \{#implementation\}
 
 各テキスト索引は、2 つの（抽象的な）データ構造から構成されます:

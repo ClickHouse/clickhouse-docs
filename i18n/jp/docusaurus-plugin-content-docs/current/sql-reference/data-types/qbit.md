@@ -1,6 +1,6 @@
 ---
-description: 'ClickHouse における QBit データ型のドキュメントです。近似ベクトル検索のためのきめ細かな量子化を可能にします'
-keywords: ['qbit', 'データ型']
+description: 'ClickHouse における QBit データ型のドキュメント。近似ベクトル検索のためのきめ細かな量子化を可能にします'
+keywords: ['qbit', 'data type']
 sidebar_label: 'QBit'
 sidebar_position: 64
 slug: /sql-reference/data-types/qbit
@@ -8,18 +8,8 @@ title: 'QBit データ型'
 doc_type: 'reference'
 ---
 
-import BetaBadge from '@theme/badges/BetaBadge';
-
-<BetaBadge />
-
-`QBit` データ型は、近似検索を高速化するためにベクトルの格納方法を再構成します。各ベクトルの要素をまとめて格納する代わりに、すべてのベクトルにわたって同じビット位置同士をグループ化して格納します。
-これにより、ベクトルはフル精度のまま保持されつつ、検索時に細かな量子化レベルを選択できます。I/O を減らして計算を高速化したい場合はより少ないビットを読み取り、精度を高めたい場合はより多くのビットを読み取ります。量子化によるデータ転送量と計算量削減の高速化メリットを得つつ、必要に応じて元の全データにいつでもアクセスできます。
-
-:::note
-`QBit` データ型とそれに関連する距離関数はベータ機能です。
-これらを有効化するには、まず `SET enable_qbit_type = 1` を実行してください。
-問題が発生した場合は、[ClickHouse repository](https://github.com/clickhouse/clickhouse/issues) に issue を作成してください。
-:::
+`QBit` データ型は、近似検索を高速化するためにベクトルの格納方法を再編成します。各ベクトルの要素をひとまとまりとして格納する代わりに、すべてのベクトルにわたって同じビット桁（ビット位置）ごとにグループ化して格納します。
+これにより、ベクトルは元の精度を保ったまま保存されつつ、検索時にきめ細かな量子化レベルを選択できます。I/O を少なくして計算を高速化したい場合は読むビット数を減らし、高い精度が必要な場合は読むビット数を増やします。量子化によるデータ転送量と計算量削減に伴う高速化の利点を得つつ、必要に応じて元の全データにもアクセスできます。
 
 `QBit` 型のカラムを宣言するには、次の構文を使用します。
 
@@ -27,8 +17,8 @@ import BetaBadge from '@theme/badges/BetaBadge';
 column_name QBit(element_type, dimension)
 ```
 
-* `element_type` – 各ベクトル要素の型。使用できる型は `BFloat16`、`Float32`、`Float64` です。
-* `dimension` – 各ベクトル内の要素数。
+* `element_type` – 各ベクトル要素の型。使用可能な型は `BFloat16`、`Float32`、`Float64` です。
+* `dimension` – 各ベクトル内の要素数
 
 
 ## QBit の作成 \{#creating-qbit\}
