@@ -20,8 +20,8 @@ import permissions from '@site/static/images/integrations/data-ingestion/clickpi
 
 To follow this guide, you will need:
 - An Azure Blob Storage account
-  - [Azure connection string](/integrations/azure-data-factory/table-function#acquiring-azure-blob-storage-access-keys)
-  - Container name
+- [Azure connection string](/integrations/azure-data-factory/table-function#acquiring-azure-blob-storage-access-keys)
+- Container name
 - A running ClickHouse Cloud service
 
 <VerticalStepper headerLevel="h2">
