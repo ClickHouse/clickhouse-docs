@@ -58,7 +58,7 @@ For advance testing before production upgrades, use the Fast or Regular channel 
      fast_progress: 'green',
      regular_progress: 'green',
      slow_progress: 'green',
-     fast_delay_note: 'Services with scheduled upgrade windows will receive 25.10 during their scheduled window in the week after rollout completes',
+     regular_delay_note: 'Services with scheduled upgrade windows will receive 25.10 during their scheduled window in the week after rollout completes',
    },
    {
     changelog_link: 'https://clickhouse.com/docs/changelogs/25.8',
@@ -72,6 +72,5 @@ For advance testing before production upgrades, use the Fast or Regular channel 
     fast_progress: 'green',
     regular_progress: 'green',
     slow_progress: 'green',
-    regular_delay_note: 'Services with scheduled upgrade windows will be upgraded starting in the week after rollout completes',
   }
 ]} />
