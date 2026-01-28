@@ -2276,6 +2276,15 @@ SETTINGS convert_query_to_cnf = true;
 - enable_when_possible — 如果 `insert_deduplicate` 启用且 SELECT 结果稳定，则启用去重，否则禁用。
 - enable_even_for_bad_queries - 如果 `insert_deduplicate` 启用，则始终启用去重。如果 SELECT 结果不稳定，会记录警告日志，但查询仍然在启用去重的情况下执行。此选项用于向后兼容。建议优先使用其他选项，因为该选项可能导致不符合预期的结果。
 
+## default_dictionary_database \{#default_dictionary_database\}
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": ""},{"label": "New setting"}]}]}/>
+
+在未指定数据库名称时用于搜索外部字典的数据库。
+空字符串表示当前数据库。如果在指定的默认数据库中未找到字典，ClickHouse 会回退使用当前数据库。
+
+在从基于 XML 定义的全局字典迁移到基于 SQL 定义的字典时，这一配置会非常有用。
+
 ## default_materialized_view_sql_security \{#default_materialized_view_sql_security\}
 
 <SettingsInfoBlock type="SQLSecurityType" default_value="DEFINER" />

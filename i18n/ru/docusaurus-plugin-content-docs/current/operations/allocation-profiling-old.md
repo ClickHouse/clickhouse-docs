@@ -9,6 +9,7 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
 # Профилирование выделения памяти для версий до 25.9 \{#allocation-profiling-for-versions-before-259\}
 
 ClickHouse использует [jemalloc](https://github.com/jemalloc/jemalloc) в качестве глобального аллокатора. Jemalloc предоставляет инструменты для выборочного отслеживания и профилирования выделения памяти.  
@@ -19,7 +20,7 @@ ClickHouse использует [jemalloc](https://github.com/jemalloc/jemalloc)
 Если вы хотите выполнять сэмплирование и профилирование выделений памяти в `jemalloc`, необходимо запустить ClickHouse/Keeper с включённым профилированием, задав переменную окружения `MALLOC_CONF`:
 
 ```sh
-MALLOC_CONF=background_thread:true,prof:true
+MALLOC_CONF=background_thread:true,prof:true,prof_active:true
 ```
 
 `jemalloc` будет выборочно отслеживать выделения памяти и сохранять информацию во внутренних структурах.
@@ -40,28 +41,29 @@ MALLOC_CONF=background_thread:true,prof:true
   </TabItem>
 </Tabs>
 
-По умолчанию файл профиля кучи будет создан в `/tmp/jemalloc_clickhouse._pid_._seqnum_.heap`, где `_pid_` — это PID ClickHouse, а `_seqnum_` — глобальный порядковый номер текущего профиля кучи.\
+По умолчанию файл профиля кучи будет создан в `/tmp/jemalloc_clickhouse._pid_._seqnum_.heap`, где `_pid_` — это PID ClickHouse, а `_seqnum_` — глобальный порядковый номер текущего профиля кучи.
 Для Keeper файл по умолчанию — `/tmp/jemalloc_keeper._pid_._seqnum_.heap` и подчиняется тем же правилам.
 
-Другое место хранения может быть задано путём добавления к переменной окружения `MALLOC_CONF` опции `prof_prefix`.\
+Другое место хранения может быть задано путём добавления к переменной окружения `MALLOC_CONF` опции `prof_prefix`.
 Например, если вы хотите генерировать профили в каталоге `/data`, при этом префиксом имени файла будет `my_current_profile`, вы можете запускать ClickHouse/Keeper со следующей переменной окружения:
 
 ```sh
 MALLOC_CONF=background_thread:true,prof:true,prof_prefix:/data/my_current_profile
 ```
 
-К имени сгенерированного файла будет добавлен префикс PID и порядковый номер.
+К префиксу в имени сгенерированного файла будут добавлены PID и порядковый номер.
+
 
 ## Анализ профилей кучи \{#analyzing-heap-profiles\}
 
-После генерации профилей кучи их необходимо проанализировать.\
+После генерации профилей кучи их необходимо проанализировать.
 Для этого можно использовать инструмент `jemalloc` под названием [jeprof](https://github.com/jemalloc/jemalloc/blob/dev/bin/jeprof.in). Его можно установить несколькими способами:
 
 * С помощью пакетного менеджера операционной системы
 * Клонировав [репозиторий jemalloc](https://github.com/jemalloc/jemalloc) и выполнив `autogen.sh` в корневом каталоге. В результате в каталоге `bin` появится скрипт `jeprof`
 
 :::note
-`jeprof` использует `addr2line` для генерации стек-трейсов, что может быть очень медленным.\
+`jeprof` использует `addr2line` для генерации стек-трейсов, что может быть очень медленным.
 В таком случае рекомендуется установить [альтернативную реализацию](https://github.com/gimli-rs/addr2line) этого инструмента.
 
 ```bash
@@ -88,6 +90,7 @@ jeprof path/to/binary path/to/heap/profile --output_format [ > output_file]
 jeprof path/to/binary --base path/to/first/heap/profile path/to/second/heap/profile --output_format [ > output_file]
 ```
 
+
 ### Примеры \{#examples\}
 
 * если вы хотите создать текстовый файл, в котором каждая процедура записана в отдельной строке:
@@ -99,8 +102,9 @@ jeprof path/to/binary path/to/heap/profile --text > result.txt
 * если вы хотите создать PDF-файл с графом вызовов:
 
 ```sh
-jeprof путь/к/исполняемому/файлу путь/к/профилю/heap --pdf > result.pdf
+jeprof path/to/binary path/to/heap/profile --pdf > result.pdf
 ```
+
 
 ### Генерация flame-графа \{#generating-flame-graph\}
 
@@ -121,6 +125,7 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
 ```
 
 Еще один полезный инструмент — [speedscope](https://www.speedscope.app/), который позволяет анализировать собранные стеки в более интерактивном режиме.
+
 
 ## Управление профилировщиком выделений во время работы \{#controlling-allocation-profiler-during-runtime\}
 
@@ -159,14 +164,15 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
   </TabItem>
 </Tabs>
 
-Также можно управлять начальным состоянием профилировщика, установив опцию `prof_active`, которая по умолчанию включена.\
-Например, если вы не хотите сэмплировать выделения памяти во время запуска, а только после, вы можете включить профилировщик позже. Для этого запустите ClickHouse/Keeper со следующей переменной окружения:
+Также можно управлять начальным состоянием профилировщика, установив опцию `prof_active`, которая по умолчанию включена.
+Например, если вы не хотите сэмплировать выделения памяти во время запуска, а только после, вы можете включить профилировщик. Для этого запустите ClickHouse/Keeper со следующей переменной окружения:
 
 ```sh
 MALLOC_CONF=background_thread:true,prof:true,prof_active:false
 ```
 
 Профилировщик можно будет включить позже.
+
 
 ## Дополнительные параметры профилировщика \{#additional-options-for-profiler\}
 
@@ -194,6 +200,7 @@ FORMAT Vertical
 ```
 
 [Справочник](/operations/system-tables/asynchronous_metrics)
+
 
 ### Системная таблица `jemalloc_bins` \{#system-table-jemalloc_bins\}
 

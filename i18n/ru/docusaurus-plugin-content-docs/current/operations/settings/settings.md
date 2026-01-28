@@ -2280,6 +2280,15 @@ SETTINGS convert_query_to_cnf = true;
 - enable_when_possible — дедупликация включена, если `insert_deduplicate` включён и результат SELECT стабилен, иначе отключена.
 - enable_even_for_bad_queries — дедупликация включена, если `insert_deduplicate` включён. Если результат SELECT нестабилен, записывается предупреждение, но запрос выполняется с дедупликацией. Эта опция предназначена для обратной совместимости. Рассмотрите возможность использования других опций, так как это может привести к непредсказуемым результатам.
 
+## default_dictionary_database \{#default_dictionary_database\}
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": ""},{"label": "Новая настройка"}]}]}/>
+
+База данных, в которой выполняется поиск внешних словарей, если имя базы данных не указано.
+Пустая строка задаёт текущую базу данных. Если словарь не найден в указанной базе данных по умолчанию, ClickHouse возвращается к текущей базе данных.
+
+Может быть полезно при миграции с глобальных словарей, определённых в XML, на словари, определённые в SQL.
+
 ## default_materialized_view_sql_security \{#default_materialized_view_sql_security\}
 
 <SettingsInfoBlock type="SQLSecurityType" default_value="DEFINER" />

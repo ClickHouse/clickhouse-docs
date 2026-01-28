@@ -2278,6 +2278,15 @@ Replicated\* テーブルからデータを受け取る materialized view に対
 - enable_when_possible — `insert_deduplicate` が有効で、かつ SELECT の結果が安定している場合に重複排除を有効にし、それ以外の場合は無効にします。
 - enable_even_for_bad_queries - `insert_deduplicate` が有効な場合に重複排除を有効にします。SELECT の結果が安定していない場合は警告がログに記録されますが、クエリは重複排除ありで実行されます。このオプションは後方互換性のためのものです。予期しない結果を招く可能性があるため、代わりに他のオプションの利用を検討してください。
 
+## default_dictionary_database \{#default_dictionary_database\}
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": ""},{"label": "New setting"}]}]}/>
+
+データベース名が指定されていない場合に、外部 Dictionary を検索するデータベース。
+空文字列の場合は、現在のデータベースを意味します。指定されたデフォルトデータベースで Dictionary が見つからない場合、ClickHouse は現在のデータベースを使用します。
+
+XML で定義されたグローバル Dictionary から、SQL で定義された Dictionary への移行に役立ちます。
+
 ## default_materialized_view_sql_security \{#default_materialized_view_sql_security\}
 
 <SettingsInfoBlock type="SQLSecurityType" default_value="DEFINER" />

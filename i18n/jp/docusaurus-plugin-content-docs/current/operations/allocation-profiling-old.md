@@ -9,6 +9,7 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
 # 25.9 以前のバージョン向けのアロケーションプロファイリング \{#allocation-profiling-for-versions-before-259\}
 
 ClickHouse はグローバルアロケータとして [jemalloc](https://github.com/jemalloc/jemalloc) を使用します。jemalloc には、アロケーションのサンプリングとプロファイリングのためのツールが付属しています。  
@@ -19,7 +20,7 @@ ClickHouse はグローバルアロケータとして [jemalloc](https://github.
 `jemalloc` でアロケーションのサンプリングとプロファイリングを行う場合は、環境変数 `MALLOC_CONF` を使用してプロファイリングを有効にし、ClickHouse/Keeper を起動する必要があります。
 
 ```sh
-MALLOC_CONF=background_thread:true,prof:true
+MALLOC_CONF=background_thread:true,prof:true,prof_active:true
 ```
 
 `jemalloc` はアロケーションをサンプリングし、その情報を内部に保持します。
@@ -40,28 +41,29 @@ MALLOC_CONF=background_thread:true,prof:true
   </TabItem>
 </Tabs>
 
-デフォルトでは、ヒーププロファイル用のファイルは `/tmp/jemalloc_clickhouse._pid_._seqnum_.heap` に生成されます。ここで `_pid_` は ClickHouse の PID、`_seqnum_` は現在のヒーププロファイルに対するグローバルシーケンス番号です。\
+デフォルトでは、ヒーププロファイル用のファイルは `/tmp/jemalloc_clickhouse._pid_._seqnum_.heap` に生成されます。ここで `_pid_` は ClickHouse の PID、`_seqnum_` は現在のヒーププロファイルに対するグローバルシーケンス番号です。
 Keeper の場合、デフォルトファイルは `/tmp/jemalloc_keeper._pid_._seqnum_.heap` であり、同じルールに従います。
 
-`MALLOC_CONF` 環境変数に `prof_prefix` オプションを追加することで、別の場所を指定できます。\
+`MALLOC_CONF` 環境変数に `prof_prefix` オプションを追加することで、別の場所を指定できます。
 たとえば、`/data` ディレクトリ内に、ファイル名のプレフィックスを `my_current_profile` としてプロファイルを生成したい場合は、ClickHouse/Keeper を次の環境変数を指定して実行します:
 
 ```sh
 MALLOC_CONF=background_thread:true,prof:true,prof_prefix:/data/my_current_profile
 ```
 
-生成されるファイル名は、接頭辞、PID、シーケンス番号を連結したものになります。
+生成されるファイル名は、接頭辞に PID とシーケンス番号を付加したものになります。
+
 
 ## ヒーププロファイルの解析 \{#analyzing-heap-profiles\}
 
-ヒーププロファイルを生成したら、それを解析する必要があります。\
+ヒーププロファイルを生成したら、それを解析する必要があります。
 そのために、`jemalloc` のツールである [jeprof](https://github.com/jemalloc/jemalloc/blob/dev/bin/jeprof.in) を使用できます。これは複数の方法でインストールできます:
 
 * システムのパッケージマネージャーを使用する
-* [jemalloc リポジトリ](https://github.com/jemalloc/jemalloc) をクローンし、ルートディレクトリで `autogen.sh` を実行する。この方法では、`bin` ディレクトリ内で `jeprof` スクリプトが利用できるようになります
+* [jemalloc リポジトリ](https://github.com/jemalloc/jemalloc) をクローンし、ルートディレクトリで `autogen.sh` を実行する。この方法では、`bin` ディレクトリ内に `jeprof` スクリプトが配置されます
 
 :::note
-`jeprof` はスタックトレースを生成するために `addr2line` を使用しますが、これは非常に遅くなる場合があります。\
+`jeprof` はスタックトレースを生成するために `addr2line` を使用しますが、これは非常に遅くなる場合があります。
 その場合は、このツールの[代替実装](https://github.com/gimli-rs/addr2line)をインストールすることを推奨します。
 
 ```bash
@@ -88,6 +90,7 @@ jeprof path/to/binary path/to/heap/profile --output_format [ > output_file]
 jeprof path/to/binary --base path/to/first/heap/profile path/to/second/heap/profile --output_format [ > output_file]
 ```
 
+
 ### 例 \{#examples\}
 
 * 各プロシージャを1行ごとに記述したテキストファイルを生成したい場合:
@@ -96,11 +99,12 @@ jeprof path/to/binary --base path/to/first/heap/profile path/to/second/heap/prof
 jeprof path/to/binary path/to/heap/profile --text > result.txt
 ```
 
-* コールグラフを含む PDF ファイルを生成したい場合:
+* コールグラフ付きの PDF ファイルを生成したい場合:
 
 ```sh
 jeprof path/to/binary path/to/heap/profile --pdf > result.pdf
 ```
+
 
 ### フレームグラフの生成 \{#generating-flame-graph\}
 
@@ -121,6 +125,7 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
 ```
 
 もう 1 つ有用なツールとして [speedscope](https://www.speedscope.app/) があり、収集したスタック情報をよりインタラクティブに解析できます。
+
 
 ## 実行時のアロケーションプロファイラの制御 \{#controlling-allocation-profiler-during-runtime\}
 
@@ -159,7 +164,7 @@ ClickHouse/Keeper をプロファイラを有効にした状態で起動した�
   </TabItem>
 </Tabs>
 
-`prof_active` オプションを設定することで、プロファイラの初期状態を制御することも可能です。このオプションはデフォルトで有効になっています。\
+`prof_active` オプションを設定することで、プロファイラの初期状態を制御することも可能です。このオプションはデフォルトで有効になっています。
 たとえば、起動時にはアロケーションをサンプリングせず、起動後のみサンプリングしたい場合は、その時点でプロファイラを有効にします。次の環境変数を指定して ClickHouse/Keeper を起動できます:
 
 ```sh
@@ -167,6 +172,7 @@ MALLOC_CONF=background_thread:true,prof:true,prof_active:false
 ```
 
 プロファイラは後から有効化することもできます。
+
 
 ## プロファイラの追加オプション \{#additional-options-for-profiler\}
 
@@ -194,6 +200,7 @@ FORMAT Vertical
 ```
 
 [リファレンス](/operations/system-tables/asynchronous_metrics)
+
 
 ### システムテーブル `jemalloc_bins` \{#system-table-jemalloc_bins\}
 
