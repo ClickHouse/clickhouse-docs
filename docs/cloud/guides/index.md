@@ -12,8 +12,8 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 |-----|-----|
 | [Overview](/cloud/manage/backups/overview) | Provides an overview of backups in ClickHouse Cloud |
 | [Enabling the ClickHouse Cloud Remote MCP Server](/use-cases/AI/MCP/remote_mcp) | This guide explains how to enable and use the ClickHouse Cloud Remote MCP |
-| [Use Ask AI chat in ClickHouse Cloud](/use-cases/AI_ML/AIChat) | Guide to enabling and using the AI Chat feature in ClickHouse Cloud Console |
 | [Take a backup or restore a backup from the UI](/cloud/manage/backups/backup-restore-via-ui) | Page describing how to take a backup or restore a backup from the UI with your own bucket |
+| [Use Ask AI chat in ClickHouse Cloud](/use-cases/AI_ML/AIChat) | Guide to enabling and using the AI Chat feature in ClickHouse Cloud Console |
 | [Take a backup or restore a backup using commands](/cloud/manage/backups/backup-restore-via-commands) | Page describing how to take a backup or restore a backup with your own bucket using commands |
 | [Accessing GCS data securely](/cloud/data-sources/secure-gcs) | This article demonstrates how ClickHouse Cloud customers can access their GCS data securely |
 | [Accessing S3 data securely](/cloud/data-sources/secure-s3) | This article demonstrates how ClickHouse Cloud customers can leverage role-based access to authenticate with Amazon Simple Storage Service(S3) and access their data securely. |
