@@ -35,6 +35,7 @@ const sidebars = {
             'getting-started/install/debian_ubuntu',
             'getting-started/install/redhat',
             'getting-started/install/other_linux',
+            'getting-started/install/nixos',
             'getting-started/install/macos',
             'getting-started/install/windows',
             'getting-started/install/docker',
