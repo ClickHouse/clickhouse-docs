@@ -1,6 +1,6 @@
 # Install ClickHouse on NixOS {#install-from-nix}
 
-> ClickHouse is available in the Nixpkgs repository and can be installed using Nix on **Linux**, and **macOS**.
+> ClickHouse is available in the Nixpkgs repository and can be installed using Nix on **Linux** and **macOS**.
 
 <VerticalStepper>
 
