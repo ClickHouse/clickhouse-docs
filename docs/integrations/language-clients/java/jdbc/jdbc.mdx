@@ -158,7 +158,7 @@ JDBC Driver supports the same data formats as the underlying [java client](/inte
 you may want to consider using the [java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html) package. `ZonedDateTime` and
 `OffsetDateTime` are both great replacements for java.sql.Timestamp, java.sql.Date, and java.sql.Time.
 
-:::note
+:::note[Date vs DateTime]
 `Date` is stored without timezone, while `DateTime` is stored with timezone. This can lead to unexpected results if you're not careful.
 :::
 
