@@ -573,7 +573,7 @@ WHERE Timestamp < (
 さらなる安全性のために、バックフィル用materialized viewの出力先を一時的なターゲットテーブル（例: `otel_traces_1m_v2`）に向けることを検討してください。バックフィルが正常に完了したら、[パーティションを移動](/sql-reference/statements/alter/partition#move-partition-to-table)してメインのターゲットテーブルに切り替えます（例: `ALTER TABLE otel_traces_1m_v2 MOVE PARTITION '2026-01-02' TO otel_traces_1m`）。これにより、リソース制限などが原因でバックフィルが中断・失敗した場合でも、容易にリカバリできます。
 :::
 
-挿入パフォーマンスの向上やリソースの削減・制御など、このプロセスのチューニングに関する詳細は、["Backfilling"](/data-modeling/backfilling#tuning-performance--resources) を参照してください。
+挿入パフォーマンスの向上やリソースの削減・制御など、このプロセスのチューニングに関する詳細は、["Backfilling."](/data-modeling/backfilling#tuning-performance--resources) を参照してください。
 
 </VerticalStepper>
 
