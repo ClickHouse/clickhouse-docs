@@ -1737,6 +1737,7 @@ const sidebars = {
         'use-cases/observability/clickstack/alerts',
         'use-cases/observability/clickstack/production',
         'use-cases/observability/clickstack/materialized_views',
+        'use-cases/observability/clickstack/performance_tuning',
         {
           type: 'category',
           label: 'Migration guides',
