@@ -48,103 +48,20 @@ If you would like to test the integration before configuring your own existing s
 
 <VerticalStepper headerLevel="h4">
 
-#### Install OpenTelemetry package {#install-package}
+#### Install and configure OpenTelemetry {#install-configure}
 
-Install the HyperDX OpenTelemetry package which includes automatic instrumentation for popular Node.js frameworks:
-
-```bash
-npm install @hyperdx/node-opentelemetry
-```
-
-This package includes automatic instrumentation for:
-- **Express**, **Koa**, **Fastify** (web frameworks)
-- **HTTP/HTTPS** (outgoing requests)
-- **MongoDB**, **PostgreSQL**, **Redis** (databases)
-- **AWS SDK**, **gRPC** (cloud services)
-
-:::note
-For the complete list of automatically instrumented libraries, see the [OpenTelemetry Node.js instrumentation documentation](https://opentelemetry.io/docs/languages/js/libraries/).
-:::
-
-#### Configure OpenTelemetry in your application {#configure-otel}
-
-Add OpenTelemetry initialization at the **very beginning** of your application's entry point (typically `index.js`, `server.js`, or `app.js`).
-
-**Important:** This must be the first code that runs, before any other imports.
-
-```javascript
-// This MUST be first - before any other requires/imports
-const HyperDX = require('@hyperdx/node-opentelemetry');
-
-HyperDX.init({
-    apiKey: process.env.CLICKSTACK_API_KEY,
-    service: 'my-nodejs-app',
-    endpoint: process.env.CLICKSTACK_ENDPOINT || 'http://localhost:4318'
-});
-
-// Now import your application code
-const express = require('express');
-const app = express();
-
-// Your application code...
-app.get('/', (req, res) => {
-    res.send('Hello World');
-});
-
-app.listen(3000, () => {
-    console.log('Server running on port 3000');
-});
-```
-
-For ES modules (using `import`):
-
-```javascript
-// This MUST be first
-import * as HyperDX from '@hyperdx/node-opentelemetry';
-
-HyperDX.init({
-    apiKey: process.env.CLICKSTACK_API_KEY,
-    service: 'my-nodejs-app',
-    endpoint: process.env.CLICKSTACK_ENDPOINT || 'http://localhost:4318'
-});
-
-// Now import your application code
-import express from 'express';
-const app = express();
-// ... rest of your code
-```
-
-##### Understanding the configuration {#understanding-configuration}
-
-**Configuration options:**
-- `apiKey`: Your ClickStack Ingestion API Key (required)
-- `service`: A name to identify your application in HyperDX (required)
-- `endpoint`: ClickStack OTLP HTTP endpoint (default: http://localhost:4318)
-
-**What gets traced automatically:**
-- HTTP requests (incoming and outgoing)
-- Database queries (MongoDB, PostgreSQL, MySQL, Redis)
-- Framework routing (Express, Koa, Fastify)
-- AWS SDK calls
-- gRPC calls
-
-Each trace includes:
-- Request method, path, and status code
-- Response time
-- Error details (if any)
-- Database query details
-- External API calls
+Install the `@hyperdx/node-opentelemetry` package and initialize it at the start of your application. See the [Node.js SDK guide](/use-cases/observability/clickstack/sdks/nodejs#getting-started) for detailed installation steps.
 
 #### Get ClickStack API key {#get-api-key}
 
-1. Open HyperDX at your ClickStack URL
-2. Navigate to **Team Settings → API Keys**
-3. Copy your **Ingestion API Key**
-4. Set it as an environment variable:
+An API key to send traces to ClickStack's OTLP endpoint.
 
-```bash
-export CLICKSTACK_API_KEY=your-api-key-here
-```
+1. Open HyperDX at your ClickStack URL (e.g., http://localhost:8080)
+2. Create an account or log in if needed
+3. Navigate to **Team Settings → API Keys**
+4. Copy your **Ingestion API Key**
+
+<Image img={api_key} alt="ClickStack API Key"/>
 
 #### Run your application {#run-application}
 
@@ -152,16 +69,7 @@ Start your Node.js application with the environment variables set:
 
 ```bash
 export CLICKSTACK_API_KEY=your-api-key-here
-export CLICKSTACK_ENDPOINT=http://your-clickstack-host:4318
-
-node index.js
-```
-
-Or add them to your `.env` file if using a package like `dotenv`:
-
-```env
-CLICKSTACK_API_KEY=your-api-key-here
-CLICKSTACK_ENDPOINT=http://localhost:4318
+export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
 
 #### Generate some traffic {#generate-traffic}
@@ -182,7 +90,11 @@ for i in {1..100}; do curl -s http://localhost:3000/ > /dev/null; done
 
 Once configured, log into HyperDX and verify traces are flowing. You should see something like this. If you don't see traces, try adjusting your time range:
 
+<Image img={search_view} alt="Traces search view"/>
+
 Click on any trace to see the detailed view with spans, timing, and attributes:
+
+<Image img={trace_view} alt="Individual trace view"/>
 
 </VerticalStepper>
 
@@ -203,14 +115,15 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 #### Start ClickStack {#start-clickstack}
 
 If you don't have ClickStack running yet, start it with:
-
 ```bash
 docker run -d --name clickstack-demo \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CLICKHOUSE_USER=default \
+  -e CLICKHOUSE_PASSWORD= \
   clickhouse/clickstack-all-in-one:latest
 ```
 
-#### Get ClickStack API key {#get-api-key}
+#### Get ClickStack API key {#get-api-key-demo}
 
 An API key to send traces to ClickStack's OTLP endpoint.
 
@@ -221,15 +134,13 @@ An API key to send traces to ClickStack's OTLP endpoint.
 
 <Image img={api_key} alt="ClickStack API Key"/>
 
-#### Send traces to ClickStack {#send-traces}
-
 Set your API key as an environment variable:
 
 ```bash
 export CLICKSTACK_API_KEY=your-api-key-here
 ```
 
-Then send the traces to ClickStack:
+#### Send the traces to ClickStack {#send-traces}
 
 ```bash
 curl -X POST http://localhost:4318/v1/traces \
@@ -238,7 +149,7 @@ curl -X POST http://localhost:4318/v1/traces \
   -d @nodejs-traces-sample.json
 ```
 
-You should see a response like `{"partialSuccess":{}}` indicating the traces were successfully sent. All 1,000 traces will be ingested into ClickStack.
+You should see a response like `{"partialSuccess":{}}` indicating the traces were successfully sent.
 
 #### Verify traces in HyperDX {#verify-demo-traces}
 
@@ -287,58 +198,46 @@ For the demo dataset, set the time range to **2025-10-26 13:00:00 - 2025-10-27 1
 
 ## Troubleshooting {#troubleshooting}
 
-### No traces appearing in HyperDX {#no-traces}
+### Demo traces not appearing via curl {#demo-traces-not-appearing}
 
-**Verify OpenTelemetry is initialized:**
-Check that `HyperDX.init()` is called **before** any other imports. The initialization must happen first:
+If you've sent traces via curl but don't see them in HyperDX, try sending the traces a second time:
 
-```javascript
-// CORRECT - init is first
-const HyperDX = require('@hyperdx/node-opentelemetry');
-HyperDX.init({ /* config */ });
-const express = require('express');
-
-// WRONG - other imports before init
-const express = require('express');
-const HyperDX = require('@hyperdx/node-opentelemetry');
-HyperDX.init({ /* config */ });
-```
-
-**Check environment variables are set:**
 ```bash
-echo $CLICKSTACK_API_KEY
-echo $CLICKSTACK_ENDPOINT
-```
-Both should output the correct values (not empty).
-
-**Verify network connectivity:**
-```bash
-# Test OTLP HTTP endpoint
-curl http://your-clickstack-host:4318/v1/traces \
+curl -X POST http://localhost:4318/v1/traces \
   -H "Content-Type: application/json" \
   -H "Authorization: $CLICKSTACK_API_KEY" \
-  -d '{"resourceSpans":[]}'
+  -d @nodejs-traces-sample.json
 ```
-Should return a 200 OK response.
+
+This is a known issue that occurs when using the demo approach via curl and does not affect instrumented production applications.
+
+### No traces appearing in HyperDX {#no-traces}
+
+**Verify environment variables are set:**
+
+```bash
+echo $CLICKSTACK_API_KEY
+# Should output your API key
+
+echo $OTEL_EXPORTER_OTLP_ENDPOINT
+# Should output http://localhost:4318 or your ClickStack host
+```
+
+**Verify network connectivity:**
+
+```bash
+curl -v http://localhost:4318/v1/traces
+```
+Should connect successfully to the OTLP endpoint.
 
 **Check application logs:**
-Look for OpenTelemetry initialization messages when your app starts. The HyperDX SDK should output confirmation that it's configured.
-
-**Verify your application is receiving requests:**
-```bash
-# Generate test traffic
-curl http://localhost:3000/
-```
-Check your application logs to confirm requests are being processed.
+Look for OpenTelemetry initialization messages when your app starts. The HyperDX SDK should output confirmation that it's initialized.
 
 ## Next steps {#next-steps}
+If you want to explore further, here are some next steps to experiment with your dashboard
 
-Now that you have traces flowing from your Node.js application, consider:
-
-- **Add logs and metrics**: Complete the observability picture with the [Node.js SDK guide](/use-cases/observability/clickstack/sdks/nodejs)
-- **Set up alerts**: Create alerts for high error rates or latency spikes
-- **Custom instrumentation**: Add manual spans for business-critical operations
-- **Trace sampling**: For high-traffic applications, configure sampling strategies to reduce data volume
+- Set up [alerts](/use-cases/observability/clickstack/alerts) for critical metrics (error rates, latency thresholds)
+- Create additional dashboards for specific use cases (API monitoring, security events)
 
 ## Going to production {#going-to-production}
 
