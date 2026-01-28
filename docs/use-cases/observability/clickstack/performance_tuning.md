@@ -43,18 +43,20 @@ Tables are assigned to [databases](/sql-reference/statements/create/database) in
 In most cases, performance tuning focuses on the logs and trace tables. While metrics tables can be optimized for filtering, their schemas are intentionally opinionated for Prometheus-style workloads and typically don't require modification for standard charting. Logs and traces, by contrast, support a wider range of access patterns, and therefore benefit most from tuning. Session data has a fixed user experience, and its schema rarely needs to be modified.
 :::
 
-At a minimum, users should understand the following ClickHouse fundamentals:
+At a minimum, you should understand the following ClickHouse fundamentals:
 
-- **Tables**: How data sources in ClickStack correspond to underlying ClickHouse tables. Tables in ClickHouse mainly use the [MergeTree](/engines/table-engines/mergetree-family/mergetree) engine.
-- **Parts**: How data is written in immutable parts and merged over time.
-- **Partitions**: Partitions group the data parts of a table into organised logical units. These units are easier to manage, query, and optimize.
-- **Merges** - The internal process that merges parts together to ensure that there are a lower number of parts to query. Essential for maintaining query performance.
-- **Granules**: The smallest unit of data that ClickHouse reads and prunes during query execution.
-- **Primary (ordering) keys**: How the `ORDER BY` key determines on-disk data layout, compression, and query pruning.
+| Concept | Description |
+|---------|-------------|
+| **Tables** | How data sources in ClickStack correspond to underlying ClickHouse tables. Tables in ClickHouse mainly use the [MergeTree](/engines/table-engines/mergetree-family/mergetree) engine. |
+| **Parts** | How data is written in immutable parts and merged over time. |
+| **Partitions** | Partitions group the data parts of a table into organised logical units. These units are easier to manage, query, and optimize. |
+| **Merges** | The internal process that merges parts together to ensure that there are a lower number of parts to query. Essential for maintaining query performance. |
+| **Granules** | The smallest unit of data that ClickHouse reads and prunes during query execution. |
+| **Primary (ordering) keys** | How the `ORDER BY` key determines on-disk data layout, compression, and query pruning. |
 
 These concepts are central to ClickHouse performance. They determine how data is written, how it's structured on disk, and how efficiently ClickHouse can skip reading data at query time. Every optimization in this guide, whether materialized columns, skip indexes, primary keys, projections, or materialized views, builds on these core mechanisms.
 
-We recommend reviewing the following ClickHouse documentation before undertaking any tuning:
+You are recommended to review the following ClickHouse documentation before undertaking any tuning:
 
 - [Creating tables in ClickHouse](/guides/creating-tables) - A simple introduction to tables.
 - [Parts](/parts)
@@ -178,7 +180,7 @@ PodName = 'checkout-675775c4cc-f2p9c'
 This ensures users benefit from the optimization without changing dashboards, alerts, or saved queries.
 
 :::note
-By default, materialized columns are excluded from SELECT * queries. This preserves the invariant that query results can always be reinserted into the table.
+By default, materialized columns are excluded from `SELECT * queries`. This preserves the invariant that query results can always be reinserted into the table.
 :::
 
 ### Materializing historical data {#materializing-historical-data}
@@ -347,7 +349,7 @@ You must explicitly build the index for existing data:
 ALTER TABLE otel_traces MATERIALIZE INDEX idx_kafka_offset;
 ```
 
-:::note
+:::note[Materializing skip indexes]
 Materializing a skip index is typically lightweight and safe to run, especially for minmax indexes. For Bloom filter indexes on large datasets, users may prefer to materialize on a per-partition basis to better control resource usage e.g.
 
 ```sql
@@ -393,7 +395,7 @@ Bloom filter size can be reduced by increasing the allowed false-positive rate. 
 
 Tuning Bloom filter parameters is therefore a workload-dependent optimization and should be validated using real query patterns and production-like data volumes.
 
-For further details on skip indices, we recommend the guide ["Understanding ClickHouse data skipping indexes."](/optimize/skipping-indexes/examples)
+For further details on skip indices, see the guide ["Understanding ClickHouse data skipping indexes."](/optimize/skipping-indexes/examples)
 
 ### Evaluating skip index effectiveness {#evaluating-skip-index-effectiveness}
 
@@ -407,7 +409,7 @@ For example, consider the default Bloom filter skip index for TraceId included w
 INDEX idx_trace_id TraceId TYPE bloom_filter(0.001) GRANULARITY 1
 ```
 
-We can use `EXPLAIN indexes = 1` to see how effective it's for a selective query:
+You can use `EXPLAIN indexes = 1` to see how effective it's for a selective query:
 
 ```sql
 EXPLAIN indexes = 1
@@ -459,8 +461,8 @@ Peak memory usage: 198.39 MiB.
 
 Disabling `use_query_condition_cache` ensures results aren't affected by cached filtering decisions, and setting `use_skip_indexes = 0` provides a clean baseline for comparison. If the pruning is effective and index evaluation cost is low, the indexed query should be materially faster, as in the example above.
 
-:::note
-If EXPLAIN shows minimal granule pruning, or the skip index is very large, the cost of evaluating the index can offset any benefit. Use `EXPLAIN indexes = 1` to confirm pruning, then benchmark to confirm end-to-end performance improvements.
+:::tip
+If `EXPLAIN` shows minimal granule pruning, or the skip index is very large, the cost of evaluating the index can offset any benefit. Use `EXPLAIN indexes = 1` to confirm pruning, then benchmark to confirm end-to-end performance improvements.
 :::
 
 ### When to add skip indexes {#when-to-add-skip-indexes}
@@ -481,15 +483,15 @@ While the primary key also influences compression and storage layout, its primar
 
 Filtering on columns that appear earlier in the primary key is more efficient than filtering on columns that appear later. While the default configuration is sufficient for most users, there are cases where modifying the primary key can improve performance for specific workloads.
 
-:::note
-Throughout this document, we use the term "ordering key" interchangeably with "primary key." Strictly speaking, these differ in ClickHouse, but for ClickStack, they typically refer to the same columns specified in the table `ORDER BY` clause. For details, see the [ClickHouse documentation](/engines/table-engines/mergetree-family/mergetree#choosing-a-primary-key-that-differs-from-the-sorting-key) on choosing a primary key that differs from the sorting key.
+:::note[A note on terminology]
+Throughout this document, the term "ordering key" is used interchangeably with "primary key." Strictly speaking, these differ in ClickHouse, but for ClickStack, they typically refer to the same columns specified in the table `ORDER BY` clause. For details, see the [ClickHouse documentation](/engines/table-engines/mergetree-family/mergetree#choosing-a-primary-key-that-differs-from-the-sorting-key) on choosing a primary key that differs from the sorting key.
 :::
 
-Before modifying any primary key, we strongly recommend reading our [guide to understand how primary indexes work](/primary-indexes) in ClickHouse:
+Before modifying any primary key, reading through our [guide to understand how primary indexes work](/primary-indexes) in ClickHouse is strongly recommended:
 
 Primary key tuning is table and data-type-specific. A change that benefits one table and data type may not apply to others. The goal is always to optimize for a particular data type e.g. logs.
 
-**Users will typically be optimizing the tables for logs and traces. It's rare that primary key changes need to be made to the other data types.**
+**You will typically optimize the tables for logs and traces. It's rare that primary key changes need to be made to the other data types.**
 
 Below are the default primary keys for the ClickStack tables for logs and metrics.
 
@@ -506,7 +508,7 @@ When choosing a primary key, there are also other considerations for choosing an
 
 First, identify whether your access patterns differ substantially from the defaults for a specific table. For example, if you most commonly filter logs by Kubernetes node before service name, and this represents a dominant workflow, it may justify changing the primary key.
 
-:::note
+:::note[Modifying the default primary key]
 The default primary keys are sufficient in most cases. Changes should be made cautiously and only with a clear understanding of query patterns. Modifying a primary key can degrade performance for other workflows, so testing is essential.
 :::
 
@@ -519,7 +521,7 @@ Some simple rules can be applied to help choose an ordering key. The following c
 3. Prefer columns that are likely to be highly correlated with other columns in the table. This will help ensure these values are also stored contiguously, improving compression.
 4. `GROUP BY` (aggregations for charts) and `ORDER BY` (sorting) operations for columns in the ordering key can be made more memory efficient.
 
-On identifying the subset of columns for the ordering key, they must be declared in a specific order. This order can significantly influence both the efficiency of the filtering on secondary key columns in queries and the compression ratio for the table's data files. In general, it's best to order the keys in ascending order of cardinality. This should be balanced against the fact that filtering on columns that appear later in the ordering key will be less efficient than filtering on those that appear earlier in the tuple. Balance these behaviors and consider your access patterns. Most importantly, test variants. For further understanding of ordering keys and how to optimize them, we recommend starting with ["Choosing a Primary Key."](/best-practices/choosing-a-primary-key) For even deeper insights into primary key tuning and the internal data structures, see ["A practical introduction to primary indexes in ClickHouse."](/guides/best-practices/sparse-primary-indexes)
+On identifying the subset of columns for the ordering key, they must be declared in a specific order. This order can significantly influence both the efficiency of the filtering on secondary key columns in queries and the compression ratio for the table's data files. In general, it's best to order the keys in ascending order of cardinality. This should be balanced against the fact that filtering on columns that appear later in the ordering key will be less efficient than filtering on those that appear earlier in the tuple. Balance these behaviors and consider your access patterns. Most importantly, test variants. For further understanding of ordering keys and how to optimize them, reading ["Choosing a Primary Key."](/best-practices/choosing-a-primary-key) is recommended for even deeper insights into primary key tuning and the internal data structures, see ["A practical introduction to primary indexes in ClickHouse."](/guides/best-practices/sparse-primary-indexes)
 
 ### Changing the primary key {#changing-the-primary-key}
 
@@ -537,13 +539,16 @@ PRIMARY KEY (SeverityText, ServiceName, TimestampTime)
 ORDER BY (SeverityText, ServiceName, TimestampTime)
 ```
 
-:::note Ordering Key vs Primary Key
-Note in the above example, we're required to specify a `PRIMARY KEY` and `ORDER BY`. In ClickStack, these are almost always the same. The `ORDER BY` controls the physical data layout, while the `PRIMARY KEY` defines the sparse index. In rare, very large workloads, these may differ, but most users should keep them aligned.
+:::note Ordering key vs primary key
+Note in the above example, you're required to specify a `PRIMARY KEY` and `ORDER BY`.
+In ClickStack, these are almost always the same.
+The `ORDER BY` controls the physical data layout, while the `PRIMARY KEY` defines the sparse index.
+In rare, very large workloads, these may differ, but most users should keep them aligned.
 :::
 
 #### Exchange and drop table {#exhange-and-drop-table}
 
-We now use an `EXCHANGE` statement to swap the names of the tables atomicaly. Our temporary table (now the old default table), can be dropped.
+The `EXCHANGE` statement is used to swap the names of the tables [atomically](/concepts/glossary#atomicity). The temporary table (now the old default table), can be dropped.
 
 ```sql
 EXCHANGE TABLES otel_logs_temp AND otel_logs
@@ -562,7 +567,7 @@ Backfilling existing data into a new table is rarely worthwhile at scale. The co
 
 <VerticalStepper headerLevel="h4">
 
-We use the same example of introducing the `SeverityText` as the first column in the primary key below. In this case, we create a table for new data, retaining the old table for historical analysis.
+The same example of introducing the `SeverityText` as the first column in the primary key is used below. In this case, a table is created for new data, retaining the old table for historical analysis.
 
 #### Create new table {#create-new-table-with-key-2}
 
@@ -600,7 +605,7 @@ At this point, writes continue to `otel_logs` with the original primary key, whi
 
 #### Exchange the tables {#exchange-the-tables}
 
-We now use an `EXCHANGE` statement to swap the names of the `otel_logs` and `otel_logs_23_01_2025` tables atomically.
+An `EXCHANGE` statement is now used to swap the names of the `otel_logs` and `otel_logs_23_01_2025` tables atomically.
 
 ```sql
 EXCHANGE TABLES otel_logs AND otel_logs_23_01_2025
@@ -612,13 +617,14 @@ This process allows primary key changes with no ingest interruption and no user-
 
 </VerticalStepper>
 
-This process can be adapted should further changes be required to primary keys. For example, suppose we decide actually the `SeverityNumber` should be part of the primary key one week later, rather than the `SeverityText`. The following process can be adapted as many times as primary key changes are required.
+This process can be adapted should further changes be required to primary keys. For example, if you decide that actually the `SeverityNumber` should be part of the primary key one week later, rather than the `SeverityText`. The following process can be adapted as many times as primary key changes are required.
 
 <VerticalStepper headerLevel="h4">
 
 #### Create new table {#create-new-table-with-key-3}
 
-Create the new table with the desired primary key. In this case, we use `30_01_2025` as our suffix to denote the date of the table. e.g.
+Create the new table with the desired primary key.
+In the example below `30_01_2025` is used as our suffix to denote the date of the table. e.g.
 
 ```sql
 CREATE TABLE otel_logs_30_01_2025 AS otel_logs
@@ -628,7 +634,7 @@ ORDER BY (SeverityNumber, ServiceName, TimestampTime)
 
 #### Exchange the tables {#exchange-the-tables-v2}
 
-We now use an `EXCHANGE` statement to swap the names of the `otel_logs` and `otel_logs_30_01_2025` tables atomically.
+An `EXCHANGE` statement is now used to swap the names of the `otel_logs` and `otel_logs_30_01_2025` tables atomically.
 
 ```sql
 EXCHANGE TABLES otel_logs AND otel_logs_30_01_2025
@@ -672,7 +678,7 @@ For pre-aggregation and metric acceleration, ClickStack strongly prefers **expli
 
 For additional background, see:
 
-- [Projections][Guide on projections](/data-modeling/projections)
+- [Guide on projections](/data-modeling/projections)
 - [When to use projections](/data-modeling/projections#when-to-use-projections)
 - [Materialized views versus projections](/managing-data/materialized-views-versus-projections)
 
@@ -695,8 +701,8 @@ ADD PROJECTION prj_traceid_time
 );
 ```
 
-:::note Use wildcard
-In the example projection above, a wildcard (`SELECT *`) is used. While selecting a subset of columns can reduce write overhead, it also limits when the projection can be used, since only queries that can be fully satisfied by those columns are eligible. In ClickStack, this often restricts projection usage to very narrow cases. For this reason, we generally recommend using a wildcard to maximize applicability.
+:::note Use wildcards
+In the example projection above, a wildcard (`SELECT *`) is used. While selecting a subset of columns can reduce write overhead, it also limits when the projection can be used, since only queries that can be fully satisfied by those columns are eligible. In ClickStack, this often restricts projection usage to very narrow cases. For this reason, it is generally recommended to use a wildcard to maximize applicability.
 :::
 
 As with other data layout changes, the projection only affects newly written parts. To build it for existing data, materialize it:
@@ -736,10 +742,10 @@ ORDER BY t;
 Queries that don't constrain `TraceId`, or that primarily filter on other dimensions that aren't leading in the projection’s ordering key, typically won't benefit (and may read via the base layout instead).
 
 :::note
-Projections can also store aggregations (similar to materialized views). In ClickStack, we generally don't recommend projection-based aggregations because selection depends on the ClickHouse analyzer, and usage can be harder to control and reason about. Instead, prefer explicit materialized views that ClickStack can register and select intentionally at the application layer.
+Projections can also store aggregations (similar to materialized views). In ClickStack, projection-based aggregations are not generally recommended because selection depends on the ClickHouse analyzer, and usage can be harder to control and reason about. Instead, prefer explicit materialized views that ClickStack can register and select intentionally at the application layer.
 :::
 
-In practice, projections are best suited for workflows where users frequently pivot from a broader search to a trace-centric drilldown (for example, fetching all spans for a specific TraceId).
+In practice, projections are best suited for workflows where you frequently pivot from a broader search to a trace-centric drilldown (for example, fetching all spans for a specific TraceId).
 
 ### Costs and guidance {#projection-costs-and-guidance}
 
@@ -756,8 +762,8 @@ For a deeper background, see:
 
 <BetaBadge/>
 
-:::note **Lightweight projections are Beta for ClickStack**
-We don't recommend `_part_offset-based` lightweight projections for ClickStack workloads. While they reduce storage and write I/O, they can introduce more random access at query time, and their production behavior at the observability scale is still being evaluated. This recommendation may change as the feature matures and we gain more operational data.
+:::note[Lightweight projections are Beta for ClickStack]
+`_part_offset-based` lightweight projections are not recommended for ClickStack workloads. While they reduce storage and write I/O, they can introduce more random access at query time, and their production behavior at the observability scale is still being evaluated. This recommendation may change as the feature matures and we gain more operational data.
 :::
 
 Newer ClickHouse versions also support more lightweight projections that store only the projection sorting key plus a `_part_offset` pointer into the base table, rather than duplicating full rows. This can greatly reduce storage overhead, and recent improvements enable granule-level pruning, making them behave more like true secondary indexes. See:
