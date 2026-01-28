@@ -84,10 +84,17 @@ You can use the old JDBC implementation by setting the `clickhouse.jdbc.v1` prop
 
 :::
 
-**URL Syntax**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`, for example:
+**URL Syntax**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint[:port][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`, for example:
 
 - `jdbc:clickhouse:http://localhost:8123`
 - `jdbc:clickhouse:https://localhost:8443?ssl=true`
+
+There are a few things to note about the URL syntax:
+- **only** one endpoint is allowed in the URL
+- protocol should be specified when it is not the default one - 'HTTP'
+- port should be specified when it is not the default one '8123'
+- driver do not guess the protocol from the port, you need to specify it explicitly
+- `ssl` parameter is not required when protocol is specified.
 
 ### Connection Properties
 Main configuration parameters are defined in the [java client](/integrations/language-clients/java/client#client-configuration). They should be passed 
