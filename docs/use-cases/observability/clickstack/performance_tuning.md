@@ -6,6 +6,7 @@ description: 'Performance Tuning for ClickStack - The ClickHouse Observability S
 doc_type: 'guide'
 keywords: ['clickstack', 'observability', 'logs', 'performance', 'optimization']
 ---
+
 import BetaBadge from '@theme/badges/BetaBadge';
 import materializedViewDiagram from '@site/static/images/materialized-view/materialized-view-diagram.png';
 import trace_filtering from '@site/static/images/clickstack/performance_guide/trace_filtering.png';
