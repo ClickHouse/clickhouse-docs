@@ -44,14 +44,14 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 - レイヤーを追加する権限を持つ Lambda 実行ロールがあること
 
 <VerticalStepper headerLevel="h4">
-  #### 適切なOTel Lambda Extensionレイヤーを選択する
+  #### 適切なRotel Lambda Extensionレイヤーを選択する
 
-  [Rotel Lambda Extension](https://github.com/streamfold/rotel-lambda-extension)は、ビルド済みのAWS Lambdaレイヤーとして提供されています。Lambda関数のアーキテクチャに対応するレイヤーARNを選択してください:
+  Lambda ランタイムアーキテクチャに対応する Lambda レイヤーを選択してください。`{version}` フィールドは、デプロイ先の AWS リージョンに依存します。お使いのリージョンに対応する最新のバージョン番号については、[リリース](https://github.com/streamfold/rotel-lambda-extension/releases)ページを確認してください。
 
-  | アーキテクチャ      | ARN パターン                                                                           | 最新版                                                                                                                                                                         |
-  | ------------ | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | x86-64/amd64 | `arn:aws:lambda:{region}:418653438961:layer:rotel-extension-amd64-alpha:{version}` | ![最新バージョン](https://img.shields.io/github/v/release/streamfold/rotel-lambda-extension?filter=*alpha\&label=version\&labelColor=%2338BDF8\&color=%23312E81\&cacheSeconds=600) |
-  | arm64        | `arn:aws:lambda:{region}:418653438961:layer:rotel-extension-arm64-alpha:{version}` | ![バージョン](https://img.shields.io/github/v/release/streamfold/rotel-lambda-extension?filter=*alpha\&label=version\&labelColor=%2338BDF8\&color=%23312E81\&cacheSeconds=600)   |
+  | アーキテクチャ      | ARN                                                                          |
+  | ------------ | ---------------------------------------------------------------------------- |
+  | x86-64/amd64 | `arn:aws:lambda:{region}:418653438961:layer:rotel-extension-amd64:{version}` |
+  | arm64        | `arn:aws:lambda:{region}:418653438961:layer:rotel-extension-arm64:{version}` |
 
   **利用可能なリージョン:**
 
@@ -74,16 +74,16 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   4. ［**ARN を指定**］を選択します
   5. Rotel レイヤーの ARN を入力してください:
      ```text
-     arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+     arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version}
      ```
-  6. **Add** をクリックします。
+  6. **Add** をクリックします
 
   ##### オプション2：AWS CLI
 
   ```bash
   aws lambda update-function-configuration \
     --function-name my-function \
-    --layers arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+    --layers arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version}
   ```
 
   ##### オプション3：AWS SAM
@@ -95,7 +95,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
       Properties:
         # ... other configuration ...
         Layers:
-          - arn:aws:lambda:{version}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+          - arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version}
   ```
 
   #### ClickStackへエクスポートするための拡張機能を設定する
@@ -223,7 +223,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   ログ内で以下の主要な属性を探してください:
 
-  * `service.name`: 対象の Lambda 関数名
+  * `service.name`: Lambda 関数名
   * `faas.name`: AWS Lambda 関数名
   * `faas.invocation_id`: 一意の呼び出しID
   * `cloud.provider`: &quot;aws&quot;
@@ -290,7 +290,7 @@ Rotel Extension レイヤーと計装レイヤーの **両方** を追加しま�
 aws lambda update-function-configuration \
   --function-name my-function \
   --layers \
-    arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version} \
+    arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version} \
     arn:aws:lambda:{region}:901920570463:layer:aws-otel-nodejs-{arch}-ver-1-30-2:1
 ```
 

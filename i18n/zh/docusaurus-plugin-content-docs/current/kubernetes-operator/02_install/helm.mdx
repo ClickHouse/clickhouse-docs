@@ -1,0 +1,72 @@
+---
+slug: /clickhouse-operator/install/helm
+title: '使用 Helm 安装 ClickHouse Operator'
+keywords: ['kubernetes']
+description: '本指南介绍如何使用 Helm 图表来安装 ClickHouse Operator。'
+doc_type: 'guide'
+sidebar_label: 'Helm'
+---
+
+本指南介绍如何使用 Helm 图表来安装 ClickHouse Operator。
+
+## 先决条件 \{#prerequisites\}
+
+- Kubernetes 集群 v1.33.0 或更高版本
+- Helm v3.0 或更高版本
+- 已将 kubectl 配置为可与集群通信
+
+## 安装 Helm \{#install-helm\}
+
+如果尚未安装 Helm：
+
+```bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+```
+
+验证安装：
+
+```bash
+helm version
+```
+
+
+## 安装 Operator \{#install-the-operator\}
+
+:::note
+默认情况下，Helm 图表会部署启用 webhook 的 ClickHouse Operator，并且需要预先安装 cert-manager。
+:::
+
+### 从 OCI Helm 仓库 \{#from-oci-helm-repository\}
+
+安装最新发行版本
+
+```bash
+    helm install clickhouse-operator oci://ghcr.io/clickhouse/clickhouse-operator-helm \
+       --create-namespace \
+       -n clickhouse-operator-system
+```
+
+安装特定版本的 Operator
+
+```bash
+    helm install clickhouse-operator oci://ghcr.io/clickhouse/clickhouse-operator-helm \
+       --create-namespace \
+       -n clickhouse-operator-system \
+       --set-json="manager.container.tag=<operator version>
+```
+
+
+### 从本地 Chart 安装 \{#from-local-chart\}
+
+克隆仓库，并使用本地 Chart 进行安装：
+
+```bash
+git clone https://github.com/ClickHouse/clickhouse-operator.git
+cd clickhouse-operator
+helm install clickhouse-operator ./dist/chart
+```
+
+
+### 配置选项 \{#configuration-options\}
+
+有关高级配置选项，请参阅 Helm 图表中的 [values.yaml](https://github.com/ClickHouse/clickhouse-operator/blob/main/dist/chart/values.yaml) 文件。
