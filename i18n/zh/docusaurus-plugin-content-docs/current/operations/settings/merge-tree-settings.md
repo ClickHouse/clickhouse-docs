@@ -82,6 +82,14 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 
 启用该设置后，将为表中的所有字符串列添加最小-最大（跳过）索引。
 
+## add_minmax_index_for_temporal_columns \{#add_minmax_index_for_temporal_columns\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "新设置"}]}]}/>
+
+启用后，将为表中的所有 Date、Date32、Time、Time64、DateTime 和 DateTime64 列添加 min-max（跳过）索引。
+
 ## allow_coalescing_columns_in_partition_or_order_key \{#allow_coalescing_columns_in_partition_or_order_key\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -477,6 +485,22 @@ Marks 支持压缩，从而减小标记文件大小并提高网络传输速度�
 
 存储磁盘的名称。可在此处指定，用于替代存储策略。
 
+## distributed_index_analysis_min_indexes_size_to_activate \{#distributed_index_analysis_min_indexes_size_to_activate\}
+
+<SettingsInfoBlock type="UInt64" default_value="1073741824" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1073741824"},{"label": "New setting"}]}]}/>
+
+启用分布式索引分析所需的磁盘上（未压缩）索引的最小大小（data skipping 索引和主键索引）
+
+## distributed_index_analysis_min_parts_to_activate \{#distributed_index_analysis_min_parts_to_activate\}
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "10"},{"label": "New setting"}]}]}/>
+
+用于激活分布式索引分析的最小分区片段数量
+
 ## dynamic_serialization_version \{#dynamic_serialization_version\}
 
 <SettingsInfoBlock type="MergeTreeDynamicSerializationVersion" default_value="v3" />
@@ -513,7 +537,7 @@ Dynamic 数据类型的序列化版本。用于保持兼容性。
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "添加了用于为 min_age_to_force_merge 限制最大字节数的新设置。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "添加了用于为 min_age_to_force_merge 限制最大字节数的新设置。"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}]}/>
 
 指定设置 `min_age_to_force_merge_seconds` 和
 `min_age_to_force_merge_on_partition_only` 是否应当遵从设置

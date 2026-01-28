@@ -672,6 +672,13 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 | [text_index_postings_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_postings_cache_max_entries)   | 缓存中已反序列化 posting 的最大数量。                                                                   |
 | [text_index_postings_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_postings_cache_size_ratio)     | 文本索引 posting 列表缓存中受保护队列大小相对于缓存总大小的比例。                                      |
 
+## 限制 \{#limitations\}
+
+当前文本索引具有以下限制：
+
+- 对包含大量 tokens（例如 100 亿 tokens）的文本索引进行物化时，可能会消耗大量内存。文本索引的物化可以直接进行（`ALTER TABLE <table> MATERIALIZE INDEX <index>`），也可以在分区片段合并时通过间接方式发生。
+- 无法在包含超过 4.294.967.296（= 2^32 ≈ 42 亿）行的分区片段上物化文本索引。如果没有物化的文本索引，查询会退回到在该分区片段内执行低效的暴力搜索。作为一种最坏情况的估算，假设某个分区片段只包含一个类型为 String 的列，并且 MergeTree 设置 `max_bytes_to_merge_at_max_space_in_pool`（默认值：150 GB）未被修改。在这种假设下，只要该列平均每行少于 29.5 个字符，就会出现上述情况。实际上，表中通常还包含其他列，因此阈值通常会小好几倍（具体取决于其他列的数量、类型和大小）。
+
 ## Implementation Details \{#implementation\}
 
 每个文本索引由两个（抽象的）数据结构组成：

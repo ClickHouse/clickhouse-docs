@@ -1,0 +1,72 @@
+---
+slug: /clickhouse-operator/install/helm
+title: 'Helm を使用して ClickHouse Operator をインストールする'
+keywords: ['kubernetes']
+description: 'このガイドでは、Helm チャートを使用して ClickHouse Operator をインストールする手順を説明します。'
+doc_type: 'guide'
+sidebar_label: 'Helm'
+---
+
+このガイドでは、Helm チャートを使用して ClickHouse Operator をインストールする手順を説明します。
+
+## 前提条件 \{#prerequisites\}
+
+- Kubernetes クラスター v1.33.0 以降
+- helm v3.0 以降
+- クラスターと通信できるように設定された kubectl
+
+## Helm をインストールする \{#install-helm\}
+
+まだ Helm をインストールしていない場合は：
+
+```bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+```
+
+インストールを確認します：
+
+```bash
+helm version
+```
+
+
+## オペレーターをインストールする \{#install-the-operator\}
+
+:::note
+デフォルトでは、Helm チャートは webhook を有効にした ClickHouse Operator をデプロイし、cert-manager がインストールされていることを必要とします。
+:::
+
+### OCI ベースの Helm リポジトリから \{#from-oci-helm-repository\}
+
+最新リリースをインストールします
+
+```bash
+    helm install clickhouse-operator oci://ghcr.io/clickhouse/clickhouse-operator-helm \
+       --create-namespace \
+       -n clickhouse-operator-system
+```
+
+特定バージョンのオペレーターをインストールする
+
+```bash
+    helm install clickhouse-operator oci://ghcr.io/clickhouse/clickhouse-operator-helm \
+       --create-namespace \
+       -n clickhouse-operator-system \
+       --set-json="manager.container.tag=<operator version>
+```
+
+
+### ローカルチャートから \{#from-local-chart\}
+
+リポジトリをクローンし、ローカルチャートからインストールします。
+
+```bash
+git clone https://github.com/ClickHouse/clickhouse-operator.git
+cd clickhouse-operator
+helm install clickhouse-operator ./dist/chart
+```
+
+
+### 設定オプション \{#configuration-options\}
+
+高度な設定オプションについては、Helm チャートの [values.yaml](https://github.com/ClickHouse/clickhouse-operator/blob/main/dist/chart/values.yaml) ファイルを参照してください。
