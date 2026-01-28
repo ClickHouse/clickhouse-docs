@@ -44,7 +44,7 @@ For same-region deployments, use SAS tokens instead.
 
 <VerticalStepper headerLevel="h3">
 
-### Find Your ClickHouse Cloud Egress IPs
+### Find Your ClickHouse Cloud Egress IPs {#find-egress-ips}
 
 To configure IP-based firewall rules, you need to allowlist the egress IP addresses for your ClickHouse Cloud region.
 
@@ -80,7 +80,7 @@ for which name to use.
 
 See ["Cloud IP addresses"](/manage/data-sources/cloud-endpoints-api) for more details.
 
-### Configure Azure Storage Firewall
+### Configure Azure Storage Firewall {#configure-firewall}
 
 Navigate to your Storage Account in Azure Portal
 
@@ -98,7 +98,7 @@ See [Configure Azure Storage firewalls docs](https://learn.microsoft.com/en-us/a
 
 </VerticalStepper>
 
-## ClickPipes Configuration
+## ClickPipes Configuration {#clickpipes-config}
 
 When using [ClickPipes](/integrations/clickpipes) with Azure Blob Storage, you need to configure authentication in the ClickPipes UI.
 See ["Creating your first Azure ClickPipe"](/integrations/clickpipes/object-storage/azure-blob-storage/get-started) for more details.

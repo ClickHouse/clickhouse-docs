@@ -26,7 +26,7 @@ To follow this guide, you will need:
 
 <VerticalStepper headerLevel="h2">
 
-## Navigate to data sources
+## Navigate to data sources {#navigate-to-data-sources}
 
 From the home page of your service, click **Data sources** in the left hand menu.
 Expand the **ClickPipes** dropdown and click **Create ClickPipe**
@@ -35,13 +35,13 @@ Expand the **ClickPipes** dropdown and click **Create ClickPipe**
 
 <Image img={createClickpipe} alt="Create ClickPipe" size="md"/>
 
-## Select the data source
+## Select the data source {#select-data-source}
 
 Select **Azure Blob Storage** as data type
 
 <Image img={selectBlobStorage} alt="Select Azure Blob Storage" size="md"/>
 
-## Setup your ClickPipe connection
+## Setup your ClickPipe connection {#setup-connection}
 
 1. Give your ClickPipe a descriptive name
 2. Select **Connection String** from the authentication method dropdown
@@ -55,7 +55,7 @@ Finally, click **Incoming data**
 
 <Image img={configurationDetails} alt="Configuration Details" size="md"/>
 
-## Select data format
+## Select data format {#select-data-format}
 
 1. Select file type
 2. File compression (`detect automatically`, `none`, `gzip`, `brotli`, `xz` or `zstd`)
@@ -64,7 +64,7 @@ Finally, click **Incoming data**
 
 <Image img={chooseDataFormat} alt="Choose Data Format" size="md"/>
 
-## Configure table, schema and settings
+## Configure table, schema and settings {#configure-table-schema}
 
 Now you need to create a new table or select an existing one where the incoming data can be stored.
 
@@ -78,7 +78,7 @@ Now you need to create a new table or select an existing one where the incoming 
 
 When you have finished configuring your table, schema and settings, click **Details and settings**
 
-## Configure permissions
+## Configure permissions {#configure-permissions}
 
 ClickPipes will set up a dedicated database user for data writing.
 You can select a role for this user.
@@ -86,7 +86,7 @@ For materialized views or dictionary access from the destination table, opt for 
 
 <Image img={permissions} alt="Configure Permissions" size="md"/>
 
-## Complete setup
+## Complete setup {#complete-setup}
 
 Click **Create ClickPipe** to complete setup
 
