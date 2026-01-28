@@ -51,10 +51,7 @@
   "locales": [
     "en",
     "zh",
-    "ru",
-    "jp",
-    "es",
-    "pt"
+    "ru"
   ],
   "customMapping": {
     "jp": {
