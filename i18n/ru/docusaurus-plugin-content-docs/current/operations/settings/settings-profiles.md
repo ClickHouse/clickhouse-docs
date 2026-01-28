@@ -42,6 +42,12 @@ SET profile = 'web'
         <max_threads>8</max_threads>
     </default>
 
+    <!-- Background operations settings -->
+    <background>
+        <!-- Re-defining maximum number of threads for background operations -->
+        <max_threads>12</max_threads>
+    </background>
+
     <!-- Settings for queries from the user interface -->
     <web>
         <max_rows_to_read>1000000000</max_rows_to_read>
@@ -79,6 +85,8 @@ SET profile = 'web'
 
 В примере заданы два профиля: `default` и `web`.
 
-Профиль `default` имеет особое назначение: он всегда должен присутствовать и применяется при запуске сервера. Другими словами, профиль `default` содержит настройки по умолчанию.
+Профиль `default` имеет особое назначение: он всегда должен присутствовать и применяется при запуске сервера. Другими словами, профиль `default` содержит настройки по умолчанию. Имя профиля по умолчанию можно изменить с помощью серверной настройки `default_profile`.
+
+Профиль `background` имеет особое назначение: он может быть задан для переопределения настроек фоновых операций. Этот профиль является необязательным, а его имя можно изменить с помощью серверной настройки `background_profile`.
 
 Профиль `web` — это обычный профиль, который можно задать с помощью запроса `SET` или параметра URL в HTTP-запросе.

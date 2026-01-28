@@ -184,6 +184,24 @@
   }
 }
 
+.deploy-button-grid {
+  @media (min-width: 768px) {
+    display: grid !important;
+    grid-template-columns: repeat(2, auto) !important;
+    gap: 24px !important;
+    flex-direction: unset !important;
+    align-items: start !important;
+    justify-content: start !important;
+  }
+}
+
+.deploy-button-grid .home-page-option-button {
+  @media (min-width: 768px) {
+    width: 100% !important;
+    margin-bottom: 0 !important;
+  }
+}
+
 .home-page-section {
   display: flex;
   flex-direction: column;

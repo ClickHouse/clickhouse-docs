@@ -60,6 +60,7 @@ DESCRIBE file('hobbies.jsonl')
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
+
 ## 表引擎 [File](../engines/table-engines/special/file.md)、[S3](../engines/table-engines/integrations/s3.md)、[URL](../engines/table-engines/special/url.md)、[HDFS](../engines/table-engines/integrations/hdfs.md)、[azureBlobStorage](../engines/table-engines/integrations/azureBlobStorage.md) \{#table-engines-file-s3-url-hdfs-azureblobstorage\}
 
 如果在 `CREATE TABLE` 查询中未指定列列表，表结构将会根据数据自动推断。
@@ -102,6 +103,7 @@ DESCRIBE TABLE hobbies
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
+
 ## clickhouse-local \{#clickhouse-local\}
 
 `clickhouse-local` 提供一个可选参数 `-S/--structure`，用于指定输入数据的结构。如果未指定该参数或将其设置为 `auto`，则会从数据中自动推断结构。
@@ -131,6 +133,7 @@ clickhouse-local --file='hobbies.jsonl' --table='hobbies' --query='SELECT * FROM
 3    32    Lana    ['fitness','reading','shopping']
 4    47    Brayan    ['movies','skydiving']
 ```
+
 
 ## 使用插入表的结构 \{#using-structure-from-insertion-table\}
 
@@ -209,7 +212,7 @@ CREATE TABLE hobbies3
 ORDER BY identifier;
 ```
 
-并从文件 `hobbies.jsonl` 中插入数据：
+然后从文件 `hobbies.jsonl` 中插入数据：
 
 ```sql
 INSERT INTO hobbies3 SELECT id, age, hobbies FROM file(hobbies.jsonl)
@@ -240,14 +243,16 @@ INSERT INTO hobbies4 SELECT id, empty(hobbies) ? NULL : hobbies[1] FROM file(hob
 
 在这种情况下，由于在 `SELECT` 查询中对列 `hobbies` 进行了某些操作后再将其插入表中，ClickHouse 无法复用插入目标表的结构，而是会使用 schema 推断。
 
+
 ## Schema inference cache \{#schema-inference-cache\}
 
 对于大多数输入格式，schema 推断会读取一部分数据来确定其结构，这个过程可能需要一定时间。
 为了避免 ClickHouse 每次从同一个文件读取数据时都重新推断相同的 schema，推断出的 schema 会被缓存，当再次访问同一个文件时，ClickHouse 将直接使用缓存中的 schema。
 
 有一些专门的设置用于控制该缓存：
-- `schema_inference_cache_max_elements_for_{file/s3/hdfs/url/azure}` —— 对应表函数可缓存的 schema 的最大数量。默认值为 `4096`。这些设置应在服务器配置中进行设置。
-- `schema_inference_use_cache_for_{file,s3,hdfs,url,azure}` —— 用于开启或关闭在 schema 推断中使用缓存。这些设置可以在查询中使用。
+
+* `schema_inference_cache_max_elements_for_{file/s3/hdfs/url/azure}` —— 对应表函数可缓存的 schema 的最大数量。默认值为 `4096`。这些设置应在服务器配置中进行设置。
+* `schema_inference_use_cache_for_{file,s3,hdfs,url,azure}` —— 用于开启或关闭在 schema 推断中使用缓存。这些设置可以在查询中使用。
 
 文件的 schema 既可以通过修改数据而改变，也可以通过更改格式设置而改变。
 因此，schema 推断缓存会根据文件来源、格式名称、所使用的格式设置以及文件的最后修改时间来区分 schema。
@@ -255,7 +260,7 @@ INSERT INTO hobbies4 SELECT id, empty(hobbies) ? NULL : hobbies[1] FROM file(hob
 注意：在 `url` 表函数中通过 URL 访问的一些文件可能不包含最后修改时间的信息；对于这种情况，可以使用特殊设置
 `schema_inference_cache_require_modification_time_for_url`。禁用该设置后，即使这些文件没有最后修改时间，也允许使用缓存中的 schema。
 
-另外还有一个系统表 [schema_inference_cache](../operations/system-tables/schema_inference_cache.md)，其中包含缓存中的所有当前 schema，以及系统查询 `SYSTEM DROP SCHEMA CACHE [FOR File/S3/URL/HDFS]`，
+另外还有一个系统表 [schema&#95;inference&#95;cache](../operations/system-tables/schema_inference_cache.md)，其中包含缓存中的所有当前 schema，以及系统查询 `SYSTEM CLEAR SCHEMA CACHE [FOR File/S3/URL/HDFS]`，
 用于清理所有来源或特定来源的 schema 缓存。
 
 **示例：**
@@ -308,6 +313,7 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/git
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/github/github-2022.ndjson.gz')
 ```
 
+
 ```response
 ┌─name───────┬─type─────────────────────────────────────────┐
 │ type       │ Nullable(String)                             │
@@ -347,7 +353,9 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/git
 5 rows in set. Elapsed: 0.059 sec.
 ```
 
-5 行数据。耗时 0.059 秒。
+如您所见，第二个查询几乎瞬间就完成了。
+
+我们来尝试修改一些可能影响推断 schema 的设置：
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/github/github-2022.ndjson.gz')
@@ -362,58 +370,70 @@ SETTINGS input_format_json_try_infer_named_tuples_from_objects=0, input_format_j
 └────────────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 
 5 rows in set. Elapsed: 0.611 sec
-```sql
-DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/github/github-2022.ndjson.gz')
-SETTINGS input_format_json_try_infer_named_tuples_from_objects=0, input_format_json_read_objects_as_strings = 1
+```
 
-┌─name───────┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ type       │ Nullable(String) │              │                    │         │                  │                │
-│ actor      │ Nullable(String) │              │                    │         │                  │                │
-│ repo       │ Nullable(String) │              │                    │         │                  │                │
-│ created_at │ Nullable(String) │              │                    │         │                  │                │
-│ payload    │ Nullable(String) │              │                    │         │                  │                │
-└────────────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+可以看到，对于同一个文件，没有使用缓存中的 schema，因为影响 schema 推断的相关设置已被修改。
 
-返回 5 行。耗时:0.611 秒
+我们来查看一下 `system.schema_inference_cache` 表的内容：
+
 ```sql
 SELECT schema, format, source FROM system.schema_inference_cache WHERE storage='S3'
-```sql
-SELECT schema, format, source FROM system.schema_inference_cache WHERE storage='S3'
+```
+
+
 ```response
 ┌─schema──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─format─┬─source───────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ type Nullable(String), actor Tuple(avatar_url Nullable(String), display_login Nullable(String), id Nullable(Int64), login Nullable(String), url Nullable(String)), repo Tuple(id Nullable(Int64), name Nullable(String), url Nullable(String)), created_at Nullable(String), payload Tuple(action Nullable(String), distinct_size Nullable(Int64), pull_request Tuple(author_association Nullable(String), base Tuple(ref Nullable(String), sha Nullable(String)), head Tuple(ref Nullable(String), sha Nullable(String)), number Nullable(Int64), state Nullable(String), title Nullable(String), updated_at Nullable(String), user Tuple(login Nullable(String))), ref Nullable(String), ref_type Nullable(String), size Nullable(Int64)) │ NDJSON │ datasets-documentation.s3.eu-west-3.amazonaws.com443/datasets-documentation/github/github-2022.ndjson.gz │
 │ type Nullable(String), actor Nullable(String), repo Nullable(String), created_at Nullable(String), payload Nullable(String)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 │ NDJSON │ datasets-documentation.s3.eu-west-3.amazonaws.com443/datasets-documentation/github/github-2022.ndjson.gz │
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-```response
-┌─schema──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─format─┬─source───────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ type Nullable(String), actor Tuple(avatar_url Nullable(String), display_login Nullable(String), id Nullable(Int64), login Nullable(String), url Nullable(String)), repo Tuple(id Nullable(Int64), name Nullable(String), url Nullable(String)), created_at Nullable(String), payload Tuple(action Nullable(String), distinct_size Nullable(Int64), pull_request Tuple(author_association Nullable(String), base Tuple(ref Nullable(String), sha Nullable(String)), head Tuple(ref Nullable(String), sha Nullable(String)), number Nullable(Int64), state Nullable(String), title Nullable(String), updated_at Nullable(String), user Tuple(login Nullable(String))), ref Nullable(String), ref_type Nullable(String), size Nullable(Int64)) │ NDJSON │ datasets-documentation.s3.eu-west-3.amazonaws.com443/datasets-documentation/github/github-2022.ndjson.gz │
-│ type Nullable(String), actor Nullable(String), repo Nullable(String), created_at Nullable(String), payload Nullable(String)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 │ NDJSON │ datasets-documentation.s3.eu-west-3.amazonaws.com443/datasets-documentation/github/github-2022.ndjson.gz │
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+如您所见，同一个文件有两个不同的 schema。
+
+我们可以使用 SYSTEM 查询来清除 schema 缓存：
+
 ```sql
-SYSTEM DROP SCHEMA CACHE FOR S3
-```sql
-SYSTEM DROP SCHEMA CACHE FOR S3
+SYSTEM CLEAR SCHEMA CACHE FOR S3
+```
+
 ```response
 Ok.
-```response
-完成。
+```
+
 ```sql
 SELECT count() FROM system.schema_inference_cache WHERE storage='S3'
-```sql
-SELECT count() FROM system.schema_inference_cache WHERE storage='S3'
-```response
-┌─count()─┐
-│       0 │
-└─────────┘
+```
 
 ```response
 ┌─count()─┐
 │       0 │
 └─────────┘
+```
+
+
+## Text formats \{#text-formats\}
+
+对于文本格式，ClickHouse 会逐行读取数据，根据格式提取列值，
+然后使用一些递归解析器和启发式方法来确定每个值的类型。在进行模式推断时，从数据中读取的最大行数和字节数
+由 `input_format_max_rows_to_read_for_schema_inference`（默认 25000）和 `input_format_max_bytes_to_read_for_schema_inference`（默认 32MB）这两个设置项控制。
+默认情况下，所有推断出的类型都是 [Nullable](../sql-reference/data-types/nullable.md)，但你可以通过设置 `schema_inference_make_columns_nullable` 来更改这一行为（示例见[设置](#settings-for-text-formats)部分）。
+
+### JSON 格式 \{#json-formats\}
+
+在 JSON 格式中,ClickHouse 根据 JSON 规范解析值,然后尝试为其确定最合适的数据类型。
+
+让我们看看它是如何工作的、可以推断哪些类型以及在 JSON 格式中可以使用哪些特定设置。
+
+**示例**
+
+在此处及后续示例中,将使用 [format](../sql-reference/table-functions/format.md) 表函数。
+
+整数、浮点数、布尔值、字符串:
+
 ```sql
 DESC format(JSONEachRow, '{"int" : 42, "float" : 42.42, "string" : "Hello, World!"}');
-```sql
-DESC format(JSONEachRow, '{"int" : 42, "float" : 42.42, "string" : "Hello, World!"}');
+```
+
 ```response
 ┌─name───┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ int    │ Nullable(Int64)   │              │                    │         │                  │                │
@@ -421,98 +441,93 @@ DESC format(JSONEachRow, '{"int" : 42, "float" : 42.42, "string" : "Hello, World
 │ bool   │ Nullable(Bool)    │              │                    │         │                  │                │
 │ string │ Nullable(String)  │              │                    │         │                  │                │
 └────────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name───┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ int    │ Nullable(Int64)   │              │                    │         │                  │                │
-│ float  │ Nullable(Float64) │              │                    │         │                  │                │
-│ bool   │ Nullable(Bool)    │              │                    │         │                  │                │
-│ string │ Nullable(String)  │              │                    │         │                  │                │
-└────────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+日期、日期时间:
+
 ```sql
 DESC format(JSONEachRow, '{"date" : "2022-01-01", "datetime" : "2022-01-01 00:00:00", "datetime64" : "2022-01-01 00:00:00.000"}')
-```sql
-DESC format(JSONEachRow, '{"date" : "2022-01-01", "datetime" : "2022-01-01 00:00:00", "datetime64" : "2022-01-01 00:00:00.000"}')
+```
+
 ```response
 ┌─name───────┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ date       │ Nullable(Date)          │              │                    │         │                  │                │
 │ datetime   │ Nullable(DateTime)      │              │                    │         │                  │                │
 │ datetime64 │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
 └────────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name───────┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ date       │ Nullable(Date)          │              │                    │         │                  │                │
-│ datetime   │ Nullable(DateTime)      │              │                    │         │                  │                │
-│ datetime64 │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
-└────────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+数组:
+
 ```sql
 DESC format(JSONEachRow, '{"arr" : [1, 2, 3], "nested_arrays" : [[1, 2, 3], [4, 5, 6], []]}')
-```sql
-DESC format(JSONEachRow, '{"arr" : [1, 2, 3], "nested_arrays" : [[1, 2, 3], [4, 5, 6], []]}')
+```
+
 ```response
 ┌─name──────────┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ arr           │ Array(Nullable(Int64))        │              │                    │         │                  │                │
 │ nested_arrays │ Array(Array(Nullable(Int64))) │              │                    │         │                  │                │
 └───────────────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name──────────┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ arr           │ Array(Nullable(Int64))        │              │                    │         │                  │                │
-│ nested_arrays │ Array(Array(Nullable(Int64))) │              │                    │         │                  │                │
-└───────────────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+如果数组包含 `null`,ClickHouse 将使用数组中其他元素的类型:
+
 ```sql
 DESC format(JSONEachRow, '{"arr" : [null, 42, null]}')
-```sql
-DESC format(JSONEachRow, '{"arr" : [null, 42, null]}')
-```response
-┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ arr  │ Array(Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ```response
 ┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ arr  │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+如果数组包含不同类型的值,且设置 `input_format_json_infer_array_of_dynamic_from_array_of_different_types` 已启用(默认启用),则该数组将具有 `Array(Dynamic)` 类型:
+
 ```sql
 SET input_format_json_infer_array_of_dynamic_from_array_of_different_types=1;
 DESC format(JSONEachRow, '{"arr" : [42, "hello", [1, 2, 3]]}');
-```sql
-SET input_format_json_infer_array_of_dynamic_from_array_of_different_types=1;
-DESC format(JSONEachRow, '{"arr" : [42, "hello", [1, 2, 3]]}');
+```
+
 ```response
 ┌─name─┬─type───────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ arr  │ Array(Dynamic) │              │                    │         │                  │                │
 └──────┴────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type───────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ arr  │ Array(Dynamic) │              │                    │         │                  │                │
-└──────┴────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+命名元组:
+
+当启用 `input_format_json_try_infer_named_tuples_from_objects` 设置时，在进行模式推断时，ClickHouse 会尝试根据 JSON 对象推断具名 Tuple。
+推断得到的具名 Tuple 将包含示例数据中所有对应 JSON 对象里的全部元素。
+
 ```sql
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 43, "c" : [1, 2, 3]}}, {"obj" : {"d" : {"e" : 42}}}')
-```sql
-SET input_format_json_try_infer_named_tuples_from_objects = 1;
-DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 43, "c" : [1, 2, 3]}}, {"obj" : {"d" : {"e" : 42}}}')
+```
+
 ```response
 ┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Tuple(e Nullable(Int64))) │              │                    │         │                  │                │
 └──────┴────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ obj  │ Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Tuple(e Nullable(Int64))) │              │                    │         │                  │                │
-└──────┴────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Unnamed Tuples:
+
+如果关闭 `input_format_json_infer_array_of_dynamic_from_array_of_different_types` 设置，我们会在 JSON 格式中将包含不同类型元素的数组视为未命名 Tuple。
+
 ```sql
 SET input_format_json_infer_array_of_dynamic_from_array_of_different_types = 0;
 DESC format(JSONEachRow, '{"tuple" : [1, "Hello, World!", [1, 2, 3]]}')
-```sql
-SET input_format_json_infer_array_of_dynamic_from_array_of_different_types = 0;
-DESC format(JSONEachRow, '{"tuple" : [1, "Hello, World!", [1, 2, 3]]}')
+```
+
 ```response
 ┌─name──┬─type─────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ tuple │ Tuple(Nullable(Int64), Nullable(String), Array(Nullable(Int64))) │              │                    │         │                  │                │
 └───────┴──────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name──┬─type─────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ tuple │ Tuple(Nullable(Int64), Nullable(String), Array(Nullable(Int64))) │              │                    │         │                  │                │
-└───────┴──────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+如果某些值为 `null` 或为空，我们会使用其他行中对应值的类型：
+
 ```sql
 SET input_format_json_infer_array_of_dynamic_from_array_of_different_types=0;
 DESC format(JSONEachRow, $$
@@ -520,157 +535,163 @@ DESC format(JSONEachRow, $$
                               {"tuple" : [null, "Hello, World!", []]}
                               {"tuple" : [null, null, [1, 2, 3]]}
                          $$)
-```sql
-SET input_format_json_infer_array_of_dynamic_from_array_of_different_types=0;
-DESC format(JSONEachRow, $$
-                              {"tuple" : [1, null, null]}
-                              {"tuple" : [null, "Hello, World!", []]}
-                              {"tuple" : [null, null, [1, 2, 3]]}
-                         $$)
-```response
-┌─name──┬─type─────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ tuple │ Tuple(Nullable(Int64), Nullable(String), Array(Nullable(Int64))) │              │                    │         │                  │                │
-└───────┴──────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ```response
 ┌─name──┬─type─────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ tuple │ Tuple(Nullable(Int64), Nullable(String), Array(Nullable(Int64))) │              │                    │         │                  │                │
 └───────┴──────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Maps:
+
+在 JSON 中，我们可以将值类型相同的对象读取为 Map 类型。
+注意：仅当禁用设置 `input_format_json_read_objects_as_strings` 和 `input_format_json_try_infer_named_tuples_from_objects` 时，此行为才会生效。
+
 ```sql
 SET input_format_json_read_objects_as_strings = 0, input_format_json_try_infer_named_tuples_from_objects = 0;
 DESC format(JSONEachRow, '{"map" : {"key1" : 42, "key2" : 24, "key3" : 4}}')
-```sql
-SET input_format_json_read_objects_as_strings = 0, input_format_json_try_infer_named_tuples_from_objects = 0;
-DESC format(JSONEachRow, '{"map" : {"key1" : 42, "key2" : 24, "key3" : 4}}')
+```
+
 ```response
 ┌─name─┬─type─────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ map  │ Map(String, Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ map  │ Map(String, Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+嵌套的复杂类型：
+
 ```sql
 DESC format(JSONEachRow, '{"value" : [[[42, 24], []], {"key1" : 42, "key2" : 24}]}')
-```sql
-DESC format(JSONEachRow, '{"value" : [[[42, 24], []], {"key1" : 42, "key2" : 24}]}')
+```
+
+
 ```response
 ┌─name──┬─type─────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ value │ Tuple(Array(Array(Nullable(String))), Tuple(key1 Nullable(Int64), key2 Nullable(Int64))) │              │                    │         │                  │                │
 └───────┴──────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name──┬─type─────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ value │ Tuple(Array(Array(Nullable(String))), Tuple(key1 Nullable(Int64), key2 Nullable(Int64))) │              │                    │         │                  │                │
-└───────┴──────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+如果 ClickHouse 无法为某个键确定类型，因为数据仅包含 null/空对象/空数组，如果启用了设置 `input_format_json_infer_incomplete_types_as_strings`，则会使用 `String` 类型，否则会抛出异常：
+
 ```sql
 DESC format(JSONEachRow, '{"arr" : [null, null]}') SETTINGS input_format_json_infer_incomplete_types_as_strings = 1;
-```sql
-DESC format(JSONEachRow, '{"arr" : [null, null]}') SETTINGS input_format_json_infer_incomplete_types_as_strings = 1;
+```
+
 ```response
 ┌─name─┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ arr  │ Array(Nullable(String)) │              │                    │         │                  │                │
 └──────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ arr  │ Array(Nullable(String)) │              │                    │         │                  │                │
-└──────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
 ```sql
 DESC format(JSONEachRow, '{"arr" : [null, null]}') SETTINGS input_format_json_infer_incomplete_types_as_strings = 0;
-```sql
-DESC format(JSONEachRow, '{"arr" : [null, null]}') SETTINGS input_format_json_infer_incomplete_types_as_strings = 0;
+```
+
 ```response
 Code: 652. DB::Exception: Received from localhost:9000. DB::Exception:
 Cannot determine type for column 'arr' by first 1 rows of data,
 most likely this column contains only Nulls or empty Arrays/Maps.
 ...
-```response
-代码: 652. DB::Exception: 从 localhost:9000 接收。DB::Exception:
-无法根据前 1 行数据确定列 'arr' 的类型,
-该列很可能仅包含 Null 值或空数组/映射。
-...
+```
+
+
+#### JSON 设置 \{#json-settings\}
+
+##### input_format_json_try_infer_numbers_from_strings \{#input_format_json_try_infer_numbers_from_strings\}
+
+启用此设置后，可根据字符串值推断数值。
+
+此设置默认关闭。
+
+**示例：**
+
 ```sql
 SET input_format_json_try_infer_numbers_from_strings = 1;
 DESC format(JSONEachRow, $$
                               {"value" : "42"}
                               {"value" : "424242424242"}
                          $$)
-```sql
-SET input_format_json_try_infer_numbers_from_strings = 1;
-DESC format(JSONEachRow, $$
-                              {"value" : "42"}
-                              {"value" : "424242424242"}
-                         $$)
+```
+
 ```response
 ┌─name──┬─type────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ value │ Nullable(Int64) │              │                    │         │                  │                │
 └───────┴─────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name──┬─type────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ value │ Nullable(Int64) │              │                    │         │                  │                │
-└───────┴─────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```sql
-SET input_format_json_try_infer_named_tuples_from_objects = 1;
-DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 43, "c" : [1, 2, 3]}}, {"obj" : {"d" : {"e" : 42}}}')
+```
+
+
+##### input_format_json_try_infer_named_tuples_from_objects \{#input_format_json_try_infer_named_tuples_from_objects\}
+
+启用此设置后，可以从 JSON 对象中推断命名 Tuple。推断得到的命名 Tuple 将包含示例数据中所有对应 JSON 对象中的全部元素。
+当 JSON 数据不是稀疏的，因而数据样本包含所有可能的对象键时，这会非常有用。
+
+此设置默认启用。
+
+**示例**
 
 ```sql
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 43, "c" : [1, 2, 3]}}, {"obj" : {"d" : {"e" : 42}}}')
+```
+
+结果：
+
 ```response
 ┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Tuple(e Nullable(Int64))) │              │                    │         │                  │                │
 └──────┴────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ obj  │ Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Tuple(e Nullable(Int64))) │              │                    │         │                  │                │
-└──────┴────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
 ```sql
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 DESC format(JSONEachRow, '{"array" : [{"a" : 42, "b" : "Hello"}, {}, {"c" : [1,2,3]}, {"d" : "2020-01-01"}]}')
-```sql
-SET input_format_json_try_infer_named_tuples_from_objects = 1;
-DESC format(JSONEachRow, '{"array" : [{"a" : 42, "b" : "Hello"}, {}, {"c" : [1,2,3]}, {"d" : "2020-01-01"}]}')
+```
+
+结果：
+
 ```markdown
 ┌─name──┬─type────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ array │ Array(Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Nullable(Date))) │              │                    │         │                  │                │
 └───────┴─────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```markdown
-┌─name──┬─type────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ array │ Array(Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Nullable(Date))) │              │                    │         │                  │                │
-└───────┴─────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+
+##### input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects \{#input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects\}
+
+启用此设置后，在从 JSON 对象推断具名 Tuple 时（当 `input_format_json_try_infer_named_tuples_from_objects` 已启用），对于存在歧义的路径将使用 String 类型，而不是抛出异常。
+这使得即使存在歧义路径，也可以将 JSON 对象读取为具名 Tuple。
+
+默认禁用。
+
+**示例**
+
+在禁用该设置时：
+
 ```sql
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 SET input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects = 0;
 DESC format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : "Hello"}}}');
-```sql
-SET input_format_json_try_infer_named_tuples_from_objects = 1;
-SET input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects = 0;
-DESC format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : "Hello"}}}');
+```
+
+结果：
+
 ```response
 Code: 636. DB::Exception: The table structure cannot be extracted from a JSONEachRow format file. Error:
 Code: 117. DB::Exception: JSON objects have ambiguous data: in some objects path 'a' has type 'Int64' and in some - 'Tuple(b String)'. You can enable setting input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects to use String type for path 'a'. (INCORRECT_DATA) (version 24.3.1.1).
 You can specify the structure manually. (CANNOT_EXTRACT_TABLE_STRUCTURE)
-```response
-代码：636. DB::Exception：无法从 JSONEachRow 格式文件中提取表结构。错误：
-代码：117. DB::Exception：JSON 对象数据存在歧义：某些对象中路径 'a' 的类型为 'Int64'，而另一些对象中为 'Tuple(b String)'。您可以启用设置 input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects 来对路径 'a' 使用 String 类型。(INCORRECT_DATA)（版本 24.3.1.1）。
-您可以手动指定结构。(CANNOT_EXTRACT_TABLE_STRUCTURE)
+```
+
+在启用该设置时：
+
 ```sql
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 SET input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects = 1;
 DESC format(JSONEachRow, '{"obj" : "a" : 42}, {"obj" : {"a" : {"b" : "Hello"}}}');
 SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : "Hello"}}}');
-```sql
-SET input_format_json_try_infer_named_tuples_from_objects = 1;
-SET input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects = 1;
-DESC format(JSONEachRow, '{"obj" : "a" : 42}, {"obj" : {"a" : {"b" : "Hello"}}}');
-SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : "Hello"}}}');
-```response
-┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ obj  │ Tuple(a Nullable(String))     │              │                    │         │                  │                │
-└──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-┌─obj─────────────────┐
-│ ('42')              │
-│ ('{"b" : "Hello"}') │
-└─────────────────────┘
+```
+
+结果：
 
 ```response
 ┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -680,109 +701,137 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : 
 │ ('42')              │
 │ ('{"b" : "Hello"}') │
 └─────────────────────┘
+```
+
+
+##### input_format_json_read_objects_as_strings \{#input_format_json_read_objects_as_strings\}
+
+启用此设置后，可以将嵌套的 JSON 对象读取为字符串。
+此设置可用于在不使用 JSON 对象类型的情况下读取嵌套的 JSON 对象。
+
+此设置默认启用。
+
+注意：只有在禁用 `input_format_json_try_infer_named_tuples_from_objects` 设置时，启用本设置才会生效。
+
 ```sql
 SET input_format_json_read_objects_as_strings = 1, input_format_json_try_infer_named_tuples_from_objects = 0;
 DESC format(JSONEachRow, $$
                              {"obj" : {"key1" : 42, "key2" : [1,2,3,4]}}
                              {"obj" : {"key3" : {"nested_key" : 1}}}
                          $$)
-```sql
-SET input_format_json_read_objects_as_strings = 1, input_format_json_try_infer_named_tuples_from_objects = 0;
-DESC format(JSONEachRow, $$
-                             {"obj" : {"key1" : 42, "key2" : [1,2,3,4]}}
-                             {"obj" : {"key3" : {"nested_key" : 1}}}
-                         $$)
+```
+
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Nullable(String) │              │                    │         │                  │                │
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ obj  │ Nullable(String) │              │                    │         │                  │                │
-└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+
+##### input_format_json_read_numbers_as_strings \{#input_format_json_read_numbers_as_strings\}
+
+启用该设置后，可以将数值读取为字符串。
+
+此设置默认启用。
+
+**示例**
+
 ```sql
 SET input_format_json_read_numbers_as_strings = 1;
 DESC format(JSONEachRow, $$
                                 {"value" : 1055}
                                 {"value" : "unknown"}
                          $$)
-```sql
-SET input_format_json_read_numbers_as_strings = 1;
-DESC format(JSONEachRow, $$
-                                {"value" : 1055}
-                                {"value" : "unknown"}
-                         $$)
+```
+
 ```response
 ┌─name──┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ value │ Nullable(String) │              │                    │         │                  │                │
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name──┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ value │ Nullable(String) │              │                    │         │                  │                │
-└───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+
+##### input_format_json_read_bools_as_numbers \{#input_format_json_read_bools_as_numbers\}
+
+启用此设置后，可以将 Bool 值读取为数值类型。
+
+此设置默认启用。
+
+**示例：**
+
 ```sql
 SET input_format_json_read_bools_as_numbers = 1;
 DESC format(JSONEachRow, $$
                                 {"value" : true}
                                 {"value" : 42}
                          $$)
-```sql
-SET input_format_json_read_bools_as_numbers = 1;
-DESC format(JSONEachRow, $$
-                                {"value" : true}
-                                {"value" : 42}
-                         $$)
+```
+
 ```response
 ┌─name──┬─type────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ value │ Nullable(Int64) │              │                    │         │                  │                │
 └───────┴─────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name──┬─type────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ value │ Nullable(Int64) │              │                    │         │                  │                │
-└───────┴─────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+
+##### input_format_json_read_bools_as_strings \{#input_format_json_read_bools_as_strings\}
+
+启用此设置后，可以将 Bool 类型的值读取为字符串。
+
+该设置默认启用。
+
+**示例：**
+
 ```sql
 SET input_format_json_read_bools_as_strings = 1;
 DESC format(JSONEachRow, $$
                                 {"value" : true}
                                 {"value" : "Hello, World"}
                          $$)
-```sql
-SET input_format_json_read_bools_as_strings = 1;
-DESC format(JSONEachRow, $$
-                                {"value" : true}
-                                {"value" : "Hello, World"}
-                         $$)
+```
+
 ```response
 ┌─name──┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ value │ Nullable(String) │              │                    │         │                  │                │
 └───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name──┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ value │ Nullable(String) │              │                    │         │                  │                │
-└───────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+
+##### input_format_json_read_arrays_as_strings \{#input_format_json_read_arrays_as_strings\}
+
+启用此设置后，可以将 JSON 数组值作为字符串读取。
+
+此设置默认启用。
+
+**示例**
+
 ```sql
 SET input_format_json_read_arrays_as_strings = 1;
 SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow, 'arr String', '{"arr" : [1, "Hello", [1,2,3]]}');
-```sql
-SET input_format_json_read_arrays_as_strings = 1;
-SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow, 'arr String', '{"arr" : [1, "Hello", [1,2,3]]}');
-```response
-┌─arr───────────────────┬─toTypeName(arr)─┬─arrayElement(JSONExtractArrayRaw(arr), 3)─┐
-│ [1, "Hello", [1,2,3]] │ String          │ [1,2,3]                                   │
-└───────────────────────┴─────────────────┴───────────────────────────────────────────┘
+```
 
 ```response
 ┌─arr───────────────────┬─toTypeName(arr)─┬─arrayElement(JSONExtractArrayRaw(arr), 3)─┐
 │ [1, "Hello", [1,2,3]] │ String          │ [1,2,3]                                   │
 └───────────────────────┴─────────────────┴───────────────────────────────────────────┘
+```
+
+
+##### input_format_json_infer_incomplete_types_as_strings \{#input_format_json_infer_incomplete_types_as_strings\}
+
+启用此设置后，在模式推断期间，对于数据样本中仅包含 `Null`/`{}`/`[]` 的 JSON 键，可以使用 String 类型。
+在 JSON 格式中，如果启用了所有相关设置（默认均为启用），任何值都可以被读取为 String。通过在模式推断期间对类型未知的键使用 String 类型，可以避免出现类似 `Cannot determine type for column 'column_name' by first 25000 rows of data, most likely this column contains only Nulls or empty Arrays/Maps` 的错误。
+
+示例：
+
 ```sql
 SET input_format_json_infer_incomplete_types_as_strings = 1, input_format_json_try_infer_named_tuples_from_objects = 1;
 DESCRIBE format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" : null, "d" : {}, "e" : []}}');
 SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" : null, "d" : {}, "e" : []}}');
-```sql
-SET input_format_json_infer_incomplete_types_as_strings = 1, input_format_json_try_infer_named_tuples_from_objects = 1;
-DESCRIBE format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" : null, "d" : {}, "e" : []}}');
-SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" : null, "d" : {}, "e" : []}}');
+```
+
+结果：
+
 ```markdown
 ┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Tuple(a Array(Nullable(Int64)), b Nullable(String), c Nullable(String), d Nullable(String), e Array(Nullable(String))) │              │                    │         │                  │                │
@@ -791,18 +840,28 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" :
 ┌─obj────────────────────────────┐
 │ ([1,2,3],'hello',NULL,'{}',[]) │
 └────────────────────────────────┘
-```markdown
-┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ obj  │ Tuple(a Array(Nullable(Int64)), b Nullable(String), c Nullable(String), d Nullable(String), e Array(Nullable(String))) │              │                    │         │                  │                │
-└──────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
-┌─obj────────────────────────────┐
-│ ([1,2,3],'hello',NULL,'{}',[]) │
-└────────────────────────────────┘
+
+### CSV \{#csv\}
+
+在 CSV 格式中，ClickHouse 会根据分隔符从行中提取列值。除数字和字符串以外的所有类型，ClickHouse 都要求使用双引号括起来。如果值在双引号中，ClickHouse 会尝试使用递归解析器解析
+引号内部的数据，然后尝试为其找到最合适的数据类型。如果值不在双引号中，ClickHouse 会尝试将其解析为数字，
+如果该值不是数字，ClickHouse 就会将其视为字符串。
+
+如果您不希望 ClickHouse 使用某些解析器和启发式方法来推断复杂类型，可以禁用 setting `input_format_csv_use_best_effort_in_schema_inference`，
+此时 ClickHouse 会将所有列都视为 String。
+
+如果启用了 setting `input_format_csv_detect_header`，ClickHouse 会在推断 schema 时尝试检测带有列名（以及可能的类型）的表头。此 setting 默认是启用的。
+
+**示例：**
+
+整数、浮点数、布尔值、字符串：
+
 ```sql
 DESC format(CSV, '42,42.42,true,"Hello,World!"')
-```sql
-DESC format(CSV, '42,42.42,true,"Hello,World!"')
+```
+
 ```response
 ┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Int64)   │              │                    │         │                  │                │
@@ -810,161 +869,145 @@ DESC format(CSV, '42,42.42,true,"Hello,World!"')
 │ c3   │ Nullable(Bool)    │              │                    │         │                  │                │
 │ c4   │ Nullable(String)  │              │                    │         │                  │                │
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Int64)   │              │                    │         │                  │                │
-│ c2   │ Nullable(Float64) │              │                    │         │                  │                │
-│ c3   │ Nullable(Bool)    │              │                    │         │                  │                │
-│ c4   │ Nullable(String)  │              │                    │         │                  │                │
-└──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+未加引号的字符串：
+
 ```sql
 DESC format(CSV, 'Hello world!,World hello!')
-```sql
-DESC format(CSV, 'Hello world!,World hello!')
-```response
-┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(String) │              │                    │         │                  │                │
-│ c2   │ Nullable(String) │              │                    │         │                  │                │
-└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(String) │              │                    │         │                  │                │
 │ c2   │ Nullable(String) │              │                    │         │                  │                │
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+日期、日期时间：
+
 ```sql
 DESC format(CSV, '"2020-01-01","2020-01-01 00:00:00","2022-01-01 00:00:00.000"')
-```sql
-DESC format(CSV, '"2020-01-01","2020-01-01 00:00:00","2022-01-01 00:00:00.000"')
+```
+
 ```response
 ┌─name─┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Date)          │              │                    │         │                  │                │
 │ c2   │ Nullable(DateTime)      │              │                    │         │                  │                │
 │ c3   │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
 └──────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Date)          │              │                    │         │                  │                │
-│ c2   │ Nullable(DateTime)      │              │                    │         │                  │                │
-│ c3   │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
-└──────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+数组：
+
 ```sql
 DESC format(CSV, '"[1,2,3]","[[1, 2], [], [3, 4]]"')
-```sql
-DESC format(CSV, '"[1,2,3]","[[1, 2], [], [3, 4]]"')
+```
+
 ```response
 ┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Nullable(Int64))        │              │                    │         │                  │                │
 │ c2   │ Array(Array(Nullable(Int64))) │              │                    │         │                  │                │
 └──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Nullable(Int64))        │              │                    │         │                  │                │
-│ c2   │ Array(Array(Nullable(Int64))) │              │                    │         │                  │                │
-└──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
 ```sql
 DESC format(CSV, $$"['Hello', 'world']","[['Abc', 'Def'], []]"$$)
-```sql
-DESC format(CSV, $$"['Hello', 'world']","[['Abc', 'Def'], []]"$$)
+```
+
+
 ```response
 ┌─name─┬─type───────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Nullable(String))        │              │                    │         │                  │                │
 │ c2   │ Array(Array(Nullable(String))) │              │                    │         │                  │                │
 └──────┴────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type───────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Nullable(String))        │              │                    │         │                  │                │
-│ c2   │ Array(Array(Nullable(String))) │              │                    │         │                  │                │
-└──────┴────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+如果数组包含 null，ClickHouse 将根据该数组中其他元素推断类型：
+
 ```sql
 DESC format(CSV, '"[NULL, 42, NULL]"')
-```sql
-DESC format(CSV, '"[NULL, 42, NULL]"')
+```
+
 ```response
 ┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+映射：
+
 ```sql
 DESC format(CSV, $$"{'key1' : 42, 'key2' : 24}"$$)
-```sql
-DESC format(CSV, $$"{'key1' : 42, 'key2' : 24}"$$)
+```
+
 ```response
 ┌─name─┬─type─────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Map(String, Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Map(String, Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+嵌套数组与 Map：
+
 ```sql
 DESC format(CSV, $$"[{'key1' : [[42, 42], []], 'key2' : [[null], [42]]}]"$$)
-```sql
-DESC format(CSV, $$"[{'key1' : [[42, 42], []], 'key2' : [[null], [42]]}]"$$)
-```response
-┌─name─┬─type──────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Map(String, Array(Array(Nullable(Int64))))) │              │                    │         │                  │                │
-└──────┴───────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ```response
 ┌─name─┬─type──────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Map(String, Array(Array(Nullable(Int64))))) │              │                    │         │                  │                │
 └──────┴───────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+如果 ClickHouse 无法根据引号中的内容确定类型，因为数据只包含 null 值，ClickHouse 会将其视为 String：
+
 ```sql
 DESC format(CSV, '"[NULL, NULL]"')
-```sql
-DESC format(CSV, '"[NULL, NULL]"')
+```
+
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(String) │              │                    │         │                  │                │
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(String) │              │                    │         │                  │                │
-└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+禁用 `input_format_csv_use_best_effort_in_schema_inference` 设置时的示例：
+
 ```sql
 SET input_format_csv_use_best_effort_in_schema_inference = 0
 DESC format(CSV, '"[1,2,3]",42.42,Hello World!')
-```sql
-SET input_format_csv_use_best_effort_in_schema_inference = 0
-DESC format(CSV, '"[1,2,3]",42.42,Hello World!')
+```
+
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(String) │              │                    │         │                  │                │
 │ c2   │ Nullable(String) │              │                    │         │                  │                │
 │ c3   │ Nullable(String) │              │                    │         │                  │                │
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(String) │              │                    │         │                  │                │
-│ c2   │ Nullable(String) │              │                    │         │                  │                │
-│ c3   │ Nullable(String) │              │                    │         │                  │                │
-└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+表头自动检测示例（启用 `input_format_csv_detect_header` 时）：
+
+仅包含名称：
+
 ```sql
 SELECT * FROM format(CSV,
 $$"number","string","array"
 42,"Hello","[1, 2, 3]"
 43,"World","[4, 5, 6]"
 $$)
-```sql
-SELECT * FROM format(CSV,
-$$"number","string","array"
-42,"Hello","[1, 2, 3]"
-43,"World","[4, 5, 6]"
-$$)
+```
+
+
 ```response
 ┌─number─┬─string─┬─array───┐
 │     42 │ Hello  │ [1,2,3] │
 │     43 │ World  │ [4,5,6] │
 └────────┴────────┴─────────┘
-```response
-┌─number─┬─string─┬─array───┐
-│     42 │ Hello  │ [1,2,3] │
-│     43 │ World  │ [4,5,6] │
-└────────┴────────┴─────────┘
+```
+
+列名和类型：
+
 ```sql
 DESC format(CSV,
 $$"number","string","array"
@@ -972,70 +1015,74 @@ $$"number","string","array"
 42,"Hello","[1, 2, 3]"
 43,"World","[4, 5, 6]"
 $$)
-```sql
-DESC format(CSV,
-$$"number","string","array"
-"UInt32","String","Array(UInt16)"
-42,"Hello","[1, 2, 3]"
-43,"World","[4, 5, 6]"
-$$)
+```
+
 ```response
 ┌─name───┬─type──────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ number │ UInt32        │              │                    │         │                  │                │
 │ string │ String        │              │                    │         │                  │                │
 │ array  │ Array(UInt16) │              │                    │         │                  │                │
 └────────┴───────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name───┬─type──────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ number │ UInt32        │              │                    │         │                  │                │
-│ string │ String        │              │                    │         │                  │                │
-│ array  │ Array(UInt16) │              │                    │         │                  │                │
-└────────┴───────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+注意，只有当至少存在一个非 String 类型的列时，才能识别表头。如果所有列的类型都是 String，则不会识别表头：
+
 ```sql
 SELECT * FROM format(CSV,
 $$"first_column","second_column"
 "Hello","World"
 "World","Hello"
 $$)
-```sql
-SELECT * FROM format(CSV,
-$$"first_column","second_column"
-"Hello","World"
-"World","Hello"
-$$)
+```
+
 ```response
 ┌─c1───────────┬─c2────────────┐
 │ first_column │ second_column │
 │ Hello        │ World         │
 │ World        │ Hello         │
 └──────────────┴───────────────┘
-```response
-┌─c1───────────┬─c2────────────┐
-│ 第一列       │ 第二列        │
-│ 你好        │ 世界         │
-│ 世界        │ 你好         │
-└──────────────┴───────────────┘
+```
+
+
+#### CSV 设置 \{#csv-settings\}
+
+##### input_format_csv_try_infer_numbers_from_strings \{#input_format_csv_try_infer_numbers_from_strings\}
+
+启用此设置后，可以从字符串值中推断数值类型。
+
+此设置默认禁用。
+
+**示例：**
+
 ```sql
 SET input_format_json_try_infer_numbers_from_strings = 1;
 DESC format(CSV, '42,42.42');
-```sql
-SET input_format_json_try_infer_numbers_from_strings = 1;
-DESC format(CSV, '42,42.42');
-```response
-┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Int64)   │              │                    │         │                  │                │
-│ c2   │ Nullable(Float64) │              │                    │         │                  │                │
-└──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ```response
 ┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Int64)   │              │                    │         │                  │                │
 │ c2   │ Nullable(Float64) │              │                    │         │                  │                │
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+
+### TSV/TSKV \{#tsv-tskv\}
+
+在 TSV/TSKV 格式中，ClickHouse 会根据制表符分隔符从每一行中提取列值，然后使用递归解析器对提取的值进行解析，以确定最合适的类型。如果无法确定类型，ClickHouse 会将该值视为 String。
+
+如果不希望 ClickHouse 使用某些解析器和启发式方法来尝试推断复杂类型，可以禁用 `input_format_tsv_use_best_effort_in_schema_inference` 设置，此时 ClickHouse 会将所有列都视为 String。
+
+如果启用了 `input_format_tsv_detect_header` 设置，ClickHouse 会在推断 schema 时尝试检测包含列名（以及可能的类型）的表头。该设置默认启用。
+
+**示例：**
+
+整数、浮点数、布尔值、字符串：
+
 ```sql
 DESC format(TSV, '42    42.42    true    Hello,World!')
-```sql
-DESC format(TSV, '42    42.42    true    Hello,World!')
+```
+
 ```response
 ┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Int64)   │              │                    │         │                  │                │
@@ -1043,17 +1090,12 @@ DESC format(TSV, '42    42.42    true    Hello,World!')
 │ c3   │ Nullable(Bool)    │              │                    │         │                  │                │
 │ c4   │ Nullable(String)  │              │                    │         │                  │                │
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Int64)   │              │                    │         │                  │                │
-│ c2   │ Nullable(Float64) │              │                    │         │                  │                │
-│ c3   │ Nullable(Bool)    │              │                    │         │                  │                │
-│ c4   │ Nullable(String)  │              │                    │         │                  │                │
-└──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
 ```sql
 DESC format(TSKV, 'int=42    float=42.42    bool=true    string=Hello,World!\n')
-```sql
-DESC format(TSKV, 'int=42    float=42.42    bool=true    string=Hello,World!\n')
+```
+
 ```response
 ┌─name───┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ int    │ Nullable(Int64)   │              │                    │         │                  │                │
@@ -1061,23 +1103,13 @@ DESC format(TSKV, 'int=42    float=42.42    bool=true    string=Hello,World!\n')
 │ bool   │ Nullable(Bool)    │              │                    │         │                  │                │
 │ string │ Nullable(String)  │              │                    │         │                  │                │
 └────────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name───┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ int    │ Nullable(Int64)   │              │                    │         │                  │                │
-│ float  │ Nullable(Float64) │              │                    │         │                  │                │
-│ bool   │ Nullable(Bool)    │              │                    │         │                  │                │
-│ string │ Nullable(String)  │              │                    │         │                  │                │
-└────────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+Date、DateTime：
+
 ```sql
 DESC format(TSV, '2020-01-01    2020-01-01 00:00:00    2022-01-01 00:00:00.000')
-```sql
-DESC format(TSV, '2020-01-01    2020-01-01 00:00:00    2022-01-01 00:00:00.000')
-```response
-┌─name─┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Date)          │              │                    │         │                  │                │
-│ c2   │ Nullable(DateTime)      │              │                    │         │                  │                │
-│ c3   │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
-└──────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ```response
 ┌─name─┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -1085,135 +1117,130 @@ DESC format(TSV, '2020-01-01    2020-01-01 00:00:00    2022-01-01 00:00:00.000')
 │ c2   │ Nullable(DateTime)      │              │                    │         │                  │                │
 │ c3   │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
 └──────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+数组：
+
 ```sql
 DESC format(TSV, '[1,2,3]    [[1, 2], [], [3, 4]]')
-```sql
-DESC format(TSV, '[1,2,3]    [[1, 2], [], [3, 4]]')
+```
+
 ```response
 ┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Nullable(Int64))        │              │                    │         │                  │                │
 │ c2   │ Array(Array(Nullable(Int64))) │              │                    │         │                  │                │
 └──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Nullable(Int64))        │              │                    │         │                  │                │
-│ c2   │ Array(Array(Nullable(Int64))) │              │                    │         │                  │                │
-└──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
 ```sql
 DESC format(TSV, '[''Hello'', ''world'']    [[''Abc'', ''Def''], []]')
-```sql
-DESC format(TSV, '[''Hello'', ''world'']    [[''Abc'', ''Def''], []]')
+```
+
+
 ```response
 ┌─name─┬─type───────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Nullable(String))        │              │                    │         │                  │                │
 │ c2   │ Array(Array(Nullable(String))) │              │                    │         │                  │                │
 └──────┴────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type───────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Nullable(String))        │              │                    │         │                  │                │
-│ c2   │ Array(Array(Nullable(String))) │              │                    │         │                  │                │
-└──────┴────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+如果数组包含 NULL，ClickHouse 将采用该数组中其他元素的类型：
+
 ```sql
 DESC format(TSV, '[NULL, 42, NULL]')
-```sql
-DESC format(TSV, '[NULL, 42, NULL]')
+```
+
 ```response
 ┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+元组：
+
 ```sql
 DESC format(TSV, $$(42, 'Hello, world!')$$)
-```sql
-DESC format(TSV, $$(42, 'Hello, world!')$$)
+```
+
 ```response
 ┌─name─┬─type─────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Tuple(Nullable(Int64), Nullable(String)) │              │                    │         │                  │                │
 └──────┴──────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Tuple(Nullable(Int64), Nullable(String)) │              │                    │         │                  │                │
-└──────┴──────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+映射：
+
 ```sql
 DESC format(TSV, $${'key1' : 42, 'key2' : 24}$$)
-```sql
-DESC format(TSV, $${'key1' : 42, 'key2' : 24}$$)
+```
+
 ```response
 ┌─name─┬─type─────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Map(String, Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Map(String, Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+嵌套的 Array、Tuple 和 Map：
+
 ```sql
 DESC format(TSV, $$[{'key1' : [(42, 'Hello'), (24, NULL)], 'key2' : [(NULL, ','), (42, 'world!')]}]$$)
-```sql
-DESC format(TSV, $$[{'key1' : [(42, 'Hello'), (24, NULL)], 'key2' : [(NULL, ','), (42, 'world!')]}]$$)
-```response
-┌─name─┬─type────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Map(String, Array(Tuple(Nullable(Int64), Nullable(String))))) │              │                    │         │                  │                │
-└──────┴─────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ```response
 ┌─name─┬─type────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Map(String, Array(Tuple(Nullable(Int64), Nullable(String))))) │              │                    │         │                  │                │
 └──────┴─────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+如果 ClickHouse 无法确定类型（因为数据只包含 null），则会将其当作 String 类型处理：
+
 ```sql
 DESC format(TSV, '[NULL, NULL]')
-```sql
-DESC format(TSV, '[NULL, NULL]')
+```
+
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(String) │              │                    │         │                  │                │
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(String) │              │                    │         │                  │                │
-└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+禁用 `input_format_tsv_use_best_effort_in_schema_inference` SETTING 时的示例：
+
 ```sql
 SET input_format_tsv_use_best_effort_in_schema_inference = 0
 DESC format(TSV, '[1,2,3]    42.42    Hello World!')
-```sql
-SET input_format_tsv_use_best_effort_in_schema_inference = 0
-DESC format(TSV, '[1,2,3]    42.42    Hello World!')
+```
+
+
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(String) │              │                    │         │                  │                │
 │ c2   │ Nullable(String) │              │                    │         │                  │                │
 │ c3   │ Nullable(String) │              │                    │         │                  │                │
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(String) │              │                    │         │                  │                │
-│ c2   │ Nullable(String) │              │                    │         │                  │                │
-│ c3   │ Nullable(String) │              │                    │         │                  │                │
-└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+标题自动检测示例（启用 `input_format_tsv_detect_header` 时）：
+
+仅名称：
+
 ```sql
 SELECT * FROM format(TSV,
 $$number    string    array
 42    Hello    [1, 2, 3]
 43    World    [4, 5, 6]
 $$);
-```sql
-SELECT * FROM format(TSV,
-$$number    string    array
-42    Hello    [1, 2, 3]
-43    World    [4, 5, 6]
-$$);
+```
+
 ```response
 ┌─number─┬─string─┬─array───┐
 │     42 │ Hello  │ [1,2,3] │
 │     43 │ World  │ [4,5,6] │
 └────────┴────────┴─────────┘
-```response
-┌─number─┬─string─┬─array───┐
-│     42 │ Hello  │ [1,2,3] │
-│     43 │ World  │ [4,5,6] │
-└────────┴────────┴─────────┘
+```
+
+列名和类型：
+
 ```sql
 DESC format(TSV,
 $$number    string    array
@@ -1221,54 +1248,47 @@ UInt32    String    Array(UInt16)
 42    Hello    [1, 2, 3]
 43    World    [4, 5, 6]
 $$)
-```sql
-DESC format(TSV,
-$$number    string    array
-UInt32    String    Array(UInt16)
-42    Hello    [1, 2, 3]
-43    World    [4, 5, 6]
-$$)
+```
+
 ```response
 ┌─name───┬─type──────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ number │ UInt32        │              │                    │         │                  │                │
 │ string │ String        │              │                    │         │                  │                │
 │ array  │ Array(UInt16) │              │                    │         │                  │                │
 └────────┴───────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name───┬─type──────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ number │ UInt32        │              │                    │         │                  │                │
-│ string │ String        │              │                    │         │                  │                │
-│ array  │ Array(UInt16) │              │                    │         │                  │                │
-└────────┴───────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+请注意，只有在至少存在一列类型不是 String 时，才能检测到表头。如果所有列的类型都是 String，则不会检测到表头：
+
 ```sql
 SELECT * FROM format(TSV,
 $$first_column    second_column
 Hello    World
 World    Hello
 $$)
-```sql
-SELECT * FROM format(TSV,
-$$first_column    second_column
-Hello    World
-World    Hello
-$$)
+```
+
 ```response
 ┌─c1───────────┬─c2────────────┐
 │ first_column │ second_column │
 │ Hello        │ World         │
 │ World        │ Hello         │
 └──────────────┴───────────────┘
-```response
-┌─c1───────────┬─c2────────────┐
-│ 第一列       │ 第二列        │
-│ 你好        │ 世界         │
-│ 世界        │ 你好         │
-└──────────────┴───────────────┘
+```
+
+
+### Values \{#values\}
+
+在 Values 格式中,ClickHouse 从行中提取列值,然后使用递归解析器进行解析,解析方式类似于字面量的解析方式。
+
+**示例：**
+
+整数、浮点数、布尔值、字符串:
 
 ```sql
 DESC format(Values, $$(42, 42.42, true, 'Hello,World!')$$)
-```sql
-DESC format(Values, $$(42, 42.42, true, 'Hello,World!')$$)
+```
+
 ```response
 ┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Int64)   │              │                    │         │                  │                │
@@ -1276,124 +1296,120 @@ DESC format(Values, $$(42, 42.42, true, 'Hello,World!')$$)
 │ c3   │ Nullable(Bool)    │              │                    │         │                  │                │
 │ c4   │ Nullable(String)  │              │                    │         │                  │                │
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Int64)   │              │                    │         │                  │                │
-│ c2   │ Nullable(Float64) │              │                    │         │                  │                │
-│ c3   │ Nullable(Bool)    │              │                    │         │                  │                │
-│ c4   │ Nullable(String)  │              │                    │         │                  │                │
-└──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+日期、日期时间:
+
 ```sql
  DESC format(Values, $$('2020-01-01', '2020-01-01 00:00:00', '2022-01-01 00:00:00.000')$$)
- ```sql
- DESC format(Values, $$('2020-01-01', '2020-01-01 00:00:00', '2022-01-01 00:00:00.000')$$)
+```
+
 ```response
 ┌─name─┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Date)          │              │                    │         │                  │                │
 │ c2   │ Nullable(DateTime)      │              │                    │         │                  │                │
 │ c3   │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
 └──────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Date)          │              │                    │         │                  │                │
-│ c2   │ Nullable(DateTime)      │              │                    │         │                  │                │
-│ c3   │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
-└──────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+数组:
+
 ```sql
 DESC format(Values, '([1,2,3], [[1, 2], [], [3, 4]])')
-```sql
-DESC format(Values, '([1,2,3], [[1, 2], [], [3, 4]])')
+```
+
 ```response
 ┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Nullable(Int64))        │              │                    │         │                  │                │
 │ c2   │ Array(Array(Nullable(Int64))) │              │                    │         │                  │                │
 └──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Nullable(Int64))        │              │                    │         │                  │                │
-│ c2   │ Array(Array(Nullable(Int64))) │              │                    │         │                  │                │
-└──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+如果数组包含 null,ClickHouse 将使用该数组中其他元素的类型:
+
 ```sql
 DESC format(Values, '([NULL, 42, NULL])')
-```sql
-DESC format(Values, '([NULL, 42, NULL])')
+```
+
 ```response
 ┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+元组:
+
 ```sql
 DESC format(Values, $$((42, 'Hello, world!'))$$)
-```sql
-DESC format(Values, $$((42, 'Hello, world!'))$$)
+```
+
 ```response
 ┌─name─┬─type─────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Tuple(Nullable(Int64), Nullable(String)) │              │                    │         │                  │                │
 └──────┴──────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Tuple(Nullable(Int64), Nullable(String)) │              │                    │         │                  │                │
-└──────┴──────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+映射:
+
 ```sql
 DESC format(Values, $$({'key1' : 42, 'key2' : 24})$$)
-```sql
-DESC format(Values, $$({'key1' : 42, 'key2' : 24})$$)
-```response
-┌─name─┬─type─────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Map(String, Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ```response
 ┌─name─┬─type─────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Map(String, Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴──────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+嵌套数组、元组和映射:
+
 ```sql
 DESC format(Values, $$([{'key1' : [(42, 'Hello'), (24, NULL)], 'key2' : [(NULL, ','), (42, 'world!')]}])$$)
-```sql
-DESC format(Values, $$([{'key1' : [(42, 'Hello'), (24, NULL)], 'key2' : [(NULL, ','), (42, 'world!')]}])$$)
+```
+
 ```response
 ┌─name─┬─type────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Array(Map(String, Array(Tuple(Nullable(Int64), Nullable(String))))) │              │                    │         │                  │                │
 └──────┴─────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Array(Map(String, Array(Tuple(Nullable(Int64), Nullable(String))))) │              │                    │         │                  │                │
-└──────┴─────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+如果 ClickHouse 无法确定类型，因为数据仅包含 NULL 值，则会抛出异常：
+
 ```sql
 DESC format(Values, '([NULL, NULL])')
-```sql
-DESC format(Values, '([NULL, NULL])')
+```
+
 ```response
 Code: 652. DB::Exception: Received from localhost:9000. DB::Exception:
 Cannot determine type for column 'c1' by first 1 rows of data,
 most likely this column contains only Nulls or empty Arrays/Maps.
 ...
-```response
-代码: 652. DB::Exception: 从 localhost:9000 接收。DB::Exception:
-无法根据前 1 行数据确定列 'c1' 的类型,
-该列很可能仅包含 Null 值或空数组/映射。
-...
+```
+
+禁用 `input_format_tsv_use_best_effort_in_schema_inference` 设置时的示例：
+
 ```sql
 SET input_format_tsv_use_best_effort_in_schema_inference = 0
 DESC format(TSV, '[1,2,3]    42.42    Hello World!')
-```sql
-SET input_format_tsv_use_best_effort_in_schema_inference = 0
-DESC format(TSV, '[1,2,3]    42.42    Hello World!')
+```
+
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(String) │              │                    │         │                  │                │
 │ c2   │ Nullable(String) │              │                    │         │                  │                │
 │ c3   │ Nullable(String) │              │                    │         │                  │                │
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(String) │              │                    │         │                  │                │
-│ c2   │ Nullable(String) │              │                    │         │                  │                │
-│ c3   │ Nullable(String) │              │                    │         │                  │                │
-└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+
+### CustomSeparated \{#custom-separated\}
+
+在 CustomSeparated 格式中，ClickHouse 首先根据指定的分隔符从行中提取所有列值，然后根据转义规则为每个值推断数据类型。
+
+如果启用了 `input_format_custom_detect_header` 设置，ClickHouse 会在推断 schema 时尝试自动检测包含列名（以及可能包含类型）的表头。该设置默认启用。
+
+**示例**
+
 ```sql
 SET format_custom_row_before_delimiter = '<row_before_delimiter>',
        format_custom_row_after_delimiter = '<row_after_delimiter>\n',
@@ -1409,27 +1425,7 @@ DESC format(CustomSeparated, $$<result_before_delimiter>
 <row_before_delimiter>NULL<field_delimiter>'Some string 3'<field_delimiter>[1, 2, NULL]<row_after_delimiter>
 <result_after_delimiter>
 $$)
-```sql
-SET format_custom_row_before_delimiter = '<row_before_delimiter>',
-       format_custom_row_after_delimiter = '<row_after_delimiter>\n',
-       format_custom_row_between_delimiter = '<row_between_delimiter>\n',
-       format_custom_result_before_delimiter = '<result_before_delimiter>\n',
-       format_custom_result_after_delimiter = '<result_after_delimiter>\n',
-       format_custom_field_delimiter = '<field_delimiter>',
-       format_custom_escaping_rule = 'Quoted'
-
-DESC format(CustomSeparated, $$<result_before_delimiter>
-<row_before_delimiter>42.42<field_delimiter>'Some string 1'<field_delimiter>[1, NULL, 3]<row_after_delimiter>
-<row_between_delimiter>
-<row_before_delimiter>NULL<field_delimiter>'Some string 3'<field_delimiter>[1, 2, NULL]<row_after_delimiter>
-<result_after_delimiter>
-$$)
-```response
-┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ c1   │ Nullable(Float64)      │              │                    │         │                  │                │
-│ c2   │ Nullable(String)       │              │                    │         │                  │                │
-│ c3   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
-└──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
 ```response
 ┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -1437,6 +1433,10 @@ $$)
 │ c2   │ Nullable(String)       │              │                    │         │                  │                │
 │ c3   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+表头自动检测示例（当启用 `input_format_custom_detect_header` 时）：
+
 ```sql
 SET format_custom_row_before_delimiter = '<row_before_delimiter>',
        format_custom_row_after_delimiter = '<row_after_delimiter>\n',
@@ -1454,43 +1454,37 @@ DESC format(CustomSeparated, $$<result_before_delimiter>
 <row_before_delimiter>NULL<field_delimiter>'Some string 3'<field_delimiter>[1, 2, NULL]<row_after_delimiter>
 <result_after_delimiter>
 $$)
-```sql
-SET format_custom_row_before_delimiter = '<row_before_delimiter>',
-       format_custom_row_after_delimiter = '<row_after_delimiter>\n',
-       format_custom_row_between_delimiter = '<row_between_delimiter>\n',
-       format_custom_result_before_delimiter = '<result_before_delimiter>\n',
-       format_custom_result_after_delimiter = '<result_after_delimiter>\n',
-       format_custom_field_delimiter = '<field_delimiter>',
-       format_custom_escaping_rule = 'Quoted'
+```
 
-DESC format(CustomSeparated, $$<result_before_delimiter>
-<row_before_delimiter>'number'<field_delimiter>'string'<field_delimiter>'array'<row_after_delimiter>
-<row_between_delimiter>
-<row_before_delimiter>42.42<field_delimiter>'Some string 1'<field_delimiter>[1, NULL, 3]<row_after_delimiter>
-<row_between_delimiter>
-<row_before_delimiter>NULL<field_delimiter>'Some string 3'<field_delimiter>[1, 2, NULL]<row_after_delimiter>
-<result_after_delimiter>
-$$)
 ```response
 ┌─number─┬─string────────┬─array──────┐
 │  42.42 │ Some string 1 │ [1,NULL,3] │
 │   ᴺᵁᴸᴸ │ Some string 3 │ [1,2,NULL] │
 └────────┴───────────────┴────────────┘
-```response
-┌─number─┬─string────────┬─array──────┐
-│  42.42 │ Some string 1 │ [1,NULL,3] │
-│   ᴺᵁᴸᴸ │ Some string 3 │ [1,2,NULL] │
-└────────┴───────────────┴────────────┘
+```
+
+
+### Template \{#template\}
+
+在 Template 格式中，ClickHouse 首先根据指定的模板从行中提取所有列的值，然后根据其转义规则尝试推断每个值的数据类型。
+
+**示例**
+
+假设我们有一个名为 `resultset` 的文件，其内容如下：
+
 ```bash
 <result_before_delimiter>
 ${data}<result_after_delimiter>
-```bash
-<result_before_delimiter>
-${data}<result_after_delimiter>
+```
+
+以及一个名为 `row_format` 的文件，其内容如下：
+
 ```text
 <row_before_delimiter>${column_1:CSV}<field_delimiter_1>${column_2:Quoted}<field_delimiter_2>${column_3:JSON}<row_after_delimiter>
-```text
-<row_before_delimiter>${column_1:CSV}<field_delimiter_1>${column_2:Quoted}<field_delimiter_2>${column_3:JSON}<row_after_delimiter>
+```
+
+然后我们可以执行以下查询：
+
 ```sql
 SET format_template_rows_between_delimiter = '<row_between_delimiter>\n',
        format_template_row = 'row_format',
@@ -1502,38 +1496,31 @@ DESC format(Template, $$<result_before_delimiter>
 <row_before_delimiter>\N<field_delimiter_1>'Some string 3'<field_delimiter_2>[1, 2, null]<row_after_delimiter>
 <result_after_delimiter>
 $$)
-```sql
-SET format_template_rows_between_delimiter = '<row_between_delimiter>\n',
-       format_template_row = 'row_format',
-       format_template_resultset = 'resultset_format'
+```
 
-DESC format(Template, $$<result_before_delimiter>
-<row_before_delimiter>42.42<field_delimiter_1>'Some string 1'<field_delimiter_2>[1, null, 2]<row_after_delimiter>
-<row_between_delimiter>
-<row_before_delimiter>\N<field_delimiter_1>'Some string 3'<field_delimiter_2>[1, 2, null]<row_after_delimiter>
-<result_after_delimiter>
-$$)
 ```response
 ┌─name─────┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ column_1 │ Nullable(Float64)      │              │                    │         │                  │                │
 │ column_2 │ Nullable(String)       │              │                    │         │                  │                │
 │ column_3 │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```response
-┌─name─────┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ column_1 │ Nullable(Float64)      │              │                    │         │                  │                │
-│ column_2 │ Nullable(String)       │              │                    │         │                  │                │
-│ column_3 │ Array(Nullable(Int64)) │              │                    │         │                  │                │
-└──────────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+
+### Regexp \{#regexp\}
+
+与 Template 类似，在 Regexp 格式中，ClickHouse 首先根据指定的正则表达式从行中提取所有列值，然后根据指定的转义规则尝试为每个值推断数据类型。
+
+**示例**
+
 ```sql
 SET format_regexp = '^Line: value_1=(.+?), value_2=(.+?), value_3=(.+?)',
        format_regexp_escaping_rule = 'CSV'
 
 DESC format(Regexp, $$Line: value_1=42, value_2="Some string 1", value_3="[1, NULL, 3]"
 Line: value_1=2, value_2="Some string 2", value_3="[4, 5, NULL]"$$)
-```sql
-SET format_regexp = '^Line: value_1=(.+?), value_2=(.+?), value_3=(.+?)',
-       format_regexp_escaping_rule = 'CSV'
+```
+
 ```response
 ┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Int64)        │              │                    │         │                  │                │
@@ -1541,26 +1528,28 @@ SET format_regexp = '^Line: value_1=(.+?), value_2=(.+?), value_3=(.+?)',
 │ c3   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
-```sql
-DESC format(TSV, 'Hello, World!    42    [1, 2, 3]') settings column_names_for_schema_inference = 'str,int,arr'
-```
 
-### 文本格式的设置 {#settings-for-text-formats}
 
-#### input&#95;format&#95;max&#95;rows&#95;to&#95;read&#95;for&#95;schema&#95;inference/input&#95;format&#95;max&#95;bytes&#95;to&#95;read&#95;for&#95;schema&#95;inference {#input-format-max-rows-to-read-for-schema-inference}
+### 文本格式的设置 \{#settings-for-text-formats\}
+
+#### input_format_max_rows_to_read_for_schema_inference/input_format_max_bytes_to_read_for_schema_inference \{#input-format-max-rows-to-read-for-schema-inference\}
 
 这些设置控制在执行模式推断时需读取的数据量。读取的行数/字节数越多，在模式推断上花费的时间就越长，但越有可能正确确定类型（尤其是当数据包含大量 null 时）。
 
 默认值：
 
-* `input_format_max_rows_to_read_for_schema_inference` 的默认值为 `25000`。
-* `input_format_max_bytes_to_read_for_schema_inference` 的默认值为 `33554432`（32 MB）。
+-   `input_format_max_rows_to_read_for_schema_inference` 的默认值为 `25000`。
+-   `input_format_max_bytes_to_read_for_schema_inference` 的默认值为 `33554432`（32 MB）。
 
-#### column&#95;names&#95;for&#95;schema&#95;inference \{#column-names-for-schema-inference\}
+#### column_names_for_schema_inference \{#column-names-for-schema-inference\}
 
 在对不含显式列名的格式进行模式推断时使用的列名列表。指定的名称将替代默认的 `c1,c2,c3,...`。格式：`column1,column2,column3,...`。
 
 **示例**
+
+```sql
+DESC format(TSV, 'Hello, World!    42    [1, 2, 3]') settings column_names_for_schema_inference = 'str,int,arr'
+```
 
 ```response
 ┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -1570,16 +1559,17 @@ DESC format(TSV, 'Hello, World!    42    [1, 2, 3]') settings column_names_for_s
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```sql
-DESC format(JSONEachRow, '{"id" : 1, "age" : 25, "name" : "Josh", "status" : null, "hobbies" : ["football", "cooking"]}') SETTINGS schema_inference_hints = 'age LowCardinality(UInt8), status Nullable(String)', allow_suspicious_low_cardinality_types=1
-```
 
-#### schema&#95;inference&#95;hints {#schema-inference-hints}
+#### schema_inference_hints \{#schema-inference-hints\}
 
 在进行 schema 推断时，用于替代自动推断类型的列名和列类型列表。格式为：&#39;column&#95;name1 column&#95;type1, column&#95;name2 column&#95;type2, ...&#39;。
 该设置可用于指定无法自动确定类型的列的类型，或用于优化 schema。
 
 **示例**
+
+```sql
+DESC format(JSONEachRow, '{"id" : 1, "age" : 25, "name" : "Josh", "status" : null, "hobbies" : ["football", "cooking"]}') SETTINGS schema_inference_hints = 'age LowCardinality(UInt8), status Nullable(String)', allow_suspicious_low_cardinality_types=1
+```
 
 ```response
 ┌─name────┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -1591,15 +1581,8 @@ DESC format(JSONEachRow, '{"id" : 1, "age" : 25, "name" : "Josh", "status" : nul
 └─────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```sql
-SET schema_inference_make_columns_nullable = 1;
-DESC format(JSONEachRow, $$
-                                {"id" :  1, "age" :  25, "name" : "Josh", "status" : null, "hobbies" : ["football", "cooking"]}
-                                {"id" :  2, "age" :  19, "name" :  "Alan", "status" : "married", "hobbies" :  ["tennis", "art"]}
-                         $$)
-```
 
-#### schema&#95;inference&#95;make&#95;columns&#95;nullable $ {#schema-inference-make-columns-nullable}
+#### schema_inference_make_columns_nullable $ \{#schema-inference-make-columns-nullable\}
 
 控制在对缺少空值信息的格式进行 schema 推断时，是否将推断出的类型设为 `Nullable`。可能的取值：
 
@@ -1611,6 +1594,14 @@ DESC format(JSONEachRow, $$
 默认值：3。
 
 **示例**
+
+```sql
+SET schema_inference_make_columns_nullable = 1;
+DESC format(JSONEachRow, $$
+                                {"id" :  1, "age" :  25, "name" : "Josh", "status" : null, "hobbies" : ["football", "cooking"]}
+                                {"id" :  2, "age" :  19, "name" :  "Alan", "status" : "married", "hobbies" :  ["tennis", "art"]}
+                         $$)
+```
 
 ```response
 ┌─name────┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -1659,15 +1650,7 @@ DESC format(JSONEachRow, $$
 └─────────┴───────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```sql
-SET input_format_try_infer_integers = 0
-DESC format(JSONEachRow, $$
-                                {"number" : 1}
-                                {"number" : 2}
-                         $$)
-```
-
-#### input&#95;format&#95;try&#95;infer&#95;integers {#input-format-try-infer-integers}
+#### input_format_try_infer_integers \{#input-format-try-infer-integers\}
 
 :::note
 此设置不适用于 `JSON` 数据类型。
@@ -1680,6 +1663,14 @@ DESC format(JSONEachRow, $$
 默认启用。
 
 **示例**
+
+```sql
+SET input_format_try_infer_integers = 0
+DESC format(JSONEachRow, $$
+                                {"number" : 1}
+                                {"number" : 2}
+                         $$)
+```
 
 ```response
 ┌─name───┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -1727,6 +1718,16 @@ DESC format(JSONEachRow, $$
 └────────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
+
+#### input_format_try_infer_datetimes \{#input-format-try-infer-datetimes\}
+
+如果启用，ClickHouse 会在文本格式的模式推断中，尝试从字符串字段推断出 `DateTime` 或 `DateTime64` 类型。
+如果示例数据中某一列的所有字段都能成功解析为日期时间，则结果类型为 `DateTime` 或 `DateTime64(9)`（如果任意一个日期时间值包含小数部分）；如果至少有一个字段无法解析为日期时间，则结果类型为 `String`。
+
+默认情况下启用。
+
+**示例**
+
 ```sql
 SET input_format_try_infer_datetimes = 0;
 DESC format(JSONEachRow, $$
@@ -1734,16 +1735,6 @@ DESC format(JSONEachRow, $$
                                 {"datetime" : "2022-01-01 00:00:00", "datetime64" : "2022-01-01 00:00:00.000"}
                          $$)
 ```
-
-#### input&#95;format&#95;try&#95;infer&#95;datetimes {#input-format-try-infer-datetimes}
-
-如果启用，ClickHouse 会在文本格式的模式推断时，尝试从字符串字段推断出 `DateTime` 或 `DateTime64` 类型。
-如果示例数据中某一列的所有字段都能成功解析为日期时间，则结果类型为 `DateTime`，或在任意日期时间值包含小数部分时为 `DateTime64(9)`；
-如果至少有一个字段无法解析为日期时间，则结果类型为 `String`。
-
-默认启用。
-
-**示例**
 
 ```response
 ┌─name───────┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -1781,6 +1772,15 @@ DESC format(JSONEachRow, $$
 └────────────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
+
+#### input_format_try_infer_datetimes_only_datetime64 \{#input-format-try-infer-datetimes-only-datetime64\}
+
+如果启用，在 `input_format_try_infer_datetimes` 启用的情况下，即使 datetime 值不包含小数部分，ClickHouse 也始终会推断为 `DateTime64(9)`。
+
+默认禁用。
+
+**示例**
+
 ```sql
 SET input_format_try_infer_datetimes = 1;
 SET input_format_try_infer_datetimes_only_datetime64 = 1;
@@ -1790,14 +1790,6 @@ DESC format(JSONEachRow, $$
                          $$)
 ```
 
-#### input&#95;format&#95;try&#95;infer&#95;datetimes&#95;only&#95;datetime64 {#input-format-try-infer-datetimes-only-datetime64}
-
-如果启用，在 `input_format_try_infer_datetimes` 启用的情况下，即使 datetime 值不包含小数部分，ClickHouse 也始终会推断为 `DateTime64(9)`。
-
-默认禁用。
-
-**示例**
-
 ```response
 ┌─name───────┬─type────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ datetime   │ Nullable(DateTime64(9)) │              │                    │         │                  │                │
@@ -1805,17 +1797,10 @@ DESC format(JSONEachRow, $$
 └────────────┴─────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```sql
-SET input_format_try_infer_datetimes = 0, input_format_try_infer_dates = 0
-DESC format(JSONEachRow, $$
-                                {"date" : "2021-01-01"}
-                                {"date" : "2022-01-01"}
-                         $$)
-```
-
 注意：在进行模式推断时解析日期时间值，会遵守设置 [date&#95;time&#95;input&#95;format](/operations/settings/settings-formats.md#date_time_input_format)。
 
-#### input&#95;format&#95;try&#95;infer&#95;dates {#input-format-try-infer-dates}
+
+#### input_format_try_infer_dates \{#input-format-try-infer-dates\}
 
 启用后，ClickHouse 会在对文本格式进行 schema 推断时，尝试从字符串字段中推断出 `Date` 类型。
 如果示例数据中某一列的所有字段都能成功解析为日期，则结果类型为 `Date`，
@@ -1824,6 +1809,14 @@ DESC format(JSONEachRow, $$
 默认启用。
 
 **示例**
+
+```sql
+SET input_format_try_infer_datetimes = 0, input_format_try_infer_dates = 0
+DESC format(JSONEachRow, $$
+                                {"date" : "2021-01-01"}
+                                {"date" : "2022-01-01"}
+                         $$)
+```
 
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -1858,6 +1851,15 @@ DESC format(JSONEachRow, $$
 └──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
+
+#### input_format_try_infer_exponent_floats \{#input-format-try-infer-exponent-floats\}
+
+如果启用，ClickHouse 会在文本格式中尝试将指数形式的数字推断为浮点数（`JSON` 除外，在 `JSON` 中指数形式的数字始终会被推断为浮点数）。
+
+默认禁用。
+
+**示例**
+
 ```sql
 SET input_format_try_infer_exponent_floats = 1;
 DESC format(CSV,
@@ -1867,19 +1869,26 @@ $$1.1E10
 $$)
 ```
 
-#### input&#95;format&#95;try&#95;infer&#95;exponent&#95;floats {#input-format-try-infer-exponent-floats}
-
-如果启用，ClickHouse 会在文本格式中尝试将指数形式的数字推断为浮点数（`JSON` 除外，在 `JSON` 中指数形式的数字始终会被推断为浮点数）。
-
-默认禁用。
-
-**示例**
-
 ```response
 ┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Float64) │              │                    │         │                  │                │
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
+
+
+## 自描述格式 \{#self-describing-formats\}
+
+自描述格式在数据本身中就包含关于数据结构的信息，
+可以是带有描述的某种头部、二进制类型树，或者某种表结构。
+为了从此类格式的文件中自动推断表结构，ClickHouse 会读取包含类型信息的数据部分，
+并将其转换为 ClickHouse 表的模式（schema）。
+
+### 带有 -WithNamesAndTypes 后缀的格式 \{#formats-with-names-and-types\}
+
+ClickHouse 支持一些带有 -WithNamesAndTypes 后缀的文本格式。该后缀表示，在实际数据之前，数据中会额外包含两行内容，分别为列名和列类型。
+在对这类格式进行模式推断时，ClickHouse 会读取前两行并提取列名和列类型。
+
+**示例**
 
 ```sql
 DESC format(TSVWithNamesAndTypes,
@@ -1889,20 +1898,6 @@ UInt8    String    Array(UInt8)
 $$)
 ```
 
-## 自描述格式 {#self-describing-formats}
-
-自描述格式在数据本身中就包含关于数据结构的信息，
-可以是带有描述的某种头部、二进制类型树，或者某种表结构。
-为了从此类格式的文件中自动推断表结构，ClickHouse 会读取包含类型信息的数据部分，
-并将其转换为 ClickHouse 表的模式（schema）。
-
-### 带有 -WithNamesAndTypes 后缀的格式 {#formats-with-names-and-types}
-
-ClickHouse 支持一些带有 -WithNamesAndTypes 后缀的文本格式。该后缀表示，在实际数据之前，数据中会额外包含两行内容，分别为列名和列类型。
-在对这类格式进行模式推断时，ClickHouse 会读取前两行并提取列名和列类型。
-
-**示例**
-
 ```response
 ┌─name─┬─type─────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ num  │ UInt8        │              │                    │         │                  │                │
@@ -1910,6 +1905,14 @@ ClickHouse 支持一些带有 -WithNamesAndTypes 后缀的文本格式。该后�
 │ arr  │ Array(UInt8) │              │                    │         │                  │                │
 └──────┴──────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
+
+
+### 带元数据的 JSON 格式 \{#json-with-metadata\}
+
+某些 JSON 输入格式（[JSON](/interfaces/formats/JSON)、[JSONCompact](/interfaces/formats/JSONCompact)、[JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)）包含列名和类型等元数据。
+在对这类格式进行模式推断时，ClickHouse 会读取这些元数据。
+
+**示例**
 
 ```sql
 DESC format(JSON, $$
@@ -1951,13 +1954,6 @@ DESC format(JSON, $$
 $$)
 ```
 
-### 带元数据的 JSON 格式 \{#json-with-metadata\}
-
-某些 JSON 输入格式（[JSON](/interfaces/formats/JSON)、[JSONCompact](/interfaces/formats/JSONCompact)、[JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)）包含列名和类型等元数据。
-在对这类格式进行模式推断时，ClickHouse 会读取这些元数据。
-
-**示例**
-
 ```response
 ┌─name─┬─type─────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ num  │ UInt8        │              │                    │         │                  │                │
@@ -1966,13 +1962,10 @@ $$)
 └──────┴──────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```sql
-DESC format(LineAsString, 'Hello\nworld!')
-```
 
-### Avro {#avro}
+### Avro \{#avro\}
 
-在 Avro 格式中，ClickHouse 从数据中读取模式（schema），并使用以下类型映射将其转换为 ClickHouse 的模式：
+在 Avro 格式中，ClickHouse 从数据中读取 schema，并使用以下类型映射将其转换为 ClickHouse 的 schema：
 
 | Avro 数据类型                     | ClickHouse 数据类型                                                           |
 |------------------------------------|--------------------------------------------------------------------------------|
@@ -1995,7 +1988,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 
 不支持其他 Avro 类型。
 
-### Parquet {#parquet}
+### Parquet \{#parquet\}
 
 在 Parquet 格式中，ClickHouse 从数据中读取 schema，并使用以下类型映射将其转换为 ClickHouse 的 schema：
 
@@ -2025,7 +2018,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 
 ### Arrow \{#arrow\}
 
-在 Arrow 格式中，ClickHouse 从数据中读取 schema，并使用以下类型映射将其转换为 ClickHouse 的 schema：
+在 Arrow 格式中，ClickHouse 从数据中读取模式（schema），并使用下表中的类型对应关系将其转换为 ClickHouse 模式：
 
 | Arrow 数据类型                  | ClickHouse 数据类型                                     |
 |---------------------------------|---------------------------------------------------------|
@@ -2066,7 +2059,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 | `Double`                             | [Float64](../sql-reference/data-types/float.md)         |
 | `Date`                               | [Date32](../sql-reference/data-types/date32.md)         |
 | `Timestamp`                          | [DateTime64](../sql-reference/data-types/datetime64.md) |
-| `String`, `Char`, `Varchar`, `BINARY` | [String](../sql-reference/data-types/string.md)         |
+| `String`, `Char`, `Varchar`,`BINARY` | [String](../sql-reference/data-types/string.md)         |
 | `Decimal`                            | [Decimal](../sql-reference/data-types/decimal.md)       |
 | `List`                               | [Array](../sql-reference/data-types/array.md)           |
 | `Struct`                             | [Tuple](../sql-reference/data-types/tuple.md)           |
@@ -2079,7 +2072,7 @@ DESC format(LineAsString, 'Hello\nworld!')
 Native 格式在 ClickHouse 内部使用，并在数据中包含模式（schema）。
 在模式推断时，ClickHouse 直接从数据中读取模式，而不进行任何转换。
 
-## 具有外部模式的格式 {#formats-with-external-schema}
+## 具有外部模式的格式 \{#formats-with-external-schema\}
 
 此类格式需要在单独的文件中，使用特定的模式语言来描述数据的模式。
 要从此类格式的文件中自动推断模式，ClickHouse 会从单独的文件中读取外部模式，并将其转换为 ClickHouse 表的模式定义。
@@ -2125,13 +2118,13 @@ Native 格式在 ClickHouse 内部使用，并在数据中包含模式（schema�
 | `struct`                           | [Tuple](../sql-reference/data-types/tuple.md)          |
 | `union(T, Void)`, `union(Void, T)` | [Nullable(T)](../sql-reference/data-types/nullable.md) |
 
-## 强类型二进制格式 {#strong-typed-binary-formats}
+## 强类型二进制格式 \{#strong-typed-binary-formats\}
 
 在此类格式中，每个序列化值都包含其类型的信息（以及可能包含其名称的信息），但不会包含关于整个表的信息。
 在对这类格式进行模式推断时，ClickHouse 会逐行读取数据（最多读取 `input_format_max_rows_to_read_for_schema_inference` 行或 `input_format_max_bytes_to_read_for_schema_inference` 字节），并从数据中提取
 每个值的类型（以及可能的名称），然后将这些类型转换为 ClickHouse 类型。
 
-### MsgPack {#msgpack}
+### MsgPack \{#msgpack\}
 
 在 MsgPack 格式中，行与行之间没有分隔符。要对该格式使用模式推断，你需要通过设置 `input_format_msgpack_number_of_columns` 指定表中的列数。
 ClickHouse 使用以下类型对应关系：
@@ -2151,7 +2144,7 @@ ClickHouse 使用以下类型对应关系：
 
 默认情况下，所有推断出的类型都会被包装在 `Nullable` 中，但可以通过设置 `schema_inference_make_columns_nullable` 来更改这一行为。
 
-### BSONEachRow {#bsoneachrow}
+### BSONEachRow \{#bsoneachrow\}
 
 在 BSONEachRow 格式中，每一行数据都表示为一个 BSON 文档。在进行模式推断时，ClickHouse 会逐个读取 BSON 文档，并从数据中提取
 值、名称和类型，然后使用下表所示的类型对应关系将这些类型转换为 ClickHouse 类型：
@@ -2171,15 +2164,19 @@ ClickHouse 使用以下类型对应关系：
 
 默认情况下，所有推断出的类型都会被包装在 `Nullable` 中，但可以通过设置 `schema_inference_make_columns_nullable` 来更改这一行为。
 
-## 具有固定 schema 的格式 {#formats-with-constant-schema}
+## 具有固定 schema 的格式 \{#formats-with-constant-schema\}
 
 此类格式中的数据始终使用相同的 schema。
 
-### LineAsString {#line-as-string}
+### LineAsString \{#line-as-string\}
 
 在此格式中，ClickHouse 会将数据中的整行内容读取到一个 `String` 类型的单列中。此格式推断的数据类型始终为 `String`，列名为 `line`。
 
 **示例**
+
+```sql
+DESC format(LineAsString, 'Hello\nworld!')
+```
 
 ```response
 ┌─name─┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -2187,15 +2184,16 @@ ClickHouse 使用以下类型对应关系：
 └──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```sql
-DESC format(JSONAsString, '{"x" : 42, "y" : "Hello, World!"}')
-```
 
-### JSONAsString {#json-as-string}
+### JSONAsString \{#json-as-string\}
 
 在这种格式下，ClickHouse 会将数据中的整个 JSON 对象读取到一个 `String` 类型的单列中。此格式推断出的类型始终为 `String`，且列名为 `json`。
 
 **示例**
+
+```sql
+DESC format(JSONAsString, '{"x" : 42, "y" : "Hello, World!"}')
+```
 
 ```response
 ┌─name─┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -2203,15 +2201,16 @@ DESC format(JSONAsString, '{"x" : 42, "y" : "Hello, World!"}')
 └──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```sql
-DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
-```
 
-### JSONAsObject {#json-as-object}
+### JSONAsObject \{#json-as-object\}
 
 在这种格式下，ClickHouse 会将数据中的整个 JSON 对象读取到一个单独的列中，该列的数据类型为 `JSON`。此格式推断的数据类型始终为 `JSON`，且列名为 `json`。
 
 **示例**
+
+```sql
+DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
+```
 
 ```response
 ┌─name─┬─type─┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -2219,18 +2218,13 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 └──────┴──────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```json
-{"field1" :  1, "field2" :  null}
-{"field1" :  2, "field2" :  null}
-{"field1" :  3, "field2" :  null}
-```
 
-## Schema 推断模式 {#schema-inference-modes}
+## Schema 推断模式 \{#schema-inference-modes\}
 
 从一组数据文件中进行 Schema 推断时，可以使用两种不同的工作模式：`default` 和 `union`。
 工作模式由设置项 `schema_inference_mode` 控制。
 
-### 默认模式 {#default-schema-inference-mode}
+### 默认模式 \{#default-schema-inference-mode\}
 
 在默认模式下，ClickHouse 假定所有文件具有相同的 Schema，并尝试通过逐个读取文件来推断 Schema，直到成功为止。
 
@@ -2241,12 +2235,20 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 `data1.jsonl`：
 
 ```json
+{"field1" :  1, "field2" :  null}
+{"field1" :  2, "field2" :  null}
+{"field1" :  3, "field2" :  null}
+```
+
+`data2.jsonl`：
+
+```json
 {"field1" :  4, "field2" :  "Data4"}
 {"field1" :  5, "field2" :  "Data5"}
 {"field1" :  6, "field2" :  "Data5"}
 ```
 
-`data2.jsonl`:
+`data3.jsonl`：
 
 ```json
 {"field1" :  7, "field2" :  "Data7", "field3" :  [1, 2, 3]}
@@ -2254,13 +2256,13 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 {"field1" :  9, "field2" :  "Data9", "field3" :  [7, 8, 9]}
 ```
 
-`data3.jsonl`:
+我们来尝试对这 3 个文件使用 schema 推断：
 
 ```sql
 :) DESCRIBE file('data{1,2,3}.jsonl') SETTINGS schema_inference_mode='default'
 ```
 
-让我们试着对这 3 个文件进行模式推断：
+结果：
 
 ```response
 ┌─name───┬─type─────────────┐
@@ -2269,7 +2271,18 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 └────────┴──────────────────┘
 ```
 
-结果：
+正如我们所见，数据中没有来自文件 `data3.jsonl` 的字段 `field3`。
+这是因为 ClickHouse 首先尝试从文件 `data1.jsonl` 推断 schema，但由于字段 `field2` 仅包含 null 值而失败，
+然后又尝试从 `data2.jsonl` 推断 schema 并成功，因此文件 `data3.jsonl` 中的数据未被读取。
+
+
+### Union 模式 \{#default-schema-inference-mode-1\}
+
+在 union 模式下，ClickHouse 假定文件可能具有不同的 schema，因此会推断所有文件的 schema，然后将它们合并为一个公共 schema。
+
+假设我们有 3 个文件 `data1.jsonl`、`data2.jsonl` 和 `data3.jsonl`，其内容如下：
+
+`data1.jsonl`:
 
 ```json
 {"field1" :  1}
@@ -2277,17 +2290,7 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 {"field1" :  3}
 ```
 
-正如我们所见，数据中没有来自文件 `data3.jsonl` 的字段 `field3`。
-这是因为 ClickHouse 首先尝试从文件 `data1.jsonl` 推断 schema，但由于字段 `field2` 仅包含 null 值而失败，
-然后又尝试从 `data2.jsonl` 推断 schema 并成功，因此文件 `data3.jsonl` 中的数据未被读取。
-
-### Union 模式 {#default-schema-inference-mode-1}
-
-在 union 模式下，ClickHouse 假定文件可以具有不同的 schema，因此会推断所有文件的 schema，然后将它们合并为一个公共 schema。
-
-假设我们有 3 个文件 `data1.jsonl`、`data2.jsonl` 和 `data3.jsonl`，其内容如下：
-
-`data1.jsonl`:
+`data2.jsonl`：
 
 ```json
 {"field2" :  "Data4"}
@@ -2295,7 +2298,7 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 {"field2" :  "Data5"}
 ```
 
-`data2.jsonl`：
+`data3.jsonl`:
 
 ```json
 {"field3" :  [1, 2, 3]}
@@ -2303,13 +2306,13 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 {"field3" :  [7, 8, 9]}
 ```
 
-`data3.jsonl`:
+我们来对这 3 个文件使用 schema 推断：
 
 ```sql
 :) DESCRIBE file('data{1,2,3}.jsonl') SETTINGS schema_inference_mode='union'
 ```
 
-我们来对这 3 个文件使用 schema 推断：
+结果：
 
 ```response
 ┌─name───┬─type───────────────────┐
@@ -2317,15 +2320,6 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 │ field2 │ Nullable(String)       │
 │ field3 │ Array(Nullable(Int64)) │
 └────────┴────────────────────────┘
-```
-
-结果：
-
-```csv
-"a","b"
-1,"Data1"
-2,"Data2"
-3,"Data3"
 ```
 
 可以看到，我们已经从所有文件中获取到了全部字段。
@@ -2336,7 +2330,8 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 * 如果 ClickHouse 无法从某个文件推断出 schema，将会抛出异常。
 * 如果你有大量文件，从所有文件中读取 schema 可能会花费很多时间。
 
-## 自动格式检测 {#automatic-format-detection}
+
+## 自动格式检测 \{#automatic-format-detection\}
 
 如果未指定数据格式且无法通过文件扩展名确定，ClickHouse 将尝试根据文件内容检测文件格式。
 
@@ -2344,11 +2339,18 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 
 假设我们有一个名为 `data` 的文件，内容如下：
 
-```sql
-:) desc file(data);
+```csv
+"a","b"
+1,"Data1"
+2,"Data2"
+3,"Data3"
 ```
 
 我们可以在无需指定格式或结构的情况下查看和查询此文件：
+
+```sql
+:) desc file(data);
+```
 
 ```repsonse
 ┌─name─┬─type─────────────┐
@@ -2359,14 +2361,6 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 
 ```sql
 :) select * from file(data);
-```
-
-```response
-┌─a─┬─b─────┐
-│ 1 │ Data1 │
-│ 2 │ Data2 │
-│ 3 │ Data3 │
-└───┴───────┘
 ```
 
 ```response

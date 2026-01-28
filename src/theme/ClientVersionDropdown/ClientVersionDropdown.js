@@ -55,31 +55,33 @@ const ClientVersionDropdown = (props) => {
     const handleLinkClick = (e, slug, index) => {
         e.preventDefault();
 
-        setTimeout(() => {
-            setDisplayDropdown(false);
-            setSelectedVersionIndex(index);
+        // Close dropdown immediately
+        setDisplayDropdown(false);
 
-            // Get the version string from the selected version
-            const versionString = props.versions[index].version;
+        // Update selected version
+        setSelectedVersionIndex(index);
 
-            // Determine the URL to navigate to
-            let targetUrl;
-            if (slug) {
-                // If slug provided, navigate to that page
-                targetUrl = slug;
-            } else {
-                // Otherwise update the URL parameter on the current page
-                const searchParams = new URLSearchParams(location.search);
+        // Get the version string from the selected version
+        const versionString = props.versions[index].version;
 
-                // Convert the version to a URL-friendly format
-                const versionParam = versionString.replace(/\./g, '').replace(/\+/g, '');
+        // Determine the URL to navigate to
+        let targetUrl;
+        if (slug) {
+            // If slug provided, navigate to that page
+            targetUrl = slug;
+        } else {
+            // Otherwise update the URL parameter on the current page
+            const searchParams = new URLSearchParams(location.search);
 
-                searchParams.set('v', versionParam);
-                targetUrl = `${location.pathname}?${searchParams.toString()}`;
-            }
+            // Convert the version to a URL-friendly format
+            const versionParam = versionString.replace(/\./g, '').replace(/\+/g, '');
 
-            history.push(targetUrl);
-        }, 10);
+            searchParams.set('v', versionParam);
+            targetUrl = `${location.pathname}?${searchParams.toString()}`;
+        }
+
+        // Use replace instead of push to avoid adding to history stack
+        history.replace(targetUrl);
     };
 
     useEffect(() => {

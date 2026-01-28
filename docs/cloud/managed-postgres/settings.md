@@ -13,7 +13,7 @@ import postgresParameters from '@site/static/images/managed-postgres/postgres-pa
 import serviceActions from '@site/static/images/managed-postgres/service-actions.png';
 import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
-<PrivatePreviewBadge/>
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="settings" />
 
 You can modify configuration parameters and manage instance settings for your Managed Postgres instance through the **Settings** tab in the sidebar.
 
@@ -54,7 +54,7 @@ To configure IP filters:
 3. Add IP addresses or CIDR ranges that should be allowed to connect
 4. Click **Save** to apply the changes
 
-You can specify individual IP addresses or use CIDR notation for IP ranges (e.g., `192.168.1.0/24`).
+You can specify individual IP addresses or use CIDR notation for IP ranges (e.g., `192.168.1.0/24`). You can also select **Anywhere** or **Nowhere** as a shortcut for fully opening or closing the instance to the world.
 
 :::note
 If no IP filters are configured, connections from all IP addresses are permitted. For production workloads, we recommend restricting access to known IP addresses.

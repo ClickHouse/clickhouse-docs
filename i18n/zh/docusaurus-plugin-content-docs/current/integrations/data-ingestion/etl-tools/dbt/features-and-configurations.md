@@ -478,13 +478,33 @@ select a,b,c from {{ source('raw', 'table_2') }}
 > `Warning - Table <previous table name> was detected with the same pattern as model name <your model name> but was not found in this run. In case it is a renamed mv that was previously part of this model, drop it manually (!!!) `
 
 
-#### 历史数据回补 \{#data-catch-up\}
+#### 如何迭代目标表的 schema \{#how-to-iterate-the-target-table-schema\}
 
-当前，在创建 materialized view（MV）时，会先将历史数据写入目标表，然后才创建 MV 本身。
+从 dbt-clickhouse 1.9.8 版本开始，当 `dbt run` 在物化视图（MV）的 SQL 中遇到与目标表不同的列时，可以控制如何迭代目标表的 schema。
 
-换句话说，dbt-clickhouse 会先创建目标表，并根据为 MV 定义的查询预加载历史数据。只有在这一步完成之后，才会创建 MV。
+默认情况下，dbt 不会对目标表应用任何更改（设置值为 `ignore`），但可以更改此设置，使其遵循与[增量模型中的 `on_schema_change` 配置](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change)相同的行为。
 
-如果不希望在创建 MV 时预加载历史数据，可以通过将 catch-up 配置项设置为 False 来禁用此行为：
+另外，也可以将此设置用作安全机制。如果将其设置为 `fail`，则当 MV 的 SQL 中的列与首次执行 `dbt run` 时创建的目标表不一致时，构建将会失败。
+
+```jinja2
+{{config(
+    materialized='materialized_view',
+    engine='MergeTree()',
+    order_by='(id)',
+    on_schema_change='fail'
+)}}
+```
+
+
+#### 数据补齐 \{#data-catch-up\}
+
+默认情况下，在创建或重新创建 materialized view（MV）时，会先用历史数据填充目标表，然后再创建 MV 本身。可以通过将 `catchup` 配置设置为 `False` 来禁用此行为。
+
+| Operation                               | `catchup: True` (default)  | `catchup: False`           |
+| --------------------------------------- | -------------------------- | -------------------------- |
+| Initial deployment (`dbt run`)          | 使用历史数据回填目标表                | 创建为空的目标表                   |
+| Full refresh (`dbt run --full-refresh`) | 重新构建并使用历史数据回填目标表           | 重新创建为空的目标表，**现有数据将丢失**     |
+| Normal operation                        | materialized view 捕获新的插入数据 | materialized view 捕获新的插入数据 |
 
 ```python
 {{config(
@@ -494,6 +514,10 @@ select a,b,c from {{ source('raw', 'table_2') }}
     catchup=False
 )}}
 ```
+
+:::warning 使用完整刷新时存在数据丢失风险
+在使用 `dbt run --full-refresh` 并在模型上配置 `catchup: False` 时，目标表中**所有已有数据都会被丢弃**。该表会被重新创建为空表，并且之后只会接收新增数据。如果后续可能需要历史数据，请务必事先做好备份。
+:::
 
 
 #### 可刷新 materialized view \{#refreshable-materialized-views\}

@@ -1,6 +1,6 @@
 ---
-description: 'ClickHouse 中 QBit 数据类型的文档，该类型支持对近似向量搜索进行细粒度量化'
-keywords: ['qbit', '数据类型']
+description: 'ClickHouse 中 QBit 数据类型的文档，它通过细粒度量化支持近似向量搜索'
+keywords: ['qbit', 'data type']
 sidebar_label: 'QBit'
 sidebar_position: 64
 slug: /sql-reference/data-types/qbit
@@ -8,18 +8,9 @@ title: 'QBit 数据类型'
 doc_type: 'reference'
 ---
 
-import BetaBadge from '@theme/badges/BetaBadge';
+`QBit` 数据类型通过重组向量的存储方式来加速近似搜索。它并非将每个向量的元素存放在一起，而是将所有向量中相同二进制位位置的数据分组存储。
 
-<BetaBadge />
-
-`QBit` 数据类型通过重新组织向量的存储方式来加速近似搜索。它不是将每个向量的元素存放在一起，而是把所有向量中相同二进制位上的数据分组存储。
-这种方式在保持向量全精度存储的同时，允许你在查询时选择细粒度的量化级别：读取更少的位以减少 I/O 并加快计算，或者读取更多的位以获得更高精度。你既能从量化带来的数据传输和计算量减少中获益，又能在需要时访问所有原始数据。
-
-:::note
-`QBit` 数据类型以及与其相关的距离函数目前为 Beta 功能。
-要启用它们，请先运行 `SET enable_qbit_type = 1`。
-如果遇到问题，请在 [ClickHouse 仓库](https://github.com/clickhouse/clickhouse/issues) 中提交 issue（问题）。
-:::
+这种方式在保持向量以完整精度存储的同时，允许你在查询时选择更细粒度的量化级别：读取更少的位可以减少 I/O 并加快计算，而读取更多的位可以提高精度。你可以通过量化获得因数据传输和计算量减少而带来的速度优势，同时在需要时仍然可以访问所有原始数据。
 
 要声明一个 `QBit` 类型的列，请使用以下语法：
 
@@ -27,8 +18,8 @@ import BetaBadge from '@theme/badges/BetaBadge';
 column_name QBit(element_type, dimension)
 ```
 
-* `element_type` – 每个向量元素的类型。允许的类型为 `BFloat16`、`Float32` 和 `Float64`
-* `dimension` – 向量的维度（每个向量中的元素数量）
+* `element_type` – 每个向量元素的类型。支持的类型包括 `BFloat16`、`Float32` 和 `Float64`。
+* `dimension` – 每个向量中的元素数量。
 
 
 ## 创建 QBit \{#creating-qbit\}

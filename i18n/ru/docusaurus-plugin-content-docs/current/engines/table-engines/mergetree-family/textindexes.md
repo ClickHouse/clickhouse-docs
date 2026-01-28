@@ -48,6 +48,7 @@ CREATE TABLE tab
                                 [, dictionary_block_size = D]
                                 [, dictionary_block_frontcoding_compression = B]
                                 [, posting_list_block_size = C]
+                                [, posting_list_codec = 'none' | 'bitpacking' ]
                             )
 )
 ENGINE = MergeTree
@@ -80,12 +81,12 @@ ORDER BY key
 Если строки‑разделители образуют [префиксный код](https://en.wikipedia.org/wiki/Prefix_code), их можно передавать в произвольном порядке.
 :::
 
+
 :::warning
-В настоящий момент не рекомендуется строить текстовые индексы поверх текста на незападных языках, например китайском.
-Поддерживаемые сейчас токенизаторы могут приводить к огромному размеру индекса и большому времени выполнения запросов.
+В данный момент не рекомендуется строить текстовые индексы по тексту на незападных языках, например на китайском языке.
+Поддерживаемые сейчас токенизаторы могут приводить к огромным размерам индекса и большим временам выполнения запросов.
 Мы планируем в будущем добавить специализированные токенизаторы для конкретных языков, которые будут лучше обрабатывать такие случаи.
 :::
-
 
 Чтобы проверить, как токенизаторы разбивают входную строку на токены, вы можете использовать функцию [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) в ClickHouse:
 
@@ -119,6 +120,24 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 Также выражение препроцессора должно ссылаться только на столбец, для которого определён текстовый индекс.
 Использование недетерминированных функций не допускается.
+
+Препроцессор также может использоваться со столбцами типов [Array(String)](/sql-reference/data-types/array.md) и [Array(FixedString)](/sql-reference/data-types/array.md).
+В этом случае выражение препроцессора преобразует элементы массива по отдельности.
+
+Пример:
+
+```sql
+CREATE TABLE tab
+(
+    col Array(String),
+    INDEX idx col TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))
+
+    -- This is not legal:
+    INDEX idx_illegal col TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = arraySort(col))
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+```
 
 Функции [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken), [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens) и [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) используют препроцессор для предварительного преобразования поискового термина перед его токенизацией.
 
@@ -157,6 +176,7 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
 Это значение было выбрано эмпирически и обеспечивает хороший баланс между скоростью и размером индекса для большинства сценариев использования.
 Опытные пользователи могут указать другую гранулярность индекса (мы этого не рекомендуем).
 
+
 <details markdown="1">
   <summary>Необязательные расширенные параметры</summary>
 
@@ -168,6 +188,11 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
   Необязательный параметр `dictionary_block_frontcoding_compression` (по умолчанию: 1) указывает, используют ли блоки словаря front coding для сжатия.
 
   Необязательный параметр `posting_list_block_size` (по умолчанию: 1048576) указывает размер блоков списка вхождений в строках.
+
+  Необязательный параметр `posting_list_codec` (по умолчанию: `none`) указывает кодек для списка вхождений:
+
+  * `none` - списки вхождений сохраняются без дополнительного сжатия.
+  * `bitpacking` - применяется [дифференциальное (дельта) кодирование](https://en.wikipedia.org/wiki/Delta_encoding), за которым следует [bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70) (каждое в пределах блоков фиксированного размера).
 </details>
 
 Текстовые индексы могут быть добавлены к столбцу или удалены из него после создания таблицы:
@@ -645,6 +670,14 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 | [text_index_postings_cache_size](/operations/server-configuration-parameters/settings#text_index_postings_cache_size)                 | Максимальный размер кэша в байтах.                                                                     |
 | [text_index_postings_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_postings_cache_max_entries)   | Максимальное количество десериализованных списков вхождений в кэше.                                    |
 | [text_index_postings_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_postings_cache_size_ratio)     | Размер защищённой очереди в кэше списков вхождений текстового индекса относительно общего размера кэша. |
+
+## Ограничения \{#limitations\}
+
+В настоящий момент текстовый индекс имеет следующие ограничения:
+
+- Материализация текстовых индексов с большим количеством токенов (например, 10 миллиардов токенов) может потреблять значительный объем памяти. Материализация текстового
+  индекса может выполняться напрямую (`ALTER TABLE <table> MATERIALIZE INDEX <index>`) или косвенно при слиянии частей.
+- Невозможно материализовать текстовые индексы на частях с более чем 4.294.967.296 (= 2^32 = примерно 4,2 миллиарда) строк. Без материализованного текстового индекса запросы переключаются на медленный поиск полным перебором внутри части. В худшем случае можно оценивать так: предположим, что часть содержит один столбец типа String и настройка MergeTree `max_bytes_to_merge_at_max_space_in_pool` (значение по умолчанию: 150 GB) не изменялась. В этом случае такая ситуация возникает, если столбец в среднем содержит менее 29,5 символов на строку. На практике таблицы также содержат другие столбцы, и порог в несколько раз меньше (в зависимости от количества, типа и размера других столбцов).
 
 ## Подробности реализации \{#implementation\}
 

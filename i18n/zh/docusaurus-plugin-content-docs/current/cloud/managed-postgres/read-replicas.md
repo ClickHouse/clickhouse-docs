@@ -12,7 +12,7 @@ import Image from '@theme/IdealImage';
 import warehouseView from '@site/static/images/managed-postgres/warehouse-view.png';
 import readReplicaDialog from '@site/static/images/managed-postgres/read-replica-dialog.png';
 
-<PrivatePreviewBadge />
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="read-replicas" />
 
 读取副本允许你为主托管 Managed Postgres 数据库创建一个或多个副本。这些副本通过 PostgreSQL 原生复制机制持续跟随主数据库，以保持与最新变更同步。
 

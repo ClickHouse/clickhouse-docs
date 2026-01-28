@@ -37,11 +37,25 @@ import VersionHistory from '@theme/VersionHistory/VersionHistory';
 
 ## check_conversion_from_numbers_to_enum \{#check_conversion_from_numbers_to_enum\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
 Генерировать исключение при преобразовании Numbers в Enum, если значение отсутствует в Enum.
 
-По умолчанию отключено.
+Возможные значения:
+
+* 0 — Отключено.
+* 1 — Включено.
+
+**Пример**
+
+```text
+CREATE TABLE tab (
+  val Enum('first' = 1, 'second' = 2, 'third' = 3)
+) ENGINE = Memory;
+
+INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -- returns an error
+```
+
 
 ## column_names_for_schema_inference \{#column_names_for_schema_inference\}
 
@@ -1362,6 +1376,13 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Если параметр включен, точки в ключах JSON будут экранироваться при разборе.
+
+## max_dynamic_subcolumns_in_json_type_parsing \{#max_dynamic_subcolumns_in_json_type_parsing\}
+
+<SettingsInfoBlock type="UInt64Auto" default_value="auto" />
+
+Максимальное количество динамических подстолбцов, которые могут быть созданы в каждом столбце при разборе JSON-столбца.
+Этот параметр позволяет контролировать количество динамических подстолбцов при разборе независимо от динамических параметров, заданных в типе данных.
 
 ## output_format_arrow_compression_method \{#output_format_arrow_compression_method\}
 

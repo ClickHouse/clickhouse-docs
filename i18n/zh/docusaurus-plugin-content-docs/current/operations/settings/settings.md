@@ -493,6 +493,16 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 启用自然语言处理相关的实验性函数。
 
+## allow_experimental_nullable_tuple_type \{#allow_experimental_nullable_tuple_type\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "新的实验性设置"}]}]}/>
+
+允许在表中创建 [Nullable](../../sql-reference/data-types/nullable) [Tuple](../../sql-reference/data-types/tuple.md) 类型的列。
+
 ## allow_experimental_object_storage_queue_hive_partitioning \{#allow_experimental_object_storage_queue_hive_partitioning\}
 
 <ExperimentalBadge/>
@@ -1230,11 +1240,12 @@ Cloud 默认值：`1`。
 
 <ExperimentalBadge/>
 
-<SettingsInfoBlock type="UInt64" default_value="0" />
+<SettingsInfoBlock type="UInt64" default_value="1048576" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1048576"},{"label": "基于测试结果得出的更优默认值"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置"}]}]}/>
 
 用于自动启用并行副本时的每个副本最小读取字节数阈值（仅在 `automatic_parallel_replicas_mode`=1 时生效）。0 表示不设阈值。
+总计需要读取的字节数根据收集到的统计信息进行估算。
 
 ## automatic_parallel_replicas_mode \{#automatic_parallel_replicas_mode\}
 
@@ -2157,6 +2168,14 @@ SETTINGS convert_query_to_cnf = true;
 - 0 — 查询将以延迟方式执行。
 - 1 — 查询将同步执行（无延迟）。
 
+## database_datalake_require_metadata_access \{#database_datalake_require_metadata_access\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "New setting."}]}]}/>
+
+在使用 DataLakeCatalog 数据库引擎时，如果没有获取表元数据的权限，指定是否抛出错误。
+
 ## database_replicated_allow_explicit_uuid \{#database_replicated_allow_explicit_uuid\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -2246,7 +2265,7 @@ SETTINGS convert_query_to_cnf = true;
 
 <SettingsInfoBlock type="DeduplicateInsertSelectMode" default_value="enable_when_possible" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "change the default behavior of deduplicate_insert_select to ENABLE_WHEN_PROSSIBLE"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "New setting, replace insert_select_deduplicate"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "change the default behavior of deduplicate_insert_select to ENABLE_WHEN_POSSIBLE"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "New setting, replace insert_select_deduplicate"}]}]}/>
 
 启用或禁用 `INSERT SELECT` 的块去重（适用于 Replicated\* 表）。
 该设置会覆盖 `INSERT SELECT` 查询中 `insert_deduplicate` 的行为。
@@ -2981,6 +3000,12 @@ FORMAT PrettyCompactMonoBlock
 对于共享存储以及集群中海量数据的场景非常有利。
 使用来自 cluster_for_parallel_replicas 的副本。
 
+**另请参阅**
+
+- [distributed_index_analysis_for_non_shared_merge_tree](#distributed_index_analysis_for_non_shared_merge_tree)
+- [distributed_index_analysis_min_parts_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_parts_to_activate)
+- [distributed_index_analysis_min_indexes_size_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_size_to_activate)
+
 ## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -3178,7 +3203,15 @@ FORMAT PrettyCompactMonoBlock
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-在 `SELECT FINAL` 查询中仅合并同一分区内的分区片段
+通过避免跨不同分区的合并来优化 FINAL 查询。
+
+启用后，在执行 SELECT FINAL 查询时，来自不同分区的分区片段将不会被合并在一起，合并只会在各自的分区内单独进行。在处理分区表时，这可以显著提升查询性能。
+
+如果未显式设置，当分区键表达式是确定性的，并且分区键表达式中使用的所有列都包含在主键中时，ClickHouse 会自动启用此优化。
+
+这种自动推导可以确保具有相同主键值的行始终属于同一分区，从而保证避免跨分区合并在语义上是安全的。
+
+**默认值：** `false`（但如果未显式设置，可能会根据表结构自动启用）
 
 ## empty_result_for_aggregation_by_constant_keys_on_empty_set \{#empty_result_for_aggregation_by_constant_keys_on_empty_set\}
 
@@ -3537,18 +3570,6 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 允许节省内存的聚合（参见 `distributed_aggregation_memory_efficient`）在聚合过程中以非顺序方式生成 bucket。
 当各聚合 bucket 的大小分布不均衡时，通过允许副本在自身仍在处理一些较大的低 ID bucket 的同时，将较高 ID 的 bucket 提前发送给发起方，可以提升性能。
 其缺点是可能会占用更多内存。
-
-## enable_qbit_type \{#enable_qbit_type\}
-
-<BetaBadge/>
-
-**别名**: `allow_experimental_qbit_type`
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "QBit 已移至 Beta 阶段。为设置 `allow_experimental_qbit_type` 添加了别名。"}]}]}/>
-
-允许创建 [QBit](../../sql-reference/data-types/qbit.md) 数据类型。
 
 ## enable_reads_from_query_cache \{#enable_reads_from_query_cache\}
 
@@ -8344,12 +8365,6 @@ SELECT * FROM test2;
 
 - [ORDER BY 子句](/sql-reference/statements/select/order-by#optimization-of-data-reading)
 
-## optimize_read_in_window_order \{#optimize_read_in_window_order\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-启用窗口子句中的 ORDER BY 优化，以便在 MergeTree 表中按对应顺序读取数据。
-
 ## optimize_redundant_functions_in_order_by \{#optimize_redundant_functions_in_order_by\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9709,7 +9724,11 @@ a   Tuple(
 
 ## query_plan_reuse_storage_ordering_for_window_functions \{#query_plan_reuse_storage_ordering_for_window_functions\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+**别名**: `optimize_read_in_window_order`
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "默认禁用此逻辑。"}]}]}/>
 
 切换一种查询计划级别的优化，在为窗口函数排序时复用存储的排序结果。
 仅当 [`query_plan_enable_optimizations`](#query_plan_enable_optimizations) 设置为 1 时生效。
@@ -11621,9 +11640,9 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 ## use_variant_as_common_type \{#use_variant_as_common_type\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "允许在 if/multiIf 中在没有公共类型时使用 Variant"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "提升可用性。"}]}, {"id": "row-2","items": [{"label": "24.1"},{"label": "0"},{"label": "允许在 if/multiIf 中在没有公共类型时使用 Variant"}]}]} />
 
 允许在参数类型之间不存在公共类型时，将 `Variant` 类型作为 [if](../../sql-reference/functions/conditional-functions.md/#if)/[multiIf](../../sql-reference/functions/conditional-functions.md/#multiIf)/[array](../../sql-reference/functions/array-functions.md)/[map](../../sql-reference/functions/tuple-map-functions.md) 函数的结果类型。
 

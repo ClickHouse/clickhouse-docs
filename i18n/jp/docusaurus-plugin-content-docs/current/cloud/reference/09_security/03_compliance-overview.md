@@ -9,6 +9,7 @@ keywords: ['ClickHouse Cloud', 'SOC 2 Type II', 'ISO 27001', 'HIPAA', 'U.S. DPF'
 import BetaBadge from '@theme/badges/BetaBadge';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
 
+
 # セキュリティおよびコンプライアンスレポート \{#security-and-compliance-reports\}
 ClickHouse はお客様のセキュリティおよびコンプライアンスに関するニーズを評価し、追加のレポートに対するご要望に応じてプログラムの拡充を継続しています。詳細やレポートのダウンロードは、[Trust Center](https://trust.clickhouse.com) をご覧ください。
 
@@ -30,7 +31,7 @@ U.S. Data Privacy Framework は、EU／欧州経済領域（EEA）、英国、�
 
 1996年に制定された Health Insurance Portability and Accountability Act（HIPAA）は、保護対象医療情報（PHI）の管理に焦点を当てた米国のプライバシー法です。HIPAA には複数の要件があり、その一つである[セキュリティ規則（Security Rule）](https://www.hhs.gov/hipaa/for-professionals/security/index.html)は、電子保護対象医療情報（ePHI）の保護に重点を置いています。ClickHouse では、指定されたサービスに保存される ePHI の機密性、完全性、およびセキュリティを確保するため、管理的・物理的・技術的な保護対策を実装しています。これらの取り組みは、当社の [Trust Center](https://trust.clickhouse.com) からダウンロード可能な SOC 2 Type II レポートに反映されています。
 
-Business Associate Agreement（BAA）の締結および HIPAA 準拠サービスのデプロイ手順については、[HIPAA オンボーディング](//cloud/security/compliance/hipaa-onboarding)を参照してください。
+Business Associate Agreement（BAA）の締結および HIPAA 準拠サービスのデプロイ手順については、[HIPAA オンボーディング](/cloud/security/compliance/hipaa-onboarding)を参照してください。
 
 ## PCI サービスプロバイダ（2025 年以降） \{#pci-service-provider-since-2025\}
 
@@ -38,7 +39,7 @@ Business Associate Agreement（BAA）の締結および HIPAA 準拠サービス
 
 [Payment Card Industry Data Security Standard (PCI DSS)](https://www.pcisecuritystandards.org/standards/pci-dss/) は、クレジットカード決済データを保護するために PCI Security Standards Council によって策定された一連のセキュリティ要件です。ClickHouse は Qualified Security Assessor (QSA) による外部監査を受け、クレジットカードデータの保存に関連する PCI 要件に対する適合報告書 (Report on Compliance, ROC) において合格判定を受けています。ClickHouse の Attestation of Compliance (AOC) および PCI における責任分界の概要をダウンロードするには、[Trust Center](https://trust.clickhouse.com) にアクセスしてください。
 
-PCI に準拠したサービスをデプロイする手順については、[PCI onboarding](//cloud/security/compliance/pci-onboarding) を参照してください。
+PCI に準拠したサービスをデプロイする手順については、[PCI onboarding](/cloud/security/compliance/pci-onboarding) を参照してください。
 
 ## プライバシーコンプライアンス \{#privacy-compliance\}
 

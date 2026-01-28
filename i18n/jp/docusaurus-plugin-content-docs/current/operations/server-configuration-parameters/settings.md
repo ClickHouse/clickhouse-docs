@@ -599,6 +599,7 @@ ClickHouse を使い始めたばかりの場合は、これを変更しないこ
 
 - `round_robin` — `use_concurrency_control` 設定が 1 のすべてのクエリは、最大で `max_threads` 個の CPU スロットを確保します。1 スレッドあたり 1 スロットです。競合が発生した場合、CPU スロットはラウンドロビン方式でクエリに割り当てられます。最初のスロットは無条件に付与されることに注意してください。これにより、多数の `max_threads` = 1 のクエリが存在する状況では、`max_threads` が大きいクエリに対して不公平となり、そのレイテンシが増大する可能性があります。
 - `fair_round_robin` — `use_concurrency_control` 設定が 1 のすべてのクエリは、最大で `max_threads - 1` 個の CPU スロットを確保します。すべてのクエリの最初のスレッドには CPU スロットを必要としない `round_robin` のバリエーションです。この方式では、`max_threads` = 1 のクエリはスロットを一切必要とせず、スロットを不公平にすべて確保してしまうことがありません。無条件に付与されるスロットは存在しません。
+- `max_min_fair` — `use_concurrency_control` 設定が 1 のすべてのクエリは、最大で `max_threads - 1` 個の CPU スロットを確保します。`fair_round_robin` に似ていますが、解放されたスロットは常に、現在割り当てられているスロット数が最小のクエリに付与されます。これにより、多数のクエリが限られた CPU スロットを巡って競合する、オーバーサブスクリプションが大きい環境において、より高い公平性が提供されます。短時間で終了するクエリは、時間の経過とともにより多くのスロットを確保した長時間実行クエリによって不利な扱いを受けません。
 
 ## concurrent_threads_soft_limit_num \{#concurrent_threads_soft_limit_num\}
 
@@ -643,12 +644,12 @@ ClickHouse が設定を再読み込みし、新しい変更を確認する間隔
 
 ## cpu_slot_preemption \{#cpu_slot_preemption\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
 CPU リソース（MASTER THREAD および WORKER THREAD）のワークロードのスケジューリング方法を定義します。
 
-* `true`（推奨）の場合、実際に消費された CPU 時間に基づいて計測が行われます。競合するワークロードに対して、公平な量の CPU 時間が割り当てられます。スロットは一定時間のみ割り当てられ、期限切れ後に再要求されます。CPU リソースが過負荷の場合にはスロット要求がスレッド実行をブロックすることがあり、つまりプリエンプションが発生する可能性があります。これにより CPU 時間の公平な分配が保証されます。
-* `false`（デフォルト）の場合、計測は割り当てられた CPU スロット数に基づきます。競合するワークロードに対して、公平な数の CPU スロットが割り当てられます。スロットはスレッド開始時に割り当てられ、実行が終了するまで継続的に保持され、その後解放されます。クエリ実行に割り当てられるスレッド数は 1 から `max_threads` まで増加することはあっても減少することはありません。これは長時間実行されるクエリにとって有利ですが、短いクエリに対しては CPU リソースの枯渇を引き起こす可能性があります。
+* `true`（デフォルト）の場合、実際に消費された CPU 時間に基づいて計測が行われます。競合するワークロードに対して、公平な量の CPU 時間が割り当てられます。スロットは一定時間のみ割り当てられ、期限切れ後に再要求されます。CPU リソースが過負荷の場合にはスロット要求がスレッド実行をブロックすることがあり、つまりプリエンプションが発生する可能性があります。これにより CPU 時間の公平な分配が保証されます。
+* `false` の場合、計測は割り当てられた CPU スロット数に基づきます。競合するワークロードに対して、公平な数の CPU スロットが割り当てられます。スロットはスレッド開始時に割り当てられ、実行が終了するまで継続的に保持され、その後解放されます。クエリ実行に割り当てられるスレッド数は 1 から `max_threads` まで増加することはあっても減少することはありません。これは長時間実行されるクエリにとって有利ですが、短いクエリに対しては CPU リソースの枯渇を引き起こす可能性があります。
 
 **例**
 
@@ -1560,7 +1561,7 @@ ClickHouse の HTTP(s) サーバーにアクセスしたときに、デフォル
 
 ## iceberg_catalog_threadpool_queue_size \{#iceberg_catalog_threadpool_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />Iceberg カタログプールにおいてキューに投入可能なタスクの数
+<SettingsInfoBlock type="UInt64" default_value="10000" />Iceberg カタログプールにおいてキューに投入可能なタスクの数
 
 ## iceberg_metadata_files_cache_max_entries \{#iceberg_metadata_files_cache_max_entries\}
 
@@ -1983,7 +1984,7 @@ listen ソケットのバックログ（保留中接続キューのサイズ）�
 
 ## load_marks_threadpool_queue_size \{#load_marks_threadpool_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />prefetch プールに投入できるタスクの数
+<SettingsInfoBlock type="UInt64" default_value="10000" />prefetch プールに投入できるタスクの数
 
 ## logger \{#logger\}
 
@@ -2912,6 +2913,12 @@ ClickHouse はクエリを処理するためにグローバルスレッドプー
 
 バックグラウンドメモリワーカーが、jemalloc や cgroups などの外部情報源からの情報に基づいて内部メモリトラッカーを補正するかどうかを指定します。
 
+## memory_worker_decay_adjustment_period_ms \{#memory_worker_decay_adjustment_period_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="5000" />
+
+メモリプレッシャーが継続してから、jemalloc の `dirty_decay_ms` を動的に調整し始めるまでの時間（ミリ秒単位）。この期間のあいだメモリ使用量がパージ閾値を上回り続けると、自動的な dirty ページの decay が無効化され（`dirty_decay_ms=0`）、メモリを積極的に回収します。使用量がこの期間のあいだ閾値を下回り続けると、デフォルトの decay 動作が復元されます。0 を設定すると動的調整を無効化し、jemalloc のデフォルトの decay 設定を使用します。
+
 ## memory_worker_period_ms \{#memory_worker_period_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -2922,7 +2929,13 @@ ClickHouse はクエリを処理するためにグローバルスレッドプー
 
 <SettingsInfoBlock type="Double" default_value="0.2" />
 
-ClickHouse サーバーで利用可能なメモリに対する、jemalloc のダーティページのしきい値となる比率です。ダーティページのサイズがこの比率を超えると、バックグラウンドのメモリワーカーがダーティページのパージを強制的に実行します。0 に設定すると、強制パージは無効になります。
+ClickHouse サーバーで利用可能なメモリに対する、jemalloc のダーティページのしきい値となる比率です。ダーティページのサイズがこの比率を超えると、バックグラウンドのメモリワーカーがダーティページのパージを強制的に実行します。0 に設定すると、ダーティページ比率に基づく強制パージは無効になります。
+
+## memory_worker_purge_total_memory_threshold_ratio \{#memory_worker_purge_total_memory_threshold_ratio\}
+
+<SettingsInfoBlock type="Double" default_value="0.9" />
+
+ClickHouse サーバーで利用可能なメモリに対する、jemalloc をパージするためのしきい値となる比率です。合計メモリ使用量がこの比率を超えると、バックグラウンドのメモリワーカーがダーティページのパージを強制的に実行します。0 に設定すると、合計メモリに基づく強制パージは無効になります。
 
 ## memory_worker_use_cgroup \{#memory_worker_use_cgroup\}
 
@@ -3486,7 +3499,7 @@ PostgreSQL プロトコルでクライアントと通信するためのポート
 
 ## prefetch_threadpool_queue_size \{#prefetch_threadpool_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />prefetch 用プールに投入できるタスクの最大数
+<SettingsInfoBlock type="UInt64" default_value="10000" />prefetch 用プールに投入できるタスクの最大数
 
 ## prefixes_deserialization_thread_pool_thread_pool_queue_size \{#prefixes_deserialization_thread_pool_thread_pool_queue_size\}
 
@@ -4506,7 +4519,7 @@ true に設定すると、ユーザーが特定のエンジンを使ってテー
 
 ## threadpool_local_fs_reader_queue_size \{#threadpool_local_fs_reader_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />ローカルファイルシステムからの読み取りのためにスレッドプール上でスケジュールできるタスクの最大数。
+<SettingsInfoBlock type="UInt64" default_value="10000" />ローカルファイルシステムからの読み取りのためにスレッドプール上でスケジュールできるタスクの最大数。
 
 ## threadpool_remote_fs_reader_pool_size \{#threadpool_remote_fs_reader_pool_size\}
 
@@ -4514,7 +4527,7 @@ true に設定すると、ユーザーが特定のエンジンを使ってテー
 
 ## threadpool_remote_fs_reader_queue_size \{#threadpool_remote_fs_reader_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />リモートファイルシステムからの読み取りのためにスレッドプールにスケジュールできるジョブの最大数。
+<SettingsInfoBlock type="UInt64" default_value="10000" />リモートファイルシステムからの読み取りのためにスレッドプールにスケジュールできるジョブの最大数。
 
 ## threadpool_writer_pool_size \{#threadpool_writer_pool_size\}
 
@@ -4522,7 +4535,7 @@ true に設定すると、ユーザーが特定のエンジンを使ってテー
 
 ## threadpool_writer_queue_size \{#threadpool_writer_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />オブジェクトストレージへの書き込みリクエスト用のバックグラウンドプールに投入できるタスクの最大数
+<SettingsInfoBlock type="UInt64" default_value="10000" />オブジェクトストレージへの書き込みリクエスト用のバックグラウンドプールに投入できるタスクの最大数
 
 ## throw_on_unknown_workload \{#throw_on_unknown_workload\}
 

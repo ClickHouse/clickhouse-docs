@@ -213,12 +213,15 @@ Azure コンテナから別の Azure コンテナに移動するには、Blob St
 
 ### `keeper_path` \{#keeper_path\}
 
-ZooKeeper 内のパスはテーブルエンジンの設定として指定するか、グローバル設定で指定されたパスとテーブル UUID から既定パスを生成できます。
-取り得る値:
+ZooKeeper 内のキューのメタデータへのパス。明示的に指定されていない場合、ClickHouse は `s3queue_default_zookeeper_path`、データベース UUID、およびテーブル UUID からパスを構築します。絶対パス値（`/` で始まるもの）はそのまま使用され、相対パス値は設定済みプレフィックスに連結されます。`{database}` や `{uuid}` などのマクロは、エンジンが ZooKeeper に接続する前に展開されます。
 
-* 文字列。
+補助 ZooKeeper クラスターを対象にするには、設定済みの名前を値の先頭に付けます。たとえば `analytics_keeper:/clickhouse/queue/orders` のようにします。名前は `<auxiliary_zookeepers>` に存在している必要があり、存在しない場合、エンジンは `Unknown auxiliary ZooKeeper name ...` を報告します。プレフィックスを含む完全な文字列は `SHOW CREATE TABLE` に保持されるため、ステートメントをそのままレプリケートできます。
 
-既定値: `/`。
+設定可能な値:
+
+- 文字列。
+
+デフォルト値: `/`。
 
 ### `loading_retries` \{#loading_retries\}
 

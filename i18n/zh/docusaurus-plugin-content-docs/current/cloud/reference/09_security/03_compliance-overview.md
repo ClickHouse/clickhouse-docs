@@ -9,6 +9,7 @@ keywords: ['ClickHouse Cloud', 'SOC 2 Type II', 'ISO 27001', 'HIPAA', 'U.S. DPF'
 import BetaBadge from '@theme/badges/BetaBadge';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
 
+
 # 安全与合规报告 \{#security-and-compliance-reports\}
 ClickHouse 会评估客户在安全与合规方面的需求，并会根据额外报告请求持续扩展相关项目。有关更多信息或下载报告，请访问我们的[信任中心（Trust Center）](https://trust.clickhouse.com)。
 
@@ -30,7 +31,7 @@ System and Organization Controls（SOC）2 是一类报告，聚焦于信任服�
 
 《健康保险携带与责任法案》（Health Insurance Portability and Accountability Act，HIPAA）于 1996 年在美国颁布，是一部聚焦于受保护健康信息（PHI）管理的美国隐私法。HIPAA 包含多项要求，其中之一是[《安全规则》](https://www.hhs.gov/hipaa/for-professionals/security/index.html)，其重点在于保护电子个人健康信息（ePHI）。ClickHouse 已实施管理、物理及技术防护措施，以确保存储在指定服务中的 ePHI 的机密性、完整性和安全性。这些措施已纳入我们的 SOC 2 Type II 报告中，您可以在我们的[信任中心](https://trust.clickhouse.com)下载该报告。
 
-请参阅 [HIPAA onboarding](//cloud/security/compliance/hipaa-onboarding)，了解完成业务伙伴协议（BAA）并部署符合 HIPAA 要求的服务的具体步骤。
+请参阅 [HIPAA onboarding](/cloud/security/compliance/hipaa-onboarding)，了解完成业务伙伴协议（BAA）并部署符合 HIPAA 要求的服务的具体步骤。
 
 ## PCI 服务提供商（自 2025 年起） \{#pci-service-provider-since-2025\}
 
@@ -38,7 +39,7 @@ System and Organization Controls（SOC）2 是一类报告，聚焦于信任服�
 
 [Payment Card Industry Data Security Standard（PCI DSS）](https://www.pcisecuritystandards.org/standards/pci-dss/) 是由 PCI Security Standards Council 制定的一套用于保护信用卡支付数据的安全标准。ClickHouse 已通过合格安全评估员（Qualified Security Assessor，QSA）执行的外部审计，并依据与存储信用卡数据相关的 PCI 标准获得了合规性报告（Report on Compliance，ROC）。如需下载我们的合规声明（Attestation on Compliance，AOC）及 PCI 职责概览，请访问我们的 [Trust Center](https://trust.clickhouse.com)。
 
-有关部署符合 PCI 合规要求服务的步骤，请参阅 [PCI onboarding](//cloud/security/compliance/pci-onboarding)。
+有关部署符合 PCI 合规要求服务的步骤，请参阅 [PCI onboarding](/cloud/security/compliance/pci-onboarding)。
 
 ## 隐私合规 \{#privacy-compliance\}
 

@@ -23,10 +23,12 @@ ClickStack は、オブザーバビリティデータを ClickHouse インスタ
 | [JVM Metrics](/use-cases/observability/clickstack/integrations/jvm-metrics) | JVM のパフォーマンスを監視する |
 | [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Kafka のパフォーマンスを監視する |
 | [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | K8s クラスターを監視する |
+| [MySQL Logs](/use-cases/observability/clickstack/integrations/mysql-logs) | MySQL のスロークエリ/エラーログを収集する |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Nginx のアクセス/エラーログを収集する |
 | [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Nginx の HTTP リクエストをトレースする |
 | [PostgreSQL Logs](/use-cases/observability/clickstack/integrations/postgresql-logs) | Postgres ログを収集する |
 | [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | Postgres のパフォーマンスを監視する |
 | [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Redis サーバーログを収集する |
 | [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Redis のパフォーマンスを監視する |
+| [Systemd Logs](/use-cases/observability/clickstack/integrations/systemd-logs) | Systemd/Journald のログを収集する |
 | [Temporal Metrics](/use-cases/observability/clickstack/integrations/temporal-metrics)| Temporal Cloud のメトリクスを監視する |

@@ -495,6 +495,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включает экспериментальные функции обработки естественного языка.
 
+## allow_experimental_nullable_tuple_type \{#allow_experimental_nullable_tuple_type\}
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "Новый экспериментальный параметр"}]}]}/>
+
+Разрешает создавать в таблицах столбцы типа [Nullable](../../sql-reference/data-types/nullable) [Tuple](../../sql-reference/data-types/tuple.md).
+
 ## allow_experimental_object_storage_queue_hive_partitioning \{#allow_experimental_object_storage_queue_hive_partitioning\}
 
 <ExperimentalBadge/>
@@ -1234,11 +1244,12 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 <ExperimentalBadge/>
 
-<SettingsInfoBlock type="UInt64" default_value="0" />
+<SettingsInfoBlock type="UInt64" default_value="1048576" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1048576"},{"label": "Улучшенное значение по умолчанию, полученное на основе результатов тестирования"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 Порог количества байт для чтения на реплику, при котором автоматически включаются параллельные реплики (применяется только, когда `automatic_parallel_replicas_mode`=1). Значение 0 означает отсутствие порога.
+Общее количество байт для чтения оценивается на основе собранной статистики.
 
 ## automatic_parallel_replicas_mode \{#automatic_parallel_replicas_mode\}
 
@@ -2161,6 +2172,14 @@ SETTINGS convert_query_to_cnf = true;
 - 0 — запросы выполняются с задержкой.
 - 1 — запросы выполняются без задержки.
 
+## database_datalake_require_metadata_access \{#database_datalake_require_metadata_access\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "New setting."}]}]}/>
+
+Определяет, следует ли выдавать ошибку, если нет прав на получение метаданных таблицы в движке базы данных DataLakeCatalog.
+
 ## database_replicated_allow_explicit_uuid \{#database_replicated_allow_explicit_uuid\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -2250,7 +2269,7 @@ SETTINGS convert_query_to_cnf = true;
 
 <SettingsInfoBlock type="DeduplicateInsertSelectMode" default_value="enable_when_possible" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "change the default behavior of deduplicate_insert_select to ENABLE_WHEN_PROSSIBLE"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "New setting, replace insert_select_deduplicate"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "change the default behavior of deduplicate_insert_select to ENABLE_WHEN_POSSIBLE"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "New setting, replace insert_select_deduplicate"}]}]}/>
 
 Включает или отключает дедупликацию блоков для `INSERT SELECT` (для таблиц Replicated\*).
 Этот параметр переопределяет `insert_deduplicate` для запросов `INSERT SELECT`.
@@ -2986,6 +3005,12 @@ FORMAT PrettyCompactMonoBlock
 Полезно при использовании общей системы хранения и при очень больших объёмах данных в кластере.
 Использует реплики из `cluster_for_parallel_replicas`.
 
+**См. также**
+
+- [distributed_index_analysis_for_non_shared_merge_tree](#distributed_index_analysis_for_non_shared_merge_tree)
+- [distributed_index_analysis_min_parts_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_parts_to_activate)
+- [distributed_index_analysis_min_indexes_size_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_size_to_activate)
+
 ## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -3183,7 +3208,15 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-Выполнять слияние частей только внутри одной партиции в запросах с `FINAL`
+Улучшает запросы с FINAL за счёт предотвращения слияния данных из разных партиций.
+
+Когда параметр включён, при выполнении запросов SELECT FINAL части из разных партиций не будут объединяться друг с другом. Вместо этого слияние будет происходить только внутри каждой партиции отдельно. Это может значительно повысить производительность запросов при работе с партиционированными таблицами.
+
+Если параметр явно не установлен, ClickHouse автоматически включит эту оптимизацию, когда выражение ключа партиционирования является детерминированным и все столбцы, используемые в выражении ключа партиционирования, включены в первичный ключ.
+
+Такое автоматическое определение гарантирует, что строки с одинаковыми значениями первичного ключа всегда будут принадлежать одной и той же партиции, что делает безопасным отказ от слияний между партициями.
+
+**Значение по умолчанию:** `false` (но может быть автоматически включено на основе структуры таблицы, если не задано явно)
 
 ## empty_result_for_aggregation_by_constant_keys_on_empty_set \{#empty_result_for_aggregation_by_constant_keys_on_empty_set\}
 
@@ -3542,18 +3575,6 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 Разрешает агрегации с экономным использованием памяти (см. `distributed_aggregation_memory_efficient`) формировать бакеты не по порядку.
 Это может повысить производительность при неравномерных размерах бакетов агрегации, позволяя реплике отправлять инициатору бакеты с более высокими ID, пока он всё ещё обрабатывает тяжёлые бакеты с более низкими ID.
 Недостатком может быть потенциально более высокое использование памяти.
-
-## enable_qbit_type \{#enable_qbit_type\}
-
-<BetaBadge/>
-
-**Псевдонимы**: `allow_experimental_qbit_type`
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "QBit был переведен в статус Beta. Добавлен псевдоним для настройки 'allow_experimental_qbit_type'."}]}]}/>
-
-Позволяет создавать тип данных [QBit](../../sql-reference/data-types/qbit.md).
 
 ## enable_reads_from_query_cache \{#enable_reads_from_query_cache\}
 
@@ -8380,12 +8401,6 @@ SELECT * FROM test2;
 
 - [Оператор ORDER BY](/sql-reference/statements/select/order-by#optimization-of-data-reading)
 
-## optimize_read_in_window_order \{#optimize_read_in_window_order\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-Включает оптимизацию ORDER BY в оконной части запроса для чтения данных в соответствующем порядке в таблицах MergeTree.
-
 ## optimize_redundant_functions_in_order_by \{#optimize_redundant_functions_in_order_by\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9748,7 +9763,11 @@ a   Tuple(
 
 ## query_plan_reuse_storage_ordering_for_window_functions \{#query_plan_reuse_storage_ordering_for_window_functions\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+**Псевдонимы**: `optimize_read_in_window_order`
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "Отключить эту логику по умолчанию."}]}]}/>
 
 Включает или отключает оптимизацию на уровне плана запроса, которая использует сортировку данных в хранилище при сортировке для оконных функций.
 Влияет на поведение только в том случае, если настройка [`query_plan_enable_optimizations`](#query_plan_enable_optimizations) установлена в 1.
@@ -11666,9 +11685,9 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 ## use_variant_as_common_type \{#use_variant_as_common_type\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "Разрешить использование Variant в if/multiIf при отсутствии общего типа"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Улучшает удобство использования."}]}, {"id": "row-2","items": [{"label": "24.1"},{"label": "0"},{"label": "Разрешить использование Variant в if/multiIf при отсутствии общего типа"}]}]} />
 
 Позволяет использовать тип `Variant` в качестве результирующего типа для функций [if](../../sql-reference/functions/conditional-functions.md/#if)/[multiIf](../../sql-reference/functions/conditional-functions.md/#multiIf)/[array](../../sql-reference/functions/array-functions.md)/[map](../../sql-reference/functions/tuple-map-functions.md), если для аргументов не существует общего типа.
 

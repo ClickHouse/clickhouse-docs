@@ -13,6 +13,10 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />
 
+:::tip
+Ознакомьтесь с нашим сервисом [Managed Postgres](/docs/cloud/managed-postgres). Благодаря NVMe‑хранилищу, физически расположенному рядом с вычислительными ресурсами, он обеспечивает до 10 раз более высокую производительность для нагрузок, упирающихся в дисковую подсистему, по сравнению с альтернативами, использующими сетевое хранилище, такое как EBS, и позволяет реплицировать данные из Postgres в ClickHouse с помощью коннектора Postgres CDC в ClickPipes.
+:::
+
 ClickHouse поддерживает сетевой протокол PostgreSQL (PostgreSQL wire protocol), что позволяет использовать клиенты PostgreSQL для подключения к ClickHouse. В некотором смысле ClickHouse может выдавать себя за экземпляр PostgreSQL, позволяя подключать к ClickHouse клиентские приложения PostgreSQL, которые ещё не поддерживаются ClickHouse напрямую (например, Amazon Redshift).
 
 Чтобы включить сетевой протокол PostgreSQL, добавьте настройку [postgresql&#95;port](/operations/server-configuration-parameters/settings#postgresql_port) в конфигурационный файл сервера. Например, вы можете определить этот порт в новом XML‑файле в папке `config.d`:

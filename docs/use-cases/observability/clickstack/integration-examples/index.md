@@ -23,6 +23,7 @@ Several of these integration guides use ClickStack's built-in OpenTelemetry Coll
 | [JVM Metrics](/use-cases/observability/clickstack/integrations/jvm-metrics) | Monitor JVM performance |
 | [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Monitor Kafka performance |
 | [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | Monitor K8s clusters |
+| [MySQL Logs](/use-cases/observability/clickstack/integrations/mysql-logs) | Collect MySQL slow query/error logs |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Collect Nginx access/error logs |
 | [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Trace Nginx HTTP requests |
 | [Node.js Traces](/use-cases/observability/clickstack/integrations/nodejs-traces) | Trace Node.js HTTP requests |
@@ -30,4 +31,5 @@ Several of these integration guides use ClickStack's built-in OpenTelemetry Coll
 | [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | Monitor Postgres performance |
 | [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Collect Redis server logs |
 | [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Monitor Redis performance |
+| [Systemd Logs](/use-cases/observability/clickstack/integrations/systemd-logs) | Collect Systemd/Journald logs |
 | [Temporal Metrics](/use-cases/observability/clickstack/integrations/temporal-metrics)| Monitor Temporal Cloud Metrics |

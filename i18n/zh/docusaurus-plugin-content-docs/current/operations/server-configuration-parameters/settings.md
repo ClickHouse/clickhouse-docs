@@ -599,6 +599,7 @@ ClickHouse 每隔 x 秒重新加载内置字典，这样就可以在无需重启
 
 - `round_robin` — 每个 `use_concurrency_control` = 1 的查询最多分配 `max_threads` 个 CPU 插槽，每个线程一个插槽。当发生竞争时，CPU 插槽会以轮询方式分配给各个查询。注意，第一个插槽是无条件授予的，这可能会导致不公平，并在存在大量 `max_threads` = 1 的查询时，增加具有较大 `max_threads` 的查询的延迟。
 - `fair_round_robin` — 每个 `use_concurrency_control` = 1 的查询最多分配 `max_threads - 1` 个 CPU 插槽。这是 `round_robin` 的一种变体，它不为每个查询的第一个线程分配 CPU 插槽。这样，`max_threads` = 1 的查询不需要任何插槽，也就无法不公平地独占所有插槽。不会无条件授予任何插槽。
+- `max_min_fair` — 每个 `use_concurrency_control` = 1 的查询最多分配 `max_threads - 1` 个 CPU 插槽。类似于 `fair_round_robin`，但释放的插槽总是优先授予当前已分配插槽数最少的查询。在高超售（oversubscription）场景下（即许多查询争抢有限 CPU 插槽）可以提供更好的公平性。短时运行的查询不会因长时间运行且随着时间累积了更多插槽的查询而受到惩罚。
 
 ## concurrent_threads_soft_limit_num \{#concurrent_threads_soft_limit_num\}
 
@@ -643,12 +644,12 @@ ClickHouse 重新加载配置并检查新变更的时间间隔
 
 ## cpu_slot_preemption \{#cpu_slot_preemption\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
 定义如何对 CPU 资源（MASTER THREAD 和 WORKER THREAD）进行工作负载调度。
 
-* 当为 `true`（推荐）时，核算基于实际消耗的 CPU 时间。会为相互竞争的工作负载分配公平的 CPU 时间。Slot（槽位）会在有限时间内被分配，到期后需要重新请求。在 CPU 资源过载的情况下，请求 slot 可能会阻塞线程执行，即可能发生抢占，从而确保 CPU 时间使用的公平性。
-* 当为 `false`（默认）时，核算基于分配的 CPU slot 数量。会为相互竞争的工作负载分配公平数量的 CPU slot。线程启动时分配一个 slot，在线程执行期间持续持有，并在线程结束执行时释放。为查询执行分配的线程数量只能从 1 增加到 `max_threads`，且不会减少。对此长时间运行的查询更有利，但可能导致短查询出现 CPU 资源饥饿。
+* 当为 `true`（默认）时，核算基于实际消耗的 CPU 时间。会为相互竞争的工作负载分配公平的 CPU 时间。Slot（槽位）会在有限时间内被分配，到期后需要重新请求。在 CPU 资源过载的情况下，请求 slot 可能会阻塞线程执行，即可能发生抢占，从而确保 CPU 时间使用的公平性。
+* 当为 `false` 时，核算基于分配的 CPU slot 数量。会为相互竞争的工作负载分配公平数量的 CPU slot。线程启动时分配一个 slot，在线程执行期间持续持有，并在线程结束执行时释放。为查询执行分配的线程数量只能从 1 增加到 `max_threads`，且不会减少。对此长时间运行的查询更有利，但可能导致短查询出现 CPU 资源饥饿。
 
 **示例**
 
@@ -1557,7 +1558,7 @@ HSTS 的失效时间（秒）。
 
 ## iceberg_catalog_threadpool_queue_size \{#iceberg_catalog_threadpool_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />iceberg catalog 线程池队列中可排队的最大任务数
+<SettingsInfoBlock type="UInt64" default_value="10000" />iceberg catalog 线程池队列中可排队的最大任务数
 
 ## iceberg_metadata_files_cache_max_entries \{#iceberg_metadata_files_cache_max_entries\}
 
@@ -1980,7 +1981,7 @@ ClickHouse 企业版许可证文件内容
 
 ## load_marks_threadpool_queue_size \{#load_marks_threadpool_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />可加入预取线程池队列的最大任务数
+<SettingsInfoBlock type="UInt64" default_value="10000" />可加入预取线程池队列的最大任务数
 
 ## logger \{#logger\}
 
@@ -2909,6 +2910,12 @@ ClickHouse 使用全局线程池中的线程来处理查询。如果没有空闲
 
 后台内存工作线程是否应根据 jemalloc、cgroups 等外部来源的信息来校正内部内存跟踪器。
 
+## memory_worker_decay_adjustment_period_ms \{#memory_worker_decay_adjustment_period_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="5000" />
+
+内存压力必须持续的时间（毫秒），在超过该时间后才会对 jemalloc 的 `dirty_decay_ms` 进行动态调整。当内存使用在该时间段内持续高于清理阈值时，将禁用自动脏页衰减（`dirty_decay_ms=0`），以更积极地回收内存。当内存使用在该时间段内持续低于阈值时，将恢复默认的衰减行为。将其设置为 0 可禁用动态调整，并使用 jemalloc 的默认衰减设置。
+
 ## memory_worker_period_ms \{#memory_worker_period_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -2919,7 +2926,13 @@ ClickHouse 使用全局线程池中的线程来处理查询。如果没有空闲
 
 <SettingsInfoBlock type="Double" default_value="0.2" />
 
-相对于 ClickHouse 服务器可用内存的 jemalloc 脏页阈值比例。当脏页大小超过该比例时，后台内存工作线程会强制回收脏页。若设置为 0，则禁用强制回收。
+相对于 ClickHouse 服务器可用内存的 jemalloc 脏页阈值比例。当脏页大小超过该比例时，后台内存工作线程会强制回收脏页。若设置为 0，则禁用基于脏页比例的强制回收。
+
+## memory_worker_purge_total_memory_threshold_ratio \{#memory_worker_purge_total_memory_threshold_ratio\}
+
+<SettingsInfoBlock type="Double" default_value="0.9" />
+
+相对于 ClickHouse 服务器可用内存的 jemalloc 清理触发阈值比例。当总内存占用超过该比例时，后台内存工作线程会强制回收脏页。若设置为 0，则禁用基于总内存的强制回收。
 
 ## memory_worker_use_cgroup \{#memory_worker_use_cgroup\}
 
@@ -3487,7 +3500,7 @@ ZooKeeper 客户端中用于发送和接收线程的 Linux nice 值。值越低�
 
 ## prefetch_threadpool_queue_size \{#prefetch_threadpool_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />可以推入预取线程池的任务数量上限
+<SettingsInfoBlock type="UInt64" default_value="10000" />可以推入预取线程池的任务数量上限
 
 ## prefixes_deserialization_thread_pool_thread_pool_queue_size \{#prefixes_deserialization_thread_pool_thread_pool_queue_size\}
 
@@ -4504,7 +4517,7 @@ SSH 服务器使用的端口，允许用户通过 PTY 使用嵌入式客户端�
 
 ## threadpool_local_fs_reader_queue_size \{#threadpool_local_fs_reader_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />用于从本地文件系统读取数据的线程池中可调度的最大作业数量。
+<SettingsInfoBlock type="UInt64" default_value="10000" />用于从本地文件系统读取数据的线程池中可调度的最大作业数量。
 
 ## threadpool_remote_fs_reader_pool_size \{#threadpool_remote_fs_reader_pool_size\}
 
@@ -4512,7 +4525,7 @@ SSH 服务器使用的端口，允许用户通过 PTY 使用嵌入式客户端�
 
 ## threadpool_remote_fs_reader_queue_size \{#threadpool_remote_fs_reader_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />用于从远程文件系统读取的线程池中可调度任务的最大数量。
+<SettingsInfoBlock type="UInt64" default_value="10000" />用于从远程文件系统读取的线程池中可调度任务的最大数量。
 
 ## threadpool_writer_pool_size \{#threadpool_writer_pool_size\}
 
@@ -4520,7 +4533,7 @@ SSH 服务器使用的端口，允许用户通过 PTY 使用嵌入式客户端�
 
 ## threadpool_writer_queue_size \{#threadpool_writer_queue_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />可推送到用于对象存储写请求的后台线程池中的最大任务数
+<SettingsInfoBlock type="UInt64" default_value="10000" />可推送到用于对象存储写请求的后台线程池中的最大任务数
 
 ## throw_on_unknown_workload \{#throw_on_unknown_workload\}
 

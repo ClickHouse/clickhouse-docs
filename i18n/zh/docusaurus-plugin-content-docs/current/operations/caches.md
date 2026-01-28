@@ -36,4 +36,4 @@ doc_type: 'reference'
 * 格式 Schema 缓存。
 
 如果希望出于性能调优、故障排查或数据一致性等原因清除某一种缓存，
-可以使用 [`SYSTEM DROP ... CACHE`](../sql-reference/statements/system.md) 语句。
+可以使用 [`SYSTEM CLEAR ... CACHE`](../sql-reference/statements/system.md) 语句。
