@@ -31,7 +31,7 @@ All single replica services are automatically enrolled in the Fast release chann
 
 </details>
 
-Scheduled upgrades are available for all release channels for services in the Enterprise tier. This feature allows you to configure a time window on a given day of the week for upgrades.
+Scheduled upgrade windows are available for all release channels for services in the Enterprise tier. This feature allows you to configure a time window on a given day of the week for upgrades.
 
 ## Release schedule {#release-schedule}
 
@@ -39,7 +39,7 @@ Scheduled upgrades are available for all release channels for services in the En
 The dates shown below indicate when ClickHouse **begins the rollout** to each release channel, not when your individual service will be upgraded.
 
 - Rollouts are automated and occur gradually over multiple weeks
-- Services with configured upgrade windows are upgraded during their scheduled window after the channel rollout begins
+- Services with configured scheduled upgrade windows are upgraded during their scheduled window in the week after the channel rollout ends
 - Rollout completion may be delayed due to rollout pauses (e.g., holiday freezes) or health monitoring
 
 For advance testing before production upgrades, use the Fast or Regular channel for non-production services and the Slow channel for production services.
@@ -58,6 +58,7 @@ For advance testing before production upgrades, use the Fast or Regular channel 
      fast_progress: 'green',
      regular_progress: 'green',
      slow_progress: 'green',
+     regular_delay_note: 'Services with scheduled upgrade windows will receive 25.10 during their scheduled window in the week after rollout completes',
    },
    {
     changelog_link: 'https://clickhouse.com/docs/changelogs/25.8',
