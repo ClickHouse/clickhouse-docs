@@ -9,16 +9,18 @@ keywords: ['clickstack', 'オブザーバビリティ', 'ログ', 'パフォー�
 
 import BetaBadge from '@theme/badges/BetaBadge';
 import materializedViewDiagram from '@site/static/images/materialized-view/materialized-view-diagram.png';
-import trace_filtering from '@site/static/images/cclickstack/performance_guide/trace_filtering.png';
+import trace_filtering from '@site/static/images/clickstack/performance_guide/trace_filtering.png';
 import trace_filtering_v2 from '@site/static/images/clickstack/performance_guide/trace_filtering_v2.png';
 import select_merge_table from '@site/static/images/clickstack/performance_guide/select_merge_table.png';
 
 import Image from '@theme/IdealImage';
 
 
+
 ## はじめに \{#introduction\}
 
 このガイドでは、ClickStack 向けの、最も一般的かつ効果的なパフォーマンス最適化手法に焦点を当てます。これらは、実運用環境における大半のオブザーバビリティワークロードに対して十分な最適化を提供し、通常は 1 日あたり数十テラバイト規模のデータまでを対象とします。
+
 
 最適化は意図した順序で提示しており、最も簡単で効果の大きい手法から始めて、より高度かつ専門的なチューニングへと進んでいきます。初期段階の最適化は最優先で適用すべきであり、それだけでも大きな効果をもたらすことがよくあります。データ量が増え、ワークロードの要求が厳しくなるにつれて、後半の手法を検討する価値が高まっていきます。
 
@@ -65,12 +67,15 @@ ClickStack では、各 **データソースは 1 つ以上の ClickHouse テー
 - [Partitions](/partitions)
 - [Merges](/merges)
 - [Primary keys/indexes](/primary-indexes)
+
 - [How ClickHouse stores data: parts and granules](/guides/best-practices/sparse-primary-indexes) - ClickHouse でデータがどのように構造化され、クエリされるかを、granule とプライマリキーの詳細を含めて解説する上級ガイド。
+
 - [MergeTree](/engines/table-engines/mergetree-family/mergetree)- コマンドおよび内部仕様の理解に有用な、MergeTree の高度なリファレンスガイド。
 
 以下で説明するすべての最適化は、標準的な ClickHouse SQL を使用して、[ClickHouse Cloud SQL console](/integrations/sql-clients/sql-console) または [ClickHouse client](/interfaces/cli) から元となるテーブルに直接適用できます。
 
 ## 最適化 1. よくクエリされる属性をマテリアライズする \{#materialize-frequently-queried-attributes\}
+
 
 ClickStack ユーザー向けの最初かつ最も簡単な最適化は、`LogAttributes`、`ScopeAttributes`、`ResourceAttributes` 内で頻繁にクエリされる属性を特定し、マテリアライズドカラムを使ってそれらをトップレベルのカラムとして昇格させることです。
 
@@ -91,6 +96,7 @@ Map カラムから単一のキーをクエリする際、ClickHouse はディ�
 - 任意の ClickHouse 式をサポートする
 - String から、より効率的な数値型や日付型への型変換を可能にする
 - スキップ索引とプライマリキーの利用を可能にする
+
 - Map 全体へのアクセスを回避してディスク読み取りを削減する
 
 :::note
@@ -167,6 +173,7 @@ MATERIALIZED ResourceAttributes['k8s.pod.name']
 
 この時点以降、新規に挿入されるデータでは、ポッド名が専用のカラム `PodName` に保存されます。
 
+
 ユーザーは Lucene 構文を使って、`PodName:"checkout-675775c4cc-f2p9c"` のようにポッド名を効率的にクエリできます。
 
 <Image img={trace_filtering_v2} size="lg" alt="Trace filtering v2" />
@@ -179,6 +186,7 @@ MATERIALIZED ResourceAttributes['k8s.pod.name']
 ```sql
 PodName = 'checkout-675775c4cc-f2p9c'
 ```
+
 
 これにより、ダッシュボード、アラート、保存済みクエリを変更することなく、ユーザーは最適化の恩恵を受けられます。
 
@@ -214,6 +222,7 @@ FROM system.mutations
 WHERE database = 'otel'
   AND table = 'otel_traces'
 ORDER BY create_time DESC;
+
 ```
 
 対応するミューテーションについて `is_done = 1` になるまで待ちます。
@@ -269,6 +278,7 @@ CREATE TABLE IF NOT EXISTS otel_traces
 ENGINE = MergeTree
 PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SpanName, toDateTime(Timestamp))
+
 TTL toDate(Timestamp) + toIntervalDay(30)
 SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1;
 ```
@@ -298,6 +308,7 @@ ALTER TABLE otel_traces
 ADD INDEX idx_pod_name PodName
 TYPE bloom_filter(0.01)
 GRANULARITY 1
+
 ```
 
 追加したら、skip index はマテリアライズする必要があります。詳細は [&quot;Materialize skip index.&quot;](#materialize-skip-index) を参照してください。
@@ -328,6 +339,7 @@ ALTER TABLE otel_traces
 ADD COLUMN KafkaOffset UInt64
 MATERIALIZED toUInt64(SpanAttributes['messaging.kafka.offset'])
 ```
+
 
 次に、minmax 索引を追加します:
 
@@ -393,6 +405,7 @@ WHERE database = 'otel'
   AND table = 'otel_traces'
   AND name = 'idx_kafka_offset';
 ```
+
 
 ゼロ以外の値は、索引が正常にマテリアライズされていることを示します。
 
@@ -462,6 +475,7 @@ Peak memory usage: 41.97 MiB.
 SELECT *
 FROM otel_traces
 WHERE (ServiceName = 'accountingservice') AND (TraceId = '4512e822ca3c0c68bbf5d4a263f9943d')
+
 FORMAT Null
 SETTINGS use_query_condition_cache = 0, use_skip_indexes = 0;
 
@@ -470,6 +484,7 @@ Peak memory usage: 198.39 MiB.
 ```
 
 `use_query_condition_cache` を無効化すると、キャッシュされたフィルタリング判定によって結果が影響を受けなくなり、`use_skip_indexes = 0` を設定することで比較用のクリーンなベースラインが得られます。プルーニングが有効で、索引評価コストが低い場合は、上記の例のように、索引付きクエリの方が体感できるほど高速になるはずです。
+
 
 :::tip
 `EXPLAIN` の出力で granule のプルーニングがほとんど行われていない場合や、skip index が非常に大きい場合は、索引の評価コストが利点を相殺してしまうことがあります。`EXPLAIN indexes = 1` を使用してプルーニングを確認し、その後ベンチマークを実施してエンドツーエンドのパフォーマンス改善を検証してください。
@@ -500,6 +515,7 @@ Bloom フィルタは、高カーディナリティな文字列カラムで各�
 
 プライマリキーを変更する前に、ClickHouse における[プライマリ索引の仕組みを理解するガイド](/primary-indexes)に目を通すことを強く推奨します。
 
+
 プライマリキーのチューニングは、テーブルおよびデータ種別ごとに固有です。あるテーブルやデータ種別に有効な変更が、他には当てはまらない場合があります。目標は常に、特定のデータ種別（例: ログ）に対して最適化することです。
 
 **一般的には、ログおよびトレースのテーブルを最適化することになります。その他のデータ種別について、プライマリキーを変更する必要があるケースはまれです。**
@@ -516,6 +532,7 @@ Bloom フィルタは、高カーディナリティな文字列カラムで各�
 **プライマリキーの変更はテーブルごとに個別に行う必要があります。ログで意味のあることが、トレースやメトリクスでも意味があるとは限りません。**
 
 ### プライマリキーの選択 \{#choosing-a-primary-key\}
+
 
 まず、特定のテーブルについて、アクセスパターンがデフォルト設定と大きく異なっているかどうかを確認します。たとえば、Kubernetes ノードでフィルタしてからサービス名でフィルタする、という形でログを参照することが最も一般的であり、これが主要なワークフローである場合は、プライマリキーを変更する十分な理由になりえます。
 
@@ -610,6 +627,7 @@ ENGINE = Merge(currentDatabase(), 'otel_logs*')
 
 HyperDX を構成し、ログのデータソース用テーブルとして `otel_logs_merge` を使用するようにします。
 
+
 <Image img={select_merge_table} size="lg" alt="Merge テーブルを選択"/>
 
 この時点でも、書き込みは元のプライマリキーを持つ `otel_logs` に対して行われる一方で、読み取りは Merge テーブルを使用します。ユーザーにとって見える変更もなく、インジェストへの影響もありません。
@@ -640,12 +658,14 @@ EXCHANGE TABLES otel_logs AND otel_logs_23_01_2025
 ```sql
 CREATE TABLE otel_logs_30_01_2025 AS otel_logs
 PRIMARY KEY (SeverityNumber, ServiceName, TimestampTime)
+
 ORDER BY (SeverityNumber, ServiceName, TimestampTime)
 ```
 
 #### テーブルを入れ替える \{#exchange-the-tables-v2\}
 
 `EXCHANGE` ステートメントを使用して、`otel_logs` テーブルと `otel_logs_30_01_2025` テーブルの名前をアトミックに入れ替えます。
+
 
 ```sql
 EXCHANGE TABLES otel_logs AND otel_logs_30_01_2025
@@ -672,6 +692,7 @@ ClickStack でこの機能を使用する方法の詳細については、専用
 PROJECTION は、materialized columns、skip indexes、primary keys、および materialized views を検討し終えた後に考慮できる、最終段階かつ高度な最適化手法です。PROJECTION と materialized view は見かけ上は似ていますが、ClickStack においては異なる目的を持ち、異なるシナリオで使うのが最適です。
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6CdnUdZSEG0?si=1zUyrP-tCvn9tXse" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 
 実際には、**PROJECTION はテーブルの追加の「隠れたコピー」とみなすことができ**、同じ行を**異なる物理順序**で保存します。これにより、PROJECTION はベーステーブルの `ORDER BY` キーとは異なる独自の primary 索引を持ち、元の並び順と一致しないアクセスパターンに対して、ClickHouse がより効果的にデータをプルーニングできるようになります。
 
@@ -737,6 +758,7 @@ SELECT *
 FROM otel_traces
 WHERE TraceId = 'aeea7f401feb75fc5af8eb25ebc8e974'
   AND Timestamp >= now() - INTERVAL 1 DAY
+
 ORDER BY Timestamp;
 
 -- Trace-scoped aggregation
@@ -747,6 +769,7 @@ FROM otel_traces
 WHERE TraceId = 'aeea7f401feb75fc5af8eb25ebc8e974'
   AND Timestamp >= now() - INTERVAL 1 DAY
 GROUP BY t
+
 ORDER BY t;
 ```
 
@@ -759,33 +782,9 @@ Projection は集計結果も保存できます（materialized view に近い動
 実際には、projection は、広い検索からトレース中心のドリルダウンへ頻繁にピボットするワークフロー（たとえば、特定の `TraceId` に対するすべての span を取得するようなケース）に最も適しています。
 
 
+
 ### コストと指針 \{#projection-costs-and-guidance\}
 
 - **挿入時のオーバーヘッド**: 異なる並び替えキーを持つ `SELECT *` の projection は、実質的にデータを 2 回書き込むことになり、書き込み I/O が増加し、インジェストを維持するために追加の CPU およびディスクスループットが必要になる場合があります。
 - **慎重に利用する**: projection は、2 つ目の物理的な並び順によって多くのクエリに対して有意なプルーニングが可能になるような、実際に多様なアクセスパターンが存在する場合に限定して利用するのが最適です。例えば、2 つのチームが同じデータセットに対して本質的に異なる方法でクエリを実行するようなケースです。
 - **ベンチマークで検証する**: すべてのチューニングと同様に、projection を追加してマテリアライズする前後で、実際のクエリレイテンシーとリソース使用量を比較してください。
-
-より詳しい背景については、次を参照してください:
-
-- [ClickHouse projections ガイド](/data-modeling/projections#when-to-use-projections)
-- [materialized views と projections の比較](/managing-data/materialized-views-versus-projections)
-
-### `_part_offset` を用いた軽量プロジェクション \{#lightweight-projections\}
-
-<BetaBadge/>
-
-:::note[ClickStack における軽量プロジェクションは Beta 機能です]
-`_part_offset` ベースの軽量プロジェクションは、ClickStack のワークロードでは推奨されません。ストレージと書き込み I/O を削減できる一方で、クエリ時のランダムアクセスが増える可能性があり、オブザーバビリティ規模の本番環境における挙動については、まだ評価段階にあります。この推奨事項は、機能の成熟と運用データの蓄積に応じて変更される可能性があります。
-:::
-
-より新しい ClickHouse のバージョンでは、完全な行を複製するのではなく、プロジェクションのソートキーと、ベーステーブルへの `_part_offset` ポインタだけを保持する、より軽量なプロジェクションもサポートしています。これによりストレージのオーバーヘッドを大幅に削減でき、最近の改善によって granule レベルでの pruning が可能になったため、真のセカンダリ索引により近い挙動をするようになっています。詳細は次を参照してください:
-
-- [Smarter storage with _part_offset](/data-modeling/projections#smarter_storage_with_part_offset)
-- [Blog explanation and examples](https://clickhouse.com/blog/projections-secondary-indices#example-combining-multiple-projection-indexes)
-
-### 代替案 \{#projection-alternatives\}
-
-複数のソートキーが必要な場合、PROJECTION だけが選択肢ではありません。運用上の制約や、ClickStack にクエリをどのようにルーティングさせたいかに応じて、次の点を検討してください。
-
-- OpenTelemetry collector を構成して、`ORDER BY` キーが異なる 2 つのテーブルに書き込み、それぞれのテーブルごとに個別の ClickStack ソースを作成します。
-- コピー用パイプラインとして materialized view を作成します。つまり、メインテーブルに materialized view をアタッチし、生の行を異なるソートキーを持つセカンダリテーブルに SELECT するようにします（非正規化やルーティングのパターン）。そのターゲットテーブル用のソースを作成します。例は[こちら](/materialized-view/incremental-materialized-view#filtering-and-transformation)にあります。
