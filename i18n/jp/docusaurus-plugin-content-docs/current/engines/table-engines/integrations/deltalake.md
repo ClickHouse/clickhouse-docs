@@ -51,9 +51,10 @@ CREATE TABLE deltalake ENGINE=DeltaLake('http://mars-doc-test.s3.amazonaws.com/c
 CREATE TABLE deltalake ENGINE=DeltaLake(deltalake_conf, filename = 'test_table')
 ```
 
+
 ### データキャッシュ \{#data-cache\}
 
-`Iceberg` テーブルエンジンおよびテーブル関数は、`S3`、`AzureBlobStorage`、`HDFS` ストレージと同様に、データキャッシュをサポートします。詳細は[こちら](../../../engines/table-engines/integrations/s3.md#data-cache)を参照してください。
+`DeltaLake` テーブルエンジンおよびテーブル関数は、`S3`、`AzureBlobStorage`、`HDFS` ストレージと同様に、データキャッシュをサポートします。詳細は[こちら](../../../engines/table-engines/integrations/s3.md#data-cache)を参照してください。
 
 ## 関連項目 \{#see-also\}
 

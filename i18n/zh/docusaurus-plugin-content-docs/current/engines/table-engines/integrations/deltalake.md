@@ -51,9 +51,10 @@ CREATE TABLE deltalake ENGINE=DeltaLake('http://mars-doc-test.s3.amazonaws.com/c
 CREATE TABLE deltalake ENGINE=DeltaLake(deltalake_conf, filename = 'test_table')
 ```
 
+
 ### 数据缓存 \{#data-cache\}
 
-`Iceberg` 表引擎和表函数支持与 `S3`、`AzureBlobStorage`、`HDFS` 存储相同的数据缓存机制。请参阅[此处](../../../engines/table-engines/integrations/s3.md#data-cache)。
+`DeltaLake` 表引擎和表函数支持与 `S3`、`AzureBlobStorage`、`HDFS` 存储相同的数据缓存机制。请参阅[此处](../../../engines/table-engines/integrations/s3.md#data-cache)。
 
 ## 另请参阅 \{#see-also\}
 

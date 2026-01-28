@@ -178,6 +178,28 @@ ClickHouse Server 构建在 POCO C++ Libraries 之上，并使用 `Poco::Util::A
 
 对于 `Server` 之外的查询和子系统，可以使用 `Context::getConfigRef()` 方法访问配置。每个能够在不重启服务器的情况下重载其配置的子系统，都应在 `Server::main()` 方法中的重载回调中注册自身。请注意，如果新的配置存在错误，大多数子系统会忽略新配置、记录警告日志，并继续使用先前加载的配置。由于 `AbstractConfiguration` 的特性，无法传递指向特定配置节的引用，因此通常会改为使用 `String config_prefix`。
 
+### 上下文 \{#context\}
+
+ClickHouse 通过一套分层的上下文体系来管理设置：
+
+* **全局上下文（Global context）** - 通过配置文件定义的整个服务器范围的设置
+* **会话上下文（Session context）** - 基于配置档案（profile）、用户配置和 SET 命令的用户会话设置
+* **查询上下文（Query context）** - 来自 SETTINGS 子句的查询级别设置
+* **后台上下文（Background context）** - 针对后台操作（Mutate、Merge）的服务器范围设置，通过 `background` profile 定义
+
+在调度某个操作（查询、变更等）时，服务器会按如下顺序合并各层设置来构建具体上下文（后面的设置会覆盖前面的设置）：
+
+1. 全局默认值
+2. 全局配置
+3. Profile 设置（来自 `<profiles>` 部分）
+4. 用户设置（来自 `<users>` 部分）
+5. 会话设置（来自 SET 命令）
+6. 查询设置（来自 SETTINGS 子句）
+
+:::note
+后台操作可以通过全局设置和 `background` profile 设置进行配置；在这种情况下，会话和查询设置不会生效。如果未给出显式配置，将从全局上下文继承配置。此类操作的默认 profile 名称为 `background`，可通过 `background_profile` 服务器设置进行覆盖。
+:::
+
 ## 线程与作业 \{#threads-and-jobs\}
 
 为了执行查询和处理辅助活动，ClickHouse 会从多个线程池之一中分配线程，以避免频繁创建和销毁线程。存在若干线程池，会根据作业的目的和结构进行选择：
@@ -241,6 +263,7 @@ stateDiagram-v2
 3. 更新 slot 的总数量：`ConcurrencyControl::setMaxConcurrency(concurrent_threads_soft_limit_num)`。可以在运行时进行，无需重启服务器。
 
 该 API 允许在存在 CPU 压力时，查询至少以一个线程启动，并在之后按需扩展到 `max_threads`。
+
 
 ## 分布式查询执行 \{#distributed-query-execution\}
 

@@ -565,7 +565,7 @@ Because the data is processed incrementally, memory usage remains bounded and pr
 For additional safety, consider directing the backfill materialized view to a temporary target table (for example, `otel_traces_1m_v2`). Once the backfill completes successfully, [partitions can be moved](/sql-reference/statements/alter/partition#move-partition-to-table) to the primary target table e.g. `ALTER TABLE otel_traces_1m_v2 MOVE PARTITION '2026-01-02' TO otel_traces_1m`. This allows for easy recovery if the backfill is interrupted or fails due to resource limits.
 :::
 
-For further details on tuning this process, including improving insert performance and reducing and controlling resources, see ["Backfilling"](/data-modeling/backfilling#tuning-performance--resources).
+For further details on tuning this process, including improving insert performance and reducing and controlling resources, see ["Backfilling."](/data-modeling/backfilling#tuning-performance--resources)
 
 </VerticalStepper>
 
