@@ -234,7 +234,7 @@ HyperDX does not support fetching/displaying exponential histogram metrics yet. 
 :::
 
 ```sql
-CREATE TABLE otel_metrics_exponentialhistogram 
+CREATE TABLE otel_metrics_exponentialhistogram
 (
     `ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
     `ResourceSchemaUrl` String CODEC(ZSTD(1)),

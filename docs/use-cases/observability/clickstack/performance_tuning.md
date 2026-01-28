@@ -22,9 +22,9 @@ The optimizations are presented in a deliberate order, starting with the simples
 
 ## ClickHouse concepts {#clickhouse-concepts}
 
-Before applying any of the optimizations described in this guide, it is important to be familiar with a few core ClickHouse concepts.
+Before applying any of the optimizations described in this guide, it's important to be familiar with a few core ClickHouse concepts.
 
-In ClickStack, each **data source maps directly to one or more ClickHouse tables**. When using OpenTelemetry, ClickStack creates and manages a set of default tables that store logs, traces, and metrics data. If you are using custom schemas or managing your own tables, you may already be familiar with these concepts. However, if you are simply sending data via the OpenTelemetry Collector, these tables are created automatically and are where all optimizations described below will be applied.
+In ClickStack, each **data source maps directly to one or more ClickHouse tables**. When using OpenTelemetry, ClickStack creates and manages a set of default tables that store logs, traces, and metrics data. If you are using custom schemas or managing your own tables, you may already be familiar with these concepts. However, if you are simply sending data via the OpenTelemetry Collector, these tables are created automatically, and are where all optimizations described below will be applied.
 
 | Data type                        | Table                                                                                                                  |
 |----------------------------------|------------------------------------------------------------------------------------------------------------------------|
@@ -40,7 +40,7 @@ In ClickStack, each **data source maps directly to one or more ClickHouse tables
 Tables are assigned to [databases](/sql-reference/statements/create/database) in ClickHouse. By default, the `default` database is used -  this can be [modified in the OpenTelemetry collector](/use-cases/observability/clickstack/config#otel-collector).
 
 :::important Focus on logs and traces
-In most cases, performance tuning focuses on the logs and trace tables. While metrics tables can be optimized for filtering, their schemas are intentionally opinionated for Prometheus-style workloads and typically do not require modification for standard charting. Logs and traces, by contrast, support a wider range of access patterns and therefore benefit most from tuning. Session data has a fixed user experience, and its schema rarely needs to be modified.
+In most cases, performance tuning focuses on the logs and trace tables. While metrics tables can be optimized for filtering, their schemas are intentionally opinionated for Prometheus-style workloads and typically don't require modification for standard charting. Logs and traces, by contrast, support a wider range of access patterns, and therefore benefit most from tuning. Session data has a fixed user experience, and its schema rarely needs to be modified.
 :::
 
 At a minimum, users should understand the following ClickHouse fundamentals:
@@ -52,7 +52,7 @@ At a minimum, users should understand the following ClickHouse fundamentals:
 - **Granules**: The smallest unit of data that ClickHouse reads and prunes during query execution.
 - **Primary (ordering) keys**: How the `ORDER BY` key determines on-disk data layout, compression, and query pruning.
 
-These concepts are central to ClickHouse performance. They determine how data is written, how it is structured on disk, and how efficiently ClickHouse can skip reading data at query time. Every optimization in this guide, whether materialized columns, skip indexes, primary keys, projections, or materialized views, builds on these core mechanisms.
+These concepts are central to ClickHouse performance. They determine how data is written, how it's structured on disk, and how efficiently ClickHouse can skip reading data at query time. Every optimization in this guide, whether materialized columns, skip indexes, primary keys, projections, or materialized views, builds on these core mechanisms.
 
 We recommend reviewing the following ClickHouse documentation before undertaking any tuning:
 
@@ -83,13 +83,13 @@ Materializing frequently accessed attributes avoids this overhead by extracting 
 Materialized columns:
 
 - Are computed automatically during inserts
-- Cannot be explicitly set in INSERT statements
+- Can't be explicitly set in INSERT statements
 - Support any ClickHouse expression
 - Allow type conversion from String to more efficient numeric or date types
 - Enable skip indexes and primary key usage
 - Reduce disk reads by avoiding full map access
 
-:::note 
+:::note
 ClickStack automatically detects materialized columns extracted from maps and transparently uses them during query execution, even when users continue to query the original attribute path.
 :::
 
@@ -213,7 +213,7 @@ ORDER BY create_time DESC;
 Wait until `is_done = 1` for the corresponding mutation.
 
 :::important
-Mutations incur additional IO and CPU overhead and should be used sparingly. In many cases, it is sufficient to allow older data to age out naturally and rely on the performance improvements for newly ingested data.
+Mutations incur additional IO and CPU overhead and should be used sparingly. In many cases, it's sufficient to allow older data to age out naturally and rely on the performance improvements for newly ingested data.
 :::
 
 ## Optimization 2. Adding skip indices {#adding-skip-indices}
@@ -268,12 +268,12 @@ SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1;
 
 These indexes focus on two common patterns:
 
-- High-cardinality string filtering, such as TraceId, session identifiers, and attribute keys or values
+- High-cardinality string filtering, such as TraceId, session identifiers, attribute keys, or values
 - Numeric range filtering, such as span duration
 
 ### Bloom filters {#bloom-filters}
 
-Bloom filter indexes are the most commonly used skip index type in ClickStack. They are well-suited for string columns with high cardinality, typically at least tens of thousands of distinct values. A false-positive rate of 0.01 with granularity 1 is a good default starting point and balances storage overhead with effective pruning.
+Bloom filter indexes are the most commonly used skip index type in ClickStack. They're well-suited for string columns with high cardinality, typically at least tens of thousands of distinct values. A false-positive rate of 0.01 with granularity 1 is a good default starting point and balances storage overhead with effective pruning.
 
 Continuing the example from Optimization 1, suppose the Kubernetes pod name has been materialized from ResourceAttributes:
 
@@ -292,17 +292,17 @@ TYPE bloom_filter(0.01)
 GRANULARITY 1
 ```
 
-Once added, the skip index must be materialized - see ["Materialize skip index"](#materialize-skip-index).
+Once added, the skip index must be materialized - see ["Materialize skip index."](#materialize-skip-index)
 
 Once created and materialized, ClickHouse can skip entire granules that are guaranteed not to contain the requested pod name, potentially reducing the amount of data read during queries such as `PodName:"checkout-675775c4cc-f2p9c"`.
 
-Bloom filters are most effective when the distribution of values is such that a given value appears in a relatively small number of parts. This often occurs naturally in observability workloads where metadata like pod names, trace IDs, or session identifiers is correlated with time and therefore clustered by the table's ordering key.
+Bloom filters are most effective when the distribution of values is such that a given value appears in a relatively small number of parts. This often occurs naturally in observability workloads where metadata like pod names, trace IDs, or session identifiers is correlated with time, and therefore clustered by the table's ordering key.
 
-As with all skip indexes, Bloom filters should be added selectively and validated against real query patterns to ensure they provide measurable benefit - see ["Evaluating skip index effectiveness"](#evaluating-skip-index-effectiveness).
+As with all skip indexes, Bloom filters should be added selectively and validated against real query patterns to ensure they provide measurable benefit - see ["Evaluating skip index effectiveness."](#evaluating-skip-index-effectiveness)
 
 ### Min-max indices {#min-max-indices}
 
-Minmax indexes store the minimum and maximum value per granule and are extremely lightweight. They are particularly effective for numeric columns and range queries. While they may not accelerate every query, they are low-cost and almost always worth adding for numeric fields.
+Minmax indexes store the minimum and maximum value per granule and are extremely lightweight. They're particularly effective for numeric columns and range queries. While they may not accelerate every query, they're low-cost and almost always worth adding for numeric fields.
 
 Minmax indexes work best when numeric values are either naturally ordered or confined to narrow ranges within each part.
 
@@ -327,13 +327,13 @@ ALTER TABLE otel_traces
 ADD INDEX idx_kafka_offset KafkaOffset TYPE minmax GRANULARITY 1
 ```
 
-This allows ClickHouse to efficiently skip parts when filtering by Kafka offset ranges, for example, when debugging consumer lag or replay behavior.
+This allows ClickHouse to efficiently skip parts when filtering by Kafka offset ranges, for example, when debugging consumer lag, or replay behavior.
 
 Again, the index must be [materialized](#materialize-skip-index) prior to it becoming available.
 
 ### Materialize skip index {#materialize-skip-index}
 
-After a skip index has been added, it only applies to newly ingested data. Historical data will not benefit from the index until it is explicitly materialized.
+After a skip index has been added, it only applies to newly ingested data. Historical data won't benefit from the index until it's explicitly materialized.
 
 If you have already added a skip index, for example:
 
@@ -348,8 +348,7 @@ ALTER TABLE otel_traces MATERIALIZE INDEX idx_kafka_offset;
 ```
 
 :::note
-Materializing a skip index is typically lightweight and safe to run, especially for minmax indexes. For Bloom filter indexes on large datasets, users may prefer to materialize on a per-partition basis to better control resource usage 
-e.g. 
+Materializing a skip index is typically lightweight and safe to run, especially for minmax indexes. For Bloom filter indexes on large datasets, users may prefer to materialize on a per-partition basis to better control resource usage e.g.
 
 ```sql
 ALTER TABLE otel_v2.otel_traces
@@ -386,7 +385,7 @@ WHERE database = 'otel'
 
 Non-zero values indicate the index has been successfully materialized.
 
-It is important to note that the skip index size directly affects query performance. Very large skip indexes, on the order of tens or hundreds of gigabytes, can take noticeable time to evaluate during query execution, which may reduce or even negate their benefit.
+It's important the skip index size directly affects query performance. Very large skip indexes, on the order of tens or hundreds of gigabytes, can take noticeable time to evaluate during query execution, which may reduce, or even negate their benefit.
 
 In practice, minmax indexes are typically very small and inexpensive to evaluate, making them almost always safe to materialize. Bloom filter indexes, on the other hand, can grow significantly depending on cardinality, granularity, and false-positive probability.
 
@@ -394,13 +393,13 @@ Bloom filter size can be reduced by increasing the allowed false-positive rate. 
 
 Tuning Bloom filter parameters is therefore a workload-dependent optimization and should be validated using real query patterns and production-like data volumes.
 
-For further details on skip indices, we recommend the guide ["Understanding ClickHouse data skipping indexes"](/optimize/skipping-indexes/examples).
+For further details on skip indices, we recommend the guide ["Understanding ClickHouse data skipping indexes."](/optimize/skipping-indexes/examples)
 
 ### Evaluating skip index effectiveness {#evaluating-skip-index-effectiveness}
 
 The most reliable way to evaluate skip index pruning is to use `EXPLAIN indexes = 1`, which shows how many [parts](/parts) and [granules](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) are eliminated at each stage of query planning. In most cases, you want to see a large reduction in granules at the Skip stage, ideally after the primary key has already reduced the search space. Skip indexes are evaluated after partition pruning and primary key pruning, so their impact is best measured relative to the remaining parts and granules.
 
-`EXPLAIN` confirms whether pruning occurs, but it does not guarantee a net speedup. Skip indexes have a cost to evaluate, especially if the index is large. Always benchmark queries before and after adding and materializing an index to confirm real performance improvements.
+`EXPLAIN` confirms whether pruning occurs, but it doesn't guarantee a net speedup. Skip indexes have a cost to evaluate, especially if the index is large. Always benchmark queries before and after adding and materializing an index to confirm real performance improvements.
 
 For example, consider the default Bloom filter skip index for TraceId included with the default Traces schema:
 
@@ -408,7 +407,7 @@ For example, consider the default Bloom filter skip index for TraceId included w
 INDEX idx_trace_id TraceId TYPE bloom_filter(0.001) GRANULARITY 1
 ```
 
-We can use `EXPLAIN indexes = 1` to see how effective it is for a selective query:
+We can use `EXPLAIN indexes = 1` to see how effective it's for a selective query:
 
 ```sql
 EXPLAIN indexes = 1
@@ -458,7 +457,7 @@ SETTINGS use_query_condition_cache = 0, use_skip_indexes = 0;
 Peak memory usage: 198.39 MiB.
 ```
 
-Disabling `use_query_condition_cache` ensures results are not affected by cached filtering decisions, and setting `use_skip_indexes = 0` provides a clean baseline for comparison. If the pruning is effective and index evaluation cost is low, the indexed query should be materially faster, as in the example above.
+Disabling `use_query_condition_cache` ensures results aren't affected by cached filtering decisions, and setting `use_skip_indexes = 0` provides a clean baseline for comparison. If the pruning is effective and index evaluation cost is low, the indexed query should be materially faster, as in the example above.
 
 :::note
 If EXPLAIN shows minimal granule pruning, or the skip index is very large, the cost of evaluating the index can offset any benefit. Use `EXPLAIN indexes = 1` to confirm pruning, then benchmark to confirm end-to-end performance improvements.
@@ -468,11 +467,11 @@ If EXPLAIN shows minimal granule pruning, or the skip index is very large, the c
 
 Skip indexes should be added selectively, based on the types of filters users run most frequently and the shape of the data in parts and granules. The goal is to prune enough granules to offset the cost of evaluating the index itself, which is why benchmarking on production-like data is essential.
 
-**For numeric columns that are used in filters, a minmax skip index is almost always a good choice.** It is lightweight, cheap to evaluate, and can be effective for range predicates, especially when values are loosely ordered or confined to narrow ranges inside parts. Even when minmax does not help a specific query pattern, its overhead is typically low enough that it is still reasonable to keep.
+**For numeric columns that are used in filters, a minmax skip index is almost always a good choice.** It's lightweight, cheap to evaluate, and can be effective for range predicates - especially when values are loosely ordered, or confined to narrow ranges inside parts. Even when minmax doesn't help a specific query pattern, its overhead is typically low enough that it's still reasonable to keep.
 
 **String columns. Use Bloom filters when cardinality is high and values are sparse.**
 
-Bloom filters are most effective for high-cardinality string columns where each value has relatively low frequency, meaning most parts and granules do not contain the searched value. As a rule of thumb, Bloom filters are most promising when the column has at least 10,000 distinct values, and often perform best with 100,000+ distinct values. They are also more effective when matching values are clustered into a small number of sequential parts, which typically happens when the column is correlated with the ordering key. Again, your mileage here may vary - nothing replaces real world-testing.
+Bloom filters are most effective for high-cardinality string columns where each value has relatively low frequency, meaning most parts and granules don't contain the searched value. As a rule of thumb, Bloom filters are most promising when the column has at least 10,000 distinct values, and often perform best with 100,000+ distinct values. They're also more effective when matching values are clustered into a small number of sequential parts, which typically happens when the column is correlated with the ordering key. Again, your mileage here may vary - nothing replaces real world-testing.
 
 ## Optimization 3. Modifying the primary key {#modifying-the-primary-key}
 
@@ -483,23 +482,23 @@ While the primary key also influences compression and storage layout, its primar
 Filtering on columns that appear earlier in the primary key is more efficient than filtering on columns that appear later. While the default configuration is sufficient for most users, there are cases where modifying the primary key can improve performance for specific workloads.
 
 :::note
-Throughout this document, we use the term "ordering key" interchangeably with "primary key". Strictly speaking, these differ in ClickHouse, but for ClickStack, they typically refer to the same columns specified in the table `ORDER BY` clause. For details, see the [ClickHouse documentation](/engines/table-engines/mergetree-family/mergetree#choosing-a-primary-key-that-differs-from-the-sorting-key) on choosing a primary key that differs from the sorting key.
+Throughout this document, we use the term "ordering key" interchangeably with "primary key." Strictly speaking, these differ in ClickHouse, but for ClickStack, they typically refer to the same columns specified in the table `ORDER BY` clause. For details, see the [ClickHouse documentation](/engines/table-engines/mergetree-family/mergetree#choosing-a-primary-key-that-differs-from-the-sorting-key) on choosing a primary key that differs from the sorting key.
 :::
 
 Before modifying any primary key, we strongly recommend reading our [guide to understand how primary indexes work](/primary-indexes) in ClickHouse:
 
 Primary key tuning is table and data-type-specific. A change that benefits one table and data type may not apply to others. The goal is always to optimize for a particular data type e.g. logs.
 
-**Users will typically be optimising the tables for logs and traces. It is rare that primary key changes need to be made to the other data types.**
+**Users will typically be optimizing the tables for logs and traces. It's rare that primary key changes need to be made to the other data types.**
 
 Below are the default primary keys for the ClickStack tables for logs and metrics.
 
 - Logs ([`otel_logs`](/use-cases/observability/clickstack/ingesting-data/schemas#logs)) - `(ServiceName, TimestampTime, Timestamp)`
 - Traces (['otel_traces](/use-cases/observability/clickstack/ingesting-data/schemas#traces)) - `(ServiceName, SpanName, toDateTime(Timestamp))`
 
-See ["Tables and schemas used by ClickStack"](/use-cases/observability/clickstack/ingesting-data/schemas) for the primary keys used by the tables for other data types.
+See ["Tables and schemas used by ClickStack"](/use-cases/observability/clickstack/ingesting-data/schemas) for the primary keys used by the tables for other data types. For example, trace tables are optimized for filtering by service name and span name, followed by timestamp and, trace ID. Log tables, conversely, are optimized for filtering by service name, then by date, and then by timestamp. Although the optimal order would be for the user to apply the filters in the order of the primary key, queries will still heavily benefit if filtering by any of these columns in any order, with ClickHouse [pruning data prior to reading](/optimize/skipping-indexes).
 
-For example, trace tables are optimized for filtering by service name and span name, followed by timestamp and trace ID. Log tables, conversely, are optimized for filtering by service name, then by date, and then by timestamp. Although the optimal order would be for the user to apply the filters in the order of the primary key, queries will still heavily benefit if filtering by any of these columns in any order, with ClickHouse able to [prune data for reading](/optimize/skipping-indexes). When choosing a primary key, there are also other considerations for choosing an optimal ordering of the columns. See ["Choosing a primary key"](#choosing-a-primary-key).
+When choosing a primary key, there are also other considerations for choosing an optimal ordering of the columns. See ["Choosing a primary key."](#choosing-a-primary-key)
 
 **Primary keys should be changed in isolation per table. What makes sense for logs may not make sense for traces or metrics.**
 
@@ -513,14 +512,14 @@ The default primary keys are sufficient in most cases. Changes should be made ca
 
 Once you have extracted your desired columns, you can begin optimizing your ordering/primary key.
 
-Some simple rules can be applied to help choose an ordering key. The following can sometimes be in conflict, so consider these in order. You can identify a number of keys from this process, with 4-5 typically sufficient:
+Some simple rules can be applied to help choose an ordering key. The following can sometimes be in conflict, so consider these in order. Aim to select a maximum of 4-5 keys from this process:
 
-1. Select columns that align with your common filters and access patterns. If you typically start Observability investigations by filtering by a specific column e.g. pod name, this column will be used frequently in WHERE clauses. Prioritize including these in your key over those that are used less frequently.
-2. Prefer columns that help exclude a large percentage of the total rows when filtered, thus reducing the amount of data that needs to be read. Service names and status codes are often good candidates - in the latter case, only if you filter by values which exclude most rows e.g. filtering by 200s will, in most systems, match most rows, in comparison to 500 errors, which will correspond to a small subset.
+1. Select columns that align with your common filters and access patterns. If you typically start Observability investigations by filtering by a specific column e.g. pod name, this column will be used frequently in `WHERE` clauses. Prioritize including these in your key over those that are used less frequently.
+2. Prefer columns that help exclude a large percentage of the total rows when filtered, thus reducing the amount of data that needs to be read. Service names and status codes are often good candidates - in the latter case, only if you filter by values which exclude most rows e.g. filtering by 200 codes will, in most systems, match most rows, in comparison to 500 errors, which will correspond to a small subset.
 3. Prefer columns that are likely to be highly correlated with other columns in the table. This will help ensure these values are also stored contiguously, improving compression.
 4. `GROUP BY` (aggregations for charts) and `ORDER BY` (sorting) operations for columns in the ordering key can be made more memory efficient.
 
-On identifying the subset of columns for the ordering key, they must be declared in a specific order. This order can significantly influence both the efficiency of the filtering on secondary key columns in queries and the compression ratio for the table's data files. In general, it is best to order the keys in ascending order of cardinality. This should be balanced against the fact that filtering on columns that appear later in the ordering key will be less efficient than filtering on those that appear earlier in the tuple. Balance these behaviors and consider your access patterns. Most importantly, test variants. For further understanding of ordering keys and how to optimize them, we recommend starting with ["Choosing a Primary Key"](/best-practices/choosing-a-primary-key). For even deeper insights into primary key tuning and the internal data structures, see ["A practical introduction to primary indexes in ClickHouse"](/guides/best-practices/sparse-primary-indexes).
+On identifying the subset of columns for the ordering key, they must be declared in a specific order. This order can significantly influence both the efficiency of the filtering on secondary key columns in queries and the compression ratio for the table's data files. In general, it's best to order the keys in ascending order of cardinality. This should be balanced against the fact that filtering on columns that appear later in the ordering key will be less efficient than filtering on those that appear earlier in the tuple. Balance these behaviors and consider your access patterns. Most importantly, test variants. For further understanding of ordering keys and how to optimize them, we recommend starting with ["Choosing a Primary Key."](/best-practices/choosing-a-primary-key) For even deeper insights into primary key tuning and the internal data structures, see ["A practical introduction to primary indexes in ClickHouse."](/guides/best-practices/sparse-primary-indexes)
 
 ### Changing the primary key {#changing-the-primary-key}
 
@@ -539,7 +538,7 @@ ORDER BY (SeverityText, ServiceName, TimestampTime)
 ```
 
 :::note Ordering Key vs Primary Key
-Note in the above example, we are required to specify a `PRIMARY KEY` and `ORDER BY`. In ClickStack, these are almost always the same. The `ORDER BY` controls the physical data layout, while the `PRIMARY KEY` defines the sparse index. In rare, very large workloads, these may differ, but most users should keep them aligned.
+Note in the above example, we're required to specify a `PRIMARY KEY` and `ORDER BY`. In ClickStack, these are almost always the same. The `ORDER BY` controls the physical data layout, while the `PRIMARY KEY` defines the sparse index. In rare, very large workloads, these may differ, but most users should keep them aligned.
 :::
 
 #### Exchange and drop table {#exhange-and-drop-table}
@@ -553,9 +552,9 @@ DROP TABLE otel_logs_temp
 
 </VerticalStepper>
 
-However, **the primary key cannot be modified on an existing table**. Changing it requires creating a new table. 
+However, **the primary key can't be modified on an existing table**. Changing it requires creating a new table.
 
-The following process can be used to ensure the old data can be retained and still queried transparently (using its existing key in HyperDX, if required, while new data is exposed through a new table optimized for the users' access patterns. This approach ensures ingest pipelines do not need to be modified, with data still sent to the default table names, and all changes are transparent to users.
+The following process can be used to ensure the old data can be retained and still queried transparently (using its existing key in HyperDX, if required, while new data is exposed through a new table optimized for the users' access patterns. This approach ensures ingest pipelines don't need to be modified, with data still sent to the default table names, and all changes are transparent to users.
 
 :::note
 Backfilling existing data into a new table is rarely worthwhile at scale. The compute and IO cost is usually high, and doesn't justify the performance benefits. Instead, allow older data to expire [via TTL](/use-cases/observability/clickstack/ttl) while newer data benefits from the improved key.
@@ -577,7 +576,7 @@ ORDER BY (SeverityText, ServiceName, TimestampTime)
 
 #### Create a Merge table {#create-merge-table}
 
-The [Merge engine](/engines/table-engines/special/merge) (not to be confused with MergeTree) does not store data itself, but allows reading from any number of other tables simultaneously.
+The [Merge engine](/engines/table-engines/special/merge) (not to be confused with MergeTree) doesn't store data itself, but allows reading from any number of other tables simultaneously.
 
 ```sql
 CREATE TABLE otel_logs_merge
@@ -601,7 +600,7 @@ At this point, writes continue to `otel_logs` with the original primary key, whi
 
 #### Exchange the tables {#exchange-the-tables}
 
-We now use an `EXCHANGE` statement to swap the names of the `otel_logs` and `otel_logs_23_01_2025` tables atomically. 
+We now use an `EXCHANGE` statement to swap the names of the `otel_logs` and `otel_logs_23_01_2025` tables atomically.
 
 ```sql
 EXCHANGE TABLES otel_logs AND otel_logs_23_01_2025
@@ -629,7 +628,7 @@ ORDER BY (SeverityNumber, ServiceName, TimestampTime)
 
 #### Exchange the tables {#exchange-the-tables-v2}
 
-We now use an `EXCHANGE` statement to swap the names of the `otel_logs` and `otel_logs_30_01_2025` tables atomically. 
+We now use an `EXCHANGE` statement to swap the names of the `otel_logs` and `otel_logs_30_01_2025` tables atomically.
 
 ```sql
 EXCHANGE TABLES otel_logs AND otel_logs_30_01_2025
@@ -647,17 +646,17 @@ If TTL policies are in place, which is recommended, tables with older primary ke
 
 <BetaBadge/>
 
-ClickStack can exploit [Incremental Materialized Views](/materialized-view/incremental-materialized-view) to accelerate visualizations that rely on aggregation-heavy queries, such as computing average request duration per minute over time. This feature can dramatically improve query performance and is typically most beneficial for larger deployments, around 10 TB per day and above, while enabling scaling into the petabytes-per-day range. Incremental Materialized Views are currently in Beta and should be used with care.
+ClickStack can exploit [Incremental Materialized Views](/materialized-view/incremental-materialized-view) to accelerate visualizations that rely on aggregation-heavy queries, such as computing average request duration per minute over time. This feature can dramatically improve query performance and is typically most beneficial for larger deployments, around 10 TB per day and above, while enabling scaling into the petabytes-per-day range. Incremental Materialized Views are in Beta and should be used with care.
 
-For details on using this feature in ClickStack, see our dedicated guide ["ClickStack - Materialized Views"](/use-cases/observability/clickstack/materialized_views).
+For details on using this feature in ClickStack, see our dedicated guide ["ClickStack - Materialized Views."](/use-cases/observability/clickstack/materialized_views)
 
 ## Optimization 5. Exploiting Projections {#exploting-projections}
 
-Projections represent a final, advanced optimization that can be considered once materialized columns, skip indexes, primary keys, and materialized views have been evaluated. While projections and materialized views may appear similar, in ClickStack, they serve different purposes and are best used in different scenarios.
+Projections represent a final, advanced optimization that can be considered once materialized columns, skip indexes, primary keys, and materialized views have been evaluated. While projections and materialized views may appear similar, in ClickStack, they serve different purposes, and are best used in different scenarios.
 
- <iframe width="560" height="315" src="https://www.youtube.com/embed/6CdnUdZSEG0?si=1zUyrP-tCvn9tXse" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> 
+ <iframe width="560" height="315" src="https://www.youtube.com/embed/6CdnUdZSEG0?si=1zUyrP-tCvn9tXse" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-Practically, a **projection can be thought of as an additional, hidden copy of the table** that stores the same rows in a **different physical order**. This gives the projection its own primary index, distinct from the base table's `ORDER BY` key, allowing ClickHouse to prune data more effectively for access patterns that do not align with the original ordering.
+Practically, a **projection can be thought of as an additional, hidden copy of the table** that stores the same rows in a **different physical order**. This gives the projection its own primary index, distinct from the base table's `ORDER BY` key, allowing ClickHouse to prune data more effectively for access patterns that don't align with the original ordering.
 
 Materialized views can achieve a similar effect by explicitly writing rows into a separate target table with a different ordering key. The key difference is that **projections are maintained automatically and transparently** by ClickHouse, while materialized views are explicit tables that must be registered and selected intentionally by ClickStack.
 
@@ -666,7 +665,7 @@ When a query targets the base table, ClickHouse evaluates the base layout and an
 In ClickStack, projections are therefore best suited for **pure data reordering**, where:
 
 - Access patterns are fundamentally different from the default primary key
-- It is impractical to cover all workflows with a single ordering key
+- It's impractical to cover all workflows with a single ordering key
 - You want ClickHouse to transparently choose the optimal physical layout
 
 For pre-aggregation and metric acceleration, ClickStack strongly prefers **explicit materialized views**, which give the application layer full control over view selection and usage.
@@ -708,10 +707,10 @@ MATERIALIZE PROJECTION prj_traceid_time;
 ```
 
 :::note
-Materializing a projection can take a long time and consume significant resources. Because observability data typically expires via TTL, this should only be done when absolutely necessary. In most cases, it is sufficient to let the projection apply only to newly ingested data, allowing it to optimize the most frequently queried time ranges, such as the last 24 hours.
+Materializing a projection can take a long time and consume significant resources. Because observability data typically expires via TTL, this should only be done when absolutely necessary. In most cases, it's sufficient to let the projection apply only to newly ingested data, allowing it to optimize the most frequently queried time ranges, such as the last 24 hours.
 :::
 
-ClickHouse may choose the projection automatically when it estimates that the projection will scan fewer granules than the base layout. Projections are most reliable when they represent a straightforward reordering of the full row set (`SELECT *`) and the query filters strongly align with the projection’s `ORDER BY`. 
+ClickHouse may choose the projection automatically when it estimates that the projection will scan fewer granules than the base layout. Projections are most reliable when they represent a straightforward reordering of the full row set (`SELECT *`) and the query filters strongly align with the projection’s `ORDER BY`.
 
 Queries that filter on TraceId (especially equality) and include a time range would benefit from the above projection. For example:
 
@@ -734,10 +733,10 @@ GROUP BY t
 ORDER BY t;
 ```
 
-Queries that do not constrain TraceId, or that primarily filter on other dimensions that are not leading in the projection’s ordering key, typically will not benefit (and may read via the base layout instead).
+Queries that don't constrain `TraceId`, or that primarily filter on other dimensions that aren't leading in the projection’s ordering key, typically won't benefit (and may read via the base layout instead).
 
 :::note
-Projections can also store aggregations (similar to materialized views). In ClickStack, we generally do not recommend projection-based aggregations because selection depends on the ClickHouse analyzer, and usage can be harder to control and reason about. Instead, prefer explicit materialized views that ClickStack can register and select intentionally at the application layer.
+Projections can also store aggregations (similar to materialized views). In ClickStack, we generally don't recommend projection-based aggregations because selection depends on the ClickHouse analyzer, and usage can be harder to control and reason about. Instead, prefer explicit materialized views that ClickStack can register and select intentionally at the application layer.
 :::
 
 In practice, projections are best suited for workflows where users frequently pivot from a broader search to a trace-centric drilldown (for example, fetching all spans for a specific TraceId).
@@ -758,7 +757,7 @@ For a deeper background, see:
 <BetaBadge/>
 
 :::note **Lightweight projections are Beta for ClickStack**
-We do not recommend `_part_offset-based` lightweight projections for ClickStack workloads. While they reduce storage and write I/O, they can introduce more random access at query time, and their production behavior at the observability scale is still being evaluated. This recommendation may change as the feature matures and we gain more operational data.
+We don't recommend `_part_offset-based` lightweight projections for ClickStack workloads. While they reduce storage and write I/O, they can introduce more random access at query time, and their production behavior at the observability scale is still being evaluated. This recommendation may change as the feature matures and we gain more operational data.
 :::
 
 Newer ClickHouse versions also support more lightweight projections that store only the projection sorting key plus a `_part_offset` pointer into the base table, rather than duplicating full rows. This can greatly reduce storage overhead, and recent improvements enable granule-level pruning, making them behave more like true secondary indexes. See:
@@ -768,7 +767,7 @@ Newer ClickHouse versions also support more lightweight projections that store o
 
 ### Alternatives {#projection-alternatives}
 
-If you need multiple ordering keys, projections are not the only option. Depending on operational constraints and how you want ClickStack to route queries, consider:
+If you need multiple ordering keys, projections aren't the only option. Depending on operational constraints and how you want ClickStack to route queries, consider:
 
 - Configuring your OpenTelemetry collector to write to two tables with different `ORDER BY` keys, and create separate ClickStack sources for each table.
 - Create a materialized view as a copy pipeline i.e. attach a materialized view to the main table that selects raw rows into a secondary table with a different ordering key (a denormalization or routing pattern). Create a source for this target table. Examples can be found [here](/materialized-view/incremental-materialized-view#filtering-and-transformation).
