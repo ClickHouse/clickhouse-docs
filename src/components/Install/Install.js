@@ -13,6 +13,7 @@ const InstallSelector = (props) => {
     const handleSelectUbuntu = () => setPlatformType('Ubuntu');
     const handleSelectRedhat = () => setPlatformType('Redhat');
     const handleSelectLinuxOther = () => setPlatformType('LinuxOther');
+    const handleSelectNixOS = () => setPlatformType('NixOS');
 
 
     const renderDistribution = () => {
@@ -47,6 +48,16 @@ const InstallSelector = (props) => {
                         size="sm"
                         title="Other"
                         isSelected={platform === 'LinuxOther'}
+                    />
+                    <CardPrimary
+                        className="install-card"
+                        alignContent="center"
+                        iconUrl="/docs/img/nixos.svg"
+                        infoUrl="https://clickhouse.com"
+                        onClick={handleSelectNixOS}
+                        size="sm"
+                        title="NixOS"
+                        isSelected={platform === 'NixOS'}
                     />
                     <CardPrimary
                         className="install-card"
@@ -92,6 +103,8 @@ const InstallSelector = (props) => {
             return props.rpm_prod
         } else if (platform === 'LinuxOther') {
             return props.tar_prod
+        } else if (platform === 'NixOS') {
+            return props.nixos
         } else if (platform === 'Windows') {
             return props.windows
         } else if (platform === 'MacOS') {
