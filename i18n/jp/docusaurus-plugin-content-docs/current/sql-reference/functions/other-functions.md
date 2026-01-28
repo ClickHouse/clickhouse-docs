@@ -452,9 +452,9 @@ FROM system.numbers LIMIT 5
 
 導入バージョン: v20.5
 
-実行中の ClickHouse サーバーのバイナリに対して、コンパイラによって生成されたビルド ID を返します。
+実行中の ClickHouse サーバーバイナリに対して、コンパイラによって生成されたビルド ID を返します。
 分散テーブルのコンテキストで実行された場合、この関数は各分片に対応する値を持つ通常のカラムを生成します。
-それ以外の場合は、定数値を生成します。
+それ以外の場合は、定数値を返します。
 
 **構文**
 
@@ -468,7 +468,7 @@ buildId()
 
 **戻り値**
 
-ビルド ID を返します。[`String`](/sql-reference/data-types/string)
+ビルドID を返します。[`String`](/sql-reference/data-types/string)
 
 **例**
 
@@ -598,6 +598,75 @@ SELECT catboostEvaluate('/root/occupy.bin', Temperature, Humidity, Light, CO2, H
 4.695691092573497
 ```
 
+## colorOKLABToSRGB \{#colorOKLABToSRGB\}
+
+導入バージョン: v26.2
+
+OKLab 知覚色空間から sRGB 色空間へ色を変換します。
+
+入力色は OKLab 色空間で指定されます。入力値が典型的な OKLab の範囲外にある場合、結果は実装依存になります。
+
+OKLab は次の 3 つの成分を使用します:
+
+* L: 知覚的な明度（典型的には [0..1] の範囲）
+  * a: 緑-赤 の対立軸
+  * b: 青-黄 の対立軸
+
+a および b 成分は理論上は無限に取り得ますが、実際には -0.4 から 0.4 の間に収まります。
+OKLab は、計算コストを低く抑えつつ知覚的に一様となるよう設計されています。
+
+この変換は colorSRGBToOKLAB の逆変換として意図されており、次の段階から成ります:
+
+1. OKLab からリニア sRGB への変換。
+   2) リニア sRGB からガンマ補正された sRGB への変換。
+
+省略可能な gamma 引数は、リニア sRGB からガンマ補正された RGB 値へ変換する際に使用される指数を指定します。指定されない場合、colorSRGBToOKLAB との一貫性のためにデフォルトの gamma 値が使用されます。
+
+OKLab 色空間とその sRGB との関係の詳細については、https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color&#95;value/oklab を参照してください。
+
+**構文**
+
+```sql
+colorOKLABToSRGB(tuple [, gamma])
+```
+
+**引数**
+
+* `tuple` — 数値 `L`, `a`, `b` の 3 要素からなるタプル。`L` は範囲 `[0...1]`。[`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+* `gamma` — 省略可能。リニア sRGB を、各チャネル `x` に対して `(x ^ (1 / gamma)) * 255` を適用することで sRGB に戻す際に使用される指数。デフォルト値は `2.2`。[`Float64`](/sql-reference/data-types/float)
+
+**戻り値**
+
+sRGB の色値を表すタプル (R, G, B) を返します。[`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+
+**例**
+
+**OKLAB を sRGB に変換 (Float)**
+
+```sql title=Query
+SELECT colorOKLABToSRGB((0.4466, 0.0991, 0.44)) AS rgb
+```
+
+```response title=Response
+┌─rgb──────────────────────┐
+                           │ (198.07056923258935,0,0) │
+                           └──────────────────────────┘
+```
+
+**OKLAB を sRGB（UInt8）に変換**
+
+```sql title=Query
+WITH colorOKLABToSRGB((0.7, 0.1, 0.54)) AS t
+                        SELECT tuple(toUInt8(t.1), toUInt8(t.2), toUInt8(t.3)) AS RGB
+```
+
+```response title=Response
+┌─RGB──────────┐
+                        │ (205,0,0)    │
+                        └──────────────┘
+```
+
+
 ## colorOKLCHToSRGB \{#colorOKLCHToSRGB\}
 
 導入バージョン: v25.7
@@ -615,8 +684,8 @@ OKLab/OKLCH は、計算コストを低く抑えつつ知覚的な一様性を�
 この変換は [`colorSRGBToOKLCH`](#colorSRGBToOKLCH) の逆変換です:
 
 1. OKLCH から OKLab への変換
-2. OKLab から Linear sRGB への変換
-3. Linear sRGB から sRGB への変換
+   2) OKLab から Linear sRGB への変換
+   3) Linear sRGB から sRGB への変換
 
 2 番目の引数 `gamma` は、最後の段階で使用されます。
 
@@ -642,18 +711,77 @@ sRGB の色値を表すタプル (R, G, B) を返します。[`Tuple(Float64, Fl
 **OKLCH を sRGB に変換**
 
 ```sql title=Query
-SELECT colorOKLCHToSRGB((0.4466, 0.0991, 45.44), 2.2) AS rgb
-WITH colorOKLCHToSRGB((0.7, 0.1, 54)) as t SELECT tuple(toUInt8(t.1), toUInt8(t.2), toUInt8(t.3)) AS RGB
+SELECT colorOKLCHToSRGB((0.6, 0.12, 40)) AS rgb
 ```
 
 ```response title=Response
-┌─rgb──────────────────────────────────────────────────────┐
-│ (127.03349738778945,66.06672044472008,37.11802592155851) │
-└──────────────────────────────────────────────────────────┘
-┌─RGB──────────┐
-│ (205,139,97) │
-└──────────────┘
+┌─rgb─────────────────────────────────────────────────────┐
+                            │(186.02058688365264,100.68677189684993,71.67819977081572)                                      │
+                            └─────────────────────────────────────────────────────────┘
 ```
+
+**OKLCH を sRGB (UInt8) に変換**
+
+```sql title=Query
+WITH colorOKLCHToSRGB((0.6, 0.12, 40)) AS t
+                            SELECT tuple(toUInt8(t.1), toUInt8(t.2), toUInt8(t.3)) AS RGB
+```
+
+```response title=Response
+┌─RGB──────────┐
+                            │ (186,100,71) │
+                            └──────────────┘
+```
+
+
+## colorSRGBToOKLAB \{#colorSRGBToOKLAB\}
+
+導入バージョン: v26.2
+
+**sRGB** カラースペースでエンコードされた色を、知覚的に一様な **OKLAB** カラースペースへ変換します。
+
+いずれかの入力チャネルが `[0...255]` の範囲外である場合、またはガンマ値が正でない場合、その挙動は実装依存です。
+
+:::note
+**OKLAB** は知覚的に一様なカラースペースです。
+3 つの座標は、それぞれ `L`（明度で、範囲は `[0...1]`）、`a`（Green-Red 軸）、`b`（Blue-Yellow 軸）です。
+OKLab は、計算コストを低く抑えつつ知覚的に一様になるよう設計されています。
+:::
+
+変換は次の 2 段階で構成されます:
+
+1. sRGB から Linear sRGB への変換
+2. Linear sRGB から OKLab への変換
+
+**構文**
+
+```sql
+colorSRGBToOKLAB(tuple[, gamma])
+```
+
+**引数**
+
+* `tuple` — `[0...255]` の範囲にある R, G, B の 3 つの値からなるタプル。[`Tuple(UInt8, UInt8, UInt8)`](/sql-reference/data-types/tuple)
+* `gamma` — オプション。各チャネル `x` に対して `(x / 255)^gamma` を適用することで sRGB を線形化する際に使用する指数。デフォルト値は `2.2`。[`Float64`](/sql-reference/data-types/float)
+
+**返り値**
+
+OKLAB カラースペースの値を表すタプル (L, a, b) を返します。[`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+
+**使用例**
+
+**sRGB を OKLAB に変換する**
+
+```sql title=Query
+SELECT colorSRGBToOKLAB((128, 64, 32), 2.2) AS lab
+```
+
+```response title=Response
+┌─lab───────────────────────────────────────────────────────── ┐
+                        │ (0.4436238384931984,0.07266246769242975,0.07500108778529994) │
+                        └───────────────────────────────────────────────────────────── ┘
+```
+
 
 ## colorSRGBToOKLCH \{#colorSRGBToOKLCH\}
 
@@ -673,7 +801,7 @@ OKLab/OKLCH は、計算コストを低く抑えつつ知覚的に一様にな�
 
 1. sRGB から Linear sRGB への変換
 2. Linear sRGB から OKLab への変換
-3. OKLab から OKLCH への変換
+3. OKLab から OKLCH への変換。
 
 OKLCH 空間における色の例と、それらが sRGB の色にどのように対応するかについては、[https://OKLCH.com/](https://OKLCH.com/) を参照してください。
 
@@ -702,9 +830,10 @@ SELECT colorSRGBToOKLCH((128, 64, 32), 2.2) AS lch
 
 ```response title=Response
 ┌─lch─────────────────────────────────────────────────────────┐
-│ (0.4436238384931984,0.10442699545678624,45.907345481930236) │
-└─────────────────────────────────────────────────────────────┘
+                        │ (0.4436238384931984,0.10442699545678624,45.907345481930236) │
+                        └─────────────────────────────────────────────────────────────┘
 ```
+
 
 ## connectionId \{#connectionId\}
 

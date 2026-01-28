@@ -489,13 +489,33 @@ select a,b,c from {{ source('raw', 'table_2') }}
 > `Warning - Table <previous table name> was detected with the same pattern as model name <your model name> but was not found in this run. In case it is a renamed mv that was previously part of this model, drop it manually (!!!) `
 
 
-#### データのキャッチアップ \{#data-catch-up\}
+#### ターゲットテーブルのスキーマをどのように反映させるか \{#how-to-iterate-the-target-table-schema\}
 
-現在、materialized view (MV) を作成する際は、MV 自体が作成される前に、まずターゲットテーブルが履歴データで満たされます。
+dbt-clickhouse バージョン 1.9.8 から、`dbt run` が MV の SQL 内で異なるカラムを検出した場合に、ターゲットテーブルのスキーマをどのように反映させるかを制御できるようになりました。
 
-言い換えると、dbt-clickhouse は最初にターゲットテーブルを作成し、MV に対して定義されたクエリに基づいて履歴データを事前にロードします。このステップが完了した後にのみ、MV が作成されます。
+デフォルトでは、dbt はターゲットテーブルに対して一切変更を適用しません（`ignore` 設定値）。ただし、この設定を変更することで、[インクリメンタルモデル](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change) の `on_schema_change` 設定と同じ動作をさせることができます。
 
-MV 作成時に履歴データを事前ロードしたくない場合は、`catch-up` 設定を False にすることで、この動作を無効化できます:
+また、この設定を安全策として使用することもできます。`fail` に設定した場合、最初の `dbt run` によって作成されたターゲットテーブルと MV の SQL 内のカラムが異なっていると、ビルドは失敗します。
+
+```jinja2
+{{config(
+    materialized='materialized_view',
+    engine='MergeTree()',
+    order_by='(id)',
+    on_schema_change='fail'
+)}}
+```
+
+
+#### データキャッチアップ \{#data-catch-up\}
+
+デフォルトでは、materialized view (MV) を作成または再作成する際、MV 自体が作成される前に、ターゲットテーブルはまず履歴データでバックフィルされます。この挙動は、`catchup` 設定を `False` にすることで無効化できます。
+
+| Operation                               | `catchup: True` (default)       | `catchup: False`                    |
+| --------------------------------------- | ------------------------------- | ----------------------------------- |
+| Initial deployment (`dbt run`)          | ターゲットテーブルが履歴データでバックフィルされる       | ターゲットテーブルが空の状態で作成される                |
+| Full refresh (`dbt run --full-refresh`) | ターゲットテーブルが再構築され、バックフィルされる       | ターゲットテーブルが空の状態で再作成され、**既存データは失われる** |
+| Normal operation                        | materialized view が新規挿入データを取り込む | materialized view が新規挿入データを取り込む     |
 
 ```python
 {{config(
@@ -505,6 +525,10 @@ MV 作成時に履歴データを事前ロードしたくない場合は、`catc
     catchup=False
 )}}
 ```
+
+:::warning フルリフレッシュ時のデータ損失リスク
+`catchup: False` を `dbt run --full-refresh` と併用すると、対象テーブル内の **既存データがすべて破棄されます**。テーブルは空の状態で再作成され、以降は新規データのみがロードされます。過去データが後から必要になる可能性がある場合は、必ずバックアップを取得しておいてください。
+:::
 
 
 #### リフレッシャブルmaterialized view \{#refreshable-materialized-views\}

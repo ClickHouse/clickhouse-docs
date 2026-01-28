@@ -213,10 +213,13 @@ SETTINGS
 
 ### `keeper_path` \{#keeper_path\}
 
-ZooKeeper 中的路径可以通过表引擎设置单独指定；如果未指定，则默认路径由全局配置中提供的路径和表的 UUID 组成。
+ZooKeeper 中队列元数据的路径。如果未显式指定，ClickHouse 会基于 `s3queue_default_zookeeper_path`、数据库 UUID 和表 UUID 构建该路径。绝对路径值（以 `/` 开头）会按原样使用，而相对路径值会附加到已配置的前缀之后。在引擎连接 ZooKeeper 之前，会先展开 `{database}` 或 `{uuid}` 等宏。
+
+要使用辅助 ZooKeeper 集群，请在该值前加上已配置的名称前缀，例如 `analytics_keeper:/clickhouse/queue/orders`。该名称必须存在于 `<auxiliary_zookeepers>` 中；否则引擎会报告 `Unknown auxiliary ZooKeeper name ...`。完整字符串（包括该前缀）会保留在 `SHOW CREATE TABLE` 中，从而可以对该语句进行原样复制。
+
 可能的取值：
 
-* 字符串。
+- 字符串。
 
 默认值：`/`。
 

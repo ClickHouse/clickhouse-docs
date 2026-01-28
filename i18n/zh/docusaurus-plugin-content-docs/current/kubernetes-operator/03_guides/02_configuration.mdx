@@ -1,0 +1,485 @@
+---
+position: 2
+slug: /clickhouse-operator/guides/configuration
+title: '配置'
+keywords: ['kubernetes']
+description: '本指南介绍如何使用 ClickHouse Operator 来配置 ClickHouse 和 Keeper 集群。'
+doc_type: 'guide'
+---
+
+# ClickHouse Operator 配置指南 \{#clickhouse-operator-configuration-guide\}
+
+本指南说明如何通过 Operator 配置 ClickHouse 和 Keeper 集群。
+
+## ClickHouseCluster 配置 \{#clickhousecluster-configuration\}
+
+### 基础配置 \{#basic-configuration\}
+
+```yaml
+apiVersion: clickhouse.com/v1alpha1
+kind: ClickHouseCluster
+metadata:
+  name: my-cluster
+spec:
+  replicas: 3           # Number of replicas per shard
+  shards: 2             # Number of shards
+  keeperClusterRef:
+    name: my-keeper     # Reference to KeeperCluster
+  dataVolumeClaimSpec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+```
+
+
+### 副本和分片 \{#replicas-and-shards\}
+
+* **Replicas（副本）**: 每个分片中的 ClickHouse 实例数量（用于高可用性）
+* **Shards（分片）**: 水平分片的数量（用于扩展）
+
+```yaml
+spec:
+  replicas: 3  # Default: 3
+  shards: 2    # Default: 1
+```
+
+具有 `replicas: 3` 和 `shards: 2` 的集群将总共创建 6 个 ClickHouse Pod（容器组）。
+
+
+### Keeper 集成 \{#keeper-integration\}
+
+每个 ClickHouse 集群都必须引用一个 KeeperCluster 用于协调：
+
+```yaml
+spec:
+  keeperClusterRef:
+    name: my-keeper  # Name of the KeeperCluster in the same namespace
+```
+
+
+## KeeperCluster 配置 \{#keepercluster-configuration\}
+
+```yaml
+apiVersion: clickhouse.com/v1alpha1
+kind: KeeperCluster
+metadata:
+  name: my-keeper
+spec:
+  replicas: 3  # Must be odd: 1, 3, 5, 7, 9, 11, 13, or 15
+  dataVolumeClaimSpec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 5Gi
+```
+
+
+## 存储配置 \{#storage-configuration\}
+
+配置持久化存储：
+
+```yaml
+spec:
+  dataVolumeClaimSpec:
+    storageClassName: fast-ssd  # Optional: consider your storage class based on the installed CSI
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Gi
+```
+
+:::note
+只有在底层 StorageClass 支持卷扩容时，Operator 才能修改现有 PVC。
+:::
+
+
+## Pod（容器组）配置 \{#pod-configuration\}
+
+### 自动拓扑分布和亲和性 \{#automatic-topology-spread-and-affinity\}
+
+在各个可用区之间分布 Pod（容器组）：
+
+```yaml
+spec:
+  podTemplate:
+    topologyZoneKey: topology.kubernetes.io/zone
+    nodeHostnameKey: kubernetes.io/hostname
+```
+
+:::note
+确保 Kubernetes 集群在不同可用区中具有足够数量的节点，以满足分布约束。
+:::
+
+
+### 手动配置 \{#manual-configuration\}
+
+可以自定义 pod（容器组）亲和性 / 反亲和性规则以及拓扑分布约束。
+
+```yaml
+spec:
+  podTemplate:
+    affinity:
+      <your-affinity-rules-here>
+    topologySpreadConstraints:
+      <your-topology-spread-constraints-here>
+```
+
+
+### 请参阅 [API Reference](../04_api_reference.mdx#podtemplatespec) 了解所有受支持的 Pod（容器组）Template 选项。 \{#see-api-reference04_api_referencemdxpodtemplatespec-for-all-supported-pod-template-options\}
+
+## 容器配置 \{#container-configuration\}
+
+### 自定义镜像 \{#custom-image\}
+
+使用特定的 ClickHouse 镜像：
+
+```yaml
+spec:
+  containerTemplate:
+    image:
+      repository: clickhouse/clickhouse-server
+      tag: "25.12"
+    imagePullPolicy: IfNotPresent
+```
+
+
+### 容器资源 \{#container-resources\}
+
+为 ClickHouse 容器配置 CPU 和内存资源：
+
+```yaml
+# default values
+spec:
+  containerTemplate:
+    resources:
+      requests:
+        cpu: "250m"
+        memory: "256Mi"
+      limits:
+        cpu: "1"
+        memory: "1Gi"
+```
+
+
+### 环境变量 \{#environment-variables\}
+
+添加自定义环境变量：
+
+```yaml
+spec:
+  containerTemplate:
+    env:
+    - name: CUSTOM_ENV_VAR
+      value: "1"
+```
+
+
+### 卷挂载 \{#volume-mounts\}
+
+添加更多卷挂载：
+
+```yaml
+spec:
+  containerTemplate:
+    volumeMounts:
+    - name: custom-config
+      mountPath: /etc/clickhouse-server/config.d/custom.xml
+      subPath: custom.xml
+```
+
+:::note
+允许为同一个 `mountPath` 指定多个卷挂载。
+Operator 会创建一个 projected 卷，其中包含所有已指定的挂载。
+:::
+
+
+### 有关容器模板的所有受支持选项，请参阅 [API 参考](../04_api_reference.mdx#containertemplatespec)。 \{#see-api-reference04_api_referencemdxcontainertemplatespec-for-all-supported-container-template-options\}
+
+## TLS/SSL 配置 \{#tls-ssl-configuration\}
+
+### 配置安全端点 \{#configure-secure-endpoints\}
+
+传入一个指向包含 TLS 证书的 Kubernetes Secret 的引用，以启用安全端点
+
+```yaml
+spec:
+  settings:
+    tls:
+      enabled: true
+      required: true # Insecure ports are disabled if set
+      serverCertSecret:
+        name: <certificate-secret-name>
+```
+
+
+### SSL 证书 Secret 格式 \{#ssl-certificate-secret-format\}
+
+Secret 中应包含以下键名：
+
+- `tls.crt` - PEM 编码格式的服务器证书
+- `tls.key` - PEM 编码格式的私钥
+- `ca.crt` - PEM 编码格式的 CA 证书链
+
+:::note
+此格式与 cert-manager 生成的证书兼容。
+:::
+
+### 通过 TLS 进行 ClickHouse-Keeper 通信 \{#clickhouse-keeper-communication-over-tls\}
+
+如果 KeeperCluster 启用了 TLS，ClickHouseCluster 将自动使用到 Keeper 节点的安全连接。
+
+ClickHouseCluster 必须能够验证 Keeper 节点的证书。
+如果 ClickHouseCluster 启用了 TLS，它会使用 `ca.crt` 证书包（bundle）进行验证；否则，将使用默认的 CA 证书包。
+
+用户可以提供一个自定义的 CA 证书包引用：
+
+```yaml
+spec:
+    settings:
+        tls:
+          caBundle:
+            name: <ca-certificate-secret-name>
+            key: <ca-certificate-key>
+```
+
+
+## ClickHouse 设置 \{#clickhouse-settings\}
+
+### 默认用户密码 \{#default-user-password\}
+
+为默认用户设置密码：
+
+```yaml
+spec:
+  settings:
+    defaultUserPassword:
+      passwordType: <password-type> # Default: password
+      <secret|configMap>:
+        name: <resource name>
+        key: <password>
+```
+
+:::note
+不推荐使用 ConfigMap 存储明文形式的密码。
+:::
+
+创建 Secret：
+
+```bash
+kubectl create secret generic clickhouse-password --from-literal=password='your-secure-password'
+```
+
+
+#### 使用 ConfigMap 配置用户密码 \{#using-configmap-for-user-passwords\}
+
+你也可以使用 ConfigMap 来配置非敏感的默认密码：
+
+```yaml
+spec:
+  settings:
+    defaultUserPassword:
+      passwordType: password_sha256_hex
+      configMap:
+        name: clickhouse-config
+        key: default_password
+```
+
+
+### 在配置中自定义用户 \{#custom-users-in-configuration\}
+
+在配置文件中配置其他用户。
+
+为用户创建一个 ConfigMap 和 Secret：
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-config
+data:
+  reader.yaml: |
+    users:
+      reader:
+        password:
+          - '@from_env': READER_PASSWORD
+        profile: default
+        grants:
+          - query: "GRANT SELECT ON *.*"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: reader-password
+data:
+  password: "c2VjcmV0LXBhc3N3b3Jk"  # base64("secret-password")
+
+```
+
+为 ClickHouseCluster 添加自定义配置：
+
+```yaml
+spec:
+  podTemplate:
+    volumes:
+      - name: reader-user
+        configMap:
+          name: user-config
+  containerTemplate:
+    env:
+      - name: READER_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: reader-password
+            key: password
+    volumeMounts:
+      - mountPath: /etc/clickhouse-server/users.d/
+        name: reader-user
+        readOnly: true
+```
+
+
+### 数据库同步 \{#database-sync\}
+
+为新建副本启用自动数据库同步：
+
+```yaml
+spec:
+  settings:
+    enableDatabaseSync: true  # Default: true
+```
+
+启用后，Operator 会将 Replicated 表和集成表同步到新的副本。
+
+
+## 自定义配置 \{#custom-configuration\}
+
+### 内嵌额外配置 \{#embedded-extra-configuration\}
+
+无需挂载自定义配置文件，你可以直接指定额外的 ClickHouse 配置选项。
+
+使用 `extraConfig` 添加自定义 ClickHouse 配置：
+
+```yaml
+spec:
+  settings:
+    extraConfig:
+      background_pool_size: 20
+```
+
+
+#### 实用链接： \{#useful-links\}
+
+* [YAML 配置示例](/operations/configuration-files#example-1)
+* [所有服务器配置项](/operations/server-configuration-parameters/settings)
+
+### 内嵌额外用户配置 \{#embedded-extra-users-configuration\}
+
+还可以使用 `extraUsersConfig` 指定额外的 ClickHouse 用户配置。这对于在集群配置中直接定义用户、profile、QUOTA 和授权非常有用。
+
+```yaml
+spec:
+  settings:
+    extraUsersConfig:
+      users:
+        analyst:
+          password:
+            - '@from_env': ANALYST_PASSWORD
+          profile: "readonly"
+          quota: "default"
+      profiles:
+        readonly:
+          readonly: 1
+          max_memory_usage: 10000000000
+      quotas:
+        default:
+          interval:
+            duration: 3600
+            queries: 1000
+            errors: 100
+```
+
+:::note
+`extraUsersConfig` 存储在 k8s 的 ConfigMap 对象中。请避免在其中以明文形式存放密钥/机密信息。
+:::
+
+
+#### 有关 ClickHouse 用户的所有受支持配置选项，请参阅[文档](/operations/settings/settings-users)。 \{#see-documentationoperationssettingssettings-users-for-all-supported-clickhouse-users-configuration-options\}
+
+### 配置示例 \{#configuration-example\}
+
+完整的配置示例：
+
+```yaml
+apiVersion: clickhouse.com/v1alpha1
+kind: KeeperCluster
+metadata:
+  name: sample
+spec:
+  replicas: 3
+  dataVolumeClaimSpec:
+    storageClassName: <storage-class-name>
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+  podTemplate:
+    topologyZoneKey: topology.kubernetes.io/zone
+    nodeHostnameKey: kubernetes.io/hostname
+  containerTemplate:
+    resources:
+      requests:
+        cpu: "2"
+        memory: "4Gi"
+      limits:
+        cpu: "4"
+        memory: "8Gi"
+  settings:
+    tls:
+      enabled: true
+      required: true
+      serverCertSecret:
+        name: <keeper-certificate-secret>
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: default-user-password
+data:
+  # secret-password
+  password: "..." # sha256 hex of the password
+---
+apiVersion: clickhouse.com/v1alpha1
+kind: ClickHouseCluster
+metadata:
+  name: sample
+spec:
+  replicas: 2
+  dataVolumeClaimSpec:
+    storageClassName: <storage-class-name>
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 200Gi
+  keeperClusterRef:
+    name: sample
+  podTemplate:
+    topologyZoneKey: topology.kubernetes.io/zone
+    nodeHostnameKey: kubernetes.io/hostname
+  settings:
+    tls:
+      enabled: true
+      required: true
+      serverCertSecret:
+        name: clickhouse-cert
+    defaultUserPassword:
+      passwordType: password_sha256_hex
+      configMap:
+        key: password
+        name: default-password
+```

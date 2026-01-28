@@ -81,6 +81,14 @@ true の場合、CollapsingMergeTree または VersionedCollapsingMergeTree テ�
 
 有効にすると、テーブルのすべての文字列カラムに対して、min-max（スキップ）索引が追加されます。
 
+## add_minmax_index_for_temporal_columns \{#add_minmax_index_for_temporal_columns\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "新しい設定"}]}]}/>
+
+有効にすると、テーブル内のすべての Date、Date32、Time、Time64、DateTime、DateTime64 カラムに対して、min-max（スキップ）索引が追加されます。
+
 ## allow_coalescing_columns_in_partition_or_order_key \{#allow_coalescing_columns_in_partition_or_order_key\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -489,6 +497,22 @@ ClickHouse Cloud でのみ利用可能です。マージ処理中に、パーツ
 
 ストレージディスクの名前。`storage policy` の代わりに指定できます。
 
+## distributed_index_analysis_min_indexes_size_to_activate \{#distributed_index_analysis_min_indexes_size_to_activate\}
+
+<SettingsInfoBlock type="UInt64" default_value="1073741824" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1073741824"},{"label": "New setting"}]}]}/>
+
+ディスク上（非圧縮）のデータスキップ索引および primary key 索引の最小サイズ。この値を超えると distributed index analysis が有効になります。
+
+## distributed_index_analysis_min_parts_to_activate \{#distributed_index_analysis_min_parts_to_activate\}
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "10"},{"label": "New setting"}]}]}/>
+
+分散索引解析を有効化するために必要なパーツの最小数
+
 ## dynamic_serialization_version \{#dynamic_serialization_version\}
 
 <SettingsInfoBlock type="MergeTreeDynamicSerializationVersion" default_value="v3" />
@@ -525,7 +549,7 @@ Dynamic データ型のシリアライズバージョン。互換性を維持す
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}]}/>
 
 設定 `min_age_to_force_merge_seconds` および
 `min_age_to_force_merge_on_partition_only` が、

@@ -15,6 +15,7 @@ doc_type: 'reference'
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster] [ENGINE = engine(...)] [COMMENT 'Comment']
 ```
 
+
 ## 子句 \{#clauses\}
 
 ### IF NOT EXISTS \{#if-not-exists\}
@@ -30,7 +31,7 @@ ClickHouse 会在指定集群的所有服务器上创建 `db_name` 数据库。�
 
 ### ENGINE \{#engine\}
 
-默认情况下，ClickHouse 使用其自带的 [Atomic](../../../engines/database-engines/atomic.md) 数据库引擎。还可以使用 [Lazy](../../../engines/database-engines/lazy.md)、[MySQL](../../../engines/database-engines/mysql.md)、[PostgresSQL](../../../engines/database-engines/postgresql.md)、[MaterializedPostgreSQL](../../../engines/database-engines/materialized-postgresql.md)、[Replicated](../../../engines/database-engines/replicated.md)、[SQLite](../../../engines/database-engines/sqlite.md)。
+默认情况下，ClickHouse 使用其自带的 [Atomic](../../../engines/database-engines/atomic.md) 数据库引擎。还可以使用 [MySQL](../../../engines/database-engines/mysql.md)、[PostgresSQL](../../../engines/database-engines/postgresql.md)、[MaterializedPostgreSQL](../../../engines/database-engines/materialized-postgresql.md)、[Replicated](../../../engines/database-engines/replicated.md)、[SQLite](../../../engines/database-engines/sqlite.md)。
 
 ### COMMENT \{#comment\}
 

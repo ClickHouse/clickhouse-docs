@@ -33,6 +33,8 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - af-south-1 (Южная Африка)
 - eu-north-1 (Стокгольм)
 - sa-east-1 (Южная Америка)
+- ap-southeast-3 (Джакарта)
+- ap-east-1 (Гонконг)
 
 ## Регионы Google Cloud \{#google-cloud-regions\}
 

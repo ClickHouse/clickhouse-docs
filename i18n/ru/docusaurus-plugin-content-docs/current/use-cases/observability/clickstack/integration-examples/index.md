@@ -23,6 +23,7 @@ ClickStack предоставляет несколько способов при
 | [JVM Metrics](/use-cases/observability/clickstack/integrations/jvm-metrics) | Мониторинг производительности JVM |
 | [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Мониторинг производительности Kafka |
 | [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | Мониторинг кластеров K8s |
+| [MySQL Logs](/use-cases/observability/clickstack/integrations/mysql-logs) | Сбор логов медленных запросов и ошибок MySQL |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Сбор логов доступа и ошибок Nginx |
 | [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Трейсинг HTTP‑запросов Nginx |
 | [PostgreSQL Logs](/use-cases/observability/clickstack/integrations/postgresql-logs) | Сбор логов Postgres |
