@@ -1,4 +1,4 @@
-personal_ws-1.1 en 4006 
+personal_ws-1.1 en 4011 
 AArch
 ACLs
 AICPA
@@ -1266,6 +1266,7 @@ ReplicatedSend
 ReplicatedSummingMergeTree
 ReplicatedVersionedCollapsingMergeTree
 Resample
+ResourceAttributes
 RestartReplicaThreads
 RestartReplicaThreadsActive
 RestoreThreads
@@ -1518,6 +1519,7 @@ TotalRowsOfMergeTreeTables
 TotalTemporaryFiles
 Totalprices
 TotalsMode
+TraceId
 TrackedLink
 Tradeoff
 Transactional
@@ -1959,6 +1961,7 @@ cbrt
 ccache
 cctz
 ceil
+centric
 centroid
 certificateFile
 cetera
@@ -2309,6 +2312,7 @@ exponentialTimeDecayedAvg
 exponentialTimeDecayedCount
 exponentialTimeDecayedMax
 exponentialTimeDecayedSum
+exponentialhistogram
 exponentialmovingaverage
 expr
 exprN
@@ -2551,6 +2555,7 @@ http
 https
 hudi
 hudiCluster
+hyperdx
 hyperscan
 hypot
 hyvor
