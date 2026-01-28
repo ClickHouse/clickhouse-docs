@@ -1,4 +1,4 @@
-personal_ws-1.1 en 4002 
+personal_ws-1.1 en 4006 
 AArch
 ACLs
 AICPA
@@ -71,6 +71,7 @@ AutoFDO
 AutoML
 Autocompletion
 Autoscaler
+Aviv
 AvroConfluent
 AzureQueue
 Azurite
@@ -765,6 +766,7 @@ LibreChat
 Lifecycles
 LightHouse
 Lightdash
+Lightdash's
 LineAsString
 LineAsStringWithNames
 LineAsStringWithNamesAndTypes
@@ -895,6 +897,7 @@ Mixpanel
 Mongo
 Mongodb
 Monotonicity
+Montréal
 MsgPack
 MsgPackUUIDRepresentation
 MultiLineString
@@ -1322,6 +1325,7 @@ SYSCONF
 SaaS
 Sackmann's
 SageMaker
+Saitama
 Sanjeev
 Sankey
 Sapchuk

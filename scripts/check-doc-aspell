@@ -171,12 +171,23 @@ if [[ ${1:-} == "-i" ]]; then
 
         echo "Checking $fname"
 
-        # Fetch ignore words for the file and make custom dict
+        # Fetch ignore words for the file and filter out non-ASCII words
         ignore_words=$(get_ignore_words_for_file "$fname")
-        word_count=$(echo "$ignore_words" | wc -w)
+        ascii_only_words=""
+        
+        while IFS= read -r word; do
+            [[ -z "$word" ]] && continue
+            # Check if word contains only printable ASCII (no extended characters)
+            if printf '%s' "$word" | LC_ALL=C grep -q '^[[:print:]]*$' && \
+               ! printf '%s' "$word" | LC_ALL=C grep -q $'[\x80-\xFF]'; then
+                ascii_only_words="${ascii_only_words}${word}"$'\n'
+            fi
+        done <<< "$ignore_words"
+        
+        word_count=$(printf '%s' "$ascii_only_words" | grep -c . || echo 0)
         temp_dict="${ROOT_PATH}/aspell.tmp.dict"
-        echo "personal_ws-1.1 ${CHECK_LANG} $word_count" > "$temp_dict" # Add header with word count
-        echo "$ignore_words" | tr ' ' '\n' >> "$temp_dict"            # Add words, one per line
+        printf "personal_ws-1.1 %s %d\n" "${CHECK_LANG}" "$word_count" > "$temp_dict"
+        printf '%s' "$ascii_only_words" >> "$temp_dict"
 
         # Run Aspell on the filtered/preprocessed file
         temp_file=$(mktemp)
