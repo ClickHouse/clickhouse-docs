@@ -3,7 +3,7 @@ slug: /cloud/data-sources/secure-azure
 sidebar_label: 'Accessing Azure data securely'
 title: 'Connecting ClickHouse Cloud to Azure Blob Storage'
 description: 'This article demonstrates how ClickHouse Cloud customers can access their Azure data securely'
-keywords: ['GCS']
+keywords: ['ABS', 'azure blob storage']
 doc_type: 'guide'
 ---
 
