@@ -22,7 +22,7 @@ You can think of it as a universal API standard designed specifically for AI sys
 The key advantage of MCP is that AI libraries only need to implement support for the protocol once. 
 After that, all MCP-compatible services become immediately accessible, saving AI library maintainers a lot of time.
 
-## What is MCP's architecture?  {#mcp-architecture}
+## What is MCP's architecture? {#mcp-architecture}
 
 MCP follows a client-server architecture:
 

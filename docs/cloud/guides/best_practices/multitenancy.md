@@ -11,7 +11,7 @@ On a SaaS data analytics platform, it is common for multiple tenants, such as or
 
 Depending on the requirements, there are different ways to implement multi-tenancy. Below is a guide on how to implement them with ClickHouse Cloud.
 
-## Shared table  {#shared-table}
+## Shared table {#shared-table}
 
 In this approach, data from all tenants is stored in a single shared table, with a field (or set of fields) used to identify each tenant's data. To maximize performance, this field should be included in the [primary key](/sql-reference/statements/create/table#primary-key). To ensure that you can only access data belonging to your respective tenants we use [role-based access control](/operations/access-rights), implemented through [row policies](/operations/access-rights#row-policy-management).
 

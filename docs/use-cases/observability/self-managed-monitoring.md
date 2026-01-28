@@ -13,7 +13,7 @@ import CommunityMonitoring from '@site/docs/_snippets/_community_monitoring.md';
 
 # Self-managed monitoring {#cloud-monitoring}
 
-This guide provides enterprise teams evaluating ClickHouse open-source with comprehensive information on monitoring and observability capabilities for production deployments. Enterprise customers frequently ask about out-of-the-box monitoring features, integration with existing observability stacks including tools like Datadog and AWS CloudWatch, and how ClickHouse’ss monitoring compares to self-hosted deployments.
+This guide provides enterprise teams evaluating ClickHouse open-source with comprehensive information on monitoring and observability capabilities for production deployments. Enterprise customers frequently ask about out-of-the-box monitoring features, integration with existing observability stacks including tools like Datadog and AWS CloudWatch, and how ClickHouse's monitoring compares to self-hosted deployments.
 
 ### Prometheus-based integration architecture {#prometheus}
 ClickHouse exposes Prometheus-compatible metrics through different endpoints depending on your deployment model, each with distinct operational characteristics:

@@ -40,7 +40,7 @@ FROM s3('https://ClickHouse-public-datasets.s3.amazonaws.com/wikistat/partitione
 LIMIT 1e9;
 ```
 
-## Aggregating by time bucket  {#time-series-aggregating-time-bucket}
+## Aggregating by time bucket {#time-series-aggregating-time-bucket}
 
 The most popular requirement is to aggregate data based on periods, e.g. get the total amount of hits for each day:
 

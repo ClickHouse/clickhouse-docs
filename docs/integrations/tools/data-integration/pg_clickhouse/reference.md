@@ -229,7 +229,7 @@ pg_clickhouse will fetch a list of all the tables in the specified ClickHouse
 database ("demo" in the above examples), fetch column definitions for each,
 and execute [CREATE FOREIGN TABLE](#create-foreign-table) commands to create
 the foreign tables. Columns will be defined using the [supported data
-types](#data-types) and, were detectible, the options supported by [CREATE
+types](#data-types) and, were detectable, the options supported by [CREATE
 FOREIGN TABLE](#create-foreign-table).
 
 :::tip Imported Identifier Case Preservation

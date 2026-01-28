@@ -42,7 +42,7 @@ To restrict which clients can call your Query API endpoints:
 
 #### Add allowed IP addresses {#add-ips}
 
-1. In the **Alow access to this API Key** section, select **Specific locations**
+1. In the **Allow access to this API Key** section, select **Specific locations**
 2. Enter IP addresses or CIDR ranges (e.g., `203.0.113.1` or `203.0.113.0/24`)
 3. Add multiple entries as needed
 

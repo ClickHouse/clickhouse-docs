@@ -57,7 +57,7 @@ Context is precious—every token depletes the agent's "attention budget." Like 
 
 Strike a balance between two extremes:
 
-- **Too specific**: Hardcoding brittle if-else logic that creates fragility and maintenance complexity
+- **Too specific**: Hard coding brittle if-else logic that creates fragility and maintenance complexity
 - **Too vague**: High-level guidance that fails to give concrete signals or falsely assumes shared context
 
 The optimal altitude is specific enough to guide behavior effectively, yet flexible enough for the model to apply strong heuristics. Start with a minimal prompt on the best model available, then add clear instructions based on observed failure modes.

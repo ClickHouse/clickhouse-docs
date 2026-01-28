@@ -43,7 +43,7 @@ SELECT * FROM pg_available_extensions;
 | `address_standardizer_data_us-3` | 3.6.1 | Alias for address_standardizer_data_us |
 | `adminpack` | 2.1 | Administrative functions for PostgreSQL *(PG16 only)* |
 | `amcheck` | | Functions for verifying relation integrity |
-| `autoinc` | 1.0 | Functions for autoincrementing fields |
+| `autoinc` | 1.0 | Functions for auto-incrementing fields |
 | `bloom` | 1.0 | Bloom access method - signature file based index |
 | `bool_plperl` | 1.0 | Transform between bool and plperl |
 | `bool_plperlu` | 1.0 | Transform between bool and plperlu |

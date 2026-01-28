@@ -31,7 +31,7 @@ In ClickStack, each **data source maps directly to one or more ClickHouse tables
 |----------------------------------|------------------------------------------------------------------------------------------------------------------------|
 | Logs                             | [otel_logs](/use-cases/observability/clickstack/ingesting-data/schemas#logs)                                          |
 | Traces                           | [otel_traces](/use-cases/observability/clickstack/ingesting-data/schemas#traces)                                       |
-| Metrics (guages)                 | [otel_metrics_gauge](/use-cases/observability/clickstack/ingesting-data/schemas#gauge)                                 |
+| Metrics (gauges)                 | [otel_metrics_gauge](/use-cases/observability/clickstack/ingesting-data/schemas#gauge)                                 |
 | Metrics (sums)                   | [otel_metrics_sum](/use-cases/observability/clickstack/ingesting-data/schemas#sum)                                     |
 | Metrics (histogram)              | [otel_metrics_histogram](/use-cases/observability/clickstack/ingesting-data/schemas#histogram)                         |
 | Metrics (Exponential histograms) | [otel_metrics_exponentialhistogram](/use-cases/observability/clickstack/ingesting-data/schemas#exponential-histograms) |
@@ -746,7 +746,7 @@ Queries that don't constrain `TraceId`, or that primarily filter on other dimens
 Projections can also store aggregations (similar to materialized views). In ClickStack, projection-based aggregations are not generally recommended because selection depends on the ClickHouse analyzer, and usage can be harder to control and reason about. Instead, prefer explicit materialized views that ClickStack can register and select intentionally at the application layer.
 :::
 
-In practice, projections are best suited for workflows where you frequently pivot from a broader search to a trace-centric drilldown (for example, fetching all spans for a specific TraceId).
+In practice, projections are best suited for workflows where you frequently pivot from a broader search to a trace-centric drill down (for example, fetching all spans for a specific TraceId).
 
 ### Costs and guidance {#projection-costs-and-guidance}
 

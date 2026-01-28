@@ -13,7 +13,7 @@ integration:
 
 # ClickPipes for MySQL FAQ
 
-### Does the MySQL ClickPipe support MariaDB?  {#does-the-clickpipe-support-mariadb}
+### Does the MySQL ClickPipe support MariaDB? {#does-the-clickpipe-support-mariadb}
 Yes, the MySQL ClickPipe supports MariaDB 10.0 and above. The configuration for it is very similar to MySQL, using GTID replication by default.
 
 ### Does the MySQL ClickPipe support PlanetScale, Vitess, or TiDB? {#does-the-clickpipe-support-planetscale-vitess}

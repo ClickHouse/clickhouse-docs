@@ -146,7 +146,7 @@ As a result, larger datasets require proportionally more RAM.
 | **Speed** | Slow | Fast | Flexible |
 | **Others** | Quantized: more space or irreversible precision | Index has to fit in memory and has to be built | Still O(#records) |
 
-## QBit deepdive {#qbit-deepdive}
+## QBit deep dive {#qbit-deepdive}
 
 ### Quantised Bit (QBit) {#quantised-bit}
 
@@ -253,7 +253,7 @@ BFloat16 is a Float32 truncated by half. It keeps the same sign bit and 8-bit ex
 Float64, however, is a different story. It uses an 11-bit exponent and a 52-bit mantissa, meaning it's not simply a Float32 with twice the bits. Its structure and exponent bias are completely different. Downcasting a Float64 to a smaller format like Float32 requires an actual IEEE-754 conversion, where each value is rounded to the nearest representable Float32. This rounding step is computationally expensive.
 
 :::tip
-If you're interested in a deep-dive of performance elements of QBit, see ["Let’s vectorise"](https://clickhouse.com/blog/qbit-vector-search#lets-vectorise)
+If you're interested in a deep-dive of performance elements of QBit, see ["Let’s vectorize"](https://clickhouse.com/blog/qbit-vector-search#lets-vectorise)
 :::
 
 ## Example with DBpedia {#example}

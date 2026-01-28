@@ -62,7 +62,7 @@ You can optionally toggle search inputs to be in SQL mode. This will accept any 
 SQL WHERE clause for searching. This is useful for complex queries that cannot be
 expressed in Lucene syntax.
 
-### Select statement  {#select-statement}
+### Select statement {#select-statement}
 
 To specify the columns to display in the search results, you can use the `SELECT`
 input. This is a SQL SELECT expression for the columns to select in the search page.
