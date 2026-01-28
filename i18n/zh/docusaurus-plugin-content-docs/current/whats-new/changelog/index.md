@@ -8,10 +8,7 @@ title: '2026 年变更日志'
 doc_type: 'changelog'
 ---
 
-
 ### ClickHouse 26.1 版本，2026-01-29。[演示](https://presentations.clickhouse.com/2026-release-26.1/)，[视频](TODO) \{#261\}
-
-
 
 #### 不兼容变更 \{#backward-incompatible-change\}
 
@@ -31,10 +28,6 @@ doc_type: 'changelog'
 * `joinGet/joinGetOrNull` 函数现在会对底层 Join 表强制要求具备 `SELECT` 权限。此更改之后，执行 `joinGet('db.table', 'column', key)` 要求用户同时对 Join 表中定义的键列以及要获取的属性列拥有 `SELECT` 权限。缺少这些权限的查询将失败，并返回 `ACCESS_DENIED`。迁移时，可通过 `GRANT SELECT ON db.join_table TO user` 授予整张表的访问权限，或通过 `GRANT SELECT(key_col, attr_col) ON db.join_table TO user` 授予列级访问权限。此更改会影响所有依赖 `joinGet`/`joinGetOrNull` 且之前未显式配置 `SELECT` 授权的用户和应用程序。[#94307](https://github.com/ClickHouse/ClickHouse/pull/94307)（[Vladimir Cherkasov](https://github.com/vdimir)）。
 * 针对 `CREATE TABLE ... AS ...` 查询改为检查 `SHOW COLUMNS`。之前检查的是 `SHOW TABLES`，这对于此类权限检查来说是不正确的权限授予。[#94556](https://github.com/ClickHouse/ClickHouse/pull/94556)（[pufit](https://github.com/pufit)）。
 * 使 `Hash` 输出格式不再依赖于数据块大小。[#94503](https://github.com/ClickHouse/ClickHouse/pull/94503)（[Alexey Milovidov](https://github.com/alexey-milovidov)）。请注意，与之前版本相比，此更改会导致输出的哈希值发生变化。
-
-
-
-
 
 #### 新特性 \{#new-feature\}
 
@@ -62,65 +55,58 @@ doc_type: 'changelog'
 * 为 deltaLakeCluster 添加对删除向量的支持。 [#94365](https://github.com/ClickHouse/ClickHouse/pull/94365) ([Kseniia Sumarokova](https://github.com/kssenii)).
 * 为数据湖增加对 Google Cloud Storage 的支持。 [#93866](https://github.com/ClickHouse/ClickHouse/pull/93866) ([Konstantin Vedernikov](https://github.com/scanhex12)).
 
-
-
 #### 实验特性 \{#experimental-feature\}
+
 * 将 `QBit` 从 Experimental 提升至 Beta。 [#93816](https://github.com/ClickHouse/ClickHouse/pull/93816) ([Raufs Dunamalijevs](https://github.com/rienath)).
 * 新增对 `Nullable(Tuple)` 的支持。将 `allow_experimental_nullable_tuple_type` 设置为 1 以启用该功能。 [#89643](https://github.com/ClickHouse/ClickHouse/pull/89643) ([Nihal Z. Miaji](https://github.com/nihalzp)).
 * 支持 Paimon REST catalog，延续自 https://github.com/ClickHouse/ClickHouse/pull/84423。 [#92011](https://github.com/ClickHouse/ClickHouse/pull/92011) ([JIaQi Tang](https://github.com/JiaQiTang98)).
 
-
-
 #### 性能优化 \{#performance-improvement\}
 
-- 默认启用 JSON 的高级共享数据。此更改后将无法降级到 <25.8 版本,因为这些版本无法读取包含 JSON 列的新分区片段。为了安全升级,建议将 `compatibility` 设置为先前版本,或设置 MergeTree 设置 `dynamic_serialization_version='v2', object_serialization_version='v2'`。[#92511](https://github.com/ClickHouse/ClickHouse/pull/92511) ([Pavel Kruglov](https://github.com/Avogar))。
-- Setting `use_skip_indexes_on_data_read` is now enabled by default. This setting allows filtering in a streaming fashion, at the same time as reading, improving query performance and startup time. [#93407](https://github.com/ClickHouse/ClickHouse/pull/93407) ([Shankar Iyer](https://github.com/shankar-iyer)).
-- Datalakes prewhere & multistage prewhere in Parquet reader v3. Resolves [#89101](https://github.com/ClickHouse/ClickHouse/issues/89101). [#93542](https://github.com/ClickHouse/ClickHouse/pull/93542) ([Konstantin Vedernikov](https://github.com/scanhex12)).
-- Improve performance of `DISTINCT` on `LowCardinality` columns. Closes [#5917](https://github.com/ClickHouse/ClickHouse/issues/5917). [#91639](https://github.com/ClickHouse/ClickHouse/pull/91639) ([Nihal Z. Miaji](https://github.com/nihalzp)).
-- Optimize `distinctJSONPaths` aggregate function so it reads only JSON paths from data parts and not the whole JSON column. [#92196](https://github.com/ClickHouse/ClickHouse/pull/92196) ([Pavel Kruglov](https://github.com/Avogar)).
-- More filters pushed down JOINs. [#85556](https://github.com/ClickHouse/ClickHouse/pull/85556) ([Nikita Taranov](https://github.com/nickitat)).
-- Support more cases for push down from join ON condition when the filter uses inputs only from one side. Support `ANY`, `SEMI`, `ANTI` joins. [#92584](https://github.com/ClickHouse/ClickHouse/pull/92584) ([Dmitry Novik](https://github.com/novikd)).
-- Allow using equivalent sets to push down filters for `SEMI JOIN`. Closes [#85239](https://github.com/ClickHouse/ClickHouse/issues/85239). [#92837](https://github.com/ClickHouse/ClickHouse/pull/92837) ([Dmitry Novik](https://github.com/novikd)).
-- Skip reading left side of hash join when right side is empty. Previously we were reading left side until first non-empty block, which might do a lot of work in case when there is heavy filtering or aggregation. [#94062](https://github.com/ClickHouse/ClickHouse/pull/94062) ([Alexander Gololobov](https://github.com/davenger)).
-- Using the "fastrange" (Daniel Lemire) method for partitioning data inside the query pipeline. This could improve parallel sorting and JOINs. [#93080](https://github.com/ClickHouse/ClickHouse/pull/93080) ([Alexey Milovidov](https://github.com/alexey-milovidov)).
-- Improve performance of window functions when PARTITION BY matches or is a prefix of the sorting key. [#87299](https://github.com/ClickHouse/ClickHouse/pull/87299) ([Nikita Taranov](https://github.com/nickitat)).
-- Outer filter is pushed down into views which allows applying PREWHERE on local and remote nodes. Resolves [#88189](https://github.com/ClickHouse/ClickHouse/issues/88189). [#88316](https://github.com/ClickHouse/ClickHouse/pull/88316) ([Igor Nikonov](https://github.com/devcrafter)).
-- Implement JIT compilations for more functions. Closes [#73509](https://github.com/ClickHouse/ClickHouse/issues/73509). [#88770](https://github.com/ClickHouse/ClickHouse/pull/88770) ([Alexey Milovidov](https://github.com/alexey-milovidov) with [Taiyang Li](https://github.com/taiyang-li)).
-- If a skip index used in a `FINAL` query is on a column that is part of the primary key, the additional step to check for primary key intersection in other parts is unnecessary and now not performed. Resolves [#85897](https://github.com/ClickHouse/ClickHouse/issues/85897). [#93899](https://github.com/ClickHouse/ClickHouse/pull/93899) ([Shankar Iyer](https://github.com/shankar-iyer)).
-- Optimize performance and memory usage for fractional `LIMIT` and `OFFSET`. [#91167](https://github.com/ClickHouse/ClickHouse/pull/91167) ([Ahmed Gouda](https://github.com/0xgouda)).
-- Fix using of faster random read logic for Parquet Reader V3 prefetcher. Closes [#90890](https://github.com/ClickHouse/ClickHouse/issues/90890). [#91435](https://github.com/ClickHouse/ClickHouse/pull/91435) ([Arsen Muk](https://github.com/arsenmuk)).
-- Improve performance of `icebergCluster`. Closes [#91462](https://github.com/ClickHouse/ClickHouse/issues/91462). [#91537](https://github.com/ClickHouse/ClickHouse/pull/91537) ([Yang Jiang](https://github.com/Ted-Jiang)).
-- Don't filter by virtual columns on constant filters. [#91588](https://github.com/ClickHouse/ClickHouse/pull/91588) ([c-end](https://github.com/c-end)).
-- Reduce INSERT/merges memory usage with wide parts for very wide tables by enabling adaptive write buffers. Add support of adaptive write buffers for encrypted disks. [#92250](https://github.com/ClickHouse/ClickHouse/pull/92250) ([Azat Khuzhin](https://github.com/azat)).
-- Improved performance of full text search with text index and `sparseGrams` tokenizer by reducing the number of searched tokens in the index. [#93078](https://github.com/ClickHouse/ClickHouse/pull/93078) ([Anton Popov](https://github.com/CurtizJ)).
-- Function `isValidASCII` was optimized for positive outcomes, i.e. all-ASCII input values. [#93347](https://github.com/ClickHouse/ClickHouse/pull/93347) ([Robert Schulze](https://github.com/rschu1ze)).
-- The read-in-order optimization now recognizes when ORDER BY columns are constant due to WHERE conditions, enabling efficient reverse-order reads. This benefits multi-tenant queries like `WHERE tenant='42' ORDER BY tenant, event_time DESC` which can now use InReverseOrder instead of requiring a full sort.". [#94103](https://github.com/ClickHouse/ClickHouse/pull/94103) ([matanper](https://github.com/matanper)).
-- Introduce Enum AST specialized class to store value parameters in (string, integer) pairs instead of ASTLiteral children to optimize memory consumption. [#94178](https://github.com/ClickHouse/ClickHouse/pull/94178) ([Ilya Yatsishin](https://github.com/qoega)).
-- Distributed index analysis on multiple replicas. Beneficial for shared storage and huge amount of data in cluster. This is applicable for SharedMergeTree (ClickHouse Cloud) and could be applicable for other types of MergeTree tables on a shared storage. [#86786](https://github.com/ClickHouse/ClickHouse/pull/86786) ([Azat Khuzhin](https://github.com/azat)).
-- Reduce overhead of join runtime filters by disabling them in the following cases: - too many bits are set in the bloom filter - too few rows are filtered out at runtime. [#91578](https://github.com/ClickHouse/ClickHouse/pull/91578) ([Alexander Gololobov](https://github.com/davenger)).
-- Use an in-memory buffer for correlated subqueries input to avoid evaluating it multiple times. Part of [#79890](https://github.com/ClickHouse/ClickHouse/issues/79890). [#91205](https://github.com/ClickHouse/ClickHouse/pull/91205) ([Dmitry Novik](https://github.com/novikd)).
-- Allow all replicas to steal orphaned ranges in parallel replicas reading. This improves load balancing and reduces long-tail latency. [#91374](https://github.com/ClickHouse/ClickHouse/pull/91374) ([zoomxi](https://github.com/zoomxi)).
-- External aggregation/sorting/join now respects query setting `temporary_files_codec` in all contexts. Fixed missing profile events for grace hash join. [#92388](https://github.com/ClickHouse/ClickHouse/pull/92388) ([Vladimir Cherkasov](https://github.com/vdimir)).
-- Make query memory usage detection for spilling to disk during aggregation/sorting more robust. [#92500](https://github.com/ClickHouse/ClickHouse/pull/92500) ([Azat Khuzhin](https://github.com/azat)).
-- Estimate total rows count and NDV (number of distinct values) statistics of aggregation key columns. [#92812](https://github.com/ClickHouse/ClickHouse/pull/92812) ([Alexander Gololobov](https://github.com/davenger)).
-- Optimize postings list compression with simdcomp. [#92871](https://github.com/ClickHouse/ClickHouse/pull/92871) ([Peng Jian](https://github.com/fastio)).
-- Refactor S3Queue Ordered mode processing with buckets. This should also improve performance, reducing the number of keeper requests. [#92889](https://github.com/ClickHouse/ClickHouse/pull/92889) ([Kseniia Sumarokova](https://github.com/kssenii)).
-- Functions `mapContainsKeyLike` and `mapContainsValueLike` can now leverage a text index on `mapKeys()` or `mapValues()`, respectively. [#93049](https://github.com/ClickHouse/ClickHouse/pull/93049) ([Michael Jarrett](https://github.com/EmeraldShift)).
-- Reduce memory usage on non-Linux systems (enable immediate purging of jemalloc dirty pages). [#93360](https://github.com/ClickHouse/ClickHouse/pull/93360) ([Eduard Karacharov](https://github.com/korowa)).
-- Force purging of jemalloc arenas in case the ratio of dirty pages size to `max_server_memory_usage` exceeds `memory_worker_purge_dirty_pages_threshold_ratio`. [#93500](https://github.com/ClickHouse/ClickHouse/pull/93500) ([Eduard Karacharov](https://github.com/korowa)).
-- Reduce memory usage for AST. [#93601](https://github.com/ClickHouse/ClickHouse/pull/93601) ([Nikolai Kochetov](https://github.com/KochetovNicolai)).
-- In some cases we've seen ClickHouse doesn't respect a memory limit when reading from a table. This behaviour is fixed. [#93715](https://github.com/ClickHouse/ClickHouse/pull/93715) ([Nikita Mikhaylov](https://github.com/nikitamikhaylov)).
-- Enable `CHECK_STAT` and `TRY_REMOVE` Keeper extension by default. [#93886](https://github.com/ClickHouse/ClickHouse/pull/93886) ([Mikhail Artemenko](https://github.com/Michicosun)).
-- Parse lower and upper bounds of file names corresponding to position deletes from Iceberg manifest file entries for better selection of corresponding data files. [#93980](https://github.com/ClickHouse/ClickHouse/pull/93980) ([Daniil Ivanik](https://github.com/divanik)).
-- Add two more settings to control maximum number of dynamic subcolumns in JSON column. First is MergeTree setting `merge_max_dynamic_subcolumns_in_compact_part` (similar to already added `merge_max_dynamic_subcolumns_in_wide_part`) that limits number of dynamic subcolumns created during merge into a Compact part. Second is query level setting `max_dynamic_subcolumns_in_json_type_parsing` that limits number of dynamic subcolumns created during parsing of JSON data, it will allow to specify the limit on insert. [#94184](https://github.com/ClickHouse/ClickHouse/pull/94184) ([Pavel Kruglov](https://github.com/Avogar)).
-- Slightly optimize squashing of JSON columns for some cases. [#94247](https://github.com/ClickHouse/ClickHouse/pull/94247) ([Pavel Kruglov](https://github.com/Avogar)).
-- Lower the thread pool queue sizes based on the production experience. Add an explicit memory consumption check before reading any data from the MergeTree. [#94692](https://github.com/ClickHouse/ClickHouse/pull/94692) ([Nikita Mikhaylov](https://github.com/nikitamikhaylov)).
-- Make sure the scheduler would prefer MemoryWorker thread under the CPU starvation, because it protects ClickHouse process from an existential threat. [#94864](https://github.com/ClickHouse/ClickHouse/pull/94864) ([Nikita Mikhaylov](https://github.com/nikitamikhaylov)).
-- Run purging of jemalloc dirty pages in a different thread from main thread of MemoryWorker. If purging is slow, it could delay updates of RSS usage which could lead to out of memory kills of the process. Introduce new config `memory_worker_purge_total_memory_threshold_ratio` to start purging dirty pages based on ratio of total memory usage. [#94902](https://github.com/ClickHouse/ClickHouse/pull/94902) ([Antonio Andelic](https://github.com/antonio2368)).
-
-
-
-
+* 默认启用 JSON 的高级共享数据。此更改后将无法降级到 &lt;25.8 版本,因为这些版本无法读取包含 JSON 列的新分区片段。为了安全升级,建议将 `compatibility` 设置为先前版本,或设置 MergeTree 设置 `dynamic_serialization_version='v2', object_serialization_version='v2'`。[#92511](https://github.com/ClickHouse/ClickHouse/pull/92511) ([Pavel Kruglov](https://github.com/Avogar))。
+* Setting `use_skip_indexes_on_data_read` is now enabled by default. This setting allows filtering in a streaming fashion, at the same time as reading, improving query performance and startup time. [#93407](https://github.com/ClickHouse/ClickHouse/pull/93407) ([Shankar Iyer](https://github.com/shankar-iyer)).
+* Datalakes prewhere &amp; multistage prewhere in Parquet reader v3. Resolves [#89101](https://github.com/ClickHouse/ClickHouse/issues/89101). [#93542](https://github.com/ClickHouse/ClickHouse/pull/93542) ([Konstantin Vedernikov](https://github.com/scanhex12)).
+* Improve performance of `DISTINCT` on `LowCardinality` columns. Closes [#5917](https://github.com/ClickHouse/ClickHouse/issues/5917). [#91639](https://github.com/ClickHouse/ClickHouse/pull/91639) ([Nihal Z. Miaji](https://github.com/nihalzp)).
+* Optimize `distinctJSONPaths` aggregate function so it reads only JSON paths from data parts and not the whole JSON column. [#92196](https://github.com/ClickHouse/ClickHouse/pull/92196) ([Pavel Kruglov](https://github.com/Avogar)).
+* More filters pushed down JOINs. [#85556](https://github.com/ClickHouse/ClickHouse/pull/85556) ([Nikita Taranov](https://github.com/nickitat)).
+* Support more cases for push down from join ON condition when the filter uses inputs only from one side. Support `ANY`, `SEMI`, `ANTI` joins. [#92584](https://github.com/ClickHouse/ClickHouse/pull/92584) ([Dmitry Novik](https://github.com/novikd)).
+* Allow using equivalent sets to push down filters for `SEMI JOIN`. Closes [#85239](https://github.com/ClickHouse/ClickHouse/issues/85239). [#92837](https://github.com/ClickHouse/ClickHouse/pull/92837) ([Dmitry Novik](https://github.com/novikd)).
+* Skip reading left side of hash join when right side is empty. Previously we were reading left side until first non-empty block, which might do a lot of work in case when there is heavy filtering or aggregation. [#94062](https://github.com/ClickHouse/ClickHouse/pull/94062) ([Alexander Gololobov](https://github.com/davenger)).
+* Using the &quot;fastrange&quot; (Daniel Lemire) method for partitioning data inside the query pipeline. This could improve parallel sorting and JOINs. [#93080](https://github.com/ClickHouse/ClickHouse/pull/93080) ([Alexey Milovidov](https://github.com/alexey-milovidov)).
+* Improve performance of window functions when PARTITION BY matches or is a prefix of the sorting key. [#87299](https://github.com/ClickHouse/ClickHouse/pull/87299) ([Nikita Taranov](https://github.com/nickitat)).
+* Outer filter is pushed down into views which allows applying PREWHERE on local and remote nodes. Resolves [#88189](https://github.com/ClickHouse/ClickHouse/issues/88189). [#88316](https://github.com/ClickHouse/ClickHouse/pull/88316) ([Igor Nikonov](https://github.com/devcrafter)).
+* Implement JIT compilations for more functions. Closes [#73509](https://github.com/ClickHouse/ClickHouse/issues/73509). [#88770](https://github.com/ClickHouse/ClickHouse/pull/88770) ([Alexey Milovidov](https://github.com/alexey-milovidov) with [Taiyang Li](https://github.com/taiyang-li)).
+* If a skip index used in a `FINAL` query is on a column that is part of the primary key, the additional step to check for primary key intersection in other parts is unnecessary and now not performed. Resolves [#85897](https://github.com/ClickHouse/ClickHouse/issues/85897). [#93899](https://github.com/ClickHouse/ClickHouse/pull/93899) ([Shankar Iyer](https://github.com/shankar-iyer)).
+* Optimize performance and memory usage for fractional `LIMIT` and `OFFSET`. [#91167](https://github.com/ClickHouse/ClickHouse/pull/91167) ([Ahmed Gouda](https://github.com/0xgouda)).
+* Fix using of faster random read logic for Parquet Reader V3 prefetcher. Closes [#90890](https://github.com/ClickHouse/ClickHouse/issues/90890). [#91435](https://github.com/ClickHouse/ClickHouse/pull/91435) ([Arsen Muk](https://github.com/arsenmuk)).
+* Improve performance of `icebergCluster`. Closes [#91462](https://github.com/ClickHouse/ClickHouse/issues/91462). [#91537](https://github.com/ClickHouse/ClickHouse/pull/91537) ([Yang Jiang](https://github.com/Ted-Jiang)).
+* Don&#39;t filter by virtual columns on constant filters. [#91588](https://github.com/ClickHouse/ClickHouse/pull/91588) ([c-end](https://github.com/c-end)).
+* Reduce INSERT/merges memory usage with wide parts for very wide tables by enabling adaptive write buffers. Add support of adaptive write buffers for encrypted disks. [#92250](https://github.com/ClickHouse/ClickHouse/pull/92250) ([Azat Khuzhin](https://github.com/azat)).
+* Improved performance of full text search with text index and `sparseGrams` tokenizer by reducing the number of searched tokens in the index. [#93078](https://github.com/ClickHouse/ClickHouse/pull/93078) ([Anton Popov](https://github.com/CurtizJ)).
+* Function `isValidASCII` was optimized for positive outcomes, i.e. all-ASCII input values. [#93347](https://github.com/ClickHouse/ClickHouse/pull/93347) ([Robert Schulze](https://github.com/rschu1ze)).
+* The read-in-order optimization now recognizes when ORDER BY columns are constant due to WHERE conditions, enabling efficient reverse-order reads. This benefits multi-tenant queries like `WHERE tenant='42' ORDER BY tenant, event_time DESC` which can now use InReverseOrder instead of requiring a full sort.&quot;. [#94103](https://github.com/ClickHouse/ClickHouse/pull/94103) ([matanper](https://github.com/matanper)).
+* Introduce Enum AST specialized class to store value parameters in (string, integer) pairs instead of ASTLiteral children to optimize memory consumption. [#94178](https://github.com/ClickHouse/ClickHouse/pull/94178) ([Ilya Yatsishin](https://github.com/qoega)).
+* Distributed index analysis on multiple replicas. Beneficial for shared storage and huge amount of data in cluster. This is applicable for SharedMergeTree (ClickHouse Cloud) and could be applicable for other types of MergeTree tables on a shared storage. [#86786](https://github.com/ClickHouse/ClickHouse/pull/86786) ([Azat Khuzhin](https://github.com/azat)).
+* Reduce overhead of join runtime filters by disabling them in the following cases: - too many bits are set in the bloom filter - too few rows are filtered out at runtime. [#91578](https://github.com/ClickHouse/ClickHouse/pull/91578) ([Alexander Gololobov](https://github.com/davenger)).
+* Use an in-memory buffer for correlated subqueries input to avoid evaluating it multiple times. Part of [#79890](https://github.com/ClickHouse/ClickHouse/issues/79890). [#91205](https://github.com/ClickHouse/ClickHouse/pull/91205) ([Dmitry Novik](https://github.com/novikd)).
+* Allow all replicas to steal orphaned ranges in parallel replicas reading. This improves load balancing and reduces long-tail latency. [#91374](https://github.com/ClickHouse/ClickHouse/pull/91374) ([zoomxi](https://github.com/zoomxi)).
+* External aggregation/sorting/join now respects query setting `temporary_files_codec` in all contexts. Fixed missing profile events for grace hash join. [#92388](https://github.com/ClickHouse/ClickHouse/pull/92388) ([Vladimir Cherkasov](https://github.com/vdimir)).
+* Make query memory usage detection for spilling to disk during aggregation/sorting more robust. [#92500](https://github.com/ClickHouse/ClickHouse/pull/92500) ([Azat Khuzhin](https://github.com/azat)).
+* Estimate total rows count and NDV (number of distinct values) statistics of aggregation key columns. [#92812](https://github.com/ClickHouse/ClickHouse/pull/92812) ([Alexander Gololobov](https://github.com/davenger)).
+* Optimize postings list compression with simdcomp. [#92871](https://github.com/ClickHouse/ClickHouse/pull/92871) ([Peng Jian](https://github.com/fastio)).
+* Refactor S3Queue Ordered mode processing with buckets. This should also improve performance, reducing the number of keeper requests. [#92889](https://github.com/ClickHouse/ClickHouse/pull/92889) ([Kseniia Sumarokova](https://github.com/kssenii)).
+* Functions `mapContainsKeyLike` and `mapContainsValueLike` can now leverage a text index on `mapKeys()` or `mapValues()`, respectively. [#93049](https://github.com/ClickHouse/ClickHouse/pull/93049) ([Michael Jarrett](https://github.com/EmeraldShift)).
+* Reduce memory usage on non-Linux systems (enable immediate purging of jemalloc dirty pages). [#93360](https://github.com/ClickHouse/ClickHouse/pull/93360) ([Eduard Karacharov](https://github.com/korowa)).
+* Force purging of jemalloc arenas in case the ratio of dirty pages size to `max_server_memory_usage` exceeds `memory_worker_purge_dirty_pages_threshold_ratio`. [#93500](https://github.com/ClickHouse/ClickHouse/pull/93500) ([Eduard Karacharov](https://github.com/korowa)).
+* Reduce memory usage for AST. [#93601](https://github.com/ClickHouse/ClickHouse/pull/93601) ([Nikolai Kochetov](https://github.com/KochetovNicolai)).
+* In some cases we&#39;ve seen ClickHouse doesn&#39;t respect a memory limit when reading from a table. This behaviour is fixed. [#93715](https://github.com/ClickHouse/ClickHouse/pull/93715) ([Nikita Mikhaylov](https://github.com/nikitamikhaylov)).
+* Enable `CHECK_STAT` and `TRY_REMOVE` Keeper extension by default. [#93886](https://github.com/ClickHouse/ClickHouse/pull/93886) ([Mikhail Artemenko](https://github.com/Michicosun)).
+* Parse lower and upper bounds of file names corresponding to position deletes from Iceberg manifest file entries for better selection of corresponding data files. [#93980](https://github.com/ClickHouse/ClickHouse/pull/93980) ([Daniil Ivanik](https://github.com/divanik)).
+* Add two more settings to control maximum number of dynamic subcolumns in JSON column. First is MergeTree setting `merge_max_dynamic_subcolumns_in_compact_part` (similar to already added `merge_max_dynamic_subcolumns_in_wide_part`) that limits number of dynamic subcolumns created during merge into a Compact part. Second is query level setting `max_dynamic_subcolumns_in_json_type_parsing` that limits number of dynamic subcolumns created during parsing of JSON data, it will allow to specify the limit on insert. [#94184](https://github.com/ClickHouse/ClickHouse/pull/94184) ([Pavel Kruglov](https://github.com/Avogar)).
+* Slightly optimize squashing of JSON columns for some cases. [#94247](https://github.com/ClickHouse/ClickHouse/pull/94247) ([Pavel Kruglov](https://github.com/Avogar)).
+* Lower the thread pool queue sizes based on the production experience. Add an explicit memory consumption check before reading any data from the MergeTree. [#94692](https://github.com/ClickHouse/ClickHouse/pull/94692) ([Nikita Mikhaylov](https://github.com/nikitamikhaylov)).
+* Make sure the scheduler would prefer MemoryWorker thread under the CPU starvation, because it protects ClickHouse process from an existential threat. [#94864](https://github.com/ClickHouse/ClickHouse/pull/94864) ([Nikita Mikhaylov](https://github.com/nikitamikhaylov)).
+* Run purging of jemalloc dirty pages in a different thread from main thread of MemoryWorker. If purging is slow, it could delay updates of RSS usage which could lead to out of memory kills of the process. Introduce new config `memory_worker_purge_total_memory_threshold_ratio` to start purging dirty pages based on ratio of total memory usage. [#94902](https://github.com/ClickHouse/ClickHouse/pull/94902) ([Antonio Andelic](https://github.com/antonio2368)).
 
 #### 改进 \{#improvement\}
 
@@ -200,10 +186,6 @@ doc_type: 'changelog'
 * 移除了 `hasAnyTokens` 和 `hasAllTokens` 函数中搜索 token 数量上限为 64 的限制。示例：`SELECT count() FROM table WHERE hasAllTokens(text, ['token_1', 'token_2', [...], 'token_65']]);` 此前该查询会因为包含 65 个搜索 token 而抛出 `BAD_ARGUMENTS` 错误。通过此 PR，该限制已被完全移除，相同查询将不再报错。[#95152](https://github.com/ClickHouse/ClickHouse/pull/95152) ([Elmi Ahmadov](https://github.com/ahmadov))。
 * 添加名为 `input_format_numbers_enum_on_conversion_error` 的 SETTING，用于在将 Numbers 转换为 Enums 时检查元素是否存在。Closes: [#56144](https://github.com/ClickHouse/ClickHouse/issues/56144)。[#56240](https://github.com/ClickHouse/ClickHouse/pull/56240)（[Nikolay Degterinsky](https://github.com/evillique)）。
 * 在 Iceberg 表中，数据文件和位置删除文件的读取共用格式解析器资源，以减少内存分配。[#94701](https://github.com/ClickHouse/ClickHouse/pull/94701)（[Yang Jiang](https://github.com/Ted-Jiang)）。
-
-
-
-
 
 #### 错误修复(官方稳定版本中用户可见的异常行为) \{#bug-fix-user-visible-misbehavior-in-an-official-stable-release\}
 
@@ -385,9 +367,8 @@ doc_type: 'changelog'
 * 从 DateTime/整数转换为 Time64 会使用 `toTime` 提取一天中的时间部分，但该函数不是单调的。`ToDateTimeMonotonicity` 模板错误地将此转换标记为单调的，导致在调试构建中出现 &quot;Invalid binary search result in MergeTreeSetIndex&quot; 异常。[#95125](https://github.com/ClickHouse/ClickHouse/pull/95125) ([Alexey Milovidov](https://github.com/alexey-milovidov))。
 * 仅在必要时才重新生成清单文件中的条目列表（此前会在每次迭代时都重新生成）。 [#95162](https://github.com/ClickHouse/ClickHouse/pull/95162) ([Daniil Ivanik](https://github.com/divanik))。
 
-
-
 #### 构建 / 测试 / 打包改进 \{#buildtestingpackaging-improvement\}
+
 * 添加了一组工具，用于利用 jemalloc 的堆分析能力对 ClickHouse SQL 解析器中的内存分配进行剖析。[#94072](https://github.com/ClickHouse/ClickHouse/pull/94072) ([Ilya Yatsishin](https://github.com/qoega))。
 * 添加了一个简化解析器内存分配调试的工具。它在将查询解析为 AST 表示之前和之后使用 jemalloc 的 `stats.allocated` 指标来展示具体的内存分配情况。同时，它支持内存分析模式，会在解析前后转储 profile，以生成报告展示内存分配发生的位置。[#93523](https://github.com/ClickHouse/ClickHouse/pull/93523) ([Ilya Yatsishin](https://github.com/qoega))。
 * 移除传递性的 libc++ 头文件包含。[#92523](https://github.com/ClickHouse/ClickHouse/pull/92523) ([Raúl Marín](https://github.com/Algunenano))。
