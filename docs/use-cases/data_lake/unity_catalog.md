@@ -55,9 +55,20 @@ SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type 
 
 ### Read Iceberg {#read-iceberg}
 
+To access UniForm-enabled Delta tables:
+
 ```sql
 CREATE DATABASE unity
 ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/unity-catalog/iceberg')
+SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret>', warehouse = 'workspace', 
+oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', auth_scope = 'all-apis,sql'
+```
+
+To access managed Iceberg tables:
+
+```sql
+CREATE DATABASE unity
+ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/unity-catalog/iceberg-rest')
 SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret>', warehouse = 'workspace', 
 oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', auth_scope = 'all-apis,sql'
 ```
@@ -105,8 +116,6 @@ SHOW TABLES;
 │ uniform.delta_hits                                 │
 └────────────────────────────────────────────────────┘
 ```
-
-If you're using the Iceberg client, only the Delta tables with Uniform-enabled will be shown:
 
 ```sql
 SHOW TABLES
