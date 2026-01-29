@@ -2913,6 +2913,12 @@ ClickHouse はクエリを処理するためにグローバルスレッドプー
 
 バックグラウンドメモリワーカーが、jemalloc や cgroups などの外部情報源からの情報に基づいて内部メモリトラッカーを補正するかどうかを指定します。
 
+## memory_worker_decay_adjustment_period_ms \{#memory_worker_decay_adjustment_period_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="5000" />
+
+メモリプレッシャーが継続してから、jemalloc の `dirty_decay_ms` を動的に調整し始めるまでの時間（ミリ秒単位）。この期間のあいだメモリ使用量がパージ閾値を上回り続けると、自動的な dirty ページの decay が無効化され（`dirty_decay_ms=0`）、メモリを積極的に回収します。使用量がこの期間のあいだ閾値を下回り続けると、デフォルトの decay 動作が復元されます。0 を設定すると動的調整を無効化し、jemalloc のデフォルトの decay 設定を使用します。
+
 ## memory_worker_period_ms \{#memory_worker_period_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -2923,7 +2929,13 @@ ClickHouse はクエリを処理するためにグローバルスレッドプー
 
 <SettingsInfoBlock type="Double" default_value="0.2" />
 
-ClickHouse サーバーで利用可能なメモリに対する、jemalloc のダーティページのしきい値となる比率です。ダーティページのサイズがこの比率を超えると、バックグラウンドのメモリワーカーがダーティページのパージを強制的に実行します。0 に設定すると、強制パージは無効になります。
+ClickHouse サーバーで利用可能なメモリに対する、jemalloc のダーティページのしきい値となる比率です。ダーティページのサイズがこの比率を超えると、バックグラウンドのメモリワーカーがダーティページのパージを強制的に実行します。0 に設定すると、ダーティページ比率に基づく強制パージは無効になります。
+
+## memory_worker_purge_total_memory_threshold_ratio \{#memory_worker_purge_total_memory_threshold_ratio\}
+
+<SettingsInfoBlock type="Double" default_value="0.9" />
+
+ClickHouse サーバーで利用可能なメモリに対する、jemalloc をパージするためのしきい値となる比率です。合計メモリ使用量がこの比率を超えると、バックグラウンドのメモリワーカーがダーティページのパージを強制的に実行します。0 に設定すると、合計メモリに基づく強制パージは無効になります。
 
 ## memory_worker_use_cgroup \{#memory_worker_use_cgroup\}
 

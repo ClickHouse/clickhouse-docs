@@ -62,7 +62,7 @@ Press the `Connect` button from the navigation menu. A modal will open offering 
 
 <Image img={cloud_connect} alt="ClickHouse Cloud connect" size="lg"/>
 
-### Deploy Open Telemetry Collector (optional) {#deploy-otel-collector} 
+### Deploy Open Telemetry Collector (optional) {#deploy-otel-collector}
 
 **If you have existing observability events you wish to visualize in your service, this step can be skipped.**
 
@@ -311,7 +311,7 @@ To enable alerts, at least one user with **Service Admin** permissions (mapped t
 
 HyperDX is Open Telemetry native but not Open Telemetry exclusive - you can use your own table schemas if desired.
 
-#### Using Open Telemetry schemas  {#using-otel-schemas}
+#### Using Open Telemetry schemas {#using-otel-schemas}
 
 If you're using the above OTel collector to create the database and tables within ClickHouse, retain all default values within the create source model, completing the `Table` field with the value `otel_logs` - to create a logs source. All other settings should be auto-detected, allowing you to click `Save New Source`.
 

@@ -25,7 +25,7 @@ to get results without duplicates, such as with the `ReplacingMergeTree`. Genera
 in your primary key.
 :::
 
-## Why avoid?  {#why-avoid}
+## Why avoid? {#why-avoid}
 
 ### It's expensive {#its-expensive}
 

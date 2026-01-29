@@ -250,7 +250,7 @@ This demonstrates that for queries on small datasets, ClickHouse will intentiona
 * The actual number of lanes depends on the size of data selected for processing.
 * Use `EXPLAIN PIPELINE` and trace logs to analyze lane usage.
 
-## Where to find more information  {#where-to-find-more-information}
+## Where to find more information {#where-to-find-more-information}
 
 If you'd like to dive deeper into how ClickHouse executes queries in parallel and how it achieves high performance at scale, explore the following resources: 
 

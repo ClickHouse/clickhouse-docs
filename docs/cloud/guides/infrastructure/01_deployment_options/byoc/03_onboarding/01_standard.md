@@ -27,7 +27,7 @@ If you need a more customized setup (for example, deploying into an existing VPC
 
 To start the onboarding process, please [contact us](https://clickhouse.com/cloud/bring-your-own-cloud). Our team will guide you through the BYOC requirements, help you select the most suitable deployment options, and add your account to the allowlist.
 
-## Onboarding {#onboarding-process} 
+## Onboarding {#onboarding-process}
 
 ### Prepare an AWS account/GCP project {#prepare-an-aws-account}
 
@@ -41,7 +41,7 @@ Prepare a fresh AWS account or GCP project under your organization. Visit our we
 
 ### Account/Project setup {#account-setup}
 
-The initial BYOC setup can be performed using either a [CloudFormation template(AWS)](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml) or a [Terraform module(GCP)](https://github.com/ClickHouse/terraform-byoc-onboarding/tree/main/modules/gcp). It creates a high priviledged IAM role, enabling BYOC controllers from ClickHouse Cloud to manage your infrastructure. 
+The initial BYOC setup can be performed using either a [CloudFormation template(AWS)](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml) or a [Terraform module(GCP)](https://github.com/ClickHouse/terraform-byoc-onboarding/tree/main/modules/gcp). It creates a high privileged IAM role, enabling BYOC controllers from ClickHouse Cloud to manage your infrastructure. 
 
 <Image img={byoc_onboarding_2} size="lg" alt="BYOC initialize account" background='black'/>
 

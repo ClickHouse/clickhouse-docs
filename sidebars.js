@@ -35,6 +35,7 @@ const sidebars = {
             'getting-started/install/debian_ubuntu',
             'getting-started/install/redhat',
             'getting-started/install/other_linux',
+            'getting-started/install/nixos',
             'getting-started/install/macos',
             'getting-started/install/windows',
             'getting-started/install/docker',
@@ -1764,6 +1765,7 @@ const sidebars = {
         'use-cases/observability/clickstack/alerts',
         'use-cases/observability/clickstack/production',
         'use-cases/observability/clickstack/materialized_views',
+        'use-cases/observability/clickstack/performance_tuning',
         {
           type: 'category',
           label: 'Migration guides',

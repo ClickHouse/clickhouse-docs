@@ -87,7 +87,7 @@ These visualizations are often executed repeatedly across users and time ranges,
 Materialized views introduce additional work at insert time, so they should be created selectively and deliberately. Not every visualization benefits from pre-aggregation, and accelerating rarely used charts is usually not worth the overhead. You should keep the total number of materialized views below a maximum of 20.
 
 :::note
-Prior to moving to production, always validate the resource overhead introduced by materialized views, particularly CPU usage, disk I/O, and [merge activity](/docs/tips-and-tricks/too-many-parts). Each materialized view increases insert-time work and contributes additional parts, so it's important to ensure merges can keep up and part counts remain stable. This can be monitored via [system tables](/operations/system-tables/tables) and the [built-in observability dashboard](/operations/monitoring#built-in-advanced-observability-dashboard) in open-source ClickHouse or using the built-in metrics and [monitoring dashboards in ClickHouse Cloud](/cloud/manage/monitor/advanced-dashboard). See [Too many parts](/guides/best-practices/too-many-parts) for guidance on diagnosing and mitigating excessive part counts.
+Prior to moving to production, always validate the resource overhead introduced by materialized views, particularly CPU usage, disk I/O, and [merge activity](/docs/tips-and-tricks/too-many-parts). Each materialized view increases insert-time work and contributes additional parts, so it's important to ensure merges can keep up and part counts remain stable. This can be monitored via [system tables](/operations/system-tables/tables) and the [built-in observability dashboard](/operations/monitoring#built-in-advanced-observability-dashboard) in open-source ClickHouse or using the built-in metrics and [monitoring dashboards in ClickHouse Cloud](/cloud/manage/monitor/advanced-dashboard). See [Too many parts](/knowledgebase/exception-too-many-parts) for guidance on diagnosing and mitigating excessive part counts.
 :::
 
 Once you have identified the visualizations that matter most, the next step is consolidation.
@@ -395,7 +395,7 @@ Backfilling can be **computationally expensive**. Under normal operation, materi
 
 Backfilling compresses this work into a much shorter period, **significantly increasing CPU and memory usage per unit time.**
 
-Depending on the dataset sizeand retention window, this may require temporarily scaling the cluster, either vertically, or horizontally in ClickHouse Cloud, to complete the backfill in a reasonable timeframe.
+Depending on the dataset size and retention window, this may require temporarily scaling the cluster, either vertically, or horizontally in ClickHouse Cloud, to complete the backfill in a reasonable time frame.
 
 If additional resources aren't provisioned, backfilling can negatively impact production workloads, including query latency, and ingestion throughput. For **very large datasets or long historical ranges, backfilling may be impractical**, or infeasible altogether.
 
@@ -565,7 +565,7 @@ Because the data is processed incrementally, memory usage remains bounded and pr
 For additional safety, consider directing the backfill materialized view to a temporary target table (for example, `otel_traces_1m_v2`). Once the backfill completes successfully, [partitions can be moved](/sql-reference/statements/alter/partition#move-partition-to-table) to the primary target table e.g. `ALTER TABLE otel_traces_1m_v2 MOVE PARTITION '2026-01-02' TO otel_traces_1m`. This allows for easy recovery if the backfill is interrupted or fails due to resource limits.
 :::
 
-For further details on tuning this process, including improving insert performance and reducing and controlling resources, see ["Backfilling"](/data-modeling/backfilling#tuning-performance--resources).
+For further details on tuning this process, including improving insert performance and reducing and controlling resources, see ["Backfilling."](/data-modeling/backfilling#tuning-performance--resources)
 
 </VerticalStepper>
 

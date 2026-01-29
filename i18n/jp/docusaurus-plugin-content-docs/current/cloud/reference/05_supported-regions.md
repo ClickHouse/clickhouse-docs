@@ -33,6 +33,8 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - af-south-1 (南アフリカ)
 - eu-north-1 (ストックホルム)
 - sa-east-1 (南米)
+- ap-southeast-3 (ジャカルタ)
+- ap-east-1 (香港)
 
 ## Google Cloud リージョン \{#google-cloud-regions\}
 

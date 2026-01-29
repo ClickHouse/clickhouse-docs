@@ -23,7 +23,7 @@ To create a custom role for a SQL console user and grant it a general role, run 
 
 <VerticalStepper headerLevel="h4">
 
-#### Create `database_developer` and grant permissions {#create-role-grant-permissions} 
+#### Create `database_developer` and grant permissions {#create-role-grant-permissions}
 
 Create the `database_developer` role and grant `SHOW`, `CREATE`, `ALTER`, and `DELETE` permissions.
     
@@ -35,7 +35,7 @@ GRANT ALTER ON * TO database_developer;
 GRANT DELETE ON * TO database_developer;
 ```
 
-#### Create SQL console user role {#create-sql-console-user-role} 
+#### Create SQL console user role {#create-sql-console-user-role}
 
 Create a role for the SQL console user my.user@domain.com and assign it the database_developer role.
     
@@ -92,7 +92,7 @@ The illustration below shows the different ways a user could be granted permissi
 
 <Image img={user_grant_permissions_options} alt='An illustration showing the different ways a user could be granted permissions' size="md" background="black"/>
 
-### Initial settings {#initial-settings} 
+### Initial settings {#initial-settings}
 Databases have an account named `default` that is added automatically and granted the default_role upon service creation. The user that creates the service is presented with the automatically generated, random password that is assigned to the `default` account when the service is created. The password is not shown after initial setup, but may be changed by any user with Service Admin permissions in the console at a later time. This account or an account with Service Admin privileges within the console may set up additional database users and roles at any time.
 
 :::note
