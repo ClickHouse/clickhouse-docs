@@ -22,6 +22,7 @@ description: 'パフォーマンス最適化戦略の実践的な実例集'
 ---
 
 # パフォーマンス最適化: コミュニティで検証された手法 \{#performance-optimization\}
+
 *このガイドは、コミュニティミートアップから得られた知見をまとめたコレクションの一部です。より実践的な解決策や知見については、[問題別のトピック](./community-wisdom.md)を参照してください。*
 *マテリアライズドビューでお困りですか？[Materialized Views](./materialized-views.md) に関するコミュニティの知見をまとめたガイドをご覧ください。*
 *クエリが遅く、さらに多くの例が必要な場合は、[Query Optimization](/optimize/query-optimization) ガイドも参照してください。*
@@ -38,29 +39,30 @@ ClickHouse のプライマリインデックスは、カーディナリティの
 ORDER BY 句でタイムスタンプを使用する場合は、カーディナリティと精度のトレードオフを考慮してください。マイクロ秒精度のタイムスタンプは非常に高いカーディナリティ（ほぼ 1 行につき 1 つのユニークな値）を生み出し、ClickHouse のスパースなプライマリインデックスの有効性を低下させます。一方、タイムスタンプを丸めるとカーディナリティを低く抑えられ、より効果的なインデックススキップが可能になりますが、その代わりに時間ベースのクエリの精度が失われます。
 
 ```sql runnable editable
--- チャレンジ: toStartOfMinuteやtoStartOfWeekなどの異なる時間関数を試してみてください
--- 実験: 独自のタイムスタンプデータでカーディナリティの違いを比較してください
+-- Challenge: Try different time functions like toStartOfMinute or toStartOfWeek
+-- Experiment: Compare the cardinality differences with your own timestamp data
 SELECT 
-    'マイクロ秒精度' as granularity,
+    'Microsecond precision' as granularity,
     uniq(created_at) as unique_values,
-    '膨大なカーディナリティを生成 - ソートキーには不適' as impact
+    'Creates massive cardinality - bad for sort key' as impact
 FROM github.github_events
 WHERE created_at >= '2024-01-01'
 UNION ALL
 SELECT 
-    '時間精度',
+    'Hour precision',
     uniq(toStartOfHour(created_at)),
-    'ソートキーに適している - スキップインデックスを有効化'
+    'Much better for sort key - enables skip indexing'
 FROM github.github_events
 WHERE created_at >= '2024-01-01'
 UNION ALL  
 SELECT 
-    '日精度',
+    'Day precision',
     uniq(toStartOfDay(created_at)),
-    'レポートクエリに最適'
+    'Best for reporting queries'
 FROM github.github_events
 WHERE created_at >= '2024-01-01';
 ```
+
 
 ## 個々のクエリに注目し、平均値に頼らない \{#focus-on-individual-queries-not-averages\}
 
@@ -81,10 +83,11 @@ Sentry は開発者を第一に考えたエラートラッキングプラット�
 極端なケースでは、Sentry は決定論的サンプリングを使用しています。10% のサンプルであれば、ほとんどの集約に対しておおよそ 5% 程度の精度を維持しつつ、メモリ使用量を 90% 削減できます。
 
 ```sql
-WHERE cityHash64(user_id) % 10 = 0  -- 常に同一の10%のユーザー
+WHERE cityHash64(user_id) % 10 = 0  -- Always same 10% of users
 ```
 
 これにより、すべてのクエリで同じユーザーが現れ、期間をまたいでも一貫した結果が得られます。重要なポイントは、`cityHash64()` が同じ入力に対して常に同じハッシュ値を生成することです。そのため、`user_id = 12345` は常に同じ値にハッシュされ、そのユーザーは 10% サンプルに必ず含まれるか、あるいはまったく含まれないかのどちらかになり、クエリ間で出たり消えたりすることがなくなります。
+
 
 ## Sentry のビットマスク最適化 \{#bit-mask-optimization\}
 
@@ -93,24 +96,24 @@ WHERE cityHash64(user_id) % 10 = 0  -- 常に同一の10%のユーザー
 このような状況に当てはまる場合は、ご自身のテーブルに対して次のクエリを試してみてください。
 
 ```sql
--- メモリ効率的な集約パターン: 各条件 = グループごとに1つの整数
--- 重要なポイント: sumIf()はデータ量に関係なく制限されたメモリを作成
--- グループあたりのメモリ: N個の整数 (N * 8バイト)、Nは条件の数
+-- Memory-Efficient Aggregation Pattern: Each condition = one integer per group
+-- Key insight: sumIf() creates bounded memory regardless of data volume
+-- Memory per group: N integers (N * 8 bytes) where N = number of conditions
 
 SELECT 
     your_grouping_column,
     
-    -- 各sumIfはグループごとに正確に1つの整数カウンタを作成
-    -- 各条件に一致する行数に関係なくメモリは一定に保たれる
+    -- Each sumIf creates exactly one integer counter per group
+    -- Memory stays constant regardless of how many rows match each condition
     sumIf(1, your_condition_1) as condition_1_count,
     sumIf(1, your_condition_2) as condition_2_count,
     sumIf(1, your_text_column LIKE '%pattern%') as pattern_matches,
     sumIf(1, your_numeric_column > threshold_value) as above_threshold,
     
-    -- 複雑な複数条件の集約でも一定のメモリを使用
+    -- Complex multi-condition aggregations still use constant memory
     sumIf(1, your_condition_1 AND your_text_column LIKE '%pattern%') as complex_condition_count,
     
-    -- 参考用の標準集約
+    -- Standard aggregations for context
     count() as total_rows,
     avg(your_numeric_column) as average_value,
     max(your_timestamp_column) as latest_timestamp
@@ -129,6 +132,7 @@ LIMIT 20
 
 Sentry のエンジニアリングチームによると、「これらの重いクエリは 10 倍以上高速になり、メモリ使用量は 100 倍少なくなりました（しかも、より重要なことに、上限が決まっています）。最大規模のお客様でもリプレイ検索時にエラーが発生しなくなり、メモリ不足を心配することなく、あらゆる規模のお客様をサポートできるようになりました。」
 
+
 ## 動画資料 \{#video-sources\}
 
 - [Lost in the Haystack - Optimizing High Cardinality Aggregations](https://www.youtube.com/watch?v=paK84-EUJCA) - Sentry 本番環境でのメモリ最適化に関する知見
@@ -136,5 +140,6 @@ Sentry のエンジニアリングチームによると、「これらの重い�
 - [ClickHouse Meetup: Query Optimization Techniques](https://www.youtube.com/watch?v=JBomQk4Icjo) - コミュニティによる最適化戦略
 
 **次に読む**:
+
 - [クエリ最適化ガイド](/optimize/query-optimization)
 - [マテリアライズドビューに関するコミュニティの知見](./materialized-views.md)

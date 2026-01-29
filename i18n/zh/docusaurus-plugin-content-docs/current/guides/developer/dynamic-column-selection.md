@@ -104,14 +104,14 @@ FROM nyc_taxi.trips;
    └──────────────────┴──────────────┴─────────────────┴───────────────────┴────────────────┴───────────────────┘
 ```
 
-或者，我们也可以改为查看平均值：
+或者，我们也可以改为看平均值：
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg)
 FROM nyc_taxi.trips
 ```
 
-> [在 SQL playground 中尝试运行此查询](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkoYXZnKQpGUk9NIG55Y190YXhpLnRyaXBzOw\&run_query=true)
+> [在 SQL Playground 中尝试运行此查询](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudHxmZWV8dGF4JykgQVBQTFkoYXZnKQpGUk9NIG55Y190YXhpLnRyaXBzOw\&run_query=true)
 
 ```text
    ┌─avg(fare_amount)─┬───────avg(mta_tax)─┬────avg(tip_amount)─┬──avg(tolls_amount)─┬──────avg(ehail_fee)─┬──avg(total_amount)─┐
@@ -119,7 +119,7 @@ FROM nyc_taxi.trips
    └──────────────────┴────────────────────┴────────────────────┴────────────────────┴─────────────────────┴────────────────────┘
 ```
 
-这些值包含很多小数位，不过我们可以通过链式调用函数来处理这个问题。在这种情况下，我们先使用 `avg` 函数，然后再使用 `round` 函数：
+这些值保留了很多小数位，不过幸运的是，我们可以通过链式调用函数来解决这个问题。在这种情况下，我们先使用 `avg` 函数，然后再使用 `round` 函数：
 
 ```sql
 SELECT COLUMNS('.*_amount|fee|tax') APPLY(avg) APPLY(round)

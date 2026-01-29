@@ -154,7 +154,7 @@ ClickHouse と SQL Server では、カラム構成が同じとは限りません
 
 特別な要件がない限り、ひとまず「バックフィルしない」を選択してください。
 
-## ストリーミングの実行: 期待できること  \{#streaming-in-action-what-to-expect\}
+## ストリーミングの実行: 期待できること \{#streaming-in-action-what-to-expect\}
 
 これでパイプラインのセットアップが完了し、稼働を開始しました。
 
