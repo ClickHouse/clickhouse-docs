@@ -15,11 +15,11 @@ import simple_merges from '@site/static/images/bestpractices/simple_merges.png';
 OPTIMIZE TABLE <table> FINAL;
 ```
 
-**ほとんどの場合は `OPTIMIZE FINAL` 操作は避けるべきです。**\
+**ほとんどの場合は `OPTIMIZE FINAL` 操作は避けるべきです。**
 この操作はリソースを多く消費する処理を実行し、クラスターのパフォーマンスに影響を与える可能性があります。
 
 :::note OPTIMIZE FINAL と FINAL の違い
-`OPTIMIZE FINAL` は `FINAL` と同じではありません。`FINAL` は、`ReplacingMergeTree` のように重複を除いた結果を取得するために必要になる場合があります。\
+`OPTIMIZE FINAL` は `FINAL` と同じではありません。`FINAL` は、`ReplacingMergeTree` のように重複を除いた結果を取得するために必要になる場合があります。
 一般的に、クエリがプライマリキーと同じ列を条件にフィルタしている場合は、`FINAL` を使用しても問題ありません。
 :::
 
@@ -44,8 +44,6 @@ OPTIMIZE TABLE <table> FINAL;
 * **複数の 150 GB パーツ** を 1 つの巨大なパーツにマージしようとする可能性がある
 * その結果、**マージ時間の長期化**、**メモリプレッシャー**、さらには **メモリ不足エラー** を引き起こす可能性がある
 * これらの巨大なパーツは、その後のマージが難しくなる場合があり、つまり、上記の理由によりさらなるマージの試行が失敗します。クエリ時に正しい挙動を得るためにマージが必要なケースでは、[ReplacingMergeTree における重複の蓄積](/guides/developer/deduplication#using-replacingmergetree-for-upserts) のような望ましくない結果を招き、クエリ時のパフォーマンスを低下させる可能性があります。
-
-
 
 ## バックグラウンドマージに任せる \{#let-background-merges-do-the-work\}
 

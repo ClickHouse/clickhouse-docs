@@ -26,35 +26,36 @@ import ToolsCalled from '@site/static/images/use-cases/AI_ML/MCP/8_janai_tools_c
 import ToolsCalledExpanded from '@site/static/images/use-cases/AI_ML/MCP/9_janai_tools_called_expanded.png';  
 import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png';
 
-# 在 Jan.ai 中使用 ClickHouse MCP 服务器 \{#using-clickhouse-mcp-server-with-janai\}
 
-> 本指南介绍如何在 [Jan.ai](https://jan.ai/docs) 中使用 ClickHouse MCP 服务器。
+# 在 Jan.ai 中使用 ClickHouse MCP Server \{#using-clickhouse-mcp-server-with-janai\}
+
+> 本指南解释如何在 [Jan.ai](https://jan.ai/docs) 中使用 ClickHouse MCP Server。
 
 <VerticalStepper headerLevel="h2">
 
 ## 安装 Jan.ai \{#install-janai\}
 
-Jan.ai 是一个开源的 ChatGPT 替代品，可以100% 离线运行。
-可以为 [Mac](https://jan.ai/docs/desktop/mac)、[Windows](https://jan.ai/docs/desktop/windows) 或 [Linux](https://jan.ai/docs/desktop/linux) 下载 Jan.ai。
+Jan.ai 是一个可 100% 离线运行的开源 ChatGPT 替代方案。
+可以下载适用于 [Mac](https://jan.ai/docs/desktop/mac)、[Windows](https://jan.ai/docs/desktop/windows) 或 [Linux](https://jan.ai/docs/desktop/linux) 的 Jan.ai。
 
-这是一个原生应用，下载完成后即可启动使用。
+它是一个原生应用程序，下载完成后即可直接启动。
 
-## 将 LLM 添加到 Jan.ai \{#add-llm-to-janai\}
+## 向 Jan.ai 添加 LLM \{#add-llm-to-janai\}
 
-我们可以在设置菜单中启用模型。
+可以通过设置菜单启用模型。 
 
 要启用 OpenAI，我们需要提供一个 API 密钥，如下所示：
 
 <Image img={OpenAIModels} alt="启用 OpenAI 模型" size="md"/>
 
-## 启用 MCP 服务器 \{#enable-mcp-servers\}
+## 启用 MCP Servers \{#enable-mcp-servers\}
 
-在撰写本文时，MCP 服务器仍然是 Jan.ai 中的一项实验性功能。
-我们可以通过打开实验性功能开关来启用它们：
+在撰写本文时，MCP Servers 仍然是 Jan.ai 中的实验性功能。
+可以通过打开实验性功能开关来启用它们：
 
-<Image img={MCPServers} alt="Enable MCP servers" size="md"/>
+<Image img={MCPServers} alt="启用 MCP 服务器" size="md"/>
 
-启用该开关后，我们会在左侧菜单中看到 `MCP Servers`。
+打开该开关后，左侧菜单中会出现 `MCP Servers`。
 
 ## 配置 ClickHouse MCP Server \{#configure-clickhouse-mcp-server\}
 
@@ -76,27 +77,27 @@ Jan.ai 是一个开源的 ChatGPT 替代品，可以100% 离线运行。
 
 <Image img={MCPTool} alt="ClickHouse MCP Server 工具" size="md"/>
 
-## 使用 Jan.ai 与 ClickHouse MCP 服务器对话 \{#chat-to-clickhouse-mcp-server\}
+## 使用 Jan.ai 与 ClickHouse MCP Server 对话 \{#chat-to-clickhouse-mcp-server\}
 
-现在可以开始查询存储在 ClickHouse 中的数据了!
-让我们提出一个问题:
+现在可以来聊一聊存储在 ClickHouse 中的一些数据了！
+先提一个问题：
 
-<Image img={Question} alt='问题' size='md' />
+<Image img={Question} alt="问题" size="md"/>
 
-Jan.ai 在调用工具之前会请求确认:
+在调用工具之前，Jan.ai 会先请求确认：
 
-<Image img={MCPToolConfirm} alt='工具确认' size='md' />
+<Image img={MCPToolConfirm} alt="工具调用确认" size="md"/>
 
-然后它会显示已执行的工具调用列表:
+随后它会展示已发起的工具调用列表：
 
-<Image img={ToolsCalled} alt='已调用的工具' size='md' />
+<Image img={ToolsCalled} alt="已调用的工具" size="md"/>
 
-如果点击工具调用,可以查看调用的详细信息:
+如果我们点击某个工具调用项，就可以查看这次调用的详细信息：
 
-<Image img={ToolsCalledExpanded} alt='已调用工具的展开视图' size='md' />
+<Image img={ToolsCalledExpanded} alt="展开的工具调用详情" size="md"/>    
 
-然后在下方,我们可以看到结果:
+然后在下面，可以看到我们的结果：
 
-<Image img={Result} alt='结果' size='md' />
+<Image img={Result} alt="结果" size="md"/>    
 
 </VerticalStepper>

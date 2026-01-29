@@ -31,13 +31,6 @@ CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name'
 
 对于 [ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication) 表，如果未提供任何参数，则会使用默认参数：`/clickhouse/tables/{uuid}/{shard}` 和 `{replica}`。可以在服务器设置中通过 [default&#95;replica&#95;path](../../operations/server-configuration-parameters/settings.md#default_replica_path) 和 [default&#95;replica&#95;name](../../operations/server-configuration-parameters/settings.md#default_replica_name) 对其进行修改。宏 `{uuid}` 会展开为表的 uuid，`{shard}` 和 `{replica}` 会展开为服务器配置中的值，而不是数据库引擎参数中的值。不过在未来，将可以使用 Replicated 数据库的 `shard_name` 和 `replica_name`。
 
-还支持使用辅助 ZooKeeper 集群来存储复制数据库的元数据，以替代默认的 ZooKeeper 集群。可以使用如下 SQL 创建使用辅助 ZooKeeper 集群的复制数据库：
-
-```sql
-CREATE DATABASE database_name ENGINE = Replicated('zookeeper_name_configured_in_auxiliary_zookeepers:path', 'shard_name', 'replica_name')
-```
-
-
 ## 细节与建议 \{#specifics-and-recommendations\}
 
 使用 `Replicated` 数据库的 DDL 查询与 [ON CLUSTER](../../sql-reference/distributed-ddl.md) 查询的工作方式类似，但存在一些细微差别。
@@ -64,7 +57,7 @@ node2 :) CREATE DATABASE r ENGINE=Replicated('some/path/r','shard1','other_repli
 node3 :) CREATE DATABASE r ENGINE=Replicated('some/path/r','other_shard','{replica}');
 ```
 
-在集群上使用隐式参数创建数据库：
+在使用隐式参数的集群上创建数据库：
 
 ```sql
 CREATE DATABASE r ON CLUSTER default ENGINE=Replicated;
@@ -120,7 +113,7 @@ node1 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 node4 :) CREATE DATABASE r ENGINE=Replicated('some/path/r','other_shard','r2');
 ```
 
-如果在 `zoo_path` 中使用宏 `{uuid}`，在另一台主机上添加副本：
+当在 `zoo_path` 中使用宏 `{uuid}`，并需要在另一台主机上添加副本时：
 
 ```sql
 node1 :) SELECT uuid FROM system.databases WHERE database='r';
@@ -128,7 +121,6 @@ node4 :) CREATE DATABASE r UUID '<uuid from previous query>' ENGINE=Replicated('
 ```
 
 集群配置如下：
-
 
 ```text
 ┌─cluster─┬─shard_num─┬─replica_num─┬─host_name─┬─host_address─┬─port─┬─is_local─┐
@@ -151,7 +143,6 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 │ node4 │  [0,2,4,6,8]  │
 └───────┴───────────────┘
 ```
-
 
 ## 设置 \{#settings\}
 

@@ -10,7 +10,7 @@ keywords: ['merge', 'table function', 'query patterns', 'table engine', 'data ac
 [Функция таблицы Merge](https://clickhouse.com/docs/sql-reference/table-functions/merge) позволяет выполнять запросы к нескольким таблицам параллельно.
 Для этого она создаёт временную таблицу [Merge](https://clickhouse.com/docs/engines/table-engines/special/merge) и определяет её структуру как объединение столбцов исходных таблиц с приведением типов к общим.
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="Видеопроигрыватель YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+<iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="Видеопроигрыватель YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Настройка таблиц \{#setup-tables\}
 
@@ -47,6 +47,7 @@ FROM url('https://raw.githubusercontent.com/JeffSackmann/tennis_atp/refs/heads/m
 SETTINGS schema_inference_make_columns_nullable=0,
          schema_inference_hints='winner_seed Nullable(UInt16), loser_seed Nullable(UInt16), surface Enum(\'Hard\', \'Grass\', \'Clay\', \'Carpet\')';
 ```
+
 
 ## Схема нескольких таблиц \{#schema-multiple-tables\}
 
@@ -86,6 +87,7 @@ SETTINGS output_format_pretty_max_value_width=25;
 * В 1970s тип `winner_seed` меняется с `Nullable(String)` на `Nullable(UInt8)`, а `score` — с `String` на `Array(String)`.
 * В 1980s `winner_seed` и `loser_seed` меняются с `Nullable(UInt8)` на `Nullable(UInt16)`.
 * В 1990s `surface` меняется с `String` на `Enum('Hard', 'Grass', 'Clay', 'Carpet')` и добавляются столбцы `walkover` и `retirement`.
+
 
 ## Запрос к нескольким таблицам с помощью merge \{#querying-multiple-tables\}
 
@@ -142,6 +144,7 @@ AND multiIf(
 │ Stefan Edberg │ ['6-2','6-2'] │ 7           │
 └───────────────┴───────────────┴─────────────┘
 ```
+
 
 ## Из какой таблицы берутся строки при использовании `merge`? \{#which-table-merge\}
 

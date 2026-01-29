@@ -38,29 +38,30 @@ description: '性能优化策略的真实案例'
 在 ORDER BY 子句中使用时间戳时，需要权衡基数与精度之间的取舍。微秒级精度的时间戳会产生非常高的基数（几乎每行一个唯一值），从而降低 ClickHouse 稀疏主索引的效率。对时间戳进行取整可以降低基数，从而实现更好的索引跳过，但会在基于时间的查询中损失时间精度。
 
 ```sql runnable editable
--- 挑战：尝试不同的时间函数，如 toStartOfMinute 或 toStartOfWeek
--- 实验：使用您自己的时间戳数据比较基数差异
+-- Challenge: Try different time functions like toStartOfMinute or toStartOfWeek
+-- Experiment: Compare the cardinality differences with your own timestamp data
 SELECT 
-    '微秒精度' as granularity,
+    'Microsecond precision' as granularity,
     uniq(created_at) as unique_values,
-    '产生大量基数 - 不适合作为排序键' as impact
+    'Creates massive cardinality - bad for sort key' as impact
 FROM github.github_events
 WHERE created_at >= '2024-01-01'
 UNION ALL
 SELECT 
-    '小时精度',
+    'Hour precision',
     uniq(toStartOfHour(created_at)),
-    '更适合作为排序键 - 支持跳数索引'
+    'Much better for sort key - enables skip indexing'
 FROM github.github_events
 WHERE created_at >= '2024-01-01'
 UNION ALL  
 SELECT 
-    '天精度',
+    'Day precision',
     uniq(toStartOfDay(created_at)),
-    '最适合报表查询'
+    'Best for reporting queries'
 FROM github.github_events
 WHERE created_at >= '2024-01-01';
 ```
+
 
 ## 聚焦单条查询，而不是平均值 \{#focus-on-individual-queries-not-averages\}
 
@@ -81,10 +82,11 @@ Sentry 是一个面向开发者的错误跟踪平台，每天为 400 多万开�
 在极端场景下，Sentry 使用确定性采样。10% 的采样可以将内存使用量降低 90%，同时对大多数聚合仍能保持大约 5% 的精度：
 
 ```sql
-WHERE cityHash64(user_id) % 10 = 0  -- 始终为相同的 10% 用户
+WHERE cityHash64(user_id) % 10 = 0  -- Always same 10% of users
 ```
 
 这可以确保相同的用户在每次查询中都会以相同的方式出现，从而在不同时间段内提供一致的结果。关键在于：`cityHash64()` 会对相同输入生成一致的哈希值，因此 `user_id = 12345` 始终会被哈希到同一个值，保证该用户要么始终出现在你的 10% 样本中，要么从不出现——不会在不同查询之间时有时无。
+
 
 ## Sentry 的位掩码优化 \{#bit-mask-optimization\}
 
@@ -93,24 +95,24 @@ WHERE cityHash64(user_id) % 10 = 0  -- 始终为相同的 10% 用户
 如果你也遇到类似情况，可以在自己的表上运行下面的查询：
 
 ```sql
--- 内存高效聚合模式：每个条件 = 每组一个整数
--- 核心要点：sumIf() 创建有界内存，与数据量无关
--- 每组内存：N 个整数（N * 8 字节），其中 N = 条件数量
+-- Memory-Efficient Aggregation Pattern: Each condition = one integer per group
+-- Key insight: sumIf() creates bounded memory regardless of data volume
+-- Memory per group: N integers (N * 8 bytes) where N = number of conditions
 
 SELECT 
     your_grouping_column,
     
-    -- 每个 sumIf 为每组创建恰好一个整数计数器
-    -- 无论有多少行匹配每个条件，内存保持恒定
+    -- Each sumIf creates exactly one integer counter per group
+    -- Memory stays constant regardless of how many rows match each condition
     sumIf(1, your_condition_1) as condition_1_count,
     sumIf(1, your_condition_2) as condition_2_count,
     sumIf(1, your_text_column LIKE '%pattern%') as pattern_matches,
     sumIf(1, your_numeric_column > threshold_value) as above_threshold,
     
-    -- 复杂的多条件聚合仍使用恒定内存
+    -- Complex multi-condition aggregations still use constant memory
     sumIf(1, your_condition_1 AND your_text_column LIKE '%pattern%') as complex_condition_count,
     
-    -- 标准聚合（用于上下文）
+    -- Standard aggregations for context
     count() as total_rows,
     avg(your_numeric_column) as average_value,
     max(your_timestamp_column) as latest_timestamp
@@ -129,6 +131,7 @@ LIMIT 20
 
 来自 Sentry 工程团队的反馈：“这些重量级查询的速度提升了 10 倍以上，而内存使用降低了 100 倍（更重要的是，现在是有上界的）。我们最大的一些客户在搜索回放时不再遇到错误，我们现在也可以在不耗尽内存的情况下支持任意规模的客户。”
 
+
 ## 视频资源 \{#video-sources\}
 
 - [Lost in the Haystack - Optimizing High Cardinality Aggregations](https://www.youtube.com/watch?v=paK84-EUJCA) - 来自 Sentry 的生产环境内存优化实战经验
@@ -136,5 +139,6 @@ LIMIT 20
 - [ClickHouse Meetup: Query Optimization Techniques](https://www.youtube.com/watch?v=JBomQk4Icjo) - 社区查询优化策略
 
 **延伸阅读**:
+
 - [查询优化指南](/optimize/query-optimization)
 - [物化视图社区洞见](./materialized-views.md)
