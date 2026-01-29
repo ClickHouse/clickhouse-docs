@@ -573,7 +573,7 @@ WHERE Timestamp < (
 为了进一步提高安全性，可以考虑将回填用的 materialized view 指向一个临时目标表（例如 `otel_traces_1m_v2`）。一旦回填成功完成，可以将[分区移动](/sql-reference/statements/alter/partition#move-partition-to-table)到主目标表，例如 `ALTER TABLE otel_traces_1m_v2 MOVE PARTITION '2026-01-02' TO otel_traces_1m`。如果回填因资源限制而中断或失败，这样可以更容易恢复。
 :::
 
-关于如何调优此过程（包括提升插入性能以及减少和控制资源使用）的更多详情，请参阅 [“Backfilling”](/data-modeling/backfilling#tuning-performance--resources)。
+关于如何调优此过程（包括提升插入性能以及减少和控制资源使用）的更多详情，请参阅 [“Backfilling.”](/data-modeling/backfilling#tuning-performance--resources)
 
 </VerticalStepper>
 
