@@ -175,7 +175,7 @@ By scrolling to the bottom of the view we can see that the `payment` service is 
 
 <Image img={step_9} alt="Step 9" size="lg"/>
 
-### Searching traces {#searching-traces} 
+### Searching traces {#searching-traces}
 
 We have established users are failing to complete purchases due to a cache issue in the payment service. Let's explore the traces for this service in more detail to see if we can learn more about the root cause.
 
@@ -203,7 +203,7 @@ Select a `Error: Visa cache full: cannot add new item.` error, switch to the `In
 
 By correlating traces with metrics we can see that memory and CPU increased with the `payment` service, before collapsing to `0` (we can attribute this to a pod restart) - suggesting the cache issue caused resource issues. We can expect this has impacted payment completion times.
 
-### Event deltas for faster resolution {#event-deltas-for-faster-resolution} 
+### Event deltas for faster resolution {#event-deltas-for-faster-resolution}
 
 Event Deltas help surface anomalies by attributing changes in performance or error rates to specific subsets of data—making it easier to quickly pinpoint the root cause. 
 
@@ -282,7 +282,7 @@ In summary, by exploring logs, traces and finally metrics we have concluded:
 - As the cache grew, the performance of Visa payments degraded
 - On reaching the maximum size, the cache rejected payments and reported itself as size `0`.
 
-### Using sessions {#using-sessions} 
+### Using sessions {#using-sessions}
 
 Sessions allow us to replay the user experience, offering a visual account of how an error occurred from the user's perspective. While not typically used to diagnose root causes, they are valuable for confirming issues reported to customer support and can serve as a starting point for deeper investigation.
 
@@ -298,7 +298,7 @@ Search for `SpanAttributes.userEmail: Braulio` to find our customer's session. S
 
 <Image img={step_22} alt="Step 22" size="lg"/>
 
-### Replaying sessions {#replaying-sessions} 
+### Replaying sessions {#replaying-sessions}
 
 Sessions can be replayed by pressing the ▶️ button. Switching between `Highlighted` and `All Events` allows varying degrees of span granularity, with the former highlighting key events and errors. 
 

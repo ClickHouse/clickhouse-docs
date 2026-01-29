@@ -23,6 +23,7 @@ ClickStack 提供多种方式，将可观测性数据摄取到 ClickHouse 实例
 | [JVM Metrics](/use-cases/observability/clickstack/integrations/jvm-metrics) | 监控 JVM 性能 |
 | [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | 监控 Kafka 性能 |
 | [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | 监控 K8s 集群 |
+| [MySQL Logs](/use-cases/observability/clickstack/integrations/mysql-logs) | 收集 MySQL 慢查询与错误日志 |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | 收集 Nginx 访问/错误日志 |
 | [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | 追踪 Nginx HTTP 请求 |
 | [PostgreSQL Logs](/use-cases/observability/clickstack/integrations/postgresql-logs) | 收集 Postgres 日志 |

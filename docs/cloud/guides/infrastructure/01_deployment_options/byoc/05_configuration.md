@@ -87,7 +87,7 @@ Need specialized resources or architectures? The following customizations are av
 - **Architecture**  
   Switch workload node groups from ARM to x86 if required.
 
-> **Note:** Spot (preemptible) instances are _not_ supported; all BYOC node groups run on on-demand instances by default.
+> **Note:** Spot (preemptable) instances are _not_ supported; all BYOC node groups run on on-demand instances by default.
 
 :::note
 All node group customization and configuration changes must be coordinated through ClickHouse Support. This ensures compatibility, stability, and optimal performance.

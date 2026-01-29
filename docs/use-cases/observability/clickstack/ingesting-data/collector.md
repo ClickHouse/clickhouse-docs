@@ -481,7 +481,7 @@ RENAME TABLE otel_logs TO otel_logs_map;
 RENAME TABLE otel_metrics TO otel_metrics_map;
 ```
 
-#### Deploy the collector  {#deploy-the-collector}
+#### Deploy the collector {#deploy-the-collector}
 
 Deploy the collector with `OTEL_AGENT_FEATURE_GATE_ARG` set.
 

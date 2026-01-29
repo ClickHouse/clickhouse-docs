@@ -26,6 +26,7 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 
 Предложение `ON CLUSTER` позволяет создавать пользователей на кластере, см. [Распределённый DDL](../../../sql-reference/distributed-ddl.md).
 
+
 ## Идентификация \{#identification\}
 
 Существует несколько способов идентификации пользователя:
@@ -71,6 +72,7 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 * Содержать как минимум 1 строчную букву
 * Содержать как минимум 1 специальный символ
   :::
+
 
 ## Примеры \{#examples\}
 
@@ -139,7 +141,7 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
    рассмотрите альтернативные методы аутентификации
    из-за вычислительных накладных расходов bcrypt при высоких значениях work factor.
    :::
-6. 
+
 6. Тип пароля также можно опустить:
 
     ```sql
@@ -160,7 +162,6 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
    CREATE USER user1 IDENTIFIED WITH plaintext_password by '1', bcrypt_password by '2', plaintext_password by '3''
    ```
 
-Примечания:
 1. Более старые версии ClickHouse могут не поддерживать синтаксис с несколькими методами аутентификации. Поэтому, если на сервере ClickHouse есть пользователи с такими настройками и сервер понижен до версии, которая этого не поддерживает, эти пользователи станут недоступны, а некоторые операции, связанные с пользователями, перестанут работать. Чтобы выполнить понижение версии корректно, необходимо перед понижением настроить всех пользователей так, чтобы у каждого был только один метод аутентификации. Либо, если сервер был понижен без соблюдения предусмотренной процедуры, проблемных пользователей следует удалить.
 2. `no_password` не может сосуществовать с другими методами аутентификации по соображениям безопасности. Поэтому вы можете указать
 `no_password` только если это единственный метод аутентификации в запросе. 
@@ -240,7 +241,7 @@ Create the user account `john` and make all his future roles default excepting `
 CREATE USER john DEFAULT ROLE ALL EXCEPT role1, role2;
 ```
 
-Create the user account `john` and allow him to grant his privileges to the user with `jack` account:
+Создайте учетную запись пользователя `john` и разрешите ему передавать свои привилегии пользователю с учетной записью `jack`:
 
 ```sql
 CREATE USER john GRANTEES jack;

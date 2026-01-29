@@ -1249,6 +1249,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1048576"},{"label": "Улучшенное значение по умолчанию, полученное на основе результатов тестирования"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 Порог количества байт для чтения на реплику, при котором автоматически включаются параллельные реплики (применяется только, когда `automatic_parallel_replicas_mode`=1). Значение 0 означает отсутствие порога.
+Общее количество байт для чтения оценивается на основе собранной статистики.
 
 ## automatic_parallel_replicas_mode \{#automatic_parallel_replicas_mode\}
 
@@ -2268,7 +2269,7 @@ SETTINGS convert_query_to_cnf = true;
 
 <SettingsInfoBlock type="DeduplicateInsertSelectMode" default_value="enable_when_possible" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "change the default behavior of deduplicate_insert_select to ENABLE_WHEN_PROSSIBLE"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "New setting, replace insert_select_deduplicate"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "change the default behavior of deduplicate_insert_select to ENABLE_WHEN_POSSIBLE"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "New setting, replace insert_select_deduplicate"}]}]}/>
 
 Включает или отключает дедупликацию блоков для `INSERT SELECT` (для таблиц Replicated\*).
 Этот параметр переопределяет `insert_deduplicate` для запросов `INSERT SELECT`.
@@ -2278,6 +2279,15 @@ SETTINGS convert_query_to_cnf = true;
 - force_enable — дедупликация включена для запроса `INSERT SELECT`. Если результат SELECT нестабилен, выбрасывается исключение.
 - enable_when_possible — дедупликация включена, если `insert_deduplicate` включён и результат SELECT стабилен, иначе отключена.
 - enable_even_for_bad_queries — дедупликация включена, если `insert_deduplicate` включён. Если результат SELECT нестабилен, записывается предупреждение, но запрос выполняется с дедупликацией. Эта опция предназначена для обратной совместимости. Рассмотрите возможность использования других опций, так как это может привести к непредсказуемым результатам.
+
+## default_dictionary_database \{#default_dictionary_database\}
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": ""},{"label": "Новая настройка"}]}]}/>
+
+База данных, в которой выполняется поиск внешних словарей, если имя базы данных не указано.
+Пустая строка задаёт текущую базу данных. Если словарь не найден в указанной базе данных по умолчанию, ClickHouse возвращается к текущей базе данных.
+
+Может быть полезно при миграции с глобальных словарей, определённых в XML, на словари, определённые в SQL.
 
 ## default_materialized_view_sql_security \{#default_materialized_view_sql_security\}
 
@@ -3004,6 +3014,12 @@ FORMAT PrettyCompactMonoBlock
 Полезно при использовании общей системы хранения и при очень больших объёмах данных в кластере.
 Использует реплики из `cluster_for_parallel_replicas`.
 
+**См. также**
+
+- [distributed_index_analysis_for_non_shared_merge_tree](#distributed_index_analysis_for_non_shared_merge_tree)
+- [distributed_index_analysis_min_parts_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_parts_to_activate)
+- [distributed_index_analysis_min_indexes_size_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_size_to_activate)
+
 ## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -3201,7 +3217,15 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-Выполнять слияние частей только внутри одной партиции в запросах с `FINAL`
+Улучшает запросы с FINAL за счёт предотвращения слияния данных из разных партиций.
+
+Когда параметр включён, при выполнении запросов SELECT FINAL части из разных партиций не будут объединяться друг с другом. Вместо этого слияние будет происходить только внутри каждой партиции отдельно. Это может значительно повысить производительность запросов при работе с партиционированными таблицами.
+
+Если параметр явно не установлен, ClickHouse автоматически включит эту оптимизацию, когда выражение ключа партиционирования является детерминированным и все столбцы, используемые в выражении ключа партиционирования, включены в первичный ключ.
+
+Такое автоматическое определение гарантирует, что строки с одинаковыми значениями первичного ключа всегда будут принадлежать одной и той же партиции, что делает безопасным отказ от слияний между партициями.
+
+**Значение по умолчанию:** `false` (но может быть автоматически включено на основе структуры таблицы, если не задано явно)
 
 ## empty_result_for_aggregation_by_constant_keys_on_empty_set \{#empty_result_for_aggregation_by_constant_keys_on_empty_set\}
 
@@ -3560,18 +3584,6 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 Разрешает агрегации с экономным использованием памяти (см. `distributed_aggregation_memory_efficient`) формировать бакеты не по порядку.
 Это может повысить производительность при неравномерных размерах бакетов агрегации, позволяя реплике отправлять инициатору бакеты с более высокими ID, пока он всё ещё обрабатывает тяжёлые бакеты с более низкими ID.
 Недостатком может быть потенциально более высокое использование памяти.
-
-## enable_qbit_type \{#enable_qbit_type\}
-
-<BetaBadge/>
-
-**Псевдонимы**: `allow_experimental_qbit_type`
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "QBit был переведен в статус Beta. Добавлен псевдоним для настройки 'allow_experimental_qbit_type'."}]}]}/>
-
-Позволяет создавать тип данных [QBit](../../sql-reference/data-types/qbit.md).
 
 ## enable_reads_from_query_cache \{#enable_reads_from_query_cache\}
 

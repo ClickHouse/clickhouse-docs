@@ -1245,6 +1245,7 @@ Cloud 默认值：`1`。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1048576"},{"label": "基于测试结果得出的更优默认值"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置"}]}]}/>
 
 用于自动启用并行副本时的每个副本最小读取字节数阈值（仅在 `automatic_parallel_replicas_mode`=1 时生效）。0 表示不设阈值。
+总计需要读取的字节数根据收集到的统计信息进行估算。
 
 ## automatic_parallel_replicas_mode \{#automatic_parallel_replicas_mode\}
 
@@ -2264,7 +2265,7 @@ SETTINGS convert_query_to_cnf = true;
 
 <SettingsInfoBlock type="DeduplicateInsertSelectMode" default_value="enable_when_possible" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "change the default behavior of deduplicate_insert_select to ENABLE_WHEN_PROSSIBLE"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "New setting, replace insert_select_deduplicate"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "change the default behavior of deduplicate_insert_select to ENABLE_WHEN_POSSIBLE"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "New setting, replace insert_select_deduplicate"}]}]}/>
 
 启用或禁用 `INSERT SELECT` 的块去重（适用于 Replicated\* 表）。
 该设置会覆盖 `INSERT SELECT` 查询中 `insert_deduplicate` 的行为。
@@ -2274,6 +2275,15 @@ SETTINGS convert_query_to_cnf = true;
 - force_enable — 对 `INSERT SELECT` 查询启用去重。如果 SELECT 结果不稳定，则抛出异常。
 - enable_when_possible — 如果 `insert_deduplicate` 启用且 SELECT 结果稳定，则启用去重，否则禁用。
 - enable_even_for_bad_queries - 如果 `insert_deduplicate` 启用，则始终启用去重。如果 SELECT 结果不稳定，会记录警告日志，但查询仍然在启用去重的情况下执行。此选项用于向后兼容。建议优先使用其他选项，因为该选项可能导致不符合预期的结果。
+
+## default_dictionary_database \{#default_dictionary_database\}
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": ""},{"label": "New setting"}]}]}/>
+
+在未指定数据库名称时用于搜索外部字典的数据库。
+空字符串表示当前数据库。如果在指定的默认数据库中未找到字典，ClickHouse 会回退使用当前数据库。
+
+在从基于 XML 定义的全局字典迁移到基于 SQL 定义的字典时，这一配置会非常有用。
 
 ## default_materialized_view_sql_security \{#default_materialized_view_sql_security\}
 
@@ -2999,6 +3009,12 @@ FORMAT PrettyCompactMonoBlock
 对于共享存储以及集群中海量数据的场景非常有利。
 使用来自 cluster_for_parallel_replicas 的副本。
 
+**另请参阅**
+
+- [distributed_index_analysis_for_non_shared_merge_tree](#distributed_index_analysis_for_non_shared_merge_tree)
+- [distributed_index_analysis_min_parts_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_parts_to_activate)
+- [distributed_index_analysis_min_indexes_size_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_size_to_activate)
+
 ## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -3196,7 +3212,15 @@ FORMAT PrettyCompactMonoBlock
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-在 `SELECT FINAL` 查询中仅合并同一分区内的分区片段
+通过避免跨不同分区的合并来优化 FINAL 查询。
+
+启用后，在执行 SELECT FINAL 查询时，来自不同分区的分区片段将不会被合并在一起，合并只会在各自的分区内单独进行。在处理分区表时，这可以显著提升查询性能。
+
+如果未显式设置，当分区键表达式是确定性的，并且分区键表达式中使用的所有列都包含在主键中时，ClickHouse 会自动启用此优化。
+
+这种自动推导可以确保具有相同主键值的行始终属于同一分区，从而保证避免跨分区合并在语义上是安全的。
+
+**默认值：** `false`（但如果未显式设置，可能会根据表结构自动启用）
 
 ## empty_result_for_aggregation_by_constant_keys_on_empty_set \{#empty_result_for_aggregation_by_constant_keys_on_empty_set\}
 
@@ -3555,18 +3579,6 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 允许节省内存的聚合（参见 `distributed_aggregation_memory_efficient`）在聚合过程中以非顺序方式生成 bucket。
 当各聚合 bucket 的大小分布不均衡时，通过允许副本在自身仍在处理一些较大的低 ID bucket 的同时，将较高 ID 的 bucket 提前发送给发起方，可以提升性能。
 其缺点是可能会占用更多内存。
-
-## enable_qbit_type \{#enable_qbit_type\}
-
-<BetaBadge/>
-
-**别名**: `allow_experimental_qbit_type`
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "QBit 已移至 Beta 阶段。为设置 `allow_experimental_qbit_type` 添加了别名。"}]}]}/>
-
-允许创建 [QBit](../../sql-reference/data-types/qbit.md) 数据类型。
 
 ## enable_reads_from_query_cache \{#enable_reads_from_query_cache\}
 

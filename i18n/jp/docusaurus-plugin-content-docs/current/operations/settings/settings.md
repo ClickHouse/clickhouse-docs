@@ -1247,6 +1247,7 @@ true に設定すると、非同期挿入に対して適応型ビジータイム
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1048576"},{"label": "テスト結果に基づいて導出された、より適切なデフォルト値"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 `automatic_parallel_replicas_mode`=1 の場合に、parallel replicas を自動的に有効化するための、レプリカごとの読み取りバイト数のしきい値です。0 を指定すると、しきい値はありません。
+読み取るバイト数の合計は、収集された統計情報に基づいて推定されます。
 
 ## automatic_parallel_replicas_mode \{#automatic_parallel_replicas_mode\}
 
@@ -2266,7 +2267,7 @@ Replicated\* テーブルからデータを受け取る materialized view に対
 
 <SettingsInfoBlock type="DeduplicateInsertSelectMode" default_value="enable_when_possible" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "deduplicate_insert_select のデフォルト動作を ENABLE_WHEN_PROSSIBLE に変更"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "新しい設定。insert_select_deduplicate を置き換えます。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "deduplicate_insert_select のデフォルト動作を ENABLE_WHEN_POSSIBLE に変更"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "新しい設定。insert_select_deduplicate を置き換えます。"}]}]}/>
 
 `INSERT SELECT`（Replicated\* テーブル向け）のブロック単位の重複排除を有効または無効にします。
 この設定は、`INSERT SELECT` クエリに対して `insert_deduplicate` を上書きします。
@@ -2276,6 +2277,15 @@ Replicated\* テーブルからデータを受け取る materialized view に対
 - force_enable — `INSERT SELECT` クエリに対して重複排除を有効にします。SELECT の結果が安定していない場合は例外がスローされます。
 - enable_when_possible — `insert_deduplicate` が有効で、かつ SELECT の結果が安定している場合に重複排除を有効にし、それ以外の場合は無効にします。
 - enable_even_for_bad_queries - `insert_deduplicate` が有効な場合に重複排除を有効にします。SELECT の結果が安定していない場合は警告がログに記録されますが、クエリは重複排除ありで実行されます。このオプションは後方互換性のためのものです。予期しない結果を招く可能性があるため、代わりに他のオプションの利用を検討してください。
+
+## default_dictionary_database \{#default_dictionary_database\}
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": ""},{"label": "New setting"}]}]}/>
+
+データベース名が指定されていない場合に、外部 Dictionary を検索するデータベース。
+空文字列の場合は、現在のデータベースを意味します。指定されたデフォルトデータベースで Dictionary が見つからない場合、ClickHouse は現在のデータベースを使用します。
+
+XML で定義されたグローバル Dictionary から、SQL で定義された Dictionary への移行に役立ちます。
 
 ## default_materialized_view_sql_security \{#default_materialized_view_sql_security\}
 
@@ -2999,6 +3009,12 @@ FORMAT PrettyCompactMonoBlock
 
 索引の解析処理がレプリカ間で分散実行されます。共有ストレージを使用している場合や、クラスター内のデータ量が非常に多い場合に有益です。`cluster_for_parallel_replicas` のレプリカを使用します。
 
+**関連項目**
+
+- [distributed_index_analysis_for_non_shared_merge_tree](#distributed_index_analysis_for_non_shared_merge_tree)
+- [distributed_index_analysis_min_parts_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_parts_to_activate)
+- [distributed_index_analysis_min_indexes_size_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_size_to_activate)
+
 ## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -3196,7 +3212,15 @@ ClickHouse は、クエリに分散テーブルの積（product）が含まれ�
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-SELECT FINAL で、単一のパーティション内にあるパーツのみをマージします
+異なるパーティション間でのマージを回避して、FINAL クエリを効率化します。
+
+有効にすると、SELECT FINAL クエリの実行時に、異なるパーティションに属するパーツはマージされません。代わりに、各パーティション内だけでマージが行われます。パーティション化されたテーブルを扱う場合、これによりクエリ性能が大きく向上する可能性があります。
+
+明示的に設定しない場合でも、パーティションキー式が決定的であり、そのパーティションキー式で使用されているすべてのカラムがプライマリキーに含まれているときは、ClickHouse がこの最適化を自動的に有効化します。
+
+この自動判定により、同じプライマリキー値を持つ行は必ず同じパーティションに属することが保証されるため、パーティションをまたいだマージを行わなくても安全になります。
+
+**デフォルト値:** `false`（ただし、明示的に設定しない場合はテーブル構造に基づいて自動的に有効化されることがあります）
 
 ## empty_result_for_aggregation_by_constant_keys_on_empty_set \{#empty_result_for_aggregation_by_constant_keys_on_empty_set\}
 
@@ -3554,18 +3578,6 @@ PROJECTION 定義における位置引数のサポートの有無を切り替え
 メモリ効率の高い集約（`distributed_aggregation_memory_efficient` を参照）で、バケットを順不同で生成できるようにします。
 これにより、集約バケットのサイズに偏りがある場合に、あるレプリカが低い ID の重いバケットをまだ処理している間でも、より高い ID のバケットをイニシエータへ送信できるようになり、パフォーマンスが向上する可能性があります。
 その代償として、メモリ使用量が増加する可能性があります。
-
-## enable_qbit_type \{#enable_qbit_type\}
-
-<BetaBadge/>
-
-**エイリアス**: `allow_experimental_qbit_type`
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "QBit が Beta 機能に移行されました。設定 'allow_experimental_qbit_type' のエイリアスが追加されました。"}]}]}/>
-
-[QBit](../../sql-reference/data-types/qbit.md) データ型の作成を許可します。
 
 ## enable_reads_from_query_cache \{#enable_reads_from_query_cache\}
 

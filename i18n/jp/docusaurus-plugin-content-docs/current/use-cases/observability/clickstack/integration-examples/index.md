@@ -23,6 +23,7 @@ ClickStack は、オブザーバビリティデータを ClickHouse インスタ
 | [JVM Metrics](/use-cases/observability/clickstack/integrations/jvm-metrics) | JVM のパフォーマンスを監視する |
 | [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Kafka のパフォーマンスを監視する |
 | [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | K8s クラスターを監視する |
+| [MySQL Logs](/use-cases/observability/clickstack/integrations/mysql-logs) | MySQL のスロークエリ/エラーログを収集する |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Nginx のアクセス/エラーログを収集する |
 | [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Nginx の HTTP リクエストをトレースする |
 | [PostgreSQL Logs](/use-cases/observability/clickstack/integrations/postgresql-logs) | Postgres ログを収集する |

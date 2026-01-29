@@ -42,6 +42,12 @@ SET profile = 'web'
         <max_threads>8</max_threads>
     </default>
 
+    <!-- Background operations settings -->
+    <background>
+        <!-- Re-defining maximum number of threads for background operations -->
+        <max_threads>12</max_threads>
+    </background>
+
     <!-- Settings for queries from the user interface -->
     <web>
         <max_rows_to_read>1000000000</max_rows_to_read>
@@ -79,6 +85,8 @@ SET profile = 'web'
 
 该示例定义了两个配置文件：`default` 和 `web`。
 
-`default` 配置文件有一个特殊用途：它必须始终存在，并在启动服务器时应用。换句话说，`default` 配置文件包含默认设置。
+`default` 配置文件有一个特殊用途：它必须始终存在，并在启动服务器时应用。换句话说，`default` 配置文件包含默认设置。默认配置文件的名称可以通过 `default_profile` 服务器设置进行更改。
+
+`background` 配置文件有一个特殊用途：它（如果存在）用于覆盖后台操作的设置。该参数是可选的，其名称可以通过 `background_profile` 服务器设置进行更改。
 
 `web` 配置文件是一个常规配置文件，可以通过 `SET` 查询或在 HTTP 查询中使用 URL 参数来设置。

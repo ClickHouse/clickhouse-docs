@@ -20,9 +20,11 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Architecture](/cloud/reference/byoc/architecture) | Deploy ClickHouse on your own cloud infrastructure |
 | [AWS PrivateLink](/manage/security/aws-privatelink) | This document describes how to connect to ClickHouse Cloud using AWS PrivateLink. |
 | [Azure Private Link](/cloud/security/azure-privatelink) | How to set up Azure Private Link |
-| [BYOC on AWS FAQ](/cloud/reference/byoc/faq/aws) | Deploy ClickHouse on your own cloud infrastructure |
-| [BYOC on AWS Observability](/cloud/reference/byoc/observability) | Deploy ClickHouse on your own cloud infrastructure |
-| [BYOC Onboarding for AWS](/cloud/reference/byoc/onboarding/aws) | Deploy ClickHouse on your own cloud infrastructure |
+| [BYOC FAQ](/cloud/reference/byoc/reference/faq) | Deploy ClickHouse on your own cloud infrastructure |
+| [BYOC Network Security](/cloud/reference/byoc/reference/network_security) | Deploy ClickHouse on your own cloud infrastructure |
+| [BYOC Observability](/cloud/reference/byoc/observability) | Monitor and observe your BYOC ClickHouse deployment using built-in dashboards and Prometheus metrics |
+| [BYOC Operations and Maintenance](/cloud/reference/byoc/operations) | Deploy ClickHouse on your own cloud infrastructure |
+| [BYOC Privilege](/cloud/reference/byoc/reference/priviledge) | Deploy ClickHouse on your own cloud infrastructure |
 | [BYOC security playbook](/cloud/security/audit-logging/byoc-security-playbook) | This page illustrates methods customers can use to identify potential security events |
 | [ClickHouse Cloud production readiness guide](/cloud/guides/production-readiness) | Guide for organizations transitioning from quick start to enterprise-ready ClickHouse Cloud deployments |
 | [ClickHouse Government](/cloud/infrastructure/clickhouse-government) | Overview of ClickHouse Government offering |
@@ -31,14 +33,18 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Cloud IP addresses](/manage/data-sources/cloud-endpoints-api) | This page documents the Cloud Endpoints API security features within ClickHouse. It details how to secure your ClickHouse deployments by managing access through authentication and authorization mechanisms. |
 | [Common access management queries](/cloud/security/common-access-management-queries) | This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns. |
 | [Configure backup schedules](/cloud/manage/backups/configurable-backups) | Guide showing how to configure backups |
+| [Connect to ClickHouse](/cloud/reference/byoc/connect) | Connect to your BYOC ClickHouse services via public, private, or PrivateLink endpoints |
 | [Console audit log](/cloud/security/audit-logging/console-audit-log) | This page describes how you can review the cloud audit log |
+| [Customized Setup](/cloud/reference/byoc/onboarding/customization) | Deploy ClickHouse on your own cloud infrastructure |
 | [Data encryption](/cloud/security/cmek) | Learn more about data encryption in ClickHouse Cloud |
 | [Data masking in ClickHouse](/cloud/guides/data-masking) | A guide to data masking in ClickHouse |
 | [Database audit log](/cloud/security/audit-logging/database-audit-log) | This page describes how you can review the database audit log |
+| [Deploying Additional Infrastructure](/cloud/reference/byoc/onboarding/new_region) | Deploy additional BYOC infrastructure in new regions or accounts |
 | [Export Backups to your Own Cloud Account](/cloud/manage/backups/export-backups-to-own-cloud-account) | Describes how to export backups to your own Cloud account |
 | [Gather your connection details](/cloud/guides/sql-console/gather-connection-details) | Gather your connection details |
 | [GCP private service connect](/manage/security/gcp-private-service-connect) | This document describes how to connect to ClickHouse Cloud using Google Cloud Platform (GCP) Private Service Connect (PSC), and how to disable access to your ClickHouse Cloud services from addresses other than GCP PSC addresses using ClickHouse Cloud IP access lists. |
 | [HIPAA onboarding](/cloud/security/compliance/hipaa-onboarding) | Learn more about how to onboard to HIPAA compliant services |
+| [Infrastructure Configuration](/cloud/reference/byoc/configurations) | Configure load balancers, node groups, and other BYOC infrastructure components |
 | [Manage cloud users](/cloud/security/manage-cloud-users) | This page describes how administrators can add users, manage assignments, and remove users |
 | [Manage database users](/cloud/security/manage-database-users) | This page describes how administrators can add database users, manage assignments, and remove database users |
 | [Manage my account](/cloud/security/manage-my-account) | This page describes how you can accept invitations, manage MFA settings, and reset passwords |
@@ -48,9 +54,11 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Optimizing Ask AI Agent Conversations with a Semantic Layer](/use-cases/AI_ML/AIChat/semantic-layer) | Guide to using AGENTS.md to provide custom business logic and data-specific instructions to the Ask AI chat agent |
 | [Overview](/cloud/reference/byoc/overview) | Deploy ClickHouse on your own cloud infrastructure |
 | [PCI onboarding](/cloud/security/compliance/pci-onboarding) | Learn more about how to onboard to PCI compliant services |
+| [Private Networking Setup](/cloud/reference/byoc/onboarding/network) | Deploy ClickHouse on your own cloud infrastructure |
 | [Query API Endpoints](/cloud/get-started/query-endpoints) | Easily spin up REST API endpoints from your saved queries |
 | [SAML SSO removal](/cloud/security/saml-removal) | How to remove SAML SSO with ClickHouse Cloud |
 | [SAML SSO setup](/cloud/security/saml-setup) | How to set up SAML SSO with ClickHouse Cloud |
 | [Setting IP filters](/cloud/security/setting-ip-filters) | This page explains how to set IP filters in ClickHouse Cloud to control access to ClickHouse services. |
+| [Standard Onboarding](/cloud/reference/byoc/onboarding/standard) | Deploy ClickHouse on your own cloud infrastructure |
 | [Usage limits](/cloud/bestpractices/usage-limits) | Describes the recommended usage limits in ClickHouse Cloud |
 <!--AUTOGENERATED_END-->
