@@ -90,7 +90,7 @@ com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scal
 
 ## Using TableProvider API {#tableprovider-api}
 
-When Unity Catalog is enabled (default), you **must** use the TableProvider API (format-based access) because Unity Catalog blocks Spark catalog registration. If you've disabled Unity Catalog by using a cluster with "No isolation shared" access mode, you can use the [Catalog API](/docs/integrations/data-ingestion/apache-spark/spark-native-connector#register-the-catalog-required) instead.
+When Unity Catalog is enabled (default), you **must** use the TableProvider API (format-based access) because Unity Catalog blocks Spark catalog registration. If you've disabled Unity Catalog by using a cluster with "No isolation shared" access mode, you can use the [Catalog API](/integrations/apache-spark/spark-native-connector#register-the-catalog-required) instead.
 
 ### Reading data {#reading-data-table-provider}
 
@@ -306,6 +306,6 @@ transformedDF.write
 
 ## Related documentation {#related}
 
-- [Spark Native Connector Guide](/docs/integrations/data-ingestion/apache-spark/spark-native-connector) - Complete connector documentation
-- [TableProvider API Documentation](/docs/integrations/data-ingestion/apache-spark/spark-native-connector#using-the-tableprovider-api-format-based-access) - Format-based access details
-- [Catalog API Documentation](/docs/integrations/data-ingestion/apache-spark/spark-native-connector#register-the-catalog-required) - Catalog-based access details
+- [Spark Native Connector Guide](/integrations/apache-spark/spark-native-connector) - Complete connector documentation
+- [TableProvider API Documentation](/integrations/apache-spark/spark-native-connector#using-the-tableprovider-api) - Format-based access details
+- [Catalog API Documentation](/integrations/apache-spark/spark-native-connector#register-the-catalog-required) - Catalog-based access details
