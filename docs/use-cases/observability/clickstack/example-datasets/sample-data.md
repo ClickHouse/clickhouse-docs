@@ -33,7 +33,7 @@ import copy_api_key from '@site/static/images/use-cases/observability/copy_api_k
 
 # ClickStack - Sample logs, traces and metrics {#clickstack-sample-dataset}
 
-The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) or a [ClickHouse Cloud instance](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection). 
+The following example assumes you have started Open Source ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started/oss) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started/oss#complete-connection-credentials). 
 
 :::note HyperDX in ClickHouse Cloud
 This sample dataset can also be used with HyperDX in ClickHouse Cloud, with only minor adjustments to the flow as noted. If using HyperDX in ClickHouse Cloud, you will require an Open Telemetry collector to be running locally as described in the [getting started guide for this deployment model](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud).

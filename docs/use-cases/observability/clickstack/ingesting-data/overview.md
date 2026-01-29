@@ -12,12 +12,24 @@ keywords: ['clickstack', 'observability', 'logs', 'monitoring', 'platform']
 
 import Image from '@theme/IdealImage';
 import architecture_with_flow from '@site/static/images/use-cases/observability/simple-architecture-with-flow.png';
+import managed_architecture_with_flow from '@site/static/images/use-cases/observability/managed-architecture-with-flow.png';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-All data is ingested into ClickStack via an **OpenTelemetry (OTel) collector**, which acts as the primary entry point for logs, metrics, traces, and session data.
+All data is ingested into ClickStack Open Source or Managed ClickStack via an **OpenTelemetry (OTel) collector**. This acts as the primary entry point for logs, metrics, traces, and session data.
 
-<Image img={architecture_with_flow} alt="Simple architecture with flow" size="md"/>
+The key difference between the architectures lies in where the components are hosted. In both cases, you run an OpenTelemetry Collector to receive telemetry data from your applications. With ClickStack Open Source, you also manage and host both ClickHouse and the ClickStack UI (HyperDX) yourself. With Managed ClickStack, ClickHouse and the HyperDX UI are hosted and managed in ClickHouse Cloud, with integrated authentication and operational management handled for you.
 
-This collector exposes two OTLP endpoints:
+<Tabs groupId="architecture">
+    <TabItem value="managed-clickstack" label="Managed ClickStack" default>
+        <Image img={managed_architecture_with_flow} alt="Managed architecture with flow" size="md"/>
+    </TabItem>
+    <TabItem value="oss-clickstack" label="Open Source ClickStack">
+    <Image img={architecture_with_flow} alt="Simple architecture with flow" size="md" force/>
+    </TabItem>
+</Tabs>
+
+In both deployment models, the collector exposes two OTLP endpoints:
 
 - **HTTP** - port `4318`
 - **gRPC** - port `4317`
