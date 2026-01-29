@@ -13,7 +13,6 @@ import {
     usePluralForm,
     useSearchQueryString,
 } from '@docusaurus/theme-common';
-import { useTitleFormatter } from '@docusaurus/theme-common/internal';
 import Translate, { translate } from '@docusaurus/Translate';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import {
@@ -123,6 +122,20 @@ function SearchPageContent() {
     const documentsFoundPlural = useDocumentsFoundPlural();
     const docsSearchVersionsHelpers = useDocsSearchVersionsHelpers();
     const [searchQuery, setSearchQuery] = useSearchQueryString();
+    const title = searchQuery
+        ? translate(
+            {
+                id: 'theme.SearchPage.existingResultsTitle',
+                message: 'Search results for "{query}"',
+                description: 'The search page title for non-empty query',
+            },
+            { query: searchQuery },
+        )
+        : translate({
+            id: 'theme.SearchPage.emptyResultsTitle',
+            message: 'Search the documentation',
+            description: 'The search page title for empty query',
+        });
     const initialSearchResultState = {
         items: [],
         query: null,
@@ -294,24 +307,6 @@ function SearchPageContent() {
             { threshold: 1 },
         ),
     );
-    const getTitle = () =>
-        searchQuery
-            ? translate(
-                {
-                    id: 'theme.SearchPage.existingResultsTitle',
-                    message: 'Search results for "{query}"',
-                    description: 'The search page title for non-empty query',
-                },
-                {
-                    query: searchQuery,
-                },
-            )
-            : translate({
-                id: 'theme.SearchPage.emptyResultsTitle',
-                message: 'Search the documentation',
-                description: 'The search page title for empty query',
-            });
-
     const makeSearch = useEvent((page = 0) => {
         if (contextualSearch) {
             algoliaHelper.addDisjunctiveFacetRefinement('docusaurus_tag', 'default');
@@ -354,10 +349,24 @@ function SearchPageContent() {
         }
         makeSearch(searchResultState.lastPage);
     }, [makeSearch, searchResultState.lastPage]);
+    const pageTitle = searchQuery
+        ? translate(
+            {
+                id: 'theme.SearchPage.existingResultsTitle',
+                message: 'Search results for "{query}"',
+                description: 'The search page title for non-empty query',
+            },
+            { query: searchQuery }
+        )
+        : translate({
+            id: 'theme.SearchPage.emptyResultsTitle',
+            message: 'Search the documentation',
+            description: 'The search page title for empty query',
+        });
+
     return (
-        <Layout>
+        <Layout title={pageTitle}>
             <Head>
-                <title>{useTitleFormatter(getTitle())}</title>
                 {/*
          We should not index search pages
           See https://github.com/facebook/docusaurus/pull/3233
@@ -366,7 +375,7 @@ function SearchPageContent() {
             </Head>
 
             <div className="container margin-vert--lg">
-                <Heading as="h1">{getTitle()}</Heading>
+                <Heading as="h1">{pageTitle}</Heading>
 
                 <form className="row" onSubmit={(e) => e.preventDefault()}>
                     <div
