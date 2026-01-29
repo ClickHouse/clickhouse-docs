@@ -203,7 +203,7 @@ CREATE TABLE customer (
     c_birth_country           LowCardinality(Nullable(String)),
     c_login                   LowCardinality(Nullable(String)),
     c_email_address           LowCardinality(Nullable(String)),
-    c_last_review_date        LowCardinality(Nullable(String)),
+    c_last_review_date_sk     Nullable(UInt32),
     PRIMARY KEY (c_customer_sk)
 );
 
