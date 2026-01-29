@@ -11,22 +11,23 @@ doc_type: 'guide'
 import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';
 import Image from '@theme/IdealImage';
 
+
 # Миграция из Snowflake в ClickHouse \{#migrate-from-snowflake-to-clickhouse\}
 
-> В этом руководстве описывается процесс миграции данных из Snowflake в ClickHouse.
+> В этом руководстве описывается, как перенести данные из Snowflake в ClickHouse.
 
-Для миграции данных из Snowflake в ClickHouse необходимо использовать объектное хранилище,
-например S3, в качестве промежуточного хранилища. Процесс миграции также
-предполагает использование команды `COPY INTO` в Snowflake и `INSERT INTO SELECT`
+Для миграции данных между Snowflake и ClickHouse необходимо использовать объектное хранилище,
+например S3, в качестве промежуточного хранилища для передачи данных. Процесс миграции также 
+предполагает использование команд `COPY INTO` в Snowflake и `INSERT INTO SELECT` 
 в ClickHouse.
 
 <VerticalStepper headerLevel="h2">
 
 ## Экспорт данных из Snowflake \{#1-exporting-data-from-snowflake\}
 
-<Image img={migrate_snowflake_clickhouse} size="md" alt="Миграция с Snowflake на ClickHouse" />
+<Image img={migrate_snowflake_clickhouse} size="md" alt="Миграция с Snowflake на ClickHouse"/>
 
-Для экспорта данных из Snowflake необходимо использовать внешний stage (external stage), как показано на диаграмме выше.
+Экспорт данных из Snowflake требует использования внешнего stage, как показано на диаграмме выше.
 
 Предположим, что мы хотим экспортировать таблицу Snowflake со следующей схемой:
 
@@ -39,25 +40,25 @@ CREATE TABLE MYDATASET (
 ) DATA_RETENTION_TIME_IN_DAYS = 0;
 ```
 
-Чтобы перенести данные этой таблицы в базу данных ClickHouse, сначала нужно скопировать их во внешний stage. При копировании данных мы рекомендуем использовать Parquet как промежуточный формат, поскольку он позволяет передавать информацию о типах, сохраняет точность, хорошо сжимается и нативно поддерживает вложенные структуры, типичные для аналитики.
+Чтобы перенести данные этой таблицы в базу данных ClickHouse, сначала необходимо скопировать эти данные во внешний stage. При копировании данных в качестве промежуточного формата мы рекомендуем использовать Parquet, так как он позволяет передавать информацию о типах, сохраняет точность, хорошо сжимается и нативно поддерживает вложенные структуры, типичные для аналитики.
 
-В примере ниже мы создаём именованный формат файла в Snowflake для представления формата Parquet и требуемых параметров файлов. Затем указываем, какой bucket будет содержать наш скопированный набор данных. Наконец, копируем набор данных в этот bucket.
+В примере ниже мы создаём именованный файловый формат в Snowflake для представления Parquet и нужных файловых опций. Затем мы указываем, какой bucket будет содержать наш скопированный набор данных. Наконец, мы копируем набор данных в этот bucket.
 
 ```sql
 CREATE FILE FORMAT my_parquet_format TYPE = parquet;
 
--- Create the external stage that specifies the S3 bucket to copy into
+-- Создаём внешний stage, указывающий S3‑bucket, в который будут копироваться данные
 CREATE OR REPLACE STAGE external_stage
 URL='s3://mybucket/mydataset'
 CREDENTIALS=(AWS_KEY_ID='<key>' AWS_SECRET_KEY='<secret>')
 FILE_FORMAT = my_parquet_format;
 
--- Apply "mydataset" prefix to all files and specify a max file size of 150mb
--- The `header=true` parameter is required to get column names
+-- Добавляем префикс "mydataset" ко всем файлам и задаём максимальный размер файла 150 МБ
+-- Параметр `header=true` требуется для получения имён столбцов
 COPY INTO @external_stage/mydataset from mydataset max_file_size=157286400 header=true;
 ```
 
-Для набора данных объемом около 5 ТБ с максимальным размером файла 150 МБ и при использовании виртуального склада Snowflake типа 2X-Large, расположенного в том же регионе AWS `us-east-1`, копирование данных в бакет S3 займет примерно 30 минут.
+Для набора данных объёмом около 5 ТБ с максимальным размером файла 150 МБ и при использовании Snowflake‑warehouse размера 2X-Large, расположенного в том же регионе AWS `us-east-1`, копирование данных в bucket S3 займёт около 30 минут.
 
 ## Импорт в ClickHouse \{#2-importing-to-clickhouse\}
 
@@ -107,7 +108,7 @@ input_format_parquet_case_insensitive_column_matching = 1 -- Column matching bet
 
 ## Проверка успешного экспорта данных \{#3-testing-successful-data-export\}
 
-Чтобы проверить, что данные были корректно вставлены, выполните запрос `SELECT` к новой таблице:
+Чтобы проверить, что ваши данные были корректно вставлены, просто выполните `SELECT`‑запрос к новой таблице:
 
 ```sql
 SELECT * FROM mydataset LIMIT 10;

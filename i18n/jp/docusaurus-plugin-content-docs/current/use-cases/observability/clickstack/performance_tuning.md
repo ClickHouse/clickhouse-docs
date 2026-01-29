@@ -22,8 +22,6 @@ import Image from '@theme/IdealImage';
 このガイドでは、ClickStack 向けの、最も一般的かつ効果的なパフォーマンス最適化手法に焦点を当てます。これらは、実運用環境における大半のオブザーバビリティワークロードに対して十分な最適化を提供し、通常は 1 日あたり数十テラバイト規模のデータまでを対象とします。
 
 
-最適化は意図した順序で提示しており、最も簡単で効果の大きい手法から始めて、より高度かつ専門的なチューニングへと進んでいきます。初期段階の最適化は最優先で適用すべきであり、それだけでも大きな効果をもたらすことがよくあります。データ量が増え、ワークロードの要求が厳しくなるにつれて、後半の手法を検討する価値が高まっていきます。
-
 ## ClickHouse の概念 \{#clickhouse-concepts\}
 
 このガイドで説明する最適化を適用する前に、いくつかの中核となる ClickHouse の概念に慣れておくことが重要です。
@@ -34,7 +32,7 @@ ClickStack では、各 **データソースは 1 つ以上の ClickHouse テー
 |----------------------------------|------------------------------------------------------------------------------------------------------------------------|
 | Logs                             | [otel_logs](/use-cases/observability/clickstack/ingesting-data/schemas#logs)                                          |
 | Traces                           | [otel_traces](/use-cases/observability/clickstack/ingesting-data/schemas#traces)                                       |
-| Metrics (guages)                 | [otel_metrics_gauge](/use-cases/observability/clickstack/ingesting-data/schemas#gauge)                                 |
+| Metrics (gauges)                 | [otel_metrics_gauge](/use-cases/observability/clickstack/ingesting-data/schemas#gauge)                                 |
 | Metrics (sums)                   | [otel_metrics_sum](/use-cases/observability/clickstack/ingesting-data/schemas#sum)                                     |
 | Metrics (histogram)              | [otel_metrics_histogram](/use-cases/observability/clickstack/ingesting-data/schemas#histogram)                         |
 | Metrics (Exponential histograms) | [otel_metrics_exponentialhistogram](/use-cases/observability/clickstack/ingesting-data/schemas#exponential-histograms) |
@@ -67,6 +65,8 @@ ClickStack では、各 **データソースは 1 つ以上の ClickHouse テー
 - [Partitions](/partitions)
 - [Merges](/merges)
 - [Primary keys/indexes](/primary-indexes)
+- [How ClickHouse stores data: parts and granules](/guides/best-practices/sparse-primary-indexes) - ClickHouse におけるデータ構造とクエリ方法について、granules やプライマリキーを含めて詳しく解説した上級ガイド。
+- [MergeTree](/engines/table-engines/mergetree-family/mergetree)- コマンドや内部仕様の理解に役立つ、MergeTree の上級リファレンスガイド。
 
 - [How ClickHouse stores data: parts and granules](/guides/best-practices/sparse-primary-indexes) - ClickHouse でデータがどのように構造化され、クエリされるかを、granule とプライマリキーの詳細を含めて解説する上級ガイド。
 
@@ -693,27 +693,6 @@ PROJECTION は、materialized columns、skip indexes、primary keys、および 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6CdnUdZSEG0?si=1zUyrP-tCvn9tXse" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-
-実際には、**PROJECTION はテーブルの追加の「隠れたコピー」とみなすことができ**、同じ行を**異なる物理順序**で保存します。これにより、PROJECTION はベーステーブルの `ORDER BY` キーとは異なる独自の primary 索引を持ち、元の並び順と一致しないアクセスパターンに対して、ClickHouse がより効果的にデータをプルーニングできるようになります。
-
-Materialized view も、別のターゲットテーブルに対して異なる並び替えキーで行を明示的に書き込むことで、同様の効果を達成できます。重要な違いは、**PROJECTION は ClickHouse によって自動的かつ透過的に維持される**のに対し、materialized view は明示的なテーブルであり、ClickStack によって明示的に登録され、意図的に選択されて利用される必要がある点です。
-
-クエリがベーステーブルを対象とする場合、ClickHouse はベースのレイアウトと利用可能なすべての PROJECTION を評価し、それぞれの primary 索引をサンプリングし、最小数の granule を読み込んで正しい結果を返せるレイアウトを選択します。この判断はクエリアナライザによって自動的に行われます。
-
-ClickStack において、PROJECTION は次のような **純粋なデータの並び替え** に最も適しています:
-
-- アクセスパターンがデフォルトの primary key と本質的に異なる場合
-- 単一の並び替えキーですべてのワークフローをカバーすることが非現実的な場合
-- ClickHouse に最適な物理レイアウトの選択を透過的に任せたい場合
-
-事前集計やメトリクスの高速化については、ClickStack は **明示的な materialized view** を強く推奨します。これにより、アプリケーション層が materialized view の選択と利用に対して完全な制御を持つことができます。
-
-背景情報については、次も参照してください:
-
-- [PROJECTION のガイド](/data-modeling/projections)
-- [PROJECTION を使用すべきタイミング](/data-modeling/projections#when-to-use-projections)
-- [Materialized view と PROJECTION の比較](/managing-data/materialized-views-versus-projections)
-
 ### プロジェクションの例 \{#example-projections\}
 
 traces テーブルがデフォルトの ClickStack のアクセスパターンに合わせて最適化されているとします。
@@ -758,6 +737,27 @@ SELECT *
 FROM otel_traces
 WHERE TraceId = 'aeea7f401feb75fc5af8eb25ebc8e974'
   AND Timestamp >= now() - INTERVAL 1 DAY
+ORDER BY Timestamp;
+
+-- Trace-scoped aggregation
+SELECT
+  toStartOfMinute(Timestamp) AS t,
+  count() AS spans
+FROM otel_traces
+WHERE TraceId = 'aeea7f401feb75fc5af8eb25ebc8e974'
+  AND Timestamp >= now() - INTERVAL 1 DAY
+GROUP BY t
+ORDER BY t;
+```
+
+`TraceId` を制約しないクエリや、projection の並び替えキーの先頭ではない別のディメンションを主にフィルタ条件とするクエリは、通常は恩恵を受けません（代わりにベースレイアウト経由で読み込まれる可能性があります）。
+
+:::note
+projection には、集計結果を格納することもできます（materialized view に近いイメージです）。しかし ClickStack では、どのレイアウトが選択されるかが ClickHouse のアナライザに依存し、利用状況の制御や挙動の把握が難しくなるため、projection ベースの集計は一般的には推奨されません。代わりに、ClickStack がアプリケーション層で明示的に登録・選択できる materialized view を利用することを推奨します。
+:::
+
+実務上、projection は、広い検索結果からトレース中心のドリルダウンに頻繁にピボットするようなワークフロー（たとえば、特定の TraceId に属するすべての span を取得する処理）に最も適しています。
+
 
 ORDER BY Timestamp;
 
@@ -783,7 +783,7 @@ Projection は集計結果も保存できます（materialized view に近い動
 
 
 
-### コストと指針 \{#projection-costs-and-guidance\}
+### コストと指針 {#projection-costs-and-guidance}
 
 - **挿入時のオーバーヘッド**: 異なる並び替えキーを持つ `SELECT *` の projection は、実質的にデータを 2 回書き込むことになり、書き込み I/O が増加し、インジェストを維持するために追加の CPU およびディスクスループットが必要になる場合があります。
 - **慎重に利用する**: projection は、2 つ目の物理的な並び順によって多くのクエリに対して有意なプルーニングが可能になるような、実際に多様なアクセスパターンが存在する場合に限定して利用するのが最適です。例えば、2 つのチームが同じデータセットに対して本質的に異なる方法でクエリを実行するようなケースです。

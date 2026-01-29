@@ -43,7 +43,7 @@ Query API エンドポイントは、API キー単位の IP ホワイトリス�
 
 #### 許可する IP アドレスを追加する \{#add-ips\}
 
-1. **Alow access to this API Key** セクションで、**Specific locations** を選択します
+1. **Allow access to this API Key** セクションで、**Specific locations** を選択します
 2. IP アドレスまたは CIDR 範囲（例: `203.0.113.1` や `203.0.113.0/24`）を入力します
 3. 必要に応じて複数のエントリを追加します
 
