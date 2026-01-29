@@ -1,0 +1,149 @@
+---
+date: 2025-01-29
+title: How to recover from a corrupt Keeper snapshot
+tags: ['Troubleshooting']
+keywords: ['Keeper', 'corrupt snapshot']
+description: 'Article describing how to recover from a corrupt Keeper snapshot: how the problem manifests, what a snapshot is and where to find it and possible recovery strategies.'
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+Corrupt or bad ClickHouse Keeper snapshots can cause significant system instability, such as metadata inconsistencies, read-only states for tables, resource exhaustion, or failed backups.
+This article covers:
+- [What snapshots are and where to find them](#overview)
+- [How the problem manifests](#symptoms)
+- [Possible strategies for recovery](#recovery-strategies) and what each of them means
+
+## Overview of Keeper snapshots {#overview}
+
+### What is a snapshot? {#what-is-snapshot}
+
+A snapshot is a serialized state of Keeper's internal data (such as metadata about clusters, table coordination paths, and configurations) at a specific point in time.
+Snapshots are vital for resynchronizing Keeper nodes within a cluster, recovering metadata during failures, and start-up or restart processes that rely on a known-good Keeper state.
+
+### Where can I find snapshots? {#where-to-find-snapshots}
+
+Snapshots are stored as files on the local filesystem of Keeper nodes.
+By default, they are stored at `/var/lib/clickhouse/coordination/snapshots/` or by the custom path specified by `snapshot_storage_path` in your `keeper_server.xml` file.
+Snapshots are named incrementally (e.g., snapshot.23), with newer ones having higher numbers.
+For multi-node clusters, each Keeper node has its own snapshot directory.
+
+:::note
+Consistency within snapshots across nodes is critical for recovery.
+:::
+
+## Key symptoms and manifestations of corrupt Keeper snapshots {#symptoms}
+
+The table below details some common symptoms and manifestations of corrupt Keeper snapshots:
+Here's the updated table with the additional issues:
+
+| **Category** | **Issue Type** | **What to look for** |
+|---|---|---|
+| **Operational Issues** | Read-Only Mode | Tables unexpectedly switch to read-only mode |
+| | Query Failures | Persistent query failures with `Coordination::Exception` errors |
+| **Metadata Corruption** | Outdated Metadata | Dropped tables not reflected; operation failures due to stale metadata |
+| **Resource Overload** | System Resource Exhaustion | Keeper nodes consume excessive CPU, memory, or disk space; potential downtime |
+| | Disk Full | Disk full during snapshot creation |
+| **Backup & Restore** | Backup Failures | Backups fail due to missing or inconsistent Keeper metadata |
+| **Snapshot Creation/Transfer** | Keeper Crash | Keeper crash mid-snapshot (look for "SEGFAULT" errors) |
+| | Snapshot Transfer Corruption | Corruption during snapshot transfer between replicas |
+| | Race Condition | Race condition during log compaction - background commit thread accessing deleted logs |
+| | Network Synchronization | Network issues preventing snapshot sync from leader to followers |
+
+**Log Indicators:**
+
+| **Log Type** | **What to Look For** |
+|---|---|
+| **Error Messages** | • `Coordination::Exception`<br/>• `logical data is unavailable`<br/>• `Zookeeper::Session Timeout`<br/>• Invalid pointer/access violations<br/>• `SEGFAULT` errors |
+| **Debug Logs** | • Synchronization or election issues<br/>• Snapshot serialization/loading failures during startup<br/>• Log compaction race conditions |
+
+## Recovering from corrupt Keeper snapshots {#recovery-strategies}
+
+Before touching any files, always:
+
+1. Stop all Keeper nodes to prevent further corruption
+2. Backup everything by copying the entire coordination directory to a safe location
+3. Verify cluster quorum to ensure at least one node has good data
+
+---
+
+1. **Restore from an existing backup**
+
+You should follow this process if:
+- The Keeper metadata or snapshot corruption makes current data unsalvageable.
+- A backup exists with a known-good Keeper state.
+
+Follow the steps below to restore an existing backup:
+
+1. Locate and validate the newest backup for metadata consistency.
+2. Shut down the ClickHouse and Keeper services.
+3. Replace the faulty snapshots and logs with those from the backup directory.
+4. Restart the Keeper cluster and validate metadata synchronization.
+
+:::tip[Backup regularly]
+If backups are outdated, you may incur a loss of recent metadata changes.
+For this reason, we recommend backing up regularly.
+:::
+
+---
+
+2. **Rollback to an older snapshot**
+
+You should follow this process when:
+- Recent snapshots are corrupt, but older ones remain usable.
+- Incremental logs are intact for consistent recovery.
+
+Follow the steps below to roll back to an older snapshot:
+
+1. Identify and select a valid older snapshot (e.g., snapshot.19) from the Keeper directory.
+2. Remove newer snapshots and logs.
+3. Restart Keeper so it replays logs to rebuild the metadata state.
+
+:::warning[Metadata desynchronization risk]
+There is a risk of metadata desynchronization if snapshots and logs are missing or incomplete.
+:::
+
+---
+
+3. **Corrupted snapshot cleanup**
+
+
+
+---
+
+4. **Manual metadata cleanup**
+
+You should follow this process when:
+- You need to recover from stale or inconsistent metadata (e.g., Zookeeper paths for dropped tables remain visible).
+- You want to fix specific metadata inconsistencies rather than perform a full recovery.
+
+Follow the steps below to manually clean up metadata:
+
+1. Analyze logs and error messages to identify faulty paths (e.g., via `zookeepercli` or Keeper debug logs).
+2. Manually clean up paths using tools like `zkCli.sh delete /path/to/object`.
+3. Restart Keeper and validate operations.
+
+:::warning[Advanced knowledge required]
+This process requires advanced knowledge of metadata structure and coordination paths.
+:::
+
+---
+
+5. **Rebuild Keeper cluster**
+
+You should follow this process when:
+- No valid snapshots, logs, or backups are available for recovery.
+- You need to recreate the entire Keeper cluster and its metadata.
+
+Follow the steps below to rebuild the Keeper cluster:
+
+1. Fully stop the ClickHouse and Keeper clusters.
+2. Reset each Keeper node by cleaning the snapshot and log directories.
+3. Initialize one Keeper node as the leader and add other nodes incrementally.
+4. Re-import metadata if available from external records.
+
+:::warning[Time-intensive process]
+This process is time-intensive and carries a risk of prolonged outage. Total data reconstruction is required.
+:::
+
