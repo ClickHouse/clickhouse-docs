@@ -43,7 +43,7 @@ import Link from '@docusaurus/Link'
 
 #### Добавьте разрешённые IP-адреса \{#add-ips\}
 
-1. В разделе **Alow access to this API Key** выберите **Specific locations**
+1. В разделе **Allow access to this API Key** выберите **Specific locations**
 2. Введите IP-адреса или CIDR-диапазоны (например, `203.0.113.1` или `203.0.113.0/24`)
 3. При необходимости добавьте несколько записей
 

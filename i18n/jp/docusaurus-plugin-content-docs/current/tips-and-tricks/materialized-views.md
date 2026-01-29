@@ -56,6 +56,7 @@ WHERE your_filter_conditions;
 -- If aggregation_ratio < 10%, you'll get good compression
 ```
 
+
 ## マテリアライズドビューが問題になるとき \{#mv-problems\}
 
 **監視すべき警告サイン:**
@@ -67,4 +68,5 @@ WHERE your_filter_conditions;
 `system.query_log` を使用してクエリ実行時間の推移を追跡することで、マテリアライズドビューを追加する前後の挿入パフォーマンスを比較できます。
 
 ## 動画資料 \{#video-sources\}
+
 - [ClickHouse at CommonRoom - Kirill Sapchuk](https://www.youtube.com/watch?v=liTgGiTuhJE) - 「マテリアライズドビューに過度に熱狂した」事例と「20GB から 190GB への爆発的増加」事例の出典

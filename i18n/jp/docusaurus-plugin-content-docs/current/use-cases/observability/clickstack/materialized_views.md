@@ -88,7 +88,7 @@ ClickStack では、materialized view は **集計処理が重い可視化を高
 materialized view は挿入時に追加の処理を発生させるため、選択的かつ慎重に作成する必要があります。すべての可視化が事前集計の恩恵を受けるわけではなく、ほとんど使用されないチャートを高速化しても、通常はオーバーヘッドに見合いません。materialized view の総数は最大でも 20 を超えないようにすべきです。
 
 :::note
-本番環境へ移行する前には、materialized view によって発生するリソースオーバーヘッド、特に CPU 使用率、ディスク I/O、そして [マージのアクティビティ](/docs/tips-and-tricks/too-many-parts) を必ず検証してください。各 materialized view は挿入時の処理量を増やし、追加のパーツを生み出すため、マージ処理が追いついているか、パーツ数が安定しているかを確認することが重要です。これは、オープンソース版 ClickHouse の [system テーブル](/operations/system-tables/tables) および[組み込みのオブザーバビリティダッシュボード](/operations/monitoring#built-in-advanced-observability-dashboard)、または ClickHouse Cloud の組み込みメトリクスおよび[監視ダッシュボード](/cloud/manage/monitor/advanced-dashboard)を通じて監視できます。過剰なパーツ数の診断と軽減については、[Too many parts](/guides/best-practices/too-many-parts) を参照してください。
+本番環境へ移行する前には、materialized view によって発生するリソースオーバーヘッド、特に CPU 使用率、ディスク I/O、そして [マージのアクティビティ](/docs/tips-and-tricks/too-many-parts) を必ず検証してください。各 materialized view は挿入時の処理量を増やし、追加のパーツを生み出すため、マージ処理が追いついているか、パーツ数が安定しているかを確認することが重要です。これは、オープンソース版 ClickHouse の [system テーブル](/operations/system-tables/tables) および[組み込みのオブザーバビリティダッシュボード](/operations/monitoring#built-in-advanced-observability-dashboard)、または ClickHouse Cloud の組み込みメトリクスおよび[監視ダッシュボード](/cloud/manage/monitor/advanced-dashboard)を通じて監視できます。過剰なパーツ数の診断と軽減については、[Too many parts](/knowledgebase/exception-too-many-parts) を参照してください。
 :::
 
 最も重要な可視化を特定できたら、次のステップは統合です。
