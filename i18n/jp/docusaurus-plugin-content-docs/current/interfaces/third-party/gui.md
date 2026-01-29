@@ -319,6 +319,19 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 
 [Telescope ソースコード](https://github.com/iamtelescope/telescope) · [ライブデモ](https://demo.iamtelescope.net)
 
+### ClickLens \{#clicklens\}
+
+[ClickLens](https://ntk148v.github.io/clicklens/) は、ClickHouse データベースの管理と監視のための、モダンで強力かつユーザーフレンドリーな Web インターフェイスです。開発者、アナリスト、管理者が ClickHouse クラスターを効率的に操作できる包括的なツール群を提供します。ClickHouse は非常に優れた分析データベースですが、CLI や基本的なツールだけで管理するのは困難な場合があります。ClickLens は次の機能を提供することで、そのギャップを埋めます。
+
+- Discover - 任意のテーブルに対して柔軟に利用できる、Kibana ライクなデータ探索
+- SQL Console - 構文ハイライトとストリーミング結果付きでクエリを記述・実行・分析
+- Real-time Monitoring - クラスターの健全性、クエリ性能、リソース使用状況をリアルタイムに監視
+- Schema Explorer - データベース、テーブル、カラム、パーツなどを参照
+- Access Control - UI から直接ユーザーとロールを管理
+- Native RBAC - UI の権限は ClickHouse の GRANT から直接派生
+
+[ClickLens ソースコード](https://github.com/ntk148v/clicklens)
+
 ## 商用 \{#commercial\}
 
 ### DataGrip \{#datagrip\}
@@ -397,7 +410,7 @@ SeekTable は、個人／個人用途での利用については[無料](https:/
 
 ### TABLUM.IO \{#tablum_io\}
 
-[TABLUM.IO](https://tablum.io/) は、ETL と可視化のためのオンラインクエリおよび分析ツールです。ClickHouse へ接続し、柔軟な SQL コンソール経由でデータをクエリできるほか、静的ファイルやサードパーティサービスからデータをロードすることもできます。TABLUM.IO は、クエリ結果データをチャートやテーブルとして可視化できます。
+[TABLUM.IO](https://tablum.io/) は、ETL および可視化のためのオンラインのクエリおよび分析ツールです。ClickHouse に接続し、多機能な SQL コンソールを通じてデータをクエリできるほか、静的ファイルやサードパーティサービスからデータをロードすることもできます。TABLUM.IO は、チャートやテーブルとしてクエリ結果を可視化できます。
 
 機能:
 - ETL: 一般的なデータベース、ローカルおよびリモートファイル、API 呼び出しからのデータのロード。

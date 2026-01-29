@@ -13,6 +13,7 @@ import S3Settings from '@site/i18n/zh/docusaurus-plugin-content-docs/current/ope
 
 > 本节将对 ClickHouse 中的备份和恢复进行总体介绍。若需要了解各备份方法的详细说明，请参阅侧边栏中相应方法的页面。
 
+
 ## 介绍 \{#introduction\}
 
 虽然[复制](/engines/table-engines/mergetree-family/replication)可以防止硬件故障，但它无法
@@ -84,6 +85,7 @@ import S3Settings from '@site/i18n/zh/docusaurus-plugin-content-docs/current/ope
 
 这两个设置的默认值都是 true，因此默认情况下允许并发执行备份/恢复操作。 当在集群上将这些设置设为 false 时，任意时刻该集群上只允许运行一个备份或恢复操作。
 
+
 ## 压缩备份与未压缩备份 \{#compressed-vs-uncompressed\}
 
 ClickHouse 备份通过 `compression_method` 和 `compression_level` 设置来支持压缩。
@@ -95,6 +97,7 @@ BACKUP TABLE test.table
   TO Disk('backups', 'filename.zip')
   SETTINGS compression_method='lzma', compression_level=3
 ```
+
 
 ## 使用命名集合 \{#using-named-collections\}
 
