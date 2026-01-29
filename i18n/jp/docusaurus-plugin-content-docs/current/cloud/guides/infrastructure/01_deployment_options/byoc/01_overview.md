@@ -48,7 +48,7 @@ BYOC は特に大規模なデプロイメント向けに設計されており、
 - **Tailscale を用いたゼロトラストネットワーク。**
 - **監視**:
   - Cloud コンソールには、サービスの健全性を監視するための組み込みヘルスダッシュボードが用意されています。
-  - Prometheus、Grafana、Datadog を用いた集中監視のための Prometheus スクレイピング。セットアップ手順については [Prometheus ドキュメント](/integrations/prometheus) を参照してください。
+  - Prometheus、Grafana、Datadog を用いた集中監視のための Prometheus スクレイピング。セットアップ手順については [Prometheus ドキュメント](/cloud/reference/byoc/observability#prometheus-access) を参照してください。
 - **VPC ピアリング**
 - **インテグレーション**: 完全な一覧は[このページ](/integrations)を参照してください。
 - **セキュアな S3**

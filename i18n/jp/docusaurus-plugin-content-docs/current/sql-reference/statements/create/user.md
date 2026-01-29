@@ -26,6 +26,7 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 
 `ON CLUSTER` 句を使用すると、クラスター全体にユーザーを作成できます。詳しくは [Distributed DDL](../../../sql-reference/distributed-ddl.md) を参照してください。
 
+
 ## 識別 \{#identification\}
 
 ユーザーを識別する方法には、以下のようなものがあります:
@@ -52,11 +53,11 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
     <password_complexity>
         <rule>
             <pattern>.{12}</pattern>
-            <message>12文字以上であること</message>
+            <message>be at least 12 characters long</message>
         </rule>
         <rule>
             <pattern>\p{N}</pattern>
-            <message>数字を1文字以上含むこと</message>
+            <message>contain at least 1 numeric character</message>
         </rule>
     </password_complexity>
 </clickhouse>
@@ -71,6 +72,7 @@ ClickHouse Cloud では、パスワードは既定で次の複雑性要件を満
 * 少なくとも1文字の小文字を含むこと
 * 少なくとも1文字の特殊文字を含むこと
   :::
+
 
 ## 例 \{#examples\}
 
@@ -139,7 +141,7 @@ ClickHouse Cloud では、パスワードは既定で次の複雑性要件を満
    高いワークファクター時の bcrypt の計算オーバーヘッドを考慮し、
    別の認証方式の利用も検討してください。
    :::
-6. 
+
 6. パスワードのタイプを省略することもできます。
 
     ```sql
@@ -160,7 +162,6 @@ ClickHouse Cloud では、パスワードは既定で次の複雑性要件を満
    CREATE USER user1 IDENTIFIED WITH plaintext_password by '1', bcrypt_password by '2', plaintext_password by '3''
    ```
 
-Notes:
 1. 古いバージョンの ClickHouse では、複数の認証方式を用いる構文をサポートしていない場合があります。そのため、ClickHouse サーバーにそのようなユーザーが存在した状態で、これをサポートしないバージョンにダウングレードすると、そのユーザーは利用不能になり、一部のユーザー関連の操作が失敗します。正常にダウングレードするには、ダウングレード前にすべてのユーザーが単一の認証方式のみを持つように設定しておく必要があります。あるいは、適切な手順を踏まずにサーバーをダウングレードしてしまった場合は、問題のあるユーザーを削除する必要があります。
 2. セキュリティ上の理由から、`no_password` は他の認証方式と同時に使用することはできません。したがって、クエリ内で `no_password` を指定できるのは、それが唯一の認証方式である場合に限られます。 
 

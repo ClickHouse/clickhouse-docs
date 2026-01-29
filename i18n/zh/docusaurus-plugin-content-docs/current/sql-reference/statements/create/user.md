@@ -26,6 +26,7 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 
 `ON CLUSTER` 子句可用于在整个集群中创建用户，参见 [Distributed DDL](../../../sql-reference/distributed-ddl.md)。
 
+
 ## 身份验证 \{#identification\}
 
 可以通过多种方式对用户进行身份验证：
@@ -71,6 +72,7 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 * 至少包含 1 个小写字母
 * 至少包含 1 个特殊字符
   :::
+
 
 ## 示例 \{#examples\}
 
@@ -139,7 +141,7 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
    请考虑使用其他认证方法，
    以避免在较高工作因子下 bcrypt 的计算开销。
    :::
-6. 
+
 6. 也可以省略密码类型：
 
     ```sql
@@ -160,7 +162,8 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
    CREATE USER user1 IDENTIFIED WITH plaintext_password by '1', bcrypt_password by '2', plaintext_password by '3''
    ```
 
-Notes:
+备注：
+
 1. 较旧版本的 ClickHouse 可能不支持多种认证方法的语法。因此，如果 ClickHouse 服务器中已经存在此类用户并被降级到不支持该语法的版本，这些用户将变得不可用，且部分与用户相关的操作将无法正常工作。为了平滑降级，必须在降级之前将所有用户配置为仅包含单一认证方法。或者，如果服务器在未按正确流程操作的情况下已经被降级，则应删除这些有问题的用户。
 2. 出于安全原因，`no_password` 不能与其他认证方法共存。因此，只有在 `no_password` 是查询中唯一的认证方法时，才能指定 `no_password`。 
 
