@@ -33,16 +33,6 @@ For production deployments, we recommend using [Managed ClickStack](/use-cases/o
 
 **We recommend following the [best practices](/cloud/guides/production-readiness) for ClickHouse Cloud when using Managed ClickStack.**
 
-## Secure ingestion {#secure-ingestion-managed}
-
-In production, users will manage their own OpenTelemetry collectors to send data to Managed ClickStack. We recommend using the official ClickStack distribution of the collector which employs best practices.
-
-All ingestion should occur via the OTLP ports exposed by ClickStack distribution of the OpenTelemetry (OTel) collector. By default, this requires a secure ingestion API key generated at startup. This key is required when sending data to the OTel ports, and can be found in the HyperDX UI under `Team Settings → API Keys`.
-
-<Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
-
-Additionally, we recommend enabling TLS for OTLP endpoints.
-
 ### Database and ingestion user {#database-ingestion-user-managed-managed}
 
 We recommend creating a dedicated user for the OTel collector for ingestion into Managed ClickHouse and ensuring ingestion is sent to a specific database e.g. `otel`. See ["Creating an ingestion user"](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) for further details.

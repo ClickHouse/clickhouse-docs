@@ -45,13 +45,7 @@ For [language SDKs](/use-cases/observability/clickstack/sdks) and telemetry libr
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
 
-For language SDKs, this can either be set by an `init` function or via an`OTEL_EXPORTER_OTLP_HEADERS` environment variable e.g.:
-
-```shell
-OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
-```
-
-If deploying a [contrib distribution of the OTel collector](https://github.com/open-telemetry/opentelemetry-collector-contrib) in the agent role, can use the OTLP exporter to send to the collector. An example agent config consuming this [structured log file](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz), is shown below.
+If deploying a [contrib distribution of the OTel collector](https://github.com/open-telemetry/opentelemetry-collector-contrib) in the agent role, can use the OTLP exporter to send to the ClickStack collector. An example agent config consuming this [structured log file](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz), is shown below.
 
 ```yaml
 # clickhouse-agent-config.yaml
@@ -74,8 +68,6 @@ exporters:
   # gRPC setup (alternative)
   otlp/hdx:
     endpoint: 'localhost:4317'
-    headers:
-      authorization: <YOUR_API_INGESTION_KEY>
     compression: gzip
 processors:
   batch:
@@ -130,14 +122,15 @@ For [language SDKs](/use-cases/observability/clickstack/sdks) and telemetry libr
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
 
-For language SDKs, this can either be set by an `init` function or via an`OTEL_EXPORTER_OTLP_HEADERS` environment variable e.g.:
+In addition, an authorization header containing the API ingestion key is required. You can find the key in the HyperDX app under `Team Settings → API Keys`.
+
+<Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
+
+For language SDKs, this can then either be set by an `init` function or via an`OTEL_EXPORTER_OTLP_HEADERS` environment variable e.g.:
 
 ```shell
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
-In addition, an authorization header containing the API ingestion key is required. You can find the key in the HyperDX app under `Team Settings → API Keys`.
-
-<Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
 
 Agents should likewise include this authorization header in any OTLP communication. For example, if deploying a [contrib distribution of the OTel collector](https://github.com/open-telemetry/opentelemetry-collector-contrib) in the agent role, they can use the OTLP exporter. An example agent config consuming this [structured log file](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz), is shown below. Note the need to specify an authorization key - see `<YOUR_API_INGESTION_KEY>`.
 
