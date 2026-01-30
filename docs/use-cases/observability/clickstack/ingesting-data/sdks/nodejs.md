@@ -320,7 +320,7 @@ Node.js `--require` flag. The CLI installation exposes a wider range of auto-ins
 <TabItem value="npx" label="Using NPX" default>
 
 :::note Managed ClickStack
-The `HYPERDX_API_KEY` can be ommitted for Managed ClickStack.
+The `HYPERDX_API_KEY` can be omitted for Managed ClickStack.
 :::
 
 ```shell
@@ -331,7 +331,7 @@ HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' npx o
 <TabItem value="custom" label="Custom Entry Point (ex. Nodemon, ts-node, etc.)">
 
 :::note Managed ClickStack
-The `HYPERDX_API_KEY` can be ommitted for Managed ClickStack.
+The `HYPERDX_API_KEY` can be omitted for Managed ClickStack.
 :::
 
 ```shell

@@ -31,7 +31,7 @@ instrumentation isn't required to get value out of tracing.
 At present, the integration is compatible exclusively with **Java 8+**
 :::
 
-### Download OpenTelemetry Java agent {#download-opentelemtry-java-agent}
+### Download OpenTelemetry Java agent {#download-opentelemetry-java-agent}
 
 Download [`opentelemetry-javaagent.jar`](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar)
 and place the JAR in your preferred directory. The JAR file contains the agent

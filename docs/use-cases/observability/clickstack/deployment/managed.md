@@ -105,7 +105,7 @@ From the ClickHouse Cloud landing page, select `New service` to create a new ser
 
 <Image img={new_service} size="md" alt='Service Service' border force/>
 
-### Select your usecase {#select-your-use-case}
+### Select your use case {#select-your-use-case}
 
 <UseCaseSelector/>
 

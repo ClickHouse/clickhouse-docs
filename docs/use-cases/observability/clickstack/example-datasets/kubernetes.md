@@ -125,7 +125,7 @@ With the Helm chart installed, you can deploy ClickStack to your cluster. You ca
 <br/>
 
 <details>
-<summary>ClickStack OpenSource (self-managed)</summary>
+<summary>ClickStack Open Source (self-managed)</summary>
 
 The following command installs ClickStack to the `otel-demo` namespace. The helm chart deploys:
 

@@ -48,7 +48,7 @@ To create a Managed ClickStack service in [ClickHouse Cloud](https://console.cli
 
 <Image img={signup_page} size="md" alt='Signup cloud' border/>
 
-## Select your usecase {#select-your-use-case}
+## Select your use case {#select-your-use-case}
 
 <UseCaseSelector/>
 
@@ -76,6 +76,6 @@ If you have not recorded your default credentials during the above steps, naviga
 
 <Image img={service_connect} size="md" alt='Service Connect' border/>
 
-To perform tasks such as provisioning new users or adding further data sources, see the [deployment guide for Managed ClicKStack](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud#additional-tasks).
+To perform tasks such as provisioning new users or adding further data sources, see the [deployment guide for Managed ClickStack](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud#additional-tasks).
 
 </VerticalStepper>

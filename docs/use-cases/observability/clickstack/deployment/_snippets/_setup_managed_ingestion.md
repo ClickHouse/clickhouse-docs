@@ -201,7 +201,7 @@ service:
 
 <Image img={advanced_otel_collector} size="md" alt='Advanced OTel collector source' border force/>
 
-For further details on configuring OpenTelemtry collectors see ["Ingesting with OpenTelemetry."](/use-cases/observability/clickstack/ingesting-data/opentelemetry)
+For further details on configuring OpenTelemetry collectors see ["Ingesting with OpenTelemetry."](/use-cases/observability/clickstack/ingesting-data/opentelemetry)
 
 </TabItem>
 <TabItem value="vector" label="Vector" default>

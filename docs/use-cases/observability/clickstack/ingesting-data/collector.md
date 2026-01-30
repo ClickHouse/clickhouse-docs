@@ -192,7 +192,7 @@ With Docker Compose, modify the collector configuration using the same environme
 
 <TabItem value="managed-clickstack" label="Managed ClickStack" default>
 
-To further secure your collector deploymeent, we recommend:
+To further secure your collector deployment, we recommend:
 
 - Configuring the collector to communicate with ClickHouse over HTTPS.
 - Create a dedicated user for ingestion with limited permissions - see below.
