@@ -78,7 +78,7 @@ More compute may be required for access patterns that regularly query longer tim
 These values are **estimates only** and should be used as an initial baseline. Actual requirements depend on query complexity, concurrency, retention policies, and ingestion burstiness. Always monitor resource usage and scale as needed.
 :::
 
-### Isolating observability workloads
+### Isolating observability workloads {#isolating-workloads}
 
 If you are adding ClickStack to an **existing ClickHouse Cloud service** that already supports other workloads, such as real-time application analytics, we strongly recommend isolating observability traffic.
 
