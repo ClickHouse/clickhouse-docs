@@ -11,7 +11,7 @@ keywords: ['多租户', '隔离', '最佳实践', '架构', '多租户架构']
 
 根据具体需求，实现多租户架构有多种方式。下面的指南将介绍如何在 ClickHouse Cloud 中实现这些方式。
 
-## 共享表  \{#shared-table\}
+## 共享表 \{#shared-table\}
 
 在这种方案中，所有租户的数据都存储在单个共享表中，并使用一个字段（或一组字段）来标识每个租户的数据。为最大化性能，该字段应包含在[主键](/sql-reference/statements/create/table#primary-key)中。为确保只能访问各自租户的数据，我们使用[基于角色的访问控制](/operations/access-rights)，并通过[行策略](/operations/access-rights#row-policy-management)来实现。
 

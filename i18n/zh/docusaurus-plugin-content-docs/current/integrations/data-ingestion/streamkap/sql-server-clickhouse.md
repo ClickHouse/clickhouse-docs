@@ -154,7 +154,7 @@ Pipeline 设置截图——展示如何选择源、目标和表。
 
 除非你有明确需求，否则目前可以先选择“不回填（don’t backfill）”选项。
 
-## 流式传输实战：预期效果  \{#streaming-in-action-what-to-expect\}
+## 流式传输实战：预期效果 \{#streaming-in-action-what-to-expect\}
 
 现在你的 pipeline 已经配置完成并开始运行！
 

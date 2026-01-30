@@ -258,7 +258,7 @@ BFloat16 は、Float32 の下位ビットを半分切り捨てた形式です。
 一方、Float64 は話が異なります。Float64 は 11 ビットの指数部と 52 ビットの仮数部を使用しており、単にビット数が 2 倍になった Float32 というわけではありません。その構造や指数バイアスはまったく異なります。Float64 を Float32 のような、より小さいフォーマットにダウンキャストするには、各値を最も近い表現可能な Float32 に丸める、正規の IEEE-754 変換が必要になります。この丸め処理は計算コストが高くなります。
 
 :::tip
-QBit のパフォーマンス要素をより詳しく知りたい場合は、["Let’s vectorise"](https://clickhouse.com/blog/qbit-vector-search#lets-vectorise) を参照してください。
+QBit のパフォーマンス要素をより詳しく知りたい場合は、["Let’s vectorize"](https://clickhouse.com/blog/qbit-vector-search#lets-vectorise) を参照してください。
 :::
 
 ## DBpedia を用いた例 \{#example\}

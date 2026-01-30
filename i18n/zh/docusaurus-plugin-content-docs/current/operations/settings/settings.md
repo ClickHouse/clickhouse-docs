@@ -2261,6 +2261,20 @@ SETTINGS convert_query_to_cnf = true;
 
 - [IN 运算符中的 NULL 处理](/guides/developer/deduplicating-inserts-on-retries#insert-deduplication-with-materialized-views)
 
+## deduplicate_insert \{#deduplicate_insert\}
+
+<SettingsInfoBlock type="DeduplicateInsertMode" default_value="backward_compatible_choice" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "用于控制 INSERT 查询去重行为的新设置。"}]}]}/>
+
+启用或禁用 `INSERT INTO` 的块级去重（适用于 Replicated\* 表）。
+该设置会覆盖 `insert_deduplicate` 和 `async_insert_deduplicate` 两个设置。
+该设置支持以下三个取值：
+
+- disable — 对 `INSERT INTO` 查询禁用去重。
+- enable — 对 `INSERT INTO` 查询启用去重。
+- backward_compatible_choice — 如果针对特定插入类型启用了 `insert_deduplicate` 或 `async_insert_deduplicate`，则启用去重。
+
 ## deduplicate_insert_select \{#deduplicate_insert_select\}
 
 <SettingsInfoBlock type="DeduplicateInsertSelectMode" default_value="enable_when_possible" />
@@ -2268,7 +2282,7 @@ SETTINGS convert_query_to_cnf = true;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "change the default behavior of deduplicate_insert_select to ENABLE_WHEN_POSSIBLE"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "New setting, replace insert_select_deduplicate"}]}]}/>
 
 启用或禁用 `INSERT SELECT` 的块去重（适用于 Replicated\* 表）。
-该设置会覆盖 `INSERT SELECT` 查询中 `insert_deduplicate` 的行为。
+该设置会覆盖 `INSERT SELECT` 查询中 `insert_deduplicate` 和 `deduplicate_insert` 的行为。
 该设置有四种可能取值：
 
 - disable — 对 `INSERT SELECT` 查询禁用去重。

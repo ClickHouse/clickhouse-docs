@@ -2,8 +2,6 @@ import Image from '@theme/IdealImage';
 import AdvancedDashboard from '@site/static/images/cloud/manage/monitoring/advanced_dashboard.png';
 import NativeAdvancedDashboard from '@site/static/images/cloud/manage/monitoring/native_advanced_dashboard.png';
 
-
-
 ## 集成示例 \{#examples\}
 
 外部集成使组织能够保持既有的监控工作流，利用团队对熟悉工具的既有专业经验，并在不扰乱当前流程或需要大量再培训投入的情况下，将 ClickHouse 监控纳入更广泛的基础设施可观测性体系。

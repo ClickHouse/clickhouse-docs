@@ -31,13 +31,6 @@ CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name'
 
 [ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication) テーブルでは、引数が指定されていない場合、デフォルトの引数 `/clickhouse/tables/{uuid}/{shard}` および `{replica}` が使用されます。これらはサーバー設定 [default&#95;replica&#95;path](../../operations/server-configuration-parameters/settings.md#default_replica_path) および [default&#95;replica&#95;name](../../operations/server-configuration-parameters/settings.md#default_replica_name) で変更できます。マクロ `{uuid}` はテーブルの UUID に展開され、`{shard}` と `{replica}` はデータベースエンジンの引数ではなくサーバー設定の値に展開されます。ただし将来的には、Replicated データベースの `shard_name` および `replica_name` も使用できるようになる予定です。
 
-補助 ZooKeeper クラスタもサポートされており、既定の ZooKeeper クラスタを使用する代わりに、レプリケートされたデータベースのメタデータを保存できます。補助 ZooKeeper クラスタを用いてレプリケートされたデータベースを作成するには、次のように SQL を使用できます。
-
-```sql
-CREATE DATABASE database_name ENGINE = Replicated('zookeeper_name_configured_in_auxiliary_zookeepers:path', 'shard_name', 'replica_name')
-```
-
-
 ## 詳細と推奨事項 \{#specifics-and-recommendations\}
 
 `Replicated` データベースでの DDL クエリは、[ON CLUSTER](../../sql-reference/distributed-ddl.md) クエリと同様の方法で動作しますが、いくつかの細かな違いがあります。
@@ -56,7 +49,7 @@ CREATE DATABASE database_name ENGINE = Replicated('zookeeper_name_configured_in_
 
 ## 使用例 \{#usage-example\}
 
-3 つのホストを持つクラスターの作成：
+3 つのホストを持つクラスターの作成:
 
 ```sql
 node1 :) CREATE DATABASE r ENGINE=Replicated('some/path/r','shard1','replica1');
@@ -129,7 +122,6 @@ node4 :) CREATE DATABASE r UUID '<uuid from previous query>' ENGINE=Replicated('
 
 クラスター構成は次のようになります。
 
-
 ```text
 ┌─cluster─┬─shard_num─┬─replica_num─┬─host_name─┬─host_address─┬─port─┬─is_local─┐
 │ r       │     1     │      1      │   node3   │  127.0.0.1   │ 9002 │     0    │
@@ -151,7 +143,6 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 │ node4 │  [0,2,4,6,8]  │
 └───────┴───────────────┘
 ```
-
 
 ## 設定 \{#settings\}
 
