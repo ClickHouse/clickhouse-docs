@@ -149,11 +149,11 @@ To enable alerts, at least one user with **Service Admin** permissions (mapped t
 
 ### Adding more data sources {#adding-data-sources}
 
-ClickStack is Open Telemetry native but not Open Telemetry exclusive - you can use your own table schemas if desired.
+ClickStack is OpenTelemetry native but not OpenTelemetry exclusive - you can use your own table schemas if desired.
 
 The following describes how users can add additional data sources beyond those that are configured automatically.
 
-#### Using Open Telemetry schemas  {#using-otel-schemas}
+#### Using OpenTelemetry schemas  {#using-otel-schemas}
 
 If you're using an OTel collector to create the database and tables within ClickHouse, retain all default values within the create source model, completing the `Table` field with the value `otel_logs` - to create a logs source. All other settings should be auto-detected, allowing you to click `Save New Source`.
 
@@ -173,7 +173,7 @@ Note that different data sources in ClickStack—such as logs and traces—can b
 
 #### Using custom schemas {#using-custom-schemas}
 
-Users looking to connect HyperDX to an existing service with data can complete the database and table settings as required. Settings will be auto-detected if tables conform to the Open Telemetry schemas for ClickHouse. 
+Users looking to connect HyperDX to an existing service with data can complete the database and table settings as required. Settings will be auto-detected if tables conform to the OpenTelemetry schemas for ClickHouse. 
 
 If using your own schema, we recommend creating a Logs source ensuring the required fields are specified - see ["Log source settings"](/use-cases/observability/clickstack/config#logs) for further details.
 

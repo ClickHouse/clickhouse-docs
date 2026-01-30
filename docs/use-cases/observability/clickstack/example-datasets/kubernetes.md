@@ -19,7 +19,7 @@ import hyperdx_create_new_source from '@site/static/images/use-cases/observabili
 import hyperdx_create_trace_datasource from '@site/static/images/use-cases/observability/hyperdx_create_trace_datasource.png';
 import dashboard_kubernetes from '@site/static/images/use-cases/observability/hyperdx-dashboard-kubernetes.png';
 
-This guide allows you to collect logs and metrics from your Kubernetes system, sending them to **ClickStack** for visualization and analysis. For demo data we use optionally use the ClickStack fork of the official Open Telemetry demo.
+This guide allows you to collect logs and metrics from your Kubernetes system, sending them to **ClickStack** for visualization and analysis. For demo data we use optionally use the ClickStack fork of the official OpenTelemetry demo.
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/winI7256Ejk?si=TRThhzCJdq87xg_x" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
