@@ -30,7 +30,10 @@ Before querying your table in Microsoft Fabric, you'll need to collect the follo
 - An OneLake tenant ID (Your Entra ID)
 - An Application (client) ID
 - A client secret
-- A warehouse ID and a data item ID (Lakehouse ID recommended)
+- A warehouse ID and a data item ID
+
+Your warehouse ID is your Workspace ID.
+For Data Item ID - we recommend using using your LakeHouse ID.
 
 See [Microsoft OneLake's documentation](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites) for help finding these values.
 
