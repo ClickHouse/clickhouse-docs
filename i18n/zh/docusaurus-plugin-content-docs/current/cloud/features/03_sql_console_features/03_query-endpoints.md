@@ -43,7 +43,7 @@ Query API 端点遵循基于 API 密钥的 IP 白名单配置。与 SQL Console 
 
 #### 添加允许的 IP 地址 \{#add-ips\}
 
-1. 在 **Alow access to this API Key** 部分中，选择 **Specific locations**
+1. 在 **Allow access to this API Key** 部分中，选择 **Specific locations**
 2. 输入 IP 地址或 CIDR 范围（例如：`203.0.113.1` 或 `203.0.113.0/24`）
 3. 根据需要添加多条记录
 

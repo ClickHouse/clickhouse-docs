@@ -2265,6 +2265,20 @@ SETTINGS convert_query_to_cnf = true;
 
 - [Обработка NULL в операторах IN](/guides/developer/deduplicating-inserts-on-retries#insert-deduplication-with-materialized-views)
 
+## deduplicate_insert \{#deduplicate_insert\}
+
+<SettingsInfoBlock type="DeduplicateInsertMode" default_value="backward_compatible_choice" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "Новая настройка для управления дедупликацией для запросов INSERT."}]}]}/>
+
+Включает или отключает блочную дедупликацию при выполнении `INSERT INTO` (для таблиц Replicated\*).
+Эта настройка переопределяет настройки `insert_deduplicate` и `async_insert_deduplicate`.
+У данной настройки есть три возможных значения:
+
+- disable — дедупликация отключена для запроса `INSERT INTO`.
+- enable — дедупликация включена для запроса `INSERT INTO`.
+- backward_compatible_choice — дедупликация включена, если `insert_deduplicate` или `async_insert_deduplicate` включены для соответствующего типа вставки.
+
 ## deduplicate_insert_select \{#deduplicate_insert_select\}
 
 <SettingsInfoBlock type="DeduplicateInsertSelectMode" default_value="enable_when_possible" />
@@ -2272,8 +2286,8 @@ SETTINGS convert_query_to_cnf = true;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "change the default behavior of deduplicate_insert_select to ENABLE_WHEN_POSSIBLE"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "New setting, replace insert_select_deduplicate"}]}]}/>
 
 Включает или отключает дедупликацию блоков для `INSERT SELECT` (для таблиц Replicated\*).
-Этот параметр переопределяет `insert_deduplicate` для запросов `INSERT SELECT`.
-У этого параметра есть следующие возможные значения:
+Этот параметр переопределяет `insert_deduplicate` и `deduplicate_insert` для запросов `INSERT SELECT`.
+У этого параметра есть четыре возможных значения:
 
 - disable — дедупликация отключена для запроса `INSERT SELECT`.
 - force_enable — дедупликация включена для запроса `INSERT SELECT`. Если результат SELECT нестабилен, выбрасывается исключение.

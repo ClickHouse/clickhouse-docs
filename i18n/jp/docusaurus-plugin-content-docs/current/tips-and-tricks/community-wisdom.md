@@ -21,15 +21,11 @@ title: 'ClickHouse コミュニティの知見'
 description: 'ClickHouse コミュニティから、実際のユースケースとそこで得られた教訓を学びましょう'
 ---
 
-
-
 # ClickHouse コミュニティの知見：ミートアップから得たヒントとテクニック \{#community-wisdom\}
 
 *これらのインタラクティブガイドは、数百件におよぶ本番環境でのデプロイメントから得られた集合知を表しています。各実行可能なサンプルは、実際の GitHub events データを用いて ClickHouse のパターンを理解するのに役立ちます。これらの概念を実践してよくあるミスを避け、成功までの道のりを加速しましょう。*
 
 この知見を [Best Practices](/best-practices) ガイドと組み合わせて活用し、ClickHouse での体験を最適化してください。
-
-
 
 ## 問題別クイックジャンプ \{#problem-specific-quick-jumps\}
 

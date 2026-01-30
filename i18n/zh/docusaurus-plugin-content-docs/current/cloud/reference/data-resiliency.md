@@ -20,8 +20,6 @@ ClickHouse Cloud 目前不支持自动故障转移，也不支持跨多个地理
 客户应定期执行备份恢复测试，以了解在其服务规模和配置下的具体恢复时间目标（RTO）。
 :::
 
-
-
 ## 定义 \{#definitions\}
 
 首先了解一些相关定义会很有帮助。
@@ -31,8 +29,6 @@ ClickHouse Cloud 目前不支持自动故障转移，也不支持跨多个地理
 **RTO（恢复时间目标）**：在发生故障或中断后，业务必须恢复到正常运行状态之前所允许的最长停机时间。例如：RTO 为 30 分钟意味着在发生故障时，团队能够在 30 分钟内恢复数据和应用，并使业务恢复正常运行。
 
 **数据库备份和快照**：备份提供将数据副本存储在独立介质上的持久性长期存储。快照不会创建额外的数据副本，通常速度更快，并且可以提供更好的 RPO。
-
-
 
 ## 数据库备份 \{#database-backups\}
 
@@ -63,14 +59,10 @@ Enterprise Tier 客户可以将[备份导出](/cloud/manage/backups/export-backu
 当前可用于该服务的备份会列在 ClickHouse Cloud 控制台的 “backups” 页面中。
 该页面还会显示每个备份的成功 / 失败状态。
 
-
-
 ## 从备份恢复 \{#restoring-from-a-backup\}
 
 1. 默认备份（位于 ClickHouse Cloud 存储桶中）可以恢复到同一区域内的新服务。
 2. 外部备份（位于客户对象存储中）可以恢复到同一区域或不同区域的新服务。
-
-
 
 ## 备份和恢复时长指南 \{#backup-and-restore-duration-guidance\}
 
@@ -89,8 +81,6 @@ Enterprise Tier 客户可以将[备份导出](/cloud/manage/backups/export-backu
 当前在同一区域或跨区域的两个 ClickHouse Cloud 实例之间**不支持**自动故障切换。
 当前在同一区域或跨区域的不同 ClickHouse Cloud 服务之间**不支持**自动数据同步，即不支持 Active-Active 复制。
 :::
-
-
 
 ## 恢复流程 \{#recovery-process\}
 
@@ -132,8 +122,6 @@ Enterprise Tier 的客户可以将[备份导出](/cloud/manage/backups/export-ba
 :::note
 当前不支持对使用 [Transparent Data Encryption (TDE)](/cloud/security/cmek#transparent-data-encryption-tde) 的服务执行备份/恢复到外部 bucket 的操作。
 :::
-
-
 
 ## 其他选项 \{#additional-options\}
 

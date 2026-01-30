@@ -164,6 +164,16 @@ ClickPipes 会以批次方式向 ClickHouse 插入数据。这样可以避免在
 
 如果您有特定的低延迟需求，请[联系我们](https://clickhouse.com/company/contact?loc=clickpipes)。
 
+### 活跃分片 \{#active-shards\}
+
+我们强烈建议将并发活跃分片的数量控制在与吞吐量需求相匹配的范围内。对于按需（"On Demand"）Kinesis 流，AWS 会根据吞吐量自动分配相应数量的分片；
+但对于预置（"Provisioned"）流，如果预置了过多分片，会导致下文所述的延迟问题，并且还会产生更高的成本，因为此类流的 Kinesis 定价是按“每个分片”（"per shard"）计费的。
+
+如果生产者应用持续向大量活跃分片写入数据，而你的 pipe 没有扩容到足以高效处理这些分片的规模，就可能导致延迟。基于 Kinesis 的吞吐限制，
+ClickPipes 会为每个副本分配特定数量的 worker 来读取分片数据。比如，在最小规格下，一个 ClickPipes 副本会拥有 4 个这样的 worker 线程。如果生产者同时向
+超过 4 个分片写入数据，那么在有空闲 worker 线程之前，“额外”分片上的数据将无法被处理。特别是，当 pipe 使用“enhanced fanout”时，每个 worker 线程会在 5 分钟内只订阅
+单个分片，并且在这段时间内无法读取其他任何分片。这会导致以 5 分钟为单位的延迟“尖峰”。
+
 ### 扩展 \{#scaling\}
 
 用于 Kinesis 的 ClickPipes 被设计为既可以水平扩展，也可以垂直扩展。默认情况下，我们会创建一个包含一个 consumer 的 consumer group。可以在创建 ClickPipe 时进行配置，或者在之后通过 **Settings** -> **Advanced Settings** -> **Scaling** 进行配置。

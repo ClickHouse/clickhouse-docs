@@ -24,11 +24,12 @@ SELECT *
 FROM clusterAllReplicas('default',system.crash_log)
 ```
 
+
 ## 遭入侵的 ClickHouse 创建的 AWS 角色 \{#compromised-clickhouse-created-aws-roles\}
 
 ClickHouse 使用预先创建的角色来实现系统功能。本节假设客户在 AWS 上启用了 CloudTrail，并且能够访问 CloudTrail 日志。
 
-如果某个安全事件可能是由于角色被入侵导致的，请在 CloudTrail 和 CloudWatch 中审阅与 ClickHouse IAM 角色及其相关操作有关的活动。有关 IAM 角色列表，请参考作为部署设置一部分提供的 [CloudFormation](/cloud/reference/byoc/onboarding/aws#cloudformation-iam-roles) 堆栈或 Terraform 模块。
+如果某个安全事件可能是由于角色被入侵导致的，请在 CloudTrail 和 CloudWatch 中审阅与 ClickHouse IAM 角色及其相关操作有关的活动。有关 IAM 角色列表，请参考作为部署设置一部分提供的 [CloudFormation](/cloud/reference/byoc/reference/priviledge#cloudformation-iam-roles) 堆栈或 Terraform 模块。
 
 ## 未经授权访问 EKS 集群 \{#unauthorized-access-eks-cluster\}
 
@@ -43,7 +44,7 @@ fields user.username
 | stats count(*) as count by user.username
 ```
 
-判断某个用户是否为 ClickHouse 工程师
+识别某个用户是否为 ClickHouse 工程师
 
 ```sql
 fields @timestamp,user.extra.sessionName.0, requestURI, verb,userAgent, @message, @logStream, @log

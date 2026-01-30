@@ -9,6 +9,7 @@ doc_type: 'reference'
 
 {/* no-glossary */ }
 
+
 # 用語集 \{#glossary\}
 
 ## 原子性 \{#atomicity\}
