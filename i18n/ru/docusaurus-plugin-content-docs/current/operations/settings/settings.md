@@ -8850,6 +8850,16 @@ FROM fuse_tbl
 
 Примечание: Эта настройка не приводит к дополнительной фильтрации данных во время обработки запроса, а лишь изменяет точки, в которых фильтр диапазона разбивает диапазон `[0, INT_MAX]` для параллельной обработки.
 
+## parallel_replicas_filter_pushdown \{#parallel_replicas_filter_pushdown\}
+
+<BetaBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+Разрешает проталкивать фильтры в ту часть запроса, выполнение которой выбирают параллельные реплики
+
 ## parallel_replicas_for_cluster_engines \{#parallel_replicas_for_cluster_engines\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

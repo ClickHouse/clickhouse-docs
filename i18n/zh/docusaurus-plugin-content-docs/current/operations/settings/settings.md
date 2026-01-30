@@ -8812,6 +8812,16 @@ FROM fuse_tbl
 
 注意：此设置不会在查询处理期间额外过滤任何数据，而是改变范围过滤器将范围 `[0, INT_MAX]` 拆分为并行处理子范围的切分点。
 
+## parallel_replicas_filter_pushdown \{#parallel_replicas_filter_pushdown\}
+
+<BetaBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+允许将过滤条件下推到查询中由并行副本选择执行的部分
+
 ## parallel_replicas_for_cluster_engines \{#parallel_replicas_for_cluster_engines\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

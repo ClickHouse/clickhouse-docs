@@ -8830,6 +8830,16 @@ parallel replicas を用いたクエリ実行中に、リモートのレプリ�
 
 注意: この設定によってクエリ処理中に追加のデータがフィルタされることはありません。代わりに、並列処理のために range フィルタが範囲 `[0, INT_MAX]` をどの位置で分割するかが変更されます。
 
+## parallel_replicas_filter_pushdown \{#parallel_replicas_filter_pushdown\}
+
+<BetaBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+並列レプリカが実行対象として選択したクエリ部分へのフィルタのプッシュダウンを許可します
+
 ## parallel_replicas_for_cluster_engines \{#parallel_replicas_for_cluster_engines\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
