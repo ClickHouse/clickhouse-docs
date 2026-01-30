@@ -56,6 +56,7 @@ WHERE your_filter_conditions;
 -- If aggregation_ratio < 10%, you'll get good compression
 ```
 
+
 ## Когда материализованные представления становятся проблемой \{#mv-problems\}
 
 **Предупреждающие признаки, за которыми стоит следить:**
@@ -67,4 +68,5 @@ WHERE your_filter_conditions;
 Вы можете сравнить производительность вставки до и после добавления материализованных представлений с помощью `system.query_log`, отслеживая тенденции по длительности выполнения запросов.
 
 ## Источники видео \{#video-sources\}
+
 - [ClickHouse at CommonRoom - Kirill Sapchuk](https://www.youtube.com/watch?v=liTgGiTuhJE) — источник кейса о «чрезмерном энтузиазме вокруг материализованных представлений» и «раздувании объёма данных с 20 GB до 190 GB»

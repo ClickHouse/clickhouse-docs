@@ -475,6 +475,10 @@ Peak memory usage: 639.47 MiB.
 * **挿入ブロックサイズ (Insert Block Size)** - データはループ内で処理され、[partitioning key](/engines/table-engines/mergetree-family/custom-partitioning-key) に基づいて取り出され、パースされ、インメモリの挿入ブロックに形成されます。これらのブロックはソート、最適化、圧縮され、新しい [data parts](/parts) としてストレージに書き込まれます。挿入ブロックのサイズは、設定 [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows) と [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes) (非圧縮) によって制御され、メモリ使用量とディスク I/O に影響します。大きなブロックはメモリを多く使用しますが、作成される parts が少なくなり、I/O とバックグラウンドマージが減少します。これらの設定は最小しきい値を表し、いずれかに到達するとフラッシュがトリガーされます。
 * **マテリアライズドビューのブロックサイズ (Materialized view block size)** - 上記のメイン挿入用メカニズムに加えて、マテリアライズドビューに挿入される前にも、より効率的に処理できるようブロックがまとめられます。これらのブロックサイズは、設定 [`min_insert_block_size_bytes_for_materialized_views`](/operations/settings/settings#min_insert_block_size_bytes_for_materialized_views) および [`min_insert_block_size_rows_for_materialized_views`](/operations/settings/settings#min_insert_block_size_rows_for_materialized_views) によって決定されます。ブロックを大きくするとメモリ使用量が増える代わりに、処理効率が向上します。デフォルトでは、これらの設定はソーステーブルの設定 [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows) および [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes) の値をそれぞれ継承します。
 
+:::note
+**単純な INSERT SELECT クエリ向けのヒント**: 複雑な変換を含まない `INSERT INTO t1 SELECT * FROM t2` のような単純なクエリでは、`optimize_trivial_insert_select=1` を有効にすることを検討してください。この設定 (バージョン 24.7 以降ではデフォルトで無効) は、`max_insert_threads` に合わせて SELECT の並列度を自動的に調整し、リソース使用量と生成される parts の数を削減します。これは、大量データをテーブル間で移行する際に特に有用です。
+:::
+
 パフォーマンス向上のために、[Optimizing for S3 Insert and Read Performance guide](/integrations/s3/performance) の [Tuning Threads and Block Size for Inserts](/integrations/s3/performance#tuning-threads-and-block-size-for-inserts) セクションで示されているガイドラインに従うことができます。ほとんどの場合、パフォーマンス向上のために `min_insert_block_size_bytes_for_materialized_views` と `min_insert_block_size_rows_for_materialized_views` を変更する必要はありません。これらを変更する場合は、`min_insert_block_size_rows` と `min_insert_block_size_bytes` について説明したのと同じベストプラクティスを適用してください。
 
 メモリ使用量を最小化するために、これらの設定を調整してみることもできますが、その場合パフォーマンスは必然的に低下します。前述のクエリを使い、以下に例を示します。
@@ -496,6 +500,7 @@ Peak memory usage: 506.78 MiB.
 
 `max_threads` 設定を 1 に下げることで、メモリ使用量をさらに削減できます。
 
+
 ```sql
 INSERT INTO pypi_v2
 SELECT timestamp, project
@@ -509,8 +514,7 @@ Ok.
 Peak memory usage: 272.53 MiB.
 ```
 
-最後に、`min_insert_block_size_rows` を 0 に設定して (ブロックサイズを決定する要素として無効化し)、`min_insert_block_size_bytes` を 10485760 (10MiB) に設定することで、メモリ使用量をさらに削減できます。
-
+最後に、`min_insert_block_size_rows` を 0（ブロックサイズを決定する要素として無効化）に、`min_insert_block_size_bytes` を 10485760（10MiB）に設定することで、メモリ使用量をさらに削減できます。
 
 ```sql
 INSERT INTO pypi_v2

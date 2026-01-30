@@ -51,8 +51,6 @@ ClickPipes можно использовать как для долгосроч�
 | [MySQL](/integrations/clickpipes/mysql)            | <Mysqlsvg class="image" alt="MySQL logo" style={{width: '3rem', height: 'auto'}}/>               |DBMS| Private Beta | Настройте ClickPipes и начните приём данных из MySQL в ClickHouse Cloud.                            |
 | [MongoDB](/integrations/clickpipes/mongodb)        | <Mongodbsvg class="image" alt="MongoDB logo" style={{width: '3rem', height: 'auto'}}/>           |DBMS| Private Preview | Настройте ClickPipes и начните приём данных из MongoDB в ClickHouse Cloud.                         |
 
-
-
 ## Интеграции клиентов для языков программирования \{#language-client-integrations\}
 
 ClickHouse предлагает ряд клиентских библиотек для различных языков программирования; ссылки на документацию по каждой из них приведены ниже.

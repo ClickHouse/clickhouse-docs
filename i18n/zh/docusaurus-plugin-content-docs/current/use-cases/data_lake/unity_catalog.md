@@ -54,12 +54,24 @@ SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type 
 
 ### 读取 Iceberg 表 \{#read-iceberg\}
 
+要访问启用了 UniForm 的 Delta 表：
+
 ```sql
 CREATE DATABASE unity
 ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/unity-catalog/iceberg')
 SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret>', warehouse = 'workspace', 
 oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', auth_scope = 'all-apis,sql'
 ```
+
+要访问托管的 Iceberg 表：
+
+```sql
+CREATE DATABASE unity
+ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/unity-catalog/iceberg-rest')
+SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret>', warehouse = 'workspace', 
+oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', auth_scope = 'all-apis,sql'
+```
+
 
 ## 使用 ClickHouse 查询 Unity Catalog 中的表 \{#querying-unity-catalog-tables-using-clickhouse\}
 
@@ -105,8 +117,6 @@ SHOW TABLES;
 └────────────────────────────────────────────────────┘
 ```
 
-使用 Iceberg 客户端时，只会显示已启用 Uniform 的 Delta 表：
-
 ```sql
 SHOW TABLES
 
@@ -115,7 +125,7 @@ SHOW TABLES
 └────────────────────┘
 ```
 
-要查询一个表：
+要查询某个表：
 
 ```sql
 SELECT count(*) FROM `uniform.delta_hits`
@@ -150,6 +160,7 @@ CREATE TABLE unity_uniform.`uniform.delta_hits`
 ENGINE = Iceberg('s3://<path>);
 
 ```
+
 
 ## 从数据湖将数据加载到 ClickHouse \{#loading-data-from-your-data-lake-into-clickhouse\}
 

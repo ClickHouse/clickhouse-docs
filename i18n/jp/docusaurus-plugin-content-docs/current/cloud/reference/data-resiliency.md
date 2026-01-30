@@ -20,8 +20,6 @@ import restore_backup from '@site/static/images/cloud/guides/restore_backup.png'
 お客様は、自身のサービス規模および構成に固有の RTO を把握するため、定期的にバックアップからの復元テストを実施する必要があります。
 :::
 
-
-
 ## 用語の定義 \{#definitions\}
 
 まずはいくつかの用語を定義しておくと役に立ちます。
@@ -31,8 +29,6 @@ import restore_backup from '@site/static/images/cloud/guides/restore_backup.png'
 **RTO (Recovery Time Objective / 復旧時間目標)**: 障害発生後、通常運用を再開しなければならないまでに許容される最大停止時間。例: RTO が 30 分であれば、障害発生時にチームは 30 分以内にデータとアプリケーションを復元し、通常運用を再開できる必要があります。
 
 **データベースのバックアップとスナップショット**: バックアップは、データの別コピーを保持する耐久性の高い長期保存を提供します。スナップショットは追加のデータコピーを作成せず、通常はより高速で、より優れた RPO を実現できます。
-
-
 
 ## データベースバックアップ \{#database-backups\}
 
@@ -63,14 +59,10 @@ Enterprise Tier のお客様は、自身のアカウント内のオブジェク�
 現在お使いのサービスで利用可能なバックアップは、ClickHouse Cloud コンソールの「Backups」ページに一覧表示されます。
 このセクションでは、各バックアップの成功/失敗ステータスも確認できます。
 
-
-
 ## バックアップからの復元 \{#restoring-from-a-backup\}
 
 1. ClickHouse Cloud バケット内のデフォルト バックアップは、同じリージョン内の新しいサービスに復元できます。
 2. 外部バックアップ（お客様のオブジェクトストレージ内）は、同じリージョンまたは別のリージョンの新しいサービスに復元できます。
-
-
 
 ## バックアップおよびリストア所要時間の目安 \{#backup-and-restore-duration-guidance\}
 
@@ -89,8 +81,6 @@ Enterprise Tier のお客様は、自身のアカウント内のオブジェク�
 現在、同一リージョン内か異なるリージョンかを問わず、2 つの ClickHouse Cloud インスタンス間での自動フェイルオーバーはサポートされていません。
 また、同一または異なるリージョンに存在する複数の ClickHouse Cloud サービス間でのデータの自動同期、すなわちアクティブ-アクティブレプリケーションも現時点では利用できません。
 :::
-
-
 
 ## 復旧プロセス \{#recovery-process\}
 
@@ -132,8 +122,6 @@ Enterprise Tier のお客様は、バックアップを自身のクラウドプ�
 :::note
 外部バケットへのバックアップ／リストアは、現在 [Transparent Data Encryption (TDE)](/cloud/security/cmek#transparent-data-encryption-tde) を利用しているサービスではサポートされていません。
 :::
-
-
 
 ## 追加オプション \{#additional-options\}
 

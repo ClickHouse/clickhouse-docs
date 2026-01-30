@@ -10,7 +10,7 @@ keywords: ['merge', 'table function', 'query patterns', 'table engine', 'data ac
 [Merge 表函数](https://clickhouse.com/docs/sql-reference/table-functions/merge) 允许我们并行查询多张表。
 它通过创建一个临时的 [Merge](https://clickhouse.com/docs/engines/table-engines/special/merge) 表来实现这一点，该表的结构是通过对这些表的列取并集，并推断其公共数据类型而得到的。
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+<iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## 设置数据表 \{#setup-tables\}
 
@@ -47,6 +47,7 @@ FROM url('https://raw.githubusercontent.com/JeffSackmann/tennis_atp/refs/heads/m
 SETTINGS schema_inference_make_columns_nullable=0,
          schema_inference_hints='winner_seed Nullable(UInt16), loser_seed Nullable(UInt16), surface Enum(\'Hard\', \'Grass\', \'Clay\', \'Carpet\')';
 ```
+
 
 ## 多个表的结构 \{#schema-multiple-tables\}
 
@@ -86,6 +87,7 @@ SETTINGS output_format_pretty_max_value_width=25;
 * 1970s 将 `winner_seed` 的类型从 `Nullable(String)` 更改为 `Nullable(UInt8)`，并将 `score` 的类型从 `String` 更改为 `Array(String)`。
 * 1980s 将 `winner_seed` 和 `loser_seed` 的类型从 `Nullable(UInt8)` 更改为 `Nullable(UInt16)`。
 * 1990s 将 `surface` 的类型从 `String` 更改为 `Enum('Hard', 'Grass', 'Clay', 'Carpet')`，并新增 `walkover` 和 `retirement` 两列。
+
 
 ## 使用 merge 查询多张表 \{#querying-multiple-tables\}
 
@@ -142,6 +144,7 @@ AND multiIf(
 │ Stefan Edberg │ ['6-2','6-2'] │ 7           │
 └───────────────┴───────────────┴─────────────┘
 ```
+
 
 ## 在使用 merge 时，行是来自哪个表？ \{#which-table-merge\}
 
