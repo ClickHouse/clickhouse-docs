@@ -25,6 +25,7 @@ import TabItem from '@theme/TabItem';
 import SetupManagedIngestion from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_setup_managed_ingestion.md';
 import StartManagedIngestion from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_start_managed_ingestion.md';
 import NavigateClickStackUI from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_navigate_managed.md';
+import service_connect from '@site/static/images/_snippets/service_connect.png';
 
 <BetaBadge/>
 
@@ -90,6 +91,13 @@ Once provisioning is complete, users can select 'Start Ingestion'.
 <NavigateClickStackUI/>
 
 ## Next Steps {#next-steps}
+
+:::important Record default credentials
+If you have not recorded your default credentials during the above steps, navigate to the service and select `Connect`, recording the password and HTTP/native endpoints. Store these admin credentials securely, which can be reused in further guides.
+:::
+
+<Image img={service_connect} size="md" alt='Service Connect' border/>
+
 
 To perform tasks such as provisioning new users or adding further data sources, see the [deployment guide for Managed ClicKStack](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud#additional-tasks).
 

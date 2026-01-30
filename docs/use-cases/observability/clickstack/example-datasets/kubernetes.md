@@ -35,12 +35,12 @@ This guide requires you to have:
 
 You can follow this guide using either of the following deployment options:
 
-- **Self-hosted**: Deploy ClickStack entirely within your Kubernetes cluster, including:
+- **Open Source ClickStack**: Deploy ClickStack entirely within your Kubernetes cluster, including:
   - ClickHouse
   - HyperDX
   - MongoDB (used for dashboard state and configuration)
 
-- **Cloud-hosted**: Use **ClickHouse Cloud**, with HyperDX managed externally. This eliminates the need to run ClickHouse or HyperDX inside your cluster.
+- **Managed ClickStack**, with ClickHouse and the ClickStack UI (HyperDX) managed in ClickHouse Cloud. This eliminates the need to run ClickHouse or HyperDX inside your cluster.
 
 To simulate application traffic, you can optionally deploy the ClickStack fork of the [**OpenTelemetry Demo Application**](https://github.com/ClickHouse/opentelemetry-demo). This generates telemetry data including logs, metrics, and traces. If you already have workloads running in your cluster, you can skip this step and monitor existing pods, nodes, and containers.
 
@@ -121,11 +121,14 @@ helm repo update
 
 ### Deploy ClickStack {#deploy-clickstack}
 
-With the Helm chart installed, you can deploy ClickStack to your cluster. You can either run all components, including ClickHouse and HyperDX, within your Kubernetes environment, or use ClickHouse Cloud, where HyperDX is also available as a managed service.
+With the Helm chart installed, you can deploy ClickStack to your cluster. You can either run all components, including ClickHouse and HyperDX, within your Kubernetes environment, or just deploy the collector and rely on Managed ClickStack for ClickHouse and the UI HyperDX.
 <br/>
 
+
+
+
 <details>
-<summary>Self-managed deployment</summary>
+<summary>ClickStack OpenSource (self-managed)</summary>
 
 The following command installs ClickStack to the `otel-demo` namespace. The helm chart deploys:
 
@@ -146,7 +149,7 @@ helm install my-hyperdx hyperdx/hdx-oss-v2   --set clickhouse.persistence.dataSi
 
 :::warning ClickStack in production
 
-This chart also installs ClickHouse and the OTel collector. For production, it is recommended that you use the clickhouse and OTel collector operators and/or use ClickHouse Cloud.
+This chart also installs ClickHouse and the OTel collector. For production, it is recommended that you use the clickhouse and OTel collector operators and/or use Managed ClickStack.
 
 To disable clickhouse and OTel collector, set the following values:
 
@@ -159,9 +162,9 @@ helm install myrelease <chart-name-or-path> --set clickhouse.enabled=false --set
 </details>
 
 <details>
-<summary>Using ClickHouse Cloud</summary>
+<summary>Managed ClickStack</summary>
 
-If you'd rather use ClickHouse Cloud, you can deploy ClickStack and [disable the included ClickHouse](https://clickhouse.com/docs/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud). 
+If you'd rather use Managed ClickStack, you can deploy ClickStack and [disable the included ClickHouse](https://clickhouse.com/docs/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud). 
 
 :::note
 The chart currently always deploys both HyperDX and MongoDB. While these components offer an alternative access path, they are not integrated with ClickHouse Cloud authentication. These components are intended for administrators in this deployment model, [providing access to the secure ingestion key](#retrieve-ingestion-api-key) needed to ingest through the deployed OTel collector, but should not be exposed to end users.
@@ -178,7 +181,7 @@ helm install my-hyperdx hyperdx/hdx-oss-v2  --set clickhouse.enabled=false --set
 
 </details>
 
-To verify the deployment status, run the following command and confirm all components are in the `Running` state. Note that ClickHouse will be absent from this for you using ClickHouse Cloud:
+To verify the deployment status, run the following command and confirm all components are in the `Running` state. Note that ClickHouse will be absent if you're using Managed ClickStack:
 
 ```shell
 kubectl get pods -l "app.kubernetes.io/name=hdx-oss-v2" -n otel-demo
@@ -193,7 +196,7 @@ my-hyperdx-hdx-oss-v2-otel-collector-64cf698f5c-8s7qj   1/1     Running   0     
 ### Access the HyperDX UI {#access-the-hyperdx-ui}
 
 :::note
-Even when using ClickHouse Cloud, the local HyperDX instance deployed in the Kubernetes cluster is still required. It provides an ingestion key managed by the OpAMP server bundled with HyperDX, with secures ingestion through the deployed OTel collector - a capability not currently available in the ClickHouse Cloud-hosted version.
+Even when using Managed ClickStack, the local HyperDX instance deployed in the Kubernetes cluster is still required. It provides an ingestion key managed by the OpAMP server bundled with HyperDX, with secures ingestion through the deployed OTel collector - a capability not currently available in Managed ClickStack.
 :::
 
 For security, the service uses `ClusterIP` and is not exposed externally by default.
@@ -463,37 +466,21 @@ config:
 
 ### Explore Kubernetes data in HyperDX {#explore-kubernetes-data-hyperdx}
 
-Navigate to your HyperDX UI - either using your Kubernetes-deployed instance or via ClickHouse Cloud.
+Navigate to your HyperDX UI - either using your Kubernetes-deployed instance or via Managed ClickStack.
 
 <p/>
 <details>
-<summary>Using ClickHouse Cloud</summary>
+<summary>Managed ClickStack</summary>
 
-If using ClickHouse Cloud, simply log in to your ClickHouse Cloud service and select "HyperDX" from the left menu. You will be automatically authenticated and will not need to create a user.
+If using Managed ClickStack, simply log in to your ClickHouse Cloud service and select "ClickStack" from the left menu. You will be automatically authenticated and will not need to create a user.
 
-When prompted to create a datasource, retain all default values within the create source model, completing the Table field with the value `otel_logs` - to create a logs source. All other settings should be auto-detected, allowing you to click `Save New Source`.
-
-<Image force img={hyperdx_cloud_datasource} alt="ClickHouse Cloud HyperDX Datasource" size="lg"/>
-
-You will also need to create a datasource for traces and metrics.
-
-For example, to create sources for traces and OTel metrics, you can select `Create New Source` from the top menu.
-
-<Image force img={hyperdx_create_new_source} alt="HyperDX create new source" size="lg"/>
-
-From here, select the required source type followed by the appropriate table e.g. for traces, select the table `otel_traces`. All settings should be auto-detected.
-
-<Image force img={hyperdx_create_trace_datasource} alt="HyperDX create trace source" size="lg"/>
-
-:::note Correlating sources
-Note that different data sources in ClickStack—such as logs and traces—can be correlated with each other. To enable this, additional configuration is required on each source. For example, in the logs source, you can specify a corresponding trace source, and vice versa in the traces source. See "Correlated sources" for further details.
-:::
+Data sources for logs, metrics and traces will be pre-created for you.
 
 </details>
 
 <details>
 
-<summary>Using self-managed deployment</summary>
+<summary>ClickStack Open Source</summary>
 
 To access the local deployed HyperDX, you can port forward using the local command and access HyperDX at [http://localhost:8080](http://localhost:8080).
 
@@ -505,7 +492,7 @@ kubectl port-forward \
 ```
 
 :::note ClickStack in production
-In production, we recommend using an ingress with TLS if you are not using HyperDX in ClickHouse Cloud. For example:
+In production, we recommend using an ingress with TLS if you are not using Managed ClickStack. For example:
 
 ```shell
 helm upgrade my-hyperdx hyperdx/hdx-oss-v2 \
