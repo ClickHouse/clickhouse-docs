@@ -640,7 +640,6 @@ const sidebars = {
             },
           ],
         },
-        'integrations/data-ingestion/clickpipes/secure-rds',
         'integrations/data-ingestion/clickpipes/aws-privatelink',
         {
           type: 'category',
@@ -796,8 +795,6 @@ const sidebars = {
             },
           ],
         },
-        'integrations/data-ingestion/clickpipes/kinesis',
-        'integrations/data-ingestion/clickpipes/secure-kinesis',
         'integrations/data-ingestion/clickpipes/aws-privatelink',
         'integrations/data-ingestion/dbms/dynamodb/index',
       ],
