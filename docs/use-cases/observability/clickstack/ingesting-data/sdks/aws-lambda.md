@@ -276,7 +276,6 @@ To debug collector issues, you can enable debug logs by modifying your collector
 configuration file to add the `logging` exporter and setting the telemetry 
 log level to `debug` to enable more verbose logging from the collector lambda layer.
 
-
 <Tabs groupId="service-type">
 <TabItem value="clickstack-managed" label="Managed ClickStack" default>
 

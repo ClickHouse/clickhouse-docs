@@ -5,7 +5,6 @@ import advanced_otel_collector from '@site/static/images/clickstack/getting-star
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 This will prompt the user to select their ingestion source. Managed ClickStack supports a number of ingestion sources, including OpenTelemetry and [Vector](https://vector.dev/), as well as the option to send data directly to ClickHouse in your own schema.
 
 <Image img={select_source} size="md" alt='Select source' border force/>

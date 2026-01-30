@@ -45,19 +45,19 @@ This guide demonstrates both ClickStack Open Source and Managed ClickStack using
 
 The following guide assumes you have completed the [Getting Started Guide for Managed ClickStack](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud) and have the [connection credentials recorded](/use-cases/observability/clickstack/getting-started/managed#next-steps).
 
-## Select your service {#select-your-service}
+## Select your service {#select-your-service-managed}
 
 Select the service with Managed ClickStack from the main ClickHouse cloud landing page.
 
 <Image img={select_service} alt="Select Service" size="lg"/>
 
-## Navigate to the ClickStack UI (HyperDX) {#navigate-to-the-hyperdx-ui}
+## Navigate to the ClickStack UI (HyperDX) {#navigate-to-the-hyperdx-ui-managed}
 
 Select `ClickStack` from the left menu to navigate to the ClickStack UI, where you will be automatically authenticated.
 
 <Image img={hyperdx} alt="ClickStack UI" size="lg"/>
 
-## Download sample data {#download-sample-data}
+## Download sample data {#download-sample-data-managed}
 
 In order to populate the UI with sample data, download the following file:
 
@@ -72,7 +72,7 @@ curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
 
 This file contains example logs, metrics, and traces from our public [OpenTelemetry demo](https://github.com/ClickHouse/opentelemetry-demo) - a simple e-commerce store with microservices. Copy this file to a directory of your choosing.
 
-## Load sample data {#load-sample-data}
+## Load sample data {#load-sample-data-managed}
 
 To load this data, we simply send it to the HTTP endpoint of the deployed OpenTelemetry (OTel) collector. 
 
@@ -98,7 +98,7 @@ Returning to the `Search` view, you should see that data has started to load (ad
 
 Data loading will take a few minutes. Allow for the load to be completed before progressing to the next steps.
 
-## Explore sessions {#explore-sessions}
+## Explore sessions {#explore-sessions-managed}
 
 Suppose we have reports that our users are experiencing issues paying for goods. We can view their experience using HyperDX's session replay capabilities. 
 
@@ -126,7 +126,7 @@ The user was unable to place the order, with no obvious error. Scroll to the bot
 
 Select this `500` error. Neither the `Overview` nor `Column Values` indicate the source of the issue, other than the fact the error is unexpected, causing an `Internal Error`.
 
-## Explore traces {#explore-traces}
+## Explore traces {#explore-traces-managed}
 
 Navigate to the `Trace` tab to see the full distributed trace. 
 
@@ -146,7 +146,7 @@ Scrolling up and returning to the trace, we can see logs are correlated with the
 
 We've established that a cache is getting filled in the payment service, which is preventing payments from completing. 
 
-## Explore logs {#explore-logs}
+## Explore logs {#explore-logs-managed}
 
 For further details, we can return to the `Search`:
 
@@ -156,7 +156,7 @@ Select `Logs` from the sources and apply a filter to the `payment` service.
 
 We can see that while the issue is recent, the number of impacted payments is high. Furthermore, a cache related to the visa payments appears to be causing issues.
 
-## Chart metrics {#chart-metrics}
+## Chart metrics {#chart-metrics-managed}
 
 While an error has clearly been introduced in the code, we can use metrics to confirm the cache size. Navigate to the `Chart Explorer` view.
 

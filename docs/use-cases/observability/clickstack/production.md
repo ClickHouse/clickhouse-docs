@@ -43,11 +43,11 @@ All ingestion should occur via the OTLP ports exposed by ClickStack distribution
 
 Additionally, we recommend enabling TLS for OTLP endpoints.
 
-### Database and ingestion user {#database-ingestion-user-managed}
+### Database and ingestion user {#database-ingestion-user-managed-managed}
 
 We recommend creating a dedicated user for the OTel collector for ingestion into Managed ClickHouse and ensuring ingestion is sent to a specific database e.g. `otel`. See ["Creating an ingestion user"](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) for further details.
 
-## Configure Time To Live (TTL) {#configure-ttl}
+## Configure Time To Live (TTL) {#configure-ttl-managed}
 
 Ensure the [Time To Live (TTL)](/use-cases/observability/clickstack/ttl) has been [appropriately configured](/use-cases/observability/clickstack/ttl#modifying-ttl) for your Managed ClickStack deployment. This controls how long data is retained for - the default of 3 days often needs to be modified.
 

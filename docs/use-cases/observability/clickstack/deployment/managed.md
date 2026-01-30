@@ -39,13 +39,13 @@ In this deployment pattern, both ClickHouse and the ClickStack UI (HyperDX) are 
 
 As well as reducing infrastructure management, this deployment pattern ensures authentication is integrated with ClickHouse Cloud SSO/SAML. Unlike self-hosted deployments, there is also no need to provision a MongoDB instance to store application state — such as dashboards, saved searches, user settings, and alerts. Users also benefit from:
 
-  - Automatic scaling of compute independent of storage
-  - Low-cost and effectively unlimited retention based on object storage
-  - The ability to independently isolate read and write workloads with Warehouses.
-  - Integrated authentication
-  - Automated backups
-  - Security and compliance features
-  - Seamless upgrades
+- Automatic scaling of compute independent of storage
+- Low-cost and effectively unlimited retention based on object storage
+- The ability to independently isolate read and write workloads with Warehouses.
+- Integrated authentication
+- Automated backups
+- Security and compliance features
+- Seamless upgrades
 
 In this mode, data ingestion is entirely left to the user. You can ingest data into Managed ClickStack using your own hosted OpenTelemetry collector, direct ingestion from client libraries, ClickHouse-native table engines (such as Kafka or S3), ETL pipelines, or ClickPipes — ClickHouse Cloud's managed ingestion service. This approach offers the simplest and most performant way to operate ClickStack.
 
@@ -113,15 +113,15 @@ From the ClickHouse Cloud landing page, select `New service` to create a new ser
 
 <ProviderSelection/>
 
-### Setup ingestion {#setup-ingestion}
+### Setup ingestion {#setup-ingestion-create-new}
 
 <SetupManagedIngestion/>
 
-### Start ingestion {#start-ingestion}
+### Start ingestion {#start-ingestion-create-new}
 
 <StartManagedIngestion/>
 
-### Navigate to the ClickStack UI {#navigate-to-clickstack-ui-cloud}
+### Navigate to the ClickStack UI {#navigate-to-clickstack-ui-cloud-create-new}
 
 <NavigateClickStackUI/>
 

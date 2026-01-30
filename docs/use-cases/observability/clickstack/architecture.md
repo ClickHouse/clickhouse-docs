@@ -39,13 +39,13 @@ ClickHouse Cloud handles observability data as wide events, allowing for deep co
 
 In addition to ClickHouse Open Source, it provides a number of benefits for observability:
 
-  - Automatic scaling of compute independent of storage
-  - Low-cost and effectively unlimited retention based on object storage
-  - The ability to independently isolate read and write workloads with Warehouses.
-  - Integrated authentication
-  - Automated backups
-  - Security and compliance features
-  - Seamless upgrades
+- Automatic scaling of compute independent of storage
+- Low-cost and effectively unlimited retention based on object storage
+- The ability to independently isolate read and write workloads with Warehouses.
+- Integrated authentication
+- Automated backups
+- Security and compliance features
+- Seamless upgrades
 
 ## OpenTelemetry collector: data ingestion {#open-telemetry-collector-managed}
 
@@ -103,7 +103,7 @@ ClickStack includes a pre-configured OpenTelemetry (OTel) collector to ingest te
 
 The collector exports telemetry to ClickHouse in efficient batches. It supports optimized table schemas per data source, ensuring scalable performance across all signal types.
 
-## ClickStack UI (HyperDX): the interface {#hyperdx}
+## ClickStack UI (HyperDX): the interface {#hyperdx-ui}
 
 ClickStack UI (HyperDX) is the user interface for ClickStack. It offers:
 

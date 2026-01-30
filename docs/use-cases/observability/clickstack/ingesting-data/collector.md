@@ -20,7 +20,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ExtendingConfig from '@site/docs/use-cases/observability/clickstack/ingesting-data/_snippets/_extending_config.md';
 
-
 This page includes details on configuring the official ClickStack OpenTelemetry (OTel) collector.
 
 ## Collector roles {#collector-roles}
@@ -110,7 +109,7 @@ With Docker Compose, modify the collector configuration using the same environme
 
 <TabItem value="oss-clickstack" label="Open Source ClickStack" default>
 
-## Deploying the collector {#configuring-the-collector}
+## Deploying the collector {#configuring-the-collector-oss}
 
 If you are managing your own OpenTelemetry collector in a standalone deployment - such as when using the HyperDX-only distribution - we [recommend still using the official ClickStack distribution of the collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) for the gateway role where possible, but if you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
 
@@ -227,7 +226,7 @@ To further secure your deployment, we recommend:
 - Create a dedicated user for ingestion with limited permissions - see below.
 - Enabling TLS for the OTLP endpoint, ensuring encrypted communication between SDKs/agents and the collector. This can be configured via [custom collector configuration](#extending-collector-config).
 
-### Creating an ingestion user {#creating-an-ingestion-user}
+### Creating an ingestion user {#creating-an-ingestion-user-oss}
 
 We recommend creating a dedicated database and user for the OTel collector for ingestion into ClickHouse. This should have the ability to create and insert into the [tables created and used by ClickStack](/use-cases/observability/clickstack/ingesting-data/schemas). 
 

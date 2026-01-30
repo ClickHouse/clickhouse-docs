@@ -27,13 +27,13 @@ import service_connect from '@site/static/images/_snippets/service_connect.png';
 
 The easiest way to get started is by deploying **Managed ClickStack** on **ClickHouse Cloud**, which provides a fully managed, secure backend while retaining complete control over ingestion, schema, and observability workflows. This removes the need to operate ClickHouse yourself and delivers a range of benefits: 
 
-  - Automatic scaling of compute independent of storage
-  - Low-cost and effectively unlimited retention based on object storage
-  - The ability to independently isolate read and write workloads with Warehouses.
-  - Integrated authentication
-  - Automated backups
-  - Security and compliance features
-  - Seamless upgrades
+- Automatic scaling of compute independent of storage
+- Low-cost and effectively unlimited retention based on object storage
+- The ability to independently isolate read and write workloads with Warehouses.
+- Integrated authentication
+- Automated backups
+- Security and compliance features
+- Seamless upgrades
 
 <VerticalStepper headerLevel="h2">
 
@@ -75,7 +75,6 @@ If you have not recorded your default credentials during the above steps, naviga
 :::
 
 <Image img={service_connect} size="md" alt='Service Connect' border/>
-
 
 To perform tasks such as provisioning new users or adding further data sources, see the [deployment guide for Managed ClicKStack](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud#additional-tasks).
 

@@ -170,7 +170,7 @@ From the subsequent menu you can select `Percentage` from the `Output format` dr
 
 <VerticalStepper>
 
-## Create a custom OpenTelemetry configuration {#create-otel-configuration}
+## Create a custom OpenTelemetry configuration {#create-otel-configuration-oss}
 
 Create a `custom-local-config.yaml` file with the following content:
 
@@ -271,7 +271,7 @@ We run the collector as the root user to access all system logs—this is necess
 Note that we mount the host's `/var/log` to `/host/var/log` inside the container to avoid conflicts with the container's own log files.
 :::
 
-## Explore system logs {#navigate-to-the-hyperdx-ui}
+## Explore system logs {#navigate-to-the-hyperdx-ui-oss}
 
 Visit [http://localhost:8080](http://localhost:8080) to access the ClickStack UI if deploying locally. 
 
@@ -279,7 +279,7 @@ Data sources should be pre-created for you. The search UI should be populated wi
 
 <Image img={hyperdx_20} alt="HyperDX Local logs" size="lg" force/>
 
-## Explore system metrics {#explore-system-metrics}
+## Explore system metrics {#explore-system-metrics-oss}
 
 We can explore our metrics using charts.
 
