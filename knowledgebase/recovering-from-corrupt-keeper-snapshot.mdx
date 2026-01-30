@@ -7,10 +7,14 @@ description: 'Article describing how to recover from a corrupt Keeper snapshot: 
 ---
 
 {frontMatter.description}
+
 {/* truncate */}
 
-Corrupt or bad ClickHouse Keeper snapshots can cause significant system instability, such as metadata inconsistencies, read-only states for tables, resource exhaustion, or failed backups.
-This article covers:
+<br/>
+<br/>
+
+Corrupt or bad ClickHouse Keeper snapshots can cause significant system instability, such as metadata inconsistencies, read-only states for tables, resource exhaustion, or failed backups. This article covers:
+
 - [What snapshots are and where to find them](#overview)
 - [How the problem manifests](#symptoms)
 - [Possible strategies for recovery](#recovery-strategies) and what each of them means
@@ -19,14 +23,12 @@ This article covers:
 
 ### What is a snapshot? {#what-is-snapshot}
 
-A snapshot is a serialized state of Keeper's internal data (such as metadata about clusters, table coordination paths, and configurations) at a specific point in time.
-Snapshots are vital for resynchronizing Keeper nodes within a cluster, recovering metadata during failures, and start-up or restart processes that rely on a known-good Keeper state.
+A snapshot is a serialized state of Keeper's internal data (such as metadata about clusters, table coordination paths, and configurations) at a specific point in time. Snapshots are vital for resynchronizing Keeper nodes within a cluster, recovering metadata during failures, and start-up or restart processes that rely on a known-good Keeper state.
 
 ### Where can I find snapshots? {#where-to-find-snapshots}
 
-Snapshots are stored as files on the local filesystem of Keeper nodes.
-By default, they are stored at `/var/lib/clickhouse/coordination/snapshots/` or by the custom path specified by `snapshot_storage_path` in your `keeper_server.xml` file.
-Snapshots are named incrementally (e.g., snapshot.23), with newer ones having higher numbers.
+Snapshots are stored as files on the local filesystem of Keeper nodes. By default, they are stored at `/var/lib/clickhouse/coordination/snapshots/` or by the custom path specified by `snapshot_storage_path` in your `keeper_server.xml` file. Snapshots are named incrementally (e.g., snapshot.23), with newer ones having higher numbers.
+
 For multi-node clusters, each Keeper node has its own snapshot directory.
 
 :::note
@@ -36,7 +38,6 @@ Consistency within snapshots across nodes is critical for recovery.
 ## Key symptoms and manifestations of corrupt Keeper snapshots {#symptoms}
 
 The table below details some common symptoms and manifestations of corrupt Keeper snapshots:
-Here's the updated table with the additional issues:
 
 | **Category** | **Issue Type** | **What to look for** |
 |---|---|---|
@@ -55,8 +56,8 @@ Here's the updated table with the additional issues:
 
 | **Log Type** | **What to Look For** |
 |---|---|
-| **Error Messages** | • `Coordination::Exception`<br/>• `logical data is unavailable`<br/>• `Zookeeper::Session Timeout`<br/>• Invalid pointer/access violations<br/>• `SEGFAULT` errors |
-| **Debug Logs** | • Synchronization or election issues<br/>• Snapshot serialization/loading failures during startup<br/>• Log compaction race conditions |
+| **Error Messages** | • `Coordination::Exception` • `logical data is unavailable` • `Zookeeper::Session Timeout` • Invalid pointer/access violations • `SEGFAULT` errors |
+| **Debug Logs** | • Synchronization or election issues • Snapshot serialization/loading failures during startup • Log compaction race conditions |
 
 ## Recovering from corrupt Keeper snapshots {#recovery-strategies}
 
@@ -68,9 +69,10 @@ Before touching any files, always:
 
 ---
 
-1. **Restore from an existing backup**
+### 1. Restore from an existing backup
 
 You should follow this process if:
+
 - The Keeper metadata or snapshot corruption makes current data unsalvageable.
 - A backup exists with a known-good Keeper state.
 
@@ -82,15 +84,15 @@ Follow the steps below to restore an existing backup:
 4. Restart the Keeper cluster and validate metadata synchronization.
 
 :::tip[Backup regularly]
-If backups are outdated, you may incur a loss of recent metadata changes.
-For this reason, we recommend backing up regularly.
+If backups are outdated, you may incur a loss of recent metadata changes. For this reason, we recommend backing up regularly.
 :::
 
 ---
 
-2. **Rollback to an older snapshot**
+### 2. Rollback to an older snapshot
 
 You should follow this process when:
+
 - Recent snapshots are corrupt, but older ones remain usable.
 - Incremental logs are intact for consistent recovery.
 
@@ -106,33 +108,117 @@ There is a risk of metadata desynchronization if snapshots and logs are missing 
 
 ---
 
-3. **Corrupted snapshot cleanup**
-
-
-
----
-
-4. **Manual metadata cleanup**
+### 3. Restore metadata using SYSTEM RESTORE REPLICA
 
 You should follow this process when:
-- You need to recover from stale or inconsistent metadata (e.g., Zookeeper paths for dropped tables remain visible).
-- You want to fix specific metadata inconsistencies rather than perform a full recovery.
 
-Follow the steps below to manually clean up metadata:
+- Keeper metadata is lost or corrupted but table data still exists on disk
+- Tables have switched to read-only mode due to missing ZooKeeper/Keeper metadata
+- You need to recreate metadata in Keeper based on locally available data parts
 
-1. Analyze logs and error messages to identify faulty paths (e.g., via `zookeepercli` or Keeper debug logs).
-2. Manually clean up paths using tools like `zkCli.sh delete /path/to/object`.
-3. Restart Keeper and validate operations.
+Follow the steps below to restore metadata:
 
-:::warning[Advanced knowledge required]
-This process requires advanced knowledge of metadata structure and coordination paths.
+1. Verify that table data exists locally in `/var/lib/clickhouse/data/` directories
+
+2. For each affected table, execute:
+```sql
+SYSTEM RESTART REPLICA [db.]table_name;
+SYSTEM RESTORE REPLICA [db.]table_name;
+   ```
+
+3. For database-level recovery (if using Replicated database engine):
+```sql
+SYSTEM RESTORE DATABASE REPLICA db_name;
+   ```
+
+4. Wait for synchronization to complete:
+```sql
+SYSTEM SYNC REPLICA [db.]table_name;
+   ```
+
+5. Verify recovery by checking `system.replicas` for `is_readonly = 0` and monitoring `system.detached_parts`
+
+:::info[How it works]
+`SYSTEM RESTORE REPLICA` detaches all existing parts, recreates metadata in Keeper (as if it's a new empty table), then reattaches all parts. This avoids re-downloading data over the network.
+:::
+
+:::warning[Prerequisites]
+This only works if local data parts are intact. If data is also corrupted, use strategy #5 (rebuild cluster) instead.
 :::
 
 ---
 
-5. **Rebuild Keeper cluster**
+### 4. Drop and recreate replica metadata in Keeper
 
 You should follow this process when:
+
+- A specific replica has corrupt or inconsistent metadata in Keeper
+- You encounter errors like "Part XXXXX intersects previous part YYYYY"
+- You need to completely reset a replica's Keeper metadata while preserving local data
+
+Follow the steps below to drop and recreate metadata:
+
+1. On the affected replica, detach the table:
+```sql
+DETACH TABLE [db.]table_name;
+   ```
+
+2. Remove the replica's metadata from Keeper (execute on any replica):
+```sql
+SYSTEM DROP REPLICA 'replica_name' FROM ZKPATH '/clickhouse/tables/{shard}/table_name';
+   ```
+
+To find the correct ZooKeeper path:
+```sql
+SELECT zookeeper_path, replica_name FROM system.replicas WHERE table = 'table_name';
+   ```
+
+3. Reattach the table (it will be in read-only mode):
+```sql
+ATTACH TABLE [db.]table_name;
+   ```
+
+4. Restore the replica metadata:
+```sql
+SYSTEM RESTORE REPLICA [db.]table_name;
+   ```
+
+5. Synchronize with other replicas:
+```sql
+SYSTEM SYNC REPLICA [db.]table_name;
+   ```
+
+6. Check `system.detached_parts` on all replicas after recovery
+
+:::warning[Execute on all affected replicas]
+If the corruption affects multiple replicas, repeat these steps on each one sequentially.
+:::
+
+:::tip[For entire database]
+If using a Replicated database, you can use `SYSTEM DROP REPLICA ... FROM DATABASE db_name` instead.
+:::
+
+**Alternative: Using force_restore_data flag**
+
+For automatic recovery of all replicated tables at server startup:
+
+1. Stop ClickHouse server
+2. Create the recovery flag:
+```bash
+sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data
+   ```
+3. Start ClickHouse server
+4. The server will automatically delete the flag and restore all replicated tables
+5. Monitor logs for recovery progress
+
+This approach is useful when multiple tables need recovery simultaneously.
+
+---
+
+### 5. Rebuild Keeper cluster
+
+You should follow this process when:
+
 - No valid snapshots, logs, or backups are available for recovery.
 - You need to recreate the entire Keeper cluster and its metadata.
 
@@ -146,4 +232,3 @@ Follow the steps below to rebuild the Keeper cluster:
 :::warning[Time-intensive process]
 This process is time-intensive and carries a risk of prolonged outage. Total data reconstruction is required.
 :::
-
