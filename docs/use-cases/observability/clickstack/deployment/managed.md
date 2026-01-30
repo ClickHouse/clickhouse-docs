@@ -21,14 +21,19 @@ import JSONSupport from '@site/docs/use-cases/observability/clickstack/deploymen
 import SetupManagedIngestion from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_setup_managed_ingestion.md';
 import StartManagedIngestion from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_start_managed_ingestion.md';
 import NavigateClickStackUI from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_navigate_managed.md';
+import ProviderSelection from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_select_provider.md';
+import UseCaseSelector from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_select_usecase.md';
+import new_service from '@site/static/images/clickstack/getting-started/new_service.png';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 <BetaBadge/>
 
 ::::note[Beta feature]
 This feature is in ClickHouse Cloud beta.
-
-If you're new to ClickHouse Cloud, we recommend our [Getting Started](/use-cases/observability/clickstack/getting-started/managed) guide for Managed ClickStack.
 ::::
+
+This **guide is for existing users of ClickHouse Cloud**. If you're new to ClickHouse Cloud, we recommend our [Getting Started](/use-cases/observability/clickstack/getting-started/managed) guide for Managed ClickStack.
 
 In this deployment pattern, both ClickHouse and the ClickStack UI (HyperDX) are hosted in ClickHouse Cloud, minimizing the number of components the user needs to self-host.
 
@@ -56,9 +61,12 @@ This deployment pattern is ideal in the following scenarios:
 
 The following guide assumes you have already created a ClickHouse Cloud service. If you haven't created a service, follow the [Getting Started](/use-cases/observability/clickstack/getting-started/managed) guide for Managed ClickStack. This will leave you with a service in the same state as this guide i.e. ready for observability data with ClickStack enabled.
 
+<Tabs groupId="service-create-select">
+<TabItem value="select" label="Use an existing service" default>
+
 <VerticalStepper headerLevel="h3">
 
-### Select Service {#select-service}
+### Select a service {#select-service}
 
 From the ClickHouse Cloud landing page, select the service for which you wish to enable managed ClickStack.
 
@@ -68,11 +76,11 @@ This guide assumes you have provisioned sufficient resources to handle the volum
 If your ClickHouse service already hosts existing workloads, such as real-time application analytics, we recommend creating a child service using [ClickHouse Cloud's warehouses feature](/cloud/reference/warehouses) to isolate the observability workload. This ensures your existing applications are not disrupted, while keeping the datasets accessible from both services.
 :::
 
-<Image img={select_service} alt="Select Service" size="md"/>
-
-### Setup ingestion {#setup-ingestion}
+<Image img={select_service} alt="Select service" size="md"/>
 
 Select 'ClickStack' from the left navigation menu.
+
+### Setup ingestion {#setup-ingestion}
 
 <SetupManagedIngestion/>
 
@@ -85,6 +93,42 @@ Select 'ClickStack' from the left navigation menu.
 <NavigateClickStackUI/>
 
 </VerticalStepper>
+
+</TabItem>
+<TabItem value="create" label="Create a new service" default>
+
+<VerticalStepper headerLevel="h3">
+
+### Create a new service {#create-a-service}
+
+From the ClickHouse Cloud landing page, select `New service` to create a new service.
+
+<Image img={new_service} size="md" alt='Service Service' border force/>
+
+### Select your usecase {#select-your-use-case}
+
+<UseCaseSelector/>
+
+### Specify your provider, region and data size {#specify-your-data-size}
+
+<ProviderSelection/>
+
+### Setup ingestion {#setup-ingestion}
+
+<SetupManagedIngestion/>
+
+### Start ingestion {#start-ingestion}
+
+<StartManagedIngestion/>
+
+### Navigate to the ClickStack UI {#navigate-to-clickstack-ui-cloud}
+
+<NavigateClickStackUI/>
+
+</VerticalStepper>
+
+</TabItem>
+</Tabs>
 
 ## Additional tasks {#additional-tasks}
 

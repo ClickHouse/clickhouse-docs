@@ -10,8 +10,8 @@ keywords: ['clickstack', 'observability', 'logs', 'monitoring', 'platform']
 ---
 
 import Image from '@theme/IdealImage';
-import oss_architecture from '@site/static/images/use-cases/observability/clickstack-oss-architecture.png';
-import managed_architecture from '@site/static/images/use-cases/observability/clickstack-managed-architecture.png';
+import oss_simple_architecture from '@site/static/images/use-cases/observability/clickstack-simple-oss-architecture.png';
+import managed_simple_architecture from '@site/static/images/use-cases/observability/clickstack-simple-managed-architecture.png';
 import landing_image from '@site/static/images/use-cases/observability/hyperdx-landing.png';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -91,7 +91,7 @@ The ClickStack architecture varies depending on how it is deployed. There are im
 <Tabs groupId="architectures">
 <TabItem value="managed-clickstack" label="Managed ClickStack" default>
 
-<Image img={managed_architecture} alt="Managed ClickStack architecture" size="md" force/>
+<Image img={managed_simple_architecture} alt="Managed ClickStack architecture" size="md" force/>
 
 Managed ClickStack runs entirely within **ClickHouse Cloud**, providing a fully managed observability backend while preserving the same ClickStack data model and user experience.
 
@@ -126,7 +126,7 @@ For users deploying ClickStack in production, Managed ClickStack is the recommen
 
 <TabItem value="oss-clickstack" label="Open Source ClickStack" default>
 
-<Image img={oss_architecture} alt="OSS Simple architecture" size="md" force/>
+<Image img={oss_simple_architecture} alt="OSS Simple architecture" size="md" force/>
 
 Open Source ClickStack consists of three core components:
 

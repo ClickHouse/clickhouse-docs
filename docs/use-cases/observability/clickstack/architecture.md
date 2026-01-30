@@ -9,7 +9,7 @@ keywords: ['ClickStack architecture', 'observability architecture', 'HyperDX', '
 ---
 
 import Image from '@theme/IdealImage';
-import architecture from '@site/static/images/use-cases/observability/clickstack-architecture.png';
+import oss_architecture from '@site/static/images/use-cases/observability/clickstack-oss-architecture.png';
 import managed_architecture from '@site/static/images/use-cases/observability/clickstack-managed-architecture.png';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -23,7 +23,7 @@ Managed ClickStack runs entirely within **ClickHouse Cloud**, providing a fully 
 
 In this model, **ClickHouse and the ClickStack UI (HyperDX)** are hosted, operated, and secured by ClickHouse Cloud. Users are responsible only for running an **OpenTelemetry (OTel) collector**to send telemetry data into the managed service.
 
-<Image img={managed_architecture} alt="Managed Architecture" size="lg" force/>
+<Image img={managed_architecture} alt="Managed Architecture" size="lg"/>
 
 ## ClickHouse Cloud: the engine {#clickhouse-cloud}
 
@@ -80,7 +80,7 @@ The ClickStack Open Source architecture is built around three core components: *
 
 ## Architecture overview {#architecture-overview}
 
-<Image img={architecture} alt="Architecture" size="lg" force/>
+<Image img={oss_architecture} alt="Architecture" size="lg" force/>
 
 ## ClickHouse: the database engine {#clickhouse}
 

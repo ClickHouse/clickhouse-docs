@@ -11,19 +11,15 @@ keywords: ['Managed ClickStack', 'getting started', 'ClickHouse Cloud']
 
 import Image from '@theme/IdealImage';
 import signup_page from '@site/static/images/clickstack/getting-started/signup_page.png';
-import use_case_selector from '@site/static/images/clickstack/getting-started/use_case_selector.png';
-import provider_selection from '@site/static/images/clickstack/getting-started/provider_selection.png';
-import advanced_resources from '@site/static/images/clickstack/getting-started/advanced_resources.png';
-import service_provisioned from '@site/static/images/clickstack/getting-started/service_provisioned.png';
 import select_source from '@site/static/images/clickstack/getting-started/select_source.png';
 import otel_collector_start from '@site/static/images/clickstack/getting-started/otel_collector_start.png';
 import advanced_otel_collector from '@site/static/images/clickstack/getting-started/otel_collector_start.png';
 import clickstack_managed_ui from '@site/static/images/clickstack/getting-started/clickstack_managed_ui.png';
 import BetaBadge from '@theme/badges/BetaBadge';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 import SetupManagedIngestion from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_setup_managed_ingestion.md';
 import StartManagedIngestion from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_start_managed_ingestion.md';
+import ProviderSelection from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_select_provider.md';
+import UseCaseSelector from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_select_usecase.md';
 import NavigateClickStackUI from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_navigate_managed.md';
 import service_connect from '@site/static/images/_snippets/service_connect.png';
 
@@ -54,29 +50,11 @@ To create a Managed ClickStack service in [ClickHouse Cloud](https://console.cli
 
 ## Select your usecase {#select-your-use-case}
 
-Select "Observability" when prompted to select your use case.
-
-<Image img={use_case_selector} size="md" alt='Signup cloud' border/>
+<UseCaseSelector/>
 
 ## Specify your provider, region and data size {#specify-your-data-size}
 
-Select your cloud provider, the region in which you wish to deploy, and the volume of data that you have per month via the 'Memory and Scaling' drop-down.
-
-This should be a rough estimate of the amount of data you have, either logs or traces, in an uncompressed form. 
-
-<Image img={use_case_selector} size="md" alt='Resource selector' border/>
-
-This estimate will be used to size the compute supporting your Managed ClickStack service. By default, new organizations are put on the [Scale tier](/cloud/manage/cloud-tiers). [Vertical autoscaling](/manage/scaling#vertical-auto-scaling) will be enabled by default in the Scale tier. You can change your organization tier later on the 'Plans' page.
-
-Advanced users with an understanding of their requirements can alternatively specify the exact resources provisionned, as well as any enterprise features, by selecting 'Custom Configuration' from the 'Memory and Scaling' dropdown.
-
-<Image img={advanced_resources} size="md" alt='Advanced resource selector' border/>
-
-Once you have specified the requirements, your Managed ClickStack service will take several minutes to provision. The completion of provisionning is indicated on the subsequent 'ClickStack' page. Feel free to explore the rest of the [ClickHouse Cloud console](/cloud/overview) whilst waiting for provisioning.
-
-<Image img={service_provisioned} size="md" alt='Service provisioned' border/>
-
-Once provisioning is complete, users can select 'Start Ingestion'.
+<ProviderSelection/>
 
 ## Setup ingestion {#setup-ingestion}
 
