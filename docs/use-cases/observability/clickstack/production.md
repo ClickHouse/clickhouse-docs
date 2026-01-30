@@ -53,6 +53,46 @@ Ensure the [Time To Live (TTL)](/use-cases/observability/clickstack/ttl) has bee
 
 ## Estimating Resources {#estimating-resources}
 
+When deploying **Managed ClickStack**, it is important to provision sufficient compute resources to handle both ingestion and query workloads. The estimates below provide a **baseline starting point** based on the volume of observability data you plan to ingest.
+
+These recommendations are based on the following assumptions:
+
+- Data volume refers to **uncompressed ingest volume** per month and applies to both logs and traces.
+- Query patterns are typical for observability use cases, with most queries targeting **recent data**, usually the last 24 hours.
+- Ingestion is relatively **uniform across the month**. If you expect bursty traffic or spikes, you should provision additional headroom.
+- Storage is handled separately via ClickHouse Cloud object storage and is not a limiting factor for retention. We assume data retained for longer periods is infrequently accessed.
+
+More compute may be required for access patterns that regularly query longer time ranges, perform heavy aggregations, or support a high number of concurrent users.
+
+### Recommended baseline sizing {#recommended-sizing}
+
+| Monthly ingest volume | Recommended compute |
+|-----------------------|---------------------|
+| < 10 TB / month       | 2 vCPU × 3 replicas |
+| 10–50 TB / month      | 4 vCPU × 3 replicas |
+| 50–100 TB / month     | 8 vCPU × 3 replicas |
+| 100–500 TB / month   | 30 vCPU × 3 replicas |
+| 1 PB+ / month        | 59 vCPU × 3 replicas |
+
+:::note
+These values are **estimates only** and should be used as an initial baseline. Actual requirements depend on query complexity, concurrency, retention policies, and ingestion burstiness. Always monitor resource usage and scale as needed.
+:::
+
+### Isolating observability workloads
+
+If you are adding ClickStack to an **existing ClickHouse Cloud service** that already supports other workloads, such as real-time application analytics, we strongly recommend isolating observability traffic.
+
+Use [**Managed Warehouses**](/cloud/reference/warehouses) to create a **child service** dedicated to ClickStack. This allows you to:
+
+- Isolate ingest and query load from existing applications
+- Scale observability workloads independently
+- Prevent observability queries from impacting production analytics
+- Share the same underlying datasets across services when needed
+
+This approach ensures your existing workloads remain unaffected while allowing ClickStack to scale independently as observability data grows.
+
+For larger deployments or custom sizing guidance, please contact support for a more precise estimate.
+
 </TabItem>
 
 <TabItem value="oss-clickstack" label="ClickStack Open Source">
