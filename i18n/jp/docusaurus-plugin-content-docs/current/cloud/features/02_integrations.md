@@ -51,8 +51,6 @@ ClickPipes は、長期的なストリーミング用途にも、単発のデー
 | [MySQL](/integrations/clickpipes/mysql)            | <Mysqlsvg class="image" alt="MySQL ロゴ" style={{width: '3rem', height: 'auto'}}/>               |DBMS| プライベートベータ版 | ClickPipes を構成し、MySQL から ClickHouse Cloud へデータの取り込みを開始します。                      |
 | [MongoDB](/integrations/clickpipes/mongodb)        | <Mongodbsvg class="image" alt="MongoDB ロゴ" style={{width: '3rem', height: 'auto'}}/>           |DBMS| プライベートプレビュー版 | ClickPipes を構成し、MongoDB から ClickHouse Cloud へデータの取り込みを開始します。                   |
 
-
-
 ## 言語クライアント連携 \{#language-client-integrations\}
 
 ClickHouse には複数の言語クライアント連携が用意されており、それぞれのドキュメントへのリンクは以下のとおりです。

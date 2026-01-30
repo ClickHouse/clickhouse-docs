@@ -25,6 +25,7 @@ OPTIMIZE TABLE <table> FINAL;
 первичном ключе.
 :::
 
+
 ## Почему этого следует избегать?  \{#why-avoid\}
 
 ### Это дорого по ресурсам \{#its-expensive\}

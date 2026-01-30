@@ -154,7 +154,7 @@ import image3 from '@site/static/images/integrations/data-ingestion/etl-tools/im
 
 Просто выберите вариант «Don’t backfill» на данном этапе, если у вас нет какой‑то конкретной потребности.
 
-## Стриминг в действии: чего ожидать  \{#streaming-in-action-what-to-expect\}
+## Стриминг в действии: чего ожидать \{#streaming-in-action-what-to-expect\}
 
 Теперь ваш конвейер данных настроен и работает!
 

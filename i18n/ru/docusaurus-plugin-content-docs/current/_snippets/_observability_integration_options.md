@@ -2,8 +2,6 @@ import Image from '@theme/IdealImage';
 import AdvancedDashboard from '@site/static/images/cloud/manage/monitoring/advanced_dashboard.png';
 import NativeAdvancedDashboard from '@site/static/images/cloud/manage/monitoring/native_advanced_dashboard.png';
 
-
-
 ## Примеры интеграции \{#examples\}
 
 Внешняя интеграция позволяет организациям сохранять сложившиеся процессы мониторинга, использовать накопленную экспертизу команд с привычными инструментами и интегрировать мониторинг ClickHouse с общей наблюдаемостью за инфраструктурой без нарушения текущих процессов и необходимости значительных затрат на переобучение.
@@ -14,6 +12,7 @@ import NativeAdvancedDashboard from '@site/static/images/cloud/manage/monitoring
 Grafana обеспечивает мониторинг ClickHouse как через прямую интеграцию с помощью плагина, так и на основе подходов с использованием Prometheus. Интеграция через Prometheus-эндпоинт поддерживает операционное разделение между системами мониторинга и производственными нагрузками, одновременно позволяя визуализировать данные в существующей инфраструктуре Grafana Cloud. См. [документацию Grafana по ClickHouse](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-clickhouse/) для получения рекомендаций по настройке.
 
 ### Мониторинг в Datadog \{#datadog\}
+
 Datadog разрабатывает специальную интеграцию через API, которая обеспечит корректный мониторинг облачных сервисов с учетом поведения простаивающих сервисов. Пока она находится в разработке, команды могут использовать подход интеграции OpenMetrics через Prometheus-эндпоинты ClickHouse для операционного разделения и экономичного мониторинга. Рекомендации по настройке см. в [документации Datadog по интеграции Prometheus и OpenMetrics](https://docs.datadoghq.com/integrations/openmetrics/).
 
 ### ClickStack \{#clickstack\}

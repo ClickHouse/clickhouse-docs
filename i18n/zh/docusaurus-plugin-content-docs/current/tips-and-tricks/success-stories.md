@@ -21,16 +21,12 @@ title: '经验总结 - 创新用例'
 description: '查找 ClickHouse 中最常见问题的解决方案，包括慢查询、内存错误、连接问题和配置问题。'
 ---
 
-
-
 # 成功案例 \{#breaking-the-rules\}
 
 *本指南是社区交流活动中汇总实践经验的一部分。若想获取更多真实场景下的解决方案与洞见，你可以[按具体问题浏览](./community-wisdom.md)。*
 *需要一些在生产环境中调试问题的技巧？请查看社区指南：[Debugging Insights](./debugging-insights.md)。*
 
 这些案例展示了各家公司如何在自身场景中通过使用 ClickHouse 获得成功，有的甚至挑战了传统的数据库分类方式，证明有时看似“错误”的工具，反而会成为最合适的解决方案。
-
-
 
 ## 将 ClickHouse 用作限流器 \{#clickhouse-rate-limiter\}
 
@@ -43,8 +39,6 @@ description: '查找 ClickHouse 中最常见问题的解决方案，包括慢查
 - 内置 TTL 实现自动清理，消除了维护开销
 - SQL 的灵活性支持超出简单计数器的复杂限流规则
 - 复用现有数据管道，无需额外建设独立基础设施
-
-
 
 ## 用于客户分析的 ClickHouse \{#customer-analytics\}
 
@@ -59,8 +53,6 @@ description: '查找 ClickHouse 中最常见问题的解决方案，包括慢查
 - 复杂的客户旅程分析成为可能
 - 客户可以自行创建细分并自由切分数据  
 - 新分析需求不再形成工程瓶颈
-
-
 
 ## 视频资源 \{#video-sources\}
 

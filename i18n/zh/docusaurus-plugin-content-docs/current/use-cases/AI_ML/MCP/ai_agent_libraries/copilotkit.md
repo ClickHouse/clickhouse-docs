@@ -57,6 +57,7 @@ uv sync
 uv add fastmcp
 ```
 
+
 ## 配置应用程序 \{#configure-the-application\}
 
 将 `env.example` 文件复制到 `.env`，并在其中填入您的 `ANTHROPIC_API_KEY`。

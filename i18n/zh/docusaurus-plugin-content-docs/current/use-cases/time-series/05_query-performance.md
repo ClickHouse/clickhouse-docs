@@ -11,7 +11,7 @@ doc_type: 'guide'
 # 时序查询性能 \{#time-series-query-performance\}
 
 在完成存储优化之后，下一步是提升查询性能。
-本节将探讨两项关键技术：优化 `ORDER BY` 排序键以及使用物化视图。
+本节将探讨两项关键技术：优化 `ORDER BY` 排序键以及使用 materialized view。
 我们将看到，这些方法如何把查询时间从秒级降低到毫秒级。
 
 ## 优化 `ORDER BY` 键 \{#time-series-optimize-order-by\}
@@ -139,8 +139,8 @@ LIMIT 10
 │ 2015_Nepal_earthquake │  1406422 │
 └───────────────────────┴──────────┘
 
-结果集包含 10 行。耗时：2.285 秒。处理了 2.3141 亿行，9.22 GB（每秒 1.0126 亿行，4.03 GB/秒）。
-峰值内存使用：1.50 GiB。
+10 rows in set. Elapsed: 2.285 sec. Processed 231.41 million rows, 9.22 GB (101.26 million rows/s., 4.03 GB/s.)
+Peak memory usage: 1.50 GiB.
 ```
 
 ### 创建物化视图 \{#time-series-create-materialized-view\}
@@ -236,7 +236,7 @@ DROP VIEW wikistat_backfill_top_mv;
 DROP TABLE wikistat_backfill;
 ```
 
-现在可以查询物化视图，而无需再查询原始表：
+现在我们可以查询 materialized view，而不是原始表：
 
 ```sql
 SELECT path, sum(hits) AS hits
@@ -261,8 +261,8 @@ LIMIT 10;
 │ 2015_Nepal_earthquake │   726327 │
 └───────────────────────┴──────────┘
 
-共 10 行。用时:0.004 秒。
+10 rows in set. Elapsed: 0.004 sec.
 ```
 
-这里的性能提升非常显著。
-此前执行这个查询得出结果需要 2 秒多一点，而现在只需 4 毫秒。
+在这里，我们的性能提升非常显著。
+之前计算该查询结果需要 2 秒多一点，而现在只需 4 毫秒。

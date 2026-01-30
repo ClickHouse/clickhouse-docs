@@ -858,7 +858,7 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 
 ---
 
-#### 不支持写入  \{#type-map-writing-not-supported\}
+#### 不支持写入 \{#type-map-writing-not-supported\}
 
 | ClickHouse 类型 | 说明 |
 |-----------------|-------|

@@ -471,9 +471,13 @@ Peak memory usage: 639.47 MiB.
 在上述场景中，有多个因素会影响性能和资源使用情况。在尝试调优之前，建议先理解《[Optimizing for S3 Insert and Read Performance](/integrations/s3/performance)》指南中 [Using Threads for Reads](/integrations/s3/performance#using-threads-for-reads) 一节所详细说明的写入机制。总结如下：
 
 * **读取并行度（Read Parallelism）** - 用于读取的线程数，通过 [`max_threads`](/operations/settings/settings#max_threads) 控制。在 ClickHouse Cloud 中，该值由实例规格决定，默认等于 vCPU 数量。增大该值可能提升读取性能，但会增加内存占用。
-* **写入并行度（Insert Parallelism）** - 用于执行写入的线程数，通过 [`max_insert_threads`](/operations/settings/settings#max_insert_threads) 控制。在 ClickHouse Cloud 中，该值由实例规格决定（介于 2 到 4 之间），在 OSS 中默认为 1。增大该值可能提升写入性能，但会增加内存占用。
+* **写入并行度（Insert Parallelism）** - 用于执行写入的线程数，通过 [`max_insert_threads`](/operations/settings/settings#max_insert_threads) 控制。**注意**：该值受 `max_threads` 限制，因此实际有效的写入并行度为 `min(max_insert_threads, max_threads)`。在 ClickHouse Cloud 中，该值由实例规格决定（介于 2 到 4 之间），在 OSS 中默认为 1。增大该值可能提升写入性能，但会增加内存占用。
 * **写入块大小（Insert Block Size）** - 数据在一个循环中被处理：从源拉取、解析，并根据[分区键](/engines/table-engines/mergetree-family/custom-partitioning-key) 组装成内存中的写入块。这些块随后会被排序、优化、压缩，并作为新的[数据 part](/parts) 写入存储。写入块的大小由 [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows) 和 [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes)（未压缩）设置控制，会影响内存使用和磁盘 I/O。更大的块会占用更多内存，但会生成更少的 part，从而减少 I/O 和后台合并。这些设置表示最小阈值（先达到的阈值会触发一次刷新（flush））。
 * **物化视图块大小（Materialized view block size）** - 除了上述针对主表写入的机制外，在写入物化视图之前，数据块同样会被压缩合并（squash），以实现更高效的处理。这些块的大小由 [`min_insert_block_size_bytes_for_materialized_views`](/operations/settings/settings#min_insert_block_size_bytes_for_materialized_views) 和 [`min_insert_block_size_rows_for_materialized_views`](/operations/settings/settings#min_insert_block_size_rows_for_materialized_views) 设置决定。更大的块可以更高效地处理数据，但会增加内存占用。默认情况下，这些设置会分别回退到源表设置 [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows) 和 [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes) 的值。
+
+:::note
+**针对简单 INSERT SELECT 查询的提示**：对于不包含复杂转换的简单 `INSERT INTO t1 SELECT * FROM t2` 查询，可以考虑启用 `optimize_trivial_insert_select=1`。该设置（自 24.7 版本起默认禁用）会自动将 SELECT 的并行度调整为与 `max_insert_threads` 一致，从而降低资源使用并减少创建的分区片段数量。这对于在表之间执行大量数据迁移尤其有用。
+:::
 
 为了提升性能，你可以参考《[Optimizing for S3 Insert and Read Performance](/integrations/s3/performance)》指南中 [Tuning Threads and Block Size for Inserts](/integrations/s3/performance#tuning-threads-and-block-size-for-inserts) 一节的指导。在大多数情况下，无需另外修改 `min_insert_block_size_bytes_for_materialized_views` 和 `min_insert_block_size_rows_for_materialized_views` 也能获得性能提升。如果确实需要修改它们，请遵循对 `min_insert_block_size_rows` 和 `min_insert_block_size_bytes` 所讨论的相同最佳实践。
 
@@ -496,6 +500,7 @@ Peak memory usage: 506.78 MiB.
 
 通过将 `max_threads` 设置为 1，我们可以进一步降低内存占用。
 
+
 ```sql
 INSERT INTO pypi_v2
 SELECT timestamp, project
@@ -509,8 +514,7 @@ Ok.
 Peak memory usage: 272.53 MiB.
 ```
 
-最后，我们还可以通过将 `min_insert_block_size_rows` 设置为 0（使其不再作为确定块大小的依据）以及将 `min_insert_block_size_bytes` 设置为 10485760（10MiB）来进一步降低内存占用。
-
+最后，我们可以通过将 `min_insert_block_size_rows` 设置为 0（禁用其作为决定块大小的因素）以及将 `min_insert_block_size_bytes` 设置为 10485760（10MiB）来进一步减少内存占用。
 
 ```sql
 INSERT INTO pypi_v2
