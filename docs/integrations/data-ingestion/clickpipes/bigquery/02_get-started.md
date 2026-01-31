@@ -19,7 +19,7 @@ import Image from '@theme/IdealImage';
 
 <IntroClickPipe/>
 
-## Pre-requisites
+## Pre-requisites {#pre-requisites}
 
 * You must have privileges to manage [service accounts](https://docs.cloud.google.com/iam/docs/service-account-overview) and [IAM roles](https://docs.cloud.google.com/iam/docs/roles-overview) in your GCP project, or get assistance from an administrator. We recommend creating a dedicated service account with the minimum required set of [permissions](./01_overview.md#permissions) following the [official documentation](https://docs.cloud.google.com/iam/docs/service-accounts-create).
 
@@ -63,7 +63,7 @@ Depending on the size of your BigQuery dataset, or the total size of the tables 
 
     <Image img={cp_step3} alt="Permissions" size="lg" border/>
 
-**3.** For each selected table, make sure to define a custom sorting key under **Advanced settings** > **Use a custom sorting key**. In the future, the sorting key will be automatically inferred based on existing clustering or partitioning keys in the usptream database.
+**3.** For each selected table, make sure to define a custom sorting key under **Advanced settings** > **Use a custom sorting key**. In the future, the sorting key will be automatically inferred based on existing clustering or partitioning keys in the upstream database.
 
     :::warning
     You **must** define a [sorting key](../../../../best-practices/choosing_a_primary_key.md) for the replicated tables in order to optimize query performance in ClickHouse. Otherwise, the sorting key will be set as `tuple()`, which means no primary index will be created and ClickHouse will perform full table scans for all queries on the table.
@@ -83,6 +83,6 @@ Finally, you can configure permissions for the internal ClickPipes user.
 
 Click **Create ClickPipe** to complete the setup. You'll be redirected to the overview page, where you can the progress of the initial load and click through to see the details for your BigQuery ClickPipes.
 
-<Image img={cp_step4} alt="Permissions" size="lg" border/>
+<Image img={cp_step5} alt="Permissions" size="lg" border/>
 
 </VerticalStepper>

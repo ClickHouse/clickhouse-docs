@@ -27,7 +27,7 @@ ClickPipes relies on batch extract jobs to fetch data from BigQuery into the sta
 
 CDC is **not supported** in Private Preview, but will be supported in the future. In the meantime, we recommend using the [Google Cloud Storage ClickPipe](../object-storage/google-cloud-storage/01_overview.md) to continuously sync BigQuery data exports into ClickHouse Cloud once the initial load is completed.
 
-## Data type mapping
+## Data type mapping {#data-type-mapping}
 
 [BigQuery data types](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/data-types).
 
@@ -73,7 +73,7 @@ The service account must have the following BigQuery roles:
 
 To further scope access, we recommend using [IAM conditions](https://docs.cloud.google.com/bigquery/docs/conditions) to restrict the resources the role has access to. For example, you can restrict the `dataViewer` role to the specific dataset containing the tables you want to sync:
 
-```
+```bash
 resource.name.startsWith("projects/<PROJECT_ID>/datasets/<DATASET_NAME>")
 ```
 
@@ -86,7 +86,6 @@ The service account must have the following Cloud Storage roles:
 
 To further scope access, we recommend using [IAM conditions](https://docs.cloud.google.com/bigquery/docs/conditions) to restrict the resources the role has access to. For example, you can restrict the `objectAdmin` and `bucketViewer` roles to the dedicated bucket created for ClickPipes syncs.
 
-```
+```bash
 resource.name.startsWith("projects/_/buckets/<BUCKET_NAME>")
 ```
-
