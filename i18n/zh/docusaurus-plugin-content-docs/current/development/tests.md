@@ -151,7 +151,8 @@ SELECT 1
 | `no-ordinary-database`            |                                                            |                                         |
 | `no-parallel`                     | 禁止与其他测试并行运行                                                | 测试从 `system` 表读取数据，可能破坏不变式              |
 | `no-parallel-replicas`            |                                                            |                                         |
-| `no-debug`                        |                                                            |                                         |
+| `no-debug`                        | 在 Debug 构建中禁用该测试                                           |                                         |
+| `no-release`                      | 在 Release 构建中禁用该测试                                         |                                         |
 | `no-stress`                       |                                                            |                                         |
 | `no-polymorphic-parts`            |                                                            |                                         |
 | `no-random-settings`              |                                                            |                                         |
