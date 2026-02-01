@@ -7735,10 +7735,10 @@ file-loader@^6.2.0:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-filesize@^10.1.6:
-  version "10.1.6"
-  resolved "https://registry.yarnpkg.com/filesize/-/filesize-10.1.6.tgz#31194da825ac58689c0bce3948f33ce83aabd361"
-  integrity sha512-sJslQKU2uM33qH5nqewAwVB2QgR6w1aMNsYUp3aN5rMRyXEwJGmZvaWzeJFNTOXWlHQyBFCWrdj3fV/fsTOX8w==
+filesize@^11.0.13:
+  version "11.0.13"
+  resolved "https://registry.yarnpkg.com/filesize/-/filesize-11.0.13.tgz#8e61c5c4e8d7463c71d573c4f8051fb1ba4ff883"
+  integrity sha512-mYJ/qXKvREuO0uH8LTQJ6v7GsUvVOguqxg2VTwQUkyTPXXRRWPdjuUPVqdBrJQhvci48OHlNGRnux+Slr2Rnvw==
 
 filesize@^8.0.6:
   version "8.0.7"
