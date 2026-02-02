@@ -26,6 +26,7 @@ ClickStack предоставляет несколько способов при
 | [MySQL Logs](/use-cases/observability/clickstack/integrations/mysql-logs) | Сбор логов медленных запросов и ошибок MySQL |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Сбор логов доступа и ошибок Nginx |
 | [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Трейсинг HTTP‑запросов Nginx |
+| [Node.js Traces](/use-cases/observability/clickstack/integrations/nodejs-traces) | Трейсинг HTTP‑запросов Node.js |
 | [PostgreSQL Logs](/use-cases/observability/clickstack/integrations/postgresql-logs) | Сбор логов Postgres |
 | [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | Мониторинг производительности Postgres |
 | [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Сбор логов сервера Redis |
