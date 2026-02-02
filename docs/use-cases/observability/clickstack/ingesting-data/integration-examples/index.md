@@ -28,6 +28,7 @@ For production deployments, we recommend running integrations as OpenTelemetry C
 | [MySQL Logs](/use-cases/observability/clickstack/integrations/mysql-logs) | Collect MySQL slow query/error logs |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Collect Nginx access/error logs |
 | [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Trace Nginx HTTP requests |
+| [Node.js Traces](/use-cases/observability/clickstack/integrations/nodejs-traces) | Trace Node.js HTTP requests |
 | [PostgreSQL Logs](/use-cases/observability/clickstack/integrations/postgresql-logs) | Collect Postgres logs |
 | [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | Monitor Postgres performance |
 | [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Collect Redis server logs |

@@ -27,7 +27,7 @@ import Image from '@theme/IdealImage';
 
 # Integrating Amazon Kinesis with ClickHouse Cloud
 ## Prerequisite {#prerequisite}
-You have familiarized yourself with the [ClickPipes intro](./index.md) and setup [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) or an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). Follow the [Kinesis Role-Based Access guide](./secure-kinesis.md) for information on how to setup a role that works with ClickHouse Cloud.
+You have familiarized yourself with the [ClickPipes intro](../index.md) and setup [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) or an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). Follow the [Kinesis Role-Based Access guide](./02_auth.md) for information on how to setup a role that works with ClickHouse Cloud.
 
 ## Creating your first ClickPipe {#creating-your-first-clickpipe}
 
@@ -158,6 +158,16 @@ Latency (defined as the time between the Kinesis message being sent to the strea
 
 If you have specific low-latency requirements, please [contact us](https://clickhouse.com/company/contact?loc=clickpipes).
 
+### Active Shards {#active-shards}
+
+We strongly recommend limiting the number concurrently active shards to match your throughput requirements.  For an "On Demand" Kinesis stream, AWS will automatically assign a matching number of shards based on throughput,
+but for "Provisioned" streams, provisioning too many shards can cause latency as described below, plus have increased costs because Kinesis pricing for such streams is on a "per shard" basis.
+
+If your producer application writes continuously to a large number of active shards, this can cause latency if your pipe is not scaled high enough to efficiently process those shards.  Based on Kinesis throughput limits,
+ClickPipes assigns a specific number of "workers" per replica to read shard data.  For example, at the smallest size, a ClickPipes replica will have 4 of these worker threads.  If the producer is writing
+to more than 4 shards at the same time, data will not be processed from the "extra" shards until a worker thread is available.  In particular, if the pipe is using "enhanced fanout", each worker thread will subscribe to a
+single shard for 5 minutes, and is unavailable to read any other shard during that time.  This can cause latency "spikes" of 5 minute multiples.
+
 ### Scaling {#scaling}
 
 ClickPipes for Kinesis is designed to scale both horizontally and vertically. By default, we create a consumer group with one consumer. This can be configured during ClickPipe creation, or at any other point under **Settings** -> **Advanced Settings** -> **Scaling**.
@@ -171,4 +181,4 @@ the ClickPipe will automatically restart the consumer and continue processing me
 
 ## Authentication {#authentication}
 
-To access Amazon Kinesis streams, you can use [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) or an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). For more details on how to setup an IAM role, you can [refer to this guide](./secure-kinesis.md) for information on how to setup a role that works with ClickHouse Cloud
+To access Amazon Kinesis streams, you can use [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) or an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). For more details on how to setup an IAM role, you can [refer to this guide](./02_auth.md) for information on how to setup a role that works with ClickHouse Cloud

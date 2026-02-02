@@ -23,6 +23,7 @@ doc_type: 'reference'
 | [TTL](/sql-reference/statements/alter/ttl.md)                               |
 | [STATISTICS](/sql-reference/statements/alter/statistics.md)                 |
 | [APPLY DELETED MASK](/sql-reference/statements/alter/apply-deleted-mask.md) |
+| [APPLY PATCHES](/sql-reference/statements/alter/apply-patches.md)           |
 
 :::note
 ほとんどの `ALTER TABLE` クエリは、[\*MergeTree](/engines/table-engines/mergetree-family/index.md)、[Merge](/engines/table-engines/special/merge.md)、および [Distributed](/engines/table-engines/special/distributed.md) テーブルに対してのみサポートされています。
@@ -66,7 +67,7 @@ doc_type: 'reference'
 
 非レプリケートテーブルに対しては、すべての `ALTER` クエリは同期的に実行されます。レプリケートテーブルに対しては、クエリは該当するアクションの指示を `ZooKeeper` に追加するだけで、アクション自体は可能な限り早く実行されます。ただし、クエリ側で、これらのアクションがすべてのレプリカで完了するまで待機させることも可能です。
 
-ミューテーションを生成する `ALTER` クエリ（例：`UPDATE`、`DELETE`、`MATERIALIZE INDEX`、`MATERIALIZE PROJECTION`、`MATERIALIZE COLUMN`、`APPLY DELETED MASK`、`CLEAR STATISTIC`、`MATERIALIZE STATISTIC` など、これらに限定されない）については、その同期動作は [mutations_sync](/operations/settings/settings.md/#mutations_sync) 設定によって定義されます。
+ミューテーションを生成する `ALTER` クエリ（例：`UPDATE`、`DELETE`、`MATERIALIZE INDEX`、`MATERIALIZE PROJECTION`、`MATERIALIZE COLUMN`、`APPLY DELETED MASK`、`APPLY PATCHES`、`CLEAR STATISTIC`、`MATERIALIZE STATISTIC` など、これらに限定されない）については、その同期動作は [mutations_sync](/operations/settings/settings.md/#mutations_sync) 設定によって定義されます。
 
 メタデータのみを変更するその他の `ALTER` クエリについては、[alter_sync](/operations/settings/settings#alter_sync) 設定を使用して待機動作を設定できます。
 

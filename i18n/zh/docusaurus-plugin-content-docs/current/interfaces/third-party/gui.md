@@ -183,7 +183,7 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 
 ### clickhouse-plantuml \{#clickhouse-plantuml\}
 
-[cickhouse-plantuml](https://pypi.org/project/clickhouse-plantuml/) 是一个用于生成表结构 [PlantUML](https://plantuml.com/) 图的脚本。
+[cickhouse-plantuml](https://pypi.org/project/clickhouse-plantuml/) 是一个用于生成表结构的 [PlantUML](https://plantuml.com/) 图的脚本。
 
 ### ClickHouse table graph \{#clickhouse-table-graph\}
 
@@ -319,6 +319,19 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 
 [Telescope 源码](https://github.com/iamtelescope/telescope) · [在线演示](https://demo.iamtelescope.net)
 
+### ClickLens \{#clicklens\}
+
+[ClickLens](https://ntk148v.github.io/clicklens/) 是一个现代、强大且用户友好的 Web 界面，用于管理和监控 ClickHouse 数据库。它为开发人员、分析师和管理员提供了一套完整的工具，以高效地与 ClickHouse 集群交互。ClickHouse 是一个出色的分析型数据库，但仅通过 CLI 或基础工具进行管理可能较为困难。ClickLens 通过提供以下功能来弥合这一差距：
+
+- Discover - 针对任意表的灵活数据探索体验，类似 Kibana
+- SQL Console - 编写、执行和分析查询，支持语法高亮和流式结果
+- Real-time Monitoring - 实时监控集群健康状况、查询性能以及资源使用情况
+- Schema Explorer - 浏览数据库、表、列、分区片段等对象
+- Access Control - 直接在 UI 中管理用户和角色
+- Native RBAC - UI 权限直接来源于 ClickHouse 授权
+
+[ClickLens 源码](https://github.com/ntk148v/clicklens)
+
 ## 商业版 \{#commercial\}
 
 ### DataGrip \{#datagrip\}
@@ -396,7 +409,7 @@ SeekTable 对于个人/个体使用是[免费的](https://www.seektable.com/help
 
 ### TABLUM.IO \{#tablum_io\}
 
-[TABLUM.IO](https://tablum.io/) 是一款用于 ETL 和可视化的在线查询与分析工具。它支持连接 ClickHouse，可通过通用的 SQL 控制台查询数据，也可以从静态文件和第三方服务加载数据。TABLUM.IO 可以将查询结果可视化为图表和表格。
+[TABLUM.IO](https://tablum.io/) —— 一款用于 ETL 和可视化的在线查询与分析工具。它支持连接 ClickHouse，通过功能强大的 SQL 控制台查询数据，并从静态文件和第三方服务加载数据。TABLUM.IO 可以将查询结果以图表和表格的形式进行可视化展示。
 
 功能：
 - ETL：从常见数据库、本地和远程文件以及 API 调用中加载数据。

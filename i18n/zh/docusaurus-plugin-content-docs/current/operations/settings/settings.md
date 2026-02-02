@@ -2261,6 +2261,20 @@ SETTINGS convert_query_to_cnf = true;
 
 - [IN 运算符中的 NULL 处理](/guides/developer/deduplicating-inserts-on-retries#insert-deduplication-with-materialized-views)
 
+## deduplicate_insert \{#deduplicate_insert\}
+
+<SettingsInfoBlock type="DeduplicateInsertMode" default_value="backward_compatible_choice" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "用于控制 INSERT 查询去重行为的新设置。"}]}]}/>
+
+启用或禁用 `INSERT INTO` 的块级去重（适用于 Replicated\* 表）。
+该设置会覆盖 `insert_deduplicate` 和 `async_insert_deduplicate` 两个设置。
+该设置支持以下三个取值：
+
+- disable — 对 `INSERT INTO` 查询禁用去重。
+- enable — 对 `INSERT INTO` 查询启用去重。
+- backward_compatible_choice — 如果针对特定插入类型启用了 `insert_deduplicate` 或 `async_insert_deduplicate`，则启用去重。
+
 ## deduplicate_insert_select \{#deduplicate_insert_select\}
 
 <SettingsInfoBlock type="DeduplicateInsertSelectMode" default_value="enable_when_possible" />
@@ -2268,7 +2282,7 @@ SETTINGS convert_query_to_cnf = true;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "change the default behavior of deduplicate_insert_select to ENABLE_WHEN_POSSIBLE"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "New setting, replace insert_select_deduplicate"}]}]}/>
 
 启用或禁用 `INSERT SELECT` 的块去重（适用于 Replicated\* 表）。
-该设置会覆盖 `INSERT SELECT` 查询中 `insert_deduplicate` 的行为。
+该设置会覆盖 `INSERT SELECT` 查询中 `insert_deduplicate` 和 `deduplicate_insert` 的行为。
 该设置有四种可能取值：
 
 - disable — 对 `INSERT SELECT` 查询禁用去重。
@@ -8798,6 +8812,16 @@ FROM fuse_tbl
 
 注意：此设置不会在查询处理期间额外过滤任何数据，而是改变范围过滤器将范围 `[0, INT_MAX]` 拆分为并行处理子范围的切分点。
 
+## parallel_replicas_filter_pushdown \{#parallel_replicas_filter_pushdown\}
+
+<BetaBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+允许将过滤条件下推到查询中由并行副本选择执行的部分
+
 ## parallel_replicas_for_cluster_engines \{#parallel_replicas_for_cluster_engines\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9336,21 +9360,6 @@ a   Tuple(
 可能的取值：
 
 - 大于等于 0 的正整数。
-
-## query_condition_cache_store_conditions_as_plaintext \{#query_condition_cache_store_conditions_as_plaintext\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "0"},{"label": "新设置"}]}]}/>
-
-以明文形式存储 [query condition cache](/operations/query-condition-cache) 的过滤条件。
-如果启用，system.query_condition_cache 会显示原始的过滤条件，从而便于调试缓存相关的问题。
-默认禁用，因为明文过滤条件可能暴露敏感信息。
-
-可能的取值：
-
-- 0 - 禁用
-- 1 - 启用
 
 ## query_metric_log_interval \{#query_metric_log_interval\}
 

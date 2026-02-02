@@ -6,13 +6,9 @@ keywords: ['marketplace', '计费', 'PAYG', 'pay-as-you-go', '承诺消费合同
 doc_type: 'guide'
 ---
 
-
-
 # 将按需付费 (PAYG) 计费迁移为云市场中的承诺消费合约 \{#migrate-payg-to-committed\}
 
 如果您的 ClickHouse 组织当前是通过云市场中的有效按需付费 (PAYG) 订阅（或订单）进行计费，并且希望在同一云市场中改为通过承诺消费合约进行计费，请先接受您的新报价，然后根据您的云服务提供商，按照下面的步骤进行操作。
-
-
 
 ## 重要说明 \{#important-notes\}
 
@@ -25,8 +21,6 @@ doc_type: 'guide'
 在订阅取消之后产生的任何使用量，将计入下一个已配置的有效支付方式——按预付额度、云市场订阅、信用卡的顺序依次扣费。
 
 如果您在为组织配置新的云市场订阅时有任何疑问或需要支持，请联系 ClickHouse [支持](https://clickhouse.com/support/program)获取帮助。
-
-
 
 ## AWS Marketplace \{#aws-marketplace\}
 
@@ -50,8 +44,6 @@ doc_type: 'guide'
 
 接下来，请按照这些[步骤](/cloud/billing/marketplace/aws-marketplace-committed-contract)，将你的 ClickHouse 组织配置为你已接受的新 AWS 承诺消费合约。
 
-
-
 ## GCP Marketplace \{#gcp-marketplace\}
 
 ### 取消 GCP 按需付费 (PAYG) 订单的步骤 \{#cancel-gcp-payg\}
@@ -68,8 +60,6 @@ doc_type: 'guide'
 
 接下来按照这些[步骤](/cloud/billing/marketplace/gcp-marketplace-committed-contract)，将你的 ClickHouse 组织配置到新的 GCP 承诺支出合约下。
 
-
-
 ## Azure Marketplace \{#azure-marketplace\}
 
 ### 取消 Azure 按需付费 (PAYG) 订阅的步骤 \{#cancel-azure-payg\}
@@ -84,8 +74,6 @@ doc_type: 'guide'
 > **注意：** 如需协助取消此订单，请在 Azure 门户中提交支持工单。
 
 接下来，请按照这些[步骤](/cloud/billing/marketplace/azure-marketplace-committed-contract)将您的 ClickHouse 组织配置到新的 Azure 承诺消费合约。
-
-
 
 ## 将组织关联至承诺消费合同时的要求 \{#linking-requirements\}
 

@@ -258,7 +258,7 @@ BFloat16 是在 Float32 基础上按位截断一半精度得到的类型。它�
 然而，Float64 的情况则完全不同。它使用 11 位指数位和 52 位尾数位，这意味着它并不是简单地将 Float32 的位数翻倍。它的结构和指数偏置都完全不同。将 Float64 向下转换为像 Float32 这样更小的格式时，需要执行真正的 IEEE-754 转换，其中每个值都会被舍入到最接近且可由 Float32 表示的数值。这个舍入步骤在计算上开销很大。
 
 :::tip
-如果你对 QBit 的性能要素感兴趣并想深入了解，请参阅 ["Let’s vectorise"](https://clickhouse.com/blog/qbit-vector-search#lets-vectorise)
+如果你对 QBit 的性能要素感兴趣并想深入了解，请参阅 ["Let’s vectorize"](https://clickhouse.com/blog/qbit-vector-search#lets-vectorise)
 :::
 
 ## 使用 DBpedia 的示例 \{#example\}

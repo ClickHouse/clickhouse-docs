@@ -71,6 +71,7 @@ doc_type: 'reference'
 | [parallel_replicas_custom_key](/operations/settings/settings#parallel_replicas_custom_key) | `` |
 | [parallel_replicas_custom_key_range_lower](/operations/settings/settings#parallel_replicas_custom_key_range_lower) | `0` |
 | [parallel_replicas_custom_key_range_upper](/operations/settings/settings#parallel_replicas_custom_key_range_upper) | `0` |
+| [parallel_replicas_filter_pushdown](/operations/settings/settings#parallel_replicas_filter_pushdown) | `0` |
 | [allow_experimental_database_iceberg](/operations/settings/settings#allow_experimental_database_iceberg) | `0` |
 | [allow_experimental_database_unity_catalog](/operations/settings/settings#allow_experimental_database_unity_catalog) | `0` |
 | [allow_experimental_database_glue_catalog](/operations/settings/settings#allow_experimental_database_glue_catalog) | `0` |

@@ -151,7 +151,8 @@ SELECT 1
 | `no-ordinary-database`            |                                                            |                                                  |
 | `no-parallel`                     | このテストと他のテストを並行実行しないようにします                                  | テストは `system` テーブルを読み取り、不変条件が壊れる可能性があります         |
 | `no-parallel-replicas`            |                                                            |                                                  |
-| `no-debug`                        |                                                            |                                                  |
+| `no-debug`                        | Debug ビルドではテストを実行しません                                      |                                                  |
+| `no-release`                      | Release ビルドではテストを実行しません                                    |                                                  |
 | `no-stress`                       |                                                            |                                                  |
 | `no-polymorphic-parts`            |                                                            |                                                  |
 | `no-random-settings`              |                                                            |                                                  |

@@ -11,7 +11,7 @@ import TableOfContents from '@site/i18n/jp/docusaurus-plugin-content-docs/curren
 
 # パフォーマンスと最適化 \{#performance-and-optimizations\}
 
-このセクションでは、ClickHouse のパフォーマンスを向上させるためのヒントとベストプラクティスを紹介します。
-パフォーマンス向上に必要な基本概念を解説している [Core Concepts](/parts) を、このセクションを読む前に参照することを推奨します。
+このセクションでは、ClickHouse のパフォーマンスを向上させるためのヒントやベストプラクティスを紹介します。
+本セクションを読み進める前に、パフォーマンス向上に必要な主な概念を解説している [Core Concepts](/parts) に目を通しておくことを推奨します。
 
 <TableOfContents />

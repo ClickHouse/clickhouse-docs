@@ -2263,6 +2263,20 @@ Replicated\* テーブルからデータを受け取る materialized view に対
 
 - [IN 演算子における NULL の処理](/guides/developer/deduplicating-inserts-on-retries#insert-deduplication-with-materialized-views)
 
+## deduplicate_insert \{#deduplicate_insert\}
+
+<SettingsInfoBlock type="DeduplicateInsertMode" default_value="backward_compatible_choice" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "INSERT クエリに対する重複排除を制御するための新しい設定。"}]}]}/>
+
+`INSERT INTO`（Replicated\* テーブル向け）のブロック単位の重複排除を有効または無効にします。
+この設定は `insert_deduplicate` および `async_insert_deduplicate` の設定を上書きします。
+この設定には次の 3 つの値を指定できます。
+
+- disable — `INSERT INTO` クエリに対する重複排除を無効にします。
+- enable — `INSERT INTO` クエリに対する重複排除を有効にします。
+- backward_compatible_choice — 特定の INSERT の種類に対して `insert_deduplicate` または `async_insert_deduplicate` が有効な場合に、重複排除を有効にします。
+
 ## deduplicate_insert_select \{#deduplicate_insert_select\}
 
 <SettingsInfoBlock type="DeduplicateInsertSelectMode" default_value="enable_when_possible" />
@@ -2270,8 +2284,8 @@ Replicated\* テーブルからデータを受け取る materialized view に対
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "deduplicate_insert_select のデフォルト動作を ENABLE_WHEN_POSSIBLE に変更"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "新しい設定。insert_select_deduplicate を置き換えます。"}]}]}/>
 
 `INSERT SELECT`（Replicated\* テーブル向け）のブロック単位の重複排除を有効または無効にします。
-この設定は、`INSERT SELECT` クエリに対して `insert_deduplicate` を上書きします。
-この設定には次の 3 つの値を指定できます:
+この設定は、`INSERT SELECT` クエリに対して `insert_deduplicate` および `deduplicate_insert` を上書きします。
+この設定には次の 4 つの値を指定できます:
 
 - disable — `INSERT SELECT` クエリに対して重複排除を無効にします。
 - force_enable — `INSERT SELECT` クエリに対して重複排除を有効にします。SELECT の結果が安定していない場合は例外がスローされます。
@@ -8816,6 +8830,16 @@ parallel replicas を用いたクエリ実行中に、リモートのレプリ�
 
 注意: この設定によってクエリ処理中に追加のデータがフィルタされることはありません。代わりに、並列処理のために range フィルタが範囲 `[0, INT_MAX]` をどの位置で分割するかが変更されます。
 
+## parallel_replicas_filter_pushdown \{#parallel_replicas_filter_pushdown\}
+
+<BetaBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+並列レプリカが実行対象として選択したクエリ部分へのフィルタのプッシュダウンを許可します
+
 ## parallel_replicas_for_cluster_engines \{#parallel_replicas_for_cluster_engines\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9354,21 +9378,6 @@ promql 方言で使用される評価時刻を設定します。`auto` は現在
 指定可能な値:
 
 - 0 以上の正の整数。
-
-## query_condition_cache_store_conditions_as_plaintext \{#query_condition_cache_store_conditions_as_plaintext\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "0"},{"label": "New setting"}]}]}/>
-
-[query condition cache](/operations/query-condition-cache) 用のフィルタ条件を平文で格納します。
-有効にすると、system.query_condition_cache にフィルタ条件がそのままの形で表示されるため、キャッシュに関する問題のデバッグが容易になります。
-平文のフィルタ条件によって機密情報が露出する可能性があるため、デフォルトでは無効です。
-
-設定可能な値:
-
-- 0 - 無効
-- 1 - 有効
 
 ## query_metric_log_interval \{#query_metric_log_interval\}
 

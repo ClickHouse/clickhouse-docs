@@ -10,7 +10,7 @@ keywords: ['merge', 'table function', 'query patterns', 'table engine', 'data ac
 [Merge テーブル関数](https://clickhouse.com/docs/sql-reference/table-functions/merge) を使用すると、複数のテーブルに対して並列にクエリを実行できます。
 一時的な [Merge](https://clickhouse.com/docs/engines/table-engines/special/merge) テーブルを作成し、対象となるテーブル群のカラムの和集合を取り、共通の型を導出することでそのテーブルの構造を決定します。
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+<iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## テーブルのセットアップ \{#setup-tables\}
 
@@ -47,6 +47,7 @@ FROM url('https://raw.githubusercontent.com/JeffSackmann/tennis_atp/refs/heads/m
 SETTINGS schema_inference_make_columns_nullable=0,
          schema_inference_hints='winner_seed Nullable(UInt16), loser_seed Nullable(UInt16), surface Enum(\'Hard\', \'Grass\', \'Clay\', \'Carpet\')';
 ```
+
 
 ## 複数テーブルのスキーマ \{#schema-multiple-tables\}
 
@@ -86,6 +87,7 @@ SETTINGS output_format_pretty_max_value_width=25;
 * 1970s では、`winner_seed` の型を `Nullable(String)` から `Nullable(UInt8)` に、`score` の型を `String` から `Array(String)` に変更しています。
 * 1980s では、`winner_seed` と `loser_seed` の型を `Nullable(UInt8)` から `Nullable(UInt16)` に変更しています。
 * 1990s では、`surface` の型を `String` から `Enum('Hard', 'Grass', 'Clay', 'Carpet')` に変更し、`walkover` および `retirement` 列を追加しています。
+
 
 ## merge を使って複数テーブルをクエリする \{#querying-multiple-tables\}
 
@@ -142,6 +144,7 @@ AND multiIf(
 │ Stefan Edberg │ ['6-2','6-2'] │ 7           │
 └───────────────┴───────────────┴─────────────┘
 ```
+
 
 ## merge を使用している場合、行はどのテーブルに由来するのか？ \{#which-table-merge\}
 

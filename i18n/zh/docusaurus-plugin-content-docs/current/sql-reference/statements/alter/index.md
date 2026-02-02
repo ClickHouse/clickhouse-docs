@@ -23,6 +23,7 @@ doc_type: 'reference'
 | [TTL](/sql-reference/statements/alter/ttl.md)                               |
 | [STATISTICS](/sql-reference/statements/alter/statistics.md)                 |
 | [APPLY DELETED MASK](/sql-reference/statements/alter/apply-deleted-mask.md) |
+| [APPLY PATCHES](/sql-reference/statements/alter/apply-patches.md)           |
 
 :::note
 大多数 `ALTER TABLE` 查询仅支持 [\*MergeTree](/engines/table-engines/mergetree-family/index.md)、[Merge](/engines/table-engines/special/merge.md) 和 [Distributed](/engines/table-engines/special/distributed.md) 表。
@@ -66,7 +67,7 @@ doc_type: 'reference'
 
 对于非复制表，所有 `ALTER` 查询都会以同步方式执行。对于复制表，查询只是向 `ZooKeeper` 中添加相应操作的指令，而这些操作本身会尽快执行。不过，查询可以等待这些操作在所有副本上完成。
 
-对于会创建 mutation 的 `ALTER` 查询（例如包括但不限于 `UPDATE`、`DELETE`、`MATERIALIZE INDEX`、`MATERIALIZE PROJECTION`、`MATERIALIZE COLUMN`、`APPLY DELETED MASK`、`CLEAR STATISTIC`、`MATERIALIZE STATISTIC`），其同步行为由 [mutations_sync](/operations/settings/settings.md/#mutations_sync) 设置控制。
+对于会创建 mutation 的 `ALTER` 查询（例如包括但不限于 `UPDATE`、`DELETE`、`MATERIALIZE INDEX`、`MATERIALIZE PROJECTION`、`MATERIALIZE COLUMN`、`APPLY DELETED MASK`、`APPLY PATCHES`、`CLEAR STATISTIC`、`MATERIALIZE STATISTIC`），其同步行为由 [mutations_sync](/operations/settings/settings.md/#mutations_sync) 设置控制。
 
 对于仅修改元数据的其他 `ALTER` 查询，可以使用 [alter_sync](/operations/settings/settings#alter_sync) 设置来配置等待行为。
 
