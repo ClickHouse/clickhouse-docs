@@ -3,4 +3,4 @@ import use_case_selector from '@site/static/images/clickstack/getting-started/us
 
 Select "Observability" when prompted to select your use case.
 
-<Image img={use_case_selector} size="md" alt='Signup cloud' border force/>
+<Image img={use_case_selector} size="md" alt='Signup cloud' border/>

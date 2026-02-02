@@ -5,46 +5,47 @@ import advanced_otel_collector from '@site/static/images/clickstack/getting-star
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This will prompt the user to select their ingestion source. Managed ClickStack supports a number of ingestion sources, including OpenTelemetry and [Vector](https://vector.dev/), as well as the option to send data directly to ClickHouse in your own schema.
+You'll be prompted to select an ingestion source. Managed ClickStack supports a number of ingestion sources, including OpenTelemetry and [Vector](https://vector.dev/), as well as the option to send data directly to ClickHouse in your own schema.
 
-<Image img={select_source} size="md" alt='Select source' border force/>
+<Image img={select_source} size="md" alt='Select source' border/>
 
-:::note OpenTelemetry recommended
-We strongly recommend using OpenTelemetry as the ingestion format. It provides the simplest and most optimized experience, with out-of-the-box schemas that are specifically designed to work efficiently with ClickStack.
+:::note[OpenTelemetry recommended]
+Use of the OpenTelemetry is strongly recommended as the ingestion format.
+It provides the simplest and most optimized experience, with out-of-the-box schemas that are specifically designed to work efficiently with ClickStack.
 :::
 
 <Tabs groupId="ingestion-sources">
-<TabItem value="open-telemetry" label="OpenTelemetry" default force>
+<TabItem value="open-telemetry" label="OpenTelemetry" default>
 
-To send OpenTelemetry data to Managed ClickStack, we recommend using an OpenTelemetry Collector. The collector acts as a gateway that receives OpenTelemetry data from your applications (and other collectors) and forwards it to ClickHouse Cloud.
+To send OpenTelemetry data to Managed ClickStack, you're recommended to use an OpenTelemetry Collector. The collector acts as a gateway that receives OpenTelemetry data from your applications (and other collectors) and forwards it to ClickHouse Cloud.
 
-If you do not already have one running, start a collector using steps below. For users with existing collectors, a configuration example is also provided.
+If you don't already have one running, start a collector using the steps below. If you have existing collectors, a configuration example is also provided.
 
 ### Start a collector {#start-a-collector}
 
-The following assumes the recommended path of using the **ClickStack distribution of the OpenTelemetry Collector**, which includes additional processing and is optimized specifically for ClickHouse Cloud. For users looking to use their own OpenTelemetry Collector see ["Configure existing collectors."](#configure-existing-collectors)
+The following assumes the recommended path of using the **ClickStack distribution of the OpenTelemetry Collector**, which includes additional processing and is optimized specifically for ClickHouse Cloud. If you're looking to use your own OpenTelemetry Collector, see ["Configure existing collectors."](#configure-existing-collectors)
 
 To get started quickly, copy and run the Docker command shown.
 
-<Image img={otel_collector_start} size="md" alt='OTel collector source' border force/>
+<Image img={otel_collector_start} size="md" alt='OTel collector source' border/>
 
 This command should include your connection credentials `CLICKHOUSE_ENDPOINT` and `CLICKHOUSE_PASSWORD` pre-populated.
 
-:::note Deploying to production
-While this command uses the `default` user to connect Managed ClickStack, we recommend creating a dedicated user when [going to production](/use-cases/observability/clickstack/production#create-a-user) and modifying your configuration.
+:::note[Deploying to production]
+While this command uses the `default` user to connect Managed ClickStack, you should create a dedicated user when [going to production](/use-cases/observability/clickstack/production#create-a-user) and modifying your configuration.
 :::
 
 Running this single command starts the ClickStack collector with OTLP endpoints exposed on ports 4317 (gRPC) and 4318 (HTTP). If you already have OpenTelemetry instrumentation and agents, you can immediately begin sending telemetry data to these endpoints. 
 
 ### Configure existing collectors {#configure-existing-collectors}
 
-Users can also configure their own existing OpenTelemetry Collectors or use their own distribution of the collector. 
+It's also possible to configure your own existing OpenTelemetry Collectors or use your own distribution of the collector. 
 
-:::note ClickHouse exporter required
-If using your own distribution e.g. the [contrib image](https://github.com/open-telemetry/opentelemetry-collector-contrib), ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
+:::note[ClickHouse exporter required]
+If you're using your own distribution, for example the [contrib image](https://github.com/open-telemetry/opentelemetry-collector-contrib), ensure that it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
 :::
 
-For this purpose, we provide an example OpenTelemetry Collector configuration that uses the ClickHouse exporter with appropriate settings and exposes OTLP receivers, matching the interfaces and behavior expected by the ClickStack distribution.
+For this purpose, you're provided with an example OpenTelemetry Collector configuration that uses the ClickHouse exporter with appropriate settings and exposes OTLP receivers. This configuration matches the interfaces and behavior expected by the ClickStack distribution.
 
 An example of this configuration is shown below (environment variables will be pre-populated if copying from the UI):
 
@@ -199,9 +200,9 @@ service:
 
 ```
 
-<Image img={advanced_otel_collector} size="md" alt='Advanced OTel collector source' border force/>
+<Image img={advanced_otel_collector} size="md" alt='Advanced OTel collector source' border/>
 
-For further details on configuring OpenTelemetry collectors see ["Ingesting with OpenTelemetry."](/use-cases/observability/clickstack/ingesting-data/opentelemetry)
+For further details on configuring OpenTelemetry collectors, see ["Ingesting with OpenTelemetry."](/use-cases/observability/clickstack/ingesting-data/opentelemetry)
 
 </TabItem>
 <TabItem value="vector" label="Vector" default>

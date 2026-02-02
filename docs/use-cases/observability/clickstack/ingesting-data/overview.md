@@ -25,7 +25,7 @@ The key difference between the architectures lies in where the components are ho
         <Image img={managed_architecture_with_flow} alt="Managed architecture with flow" size="md"/>
     </TabItem>
     <TabItem value="oss-clickstack" label="Open Source ClickStack">
-    <Image img={oss_architecture_with_flow} alt="Simple architecture with flow" size="md" force/>
+    <Image img={oss_architecture_with_flow} alt="Simple architecture with flow" size="md" />
     </TabItem>
 </Tabs>
 

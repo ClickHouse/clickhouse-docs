@@ -21,6 +21,15 @@ import manage_alerts from '@site/static/images/use-cases/observability/manage_al
 import alerts_view from '@site/static/images/use-cases/observability/alerts_view.png';
 import multiple_search_alerts from '@site/static/images/use-cases/observability/multiple_search_alerts.png';
 import remove_chart_alert from '@site/static/images/use-cases/observability/remove_chart_alert.png';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+
+<TabItem>
+<Image img={alerts_search_view} alt="Alerts search view" size="md"/>
+</TabItem>
+</Tabs>
 
 ## Alerting in ClickStack {#alerting-in-clickstack}
 
