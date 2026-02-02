@@ -30,6 +30,9 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN P
 * [Mutations](/sql-reference/statements/alter/index.md#mutations)
 * [ALTER クエリの同期性](/sql-reference/statements/alter/index.md#synchronicity-of-alter-queries)
 * [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync) 設定
+* [Lightweight `UPDATE`](/sql-reference/statements/update) - パッチパーツを使用する代替の論理更新
+* [`APPLY PATCHES`](/sql-reference/statements/alter/apply-patches) - 論理更新によって生成されたパッチを手動で適用
+
 
 ## 関連コンテンツ \{#related-content\}
 

@@ -18,7 +18,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 :::
 
 轻量级 `UPDATE` 语句用于更新表 `[db.]table` 中满足表达式 `filter_expr` 的行。
-之所以称为“轻量级更新”，是为了与 [`ALTER TABLE ... UPDATE`](/sql-reference/statements/alter/update) 查询区分开来；后者是一个需要重写数据分片（data parts）中整列数据的重量级操作。
+之所以称为“轻量级更新”，是为了与 [`ALTER TABLE ... UPDATE`](/sql-reference/statements/alter/update) 查询区分开来；后者是一个需要重写分区片段中整列数据的重量级操作。
 它仅适用于 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree) 表引擎家族。
 
 ```sql
@@ -28,6 +28,7 @@ UPDATE [db.]table [ON CLUSTER cluster] SET column1 = expr1 [, ...] [IN PARTITION
 `filter_expr` 必须是 `UInt8` 类型。此查询会将指定列的值更新为对应表达式的值，更新发生在那些 `filter_expr` 为非零的行上。
 值会使用 `CAST` 运算符转换为列的数据类型。不支持更新用于计算主键或分区键的列。
 
+
 ## 示例 \{#examples\}
 
 ```sql
@@ -36,6 +37,7 @@ UPDATE hits SET Title = 'Updated Title' WHERE EventDate = today();
 UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 ```
 
+
 ## 轻量级更新不会立即更新数据 \{#lightweight-update-does-not-update-data-immediately\}
 
 轻量级 `UPDATE` 是通过 **补丁部件（patch parts）** 实现的，这是一种只包含已更新列和行的特殊数据部件。
@@ -43,9 +45,10 @@ UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 更新过程类似于 `INSERT ... SELECT ...` 查询，但 `UPDATE` 查询会在补丁部件创建完成后才返回。
 
 更新后的值具有以下特性：
-- 在应用补丁后，通过 `SELECT` 查询中**可立即看到**
-- 仅在后续的合并（merge）和变更（mutation）过程中才会在物理数据部分中被**实际物化**
-- 一旦所有活动数据分片中的补丁都已完成物化，就会被**自动清理**
+
+- 在执行 `SELECT` 查询时通过应用补丁即可**立即可见**
+- 只有在后续的合并和变更（mutations）过程中才会被**物理物化**
+- 一旦所有活跃分区片段中的补丁都已物理物化，就会被**自动清理**
 
 ## 轻量级更新的要求 \{#lightweight-update-requirements\}
 
@@ -83,6 +86,7 @@ UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 ```sql
 GRANT ALTER UPDATE ON db.table TO username;
 ```
+
 
 ## 实现细节 \{#details-of-the-implementation\}
 
@@ -123,3 +127,4 @@ join 模式比 merge 模式更慢且需要更多内存，但使用频率较低�
 
 - [`ALTER UPDATE`](/sql-reference/statements/alter/update) - 大规模 `UPDATE` 操作
 - [轻量级 `DELETE`](/sql-reference/statements/delete) - 轻量级 `DELETE` 操作
+- [`APPLY PATCHES`](/sql-reference/statements/alter/apply-patches) - 强制将补丁物理应用到数据分区片段（mutation 操作）

@@ -8830,6 +8830,16 @@ parallel replicas を用いたクエリ実行中に、リモートのレプリ�
 
 注意: この設定によってクエリ処理中に追加のデータがフィルタされることはありません。代わりに、並列処理のために range フィルタが範囲 `[0, INT_MAX]` をどの位置で分割するかが変更されます。
 
+## parallel_replicas_filter_pushdown \{#parallel_replicas_filter_pushdown\}
+
+<BetaBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+並列レプリカが実行対象として選択したクエリ部分へのフィルタのプッシュダウンを許可します
+
 ## parallel_replicas_for_cluster_engines \{#parallel_replicas_for_cluster_engines\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9368,21 +9378,6 @@ promql 方言で使用される評価時刻を設定します。`auto` は現在
 指定可能な値:
 
 - 0 以上の正の整数。
-
-## query_condition_cache_store_conditions_as_plaintext \{#query_condition_cache_store_conditions_as_plaintext\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "0"},{"label": "New setting"}]}]}/>
-
-[query condition cache](/operations/query-condition-cache) 用のフィルタ条件を平文で格納します。
-有効にすると、system.query_condition_cache にフィルタ条件がそのままの形で表示されるため、キャッシュに関する問題のデバッグが容易になります。
-平文のフィルタ条件によって機密情報が露出する可能性があるため、デフォルトでは無効です。
-
-設定可能な値:
-
-- 0 - 無効
-- 1 - 有効
 
 ## query_metric_log_interval \{#query_metric_log_interval\}
 

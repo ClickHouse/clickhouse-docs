@@ -8812,6 +8812,16 @@ FROM fuse_tbl
 
 注意：此设置不会在查询处理期间额外过滤任何数据，而是改变范围过滤器将范围 `[0, INT_MAX]` 拆分为并行处理子范围的切分点。
 
+## parallel_replicas_filter_pushdown \{#parallel_replicas_filter_pushdown\}
+
+<BetaBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+允许将过滤条件下推到查询中由并行副本选择执行的部分
+
 ## parallel_replicas_for_cluster_engines \{#parallel_replicas_for_cluster_engines\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9350,21 +9360,6 @@ a   Tuple(
 可能的取值：
 
 - 大于等于 0 的正整数。
-
-## query_condition_cache_store_conditions_as_plaintext \{#query_condition_cache_store_conditions_as_plaintext\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "0"},{"label": "新设置"}]}]}/>
-
-以明文形式存储 [query condition cache](/operations/query-condition-cache) 的过滤条件。
-如果启用，system.query_condition_cache 会显示原始的过滤条件，从而便于调试缓存相关的问题。
-默认禁用，因为明文过滤条件可能暴露敏感信息。
-
-可能的取值：
-
-- 0 - 禁用
-- 1 - 启用
 
 ## query_metric_log_interval \{#query_metric_log_interval\}
 

@@ -8850,6 +8850,16 @@ FROM fuse_tbl
 
 Примечание: Эта настройка не приводит к дополнительной фильтрации данных во время обработки запроса, а лишь изменяет точки, в которых фильтр диапазона разбивает диапазон `[0, INT_MAX]` для параллельной обработки.
 
+## parallel_replicas_filter_pushdown \{#parallel_replicas_filter_pushdown\}
+
+<BetaBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+Разрешает проталкивать фильтры в ту часть запроса, выполнение которой выбирают параллельные реплики
+
 ## parallel_replicas_for_cluster_engines \{#parallel_replicas_for_cluster_engines\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9388,21 +9398,6 @@ a   Tuple(
 Возможные значения:
 
 - Положительное целое число >= 0.
-
-## query_condition_cache_store_conditions_as_plaintext \{#query_condition_cache_store_conditions_as_plaintext\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "0"},{"label": "New setting"}]}]}/>
-
-Сохраняет условие фильтра для [кэша условий запроса](/operations/query-condition-cache) в виде обычного текста.
-Если включено, system.query_condition_cache показывает исходное условие фильтра, что упрощает отладку проблем с кэшем.
-По умолчанию отключено, так как условия фильтра в открытом виде могут раскрывать конфиденциальную информацию.
-
-Возможные значения:
-
-- 0 - Отключено
-- 1 - Включено
 
 ## query_metric_log_interval \{#query_metric_log_interval\}
 

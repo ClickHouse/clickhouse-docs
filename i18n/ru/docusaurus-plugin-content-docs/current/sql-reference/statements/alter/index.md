@@ -23,6 +23,7 @@ doc_type: 'reference'
 | [TTL](/sql-reference/statements/alter/ttl.md)                               |
 | [STATISTICS](/sql-reference/statements/alter/statistics.md)                 |
 | [APPLY DELETED MASK](/sql-reference/statements/alter/apply-deleted-mask.md) |
+| [APPLY PATCHES](/sql-reference/statements/alter/apply-patches.md)           |
 
 :::note
 Большинство запросов `ALTER TABLE` поддерживаются только для таблиц типов [\*MergeTree](/engines/table-engines/mergetree-family/index.md), [Merge](/engines/table-engines/special/merge.md) и [Distributed](/engines/table-engines/special/distributed.md).
@@ -66,7 +67,7 @@ doc_type: 'reference'
 
 Для нереплицируемых таблиц все запросы `ALTER` выполняются синхронно. Для реплицируемых таблиц запрос лишь добавляет инструкции для соответствующих действий в `ZooKeeper`, а сами действия выполняются как можно скорее. Однако запрос может ожидать завершения этих действий на всех репликах.
 
-Для запросов `ALTER`, которые создают мутации (например, включая, но не ограничиваясь `UPDATE`, `DELETE`, `MATERIALIZE INDEX`, `MATERIALIZE PROJECTION`, `MATERIALIZE COLUMN`, `APPLY DELETED MASK`, `CLEAR STATISTIC`, `MATERIALIZE STATISTIC`), синхронность определяется настройкой [mutations_sync](/operations/settings/settings.md/#mutations_sync).
+Для запросов `ALTER`, которые создают мутации (например, включая, но не ограничиваясь `UPDATE`, `DELETE`, `MATERIALIZE INDEX`, `MATERIALIZE PROJECTION`, `MATERIALIZE COLUMN`, `APPLY DELETED MASK`, `APPLY PATCHES`, `CLEAR STATISTIC`, `MATERIALIZE STATISTIC`), синхронность определяется настройкой [mutations_sync](/operations/settings/settings.md/#mutations_sync).
 
 Для других запросов `ALTER`, которые изменяют только метаданные, вы можете использовать настройку [alter_sync](/operations/settings/settings#alter_sync) для настройки ожидания.
 
