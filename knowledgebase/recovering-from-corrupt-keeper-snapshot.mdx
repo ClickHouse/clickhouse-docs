@@ -53,10 +53,12 @@ The table below details some common symptoms and manifestations of corrupt Keepe
 
 **Log Indicators:**
 
+Before diagnosing snapshot corruption, check **Keeper logs** for specific error patterns:
+
 | **Log Type** | **What to Look For** |
 |---|---|
-| **Error Messages** | • `Coordination::Exception` • `logical data is unavailable` • `Zookeeper::Session Timeout` • Invalid pointer/access violations • `SEGFAULT` errors |
-| **Debug Logs** | • Synchronization or election issues • Snapshot serialization/loading failures during startup • Log compaction race conditions |
+| **Snapshot corruption errors** | • `Aborting because of failure to load from latest snapshot with index`<br/>• `Failure to load from latest snapshot with index {}: {}. Manual intervention is necessary for recovery`<br/>• `Failed to preprocess stored log at index {}, aborting to avoid inconsistent state`<br/>• Snapshot serialization/loading failures during startup |
+| **Other Keeper issues** | • `Coordination::Exception`<br/>• `Zookeeper::Session Timeout`<br/>• Synchronization or election issues<br/>• Log compaction race conditions |
 
 ## Recovering from corrupt Keeper snapshots {#recovery-strategies}
 
@@ -117,23 +119,23 @@ You should follow this process when:
 
 Follow the steps below to restore metadata:
 
-1. Verify that table data exists locally in `/var/lib/clickhouse/data/` directories
+1. Verify that table data exists locally in your clickHouse-server data path, set by `<path>` in your config. (`/var/lib/clickhouse/data/` by default)
 
 2. For each affected table, execute:
 ```sql
 SYSTEM RESTART REPLICA [db.]table_name;
 SYSTEM RESTORE REPLICA [db.]table_name;
-   ```
+```
 
 3. For database-level recovery (if using Replicated database engine):
 ```sql
 SYSTEM RESTORE DATABASE REPLICA db_name;
-   ```
+```
 
 4. Wait for synchronization to complete:
 ```sql
 SYSTEM SYNC REPLICA [db.]table_name;
-   ```
+```
 
 5. Verify recovery by checking `system.replicas` for `is_readonly = 0` and monitoring `system.detached_parts`
 
@@ -151,7 +153,7 @@ This only works if local data parts are intact. If data is also corrupted, use s
 
 You should follow this process when:
 
-- A specific replica has corrupt or inconsistent metadata in Keeper
+- The error occurs on a single replica of the cluster and has corrupt or inconsistent metadata in Keeper
 - You encounter errors like "Part XXXXX intersects previous part YYYYY"
 - You need to completely reset a replica's Keeper metadata while preserving local data
 
@@ -160,32 +162,32 @@ Follow the steps below to drop and recreate metadata:
 1. On the affected replica, detach the table:
 ```sql
 DETACH TABLE [db.]table_name;
-   ```
+```
 
 2. Remove the replica's metadata from Keeper (execute on any replica):
 ```sql
 SYSTEM DROP REPLICA 'replica_name' FROM ZKPATH '/clickhouse/tables/{shard}/table_name';
-   ```
+```
 
 To find the correct ZooKeeper path:
 ```sql
 SELECT zookeeper_path, replica_name FROM system.replicas WHERE table = 'table_name';
-   ```
+```
 
 3. Reattach the table (it will be in read-only mode):
 ```sql
 ATTACH TABLE [db.]table_name;
-   ```
+```
 
 4. Restore the replica metadata:
 ```sql
 SYSTEM RESTORE REPLICA [db.]table_name;
-   ```
+```
 
 5. Synchronize with other replicas:
 ```sql
 SYSTEM SYNC REPLICA [db.]table_name;
-   ```
+```
 
 6. Check `system.detached_parts` on all replicas after recovery
 
@@ -205,7 +207,7 @@ For automatic recovery of all replicated tables at server startup:
 2. Create the recovery flag:
 ```bash
 sudo -u clickhouse touch /var/lib/clickhouse/flags/force_restore_data
-   ```
+```
 3. Start ClickHouse server
 4. The server will automatically delete the flag and restore all replicated tables
 5. Monitor logs for recovery progress
