@@ -78,12 +78,12 @@ After the migration is complete:
 - **Test your application**: Make sure to test your application against the ClickHouse Managed Postgres instance to ensure everything is working as expected.
 - **Clean up resources**: Once you are satisfied with the migration and have switched your application to use ClickHouse Managed Postgres, you can delete the mirror and peers in PeerDB to clean up resources.
 
-:::info
+:::info Replication slots
 If you enabled continuous replication, PeerDB will create a **replication slot** on the source PostgreSQL database. Make sure to drop the replication slot manually from the source database after you are done with the migration to avoid unnecessary resource usage.
 :::
 
 ## References {#migration-peerdb-references}
-- [ClickHouse Managed Postgres Documentation](../overview)
+- [ClickHouse Managed Postgres Documentation](../)
 - [PeerDB guide for CDC creation](https://docs.peerdb.io/mirror/cdc-pg-pg)
 - [Postgres ClickPipe FAQ (holds true for PeerDB as well)](../../../integrations/data-ingestion/clickpipes/postgres/faq.md)
 
