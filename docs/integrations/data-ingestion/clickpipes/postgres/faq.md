@@ -366,7 +366,7 @@ Postgres sends information about changes in the form of messages that have a fix
 This is not yet supported, an alternative would be to [resync the table](./table_resync.md) whose columns you want to include.
 
 ### I am noticing that my ClickPipe has entered Snapshot but data is not flowing in, what could be the issue? {#snapshot-no-data-flow}
-This can be for a few reasons, mainly around some prerequisites for snapshotting taking longer than usual.
+This can be for a few reasons, mainly around some prerequisites for snapshotting taking longer than usual. For more information, do read our doc on parallel snapshotting [here](./parallel_initial_load.md).
 #### Parallel snapshotting is taking time to obtain partitions
 Parallel snapshotting has a few initial steps to obtain logical partitions for your tables. If your tables are small, this will finish in a matter of seconds however for very large (order of terabytes) tables, this can take longer. You can monitor the queries running on your Postgres source in the **Source** tab to see if there are any long running queries related to obtaining partitions for snapshotting. Once the partitions are obtained, data will start flowing in.
 #### Replication slot creation is transaction locked
