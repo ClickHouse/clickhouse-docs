@@ -19,4 +19,4 @@ Once you have specified the requirements, your Managed ClickStack service will t
 
 <Image img={service_provisioned} size="md" alt='Service provisioned' border />
 
-Once provisioning is complete, users can select 'Start Ingestion'.
+Once provisioning is complete, select 'Start Ingestion'.

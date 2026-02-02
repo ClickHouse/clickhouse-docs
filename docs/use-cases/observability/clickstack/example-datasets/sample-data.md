@@ -177,13 +177,13 @@ The following example assumes you have started Open Source ClickStack using the 
 
 Visit [http://localhost:8080](http://localhost:8080) to access the ClickStack UI. 
 
-<Image img={hyperdx} alt="ClickStack UI" size="lg"/>
+<Image img={hyperdx} alt="ClickStack UI" size="lg" />
 
 ## Copy ingestion API key {#copy-ingestion-api-key}
 
 Navigate to [`Team Settings`](http://localhost:8080/team) and copy the `Ingestion API Key` from the `API Keys` section. This API key ensures data ingestion through the OpenTelemetry collector is secure.
 
-<Image img={copy_api_key} alt="Copy API key" size="lg"/>
+<Image img={copy_api_key} alt="Copy API key" size="lg" />
 
 ## Download sample data {#download-sample-data}
 
@@ -230,7 +230,7 @@ This simulates OTLP log, trace, and metric sources sending data to the OTel coll
 
 Returning to the `Search` view, you should see that data has started to load (adjust the time frame to the `Last 1 hour` if the data does not render):
 
-<Image img={hyperdx_10} alt="HyperDX search" size="lg"/>
+<Image img={hyperdx_10} alt="HyperDX search" size="lg" />
 
 Data loading will take a few minutes. Allow for the load to be completed before progressing to the next steps.
 
@@ -240,7 +240,7 @@ Suppose we have reports that our users are experiencing issues paying for goods.
 
 Select [`Client Sessions`](http://localhost:8080/sessions?from=1747312320000&to=1747312920000&sessionSource=l1324572572) from the left menu.
 
-<Image img={hyperdx_11} alt="Sessions" size="lg"/>
+<Image img={hyperdx_11} alt="Sessions" size="lg" />
 
 This view allows us to see front-end sessions for our e-commerce store. Sessions remain Anonymous until users check out and try to complete a purchase.
 
@@ -248,7 +248,7 @@ Note that some sessions with emails have an associated error, potentially confir
 
 Select a trace with a failure and associated email. The subsequent view allows us to replay the user's session and review their issue. Press play to watch the session.
 
-<Image img={hyperdx_12} alt="Session replay" size="lg"/>
+<Image img={hyperdx_12} alt="Session replay" size="lg" />
 
 The replay shows the user navigating the site, adding items to their cart. Feel free to skip to later in the session where they attempt to complete a payment.
 
@@ -258,7 +258,7 @@ Any errors are annotated on the timeline in red.
 
 The user was unable to place the order, with no obvious error. Scroll to the bottom of the left panel, containing the network and console events from the user's browser. You will notice a 500 error was thrown on making a `/api/checkout` call. 
 
-<Image img={hyperdx_13} alt="Error in session" size="lg"/>
+<Image img={hyperdx_13} alt="Error in session" size="lg" />
 
 Select this `500` error. Neither the `Overview` nor `Column Values` indicate the source of the issue, other than the fact the error is unexpected, causing an `Internal Error`.
 
@@ -266,19 +266,19 @@ Select this `500` error. Neither the `Overview` nor `Column Values` indicate the
 
 Navigate to the `Trace` tab to see the full distributed trace. 
 
-<Image img={hyperdx_14} alt="Session trace" size="lg"/>
+<Image img={hyperdx_14} alt="Session trace" size="lg" />
 
 Scroll down the trace to see the origin of the error - the `checkout` service span. Select the `Payment` service span. 
 
-<Image img={hyperdx_15} alt="Span" size="lg"/>
+<Image img={hyperdx_15} alt="Span" size="lg" />
 
 Select the tab `Column Values` and scroll down. We can see the issue is associated with a cache being full.
 
-<Image img={hyperdx_16} alt="Column values" size="lg"/>
+<Image img={hyperdx_16} alt="Column values" size="lg" />
 
 Scrolling up and returning to the trace, we can see logs are correlated with the span, thanks to our earlier configuration. These provide further context.
 
-<Image img={hyperdx_17} alt="Correlated log" size="lg"/>
+<Image img={hyperdx_17} alt="Correlated log" size="lg" />
 
 We've established that a cache is getting filled in the payment service, which is preventing payments from completing. 
 

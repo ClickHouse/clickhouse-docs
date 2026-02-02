@@ -27,9 +27,9 @@ import service_connect from '@site/static/images/_snippets/service_connect.png';
 
 The easiest way to get started is by deploying **Managed ClickStack** on **ClickHouse Cloud**, which provides a fully managed, secure backend while retaining complete control over ingestion, schema, and observability workflows. This removes the need to operate ClickHouse yourself and delivers a range of benefits: 
 
-- Automatic scaling of compute independent of storage
+- Automatic scaling of compute, independent of storage
 - Low-cost and effectively unlimited retention based on object storage
-- The ability to independently isolate read and write workloads with Warehouses.
+- The ability to independently isolate read and write workloads with warehouses.
 - Integrated authentication
 - Automated backups
 - Security and compliance features
@@ -37,12 +37,12 @@ The easiest way to get started is by deploying **Managed ClickStack** on **Click
 
 <VerticalStepper headerLevel="h2">
 
-## Signup to ClickHouse Cloud service {#signup-to-clickhouse-cloud}
+## Signup to ClickHouse Cloud {#signup-to-clickhouse-cloud}
 
-To create a Managed ClickStack service in [ClickHouse Cloud](https://console.clickhouse.cloud), you just need to sign up by completing the following steps:
+To create a Managed ClickStack service in [ClickHouse Cloud](https://console.clickhouse.cloud) sign up by completing the following steps:
 
 - Create an account on the [sign-up page](https://console.clickhouse.cloud/signUp)
-- You can choose to sign up using your email or via Google SSO, Microsoft SSO, AWS Marketplace, Google Cloud or Microsoft Azure
+- Choose to sign up using your email or via Google SSO, Microsoft SSO, AWS Marketplace, Google Cloud or Microsoft Azure
 - If you sign up using an email and password, remember to verify your email address within the next 24h via the link you receive in your email
 - Login using the username and password you just created
 
@@ -70,7 +70,7 @@ To create a Managed ClickStack service in [ClickHouse Cloud](https://console.cli
 
 ## Next Steps {#next-steps}
 
-:::important Record default credentials
+:::important[Record default credentials]
 If you have not recorded your default credentials during the above steps, navigate to the service and select `Connect`, recording the password and HTTP/native endpoints. Store these admin credentials securely, which can be reused in further guides.
 :::
 

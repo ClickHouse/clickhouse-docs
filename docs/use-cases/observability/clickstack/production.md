@@ -22,7 +22,7 @@ When deploying ClickStack in production, there are several additional considerat
 <Tabs groupId="architectures">
 <TabItem value="managed-clickstack" label="Managed ClickStack" default>
 
-For production deployments, we recommend using [Managed ClickStack](/use-cases/observability/clickstack/getting-started/managed), which applies industry-standard [security practices](/cloud/security) by default - including enhanced encryption, authentication and connectivity, and managed access controls, as well as providing the following benefits:
+For production deployments, [Managed ClickStack](/use-cases/observability/clickstack/getting-started/managed) is recommended. It applies industry-standard [security practices](/cloud/security) by default - including enhanced encryption, authentication and connectivity, and managed access controls, as well as providing the following benefits:
 
 - Automatic scaling of compute independent of storage
 - Low-cost and effectively unlimited retention based on object storage
@@ -31,11 +31,11 @@ For production deployments, we recommend using [Managed ClickStack](/use-cases/o
 - Automated [backups](/cloud/features/backups)
 - Seamless upgrades
 
-**We recommend following the [best practices](/cloud/guides/production-readiness) for ClickHouse Cloud when using Managed ClickStack.**
+**Follow these [best practices](/cloud/guides/production-readiness) for ClickHouse Cloud when using Managed ClickStack.**
 
 ### Database and ingestion user {#database-ingestion-user-managed-managed}
 
-We recommend creating a dedicated user for the OTel collector for ingestion into Managed ClickHouse and ensuring ingestion is sent to a specific database e.g. `otel`. See ["Creating an ingestion user"](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) for further details.
+It's recommended to create a dedicated user for the OTel collector for ingestion into Managed ClickHouse and ensuring ingestion is sent to a specific database e.g. `otel`. See ["Creating an ingestion user"](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) for further details.
 
 ## Configure Time To Live (TTL) {#configure-ttl-managed}
 
@@ -70,7 +70,7 @@ These values are **estimates only** and should be used as an initial baseline. A
 
 ### Isolating observability workloads {#isolating-workloads}
 
-If you are adding ClickStack to an **existing ClickHouse Cloud service** that already supports other workloads, such as real-time application analytics, we strongly recommend isolating observability traffic.
+If you are adding ClickStack to an **existing ClickHouse Cloud service** that already supports other workloads, such as real-time application analytics, isolating observability traffic is strongly recommended.
 
 Use [**Managed Warehouses**](/cloud/reference/warehouses) to create a **child service** dedicated to ClickStack. This allows you to:
 
@@ -153,7 +153,7 @@ All ingestion should occur via the OTLP ports exposed by ClickStack distribution
 
 <Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
 
-Additionally, we recommend enabling TLS for OTLP endpoints and creating a [dedicated user for ClickHouse ingestion](#database-ingestion-user).
+Additionally, enabling TLS for OTLP endpoints and creating a [dedicated user for ClickHouse ingestion](#database-ingestion-user) is recommended.
 
 ## ClickHouse {#clickhouse}
 
@@ -189,11 +189,11 @@ The ClickHouse user for HyperDX only needs to be a `readonly` user with access t
 - `cancel_http_readonly_queries_on_client_close`
 - `wait_end_of_query`
 
-By default the `default` user in both OSS and ClickHouse Cloud will have these permissions available but we recommend you create a new user with these permissions.
+By default, the `default` user in both OSS and ClickHouse Cloud will have these permissions available however you are recommended to create a new user with these permissions.
 
 #### Database and ingestion user {#database-ingestion-user-managed}
 
-We recommend creating a dedicated user for the OTel collector for ingestion into ClickHouse and ensuring ingestion is sent to a specific database e.g. `otel`. See ["Creating an ingestion user"](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) for further details.
+Creating a dedicated user for the OTel collector for ingestion into ClickHouse and ensuring ingestion is sent to a specific database e.g. `otel` is recommended. See ["Creating an ingestion user"](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) for further details.
 
 ### Configure Time To Live (TTL) {#configure-ttl}
 
