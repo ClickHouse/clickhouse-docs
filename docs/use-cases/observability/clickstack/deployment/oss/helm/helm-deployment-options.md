@@ -167,7 +167,7 @@ hyperdx:
   existingConfigSourcesKey: "sources.json"
 ```
 
-For a complete example of connecting to ClickHouse Cloud, see ["Create a ClickHouse Cloud connection"](/docs/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
+For a complete example of connecting to ClickHouse Cloud, see ["Create a ClickHouse Cloud connection"](/docs/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection).
 
 ## External OTEL Collector {#external-otel-collector}
 

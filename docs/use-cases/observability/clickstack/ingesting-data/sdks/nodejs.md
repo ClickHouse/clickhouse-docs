@@ -57,7 +57,8 @@ To initialize the SDK, you'll need to call the `init` function at the top of the
 const HyperDX = require('@hyperdx/node-opentelemetry');
 
 HyperDX.init({
-    apiKey: 'YOUR_INGESTION_API_KEY',
+    url: 'http://your-otel-collector:4318',
+    apiKey: 'YOUR_INGESTION_API_KEY', // Omit for Managed ClickStack
     service: 'my-service'
 });
 ```
@@ -69,7 +70,8 @@ HyperDX.init({
 import * as HyperDX from '@hyperdx/node-opentelemetry';
 
 HyperDX.init({
-    apiKey: 'YOUR_INGESTION_API_KEY',
+    url: 'http://your-otel-collector:4318',
+    apiKey: 'YOUR_INGESTION_API_KEY', // Omit for Managed ClickStack
     service: 'my-service'
 });
 ```
@@ -155,7 +157,8 @@ To enable this, you'll need to add the following code to the end of your applica
 ```javascript 
 const HyperDX = require('@hyperdx/node-opentelemetry');
 HyperDX.init({
-    apiKey: 'YOUR_INGESTION_API_KEY',
+    url: 'http://your-otel-collector:4318',
+    apiKey: 'YOUR_INGESTION_API_KEY', // Omit for Managed ClickStack
     service: 'my-service'
 });
 const app = express();
@@ -177,7 +180,8 @@ const Koa = require("koa");
 const Router = require("@koa/router");
 const HyperDX = require('@hyperdx/node-opentelemetry');
 HyperDX.init({
-    apiKey: 'YOUR_INGESTION_API_KEY',
+    url: 'http://your-otel-collector:4318',
+    apiKey: 'YOUR_INGESTION_API_KEY', // Omit for Managed ClickStack
     service: 'my-service'
 });
 
@@ -315,12 +319,20 @@ Node.js `--require` flag. The CLI installation exposes a wider range of auto-ins
 <Tabs groupId="cli">
 <TabItem value="npx" label="Using NPX" default>
 
+:::note Managed ClickStack
+The `HYPERDX_API_KEY` can be omitted for Managed ClickStack.
+:::
+
 ```shell
 HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' npx opentelemetry-instrument index.js
 ```
 
 </TabItem>
 <TabItem value="custom" label="Custom Entry Point (ex. Nodemon, ts-node, etc.)">
+
+:::note Managed ClickStack
+The `HYPERDX_API_KEY` can be omitted for Managed ClickStack.
+:::
 
 ```shell
 HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' ts-node -r '@hyperdx/node-opentelemetry/build/src/tracing' index.js

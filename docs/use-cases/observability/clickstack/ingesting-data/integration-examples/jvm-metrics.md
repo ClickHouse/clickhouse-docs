@@ -114,6 +114,7 @@ java -jar my-application.jar
 
 :::tip
 The OpenTelemetry Java agent automatically collects these JVM metrics:
+
 - **Memory**: `jvm.memory.used`, `jvm.memory.limit`, `jvm.memory.committed`, `jvm.memory.used_after_last_gc`
 - **Garbage Collection**: `jvm.gc.duration`
 - **Threads**: `jvm.thread.count`
