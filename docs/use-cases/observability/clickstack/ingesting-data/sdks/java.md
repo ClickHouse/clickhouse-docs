@@ -9,9 +9,6 @@ doc_type: 'guide'
 keywords: ['Java SDK ClickStack', 'Java OpenTelemetry ClickStack', 'Java observability SDK', 'ClickStack Java integration', 'Java application monitoring']
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 ClickStack uses the OpenTelemetry standard for collecting telemetry data (logs and
 traces). Traces are auto-generated with automatic instrumentation, so manual
 instrumentation isn't required to get value out of tracing.
@@ -34,7 +31,7 @@ instrumentation isn't required to get value out of tracing.
 At present, the integration is compatible exclusively with **Java 8+**
 :::
 
-### Download OpenTelemetry Java agent {#download-opentelemetry-java-agent}
+### Download OpenTelemetry Java agent {#download-opentelemtry-java-agent}
 
 Download [`opentelemetry-javaagent.jar`](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar)
 and place the JAR in your preferred directory. The JAR file contains the agent
@@ -47,34 +44,16 @@ curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/
 
 ### Configure environment variables {#configure-environment-variables}
 
-Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to ClickStack via the OpenTelemetry collector:
-
-<Tabs groupId="service-type">
-<TabItem value="clickstack-managed" label="Managed ClickStack" default>
+Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to ClickStack:
 
 ```shell
 export JAVA_TOOL_OPTIONS="-javaagent:PATH/TO/opentelemetry-javaagent.jar" \
-OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
-OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
-OTEL_LOGS_EXPORTER=otlp \
-OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
-```
-
-</TabItem>
-
-<TabItem value="clickstack-oss" label="ClickStack Open Source" >
-
-```shell
-export JAVA_TOOL_OPTIONS="-javaagent:PATH/TO/opentelemetry-javaagent.jar" \
-OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
+OTEL_EXPORTER_OTLP_ENDPOINT=https://localhost:4318 \
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>' \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_LOGS_EXPORTER=otlp \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
 ```
-
-</TabItem>
-</Tabs>
 
 _The `OTEL_SERVICE_NAME` environment variable is used to identify your service in the HyperDX app, it can be any name you want._
 

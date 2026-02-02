@@ -168,7 +168,6 @@ Ensure the ClickStack collector has appropriate permissions to read the nginx lo
 :::
 
 #### Verifying Logs in HyperDX {#verifying-logs}
-
 Once configured, log into HyperDX and verify logs are flowing:
 
 1. Navigate to the search view

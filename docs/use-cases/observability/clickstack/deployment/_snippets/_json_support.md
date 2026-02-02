@@ -4,7 +4,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge/>
 
-:::warning[Beta Feature - not production ready]
+:::warning Beta Feature - not production ready
 JSON type support in **ClickStack** is a **beta feature**. While the JSON type itself is production-ready in ClickHouse 25.3+, its integration within ClickStack is still under active development and may have limitations, change in the future, or contain bugs.
 :::
 
@@ -15,4 +15,4 @@ For the benefits of this type see [Benefits of the JSON type](/use-cases/observa
 In order to enable support for the JSON type you must set the following environment variables:
 
 - `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` - enables support in the OTel collector, ensuring schemas are created using the JSON type.
-- `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` (ClickStack Open Source only) - enables support in the ClickStack UI application, allowing JSON data to be queried.
+- `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` - enables support in the HyperDX application, allowing JSON data to be queried.
