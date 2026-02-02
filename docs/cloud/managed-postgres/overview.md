@@ -4,6 +4,8 @@ title: 'Managed Postgres'
 description: 'Fast, scalable, enterprise-grade Postgres backed by NVMe storage with native ClickHouse integration for real-time analytics'
 keywords: ['managed postgres', 'postgresql', 'cloud database', 'postgres service', 'nvme postgres', 'clickhouse integration']
 doc_type: 'guide'
+pagination_next: cloud/managed-postgres/quickstart
+pagination_prev: null
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
