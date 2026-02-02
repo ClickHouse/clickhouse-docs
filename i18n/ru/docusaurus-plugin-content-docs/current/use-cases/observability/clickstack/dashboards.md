@@ -6,7 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Визуализации и дашборды с ClickStack'
 doc_type: 'guide'
-keywords: ['clickstack', 'дашборды', 'визуализация', 'мониторинг', 'наблюдаемость']
+keywords: ['clickstack', 'дашборды', 'визуализация', 'мониторинг', 'обсервабилити']
 ---
 
 import Image from '@theme/IdealImage';
@@ -27,9 +27,10 @@ import dashboard_services from '@site/static/images/use-cases/observability/hype
 import dashboard_kubernetes from '@site/static/images/use-cases/observability/hyperdx-dashboard-kubernetes.png';
 import Tagging from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_clickstack_tagging.mdx';
 
-ClickStack поддерживает визуализацию событий и имеет встроенные средства построения графиков в HyperDX. Эти графики можно добавлять на дашборды для совместного использования с другими пользователями.
+ClickStack поддерживает визуализацию событий и имеет встроенные средства построения графиков в ClickStack UI (HyperDX). Эти графики можно добавлять на дашборды для совместного использования с другими пользователями.
 
 Визуализации могут создаваться на основе трассировок, метрик, логов или любых пользовательски определённых широких схем событий.
+
 
 ## Создание визуализаций \{#creating-visualizations\}
 

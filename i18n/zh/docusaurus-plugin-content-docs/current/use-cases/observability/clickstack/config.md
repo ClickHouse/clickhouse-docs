@@ -14,7 +14,7 @@ import hyperdx_26 from '@site/static/images/use-cases/observability/hyperdx-26.p
 
 ClickStack 的每个组件都提供如下配置选项：
 
-## 修改设置 \{#modifying-settings\}
+## 开源版 ClickStack 设置 \{#modifying-settings\}
 
 ### Docker \{#docker\}
 
@@ -95,11 +95,11 @@ ingress:
       value: abc
 ```
 
-## HyperDX \{#hyperdx\}
+## ClickStack UI（HyperDX）应用程序 \{#hyperdx\}
 
 ### 数据源设置 \{#datasource-settings\}
 
-HyperDX 依赖用户为每一种可观测性数据类型/支柱定义一个数据源：
+ClickStack UI 依赖用户为每一种可观测性数据类型/支柱定义一个数据源：
 
 - `Logs`
 - `Traces`
@@ -402,12 +402,12 @@ ClickStack 随附的 ClickHouse 默认 schema 是由 [ClickHouse exporter for th
 
 ## ClickHouse \{#clickhouse\}
 
-ClickStack 随附的默认 ClickHouse 配置面向多 TB 级别规模设计，但用户可以自由修改和优化，使其更适合自身的工作负载。
+ClickStack 开源版随附的默认 ClickHouse 配置面向多 TB 级别规模设计，但用户可以自由修改和优化，使其更适合自身的工作负载。
 
 为了高效调优 ClickHouse，用户应理解关键存储概念，例如 [parts](/parts)、[partitions](/partitions)、[shards and replicas](/shards)，以及在插入时 [merges](/merges) 是如何发生的。我们建议先回顾 [primary indices](/primary-indexes)、[sparse secondary indices](/optimize/skipping-indexes) 和数据跳过索引等基础知识，以及用于[管理数据生命周期](/observability/managing-data) 的技术（例如使用 TTL 进行生命周期管理）。
 
 ClickStack 支持[模式自定义](/use-cases/observability/schema-design) —— 用户可以修改列类型，从日志等来源提取新字段，应用编解码器（codec）和字典，并通过投影（projection）加速查询。
 
-此外，可以使用物化视图在[摄取期间转换或过滤数据](/use-cases/observability/schema-design#materialized-columns)，前提是数据写入视图的源表，并且应用从目标表读取数据。
+此外，可以使用物化视图在[摄取期间转换或过滤数据](/use-cases/observability/schema-design#materialized-columns)，前提是数据写入视图的源表，并且应用从目标表读取数据。物化视图还可用于在 ClickStack 中[原生加速查询](/use-cases/observability/clickstack/materialized_views)。
 
 更多详情请参考 ClickHouse 关于模式设计、索引策略和数据管理最佳实践的文档——其中大部分内容可以直接应用于 ClickStack 部署。

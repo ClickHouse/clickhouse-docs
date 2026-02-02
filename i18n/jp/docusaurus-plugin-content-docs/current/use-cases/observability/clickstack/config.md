@@ -14,7 +14,7 @@ import hyperdx_26 from '@site/static/images/use-cases/observability/hyperdx-26.p
 
 ClickStack の各コンポーネントには、以下の設定オプションがあります。
 
-## 設定の変更 \{#modifying-settings\}
+## オープンソース版 ClickStack の設定 \{#modifying-settings\}
 
 ### Docker \{#docker\}
 
@@ -95,11 +95,11 @@ ingress:
       value: abc
 ```
 
-## HyperDX \{#hyperdx\}
+## ClickStack の UI アプリケーション (HyperDX) \{#hyperdx\}
 
 ### データソース設定 \{#datasource-settings\}
 
-HyperDX は、各 Observability データタイプ/ピラーごとにソースをユーザーが定義することを前提としています:
+ClickStack UI は、各 Observability データタイプ/ピラーごとにソースをユーザーが定義することを前提としています:
 
 - `Logs`
 - `Traces`
@@ -402,12 +402,12 @@ HyperDX が ClickHouse Cloud 上で管理されている場合、これらの設
 
 ## ClickHouse \{#clickhouse\}
 
-ClickStack には、マルチテラバイト規模を想定したデフォルトの ClickHouse 構成が含まれていますが、ユーザーは自分たちのワークロードに合わせて自由に変更・最適化できます。
+ClickStack Open Source には、マルチテラバイト規模を想定したデフォルトの ClickHouse 構成が含まれていますが、ユーザーは自分たちのワークロードに合わせて自由に変更・最適化できます。
 
 ClickHouse を効果的にチューニングするには、[parts](/parts)、[partitions](/partitions)、[shards and replicas](/shards) といった主要なストレージの概念や、[merges](/merges) が挿入時にどのように行われるかを理解しておく必要があります。[primary indices](/primary-indexes)、[sparse secondary indices](/optimize/skipping-indexes)、およびデータスキッピングインデックスの基礎と、TTL によるライフサイクル管理などの[データライフサイクル管理](/observability/managing-data)手法を確認しておくことを推奨します。
 
 ClickStack は [schema customization](/use-cases/observability/schema-design) をサポートしており、カラム型の変更、（例: ログからの）新しいフィールドの抽出、codec と辞書の適用、そしてプロジェクションを用いたクエリの高速化を行えます。
 
-さらに、ビューのソーステーブルにデータを書き込み、アプリケーションがターゲットテーブルを読み取る構成であれば、マテリアライズドビューを使用して[インジェスト時にデータを変換またはフィルタリング](/use-cases/observability/schema-design#materialized-columns)することができます。
+さらに、ビューのソーステーブルにデータを書き込み、アプリケーションがターゲットテーブルを読み取る構成であれば、マテリアライズドビューを使用して[インジェスト時にデータを変換またはフィルタリング](/use-cases/observability/schema-design#materialized-columns)することができます。マテリアライズドビューは、ClickStack で[クエリをネイティブに高速化](/use-cases/observability/clickstack/materialized_views)するためにも利用できます。
 
 詳細については、スキーマ設計、インデックス戦略、およびデータ管理のベストプラクティスに関する ClickHouse ドキュメントを参照してください。これらの多くは、そのまま ClickStack のデプロイメントにも適用できます。

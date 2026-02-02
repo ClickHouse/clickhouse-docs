@@ -8,7 +8,7 @@ doc_type: 'landing-page'
 keywords: ['ClickStack 数据摄取', '可观测性数据摄取', 'ClickStack OpenTelemetry', 'ClickHouse 可观测性摄取', '遥测数据收集']
 ---
 
-ClickStack 提供多种方式，将可观测性数据摄取到 ClickHouse 实例中。无论是收集日志、指标、追踪数据还是会话数据，都可以使用 OpenTelemetry (OTel) collector 作为统一的摄取入口，或者利用特定平台的集成来满足专业化的使用场景。
+托管版和开源版 ClickStack 提供多种方式，将可观测性数据摄取到 ClickHouse 实例中。无论是收集日志、指标、追踪数据还是会话数据，都可以使用 OpenTelemetry (OTel) collector 作为统一的摄取入口，或者利用特定平台的集成来满足专业化的使用场景。
 
 | Section | Description |
 |------|-------------|

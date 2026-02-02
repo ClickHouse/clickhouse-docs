@@ -3,15 +3,18 @@ slug: /use-cases/observability/clickstack/overview
 title: 'ClickStack - ClickHouse 可观测性栈'
 sidebar_label: '概览'
 pagination_prev: null
-pagination_next: use-cases/observability/clickstack/getting-started
+pagination_next: use-cases/observability/clickstack/getting-started/index
 description: 'ClickStack - ClickHouse 可观测性栈概览'
 doc_type: 'guide'
 keywords: ['clickstack', 'observability', 'logs', 'monitoring', 'platform']
 ---
 
 import Image from '@theme/IdealImage';
-import architecture from '@site/static/images/use-cases/observability/clickstack-simple-architecture.png';
+import oss_simple_architecture from '@site/static/images/use-cases/observability/clickstack-simple-oss-architecture.png';
+import managed_simple_architecture from '@site/static/images/use-cases/observability/clickstack-simple-managed-architecture.png';
 import landing_image from '@site/static/images/use-cases/observability/hyperdx-landing.png';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 <Image img={landing_image} alt="首页" size="lg" />
 
@@ -44,11 +47,13 @@ ClickStack 利用 ClickHouse 的列式架构、原生 JSON 支持以及完全并
 
 ClickStack 由三个核心组件组成：
 
-1. **HyperDX UI** – 专用于探索和可视化可观测性数据的前端界面
+1. **ClickStack UI (HyperDX)** – 专用于探索和可视化可观测性数据的前端界面
 2. **OpenTelemetry collector** – 自定义构建并预先配置的采集器，对日志、链路追踪和指标采用标准化的模式
 3. **ClickHouse** – 整个技术栈的核心高性能分析型数据库
 
-这些组件可以独立部署，也可以组合部署。还提供了浏览器托管版本的 HyperDX UI，用户无需额外基础设施即可连接到现有的 ClickHouse 部署。
+这些组件可以在完全**自管理的 ClickStack 开源版**环境中一并部署，也可以拆分在托管和自托管环境中运行。在 **Managed ClickStack** 中，ClickHouse 和 HyperDX UI 由 [ClickHouse Cloud](/cloud/get-started) 托管并运维，用户只需运行 OpenTelemetry collector。
+
+还提供了浏览器托管版本的 HyperDX UI，用户无需部署额外的 UI 基础设施即可直接连接到现有的 ClickHouse 部署。
 
 开始之前，请先访问[入门指南](/use-cases/observability/clickstack/getting-started)，然后加载[示例数据集](/use-cases/observability/clickstack/sample-datasets)。你还可以查阅关于[部署选项](/use-cases/observability/clickstack/deployment)和[生产环境最佳实践](/use-cases/observability/clickstack/production)的文档。
 
@@ -82,11 +87,51 @@ ClickStack 完全开源，可部署在任何环境中。其 schema 灵活且可�
 
 ## 架构概览 \{#architectural-overview\}
 
-<Image img={architecture} alt="简化架构" size="lg"/>
+ClickStack 的架构会根据部署方式而变化。**ClickStack Open Source**（所有组件均为自管理）与 **Managed ClickStack**（ClickHouse 和 HyperDX UI 托管并运行在 ClickHouse Cloud 中）之间在架构上存在重要差异。虽然两种模式下的核心组件保持一致，但每个组件在托管、伸缩和安全性方面的责任划分不同。
 
-ClickStack 由三个核心组件组成：
+<Tabs groupId="architectures">
+<TabItem value="managed-clickstack" label="Managed ClickStack" default>
 
-1. **HyperDX UI**  
+<Image img={managed_simple_architecture} alt="Managed ClickStack 架构" size="md" />
+
+Managed ClickStack 完全运行在 **ClickHouse Cloud** 中，在保留相同 ClickStack 数据模型和用户体验的同时，提供完全托管的可观测性后端。
+
+在这种模式下，**ClickHouse 和 ClickStack UI（HyperDX）** 由 ClickHouse Cloud 托管、运维并进行安全加固。用户只需负责运行一个 OpenTelemetry Collector，将遥测数据发送到托管服务中。
+
+Managed ClickStack 由以下组件组成：
+
+1. **ClickStack UI（HyperDX）**  
+   HyperDX UI 完全集成到 ClickHouse Cloud 中，并作为服务的一部分进行托管。它提供日志搜索、链路追踪分析、仪表盘、告警以及跨多种遥测类型的关联分析，并集成了认证和访问控制。
+
+2. **OpenTelemetry collector（自管理）**  
+   用户运行一个 OpenTelemetry Collector，从其应用和基础设施中接收遥测数据。该 collector 通过 OTLP 将数据转发到 ClickHouse Cloud。虽然可以使用任意符合标准的 OpenTelemetry Collector，但我们强烈推荐使用 **ClickStack 发行版**，它预先配置并针对 ClickHouse 摄取进行了优化，且可直接与 ClickStack schema 开箱即用。
+
+3. **ClickHouse Cloud**  
+   ClickHouse 在 ClickHouse Cloud 中以完全托管的方式运行，作为所有可观测性数据的存储和查询引擎。用户无需管理集群、升级或日常运维工作。
+
+Managed ClickStack 提供以下关键优势：
+
+- **计算与存储的自动独立伸缩**
+- 由对象存储支撑的 **低成本且几乎无限的保留期**
+- 使用 ClickHouse Cloud Warehouses 实现 **读写隔离**
+- **集成的认证与访问控制**
+- **自动备份**
+- **安全与合规特性**
+- **无运维停机的平滑升级**
+
+这种部署模式使团队可以将精力完全聚焦在可观测性工作流与监测/埋点上，而无需自行运维 ClickHouse 或 ClickStack UI。
+
+对于计划在生产环境中部署 ClickStack 的用户，推荐优先选择 Managed ClickStack。请参阅[快速入门指南](/use-cases/observability/clickstack/getting-started/managed)以了解如何在 ClickHouse Cloud 中部署 ClickStack。
+
+</TabItem>
+
+<TabItem value="oss-clickstack" label="Open Source ClickStack" default>
+
+<Image img={oss_simple_architecture} alt="OSS 简化架构" size="md" />
+
+Open Source ClickStack 由三个核心组件组成：
+
+1. **ClickStack UI（HyperDX）**  
    为可观测性构建的用户友好型界面。它同时支持 Lucene 风格查询和 SQL 查询、交互式仪表盘、告警、链路追踪分析等功能——并针对以 ClickHouse 作为后端进行了优化。
 
 2. **OpenTelemetry collector**  
@@ -99,4 +144,7 @@ ClickStack 由三个核心组件组成：
 
 完整的架构图和部署细节可以在[架构部分](/use-cases/observability/clickstack/architecture)中找到。
 
-对于计划在生产环境中部署 ClickStack 的用户，我们建议阅读["生产环境"](/use-cases/observability/clickstack/production)指南。
+对于计划在生产环境中部署 Open Source ClickStack 的用户，我们建议阅读["生产环境"](/use-cases/observability/clickstack/production)指南。
+
+</TabItem>
+</Tabs>
