@@ -11,7 +11,155 @@ doc_type: 'guide'
 
 Data masking is a technique used for data protection, in which the original data is replaced with a version of the data which maintains its format and structure while removing any personally identifiable information (PII) or sensitive information.
 
-This guide shows you how you can mask data in ClickHouse.
+This guide shows you how you can mask data in ClickHouse using several approaches:
+
+- **Masking policies** (ClickHouse Cloud, 25.12+): Native dynamic masking applied at query time for specific users/roles
+- **String replacement functions**: Basic masking using built-in functions
+- **Masked views**: Creating views with transformation logic
+- **Materialized columns**: Storing masked versions alongside original data
+- **Query masking rules**: Masking sensitive data in logs (ClickHouse OSS)
+
+## Use masking policies (ClickHouse Cloud) {#masking-policies}
+
+:::note
+Masking policies are available in ClickHouse Cloud starting from version 25.12.
+:::
+
+The [`CREATE MASKING POLICY`](/sql-reference/statements/create/masking-policy) statement provides a native way to dynamically mask column values for specific users or roles at query time. Unlike other approaches, masking policies don't require creating separate views or storing masked data - the transformation happens transparently when users query the table.
+
+### Basic masking policy
+
+To demonstrate masking policies, let's create an `orders` table that contains customer information:
+
+```sql
+CREATE TABLE orders (
+    user_id UInt32,
+    name String,
+    email String,
+    phone String,
+    total_amount Decimal(10,2),
+    order_date Date,
+    shipping_address String
+)
+ENGINE = MergeTree()
+ORDER BY user_id;
+
+INSERT INTO orders VALUES
+    (1001, 'John Smith', 'john.smith@gmail.com', '555-123-4567', 299.99, '2024-01-15', '123 Main St, New York, NY 10001'),
+    (1002, 'Sarah Johnson', 'sarah.johnson@outlook.com', '555-987-6543', 149.50, '2024-01-16', '456 Oak Ave, Los Angeles, CA 90210'),
+    (1003, 'Michael Brown', 'mbrown@company.com', '555-456-7890', 599.00, '2024-01-17', '789 Pine Rd, Chicago, IL 60601'),
+    (1004, 'Emily Rogers', 'emily.rogers@yahoo.com', '555-321-0987', 89.99, '2024-01-18', '321 Elm St, Houston, TX 77001'),
+    (1005, 'David Wilson', 'dwilson@email.net', '555-654-3210', 449.75, '2024-01-19', '654 Cedar Blvd, Phoenix, AZ 85001');
+```
+
+Now create a role for users who should see masked data:
+
+```sql
+CREATE ROLE masked_data_viewer;
+```
+
+Create a masking policy that applies to the `masked_data_viewer` role:
+
+```sql
+CREATE MASKING POLICY mask_pii_data ON orders
+    UPDATE
+        name = replaceRegexpOne(name, '^([A-Za-z]+)\\s+(.*)$', '\\1 ****'),
+        email = replaceRegexpOne(email, '^(.{2})[^@]*(@.*)$', '\\1****\\2'),
+        phone = replaceRegexpOne(phone, '^(\\d{3})-(\\d{3})-(\\d{4})$', '\\1-***-\\3'),
+        shipping_address = replaceRegexpOne(shipping_address, '^[^,]+,\\s*(.*)$', '*** \\1')
+    TO masked_data_viewer;
+```
+
+When a user with the `masked_data_viewer` role queries the `orders` table, they automatically see masked data:
+
+```sql title="Query"
+SELECT * FROM orders ORDER BY user_id;
+```
+
+```response title="Response (for masked_data_viewer role)"
+┌─user_id─┬─name─────────┬─email──────────────┬─phone────────┬─total_amount─┬─order_date─┬─shipping_address──────────┐
+│    1001 │ John ****    │ jo****@gmail.com   │ 555-***-4567 │       299.99 │ 2024-01-15 │ *** New York, NY 10001    │
+│    1002 │ Sarah ****   │ sa****@outlook.com │ 555-***-6543 │        149.5 │ 2024-01-16 │ *** Los Angeles, CA 90210 │
+│    1003 │ Michael **** │ mb****@company.com │ 555-***-7890 │          599 │ 2024-01-17 │ *** Chicago, IL 60601     │
+│    1004 │ Emily ****   │ em****@yahoo.com   │ 555-***-0987 │        89.99 │ 2024-01-18 │ *** Houston, TX 77001     │
+│    1005 │ David ****   │ dw****@email.net   │ 555-***-3210 │       449.75 │ 2024-01-19 │ *** Phoenix, AZ 85001     │
+└─────────┴──────────────┴────────────────────┴──────────────┴──────────────┴────────────┴───────────────────────────┘
+```
+
+Users without the `masked_data_viewer` role see the original, unmasked data.
+
+### Conditional masking
+
+You can use the `WHERE` clause to apply masking only to specific rows. For example, to mask only high-value orders:
+
+```sql
+CREATE MASKING POLICY mask_high_value_orders ON orders
+    UPDATE
+        name = replaceRegexpOne(name, '^([A-Za-z]+)\\s+(.*)$', '\\1 ****'),
+        email = replaceRegexpOne(email, '^(.{2})[^@]*(@.*)$', '\\1****\\2')
+    WHERE total_amount > 200
+    TO masked_data_viewer;
+```
+
+### Multiple policies with priority
+
+When multiple masking policies apply to the same column, use the `PRIORITY` clause to control which transformation is applied. Higher priority values are applied last:
+
+```sql
+-- Lower priority: Basic masking for all sensitive data
+CREATE MASKING POLICY basic_masking ON orders
+    UPDATE
+        name = '****',
+        email = '****@****.com'
+    TO masked_data_viewer
+    PRIORITY 0;
+
+-- Higher priority: More refined masking (overrides basic_masking)
+CREATE MASKING POLICY refined_masking ON orders
+    UPDATE
+        name = replaceRegexpOne(name, '^([A-Za-z]+)\\s+(.*)$', '\\1 ****')
+    WHERE total_amount > 100
+    TO masked_data_viewer
+    PRIORITY 10;
+```
+
+In this example, for orders with `total_amount > 100`, the `refined_masking` policy (priority 10) overrides the `basic_masking` policy (priority 0) for the `name` column, while `email` continues to use the basic masking.
+
+### Hash-based masking
+
+For cases where you need consistent masking (same input always produces the same masked output), use hash functions:
+
+```sql
+CREATE MASKING POLICY hash_sensitive_data ON orders
+    UPDATE
+        email = concat(toString(cityHash64(email)), '@masked.com'),
+        phone = concat('555-', toString(cityHash64(phone) % 10000000))
+    TO masked_data_viewer;
+```
+
+### Managing masking policies
+
+View all masking policies:
+
+```sql
+SHOW MASKING POLICIES;
+```
+
+Drop a masking policy:
+
+```sql
+DROP MASKING POLICY mask_pii_data ON orders;
+```
+
+Replace an existing policy:
+
+```sql
+CREATE OR REPLACE MASKING POLICY mask_pii_data ON orders
+    UPDATE name = '[REDACTED]'
+    TO masked_data_viewer;
+```
+
+For more details, see the [CREATE MASKING POLICY](/sql-reference/statements/create/masking-policy) documentation.
 
 ## Use string replacement functions {#using-string-functions}
 
