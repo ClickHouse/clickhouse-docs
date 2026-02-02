@@ -103,7 +103,7 @@ Select 'ClickStack' from the left navigation menu.
 
 From the ClickHouse Cloud landing page, select `New service` to create a new service.
 
-<Image img={new_service} size="md" alt='Service Service' border force/>
+<Image img={new_service} size="md" alt='Service Service' border/>
 
 ### Select your use case {#select-your-use-case}
 

@@ -7,14 +7,14 @@ import TabItem from '@theme/TabItem';
 
 This will prompt the user to select their ingestion source. Managed ClickStack supports a number of ingestion sources, including OpenTelemetry and [Vector](https://vector.dev/), as well as the option to send data directly to ClickHouse in your own schema.
 
-<Image img={select_source} size="md" alt='Select source' border force/>
+<Image img={select_source} size="md" alt='Select source' border/>
 
 :::note OpenTelemetry recommended
 We strongly recommend using OpenTelemetry as the ingestion format. It provides the simplest and most optimized experience, with out-of-the-box schemas that are specifically designed to work efficiently with ClickStack.
 :::
 
 <Tabs groupId="ingestion-sources">
-<TabItem value="open-telemetry" label="OpenTelemetry" default force>
+<TabItem value="open-telemetry" label="OpenTelemetry" default>
 
 To send OpenTelemetry data to Managed ClickStack, we recommend using an OpenTelemetry Collector. The collector acts as a gateway that receives OpenTelemetry data from your applications (and other collectors) and forwards it to ClickHouse Cloud.
 
@@ -26,7 +26,7 @@ The following assumes the recommended path of using the **ClickStack distributio
 
 To get started quickly, copy and run the Docker command shown.
 
-<Image img={otel_collector_start} size="md" alt='OTel collector source' border force/>
+<Image img={otel_collector_start} size="md" alt='OTel collector source' border/>
 
 This command should include your connection credentials `CLICKHOUSE_ENDPOINT` and `CLICKHOUSE_PASSWORD` pre-populated.
 
@@ -199,7 +199,7 @@ service:
 
 ```
 
-<Image img={advanced_otel_collector} size="md" alt='Advanced OTel collector source' border force/>
+<Image img={advanced_otel_collector} size="md" alt='Advanced OTel collector source' border/>
 
 For further details on configuring OpenTelemetry collectors see ["Ingesting with OpenTelemetry."](/use-cases/observability/clickstack/ingesting-data/opentelemetry)
 

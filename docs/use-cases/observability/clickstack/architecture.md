@@ -80,7 +80,7 @@ The ClickStack Open Source architecture is built around three core components: *
 
 ## Architecture overview {#architecture-overview}
 
-<Image img={oss_architecture} alt="Architecture" size="lg" force/>
+<Image img={oss_architecture} alt="Architecture" size="lg"/>
 
 ## ClickHouse: the database engine {#clickhouse}
 

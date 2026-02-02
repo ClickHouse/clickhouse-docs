@@ -3,7 +3,7 @@ import clickstack_managed_ui from '@site/static/images/clickstack/getting-starte
 
 Select 'Launch ClickStack' to access the ClickStack UI (HyperDX). You will automatically authenticated and redirected. Data sources will be pre-created for each of the OTel sources, logs, traces and metrics.
 
-<Image img={clickstack_managed_ui} size="md" alt='ClickStack UI' border force/>
+<Image img={clickstack_managed_ui} size="md" alt='ClickStack UI' border/>
 
 And that’s it — you’re all set. 🎉
 

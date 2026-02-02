@@ -277,7 +277,7 @@ Visit [http://localhost:8080](http://localhost:8080) to access the ClickStack UI
 
 Data sources should be pre-created for you. The search UI should be populated with local system logs. Expand the filters to select the `system.log`:
 
-<Image img={hyperdx_20} alt="HyperDX Local logs" size="lg" force/>
+<Image img={hyperdx_20} alt="HyperDX Local logs" size="lg"/>
 
 ## Explore system metrics {#explore-system-metrics-oss}
 
@@ -289,15 +289,15 @@ For the `Select a Metric` menu simply type `memory` before selecting `system.mem
 
 Press the run button to visualize your memory utilization over time.
 
-<Image img={hyperdx_21} alt="Memory over time" size="lg" force/>
+<Image img={hyperdx_21} alt="Memory over time" size="lg"/>
 
 Note the number is returned as a floating point `%`. To render it more clearly, select `Set number format`. 
 
-<Image img={hyperdx_22} alt="Number format" size="lg" force/>
+<Image img={hyperdx_22} alt="Number format" size="lg"/>
 
 From the subsequent menu you can select `Percentage` from the `Output format` drop down before clicking `Apply`.
 
-<Image img={hyperdx_23} alt="Memory % of time" size="lg" force/>
+<Image img={hyperdx_23} alt="Memory % of time" size="lg"/>
 
 </VerticalStepper>
 </TabItem>
