@@ -15,6 +15,9 @@ import S3DataSource from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_
 import GCSSDataSource from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/google-cloud-storage/_1-data-source.md';
 import ABSDataSource from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/azure-blob-storage/_1-data-source.md';
 
+import S3Connection from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/amazon-s3/_2-connection.md';
+import GCSConnection from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/google-cloud-storage/_2-connection.md';
+
 <VerticalStepper type="numbered" headerLevel="h2">
 
 ## 选择数据源 \{#1-select-the-data-source\}
@@ -31,9 +34,8 @@ import ABSDataSource from '@site/i18n/zh/docusaurus-plugin-content-docs/current/
 
 **1.** 要创建一个新的 ClickPipe，你需要提供如何连接到对象存储服务并进行身份验证的详细信息。
 
-{props.provider === 's3' && <S3DataSource />}
-{props.provider === 'gcs' && <GCSSDataSource />}
-{props.provider === 'abs' && <ABSDataSource />}
+{props.provider === 's3' && <S3Connection />}
+{props.provider === 'gcs' && <GCSConnection />}
 
 **2.** 点击 **Incoming data**。ClickPipes 将从你的 bucket（存储桶）中获取元数据，用于下一步。
 

@@ -15,6 +15,9 @@ import S3DataSource from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_
 import GCSSDataSource from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/google-cloud-storage/_1-data-source.md';
 import ABSDataSource from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/azure-blob-storage/_1-data-source.md';
 
+import S3Connection from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/amazon-s3/_2-connection.md';
+import GCSConnection from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/google-cloud-storage/_2-connection.md';
+
 <VerticalStepper type="numbered" headerLevel="h2">
 
 ## Выберите источник данных \{#1-select-the-data-source\}
@@ -31,9 +34,8 @@ import ABSDataSource from '@site/i18n/ru/docusaurus-plugin-content-docs/current/
 
 **1.** Чтобы настроить новый ClickPipe, необходимо указать параметры подключения и аутентификации к вашему сервису объектного хранилища.
 
-{props.provider === 's3' && <S3DataSource />}
-{props.provider === 'gcs' && <GCSSDataSource />}
-{props.provider === 'abs' && <ABSDataSource />}
+{props.provider === 's3' && <S3Connection />}
+{props.provider === 'gcs' && <GCSConnection />}
 
 **2.** Нажмите **Incoming data**. ClickPipes получит метаданные из вашего бакета для следующего шага.
 
