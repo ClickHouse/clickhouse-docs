@@ -26,6 +26,7 @@ ClickStack は、オブザーバビリティデータを ClickHouse インスタ
 | [MySQL Logs](/use-cases/observability/clickstack/integrations/mysql-logs) | MySQL のスロークエリ/エラーログを収集する |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Nginx のアクセス/エラーログを収集する |
 | [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | Nginx の HTTP リクエストをトレースする |
+| [Node.js Traces](/use-cases/observability/clickstack/integrations/nodejs-traces) | Node.js の HTTP リクエストをトレースする |
 | [PostgreSQL Logs](/use-cases/observability/clickstack/integrations/postgresql-logs) | Postgres ログを収集する |
 | [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | Postgres のパフォーマンスを監視する |
 | [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Redis サーバーログを収集する |
