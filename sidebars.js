@@ -352,6 +352,7 @@ const sidebars = {
             items: [
               'cloud/managed-postgres/migrations/pg_dump-pg_restore',
               'cloud/managed-postgres/migrations/logical-replication',
+              'cloud/managed-postgres/migrations/peerdb',
             ],
           },
       ],
