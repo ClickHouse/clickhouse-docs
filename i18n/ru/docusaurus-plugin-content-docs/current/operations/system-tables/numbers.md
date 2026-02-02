@@ -40,7 +40,7 @@ SELECT * FROM system.numbers LIMIT 10;
 Вы также можете ограничить вывод по предикатам.
 
 ```sql
-SELECT * FROM system.numbers < 10;
+SELECT * FROM system.numbers WHERE number < 10;
 ```
 
 ```response

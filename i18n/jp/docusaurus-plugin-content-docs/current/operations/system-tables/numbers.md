@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 # system.numbers \{#systemnumbers\}
 
-このテーブルには、`number` という名前の単一の UInt64 列があり、0 から始まるほぼすべての自然数が含まれます。
+このテーブルには、`number` という名前の単一の UInt64 カラムがあり、0 から始まるほぼすべての自然数が含まれます。
 
 このテーブルはテスト用途や、総当たり検索を行う必要がある場合に使用できます。
 
@@ -37,10 +37,10 @@ SELECT * FROM system.numbers LIMIT 10;
 10 rows in set. Elapsed: 0.001 sec.
 ```
 
-出力を条件で絞り込むこともできます。
+出力を述語で絞り込むこともできます。
 
 ```sql
-SELECT * FROM system.numbers < 10;
+SELECT * FROM system.numbers WHERE number < 10;
 ```
 
 ```response
