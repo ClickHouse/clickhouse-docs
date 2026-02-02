@@ -6,6 +6,7 @@ description: 'Learn how to migrate your PostgreSQL data to ClickHouse Managed Po
 keywords: ['postgres', 'postgresql', 'logical replication', 'migration', 'data transfer', 'managed postgres', 'peerdb']
 doc_type: 'guide'
 ---
+
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 import sourcePeer from '@site/static/images/managed-postgres/peerdb/source-peer.png';
