@@ -370,7 +370,8 @@ This can be for a few reasons, mainly around some prerequisites for snapshotting
 #### Parallel snapshotting is taking time to obtain partitions
 Parallel snapshotting has a few initial steps to obtain logical partitions for your tables. If your tables are small, this will finish in a matter of seconds however for very large (order of terabytes) tables, this can take longer. You can monitor the queries running on your Postgres source in the **Source** tab to see if there are any long running queries related to obtaining partitions for snapshotting. Once the partitions are obtained, data will start flowing in.
 #### Replication slot creation is transaction locked
-In the **Source** tab under the Activity section, you would see the `CREATE_REPLICATION_SLOT` query stuck in `Lock` state. In order to see the blocking queries, you can run the below query on your Postgres source:
+In the **Source** tab under the Activity section, you would see the `CREATE_REPLICATION_SLOT` query stuck in `Lock` state. This could be due to another transaction holding locks on objects that Postgres uses to create replication slots.
+In order to see the blocking queries, you can run the below query on your Postgres source:
 ```sql
 SELECT
   blocked.pid AS blocked_pid,
