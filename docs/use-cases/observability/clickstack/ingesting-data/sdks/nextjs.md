@@ -94,30 +94,15 @@ This will allow Next.js to import the OpenTelemetry instrumentation for any serv
 
 ### Configure environment variables {#configure-environment-variables}
 
-If you're sending traces directly to ClickStack via the OpenTelemetry, you'll need to start your Next.js
+If you're sending traces directly to ClickStack, you'll need to start your Next.js
 server with the following environment variables to point spans towards the OTel collector:
-
-<Tabs groupId="service-type">
-<TabItem value="clickstack-managed" label="Managed ClickStack" default>
-
-```sh copy
-OTEL_SERVICE_NAME=<MY_SERVICE_NAME> \
-OTEL_EXPORTER_OTLP_ENDPOINT=http://your-otel-collector:4318
-npm run dev
-```
-
-</TabItem>
-
-<TabItem value="clickstack-oss" label="ClickStack Open Source" >
 
 ```sh copy
 HYPERDX_API_KEY=<YOUR_INGESTION_API_KEY> \
 OTEL_SERVICE_NAME=<MY_SERVICE_NAME> \
-OTEL_EXPORTER_OTLP_ENDPOINT=http://your-otel-collector:4318
+OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 npm run dev
 ```
-</TabItem>
-</Tabs>
 
 If you're deploying in Vercel, ensure that all the environment variables above are configured
 for your deployment.

@@ -39,8 +39,7 @@ import { HyperDXNestLoggerModule } from '@hyperdx/node-logger';
 @Module({
   imports: [
     HyperDXNestLoggerModule.forRoot({
-      url: 'http://your-otel-collector:4318',
-      apiKey: ***YOUR_INGESTION_API_KEY***, // Not need for Managed ClickStack
+      apiKey: ***YOUR_INGESTION_API_KEY***,
       maxLevel: 'info',
       service: 'my-app',
     }),
@@ -93,8 +92,7 @@ import { HyperDXNestLoggerModule } from '@hyperdx/node-logger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: HyperDXNestLoggerModule.createLogger({
-      url: 'http://your-otel-collector:4318',
-      apiKey: ***YOUR_INGESTION_API_KEY***, // Not needed for Managed ClickStack
+      apiKey: ***YOUR_INGESTION_API_KEY***,
       maxLevel: 'info',
       service: 'my-app',
     })

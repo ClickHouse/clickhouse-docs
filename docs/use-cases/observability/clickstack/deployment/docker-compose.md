@@ -4,7 +4,7 @@ title: 'Docker Compose'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 3
-description: 'Deploying ClickStack Open Source with Docker Compose - The ClickHouse Observability Stack'
+description: 'Deploying ClickStack with Docker Compose - The ClickHouse Observability Stack'
 doc_type: 'guide'
 keywords: ['ClickStack Docker Compose', 'Docker Compose ClickHouse', 'HyperDX Docker deployment', 'ClickStack deployment guide', 'OpenTelemetry Docker Compose']
 ---
@@ -14,7 +14,7 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
 import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
-All ClickStack Open Source components are distributed separately as individual Docker images:
+All ClickStack components are distributed separately as individual Docker images:
 
 * **ClickHouse**
 * **HyperDX**
@@ -68,7 +68,7 @@ You can override the default connection to the integrated ClickHouse instance. F
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
-For an example of using an alternative ClickHouse instance, see ["Create a ClickHouse Cloud connection"](/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection).
+For an example of using an alternative ClickHouse instance, see ["Create a ClickHouse Cloud connection"](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
 
 ### Complete connection details {#complete-connection-details}
 
@@ -117,9 +117,7 @@ The OTel collector configuration can be modified if required - see ["Modifying c
 
 ## Using ClickHouse Cloud {#using-clickhouse-cloud}
 
-This distribution can be used with ClickHouse Cloud, but it differs from [Managed ClickStack](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud). In this setup, you manage the ClickStack UI yourself while using ClickHouse Cloud only for compute and storage. Unless you have a specific reason to operate the UI independently, we recommend using Managed ClickStack, which includes integrated authentication and additional enterprise features, and removes the need to manage the ClickStack UI yourself.
-
-You should:
+This distribution can be used with ClickHouse Cloud. You should:
 
 - Remove the ClickHouse service from the `docker-compose.yml` file. This is optional if testing, as the deployed ClickHouse instance will simply be ignored - although waste local resources. If removing the service, ensure any references to the service such as `depends_on` are removed.
 - Modify the OTel collector to use a ClickHouse Cloud instance by setting the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD` in the compose file. Specifically, add the environment variables to the OTel collector service:
