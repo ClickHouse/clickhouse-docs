@@ -51,8 +51,6 @@ ClickPipes 既可以用于长期的流式数据摄取需求，也可以用于一
 | [MySQL](/integrations/clickpipes/mysql)            | <Mysqlsvg class="image" alt="MySQL logo" style={{width: '3rem', height: 'auto'}}/>               |DBMS| Private Beta | 配置 ClickPipes，并开始将来自 MySQL 的数据摄取到 ClickHouse Cloud 中。                               |
 | [MongoDB](/integrations/clickpipes/mongodb)        | <Mongodbsvg class="image" alt="MongoDB logo" style={{width: '3rem', height: 'auto'}}/>           |DBMS| Private Preview | 配置 ClickPipes，并开始将来自 MongoDB 的数据摄取到 ClickHouse Cloud 中。                            |
 
-
-
 ## 语言客户端集成 \{#language-client-integrations\}
 
 ClickHouse 提供了多种语言客户端集成，下面列出了每种集成对应的文档链接。

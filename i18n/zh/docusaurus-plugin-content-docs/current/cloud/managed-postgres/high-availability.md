@@ -10,7 +10,7 @@ doc_type: '指南'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 
-<PrivatePreviewBadge />
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="high-availability" />
 
 Managed Postgres 提供多种高可用性级别，以满足您的数据持久性和性能需求。您可以在配置数据库时添加一个或两个备用副本，或稍后根据需要在 **Settings** 页面中调整此配置。
 

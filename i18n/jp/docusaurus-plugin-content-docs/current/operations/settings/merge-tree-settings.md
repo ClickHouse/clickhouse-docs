@@ -81,6 +81,14 @@ true の場合、CollapsingMergeTree または VersionedCollapsingMergeTree テ�
 
 有効にすると、テーブルのすべての文字列カラムに対して、min-max（スキップ）索引が追加されます。
 
+## add_minmax_index_for_temporal_columns \{#add_minmax_index_for_temporal_columns\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "新しい設定"}]}]}/>
+
+有効にすると、テーブル内のすべての Date、Date32、Time、Time64、DateTime、DateTime64 カラムに対して、min-max（スキップ）索引が追加されます。
+
 ## allow_coalescing_columns_in_partition_or_order_key \{#allow_coalescing_columns_in_partition_or_order_key\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -489,6 +497,22 @@ ClickHouse Cloud でのみ利用可能です。マージ処理中に、パーツ
 
 ストレージディスクの名前。`storage policy` の代わりに指定できます。
 
+## distributed_index_analysis_min_indexes_size_to_activate \{#distributed_index_analysis_min_indexes_size_to_activate\}
+
+<SettingsInfoBlock type="UInt64" default_value="1073741824" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1073741824"},{"label": "New setting"}]}]}/>
+
+ディスク上（非圧縮）のデータスキップ索引および primary key 索引の最小サイズ。この値を超えると distributed index analysis が有効になります。
+
+## distributed_index_analysis_min_parts_to_activate \{#distributed_index_analysis_min_parts_to_activate\}
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "10"},{"label": "New setting"}]}]}/>
+
+分散索引解析を有効化するために必要なパーツの最小数
+
 ## dynamic_serialization_version \{#dynamic_serialization_version\}
 
 <SettingsInfoBlock type="MergeTreeDynamicSerializationVersion" default_value="v3" />
@@ -525,7 +549,7 @@ Dynamic データ型のシリアライズバージョン。互換性を維持す
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}]}/>
 
 設定 `min_age_to_force_merge_seconds` および
 `min_age_to_force_merge_on_partition_only` が、
@@ -579,6 +603,14 @@ Vertical merge アルゴリズムの利用を有効化します。
 宛先テーブルに対して有効になっている場合、ソーステーブルと宛先テーブルの
 索引および PROJECTION は完全に一致していなければなりません。そうでない場合は、
 宛先テーブルはソーステーブルの索引および PROJECTION のスーパーセットであってもかまいません。
+
+## escape_index_filenames \{#escape_index_filenames\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "索引用に作成されるファイル名内の非 ASCII 文字をエスケープ"}]}]}/>
+
+26.1 より前のバージョンでは、二次索引用に作成されるファイル名内の特殊文字をエスケープしていなかったため、索引名に含まれる一部の文字によってパーツが破損する問題が発生する可能性がありました。この設定は互換性維持のためだけに追加されたものです。名前に非 ASCII 文字を含む索引を持つ古いパーツを読み込む場合を除き、この設定を変更すべきではありません。
 
 ## escape_variant_subcolumn_filenames \{#escape_variant_subcolumn_filenames\}
 
@@ -1252,6 +1284,18 @@ ReplicatedMergeTree のキュー内で、パーツに対する mutation タス�
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1073741824"},{"label": "Cloud sync"}]}]}/>
 
 ClickHouse Cloud でのみ利用可能です。マージ処理中にキャッシュを事前ウォームアップする際の対象となるパーツ（compact または packed）の最大サイズ。
+
+## merge_max_dynamic_subcolumns_in_compact_part \{#merge_max_dynamic_subcolumns_in_compact_part\}
+
+<SettingsInfoBlock type="UInt64Auto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "auto"},{"label": "マージ後の Compact データパートにおいて、データ型で指定されたパラメータに関わらず、動的サブカラム数を制限する新しい設定を追加"}]}]}/>
+
+マージ後の Compact データパート内の各カラムで作成できる動的サブカラムの最大数を指定します。
+この設定により、データ型で指定された動的パラメータに関わらず、Compact データパート内の動的サブカラム数を制御できます。
+
+例えば、テーブルに JSON(max_dynamic_paths=1024) 型のカラムがあり、`merge_max_dynamic_subcolumns_in_compact_part` 設定が 128 に設定されている場合、
+Compact データパートへのマージ後、このパート内の動的パスの数は 128 に制限され、動的サブカラムとして書き込まれるパスも 128 個のみになります。
 
 ## merge_max_dynamic_subcolumns_in_wide_part \{#merge_max_dynamic_subcolumns_in_wide_part\}
 

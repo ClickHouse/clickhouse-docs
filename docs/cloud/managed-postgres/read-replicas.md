@@ -12,7 +12,7 @@ import Image from '@theme/IdealImage';
 import warehouseView from '@site/static/images/managed-postgres/warehouse-view.png';
 import readReplicaDialog from '@site/static/images/managed-postgres/read-replica-dialog.png';
 
-<PrivatePreviewBadge/>
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="read-replicas" />
 
 Read replicas allow you to create one or more copies of your primary Managed Postgres database. These replicas continuously follow your primary database using PostgreSQL's native replication to stay up to date with changes.
 

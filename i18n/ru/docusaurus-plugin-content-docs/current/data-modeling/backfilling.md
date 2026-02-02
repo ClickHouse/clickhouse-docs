@@ -471,9 +471,13 @@ Peak memory usage: 639.47 MiB.
 На производительность и потребление ресурсов в описанном выше сценарии влияет несколько факторов. Перед тем как приступать к настройке, мы рекомендуем ознакомиться с механикой вставки, подробно описанной в разделе [Using Threads for Reads](/integrations/s3/performance#using-threads-for-reads) руководства [Optimizing for S3 Insert and Read Performance](/integrations/s3/performance). Вкратце:
 
 * **Параллелизм чтения (Read Parallelism)** — количество потоков, используемых для чтения. Управляется через [`max_threads`](/operations/settings/settings#max_threads). В ClickHouse Cloud определяется размером экземпляра, по умолчанию равным количеству vCPU. Увеличение этого значения может улучшить производительность чтения за счет большего потребления памяти.
-* **Параллелизм вставки (Insert Parallelism)** — количество потоков, используемых для вставки данных. Управляется через [`max_insert_threads`](/operations/settings/settings#max_insert_threads). В ClickHouse Cloud определяется размером экземпляра (между 2 и 4), а в OSS по умолчанию равно 1. Увеличение этого значения может улучшить производительность за счет большего потребления памяти.
+* **Параллелизм вставки (Insert Parallelism)** — количество потоков, используемых для вставки данных. Управляется через [`max_insert_threads`](/operations/settings/settings#max_insert_threads). **Примечание**: это значение ограничено `max_threads`, поэтому эффективный параллелизм вставки равен `min(max_insert_threads, max_threads)`. В ClickHouse Cloud определяется размером экземпляра (между 2 и 4), а в OSS по умолчанию равно 1. Увеличение этого значения может улучшить производительность за счет большего потребления памяти.
 * **Размер блока вставки (Insert Block Size)** — данные обрабатываются в цикле: они извлекаются, парсятся и формируются в блоки вставки в памяти на основе [ключа партиционирования](/engines/table-engines/mergetree-family/custom-partitioning-key). Эти блоки сортируются, оптимизируются, сжимаются и записываются в хранилище как новые [части данных](/parts). Размер блока вставки, управляемый настройками [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows) и [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes) (в несжатом виде), влияет на использование памяти и дисковый ввод-вывод. Более крупные блоки потребляют больше памяти, но создают меньше частей, снижая I/O и объем фоновых слияний. Эти настройки задают минимальные пороговые значения (как только достигается любое из них, инициируется сброс).
 * **Размер блока для материализованного представления (Materialized view block size)** — помимо описанной выше механики основной вставки, перед вставкой в материализованные представления блоки также укрупняются для более эффективной обработки. Размер этих блоков определяется настройками [`min_insert_block_size_bytes_for_materialized_views`](/operations/settings/settings#min_insert_block_size_bytes_for_materialized_views) и [`min_insert_block_size_rows_for_materialized_views`](/operations/settings/settings#min_insert_block_size_rows_for_materialized_views). Более крупные блоки позволяют более эффективно обрабатывать данные за счет большего потребления памяти. По умолчанию эти настройки наследуют значения настроек исходной таблицы [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows) и [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes) соответственно.
+
+:::note
+**Совет для тривиальных запросов INSERT SELECT**: для простых запросов вида `INSERT INTO t1 SELECT * FROM t2` без сложных преобразований рассмотрите возможность включения `optimize_trivial_insert_select=1`. Эта настройка (по умолчанию отключена начиная с версии 24.7) автоматически подстраивает параллелизм SELECT под значение `max_insert_threads`, уменьшая потребление ресурсов и количество создаваемых частей. Это особенно полезно при массовой миграции данных между таблицами.
+:::
 
 Для улучшения производительности пользователи могут следовать рекомендациям, изложенным в разделе [Tuning Threads and Block Size for Inserts](/integrations/s3/performance#tuning-threads-and-block-size-for-inserts) руководства [Optimizing for S3 Insert and Read Performance](/integrations/s3/performance). В большинстве случаев нет необходимости дополнительно изменять `min_insert_block_size_bytes_for_materialized_views` и `min_insert_block_size_rows_for_materialized_views` для повышения производительности. Если вы все же изменяете эти параметры, применяйте те же рекомендуемые практики, которые описаны для `min_insert_block_size_rows` и `min_insert_block_size_bytes`.
 
@@ -496,6 +500,7 @@ Peak memory usage: 506.78 MiB.
 
 Мы можем еще больше снизить использование памяти, уменьшив значение параметра `max_threads` до 1.
 
+
 ```sql
 INSERT INTO pypi_v2
 SELECT timestamp, project
@@ -509,8 +514,7 @@ Ok.
 Peak memory usage: 272.53 MiB.
 ```
 
-Наконец, мы можем еще больше снизить потребление памяти, установив параметр `min_insert_block_size_rows` в 0 (отключает его как определяющий фактор при выборе размера блока) и `min_insert_block_size_bytes` в 10485760 (10 МиБ).
-
+Наконец, мы можем еще больше снизить потребление памяти, установив `min_insert_block_size_rows` равным 0 (это отключает его как определяющий фактор при выборе размера блока) и `min_insert_block_size_bytes` равным 10485760 (10 MiB).
 
 ```sql
 INSERT INTO pypi_v2

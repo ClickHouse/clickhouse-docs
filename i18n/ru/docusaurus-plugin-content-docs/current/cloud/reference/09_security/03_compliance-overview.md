@@ -9,7 +9,9 @@ keywords: ['ClickHouse Cloud', 'SOC 2 Type II', 'ISO 27001', 'HIPAA', 'U.S. DPF'
 import BetaBadge from '@theme/badges/BetaBadge';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
 
+
 # Отчеты по безопасности и соответствию требованиям \{#security-and-compliance-reports\}
+
 ClickHouse оценивает потребности наших клиентов в области безопасности и соответствия требованиям и постоянно расширяет программу по мере появления запросов на дополнительные отчеты. Для получения дополнительной информации или загрузки отчетов посетите наш [Центр доверия](https://trust.clickhouse.com).
 
 ## SOC 2 Type II (с 2022 года) \{#soc-2-type-ii-since-2022\}
@@ -30,7 +32,7 @@ ISO 27001 — международный стандарт в области ин
 
 Закон о переносимости и подотчетности медицинского страхования 1996 года (Health Insurance Portability and Accountability Act, HIPAA) — закон США о конфиденциальности, посвященный управлению защищенной медицинской информацией (PHI). HIPAA содержит несколько требований, включая [Security Rule](https://www.hhs.gov/hipaa/for-professionals/security/index.html), направленное на защиту электронной персональной медицинской информации (ePHI). ClickHouse реализовал административные, физические и технические меры защиты, чтобы обеспечить конфиденциальность, целостность и безопасность ePHI, хранящейся в специально определенных сервисах. Эти мероприятия отражены в нашем отчете SOC 2 Type II, доступном для загрузки в нашем [Trust Center](https://trust.clickhouse.com).
 
-Обратитесь к разделу [HIPAA onboarding](//cloud/security/compliance/hipaa-onboarding), чтобы ознакомиться с шагами по заключению Business Associate Agreement (BAA) и развертыванию сервисов, соответствующих требованиям HIPAA.
+Обратитесь к разделу [HIPAA onboarding](/cloud/security/compliance/hipaa-onboarding), чтобы ознакомиться с шагами по заключению Business Associate Agreement (BAA) и развертыванию сервисов, соответствующих требованиям HIPAA.
 
 ## Поставщик услуг PCI (с 2025 года) \{#pci-service-provider-since-2025\}
 
@@ -38,7 +40,7 @@ ISO 27001 — международный стандарт в области ин
 
 [Стандарт безопасности данных индустрии платёжных карт (Payment Card Industry Data Security Standard, PCI DSS)](https://www.pcisecuritystandards.org/standards/pci-dss/) — это набор правил, созданный Советом по стандартам безопасности PCI (PCI Security Standards Council) для защиты платёжных данных по банковским картам. ClickHouse прошёл внешний аудит у квалифицированного оценщика безопасности (Qualified Security Assessor, QSA), по результатам которого был получен положительный отчёт о соответствии (Report on Compliance, ROC) требованиям PCI, применимым к хранению данных банковских карт. Чтобы скачать копию нашего подтверждения соответствия (Attestation on Compliance, AOC) и обзор распределения ответственности по PCI, посетите наш [Trust Center](https://trust.clickhouse.com).
 
-Для получения информации о шагах по развёртыванию сервисов, соответствующих требованиям PCI, см. раздел [PCI onboarding](//cloud/security/compliance/pci-onboarding).
+Для получения информации о шагах по развёртыванию сервисов, соответствующих требованиям PCI, см. раздел [PCI onboarding](/cloud/security/compliance/pci-onboarding).
 
 ## Соответствие требованиям конфиденциальности \{#privacy-compliance\}
 

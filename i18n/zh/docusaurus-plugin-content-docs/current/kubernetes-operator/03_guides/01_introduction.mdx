@@ -1,0 +1,205 @@
+---
+position: 1
+slug: /clickhouse-operator/guides/introduction
+title: '简介'
+keywords: ['kubernetes']
+description: '本文档概述了 ClickHouse Operator 的核心概念和使用模式。'
+doc_type: 'guide'
+---
+
+# ClickHouse Operator 简介 \{#introduction-to-the-clickhouse-operator\}
+
+本文档将概述 ClickHouse Operator 的核心概念及其常见使用模式。
+
+## 什么是 ClickHouse Operator \{#what-is-the-clickhouse-operator\}
+
+ClickHouse Operator 是一个 Kubernetes Operator，用于在 Kubernetes 集群中自动化部署和管理 ClickHouse 集群。它基于 Operator 模式构建，通过自定义资源扩展 Kubernetes API，以表达 ClickHouse 集群及其依赖关系。
+
+该 Operator 负责：
+
+- 集群生命周期管理（创建、更新、扩缩容、删除）
+- ClickHouse Keeper 集群协调
+- 自动生成配置
+- 数据库 schema 的同步
+- 滚动更新和升级
+- 存储资源的预配
+
+## 自定义资源 \{#custom-resources\}
+
+该 Operator 提供了两个主要的自定义资源定义（CRD）：
+
+### ClickHouseCluster \{#clickhousecluster\}
+
+表示一个具有可配置副本和分片的 ClickHouse 数据库集群。
+
+```yaml
+apiVersion: clickhouse.com/v1alpha1
+kind: ClickHouseCluster
+metadata:
+  name: sample-cluster
+spec:
+  replicas: 3
+  shards: 2
+  keeperClusterRef:
+    name: sample-keeper
+  dataVolumeClaimSpec:
+    resources:
+      requests:
+        storage: 100Gi
+```
+
+
+### KeeperCluster \{#keepercluster\}
+
+表示一个用于分布式协调的 ClickHouse Keeper 集群（作为 ZooKeeper 的替代方案）。
+
+```yaml
+apiVersion: clickhouse.com/v1alpha1
+kind: KeeperCluster
+metadata:
+  name: sample-keeper
+spec:
+  replicas: 3
+  dataVolumeClaimSpec:
+    resources:
+      requests:
+        storage: 10Gi
+```
+
+
+## 协调机制 \{#coordination\}
+
+### ClickHouse Keeper 是必需的 \{#clickhouse-keeper-is-required\}
+
+每个 ClickHouseCluster 都需要一个 ClickHouse Keeper 集群用于分布式协调。
+必须在 ClickHouseCluster 的 spec 中使用 `keeperClusterRef` 引用该 Keeper 集群。
+
+###  一对一 Keeper 关系 \{#one-to-one-keeper-relationship\}
+
+每个 ClickHouseCluster 必须拥有自己专用的 KeeperCluster。不能在多个 ClickHouseCluster 之间共享同一个 KeeperCluster。
+
+**原因：** Operator 会为每个 ClickHouseCluster 自动生成一个唯一的认证密钥，用于访问其 Keeper。该密钥存储在 Secret 中，不能共享。
+
+**后果**：
+
+- 多个 ClickHouseCluster 不能引用同一个 KeeperCluster
+- 重新创建 ClickHouseCluster 时，需要同时重新创建其对应的 KeeperCluster
+
+:::note
+当 ClickHouseCluster 或 KeeperCluster 资源被删除时，Persistent Volume 不会被自动删除。
+:::
+
+在重新创建集群时：
+
+1. 删除 ClickHouseCluster 资源
+2. 删除 KeeperCluster 资源
+3. 等待所有 Pod（容器组）终止
+4. 如果希望从头开始，可以选择删除 PersistentVolumeClaim
+5. 同时重新创建 KeeperCluster 和 ClickHouseCluster
+
+为避免认证错误，要么手动删除 Persistent Volume，要么在使用全新存储的情况下同时重新创建这两个集群。
+
+## 模式复制 \{#schema-replication\}
+
+ClickHouse Operator 会自动在集群中的所有副本之间复制数据库定义。
+
+### 会被复制的内容 \{#what-gets-replicated\}
+
+Operator 会同步：
+
+- [Replicated](/engines/database-engines/replicated) 数据库定义
+- 集成数据库引擎（PostgreSQL、MySQL 等）
+
+Operator **不会** 同步：
+
+- 非复制数据库（Atomic、Ordinary 等）
+- 非复制数据库中的本地表
+- 表数据（由 ClickHouse 复制 处理）
+
+### 推荐：使用 Replicated 数据库引擎 \{#recommended-use-replicated-database-engine\}
+
+:::tip 最佳实践
+在生产环境部署中始终使用 [Replicated](/docs/engines/database-engines/replicated) 数据库引擎。
+:::
+
+优势：
+
+* 在所有节点之间自动进行 schema 复制
+* 简化表管理
+* Operator 可以同步到新的副本
+* 在整个集群内保持一致的 schema
+
+使用分布式 DDL 创建数据库：
+
+```sql
+CREATE DATABASE my_database ON CLUSTER 'default' ENGINE = Replicated;
+```
+
+
+### 避免使用非 Replicated 引擎 \{#avoid-non-replicated-engines\}
+
+非副本数据库引擎（Atomic、Lazy、SQLite、Ordinary）需要手动管理 schema：
+
+- 必须在每个副本上分别创建表
+- 各节点之间可能出现 schema 漂移
+- Operator 无法自动同步新的副本
+
+### 禁用 schema 复制 \{#disable-schema-replication\}
+
+要禁用自动 schema 复制，请在 ClickHouseCluster 资源中将 `spec.settings.enableDatabaseSync` 设置为 `false`。
+
+## 存储管理 \{#storage-management\}
+
+该 Operator 通过 Kubernetes 的 PersistentVolumeClaim（PVC）来管理存储。
+
+### 数据卷配置 \{#data-volume-configuration\}
+
+在 `dataVolumeClaimSpec` 中指定存储需求：
+
+```yaml
+spec:
+  dataVolumeClaimSpec:
+    storageClassName: fast-ssd
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 500Gi
+```
+
+
+### 存储生命周期 \{#storage-lifecycle\}
+
+* **创建**：PVC 会随集群自动创建
+* **扩容**：如果 StorageClass 支持卷扩容，则可以进行扩容
+* **保留**：在删除集群时 **不会** 自动删除 PVC
+* **复用**：如果使用相同名称重新创建集群，可以复用现有 PVC
+
+要完全移除存储：
+
+```bash
+# Delete cluster
+kubectl delete clickhousecluster my-cluster
+
+# Wait for pods to terminate
+kubectl wait --for=delete pod -l app.kubernetes.io/instance=my-cluster
+
+# Delete PVCs
+kubectl delete pvc -l app.kubernetes.io/instance=sample-cluster
+```
+
+
+## 默认配置要点 \{#default-configuration-highlights\}
+
+* **预先配置的集群：** 名为 `default` 的集群，包含所有 ClickHouse 节点。
+* **默认宏：** 预定义了一些有用的宏：
+  - `{cluster}`：集群名称（`default`）
+  - `{shard}`：分片编号
+  - `{replica}`：副本编号
+* **用于基于角色的访问控制（RBAC）实体的副本存储**
+* **用于用户自定义函数（UDF）的副本存储**
+
+## 后续步骤 \{#next-steps\}
+
+- [配置指南](./02_configuration.mdx) - 配置选项详解
+- [API 参考](../04_api_reference.mdx) - 完整 API 文档

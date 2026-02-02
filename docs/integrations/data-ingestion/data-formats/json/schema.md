@@ -913,7 +913,7 @@ FORMAT PrettyJSONEachRow
 2 rows in set. Elapsed: 0.004 sec.
 ```
 
-#### Optimizing performance with type hints {#optimizing-performance-with-type-hints}  
+#### Optimizing performance with type hints {#optimizing-performance-with-type-hints}
 
 Type hints offer more than just a way to avoid unnecessary type inference - they eliminate storage and processing indirection entirely, as well as allowing [optimal primitive types](/data-modeling/schema-design#optimizing-types) to be specified. JSON paths with type hints are always stored just like traditional columns, bypassing the need for [**discriminator columns**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data) or dynamic resolution during query time. 
 

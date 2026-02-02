@@ -32,7 +32,7 @@ For Apache Kafka protocol data sources, ClickPipes supports [SASL/PLAIN](https:/
 ## Warpstream Fetch Size {#warpstream-settings}
 ClickPipes rely on the Kafka setting `max.fetch_bytes` to limit the size of data processed in a single ClickPipes node at any one time.  In some circumstances
 Warpstream does not respect this setting, which can cause unexpected pipe failures.  We strongly recommend that the Warpstream specific setting `kafkaMaxFetchPartitionBytesUncompressedOverride`
-to 8MB (or lower) when configuring your Warpstreawm agent to prevent ClickPipes failures.
+to 8MB (or lower) when configuring your WarpStream agent to prevent ClickPipes failures.
 
 ### IAM {#iam}
 

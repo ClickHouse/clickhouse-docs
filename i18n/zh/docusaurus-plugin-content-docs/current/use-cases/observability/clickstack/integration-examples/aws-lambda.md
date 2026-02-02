@@ -46,12 +46,12 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 <VerticalStepper headerLevel="h4">
   #### 选择合适的 Rotel Lambda Extension 层
 
-  [Rotel Lambda 扩展](https://github.com/streamfold/rotel-lambda-extension)以预构建的 AWS Lambda 层形式提供。请选择与您的 Lambda 函数架构相匹配的层 ARN:
+  选择与您的 Lambda 运行时架构相匹配的 Lambda 层。`{version}` 字段取决于您要部署到的 AWS 区域。请查看 [releases](https://github.com/streamfold/rotel-lambda-extension/releases) 页面以获取与您的区域对应的最新版本号。
 
-  | 架构           | ARN 格式                                                                             | 最新版本                                                                                                                                                                   |
-  | ------------ | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | x86-64/amd64 | `arn:aws:lambda:{region}:418653438961:layer:rotel-extension-amd64-alpha:{version}` | ![版本](https://img.shields.io/github/v/release/streamfold/rotel-lambda-extension?filter=*alpha\&label=version\&labelColor=%2338BDF8\&color=%23312E81\&cacheSeconds=600) |
-  | arm64        | `arn:aws:lambda:{region}:418653438961:layer:rotel-extension-arm64-alpha:{version}` | ![版本](https://img.shields.io/github/v/release/streamfold/rotel-lambda-extension?filter=*alpha\&label=version\&labelColor=%2338BDF8\&color=%23312E81\&cacheSeconds=600) |
+  | 架构           | ARN                                                                          |
+  | ------------ | ---------------------------------------------------------------------------- |
+  | x86-64/amd64 | `arn:aws:lambda:{region}:418653438961:layer:rotel-extension-amd64:{version}` |
+  | arm64        | `arn:aws:lambda:{region}:418653438961:layer:rotel-extension-arm64:{version}` |
 
   **可用区域：**
 
@@ -69,21 +69,21 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   ##### 选项 1：AWS 控制台
 
   1. 打开 AWS Lambda 控制台
-  2. 前往你的 Lambda 函数
-  3. 向下滚动至 **Layers** 部分，然后单击 **Add a layer**。
-  4. 选择 **指定 ARN**
+  2. 导航到你的 Lambda 函数
+  3. 向下滚动至 **Layers** 部分，然后单击 **Add a layer**
+  4. 选择 **Specify an ARN**
   5. 请输入 Rotel 层的 ARN：
      ```text
-     arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+     arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version}
      ```
-  6. 点击 **Add**
+  6. 单击 **Add**
 
   ##### 选项 2：AWS CLI
 
   ```bash
   aws lambda update-function-configuration \
     --function-name my-function \
-    --layers arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+    --layers arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version}
   ```
 
   ##### 选项 3：AWS SAM
@@ -95,14 +95,14 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
       Properties:
         # ... other configuration ...
         Layers:
-          - arn:aws:lambda:{version}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+          - arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version}
   ```
 
   #### 配置扩展以导出至 ClickStack
 
   Rotel Lambda 扩展通过环境变量进行配置。您需要将 OTLP 导出器端点配置为指向您的 ClickStack 实例。以下示例假定您的 AWS Lambda 函数能够访问 ClickStack 实例。
 
-  ##### 基本配置（环境变量）
+  ##### 基本配置(环境变量)
 
   将以下环境变量添加到您的 Lambda 函数:
 
@@ -117,9 +117,9 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,service.version=1.0.0"
   ```
 
-  ##### 高级配置（使用 .env 文件）
+  ##### 高级配置(使用 .env 文件)
 
-  对于更复杂的配置，请在 Lambda 函数包中创建 `rotel.env` 文件：
+  对于更复杂的配置,请在 Lambda 函数包中创建 `rotel.env` 文件:
 
   **rotel.env:**
 
@@ -193,7 +193,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   ```
 
   :::note
-  AWS API 调用检索密钥会增加 100-150 毫秒的冷启动延迟。密钥以批量方式检索（最多 10 个），且仅在初始化时检索，因此后续调用不受影响。
+  AWS API 调用检索密钥会增加 100-150 毫秒的冷启动延迟。密钥以批量方式检索(最多 10 个),且仅在初始化时检索,因此后续调用不受影响。
   :::
 
   #### 测试集成
@@ -223,8 +223,8 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   在日志中查找这些关键属性：
 
-  * `service.name`: Lambda 函数的名称
-  * `faas.name`: AWS Lambda 函数名
+  * `service.name`: 您的 Lambda 函数名称
+  * `faas.name`: AWS Lambda 函数名称
   * `faas.invocation_id`: 唯一的调用 ID
   * `cloud.provider`: &quot;aws&quot;
   * `cloud.platform`: &quot;aws&#95;lambda&quot;
@@ -290,7 +290,7 @@ AWS 为多种语言提供了 OpenTelemetry 自动插桩 layer：
 aws lambda update-function-configuration \
   --function-name my-function \
   --layers \
-    arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version} \
+    arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version} \
     arn:aws:lambda:{region}:901920570463:layer:aws-otel-nodejs-{arch}-ver-1-30-2:1
 ```
 

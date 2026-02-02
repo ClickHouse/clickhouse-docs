@@ -83,6 +83,14 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 
 При включении для всех строковых столбцов таблицы добавляются пропускающие индексы min-max.
 
+## add_minmax_index_for_temporal_columns \{#add_minmax_index_for_temporal_columns\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
+
+Если настройка включена, для всех столбцов таблицы типов Date, Date32, Time, Time64, DateTime и DateTime64 добавляются индексы min-max (skipping).
+
 ## allow_coalescing_columns_in_partition_or_order_key \{#allow_coalescing_columns_in_partition_or_order_key\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -501,6 +509,22 @@ MergeTree будет игнорировать этот параметр. Эта 
 
 Имя диска хранения данных. Может быть указано вместо политики хранения.
 
+## distributed_index_analysis_min_indexes_size_to_activate \{#distributed_index_analysis_min_indexes_size_to_activate\}
+
+<SettingsInfoBlock type="UInt64" default_value="1073741824" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1073741824"},{"label": "New setting"}]}]}/>
+
+Минимальные размеры индексов (data skipping и первичного ключа) на диске (в несжатом виде) для активации анализа распределённых индексов
+
+## distributed_index_analysis_min_parts_to_activate \{#distributed_index_analysis_min_parts_to_activate\}
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "10"},{"label": "New setting"}]}]}/>
+
+Минимальное количество частей, необходимое для активации анализа распределённого индекса
+
 ## dynamic_serialization_version \{#dynamic_serialization_version\}
 
 <SettingsInfoBlock type="MergeTreeDynamicSerializationVersion" default_value="v3" />
@@ -537,7 +561,7 @@ MergeTree будет игнорировать этот параметр. Эта 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "Новая настройка"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "Добавлена новая настройка для ограничения максимального объёма данных (в байтах) для min_age_to_force_merge."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "Добавлена новая настройка для ограничения максимального объёма данных (в байтах) для min_age_to_force_merge."}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
 
 Определяет, должны ли настройки `min_age_to_force_merge_seconds` и
 `min_age_to_force_merge_on_partition_only` учитывать настройку
@@ -599,6 +623,16 @@ MergeTree будет игнорировать этот параметр. Эта 
 (`ATTACH/MOVE/REPLACE PARTITION`), индексы и проекции должны быть
 идентичны между исходной и целевой таблицами. В противном случае таблица
 назначения может иметь надмножество индексов и проекций исходной таблицы.
+
+## escape_index_filenames \{#escape_index_filenames\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Экранировать не-ASCII символы в именах файлов, создаваемых для индексов"}]}]}/>
+
+До версии 26.1 мы не экранировали специальные символы в именах файлов, создаваемых для вторичных индексов, что могло приводить к проблемам, когда некоторые
+символы в именах индексов портили части данных. Этот параметр добавлен исключительно по соображениям совместимости. Его не следует изменять, если только вы
+не читаете старые части с индексами, использующими не-ASCII символы в своих именах.
 
 ## escape_variant_subcolumn_filenames \{#escape_variant_subcolumn_filenames\}
 
@@ -1325,6 +1359,18 @@ fetch-запросов. Этот параметр применяется к ко
 
 Параметр доступен только в ClickHouse Cloud. Максимальный размер части (compact или packed)
 для предварительного прогрева кэша при слиянии.
+
+## merge_max_dynamic_subcolumns_in_compact_part \{#merge_max_dynamic_subcolumns_in_compact_part\}
+
+<SettingsInfoBlock type="UInt64Auto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "auto"},{"label": "Добавлена новая настройка для ограничения числа динамических подстолбцов в части данных Compact после слияния, независимо от параметров, указанных в типе данных"}]}]}/>
+
+Максимальное количество динамических подстолбцов, которое может быть создано в каждом столбце части данных Compact после слияния.
+Эта настройка позволяет контролировать количество динамических подстолбцов в части данных Compact независимо от динамических параметров, указанных в типе данных.
+
+Например, если таблица имеет столбец типа JSON(max_dynamic_paths=1024), а настройка merge_max_dynamic_subcolumns_in_compact_part установлена в значение 128,
+после слияния в часть данных Compact количество динамических путей будет уменьшено до 128, и в этой части будет записано только 128 путей в виде динамических подстолбцов.
 
 ## merge_max_dynamic_subcolumns_in_wide_part \{#merge_max_dynamic_subcolumns_in_wide_part\}
 

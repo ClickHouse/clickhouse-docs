@@ -149,7 +149,7 @@ For a lot of analytics cases, you might just want to start with streaming change
 
 Just pick “don’t backfill” for now unless you have a specific need.
 
-## Streaming in Action: What to Expect  {#streaming-in-action-what-to-expect}
+## Streaming in Action: What to Expect {#streaming-in-action-what-to-expect}
 
 Now your pipeline is set up and active!
 

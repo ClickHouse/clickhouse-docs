@@ -82,6 +82,14 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 
 启用该设置后，将为表中的所有字符串列添加最小-最大（跳过）索引。
 
+## add_minmax_index_for_temporal_columns \{#add_minmax_index_for_temporal_columns\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "新设置"}]}]}/>
+
+启用后，将为表中的所有 Date、Date32、Time、Time64、DateTime 和 DateTime64 列添加 min-max（跳过）索引。
+
 ## allow_coalescing_columns_in_partition_or_order_key \{#allow_coalescing_columns_in_partition_or_order_key\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -477,6 +485,22 @@ Marks 支持压缩，从而减小标记文件大小并提高网络传输速度�
 
 存储磁盘的名称。可在此处指定，用于替代存储策略。
 
+## distributed_index_analysis_min_indexes_size_to_activate \{#distributed_index_analysis_min_indexes_size_to_activate\}
+
+<SettingsInfoBlock type="UInt64" default_value="1073741824" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1073741824"},{"label": "New setting"}]}]}/>
+
+启用分布式索引分析所需的磁盘上（未压缩）索引的最小大小（data skipping 索引和主键索引）
+
+## distributed_index_analysis_min_parts_to_activate \{#distributed_index_analysis_min_parts_to_activate\}
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "10"},{"label": "New setting"}]}]}/>
+
+用于激活分布式索引分析的最小分区片段数量
+
 ## dynamic_serialization_version \{#dynamic_serialization_version\}
 
 <SettingsInfoBlock type="MergeTreeDynamicSerializationVersion" default_value="v3" />
@@ -513,7 +537,7 @@ Dynamic 数据类型的序列化版本。用于保持兼容性。
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "添加了用于为 min_age_to_force_merge 限制最大字节数的新设置。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "添加了用于为 min_age_to_force_merge 限制最大字节数的新设置。"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}]}/>
 
 指定设置 `min_age_to_force_merge_seconds` 和
 `min_age_to_force_merge_on_partition_only` 是否应当遵从设置
@@ -566,6 +590,14 @@ Dynamic 数据类型的序列化版本。用于保持兼容性。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.12"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 如果对分区操作类查询（`ATTACH/MOVE/REPLACE PARTITION`）的目标表启用此设置，则源表和目标表中的索引与 PROJECTION 必须完全一致。否则，目标表可以拥有源表索引和 PROJECTION 的超集。
+
+## escape_index_filenames \{#escape_index_filenames\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "Escape non-ascii characters in filenames created for indices"}]}]}/>
+
+在 26.1 之前，我们不会对为二级索引创建的文件名中的特殊字符进行转义，这可能会导致某些索引名称中的字符使分区片段损坏。此选项仅为兼容性而添加。除非你需要读取名称中索引包含非 ASCII 字符的旧分区片段，否则不应更改此设置。
 
 ## escape_variant_subcolumn_filenames \{#escape_variant_subcolumn_filenames\}
 
@@ -1225,6 +1257,18 @@ fetch 操作。此设置作用于特定表，不同于
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1073741824"},{"label": "Cloud sync"}]}]}/>
 
 仅在 ClickHouse Cloud 中可用。用于在合并过程中预热缓存的单个 part（compact 或 packed）的最大大小。
+
+## merge_max_dynamic_subcolumns_in_compact_part \{#merge_max_dynamic_subcolumns_in_compact_part\}
+
+<SettingsInfoBlock type="UInt64Auto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "auto"},{"label": "添加一个新设置，用于在合并后限制 Compact 数据部分中动态子列的数量，而不受数据类型中指定参数的影响"}]}]}/>
+
+在合并后，Compact 数据部分中每个列中可创建的动态子列的最大数量。
+该设置允许在 Compact 数据部分中控制动态子列的数量，而不受数据类型中指定的动态参数的影响。
+
+例如，如果表中有一个类型为 JSON(max_dynamic_paths=1024) 的列，并且将设置 merge_max_dynamic_subcolumns_in_compact_part 设为 128，
+那么在合并到 Compact 数据部分后，此数据部分中的动态路径数量将被减少到 128，并且只有 128 个路径会被写入为动态子列。
 
 ## merge_max_dynamic_subcolumns_in_wide_part \{#merge_max_dynamic_subcolumns_in_wide_part\}
 

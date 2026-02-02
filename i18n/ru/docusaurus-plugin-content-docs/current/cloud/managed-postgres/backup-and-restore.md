@@ -11,7 +11,7 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 import backupAndRestore from '@site/static/images/managed-postgres/backup-and-restore.png';
 
-<PrivatePreviewBadge />
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="backup-and-restore" />
 
 Управляемый Postgres обеспечивает безопасность и доступность ваших данных с помощью автоматических резервных копий и восстановления до определённого момента времени. Вы можете просматривать историю резервного копирования и инициировать восстановление в разделе **Backups** вашего экземпляра.
 

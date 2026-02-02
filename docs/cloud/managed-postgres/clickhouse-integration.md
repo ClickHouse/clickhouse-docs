@@ -14,9 +14,9 @@ import replicationServiceStep from '@site/static/images/managed-postgres/replica
 import selectTablesStep from '@site/static/images/managed-postgres/select-tables-step.png';
 import integrationRunning from '@site/static/images/managed-postgres/integration-running.png';
 
-<PrivatePreviewBadge/>
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="clickhouse-integration" />
 
-Every Managed Postgres instance comes with built-in CDC capabilities to any of your ClickHouse services. This allows you to move some or all of the data on your Postgres instance to ClickHouse and have changes in data on Postgres be reflected on ClickHouse continous and nearly real-time. This is powered by [ClickPipes](/integrations/clickpipes) under the hood.
+Every Managed Postgres instance comes with built-in CDC capabilities to any of your ClickHouse services. This allows you to move some or all of the data on your Postgres instance to ClickHouse and have changes in data on Postgres be reflected on ClickHouse continuous and nearly real-time. This is powered by [ClickPipes](/integrations/clickpipes) under the hood.
 
 To access this, click on **ClickHouse Integration** in the sidebar of your Postgres instance.
 

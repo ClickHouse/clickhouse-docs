@@ -10,6 +10,7 @@ import merges from '@site/static/images/managing-data/core-concepts/merges.png';
 import part from '@site/static/images/managing-data/core-concepts/part.png';
 import Image from '@theme/IdealImage';
 
+
 ## ClickHouse におけるテーブルパーツとは？ \{#what-are-table-parts-in-clickhouse\}
 
 <br />
@@ -51,6 +52,7 @@ ClickHouse サーバーが、上の図に示した 4 行の INSERT（[INSERT INT
 テーブルで使用しているエンジンに応じて、ソートと合わせて追加の変換が[行われる場合があります](/operations/settings/settings)。
 
 データ^^パーツ^^は自己完結しており、中央のカタログを必要とせずにその内容を解釈するために必要な、すべてのメタデータを含みます。スパース主キーインデックスに加えて、^^パーツ^^には、副次的な [data skipping インデックス](/optimize/skipping-indexes)、[カラム統計](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere)、チェックサム、（[パーティション](/partitions) が使われている場合の）min-max インデックス、そして[その他の情報](https://github.com/ClickHouse/ClickHouse/blob/a065b11d591f22b5dd50cb6224fab2ca557b4989/src/Storages/MergeTree/MergeTreeData.h#L104)が含まれます。
+
 
 ## パーツのマージ \{#part-merges\}
 

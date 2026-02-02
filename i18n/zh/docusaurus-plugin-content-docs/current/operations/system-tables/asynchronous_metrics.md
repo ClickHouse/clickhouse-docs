@@ -588,6 +588,10 @@ Keeper TCP 协议服务器的线程数（未启用 TLS）。
 
 当前 ZooKeeper 客户端会话看到的最后一个 ZXID。该值会随着客户端从 ZooKeeper 观测到事务而单调递增。
 
+### LongestRunningMerge \{#longestrunningmerge\}
+
+当前正在运行的后台合并任务中，耗时最长的那个已运行的时间（秒）。
+
 ### jemalloc.active \{#jemallocactive\}
 
 底层内存分配器（jemalloc）的内部度量指标。参见 https://jemalloc.net/jemalloc.3.html

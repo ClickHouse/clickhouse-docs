@@ -10,6 +10,7 @@ import merges from '@site/static/images/managing-data/core-concepts/merges.png';
 import part from '@site/static/images/managing-data/core-concepts/part.png';
 import Image from '@theme/IdealImage';
 
+
 ## ClickHouse 中的表部件是什么？ \{#what-are-table-parts-in-clickhouse\}
 
 <br />
@@ -51,6 +52,7 @@ ORDER BY (town, street);
 根据表所使用的具体引擎，在排序的同时可能还会进行其他[转换](/operations/settings/settings)。
 
 ^^数据部分^^ 是自包含的，包含了解释其内容所需的全部元数据，而不需要一个集中式目录。除了稀疏主索引之外，^^数据部分^^ 还包含其他元数据，例如二级[数据跳过索引](/optimize/skipping-indexes)、[列统计信息](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere)、校验和、最小-最大索引（如果使用了[分区](/partitions)），以及[更多信息](https://github.com/ClickHouse/ClickHouse/blob/a065b11d591f22b5dd50cb6224fab2ca557b4989/src/Storages/MergeTree/MergeTreeData.h#L104)。
+
 
 ## Part 合并 \{#part-merges\}
 

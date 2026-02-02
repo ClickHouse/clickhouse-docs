@@ -1376,6 +1376,13 @@ Parquet 读取器输出的平均块大小（字节）
 
 启用后，在解析过程中会对 JSON 键名中的点号进行转义。
 
+## max_dynamic_subcolumns_in_json_type_parsing \{#max_dynamic_subcolumns_in_json_type_parsing\}
+
+<SettingsInfoBlock type="UInt64Auto" default_value="auto" />
+
+在解析 JSON 列时，每一列中可以创建的动态子列的最大数量。  
+它允许在解析过程中控制动态子列的数量，而不受数据类型中指定的动态参数限制。
+
 ## output_format_arrow_compression_method \{#output_format_arrow_compression_method\}
 
 <SettingsInfoBlock type="ArrowCompression" default_value="lz4_frame" />

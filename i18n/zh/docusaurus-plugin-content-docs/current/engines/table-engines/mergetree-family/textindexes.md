@@ -48,6 +48,7 @@ CREATE TABLE tab
                                 [, dictionary_block_size = D]
                                 [, dictionary_block_frontcoding_compression = B]
                                 [, posting_list_block_size = C]
+                                [, posting_list_codec = 'none' | 'bitpacking' ]
                             )
 )
 ENGINE = MergeTree
@@ -80,12 +81,12 @@ ORDER BY key
 如果这些分隔字符串恰好构成一个 [prefix code](https://en.wikipedia.org/wiki/Prefix_code)，则可以以任意顺序传递。
 :::
 
-:::warning
-目前不推荐在非西方语言（例如中文）的文本上构建文本索引（text index）。
-当前支持的 tokenizer 可能会导致索引体积非常大以及查询耗时很长。
-我们计划未来添加针对特定语言优化的 tokenizer，以更好地处理这些场景。
-:::
 
+:::warning
+目前不建议在非西方语言（例如中文）的文本上构建文本索引。
+当前支持的分词器可能会导致索引体积巨大且查询耗时较长。
+我们计划在未来添加专门的、特定于语言的分词器，以更好地处理这些情况。
+:::
 
 要测试分词器如何切分输入字符串，可以使用 ClickHouse 的 [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) 函数：
 
@@ -187,6 +188,11 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
   可选参数 `dictionary_block_frontcoding_compression`（默认值：1）指定字典块是否使用 front coding 作为压缩方式。
 
   可选参数 `posting_list_block_size`（默认值：1048576）指定倒排列表（posting list）块的大小（以行数计）。
+
+  可选参数 `posting_list_codec`（默认值：`none`）指定倒排列表使用的编解码器：
+
+  * `none` - 倒排列表在存储时不进行额外压缩。
+  * `bitpacking` - 先应用[差分（delta）编码](https://en.wikipedia.org/wiki/Delta_encoding)，然后进行[bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70)（均在固定大小的块内完成）。
 </details>
 
 在创建表之后，可以为某个列添加或移除文本索引：
@@ -665,6 +671,13 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 | [text_index_postings_cache_size](/operations/server-configuration-parameters/settings#text_index_postings_cache_size)                 | 最大缓存大小（以字节为单位）。                                                                          |
 | [text_index_postings_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_postings_cache_max_entries)   | 缓存中已反序列化 posting 的最大数量。                                                                   |
 | [text_index_postings_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_postings_cache_size_ratio)     | 文本索引 posting 列表缓存中受保护队列大小相对于缓存总大小的比例。                                      |
+
+## 限制 \{#limitations\}
+
+当前文本索引具有以下限制：
+
+- 对包含大量 tokens（例如 100 亿 tokens）的文本索引进行物化时，可能会消耗大量内存。文本索引的物化可以直接进行（`ALTER TABLE <table> MATERIALIZE INDEX <index>`），也可以在分区片段合并时通过间接方式发生。
+- 无法在包含超过 4.294.967.296（= 2^32 ≈ 42 亿）行的分区片段上物化文本索引。如果没有物化的文本索引，查询会退回到在该分区片段内执行低效的暴力搜索。作为一种最坏情况的估算，假设某个分区片段只包含一个类型为 String 的列，并且 MergeTree 设置 `max_bytes_to_merge_at_max_space_in_pool`（默认值：150 GB）未被修改。在这种假设下，只要该列平均每行少于 29.5 个字符，就会出现上述情况。实际上，表中通常还包含其他列，因此阈值通常会小好几倍（具体取决于其他列的数量、类型和大小）。
 
 ## Implementation Details \{#implementation\}
 

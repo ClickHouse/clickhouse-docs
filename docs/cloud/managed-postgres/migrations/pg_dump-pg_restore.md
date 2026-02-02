@@ -18,7 +18,7 @@ import targetSetup from '@site/static/images/managed-postgres/pg_dump_restore/ta
 # Migrate to Managed Postgres using pg_dump and pg_restore {#pg-dump-pg-restore}
 This guide provides step-by-step instructions on how to migrate your PostgreSQL database to ClickHouse Managed Postgres using the `pg_dump` and `pg_restore` utilities.
 
-<PrivatePreviewBadge />
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="pg_dump-pg_restore" />
 
 ## Prerequisites {#migration-pgdump-pg-restore-prerequisites}
 - Access to your source PostgreSQL database.

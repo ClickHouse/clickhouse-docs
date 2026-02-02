@@ -3439,10 +3439,6 @@
       "permanent": true
     },
     {
-      "source": "/docs/whats-new/changelog/2025",
-      "destination": "/docs/category/changelog"
-    },
-    {
       "source": "/docs/development/adding_test_queries",
       "destination": "/docs/development/tests#adding-a-new-test"
     },

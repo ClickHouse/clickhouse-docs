@@ -42,6 +42,10 @@ import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.pn
 :::
 
 
+## 2026年1月23日 \{#january-23-2026\}
+
+- ClickPipes が AWS `eu-west-1` で利用可能になりました。そのリージョンで 2026年1月20日以降に新規作成された ClickHouse Cloud サービスでは、ClickPipes に対して同じリージョンが使用されます。既存のサービスでは、ClickPipes のデフォルトリージョンは `eu-central-1` です。詳しくは、[ドキュメント](/integrations/clickpipes#list-of-static-ips)を参照してください。
+
 ## 2026年1月16日 \{#january-16-2026\}
 
 - **API によるサービスレベルでの利用コストのフィルタリング:** 弊社 API で、特定のサービスタグごとに組織の利用コストをフィルタリングできるようになり、より細かい粒度で支出を分析しやすくなりました。

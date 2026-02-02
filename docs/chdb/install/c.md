@@ -41,7 +41,7 @@ gcc -o myapp myapp.c -lchdb
 g++ -o myapp myapp.cpp -lchdb
 ```
 
-## C Examples {#c-examples} 
+## C Examples {#c-examples}
 
 ### Basic connection and queries {#basic-connection-queries}
 

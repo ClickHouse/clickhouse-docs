@@ -1,0 +1,40 @@
+---
+position: 1
+slug: /clickhouse-operator/overview
+title: 'ClickHouse Operator'
+keywords: ['kubernetes']
+description: 'ClickHouse Operator の概要ページです。ClickHouse Operator は、Kubernetes 上で ClickHouse クラスターおよび ClickHouse Keeper クラスターのデプロイ、設定、管理を自動化する Kubernetes オペレーターです。'
+doc_type: 'guide'
+sidebar_label: '概要'
+---
+
+ClickHouse Operator は、Kubernetes 上で ClickHouse クラスターおよび ClickHouse Keeper クラスターのデプロイ、設定、管理を自動化する Kubernetes オペレーターです。
+カスタムリソースを通じた宣言的なクラスター管理を提供し、ユーザーが高可用な ClickHouse デプロイメントを容易に作成できるようにします。
+
+Operator は、スケーリング、アップグレード、設定管理を含む ClickHouse クラスターのライフサイクル全体を管理します。
+
+## 機能 \{#features\}
+
+- **ClickHouse クラスター管理**: ClickHouse クラスターの作成および管理
+- **ClickHouse Keeper 連携**: 分散コーディネーション用 ClickHouse Keeper クラスターの組み込みサポート
+- **ストレージプロビジョニング**: StorageClass を選択可能な PersistentVolumeClaim の柔軟なカスタマイズ
+- **高可用性**: ClickHouse および Keeper クラスター向けの耐障害性の高いデプロイ
+- **セキュリティ**: 安全なクラスター間通信のための TLS/SSL サポートを含む組み込みセキュリティ機能
+- **モニタリング**: オブザーバビリティ向上のための Prometheus メトリクス連携
+
+## インストール \{#installation\}
+
+ご希望のインストール方法を選択してください：
+
+- [Manifests によるインストール](./02_install/kubectl.mdx) - kubectl/kustomize を使用してインストールします
+- [Helm によるインストール](./02_install/helm.mdx) - Helm チャートを使用してインストールします
+- [Operator Lifecycle Manager (OLM) によるインストール](./02_install/olm.mdx) - OLM を使用してインストールします
+
+## ガイド \{#guides\}
+
+- **[イントロダクション](./03_guides/01_introduction.mdx)** - ClickHouse Operator の概要と基本概念
+- **[設定ガイド](./03_guides/02_configuration.mdx)** - ClickHouse および Keeper クラスターの設定方法
+
+## リファレンス \{#reference\}
+
+- **[API Reference](./04_api_reference.mdx)** - カスタムリソースのための完全な API リファレンス
