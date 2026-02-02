@@ -25,16 +25,19 @@ This guide provides step-by-step instructions on how to migrate your PostgreSQL 
 - A ClickHouse Managed Postgres instance where you want to migrate your data.
 - PeerDB installed on a machine. You can follow the installation instructions on the [PeerDB GitHub repository](https://github.com/PeerDB-io/peerdb?tab=readme-ov-file#get-started). You just need to clone the repository and run `docker-compose up`. For this guide, we will be using **PeerDB UI**, which will be accessible at `http://localhost:3000` once PeerDB is running.
 
+## Considerations before migration {#migration-peerdb-considerations-before}
+Before starting your migration, keep the following in mind:
+
+- **Database objects**: PeerDB will create tables automatically in the target database based on the source schema. However, certain database objects like indexes, constraints, and triggers will not be migrated automatically. You'll need to recreate these objects manually in the target database after the migration.
+- **DDL changes**: If you enable continuous replication, PeerDB will keep the target database in sync with the source for DML operations (INSERT, UPDATE, DELETE) and will propagate ADD COLUMN operations. However, other DDL changes (like DROP COLUMN, ALTER COLUMN) are not propagated automatically. More on schema changes support [here](../../../integrations/clickpipes/postgres/schema-changes.md)
+- **Network connectivity**: Ensure that both the source and target databases are reachable from the machine where PeerDB is running. You may need to configure firewall rules or security group settings to allow connectivity.
+
 ## Create peers {#migration-peerdb-create-peers}
 First, we need to create peers for both the source and target databases. A peer represents a connection to a database. In PeerDB UI, navigate to the "Peers" section by clicking on "Peers" in the sidebar. To create a new peer, click on the `+ New peer` button.
 
 ### Source peer creation {#migration-peerdb-source-peer}
 Create a peer for your source PostgreSQL database by filling in the connection details such as host, port, database name, username, and password. Once you have filled in the details, click on the `Create peer` button to save the peer.
 <Image img={sourcePeer} alt="Source Peer Creation" size="md" border />
-
-:::info
-Ensure that the source database is reachable from the machine where PeerDB is running. You may need to configure firewall rules or security group settings to allow connectivity.
-:::
 
 ### Target peer creation {#migration-peerdb-target-peer}
 Similarly, create a peer for your ClickHouse Managed Postgres instance by providing the necessary connection details. You can get the [connection details](../connection) for your instance from the ClickHouse Cloud console. After filling in the details, click on the `Create peer` button to save the target peer.
@@ -67,11 +70,12 @@ If you click on the source peer, you can see a list of running commands which Pe
 2. Then we run a partitioning query using NTILE to break down large tables into smaller chunks for efficient data transfer.
 3. We then do FETCH commands to pull data from the source database and then PeerDB syncs them to the target database.
 
-## Considerations after migration {#migration-peerdb-considerations}
-- Note that we create the tables automatically in the target database based on the source schema. However, certain database objects like indexes, constraints, and triggers will not be migrated automatically. You would need to recreate these objects manually in the target database after the migration.
-- If you enabled continuous replication, PeerDB will keep the target database in sync with the source as far as DML operations (INSERT, UPDATE, DELETE) are concerned. We also propagate ADD COLUMN operations, but other DDL changes (like DROP COLUMN, ALTER COLUMN) are not propagated automatically. More on schema changes support [here](../../../integrations/clickpipes/postgres/schema-changes.md)
-- Make sure to test your application against the ClickHouse Managed Postgres instance to ensure everything is working as expected after the migration.
-- Once you are satisfied with the migration and have switched your application to use ClickHouse Managed Postgres, you can delete the mirror and peers in PeerDB to clean up resources.
+## Post-migration tasks {#migration-peerdb-considerations}
+After the migration is complete:
+
+- **Recreate database objects**: Remember to manually recreate indexes, constraints, and triggers in the target database, as these are not migrated automatically.
+- **Test your application**: Make sure to test your application against the ClickHouse Managed Postgres instance to ensure everything is working as expected.
+- **Clean up resources**: Once you are satisfied with the migration and have switched your application to use ClickHouse Managed Postgres, you can delete the mirror and peers in PeerDB to clean up resources.
 
 :::info
 If you enabled continuous replication, PeerDB will create a **replication slot** on the source PostgreSQL database. Make sure to drop the replication slot manually from the source database after you are done with the migration to avoid unnecessary resource usage.
