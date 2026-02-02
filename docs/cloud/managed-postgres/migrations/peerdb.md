@@ -68,7 +68,8 @@ If you click on the source peer, you can see a list of running commands which Pe
 3. We then do FETCH commands to pull data from the source database and then PeerDB syncs them to the target database.
 
 ## Considerations after migration {#migration-peerdb-considerations}
-- If you enabled continuous replication, PeerDB will keep the target database in sync with the source as far as DML operations (INSERT, UPDATE, DELETE) are concerned. We also propagate ADD COLUMN operations, but other DDL changes (like DROP COLUMN, ALTER COLUMN) are not propagated automatically.
+- Note that we create the tables automatically in the target database based on the source schema. However, certain database objects like indexes, constraints, and triggers will not be migrated automatically. You would need to recreate these objects manually in the target database after the migration.
+- If you enabled continuous replication, PeerDB will keep the target database in sync with the source as far as DML operations (INSERT, UPDATE, DELETE) are concerned. We also propagate ADD COLUMN operations, but other DDL changes (like DROP COLUMN, ALTER COLUMN) are not propagated automatically. More on schema changes support [here](../../../integrations/clickpipes/postgres/schema-changes.md)
 - Make sure to test your application against the ClickHouse Managed Postgres instance to ensure everything is working as expected after the migration.
 - Once you are satisfied with the migration and have switched your application to use ClickHouse Managed Postgres, you can delete the mirror and peers in PeerDB to clean up resources.
 
