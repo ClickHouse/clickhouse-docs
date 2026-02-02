@@ -1,5 +1,43 @@
 WITH
     'FormatFactorySettings.h' AS cpp_file,
+    settings_changes AS
+    (
+        SELECT
+            setting_name AS name,
+            '[' ||
+            arrayStringConcat(
+                arrayMap(
+                    (i, x) -> '{' ||
+                        '"id": "row-' || toString(i) || '",' ||
+                        '"items": [' ||
+                            '{"label": "' || toString(x.1) || '"},' ||
+                            '{"label": "' || toString(x.2) || '"},' ||
+                            '{"label": "' || replaceRegexpAll(x.3, '([\\"])', '\\\\$1') || '"}' ||
+                        ']' ||
+                    '}',
+                    arrayEnumerate(groupArray((version, default_value, comment))),
+                    groupArray((version, default_value, comment))
+                ),
+            ', '
+        ) ||
+        ']' AS rows
+        FROM
+        (
+            SELECT
+                (arrayJoin(changes) AS change).1 AS setting_name,
+                version,
+                change.3 AS default_value,
+                change.4 AS comment
+            FROM system.settings_changes
+            WHERE setting_name LIKE 'output_format_%'
+               OR setting_name LIKE 'input_format_%'
+               OR setting_name LIKE 'format_%'
+               OR setting_name LIKE '%_input_format'
+               OR setting_name LIKE '%_output_format'
+            ORDER BY setting_name, version DESC
+        )
+        GROUP BY setting_name
+    ),
     settings_from_cpp AS
     (
     SELECT extract(line, 'DECLARE\\(\\w+, (\\w+),') AS name
@@ -16,21 +54,32 @@ WITH
         AND alias_for IN settings_from_cpp
         GROUP BY alias_for
     ),
+    settings_with_change_history AS
+    (
+        SELECT
+            a.*,
+            b.*
+        FROM
+            system.settings AS a
+        LEFT OUTER JOIN settings_changes as b
+        ON a.name = b.name
+        WHERE a.name IN settings_from_cpp
+    ),
     main_content AS
     (
-    SELECT format('## {} {} {}  \n\n{}{}\n\n{}\n\n',
-    s.name,
-    '{#'||s.name||'}',
-    multiIf(s.tier == 'Experimental', '<ExperimentalBadge/>', s.tier == 'Beta', '<BetaBadge/>', ''),
+    SELECT format('## {} {} {}  \n\n{}{}{}\n\n{}\n\n',
+    name,
+    '{#'||name||'}',
+    multiIf(tier == 'Experimental', '<ExperimentalBadge/>', tier == 'Beta', '<BetaBadge/>', ''),
     if(sa.aliases IS NOT NULL AND length(sa.aliases) > 0,
        '**Aliases**: ' || arrayStringConcat(arrayMap(x -> '`' || x || '`', sa.aliases), ', ') || '\n\n',
        ''),
-    if(s.type != '' AND s.default != '', format('<SettingsInfoBlock type="{}" default_value="{}" />', s.type, s.default), ''),
-    trim(BOTH '\\n' FROM s.description))
-    FROM system.settings s
-    LEFT JOIN setting_aliases sa ON s.name = sa.alias_for
-    WHERE s.name IN settings_from_cpp
-    ORDER BY s.name
+    if(type != '' AND default != '', format('<SettingsInfoBlock type="{}" default_value="{}" />', type, default), ''),
+    if(rows != '', printf('\n\n<VersionHistory rows={%s}/>\n\n', rows), ''),
+    trim(BOTH '\\n' FROM description))
+    FROM settings_with_change_history
+    LEFT JOIN setting_aliases sa ON settings_with_change_history.name = sa.alias_for
+    ORDER BY name
     ),
     '' ||
 '---
