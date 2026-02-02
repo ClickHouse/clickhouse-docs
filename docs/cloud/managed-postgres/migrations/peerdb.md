@@ -19,7 +19,7 @@ import mirrors from '@site/static/images/managed-postgres/peerdb/mirrors.png';
 
 # Migrate to Managed Postgres using PeerDB {#peerdb-migration}
 This guide provides step-by-step instructions on how to migrate your PostgreSQL database to ClickHouse Managed Postgres using PeerDB.
-<PrivatePreviewBadge />
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="migration-guide-peerdb" />
 
 ## Prerequisites {#migration-peerdb-prerequisites}
 - Access to your source PostgreSQL database.
