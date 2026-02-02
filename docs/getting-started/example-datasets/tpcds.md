@@ -14,7 +14,6 @@ It includes 99 reporting and ad-hoc queries with random substitutions.
 **References**
 - [The Making of TPC-DS](https://dl.acm.org/doi/10.5555/1182635.1164217) (Nambiar), 2006
 
-
 ## Data Generation and Import {#data-generation-and-import}
 
 First, checkout the TPC-DS repository and compile the data generator:
@@ -602,7 +601,6 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_site FORMA
 ```
 
 Then run the generated queries.
-
 
 ## Queries {#queries}
 
