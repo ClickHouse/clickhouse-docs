@@ -189,6 +189,17 @@ This example assumes preconfigured secret scopes in Databricks. For setup instru
 
 ## Databricks-specific considerations {#considerations}
 
+### Access mode requirements {#access-mode}
+
+The ClickHouse Spark Connector requires **Dedicated** (formerly Single User) access mode. **Standard** (formerly Shared) access mode is not supported when Unity Catalog is enabled, as Databricks blocks external DataSource V2 connectors in that configuration.
+
+| Access Mode | Unity Catalog | Supported |
+|-------------|---------------|-----------|
+| Dedicated (Single User) | Enabled | ✅ Yes |
+| Dedicated (Single User) | Disabled | ✅ Yes |
+| Standard (Shared) | Enabled | ❌ No |
+| Standard (Shared) | Disabled | ✅ Yes |
+
 ### Secret management {#secret-management}
 
 Use Databricks secret scopes to securely store ClickHouse credentials:
