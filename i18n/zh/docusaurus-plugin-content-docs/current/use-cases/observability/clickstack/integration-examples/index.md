@@ -26,6 +26,7 @@ ClickStack 提供多种方式，将可观测性数据摄取到 ClickHouse 实例
 | [MySQL Logs](/use-cases/observability/clickstack/integrations/mysql-logs) | 收集 MySQL 慢查询与错误日志 |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | 收集 Nginx 访问/错误日志 |
 | [Nginx Traces](/use-cases/observability/clickstack/integrations/nginx-traces) | 追踪 Nginx HTTP 请求 |
+| [Node.js Traces](/use-cases/observability/clickstack/integrations/nodejs-traces) | 追踪 Node.js HTTP 请求 |
 | [PostgreSQL Logs](/use-cases/observability/clickstack/integrations/postgresql-logs) | 收集 Postgres 日志 |
 | [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | 监控 Postgres 性能 |
 | [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | 收集 Redis 服务器日志 |
