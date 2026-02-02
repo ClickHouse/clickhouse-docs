@@ -367,9 +367,9 @@ This is not yet supported, an alternative would be to [resync the table](./table
 
 ### I am noticing that my ClickPipe has entered Snapshot but data is not flowing in, what could be the issue? {#snapshot-no-data-flow}
 This can be for a few reasons, mainly around some prerequisites for snapshotting taking longer than usual. For more information, do read our doc on parallel snapshotting [here](./parallel_initial_load.md).
-#### Parallel snapshotting is taking time to obtain partitions
+#### Parallel snapshotting is taking time to obtain partitions {#parallel-snapshotting-taking-time}
 Parallel snapshotting has a few initial steps to obtain logical partitions for your tables. If your tables are small, this will finish in a matter of seconds however for very large (order of terabytes) tables, this can take longer. You can monitor the queries running on your Postgres source in the **Source** tab to see if there are any long running queries related to obtaining partitions for snapshotting. Once the partitions are obtained, data will start flowing in.
-#### Replication slot creation is transaction locked
+#### Replication slot creation is transaction locked {#replication-slot-creation-transaction-locked}
 In the **Source** tab under the Activity section, you would see the `CREATE_REPLICATION_SLOT` query stuck in `Lock` state. This could be due to another transaction holding locks on objects that Postgres uses to create replication slots.
 In order to see the blocking queries, you can run the below query on your Postgres source:
 ```sql
