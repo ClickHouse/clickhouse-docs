@@ -24,13 +24,6 @@ import remove_chart_alert from '@site/static/images/use-cases/observability/remo
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-<Tabs>
-
-<TabItem>
-<Image img={alerts_search_view} alt="Alerts search view" size="md"/>
-</TabItem>
-</Tabs>
-
 ## Alerting in ClickStack {#alerting-in-clickstack}
 
 ClickStack includes built-in support for alerting, enabling teams to detect and respond to issues in real time across logs, metrics, and traces.
