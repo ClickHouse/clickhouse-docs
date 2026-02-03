@@ -194,7 +194,7 @@ Your table must align with the output schema produced by Vector. Adjust the sche
 
 We strongly recommend understanding how [Primary keys](/docs/primary-indexes) work in ClickHouse and choosing an ordering key based on your access patterns. See the [ClickStack-specific](/use-cases/observability/clickstack/performance_tuning#choosing-a-primary-key) guidance on choosing a primary key.
 
-Once the table exists, copy the configuration snipper shown. Adjust the input to consume your existing pipelines, as well as the target table and database if required. Credentials should be pre-populated.
+Once the table exists, copy the configuration snippet shown. Adjust the input to consume your existing pipelines, as well as the target table and database if required. Credentials should be pre-populated.
 
 <Image img={vector_config} size="lg" alt='Vector configuration'/>
 

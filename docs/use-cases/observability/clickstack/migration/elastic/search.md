@@ -24,9 +24,10 @@ For simple log and trace exploration, the ClickStack UI (HyperDX) provides a [Lu
 
 <Image img={hyperdx_search} alt="Search" size="lg"/>
 
-The UI's search interface supports this familiar syntax but translates it behind the scenes into efficient SQL `WHERE` clauses, making the experience familiar for Kibana users while still allowing users to leverage the power of SQL when needed. This allows you to exploit the full range of [string search functions](/sql-reference/functions/string-search-functions), [similarity functions](/sql-reference/functions/string-functions#stringJaccardIndex) and [date time functions](/sql-reference/functions/date-time-functions) in ClickHouse.
+The search interface supports this familiar syntax but translates it behind the scenes into efficient SQL `WHERE` clauses, making the experience familiar for Kibana users while still allowing users to leverage the power of SQL when needed. This allows you to exploit the full range of [string search functions](/sql-reference/functions/string-search-functions), [similarity functions](/sql-reference/functions/string-functions#stringJaccardIndex) and [date time functions](/sql-reference/functions/date-time-functions) in ClickHouse.
 
 <Image img={hyperdx_sql} alt="SQL" size="lg"/>
+
 
 Below, we compare the Lucene query languages of ClickStack and Elasticsearch.
 

@@ -192,7 +192,27 @@ With Docker Compose, modify the collector configuration using the same environme
 
 <TabItem value="managed-clickstack" label="Managed ClickStack" default>
 
-We recommend:
+By default, the ClickStack OpenTelemetry Collector is not secured when deployed outside of the Open Source distributions and does not require authentication on its OTLP ports.
+
+To secure ingestion, specify an authentication token when deploying the collector using the `OTLP_AUTH_TOKEN` environment variable. For example:
+
+```sh
+export CLICKHOUSE_ENDPOINT=<HTTPS_ENDPOINT>
+export CLICKHOUSE_USER=<CLICKHOUSE_USER>
+export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
+export OTLP_AUTH_TOKEN="a_very_secure_string"
+
+docker run \
+  -e OTLP_AUTH_TOKEN=${OTLP_AUTH_TOKEN} \
+  -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
+  -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
+  -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
+  -p 4317:4317 \
+  -p 4318:4318 \
+  clickhouse/clickstack-otel-collector:latest
+```
+
+We additionally recommend:
 
 - Configuring the collector to communicate with ClickHouse over HTTPS.
 - Create a dedicated user for ingestion with limited permissions - see below.

@@ -29,7 +29,6 @@ In the example above, a `Body` column does not exist in the data. Instead, it is
 
 For other possible options, see the [configuration reference](/use-cases/observability/clickstack/config).
 
-
 </TabItem>
 </Tabs>
 

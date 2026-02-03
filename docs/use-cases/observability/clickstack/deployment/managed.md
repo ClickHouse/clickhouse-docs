@@ -151,7 +151,7 @@ ClickStack is OpenTelemetry native but not OpenTelemetry exclusive - you can use
 
 The following describes how users can add additional data sources beyond those that are configured automatically.
 
-#### Using OpenTelemetry schemas  {#using-otel-schemas}
+#### Using OpenTelemetry schemas {#using-otel-schemas}
 
 If you're using an OTel collector to create the database and tables within ClickHouse, retain all default values within the create source model, completing the `Table` field with the value `otel_logs` - to create a logs source. All other settings should be auto-detected, allowing you to click `Save New Source`.
 

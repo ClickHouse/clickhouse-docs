@@ -11,7 +11,7 @@ keywords: ['managing ClickStack', 'performance', 'materialized views', 'admin co
 
 This section describes how to manage ClickStack.
 
-## Admin guides
+## Admin guides {#admin-guides}
 
 | Section | Description |
 |--------|-------------|
@@ -20,7 +20,7 @@ This section describes how to manage ClickStack.
 | [Materialized views](/use-cases/observability/clickstack/materialized_views) | A detailed guide to using materialized views in ClickStack to accelerate query performance. |
 | [Performance tuning](/use-cases/observability/clickstack/performance_tuning) | A comprehensive guide to tuning ClickStack for large-scale workloads. |
 
-## Core ClickHouse concepts
+## Core ClickHouse concepts {#core-concepts}
 
  Most ClickStack management tasks require familiarity with the underlying ClickHouse database. We recommend reviewing the following core ClickHouse concepts outlined below before performing administrative or performance-related operations.
 

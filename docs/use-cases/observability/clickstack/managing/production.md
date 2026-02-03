@@ -33,6 +33,12 @@ For production deployments, [Managed ClickStack](/use-cases/observability/clicks
 
 **Follow these [best practices](/cloud/guides/production-readiness) for ClickHouse Cloud when using Managed ClickStack.**
 
+## Secure ingestion {#secure-ingestion-managed}
+
+By default, the ClickStack OpenTelemetry Collector is not secured when deployed outside of the Open Source distributions and does not require authentication on its OTLP ports.
+
+To secure ingestion, specify an authentication token when deploying the collector using the `OTLP_AUTH_TOKEN` environment variable. See ["Securing the collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector) for further details.
+
 ### Database and ingestion user {#database-ingestion-user-managed-managed}
 
 It's recommended to create a dedicated user for the OTel collector for ingestion into Managed ClickHouse and ensuring ingestion is sent to a specific database e.g. `otel`. See ["Creating an ingestion user"](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) for further details.

@@ -36,7 +36,7 @@ Time Required: 10-15 minutes
 
 ## Integration with existing Node.js application {#existing-nodejs}
 
-This section covers adding distributed tracing to your existing Node.js application using OpenTelemetry's automatic instrumentation.
+This section covers adding distributed tracing to your existing Node.js application using OpenTelemetry automatic instrumentation.
 
 If you would like to test the integration before configuring your own existing setup, you can test with our preconfigured setup and sample data in the [demo dataset section](#demo-dataset).
 
@@ -173,7 +173,7 @@ To help you get started monitoring Node.js application performance, we provide a
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nodejs-traces-dashboard.json')} download="nodejs-traces-dashboard.json" eventName="docs.nodejs_traces_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download-dashboard}
+#### <TrackedLink href={useBaseUrl('/examples/nodejs-traces-dashboard.json')} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download-dashboard}
 
 #### Import the pre-built dashboard {#import-dashboard}
 
@@ -234,7 +234,7 @@ Should connect successfully to the OTLP endpoint.
 Look for OpenTelemetry initialization messages when your app starts. The HyperDX SDK should output confirmation that it's initialized.
 
 ## Next steps {#next-steps}
-If you want to explore further, here are some next steps to experiment with your dashboard
+If you want to explore further, here are some next steps to experiment with your dashboard:
 
 - Set up [alerts](/use-cases/observability/clickstack/alerts) for critical metrics (error rates, latency thresholds)
 - Create additional dashboards for specific use cases (API monitoring, security events)

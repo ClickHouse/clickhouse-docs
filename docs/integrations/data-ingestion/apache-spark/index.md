@@ -33,10 +33,10 @@ There are two main ways to connect Apache Spark and ClickHouse:
 <br/>
 Both solutions have been successfully tested and are fully compatible with various APIs, including Java, Scala, PySpark, and Spark SQL.
 
-### Spark Runtime Environments{#spark-runtime-environment}
-#### Standard Spark runtimes{#standard-spark-runtime}
+### Spark Runtime Environments {#spark-runtime-environment}
+#### Standard Spark runtimes {#standard-spark-runtime}
 The Spark Connector works out of the box on environments that closely follow the upstream Apache Spark runtime, such as Amazon EMR or a Kubernetes-based Spark deployments.
 
-#### Managed Spark platforms{#managed-spark-platforms}
+#### Managed Spark platforms {#managed-spark-platforms}
 Platforms such as [AWS Glue](./../aws-glue/index.md) and [Databricks](./databricks.md) introduce additional abstractions and environment-specific behavior.
 While the core integration remains the same, they may require dedicated configuration and setup steps. See the respective documentation pages for details.
