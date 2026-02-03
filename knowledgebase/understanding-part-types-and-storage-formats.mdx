@@ -95,8 +95,10 @@ In ClickHouse Cloud, a part uses Packed storage if **any** of these conditions a
 While the settings `min_bytes_for_full_part_storage`, `min_rows_for_full_part_storage`, and `min_level_for_full_part_storage` are defined in open source ClickHouse, they have no effect because the Packed storage implementation is only available in ClickHouse Cloud.
 :::
 
-The min_level_for_full_part_storage setting can be used to optimize both performance and costs in ClickHouse Cloud environments, particularly for tables that receive continuous inserts.
-Changing it from the default value could be considered in the following use cases:
+The `min_level_for_full_part_storage` setting can be used to optimize both performance and costs in ClickHouse Cloud environments, particularly for tables that receive continuous inserts.
+The setting is available starting in ClickHouse version 25.10 and works in conjunction with `min_level_for_wide_part` to provide comprehensive control over part storage strategies.
+
+Changing it from the default value (0) could be considered in the following use cases:
 - When tables receive regular data ingestion, initial parts will be merged away quickly, making it wasteful to store them in full part format initially
 - Setting this parameter prevents expensive S3 PUT requests during inserts. For example, one analysis showed that inserts creating full parts averaged 31.3 PUT requests per insert, while those creating only packed parts averaged just 2.22 PUT requests per insert
 - Insert operations become faster, especially for tables with many columns, since packed storage writes all data into one file rather than creating separate files for each column.
