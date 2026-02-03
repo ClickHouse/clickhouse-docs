@@ -341,7 +341,9 @@ const sidebars = {
           'cloud/managed-postgres/clickhouse-integration',
           'cloud/managed-postgres/high-availability',
           'cloud/managed-postgres/read-replicas',
+          'cloud/managed-postgres/scaling',
           'cloud/managed-postgres/backup-and-restore',
+          'cloud/managed-postgres/security',
           'cloud/managed-postgres/extensions',
           'cloud/managed-postgres/settings',
           {
