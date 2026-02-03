@@ -40,7 +40,7 @@ Fill out the form by providing your ClickPipe with a name, a description (option
 <Image img={cp_step2} alt="Fill out connection details" size="md"/>
 
 ## Configure a schema registry (optional) {#4-configure-your-schema-registry}
-A valid schema is required for Avro streams. See [Schema registries](./02_schema-registries.md) for more details on how to configure a schema registry.
+A valid schema is required for Avro and Protobuf streams. See [Schema registries](./02_schema-registries.md) for more details on how to configure a schema registry.
 
 ## Configure a reverse private endpoint (optional) {#5-configure-reverse-private-endpoint}
 Configure a Reverse Private Endpoint to allow ClickPipes to connect to your Kafka cluster using AWS PrivateLink.

@@ -38,6 +38,7 @@ import ExperimentalBadge from '@site/src/theme/badges/ExperimentalBadge';
 The supported formats are:
 - [JSON](/integrations/data-formats/json/overview)
 - [AvroConfluent](/interfaces/formats/AvroConfluent)
+- [Protobuf](/interfaces/formats/Protobuf)
 
 ## Supported data types {#supported-data-types}
 
@@ -57,15 +58,34 @@ The following standard ClickHouse data types are currently supported in ClickPip
 - UUID
 - IPv4
 - IPv6
+- Time, Time64
+- JSON
 - all ClickHouse LowCardinality types
 - Map with keys and values using any of the above types (including Nullables)
 - Tuple and Array with elements using any of the above types (including Nullables, one level depth only)
 - SimpleAggregateFunction types (for AggregatingMergeTree or SummingMergeTree destinations)
 
+### Variant type support {#variant-type-support}
+ClickPipes supports the Variant type in the following circumstances:
+- Avro Unions.  If your Avro schema contains a union with multiple non-null types, ClickPipes will infer the
+  appropriate variant type.  Variant types are not otherwise supported for Avro data.
+- JSON fields.  You can manually specify a Variant type (such as `Variant(String, Int64, DateTime)`) for any JSON field
+  in the source data stream.  Complex subtypes (arrays/maps/tuples) are not supported.  In addition, because of the way ClickPipes determines
+  the correct variant subtype to use, only one integer or datetime type can be used in the Variant definition - for example, `Variant(Int64, UInt32)` is not supported.
+
+### JSON type support {#json-type-support}
+ClickPipes support the JSON type in the following circumstances:
+- Avro Record and Protobuf Message fields can always be assigned to a JSON column.
+- Avro String and Bytes fields can be assigned to a JSON column if the Avro field actually contains JSON String objects.
+- Protobuf string and bytes Kinds can be assigned to a JSON column if the Protobuf field actually contains JSON String objects.
+- JSON fields that are always a JSON object can be assigned to a JSON destination column.
+
+Note that you will have to manually change the destination column to the desired JSON type, including any fixed or skipped paths.
+
 ### Avro {#avro}
 
 #### Supported Avro Data Types {#supported-avro-data-types}
-ClickPipes supports all Avro Primitive and Complex types, and all Avro Logical types except `time-millis`, `time-micros`, `local-timestamp-millis`, `local_timestamp-micros`, and `duration`.  Avro `record` types are converted to Tuple, `array` types to Array, and `map` to Map (string keys only).  In general the conversions listed [here](/interfaces/formats/Avro#data-type-mapping) are available.  We recommend using exact type matching for Avro numeric types, as ClickPipes does not check for overflow or precision loss on type conversion.
+ClickPipes supports all Avro Primitive and Complex types, and all Avro Logical types except `local-timestamp-millis` and `local_timestamp-micros`.  Avro `record` types are converted to Tuple, `array` types to Array, and `map` to Map (string keys only).  In general the conversions listed [here](/interfaces/schema-inference#avro) are available.  We recommend using exact type matching for Avro numeric types, as ClickPipes does not check for overflow or precision loss on type conversion.
 Alternatively, all Avro types can be inserted into a `String` column, and will be represented as a valid JSON string in that case.
 
 #### Nullable types and Avro unions {#nullable-types-and-avro-unions}
@@ -75,21 +95,22 @@ Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(n
 - An empty Map for a null Avro Map
 - A named Tuple with all default/zero values for a null Avro Record
 
-#### Variant type support {#variant-type-support}
-ClickPipes supports the Variant type in the following circumstances:
-- Avro Unions.  If your Avro schema contains a union with multiple non-null types, ClickPipes will infer the
-  appropriate variant type.  Variant types are not otherwise supported for Avro data.
-- JSON fields.  You can manually specify a Variant type (such as `Variant(String, Int64, DateTime)`) for any JSON field
-  in the source data stream.  Complex subtypes (arrays/maps/tuples) are not supported.  In addition, because of the way ClickPipes determines
-  the correct variant subtype to use, only one integer or datetime type can be used in the Variant definition - for example, `Variant(Int64, UInt32)` is not supported.
+### Protobuf {#protobuf}
 
-#### JSON type support {#json-type-support}
-ClickPipes support the JSON type in the following circumstances:
-- Avro Record types can always be assigned to a JSON column.
-- Avro String and Bytes types can be assigned to a JSON column if the column actually holds JSON String objects.
-- JSON fields that are always a JSON object can be assigned to a JSON destination column.
+#### Supported Protobuf Data Types {#supported-protobuf-data-types}
+ClickPipes supports all Protobuf version 2 and 3 types (except the long deprecated proto 2 `group` type).  Basic conversions are identical to those used for the ClickHouse Protobuf format listed [here](/interfaces/schema-inference#protobuf).
+We recommend exact type matching for Protobuf numeric types, as type conversion can result overflows or precision loss.  Protobuf maps, arrays, and Nullable variations of basic types are also supported.  ClickPipes also recognizes a
+limited set of Google "well known types": Timestamp, Duration, and "wrapper" messages.  Timestamps can be accurately mapped to DateTime or DateTime64 types, Durations to Time or Time64 types, and wrapper messages to the
+underlying type.  All Protobuf types can also be mapped to a ClickHouse `String` column and will be represented by a JSON string in that case.
 
-Note that you will have to manually change the destination column to the desired JSON type, including any fixed or skipped paths.
+#### Protobuf One-Ofs {#protobuf-one-ofs}
+During schema inference, protobuf "One Of" special fields will normally be mapped to a named Tuple, where only one of the fields will have a "non-default" value.  Alternatively, some "One Ofs" may be automatically mapped to a name variant field
+with the name of the "One Of", and a value representing using one of the valid types of the constituent fields.  Alternatively, each "One Of" constituent field can be manually mapped to a ClickHouse column, where only one of the constituent fields
+will ever be populated during processing.
+
+#### Message Lists (Envelopes) {#protobuf-message-lists}
+If the top level Protobuf schema defined for the ClickPipe contains a single repeated field that is itself a protobuf Message, schema inference and column mapping will be based on the "contained" Message field.  The Kafka message will be processed as a
+list of such messages, and a single Kafka message will generate multiple ClickHouse rows.
 
 ## Kafka virtual columns {#kafka-virtual-columns}
 
