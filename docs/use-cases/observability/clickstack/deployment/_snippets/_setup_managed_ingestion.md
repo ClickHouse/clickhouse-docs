@@ -33,9 +33,9 @@ The following assumes the recommended path of using the **ClickStack distributio
 
 To get started quickly, copy and run the Docker command shown.
 
-<Image img={otel_collector_start} size="lg" alt='OTel collector source'/>
+<Image img={otel_collector_start} size="md" alt='OTel collector source'/>
 
-This command should include your connection credentials `CLICKHOUSE_ENDPOINT` and `CLICKHOUSE_PASSWORD` pre-populated.
+This command should include your connection credentials pre-populated.
 
 :::note[Deploying to production]
 While this command uses the `default` user to connect Managed ClickStack, you should create a dedicated user when [going to production](/use-cases/observability/clickstack/production#create-a-user) and modifying your configuration.

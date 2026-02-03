@@ -76,11 +76,11 @@ This guide assumes you have provisioned sufficient resources to handle the volum
 If your ClickHouse service already hosts existing workloads, such as real-time application analytics, we recommend creating a child service using [ClickHouse Cloud's warehouses feature](/cloud/reference/warehouses) to isolate the observability workload. This ensures your existing applications are not disrupted, while keeping the datasets accessible from both services.
 :::
 
-<Image img={select_service} alt="Select service" size="md"/>
+<Image img={select_service} alt="Select service" size="lg"/>
 
 Select 'ClickStack' from the left navigation menu.
 
-### Setup ingestion {#setup-ingestion}
+### Setup ingestion (OpenTelemetry only) {#setup-ingestion}
 
 <SetupManagedIngestion/>
 
@@ -103,7 +103,7 @@ Select 'ClickStack' from the left navigation menu.
 
 From the ClickHouse Cloud landing page, select `New service` to create a new service.
 
-<Image img={new_service} size="md" alt='Service Service' border/>
+<Image img={new_service} size="lg" alt='Service Service' border/>
 
 ### Select your use case {#select-your-use-case}
 
@@ -173,7 +173,7 @@ Note that different data sources in ClickStack—such as logs and traces—can b
 
 #### Using custom schemas {#using-custom-schemas}
 
-Users looking to connect HyperDX to an existing service with data can complete the database and table settings as required. Settings will be auto-detected if tables conform to the OpenTelemetry schemas for ClickHouse. 
+Users looking to connect ClickStack to an existing service with data can complete the database and table settings as required. Settings will be auto-detected if tables conform to the OpenTelemetry schemas for ClickHouse. 
 
 If using your own schema, we recommend creating a Logs source ensuring the required fields are specified - see ["Log source settings"](/use-cases/observability/clickstack/config#logs) for further details.
 
