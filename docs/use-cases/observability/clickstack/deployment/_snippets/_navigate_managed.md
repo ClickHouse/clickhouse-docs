@@ -29,8 +29,14 @@ In the example above, a `Body` column does not exist in the data. Instead, it is
 
 For other possible options, see the [configuration reference](/use-cases/observability/clickstack/config).
 
+Once created, you should be directed to the search view where you can immediately begin exploring your data.
+
+<Image img={clickstack_managed_ui} size="lg" alt='ClickStack UI'/>
+
 </TabItem>
 </Tabs>
+
+<br/>
 
 And that’s it — you’re all set. 🎉
 
