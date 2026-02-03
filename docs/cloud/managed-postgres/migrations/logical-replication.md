@@ -37,6 +37,15 @@ For logical replication to work, we need to ensure that the source database is s
     ```sql
     GRANT rds_replication TO <your-username>;
     ```
+- The role you use for the target database must have write privileges on the target database's objects:
+    ```sql
+    GRANT USAGE ON SCHEMA <schema_i> TO subscriber_user;
+    GRANT CREATE ON DATABASE destination_db TO subscriber_user;
+    GRANT pg_create_subscription TO subscriber_user;
+
+    -- Grant table rights
+    GRANT INSERT, UPDATE, DELETE, TRUNCATE ON ALL TABLES IN SCHEMA <schema_i> TO subscriber_user;
+    ```
 
 Make sure your source database is set up like this:
 <Image img={sourceReplicationSetup} alt="Source PostgreSQL Replication Setup" size="md" border />

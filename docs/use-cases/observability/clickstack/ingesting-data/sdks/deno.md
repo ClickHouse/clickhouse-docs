@@ -9,9 +9,6 @@ doc_type: 'guide'
 keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'ClickStack Deno integration', 'Deno observability', 'Deno logging SDK']
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 This guide Integrates the following:
 
 - **Logs**
@@ -48,25 +45,9 @@ log.getLogger('my-otel-logger').info('Hello from Deno!');
 
 ### Run the application {#run-the-application}
 
-<Tabs groupId="service-type">
-<TabItem value="clickstack-managed" label="Managed ClickStack" default>
-
-```shell
-OTEL_EXPORTER_OTLP_ENDPOINT=http://your-otel-collector:4318 \
-OTEL_SERVICE_NAME="<NAME_OF_YOUR_APP_OR_SERVICE>" \
-deno run --allow-net --allow-env --allow-read --allow-sys --allow-run app.ts
-```
-
-</TabItem>
-
-<TabItem value="clickstack-oss" label="ClickStack Open Source" >
-
 ```shell
 OTEL_EXPORTER_OTLP_HEADERS="authorization=<YOUR_INGESTION_API_KEY>" \
-OTEL_EXPORTER_OTLP_ENDPOINT=http://your-otel-collector:4318 \
+OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
 OTEL_SERVICE_NAME="<NAME_OF_YOUR_APP_OR_SERVICE>" \
 deno run --allow-net --allow-env --allow-read --allow-sys --allow-run app.ts
 ```
-
-</TabItem>
-</Tabs>

@@ -1,12 +1,12 @@
 ---
-slug: /use-cases/observability/clickstack/getting-started/oss
-title: 'Getting Started with Open Source ClickStack'
-sidebar_label: 'Open Source'
+slug: /use-cases/observability/clickstack/getting-started
+title: 'Getting Started with ClickStack'
+sidebar_label: 'Getting started'
 pagination_prev: null
 pagination_next: use-cases/observability/clickstack/example-datasets/index
-description: 'Getting started with Open Source ClickStack'
+description: 'Getting started with ClickStack - The ClickHouse Observability Stack'
 doc_type: 'guide'
-keywords: ['ClickStack Open Source', 'getting started', 'Docker deployment', 'HyperDX UI', 'local deployment']
+keywords: ['ClickStack', 'getting started', 'Docker deployment', 'HyperDX UI', 'ClickHouse Cloud', 'local deployment']
 ---
 
 import Image from '@theme/IdealImage';
@@ -14,6 +14,7 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-logs.png';
 import hyperdx from '@site/static/images/use-cases/observability/hyperdx-1.png';
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
+import connect_cloud from '@site/static/images/use-cases/observability/connect-cloud-creds.png';
 import add_connection from '@site/static/images/use-cases/observability/add_connection.png';
 import hyperdx_cloud from '@site/static/images/use-cases/observability/hyperdx-cloud.png';
 import edit_cloud_connection from '@site/static/images/use-cases/observability/edit_cloud_connection.png';
@@ -21,12 +22,10 @@ import delete_source from '@site/static/images/use-cases/observability/delete_so
 import delete_connection from '@site/static/images/use-cases/observability/delete_connection.png';
 import created_sources from '@site/static/images/use-cases/observability/created_sources.png';
 import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
-To deploy **ClickStack Open Source**, where you run and manage ClickHouse and the ClickStack UI yourself, we provide prebuilt Docker images that bundle the UI, an OpenTelemetry collector, and ClickHouse into a single container -  making local development, testing, and self-managed deployments straightforward to get started.
+Getting started with **ClickStack** is straightforward thanks to the availability of prebuilt Docker images. These images are based on the official ClickHouse Debian package and are available in multiple distributions to suit different use cases.
 
-These images are based on the official ClickHouse Debian package and are available in multiple distributions to suit different use cases.
+## Local deployment {#local-deployment}
 
 The simplest option is a **single-image distribution** that includes all core components of the stack bundled together:
 
@@ -36,9 +35,9 @@ The simplest option is a **single-image distribution** that includes all core co
 
 This all-in-one image allows you to launch the full stack with a single command, making it ideal for testing, experimentation, or quick local deployments.
 
-<VerticalStepper headerLevel="h2">
+<VerticalStepper headerLevel="h3">
 
-## Deploy the stack with docker {#deploy-stack-with-docker}
+### Deploy stack with docker {#deploy-stack-with-docker}
 
 The following will run an OpenTelemetry collector (on port 4317 and 4318), the HyperDX UI (on port 8080) and ClickHouse (8123).
 
@@ -70,9 +69,9 @@ docker run \
 ```
 :::
 
-## Navigate to the ClickStack UI {#navigate-to-hyperdx-ui}
+### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui}
 
-Visit [http://localhost:8080](http://localhost:8080) to access the ClickStack UI (HyperDX).
+Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
 Create a user, providing a username and password that meets the complexity requirements. 
 
@@ -80,7 +79,7 @@ Create a user, providing a username and password that meets the complexity requi
 
 HyperDX will automatically connect to the local cluster and create data sources for the logs, traces, metrics, and sessions - allowing you to explore the product immediately.
 
-## Explore the product {#explore-the-product}
+### Explore the product {#explore-the-product}
 
 With the stack deployed, try one of our same datasets.
 
@@ -96,21 +95,84 @@ Alternatively, you can connect to a demo cluster where you can explore a larger 
 
 </VerticalStepper>
 
-## Alternative deployment models {#alternative-deployment-models}
+## Deploy with ClickHouse Cloud {#deploy-with-clickhouse-cloud}
 
-### Local mode {#local-mode}
+You can deploy ClickStack against ClickHouse Cloud, benefiting from a fully managed, secure backend while retaining complete control over ingestion, schema, and observability workflows.
+
+<VerticalStepper headerLevel="h3">
+
+### Create a ClickHouse Cloud service {#create-a-service}
+
+Follow the [getting started guide for ClickHouse Cloud](/getting-started/quick-start/cloud#1-create-a-clickhouse-service) to create a service.
+
+### Copy connection details {#copy-cloud-connection-details}
+
+To find the connection details for HyperDX, navigate to the ClickHouse Cloud console and click the <b>Connect</b> button on the sidebar. 
+
+Copy the HTTP connection details, specifically the HTTPS endpoint (`endpoint`) and password.
+
+<Image img={connect_cloud} alt="Connect Cloud" size="md"/>
+
+:::note Deploying to production
+While we will use the `default` user to connect HyperDX, we recommend creating a dedicated user when [going to production](/use-cases/observability/clickstack/production#create-a-user).
+:::
+
+### Deploy with docker {#deploy-with-docker}
+
+Open a terminal and export the credentials copied above:
+
+```shell
+export CLICKHOUSE_USER=default
+export CLICKHOUSE_ENDPOINT=<YOUR HTTPS ENDPOINT>
+export CLICKHOUSE_PASSWORD=<YOUR_PASSWORD>
+```
+
+Run the following docker command:
+
+```shell
+docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
+```
+
+This will expose an OpenTelemetry collector (on port 4317 and 4318), and the HyperDX UI (on port 8080).
+
+### Navigate to the HyperDX UI {#navigate-to-hyperdx-ui-cloud}
+
+Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
+
+Create a user, providing a username and password which meets the complexity requirements. 
+
+<Image img={hyperdx_login} alt="HyperDX Login" size="lg"/>
+
+### Create a ClickHouse Cloud connection {#create-a-cloud-connection}
+
+Navigate to `Team Settings` and click `Edit` for the `Local Connection`:
+
+<Image img={edit_connection} alt="Edit Connection" size="lg"/>
+
+Rename the connection to `Cloud` and complete the subsequent form with your ClickHouse Cloud service credentials before clicking `Save`:
+
+<Image img={edit_cloud_connection} alt="Create Cloud connection" size="lg"/>
+
+### Explore the product {#explore-the-product-cloud}
+
+With the stack deployed, try one of our same datasets.
+
+- [Example dataset](/use-cases/observability/clickstack/getting-started/sample-data) - Load an example dataset from our public demo. Diagnose a simple issue.
+- [Local files and metrics](/use-cases/observability/clickstack/getting-started/local-data) - Load local files and monitor the system on OSX or Linux using a local OTel collector.
+
+</VerticalStepper>
+
+## Local mode {#local-mode}
 
 Local mode is a way to deploy HyperDX without needing to authenticate. 
 
-**Authentication is not supported**. 
+Authentication is not supported. 
 
 This mode is intended to be used for quick testing, development, demos and debugging use cases where authentication and settings persistence is not necessary.
 
-For further details on this deployment model, see ["Local Mode Only"](/use-cases/observability/clickstack/deployment/local-mode-only).
-
 ### Hosted version {#hosted-version}
 
-You can use a hosted version of ClickStack in local mode available at [play-clickstack.clickhouse.com](https://play-clickstack.clickstack.com).
+You can use a hosted version of HyperDX in local mode available at [play.hyperdx.io](https://play.hyperdx.io).
 
 ### Self-hosted version {#self-hosted-version}
 
@@ -118,13 +180,13 @@ You can use a hosted version of ClickStack in local mode available at [play-clic
 
 ### Run with docker {#run-local-with-docker}
 
-The self-hosted local mode image comes with an OpenTelemetry collector, the ClickStack UI and a ClickHouse server pre-configured as well. This makes it easy to consume telemetry data from your applications and visualize it with minimal external setup. To get started with the self-hosted version, simply run the Docker container with the appropriate ports forwarded:
+The self-hosted local mode image comes with an OpenTelemetry collector and a ClickHouse server pre-configured as well. This makes it easy to consume telemetry data from your applications and visualize it in HyperDX with minimal external setup. To get started with the self-hosted version, simply run the Docker container with the appropriate ports forwarded:
 
 ```shell
 docker run -p 8080:8080 clickhouse/clickstack-local:latest
 ```
 
-Unlike the "All in one" image, you will not be promoted to create a user as **local mode does not include authentication**.
+You will not be promoted to create a user as local mode does not include authentication.
 
 ### Complete connection credentials {#complete-connection-credentials}
 
