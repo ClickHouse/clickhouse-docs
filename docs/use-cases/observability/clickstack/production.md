@@ -65,7 +65,7 @@ More compute may be required for access patterns that regularly query longer tim
 | 1 PB+ / month        | 59 vCPU × 3 replicas |
 
 :::note
-These values are **estimates only** and should be used as an initial baseline. Actual requirements depend on query complexity, concurrency, retention policies, and ingestion burstiness. Always monitor resource usage and scale as needed.
+These values are **estimates only** and should be used as an initial baseline. Actual requirements depend on query complexity, concurrency, retention policies, and variance in ingestion throughput. Always monitor resource usage and scale as needed.
 :::
 
 ### Isolating observability workloads {#isolating-workloads}

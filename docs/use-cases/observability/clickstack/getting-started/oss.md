@@ -40,10 +40,10 @@ This all-in-one image allows you to launch the full stack with a single command,
 
 ## Deploy the stack with docker {#deploy-stack-with-docker}
 
-The following will run an OpenTelemetry collector (on port 4317 and 4318), the HyperDX UI (on port 8080) and ClickHouse.
+The following will run an OpenTelemetry collector (on port 4317 and 4318), the HyperDX UI (on port 8080) and ClickHouse (8123).
 
 ```shell
-docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
+docker run --name clickstack -p 8123:8123 -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest clickstack
 ```
 
 :::note Image Name Update
@@ -58,6 +58,8 @@ For example:
 ```shell
 # modify command to mount paths
 docker run \
+  --name clickstack
+  -p 8123:8123 \
   -p 8080:8080 \
   -p 4317:4317 \
   -p 4318:4318 \

@@ -962,6 +962,8 @@ payg
 payg
 --docs/cloud/manage/scaling.md--
 bursty
+--docs/use-cases/observability/clickstack/production.md--
+bursty
 --docs/cloud/security/gcp-private-service-connect.md--
 privatelink
 --docs/cloud/features/04_security/connectivity/private_networking/aws-privatelink.md--
