@@ -1,10 +1,10 @@
 ---
-title: Service Stuck in Awakening State (15+ Minutes)
-description: Troubleshoot ClickHouse Cloud services that take 15+ minutes to wake from idle state, including dictionary loading issues, DDL queue synchronization, and resource constraints.
+title: My service is stuck in an awakening state (15+ Minutes)
+description: Troubleshoot a ClickHouse Cloud services that take 15+ minutes to wake from idle state, including dictionary loading issues, DDL queue synchronization, and resource constraints.
 date: 2026-02-03
 slug: service-stuck-awakening
 tags: ['Managing Cloud']
-keywords: ['service awakening', 'idle timeout', 'startup time', 'dictionary loading', 'DDL queue', 'cloud troubleshooting']
+keywords: ['Troubleshoot']
 ---
 
 {frontMatter.description}
@@ -12,13 +12,34 @@ keywords: ['service awakening', 'idle timeout', 'startup time', 'dictionary load
 
 ## Service Stuck in Awakening State (15+ Minutes) \{#service-stuck-awakening\}
 
-If your ClickHouse Cloud service takes 15+ minutes to wake from idle state, it's typically caused by one of several specific issues. This guide will help you diagnose and resolve long startup times.
+When you start, scale, or wake a ClickHouse Cloud service, you may sometimes experience longer-than-expected wait times. This guide explains normal startup timelines, common causes of delays, and self-service troubleshooting steps.
 
-## Common Causes \{#common-causes\}
+Startup duration depends on several factors:
 
-### 1. Dictionary Loading Blocking Startup (Most Common) \{#dictionary-loading-blocking-startup\}
+| Scenario | Typical duration | Investigation threshold |
+|----------|------------------|------------------------|
+| Starting idle service (minimal metadata) | 2-3 minutes | >10 minutes |
+| Starting service with dictionaries | 5-15 minutes | >30 minutes |
+| Scaling operations (adding replicas) | 10-20 minutes | >45 minutes |
+| Release channel changes with upgrades | 15-30 minutes | >60 minutes |
+| Services with large metadata volumes | 20-40 minutes | >60 minutes |
 
-**Symptom:** Service waits 15+ minutes trying to load dictionaries that connect to external sources.
+:::tip Normal behavior
+Services typically show a "Starting" or "Awakening" status while:
+- Kubernetes pods are being created and scheduled
+- Dictionaries are being loaded from ClickHouse Keeper
+- Metadata is being synchronized across replicas
+- Readiness health checks are passing
+:::
+
+If your ClickHouse Cloud service takes longer than the typical durations described above to wake from idle state, it's typically caused by one of several specific issues.
+This guide will help you diagnose and resolve long startup times.
+
+## Common causes \{#common-causes\}
+
+### 1. Dictionary loading blocks startup (most common) \{#dictionary-loading-blocking-startup\}
+
+In this case, your service waits 15+ minutes trying to load dictionaries that connect to external sources.
 
 Example from logs:
 ```
@@ -28,7 +49,8 @@ Example from logs:
 2025-09-19 06:34:01 | ERROR: Could not load external dictionary
 ```
 
-**The issue:** A dictionary with an external source like:
+The issue is caused by a dictionary with an external source like:
+
 ```sql
 CREATE DICTIONARY testing_env.failure_status_dict
 SOURCE(CLICKHOUSE(HOST 'other-service.clickhouse.cloud' ...))
@@ -36,9 +58,10 @@ LIFETIME(MIN 0 MAX 0)
 LAYOUT(...)
 ```
 
-If the target service is also idle or starting, it creates a **circular wait**. By default, ClickHouse waits for all dictionaries to load before accepting queries.
+If the target service is also idle or starting, it creates a **circular wait**.
+By default, ClickHouse waits for all dictionaries to load before accepting queries.
 
-**Solutions:**
+To solve the issue:
 - **Contact support** to enable lazy dictionary loading by setting:
   - `dictionaries_lazy_load=true`
   - `wait_dictionaries_load_at_startup=false`
@@ -48,24 +71,25 @@ If the target service is also idle or starting, it creates a **circular wait**. 
 
 ---
 
-### 2. DDL Queue Synchronization \{#ddl-queue-synchronization\}
+### 2. DDL queue synchronization \{#ddl-queue-synchronization\}
 
-**Symptom:** Long waits for `SYNC DATABASE REPLICA` operations.
+Long waits for `SYNC DATABASE REPLICA` operations are symptomatic of this case.
 
-Services with **heavy DDL activity** (frequent CREATE/DROP/ALTER) must replay all DDL changes when waking from idle.
+Services with **heavy DDL activity** (frequent `CREATE`/`DROP`/`ALTER`) must replay all DDL changes when waking from idle.
 
-Example from logs:
+Example from the logs:
+
 ```
 Code: 159. TIMEOUT_EXCEEDED: SYNC DATABASE REPLICA prod_events:
 database is readonly or command timed out after 180 seconds
 ```
 
-**Why it's worse after idle:**
+This is worse particularly after idle as:
 - New services start faster because they only copy current metadata
 - Idled services must replay hours or days of DDL changes sequentially
 - Each DDL operation is replayed one at a time
 
-**Solutions:**
+To solve this issue, you can:
 - **Increase idle timeout** to match your DDL frequency (e.g., if you run DDL hourly, use at least 2-hour idle timeout)
 - Consider keeping critical services always-on
 - Reduce DDL operations:
@@ -75,11 +99,12 @@ database is readonly or command timed out after 180 seconds
 
 ---
 
-### 3. Idle Timeout Too Short for Startup Time \{#idle-timeout-too-short\}
+### 3. Idle timeout is too short for startup time \{#idle-timeout-too-short\}
 
-**Problem:** Service with a 5-minute idle timeout takes 15+ minutes to start.
+One such example of this case is when a service with a 5-minute idle timeout takes 15+ minutes to start.
 
 This creates a **never-ending cycle:**
+
 ```
 09:15 - Service goes idle
 09:16 - Port scan or query wakes it up
@@ -88,8 +113,8 @@ This creates a **never-ending cycle:**
 09:32 - Start over...
 ```
 
-**Check your metrics:**
-If you see metrics like:
+In this case, you should check your metrics:
+
 ```json
 {
   "serverInitDurationSec": "915",  // 15+ minutes!
@@ -97,39 +122,37 @@ If you see metrics like:
 }
 ```
 
-**Recommended idle timeouts based on startup time:**
+The following idle timeouts are recommended based on startup time:
 - **15-30 min startup** → 30 min idle timeout minimum
 - **5-15 min startup** → 15 min idle timeout minimum
 - **< 5 min startup** → 5 min idle timeout acceptable
 
-**Important:** Always ensure your idle timeout is at least 2x your typical startup time to prevent restart loops.
+:::tip
+Always ensure your idle timeout is at least 2x your typical startup time to prevent restart loops.
+:::
 
-**Solution:**
+To solve this issue:
 - Contact support to increase your idle timeout
 - Consider keeping the service always-on if startup times are consistently high
 
 ---
 
-### 4. Insufficient Resources \{#insufficient-resources\}
+### 4. Insufficient resources \{#insufficient-resources\}
 
 Services with **minimal resources** (e.g., 2 CPU / 8GB RAM) can take 30+ minutes to:
 - Load table metadata
 - Initialize merge operations
 - Synchronize database replicas
 
-**Minimum recommendations:**
-- **Development:** 8GB RAM, 4 vCPU
-- **Production:** 16GB+ RAM, 8+ vCPU
-
-**Solution:**
-- Scale up your service via the Cloud console or API
-- See [Automatic scaling](/manage/scaling) for more details
+The solution here is to:
+- Scale up your service manually via the Cloud console or API
+- Employ [automatic scaling](/manage/scaling)
 
 ---
 
-## How to Diagnose Your Service \{#how-to-diagnose\}
+## How to diagnose your service \{#how-to-diagnose\}
 
-### Check Dictionary Issues \{#check-dictionary-issues\}
+### Check Dictionary issues \{#check-dictionary-issues\}
 
 Connect to your service (once it's awake) and run:
 
@@ -144,7 +167,7 @@ WHERE last_exception != '';
 
 If you see timeout errors or connection failures, dictionaries are likely blocking startup.
 
-### Check for Frequent DDL Operations \{#check-ddl-operations\}
+### Check for frequent DDL operations \{#check-ddl-operations\}
 
 Review your query logs:
 
@@ -162,7 +185,7 @@ ORDER BY event_date DESC;
 
 If you see hundreds of DDL operations per day, DDL replay may be causing slow startups.
 
-### Review Your Configuration \{#review-configuration\}
+### Review your configuration \{#review-configuration\}
 
 Check these settings in the Cloud console:
 1. **Idle timeout:** Should be at least 2x your startup time
@@ -171,34 +194,10 @@ Check these settings in the Cloud console:
 
 ---
 
-## Immediate Actions \{#immediate-actions\}
-
-1. **Contact ClickHouse Cloud support** to:
-   - Check if dictionaries are blocking startup
-   - Enable lazy dictionary loading if needed
-   - Increase idle timeout to match your startup time
-   - Review resource allocation
-
-2. **Reduce unnecessary wakeups:**
-   - Restrict IP access to prevent random port scans
-   - Review monitoring tools that might be probing your service
-
-3. **Scale up resources:**
-   - If using minimal resources (< 8GB RAM), scale up your service
-   - See [Automatic scaling](/manage/scaling) for details
-
-4. **Optimize dictionaries:**
-   - Review all dictionary definitions
-   - Remove unused dictionaries
-   - Consider alternatives to external dictionary sources
-
----
-
-## Additional Resources \{#additional-resources\}
+## Additional resources \{#additional-resources\}
 
 - [Automatic scaling](/manage/scaling)
 - [Dictionaries](/sql-reference/dictionaries/index)
-- [ClickHouse Cloud settings](/cloud/reference/settings)
 - [How to check your ClickHouse Cloud service state](/knowledgebase/how-to-check-my-clickhouse-cloud-sevice-state)
 
 If startup times remain high after trying these solutions, contact [ClickHouse Cloud support](https://clickhouse.com/support) with your service details for further investigation.
