@@ -28,7 +28,6 @@ The search interface supports this familiar syntax but translates it behind the 
 
 <Image img={hyperdx_sql} alt="SQL" size="lg"/>
 
-
 Below, we compare the Lucene query languages of ClickStack and Elasticsearch.
 
 ## ClickStack search syntax vs Elasticsearch query string {#clickstack-vs-elasticsearch-query-string}
