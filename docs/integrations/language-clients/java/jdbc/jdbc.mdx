@@ -268,10 +268,8 @@ There are few ways to change the mapping:
 
 **Nullable and LowCardinality Types**
 
-| ClickHouse Type             | JDBC Type                    | Java Class                  |
-|-----------------------------|------------------------------|-----------------------------|
-| Nullable                    | (wrapped type)               | (wrapped class)             |
-| LowCardinality              | (wrapped type)               | (wrapped class)             |
+- `Nullable` and `LowCardinality` are special types that wrap other types. 
+- `Nullable` affects how type names are returned in `ResultSetMetaData`
 
 **Special Types**
 
@@ -284,6 +282,10 @@ There are few ways to change the mapping:
 | AggregateFunction           | OTHER                        | (binary representation)     |
 | SimpleAggregateFunction     | (wrapped type)               | (wrapped class)             |
 
+- `UUID` is not JDBC standard type. However it is part of JDK. By default `java.util.UUID` is returned on `getObject()` method.
+- `UUID` can be read/written as `String` by using `getObject(columnIndex, String.class)` method.
+- `IPv4` and `IPv6` are not JDBC standard types. However they are part of JDK. By default `java.net.Inet4Address` and `java.net.Inet6Address` are returned on `getObject()` method.
+- `IPv4` and `IPv6` can be read/written as `String` by using `getObject(columnIndex, String.class)` method.
 
 ### Handling Dates, Times, and Timezones {#handling-dates-times-and-timezones}
 `java.sql.Date`, `java.sql.Time`, and `java.sql.Timestamp` can complicate how Timezones are calculated - though they're of course supported,
@@ -536,9 +538,9 @@ try (Connection conn = DriverManager.getConnection(url, properties)) {
 
 | ClickHouse Type             | Changed | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
 |-----------------------------|---------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
-| Array                       | Yes      | ARRAY                      | java.sql.Array             | ARRAY                      | Object[] or array of primitive types                          |
-| Tuple                       | No      | STRUCT                     | java.sql.Struct            | STRUCT                     | java.sql.Struct                         |
-| Map                         | Yes      | JAVA_OBJECT               | java.util.Map              | STRUCT                      | java.util.Map                           |
+| Array                       | Yes      | ARRAY                      | java.sql.Array            | ARRAY                      | Object[] or array of primitive types   |
+| Tuple                       | Yes      | OTHER                     | Object[]                   | STRUCT                     | java.sql.Struct                        |
+| Map                         | Yes      | JAVA_OBJECT               | java.util.Map              | STRUCT                     | java.util.Map                          |
 
 - In V2 `Array` is mapped to `java.sql.Array` by default to be compatible with JDBC. This is also done to give more information about returned array value. Useful for type inference.
 - In V2 `Array` implements `getResultSet()` method to return `java.sql.ResultSet` with the same content as the original array.
@@ -557,23 +559,26 @@ try (Connection conn = DriverManager.getConnection(url, properties)) {
 
 **Nullable and LowCardinality Types**
 
-| ClickHouse Type             | Changed | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
-|-----------------------------|---------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
-| Nullable                    | No      | (wrapped type)             | (wrapped class)            | (wrapped type)             | (wrapped class)                         |
-| LowCardinality              | No      | (wrapped type)             | (wrapped class)            | (wrapped type)             | (wrapped class)                         |
+- `Nullable` and `LowCardinality` are special types that wrap other types. 
+- No changes are made to these types in V2.
 
 **Special Types**
 
 | ClickHouse Type             | Changed | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
 |-----------------------------|---------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
-| JSON                        | Yes      | OTHER                      | java.lang.String           | not supported | not supported                         |
+| JSON                        | Yes     | OTHER                      | java.lang.String           | not supported              | not supported                           |
 | AggregateFunction           | No      | OTHER                      | (binary representation)    | OTHER                      | (binary representation)                 |
 | SimpleAggregateFunction     | No      | (wrapped type)             | (wrapped class)            | (wrapped type)             | (wrapped class)                         |
-| UUID                        | No      | OTHER                      | java.util.UUID             | OTHER                      | java.util.UUID                          |
-| IPv4                        | No      | OTHER                      | java.net.Inet4Address      | OTHER                      | java.net.Inet4Address                   |
-| IPv6                        | No      | OTHER                      | java.net.Inet6Address      | OTHER                      | java.net.Inet6Address                   |
-| Dynamic                     | Yes      | OTHER                      | java.Object                | not supported              | not supported                         |
-| Variant                     | Yes     | OTHER                      | java.Object                | not supported              | not supported                         |
+| UUID                        | No      | OTHER                      | java.util.UUID             | VARCHAR                    | java.util.UUID                          |
+| IPv4                        | No      | OTHER                      | java.net.Inet4Address      | VARCHAR                    | java.net.Inet4Address                   |
+| IPv6                        | No      | OTHER                      | java.net.Inet6Address      | VARCHAR                    | java.net.Inet6Address                   |
+| Dynamic                     | Yes     | OTHER                      | java.Object                | not supported              | not supported                           |
+| Variant                     | Yes     | OTHER                      | java.Object                | not supported              | not supported                           |
+
+- V1 uses `VARCHAR` for `UUID` but returns `java.util.UUID` object always. V2 fixes this by mapping `UUID` to `OTHER` and returns `java.util.UUID` object.
+- V1 uses `VARCHAR` for `IPv4` and `IPv6` but returns `java.net.Inet4Address` and `java.net.Inet6Address` objects always. V2 fixes this by mapping `IPv4` and `IPv6` to `OTHER` and returns `java.net.Inet4Address` and `java.net.Inet6Address` objects.
+- `Dynamic` and `Variant` are new types in V2. Not supported in V1.
+- `JSON` is based on `Dynamic` type. Therefore it is supported only in V2.
 
 
 </Version>
