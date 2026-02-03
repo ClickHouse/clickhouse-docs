@@ -384,7 +384,14 @@ See ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/i
   - **Guidance:**
     - Must point to your HyperDX instance
     - Enables dynamic configuration and secure ingestion
+    - If omitted, secure ingestion is disabled unless an `OTLP_AUTH_TOKEN` value is specified.
 
+- `OTLP_AUTH_TOKEN`
+  - **Default:** *None*. Used only for standalone image. 
+  - **Description:** Allows an OTLP authentication token to be specified. If set, all communication requires this bearer token.
+  - **Guidance:**
+    - Recommended if using the standalone collector image in production.
+    
 - `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`
   - **Default:** `default`
   - **Description:** ClickHouse database the collector writes telemetry data to.
