@@ -147,6 +147,25 @@ mcpServers:
 
 This configures LibreChat to connect to the MCP server running on Docker.
 
+## Enable MCP server permissions {#enable-mcp-server-permissions}
+
+By default, LibreChat disables MCP server usage for users in `librechat.example.yaml`. To enable it, find the 
+`mcpServers` section under `interface` in `librechat.yaml` and set `use` to `true`:
+
+```yml title="librechat.yaml"
+interface:
+  mcpServers:
+    use: true
+    share: false
+    create: false
+    public: false
+```
+
+:::note
+Without this configuration, the MCP server option will not appear in the LibreChat UI,
+even if the server is properly configured and running.
+:::
+
 Find the following line: 
 
 ```text title="librechat.yaml"
