@@ -1,0 +1,204 @@
+---
+title: Service Stuck in Awakening State (15+ Minutes)
+description: Troubleshoot ClickHouse Cloud services that take 15+ minutes to wake from idle state, including dictionary loading issues, DDL queue synchronization, and resource constraints.
+date: 2026-02-03
+slug: service-stuck-awakening
+tags: ['Managing Cloud']
+keywords: ['service awakening', 'idle timeout', 'startup time', 'dictionary loading', 'DDL queue', 'cloud troubleshooting']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## Service Stuck in Awakening State (15+ Minutes) \{#service-stuck-awakening\}
+
+If your ClickHouse Cloud service takes 15+ minutes to wake from idle state, it's typically caused by one of several specific issues. This guide will help you diagnose and resolve long startup times.
+
+## Common Causes \{#common-causes\}
+
+### 1. Dictionary Loading Blocking Startup (Most Common) \{#dictionary-loading-blocking-startup\}
+
+**Symptom:** Service waits 15+ minutes trying to load dictionaries that connect to external sources.
+
+Example from logs:
+```
+2025-09-19 06:19:01 | Context: Waiting for dictionaries to be loaded
+2025-09-19 06:24:01 | WARN: Connection failed at try #1
+2025-09-19 06:29:01 | WARN: Connection failed at try #2
+2025-09-19 06:34:01 | ERROR: Could not load external dictionary
+```
+
+**The issue:** A dictionary with an external source like:
+```sql
+CREATE DICTIONARY testing_env.failure_status_dict
+SOURCE(CLICKHOUSE(HOST 'other-service.clickhouse.cloud' ...))
+LIFETIME(MIN 0 MAX 0)
+LAYOUT(...)
+```
+
+If the target service is also idle or starting, it creates a **circular wait**. By default, ClickHouse waits for all dictionaries to load before accepting queries.
+
+**Solutions:**
+- **Contact support** to enable lazy dictionary loading by setting:
+  - `dictionaries_lazy_load=true`
+  - `wait_dictionaries_load_at_startup=false`
+- Use `LIFETIME(MIN 0 MAX 0)` only for small, local dictionaries
+- Avoid cross-service dictionary dependencies
+- Consider using materialized views or regular tables instead of dictionaries for external data
+
+---
+
+### 2. DDL Queue Synchronization \{#ddl-queue-synchronization\}
+
+**Symptom:** Long waits for `SYNC DATABASE REPLICA` operations.
+
+Services with **heavy DDL activity** (frequent CREATE/DROP/ALTER) must replay all DDL changes when waking from idle.
+
+Example from logs:
+```
+Code: 159. TIMEOUT_EXCEEDED: SYNC DATABASE REPLICA prod_events:
+database is readonly or command timed out after 180 seconds
+```
+
+**Why it's worse after idle:**
+- New services start faster because they only copy current metadata
+- Idled services must replay hours or days of DDL changes sequentially
+- Each DDL operation is replayed one at a time
+
+**Solutions:**
+- **Increase idle timeout** to match your DDL frequency (e.g., if you run DDL hourly, use at least 2-hour idle timeout)
+- Consider keeping critical services always-on
+- Reduce DDL operations:
+  - Use materialized views instead of frequent schema changes
+  - Batch DDL operations together
+  - Avoid frequent CREATE/DROP operations
+
+---
+
+### 3. Idle Timeout Too Short for Startup Time \{#idle-timeout-too-short\}
+
+**Problem:** Service with a 5-minute idle timeout takes 15+ minutes to start.
+
+This creates a **never-ending cycle:**
+```
+09:15 - Service goes idle
+09:16 - Port scan or query wakes it up
+09:30 - Still starting...
+09:31 - Timeout triggers, pods restart
+09:32 - Start over...
+```
+
+**Check your metrics:**
+If you see metrics like:
+```json
+{
+  "serverInitDurationSec": "915",  // 15+ minutes!
+  "idleTimeout": "1h0m0s"
+}
+```
+
+**Recommended idle timeouts based on startup time:**
+- **15-30 min startup** → 30 min idle timeout minimum
+- **5-15 min startup** → 15 min idle timeout minimum
+- **< 5 min startup** → 5 min idle timeout acceptable
+
+**Important:** Always ensure your idle timeout is at least 2x your typical startup time to prevent restart loops.
+
+**Solution:**
+- Contact support to increase your idle timeout
+- Consider keeping the service always-on if startup times are consistently high
+
+---
+
+### 4. Insufficient Resources \{#insufficient-resources\}
+
+Services with **minimal resources** (e.g., 2 CPU / 8GB RAM) can take 30+ minutes to:
+- Load table metadata
+- Initialize merge operations
+- Synchronize database replicas
+
+**Minimum recommendations:**
+- **Development:** 8GB RAM, 4 vCPU
+- **Production:** 16GB+ RAM, 8+ vCPU
+
+**Solution:**
+- Scale up your service via the Cloud console or API
+- See [Automatic scaling](/manage/scaling) for more details
+
+---
+
+## How to Diagnose Your Service \{#how-to-diagnose\}
+
+### Check Dictionary Issues \{#check-dictionary-issues\}
+
+Connect to your service (once it's awake) and run:
+
+```sql
+SELECT
+    name,
+    status,
+    last_exception
+FROM system.dictionaries
+WHERE last_exception != '';
+```
+
+If you see timeout errors or connection failures, dictionaries are likely blocking startup.
+
+### Check for Frequent DDL Operations \{#check-ddl-operations\}
+
+Review your query logs:
+
+```sql
+SELECT
+    event_date,
+    count() as ddl_count
+FROM system.query_log
+WHERE type = 'QueryFinish'
+  AND query_kind = 'DDL'
+  AND event_date >= today() - 7
+GROUP BY event_date
+ORDER BY event_date DESC;
+```
+
+If you see hundreds of DDL operations per day, DDL replay may be causing slow startups.
+
+### Review Your Configuration \{#review-configuration\}
+
+Check these settings in the Cloud console:
+1. **Idle timeout:** Should be at least 2x your startup time
+2. **IP allowlist:** If set to `0.0.0.0/0`, port scans can wake your service unnecessarily
+3. **Resource allocation:** Ensure adequate CPU and memory
+
+---
+
+## Immediate Actions \{#immediate-actions\}
+
+1. **Contact ClickHouse Cloud support** to:
+   - Check if dictionaries are blocking startup
+   - Enable lazy dictionary loading if needed
+   - Increase idle timeout to match your startup time
+   - Review resource allocation
+
+2. **Reduce unnecessary wakeups:**
+   - Restrict IP access to prevent random port scans
+   - Review monitoring tools that might be probing your service
+
+3. **Scale up resources:**
+   - If using minimal resources (< 8GB RAM), scale up your service
+   - See [Automatic scaling](/manage/scaling) for details
+
+4. **Optimize dictionaries:**
+   - Review all dictionary definitions
+   - Remove unused dictionaries
+   - Consider alternatives to external dictionary sources
+
+---
+
+## Additional Resources \{#additional-resources\}
+
+- [Automatic scaling](/manage/scaling)
+- [Dictionaries](/sql-reference/dictionaries/index)
+- [ClickHouse Cloud settings](/cloud/reference/settings)
+- [How to check your ClickHouse Cloud service state](/knowledgebase/how-to-check-my-clickhouse-cloud-sevice-state)
+
+If startup times remain high after trying these solutions, contact [ClickHouse Cloud support](https://clickhouse.com/support) with your service details for further investigation.
