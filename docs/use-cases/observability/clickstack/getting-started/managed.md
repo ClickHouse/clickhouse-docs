@@ -41,38 +41,11 @@ The easiest way to get started is by deploying **Managed ClickStack** on **Click
 
 To create a Managed ClickStack service in [ClickHouse Cloud](https://console.clickhouse.cloud) first complete the **first step** of the [ClickHouse Cloud quickstart guide](/getting-started/quick-start/cloud).
 
-:::note Scale vs Enterprise
-We recommend this [Scale tier](/cloud/manage/cloud-tiers) for most ClickStack workloads. Choose the Enterprise tier if you require advanced security features such as SAML, CMEK, or HIPAA compliance. It also offers custom hardware profiles for very large ClickStack deployments. In these cases, we recommend contacting support.
-:::
-
-When prompted to select CPU and memory, estimate it based on your expected ClickStack ingestion throughput. The table below provides guidance for sizing these resources.
-
-| Monthly ingest volume | Recommended compute |
-|-----------------------|---------------------|
-| < 10 TB / month       | 2 vCPU × 3 replicas |
-| 10–50 TB / month      | 4 vCPU × 3 replicas |
-| 50–100 TB / month     | 8 vCPU × 3 replicas |
-| 100–500 TB / month   | 30 vCPU × 3 replicas |
-| 1 PB+ / month        | 59 vCPU × 3 replicas |
-
-These recommendations are based on the following assumptions:
-
-- Data volume refers to **uncompressed ingest volume** per month and applies to both logs and traces.
-- Query patterns are typical for observability use cases, with most queries targeting **recent data**, usually the last 24 hours.
-- Ingestion is relatively **uniform across the month**. If you expect bursty traffic or spikes, you should provision additional headroom.
-- Storage is handled separately via ClickHouse Cloud object storage and is not a limiting factor for retention. We assume data retained for longer periods is infrequently accessed.
-
-More compute may be required for access patterns that regularly query longer time ranges, perform heavy aggregations, or support a high number of concurrent users.
-
-Although two replicas can meet the CPU and memory requirements for a given ingestion throughput, we recommend using three replicas where possible to achieve the same total capacity and improve service redundancy.
-
-:::note
-These values are **estimates only** and should be used as an initial baseline. Actual requirements depend on query complexity, concurrency, retention policies, and variance in ingestion throughput. Always monitor resource usage and scale as needed.
-:::
+<ProviderSelection/>
 
 ## Setup ingestion {#setup-ingestion}
 
-Once your service has been provisioned, select the service and select "ClickStack" from the left menu.
+Once your service has been provisioned, ensure the the service is selected and click "ClickStack" from the left menu.
 
 <SetupManagedIngestion/>
 

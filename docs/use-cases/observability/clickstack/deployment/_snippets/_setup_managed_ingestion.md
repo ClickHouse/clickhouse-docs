@@ -61,13 +61,13 @@ receivers:
     protocols:
       grpc:
         include_metadata: true
-        endpoint: '0.0.0.0:4317'
+        endpoint: "0.0.0.0:4317"
       http:
         cors:
-          allowed_origins: ['*']
-          allowed_headers: ['*']
+          allowed_origins: ["*"]
+          allowed_headers: ["*"]
         include_metadata: true
-        endpoint: '0.0.0.0:4318'
+        endpoint: "0.0.0.0:4318"
 processors:
   batch:
   memory_limiter:
@@ -104,7 +104,7 @@ exporters:
       max_elapsed_time: 300s
   clickhouse:
     database: default
-    endpoint: <your_clickhouse_cloud_endpoint>
+    endpoint: <clickhouse_cloud_endpoint>
     password: <your_password_here>
     username: default
     ttl: 720h
@@ -136,6 +136,7 @@ service:
       receivers: [routing/logs]
       processors: [memory_limiter, batch]
       exporters: [clickhouse/rrweb]
+
 ```
 
 <Image img={advanced_otel_collector} size="lg" alt='Advanced OTel collector source' border/>

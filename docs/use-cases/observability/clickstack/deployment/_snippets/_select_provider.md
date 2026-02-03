@@ -2,21 +2,41 @@ import Image from '@theme/IdealImage';
 import provider_selection from '@site/static/images/clickstack/getting-started/provider_selection.png';
 import advanced_resources from '@site/static/images/clickstack/getting-started/advanced_resources.png';
 import service_provisioned from '@site/static/images/clickstack/getting-started/service_provisioned.png';
+import region_resources from '@site/static/images/clickstack/getting-started/region_resources.png';
 
-Select your cloud provider, the region in which you wish to deploy, and the volume of data that you have per month via the 'Memory and Scaling' drop-down.
+:::note Scale vs Enterprise
+We recommend this [Scale tier](/cloud/manage/cloud-tiers) for most ClickStack workloads. Choose the Enterprise tier if you require advanced security features such as SAML, CMEK, or HIPAA compliance. It also offers custom hardware profiles for very large ClickStack deployments. In these cases, we recommend contacting support.
+:::
 
-This should be a rough estimate of the amount of data you have, either logs or traces, in an uncompressed form. 
+Select the Cloud provider and region.
 
-<Image img={provider_selection} size="md" alt='Resource selector' border/>
+<Image img={region_resources} size="md" alt='Resource selector' border/>
 
-This estimate will be used to size the compute supporting your Managed ClickStack service. By default, new organizations are put on the [Scale tier](/cloud/manage/cloud-tiers). [Vertical autoscaling](/manage/scaling#vertical-auto-scaling) will be enabled by default in the Scale tier. You can change your organization tier later on the 'Plans' page.
+When specifying the select CPU and memory, estimate it based on your expected ClickStack ingestion throughput. The table below provides guidance for sizing these resources.
 
-Advanced users with an understanding of their requirements can alternatively specify the exact resources provisioned, as well as any enterprise features, by selecting 'Custom Configuration' from the 'Memory and Scaling' dropdown.
+| Monthly ingest volume | Recommended compute |
+|-----------------------|---------------------|
+| < 10 TB / month       | 2 vCPU × 3 replicas |
+| 10–50 TB / month      | 4 vCPU × 3 replicas |
+| 50–100 TB / month     | 8 vCPU × 3 replicas |
+| 100–500 TB / month   | 30 vCPU × 3 replicas |
+| 1 PB+ / month        | 59 vCPU × 3 replicas |
 
-<Image img={advanced_resources} size="md" alt='Advanced resource selector' border/>
+These recommendations are based on the following assumptions:
 
-Once you have specified the requirements, your Managed ClickStack service will take several minutes to provision. The completion of provisioning is indicated on the subsequent 'ClickStack' page. Feel free to explore the rest of the [ClickHouse Cloud console](/cloud/overview) whilst waiting for provisioning.
+- Data volume refers to **uncompressed ingest volume** per month and applies to both logs and traces.
+- Query patterns are typical for observability use cases, with most queries targeting **recent data**, usually the last 24 hours.
+- Ingestion is relatively **uniform across the month**. If you expect bursty traffic or spikes, you should provision additional headroom.
+- Storage is handled separately via ClickHouse Cloud object storage and is not a limiting factor for retention. We assume data retained for longer periods is infrequently accessed.
 
-<Image img={service_provisioned} size="md" alt='Service provisioned' border />
+More compute may be required for access patterns that regularly query longer time ranges, perform heavy aggregations, or support a high number of concurrent users.
 
-Once provisioning is complete, select 'Start Ingestion'.
+Although two replicas can meet the CPU and memory requirements for a given ingestion throughput, we recommend using three replicas where possible to achieve the same total capacity and improve service redundancy.
+
+:::note
+These values are **estimates only** and should be used as an initial baseline. Actual requirements depend on query complexity, concurrency, retention policies, and variance in ingestion throughput. Always monitor resource usage and scale as needed.
+:::
+ 
+Once you have specified the requirements, your Managed ClickStack service will take several minutes to provision. Feel free to explore the rest of the [ClickHouse Cloud console](/cloud/overview) whilst waiting for provisioning.
+
+Once **provisioning is complete, the 'ClickStack' option on the left menu will be enabled**.

@@ -105,15 +105,13 @@ From the ClickHouse Cloud landing page, select `New service` to create a new ser
 
 <Image img={new_service} size="lg" alt='Service Service' border/>
 
-### Select your use case {#select-your-use-case}
-
-<UseCaseSelector/>
-
-### Specify your provider, region and data size {#specify-your-data-size}
+### Specify your provider, region and resource {#specify-your-region-and-resources}
 
 <ProviderSelection/>
 
 ### Setup ingestion {#setup-ingestion-create-new}
+
+Once your service has been provisioned, ensure the the service is selected and click "ClickStack" from the left menu.
 
 <SetupManagedIngestion/>
 
