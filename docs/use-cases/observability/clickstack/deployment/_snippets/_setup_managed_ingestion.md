@@ -1,13 +1,18 @@
 import Image from '@theme/IdealImage';
 import select_source from '@site/static/images/clickstack/getting-started/select_source.png';
+import start_ingestion from '@site/static/images/clickstack/getting-started/start_ingestion.png';
 import otel_collector_start from '@site/static/images/clickstack/getting-started/otel_collector_start.png';
-import advanced_otel_collector from '@site/static/images/clickstack/getting-started/otel_collector_start.png';
+import advanced_otel_collector from '@site/static/images/clickstack/getting-started/advanced_otel_collector.png';
+import vector_config from '@site/static/images/clickstack/getting-started/vector_config.png';
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-You'll be prompted to select an ingestion source. Managed ClickStack supports a number of ingestion sources, including OpenTelemetry and [Vector](https://vector.dev/), as well as the option to send data directly to ClickHouse in your own schema.
+<Image img={start_ingestion} size="lg" alt='Start Ingestion' border/>
 
-<Image img={select_source} size="md" alt='Select source' border/>
+Select "Start Ingestion" and you'll be prompted to select an ingestion source. Managed ClickStack supports OpenTelemetry and [Vector](https://vector.dev/) as its main ingestion sources. However, users are also free to send data directly to ClickHouse in their own schema using any of the [ClickHouse Cloud support integrations](/integrations).
+
+<Image img={select_source} size="lg" alt='Select source' border/>
 
 :::note[OpenTelemetry recommended]
 Use of the OpenTelemetry is strongly recommended as the ingestion format.
@@ -15,6 +20,7 @@ It provides the simplest and most optimized experience, with out-of-the-box sche
 :::
 
 <Tabs groupId="ingestion-sources">
+
 <TabItem value="open-telemetry" label="OpenTelemetry" default>
 
 To send OpenTelemetry data to Managed ClickStack, you're recommended to use an OpenTelemetry Collector. The collector acts as a gateway that receives OpenTelemetry data from your applications (and other collectors) and forwards it to ClickHouse Cloud.
@@ -27,7 +33,7 @@ The following assumes the recommended path of using the **ClickStack distributio
 
 To get started quickly, copy and run the Docker command shown.
 
-<Image img={otel_collector_start} size="md" alt='OTel collector source' border/>
+<Image img={otel_collector_start} size="lg" alt='OTel collector source'/>
 
 This command should include your connection credentials `CLICKHOUSE_ENDPOINT` and `CLICKHOUSE_PASSWORD` pre-populated.
 
@@ -63,71 +69,6 @@ receivers:
         include_metadata: true
         endpoint: '0.0.0.0:4318'
 processors:
-  transform:
-    log_statements:
-      - context: log
-        error_mode: ignore
-        statements:
-          # JSON parsing: Extends log attributes with the fields from structured log body content, either as an OTEL map or
-          # as a string containing JSON content.
-          - set(log.cache, ExtractPatterns(log.body, "(?P<0>(\\{.*\\}))")) where
-            IsString(log.body)
-          - merge_maps(log.attributes, ParseJSON(log.cache["0"]), "upsert")
-            where IsMap(log.cache)
-          - flatten(log.attributes) where IsMap(log.cache)
-          - merge_maps(log.attributes, log.body, "upsert") where IsMap(log.body)
-      - context: log
-        error_mode: ignore
-        conditions:
-          - severity_number == 0 and severity_text == ""
-        statements:
-          # Infer: extract the first log level keyword from the first 256 characters of the body
-          - set(log.cache["substr"], log.body.string) where Len(log.body.string)
-            < 256
-          - set(log.cache["substr"], Substring(log.body.string, 0, 256)) where
-            Len(log.body.string) >= 256
-          - set(log.cache, ExtractPatterns(log.cache["substr"],
-            "(?i)(?P<0>(alert|crit|emerg|fatal|error|err|warn|notice|debug|dbug|trace))"))
-          # Infer: detect FATAL
-          - set(log.severity_number, SEVERITY_NUMBER_FATAL) where
-            IsMatch(log.cache["0"], "(?i)(alert|crit|emerg|fatal)")
-          - set(log.severity_text, "fatal") where log.severity_number ==
-            SEVERITY_NUMBER_FATAL
-          # Infer: detect ERROR
-          - set(log.severity_number, SEVERITY_NUMBER_ERROR) where
-            IsMatch(log.cache["0"], "(?i)(error|err)")
-          - set(log.severity_text, "error") where log.severity_number ==
-            SEVERITY_NUMBER_ERROR
-          # Infer: detect WARN
-          - set(log.severity_number, SEVERITY_NUMBER_WARN) where
-            IsMatch(log.cache["0"], "(?i)(warn|notice)")
-          - set(log.severity_text, "warn") where log.severity_number ==
-            SEVERITY_NUMBER_WARN
-          # Infer: detect DEBUG
-          - set(log.severity_number, SEVERITY_NUMBER_DEBUG) where
-            IsMatch(log.cache["0"], "(?i)(debug|dbug)")
-          - set(log.severity_text, "debug") where log.severity_number ==
-            SEVERITY_NUMBER_DEBUG
-          # Infer: detect TRACE
-          - set(log.severity_number, SEVERITY_NUMBER_TRACE) where
-            IsMatch(log.cache["0"], "(?i)(trace)")
-          - set(log.severity_text, "trace") where log.severity_number ==
-            SEVERITY_NUMBER_TRACE
-          # Infer: else
-          - set(log.severity_text, "info") where log.severity_number == 0
-          - set(log.severity_number, SEVERITY_NUMBER_INFO) where log.severity_number == 0
-      - context: log
-        error_mode: ignore
-        statements:
-          # Normalize the severity_text case
-          - set(log.severity_text, ConvertCase(log.severity_text, "lower"))
-  resourcedetection:
-    detectors:
-      - env
-      - system
-      - docker
-    timeout: 5s
-    override: false
   batch:
   memory_limiter:
     # 80% of maximum memory up to 2G, adjust for low memory environments
@@ -149,10 +90,10 @@ exporters:
     sampling_initial: 5
     sampling_thereafter: 200
   clickhouse/rrweb:
-    database: ${env:CLICKHOUSE_DATABASE}
-    endpoint: ${env:CLICKHOUSE_ENDPOINT}
-    password: ${env:CLICKHOUSE_PASSWORD}
-    username: ${env:CLICKHOUSE_USER}
+    database: default
+    endpoint: <clickhouse_cloud_endpoint>
+    password: <your_password_here>
+    username: default
     ttl: 720h
     logs_table_name: hyperdx_sessions
     timeout: 5s
@@ -162,10 +103,10 @@ exporters:
       max_interval: 30s
       max_elapsed_time: 300s
   clickhouse:
-    database: ${env:CLICKHOUSE_DATABASE}
-    endpoint: ${env:CLICKHOUSE_ENDPOINT}
-    password: ${env:CLICKHOUSE_PASSWORD}
-    username: ${env:CLICKHOUSE_USER}
+    database: default
+    endpoint: <your_clickhouse_cloud_endpoint>
+    password: <your_password_here>
+    username: default
     ttl: 720h
     timeout: 5s
     retry_on_failure:
@@ -173,9 +114,7 @@ exporters:
       initial_interval: 5s
       max_interval: 30s
       max_elapsed_time: 300s
-extensions:
-  health_check:
-    endpoint: :13133
+
 service:
   pipelines:
     traces:
@@ -191,24 +130,74 @@ service:
       exporters: [routing/logs]
     logs/out-default:
       receivers: [routing/logs]
-      processors: [memory_limiter, transform, batch]
+      processors: [memory_limiter, batch]
       exporters: [clickhouse]
     logs/out-rrweb:
       receivers: [routing/logs]
       processors: [memory_limiter, batch]
       exporters: [clickhouse/rrweb]
-
 ```
 
-<Image img={advanced_otel_collector} size="md" alt='Advanced OTel collector source' border/>
+<Image img={advanced_otel_collector} size="lg" alt='Advanced OTel collector source' border/>
 
 For further details on configuring OpenTelemetry collectors, see ["Ingesting with OpenTelemetry."](/use-cases/observability/clickstack/ingesting-data/opentelemetry)
 
 </TabItem>
 <TabItem value="vector" label="Vector" default>
-Coming Soon
-</TabItem>
-<TabItem value="other" label="Other" default>
-Coming Soon
+
+[Vector](https://vector.dev) is a high-performance, vendor-neutral observability data pipeline, especially popular for log ingestion due to its flexibility and low resource footprint.
+
+When using Vector with ClickStack, users are responsible for defining their own schemas. These schemas may follow OpenTelemetry conventions, but they can also be entirely custom, representing user-defined event structures.
+
+:::note Timestamp required
+The only strict requirement for Managed ClickStack, is that the data includes a **timestamp column** (or equivalent time field), which can be declared when configuring the data source in the ClickStack UI.
+:::
+
+The following assumes you have an instance of Vector running, pre-configured with ingest pipelines, delivering data.
+
+### Create a database and table {#create-database-and-tables}
+
+Vector requires a table and schema to be defined prior to data ingestion.
+
+First create a database. This can be done via the [ClickHouse Cloud console](/cloud/get-started/sql-console). 
+
+For example, create a database for logs:
+
+```sql
+CREATE DATABASE IF NOT EXISTS logs
+```
+
+Then create a table whose schema matches the structure of your log data. The example below assumes a classic Nginx access log format:
+
+```sql
+CREATE TABLE logs.nginx_logs
+(
+    `time_local` DateTime,
+    `remote_addr` IPv4,
+    `remote_user` LowCardinality(String),
+    `request` String,
+    `status` UInt16,
+    `body_bytes_sent` UInt64,
+    `http_referer` String,
+    `http_user_agent` String,
+    `http_x_forwarded_for` LowCardinality(String),
+    `request_time` Float32,
+    `upstream_response_time` Float32,
+    `http_host` String
+)
+ENGINE = MergeTree
+ORDER BY (toStartOfMinute(time_local), status, remote_addr);
+```
+
+Your table must align with the output schema produced by Vector. Adjust the schema as needed for your data, following the recommended [schema best practices](/docs/best-practices/select-data-types). 
+
+We strongly recommend understanding how [Primary keys](/docs/primary-indexes) work in ClickHouse and choosing an ordering key based on your access patterns. See the [ClickStack-specific](/use-cases/observability/clickstack/performance_tuning#choosing-a-primary-key) guidance on choosing a primary key.
+
+Once the table exists, copy the configuration snipper shown. Adjust the input to consume your existing pipelines, as well as the target table and database if required. Credentials should be pre-populated.
+
+<Image img={vector_config} size="lg" alt='Vector configuration'/>
+
+For more examples of ingesting data with Vector, see ["Ingesting with Vector"](/use-cases/observability/clickstack/ingesting-data/vector) or the [Vector ClickHouse sink documentation](https://vector.dev/docs/reference/configuration/sinks/clickhouse/) for advanced options.
+
 </TabItem>
 </Tabs>

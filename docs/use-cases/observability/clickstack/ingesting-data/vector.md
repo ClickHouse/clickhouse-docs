@@ -39,7 +39,9 @@ The following guide assumes you have already created a Managed ClickStack servic
 
 ### Create a database and table {#create-a-database-table}
 
-Define a table to store your events. This can be done via the [ClickHouse Cloud console](/cloud/get-started/sql-console).
+Vector requires a table and schema to be defined prior to data ingestion. 
+
+First create a database. This can be done via the [ClickHouse Cloud console](/cloud/get-started/sql-console).
 
 In the example below, we use `logs`:
 
@@ -141,7 +143,9 @@ Navigate to the logs view to explore the data and begin using ClickStack.
 
 ### Create a database and table {#create-a-database-table-oss}
 
-Define a table to store your events. This can be done via the [ClickHouse Web user interface](/interfaces/http#web-ui) at [http://localhost:8123/play](http://localhost:8123/play). Use the default username and password `api:api`.
+Vector requires a table and schema to be defined prior to data ingestion. 
+
+First create a database. This can be done via the [ClickHouse Web user interface](/interfaces/http#web-ui) at [http://localhost:8123/play](http://localhost:8123/play). Use the default username and password `api:api`.
 
 <Image img={play_ui} alt="Play UI ClickStack" size="lg"/>
 
@@ -262,9 +266,11 @@ The following guide assumes you have already created a Managed ClickStack servic
 
 <VectorSampleData/>
 
-### Create the database and table {#create-database-table-nginx-managed}
+### Create a database and table {#create-database-table-nginx-managed}
 
-Define a table to store your events. This can be done via the [ClickHouse Cloud console](/cloud/get-started/sql-console).
+Vector requires a table and schema to be defined prior to data ingestion. 
+
+First create a database. This can be done via the [ClickHouse Cloud console](/cloud/get-started/sql-console).
 
 Create a database `logs`:
 
@@ -416,7 +422,9 @@ The following guide assumes you have set up ClickStack Open Source with the [Get
 
 ### Create a database and table {#create-a-database-table-nginx-oss}
 
-Define a table to store your events. This can be done via the [ClickHouse Web user interface](/interfaces/http#web-ui) at [http://localhost:8123/play](http://localhost:8123/play). Use the default username and password `api:api`.
+Vector requires a table and schema to be defined prior to data ingestion. 
+
+First create a database. This can be done via the [ClickHouse Web user interface](/interfaces/http#web-ui) at [http://localhost:8123/play](http://localhost:8123/play). Use the default username and password `api:api`.
 
 <Image img={play_ui} alt="Play UI ClickStack" size="lg"/>
 

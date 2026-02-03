@@ -1,4 +1,4 @@
-If you have existing applications or infrastructure to instrument, navigate to the relevant guides linked from the UI. 
+If you have existing applications or infrastructure to instrument with OpenTelemetry, navigate to the relevant guides linked from the UI. 
 
 To instrument your applications to collect traces and logs, use the [supported language SDKs](/use-cases/observability/clickstack/sdks) which send data to your OpenTelemetry Collector acting as a gateway for ingestion into Managed ClickStack. 
 
