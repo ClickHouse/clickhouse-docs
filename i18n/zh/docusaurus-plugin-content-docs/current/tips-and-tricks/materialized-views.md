@@ -56,6 +56,7 @@ WHERE your_filter_conditions;
 -- If aggregation_ratio < 10%, you'll get good compression
 ```
 
+
 ## 当物化视图开始带来问题时 \{#mv-problems\}
 
 **需要监控的预警信号：**
@@ -67,4 +68,5 @@ WHERE your_filter_conditions;
 你可以使用 `system.query_log` 比较添加物化视图前后的写入性能，以跟踪查询耗时趋势。
 
 ## 视频来源 \{#video-sources\}
-- [ClickHouse at CommonRoom - Kirill Sapchuk](https://www.youtube.com/watch?v=liTgGiTuhJE) - “过度迷恋物化视图”和“20GB→190GB 激增”案例研究的出处
+
+- [ClickHouse at CommonRoom - Kirill Sapchuk](https://www.youtube.com/watch?v=liTgGiTuhJE) - “过度迷恋 materialized view”和“20GB→190GB 激增”案例研究的出处

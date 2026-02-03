@@ -24,11 +24,12 @@ SELECT *
 FROM clusterAllReplicas('default',system.crash_log)
 ```
 
+
 ## Скомпрометированные роли AWS, созданные ClickHouse \{#compromised-clickhouse-created-aws-roles\}
 
 ClickHouse использует предварительно созданные роли для обеспечения работы системных функций. В этом разделе предполагается, что заказчик использует AWS с CloudTrail и имеет доступ к журналам CloudTrail.
 
-Если инцидент может быть результатом скомпрометированной роли, просмотрите действия в CloudTrail и CloudWatch, связанные с ролями и действиями ClickHouse IAM. Обратитесь к стеку [CloudFormation](/cloud/reference/byoc/onboarding/aws#cloudformation-iam-roles) или модулю Terraform, предоставленным в рамках первоначальной настройки, чтобы получить список ролей IAM.
+Если инцидент может быть результатом скомпрометированной роли, просмотрите действия в CloudTrail и CloudWatch, связанные с ролями и действиями ClickHouse IAM. Обратитесь к стеку [CloudFormation](/cloud/reference/byoc/reference/priviledge#cloudformation-iam-roles) или модулю Terraform, предоставленным в рамках первоначальной настройки, чтобы получить список ролей IAM.
 
 ## Несанкционированный доступ к кластеру EKS \{#unauthorized-access-eks-cluster\}
 

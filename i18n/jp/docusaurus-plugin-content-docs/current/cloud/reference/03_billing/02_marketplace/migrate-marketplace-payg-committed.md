@@ -6,13 +6,9 @@ keywords: ['マーケットプレイス', '請求', 'PAYG', '従量課金制', '
 doc_type: 'guide'
 ---
 
-
-
 # クラウドマーケットプレイスでの従量課金 (PAYG) からコミットメント支出契約への課金移行 \{#migrate-payg-to-committed\}
 
 ClickHouse の組織が現在、クラウドマーケットプレイスの有効な従量課金 (PAYG) サブスクリプション（または注文）によって課金されており、同じクラウドマーケットプレイス経由でコミットメント支出契約による課金へ移行したい場合は、新しいオファーを承諾したうえで、利用しているクラウドサービスプロバイダーに応じて以下の手順に従ってください。
-
-
 
 ## 重要な注意事項 \{#important-notes\}
 
@@ -25,8 +21,6 @@ ClickHouse の組織が現在、クラウドマーケットプレイスの有効
 サブスクリプションのキャンセル後に発生した利用分については、次に設定されている有効な支払い方法に対して請求されます。優先順は、プリペイドクレジット、マーケットプレイスサブスクリプション、クレジットカードの順となります。
 
 新しいマーケットプレイスサブスクリプションに組織を紐付ける際のご質問や、設定に関するサポートが必要な場合は、ClickHouse の[サポート](https://clickhouse.com/support/program)までお問い合わせください。
-
-
 
 ## AWS Marketplace \{#aws-marketplace\}
 
@@ -50,8 +44,6 @@ ClickHouse の組織が現在、クラウドマーケットプレイスの有効
 
 続いて、受け入れた新しい AWS コミット済み支出契約で ClickHouse 組織を構成するために、これらの[手順](/cloud/billing/marketplace/aws-marketplace-committed-contract)に従ってください。
 
-
-
 ## GCP Marketplace \{#gcp-marketplace\}
 
 ### GCP PAYG 注文をキャンセルする手順 \{#cancel-gcp-payg\}
@@ -68,8 +60,6 @@ ClickHouse の組織が現在、クラウドマーケットプレイスの有効
 
 続いて、これらの[手順](/cloud/billing/marketplace/gcp-marketplace-committed-contract)に従って、お使いの ClickHouse 組織を新しい GCP コミット済み支出契約用に構成します。
 
-
-
 ## Azure Marketplace \{#azure-marketplace\}
 
 ### Azure の PAYG サブスクリプションを解約する手順 \{#cancel-azure-payg\}
@@ -84,8 +74,6 @@ ClickHouse の組織が現在、クラウドマーケットプレイスの有効
 > **注:** この注文の解約についてサポートが必要な場合は、Azure Portal からサポートチケットを作成してください。
 
 続いて、ClickHouse 組織を新しい Azure のコミット済み利用契約に対応させるため、こちらの[手順](/cloud/billing/marketplace/azure-marketplace-committed-contract)に従って構成してください。
-
-
 
 ## コミット済み利用契約へのリンク要件 \{#linking-requirements\}
 

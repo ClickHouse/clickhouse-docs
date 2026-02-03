@@ -28,9 +28,12 @@ Microsoft OneLake 的 lakehouse 支持多种表格式。借助 ClickHouse，你�
 在 Microsoft Fabric 中查询数据表之前，你需要收集以下信息：
 
 - OneLake 租户 ID（你的 Entra ID）
-- 客户端 ID
+- 应用程序（客户端）ID
 - 客户端密钥
 - 仓库 ID 和数据项 ID
+
+你的仓库 ID 即为 Workspace ID。
+对于 Data Item ID，我们建议使用 LakeHouse ID。
 
 如需帮助查找这些值，请参阅 [Microsoft OneLake 的文档](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites)。
 

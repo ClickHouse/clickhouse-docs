@@ -86,7 +86,7 @@ SELECT * FROM pg_available_extensions;
 | `pg_freespacemap`                | 1.3    | 空き領域マップ (FSM) を確認する                                        |
 | `pg_hint_plan`                   |        | PostgreSQL 向けのオプティマイザーヒント                                  |
 | `pg_ivm`                         | 1.13   | PostgreSQL 向けインクリメンタルビューのメンテナンス機能                          |
-| `pg_logicalinspect`              | 1.0    | 論理デコーディングコンポーネントの検査用関数 *(PG18+)*                           |
+| `pg_logicalinspect`              | 1.0    | 論理デコーディングコンポーネントを検査する関数 *(PG18+)*                          |
 | `pg_partman`                     | 5.4.0  | 時間またはIDでパーティション分割されたテーブルを管理する拡張機能                          |
 | `pg_prewarm`                     | 1.2    | リレーションデータを事前に読み込みキャッシュ                                     |
 | `pg_repack`                      | 1.5.3  | PostgreSQL データベース内のテーブルを最小限のロックで再編成                        |

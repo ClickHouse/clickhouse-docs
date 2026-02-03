@@ -984,6 +984,7 @@ bigquery
 clickpipes
 --docs/integrations/data-ingestion/clickpipes/kinesis.md--
 kinesis
+fanout
 --docs/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql.md--
 cloudsql
 --docs/integrations/data-ingestion/clickpipes/postgres/source/neon-postgres.md--

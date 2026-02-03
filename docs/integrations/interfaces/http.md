@@ -448,7 +448,7 @@ The possible header fields are:
 | `written_rows`       | Number of rows written.         |
 | `written_bytes`      | Volume of data written in bytes.|
 | `elapsed_ns`         | Query runtime in nanoseconds.|
-| `memory_usage`       | Memory in bytes used by the query. |
+| `memory_usage`       | Memory in bytes used by the query. (**Available from v25.11**) |
 
 Running requests do not stop automatically if the HTTP connection is lost. Parsing and data formatting are performed on the server-side, and using the network might be ineffective.
 

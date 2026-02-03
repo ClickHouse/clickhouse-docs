@@ -45,7 +45,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
         <dependency>
             <groupId>com.clickhouse</groupId>
             <artifactId>client-v2</artifactId>
-            <version>0.9.4</version>
+            <version>0.9.6</version>
         </dependency>
         ```
       </TabItem>
@@ -53,14 +53,14 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       <TabItem value="gradle-kt" label="Gradle (Kotlin)">
         ```kotlin
         // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-        implementation("com.clickhouse:client-v2:0.9.4")
+        implementation("com.clickhouse:client-v2:0.9.6")
         ```
       </TabItem>
 
       <TabItem value="gradle" label="Gradle">
         ```groovy
         // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-        implementation 'com.clickhouse:client-v2:0.9.4'
+        implementation 'com.clickhouse:client-v2:0.9.6'
         ```
       </TabItem>
     </Tabs>
@@ -70,7 +70,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     ## 初期化 \{#initialization\}
 
     Clientオブジェクトは`com.clickhouse.client.api.Client.Builder#build()`によって初期化されます。各クライアントは独自のコンテキストを持ち、クライアント間でオブジェクトが共有されることはありません。
-    Builderには、セットアップを簡単に行うための設定メソッドが用意されています。
+    Builderには、便利なセットアップのための設定メソッドが用意されています。
 
     例:
 
@@ -122,10 +122,10 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     証明書と鍵を検証するには、[openssl](https://docs.openssl.org/master/man1/openssl/)のようなツールを使用してください:
 
-    * 鍵の整合性を確認します: `openssl rsa -in [key-file.key] -check -noout`
-    * クライアント証明書の CN が対象ユーザーと一致していることを確認:
+    * 秘密鍵の整合性を検証します: `openssl rsa -in [key-file.key] -check -noout`
+    * クライアント証明書の CN が対象ユーザーと一致していることを確認する:
       * ユーザー証明書から CN を取得します - `openssl x509 -noout -subject -in [user.cert]`
-      * 次のクエリを実行して、同じ値がデータベースに設定されていることを確認します: `select name, auth_type, auth_params from system.users where auth_type = 'ssl_certificate'`（このクエリでは、`auth_params` が `{"common_names":["some_user"]}` のような形式で出力されます）
+      * 次のクエリを実行して、同じ値がデータベースに設定されていることを確認します: `select name, auth_type, auth_params from system.users where auth_type = 'ssl_certificate'`（このクエリでは、`auth_params` が ` {"common_names":["some_user"]}` のような形式で出力されます）
 
     :::
 
@@ -140,30 +140,30 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     <Tabs groupId="client-config">
       <TabItem value="接続" label="接続とエンドポイント">
-        | Method                                                                  | Arguments                                                                | Description                                                      | Default   | Key                         |
-        | ----------------------------------------------------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------- | --------- | --------------------------- |
-        | `addEndpoint(String endpoint)`                                          | `endpoint` - URL 形式のサーバーアドレス                                             | 利用可能なサーバーのリストにサーバーエンドポイントを追加します。現在は 1 つのエンドポイントのみがサポートされています。    | `none`    | `none`                      |
-        | `addEndpoint(Protocol protocol, String host, int port, boolean secure)` | `protocol` - 接続プロトコル<br />`host` - IP もしくはホスト名<br />`secure` - HTTPS を使用 | 利用可能なサーバーのリストにサーバーエンドポイントを追加します。現在は 1 つのエンドポイントのみがサポートされています。    | `none`    | `none`                      |
-        | `enableConnectionPool(boolean enable)`                                  | `enable` - 有効/無効を切り替えるフラグ                                                | コネクションプールを有効にするかどうかを設定します。                                       | `true`    | `connection_pool_enabled`   |
-        | `setMaxConnections(int maxConnections)`                                 | `maxConnections` - コネクション数                                               | 各サーバーエンドポイントに対してクライアントが開くことができる接続数の上限を設定します。                     | `10`      | `max_open_connections`      |
-        | `setConnectionTTL(long timeout, ChronoUnit unit)`                       | `timeout` - タイムアウト値<br />`unit` - 時間単位                                   | 接続が非アクティブと見なされるまでの接続の有効期限 (TTL) を設定します。                          | `-1`      | `connection_ttl`            |
-        | `setKeepAliveTimeout(long timeout, ChronoUnit unit)`                    | `timeout` - タイムアウト値<br />`unit` - 時間単位                                   | HTTP 接続の Keep-Alive タイムアウトを設定します。Keep-Alive を無効にするには `0` を設定します。 | -         | `http_keep_alive_timeout`   |
-        | `setConnectionReuseStrategy(ConnectionReuseStrategy strategy)`          | `strategy` - `LIFO` または `FIFO`                                           | コネクションプールが使用する接続再利用戦略を選択します。                                     | `FIFO`    | `connection_reuse_strategy` |
-        | `setDefaultDatabase(String database)`                                   | `database` - データベース名                                                     | デフォルトデータベースを設定します。                                               | `default` | `database`                  |
+        | Method                                                                  | Arguments                                                                      | Description                                                      | Default   | Key                         |
+        | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------- | --------- | --------------------------- |
+        | `addEndpoint(String endpoint)`                                          | `endpoint` - URL 形式のサーバーアドレス                                                   | 利用可能なサーバーのリストにサーバーエンドポイントを追加します。現在は 1 つのエンドポイントのみがサポートされています。    | `none`    | `none`                      |
+        | `addEndpoint(Protocol protocol, String host, int port, boolean secure)` | `protocol` - 接続プロトコル<br />`host` - IP もしくはホスト名<br />`secure` - HTTPS を使用するかどうか | 利用可能なサーバーのリストにサーバーエンドポイントを追加します。現在は 1 つのエンドポイントのみがサポートされています。    | `none`    | `none`                      |
+        | `enableConnectionPool(boolean enable)`                                  | `enable` - 有効/無効を切り替えるフラグ                                                      | コネクションプールを有効にするかどうかを設定します。                                       | `true`    | `connection_pool_enabled`   |
+        | `setMaxConnections(int maxConnections)`                                 | `maxConnections` - コネクション数                                                     | 各サーバーエンドポイントに対してクライアントが開くことができる接続数の上限を設定します。                     | `10`      | `max_open_connections`      |
+        | `setConnectionTTL(long timeout, ChronoUnit unit)`                       | `timeout` - タイムアウト値<br />`unit` - 時間単位                                         | 接続が非アクティブと見なされるまでの有効期限 (TTL) を設定します。                             | `-1`      | `connection_ttl`            |
+        | `setKeepAliveTimeout(long timeout, ChronoUnit unit)`                    | `timeout` - タイムアウト値<br />`unit` - 時間単位                                         | HTTP 接続の Keep-Alive タイムアウトを設定します。Keep-Alive を無効にするには `0` を設定します。 | -         | `http_keep_alive_timeout`   |
+        | `setConnectionReuseStrategy(ConnectionReuseStrategy strategy)`          | `strategy` - `LIFO` または `FIFO`                                                 | コネクションプールが使用する接続再利用戦略を選択します。                                     | `FIFO`    | `connection_reuse_strategy` |
+        | `setDefaultDatabase(String database)`                                   | `database` - データベース名                                                           | デフォルトデータベースを設定します。                                               | `default` | `database`                  |
       </TabItem>
 
       <TabItem value="認証" label="認証">
         | Method                                               | Arguments                                | Description                                                                   | Default   | Key                   |
         | ---------------------------------------------------- | ---------------------------------------- | ----------------------------------------------------------------------------- | --------- | --------------------- |
         | `setUsername(String username)`                       | `username` - 認証用のユーザー名                   | 追加の設定によって選択される認証方式で使用するユーザー名を設定します                                            | `default` | `user`                |
-        | `setPassword(String password)`                       | `password` - シークレット値                     | パスワード認証用のシークレットを設定し、その認証方式を選択します                                              | -         | `password`            |
+        | `setPassword(String password)`                       | `password` - シークレット値                     | パスワード認証用のシークレットを設定し、事実上その認証方式を選択します                                           | -         | `password`            |
         | `setAccessToken(String accessToken)`                 | `accessToken` - アクセストークン文字列              | アクセストークンを設定し、対応する認証方式での認証に使用されるようにします                                         | -         | `access_token`        |
         | `useSSLAuthentication(boolean useSSLAuthentication)` | `useSSLAuthentication` - SSL 認証を有効化するフラグ | SSL クライアント証明書を認証方式として使用するように設定します                                             | -         | `ssl_authentication`  |
         | `useHTTPBasicAuth(boolean useBasicAuth)`             | `useBasicAuth` - 有効/無効を切り替えるフラグ          | ユーザー名とパスワードによる認証において、Basic HTTP 認証を使用するかどうかを設定します。特殊文字を含むパスワードによる問題の解消に役立ちます。 | `true`    | `http_use_basic_auth` |
         | `useBearerTokenAuth(String bearerToken)`             | `bearerToken` - エンコード済み Bearer トークン      | Bearer 認証を使用するかどうかと、使用するトークンを指定します。トークンはそのまま送信されます。                           | -         | `bearer_token`        |
       </TabItem>
 
-      <TabItem value="タイムアウト" label="タイムアウトと再試行">
+      <TabItem value="タイムアウト" label="タイムアウトとリトライ">
         | Method                                                       | Arguments                                  | Description                                  | Default                                                      | Key                          |
         | ------------------------------------------------------------ | ------------------------------------------ | -------------------------------------------- | ------------------------------------------------------------ | ---------------------------- |
         | `setConnectTimeout(long timeout, ChronoUnit unit)`           | `timeout` - タイムアウト値<br />`unit` - 時間単位     | すべての発信側接続について、接続確立のタイムアウトを設定します。             | -                                                            | `connection_timeout`         |
@@ -191,11 +191,11 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
         | `compressClientRequest(boolean enabled)`  | `enabled` - 有効/無効を示すフラグ | クライアントがリクエストを圧縮するかどうかを指定します。                              | `false` | `decompress`                               |
         | `useHttpCompression(boolean enabled)`     | `enabled` - 有効/無効を示すフラグ | 対応するオプションが有効な場合に、クライアント/サーバー間の通信で HTTP 圧縮を使用するかどうかを指定します。 | -       | -                                          |
         | `appCompressedData(boolean enabled)`      | `enabled` - 有効/無効を示すフラグ | 圧縮処理がアプリケーション側で行われることをクライアントに通知します。                       | `false` | `app_compressed_data`                      |
-        | `setLZ4UncompressedBufferSize(int size)`  | `size` - バイト単位のサイズ      | 非圧縮データストリームを受信するバッファのサイズを設定します。                           | `65536` | `compression.lz4.uncompressed_buffer_size` |
+        | `setLZ4UncompressedBufferSize(int size)`  | `size` - バイト単位のサイズ      | データストリーム内の非圧縮部分を受信するバッファのサイズを設定します。                       | `65536` | `compression.lz4.uncompressed_buffer_size` |
         | `disableNativeCompression`                | `disable` - 無効化を示すフラグ   | ネイティブ圧縮を無効にします。`true` の場合、ネイティブ圧縮は無効になります。                | `false` | `disable_native_compression`               |
       </TabItem>
 
-      <TabItem value="SSL" label="SSL/セキュリティ">
+      <TabItem value="ssl" label="SSL/セキュリティ">
         | Method                                      | Arguments                 | Description                                                   | Default | Key                  |
         | ------------------------------------------- | ------------------------- | ------------------------------------------------------------- | ------- | -------------------- |
         | `setSSLTrustStore(String path)`             | `path` - ローカルシステム上のファイルパス | クライアントがサーバーホストの検証のために SSL トラストストアを使用するかどうかを設定します。             | -       | `trust_store`        |
@@ -217,17 +217,17 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       <TabItem value="http" label="HTTP とヘッダー">
         | Method                                      | Arguments                                     | Description                            | Default | Key    |
         | ------------------------------------------- | --------------------------------------------- | -------------------------------------- | ------- | ------ |
-        | `setHttpCookiesEnabled(boolean enabled)`    | `enabled` - 有効化/無効化するためのフラグ                   | HTTP Cookie を保持し、サーバーに送信するかどうかを設定します。  | -       | -      |
+        | `setHttpCookiesEnabled(boolean enabled)`    | `enabled` - 有効/無効を切り替えるフラグ                    | HTTP Cookie を記憶し、サーバーへ送り返すかどうかを設定します。  | -       | -      |
         | `httpHeader(String key, String value)`      | `key` - HTTP ヘッダーのキー<br />`value` - 文字列値      | 単一の HTTP ヘッダーの値を設定します。以前の値は上書きされます。    | `none`  | `none` |
         | `httpHeader(String key, Collection values)` | `key` - HTTP ヘッダーのキー<br />`values` - 文字列値のリスト | 単一の HTTP ヘッダーに複数の値を設定します。以前の値は上書きされます。 | `none`  | `none` |
         | `httpHeaders(Map headers)`                  | `headers` - HTTP ヘッダーを含むマップ                   | 複数の HTTP ヘッダーの値を一度に設定します。              | `none`  | `none` |
       </TabItem>
 
       <TabItem value="server-settings" label="サーバー設定">
-        | Method                                          | Arguments                        | Description                                                                                       | Default | Key    |
-        | ----------------------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------- | ------- | ------ |
-        | `serverSetting(String name, String value)`      | `name` - 設定名<br />`value` - 設定値  | 各クエリとともにサーバーへ渡す設定を指定します。個々の操作で指定された設定によって上書きされる場合があります。 [設定の一覧](/operations/settings/query-level) | `none`  | `none` |
-        | `serverSetting(String name, Collection values)` | `name` - 設定名<br />`values` - 設定値 | サーバーへ複数の値を持つ設定を渡します。たとえば [roles](/interfaces/http#setting-role-with-query-parameters) などがあります。    | `none`  | `none` |
+        | Method                                          | Arguments                               | Description                                                                                       | Default | Key    |
+        | ----------------------------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------- | ------- | ------ |
+        | `serverSetting(String name, String value)`      | `name` - 設定名<br />`value` - 設定値         | 各クエリとともにサーバーへ渡す設定を指定します。個々の操作で指定された設定によって上書きされる場合があります。 [設定の一覧](/operations/settings/query-level) | `none`  | `none` |
+        | `serverSetting(String name, Collection values)` | `name` - 設定名<br />`values` - 設定値のコレクション | たとえば[roles](/interfaces/http#setting-role-with-query-parameters)のように、複数の値を持つサーバー設定を指定します。         | `none`  | `none` |
       </TabItem>
 
       <TabItem value="タイムゾーン" label="タイムゾーン">
@@ -238,7 +238,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
         | `setServerTimeZone(String timeZone)`           | `timeZone` - Java の有効なタイムゾーン ID      | サーバー側のタイムゾーンを設定します。デフォルトでは UTC タイムゾーンが使用されます。                                   | `UTC`   | `server_time_zone`     |
       </TabItem>
 
-      <TabItem value="高度な" label="詳細設定">
+      <TabItem value="詳細設定" label="詳細設定">
         | Method                                                                    | Arguments                                                    | Description                                                                     | Default  | Key                          |
         | ------------------------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------- | -------- | ---------------------------- |
         | `setOption(String key, String value)`                                     | `key` - 設定オプションのキー<br />`value` - オプション値                     | クライアントオプションの生の値を設定します。プロパティファイルから設定を読み込む場合に有用です。                                | -        | -                            |
@@ -303,9 +303,9 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     [サポートされている形式](/interfaces/formats)の列挙型。ClickHouseがサポートするすべての形式を含みます。
 
-    * `raw` - ユーザーは生データをトランスコードする必要があります
-    * `full` - クライアント側でデータをトランスコードでき、生のデータストリームを受け入れます
-    * `-` - このフォーマットでは ClickHouse がサポートしない操作
+    * `raw` - ユーザー側で生データのトランスコードを行う必要があります
+    * `full` - クライアント側でデータのトランスコードを行え、生データストリームを受信できます
+    * `-` - この形式では ClickHouse でサポートされない操作
 
     このクライアントバージョンは以下をサポートします:
 
@@ -333,7 +333,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     | [JSONAsObject](/interfaces/formats/JSONAsObject)                                                             |  raw |   *  |
     | [JSONStrings](/interfaces/formats/JSONStrings)                                                               |  raw |  raw |
     | [JSONColumns](/interfaces/formats/JSONColumns)                                                               |  raw |  raw |
-    | [JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)                                       |  raw |  未加工 |
+    | [JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)                                       |  raw |  raw |
     | [JSONCompact](/interfaces/formats/JSONCompact)                                                               |  raw |  raw |
     | [JSONCompactStrings](/interfaces/formats/JSONCompactStrings)                                                 |   -  |  raw |
     | [JSONCompactColumns](/interfaces/formats/JSONCompactColumns)                                                 |  raw |  raw |
@@ -390,7 +390,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     | [MsgPack](/interfaces/formats/MsgPack)                                                                       |  raw |  raw |
     | [MySQLDump](/interfaces/formats/MySQLDump)                                                                   |  raw |   -  |
     | [DWARF](/interfaces/formats/DWARF)                                                                           |  raw |   *  |
-    | [Markdown](/interfaces/formats/Markdown)                                                                     |   -  |  未加工 |
+    | [Markdown](/interfaces/formats/Markdown)                                                                     |   -  |  raw |
     | [Form](/interfaces/formats/Form)                                                                             |  raw |   *  |
 
     ## Insert API \{#insert-api\}
@@ -414,7 +414,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     `format` - データのエンコード形式。
 
-    `settings` - リクエストの設定。
+    `settings` - リクエスト設定。
 
     **戻り値**
 
@@ -438,7 +438,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ### insert(String tableName, List&lt;?&gt; data, InsertSettings settings) \{#insertstring-tablename-listlt-data-insertsettings-settings\}
 
-    データベースに書き込みリクエストを送信します。オブジェクトのリストは効率的な形式に変換され、サーバーに送信されます。リストアイテムのクラスは、`register(Class, TableSchema)` メソッドを使用して事前に登録しておく必要があります。
+    データベースに書き込みリクエストを送信します。オブジェクトのリストは効率的な形式に変換され、サーバーに送信されます。リストアイテムのクラスは、`register(Class, TableSchema)` メソッドを使用して事前に登録する必要があります。
 
     **署名**
 
@@ -453,7 +453,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     `data` - DTO（Data Transfer Object）オブジェクトのコレクション。
 
-    `settings` - リクエストの設定。
+    `settings` - リクエスト設定。
 
     **戻り値**
 
@@ -478,28 +478,28 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **構成方法**
 
-    | メソッド                                            | 説明                                                                              |
-    | ----------------------------------------------- | ------------------------------------------------------------------------------- |
-    | `setQueryId(String queryId)`                    | 操作に割り当てられるクエリ ID を設定します。デフォルト値: `null`。                                         |
-    | `setDeduplicationToken(String token)`           | 重複排除用トークンを設定します。このトークンはサーバーに送信され、クエリを識別するために使用できます。デフォルト: `null`。               |
-    | `setInputStreamCopyBufferSize(int size)`        | コピー用バッファのサイズ。書き込み処理中に、ユーザー提供の入力ストリームから出力ストリームへデータをコピーするために使用されます。デフォルト: `8196`。 |
-    | `serverSetting(String name, String value)`      | 操作に対するサーバーの個別設定を指定します。                                                          |
-    | `serverSetting(String name, Collection values)` | 操作に対して複数の値を取る個別のサーバー設定を指定します。コレクションの要素は `String` 型の値である必要があります。                 |
-    | `setDBRoles(Collection dbRoles)`                | 操作の実行前に設定する DB ロールを指定します。コレクションの要素は `String` 値でなければなりません。                       |
-    | `setOption(String option, Object value)`        | 生の値として構成オプションを設定します。これはサーバー側の設定ではありません。                                         |
+    | メソッド                                            | 説明                                                                                |
+    | ----------------------------------------------- | --------------------------------------------------------------------------------- |
+    | `setQueryId(String queryId)`                    | 操作に割り当てられるクエリ ID を設定します。デフォルト: `null`。                                            |
+    | `setDeduplicationToken(String token)`           | 重複排除トークンを設定します。このトークンはサーバーに送信され、クエリの識別に利用できます。デフォルト値: `null`。                     |
+    | `setInputStreamCopyBufferSize(int size)`        | コピー用バッファのサイズ。書き込み処理中に、ユーザーが提供した入力ストリームから出力ストリームへデータをコピーするために使用されます。デフォルト: `8196`。 |
+    | `serverSetting(String name, String value)`      | 操作ごとのサーバー設定を指定します。                                                                |
+    | `serverSetting(String name, Collection values)` | 操作に対して複数の値を取る個別のサーバー設定を指定します。コレクションの要素は `String` 型の値である必要があります。                   |
+    | `setDBRoles(Collection dbRoles)`                | 操作を実行する前に有効化する DB ロールを設定します。コレクションの要素はすべて `String` 値である必要があります。                   |
+    | `setOption(String option, Object value)`        | 構成オプションを生の値で設定します。これはサーバー側の設定ではありません。                                             |
 
     ### InsertResponse \{#insertresponse\}
 
-    挿入操作の結果を保持するレスポンスオブジェクト。サーバーからレスポンスを受信した場合にのみ利用可能です。
+    挿入操作の結果を保持するレスポンスオブジェクト。クライアントがサーバーからレスポンスを受信した場合にのみ利用可能です。
 
     :::note
     このオブジェクトは接続を解放するため、できるだけ早くクローズする必要があります。前のレスポンスのすべてのデータが完全に読み取られるまで、接続を再利用できないためです。
     :::
 
-    | メソッド                            | 説明                                                    |
-    | ------------------------------- | ----------------------------------------------------- |
-    | `OperationMetrics getMetrics()` | 操作メトリクスを保持するオブジェクトを返します。                              |
-    | `String getQueryId()`           | アプリケーション（操作設定経由、またはサーバーによって）この操作に割り当てられたクエリ ID を返します。 |
+    | メソッド                            | 説明                                                   |
+    | ------------------------------- | ---------------------------------------------------- |
+    | `OperationMetrics getMetrics()` | 操作メトリクスを含むオブジェクトを返します。                               |
+    | `String getQueryId()`           | アプリケーション（操作設定経由）またはサーバーによってこの操作に割り当てられたクエリ ID を返します。 |
 
     ## クエリAPI \{#query-api\}
 
@@ -518,7 +518,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     `sqlQuery` - 単一のSQLステートメント。クエリはそのままサーバーに送信されます。
 
-    `settings` - リクエストの設定。
+    `settings` - リクエスト設定。
 
     **戻り値**
 
@@ -566,9 +566,9 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     `sqlQuery` - プレースホルダー `{}` を含むSQL式。
 
-    `queryParams` - サーバー上でSQL式を完成させるための変数マップ。
+    `queryParams` - サーバー上でSQL式を完成させるための変数のマップ。
 
-    `settings` - リクエストの設定。
+    `settings` - リクエスト設定。
 
     **戻り値**
 
@@ -644,18 +644,18 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **構成方法**
 
-    | メソッド                                              | 説明                                                                                                                       |
-    | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-    | `setQueryId(String queryId)`                      | 操作に割り当てるクエリ ID を設定します。                                                                                                   |
-    | `setFormat(ClickHouseFormat format)`              | レスポンス形式を設定します。利用可能な形式の完全な一覧については `RowBinaryWithNamesAndTypes` を参照してください。                                                 |
-    | `setMaxExecutionTime(Integer maxExecutionTime)`   | サーバー側での操作の最大実行時間を設定します。読み取りタイムアウトには影響しません。                                                                               |
-    | `waitEndOfQuery(Boolean waitEndOfQuery)`          | レスポンスを返す前にクエリの終了を待機するようサーバーに要求します。                                                                                       |
-    | `setUseServerTimeZone(Boolean useServerTimeZone)` | サーバーのタイムゾーン（クライアント側の設定を参照）が、操作結果内の日付/時刻型のパースに使用されます。デフォルトは `false` です。                                                   |
-    | `setUseTimeZone(String timeZone)`                 | サーバーに対して、時刻変換に `timeZone` を使用するよう要求します。[session&#95;timezone](/operations/settings/settings#session_timezone) を参照してください。 |
-    | `serverSetting(String name, String value)`        | 操作ごとに個別のサーバー設定を行います。                                                                                                     |
-    | `serverSetting(String name, Collection values)`   | 操作時に複数の値を持つ個々のサーバー設定を構成します。コレクションの各要素は `String` 値である必要があります。                                                             |
-    | `setDBRoles(Collection dbRoles)`                  | 操作を実行する前に有効化する DB ロールを設定します。コレクションの要素は `String` 値である必要があります。                                                             |
-    | `setOption(String option, Object value)`          | 生形式で構成オプションを設定します。これはサーバー設定ではありません。                                                                                      |
+    | メソッド                                              | 説明                                                                                                                     |
+    | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+    | `setQueryId(String queryId)`                      | 操作に割り当てるクエリ ID を設定します。                                                                                                 |
+    | `setFormat(ClickHouseFormat format)`              | レスポンス形式を設定します。利用可能な形式の完全な一覧については `RowBinaryWithNamesAndTypes` を参照してください。                                               |
+    | `setMaxExecutionTime(Integer maxExecutionTime)`   | サーバー側での操作の最大実行時間を設定します。読み取りタイムアウトには影響しません。                                                                             |
+    | `waitEndOfQuery(Boolean waitEndOfQuery)`          | レスポンスを返す前にクエリの終了を待機するようサーバーに要求します。                                                                                     |
+    | `setUseServerTimeZone(Boolean useServerTimeZone)` | サーバーのタイムゾーン（クライアント側の設定を参照）が、操作結果内の日付/時刻型のパースに使用されます。デフォルトは `false` です。                                                 |
+    | `setUseTimeZone(String timeZone)`                 | サーバーに `timeZone` を使用して時刻を変換するよう要求します。[session&#95;timezone](/operations/settings/settings#session_timezone) を参照してください。 |
+    | `serverSetting(String name, String value)`        | 操作ごとに個別のサーバー設定を行います。                                                                                                   |
+    | `serverSetting(String name, Collection values)`   | 操作に対するサーバーの個別設定を、複数の値で指定します。コレクションの各要素は `String` 型の値である必要があります。                                                        |
+    | `setDBRoles(Collection dbRoles)`                  | 操作を実行する前に有効化する DB ロールを設定します。コレクションの要素は `String` 値でなければなりません。                                                           |
+    | `setOption(String option, Object value)`          | 生形式で構成オプションを設定します。これはサーバー設定ではありません。                                                                                    |
 
     ### QueryResponse \{#queryresponse\}
 
@@ -713,7 +713,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     **パラメータ**
 
-    `sql` - スキーマを返す&quot;SELECT&quot; SQLステートメント。
+    `sql` - 返されるべきスキーマを持つ&quot;SELECT&quot; SQLステートメント。
 
     **戻り値**
 
@@ -724,7 +724,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     ### register(Class&lt;?&gt; clazz, TableSchema schema) \{#registerclasslt-clazz-tableschema-schema\}
 
     Java クラスが `schema` を使用してデータの書き込み/読み取りを行うためのシリアライゼーションおよびデシリアライゼーション層をコンパイルします。このメソッドは、getter/setter のペアと対応するカラムに対してシリアライザーとデシリアライザーを作成します。
-    カラムの一致は、メソッド名から名前を抽出することで検出されます。例えば、`getFirstName` は カラム `first_name` または `firstname` に対応します。
+    カラムの一致は、メソッド名から名前を抽出することで検出されます。例えば、`getFirstName` はカラム `first_name` または `firstname` に対応します。
 
     **署名**
 
@@ -748,26 +748,26 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     完全なサンプルコードは、リポジトリの `example` [フォルダ](https://github.com/ClickHouse/clickhouse-java/tree/main/examples)に格納されています:
 
-    * [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - 主要なサンプル一式です。
-    * [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - Spring Boot アプリケーションにおけるクライアント利用例。
-    * [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - Ktor（Kotlin）アプリケーションにおけるクライアントの使用例です。
+    * [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - 主なサンプル集です。
+    * [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - Spring Boot アプリケーションでのクライアント利用例。
+    * [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - Ktor（Kotlin）アプリケーションでクライアントを使用する方法のサンプルです。
 
     ## 移行ガイド \{#migration_guide\}
 
     旧クライアント(V1)は`com.clickhouse.client.ClickHouseClient#builder`を開始点として使用していました。新クライアント(V2)は`com.clickhouse.client.api.Client.Builder`を使用した同様のパターンを採用しています。主な相違点は以下の通りです:
 
-    * 実装を取得するために service loader は使用しません。`com.clickhouse.client.api.Client` は、将来的にあらゆる種類の実装を扱うためのファサードクラスです。
+    * 実装を取得するために service loader を利用することはありません。`com.clickhouse.client.api.Client` は、将来的に登場しうるあらゆる種類の実装をまとめて扱うためのファサードクラスです。
     * 構成情報のソースが少なくなりました。1つはビルダーに渡されるもので、もう1つは操作設定（`QuerySettings`、`InsertSettings`）です。以前のバージョンではノードごとの構成があり、場合によっては環境変数を読み込んでいました。
 
     ### 設定パラメータの一致 \{#migration_from_v1_config\}
 
     V1には、設定に関連する3つの列挙型クラスがあります:
 
-    * `com.clickhouse.client.config.ClickHouseDefaults` - ほとんどのユースケースで設定されることを想定したパラメータです。例えば `USER` や `PASSWORD` などがあります。
+    * `com.clickhouse.client.config.ClickHouseDefaults` - ほとんどのユースケースで設定されることを想定した構成パラメータ群です。例えば `USER` や `PASSWORD` などがあります。
     * `com.clickhouse.client.config.ClickHouseClientOption` - クライアント専用の設定パラメータで、`HEALTH_CHECK_INTERVAL` などがあります。
-    * `com.clickhouse.client.http.config.ClickHouseHttpOption` - HTTP インターフェイスに固有の設定パラメータ（例：`RECEIVE_QUERY_PROGRESS`）。
+    * `com.clickhouse.client.http.config.ClickHouseHttpOption` - HTTP インターフェイス専用の構成パラメータ（`RECEIVE_QUERY_PROGRESS` など）。
 
-    これらはパラメータをグループ化し、明確に分離するように設計されていました。しかし、場合によっては混乱を招くことがありました(`com.clickhouse.client.config.ClickHouseDefaults#ASYNC`と`com.clickhouse.client.config.ClickHouseClientOption#ASYNC`の間に違いはあるのか)。 新しいV2クライアントは、すべてのクライアント設定オプションを格納する単一のDictionaryとして`com.clickhouse.client.api.Client.Builder`を使用します。すべての設定パラメータ名がリストされている`com.clickhouse.client.api.ClientConfigProperties`が存在します。
+    これらはパラメータをグループ化し、明確に分離するように設計されていました。しかし、場合によっては混乱を招くことがありました(`com.clickhouse.client.config.ClickHouseDefaults#ASYNC`と`com.clickhouse.client.config.ClickHouseClientOption#ASYNC`の間に違いはあるのか)。新しいV2クライアントは、すべてのクライアント設定オプションを格納する単一のDictionaryとして`com.clickhouse.client.api.Client.Builder`を使用します。すべての設定パラメータ名がリストされている`com.clickhouse.client.api.ClientConfigProperties`が存在します。
 
     以下の表は、新しいクライアントでサポートされている旧オプションと、その新しい意味を示しています。
 
@@ -790,7 +790,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
         | `ClickHouseHttpOption#USE_BASIC_AUTHENTICATION`                                  | `Client.Builder#useHTTPBasicAuth`           |                    |
       </TabItem>
 
-      <TabItem value="SSL" label="SSL とセキュリティ">
+      <TabItem value="SSL" label="SSLとセキュリティ">
         | V1 Configuration                                       | V2 Builder Method                         | コメント                                          |
         | ------------------------------------------------------ | ----------------------------------------- | --------------------------------------------- |
         | `ClickHouseDefaults#SSL_CERTIFICATE_TYPE`              | ✗                                         |                                               |
@@ -823,7 +823,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       </TabItem>
 
       <TabItem value="圧縮" label="圧縮">
-        | V1 設定項目                                       | V2 Builder メソッド                         | コメント                                               |
+        | V1 Configuration                              | V2 Builder Method                       | Comments                                           |
         | --------------------------------------------- | --------------------------------------- | -------------------------------------------------- |
         | `ClickHouseClientOption#COMPRESS`             | `Client.Builder#compressServerResponse` | `useHttpCompression` も参照                           |
         | `ClickHouseClientOption#DECOMPRESS`           | `Client.Builder#compressClientRequest`  | `useHttpCompression` も参照                           |
@@ -843,7 +843,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
         | `ClickHouseClientOption#PROXY_PASSWORD` | `Client.Builder#setProxyCredentials` |      |
       </TabItem>
 
-      <TabItem value="タイムアウトと再試行" label="タイムアウトとリトライ">
+      <TabItem value="timeouts-retry" label="タイムアウトとリトライ">
         | V1 の設定                                          | V2 ビルダー・メソッド                         | コメント                  |
         | ----------------------------------------------- | ------------------------------------ | --------------------- |
         | `ClickHouseClientOption#MAX_EXECUTION_TIME`     | `Client.Builder#setExecutionTimeout` |                       |
@@ -881,7 +881,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
         | `ClickHouseClientOption#REUSE_VALUE_WRAPPER`    | ✗                                           |      |
       </TabItem>
 
-      <TabItem value="スレッド処理" label="スレッドと非同期処理">
+      <TabItem value="スレッド" label="スレッドと非同期処理">
         | V1 設定                                                          | V2 Builder メソッド                   | コメント                             |
         | -------------------------------------------------------------- | --------------------------------- | -------------------------------- |
         | `ClickHouseDefaults#ASYNC`<br />`ClickHouseClientOption#ASYNC` | `Client.Builder#useAsyncRequests` |                                  |
@@ -892,7 +892,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
         | `ClickHouseClientOption#MAX_CORE_THREAD_TTL`                   | ✗                                 |                                  |
       </TabItem>
 
-      <TabItem value="HTTP ヘッダー" label="HTTP とヘッダー">
+      <TabItem value="http-headers" label="HTTP とヘッダー">
         | V1 の設定                                               | V2 Builder メソッド                | コメント                               |
         | ---------------------------------------------------- | ------------------------------ | ---------------------------------- |
         | `ClickHouseHttpOption#CUSTOM_HEADERS`                | `Client.Builder#httpHeaders`   |                                    |
@@ -959,12 +959,12 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     ### 一般的な違い \{#general-differences\}
 
     * Client V2 は移植性を高めるために、プロプライエタリなクラスへの依存を減らしています。たとえば、V2 はサーバーにデータを書き込む際に、任意の `java.io.InputStream` の実装と連携して動作します。
-    * Client V2 の `async` 設定はデフォルトで `off` です。これは追加のスレッドを起動せず、アプリケーションからクライアントをより細かく制御できることを意味します。この設定は、ほとんどのユースケースでは `off` のままにしておくことを推奨します。`async` を有効にすると、リクエストごとに専用のスレッドが作成されます。これは、アプリケーション側で制御される executor を使用する場合にのみ有用です（`com.clickhouse.client.api.Client.Builder#setSharedOperationExecutor` を参照）。
+    * Client V2 の `async` 設定はデフォルトで `off` です。これは余分なスレッドを生成せず、クライアントをアプリケーション側でより細かく制御できることを意味します。この設定は、大半のユースケースでは `off` のままにしておくことを推奨します。`async` を有効にすると、リクエストごとに専用のスレッドが作成されます。これは、アプリケーション側で制御される executor を使用する場合にだけ意味があります（`com.clickhouse.client.api.Client.Builder#setSharedOperationExecutor` を参照）。
 
     ### データの書き込み \{#writing-data\}
 
     * 任意の実装の `java.io.InputStream` を使用できます。V1 の `com.clickhouse.data.ClickHouseInputStream` もサポートされていますが、非推奨です。
-    * 入力ストリームの終端が検出されると、適切に処理されます。その前に、リクエストの出力ストリームをクローズしておく必要があります。
+    * 入力ストリームの終端が検出されると、それに応じて処理が行われます。事前に、リクエストの出力ストリームをクローズしておく必要があります。
 
     **V1 TSV形式データの挿入。**
 
@@ -1008,13 +1008,13 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     }
     ```
 
-    * 呼び出すメソッドは 1 つだけで、追加のリクエストオブジェクトを作成する必要はありません。
+    * 呼び出すメソッドは 1 つだけで、別途リクエストオブジェクトを用意する必要はありません。
     * すべてのデータのコピーが完了すると、リクエストボディのストリームは自動的にクローズされます。
     * 新しい低レベル API `com.clickhouse.client.api.Client#insert(java.lang.String, java.util.List<java.lang.String>, com.clickhouse.client.api.DataStreamWriter, com.clickhouse.data.ClickHouseFormat, com.clickhouse.client.api.insert.InsertSettings)` が利用可能です。`com.clickhouse.client.api.DataStreamWriter` は独自のデータ書き込みロジックを実装できるように設計されています。たとえば、キューからデータを読み取るといった用途に利用できます。
 
     ### データの読み取り \{#reading-data\}
 
-    * データは既定で `RowBinaryWithNamesAndTypes` フォーマットで読み込まれます。現在、データバインディングが必要な場合にサポートされているのはこのフォーマットのみです。
+    * データはデフォルトで `RowBinaryWithNamesAndTypes` フォーマットで読み込まれます。現在、データバインディングが必要な場合には、このフォーマットのみがサポートされています。
     * データは、`List<GenericRecord> com.clickhouse.client.api.Client#queryAll(java.lang.String)` メソッドを使用して、レコードのコレクションとして読み取ることができます。このメソッドはデータをメモリ上に読み込み、接続を解放します。追加の処理は不要です。`GenericRecord` はデータへのアクセスを提供し、一部の変換処理を実装しています。
 
     ```java
@@ -1169,7 +1169,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     RowBinary形式の詳細は、[こちらのページ](/interfaces/formats/RowBinaryWithNamesAndTypes)を参照してください。
 
-    [コード](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/src/main/java/com/clickhouse/kafka/connect/sink/db/ClickHouseWriter.java#L622)の例を参照してください。
+    [コード](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/src/main/java/com/clickhouse/kafka/connect/sink/db/ClickHouseWriter.java#L622)の例があります。
 
     ## 機能 \{#v1-features\}
 
@@ -1204,11 +1204,11 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
       </TabItem>
     </Tabs>
 
-    接続URLに`compress_algorithm=gzip`を設定することで、代わりにgzipを使用できます。
+    接続URLに`compress_algorithm=gzip`を設定することで、代わりにgzipを使用することもできます。
 
     あるいは、圧縮を無効化する方法がいくつかあります。
 
-    1. 接続URLで `compress=0` を設定して無効化します: `http://localhost:8123/default?compress=0`
+    1. 接続URLの `compress=0` を指定して無効化します: `http://localhost:8123/default?compress=0`
     2. クライアント設定で無効化する：
 
     ```java showLineNumbers
@@ -1253,7 +1253,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     ```
 
     :::note パラメータ
-    `String`型を含むすべての`params`シグネチャ(`String`、`String[]`、`Map<String, String>`)は、渡されるキーが有効なClickHouse SQL文字列であることを前提としています。例えば:
+    `String`型を含むすべての`params`シグネチャ(`String`、`String[]`、`Map<String, String>`)は、渡されるキーが有効なClickHouse SQL文字列であることを前提としています。例:
 
     ```java showLineNumbers
     try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
@@ -1267,7 +1267,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     }
     ```
 
-    String オブジェクトを手動で ClickHouse SQL に解析したくない場合は、`com.clickhouse.data` に配置されているヘルパー関数 `ClickHouseValues.convertToSqlExpression` を使用できます:
+    String オブジェクトを手動で ClickHouse SQL にパースしたくない場合は、`com.clickhouse.data` に配置されているヘルパー関数 `ClickHouseValues.convertToSqlExpression` を使用できます:
 
     ```java showLineNumbers
     try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
@@ -1288,7 +1288,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     ## ノードディスカバリー \{#v1-node-discovery\}
 
-    JavaクライアントはClickHouseノードを自動検出する機能を提供します。自動検出はデフォルトで無効になっています。手動で有効にするには、`auto_discovery`を`true`に設定します:
+    Javaクライアントは、ClickHouseノードを自動検出する機能を提供します。自動検出はデフォルトで無効になっています。手動で有効にするには、`auto_discovery`を`true`に設定します:
 
     ```java
     properties.setProperty("auto_discovery", "true");
@@ -1304,30 +1304,30 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
 
     以下のオプションは自動検出の設定を担当します:
 
-    | プロパティ                           | デフォルト値  | 説明                                                                       |
-    | ------------------------------- | ------- | ------------------------------------------------------------------------ |
-    | auto&#95;discovery              | `false` | クライアントが system テーブルおよび/または clickhouse-keeper/zookeeper から追加ノードを検出するかどうか。 |
-    | node&#95;discovery&#95;interval | `0`     | ノード検出の間隔（ミリ秒）。0 または負の値を指定すると一度だけ検出を行います。                                 |
-    | node&#95;discovery&#95;limit    | `100`   | 同時に検出できるノードの最大数。ゼロ以下の値を指定した場合は上限なしを意味します。                                |
+    | プロパティ                           | デフォルト値  | 説明                                                                        |
+    | ------------------------------- | ------- | ------------------------------------------------------------------------- |
+    | auto&#95;discovery              | `false` | クライアントが system テーブルおよび/または clickhouse-keeper/zookeeper から追加のノードを検出するかどうか。 |
+    | node&#95;discovery&#95;interval | `0`     | ノード検出の間隔（ミリ秒）。0 または負の値は一度だけ検出を行うことを意味します。                                 |
+    | node&#95;discovery&#95;limit    | `100`   | 同時に検出できるノードの最大数。0 以下の値は上限なしを意味します。                                        |
 
     ### ロードバランシング \{#v1-load-balancing\}
 
     Javaクライアントは、負荷分散ポリシーに従ってリクエストの送信先となるClickHouseノードを選択します。一般的に、負荷分散ポリシーは以下の処理を担当します:
 
-    1. マネージドノードの一覧からノードを取得します。
+    1. 管理対象ノードリストからノードを1つ取得します。
     2. ノードの状態を管理する。
-    3. （自動ディスカバリが有効な場合）ノードディスカバリ用のバックグラウンドプロセスを必要に応じてスケジュールし、ヘルスチェックを実行します。
+    3. オプションとして、自動ディスカバリが有効な場合はノードディスカバリ用のバックグラウンドプロセスをスケジュールし、ヘルスチェックを実行します。
 
     ロードバランシングを設定するオプションの一覧:
 
-    | プロパティ                         | デフォルト                                    | 説明                                                                                                                                                                                                                                                                                                                                      |
-    | ----------------------------- | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | load&#95;balancing&#95;policy | `""`                                     | ロードバランシングポリシーとして指定できる値は次のとおりです: <li>`firstAlive` - リクエストは、管理対象ノードリストの最初の正常なノードに送信されます</li><li>`random` - リクエストは、管理対象ノードリストからランダムに選択されたノードに送信されます</li><li>`roundRobin` - リクエストは、管理対象ノードリスト内の各ノードに順番に送信されます</li><li>`ClickHouseLoadBalancingPolicy` を実装する完全修飾クラス名 - カスタムのロードバランシングポリシー</li>ポリシーが指定されていない場合、リクエストは管理対象ノードリストの最初のノードに送信されます |
-    | load&#95;balancing&#95;tags   | `""`                                     | ノードを絞り込むためのロードバランシングタグ。リクエストは指定したタグを持つノードにのみ送信されます                                                                                                                                                                                                                                                                                      |
-    | health&#95;check&#95;interval | `0`                                      | ヘルスチェックの間隔をミリ秒単位で指定します。0 以下の値は 1 回のみ実行することを意味します。                                                                                                                                                                                                                                                                                       |
-    | health&#95;check&#95;method   | `ClickHouseHealthCheckMethod.SELECT_ONE` | ヘルスチェックの方式。次のいずれかを指定できます: <li>`ClickHouseHealthCheckMethod.SELECT_ONE` - `select 1` クエリを用いてチェック</li> <li>`ClickHouseHealthCheckMethod.PING` - プロトコル固有のチェックで、一般的により高速です</li>                                                                                                                                                             |
-    | node&#95;check&#95;interval   | `0`                                      | ノードチェック間隔（ミリ秒単位）。負の値は 0 として扱われます。前回のチェックから指定した時間が経過している場合にノードのステータスがチェックされます。<br />`health_check_interval` と `node_check_interval` の違いは、`health_check_interval` オプションがノード（全ノードまたは障害ノード）のリストに対してステータスをチェックするバックグラウンドジョブをスケジューリングするのに対し、`node_check_interval` は特定のノードについて前回のチェックから経過していなければならない時間を指定する点です                                 |
-    | check&#95;all&#95;nodes       | `false`                                  | すべてのノードを対象にヘルスチェックを行うか、障害が発生しているノードのみを対象にするかを指定します。                                                                                                                                                                                                                                                                                     |
+    | プロパティ                         | デフォルト                                    | 説明                                                                                                                                                                                                                                                                                                                                    |
+    | ----------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | load&#95;balancing&#95;policy | `""`                                     | ロードバランシングポリシーには次のいずれかを指定できます: <li>`firstAlive` - リクエストは、管理対象ノードリストの最初の正常なノードに送信されます</li><li>`random` - リクエストは、管理対象ノードリストからランダムに選択されたノードに送信されます</li><li>`roundRobin` - リクエストは、管理対象ノードリスト内の各ノードに順番に送信されます</li><li>`ClickHouseLoadBalancingPolicy` を実装する完全修飾クラス名 - カスタムのロードバランシングポリシー</li>ポリシーが指定されていない場合、リクエストは管理対象ノードリストの最初のノードに送信されます |
+    | load&#95;balancing&#95;tags   | `""`                                     | ノードを絞り込むためのロードバランシング用タグ。リクエストは指定したタグを持つノードにのみ送信されます。                                                                                                                                                                                                                                                                                  |
+    | health&#95;check&#95;interval | `0`                                      | ヘルスチェックの間隔をミリ秒単位で指定します。0 以下の値は 1 回のみ実行することを意味します。                                                                                                                                                                                                                                                                                     |
+    | health&#95;check&#95;method   | `ClickHouseHealthCheckMethod.SELECT_ONE` | ヘルスチェックの方式。次のいずれかを指定できます: <li>`ClickHouseHealthCheckMethod.SELECT_ONE` - `select 1` クエリを実行してヘルスチェックを行います</li> <li>`ClickHouseHealthCheckMethod.PING` - プロトコル固有のヘルスチェックであり、一般的により高速です</li>                                                                                                                                             |
+    | node&#95;check&#95;interval   | `0`                                      | ノードチェック間隔（ミリ秒単位）。負の値は 0 として扱われます。前回のチェックから指定した時間が経過している場合にノードのステータスがチェックされます。<br />`health_check_interval` と `node_check_interval` の違いは、`health_check_interval` オプションがノード（全ノードまたは障害ノード）のリストに対してステータスをチェックするバックグラウンドジョブをスケジューリングするのに対し、`node_check_interval` は特定のノードについて前回のチェックからどれだけの時間が経過している必要があるかを指定する点です                          |
+    | check&#95;all&#95;nodes       | `false`                                  | すべてのノードを対象にヘルスチェックを行うか、障害が発生しているノードのみを対象にするかを指定します。                                                                                                                                                                                                                                                                                   |
 
     ### フェイルオーバーとリトライ \{#v1-failover-and-retry\}
 
@@ -1336,7 +1336,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     | プロパティ                              | デフォルト値 | 説明                                                                                                                                                      |
     | ---------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
     | failover                           | `0`    | 1 つのリクエストに対して許可されるフェイルオーバーの最大回数。0 または負の値の場合は、フェイルオーバーは行われません。フェイルオーバーでは、障害から復旧するために、失敗したリクエストを（負荷分散ポリシーに従って）別のノードに送信します。                                |
-    | retry                              | `0`    | 1つのリクエストに対してリトライできる最大回数。0 または負の値の場合はリトライを行いません。リトライでは、ClickHouse サーバーが `NETWORK_ERROR` エラーコードを返した場合にのみ、同じノードに対してリクエストを再送信します                            |
+    | retry                              | `0`    | 1 つのリクエストに対して許可されるリトライの最大回数。0 または負の値の場合はリトライを行いません。リトライは、ClickHouse サーバーが `NETWORK_ERROR` エラーコードを返した場合にのみ、同じノードに対してリクエストを再送信します。                        |
     | repeat&#95;on&#95;session&#95;lock | `true` | セッションがロックされている間、`session_timeout` または `connect_timeout` に従ってタイムアウトに達するまで実行を繰り返すかどうか。ClickHouse サーバーが `SESSION_IS_LOCKED` エラーコードを返した場合、失敗したリクエストは再試行されます |
 
     ### カスタムHTTPヘッダーの追加 \{#v1-adding-custom-http-headers\}
@@ -1350,7 +1350,7 @@ import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWra
     options.put("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");
     ```
 
-    ## JDBC ドライバー \{#v1-jdbc-driver\}
+    ## JDBCドライバー \{#v1-jdbc-driver\}
 
     ```java
     properties.setProperty("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");

@@ -897,7 +897,7 @@ Mixpanel
 Mongo
 Mongodb
 Monotonicity
-Montréal
+MontrÃ©al
 MsgPack
 MsgPackUUIDRepresentation
 MultiLineString
@@ -1567,6 +1567,7 @@ Unbatched
 UncompressedCacheBytes
 UncompressedCacheCells
 UnidirectionalEdgeIsValid
+UniForm
 UnionStep
 UniqThetaSketch
 Updatable
