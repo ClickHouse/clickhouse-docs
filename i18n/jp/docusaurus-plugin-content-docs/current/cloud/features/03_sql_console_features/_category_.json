@@ -1,5 +1,6 @@
 {
   "label": "SQL コンソール",
+  "key": "features-sql-console",
   "collapsible": true,
   "collapsed": true
 }

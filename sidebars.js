@@ -663,6 +663,7 @@ const sidebars = {
             {
               type: 'category',
               label: 'Operations',
+              key: 'clickpipes-postgres-operations',
               items: [
                 'integrations/data-ingestion/clickpipes/postgres/add_table',
                 'integrations/data-ingestion/clickpipes/postgres/pause_and_resume',
@@ -676,6 +677,7 @@ const sidebars = {
             {
               type: 'category',
               label: 'Source',
+              key: 'clickpipes-postgres-source',
               items: [
                 'integrations/data-ingestion/clickpipes/postgres/source/alloydb',
                 'integrations/data-ingestion/clickpipes/postgres/source/rds',
@@ -739,6 +741,7 @@ const sidebars = {
             {
               type: 'category',
               label: 'Operations',
+              key: 'clickpipes-mysql-operations',
               items: [
                 'integrations/data-ingestion/clickpipes/mysql/add_table',
                 'integrations/data-ingestion/clickpipes/mysql/pause_and_resume',
@@ -751,6 +754,7 @@ const sidebars = {
             {
               type: 'category',
               label: 'Source',
+              key: 'clickpipes-mysql-source',
               items: [
                 'integrations/data-ingestion/clickpipes/mysql/source/rds',
                 'integrations/data-ingestion/clickpipes/mysql/source/aurora',
@@ -777,6 +781,7 @@ const sidebars = {
             {
               type: 'category',
               label: 'Operations',
+              key: 'clickpipes-mongodb-operations',
               items: [
                 'integrations/data-ingestion/clickpipes/mongodb/add_table',
                 'integrations/data-ingestion/clickpipes/mongodb/remove_table',
@@ -789,6 +794,7 @@ const sidebars = {
             {
               type: 'category',
               label: 'Source',
+              key: 'clickpipes-mongodb-source',
               items: [
                 'integrations/data-ingestion/clickpipes/mongodb/source/atlas',
                 'integrations/data-ingestion/clickpipes/mongodb/source/generic',

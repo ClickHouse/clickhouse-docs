@@ -41,14 +41,8 @@ const config = {
   ],
   // Settings for Docusaurus Faster - build optimizations
   future: {
-    experimental_faster: {
-      swcJsLoader: true,
-      swcJsMinimizer: true,
-      swcHtmlMinimizer: true,
-      lightningCssMinimizer: true,
-      rspackBundler: true,
-      mdxCrossCompilerCache: true,
-    },
+      v4: true,
+      experimental_faster: true,
   },
   title: "ClickHouse Docs",
   tagline:
@@ -319,42 +313,6 @@ const config = {
           routesPaths.map((route) => {
             //console.log(route)
           });
-        },
-      };
-    },
-    // Webpack optimization plugin for large sites
-    function webpackOptimizationPlugin(context, options) {
-      return {
-        name: 'webpack-optimization-plugin',
-        configureWebpack(config, isServer) {
-
-          const isVercel = process.env.VERCEL === '1';
-
-          if (!isServer && isVercel) {
-            return {
-              optimization: {
-                splitChunks: {
-                  chunks: 'all',
-                  cacheGroups: {
-                    vendor: {
-                      chunks: 'all',
-                      test: /node_modules/,
-                      priority: 20,
-                    },
-                    common: {
-                      minChunks: 2,
-                      chunks: 'all',
-                      priority: 10,
-                      reuseExistingChunk: true,
-                      enforce: true,
-                    },
-                  },
-                  maxSize: 244000,
-                },
-              },
-            };
-          }
-          return {};
         },
       };
     },
