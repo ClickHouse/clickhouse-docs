@@ -101,7 +101,6 @@ To enable Private Link for your Managed Postgres instance:
    - Create the Private Link by heading over to endpoint interface in AWS settings and using the configuration provided by the ClickHouse support.
    - Once your Private Link is in "Available" state, you can connect to it by using the Private DNS name provided in the AWS UI.
 
-
 ## Backup retention {#backup-retention}
 
 Managed Postgres automatically backs up your data to protect against accidental deletion, corruption, or other data loss scenarios.
@@ -111,7 +110,6 @@ Managed Postgres automatically backs up your data to protect against accidental 
 - **Default retention period**: 7 days
 - **Backup frequency**: Daily full backups + continuous WAL archiving (every 60 seconds or 16 MB, whichever comes first)
 - **Recovery granularity**: Point-in-time recovery to any moment within the retention window
-
 
 ### Backup security {#backup-security}
 

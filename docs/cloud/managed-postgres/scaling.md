@@ -36,7 +36,6 @@ Different workloads benefit from different resource configurations:
 | **Memory optimized** (large working set)          | Medium | High   | Medium  | Memory-optimized (high memory-to-CPU ratio) |
 | **Storage optimized** (large datasets, heavy I/O) | Medium | Medium | High    | Storage-optimized (high NVMe capacity)      |
 
-
 ## How scaling works {#how-scaling-works}
 
 When you change instance types, Managed Postgres performs a vertical scaling operation that provisions new infrastructure and migrates your database with minimal downtime.
@@ -100,7 +99,6 @@ To scale your Managed Postgres instance:
 3. Select the target instance type
 4. Review the changes and click "Apply changes"
 
-
 ## Scaling strategies {#scaling-strategies}
 
 ### Vertical scaling {#vertical-scaling}
@@ -136,7 +134,6 @@ This allows you to optimize the replication throughput separately from your Post
 :::note Coming soon
 Automatic storage scaling is on the roadmap for Managed Postgres. This feature will automatically increase intance size as your database grows, eliminating the need for manual intervention.
 :::
-
 
 ## Additional resources {#resources}
 
