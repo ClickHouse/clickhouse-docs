@@ -15,6 +15,7 @@ import VectorSampleData from '@site/docs/use-cases/observability/clickstack/inge
 import ingestion_key from '@site/static/images/clickstack/clickstack-ingestion-key.png';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 import create_vector_datasource from '@site/static/images/clickstack/create-vector-datasource.png';
+import create_vector_datasource_oss from '@site/static/images/clickstack/create-vector-datasource-oss.png';
 import nginx_logs_vector_search from '@site/static/images/clickstack/nginx-logs-vector-search.png';
 import launch_clickstack_vector from '@site/static/images/clickstack/launch-clickstack-vector.png';
 import play_ui from '@site/static/images/clickstack/play-ui-clickstack.png';
@@ -227,7 +228,7 @@ Navigate to the ClickStack UI at [http://localhost:8080](http://localhost:8080).
 
 Navigate to Team Settings and add a new data source.
 
-<Image img={create_vector_datasource} alt="Create datasource - vector" size="lg"/>
+<Image img={create_vector_datasource_oss} alt="Create datasource - vector" size="lg"/>
 
 The configuration above assumes an Nginx-style schema with a `time_local` column used as the timestamp. This should be, where possible, the timestamp column declared in the primary key. This column is mandatory.
 
@@ -520,7 +521,7 @@ vector --config nginx-local.yaml
 
 Create a logs data source via `Team -> Sources` 
 
-<Image img={create_vector_datasource} alt="Create datasource - vector" size="lg"/>
+<Image img={create_vector_datasource_oss} alt="Create datasource - vector" size="lg"/>
 
 The configuration assumes the Nginx schema with a `time_local` column used as the timestamp. This is the timestamp column declared in the primary key. This column is mandatory.
 
