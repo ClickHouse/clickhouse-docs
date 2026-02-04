@@ -122,6 +122,7 @@ This deployment model allows teams to focus entirely on observability workflows 
 
 For users deploying ClickStack in production, Managed ClickStack is the recommended option. See the [Getting started guide](/use-cases/observability/clickstack/getting-started/managed) for instructions on deploying ClickStack with ClickHouse Cloud.
 
+<br/>
 </TabItem>
 
 <TabItem value="oss-clickstack" label="Open Source ClickStack" default>
@@ -145,5 +146,6 @@ A full architectural diagram and deployment details can be found in the [Archite
 
 For users interesting in deploying Open Source ClickStack to production, we recommend reading the ["Production"](/use-cases/observability/clickstack/production) guide.
 
+<br/>
 </TabItem>
 </Tabs>

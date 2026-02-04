@@ -4,6 +4,7 @@ title: 'Local Logs & Metrics'
 sidebar_position: 1
 pagination_prev: null
 pagination_next: null
+toc_max_heading_level: 2
 description: 'Getting started with ClickStack local and system data and metrics'
 doc_type: 'guide'
 keywords: ['clickstack', 'example data', 'sample dataset', 'logs', 'observability']
@@ -27,9 +28,9 @@ This getting started guide allows you to collect local logs and metrics from you
 
 This guide assumes you have completed the [Getting Started Guide for Managed ClickStack](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud) and have the [connection credentials recorded](/use-cases/observability/clickstack/getting-started/managed#next-steps).
 
-<VerticalStepper>
+<VerticalStepper headerLevel="h3">
 
-## Create a custom OpenTelemetry configuration {#create-otel-configuration}
+### Create a custom OpenTelemetry configuration {#create-otel-configuration}
 
 Create a `custom-local-config.yaml` file with the following content:
 
@@ -109,7 +110,7 @@ To avoid this behavior, you can set the start position to `end` in the receiver 
 
 For more details on the OpenTelemetry (OTel) configuration structure, we recommend [the official guide](https://opentelemetry.io/docs/collector/configuration/).
 
-## Start the OpenTelemetry collector {#start-the-otel-collector}
+### Start the OpenTelemetry collector {#start-the-otel-collector}
 
 Run a standalone collector with the following command:
 
@@ -129,13 +130,13 @@ docker run -d \
 
 The collector will immediately begin collecting local system logs and metrics.
 
-## Select your service {#select-your-service}
+### Select your service {#select-your-service}
 
 Select the service with Managed ClickStack from the main ClickHouse cloud landing page.
 
 <Image img={select_service} alt="Select Service" size="lg"/>
 
-## Explore system logs {#navigate-to-the-hyperdx-ui}
+### Explore system logs {#navigate-to-the-hyperdx-ui}
 
 Select `ClickStack` from the left menu to navigate to the ClickStack UI, where you will be automatically authenticated.
 
@@ -143,7 +144,7 @@ The search UI should be populated with local system logs. Expand the filters to 
 
 <Image img={hyperdx_20} alt="HyperDX Local logs" size="lg"/>
 
-## Explore system metrics {#explore-system-metrics}
+### Explore system metrics {#explore-system-metrics}
 
 We can explore our metrics using charts.
 
@@ -170,7 +171,7 @@ From the subsequent menu you can select `Percentage` from the `Output format` dr
 
 <VerticalStepper>
 
-## Create a custom OpenTelemetry configuration {#create-otel-configuration-oss}
+### Create a custom OpenTelemetry configuration {#create-otel-configuration-oss}
 
 Create a `custom-local-config.yaml` file with the following content:
 
@@ -250,7 +251,7 @@ To avoid this behavior, you can set the start position to `end` in the receiver 
 
 For more details on the OpenTelemetry (OTel) configuration structure, we recommend [the official guide](https://opentelemetry.io/docs/collector/configuration/).
 
-## Start ClickStack with custom configuration {#start-clickstack}
+### Start ClickStack with custom configuration {#start-clickstack}
 
 Run the following docker command to start the all-in-one container with your custom configuration:
 
@@ -271,7 +272,7 @@ We run the collector as the root user to access all system logs—this is necess
 Note that we mount the host's `/var/log` to `/host/var/log` inside the container to avoid conflicts with the container's own log files.
 :::
 
-## Explore system logs {#navigate-to-the-hyperdx-ui-oss}
+### Explore system logs {#navigate-to-the-hyperdx-ui-oss}
 
 Visit [http://localhost:8080](http://localhost:8080) to access the ClickStack UI if deploying locally. 
 
@@ -279,7 +280,7 @@ Data sources should be pre-created for you. The search UI should be populated wi
 
 <Image img={hyperdx_20} alt="HyperDX Local logs" size="lg"/>
 
-## Explore system metrics {#explore-system-metrics-oss}
+### Explore system metrics {#explore-system-metrics-oss}
 
 We can explore our metrics using charts.
 

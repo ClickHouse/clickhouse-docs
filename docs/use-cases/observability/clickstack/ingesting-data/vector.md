@@ -4,6 +4,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Data ingestion with Vector for ClickStack - The ClickHouse Observability Stack'
 title: 'Ingesting with Vector'
+toc_max_heading_level: 2
 doc_type: 'guide'
 keywords: ['clickstack', 'vector', 'traces', 'observability', 'telemetry']
 ---
@@ -29,7 +30,7 @@ This guide focuses on onboarding data into ClickStack using Vector for both Clic
 The only strict requirement for ClickStack, whether using the open-source or managed deployment, is that the data includes a **timestamp column** (or equivalent time field), which can be declared when configuring the data source in the ClickStack UI.
 
 ## Sending data with Vector {#sending-data-with-vector}
-
+<br/>
 <Tabs groupId="vector-options">
 <TabItem value="managed-clickstack" label="Managed ClickStack" default>
 
@@ -514,6 +515,39 @@ Start Vector with the following command.
 mkdir ./.vector-data
 vector --config nginx-local.yaml
 ```
+
+### Create a datasource {#create-a-datasource-nginx-oss}
+
+Create a logs data source via `Team -> Sources` 
+
+<Image img={create_vector_datasource} alt="Create datasource - vector" size="lg"/>
+
+The configuration assumes the Nginx schema with a `time_local` column used as the timestamp. This is the timestamp column declared in the primary key. This column is mandatory.
+
+We have also specified the default select to be `time_local, remote_addr, status, request`, which defines which columns are returned in the logs view.
+
+In the example above, a `Body` column does not exist in the data. Instead, it is defined as the SQL expression:
+
+```sql
+concat(
+  remote_addr, ' ',
+  remote_user, ' ',
+  '[', formatDateTime(time_local, '%d/%b/%Y:%H:%M:%S %z'), '] ',
+  '"', request, '" ',
+  toString(status), ' ',
+  toString(body_bytes_sent), ' ',
+  '"', http_referer, '" ',
+  '"', http_user_agent, '" ',
+  '"', http_x_forwarded_for, '" ',
+  toString(request_time), ' ',
+  toString(upstream_response_time), ' ',
+  '"', http_host, '"'
+)
+```
+
+This reconstructs the log line from the structured fields.
+
+For other possible options, see the [configuration reference](/use-cases/observability/clickstack/config).
 
 ### Navigate to the ClickStack UI {#navigate-to-clickstack-ui-nginx-oss}
 

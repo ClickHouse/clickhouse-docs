@@ -2,6 +2,7 @@
 slug: /use-cases/observability/clickstack/ingesting-data/opentelemetry
 pagination_prev: null
 pagination_next: null
+toc_max_heading_level: 2
 description: 'Data ingestion with OpenTelemetry for ClickStack - The ClickHouse Observability Stack'
 title: 'Ingesting with OpenTelemetry'
 doc_type: 'guide'

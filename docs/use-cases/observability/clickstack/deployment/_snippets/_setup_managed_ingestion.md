@@ -4,7 +4,7 @@ import start_ingestion from '@site/static/images/clickstack/getting-started/star
 import otel_collector_start from '@site/static/images/clickstack/getting-started/otel_collector_start.png';
 import advanced_otel_collector from '@site/static/images/clickstack/getting-started/advanced_otel_collector.png';
 import vector_config from '@site/static/images/clickstack/getting-started/vector_config.png';
-
+import ExampleOTelConfig from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_config_example_otel.md';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -53,95 +53,28 @@ If you're using your own distribution, for example the [contrib image](https://g
 
 For this purpose, you're provided with an example OpenTelemetry Collector configuration that uses the ClickHouse exporter with appropriate settings and exposes OTLP receivers. This configuration matches the interfaces and behavior expected by the ClickStack distribution.
 
-An example of this configuration is shown below (environment variables will be pre-populated if copying from the UI):
-
-```yaml file=docs/use-cases/observability/clickstack/deployment/_snippets/otel-cloud-config.yaml
-receivers:
-  otlp/hyperdx:
-    protocols:
-      grpc:
-        include_metadata: true
-        endpoint: "0.0.0.0:4317"
-      http:
-        cors:
-          allowed_origins: ["*"]
-          allowed_headers: ["*"]
-        include_metadata: true
-        endpoint: "0.0.0.0:4318"
-processors:
-  batch:
-  memory_limiter:
-    # 80% of maximum memory up to 2G, adjust for low memory environments
-    limit_mib: 1500
-    # 25% of limit up to 2G, adjust for low memory environments
-    spike_limit_mib: 512
-    check_interval: 5s
-connectors:
-  routing/logs:
-    default_pipelines: [logs/out-default]
-    error_mode: ignore
-    table:
-      - context: log
-        statement: route() where IsMatch(attributes["rr-web.event"], ".*")
-        pipelines: [logs/out-rrweb]
-exporters:
-  debug:
-    verbosity: detailed
-    sampling_initial: 5
-    sampling_thereafter: 200
-  clickhouse/rrweb:
-    database: default
-    endpoint: <clickhouse_cloud_endpoint>
-    password: <your_password_here>
-    username: default
-    ttl: 720h
-    logs_table_name: hyperdx_sessions
-    timeout: 5s
-    retry_on_failure:
-      enabled: true
-      initial_interval: 5s
-      max_interval: 30s
-      max_elapsed_time: 300s
-  clickhouse:
-    database: default
-    endpoint: <clickhouse_cloud_endpoint>
-    password: <your_password_here>
-    username: default
-    ttl: 720h
-    timeout: 5s
-    retry_on_failure:
-      enabled: true
-      initial_interval: 5s
-      max_interval: 30s
-      max_elapsed_time: 300s
-
-service:
-  pipelines:
-    traces:
-      receivers: [otlp/hyperdx]
-      processors: [memory_limiter, batch]
-      exporters: [clickhouse]
-    metrics:
-      receivers: [otlp/hyperdx]
-      processors: [memory_limiter, batch]
-      exporters: [clickhouse]
-    logs/in:
-      receivers: [otlp/hyperdx]
-      exporters: [routing/logs]
-    logs/out-default:
-      receivers: [routing/logs]
-      processors: [memory_limiter, batch]
-      exporters: [clickhouse]
-    logs/out-rrweb:
-      receivers: [routing/logs]
-      processors: [memory_limiter, batch]
-      exporters: [clickhouse/rrweb]
-
-```
+<ExampleOTelConfig/>
 
 <Image img={advanced_otel_collector} size="lg" alt='Advanced OTel collector source' border/>
 
 For further details on configuring OpenTelemetry collectors, see ["Ingesting with OpenTelemetry."](/use-cases/observability/clickstack/ingesting-data/opentelemetry)
+
+### Start ingestion (optional) {#start-ingestion-create-new}
+
+If you have existing applications or infrastructure to instrument with OpenTelemetry, navigate to the relevant guides linked from the UI. 
+
+To instrument your applications to collect traces and logs, use the [supported language SDKs](/use-cases/observability/clickstack/sdks) which send data to your OpenTelemetry Collector acting as a gateway for ingestion into Managed ClickStack. 
+
+Logs can be [collected using OpenTelemetry Collectors](/use-cases/observability/clickstack/integrations/host-logs) running in agent mode, forwarding data to the same collector. For Kubernetes monitoring, follow the [dedicated guide](/use-cases/observability/clickstack/integrations/kubernetes). For other integrations, see our [quickstart guides](/use-cases/observability/clickstack/integration-guides).
+
+### Demo data {#demo-data}
+
+Alternatively, if you don't have existing data, try one of our sample datasets.
+
+- [Example dataset](/use-cases/observability/clickstack/getting-started/sample-data) - Load an example dataset from our public demo. Diagnose a simple issue.
+- [Local files and metrics](/use-cases/observability/clickstack/getting-started/local-data) - Load local files and monitor the system on OSX or Linux using a local OTel collector.
+
+<br/>
 
 </TabItem>
 <TabItem value="vector" label="Vector" default>
@@ -199,6 +132,6 @@ Once the table exists, copy the configuration snippet shown. Adjust the input to
 <Image img={vector_config} size="lg" alt='Vector configuration'/>
 
 For more examples of ingesting data with Vector, see ["Ingesting with Vector"](/use-cases/observability/clickstack/ingesting-data/vector) or the [Vector ClickHouse sink documentation](https://vector.dev/docs/reference/configuration/sinks/clickhouse/) for advanced options.
-
+<br/>
 </TabItem>
 </Tabs>

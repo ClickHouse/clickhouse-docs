@@ -4,6 +4,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Architecture of ClickStack - The ClickHouse Observability Stack'
 title: 'Architecture'
+toc_max_heading_level: 2
 doc_type: 'reference'
 keywords: ['ClickStack architecture', 'observability architecture', 'HyperDX', 'OpenTelemetry collector', 'MongoDB', 'system design']
 ---
@@ -16,6 +17,10 @@ import TabItem from '@theme/TabItem';
 
 The ClickStack architecture varies depending on how it is deployed. There are important architectural distinctions between **ClickStack Open Source**, where all components are self-managed, and **Managed ClickStack**, where ClickHouse and the HyperDX UI are hosted and operated in ClickHouse Cloud. While the core components remain the same in both models, the responsibility for hosting, scaling, and securing each component differs.
 
+## Architecture overview {#architecture-overview}
+
+The following provides an overview of the managed and open source ClickStack architectures.
+
 <Tabs groupId="architectures">
 <TabItem value="managed-clickstack" label="Managed ClickStack" default>
 
@@ -25,7 +30,7 @@ In this model, **ClickHouse and the ClickStack UI (HyperDX)** are hosted, operat
 
 <Image img={managed_architecture} alt="Managed Architecture" size="lg"/>
 
-## ClickHouse Cloud: the engine {#clickhouse-cloud}
+### ClickHouse Cloud: the engine {#clickhouse-cloud}
 
 At the heart of Managed ClickStack is ClickHouse Cloud, a serverless version of ClickHouse - a column-oriented database designed for real-time analytics at scale. It powers the ingestion and querying of observability data, enabling:
 
@@ -47,7 +52,7 @@ In addition to ClickHouse Open Source, it provides a number of benefits for obse
 - Security and compliance features
 - Seamless upgrades
 
-## OpenTelemetry collector: data ingestion {#open-telemetry-collector-managed}
+### OpenTelemetry collector: data ingestion {#open-telemetry-collector-managed}
 
 ClickStack Managed includes a pre-configured OpenTelemetry (OTel) collector to ingest telemetry in an open, standardized way. You can send data using the OTLP protocol via:
 
@@ -58,7 +63,7 @@ The collector exports telemetry to ClickHouse Cloud in efficient batches. It sup
 
 **This component of the architecture is managed by the user**
 
-## ClickStack UI (HyperDX): the interface {#hyperdx}
+### ClickStack UI (HyperDX): the interface {#hyperdx}
 
 ClickStack UI (HyperDX) is the user interface for ClickStack. It offers:
 
@@ -78,11 +83,9 @@ In Managed ClickStack, the UI is integrated into the ClickHouse Cloud console au
 
 The ClickStack Open Source architecture is built around three core components: **ClickHouse**, **HyperDX**, and a **OpenTelemetry (OTel) collector**. A **MongoDB** instance provides storage for the application state. Together, they provide a high-performance, open-source observability stack optimized for logs, metrics, and traces.
 
-## Architecture overview {#architecture-overview}
-
 <Image img={oss_architecture} alt="Architecture" size="lg"/>
 
-## ClickHouse: the database engine {#clickhouse}
+### ClickHouse: the database engine {#clickhouse}
 
 At the heart of ClickStack is ClickHouse, a column-oriented database designed for real-time analytics at scale. It powers the ingestion and querying of observability data, enabling:
 
@@ -94,7 +97,7 @@ At the heart of ClickStack is ClickHouse, a column-oriented database designed fo
 
 ClickHouse handles observability data as wide events, allowing for deep correlation across logs, metrics, and traces in a single unified structure.
 
-## OpenTelemetry collector: data ingestion {#open-telemetry-collector}
+### OpenTelemetry collector: data ingestion {#open-telemetry-collector}
 
 ClickStack includes a pre-configured OpenTelemetry (OTel) collector to ingest telemetry in an open, standardized way. You can send data using the OTLP protocol via:
 
@@ -103,7 +106,7 @@ ClickStack includes a pre-configured OpenTelemetry (OTel) collector to ingest te
 
 The collector exports telemetry to ClickHouse in efficient batches. It supports optimized table schemas per data source, ensuring scalable performance across all signal types.
 
-## ClickStack UI (HyperDX): the interface {#hyperdx-ui}
+### ClickStack UI (HyperDX): the interface {#hyperdx-ui}
 
 ClickStack UI (HyperDX) is the user interface for ClickStack. It offers:
 
@@ -116,7 +119,7 @@ ClickStack UI (HyperDX) is the user interface for ClickStack. It offers:
 
 Designed specifically for ClickHouse, HyperDX combines powerful search with intuitive workflows, enabling you to spot anomalies, investigate issues, and gain insights fast. 
 
-## MongoDB: application state {#mongo}
+### MongoDB: application state {#mongo}
 
 ClickStack uses MongoDB to store application-level state, including:
 

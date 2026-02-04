@@ -14,7 +14,7 @@ import hyperdx_26 from '@site/static/images/use-cases/observability/hyperdx-26.p
 
 The following configuration options are available for each component of ClickStack:
 
-## Open Source ClickStack settings {#modifying-settings}
+## Settings for open source distributions {#modifying-settings}
 
 ### Docker {#docker}
 

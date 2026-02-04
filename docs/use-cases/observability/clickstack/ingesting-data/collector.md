@@ -6,6 +6,7 @@ description: 'OpenTelemetry collector for ClickStack - The ClickHouse Observabil
 sidebar_label: 'OpenTelemetry collector'
 title: 'ClickStack OpenTelemetry Collector'
 doc_type: 'guide'
+toc_max_heading_level: 2
 keywords: ['ClickStack', 'OpenTelemetry collector', 'ClickHouse observability', 'OTel collector configuration', 'OpenTelemetry ClickHouse']
 ---
 
@@ -34,11 +35,11 @@ OpenTelemetry collectors can be deployed in two principal roles:
 
 Users deploying OTel collectors in the agent role will typically use the [default contrib distribution of the collector](https://github.com/open-telemetry/opentelemetry-collector-contrib) and not the ClickStack version but are free to use other OTLP compatible technologies such as [Fluentd](https://www.fluentd.org/) and [Vector](https://vector.dev/).
 
+## Deploying the collector {#configuring-the-collector}
+<br/>
 <Tabs groupId="otel-collector">
 
 <TabItem value="managed-clickstack" label="Managed ClickStack" default>
-
-## Deploying the collector {#configuring-the-collector}
 
 We [recommend using the official ClickStack distribution of the collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) for the gateway role when sending to Managed ClickStack, where possible. If you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
 
@@ -60,9 +61,9 @@ For details on retrieving your Managed ClickStack credentials, see [here](/cloud
 You should use a user with the [appropriate credentials](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) in production.
 :::
 
-## Modifying configuration {#modifying-otel-collector-configuration-managed}
+### Modifying configuration {#modifying-otel-collector-configuration-managed}
 
-### Configuring Managed ClickStack instance {#configuring-managed-clickstack}
+#### Configuring Managed ClickStack instance {#configuring-managed-clickstack}
 
 All docker images, which include the OpenTelemetry collector, can be configured to use a Managed ClickStack instance via the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` and `CLICKHOUSE_PASSWORD`:
 
@@ -80,7 +81,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 <ExtendingConfig/>
 
-### Docker Compose {#docker-compose-otel-managed}
+#### Docker Compose {#docker-compose-otel-managed}
 
 With Docker Compose, modify the collector configuration using the same environment variables as above:
 
@@ -109,8 +110,6 @@ With Docker Compose, modify the collector configuration using the same environme
 
 <TabItem value="oss-clickstack" label="Open Source ClickStack" default>
 
-## Deploying the collector {#configuring-the-collector-oss}
-
 If you are managing your own OpenTelemetry collector in a standalone deployment - such as when using the HyperDX-only distribution - we [recommend still using the official ClickStack distribution of the collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) for the gateway role where possible, but if you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
 
 To deploy the ClickStack distribution of the OTel connector in a standalone mode, run the following docker command:
@@ -137,9 +136,9 @@ For the collector to connect to the OpAMP port it must be exposed by the HyperDX
 You should use a user with the [appropriate credentials](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) in production.
 :::
 
-## Modifying configuration {#modifying-otel-collector-configuration}
+### Modifying configuration {#modifying-otel-collector-configuration}
 
-### Configuring ClickHouse instance {#configuring-clickhouse-instance}
+#### Configuring ClickHouse instance {#configuring-clickhouse-instance}
 
 All docker images, which include the OpenTelemetry collector, can be configured to use a clickhouse instance via the environment variables `OPAMP_SERVER_URL` ,`CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` and `CLICKHOUSE_PASSWORD`:
 
@@ -158,7 +157,7 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
 
 <ExtendingConfig/>
 
-### Docker Compose {#docker-compose-otel}
+#### Docker Compose {#docker-compose-otel}
 
 With Docker Compose, modify the collector configuration using the same environment variables as above:
 

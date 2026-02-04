@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Going to production with ClickStack'
 doc_type: 'guide'
+toc_max_heading_level: 2
 keywords: ['clickstack', 'production', 'deployment', 'best practices', 'operations']
 ---
 
@@ -33,21 +34,21 @@ For production deployments, [Managed ClickStack](/use-cases/observability/clicks
 
 **Follow these [best practices](/cloud/guides/production-readiness) for ClickHouse Cloud when using Managed ClickStack.**
 
-## Secure ingestion {#secure-ingestion-managed}
+### Secure ingestion {#secure-ingestion-managed}
 
 By default, the ClickStack OpenTelemetry Collector is not secured when deployed outside of the Open Source distributions and does not require authentication on its OTLP ports.
 
 To secure ingestion, specify an authentication token when deploying the collector using the `OTLP_AUTH_TOKEN` environment variable. See ["Securing the collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector) for further details.
 
-### Database and ingestion user {#database-ingestion-user-managed-managed}
+#### Create an ingestion user {#create-a-database-ingestion-user-managed}
 
 It's recommended to create a dedicated user for the OTel collector for ingestion into Managed ClickHouse and ensuring ingestion is sent to a specific database e.g. `otel`. See ["Creating an ingestion user"](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) for further details.
 
-## Configure Time To Live (TTL) {#configure-ttl-managed}
+### Configure Time To Live (TTL) {#configure-ttl-managed}
 
 Ensure the [Time To Live (TTL)](/use-cases/observability/clickstack/ttl) has been [appropriately configured](/use-cases/observability/clickstack/ttl#modifying-ttl) for your Managed ClickStack deployment. This controls how long data is retained for - the default of 3 days often needs to be modified.
 
-## Estimating Resources {#estimating-resources}
+### Estimating Resources {#estimating-resources}
 
 When deploying **Managed ClickStack**, it is important to provision sufficient compute resources to handle both ingestion and query workloads. The estimates below provide a **baseline starting point** based on the volume of observability data you plan to ingest.
 
@@ -60,7 +61,7 @@ These recommendations are based on the following assumptions:
 
 More compute may be required for access patterns that regularly query longer time ranges, perform heavy aggregations, or support a high number of concurrent users.
 
-### Recommended baseline sizing {#recommended-sizing}
+#### Recommended baseline sizing {#recommended-sizing}
 
 | Monthly ingest volume | Recommended compute |
 |-----------------------|---------------------|
@@ -74,7 +75,7 @@ More compute may be required for access patterns that regularly query longer tim
 These values are **estimates only** and should be used as an initial baseline. Actual requirements depend on query complexity, concurrency, retention policies, and variance in ingestion throughput. Always monitor resource usage and scale as needed.
 :::
 
-### Isolating observability workloads {#isolating-workloads}
+#### Isolating observability workloads {#isolating-workloads}
 
 If you are adding ClickStack to an **existing ClickHouse Cloud service** that already supports other workloads, such as real-time application analytics, isolating observability traffic is strongly recommended.
 
@@ -93,7 +94,7 @@ For larger deployments or custom sizing guidance, please contact support for a m
 
 <TabItem value="oss-clickstack" label="ClickStack Open Source">
 
-## Network and port security {#network-security}
+### Network and port security {#network-security}
 
 By default, Docker Compose exposes ports on the host, making them accessible from outside the container - even if tools like `ufw` (Uncomplicated Firewall) are enabled. This behavior is due to the Docker networking stack, which can bypass host-level firewall rules unless explicitly configured.
 
@@ -113,7 +114,7 @@ ports:
 
 Refer to the [Docker networking documentation](https://docs.docker.com/network/) for details on isolating containers and hardening access.
 
-## Session secret configuration {#session-secret}
+### Session secret configuration {#session-secret}
 
 In production, you must set a strong, random value for the `EXPRESS_SESSION_SECRET` environment variable for ClickStack UI (HyperDX) - to protect session data and prevent tampering.
 
@@ -153,19 +154,23 @@ openssl rand -hex 32
 
 Avoid committing secrets to source control. In production, consider using environment variable management tools (e.g. Docker Secrets, HashiCorp Vault, or environment-specific CI/CD configs).
 
-## Secure ingestion {#secure-ingestion}
+### Secure ingestion {#secure-ingestion}
 
 All ingestion should occur via the OTLP ports exposed by ClickStack distribution of the OpenTelemetry (OTel) collector. By default, this requires a secure ingestion API key generated at startup. This key is required when sending data to the OTel ports, and can be found in the HyperDX UI under `Team Settings → API Keys`.
 
 <Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
 
-Additionally, enabling TLS for OTLP endpoints and creating a [dedicated user for ClickHouse ingestion](#database-ingestion-user) is recommended.
+Additionally, enabling TLS for OTLP endpoints is recommended.
 
-## ClickHouse {#clickhouse}
+#### Create an ingestion user {#create-a-database-ingestion-user-oss}
+
+Creating a dedicated user for the OTel collector for ingestion into ClickHouse and ensuring ingestion is sent to a specific database e.g. `otel` is recommended. See ["Creating an ingestion user"](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) for further details.
+
+### ClickHouse {#clickhouse}
 
 Users managing their own ClickHouse instance should adhere to the following best practices.
 
-### Security best practices {#self-managed-security}
+#### Security best practices {#self-managed-security}
 
 If you are managing your own ClickHouse instance, it's essential to enable **TLS**, enforce authentication, and follow best practices for hardening access. See [this blog post](https://www.wiz.io/blog/clickhouse-and-wiz) for context on real-world misconfigurations and how to avoid them.
 
@@ -184,11 +189,9 @@ ClickHouse OSS provides robust security features out of the box. However, these 
 
 See also [external authenticators](/operations/external-authenticators) and [query complexity settings](/operations/settings/query-complexity) for managing users and ensuring query/resource limits.
 
-### User permissions {#user-permissions}
+#### User permissions for ClickStack UI {#user-permissions}
 
-#### HyperDX user {#hyperdx-user}
-
-The ClickHouse user for HyperDX only needs to be a `readonly` user with access to change the following settings:
+The ClickHouse user for the ClickStack UI only needs to be a `readonly` user with access to change the following settings:
 
 - `max_rows_to_read` (at least up to 1 million)
 - `read_overflow_mode`
@@ -197,15 +200,11 @@ The ClickHouse user for HyperDX only needs to be a `readonly` user with access t
 
 By default, the `default` user in both OSS and ClickHouse Cloud will have these permissions available however you are recommended to create a new user with these permissions.
 
-#### Database and ingestion user {#database-ingestion-user-managed}
-
-Creating a dedicated user for the OTel collector for ingestion into ClickHouse and ensuring ingestion is sent to a specific database e.g. `otel` is recommended. See ["Creating an ingestion user"](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) for further details.
-
 ### Configure Time To Live (TTL) {#configure-ttl}
 
 Ensure the [Time To Live (TTL)](/use-cases/observability/clickstack/ttl) has been [appropriately configured](/use-cases/observability/clickstack/ttl#modifying-ttl) for your ClickStack deployment. This controls how long data is retained for - the default of 3 days often needs to be modified.
 
-## MongoDB guidelines {#mongodb-guidelines}
+### MongoDB guidelines {#mongodb-guidelines}
 
 Follow the official [MongoDB security checklist](https://www.mongodb.com/docs/manual/administration/security-checklist/).
 

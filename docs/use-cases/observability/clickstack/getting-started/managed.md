@@ -17,7 +17,6 @@ import advanced_otel_collector from '@site/static/images/clickstack/getting-star
 import clickstack_managed_ui from '@site/static/images/clickstack/getting-started/clickstack_managed_ui.png';
 import BetaBadge from '@theme/badges/BetaBadge';
 import SetupManagedIngestion from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_setup_managed_ingestion.md';
-import StartManagedIngestion from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_start_managed_ingestion.md';
 import ProviderSelection from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_select_provider.md';
 import UseCaseSelector from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_select_usecase.md';
 import NavigateClickStackUI from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_navigate_managed.md';
@@ -48,10 +47,6 @@ To create a Managed ClickStack service in [ClickHouse Cloud](https://console.cli
 Once your service has been provisioned, ensure the the service is selected and click "ClickStack" from the left menu.
 
 <SetupManagedIngestion/>
-
-## Start ingestion (OpenTelemetry only) {#start-ingestion}
-
-<StartManagedIngestion/>
 
 ## Navigate to the ClickStack UI {#navigate-to-clickstack-ui-cloud}
 
