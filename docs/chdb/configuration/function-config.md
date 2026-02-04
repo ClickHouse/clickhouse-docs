@@ -2,14 +2,14 @@
 title: 'Function-Level Configuration'
 sidebar_label: 'Function Config'
 slug: /chdb/configuration/function-config
-description: 'Configure execution engine and dtype correction at the function level'
-keywords: ['chdb', 'datastore', 'function', 'config', 'dtype', 'correction']
+description: 'Configure execution engine and Dtype correction at the function level'
+keywords: ['chdb', 'datastore', 'function', 'config', 'Dtype', 'correction']
 doc_type: 'reference'
 ---
 
 # Function-Level Configuration
 
-DataStore allows fine-grained control over execution at the function level, including engine selection and dtype correction.
+DataStore allows fine-grained control over execution at the function level, including engine selection and Dtype correction.
 
 ## Function Engine Configuration {#function-engine}
 

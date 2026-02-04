@@ -63,26 +63,26 @@ print(ds.empty)      # False
 
 ## Indexing and Selection {#indexing}
 
-| Method | Description | Example |
-|--------|-------------|---------|
-| `df['col']` | Select column | `ds['age']` |
-| `df[['col1', 'col2']]` | Select columns | `ds[['name', 'age']]` |
-| `df[condition]` | Boolean indexing | `ds[ds['age'] > 25]` |
-| `df.loc[...]` | Label-based access | `ds.loc[0:10, 'name']` |
-| `df.iloc[...]` | Integer-based access | `ds.iloc[0:10, 0:3]` |
-| `df.at[...]` | Single value by label | `ds.at[0, 'name']` |
+| Method | Description              | Example |
+|--------|--------------------------|---------|
+| `df['col']` | Select column            | `ds['age']` |
+| `df[['col1', 'col2']]` | Select columns           | `ds[['name', 'age']]` |
+| `df[condition]` | Boolean indexing         | `ds[ds['age'] > 25]` |
+| `df.loc[...]` | Label-based access       | `ds.loc[0:10, 'name']` |
+| `df.iloc[...]` | Integer-based access     | `ds.iloc[0:10, 0:3]` |
+| `df.at[...]` | Single value by label    | `ds.at[0, 'name']` |
 | `df.iat[...]` | Single value by position | `ds.iat[0, 0]` |
-| `df.head(n)` | First n rows | `ds.head(10)` |
-| `df.tail(n)` | Last n rows | `ds.tail(10)` |
-| `df.sample(n)` | Random sample | `ds.sample(100)` |
-| `df.select_dtypes()` | Select by dtype | `ds.select_dtypes(include='number')` |
-| `df.query()` | Query expression | `ds.query('age > 25')` |
-| `df.where()` | Conditional replace | `ds.where(ds['age'] > 0, 0)` |
-| `df.mask()` | Inverse where | `ds.mask(ds['age'] < 0, 0)` |
-| `df.isin()` | Value membership | `ds['city'].isin(['NYC', 'LA'])` |
-| `df.get()` | Safe column access | `ds.get('col', default=None)` |
-| `df.xs()` | Cross-section | `ds.xs('key')` |
-| `df.pop()` | Remove column | `ds.pop('col')` |
+| `df.head(n)` | First n rows             | `ds.head(10)` |
+| `df.tail(n)` | Last n rows              | `ds.tail(10)` |
+| `df.sample(n)` | Random sample            | `ds.sample(100)` |
+| `df.select_dtypes()` | Select by Dtype          | `ds.select_dtypes(include='number')` |
+| `df.query()` | Query expression         | `ds.query('age > 25')` |
+| `df.where()` | Conditional replace      | `ds.where(ds['age'] > 0, 0)` |
+| `df.mask()` | Inverse where            | `ds.mask(ds['age'] < 0, 0)` |
+| `df.isin()` | Value membership         | `ds['city'].isin(['NYC', 'LA'])` |
+| `df.get()` | Safe column access       | `ds.get('col', default=None)` |
+| `df.xs()` | Cross-section            | `ds.xs('key')` |
+| `df.pop()` | Remove column            | `ds.pop('col')` |
 
 ---
 
@@ -430,11 +430,11 @@ See [I/O Operations](io.md) for detailed documentation.
 
 ## Iteration {#iteration}
 
-| Method | Description |
-|--------|-------------|
+| Method | Description              |
+|--------|--------------------------|
 | `items()` | Iterate (column, Series) |
-| `iterrows()` | Iterate (index, Series) |
-| `itertuples()` | Iterate as namedtuples |
+| `iterrows()` | Iterate (index, Series)  |
+| `itertuples()` | Iterate as named tuples  |
 
 ---
 

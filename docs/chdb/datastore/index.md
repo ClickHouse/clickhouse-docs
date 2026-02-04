@@ -78,16 +78,16 @@ DataStore delivers significant performance improvements over pandas, especially 
 
 ## Feature Comparison {#comparison}
 
-| Feature | pandas | polars | DuckDB | DataStore |
-|---------|--------|--------|--------|-----------|
-| Pandas API compatible | - | Partial | No | **Full** |
-| Lazy evaluation | No | Yes | Yes | **Yes** |
-| SQL query support | No | Yes | Yes | **Yes** |
-| ClickHouse functions | No | No | No | **Yes** |
-| String/DateTime accessors | Yes | Yes | No | **Yes + extras** |
-| Array/JSON/URL/IP/Geo | No | Partial | No | **Yes** |
-| Direct file queries | No | Yes | Yes | **Yes** |
-| Cloud storage support | No | Limited | Yes | **Yes** |
+| Feature | Pandas | Polars  | DuckDB | DataStore |
+|---------|--------|---------|--------|-----------|
+| Pandas API compatible | -      | Partial | No | **Full** |
+| Lazy evaluation | No     | Yes     | Yes | **Yes** |
+| SQL query support | No     | Yes     | Yes | **Yes** |
+| ClickHouse functions | No     | No      | No | **Yes** |
+| String/DateTime accessors | Yes    | Yes     | No | **Yes + extras** |
+| Array/JSON/URL/IP/Geo | No     | Partial | No | **Yes** |
+| Direct file queries | No     | Yes     | Yes | **Yes** |
+| Cloud storage support | No     | Limited | Yes | **Yes** |
 
 ## API Statistics {#api-stats}
 

@@ -27,13 +27,15 @@ That's it! Most pandas code works unchanged.
 
 ## Step-by-Step Migration {#step-by-step}
 
-### Step 1: Install chDB {#step-1}
+<VerticalStepper headerLevel="h3">
+
+### Install chDB {#step-1}
 
 ```bash
 pip install "chdb>=4.0"
 ```
 
-### Step 2: Change the Import {#step-2}
+### Change the Import {#step-2}
 
 ```python
 # Change this:
@@ -43,7 +45,7 @@ import pandas as pd
 from chdb import datastore as pd
 ```
 
-### Step 3: Test Your Code {#step-3}
+### Test Your Code {#step-3}
 
 Run your existing code. Most operations work unchanged:
 
@@ -57,9 +59,11 @@ grouped = df.groupby('city')['salary'].mean()
 df.to_csv("output.csv")
 ```
 
-### Step 4: Handle Any Differences {#step-4}
+### Handle Any Differences {#step-4}
 
 A few operations behave differently. See [Key Differences](#differences) below.
+
+</VerticalStepper>
 
 ---
 
