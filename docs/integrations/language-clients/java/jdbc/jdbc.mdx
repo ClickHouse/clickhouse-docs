@@ -580,6 +580,11 @@ try (Connection conn = DriverManager.getConnection(url, properties)) {
 - `Dynamic` and `Variant` are new types in V2. Not supported in V1.
 - `JSON` is based on `Dynamic` type. Therefore it is supported only in V2.
 
+### Database Metadata Changes {#database-metadata-changes}
+
+- V2 uses only `Schema` term to name databases. `Catalog` term is reserved for future use.
+- V2 returns `false` for `DatabaseMetaData.supportsTransactions()` and `DatabaseMetaData.supportsSavepoints()`. This will be changed in the future development.
+
 
 </Version>
 
