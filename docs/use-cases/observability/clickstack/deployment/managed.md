@@ -318,8 +318,6 @@ Once the source is configured, click "Save" and begin exploring your data.
 To enable alerts, at least one user with **Service Admin** permissions (mapped to **Full Access** in the SQL Console Access dropdown) must log into HyperDX at least once. This provisions a dedicated user in the database that runs alert queries.
 :::
 
-Here is a draft section you can drop into this doc. It is written to match the existing tone and level of detail, and it directly answers the ClickStack on read-only compute question.
-
 ### Using ClickStack with read-only compute {#clickstack-read-only-compute}
 
 The ClickStack UI can run entirely on a read-only ClickHouse Cloud service. This is the recommended setup when you want to isolate ingestion and query workloads.
