@@ -962,6 +962,8 @@ payg
 payg
 --docs/cloud/manage/scaling.md--
 bursty
+--docs/use-cases/observability/clickstack/production.md--
+bursty
 --docs/cloud/security/gcp-private-service-connect.md--
 privatelink
 --docs/cloud/features/04_security/connectivity/private_networking/aws-privatelink.md--
@@ -1187,3 +1189,5 @@ Lightdash’s
 --docs/cloud/guides/backups/03_bring_your_own_backup/03_backup_restore_using_commands.md--
 CSPs
 testchbackups
+--docs/use-cases/observability/clickstack/ingesting-data/integration-examples/nodejs-traces.md--
+nodejs

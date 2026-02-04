@@ -47,6 +47,10 @@ In ClickHouse is a type of materialized view that processes and aggregates data 
 
 A lightweight update in ClickHouse is an experimental feature that allows you to update rows in a table using standard SQL UPDATE syntax, but instead of rewriting entire columns or data parts (as with traditional mutations), it creates "patch parts" containing only the updated columns and rows. These updates are immediately visible in SELECT queries through patch application, but the physical data is only updated during subsequent merges.
 
+## Mark file {#mark-file}
+
+A mark file in ClickHouse is a file that stores "marks", or index entries that help ClickHouse quickly locate where specific data ranges are stored in data files.
+
 ## Materialized view {#materialized-view}
 
 A materialized view in ClickHouse is a mechanism that automatically runs a query on data as it is inserted into a source table, storing the transformed or aggregated results in a separate target table for faster querying.

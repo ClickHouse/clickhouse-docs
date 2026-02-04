@@ -33,7 +33,8 @@ Before querying your table in Microsoft Fabric, you'll need to collect the follo
 - A warehouse ID and a data item ID
 
 Your warehouse ID is your Workspace ID.
-For Data Item ID - we recommend using using your LakeHouse ID.
+
+For Data Item ID - we recommend using your Lakehouse ID. In our testing, it does not work with a Warehouse ID. 
 
 See [Microsoft OneLake's documentation](http://learn.microsoft.com/en-us/fabric/onelake/table-apis/table-apis-overview#prerequisites) for help finding these values.
 
