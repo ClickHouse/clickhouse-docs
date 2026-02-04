@@ -338,7 +338,7 @@ No additional configuration inside ClickStack is required to enforce read-only b
 To run ClickStack on read-only compute:
 
 1. Create or identify a ClickHouse Cloud service in the warehouse configured as read-only.
-2. In the ClickHouse Cloud console, select the read-only service or warehouse.
+2. In the ClickHouse Cloud console, select the read-only service.
 3. Launch ClickStack from the left navigation menu.
 
 Once launched, ClickStack UI will automatically bind to this read-only service.
