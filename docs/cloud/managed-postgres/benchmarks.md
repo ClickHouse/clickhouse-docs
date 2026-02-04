@@ -10,7 +10,7 @@ doc_type: 'guide'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 import computeIntensive from '@site/static/images/managed-postgres/benchmarks/compute-intensive.png';
-import ioReadOnly from '@site/static/images/managed-postgres/benchmarks/io-intensive-readonly.png';
+import ioRead-Only from '@site/static/images/managed-postgres/benchmarks/io-intensive-readonly.png';
 import ioReadWrite from '@site/static/images/managed-postgres/benchmarks/io-intensive-readwrite.png';
 
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="benchmarks" />
@@ -19,7 +19,7 @@ This page provides performance benchmark results comparing Postgres managed by C
 
 ## Benchmark overview {#overview}
 
-We conducted comprehensive performance testing using `pgbench`, the standard PostgreSQL benchmarking tool, to evaluate workload performance under both moderate and high-concurrency scenarios. These benchmarks follow the methodology outlined in [PeerDB's comparison of managed PostgreSQL services](https://blog.peerdb.io/comparing-postgres-managed-services-aws-azure-gcp-and-supabase), ensuring fair and reproducible results across providers.
+We conducted comprehensive performance testing using `pgbench`, the standard PostgreSQL benchmarking tool, to evaluate workload performance under both moderate and high-concurrency scenarios.
 
 ## Benchmark setup {#setup}
 
@@ -28,7 +28,7 @@ All performance tests were conducted using a client VM with the same compute cap
 We performed three distinct benchmark tests:
 
 1. **CPU Intensive** (data fits in memory)
-2. **IO Intensive - ReadOnly** (large dataset, read-only queries)
+2. **IO Intensive - Read-Only** (large dataset, read-only queries)
 3. **IO Intensive - Read+Write** (large dataset, mixed read/write operations)
 
 ### Test 1: CPU Intensive - Data fits in memory {#test1-config}
@@ -65,7 +65,7 @@ pgbench -c 32 -j 16 -T 300 -S -M prepared -P 30
 - `-M prepared`: Use prepared statements
 - `-P 30`: Progress report every 30 seconds
 
-### Test 2: IO Intensive - ReadOnly (500 GB dataset) {#test2-config}
+### Test 2: IO Intensive - Read-Only (500 GB dataset) {#test2-config}
 
 This test evaluates read performance with a large 500 GB dataset that doesn't fit in memory, stressing disk I/O capabilities.
 
@@ -141,11 +141,11 @@ When the working set fits entirely in RAM, this test primarily stresses CPU perf
 
 **Analysis**: Even in CPU-bound scenarios where disk I/O is minimal, **Postgres managed by ClickHouse led the pack with 36.5K TPS**. Despite both services hitting 100% CPU utilization, ClickHouse's NVMe storage delivered superior performance with better cache hit rates. The 12% advantage over RDS demonstrates the efficiency of the underlying infrastructure even when workloads are primarily CPU-bound.
 
-### Test 2: IO Intensive - ReadOnly (500 GB dataset) {#test2-results}
+### Test 2: IO Intensive - Read-Only (500 GB dataset) {#test2-results}
 
 This test evaluates read performance with a large dataset that exceeds available memory, heavily stressing disk I/O subsystems.
 
-<Image img={ioReadOnly} alt="IO Intensive ReadOnly benchmark results" size="lg" border/>
+<Image img={ioRead-Only} alt="IO Intensive Read-Only benchmark results" size="lg" border/>
 
 **Performance improvement over RDS (16k IOPS):**
 - **802% higher TPS** (9.0x faster)
@@ -225,7 +225,7 @@ pgbench -c 1 -T 60 -S -M prepared postgres
 pgbench -c 32 -j 16 -T 300 -S -M prepared -P 30 postgres
 ```
 
-**Test 2: IO Intensive - ReadOnly (500 GB dataset)**
+**Test 2: IO Intensive - Read-Only (500 GB dataset)**
 
 ```bash
 # Initialize (takes 1-4 hours depending on service)
@@ -258,13 +258,13 @@ For additional workload testing:
 
 ## Conclusion {#conclusion}
 
-These comprehensive pgbench benchmarks demonstrate that Postgres managed by ClickHouse delivers exceptional performance across diverse workload types. The NVMe-backed storage architecture provides:
+These comprehensive `pgbench` benchmarks demonstrate that Postgres managed by ClickHouse delivers exceptional performance across diverse workload types. The NVMe-backed storage architecture provides:
 
 - **Consistent advantages** even in CPU-bound scenarios (12% higher TPS than RDS)
 - **Dramatic improvements** for IO-intensive read workloads (9x faster than RDS with 16k IOPS)
 - **Superior write performance** for mixed read/write workloads (4.3-4.5x faster than RDS and Aurora IO Optimized)
 
-The key differentiator is the unlimited local NVMe IOPS that eliminates storage bottlenecks. While competing services with network-attached storage struggle at 4-9K TPS due to provisioned IOPS limits, Postgres managed by ClickHouse scales to 20-85K TPS depending on workload characteristics and concurrency levels. This translates to better resource utilization, lower costs, and the ability to handle demanding production workloads without over-provisioning.
+The key distinction is the unlimited local NVMe IOPS that eliminates storage bottlenecks. While competing services with network-attached storage struggle at 4-9K TPS due to provisioned IOPS limits, Postgres managed by ClickHouse scales to 20-85K TPS depending on workload characteristics and concurrency levels. This translates to better resource utilization, lower costs, and the ability to handle demanding production workloads without over-provisioning.
 
 For organizations running IO-intensive PostgreSQL workloads, the performance gains speak for themselves: faster queries, higher throughput, and predictable performance without the complexity of provisioning and managing IOPS capacity.
 

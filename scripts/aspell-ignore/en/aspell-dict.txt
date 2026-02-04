@@ -3074,6 +3074,7 @@ permalink
 permalinked
 permalinks
 persistency
+pgbench
 pgRouting
 pgSQL
 pgvector
