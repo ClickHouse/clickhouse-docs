@@ -3,15 +3,18 @@ slug: /use-cases/observability/clickstack/overview
 title: 'ClickStack - The ClickHouse Observability Stack'
 sidebar_label: 'Overview'
 pagination_prev: null
-pagination_next: use-cases/observability/clickstack/getting-started
+pagination_next: use-cases/observability/clickstack/getting-started/index
 description: 'Overview for ClickStack - The ClickHouse Observability Stack'
 doc_type: 'guide'
 keywords: ['clickstack', 'observability', 'logs', 'monitoring', 'platform']
 ---
 
 import Image from '@theme/IdealImage';
-import architecture from '@site/static/images/use-cases/observability/clickstack-simple-architecture.png';
+import oss_simple_architecture from '@site/static/images/use-cases/observability/clickstack-simple-oss-architecture.png';
+import managed_simple_architecture from '@site/static/images/use-cases/observability/clickstack-simple-managed-architecture.png';
 import landing_image from '@site/static/images/use-cases/observability/hyperdx-landing.png';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 <Image img={landing_image} alt="Landing page" size="lg"/>
 
@@ -43,11 +46,13 @@ The stack includes several key features designed for debugging and root cause an
 
 ClickStack consists of three core components:
 
-1. **HyperDX UI** – a purpose-built frontend for exploring and visualizing observability data
+1. **ClickStack UI (HyperDX)** – a purpose-built frontend for exploring and visualizing observability data
 2. **OpenTelemetry collector** – a custom-built, preconfigured collector with an opinionated schema for logs, traces, and metrics
 3. **ClickHouse** – the high-performance analytical database at the heart of the stack
 
-These components can be deployed independently or together. A browser-hosted version of the HyperDX UI is also available, allowing users to connect to existing ClickHouse deployments without additional infrastructure.
+These components can be deployed together in a fully **self-managed ClickStack Open Source** setup, or split across managed and self-hosted environments. In **Managed ClickStack**, ClickHouse and the HyperDX UI are hosted and operated in [ClickHouse Cloud](/cloud/get-started), while users run only the OpenTelemetry Collector. 
+
+A browser-hosted version of the HyperDX UI is also available, allowing users to connect directly to existing ClickHouse deployments without deploying additional UI infrastructure.
 
 To get started, visit the [Getting started guide](/use-cases/observability/clickstack/getting-started) before loading a [sample dataset](/use-cases/observability/clickstack/sample-datasets). You can also explore documentation on [deployment options](/use-cases/observability/clickstack/deployment) and [production best practices](/use-cases/observability/clickstack/production).
 
@@ -81,11 +86,52 @@ ClickStack is fully open source and can be deployed anywhere. The schema is flex
 
 ## Architectural overview {#architectural-overview}
 
-<Image img={architecture} alt="Simple architecture" size="lg"/>
+The ClickStack architecture varies depending on how it is deployed. There are important architectural distinctions between **ClickStack Open Source**, where all components are self-managed, and **Managed ClickStack**, where ClickHouse and the HyperDX UI are hosted and operated in ClickHouse Cloud. While the core components remain the same in both models, the responsibility for hosting, scaling, and securing each component differs.
 
-ClickStack consists of three core components:
+<Tabs groupId="architectures">
+<TabItem value="managed-clickstack" label="Managed ClickStack" default>
 
-1. **HyperDX UI**  
+<Image img={managed_simple_architecture} alt="Managed ClickStack architecture" size="md" />
+
+Managed ClickStack runs entirely within **ClickHouse Cloud**, providing a fully managed observability backend while preserving the same ClickStack data model and user experience.
+
+In this model, **ClickHouse and the ClickStack UI (HyperDX)** are hosted, operated, and secured by ClickHouse Cloud. Users are responsible only for running an OpenTelemetry Collector to send telemetry data into the managed service.
+
+Managed ClickStack consists of the following components:
+
+1. **ClickStack UI (HyperDX)**  
+   The HyperDX UI is fully integrated into ClickHouse Cloud and managed as part of the service. It provides log search, trace exploration, dashboards, alerting, and correlation across telemetry types, with integrated authentication and access control.
+
+2. **OpenTelemetry collector (self-managed)**  
+   Users run an OpenTelemetry Collector that receives telemetry data from their applications and infrastructure. This collector forwards data via OTLP to ClickHouse Cloud. While any standards-compliant OpenTelemetry Collector can be used, we strongly recommend the **ClickStack distribution**, which is preconfigured and optimized for ClickHouse ingestion and works out of the box with ClickStack schemas.
+
+3. **ClickHouse Cloud**  
+   ClickHouse is fully managed in ClickHouse Cloud, serving as the storage and query engine for all observability data. Users do not need to manage clusters, upgrades, or operational concerns.
+
+Managed ClickStack provides several key benefits:
+
+- **Automatic scaling of compute independent of storage**
+- **Low-cost and effectively unlimited retention** backed by object storage
+- **Independent read and write isolation** using ClickHouse Cloud Warehouses
+- **Integrated authentication and access control**
+- **Automated backups**
+- **Security and compliance features**
+- **Seamless upgrades with no operational downtime**
+
+This deployment model allows teams to focus entirely on observability workflows and instrumentation, without the overhead of operating ClickHouse or the ClickStack UI themselves.
+
+For users deploying ClickStack in production, Managed ClickStack is the recommended option. See the [Getting started guide](/use-cases/observability/clickstack/getting-started/managed) for instructions on deploying ClickStack with ClickHouse Cloud.
+
+<br/>
+</TabItem>
+
+<TabItem value="oss-clickstack" label="Open Source ClickStack" default>
+
+<Image img={oss_simple_architecture} alt="OSS Simple architecture" size="md" />
+
+Open Source ClickStack consists of three core components:
+
+1. **ClickStack UI (HyperDX)**  
    A user-friendly interface built for observability. It supports both Lucene-style and SQL queries, interactive dashboards, alerting, trace exploration, and more—all optimized for ClickHouse as the backend.
 
 2. **OpenTelemetry collector**  
@@ -98,4 +144,8 @@ In addition to these three components, ClickStack uses a **MongoDB instance** to
 
 A full architectural diagram and deployment details can be found in the [Architecture section](/use-cases/observability/clickstack/architecture).
 
-For users interesting in deploying ClickStack to production, we recommend reading the ["Production"](/use-cases/observability/clickstack/production) guide.
+For users interesting in deploying Open Source ClickStack to production, we recommend reading the ["Production"](/use-cases/observability/clickstack/production) guide.
+
+<br/>
+</TabItem>
+</Tabs>
