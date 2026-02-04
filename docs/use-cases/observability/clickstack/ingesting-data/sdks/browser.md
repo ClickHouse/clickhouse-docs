@@ -41,15 +41,14 @@ Use the following command to install the [browser package](https://www.npmjs.com
 ```shell
 npm install @hyperdx/browser
 ```
-
 **Initialize ClickStack**
 
 ```javascript
 import HyperDX from '@hyperdx/browser';
 
 HyperDX.init({
-    url: 'http://localhost:4318',
-    apiKey: 'YOUR_INGESTION_API_KEY',
+    url: 'http://your-otel-collector:4318',
+    apiKey: 'YOUR_INGESTION_API_KEY', //omit for Managed ClickStack
     service: 'my-frontend-app',
     tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
     consoleCapture: true, // Capture console logs (default false)
@@ -73,7 +72,7 @@ This is recommended if your site is not currently built using a bundler.
 <script>
   window.HyperDX.init({
     url: 'http://localhost:4318',
-    apiKey: 'YOUR_INGESTION_API_KEY',
+    apiKey: 'YOUR_INGESTION_API_KEY', //omit for Managed ClickStack
     service: 'my-frontend-app',
     tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
   });
