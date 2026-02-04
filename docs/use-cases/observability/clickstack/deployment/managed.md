@@ -328,7 +328,7 @@ ClickStack UI always connects to the ClickHouse service from where it is launche
 
 This means:
 
-* If you open ClickStack from a read-only service or read-only warehouse, all queries issued by ClickStack UI will run on that read-only compute.
+* If you open ClickStack from a read-only service, all queries issued by ClickStack UI will run on that read-only compute.
 * If you open ClickStack from a read-write service, ClickStack will use that compute instead.
 
 No additional configuration inside ClickStack is required to enforce read-only behavior.
