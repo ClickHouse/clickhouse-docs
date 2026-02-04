@@ -511,6 +511,7 @@ try (Connection conn = DriverManager.getConnection(url, properties)) {
 | FixedString                 | ✅                 | VARCHAR                    | java.lang.String           | VARCHAR                    | java.lang.String                        |
 
 - `FixedString` is read as is in both versions. For example `FixedString(10)` for `'John'` will be read as `'John\0\0\0\0\0\0\0\0\0'`.
+- When `PreparedStatement#setBytes` is used it will be converted to `unhex('<hex_string>')` and then read as `String`.
 
 **Date/Time Types**
 
@@ -546,7 +547,8 @@ try (Connection conn = DriverManager.getConnection(url, properties)) {
 - In V2 `Array` implements `getResultSet()` method to return `java.sql.ResultSet` with the same content as the original array.
 - V1 uses `STRUCT` for `Map` but returns `java.util.Map` object always. V2 fixes this by mapping `Map` to `JAVA_OBJECT`. Besides `STRUCT` is invalid for `Map` because it doesn't have named columns.
 - V1 uses `STRUCT` for `Tuple` but returns `List<Object>` object always. V2 fixes this by mapping `Tuple` to `OTHER` and returns `Object[]` because using `List` is not valid as different types can be present.
-
+- `PreparedStatement#setBytes` and `ResultSet#getBytes` cannot be used with collection types. These methods are designed to work with binary strings.
+- Normally `java.sql.Array` is used to write and read Array types. JDBC driver has full support for this. 
 
 **Geo Types**
 
