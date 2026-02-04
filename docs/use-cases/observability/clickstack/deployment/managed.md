@@ -318,6 +318,33 @@ Once the source is configured, click "Save" and begin exploring your data.
 To enable alerts, at least one user with **Service Admin** permissions (mapped to **Full Access** in the SQL Console Access dropdown) must log into HyperDX at least once. This provisions a dedicated user in the database that runs alert queries.
 :::
 
+Here is a draft section you can drop into this doc. It is written to match the existing tone and level of detail, and it directly answers the ClickStack on read-only compute question.
+
+### Using ClickStack with read-only compute {#clickstack-read-only-compute}
+
+The ClickStack UI can run entirely on a read-only ClickHouse Cloud service. This is the recommended setup when you want to isolate ingestion and query workloads.
+
+#### How ClickStack selects compute
+
+ClickStack UI always connects to the ClickHouse service from where it is launched in the ClickHouse Cloud console.
+
+This means:
+
+* If you open ClickStack from a read-only service or read-only warehouse, all queries issued by ClickStack UI will run on that read-only compute.
+* If you open ClickStack from a read-write service, ClickStack will use that compute instead.
+
+No additional configuration inside ClickStack is required to enforce read-only behavior.
+
+#### Recommended setup
+
+To run ClickStack on read-only compute:
+
+1. Create or identify a ClickHouse Cloud service in the warehouse configured as read-only.
+2. In the ClickHouse Cloud console, select the read-only service or warehouse.
+3. Launch ClickStack from the left navigation menu.
+
+Once launched, ClickStack UI will automatically bind to this read-only service.
+
 ### Adding more data sources {#adding-data-sources}
 
 ClickStack is OpenTelemetry native but not OpenTelemetry exclusive - you can use your own table schemas if desired.
