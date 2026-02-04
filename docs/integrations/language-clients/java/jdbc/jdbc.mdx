@@ -581,6 +581,8 @@ try (Connection conn = DriverManager.getConnection(url, properties)) {
 - V1 uses `VARCHAR` for `IPv4` and `IPv6` but returns `java.net.Inet4Address` and `java.net.Inet6Address` objects always. V2 fixes this by mapping `IPv4` and `IPv6` to `OTHER` and returns `java.net.Inet4Address` and `java.net.Inet6Address` objects.
 - `Dynamic` and `Variant` are new types in V2. Not supported in V1.
 - `JSON` is based on `Dynamic` type. Therefore it is supported only in V2.
+- IPv4 and IPv6 values can be read as `byte[]` by using `getBytes(columnIndex)` method. However it is recommended to use designated classes for these types.
+- V2 do not support reading IP address as numeric values because convertion is better implementation in InetAddress classes.
 
 ### Database Metadata Changes {#database-metadata-changes}
 
