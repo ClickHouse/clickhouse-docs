@@ -1,0 +1,54 @@
+---
+title: How to opt out of core dump collection
+description: 'This article shows you how you can opt out of core dump collection on ClickHouse Cloud'
+slug: /knowledgebase/opt-out-core-dump-collection
+keywords: ['Managing Cloud']
+---
+
+import optOut from '@site/static/images/crash-reports.png';
+import Image from '@theme/IdealImage';
+
+{frontMatter.description}
+{/* truncate */}
+
+## Overview
+
+As part of our ongoing efforts to improve the stability and reliability of our cloud services, ClickHouse Cloud will begin collecting core dumps in the event of server crashes starting on **February 27, 2026**.
+
+Core dump collection enables us to:
+- More quickly identify root causes of crashes
+- Resolve issues faster
+- Improve the overall service experience
+
+## What's Collected
+
+Core dumps capture the state of a process at the time of a crash and may include sensitive information resident in memory, such as:
+- Connection credentials
+- Encryption keys
+- Query strings
+- Other data in memory at the time of the crash
+
+### Data Protection
+
+- **Regional Storage**: Data is collected and stored in the same region as your service
+- **Additional Protections**: Enhanced security measures are applied to collected data
+- **Limited Retention**: Data is retained only for a short period to support debugging and is securely destroyed afterward
+
+## Exclusions
+
+The following services are **automatically excluded** from core dump collection:
+- Services subject to **HIPAA** compliance
+- Services subject to **PCI** compliance
+- **BYOC** (Bring Your Own Cloud) services
+
+## How to Opt Out
+
+If you would like to opt out of core dump collection, you can do so at any time before **February 27, 2026**:
+
+1. Navigate to the [ClickHouse Cloud Console](https://clickhouse.cloud)
+2. Select your service
+3. Go to the **Settings** tab
+4. Locate the "Share crash reports with ClickHouse" option at the bottom of the settings page
+5. Disable the option to opt out
+
+<Image img={optOut} size="md" alt="Where to find the opt out option in Cloud UI"/>
