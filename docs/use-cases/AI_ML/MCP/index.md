@@ -45,6 +45,10 @@ The [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) offers
 
 If you're looking for a remote MCP server in ClickHouse Cloud, see page ["Remote MCP server in Cloud"](/cloud/features/ai-ml/remote-mcp)
 
+:::tip[Agent Skills]
+The [ClickHouse Agent Skills repo](https://github.com/ClickHouse/agent-skills) provides packaged instructions that extend AI coding agents (Claude Code, Cursor, Copilot, etc.) with domain-specific expertise. This repository provides skills for ClickHouse databases—covering schema design, query optimization, and data ingestion patterns.
+:::
+
 ## Guides for using the ClickHouse MCP Server {#clickhouse-mcp-server-guides}
 
 Below are some guides showing how to use the ClickHouse MCP Server.
