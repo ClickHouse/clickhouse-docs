@@ -11,6 +11,9 @@ doc_type: 'reference'
 import Image from '@theme/IdealImage';
 import hyperdx_25 from '@site/static/images/use-cases/observability/hyperdx-25.png';
 import hyperdx_26 from '@site/static/images/use-cases/observability/hyperdx-26.png';
+import highlighted_attributes_config from '@site/static/images/use-cases/observability/hyperdx-highlighted-attributes-config.png';
+import highlighted_attributes from '@site/static/images/use-cases/observability/hyperdx-highlighted-attributes.png';
+import highlighted_attributes_search from '@site/static/images/use-cases/observability/hyperdx-highlighted-attributes-search.png';
 
 The following configuration options are available for each component of ClickStack:
 
@@ -139,6 +142,8 @@ The following settings are available for each source:
 | `Trace Id Expression`         | Expression or column used to extract trace ID.                                                                         | Yes       | Yes                         | `TraceId`                                             |
 | `Span Id Expression`          | Expression or column used to extract span ID.                                                                          | Yes       | Yes                         | `SpanId`                                              |
 | `Implicit Column Expression`  | Column used for full-text search if no field is specified (Lucene-style). Typically the log body.                      | Yes       | Yes                         | `Body`                                                |
+| `Highlighted Attributes`      | Expressions or columns displayed when opening log details. Expressions returning URLs will be shown as links.          | No        | No                          |  –                                                  |
+| `Highlighted Trace Attributes` | Expressions or columns extracted from each log in a trace, displayed above the trace waterfall. Expressions returning URLs will be shown as links. | No  | No   |  –                                                  |
 
 #### Traces {#traces}
 
@@ -168,6 +173,8 @@ The following settings are available for each source:
 | `Event Attributes Expression`   | Expression or column for event attributes.                                                                             | Yes      | Yes                         | `SpanAttributes`         |
 | `Span Events Expression`        | Expression to extract span events. Typically a `Nested` type column. This allows rendering of exception stack traces with supported language SDKs.                                                   | Yes      | Yes                         | `Events`                 |
 | `Implicit Column Expression`   | Column used for full-text search if no field is specified (Lucene-style). Typically the log body.  | Yes  | Yes  | `SpanName`|
+| `Highlighted Attributes`        | Expressions or columns displayed when opening span details. Expressions returning URLs will be shown as links.         | No       | No                          |  –                       |
+| `Highlighted Trace Attributes` | Expressions or columns extracted from each span in a trace, displayed above the trace waterfall. Expressions returning URLs will be shown as links. | No  | No   |  –                       |
 
 #### Metrics {#metrics}
 
@@ -195,6 +202,27 @@ The following settings are available for each source:
 | `Resource Attributes Expression` | Expression for extracting resource-level metadata.                                               | Yes      | Yes                         | `ResourceAttributes`   |
 | `Correlated Trace Source`     | Optional. Linked trace source for session correlation.                                              | No       | No                          | –                      |
 | `Implicit Column Expression`  | Column used for full-text search when no field is specified (e.g. Lucene-style query parsing).      | Yes      | Yes                         | `Body` |
+
+#### Highlighted Attributes {#highlighted-attributes}
+
+Highlighted Attributes and Highlighted Trace Attributes can be configured on Log and Trace data sources.
+
+- Highlighted Attributes are columns or expressions which are displayed for each log or span, when viewing log or span details.
+- Highlighted Trace Attributes are columns or expressions which are queried from each log or span in a trace, and displayed above the trace waterfall.
+
+These attributes are defined in the source configuration and can be arbitrary SQL expressions. If the SQL expression returns a value that is in the format of a URL, then the attribute will be displayed as a link. Empty values are not displayed.
+
+For example, this trace source has been configured with a Highlighted Attribute and a Highlighted Trace Attribute:
+
+<Image img={highlighted_attributes_config} alt="Highlighted Attributes configuration" size="md"/>
+
+These attributes are displayed in the side panel after clicking on a log or span:
+
+<Image img={highlighted_attributes} alt="Highlighted Attributes" size="md"/>
+
+Clicking on an attribute provides options for using the attribute as a search value. If the optional Lucene expression is provided in the attribute configuration, then the Lucene expression will be used for the search instead of the SQL expression.
+
+<Image img={highlighted_attributes_search} alt="Highlighted Attributes Search" size="md"/>
 
 ### Correlated sources {#correlated-sources}
 
