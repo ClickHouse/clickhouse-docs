@@ -322,7 +322,7 @@ To enable alerts, at least one user with **Service Admin** permissions (mapped t
 
 The ClickStack UI can run entirely on a read-only ClickHouse Cloud service. This is the recommended setup when you want to isolate ingestion and query workloads.
 
-#### How ClickStack selects compute
+#### How ClickStack selects compute {#how-clickstack-selects-compute}
 
 ClickStack UI always connects to the ClickHouse service from where it is launched in the ClickHouse Cloud console.
 
@@ -333,7 +333,7 @@ This means:
 
 No additional configuration inside ClickStack is required to enforce read-only behavior.
 
-#### Recommended setup
+#### Recommended setup {#recommended-setup}
 
 To run ClickStack on read-only compute:
 
