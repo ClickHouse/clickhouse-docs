@@ -29,4 +29,4 @@ However, ClickStack may not be suitable if:
 
 - You use observability data primarily for security use cases and need a SIEM-focused product.
 - Universal profiling is a critical part of your workflow.
-- You require a business intelligence (BI) dashboarding platform. ClickStack intentionally has opinionated visual workflows for SREs and developers and is not designed as a Business Intelligence (BI) tool. For equivalent capabilities,m we recommend using [Grafana with the ClickHouse plugin](/integrations/grafana) or [Superset](/integrations/superset).
+- You require a business intelligence (BI) dashboarding platform. ClickStack intentionally has opinionated visual workflows for SREs and developers and is not designed as a Business Intelligence (BI) tool. For equivalent capabilities, we recommend using [Grafana with the ClickHouse plugin](/integrations/grafana) or [Superset](/integrations/superset).

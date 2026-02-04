@@ -25,7 +25,7 @@ ClickPipes relies on batch extract jobs to fetch data from BigQuery into the sta
 
 ### CDC (Change Data Capture) {#cdc}
 
-CDC is **not supported** in Private Preview, but will be supported in the future. In the meantime, we recommend using the [Google Cloud Storage ClickPipe](../object-storage/google-cloud-storage/01_overview.md) to continuously sync BigQuery data exports into ClickHouse Cloud once the initial load is completed.
+CDC is **not supported** in Private Preview, but will be supported in the future. In the meantime, we recommend using the [Google Cloud Storage ClickPipe](/integrations/clickpipes/object-storage/gcs/overview) to continuously sync BigQuery data exports into ClickHouse Cloud once the initial load is completed.
 
 ## Data type mapping {#data-type-mapping}
 

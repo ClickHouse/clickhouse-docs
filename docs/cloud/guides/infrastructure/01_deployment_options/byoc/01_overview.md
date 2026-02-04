@@ -46,7 +46,7 @@ All **public regions** listed in our [supported regions](https://clickhouse.com/
 - **Zero Trust Network via Tailscale.**
 - **Monitoring**:
   - The Cloud console includes built-in health dashboards for monitoring service health.
-  - Prometheus scraping for centralized monitoring with Prometheus, Grafana, and Datadog. See the [Prometheus documentation](/cloud/reference/byoc/observability#prometheus-access) for setup instructions.
+  - Prometheus scraping for centralized monitoring with Prometheus, Grafana, and Datadog. See the [Prometheus documentation](/cloud/reference/byoc/observability#prometheus-monitoring) for setup instructions.
 - **VPC Peering**
 - **Integrations**: See the full list on [this page](/integrations).
 - **Secure S3**

@@ -30,7 +30,7 @@ This guide provides step-by-step instructions on how to migrate your PostgreSQL 
 Before starting your migration, keep the following in mind:
 
 - **Database objects**: PeerDB will create tables automatically in the target database based on the source schema. However, certain database objects like indexes, constraints, and triggers will not be migrated automatically. You'll need to recreate these objects manually in the target database after the migration.
-- **DDL changes**: If you enable continuous replication, PeerDB will keep the target database in sync with the source for DML operations (INSERT, UPDATE, DELETE) and will propagate ADD COLUMN operations. However, other DDL changes (like DROP COLUMN, ALTER COLUMN) are not propagated automatically. More on schema changes support [here](../../../integrations/clickpipes/postgres/schema-changes.md)
+- **DDL changes**: If you enable continuous replication, PeerDB will keep the target database in sync with the source for DML operations (INSERT, UPDATE, DELETE) and will propagate ADD COLUMN operations. However, other DDL changes (like DROP COLUMN, ALTER COLUMN) are not propagated automatically. More on schema changes support [here](/integrations/clickpipes/postgres/schema-changes)
 - **Network connectivity**: Ensure that both the source and target databases are reachable from the machine where PeerDB is running. You may need to configure firewall rules or security group settings to allow connectivity.
 
 ## Create peers {#migration-peerdb-create-peers}
