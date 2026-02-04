@@ -230,7 +230,7 @@ What datasets do you have access to?
 
 :::note
 If the MCP server option does not appear in the LibreChat UI,
-check that the proper permissions are set in the `librechat.yaml`. 
+check that the proper permissions are set in your `librechat.yaml` file. 
 :::
 
 If `use` is set to `false` in the `mcpServers` section under `interface`, the MCP selection dropdown will not appear in chat:
