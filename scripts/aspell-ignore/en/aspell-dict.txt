@@ -3076,6 +3076,7 @@ permalinks
 persistency
 pgRouting
 pgSQL
+pgvector
 phpclickhouse
 picklist
 pipelined
