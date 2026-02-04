@@ -17,7 +17,7 @@ import highlighted_attributes_search from '@site/static/images/use-cases/observa
 
 The following configuration options are available for each component of ClickStack:
 
-## Modifying settings {#modifying-settings}
+## Settings for open source distributions {#modifying-settings}
 
 ### Docker {#docker}
 
@@ -96,11 +96,11 @@ ingress:
       value: abc
 ```
 
-## HyperDX {#hyperdx}
+## ClickStack UI (HyperDX) application {#hyperdx}
 
 ### Data source settings {#datasource-settings}
 
-HyperDX relies on the user defining a source for each of the Observability data types/pillars:
+The ClickStack UI relies on the user defining a source for each of the Observability data types/pillars:
 
 - `Logs`
 - `Traces`
@@ -412,7 +412,14 @@ See ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/i
   - **Guidance:**
     - Must point to your HyperDX instance
     - Enables dynamic configuration and secure ingestion
+    - If omitted, secure ingestion is disabled unless an `OTLP_AUTH_TOKEN` value is specified.
 
+- `OTLP_AUTH_TOKEN`
+  - **Default:** *None*. Used only for standalone image. 
+  - **Description:** Allows an OTLP authentication token to be specified. If set, all communication requires this bearer token.
+  - **Guidance:**
+    - Recommended if using the standalone collector image in production.
+    
 - `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`
   - **Default:** `default`
   - **Description:** ClickHouse database the collector writes telemetry data to.
@@ -428,12 +435,12 @@ See ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/i
 
 ## ClickHouse {#clickhouse}
 
-ClickStack ships with a default ClickHouse configuration designed for multi-terabyte scale, but users are free to modify and optimize it to suit their workload.
+ClickStack Open Source ships with a default ClickHouse configuration designed for multi-terabyte scale, but users are free to modify and optimize it to suit their workload.
 
 To tune ClickHouse effectively, you should understand key storage concepts such as [parts](/parts), [partitions](/partitions), [shards and replicas](/shards), and how [merges](/merges) occur at insert time. We recommend reviewing the fundamentals of [primary indices](/primary-indexes), [sparse secondary indices](/optimize/skipping-indexes), and data skipping indices, along with techniques for [managing data lifecycle](/observability/managing-data) e.g. using a TTL lifecycle.
 
 ClickStack supports [schema customization](/use-cases/observability/schema-design) - you may modify column types, extract new fields (e.g. from logs), apply codecs and dictionaries, and accelerate queries using projections.
 
-Additionally, materialized views can be used to [transform or filter data during ingestion](/use-cases/observability/schema-design#materialized-columns), provided that data is written to the source table of the view and the application reads from the target table.
+Additionally, materialized views can be used to [transform or filter data during ingestion](/use-cases/observability/schema-design#materialized-columns), provided that data is written to the source table of the view and the application reads from the target table. Materialized views can also be used to [accelerate queries natively](/use-cases/observability/clickstack/materialized_views) in ClickStack.
 
 For more details, refer to ClickHouse documentation on schema design, indexing strategies, and data management best practices - most of which apply directly to ClickStack deployments.

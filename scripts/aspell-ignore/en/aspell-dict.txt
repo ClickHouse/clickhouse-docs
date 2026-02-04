@@ -1,4 +1,4 @@
-personal_ws-1.1 en 4011 
+personal_ws-1.1 en 4016 
 AArch
 ACLs
 AICPA
@@ -897,7 +897,7 @@ Mixpanel
 Mongo
 Mongodb
 Monotonicity
-Montréal
+Montreal
 MsgPack
 MsgPackUUIDRepresentation
 MultiLineString
@@ -1189,6 +1189,7 @@ QTCreator
 Quantile
 Quantised
 Quantized
+Querio
 QueryCacheBytes
 QueryCacheEntries
 QueryCacheHits
@@ -1566,8 +1567,8 @@ Uint
 Unbatched
 UncompressedCacheBytes
 UncompressedCacheCells
-UnidirectionalEdgeIsValid
 UniForm
+UnidirectionalEdgeIsValid
 UnionStep
 UniqThetaSketch
 Updatable
@@ -1932,6 +1933,7 @@ buildable
 builtins
 bundler
 burstable
+bursty
 byteHammingDistance
 byteSize
 byteSlice
@@ -2334,6 +2336,7 @@ extractable
 facto
 failover
 fallbacks
+fanout
 farmFingerprint
 farmHash
 fastmcp
@@ -3463,6 +3466,7 @@ skewsamp
 skippingerrors
 sleepEachRow
 smallint
+snapshotting
 snowflakeIDToDateTime
 snowflakeToDateTime
 socketcache
