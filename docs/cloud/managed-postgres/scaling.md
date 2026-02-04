@@ -73,7 +73,7 @@ The total time required for scaling depends primarily on the size of your databa
 
 The restore time can range from a few minutes to a few hours, but the maintenance/downtime is very low (only ~30 seconds).
 
-:::important Minimal downtime
+:::important[Minimal downtime]
 Your application will experience approximately 30 seconds of downtime during the failover, regardless of how long the overall scaling process takes. All the restore and catchup work happens in the background on the standby instance.
 :::
 
@@ -131,7 +131,7 @@ This allows you to optimize the replication throughput separately from your Post
 
 ## Autoscaling (roadmap) {#autoscaling}
 
-:::note Coming soon
+:::note[Coming soon]
 Automatic storage scaling is on the roadmap for Managed Postgres. This feature will automatically increase intance size as your database grows, eliminating the need for manual intervention.
 :::
 

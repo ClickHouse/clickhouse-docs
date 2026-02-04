@@ -99,7 +99,7 @@ To enable Private Link for your Managed Postgres instance:
 
 4. **Setup your Private Link**:
    - Create the Private Link by heading over to endpoint interface in AWS settings and using the configuration provided by the ClickHouse support.
-   - Once your Private Link is in "Available" state, you can connect to it by using the Private DNS name provided in the AWS UI.
+   - Once your Private Link is in an "Available" state, you can connect to it by using the Private DNS name provided in the AWS UI.
 
 ## Backup retention {#backup-retention}
 
