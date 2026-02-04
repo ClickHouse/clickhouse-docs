@@ -54,7 +54,7 @@ The scaling workflow brings up a new standby from backups and performs a control
    - WAL-G enables fast, parallelized restore operations
    - The creator of WAL-G is on the Ubicloud team with whom we have partnered, ensuring deep expertise and optimization
 
-4. **Replication catchup**: The standby catches up with the primary by streaming and applying ongoing WAL changes
+4. **Replication catch-up**: The standby catches up with the primary by streaming and applying ongoing WAL changes
 
 5. **Failover**: Once the standby is fully synchronized, a controlled failover promotes the standby to the new primary
    - **This is the only step that causes downtime** (~30 seconds)
@@ -74,7 +74,7 @@ The total time required for scaling depends primarily on the size of your databa
 The restore time can range from a few minutes to a few hours, but the maintenance/downtime is very low (only ~30 seconds).
 
 :::important[Minimal downtime]
-Your application will experience approximately 30 seconds of downtime during the failover, regardless of how long the overall scaling process takes. All the restore and catchup work happens in the background on the standby instance.
+Your application will experience approximately 30 seconds of downtime during the failover, regardless of how long the overall scaling process takes. All the restore and catch-up work happens in the background on the standby instance.
 :::
 
 ### Parallel restore with WAL-G {#parallel-restore}
@@ -132,7 +132,7 @@ This allows you to optimize the replication throughput separately from your Post
 ## Autoscaling (roadmap) {#autoscaling}
 
 :::note[Coming soon]
-Automatic storage scaling is on the roadmap for Managed Postgres. This feature will automatically increase intance size as your database grows, eliminating the need for manual intervention.
+Automatic storage scaling is on the roadmap for Managed Postgres. This feature will automatically increase instance size as your database grows, eliminating the need for manual intervention.
 :::
 
 ## Additional resources {#resources}
