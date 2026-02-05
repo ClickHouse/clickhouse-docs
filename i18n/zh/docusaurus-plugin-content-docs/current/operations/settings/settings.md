@@ -946,18 +946,19 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
-允许配置在执行 [ALTER](../../sql-reference/statements/alter/index.md)、[OPTIMIZE](../../sql-reference/statements/optimize.md) 或 [TRUNCATE](../../sql-reference/statements/truncate.md) 查询时，是否以及如何等待在副本上执行的操作完成。
+允许配置在执行 [`ALTER`](../../sql-reference/statements/alter/index.md)、[`OPTIMIZE`](../../sql-reference/statements/optimize.md) 或 [`TRUNCATE`](../../sql-reference/statements/truncate.md) 查询时，是否以及如何等待在副本上执行的操作完成。
 
 可选值：
 
 - `0` — 不等待。
 - `1` — 仅等待本副本执行完成。
 - `2` — 等待所有副本执行完成。
+- `3` - 仅等待活动副本执行完成。
 
 Cloud 默认值：`1`。
 
 :::note
-`alter_sync` 仅适用于 `Replicated` 表，对非 `Replicated` 表的 ALTER 不产生任何效果。
+`alter_sync` 仅适用于 `Replicated` 和 `SharedMergeTree` 表，对非 `Replicated` 或 `Shared` 表的 ALTER 不产生任何效果。
 :::
 
 ## alter_update_mode \{#alter_update_mode\}
@@ -2289,15 +2290,6 @@ SETTINGS convert_query_to_cnf = true;
 - force_enable — 对 `INSERT SELECT` 查询启用去重。如果 SELECT 结果不稳定，则抛出异常。
 - enable_when_possible — 如果 `insert_deduplicate` 启用且 SELECT 结果稳定，则启用去重，否则禁用。
 - enable_even_for_bad_queries - 如果 `insert_deduplicate` 启用，则始终启用去重。如果 SELECT 结果不稳定，会记录警告日志，但查询仍然在启用去重的情况下执行。此选项用于向后兼容。建议优先使用其他选项，因为该选项可能导致不符合预期的结果。
-
-## default_dictionary_database \{#default_dictionary_database\}
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": ""},{"label": "New setting"}]}]}/>
-
-在未指定数据库名称时用于搜索外部字典的数据库。
-空字符串表示当前数据库。如果在指定的默认数据库中未找到字典，ClickHouse 会回退使用当前数据库。
-
-在从基于 XML 定义的全局字典迁移到基于 SQL 定义的字典时，这一配置会非常有用。
 
 ## default_materialized_view_sql_security \{#default_materialized_view_sql_security\}
 
@@ -8536,18 +8528,18 @@ SELECT * FROM test2;
 ```sql
 CREATE TABLE fuse_tbl(a Int8, b Int8) Engine = Log;
 SET optimize_syntax_fuse_functions = 1;
-EXPLAIN SYNTAX SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
+EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
 ```
 
 结果：
 
 ```text
 SELECT
-    sum(a),
-    sumCount(b).1,
-    sumCount(b).2,
-    (sumCount(b).1) / (sumCount(b).2)
-FROM fuse_tbl
+    sum(__table1.a) AS `sum(a)`,
+    tupleElement(sumCount(__table1.b), 1) AS `sum(b)`,
+    tupleElement(sumCount(__table1.b), 2) AS `count(b)`,
+    divide(tupleElement(sumCount(__table1.b), 1), toFloat64(tupleElement(sumCount(__table1.b), 2))) AS `avg(b)`
+FROM default.fuse_tbl AS __table1
 ```
 
 
@@ -11589,11 +11581,11 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 ## use_statistics_cache \{#use_statistics_cache\}
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "启用统计信息缓存"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "新增设置"}]}]}/>
 
 在查询中使用统计信息缓存，以避免为每个分区片段分别加载统计信息带来的开销
 

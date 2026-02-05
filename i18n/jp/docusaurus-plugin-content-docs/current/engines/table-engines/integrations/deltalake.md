@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # DeltaLake テーブルエンジン \{#deltalake-table-engine\}
 
-このエンジンは、Amazon S3 上に存在する既存の [Delta Lake](https://github.com/delta-io/delta) テーブルとの読み取り専用の連携を提供します。
+このエンジンは、Amazon S3 上に存在する既存の [Delta Lake](https://github.com/delta-io/delta) テーブルとの連携を提供し、読み取りと書き込みの両方をサポートします（v25.10 から）。
 
 ## テーブルを作成する \{#create-table\}
 
@@ -17,7 +17,7 @@ Delta Lake テーブルはあらかじめ S3 上に存在している必要が�
 
 ```sql
 CREATE TABLE deltalake
-    ENGINE = DeltaLake(url, [aws_access_key_id, aws_secret_access_key,])
+ENGINE = DeltaLake(url, [aws_access_key_id, aws_secret_access_key,])
 ```
 
 **エンジンパラメータ**
@@ -30,7 +30,8 @@ CREATE TABLE deltalake
 **例**
 
 ```sql
-CREATE TABLE deltalake ENGINE=DeltaLake('http://mars-doc-test.s3.amazonaws.com/clickhouse-bucket-3/test_table/', 'ABC123', 'Abc+123')
+CREATE TABLE deltalake
+ENGINE = DeltaLake('http://mars-doc-test.s3.amazonaws.com/clickhouse-bucket-3/test_table/', 'ABC123', 'Abc+123')
 ```
 
 名前付きコレクションの使用:
@@ -48,13 +49,26 @@ CREATE TABLE deltalake ENGINE=DeltaLake('http://mars-doc-test.s3.amazonaws.com/c
 ```
 
 ```sql
-CREATE TABLE deltalake ENGINE=DeltaLake(deltalake_conf, filename = 'test_table')
+CREATE TABLE deltalake
+ENGINE = DeltaLake(deltalake_conf, filename = 'test_table')
 ```
 
 
 ### データキャッシュ \{#data-cache\}
 
 `DeltaLake` テーブルエンジンおよびテーブル関数は、`S3`、`AzureBlobStorage`、`HDFS` ストレージと同様に、データキャッシュをサポートします。詳細は[こちら](../../../engines/table-engines/integrations/s3.md#data-cache)を参照してください。
+
+## データの挿入 \{#insert-data\}
+
+DeltaLake テーブルエンジンを使用してテーブルを作成したら、次の方法でデータを挿入できます。
+
+```sql
+SET allow_experimental_delta_lake_writes = 1;
+
+INSERT INTO deltalake(id, firstname, lastname, gender, age)
+VALUES (1, 'John', 'Smith', 'M', 32);
+```
+
 
 ## 関連項目 \{#see-also\}
 
