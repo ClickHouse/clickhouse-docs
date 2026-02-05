@@ -6,7 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: '使用 ClickStack 监控 MySQL 日志'
 doc_type: 'guide'
-keywords: ['MySQL', '日志', 'OTel', 'ClickStack', '数据库监控', '慢查询']
+keywords: ['MySQL', '日志', 'OTEL', 'ClickStack', '数据库监控', '慢查询']
 ---
 
 import Image from '@theme/IdealImage';
@@ -22,30 +22,30 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # 使用 ClickStack 监控 MySQL 日志 \{#mysql-logs-clickstack\}
 
 :::note[摘要]
-本指南演示如何通过配置 OTel collector 摄取 MySQL 服务器日志，从而使用 ClickStack 监控 MySQL。本文将介绍如何：
+本指南演示如何通过配置 OpenTelemetry collector 来摄取 MySQL 服务器日志，从而使用 ClickStack 监控 MySQL。你将了解如何：
 
 - 配置 MySQL 输出错误日志和慢查询日志
-- 为日志摄取创建自定义的 OTel collector 配置
-- 使用该自定义配置部署 ClickStack
+- 为日志摄取创建自定义 OTel collector 配置
+- 使用自定义配置部署 ClickStack
 - 使用预构建的仪表板可视化 MySQL 日志洞察（错误、慢查询、连接）
 
-如果你希望在配置生产环境 MySQL 之前先测试集成，可以使用带有示例日志的演示数据集。
+如果你希望在配置生产环境 MySQL 之前先测试集成，可以使用提供的包含示例日志的演示数据集。
 
-所需时间：10–15 分钟
+预计耗时：10–15 分钟
 :::
 
-## 集成现有 MySQL \{#existing-mysql\}
+## 与现有 MySQL 集成 \{#existing-mysql\}
 
-本节介绍如何通过修改 ClickStack OTel collector 的配置，将现有 MySQL 实例的日志发送到 ClickStack。
+本节介绍如何通过修改 ClickStack OTel collector 配置，将现有 MySQL 实例的日志发送到 ClickStack。
 
-如果你希望在为自己的环境配置集成之前先测试 MySQL 日志集成功能，可以在 ["演示数据集"](/use-cases/observability/clickstack/integrations/mysql-logs#demo-dataset) 部分使用我们预先配置的环境和示例数据进行测试。
+如果希望在配置自己的现有环境之前先测试 MySQL 日志集成功能，可以在["演示数据集"](/use-cases/observability/clickstack/integrations/mysql-logs#demo-dataset)章节中使用我们预配置的环境和示例数据进行测试。
 
-##### 先决条件 \{#prerequisites\}
+##### 前提条件 \{#prerequisites\}
 
-- 运行中的 ClickStack 实例
-- 已部署的 MySQL 实例（5.7 或更高版本）
-- 有权限修改 MySQL 配置文件
-- 用于日志文件的充足磁盘空间
+- 正在运行的 ClickStack 实例
+- 已有的 MySQL 安装（版本 5.7 或更高）
+- 具备访问并修改 MySQL 配置文件的权限
+- 为日志文件预留的充足磁盘空间
 
 <VerticalStepper headerLevel="h4">
   #### 配置 MySQL 日志
@@ -56,7 +56,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   * **Linux（apt/yum）**：`/etc/mysql/my.cnf` 或 `/etc/my.cnf`
   * **macOS（Homebrew）**：`/usr/local/etc/my.cnf` 或 `/opt/homebrew/etc/my.cnf`
-  * **Docker**：通常通过环境变量或挂载的配置文件进行设置
+  * **Docker**：通常通过环境变量或挂载的配置文件来完成配置
 
   在 `[mysqld]` 部分中添加或修改这些设置:
 
@@ -172,14 +172,14 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
           - clickhouse
   ```
 
-  该配置：
+  该配置:
 
-  * 从 MySQL 错误日志和慢查询日志的默认位置读取
-  * 可处理多行日志记录（例如跨多行的慢查询）
-  * 解析两种日志格式，从中提取结构化字段（level、error&#95;code、query&#95;time、rows&#95;examined）
+  * 从 MySQL 的默认位置读取错误日志和慢查询日志
+  * 支持多行日志条目（慢查询通常会跨多行）
+  * 可解析这两种日志格式，从中提取结构化字段（level、error&#95;code、query&#95;time、rows&#95;examined）
   * 保留日志原始时间戳
-  * 在 HyperDX 中添加 `source: mysql-error` 和 `source: mysql-slow` 属性用于过滤
-  * 将日志通过专用管道路由到 ClickHouse exporter
+  * 添加 `source: mysql-error` 和 `source: mysql-slow` 属性，以便在 HyperDX 中进行过滤
+  * 通过专用管道将日志路由到 ClickHouse 导出器
 
   :::note
   需要两个接收器,因为 MySQL 错误日志和慢查询日志的格式完全不同。`time_parser` 使用 `gotime` 布局来处理 MySQL 的 ISO8601 时间戳格式(包含时区偏移)。
@@ -213,22 +213,18 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   配置完成后,登录 HyperDX 并验证日志是否正常流入:
 
   1. 进入搜索视图
-  2. 将“Source”设置为“Logs”
-  3. 按 `source:mysql-error` 或 `source:mysql-slow` 过滤以查看特定于 MySQL 的日志
-  4. 你应该可以看到结构化的日志记录，其中包含类似 `level`、`error_code`、`message`（用于错误日志）以及 `query_time`、`rows_examined`、`query`（用于慢查询日志）这样的字段
+  2. 将 Source 设置为 Logs
+  3. 按 `source:mysql-error` 或 `source:mysql-slow` 过滤，以查看特定于 MySQL 的日志
+  4. 你应当会看到结构化的日志记录，其中包含 `level`、`error_code`、`message`（针对错误日志）以及 `query_time`、`rows_examined`、`query`（针对慢查询日志）等字段。
 
-  <Image
-    img={search_view}
-    alt="Search view
-搜索界面"
-  />
+  <Image img={search_view} alt="搜索界面" />
 
   <Image img={log_view} alt="日志视图" />
 </VerticalStepper>
 
 ## 演示数据集 {#demo-dataset}
 
-对于希望在配置生产系统之前先测试 MySQL 日志集成的用户，我们提供了一份预先生成的 MySQL 日志示例数据集，其日志模式接近真实环境。
+对于希望在配置生产系统之前先测试 MySQL 日志集成的用户，我们提供了一个包含预生成 MySQL 日志的示例数据集，这些日志具有逼真的模式。
 
 <VerticalStepper headerLevel="h4">
   #### 下载示例数据集
@@ -245,10 +241,10 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   该数据集包括:
 
-  * 错误日志记录（启动消息、警告、连接错误、InnoDB 消息）
-  * 具有真实性能特征的慢查询语句
+  * 错误日志记录（启动消息、警告、连接错误、InnoDB 相关消息）
+  * 具有真实性能表现特征的慢查询
   * 连接生命周期事件
-  * 数据库服务器的启动与关闭过程
+  * 数据库服务器启动和关闭过程
 
   #### 创建测试采集器配置
 
@@ -334,10 +330,10 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   ClickStack 运行后:
 
-  1. 等待片刻，直至 ClickStack 完成初始化（通常需要 30–60 秒）
-  2. 打开 [HyperDX](http://localhost:8080/)，并登录你的账户（如有需要，先创建一个账户）。
-  3. 导航到 Search 视图，并将 source 设置为 `Logs`。
-  4. 将时间范围设置为 **2025-11-13 00:00:00 至 2025-11-16 00:00:00**
+  1. 稍等片刻，让 ClickStack 完成初始化（通常需要 30–60 秒）
+  2. 打开 [HyperDX](http://localhost:8080/)，并登录您的账户（如有需要，先创建一个账户）。
+  3. 在 Search 视图中，将 Source 设置为 `Logs`
+  4. 将时间范围设为 **2025-11-13 00:00:00 - 2025-11-16 00:00:00**
   5. 你应该能看到总共 40 条日志（30 条带有 `source:mysql-demo-error` 的错误日志 + 10 条带有 `source:mysql-demo-slow` 的慢查询）
 
   :::note
@@ -353,48 +349,48 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   :::
 </VerticalStepper>
 
-## 仪表盘和可视化 {#dashboards}
+## 仪表板和可视化 {#dashboards}
 
-为了帮助你开始使用 ClickStack 监控 MySQL，我们提供了用于 MySQL 日志的关键可视化视图。
+为了帮助你开始使用 ClickStack 监控 MySQL，我们提供了用于 MySQL 日志的关键可视化图表。
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/mysql-logs-dashboard.json')} download="mysql-logs-dashboard.json" eventName="docs.mysql_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表盘配置 \{#download\}
+#### <TrackedLink href={useBaseUrl('/examples/mysql-logs-dashboard.json')} download="mysql-logs-dashboard.json" eventName="docs.mysql_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download\}
 
-#### 导入预构建的仪表盘 \{#import-dashboard\}
+#### 导入预构建的仪表板 \{#import-dashboard\}
 
-1. 打开 HyperDX 并进入 Dashboards 部分
+1. 打开 HyperDX 并导航到 Dashboards 部分
 2. 点击右上角省略号下的 **Import Dashboard**
 
-<Image img={import_dashboard} alt="导入仪表盘按钮"/>
+<Image img={import_dashboard} alt="导入仪表板按钮"/>
 
 3. 上传 `mysql-logs-dashboard.json` 文件并点击 **Finish Import**
 
 <Image img={finish_import} alt="完成导入"/>
 
-#### 查看仪表盘 {#created-dashboard}
+#### 查看仪表板 {#created-dashboard}
 
-系统会创建该仪表盘，并预先配置好所有可视化视图。
+系统会创建一个仪表板，并预先配置好所有可视化图表。
 
-<Image img={example_dashboard} alt="示例仪表盘"/>
+<Image img={example_dashboard} alt="示例仪表板"/>
 
 :::note
-对于演示数据集，将时间范围设置为 **2025-11-14 00:00:00 - 2025-11-15 00:00:00 (UTC)**（可根据本地时区进行调整）。导入的仪表盘默认不会指定时间范围。
+对于演示数据集，将时间范围设置为 **2025-11-14 00:00:00 - 2025-11-15 00:00:00 (UTC)**（根据你的本地时区进行调整）。导入的仪表板默认不会指定时间范围。
 :::
 
 </VerticalStepper>
 
 ## 故障排查 {#troubleshooting}
 
-### 自定义配置未加载
+### 自定义配置未生效
 
-检查环境变量是否已设置：
+确认已设置环境变量：
 
 ```bash
 docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 ```
 
-检查自定义配置文件是否已挂载且可读：
+检查自定义配置文件是否已挂载并可读：
 
 ```bash
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml | head -10
@@ -403,7 +399,7 @@ docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml | head 
 
 ### HyperDX 中未显示任何日志
 
-检查生效的配置中是否包含你的 `filelog` receiver：
+检查实际生效的配置中是否包含 filelog receiver：
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 filelog
@@ -415,7 +411,7 @@ docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 1
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i mysql
 ```
 
-如果使用示例数据集，请确认能够访问日志文件：
+如果使用演示数据集，请确保日志文件是可访问的：
 
 ```bash
 docker exec <container> cat /tmp/mysql-demo/error.log | wc -l
@@ -425,7 +421,7 @@ docker exec <container> cat /tmp/mysql-demo/mysql-slow.log | wc -l
 
 ### 慢查询日志未出现
 
-确认已在 MySQL 中启用慢查询日志：
+确认在 MySQL 中已启用慢查询日志：
 
 ```sql
 SHOW VARIABLES LIKE 'slow_query_log';
@@ -447,31 +443,31 @@ SELECT SLEEP(2);
 
 ### 日志未正确解析
 
-请确认你的 MySQL 日志格式与预期格式一致。本指南中的正则表达式模式适用于 MySQL 5.7+ 和 8.0+ 的默认日志格式。
+请确认您的 MySQL 日志格式与预期格式一致。本指南中的正则表达式模式是针对 MySQL 5.7+ 和 8.0+ 默认格式设计的。
 
-查看错误日志中的几行示例：
+检查错误日志中的几行示例：
 
 ```bash
 head -5 /var/log/mysql/error.log
 ```
 
-预期格式：
+期望的格式：
 
 ```text
 2025-11-14T10:23:45.123456+00:00 0 [System] [MY-010116] [Server] /usr/sbin/mysqld (mysqld 8.0.35) starting as process 1
 ```
 
-如果你的格式有较大差异，请在配置中调整正则表达式。
+如果格式存在较大差异，请在配置中相应调整正则表达式模式。
 
 
 ## 后续步骤 {#next-steps}
 
 在完成 MySQL 日志监控配置后：
 
-- 为关键事件（连接失败、超过阈值的慢查询、错误激增）设置 [告警](/use-cases/observability/clickstack/alerts)
-- 根据查询模式创建用于慢查询分析的自定义仪表盘
-- 基于观察到的查询性能模式优化 `long_query_time` 设置
+- 为关键事件（连接失败、超过阈值的慢查询、错误激增）设置[告警](/use-cases/observability/clickstack/alerts)
+- 按查询模式创建自定义仪表板，用于慢查询分析
+- 根据实际观测到的查询性能特征调优 `long_query_time`
 
-## 迁移到生产环境 {#going-to-production}
+## 进入生产环境 {#going-to-production}
 
-本指南基于 ClickStack 内置的 OpenTelemetry Collector，便于快速完成设置。对于生产环境部署，我们建议运行您自己的 OTel Collector，并将数据发送到 ClickStack 的 OTLP 端点。有关生产环境配置，请参阅[发送 OpenTelemetry 数据](/use-cases/observability/clickstack/ingesting-data/opentelemetry)。
+本指南在 ClickStack 内置的 OpenTelemetry Collector 基础上，实现快速上手配置。对于生产环境部署，建议自行运行 OTel Collector，并将数据发送到 ClickStack 的 OTLP 端点。生产环境配置请参阅[发送 OpenTelemetry 数据](/use-cases/observability/clickstack/ingesting-data/opentelemetry)。

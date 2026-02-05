@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/aws-lambda
-title: '使用 ClickStack 与 Rotel 监控 AWS Lambda 日志'
+title: '使用 ClickStack 和 Rotel 监控 AWS Lambda 日志'
 sidebar_label: 'AWS Lambda 日志'
 pagination_prev: null
 pagination_next: null
-description: '使用 ClickStack 与 Rotel 监控 AWS Lambda 日志'
+description: '使用 ClickStack 和 Rotel 监控 AWS Lambda 日志'
 doc_type: 'guide'
-keywords: ['AWS', 'Lambda', 'OTEL', 'ClickStack', 'logs', 'CloudWatch']
+keywords: ['AWS', 'Lambda', 'OTEL', 'ClickStack', '日志', 'CloudWatch']
 ---
 
 import Image from '@theme/IdealImage';
@@ -20,33 +20,33 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-:::note[TL;DR]
-本指南演示如何使用 Rotel Lambda Extension，直接采集并转发函数日志、扩展日志以及 OpenTelemetry 数据到 ClickHouse，从而在 ClickStack 中监控 AWS Lambda 函数。你将学习如何：
+:::note[摘要]
+本指南演示如何使用 Rotel Lambda Extension，将函数日志、扩展日志以及 OpenTelemetry 数据直接收集并转发到 ClickHouse，从而利用 ClickStack 监控 AWS Lambda 函数。您将学习如何：
 
-- 将 Rotel Lambda Extension 层部署到你的 Lambda 函数
-- 配置该扩展将日志和 traces 导出到 ClickStack
-- 可选地禁用 CloudWatch Logs 以降低成本
+- 为 Lambda 函数部署 Rotel Lambda Extension 层
+- 配置扩展，将日志和追踪数据导出到 ClickStack
+- （可选）禁用 CloudWatch Logs 以降低成本
 
-通过完全绕过 CloudWatch Logs，此方案可以显著降低你的 Lambda 可观测性相关成本。
+通过完全绕过 CloudWatch Logs，此方案可以显著降低 Lambda 的可观测性成本。
 
 所需时间：5–10 分钟
 :::
 
 ## 与现有 Lambda 函数集成 \{#existing-lambda\}
 
-本节介绍如何配置您现有的 AWS Lambda 函数，通过 Rotel Lambda Extension 将日志和追踪数据发送到 ClickStack。
+本节说明如何配置现有的 AWS Lambda 函数，使其通过 Rotel Lambda Extension 将日志和追踪发送到 ClickStack。
 
-### 前提条件 \{#prerequisites\}
+### 前置条件 \{#prerequisites\}
 
-- 正在运行的 ClickStack 实例
-- 需要监控的 AWS Lambda 函数
-- 已配置且具备相应权限的 AWS CLI
-- 具有添加层权限的 Lambda 执行角色
+- 已在运行的 ClickStack 实例
+- 一个或多个需要监控的 AWS Lambda 函数
+- 已配置且具有相应权限的 AWS CLI
+- 具有添加 Layer 权限的 Lambda 执行角色
 
 <VerticalStepper headerLevel="h4">
   #### 选择合适的 Rotel Lambda Extension 层
 
-  选择与您的 Lambda 运行时架构相匹配的 Lambda 层。`{version}` 字段取决于您部署的 AWS 区域。请查看 [releases](https://github.com/streamfold/rotel-lambda-extension/releases) 页面,获取与您所在区域对应的最新版本号。
+  选择与您的 Lambda 运行时架构相匹配的 Lambda 层。`{version}` 字段取决于您要部署到的 AWS 区域。请查看 [releases](https://github.com/streamfold/rotel-lambda-extension/releases) 页面以获取与您的区域对应的最新版本号。
 
   | 架构           | ARN                                                                          |
   | ------------ | ---------------------------------------------------------------------------- |
@@ -66,17 +66,17 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   *在这些示例中,将 `{arch}`、`{region}` 和 `{version}` 替换为上述相应的值。*
 
-  ##### 选项 1:AWS 控制台
+  ##### 选项 1：AWS 控制台
 
   1. 打开 AWS Lambda 控制台
-  2. 转到您的 Lambda 函数
-  3. 滚动到 **Layers** 部分，然后点击 **Add a layer**
-  4. 选择 **指定 ARN**
-  5. 输入 Rotel 层的 ARN：
+  2. 导航到你的 Lambda 函数
+  3. 向下滚动至 **Layers** 部分，然后单击 **Add a layer**
+  4. 选择 **Specify an ARN**
+  5. 请输入 Rotel 层的 ARN：
      ```text
      arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version}
      ```
-  6. 点击 **Add**
+  6. 单击 **Add**
 
   ##### 选项 2：AWS CLI
 
@@ -129,7 +129,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,deployment.environment=production"
   ```
 
-  然后设置环境变量以指向此文件:
+  然后设置环境变量指向该文件：
 
   ```bash
   ROTEL_ENV_FILE=/var/task/rotel.env
@@ -137,7 +137,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   ##### 使用 AWS Secrets Manager 或 Parameter Store
 
-  对于生产环境部署,请将 API 密钥等敏感值存储在 AWS Secrets Manager 或 Parameter Store 中:
+  对于生产环境部署，请将 API 密钥等敏感值存储在 AWS Secrets Manager 或 Parameter Store 中：
 
   **AWS Secrets Manager 示例：**
 
@@ -155,7 +155,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   **所需 IAM 权限：**
 
-  将以下权限添加到您的 Lambda 执行角色中:
+  将这些权限添加到您的 Lambda 执行角色中：
 
   对于 Secrets Manager：
 
@@ -207,7 +207,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
     response.json
   ```
 
-  检查 Lambda 日志是否有错误:
+  检查 Lambda 日志是否存在错误：
 
   ```bash
   aws logs tail /aws/lambda/my-function --follow
@@ -219,39 +219,39 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   <Image img={log_view} alt="Lambda 日志视图" />
 
-  <Image img={log} alt="Lambda 日志详细信息" />
+  <Image img={log} alt="Lambda 日志详情" />
 
-  在日志中查找这些关键属性:
+  在日志中查找这些关键属性：
 
-  * `service.name`：Lambda 函数的名称
+  * `service.name`: 您的 Lambda 函数名称
   * `faas.name`: AWS Lambda 函数名称
-  * `faas.invocation_id`: 唯一调用 ID
+  * `faas.invocation_id`: 唯一的调用 ID
   * `cloud.provider`: &quot;aws&quot;
   * `cloud.platform`: &quot;aws&#95;lambda&quot;
 </VerticalStepper>
 
 ## 禁用 CloudWatch Logs（成本优化） {#disable-cloudwatch}
 
-默认情况下，AWS Lambda 会将所有日志发送到 CloudWatch Logs，这在大规模场景下可能非常昂贵。在确认日志已写入 ClickStack 后，可以禁用 CloudWatch 日志记录以降低成本。
+默认情况下，AWS Lambda 会将所有日志发送到 CloudWatch Logs，在大规模使用时成本可能会非常高。一旦你确认日志已经成功导入 ClickStack，便可以禁用 CloudWatch 日志记录以降低成本。
 
 <VerticalStepper headerLevel="h4">
 
 #### 从执行角色中移除 CloudWatch 权限 \{#remove-permissions\}
 
 1. 打开 AWS 控制台并导航到 **AWS Lambda**
-2. 打开目标 Lambda 函数
+2. 进入你的 Lambda 函数
 3. 选择 **Configuration** → **Permissions**
 4. 点击执行角色名称以打开 IAM 控制台
-5. 编辑该角色并移除任何 `logs:*` 操作：
-   - 如果使用自定义策略，编辑并移除 `logs:CreateLogGroup`、`logs:CreateLogStream` 和 `logs:PutLogEvents`
-   - 如果使用 AWS 托管策略 `AWSLambdaBasicExecutionRole`，从该角色中移除该策略
+5. 编辑该角色并移除所有 `logs:*` 操作：
+   - 如果使用自定义策略，编辑以移除 `logs:CreateLogGroup`、`logs:CreateLogStream` 和 `logs:PutLogEvents`
+   - 如果使用 AWS 管理的策略 `AWSLambdaBasicExecutionRole`，将其从该角色中移除
 6. 保存角色
 
-#### 验证 CloudWatch 日志记录已被禁用 {#verify-disabled}
+#### 验证 CloudWatch 日志记录已禁用 {#verify-disabled}
 
-再次调用该函数并确认：
-1. 未创建新的 CloudWatch 日志流
-2. 日志仍会出现在 ClickStack/HyperDX 中
+再次调用你的函数并验证：
+1. 没有创建新的 CloudWatch 日志流
+2. 日志仍然会出现在 ClickStack/HyperDX 中
 
 ```bash
 # 在策略变更后，这里不应显示新的日志流
@@ -264,27 +264,27 @@ aws logs describe-log-streams \
 
 </VerticalStepper>
 
-## 添加 OpenTelemetry 自动埋点 {#auto-instrumentation}
+## 添加 OpenTelemetry 自动插桩 {#auto-instrumentation}
 
-Rotel Lambda Extension 可与 OpenTelemetry 的自动埋点层无缝配合，在收集日志的同时采集分布式 trace 和指标。
+Rotel Lambda Extension 能与 OpenTelemetry 的自动插桩 layer 无缝协作，在采集日志的同时收集分布式追踪和指标。
 
 <VerticalStepper headerLevel="h4">
 
-#### 选择适用于所用语言的自动埋点层 {#choose-instrumentation}
+#### 选择所用语言的插桩 layer {#choose-instrumentation}
 
-AWS 为多种语言提供了 OpenTelemetry 自动埋点层：
+AWS 为多种语言提供了 OpenTelemetry 自动插桩 layer：
 
-| Language | Layer ARN Pattern |
+| 语言 | Layer ARN 模板 |
 |----------|-------------------|
 | Node.js  | `arn:aws:lambda:{region}:901920570463:layer:aws-otel-nodejs-{arch}-ver-{version}` |
 | Python   | `arn:aws:lambda:{region}:901920570463:layer:aws-otel-python-{arch}-ver-{version}` |
 | Java     | `arn:aws:lambda:{region}:901920570463:layer:aws-otel-java-agent-{arch}-ver-{version}` |
 
-在 [AWS OpenTelemetry Lambda repository](https://github.com/aws-observability/aws-otel-lambda) 中查找最新版本。
+在 [AWS OpenTelemetry Lambda 仓库](https://github.com/aws-observability/aws-otel-lambda)中获取最新版本。
 
 #### 将两个 layer 都添加到函数中 \{#add-both-layers\}
 
-将 **Rotel 扩展 layer** 和 **自动埋点 layer** **同时** 添加到函数：
+将 **Rotel 扩展 layer** 和 **自动插桩 layer** 一并添加：
 
 ```bash
 aws lambda update-function-configuration \
@@ -294,46 +294,46 @@ aws lambda update-function-configuration \
     arn:aws:lambda:{region}:901920570463:layer:aws-otel-nodejs-{arch}-ver-1-30-2:1
 ```
 
-#### 配置自动埋点 {#configure-instrumentation}
+#### 配置自动插桩 {#configure-instrumentation}
 
-设置 `AWS_LAMBDA_EXEC_WRAPPER` 环境变量以启用自动埋点：
+设置 `AWS_LAMBDA_EXEC_WRAPPER` 环境变量以启用自动插桩：
 
-**针对 Node.js：**
+**对于 Node.js：**
 ```bash
 AWS_LAMBDA_EXEC_WRAPPER=/opt/otel-handler
 ```
 
-**针对 Python：**
+**对于 Python：**
 ```bash
 AWS_LAMBDA_EXEC_WRAPPER=/opt/otel-instrument
 ```
 
-**针对 Java：**
+**对于 Java：**
 ```bash
 AWS_LAMBDA_EXEC_WRAPPER=/opt/otel-handler
 ```
 
-#### 在 HyperDX 中验证 trace {#verify-traces}
+#### 在 HyperDX 中验证追踪数据 {#verify-traces}
 
 在调用函数之后：
 
-1. 进入 HyperDX 中的 **Traces** 视图
-2. 你应该可以看到包含该 Lambda 函数 span 的 trace
-3. 这些 trace 会通过 `trace_id` 和 `span_id` 属性与日志进行关联
+1. 打开 HyperDX 中的 **Traces** 视图
+2. 你应当能看到包含来自 Lambda 函数 span 的追踪
+3. 这些追踪会通过 `trace_id` 和 `span_id` 属性与日志进行关联
 
 </VerticalStepper>
 
 ## 示例应用 {#examples}
 
-请查看演示 Rotel Lambda Extension 的 Python 示例应用：
+查看演示 Rotel Lambda Extension 的 Python 示例应用：
 
-- **[Python + ClickHouse](https://github.com/streamfold/python-aws-lambda-clickhouse-example)**：使用手动 OpenTelemetry 插桩的 Python 应用程序，将跟踪和日志直接发送到 ClickHouse
+- **[Python + ClickHouse](https://github.com/streamfold/python-aws-lambda-clickhouse-example)**：通过手动接入 OpenTelemetry 的 Python 应用程序，将 trace 和 log 直接发送到 ClickHouse
 
 ## 加入 Rotel 社区 {#join-rotel-community}
 
-如果您对 Rotel 有任何疑问，请加入 [Rotel Discord 服务器](https://rotel.dev)，并在其中分享您的反馈或问题。查看 [Rotel Lambda Extension](https://github.com/streamfold/rotel-lambda-extension)，为项目贡献改进。
+如果你对 Rotel 有任何疑问，请加入 [Rotel Discord 服务器](https://rotel.dev)，在其中分享你的反馈或问题。你也可以了解并使用 [Rotel Lambda Extension](https://github.com/streamfold/rotel-lambda-extension)，为项目改进做出贡献。
 
-## 其他资源 {#resources}
+## 更多资源 {#resources}
 
-- **[Rotel Lambda Extension](https://github.com/streamfold/rotel-lambda-extension)**：源代码和详细文档
+- **[Rotel Lambda Extension](https://github.com/streamfold/rotel-lambda-extension)**：源代码及详细文档
 - **[Rotel Core](https://github.com/streamfold/rotel)**：驱动该扩展的轻量级 OTel 数据平面

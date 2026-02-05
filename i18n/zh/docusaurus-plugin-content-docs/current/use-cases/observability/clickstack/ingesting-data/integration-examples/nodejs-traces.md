@@ -19,7 +19,6 @@ import finish_import from '@site/static/images/clickstack/nodejs/finish-import.p
 import example_dashboard from '@site/static/images/clickstack/nodejs/example-traces-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # 使用 ClickStack 监控 Node.js Trace \{#nodejs-traces-clickstack\}
 
 :::note[TL;DR]
@@ -58,7 +57,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 用于将跟踪数据发送到 ClickStack 的 OTLP 端点的 API key。
 
-1. 在 ClickStack 的 URL（例如：http://localhost:8080）中打开 HyperDX
+1. 在 ClickStack 的 URL (例如：http://localhost:8080) 中打开 HyperDX
 2. 如有需要，创建账号或登录
 3. 导航到 **Team Settings → API Keys**
 4. 复制 **摄取 API key**
@@ -129,7 +128,7 @@ docker run -d --name clickstack-demo \
 
 用于将链路追踪数据摄取到 ClickStack 的 OTLP 端点的 API key。
 
-1. 在 ClickStack 的 URL（例如：http://localhost:8080）中打开 HyperDX
+1. 在 ClickStack 的 URL (例如：http://localhost:8080) 中打开 HyperDX
 2. 如有需要，创建账户或登录
 3. 进入 **Team Settings → API Keys**
 4. 复制你的 **摄取 API key（Ingestion API Key）**
@@ -213,7 +212,6 @@ curl -X POST http://localhost:4318/v1/traces \
 
 这是一个已知问题，只会在通过 curl 使用演示方案时出现，不会影响已完成埋点的生产环境应用程序。
 
-
 ### 在 HyperDX 中未看到任何 Trace 数据 \{#no-traces\}
 
 **检查环境变量是否已设置：**
@@ -236,7 +234,6 @@ curl -v http://localhost:4318/v1/traces
 
 **检查应用日志：**
 在应用启动时查找 OpenTelemetry 初始化相关的消息。HyperDX SDK 应会输出已完成初始化的确认信息。
-
 
 ## 后续步骤 \{#next-steps\}
 

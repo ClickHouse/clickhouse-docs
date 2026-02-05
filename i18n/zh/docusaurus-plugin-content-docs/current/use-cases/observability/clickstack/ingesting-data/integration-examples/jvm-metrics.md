@@ -16,7 +16,6 @@ import finish_import from '@site/static/images/clickstack/jvm/jvm-metrics-import
 import example_dashboard from '@site/static/images/clickstack/jvm/jvm-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # 使用 ClickStack 监控 JVM 指标 \{#jvm-clickstack\}
 
 :::note[TL;DR]
@@ -49,7 +48,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 OpenTelemetry Java agent 会将数据发送到 ClickStack 的 OTLP 端点，该端点需要进行身份验证。
 
-1. 在你的 ClickStack URL 打开 HyperDX（例如：http://localhost:8080）
+1. 在你的 ClickStack URL 打开 HyperDX (例如：http://localhost:8080)
 2. 如有需要，创建账户或登录
 3. 前往 **Team Settings → API Keys**
 4. 复制你的 **摄取 API key**
@@ -257,7 +256,6 @@ java -version
 [otel.javaagent] OpenTelemetry Javaagent v2.22.0 started
 ```
 
-
 ### HyperDX 中没有显示任何指标 \{#no-metrics\}
 
 **验证 ClickStack 正在运行且可访问：**
@@ -283,7 +281,6 @@ echo $OTEL_METRICS_EXPORTER
 
 **验证 agent 版本：**
 确保你使用的是最新的稳定 agent 版本（当前为 2.22.0），因为较新的版本通常包含性能改进。
-
 
 ## 下一步 \{#next-steps\}
 

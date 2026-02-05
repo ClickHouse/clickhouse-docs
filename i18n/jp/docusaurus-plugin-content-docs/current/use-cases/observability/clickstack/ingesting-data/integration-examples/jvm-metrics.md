@@ -16,7 +16,6 @@ import finish_import from '@site/static/images/clickstack/jvm/jvm-metrics-import
 import example_dashboard from '@site/static/images/clickstack/jvm/jvm-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # ClickStack による JVM メトリクスの監視 \{#jvm-clickstack\}
 
 :::note[TL;DR]
@@ -49,7 +48,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 OpenTelemetry Java agent は ClickStack の OTLP エンドポイントにデータを送信します。このエンドポイントは認証を必要とします。
 
-1. ClickStack の URL（例: http://localhost:8080）で HyperDX を開く
+1. ClickStack の URL (例: http://localhost:8080) で HyperDX を開く
 2. 必要に応じてアカウントを作成するかログインする
 3. **Team Settings → API Keys** に移動する
 4. **Ingestion API Key** をコピーする
@@ -257,7 +256,6 @@ java -version
 [otel.javaagent] OpenTelemetry Javaagent v2.22.0 started
 ```
 
-
 ### HyperDX にメトリクスが表示されない \{#no-metrics\}
 
 **ClickStack が稼働しており、アクセス可能であることを確認してください:**
@@ -283,7 +281,6 @@ ClickStack がリモートホスト上にある場合、アプリケーション
 
 **エージェントバージョンを確認する:**
 最新の安定版エージェントのバージョン (現在は 2.22.0) を使用していることを確認してください。新しいバージョンにはパフォーマンス改善が含まれている場合が多くあります。
-
 
 ## 次のステップ \{#next-steps\}
 

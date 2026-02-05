@@ -1,30 +1,30 @@
 ---
 slug: /use-cases/observability/clickstack/deployment/helm-cloud
-title: 'Helm による Cloud デプロイメント'
+title: 'Helm を用いたクラウドデプロイ'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 5
-description: 'GKE、EKS、AKS 上に ClickStack をデプロイするための Cloud 向け設定'
+description: 'GKE、EKS、AKS 上に ClickStack をデプロイするためのクラウド特有の設定'
 doc_type: 'guide'
-keywords: ['ClickStack GKE', 'ClickStack EKS', 'ClickStack AKS', 'Kubernetes クラウドデプロイメント', '本番環境デプロイメント']
+keywords: ['ClickStack GKE', 'ClickStack EKS', 'ClickStack AKS', 'Kubernetes cloud deployment', 'production deployment']
 ---
 
-このガイドでは、マネージド Kubernetes サービス上に ClickStack をデプロイする際の Cloud 向けの設定について説明します。基本的なインストール手順については、[Helm デプロイメントのメインガイド](/docs/use-cases/observability/clickstack/deployment/helm)を参照してください。
+このガイドでは、マネージド Kubernetes サービス上に ClickStack をデプロイするためのクラウド特有の設定について説明します。基本的なインストール手順については、[Helm デプロイメントのメインガイド](/docs/use-cases/observability/clickstack/deployment/helm)を参照してください。
 
 ## Google Kubernetes Engine (GKE) \{#google-kubernetes-engine-gke\}
 
-GKE にデプロイする場合、クラウド特有のネットワーク動作により、いくつかの値を上書き設定する必要がある場合があります。
+GKE へデプロイする場合は、クラウド特有のネットワークの挙動により、いくつかの設定値を上書き（オーバーライド）する必要が生じることがあります。
 
-### LoadBalancer の DNS 解決の問題 \{#loadbalancer-dns-resolution-issue\}
+### LoadBalancer の DNS 解決に関する問題 \{#loadbalancer-dns-resolution-issue\}
 
-GKE の LoadBalancer サービスにより、ポッド間通信がクラスター内ネットワークに留まらず、外部 IP に解決されてしまう内部 DNS 解決の問題が発生することがあります。これは特に OTel collector の OpAMP サーバーへの接続に影響します。
+GKE の LoadBalancer サービスが原因で、ポッド間通信における内部 DNS 解決がクラスターネットワーク内にとどまらず、外部 IP に名前解決されてしまう問題が発生することがあります。これは特に、OTel collector から OpAMP サーバーへの接続に影響します。
 
 **症状:**
 
 * OTel collector のログに、クラスター IP アドレスに対する「connection refused」エラーが表示される
 * 次のような OpAMP 接続失敗: `dial tcp 34.118.227.30:4320: connect: connection refused`
 
-**解決策:**
+**解決方法:**
 
 OpAMP サーバーの URL には、完全修飾ドメイン名 (FQDN) を使用してください:
 
@@ -34,8 +34,7 @@ helm install my-clickstack clickstack/clickstack \
   --set otel.opampServerUrl="http://my-clickstack-clickstack-app.default.svc.cluster.local:4320"
 ```
 
-
-### その他の GKE に関する考慮事項 \{#other-gke-considerations\}
+### GKE に関するその他の考慮事項 \{#other-gke-considerations\}
 
 ```yaml
 # values-gke.yaml
@@ -53,10 +52,9 @@ clickhouse:
       - "10.0.0.0/8"   # Fallback for other configurations
 ```
 
-
 ## Amazon EKS \{#amazon-eks\}
 
-EKS へのデプロイ時には、よく利用される次の構成を検討してください。
+EKS にデプロイする場合は、次の一般的な構成を検討してください。
 
 ```yaml
 # values-eks.yaml
@@ -79,10 +77,9 @@ hyperdx:
       enabled: true
 ```
 
-
 ## Azure AKS \{#azure-aks\}
 
-AKS を利用する場合:
+AKS にデプロイする場合:
 
 ```yaml
 # values-aks.yaml
@@ -97,19 +94,18 @@ clickhouse:
       - "10.0.0.0/8"
 ```
 
+## 本番環境向けクラウド デプロイメント チェックリスト \{#production-cloud-deployment-checklist\}
 
-## 本番 Cloud デプロイメントチェックリスト \{#production-cloud-deployment-checklist\}
+任意のクラウドプロバイダー上の本番環境に ClickStack をデプロイする前に、次を実施してください。
 
-任意のクラウドプロバイダー上の本番環境に ClickStack をデプロイする前に、次を実施してください:
-
-- [ ] 外部ドメイン/IP を用いて適切な `frontendUrl` を設定する
-- [ ] HTTPS アクセス用に TLS を利用したイングレスをセットアップする
-- [ ] 接続問題が発生している場合（特に GKE）、`otel.opampServerUrl` を FQDN に置き換える
-- [ ] ポッドネットワーク CIDR に合わせて `clickhouse.config.clusterCidrs` を調整する
+- [ ] 外部ドメイン／IP アドレスを用いて適切な `frontendUrl` を設定する
+- [ ] HTTPS アクセス用に TLS 対応のイングレスを設定する
+- [ ] 接続問題が発生している場合（特に GKE 上）、`otel.opampServerUrl` を FQDN で上書きする
+- [ ] ポッドネットワークの CIDR に合わせて `clickhouse.config.clusterCidrs` を調整する
 - [ ] 本番ワークロード向けに永続ストレージを構成する
-- [ ] 適切なリソース requests および limits を設定する
-- [ ] 監視およびアラート通知を有効化する
-- [ ] バックアップおよび災害復旧を構成する
+- [ ] 適切なリソース要求とリミットを設定する
+- [ ] モニタリングとアラートを有効にする
+- [ ] バックアップと障害復旧を構成する
 - [ ] 適切なシークレット管理を実装する
 
 ## 本番環境におけるベストプラクティス \{#production-best-practices\}
@@ -126,7 +122,6 @@ hyperdx:
       cpu: 2000m
       memory: 4Gi
 ```
-
 
 ### 高可用性 \{#high-availability\}
 
@@ -148,10 +143,9 @@ hyperdx:
             topologyKey: kubernetes.io/hostname
 ```
 
-
 ### 永続ストレージ \{#persistent-storage\}
 
-データを保持できるよう、PersistentVolume が適切に構成されていることを確認してください。
+データを保持できるよう、PersistentVolume（永続ボリューム）が適切に構成されていることを確認します。
 
 ```yaml
 clickhouse:
@@ -161,21 +155,20 @@ clickhouse:
     storageClass: "fast-ssd"  # Use cloud-specific storage class
 ```
 
-**Cloud 環境固有のストレージクラス:**
+**クラウドごとの StorageClass:**
 
 * **GKE**: `pd-ssd` または `pd-balanced`
 * **EKS**: `gp3` または `io2`
 * **AKS**: `managed-premium` または `managed-csi`
 
+### ブラウザ互換性に関する注意事項 \{#browser-compatibility-notes\}
 
-### ブラウザー互換性に関する注意事項 \{#browser-compatibility-notes\}
-
-HTTP のみでのデプロイメント（開発／テスト）では、セキュアコンテキスト要件により、一部のブラウザーで Crypto API のエラーが表示される場合があります。本番環境のデプロイメントでは、必ずイングレス設定を通じて適切な TLS 証明書を用いた HTTPS を使用してください。
+HTTP のみでデプロイしている場合（開発／テスト用途）、一部のブラウザでは「セキュアコンテキスト」の要件により crypto API のエラーが表示されることがあります。本番環境向けのデプロイメントでは、必ずイングレス構成を利用し、適切な TLS 証明書付きの HTTPS を使用してください。
 
 TLS のセットアップ手順については、[イングレス構成](/docs/use-cases/observability/clickstack/deployment/helm-configuration#ingress-setup) を参照してください。
 
 ## 次のステップ \{#next-steps\}
 
-- [設定ガイド](/docs/use-cases/observability/clickstack/deployment/helm-configuration) - API キー、シークレット、イングレス
-- [デプロイメントオプション](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) - 外部システムの設定
-- [Helm メインガイド](/docs/use-cases/observability/clickstack/deployment/helm) - 基本インストール
+- [構成ガイド](/docs/use-cases/observability/clickstack/deployment/helm-configuration) - API キー、シークレット、およびイングレス
+- [デプロイオプション](/docs/use-cases/observability/clickstack/deployment/helm-deployment-options) - 外部システムの構成
+- [Helm のメインガイド](/docs/use-cases/observability/clickstack/deployment/helm) - 基本的なインストール

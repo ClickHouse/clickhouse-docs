@@ -6,7 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'ClickStack を使用した Temporal Cloud メトリクスの監視'
 doc_type: 'guide'
-keywords: ['Temporal', 'metrics', 'OTEL', 'ClickStack']
+keywords: ['Temporal', 'メトリクス', 'OTel', 'ClickStack']
 ---
 
 import Image from '@theme/IdealImage';
@@ -18,46 +18,46 @@ import example_dashboard from '@site/static/images/clickstack/temporal/temporal-
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
 :::note 警告
-Temporal プラットフォームにおける OpenMetrics サポートは、[Public Preview](https://docs.temporal.io/evaluate/development-production-features/release-stages#public-preview) として提供されています。詳細については、[Temporal のドキュメント](https://docs.temporal.io/cloud/metrics/openmetrics)を参照してください。
+Temporal プラットフォームにおける OpenMetrics サポートは、現在 [Public Preview](https://docs.temporal.io/evaluate/development-production-features/release-stages#public-preview) 段階で提供されています。詳細については [Temporal のドキュメント](https://docs.temporal.io/cloud/metrics/openmetrics) を参照してください。
 :::
 
-Temporal は、シンプルでありながら高度かつレジリエントなアプリケーションを構築するための抽象化レイヤーを提供します。
+Temporal は、シンプルかつ高度で高い耐障害性を備えたアプリケーションを構築するための抽象化を提供します。
 
 
 # ClickStack を使用した Temporal Cloud メトリクスの監視 \{#temporal-metrics-clickstack\}
 
-:::note[TL;DR]
-このガイドでは、OpenTelemetry collector の Prometheus receiver を設定して ClickStack で Temporal Cloud を監視する方法を説明します。次の内容を学びます:
+:::note[要約]
+このガイドでは、OpenTelemetry collector の Prometheus レシーバーを設定して、ClickStack で Temporal Cloud を監視する方法を説明します。以下の内容を学びます:
 
-- Temporal Cloud メトリクスを収集するように OTel collector を構成する
-- カスタム設定を適用して ClickStack をデプロイする
-- あらかじめ用意されたダッシュボードを使用して Temporal Cloud のパフォーマンス（オープン中のワークフロー、actions/sec、アクティブなネームスペース、タスクバックログ）を可視化する
+- Temporal Cloud メトリクスを収集するように OTel collector を設定する
+- カスタム設定を使用して ClickStack をデプロイする
+- 事前作成済みのダッシュボードを使用して Temporal Cloud のパフォーマンスを可視化する（open workflows、actions/sec、アクティブなネームスペース、タスクバックログ）
 
-所要時間: 5〜10 分
+所要時間: 約 5〜10 分
 :::
 
 ## 既存の Temporal Cloud との統合 \{#existing-temporal\}
 
-このセクションでは、Prometheus レシーバーを使用して ClickStack OTel collector を設定することで、ClickStack を構成する方法について説明します。
+このセクションでは、Prometheus receiver を使用するように ClickStack の OTel collector を設定することで、ClickStack を構成する方法について説明します。
 
 ## 前提条件 \{#prerequisites\}
 
-- ClickStack インスタンスが稼働していること
-- 既存の Temporal Cloud アカウントを保有していること
-- ClickStack から Temporal Cloud への HTTP ネットワーク アクセスがあること
+- 稼働中の ClickStack インスタンス
+- 既存の Temporal Cloud アカウント
+- ClickStack から Temporal Cloud への HTTP 経由のネットワークアクセス
 
 <VerticalStepper headerLevel="h4">
   #### Temporal Cloud キーを作成する
 
-  Temporal Cloud APIキーを保有していることを確認してください。これは、Temporalドキュメントの[認証ガイド](https://docs.temporal.io/production-deployment/cloud/metrics/openmetrics/api-reference#authentication)に従って作成できます。
+  Temporal Cloud APIキーを用意してください。APIキーは、Temporalドキュメントの[認証ガイド](https://docs.temporal.io/production-deployment/cloud/metrics/openmetrics/api-reference#authentication)に従って作成できます。
 
   :::important キーファイル
-  これらの認証情報は、以下で作成する設定ファイルと同じディレクトリ内の`temporal.key`ファイルに保存してください。このキーは、前後にスペースを含まないプレーンテキストとして保存する必要があります。
+  これらの認証情報は、以下で作成する設定ファイルと同じディレクトリ内の`temporal.key`ファイルに保存されている必要があります。このキーは、前後にスペースを含まないプレーンテキストとして保存してください。
   :::
 
-  #### カスタムOTel collector設定の作成
+  #### カスタムOTel collectorの設定を作成する
 
-  ClickStackでは、カスタム設定ファイルをマウントして環境変数を設定することで、ベースのOpenTelemetryコレクター設定を拡張できます。カスタム設定は、HyperDXがOpAMP経由で管理するベース設定にマージされます。
+  ClickStackでは、カスタム設定ファイルをマウントして環境変数を設定することで、OpenTelemetryコレクターの基本設定を拡張できます。カスタム設定は、HyperDXがOpAMP経由で管理している基本設定とマージされます。
 
   以下の設定で `temporal-metrics.yaml` という名前のファイルを作成してください:
 
@@ -97,36 +97,36 @@ Temporal は、シンプルでありながら高度かつレジリエントな�
           - clickhouse
   ```
 
-  この設定では:
+  この設定:
 
-  * Temporal Cloud のエンドポイント `metrics.temporal.io` に接続します
+  * Temporal Cloud（`metrics.temporal.io`）に接続します
   * 60秒ごとにメトリクスを収集します
-  * 主要な [パフォーマンスメトリクス](https://docs.temporal.io/production-deployment/cloud/metrics/openmetrics/metrics-reference) を収集します
+  * [主要なパフォーマンスメトリクス](https://docs.temporal.io/production-deployment/cloud/metrics/openmetrics/metrics-reference)を収集します
   * [OpenTelemetry semantic conventions](https://opentelemetry.io/docs/specs/semconv/resource/#service) に従って、必須の `service.name` リソース属性を**設定します**
-  * 専用パイプラインを通じてメトリクスを ClickHouse エクスポーターに転送します
+  * 専用パイプライン経由でメトリクスを ClickHouse エクスポーターにルーティングします
 
   :::note
 
-  * カスタム設定では、新たに追加する receiver、processor、pipeline だけを定義します
-  * `memory_limiter` プロセッサー、`batch` プロセッサー、および `clickhouse` エクスポーターはベースの ClickStack 設定ですでに定義されているため、その名前を指定するだけで参照できます
-  * `resource` プロセッサは、OpenTelemetry のセマンティック規約に準拠して、必要な `service.name` 属性を設定します
-  * 複数の Temporal Cloud アカウントがある場合は、それらを区別するために `service.name` をカスタマイズしてください（例: `"temporal-prod"`、`"temporal-dev"`）。
+  * カスタム構成では、新しい receiver、processor、pipeline のみを定義します
+  * `memory_limiter` と `batch` プロセッサおよび `clickhouse` エクスポーターは、ClickStack のベース設定内ですでに定義されているため、名前を指定して参照するだけでかまいません。
+  * `resource` processor は、OpenTelemetry のセマンティック規約に基づいて、必須の `service.name` 属性を設定します
+  * 複数の Temporal Cloud アカウントを利用する場合は、`service.name` をカスタマイズして区別できるようにします（例: `"temporal-prod"`、`"temporal-dev"`）。
     :::
 
   #### ClickStackにカスタム設定を読み込ませる構成
 
   既存のClickStackデプロイメントでカスタムコレクター設定を有効にするには、次の手順を実行してください:
 
-  1. カスタム構成ファイルを `/etc/otelcol-contrib/custom.config.yaml` にマウントします
-  2. 環境変数 `CUSTOM_OTELCOL_CONFIG_FILE` に `/etc/otelcol-contrib/custom.config.yaml` を設定します
-  3. `temporal.key` ファイルを `/etc/otelcol-contrib/temporal.key` にマウントします
-  4. ClickStack と Temporal 間のネットワーク接続を確保する
+  1. カスタム設定ファイルを `/etc/otelcol-contrib/custom.config.yaml` にマウントします
+  2. 環境変数 `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml` を設定します
+  3. `temporal.key` ファイルを `/etc/otelcol-contrib/temporal.key` パスにマウントします
+  4. ClickStack と Temporal 間でネットワーク接続が確立されていること
 
   すべてのコマンドは、`temporal-metrics.yaml` および `temporal.key` が格納されているサンプルディレクトリから実行することを前提としています。
 
   ##### オプション1：Docker Compose
 
-  ClickStack のデプロイメント設定を更新してください：
+  ClickStackのデプロイメント設定を更新します：
 
   ```yaml
   services:
@@ -140,9 +140,9 @@ Temporal は、シンプルでありながら高度かつレジリエントな�
         # ... other volumes ...
   ```
 
-  ##### オプション2: Docker run（オールインワンイメージ）
+  ##### オプション2：Docker run（オールインワンイメージ）
 
-  `docker run`でオールインワンイメージを使用する場合:
+  `docker run`でオールインワンイメージを使用する場合：
 
   ```bash
   docker run --name clickstack \
@@ -155,29 +155,29 @@ Temporal は、シンプルでありながら高度かつレジリエントな�
 
   #### HyperDXでメトリクスを検証する
 
-  設定後、HyperDXにログインし、メトリクスが流入していることを確認します:
+  設定完了後、HyperDXにログインしてメトリクスが送信されていることを確認します:
 
   1. Metrics Explorer に移動します
-  2. `temporal` で始まるメトリクス（例: `temporal_cloud_v1_workflow_success_count`, `temporal_cloud_v1_poll_timeout_count`）を検索します
-  3. 設定した収集間隔でメトリクスのデータポイントが表示されているはずです
+  2. `temporal` で始まるメトリクス（例: `temporal_cloud_v1_workflow_success_count`、`temporal_cloud_v1_poll_timeout_count`）を検索します。
+  3. 設定した収集間隔ごとにメトリクスのデータポイントが表示されるはずです
 
   <Image img={temporal_metrics} alt="Temporal のメトリクス" size="md" />
 </VerticalStepper>
 
 ## ダッシュボードと可視化 {#dashboards}
 
-ClickStack を使用して Temporal Cloud の監視を開始するにあたり、Temporal Metrics 向けのサンプル可視化をいくつか提供しています。
+ClickStack を使って Temporal Cloud の監視を始めやすくするために、Temporal Metrics 向けのサンプル可視化をいくつか用意しています。
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/temporal-metrics-dashboard.json')} download="temporal-metrics-dashboard.json" eventName="docs.temporal_metrics_monitoring.dashboard_download">ダッシュボード構成</TrackedLink> をダウンロード \{#download\}
+#### ダッシュボード構成を <TrackedLink href={useBaseUrl('/examples/temporal-metrics-dashboard.json')} download="temporal-metrics-dashboard.json" eventName="docs.temporal_metrics_monitoring.dashboard_download">ダウンロード</TrackedLink> \{#download\}
 
 #### あらかじめ用意されたダッシュボードをインポートする \{#import-dashboard\}
 
 1. HyperDX を開き、Dashboards セクションに移動します
-2. 画面右上の三点リーダー配下にある **Import Dashboard** をクリックします
+2. 右上の三点リーダー（…）アイコンから **Import Dashboard** をクリックします
 
-<Image img={import_dashboard} alt="ダッシュボードのインポートボタン"/>
+<Image img={import_dashboard} alt="ダッシュボードインポートボタン"/>
 
 3. `temporal-metrics-dashboard.json` ファイルをアップロードし、**Finish Import** をクリックします
 
@@ -185,7 +185,7 @@ ClickStack を使用して Temporal Cloud の監視を開始するにあたり�
 
 #### ダッシュボードを表示する {#created-dashboard}
 
-ダッシュボードは、すべての可視化があらかじめ構成された状態で作成されます。
+ダッシュボードは、すべての可視化があらかじめ設定された状態で作成されます。
 
 <Image img={example_dashboard} alt="Temporal Metrics ダッシュボード"/>
 
@@ -193,9 +193,9 @@ ClickStack を使用して Temporal Cloud の監視を開始するにあたり�
 
 ## トラブルシューティング {#troubleshooting}
 
-### カスタム設定が読み込まれない
+### カスタム構成が読み込まれない
 
-環境変数 `CUSTOM_OTELCOL_CONFIG_FILE` が正しく設定されていることを確認してください：
+環境変数 `CUSTOM_OTELCOL_CONFIG_FILE` が正しく設定されているか確認してください：
 
 ```bash
 docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
@@ -208,14 +208,14 @@ docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
 # usually, docker exec clickstack ls -lh /etc/otelcol-contrib/custom.config.yaml
 ```
 
-カスタム設定の内容を表示し、問題なく読めることを確認します:
+カスタム設定の内容を表示し、正しく読み取れることを確認します：
 
 ```bash
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
 # usually, docker exec clickstack cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
-`temporal.key` がコンテナ内にマウントされていることを確認してください。`
+`temporal.key` がコンテナ内にマウントされていることを確認してください：
 
 ```bash
 docker exec <container-name> cat /etc/otelcol-contrib/temporal.key
@@ -226,27 +226,27 @@ docker exec <container-name> cat /etc/otelcol-contrib/temporal.key
 
 ### HyperDX にメトリクスが表示されない
 
-コレクターから Temporal Cloud へ到達できることを確認してください：
+コレクターから Temporal Cloud にアクセスできることを確認してください。
 
 ```bash
 # From the ClickStack container
 docker exec <container-name> curl -H "Authorization: Bearer <API_KEY>" https://metrics.temporal.io/v1/metrics
 ```
 
-Prometheus メトリクスが一連で次のように出力されるはずです (例):
+一連の Prometheus メトリクスが、たとえば次のように出力されているはずです。
 
 ```text
 temporal_cloud_v1_workflow_success_count{operation="CompletionStats",region="aws-us-east-2",temporal_account="l2c4n",temporal_namespace="clickpipes-aws-prd-apps-us-east-2.l2c4n",temporal_task_queue="clickpipes-svc-dc118d12-b397-4975-a33e-c2888ac12ac4-peer-flow-task-queue",temporal_workflow_type="QRepPartitionWorkflow"} 0.067 1765894320
 ```
 
-実効設定に Prometheus receiver が含まれていることを確認します：
+実際に有効になっている設定に Prometheus receiver が含まれていることを確認します。
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 "Prometheus:"
 ## usually, docker exec clickstack cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 "prometheus:"
 ```
 
-コレクターエージェントのログにエラーが出力されていないか確認してください:
+コレクターエージェントのログにエラーがないか確認します:
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i Prometheus
@@ -254,7 +254,7 @@ docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i Promet
 # docker exec clickstack cat /etc/otel/supervisor-data/agent.log | grep -i Prometheus
 ```
 
-Collector のログを確認してください：
+コレクターのログを確認します:
 
 ```bash
 docker exec <container> cat /var/log/otel-collector.log | grep -i error
@@ -265,16 +265,16 @@ docker exec <container> cat /var/log/otel-collector.log | grep -i error
 
 ### 認証エラー {#auth-errors}
 
-ログに認証エラーが記録されている場合は、API キーを確認してください。
+ログで認証エラーが発生している場合は、API キーを確認してください。
 
 ### ネットワーク接続の問題 {#network-issues}
 
-ClickStack が Temporal Cloud に接続できない場合は、Docker Compose ファイルまたは `docker run` コマンドで[外部ネットワーク](https://docs.docker.com/engine/network/#drivers)への接続が許可されていることを確認してください。
+ClickStack が Temporal Cloud に到達できない場合は、Docker Compose ファイルまたは `docker run` コマンドで[外部ネットワークへの接続](https://docs.docker.com/engine/network/#drivers)が許可されていることを確認してください。
 
 ## 次のステップ {#next-steps}
 
-さらに掘り下げていきたい場合は、監視について次のようなことを試してみてください。
+さらに詳しく試してみたい場合は、監視環境で次のようなことに取り組んでみてください。
 
-- 重要なメトリクス（メモリ使用量のしきい値、接続数の上限、キャッシュヒット率の低下）に対する[アラート](/use-cases/observability/clickstack/alerts)を設定する
-- 特定のユースケース（レプリケーション遅延、永続化のパフォーマンス）向けの追加ダッシュボードを作成する
-- エンドポイントやサービス名を変えてレシーバー設定を複製し、複数の Temporal Cloud アカウントを監視する
+- 重要なメトリクス（メモリ使用量の閾値、接続上限、キャッシュヒット率の低下）向けに [alerts](/use-cases/observability/clickstack/alerts) を設定する
+- 特定のユースケース（レプリケーション遅延、永続化パフォーマンスなど）向けに追加のダッシュボードを作成する
+- エンドポイントとサービス名を変えて receiver の設定を複製し、複数の Temporal Cloud アカウントを監視する

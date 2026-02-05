@@ -4,9 +4,9 @@ title: 'ローカルモードのみ'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 5
-description: 'ClickStack をローカルモードのみでデプロイする - ClickHouse オブザーバビリティスタック'
-doc_type: 'guide'
-keywords: ['clickstack', 'deployment', 'setup', 'configuration', 'observability']
+description: 'ローカルモードのみで ClickStack をデプロイ - ClickHouse Observability スタック'
+doc_type: 'ガイド'
+keywords: ['clickstack', 'デプロイメント', 'セットアップ', '構成', '可観測性']
 ---
 
 import Image from '@theme/IdealImage';
@@ -14,28 +14,27 @@ import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-lo
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
 import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
-[オールインワンイメージ](/use-cases/observability/clickstack/deployment/docker-compose) と同様に、この包括的な Docker イメージには ClickStack のすべてのコンポーネントがバンドルされています：
+[all-in-one image](/use-cases/observability/clickstack/deployment/docker-compose) と同様に、この包括的な Docker イメージには、すべての ClickStack コンポーネントが含まれています：
 
 * **ClickHouse**
 * **HyperDX**
-* **OpenTelemetry (OTel) コレクター**（ポート `4317` と `4318` で OTLP を公開）
+* **OpenTelemetry (OTel) collector**（ポート `4317` および `4318` で OTLP を公開）
 * **MongoDB**（アプリケーション状態の永続化用）
 
-**ただし、このディストリビューションの HyperDX ではユーザー認証が無効になっています**
-
+**ただし、この HyperDX のディストリビューションではユーザー認証は無効になっています**
 
 ### 適した用途 \{#suitable-for\}
 
 * デモ
 * デバッグ
-* HyperDX を利用する開発
+* HyperDX を用いた開発
 
 ## デプロイ手順 \{#deployment-steps\}
 
 <br />
 
 <VerticalStepper headerLevel="h3">
-  ### Docker を使用してデプロイする
+  ### Docker でデプロイする
 
   ローカルモードでは、HyperDX UI がポート 8080 で起動します。
 
@@ -45,22 +44,22 @@ import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/us
 
   ### HyperDX UI にアクセスする
 
-  [http://localhost:8080](http://localhost:8080) にアクセスして HyperDX UI を開きます。
+  HyperDX UI にアクセスするには、[http://localhost:8080](http://localhost:8080) を開きます。
 
-  **このデプロイモードでは認証が有効化されていないため、ユーザー作成を求められることはありません。**
+  **このデプロイモードでは認証が有効になっていないため、ユーザー作成画面は表示されません。**
 
-  外部の自前 ClickHouse クラスター（例: ClickHouse Cloud）に接続します。
+  外部の ClickHouse クラスター（例: ClickHouse Cloud）に接続します。
 
-  <Image img={hyperdx_2} alt="ログインを作成" size="md" />
+  <Image img={hyperdx_2} alt="ログイン情報を作成" size="md" />
 
-  ソースを作成し、デフォルト値はすべて保持したまま、`Table` フィールドに `otel_logs` を入力します。他の設定は自動検出されるため、そのまま `Save New Source` をクリックします。
+  ソースを作成し、すべてのデフォルト値はそのままにして、`Table` フィールドに `otel_logs` を入力します。その他の設定は自動検出されるはずなので、`Save New Source` をクリックします。
 
   <Image img={hyperdx_logs} alt="ログソースを作成" size="md" />
 </VerticalStepper>
 
 <JSONSupport />
 
-ローカルモード専用イメージの場合、ユーザーは `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` パラメーターだけを設定すればよく、例えば次のように指定します。
+ローカルモード専用イメージの場合は、`BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` パラメーターを設定するだけで十分です（例: 環境変数として設定）。
 
 ```shell
 docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -p 8080:8080 clickhouse/clickstack-local:latest

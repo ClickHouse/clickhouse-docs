@@ -19,7 +19,6 @@ import finish_import from '@site/static/images/clickstack/nodejs/finish-import.p
 import example_dashboard from '@site/static/images/clickstack/nodejs/example-traces-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # ClickStack による Node.js トレースの監視 \{#nodejs-traces-clickstack\}
 
 :::note[TL;DR]
@@ -58,7 +57,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 ClickStack の OTLP エンドポイントにトレースを送信するための API key を取得します。
 
-1. ClickStack の URL（例: http://localhost:8080）で HyperDX を開く
+1. ClickStack の URL (例: http://localhost:8080) で HyperDX を開く
 2. 必要に応じてアカウントを作成するかログインする
 3. **Team Settings → API Keys** に移動する
 4. **インジェスト API key** をコピーする
@@ -213,7 +212,6 @@ curl -X POST http://localhost:4318/v1/traces \
 
 これは、curl を使ったデモ用アプローチでのみ発生する既知の問題であり、計装済みの本番アプリケーションには影響しません。
 
-
 ### HyperDX にトレースが表示されない場合 \{#no-traces\}
 
 **環境変数が設定されているか確認してください：**
@@ -236,7 +234,6 @@ OTLP エンドポイントに正常に接続できるはずです。
 
 **アプリケーションログを確認する:**
 アプリケーション起動時に、OpenTelemetry の初期化メッセージが出力されていることを確認します。HyperDX SDK は、初期化が完了したことを示す確認メッセージを出力するはずです。
-
 
 ## 次のステップ \{#next-steps\}
 
