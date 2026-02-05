@@ -32,7 +32,7 @@ While powerful, skip indexes must be used with care. They only provide benefit w
 
 **Effective skip index usage often depends on a strong correlation between the indexed column and the table's primary key, or inserting data in a way that groups similar values together.**
 
-In general, data skipping indices are best applied after ensuring proper primary key design and type optimization. They are particularly useful for:
+In general, data skipping indices are best applied after ensuring proper primary key design and type optimization. They're particularly useful for:
 
 * Columns with high overall cardinality but low cardinality within a block.
 * Rare values that are critical for search (e.g. error codes, specific IDs).
@@ -248,7 +248,7 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 29 rows in set. Elapsed: 0.211 sec.
 ```
 
-We also show an animation how the minmax skipping index prunes all row blocks that cannot possibly contain matches for the `ViewCount` > 10,000,000 predicate in our example query:
+We also show an animation how the minmax skipping index prunes all row blocks that can't possibly contain matches for the `ViewCount` > 10,000,000 predicate in our example query:
 
 <Image img={using_skipping_indices} size="lg" alt="Using skipping indices"/>
 

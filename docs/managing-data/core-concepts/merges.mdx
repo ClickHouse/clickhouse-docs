@@ -36,7 +36,7 @@ The following diagram sketches this background merge process:
 
 <br/>
 
-The `merge level` of a part is incremented by one with each additional merge. A level of `0` means the part is new and has not been merged yet. ^^Parts^^ that were merged into larger ^^parts^^ are marked as [inactive](/operations/system-tables/parts) and finally deleted after a [configurable](/operations/settings/merge-tree-settings#old_parts_lifetime) time (8 minutes by default). Over time, this creates a **tree** of merged ^^parts^^. Hence the name [merge tree](/engines/table-engines/mergetree-family) table.
+The `merge level` of a part is incremented by one with each additional merge. A level of `0` means the part is new and hasn't been merged yet. ^^Parts^^ that were merged into larger ^^parts^^ are marked as [inactive](/operations/system-tables/parts) and finally deleted after a [configurable](/operations/settings/merge-tree-settings#old_parts_lifetime) time (8 minutes by default). Over time, this creates a **tree** of merged ^^parts^^. Hence the name [merge tree](/engines/table-engines/mergetree-family) table.
 
 ## Monitoring merges \{#monitoring-merges\}
 
@@ -105,7 +105,7 @@ Note that increasing the number of CPU cores and the size of RAM allows to incre
 
 ## Memory optimized merges \{#memory-optimized-merges\}
 
-ClickHouse does not necessarily load all ^^parts^^ to be merged into memory at once, as sketched in the [previous example](/merges#concurrent-merges). Based on several [factors](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L210), and to reduce memory consumption (sacrificing merge speed), so-called [vertical merging](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L209) loads and merges ^^parts^^ by chunks of blocks instead of in one go.
+ClickHouse doesn't necessarily load all ^^parts^^ to be merged into memory at once, as sketched in the [previous example](/merges#concurrent-merges). Based on several [factors](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L210), and to reduce memory consumption (sacrificing merge speed), so-called [vertical merging](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L209) loads and merges ^^parts^^ by chunks of blocks instead of in one go.
 
 ## Merge mechanics \{#merge-mechanics\}
 

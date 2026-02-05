@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 When it comes to handling updates, ClickHouse and OLTP databases diverge significantly due to their underlying design philosophies and target use cases. For example, PostgreSQL, a row-oriented, ACID-compliant relational database, supports robust and transactional update and delete operations, ensuring data consistency and integrity through mechanisms like Multi-Version Concurrency Control (MVCC). This allows for safe and reliable modifications even in high-concurrency environments.
 
-Conversely, ClickHouse is a column-oriented database optimized for read-heavy analytics and high throughput append-only operations. While it does natively support in-place updates and delete, they must be used carefully to avoid high I/O. Alternatively, tables can be restructured to convert delete and update into appended operations where they are processed asynchronously and/or at read time, thus reflecting the focus on high-throughput data ingestion and efficient query performance over real-time data manipulation.
+Conversely, ClickHouse is a column-oriented database optimized for read-heavy analytics and high throughput append-only operations. While it does natively support in-place updates and delete, they must be used carefully to avoid high I/O. Alternatively, tables can be restructured to convert delete and update into appended operations where they're processed asynchronously and/or at read time, thus reflecting the focus on high-throughput data ingestion and efficient query performance over real-time data manipulation.
 
 ## Methods to update data in ClickHouse \{#methods-to-update-data-in-clickhouse\}
 
@@ -18,7 +18,7 @@ There are several ways to update data in ClickHouse, each with its own advantage
 
 For both operations, if the number of submitted mutations constantly exceeds the number of mutations that are processed in the background over some time interval, the queue of non-materialized mutations that have to be applied will continue to grow. This will result in the eventual degradation of `SELECT` query performance.
 
-In summary, update operations should be issued carefully, and the mutations queue should be tracked closely using the `system.mutations` table. Do not issue updates frequently as you would in OLTP databases. If you have a requirement for frequent updates, see [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree).
+In summary, update operations should be issued carefully, and the mutations queue should be tracked closely using the `system.mutations` table. Don't issue updates frequently as you would in OLTP databases. If you have a requirement for frequent updates, see [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree).
 | Method                                                                                | Syntax                               | When to use                                                                                                                                                                                                                              |
 |---------------------------------------------------------------------------------------|--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [Update mutation](/sql-reference/statements/alter/update)                          | `ALTER TABLE [table] UPDATE`         | Use when data must be updated to disk immediately (e.g. for compliance). Negatively affects `SELECT` performance.                                                                                                                        |
@@ -35,7 +35,7 @@ Update mutations can be issued through a `ALTER TABLE ... UPDATE` command e.g.
 ALTER TABLE posts_temp
         (UPDATE AnswerCount = AnswerCount + 1 WHERE AnswerCount = 0)
 ```
-These are extremely IO-heavy, rewriting all the parts that match the `WHERE` expression. There is no atomicity to this process - parts are substituted for mutated parts as soon as they are ready, and a `SELECT` query that starts executing during a mutation will see data from parts that have already been mutated along with data from parts that have not been mutated yet. Users can track the state of the progress via the [systems.mutations](/operations/system-tables/mutations) table. These are I/O intense operations and should be used sparingly as they can impact cluster `SELECT` performance.
+These are extremely IO-heavy, rewriting all the parts that match the `WHERE` expression. There is no atomicity to this process - parts are substituted for mutated parts as soon as they're ready, and a `SELECT` query that starts executing during a mutation will see data from parts that have already been mutated along with data from parts that haven't been mutated yet. Users can track the state of the progress via the [systems.mutations](/operations/system-tables/mutations) table. These are I/O intense operations and should be used sparingly as they can impact cluster `SELECT` performance.
 
 Read more about [update mutations](/sql-reference/statements/alter/update).
 
@@ -53,7 +53,7 @@ For more details see ["The Lightweight UPDATE Statement"](/sql-reference/stateme
 
 ## On-the-fly Updates \{#on-the-fly-updates\}
 
-On-the-fly updates provide a mechanism to update rows such that they are updated immediately, and subsequent `SELECT` queries will automatically return with the changed values (this incurs an overhead and will slow queries). This effectively addresses the atomicity limitation of normal mutations. We show an example below:
+On-the-fly updates provide a mechanism to update rows such that they're updated immediately, and subsequent `SELECT` queries will automatically return with the changed values (this incurs an overhead and will slow queries). This effectively addresses the atomicity limitation of normal mutations. We show an example below:
 
 ```sql
 SET apply_mutations_on_fly = 1;

@@ -52,7 +52,7 @@ ${time:Escaped} [error]  client: ${ip:CSV}, server: ${host:CSV} ${request:JSON}
 
 We define a name of a column and escaping rule in a `${name:escaping}` format. Multiple options are available here, like CSV, JSON, Escaped, or Quoted, which implement [respective escaping rules](/interfaces/formats/Template).
 
-Now we can use the given file as an argument to the `format_template_row` settings option while importing data (*note, that template and data files **should not have** an extra `\n` symbol at the end of file*):
+Now we can use the given file as an argument to the `format_template_row` settings option while importing data (*note, that template and data files **shouldn't have** an extra `\n` symbol at the end of file*):
 
 ```sql
 INSERT INTO error_log FROM INFILE 'error.log'

@@ -180,7 +180,7 @@ chdb.to_arrowTable(res)
 
 | Error type    | Description                            |
 |---------------|----------------------------------------|
-| `ImportError` | If pyarrow or pandas are not installed |
+| `ImportError` | If pyarrow or pandas aren't installed |
 
 **Example**
 
@@ -223,7 +223,7 @@ chdb.to_df(r)
 
 | Exception     | Condition                              |
 |---------------|----------------------------------------|
-| `ImportError` | If pyarrow or pandas are not installed |
+| `ImportError` | If pyarrow or pandas aren't installed |
 
 **Example**
 
@@ -430,7 +430,7 @@ finally blocks or destructors.
 Close the session and cleanup resources.
 
 This method closes the underlying connection and resets the global session state.
-After calling this method, the session becomes invalid and cannot be used for
+After calling this method, the session becomes invalid and can't be used for
 further queries.
 
 **Syntax**
@@ -495,7 +495,7 @@ The exact return type depends on the format parameter:
 | `ValueError`   | If the SQL query is malformed       |
 
 :::note
-The “Debug” format is not supported and will be automatically converted
+The “Debug” format isn't supported and will be automatically converted
 to “CSV” with a warning.
 For debugging, use connection string parameters instead.
 :::
@@ -578,7 +578,7 @@ send_query(sql, fmt='CSV') → StreamingResult
 | `ValueError`   | If the SQL query is malformed       |
 
 :::note
-The “Debug” format is not supported and will be automatically converted
+The “Debug” format isn't supported and will be automatically converted
 to “CSV” with a warning. For debugging, use connection string parameters instead.
 :::
 
@@ -653,7 +653,7 @@ The exact return type depends on the format parameter:
 | `ValueError`   | If the SQL query is malformed       |
 
 :::note
-The “Debug” format is not supported and will be automatically converted
+The “Debug” format isn't supported and will be automatically converted
 to “CSV” with a warning. For debugging, use connection string parameters
 instead.
 :::
@@ -814,7 +814,7 @@ Close the connection and cleanup resources.
 
 This method closes the database connection and cleans up any associated
 resources including active cursors. After calling this method, the
-connection becomes invalid and cannot be used for further operations.
+connection becomes invalid and can't be used for further operations.
 
 **Syntax**
 
@@ -929,7 +929,7 @@ query(query: str, format: str = 'CSV') → Any
 | Exception      | Condition                                         |
 |----------------|---------------------------------------------------|
 | `RuntimeError` | If query execution fails                          |
-| `ImportError`  | If required packages for format are not installed |
+| `ImportError`  | If required packages for format aren't installed |
 
 :::warning Warning
 This method loads the entire result set into memory. For large
@@ -997,7 +997,7 @@ send_query(query: str, format: str = 'CSV') → StreamingResult
 | Exception      | Condition                                         |
 |----------------|---------------------------------------------------|
 | `RuntimeError` | If query execution fails                          |
-| `ImportError`  | If required packages for format are not installed |
+| `ImportError`  | If required packages for format aren't installed |
 
 :::note
 Only the “Arrow” format supports the `record_batch()` method on the returned StreamingResult.
@@ -1052,7 +1052,7 @@ class chdb.state.sqlitelike.Cursor(connection)
 Close the cursor and cleanup resources.
 
 This method closes the cursor and cleans up any associated resources.
-After calling this method, the cursor becomes invalid and cannot be
+After calling this method, the cursor becomes invalid and can't be
 used for further operations.
 
 **Syntax**
@@ -1452,7 +1452,7 @@ chdb.state.sqlitelike.to_arrowTable(res)
 
 | Exception     | Condition                                       |
 |---------------|-------------------------------------------------|
-| `ImportError` | If pyarrow or pandas packages are not installed |
+| `ImportError` | If pyarrow or pandas packages aren't installed |
 
 :::note
 This function requires both pyarrow and pandas to be installed.
@@ -1509,7 +1509,7 @@ chdb.state.sqlitelike.to_df(r)
 
 | Exception     | Condition                                       |
 |---------------|-------------------------------------------------|
-| `ImportError` | If pyarrow or pandas packages are not installed |
+| `ImportError` | If pyarrow or pandas packages aren't installed |
 
 :::note
 This function uses multi-threading for the Arrow to Pandas conversion
@@ -1582,7 +1582,7 @@ chdb.dbapi.connect(*args, **kwargs)
 
 | Exception                            | Condition                           |
 |--------------------------------------|-------------------------------------|
-| [`err.Error`](#chdb-dbapi-err-error) | If connection cannot be established |
+| [`err.Error`](#chdb-dbapi-err-error) | If connection can't be established |
 
 ---
 
@@ -1694,7 +1694,7 @@ class chdb.dbapi.connections.Connection(path=None)
 ```
 
 :::note
-ClickHouse does not support traditional transactions, so commit() and rollback()
+ClickHouse doesn't support traditional transactions, so commit() and rollback()
 operations are no-ops but provided for DB-API compliance.
 :::
 
@@ -1901,7 +1901,7 @@ Get the last query response.
 
 :::note
 This property is updated each time query() is called directly.
-It does not reflect queries executed through cursors.
+It doesn't reflect queries executed through cursors.
 :::
 
 ---
@@ -1935,7 +1935,7 @@ The cursor provides methods for executing SQL statements, managing query results
 and navigating through result sets. It supports parameter binding, bulk operations,
 and follows DB-API 2.0 specifications.
 
-Do not create Cursor instances directly. Use `Connection.cursor()` instead.
+Don't create Cursor instances directly. Use `Connection.cursor()` instead.
 
 ```python
 class chdb.dbapi.cursors.Cursor(connection)
@@ -1991,15 +1991,15 @@ callproc(procname, args=())
 | `sequence`   | The original args parameter (unmodified) |
 
 :::note
-chDB/ClickHouse does not support stored procedures in the traditional sense.
-This method is provided for DB-API 2.0 compliance but does not perform
+chDB/ClickHouse doesn't support stored procedures in the traditional sense.
+This method is provided for DB-API 2.0 compliance but doesn't perform
 any actual operation. Use execute() for all SQL operations.
 :::
 
 :::warning Compatibility
 This is a placeholder implementation. Traditional stored procedure
 features like OUT/INOUT parameters, multiple result sets, and server
-variables are not supported by the underlying ClickHouse engine.
+variables aren't supported by the underlying ClickHouse engine.
 :::
 
 ---
@@ -2146,7 +2146,7 @@ fetchall()
 
 | Exception                                              | Condition                              |
 |--------------------------------------------------------|----------------------------------------|
-| [`ProgrammingError`](#chdb-dbapi-err-programmingerror) | If execute() has not been called first |
+| [`ProgrammingError`](#chdb-dbapi-err-programmingerror) | If execute() hasn't been called first |
 
 :::warning Warning
 This method can consume large amounts of memory for big result sets.
@@ -2189,7 +2189,7 @@ fetchmany(size=1)
 
 | Exception                                              | Condition                              |
 |--------------------------------------------------------|----------------------------------------|
-| [`ProgrammingError`](#chdb-dbapi-err-programmingerror) | If execute() has not been called first |
+| [`ProgrammingError`](#chdb-dbapi-err-programmingerror) | If execute() hasn't been called first |
 
 **Example**
 
@@ -2221,7 +2221,7 @@ fetchone()
 
 | Exception                                              | Condition                              |
 |--------------------------------------------------------|----------------------------------------|
-| [`ProgrammingError`](#chdb-dbapi-err-programmingerror) | If `execute()` has not been called first |
+| [`ProgrammingError`](#chdb-dbapi-err-programmingerror) | If `execute()` hasn't been called first |
 
 **Example**
 
@@ -2296,10 +2296,10 @@ nextset()
 
 | Return Type  | Description                                                   |
 |--------------|---------------------------------------------------------------|
-| `None`       | Always returns None as multiple result sets are not supported |
+| `None`       | Always returns None as multiple result sets aren't supported |
 
 :::note
-chDB/ClickHouse does not support multiple result sets from a single query.
+chDB/ClickHouse doesn't support multiple result sets from a single query.
 This method is provided for DB-API 2.0 compliance but always returns None.
 :::
 
@@ -2571,9 +2571,9 @@ Bases: [`DatabaseError`](#chdb-dbapi-err-databaseerror)
 Exception raised when the database encounters an internal error.
 
 This exception is raised when the database system encounters internal
-errors that are not caused by the application, such as:
+errors that aren't caused by the application, such as:
 
-- Invalid cursor state (cursor is not valid anymore)
+- Invalid cursor state (cursor isn't valid anymore)
 - Transaction state inconsistencies (transaction is out of sync)
 - Database corruption issues
 - Internal data structure corruption
@@ -2602,10 +2602,10 @@ and may require database restart or repair operations.
 
 Bases: [`DatabaseError`](#chdb-dbapi-err-databaseerror)
 
-Exception raised when a method or database API is not supported.
+Exception raised when a method or database API isn't supported.
 
 This exception is raised when the application attempts to use database
-features or API methods that are not supported by the current database
+features or API methods that aren't supported by the current database
 configuration or version, such as:
 
 - Requesting `rollback()` on connections without transaction support
@@ -2647,7 +2647,7 @@ Bases: [`DatabaseError`](#chdb-dbapi-err-databaseerror)
 Exception raised for errors that are related to the database’s operation.
 
 This exception is raised for errors that occur during database operation
-and are not necessarily under the control of the programmer, including:
+and aren't necessarily under the control of the programmer, including:
 
 - Unexpected disconnection from database
 - Database server not found or unreachable
@@ -2787,7 +2787,7 @@ Convert a number or string to an integer, or return 0 if no arguments
 are given.  If x is a number, return x._\_int_\_().  For floating-point
 numbers, this truncates towards zero.
 
-If x is not a number or if base is given, then x must be a string,
+If x isn't a number or if base is given, then x must be a string,
 bytes, or bytearray instance representing an integer literal in the
 given base.  The literal can be preceded by ‘+’ or ‘-’ and be surrounded
 by whitespace.  The base defaults to 10.  Valid bases are 0 and 2-36.
@@ -3171,7 +3171,7 @@ chdb.udf.generate_udf(func_name, args, return_type, udf_body)
 | `udf_body`    | str   | Python source code body of the UDF function |
 
 :::note
-This function is typically called by the @chdb_udf decorator and should not
+This function is typically called by the @chdb_udf decorator and shouldn't
 be called directly by users.
 :::
 
@@ -3292,7 +3292,7 @@ Infers the most suitable data type for a list of values.
 This function examines a list of values and determines the most appropriate
 data type that can represent all the values in the list. It considers integer,
 unsigned integer, decimal, and float types, and defaults to “string” if the
-values cannot be represented by any numeric type or if all values are None.
+values can't be represented by any numeric type or if all values are None.
 
 **Syntax**
 

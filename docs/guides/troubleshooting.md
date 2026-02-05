@@ -8,11 +8,11 @@ keywords: ['troubleshooting', 'debugging', 'problem solving', 'errors', 'diagnos
 
 ## Installation {#installation}
 
-### Cannot import GPG keys from keyserver.ubuntu.com with apt-key {#cannot-import-gpg-keys-from-keyserverubuntucom-with-apt-key}
+### Can't import GPG keys from keyserver.ubuntu.com with apt-key {#can't-import-gpg-keys-from-keyserverubuntucom-with-apt-key}
 
 The `apt-key` feature with the [Advanced package tool (APT) has been deprecated](https://manpages.debian.org/bookworm/apt/apt-key.8.en.html). You should use the `gpg` command instead. Please refer the [install guide](../getting-started/install/install.mdx) article.
 
-### Cannot import GPG keys from keyserver.ubuntu.com with gpg {#cannot-import-gpg-keys-from-keyserverubuntucom-with-gpg}
+### Can't import GPG keys from keyserver.ubuntu.com with gpg {#can't-import-gpg-keys-from-keyserverubuntucom-with-gpg}
 
 1. See if your `gpg` is installed:
 
@@ -20,12 +20,12 @@ The `apt-key` feature with the [Advanced package tool (APT) has been deprecated]
 sudo apt-get install gnupg
 ```
 
-### Cannot get deb packages from ClickHouse repository with apt-get {#cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
+### Can't get deb packages from ClickHouse repository with apt-get {#can't-get-deb-packages-from-clickhouse-repository-with-apt-get}
 
 1. Check firewall settings.
-1. If you cannot access the repository for any reason, download packages as described in the [install guide](../getting-started/install/install.mdx) article and install them manually using the `sudo dpkg -i <packages>` command. You will also need the `tzdata` package.
+1. If you can't access the repository for any reason, download packages as described in the [install guide](../getting-started/install/install.mdx) article and install them manually using the `sudo dpkg -i <packages>` command. You will also need the `tzdata` package.
 
-### Cannot update deb packages from ClickHouse repository with apt-get {#cannot-update-deb-packages-from-clickhouse-repository-with-apt-get}
+### Can't update deb packages from ClickHouse repository with apt-get {#can't-update-deb-packages-from-clickhouse-repository-with-apt-get}
 
 The issue may be happened when the GPG key is changed.
 
@@ -80,10 +80,10 @@ After that follow the [install guide](/install/redhat)
 
 Possible issues:
 
-- The server is not running.
+- The server isn't running.
 - Unexpected or wrong configuration parameters.
 
-### Server is not running {#server-is-not-running}
+### Server isn't running {#server-is-not-running}
 
 #### Check if server is running {#check-if-server-is-running}
 
@@ -91,7 +91,7 @@ Possible issues:
 sudo service clickhouse-server status
 ```
 
-If the server is not running, start it with the command:
+If the server isn't running, start it with the command:
 
 ```shell
 sudo service clickhouse-server start
@@ -112,7 +112,7 @@ If `clickhouse-server` start failed with a configuration error, you should see t
 2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
 ```
 
-If you do not see an error at the end of the file, look through the entire file starting from the string:
+If you don't see an error at the end of the file, look through the entire file starting from the string:
 
 ```plaintext
 <Information> Application: starting up.
@@ -136,7 +136,7 @@ Revision: 54413
 
 #### See system.d logs {#see-systemd-logs}
 
-If you do not find any useful information in `clickhouse-server` logs or there aren't any logs, you can view `system.d` logs using the command:
+If you don't find any useful information in `clickhouse-server` logs or there aren't any logs, you can view `system.d` logs using the command:
 
 ```shell
 sudo journalctl -u clickhouse-server
@@ -179,7 +179,7 @@ Check:
 
 ## Query processing {#query-processing}
 
-If ClickHouse is not able to process the query, it sends an error description to the client. In the `clickhouse-client` you get a description of the error in the console. If you are using the HTTP interface, ClickHouse sends the error description in the response body. For example:
+If ClickHouse isn't able to process the query, it sends an error description to the client. In the `clickhouse-client` you get a description of the error in the console. If you're using the HTTP interface, ClickHouse sends the error description in the response body. For example:
 
 ```shell
 $ curl 'http://localhost:8123/' --data-binary "SELECT a"

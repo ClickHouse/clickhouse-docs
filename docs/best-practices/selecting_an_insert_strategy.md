@@ -18,7 +18,7 @@ import BulkInserts from '@site/docs/best-practices/_snippets/_bulk_inserts.md';
 Efficient data ingestion forms the basis of high-performance ClickHouse deployments. Selecting the right insert strategy can dramatically impact throughput, cost, and reliability. This section outlines best practices, tradeoffs, and configuration options to help you make the right decision for your workload.
 
 :::note
-The following assumes you are pushing data to ClickHouse via a client. If you are pulling data into ClickHouse e.g. using built in table functions such as [s3](/sql-reference/table-functions/s3) and [gcs](/sql-reference/table-functions/gcs), we recommend our guide ["Optimizing for S3 Insert and Read Performance"](/integrations/s3/performance).
+The following assumes you're pushing data to ClickHouse via a client. If you're pulling data into ClickHouse e.g. using built in table functions such as [s3](/sql-reference/table-functions/s3) and [gcs](/sql-reference/table-functions/gcs), we recommend our guide ["Optimizing for S3 Insert and Read Performance"](/integrations/s3/performance).
 :::
 
 ## Synchronous inserts by default {#synchronous-inserts-by-default}
@@ -49,7 +49,7 @@ The data is ⑤ transmitted to a ClickHouse network interface—either the [nati
 
 After ⑥ receiving the data, ClickHouse ⑦ decompresses it if compression was used, then ⑧ parses it from the originally sent format.
 
-Using the values from that formatted data and the target table's [DDL](/sql-reference/statements/create/table) statement, ClickHouse ⑨ builds an in-memory [block](/development/architecture#block) in the MergeTree format, ⑩ [sorts](/parts#what-are-table-parts-in-clickhouse) rows by the primary key columns if they are not already pre-sorted, ⑪ creates a [sparse primary index](/guides/best-practices/sparse-primary-indexes), ⑫ applies [per-column compression](/parts#what-are-table-parts-in-clickhouse), and ⑬ writes the data as a new ⑭ [data part](/parts) to disk.
+Using the values from that formatted data and the target table's [DDL](/sql-reference/statements/create/table) statement, ClickHouse ⑨ builds an in-memory [block](/development/architecture#block) in the MergeTree format, ⑩ [sorts](/parts#what-are-table-parts-in-clickhouse) rows by the primary key columns if they're not already pre-sorted, ⑪ creates a [sparse primary index](/guides/best-practices/sparse-primary-indexes), ⑫ applies [per-column compression](/parts#what-are-table-parts-in-clickhouse), and ⑬ writes the data as a new ⑭ [data part](/parts) to disk.
 
 ### Batch inserts if synchronous {#batch-inserts-if-synchronous}
 
@@ -144,6 +144,6 @@ Unlike many traditional databases, ClickHouse also supports an HTTP interface. *
 
 This is often preferable to ClickHouse's native protocol as it allows traffic to be easily switched with load balancers. We expect small differences in insert performance with the native protocol, which incurs a little less overhead.
 
-However, it lacks the native protocol's deeper integration and cannot perform client-side optimizations like materialized value computation or automatic conversion to Native format. While HTTP inserts can still be compressed using standard HTTP headers (e.g. `Content-Encoding: lz4`), the compression is applied to the entire payload rather than individual data blocks. This interface is often preferred in environments where protocol simplicity, load balancing, or broad format compatibility is more important than raw performance.
+However, it lacks the native protocol's deeper integration and can't perform client-side optimizations like materialized value computation or automatic conversion to Native format. While HTTP inserts can still be compressed using standard HTTP headers (e.g. `Content-Encoding: lz4`), the compression is applied to the entire payload rather than individual data blocks. This interface is often preferred in environments where protocol simplicity, load balancing, or broad format compatibility is more important than raw performance.
 
 For a more detailed description of these interfaces see [here](/interfaces/overview).

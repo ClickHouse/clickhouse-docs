@@ -40,7 +40,7 @@ View the [Quick Start](/getting-started/install/install.mdx) for more details on
 
 ## 2. Create TLS certificates {#2-create-tls-certificates}
 :::note
-Using self-signed certificates are for demonstration purposes only and should not used in production. Certificate requests should be created to be signed by the organization and validated using the CA chain that will be configured in the settings. However, these steps can be used to configure and test settings, then can be replaced by the actual certificates that will be used.
+Using self-signed certificates are for demonstration purposes only and shouldn't used in production. Certificate requests should be created to be signed by the organization and validated using the CA chain that will be configured in the settings. However, these steps can be used to configure and test settings, then can be replaced by the actual certificates that will be used.
 :::
 
 1. Generate a key that will be used for the new CA:
@@ -378,7 +378,7 @@ The settings below are configured in the ClickHouse server `config.xml`
     |9444 | ClickHouse Keeper Raft port |
 
 3. Verify ClickHouse Keeper health
-The typical [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) commands will not work using `echo` without TLS, here is how to use the commands with `openssl`.
+The typical [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) commands won't work using `echo` without TLS, here is how to use the commands with `openssl`.
    - Start an interactive session with `openssl`
 
   ```bash
@@ -455,7 +455,7 @@ The typical [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-c
     <Image img={configuringSsl01} alt="Configuring TLS" size="md" border />
 
     :::note
-    the browser will show an untrusted certificate since it is being reached from a workstation and the certificates are not in the root CA stores on the client machine.
+    the browser will show an untrusted certificate since it is being reached from a workstation and the certificates aren't in the root CA stores on the client machine.
     When using certificates issued from a public authority or enterprise CA, it should show trusted.
     :::
 

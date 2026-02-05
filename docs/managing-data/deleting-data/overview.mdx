@@ -19,7 +19,7 @@ Here is a summary of the different ways to delete data in ClickHouse:
 
 ## Lightweight deletes \{#lightweight-deletes\}
 
-Lightweight deletes cause rows to be immediately marked as deleted such that they can be automatically filtered out of all subsequent `SELECT` queries. Subsequent removal of these deleted rows occurs during natural merge cycles and thus incurs less I/O. As a result, it is possible that for an unspecified period, data is not actually deleted from storage and is only marked as deleted. If you need to guarantee that data is deleted, consider the above mutation command.
+Lightweight deletes cause rows to be immediately marked as deleted such that they can be automatically filtered out of all subsequent `SELECT` queries. Subsequent removal of these deleted rows occurs during natural merge cycles and thus incurs less I/O. As a result, it is possible that for an unspecified period, data isn't actually deleted from storage and is only marked as deleted. If you need to guarantee that data is deleted, consider the above mutation command.
 
 ```sql
 -- delete all data from 2018 with a lightweight delete. Not recommended.
@@ -43,7 +43,7 @@ Delete mutations can be issued through a `ALTER TABLE ... DELETE` command e.g.
 ALTER TABLE posts DELETE WHERE toYear(CreationDate) = 2018
 ```
 
-These can be executed either synchronously (by default if non-replicated) or asynchronously (determined by the [mutations_sync](/operations/settings/settings#mutations_sync) setting). These are extremely IO-heavy, rewriting all the parts that match the `WHERE` expression. There is no atomicity to this process - parts are substituted for mutated parts as soon as they are ready, and a `SELECT` query that starts executing during a mutation will see data from parts that have already been mutated along with data from parts that have not been mutated yet. Users can track the state of the progress via the [system.mutations](/operations/system-tables/mutations#monitoring-mutations) table. These are I/O intense operations and should be used sparingly as they can impact cluster `SELECT` performance.
+These can be executed either synchronously (by default if non-replicated) or asynchronously (determined by the [mutations_sync](/operations/settings/settings#mutations_sync) setting). These are extremely IO-heavy, rewriting all the parts that match the `WHERE` expression. There is no atomicity to this process - parts are substituted for mutated parts as soon as they're ready, and a `SELECT` query that starts executing during a mutation will see data from parts that have already been mutated along with data from parts that haven't been mutated yet. Users can track the state of the progress via the [system.mutations](/operations/system-tables/mutations#monitoring-mutations) table. These are I/O intense operations and should be used sparingly as they can impact cluster `SELECT` performance.
 
 Read more about [delete mutations](/sql-reference/statements/alter/delete).
 

@@ -92,7 +92,7 @@ Together, these two components enable ClickHouse Cloud to:
 All customer data remains within your cloud account and is never accessed or transmitted through these management channels.
 
 **Additional recommendations and considerations:**
-- Ensure that network CIDR ranges for your BYOC VPC does not overlap with any existing VPCs you plan to peer with.
+- Ensure that network CIDR ranges for your BYOC VPC doesn't overlap with any existing VPCs you plan to peer with.
 - Tag your resources clearly to simplify management and support.
 - Plan for adequate subnet sizing and distribution across availability zones for high availability.
 - Consult the [security playbook](https://clickhouse.com/docs/cloud/security/audit-logging/byoc-security-playbook) to understand shared responsibility and best practices when ClickHouse Cloud operates within your environment.

@@ -69,7 +69,7 @@ Contact support to schedule maintenance windows. Please expect a minimum of a we
 <details>
 <summary>How does storage communication work between BYOC VPC and S3?</summary>
 
-Traffic between your Customer BYOC VPC and S3 uses HTTPS (port 443) via the AWS S3 API for table data, backups, and logs. When using S3 VPC endpoints, this traffic remains within the AWS network and does not traverse the public internet.
+Traffic between your Customer BYOC VPC and S3 uses HTTPS (port 443) via the AWS S3 API for table data, backups, and logs. When using S3 VPC endpoints, this traffic remains within the AWS network and doesn't traverse the public internet.
 
 </details>
 
@@ -88,6 +88,6 @@ Internal ClickHouse cluster communication within the Customer BYOC VPC uses:
 <details>
 <summary>Does ClickHouse offer an uptime SLA for BYOC?</summary>
 
-No, since the data plane is hosted in the customer's cloud environment, service availability depends on resources not in ClickHouse's control. Therefore, ClickHouse does not offer a formal uptime SLA for BYOC deployments. If you have additional questions, please contact support@clickhouse.com.
+No, since the data plane is hosted in the customer's cloud environment, service availability depends on resources not in ClickHouse's control. Therefore, ClickHouse doesn't offer a formal uptime SLA for BYOC deployments. If you have additional questions, please contact support@clickhouse.com.
 
 </details>

@@ -37,7 +37,7 @@ These ports enable integrations with a variety of telemetry sources and make the
 
 * Local testing
 * Proof of concepts
-* Production deployments where fault tolerance is not required and a single server is sufficient to host all ClickHouse data
+* Production deployments where fault tolerance isn't required and a single server is sufficient to host all ClickHouse data
 * When deploying ClickStack but hosting ClickHouse separately e.g. using ClickHouse Cloud.
 
 ## Deployment steps {#deployment-steps}

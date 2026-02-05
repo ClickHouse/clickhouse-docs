@@ -15,7 +15,7 @@ import Image from '@theme/IdealImage';
 
 **Deduplication** refers to the process of ***removing duplicate rows of a dataset***. In an OLTP database, this is done easily because each row has a unique primary key-but at the cost of slower inserts. Every inserted row needs to first be searched for and, if found, needs to be replaced.
 
-ClickHouse is built for speed when it comes to data insertion. The storage files are immutable and ClickHouse does not check for an existing primary key before inserting a row-so deduplication involves a bit more effort. This also means that deduplication is not immediate-it is **eventual**, which has a few side effects:
+ClickHouse is built for speed when it comes to data insertion. The storage files are immutable and ClickHouse doesn't check for an existing primary key before inserting a row-so deduplication involves a bit more effort. This also means that deduplication isn't immediate-it is **eventual**, which has a few side effects:
 
 - At any moment in time your table can still have duplicates (rows with the same sorting key)
 - The actual removal of duplicate rows occurs during the merging of parts
@@ -35,7 +35,7 @@ Deduplication is implemented in ClickHouse using the following table engines:
 
 1. `ReplacingMergeTree` table engine: with this table engine, duplicate rows with the same sorting key are removed during merges. `ReplacingMergeTree` is a good option for emulating upsert behavior (where you want queries to return the last row inserted).
 
-2. Collapsing rows: the `CollapsingMergeTree` and `VersionedCollapsingMergeTree` table engines use a logic where an existing row is "canceled" and a new row is inserted. They are more complex to implement than `ReplacingMergeTree`, but your queries and aggregations can be simpler to write without worrying about whether or not data has been merged yet. These two table engines are useful when you need to update data frequently.
+2. Collapsing rows: the `CollapsingMergeTree` and `VersionedCollapsingMergeTree` table engines use a logic where an existing row is "canceled" and a new row is inserted. They're more complex to implement than `ReplacingMergeTree`, but your queries and aggregations can be simpler to write without worrying about whether or not data has been merged yet. These two table engines are useful when you need to update data frequently.
 
 We walk through both of these techniques below. For more details, check out our free on-demand [Deleting and Updating Data training module](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs).
 
@@ -88,7 +88,7 @@ FROM hackernews_rmt
 └────┴─────────┴─────────────────┴───────┘
 ```
 
-The separate boxes above in the output demonstrate the two parts behind-the-scenes - this data has not been merged yet, so the duplicate rows have not been removed yet. Let's use the `FINAL` keyword in the `SELECT` query, which results in a logical merging of the query result:
+The separate boxes above in the output demonstrate the two parts behind-the-scenes - this data hasn't been merged yet, so the duplicate rows haven't been removed yet. Let's use the `FINAL` keyword in the `SELECT` query, which results in a logical merging of the query result:
 
 ```sql
 SELECT *
@@ -106,7 +106,7 @@ FINAL
 The result only has 2 rows, and the last row inserted is the row that gets returned.
 
 :::note
-Using `FINAL` works okay if you have a small amount of data. If you are dealing with a large amount of data, 
+Using `FINAL` works okay if you have a small amount of data. If you're dealing with a large amount of data, 
 using `FINAL` is probably not the best option. Let's discuss a better option for 
 finding the latest value of a column.
 :::
@@ -191,7 +191,7 @@ What is the sign column of a `CollapsingMergeTree` table? It represents the _sta
 
 - If two rows have the same primary key (or sort order if that is different than the primary key), but different values of the sign column, then the last row inserted with a +1 becomes the state row and the other rows cancel each other
 - Rows that cancel each other out are deleted during merges
-- Rows that do not have a matching pair are kept
+- Rows that don't have a matching pair are kept
 
 Let's add a row to the `hackernews_views` table. Since it is the only row for this primary key, we set its state to 1:
 
@@ -239,10 +239,10 @@ FINAL
 └─────┴─────────┴───────┴──────┘
 ```
 
-But of course, using `FINAL` is not recommended for large tables.
+But of course, using `FINAL` isn't recommended for large tables.
 
 :::note
-The value passed in for the `views` column in our example is not really needed, nor does it have to match the current value of `views` of the old row. In fact, you can cancel a row with just the primary key and a -1:
+The value passed in for the `views` column in our example isn't really needed, nor does it have to match the current value of `views` of the old row. In fact, you can cancel a row with just the primary key and a -1:
 
 ```sql
 INSERT INTO hackernews_views(id, author, sign) VALUES
@@ -252,7 +252,7 @@ INSERT INTO hackernews_views(id, author, sign) VALUES
 
 ## Real-time updates from multiple threads {#real-time-updates-from-multiple-threads}
 
-With a `CollapsingMergeTree` table, rows cancel each other using a sign column, and the state of a row is determined by the last row inserted. But this can be problematic if you are inserting rows from different threads where rows can be inserted out of order. Using the "last" row does not work in this situation.
+With a `CollapsingMergeTree` table, rows cancel each other using a sign column, and the state of a row is determined by the last row inserted. But this can be problematic if you're inserting rows from different threads where rows can be inserted out of order. Using the "last" row doesn't work in this situation.
 
 This is where `VersionedCollapsingMergeTree` comes in handy - it collapses rows just like `CollapsingMergeTree`, but instead of keeping the last row inserted, it keeps the row with the highest value of a version column that you specify.
 
@@ -273,8 +273,8 @@ PRIMARY KEY (id, author)
 Notice the table uses `VersionsedCollapsingMergeTree` as the engine and passes in the **sign column** and a **version column**. Here is the table works:
 
 - It deletes each pair of rows that have the same primary key and version and different sign
-- The order that rows were inserted does not matter
-- Note that if the version column is not a part of the primary key, ClickHouse adds it to the primary key implicitly as the last field
+- The order that rows were inserted doesn't matter
+- Note that if the version column isn't a part of the primary key, ClickHouse adds it to the primary key implicitly as the last field
 
 You use the same type of logic when writing queries - group by the primary key and use clever logic to avoid rows that have been canceled but not deleted yet. Let's add some rows to the `hackernews_views_vcmt` table:
 
@@ -342,6 +342,6 @@ A `VersionedCollapsingMergeTree` table is quite handy when you want to implement
 
 ## Why aren't my rows being deduplicated? {#why-arent-my-rows-being-deduplicated}
 
-One reason inserted rows may not be deduplicated is if you are using a non-idempotent function or expression in your `INSERT` statement. For example, if you are inserting rows with the column `createdAt DateTime64(3) DEFAULT now()`, your rows are guaranteed to be unique because each row will have a unique default value for the `createdAt` column. The MergeTree / ReplicatedMergeTree table engine will not know to deduplicate the rows as each inserted row will generate a unique checksum.
+One reason inserted rows may not be deduplicated is if you're using a non-idempotent function or expression in your `INSERT` statement. For example, if you're inserting rows with the column `createdAt DateTime64(3) DEFAULT now()`, your rows are guaranteed to be unique because each row will have a unique default value for the `createdAt` column. The MergeTree / ReplicatedMergeTree table engine won't know to deduplicate the rows as each inserted row will generate a unique checksum.
 
-In this case, you can specify your own `insert_deduplication_token` for each batch of rows to ensure that multiple inserts of the same batch will not result in the same rows being re-inserted. Please see the [documentation on `insert_deduplication_token`](/operations/settings/settings#insert_deduplication_token) for more details about how to use this setting.
+In this case, you can specify your own `insert_deduplication_token` for each batch of rows to ensure that multiple inserts of the same batch won't result in the same rows being re-inserted. Please see the [documentation on `insert_deduplication_token`](/operations/settings/settings#insert_deduplication_token) for more details about how to use this setting.

@@ -77,7 +77,7 @@ In the query above `\3` is used to substitute the third capture group into the r
 
 ## Create masked `VIEW`s {#masked-views}
 
-A [`VIEW`](/sql-reference/statements/create/view) can be used in conjunction with the aforementioned string functions to apply transformations to columns containing sensitive data, before they are presented to the user. 
+A [`VIEW`](/sql-reference/statements/create/view) can be used in conjunction with the aforementioned string functions to apply transformations to columns containing sensitive data, before they're presented to the user. 
 In this way, the original data remains unchanged, and users querying the view see only the masked data.
 
 To demonstrate, let's imagine that we have a table which stores records of customer orders.
@@ -156,7 +156,7 @@ Next grant `SELECT` privileges on the view to the role:
 GRANT SELECT ON masked_orders TO masked_orders_viewer;
 ```
 
-Because ClickHouse roles are additive, you must ensure that users who should only see the masked view do not have any `SELECT` privilege on the base table via any role.
+Because ClickHouse roles are additive, you must ensure that users who should only see the masked view don't have any `SELECT` privilege on the base table via any role.
 
 As such, you should explicitly revoke base-table access to be safe:
 
@@ -264,7 +264,7 @@ GRANT masked_orders_viewer TO your_user;
 
 In the case where you want to store only the masked data in the `orders` table,
 you can mark the sensitive unmasked columns as [`EPHEMERAL`](/sql-reference/statements/create/table#ephemeral),
-which will ensure that columns of this type are not stored in the table.
+which will ensure that columns of this type aren't stored in the table.
 
 ```sql
 DROP TABLE IF EXISTS orders;
@@ -320,10 +320,10 @@ ORDER BY user_id ASC
 For users of ClickHouse OSS wishing to mask log data specifically, you can make use of [query masking rules](/operations/server-configuration-parameters/settings#query_masking_rules) (log masking) to mask data.
 
 To do so, you can define regular expression-based masking rules in the server configuration.
-These rules are applied to queries and all log messages before they are stored in server logs or system tables (such as `system.query_log`, `system.text_log`, and `system.processes`).
+These rules are applied to queries and all log messages before they're stored in server logs or system tables (such as `system.query_log`, `system.text_log`, and `system.processes`).
 
 This helps prevent sensitive data from leaking into **logs** only.
-Note that it does not mask data in query results.
+Note that it doesn't mask data in query results.
 
 For example, to mask a social security number, you could add the following rule to your [server configuration](/operations/configuration-files):
 

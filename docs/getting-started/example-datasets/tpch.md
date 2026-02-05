@@ -54,8 +54,8 @@ Now create tables in ClickHouse.
 We stick as closely as possible to the rules of the TPC-H specification:
 - Primary keys are created only for the columns mentioned in section 1.4.2.2 of the specification.
 - Substitution parameters were replaced by the values for query validation in sections 2.1.x.4 of the specification.
-- As per section 1.4.2.1, the table definitions do not use the optional `NOT NULL` constraints, even if `dbgen` generates them by default.
-  The performance of `SELECT` queries in ClickHouse is not affected by the presence or absence of `NOT NULL` constraints.
+- As per section 1.4.2.1, the table definitions don't use the optional `NOT NULL` constraints, even if `dbgen` generates them by default.
+  The performance of `SELECT` queries in ClickHouse isn't affected by the presence or absence of `NOT NULL` constraints.
 - As per section 1.3.1, we use ClickHouse's native datatypes (e.g. `Int32`, `String`) to implement the abstract datatypes mentioned in the
   specification (e.g. `Identifier`, `Variable text, size N`). The only effect of this is better readability, the SQL-92 datatypes generated
   by `dbgen` (e.g. `INTEGER`, `VARCHAR(40)`) would also work in ClickHouse.
@@ -390,7 +390,7 @@ WHERE
 ```
 
 ::::note
-As of February 2025, the query does not work out-of-the box due to a bug with Decimal addition. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/70136
+As of February 2025, the query doesn't work out-of-the box due to a bug with Decimal addition. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/70136
 
 This alternative formulation works and was verified to return the reference results.
 

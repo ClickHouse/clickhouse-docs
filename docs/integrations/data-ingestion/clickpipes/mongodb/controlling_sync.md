@@ -26,7 +26,7 @@ There are two main ways to control the sync of a MongoDB ClickPipe. The ClickPip
 
 ### Sync interval {#interval}
 
-The sync interval of the pipe is the amount of time (in seconds) for which the ClickPipe will pull records from the source database. The time to push what we have to ClickHouse is not included in this interval.
+The sync interval of the pipe is the amount of time (in seconds) for which the ClickPipe will pull records from the source database. The time to push what we have to ClickHouse isn't included in this interval.
 
 The default is **1 minute**.
 Sync interval can be set to any positive integer value, but it is recommended to keep it above 10 seconds.

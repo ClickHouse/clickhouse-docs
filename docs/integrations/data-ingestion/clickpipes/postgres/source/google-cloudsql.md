@@ -34,7 +34,7 @@ Anything on or after Postgres 12
 
 ## Enable logical replication {#enable-logical-replication}
 
-**You don't need** to follow the below steps if the settings `cloudsql. logical_decoding` is on and `wal_sender_timeout` is 0. These settings should mostly be pre-configured if you are migrating from another data replication tool.
+**You don't need** to follow the below steps if the settings `cloudsql. logical_decoding` is on and `wal_sender_timeout` is 0. These settings should mostly be pre-configured if you're migrating from another data replication tool.
 
 1. Click on **Edit** button on the Overview page.
 

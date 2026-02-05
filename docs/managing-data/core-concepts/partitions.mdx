@@ -123,7 +123,7 @@ TTL date + INTERVAL 12 MONTH TO VOLUME 'slow_but_cheap';
 
 ### Query optimization \{#query-optimization\}
 
-Partitions can assist with query performance, but this depends heavily on the access patterns. If queries target only a few partitions (ideally one), performance can potentially improve. This is only typically useful if the partitioning key is not in the primary key and you are filtering by it, as shown in the example query below.
+Partitions can assist with query performance, but this depends heavily on the access patterns. If queries target only a few partitions (ideally one), performance can potentially improve. This is only typically useful if the partitioning key isn't in the primary key and you're filtering by it, as shown in the example query below.
 
 ```sql runnable
 SELECT MAX(price) AS highest_price
@@ -133,7 +133,7 @@ WHERE date >= '2020-12-01'
   AND town = 'LONDON';
 ```
 
-The query runs over our example table from above and [calculates](https://sql.clickhouse.com/?query=U0VMRUNUIE1BWChwcmljZSkgQVMgaGlnaGVzdF9wcmljZQpGUk9NIHVrLnVrX3ByaWNlX3BhaWRfc2ltcGxlX3BhcnRpdGlvbmVkCldIRVJFIGRhdGUgPj0gJzIwMjAtMTItMDEnCiAgQU5EIGRhdGUgPD0gJzIwMjAtMTItMzEnCiAgQU5EIHRvd24gPSAnTE9ORE9OJzs&run_query=true&tab=results) the highest price of all sold properties in London in December 2020 by filtering on both a column (`date`) used in the table's partition key and on a column (`town`) used in the table's primary key (and `date` is not part of the primary key).
+The query runs over our example table from above and [calculates](https://sql.clickhouse.com/?query=U0VMRUNUIE1BWChwcmljZSkgQVMgaGlnaGVzdF9wcmljZQpGUk9NIHVrLnVrX3ByaWNlX3BhaWRfc2ltcGxlX3BhcnRpdGlvbmVkCldIRVJFIGRhdGUgPj0gJzIwMjAtMTItMDEnCiAgQU5EIGRhdGUgPD0gJzIwMjAtMTItMzEnCiAgQU5EIHRvd24gPSAnTE9ORE9OJzs&run_query=true&tab=results) the highest price of all sold properties in London in December 2020 by filtering on both a column (`date`) used in the table's partition key and on a column (`town`) used in the table's primary key (and `date` isn't part of the primary key).
 
 ClickHouse processes that query by applying a sequence of pruning techniques to avoid evaluating irrelevant data:
 

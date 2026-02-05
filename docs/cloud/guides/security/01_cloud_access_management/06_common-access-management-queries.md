@@ -12,7 +12,7 @@ import CommonUserRolesContent from '@site/docs/_snippets/_users-and-roles-common
 # Common access management queries
 
 :::tip Self-managed
-If you are working with self-managed ClickHouse please see [SQL users and roles](/guides/sre/user-management/index.md).
+If you're working with self-managed ClickHouse please see [SQL users and roles](/guides/sre/user-management/index.md).
 :::
 
 This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns.
@@ -33,7 +33,7 @@ GRANT default_role TO clickhouse_admin;
 ```
 
 :::note
-When using the SQL Console, your SQL statements will not be run as the `default` user. Instead, statements will be run as a user named `sql-console:${cloud_login_email}`, where `cloud_login_email` is the email of the user currently running the query.
+When using the SQL Console, your SQL statements won't be run as the `default` user. Instead, statements will be run as a user named `sql-console:${cloud_login_email}`, where `cloud_login_email` is the email of the user currently running the query.
 
 These automatically generated SQL Console users have the `default` role.
 :::

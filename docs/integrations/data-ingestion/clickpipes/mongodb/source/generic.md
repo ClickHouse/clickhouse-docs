@@ -20,7 +20,7 @@ If you use MongoDB Atlas, please refer to the specific guide [here](./atlas).
 
 ## Enable oplog retention {#enable-oplog-retention}
 
-Minimum oplog retention of 24 hours is required for replication. We recommend setting the oplog retention to 72 hours or longer to ensure that the oplog is not truncated before the initial snapshot is completed.
+Minimum oplog retention of 24 hours is required for replication. We recommend setting the oplog retention to 72 hours or longer to ensure that the oplog isn't truncated before the initial snapshot is completed.
 
 You can check your current oplog retention by running the following command in the MongoDB shell (you must have `clusterMonitor` role to run this command):
 
