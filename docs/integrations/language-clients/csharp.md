@@ -95,6 +95,7 @@ Below is a full list of all the settings, their default values, and their effect
 |----------|------|---------|----------------------|-------------|
 | UseCompression | `bool` | `true` | `Compression` | Enable gzip compression for data transfer |
 | UseCustomDecimals | `bool` | `true` | `UseCustomDecimals` | Use `ClickHouseDecimal` for arbitrary precision; if false, uses .NET `decimal` (128-bit limit) |
+| ReadStringsAsByteArrays | `bool` | `false` | `ReadStringsAsByteArrays` | Read `String` and `FixedString` columns as `byte[]` instead of `string`; useful for binary data |
 | UseFormDataParameters | `bool` | `false` | `UseFormDataParameters` | Send parameters as form data instead of URL query string |
 
 ### Session management {#session-management}
@@ -575,7 +576,11 @@ Decimal type conversion is controlled via the UseCustomDecimals setting.
 | ClickHouse Type | .NET Type |
 |-----------------|-----------|
 | String | `string` |
-| FixedString(N) | `byte[]` |
+| FixedString(N) | `string` |
+
+:::note
+By default, both `String` and `FixedString(N)` columns are returned as `string`. Set `ReadStringsAsByteArrays=true` in your connection string to read them as `byte[]` instead. This is useful when storing binary data that may not be valid UTF-8.
+:::
 
 ---
 
@@ -711,8 +716,8 @@ When inserting data, the driver converts .NET types to their corresponding Click
 
 | ClickHouse Type | Accepted .NET Types | Notes |
 |-----------------|---------------------|-------|
-| String | `string`, any `Convert.ToString()` compatible |  |
-| FixedString(N) | `string`, `byte[]` | String is UTF-8 encoded and padded/truncated; byte[] must be exactly N bytes |
+| String | `string`, `byte[]`, `ReadOnlyMemory<byte>`, `Stream` | Binary types written directly; streams can be seekable or non-seekable |
+| FixedString(N) | `string`, `byte[]`, `ReadOnlyMemory<byte>`, `Stream` | String is UTF-8 encoded and padded; binary types must be exactly N bytes |
 
 ---
 
