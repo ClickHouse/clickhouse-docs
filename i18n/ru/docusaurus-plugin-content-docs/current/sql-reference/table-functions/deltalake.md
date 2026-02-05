@@ -10,11 +10,11 @@ doc_type: 'reference'
 
 # Табличная функция deltaLake \{#deltalake-table-function\}
 
-Предоставляет табличный интерфейс только для чтения к таблицам [Delta Lake](https://github.com/delta-io/delta) в Amazon S3, Azure Blob Storage или локально смонтированной файловой системе.
+Предоставляет табличный интерфейс к таблицам [Delta Lake](https://github.com/delta-io/delta) в Amazon S3, Azure Blob Storage или локально смонтированной файловой системе с поддержкой операций чтения и записи (начиная с v25.10)
 
 ## Синтаксис \{#syntax\}
 
-`deltaLake` — это псевдоним `deltaLakeS3` и поддерживается для обеспечения совместимости.
+`deltaLake` — это псевдоним `deltaLakeS3`, который поддерживается для обеспечения совместимости.
 
 ```sql
 deltaLake(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
@@ -26,20 +26,24 @@ deltaLakeAzure(connection_string|storage_account_url, container_name, blobpath, 
 deltaLakeLocal(path, [,format])
 ```
 
+
 ## Аргументы \{#arguments\}
 
 Описание аргументов совпадает с описанием аргументов табличных функций `s3`, `azureBlobStorage`, `HDFS` и `file` соответственно.
-`format` обозначает формат файлов данных в таблице Delta Lake.
+Аргумент `format` задаёт формат файлов данных в таблице Delta Lake.
 
 ## Возвращаемое значение \{#returned_value\}
 
-Таблица с указанной структурой для чтения данных из указанной таблицы Delta Lake.
+Таблица с указанной структурой для чтения данных из или записи данных в указанную таблицу Delta Lake.
 
 ## Примеры \{#examples\}
 
-Выборка строк из таблицы в S3 `https://clickhouse-public-datasets.s3.amazonaws.com/delta_lake/hits/`:
+### Чтение данных \{#reading-data\}
 
-```sql
+Рассмотрим таблицу в хранилище S3 по адресу `https://clickhouse-public-datasets.s3.amazonaws.com/delta_lake/hits/`.
+Чтобы прочитать данные из таблицы в ClickHouse, выполните следующую команду:
+
+```sql title="Query"
 SELECT
     URL,
     UserAgent
@@ -48,12 +52,53 @@ WHERE URL IS NOT NULL
 LIMIT 2
 ```
 
-```response
+```response title="Response"
 ┌─URL───────────────────────────────────────────────────────────────────┬─UserAgent─┐
 │ http://auto.ria.ua/search/index.kz/jobinmoscow/detail/55089/hasimages │         1 │
 │ http://auto.ria.ua/search/index.kz/jobinmoscow.ru/gosushi             │         1 │
 └───────────────────────────────────────────────────────────────────────┴───────────┘
 ```
+
+
+### Вставка данных \{#inserting-data\}
+
+Рассмотрим таблицу в хранилище S3 по адресу `s3://ch-docs-s3-bucket/people_10k/`.
+Чтобы вставить данные в таблицу, сначала включите экспериментальную возможность:
+
+```sql
+SET allow_experimental_delta_lake_writes=1
+```
+
+Затем выполните:
+
+```sql title="Query"
+INSERT INTO TABLE FUNCTION deltaLake('s3://ch-docs-s3-bucket/people_10k/', '<access_key>', '<secret>') VALUES (10001, 'John', 'Smith', 'Male', 30)
+```
+
+```response title="Response"
+Query id: 09069b47-89fa-4660-9e42-3d8b1dde9b17
+
+Ok.
+
+1 row in set. Elapsed: 3.426 sec.
+```
+
+Вы можете убедиться, что вставка прошла успешно, прочитав таблицу ещё раз:
+
+```sql title="Query"
+SELECT *
+FROM deltaLake('s3://ch-docs-s3-bucket/people_10k/', '<access_key>', '<secret>')
+WHERE (firstname = 'John') AND (lastname = 'Smith')
+```
+
+```response title="Response"
+Query id: 65032944-bed6-4d45-86b3-a71205a2b659
+
+   ┌────id─┬─firstname─┬─lastname─┬─gender─┬─age─┐
+1. │ 10001 │ John      │ Smith    │ Male   │  30 │
+   └───────┴───────────┴──────────┴────────┴─────┘
+```
+
 
 ## Виртуальные столбцы \{#virtual-columns\}
 
