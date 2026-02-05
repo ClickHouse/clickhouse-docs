@@ -8,11 +8,11 @@ keywords: ['troubleshooting', 'debugging', 'problem solving', 'errors', 'diagnos
 
 ## Installation {#installation}
 
-### Can't import GPG keys from keyserver.ubuntu.com with apt-key {#can't-import-gpg-keys-from-keyserverubuntucom-with-apt-key}
+### Can't import GPG keys from keyserver.ubuntu.com with apt-key {#cant-import-gpg-keys-from-keyserverubuntucom-with-apt-key}
 
 The `apt-key` feature with the [Advanced package tool (APT) has been deprecated](https://manpages.debian.org/bookworm/apt/apt-key.8.en.html). You should use the `gpg` command instead. Please refer the [install guide](../getting-started/install/install.mdx) article.
 
-### Can't import GPG keys from keyserver.ubuntu.com with gpg {#can't-import-gpg-keys-from-keyserverubuntucom-with-gpg}
+### Can't import GPG keys from keyserver.ubuntu.com with gpg {#cant-import-gpg-keys-from-keyserverubuntucom-with-gpg}
 
 1. See if your `gpg` is installed:
 
@@ -20,12 +20,12 @@ The `apt-key` feature with the [Advanced package tool (APT) has been deprecated]
 sudo apt-get install gnupg
 ```
 
-### Can't get deb packages from ClickHouse repository with apt-get {#can't-get-deb-packages-from-clickhouse-repository-with-apt-get}
+### Can't get deb packages from ClickHouse repository with apt-get {#cant-get-deb-packages-from-clickhouse-repository-with-apt-get}
 
 1. Check firewall settings.
 1. If you can't access the repository for any reason, download packages as described in the [install guide](../getting-started/install/install.mdx) article and install them manually using the `sudo dpkg -i <packages>` command. You will also need the `tzdata` package.
 
-### Can't update deb packages from ClickHouse repository with apt-get {#can't-update-deb-packages-from-clickhouse-repository-with-apt-get}
+### Can't update deb packages from ClickHouse repository with apt-get {#cant-update-deb-packages-from-clickhouse-repository-with-apt-get}
 
 The issue may be happened when the GPG key is changed.
 
