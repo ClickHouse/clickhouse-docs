@@ -97,6 +97,8 @@ Below is a full list of all the settings, their default values, and their effect
 | UseCustomDecimals | `bool` | `true` | `UseCustomDecimals` | Use `ClickHouseDecimal` for arbitrary precision; if false, uses .NET `decimal` (128-bit limit) |
 | ReadStringsAsByteArrays | `bool` | `false` | `ReadStringsAsByteArrays` | Read `String` and `FixedString` columns as `byte[]` instead of `string`; useful for binary data |
 | UseFormDataParameters | `bool` | `false` | `UseFormDataParameters` | Send parameters as form data instead of URL query string |
+| JsonReadMode | `JsonReadMode` | `Binary` | `JsonReadMode` | How JSON data is returned: `Binary` (returns `JsonObject`) or `String` (returns raw JSON string) |
+| JsonWriteMode | `JsonWriteMode` | `String` | `JsonWriteMode` | How JSON data is sent: `String` (serializes via `JsonSerializer`, accepts all inputs) or `Binary` (registered POCOs only with type hints) |
 
 ### Session management {#session-management}
 
@@ -625,6 +627,32 @@ If you need timezone-aware behavior for columns without explicit timezones, eith
 
 ---
 
+#### JSON type {#type-map-reading-json}
+
+| ClickHouse Type | .NET Type | Notes |
+|-----------------|-----------|-------|
+| Json | `JsonObject` | Default (`JsonReadMode=Binary`) |
+| Json | `string` | When `JsonReadMode=String` |
+
+The return type for JSON columns is controlled by the `JsonReadMode` setting:
+
+- **`Binary` (default)**: Returns `System.Text.Json.Nodes.JsonObject`. Provides structured access to JSON data, but specialized ClickHouse types (like IP addresses, UUIDs, large decimals) are converted to their string representations within the JSON structure.
+
+- **`String`**: Returns the raw JSON as a `string`. Preserves the exact JSON representation from ClickHouse, which is useful when you need to pass the JSON through without parsing, or when you want to handle deserialization yourself.
+
+```csharp
+// Configure string mode via settings
+var settings = new ClickHouseClientSettings("Host=localhost")
+{
+    JsonReadMode = JsonReadMode.String
+};
+
+// Or via connection string
+// "Host=localhost;JsonReadMode=String"
+```
+
+---
+
 #### Other types {#type-map-reading-other}
 
 | ClickHouse Type | .NET Type |
@@ -798,6 +826,101 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 | Decimal64 | `decimal`, `ClickHouseDecimal`, any `Convert.ToDecimal()` compatible | Max precision 18 |
 | Decimal128 | `decimal`, `ClickHouseDecimal`, any `Convert.ToDecimal()` compatible | Max precision 38 |
 | Decimal256 | `decimal`, `ClickHouseDecimal`, any `Convert.ToDecimal()` compatible | Max precision 76 |
+
+---
+
+#### JSON type {#type-map-writing-json}
+
+| ClickHouse Type | Accepted .NET Types | Notes |
+|-----------------|---------------------|-------|
+| Json | `string`, `JsonObject`, `JsonNode`, any object | Behavior depends on `JsonWriteMode` setting |
+
+The behavior when writing JSON is controlled by the `JsonWriteMode` setting:
+
+| Input Type | `JsonWriteMode.String` (default) | `JsonWriteMode.Binary` |
+|------------|----------------------------------|------------------------|
+| `string` | Passed through directly | Throws `ArgumentException` |
+| `JsonObject` | Serialized via `ToJsonString()` | Throws `ArgumentException` |
+| `JsonNode` | Serialized via `ToJsonString()` | Throws `ArgumentException` |
+| Registered POCO | Serialized via `JsonSerializer.Serialize()` | Binary encoding with type hints, custom path attributes supported |
+| Unregistered POCO / Anonymous object | Serialized via `JsonSerializer.Serialize()` | Throws `ClickHouseJsonSerializationException` |
+
+- **`String` (default)**: Accepts `string`, `JsonObject`, `JsonNode`, or any object. All inputs are serialized via `System.Text.Json.JsonSerializer` and sent as JSON strings for server-side parsing. This is the most flexible mode and works without type registration.
+
+- **`Binary`**: Only accepts registered POCO types. Data is converted to ClickHouse's binary JSON format client-side with full type hint support. Requires calling `connection.RegisterJsonSerializationType<T>()` before use. Writing `string` or `JsonNode` values in this mode throws `ArgumentException`.
+
+```csharp
+// Default String mode works with any input
+await bulkCopy.WriteToServerAsync(new[] { new object[] {
+    new { name = "test", value = 42 }  // Anonymous object - no registration needed
+}});
+
+// Binary mode requires explicit opt-in and type registration
+var settings = new ClickHouseClientSettings("Host=localhost")
+{
+    JsonWriteMode = JsonWriteMode.Binary
+};
+connection.RegisterJsonSerializationType<MyPocoType>();
+```
+
+##### Typed JSON columns {#json-typed-columns}
+
+When a JSON column has type hints (e.g., `JSON(id UInt64, price Decimal128(2))`), the driver uses these hints to serialize values with full type fidelity. This preserves precision for types like `UInt64`, `Decimal`, `UUID`, and `DateTime64` that would otherwise lose precision when serialized as generic JSON.
+
+##### POCO serialization {#json-poco-serialization}
+
+POCOs can be written to JSON columns in two ways depending on the `JsonWriteMode`:
+
+**String mode (default)**: POCOs are serialized via `System.Text.Json.JsonSerializer`. No type registration is required. This is the simplest approach and works with anonymous objects.
+
+**Binary mode**: POCOs are serialized using the driver's binary JSON format with full type hint support. Types must be registered with `connection.RegisterJsonSerializationType<T>()` before use. This mode supports custom path mappings via attributes:
+
+- **`[ClickHouseJsonPath("path")]`**: Maps a property to a custom JSON path. Useful for nested structures or when the property name differs from the desired JSON key. **Only works in Binary mode.**
+
+- **`[ClickHouseJsonIgnore]`**: Excludes a property from serialization. **Only works in Binary mode.**
+
+```sql
+CREATE TABLE events (
+    id UInt32,
+    data JSON(`user.id` Int64, `user.name` String, Timestamp DateTime64(3))
+) ENGINE = MergeTree() ORDER BY id
+```
+
+```csharp
+using ClickHouse.Driver.Json;
+
+public class UserEvent
+{
+    [ClickHouseJsonPath("user.id")]
+    public long UserId { get; set; }
+
+    [ClickHouseJsonPath("user.name")]
+    public string UserName { get; set; }
+
+    public DateTime Timestamp { get; set; }
+
+    [ClickHouseJsonIgnore]
+    public string InternalData { get; set; }  // Not serialized
+}
+
+// For Binary mode: Register the type and enable Binary mode
+var settings = new ClickHouseClientSettings("Host=localhost") { JsonWriteMode = JsonWriteMode.Binary };
+using var connection = new ClickHouseConnection(settings);
+connection.RegisterJsonSerializationType<UserEvent>();
+
+// Insert POCO - serialized to JSON with nested structure via custom path attributes
+using var bulkCopy = new ClickHouseBulkCopy(connection) { DestinationTableName = "events" };
+await bulkCopy.WriteToServerAsync(new[] { new object[] { 1u, new UserEvent { UserId = 123, UserName = "Alice", Timestamp = DateTime.UtcNow } } });
+// Resulting JSON: {"user": {"id": 123, "name": "Alice"}, "Timestamp": "2024-01-15T..."}
+```
+
+Property name matching with column type hints is case-sensitive. A property `UserId` will only match a hint defined as `UserId`, not `userid`. This matches ClickHouse behavior which allows paths like `userName` and `UserName` to coexist as separate fields.
+
+**Limitations (Binary mode only):**
+- POCO types must be registered on the connection with `connection.RegisterJsonSerializationType<T>()` before serialization. Attempting to serialize an unregistered type throws `ClickHouseJsonSerializationException`.
+- Dictionary and array/list properties require type hints in the column definition to be serialized correctly. Without hints, use String mode instead.
+- Null values in POCO properties are only written when the path has a `Nullable(T)` type hint in the column definition. ClickHouse doesn't allow `Nullable` types inside dynamic JSON paths, so unhinted null properties are skipped.
+- `ClickHouseJsonPath` and `ClickHouseJsonIgnore` attributes are ignored in String mode (they only work in Binary mode).
 
 ---
 
