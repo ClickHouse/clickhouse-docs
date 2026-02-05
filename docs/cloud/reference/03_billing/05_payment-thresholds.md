@@ -34,7 +34,7 @@ As you can see from the above example - there was a threshold invoice sent durin
 
 <Image img={billing_2} size="md" alt="Bill" border/>
 
-## Payment thresholds {#threshholds}
+## Payment threshold notifications {#threshholds-notifications}
 
 If your organization reaches 90% of the payment threshold and is on-track to exceed the payment threshold mid-period, the billing contact email associated with the organization will receive an email notification.
 You will also receive an email notification as well as an invoice when you exceed the payment threshold.
