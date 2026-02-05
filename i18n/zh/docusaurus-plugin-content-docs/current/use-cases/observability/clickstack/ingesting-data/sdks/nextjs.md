@@ -94,14 +94,29 @@ export async function register() {
 
 ### 配置环境变量 \{#configure-environment-variables\}
 
-如果你要将 trace 数据直接发送到 ClickStack，则需要在启动 Next.js
-服务器时设置以下环境变量，以便将 span 转发到 OTel collector：
+如果您通过 OpenTelemetry 直接向 ClickStack 发送 trace，需要使用以下环境变量启动 Next.js
+服务器，以便将 span 发送到 OTel collector：
+
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="托管版 ClickStack" default>
+
+```sh copy
+OTEL_SERVICE_NAME=<MY_SERVICE_NAME> \
+OTEL_EXPORTER_OTLP_ENDPOINT=http://your-otel-collector:4318
+npm run dev
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack 开源版" >
 
 ```sh copy
 HYPERDX_API_KEY=<YOUR_INGESTION_API_KEY> \
 OTEL_SERVICE_NAME=<MY_SERVICE_NAME> \
-OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+OTEL_EXPORTER_OTLP_ENDPOINT=http://your-otel-collector:4318
 npm run dev
 ```
+</TabItem>
+</Tabs>
 
-如果你在 Vercel 上进行部署，请确保为此次部署正确配置以上所有环境变量。
+如果您在 Vercel 上进行部署，请确保上述所有环境变量都已为您的部署完成配置。

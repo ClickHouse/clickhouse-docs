@@ -27,35 +27,31 @@ doc_type: 'guide'
 
 ### 実装手順 \{#implementation-steps\}
 
-1. **二重インジェストを構成する**
+<VerticalStepper headerLevel="h4">
 
-<br/>
+#### 二重インジェストを構成する \{#configure-dual-ingestion\}
 
 データ収集パイプラインを設定し、Elastic と ClickStack の両方に同時にデータを送信できるようにします。 
 
 これをどのように実現するかは、現在使用している収集用エージェントによって異なります。詳しくは、「[Migrating Agents](/use-cases/observability/clickstack/migration/elastic/migrating-agents)」を参照してください。
 
-2. **保持期間を調整する**
-
-<br/>
+#### 保持期間を調整する \{#adjust-retention-period\}
 
 Elastic の TTL 設定を、希望する保持期間に合うように構成します。ClickStack 側でも同じ期間データを保持できるように、[TTL](/use-cases/observability/clickstack/production#configure-ttl) を設定します。
 
-3. **検証と比較**
-
-<br/>
+#### 検証と比較 \{#validate-and-compare\}
 
 - 両方のシステムに対してクエリを実行し、データの一貫性を確認する
 - クエリのパフォーマンスと結果を比較する
 - ダッシュボードとアラートを ClickStack に移行する（現在は手作業によるプロセスです）
 - すべての重要なダッシュボードとアラートが ClickStack 上で期待どおりに動作することを確認する
 
-4. **段階的な移行**
-
-<br/>
+#### 段階的な移行 \{#graudal-transition\}
 
 - データが Elastic から自然に期限切れを迎えるにつれて、徐々に ClickStack に依存するようになります
 - ClickStack に対する信頼が十分に確立されたら、クエリとダッシュボードのリダイレクトを開始できます
+
+</VerticalStepper>
 
 ### 長期保持 \{#long-term-retention\}
 

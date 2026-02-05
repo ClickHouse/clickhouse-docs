@@ -593,7 +593,7 @@ ClickHouse перезагружает встроенные словари каж
 
 ## concurrent_threads_scheduler \{#concurrent_threads_scheduler\}
 
-<SettingsInfoBlock type="String" default_value="fair_round_robin" />
+<SettingsInfoBlock type="String" default_value="max_min_fair" />
 
 Политика планирования слотов CPU, определённых `concurrent_threads_soft_limit_num` и `concurrent_threads_soft_limit_ratio_to_cores`. Алгоритм, определяющий, как ограниченное количество слотов CPU распределяется между конкурирующими запросами. Планировщик можно изменить во время работы без перезапуска сервера.
 

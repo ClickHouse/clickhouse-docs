@@ -55,7 +55,7 @@ SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type 
 
 ### Iceberg を読み込む \{#read-iceberg\}
 
-UniForm 対応の Delta テーブルにアクセスするには:
+UniForm 対応の Iceberg テーブルにアクセスするには:
 
 ```sql
 CREATE DATABASE unity

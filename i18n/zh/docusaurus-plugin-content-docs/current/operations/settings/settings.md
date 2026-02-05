@@ -946,18 +946,19 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
-允许配置在执行 [ALTER](../../sql-reference/statements/alter/index.md)、[OPTIMIZE](../../sql-reference/statements/optimize.md) 或 [TRUNCATE](../../sql-reference/statements/truncate.md) 查询时，是否以及如何等待在副本上执行的操作完成。
+允许配置在执行 [`ALTER`](../../sql-reference/statements/alter/index.md)、[`OPTIMIZE`](../../sql-reference/statements/optimize.md) 或 [`TRUNCATE`](../../sql-reference/statements/truncate.md) 查询时，是否以及如何等待在副本上执行的操作完成。
 
 可选值：
 
 - `0` — 不等待。
 - `1` — 仅等待本副本执行完成。
 - `2` — 等待所有副本执行完成。
+- `3` - 仅等待活动副本执行完成。
 
 Cloud 默认值：`1`。
 
 :::note
-`alter_sync` 仅适用于 `Replicated` 表，对非 `Replicated` 表的 ALTER 不产生任何效果。
+`alter_sync` 仅适用于 `Replicated` 和 `SharedMergeTree` 表，对非 `Replicated` 或 `Shared` 表的 ALTER 不产生任何效果。
 :::
 
 ## alter_update_mode \{#alter_update_mode\}
@@ -8536,18 +8537,18 @@ SELECT * FROM test2;
 ```sql
 CREATE TABLE fuse_tbl(a Int8, b Int8) Engine = Log;
 SET optimize_syntax_fuse_functions = 1;
-EXPLAIN SYNTAX SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
+EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
 ```
 
 结果：
 
 ```text
 SELECT
-    sum(a),
-    sumCount(b).1,
-    sumCount(b).2,
-    (sumCount(b).1) / (sumCount(b).2)
-FROM fuse_tbl
+    sum(__table1.a) AS `sum(a)`,
+    tupleElement(sumCount(__table1.b), 1) AS `sum(b)`,
+    tupleElement(sumCount(__table1.b), 2) AS `count(b)`,
+    divide(tupleElement(sumCount(__table1.b), 1), toFloat64(tupleElement(sumCount(__table1.b), 2))) AS `avg(b)`
+FROM default.fuse_tbl AS __table1
 ```
 
 

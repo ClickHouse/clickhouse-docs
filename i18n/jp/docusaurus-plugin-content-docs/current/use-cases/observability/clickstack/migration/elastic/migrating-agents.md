@@ -95,7 +95,7 @@ Filebeat エージェントが、Beats でサポートされている出力先�
   相互TLSが必要な場合は、Elasticガイド[&quot;Configure SSL/TLS for the Logstash output&quot;](https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#use-ls-output)を使用して証明書と鍵を生成します。生成した証明書と鍵は、上記の設定例のように指定することができます。
   :::
 
-  イベントはECS形式で受信されます。これらはVector Remap Language（VRL）トランスフォーマーを使用してOpenTelemetryスキーマに変換できます。このトランスフォーマーの設定は簡単で、スクリプトファイルを別ファイルとして保持します:
+  イベントはECS形式で受信されます。これらはVector Remap Language(VRL)トランスフォーマーを使用してOpenTelemetryスキーマに変換できます。このトランスフォーマーの設定は簡単で、スクリプトファイルを別ファイルとして保持します:
 
   ```yaml
   transforms:
@@ -248,7 +248,7 @@ Filebeat エージェントが、Beats でサポートされている出力先�
           authorization: ${YOUR_INGESTION_API_KEY}
   ```
 
-  ここでの`YOUR_INGESTION_API_KEY`はClickStackによって生成されます。このキーはHyperDXアプリの`Team Settings → API Keys`から確認できます。
+  ここでの`YOUR_INGESTION_API_KEY`はClickStackによって生成されます。このキーはClickStack UI（HyperDX）の`Team Settings → API Keys`から確認できます。
 
   <Image img={ingestion_key} alt="インジェストキー" size="lg" />
 
@@ -373,7 +373,7 @@ EDOT Collector と共に Elastic Agent を実行するには、[Elastic の公�
 
 ```yaml
 exporters:
-  # Elasticsearch Managed OTLP Inputにログとメトリクスを送信するエクスポーター
+  # Exporter to send logs and metrics to Elasticsearch Managed OTLP Input
   otlp:
     endpoint: localhost:4317
     headers:
@@ -382,7 +382,11 @@ exporters:
       insecure: true
 ```
 
-ここでの `YOUR_INGESTION_API_KEY` は ClickStack によって発行されます。キーは HyperDX アプリの `Team Settings → API Keys` で確認できます。
+:::note Managed ClickStack
+Managed ClickStack でスタンドアロンの OpenTelemetry Collector を実行している場合、デフォルトでは API インジェストキーは不要です。ただし、OTLP 認証トークンを指定することでインジェストを保護できます。詳細は [&quot;Securing the collector&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector) を参照してください。
+:::
+
+ここでの `YOUR_INGESTION_API_KEY` は ClickStack によって発行されます。キーは ClickStack UI の `Team Settings → API Keys` で確認できます。
 
 <Image img={ingestion_key} alt="インジェストキー" size="lg" />
 
@@ -390,7 +394,7 @@ Vector が相互 TLS (mTLS) を使用するように構成されており、証�
 
 ```yaml
 exporters:
-  # ログとメトリクスをElasticsearch Managed OTLP Inputに送信するエクスポーター
+  # Exporter to send logs and metrics to Elasticsearch Managed OTLP Input
   otlp:
     endpoint: localhost:4317
     headers:
