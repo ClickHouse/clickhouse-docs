@@ -947,18 +947,19 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
-Позволяет настроить ожидание выполнения действий на репликах при выполнении запросов [ALTER](../../sql-reference/statements/alter/index.md), [OPTIMIZE](../../sql-reference/statements/optimize.md) или [TRUNCATE](../../sql-reference/statements/truncate.md).
+Позволяет задать поведение ожидания выполнения действий на репликах при выполнении запросов [`ALTER`](../../sql-reference/statements/alter/index.md), [`OPTIMIZE`](../../sql-reference/statements/optimize.md) или [`TRUNCATE`](../../sql-reference/statements/truncate.md).
 
 Возможные значения:
 
 - `0` — Не ждать.
 - `1` — Ждать выполнения на собственной реплике.
 - `2` — Ждать выполнения на всех репликах.
+- `3` — Ждать выполнения только на активных репликах.
 
 Значение по умолчанию в Cloud: `1`.
 
 :::note
-`alter_sync` применим только к таблицам `Replicated`; при ALTER таблиц, не являющихся `Replicated`, он не оказывает эффекта.
+`alter_sync` применим только к таблицам `Replicated` и `SharedMergeTree`; при ALTER таблиц, не являющихся `Replicated` или `Shared`, он не оказывает эффекта.
 :::
 
 ## alter_update_mode \{#alter_update_mode\}
@@ -2293,15 +2294,6 @@ SETTINGS convert_query_to_cnf = true;
 - force_enable — дедупликация включена для запроса `INSERT SELECT`. Если результат SELECT нестабилен, выбрасывается исключение.
 - enable_when_possible — дедупликация включена, если `insert_deduplicate` включён и результат SELECT стабилен, иначе отключена.
 - enable_even_for_bad_queries — дедупликация включена, если `insert_deduplicate` включён. Если результат SELECT нестабилен, записывается предупреждение, но запрос выполняется с дедупликацией. Эта опция предназначена для обратной совместимости. Рассмотрите возможность использования других опций, так как это может привести к непредсказуемым результатам.
-
-## default_dictionary_database \{#default_dictionary_database\}
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": ""},{"label": "Новая настройка"}]}]}/>
-
-База данных, в которой выполняется поиск внешних словарей, если имя базы данных не указано.
-Пустая строка задаёт текущую базу данных. Если словарь не найден в указанной базе данных по умолчанию, ClickHouse возвращается к текущей базе данных.
-
-Может быть полезно при миграции с глобальных словарей, определённых в XML, на словари, определённые в SQL.
 
 ## default_materialized_view_sql_security \{#default_materialized_view_sql_security\}
 
@@ -8572,18 +8564,18 @@ SELECT * FROM test2;
 ```sql
 CREATE TABLE fuse_tbl(a Int8, b Int8) Engine = Log;
 SET optimize_syntax_fuse_functions = 1;
-EXPLAIN SYNTAX SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
+EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
 ```
 
 Результат:
 
 ```text
 SELECT
-    sum(a),
-    sumCount(b).1,
-    sumCount(b).2,
-    (sumCount(b).1) / (sumCount(b).2)
-FROM fuse_tbl
+    sum(__table1.a) AS `sum(a)`,
+    tupleElement(sumCount(__table1.b), 1) AS `sum(b)`,
+    tupleElement(sumCount(__table1.b), 2) AS `count(b)`,
+    divide(tupleElement(sumCount(__table1.b), 1), toFloat64(tupleElement(sumCount(__table1.b), 2))) AS `avg(b)`
+FROM default.fuse_tbl AS __table1
 ```
 
 

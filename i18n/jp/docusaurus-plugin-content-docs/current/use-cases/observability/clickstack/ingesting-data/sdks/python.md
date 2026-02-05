@@ -38,13 +38,28 @@ opentelemetry-bootstrap -a install
 
 ### 環境変数を設定する \{#configure-environment-variables\}
 
-その後、ClickStack にテレメトリを送信するために、シェル環境で以下の環境変数を設定する必要があります。
+その後、OpenTelemetry コレクター経由で ClickStack にテレメトリを送信するために、シェル環境で以下の環境変数を設定する必要があります。
+
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="Managed ClickStack" default>
+
+```shell
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack Open Source" >
 
 ```shell
 export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 
 ```
+
+</TabItem>
+</Tabs>
 
 *`OTEL_SERVICE_NAME` 環境変数は、HyperDX アプリ内でサービスを識別するために使用されます。任意の名前を指定できます。*
 

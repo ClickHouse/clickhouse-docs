@@ -642,26 +642,26 @@ colorOKLABToSRGB(tuple [, gamma])
 **将 OKLAB 转换为 sRGB（浮点数）**
 
 ```sql title=Query
-SELECT colorOKLABToSRGB((0.4466, 0.0991, 0.44)) AS rgb
+SELECT colorOKLABToSRGB((0.4466, 0.0991, 0.44)) AS rgb;
 ```
 
 ```response title=Response
 ┌─rgb──────────────────────┐
-                           │ (198.07056923258935,0,0) │
-                           └──────────────────────────┘
+│ (198.07056923258935,0,0) │
+└──────────────────────────┘
 ```
 
 **将 OKLAB 转换为 sRGB（UInt8）**
 
 ```sql title=Query
 WITH colorOKLABToSRGB((0.7, 0.1, 0.54)) AS t
-                        SELECT tuple(toUInt8(t.1), toUInt8(t.2), toUInt8(t.3)) AS RGB
+SELECT tuple(toUInt8(t.1), toUInt8(t.2), toUInt8(t.3)) AS RGB;
 ```
 
 ```response title=Response
 ┌─RGB──────────┐
-                        │ (205,0,0)    │
-                        └──────────────┘
+│ (255,0,0)    │
+└──────────────┘
 ```
 
 
@@ -709,26 +709,26 @@ colorOKLCHToSRGB(tuple [, gamma])
 **将 OKLCH 转换为 sRGB**
 
 ```sql title=Query
-SELECT colorOKLCHToSRGB((0.6, 0.12, 40)) AS rgb
+SELECT colorOKLCHToSRGB((0.6, 0.12, 40)) AS rgb;
 ```
 
 ```response title=Response
-┌─rgb─────────────────────────────────────────────────────┐
-                            │(186.02058688365264,100.68677189684993,71.67819977081572)                                      │
-                            └─────────────────────────────────────────────────────────┘
+┌─rgb───────────────────────────────────────────────────────┐
+│ (186.02058688365264,100.68677189684993,71.67819977081575) │
+└───────────────────────────────────────────────────────────┘
 ```
 
-**将 OKLCH 转换为 sRGB（UInt8 类型）**
+**将 OKLCH 转换为 sRGB（UInt8）**
 
 ```sql title=Query
 WITH colorOKLCHToSRGB((0.6, 0.12, 40)) AS t
-                            SELECT tuple(toUInt8(t.1), toUInt8(t.2), toUInt8(t.3)) AS RGB
+SELECT tuple(toUInt8(t.1), toUInt8(t.2), toUInt8(t.3)) AS RGB;
 ```
 
 ```response title=Response
 ┌─RGB──────────┐
-                            │ (186,100,71) │
-                            └──────────────┘
+│ (186,100,71) │
+└──────────────┘
 ```
 
 
@@ -749,7 +749,7 @@ OKLab 被设计为在保持计算开销较低的同时尽可能做到感知均�
 转换包括两个阶段：
 
 1. sRGB 到线性 sRGB
-2. 线性 sRGB 到 OKLab
+   2) 线性 sRGB 到 OKLab
 
 **语法**
 
@@ -771,13 +771,13 @@ colorSRGBToOKLAB(tuple[, gamma])
 **将 sRGB 转换为 OKLAB**
 
 ```sql title=Query
-SELECT colorSRGBToOKLAB((128, 64, 32), 2.2) AS lab
+SELECT colorSRGBToOKLAB((128, 64, 32), 2.2) AS lab;
 ```
 
 ```response title=Response
-┌─lab───────────────────────────────────────────────────────── ┐
-                        │ (0.4436238384931984,0.07266246769242975,0.07500108778529994) │
-                        └───────────────────────────────────────────────────────────── ┘
+┌─lab──────────────────────────────────────────────────────────┐
+│ (0.4436238384931984,0.07266246769242975,0.07500108778529994) │
+└──────────────────────────────────────────────────────────────┘
 ```
 
 
@@ -823,13 +823,13 @@ colorSRGBToOKLCH(tuple[, gamma])
 **将 sRGB 转换为 OKLCH**
 
 ```sql title=Query
-SELECT colorSRGBToOKLCH((128, 64, 32), 2.2) AS lch
+SELECT colorSRGBToOKLCH((128, 64, 32), 2.2) AS lch;
 ```
 
 ```response title=Response
-┌─lch─────────────────────────────────────────────────────────┐
-                        │ (0.4436238384931984,0.10442699545678624,45.907345481930236) │
-                        └─────────────────────────────────────────────────────────────┘
+┌─lch───────────────────────────────────────────────────────┐
+│ (0.4436238384931984,0.1044269954567863,45.90734548193018) │
+└───────────────────────────────────────────────────────────┘
 ```
 
 
