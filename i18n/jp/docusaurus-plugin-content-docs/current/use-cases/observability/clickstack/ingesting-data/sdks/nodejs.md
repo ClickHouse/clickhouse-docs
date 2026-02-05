@@ -57,7 +57,8 @@ SDK を初期化するには、アプリケーションのエントリポイン�
 const HyperDX = require('@hyperdx/node-opentelemetry');
 
 HyperDX.init({
-    apiKey: 'YOUR_INGESTION_API_KEY',
+    url: 'http://your-otel-collector:4318',
+    apiKey: 'YOUR_INGESTION_API_KEY', // Managed ClickStack の場合は省略
     service: 'my-service'
 });
 ```
@@ -69,7 +70,8 @@ HyperDX.init({
 import * as HyperDX from '@hyperdx/node-opentelemetry';
 
 HyperDX.init({
-    apiKey: 'YOUR_INGESTION_API_KEY',
+    url: 'http://your-otel-collector:4318',
+    apiKey: 'YOUR_INGESTION_API_KEY', // Managed ClickStack の場合は省略
     service: 'my-service'
 });
 ```
@@ -152,7 +154,8 @@ ClickStack SDK を使用すると、アプリケーション内で捕捉され�
 ```javascript 
 const HyperDX = require('@hyperdx/node-opentelemetry');
 HyperDX.init({
-    apiKey: 'YOUR_INGESTION_API_KEY',
+    url: 'http://your-otel-collector:4318',
+    apiKey: 'YOUR_INGESTION_API_KEY', // Managed ClickStack の場合は省略
     service: 'my-service'
 });
 const app = express();
@@ -174,7 +177,8 @@ const Koa = require("koa");
 const Router = require("@koa/router");
 const HyperDX = require('@hyperdx/node-opentelemetry');
 HyperDX.init({
-    apiKey: 'YOUR_INGESTION_API_KEY',
+    url: 'http://your-otel-collector:4318',
+    apiKey: 'YOUR_INGESTION_API_KEY', // Managed ClickStack の場合は省略
     service: 'my-service'
 });
 
@@ -195,7 +199,7 @@ app.listen(3030);
 const HyperDX = require('@hyperdx/node-opentelemetry');
 
 function myErrorHandler(error, req, res, next) {
-    // This can be used anywhere in your application
+    // アプリケーション内のどこでも使用できます
     HyperDX.recordException(error);
 }
 ```
@@ -311,12 +315,20 @@ Node.js `--require` flag. The CLI installation exposes a wider range of auto-ins
 <Tabs groupId="cli">
 <TabItem value="npx" label="Using NPX" default>
 
+:::note Managed ClickStack
+Managed ClickStack を利用している場合は、`HYPERDX_API_KEY` を省略できます。
+:::
+
 ```shell
 HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' npx opentelemetry-instrument index.js
 ```
 
 </TabItem>
 <TabItem value="custom" label="Custom Entry Point (ex. Nodemon, ts-node, etc.)">
+
+:::note Managed ClickStack
+Managed ClickStack を利用している場合は、`HYPERDX_API_KEY` を省略できます。
+:::
 
 ```shell
 HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' ts-node -r '@hyperdx/node-opentelemetry/build/src/tracing' index.js

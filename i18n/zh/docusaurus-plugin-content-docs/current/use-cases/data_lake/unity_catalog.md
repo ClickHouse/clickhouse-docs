@@ -54,7 +54,7 @@ SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type 
 
 ### 读取 Iceberg 表 \{#read-iceberg\}
 
-要访问启用了 UniForm 的 Delta 表：
+要访问 UniForm Iceberg 表：
 
 ```sql
 CREATE DATABASE unity
