@@ -204,8 +204,8 @@ await connection2.OpenAsync();
 ```
 
 :::note
-* A `ClickHouseConnection` represents a "session" with the server. It performs feature discovery by querying server version (so there is a minor overhead on opening), but generally it is safe to create and destroy such objects multiple times.
-* Recommended lifetime for a connection is one connection object per large "transaction" spanning multiple queries. The `ClickHouseConnection` object can be long-lived. There is a minor overhead on connection startup, so it's not recommended to create a connection object for each query.
+* A `ClickHouseConnection` represents a "session" with the server. It is safe to create and destroy such objects multiple times.
+* Recommended lifetime for a connection is one connection object per large "transaction" spanning multiple queries. The `ClickHouseConnection` object can be long-lived.
 * If an application operates on large volumes of transactions and requires to create/destroy `ClickHouseConnection` objects often, it is recommended to use `IHttpClientFactory` or a static instance of `HttpClient` to manage connections.
 :::
 
@@ -278,8 +278,6 @@ using var bulkCopy = new ClickHouseBulkCopy(connection)
     BatchSize = 100000,
     MaxDegreeOfParallelism = 2
 };
-
-await bulkCopy.InitAsync(); // Prepares ClickHouseBulkCopy instance by loading target column types
 
 var values = Enumerable.Range(0, 1000000)
     .Select(i => new object[] { (long)i, "value" + i });
@@ -428,7 +426,15 @@ For additional practical usage examples, see the [examples directory](https://gi
 For DI environments, there is a bespoke constructor `ClickHouseConnection(string connectionString, IHttpClientFactory httpClientFactory, string httpClientName = "")` which makes the ClickHouseConnection request a named http client.
 
 :::important
-When using a custom `HttpClient` or `HttpClientFactory`, ensure that the `PooledConnectionIdleTimeout` is set to a value smaller than the server's `keep_alive_timeout`, in order to avoid errors due to half-closed connections. The default `keep_alive_timeout` for Cloud deployments is 10 seconds. 
+When using a custom `HttpClient` or `HttpClientFactory`, ensure that the `PooledConnectionIdleTimeout` is set to a value smaller than the server's `keep_alive_timeout`, in order to avoid errors due to half-closed connections. The default `keep_alive_timeout` for Cloud deployments is 10 seconds.
+:::
+
+:::note
+If you create multiple `ClickHouseConnection` instances without passing a shared `HttpClient`, each connection will create its own `HttpClient` with its own connection pool. In high-throughput scenarios, this can lead to socket exhaustion as each pool maintains separate TCP connections to the server.
+
+To avoid this:
+- **Use a singleton `HttpClient`**: Pass a shared `HttpClient` instance to all `ClickHouseConnection` objects via `ClickHouseClientSettings.HttpClient`. This maintains a single connection pool and reuses TCP connections efficiently.
+- **Use a singleton `ClickHouseConnection`**: A single long-lived connection instance achieves the same result since the underlying `HttpClient` is shared.
 :::
 
 ---
@@ -663,7 +669,6 @@ var settings = new ClickHouseClientSettings("Host=localhost")
 | IPv6 | `IPAddress` |
 | Nothing | `DBNull` |
 | Dynamic | See note |
-| Json | `JsonObject` |
 | Array(T) | `T[]` |
 | Tuple(T1, T2, ...) | `Tuple<T1, T2, ...>` / `LargeTuple` |
 | Map(K, V) | `Dictionary<K, V>` |
@@ -934,7 +939,6 @@ Property name matching with column type hints is case-sensitive. A property `Use
 | IPv6 | `IPAddress`, `string` | Must be IPv6; string parsed via `IPAddress.Parse()` |
 | Nothing | Any | Writes nothing (no-op) |
 | Dynamic | — | **Not supported** (throws `NotImplementedException`) |
-| Json | `string`, `JsonObject`, any object | String parsed as JSON; objects serialized via `JsonSerializer` |
 | Array(T) | `IList`, `null` | Null writes empty array |
 | Tuple(T1, T2, ...) | `ITuple`, `IList` | Element count must match tuple arity |
 | Map(K, V) | `IDictionary` | |
