@@ -234,7 +234,7 @@ using (var connection = new ClickHouseConnection(connectionString))
 
 ### Inserting data {#inserting-data}
 
-Insert data using parameterized queries:
+Insert data using parameterized queries. The parameter types are automatically extracted from the SQL query's `{name:Type}` syntax:
 
 ```csharp
 using ClickHouse.Driver.ADO;
@@ -245,9 +245,9 @@ using (var connection = new ClickHouseConnection(connectionString))
 
     using (var command = connection.CreateCommand())
     {
-        command.AddParameter("id", "Int64", 1);
-        command.AddParameter("name", "String", "test");
         command.CommandText = "INSERT INTO default.my_table (id, name) VALUES ({id:Int64}, {name:String})";
+        command.AddParameter("id", 1);      // Type Int64 extracted from SQL
+        command.AddParameter("name", "test"); // Type String extracted from SQL
         await command.ExecuteNonQueryAsync();
     }
 }
@@ -314,8 +314,8 @@ using (var connection = new ClickHouseConnection(connectionString))
 
     using (var command = connection.CreateCommand())
     {
-        command.AddParameter("id", "Int64", 10);
         command.CommandText = "SELECT * FROM default.my_table WHERE id < {id:Int64}";
+        command.AddParameter("id", 10); // Type Int64 extracted from SQL
         using var reader = await command.ExecuteReaderAsync();
         while (reader.Read())
         {
@@ -439,9 +439,10 @@ When using a custom `HttpClient` or `HttpClientFactory`, ensure that the `Pooled
 
 2. **Use `DateTimeOffset` for explicit timezone handling.** It always represents a specific instant and includes the offset information.
 
-3. **Specify timezone in HTTP parameter type hints.** When using parameters with `Unspecified` DateTime values targeting non-UTC columns:
+3. **Specify timezone in SQL type hints.** When using parameters with `Unspecified` DateTime values targeting non-UTC columns, include the timezone in the SQL:
    ```csharp
-   command.AddParameter("dt", value, "DateTime('Europe/Amsterdam')");
+   command.CommandText = "INSERT INTO table (dt) VALUES ({dt:DateTime('Europe/Amsterdam')})";
+   command.AddParameter("dt", value); // Type extracted from SQL automatically
    ```
 
 ---
@@ -763,11 +764,11 @@ When inserting data, the driver converts .NET types to their corresponding Click
 
 The driver respects `DateTime.Kind` when writing values:
 
-| `DateTime.Kind` | Behavior |
-|-----------------|----------|
-| `Utc` | Instant is preserved exactly |
-| `Local` | Converted to UTC using system timezone, instant preserved |
-| `Unspecified` | Treated as wall-clock time in target column's timezone |
+ | DateTime.Kind | HTTP Parameters | Bulk |
+ | --- | --- | --- |
+  | Utc           | Instant preserved | Instant preserved |
+  | Local         | Instant preserved | Instant preserved |
+  | Unspecified   | Treated as wall-clock in parameter type's timezone (defaults to UTC) | Treated as wall-clock in column's timezone |
 
 `DateTimeOffset` values always preserve the exact instant.
 
@@ -794,16 +795,16 @@ There is an important difference between HTTP parameter binding and bulk copy wh
 
 **Bulk Copy** knows the target column's timezone and correctly interprets `Unspecified` values in that timezone.
 
-**HTTP Parameters** do not automatically know the column timezone. You must specify it in the parameter type hint:
+**HTTP Parameters** do not automatically know the column timezone. You must specify it in the SQL type hint:
 
 ```csharp
-// CORRECT: Timezone in type hint
-command.AddParameter("dt", myDateTime, "DateTime('Europe/Amsterdam')");
+// CORRECT: Timezone in SQL type hint - type is extracted automatically
 command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime('Europe/Amsterdam')})";
+command.AddParameter("dt", myDateTime);
 
 // INCORRECT: Without timezone hint, interpreted as UTC
-command.AddParameter("dt", myDateTime);
 command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
+command.AddParameter("dt", myDateTime);
 // String value "2024-01-15 14:30:00" interpreted as UTC, not Amsterdam time!
 ```
 
