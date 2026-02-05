@@ -173,9 +173,7 @@ A Postgres ClickPipe can also be created and managed via [OpenAPI](https://click
 
 You cannot speed up an already running initial load. However, you can optimize future initial loads by adjusting certain settings. By default, the settings are configured with 4 parallel threads and a snapshot number of rows per partition set to 100,000. These are advanced settings and are generally sufficient for most use cases.
 
-For Postgres versions 13 or lower, CTID range scans are very slow and therefore ClickPipes does not use them. Instead we read the entire table as a single partition, essentially making it single-threaded (therefore ignoring both number of rows per partition and parallel threads settings). It is critical to adjust these settings to instead move multiple tables in parallel for fast initial loads.
-
-These adjustments should significantly enhance the performance of the initial load, especially for older Postgres versions. If you are using Postgres 14 or later, these settings are less impactful due to improved support for CTID range scans.
+For Postgres versions 13 or lower, CTID range scans are very slow and therefore ClickPipes does not use them. Instead we read the entire table as a single partition, essentially making it single-threaded (therefore ignoring both number of rows per partition and parallel threads settings). To speed up the initial load in that case, you can increase the `snapshot number of tables in parallel` or specify a custom, indexed partitioning column for large tables.
 
 ### How should I scope my publications when setting up replication? {#how-should-i-scope-my-publications-when-setting-up-replication}
 
