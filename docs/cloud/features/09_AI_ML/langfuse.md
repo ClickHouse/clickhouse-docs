@@ -122,7 +122,7 @@ See quality, cost, and latency metrics in the dashboard to monitor your LLM appl
 
 </TabItem>
 </Tabs>
-### Prompt Management {#prompt-management}
+### Prompt management {#prompt-management}
 
 [Prompt Management](/docs/prompt-management/overview) is critical in building effective LLM applications. Langfuse provides tools to help you manage, version, and optimize your prompts throughout the development lifecycle.
 
