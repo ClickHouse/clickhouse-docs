@@ -591,7 +591,7 @@ ClickHouse 每隔 x 秒重新加载内置字典，这样就可以在无需重启
 
 ## concurrent_threads_scheduler \{#concurrent_threads_scheduler\}
 
-<SettingsInfoBlock type="String" default_value="fair_round_robin" />
+<SettingsInfoBlock type="String" default_value="max_min_fair" />
 
 针对由 `concurrent_threads_soft_limit_num` 和 `concurrent_threads_soft_limit_ratio_to_cores` 指定的 CPU 插槽的调度策略。该算法用于控制在并发查询之间如何分配数量受限的 CPU 插槽。调度器可以在运行时更改而无需重启服务器。
 
@@ -4156,6 +4156,18 @@ Keeper 中的路径，其中包含由 `generateSerialID` FUNCTION 生成的自�
 <skip_check_for_incorrect_settings>1</skip_check_for_incorrect_settings>
 ```
 
+
+## snapshot_cleaner_period \{#snapshot_cleaner_period\}
+
+<SettingsInfoBlock type="UInt64" default_value="120" />
+
+彻底删除 SharedMergeTree 快照分区片段的时间间隔。仅在 ClickHouse Cloud 中可用
+
+## snapshot_cleaner_pool_size \{#snapshot_cleaner_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="128" />
+
+用于清理共享 MergeTree 快照的线程池大小。仅在 ClickHouse Cloud 中可用
 
 ## ssh_server \{#ssh_server\}
 

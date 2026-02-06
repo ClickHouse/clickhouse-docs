@@ -591,7 +591,7 @@ ClickHouse を使い始めたばかりの場合は、これを変更しないこ
 
 ## concurrent_threads_scheduler \{#concurrent_threads_scheduler\}
 
-<SettingsInfoBlock type="String" default_value="fair_round_robin" />
+<SettingsInfoBlock type="String" default_value="max_min_fair" />
 
 `concurrent_threads_soft_limit_num` と `concurrent_threads_soft_limit_ratio_to_cores` によって指定される CPU スロットをどのようにスケジューリングするかを決定するポリシーです。制限された数の CPU スロットを同時実行中のクエリ間でどのように分配するかを制御するアルゴリズムです。スケジューラはサーバーを再起動せずに、実行中に変更できます。
 
@@ -4159,6 +4159,18 @@ true に設定すると、サーバー設定が正しいかどうかのチェッ
 <skip_check_for_incorrect_settings>1</skip_check_for_incorrect_settings>
 ```
 
+
+## snapshot_cleaner_period \{#snapshot_cleaner_period\}
+
+<SettingsInfoBlock type="UInt64" default_value="120" />
+
+SharedMergeTree のスナップショットパーツを完全に削除する間隔。ClickHouse Cloud でのみ使用可能です
+
+## snapshot_cleaner_pool_size \{#snapshot_cleaner_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="128" />
+
+共有 MergeTree スナップショットのクリーンアップを行うためのスレッド数です。ClickHouse Cloud でのみ利用可能です。
 
 ## ssh_server \{#ssh_server\}
 

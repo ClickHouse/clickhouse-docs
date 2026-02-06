@@ -12,7 +12,7 @@ doc_type: 'reference'
 Введена в версии: v1.1
 
 Возвращает выборочное стандартное отклонение последовательности числовых данных.
-Результат равен квадратному корню из [`varSamp`](/sql-reference/aggregate-functions/reference/varsamp).
+Результат равен квадратному корню из [`varSamp`](/sql-reference/aggregate-functions/reference/varSamp).
 
 :::note
 Эта функция использует численно неустойчивый алгоритм.

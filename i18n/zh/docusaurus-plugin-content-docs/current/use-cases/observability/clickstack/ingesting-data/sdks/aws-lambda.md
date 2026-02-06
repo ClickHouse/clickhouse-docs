@@ -128,80 +128,115 @@ OTEL_TRACES_SAMPLER=always_on
 
 </Tabs>
 
-### Installing the OpenTelemetry collector Lambda layer \{#installing-the-otel-collector-layer\}
+### 安装 OpenTelemetry collector Lambda 层 \{#installing-the-otel-collector-layer\}
 
-The collector Lambda layer allows you to forward logs, metrics, and traces from your Lambda function to ClickStack without impacting response times due 
-to exporter latency.
+collector Lambda 层允许你将 Lambda 函数中的日志、指标和追踪（traces）转发到 ClickStack，而不会因为导出器（exporter）延迟而影响响应时间。
 
-**To install the collector layer**:
+**安装 collector 层的步骤**：
 
-1. In the Layers section click "Add a layer"
-2. Select specify an ARN and choose the correct ARN based on architecture,  ensure you replace the `<region>` with your region (ex. `us-east-2`):
+1. 在 Layers 区域点击 “Add a layer”
+2. 选择 “Specify an ARN”，并根据架构选择正确的 ARN，确保将 `<region>` 替换为你的区域（例如 `us-east-2`）：
 
 <Tabs groupId="install-language-layer">
-
-<TabItem value="x86_64" label="x86_64" default>
-
-```shell
+  <TabItem value="x86_64" label="x86_64" default>
+    ```shell
     arn:aws:lambda:<region>:184161586896:layer:opentelemetry-collector-amd64-0_8_0:1
     ```
+  </TabItem>
 
-</TabItem>
-
-<TabItem value="arm64" label="arm64" default>
-
-```shell
+  <TabItem value="arm64" label="arm64" default>
+    ```shell
     arn:aws:lambda:<region>:184161586896:layer:opentelemetry-collector-arm64-0_8_0:1
     ```
-
-</TabItem>
-
+  </TabItem>
 </Tabs>
 
-3. Add the following `collector.yaml` file to your project to configure the collector to send to ClickStack:
+3. 将以下 `collector.yaml` 文件添加到你的项目中，用于配置 collector 将数据发送到 ClickStack：
 
-```yaml
-# collector.yaml {#collectoryaml}
-receivers:
-  otlp:
-    protocols:
-      grpc:
-        endpoint: 'localhost:4317'
-      http:
-        endpoint: 'localhost:4318'
+<Tabs groupId="service-type">
+  <TabItem value="clickstack-managed" label="Managed ClickStack" default>
+    ```yaml
+    # collector.yaml
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 'localhost:4317'
+          http:
+            endpoint: 'localhost:4318'
 
-processors:
-  batch:
-  decouple:
+    processors:
+      batch:
+      decouple:
 
-exporters:
-  otlphttp:
-    endpoint: "<YOU_OTEL_COLLECTOR_HTTP_ENDPOINT>
-    headers:
-      authorization: <YOUR_INGESTION_API_KEY>
-    compression: gzip
+    exporters:
+      otlphttp:
+        endpoint: "<YOU_OTEL_COLLECTOR_HTTP_ENDPOINT>"
+        compression: gzip
 
-service:
-  pipelines:
-    traces:
-      receivers: [otlp]
-      processors: [batch, decouple]
-      exporters: [otlphttp]
-    metrics:
-      receivers: [otlp]
-      processors: [batch, decouple]
-      exporters: [otlphttp]
-    logs:
-      receivers: [otlp]
-      processors: [batch, decouple]
-      exporters: [otlphttp]
-```
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch, decouple]
+          exporters: [otlphttp]
+        metrics:
+          receivers: [otlp]
+          processors: [batch, decouple]
+          exporters: [otlphttp]
+        logs:
+          receivers: [otlp]
+          processors: [batch, decouple]
+          exporters: [otlphttp]
+    ```
+  </TabItem>
 
-4. Add the following environment variable:
+  <TabItem value="clickstack-oss" label="ClickStack Open Source">
+    ```yaml
+    # collector.yaml
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 'localhost:4317'
+          http:
+            endpoint: 'localhost:4318'
+
+    processors:
+      batch:
+      decouple:
+
+    exporters:
+      otlphttp:
+        endpoint: "<YOU_OTEL_COLLECTOR_HTTP_ENDPOINT>"
+        headers:
+          authorization: <YOUR_INGESTION_API_KEY>
+        compression: gzip
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch, decouple]
+          exporters: [otlphttp]
+        metrics:
+          receivers: [otlp]
+          processors: [batch, decouple]
+          exporters: [otlphttp]
+        logs:
+          receivers: [otlp]
+          processors: [batch, decouple]
+          exporters: [otlphttp]
+    ```
+  </TabItem>
+</Tabs>
+
+4. 添加以下环境变量：
 
 ```shell
 OPENTELEMETRY_COLLECTOR_CONFIG_FILE=/var/task/collector.yaml
 ```
+
 
 ## Checking the installation \{#checking-the-installation\}
 
@@ -232,8 +267,11 @@ To debug collector issues, you can enable debug logs by modifying your collector
 configuration file to add the `logging` exporter and setting the telemetry 
 log level to `debug` to enable more verbose logging from the collector lambda layer.
 
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="托管 ClickStack" default>
+
 ```yaml
-# collector.yaml {#collectoryaml}
+# collector.yaml
 receivers:
   otlp:
     protocols:
@@ -246,7 +284,47 @@ exporters:
   logging:
     verbosity: detailed
   otlphttp:
-    endpoint: "https://in-otel.hyperdx.io"
+    endpoint: "<YOU_OTEL_COLLECTOR_HTTP_ENDPOINT>"
+    compression: gzip
+
+service:
+  telemetry:
+    logs:
+      level: "debug"
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch, decouple]
+      exporters: [otlphttp, logging]
+    metrics:
+      receivers: [otlp]
+      processors: [batch, decouple]
+      exporters: [otlphttp, logging]
+    logs:
+      receivers: [otlp]
+      processors: [batch, decouple]
+      exporters: [otlphttp, logging]
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack 开源版">
+
+```yaml
+# collector.yaml
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 'localhost:4317'
+      http:
+        endpoint: 'localhost:4318'
+
+exporters:
+  logging:
+    verbosity: detailed
+  otlphttp:
+    endpoint: "<YOU_OTEL_COLLECTOR_HTTP_ENDPOINT>"
     headers:
       authorization: <您的摄取_API_密钥>
     compression: gzip
@@ -269,3 +347,6 @@ service:
       processors: [batch, decouple]
       exporters: [otlphttp, logging]
 ```
+
+</TabItem>
+</Tabs>

@@ -593,7 +593,7 @@ ClickHouse перезагружает встроенные словари каж
 
 ## concurrent_threads_scheduler \{#concurrent_threads_scheduler\}
 
-<SettingsInfoBlock type="String" default_value="fair_round_robin" />
+<SettingsInfoBlock type="String" default_value="max_min_fair" />
 
 Политика планирования слотов CPU, определённых `concurrent_threads_soft_limit_num` и `concurrent_threads_soft_limit_ratio_to_cores`. Алгоритм, определяющий, как ограниченное количество слотов CPU распределяется между конкурирующими запросами. Планировщик можно изменить во время работы без перезапуска сервера.
 
@@ -4164,6 +4164,18 @@ DDL-запросы будут дожидаться только реплик и�
 <skip_check_for_incorrect_settings>1</skip_check_for_incorrect_settings>
 ```
 
+
+## snapshot_cleaner_period \{#snapshot_cleaner_period\}
+
+<SettingsInfoBlock type="UInt64" default_value="120" />
+
+Период, по истечении которого полностью удаляются части снапшота для SharedMergeTree. Доступно только в ClickHouse Cloud.
+
+## snapshot_cleaner_pool_size \{#snapshot_cleaner_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="128" />
+
+Пул потоков для очистки снапшотов SharedMergeTree. Доступно только в ClickHouse Cloud
 
 ## ssh_server \{#ssh_server\}
 

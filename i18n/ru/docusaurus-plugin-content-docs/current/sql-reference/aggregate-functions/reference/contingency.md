@@ -12,7 +12,7 @@ doc_type: 'reference'
 Введено в: v22.1
 
 Функция `contingency` вычисляет [коэффициент контингенции](https://en.wikipedia.org/wiki/Contingency_table#Cram%C3%A9r's_V_and_the_contingency_coefficient_C) — величину, которая измеряет связь между двумя столбцами в таблице.
-Вычисление аналогично функции [`cramersV`](./cramersV.md), но отличается знаменателем под знаком квадратного корня.
+Вычисление аналогично функции [`cramersV`](/sql-reference/aggregate-functions/reference/cramersv), но отличается знаменателем под знаком квадратного корня.
 
 **Синтаксис**
 

@@ -683,6 +683,8 @@ File Cache **磁盘配置设置**：
 | `max_file_segment_size`               | Size    | `8Mi`      | 单个缓存文件的最大大小，可以是字节数或可读格式。                                                                     |
 | `max_elements`                        | Integer | `10000000` | 最大缓存文件数量。                                                                                    |
 | `load_metadata_threads`               | Integer | `16`       | 启动时用于加载缓存元数据的线程数。                                                                            |
+| `use_split_cache`                     | Boolean | `false`    | 将文件划分为 system/data 两部分进行存储。                                                                  |
+| `split_cache_ratio`                   | Double  | `0.1`      | 在 split&#95;cache 中，system 段大小相对于缓存总大小的比例。                                                   |
 
 > **注意**：Size 值支持 `ki`、`Mi`、`Gi` 等单位（例如 `10Gi`）。
 
