@@ -71,6 +71,14 @@ We recommend using the latest java client directly if performance/direct access 
     </TabItem>
 </Tabs>
 
+
+If you are using JDBC driver within an application that requires jar to be added to the classpath, you need to add download the jar from:
+- [Maven Central](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc) and add it to the classpath
+    - starting from version `0.9.4` there is an artifact https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc-all
+    - use qualifier `all` to get the jar with all shaded dependencies included.
+- or from official repository [here](https://github.com/ClickHouse/clickhouse-java/releases)
+
+
 ## Configuration {#configuration}
 
 **Driver Class**: `com.clickhouse.jdbc.ClickHouseDriver`
@@ -512,6 +520,7 @@ try (Connection conn = DriverManager.getConnection(url, properties)) {
 
 - `FixedString` is read as is in both versions. For example `FixedString(10)` for `'John'` will be read as `'John\0\0\0\0\0\0\0\0\0'`.
 - When `PreparedStatement#setBytes` is used it will be converted to `unhex('<hex_string>')` and then read as `String`.
+- Strings are stored in UTF-8 encoding.
 
 **Date/Time Types**
 
