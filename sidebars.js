@@ -348,6 +348,7 @@ const sidebars = {
         'cloud/managed-postgres/security',
         'cloud/managed-postgres/extensions',
         'cloud/managed-postgres/settings',
+        'cloud/managed-postgres/benchmarks',
         'cloud/managed-postgres/faq',
         {
           type: 'category',
