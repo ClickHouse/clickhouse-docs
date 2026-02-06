@@ -22,6 +22,14 @@ The official C# client for connecting to ClickHouse.
 The client source code is available in the [GitHub repository](https://github.com/ClickHouse/clickhouse-cs).
 Originally developed by [Oleg V. Kozlyuk](https://github.com/DarkWanderer).
 
+The library provides two main APIs:
+
+- **`ClickHouseClient`** (recommended): A high-level, thread-safe client designed for singleton use. Provides a simple async API for queries and bulk inserts. Best for most applications.
+
+- **ADO.NET** (`ClickHouseConnection`, `ClickHouseCommand`): Standard .NET database abstractions. Required for ORM integration (Dapper, Linq2db) and when you need ADO.NET compatibility.
+
+Both APIs share the same underlying HTTP connection pool and can be used together in the same application.
+
 ## Migration guide {#migration-guide}
 
 1. Update your `.csproj` file with the new package name `ClickHouse.Driver` and [the latest version on NuGet](https://www.nuget.org/packages/ClickHouse.Driver).
@@ -58,13 +66,14 @@ Install-Package ClickHouse.Driver
 ## Quick start {#quick-start}
 
 ```csharp
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
 
-using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=https;Port=8443;Username=user"))
-{
-    var version = await connection.ExecuteScalarAsync("SELECT version()");
-    Console.WriteLine(version);
-}
+// Create a client (typically as a singleton)
+using var client = new ClickHouseClient("Host=my.clickhouse;Protocol=https;Port=8443;Username=user");
+
+// Execute a query
+var version = await client.ExecuteScalarAsync("SELECT version()");
+Console.WriteLine(version);
 ```
 
 ## Configuration {#configuration}
@@ -163,11 +172,85 @@ Host=localhost;Port=8123;Username=default;Password=secret;Database=mydb
 Host=localhost;set_max_threads=4;set_readonly=1;set_max_memory_usage=10000000000
 ```
 
-## Usage {#usage}
+---
 
-### Connecting {#connecting}
+### QueryOptions {#query-options}
 
-To connect to ClickHouse, create a `ClickHouseConnection` with a connection string or a `ClickHouseClientSettings` object. See the [Configuration](#configuration) section for available options.
+`QueryOptions` allows you to override client-level settings on a per-query basis. All properties are optional and only override the client defaults when specified.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| QueryId | `string` | Custom query identifier for tracking in `system.query_log` or cancellation |
+| Database | `string` | Override the default database for this query |
+| Roles | `IReadOnlyList<string>` | Override client roles for this query |
+| CustomSettings | `IDictionary<string, object>` | ClickHouse server settings for this query (e.g., `max_threads`) |
+| CustomHeaders | `IDictionary<string, string>` | Additional HTTP headers for this query |
+| UseSession | `bool?` | Override session behavior for this query |
+| SessionId | `string` | Session ID for this query (requires `UseSession = true`) |
+| BearerToken | `string` | Override authentication token for this query |
+| Timeout | `TimeSpan?` | Override client timeout for this query |
+
+**Example:**
+
+```csharp
+var options = new QueryOptions
+{
+    QueryId = "report-2024-001",
+    Database = "analytics",
+    CustomSettings = new Dictionary<string, object>
+    {
+        { "max_threads", 4 },
+        { "max_memory_usage", 10_000_000_000 }
+    },
+    Timeout = TimeSpan.FromMinutes(5)
+};
+
+var reader = await client.ExecuteReaderAsync(
+    "SELECT * FROM large_table",
+    parameters: null,
+    options: options
+);
+```
+
+---
+
+### InsertOptions {#insert-options}
+
+`InsertOptions` extends `QueryOptions` with settings specific to bulk insert operations via `InsertBinaryAsync`.
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| BatchSize | `int` | 100,000 | Number of rows per batch |
+| MaxDegreeOfParallelism | `int` | 1 | Number of parallel batch uploads |
+| Format | `RowBinaryFormat` | `RowBinary` | Binary format: `RowBinary` or `RowBinaryWithDefaults` |
+
+All `QueryOptions` properties are also available on `InsertOptions`.
+
+**Example:**
+
+```csharp
+var insertOptions = new InsertOptions
+{
+    BatchSize = 50_000,
+    MaxDegreeOfParallelism = 4,
+    QueryId = "bulk-import-001"
+};
+
+long rowsInserted = await client.InsertBinaryAsync(
+    "my_table",
+    columns,
+    rows,
+    insertOptions
+);
+```
+
+## ClickHouseClient {#clickhouse-client}
+
+`ClickHouseClient` is the recommended API for interacting with ClickHouse. It is thread-safe, designed for singleton use, and manages HTTP connection pooling internally.
+
+### Creating a client {#creating-a-client}
+
+Create a `ClickHouseClient` with a connection string or a `ClickHouseClientSettings` object. See the [Configuration](#configuration) section for available options.
 
 The details for your ClickHouse Cloud service are available in the ClickHouse Cloud console.
 
@@ -184,142 +267,150 @@ If you are using self-managed ClickHouse, the connection details are set by your
 Using a connection string:
 
 ```csharp
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
 
-using var connection = new ClickHouseConnection("Host=localhost;Username=default;Password=secret");
-await connection.OpenAsync();
+using var client = new ClickHouseClient("Host=localhost;Username=default;Password=secret");
 ```
 
 Or using `ClickHouseClientSettings`:
 
 ```csharp
+using ClickHouse.Driver;
+
 var settings = new ClickHouseClientSettings
 {
     Host = "localhost",
     Username = "default",
     Password = "secret"
 };
-using var connection2 = new ClickHouseConnection(settings);
-await connection2.OpenAsync();
+using var client = new ClickHouseClient(settings);
+```
+
+For dependency injection scenarios, use `IHttpClientFactory`:
+
+```csharp
+// In your DI configuration
+services.AddHttpClient("ClickHouse", client =>
+{
+    client.Timeout = TimeSpan.FromMinutes(5);
+}).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+{
+    AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+});
+
+// Create client with factory
+var factory = serviceProvider.GetRequiredService<IHttpClientFactory>();
+var client = new ClickHouseClient("Host=localhost", factory, "ClickHouse");
 ```
 
 :::note
-* A `ClickHouseConnection` represents a "session" with the server. It is safe to create and destroy such objects multiple times.
-* Recommended lifetime for a connection is one connection object per large "transaction" spanning multiple queries. The `ClickHouseConnection` object can be long-lived.
-* If an application operates on large volumes of transactions and requires to create/destroy `ClickHouseConnection` objects often, it is recommended to use `IHttpClientFactory` or a static instance of `HttpClient` to manage connections.
+`ClickHouseClient` is designed to be long-lived and shared across your application. Create it once (typically as a singleton) and reuse it for all database operations. The client manages HTTP connection pooling internally.
 :::
 
 ---
 
-### Creating a table {#creating-a-table}
+### Executing queries {#executing-queries}
 
-Create a table using standard SQL syntax:
+Use `ExecuteNonQueryAsync` for statements that don't return results:
 
 ```csharp
-using ClickHouse.Driver.ADO;
+// Create a table
+await client.ExecuteNonQueryAsync(
+    "CREATE TABLE IF NOT EXISTS default.my_table (id Int64, name String) ENGINE = Memory"
+);
 
-using (var connection = new ClickHouseConnection(connectionString))
-{
-    await connection.OpenAsync();
+// Drop a table
+await client.ExecuteNonQueryAsync("DROP TABLE IF EXISTS default.my_table");
+```
 
-    using (var command = connection.CreateCommand())
-    {
-        command.CommandText = "CREATE TABLE IF NOT EXISTS default.my_table (id Int64, name String) ENGINE = Memory";
-        await command.ExecuteNonQueryAsync();
-    }
-}
+Use `ExecuteScalarAsync` to retrieve a single value:
+
+```csharp
+var count = await client.ExecuteScalarAsync("SELECT count() FROM default.my_table");
+Console.WriteLine($"Row count: {count}");
+
+var version = await client.ExecuteScalarAsync("SELECT version()");
+Console.WriteLine($"Server version: {version}");
 ```
 
 ---
 
 ### Inserting data {#inserting-data}
 
-Insert data using parameterized queries. The parameter types are automatically extracted from the SQL query's `{name:Type}` syntax:
+#### Parameterized inserts {#parameterized-inserts}
+
+Insert data using parameterized queries with `ExecuteNonQueryAsync`. Parameter types must be specified in the SQL using `{name:Type}` syntax:
 
 ```csharp
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
+using ClickHouse.Driver.ADO.Parameters;
 
-using (var connection = new ClickHouseConnection(connectionString))
-{
-    await connection.OpenAsync();
+var parameters = new ClickHouseParameterCollection();
+parameters.Add(new ClickHouseDbParameter("id", 1L));
+parameters.Add(new ClickHouseDbParameter("name", "Alice"));
 
-    using (var command = connection.CreateCommand())
-    {
-        command.CommandText = "INSERT INTO default.my_table (id, name) VALUES ({id:Int64}, {name:String})";
-        command.AddParameter("id", 1);      // Type Int64 extracted from SQL
-        command.AddParameter("name", "test"); // Type String extracted from SQL
-        await command.ExecuteNonQueryAsync();
-    }
-}
+await client.ExecuteNonQueryAsync(
+    "INSERT INTO default.my_table (id, name) VALUES ({id:Int64}, {name:String})",
+    parameters
+);
 ```
 
 ---
 
-### Bulk insert {#bulk-insert}
+#### Bulk inserts {#bulk-insert}
 
-Use `ClickHouseBulkCopy` for inserting large numbers of rows. It streams data efficiently using ClickHouse's native row binary format, works in parallel, and can split the data into batches. It also avoids limitations with large parameter sets causing "URL too long" errors.
-
-Using `ClickHouseBulkCopy` requires:
-
-* Target connection (`ClickHouseConnection` instance)
-* Target table name (`DestinationTableName` property)
-* Data source (`IDataReader` or `IEnumerable<object[]>`)
+Use `InsertBinaryAsync` for inserting large numbers of rows efficiently. It streams data using ClickHouse's native row binary format, supports parallel batch uploads, and avoids "URL too long" errors that can occur with parameterized queries.
 
 ```csharp
-using ClickHouse.Driver.ADO;
-using ClickHouse.Driver.Copy;
+// Prepare data as IEnumerable<object[]>
+var rows = Enumerable.Range(0, 1_000_000)
+    .Select(i => new object[] { (long)i, $"value{i}" });
 
-using var connection = new ClickHouseConnection(connectionString);
-await connection.OpenAsync();
+var columns = new[] { "id", "name" };
 
-using var bulkCopy = new ClickHouseBulkCopy(connection)
+// Basic insert
+long rowsInserted = await client.InsertBinaryAsync("default.my_table", columns, rows);
+Console.WriteLine($"Rows inserted: {rowsInserted}");
+```
+
+For large datasets, configure batching and parallelism with `InsertOptions`:
+
+```csharp
+var options = new InsertOptions
 {
-    DestinationTableName = "default.my_table",
-    BatchSize = 100000,
-    MaxDegreeOfParallelism = 2
+    BatchSize = 100_000,           // Rows per batch (default: 100,000)
+    MaxDegreeOfParallelism = 4     // Parallel batch uploads (default: 1)
 };
-
-var values = Enumerable.Range(0, 1000000)
-    .Select(i => new object[] { (long)i, "value" + i });
-
-await bulkCopy.WriteToServerAsync(values);
-Console.WriteLine($"Rows written: {bulkCopy.RowsWritten}");
 ```
 
 :::note
-* For optimal performance, ClickHouseBulkCopy uses the Task Parallel Library (TPL) to process batches of data, with up to 4 parallel insertion tasks (this can be tuned).
-* Column names can be optionally provided via `ColumnNames` property if source data has fewer columns than target table.
-* Configurable parameters: `Columns`, `BatchSize`, `MaxDegreeOfParallelism`.
-* Before copying, a `SELECT * FROM <table> LIMIT 0` query is performed to get information about target table structure. Types of provided objects must reasonably match the target table.
-* Sessions are not compatible with parallel insertion. Connection passed to `ClickHouseBulkCopy` must have sessions disabled, or `MaxDegreeOfParallelism` must be set to `1`.
+* The client automatically fetches table structure via `SELECT * FROM <table> WHERE 1=0` before inserting. Provided values must match the target column types.
+* When `MaxDegreeOfParallelism > 1`, batches are uploaded in parallel. Sessions are not compatible with parallel insertion; either disable sessions or set `MaxDegreeOfParallelism = 1`.
+* Use `RowBinaryFormat.RowBinaryWithDefaults` in `InsertOptions.Format` if you want the server to apply DEFAULT values for columns not provided.
 :::
 
 ---
 
-### Performing SELECT queries {#performing-select-queries}
+### Reading data {#reading-data}
 
-Execute SELECT queries using `ExecuteReader()` or `ExecuteReaderAsync()`. The returned `DbDataReader` provides typed access to result columns via methods like `GetInt64()`, `GetString()`, and `GetFieldValue<T>()`.
+Use `ExecuteReaderAsync` to execute SELECT queries. The returned `ClickHouseDataReader` provides typed access to result columns via methods like `GetInt64()`, `GetString()`, and `GetFieldValue<T>()`.
 
 Call `Read()` to advance to the next row. It returns `false` when there are no more rows. Access columns by index (0-based) or by column name.
 
 ```csharp
-using ClickHouse.Driver.ADO;
-using System.Data;
+using ClickHouse.Driver.ADO.Parameters;
 
-using (var connection = new ClickHouseConnection(connectionString))
+var parameters = new ClickHouseParameterCollection();
+parameters.Add(new ClickHouseDbParameter("max_id", 100L));
+
+var reader = await client.ExecuteReaderAsync(
+    "SELECT * FROM default.my_table WHERE id < {max_id:Int64}",
+    parameters
+);
+
+while (reader.Read())
 {
-    await connection.OpenAsync();
-
-    using (var command = connection.CreateCommand())
-    {
-        command.CommandText = "SELECT * FROM default.my_table WHERE id < {id:Int64}";
-        command.AddParameter("id", 10); // Type Int64 extracted from SQL
-        using var reader = await command.ExecuteReaderAsync();
-        while (reader.Read())
-        {
-            Console.WriteLine($"select: Id: {reader.GetInt64(0)}, Name: {reader.GetString(1)}");
-        }
-    }
+    Console.WriteLine($"Id: {reader.GetInt64(0)}, Name: {reader.GetString(1)}");
 }
 ```
 
@@ -344,61 +435,67 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
 ```
 
 :::note
-SQL 'bind' parameters are passed as HTTP URI query parameters, so using too many of them may result in a "URL too long" exception. Using ClickHouseBulkInsert can bypass this limitation.
+SQL 'bind' parameters are passed as HTTP URI query parameters, so using too many of them may result in a "URL too long" exception. Use `InsertBinaryAsync` for bulk data insertion to avoid this limitation.
 :::
 
 ---
 
 ### Query ID {#query-id}
 
-Every method that makes a query will also include a query_id in the result. This unique identifier is assigned by the client per query and can be used to fetch data from the `system.query_log` table (if it is enabled), or cancel long-running queries. If necessary, the query ID can be overridden by the user in the ClickHouseCommand object.
+Every query is assigned a unique `query_id` that can be used to fetch data from the `system.query_log` table or cancel long-running queries. You can specify a custom query ID via `QueryOptions`:
 
 ```csharp
-var customQueryId = $"qid-{Guid.NewGuid()}";
+var options = new QueryOptions
+{
+    QueryId = $"report-{Guid.NewGuid()}"
+};
 
-using var command = connection.CreateCommand();
-command.CommandText = "SELECT version()";
-command.QueryId = customQueryId;
-
-var version = await command.ExecuteScalarAsync();
-Console.WriteLine($"QueryId: {command.QueryId}");
+var reader = await client.ExecuteReaderAsync(
+    "SELECT * FROM large_table",
+    parameters: null,
+    options: options
+);
 ```
 
 :::tip
-If you are overriding the `QueryId` parameter, you need to ensure its uniqueness for every call. A random GUID is a good choice.
+If you are specifying a custom `QueryId`, ensure it is unique for every call. A random GUID is a good choice.
 :::
 
 ---
 
 ### Raw streaming {#raw-streaming}
 
-It's possible to stream data in a particular format directly, bypassing the data reader. This can be useful in situations where you want to save the data to file in a particular format. For example:
+Use `ExecuteRawResultAsync` to stream query results in a specific format directly, bypassing the data reader. This is useful for exporting data to files or passing through to other systems:
 
 ```csharp
-using var command = connection.CreateCommand();
-command.CommandText = "SELECT * FROM default.my_table LIMIT 100 FORMAT JSONEachRow";
-using var result = await command.ExecuteRawResultAsync(CancellationToken.None);
-using var stream = await result.ReadAsStreamAsync();
+using var result = await client.ExecuteRawResultAsync(
+    "SELECT * FROM default.my_table LIMIT 100 FORMAT JSONEachRow"
+);
+
+await using var stream = await result.ReadAsStreamAsync();
 using var reader = new StreamReader(stream);
 var json = await reader.ReadToEndAsync();
 ```
+
+Common formats: `JSONEachRow`, `CSV`, `TSV`, `Parquet`, `Native`. See the [formats documentation](/docs/interfaces/formats) for all options.
 
 ---
 
 ### Raw stream insert {#raw-stream-insert}
 
-Use `InsertRawStreamAsync` to insert data directly from file or memory streams in formats like CSV, JSON, or any [supported ClickHouse format](/docs/interfaces/formats).
+Use `InsertRawStreamAsync` to insert data directly from file or memory streams in formats like CSV, JSON, Parquet, or any [supported ClickHouse format](/docs/interfaces/formats).
 
 **Insert from a CSV file:**
 
 ```csharp
 await using var fileStream = File.OpenRead("data.csv");
 
-using var response = await connection.InsertRawStreamAsync(
+using var response = await client.InsertRawStreamAsync(
     table: "my_table",
     stream: fileStream,
     format: "CSV",
-    columns: ["id", "product", "price"]); // Optional: specify columns
+    columns: ["id", "product", "price"] // Optional: specify columns
+);
 ```
 
 :::note
@@ -411,30 +508,147 @@ See the [format settings documentation](/docs/operations/settings/formats) for o
 
 For additional practical usage examples, see the [examples directory](https://github.com/ClickHouse/clickhouse-cs/tree/main/examples) in the GitHub repository.
 
+## ADO.NET {#ado-net}
+
+The library provides full ADO.NET support through `ClickHouseConnection`, `ClickHouseCommand`, and `ClickHouseDataReader`. This API is required for ORM integration (Dapper, Linq2db) and when you need standard .NET database abstractions.
+
+### Lifetime management with ClickHouseDataSource {#ado-net-datasource}
+
+**Always create connections from a `ClickHouseDataSource`** to ensure proper lifetime management and connection pooling. The DataSource manages a single `ClickHouseClient` internally, and all connections share its HTTP connection pool.
+
+```csharp
+using ClickHouse.Driver.ADO;
+
+// Create DataSource once (register as singleton in DI)
+var dataSource = new ClickHouseDataSource("Host=localhost;Username=default;Password=secret");
+
+// Create lightweight connections as needed
+await using var connection = await dataSource.OpenConnectionAsync();
+
+// Use the connection
+await using var command = connection.CreateCommand("SELECT version()");
+var version = await command.ExecuteScalarAsync();
+```
+
+For dependency injection:
+
+```csharp
+// In Startup.cs or Program.cs
+services.AddSingleton(sp =>
+{
+    var factory = sp.GetRequiredService<IHttpClientFactory>();
+    return new ClickHouseDataSource("Host=localhost", factory, "ClickHouse");
+});
+
+// In your service
+public class MyService
+{
+    private readonly ClickHouseDataSource _dataSource;
+
+    public MyService(ClickHouseDataSource dataSource)
+    {
+        _dataSource = dataSource;
+    }
+
+    public async Task DoWorkAsync()
+    {
+        await using var connection = await _dataSource.OpenConnectionAsync();
+        // Use connection...
+    }
+}
+```
+
+:::warning
+**Do not create `ClickHouseConnection` directly** in production code. Each direct instantiation creates a new HTTP client and connection pool, which can lead to socket exhaustion under load:
+
+```csharp
+// DON'T DO THIS - creates new connection pool each time
+using var conn = new ClickHouseConnection("Host=localhost");
+await conn.OpenAsync();
+```
+
+Instead, always use `ClickHouseDataSource` or share a single `ClickHouseClient` instance.
+:::
+
+---
+
+### Using ClickHouseCommand {#ado-net-command}
+
+Create commands from a connection to execute SQL:
+
+```csharp
+await using var connection = await dataSource.OpenConnectionAsync();
+
+// Create command with SQL
+await using var command = connection.CreateCommand("SELECT * FROM my_table WHERE id = {id:Int64}");
+command.AddParameter("id", 42L);
+
+// Execute and read results
+await using var reader = await command.ExecuteReaderAsync();
+while (reader.Read())
+{
+    Console.WriteLine($"Name: {reader.GetString("name")}");
+}
+```
+
+Command methods:
+- `ExecuteNonQueryAsync()` - For INSERT, UPDATE, DELETE, DDL statements
+- `ExecuteScalarAsync()` - Returns first column of first row
+- `ExecuteReaderAsync()` - Returns a `ClickHouseDataReader` for iterating results
+
+---
+
+### Using ClickHouseDataReader {#ado-net-reader}
+
+The `ClickHouseDataReader` provides typed access to query results:
+
+```csharp
+await using var reader = await command.ExecuteReaderAsync();
+
+while (reader.Read())
+{
+    // Access by column index
+    var id = reader.GetInt64(0);
+    var name = reader.GetString(1);
+
+    // Access by column name
+    var email = reader.GetString("email");
+
+    // Generic access
+    var timestamp = reader.GetFieldValue<DateTime>("created_at");
+
+    // Check for null
+    if (!reader.IsDBNull("optional_field"))
+    {
+        var value = reader.GetString("optional_field");
+    }
+}
+```
+
 ## Best practices {#best-practices}
 
 ### Connection lifetime and pooling {#best-practices-connection-lifetime}
 
 `ClickHouse.Driver` uses `System.Net.Http.HttpClient` under the hood. `HttpClient` has a per-endpoint connection pool. As a consequence:
 
-* A `ClickHouseConnection` object does not have 1:1 mapping to TCP connections - multiple database sessions will be multiplexed through several TCP connections per server.
-* `ClickHouseConnection` objects can be long-lived; the actual TCP connections underneath will be recycled by the connection pool.
-* Let `HttpClient` manage connection pooling internally. Do not pool `ClickHouseConnection` objects yourself. 
-* Connections can stay alive after `ClickHouseConnection` object was disposed.
-* This behavior can be tweaked by passing a custom `HttpClientFactory` or `HttpClient` with custom `HttpClientHandler`.
+* Database sessions are multiplexed through HTTP connections managed by the connection pool.
+* HTTP connections are recycled automatically by the pool.
+* Connections can stay alive after `ClickHouseClient` or `ClickHouseConnection` objects are disposed.
 
-For DI environments, there is a bespoke constructor `ClickHouseConnection(string connectionString, IHttpClientFactory httpClientFactory, string httpClientName = "")` which makes the ClickHouseConnection request a named http client.
+**Recommended patterns:**
+
+| Scenario | Recommended Approach |
+|----------|---------------------|
+| General use | Use a singleton `ClickHouseClient` |
+| ADO.NET / ORMs | Use `ClickHouseDataSource` (creates connections that share the same pool) |
+| DI environments | Register `ClickHouseClient` or `ClickHouseDataSource` as singleton with `IHttpClientFactory` |
 
 :::important
 When using a custom `HttpClient` or `HttpClientFactory`, ensure that the `PooledConnectionIdleTimeout` is set to a value smaller than the server's `keep_alive_timeout`, in order to avoid errors due to half-closed connections. The default `keep_alive_timeout` for Cloud deployments is 10 seconds.
 :::
 
-:::note
-If you create multiple `ClickHouseConnection` instances without passing a shared `HttpClient`, each connection will create its own `HttpClient` with its own connection pool. In high-throughput scenarios, this can lead to socket exhaustion as each pool maintains separate TCP connections to the server.
-
-To avoid this:
-- **Use a singleton `HttpClient`**: Pass a shared `HttpClient` instance to all `ClickHouseConnection` objects via `ClickHouseClientSettings.HttpClient`. This maintains a single connection pool and reuses TCP connections efficiently.
-- **Use a singleton `ClickHouseConnection`**: A single long-lived connection instance achieves the same result since the underlying `HttpClient` is shared.
+:::warning
+Avoid creating multiple `ClickHouseClient` or standalone `ClickHouseConnection` instances without a shared `HttpClient`. Each instance creates its own connection pool.
 :::
 
 ---
@@ -447,8 +661,13 @@ To avoid this:
 
 3. **Specify timezone in SQL type hints.** When using parameters with `Unspecified` DateTime values targeting non-UTC columns, include the timezone in the SQL:
    ```csharp
-   command.CommandText = "INSERT INTO table (dt) VALUES ({dt:DateTime('Europe/Amsterdam')})";
-   command.AddParameter("dt", value); // Type extracted from SQL automatically
+   var parameters = new ClickHouseParameterCollection();
+   parameters.Add("dt", myDateTime);
+
+   await client.ExecuteNonQueryAsync(
+       "INSERT INTO table (dt) VALUES ({dt:DateTime('Europe/Amsterdam')})",
+       parameters
+   );
    ```
 
 ---
@@ -508,8 +727,28 @@ var settings = new ClickHouseClientSettings
     SessionId = "my-session", // Optional -- will be auto-generated if not provided
 };
 
-await using var connection = new ClickHouseConnection(settings);
-await connection.OpenAsync();
+using var client = new ClickHouseClient(settings);
+
+await client.ExecuteNonQueryAsync("CREATE TEMPORARY TABLE temp_ids (id UInt64)");
+await client.ExecuteNonQueryAsync("INSERT INTO temp_ids VALUES (1), (2), (3)");
+
+var reader = await client.ExecuteReaderAsync(
+    "SELECT * FROM users WHERE id IN (SELECT id FROM temp_ids)"
+);
+```
+
+**Using ADO.NET (for ORM compatibility):**
+
+```csharp
+var settings = new ClickHouseClientSettings
+{
+    Host = "localhost",
+    UseSession = true,
+    SessionId = "my-session",
+};
+
+var dataSource = new ClickHouseDataSource(settings);
+await using var connection = await dataSource.OpenConnectionAsync();
 
 await using var cmd1 = connection.CreateCommand("CREATE TEMPORARY TABLE temp_ids (id UInt64)");
 await cmd1.ExecuteNonQueryAsync();
@@ -857,16 +1096,19 @@ The behavior when writing JSON is controlled by the `JsonWriteMode` setting:
 
 ```csharp
 // Default String mode works with any input
-await bulkCopy.WriteToServerAsync(new[] { new object[] {
-    new { name = "test", value = 42 }  // Anonymous object - no registration needed
-}});
+await client.InsertBinaryAsync(
+    "my_table",
+    new[] { "id", "data" },
+    new[] { new object[] { 1u, new { name = "test", value = 42 } } }
+);
 
 // Binary mode requires explicit opt-in and type registration
 var settings = new ClickHouseClientSettings("Host=localhost")
 {
     JsonWriteMode = JsonWriteMode.Binary
 };
-connection.RegisterJsonSerializationType<MyPocoType>();
+using var client = new ClickHouseClient(settings);
+client.RegisterJsonSerializationType<MyPocoType>();
 ```
 
 ##### Typed JSON columns {#json-typed-columns}
@@ -911,12 +1153,15 @@ public class UserEvent
 
 // For Binary mode: Register the type and enable Binary mode
 var settings = new ClickHouseClientSettings("Host=localhost") { JsonWriteMode = JsonWriteMode.Binary };
-using var connection = new ClickHouseConnection(settings);
-connection.RegisterJsonSerializationType<UserEvent>();
+using var client = new ClickHouseClient(settings);
+client.RegisterJsonSerializationType<UserEvent>();
 
 // Insert POCO - serialized to JSON with nested structure via custom path attributes
-using var bulkCopy = new ClickHouseBulkCopy(connection) { DestinationTableName = "events" };
-await bulkCopy.WriteToServerAsync(new[] { new object[] { 1u, new UserEvent { UserId = 123, UserName = "Alice", Timestamp = DateTime.UtcNow } } });
+await client.InsertBinaryAsync(
+    "events",
+    new[] { "id", "data" },
+    new[] { new object[] { 1u, new UserEvent { UserId = 123, UserName = "Alice", Timestamp = DateTime.UtcNow } } }
+);
 // Resulting JSON: {"user": {"id": 123, "name": "Alice"}, "Timestamp": "2024-01-15T..."}
 ```
 
@@ -988,27 +1233,24 @@ CREATE TABLE test.nested (
 ```
 
 ```csharp
-using var bulkCopy = new ClickHouseBulkCopy(connection)
-{
-    DestinationTableName = "test.nested"
-};
-
 var row1 = new object[] { 1, new[] { 1, 2, 3 }, new[] { "v1", "v2", "v3" } };
 var row2 = new object[] { 2, new[] { 4, 5, 6 }, new[] { "v4", "v5", "v6" } };
 
-await bulkCopy.WriteToServerAsync(new[] { row1, row2 });
+await client.InsertBinaryAsync(
+    "test.nested",
+    new[] { "id", "params.param_id", "params.param_val" },
+    new[] { row1, row2 }
+);
 ```
 
 ## Logging and diagnostics {#logging-and-diagnostics}
 
-The ClickHouse .NET client integrates with the `Microsoft.Extensions.Logging` abstractions to offer lightweight, opt-in logging. When enabled, the driver emits structured messages for connection lifecycle events, command execution, transport operations, and bulk copy uploads. Logging is entirely optional—applications that do not configure a logger continue to run without additional overhead.
+The ClickHouse .NET client integrates with the `Microsoft.Extensions.Logging` abstractions to offer lightweight, opt-in logging. When enabled, the driver emits structured messages for connection lifecycle events, command execution, transport operations, and bulk insert operations. Logging is entirely optional—applications that do not configure a logger continue to run without additional overhead.
 
 ### Quick start {#logging-quick-start}
 
-#### Using ClickHouseConnection {#logging-clickhouseconnection}
-
 ```csharp
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
 using Microsoft.Extensions.Logging;
 
 var loggerFactory = LoggerFactory.Create(builder =>
@@ -1023,8 +1265,7 @@ var settings = new ClickHouseClientSettings("Host=localhost;Port=8123")
     LoggerFactory = loggerFactory
 };
 
-await using var connection = new ClickHouseConnection(settings);
-await connection.OpenAsync();
+using var client = new ClickHouseClient(settings);
 ```
 
 #### Using appsettings.json {#logging-appsettings-config}
@@ -1032,7 +1273,7 @@ await connection.OpenAsync();
 You can configure logging levels using standard .NET configuration:
 
 ```csharp
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -1053,8 +1294,7 @@ var settings = new ClickHouseClientSettings("Host=localhost;Port=8123")
     LoggerFactory = loggerFactory
 };
 
-await using var connection = new ClickHouseConnection(settings);
-await connection.OpenAsync();
+using var client = new ClickHouseClient(settings);
 ```
 
 #### Using in-memory configuration {#logging-inmemory-config}
@@ -1062,7 +1302,7 @@ await connection.OpenAsync();
 You can also configure logging verbosity by category in code:
 
 ```csharp
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -1089,8 +1329,7 @@ var settings = new ClickHouseClientSettings("Host=localhost;Port=8123")
     LoggerFactory = loggerFactory
 };
 
-await using var connection = new ClickHouseConnection(settings);
-await connection.OpenAsync();
+using var client = new ClickHouseClient(settings);
 ```
 
 ### Categories and emitters {#logging-categories}
@@ -1102,7 +1341,7 @@ The driver uses dedicated categories so that you can fine-tune log levels per co
 | `ClickHouse.Driver.Connection` | `ClickHouseConnection` | Connection lifecycle, HTTP client factory selection, connection opening/closing, session management. |
 | `ClickHouse.Driver.Command` | `ClickHouseCommand` | Query execution start/completion, timing, query IDs, server statistics, and error details. |
 | `ClickHouse.Driver.Transport` | `ClickHouseConnection` | Low-level HTTP streaming requests, compression flags, response status codes, and transport failures. |
-| `ClickHouse.Driver.BulkCopy` | `ClickHouseBulkCopy` | Metadata loading, batch operations, row counts, and upload completions. |
+| `ClickHouse.Driver.Client` | `ClickHouseClient` | Binary insert, qqueries, and other operations |
 | `ClickHouse.Driver.NetTrace` | `TraceHelper` | Network tracing, only when debug mode is enabled |
 
 #### Example: Diagnosing connection issues {#logging-config-example}
@@ -1219,7 +1458,7 @@ For production environments requiring custom certificate validation logic, provi
 ```csharp
 using System.Net;
 using System.Net.Security;
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
 
 var handler = new HttpClientHandler
 {
@@ -1250,8 +1489,7 @@ var settings = new ClickHouseClientSettings
     HttpClient = httpClient,
 };
 
-using var connection = new ClickHouseConnection(settings);
-await connection.OpenAsync();
+using var client = new ClickHouseClient(settings);
 ```
 
 :::note 
@@ -1261,6 +1499,17 @@ Important considerations when providing a custom HttpClient
 :::
 
 ## ORM support {#orm-support}
+
+ORMs require the ADO.NET API (`ClickHouseConnection`). For proper connection lifetime management, create connections from a `ClickHouseDataSource`:
+
+```csharp
+// Register DataSource as singleton
+var dataSource = new ClickHouseDataSource("Host=localhost;Username=default");
+
+// Create connections for ORM use
+await using var connection = await dataSource.OpenConnectionAsync();
+// Pass connection to your ORM...
+```
 
 ### Dapper {#orm-support-dapper}
 
