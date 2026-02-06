@@ -1,5 +1,4 @@
 ---
-sidebar_label: 'Overview'
 slug: /integrations/dbt
 sidebar_position: 1
 description: 'You can transform and model your data in ClickHouse using dbt'
@@ -12,8 +11,21 @@ integration:
   - website: 'https://github.com/ClickHouse/dbt-clickhouse'
 ---
 
-import TOCInline from '@theme/TOCInline';
+import {useCurrentSidebarCategory} from '@docusaurus/theme-common/internal';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+
+export const DocPageList = () => {
+  const category = useCurrentSidebarCategory();
+  return (
+    <ul>
+      {category.items.map((item) => (
+        <li key={item.docId || item.label}>
+          <a href={item.href}>{item.label}</a>
+        </li>
+      ))}
+    </ul>
+  );
+};
 
 # Integrating dbt and ClickHouse {#integrate-dbt-clickhouse}
 
@@ -26,7 +38,8 @@ Within dbt, these models can be cross-referenced and layered to allow the constr
 
 dbt is compatible with ClickHouse through a [ClickHouse-supported adapter](https://github.com/ClickHouse/dbt-clickhouse).
 
-<TOCInline toc={toc}  maxHeadingLevel={2} />
+## Related pages
+<DocPageList />
 
 ## Supported features {#supported-features}
 
@@ -73,7 +86,7 @@ The following are [experimental features](https://clickhouse.com/docs/en/beta-an
 
 | Type                                    | Supported?        | Details                                                                                                                                                                                                                                         |
 |-----------------------------------------|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Materialized View materialization       | YES, Experimental | Creates a [materialized view](https://clickhouse.com/docs/en/materialized-view).                                                                                                                                                                |
+| Materialized View materialization       | YES, Experimental | Creates a [materialized view](/integrations/dbt/materialized-views).                                                                                                                                                                |
 | Distributed table materialization       | YES, Experimental | Creates a [distributed table](https://clickhouse.com/docs/en/engines/table-engines/special/distributed).                                                                                                                                        |
 | Distributed incremental materialization | YES, Experimental | Incremental model based on the same idea as distributed table. Note that not all strategies are supported, visit [this](https://github.com/ClickHouse/dbt-clickhouse?tab=readme-ov-file#distributed-incremental-materialization) for more info. |
 | Dictionary materialization              | YES, Experimental | Creates a [dictionary](https://clickhouse.com/docs/en/engines/table-engines/special/dictionary).                                                                                                                                                |
@@ -157,7 +170,7 @@ For deployment (i.e., the CD step), we recommend using the artifacts from your p
 
 If you encounter issues connecting to ClickHouse from dbt, make sure the following criteria are met:
 
-- The engine must be one of the [supported engines](/integrations/dbt/features-and-configurations#supported-table-engines).
+- The engine must be one of the [supported engines](/integrations/dbt/materializations#supported-table-engines).
 - You must have adequate permissions to access the database.
 - If you're not using the default table engine for the database, you must specify a table engine in your model
   configuration.
