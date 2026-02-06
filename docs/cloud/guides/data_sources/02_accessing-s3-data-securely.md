@@ -17,8 +17,6 @@ Before diving into the setup for secure S3 access, it is important to understand
 
 <Image img={secure_s3} size="lg" alt="Overview of Secure S3 Access with ClickHouse"/>
 <br/>
-<Image img={secure_s3} size="md" alt="Overview of Secure S3 Access with ClickHouse"/>
-<br/>
 
 This approach allows customers to manage all access to their S3 buckets in a single place (the IAM policy of the assumed-role) without having to go through all of their bucket policies to add or remove access.
 In the section below, you will learn how to set this up.
