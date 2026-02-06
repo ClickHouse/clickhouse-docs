@@ -4016,3 +4016,9 @@ znode
 znodes
 zookeeperSessionUptime
 zstd
+DataStore
+DataStores
+Dtype
+LaTeX
+DuckDB
+Polars
