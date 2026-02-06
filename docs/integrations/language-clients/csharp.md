@@ -1170,7 +1170,7 @@ Property name matching with column type hints is case-sensitive. A property `Use
 **Limitations (Binary mode only):**
 - POCO types must be registered on the connection with `connection.RegisterJsonSerializationType<T>()` before serialization. Attempting to serialize an unregistered type throws `ClickHouseJsonSerializationException`.
 - Dictionary and array/list properties require type hints in the column definition to be serialized correctly. Without hints, use String mode instead.
-- Null values in POCO properties are only written when the path has a `Nullable(T)` type hint in the column definition. ClickHouse doesn't allow `Nullable` types inside dynamic JSON paths, so unhinted null properties are skipped.
+- Null values in POCO properties are only written when the path has a `Nullable(T)` type hint in the column definition. ClickHouse doesn't allow `Nullable` types inside dynamic JSON paths, so un-hinted null properties are skipped.
 - `ClickHouseJsonPath` and `ClickHouseJsonIgnore` attributes are ignored in String mode (they only work in Binary mode).
 
 ---
