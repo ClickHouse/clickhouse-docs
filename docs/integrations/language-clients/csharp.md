@@ -1341,7 +1341,7 @@ The driver uses dedicated categories so that you can fine-tune log levels per co
 | `ClickHouse.Driver.Connection` | `ClickHouseConnection` | Connection lifecycle, HTTP client factory selection, connection opening/closing, session management. |
 | `ClickHouse.Driver.Command` | `ClickHouseCommand` | Query execution start/completion, timing, query IDs, server statistics, and error details. |
 | `ClickHouse.Driver.Transport` | `ClickHouseConnection` | Low-level HTTP streaming requests, compression flags, response status codes, and transport failures. |
-| `ClickHouse.Driver.Client` | `ClickHouseClient` | Binary insert, qqueries, and other operations |
+| `ClickHouse.Driver.Client` | `ClickHouseClient` | Binary insert, queries, and other operations |
 | `ClickHouse.Driver.NetTrace` | `TraceHelper` | Network tracing, only when debug mode is enabled |
 
 #### Example: Diagnosing connection issues {#logging-config-example}
