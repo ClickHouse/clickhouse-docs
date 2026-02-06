@@ -47,6 +47,19 @@ ClickHouse Cloud 提供不同的发布通道，以满足用户在稳定性、新
 :::
 
 <ReleaseSchedule releases={[
+    {
+     changelog_link: 'https://clickhouse.com/docs/changelogs/25.12',
+     version: '25.12',
+     fast_start_date: '待定',
+     fast_end_date: '待定',
+     regular_start_date: '待定',
+     regular_end_date: '待定',
+     slow_start_date: '待定',
+     slow_end_date: '待定',
+     fast_progress: 'green',
+     regular_progress: 'green',
+     slow_progress: 'green'
+   },
    {
      changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
      version: '25.10',

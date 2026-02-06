@@ -58,7 +58,7 @@ Querio を ClickHouse に接続するには、次の接続情報が必要です:
 | `HOST` | ClickHouse サーバーまたはクラスターのアドレス |
 | `PORT` | ポート 9440（セキュアなネイティブプロトコルのデフォルト）または設定しているポート |
 | `DATABASE` | Querio にクエリさせたいデータベース |
-| `USERNAME` | querio_user（または任意のユーザー名） |
+| `USERNAME` | `querio_user`（または任意のユーザー名） |
 | `PASSWORD` | ユーザーアカウントのパスワード |
 
 :::note

@@ -47,6 +47,19 @@ ClickHouse Cloud предлагает различные каналы релиз
 :::
 
 <ReleaseSchedule releases={[
+    {
+     changelog_link: 'https://clickhouse.com/docs/changelogs/25.12',
+     version: '25.12',
+     fast_start_date: 'TBD',
+     fast_end_date: 'TBD',
+     regular_start_date: 'TBD',
+     regular_end_date: 'TBD',
+     slow_start_date: 'TBD',
+     slow_end_date: 'TBD',
+     fast_progress: 'green',
+     regular_progress: 'green',
+     slow_progress: 'green'
+   },
    {
      changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
      version: '25.10',

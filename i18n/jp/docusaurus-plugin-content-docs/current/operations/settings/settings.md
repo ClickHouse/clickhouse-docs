@@ -945,18 +945,19 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
-[ALTER](../../sql-reference/statements/alter/index.md)、[OPTIMIZE](../../sql-reference/statements/optimize.md)、[TRUNCATE](../../sql-reference/statements/truncate.md) クエリによりレプリカ上での操作が実行されるまで待機するかどうかを設定します。
+[`ALTER`](../../sql-reference/statements/alter/index.md)、[`OPTIMIZE`](../../sql-reference/statements/optimize.md)、[`TRUNCATE`](../../sql-reference/statements/truncate.md) クエリによりレプリカ上での操作が実行されるまで待機するかどうかを設定します。
 
 設定可能な値:
 
 - `0` — 待機しない。
 - `1` — 自身での実行が完了するまで待機する。
 - `2` — すべてのレプリカでの実行が完了するまで待機する。
+- `3` - アクティブなレプリカのみを待機する。
 
 Cloud でのデフォルト値: `1`。
 
 :::note
-`alter_sync` は `Replicated` テーブルにのみ適用され、`Replicated` ではないテーブルに対する ALTER には何も影響しません。
+`alter_sync` は `Replicated` および `SharedMergeTree` テーブルにのみ適用され、`Replicated` または `Shared` ではないテーブルに対する ALTER には何も影響しません。
 :::
 
 ## alter_update_mode \{#alter_update_mode\}
@@ -2291,15 +2292,6 @@ Replicated\* テーブルからデータを受け取る materialized view に対
 - force_enable — `INSERT SELECT` クエリに対して重複排除を有効にします。SELECT の結果が安定していない場合は例外がスローされます。
 - enable_when_possible — `insert_deduplicate` が有効で、かつ SELECT の結果が安定している場合に重複排除を有効にし、それ以外の場合は無効にします。
 - enable_even_for_bad_queries - `insert_deduplicate` が有効な場合に重複排除を有効にします。SELECT の結果が安定していない場合は警告がログに記録されますが、クエリは重複排除ありで実行されます。このオプションは後方互換性のためのものです。予期しない結果を招く可能性があるため、代わりに他のオプションの利用を検討してください。
-
-## default_dictionary_database \{#default_dictionary_database\}
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": ""},{"label": "New setting"}]}]}/>
-
-データベース名が指定されていない場合に、外部 Dictionary を検索するデータベース。
-空文字列の場合は、現在のデータベースを意味します。指定されたデフォルトデータベースで Dictionary が見つからない場合、ClickHouse は現在のデータベースを使用します。
-
-XML で定義されたグローバル Dictionary から、SQL で定義された Dictionary への移行に役立ちます。
 
 ## default_materialized_view_sql_security \{#default_materialized_view_sql_security\}
 
@@ -8554,18 +8546,18 @@ Possible values:
 ```sql
 CREATE TABLE fuse_tbl(a Int8, b Int8) Engine = Log;
 SET optimize_syntax_fuse_functions = 1;
-EXPLAIN SYNTAX SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
+EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
 ```
 
 結果:
 
 ```text
 SELECT
-    sum(a),
-    sumCount(b).1,
-    sumCount(b).2,
-    (sumCount(b).1) / (sumCount(b).2)
-FROM fuse_tbl
+    sum(__table1.a) AS `sum(a)`,
+    tupleElement(sumCount(__table1.b), 1) AS `sum(b)`,
+    tupleElement(sumCount(__table1.b), 2) AS `count(b)`,
+    divide(tupleElement(sumCount(__table1.b), 1), toFloat64(tupleElement(sumCount(__table1.b), 2))) AS `avg(b)`
+FROM default.fuse_tbl AS __table1
 ```
 
 
@@ -11606,11 +11598,11 @@ TopK フィルタリングにデータスキッピングインデックスを使
 
 ## use_statistics_cache \{#use_statistics_cache\}
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "新しい設定"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "statistics キャッシュを有効化"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "新しい設定"}]}]}/>
 
 すべてのパーツの統計情報を読み込むオーバーヘッドを回避するために、クエリで statistics キャッシュを使用します
 
