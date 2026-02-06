@@ -22,7 +22,7 @@ DataStore is chDB's pandas-compatible API that combines the familiar pandas Data
 ## Architecture {#architecture}
 
 <div style={{textAlign: 'center'}}>
-  <img src={require('../images/datastore_architecture.png').default} alt="DataStore Architecture" style={{maxWidth: '700px', width: '100%'}} />
+  <img src="../images/datastore_architecture.png" alt="DataStore Architecture" style={{maxWidth: '700px', width: '100%'}} />
 </div>
 
 DataStore uses **lazy evaluation** with **dual-engine execution**:
@@ -123,6 +123,7 @@ DataStore delivers significant performance improvements over pandas, especially 
 
 ### Configuration & Debugging {#configuration-debugging}
 - [Configuration](../configuration/index.md) - All configuration options
+- [Performance Mode](../configuration/performance-mode.md) - SQL-first mode for maximum throughput
 - [Debugging](../debugging/index.md) - Explain, profiling, and logging
 
 ### Pandas User Guides {#pandas-user-guides}

@@ -201,7 +201,32 @@ ds = DataStore(existing_df)  # No data copy
 
 ## Optimization Tips {#tips}
 
-### 1. Use Parquet Instead of CSV {#use-parquet}
+### 1. Enable Performance Mode for Heavy Workloads {#use-performance-mode}
+
+For aggregation-heavy workloads where you don't need exact pandas output format (row order, MultiIndex columns, dtype corrections), enable performance mode for maximum throughput:
+
+```python
+from chdb.datastore.config import config
+
+config.use_performance_mode()
+
+# Now all operations use SQL-first execution with no pandas overhead:
+# - Parallel Parquet reading (no preserve_order)
+# - Single-SQL aggregation (filter+groupby in one query)
+# - No row-order preservation overhead
+# - No MultiIndex, no dtype corrections
+result = (ds
+    .filter(ds['amount'] > 100)
+    .groupby('region')
+    .agg({'amount': ['sum', 'mean', 'count']})
+)
+```
+
+**Expected improvement**: Up to 2-8x faster for filter+groupby workloads, reduced memory usage for large Parquet files.
+
+See [Performance Mode](../configuration/performance-mode.md) for full details.
+
+### 2. Use Parquet Instead of CSV {#use-parquet}
 
 ```python
 # CSV: Slower, reads entire file
@@ -217,7 +242,7 @@ df.to_parquet("data.parquet")
 
 **Expected improvement**: 3-10x faster reads
 
-### 2. Filter Early {#filter-early}
+### 3. Filter Early {#filter-early}
 
 ```python
 # Good: Filter first, then aggregate
@@ -233,7 +258,7 @@ result = (ds
 )
 ```
 
-### 3. Select Only Needed Columns {#select-only-needed-columns}
+### 4. Select Only Needed Columns {#select-only-needed-columns}
 
 ```python
 # Good: Column pruning
@@ -243,7 +268,7 @@ result = ds.select('name', 'amount').filter(ds['amount'] > 100)
 result = ds.filter(ds['amount'] > 100)  # Loads all columns
 ```
 
-### 4. Leverage SQL Aggregations {#leverage-sql-aggregations}
+### 5. Leverage SQL Aggregations {#leverage-sql-aggregations}
 
 ```python
 # GroupBy is where DataStore shines
@@ -254,7 +279,7 @@ result = ds.groupby('category').agg({
 })
 ```
 
-### 5. Use head() Instead of Full Queries {#use-head}
+### 6. Use head() Instead of Full Queries {#use-head}
 
 ```python
 # Don't load entire result if you only need a sample
@@ -264,7 +289,7 @@ result = ds.filter(ds['type'] == 'A').head(100)  # LIMIT 100
 # result = ds.filter(ds['type'] == 'A').to_df()  # Loads everything
 ```
 
-### 6. Batch Operations {#batch-operations}
+### 7. Batch Operations {#batch-operations}
 
 ```python
 # Good: Single execution
@@ -275,7 +300,7 @@ result1 = ds.filter(ds['x'] > 10).to_df()  # Execute
 result2 = result1[result1['y'] < 100]       # Execute again
 ```
 
-### 7. Use explain() to Optimize {#use-explain}
+### 8. Use explain() to Optimize {#use-explain}
 
 ```python
 # View the query plan before executing
@@ -340,6 +365,7 @@ print(f"Approach 2: {time2:.0f}ms")
 
 | Practice | Impact |
 |----------|--------|
+| Enable performance mode | 2-8x faster for aggregation workloads |
 | Use Parquet files | 3-10x faster reads |
 | Filter early | Reduce data processing |
 | Select needed columns | Reduce I/O and memory |
@@ -364,5 +390,6 @@ print(f"Approach 2: {time2:.0f}ms")
 
 :::tip
 For automatic optimal engine selection, use `config.set_execution_engine('auto')` (default).
-See [Execution Engine Configuration](../configuration/execution-engine.md) for details.
+For maximum throughput on aggregation workloads, use `config.use_performance_mode()`.
+See [Execution Engine](../configuration/execution-engine.md) and [Performance Mode](../configuration/performance-mode.md) for details.
 :::
