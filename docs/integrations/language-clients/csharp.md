@@ -346,8 +346,8 @@ using ClickHouse.Driver;
 using ClickHouse.Driver.ADO.Parameters;
 
 var parameters = new ClickHouseParameterCollection();
-parameters.Add(new ClickHouseDbParameter("id", 1L));
-parameters.Add(new ClickHouseDbParameter("name", "Alice"));
+parameters.Add("id", 1L);
+parameters.Add("name", "Alice");
 
 await client.ExecuteNonQueryAsync(
     "INSERT INTO default.my_table (id, name) VALUES ({id:Int64}, {name:String})",
@@ -401,7 +401,7 @@ Call `Read()` to advance to the next row. It returns `false` when there are no m
 using ClickHouse.Driver.ADO.Parameters;
 
 var parameters = new ClickHouseParameterCollection();
-parameters.Add(new ClickHouseDbParameter("max_id", 100L));
+parameters.Add("max_id", 100L);
 
 var reader = await client.ExecuteReaderAsync(
     "SELECT * FROM default.my_table WHERE id < {max_id:Int64}",
