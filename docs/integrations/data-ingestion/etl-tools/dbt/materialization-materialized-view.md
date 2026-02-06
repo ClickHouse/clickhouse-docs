@@ -355,7 +355,7 @@ select a, b, c from {{ source('raw', 'table_2') }}
 
 Because ClickHouse materialized views act as **insert triggers**, they only capture data while they exist. If a materialized view is dropped and recreated (e.g. during a `--full-refresh`), any rows inserted into the source table during that window will **not** be processed by the MV. This is referred to as the MV being "blind."
 
-Additionally, the **catchup** (both from the MV's `catchup` or from the target table's `repopulate_from_mvs_on_full_refresh`) process runs an `INSERT INTO ... SELECT` using the MV's SQL. If inserts into the source table are happening at the same time, the catchup query may include rows that the MV has already processed (or will process right after being created), potentially causing **duplicate data** in the target table. Using a deduplicating engine such as `ReplacingMergeTree` on the target table mitigates this risk.
+Additionally, the **catchup** (both from the MV's `catchup` or from the target table's `repopulate_from_mvs_on_full_refresh`) process runs an `INSERT INTO ... SELECT` using the MV's SQL. If inserts into the source table are happening at the same time, the catch-up query may include rows that the MV has already processed (or will process right after being created), potentially causing **duplicate data** in the target table. Using a deduplicating engine such as `ReplacingMergeTree` on the target table mitigates this risk.
 
 The following table summarizes the safety of each operation when inserts are actively happening on the source table.
 
@@ -373,9 +373,9 @@ The following table summarizes the safety of each operation when inserts are act
 
 | Operation | Internal process | Safety while inserts are happening |
 |-----------|------------------|------------------------------------|
-| First `dbt run` | 1. Create MV (with `TO` clause)<br/>2. Run catchup (if `catchup=True`) | ✅ MV is created first, so new inserts are captured immediately.<br/>⚠️ **Catchup may duplicate data** — the backfill query can overlap with rows already being processed by the MV. Safe if using a deduplicating engine (e.g. `ReplacingMergeTree`). |
+| First `dbt run` | 1. Create MV (with `TO` clause)<br/>2. Run catch-up (if `catchup=True`) | ✅ MV is created first, so new inserts are captured immediately.<br/>⚠️ **Catch-up may duplicate data** — the backfill query can overlap with rows already being processed by the MV. Safe if using a deduplicating engine (e.g. `ReplacingMergeTree`). |
 | Subsequent `dbt run` | `ALTER TABLE ... MODIFY QUERY` | ✅ Safe. The MV is updated atomically. |
-| `dbt run --full-refresh` on MVs | 1. Drop and recreate MV<br/>2. Run catchup (if `catchup=True`) | ⚠️ **MV is blind during recreation** (between drop and create).<br/>⚠️ **Catchup may duplicate data** if inserts are happening concurrently. |
+| `dbt run --full-refresh` on MVs | 1. Drop and recreate MV<br/>2. Run catch-up (if `catchup=True`) | ⚠️ **MV is blind during recreation** (between drop and create).<br/>⚠️ **Catch-up may duplicate data** if inserts are happening concurrently. |
 
 **Target table model:**
 
@@ -387,7 +387,7 @@ The following table summarizes the safety of each operation when inserts are act
 
 :::tip Recommendations for production environments with active ingestion
 - **Pause the ingestion during dbt operations if possible**: This will make all operations safe and no data will be lost.
-- **Use a deduplicating engine if possible** (e.g. `ReplacingMergeTree`) on the target table to handle potential duplicates from catchup overlaps.
+- **Use a deduplicating engine if possible** (e.g. `ReplacingMergeTree`) on the target table to handle potential duplicates from catch-up overlaps.
 - **Prefer `ALTER TABLE ... MODIFY QUERY`** (regular `dbt run` without `--full-refresh`) when possible — this is always safe.
 - **Be aware of problematic windows** during dbt operations.
 :::
