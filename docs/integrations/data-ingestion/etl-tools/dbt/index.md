@@ -38,7 +38,7 @@ Within dbt, these models can be cross-referenced and layered to allow the constr
 
 dbt is compatible with ClickHouse through a [ClickHouse-supported adapter](https://github.com/ClickHouse/dbt-clickhouse).
 
-## Related pages
+## Related pages {#related-pages}
 <DocPageList />
 
 ## Supported features {#supported-features}
