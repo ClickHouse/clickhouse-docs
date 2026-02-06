@@ -48,6 +48,13 @@
       "output": "i18n/locales/[locale].json"
     }
   },
+  "sharedStaticAssets": {
+    "include": [
+      "docs/**/images/*.png",
+      "knowledgebase/**/images/*.png"
+    ],
+    "mirrorToLocales": true
+  },
   "locales": [
     "en",
     "zh",
