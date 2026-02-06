@@ -180,7 +180,7 @@ Track changes to your prompts to understand how they evolve over time.
 </TabItem>
 </Tabs>
 
-### Evaluation & Datasets {#evaluation}
+### Evaluation & datasets {#evaluation}
 
 [Evaluation](/docs/evaluation/overview) is crucial for ensuring the quality and reliability of your LLM applications. Langfuse provides flexible evaluation tools that adapt to your specific needs, whether you're testing in development or monitoring production performance.
 
