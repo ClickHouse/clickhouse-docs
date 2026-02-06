@@ -757,6 +757,7 @@ Lakekeeper
 LangChain
 LangGraph
 Langchain
+Langfuse
 Lemire
 Levenshtein
 Lhotsky
@@ -1200,6 +1201,7 @@ QueryPreempted
 QueryThread
 QuickAssist
 QuickSight
+Quickstarts
 QuoteMeta
 RBAC
 RClickHouse
@@ -1815,6 +1817,7 @@ auditability
 auth
 authenticator
 authenticators
+autoPlay
 autocomplete
 autocompletion
 autodetect
@@ -1918,9 +1921,11 @@ bool
 boolean
 booleans
 bools
+borderRadius
 boringssl
 bottlenecked
 boundingRatio
+boxShadow
 bozerkins
 brainer
 brotli
@@ -3083,6 +3088,7 @@ pipelined
 pipelining
 plaintext
 plantuml
+playsInline
 plperl
 plperlu
 plpgsql
@@ -3356,6 +3362,7 @@ retryable
 reusability
 reverseUTF
 rewritable
+rgba
 rightPad
 rightPadUTF
 rightUTF
