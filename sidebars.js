@@ -1613,6 +1613,7 @@ const sidebars = {
         'chdb/datastore/io',
         'chdb/datastore/execution-model',
         'chdb/datastore/class-reference',
+        'chdb/configuration/performance-mode'
       ],
     },
     {
