@@ -242,8 +242,6 @@ langfuse.score(
 
 </TabItem>
 </Tabs>
-
-
 ## Quickstarts {#quickstarts}
 
 Get up and running with Langfuse in minutes. Choose the path that best fits your current needs:
