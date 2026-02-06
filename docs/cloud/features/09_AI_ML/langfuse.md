@@ -26,7 +26,7 @@ By leveraging ClickHouse's columnar storage and fast analytical capabilities, La
 - **Multi-modal:** Support for tracing text, images and other modalities
 - **Full platform:** Suite of tools for the complete LLM application development lifecycle
 
-## Deployment Options {#deployment-options}
+## Deployment options {#deployment-options}
 
 Langfuse offers flexible deployment options to meet different security and infrastructure needs.
 
