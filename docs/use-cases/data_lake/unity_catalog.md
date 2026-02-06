@@ -55,6 +55,8 @@ SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type 
 
 ### Read Iceberg {#read-iceberg}
 
+To access managed Iceberg tables:
+
 ```sql
 CREATE DATABASE unity
 ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/unity-catalog/iceberg-rest')
