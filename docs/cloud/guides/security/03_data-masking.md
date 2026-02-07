@@ -27,7 +27,7 @@ Masking policies are available in ClickHouse Cloud starting from version 25.12.
 
 The [`CREATE MASKING POLICY`](/sql-reference/statements/create/masking-policy) statement provides a native way to dynamically mask column values for specific users or roles at query time. Unlike other approaches, masking policies don't require creating separate views or storing masked data - the transformation happens transparently when users query the table.
 
-### Basic masking policy
+### Basic masking policy {#basic-maasking-policy}
 
 To demonstrate masking policies, let's create an `orders` table that contains customer information:
 
@@ -88,7 +88,7 @@ SELECT * FROM orders ORDER BY user_id;
 
 Users without the `masked_data_viewer` role see the original, unmasked data.
 
-### Conditional masking
+### Conditional masking {#conditional-masking}
 
 You can use the `WHERE` clause to apply masking only to specific rows. For example, to mask only high-value orders:
 
@@ -101,7 +101,7 @@ CREATE MASKING POLICY mask_high_value_orders ON orders
     TO masked_data_viewer;
 ```
 
-### Multiple policies with priority
+### Multiple policies with priority {#multiple-policies-with-priority}
 
 When multiple masking policies apply to the same column, use the `PRIORITY` clause to control which transformation is applied. Higher priority values are applied last:
 
@@ -125,7 +125,7 @@ CREATE MASKING POLICY refined_masking ON orders
 
 In this example, for orders with `total_amount > 100`, the `refined_masking` policy (priority 10) overrides the `basic_masking` policy (priority 0) for the `name` column, while `email` continues to use the basic masking.
 
-### Hash-based masking
+### Hash-based masking {#hash-based-masking}
 
 For cases where you need consistent masking (same input always produces the same masked output), use hash functions:
 
@@ -137,7 +137,7 @@ CREATE MASKING POLICY hash_sensitive_data ON orders
     TO masked_data_viewer;
 ```
 
-### Managing masking policies
+### Managing masking policies {#managing-masking-policies}
 
 View all masking policies:
 
