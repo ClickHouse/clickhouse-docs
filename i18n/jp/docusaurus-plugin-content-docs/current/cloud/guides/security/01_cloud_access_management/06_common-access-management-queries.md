@@ -2,27 +2,26 @@
 sidebar_label: '一般的なアクセス管理クエリ'
 title: '一般的なアクセス管理クエリ'
 slug: /cloud/security/common-access-management-queries
-description: 'この記事では、SQLユーザーとロールの定義方法の基本と、それらの権限をデータベース、テーブル、行、カラムに適用する方法を説明します。'
+description: 'この記事では、SQL ユーザーとロールの定義方法の基本と、それらの権限およびパーミッションをデータベース、テーブル、行、列に適用する方法について説明します。'
 keywords: ['ClickHouse Cloud', 'アクセス管理']
 doc_type: 'guide'
 ---
 
 import CommonUserRolesContent from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
 
+# 一般的なアクセス管理クエリ \{#common-access-management-queries\}
 
-# よくあるアクセス管理クエリ \{#common-access-management-queries\}
-
-:::tip セルフマネージド
-セルフマネージド環境で ClickHouse を運用している場合は、[SQL ユーザーとロール](/guides/sre/user-management/index.md) を参照してください。
+:::tip 自前運用
+自前運用の ClickHouse を使用している場合は、[SQL ユーザーとロール](/guides/sre/user-management/index.md) を参照してください。
 :::
 
-この記事では、SQL ユーザーとロールの定義方法の基本と、それらの権限をデータベース、テーブル、行、カラムに適用する方法について説明します。
+この記事では、SQL ユーザーとロールの基本的な定義方法と、それらの権限（パーミッション）をデータベース、テーブル、行、列に適用する方法を説明します。
 
 ## 管理ユーザー \{#admin-user\}
 
-ClickHouse Cloud サービスには、サービス作成時に作成される `default` という管理ユーザーが存在します。パスワードはサービス作成時に設定され、**Admin** ロールを持つ ClickHouse Cloud ユーザーによってリセットできます。
+ClickHouse Cloud のサービスには、サービス作成時に `default` という管理ユーザーが作成されます。パスワードはサービス作成時に付与され、**Admin** ロールを持つ ClickHouse Cloud ユーザーであればリセットできます。
 
-ClickHouse Cloud サービスに追加の SQL ユーザーを作成する場合、それぞれに SQL のユーザー名とパスワードが必要です。これらのユーザーに管理者レベルの権限を付与したい場合は、新しいユーザーにロール `default_role` を割り当ててください。たとえば、ユーザー `clickhouse_admin` を追加する場合は次のようになります。
+ClickHouse Cloud サービスに追加の SQL ユーザーを作成する場合、それぞれに SQL のユーザー名とパスワードが必要です。管理者レベルの権限を付与したい場合は、新しいユーザーにロール `default_role` を割り当ててください。例えば、ユーザー `clickhouse_admin` を追加する場合は次のとおりです。
 
 ```sql
 CREATE USER IF NOT EXISTS clickhouse_admin
@@ -34,28 +33,27 @@ GRANT default_role TO clickhouse_admin;
 ```
 
 :::note
-SQL Console を使用する場合、SQL 文は `default` ユーザーとしては実行されません。代わりに、`sql-console:${cloud_login_email}` という名前のユーザーとして実行されます。ここで `cloud_login_email` は、現在クエリを実行しているユーザーのメールアドレスです。
+SQL Console を使用する場合、SQL ステートメントは `default` ユーザーとしては実行されません。代わりに、ステートメントは `sql-console:${cloud_login_email}` という名前のユーザーとして実行されます。ここで `cloud_login_email` は、現在クエリを実行しているユーザーのメールアドレスです。
 
-これら自動的に作成される SQL Console ユーザーには、`default` ロールが付与されています。
+これら自動的に生成される SQL Console ユーザーには、`default` ロールが付与されています。
 :::
-
 
 ## パスワードレス認証 \{#passwordless-authentication\}
 
-SQL コンソールには 2 種類のロールが利用可能です。`sql_console_admin` は `default_role` と同一の権限を持ち、`sql_console_read_only` は読み取り専用の権限を持ちます。 
+SQL コンソールには 2 種類のロールが利用可能です。`sql_console_admin` は `default_role` と同一の権限を持ち、`sql_console_read_only` は読み取り専用の権限を持ちます。
 
-管理者ユーザーにはデフォルトで `sql_console_admin` ロールが割り当てられるため、管理者側の挙動は従来と変わりません。一方で、`sql_console_read_only` ロールを使用すると、非管理者ユーザーにも任意のインスタンスに対する読み取り専用またはフルアクセス権を付与できます。このアクセスの設定は管理者が行う必要があります。ロールは `GRANT` または `REVOKE` コマンドを使用して調整でき、インスタンス固有の要件に合わせて柔軟に構成できます。これらのロールに対して行われた変更は永続化されます。
+管理者ユーザーにはデフォルトで `sql_console_admin` ロールが割り当てられるため、これまでと動作は変わりません。一方で、`sql_console_read_only` ロールを使用すると、非管理者ユーザーに対して任意のインスタンスへの読み取り専用アクセスまたはフルアクセスを付与できます。このアクセス権の構成は管理者が行う必要があります。ロールは `GRANT` または `REVOKE` コマンドを使用して調整でき、インスタンス固有の要件に合わせて構成可能であり、これらのロールに加えられた変更は保存されます。
 
 ### きめ細かなアクセス制御 \{#granular-access-control\}
 
-このアクセス制御機能は、ユーザー単位で手動設定することも可能です。新しい `sql_console_*` ロールをユーザーに割り当てる前に、ネームスペース `sql-console-role:&lt;email&gt;` に一致する、SQL コンソール用のユーザー固有のデータベースロールを作成しておく必要があります。たとえば、次のとおりです。
+このアクセス制御機能は、ユーザー単位でも手動で設定できます。新しい `sql_console_*` ロールをユーザーに割り当てる前に、名前空間 `sql-console-role:<email>` に一致する、SQL コンソール用のユーザー固有データベースロールを作成しておく必要があります。例えば次のとおりです。
 
 ```sql
 CREATE ROLE OR REPLACE sql-console-role:<email>;
 GRANT <some grants> TO sql-console-role:<email>;
 ```
 
-一致するロールが見つかった場合は、ひな型のロールではなく、そのロールがユーザーに割り当てられます。これにより、`sql_console_sa_role` や `sql_console_pm_role` といったロールを作成して特定のユーザーに付与するなど、より複雑なアクセス制御の構成が可能になります。例えば、次のようにします。
+一致するロールが検出された場合は、定型的なロールではなく、そのロールがユーザーに割り当てられます。これにより、`sql_console_sa_role` や `sql_console_pm_role` のようなロールを作成して特定のユーザーに付与するなど、より複雑なアクセス制御構成を行えるようになります。例えば、次のようになります。
 
 ```sql
 CREATE ROLE OR REPLACE sql_console_sa_role;

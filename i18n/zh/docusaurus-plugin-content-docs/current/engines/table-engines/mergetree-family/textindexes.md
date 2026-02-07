@@ -192,7 +192,7 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
   可选参数 `posting_list_codec`（默认值：`none`）指定倒排列表使用的编解码器：
 
   * `none` - 倒排列表在存储时不进行额外压缩。
-  * `bitpacking` - 先应用[差分（delta）编码](https://en.wikipedia.org/wiki/Delta_encoding)，然后进行[bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70)（均在固定大小的块内完成）。
+  * `bitpacking` - 先应用[差分（delta）编码](https://en.wikipedia.org/wiki/Delta_encoding)，然后进行[bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70)（均在固定大小的块内完成）。会减慢 SELECT 查询的速度，目前不推荐使用。
 </details>
 
 在创建表之后，可以为某个列添加或移除文本索引：
@@ -945,6 +945,11 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 
 
 ## 相关内容 \{#related-content\}
+
+- 演示文稿：https://github.com/ClickHouse/clickhouse-presentations/blob/master/2025-tumuchdata-munich/ClickHouse_%20full-text%20search%20-%2011.11.2025%20Munich%20Database%20Meetup.pdf
+- 演示文稿：https://presentations.clickhouse.com/2026-fosdem-inverted-index/Inverted_indexes_the_what_the_why_the_how.pdf
+
+**已过时的内容**
 
 - 博客：[Introducing Inverted Indices in ClickHouse](https://clickhouse.com/blog/clickhouse-search-with-inverted-indices)
 - 博客：[Inside ClickHouse full-text search: fast, native, and columnar](https://clickhouse.com/blog/clickhouse-full-text-search)

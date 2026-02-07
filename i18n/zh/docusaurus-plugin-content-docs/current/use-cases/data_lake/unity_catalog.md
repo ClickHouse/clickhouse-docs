@@ -54,15 +54,6 @@ SETTINGS warehouse = 'CATALOG_NAME', catalog_credential = '<PAT>', catalog_type 
 
 ### 读取 Iceberg 表 \{#read-iceberg\}
 
-要访问启用了 UniForm 的 Delta 表：
-
-```sql
-CREATE DATABASE unity
-ENGINE = DataLakeCatalog('https://<workspace-id>.cloud.databricks.com/api/2.1/unity-catalog/iceberg')
-SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret>', warehouse = 'workspace', 
-oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', auth_scope = 'all-apis,sql'
-```
-
 要访问托管的 Iceberg 表：
 
 ```sql

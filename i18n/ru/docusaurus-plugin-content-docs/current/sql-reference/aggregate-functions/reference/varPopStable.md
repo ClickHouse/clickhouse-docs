@@ -12,7 +12,7 @@ doc_type: 'reference'
 Добавлена в: v1.1
 
 Возвращает дисперсию генеральной совокупности.
-В отличие от [`varPop`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/varpop), эта функция использует [численно устойчивый](https://en.wikipedia.org/wiki/Numerical_stability) алгоритм.
+В отличие от [`varPop`](/sql-reference/aggregate-functions/reference/varPop), эта функция использует [численно устойчивый](https://en.wikipedia.org/wiki/Numerical_stability) алгоритм.
 Она работает медленнее, но обеспечивает меньшую вычислительную погрешность.
 
 **Синтаксис**

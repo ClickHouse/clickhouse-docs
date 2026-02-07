@@ -48,7 +48,7 @@ BYOC 专为大规模部署设计，并要求客户签署具有使用承诺的合
 - **通过 Tailscale 实现 Zero Trust 网络。**
 - **监控**：
   - Cloud 控制台包含内置健康仪表板，用于监控服务健康状况。
-  - 支持 Prometheus 抓取，用于通过 Prometheus、Grafana 和 Datadog 实现集中式监控。有关设置说明，请参阅 [Prometheus 文档](/cloud/reference/byoc/observability#prometheus-access)。
+  - 支持 Prometheus 抓取，用于通过 Prometheus、Grafana 和 Datadog 实现集中式监控。有关设置说明，请参阅 [Prometheus 文档](/cloud/reference/byoc/observability#prometheus-monitoring)。
 - **VPC 对等连接（VPC Peering）**
 - **集成**：完整列表见[此页面](/integrations)。
 - **安全的 S3 访问**

@@ -192,7 +192,7 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
   Необязательный параметр `posting_list_codec` (по умолчанию: `none`) указывает кодек для списка вхождений:
 
   * `none` - списки вхождений сохраняются без дополнительного сжатия.
-  * `bitpacking` - применяется [дифференциальное (дельта) кодирование](https://en.wikipedia.org/wiki/Delta_encoding), за которым следует [bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70) (каждое в пределах блоков фиксированного размера).
+  * `bitpacking` - применяется [дифференциальное (дельта) кодирование](https://en.wikipedia.org/wiki/Delta_encoding), за которым следует [bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70) (каждое в пределах блоков фиксированного размера). Замедляет запросы SELECT и в настоящий момент не рекомендуется.
 </details>
 
 Текстовые индексы могут быть добавлены к столбцу или удалены из него после создания таблицы:
@@ -945,6 +945,11 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 
 
 ## Связанные материалы \{#related-content\}
+
+- Презентация: https://github.com/ClickHouse/clickhouse-presentations/blob/master/2025-tumuchdata-munich/ClickHouse_%20full-text%20search%20-%2011.11.2025%20Munich%20Database%20Meetup.pdf
+- Презентация: https://presentations.clickhouse.com/2026-fosdem-inverted-index/Inverted_indexes_the_what_the_why_the_how.pdf
+
+**Устаревшие материалы**
 
 - Статья в блоге: [Introducing Inverted Indices in ClickHouse](https://clickhouse.com/blog/clickhouse-search-with-inverted-indices)
 - Статья в блоге: [Inside ClickHouse full-text search: fast, native, and columnar](https://clickhouse.com/blog/clickhouse-full-text-search)

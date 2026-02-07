@@ -26,6 +26,7 @@ git push
 
 如果你不确定该怎么做，请向维护人员寻求帮助。
 
+
 ## 与 master 合并 \{#merge-with-master\}
 
 验证该 PR 是否可以合并到 master 分支。
@@ -98,6 +99,7 @@ python -m ci.praktika run "Style check" --test cpp
 这些命令会拉取 `clickhouse/style-test` Docker 镜像，并在容器化环境中运行该任务。
 除 Python 3 和 Docker 外，无需其他任何依赖。
 
+
 ## 快速测试 \{#fast-test\}
 
 通常这是在 PR 上运行的第一个检查。
@@ -114,6 +116,7 @@ python -m ci.praktika run "Fast test" [--test some_test_name]
 这些命令会拉取 `clickhouse/fast-test` Docker 镜像，并在容器化环境中运行该作业。
 只需 Python 3 和 Docker，无需其他依赖。
 
+
 ## 构建检查 \{#build-check\}
 
 以多种配置构建 ClickHouse，以便在后续步骤中使用。
@@ -127,6 +130,7 @@ python -m ci.praktika run "<BUILD_JOB_NAME>"
 ```
 
 除了 Python 3 和 Docker 外不需要其他依赖。
+
 
 #### 可用构建任务 \{#available-build-jobs\}
 
@@ -176,6 +180,7 @@ python -m ci.praktika run "Build (amd_debug)"
 
 如果上述方法不适用于你的情况，请从构建日志中获取 cmake 选项，并按照[通用构建流程](../development/build.md)进行操作。
 
+
 ## Functional stateless tests \{#functional-stateless-tests\}
 
 针对在不同配置（release、debug、启用 sanitizer 等）下构建的 ClickHouse 二进制文件运行[无状态功能测试](tests.md#functional-tests)。
@@ -196,7 +201,7 @@ python -m ci.praktika run "Build (amd_debug)"
 
 从多个客户端并发运行无状态功能性测试，以检测与并发相关的错误。如果测试失败：
 
-    * 先修复所有其他测试失败的问题；
+* 先修复所有其他测试失败的问题；
     * 查看报告以找到服务器日志，并检查日志以排查可能的错误原因。
 
 ## 兼容性检查 \{#compatibility-check\}
@@ -213,4 +218,4 @@ python -m ci.praktika run "Build (amd_debug)"
 
 衡量查询性能的变化。
 这是运行时间最长的检查，耗时略低于 6 小时。
-性能测试报告的详细说明见[此处](https://github.com/ClickHouse/ClickHouse/tree/master/docker/test/performance-comparison#how-to-read-the-report)。
+性能测试报告的详细说明见[此处](https://github.com/ClickHouse/ClickHouse/blob/master/tests/performance/scripts/README.md#how-to-read-the-report)。

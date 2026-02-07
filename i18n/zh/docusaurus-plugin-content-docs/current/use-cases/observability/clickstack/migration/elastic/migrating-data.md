@@ -27,35 +27,31 @@ doc_type: 'guide'
 
 ### 实施步骤 \{#implementation-steps\}
 
-1. **配置双重摄取**
+<VerticalStepper headerLevel="h4">
 
-<br/>
+#### 配置双重摄取 \{#configure-dual-ingestion\}
 
 将数据采集管道配置为同时向 Elastic 和 ClickStack 发送数据。 
 
 具体实现方式取决于当前使用的采集代理（agent）—— 参见「[迁移 Agents](/use-cases/observability/clickstack/migration/elastic/migrating-agents)」。
 
-2. **调整保留期**
-
-<br/>
+#### 调整保留期 \{#adjust-retention-period\}
 
 将 Elastic 的 TTL 设置配置为与目标保留期一致。配置 ClickStack 的 [TTL](/use-cases/observability/clickstack/production#configure-ttl)，以在相同时间范围内保留数据。
 
-3. **验证与对比**：
-
-<br/>
+#### 验证与对比 \{#validate-and-compare\}
 
 - 在两个系统上运行查询以确保数据一致性
 - 对比查询性能和结果
 - 将仪表盘和告警迁移到 ClickStack。目前这仍是一个手动流程。
 - 验证所有关键仪表盘和告警在 ClickStack 中是否按预期工作
 
-4. **渐进式切换**：
-
-<br/>
+#### 渐进式切换 \{#graudal-transition\}
 
 - 随着 Elastic 中的数据自然过期，你会逐步更多地依赖 ClickStack
 - 一旦对 ClickStack 建立了足够信心，即可开始将查询和仪表盘重定向到 ClickStack
+
+</VerticalStepper>
 
 ### 长期保留 \{#long-term-retention\}
 

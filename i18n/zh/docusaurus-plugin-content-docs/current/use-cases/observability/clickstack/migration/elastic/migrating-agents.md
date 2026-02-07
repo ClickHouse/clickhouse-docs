@@ -92,7 +92,7 @@ Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/ref
   ```
 
   :::note TLS 配置
-  如需使用双向 TLS，请参考 Elastic 指南 [&quot;Configure SSL/TLS for the Logstash output&quot;](https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#use-ls-output) 生成证书和密钥。生成后，可按上述方式在配置中指定这些证书和密钥。
+  如需使用双向 TLS,请参考 Elastic 指南 [&quot;Configure SSL/TLS for the Logstash output&quot;](https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#use-ls-output) 生成证书和密钥。生成后,可按上述方式在配置中指定这些证书和密钥。
   :::
 
   事件将以 ECS 格式接收。可使用 Vector Remap Language (VRL) 转换器将其转换为 OpenTelemetry 模式。该转换器的配置十分简单——只需将脚本文件单独存放：
@@ -248,11 +248,11 @@ Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/ref
           authorization: ${YOUR_INGESTION_API_KEY}
   ```
 
-  此处的 `YOUR_INGESTION_API_KEY` 由 ClickStack 生成。您可以在 HyperDX 应用的 `Team Settings → API Keys` 中找到该密钥。
+  此处的 `YOUR_INGESTION_API_KEY` 由 ClickStack 生成。您可以在 ClickStack UI (HyperDX) 的 `Team Settings → API Keys` 中找到该密钥。
 
   <Image img={ingestion_key} alt="数据摄取密钥" size="lg" />
 
-  最终的完整配置如下所示：
+  最终的完整配置如下所示:
 
   ```yaml
   sources:
@@ -373,7 +373,7 @@ Elastic Agent 包含一个内置的 EDOT Collector，使你可以一次性为应
 
 ```yaml
 exporters:
-  # 用于将日志和指标发送到 Elasticsearch 托管 OTLP 输入的导出器
+  # Exporter to send logs and metrics to Elasticsearch Managed OTLP Input
   otlp:
     endpoint: localhost:4317
     headers:
@@ -382,7 +382,11 @@ exporters:
       insecure: true
 ```
 
-此处的 `YOUR_INGESTION_API_KEY` 由 ClickStack 生成。您可以在 HyperDX 应用的 `Team Settings → API Keys` 下找到该密钥。
+:::note 托管 ClickStack
+默认情况下，如果在托管 ClickStack 中以独立模式运行 OpenTelemetry Collector，则不需要 API 摄取密钥。不过，仍然可以通过指定 OTLP 认证令牌来对摄取进行保护。请参阅 [&quot;Securing the collector&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector)。
+:::
+
+此处的 `YOUR_INGESTION_API_KEY` 由 ClickStack 生成。您可以在 ClickStack UI 的 `Team Settings → API Keys` 下找到该密钥。
 
 <Image img={ingestion_key} alt="摄取密钥" size="lg" />
 
@@ -390,7 +394,7 @@ exporters:
 
 ```yaml
 exporters:
-  # 导出器，用于将日志和指标发送到 Elasticsearch 托管 OTLP 输入
+  # Exporter to send logs and metrics to Elasticsearch Managed OTLP Input
   otlp:
     endpoint: localhost:4317
     headers:

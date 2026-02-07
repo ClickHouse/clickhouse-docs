@@ -8,43 +8,43 @@ doc_type: 'reference'
 
 # system.user_defined_functions \{#systemuser_defined_functions\}
 
-[User-Defined Functions (UDFs)](/docs/en/sql-reference/functions/udf.md) の読み込みステータス、エラー情報、および設定メタデータを含みます。
+[ユーザー定義関数 (UDF)](/sql-reference/functions/udf.md) の読み込みステータス、エラー情報、および設定メタデータを含みます。
 
 カラム:
 
 **読み込みステータス**
 
-* `name` ([String](/docs/en/sql-reference/data-types/string.md)) — UDF 名。
-* `load_status` ([Enum8](/docs/en/sql-reference/data-types/enum.md)) — 読み込みステータス: `Success` (UDF が読み込まれて使用可能)、`Failed` (UDF の読み込みに失敗)。
-* `loading_error_message` ([String](/docs/en/sql-reference/data-types/string.md)) — 読み込みに失敗した場合の詳細なエラーメッセージ。正常に読み込まれた場合は空。
-* `last_successful_update_time` ([Nullable(DateTime)](/docs/en/sql-reference/data-types/datetime.md)) — 最後に正常に読み込まれた時刻のタイムスタンプ。一度も成功していない場合は `NULL`。
-* `loading_duration_ms` ([UInt64](/docs/en/sql-reference/data-types/int-uint.md)) — UDF の読み込みに要した時間 (ミリ秒)。
+* `name` ([String](/sql-reference/data-types/string.md)) — UDF 名。
+* `load_status` ([Enum8](/sql-reference/data-types/enum.md)) — 読み込みステータス: `Success` (UDF が読み込まれて準備完了)、`Failed` (UDF の読み込みに失敗)。
+* `loading_error_message` ([String](/sql-reference/data-types/string.md)) — 読み込みに失敗した場合の詳細なエラーメッセージ。正常に読み込まれた場合は空文字列。
+* `last_successful_update_time` ([Nullable(DateTime)](/sql-reference/data-types/datetime.md)) — 直近の正常な読み込みのタイムスタンプ。成功したことがない場合は `NULL`。
+* `loading_duration_ms` ([UInt64](/sql-reference/data-types/int-uint.md)) — UDF の読み込みに要した時間 (ミリ秒)。
 
 **UDF 設定**
 
-* `type` ([Enum8](/docs/en/sql-reference/data-types/enum.md)) — UDF の種類: `executable` (ブロックごとに単一プロセス) または `executable_pool` (永続プロセスプール)。
-* `command` ([String](/docs/en/sql-reference/data-types/string.md)) — 引数を含む実行用スクリプトまたはコマンド。
-* `format` ([String](/docs/en/sql-reference/data-types/string.md)) — I/O のデータフォーマット (例: `TabSeparated`, `JSONEachRow`)。
-* `return_type` ([String](/docs/en/sql-reference/data-types/string.md)) — 関数の戻り値の型 (例: `String`, `UInt64`)。
-* `return_name` ([String](/docs/en/sql-reference/data-types/string.md)) — オプションの戻り値識別子。設定されていない場合は空。
-* `argument_types` ([Array(String)](/docs/en/sql-reference/data-types/array.md)) — 引数型の配列。
-* `argument_names` ([Array(String)](/docs/en/sql-reference/data-types/array.md)) — 引数名の配列。名前のない引数には空文字列。
+* `type` ([Enum8](/sql-reference/data-types/enum.md)) — UDF の種類: `executable` (ブロックごとに 1 プロセス) または `executable_pool` (永続プロセスプール)。
+* `command` ([String](/sql-reference/data-types/string.md)) — 引数を含む実行対象のスクリプトまたはコマンド。
+* `format` ([String](/sql-reference/data-types/string.md)) — 入出力用のデータフォーマット (例: `TabSeparated`, `JSONEachRow`)。
+* `return_type` ([String](/sql-reference/data-types/string.md)) — 関数の戻り値の型 (例: `String`, `UInt64`)。
+* `return_name` ([String](/sql-reference/data-types/string.md)) — 任意の戻り値識別子。設定されていない場合は空。
+* `argument_types` ([Array(String)](/sql-reference/data-types/array.md)) — 引数の型の配列。
+* `argument_names` ([Array(String)](/sql-reference/data-types/array.md)) — 引数名の配列。名前なしの引数の場合は空文字列。
 
 **実行パラメータ**
 
-* `max_command_execution_time` ([UInt64](/docs/en/sql-reference/data-types/int-uint.md)) — データブロックを処理する最大秒数。`executable_pool` 型でのみ有効。
-* `command_termination_timeout` ([UInt64](/docs/en/sql-reference/data-types/int-uint.md)) — コマンドプロセスに SIGTERM を送信するまでの秒数。
-* `command_read_timeout` ([UInt64](/docs/en/sql-reference/data-types/int-uint.md)) — コマンドの stdout から読み取る際のタイムアウト (ミリ秒)。
-* `command_write_timeout` ([UInt64](/docs/en/sql-reference/data-types/int-uint.md)) — コマンドの stdin へ書き込む際のタイムアウト (ミリ秒)。
-* `pool_size` ([UInt64](/docs/en/sql-reference/data-types/int-uint.md)) — プール内のプロセスインスタンス数。`executable_pool` 型でのみ有効。
-* `send_chunk_header` ([UInt8](/docs/en/sql-reference/data-types/int-uint.md)) — 各データ chunk の前に行数を送信するかどうか (1 = true, 0 = false)。
-* `execute_direct` ([UInt8](/docs/en/sql-reference/data-types/int-uint.md)) — コマンドを直接実行するか (1)、`/bin/bash` 経由で実行するか (0)。
-* `lifetime` ([UInt64](/docs/en/sql-reference/data-types/int-uint.md)) — 再読み込み間隔 (秒)。0 の場合、再読み込みは無効。
-* `deterministic` ([UInt8](/docs/en/sql-reference/data-types/int-uint.md)) — 同じ引数に対して常に同じ結果を返す関数かどうか (1 = true, 0 = false)。
+* `max_command_execution_time` ([UInt64](/sql-reference/data-types/int-uint.md)) — データブロックを処理する最大秒数。`executable_pool` 型でのみ使用。
+* `command_termination_timeout` ([UInt64](/sql-reference/data-types/int-uint.md)) — コマンドプロセスに SIGTERM を送信するまでの秒数。
+* `command_read_timeout` ([UInt64](/sql-reference/data-types/int-uint.md)) — コマンドの stdout から読み取る際のタイムアウト (ミリ秒)。
+* `command_write_timeout` ([UInt64](/sql-reference/data-types/int-uint.md)) — コマンドの stdin へ書き込む際のタイムアウト (ミリ秒)。
+* `pool_size` ([UInt64](/sql-reference/data-types/int-uint.md)) — プール内のプロセスインスタンス数。`executable_pool` 型でのみ使用。
+* `send_chunk_header` ([UInt8](/sql-reference/data-types/int-uint.md)) — 各データ chunk の先頭で行数を送信するかどうか (1 = true, 0 = false)。
+* `execute_direct` ([UInt8](/sql-reference/data-types/int-uint.md)) — コマンドを直接実行するか (1)、`/bin/bash` 経由で実行するか (0)。
+* `lifetime` ([UInt64](/sql-reference/data-types/int-uint.md)) — 再読み込み間隔 (秒)。0 の場合は再読み込みが無効。
+* `deterministic` ([UInt8](/sql-reference/data-types/int-uint.md)) — 同じ引数に対して常に同じ結果を返すかどうか (1 = true, 0 = false)。
 
 **例**
 
-すべての UDF とその読み込みステータスを表示します:
+すべての UDF とその読み込みステータスを表示:
 
 ```sql
 SELECT
@@ -69,7 +69,7 @@ return_type:    UInt64
 argument_types: ['UInt64','UInt64']
 ```
 
-失敗した UDF を特定する：
+失敗した UDF を見つける:
 
 ```sql
 SELECT
@@ -81,4 +81,4 @@ WHERE load_status = 'Failed';
 
 **関連項目**
 
-* [User-Defined Functions](/docs/en/sql-reference/functions/udf.md) — UDF の作成と設定方法。
+* [ユーザー定義関数](/sql-reference/functions/udf.md) — UDF の作成と設定方法。

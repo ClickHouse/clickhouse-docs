@@ -27,9 +27,10 @@ import dashboard_services from '@site/static/images/use-cases/observability/hype
 import dashboard_kubernetes from '@site/static/images/use-cases/observability/hyperdx-dashboard-kubernetes.png';
 import Tagging from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_clickstack_tagging.mdx';
 
-ClickStack はイベントの可視化をサポートしており、HyperDX に組み込みのチャート機能を備えています。これらのチャートはダッシュボードに追加し、他のユーザーと共有できます。
+ClickStack はイベントの可視化をサポートしており、ClickStack UI（HyperDX）にはチャート機能が組み込まれています。これらのチャートはダッシュボードに追加し、他のユーザーと共有できます。
 
 可視化は、トレース、メトリクス、ログ、または任意のユーザー定義のワイドイベントスキーマに基づいて作成できます。
+
 
 ## 可視化の作成 \{#creating-visualizations\}
 

@@ -12,7 +12,7 @@ doc_type: 'reference'
 導入バージョン: v1.1
 
 数値データ列の母集団標準偏差を返します。
-結果は [`varPop`](/sql-reference/aggregate-functions/reference/varpop) の平方根と同じです。
+結果は [`varPop`](/sql-reference/aggregate-functions/reference/varPop) の平方根と同じです。
 
 :::note
 この関数は数値的に不安定なアルゴリズムを使用します。計算で[数値安定性](https://en.wikipedia.org/wiki/Numerical_stability)が必要な場合は、[`stddevPopStable`](/sql-reference/aggregate-functions/reference/stddevpopstable) 関数を使用してください。こちらは計算誤差は小さくなりますが、処理は遅くなります。

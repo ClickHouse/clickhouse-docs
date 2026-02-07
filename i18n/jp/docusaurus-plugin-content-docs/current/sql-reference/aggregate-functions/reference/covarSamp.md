@@ -20,7 +20,7 @@ $$
 $$
 
 :::note
-This function uses a numerically unstable algorithm. If you need [numerical stability](https://en.wikipedia.org/wiki/Numerical_stability) in calculations, use the [`covarSampStable`](../reference/covarsampstable.md) function.
+This function uses a numerically unstable algorithm. If you need [numerical stability](https://en.wikipedia.org/wiki/Numerical_stability) in calculations, use the [`covarSampStable`](/sql-reference/aggregate-functions/reference/covarsampstable) function.
 It works slower but provides a lower computational error.
 :::
 
@@ -32,7 +32,7 @@ covarSamp(x, y)
 
 **Aliases**: `COVAR_SAMP`
 
-**引数**
+**Arguments**
 
 - `x` — 第1変数。[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float)、または[`Decimal`](/sql-reference/data-types/decimal)
 - `y` — 第2変数。[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float)、または[`Decimal`](/sql-reference/data-types/decimal)

@@ -9,6 +9,9 @@ doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 В этом руководстве рассматривается интеграция:
 
 <table>
@@ -21,7 +24,8 @@ keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitorin
   </tbody>
 </table>
 
-_Чтобы отправлять логи в ClickStack, используйте [OpenTelemetry Collector](/use-cases/observability/clickstack/ingesting-data/otel-collector)._
+*Чтобы отправлять логи в ClickStack, используйте [OpenTelemetry Collector](/use-cases/observability/clickstack/ingesting-data/otel-collector).*
+
 
 ## Начало работы \{#getting-started\}
 
@@ -76,7 +80,20 @@ end
 
 ### Настройка переменных окружения \{#configure-environment-variables\}
 
-Далее вам нужно будет настроить в вашей оболочке следующие переменные окружения для отправки телеметрии в ClickStack:
+Далее вам нужно будет настроить в вашей оболочке следующие переменные окружения для отправки телеметрии в ClickStack через коллектор OpenTelemetry:
+
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="Управляемый ClickStack" default>
+
+```shell
+export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
+OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack с открытым исходным кодом" >
 
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
@@ -84,6 +101,9 @@ OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
+
+</TabItem>
+</Tabs>
 
 *Переменная окружения `OTEL_SERVICE_NAME` используется для идентификации вашего сервиса
 в приложении HyperDX; вы можете задать любое удобное вам имя.*

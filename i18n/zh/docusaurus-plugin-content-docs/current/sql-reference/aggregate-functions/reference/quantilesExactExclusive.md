@@ -13,7 +13,7 @@ doc_type: 'reference'
 
 使用排除法（exclusive method），对数值数据序列在多个不同分位水平上同时精确计算多个[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
-此函数等价于 [`quantileExactExclusive`](/sql-reference/aggregate-functions/reference/quantileexactexclusive)，但允许在一次遍历中计算多个分位水平，与分别调用单个分位函数相比更高效。
+此函数等价于 [`quantileExactExclusive`](/sql-reference/aggregate-functions/reference/quantileExactExclusive)，但允许在一次遍历中计算多个分位水平，与分别调用单个分位函数相比更高效。
 
 该函数使用排除法来计算分位数，如 [R-6 method](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample) 中所述。
 这等价于 Excel 函数 [PERCENTILE.EXC](https://support.microsoft.com/en-us/office/percentile-exc-function-bbaa7204-e9e1-4010-85bf-c31dc5dce4ba)。

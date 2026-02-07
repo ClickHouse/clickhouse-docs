@@ -23,6 +23,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/winI7256Ejk?si=TRThhzCJdq87xg_x" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
+
 ## 前置条件 \{#prerequisites\}
 
 使用本指南前，您需要具备：
@@ -35,12 +36,12 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
 可以使用以下任一部署选项来完成本指南：
 
-- **自托管**：在 Kubernetes 集群中完整部署 ClickStack，包括：
+- **开源版 ClickStack**：在 Kubernetes 集群中完整部署 ClickStack，包括：
   - ClickHouse
   - HyperDX
   - MongoDB（用于仪表盘状态和配置）
 
-- **云托管**：使用 **ClickHouse Cloud**，并将 HyperDX 作为外部托管服务使用。这样就无需在集群内部运行 ClickHouse 或 HyperDX。
+- **托管版 ClickStack**：由 ClickHouse Cloud 托管 ClickHouse 和 ClickStack UI（HyperDX）。这样就无需在集群内部运行 ClickHouse 或 HyperDX。
 
 为了模拟应用程序流量，可以选择部署 ClickStack 分支版本的 [**OpenTelemetry Demo Application**](https://github.com/ClickHouse/opentelemetry-demo)。这会生成包括日志、指标和追踪在内的遥测数据。如果集群中已经有工作负载在运行，可以跳过此步骤，直接监控现有的 Pod（容器组）、节点和容器。
 
@@ -61,12 +62,12 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   此**步骤为可选项，适用于没有现有 Pod（容器组）需要监控的用户**。虽然已在 Kubernetes 环境中部署了现有服务的用户可以跳过此步骤，但本演示包含已插桩的微服务，这些微服务会生成追踪和会话回放数据，让用户能够体验 ClickStack 的所有功能。
 
-  以下步骤将在 Kubernetes 集群中部署 ClickStack 分支版本的 OpenTelemetry Demo Application 堆栈，专为可观测性测试和仪表化演示而定制。该堆栈包含后端微服务、负载生成器、遥测管道、支撑基础设施（如 Kafka、Redis）以及与 ClickStack 的 SDK 集成。
+  以下步骤将在 Kubernetes 集群中部署 ClickStack 分支版本的 OpenTelemetry Demo Application 堆栈,专为可观测性测试和仪表化演示而定制。该堆栈包含后端微服务、负载生成器、遥测管道、支撑基础设施(如 Kafka、Redis)以及与 ClickStack 的 SDK 集成。
 
   所有服务均部署到 `otel-demo` 命名空间。每个部署包括：
 
   * 使用 OTel 和 ClickStack SDKS 对链路追踪、指标和日志进行自动仪表化。
-  * 所有服务会将其遥测数据发送到 `my-hyperdx-hdx-oss-v2-otel-collector` OpenTelemetry 收集器（尚未部署）
+  * 所有服务会将其遥测数据发送到名为 `my-hyperdx-hdx-oss-v2-otel-collector` 的 OpenTelemetry 收集器（尚未部署）
   * [将资源标签转发](/use-cases/observability/clickstack/integrations/kubernetes#forwarding-resouce-tags-to-pods)，以便通过环境变量 `OTEL_RESOURCE_ATTRIBUTES` 关联日志、指标和追踪数据。
 
   ```shell
@@ -120,12 +121,12 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   ### 部署 ClickStack
 
-  安装 Helm 图表后,您可以将 ClickStack 部署到集群。您可以选择在 Kubernetes 环境中运行所有组件(包括 ClickHouse 和 HyperDX),也可以使用 ClickHouse Cloud,HyperDX 在其中同样以托管服务的形式提供。
+  安装 Helm 图表后,您可以将 ClickStack 部署到集群。您可以选择在 Kubernetes 环境中运行所有组件(包括 ClickHouse 和 HyperDX),也可以仅部署收集器并依赖托管 ClickStack 来提供 ClickHouse 和 HyperDX UI。
 
   <br />
 
   <details>
-    <summary>自托管部署</summary>
+    <summary>ClickStack 开源版（自管理部署）</summary>
 
     以下命令会将 ClickStack 安装到 `otel-demo` 命名空间。该 Helm 图表会部署：
 
@@ -146,7 +147,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
     :::warning 生产环境中的 ClickStack
 
-    此 Helm 图表还会安装 ClickHouse 和 OTel collector。在生产环境中，建议使用 ClickHouse 和 OTel collector 的 Operator，和/或使用 ClickHouse Cloud。
+    此 Helm 图表还会安装 ClickHouse 和 OTel collector。在生产环境中，建议使用 ClickHouse 和 OTel collector 的 Operator，和/或使用托管版 ClickStack。
 
     要禁用 ClickHouse 和 OTel collector，请设置以下值：
 
@@ -158,9 +159,9 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
   </details>
 
   <details>
-    <summary>使用 ClickHouse Cloud</summary>
+    <summary>托管 ClickStack</summary>
 
-    如果您更倾向于使用 ClickHouse Cloud，可以部署 ClickStack 并[禁用内置的 ClickHouse](https://clickhouse.com/docs/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud)。
+    如果您更倾向于使用托管版 ClickStack，可以部署 ClickStack 并[禁用内置的 ClickHouse](https://clickhouse.com/docs/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud)。
 
     :::note
     该 chart 当前始终会同时部署 HyperDX 和 MongoDB。虽然这些组件提供了一种备用访问方式，但它们并未与 ClickHouse Cloud 的身份验证机制集成。在此部署模型中，这些组件主要供管理员使用，[用于获取安全摄取密钥](#retrieve-ingestion-api-key)，该密钥是通过已部署的 OTel collector 进行数据摄取所必需的，但不应向最终用户暴露。
@@ -176,7 +177,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
     ```
   </details>
 
-  要验证部署状态,请运行以下命令并确认所有组件均处于 `Running` 状态。注意:使用 ClickHouse Cloud 的用户在此列表中不会看到 ClickHouse 组件:
+  要验证部署状态,请运行以下命令并确认所有组件均处于 `Running` 状态。注意:使用托管 ClickStack 的用户在此列表中不会看到 ClickHouse 组件:
 
   ```shell
   kubectl get pods -l "app.kubernetes.io/name=hdx-oss-v2" -n otel-demo
@@ -191,10 +192,10 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
   ### 访问 HyperDX UI
 
   :::note
-  即使使用 ClickHouse Cloud,仍需在 Kubernetes 集群中部署本地 HyperDX 实例。该实例提供由 HyperDX 内置的 OpAMP 服务器管理的摄取密钥,用于保护通过已部署的 OTel collector 进行的数据摄取——此功能目前在 ClickHouse Cloud 托管版本中尚不可用。
+  即使使用 Managed ClickStack,仍需在 Kubernetes 集群中部署本地 HyperDX 实例。该实例提供由 HyperDX 内置的 OpAMP 服务器管理的摄取密钥,用于保护通过已部署的 OTel collector 进行的数据摄取——此功能目前在 Managed ClickStack 中尚不可用。
   :::
 
-  出于安全考虑,该服务使用 `ClusterIP` 类型,默认不对外暴露。
+  出于安全考虑,该服务使用 `集群IP` 类型,默认不对外暴露。
 
   要访问 HyperDX UI,请将端口 3000 转发到本地端口 8080。
 
@@ -209,9 +210,9 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   创建用户，提供满足复杂度要求的用户名和密码。
 
-  <Image img={hyperdx_login} alt="HyperDX 界面" size="lg" />
+  <Image img={hyperdx_login} alt="HyperDX UI" size="lg" />
 
-  ### 获取摄取 API 密钥
+  ### 获取摄取 API key
 
   通过 ClickStack collector 部署的 OTel collector 的数据摄取由摄取密钥进行保护。
 
@@ -258,9 +259,9 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   要从集群本身和各个节点收集日志和指标,需要部署两个独立的 OpenTelemetry 收集器,每个收集器使用各自的清单文件。所提供的两个清单文件 `k8s_deployment.yaml` 和 `k8s_daemonset.yaml` 协同工作,从 Kubernetes 集群中收集全面的遥测数据。
 
-  * `k8s_deployment.yaml` 会部署一个 **单个 OpenTelemetry Collector 实例**，负责采集**集群范围内的事件和元数据**。它会收集 Kubernetes 事件、集群指标，并使用 pod（容器组）标签和注解来丰富遥测数据。该收集器作为一个独立的部署运行，仅启用一个副本，以避免产生重复数据。
+  * `k8s_deployment.yaml` 部署一个**单个 OpenTelemetry Collector 实例**，负责采集**集群范围内的事件和元数据**。它会收集 Kubernetes 事件和集群指标，并使用 pod（容器组）标签和注解来丰富遥测数据。该收集器作为一个独立的部署运行，仅保持一个副本，以避免产生重复数据。
 
-  * `k8s_daemonset.yaml` 部署了一个**基于 DaemonSet 的采集器**，会在集群中的每个节点上运行。它使用 `kubeletstats`、`hostmetrics` 和 Kubernetes Attribute Processor 等组件，收集**节点级和 pod（容器组）级指标**以及容器日志。该采集器为日志附加元数据，并通过 OTLP exporter 将其发送到 HyperDX。
+  * `k8s_daemonset.yaml` 部署了一个**基于 DaemonSet 的采集器**，会在集群中的每个节点上运行。它使用 `kubeletstats`、`hostmetrics` 和 Kubernetes Attribute Processor 等组件，收集**节点级和 pod（容器组）级指标**以及容器日志。这些采集器为日志附加元数据，并通过 OTLP 导出器将其发送到 HyperDX。
 
   这些清单共同实现了集群的全栈可观测性,涵盖从基础设施到应用级别的遥测数据,并将增强后的数据发送到 ClickStack 进行集中分析。
 
@@ -458,38 +459,22 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   ### 在 HyperDX 中探索 Kubernetes 数据
 
-  访问您的 HyperDX UI——可以使用 Kubernetes 部署的实例，或通过 ClickHouse Cloud 访问。
+  访问您的 HyperDX UI——可以使用 Kubernetes 部署的实例，或通过托管 ClickStack 访问。
 
   <p />
 
   <details>
-    <summary>使用 ClickHouse Cloud</summary>
+    <summary>托管 ClickStack</summary>
 
-    如果使用 ClickHouse Cloud，只需登录到你的 ClickHouse Cloud 服务，然后在左侧菜单中选择 “HyperDX”。你会被自动完成身份验证，无需创建用户。
+    如果使用托管 ClickStack，只需登录到你的 ClickHouse Cloud 服务，然后在左侧菜单中选择 &quot;ClickStack&quot;。系统会自动完成身份验证，你无需创建用户。
 
-    当系统提示你创建数据源时，保留创建数据源对话框中的所有默认值，仅将 Table 字段填写为 `otel_logs`，以创建一个日志数据源。其他所有设置应会被自动检测，你可以直接点击 `Save New Source`。
-
-    <Image force img={hyperdx_cloud_datasource} alt="ClickHouse Cloud HyperDX 数据源" size="lg" />
-
-    你还需要为 traces 和 metrics 创建数据源。
-
-    例如，要为 traces 和 OTel metrics 创建数据源，你可以从顶部菜单中选择 `Create New Source`。
-
-    <Image force img={hyperdx_create_new_source} alt="HyperDX 创建新数据源" size="lg" />
-
-    在这里，选择所需的数据源类型，然后选择相应的表，例如对于 traces，选择表 `otel_traces`。所有设置应会被自动检测。
-
-    <Image force img={hyperdx_create_trace_datasource} alt="HyperDX 创建 trace 数据源" size="lg" />
-
-    :::note 关联来源
-    请注意，ClickStack 中的不同数据源——例如日志和 traces——可以彼此关联。要启用这一点，需要在每个数据源上进行额外配置。例如，在日志数据源中，你可以指定对应的 trace 数据源，反之亦然，在 traces 数据源中指定日志数据源。有关更多详细信息，请参阅 “关联来源”。
-    :::
+    用于日志、指标和追踪的数据源会为你预先创建。
   </details>
 
   <details>
-    <summary>使用自托管部署</summary>
+    <summary>ClickStack 开源版</summary>
 
-    要访问本地部署的 HyperDX，可在本地执行端口转发命令，然后在浏览器中通过 [http://localhost:8080](http://localhost:8080) 访问 HyperDX。
+    要访问本地部署的 HyperDX，可以在本地执行端口转发命令，然后在浏览器中通过 [http://localhost:8080](http://localhost:8080) 访问 HyperDX。
 
     ```shell
     kubectl port-forward \
@@ -499,7 +484,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
     ```
 
     :::note ClickStack in production
-    在生产环境中，如果未在 ClickHouse Cloud 中使用 HyperDX，建议使用启用 TLS 的入口资源（Ingress）。例如：
+    在生产环境中，如果未使用托管版 ClickStack，我们建议使用启用 TLS 的入口资源（Ingress）。例如：
 
     ```shell
     helm upgrade my-hyperdx hyperdx/hdx-oss-v2 \
@@ -513,7 +498,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   要浏览 Kubernetes 数据,请导航至专用仪表板 `/kubernetes`,例如 [http://localhost:8080/kubernetes](http://localhost:8080/kubernetes)。
 
-  每个选项卡（Pod（容器组）、节点和命名空间）都应显示相应数据。
+  每个选项卡(Pod(容器组)、节点和命名空间)都应显示相应数据。
 </VerticalStepper>
 
 <Image img={dashboard_kubernetes} alt="ClickHouse Kubernetes 仪表板" size="lg"/>

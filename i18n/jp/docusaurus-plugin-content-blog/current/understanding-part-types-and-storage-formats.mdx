@@ -1,0 +1,168 @@
+---
+title: パーツの種類とストレージフォーマットを理解する
+description: 'ClickHouse における異なるパーツの種類（Wide と Compact）およびストレージフォーマット（Full と Packed）、そしてそれらがパフォーマンスに与える影響について学びます。'
+date: 2026-02-03
+tags: ['コアデータの概念']
+keywords: ['compact parts', 'wide parts', 'full storage', 'packed storage', 'part types', 'storage formats']
+---
+
+{frontMatter.description}
+
+{/* 省略 */}
+
+<br />
+
+<br />
+
+ClickHouse は、パーツ内のデータを整理するために、次の2つの独立した概念を使用します:
+
+* **パーツタイプ**（Wide と Compact）: 1つのパーツ内でカラムデータをどのように格納するか
+* **ストレージフォーマット**（Full と Packed）: パーツのファイルをディスク上でどのようにディスクに格納するか
+
+## パーツタイプ: Wide と Compact \{#part-types-wide-vs-compact\}
+
+パーツタイプは、データパーツ内でカラムデータがどのように配置されるかを決定します。
+
+| タイプ | 説明 | 適した用途 |
+|--------|------|------------|
+| **Wide** | 各カラムが個別のファイルに保存され、それぞれに独自の [marks ファイル](/concepts/glossary#mark-file)があります | 一部のカラムのみを選択するクエリ |
+| **Compact** | すべてのカラムが、単一の [marks ファイル](/concepts/glossary#mark-file)を持つ 1 つのファイルに保存されます | インジェスト性能が重要な場合や、すべてのカラムを必要とするクエリ |
+
+### 各パートタイプが使用される条件 \{#when-each-type-is-used\}
+
+パートタイプは、次のテーブル設定によって制御されます。
+
+* [`min_bytes_for_wide_part`](/operations/settings/merge-tree-settings#min_bytes_for_wide_part): `Wide` 形式を使用するパートの最小バイト数
+* [`min_rows_for_wide_part`](/operations/settings/merge-tree-settings#min_rows_for_wide_part): `Wide` 形式を使用するパートの最小行数
+
+データパート内のバイト数または行数のいずれかが対応する設定値より小さい場合、そのパートは `Compact` 形式で保存され、それ以外の場合は `Wide` 形式が使用されます。
+
+### パフォーマンス上の考慮事項 \{#performance-considerations\}
+
+**コンパクトパーツ:**
+
+* インジェスト性能が高い
+* クエリがすべてのカラムを必要とする場合に最適
+* 小さなパーツに対してより効率的
+
+**ワイドパーツ:**
+
+* 一部のカラムのみを選択するクエリに対してより効率的
+* 選択的なカラムアクセスを行う大規模データセットに適している
+
+コンパクトからワイドへのマージは、ワイドからワイドへのマージよりも遅くなります。これは、ClickHouse がコンパクトからワイドへの変換には[垂直マージ](/merges#memory-optimized-merges)アルゴリズムを使用する一方で、コンパクトからコンパクトへのマージには水平アルゴリズムを使用しているためです。サイズに関係なくワイドパーツの使用を強制したい場合は、`min_bytes_for_wide_part=0` を設定できます。
+
+これは次のようなシナリオで有用です:
+
+1. 多数のカラム（例: 600 カラム以上）を持つテーブルに対して大規模な insert を行う場合に、これを 0 に設定するとパフォーマンス向上に役立つ
+2. マージ中に過剰なメモリを消費している `system.metric_log` や `system.text_log` のような system テーブルのメモリ使用量を最適化する場合
+3. insert ボリュームが高いテーブルを扱っており、ストレージおよびマージ動作を最適化したい場合
+4. 一貫したパーツフォーマットの挙動を望み、サイズしきい値に基づくフォーマット遷移のオーバーヘッドを避けたい場合
+
+これを 0 に設定すると特定のパフォーマンス特性が改善される一方で、ワイドパーツフォーマットにより S3 ストレージへの GET リクエスト数が増加する可能性がある点には注意が必要です。
+
+### 制限事項 \{#limitations\}
+
+コンパクトパーツではカラムサイズの統計情報が計算されないため、監視や最適化の作業に影響する可能性があります。`system.parts_columns` をクエリすると、コンパクトパーツでは `column_data_compressed_bytes` および `column_data_uncompressed_bytes` が `0` と表示されます。詳細については、「[ワイドパーツまたはコンパクトパーツの件数とサイズを調べる](/knowledgebase/count-parts-by-type)」を参照してください。
+
+## ストレージフォーマット: Full と Packed の比較 (ClickHouse Cloud) \{#storage-formats-full-vs-packed-clickhouse-cloud\}
+
+ストレージフォーマットは、パーツに含まれるファイルがディスク上に物理的にどのように保存されるかを決定します。
+
+| Format | 説明 | 提供範囲 |
+|--------|-------------|--------------|
+| **Full** | 各ファイルがパーツディレクトリ内に個別に保存される | オープンソース版および Cloud |
+| **Packed** | すべてのファイルが 1 つのアーカイブファイルにまとめられる | ClickHouse Cloud 限定 |
+
+### フルストレージ \{#full-storage\}
+
+フルストレージでは、各パーツはディスク上に個別に保存される複数の独立したファイルで構成されます。これは、オープンソース版 ClickHouse におけるデフォルトかつ唯一のストレージ形式です。
+
+### Packed storage（ClickHouse Cloud のみ） \{#packed-storage-clickhouse-cloud-only\}
+
+Packed storage では、すべてのパーツファイルが 1 つのアーカイブファイルにまとめられます。これによりファイル操作の回数が大幅に削減され、各リクエストにレイテンシとコストが伴う S3 のようなリモートストレージに対して極めて重要な効果を発揮します。
+
+**Packed storage の利点:**
+
+* S3 / オブジェクトストレージの API 呼び出しの削減
+* コーディネーションサービスへのメタデータ負荷の軽減
+* ストレージコストの削減（Full storage は大幅に高コストになる可能性があります）
+* リモートストレージ上の小さなパーツに対するパフォーマンス向上
+
+### Packed ストレージが使用される場合 \{#when-packed-storage-is-used\}
+
+ClickHouse Cloud では、以下の条件の**いずれか**が成り立つ場合、そのパーツは Packed ストレージを使用します:
+
+* 非圧縮バイト数 &lt; [`min_bytes_for_full_part_storage`](/operations/settings/merge-tree-settings#min_bytes_for_full_part_storage)
+* 行数 &lt; [`min_rows_for_full_part_storage`](/operations/settings/merge-tree-settings#min_rows_for_full_part_storage)
+* マージレベル &lt; [`min_level_for_full_part_storage`](/operations/settings/merge-tree-settings#min_level_for_full_part_storage)
+
+:::note オープンソース
+`min_bytes_for_full_part_storage`、`min_rows_for_full_part_storage`、`min_level_for_full_part_storage` の各設定はオープンソース版の ClickHouse でも定義されていますが、Packed ストレージの実装は ClickHouse Cloud にのみ存在するため、これらの設定は効果がありません。
+:::
+
+`min_level_for_full_part_storage` 設定は、特に継続的に挿入が行われるテーブルにおいて、ClickHouse Cloud 環境でパフォーマンスとコストの両方を最適化するために使用できます。
+この設定は ClickHouse バージョン 25.10 から利用可能で、`min_level_for_wide_part` と併用することで、パーツのストレージ戦略を包括的に制御できます。
+
+デフォルト値 (0) からの変更を検討できるユースケースは次のとおりです:
+
+* テーブルが定期的にデータを取り込む場合、最初のパーツはすぐにマージで消えるため、最初からフルパーツ形式で保存するのは無駄になります
+* このパラメータを設定すると、挿入時の高価な S3 の PUT リクエストを抑制できます。たとえば、ある分析では、フルパーツを作成する挿入は 1 回あたり平均 31.3 回の PUT リクエストを発生させた一方で、Packed パーツのみを作成する挿入は 1 回あたり平均 2.22 回の PUT リクエストにとどまりました
+* Packed ストレージではすべてのデータを 1 つのファイルに書き込むため、カラムごとに個別のファイルを作成する必要がなくなり、とくにカラム数の多いテーブルでは挿入処理が高速になります。
+
+推奨構成:
+
+Cloud デプロイメントでは `min_level_for_full_part_storage = 2` を設定します。
+これにより次のようになります:
+
+* レベル 0 のパーツ (最初の挿入) は Packed ストレージを使用する
+* レベル 1 のパーツも引き続き Packed ストレージを使用する
+* レベル 2 以上のパーツのみがフルストレージ形式を使用する
+
+:::tip
+十分なマージが発生しない、非常に大きいが頻度の低い書き込みを受けるテーブルでは、この設定の使用は避けてください。そのような場合、大きな最初の書き込みは最初からフルパーツストレージを使用した方が有利な場合があります。
+:::
+
+## パーツタイプとストレージフォーマットの組み合わせ \{#combining-part-types-and-storage-formats\}
+
+これら 2 つの概念は互いに独立しており、ClickHouse Cloud を使用しているかオープンソース版 ClickHouse を使用しているかに応じて、任意の組み合わせを利用できます。
+
+| Combination | Use case |
+|-------------|----------|
+| Wide + Full | ローカルストレージ上の大きなパーツ（オープンソース版でのデフォルト） |
+| Wide + Packed | クラウドストレージ上の大きなパーツ |
+| Compact + Full | ローカルストレージ上の小さなパーツ |
+| Compact + Packed | クラウドストレージ上の小さなパーツ |
+
+## パーツ情報の参照 \{#querying-part-information\}
+
+既存のパーツのパーツタイプおよびパーツストレージタイプは、[`system.parts`](/operations/system-tables/parts) テーブルで確認できます。
+
+```sql
+SELECT
+    part_type,
+    part_storage_type,
+    max(level),
+    count(),
+    formatReadableSize(max(data_uncompressed_bytes)),
+    formatReadableSize(min(data_uncompressed_bytes))
+FROM system.parts
+WHERE (database != 'system') AND active
+GROUP BY
+    1,
+    2
+ORDER BY
+    1 ASC,
+    2 ASC
+```
+
+次のような結果が表示されます:
+
+```response
+   ┌─part_type─┬─part_storage_type─┬─max(level)─┬─count()─┬─formatReadab⋯sed_bytes))─┬─formatReadab⋯sed_bytes))─┐
+1. │ Compact   │ Full              │      12688 │    2456 │ 1023.87 MiB              │ 23.78 MiB                │
+2. │ Compact   │ Packed            │      97383 │   13748 │ 127.77 MiB               │ 1.00 B                   │
+3. │ Wide      │ Full              │       7642 │    2000 │ 1.38 TiB                 │ 30.18 MiB                │
+4. │ Wide      │ Packed            │         10 │     187 │ 110.01 MiB               │ 1.30 KiB                 │
+   └───────────┴───────────────────┴────────────┴─────────┴──────────────────────────┴──────────────────────────┘
+```

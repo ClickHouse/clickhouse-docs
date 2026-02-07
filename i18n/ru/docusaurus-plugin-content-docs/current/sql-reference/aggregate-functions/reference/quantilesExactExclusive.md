@@ -13,7 +13,7 @@ doc_type: 'reference'
 
 Точно вычисляет несколько [квантилей](https://en.wikipedia.org/wiki/Quantile) последовательности числовых данных на разных уровнях одновременно, используя эксклюзивный метод.
 
-Эта функция эквивалентна [`quantileExactExclusive`](/sql-reference/aggregate-functions/reference/quantileexactexclusive), но позволяет вычислять несколько уровней квантилей за один проход, что более эффективно, чем вызов отдельных функций квантилей.
+Эта функция эквивалентна [`quantileExactExclusive`](/sql-reference/aggregate-functions/reference/quantileExactExclusive), но позволяет вычислять несколько уровней квантилей за один проход, что более эффективно, чем вызов отдельных функций квантилей.
 
 Эта функция использует эксклюзивный метод вычисления квантилей, описанный в [методе R-6](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample).
 Она эквивалентна функции Excel [PERCENTILE.EXC](https://support.microsoft.com/en-us/office/percentile-exc-function-bbaa7204-e9e1-4010-85bf-c31dc5dce4ba).

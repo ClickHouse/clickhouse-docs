@@ -46,6 +46,10 @@ MCP использует клиент-серверную архитектуру:
 
 Если вы ищете удалённый MCP server в ClickHouse Cloud, см. страницу ["Remote MCP server in Cloud"](/cloud/features/ai-ml/remote-mcp)
 
+:::tip[Навыки агента]
+Репозиторий [ClickHouse Agent Skills](https://github.com/ClickHouse/agent-skills) предоставляет готовые наборы инструкций, которые расширяют агентов для написания кода с ИИ (Claude Code, Cursor, Copilot и т. д.) экспертизой в конкретной предметной области. Этот репозиторий предоставляет навыки для баз данных ClickHouse — охватывающие проектирование схем, оптимизацию запросов и шаблоны ингестии данных.
+:::
+
 ## Руководства по использованию сервера ClickHouse MCP \{#clickhouse-mcp-server-guides\}
 
 Ниже представлены руководства по работе с сервером ClickHouse MCP.

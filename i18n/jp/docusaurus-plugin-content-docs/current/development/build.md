@@ -51,8 +51,9 @@ sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 
 他の Linux ディストリビューションについては、LLVM の[事前ビルド済みパッケージ](https://releases.llvm.org/download.html)をインストールできるか確認してください。
 
-2025 年 3 月時点では、Clang 19 以上が必要です。
+2026 年 2 月時点では、Clang 21 以上が必要です。
 GCC などの他のコンパイラはサポートされていません。
+
 
 ## Rust コンパイラのインストール（任意） \{#install-the-rust-compiler-optional\}
 

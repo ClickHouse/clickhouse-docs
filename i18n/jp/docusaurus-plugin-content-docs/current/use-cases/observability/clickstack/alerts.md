@@ -6,7 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'ClickStack によるアラート'
 doc_type: 'guide'
-keywords: ['ClickStack', '可観測性', 'アラート', '検索アラート', '通知', 'しきい値', 'Slack', 'メール', 'PagerDuty', 'エラー監視', 'パフォーマンス監視', 'ユーザーイベント']
+keywords: ['ClickStack', 'オブザーバビリティ', 'アラート', '検索アラート', '通知', 'しきい値', 'Slack', 'メール', 'PagerDuty', 'エラー監視', 'パフォーマンス監視', 'ユーザーイベント']
 ---
 
 import Image from '@theme/IdealImage';
@@ -21,6 +21,8 @@ import manage_alerts from '@site/static/images/use-cases/observability/manage_al
 import alerts_view from '@site/static/images/use-cases/observability/alerts_view.png';
 import multiple_search_alerts from '@site/static/images/use-cases/observability/multiple_search_alerts.png';
 import remove_chart_alert from '@site/static/images/use-cases/observability/remove_chart_alert.png';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 
 ## ClickStack におけるアラート \{#alerting-in-clickstack\}

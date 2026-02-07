@@ -26,6 +26,7 @@ git push
 
 Если вы не уверены, как поступить, обратитесь за помощью к мейнтейнеру проекта.
 
+
 ## Объединение с master \{#merge-with-master\}
 
 Проверяет, что PR может быть объединён с веткой master.
@@ -98,6 +99,7 @@ python -m ci.praktika run "Style check" --test cpp
 Эти команды скачивают Docker-образ `clickhouse/style-test` и запускают задачу в контейнеризованной среде.
 Дополнительные зависимости не требуются — достаточно Python 3 и Docker.
 
+
 ## Быстрый тест \{#fast-test\}
 
 Обычно это первая проверка, которая запускается для PR.
@@ -114,6 +116,7 @@ python -m ci.praktika run "Fast test" [--test some_test_name]
 Эти команды загружают Docker-образ `clickhouse/fast-test` и запускают задачу в контейнеризированной среде.
 Никаких зависимостей, кроме Python 3 и Docker, не требуется.
 
+
 ## Проверка сборки \{#build-check\}
 
 Выполняет сборку ClickHouse в различных конфигурациях для использования на следующих шагах.
@@ -126,7 +129,8 @@ python -m ci.praktika run "Fast test" [--test some_test_name]
 python -m ci.praktika run "<BUILD_JOB_NAME>"
 ```
 
-Никаких дополнительных зависимостей, кроме Python 3 и Docker, не требуется.
+Помимо Python 3 и Docker, никаких дополнительных зависимостей не требуется.
+
 
 #### Доступные задания сборки \{#available-build-jobs\}
 
@@ -168,13 +172,15 @@ python -m ci.praktika run "<BUILD_JOB_NAME>"
 
 #### Пример \{#example-run-local\}
 
-Чтобы выполнить локальную отладочную сборку:
+Чтобы запустить локальную debug-сборку:
 
 ```bash
 python -m ci.praktika run "Build (amd_debug)"
 ```
 
 Если описанный выше подход вам не подходит, используйте параметры cmake из лога сборки и следуйте [общему процессу сборки](../development/build.md).
+
+
 ## Functional stateless tests \{#functional-stateless-tests\}
 
 Запускает [функциональные stateless-тесты](tests.md#functional-tests) для бинарных файлов ClickHouse, собранных в различных конфигурациях — release, debug, с санитайзерами и т. д.
@@ -195,7 +201,7 @@ python -m ci.praktika run "Build (amd_debug)"
 
 Запускает функциональные тесты без сохранения состояния одновременно с нескольких клиентов для выявления ошибок, связанных с конкурентным выполнением. Если тест завершился неуспешно:
 
-    * Сначала исправьте все остальные ошибки тестов;
+* Сначала исправьте все остальные ошибки тестов;
     * Ознакомьтесь с отчетом, найдите журналы сервера и проверьте их на возможные причины
       ошибки.
 
@@ -213,4 +219,4 @@ python -m ci.praktika run "Build (amd_debug)"
 
 Измеряйте, как изменяется производительность запросов.
 Это самая длительная проверка, она занимает чуть меньше 6 часов.
-Отчёт о тестах производительности подробно описан [здесь](https://github.com/ClickHouse/ClickHouse/tree/master/docker/test/performance-comparison#how-to-read-the-report).
+Отчёт о тестах производительности подробно описан [здесь](https://github.com/ClickHouse/ClickHouse/blob/master/tests/performance/scripts/README.md#how-to-read-the-report).

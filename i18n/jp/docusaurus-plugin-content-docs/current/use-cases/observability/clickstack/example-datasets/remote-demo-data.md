@@ -40,12 +40,12 @@ import demo_sources from '@site/static/images/use-cases/observability/hyperdx-de
 import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
 import DemoArchitecture from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
 
-**以下のガイドでは、[all-in-one イメージ用の手順](/use-cases/observability/clickstack/getting-started) または [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only) の手順に従って ClickStack をデプロイし、初回ユーザー作成を完了していることを前提としています。あるいは、ローカルでのセットアップをすべて省略し、このデータセットを使用している ClickStack ホスト済みデモ環境 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) に接続することもできます。**
+**以下のガイドでは、[all-in-one イメージ用の手順](/use-cases/observability/clickstack/getting-started/oss) または [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only) の手順に従って Open Source ClickStack をデプロイし、初回ユーザー作成を完了していることを前提としています。あるいは、ローカルでのセットアップをすべて省略し、このデータセットを使用している ClickStack ホスト済みデモ環境 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) に接続することもできます。**
 
 このガイドで使用するサンプルデータセットは、パブリックな ClickHouse Playground である [sql.clickhouse.com](https://sql.clickhpouse.com) 上にホストされており、ローカルの ClickStack デプロイメントから接続できます。
 
-:::warning ClickHouse Cloud 上の HyperDX ではサポートされません
-HyperDX が ClickHouse Cloud 上でホストされている場合、リモートデータベースはサポートされません。そのため、このデータセットもサポート対象外です。
+:::warning Managed ClickStack ではサポートされません
+Managed ClickStack を使用している場合、リモートデータベースはサポートされません。そのため、このデータセットもサポート対象外です。
 :::
 
 

@@ -29,13 +29,13 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
   * `MutatePartStart` — 数据分片变更操作已开始。
   * `MutatePart` — 数据分片变更操作已完成。
   * `MovePart` — 将数据分片从一个磁盘移动到另一个磁盘。
-* `merge_reason`（[Enum8](../../sql-reference/data-types/enum.md)）— 类型为 `MERGE_PARTS` 的事件的原因。可以具有以下值之一：
+* `merge_reason`（[Enum8](../../sql-reference/data-types/enum.md)）— 类型为 `MERGE_PARTS` 的事件的原因。可以取以下值之一：
   * `NotAMerge` — 当前事件的类型不是 `MERGE_PARTS`。
   * `RegularMerge` — 一次常规合并。
   * `TTLDeleteMerge` — 清理过期数据。
   * `TTLRecompressMerge` — 对数据分片进行重新压缩。
 * `merge_algorithm` ([Enum8](../../sql-reference/data-types/enum.md)) — 类型为 `MERGE_PARTS` 的事件所使用的合并算法。可以取以下值之一：
-  * `未决定`
+  * `未确定`
   * `水平`
   * `垂直`
 * `event_date` ([Date](../../sql-reference/data-types/date.md)) — 事件日期。
@@ -46,20 +46,21 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 * `table` ([String](../../sql-reference/data-types/string.md)) — 该数据分片所在表的名称。
 * `table_uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — 该数据部分所属表的 UUID。
 * `part_name` ([String](../../sql-reference/data-types/string.md)) — 数据部分的名称。
-* `partition_id` ([String](../../sql-reference/data-types/string.md)) — 数据部件写入到的分区 ID。如果按 `tuple()` 分区，则该列取值为 `all`。
+* `partition_id` ([String](../../sql-reference/data-types/string.md)) — 数据部件被写入到的分区 ID。如果按 `tuple()` 分区，则该列取值为 `all`。
 * `partition` ([String](../../sql-reference/data-types/string.md)) - 分区名称。
 * `part_type` ([String](../../sql-reference/data-types/string.md)) - part 的类型。可能的取值有：Wide 和 Compact。
 * `disk_name` ([String](../../sql-reference/data-types/string.md)) - 数据部件所在的磁盘名称。
 * `path_on_disk` ([String](../../sql-reference/data-types/string.md)) — 包含数据部件文件的目录的绝对路径。
 * `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 数据部分中的行数。
 * `size_in_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 数据部分的大小（以字节为单位）。
-* `merged_from` ([Array(String)](../../sql-reference/data-types/array.md)) — 当前数据片（合并后）由其来源数据片名称组成的数组。
+* `merged_from` ([Array(String)](../../sql-reference/data-types/array.md)) — 一个字符串数组，包含在合并或变更中被合并为当前分区片段的来源分区片段名称。
 * `bytes_uncompressed` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 未压缩数据的字节数。
 * `read_rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 在合并过程中读取的行数。
 * `read_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 合并过程中读取的字节数。
 * `peak_memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — 在此线程上下文中，已分配内存与已释放内存之间的最大差值。
 * `error` ([UInt16](../../sql-reference/data-types/int-uint.md)) — 发生错误的代码号。
 * `exception` ([String](../../sql-reference/data-types/string.md)) — 发生错误时的文本信息。
+* `mutation_ids` ([Array(String)](../../sql-reference/data-types/array.md)) — 对于类型为 `MutatePartsStart` 和 `MutateParts` 的事件，应用于源分区片段（`merged_from`）的变更 ID 数组。
 * `ProfileEvents`（[Map(String, UInt64)](../../sql-reference/data-types/map.md)）— 用于统计不同指标的 ProfileEvents。相关说明可在表 [system.events](/operations/system-tables/events) 中找到。
 
 在首次向 `MergeTree` 表插入数据后，会创建 `system.part_log` 表。
@@ -100,5 +101,6 @@ read_bytes:              1429206946 -- 1.43 billion
 peak_memory_usage:       303611887 -- 303.61 million
 error:                   0
 exception:
+mutation_ids:
 ProfileEvents:           {'FileOpen':703,'ReadBufferFromFileDescriptorRead':3824,'ReadBufferFromFileDescriptorReadBytes':439601681,'WriteBufferFromFileDescriptorWrite':592,'WriteBufferFromFileDescriptorWriteBytes':438988500,'ReadCompressedBytes':439601681,'CompressedReadBufferBlocks':6314,'CompressedReadBufferBytes':1539835748,'OpenedFileCacheHits':50,'OpenedFileCacheMisses':484,'OpenedFileCacheMicroseconds':222,'IOBufferAllocs':1914,'IOBufferAllocBytes':319810140,'ArenaAllocChunks':8,'ArenaAllocBytes':131072,'MarkCacheMisses':7,'CreatedReadBufferOrdinary':534,'DiskReadElapsedMicroseconds':139058,'DiskWriteElapsedMicroseconds':51639,'AnalyzePatchRangesMicroseconds':28,'ExternalProcessingFilesTotal':1,'RowsReadByMainReader':170857759,'WaitMarksLoadMicroseconds':988,'LoadedMarksFiles':7,'LoadedMarksCount':14,'LoadedMarksMemoryBytes':728,'Merge':2,'MergeSourceParts':14,'MergedRows':3285733,'MergedColumns':4,'GatheredColumns':51,'MergedUncompressedBytes':1429207058,'MergeTotalMilliseconds':2158,'MergeExecuteMilliseconds':2155,'MergeHorizontalStageTotalMilliseconds':145,'MergeHorizontalStageExecuteMilliseconds':145,'MergeVerticalStageTotalMilliseconds':2008,'MergeVerticalStageExecuteMilliseconds':2006,'MergeProjectionStageTotalMilliseconds':5,'MergeProjectionStageExecuteMilliseconds':4,'MergingSortedMilliseconds':7,'GatheringColumnMilliseconds':56,'ContextLock':2091,'PartsLockHoldMicroseconds':77,'PartsLockWaitMicroseconds':1,'RealTimeMicroseconds':2157475,'CannotWriteToWriteBufferDiscard':36,'LogTrace':6,'LogDebug':59,'LoggerElapsedNanoseconds':514040,'ConcurrencyControlSlotsGranted':53,'ConcurrencyControlSlotsAcquired':53}
 ```

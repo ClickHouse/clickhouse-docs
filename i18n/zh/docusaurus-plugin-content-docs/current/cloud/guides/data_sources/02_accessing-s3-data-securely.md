@@ -19,10 +19,6 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.png';
 
 <br />
 
-<Image img={secure_s3} size="md" alt="ClickHouse 安全访问 S3 的概览" />
-
-<br />
-
 这种方式允许客户在单一位置（所承担角色的 IAM 策略）管理对其 S3 存储桶的全部访问权限，而无需逐一修改所有存储桶策略来添加或移除访问权限。
 在下面的章节中，您将学习如何完成这一配置。
 

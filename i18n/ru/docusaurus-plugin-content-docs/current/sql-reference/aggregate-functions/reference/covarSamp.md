@@ -20,7 +20,7 @@ $$
 $$
 
 :::note
-This function uses a numerically unstable algorithm. If you need [numerical stability](https://en.wikipedia.org/wiki/Numerical_stability) in calculations, use the [`covarSampStable`](../reference/covarsampstable.md) function.
+Эта функция использует численно нестабильный алгоритм. Если вам нужна [численная стабильность](https://en.wikipedia.org/wiki/Numerical_stability) в вычислениях, используйте функцию [`covarSampStable`](/sql-reference/aggregate-functions/reference/covarsampstable).
 It works slower but provides a lower computational error.
 :::
 
@@ -32,10 +32,10 @@ covarSamp(x, y)
 
 **Aliases**: `COVAR_SAMP`
 
-**Аргументы**
+**Arguments**
 
-- `x` — первая переменная. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-- `y` — вторая переменная. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+- `x` — First variable. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+- `y` — Second variable. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
 
 **Returned value**
 

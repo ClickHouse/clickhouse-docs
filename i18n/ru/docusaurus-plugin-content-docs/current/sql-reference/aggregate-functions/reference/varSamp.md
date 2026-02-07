@@ -13,9 +13,9 @@ doc_type: 'reference'
 
 Introduced in: v1.1
 
-Вычисляет выборочную дисперсию набора данных.
+Calculate the sample variance of a data set.
 
-Выборочная дисперсия вычисляется по формуле:
+The sample variance is calculated using the formula:
 
 $$
 \frac{\Sigma{(x - \bar{x})^2}}{n-1}
@@ -23,37 +23,37 @@ $$
 
 <br />
 
-Где:
+Where:
 
-- $x$ — каждое отдельное значение в наборе данных
-- $\bar{x}$ — среднее арифметическое набора данных
-- $n$ — количество значений в наборе данных
+- $x$ is each individual data point in the data set
+- $\bar{x}$ is the arithmetic mean of the data set
+- $n$ is the number of data points in the data set
 
-Функция предполагает, что входной набор данных представляет собой выборку из большей генеральной совокупности. Если необходимо вычислить дисперсию всей генеральной совокупности (при наличии полного набора данных), используйте [`varPop`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/varpop).
+The function assumes that the input data set represents a sample from a larger population. If you want to calculate the variance of the entire population (when you have the complete data set), you should use [`varPop`](/sql-reference/aggregate-functions/reference/varPop) instead.
 
 :::note
-Функция использует численно неустойчивый алгоритм. Если требуется [численная устойчивость](https://en.wikipedia.org/wiki/Numerical_stability) вычислений, используйте функцию [`varSampStable`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/varsampstable). Она работает медленнее, но обеспечивает меньшую вычислительную погрешность.
+Функция использует численно неустойчивый алгоритм. Если требуется [численная устойчивость](https://en.wikipedia.org/wiki/Numerical_stability) вычислений, используйте функцию [`varSampStable`](/sql-reference/aggregate-functions/reference/varsampstable). Она работает медленнее, но обеспечивает меньшую вычислительную погрешность.
 :::
 
-**Синтаксис**
+**Syntax**
 
 ```sql
 varSamp(x)
 ```
 
-**Псевдонимы**: `VAR_SAMP`
+**Aliases**: `VAR_SAMP`
 
-**Аргументы**
+**Arguments**
 
-- `x` — данные, для которых требуется вычислить выборочную дисперсию. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
+- `x` — The population for which you want to calculate the sample variance. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
 
-**Возвращаемое значение**
+**Returned value**
 
-Возвращает выборочную дисперсию входного набора данных `x`. [`Float64`](/sql-reference/data-types/float)
+Returns the sample variance of the input data set `x`. [`Float64`](/sql-reference/data-types/float)
 
-**Примеры**
+**Examples**
 
-**Вычисление выборочной дисперсии**
+**Computing sample variance**
 
 ```sql title=Query
 DROP TABLE IF EXISTS test_data;

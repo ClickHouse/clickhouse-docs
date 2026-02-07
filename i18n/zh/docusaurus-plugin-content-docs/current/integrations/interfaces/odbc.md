@@ -7,7 +7,7 @@ title: 'ODBC 驱动程序'
 doc_type: 'reference'
 ---
 
-# ODBC driver \{#odbc-driver\}
+# ODBC Driver \{#odbc-driver\}
 
 ClickHouse ODBC 驱动程序提供符合标准的接口，用于将兼容 ODBC 的应用程序连接到
 ClickHouse。它实现了 ODBC API，使应用程序、BI 工具和脚本环境能够执行 SQL
@@ -16,8 +16,8 @@ ClickHouse。它实现了 ODBC API，使应用程序、BI 工具和脚本环境�
 该驱动程序使用 [HTTP protocol](/interfaces/http) 与 ClickHouse 服务器通信，这是所有 ClickHouse 部署中主要支持的
 协议。这使得驱动程序能够在各种环境中保持一致运行，包括本地安装、Cloud 托管服务，以及仅提供基于 HTTP 访问的环境。
 
-该驱动程序的源代码可在 [ClickHouse-ODBC GitHub Repository](
-https://github.com/ClickHouse/clickhouse-odbc) 中获取。
+该驱动程序的源代码可在
+[ClickHouse-ODBC GitHub Repository](https://github.com/ClickHouse/clickhouse-odbc) 中获取。
 
 :::tip
 为了获得更好的兼容性，我们强烈建议将 ClickHouse 服务器更新到 24.11 或更高版本。
@@ -28,13 +28,16 @@ https://github.com/ClickHouse/clickhouse-odbc) 中获取。
 重点提供基本连接能力和核心 ODBC 功能，更多特性计划在未来版本中提供。
 
 您的反馈非常重要，有助于指导新特性和改进项的优先级。如果您遇到
-限制、缺失的功能或意外行为，请通过 issue 跟踪器 https://github.com/ClickHouse/clickhouse-odbc/issues
+限制、缺失的功能或意外行为，请通过 issue 跟踪器
+[https://github.com/ClickHouse/clickhouse-odbc/issues](https://github.com/ClickHouse/clickhouse-odbc/issues)
 分享您的观察或功能请求。
 :::
 
 ## 在 Windows 上安装 \{#installation-on-windows\}
 
-你可以在 https://github.com/ClickHouse/clickhouse-odbc/releases/latest 找到该驱动的最新版本。  
+你可以在
+[https://github.com/ClickHouse/clickhouse-odbc/releases/latest](https://github.com/ClickHouse/clickhouse-odbc/releases/latest)
+找到该驱动的最新版本。
 在该页面下载并运行 MSI 安装程序，然后按照安装向导的提示完成安装。
 
 ## 测试 \{#testing\}
@@ -45,7 +48,7 @@ https://github.com/ClickHouse/clickhouse-odbc) 中获取。
 
 ```powershell
 $url = "http://127.0.0.1:8123/"
-$user = "default"
+$username = "default"
 $password = ""
 $conn = New-Object System.Data.Odbc.OdbcConnection("`
     Driver={ClickHouse ODBC Driver (Unicode)};`
@@ -80,7 +83,7 @@ $conn.Close()
 * 安装在本地 WSL 实例上的 ClickHouse 服务器
 
 ```plaintext
-Driver={ClickHouse ODBC Driver (Unicode)};Url=http://localhost:8123//;Username=default
+Driver={ClickHouse ODBC Driver (Unicode)};Url=http://localhost:8123/;Username=default
 ```
 
 * 一个 ClickHouse Cloud 实例。
@@ -90,7 +93,7 @@ Driver={ClickHouse ODBC Driver (Unicode)};Url=https://you-instance-url.gcp.click
 ```
 
 
-## Microsoft Power BI 集成 \{#powerbi-Integration\}
+## Microsoft Power BI 集成 \{#powerbi-integration\}
 
 您可以使用 ODBC 驱动程序将 Microsoft Power BI 连接到 ClickHouse 服务器。Power BI 提供两种连接选项：通用 ODBC 连接器和 ClickHouse 连接器，这两者都包含在标准版 Power BI 的安装包中。
 
@@ -102,6 +105,6 @@ Driver={ClickHouse ODBC Driver (Unicode)};Url=https://you-instance-url.gcp.click
 - ODBC 连接器
   仅支持 Import 模式。Power BI 会执行用户提供的查询（或选择整个表），并将完整的结果集导入到 Power BI 中。后续刷新会重新导入整个数据集。
 
-请根据您的使用场景选择连接器：对于包含大型数据集的交互式仪表板，使用 DirectQuery 模式；当您需要数据的完整本地副本时，使用 Import 模式。
+请根据您的使用场景选择连接器。对于包含大型数据集的交互式仪表板，DirectQuery 模式效果最佳。当您需要数据的完整本地副本时，请选择 Import 模式。
 
-有关将 Microsoft Power BI 与 ClickHouse 集成的更多信息，请参阅 [ClickHouse 文档中关于 Power BI 集成的页面](http://localhost:3000/docs/integrations/powerbi)。
+有关将 Microsoft Power BI 与 ClickHouse 集成的更多信息，请参阅 [ClickHouse 文档中关于 Power BI 集成的页面](/integrations/powerbi)。

@@ -685,6 +685,8 @@ File Cache の**ディスク構成設定**:
 | `max_file_segment_size`               | Size    | `8Mi`      | 1 つのキャッシュファイルの最大サイズ（バイト数または可読形式）。                                                                                 |
 | `max_elements`                        | Integer | `10000000` | キャッシュファイルの最大数。                                                                                                    |
 | `load_metadata_threads`               | Integer | `16`       | 起動時にキャッシュメタデータを読み込むスレッド数。                                                                                         |
+| `use_split_cache`                     | Boolean | `false`    | キャッシュファイルを system 用と data 用に分割して使用します。                                                                            |
+| `split_cache_ratio`                   | Double  | `0.1`      | split&#95;cache における、キャッシュ全体サイズに対する system セグメントの比率。                                                              |
 
 > **Note**: サイズ指定値は `ki`、`Mi`、`Gi` などの単位をサポートします（例: `10Gi`）。
 

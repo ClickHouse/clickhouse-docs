@@ -4,6 +4,8 @@ title: 'Управляемый Postgres'
 description: 'Быстрый, масштабируемый, корпоративного уровня Postgres на базе NVMe-хранилища с нативной интеграцией с ClickHouse для аналитики в режиме реального времени'
 keywords: ['управляемый Postgres', 'PostgreSQL', 'облачная база данных', 'сервис Postgres', 'NVMe Postgres', 'интеграция с ClickHouse']
 doc_type: 'guide'
+pagination_next: cloud/managed-postgres/quickstart
+pagination_prev: null
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';

@@ -774,6 +774,8 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 | `async_queue_max_size` | 使用异步日志时，队列中等待刷盘的最大消息数量。超过该数量的多余消息将被丢弃。                       |
 | `console` | 启用将日志输出到控制台。设置为 `1` 或 `true` 以启用。如果 ClickHouse 不在守护进程模式下运行，默认是 `1`，否则为 `0`。                            |
 | `console_log_level` | 控制台输出的日志级别。默认为 `level`。                                                                                                                 |
+| `console_shutdown_log_level` | 关闭级别，用于在服务器关闭时设置控制台日志级别。   |
+| `console_startup_log_level` | 启动级别，用于在服务器启动时设置控制台日志级别。启动完成后，日志级别会恢复为 `console_log_level` 配置的值。                                   |   
 | `count` | 轮转策略：ClickHouse 最多保留的历史日志文件数量。                                                                                        |
 | `errorlog` | 错误日志文件的路径。                                                                                                                                    |
 | `formatting.type` | 控制台输出的日志格式。目前仅支持 `json`。                                                                                                 |

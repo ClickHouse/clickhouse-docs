@@ -9,6 +9,9 @@ doc_type: 'guide'
 keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'ClickStack Deno 集成', 'Deno 可观测性', 'Deno 日志 SDK']
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 本指南集成以下功能：
 
 * **日志**
@@ -16,6 +19,7 @@ keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'ClickStack Deno 集成'
 :::note
 当前仅支持 OpenTelemetry 日志功能。如需链路追踪（tracing）支持，请参阅[以下指南](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example)。
 :::
+
 
 ## 日志 \{#logging\}
 
@@ -45,9 +49,25 @@ log.getLogger('my-otel-logger').info('Hello from Deno!');
 
 ### 运行应用程序 \{#run-the-application\}
 
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="托管版 ClickStack" default>
+
 ```shell
-OTEL_EXPORTER_OTLP_HEADERS="authorization=<YOUR_INGESTION_API_KEY>" \
-OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
+OTEL_EXPORTER_OTLP_ENDPOINT=http://your-otel-collector:4318 \
 OTEL_SERVICE_NAME="<NAME_OF_YOUR_APP_OR_SERVICE>" \
 deno run --allow-net --allow-env --allow-read --allow-sys --allow-run app.ts
 ```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack 开源版" >
+
+```shell
+OTEL_EXPORTER_OTLP_HEADERS="authorization=<YOUR_INGESTION_API_KEY>" \
+OTEL_EXPORTER_OTLP_ENDPOINT=http://your-otel-collector:4318 \
+OTEL_SERVICE_NAME="<NAME_OF_YOUR_APP_OR_SERVICE>" \
+deno run --allow-net --allow-env --allow-read --allow-sys --allow-run app.ts
+```
+
+</TabItem>
+</Tabs>
