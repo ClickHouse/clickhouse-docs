@@ -39,13 +39,13 @@ import Link from '@docusaurus/Link'
 
 上述语法中的各参数定义如下：
 
-| Parameter                   | Description                                                                                                                                                  | Default Value |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
-| `max_dynamic_paths`         | 一个可选参数，表示在单个独立存储的数据块中（例如 MergeTree 表的单个 data part），最多可以有多少个路径以子列形式单独存储。<br /><br />如果超过此限制，所有其余路径将合并存储在一个单一结构中。                                              | `1024`        |
-| `max_dynamic_types`         | 一个取值范围在 `1` 到 `255` 之间的可选参数，表示在单个独立存储的数据块中（例如 MergeTree 表的单个 data part），在类型为 `Dynamic` 的单个路径列中最多可以存储多少种不同的数据类型。<br /><br />如果超过此限制，所有新增类型都会被转换为 `String` 类型。 | `32`          |
-| `some.path TypeName`        | 针对 JSON 中特定路径的可选类型提示。此类路径将始终作为具有指定类型的子列进行存储。                                                                                                                 |               |
-| `SKIP path.to.skip`         | 针对在 JSON 解析期间应跳过的特定路径的可选提示。此类路径将永远不会存储在 JSON 列中。若指定路径是一个嵌套 JSON 对象，则整个嵌套对象都会被跳过。                                                                             |               |
-| `SKIP REGEXP 'path_regexp'` | 使用正则表达式在 JSON 解析期间跳过路径的可选提示。所有匹配此正则表达式的路径将永远不会存储在 JSON 列中。                                                                                                   |               |
+| Parameter                   | Description                                                                                                                                                                                                                            | Default Value |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| `max_dynamic_paths`         | 一个可选参数，表示在单个独立存储的数据块中（例如 MergeTree 表的单个 data part），最多可以有多少个路径以子列形式单独存储。<br /><br />如果超过此限制，所有其余路径将合并存储在一个名为[共享数据](#shared-data-structure)的单一结构中。<br /><br />还可以通过[其他方式](#controlling-the-number-of-dynamic-paths)在不修改该参数的情况下更改动态路径的限制。 | `1024`        |
+| `max_dynamic_types`         | 一个取值范围在 `1` 到 `255` 之间的可选参数，表示在单个独立存储的数据块中（例如 MergeTree 表的单个 data part），在类型为 `Dynamic` 的单个路径列中最多可以有多少种不同的数据类型单独存储。<br /><br />如果超过此限制，所有新增类型将合并存储在一个名为 `shared variant` 的单一结构中。                                                        | `32`          |
+| `some.path TypeName`        | 针对 JSON 中特定路径的可选类型提示。此类路径将始终作为具有指定类型的子列进行存储。                                                                                                                                                                                           |               |
+| `SKIP path.to.skip`         | 针对在 JSON 解析期间应跳过的特定路径的可选提示。此类路径将永远不会存储在 JSON 列中。若指定路径是一个嵌套 JSON 对象，则整个嵌套对象都会被跳过。                                                                                                                                                       |               |
+| `SKIP REGEXP 'path_regexp'` | 使用正则表达式在 JSON 解析期间跳过路径的可选提示。所有匹配此正则表达式的路径将永远不会存储在 JSON 列中。                                                                                                                                                                             |               |
 
 <WhenToUseJson />
 
@@ -842,6 +842,18 @@ ORDER BY _part ASC
 注意：由于在数据结构中存储了额外信息，与 `map` 和 `map_with_buckets` 序列化方式相比，这种序列化在磁盘上的存储空间占用更高。
 
 如需更详细地了解新的共享数据序列化方式及其实现细节，请参阅这篇[博客文章](https://clickhouse.com/blog/json-data-type-gets-even-better)。
+
+## 控制 MergeTree 分区片段中 JSON 内部动态路径的数量 \{#controlling-the-number-of-dynamic-paths\}
+
+在 JSON 中设置动态路径数量上限的主要方式，是在 JSON 类型声明中使用 `max_dynamic_paths` 参数。
+但是，修改已有列的 `max_dynamic_paths` 需要执行 `ALTER TABLE <table> MODIFY COLUMN <column> JSON(max_dynamic_paths=K)`，这会启动一个后台 mutation，用于重写所有已有的分区片段。
+此类 mutation 可能非常耗费资源，并在完成之前影响服务器性能。为避免这种情况，可以使用以下 3 个设置项，仅针对新的数据分区片段调整 MergeTree 表中动态路径的上限：
+
+- `merge_max_dynamic_subcolumns_in_wide_part` —— 一个 MergeTree 设置，用于在合并为 Wide 数据分区片段时，限制每个 JSON 列的动态子列数量。
+- `merge_max_dynamic_subcolumns_in_compact_part` —— 一个 MergeTree 设置，用于在合并为 Compact 数据分区片段时，限制每个 JSON 列的动态子列数量。
+- `max_dynamic_subcolumns_in_json_type_parsing` —— 一个会话级设置，用于在将 JSON 数据解析到 JSON 列时，限制每个 JSON 列的动态子列数量。
+
+注意：动态路径的上限不能超过 `max_dynamic_paths` 参数中指定的值，即使上述设置项的取值更高也不会生效。
 
 ## 自省函数 \{#introspection-functions\}
 

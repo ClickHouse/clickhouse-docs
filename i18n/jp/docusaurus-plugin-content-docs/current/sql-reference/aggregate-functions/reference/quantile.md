@@ -15,7 +15,7 @@ doc_type: 'reference'
 
 この関数は、最大 8192 のリザーバサイズとサンプリング用の乱数生成器を用いた [リザーバサンプリング](https://en.wikipedia.org/wiki/Reservoir_sampling) を適用します。
 結果は非決定的です。
-厳密な quantile を取得するには、[`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileexact) 関数を使用してください。
+厳密な quantile を取得するには、[`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileExact) 関数を使用してください。
 
 クエリ内で異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません（つまり、そのクエリは本来より非効率に動作します）。
 このような場合は、[`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 関数を使用してください。

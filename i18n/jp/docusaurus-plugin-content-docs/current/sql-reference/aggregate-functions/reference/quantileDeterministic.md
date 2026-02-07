@@ -15,7 +15,7 @@ doc_type: 'reference'
 
 この関数は、リザーバサイズ最大 8192 の[リザーバサンプリング](https://en.wikipedia.org/wiki/Reservoir_sampling)に基づく決定的なサンプリングアルゴリズムを適用します。
 結果は決定的です。
-厳密な分位数を取得するには、[`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileexact) 関数を使用します。
+厳密な分位数を取得するには、[`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileExact) 関数を使用します。
 
 クエリ内で異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません（つまり、そのクエリは本来よりも非効率になります）。
 このような場合は、[`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 関数を使用します。

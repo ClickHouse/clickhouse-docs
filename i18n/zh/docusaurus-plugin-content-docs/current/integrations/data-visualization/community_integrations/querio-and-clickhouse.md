@@ -58,7 +58,7 @@ GRANT SELECT ON database.table_name TO querio_user;
 | `HOST` | ClickHouse 服务器或集群的地址 |
 | `PORT` | 端口 9440（安全原生协议的默认端口）或已配置的端口 |
 | `DATABASE` | 希望 Querio 执行查询的数据库 |
-| `USERNAME` | querio_user（或自定义的用户名） |
+| `USERNAME` | `querio_user`（或自定义的用户名） |
 | `PASSWORD` | 该用户账号的密码 |
 
 :::note
@@ -83,7 +83,7 @@ GRANT SELECT ON database.table_name TO querio_user;
 
 ## 查询 ClickHouse \{#querying-clickhouse\}
 
-将 Querio 连接到 ClickHouse 之后，即可在平台各处探索和分析数据。在 Querio notebook 中创建一个 SQL block 或 Python cell，选择 ClickHouse 作为数据源，并直接对 ClickHouse 集群运行查询。利用 Querio 的可视化和 AI 工具挖掘洞察、构建看板并共享结果。
+将 Querio 连接到 ClickHouse 之后，即可在平台各处探索和分析数据。在 Querio notebook 中创建一个 SQL block 或 Python cell，选择 ClickHouse 作为数据源，并直接对 ClickHouse 集群运行查询。利用 Querio 可视化和 AI 工具挖掘洞察、构建看板并共享结果。
 
 ## 其他资源 \{#additional-resources\}
 
