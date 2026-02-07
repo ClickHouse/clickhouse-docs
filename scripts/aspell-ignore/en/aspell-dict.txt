@@ -4029,3 +4029,5 @@ Dtype
 LaTeX
 DuckDB
 Polars
+MultiIndex
+dtype

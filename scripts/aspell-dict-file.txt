@@ -1266,3 +1266,12 @@ inplace
 numpy
 --docs/chdb/api/python.md--
 RecordBatchReader
+--docs/chdb/configuration/performance-mode.md--
+ColumnExpr
+GroupBy
+MultiIndex
+dropna
+dtype
+dtypes
+groupby
+skipna
