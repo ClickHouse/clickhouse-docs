@@ -1085,6 +1085,17 @@ Oleg
 sbyte
 ulong
 ushort
+BatchSize
+BearerToken
+CustomHeaders
+InsertOptions
+JsonReadMode
+JsonWriteMode
+MaxDegreeOfParallelism
+POCOs
+QueryId
+QueryOptions
+ReadStringsAsByteArrays
 --docs/whats-new/roadmap.md--
 roadmaps
 --docs/integrations/language-clients/python/index.md--
