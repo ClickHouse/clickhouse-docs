@@ -7,6 +7,7 @@ keywords: ['chdb', 'datastore', 'pandas', 'dataframe', 'sql', 'lazy evaluation']
 doc_type: 'guide'
 ---
 
+import Image from '@theme/IdealImage';
 import data_store from '@site/static/images/datastore_architecture.png'
 
 # DataStore: Pandas-compatible API with SQL optimization
@@ -23,9 +24,7 @@ DataStore is chDB's pandas-compatible API that combines the familiar pandas Data
 
 ## Architecture {#architecture}
 
-<div style={{textAlign: 'center'}}>
-  <img src={data_store} alt="DataStore Architecture" style={{maxWidth: '700px', width: '100%'}} />
-</div>
+<Image size="md" src={data_store} alt="DataStore Architecture" />
 
 DataStore uses **lazy evaluation** with **dual-engine execution**:
 
