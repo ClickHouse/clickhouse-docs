@@ -24,7 +24,7 @@ DataStore is chDB's pandas-compatible API that combines the familiar pandas Data
 
 ## Architecture {#architecture}
 
-<Image size="md" src={data_store} alt="DataStore Architecture" />
+<Image size="md" img={data_store} alt="DataStore Architecture" />
 
 DataStore uses **lazy evaluation** with **dual-engine execution**:
 
