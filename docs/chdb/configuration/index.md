@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # DataStore Configuration
 
-DataStore provides comprehensive configuration options for execution engine selection, logging, caching, profiling, and dtype correction.
+DataStore provides comprehensive configuration options for execution engine selection, compatibility mode, logging, caching, profiling, and dtype correction.
 
 ## Quick Reference {#quick-reference}
 
@@ -17,11 +17,13 @@ DataStore provides comprehensive configuration options for execution engine sele
 from chdb.datastore.config import config
 
 # Quick setup presets
-config.enable_debug()       # Enable verbose logging
-config.use_chdb()           # Force ClickHouse engine
-config.use_pandas()         # Force pandas engine
-config.use_auto()           # Auto-select engine (default)
-config.enable_profiling()   # Enable performance profiling
+config.enable_debug()           # Enable verbose logging
+config.use_chdb()               # Force ClickHouse engine
+config.use_pandas()             # Force pandas engine
+config.use_auto()               # Auto-select engine (default)
+config.use_performance_mode()   # SQL-first, max throughput
+config.use_pandas_compat()      # Full pandas compatibility (default)
+config.enable_profiling()       # Enable performance profiling
 ```
 
 ## All Configuration Options {#all-options}
@@ -34,6 +36,7 @@ config.enable_profiling()   # Enable performance profiling
 | | `cache_ttl` | float (seconds) | 0.0 | Cache time-to-live |
 | **Engine** | `execution_engine` | "auto", "chdb", "pandas" | "auto" | Execution engine |
 | | `cross_datastore_engine` | "auto", "chdb", "pandas" | "auto" | Cross-DataStore operations |
+| **Compat** | `compat_mode` | "pandas", "performance" | "pandas" | Pandas compatibility vs SQL-first throughput |
 | **Profiling** | `profiling_enabled` | True/False | False | Enable profiling |
 | **Dtype** | `correction_level` | NONE/CRITICAL/HIGH/MEDIUM/ALL | HIGH | Dtype correction level |
 
@@ -102,6 +105,23 @@ print(config.execution_engine)
 ```
 
 See [Execution Engine](execution-engine.md) for details.
+
+### Compatibility Mode {#compat-mode}
+
+```python
+# Performance mode: SQL-first, no pandas compatibility overhead
+config.use_performance_mode()
+# or: config.set_compat_mode('performance')
+
+# Pandas compatibility mode (default)
+config.use_pandas_compat()
+# or: config.set_compat_mode('pandas')
+
+# Check current mode
+print(config.compat_mode)  # 'pandas' or 'performance'
+```
+
+See [Performance Mode](performance-mode.md) for details.
 
 ### Profiling Configuration {#profiling}
 
@@ -209,6 +229,15 @@ config.set_cache_enabled(True)         # Enable caching
 config.set_profiling_enabled(False)    # Disable profiling overhead
 ```
 
+### Maximum Throughput {#max-throughput-config}
+
+```python
+from chdb.datastore.config import config
+
+config.use_performance_mode()    # SQL-first, no pandas overhead
+config.set_cache_enabled(False)  # Disable cache for streaming
+```
+
 ### Performance Testing {#perf-config}
 
 ```python
@@ -233,6 +262,7 @@ config.enable_debug()        # See what operations are used
 ## Related Documentation {#related}
 
 - [Execution Engine](execution-engine.md) - Engine selection details
+- [Performance Mode](performance-mode.md) - SQL-first mode for maximum throughput
 - [Function Config](function-config.md) - Per-function engine configuration
 - [Logging](../debugging/logging.md) - Logging configuration
 - [Profiling](../debugging/profiling.md) - Performance profiling

@@ -124,6 +124,7 @@ DataStore delivers significant performance improvements over pandas, especially 
 
 ### Configuration & debugging {#configuration-debugging}
 - [Configuration](../configuration/index.md) - All configuration options
+- [Performance Mode](../configuration/performance-mode.md) - SQL-first mode for maximum throughput
 - [Debugging](../debugging/index.md) - Explain, profiling, and logging
 
 ### Pandas user guides {#pandas-user-guides}
