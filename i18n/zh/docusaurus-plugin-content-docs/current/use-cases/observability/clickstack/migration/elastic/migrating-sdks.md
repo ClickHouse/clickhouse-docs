@@ -21,8 +21,9 @@ Elastic Stack 为对应用进行埋点提供了两类语言 SDK：
 2. **[Elastic Distributions of OpenTelemetry (EDOT SDKs)](https://www.elastic.co/docs/reference/opentelemetry/edot-sdks/)** – 这些是 Elastic 基于标准 OpenTelemetry SDKs 发布的发行版，适用于 .NET、Java、Node.js、PHP 和 Python。如果你的应用已经在使用 EDOT SDK，则无需重新为代码埋点。你只需重新配置该 SDK，将遥测数据导出到 ClickStack 中随附的 OTLP Collector。更多详情请参见 [&quot;Migrating EDOT SDKs&quot;](#migrating-edot-sdks)。
 
 :::note Use ClickStack SDKs where possible
-虽然也支持标准 OpenTelemetry SDKs，但我们强烈建议为每种语言使用 [**ClickStack 分发的 SDKs**](/use-cases/observability/clickstack/sdks)。这些发行版内置了额外的埋点、增强的默认配置，以及为与 ClickStack 数据管道和 HyperDX UI 无缝协同而设计的自定义扩展。通过使用 ClickStack SDKs，你可以启用高级功能（例如异常堆栈跟踪），这些功能在原生 OpenTelemetry 或 EDOT SDKs 中不可用。
+虽然也支持标准 OpenTelemetry SDKs，但我们强烈建议为每种语言使用 [**ClickStack 分发的 SDKs**](/use-cases/observability/clickstack/sdks)。这些发行版内置了额外的埋点、增强的默认配置，以及为与 ClickStack 数据管道和 UI 无缝协同而设计的自定义扩展。通过使用 ClickStack SDKs，你可以启用高级功能（例如异常堆栈跟踪），这些功能在原生 OpenTelemetry 或 EDOT SDKs 中不可用。
 :::
+
 
 ## 迁移 EDOT SDKs \{#migrating-edot-sdks\}
 
