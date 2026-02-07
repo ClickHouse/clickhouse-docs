@@ -1066,9 +1066,11 @@ const sidebars = {
           className: 'top-nav-item',
           collapsed: true,
           collapsible: true,
+          link: { type: 'doc', id: 'integrations/data-ingestion/etl-tools/dbt/index' },
           items: [
-            'integrations/data-ingestion/etl-tools/dbt/index',
             'integrations/data-ingestion/etl-tools/dbt/features-and-configurations',
+            'integrations/data-ingestion/etl-tools/dbt/materializations',
+            'integrations/data-ingestion/etl-tools/dbt/materialization-materialized-view',
             'integrations/data-ingestion/etl-tools/dbt/guides',
           ],
         },
