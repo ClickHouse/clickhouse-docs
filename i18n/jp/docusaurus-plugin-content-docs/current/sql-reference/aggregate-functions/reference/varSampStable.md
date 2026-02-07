@@ -13,9 +13,9 @@ doc_type: 'reference'
 
 導入バージョン: v1.1
 
-データセットの標本分散を計算します。[`varSamp`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/varsamp)とは異なり、この関数は[数値的に安定した](https://en.wikipedia.org/wiki/Numerical_stability)アルゴリズムを使用します。処理速度は遅くなりますが、計算誤差を低減します。
+データセットの標本分散を計算します。[`varSamp`](/sql-reference/aggregate-functions/reference/varSamp)とは異なり、この関数は[数値的に安定した](https://en.wikipedia.org/wiki/Numerical_stability)アルゴリズムを使用します。処理速度は遅くなりますが、計算誤差を低減します。
 
-標本分散は[`varSamp`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/varsamp)と同じ式を使用して計算されます:
+標本分散は[`varSamp`](/sql-reference/aggregate-functions/reference/varSamp)と同じ式を使用して計算されます:
 
 $$
 \frac{\Sigma{(x - \bar{x})^2}}{n-1}

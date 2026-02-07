@@ -947,18 +947,19 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
-Позволяет настроить ожидание выполнения действий на репликах при выполнении запросов [ALTER](../../sql-reference/statements/alter/index.md), [OPTIMIZE](../../sql-reference/statements/optimize.md) или [TRUNCATE](../../sql-reference/statements/truncate.md).
+Позволяет задать поведение ожидания выполнения действий на репликах при выполнении запросов [`ALTER`](../../sql-reference/statements/alter/index.md), [`OPTIMIZE`](../../sql-reference/statements/optimize.md) или [`TRUNCATE`](../../sql-reference/statements/truncate.md).
 
 Возможные значения:
 
 - `0` — Не ждать.
 - `1` — Ждать выполнения на собственной реплике.
 - `2` — Ждать выполнения на всех репликах.
+- `3` — Ждать выполнения только на активных репликах.
 
 Значение по умолчанию в Cloud: `1`.
 
 :::note
-`alter_sync` применим только к таблицам `Replicated`; при ALTER таблиц, не являющихся `Replicated`, он не оказывает эффекта.
+`alter_sync` применим только к таблицам `Replicated` и `SharedMergeTree`; при ALTER таблиц, не являющихся `Replicated` или `Shared`, он не оказывает эффекта.
 :::
 
 ## alter_update_mode \{#alter_update_mode\}
@@ -2294,15 +2295,6 @@ SETTINGS convert_query_to_cnf = true;
 - enable_when_possible — дедупликация включена, если `insert_deduplicate` включён и результат SELECT стабилен, иначе отключена.
 - enable_even_for_bad_queries — дедупликация включена, если `insert_deduplicate` включён. Если результат SELECT нестабилен, записывается предупреждение, но запрос выполняется с дедупликацией. Эта опция предназначена для обратной совместимости. Рассмотрите возможность использования других опций, так как это может привести к непредсказуемым результатам.
 
-## default_dictionary_database \{#default_dictionary_database\}
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": ""},{"label": "Новая настройка"}]}]}/>
-
-База данных, в которой выполняется поиск внешних словарей, если имя базы данных не указано.
-Пустая строка задаёт текущую базу данных. Если словарь не найден в указанной базе данных по умолчанию, ClickHouse возвращается к текущей базе данных.
-
-Может быть полезно при миграции с глобальных словарей, определённых в XML, на словари, определённые в SQL.
-
 ## default_materialized_view_sql_security \{#default_materialized_view_sql_security\}
 
 <SettingsInfoBlock type="SQLSecurityType" default_value="DEFINER" />
@@ -3396,11 +3388,11 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 ## enable_join_runtime_filters \{#enable_join_runtime_filters\}
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включена эта оптимизация"}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 Фильтрует левую часть JOIN по множеству ключей, собранных из правой части во время выполнения запроса.
 
@@ -8572,18 +8564,18 @@ SELECT * FROM test2;
 ```sql
 CREATE TABLE fuse_tbl(a Int8, b Int8) Engine = Log;
 SET optimize_syntax_fuse_functions = 1;
-EXPLAIN SYNTAX SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
+EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
 ```
 
 Результат:
 
 ```text
 SELECT
-    sum(a),
-    sumCount(b).1,
-    sumCount(b).2,
-    (sumCount(b).1) / (sumCount(b).2)
-FROM fuse_tbl
+    sum(__table1.a) AS `sum(a)`,
+    tupleElement(sumCount(__table1.b), 1) AS `sum(b)`,
+    tupleElement(sumCount(__table1.b), 2) AS `count(b)`,
+    divide(tupleElement(sumCount(__table1.b), 1), toFloat64(tupleElement(sumCount(__table1.b), 2))) AS `avg(b)`
+FROM default.fuse_tbl AS __table1
 ```
 
 
@@ -11471,6 +11463,22 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использовать userspace page cache для удалённых дисков, на которых не включён кэш файловой системы.
 
+## use_page_cache_for_local_disks \{#use_page_cache_for_local_disks\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка для использования кеша страниц в пространстве пользователя (userspace page cache) для локальных дисков"}]}]}/>
+
+Использовать кеш страниц в пространстве пользователя (userspace page cache) при чтении с локальных дисков. Используется для тестирования; маловероятно, что улучшит производительность на практике. Требует, чтобы local_filesystem_read_method было установлено в 'pread' или 'read'. Не отключает кеш страниц ОС; для этого можно использовать min_bytes_to_use_direct_io. Влияет только на обычные таблицы и не затрагивает функцию таблицы file() или движок таблицы File().
+
+## use_page_cache_for_object_storage \{#use_page_cache_for_object_storage\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка для использования пользовательского страничного кэша для табличных функций объектного хранилища"}]}]}/>
+
+Использовать пользовательский страничный кэш при чтении из табличных функций объектного хранилища (s3, azure, hdfs) и Движков таблиц (S3, Azure, HDFS).
+
 ## use_page_cache_with_distributed_cache \{#use_page_cache_with_distributed_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -11634,11 +11642,11 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 ## use_statistics_cache \{#use_statistics_cache\}
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включить кэш статистики"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 Использовать кэш статистики в запросе, чтобы избежать накладных расходов на загрузку статистики для каждой части.
 

@@ -591,7 +591,7 @@ ClickHouse 每隔 x 秒重新加载内置字典，这样就可以在无需重启
 
 ## concurrent_threads_scheduler \{#concurrent_threads_scheduler\}
 
-<SettingsInfoBlock type="String" default_value="fair_round_robin" />
+<SettingsInfoBlock type="String" default_value="max_min_fair" />
 
 针对由 `concurrent_threads_soft_limit_num` 和 `concurrent_threads_soft_limit_ratio_to_cores` 指定的 CPU 插槽的调度策略。该算法用于控制在并发查询之间如何分配数量受限的 CPU 插槽。调度器可以在运行时更改而无需重启服务器。
 
@@ -1995,6 +1995,8 @@ ClickHouse 企业版许可证文件内容
 | `async_queue_max_size` | 使用异步日志时，队列中等待写入的最大消息数量。超出的消息将被丢弃。                       |
 | `console` | 启用输出到控制台的日志。设置为 `1` 或 `true` 以启用。如果 ClickHouse 不以守护进程模式运行，则默认值为 `1`，否则为 `0`。                            |
 | `console_log_level` | 控制台输出的日志级别。默认与 `level` 一致。                                                                                                                 |
+| `console_shutdown_log_level` | 用于在服务器关闭时设置控制台日志级别。   |
+| `console_startup_log_level` | 用于在服务器启动时设置控制台日志级别。启动完成后，日志级别会恢复为 `console_log_level` 设置                                   |   
 | `count` | 轮转策略：ClickHouse 最多保留的历史日志文件数量。                                                                                        |
 | `errorlog` | 错误日志文件的路径。                                                                                                                                    |
 | `formatting.type` | 控制台输出的日志格式。目前仅支持 `json`。                                                                                                 |
@@ -4156,6 +4158,18 @@ Keeper 中的路径，其中包含由 `generateSerialID` FUNCTION 生成的自�
 <skip_check_for_incorrect_settings>1</skip_check_for_incorrect_settings>
 ```
 
+
+## snapshot_cleaner_period \{#snapshot_cleaner_period\}
+
+<SettingsInfoBlock type="UInt64" default_value="120" />
+
+彻底删除 SharedMergeTree 快照分区片段的时间间隔。仅在 ClickHouse Cloud 中可用
+
+## snapshot_cleaner_pool_size \{#snapshot_cleaner_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="128" />
+
+用于清理共享 MergeTree 快照的线程池大小。仅在 ClickHouse Cloud 中可用
 
 ## ssh_server \{#ssh_server\}
 
