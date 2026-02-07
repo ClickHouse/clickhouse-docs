@@ -8,7 +8,7 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import data_store from '@site/static/images/datastore_architecture.png'
+import data_store from '@site/static/images/chdb/datastore_architecture.png'
 
 # DataStore: Pandas-compatible API with SQL optimization
 
