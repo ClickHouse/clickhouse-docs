@@ -39,7 +39,7 @@ To set up the security group for your private load balancer:
 **Contact ClickHouse Support** to request inbound security group rule changes that allow traffic from your specific source networks:
 
 - **VPC Peering**: Request rules to permit traffic from your peered VPCs’ CIDR ranges.
-- **PrivateLink**: No security group changes required, as traffic is not governed by the load balancer's security group.
+- **PrivateLink**: No security group changes required, as traffic isn't governed by the load balancer's security group.
 - **Other network setups**: Specify your scenario so support can assist accordingly.
 
 :::note

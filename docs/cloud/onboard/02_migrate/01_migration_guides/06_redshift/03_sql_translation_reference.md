@@ -72,7 +72,7 @@ CREATE TABLE some_table(...) ENGINE = MergeTree ORDER BY (column1, column2)
 ```
 
 In most cases, you can use the same sorting key columns and order in ClickHouse
-as Redshift, assuming you are using the default `COMPOUND` type. When data is 
+as Redshift, assuming you're using the default `COMPOUND` type. When data is 
 added to Redshift, you should run the `VACUUM` and `ANALYZE` commands to re-sort
 newly added data and update the statistics for the query planner - otherwise, the
 unsorted space grows. No such process is required for ClickHouse.
@@ -88,7 +88,7 @@ same end-result with a slightly different setup.
 
 You should be aware that the “primary key” concept represents different things
 in ClickHouse and Redshift. In Redshift, the primary key resembles the traditional
-RDMS concept intended to enforce constraints. However, they are not strictly 
+RDMS concept intended to enforce constraints. However, they're not strictly 
 enforced in Redshift and instead act as hints for the query planner and data 
 distribution among nodes. In ClickHouse, the primary key denotes columns used 
 to construct the sparse primary index, used to ensure the data is ordered on 

@@ -267,7 +267,7 @@ docker run -d --name clickstack \
 ```
 
 :::note Root user
-We run the collector as the root user to access all system logs—this is necessary to capture logs from protected paths on Linux-based systems. However, this approach is not recommended for production. In production environments, the OpenTelemetry Collector should be deployed as a local agent with only the minimal permissions required to access the intended log sources.
+We run the collector as the root user to access all system logs—this is necessary to capture logs from protected paths on Linux-based systems. However, this approach isn't recommended for production. In production environments, the OpenTelemetry Collector should be deployed as a local agent with only the minimal permissions required to access the intended log sources.
 
 Note that we mount the host's `/var/log` to `/host/var/log` inside the container to avoid conflicts with the container's own log files.
 :::

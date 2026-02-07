@@ -45,7 +45,7 @@ To connect a database with DbVisualizer, you must first create and setup a Datab
 
 4. Leave the **Database Type** as **Auto Detect**.
 
-5. If the selected driver in **Driver Type** is marked with a green check mark then it is ready to use. If it is not marked with a green check mark, you may have to configure the driver in the **Driver Manager**.
+5. If the selected driver in **Driver Type** is marked with a green check mark then it is ready to use. If it isn't marked with a green check mark, you may have to configure the driver in the **Driver Manager**.
 
 6. Enter information about the database server in the remaining fields.
 

@@ -43,7 +43,7 @@ ClickHouse Cloud currently has no concept equivalent to BigQuery folders.
 
 Like BigQuery slot reservations, you can [configure vertical and horizontal autoscaling](/manage/scaling#configuring-vertical-auto-scaling) in ClickHouse Cloud. For vertical autoscaling, you can set the minimum and maximum size for the memory and CPU cores of the compute nodes for a service. The service will then scale as needed within those bounds. These settings are also available during the initial service creation flow. Each compute node in the service has the same size. You can change the number of compute nodes within a service with [horizontal scaling](/manage/scaling#manual-horizontal-scaling).
 
-Furthermore, similar to BigQuery quotas, ClickHouse Cloud offers concurrency control, memory usage limits, and I/O scheduling, enabling you to isolate queries into workload classes. By setting limits on shared resources (CPU cores, DRAM, disk and network I/O) for specific workload classes, it ensures these queries do not affect other critical business queries. Concurrency control prevents thread oversubscription in scenarios with a high number of concurrent queries.
+Furthermore, similar to BigQuery quotas, ClickHouse Cloud offers concurrency control, memory usage limits, and I/O scheduling, enabling you to isolate queries into workload classes. By setting limits on shared resources (CPU cores, DRAM, disk and network I/O) for specific workload classes, it ensures these queries don't affect other critical business queries. Concurrency control prevents thread oversubscription in scenarios with a high number of concurrent queries.
 
 ClickHouse tracks byte sizes of memory allocations at the server, user, and query level, allowing flexible memory usage limits. Memory overcommit enables queries to use additional free memory beyond the guaranteed memory, while assuring memory limits for other queries. Additionally, memory usage for aggregation, sort, and join clauses can be limited, allowing fallback to external algorithms when the memory limit is exceeded.
 
@@ -82,7 +82,7 @@ When presented with multiple options for ClickHouse types, consider the actual r
 
 ### Primary and Foreign keys and Primary index {#primary-and-foreign-keys-and-primary-index}
 
-In BigQuery, a table can have [primary key and foreign key constraints](https://cloud.google.com/bigquery/docs/information-schema-table-constraints). Typically, primary and foreign keys are used in relational databases to ensure data integrity. A primary key value is normally unique for each row and is not `NULL`. Each foreign key value in a row must be present in the primary key column of the primary key table or be `NULL`. In BigQuery, these constraints are not enforced, but the query optimizer may use this information to optimize queries better.
+In BigQuery, a table can have [primary key and foreign key constraints](https://cloud.google.com/bigquery/docs/information-schema-table-constraints). Typically, primary and foreign keys are used in relational databases to ensure data integrity. A primary key value is normally unique for each row and isn't `NULL`. Each foreign key value in a row must be present in the primary key column of the primary key table or be `NULL`. In BigQuery, these constraints aren't enforced, but the query optimizer may use this information to optimize queries better.
 
 In ClickHouse, a table can also have a primary key. Like BigQuery, ClickHouse doesn't enforce uniqueness for a table's primary key column values. Unlike BigQuery, a table's data is stored on disk [ordered](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files) by the primary key column(s). The query optimizer utilizes this sort order to prevent resorting, to minimize memory usage for joins, and to enable short-circuiting for limit clauses. Unlike BigQuery, ClickHouse automatically creates [a (sparse) primary index](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales) based on the primary key column values. This index is used to speed up all queries that contain filters on the primary key columns. ClickHouse currently doesn't support foreign key constraints.
 
@@ -97,7 +97,7 @@ In addition to the primary index created from the values of a table's primary ke
   - Similar to a Bloom Filter Index but used for tokenized strings and  suitable for full-text search queries.
 - [**Min-Max Index**](/engines/table-engines/mergetree-family/mergetree#minmax):
   - Maintains the minimum and maximum values of a column for each data part.
-  - Helps to skip reading data parts that do not fall within the specified range.
+  - Helps to skip reading data parts that don't fall within the specified range.
 
 ## Search indexes {#search-indexes}
 

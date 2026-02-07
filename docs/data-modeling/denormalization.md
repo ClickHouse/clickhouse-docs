@@ -32,7 +32,7 @@ In general, we would recommend denormalizing in the following cases:
 
 - Denormalize tables which change infrequently or for which a delay before data is available for analytical queries can be tolerated i.e. the data can be completely reloaded in a batch.
 - Avoid denormalizing many-to-many relationships. This can result in the need to update many rows if a single source row changes.
-- Avoid denormalizing high cardinality relationships. If each row in a table has thousands of related entries in another table, these will need to be represented as an `Array` - either of a primitive type or tuples. Generally, arrays with more than 1000 tuples would not be recommended.
+- Avoid denormalizing high cardinality relationships. If each row in a table has thousands of related entries in another table, these will need to be represented as an `Array` - either of a primitive type or tuples. Generally, arrays with more than 1000 tuples wouldn't be recommended.
 - Rather than denormalizing all columns as nested objects, consider denormalizing just a statistic using materialized views (see below).
 
 All information doesn't need to be denormalized - just the key information that needs to be frequently accessed.
@@ -127,7 +127,7 @@ LIMIT 5
 └──────────┴──────────────────────────────────────────────┴───────┘
 ```
 
-The main observation here is that aggregated vote statistics for each post would be sufficient for most analysis - we do not need to denormalize all of the vote information. For example, the current `Score` column represents such a statistic i.e. total up votes minus down votes. Ideally, we would just be able to retrieve these statistics at query time with a simple lookup (see [dictionaries](/dictionary)).
+The main observation here is that aggregated vote statistics for each post would be sufficient for most analysis - we don't need to denormalize all of the vote information. For example, the current `Score` column represents such a statistic i.e. total up votes minus down votes. Ideally, we would just be able to retrieve these statistics at query time with a simple lookup (see [dictionaries](/dictionary)).
 
 ### Users and Badges {#users-and-badges}
 
@@ -237,7 +237,7 @@ ORDER BY c DESC LIMIT 5
 └──────────┴─────┘
 ```
 
-Likewise, these links are not events which occur overly frequently:
+Likewise, these links aren't events which occur overly frequently:
 
 ```sql
 SELECT

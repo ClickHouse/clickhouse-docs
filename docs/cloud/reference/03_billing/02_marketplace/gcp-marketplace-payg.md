@@ -57,7 +57,7 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 
 <br />
 
-5. Note that at this point, the setup is not complete yet. You will need to redirect to ClickHouse Cloud by clicking on **Set up your account** and signing up on ClickHouse Cloud.
+5. Note that at this point, the setup isn't complete yet. You will need to redirect to ClickHouse Cloud by clicking on **Set up your account** and signing up on ClickHouse Cloud.
 
 6. Once you redirect to ClickHouse Cloud, you can either login with an existing account, or register with a new account. This step is very important so we can bind your ClickHouse Cloud organization to the GCP Marketplace billing.
 
@@ -67,7 +67,7 @@ Get started with ClickHouse Cloud on the [GCP Marketplace](https://console.cloud
 
 <br />
 
-If you are a new ClickHouse Cloud user, click **Register** at the bottom of the page. You will be prompted to create a new user and verify the email. After verifying your email, you can leave the ClickHouse Cloud login page and login using the new username at the [https://console.clickhouse.cloud](https://console.clickhouse.cloud).
+If you're a new ClickHouse Cloud user, click **Register** at the bottom of the page. You will be prompted to create a new user and verify the email. After verifying your email, you can leave the ClickHouse Cloud login page and login using the new username at the [https://console.clickhouse.cloud](https://console.clickhouse.cloud).
 
 <br />
 
@@ -75,7 +75,7 @@ If you are a new ClickHouse Cloud user, click **Register** at the bottom of the 
 
 <br />
 
-Note that if you are a new user, you will also need to provide some basic information about your business. See the screenshots below.
+Note that if you're a new user, you will also need to provide some basic information about your business. See the screenshots below.
 
 <br />
 
@@ -87,7 +87,7 @@ Note that if you are a new user, you will also need to provide some basic inform
 
 <br />
 
-If you are an existing ClickHouse Cloud user, simply log in using your credentials.
+If you're an existing ClickHouse Cloud user, simply log in using your credentials.
 
 7. After successfully logging in, a new ClickHouse Cloud organization will be created. This organization will be connected to your GCP billing account and all usage will be billed via your GCP account.
 
@@ -114,4 +114,4 @@ If you are an existing ClickHouse Cloud user, simply log in using your credentia
 
 <br />
 
-If you run into any issues, please do not hesitate to contact [our support team](https://clickhouse.com/support/program).
+If you run into any issues, please don't hesitate to contact [our support team](https://clickhouse.com/support/program).

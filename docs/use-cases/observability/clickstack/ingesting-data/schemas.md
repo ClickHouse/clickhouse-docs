@@ -230,7 +230,7 @@ ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ### Exponential histograms {#exponential-histograms}
 
 :::note
-HyperDX does not support fetching/displaying exponential histogram metrics yet. You may configure them in the metrics source but future support is forthcoming.
+HyperDX doesn't support fetching/displaying exponential histogram metrics yet. You may configure them in the metrics source but future support is forthcoming.
 :::
 
 ```sql

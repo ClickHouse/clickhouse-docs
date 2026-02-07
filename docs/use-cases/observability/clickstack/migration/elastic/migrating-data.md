@@ -20,7 +20,7 @@ When migrating from Elastic to ClickStack for observability use cases, we recomm
 3. **Simplified migration**: no need for complex data transfer tools or processes to move historical data between systems.
 <br/>
 :::note Migrating data
-We demonstrate an approach for migrating essential data from Elasticsearch to ClickHouse in the section ["Migrating data"](#migrating-data). This should not be used for larger datasets as it is rarely performant - limited by the ability for Elasticsearch to export efficiently, with only JSON format supported.
+We demonstrate an approach for migrating essential data from Elasticsearch to ClickHouse in the section ["Migrating data"](#migrating-data). This shouldn't be used for larger datasets as it is rarely performant - limited by the ability for Elasticsearch to export efficiently, with only JSON format supported.
 :::
 
 ### Implementation steps {#implementation-steps}
@@ -573,7 +573,7 @@ Where possible, we recommend running both ClickHouse, Elasticsearch, and `elasti
 
 ### Install ClickHouse client {#install-clickhouse-client}
 
-Ensure ClickHouse is [installed on the server](/install) on which `elasticdump` is located. **Do not start a ClickHouse server** - these steps only require the client.
+Ensure ClickHouse is [installed on the server](/install) on which `elasticdump` is located. **Don't start a ClickHouse server** - these steps only require the client.
 
 ### Stream data {#stream-data}
 

@@ -14,11 +14,11 @@ import Image from '@theme/IdealImage';
 
 Incremental Materialized Views (Materialized Views) allow you to shift the cost of computation from query time to insert time, resulting in faster `SELECT` queries.
 
-Unlike in transactional databases like Postgres, a ClickHouse materialized view is just a trigger that runs a query on blocks of data as they are inserted into a table. The result of this query is inserted into a second "target" table. Should more rows be inserted, results will again be sent to the target table where the intermediate results will be updated and merged. This merged result is the equivalent of running the query over all of the original data.
+Unlike in transactional databases like Postgres, a ClickHouse materialized view is just a trigger that runs a query on blocks of data as they're inserted into a table. The result of this query is inserted into a second "target" table. Should more rows be inserted, results will again be sent to the target table where the intermediate results will be updated and merged. This merged result is the equivalent of running the query over all of the original data.
 
 The principal motivation for Materialized Views is that the results inserted into the target table represent the results of an aggregation, filtering, or transformation on rows. These results will often be a smaller representation of the original data (a partial sketch in the case of aggregations). This, along with the resulting query for reading the results from the target table being simple, ensures query times are faster than if the same computation was performed on the original data, shifting computation (and thus query latency) from query time to insert time.
 
-Materialized views in ClickHouse are updated in real time as data flows into the table they are based on, functioning more like continually updating indexes. This is in contrast to other databases where Materialized Views are typically static snapshots of a query that must be refreshed (similar to ClickHouse [Refreshable Materialized Views](/sql-reference/statements/create/view#refreshable-materialized-view)).
+Materialized views in ClickHouse are updated in real time as data flows into the table they're based on, functioning more like continually updating indexes. This is in contrast to other databases where Materialized Views are typically static snapshots of a query that must be refreshed (similar to ClickHouse [Refreshable Materialized Views](/sql-reference/statements/create/view#refreshable-materialized-view)).
 
 <Image img={materializedViewDiagram} size="md" alt="Materialized view diagram"/>
 
@@ -209,13 +209,13 @@ Peak memory usage: 658.84 MiB.
 
 As before, we can create a materialized view which executes the above query as new posts are inserted into our `posts` table.
 
-For the purposes of example, and to avoid loading the posts data from S3, we will create a duplicate table `posts_null` with the same schema as `posts`. However, this table will not store any data and simply be used by the materialized view when rows are inserted. To prevent storage of data, we can use the [`Null` table engine type](/engines/table-engines/special/null).
+For the purposes of example, and to avoid loading the posts data from S3, we will create a duplicate table `posts_null` with the same schema as `posts`. However, this table won't store any data and simply be used by the materialized view when rows are inserted. To prevent storage of data, we can use the [`Null` table engine type](/engines/table-engines/special/null).
 
 ```sql
 CREATE TABLE posts_null AS posts ENGINE = Null
 ```
 
-The Null table engine is a powerful optimization - think of it as `/dev/null`. Our materialized view will compute and store our summary statistics when our `posts_null` table receives rows at insert time - it's just a trigger. However, the raw data will not be stored. While in our case, we probably still want to store the original posts, this approach can be used to compute aggregates while avoiding storage overhead of the raw data.
+The Null table engine is a powerful optimization - think of it as `/dev/null`. Our materialized view will compute and store our summary statistics when our `posts_null` table receives rows at insert time - it's just a trigger. However, the raw data won't be stored. While in our case, we probably still want to store the original posts, this approach can be used to compute aggregates while avoiding storage overhead of the raw data.
 
 The materialized view thus becomes:
 
@@ -292,7 +292,7 @@ CREATE MATERIALIZED VIEW posts_mv TO posts AS
 
 ### Lookup table {#lookup-table}
 
-You should consider their access patterns when choosing a ClickHouse ordering key. Columns which are frequently used in filter and aggregation clauses should be used. This can be restrictive for scenarios where users have more diverse access patterns which cannot be encapsulated in a single set of columns. For example, consider the following `comments` table:
+You should consider their access patterns when choosing a ClickHouse ordering key. Columns which are frequently used in filter and aggregation clauses should be used. This can be restrictive for scenarios where users have more diverse access patterns which can't be encapsulated in a single set of columns. For example, consider the following `comments` table:
 
 ```sql
 CREATE TABLE comments
@@ -378,13 +378,13 @@ For more information see the guide ["Cascading materialized views"](https://clic
 The following applies to Incremental Materialized Views only. Refreshable Materialized Views execute their query periodically over the full target dataset and fully support JOINs. Consider using them for complex JOINs if a reduction in result freshness can be tolerated.
 :::
 
-Incremental Materialized views in ClickHouse fully support `JOIN` operations, but with one crucial constraint: **the materialized view only triggers on inserts to the source table (the left-most table in the query).** Right-side tables in JOINs do not trigger updates, even if their data changes. This behavior is especially important when building **Incremental** Materialized Views, where data is aggregated or transformed during insert time.
+Incremental Materialized views in ClickHouse fully support `JOIN` operations, but with one crucial constraint: **the materialized view only triggers on inserts to the source table (the left-most table in the query).** Right-side tables in JOINs don't trigger updates, even if their data changes. This behavior is especially important when building **Incremental** Materialized Views, where data is aggregated or transformed during insert time.
 
-When an Incremental materialized view is defined using a `JOIN`, the left-most table in the `SELECT` query acts as the source. When new rows are inserted into this table, ClickHouse executes the materialized view query *only* with those newly inserted rows. Right-side tables in the JOIN are read in full during this execution, but changes to them alone do not trigger the view.
+When an Incremental materialized view is defined using a `JOIN`, the left-most table in the `SELECT` query acts as the source. When new rows are inserted into this table, ClickHouse executes the materialized view query *only* with those newly inserted rows. Right-side tables in the JOIN are read in full during this execution, but changes to them alone don't trigger the view.
 
 This behavior makes JOINs in Materialized Views similar to a snapshot join against static dimension data. 
 
-This works well for enriching data with reference or dimension tables. However, any updates to the right-side tables (e.g., user metadata) will not retroactively update the materialized view. To see updated data, new inserts must arrive in the source table.
+This works well for enriching data with reference or dimension tables. However, any updates to the right-side tables (e.g., user metadata) won't retroactively update the materialized view. To see updated data, new inserts must arrive in the source table.
 
 ### Example {#materialized-views-and-joins-example}
 
@@ -558,7 +558,7 @@ Note, however, that this result is incorrect.
 
 ### Best practices for JOINs in materialized views {#join-best-practices}
 
-- **Use the left-most table as the trigger.** Only the table on the left side of the `SELECT` statement triggers the materialized view. Changes to right-side tables will not trigger updates.
+- **Use the left-most table as the trigger.** Only the table on the left side of the `SELECT` statement triggers the materialized view. Changes to right-side tables won't trigger updates.
 
 - **Pre-insert joined data.** Ensure that data in joined tables exists before inserting rows into the source table. The JOIN is evaluated at insert time, so missing data will result in unmatched rows or nulls.
 
@@ -725,7 +725,7 @@ In the above operation, only one row is retrieved from the users table for the u
 
 `UNION ALL` queries are commonly used to combine data from multiple source tables into a single result set.
 
-While `UNION ALL` is not directly supported in Incremental Materialized Views, you can achieve the same outcome by creating a separate materialized view for each `SELECT` branch and writing their results to a shared target table.
+While `UNION ALL` isn't directly supported in Incremental Materialized Views, you can achieve the same outcome by creating a separate materialized view for each `SELECT` branch and writing their results to a shared target table.
 
 For our example, we'll use the Stack Overflow dataset. Consider the `badges` and `comments` tables below, which represent the badges earned by a user and the comments they make on posts:
 
@@ -858,7 +858,7 @@ GROUP BY UserId
 1 row in set. Elapsed: 0.005 sec.
 ```
 
-Inserts into the `badges` table will not trigger the view, causing `user_activity` to not receive updates:
+Inserts into the `badges` table won't trigger the view, causing `user_activity` to not receive updates:
 
 ```sql
 INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
@@ -1071,7 +1071,7 @@ ORDER BY now ASC
 3 rows in set. Elapsed: 0.004 sec.
 ```
 
-Although our ordering of the arrival of rows from each view is the same, this is not guaranteed - as illustrated by the similarity of each row's insert time. Also note the improved insert performance.
+Although our ordering of the arrival of rows from each view is the same, this isn't guaranteed - as illustrated by the similarity of each row's insert time. Also note the improved insert performance.
 
 ### When to use parallel processing {#materialized-views-when-to-use-parallel}
 
@@ -1099,8 +1099,8 @@ Leave it disabled when:
 
 **Non-recursive** Common Table Expressions (CTEs) are supported in Materialized Views.
 
-:::note Common Table Expressions **are not** materialized
-ClickHouse does not materialize CTEs; instead, it substitutes the CTE definition directly into the query, which can lead to multiple evaluations of the same expression (if the CTE is used more than once).
+:::note Common Table Expressions **aren't** materialized
+ClickHouse doesn't materialize CTEs; instead, it substitutes the CTE definition directly into the query, which can lead to multiple evaluations of the same expression (if the CTE is used more than once).
 :::
 
 Consider the following example which computes daily activity for each post type.
@@ -1179,7 +1179,7 @@ LIMIT 10
 Peak memory usage: 989.53 KiB.
 ```
 
-In ClickHouse, CTEs are inlined which means they are effectively copy-pasted into the query during optimization and **not** materialized. This means:
+In ClickHouse, CTEs are inlined which means they're effectively copy-pasted into the query during optimization and **not** materialized. This means:
 
 - If your CTE references a different table from the source table (i.e., the one the materialized view is attached to), and is used in a `JOIN` or `IN` clause, it will behave like a subquery or join, not a trigger.
 - The materialized view will still only trigger on inserts into the main source table, but the CTE will be re-executed on every insert, which may cause unnecessary overhead, especially if the referenced table is large.
@@ -1193,6 +1193,6 @@ WITH recent_users AS (
 SELECT * FROM stackoverflow.posts WHERE OwnerUserId IN (SELECT Id FROM recent_users)
 ```
 
-In this case, the users CTE is re-evaluated on every insert into posts, and the materialized view will not update when new users are inserted - only when posts are.
+In this case, the users CTE is re-evaluated on every insert into posts, and the materialized view won't update when new users are inserted - only when posts are.
 
 Generally, use CTEs for logic that operates on the same source table the materialized view is attached to or ensure that referenced tables are small and unlikely to cause performance bottlenecks. Alternatively, consider [the same optimizations as JOINs with Materialized Views](/materialized-view/incremental-materialized-view#join-best-practices).

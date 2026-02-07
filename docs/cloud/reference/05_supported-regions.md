@@ -73,9 +73,9 @@ Need to deploy to a region not currently listed? [Submit a request](https://clic
 We offer Private regions for our Enterprise tier services. Please [Contact us](https://clickhouse.com/company/contact) for private region requests.
 
 Key considerations for private regions:
-- Services will not auto-scale; however, manual vertical and horizontal scaling is supported.
-- Services cannot be idled.
-- Status page is not available for private regions.
+- Services won't auto-scale; however, manual vertical and horizontal scaling is supported.
+- Services can't be idled.
+- Status page isn't available for private regions.
   
 Additional requirements may apply for HIPAA compliance (including signing a BAA). Note that HIPAA is currently available only for Enterprise tier services
 

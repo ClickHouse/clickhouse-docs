@@ -21,7 +21,7 @@ Initial load is the first phase of a CDC ClickPipe, where the ClickPipe syncs th
 However, the Postgres ClickPipe can parallelize this process, which can significantly speed up the initial load.
 
 ### CTID column in Postgres {#ctid-pg-snapshot}
-In Postgres, every row in a table has a unique identifier called the CTID. This is a system column that is not visible to you by default, but it can be used to uniquely identify rows in a table. The CTID is a combination of the block number and the offset within the block, which allows for efficient access to rows.
+In Postgres, every row in a table has a unique identifier called the CTID. This is a system column that isn't visible to you by default, but it can be used to uniquely identify rows in a table. The CTID is a combination of the block number and the offset within the block, which allows for efficient access to rows.
 
 ### Logical partitioning {#logical-partitioning-pg-snapshot}
 The Postgres ClickPipe uses the CTID column to logically partition source tables. It obtains the partitions by first performing a COUNT(*) on the source table, followed by a window function partitioning query to get the CTID ranges for each partition. This allows the ClickPipe to read the source table in parallel, with each partition being processed by a separate thread.
@@ -48,6 +48,6 @@ You can analyze **pg_stat_activity** to see the parallel snapshot in action. The
 
 ### Limitations {#limitations-parallel-pg-snapshot}
 
-- The snapshot parameters cannot be edited after pipe creation. If you want to change them, you will have to create a new ClickPipe.
-- When adding tables to an existing ClickPipe, you cannot change the snapshot parameters. The ClickPipe will use the existing parameters for the new tables.
-- The partition key column should not contain `NULL`s, as they are skipped by the partitioning logic.
+- The snapshot parameters can't be edited after pipe creation. If you want to change them, you will have to create a new ClickPipe.
+- When adding tables to an existing ClickPipe, you can't change the snapshot parameters. The ClickPipe will use the existing parameters for the new tables.
+- The partition key column shouldn't contain `NULL`s, as they're skipped by the partitioning logic.

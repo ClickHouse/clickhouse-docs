@@ -290,7 +290,7 @@ To help you get started monitoring nginx with ClickStack, we provide essential v
 #### The dashboard will be created with all visualizations pre-configured {#created-dashboard}
 
 :::note
-For the demo dataset, set the time range to **2025-10-20 11:00:00 - 2025-10-21 11:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard will not have a time range specified by default.
+For the demo dataset, set the time range to **2025-10-20 11:00:00 - 2025-10-21 11:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard won't have a time range specified by default.
 :::
 
 <Image img={example_dashboard} alt="Example Dashboard"/>

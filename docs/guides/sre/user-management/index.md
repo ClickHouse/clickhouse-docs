@@ -34,14 +34,14 @@ You can't manage the same access entity by both configuration methods simultaneo
 :::
 
 :::note
-If you are looking to manage ClickHouse Cloud console users, please refer to this [page](/cloud/security/manage-cloud-users)
+If you're looking to manage ClickHouse Cloud console users, please refer to this [page](/cloud/security/manage-cloud-users)
 :::
 
 To see all users, roles, profiles, etc. and all their grants use [`SHOW ACCESS`](/sql-reference/statements/show#show-access) statement.
 
 ## Overview {#access-control-usage}
 
-By default, the ClickHouse server provides the `default` user account which is not allowed using SQL-driven access control and account management but has all the rights and permissions. The `default` user account is used in any cases when the username is not defined, for example, at login from client or in distributed queries. In distributed query processing a default user account is used, if the configuration of the server or cluster does not specify the [user and password](/engines/table-engines/special/distributed.md) properties.
+By default, the ClickHouse server provides the `default` user account which isn't allowed using SQL-driven access control and account management but has all the rights and permissions. The `default` user account is used in any cases when the username isn't defined, for example, at login from client or in distributed queries. In distributed query processing a default user account is used, if the configuration of the server or cluster doesn't specify the [user and password](/engines/table-engines/special/distributed.md) properties.
 
 If you just started using ClickHouse, consider the following scenario:
 
@@ -51,8 +51,8 @@ If you just started using ClickHouse, consider the following scenario:
 
 ### Properties of current solution {#access-control-properties}
 
-- You can grant permissions for databases and tables even if they do not exist.
-- If a table is deleted, all the privileges that correspond to this table are not revoked. This means that even if you create a new table with the same name later, all the privileges remain valid. To revoke privileges corresponding to the deleted table, you need to execute, for example, the `REVOKE ALL PRIVILEGES ON db.table FROM ALL` query.
+- You can grant permissions for databases and tables even if they don't exist.
+- If a table is deleted, all the privileges that correspond to this table aren't revoked. This means that even if you create a new table with the same name later, all the privileges remain valid. To revoke privileges corresponding to the deleted table, you need to execute, for example, the `REVOKE ALL PRIVILEGES ON db.table FROM ALL` query.
 - There are no lifetime settings for privileges.
 
 ### User account {#user-account-management}
@@ -163,7 +163,7 @@ Management queries:
 ## Defining SQL users and roles {#defining-sql-users-and-roles}
 
 :::tip
-If you are working in ClickHouse Cloud, please see [Cloud access management](/cloud/security/console-roles).
+If you're working in ClickHouse Cloud, please see [Cloud access management](/cloud/security/console-roles).
 :::
 
 This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns.
@@ -205,7 +205,7 @@ This article shows the basics of defining SQL users and roles and applying those
 
 This article is intended to provide you with a better understanding of how to define permissions, and how permissions work when using `ALTER` statements for privileged users.
 
-The `ALTER` statements are divided into several categories, some of which are hierarchical and some of which are not and must be explicitly defined.
+The `ALTER` statements are divided into several categories, some of which are hierarchical and some of which aren't and must be explicitly defined.
 
 **Example DB, table and user configuration**
 1. With an admin user, create a sample user
@@ -306,7 +306,7 @@ Query id: 706befbc-525e-4ec1-a1a2-ba2508cc09e3
 └──────────────────────────────────────────────────────────────┘
 ```
 
-This will grant all permissions under `ALTER TABLE` and `ALTER VIEW` from the example above, however, it will not grant certain other `ALTER` permissions such as `ALTER ROW POLICY` (Refer back to the hierarchy and you will see that `ALTER ROW POLICY` is not a child of `ALTER TABLE` or `ALTER VIEW`). Those must be explicitly granted or revoked.
+This will grant all permissions under `ALTER TABLE` and `ALTER VIEW` from the example above, however, it won't grant certain other `ALTER` permissions such as `ALTER ROW POLICY` (Refer back to the hierarchy and you will see that `ALTER ROW POLICY` isn't a child of `ALTER TABLE` or `ALTER VIEW`). Those must be explicitly granted or revoked.
 
 If only a subset of `ALTER` permissions is needed then each can be granted separately, if there are sub-privileges to that permission then those would be automatically granted also.
 
@@ -519,7 +519,7 @@ Query id: 1c7622fa-9df1-4c54-9fc3-f984c716aeba
 Ok.
 ```
 
-8. Test granting a privilege that the alter admin user does not have is not a sub privilege of the grants for the admin user.
+8. Test granting a privilege that the alter admin user doesn't have isn't a sub privilege of the grants for the admin user.
 ```sql
 GRANT ALTER UPDATE ON my_db.my_table TO my_user;
 ```
@@ -536,4 +536,4 @@ Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exceptio
 ```
 
 **Summary**
-The ALTER privileges are hierarchical for `ALTER` with tables and views but not for other `ALTER` statements.  The permissions can be set in granular level or by grouping of permissions and also revoked similarly. The user granting or revoking must have `WITH GRANT OPTION` to set privileges on users, including the acting user themselves, and must have the privilege already. The acting user cannot revoke their own privileges if they do not have the grant option privilege themselves.
+The ALTER privileges are hierarchical for `ALTER` with tables and views but not for other `ALTER` statements.  The permissions can be set in granular level or by grouping of permissions and also revoked similarly. The user granting or revoking must have `WITH GRANT OPTION` to set privileges on users, including the acting user themselves, and must have the privilege already. The acting user can't revoke their own privileges if they don't have the grant option privilege themselves.

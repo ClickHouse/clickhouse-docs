@@ -20,7 +20,7 @@ To learn more about message compression in Kafka, we recommend starting with thi
 
 ## Limitations {#limitations}
 
-- [`DEFAULT`](/sql-reference/statements/create/table#default) is not supported.
+- [`DEFAULT`](/sql-reference/statements/create/table#default) isn't supported.
 - Individual messages are limited to 8MB (uncompressed) by default when running with the smallest (XS) replica size, and 16MB (uncompressed) with larger replicas.  Messages that exceed this limit will be rejected with an error.  If you have a need for larger messages, please contact support.
 
 ## Delivery semantics {#delivery-semantics}
@@ -31,7 +31,7 @@ For Apache Kafka protocol data sources, ClickPipes supports [SASL/PLAIN](https:/
 
 ## Warpstream Fetch Size {#warpstream-settings}
 ClickPipes rely on the Kafka setting `max.fetch_bytes` to limit the size of data processed in a single ClickPipes node at any one time.  In some circumstances
-Warpstream does not respect this setting, which can cause unexpected pipe failures.  We strongly recommend that the Warpstream specific setting `kafkaMaxFetchPartitionBytesUncompressedOverride`
+Warpstream doesn't respect this setting, which can cause unexpected pipe failures.  We strongly recommend that the Warpstream specific setting `kafkaMaxFetchPartitionBytesUncompressedOverride`
 to 8MB (or lower) when configuring your WarpStream agent to prevent ClickPipes failures.
 
 ### IAM {#iam}
@@ -87,7 +87,7 @@ Below is an example of the required IAM policy for Apache Kafka APIs for MSK:
 
 #### Configuring a trusted relationship {#configuring-a-trusted-relationship}
 
-If you are authenticating to MSK with a IAM role ARN, you will need to add a trusted relationship between your ClickHouse Cloud instance so the role can be assumed.
+If you're authenticating to MSK with a IAM role ARN, you will need to add a trusted relationship between your ClickHouse Cloud instance so the role can be assumed.
 
 :::note
 Role-based access only works for ClickHouse Cloud instances deployed to AWS.
@@ -126,7 +126,7 @@ Batches are inserted when one of the following criteria has been met:
 
 Latency (defined as the time between the Kafka message being produced and the message being available in ClickHouse) will be dependent on a number of factors (i.e. broker latency, network latency, message size/format). The [batching](#batching) described in the section above will also impact latency. We always recommend testing your specific use case with typical loads to determine the expected latency.
 
-ClickPipes does not provide any guarantees concerning latency. If you have specific low-latency requirements, please [contact us](https://clickhouse.com/company/contact?loc=clickpipes).
+ClickPipes doesn't provide any guarantees concerning latency. If you have specific low-latency requirements, please [contact us](https://clickhouse.com/company/contact?loc=clickpipes).
 
 ### Scaling {#scaling}
 
@@ -141,11 +141,11 @@ the ClickPipe will automatically restart the consumer and continue processing me
 
 ### Benchmarks {#benchmarks}
 
-Below are some informal benchmarks for ClickPipes for Kafka that can be used to get a general idea of the baseline performance. It's important to know that many factors can impact performance, including message size, data types, and data format. Your mileage may vary, and what we show here is not a guarantee of actual performance.
+Below are some informal benchmarks for ClickPipes for Kafka that can be used to get a general idea of the baseline performance. It's important to know that many factors can impact performance, including message size, data types, and data format. Your mileage may vary, and what we show here isn't a guarantee of actual performance.
 
 Benchmark details:
 
-- We used production ClickHouse Cloud services with enough resources to ensure that throughput was not bottlenecked by the insert processing on the ClickHouse side.
+- We used production ClickHouse Cloud services with enough resources to ensure that throughput wasn't bottlenecked by the insert processing on the ClickHouse side.
 - The ClickHouse Cloud service, the Kafka cluster (Confluent Cloud), and the ClickPipe were all running in the same region (`us-east-2`).
 - The ClickPipe was configured with a single L-sized replica (4 GiB of RAM and 1 vCPU).
 - The sample data included nested data with a mix of `UUID`, `String`, and `Int` datatypes. Other datatypes, such as `Float`, `Decimal`, and `DateTime`, may be less performant.

@@ -48,7 +48,7 @@ Once your source MongoDB database is set up, you can continue creating your Clic
 
 ## Create your ClickPipe {#create-your-clickpipe}
 
-Make sure you are logged in to your ClickHouse Cloud account. If you don't have an account yet, you can sign up [here](https://cloud.clickhouse.com/).
+Make sure you're logged in to your ClickHouse Cloud account. If you don't have an account yet, you can sign up [here](https://cloud.clickhouse.com/).
 
 1. In the ClickHouse Cloud console, navigate to your ClickHouse Cloud Service.
 
@@ -75,7 +75,7 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 
 #### (Optional) Set up SSH Tunneling {#optional-set-up-ssh-tunneling}
 
-You can specify SSH tunneling details if your source MongoDB database is not publicly accessible.
+You can specify SSH tunneling details if your source MongoDB database isn't publicly accessible.
 
 1. Enable the "Use SSH Tunnelling" toggle.
 2. Fill in the SSH connection details.
@@ -124,4 +124,4 @@ Here are a few caveats to note when using this connector:
 - We require MongoDB version 5.1.0+.
 - We use MongoDB's native Change Streams API for CDC, which relies on the MongoDB oplog to capture real-time changes. 
 - Documents from MongoDB are replicated into ClickHouse as JSON type by default. This allows for flexible schema management and makes it possible to use the rich set of JSON operators in ClickHouse for querying and analytics. You can learn more about querying JSON data [here](https://clickhouse.com/docs/sql-reference/data-types/newjson).
-- Self-serve PrivateLink configuration is not currently available. If you are on AWS and require PrivateLink, please reach out to db-integrations-support@clickhouse.com or create a support ticket — we will work with you to enable it.
+- Self-serve PrivateLink configuration isn't currently available. If you're on AWS and require PrivateLink, please reach out to db-integrations-support@clickhouse.com or create a support ticket — we will work with you to enable it.

@@ -114,7 +114,7 @@ Client client = new Client.Builder()
 ```
 
 :::note
-SSL Authentication may be hard to troubleshoot on production because many errors from SSL libraries provide not enough information. For example, if client certificate and key do not match then server will terminate connection immediately (in case of HTTP it will be connection initiation stage where no HTTP requests are send so no response is sent).
+SSL Authentication may be hard to troubleshoot on production because many errors from SSL libraries provide not enough information. For example, if client certificate and key don't match then server will terminate connection immediately (in case of HTTP it will be connection initiation stage where no HTTP requests are send so no response is sent).
 
 Please use tools like [openssl](https://docs.openssl.org/master/man1/openssl/) to verify certificates and keys:
 - check key integrity: `openssl rsa -in [key-file.key] -check -noout`
@@ -127,7 +127,7 @@ Please use tools like [openssl](https://docs.openssl.org/master/man1/openssl/) t
 ## Configuration {#configuration}
 
 All settings are defined by instance methods (a.k.a configuration methods) that make the scope and context of each value clear.
-Major configuration parameters are defined in one scope (client or operation) and do not override each other.
+Major configuration parameters are defined in one scope (client or operation) and don't override each other.
 
 Configuration is defined during client creation. See `com.clickhouse.client.api.Client.Builder`.
 
@@ -499,14 +499,14 @@ Configuration options for insert operations.
 | `serverSetting(String name, String value)`   | Sets individual server settings for an operation.                                                                          |
 | `serverSetting(String name, Collection values)` | Sets individual server settings with multiple values for an operation. Items of the collection should be `String` values.  |
 | `setDBRoles(Collection dbRoles)`             | Sets DB roles to be set before executing an operation. Items of the collection should be `String` values.                  |
-| `setOption(String option, Object value)`     | Sets a configuration option in raw format. This is not a server setting.                                                  |
+| `setOption(String option, Object value)`     | Sets a configuration option in raw format. This isn't a server setting.                                                  |
 
 ### InsertResponse {#insertresponse}
 
 Response object that holds result of insert operation. It is only available if the client got response from a server.
 
 :::note
-This object should be closed as soon as possible to release a connection because the connection cannot be re-used until all data of previous response is fully read.
+This object should be closed as soon as possible to release a connection because the connection can't be re-used until all data of previous response is fully read.
 :::
 
 | Method                      | Description                                                                                          |
@@ -659,21 +659,21 @@ Configuration options for query operations.
 |----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
 | `setQueryId(String queryId)`                 | Sets query ID that will be assigned to the operation.                                                                      |
 | `setFormat(ClickHouseFormat format)`         | Sets response format. See `RowBinaryWithNamesAndTypes` for the full list.                                                  |
-| `setMaxExecutionTime(Integer maxExecutionTime)` | Sets operation execution time on server. Will not affect read timeout.                                                    |
+| `setMaxExecutionTime(Integer maxExecutionTime)` | Sets operation execution time on server. Won't affect read timeout.                                                    |
 | `waitEndOfQuery(Boolean waitEndOfQuery)`     | Requests the server to wait for the end of the query before sending a response.                                            |
 | `setUseServerTimeZone(Boolean useServerTimeZone)` | Server timezone (see client config) will be used to parse date/time types in the result of an operation. Default `false`.  |
 | `setUseTimeZone(String timeZone)`            | Requests server to use `timeZone` for time conversion. See [session_timezone](/operations/settings/settings#session_timezone). |
 | `serverSetting(String name, String value)`   | Sets individual server settings for an operation.                                                                          |
 | `serverSetting(String name, Collection values)` | Sets individual server settings with multiple values for an operation. Items of the collection should be `String` values.  |
 | `setDBRoles(Collection dbRoles)`             | Sets DB roles to be set before executing an operation. Items of the collection should be `String` values.                  |
-| `setOption(String option, Object value)`     | Sets a configuration option in raw format. This is not a server setting.                                                  |
+| `setOption(String option, Object value)`     | Sets a configuration option in raw format. This isn't a server setting.                                                  |
 
 ### QueryResponse {#queryresponse}
 
 Response object that holds result of query execution. It is only available if the client got a response from a server.
 
 :::note
-This object should be closed as soon as possible to release a connection because the connection cannot be re-used until all data of previous response is fully read.
+This object should be closed as soon as possible to release a connection because the connection can't be re-used until all data of previous response is fully read.
 :::
 
 | Method                              | Description                                                                                          |
@@ -1374,7 +1374,7 @@ Here is a list of options to configure load balancing:
 
 | Property              | Default                                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 |-----------------------|-------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| load_balancing_policy | `""`                                      | The load-balancing policy can be one of: <li>`firstAlive` - request is sent to the first healthy node from the managed node list</li><li>`random` - request is sent to a random node from the managed node list </li><li>`roundRobin` - request is sent to each node from the managed node list, in turn.</li><li>full qualified class name implementing `ClickHouseLoadBalancingPolicy` - custom load balancing policy</li>If it is not specified the request is sent to the first node from the managed node list |
+| load_balancing_policy | `""`                                      | The load-balancing policy can be one of: <li>`firstAlive` - request is sent to the first healthy node from the managed node list</li><li>`random` - request is sent to a random node from the managed node list </li><li>`roundRobin` - request is sent to each node from the managed node list, in turn.</li><li>full qualified class name implementing `ClickHouseLoadBalancingPolicy` - custom load balancing policy</li>If it isn't specified the request is sent to the first node from the managed node list |
 | load_balancing_tags   | `""`                                      | Load balancing tags for filtering out nodes. Requests are sent only to nodes that have the specified tags                                                                                                                                                                                                                                                                                                                                                                                                      |
 | health_check_interval | `0`                                       | Health check interval in milliseconds, zero or negative value means one-time.                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | health_check_method   | `ClickHouseHealthCheckMethod.SELECT_ONE`  | Health check method. Can be one of: <li>`ClickHouseHealthCheckMethod.SELECT_ONE` - check with `select 1` query</li> <li>`ClickHouseHealthCheckMethod.PING` - protocol-specific check, which is generally faster</li>                                                                                                                                                                                                                                                                                          |

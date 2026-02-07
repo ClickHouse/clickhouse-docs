@@ -33,7 +33,7 @@ For complete details on backup frequency, retention, and how to perform point-in
 
 ### Is Terraform support available for Managed Postgres? {#terraform-support}
 
-Terraform support for Managed Postgres is not currently available. We recommend using the ClickHouse Cloud console to create and manage your instances.
+Terraform support for Managed Postgres isn't currently available. We recommend using the ClickHouse Cloud console to create and manage your instances.
 
 ## Extensions and configuration {#extensions-and-configuration}
 

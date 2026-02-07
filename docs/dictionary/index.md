@@ -245,7 +245,7 @@ Peak memory usage: 248.84 MiB.
 
 ## Index time enrichment {#index-time-enrichment}
 
-In the above example, we used a dictionary at query time to remove a join. Dictionaries can also be used to enrich rows at insert time. This is typically appropriate if the enrichment value does not change and exists in an external source which can be used to populate the dictionary. In this case, enriching the row at insert time avoids the query time lookup to the dictionary.
+In the above example, we used a dictionary at query time to remove a join. Dictionaries can also be used to enrich rows at insert time. This is typically appropriate if the enrichment value doesn't change and exists in an external source which can be used to populate the dictionary. In this case, enriching the row at insert time avoids the query time lookup to the dictionary.
 
 Let's suppose that the `Location` of a user in Stack Overflow never changes (in reality they do) - specifically the `Location` column of the `users` table. Suppose we want to do an analytics query on the posts table by location. This contains a `UserId`.
 

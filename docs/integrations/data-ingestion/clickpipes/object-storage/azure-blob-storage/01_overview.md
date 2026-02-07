@@ -34,7 +34,7 @@ When continuous ingestion is enabled, ClickPipes continuously ingests data from 
 
 #### Lexicographical order {#continuous-ingestion-lexicographical-order}
 
-The ABS ClickPipe assumes files are added to a container in lexicographical order, and relies on this implicit order to ingest files sequentially. This means that any new file **must** be lexically greater than the last ingested file. For example, files named `file1`, `file2`, and `file3` will be ingested sequentially, but if a new `file 0` is added to the container, it will be **ignored** because the file name is not lexically greater than the last ingested file.
+The ABS ClickPipe assumes files are added to a container in lexicographical order, and relies on this implicit order to ingest files sequentially. This means that any new file **must** be lexically greater than the last ingested file. For example, files named `file1`, `file2`, and `file3` will be ingested sequentially, but if a new `file 0` is added to the container, it will be **ignored** because the file name isn't lexically greater than the last ingested file.
 
 In this mode, the ABS ClickPipe does an initial load of **all files** in the specified path, and then polls for new files at a configurable interval (by default, 30 seconds). It is **not possible** to start ingestion from a specific file or point in time — ClickPipes will always load all files in the specified path.
 
@@ -89,7 +89,7 @@ Containers must allow the [`s3:GetObject`](https://docs.aws.amazon.com/AmazonS3/
 ### Authentication {#authentication}
 
 :::note
-Microsoft Entra ID authentication (including Managed Identities) is not currently supported.
+Microsoft Entra ID authentication (including Managed Identities) isn't currently supported.
 :::
 
 Azure Blob Storage authentication uses a [connection string](https://docs.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string), which supports both access keys and shared access signatures (SAS).
@@ -119,7 +119,7 @@ Generate a SAS token in the Azure Portal under **Storage Account > Shared access
 ABS ClickPipes use two distinct network paths for metadata discovery and data ingestion: the ClickPipes service and the ClickHouse Cloud service, respectively. If you want to configure an additional layer of network security (e.g., for compliance reasons), network access **must be configured for both paths**.
 
 :::warning
-IP-based access control **does not work** if your Azure Blob Storage container is in the same Azure region as your ClickHouse Cloud service. When both services are co-located, traffic is routed through Azure's internal network, rather than the public internet.
+IP-based access control **doesn't work** if your Azure Blob Storage container is in the same Azure region as your ClickHouse Cloud service. When both services are co-located, traffic is routed through Azure's internal network, rather than the public internet.
 :::
 
 * For **IP-based access control**, the [IP network rules](https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security) for your Azure Storage firewall must allow the static IPs for the ClickPipes service region listed [here](/integrations/clickpipes#list-of-static-ips), as well as the [static IPs](/manage/data-sources/cloud-endpoints-api) for the ClickHouse Cloud service. To obtain the static IPs for your ClickHouse Cloud region, open a terminal and run:
@@ -150,7 +150,7 @@ ClickPipes provides sensible defaults that cover the requirements of most use ca
 
 ### Scaling {#scaling}
 
-Object Storage ClickPipes are scaled based on the minimum ClickHouse service size determined by the [configured vertical autoscaling settings](/manage/scaling#configuring-vertical-auto-scaling). The size of the ClickPipe is determined when the pipe is created. Subsequent changes to the ClickHouse service settings will not affect the ClickPipe size.
+Object Storage ClickPipes are scaled based on the minimum ClickHouse service size determined by the [configured vertical autoscaling settings](/manage/scaling#configuring-vertical-auto-scaling). The size of the ClickPipe is determined when the pipe is created. Subsequent changes to the ClickHouse service settings won't affect the ClickPipe size.
 
 To increase the throughput on large ingest jobs, we recommend scaling the ClickHouse service before creating the ClickPipe.
 
@@ -175,7 +175,7 @@ For [continuous ingestion](#continuous-ingestion), ClickPipes must scan the cont
 
 Materialized views on the target table are also supported. ClickPipes will create staging tables not only for the target table, but also any dependent materialized view.
 
-We do not create staging tables for non-materialized views. This means that if you have a target table with one of more downstream materialized views, those materialized views should avoid selecting data via a view from the target table. Otherwise, you may find that you are missing data in the materialized view.
+We don't create staging tables for non-materialized views. This means that if you have a target table with one of more downstream materialized views, those materialized views should avoid selecting data via a view from the target table. Otherwise, you may find that you're missing data in the materialized view.
 
 ### Dependencies {#dependencies}
 

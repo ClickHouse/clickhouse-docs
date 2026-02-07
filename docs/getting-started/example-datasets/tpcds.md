@@ -974,7 +974,7 @@ LIMIT 100;
 ```
 
 ::::note
-The query does not work out-of-the-box due to https://github.com/ClickHouse/ClickHouse/issues/95299. This alternative formulation with a minor fix works:
+The query doesn't work out-of-the-box due to https://github.com/ClickHouse/ClickHouse/issues/95299. This alternative formulation with a minor fix works:
 
 ```sql
 WITH
@@ -2351,7 +2351,7 @@ LIMIT 100;
 ```
 
 ::::note
-The query does not work out-of-the-box due to https://github.com/ClickHouse/ClickHouse/issues/95299. This alternative formulation with a minor fix works:
+The query doesn't work out-of-the-box due to https://github.com/ClickHouse/ClickHouse/issues/95299. This alternative formulation with a minor fix works:
 
 ```sql
 SELECT
@@ -3322,7 +3322,7 @@ LIMIT 100;
 ```
 
 ::::note
-The query does not work out-of-the-box due to https://github.com/ClickHouse/ClickHouse/issues/94858. This alternative formulation with a minor fix works:
+The query doesn't work out-of-the-box due to https://github.com/ClickHouse/ClickHouse/issues/94858. This alternative formulation with a minor fix works:
 
 ```sql
 WITH
@@ -3946,7 +3946,7 @@ LIMIT 100;
 ```
 
 ::::note
-The query does not work out-of-the-box due to https://github.com/ClickHouse/ClickHouse/issues/94858. This alternative formulation with a minor fix works:
+The query doesn't work out-of-the-box due to https://github.com/ClickHouse/ClickHouse/issues/94858. This alternative formulation with a minor fix works:
 
 ```sql
 WITH
@@ -4090,7 +4090,7 @@ LIMIT 100;
 ```
 
 ::::note
-The query does not work out-of-the-box due to https://github.com/ClickHouse/ClickHouse/issues/94976. This alternative formulation with a minor fix works:
+The query doesn't work out-of-the-box due to https://github.com/ClickHouse/ClickHouse/issues/94976. This alternative formulation with a minor fix works:
 
 ```sql
 WITH
@@ -5208,7 +5208,7 @@ LIMIT 100;
 ```
 
 ::::note
-The query does not work out-of-the-box due to https://github.com/ClickHouse/ClickHouse/issues/94671. This alternative formulation with a minor fix works:
+The query doesn't work out-of-the-box due to https://github.com/ClickHouse/ClickHouse/issues/94671. This alternative formulation with a minor fix works:
 
 ```sql
 WITH
@@ -5710,7 +5710,7 @@ LIMIT 100;
 ```
 
 ::::note
-The query does not work out-of-the-box due to https://github.com/ClickHouse/ClickHouse/issues/95299. This alternative formulation with a minor fix works:
+The query doesn't work out-of-the-box due to https://github.com/ClickHouse/ClickHouse/issues/95299. This alternative formulation with a minor fix works:
 
 ```sql
 WITH

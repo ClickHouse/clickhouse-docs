@@ -13,7 +13,7 @@ import Image from '@theme/IdealImage';
 import incremental_materialized_view from '@site/static/images/bestpractices/incremental_materialized_view.gif';
 import refreshable_materialized_view from '@site/static/images/bestpractices/refreshable_materialized_view.gif';
 
-ClickHouse supports two types of materialized views: [**incremental**](/materialized-view/incremental-materialized-view) and [**refreshable**](/materialized-view/refreshable-materialized-view). While both are designed to accelerate queries by pre-computing and storing results, they differ significantly in how and when the underlying queries are executed, what workloads they are suited for, and how data freshness is handled.
+ClickHouse supports two types of materialized views: [**incremental**](/materialized-view/incremental-materialized-view) and [**refreshable**](/materialized-view/refreshable-materialized-view). While both are designed to accelerate queries by pre-computing and storing results, they differ significantly in how and when the underlying queries are executed, what workloads they're suited for, and how data freshness is handled.
 
 **You should consider materialized views for specific query patterns which need to be accelerated, assuming previous best practices [regarding type](/best-practices/select-data-types) and [primary key optimization](/best-practices/choosing-a-primary-key) have been performed.**
 
@@ -43,9 +43,9 @@ For examples of incremental materialized views see [here](/materialized-view/inc
 
 Refreshable materialized views execute their queries periodically rather than incrementally, storing the query result set for rapid retrieval. 
 
-They are most useful when query performance is critical (e.g. sub-millisecond latency) and slightly stale results are acceptable. Since the query is re-run in full, refreshable views are best suited to queries that are either relatively fast to compute or which can be computed at infrequent intervals (e.g. hourly), such as caching “top N” results or lookup tables. 
+They're most useful when query performance is critical (e.g. sub-millisecond latency) and slightly stale results are acceptable. Since the query is re-run in full, refreshable views are best suited to queries that are either relatively fast to compute or which can be computed at infrequent intervals (e.g. hourly), such as caching “top N” results or lookup tables. 
 
-Execution frequency should be tuned carefully to avoid excessive load on the system. Extremely complex queries which consume significant resources should be scheduled cautiously — these can cause overall cluster performance to degrade by impacting caches and consuming CPU and memory. The query should run relatively quickly compared to the refresh interval to avoid overloading your cluster. For example, do not schedule a view to be updated every 10 seconds if the query itself takes at least 10 seconds to compute. 
+Execution frequency should be tuned carefully to avoid excessive load on the system. Extremely complex queries which consume significant resources should be scheduled cautiously — these can cause overall cluster performance to degrade by impacting caches and consuming CPU and memory. The query should run relatively quickly compared to the refresh interval to avoid overloading your cluster. For example, don't schedule a view to be updated every 10 seconds if the query itself takes at least 10 seconds to compute. 
 
 ## Summary {#summary}
 
@@ -53,7 +53,7 @@ In summary, use refreshable materialized views when:
 
 - You need cached query results available instantly, and minor delays in freshness are acceptable.
 - You need the top N for a query result set.
-- The size of the result set does not grow unbounded over time. This will cause performance of the target view to degrade.
+- The size of the result set doesn't grow unbounded over time. This will cause performance of the target view to degrade.
 - You're performing complex joins or denormalization involving multiple tables, requiring updates whenever any source table changes.
 - You're building batch workflows, denormalization tasks, or creating view dependencies similar to DBT DAGs.
 

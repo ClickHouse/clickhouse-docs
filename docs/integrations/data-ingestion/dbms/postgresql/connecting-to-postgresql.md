@@ -76,7 +76,7 @@ This article is to illustrate basic methods of integration using one table.
   ```
 
 :::note
-If you are using this feature in ClickHouse Cloud, you may need the to allow the ClickHouse Cloud IP addresses to access your PostgreSQL instance.
+If you're using this feature in ClickHouse Cloud, you may need the to allow the ClickHouse Cloud IP addresses to access your PostgreSQL instance.
 Check the ClickHouse [Cloud Endpoints API](/cloud/get-started/query-endpoints) for egress traffic details.
 :::
 
@@ -338,7 +338,7 @@ Query id: b0729816-3917-44d3-8d1a-fed912fb59ce
 ```
 
 ### 4. Summary {#4-summary}
-This integration guide focused on a simple example on how to replicate a database with a table, however, there exist more advanced options which include replicating the whole database or adding new tables and schemas to the existing replications. Although DDL commands are not supported for this replication, the engine can be set to detect changes and reload the tables when there are structural changes made.
+This integration guide focused on a simple example on how to replicate a database with a table, however, there exist more advanced options which include replicating the whole database or adding new tables and schemas to the existing replications. Although DDL commands aren't supported for this replication, the engine can be set to detect changes and reload the tables when there are structural changes made.
 
 :::info
 For more features available for advanced options, please see the [reference documentation](/engines/database-engines/materialized-postgresql).

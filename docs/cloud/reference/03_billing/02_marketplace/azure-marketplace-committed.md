@@ -72,7 +72,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 - Subscription and resource group 
 - Provide a name for the SaaS subscription
 - Choose the billing plan that you have a private offer for. Only the term that the private offer was created (for example, 1 year) will have an amount against it. Other billing term options will be for $0 amounts. 
-- Choose whether you want recurring billing or not. If recurring billing is not selected, the contract will end at the end of the billing period and the resources will be set to decommissioned.
+- Choose whether you want recurring billing or not. If recurring billing isn't selected, the contract will end at the end of the billing period and the resources will be set to decommissioned.
 - Click on **Review + subscribe**.
 
 <br />
@@ -97,7 +97,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-8. Once ready, you can click on **Configure account now**. Note that is a critical step that binds the Azure subscription to a ClickHouse Cloud organization for your account. Without this step, your Marketplace subscription is not complete.
+8. Once ready, you can click on **Configure account now**. Note that is a critical step that binds the Azure subscription to a ClickHouse Cloud organization for your account. Without this step, your Marketplace subscription isn't complete.
 
 <br />
 
@@ -105,7 +105,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-9. You will be redirected to the ClickHouse Cloud sign up or sign in page. You can either sign up using a new account or sign in using an existing account. Once you are signed in, a new organization will be created that is ready to be used and billed via the Azure Marketplace.
+9. You will be redirected to the ClickHouse Cloud sign up or sign in page. You can either sign up using a new account or sign in using an existing account. Once you're signed in, a new organization will be created that is ready to be used and billed via the Azure Marketplace.
 
 10. You will need to answer a few questions - address and company details - before you can proceed.
 
@@ -119,7 +119,7 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-11. Once you hit **Complete sign up**, you will be taken to your organization within ClickHouse Cloud where you can view the billing screen to ensure you are being billed via the Azure Marketplace and can create services.
+11. Once you hit **Complete sign up**, you will be taken to your organization within ClickHouse Cloud where you can view the billing screen to ensure you're being billed via the Azure Marketplace and can create services.
 
 <br />
 
@@ -135,4 +135,4 @@ Get started with ClickHouse Cloud on the [Azure Marketplace](https://azuremarket
 
 <br />
 
-If you run into any issues, please do not hesitate to contact [our support team](https://clickhouse.com/support/program).
+If you run into any issues, please don't hesitate to contact [our support team](https://clickhouse.com/support/program).

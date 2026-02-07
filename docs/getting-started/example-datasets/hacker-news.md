@@ -444,7 +444,7 @@ LIMIT 5
 ## Parquet {#parquet}
 
 One of the strengths of ClickHouse is its ability to handle any number of [formats](/interfaces/formats).
-CSV represents a rather ideal use case, and is not the most efficient for data exchange.
+CSV represents a rather ideal use case, and isn't the most efficient for data exchange.
 
 Next, you'll load the data from a Parquet file which is an efficient column-oriented format.
 

@@ -80,7 +80,7 @@ docker exec -it clickhouse-01 clickhouse-client
 ClickHouse Cloud works with [`SharedMergeTree`](/cloud/reference/shared-merge-tree).
 When restoring a backup, ClickHouse automatically converts tables with `ReplicatedMergeTree` to `SharedMergeTree` tables.
 
-It's likely your tables are already using the `ReplciatedMergeTree` engine if you are running a cluster.
+It's likely your tables are already using the `ReplciatedMergeTree` engine if you're running a cluster.
 If not, you will need to convert any `MergeTree` tables to `ReplicatedMergeTree` before backing them up.
 
 For the sake of demonstration of how to convert `MergeTree` tables to `ReplicatedMergeTree`, we will begin with a `MergeTree` table and convert it to `ReplicatedMergeTree` after wards.
@@ -259,7 +259,7 @@ TO S3(
 
 Replace `BUCKET_URL`, `KEY_ID` and `SECRET_KEY` with your own AWS credentials.
 The guide ["How to create an S3 bucket and IAM role"](/integrations/s3/creating-iam-user-and-s3-bucket)
-shows you how to obtain these if you do not yet have them.
+shows you how to obtain these if you don't yet have them.
 
 If everything is correctly configured you will see a response similar to the one below
 containing a unique id assigned to the backup and the status of the backup.

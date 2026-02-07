@@ -93,7 +93,7 @@ execute a query on a subset of the data. How does it work when there is no shard
 
 To parallelize query execution through multiple servers, we first need to be
 able to assign one of our servers as a coordinator. The coordinator is the one
-that creates the list of tasks that need to be executed, ensures they are all
+that creates the list of tasks that need to be executed, ensures they're all
 executed, aggregated and that the result is returned to the client. Like
 in most distributed systems, this will be the role of the node that receives the
 initial query. We also need to define the unit of work. In a sharded architecture,
@@ -122,7 +122,7 @@ With parallel replicas:
     </li>
     <li>
         Each set of granules gets processed by the corresponding replicas and a
-        mergeable state is sent to the coordinator when they are finished.
+        mergeable state is sent to the coordinator when they're finished.
     </li>
     <li>
         Finally, the coordinator merges all the results from the replicas and
@@ -176,9 +176,9 @@ announcement. Let's visualize how it works using the figure below:
         The coordinating node then uses the announcements to define a set of
         granules that can be assigned to the different replicas. Here for example,
         we can see that no granules from part 3 have been assigned to replica 2
-        because this replica did not provide this part in its announcement.
+        because this replica didn't provide this part in its announcement.
         Also note that no tasks were assigned to replica 3 because the
-        replica did not provide an announcement.
+        replica didn't provide an announcement.
     </li>
     <li>
         After each replica has processed the query on their subset of granules
@@ -190,12 +190,12 @@ announcement. Let's visualize how it works using the figure below:
 ### Dynamic coordination \{#dynamic-coordination\}
 
 To address the issue of tail latency, we added dynamic coordination. This means
-that all the granules are not sent to a replica in one request, but each replica
+that all the granules aren't sent to a replica in one request, but each replica
 will be able to request a new task (a set of granules to be processed) to the
 coordinator. The coordinator will give the replica the set of granules based on
 the announcement received.
 
-Let's assume that we are at the stage in the process where all replicas have sent
+Let's assume that we're at the stage in the process where all replicas have sent
 an announcement with all parts.
 
 The figure below visualizes how dynamic coordination works:
@@ -204,7 +204,7 @@ The figure below visualizes how dynamic coordination works:
 
 <ol className="docs-ordered-list">
     <li>
-        Replicas let the coordinator node know that they are able to process
+        Replicas let the coordinator node know that they're able to process
         tasks, they can also specify how much work they can process.
     </li>
     <li>
@@ -300,7 +300,7 @@ This feature has known limitations, of which the major ones are documented in
 this section.
 
 :::note
-If you find an issue which is not one of the limitations given below, and
+If you find an issue which isn't one of the limitations given below, and
 suspect parallel replica to be the cause, please open an issue on GitHub using
 the label `comp-parallel-replicas`.
 :::
@@ -308,9 +308,9 @@ the label `comp-parallel-replicas`.
 | Limitation                                    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 |-----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Complex queries                                 | Currently parallel replica works fairly well for simple queries. Complexity layers like CTEs, subqueries, JOINs, non-flat query, etc. can have a negative impact on query performance.                                                                                                                                                                                                                                                                                   |
-| Small queries                                 | If you are executing a query that does not process a lot of rows, executing it on multiple replicas might not yield a better performance time given that the network time for the coordination between replicas can lead to additional cycles in the query execution. You can limit these issues by using the setting: [`parallel_replicas_min_number_of_rows_per_replica`](/docs/operations/settings/settings#parallel_replicas_min_number_of_rows_per_replica).  |
+| Small queries                                 | If you're executing a query that doesn't process a lot of rows, executing it on multiple replicas might not yield a better performance time given that the network time for the coordination between replicas can lead to additional cycles in the query execution. You can limit these issues by using the setting: [`parallel_replicas_min_number_of_rows_per_replica`](/docs/operations/settings/settings#parallel_replicas_min_number_of_rows_per_replica).  |
 | Parallel replicas are disabled with FINAL      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| Projections are not used together with Parallel replicas      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Projections aren't used together with Parallel replicas      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | High Cardinality data and complex aggregation | High cardinality aggregation that needs to send much data can significantly slow down your queries.                                                                                                                                                                                                                                                                                                                                                                     |
 | Compatibility with the new analyzer           | The new analyzer might significantly slow down or speed up query execution in specific scenarios.                                                                                                                                                                                                                                                                                                                                                                       |
 
@@ -319,7 +319,7 @@ the label `comp-parallel-replicas`.
 | Setting                                            | Description                                                                                                                                                                                                                                                         |
 |----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `enable_parallel_replicas`                         | `0`: disabled<br/> `1`: enabled <br/>`2`: Force the usage of parallel replica, will throw an exception if not used.                                                                                                                                                 |
-| `cluster_for_parallel_replicas`                    | The cluster name to use for parallel replication; if you are using ClickHouse Cloud, use `default`.                                                                                                                                                                 |
+| `cluster_for_parallel_replicas`                    | The cluster name to use for parallel replication; if you're using ClickHouse Cloud, use `default`.                                                                                                                                                                 |
 | `max_parallel_replicas`                            | Maximum number of replicas to use for the query execution on multiple replicas, if a number lower than the number of replicas in the cluster is specified, nodes will be selected randomly. This value can also be overcommitted to account for horizontal scaling. |
 | `parallel_replicas_min_number_of_rows_per_replica` | Help limiting the number of replicas used based on the number of rows that need to be processed the number of replicas used is defined by: <br/> `estimated rows to read` / `min_number_of_rows_per_replica`.                                                       |
 | `enable_analyzer`                                  | Query execution with parallel replicas is supported only with enabled analyzer                                                                                                                                                                                      |
@@ -331,7 +331,7 @@ You can check what settings are being used for each query in the
 also look at the [`system.events`](/docs/operations/system-tables/events)
 table to see all the events that have occured on the server, and you can use the
 [`clusterAllReplicas`](/docs/sql-reference/table-functions/cluster) table function to see the tables on all the replicas
-(if you are a cloud user, use `default`).
+(if you're a cloud user, use `default`).
 
 ```sql title="Query"
 SELECT

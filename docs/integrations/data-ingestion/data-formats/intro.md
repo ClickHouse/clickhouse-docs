@@ -33,4 +33,4 @@ Handle common Apache formats such as Parquet and Arrow.
 
 Need a SQL dump to import into MySQL or Postgresql? Look no further.
 
-If you are looking to connect a BI tool like Grafana, Tableau and others, check out the [Visualize category](../../data-visualization/index.md) of the docs.
+If you're looking to connect a BI tool like Grafana, Tableau and others, check out the [Visualize category](../../data-visualization/index.md) of the docs.

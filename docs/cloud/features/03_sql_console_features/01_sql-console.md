@@ -114,7 +114,7 @@ The SQL console can convert your sorts and filters directly into queries with on
 <Image img={create_a_query_from_sorts_and_filters} size="md" alt='Create a query from sorts and filters' />
 
 :::note
-Filters and sorts are not mandatory when using the 'Create Query' feature.
+Filters and sorts aren't mandatory when using the 'Create Query' feature.
 :::
 
 You can learn more about querying in the SQL console by reading the (link) query documentation.
@@ -227,7 +227,7 @@ After a query is executed, you can quickly search through the returned result se
 
 <Image img={search_hn} size="md" alt='Search Hacker News Data' />
 
-Note: Any field matching the inputted value will be returned. For example, the third record in the above screenshot does not match 'breakfast' in the `by` field, but the `text` field does:
+Note: Any field matching the inputted value will be returned. For example, the third record in the above screenshot doesn't match 'breakfast' in the `by` field, but the `text` field does:
 
 <Image img={match_in_body} size="md" alt='Match in body' />
 

@@ -594,7 +594,7 @@ table.
 
     :::note
     Notice the output of the above `JOIN` query is the same as the `dictGet`
-    query above, (except that the `Unknown` values are not included). Behind
+    query above, (except that the `Unknown` values aren't included). Behind
     the scenes, ClickHouse is actually calling the `dictGet` function for
     the `taxi_zone_dictionary` dictionary, but the `JOIN` syntax is more
     familiar for SQL developers.

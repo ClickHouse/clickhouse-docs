@@ -34,13 +34,13 @@ Looking to store ClickHouse audit logs to Splunk? Follow the ["Storing ClickHous
 
 Splunk is a popular technology for security and observability. It is also a powerful search and dashboarding engine. There are hundreds of Splunk apps available to address different use cases.
 
-For ClickHouse specifically, we are leveraging the [Splunk DB Connect App](https://splunkbase.splunk.com/app/2686) which has a simple integration to the highly performant ClickHouse JDBC driver to query tables in ClickHouse directly.
+For ClickHouse specifically, we're leveraging the [Splunk DB Connect App](https://splunkbase.splunk.com/app/2686) which has a simple integration to the highly performant ClickHouse JDBC driver to query tables in ClickHouse directly.
 
-The ideal use case for this integration is when you are using ClickHouse for large data sources such as NetFlow, Avro or Protobuf binary data, DNS, VPC flow logs, and other OTEL logs that can be shared with your team on Splunk to search and create dashboards. By using this approach, the data is not ingested into the Splunk index layer and is simply queried directly from ClickHouse similarly to other visualization integrations such as [Metabase](https://www.metabase.com/) or [Superset](https://superset.apache.org/).
+The ideal use case for this integration is when you're using ClickHouse for large data sources such as NetFlow, Avro or Protobuf binary data, DNS, VPC flow logs, and other OTEL logs that can be shared with your team on Splunk to search and create dashboards. By using this approach, the data isn't ingested into the Splunk index layer and is simply queried directly from ClickHouse similarly to other visualization integrations such as [Metabase](https://www.metabase.com/) or [Superset](https://superset.apache.org/).
 
 ## Goal​ {#goal}
 
-In this guide, we will use the ClickHouse JDBC driver to connect ClickHouse to Splunk. We will install a local version of Splunk Enterprise but we are not indexing any data. Instead, we are using the search functions through the DB Connect query engine.
+In this guide, we will use the ClickHouse JDBC driver to connect ClickHouse to Splunk. We will install a local version of Splunk Enterprise but we're not indexing any data. Instead, we're using the search functions through the DB Connect query engine.
 
 With this guide, you will be able to create a dashboard connected to ClickHouse similar to this:
 
@@ -133,7 +133,7 @@ If you receive an error, make sure that you have added the IP address of your Sp
 
 We will now run a SQL query to test that everything works.
 
-Select your connection details in the SQL Explorer from the DataLab section of the DB Connect App. We are using the  `trips` table for this demo:
+Select your connection details in the SQL Explorer from the DataLab section of the DB Connect App. We're using the  `trips` table for this demo:
 
 <Image img={splunk_6} size="md" border alt="Splunk SQL Explorer selecting connection to ClickHouse" />
 

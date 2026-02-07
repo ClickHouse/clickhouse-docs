@@ -29,7 +29,7 @@ Type hints offer more than just a way to avoid unnecessary type inference—they
 
 ## Advanced features {#advanced-features}
 
-* JSON columns **can be used in primary keys** like any other columns. Codecs cannot be specified for a subcolumn.
+* JSON columns **can be used in primary keys** like any other columns. Codecs can't be specified for a subcolumn.
 * They support introspection via functions like [`JSONAllPathsWithTypes()` and `JSONDynamicPaths()`](/sql-reference/data-types/newjson#introspection-functions).
 * You can read nested sub-objects using the `.^` syntax.
 * Query syntax may differ from standard SQL and may require special casting or operators for nested fields.
@@ -113,7 +113,7 @@ Consider the [arXiv dataset](https://www.kaggle.com/datasets/Cornell-University/
 }
 ```
 
-While the JSON here is complex, with nested structures, it is predictable. The number and type of the fields will not change. While we could use the JSON type for this example, we can also just define the structure explicitly using [Tuples](/sql-reference/data-types/tuple) and [Nested](/sql-reference/data-types/nested-data-structures/nested) types:
+While the JSON here is complex, with nested structures, it is predictable. The number and type of the fields won't change. While we could use the JSON type for this example, we can also just define the structure explicitly using [Tuples](/sql-reference/data-types/tuple) and [Nested](/sql-reference/data-types/nested-data-structures/nested) types:
 
 ```sql
 CREATE TABLE arxiv

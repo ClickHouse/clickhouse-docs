@@ -138,11 +138,11 @@ Ensure your buckets are located in the same region as your ClickHouse instances.
 
 ClickHouse can read files stored in S3 buckets in the [supported formats](/interfaces/formats#formats-overview) using the `s3` function and `S3` engine. If reading raw files, some of these formats have distinct advantages:
 
-* Formats with encoded column names such as Native, Parquet, CSVWithNames, and TabSeparatedWithNames will be less verbose to query since the user will not be required to specify the column name is the `s3` function. The column names allow this information to be inferred.
-* Formats will differ in performance with respect to read and write throughputs. Native and parquet represent the most optimal formats for read performance since they are already column orientated and more compact. The native format additionally benefits from alignment with how ClickHouse stores data in memory - thus reducing processing overhead as data is streamed into ClickHouse.
+* Formats with encoded column names such as Native, Parquet, CSVWithNames, and TabSeparatedWithNames will be less verbose to query since the user won't be required to specify the column name is the `s3` function. The column names allow this information to be inferred.
+* Formats will differ in performance with respect to read and write throughputs. Native and parquet represent the most optimal formats for read performance since they're already column orientated and more compact. The native format additionally benefits from alignment with how ClickHouse stores data in memory - thus reducing processing overhead as data is streamed into ClickHouse.
 * The block size will often impact the latency of reads on large files. This is very apparent if you only sample the data, e.g., returning the top N rows. In the case of formats such as CSV and TSV, files must be parsed to return a set of rows. Formats such as Native and Parquet will allow faster sampling as a result.
 * Each compression format brings pros and cons, often balancing the compression level for speed and biasing compression or decompression performance. If compressing raw files such as CSV or TSV, lz4 offers the fastest decompression performance, sacrificing the compression level. Gzip typically compresses better at the expense of slightly slower read speeds. Xz takes this further by usually offering the best compression with the slowest compression and decompression performance. If exporting, Gz and lz4 offer comparable compression speeds. Balance this against your connection speeds. Any gains from faster decompression or compression will be easily negated by a slower connection to your s3 buckets.
-* Formats such as native or parquet do not typically justify the overhead of compression. Any savings in data size are likely to be minimal since these formats are inherently compact. The time spent compressing and decompressing will rarely offset network transfer times - especially since s3 is globally available with higher network bandwidth.
+* Formats such as native or parquet don't typically justify the overhead of compression. Any savings in data size are likely to be minimal since these formats are inherently compact. The time spent compressing and decompressing will rarely offset network transfer times - especially since s3 is globally available with higher network bandwidth.
 
 ## Example dataset {#example-dataset}
 
@@ -191,7 +191,7 @@ When reading from queries, the initial query can often appear slower than if the
 
 ## Using threads for reads {#using-threads-for-reads}
 
-Read performance on S3 will scale linearly with the number of cores, provided you are not limited by network bandwidth or local I/O. Increasing the number of threads also has memory overhead permutations that you should be aware of. The following can be modified to improve read throughput performance potentially:
+Read performance on S3 will scale linearly with the number of cores, provided you're not limited by network bandwidth or local I/O. Increasing the number of threads also has memory overhead permutations that you should be aware of. The following can be modified to improve read throughput performance potentially:
 
 * Usually, the default value of `max_threads` is sufficient, i.e., the number of cores. If the amount of memory used for a query is high, and this needs to be reduced, or the `LIMIT` on results is low, this value can be set lower. Users with plenty of memory may wish to experiment with increasing this value for possible higher read throughput from S3. Typically this is only beneficial on machines with lower core counts, i.e., &lt; 10. The benefit from further parallelization typically diminishes as other resources act as a bottleneck, e.g., network and CPU contention.
 * Versions of ClickHouse before 22.3.1 only parallelized reads across multiple files when using the `s3` function or `S3` table engine. This required the user to ensure files were split into chunks on S3 and read using a glob pattern to achieve optimal read performance. Later versions now parallelize downloads within a file.
@@ -369,7 +369,7 @@ As expected, this reduces insert performance by 3x.
 
 ### Disable de-duplication {#disable-de-duplication}
 
-Insert operations can sometimes fail due to errors such as timeouts. When inserts fail, data may or may not have been successfully inserted. To allow inserts to be safely re-tried by the client, by default in distributed deployments such as ClickHouse Cloud, ClickHouse tries to determine whether the data has already been successfully inserted. If the inserted data is marked as a duplicate, ClickHouse does not insert it into the destination table. However, the user will still receive a successful operation status as if the data had been inserted normally.
+Insert operations can sometimes fail due to errors such as timeouts. When inserts fail, data may or may not have been successfully inserted. To allow inserts to be safely re-tried by the client, by default in distributed deployments such as ClickHouse Cloud, ClickHouse tries to determine whether the data has already been successfully inserted. If the inserted data is marked as a duplicate, ClickHouse doesn't insert it into the destination table. However, the user will still receive a successful operation status as if the data had been inserted normally.
 
 While this behavior, which incurs an insert overhead, makes sense when loading data from a client or in batches it can be unnecessary when performing an `INSERT INTO SELECT` from object storage. By disabling this functionality at insert time, we can improve performance as shown below:
 
@@ -386,7 +386,7 @@ Peak memory usage: 26.57 GiB.
 
 ### Optimize on insert {#optimize-on-insert}
 
-In ClickHouse, the `optimize_on_insert` setting controls whether data parts are merged during the insert process. When enabled (`optimize_on_insert = 1` by default), small parts are merged into larger ones as they are inserted, improving query performance by reducing the number of parts that need to be read. However, this merging adds overhead to the insert process, potentially slowing down high-throughput insertions.
+In ClickHouse, the `optimize_on_insert` setting controls whether data parts are merged during the insert process. When enabled (`optimize_on_insert = 1` by default), small parts are merged into larger ones as they're inserted, improving query performance by reducing the number of parts that need to be read. However, this merging adds overhead to the insert process, potentially slowing down high-throughput insertions.
 
 Disabling this setting (`optimize_on_insert = 0`) skips merging during inserts, allowing data to be written more quickly, especially when handling frequent small inserts. The merging process is deferred to the background, allowing for better insert performance but temporarily increasing the number of small parts, which may slow down queries until the background merge completes. This setting is ideal when insert performance is a priority, and the background merge process can handle optimization efficiently later. As shown below, disabling setting can improve insert throughput:
 

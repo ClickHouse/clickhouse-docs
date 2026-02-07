@@ -48,7 +48,7 @@ ClickPipes supports Postgres version 12 and later.
     SHOW max_replication_slots;
     ```
 
-   If the values do not match the recommended values, you can run the following SQL commands to set them:
+   If the values don't match the recommended values, you can run the following SQL commands to set them:
     ```sql
     ALTER SYSTEM SET max_wal_senders = 10;
     ALTER SYSTEM SET max_replication_slots = 10;
@@ -101,7 +101,7 @@ Connect to your Postgres instance as an admin user and execute the following com
 
 ## Enabling connections in pg_hba.conf to the ClickPipes User {#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user}
 
-If you are self serving, you need to allow connections to the ClickPipes user from the ClickPipes IP addresses by following the below steps. If you are using a managed service, you can do the same by following the provider's documentation.
+If you're self serving, you need to allow connections to the ClickPipes user from the ClickPipes IP addresses by following the below steps. If you're using a managed service, you can do the same by following the provider's documentation.
 
 1. Make necessary changes to the `pg_hba.conf` file to allow connections to the ClickPipes user from the ClickPipes IP addresses. An example entry in the `pg_hba.conf` file would look like:
     ```response
@@ -115,7 +115,7 @@ If you are self serving, you need to allow connections to the ClickPipes user fr
 
 ## Increase `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
 
-This is a recommended configuration change to ensure that large transactions/commits do not cause the replication slot to be dropped.
+This is a recommended configuration change to ensure that large transactions/commits don't cause the replication slot to be dropped.
 
 You can increase the `max_slot_wal_keep_size` parameter for your PostgreSQL instance to a higher value (at least 100GB or `102400`) by updating the `postgresql.conf` file.
 

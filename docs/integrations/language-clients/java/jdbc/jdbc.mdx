@@ -91,14 +91,14 @@ You can use the old JDBC implementation by setting the `clickhouse.jdbc.v1` prop
 
 There are a few things to note about the URL syntax:
 - **only** one endpoint is allowed in the URL
-- protocol should be specified when it is not the default one - 'HTTP'
-- port should be specified when it is not the default one '8123'
-- driver do not guess the protocol from the port, you need to specify it explicitly
-- `ssl` parameter is not required when protocol is specified.
+- protocol should be specified when it isn't the default one - 'HTTP'
+- port should be specified when it isn't the default one '8123'
+- driver don't guess the protocol from the port, you need to specify it explicitly
+- `ssl` parameter isn't required when protocol is specified.
 
 ### Connection Properties
 Main configuration parameters are defined in the [java client](/integrations/language-clients/java/client#client-configuration). They should be passed 
-as is to the driver. Driver has some own properties that are not part of the client configuration they are listed below.
+as is to the driver. Driver has some own properties that aren't part of the client configuration they're listed below.
 
 **Driver properties**:
 | Property                         | Default | Description                                                    |
@@ -191,7 +191,7 @@ There are few ways to change the mapping:
     - `rs.getObject(1, Float64.class)` will return `Float64` value of `Int8` column.
     - `rs.getLong(1)` will return `Long` value of `Int8` column.
     - `rs.getByte(1)` can return `Byte` value of `Int16` column if it fits into `Byte`.
-- conversion from wider to narrower type is not recommend because of data coruption risk.
+- conversion from wider to narrower type isn't recommend because of data coruption risk.
 - `Bool` type acts as number, too.
 - All number types can be read as `java.lang.String`.
 
@@ -235,7 +235,7 @@ There are few ways to change the mapping:
     - `rs.getObject(1, java.time.LocalDate.class)` will return `java.time.LocalDate` value of `Date` column.
     - `rs.getObject(1, java.time.LocalDateTime.class)` will return `java.time.LocalDateTime` value of `DateTime` column.
     - `rs.getObject(1, java.time.LocalTime.class)` will return `java.time.LocalTime` value of `Time` column.
-- `Date`, `Date32`, `Time`, `Time64` is not affected by the timezone of the server. 
+- `Date`, `Date32`, `Time`, `Time64` isn't affected by the timezone of the server. 
 - `DateTime`, `DateTime64` is affected by the timezone of the server or session timezone. 
 - `DateTime` and `DateTime64` can be retrieved as `ZonedDateTime` by using `getObject(colIndex, ZonedDateTime.class)`.
 
@@ -250,10 +250,10 @@ There are few ways to change the mapping:
 
 - `Array` is mapped to `java.sql.Array` by default to be compatible with JDBC. This is also done to give more information about returned array value. Useful for type inference.
 - `Array` implements `getResultSet()` method to return `java.sql.ResultSet` with the same content as the original array.
-- Collection types should not be read as `java.lang.String` because it is not a valid way to represent the data (Ex. there is no quoting for string values in array). 
+- Collection types shouldn't be read as `java.lang.String` because it isn't a valid way to represent the data (Ex. there is no quoting for string values in array). 
 - `Map` is mapped to `JAVA_OBJECT` because value can be read only with `getObject(columnIndex, Class<T>)` method. 
-    - `Map` is not a `java.sql.Struct` because it doesn't have named columns.
-- `Tuple` is mapped to `Object[]` because it can contain different types and using `List` is not valid. 
+    - `Map` isn't a `java.sql.Struct` because it doesn't have named columns.
+- `Tuple` is mapped to `Object[]` because it can contain different types and using `List` isn't valid. 
 - `Tuple` can be read as `Array` by using `getObject(columnIndex, Array.class)` method. In this case `Array#baseTypeName` will return `Tuple` column definition. 
 
 
@@ -282,9 +282,9 @@ There are few ways to change the mapping:
 | AggregateFunction           | OTHER                        | (binary representation)     |
 | SimpleAggregateFunction     | (wrapped type)               | (wrapped class)             |
 
-- `UUID` is not JDBC standard type. However it is part of JDK. By default `java.util.UUID` is returned on `getObject()` method.
+- `UUID` isn't JDBC standard type. However it is part of JDK. By default `java.util.UUID` is returned on `getObject()` method.
 - `UUID` can be read/written as `String` by using `getObject(columnIndex, String.class)` method.
-- `IPv4` and `IPv6` are not JDBC standard types. However they are part of JDK. By default `java.net.Inet4Address` and `java.net.Inet6Address` are returned on `getObject()` method.
+- `IPv4` and `IPv6` aren't JDBC standard types. However they're part of JDK. By default `java.net.Inet4Address` and `java.net.Inet6Address` are returned on `getObject()` method.
 - `IPv4` and `IPv6` can be read/written as `String` by using `getObject(columnIndex, String.class)` method.
 
 ### Handling Dates, Times, and Timezones {#handling-dates-times-and-timezones}
@@ -444,7 +444,7 @@ properties.setProperty("socket_keepalive", "true");
 | Streaming Data With `PreparedStatement` | Supported | Not supported |
 
 - JDBC V2 is implemented to be more lightweight and some features were removed.
-    - Streaming Data is not supported in JDBC V2 because it is not part of the JDBC spec and Java.
+    - Streaming Data isn't supported in JDBC V2 because it isn't part of the JDBC spec and Java.
 - JDBC V2 expects explicit configuration. No failover defaults.
     - Protocol should be specified in the URL. No implicit protocol detection using port numbers.
 
@@ -457,7 +457,7 @@ There are only two enums:
 
 Connection properties are parsed in the following way:
 - URL is parsed first for properties. They override all other properties.
-- Driver properties are not passed to the client.
+- Driver properties aren't passed to the client.
 - Endpoints (host, port, protocol) are parsed from the URL. 
 
 Example:
@@ -643,7 +643,7 @@ Latest JDBC (0.7.2) version uses Client-V1
     </TabItem>
 </Tabs>
 
-Since version `0.5.0`, we are using Apache HTTP Client that's packed the Client. Since there is not a shared version of the package, you need to add a logger as a dependency.
+Since version `0.5.0`, we're using Apache HTTP Client that's packed the Client. Since there isn't a shared version of the package, you need to add a logger as a dependency.
 
 <Tabs groupId="client-v1-compression-deps">
     <TabItem value="maven" label="Maven" >
@@ -690,7 +690,7 @@ Since version `0.5.0`, we are using Apache HTTP Client that's packed the Client.
 | Property                 | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                |
 | ------------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `continueBatchOnError`     | `false` | Whether to continue batch processing when error occurred                                                                                                                                                                                                                                                                                                                                                                   |
-| `createDatabaseIfNotExist` | `false` | Whether to create database if it does not exist                                                                                                                                                                                                                                                                                                                                                                            |
+| `createDatabaseIfNotExist` | `false` | Whether to create database if it doesn't exist                                                                                                                                                                                                                                                                                                                                                                            |
 | `custom_http_headers`      |         | comma separated custom http headers, for example: `User-Agent=client1,X-Gateway-Id=123`                                                                                                                                                                                                                                                                                                                                    |
 | `custom_http_params`       |         | comma separated custom http query parameters, for example: `extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                                                                |
 | `nullAsDefault`            | `0`     | `0` - treat null value as is and throw exception when inserting null into non-nullable column; `1` - treat null value as is and disable null-check for inserting; `2` - replace null to default value of corresponding data type for both query and insert                                                                                                                                                                 |
@@ -705,7 +705,7 @@ Note: please refer to [JDBC specific configuration](https://github.com/ClickHous
 JDBC Driver supports same data formats as client library does.
 
 :::note
-- AggregatedFunction - :warning: does not support `SELECT * FROM table ...`
+- AggregatedFunction - :warning: doesn't support `SELECT * FROM table ...`
 - Decimal - `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency
 - Enum - can be treated as both string and integer
 - UInt64 - mapped to `long` (in client-v1)
@@ -960,7 +960,7 @@ properties.setProperty("socket_keepalive", "true");
 ```
 
 :::note
-Currently, you must use Apache HTTP Client library when setting the socket keep-alive, as the other two HTTP client libraries supported by `clickhouse-java` do not allow setting socket options. For a detailed guide, see [Configuring HTTP library](#v07-configuring-http-library).
+Currently, you must use Apache HTTP Client library when setting the socket keep-alive, as the other two HTTP client libraries supported by `clickhouse-java` don't allow setting socket options. For a detailed guide, see [Configuring HTTP library](#v07-configuring-http-library).
 :::
 
 Alternatively, you can add equivalent parameters to the JDBC URL.

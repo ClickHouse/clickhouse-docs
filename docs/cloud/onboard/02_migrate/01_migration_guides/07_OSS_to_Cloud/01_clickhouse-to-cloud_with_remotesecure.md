@@ -97,7 +97,7 @@ remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
 ```
 
 :::note
-If the source system is not available from outside networks then you can push the data rather than pulling it, as the `remoteSecure` function works for both selects and inserts.  See the next option.
+If the source system isn't available from outside networks then you can push the data rather than pulling it, as the `remoteSecure` function works for both selects and inserts.  See the next option.
 :::
 
 - Use the `remoteSecure` function to push the data to the ClickHouse Cloud service
@@ -159,7 +159,7 @@ There are a few steps in the migration:
 
 #### Duplicate the table structure on the destination service {#duplicate-the-table-structure-on-the-destination-service}
 
-On the destination create the database if it is not there already:
+On the destination create the database if it isn't there already:
 
 - Create the destination database:
   ```sql

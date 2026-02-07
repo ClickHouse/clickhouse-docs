@@ -16,7 +16,7 @@ import Image from '@theme/IdealImage';
 
 # Understanding query execution with the analyzer
 
-ClickHouse processes queries extremely quickly, but the execution of a query is not a simple story. Let's try to understand how a `SELECT` query gets executed. To illustrate it, let's add some data in a table in ClickHouse:
+ClickHouse processes queries extremely quickly, but the execution of a query isn't a simple story. Let's try to understand how a `SELECT` query gets executed. To illustrate it, let's add some data in a table in ClickHouse:
 
 ```sql
 CREATE TABLE session_events(
@@ -38,7 +38,7 @@ Now that we have some data in ClickHouse, we want to run some queries and unders
 
 <Image img={analyzer1} alt="Explain query steps" size="md"/>
 
-Let's look at each entity in action during query execution. We are going to take a few queries and then examine them using the `EXPLAIN` statement.
+Let's look at each entity in action during query execution. We're going to take a few queries and then examine them using the `EXPLAIN` statement.
 
 ## Parser {#parser}
 
@@ -69,11 +69,11 @@ The output is an Abstract Syntax Tree that can be visualized as shown below:
 
 <Image img={analyzer2} alt="AST output" size="md"/>
 
-Each node has corresponding children and the overall tree represents the overall structure of your query. This is a logical structure to help processing a query. From an end-user standpoint (unless interested in query execution), it is not super useful; this tool is mainly used by developers.
+Each node has corresponding children and the overall tree represents the overall structure of your query. This is a logical structure to help processing a query. From an end-user standpoint (unless interested in query execution), it isn't super useful; this tool is mainly used by developers.
 
 ## Analyzer {#analyzer}
 
-ClickHouse currently has two architectures for the Analyzer. You can use the old architecture by setting: `enable_analyzer=0`. The new architecture is enabled by default. We are going to describe only the new architecture here, given the old one is going to be deprecated once the new analyzer is generally available.
+ClickHouse currently has two architectures for the Analyzer. You can use the old architecture by setting: `enable_analyzer=0`. The new architecture is enabled by default. We're going to describe only the new architecture here, given the old one is going to be deprecated once the new analyzer is generally available.
 
 :::note
 The new architecture should provide us with a better framework to improve ClickHouse's performance. However, given it is a fundamental component of the query processing steps, it also might have a negative impact on some queries and there are [known incompatibilities](/operations/analyzer#known-incompatibilities). You can revert back to the old analyzer by changing the `enable_analyzer` setting at the query or user level.
@@ -336,7 +336,7 @@ You can then copy this output and paste it [here](https://dreampuf.github.io/Gra
 
 <Image img={analyzer3} alt="Graph output" size="md"/>
 
-A white rectangle corresponds to a pipeline node, the gray rectangle corresponds to the query plan steps, and the `x` followed by a number corresponds to the number of inputs/outputs that are being used. If you do not want to see them in a compact form, you can always add `compact=0`:
+A white rectangle corresponds to a pipeline node, the gray rectangle corresponds to the query plan steps, and the `x` followed by a number corresponds to the number of inputs/outputs that are being used. If you don't want to see them in a compact form, you can always add `compact=0`:
 
 ```sql
 EXPLAIN PIPELINE graph = 1, compact = 0
@@ -435,8 +435,8 @@ digraph
 
 <Image img={analyzer5} alt="Parallel graph output" size="md" />
 
-So the executor decided not to parallelize operations because the volume of data was not high enough. By adding more rows, the executor then decided to use multiple threads as shown in the graph.
+So the executor decided not to parallelize operations because the volume of data wasn't high enough. By adding more rows, the executor then decided to use multiple threads as shown in the graph.
 
 ## Executor {#executor}
 
-Finally the last step of the query execution is done by the executor. It will take the query pipeline and execute it. There are different types of executors, depending if you are doing a `SELECT`, an `INSERT`, or an `INSERT SELECT`.
+Finally the last step of the query execution is done by the executor. It will take the query pipeline and execute it. There are different types of executors, depending if you're doing a `SELECT`, an `INSERT`, or an `INSERT SELECT`.

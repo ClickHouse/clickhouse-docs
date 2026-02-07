@@ -132,7 +132,7 @@ It is also required to configure these defaults for enabling [data links](./quer
 
 To speed up [query building for logs](./query-builder.md#logs), you can set a default database/table as well as columns for the logs query. This will pre-load the query builder with a runnable logs query, which makes browsing on the explore page faster for observability.
 
-If you are using OpenTelemetry, you should enable the "**Use OTel**" switch, and set the **default log table** to `otel_logs`.
+If you're using OpenTelemetry, you should enable the "**Use OTel**" switch, and set the **default log table** to `otel_logs`.
 This will automatically override the default columns to use the selected OTel schema version.
 
 While OpenTelemetry isn't required for logs, using a single logs/trace dataset helps to enable a smoother observability workflow with [data linking](./query-builder.md#data-links).
@@ -160,7 +160,7 @@ jsonData:
 
 To speed up [query building for traces](./query-builder.md#traces), you can set a default database/table as well as columns for the trace query. This will pre-load the query builder with a runnable trace search query, which makes browsing on the explore page faster for observability.
 
-If you are using OpenTelemetry, you should enable the "**Use OTel**" switch, and set the **default trace table** to `otel_traces`.
+If you're using OpenTelemetry, you should enable the "**Use OTel**" switch, and set the **default trace table** to `otel_traces`.
 This will automatically override the default columns to use the selected OTel schema version.
 While OpenTelemetry isn't required, this feature works best when using its schema for traces.
 
@@ -215,7 +215,7 @@ CREATE TABLE alias_example (
 
 In the above example, we create an alias called `TimestampDate` that converts the nanoseconds timestamp to a `Date` type.
 This data isn't stored on disk like the first column, it's calculated at query time.
-Table-defined aliases will not be returned with `SELECT *`, but this can be configured in the server settings.
+Table-defined aliases won't be returned with `SELECT *`, but this can be configured in the server settings.
 
 For more info, read the documentation for the [ALIAS](/sql-reference/statements/create/table#alias) column type.
 

@@ -67,7 +67,7 @@ SHOW TABLES;
    └────────────────────────────────────────┘
 ```
 
-You can see above that some tables above are not Iceberg tables, for instance
+You can see above that some tables above aren't Iceberg tables, for instance
 `iceberg-benchmark.hitsparquet`. You won't be able to query these as only Iceberg
 is currently supported.
 

@@ -67,12 +67,12 @@ GROUP BY name
    
 <summary>A note on compact versus wide parts</summary>
 
-If you are seeing `compressed_size` or `uncompressed_size` values equal to `0`, this could be because the type of the
+If you're seeing `compressed_size` or `uncompressed_size` values equal to `0`, this could be because the type of the
 parts are `compact` and not `wide` (see description for `part_type` in [`system.parts`](/operations/system-tables/parts)).
 The part format is controlled by settings [`min_bytes_for_wide_part`](/operations/settings/merge-tree-settings#min_bytes_for_wide_part)
 and [`min_rows_for_wide_part`](/operations/settings/merge-tree-settings#min_rows_for_wide_part) meaning that if the inserted
-data results in a part which does not exceed the values of the aforementioned settings, the part will be compact rather
-than wide and you will not see the values for `compressed_size` or `uncompressed_size`.
+data results in a part which doesn't exceed the values of the aforementioned settings, the part will be compact rather
+than wide and you won't see the values for `compressed_size` or `uncompressed_size`.
 
 To demonstrate:
 

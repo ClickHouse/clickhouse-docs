@@ -53,7 +53,7 @@ The IAM assume role can be setup in one of two ways:
 4. Enter your bucket name in the input titled "Bucket Names". If your bucket URL is `https://ch-docs-s3-bucket.s3.eu-central-1.amazonaws.com/clickhouseS3/` then the bucket name is `ch-docs-s3-bucket`.
 
 :::note
-Do not put the full bucket ARN but instead just the bucket name only.
+Don't put the full bucket ARN but instead just the bucket name only.
 :::
 
 5. Configure the CloudFormation stack. Below is additional information about these parameters.
@@ -143,7 +143,7 @@ DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWit
 ```
 
 Below is an example query that uses the `role_session_name` as a shared secret to query data from a bucket.
-If the `role_session_name` is not correct, this operation will fail.
+If the `role_session_name` isn't correct, this operation will fail.
 
 ```sql
 DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWithNames',extra_credentials(role_arn = 'arn:aws:iam::111111111111:role/ClickHouseAccessRole-001', role_session_name = 'secret-role-name'))

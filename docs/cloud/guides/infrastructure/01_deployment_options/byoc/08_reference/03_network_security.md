@@ -150,7 +150,7 @@ By default, ingress is publicly accessible with IP allow list filtering. Custome
 
 *Inbound, Private*
 
-ClickHouse Cloud engineers require troubleshooting access via Tailscale. They are provisioned with just-in-time certificate-based authentication for BYOC deployments.
+ClickHouse Cloud engineers require troubleshooting access via Tailscale. They're provisioned with just-in-time certificate-based authentication for BYOC deployments.
 
 ### Billing scraper {#billing-scraper}
 

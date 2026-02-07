@@ -107,7 +107,7 @@ LIMIT 100
 
 #### Take an incremental backup {#take-an-incremental-backup}
 
-This backup command is similar to the base backup, but adds `SETTINGS base_backup` and the location of the base backup.  Note that the destination for the incremental backup is not the same directory as the base, it is the same endpoint with a different target directory within the bucket.  The base backup is in `my_backup`, and the incremental will be written to `my_incremental`:
+This backup command is similar to the base backup, but adds `SETTINGS base_backup` and the location of the base backup.  Note that the destination for the incremental backup isn't the same directory as the base, it is the same endpoint with a different target directory within the bucket.  The base backup is in `my_backup`, and the incremental will be written to `my_incremental`:
 
 ```sql
 BACKUP TABLE test_db.test_table TO S3(

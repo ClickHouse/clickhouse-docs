@@ -83,9 +83,9 @@ docker run \
 
 ## Deploying to production {#deploying-to-production}
 
-This option should not be deployed to production for the following reasons:
+This option shouldn't be deployed to production for the following reasons:
 
-- **Non-persistent storage:** All data is stored using the Docker native overlay filesystem. This setup does not support performance at scale, and data will be lost if the container is removed or restarted - unless users [mount the required file paths](#persisting-data-and-settings).
+- **Non-persistent storage:** All data is stored using the Docker native overlay filesystem. This setup doesn't support performance at scale, and data will be lost if the container is removed or restarted - unless users [mount the required file paths](#persisting-data-and-settings).
 - **Lack of component isolation:** All components run within a single Docker container. This prevents independent scaling and monitoring and applies any `cgroup` limits globally to all processes. As a result, components may compete for CPU and memory.
 
 ## Customizing ports {#customizing-ports-deploy}

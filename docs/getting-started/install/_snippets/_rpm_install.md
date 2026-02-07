@@ -22,7 +22,7 @@ sudo zypper --gpg-auto-import-keys refresh clickhouse-stable
 ```
 
 In the steps below, `yum install` can be replaced by `zypper install`, depending
-on which package manager you are using.
+on which package manager you're using.
 
 ## Install ClickHouse server and client {#install-clickhouse-server-and-client-1}
 
@@ -68,7 +68,7 @@ clickhouse-client --password
 :::tip
 In production environments we strongly recommend running ClickHouse Keeper on dedicated nodes.
 In test environments, if you decide to run ClickHouse Server and ClickHouse Keeper on the same server, 
-then you do not need to install ClickHouse Keeper as it is included with ClickHouse server.
+then you don't need to install ClickHouse Keeper as it is included with ClickHouse server.
 :::
 
 To install `clickhouse-keeper` on standalone ClickHouse Keeper servers, run:

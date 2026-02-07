@@ -92,7 +92,7 @@ If you're using AWS, you should be aware that default general purpose EBS volume
 
 ### Too many parts error {#too-many-parts-error}
 
-Small frequent inserts create performance problems. The community has identified that insert rates above 10 per second often trigger "too many parts" errors because ClickHouse cannot merge parts fast enough.
+Small frequent inserts create performance problems. The community has identified that insert rates above 10 per second often trigger "too many parts" errors because ClickHouse can't merge parts fast enough.
 
 **Solutions:**
 - Batch data using 30-second or 200MB thresholds

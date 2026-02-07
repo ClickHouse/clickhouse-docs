@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Primary indexes'
 sidebar_position: 1
-description: 'In this guide we are going to do a deep dive into ClickHouse indexing.'
+description: 'In this guide we're going to do a deep dive into ClickHouse indexing.'
 title: 'A Practical Introduction to Primary Indexes in ClickHouse'
 slug: /guides/best-practices/sparse-primary-indexes
 show_related_blogs: true
@@ -39,7 +39,7 @@ import Image from '@theme/IdealImage';
 
 ## Introduction {#introduction}
 
-In this guide we are going to do a deep dive into ClickHouse indexing. We will illustrate and discuss in detail:
+In this guide we're going to do a deep dive into ClickHouse indexing. We will illustrate and discuss in detail:
 - [how indexing in ClickHouse is different from traditional relational database management systems](#an-index-design-for-massive-data-scales)
 - [how ClickHouse is building and using a table's sparse primary index](#a-table-with-a-primary-key)
 - [what some of the best practices are for indexing in ClickHouse](#using-multiple-primary-indexes)
@@ -113,7 +113,7 @@ OPTIMIZE TABLE hits_NoPrimaryKey FINAL;
 ```
 
 :::note
-In general it is not required nor recommended to immediately optimize a table
+In general it isn't required nor recommended to immediately optimize a table
 after loading data into it. Why this is necessary for this example will become apparent.
 :::
 
@@ -326,7 +326,7 @@ ClickHouse is a <a href="https://clickhouse.com/docs/introduction/distinctive-fe
 :::note
 - As the primary key defines the lexicographical order of the rows on disk, a table can only have one primary key.
 
-- We are numbering rows starting with 0 in order to be aligned with the ClickHouse internal row numbering scheme that is also used for logging messages.
+- We're numbering rows starting with 0 in order to be aligned with the ClickHouse internal row numbering scheme that is also used for logging messages.
 :::
 
 ### Data is organized into granules for parallel data processing {#data-is-organized-into-granules-for-parallel-data-processing}
@@ -335,7 +335,7 @@ For data processing purposes, a table's column values are logically divided into
 A granule is the smallest indivisible data set that is streamed into ClickHouse for data processing.
 This means that instead of reading individual rows, ClickHouse is always reading (in a streaming fashion and in parallel) a whole group (granule) of rows.
 :::note
-Column values are not physically stored inside granules: granules are just a logical organization of the column values for query processing.
+Column values aren't physically stored inside granules: granules are just a logical organization of the column values for query processing.
 :::
 
 The following diagram shows how the (column values of) 8.87 million rows of our table
@@ -358,7 +358,7 @@ The first (based on physical order on disk) 8192 rows (their column values) logi
   These orange-marked column values are the primary key column values of each first row of each granule.
   As we will see below, these orange-marked column values will be the entries in the table's primary index.
 
-- We are numbering granules starting with 0 in order to be aligned with the ClickHouse internal numbering scheme that is also used for logging messages.
+- We're numbering granules starting with 0 in order to be aligned with the ClickHouse internal numbering scheme that is also used for logging messages.
 :::
 
 ### The primary index has one entry per granule {#the-primary-index-has-one-entry-per-granule}
@@ -649,7 +649,7 @@ For our example query, ClickHouse used the primary index and selected a single g
 
 Furthermore, this offset information is only needed for the UserID and URL columns.
 
-Offset information is not needed for columns that are not used in the query e.g. the `EventTime`.
+Offset information isn't needed for columns that aren't used in the query e.g. the `EventTime`.
 
 For our sample query, ClickHouse needs only the two physical location offsets for granule 176 in the UserID data file (UserID.bin) and the two physical location offsets for granule 176 in the URL data file (URL.bin).
 
@@ -682,7 +682,7 @@ In parallel, ClickHouse is doing the same for granule 176 for the URL.bin data f
 
 When a query is filtering on a column that is part of a compound key and is the first key column, [then ClickHouse is running the binary search algorithm over the key column's index marks](#the-primary-index-is-used-for-selecting-granules).
 
-But what happens when a query is filtering on a column that is part of a compound key, but is not the first key column?
+But what happens when a query is filtering on a column that is part of a compound key, but isn't the first key column?
 
 :::note
 We discuss a scenario when a query is explicitly not filtering on the first key column, but on a secondary key column.
@@ -746,9 +746,9 @@ This results in 8.81 million rows being streamed into the ClickHouse engine (in 
 
 However, as we will see later, only 39 granules out of that selected 1076 granules actually contain matching rows.
 
-Whilst the primary index based on the compound primary key (UserID, URL) was very useful for speeding up queries filtering for rows with a specific UserID value, the index is not providing significant help with speeding up the query that filters for rows with a specific URL value.
+Whilst the primary index based on the compound primary key (UserID, URL) was very useful for speeding up queries filtering for rows with a specific UserID value, the index isn't providing significant help with speeding up the query that filters for rows with a specific URL value.
 
-The reason for this is that the URL column is not the first key column and therefore ClickHouse is using a generic exclusion search algorithm (instead of binary search) over the URL column's index marks, and **the effectiveness of that algorithm is dependant on the cardinality difference** between the URL column and its predecessor key column UserID.
+The reason for this is that the URL column isn't the first key column and therefore ClickHouse is using a generic exclusion search algorithm (instead of binary search) over the URL column's index marks, and **the effectiveness of that algorithm is dependant on the cardinality difference** between the URL column and its predecessor key column UserID.
 
 In order to illustrate that, we give some details about how the generic exclusion search works.
 
@@ -782,13 +782,13 @@ There are three different scenarios for the granule selection process for our ab
 
 **Predecessor key column has high(er) cardinality**<a name="generic-exclusion-search-slow"></a>
 
-When the UserID has high cardinality then it is unlikely that the same UserID value is spread over multiple table rows and granules. This means the URL values for the index marks are not monotonically increasing:
+When the UserID has high cardinality then it is unlikely that the same UserID value is spread over multiple table rows and granules. This means the URL values for the index marks aren't monotonically increasing:
 
 <Image img={sparsePrimaryIndexes08} size="md" alt="Sparse Primary Indices 06" background="white"/>
 
 As we can see in the diagram above, all shown marks whose URL values are smaller than W3 are getting selected for streaming its associated granule's rows into the ClickHouse engine.
 
-This is because whilst all index marks in the diagram fall into scenario 1 described above, they do not satisfy the mentioned exclusion-precondition that *the directly succeeding index mark has the same UserID value as the current mark* and thus can't be excluded.
+This is because whilst all index marks in the diagram fall into scenario 1 described above, they don't satisfy the mentioned exclusion-precondition that *the directly succeeding index mark has the same UserID value as the current mark* and thus can't be excluded.
 
 For example, consider index mark 0 for which the **URL value is smaller than W3 and for which the URL value of the directly succeeding index mark is also smaller than W3**. This can *not* be excluded because the directly succeeding index mark 1 does *not* have the same UserID value as the current mark 0.
 
@@ -797,10 +797,10 @@ This ultimately prevents ClickHouse from making assumptions about the maximum UR
 The same scenario is true for mark 1, 2, and 3.
 
 :::note Conclusion
-The <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444" target="_blank">generic exclusion search algorithm</a> that ClickHouse is using instead of the <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">binary search algorithm</a> when a query is filtering on a column that is part of a compound key, but is not the first key column is most effective when the predecessor key column has low(er) cardinality.
+The <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444" target="_blank">generic exclusion search algorithm</a> that ClickHouse is using instead of the <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">binary search algorithm</a> when a query is filtering on a column that is part of a compound key, but isn't the first key column is most effective when the predecessor key column has low(er) cardinality.
 :::
 
-In our sample data set both key columns (UserID, URL) have similar high cardinality, and, as explained, the generic exclusion search algorithm is not very effective when the predecessor key column of the URL column has a high(er) or similar cardinality.
+In our sample data set both key columns (UserID, URL) have similar high cardinality, and, as explained, the generic exclusion search algorithm isn't very effective when the predecessor key column of the URL column has a high(er) or similar cardinality.
 
 ### Note about data skipping index {#note-about-data-skipping-index}
 
@@ -867,7 +867,7 @@ In the following we discuss this three options for creating and using multiple p
 ### Option 1: Secondary Tables {#option-1-secondary-tables}
 
 <a name="secondary-table"></a>
-We are creating a new additional table where we switch the order of the key columns (compared to our original table) in the primary key:
+We're creating a new additional table where we switch the order of the key columns (compared to our original table) in the primary key:
 
 ```sql
 CREATE TABLE hits_URL_UserID
@@ -947,7 +947,7 @@ Processed 319.49 thousand rows,
 
 Now, instead of [almost doing a full table scan](/guides/best-practices/sparse-primary-indexes#efficient-filtering-on-secondary-key-columns), ClickHouse executed that query much more effectively.
 
-With the primary index from the [original table](#a-table-with-a-primary-key) where UserID was the first, and URL the second key column, ClickHouse used a [generic exclusion search](/guides/best-practices/sparse-primary-indexes#generic-exclusion-search-algorithm) over the index marks for executing that query and that was not very effective because of the similarly high cardinality of UserID and URL.
+With the primary index from the [original table](#a-table-with-a-primary-key) where UserID was the first, and URL the second key column, ClickHouse used a [generic exclusion search](/guides/best-practices/sparse-primary-indexes#generic-exclusion-search-algorithm) over the index marks for executing that query and that wasn't very effective because of the similarly high cardinality of UserID and URL.
 
 With URL as the first column in the primary index, ClickHouse is now running <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">binary search</a> over the index marks.
 The corresponding trace log in the ClickHouse server log file confirms that:
@@ -968,7 +968,7 @@ ClickHouse selected only 39 index marks, instead of 1076 when generic exclusion 
 
 Note that the additional table is optimized for speeding up the execution of our example query filtering on URLs.
 
-Similar to the [bad performance](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient) of that query with our [original table](#a-table-with-a-primary-key), our [example query filtering on `UserIDs`](#the-primary-index-is-used-for-selecting-granules) will not run very effectively with the new additional table, because UserID is now the second key column in the primary index of that table and therefore ClickHouse will use generic exclusion search for granule selection, which is [not very effective for similarly high cardinality](/guides/best-practices/sparse-primary-indexes#generic-exclusion-search-algorithm) of UserID and URL.
+Similar to the [bad performance](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient) of that query with our [original table](#a-table-with-a-primary-key), our [example query filtering on `UserIDs`](#the-primary-index-is-used-for-selecting-granules) won't run very effectively with the new additional table, because UserID is now the second key column in the primary index of that table and therefore ClickHouse will use generic exclusion search for granule selection, which is [not very effective for similarly high cardinality](/guides/best-practices/sparse-primary-indexes#generic-exclusion-search-algorithm) of UserID and URL.
 Open the details box for specifics.
 
 <details>
@@ -1130,11 +1130,11 @@ ALTER TABLE hits_UserID_URL
 
 :::note
 - the projection is creating a **hidden table** whose row order and primary index is based on the given `ORDER BY` clause of the projection
-- the hidden table is not listed by the `SHOW TABLES` query
+- the hidden table isn't listed by the `SHOW TABLES` query
 - we use the `MATERIALIZE` keyword in order to immediately populate the hidden table with all 8.87 million rows from the source table [hits_UserID_URL](#a-table-with-a-primary-key)
 - if new rows are inserted into the source table hits_UserID_URL, then that rows are automatically also inserted into the hidden table
 - a query is always (syntactically) targeting the source table hits_UserID_URL, but if the row order and primary index of the hidden table allows a more effective query execution, then that hidden table will be used instead
-- please note that projections do not make queries that use ORDER BY more efficient, even if the ORDER BY matches the projection's ORDER BY statement (see https://github.com/ClickHouse/ClickHouse/issues/47333)
+- please note that projections don't make queries that use ORDER BY more efficient, even if the ORDER BY matches the projection's ORDER BY statement (see https://github.com/ClickHouse/ClickHouse/issues/47333)
 - Effectively the implicitly created hidden table has the same row order and primary index as the [secondary table that we created explicitly](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables):
 
 <Image img={sparsePrimaryIndexes12c1} size="md" alt="Sparse Primary Indices 12c1" background="white"/>
@@ -1199,7 +1199,7 @@ The corresponding trace log in the ClickHouse server log file confirms that Clic
 
 ### Summary {#summary}
 
-The primary index of our [table with compound primary key (UserID, URL)](#a-table-with-a-primary-key) was very useful for speeding up a [query filtering on UserID](#the-primary-index-is-used-for-selecting-granules). But that index is not providing significant help with speeding up a [query filtering on URL](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient), despite the URL column being part of the compound primary key.
+The primary index of our [table with compound primary key (UserID, URL)](#a-table-with-a-primary-key) was very useful for speeding up a [query filtering on UserID](#the-primary-index-is-used-for-selecting-granules). But that index isn't providing significant help with speeding up a [query filtering on URL](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient), despite the URL column being part of the compound primary key.
 
 And vice versa:
 The primary index of our [table with compound primary key (URL, UserID)](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables) was speeding up a [query filtering on URL](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient), but didn't provide much support for a [query filtering on UserID](#the-primary-index-is-used-for-selecting-granules).
@@ -1225,9 +1225,9 @@ where each row contains three columns that indicate whether or not the access by
 
 We will use a compound primary key containing all three aforementioned columns that could be used to speed up typical web analytics queries that calculate
 - how much (percentage of) traffic to a specific URL is from bots or
-- how confident we are that a specific user is (not) a bot (what percentage of traffic from that user is (not) assumed to be bot traffic)
+- how confident we're that a specific user is (not) a bot (what percentage of traffic from that user is (not) assumed to be bot traffic)
 
-We use this query for calculating the cardinalities of the three columns that we want to use as key columns in a compound primary key (note that we are using the [URL table function](/sql-reference/table-functions/url.md) for querying TSV data ad hoc without having to create a local table). Run this query in `clickhouse client`:
+We use this query for calculating the cardinalities of the three columns that we want to use as key columns in a compound primary key (note that we're using the [URL table function](/sql-reference/table-functions/url.md) for querying TSV data ad hoc without having to create a local table). Run this query in `clickhouse client`:
 ```sql
 SELECT
     formatReadableQuantity(uniq(URL)) AS cardinality_URL,
@@ -1254,7 +1254,7 @@ The response is:
 
 We can see that there is a big difference between the cardinalities, especially between the `URL` and `IsRobot` columns, and therefore the order of these columns in a compound primary key is significant for both the efficient speed up of queries filtering on that columns and for achieving optimal compression ratios for the table's column data files.
 
-In order to demonstrate that we are creating two table versions for our bot traffic analysis data:
+In order to demonstrate that we're creating two table versions for our bot traffic analysis data:
 - a table `hits_URL_UserID_IsRobot` with the compound primary key `(URL, UserID, IsRobot)` where we order the key columns by cardinality in descending order
 - a table `hits_IsRobot_UserID_URL` with the compound primary key `(IsRobot, UserID, URL)` where we order the key columns by cardinality in ascending order
 
@@ -1316,7 +1316,7 @@ The response is:
 
 When a query is filtering on at least one column that is part of a compound key, and is the first key column, [then ClickHouse is running the binary search algorithm over the key column's index marks](#the-primary-index-is-used-for-selecting-granules).
 
-When a query is filtering (only) on a column that is part of a compound key, but is not the first key column, [then ClickHouse is using the generic exclusion search algorithm over the key column's index marks](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient).
+When a query is filtering (only) on a column that is part of a compound key, but isn't the first key column, [then ClickHouse is using the generic exclusion search algorithm over the key column's index marks](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient).
 
 For the second case the ordering of the key columns in the compound primary key is significant for the effectiveness of the [generic exclusion search algorithm](https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444).
 

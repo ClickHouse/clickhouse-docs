@@ -83,7 +83,7 @@ LIMIT 2;
 2 rows in set. Elapsed: 0.003 sec.
 ```
 
-The `JSONAsObject` format may also be useful for reading newline-delimited JSON in cases where the structure of the objects is inconsistent. For example, if a key varies in type across rows (it may sometimes be a string, but other times an object). In such cases, ClickHouse cannot infer a stable schema using `JSONEachRow`, and `JSONAsObject` allows the data to be ingested without strict type enforcement, storing each JSON row as a whole in a single column. For example, notice how `JSONEachRow` fails on the following example:
+The `JSONAsObject` format may also be useful for reading newline-delimited JSON in cases where the structure of the objects is inconsistent. For example, if a key varies in type across rows (it may sometimes be a string, but other times an object). In such cases, ClickHouse can't infer a stable schema using `JSONEachRow`, and `JSONAsObject` allows the data to be ingested without strict type enforcement, storing each JSON row as a whole in a single column. For example, notice how `JSONEachRow` fails on the following example:
 
 ```sql
 SELECT count()

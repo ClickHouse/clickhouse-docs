@@ -61,7 +61,7 @@ target_link_libraries(your-target PRIVATE clickhouse-cpp-lib)
 ### Setting the client object {#example-setup-client}
 
 Create a `Client` instance to establish a connection to ClickHouse. The following example
-demonstrates connecting to a local ClickHouse instance, where no password is required and SSL is not
+demonstrates connecting to a local ClickHouse instance, where no password is required and SSL isn't
 enabled.
 
 ```cpp
@@ -88,7 +88,7 @@ clickhouse::Client client{
 
 ### Creating tables and running queries without data {#example-create-table}
 
-To execute a query that does not return any data, such as creating tables, use the `Execute` method.
+To execute a query that doesn't return any data, such as creating tables, use the `Execute` method.
 The same approach applies to other statements like `ALTER TABLE`, `DROP`, etc..
 
 ```cpp

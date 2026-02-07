@@ -24,7 +24,7 @@ You'll be able to access API endpoints via HTTP to execute your saved queries wi
 
 ## IP Access Control {#ip-access-control}
 
-Query API endpoints respect API key-level IP whitelisting. Similar to the SQL Console, Query API endpoints proxy requests from within ClickHouse's infrastructure, so service-level IP whitelist settings do not apply.
+Query API endpoints respect API key-level IP whitelisting. Similar to the SQL Console, Query API endpoints proxy requests from within ClickHouse's infrastructure, so service-level IP whitelist settings don't apply.
 
 To restrict which clients can call your Query API endpoints:
 

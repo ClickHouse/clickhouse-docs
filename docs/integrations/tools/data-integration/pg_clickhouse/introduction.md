@@ -131,7 +131,7 @@ sudo make install
 
 <!-- XXX DSO currently disabled.
 By default `make` dynamically links the `clickhouse-cpp` library (except on
-macOS, where a dynamic `clickhouse-cpp` library is not yet supported). To
+macOS, where a dynamic `clickhouse-cpp` library isn't yet supported). To
 statically compile the ClickHouse library into `pg_clickhouse`, pass
 `CH_BUILD=static`:
 
@@ -150,7 +150,7 @@ make
 sudo make install
 ```
 
-If `curl-config` is not in the path on you host, you can specify the path
+If `curl-config` isn't in the path on you host, you can specify the path
 explicitly:
 
 ```sh

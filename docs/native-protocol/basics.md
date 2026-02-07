@@ -26,7 +26,7 @@ For lengths, packet codes and other cases the *unsigned varint* encoding is used
 Use [binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) and [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint).
 
 :::note
-*Signed* varint is not used.
+*Signed* varint isn't used.
 :::
 
 ## String {#string}

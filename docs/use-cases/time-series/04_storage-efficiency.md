@@ -59,7 +59,7 @@ ALTER TABLE wikistat
 MODIFY COLUMN `hits` UInt32;
 ```
 
-This will reduce the size of this column in memory by at least a factor of two. Note that the size on disk will remain unchanged due to compression. But be careful, pick data types that are not too small!
+This will reduce the size of this column in memory by at least a factor of two. Note that the size on disk will remain unchanged due to compression. But be careful, pick data types that aren't too small!
 
 ## Specialized codecs {#time-series-specialized-codecs}
 

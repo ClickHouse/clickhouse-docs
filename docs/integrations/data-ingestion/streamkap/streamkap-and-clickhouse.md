@@ -93,7 +93,7 @@ By default, Streamkap uses an upsert ingestion mode. When it creates a table in 
 
 - **Updates** in the source are written as new rows in ClickHouse. During its background merge process, ReplacingMergeTree collapses these rows, keeping only the latest version based on the ordering key.
 
-- **Deletes** are handled by a metadata flag feeding the ReplacingMergeTree ```is_deleted``` parameter. Rows deleted at the source are not removed immediately but are marked as deleted.
+- **Deletes** are handled by a metadata flag feeding the ReplacingMergeTree ```is_deleted``` parameter. Rows deleted at the source aren't removed immediately but are marked as deleted.
   - Optionally deleted records can be kept in ClickHouse for analytics purposes
 
 ### Metadata Columns {#metadata-columns}

@@ -63,14 +63,14 @@ your_profile_name:
 ```
 ### Schema vs Database {#schema-vs-database}
 
-The dbt model relation identifier `database.schema.table` is not compatible with Clickhouse because Clickhouse does not
+The dbt model relation identifier `database.schema.table` isn't compatible with Clickhouse because Clickhouse doesn't
 support a `schema`.
 So we use a simplified approach `schema.table`, where `schema` is the Clickhouse database. Using the `default` database
-is not recommended.
+isn't recommended.
 
 ### SET Statement Warning {#set-statement-warning}
 
-In many environments, using the SET statement to persist a ClickHouse setting across all DBT queries is not reliable
+In many environments, using the SET statement to persist a ClickHouse setting across all DBT queries isn't reliable
 and can cause unexpected failures. This is particularly true when using HTTP connections through a load balancer that
 distributes queries across multiple nodes (such as ClickHouse cloud), although in some circumstances this can also
 happen with native ClickHouse connections. Accordingly, we recommend configuring any required ClickHouse settings in the
@@ -90,7 +90,7 @@ seeds:
 
 When using a ClickHouse cluster, you need to consider two things:
 - Setting the `cluster` setting.
-- Ensuring read-after-write consistency, especially if you are using more than one `threads`.
+- Ensuring read-after-write consistency, especially if you're using more than one `threads`.
 
 #### Cluster Setting {#cluster-setting}
 
@@ -101,7 +101,7 @@ The `cluster` setting in profile enables dbt-clickhouse to run against a ClickHo
 - Table and incremental materializations
 - Distributed materializations
 
-Replicated engines will **not** include the `ON CLUSTER` clause, as they are designed to manage replication internally.
+Replicated engines will **not** include the `ON CLUSTER` clause, as they're designed to manage replication internally.
 
 To **opt out** of cluster-based creation for a specific model, add the `disable_on_cluster` config:
 
@@ -115,7 +115,7 @@ To **opt out** of cluster-based creation for a specific model, add the `disable_
 
 ```
 
-table and incremental materializations with non-replicated engine will not be affected by `cluster` setting (model would
+table and incremental materializations with non-replicated engine won't be affected by `cluster` setting (model would
 be created on the connected node only).
 
 **Compatibility**
@@ -125,9 +125,9 @@ without `on cluster` clause for this model.
 
 #### Read-after-write Consistency {#read-after-write-consistency}
 
-dbt relies on a read-after-insert consistency model. This is not compatible with ClickHouse clusters that have more than one replica if you cannot guarantee that all operations will go to the same replica. You may not encounter problems in your day-to-day usage of dbt, but there are some strategies depending on your cluster to have this guarantee in place:
-- If you are using a ClickHouse Cloud cluster, you only need to set `select_sequential_consistency: 1` in your profile's `custom_settings` property. You can find more information about this setting [here](/operations/settings/settings#select_sequential_consistency).
-- If you are using a self-hosted cluster, make sure all dbt requests are sent to the same ClickHouse replica. If you have a load balancer on top of it, try using some `replica aware routing`/`sticky sessions` mechanism to be able to always reach the same replica. Adding the setting `select_sequential_consistency = 1` in clusters outside ClickHouse Cloud is [not recommended](/operations/settings/settings#select_sequential_consistency).
+dbt relies on a read-after-insert consistency model. This isn't compatible with ClickHouse clusters that have more than one replica if you can't guarantee that all operations will go to the same replica. You may not encounter problems in your day-to-day usage of dbt, but there are some strategies depending on your cluster to have this guarantee in place:
+- If you're using a ClickHouse Cloud cluster, you only need to set `select_sequential_consistency: 1` in your profile's `custom_settings` property. You can find more information about this setting [here](/operations/settings/settings#select_sequential_consistency).
+- If you're using a self-hosted cluster, make sure all dbt requests are sent to the same ClickHouse replica. If you have a load balancer on top of it, try using some `replica aware routing`/`sticky sessions` mechanism to be able to always reach the same replica. Adding the setting `select_sequential_consistency = 1` in clusters outside ClickHouse Cloud is [not recommended](/operations/settings/settings#select_sequential_consistency).
 
 ## General information about features {#general-information-about-features}
 
@@ -389,7 +389,7 @@ caveats to using this strategy:
   rare cases using non-deterministic incremental_predicates
   this could result in a race condition for the updated/deleted items (and related log messages in the ClickHouse logs).
   To ensure consistent results the
-  incremental predicates should only include sub-queries on data that will not be modified during the incremental
+  incremental predicates should only include sub-queries on data that won't be modified during the incremental
   materialization.
 
 ##### The Microbatch Strategy (Requires dbt-core >= 1.9) {#microbatch-strategy}
@@ -420,14 +420,14 @@ For detailed microbatch usage, refer to the [official documentation](https://doc
 
 This strategy replaces the `inserts_only` setting in previous versions of dbt-clickhouse. This approach simply appends
 new rows to the existing relation.
-As a result duplicate rows are not eliminated, and there is no temporary or intermediate table. It is the fastest
+As a result duplicate rows aren't eliminated, and there is no temporary or intermediate table. It is the fastest
 approach if duplicates are either permitted
 in the data or excluded by the incremental query WHERE clause/filter.
 
 ##### The insert_overwrite Strategy (Experimental) {#insert-overwrite-strategy}
 
 > [IMPORTANT]  
-> Currently, the insert_overwrite strategy is not fully functional with distributed materializations.
+> Currently, the insert_overwrite strategy isn't fully functional with distributed materializations.
 
 Performs the following steps:
 
@@ -440,7 +440,7 @@ This approach has the following advantages:
 
 - It is faster than the default strategy because it doesn't copy the entire table.
 - It is safer than other strategies because it doesn't modify the original table until the INSERT operation completes
-  successfully: in case of intermediate failure, the original table is not modified.
+  successfully: in case of intermediate failure, the original table isn't modified.
 - It implements "partitions immutability" data engineering best practice. Which simplifies incremental and parallel data
   processing, rollbacks, etc.
 
@@ -479,14 +479,14 @@ select a,b,c from {{ source('raw', 'table_2') }}
 > IMPORTANT!
 >
 > When updating a model with multiple materialized views (MVs), especially when renaming one of the MV names,
-> dbt-clickhouse does not automatically drop the old MV. Instead,
+> dbt-clickhouse doesn't automatically drop the old MV. Instead,
 > you will encounter the following warning:
 `Warning - Table <previous table name> was detected with the same pattern as model name <your model name> but was not found in this run. In case it is a renamed mv that was previously part of this model, drop it manually (!!!) `
 
 #### How to iterate the target table schema {#how-to-iterate-the-target-table-schema}
 Starting with dbt-clickhouse version 1.9.8, you can control how the target table schema is iterated when `dbt run` encounters different columns in the MV's SQL.
 
-By default, dbt will not apply any changes to the target table (`ignore` setting value), but you can change this setting to follow the same behavior as the `on_schema_change` config [in incremental models](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change).
+By default, dbt won't apply any changes to the target table (`ignore` setting value), but you can change this setting to follow the same behavior as the `on_schema_change` config [in incremental models](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change).
 
 Also, you can use this setting as a safety mechanism. If you set it to `fail`, the build will fail if the columns in the MV's SQL differ from the target table that was created by the first `dbt run`.
 
@@ -532,7 +532,7 @@ refreshable config object):
 |-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|---------------|
 | refresh_interval      | The interval clause (required)                                                                                                                                           | Yes      |               |
 | randomize             | The randomization clause, will appear after `RANDOMIZE FOR`                                                                                                              |          |               |
-| append                | If set to `True`, each refresh inserts rows into the table without deleting existing rows. The insert is not atomic, just like a regular INSERT SELECT.                  |          | False         |
+| append                | If set to `True`, each refresh inserts rows into the table without deleting existing rows. The insert isn't atomic, just like a regular INSERT SELECT.                  |          | False         |
 | depends_on            | A dependencies list for the refreshable mv. Please provide the dependencies in the following format `{schema}.{view_name}`                                               |          |               |
 | depends_on_validation | Whether to validate the existence of the dependencies provided in `depends_on`. In case a dependency doesn't contain a schema, the validation occurs on schema `default` |          | False         |
 
@@ -555,15 +555,15 @@ A config example for refreshable materialized view:
 
 #### Limitations {#limitations}
 
-* When creating a refreshable materialized view (MV) in ClickHouse that has a dependency, ClickHouse does not throw an
-  error if the specified dependency does not exist at the time of creation. Instead, the refreshable MV remains in an
+* When creating a refreshable materialized view (MV) in ClickHouse that has a dependency, ClickHouse doesn't throw an
+  error if the specified dependency doesn't exist at the time of creation. Instead, the refreshable MV remains in an
   inactive state, waiting for the dependency to be satisfied before it starts processing updates or refreshing.
-  This behavior is by design, but it may lead to delays in data availability if the required dependency is not addressed
+  This behavior is by design, but it may lead to delays in data availability if the required dependency isn't addressed
   promptly. Users are advised to ensure all dependencies are correctly defined and exist before creating a refreshable
   materialized view.
-* As of today, there is no actual "dbt linkage" between the mv and its dependencies, therefore the creation order is not
+* As of today, there is no actual "dbt linkage" between the mv and its dependencies, therefore the creation order isn't
   guaranteed.
-* The refreshable feature was not tested with multiple mvs directing to the same target model.
+* The refreshable feature wasn't tested with multiple mvs directing to the same target model.
 
 ### Materialization: dictionary (experimental) {#materialization-dictionary}
 
@@ -638,7 +638,7 @@ strategies correctly.
 2. _The Delete+Insert_ Strategy creates distributed temp table to work with all data on every shard.
 3. _The Default (Legacy) Strategy_ creates distributed temp and intermediate tables for the same reason.
 
-Only shard tables are replacing, because distributed table does not keep data.
+Only shard tables are replacing, because distributed table doesn't keep data.
 The distributed table reloads only when the full_refresh mode is enabled or the table structure may have changed.
 
 #### Distributed incremental model example {#distributed-incremental-model-example}
@@ -700,7 +700,7 @@ For more information on configuration, check out the [snapshot configs](https://
 Only exact column type contracts are supported. For example, a contract with a UInt32 column type will fail if the model
 returns a UInt64 or other integer type.
 ClickHouse also support _only_ `CHECK` constraints on the entire table/model. Primary key, foreign key, unique, and
-column level CHECK constraints are not supported.
+column level CHECK constraints aren't supported.
 (See ClickHouse documentation on primary/order by keys.)
 
 ### Additional ClickHouse Macros {#additional-clickhouse-macros}
@@ -761,7 +761,7 @@ dbt-clickhouse supports most of the cross database macros now included in `dbt C
 
 ### dbt Catalog Integration Status {#dbt-catalog-integration-status}
 
-dbt Core v1.10 introduced catalog integration support, which allows adapters to materialize models into external catalogs that manage open table formats like Apache Iceberg. **This feature is not yet natively implemented in dbt-clickhouse.** You can track the progress of this feature implementation in [GitHub issue #489](https://github.com/ClickHouse/dbt-clickhouse/issues/489).
+dbt Core v1.10 introduced catalog integration support, which allows adapters to materialize models into external catalogs that manage open table formats like Apache Iceberg. **This feature isn't yet natively implemented in dbt-clickhouse.** You can track the progress of this feature implementation in [GitHub issue #489](https://github.com/ClickHouse/dbt-clickhouse/issues/489).
 
 ### ClickHouse Catalog Support {#clickhouse-catalog-support}
 
@@ -822,5 +822,5 @@ The good things about these workarounds are:
 
 But there are currently some limitations:
 * **Manual setup:** Iceberg tables and catalog databases must be created manually in ClickHouse before they can be referenced in dbt.
-* **No catalog-level DDL:** dbt cannot manage catalog-level operations like creating or dropping Iceberg tables in external catalogs. So you will not be able to create them right now from the dbt connector. Creating tables with the Iceberg() engines may be added in the future.
+* **No catalog-level DDL:** dbt can't manage catalog-level operations like creating or dropping Iceberg tables in external catalogs. So you won't be able to create them right now from the dbt connector. Creating tables with the Iceberg() engines may be added in the future.
 * **Write operations:** Currently, writing into Iceberg/Data Catalog tables is limited. Check the ClickHouse documentation to understand which options are available.

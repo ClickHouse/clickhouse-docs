@@ -146,11 +146,11 @@ The supported `JOIN` types for each join algorithm are shown below and should be
 
 A full detailed description of each `JOIN` algorithm can be found [here](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2), including their pros, cons, and scaling properties.
 
-Selecting the appropriate join algorithms depends on whether you are looking to optimize for memory or performance.
+Selecting the appropriate join algorithms depends on whether you're looking to optimize for memory or performance.
 
 ## Optimizing JOIN performance {#optimizing-join-performance}
 
-If your key optimization metric is performance and you are looking to execute the join as fast as possible, you can use the following decision tree for choosing the right join algorithm:
+If your key optimization metric is performance and you're looking to execute the join as fast as possible, you can use the following decision tree for choosing the right join algorithm:
 
 <br />
 
@@ -183,6 +183,6 @@ If you want to optimize a join for the lowest memory usage instead of the fastes
 <br />
 
 - **(1)** If your table's physical row order matches the join key sort order, then the memory usage of the **full sorting merge join** is as low as it gets. With the additional benefit of good join speed because the sorting phase is [disabled](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3#utilizing-physical-row-order).
-- **(2)** The **grace hash join** can be tuned for very low memory usage by [configuring](https://github.com/ClickHouse/ClickHouse/blob/23.5/src/Core/Settings.h#L759) a high number of [buckets](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2#description-2) at the expense of join speed. The **partial merge join** intentionally uses a low amount of main memory. The **full sorting merge join** with external sorting enabled generally uses more memory than the partial merge join (assuming the row order does not match the key sort order), with the benefit of significantly better join execution time.
+- **(2)** The **grace hash join** can be tuned for very low memory usage by [configuring](https://github.com/ClickHouse/ClickHouse/blob/23.5/src/Core/Settings.h#L759) a high number of [buckets](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2#description-2) at the expense of join speed. The **partial merge join** intentionally uses a low amount of main memory. The **full sorting merge join** with external sorting enabled generally uses more memory than the partial merge join (assuming the row order doesn't match the key sort order), with the benefit of significantly better join execution time.
 
 For users needing more details on the above, we recommend the following [blog series](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1).

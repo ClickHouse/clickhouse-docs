@@ -25,7 +25,7 @@ After creating a [database user identified by an SSH key](/knowledgebase/how-to-
 CREATE USER abcuser IDENTIFIED WITH ssh_key BY KEY '<REDACTED>' TYPE 'ssh-ed25519';
 ```
 
-You are able to use this key to connect to a ClickHouse server. It will open a pseudoterminal (PTY) with an interactive session of clickhouse-client.
+You're able to use this key to connect to a ClickHouse server. It will open a pseudoterminal (PTY) with an interactive session of clickhouse-client.
 
 ```bash
 > ssh -i ~/test_ssh/id_ed25519 abcuser@localhost -p 9022
@@ -83,7 +83,7 @@ ssh -o "StrictHostKeyChecking no" user@host
 
 ## Configuring embedded client {#configuring-embedded-client}
 
-You are able to pass options to an embedded client similar to the ordinary `clickhouse-client`, but with a few limitations.
+You're able to pass options to an embedded client similar to the ordinary `clickhouse-client`, but with a few limitations.
 Since this is an SSH protocol, the only way to pass parameters to the target host is through environment variables.
 
 For example setting the `format` can be done this way:
@@ -97,7 +97,7 @@ For example setting the `format` can be done this way:
    └───┘
 ```
 
-You are able to change any user-level setting this way and additionally pass most of the ordinary `clickhouse-client` options (except ones which don't make sense in this setup.)
+You're able to change any user-level setting this way and additionally pass most of the ordinary `clickhouse-client` options (except ones which don't make sense in this setup.)
 
 Important:
 

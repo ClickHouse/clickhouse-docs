@@ -24,7 +24,7 @@ After a pipe is provisioned, it enters the `Setup` state. This state is where we
 
 ## Snapshot {#snapshot}
 
-Once setup is complete, we enter the `Snapshot` state (unless it's a CDC-only pipe, which would transition to `Running`). `Snapshot`, `Initial Snapshot` and `Initial Load` (more common) are interchangeable terms. In this state, we take a snapshot of the source database tables and load them into ClickHouse. This does not use logical replication, but the replication slot is created at this step, therefore your `max_slot_wal_keep_size` and storage parameters should account for slot growth during initial load. For more information on initial load, see the [parallel initial load documentation](./parallel_initial_load). The pipe will also enter the `Snapshot` state when a resync is triggered or when new tables are added to an existing pipe.
+Once setup is complete, we enter the `Snapshot` state (unless it's a CDC-only pipe, which would transition to `Running`). `Snapshot`, `Initial Snapshot` and `Initial Load` (more common) are interchangeable terms. In this state, we take a snapshot of the source database tables and load them into ClickHouse. This doesn't use logical replication, but the replication slot is created at this step, therefore your `max_slot_wal_keep_size` and storage parameters should account for slot growth during initial load. For more information on initial load, see the [parallel initial load documentation](./parallel_initial_load). The pipe will also enter the `Snapshot` state when a resync is triggered or when new tables are added to an existing pipe.
 
 ## Running {#running}
 
@@ -39,7 +39,7 @@ Once the pipe is in the `Running` state, you can pause it. This will stop the CD
 :::note
 This state is coming soon. If you're using our [OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi), consider adding support for it now to ensure your integration continues working when it's released.
 :::
-When you click on the Pause button, the pipe enters the `Pausing` state. This is a transient state where we are in the process of stopping the CDC process. Once the CDC process is fully stopped, the pipe will enter the `Paused` state.
+When you click on the Pause button, the pipe enters the `Pausing` state. This is a transient state where we're in the process of stopping the CDC process. Once the CDC process is fully stopped, the pipe will enter the `Paused` state.
 
 ## Modifying {#modifying}
 :::note

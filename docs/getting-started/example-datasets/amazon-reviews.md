@@ -123,7 +123,7 @@ FROM s3Cluster('default',
 ```
 
 :::tip
-In ClickHouse Cloud, the name of the cluster is `default`. Change `default` to the name of your cluster...or use the `s3` table function (instead of `s3Cluster`) if you do not have a cluster.
+In ClickHouse Cloud, the name of the cluster is `default`. Change `default` to the name of your cluster...or use the `s3` table function (instead of `s3Cluster`) if you don't have a cluster.
 :::
 
 5. That query doesn't take long - averaging about 300,000 rows per second. Within 5 minutes or so you should see all the rows inserted:

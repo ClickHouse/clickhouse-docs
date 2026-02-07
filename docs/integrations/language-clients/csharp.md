@@ -139,7 +139,7 @@ The `ClickHouseConnection` class normally allows for parallel operation (multipl
 | Roles | `IReadOnlyList<string>` | Empty | `Roles` | Comma-separated ClickHouse roles (e.g., `Roles=admin,reader`) |
 
 :::note
-When using a connection string to set custom settings, use the `set_` prefix, e.g. "set_max_threads=4". When using a ClickHouseClientSettings object, do not use the `set_` prefix.
+When using a connection string to set custom settings, use the `set_` prefix, e.g. "set_max_threads=4". When using a ClickHouseClientSettings object, don't use the `set_` prefix.
 
 For a full list of available settings, see [here](https://clickhouse.com/docs/operations/settings/settings).
 :::
@@ -176,7 +176,7 @@ Choose **C#**. Connection details are displayed below.
 
 <Image img={connection_details_csharp} size="md" alt="ClickHouse Cloud C# connection details" border />
 
-If you are using self-managed ClickHouse, the connection details are set by your ClickHouse administrator.
+If you're using self-managed ClickHouse, the connection details are set by your ClickHouse administrator.
 
 Using a connection string:
 
@@ -290,7 +290,7 @@ Console.WriteLine($"Rows written: {bulkCopy.RowsWritten}");
 * Column names can be optionally provided via `ColumnNames` property if source data has fewer columns than target table.
 * Configurable parameters: `Columns`, `BatchSize`, `MaxDegreeOfParallelism`.
 * Before copying, a `SELECT * FROM <table> LIMIT 0` query is performed to get information about target table structure. Types of provided objects must reasonably match the target table.
-* Sessions are not compatible with parallel insertion. Connection passed to `ClickHouseBulkCopy` must have sessions disabled, or `MaxDegreeOfParallelism` must be set to `1`.
+* Sessions aren't compatible with parallel insertion. Connection passed to `ClickHouseBulkCopy` must have sessions disabled, or `MaxDegreeOfParallelism` must be set to `1`.
 :::
 
 ---
@@ -364,7 +364,7 @@ Console.WriteLine($"QueryId: {command.QueryId}");
 ```
 
 :::tip
-If you are overriding the `QueryId` parameter, you need to ensure its uniqueness for every call. A random GUID is a good choice.
+If you're overriding the `QueryId` parameter, you need to ensure its uniqueness for every call. A random GUID is a good choice.
 :::
 
 ---
@@ -416,9 +416,9 @@ For additional practical usage examples, see the [examples directory](https://gi
 
 `ClickHouse.Driver` uses `System.Net.Http.HttpClient` under the hood. `HttpClient` has a per-endpoint connection pool. As a consequence:
 
-* A `ClickHouseConnection` object does not have 1:1 mapping to TCP connections - multiple database sessions will be multiplexed through several TCP connections per server.
+* A `ClickHouseConnection` object doesn't have 1:1 mapping to TCP connections - multiple database sessions will be multiplexed through several TCP connections per server.
 * `ClickHouseConnection` objects can be long-lived; the actual TCP connections underneath will be recycled by the connection pool.
-* Let `HttpClient` manage connection pooling internally. Do not pool `ClickHouseConnection` objects yourself. 
+* Let `HttpClient` manage connection pooling internally. Don't pool `ClickHouseConnection` objects yourself. 
 * Connections can stay alive after `ClickHouseConnection` object was disposed.
 * This behavior can be tweaked by passing a custom `HttpClientFactory` or `HttpClient` with custom `HttpClientHandler`.
 
@@ -467,7 +467,7 @@ settings.CustomSettings["wait_for_async_insert"] = 1; // Recommended: wait for f
 | `wait_for_async_insert=0` | Insert returns immediately when data is buffered. No guarantee data will be persisted. | Only when data loss is acceptable |
 
 :::warning
-With `wait_for_async_insert=0`, errors only surface during flush and cannot be traced back to the original insert. The client also provides no backpressure, risking server overload.
+With `wait_for_async_insert=0`, errors only surface during flush and can't be traced back to the original insert. The client also provides no backpressure, risking server overload.
 :::
 
 **Key settings:**
@@ -761,7 +761,7 @@ There is an important difference between HTTP parameter binding and bulk copy wh
 
 **Bulk Copy** knows the target column's timezone and correctly interprets `Unspecified` values in that timezone.
 
-**HTTP Parameters** do not automatically know the column timezone. You must specify it in the parameter type hint:
+**HTTP Parameters** don't automatically know the column timezone. You must specify it in the parameter type hint:
 
 ```csharp
 // CORRECT: Timezone in type hint
@@ -868,7 +868,7 @@ await bulkCopy.WriteToServerAsync(new[] { row1, row2 });
 
 ## Logging and diagnostics {#logging-and-diagnostics}
 
-The ClickHouse .NET client integrates with the `Microsoft.Extensions.Logging` abstractions to offer lightweight, opt-in logging. When enabled, the driver emits structured messages for connection lifecycle events, command execution, transport operations, and bulk copy uploads. Logging is entirely optional—applications that do not configure a logger continue to run without additional overhead.
+The ClickHouse .NET client integrates with the `Microsoft.Extensions.Logging` abstractions to offer lightweight, opt-in logging. When enabled, the driver emits structured messages for connection lifecycle events, command execution, transport operations, and bulk copy uploads. Logging is entirely optional—applications that don't configure a logger continue to run without additional overhead.
 
 ### Quick start {#logging-quick-start}
 
@@ -996,7 +996,7 @@ This will log:
 
 ### Debug mode: network tracing and diagnostics {#logging-debugmode}
 
-To help with diagnosing networking issues, the driver library includes a helper that enables low-level tracing of .NET networking internals. To enable it you must pass a LoggerFactory with the level set to Trace, and set EnableDebugMode to true (or manually enable it via the `ClickHouse.Driver.Diagnostic.TraceHelper` class). Events will be logged to the `ClickHouse.Driver.NetTrace` category. Warning: this will generate extremely verbose logs, and impact performance. It is not recommended to enable debug mode in production.
+To help with diagnosing networking issues, the driver library includes a helper that enables low-level tracing of .NET networking internals. To enable it you must pass a LoggerFactory with the level set to Trace, and set EnableDebugMode to true (or manually enable it via the `ClickHouse.Driver.Diagnostic.TraceHelper` class). Events will be logged to the `ClickHouse.Driver.NetTrace` category. Warning: this will generate extremely verbose logs, and impact performance. It isn't recommended to enable debug mode in production.
 
 ```csharp
 var loggerFactory = LoggerFactory.Create(builder =>
@@ -1123,7 +1123,7 @@ await connection.OpenAsync();
 
 :::note 
 Important considerations when providing a custom HttpClient
-- **Automatic decompression**: You must enable `AutomaticDecompression` if compression is not disabled (compression is enabled by default).
+- **Automatic decompression**: You must enable `AutomaticDecompression` if compression isn't disabled (compression is enabled by default).
 - **Idle timeout**: Set `PooledConnectionIdleTimeout` smaller than the server's `keep_alive_timeout` (10 seconds for ClickHouse Cloud) to avoid connection errors from half-open connections.
 :::
 
@@ -1131,7 +1131,7 @@ Important considerations when providing a custom HttpClient
 
 ### Dapper {#orm-support-dapper}
 
-`ClickHouse.Driver` can be used with Dapper, but anonymous objects are not supported.
+`ClickHouse.Driver` can be used with Dapper, but anonymous objects aren't supported.
 
 **Working example:**
 
@@ -1219,7 +1219,7 @@ Entity Framework Core is currently not supported.
 
 ### AggregateFunction columns {#aggregatefunction-columns}
 
-Columns of type `AggregateFunction(...)` cannot be queried or inserted directly.
+Columns of type `AggregateFunction(...)` can't be queried or inserted directly.
 
 To insert:
 

@@ -213,7 +213,7 @@ The query was successfully executed.
 |-------------|-------------|
 | `400 Bad Request` | The request was malformed |
 | `401 Unauthorized` | Missing authentication or insufficient permissions |
-| `404 Not Found` | The specified query endpoint was not found |
+| `404 Not Found` | The specified query endpoint wasn't found |
 
 #### Error handling best practices {#error-handling-best-practices}
 
