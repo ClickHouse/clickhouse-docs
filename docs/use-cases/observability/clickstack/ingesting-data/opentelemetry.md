@@ -13,7 +13,7 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 All data is ingested into ClickStack via an **OpenTelemetry (OTel) collector** instance, which acts as the primary entry point for logs, metrics, traces, and session data. We recommend using the official [ClickStack distribution](#installing-otel-collector) of the collector for this instance.
 
-Users send data to this collector from [language SDKs](/use-cases/observability/clickstack/sdks) or through data collection agents collecting infrastructure metrics and logs (such OTel collectors in an [agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) role or other technologies e.g. [Fluentd](https://www.fluentd.org/) or [Vector](https://vector.dev/)).
+Users send data to this collector from [language SDKs](/use-cases/observability/clickstack/sdks) or through data collection agents collecting infrastructure metrics and logs (such OTel collectors in an [agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) role or other technologies e.g. [Fluentd](https://www.fluentd.org/) or [Vector](https://vector.dev/)). For a streamlined setup, [Bindplane](https://clickhouse.com/docs/use-cases/observability/clickstack/integration-partners/bindplane) is an OpenTelemetry-native telemetry pipeline with a native ClickStack destination that simplifies collecting, processing, and routing telemetry to ClickStack.
 
 ## Installing ClickStack OpenTelemetry collector {#installing-otel-collector}
 
