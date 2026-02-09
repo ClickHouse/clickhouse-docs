@@ -1096,6 +1096,7 @@ POCOs
 QueryId
 QueryOptions
 ReadStringsAsByteArrays
+MaxExecutionTime
 --docs/whats-new/roadmap.md--
 roadmaps
 --docs/integrations/language-clients/python/index.md--
