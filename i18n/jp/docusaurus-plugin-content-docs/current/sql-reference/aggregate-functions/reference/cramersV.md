@@ -16,7 +16,7 @@ doc_type: 'reference'
 これは、2 つの変数間の連関を、それらが取り得る最大限の変動量に対する割合として解釈できます。
 
 :::note
-バイアス補正済みの Cramer&#39;s V については、[cramersVBiasCorrected](./cramersvbiascorrected.md) を参照してください。
+バイアス補正済みの Cramer&#39;s V については、[cramersVBiasCorrected](/sql-reference/aggregate-functions/reference/cramersvbiascorrected) を参照してください。
 :::
 
 **構文**
