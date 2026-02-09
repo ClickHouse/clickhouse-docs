@@ -10,12 +10,12 @@ doc_type: 'guide'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 import computeIntensive from '@site/static/images/managed-postgres/benchmarks/compute-intensive.png';
-import ioRead-Only from '@site/static/images/managed-postgres/benchmarks/io-intensive-readonly.png';
+import ioReadOnly from '@site/static/images/managed-postgres/benchmarks/io-intensive-readonly.png';
 import ioReadWrite from '@site/static/images/managed-postgres/benchmarks/io-intensive-readwrite.png';
 
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="benchmarks" />
 
-## TL;DR
+## TL;DR {#tldr}
 
 We benchmarked Postgres managed by ClickHouse against AWS RDS (with 16k provisioned IOPS) and Aurora IO Optimized using standard [`pgbench`](https://www.postgresql.org/docs/current/pgbench.html) tests. **Results show that ClickHouse's NVMe-backed Postgres delivers 4.3-9x faster performance for IO-intensive workloads and 12% faster for CPU-bound scenarios.** This exceptional throughput and scalability makes it ideal for fast-growing AI-driven workloads that demand high transaction rates, low-latency data access, and predictable performance without IO bottlenecks.
 
@@ -23,7 +23,7 @@ We benchmarked Postgres managed by ClickHouse against AWS RDS (with 16k provisio
 
 We conducted comprehensive performance testing using `pgbench`, the standard PostgreSQL benchmarking tool, to evaluate workload performance under both moderate and high-concurrency scenarios.
 
-## Benchmarks
+## Benchmarks {#benchmarks}
 
 All performance tests were conducted using a client VM with the same compute capacity, collocated in the same region and availability zone as the PostgreSQL database to ensure fair comparison.
 
@@ -65,7 +65,7 @@ pgbench -c 256 -j 16 -T 600 -M prepared -P 30
 
 ### Test 2: IO Intensive - Read-Only (500 GB dataset) {#test2}
 
-<Image img={ioRead-Only} alt="IO Intensive Read-Only benchmark results" size="md" border/>
+<Image img={ioReadOnly} alt="IO Intensive Read-Only benchmark results" size="md" border/>
 
 **Performance improvement over RDS (16k IOPS):**
 - **802% higher TPS** (9.0x faster)
