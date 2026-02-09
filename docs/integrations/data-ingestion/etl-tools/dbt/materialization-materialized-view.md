@@ -119,7 +119,6 @@ By default, when creating or recreating a materialized view (MV), the target tab
 | Full refresh (`dbt run --full-refresh`) | Target table rebuilt and backfilled | Target table recreated empty, **existing data lost** |
 | Normal operation | Materialized view captures new inserts | Materialized view captures new inserts |
 
-
 :::warning Data Loss Risk with Full Refresh
 Using `catchup: False` with `dbt run --full-refresh` will **discard all existing data** in the target table. The table will be recreated empty and only capture new data going forward. Ensure you have backups if the historical data might be needed later.
 :::
@@ -152,7 +151,6 @@ The **explicit target** feature allows you to define the target table separately
   - When `ref()` is called from inside the config block, it returns the current model, not the one shared. This blocks us from defining it in the config() section, forcing us to use a comment to add this dependency. We are following the same pattern as defined in the dbt docs with [the "--depends_on:" approach](https://docs.getdbt.com/reference/dbt-jinja-functions/ref#forcing-dependencies).
   - `ref()` works for us as it forces the target table to be created first, but in the dependency chart in the generated documentation, the target table will be drawn as another upstream dependency, not downstream, making it a bit difficult to understand.
   - `unit-test` also forces us to define some data for the target table even when the idea is not to read from it. The workaround is just to leave the data for this table empty.
-
 
 ### Usage {#explicit-target-usage}
 
@@ -286,7 +284,6 @@ To change the target:
 1. Update the `materialization_target_table()` call
 2. Run `dbt run --full-refresh -s your_mv_model`
 
-
 ### Migrating from implicit to explicit target {#migration-implicit-to-explicit}
 
 If you have existing materialized view models using the implicit target approach and want to migrate to the explicit target approach, follow these steps:
@@ -319,7 +316,6 @@ For the model names you'll have to follow this naming convention:
 - if only one MV was defined, this will have the name: `<old_model_name>_mv`
 - if multiple MVs were defined, each will have the name: `<old_model_name>_mv_<name_in_comments>`
 
-
 Before in `my_model.sql` (implicit target, single model with UNION ALL):
 ```sql
 --mv1:begin
@@ -349,7 +345,6 @@ select a, b, c from {{ source('raw', 'table_2') }}
 ```
 
 **3. Iterate them as needed following the instructions in the [explicit target](#explicit-target) section.**
-
 
 ## Behavior during active ingestion {#behavior-during-active-ingestion}
 
