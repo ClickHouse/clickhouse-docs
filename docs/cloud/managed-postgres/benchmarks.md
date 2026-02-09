@@ -43,7 +43,6 @@ This test evaluates CPU performance when the working set fits entirely in memory
 | **vCPUs**      | 2                              | 2                      |
 | **RAM**        | 8 GB                           | 8 GB                   |
 | **Disk Type**  | NVMe                           | Network-attached (gp3) |
-| **HA**         | Not enabled                    | Not enabled            |
 
 **Test configuration:**
 
@@ -58,13 +57,6 @@ pgbench -c 1 -T 60 -S -M prepared
 pgbench -c 32 -j 16 -T 300 -S -M prepared -P 30
 ```
 
-- `-c 32`: 32 concurrent client connections
-- `-j 16`: 16 worker threads
-- `-T 300`: Run for 300 seconds (5 minutes)
-- `-S`: SELECT-only mode (read-only)
-- `-M prepared`: Use prepared statements
-- `-P 30`: Progress report every 30 seconds
-
 ### Test 2: IO Intensive - Read-Only (500 GB dataset) {#test2-config}
 
 This test evaluates read performance with a large 500 GB dataset that doesn't fit in memory, stressing disk I/O capabilities.
@@ -78,7 +70,6 @@ This test evaluates read performance with a large 500 GB dataset that doesn't fi
 | **RAM**        | 64 GB                          | 64 GB                          |
 | **Disk Size**  | 1 TB                           | 1 TB                           |
 | **Disk Type**  | NVMe (unlimited IOPS)          | Network-attached (16,000 IOPS) |
-| **HA**         | Not enabled                    | Not enabled                    |
 
 **Test configuration:**
 
@@ -89,13 +80,6 @@ pgbench -i -s 34247
 # Read-only benchmark
 pgbench -c 256 -j 16 -T 600 -M prepared -P 30 -S
 ```
-
-- `-c 256`: 256 concurrent client connections
-- `-j 16`: 16 worker threads
-- `-T 600`: Run for 600 seconds (10 minutes)
-- `-M prepared`: Use prepared statements
-- `-P 30`: Progress report every 30 seconds
-- `-S`: SELECT-only mode (read-only)
 
 ### Test 3: IO Intensive - Read+Write (500 GB dataset) {#test3-config}
 
@@ -110,7 +94,6 @@ This test evaluates mixed read/write performance with a large 500 GB dataset, st
 | **RAM**        | 64 GB                          | 64 GB                          | 128 GB                          |
 | **Disk Size**  | 1 TB                           | 1 TB                           | 1 TB                            |
 | **Disk Type**  | NVMe (unlimited IOPS)          | Network-attached (16,000 IOPS) | Network-attached (IO Optimized) |
-| **HA**         | Not enabled                    | Not enabled                    | Not enabled                     |
 
 **Test configuration:**
 
@@ -121,12 +104,6 @@ pgbench -i -s 34247
 # Read+Write benchmark
 pgbench -c 256 -j 16 -T 600 -M prepared -P 30
 ```
-
-- `-c 256`: 256 concurrent client connections
-- `-j 16`: 16 worker threads
-- `-T 600`: Run for 600 seconds (10 minutes)
-- `-M prepared`: Use prepared statements
-- `-P 30`: Progress report every 30 seconds
 
 ## Benchmark results {#results}
 
@@ -207,66 +184,6 @@ Beyond raw performance, Postgres managed by ClickHouse offers superior price-per
 - **Reduced need for read replicas**: Higher single-instance throughput reduces need for horizontal scaling
 
 For workloads currently constrained by IOPS limits, switching to Managed Postgres can eliminate the need for expensive provisioned IOPS or IO-optimized configurations while delivering significantly better performance.
-
-## Running your own benchmarks {#running-your-own}
-
-To reproduce these benchmarks or test with your own workload:
-
-**Test 1: CPU Intensive (2 GB dataset)**
-
-```bash
-# Initialize
-pgbench -i -s 136 postgres
-
-# Warm-up run
-pgbench -c 1 -T 60 -S -M prepared postgres
-
-# Run benchmark
-pgbench -c 32 -j 16 -T 300 -S -M prepared -P 30 postgres
-```
-
-**Test 2: IO Intensive - Read-Only (500 GB dataset)**
-
-```bash
-# Initialize (takes 1-4 hours depending on service)
-pgbench -i -s 34247 postgres
-
-# Read-only benchmark (high concurrency)
-pgbench -c 256 -j 16 -T 600 -M prepared -P 30 -S postgres
-```
-
-**Test 3: IO Intensive - Read+Write (500 GB dataset)**
-
-```bash
-# Initialize (takes 1-4 hours depending on service)
-pgbench -i -s 34247 postgres
-
-# Read+Write benchmark (high concurrency)
-pgbench -c 256 -j 16 -T 600 -M prepared -P 30 postgres
-```
-
-**Monitoring metrics:**
-- Average TPS (transactions per second)
-- CPU utilization percentage
-- Disk IOPS (read and write separately)
-- Cache hit rates
-
-For additional workload testing:
-- Adjust client count (`-c`) and worker threads (`-j`) to match your concurrency requirements
-- Increase test duration (`-T`) for more stable long-running results
-- Modify scale factor (`-s`) to test with different dataset sizes
-
-## Conclusion {#conclusion}
-
-These comprehensive `pgbench` benchmarks demonstrate that Postgres managed by ClickHouse delivers exceptional performance across diverse workload types. The NVMe-backed storage architecture provides:
-
-- **Consistent advantages** even in CPU-bound scenarios (12% higher TPS than RDS)
-- **Dramatic improvements** for IO-intensive read workloads (9x faster than RDS with 16k IOPS)
-- **Superior write performance** for mixed read/write workloads (4.3-4.5x faster than RDS and Aurora IO Optimized)
-
-The key distinction is the unlimited local NVMe IOPS that eliminates storage bottlenecks. While competing services with network-attached storage struggle at 4-9K TPS due to provisioned IOPS limits, Postgres managed by ClickHouse scales to 20-85K TPS depending on workload characteristics and concurrency levels. This translates to better resource utilization, lower costs, and the ability to handle demanding production workloads without over-provisioning.
-
-For organizations running IO-intensive PostgreSQL workloads, the performance gains speak for themselves: faster queries, higher throughput, and predictable performance without the complexity of provisioning and managing IOPS capacity.
 
 ## References {#references}
 
