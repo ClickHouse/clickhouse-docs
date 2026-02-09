@@ -188,7 +188,7 @@ Host=localhost;set_max_threads=4;set_readonly=1;set_max_memory_usage=10000000000
 | UseSession | `bool?` | Override session behavior for this query |
 | SessionId | `string` | Session ID for this query (requires `UseSession = true`) |
 | BearerToken | `string` | Override authentication token for this query |
-| Timeout | `TimeSpan?` | Override client timeout for this query |
+| MaxExecutionTime | `TimeSpan?` | Server-side query timeout (passed as `max_execution_time` setting); server cancels query if exceeded |
 
 **Example:**
 
@@ -202,7 +202,7 @@ var options = new QueryOptions
         { "max_threads", 4 },
         { "max_memory_usage", 10_000_000_000 }
     },
-    Timeout = TimeSpan.FromMinutes(5)
+    MaxExecutionTime = TimeSpan.FromMinutes(5)
 };
 
 var reader = await client.ExecuteReaderAsync(
