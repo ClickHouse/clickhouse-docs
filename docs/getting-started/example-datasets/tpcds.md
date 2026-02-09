@@ -604,7 +604,7 @@ Then run the generated queries.
 The following settings should be enabled to produce correct results according to SQL standard:
 
 ```sql
-SET data_type_default_nullable: 1;
+SET data_type_default_nullable = 1;
 SET group_by_use_nulls = 1;
 SET intersect_default_mode = 'DISTINCT';
 SET joined_subquery_requires_alias = 0;
