@@ -24,10 +24,10 @@ For general materialization concepts and shared configurations (engine, order_by
 
 When you use the `materialized_view` materialization, dbt-clickhouse needs to create both a **materialized view** and a **target table** where the transformed rows are inserted. There are two ways to manage the target table:
 
-| Approach | Description | Status |
-|----------|-------------|--------|
-| **Implicit target** | dbt-clickhouse creates and manages the target table automatically within the same model. The target table schema is inferred from the MV's SQL. | Stable |
-| **Explicit target** | You define the target table as a separate `table` materialization and reference it from your MV model using the `materialization_target_table()` macro. The MV is created with a `TO` clause pointing to that table. | **Experimental** |
+| Approach | Description | Status   |
+|----------|-------------|----------|
+| **Implicit target** | dbt-clickhouse creates and manages the target table automatically within the same model. The target table schema is inferred from the MV's SQL. | Stable   |
+| **Explicit target** | You define the target table as a separate `table` materialization and reference it from your MV model using the `materialization_target_table()` macro. The MV is created with a `TO` clause pointing to that table. | **Beta** |
 
 The approach you choose affects how schema changes, full refreshes, and multi-MV setups are handled. The following sections describe each approach in detail.
 
