@@ -15,9 +15,11 @@ import ioReadWrite from '@site/static/images/managed-postgres/benchmarks/io-inte
 
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="benchmarks" />
 
-## TL;DR {#tldr}
-
-We benchmarked Postgres managed by ClickHouse against AWS RDS (with 16k provisioned IOPS) and Aurora IO Optimized using standard [`pgbench`](https://www.postgresql.org/docs/current/pgbench.html) tests. **Results show that ClickHouse's NVMe-backed Postgres delivers 4.3-9x faster performance for IO-intensive workloads and 12% faster for CPU-bound scenarios.** This exceptional throughput and scalability makes it ideal for fast-growing AI-driven workloads that demand high transaction rates, low-latency data access, and predictable performance without IO bottlenecks.
+:::info TL;DR
+- **Benchmarked** Postgres managed by ClickHouse against AWS RDS (16k provisioned IOPS) and Aurora IO Optimized using standard [`pgbench`](https://www.postgresql.org/docs/current/pgbench.html) tests
+- **Performance**: ClickHouse's NVMe-backed Postgres delivers **4.3-9x faster performance** for IO-intensive workloads and **12% faster** for CPU-bound scenarios
+- **Ideal for fast-growing AI-driven workloads** that demand high transaction rates, low-latency data access, and predictable performance without IO bottlenecks
+:::
 
 ## Benchmark overview {#overview}
 
