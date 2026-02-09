@@ -21,26 +21,26 @@ $$
 
 <br />
 
-It is similar to the [`covarPop`](../reference/covarpop.md) function, but uses a numerically stable algorithm. As a result, `covarPopStable` is slower than `covarPop` but produces a more accurate result.
+[`covarPop`](/sql-reference/aggregate-functions/reference/covarpop)関数と類似していますが、数値的に安定したアルゴリズムを使用します。その結果、`covarPopStable`は`covarPop`よりも低速ですが、より正確な結果を生成します。
 
-**Syntax**
+**構文**
 
 ```sql
 covarPopStable(x, y)
 ```
 
-**Arguments**
+**引数**
 
 - `x` — 第1変数。[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float)、または[`Decimal`](/sql-reference/data-types/decimal)
 - `y` — 第2変数。[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float)、または[`Decimal`](/sql-reference/data-types/decimal)
 
-**Returned value**
+**返り値**
 
-Returns the population covariance between `x` and `y`. [`Float64`](/sql-reference/data-types/float)
+`x`と`y`の母共分散を返します。[`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**例**
 
-**Basic population covariance calculation with stable algorithm**
+**安定したアルゴリズムによる基本的な母共分散の計算**
 
 ```sql title=Query
 DROP TABLE IF EXISTS series;

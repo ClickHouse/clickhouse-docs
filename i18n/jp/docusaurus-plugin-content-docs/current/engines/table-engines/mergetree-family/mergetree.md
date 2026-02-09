@@ -1080,9 +1080,12 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 
 [外部ストレージオプションの設定](/operations/storing-data.md/#configuring-external-storage)も参照してください。
 
+共有ストレージ上で、1 ライター/多リーダー構成の非レプリケートな MergeTree テーブルを構成することが可能です。これは、リーダー側で設定できるパーツリストの自動リフレッシュによって実現されます。この機能には、レプリカ間でファイルシステムのメタデータを共有していること（またはテーブルローカルディスクを使用する場合の `table_disk = true`）が必要であることに注意してください。[refresh&#95;parts&#95;interval と table&#95;disk](/operations/storing-data.md/#refresh-parts-interval-and-table-disk)を参照してください。
+
 :::note キャッシュ設定
 ClickHouse バージョン 22.3 から 22.7 までは異なるキャッシュ設定が使用されています。これらのバージョンのいずれかを使用している場合は、[ローカルキャッシュの使用](/operations/storing-data.md/#using-local-cache)を参照してください。
 :::
+
 
 ## 仮想カラム \{#virtual-columns\}
 
