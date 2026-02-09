@@ -144,7 +144,7 @@ Across all three benchmark scenarios, Postgres managed by ClickHouse consistentl
 ### When Postgres by ClickHouse excels {#when-it-excels}
 
 Postgres by ClickHouse is ideal for applications that:
-- **Fast-growing AI-driven workloads** that require high-throughput data ingestion with frequent upserts, real-time feature updates, and the ability to get analytics out of the box through seamless integration with ClickHouse for OLAP workloads
+- **Power fast-growing AI-driven workloads** requiring high-throughput data ingestion with frequent upserts, real-time feature updates, and analytics out of the box through seamless integration with ClickHouse for OLAP workloads
 - Perform frequent writes, updates, or mixed read/write operations
 - Need predictable, high-performance storage
 - Are currently constrained by IOPS limits on traditional managed Postgres services
