@@ -17,7 +17,7 @@ import ioReadWrite from '@site/static/images/managed-postgres/benchmarks/io-inte
 
 ## TL;DR
 
-We benchmarked Postgres managed by ClickHouse against AWS RDS (with 16k provisioned IOPS) and Aurora IO Optimized using standard [`pgbench`](https://www.postgresql.org/docs/current/pgbench.html) tests. Results show that ClickHouse's NVMe-backed Postgres delivers **4.3-9x faster performance** for IO-intensive workloads and **12% faster** for CPU-bound scenarios. This exceptional throughput and scalability makes it ideal for fast-growing AI-driven workloads that demand high transaction rates, low-latency data access, and predictable performance without IO bottlenecks.
+We benchmarked Postgres managed by ClickHouse against AWS RDS (with 16k provisioned IOPS) and Aurora IO Optimized using standard [`pgbench`](https://www.postgresql.org/docs/current/pgbench.html) tests. **Results show that ClickHouse's NVMe-backed Postgres delivers 4.3-9x faster performance for IO-intensive workloads and 12% faster for CPU-bound scenarios.** This exceptional throughput and scalability makes it ideal for fast-growing AI-driven workloads that demand high transaction rates, low-latency data access, and predictable performance without IO bottlenecks.
 
 ## Benchmark overview {#overview}
 
@@ -37,7 +37,7 @@ All performance tests were conducted using a client VM with the same compute cap
 **Performance improvement over Aurora IO Optimized:**
 - **345% higher TPS** (4.5x faster)
 
-**Analysis**: Mixed read/write workloads showcase the most dramatic performance advantages of NVMe storage. **Postgres managed by ClickHouse achieved 19.8K TPS with higher concurrency**, demonstrating how NVMe storage scales effectively under load. This is **4.3-4.5x faster than RDS and Aurora**. Network-attached storage solutions struggled with write-heavy operations, with RDS and Aurora maxing out at 4.4K-4.6K TPS despite provisioned capacity and even with Aurora's IO Optimized configuration.
+**Analysis**: Mixed read/write workloads showcase the most dramatic performance advantages of NVMe storage and represent the **most realistic scenario for fast-growing AI-driven workloads** that require both high-throughput data ingestion and low-latency reads. **Postgres managed by ClickHouse achieved 19.8K TPS with higher concurrency**, demonstrating how NVMe storage scales effectively under load. This is **4.3-4.5x faster than RDS and Aurora**. Network-attached storage solutions struggled with write-heavy operations, with RDS and Aurora maxing out at 4.4K-4.6K TPS despite provisioned capacity and even with Aurora's IO Optimized configuration.
 
 #### Setup {#test1-setup}
 
@@ -70,7 +70,7 @@ pgbench -c 256 -j 16 -T 600 -M prepared -P 30
 **Performance improvement over RDS (16k IOPS):**
 - **802% higher TPS** (9.0x faster)
 
-**Analysis**: The performance gap widens dramatically for read-intensive workloads that exceed memory capacity. **Postgres managed by ClickHouse delivered 84.8K TPS**, while RDS with 16,000 provisioned IOPS achieved only 9.4K TPS despite having equivalent compute resources. The key difference: ClickHouse's NVMe storage scales with higher concurrency, while network-attached storage remains constrained by provisioned IOPS limits. Even with provisioned IOPS, RDS was still 9x slower than ClickHouse, demonstrating the critical importance of storage architecture for IO-intensive workloads.
+**Analysis**: The performance gap widens dramatically for read-intensive workloads that are IO Bound. **Postgres managed by ClickHouse delivered 84.8K TPS**, while RDS with 16,000 provisioned IOPS achieved only 9.4K TPS despite having equivalent compute resources. The key difference: ClickHouse's NVMe storage scales with higher concurrency, while network-attached storage remains constrained by provisioned IOPS limits. Even with provisioned IOPS, RDS was still 9x slower than ClickHouse, demonstrating the critical importance of storage architecture for IO-intensive workloads.
 
 #### Setup {#test2-setup}
 
@@ -144,9 +144,12 @@ Across all three benchmark scenarios, Postgres managed by ClickHouse consistentl
 ### When Postgres by ClickHouse excels {#when-it-excels}
 
 Postgres by ClickHouse is ideal for applications that:
+- **Fast-growing AI-driven workloads** that require high-throughput data ingestion with frequent upserts, real-time feature updates, and the ability to get analytics out of the box through seamless integration with ClickHouse for OLAP workloads
 - Perform frequent writes, updates, or mixed read/write operations
 - Need predictable, high-performance storage
 - Are currently constrained by IOPS limits on traditional managed Postgres services
+
+**If you expect analytics later** and anticipate deeper ClickHouse integration—common in modern AI workloads where transactional data feeds real-time dashboards, feature stores, and ML pipelines—**Postgres by ClickHouse should be your default go-to choice**. The native integration eliminates complex ETL pipelines and enables seamless data flow between your operational database and analytical queries.
 
 ### NVMe architecture advantage {#nvme-advantage}
 

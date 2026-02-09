@@ -1863,6 +1863,7 @@ balancer's
 balancers
 basename
 bcrypt
+benchmarked
 benchmarking
 bfloat
 bigint
