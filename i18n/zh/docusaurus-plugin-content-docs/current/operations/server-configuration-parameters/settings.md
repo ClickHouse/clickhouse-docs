@@ -591,7 +591,7 @@ ClickHouse 每隔 x 秒重新加载内置字典，这样就可以在无需重启
 
 ## concurrent_threads_scheduler \{#concurrent_threads_scheduler\}
 
-<SettingsInfoBlock type="String" default_value="fair_round_robin" />
+<SettingsInfoBlock type="String" default_value="max_min_fair" />
 
 针对由 `concurrent_threads_soft_limit_num` 和 `concurrent_threads_soft_limit_ratio_to_cores` 指定的 CPU 插槽的调度策略。该算法用于控制在并发查询之间如何分配数量受限的 CPU 插槽。调度器可以在运行时更改而无需重启服务器。
 
@@ -1642,6 +1642,17 @@ HSTS 的失效时间（秒）。
 
 <SettingsInfoBlock type="Double" default_value="0.5" />在使用 SLRU 策略时，二级索引未压缩缓存中受保护队列的大小占缓存总大小的比例。
 
+## insert_deduplication_version \{#insert_deduplication_version\}
+
+<SettingsInfoBlock type="InsertDeduplicationVersions" default_value="old_separate_hashes" />
+
+此设置用于实现代码版本迁移：从旧代码版本（同步和异步插入各自独立去重，行为完全不同且不透明）迁移到新代码版本（插入的数据会在同步和异步插入之间统一去重）。
+默认值为 `old_separate_hashes`，这意味着 ClickHouse 会为同步和异步插入使用不同的去重哈希（行为与之前相同）。
+为了保持向后兼容，应将此值作为默认值使用。所有现有的 ClickHouse 实例都应使用该值以避免破坏性变更。
+值 `compatible_double_hashes` 表示 ClickHouse 会使用两个去重哈希：旧哈希继续用于同步或异步插入，新哈希则用于所有插入操作。应使用此值以安全的方式将现有实例迁移到新的行为。
+需要启用此值一段时间（参见 `replicated_deduplication_window` 和 `non_replicated_deduplication_window` 设置），以确保在迁移过程中不会丢失任何同步或异步插入。
+最后，值 `new_unified_hash` 表示 ClickHouse 会对同步和异步插入都使用新的去重哈希。此值可以在新的 ClickHouse 实例上启用，或在已经使用 `compatible_double_hashes` 值一段时间的实例上启用。
+
 ## interserver_http_credentials \{#interserver_http_credentials\}
 
 在[复制](../../engines/table-engines/mergetree-family/replication.md)期间用于连接到其他服务器的用户名和密码。此外，服务器还会使用这些凭证对其他副本进行身份验证。
@@ -1995,6 +2006,8 @@ ClickHouse 企业版许可证文件内容
 | `async_queue_max_size` | 使用异步日志时，队列中等待写入的最大消息数量。超出的消息将被丢弃。                       |
 | `console` | 启用输出到控制台的日志。设置为 `1` 或 `true` 以启用。如果 ClickHouse 不以守护进程模式运行，则默认值为 `1`，否则为 `0`。                            |
 | `console_log_level` | 控制台输出的日志级别。默认与 `level` 一致。                                                                                                                 |
+| `console_shutdown_log_level` | 用于在服务器关闭时设置控制台日志级别。   |
+| `console_startup_log_level` | 用于在服务器启动时设置控制台日志级别。启动完成后，日志级别会恢复为 `console_log_level` 设置                                   |   
 | `count` | 轮转策略：ClickHouse 最多保留的历史日志文件数量。                                                                                        |
 | `errorlog` | 错误日志文件的路径。                                                                                                                                    |
 | `formatting.type` | 控制台输出的日志格式。目前仅支持 `json`。                                                                                                 |
@@ -4156,6 +4169,18 @@ Keeper 中的路径，其中包含由 `generateSerialID` FUNCTION 生成的自�
 <skip_check_for_incorrect_settings>1</skip_check_for_incorrect_settings>
 ```
 
+
+## snapshot_cleaner_period \{#snapshot_cleaner_period\}
+
+<SettingsInfoBlock type="UInt64" default_value="120" />
+
+彻底删除 SharedMergeTree 快照分区片段的时间间隔。仅在 ClickHouse Cloud 中可用
+
+## snapshot_cleaner_pool_size \{#snapshot_cleaner_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="128" />
+
+用于清理共享 MergeTree 快照的线程池大小。仅在 ClickHouse Cloud 中可用
 
 ## ssh_server \{#ssh_server\}
 

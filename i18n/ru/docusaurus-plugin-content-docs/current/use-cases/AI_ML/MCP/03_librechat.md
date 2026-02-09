@@ -17,213 +17,230 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
 
 # Использование MCP-сервера ClickHouse с LibreChat \{#using-clickhouse-mcp-server-with-librechat\}
 
-> В данном руководстве описывается настройка LibreChat с MCP-сервером ClickHouse с использованием Docker
-> и подключение к примерам наборов данных ClickHouse.
+> В этом руководстве объясняется, как настроить LibreChat с MCP-сервером ClickHouse с использованием Docker
+> и подключить его к примерным наборам данных ClickHouse.
 
 <VerticalStepper headerLevel="h2">
+  ## Установка Docker \{#install-docker\}
 
-## Установите Docker \{#install-docker\}
+  Для запуска LibreChat и сервера MCP потребуется Docker. Чтобы установить Docker:
 
-Вам потребуется Docker для запуска LibreChat и MCP-сервера. Чтобы установить Docker:
-1. Перейдите на [docker.com](https://www.docker.com/products/docker-desktop)
-2. Скачайте Docker Desktop для вашей операционной системы
-3. Установите Docker, следуя инструкциям для вашей операционной системы
-4. Откройте Docker Desktop и убедитесь, что он запущен
-<br/>
-Для получения дополнительной информации см. [документацию по Docker](https://docs.docker.com/get-docker/).
+  1. Перейдите на [docker.com](https://www.docker.com/products/docker-desktop)
+  2. Скачайте Docker Desktop для своей операционной системы
+  3. Установите Docker в соответствии с инструкциями для вашей операционной системы
+  4. Откройте Docker Desktop и убедитесь, что он запущен.
 
-## Клонируйте репозиторий LibreChat \{#clone-librechat-repo\}
+  <br />
 
-Откройте консоль (Command Prompt, терминал или PowerShell) и клонируйте
-репозиторий LibreChat с помощью следующей команды:
+  Для получения дополнительной информации см. [документацию Docker](https://docs.docker.com/get-docker/).
 
-```bash
-git clone https://github.com/danny-avila/LibreChat.git
-cd LibreChat
-```
+  ## Клонируйте репозиторий LibreChat \{#clone-librechat-repo\}
 
-## Создайте и отредактируйте файл .env \{#create-and-edit-env-file\}
+  Откройте терминал (командную строку или PowerShell) и клонируйте
+  репозиторий LibreChat с помощью следующей команды:
 
-Скопируйте пример конфигурационного файла из `.env.example` в `.env`:
+  ```bash
+  git clone https://github.com/danny-avila/LibreChat.git
+  cd LibreChat
+  ```
 
-```bash
-cp .env.example .env
-```
+  ## Создайте и отредактируйте файл .env \{#create-and-edit-env-file\}
 
-Откройте файл `.env` в вашем любимом текстовом редакторе. Вы увидите разделы для
-многих популярных провайдеров LLM, включая OpenAI, Anthropic, AWS Bedrock и др.,
-например:
+  Скопируйте файл примера конфигурации из `.env.example` в `.env`:
 
-```text title=".venv"
-#============#
-# Anthropic  #
-#============#
-#highlight-next-line
-ANTHROPIC_API_KEY=user_provided
-# ANTHROPIC_MODELS=claude-opus-4-20250514,claude-sonnet-4-20250514,claude-3-7-sonnet-20250219,claude-3-5-sonnet-20241022,claude-3-5-haiku-20241022,claude-3-opus-20240229,claude-3-sonnet-20240229,claude-3-haiku-20240307
-# ANTHROPIC_REVERSE_PROXY=
-```
+  ```bash
+  cp .env.example .env
+  ```
 
-Замените `user_provided` на ваш API-ключ для используемого провайдера LLM.
+  Откройте файл `.env` в вашем текстовом редакторе. Вы увидите разделы для
+  многих популярных провайдеров LLM, включая OpenAI, Anthropic, AWS Bedrock и другие,
+  например:
 
-:::note Использование локальной LLM
-Если у вас нет API-ключа, вы можете использовать локальную LLM, например Ollama. Вы увидите,
-как это сделать позже на шаге [&quot;Install Ollama&quot;](#add-local-llm-using-ollama). Пока
-не изменяйте файл .env и переходите к следующим шагам.
-:::
+  ```text title=".venv"
+  #============#
+  # Anthropic  #
+  #============#
+  #highlight-next-line
+  ANTHROPIC_API_KEY=user_provided
+  # ANTHROPIC_MODELS=claude-opus-4-20250514,claude-sonnet-4-20250514,claude-3-7-sonnet-20250219,claude-3-5-sonnet-20241022,claude-3-5-haiku-20241022,claude-3-opus-20240229,claude-3-sonnet-20240229,claude-3-haiku-20240307
+  # ANTHROPIC_REVERSE_PROXY=
+  ```
 
-## Создайте файл librechat.yaml \{#create-librechat-yaml-file\}
+  Замените `user_provided` на ваш API-ключ провайдера LLM, который вы хотите использовать.
 
-Выполните следующую команду, чтобы создать новый файл `librechat.yaml`:
+  :::note Использование локальной LLM
+  Если у вас нет API-ключа, вы можете использовать локальную LLM, например Ollama. Как
+  это сделать, описано далее в шаге [&quot;Установка Ollama&quot;](#add-local-llm-using-ollama). Пока
+  не изменяйте файл .env и продолжайте выполнение следующих шагов.
+  :::
 
-```bash
-cp librechat.example.yaml librechat.yaml
-```
+  ## Создайте файл librechat.yaml \{#create-librechat-yaml-file\}
 
-Это создаёт основной [конфигурационный файл](https://www.librechat.ai/docs/configuration/librechat_yaml) для LibreChat.
+  Выполните следующую команду для создания нового файла `librechat.yaml`:
 
-## Добавление сервера ClickHouse MCP в Docker Compose \{#add-clickhouse-mcp-server-to-docker-compose\}
+  ```bash
+  cp librechat.example.yaml librechat.yaml
+  ```
 
-Теперь мы добавим сервер ClickHouse MCP в файл Docker Compose LibreChat,
-чтобы LLM мог взаимодействовать с
-[ClickHouse SQL Playground](https://sql.clickhouse.com/).
+  Это создаёт основной [файл конфигурации](https://www.librechat.ai/docs/configuration/librechat_yaml) для LibreChat.
 
-Создайте файл с именем `docker-compose.override.yml` и добавьте в него следующую конфигурацию:
+  ## Добавление сервера ClickHouse MCP в Docker Compose \{#add-clickhouse-mcp-server-to-docker-compose\}
 
-```yml title="docker-compose.override.yml"
-services:
-  api:
-    volumes:
-      - ./librechat.yaml:/app/librechat.yaml
-  mcp-clickhouse:
-    image: mcp/clickhouse
-    container_name: mcp-clickhouse
-    ports:
-      - 8001:8000
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    environment:
-      - CLICKHOUSE_HOST=sql-clickhouse.clickhouse.com
-      - CLICKHOUSE_USER=demo
-      - CLICKHOUSE_PASSWORD=
-      - CLICKHOUSE_MCP_SERVER_TRANSPORT=sse
-      - CLICKHOUSE_MCP_BIND_HOST=0.0.0.0
-```
+  Теперь мы добавим сервер ClickHouse MCP в файл Docker Compose LibreChat,
+  чтобы LLM мог взаимодействовать с
+  [ClickHouse SQL Playground](https://sql.clickhouse.com/).
 
-Если вы хотите исследовать собственные данные, вы можете сделать это,
-используя [host, username и password](https://clickhouse.com/docs/getting-started/quick-start/cloud#connect-with-your-app)
-вашего сервиса ClickHouse Cloud.
+  Создайте файл с именем `docker-compose.override.yml` и добавьте в него следующую конфигурацию:
 
-<Link to="https://cloud.clickhouse.com/">
-  <CardHorizontal
-    badgeIcon="cloud"
-    badgeIconDir=""
-    badgeState="default"
-    badgeText=""
-    description="
+  ```yml title="docker-compose.override.yml"
+  services:
+    api:
+      volumes:
+        - ./librechat.yaml:/app/librechat.yaml
+    mcp-clickhouse:
+      image: mcp/clickhouse
+      container_name: mcp-clickhouse
+      ports:
+        - 8001:8000
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
+      environment:
+        - CLICKHOUSE_HOST=sql-clickhouse.clickhouse.com
+        - CLICKHOUSE_USER=demo
+        - CLICKHOUSE_PASSWORD=
+        - CLICKHOUSE_MCP_SERVER_TRANSPORT=sse
+        - CLICKHOUSE_MCP_BIND_HOST=0.0.0.0
+  ```
+
+  Если вы хотите исследовать собственные данные, вы можете сделать это,
+  используя [host, username и password](https://clickhouse.com/docs/getting-started/quick-start/cloud#connect-with-your-app)
+  вашего сервиса ClickHouse Cloud.
+
+  <Link to="https://cloud.clickhouse.com/">
+    <CardHorizontal
+      badgeIcon="cloud"
+      badgeIconDir=""
+      badgeState="default"
+      badgeText=""
+      description="
 Если у вас еще нет аккаунта в ClickHouse Cloud, начните работу уже сегодня и
 получите $300 в виде бонусных кредитов. По окончании 30-дневного бесплатного пробного периода вы можете продолжить использовать
 тариф с оплатой по мере использования или связаться с нами, чтобы узнать больше о наших скидках при больших объемах.
 Подробности смотрите на нашей странице с тарифами.
 "
-    icon="cloud"
-    infoText=""
-    infoUrl=""
-    title="Начните работу с ClickHouse Cloud"
-    isSelected={true}
-  />
-</Link>
+      icon="cloud"
+      infoText=""
+      infoUrl=""
+      title="Начните работу с ClickHouse Cloud"
+      isSelected={true}
+    />
+  </Link>
 
-## Настройка сервера MCP в librechat.yaml \{#configure-mcp-server-in-librechat-yaml\}
+  ## Настройка сервера MCP в librechat.yaml \{#configure-mcp-server-in-librechat-yaml\}
 
-Откройте `librechat.yaml` и разместите следующую конфигурацию в конце файла:
+  Откройте `librechat.yaml` и добавьте следующую конфигурацию в конец файла:
 
-```yml
-mcpServers:
-  clickhouse-playground:
-    type: sse
-    url: http://host.docker.internal:8001/sse
-```
+  ```yml
+  mcpServers:
+    clickhouse-playground:
+      type: sse
+      url: http://host.docker.internal:8001/sse
+  ```
 
-Эта конфигурация настраивает LibreChat для подключения к MCP-серверу, запущенному в Docker-контейнере.
+  Это настраивает LibreChat для подключения к серверу MCP, работающему на Docker.
 
-Найдите следующую строку:
+  Найдите следующую строку:
 
-```text title="librechat.yaml"
-socialLogins: ['github', 'google', 'discord', 'openid', 'facebook', 'apple', 'saml']
-```
+  ```text title="librechat.yaml"
+  socialLogins: ['github', 'google', 'discord', 'openid', 'facebook', 'apple', 'saml']
+  ```
 
-Чтобы упростить задачу, мы временно отключим аутентификацию:
+  Для упрощения мы временно отключим необходимость аутентификации:
 
-```text title="librechat.yaml"
-socialLogins: []
-```
+  ```text title="librechat.yaml"
+  socialLogins: []
+  ```
 
-## Добавление локальной LLM‑модели с помощью Ollama (необязательно) \{#add-local-llm-using-ollama\}
+  ## Добавление локальной LLM с помощью Ollama (опционально) \{#add-local-llm-using-ollama\}
 
-### Установка Ollama \{#install-ollama\}
+  ### Установите Ollama \{#install-ollama\}
 
-Перейдите на [сайт Ollama](https://ollama.com/download) и установите Ollama для своей системы.
+  Перейдите на [сайт Ollama](https://ollama.com/download) и установите Ollama для вашей системы.
 
-После установки вы можете запустить модель следующим образом:
+  После установки можно запустить модель следующим образом:
 
-```bash
-ollama run qwen3:32b
-```
+  ```bash
+  ollama run qwen3:32b
+  ```
 
-Это загрузит модель на ваш локальный компьютер, если она ещё не загружена.
+  Это загрузит модель на локальную машину, если она отсутствует.
 
-Список моделей смотрите в [библиотеке Ollama](https://ollama.com/library)
+  Список моделей см. в [библиотеке Ollama](https://ollama.com/library)
 
-### Настройка Ollama в librechat.yaml \{#configure-ollama-in-librechat-yaml\}
+  ### Настройка Ollama в librechat.yaml \{#configure-ollama-in-librechat-yaml\}
 
-После загрузки модели настройте её в `librechat.yaml`:
+  После загрузки модели настройте её в `librechat.yaml`:
 
-```text title="librechat.yaml"
-custom:
-  - name: "Ollama"
-    apiKey: "ollama"
-    baseURL: "http://host.docker.internal:11434/v1/"
-    models:
-      default:
-        [
-          "qwen3:32b"
-        ]
-      fetch: false
-    titleConvo: true
-    titleModel: "current_model"
-    summarize: false
-    summaryModel: "current_model"
-    forcePrompt: false
-    modelDisplayLabel: "Ollama"
-```
+  ```text title="librechat.yaml"
+  custom:
+    - name: "Ollama"
+      apiKey: "ollama"
+      baseURL: "http://host.docker.internal:11434/v1/"
+      models:
+        default:
+          [
+            "qwen3:32b"
+          ]
+        fetch: false
+      titleConvo: true
+      titleModel: "current_model"
+      summarize: false
+      summaryModel: "current_model"
+      forcePrompt: false
+      modelDisplayLabel: "Ollama"
+  ```
 
-## Запустите все сервисы \{#start-all-services\}
+  ## Запуск всех сервисов \{#start-all-services\}
 
-Из корневого каталога проекта LibreChat выполните следующую команду, чтобы запустить сервисы:
+  Из корневой директории проекта LibreChat выполните следующую команду для запуска сервисов:
 
-```bash
-docker compose up
-```
+  ```bash
+  docker compose up
+  ```
 
-Дождитесь, пока все сервисы будут полностью запущены.
+  Дождитесь полного запуска всех сервисов.
 
-## Откройте LibreChat в браузере \{#open-librechat-in-browser\}
+  ## Откройте LibreChat в браузере \{#open-librechat-in-browser\}
 
-После запуска всех сервисов откройте браузер и перейдите по адресу `http://localhost:3080/`
+  После того как все сервисы запущены и работают, откройте браузер и перейдите по адресу `http://localhost:3080/`
 
-Создайте бесплатную учетную запись LibreChat, если у вас ее еще нет, и войдите в систему. Теперь вы должны
-увидеть интерфейс LibreChat, подключенный к серверу ClickHouse MCP и, при необходимости,
-к вашей локальной LLM.
+  Создайте бесплатный аккаунт LibreChat, если у вас его еще нет, и войдите в систему. Теперь вы должны
+  увидеть интерфейс LibreChat, подключенный к серверу ClickHouse MCP и, при необходимости,
+  к вашей локальной LLM.
 
-В интерфейсе чата выберите `clickhouse-playground` в качестве MCP-сервера:
+  В интерфейсе чата выберите `clickhouse-playground` в качестве MCP-сервера:
 
-<Image img={LibreInterface} alt='Выберите MCP-сервер' size='md' />
+  <Image img={LibreInterface} alt="Выберите сервер MCP" size="md" />
 
-Теперь вы можете отправить запрос LLM для исследования примеров наборов данных ClickHouse. Попробуйте:
+  Теперь вы можете предложить LLM исследовать примеры наборов данных ClickHouse. Попробуйте:
 
-```text title="Prompt"
-What datasets do you have access to?
-```
-
+  ```text title="Prompt"
+  What datasets do you have access to?
+  ```
 </VerticalStepper>
+
+:::note
+Если параметр MCP server не отображается в интерфейсе LibreChat,
+убедитесь, что в файле `librechat.yaml` заданы корректные права доступа.
+:::
+
+Если для `use` в разделе `mcpServers` внутри `interface` установлено значение `false`, выпадающий список выбора MCP не будет отображаться в чате:
+
+```yml title="librechat.yaml"
+interface:
+  mcpServers:
+    use: true
+    share: false
+    create: false
+    public: false
+```
