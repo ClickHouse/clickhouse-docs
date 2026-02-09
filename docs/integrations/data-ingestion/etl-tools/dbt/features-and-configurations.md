@@ -129,9 +129,9 @@ dbt relies on a read-after-insert consistency model. This is not compatible with
 - If you are using a ClickHouse Cloud cluster, you only need to set `select_sequential_consistency: 1` in your profile's `custom_settings` property. You can find more information about this setting [here](/operations/settings/settings#select_sequential_consistency).
 - If you are using a self-hosted cluster, make sure all dbt requests are sent to the same ClickHouse replica. If you have a load balancer on top of it, try using some `replica aware routing`/`sticky sessions` mechanism to be able to always reach the same replica. Adding the setting `select_sequential_consistency = 1` in clusters outside ClickHouse Cloud is [not recommended](/operations/settings/settings#select_sequential_consistency).
 
-## Additional ClickHouse Macros {#additional-clickhouse-macros}
+## Additional ClickHouse macros {#additional-clickhouse-macros}
 
-### Model Materialization Utility Macros {#model-materialization-utility-macros}
+### Model materialization utility macros {#model-materialization-utility-macros}
 
 The following macros are included to facilitate creating ClickHouse specific tables and views:
 
@@ -148,7 +148,7 @@ The following macros are included to facilitate creating ClickHouse specific tab
 - `ttl_config` -- Uses the `ttl` model configuration property to assign a ClickHouse table TTL expression. No TTL is
   assigned by default.
 
-### s3Source Helper Macro {#s3source-helper-macro}
+### s3Source helper macro {#s3source-helper-macro}
 
 The `s3source` macro simplifies the process of selecting ClickHouse data directly from S3 using the ClickHouse S3 table
 function. It works by
