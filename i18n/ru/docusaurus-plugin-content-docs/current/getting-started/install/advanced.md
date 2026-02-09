@@ -8,7 +8,7 @@ hide_title: false
 doc_type: 'guide'
 ---
 
-## Сборка из исходных кодов {#compile-from-source}
+## Сборка из исходных кодов \{#compile-from-source\}
 
 Чтобы вручную собрать ClickHouse, следуйте инструкциям по сборке для [Linux](/development/build.md) или [macOS](/development/build-osx.md).
 
@@ -29,7 +29,7 @@ Server: <build_directory>/programs/clickhouse-server
 В Gentoo можно просто выполнить `emerge clickhouse`, чтобы установить ClickHouse из исходного кода.
 
 
-## Установка бинарника, сгенерированного CI {#install-a-ci-generated-binary}
+## Установка бинарника, сгенерированного CI \{#install-a-ci-generated-binary\}
 
 Инфраструктура непрерывной интеграции (CI) ClickHouse создает специализированные сборки для каждого коммита в [репозитории
 ClickHouse](https://github.com/clickhouse/clickhouse/), например, [sanitized](https://github.com/google/sanitizers)‑сборки, неоптимизированные (Debug)

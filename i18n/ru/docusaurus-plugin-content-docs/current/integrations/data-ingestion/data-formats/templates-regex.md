@@ -8,11 +8,11 @@ doc_type: 'guide'
 keywords: ['форматы данных', 'шаблоны', 'regex', 'пользовательские форматы', 'парсинг']
 ---
 
-# Импорт и экспорт произвольных текстовых данных с помощью форматов Template и Regex в ClickHouse {#importing-and-exporting-custom-text-data-using-templates-and-regex-in-clickhouse}
+# Импорт и экспорт произвольных текстовых данных с помощью форматов Template и Regex в ClickHouse \{#importing-and-exporting-custom-text-data-using-templates-and-regex-in-clickhouse\}
 
 Нам часто приходится работать с данными в произвольных текстовых форматах. Это может быть нестандартный формат, некорректный JSON или «сломанный» CSV. Использование стандартных парсеров, таких как CSV или JSON, в таких случаях не всегда работает. Но в ClickHouse для этого предусмотрены мощные форматы Template и Regex.
 
-## Импорт на основе шаблона {#importing-based-on-a-template}
+## Импорт на основе шаблона \{#importing-based-on-a-template\}
 
 Предположим, что мы хотим импортировать данные из следующего [файла журнала](assets/error.log):
 
@@ -84,7 +84,7 @@ GROUP BY request
 └──────────────────────────────────────────────────┴─────────┘
 ```
 
-### Пропуск пробелов {#skipping-whitespaces}
+### Пропуск пробелов \{#skipping-whitespaces\}
 
 Рекомендуется использовать [TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces), который позволяет игнорировать пробелы между разделителями в шаблоне:
 
@@ -93,7 +93,7 @@ Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
 TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 ```
 
-## Экспорт данных с использованием шаблонов {#exporting-data-using-templates}
+## Экспорт данных с использованием шаблонов \{#exporting-data-using-templates\}
 
 Мы также можем экспортировать данные в любой текстовый формат с помощью шаблонов. В этом случае нужно создать два файла:
 
@@ -137,7 +137,7 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 --- 1000 rows read in 0.001380604 ---
 ```
 
-### Экспорт в HTML-файлы {#exporting-to-html-files}
+### Экспорт в HTML-файлы \{#exporting-to-html-files\}
 
 Результаты, сформированные по шаблону, также можно экспортировать в файлы с помощью предложения [`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md). Сгенерируем HTML-файлы на основе указанных форматов [resultset](assets/html.results) и [row](assets/html.row):
 
@@ -152,7 +152,7 @@ SETTINGS format_template_resultset = 'html.results',
          format_template_row = 'html.row'
 ```
 
-### Экспорт в XML {#exporting-to-xml}
+### Экспорт в XML \{#exporting-to-xml\}
 
 Формат шаблона можно использовать для генерации файлов любого текстового формата, включая XML. Просто подготовьте соответствующий шаблон и выполните экспорт.
 
@@ -197,7 +197,7 @@ FORMAT XML
 
 ```
 
-## Импорт данных на основе регулярных выражений {#importing-data-based-on-regular-expressions}
+## Импорт данных на основе регулярных выражений \{#importing-data-based-on-regular-expressions\}
 
 Формат [Regexp](/interfaces/formats/Regexp) предназначен для более сложных случаев, когда входные данные необходимо разбирать более сложным способом. Давайте разберём наш пример с файлом [error.log](assets/error.log), но на этот раз извлечём имя файла и протокол, чтобы сохранить их в отдельные столбцы. Для начала подготовим для этого новую таблицу:
 
@@ -245,7 +245,7 @@ SELECT * FROM error_log LIMIT 5
 SET format_regexp_skip_unmatched = 1;
 ```
 
-## Другие форматы {#other-formats}
+## Другие форматы \{#other-formats\}
 
 ClickHouse поддерживает множество форматов, как текстовых, так и двоичных, чтобы охватить различные сценарии и платформы. Изучите дополнительные форматы и способы работы с ними в следующих статьях:
 

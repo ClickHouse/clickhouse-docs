@@ -13,7 +13,7 @@ ClickHouse は、位置情報や領域などの地理的オブジェクトを表
 
 - [単純な地理的地物の表現](https://en.wikipedia.org/wiki/GeoJSON)。
 
-## Point {#point}
+## Point \{#point\}
 
 `Point` は X 座標と Y 座標で表現され、[Tuple](tuple.md) 型 ([Float64](float.md), [Float64](float.md)) として格納されます。
 
@@ -36,7 +36,7 @@ SELECT p, toTypeName(p) FROM geo_point;
 ```
 
 
-## Ring {#ring}
+## Ring \{#ring\}
 
 `Ring` は、穴を持たない単純多角形であり、点の配列として保存されます: [Array](array.md)([Point](#point))。
 
@@ -59,7 +59,7 @@ SELECT r, toTypeName(r) FROM geo_ring;
 ```
 
 
-## LineString {#linestring}
+## LineString \{#linestring\}
 
 `LineString` は、点の配列として保存される線です: [Array](array.md)([Point](#point))。
 
@@ -82,7 +82,7 @@ SELECT l, toTypeName(l) FROM geo_linestring;
 ```
 
 
-## MultiLineString {#multilinestring}
+## MultiLineString \{#multilinestring\}
 
 `MultiLineString` は、複数の線分を `LineString` の配列として格納したものです: [Array](array.md)([LineString](#linestring))。
 
@@ -105,7 +105,7 @@ SELECT l, toTypeName(l) FROM geo_multilinestring;
 ```
 
 
-## Polygon {#polygon}
+## Polygon \{#polygon\}
 
 `Polygon` は、[Array](array.md)([Ring](#ring)) として保存される、穴を含むポリゴンです。外側の配列の最初の要素がポリゴンの外形で、それ以降のすべての要素が穴を表します。
 
@@ -128,7 +128,7 @@ SELECT pg, toTypeName(pg) FROM geo_polygon;
 ```
 
 
-## MultiPolygon {#multipolygon}
+## MultiPolygon \{#multipolygon\}
 
 `MultiPolygon` は複数のポリゴンで構成されており、ポリゴンの配列として格納されます: [Array](array.md)([Polygon](#polygon))。
 
@@ -151,7 +151,7 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 ```
 
 
-## Geometry {#geometry}
+## Geometry \{#geometry\}
 
 `Geometry` は、上記のすべての型に共通する型です。これらの型を要素とする `Variant` と同等です。
 
@@ -200,6 +200,6 @@ SELECT * FROM geo_dst;
 ```
 
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \{#related-content\}
 
 - [大規模な実データセットの活用：ClickHouse で扱う 100 年以上の気象記録](https://clickhouse.com/blog/real-world-data-noaa-climate-data)

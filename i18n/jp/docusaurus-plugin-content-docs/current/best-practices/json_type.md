@@ -15,7 +15,7 @@ ClickHouse には、半構造化データや動的なデータ向けに設計さ
 
 <WhenToUseJson />
 
-## JSON を使用する際の考慮事項とヒント {#considerations-and-tips-for-using-json}
+## JSON を使用する際の考慮事項とヒント \{#considerations-and-tips-for-using-json\}
 
 JSON 型は、パスをサブカラムとしてフラット化することで効率的な列指向ストレージを実現します。ただし、高い柔軟性にはそれ相応の注意が必要です。効果的に利用するには次の点に留意してください。
 
@@ -27,7 +27,7 @@ JSON 型は、パスをサブカラムとしてフラット化することで効
 Type hints は、不要な型推論を避けるための仕組みにとどまらず、ストレージおよび処理における間接参照を完全に排除します。Type hints が指定された JSON パスは、常に従来のカラムと同様の方法で保存されるため、[**discriminator カラム**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data) やクエリ時の動的な解決は不要になります。つまり、適切に定義された type hints を用いれば、ネストされた JSON フィールドは、最初からトップレベルフィールドとしてモデリングされていた場合と同等のパフォーマンスと効率を実現できます。その結果、ほとんど一貫しているものの、なお JSON の柔軟性からも恩恵を受けたいデータセットに対して、スキーマや取り込みパイプラインを再構成することなくパフォーマンスを維持する、便利な手段を type hints が提供します。
 :::
 
-## 高度な機能 {#advanced-features}
+## 高度な機能 \{#advanced-features\}
 
 * JSON カラムは、他のカラムと同様に**主キーとして使用できます**。サブカラムには codec を指定できません。
 * [`JSONAllPathsWithTypes()` および `JSONDynamicPaths()`](/sql-reference/data-types/newjson#introspection-functions) のような関数によるイントロスペクションをサポートします。
@@ -36,7 +36,7 @@ Type hints は、不要な型推論を避けるための仕組みにとどまら
 
 詳細については、[ClickHouse JSON ドキュメント](/sql-reference/data-types/newjson) を参照するか、ブログ記事 [A New Powerful JSON Data Type for ClickHouse](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse) を参照してください。
 
-## 例 {#examples}
+## 例 \{#examples\}
 
 次の JSON サンプルは、[Python PyPI データセット](https://clickpy.clickhouse.com/) の 1 行を表しています。
 

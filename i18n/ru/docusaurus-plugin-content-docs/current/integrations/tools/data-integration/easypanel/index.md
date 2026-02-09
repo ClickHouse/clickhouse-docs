@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Развертывание ClickHouse на Easypanel {#deploying-clickhouse-on-easypanel}
+# Развертывание ClickHouse на Easypanel \{#deploying-clickhouse-on-easypanel\}
 
 <CommunityMaintainedBadge/>
 
@@ -17,7 +17,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 [![Deploy to Easypanel](https://easypanel.io/img/deploy-on-easypanel-40.svg)](https://easypanel.io/docs/templates/clickhouse)
 
-## Инструкции {#instructions}
+## Инструкции \{#instructions\}
 
 1. Создайте виртуальную машину (VM) с Ubuntu у вашего облачного провайдера.
 2. Установите Easypanel, следуя инструкциям на сайте.

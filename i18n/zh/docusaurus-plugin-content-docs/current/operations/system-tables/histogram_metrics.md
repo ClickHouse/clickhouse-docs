@@ -9,7 +9,7 @@ doc_type: 'reference'
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
 
-# histogram&#95;metrics {#histogram&#95;metrics}
+# histogram&#95;metrics \{#histogram&#95;metrics\}
 
 <SystemTableCloud/>
 
@@ -42,17 +42,17 @@ FORMAT Prometheus
 ```
 
 
-## 指标说明 {#metric_descriptions}
+## 指标说明 \{#metric_descriptions\}
 
-### keeper_response_time_ms_bucket {#keeper_response_time_ms_bucket}
+### keeper_response_time_ms_bucket \{#keeper_response_time_ms_bucket\}
 
 Keeper 的响应时间（单位：毫秒）。
 
-### keeper_batch_size_elements_bucket {#keeper_batch_size_elements_bucket}
+### keeper_batch_size_elements_bucket \{#keeper_batch_size_elements_bucket\}
 
 发送到 Raft 的批处理大小（按元素个数计）。
 
-### keeper_batch_size_bytes_bucket {#keeper_batch_size_bytes_bucket}
+### keeper_batch_size_bytes_bucket \{#keeper_batch_size_bytes_bucket\}
 
 发送到 Raft 的批次大小（单位：字节）。
 

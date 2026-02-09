@@ -7,7 +7,7 @@ title: 'UUID'
 doc_type: 'reference'
 ---
 
-# UUID {#uuid}
+# UUID \{#uuid\}
 
 Универсальный уникальный идентификатор (UUID) — это 16-байтовое значение, используемое для идентификации записей. Подробную информацию о UUID см. в статье на [Википедии](https://en.wikipedia.org/wiki/Universally_unique_identifier).
 
@@ -83,11 +83,11 @@ SELECT * FROM tab ORDER BY toUInt128(uuid);
 └──────────────────────────────────────┘
 ```
 
-## Генерация UUID {#generating-uuids}
+## Генерация UUID \{#generating-uuids\}
 
 ClickHouse предоставляет функцию [generateUUIDv4](../../sql-reference/functions/uuid-functions.md) для генерации случайных UUID версии 4.
 
-## Пример использования {#usage-example}
+## Пример использования \{#usage-example\}
 
 **Пример 1**
 
@@ -126,7 +126,7 @@ SELECT * FROM t_uuid
 └──────────────────────────────────────┴───────────┘
 ```
 
-## Ограничения {#restrictions}
+## Ограничения \{#restrictions\}
 
 Тип данных UUID поддерживает только те функции, которые также поддерживает тип данных [String](../../sql-reference/data-types/string.md) (например, [min](/sql-reference/aggregate-functions/reference/min), [max](/sql-reference/aggregate-functions/reference/max) и [count](/sql-reference/aggregate-functions/reference/count)).
 

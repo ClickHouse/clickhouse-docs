@@ -25,13 +25,13 @@ import zing_08 from '@site/static/images/integrations/data-visualization/zing_08
 import zing_09 from '@site/static/images/integrations/data-visualization/zing_09.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# 将 Zing Data 连接到 ClickHouse {#connect-zing-data-to-clickhouse}
+# 将 Zing Data 连接到 ClickHouse \{#connect-zing-data-to-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
 <a href="https://www.zingdata.com/" target="_blank">Zing Data</a> 是一个数据探索与可视化平台。Zing Data 使用 ClickHouse 提供的 JS 驱动程序连接到 ClickHouse。
 
-## 如何连接 {#how-to-connect}
+## 如何连接 \{#how-to-connect\}
 
 1. 收集你的连接信息。
 
@@ -64,7 +64,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 6. 一旦添加了 ClickHouse 数据源，它将在你的 Zing 组织中对所有成员可见，位于 **Data Sources** / **Sources** 选项卡下。
 
-## 在 Zing Data 中创建图表和仪表板 {#creating-charts-and-dashboards-in-zing-data}
+## 在 Zing Data 中创建图表和仪表板 \{#creating-charts-and-dashboards-in-zing-data\}
 
 1. 在添加好 ClickHouse 数据源之后，在 Web 端点击 **Zing App**，或在移动端点击该数据源以开始创建图表。
 
@@ -93,7 +93,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
     <Image size="md" img={zing_09} alt="Zing Data 仪表板视图，展示在仪表板布局中排列的多个可视化图表" border />
     <br/>
 
-## 相关内容 {#related-content}
+## 相关内容 \{#related-content\}
 
 - [文档](https://docs.getzingdata.com/docs/)
 - [快速入门](https://getzingdata.com/quickstart/)

@@ -10,13 +10,11 @@ keywords: ['тарификация', 'clickpipes', 'цены на потоков
 import ClickPipesFAQ from '../../../_snippets/_clickpipes_faq.md'
 
 
-# ClickPipes для потоковой передачи данных и объектного хранилища {#clickpipes-for-streaming-object-storage}
+# ClickPipes для потоковой передачи данных и объектного хранилища \{#clickpipes-for-streaming-object-storage\}
 
 В этом разделе рассматривается модель ценообразования ClickPipes для потоковой передачи данных и объектного хранилища.
 
-
-
-## Как устроена структура ценообразования ClickPipes? {#what-does-the-clickpipes-pricing-structure-look-like}
+## Как устроена структура ценообразования ClickPipes? \{#what-does-the-clickpipes-pricing-structure-look-like\}
 
 Она включает два компонента:
 
@@ -28,24 +26,18 @@ import ClickPipesFAQ from '../../../_snippets/_clickpipes_faq.md'
   (Kafka, Confluent, Amazon MSK, Amazon Kinesis, Redpanda, WarpStream, Azure Event Hubs)
   для данных, передаваемых через репликационные поды. Объём принятых данных (ГБ) рассчитывается исходя из количества байт, полученных от источника (в несжатом или сжатом виде).
 
-
-
-## Что такое реплики ClickPipes? {#what-are-clickpipes-replicas}
+## Что такое реплики ClickPipes? \{#what-are-clickpipes-replicas\}
 
 ClickPipes выполняет приём данных из удалённых источников через специализированную инфраструктуру,
 которая работает и масштабируется независимо от сервиса ClickHouse Cloud.
 По этой причине используются выделенные вычислительные реплики.
 
-
-
-## Какое количество реплик используется по умолчанию и какого они размера? {#what-is-the-default-number-of-replicas-and-their-size}
+## Какое количество реплик используется по умолчанию и какого они размера? \{#what-is-the-default-number-of-replicas-and-their-size\}
 
 Каждый ClickPipe по умолчанию использует 1 реплику, которой выделяется 512 MiB RAM и 0.125 vCPU (XS).
 Это соответствует **0.0625** вычислительной единицы ClickHouse (1 единица = 8 GiB RAM, 2 vCPU).
 
-
-
-## Каковы публичные цены ClickPipes? {#what-are-the-clickpipes-public-prices}
+## Каковы публичные цены ClickPipes? \{#what-are-the-clickpipes-public-prices\}
 
 - Вычислительные ресурсы: \$0.20 за единицу в час (\$0.0125 за реплику в час для размера реплики по умолчанию)
 - Данные при приёме: \$0.04 за ГБ
@@ -60,9 +52,7 @@ ClickPipes выполняет приём данных из удалённых и
 | Large (L)                  | 0.5           | 4 GiB   | 1.0    | $0.10          |
 | Extra Large (XL)           | 1.0           | 8 GiB   | 2.0    | $0.20          |
 
-
-
-## Как это выглядит на наглядном примере? {#how-does-it-look-in-an-illustrative-example}
+## Как это выглядит на наглядном примере? \{#how-does-it-look-in-an-illustrative-example\}
 
 В следующих примерах по умолчанию предполагается одна реплика размера M, если явно не указано иное.
 
@@ -91,8 +81,6 @@ ClickPipes выполняет приём данных из удалённых и
 
 $^1$ _Оплачиваются только вычисления ClickPipes для оркестрации; фактическую передачу данных обеспечивает базовый сервис ClickHouse_
 
-
-
-## FAQ по ClickPipes для стриминга данных и объектного хранилища {#faq-streaming-and-object-storage}
+## FAQ по ClickPipes для стриминга данных и объектного хранилища \{#faq-streaming-and-object-storage\}
 
 <ClickPipesFAQ/>

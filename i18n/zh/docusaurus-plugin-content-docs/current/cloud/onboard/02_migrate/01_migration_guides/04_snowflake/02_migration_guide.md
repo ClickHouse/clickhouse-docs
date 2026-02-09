@@ -11,21 +11,24 @@ doc_type: 'guide'
 import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';
 import Image from '@theme/IdealImage';
 
-# 从 Snowflake 迁移到 ClickHouse {#migrate-from-snowflake-to-clickhouse}
+
+# 从 Snowflake 迁移到 ClickHouse \{#migrate-from-snowflake-to-clickhouse\}
 
 > 本指南介绍如何将数据从 Snowflake 迁移到 ClickHouse。
 
 在 Snowflake 和 ClickHouse 之间迁移数据需要使用对象存储(如 S3)作为传输的中间存储。迁移过程还依赖于使用 Snowflake 的 `COPY INTO` 命令和 ClickHouse 的 `INSERT INTO SELECT` 命令。
 
+<VerticalStepper headerLevel="h2" />
+
 <VerticalStepper headerLevel="h2">
 
-## 从 Snowflake 导出数据 {#1-exporting-data-from-snowflake}
+## 从 Snowflake 导出数据 \{#1-exporting-data-from-snowflake\}
 
-<Image img={migrate_snowflake_clickhouse} size="md" alt="Migrating from Snowflake to ClickHouse" />
+<Image img={migrate_snowflake_clickhouse} size="md" alt="从 Snowflake 迁移到 ClickHouse"/>
 
-如上图所示，从 Snowflake 导出数据需要使用一个 external stage（外部暂存区）。
+如上图所示，从 Snowflake 导出数据需要使用 external stage（外部 stage）。
 
-假设我们要导出一个具有以下表结构的 Snowflake 表：
+假设我们希望导出具有以下表结构的 Snowflake 表：
 
 ```sql
 CREATE TABLE MYDATASET (
@@ -36,27 +39,27 @@ CREATE TABLE MYDATASET (
 ) DATA_RETENTION_TIME_IN_DAYS = 0;
 ```
 
-要将此表中的数据迁移到 ClickHouse 数据库，首先需要将这些数据复制到一个外部 stage（外部暂存区）。在复制数据时，我们推荐使用 Parquet 作为中间格式，因为它能够共享类型信息、保留精度、具有良好的压缩效果，并且原生支持分析场景中常见的嵌套结构。
+要将此表中的数据迁移到 ClickHouse 数据库，首先需要将这些数据复制到 external stage。在复制数据时，我们推荐使用 Parquet 作为中间格式，因为它可以共享类型信息、保留精度、具有良好的压缩效果，并且原生支持分析场景中常见的嵌套结构。
 
-在下面的示例中，我们在 Snowflake 中创建一个命名的 file format，用于指定 Parquet 以及所需的文件选项。然后，我们指定用于存放已复制数据集的对象存储桶（bucket）。最后，我们将数据集复制到该 bucket 中。
+在下面的示例中，我们在 Snowflake 中创建了一个命名的 file format 来表示 Parquet 以及所需的文件选项。然后，我们指定用于保存已复制数据集的 bucket。最后，我们将数据集复制到该 bucket 中。
 
 ```sql
 CREATE FILE FORMAT my_parquet_format TYPE = parquet;
 
--- Create the external stage that specifies the S3 bucket to copy into
+-- 创建 external stage，指定要复制到的 S3 bucket
 CREATE OR REPLACE STAGE external_stage
 URL='s3://mybucket/mydataset'
 CREDENTIALS=(AWS_KEY_ID='<key>' AWS_SECRET_KEY='<secret>')
 FILE_FORMAT = my_parquet_format;
 
--- Apply "mydataset" prefix to all files and specify a max file size of 150mb
--- The `header=true` parameter is required to get column names
+-- 为所有文件添加 "mydataset" 前缀，并指定最大文件大小为 150MB
+-- `header=true` 参数是必需的，以获取列名
 COPY INTO @external_stage/mydataset from mydataset max_file_size=157286400 header=true;
 ```
 
-对于大约 5TB 的数据集（单个文件最大 150MB），在同一 AWS `us-east-1` 区域使用 2X-Large Snowflake 仓库时，将数据复制到 S3 存储桶大约需要 30 分钟。
+对于大约 5TB 数据、最大文件大小为 150MB 的数据集，如果使用与其位于同一 AWS `us-east-1` 区域内的 2X-Large Snowflake warehouse，将数据复制到 S3 bucket 大约需要 30 分钟。
 
-## 导入 ClickHouse {#2-importing-to-clickhouse}
+## 导入 ClickHouse \{#2-importing-to-clickhouse\}
 
 将数据暂存到中间对象存储后，就可以使用 ClickHouse 的函数（例如 [s3 表函数](/sql-reference/table-functions/s3)）将数据插入到表中，如下所示。
 
@@ -102,9 +105,9 @@ input_format_parquet_case_insensitive_column_matching = 1 -- Column matching bet
 诸如 `some_file` 之类的嵌套结构在通过 Snowflake 复制导出时会被转换为 JSON 字符串。导入这些数据时，我们需要在向 ClickHouse 插入时使用如上所示的 [JSONExtract 函数](/sql-reference/functions/json-functions#JSONExtract)，将这些结构转换为 Tuple。
 :::
 
-## 测试数据导出是否成功 {#3-testing-successful-data-export}
+## 测试数据导出是否成功 \{#3-testing-successful-data-export\}
 
-要测试数据是否已正确插入,只需对新表执行 `SELECT` 查询:
+要验证数据是否已正确插入，只需在新表上运行一条 `SELECT` 查询：
 
 ```sql
 SELECT * FROM mydataset LIMIT 10;

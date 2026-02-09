@@ -7,7 +7,7 @@ title: 'input'
 doc_type: 'reference'
 ---
 
-# input 表函数 {#input-table-function}
+# input 表函数 \{#input-table-function\}
 
 `input(structure)` —— 一种表函数，用于将按给定结构发送到服务器的数据高效转换后，插入到具有另一种结构的表中。
 
@@ -23,7 +23,7 @@ doc_type: 'reference'
 该函数的主要特性在于，当服务器从客户端接收数据时，会根据 `SELECT` 子句中的表达式列表同时对其进行转换，
 并将其插入目标表中，而不会为所有传输的数据创建临时表。
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
 * 假设 `test` 表具有如下结构 `(a String, b String)`，
   而 `data.csv` 中的数据结构不同，为 `(col1 String, col2 Date, col3 Int32)`。将

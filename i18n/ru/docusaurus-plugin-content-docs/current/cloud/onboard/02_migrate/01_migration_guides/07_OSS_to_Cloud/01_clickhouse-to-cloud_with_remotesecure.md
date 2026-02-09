@@ -18,14 +18,14 @@ import self_managed_06 from '@site/static/images/integrations/migration/self-man
 import CompatibilityNote from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/compatibility.mdx'
 
 
-# Миграция между самоуправляемым ClickHouse и ClickHouse Cloud с использованием remoteSecure {#migrating-between-self-managed-clickhouse-and-clickhouse-cloud-using-remotesecure}
+# Миграция между самоуправляемым ClickHouse и ClickHouse Cloud с использованием remoteSecure \{#migrating-between-self-managed-clickhouse-and-clickhouse-cloud-using-remotesecure\}
 
 <Image img={self_managed_01} size='lg' alt='Миграция самоуправляемого ClickHouse'/>
 
 В этом руководстве показано, как перенести данные с самоуправляемого сервера ClickHouse в ClickHouse Cloud, а также как выполнять миграцию между сервисами ClickHouse Cloud.
 Функция [`remoteSecure`](/sql-reference/table-functions/remote) используется в запросах `SELECT` и `INSERT` для доступа к удалённым серверам ClickHouse, что делает миграцию таблиц такой же простой, как написание запроса `INSERT INTO` с вложенным `SELECT`.
 
-## Миграция с самоуправляемого ClickHouse в ClickHouse Cloud {#migrating-from-self-managed-clickhouse-to-clickhouse-cloud}
+## Миграция с самоуправляемого ClickHouse в ClickHouse Cloud \{#migrating-from-self-managed-clickhouse-to-clickhouse-cloud\}
 
 <Image img={self_managed_02} size='lg' alt='Миграция самоуправляемого ClickHouse'  />
 
@@ -35,7 +35,7 @@ import CompatibilityNote from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 
 В этом примере самоуправляемый сервер ClickHouse является *источником*, а сервис ClickHouse Cloud — *приёмником*.
 
-### Обзор {#overview}
+### Обзор \{#overview\}
 
 Процесс состоит из следующих шагов:
 
@@ -45,13 +45,13 @@ import CompatibilityNote from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 1. Удалите исходный сервер из списка контроля доступа по IP на целевом сервисе (если применимо)
 1. Удалите пользователя с правами только на чтение из исходного сервиса
 
-### Миграция таблиц с одной системы на другую: {#migration-of-tables-from-one-system-to-another}
+### Миграция таблиц с одной системы на другую: \{#migration-of-tables-from-one-system-to-another\}
 
 В этом примере показан перенос одной таблицы с самоуправляемого сервера ClickHouse в ClickHouse Cloud.
 
 <CompatibilityNote/>
 
-### На исходной системе ClickHouse (системе, которая в данный момент содержит данные) {#on-the-source-clickhouse-system-the-system-that-currently-hosts-the-data}
+### На исходной системе ClickHouse (системе, которая в данный момент содержит данные) \{#on-the-source-clickhouse-system-the-system-that-currently-hosts-the-data\}
 
 * Добавьте пользователя с правами только на чтение, который сможет читать исходную таблицу (`db.table` в этом примере)
 
@@ -74,7 +74,7 @@ WHERE database = 'db' AND table = 'table'
 ```
 
 
-### На целевой системе ClickHouse Cloud: {#on-the-destination-clickhouse-cloud-system}
+### На целевой системе ClickHouse Cloud: \{#on-the-destination-clickhouse-cloud-system\}
 
 * Создайте базу данных назначения:
 
@@ -122,7 +122,7 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
 ```
 
 
-## Миграция между сервисами ClickHouse Cloud {#migrating-between-clickhouse-cloud-services}
+## Миграция между сервисами ClickHouse Cloud \{#migrating-between-clickhouse-cloud-services\}
 
 <Image img={self_managed_05} size='lg' alt='Миграция самоуправляемого ClickHouse'  />
 
@@ -145,7 +145,7 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
 1. Восстановите список доступа по IP на целевом сервисе
 1. Удалите пользователя с доступом только для чтения с исходного сервиса
 
-#### Добавьте пользователя с доступом только на чтение в исходный сервис {#add-a-read-only-user-to-the-source-service}
+#### Добавьте пользователя с доступом только на чтение в исходный сервис \{#add-a-read-only-user-to-the-source-service\}
 
 - Добавьте пользователя с доступом только на чтение, который может читать исходную таблицу (`db.table` в этом примере)
   ```sql
@@ -165,7 +165,7 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
   where database = 'db' and table = 'table'
   ```
 
-#### Продублируйте структуру таблицы на целевом сервисе {#duplicate-the-table-structure-on-the-destination-service}
+#### Продублируйте структуру таблицы на целевом сервисе \{#duplicate-the-table-structure-on-the-destination-service\}
 
 На целевом сервисе создайте базу данных, если она ещё не существует:
 
@@ -182,7 +182,7 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
   CREATE TABLE db.table ...
   ```
 
-#### Разрешить удаленный доступ к исходному сервису {#allow-remote-access-to-the-source-service}
+#### Разрешить удаленный доступ к исходному сервису \{#allow-remote-access-to-the-source-service\}
 
 Чтобы перенести данные с исходного сервиса на целевой, исходный сервис должен разрешать подключения. Временно отключите функцию **IP Access List** на исходном сервисе.
 
@@ -192,7 +192,7 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
 
 Измените список разрешений (allow list) и временно установите доступ из **Anywhere**. Подробности см. в документации по [IP Access List](/cloud/security/setting-ip-filters).
 
-#### Скопируйте данные из источника в назначение {#copy-the-data-from-source-to-destination}
+#### Скопируйте данные из источника в назначение \{#copy-the-data-from-source-to-destination\}
 
 - Используйте функцию `remoteSecure`, чтобы извлечь данные из исходного сервиса ClickHouse Cloud.  
   Подключитесь к целевому сервису. Выполните следующую команду на целевом сервисе ClickHouse Cloud:
@@ -204,11 +204,11 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
 
 - Проверьте данные в целевом сервисе
 
-#### Восстановите список доступа по IP на исходном сервисе {#re-establish-the-ip-access-list-on-the-source}
+#### Восстановите список доступа по IP на исходном сервисе \{#re-establish-the-ip-access-list-on-the-source\}
 
 Если вы ранее экспортировали список доступа, вы можете повторно импортировать его с помощью **Share**, в противном случае заново добавьте необходимые записи в список доступа.
 
-#### Удалите пользователя `exporter`, имеющего права только на чтение {#remove-the-read-only-exporter-user}
+#### Удалите пользователя `exporter`, имеющего права только на чтение \{#remove-the-read-only-exporter-user\}
 
 ```sql
 DROP USER exporter

@@ -13,12 +13,12 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 `LineAsStringWithNames` 格式类似于 [`LineAsString`](./LineAsString.md) 格式，
 但会打印两行表头：第一行是列名，第二行是类型。
 
-## 使用示例 {#example-usage}
+## 使用示例 \{#example-usage\}
 
 ```sql
 CREATE TABLE example (
@@ -40,4 +40,4 @@ Jane    25
 Peter    35
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}

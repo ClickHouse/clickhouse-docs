@@ -13,7 +13,7 @@ import Image from '@theme/IdealImage';
 上記のような使用パターンを避けつつ更新および削除対象の行ストリームを処理するために、ClickHouse のテーブルエンジンである ReplacingMergeTree を使用できます。
 
 
-## 挿入行の自動アップサート {#automatic-upserts-of-inserted-rows}
+## 挿入行の自動アップサート \{#automatic-upserts-of-inserted-rows\}
 
 [ReplacingMergeTree テーブルエンジン](/engines/table-engines/mergetree-family/replacingmergetree) を使用すると、ユーザーが同一行を複数回挿入し、そのうち 1 つを最新バージョンとして指定できるため、非効率な `ALTER` や `DELETE` 文を使用せずに行を更新できます。バックグラウンドプロセスによって、同じ行の古いバージョンが非同期に削除され、不変な挿入のみを用いて更新操作を効率的に模倣します。
 これは、テーブルエンジンが重複行を識別できることに依存しています。これは `ORDER BY` 句を使用して一意性を判定することで実現されます。すなわち、`ORDER BY` で指定された列について 2 行が同じ値を持つ場合、それらは重複と見なされます。テーブル定義時に指定される `version` 列により、2 行が重複と識別された際に、行の最新バージョンを保持できます。すなわち、バージョン値が最大の行が保持されます。
@@ -53,7 +53,7 @@ SYSTEM SYNC REPLICA table
 > ヒント: 変更が発生しなくなった特定のパーティションに対して `OPTIMIZE FINAL CLEANUP` を実行することもできます。
 
 
-## プライマリキー／重複排除キーの選択 {#choosing-a-primarydeduplication-key}
+## プライマリキー／重複排除キーの選択 \{#choosing-a-primarydeduplication-key\}
 
 前述のとおり、ReplacingMergeTree の場合には、追加で満たすべき重要な制約があります。それは、`ORDER BY` の列の値が、変更をまたいでも行を一意に識別できなければならない、というものです。Postgres のようなトランザクションデータベースから移行する場合、元の Postgres のプライマリキーを ClickHouse の `ORDER BY` 句に含める必要があります。
 
@@ -99,7 +99,7 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 `ORDER BY` キーとして `(PostTypeId, toDate(CreationDate), CreationDate, Id)` を使用します。各投稿に対して一意な `Id` カラムによって、行の重複排除を行えるようにしています。要件に応じて、スキーマには `Version` カラムと `Deleted` カラムが追加されます。
 
 
-## ReplacingMergeTree でのクエリ実行 {#querying-replacingmergetree}
+## ReplacingMergeTree でのクエリ実行 \{#querying-replacingmergetree\}
 
 マージ時に、ReplacingMergeTree は `ORDER BY` 列の値を一意な識別子として使用して重複行を特定し、最新バージョンが削除を示している場合にはすべての重複を削除し、そうでなければ最も高いバージョンのみを保持します。ただし、これはあくまで最終的にのみ正しい状態に近づける仕組みであり、行が必ず重複排除されることは保証されないため、これに依存すべきではありません。更新行や削除行もクエリの対象となるため、クエリが誤った結果を返す可能性があります。
 
@@ -225,7 +225,7 @@ Peak memory usage: 8.14 MiB.
 ```
 
 
-## FINAL のパフォーマンス {#final-performance}
+## FINAL のパフォーマンス \{#final-performance\}
 
 `FINAL` 演算子は、クエリに対してわずかなパフォーマンス上のオーバーヘッドを伴います。
 これは、クエリがプライマリキー列でフィルタしていない場合に最も顕著で、
@@ -233,7 +233,7 @@ Peak memory usage: 8.14 MiB.
 
 `WHERE` 条件でキー列を使用していない場合、`FINAL` 使用時には現時点で ClickHouse は `PREWHERE` 最適化を利用しません。この最適化は、フィルタ対象外の列に対して読み取る行数を削減することを目的としています。この `PREWHERE` をエミュレートし、その結果としてパフォーマンスの向上につながる可能性がある例は[こちら](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1#final-performance)にあります。
 
-## ReplacingMergeTree でパーティションを活用する {#exploiting-partitions-with-replacingmergetree}
+## ReplacingMergeTree でパーティションを活用する \{#exploiting-partitions-with-replacingmergetree\}
 
 ClickHouse におけるデータのマージ処理はパーティション単位で行われます。ReplacingMergeTree を使用する場合、**行に対してこのパーティションキーが変更されない** ことを保証できるのであれば、ベストプラクティスに従ってテーブルをパーティション分割することを推奨します。これにより、同じ行に対する更新が同じ ClickHouse パーティションに送信されるようになります。ここで説明するベストプラクティスに従う限り、Postgres と同じパーティションキーを再利用することもできます。
 
@@ -322,15 +322,15 @@ ORDER BY year ASC
 示したように、このケースでは、パーティショニングによって重複排除処理をパーティション単位で並列に実行できるようになった結果、クエリのパフォーマンスが大幅に向上しました。
 
 
-## マージ動作に関する考慮事項 {#merge-behavior-considerations}
+## マージ動作に関する考慮事項 \{#merge-behavior-considerations\}
 
 ClickHouse のマージ選択メカニズムは、単純にパーツをマージするだけのものではありません。以下では、ReplacingMergeTree の文脈でこの動作を取り上げ、古いデータに対してより積極的なマージを有効にするための設定オプションや、大きなパーツを扱う際の考慮事項について説明します。
 
-### マージ選択ロジック {#merge-selection-logic}
+### マージ選択ロジック \{#merge-selection-logic\}
 
 マージの目的はパーツ数を最小限に抑えることですが、その一方で書き込み増幅によるコストとのバランスも考慮されます。その結果として、内部計算に基づき、過度な書き込み増幅を招くパーツの範囲はマージ対象から除外されます。この動作により、不要なリソース消費を防ぎ、ストレージコンポーネントの寿命を延ばすことができます。
 
-### 大きなパーツに対するマージ動作 {#merging-behavior-on-large-parts}
+### 大きなパーツに対するマージ動作 \{#merging-behavior-on-large-parts\}
 
 ClickHouse の ReplacingMergeTree エンジンは、指定された一意キーに基づいて各行の最新バージョンのみを保持するようにデータパーツをマージし、重複行を管理するよう最適化されています。しかし、マージされたパーツが `max_bytes_to_merge_at_max_space_in_pool` のしきい値に達すると、`min_age_to_force_merge_seconds` が設定されていても、それ以上マージ対象として選択されなくなります。その結果、継続的なデータ挿入によって蓄積される重複を自動マージに頼って除去することはできなくなります。
 
@@ -338,11 +338,11 @@ ClickHouse の ReplacingMergeTree エンジンは、指定された一意キー�
 
 パフォーマンスを維持しつつ、より持続的な解決策とするには、テーブルのパーティション分割を推奨します。これにより、データパーツが最大マージサイズに達することを防ぎ、継続的な手動最適化の必要性を低減できます。
 
-### パーティション分割とパーティションをまたぐマージ {#partitioning-and-merging-across-partitions}
+### パーティション分割とパーティションをまたぐマージ \{#partitioning-and-merging-across-partitions\}
 
 「Exploiting Partitions with ReplacingMergeTree」で説明しているとおり、ベストプラクティスとしてテーブルをパーティション分割することを推奨しています。パーティション分割によりデータが分離され、より効率的なマージが可能になり、とくにクエリ実行時にパーティションをまたぐマージを回避できます。この動作は 23.12 以降のバージョンでさらに強化されています。パーティションキーがソートキーのプレフィックスである場合、クエリ実行時にパーティションをまたぐマージは行われず、クエリ性能の向上につながります。
 
-### クエリ性能向上のためのマージ調整 {#tuning-merges-for-better-query-performance}
+### クエリ性能向上のためのマージ調整 \{#tuning-merges-for-better-query-performance\}
 
 デフォルトでは、`min_age_to_force_merge_seconds` と `min_age_to_force_merge_on_partition_only` はそれぞれ 0 と `false` に設定されており、これらの機能は無効になっています。この構成では、ClickHouse はパーティションの経過時間に基づいてマージを強制することなく、標準的なマージ動作を適用します。
 
@@ -350,7 +350,7 @@ ClickHouse の ReplacingMergeTree エンジンは、指定された一意キー�
 
 さらに `min_age_to_force_merge_on_partition_only=true` を設定することで、この動作をより細かく調整できます。この場合、積極的なマージを行うには、パーティション内のすべてのパーツが `min_age_to_force_merge_seconds` より古い必要があります。この構成により、古いパーティションは時間の経過とともに 1 つのパーツにマージされ、データが集約されることでクエリ性能を維持できます。
 
-### 推奨設定 {#recommended-settings}
+### 推奨設定 \{#recommended-settings\}
 
 :::warning
 マージ動作のチューニングは高度な操作です。本番ワークロードでこれらの設定を有効にする前に、ClickHouse サポートへ相談することを推奨します。

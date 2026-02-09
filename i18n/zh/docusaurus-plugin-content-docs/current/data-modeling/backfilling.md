@@ -10,7 +10,7 @@ import nullTableMV from '@site/static/images/data-modeling/null_table_mv.png';
 import Image from '@theme/IdealImage';
 
 
-# 回填数据 {#backfilling-data}
+# 回填数据 \{#backfilling-data\}
 
 无论是刚接触 ClickHouse，还是负责维护现有部署，用户往往需要将历史数据回填到表中。在某些情况下，这相对简单，但当需要填充物化视图时，就可能变得更加复杂。本指南介绍了一些可用于执行此任务的流程，用户可以根据自己的用例进行应用。
 
@@ -18,7 +18,7 @@ import Image from '@theme/IdealImage';
 本指南假定用户已经熟悉 [增量物化视图](/materialized-view/incremental-materialized-view) 的概念，以及 [使用诸如 S3 和 GCS 等表函数进行数据加载](/integrations/s3)。我们还建议用户阅读我们的[从对象存储优化插入性能](/integrations/s3/performance)指南，其中的建议适用于本指南中涉及的所有插入操作。
 :::
 
-## 示例数据集 {#example-dataset}
+## 示例数据集 \{#example-dataset\}
 
 在本指南中，我们将一直使用一个 PyPI 数据集。该数据集中的每一行都表示一次使用 `pip` 等工具下载 Python 包的记录。
 
@@ -70,7 +70,7 @@ SETTINGS describe_compact_output = 1
 :::
 
 
-## 回填场景 {#backfilling-scenarios}
+## 回填场景 \{#backfilling-scenarios\}
 
 通常在从某个时间点开始消费数据流时，需要进行回填。这些数据会被插入到带有[增量materialized view](/materialized-view/incremental-materialized-view)的 ClickHouse 表中，并在数据块被插入时触发。这些视图可能在插入前对数据进行转换，或者计算聚合并将结果发送到目标表，以便下游应用后续使用。
 
@@ -83,7 +83,7 @@ SETTINGS describe_compact_output = 1
 
 我们建议从对象存储中回填历史数据。应尽可能将数据导出为 Parquet 格式，以获得最佳的读取性能和压缩效果（减少网络传输）。文件大小通常以约 150MB 为佳，但 ClickHouse 支持超过 [70 种文件格式](/interfaces/formats)，并能够处理各种大小的文件。
 
-## 使用副本表和视图 {#using-duplicate-tables-and-views}
+## 使用副本表和视图 \{#using-duplicate-tables-and-views\}
 
 在所有这些场景中，我们依赖“副本表和视图”的概念。这些表和视图是用于实时流式数据的那些表和视图的副本，使我们可以在隔离环境中执行回填操作，并且在发生故障时能够轻松恢复。比如，我们有如下主 `pypi` 表和物化视图，用于计算每个 Python 项目的下载次数：
 
@@ -261,7 +261,7 @@ ClickPipes 在从对象存储加载数据时会使用这种方法，自动创建
 :::
 
 
-## 场景 1：在现有数据摄取基础上回填数据 {#scenario-1-backfilling-data-with-existing-data-ingestion}
+## 场景 1：在现有数据摄取基础上回填数据 \{#scenario-1-backfilling-data-with-existing-data-ingestion\}
 
 在此场景中，我们假设需要回填的数据并不在一个独立的 bucket 中，因此需要进行过滤。数据已经在持续写入，并且可以确定一个时间戳或单调递增的列，用于界定需要回填的历史数据起点。
 
@@ -325,7 +325,7 @@ ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 :::
 
 
-## 场景 2：向现有表添加物化视图 {#scenario-2-adding-materialized-views-to-existing-tables}
+## 场景 2：向现有表添加物化视图 \{#scenario-2-adding-materialized-views-to-existing-tables\}
 
 在已经填充了大量数据并且仍在持续插入数据的环境中，需要新增物化视图的情况并不少见。此时，如果能够利用时间戳或单调递增列来标识数据流中的某个时间点，将会非常有用，并且可以避免暂停数据摄取。在下面的示例中，我们假设两种情况都会存在，并优先采用不会中断摄取的方案。
 
@@ -333,7 +333,7 @@ ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 我们不建议在除小型数据集且已暂停摄取的场景之外，使用 [`POPULATE`](/sql-reference/statements/create/view#materialized-view) 命令对物化视图进行回填。该操作可能会遗漏在其源表中插入的部分行，因为物化视图是在 populate 阶段完成之后才创建的。此外，该 populate 操作会作用于全部数据，在大数据集上容易受到中断或内存限制的影响。
 :::
 
-### 存在时间戳或单调递增列 {#timestamp-or-monotonically-increasing-column-available}
+### 存在时间戳或单调递增列 \{#timestamp-or-monotonically-increasing-column-available\}
 
 在这种情况下，我们建议在新的物化视图中添加一个过滤条件，仅保留那些时间大于某个将来的任意时间点的行。随后，可以从该时间点开始，使用主表中的历史数据对该物化视图进行回填。具体的回填方法取决于数据规模以及关联查询的复杂度。
 
@@ -417,7 +417,7 @@ Peak memory usage: 543.71 MiB.
 
 我们在下文进一步探讨 (2)。
 
-#### 使用 Null table engine 填充物化视图 {#using-a-null-table-engine-for-filling-materialized-views}
+#### 使用 Null table engine 填充物化视图 \{#using-a-null-table-engine-for-filling-materialized-views\}
 
 [Null table engine](/engines/table-engines/special/null) 提供了一种不会持久化数据的存储引擎（可以将其视为表引擎世界中的 `/dev/null`）。虽然这看起来有些矛盾，但对插入到该表引擎中的数据，物化视图仍然会照常执行。这样就允许在不持久化原始数据的情况下构建物化视图——从而避免 I/O 及相关存储开销。
 
@@ -466,14 +466,18 @@ Peak memory usage: 639.47 MiB.
 请注意，这里的内存占用为 `639.47 MiB`。
 
 
-##### 调优性能和资源 {#tuning-performance--resources}
+##### 调优性能和资源 \{#tuning-performance--resources\}
 
 在上述场景中，有多个因素会影响性能和资源使用情况。在尝试调优之前，建议先理解《[Optimizing for S3 Insert and Read Performance](/integrations/s3/performance)》指南中 [Using Threads for Reads](/integrations/s3/performance#using-threads-for-reads) 一节所详细说明的写入机制。总结如下：
 
 * **读取并行度（Read Parallelism）** - 用于读取的线程数，通过 [`max_threads`](/operations/settings/settings#max_threads) 控制。在 ClickHouse Cloud 中，该值由实例规格决定，默认等于 vCPU 数量。增大该值可能提升读取性能，但会增加内存占用。
-* **写入并行度（Insert Parallelism）** - 用于执行写入的线程数，通过 [`max_insert_threads`](/operations/settings/settings#max_insert_threads) 控制。在 ClickHouse Cloud 中，该值由实例规格决定（介于 2 到 4 之间），在 OSS 中默认为 1。增大该值可能提升写入性能，但会增加内存占用。
+* **写入并行度（Insert Parallelism）** - 用于执行写入的线程数，通过 [`max_insert_threads`](/operations/settings/settings#max_insert_threads) 控制。**注意**：该值受 `max_threads` 限制，因此实际有效的写入并行度为 `min(max_insert_threads, max_threads)`。在 ClickHouse Cloud 中，该值由实例规格决定（介于 2 到 4 之间），在 OSS 中默认为 1。增大该值可能提升写入性能，但会增加内存占用。
 * **写入块大小（Insert Block Size）** - 数据在一个循环中被处理：从源拉取、解析，并根据[分区键](/engines/table-engines/mergetree-family/custom-partitioning-key) 组装成内存中的写入块。这些块随后会被排序、优化、压缩，并作为新的[数据 part](/parts) 写入存储。写入块的大小由 [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows) 和 [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes)（未压缩）设置控制，会影响内存使用和磁盘 I/O。更大的块会占用更多内存，但会生成更少的 part，从而减少 I/O 和后台合并。这些设置表示最小阈值（先达到的阈值会触发一次刷新（flush））。
 * **物化视图块大小（Materialized view block size）** - 除了上述针对主表写入的机制外，在写入物化视图之前，数据块同样会被压缩合并（squash），以实现更高效的处理。这些块的大小由 [`min_insert_block_size_bytes_for_materialized_views`](/operations/settings/settings#min_insert_block_size_bytes_for_materialized_views) 和 [`min_insert_block_size_rows_for_materialized_views`](/operations/settings/settings#min_insert_block_size_rows_for_materialized_views) 设置决定。更大的块可以更高效地处理数据，但会增加内存占用。默认情况下，这些设置会分别回退到源表设置 [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows) 和 [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes) 的值。
+
+:::note
+**针对简单 INSERT SELECT 查询的提示**：对于不包含复杂转换的简单 `INSERT INTO t1 SELECT * FROM t2` 查询，可以考虑启用 `optimize_trivial_insert_select=1`。该设置（自 24.7 版本起默认禁用）会自动将 SELECT 的并行度调整为与 `max_insert_threads` 一致，从而降低资源使用并减少创建的分区片段数量。这对于在表之间执行大量数据迁移尤其有用。
+:::
 
 为了提升性能，你可以参考《[Optimizing for S3 Insert and Read Performance](/integrations/s3/performance)》指南中 [Tuning Threads and Block Size for Inserts](/integrations/s3/performance#tuning-threads-and-block-size-for-inserts) 一节的指导。在大多数情况下，无需另外修改 `min_insert_block_size_bytes_for_materialized_views` 和 `min_insert_block_size_rows_for_materialized_views` 也能获得性能提升。如果确实需要修改它们，请遵循对 `min_insert_block_size_rows` 和 `min_insert_block_size_bytes` 所讨论的相同最佳实践。
 
@@ -496,6 +500,7 @@ Peak memory usage: 506.78 MiB.
 
 通过将 `max_threads` 设置为 1，我们可以进一步降低内存占用。
 
+
 ```sql
 INSERT INTO pypi_v2
 SELECT timestamp, project
@@ -509,8 +514,7 @@ Ok.
 Peak memory usage: 272.53 MiB.
 ```
 
-最后，我们还可以通过将 `min_insert_block_size_rows` 设置为 0（使其不再作为确定块大小的依据）以及将 `min_insert_block_size_bytes` 设置为 10485760（10MiB）来进一步降低内存占用。
-
+最后，我们可以通过将 `min_insert_block_size_rows` 设置为 0（禁用其作为决定块大小的因素）以及将 `min_insert_block_size_bytes` 设置为 10485760（10MiB）来进一步减少内存占用。
 
 ```sql
 INSERT INTO pypi_v2
@@ -528,7 +532,7 @@ Peak memory usage: 218.64 MiB.
 最后，请注意，减小块大小会产生更多的分区片段，并带来更大的合并压力。正如[此处](/integrations/s3/performance#be-aware-of-merges)所讨论的，应谨慎调整这些设置。
 
 
-### 没有时间戳或单调递增列 {#no-timestamp-or-monotonically-increasing-column}
+### 没有时间戳或单调递增列 \{#no-timestamp-or-monotonically-increasing-column\}
 
 上述过程依赖于表中存在时间戳或单调递增列。在某些情况下，这样的列并不存在。此时，我们推荐以下流程，它复用前面概述的许多步骤，但需要用户暂停数据摄取。
 

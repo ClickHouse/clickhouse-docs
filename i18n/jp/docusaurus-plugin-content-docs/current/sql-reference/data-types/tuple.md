@@ -7,7 +7,7 @@ title: 'Tuple(T1, T2, ...)'
 doc_type: 'reference'
 ---
 
-# Tuple(T1, T2, ...) {#tuplet1-t2}
+# Tuple(T1, T2, ...) \{#tuplet1-t2\}
 
 それぞれが個別の[型](/sql-reference/data-types)を持つ要素からなるタプルです。Tuple には少なくとも 1 つの要素が含まれている必要があります。
 
@@ -15,7 +15,7 @@ doc_type: 'reference'
 
 タプルはクエリ結果として返されることがあります。この場合、JSON 以外のテキスト形式では、値は丸かっこ内でカンマ区切りになります。JSON 形式では、タプルは配列（角かっこ内）として出力されます。
 
-## タプルの作成 {#creating-tuples}
+## タプルの作成 \{#creating-tuples\}
 
 関数を使用してタプルを作成できます。
 
@@ -49,7 +49,7 @@ SELECT tuple('a') AS x;
 └───────┘
 ```
 
-構文 `(tuple_element1, tuple_element2)` を使うと、`tuple()` 関数を呼び出さずに複数の要素から成るタプルを作成できます。
+構文 `(tuple_element1, tuple_element2)` を使うと、`tuple()` 関数を呼び出さずに複数の要素からなるタプルを作成できます。
 
 例:
 
@@ -63,7 +63,8 @@ SELECT (1, 'a') AS x, (today(), rand(), 'someString') AS y, ('a') AS not_a_tuple
 └─────────┴────────────────────────────────────────┴─────────────┘
 ```
 
-## データ型の自動判定 {#data-type-detection}
+
+## データ型の自動判定 \{#data-type-detection\}
 
 タプルをその場で作成する場合、ClickHouse はタプルの引数の値を保持できる最小の型として、その引数の型を推論します。値が [NULL](/operations/settings/formats#input_format_null_as_default) の場合、推論される型は [Nullable](../../sql-reference/data-types/nullable.md) になります。
 
@@ -79,7 +80,8 @@ SELECT tuple(1, NULL) AS x, toTypeName(x)
 └───────────┴─────────────────────────────────┘
 ```
 
-## タプル要素の参照 {#referring-to-tuple-elements}
+
+## タプル要素の参照 \{#referring-to-tuple-elements\}
 
 タプル要素は名前またはインデックスで参照できます。
 
@@ -105,7 +107,8 @@ SELECT a.2 FROM named_tuples; -- by index
 └────────────────────┘
 ```
 
-## Tuple による比較演算 {#comparison-operations-with-tuple}
+
+## Tuple による比較演算 \{#comparison-operations-with-tuple\}
 
 2 つのタプルは、左から右へ順に要素を比較していきます。最初のタプルの要素が 2 番目のタプルの対応する要素より大きい（または小さい）場合、最初のタプルは 2 番目のタプルより大きい（または小さい）とみなされます。そうでない場合（両方の要素が等しい場合）は、次の要素を比較します。
 
@@ -167,7 +170,7 @@ SELECT * FROM test;
 │   2 │        2 │     0 │
 └─────┴──────────┴───────┘
 
--- 各キーについて最大のdurationを持つvalueを検索します。durationが同じ場合は最大のvalueを選択します
+-- Let's find a value for each key with the biggest duration, if durations are equal, select the biggest value
 
 SELECT
     key,
@@ -181,4 +184,40 @@ ORDER BY key ASC;
 │   1 │            42 │                                    70 │
 │   2 │             2 │                                     0 │
 └─────┴───────────────┴───────────────────────────────────────┘
+```
+
+
+## Nullable(Tuple(T1, T2, ...)) \{#nullable-tuple\}
+
+:::warning 実験的機能
+`SET allow_experimental_nullable_tuple_type = 1` が必要です。
+これは将来のバージョンで変更される可能性がある実験的機能です。
+:::
+
+`Tuple(Nullable(T1), Nullable(T2), ...)` のように個々の要素のみが `NULL` になり得る場合とは異なり、タプル全体を `NULL` にできます。
+
+| 型                                          | タプルが NULL になり得るか | 要素が NULL になり得るか |
+| ------------------------------------------ | ---------------- | --------------- |
+| `Nullable(Tuple(String, Int64))`           | ✅                | ❌               |
+| `Tuple(Nullable(String), Nullable(Int64))` | ❌                | ✅               |
+
+例:
+
+```sql
+SET allow_experimental_nullable_tuple_type = 1;
+
+CREATE TABLE test (
+    id UInt32,
+    data Nullable(Tuple(String, Int64))
+) ENGINE = Memory;
+
+INSERT INTO test VALUES (1, ('hello', 42)), (2, NULL);
+
+SELECT * FROM test WHERE data IS NULL;
+```
+
+```txt
+ ┌─id─┬─data─┐
+ │  2 │ ᴺᵁᴸᴸ │
+ └────┴──────┘
 ```

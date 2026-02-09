@@ -16,7 +16,7 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Spark JDBC {#spark-jdbc}
+# Spark JDBC \{#spark-jdbc\}
 
 <ClickHouseSupportedBadge/>
 
@@ -25,7 +25,7 @@ JDBC 是 Spark 中最常用的数据源之一。
 
 <TOCInline toc={toc}></TOCInline>
 
-## 读取数据 {#read-data}
+## 读取数据 \{#read-data\}
 
 <Tabs groupId="spark_apis">
 <TabItem value="Java" label="Java" default>
@@ -164,7 +164,7 @@ df.show()
 </Tabs>
 
 
-## 写入数据 {#write-data}
+## 写入数据 \{#write-data\}
 
 <Tabs groupId="spark_apis">
 <TabItem value="Java" label="Java" default>
@@ -335,14 +335,14 @@ df.write \
 </TabItem>
 </Tabs>
 
-## 并行度 {#parallelism}
+## 并行度 \{#parallelism\}
 
 使用 Spark JDBC 时，Spark 默认只使用单个分区读取数据。要提高并发度，需要指定
 `partitionColumn`、`lowerBound`、`upperBound` 和 `numPartitions`，用于定义在由多个 worker 并行读取时如何对表进行分区。
 如需了解更多信息，请参阅 Apache Spark 官方文档中的
 [JDBC 配置](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option)。
 
-## JDBC 限制 {#jdbc-limitations}
+## JDBC 限制 \{#jdbc-limitations\}
 
 *  由于缺少 ClickHouse 方言，Spark JDBC 不支持复杂类型（MAP、ARRAY、STRUCT）——如需完整的复杂类型支持，请使用原生的 Spark-ClickHouse 连接器。
 *  截至目前，通过 JDBC 只能将数据插入到已存在的表中（目前尚无法像 Spark 使用其他连接器那样，在插入 DataFrame 时自动创建表）。

@@ -11,7 +11,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 
-# TimeSeries 表引擎 {#timeseries-table-engine}
+# TimeSeries 表引擎 \{#timeseries-table-engine\}
 
 <ExperimentalBadge />
 
@@ -31,7 +31,7 @@ metric_name2[...] = ...
 :::
 
 
-## 语法 {#syntax}
+## 语法 \{#syntax\}
 
 ```sql
 CREATE TABLE name [(columns)] ENGINE=TimeSeries
@@ -42,7 +42,7 @@ CREATE TABLE name [(columns)] ENGINE=TimeSeries
 ```
 
 
-## 用法 {#usage}
+## 用法 \{#usage\}
 
 使用全部默认设置开始会更简单（允许在不指定列列表的情况下创建 `TimeSeries` 表）：
 
@@ -56,7 +56,7 @@ CREATE TABLE my_table ENGINE=TimeSeries
 * [prometheus remote-read](/interfaces/prometheus#remote-read)
 
 
-## 目标表 {#target-tables}
+## 目标表 \{#target-tables\}
 
 `TimeSeries` 表本身不存储数据，所有数据都存储在其目标表中。
 这类似于 [materialized view（物化视图）](../../../sql-reference/statements/create/view#materialized-view) 的工作方式，
@@ -68,7 +68,7 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 目标表如下：
 
-### Data 表 {#data-table}
+### Data 表 \{#data-table\}
 
 _data_ 表包含与某个标识符关联的时间序列。
 
@@ -80,7 +80,7 @@ _data_ 表必须包含以下列：
 | `timestamp` | [x] | `DateTime64(3)` | `DateTime64(X)` | 时间点 |
 | `value` | [x] | `Float64` | `Float32` or `Float64` | 与该 `timestamp` 关联的值 |
 
-### Tags 表 {#tags-table}
+### Tags 表 \{#tags-table\}
 
 _tags_ 表包含为每种度量名称与标签组合计算得到的标识符。
 
@@ -96,7 +96,7 @@ _tags_ 表必须包含以下列：
 | `min_time` | [ ] | `Nullable(DateTime64(3))` | `DateTime64(X)` or `Nullable(DateTime64(X))` | 具有该 `id` 的时间序列的最小时间戳。当 [store_min_time_and_max_time](#settings) 为 `true` 时创建该列 |
 | `max_time` | [ ] | `Nullable(DateTime64(3))` | `DateTime64(X)` or `Nullable(DateTime64(X))` | 具有该 `id` 的时间序列的最大时间戳。当 [store_min_time_and_max_time](#settings) 为 `true` 时创建该列 |
 
-### Metrics 表 {#metrics-table}
+### Metrics 表 \{#metrics-table\}
 
 _metrics_ 表包含关于已收集指标的一些信息、这些指标的类型以及它们的描述。
 
@@ -112,7 +112,7 @@ _metrics_ 表必须包含以下列：
 插入到 `TimeSeries` 表中的任何一行实际上都会被写入这三个目标表中。  
 `TimeSeries` 表包含来自 [data](#data-table)、[tags](#tags-table)、[metrics](#metrics-table) 三张表的所有列。
 
-## 创建 {#creation}
+## 创建 \{#creation\}
 
 使用 `TimeSeries` 表引擎创建表有多种方式。
 最简单的语句如下：
@@ -197,7 +197,7 @@ ORDER BY metric_family_name
 ```
 
 
-## 调整列类型 {#adjusting-column-types}
+## 调整列类型 \{#adjusting-column-types\}
 
 在定义主表时，通过显式指定列类型，可以调整内部目标表中几乎任意列的类型。例如，
 
@@ -222,7 +222,7 @@ ORDER BY (id, timestamp)
 ```
 
 
-## `id` 列 {#id-column}
+## `id` 列 \{#id-column\}
 
 `id` 列包含标识符，每个标识符是根据指标名称与标签的组合计算得到的。
 `id` 列的 DEFAULT 表达式是用于计算这些标识符的表达式。
@@ -237,7 +237,7 @@ ENGINE=TimeSeries
 ```
 
 
-## `tags` 与 `all_tags` 列 {#tags-and-all-tags}
+## `tags` 与 `all_tags` 列 \{#tags-and-all-tags\}
 
 有两列包含标签映射——`tags` 和 `all_tags`。在本例中它们含义相同，但在使用 `tags_to_columns` 设置项时，它们可能会不同。该设置项允许指定某个特定标签应存储在单独的列中，而不是作为映射存储在 `tags` 列中：
 
@@ -269,7 +269,7 @@ SETTINGS tags_to_columns = {'instance': 'instance', 'job': 'job'}
 ```
 
 
-## 内部目标表的表引擎 {#inner-table-engines}
+## 内部目标表的表引擎 \{#inner-table-engines\}
 
 默认情况下，内部目标表使用以下表引擎：
 
@@ -289,7 +289,7 @@ METRICS ENGINE=ReplicatedReplacingMergeTree
 ```
 
 
-## 外部目标表 {#external-target-tables}
+## 外部目标表 \{#external-target-tables\}
 
 可以让 `TimeSeries` 表使用一个手动创建的表：
 
@@ -311,7 +311,7 @@ CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_
 ```
 
 
-## 设置 {#settings}
+## 设置 \{#settings\}
 
 下面是定义 `TimeSeries` 表时可以指定的设置列表：
 
@@ -323,7 +323,7 @@ CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_
 | `aggregate_min_time_and_max_time` | Bool | true | 在创建内部目标 `tags` 表时，此开关允许将 `min_time` 列的类型从 `Nullable(DateTime64(3))` 替换为 `SimpleAggregateFunction(min, Nullable(DateTime64(3)))`，`max_time` 列同理 |
 | `filter_by_min_time_and_max_time` | Bool | true | 如果设置为 true，则表在过滤时间序列时会使用 `min_time` 和 `max_time` 列 |
 
-# 函数 {#functions}
+# 函数 \{#functions\}
 
 以下是支持以 `TimeSeries` 表作为参数的函数列表：
 

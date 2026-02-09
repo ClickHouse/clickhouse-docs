@@ -46,7 +46,7 @@ SHOW TABLES FROM information_schema;
 
 他のデータベースとの互換性のために、大文字小文字を区別しない同等のビュー（例: `INFORMATION_SCHEMA.columns`）も用意されています。同様に、これらのビュー内のすべてのカラムについても、小文字（例: `table_name`）と大文字（`TABLE_NAME`）の両方の表記が提供されています。
 
-## COLUMNS {#columns}
+## COLUMNS \{#columns\}
 
 [system.columns](../../operations/system-tables/columns.md) システムテーブルから読み取られるカラムと、ClickHouse ではサポートされていないか意味を持たない（常に `NULL` となる）が、標準上存在している必要があるカラムを含みます。
 
@@ -123,7 +123,7 @@ domain_schema:            ᴺᵁᴸᴸ
 domain_name:              ᴺᵁᴸᴸ
 ```
 
-## SCHEMATA {#schemata}
+## SCHEMATA \{#schemata\}
 
 [system.databases](../../operations/system-tables/databases.md) システムテーブルから読み取られるカラムと、ClickHouse ではサポートされていない、または意味を持たない（常に `NULL`）が、標準上は存在している必要があるカラムを含みます。
 
@@ -169,7 +169,7 @@ default_character_set_name:    ᴺᵁᴸᴸ
 sql_path:                      ᴺᵁᴸᴸ
 ```
 
-## TABLES {#tables}
+## TABLES \{#tables\}
 
 [system.tables](../../operations/system-tables/tables.md) システムテーブルから読み取った列を含みます。
 
@@ -221,7 +221,7 @@ table_collation: utf8mb4_0900_ai_ci
 table_comment:   
 ```
 
-## VIEWS {#views}
+## VIEWS \{#views\}
 
 テーブルエンジン [View](../../engines/table-engines/special/view.md) が使用されている場合に、[system.tables](../../operations/system-tables/tables.md) システムテーブルから読み込まれるカラムが含まれます。
 
@@ -280,7 +280,7 @@ is_trigger_deletable:       NO
 is_trigger_insertable_into: NO
 ```
 
-## KEY&#95;COLUMN&#95;USAGE {#key_column_usage}
+## KEY&#95;COLUMN&#95;USAGE \{#key_column_usage\}
 
 制約によって制限されている [system.tables](../../operations/system-tables/tables.md) システムテーブル内の列を含みます。
 
@@ -339,7 +339,7 @@ referenced_table_name:         ᴺᵁᴸᴸ
 referenced_column_name:        ᴺᵁᴸᴸ
 ```
 
-## REFERENTIAL_CONSTRAINTS {#referential_constraints}
+## REFERENTIAL_CONSTRAINTS \{#referential_constraints\}
 
 外部キーに関する情報を保持します。現在は常に空の結果（行なし）を返しますが、Tableau Online などのサードパーティツールとの互換性を確保するには十分です。
 
@@ -357,7 +357,7 @@ referenced_column_name:        ᴺᵁᴸᴸ
 - `table_name` ([String](../../sql-reference/data-types/string.md)) — 現在は未使用。
 - `referenced_table_name` ([String](../../sql-reference/data-types/string.md)) — 現在は未使用。
 
-## STATISTICS {#statistics}
+## STATISTICS \{#statistics\}
 
 テーブルインデックスに関する情報を提供します。現在は空の結果セット（行なし）を返しますが、Tableau Online などのサードパーティツールとの互換性を確保するにはこれで十分です。
 

@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✗      |       |
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 [`Template`] と似ていますが、入力ストリーム内のデリミタと値の間にある空白文字をスキップします。  
 ただし、フォーマット文字列に空白文字が含まれている場合、その空白文字は入力ストリーム内にも存在している必要があります。  
@@ -25,7 +25,7 @@ doc_type: 'reference'
 このフォーマットは入力専用です。
 :::
 
-## 使用例 {#example-usage}
+## 使用例 \{#example-usage\}
 
 以下のリクエストを使用すると、[JSON](/interfaces/formats/JSON) 形式の出力例からデータを挿入できます。
 
@@ -46,4 +46,4 @@ FORMAT TemplateIgnoreSpaces
 {${}"SearchPhrase"${}:${}${phrase:JSON}${},${}"c"${}:${}${cnt:JSON}${}}
 ```
 
-## フォーマット設定 {#format-settings}
+## フォーマット設定 \{#format-settings\}

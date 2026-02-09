@@ -38,7 +38,7 @@ import adfCopyDataSource                        from '@site/static/images/integr
 import adfCopyDataSinkSelectPost                from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-sink-select-post.png';
 import adfCopyDataDebugSuccess                  from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-debug-success.png';
 
-# Использование HTTP-интерфейса ClickHouse в Azure Data Factory {#using-clickhouse-http-interface-in-azure-data-factory}
+# Использование HTTP-интерфейса ClickHouse в Azure Data Factory \{#using-clickhouse-http-interface-in-azure-data-factory\}
 
 Табличная функция [`azureBlobStorage`](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
 — это быстрый и удобный способ организовать приём данных из Azure Blob Storage в
@@ -65,7 +65,7 @@ Azure, Azure Data Factory отправляет данные в ClickHouse. Та�
 runtime](https://learn.microsoft.com/en-us/azure/data-factory/create-self-hosted-integration-runtime?tabs=data-factory)
 :::
 
-## Превращение ClickHouse в REST‑сервис {#turning-clickhouse-to-a-rest-service}
+## Превращение ClickHouse в REST‑сервис \{#turning-clickhouse-to-a-rest-service\}
 
 Azure Data Factory поддерживает отправку данных во внешние системы по HTTP в
 формате JSON. Мы можем использовать эту возможность, чтобы вставлять данные
@@ -124,7 +124,7 @@ Service к вашему экземпляру ClickHouse, определим Data
 и создадим действие Copy Data для отправки данных из Azure в ClickHouse.
 
 
-## Создание экземпляра Azure Data Factory {#create-an-azure-data-factory-instance}
+## Создание экземпляра Azure Data Factory \{#create-an-azure-data-factory-instance\}
 
 В этом руководстве предполагается, что у вас есть доступ к учетной записи Microsoft Azure
 и уже настроены подписка и группа ресурсов. Если Azure Data Factory у вас
@@ -151,7 +151,7 @@ Service к вашему экземпляру ClickHouse, определим Data
 После успешного завершения развертывания вы можете начать использовать новый экземпляр
 Azure Data Factory.
 
-## Создание новой связанной службы на основе REST {#-creating-new-rest-based-linked-service}
+## Создание новой связанной службы на основе REST \{#-creating-new-rest-based-linked-service\}
 
 1. Войдите в Microsoft Azure Portal и откройте экземпляр Data Factory.
    <Image img={azureHomeWithDataFactory} size="lg" alt="Главная страница Azure Portal с Data Factory" border/>
@@ -200,7 +200,7 @@ Azure Data Factory.
 
 Теперь в списке должна появиться вновь созданная связанная служба на основе REST.
 
-## Создание нового набора данных для интерфейса ClickHouse HTTP {#creating-a-new-dataset-for-the-clickhouse-http-interface}
+## Создание нового набора данных для интерфейса ClickHouse HTTP \{#creating-a-new-dataset-for-the-clickhouse-http-interface\}
 
 Теперь, когда у нас настроена связанная служба для интерфейса ClickHouse HTTP,
 мы можем создать набор данных, который Azure Data Factory будет использовать для
@@ -265,7 +265,7 @@ Data](https://clickhouse.com/docs/getting-started/example-datasets/environmental
    **Publish all** в верхней части страницы, чтобы сохранить изменения.
    <Image img={adfNewDatasetConnectionSuccessful} size="xl" alt="Подключение нового набора данных успешно" border/>
 
-### Настройка примерного набора данных {#setting-up-an-example-dataset}
+### Настройка примерного набора данных \{#setting-up-an-example-dataset\}
 
 В этом примере мы не будем использовать полный набор данных Environmental
 Sensors Dataset, а только небольшой поднабор, доступный по ссылке
@@ -284,7 +284,7 @@ Azure Data Factory.
 Resources**. Создайте новый набор данных, указывающий на загруженные данные.
 Нажмите **Publish all**, чтобы сохранить изменения.
 
-## Создание действия Copy Data для передачи данных в ClickHouse {#creating-the-copy-activity-to-transfer-data-to-clickhouse}
+## Создание действия Copy Data для передачи данных в ClickHouse \{#creating-the-copy-activity-to-transfer-data-to-clickhouse\}
 
 Теперь, когда мы настроили и входной, и выходной наборы данных, мы можем
 создать действие **Copy Data** для передачи данных из нашего примерного набора
@@ -325,7 +325,7 @@ Resources**. Создайте новый набор данных, указыва
 
 6. По завершении нажмите **Publish all**, чтобы сохранить изменения конвейера и наборов данных.
 
-## Дополнительные ресурсы {#additional-resources-1}
+## Дополнительные ресурсы \{#additional-resources-1\}
 
 - [HTTP-интерфейс](https://clickhouse.com/docs/interfaces/http)
 - [Копирование и преобразование данных в и из конечной точки REST с помощью Azure Data Factory](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest?tabs=data-factory)

@@ -8,7 +8,7 @@ keywords: ['machine learning', 'genAI', 'AI']
 doc_type: 'landing-page'
 ---
 
-# Машинное обучение и GenAI {#machine-learning-and-genai}
+# Машинное обучение и GenAI \{#machine-learning-and-genai\}
 
 ClickHouse идеально подходит в качестве базы данных реального времени для задач машинного обучения.
 С ClickHouse как никогда просто использовать GenAI для работы с аналитическими данными.

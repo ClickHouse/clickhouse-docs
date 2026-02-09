@@ -21,29 +21,29 @@ import dashboards_10 from '@site/static/images/cloud/dashboards/10_dashboards.pn
 import dashboards_11 from '@site/static/images/cloud/dashboards/11_dashboards.png';
 
 
-# ダッシュボード {#dashboards}
+# ダッシュボード \{#dashboards\}
 
 SQL Console のダッシュボード機能を使用すると、保存したクエリから得られた可視化をまとめて共有できます。まずはクエリを保存して可視化し、その可視化結果をダッシュボードに追加し、クエリパラメータを使ってダッシュボードをインタラクティブにしてみてください。
 
-## コアコンセプト {#core-concepts}
+## コアコンセプト \{#core-concepts\}
 
-### クエリの共有 {#query-sharing}
+### クエリの共有 \{#query-sharing\}
 
 ダッシュボードを同僚と共有するには、必ず背後にある保存済みクエリも共有してください。可視化を表示するには、少なくとも、その保存済みクエリへの読み取り専用アクセス権を持っている必要があります。
 
-### インタラクティビティ {#interactivity}
+### インタラクティビティ \{#interactivity\}
 
 [クエリパラメータ](/sql-reference/syntax#defining-and-using-query-parameters)を使用して、ダッシュボードをインタラクティブにできます。たとえば、`WHERE` 句にクエリパラメータを追加して、フィルタとして機能させることができます。 
 
 可視化の設定で「filter」タイプを選択すると、**Global** フィルタのサイドペインからクエリパラメータの入力欄を表示・非表示に切り替えられます。ダッシュボード上の別のオブジェクト（テーブルなど）にリンクすることで、クエリパラメータの入力欄を切り替えることもできます。詳しくは、以下のクイックスタートガイドの「[フィルタを構成する](/cloud/manage/dashboards#configure-a-filter)」セクションを参照してください。 
 
-## クイックスタート {#quick-start}
+## クイックスタート \{#quick-start\}
 
 [query\_log](/operations/system-tables/query_log) システムテーブルを使用して、ClickHouse サービスを監視するためのダッシュボードを作成します。 
 
-## クイックスタート {#quick-start-1}
+## クイックスタート \{#quick-start-1\}
 
-### 保存済みクエリを作成する {#create-a-saved-query}
+### 保存済みクエリを作成する \{#create-a-saved-query\}
 
 すでに可視化用の保存済みクエリがある場合は、この手順はスキップできます。 
 
@@ -63,13 +63,13 @@ SQL Console のダッシュボード機能を使用すると、保存したク�
 
 これで 2 つのクエリができたので、それらを収集して可視化するためのダッシュボードを作成しましょう。 
 
-### ダッシュボードを作成する {#create-a-dashboard}
+### ダッシュボードを作成する \{#create-a-dashboard\}
 
 Dashboards パネルに移動し、「New Dashboard」をクリックします。名前を付けると、最初のダッシュボードが作成されます。
 
 <Image img={dashboards_5} size="md" alt="新しいダッシュボードを作成する" border/>
 
-### 可視化を追加する {#add-a-visualization}
+### 可視化を追加する \{#add-a-visualization\}
 
 現在、`queries over time` と `query count by query kind` の 2 つの保存済みクエリがあります。まず最初のクエリを折れ線グラフとして可視化してみましょう。可視化にタイトルとサブタイトルを付け、可視化するクエリを選択します。次にチャートタイプで「Line」を選択し、x 軸と y 軸を設定します。
 
@@ -83,7 +83,7 @@ Dashboards パネルに移動し、「New Dashboard」をクリックします�
 
 これで 2 つの保存済みクエリを可視化した、最初のダッシュボードが完成しました。
 
-### フィルターを設定する {#configure-a-filter}
+### フィルターを設定する \{#configure-a-filter\}
 
 クエリ種別に対するフィルターを追加して、このダッシュボードをインタラクティブにし、Insert クエリに関連するトレンドだけを表示できるようにしましょう。これは [query parameters](/sql-reference/syntax#defining-and-using-query-parameters) を使って実現します。 
 

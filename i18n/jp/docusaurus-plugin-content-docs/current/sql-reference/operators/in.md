@@ -5,7 +5,7 @@ title: 'IN 演算子'
 doc_type: 'reference'
 ---
 
-# IN 演算子 {#in-operators}
+# IN 演算子 \{#in-operators\}
 
 `IN`、`NOT IN`、`GLOBAL IN`、`GLOBAL NOT IN` 演算子は、その機能がかなり豊富であるため、別途取り上げます。
 
@@ -92,7 +92,7 @@ ORDER BY EventDate ASC
 3月17日以降の各日について、3月17日にサイトを訪問したユーザーによるページビューの割合を算出します。
 `IN` 句内のサブクエリは、常に単一のサーバー上で一度だけ実行されます。相関サブクエリはありません。
 
-## NULL の処理 {#null-processing}
+## NULL の処理 \{#null-processing\}
 
 リクエスト処理中、`IN` 演算子は、[NULL](/operations/settings/formats#input_format_null_as_default) を含む演算の結果を、`NULL` が演算子の右側か左側かに関係なく常に `0` とみなします。[transform&#95;null&#95;in = 0](../../operations/settings/settings.md#transform_null_in) の場合、`NULL` 値はどのデータセットにも含まれず、互いに対応せず、比較もできません。
 
@@ -127,7 +127,7 @@ FROM t_null
 └───────────────────────┘
 ```
 
-## 分散サブクエリ {#distributed-subqueries}
+## 分散サブクエリ \{#distributed-subqueries\}
 
 サブクエリを伴う `IN` 演算子（`JOIN` 演算子と同様）には 2 通りの使い方があります: 通常の `IN` / `JOIN` と `GLOBAL IN` / `GLOBAL JOIN` です。これらは分散クエリ処理時の実行方法が異なります。
 
@@ -229,7 +229,7 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL 
 
 また、ローカルテーブルがリクエスト元サーバーにのみ存在し、そのデータをリモートサーバーでも使用したい場合には、`GLOBAL IN` 句でローカルテーブルを指定するのも理にかなっています。
 
-### Distributed Subqueries と max_rows_in_set {#distributed-subqueries-and-max_rows_in_set}
+### Distributed Subqueries と max_rows_in_set \{#distributed-subqueries-and-max_rows_in_set\}
 
 分散クエリで転送されるデータ量を制御するために、[`max_rows_in_set`](/operations/settings/settings#max_rows_in_set) と [`max_bytes_in_set`](/operations/settings/settings#max_bytes_in_set) を使用できます。
 
@@ -241,7 +241,7 @@ SELECT * FROM table1 WHERE col1 GLOBAL IN (SELECT col1 FROM table2 WHERE <some_p
 
 `some_predicate` の選択度が十分に高くない場合、大量のデータが返され、パフォーマンスの問題を引き起こします。このような場合、ネットワーク上のデータ転送量を制限するのが望ましいです。また、[`set_overflow_mode`](/operations/settings/settings#set_overflow_mode) は（デフォルトで）`throw` に設定されており、これらのしきい値を超えたときに例外がスローされることに注意してください。
 
-### Distributed Subqueries と max_parallel_replicas {#distributed-subqueries-and-max_parallel_replicas}
+### Distributed Subqueries と max_parallel_replicas \{#distributed-subqueries-and-max_parallel_replicas\}
 
 [max&#95;parallel&#95;replicas](#distributed-subqueries-and-max_parallel_replicas) が 1 より大きい場合、分散クエリにはさらに変換が行われます。
 

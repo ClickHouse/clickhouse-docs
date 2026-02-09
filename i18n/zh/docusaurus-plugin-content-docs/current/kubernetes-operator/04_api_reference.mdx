@@ -1,0 +1,438 @@
+---
+position: 1
+slug: /clickhouse-operator/reference/api-reference
+title: 'ClickHouse Operator API 参考'
+keywords: ['kubernetes']
+description: '本文档提供 ClickHouse Operator 自定义资源的详细 API 参考资料。'
+doc_type: 'reference'
+sidebar_label: 'API 参考'
+---
+
+# ClickHouse Operator API 参考文档 \{#clickhouse-operator-api-reference\}
+
+本文档提供了 ClickHouse Operator 自定义资源的详细 API 参考信息。
+
+## ClickHouseCluster \{#clickhousecluster\}
+
+ClickHouseCluster 是 ClickHouse 集群 API 的模式。
+
+### API 版本与 Kind \{#api-version-and-kind\}
+
+```yaml
+apiVersion: clickhouse.com/v1alpha1
+kind: ClickHouseCluster
+```
+
+
+### ClickHouseClusterSpec \{#clickhouseclusterspec\}
+
+ClickHouseClusterSpec 定义了 ClickHouse 集群的期望状态。
+
+| Field                 | Type                        | Required | Default      | Description                                           |
+|-----------------------|-----------------------------|----------|--------------|-------------------------------------------------------|
+| `replicas`            | `*int32`                    | No       | `3`          | 单个分片中的副本数量。必须大于等于 0。                  |
+| `shards`              | `*int32`                    | No       | `1`          | 集群中的分片数量。必须大于等于 0。                      |
+| `keeperClusterRef`    | `LocalObjectReference`      | Yes      | -            | 用于协调的 KeeperCluster 引用。                        |
+| `podTemplate`         | `PodTemplateSpec`           | No       | -            | pod（容器组）规范的参数。                              |
+| `containerTemplate`   | `ContainerTemplateSpec`     | No       | See defaults | ClickHouse 容器规范的参数。                            |
+| `dataVolumeClaimSpec` | `PersistentVolumeClaimSpec` | Yes      | -            | 数据卷的存储配置。                                     |
+| `labels`              | `map[string]string`         | No       | -            | 要添加到所有资源的附加标签。                           |
+| `annotations`         | `map[string]string`         | No       | -            | 要添加到所有资源的附加注解。                           |
+| `settings`            | `ClickHouseConfig`          | No       | -            | ClickHouse 配置参数。                                  |
+
+#### 示例 \{#example\}
+
+```yaml
+apiVersion: clickhouse.com/v1alpha1
+kind: ClickHouseCluster
+metadata:
+  name: example-cluster
+spec:
+  replicas: 3
+  shards: 2
+  keeperClusterRef:
+    name: example-keeper
+  dataVolumeClaimSpec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Gi
+  containerTemplate:
+    image:
+      repository: clickhouse/clickhouse-server
+      tag: "25.12"
+    resources:
+      requests:
+        cpu: "2"
+        memory: "8Gi"
+      limits:
+        cpu: "4"
+        memory: "16Gi"
+  settings:
+    defaultUserPassword:
+      secret:
+        name: clickhouse-password
+        key: password
+    tls:
+      enabled: true
+      required: true
+      serverCertSecret:
+        name: clickhouse-cert
+```
+
+
+### ClickHouseConfig \{#clickhouseconfig\}
+
+ClickHouse 配置参数。
+
+| Field                 | Type                       | Required | Default      | Description                                                            |
+|-----------------------|----------------------------|----------|--------------|------------------------------------------------------------------------|
+| `defaultUserPassword` | `*DefaultPasswordSelector` | No       | -            | 从 Secret 或 ConfigMap 中获取的 `default` 用户密码。                   |
+| `logger`              | `LoggerConfig`             | No       | See defaults | 日志配置。                                                             |
+| `tls`                 | `ClusterTLSSpec`           | No       | -            | ClickHouse 的 TLS 设置。                                               |
+| `enableDatabaseSync`  | `bool`                     | No       | `true`       | 启用将数据库同步到新副本。                                             |
+| `extraConfig`         | `runtime.RawExtension`     | No       | -            | 额外的 ClickHouse 配置（与默认值合并）。                               |
+| `extraUsersConfig`    | `runtime.RawExtension`     | No       | -            | 额外的 ClickHouse 用户配置（与默认值合并）。                           |
+
+### ClickHouseClusterStatus \{#clickhouseclusterstatus\}
+
+ClickHouseClusterStatus 定义了 ClickHouse 集群的观测到的状态。
+
+| Field                   | Type                 | Description                                            |
+|-------------------------|----------------------|--------------------------------------------------------|
+| `conditions`            | `[]metav1.Condition` | 集群当前的状态条件。                                   |
+| `observedGeneration`    | `int64`              | 最近一次观测到的 generation。                          |
+| `replicas`              | `int32`              | 当前正在运行的副本数量。                               |
+| `readyReplicas`         | `int32`              | 处于就绪状态的副本数量。                               |
+| `configurationRevision` | `string`             | 由 Operator 应用的目标配置修订版本。                   |
+| `statefulSetRevision`   | `string`             | 目标 StatefulSet 控制器修订版本。                      |
+| `currentRevision`       | `string`             | 最近一次已应用的集群 spec 修订版本。                   |
+| `updateRevision`        | `string`             | 最近一次请求的集群 spec 修订版本。                     |
+
+## KeeperCluster \{#keepercluster\}
+
+KeeperCluster 是 ClickHouse Keeper 集群 API 的模式定义。
+
+### API 版本与 Kind \{#keeper-api-version-and-kind\}
+
+```yaml
+apiVersion: clickhouse.com/v1alpha1
+kind: KeeperCluster
+```
+
+
+### KeeperClusterSpec \{#keeperclusterspec\}
+
+KeeperClusterSpec 定义了 Keeper 集群的期望状态。
+
+| 字段                  | 类型                        | 必需     | 默认值       | 描述                                                                          |
+|-----------------------|-----------------------------|----------|--------------|-------------------------------------------------------------------------------|
+| `replicas`            | `*int32`                    | 否       | `3`          | 副本数量。必须为奇数：0、1、3、5、7、9、11、13 或 15。                         |
+| `podTemplate`         | `PodTemplateSpec`           | 否       | -            | pod（容器组）规范的参数。                                                     |
+| `containerTemplate`   | `ContainerTemplateSpec`     | 否       | See defaults | Keeper 容器规范的参数。                                                       |
+| `dataVolumeClaimSpec` | `PersistentVolumeClaimSpec` | 是       | -            | 数据卷的存储配置。                                                            |
+| `labels`              | `map[string]string`         | 否       | -            | 添加到所有资源的附加标签。                                                    |
+| `annotations`         | `map[string]string`         | 否       | -            | 添加到所有资源的附加注解。                                                    |
+| `settings`            | `KeeperConfig`              | 否       | -            | Keeper 配置参数。                                                             |
+
+#### 示例 \{#example\}
+
+```yaml
+apiVersion: clickhouse.com/v1alpha1
+kind: KeeperCluster
+metadata:
+  name: example-keeper
+spec:
+  replicas: 3
+  dataVolumeClaimSpec:
+    storageClassName: fast-ssd
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+  containerTemplate:
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "512Mi"
+      limits:
+        cpu: "1"
+        memory: "1Gi"
+  podTemplate:
+    topologyZoneKey: topology.kubernetes.io/zone
+  settings:
+    tls:
+      enabled: true
+      required: true
+      serverCertSecret:
+        name: keeper-cert
+```
+
+
+### KeeperConfig \{#keeperconfig\}
+
+Keeper 配置参数。
+
+| 字段         | 类型                   | 必需 | 默认值        | 描述                                                         |
+|--------------|------------------------|------|---------------|--------------------------------------------------------------|
+| `logger`      | `LoggerConfig`         | 否   | 参见默认值    | Logger 配置。                                                |
+| `tls`         | `ClusterTLSSpec`       | 否   | -             | Keeper 的 TLS 设置。                                         |
+| `extraConfig` | `runtime.RawExtension` | 否   | -             | 附加的 Keeper 配置（与默认配置合并）。                       |
+
+### KeeperClusterStatus \{#keeperclusterstatus\}
+
+KeeperClusterStatus 定义了 Keeper 集群的观测状态。
+
+| Field                   | Type                 | Description                                    |
+|-------------------------|----------------------|------------------------------------------------|
+| `conditions`            | `[]metav1.Condition` | 集群当前的状态条件。                           |
+| `observedGeneration`    | `int64`              | 最近一次观测到的 generation 值。               |
+| `replicas`              | `int32`              | 当前正在运行的副本数量。                       |
+| `readyReplicas`         | `int32`              | 处于就绪状态的副本数量。                       |
+| `configurationRevision` | `string`             | 由 Operator 应用的目标配置修订版本。           |
+| `statefulSetRevision`   | `string`             | 目标 StatefulSet 控制器的修订版本。            |
+| `currentRevision`       | `string`             | 最近一次已应用的集群 spec 修订版本。           |
+| `updateRevision`        | `string`             | 最近一次请求的集群 spec 修订版本。             |
+
+## 常用类型 \{#common-types\}
+
+### PodTemplateSpec \{#podtemplatespec\}
+
+用于 pod（容器组）配置的参数。
+
+| Field             | Type                         | Required | Description                                                                                 |
+|-------------------|------------------------------|----------|---------------------------------------------------------------------------------------------|
+| `topologyZoneKey` | `string`                     | No       | 用于可用区分布的 Kubernetes 拓扑键（例如 `topology.kubernetes.io/zone`）。                  |
+| `nodeHostnameKey` | `string`                     | No       | 节点主机名的 Kubernetes 标签键（例如 `kubernetes.io/hostname`）。                           |
+| `nodeSelector`    | `map[string]string`          | No       | 用于 pod（容器组）调度的节点选择器。                                                        |
+| `affinity`        | `corev1.Affinity`            | No       | pod（容器组）的亲和性/反亲和性规则。                                                        |
+| `tolerations`     | `[]corev1.Toleration`        | No       | 针对打了污点的节点的容忍配置。                                                              |
+| `securityContext` | `*corev1.PodSecurityContext` | No       | pod（容器组）的安全上下文。                                                                 |
+
+#### 示例 \{#example\}
+
+```yaml
+podTemplate:
+  topologyZoneKey: topology.kubernetes.io/zone
+  nodeHostnameKey: kubernetes.io/hostname
+  nodeSelector:
+    disktype: ssd
+  tolerations:
+  - key: "dedicated"
+    operator: "Equal"
+    value: "clickhouse"
+    effect: "NoSchedule"
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: clickhouse
+        topologyKey: kubernetes.io/hostname
+```
+
+
+### ContainerTemplateSpec \{#containertemplatespec\}
+
+容器配置参数。
+
+| Field             | Type                          | Required | Description                                      |
+|-------------------|-------------------------------|----------|--------------------------------------------------|
+| `image`           | `ContainerImage`              | No       | 容器镜像配置。                                   |
+| `imagePullPolicy` | `corev1.PullPolicy`           | No       | 镜像拉取策略（Always、IfNotPresent、Never）。   |
+| `resources`       | `corev1.ResourceRequirements` | No       | CPU 和内存资源需求。                             |
+| `env`             | `[]corev1.EnvVar`             | No       | 环境变量。                                       |
+| `volumeMounts`    | `[]corev1.VolumeMount`        | No       | 额外的卷挂载。                                   |
+| `securityContext` | `*corev1.SecurityContext`     | No       | 容器安全上下文。                                 |
+
+#### 示例 \{#containertemplatespec-example\}
+
+```yaml
+containerTemplate:
+  image:
+    repository: clickhouse/clickhouse-server
+    tag: "25.12"
+  imagePullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: "2"
+      memory: "8Gi"
+    limits:
+      cpu: "4"
+      memory: "16Gi"
+  env:
+  - name: TZ
+    value: "UTC"
+```
+
+
+### ContainerImage \{#containerimage\}
+
+容器镜像规范。
+
+| 字段         | 类型     | 是否必需 | 默认值                                                                              | 描述               |
+|--------------|----------|----------|--------------------------------------------------------------------------------------|--------------------|
+| `repository` | `string` | 否       | ClickHouse: `clickhouse/clickhouse-server`<br/>Keeper: `clickhouse/clickhouse-keeper` | 容器镜像仓库。     |
+| `tag`        | `string` | 否       | `latest`                                                                             | 镜像标签。         |
+
+### ClusterTLSSpec \{#clustertlsspec\}
+
+集群的 TLS 配置。
+
+| Field              | Type                          | Required | Description                                                    |
+|--------------------|-------------------------------|----------|----------------------------------------------------------------|
+| `enabled`          | `bool`                        | No       | 启用 TLS。                                                     |
+| `required`         | `bool`                        | No       | 要求所有连接必须使用 TLS（禁用不安全的 endpoint）。            |
+| `serverCertSecret` | `corev1.LocalObjectReference` | No       | 包含服务器证书（tls.crt, tls.key）的 Secret。                  |
+| `caBundle`         | `*SecretKeySelector`          | No       | 包含用于验证的 CA 证书包（CA bundle）的 Secret。               |
+
+#### 示例 \{#clustertlsspec-example\}
+
+```yaml
+tls:
+  enabled: true
+  required: true
+  serverCertSecret:
+    name: clickhouse-cert
+  caBundle:
+    secretKeyRef:
+      name: ca-cert-secret
+      key: ca.crt
+```
+
+
+### LoggerConfig \{#loggerconfig\}
+
+ClickHouse 和 Keeper 的日志配置。
+
+| Field       | Type     | Required | Default   | Description                                           |
+|-------------|----------|----------|-----------|-------------------------------------------------------|
+| `logToFile` | `bool`   | No       | `true`    | 将日志写入文件。                                      |
+| `level`     | `string` | No       | `"trace"` | 日志级别：trace、debug、information、warning、error。 |
+| `size`      | `string` | No       | `"1000M"` | 日志文件的最大大小。                                  |
+| `count`     | `int`    | No       | `50`      | 要保留的日志文件数量。                                |
+
+#### 示例 \{#loggerconfig-example\}
+
+```yaml
+logger:
+  logToFile: true
+  level: "information"
+  size: "1000M"
+  count: 50
+```
+
+
+### DefaultPasswordSelector \{#defaultpasswordselector\}
+
+引用包含密码的 Secret 或 ConfigMap 中的键。
+
+| Field          | Type                    | Required | Default     | Description                                                                                                                                                                                                                                                    |
+|----------------|-------------------------|----------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `passwordType` | `string`                | No       | `plaintext` | 密码编码类型。可选值：`plaintext`、`sha256_password`、`sha256_hash`、`double_sha1_password`、`double_sha1_hash`。详情参见 [ClickHouse 文档](/operations/settings/settings-users#user-namepassword)。 |
+| `secret`       | `*SecretKeySelector`    | No       | -           | 从 Secret 中的键选择密码。与 `configMap` 互斥。                                                                                                                                                                                                                |
+| `configMap`    | `*ConfigMapKeySelector` | No       | -           | 从 ConfigMap 中的键选择密码。与 `secret` 互斥。                                                                                                                                                                                                                |
+
+:::note
+必须指定 `secret` 或 `configMap` 其中之一，不能同时指定二者。
+:::
+
+#### 使用 Secret 的示例（推荐） \{#defaultpasswordselector-example-secret\}
+
+```yaml
+defaultUserPassword:
+  passwordType: plaintext  # Optional, default
+  secret:
+    name: clickhouse-password
+    key: password
+```
+
+
+#### 使用 SHA256 的示例 \{#defaultpasswordselector-example-sha256\}
+
+```yaml
+defaultUserPassword:
+  passwordType: sha256_password
+  secret:
+    name: clickhouse-password
+    key: password_hash
+```
+
+
+#### ConfigMap 使用示例 \{#defaultpasswordselector-example-configmap\}
+
+```yaml
+defaultUserPassword:
+  passwordType: plaintext
+  configMap:
+    name: clickhouse-config
+    key: default_password
+```
+
+
+## 默认值 \{#default-values\}
+
+### ClickHouse 默认值 \{#clickhouse-defaults\}
+
+| 设置项              | 默认值                          |
+|----------------------|--------------------------------|
+| 副本数               | `3`                            |
+| 分片数               | `1`                            |
+| 镜像仓库             | `clickhouse/clickhouse-server` |
+| 镜像标签             | `latest`                       |
+| 镜像拉取策略         | `IfNotPresent`                 |
+| CPU 请求             | `2`                            |
+| CPU 限制             | `4`                            |
+| 内存请求             | `4Gi`                          |
+| 内存限制             | `8Gi`                          |
+| 日志级别             | `trace`                        |
+| 日志输出到文件       | `true`                         |
+| 日志大小             | `1000M`                        |
+| 日志文件数量         | `50`                           |
+| 启用数据库同步       | `true`                         |
+
+### Keeper 默认值 \{#keeper-defaults\}
+
+| 设置项            | 默认值                          |
+|--------------------|--------------------------------|
+| 副本数             | `3`                            |
+| 镜像仓库           | `clickhouse/clickhouse-keeper` |
+| 镜像标签           | `latest`                       |
+| 镜像拉取策略       | `IfNotPresent`                 |
+| CPU 请求           | `500m`                         |
+| CPU 限制           | `1`                            |
+| 内存请求           | `512Mi`                        |
+| 内存限制           | `1Gi`                          |
+| 日志级别           | `trace`                        |
+| 日志输出到文件     | `true`                         |
+| 日志文件大小       | `1000M`                        |
+| 日志文件数量       | `50`                           |
+
+## 条件 \{#conditions\}
+
+### ClickHouseCluster 条件 \{#clickhousecluster-conditions\}
+
+| Type                      | Description                                                                                           |
+|---------------------------|-------------------------------------------------------------------------------------------------------|
+| `SpecValid`               | ClickHouseCluster 自定义资源（CustomResource）是否通过校验。在没有 webhook 的部署中很有用              |
+| `ReconcileSucceeded`      | 上一次协调循环（reconciliation cycle）是否成功                                                        |
+| `ReplicaStartupSucceeded` | ClickHouseCluster 的所有副本是否都能够启动                                                            |
+| `Healthy`                 | 所有请求副本的就绪情况                                                                                |
+| `ClusterSizeAligned`      | 集群中的副本/分片数量与请求的数量一致                                                                 |
+| `ConfigurationInSync`     | 表示当前配置的部署状态                                                                                |
+| `Ready`                   | ClickHouseCluster 已就绪，可以处理客户端请求。每个分片中至少有一个副本处于 Ready 状态                  |
+| `SchemaInSync`            | 伸缩操作后，所有副本是否具有相同的数据库模式（schema）                                                |
+
+### KeeperCluster 条件 \{#keepercluster-conditions\}
+
+| Type                      | Description                                                                                           |
+|---------------------------|-------------------------------------------------------------------------------------------------------|
+| `SpecValid`               | KeeperCluster 自定义资源是否通过验证。在未配置 webhook 的部署环境中很有用                                |
+| `ReconcileSucceeded`      | 上一次调和周期是否成功                                                                                |
+| `ReplicaStartupSucceeded` | KeeperCluster 的所有副本是否都能够成功启动                                                            |
+| `Healthy`                 | 所有所需副本的就绪状态                                                                                |
+| `ClusterSizeAligned`      | 集群中的副本数量是否与请求的数量一致                                                                  |
+| `ConfigurationInSync`     | 表示配置是否与当前部署状态保持同步                                                                    |
+| `Ready`                   | KeeperCluster 已准备好为客户端请求提供服务，且已选举出 Leader                                         |

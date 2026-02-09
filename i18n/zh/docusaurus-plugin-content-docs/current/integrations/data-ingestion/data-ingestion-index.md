@@ -6,7 +6,7 @@ description: '数据摄取部分的概览页'
 doc_type: 'landing-page'
 ---
 
-# 数据摄取 {#data-ingestion}
+# 数据摄取 \{#data-ingestion\}
 
 ClickHouse 集成了多种用于数据集成和转换的解决方案。
 如需更多信息，请参阅以下页面：

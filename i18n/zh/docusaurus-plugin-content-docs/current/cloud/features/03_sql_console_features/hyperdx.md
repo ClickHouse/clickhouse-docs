@@ -21,7 +21,7 @@ HyperDX 是专为探索和可视化可观测性数据构建的前端，支持 Lu
 HyperDX 可以一键启动并连接到您的数据 —— 与 ClickHouse Cloud 身份验证系统完全集成，为您的可观测性洞察提供无缝且安全的访问体验。
 
 
-## 部署 {#main-concepts}
+## 部署 \{#main-concepts\}
 
 ClickHouse Cloud 中的 HyperDX 目前处于私有预览阶段，需在组织级别启用。启用后，当选择任意服务时，用户会在左侧主导航菜单中看到 HyperDX。
 

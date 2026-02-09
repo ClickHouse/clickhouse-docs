@@ -16,7 +16,7 @@ import log from '@site/static/images/clickstack/lambda/lambda-log.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 
-# Мониторинг логов AWS Lambda с ClickStack с использованием Rotel {#lambda-clickstack}
+# Мониторинг логов AWS Lambda с ClickStack с использованием Rotel \{#lambda-clickstack\}
 
 <CommunityMaintainedBadge/>
 
@@ -32,11 +32,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 Необходимое время: 5–10 минут
 :::
 
-## Интеграция с существующими функциями Lambda {#existing-lambda}
+## Интеграция с существующими функциями Lambda \{#existing-lambda\}
 
 В этом разделе описывается настройка ваших существующих функций AWS Lambda для отправки логов и трассировок в ClickStack с помощью расширения Rotel Lambda Extension.
 
-### Предварительные требования {#prerequisites}
+### Предварительные требования \{#prerequisites\}
 
 - Запущенный экземпляр ClickStack
 - Функции AWS Lambda для мониторинга
@@ -46,12 +46,12 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 <VerticalStepper headerLevel="h4">
   #### Выберите подходящий слой расширения Rotel Lambda Extension
 
-  [Расширение Rotel Lambda Extension](https://github.com/streamfold/rotel-lambda-extension) доступно в виде предварительно собранного слоя AWS Lambda. Выберите ARN слоя, который соответствует архитектуре вашей Lambda-функции:
+  Выберите слой Lambda, который соответствует архитектуре среды выполнения вашей Lambda-функции. Поле `{version}` зависит от региона AWS, в который вы выполняете развертывание. Проверьте страницу [releases](https://github.com/streamfold/rotel-lambda-extension/releases), чтобы узнать актуальные номера версий для вашего региона.
 
-  | Архитектура  | Шаблон ARN                                                                         | Актуальная версия                                                                                                                                                                    |
-  | ------------ | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-  | x86-64/amd64 | `arn:aws:lambda:{region}:418653438961:layer:rotel-extension-amd64-alpha:{version}` | ![Последняя версия](https://img.shields.io/github/v/release/streamfold/rotel-lambda-extension?filter=*alpha\&label=version\&labelColor=%2338BDF8\&color=%23312E81\&cacheSeconds=600) |
-  | arm64        | `arn:aws:lambda:{region}:418653438961:layer:rotel-extension-arm64-alpha:{version}` | ![Последняя версия](https://img.shields.io/github/v/release/streamfold/rotel-lambda-extension?filter=*alpha\&label=version\&labelColor=%2338BDF8\&color=%23312E81\&cacheSeconds=600) |
+  | Архитектура  | ARN                                                                          |
+  | ------------ | ---------------------------------------------------------------------------- |
+  | x86-64/amd64 | `arn:aws:lambda:{region}:418653438961:layer:rotel-extension-amd64:{version}` |
+  | arm64        | `arn:aws:lambda:{region}:418653438961:layer:rotel-extension-arm64:{version}` |
 
   **Доступные регионы:**
 
@@ -68,22 +68,22 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   ##### Вариант 1: Консоль AWS
 
-  1. Откройте консоль Lambda в AWS
-  2. Откройте свою функцию Lambda
+  1. Откройте консоль AWS Lambda
+  2. Перейдите к своей функции Lambda
   3. Прокрутите страницу до раздела **Layers** и нажмите **Add a layer**
   4. Выберите **Specify an ARN**
   5. Введите ARN слоя Rotel:
      ```text
-     arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+     arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version}
      ```
-  6. Нажмите **Add**
+  6. Нажмите кнопку **Add**
 
   ##### Вариант 2: AWS CLI
 
   ```bash
   aws lambda update-function-configuration \
     --function-name my-function \
-    --layers arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+    --layers arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version}
   ```
 
   ##### Вариант 3: AWS SAM
@@ -95,7 +95,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
       Properties:
         # ... other configuration ...
         Layers:
-          - arn:aws:lambda:{version}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+          - arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version}
   ```
 
   #### Настройте расширение для экспорта данных в ClickStack
@@ -217,15 +217,15 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   После настройки войдите в HyperDX (UI ClickStack) и убедитесь, что логи поступают:
 
-  <Image img={log_view} alt="Просмотр журналов Lambda" />
+  <Image img={log_view} alt="Просмотр логов Lambda" />
 
-  <Image img={log} alt="Подробная информация о журнале Lambda" />
+  <Image img={log} alt="Детали журнала Lambda" />
 
   Найдите следующие ключевые атрибуты в логах:
 
   * `service.name`: имя вашей функции Lambda
   * `faas.name`: имя функции AWS Lambda
-  * `faas.invocation_id`: Уникальный идентификатор вызова функции
+  * `faas.invocation_id`: уникальный идентификатор вызова функции
   * `cloud.provider`: &quot;aws&quot;
   * `cloud.platform`: &quot;aws&#95;lambda&quot;
 </VerticalStepper>
@@ -236,7 +236,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <VerticalStepper headerLevel="h4">
 
-#### Удаление прав CloudWatch из роли выполнения {#remove-permissions}
+#### Удаление прав CloudWatch из роли выполнения \{#remove-permissions\}
 
 1. Откройте AWS Console и перейдите в **AWS Lambda**
 2. Перейдите к своей функции Lambda
@@ -282,7 +282,7 @@ AWS предоставляет слои автоинструментирован
 
 Найдите последние версии в [репозитории AWS OpenTelemetry Lambda](https://github.com/aws-observability/aws-otel-lambda).
 
-#### Добавьте оба слоя в вашу функцию {#add-both-layers}
+#### Добавьте оба слоя в вашу функцию \{#add-both-layers\}
 
 Добавьте **оба** слоя: слой расширения Rotel и слой автоинструментирования:
 
@@ -290,7 +290,7 @@ AWS предоставляет слои автоинструментирован
 aws lambda update-function-configuration \
   --function-name my-function \
   --layers \
-    arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version} \
+    arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version} \
     arn:aws:lambda:{region}:901920570463:layer:aws-otel-nodejs-{arch}-ver-1-30-2:1
 ```
 

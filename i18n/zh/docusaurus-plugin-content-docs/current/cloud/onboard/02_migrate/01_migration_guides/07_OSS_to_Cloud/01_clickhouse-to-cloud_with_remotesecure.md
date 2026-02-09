@@ -18,14 +18,14 @@ import self_managed_06 from '@site/static/images/integrations/migration/self-man
 import CompatibilityNote from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/compatibility.mdx'
 
 
-# 使用 remoteSecure 在自管理 ClickHouse 与 ClickHouse Cloud 之间迁移 {#migrating-between-self-managed-clickhouse-and-clickhouse-cloud-using-remotesecure}
+# 使用 remoteSecure 在自管理 ClickHouse 与 ClickHouse Cloud 之间迁移 \{#migrating-between-self-managed-clickhouse-and-clickhouse-cloud-using-remotesecure\}
 
 <Image img={self_managed_01} size='lg' alt='Migrating Self-managed ClickHouse'/>
 
 本指南说明如何将自管理 ClickHouse 服务器迁移到 ClickHouse Cloud，以及如何在不同的 ClickHouse Cloud 服务之间进行迁移。
 [`remoteSecure`](/sql-reference/table-functions/remote) 函数可在 `SELECT` 和 `INSERT` 查询中使用，以访问远程 ClickHouse 服务器，从而使迁移表的操作简化为编写一个包含嵌套 `SELECT` 的 `INSERT INTO` 查询。
 
-## 从自管理 ClickHouse 迁移到 ClickHouse Cloud {#migrating-from-self-managed-clickhouse-to-clickhouse-cloud}
+## 从自管理 ClickHouse 迁移到 ClickHouse Cloud \{#migrating-from-self-managed-clickhouse-to-clickhouse-cloud\}
 
 <Image img={self_managed_02} size='lg' alt="迁移自管理 ClickHouse"  />
 
@@ -35,7 +35,7 @@ ClickHouse Cloud 将自动处理纵向和横向扩展。
 
 在本示例中，自管理 ClickHouse 服务器是*源端*，而 ClickHouse Cloud 服务是*目标端*。
 
-### 概述 {#overview}
+### 概述 \{#overview\}
 
 流程如下：
 
@@ -45,13 +45,13 @@ ClickHouse Cloud 将自动处理纵向和横向扩展。
 1. 从目标服务的 IP 访问列表中移除源服务器（如适用）
 1. 从源服务中移除只读用户
 
-### 将表从一个系统迁移到另一个系统：{#migration-of-tables-from-one-system-to-another}
+### 将表从一个系统迁移到另一个系统：\{#migration-of-tables-from-one-system-to-another\}
 
 本示例将单个表从自管理 ClickHouse 服务器迁移到 ClickHouse Cloud。
 
 <CompatibilityNote/>
 
-### 在源 ClickHouse 系统上（当前承载数据的系统） {#on-the-source-clickhouse-system-the-system-that-currently-hosts-the-data}
+### 在源 ClickHouse 系统上（当前承载数据的系统） \{#on-the-source-clickhouse-system-the-system-that-currently-hosts-the-data\}
 
 * 添加一个只读用户，用于读取源表（本示例中的 `db.table`）
 
@@ -74,7 +74,7 @@ WHERE database = 'db' AND table = 'table'
 ```
 
 
-### 在目标 ClickHouse Cloud 系统上： {#on-the-destination-clickhouse-cloud-system}
+### 在目标 ClickHouse Cloud 系统上： \{#on-the-destination-clickhouse-cloud-system\}
 
 * 创建目标数据库：
 
@@ -122,7 +122,7 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
 ```
 
 
-## 在 ClickHouse Cloud 服务之间迁移 {#migrating-between-clickhouse-cloud-services}
+## 在 ClickHouse Cloud 服务之间迁移 \{#migrating-between-clickhouse-cloud-services\}
 
 <Image img={self_managed_05} size='lg' alt='Migrating Self-managed ClickHouse'  />
 
@@ -145,7 +145,7 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
 1. 在目标服务上重新配置 IP 访问列表
 1. 从源服务中移除只读用户
 
-#### 在源服务中添加只读用户 {#add-a-read-only-user-to-the-source-service}
+#### 在源服务中添加只读用户 \{#add-a-read-only-user-to-the-source-service\}
 
 - 添加一个只读用户，使其可以读取源表（本例中为 `db.table`）
   ```sql
@@ -165,7 +165,7 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
   where database = 'db' and table = 'table'
   ```
 
-#### 在目标服务上复制表结构 {#duplicate-the-table-structure-on-the-destination-service}
+#### 在目标服务上复制表结构 \{#duplicate-the-table-structure-on-the-destination-service\}
 
 在目标服务中，如果数据库尚不存在，则创建该数据库：
 
@@ -182,7 +182,7 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
   CREATE TABLE db.table ...
   ```
 
-#### 允许对源服务的远程访问 {#allow-remote-access-to-the-source-service}
+#### 允许对源服务的远程访问 \{#allow-remote-access-to-the-source-service\}
 
 为了将数据从源服务拉取到目标服务，源服务必须允许连接。请在源服务上临时禁用 IP Access List 功能。
 
@@ -192,7 +192,7 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
 
 修改允许列表，并将访问权限临时设置为 **Anywhere**。详见 [IP Access List](/cloud/security/setting-ip-filters) 文档。
 
-#### 将数据从源复制到目标 {#copy-the-data-from-source-to-destination}
+#### 将数据从源复制到目标 \{#copy-the-data-from-source-to-destination\}
 
 - 使用 `remoteSecure` 函数从源 ClickHouse Cloud 服务读取数据  
   连接到目标。在目标 ClickHouse Cloud 服务上运行以下命令：
@@ -204,11 +204,11 @@ remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
 
 - 验证目标服务中的数据
 
-#### 在源服务上重新建立 IP 访问列表 {#re-establish-the-ip-access-list-on-the-source}
+#### 在源服务上重新建立 IP 访问列表 \{#re-establish-the-ip-access-list-on-the-source\}
 
 如果您之前导出了访问列表，可以通过 **Share** 将其重新导入；否则，请将相应条目重新添加到访问列表中。
 
-#### 移除只读的 `exporter` 用户 {#remove-the-read-only-exporter-user}
+#### 移除只读的 `exporter` 用户 \{#remove-the-read-only-exporter-user\}
 
 ```sql
 DROP USER exporter

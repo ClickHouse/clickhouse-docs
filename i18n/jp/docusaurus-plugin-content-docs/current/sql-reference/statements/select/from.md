@@ -6,7 +6,7 @@ title: 'FROM 句'
 doc_type: 'reference'
 ---
 
-# FROM 句 {#from-clause}
+# FROM 句 \{#from-clause\}
 
 `FROM` 句は、データを読み取る元となるソースを指定します。
 
@@ -27,7 +27,7 @@ FROM table
 SELECT *
 ```
 
-## FINAL 修飾子 {#final-modifier}
+## FINAL 修飾子 \{#final-modifier\}
 
 `FINAL` が指定されている場合、ClickHouse は結果を返す前にデータを完全にマージします。これにより、指定されたテーブルエンジンでマージ時に行われるすべてのデータ変換も実行されます。
 
@@ -41,7 +41,7 @@ SELECT *
 
 `FINAL` を含む `SELECT` クエリは並列に実行されます。[max&#95;final&#95;threads](/operations/settings/settings#max_final_threads) 設定によって、使用されるスレッド数が制限されます。
 
-### 欠点 {#drawbacks}
+### 欠点 \{#drawbacks\}
 
 `FINAL` を使用するクエリは、`FINAL` を使用しない同様のクエリよりもわずかに遅くなります。その理由は次のとおりです:
 
@@ -54,7 +54,7 @@ SELECT *
 
 `FINAL` は、セッションまたはユーザープロファイルでの [FINAL](../../../operations/settings/settings.md#final) 設定を用いて、クエリで参照されるすべてのテーブルに対して自動的に適用できます。
 
-### 使用例 {#example-usage}
+### 使用例 \{#example-usage\}
 
 `FINAL` キーワードの使用
 
@@ -75,7 +75,7 @@ SET final = 1;
 SELECT x, y FROM mytable WHERE x > 1;
 ```
 
-## 実装の詳細 {#implementation-details}
+## 実装の詳細 \{#implementation-details\}
 
 `FROM` 句が省略された場合、データは `system.one` テーブルから読み取られます。
 `system.one` テーブルには 1 行だけが含まれています（このテーブルは、他の DBMS に存在する DUAL テーブルと同じ目的を果たします）。

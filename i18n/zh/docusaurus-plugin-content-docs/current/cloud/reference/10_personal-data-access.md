@@ -11,7 +11,7 @@ import Image from '@theme/IdealImage';
 import support_case_form from '@site/static/images/cloud/security/support-case-form.png';
 
 
-## 简介 {#intro}
+## 简介 \{#intro\}
 
 作为注册用户，ClickHouse 允许您查看和管理您的个人账户数据，包括联系信息。根据您的角色权限，这还可能包括访问您所在组织中其他用户的联系信息、API 密钥详细信息以及其他相关信息。您可以通过 ClickHouse 控制台以自助方式直接管理这些信息。
 
@@ -25,7 +25,7 @@ import support_case_form from '@site/static/images/cloud/security/support-case-f
 
 
 
-## 自助服务 {#self-service}
+## 自助服务 \{#self-service\}
 
 默认情况下，ClickHouse 允许用户直接在 ClickHouse 控制台中查看其个人数据。
 
@@ -43,7 +43,7 @@ import support_case_form from '@site/static/images/cloud/security/support-case-f
 
 注意：带有 `OrgID` 的 URL 需要更新为与您特定账户相对应的 `OrgID`。
 
-### 现有客户 {#current-customers}
+### 现有客户 \{#current-customers\}
 
 如果您已经在我们这里拥有账户，但通过自助服务仍未解决您的个人数据问题，您可以根据隐私政策提交数据主体访问请求（Data Subject Access Request，DSAR）。为此，请登录您的 ClickHouse 账户并创建一个[支持工单](https://console.clickhouse.cloud/support)。这有助于我们验证您的身份并简化处理您请求的流程。
 
@@ -56,13 +56,13 @@ import support_case_form from '@site/static/images/cloud/security/support-case-f
 
 <Image img={support_case_form} size="sm" alt="ClickHouse Cloud 中的支持工单表单" border />
 
-### 无账户的个人用户 {#individuals-without-an-account}
+### 无账户的个人用户 \{#individuals-without-an-account\}
 
 如果您在我们这里没有账户，并且上述自助服务仍未解决您的个人数据问题，同时您希望根据隐私政策提交数据主体访问请求，您可以通过电子邮件将这些请求发送至 [privacy@clickhouse.com](mailto:privacy@clickhouse.com)。
 
 
 
-## 身份验证 {#identity-verification}
+## 身份验证 \{#identity-verification\}
 
 如果您通过电子邮件提交数据主体访问请求，我们可能会向您索取特定信息，以帮助我们确认您的身份并处理您的请求。适用法律可能要求或允许我们不予满足您的请求。如果我们拒绝您的请求，在不违反法律限制的前提下，我们会向您说明原因。
 

@@ -33,7 +33,7 @@ import s3_20 from '@site/static/images/_snippets/s3/2025/s3-20.png';
 > これは、S3 へのバックアップ取得や、ClickHouse が S3 上にデータを保存するよう構成するための前提となる手順です。
 
 
-## AWS IAM ユーザーを作成する {#create-an-aws-iam-user}
+## AWS IAM ユーザーを作成する \{#create-an-aws-iam-user\}
 
 この手順では、ログインユーザーではなく、サービスアカウント用ユーザーを作成します。
 
@@ -78,7 +78,7 @@ import s3_20 from '@site/static/images/_snippets/s3/2025/s3-20.png';
 
 <Image size="lg" img={s3_9} alt="AWS IAM Management Console - 新しいユーザーの追加" />
 
-## S3 バケットを作成する {#create-an-s3-bucket}
+## S3 バケットを作成する \{#create-an-s3-bucket\}
 
 1. S3 バケットセクションで **Create bucket** をクリックします。
 

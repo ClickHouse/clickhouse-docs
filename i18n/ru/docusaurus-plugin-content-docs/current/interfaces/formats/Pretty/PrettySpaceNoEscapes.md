@@ -16,17 +16,17 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | ✗    | ✔     |           |
 
 
-## Описание {#description}
+## Описание \{#description\}
 
 Отличается от формата [`PrettySpace`](./PrettySpace.md) тем, что в нём не используются [последовательности управляющих кодов ANSI (ANSI escape sequences)](http://en.wikipedia.org/wiki/ANSI_escape_code).  
 Это необходимо для корректного отображения этого формата в браузере, а также для использования консольной утилиты `watch`.
 
 
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 
 
-## Параметры форматирования {#format-settings}
+## Параметры форматирования \{#format-settings\}
 
 <PrettyFormatSettings/>

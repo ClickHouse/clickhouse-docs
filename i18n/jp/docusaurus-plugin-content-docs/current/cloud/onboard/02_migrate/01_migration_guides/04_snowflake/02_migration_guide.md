@@ -11,7 +11,8 @@ doc_type: 'guide'
 import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';
 import Image from '@theme/IdealImage';
 
-# SnowflakeからClickHouseへの移行 {#migrate-from-snowflake-to-clickhouse}
+
+# SnowflakeからClickHouseへの移行 \{#migrate-from-snowflake-to-clickhouse\}
 
 > 本ガイドでは、SnowflakeからClickHouseへデータを移行する方法について説明します。
 
@@ -19,13 +20,13 @@ SnowflakeとClickHouse間でデータを移行するには、転送用の中間�
 
 <VerticalStepper headerLevel="h2">
 
-## Snowflake からデータをエクスポートする {#1-exporting-data-from-snowflake}
+## Snowflake からのデータエクスポート \{#1-exporting-data-from-snowflake\}
 
-<Image img={migrate_snowflake_clickhouse} size="md" alt="Snowflake から ClickHouse への移行" />
+<Image img={migrate_snowflake_clickhouse} size="md" alt="Snowflake から ClickHouse への移行"/>
 
-上の図に示されているように、Snowflake からデータをエクスポートするには外部ステージを利用する必要があります。
+Snowflake からデータをエクスポートするには、上図のように外部ステージを使用する必要があります。
 
-次のスキーマを持つ Snowflake テーブルをエクスポートするとします。
+次のスキーマを持つ Snowflake テーブルをエクスポートしたいとします:
 
 ```sql
 CREATE TABLE MYDATASET (
@@ -36,27 +37,27 @@ CREATE TABLE MYDATASET (
 ) DATA_RETENTION_TIME_IN_DAYS = 0;
 ```
 
-このテーブルのデータを ClickHouse データベースに移行するには、まずこのデータを外部ステージにコピーする必要があります。データをコピーする際の中間フォーマットとしては、Parquet の利用を推奨します。Parquet であれば、型情報を共有でき、精度を保持できるうえ、圧縮効率も高く、分析で一般的なネスト構造もネイティブにサポートしているためです。
+このテーブルのデータを ClickHouse データベースに移動するには、まずこのデータを外部ステージにコピーする必要があります。データのコピー時には、中間フォーマットとして Parquet を使用することを推奨します。Parquet は型情報を共有でき、精度を保持し、圧縮率が高く、分析で一般的なネストした構造をネイティブにサポートするためです。
 
-以下の例では、Parquet と必要なファイルオプションを表現するために、Snowflake 上で名前付きファイルフォーマットを作成します。次に、コピーされたデータセットを格納するバケットを指定します。最後に、そのデータセットをバケットにコピーします。
+以下の例では、Snowflake で Parquet と必要なファイルオプションを表す名前付きファイルフォーマットを作成します。次に、コピーされたデータセットを格納するバケットを指定します。最後に、そのバケットにデータセットをコピーします。
 
 ```sql
 CREATE FILE FORMAT my_parquet_format TYPE = parquet;
 
--- Create the external stage that specifies the S3 bucket to copy into
+-- コピー先の S3 バケットを指定する外部ステージを作成
 CREATE OR REPLACE STAGE external_stage
 URL='s3://mybucket/mydataset'
 CREDENTIALS=(AWS_KEY_ID='<key>' AWS_SECRET_KEY='<secret>')
 FILE_FORMAT = my_parquet_format;
 
--- Apply "mydataset" prefix to all files and specify a max file size of 150mb
--- The `header=true` parameter is required to get column names
+-- すべてのファイルに "mydataset" プレフィックスを付与し、最大ファイルサイズを 150MB に設定
+-- カラム名を取得するには `header=true` パラメータが必須
 COPY INTO @external_stage/mydataset from mydataset max_file_size=157286400 header=true;
 ```
 
-約 5TB のデータセットで最大ファイルサイズが 150MB、かつ同じ AWS `us-east-1` リージョン内にある 2X-Large Snowflake ウェアハウスを使用する場合、S3 バケットへのデータのコピーには約 30 分かかります。
+約 5TB のデータセットに対して最大ファイルサイズを 150MB に設定し、同じ AWS `us-east-1` リージョンにある 2X-Large の Snowflake ウェアハウスを使用した場合、S3 バケットへのデータコピーにはおよそ 30 分かかります。
 
-## ClickHouse へのインポート {#2-importing-to-clickhouse}
+## ClickHouse へのインポート \{#2-importing-to-clickhouse\}
 
 データが中間オブジェクトストレージにステージングされたら、以下のように [s3 テーブル関数](/sql-reference/table-functions/s3) などの ClickHouse の関数を使用して、テーブルにデータを挿入できます。
 
@@ -102,9 +103,9 @@ input_format_parquet_case_insensitive_column_matching = 1 -- Column matching bet
 `some_file` のようなネストした構造は、Snowflake によるコピー処理の際に JSON 文字列へと変換されます。このデータをインポートするには、上記の [JSONExtract 関数](/sql-reference/functions/json-functions#JSONExtract) を使用して、ClickHouse への挿入時にこれらの構造を Tuple 型に変換する必要があります。
 :::
 
-## データエクスポートの成功を検証する {#3-testing-successful-data-export}
+## データエクスポート成功のテスト \{#3-testing-successful-data-export\}
 
-データが正しく挿入されたかどうかを検証するには、新しいテーブルに対して`SELECT`クエリを実行します。
+データが正しく挿入されたかをテストするには、新しいテーブルに対して `SELECT` クエリを実行するだけです。
 
 ```sql
 SELECT * FROM mydataset LIMIT 10;

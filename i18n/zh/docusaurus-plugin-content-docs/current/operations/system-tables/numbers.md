@@ -6,7 +6,7 @@ title: 'system.numbers'
 doc_type: 'reference'
 ---
 
-# system.numbers {#systemnumbers}
+# system.numbers \{#systemnumbers\}
 
 该表包含一个名为 `number` 的 `UInt64` 列，存储从零开始的几乎所有自然数。
 
@@ -40,7 +40,7 @@ SELECT * FROM system.numbers LIMIT 10;
 你还可以使用谓词来限制输出结果。
 
 ```sql
-SELECT * FROM system.numbers < 10;
+SELECT * FROM system.numbers WHERE number < 10;
 ```
 
 ```response

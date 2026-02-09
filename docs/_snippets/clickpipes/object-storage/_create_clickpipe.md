@@ -15,6 +15,9 @@ import S3DataSource from '@site/docs/_snippets/clickpipes/object-storage/amazon-
 import GCSSDataSource from '@site/docs/_snippets/clickpipes/object-storage/google-cloud-storage/_1-data-source.md';
 import ABSDataSource from '@site/docs/_snippets/clickpipes/object-storage/azure-blob-storage/_1-data-source.md';
 
+import S3Connection from '@site/docs/_snippets/clickpipes/object-storage/amazon-s3/_2-connection.md';
+import GCSConnection from '@site/docs/_snippets/clickpipes/object-storage/google-cloud-storage/_2-connection.md';
+
 <VerticalStepper type="numbered" headerLevel="h2">
 
 ## Select the data source {#1-select-the-data-source}
@@ -25,15 +28,13 @@ import ABSDataSource from '@site/docs/_snippets/clickpipes/object-storage/azure-
 
 {props.provider === 's3' && <S3DataSource />}
 {props.provider === 'gcs' && <GCSSDataSource />}
-{props.provider === 'abs' && <ABSDataSource />}
 
 ## Setup your ClickPipe connection {#2-setup-your-clickpipe-connection}
 
 **1.** To setup a new ClickPipe, you must provide details on how to connect to and authenticate with your object storage service.
 
-{props.provider === 's3' && <S3DataSource />}
-{props.provider === 'gcs' && <GCSSDataSource />}
-{props.provider === 'abs' && <ABSDataSource />}
+{props.provider === 's3' && <S3Connection />}
+{props.provider === 'gcs' && <GCSConnection />}
 
 **2.** Click **Incoming data**. ClickPipes will fetch metadata from your bucket for the next step.
 

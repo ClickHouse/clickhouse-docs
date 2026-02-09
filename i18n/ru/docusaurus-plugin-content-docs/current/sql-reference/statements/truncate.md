@@ -7,11 +7,11 @@ title: 'Команды TRUNCATE'
 doc_type: 'reference'
 ---
 
-# Команды TRUNCATE {#truncate-statements}
+# Команды TRUNCATE \{#truncate-statements\}
 
 Команда `TRUNCATE` в ClickHouse используется для быстрого удаления всех данных из таблицы или базы данных при сохранении их структуры.
 
-## TRUNCATE TABLE {#truncate-table}
+## TRUNCATE TABLE \{#truncate-table\}
 
 ```sql
 TRUNCATE TABLE [IF EXISTS] [db.]name [ON CLUSTER cluster] [SYNC]
@@ -42,7 +42,7 @@ TRUNCATE TABLE [IF EXISTS] [db.]name [ON CLUSTER cluster] [SYNC]
 * [`Buffer`](../../engines/table-engines/special/buffer.md)
 * [`Null`](../../engines/table-engines/special/null.md)
 
-## TRUNCATE ALL TABLES {#truncate-all-tables}
+## TRUNCATE ALL TABLES \{#truncate-all-tables\}
 
 ```sql
 TRUNCATE [ALL] TABLES FROM [IF EXISTS] db [LIKE | ILIKE | NOT LIKE '<pattern>'] [ON CLUSTER cluster]
@@ -60,7 +60,7 @@ TRUNCATE [ALL] TABLES FROM [IF EXISTS] db [LIKE | ILIKE | NOT LIKE '<pattern>'] 
 
 Удаляет все данные из всех таблиц базы данных.
 
-## TRUNCATE DATABASE {#truncate-database}
+## TRUNCATE DATABASE \{#truncate-database\}
 
 ```sql
 TRUNCATE DATABASE [IF EXISTS] db [ON CLUSTER cluster]

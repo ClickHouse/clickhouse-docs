@@ -26,7 +26,8 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 
 `ON CLUSTER` 句を使用すると、クラスター全体にユーザーを作成できます。詳しくは [Distributed DDL](../../../sql-reference/distributed-ddl.md) を参照してください。
 
-## 識別 {#identification}
+
+## 識別 \{#identification\}
 
 ユーザーを識別する方法には、以下のようなものがあります:
 
@@ -52,11 +53,11 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
     <password_complexity>
         <rule>
             <pattern>.{12}</pattern>
-            <message>12文字以上であること</message>
+            <message>be at least 12 characters long</message>
         </rule>
         <rule>
             <pattern>\p{N}</pattern>
-            <message>数字を1文字以上含むこと</message>
+            <message>contain at least 1 numeric character</message>
         </rule>
     </password_complexity>
 </clickhouse>
@@ -72,7 +73,8 @@ ClickHouse Cloud では、パスワードは既定で次の複雑性要件を満
 * 少なくとも1文字の特殊文字を含むこと
   :::
 
-## 例 {#examples}
+
+## 例 \{#examples\}
 
 1. 次のユーザー名は `name1` であり、パスワードは不要です。つまり、当然ながらセキュリティはほとんど確保されません。
 
@@ -139,7 +141,7 @@ ClickHouse Cloud では、パスワードは既定で次の複雑性要件を満
    高いワークファクター時の bcrypt の計算オーバーヘッドを考慮し、
    別の認証方式の利用も検討してください。
    :::
-6. 
+
 6. パスワードのタイプを省略することもできます。
 
     ```sql
@@ -160,11 +162,10 @@ ClickHouse Cloud では、パスワードは既定で次の複雑性要件を満
    CREATE USER user1 IDENTIFIED WITH plaintext_password by '1', bcrypt_password by '2', plaintext_password by '3''
    ```
 
-Notes:
 1. 古いバージョンの ClickHouse では、複数の認証方式を用いる構文をサポートしていない場合があります。そのため、ClickHouse サーバーにそのようなユーザーが存在した状態で、これをサポートしないバージョンにダウングレードすると、そのユーザーは利用不能になり、一部のユーザー関連の操作が失敗します。正常にダウングレードするには、ダウングレード前にすべてのユーザーが単一の認証方式のみを持つように設定しておく必要があります。あるいは、適切な手順を踏まずにサーバーをダウングレードしてしまった場合は、問題のあるユーザーを削除する必要があります。
 2. セキュリティ上の理由から、`no_password` は他の認証方式と同時に使用することはできません。したがって、クエリ内で `no_password` を指定できるのは、それが唯一の認証方式である場合に限られます。 
 
-## ユーザーホスト {#user-host}
+## ユーザーホスト \{#user-host\}
 
 ユーザーホストとは、ClickHouse サーバーへの接続を確立できるホストを指します。ホストはクエリ内の `HOST` セクションで次のように指定できます。
 
@@ -185,7 +186,7 @@ Notes:
 ClickHouse は `user_name@'address'` 全体を 1 つのユーザー名として扱います。そのため、技術的には同じ `user_name` に対して、`@` の後ろの指定が異なる複数のユーザーを作成できます。ただし、そのような運用は推奨しません。
 :::
 
-## VALID UNTIL 句 {#valid-until-clause}
+## VALID UNTIL 句 \{#valid-until-clause\}
 
 認証方式に対して、有効期限日と、必要に応じて有効期限の時刻を指定できます。文字列をパラメーターとして受け取ります。日時の指定には `YYYY-MM-DD [hh:mm:ss] [timezone]` 形式を使用することを推奨します。デフォルトでは、このパラメーターは `'infinity'` です。
 `VALID UNTIL` 句は、クエリ内で認証方式が一切指定されていない場合を除き、認証方式と一緒にのみ指定できます。この場合、`VALID UNTIL` 句は既存のすべての認証方式に適用されます。
@@ -198,7 +199,7 @@ ClickHouse は `user_name@'address'` 全体を 1 つのユーザー名として�
 - ```CREATE USER name1 VALID UNTIL '2025-01-01 12:00:00 `Asia/Tokyo`'```
 - `CREATE USER name1 IDENTIFIED WITH plaintext_password BY 'no_expiration', bcrypt_password BY 'expiration_set' VALID UNTIL '2025-01-01''`
 
-## GRANTEES 句 {#grantees-clause}
+## GRANTEES 句 \{#grantees-clause\}
 
 このユーザーが、`GRANT OPTION` 付きで必要なすべてのアクセス権を付与されていることを条件に、このユーザーから [権限](../../../sql-reference/statements/grant.md#privileges) を付与されることが許可されているユーザーまたはロールを指定します。`GRANTEES` 句のオプションは次のとおりです。
 
@@ -211,7 +212,7 @@ ClickHouse は `user_name@'address'` 全体を 1 つのユーザー名として�
 
 さらに詳しくは [GRANT ステートメントの権限に関する項目](../../../sql-reference/statements/grant.md#privileges) と [GRANT OPTION の説明](../../../sql-reference/statements/grant.md#granting-privilege-syntax) を参照してください。
 
-## 例 {#examples-1}
+## 例 \{#examples-1\}
 
 パスワード `qwerty` で保護されたユーザーアカウント `mira` を作成します：
 

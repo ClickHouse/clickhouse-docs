@@ -23,7 +23,7 @@ import multiple_search_alerts from '@site/static/images/use-cases/observability/
 import remove_chart_alert from '@site/static/images/use-cases/observability/remove_chart_alert.png';
 
 
-## ClickStack におけるアラート {#alerting-in-clickstack}
+## ClickStack におけるアラート \{#alerting-in-clickstack\}
 
 ClickStack にはアラート機能が組み込まれており、ログ・メトリクス・トレースを横断してリアルタイムに問題を検出し、対応できるようになります。
 
@@ -31,11 +31,11 @@ ClickStack にはアラート機能が組み込まれており、ログ・メト
 
 アラート機能は ClickStack のあらゆるデータとシームレスに連携し、システムの健全性の把握、パフォーマンス劣化の検知、重要なビジネスイベントの監視を支援します。
 
-## アラートの種類 {#types-of-alerts}
+## アラートの種類 \{#types-of-alerts\}
 
 ClickStack では、アラートを作成するための 2 つの補完的な方法として、**検索アラート** と **ダッシュボードチャートアラート** をサポートしています。アラートを作成すると、そのアラートは対応する検索またはチャートに関連付けられます。
 
-### 1. 検索アラート {#search-alerts}
+### 1. 検索アラート \{#search-alerts\}
 
 検索アラートを使用すると、保存済み検索の結果に基づいて通知をトリガーできます。これにより、特定のイベントやパターンが予想以上（または予想以下）の頻度で発生していることを検出できます。
 
@@ -47,13 +47,13 @@ ClickStack では、アラートを作成するための 2 つの補完的な方
 
 検索に対してアラートを作成するには、その検索が保存されている必要があります。既存の保存済み検索に対してアラートを作成することも、アラート作成プロセスの中で検索を保存することもできます。以下の例では、検索がまだ保存されていないものとします。
 
-#### アラート作成ダイアログを開く {#open-dialog}
+#### アラート作成ダイアログを開く \{#open-dialog\}
 
 まず、[search](/use-cases/observability/clickstack/search) を実行し、`Search` ページ右上の `Alerts` ボタンをクリックします。
 
 <Image img={alerts_search_view} alt="アラート検索ビュー" size="lg"/>
 
-#### アラートを作成する {#create-the-alert}
+#### アラートを作成する \{#create-the-alert\}
 
 アラート作成パネルから、次の操作を行えます:
 
@@ -72,7 +72,7 @@ ClickStack では、アラートを作成するための 2 つの補完的な方
 
 <Image img={multiple_search_alerts} alt="複数のアラート" size="md"/>
 
-### 2. ダッシュボード チャートアラート {#dashboard-alerts}
+### 2. ダッシュボード チャートアラート \{#dashboard-alerts\}
 
 ダッシュボードアラートを使用すると、アラート機能をチャートに拡張できます。
 
@@ -90,19 +90,19 @@ ClickStack では、アラートを作成するための 2 つの補完的な方
 
 アラートは、チャートの作成時、チャートをダッシュボードに追加する際、または既存チャートに対して作成できます。以下の例では、チャートはすでにダッシュボード上に存在しているものとします。
 
-#### チャート編集ダイアログを開く {#open-chart-dialog}
+#### チャート編集ダイアログを開く \{#open-chart-dialog\}
 
 チャートの設定メニューを開き、アラートボタンを選択します。チャート編集ダイアログが表示されます。
 
 <Image img={edit_chart_alert} alt="チャートアラートを編集" size="lg"/>
 
-#### アラートを追加する {#add-chart-alert}
+#### アラートを追加する \{#add-chart-alert\}
 
 **Add Alert** を選択します。
 
 <Image img={add_chart_alert} alt="チャートにアラートを追加" size="lg"/>
 
-#### アラート条件を定義する {#define-alert-conditions}
+#### アラート条件を定義する \{#define-alert-conditions\}
 
 条件（`>=`、`<`）、しきい値、期間、webhook を定義します。ここで設定した期間は、アラートがどの頻度でトリガーされるかも決定します。
 
@@ -112,7 +112,7 @@ ClickStack では、アラートを作成するための 2 つの補完的な方
 
 </VerticalStepper>
 
-## Webhook の追加 {#add-webhook}
+## Webhook の追加 \{#add-webhook\}
 
 アラート作成時には、既存の webhook を使用することも、新しく作成することもできます。いったん作成された webhook は、他のアラートでも再利用できます。
 
@@ -130,7 +130,7 @@ webhook 名は必須であり、説明は任意です。その他に必須とな
 
 ClickStack Open Source と ClickStack Cloud では、利用可能なサービス種別が異なる点に注意してください。詳しくは [Service type integrations](#integrations) を参照してください。
 
-### サービス種別ごとの連携 {#integrations}
+### サービス種別ごとの連携 \{#integrations\}
 
 ClickStack のアラートは、標準で次のサービス種別と連携できます:
 
@@ -162,7 +162,7 @@ Slack API と PagerDuty の連携は ClickHouse Cloud でのみサポートさ�
 - Webhook ヘッダー (任意)
 - Webhook ボディ (任意)。現在、ボディではテンプレート変数 `{{title}}`、`{{body}}`、`{{link}}` が利用できます。
 
-## アラートの管理 {#managing-alerts}
+## アラートの管理 \{#managing-alerts\}
 
 アラートは、HyperDX の左側にあるアラートパネルから一元的に管理できます。
 
@@ -183,14 +183,14 @@ Slack API と PagerDuty の連携は ClickHouse Cloud でのみサポートさ�
 
 アラートをクリックすると、そのアラートが紐づいているチャートまたは検索画面に移動します。
 
-### アラートの削除 {#deleting-alerts}
+### アラートの削除 \{#deleting-alerts\}
 
 アラートを削除するには、該当する検索またはチャートの編集ダイアログを開き、**Remove Alert** を選択します。
 次の例では、`Remove Alert` ボタンをクリックすると、このチャートからアラートが削除されます。
 
 <Image img={remove_chart_alert} alt="チャートのアラートを削除" size="lg"/>
 
-## 一般的なアラートシナリオ {#common-alert-scenarios}
+## 一般的なアラートシナリオ \{#common-alert-scenarios\}
 
 HyperDX で利用できる一般的なアラートシナリオをいくつか紹介します。
 

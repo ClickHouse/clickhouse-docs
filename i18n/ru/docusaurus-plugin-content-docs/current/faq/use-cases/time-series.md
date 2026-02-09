@@ -10,7 +10,7 @@ keywords: ['временные ряды', 'временные данные', 'с
 
 
 
-# Могу ли я использовать ClickHouse как базу данных временных рядов? {#can-i-use-clickhouse-as-a-time-series-database}
+# Могу ли я использовать ClickHouse как базу данных временных рядов? \{#can-i-use-clickhouse-as-a-time-series-database\}
 
 _Примечание: дополнительные примеры использования ClickHouse для анализа временных рядов см. в записи блога [Working with Time series data in ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)._
 

@@ -7,7 +7,7 @@ title: 'Map(K, V)'
 doc_type: 'reference'
 ---
 
-# Map(K, V) {#mapk-v}
+# Map(K, V) \{#mapk-v\}
 
 Тип данных `Map(K, V)` хранит пары «ключ–значение».
 
@@ -66,7 +66,7 @@ SELECT m['key1'] FROM tab;
 ```
 
 
-## Преобразование Tuple в Map {#converting-tuple-to-map}
+## Преобразование Tuple в Map \{#converting-tuple-to-map\}
 
 Значения типа `Tuple()` можно привести к значениям типа `Map()` с помощью функции [CAST](/sql-reference/functions/type-conversion-functions#CAST):
 
@@ -87,7 +87,7 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 ```
 
 
-## Чтение подстолбцов Map {#reading-subcolumns-of-map}
+## Чтение подстолбцов Map \{#reading-subcolumns-of-map\}
 
 Чтобы избежать чтения всего столбца Map, в некоторых случаях можно использовать подстолбцы `keys` и `values`.
 
@@ -122,6 +122,6 @@ SELECT m.values FROM tab; -- same as mapValues(m)
 * [-Map-комбинатор для типа данных Map](../aggregate-functions/combinators.md#-map)
 
 
-## Связанные материалы {#related-content}
+## Связанные материалы \{#related-content\}
 
 - Блог: [Решение для обсервабилити на базе ClickHouse — часть 2: трейсы](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)

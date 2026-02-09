@@ -7,16 +7,16 @@ sidebar_label: 'sumForEach'
 doc_type: 'reference'
 ---
 
-# sumForEach {#sumforeach}
+# sumForEach \{#sumforeach\}
 
-## Описание {#description}
+## Описание \{#description\}
 
 Комбинатор [`ForEach`](/sql-reference/aggregate-functions/combinators#-foreach)
 может быть применён к агрегатной функции [`sum`](/sql-reference/aggregate-functions/reference/sum), чтобы преобразовать её из агрегатной
 функции, работающей со значениями строк, в агрегатную функцию, работающую со
 столбцами-массивами и применяющую агрегирование к каждому элементу массива по всем строкам.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 В этом примере мы воспользуемся набором данных `hits`, доступным в нашем [SQL playground](https://sql.clickhouse.com/).
 
@@ -44,6 +44,6 @@ GROUP BY hour_of_day
 ORDER BY hour_of_day;
 ```
 
-## См. также {#see-also}
+## См. также \{#see-also\}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [комбинатор `ForEach`](/sql-reference/aggregate-functions/combinators#-foreach)

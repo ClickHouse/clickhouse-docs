@@ -10,7 +10,7 @@ integration:
   - category: 'clickpipes'
 ---
 
-# Работа с JSON в ClickHouse {#working-with-json-in-clickhouse}
+# Работа с JSON в ClickHouse \{#working-with-json-in-clickhouse\}
 
 В этом руководстве рассматриваются типовые подходы к работе с JSON‑данными, реплицируемыми из MongoDB в ClickHouse через ClickPipes.
 
@@ -54,7 +54,7 @@ _peerdb_version:    0
 ```
 
 
-## Схема таблицы {#table-schema}
+## Схема таблицы \{#table-schema\}
 
 Реплицируемые таблицы используют эту стандартную схему:
 
@@ -75,7 +75,7 @@ _peerdb_version:    0
 * `_peerdb_is_deleted`: Показывает, удалена ли строка
 
 
-### Движок таблицы ReplacingMergeTree {#replacingmergetree-table-engine}
+### Движок таблицы ReplacingMergeTree \{#replacingmergetree-table-engine\}
 
 ClickPipes сопоставляет коллекции MongoDB с ClickHouse, используя семейство движков таблиц `ReplacingMergeTree`. В этом движке обновления моделируются как вставки с более новой версией (`_peerdb_version`) документа для заданного первичного ключа (`_id`), что обеспечивает эффективную обработку обновлений, замен и удалений как версионных вставок.
 
@@ -86,7 +86,7 @@ SELECT * FROM t1 FINAL;
 ```
 
 
-### Обработка удалений {#handling-deletes}
+### Обработка удалений \{#handling-deletes\}
 
 Удаления из MongoDB реплицируются как новые строки, помеченные как удалённые с помощью столбца `_peerdb_is_deleted`. Обычно такие строки следует отфильтровывать в запросах:
 
@@ -102,7 +102,7 @@ FOR SELECT USING _peerdb_is_deleted = 0;
 ```
 
 
-## Выполнение запросов к данным JSON {#querying-json-data}
+## Выполнение запросов к данным JSON \{#querying-json-data\}
 
 Вы можете напрямую обращаться к полям JSON, используя точечную нотацию:
 
@@ -132,7 +132,7 @@ SELECT doc.^shipping as shipping_info FROM t1;
 ```
 
 
-### Динамический тип {#dynamic-type}
+### Динамический тип \{#dynamic-type\}
 
 В ClickHouse каждое поле JSON имеет тип `Dynamic`. Динамический тип позволяет ClickHouse хранить значения любого типа, не зная этот тип заранее. Это можно проверить с помощью функции `toTypeName`:
 
@@ -201,7 +201,7 @@ SELECT length(doc.items) AS item_count FROM t1;
 ```
 
 
-### Приведение типов полей {#field-casting}
+### Приведение типов полей \{#field-casting\}
 
 [Агрегатные функции](https://clickhouse.com/docs/sql-reference/aggregate-functions/combinators) в ClickHouse не работают напрямую с типом `dynamic`. Например, если вы попытаетесь напрямую использовать функцию `sum` для типа `dynamic`, вы получите следующую ошибку:
 
@@ -227,9 +227,9 @@ SELECT sum(doc.shipping.cost::Float32) AS shipping_cost FROM t1;
 :::
 
 
-## Уплощение JSON {#flattening-json}
+## Уплощение JSON \{#flattening-json\}
 
-### Обычное представление {#normal-view}
+### Обычное представление \{#normal-view\}
 
 Вы можете создавать обычные представления поверх JSON-таблицы, чтобы инкапсулировать логику уплощения/приведения типов/преобразования и запрашивать данные в виде, похожем на реляционную таблицу. Обычные представления являются лёгкими, так как они хранят только сам запрос, а не исходные данные. Например:
 
@@ -277,7 +277,7 @@ LIMIT 10;
 ```
 
 
-### Обновляемое материализованное представление {#refreshable-materialized-view}
+### Обновляемое материализованное представление \{#refreshable-materialized-view\}
 
 Вы можете создать [обновляемые материализованные представления](https://clickhouse.com/docs/materialized-view/refreshable-materialized-view), которые позволяют планировать выполнение запроса для дедупликации строк и сохранения результатов в денормализованной целевой таблице. При каждом запланированном обновлении целевая таблица заменяется последними результатами запроса.
 
@@ -328,7 +328,7 @@ LIMIT 10;
 ```
 
 
-### Incremental materialized view {#incremental-materialized-view}
+### Incremental materialized view \{#incremental-materialized-view\}
 
 Если вы хотите получать доступ к развёрнутым столбцам в режиме реального времени, вы можете создать [Incremental Materialized Views](https://clickhouse.com/docs/materialized-view/incremental-materialized-view). Если в вашей таблице часто происходят обновления, не рекомендуется использовать модификатор `FINAL` в materialized view, так как каждое обновление будет приводить к слиянию. Вместо этого вы можете устранять дубликаты данных на этапе выполнения запроса, построив обычное представление поверх materialized view.
 

@@ -1,0 +1,98 @@
+---
+slug: /clickhouse-operator/install/kubectl
+title: '使用 kubectl 安装 ClickHouse Operator'
+keywords: ['kubernetes']
+description: '本指南介绍如何使用 kubectl 和清单文件安装 ClickHouse Operator。'
+doc_type: 'guide'
+sidebar_label: 'kubectl'
+---
+
+本指南介绍如何使用 kubectl 和清单文件安装 ClickHouse Operator。
+
+## 前置条件 \{#prerequisites\}
+
+- Kubernetes 集群 v1.33.0 或更高版本
+- kubectl v1.33.0 或更高版本
+- 集群管理员权限
+
+## 从发布清单安装 \{#install-from-release-manifests\}
+
+:::note
+需要 cert-manager 来签发 webhook 证书。
+:::
+
+从最新发布版本中安装 Operator 和 CRD：
+
+```bash
+kubectl apply -f https://github.com/ClickHouse/clickhouse-operator/releases/latest/download/clickhouse-operator.yaml
+```
+
+这将：
+
+1. 创建 `clickhouse-operator-system` 命名空间
+2. 为 ClickHouseCluster 和 KeeperCluster 安装自定义资源定义（CRD）
+3. 创建必要的 ServiceAccounts、Roles 和 RoleBindings
+4. 部署 operator controller manager
+5. 为资源校验和默认值设置注册 webhooks
+6. 使用 cert-manager 配置 SSL 证书
+7. 启用 metrics 端点
+
+
+## 验证安装 \{#verify-installation\}
+
+检查 Operator 是否正在运行：
+
+```bash
+kubectl get pods -n clickhouse-operator-system
+```
+
+预期输出：
+
+```
+NAME                                                 READY   STATUS    RESTARTS   AGE
+clickhouse-operator-controller-manager-xxxxxxxxxx    1/1     Running   0          1m
+```
+
+检查 CRD 是否已安装：
+
+```bash
+kubectl get crd | grep clickhouse.com
+```
+
+预期输出：
+
+```
+clickhouseclusters.clickhouse.com    2025-01-06T00:00:00Z
+keeperclusters.clickhouse.com        2025-01-06T00:00:00Z
+```
+
+
+## 配置自定义部署选项 \{#configure-custom-deployment-options\}
+
+如需配置 Operator 的部署选项，请按以下步骤进行。
+
+### 1. 克隆仓库 \{#clone-the-repository\}
+
+```bash
+git clone https://github.com/ClickHouse/clickhouse-operator.git
+cd clickhouse-operator
+```
+
+
+### 2. 配置安装选项 \{#configure-installation-options\}
+
+编辑 config/default/kustomization.yaml，根据需要启用或禁用各功能。
+
+* 若要禁用 webhooks，请注释掉 `[WEBHOOK]` 和 `[CERTMANAGER]` 部分。
+* 若要启用安全的 metrics 端点，请注释掉 `[METRICS]` 部分并取消注释 `[METRICS SECURE]` 和 `[CERTMANAGER]` 部分。
+* 若要为 Prometheus Operator 启用 ServiceMonitor，请取消注释 `[PROMETHEUS]` 部分。
+* 若要启用 Operator 网络策略，请取消注释 `[NETWORK POLICY]` 部分。
+
+### 3. 构建并部署 \{#build-and-deploy\}
+
+构建 Operator 清单并将其应用：
+
+```bash
+make build-installer VERSION=<required operator version> [IMG=<custom registry path>]
+kubectl apply -k dist/install.yaml
+```

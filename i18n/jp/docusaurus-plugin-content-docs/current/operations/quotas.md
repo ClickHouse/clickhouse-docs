@@ -135,6 +135,6 @@ doc_type: 'guide'
 
 サーバーを再起動すると、クォータはリセットされます。
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \{#related-content\}
 
 - ブログ記事: [ClickHouse でシングルページアプリケーションを構築する](https://clickhouse.com/blog/building-single-page-applications-with-clickhouse-and-http)

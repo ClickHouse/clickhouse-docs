@@ -10,7 +10,7 @@ import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-ca
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';
 
-# 字典 {#dictionary}
+# 字典 \{#dictionary\}
 
 ClickHouse 中的字典以内存中的 [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 形式表示来自各种[内部和外部数据源](/sql-reference/dictionaries#dictionary-sources)的数据，并针对超低延迟的查找查询进行了优化。
 
@@ -21,7 +21,7 @@ ClickHouse 中的字典以内存中的 [key-value](https://en.wikipedia.org/wiki
 
 <Image img={dictionaryUseCases} size="lg" alt="ClickHouse 中字典的使用场景"/>
 
-## 使用字典加速 JOIN {#speeding-up-joins-using-a-dictionary}
+## 使用字典加速 JOIN \{#speeding-up-joins-using-a-dictionary\}
 
 字典（Dictionary）可以用于加速特定类型的 `JOIN`：即 [`LEFT ANY` 类型](/sql-reference/statements/select/join#supported-types-of-join)，其中 JOIN 键需要与底层键值存储的键属性匹配。
 
@@ -31,7 +31,7 @@ ClickHouse 中的字典以内存中的 [key-value](https://en.wikipedia.org/wiki
 
 Direct Join 算法要求右表由字典驱动，这样来自该表、需要参与 JOIN 的数据就已经以内存中的低延迟键值数据结构形式存在。
 
-### 示例 {#example}
+### 示例 \{#example\}
 
 使用 [Stack Overflow 数据集](/getting-started/example-datasets/stackoverflow)，来回答这样一个问题：
 *在 Hacker News 上，关于 SQL 的帖子中，哪一条是最具争议性的？*
@@ -85,7 +85,7 @@ Controversial_ratio: 0
 
 虽然这个查询很快，但它要求我们在编写 `JOIN` 时格外小心，才能获得良好的性能。理想情况下，我们只需先过滤出包含“SQL”的帖子，然后再查看这部分帖子对应的 `UpVote` 和 `DownVote` 计数来计算我们的指标。
 
-#### 应用字典 {#applying-a-dictionary}
+#### 应用字典 \{#applying-a-dictionary\}
 
 为了演示这些概念，我们为投票数据使用一个字典。由于字典通常存放在内存中（[ssd&#95;cache](/sql-reference/dictionaries#ssd_cache) 是一个例外），你应当注意数据的大小。先确认一下我们的 `votes` 表的大小：
 
@@ -181,7 +181,7 @@ LIMIT 3
 
 这个查询不仅简单得多，而且速度也提升了两倍多！还可以通过只将赞成票和反对票之和超过 10 的帖子加载到字典中，并仅存储预先计算好的争议度值来进一步优化。
 
-## 查询时富化 {#query-time-enrichment}
+## 查询时富化 \{#query-time-enrichment\}
 
 字典可以用于在查询时查找值。这些值可以在查询结果中返回，或用于聚合运算。假设我们创建一个字典，将用户 ID 映射到其所在地：
 
@@ -245,7 +245,7 @@ LIMIT 5
 峰值内存使用：248.84 MiB。
 ```
 
-## 索引时富化 {#index-time-enrichment}
+## 索引时富化 \{#index-time-enrichment\}
 
 在上面的示例中，我们在查询时使用字典来避免一次 join 操作。字典也可以用于在插入时对行进行富化。如果富化值不会变化，并且存在于可用于填充字典的外部数据源中，这通常是一个合适的做法。在这种情况下，在插入时对行进行富化可以避免在查询时对字典进行查找。
 
@@ -314,24 +314,24 @@ LIMIT 4
 内存峰值:666.82 MiB。
 ```
 
-## 字典高级主题 {#advanced-dictionary-topics}
+## 字典高级主题 \{#advanced-dictionary-topics\}
 
-### 选择字典 `LAYOUT` {#choosing-the-dictionary-layout}
+### 选择字典 `LAYOUT` \{#choosing-the-dictionary-layout\}
 
 `LAYOUT` 子句控制字典的内部数据结构。有多种可用选项，其文档见[此处](/sql-reference/dictionaries#ways-to-store-dictionaries-in-memory)。关于如何选择合适布局的一些建议见[这里](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout)。
 
-### 刷新字典 {#refreshing-dictionaries}
+### 刷新字典 \{#refreshing-dictionaries\}
 
 我们为字典指定了 `LIFETIME MIN 600 MAX 900`。`LIFETIME` 用于控制字典的更新间隔，上述取值会使字典在 600 到 900 秒之间的随机时间间隔内周期性地重新加载。这个随机间隔是必要的，以便在大量服务器进行更新时分散对字典数据源的负载。在更新过程中，旧版本的字典仍然可以被查询，只有初始加载时才会阻塞查询。注意，将 `LIFETIME(0)` 进行设置会禁止字典更新。
 可以使用 `SYSTEM RELOAD DICTIONARY` 命令强制重新加载字典。
 
 对于 ClickHouse 和 Postgres 等数据库数据源，你可以设置一个查询，仅在字典数据确实发生变化时才更新字典（由该查询的响应来决定），而不是按固定周期更新。更多详细信息请参见[此处](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)。
 
-### 其他字典类型 {#other-dictionary-types}
+### 其他字典类型 \{#other-dictionary-types\}
 
 ClickHouse 还支持[层次结构字典](/sql-reference/dictionaries#hierarchical-dictionaries)、[多边形字典](/sql-reference/dictionaries#polygon-dictionaries)和[正则表达式字典](/sql-reference/dictionaries#regexp-tree-dictionary)。
 
-### 延伸阅读 {#more-reading}
+### 延伸阅读 \{#more-reading\}
 
 - [使用字典加速查询](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
 - [字典的高级配置](/sql-reference/dictionaries)

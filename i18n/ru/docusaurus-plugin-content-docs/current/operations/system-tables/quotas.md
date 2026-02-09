@@ -6,7 +6,7 @@ title: 'system.quotas'
 doc_type: 'reference'
 ---
 
-# system.quotas {#systemquotas}
+# system.quotas \{#systemquotas\}
 
 Содержит информацию о [квотах](../../operations/system-tables/quotas.md).
 
@@ -28,6 +28,6 @@ doc_type: 'reference'
 - `apply_to_list` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — Список имён пользователей/[ролей](../../guides/sre/user-management/index.md#role-management), к которым должна применяться квота.
 - `apply_to_except` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — Список имён пользователей/ролей, к которым квота не должна применяться.
 
-## Смотрите также {#see-also}
+## Смотрите также \{#see-also\}
 
 - [SHOW QUOTAS](/sql-reference/statements/show#show-quotas)

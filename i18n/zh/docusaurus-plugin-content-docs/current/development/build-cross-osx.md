@@ -7,7 +7,7 @@ title: '在 Linux 上为 macOS 构建'
 doc_type: 'guide'
 ---
 
-# 如何在 Linux 上为 macOS 构建 ClickHouse {#how-to-build-clickhouse-on-linux-for-macos}
+# 如何在 Linux 上为 macOS 构建 ClickHouse \{#how-to-build-clickhouse-on-linux-for-macos\}
 
 本指南适用于：当你有一台 Linux 机器，并希望使用它来构建可在 OS X 上运行的 `clickhouse` 二进制可执行文件的情况。
 主要用例是运行在 Linux 机器上的持续集成（CI）检查。
@@ -19,7 +19,7 @@ doc_type: 'guide'
 如果你的目标是 ARM 架构，只需将所有出现的 `x86_64` 替换为 `aarch64` 即可。
 例如，在整个步骤中将 `x86_64-apple-darwin` 替换为 `aarch64-apple-darwin`。
 
-## 安装交叉编译工具链 {#install-cross-compilation-toolset}
+## 安装交叉编译工具链 \{#install-cross-compilation-toolset\}
 
 记住安装 `cctools` 的路径，并将其记为 `${CCTOOLS}`
 
@@ -49,7 +49,7 @@ cd ClickHouse/cmake/toolchain/darwin-x86_64
 curl -L 'https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.0.sdk.tar.xz' | tar xJ --strip-components=1
 ```
 
-## 构建 ClickHouse {#build-clickhouse}
+## 构建 ClickHouse \{#build-clickhouse\}
 
 ```bash
 cd ClickHouse

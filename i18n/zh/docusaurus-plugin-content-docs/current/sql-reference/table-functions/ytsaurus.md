@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# ytsaurus 表函数 {#ytsaurus-table-function}
+# ytsaurus 表函数 \{#ytsaurus-table-function\}
 
 <ExperimentalBadge/>
 
 此表函数用于从 YTsaurus 集群读取数据。
 
-## 语法 {#syntax}
+## 语法 \{#syntax\}
 
 ```sql
 ytsaurus(http_proxy_url, cypress_path, oauth_token, format)
@@ -28,7 +28,7 @@ ytsaurus(http_proxy_url, cypress_path, oauth_token, format)
 执行命令 `set allow_experimental_ytsaurus_table_function = 1`。
 :::
 
-## 参数 {#arguments}
+## 参数 \{#arguments\}
 
 - `http_proxy_url` — YTsaurus HTTP 代理的 URL。
 - `cypress_path` — 指向数据源的 Cypress 路径。

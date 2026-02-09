@@ -27,7 +27,7 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.png';
 以下のセクションでは、この設定方法について説明します。
 
 
-## ClickHouse サービスの IAM ロール ARN を取得する {#obtaining-the-clickhouse-service-iam-role-arn}
+## ClickHouse サービスの IAM ロール ARN を取得する \{#obtaining-the-clickhouse-service-iam-role-arn\}
 
 1. ClickHouse Cloud アカウントにログインします。
 
@@ -41,14 +41,14 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.png';
 
 <Image img={s3_info} size="lg" alt="ClickHouse サービスの IAM ロール ARN を取得する" border />
 
-## IAM Assume Role の設定 {#setting-up-iam-assume-role}
+## IAM Assume Role の設定 \{#setting-up-iam-assume-role\}
 
 IAM Assume Role は次のいずれかの方法で設定できます。
 
 - [CloudFormation スタックを使用する](#option-1-deploying-with-cloudformation-stack)
 - [IAM ロールを手動で作成する](#option-2-manually-create-iam-role)
 
-### CloudFormation スタックでデプロイする {#option-1-deploying-with-cloudformation-stack}
+### CloudFormation スタックでデプロイする \{#option-1-deploying-with-cloudformation-stack\}
 
 1. IAM ロールを作成および管理できる権限を持つ IAM ユーザーで、Web ブラウザーから AWS アカウントにログインします。
 
@@ -85,7 +85,7 @@ IAM Assume Role は次のいずれかの方法で設定できます。
 
 <Image img={s3_output} size="lg" alt="IAM Role ARN を表示している CloudFormation スタックの出力" border />
 
-### IAM ロールを手動で作成する {#option-2-manually-create-iam-role}
+### IAM ロールを手動で作成する \{#option-2-manually-create-iam-role\}
 
 1. IAM ロールの作成および管理権限を持つ IAM ユーザーで、ウェブブラウザから自分の AWS アカウントにログインします。
 
@@ -141,7 +141,7 @@ IAM Assume Role は次のいずれかの方法で設定できます。
 4. 作成後に新しい **IAM Role Arn** をコピーします。これは S3 バケットにアクセスするために必要な情報です。
 
 
-## ClickHouseAccess ロールを使用して S3 バケットにアクセスする {#access-your-s3-bucket-with-the-clickhouseaccess-role}
+## ClickHouseAccess ロールを使用して S3 バケットにアクセスする \{#access-your-s3-bucket-with-the-clickhouseaccess-role\}
 
 ClickHouse Cloud では、S3 テーブル関数の一部として `extra_credentials` を指定できます。
 以下は、上で作成した新しいロールを使用してクエリを実行する例です。
@@ -162,7 +162,7 @@ DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWit
 :::
 
 
-## 高度なアクション制御 {#advanced-action-control}
+## 高度なアクション制御 \{#advanced-action-control\}
 
 より厳格なアクセス制御を行うために、[`aws:SourceVpce` 条件](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies-vpc-endpoint.html#example-bucket-policies-restrict-accesss-vpc-endpoint) を使用して、ClickHouse Cloud の VPC エンドポイントから発行されたリクエストのみを受け付けるようにバケットポリシーを制限できます。ご利用の ClickHouse Cloud リージョンの VPC エンドポイントを取得するには、ターミナルを開いて次を実行します。
 

@@ -17,7 +17,7 @@ import holistics_05 from '@site/static/images/integrations/data-visualization/ho
 import holistics_06 from '@site/static/images/integrations/data-visualization/holistics_06.png';
 
 
-# Подключение ClickHouse к Holistics {#connecting-clickhouse-to-holistics}
+# Подключение ClickHouse к Holistics \{#connecting-clickhouse-to-holistics\}
 
 <CommunityMaintainedBadge/>
 
@@ -25,7 +25,7 @@ import holistics_06 from '@site/static/images/integrations/data-visualization/ho
 
 Подключив ClickHouse к Holistics, ваши команды получают быструю и надежную среду самообслуживания с поддержкой ИИ, основанную на кодовом семантическом слое. Бизнес-пользователи смогут уверенно исследовать данные с помощью drag-and-drop и ИИ, а вы сохраните определения метрик многократно используемыми, легко комбинируемыми и находящимися под управлением версий в Git.
 
-## Предварительные требования {#prerequisites}
+## Предварительные требования \{#prerequisites\}
 
 Перед подключением убедитесь, что выполнены следующие условия:
 
@@ -33,7 +33,7 @@ import holistics_06 from '@site/static/images/integrations/data-visualization/ho
 - **Сетевой доступ:** ваш сервер ClickHouse должен быть доступен с [IP-адресов Holistics](https://docs.holistics.io/docs/connect/ip-whitelisting).
 - **Пользователь базы данных:** создайте для Holistics отдельного пользователя с правами только на чтение, вместо использования учетной записи администратора.
 
-### Рекомендуемые привилегии {#recommended-privileges}
+### Рекомендуемые привилегии \{#recommended-privileges\}
 
 Специальному пользователю необходимы привилегии `SELECT` на таблицы, из которых вы планируете выполнять запросы, а также на системные таблицы `system` (для определения схемы).
 
@@ -102,7 +102,7 @@ GRANT SELECT ON system.* TO holistics_user;
 </VerticalStepper>
 
 
-## Известные ограничения {#known-limitations}
+## Известные ограничения \{#known-limitations\}
 
 Holistics поддерживает большинство стандартных функций SQL в ClickHouse, за следующими исключениями:
 

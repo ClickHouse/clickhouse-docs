@@ -6,12 +6,12 @@ title: 'クエリレベルのセッション設定'
 doc_type: 'reference'
 ---
 
-## 概要 {#overview}
+## 概要 \{#overview\}
 
 特定の設定を指定してステートメントを実行する方法はいくつかあります。
 設定は階層的に構成されており、後のレイヤーほど前のレイヤーで指定された設定値を再定義します。
 
-## 優先順位 {#order-of-priority}
+## 優先順位 \{#order-of-priority\}
 
 設定を定義する際の優先順位は次のとおりです。
 
@@ -37,7 +37,7 @@ doc_type: 'reference'
     句で設定を定義します。設定値はそのクエリにのみ適用され、クエリの実行後に
     デフォルトまたは以前の値にリセットされます。
 
-## 設定をデフォルト値に戻す {#converting-a-setting-to-its-default-value}
+## 設定をデフォルト値に戻す \{#converting-a-setting-to-its-default-value\}
 
 設定を変更してデフォルト値に戻したい場合は、値を `DEFAULT` に設定します。構文は次のようになります。
 
@@ -77,7 +77,7 @@ SELECT value FROM system.settings where name='async_insert';
 └─────────┘
 ```
 
-## カスタム設定 {#custom_settings}
+## カスタム設定 \{#custom_settings\}
 
 共通の[設定](/operations/settings/settings.md)に加えて、ユーザーはカスタム設定を定義できます。
 
@@ -99,12 +99,12 @@ SET custom_a = 123;
 SELECT getSetting('custom_a');
 ```
 
-## 例 {#examples}
+## 例 \{#examples\}
 
 これらの例はすべて、`async_insert` 設定の値を `1` に設定し、
 稼働中のシステムで設定を確認する方法を示します。
 
-### SQL を使用して設定をユーザーに直接適用する {#using-sql-to-apply-a-setting-to-a-user-directly}
+### SQL を使用して設定をユーザーに直接適用する \{#using-sql-to-apply-a-setting-to-a-user-directly\}
 
 以下の SQL は、設定 `async_inset = 1` を持つユーザー `ingester` を作成します。
 
@@ -115,7 +115,7 @@ IDENTIFIED WITH sha256_hash BY '7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f2
 SETTINGS async_insert = 1
 ```
 
-#### 設定プロファイルおよび割り当てを確認する {#examine-the-settings-profile-and-assignment}
+#### 設定プロファイルおよび割り当てを確認する \{#examine-the-settings-profile-and-assignment\}
 
 ```sql
 SHOW ACCESS
@@ -130,7 +130,7 @@ SHOW ACCESS
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### SQL を使用して設定プロファイルを作成し、ユーザーに割り当てる {#using-sql-to-create-a-settings-profile-and-assign-to-a-user}
+### SQL を使用して設定プロファイルを作成し、ユーザーに割り当てる \{#using-sql-to-create-a-settings-profile-and-assign-to-a-user\}
 
 次の SQL は、設定 `async_inset = 1` を持つプロファイル `log_ingest` を作成します。
 
@@ -148,7 +148,7 @@ IDENTIFIED WITH sha256_hash BY '7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f2
 SETTINGS PROFILE log_ingest
 ```
 
-### XML を使用して設定プロファイルおよびユーザーを作成する {#using-xml-to-create-a-settings-profile-and-user}
+### XML を使用して設定プロファイルおよびユーザーを作成する \{#using-xml-to-create-a-settings-profile-and-user\}
 
 ```xml title=/etc/clickhouse-server/users.d/users.xml
 <clickhouse>
@@ -176,7 +176,7 @@ SETTINGS PROFILE log_ingest
 </clickhouse>
 ```
 
-#### Examine the settings profile and assignment {#examine-the-settings-profile-and-assignment-1}
+#### Examine the settings profile and assignment \{#examine-the-settings-profile-and-assignment-1\}
 
 ```sql
 アクセスを表示
@@ -195,7 +195,7 @@ SETTINGS PROFILE log_ingest
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Assign a setting to a session {#assign-a-setting-to-a-session}
+### Assign a setting to a session \{#assign-a-setting-to-a-session\}
 
 ```sql
 SET async_insert =1;
@@ -208,7 +208,7 @@ SELECT value FROM system.settings where name='async_insert';
 └────────┘
 ```
 
-### Assign a setting during a query {#assign-a-setting-during-a-query}
+### Assign a setting during a query \{#assign-a-setting-during-a-query\}
 
 ```sql
 INSERT INTO YourTable
@@ -217,7 +217,7 @@ SETTINGS async_insert=1
 VALUES (...)
 ```
 
-## 関連項目 {#see-also}
+## 関連項目 \{#see-also\}
 
 - ClickHouse の設定の説明については、[Settings](/operations/settings/settings.md) ページを参照してください。
 - [グローバルサーバー設定](/operations/server-configuration-parameters/settings.md)

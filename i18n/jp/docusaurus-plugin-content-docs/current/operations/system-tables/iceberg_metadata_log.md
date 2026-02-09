@@ -8,11 +8,11 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.iceberg_metadata_log {#systemiceberg_metadata_log}
+# system.iceberg_metadata_log \{#systemiceberg_metadata_log\}
 
 `system.iceberg_metadata_log` テーブルは、ClickHouse が読み取り対象とする Iceberg テーブルに対するメタデータのアクセスおよび解析イベントを記録します。処理された各メタデータファイルやエントリに関する詳細情報を提供し、デバッグや監査、Iceberg テーブル構造の変遷を把握する際に有用です。
 
-## 目的 {#purpose}
+## 目的 \{#purpose\}
 
 このテーブルは、Iceberg テーブルから読み取ったすべてのメタデータファイルおよびエントリ（ルートメタデータファイル、マニフェストリスト、マニフェストエントリを含む）を記録します。これにより、ClickHouse が Iceberg テーブルのメタデータをどのように解釈しているかを追跡し、スキーマの進化、ファイルの解決、クエリプランニングに関連する問題の診断に役立ちます。
 
@@ -20,7 +20,7 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 このテーブルは主にデバッグ目的で使用されます。
 :::
 
-## 列 {#columns}
+## 列 \{#columns\}
 
 | Name           | Type      | Description                                                                                   |
 |----------------|-----------|----------------------------------------------------------------------------------------------|
@@ -34,7 +34,7 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 | `row_in_file`  | [Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md)) | ファイル内の行番号（該当する場合）。`ManifestListEntry` および `ManifestFileEntry` のコンテンツタイプに対してのみ設定されます。 |
 | `pruning_status`  | [Nullable](../../sql-reference/data-types/nullable.md)([Enum8](../../sql-reference/data-types/enum.md)) | エントリのプルーニングステータス。'NotPruned'、'PartitionPruned'、'MinMaxIndexPruned' のいずれかの値を取ります。パーティションプルーニングは minmax プルーニングより先に行われるため、'PartitionPruned' は、そのエントリがパーティションフィルターによってプルーニングされ、minmax プルーニングは試行すらされなかったことを意味します。`ManifestFileEntry` のコンテンツタイプに対してのみ設定されます。 |
 
-## `content_type` の値 {#content-type-values}
+## `content_type` の値 \{#content-type-values\}
 
 - `None`: コンテンツなし。
 - `Metadata`: ルートメタデータファイル。
@@ -45,7 +45,7 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
 <SystemTableCloud/>
 
-## ログの詳細度の制御 {#controlling-log-verbosity}
+## ログの詳細度の制御 \{#controlling-log-verbosity\}
 
 [`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level) 設定を使用して、どのメタデータイベントをログに出力するかを制御できます。
 
@@ -76,7 +76,7 @@ WHERE query_id = '{previous_query_id}';
 詳細については、[`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level) 設定の説明を参照してください。
 
 
-### 補足事項 {#good-to-know}
+### 補足事項 \{#good-to-know\}
 
 * Iceberg テーブルを詳細に調査する必要がある場合にのみ、クエリ単位で `iceberg_metadata_log_level` を使用してください。そうしないと、ログテーブルに不要なメタデータが大量に蓄積され、パフォーマンス低下を招く可能性があります。
 * このテーブルは主にデバッグ目的で使用され、エンティティごとの一意性は保証されないため、重複したエントリが含まれています。プログラム内で収集されるタイミングが異なるため、コンテンツとプルーニングステータスは別々の行に格納されます。メタデータが読み取られたときにコンテンツが収集され、メタデータがプルーニング対象かどうかチェックされたときにプルーニングステータスが収集されます。**重複排除の目的で、このテーブル自体に依存しないでください。**
@@ -84,7 +84,7 @@ WHERE query_id = '{previous_query_id}';
 * 同様に、`ManifestFileMetadata` より冗長な `content_type` を使用すると、マニフェストファイルに対する Iceberg メタデータキャッシュは無効化されます。
 * SELECT クエリがキャンセルまたは失敗した場合でも、失敗前に処理されたメタデータについてはログテーブルにエントリが残る可能性がありますが、処理されなかったメタデータエンティティに関する情報は含まれません。
 
-## 関連項目 {#see-also}
+## 関連項目 \{#see-also\}
 
 - [Iceberg テーブルエンジン](../../engines/table-engines/integrations/iceberg.md)
 - [Iceberg テーブル関数](../../sql-reference/table-functions/iceberg.md)

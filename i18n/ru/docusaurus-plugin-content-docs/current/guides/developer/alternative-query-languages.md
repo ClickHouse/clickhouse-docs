@@ -19,7 +19,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 Используемый язык запросов задаётся параметром `dialect`.
 
-## Стандартный SQL {#standard-sql}
+## Стандартный SQL \{#standard-sql\}
 
 Стандартный SQL — язык запросов, используемый в ClickHouse по умолчанию.
 
@@ -27,7 +27,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 SET dialect = 'clickhouse'
 ```
 
-## Конвейерный реляционный язык запросов (PRQL) {#pipelined-relational-query-language-prql}
+## Конвейерный реляционный язык запросов (PRQL) \{#pipelined-relational-query-language-prql\}
 
 <ExperimentalBadge />
 
@@ -50,7 +50,7 @@ aggregate {
 
 Внутренне ClickHouse транспилирует PRQL в SQL для выполнения запросов PRQL.
 
-## Язык запросов Kusto (KQL) {#kusto-query-language-kql}
+## Язык запросов Kusto (KQL) \{#kusto-query-language-kql\}
 
 <ExperimentalBadge />
 

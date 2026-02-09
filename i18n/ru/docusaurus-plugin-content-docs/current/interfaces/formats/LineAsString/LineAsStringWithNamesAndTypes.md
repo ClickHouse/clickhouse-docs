@@ -13,12 +13,12 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## Описание {#description}
+## Описание \{#description\}
 
 Формат `LineAsStringWithNames` похож на формат [`LineAsString`](./LineAsString.md), 
 но выводит две строки заголовков: одну с именами столбцов, другую — с их типами.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 ```sql
 CREATE TABLE example (
@@ -40,4 +40,4 @@ Jane    25
 Peter    35
 ```
 
-## Параметры формата {#format-settings}
+## Параметры формата \{#format-settings\}

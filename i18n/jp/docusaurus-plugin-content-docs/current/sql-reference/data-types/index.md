@@ -7,7 +7,7 @@ title: 'ClickHouse のデータ型'
 doc_type: 'reference'
 ---
 
-# ClickHouse におけるデータ型 {#data-types-in-clickhouse}
+# ClickHouse におけるデータ型 \{#data-types-in-clickhouse\}
 
 このセクションでは、ClickHouse でサポートされているデータ型について説明します。たとえば、[整数](int-uint.md)、[浮動小数点数](float.md)、[文字列](string.md) などです。
 

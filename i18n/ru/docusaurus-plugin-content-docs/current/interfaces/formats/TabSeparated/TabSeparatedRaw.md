@@ -13,7 +13,7 @@ doc_type: 'reference'
 |----------------|-----------------|-----------------|
 | ✔              | ✔               | `TSVRaw`, `Raw` |
 
-## Описание {#description}
+## Описание \{#description\}
 
 Отличается от формата [`TabSeparated`](/interfaces/formats/TabSeparated) тем, что строки записываются без экранирования.
 
@@ -23,9 +23,9 @@ doc_type: 'reference'
 
 Сравнение форматов `TabSeparatedRaw` и `RawBlob` см. в разделе [Сравнение форматов Raw](../RawBLOB.md/#raw-formats-comparison).
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
-### Вставка данных {#inserting-data}
+### Вставка данных \{#inserting-data\}
 
 Используем следующий TSV-файл с именем `football.tsv`:
 
@@ -55,7 +55,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRaw;
 ```
 
-### Чтение данных {#reading-data}
+### Чтение данных \{#reading-data\}
 
 Считайте данные в формате `TabSeparatedRaw`:
 
@@ -87,4 +87,4 @@ FORMAT TabSeparatedRaw
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-## Настройки формата {#format-settings}
+## Настройки формата \{#format-settings\}

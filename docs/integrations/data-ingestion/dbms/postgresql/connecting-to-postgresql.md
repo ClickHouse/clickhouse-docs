@@ -18,8 +18,7 @@ This page covers following options for integrating PostgreSQL with ClickHouse:
 - using the experimental `MaterializedPostgreSQL` database engine, for syncing a database in PostgreSQL with a database in ClickHouse
 
 :::tip
-We recommend using [ClickPipes](/integrations/clickpipes/postgres), a managed integration service for ClickHouse Cloud powered by PeerDB.
-Alternatively, [PeerDB](https://github.com/PeerDB-io/peerdb) is available as an an open-source CDC tool specifically designed for PostgreSQL database replication to both self-hosted ClickHouse and ClickHouse Cloud.
+Check out our [Managed Postgres](/docs/cloud/managed-postgres) service. Backed by NVMe storage that is physically collocated with compute, it delivers up to 10x faster performance for workloads that are disk-bound compared to alternatives using network-attached storage like EBS and allows you to replicate your Postgres data to ClickHouse using the Postgres CDC connector in ClickPipes.
 :::
 
 ## Using the PostgreSQL table engine {#using-the-postgresql-table-engine}

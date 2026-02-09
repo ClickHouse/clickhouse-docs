@@ -13,7 +13,7 @@ integration:
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
 import Image from '@theme/IdealImage';
 
-### Resync は何を行いますか？ {#what-postgres-resync-do}
+### Resync は何を行いますか？ \{#what-postgres-resync-do\}
 
 Resync では、次の処理がこの順番で行われます。
 
@@ -24,7 +24,7 @@ Resync では、次の処理がこの順番で行われます。
 
 元の ClickPipe のすべての設定は、Resync ClickPipe に引き継がれます。元の ClickPipe の統計情報は、UI 上ではリセットされます。
 
-### ClickPipe を Resync するユースケース {#use-cases-postgres-resync}
+### ClickPipe を Resync するユースケース \{#use-cases-postgres-resync\}
 
 いくつかのシナリオを挙げます。
 
@@ -37,7 +37,7 @@ Resync は複数回実行できますが、そのたびに並列スレッドに�
 Resync 実行時にはソースデータベースへの負荷を考慮してください。
 :::
 
-### Resync ClickPipe ガイド {#guide-postgres-resync}
+### Resync ClickPipe ガイド \{#guide-postgres-resync\}
 
 1. **Data Sources** タブで、Resync を実行したい Postgres ClickPipe をクリックします。
 2. **Settings** タブに移動します。

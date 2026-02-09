@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Overview'
 sidebar_position: 1
-keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Fabi.ai', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Databrain','Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'bi', 'visualization', 'tool', 'lightdash']
+keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Fabi.ai', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Databrain','Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'Querio', 'bi', 'visualization', 'tool', 'lightdash']
 title: 'Visualizing Data in ClickHouse'
 slug: /integrations/data-visualization
 description: 'Learn about Visualizing Data in ClickHouse'
@@ -42,6 +42,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 - [Metabase](./metabase-and-clickhouse.md)
 - [Mitzu](./community_integrations/mitzu-and-clickhouse.md)
 - [Omni](./omni-and-clickhouse.md)
+- [Querio](./community_integrations/querio-and-clickhouse.md)
 - [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)
 - [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)
 - [Tableau](./tableau/tableau-and-clickhouse.md)
@@ -75,6 +76,7 @@ Now that your data is in ClickHouse, it's time to analyze it, which often involv
 | [Omni](./omni-and-clickhouse.md)                     | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Power BI Desktop](./powerbi-and-clickhouse.md)      | ClickHouse official connector | ✅      | ✅          | Via ODBC, supports direct query mode                                                                                                    |
 | [Power BI service](/integrations/powerbi#power-bi-service)                                                    | ClickHouse official connector | ✅    | ✅          | A [Microsoft Data Gateway](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-custom-connectors) setup is required |
+| [Querio](./community_integrations/querio-and-clickhouse.md)            | Native connector              | ✅      | ✅          |                                                                                                                                         |
 | [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)     | Native connector              | ✅      | ✅          |
 | [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)            | Native connector              | ✅      | ❌          |                                                                                                                                         |
 | [Tableau Desktop](./tableau/tableau-and-clickhouse.md)       | ClickHouse official connector | ✅      | ✅          |                                                                                                               |

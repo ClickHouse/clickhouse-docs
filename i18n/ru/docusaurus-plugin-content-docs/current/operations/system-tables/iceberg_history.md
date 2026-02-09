@@ -6,7 +6,7 @@ title: 'system.iceberg_history'
 doc_type: 'reference'
 ---
 
-# system.iceberg&#95;history {#systemiceberg&#95;history}
+# system.iceberg&#95;history \{#systemiceberg&#95;history\}
 
 Эта системная таблица содержит историю снимков таблиц Iceberg, существующих в ClickHouse. Она будет пустой, если в ClickHouse нет ни одной таблицы Iceberg.
 

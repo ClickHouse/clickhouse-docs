@@ -1,14 +1,14 @@
 ---
 sidebar_label: '概览'
 sidebar_position: 1
-keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Fabi.ai', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Databrain','Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'bi', '数据可视化', '工具', 'lightdash']
+keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Fabi.ai', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Databrain','Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'Querio', 'bi', '数据可视化', '工具', 'lightdash']
 title: '在 ClickHouse 中可视化数据'
 slug: /integrations/data-visualization
 description: '了解如何在 ClickHouse 中可视化数据'
 doc_type: 'guide'
 ---
 
-# 在 ClickHouse 中可视化数据 {#visualizing-data-in-clickhouse}
+# 在 ClickHouse 中可视化数据 \{#visualizing-data-in-clickhouse\}
 
 <div class='vimeo-container'>
 <iframe
@@ -42,13 +42,14 @@ doc_type: 'guide'
 - [Metabase](./metabase-and-clickhouse.md)
 - [Mitzu](./community_integrations/mitzu-and-clickhouse.md)
 - [Omni](./omni-and-clickhouse.md)
+- [Querio](./community_integrations/querio-and-clickhouse.md)
 - [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)
 - [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)
 - [Tableau](./tableau/tableau-and-clickhouse.md)
 - [Zing Data](./community_integrations/zingdata-and-clickhouse.md)
 - [Holistics BI](./community_integrations/holistics-and-clickhouse.md)
 
-## ClickHouse Cloud 与数据可视化工具的兼容性 {#clickhouse-cloud-compatibility-with-data-visualization-tools}
+## ClickHouse Cloud 与数据可视化工具的兼容性 \{#clickhouse-cloud-compatibility-with-data-visualization-tools\}
 
 | 工具                                                                    | 支持方式                 | 已测试 | 有文档 | 备注                                                                                                                                   |
 |-------------------------------------------------------------------------|--------------------------|--------|--------|----------------------------------------------------------------------------------------------------------------------------------------|
@@ -70,11 +71,12 @@ doc_type: 'guide'
 | [Luzmo](./community_integrations/luzmo-and-clickhouse.md)                   | ClickHouse 官方连接器 | ✅      | ✅      |                                                                                                                                         |
 | [Looker Studio](./looker-studio-and-clickhouse.md)   | MySQL 接口               | ✅      | ✅      |                                                                                                                                         |
 | [Metabase](./metabase-and-clickhouse.md)             | ClickHouse 官方连接器 | ✅      | ✅      |                                                                                                                                         |
-| [Metabase (MySQL 接口)](./metabase-and-clickhouse.md)             | MySQL 接口 | ✅      | ✅      | 有些部署或版本可能通过 MySQL 接口访问（取决于配置）。                                                                 |
+| [Metabase (MySQL 接口)](./metabase-and-clickhouse.md) | MySQL 接口             | ✅     | ✅     | 使用 MySQL 接口的支持情况（如果适用）                                                                                                     |
 | [Mitzu](./community_integrations/mitzu-and-clickhouse.md)                   |  原生连接器 | ✅      | ✅      |                                                                                                                                         |
 | [Omni](./omni-and-clickhouse.md)                     | 原生连接器              | ✅      | ✅      |                                                                                                                                         |
 | [Power BI Desktop](./powerbi-and-clickhouse.md)      | ClickHouse 官方连接器 | ✅      | ✅      | 通过 ODBC，支持直接查询模式。                                                                                                    |
 | [Power BI service](/integrations/powerbi#power-bi-service)                                                    | ClickHouse 官方连接器 | ✅    | ✅      | 需要配置 [Microsoft Data Gateway](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-custom-connectors)。 |
+| [Querio](./community_integrations/querio-and-clickhouse.md)            | 原生连接器              | ✅      | ✅      |                                                                                                                                         |
 | [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)     | 原生连接器              | ✅      | ✅      |                                                                                                                                         |
 | [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)            | 原生连接器              | ✅      | ❌      |                                                                                                                                         |
 | [Tableau Desktop](./tableau/tableau-and-clickhouse.md)       | ClickHouse 官方连接器 | ✅      | ✅      |                                                                                                               |

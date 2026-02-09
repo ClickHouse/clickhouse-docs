@@ -6,7 +6,7 @@ title: 'system.settings_profile_elements'
 doc_type: 'reference'
 ---
 
-# system.settings&#95;profile&#95;elements {#systemsettings&#95;profile&#95;elements}
+# system.settings&#95;profile&#95;elements \{#systemsettings&#95;profile&#95;elements\}
 
 描述设置配置文件的内容：
 

@@ -7,9 +7,9 @@ sidebar_label: 'argMinIf'
 doc_type: 'reference'
 ---
 
-# argMinIf {#argminif}
+# argMinIf \{#argminif\}
 
-## Описание {#description}
+## Описание \{#description\}
 
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`argMin`](/sql-reference/aggregate-functions/reference/argmin),
 чтобы с помощью агрегатной функции-комбинатора `argMinIf` найти значение `arg`, которое соответствует минимальному значению `val` среди строк, для которых условие истинно.
@@ -18,7 +18,7 @@ doc_type: 'reference'
 с минимальным значением `val` в наборе данных, но только для строк, которые удовлетворяют определённому 
 условию.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 В этом примере мы создадим таблицу, которая хранит цены товаров и их временные метки,
 и используем `argMinIf`, чтобы найти минимальную цену для каждого товара в те моменты, когда он есть в наличии.
@@ -59,7 +59,7 @@ GROUP BY product_id;
    └────────────┴────────────────────────────┘
 ```
 
-## См. также {#see-also}
+## См. также \{#see-also\}
 - [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
 - [`argMaxIf`](/examples/aggregate-function-combinators/argMaxIf)

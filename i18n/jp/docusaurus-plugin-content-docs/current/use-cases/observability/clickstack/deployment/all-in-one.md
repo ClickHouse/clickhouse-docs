@@ -23,18 +23,18 @@ import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-lo
 
 このオプションには認証が含まれており、ダッシュボード、アラート、保存済み検索をセッションやユーザーをまたいで保持できます。
 
-### 適した用途 {#suitable-for}
+### 適した用途 \{#suitable-for\}
 
 * デモ
 * スタック全体のローカルテスト
 
-## デプロイ手順 {#deployment-steps}
+## デプロイ手順 \{#deployment-steps\}
 
 <br/>
 
 <VerticalStepper headerLevel="h3">
 
-### Docker を使ってデプロイする {#deploy-with-docker}
+### Docker を使ってデプロイする \{#deploy-with-docker\}
 
 次のコマンドで、OpenTelemetry コレクター（ポート 4317 および 4318）と HyperDX UI（ポート 8080）を起動します。
 
@@ -46,7 +46,7 @@ docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-o
 ClickStack のコンテナイメージは現在 `clickhouse/clickstack-*`（以前は `docker.hyperdx.io/hyperdx/*`）として公開されています。
 :::
 
-### HyperDX UI にアクセスする {#navigate-to-hyperdx-ui}
+### HyperDX UI にアクセスする \{#navigate-to-hyperdx-ui\}
 
 [http://localhost:8080](http://localhost:8080) にアクセスして HyperDX UI を開きます。
 
@@ -58,13 +58,13 @@ ClickStack のコンテナイメージは現在 `clickhouse/clickstack-*`（以�
 
 別の ClickHouse インスタンスを使用する例については、「[ClickHouse Cloud 接続を作成する](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)」を参照してください。
 
-### データを取り込む {#ingest-data}
+### データを取り込む \{#ingest-data\}
 
 データの取り込みについては、「[Ingesting data](/use-cases/observability/clickstack/ingesting-data)」を参照してください。
 
 </VerticalStepper>
 
-## データと設定の永続化 {#persisting-data-and-settings}
+## データと設定の永続化 \{#persisting-data-and-settings\}
 
 コンテナ再起動後もデータと設定を保持するには、上記の docker コマンドを変更して `/data/db`、`/var/lib/clickhouse`、`/var/log/clickhouse-server` のパスをマウントするようにします。例えば次のようにします:
 
@@ -83,14 +83,14 @@ docker run \
 ```
 
 
-## 本番環境へのデプロイ {#deploying-to-production}
+## 本番環境へのデプロイ \{#deploying-to-production\}
 
 次の理由から、このオプションを本番環境で使用することは推奨されません。
 
 - **永続化されないストレージ:** すべてのデータは Docker ネイティブのオーバーレイファイルシステムを使用して保存されます。この構成は大規模なワークロードで十分な性能を発揮できず、コンテナが削除または再起動された場合、ユーザーが[必要なファイルパスをマウント](#persisting-data-and-settings)しない限り、データは失われます。
 - **コンポーネント分離の欠如:** すべてのコンポーネントが 1 つの Docker コンテナ内で実行されます。このため、コンポーネント単位でのスケーリングや監視ができず、任意の `cgroup` 制限がすべてのプロセスに対してグローバルに適用されます。その結果、コンポーネント間で CPU やメモリを取り合う可能性があります。
 
-## ポートのカスタマイズ {#customizing-ports-deploy}
+## ポートのカスタマイズ \{#customizing-ports-deploy\}
 
 HyperDX Local が使用するアプリケーション用 (8080) または API 用 (8000) のポートをカスタマイズする必要がある場合は、適切なポートを転送し、いくつかの環境変数を設定するように `docker run` コマンドを変更する必要があります。
 
@@ -101,7 +101,7 @@ docker run -p 8080:8080 -p 4317:4317 -p 4999:4318 clickhouse/clickstack-all-in-o
 ```
 
 
-## ClickHouse Cloud を使用する {#using-clickhouse-cloud}
+## ClickHouse Cloud を使用する \{#using-clickhouse-cloud\}
 
 このディストリビューションは ClickHouse Cloud で使用できます。ローカルの ClickHouse インスタンスは引き続きデプロイされますが（使用されません）、環境変数 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USER`、`CLICKHOUSE_PASSWORD` を設定することで、OTel collector が ClickHouse Cloud インスタンスを使用するように構成できます。
 
@@ -120,7 +120,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 HyperDX UI に接続したら、[`Team Settings`](http://localhost:8080/team) に移動し、ClickHouse Cloud サービスへの接続を作成してから、必要なソースを追加します。手順の一例については[こちら](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)を参照してください。
 
 
-## OpenTelemetry Collector の設定 {#configuring-collector}
+## OpenTelemetry Collector の設定 \{#configuring-collector\}
 
 必要に応じて OTel collector の設定を変更できます。詳細は「[設定の変更](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration)」を参照してください。
 

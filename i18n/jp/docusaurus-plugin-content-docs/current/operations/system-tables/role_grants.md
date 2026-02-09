@@ -6,7 +6,7 @@ title: 'system.role_grants'
 doc_type: 'reference'
 ---
 
-# system.role&#95;grants {#systemrole&#95;grants}
+# system.role&#95;grants \{#systemrole&#95;grants\}
 
 ユーザーおよびロールに対するロール付与情報を保持します。このテーブルに行を追加するには、`GRANT role TO user` を使用します。
 

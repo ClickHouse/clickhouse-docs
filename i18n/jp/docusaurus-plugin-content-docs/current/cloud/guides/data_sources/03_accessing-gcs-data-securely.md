@@ -21,7 +21,7 @@ import clickpipes_hmac_key from '@site/static/images/cloud/guides/accessing-data
 このガイドでは、Google Cloud Storage (GCS) に安全に認証し、ClickHouse Cloud からデータにアクセスする方法を説明します。
 
 
-## はじめに {#introduction}
+## はじめに \{#introduction\}
 
 ClickHouse Cloud は、Google Cloud サービスアカウントに関連付けられた HMAC (Hash-based Message Authentication Code) キーを使用して GCS に接続します。
 この方法により、クエリ内に認証情報を直接埋め込むことなく、GCS バケットに安全にアクセスできます。
@@ -35,7 +35,7 @@ ClickHouse Cloud は、Google Cloud サービスアカウントに関連付け�
 
 この方法では、サービスアカウントに対する IAM ポリシーを通じて GCS バケットへのすべてのアクセスを管理できるため、個々のバケットポリシーを変更することなく、アクセス権の付与や取り消しを容易に行えます。
 
-## 前提条件 {#prerequisites}
+## 前提条件 \{#prerequisites\}
 
 このガイドに従うには、次のものが必要です。
 
@@ -43,7 +43,7 @@ ClickHouse Cloud は、Google Cloud サービスアカウントに関連付け�
 - Cloud Storage が有効になっている Google Cloud プロジェクト
 - GCP プロジェクトでサービスアカウントを作成し、HMAC キーを生成する権限
 
-## セットアップ {#setup}
+## セットアップ \{#setup\}
 
 <VerticalStepper headerLevel="h3">
   ### Google Cloud サービスアカウントを作成する
@@ -200,7 +200,7 @@ ClickHouse Cloud は、Google Cloud サービスアカウントに関連付け�
 
 ## ベストプラクティス {#best-practices}
 
-### 環境ごとに個別のサービスアカウントを使用する {#separate-service-accounts}
+### 環境ごとに個別のサービスアカウントを使用する \{#separate-service-accounts\}
 
 開発、ステージング、本番といった各環境ごとに、個別のサービスアカウントを作成します。例えば:
 
@@ -231,7 +231,7 @@ ClickHouse Cloud は、Google Cloud サービスアカウントに関連付け�
 Google Cloud は HMAC キーの有効期限を強制しないため、独自のローテーションポリシーを実装する必要があります。
 :::
 
-### Cloud Audit Logs でアクセスを監視する {#monitor-access}
+### Cloud Audit Logs でアクセスを監視する \{#monitor-access\}
 
 Cloud Storage 用に Cloud Audit Logs を有効化し、アクセスを監視します:
 

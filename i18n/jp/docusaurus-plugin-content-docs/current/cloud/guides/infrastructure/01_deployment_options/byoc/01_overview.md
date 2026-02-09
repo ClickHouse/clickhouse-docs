@@ -11,9 +11,11 @@ import Image from '@theme/IdealImage';
 import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';
 
 
-## 概要 {#overview}
+## 概要 \{#overview\}
 
-BYOC（Bring Your Own Cloud）は、お客様自身のクラウドインフラストラクチャ上に ClickHouse Cloud をデプロイできるオプションです。ClickHouse Cloud のマネージドサービスを利用できない特定の要件や制約がある場合に有用です。
+Bring Your Own Cloud (BYOC) により、ClickHouse Cloud のデフォルトインフラストラクチャに依存するのではなく、お客様自身のクラウドアカウント内に ClickHouse サービスをデプロイし、データを直接保存できます。このアプローチは、データに対する完全なコントロールとデータ主権を求める、厳格なセキュリティポリシーやコンプライアンス要件を持つ組織に特に適しています。
+
+概略として、BYOC では、ClickHouse Cloud によって管理され ClickHouse の VPC 内で動作する ClickHouse のコントロールプレーンと、お客様のクラウドアカウント内で完全に動作し、ClickHouse クラスター、データ、およびバックアップを含むデータプレーンを分離します。関係するコンポーネントの詳細およびそれらの間でトラフィックがどのように流れるかについては、[アーキテクチャ](/cloud/reference/byoc/architecture)ページを参照してください。
 
 > **ご利用を希望される場合は、[こちらからお問い合わせください](https://clickhouse.com/cloud/bring-your-own-cloud)。** 追加情報については、[利用規約](https://clickhouse.com/legal/agreements/terms-of-service)をご参照ください。
 
@@ -21,52 +23,43 @@ BYOC（Bring Your Own Cloud）は、お客様自身のクラウドインフラ�
 BYOC は特に大規模なデプロイメント向けに設計されており、ご利用にあたってはコミットメント契約の締結が必要です。
 :::
 
-対応しているクラウドサービスプロバイダー:
+**対応しているクラウドサービスプロバイダー:**
 
 * AWS (GA)
 * GCP (Private Preview)。ご興味のある方は[こちら](https://clickhouse.com/cloud/bring-your-own-cloud)からウェイティングリストにご登録ください。
 * Azure (Roadmap)。ご興味のある方は[こちら](https://clickhouse.com/cloud/bring-your-own-cloud)からウェイティングリストにご登録ください。
 
-## 用語集 {#glossary}
+**対応しているクラウドリージョン:**
+[サポート対象リージョン](https://clickhouse.com/docs/cloud/reference/supported-regions) ドキュメントに記載されているすべての**パブリックリージョン**が、BYOC デプロイメントで利用可能です。プライベートリージョンは現在サポートされていません。
 
-- **ClickHouse VPC:**  ClickHouse Cloud が所有する VPC。
-- **Customer BYOC VPC:** 顧客のクラウドアカウントが所有し、ClickHouse Cloud によってプロビジョニングおよび管理される、ClickHouse Cloud の BYOC デプロイメント専用の VPC。
-- **Customer VPC:** Customer BYOC VPC に接続する必要があるアプリケーションのために、顧客のクラウドアカウントが所有するその他の VPC。
+## 機能 \{#features\}
 
-## アーキテクチャ {#architecture}
-
-メトリクスとログは、顧客の BYOC VPC 内に保存されています。ログは現在、EBS のローカルストレージに保存されています。今後のアップデートでは、ログは LogHouse に保存される予定であり、LogHouse は顧客の BYOC VPC 内で動作する ClickHouse サービスです。メトリクスは、顧客の BYOC VPC 内にローカルで構成された Prometheus と Thanos のスタックによって実装されています。
-
-<br />
-
-<Image img={byoc1} size="lg" alt="BYOC アーキテクチャ" background='black'/>
-
-<br />
-
-## 機能 {#features}
-
-### サポートされている機能 {#supported-features}
+### サポートされている機能 \{#supported-features\}
 
 - **SharedMergeTree**: ClickHouse Cloud と BYOC は同じバイナリと設定を使用します。そのため、SharedMergeTree をはじめとする ClickHouse コアのすべての機能が BYOC でもサポートされます。
+- **Shared Catalog**
 - **サービス状態管理のためのコンソールアクセス**:
   - 開始、停止、終了などの操作をサポート。
   - サービスとそのステータスを表示。
-- **バックアップとリストア。**
+- **マネージドバックアップとリストア**
 - **手動による垂直および水平スケーリング。**
-- **自動アイドリング機能。**
+- **自動アイドリング機能**
 - **Warehouse**: Compute-Compute 分離
 - **Tailscale を用いたゼロトラストネットワーク。**
 - **監視**:
   - Cloud コンソールには、サービスの健全性を監視するための組み込みヘルスダッシュボードが用意されています。
-  - Prometheus、Grafana、Datadog を用いた集中監視のための Prometheus スクレイピング。セットアップ手順については [Prometheus ドキュメント](/integrations/prometheus) を参照してください。
-- **VPC ピアリング。**
+  - Prometheus、Grafana、Datadog を用いた集中監視のための Prometheus スクレイピング。セットアップ手順については [Prometheus ドキュメント](/cloud/reference/byoc/observability#prometheus-access) を参照してください。
+- **VPC ピアリング**
 - **インテグレーション**: 完全な一覧は[このページ](/integrations)を参照してください。
-- **セキュアな S3。**
-- **[AWS PrivateLink](https://aws.amazon.com/privatelink/)。**
+- **セキュアな S3**
+- **[AWS PrivateLink](https://aws.amazon.com/privatelink/)**
+- **[GCP Private Service Connect](https://docs.cloud.google.com/vpc/docs/private-service-connect)**
 
-### 計画中の機能（現在は未サポート） {#planned-features-currently-unsupported}
+### 計画中の機能（現在は未サポート） \{#planned-features-currently-unsupported\}
 
-- [AWS KMS](https://aws.amazon.com/kms/)、別名 CMEK（customer-managed encryption keys）
-- ClickPipes
+- SQL コンソール
+- ClickPipes（Kafka, S3）
+- ClickPipes（CDC）
 - オートスケーリング
 - MySQL インターフェース
+- [AWS KMS](https://aws.amazon.com/kms/)、別名 CMEK（customer-managed encryption keys）

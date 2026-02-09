@@ -16,7 +16,7 @@ import finish_import from '@site/static/images/clickstack/postgres/import-dashbo
 import example_dashboard from '@site/static/images/clickstack/postgres/postgres-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# ClickStack を使用した PostgreSQL メトリクスの監視 {#postgres-metrics-clickstack}
+# ClickStack を使用した PostgreSQL メトリクスの監視 \{#postgres-metrics-clickstack\}
 
 :::note[TL;DR]
 このガイドでは、OpenTelemetry collector の PostgreSQL receiver を構成し、ClickStack で PostgreSQL のパフォーマンスメトリクスを監視する方法を説明します。次のことを学べます:
@@ -30,13 +30,13 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 所要時間: 10〜15 分
 :::
 
-## 既存の PostgreSQL との統合 {#existing-postgres}
+## 既存の PostgreSQL との統合 \{#existing-postgres\}
 
 このセクションでは、PostgreSQL レシーバーを用いて ClickStack の OTel collector を構成し、既存の PostgreSQL 環境から ClickStack へメトリクスを送信できるようにする方法を説明します。
 
 お使いの既存環境を構成する前に PostgreSQL メトリクス連携を試してみたい場合は、[次のセクション](#demo-dataset)の事前構成済みデモデータセットを使ってテストできます。
 
-##### 前提条件 {#prerequisites}
+##### 前提条件 \{#prerequisites\}
 
 - ClickStack インスタンスが稼働していること
 - 既存の PostgreSQL インストール（バージョン 9.6 以降）
@@ -45,7 +45,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### 監視ユーザーに必要な権限が付与されていることを確認する {#monitoring-permissions}
+#### 監視ユーザーに必要な権限が付与されていることを確認する \{#monitoring-permissions\}
 
 PostgreSQL receiver には、統計ビューへの読み取りアクセス権を持つユーザーが必要です。監視ユーザーに `pg_monitor` ロールを付与します:
 
@@ -53,7 +53,7 @@ PostgreSQL receiver には、統計ビューへの読み取りアクセス権を
 GRANT pg_monitor TO your_monitoring_user;
 ```
 
-#### カスタム OTel collector 設定を作成する {#create-custom-config}
+#### カスタム OTel collector 設定を作成する \{#create-custom-config\}
 
 ClickStack では、カスタム設定ファイルをマウントし、環境変数を設定することで、ベースの OpenTelemetry collector 設定を拡張できます。
 
@@ -99,7 +99,7 @@ service:
 `tls: insecure: true` 設定は、開発／テスト用途で SSL 検証を無効化します。SSL が有効な本番環境の PostgreSQL では、この行を削除するか、適切な証明書を設定してください。
 :::
 
-#### カスタム設定を用いて ClickStack をデプロイする {#deploy-clickstack}
+#### カスタム設定を用いて ClickStack をデプロイする \{#deploy-clickstack\}
 
 カスタム設定をマウントします:
 
@@ -115,7 +115,7 @@ docker run -d \
   clickhouse/clickstack:latest
 ```
 
-#### メトリクス収集を検証する {#verify-metrics}
+#### メトリクス収集を検証する \{#verify-metrics\}
 
 設定後、HyperDX にログインしてメトリクスが流れていることを確認します:
 
@@ -127,7 +127,7 @@ docker run -d \
 
 </VerticalStepper>
 
-## デモ用データセット {#demo-dataset}
+## デモ用データセット \{#demo-dataset\}
 
 本番環境を設定する前に PostgreSQL メトリクス連携をテストしたいユーザー向けに、実運用に近い PostgreSQL メトリクスパターンを含む、あらかじめ生成されたデータセットを提供します。
 
@@ -137,7 +137,7 @@ docker run -d \
 
 <VerticalStepper headerLevel="h4">
 
-#### サンプルメトリクスデータセットをダウンロードする {#download-sample}
+#### サンプルメトリクスデータセットをダウンロードする \{#download-sample\}
 
 あらかじめ生成されたメトリクスファイル（実運用に近いパターンを持つ 24 時間分の PostgreSQL メトリクス）をダウンロードします:
 
@@ -155,7 +155,7 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 - **アプリケーションのバグ (14:00-14:30)** - ロールバック率が 15% までスパイク
 - **デッドロック発生 (14:15, 16:30)** - 稀なデッドロック
 
-#### ClickStack を起動する {#start-clickstack}
+#### ClickStack を起動する \{#start-clickstack\}
 
 ClickStack インスタンスを起動します:
 
@@ -167,7 +167,7 @@ docker run -d --name clickstack-postgres-demo \
 
 ClickStack が完全に起動するまで、約 30 秒待機してください。
 
-#### メトリクスを ClickStack に読み込む {#load-metrics}
+#### メトリクスを ClickStack に読み込む \{#load-metrics\}
 
 メトリクスを ClickHouse に直接読み込みます:
 
@@ -181,7 +181,7 @@ cat postgres-metrics-sum.csv | docker exec -i clickstack-postgres-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
 
-#### HyperDX でメトリクスを確認する {#verify-metrics-demo}
+#### HyperDX でメトリクスを確認する \{#verify-metrics-demo\}
 
 読み込みが完了したら、メトリクスを確認する最も手軽な方法は、あらかじめ用意されたダッシュボードを利用することです。
 
@@ -193,15 +193,15 @@ HyperDX はタイムスタンプをブラウザのローカルタイムゾーン
 
 </VerticalStepper>
 
-## ダッシュボードと可視化 {#dashboards}
+## ダッシュボードと可視化 \{#dashboards\}
 
 ClickStack で PostgreSQL の監視を開始するにあたって、PostgreSQL メトリクス向けの基本的な可視化を提供しています。
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/postgres-metrics-dashboard.json')} download="postgres-metrics-dashboard.json" eventName="docs.postgres_metrics_monitoring.dashboard_download">ダッシュボード設定をダウンロード</TrackedLink> {#download}
+#### <TrackedLink href={useBaseUrl('/examples/postgres-metrics-dashboard.json')} download="postgres-metrics-dashboard.json" eventName="docs.postgres_metrics_monitoring.dashboard_download">ダッシュボード設定をダウンロード</TrackedLink> \{#download\}
 
-#### あらかじめ用意されたダッシュボードをインポートする {#import-dashboard}
+#### あらかじめ用意されたダッシュボードをインポートする \{#import-dashboard\}
 
 1. HyperDX を開き、［Dashboards］セクションに移動します
 2. 右上の三点リーダーメニューから **Import Dashboard** をクリックします
@@ -212,7 +212,7 @@ ClickStack で PostgreSQL の監視を開始するにあたって、PostgreSQL �
 
 <Image img={finish_import} alt="インポート完了ダイアログ"/>
 
-#### ダッシュボードを表示する {#created-dashboard}
+#### ダッシュボードを表示する \{#created-dashboard\}
 
 ダッシュボードは、すべての可視化が事前に設定された状態で作成されます。
 
@@ -224,9 +224,9 @@ ClickStack で PostgreSQL の監視を開始するにあたって、PostgreSQL �
 
 </VerticalStepper>
 
-## トラブルシューティング {#troubleshooting}
+## トラブルシューティング \{#troubleshooting\}
 
-### カスタム設定が読み込まれない {#troubleshooting-not-loading}
+### カスタム設定が読み込まれない \{#troubleshooting-not-loading\}
 
 環境変数が設定されていることを確認してください：
 
@@ -240,7 +240,7 @@ docker exec <コンテナ名> printenv CUSTOM_OTELCOL_CONFIG_FILE
 docker exec <コンテナ名> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
-### HyperDX にメトリクスが表示されない場合 {#no-metrics}
+### HyperDX にメトリクスが表示されない場合 \{#no-metrics\}
 
 PostgreSQL にアクセスできることを確認してください。
 
@@ -254,7 +254,7 @@ OTel collector のログを確認します：
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i postgres
 ```
 
-### 認証エラー {#auth-errors}
+### 認証エラー \{#auth-errors\}
 
 パスワードが正しく設定されていることを確認してください：
 
@@ -268,7 +268,7 @@ docker exec <clickstack-container> printenv POSTGRES_PASSWORD
 psql -h postgres-host -U otel_monitor -d postgres -c "SELECT version();"
 ```
 
-## 次のステップ {#next-steps}
+## 次のステップ \{#next-steps\}
 
 PostgreSQL メトリクスの監視をセットアップしたら、次のことを実施します:
 
@@ -276,6 +276,6 @@ PostgreSQL メトリクスの監視をセットアップしたら、次のこと
 - `pg_stat_statements` 拡張機能でクエリレベルの監視を有効にする
 - 異なるエンドポイントとサービス名でレシーバー設定を複製して、複数の PostgreSQL インスタンスを監視する
 
-## 本番環境への移行 {#going-to-production}
+## 本番環境への移行 \{#going-to-production\}
 
 このガイドでは、クイックセットアップのために、ClickStack に組み込まれている OpenTelemetry Collector をベースとして利用します。本番環境では、独自の OTel Collector を稼働させ、ClickStack の OTLP エンドポイントにデータを送信することを推奨します。本番環境向けの設定については、[Sending OpenTelemetry data](/use-cases/observability/clickstack/ingesting-data/opentelemetry) を参照してください。

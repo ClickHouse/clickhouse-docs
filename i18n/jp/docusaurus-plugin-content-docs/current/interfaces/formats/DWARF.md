@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✗      |       |
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 `DWARF` フォーマットは、ELF ファイル（実行ファイル、ライブラリ、またはオブジェクトファイル）から DWARF デバッグシンボルをパースします。  
 `dwarfdump` に似ていますが、はるかに高速（数百 MB/s）で動作し、SQL をサポートします。  
@@ -56,7 +56,7 @@ DIE はソースコード中のさまざまな要素を表し、その *tag* に
   - `attr_int` - attribute の整数値。attribute に数値がない場合は 0
   - `attr_str` - attribute の文字列値。attribute に文字列がない場合は空文字列
 
-## 使用例 {#example-usage}
+## 使用例 \{#example-usage\}
 
 `DWARF` 形式を使うと、最も多くの関数定義（テンプレートのインスタンス化や、インクルードされたヘッダーファイル内の関数を含む）を持つコンパイル単位を特定できます。
 
@@ -82,4 +82,4 @@ LIMIT 3
 Peak memory usage: 271.92 MiB.
 ```
 
-## 書式設定 {#format-settings}
+## 書式設定 \{#format-settings\}

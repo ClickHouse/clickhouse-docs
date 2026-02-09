@@ -16,7 +16,7 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 | ✔  | ✔  |    |
 
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 与 [RowBinary](./RowBinary.md) 格式类似，但增加了头部：
 
@@ -26,11 +26,11 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 
 
 
-## 用法示例 {#example-usage}
+## 用法示例 \{#example-usage\}
 
 
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}
 
 <RowBinaryFormatSettings/>
 

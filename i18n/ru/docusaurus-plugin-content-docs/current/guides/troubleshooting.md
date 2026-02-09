@@ -6,13 +6,13 @@ doc_type: 'guide'
 keywords: ['устранение неполадок', 'отладка', 'решение проблем', 'ошибки', 'диагностика']
 ---
 
-## Установка {#installation}
+## Установка \{#installation\}
 
-### Не удаётся импортировать ключи GPG с keyserver.ubuntu.com с помощью apt-key {#cannot-import-gpg-keys-from-keyserverubuntucom-with-apt-key}
+### Не удаётся импортировать ключи GPG с keyserver.ubuntu.com с помощью apt-key \{#cannot-import-gpg-keys-from-keyserverubuntucom-with-apt-key\}
 
 Команда `apt-key` в [Advanced Package Tool (APT) признана устаревшей](https://manpages.debian.org/bookworm/apt/apt-key.8.en.html). Вместо неё следует использовать команду `gpg`. Обратитесь к статье [руководства по установке](../getting-started/install/install.mdx).
 
-### Не удаётся импортировать ключи GPG с keyserver.ubuntu.com с помощью gpg {#cannot-import-gpg-keys-from-keyserverubuntucom-with-gpg}
+### Не удаётся импортировать ключи GPG с keyserver.ubuntu.com с помощью gpg \{#cannot-import-gpg-keys-from-keyserverubuntucom-with-gpg\}
 
 1. Проверьте, установлен ли у вас `gpg`:
 
@@ -21,18 +21,18 @@ sudo apt-get install gnupg
 ```
 
 
-### Не удаётся получить deb-пакеты из репозитория ClickHouse с помощью apt-get {#cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
+### Не удаётся получить deb-пакеты из репозитория ClickHouse с помощью apt-get \{#cannot-get-deb-packages-from-clickhouse-repository-with-apt-get\}
 
 1. Проверьте настройки брандмауэра.
 1. Если вы по какой-либо причине не можете получить доступ к репозиторию, загрузите пакеты, как описано в статье [руководства по установке](../getting-started/install/install.mdx), и установите их вручную с помощью команды `sudo dpkg -i <packages>`. Вам также понадобится пакет `tzdata`.
 
-### Не удаётся обновить deb-пакеты из репозитория ClickHouse с помощью apt-get {#cannot-update-deb-packages-from-clickhouse-repository-with-apt-get}
+### Не удаётся обновить deb-пакеты из репозитория ClickHouse с помощью apt-get \{#cannot-update-deb-packages-from-clickhouse-repository-with-apt-get\}
 
 Проблема может возникнуть, если был изменён ключ GPG.
 
 Используйте инструкцию со страницы [setup](/install/debian_ubuntu), чтобы обновить конфигурацию репозитория.
 
-### Вы получаете различные предупреждения при выполнении `apt-get update` {#you-get-different-warnings-with-apt-get-update}
+### Вы получаете различные предупреждения при выполнении `apt-get update` \{#you-get-different-warnings-with-apt-get-update\}
 
 Полные сообщения предупреждений выглядят как один из следующих вариантов:
 
@@ -65,7 +65,7 @@ sudo apt-get autoclean
 ```
 
 
-### Не удаётся получить пакеты через Yum из‑за неверной подписи {#cant-get-packages-with-yum-because-of-wrong-signature}
+### Не удаётся получить пакеты через Yum из‑за неверной подписи \{#cant-get-packages-with-yum-because-of-wrong-signature\}
 
 Возможная причина: некорректный кэш; возможно, он был повреждён после обновления ключа GPG в сентябре 2022 года.
 
@@ -79,16 +79,16 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 Затем следуйте [руководству по установке](/install/redhat)
 
 
-## Подключение к серверу {#connecting-to-the-server}
+## Подключение к серверу \{#connecting-to-the-server\}
 
 Возможные проблемы:
 
 * Сервер не запущен.
 * Неожиданные или неверные параметры конфигурации.
 
-### Сервер не запущен {#server-is-not-running}
+### Сервер не запущен \{#server-is-not-running\}
 
-#### Проверьте, запущен ли сервер {#check-if-server-is-running}
+#### Проверьте, запущен ли сервер \{#check-if-server-is-running\}
 
 ```shell
 sudo service clickhouse-server status
@@ -101,7 +101,7 @@ sudo service clickhouse-server start
 ```
 
 
-#### Проверьте логи {#check-the-logs}
+#### Проверьте логи \{#check-the-logs\}
 
 Основной лог `clickhouse-server` по умолчанию находится в `/var/log/clickhouse-server/clickhouse-server.log`.
 
@@ -139,7 +139,7 @@ Revision: 54413
 ```
 
 
-#### Просмотр журналов systemd {#see-systemd-logs}
+#### Просмотр журналов systemd \{#see-systemd-logs\}
 
 Если вы не находите полезной информации в журналах `clickhouse-server` или их вовсе нет, вы можете просмотреть журналы `systemd` с помощью команды:
 
@@ -148,7 +148,7 @@ sudo journalctl -u clickhouse-server
 ```
 
 
-#### Запустите clickhouse-server в интерактивном режиме {#start-clickhouse-server-in-interactive-mode}
+#### Запустите clickhouse-server в интерактивном режиме \{#start-clickhouse-server-in-interactive-mode\}
 
 ```shell
 sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-server/config.xml
@@ -157,7 +157,7 @@ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-serv
 Эта команда запускает сервер как интерактивное приложение со стандартными параметрами, используемыми скриптом автозапуска. В этом режиме `clickhouse-server` выводит все сообщения о событиях в консоль.
 
 
-### Параметры конфигурации {#configuration-parameters}
+### Параметры конфигурации \{#configuration-parameters\}
 
 Проверьте:
 
@@ -184,7 +184,7 @@ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-serv
 
    * Возможно, вы используете неверное имя пользователя или пароль.
 
-## Обработка запросов {#query-processing}
+## Обработка запросов \{#query-processing\}
 
 Если ClickHouse не может выполнить запрос, он отправляет описание ошибки клиенту. В `clickhouse-client` вы получаете описание ошибки в консоли. Если вы используете HTTP-интерфейс, ClickHouse отправляет описание ошибки в теле ответа. Например:
 
@@ -198,7 +198,7 @@ Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that ther
 Вы можете увидеть сообщение о разорванном соединении. В этом случае можно повторить запрос. Если соединение обрывается каждый раз при выполнении запроса, проверьте журналы сервера на наличие ошибок.
 
 
-## Эффективность обработки запросов {#efficiency-of-query-processing}
+## Эффективность обработки запросов \{#efficiency-of-query-processing\}
 
 Если вы замечаете, что ClickHouse работает слишком медленно, следует проанализировать нагрузку на ресурсы сервера и сеть при выполнении ваших запросов.
 

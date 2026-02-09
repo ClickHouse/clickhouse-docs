@@ -7,12 +7,12 @@ title: 'クエリキャッシュ'
 doc_type: 'guide'
 ---
 
-# クエリキャッシュ {#query-cache}
+# クエリキャッシュ \{#query-cache\}
 
 クエリキャッシュを使用すると、`SELECT` クエリを一度だけ実行して結果を保存し、同じクエリの後続の実行にはキャッシュから直接結果を返すことができます。
 クエリの種類によっては、これにより ClickHouse サーバーのレイテンシとリソース消費を劇的に削減できます。
 
-## 背景、設計、制限事項 {#background-design-and-limitations}
+## 背景、設計、制限事項 \{#background-design-and-limitations\}
 
 クエリキャッシュは、一般的にトランザクション整合性のあるものとないものに分類できます。
 
@@ -24,7 +24,7 @@ doc_type: 'guide'
 トランザクション整合性のないキャッシュは、従来はデータベースとやり取りするクライアントツールやプロキシパッケージ（例:
 [chproxy](https://www.chproxy.org/configuration/caching/)）によって提供されてきました。その結果、同じキャッシュロジックと設定が重複することがよくあります。ClickHouse のクエリキャッシュでは、キャッシュロジックがサーバー側に移されます。これにより、保守の手間が減り、冗長性も回避できます。
 
-## 設定と使用方法 {#configuration-settings-and-usage}
+## 設定と使用方法 \{#configuration-settings-and-usage\}
 
 :::note
 ClickHouse Cloud では、クエリキャッシュの設定を変更するには [クエリレベルの設定](/operations/settings/query-level) を使用する必要があります。[設定ファイルレベルの設定](/operations/configuration-files) の編集は現在サポートされていません。
@@ -65,7 +65,7 @@ SETTINGS use_query_cache = true, enable_writes_to_query_cache = false;
 
 最大限の制御を行うため、通常は `use_query_cache`、`enable_writes_to_query_cache`、`enable_reads_from_query_cache` の各設定は、特定のクエリに対してのみ指定することが推奨されます。`SET use_query_cache = true` のように、USER またはプロファイル単位でキャッシュを有効化することも可能ですが、その場合、すべての `SELECT` クエリがキャッシュされた結果を返す可能性があることに留意する必要があります。
 
-クエリキャッシュは `SYSTEM DROP QUERY CACHE` ステートメントでクリアできます。クエリキャッシュの内容はシステムテーブル
+クエリキャッシュは `SYSTEM CLEAR QUERY CACHE` ステートメントでクリアできます。クエリキャッシュの内容はシステムテーブル
 [system.query&#95;cache](system-tables/query_cache.md) に表示されます。データベース起動以降のクエリキャッシュのヒット数とミス数は、システムテーブル [system.events](system-tables/events.md) のイベント &quot;QueryCacheHits&quot; および &quot;QueryCacheMisses&quot; として表示されます。両カウンタは、`use_query_cache = true` が有効な状態で実行される `SELECT` クエリに対してのみ更新され、それ以外のクエリは &quot;QueryCacheMisses&quot; に影響しません。システムテーブル [system.query&#95;log](system-tables/query_log.md) のフィールド `query_cache_usage` は、各実行クエリについて、その結果がクエリキャッシュに書き込まれたか、あるいはクエリキャッシュから読み出されたかを示します。システムテーブル
 [system.metrics](system-tables/metrics.md) にあるメトリクス `QueryCacheEntries` および `QueryCacheBytes` は、クエリキャッシュに現在含まれているエントリ数およびバイト数を示します。
 
@@ -76,6 +76,7 @@ SETTINGS use_query_cache = true, enable_writes_to_query_cache = false;
 クエリが例外やユーザーによるキャンセルにより中止された場合、そのエントリはクエリキャッシュに書き込まれません。
 
 クエリキャッシュのサイズ（バイト単位）、キャッシュエントリの最大数、および個々のキャッシュエントリの最大サイズ（バイト数およびレコード数）は、さまざまな[サーバー設定オプション](/operations/server-configuration-parameters/settings#query_cache)を使用して構成できます。
+
 
 ```xml
 <query_cache>
@@ -138,7 +139,8 @@ SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 1';
 SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 2';
 ```
 
-クエリキャッシュからタグ `tag` が付いたエントリのみを削除するには、`SYSTEM DROP QUERY CACHE TAG 'tag'` 文を使用します。
+クエリキャッシュからタグ `tag` が付いたエントリのみを削除するには、`SYSTEM CLEAR QUERY CACHE TAG 'tag'` 文を使用します。
+
 
 ClickHouse はテーブルデータを [max_block_size](/operations/settings/settings#max_block_size) 行ずつのブロック単位で読み取ります。フィルタリングや集約などの処理の結果、
 結果ブロックは通常は `max_block_size` よりかなり小さくなりますが、逆に `max_block_size` より大きくなる場合もあります。
@@ -186,6 +188,6 @@ system テーブルを含むクエリの結果を強制的にキャッシュし�
 [query_cache_share_between_users](/operations/settings/settings#query_cache_share_between_users) を指定することで、
 キャッシュエントリを他のユーザーからアクセス可能（すなわち共有）にすることができます。
 
-## 関連コンテンツ {#related-content}
+## 関連コンテンツ \{#related-content\}
 
 - ブログ記事: [Introducing the ClickHouse Query Cache](https://clickhouse.com/blog/introduction-to-the-clickhouse-query-cache-and-design)

@@ -5,7 +5,7 @@ title: 'clickhouse-format'
 doc_type: 'reference'
 ---
 
-# clickhouse-format 实用工具 {#clickhouse-format-utility}
+# clickhouse-format 实用工具 \{#clickhouse-format-utility\}
 
 用于格式化输入的查询语句。
 
@@ -24,7 +24,7 @@ doc_type: 'reference'
 * `--backslash` — 在格式化后的查询每一行末尾添加反斜杠。当你从网页或其他地方复制多行查询并希望在命令行中执行时，这会很有用。
 * `--semicolons_inline` — 在多查询模式下，将分号写在查询的最后一行，而不是单独起一行。
 
-## 示例 {#examples}
+## 示例 \{#examples\}
 
 1. 格式化查询：
 

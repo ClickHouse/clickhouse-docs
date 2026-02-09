@@ -63,7 +63,7 @@ package main
 
 import (
     "fmt"
-    "github.com/chdb-io/chdb-go"
+    "github.com/chdb-io/chdb-go/chdb"
 )
 
 func main() {
@@ -85,7 +85,7 @@ package main
 
 import (
     "fmt"
-    "github.com/chdb-io/chdb-go"
+    "github.com/chdb-io/chdb-go/chdb"
 )
 
 func main() {
@@ -139,7 +139,7 @@ package main
 import (
     "database/sql"
     "fmt"
-    _ "github.com/chdb-io/chdb-go/driver"
+    _ "github.com/chdb-io/chdb-go/chdb/driver"
 )
 
 func main() {

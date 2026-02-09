@@ -18,7 +18,7 @@ import csv_09 from '@site/static/images/cloud/migrate/csv_09.png';
 import csv_10 from '@site/static/images/cloud/migrate/csv_10.png';
 
 
-# Cloud にファイルをアップロードする {#upload-files-to-cloud}
+# Cloud にファイルをアップロードする \{#upload-files-to-cloud\}
 
 ClickHouse Cloud はファイルのインポートを簡単に行う方法を提供しており、
 次の形式をサポートしています:
@@ -35,7 +35,7 @@ ClickHouse Cloud はファイルのインポートを簡単に行う方法を提
 
 <VerticalStepper headerLevel="h2">
 
-## ファイルをアップロードする {#upload-file}
+## ファイルをアップロードする \{#upload-file\}
 
 Cloud のホーム画面から、以下のように対象のサービスを選択します:
 
@@ -56,7 +56,7 @@ Cloud のホーム画面から、以下のように対象のサービスを選�
 
 <Image img={csv_04} alt="upload_file_05" />
 
-## テーブルを構成する {#configure-table}
+## テーブルを構成する \{#configure-table\}
 
 ファイルのアップロードが完了すると、データを挿入したいテーブルの設定が
 できるようになります。先頭 3 行を使ったテーブルのプレビューが表示されます。

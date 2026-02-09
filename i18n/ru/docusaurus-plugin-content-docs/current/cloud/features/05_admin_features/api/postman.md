@@ -28,19 +28,19 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 Это руководство поможет вам протестировать ClickHouse Cloud API с помощью [Postman](https://www.postman.com/product/what-is-postman/). 
 Приложение Postman доступно как в веб-интерфейсе, так и в виде десктопного приложения.
 
-### Создайте учетную запись {#create-an-account}
+### Создайте учетную запись \{#create-an-account\}
 
 * Бесплатные учетные записи доступны на сайте [https://www.postman.com](https://www.postman.com).
 
 <Image img={postman1} size="md" alt="Сайт Postman" border/>
 
-### Создайте рабочее пространство {#create-a-workspace}
+### Создайте рабочее пространство \{#create-a-workspace\}
 
 * Задайте имя рабочему пространству и уровень видимости. 
 
 <Image img={postman2} size="md" alt="Create workspace" border/>
 
-### Создание коллекции {#create-a-collection}
+### Создание коллекции \{#create-a-collection\}
 
 * В меню слева вверху под "Explore" нажмите "Import": 
 
@@ -56,7 +56,7 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 
 <Image img={postman6} size="md" alt="Collection > Import" border/>
 
-### Взаимодействие со спецификацией API ClickHouse Cloud {#interface-with-the-clickhouse-cloud-api-spec}
+### Взаимодействие со спецификацией API ClickHouse Cloud \{#interface-with-the-clickhouse-cloud-api-spec\}
 
 * «API spec for ClickHouse Cloud» теперь отобразится в разделе «Collections» (левая панель навигации).
 
@@ -66,7 +66,7 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 
 <Image img={postman8} size="md" alt="Import complete" border/>
 
-### Настройте авторизацию {#set-authorization}
+### Настройте авторизацию \{#set-authorization\}
 
 * В выпадающем списке выберите «Basic Auth»:
 
@@ -76,20 +76,20 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 
 <Image img={postman10} size="md" alt="credentials" border/>
 
-### Включите переменные {#enable-variables}
+### Включите переменные \{#enable-variables\}
 
 * [Переменные](https://learning.postman.com/docs/sending-requests/variables/) позволяют сохранять и повторно использовать значения в Postman, что упрощает тестирование API.
 
-#### Установите идентификатор организации и Service ID {#set-the-organization-id-and-service-id}
+#### Установите идентификатор организации и Service ID \{#set-the-organization-id-and-service-id\}
 
 * Внутри "Collection" перейдите на вкладку "Variable" в средней панели (значение Base URL уже было установлено при предыдущем импорте API):
 * Под `baseURL` в открытом поле "Add new value" подставьте свой идентификатор организации и Service ID:
 
 <Image img={postman11} size="md" alt="Organization ID and Service ID" border/>
 
-## Проверка возможностей API ClickHouse Cloud {#test-the-clickhouse-cloud-api-functionalities}
+## Проверка возможностей API ClickHouse Cloud \{#test-the-clickhouse-cloud-api-functionalities\}
 
-### Тест «GET list of available organizations» {#test-get-list-of-available-organizations}
+### Тест «GET list of available organizations» \{#test-get-list-of-available-organizations\}
 
 * В разделе «OpenAPI spec for ClickHouse Cloud» разверните папку > V1 > organizations
 * Нажмите «GET list of available organizations» и затем синюю кнопку «Send» справа:
@@ -100,7 +100,7 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 
 <Image img={postman13} size="md" alt="Status" border/>
 
-### Тестирование "GET organizational details" {#test-get-organizational-details}
+### Тестирование "GET organizational details" \{#test-get-organizational-details\}
 
 * В папке `organizationid` перейдите к "GET organizational details":
 * В средней панели в меню Params требуется указать `organizationid`.
@@ -117,7 +117,7 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 
 * Возвращённый результат должен содержать сведения о вашей организации со "status": 200. (Если вы получаете "status" 400 без информации об организации, ваша конфигурация настроена неверно).
 
-### Тестирование метода "GET service details" {#test-get-service-details}
+### Тестирование метода "GET service details" \{#test-get-service-details\}
 
 * Нажмите "GET service details".
 * Измените значения `organizationid` и `serviceid` на `{{orgid}}` и `{{serviceid}}` соответственно.

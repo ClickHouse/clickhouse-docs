@@ -8,7 +8,7 @@ doc_type: 'changelog'
 keywords: ['ClickHouse Cloud', 'クラウド変更履歴', 'クラウド更新情報', 'クラウド機能', 'クラウドリリース']
 ---
 
-# クラウド版の変更履歴 {#cloud-changelog}
+# クラウド版の変更履歴 \{#cloud-changelog\}
 
 import CloudChangelog from '@site/i18n/jp/docusaurus-plugin-content-docs/current/cloud/reference/01_changelog/01_changelog.md';
 

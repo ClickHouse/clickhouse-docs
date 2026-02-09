@@ -33,7 +33,7 @@ import s3_20 from '@site/static/images/_snippets/s3/2025/s3-20.png';
 > 这是将备份写入 S3 或将 ClickHouse 配置为在 S3 上存储数据的先决条件步骤
 
 
-## 创建 AWS IAM 用户 {#create-an-aws-iam-user}
+## 创建 AWS IAM 用户 \{#create-an-aws-iam-user\}
 
 在本步骤中，我们将创建一个服务账户用户，而不是登录用户。
 
@@ -78,7 +78,7 @@ import s3_20 from '@site/static/images/_snippets/s3/2025/s3-20.png';
 
 <Image size="lg" img={s3_9} alt="AWS IAM 管理控制台 - 添加新用户" />
 
-## 创建一个 S3 bucket {#create-an-s3-bucket}
+## 创建一个 S3 bucket \{#create-an-s3-bucket\}
 
 1. 在 S3 bucket 部分选择 **Create bucket**
 

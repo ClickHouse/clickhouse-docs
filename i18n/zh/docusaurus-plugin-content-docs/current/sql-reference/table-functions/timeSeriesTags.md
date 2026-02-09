@@ -7,7 +7,7 @@ title: 'timeSeriesTags'
 doc_type: 'reference'
 ---
 
-# timeSeriesTags 表函数 {#timeseriestags-table-function}
+# timeSeriesTags 表函数 \{#timeseriestags-table-function\}
 
 `timeSeriesTags(db_name.time_series_table)` - 返回表 `db_name.time_series_table` 使用的 [tags](../../engines/table-engines/integrations/time-series.md#tags-table) 表，其中该表的表引擎为 [TimeSeries](../../engines/table-engines/integrations/time-series.md) 引擎：
 

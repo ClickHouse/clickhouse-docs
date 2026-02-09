@@ -18,13 +18,13 @@ import notebook_connections_config from '@site/static/images/integrations/data-i
 import dependent_jars_path_option from '@site/static/images/integrations/data-ingestion/aws-glue/dependent_jars_path_option.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# 将 Amazon Glue 与 ClickHouse 和 Spark 集成 {#integrating-amazon-glue-with-clickhouse-and-spark}
+# 将 Amazon Glue 与 ClickHouse 和 Spark 集成 \{#integrating-amazon-glue-with-clickhouse-and-spark\}
 
 <ClickHouseSupportedBadge/>
 
 [Amazon Glue](https://aws.amazon.com/glue/) 是由 Amazon Web Services (AWS) 提供的全托管的无服务器数据集成服务。它简化了数据的发现、准备和转换过程，以支持分析、机器学习和应用程序开发。
 
-## 安装 {#installation}
+## 安装 \{#installation\}
 
 要将 Glue 代码与 ClickHouse 集成，你可以通过以下任一方式在 Glue 中使用我们的官方 Spark 连接器：
 
@@ -64,7 +64,7 @@ Glue 连接器中使用的 JAR 是为 `Spark 3.3`、`Scala 2` 和 `Python 3` 构
 </TabItem>
 </Tabs>
 
-## 示例 {#example}
+## 示例 \{#example\}
 
 <Tabs>
   <TabItem value="Scala" label="Scala" default>

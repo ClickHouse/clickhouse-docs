@@ -6,11 +6,11 @@ title: 'system.mutations'
 doc_type: 'reference'
 ---
 
-# system.mutations {#systemmutations}
+# system.mutations \{#systemmutations\}
 
-该表包含 [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) 表的[变更](/sql-reference/statements/alter/index.md#mutations)及其执行进度的信息。每条变更命令在该表中对应一行记录。
+该表包含 [Mutation](/sql-reference/statements/alter/index.md#mutations) 在 [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) 表上的执行信息及其进度。每条 mutation 命令对应一行记录。
 
-## 列 {#columns}
+## 列 \{#columns\}
 
 - `database` ([String](/sql-reference/data-types/string.md)) — 应用变更操作的数据库名称。
 - `table` ([String](/sql-reference/data-types/string.md)) — 应用变更操作的表名称。
@@ -19,11 +19,20 @@ doc_type: 'reference'
 - `create_time` ([DateTime](/sql-reference/data-types/datetime.md)) — 提交变更命令执行的日期和时间。
 - `block_numbers.partition_id` ([Array](/sql-reference/data-types/array.md)([String](/sql-reference/data-types/string.md))) — 对于复制表的变更操作,该数组包含分区的 ID(每个分区一条记录)。对于非复制表的变更操作,该数组为空。
 - `block_numbers.number` ([Array](/sql-reference/data-types/array.md)([Int64](/sql-reference/data-types/int-uint.md))) — 对于复制表的变更操作,该数组为每个分区包含一条记录,其中包含变更操作获取的块编号。分区中只有包含编号小于此编号的块的数据部分才会被变更。在非复制表中,所有分区的块编号形成单一序列。这意味着对于非复制表的变更操作,该列将包含一条记录,其中包含变更操作获取的单个块编号。
+- `parts_in_progress_names` ([Array](/sql-reference/data-types/array.md)([String](/sql-reference/data-types/string.md))) — 正在变更的分区片段名称数组。
 - `parts_to_do_names` ([Array](/sql-reference/data-types/array.md)([String](/sql-reference/data-types/string.md))) — 需要变更才能完成变更操作的数据部分名称数组。
 - `parts_to_do` ([Int64](/sql-reference/data-types/int-uint.md)) — 需要变更才能完成变更操作的数据部分数量。
-- `is_killed` ([UInt8](/sql-reference/data-types/int-uint.md)) — 指示变更操作是否已被终止。**仅在 ClickHouse Cloud 中可用。**
+- `parts_postpone_reasons` ([Map](/sql-reference/data-types/map.md)([String](/sql-reference/data-types/string.md))) — 分区片段名称及其被延后原因的映射。
 
 :::note
+
+- 如果某个分区片段名称不在 `parts_postpone_reasons` 中且尚未被变更,则表示该分区片段尚未被调度执行该变更。
+- 分区片段名称 `all_parts` 表示所有尚未被变更的分区片段。
+:::
+
+- `is_killed` ([UInt8](/sql-reference/data-types/int-uint.md)) — 指示变更操作是否已被终止。**仅在 ClickHouse Cloud 中可用。**
+
+:::note 
 `is_killed=1` 并不一定意味着变更操作已完全结束。变更操作可能会在较长时间内保持 `is_killed=1` 和 `is_done=0` 的状态。如果另一个长时间运行的变更操作阻塞了已终止的变更操作,就会发生这种情况。这是正常情况。
 :::
 
@@ -41,7 +50,7 @@ doc_type: 'reference'
 - `latest_fail_time` ([DateTime](/sql-reference/data-types/datetime.md)) — 最近一次数据部分变更失败的日期和时间。
 - `latest_fail_reason` ([String](/sql-reference/data-types/string.md)) — 导致最近一次数据部分变更失败的异常消息。
 
-## 监控 Mutation {#monitoring-mutations}
+## 监控 Mutation \{#monitoring-mutations\}
 
 要跟踪 `system.mutations` 表中的进度,请使用以下查询:
 
@@ -63,6 +72,6 @@ WHERE is_done = 0 AND table = 'tmp';
 
 **另请参阅**
 
-- [Mutation](/sql-reference/statements/alter/index.md#mutations)
-- [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) 表引擎
-- [ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication.md) 系列
+* [Mutation](/sql-reference/statements/alter/index.md#mutations)
+* [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) 表引擎
+* [ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication.md) 系列

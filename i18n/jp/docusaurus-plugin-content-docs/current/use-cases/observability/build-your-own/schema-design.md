@@ -14,7 +14,7 @@ import observability_13 from '@site/static/images/use-cases/observability/observ
 import Image from '@theme/IdealImage';
 
 
-# オブザーバビリティのためのスキーマ設計 {#designing-a-schema-for-observability}
+# オブザーバビリティのためのスキーマ設計 \{#designing-a-schema-for-observability\}
 
 以下の理由から、ログおよびトレース用の独自スキーマを常に作成することを推奨します。
 
@@ -29,7 +29,7 @@ _上記の各ユースケースについて、以下で詳細に説明します�
 
 **重要:** ユーザーは最適な圧縮率とクエリ性能を得るためにスキーマを拡張および変更することが推奨されますが、可能な限りコアカラムについては OTel のスキーマ命名に従うべきです。ClickHouse Grafana プラグインは、クエリ作成を支援するために、Timestamp や SeverityText など、いくつかの基本的な OTel カラムが存在することを前提としています。ログおよびトレースに必要なカラムは、それぞれ [[1]](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)[[2]](https://grafana.com/docs/grafana/latest/explore/logs-integration/) および [こちら](https://grafana.com/docs/grafana/latest/explore/trace-integration/#data-frame-structure) に記載されています。これらのカラム名は、プラグイン設定でデフォルト値を上書きすることで変更することもできます。
 
-## SQL を使った構造の抽出 {#extracting-structure-with-sql}
+## SQL を使った構造の抽出 \{#extracting-structure-with-sql\}
 
 構造化ログ・非構造化ログのいずれを取り込む場合でも、次のような機能が必要になることがよくあります。
 
@@ -157,7 +157,7 @@ LIMIT 5
 :::
 
 
-### マテリアライズドカラム {#materialized-columns}
+### マテリアライズドカラム \{#materialized-columns\}
 
 マテリアライズドカラムは、他のカラムから構造を抽出するための最も簡便な方法です。この種のカラムの値は常に挿入時に計算され、INSERT クエリ内で明示的に指定することはできません。
 
@@ -225,7 +225,7 @@ Peak memory usage: 3.16 MiB.
 :::
 
 
-## materialized view {#materialized-views}
+## materialized view \{#materialized-views\}
 
 [materialized view](/materialized-views) は、ログおよびトレースに対して SQL によるフィルタリングや変換を適用するための、より強力な手段を提供します。
 
@@ -441,7 +441,7 @@ FROM otel_logs
 ```
 
 
-### 型に注意 {#beware-types}
+### 型に注意 \{#beware-types\}
 
 上記の materialized view は、特に `LogAttributes` マップを使用する場合、暗黙的なキャストに依存しています。ClickHouse は抽出された値を対象テーブルの型へ透過的にキャストすることが多く、その分記述を簡略化できます。しかし、ユーザーには、対象テーブルと同じスキーマを使用した [`INSERT INTO`](/sql-reference/statements/insert-into) 文と、その view の `SELECT` 文を組み合わせて常に view をテストすることを推奨します。これにより、型が正しく処理されているか確認できます。特に次のケースに注意してください。
 
@@ -453,7 +453,7 @@ FROM otel_logs
 ClickHouse のオブザーバビリティデータに対しては、[Nullable](/sql-reference/data-types/nullable) の使用を避けてください。ログおよびトレースでは、空と null を区別する必要があるケースは稀です。この機能は追加のストレージオーバーヘッドを発生させ、クエリ性能に悪影響を与えます。詳細は[こちら](/data-modeling/schema-design#optimizing-types)を参照してください。
 :::
 
-## プライマリ（並び替え）キーの選択 {#choosing-a-primary-ordering-key}
+## プライマリ（並び替え）キーの選択 \{#choosing-a-primary-ordering-key\}
 
 必要なカラムを抽出できたら、並び替えキー／プライマリキーの最適化を開始できます。
 
@@ -472,7 +472,7 @@ ClickHouse のオブザーバビリティデータに対しては、[Nullable](/
 ログの構造化が完了してから並び替えキーを決定することを推奨します。attribute map 内のキーや JSON 抽出式を並び替えキーとして使用しないでください。並び替えキーとして使用するカラムは、必ずテーブルのルートレベルのカラムとして定義されていることを確認してください。
 :::
 
-## マップの使用 {#using-maps}
+## マップの使用 \{#using-maps\}
 
 前の例では、`Map(String, String)` カラム内の値にアクセスするために、`map['key']` のようなマップ構文を使用する方法を示しました。ネストされたキーにアクセスするためにマップ構文を使用できるだけでなく、これらのカラムをフィルタリングまたは選択するために、ClickHouse に用意されている専用の [map 関数](/sql-reference/functions/tuple-map-functions#mapKeys)も利用できます。
 
@@ -496,7 +496,7 @@ Map カラム名にドットを使うことは推奨しておらず、将来的�
 :::
 
 
-## エイリアスの使用 {#using-aliases}
+## エイリアスの使用 \{#using-aliases\}
 
 map 型カラムへのクエリは、通常のカラムへのクエリよりも遅くなります。詳しくは [&quot;Accelerating queries&quot;](#accelerating-queries) を参照してください。加えて、構文もより複雑になり、記述が煩雑になることがあります。この後者の問題に対処するため、ALIAS カラムの使用を推奨します。
 
@@ -574,11 +574,11 @@ LIMIT 5
 :::
 
 
-## 型の最適化 {#optimizing-types}
+## 型の最適化 \{#optimizing-types\}
 
 型を最適化するための [一般的な ClickHouse のベストプラクティス](/data-modeling/schema-design#optimizing-types) は、この ClickHouse のユースケースにも適用されます。
 
-## コーデックの使用 {#using-codecs}
+## コーデックの使用 \{#using-codecs\}
 
 型の最適化に加えて、ClickHouse Observability スキーマで圧縮を最適化しようとする際には、[コーデックに関する一般的なベストプラクティス](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec)に従うことができます。
 
@@ -586,7 +586,7 @@ LIMIT 5
 
 さらに、タイムスタンプは、圧縮の観点ではデルタエンコーディングの恩恵を受ける一方で、このカラムをプライマリキー／並び替えキーとして使用した場合、クエリ性能の低下を招くことが示されています。圧縮効率とクエリ性能のトレードオフを評価することを推奨します。
 
-## Dictionary の使用 {#using-dictionaries}
+## Dictionary の使用 \{#using-dictionaries\}
 
 [Dictionaries](/sql-reference/dictionaries) は ClickHouse の[重要な機能](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)であり、さまざまな内部および外部の[ソース](/sql-reference/dictionaries#dictionary-sources)からのデータを、インメモリの[key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database)形式で表現し、超低レイテンシーのルックアップクエリ向けに最適化します。
 
@@ -599,7 +599,7 @@ LIMIT 5
 Dictionary を使って JOIN を高速化する方法に関心があるユーザーは、[こちら](/dictionary)の詳細を参照してください。
 :::
 
-### 挿入時 vs クエリ時 {#insert-time-vs-query-time}
+### 挿入時 vs クエリ時 \{#insert-time-vs-query-time\}
 
 Dictionary は、クエリ時または挿入時にデータセットをエンリッチメントするために使用できます。これらのアプローチにはそれぞれ長所と短所があります。まとめると次のとおりです。
 
@@ -610,7 +610,7 @@ Dictionary の基本を理解しておくことを推奨します。Dictionary �
 
 簡単なエンリッチメントの例については、Dictionary に関するガイドを[こちら](/dictionary)で参照してください。以下では、オブザーバビリティで一般的なエンリッチメントタスクに焦点を当てます。
 
-### IP Dictionary の使用 {#using-ip-dictionaries}
+### IP Dictionary の使用 \{#using-ip-dictionaries\}
 
 IP アドレスを使ってログやトレースに緯度・経度情報を付与してジオ情報を付加することは、一般的なオブザーバビリティ要件です。これは、構造化 Dictionary である `ip_trie` を使用することで実現できます。
 
@@ -834,7 +834,7 @@ ORDER BY (ServiceName, Timestamp)
 上記の国と座標を利用することで、国ごとのグルーピングやフィルタリングにとどまらない可視化が可能になります。参考として、「[Visualizing geo data](/observability/grafana#visualizing-geo-data)」も参照してください。
 
 
-### 正規表現 Dictionary の利用（ユーザーエージェントのパース） {#using-regex-dictionaries-user-agent-parsing}
+### 正規表現 Dictionary の利用（ユーザーエージェントのパース） \{#using-regex-dictionaries-user-agent-parsing\}
 
 [ユーザーエージェント文字列](https://en.wikipedia.org/wiki/User_agent)のパースは、古典的な正規表現の問題であり、ログやトレースを基盤とするデータセットで一般的に必要とされる処理です。ClickHouse は Regular Expression Tree Dictionary を用いて、ユーザーエージェントを効率的にパースできます。
 
@@ -1025,7 +1025,7 @@ Os:     ('Other','0','0','0')
 :::
 
 
-### さらに詳しく読む {#further-reading}
+### さらに詳しく読む \{#further-reading\}
 
 Dictionary に関するさらなる例や詳細については、次の記事を参照してください。
 
@@ -1033,11 +1033,11 @@ Dictionary に関するさらなる例や詳細については、次の記事を
 - 「Using Dictionaries to Accelerate Queries」(https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
 - [Dictionaries](/sql-reference/dictionaries)
 
-## クエリの高速化 {#accelerating-queries}
+## クエリの高速化 \{#accelerating-queries\}
 
 ClickHouse は、クエリ性能を向上させるためのさまざまな手法をサポートしています。以下の手法は、まず最も一般的なアクセスパターンを最適化し、圧縮率を最大化できるような適切な primary/ordering key を選定した後にのみ検討してください。通常、これが最小限の労力で最大の性能向上をもたらします。
 
-### 集約のために materialized view（インクリメンタル）を使用する {#using-materialized-views-incremental-for-aggregations}
+### 集約のために materialized view（インクリメンタル）を使用する \{#using-materialized-views-incremental-for-aggregations\}
 
 前のセクションでは、データの変換およびフィルタリングに materialized view を使用する方法を確認しました。しかし、materialized view は挿入時に集約をあらかじめ計算して結果を保存するためにも使用できます。この結果は後続の挿入の結果で更新できるため、実質的に挿入時点で集約を事前計算することができます。
 
@@ -1166,7 +1166,7 @@ LIMIT 5
 :::
 
 
-#### さらに複雑な例 {#a-more-complex-example}
+#### さらに複雑な例 \{#a-more-complex-example\}
 
 上記の例では、[SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree) を使って、時間ごとの単純なカウントを集計しています。単純な合計を超える統計量が必要な場合は、別のターゲットテーブルエンジン、つまり [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) を使用する必要があります。
 
@@ -1245,7 +1245,7 @@ ORDER BY Hour DESC
 ここでは `FINAL` ではなく `GROUP BY` を使用している点に注意してください。
 
 
-### materialized view（インクリメンタル）を利用した高速なルックアップ {#using-materialized-views-incremental--for-fast-lookups}
+### materialized view（インクリメンタル）を利用した高速なルックアップ \{#using-materialized-views-incremental--for-fast-lookups\}
 
 ClickHouse のオーダリングキーを選択する際は、フィルター句や集約句で頻繁に使用されるカラムを含めて、アクセスパターンを考慮する必要があります。これはオブザーバビリティのユースケースでは制約となり得ます。ユーザーのアクセスパターンがより多様で、単一のカラム集合には集約しきれないことが多いためです。この点は、デフォルトの OTel スキーマに組み込まれている例で示すとわかりやすくなります。トレース向けのデフォルトスキーマを考えてみましょう。
 
@@ -1351,7 +1351,7 @@ LIMIT 1000
 同様のアクセスパターンにも、この手法をそのまま適用できます。類似の例については、データモデリングの[こちら](/materialized-view/incremental-materialized-view#lookup-table)を参照してください。
 
 
-### プロジェクションの使用 {#using-projections}
+### プロジェクションの使用 \{#using-projections\}
 
 ClickHouseのプロジェクションを使用すると、1つのテーブルに対して複数の`ORDER BY`句を指定できます。
 
@@ -1461,7 +1461,7 @@ Peak memory usage: 27.85 MiB.
 上記の例では、先ほどのクエリで使用したカラムを PROJECTION で指定しています。これにより、PROJECTION の一部としてディスク上に保存されるのは、指定したこれらのカラムのみとなり、Status でソートされた状態になります。代わりにここで `SELECT *` を使用した場合は、すべてのカラムが保存されます。これは、任意のカラムのサブセットを使用する、より多くのクエリが PROJECTION の恩恵を受けられる一方で、追加のストレージが必要になることを意味します。ディスク容量と圧縮率の測定方法については、[「テーブルサイズと圧縮の測定」](#measuring-table-size--compression) を参照してください。
 
 
-### セカンダリ／データスキップ索引 {#secondarydata-skipping-indices}
+### セカンダリ／データスキップ索引 \{#secondarydata-skipping-indices\}
 
 ClickHouse でプライマリキーをどれだけ適切にチューニングしても、一部のクエリではフルテーブルスキャンが避けられなくなります。これは materialized view（および一部のクエリではプロジェクション）を使用することで軽減できますが、これらには追加のメンテナンスが必要であるうえ、ユーザー側もその存在を理解し、意識して利用してもらう必要があります。従来のリレーショナルデータベースでは、これをセカンダリ索引によって解決しますが、ClickHouse のようなカラム指向データベースではこれは効果的ではありません。その代わりに ClickHouse では「スキップ」索引を使用し、一致する値を含まない大きなデータ chunk をスキップできるようにすることで、クエリ性能を大幅に向上させます。
 
@@ -1471,7 +1471,7 @@ ClickHouse でプライマリキーをどれだけ適切にチューニングし
 
 **一般的に、プライマリキーと対象となる非プライマリカラム／式との間に強い相関があり、ユーザーがまれな値、すなわち多くのグラニュールには出現しない値を検索している場合に有効です。**
 
-### テキスト検索用のBloomフィルタ {#bloom-filters-for-text-search}
+### テキスト検索用のBloomフィルタ \{#bloom-filters-for-text-search\}
 
 オブザーバビリティクエリにおいて、テキスト検索を実行する必要がある場合、セカンダリ索引が有用です。 具体的には、ngramおよびトークンベースのブルームフィルタ索引である[`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types)と[`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types)を使用することで、`LIKE`、`IN`、hasToken演算子を用いたStringカラムに対する検索を高速化できます。 重要な点として、トークンベース索引は英数字以外の文字を区切り文字として使用してトークンを生成します。 これは、クエリ実行時にはトークン(または単語全体)のみがマッチング対象となることを意味します。 より細かい粒度でのマッチングが必要な場合は、[N-gramブルームフィルタ](/optimize/skipping-indexes#bloom-filter-types)を使用できます。 これは文字列を指定されたサイズのngramに分割することで、単語内の部分マッチングを可能にします。
 
@@ -1655,13 +1655,13 @@ Bloom フィルターには大幅なチューニングが必要になる場合�
 セカンダリ スキップ索引の詳細については [こちら](/optimize/skipping-indexes#skip-index-functions) を参照してください。
 
 
-### マップからの抽出 {#extracting-from-maps}
+### マップからの抽出 \{#extracting-from-maps\}
 
 `Map` 型は OTel のスキーマで広く使用されています。この型では、値とキーが同じ型である必要があり、Kubernetes のラベルのようなメタデータには十分です。`Map` 型のサブキーに対してクエリを実行する場合、親のカラム全体が読み込まれる点に注意してください。マップに多くのキーがあると、キーが個別のカラムとして存在する場合と比べてディスクから読み取るデータ量が増えるため、クエリの実行コストが大きくなる可能性があります。
 
 特定のキーに対して頻繁にクエリを実行する場合は、そのキーをルート階層に専用のカラムとして切り出すことを検討してください。これは通常、よくあるアクセスパターンやデプロイ後の利用状況に応じて行われるタスクであり、本番稼働前に予測するのは難しい場合があります。デプロイ後にスキーマをどのように変更するかについては、["Managing schema changes"](/observability/managing-data#managing-schema-changes) を参照してください。
 
-## テーブルサイズと圧縮の測定 {#measuring-table-size--compression}
+## テーブルサイズと圧縮の測定 \{#measuring-table-size--compression\}
 
 ClickHouse がオブザーバビリティに利用される主な理由の 1 つは圧縮です。
 

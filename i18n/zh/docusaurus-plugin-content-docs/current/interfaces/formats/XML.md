@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 `XML` 格式仅适用于输出，不适用于解析。 
 
@@ -24,7 +24,7 @@ doc_type: 'reference'
 
 数组会输出为 `<array><elem>Hello</elem><elem>World</elem>...</array>`，元组会输出为 `<tuple><elem>Hello</elem><elem>World</elem>...</tuple>`。
 
-## 使用示例 {#example-usage}
+## 使用示例 \{#example-usage\}
 
 示例：
 
@@ -90,6 +90,6 @@ doc_type: 'reference'
 </result>
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}
 
-## XML {#xml}
+## XML \{#xml\}

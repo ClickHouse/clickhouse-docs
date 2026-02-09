@@ -15,15 +15,15 @@ import ml_ai_08 from '@site/static/images/cloud/onboard/discover/use_cases/ml_ai
 import ml_ai_09 from '@site/static/images/cloud/onboard/discover/use_cases/ml_ai_09.png';
 
 
-## 面向 Agent 的分析概念 {#agent-facing-analytics}
+## 面向 Agent 的分析概念 \{#agent-facing-analytics\}
 
-### 什么是 “agents”？ {#agents}
+### 什么是 “agents”？ \{#agents\}
 
 可以把 AI agent 理解为已经超越简单任务执行（或函数调用）的数字助手：它们能够理解上下文、做出决策，并为特定目标采取有意义的行动。它们在一个“感知–思考–行动”（sense-think-act）循环中运行（参见 ReAct agents），处理各种输入（文本、媒体、数据），分析情境，然后基于这些信息执行有用的操作。更重要的是，根据应用领域的不同，它们在理论上可以以不同的自主程度运行，既可能需要人工监督，也可能无需人工监督。
 
 真正改变游戏规则的是大型语言模型（LLM）的出现。尽管我们早就有 AI agent 这一概念，但像 GPT 系列这样的 LLM 极大提升了它们“理解”和沟通的能力。好比它们突然变得更加“懂人话”——也就是能够理解请求，并基于模型训练中学到的知识给出相关的上下文信息。
 
-### AI agents 的超能力：“工具” {#tools}
+### AI agents 的超能力：“工具” \{#tools\}
 
 这些 agents 真正闪光的地方在于它们可以使用“工具”。工具通过赋予 AI agents 执行任务的能力来增强它们。它们不再只是对话界面，而是可以真正完成工作，无论是进行数字运算、搜索信息，还是管理客户沟通。可以把它想象成：从一个只能描述如何解决问题的人，变成一个真正能亲自解决问题的人。
 
@@ -33,7 +33,7 @@ import ml_ai_09 from '@site/static/images/cloud/onboard/discover/use_cases/ml_ai
 
 工具还可以用来简化检索增强生成（Retrieval-Augmented Generation，RAG）流水线的实现。RAG 让模型在生成回答之前拉取相关信息，而不是只依赖 AI 模型在训练期间学到的内容。比如：使用 AI 助手来帮助客户支持（例如 Salesforce AgentForce、ServiceNow AI Agents）。如果没有 RAG，它只会使用自身的一般训练来回答问题。但有了 RAG，当客户询问最新的产品功能时，系统会在生成回复前检索最新文档、发布说明以及历史支持工单。这样一来，答案就基于 AI 模型当前可获取的最新信息。
 
-### 推理模型 {#reasoning-models}
+### 推理模型 \{#reasoning-models\}
 
 AI 领域的另一项发展——也可能是最有趣的发展之一——是推理模型的出现。像 OpenAI o1、Anthropic Claude 或 DeepSeek-R1 这样的系统，通过在响应提示之前引入一个“思考”步骤，采用了更为系统的方法。推理模型不会立刻生成答案，而是使用诸如 Chain-of-Thought（CoT，思维链）之类的提示技术，从多个角度分析问题，将其拆解为步骤，并在需要时利用可用工具收集上下文信息。
 
@@ -43,7 +43,7 @@ AI 领域的另一项发展——也可能是最有趣的发展之一——是�
 
 
 
-## 面向 AI 智能体的实时分析 {#real-time-analytics-for-ai-agents}
+## 面向 AI 智能体的实时分析 \{#real-time-analytics-for-ai-agents\}
 
 以一个代理型 AI 助手为例：它可以访问一个包含公司 CRM 数据的实时分析数据库。当用户询问最新（精确到分钟）的销售趋势时，AI 助手会查询所连接的数据源，并以迭代方式分析数据，以识别有意义的模式和趋势，例如环比增长、季节性波动或新兴产品品类。最后，它会生成自然语言响应，解释关键发现，并通常配以可视化结果。当主要交互界面像本例一样是聊天式时，性能尤为关键，因为这些迭代式探索会触发一系列查询，需要扫描大量数据以提取相关洞察。
 
@@ -65,7 +65,7 @@ AI 领域的另一项发展——也可能是最有趣的发展之一——是�
 
 
 
-## 作为新兴用户角色的 AI 代理 {#ai-agents-as-an-emerging-user-persona}
+## 作为新兴用户角色的 AI 代理 \{#ai-agents-as-an-emerging-user-persona\}
 
 一种理解利用实时分析数据库的 AI 代理的有用方式，是把它们视为一类新的用户，或者用产品经理的说法：一种用户画像。
 
@@ -81,6 +81,6 @@ ClickHouse 正在通过一系列功能快速回答这些问题，旨在提供一
 
 
 
-## ClickHouse.ai {#clickhouse-ai}
+## ClickHouse.ai \{#clickhouse-ai\}
 
 有关即将上线 ClickHouse Cloud 的功能的更多信息，请参阅 [ClickHouse.ai](https://clickhouse.com/clickhouse-ai/)。

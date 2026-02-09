@@ -6,7 +6,7 @@ title: 'system.merge_tree_settings'
 doc_type: 'リファレンス'
 ---
 
-# system.merge&#95;tree&#95;settings {#systemmerge&#95;tree&#95;settings}
+# system.merge&#95;tree&#95;settings \{#systemmerge&#95;tree&#95;settings\}
 
 `MergeTree` テーブルの設定に関する情報を含みます。
 

@@ -7,7 +7,7 @@ doc_type: 'reference'
 
 用于数据压缩和解压缩的简单程序。
 
-### 示例 {#examples}
+### 示例 \{#examples\}
 
 使用 LZ4 压缩数据：
 

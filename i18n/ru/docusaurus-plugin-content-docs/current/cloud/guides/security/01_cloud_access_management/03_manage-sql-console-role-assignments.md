@@ -16,13 +16,13 @@ import step_5 from '@site/static/images/cloud/guides/sql_console/service_level_a
 import step_6 from '@site/static/images/cloud/guides/sql_console/service_level_access/6_service_settings.png'
 import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_access/7_service_settings.png'
 
-# Настройка назначений ролей для SQL-консоли {#configuring-sql-console-role-assignments}
+# Настройка назначений ролей для SQL-консоли \{#configuring-sql-console-role-assignments\}
 
 > В этом руководстве описано, как настроить назначения ролей для SQL-консоли, которые определяют глобальные права доступа к консоли и функции, доступные пользователю в консоли Cloud.
 
 <VerticalStepper headerLevel="h3">
 
-### Доступ к настройкам сервиса {#access-service-settings}
+### Доступ к настройкам сервиса \{#access-service-settings\}
 
 На странице сервисов нажмите на меню в правом верхнем углу карточки того сервиса, для которого вы хотите изменить настройки доступа к SQL-консоли.
 
@@ -32,13 +32,13 @@ import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_a
 
 <Image img={step_2} size="lg"/>
 
-### Настройка доступа к SQL-консоли {#adjust-sql-console-access}
+### Настройка доступа к SQL-консоли \{#adjust-sql-console-access\}
 
 В разделе `Security` найдите область `SQL console access`:
 
 <Image img={step_3} size="md"/>
 
-### Обновление настроек для Service Admin {#update-settings-for-service-admin}
+### Обновление настроек для Service Admin \{#update-settings-for-service-admin\}
 
 Выберите раскрывающееся меню для `Service Admin`, чтобы изменить настройки контроля доступа для ролей `Service Admin`:
 
@@ -52,7 +52,7 @@ import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_a
 | `Read only`   |
 | `Full access` |
 
-### Обновление настроек для Service Read Only {#update-settings-for-service-read-only}
+### Обновление настроек для Service Read Only \{#update-settings-for-service-read-only\}
 
 Выберите раскрывающееся меню для `Service Read Only`, чтобы изменить настройки контроля доступа для ролей `Service Read Only`:
 
@@ -66,7 +66,7 @@ import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_a
 | `Read only`   |
 | `Full access` |
 
-### Просмотр пользователей с доступом {#review-users-with-access}
+### Просмотр пользователей с доступом \{#review-users-with-access\}
 
 Обзор пользователей для сервиса можно открыть, нажав на счётчик пользователей:
 

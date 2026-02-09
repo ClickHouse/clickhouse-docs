@@ -13,7 +13,7 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
 
 Вы можете запустить базовый тест производительности ClickHouse на любом сервере без установки пакетов ClickHouse.
 
-## Автоматизированный запуск {#automated-run}
+## Автоматизированный запуск \{#automated-run\}
 
 Вы можете запустить бенчмарк одним скриптом.
 
