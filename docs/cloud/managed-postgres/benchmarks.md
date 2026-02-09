@@ -27,34 +27,32 @@ All performance tests were conducted using a client VM with the same compute cap
 
 We performed three distinct benchmark tests:
 
-1. **CPU Intensive** (data fits in memory)
+1. **IO Intensive - Read+Write** (large dataset, mixed read/write operations)
 2. **IO Intensive - Read-Only** (large dataset, read-only queries)
-3. **IO Intensive - Read+Write** (large dataset, mixed read/write operations)
+3. **CPU Intensive** (data fits in memory)
 
-### Test 1: CPU Intensive - Data fits in memory {#test1-config}
+### Test 1: IO Intensive - Read+Write (500 GB dataset) {#test1-config}
 
-This test evaluates CPU performance when the working set fits entirely in memory, minimizing disk I/O impact.
+This test evaluates mixed read/write performance with a large 500 GB dataset, stressing both read and write paths of the storage subsystem.
 
 **Instance configuration:**
 
-| Configuration  | Postgres managed by ClickHouse | RDS PostgreSQL         |
-|----------------|--------------------------------|------------------------|
-| **PG Version** | 17                             | 17                     |
-| **vCPUs**      | 2                              | 2                      |
-| **RAM**        | 8 GB                           | 8 GB                   |
-| **Disk Type**  | NVMe                           | Network-attached (gp3) |
+| Configuration  | Postgres managed by ClickHouse | RDS with 16k IOPS              | Aurora IO Optimized             |
+|----------------|--------------------------------|--------------------------------|---------------------------------|
+| **PG Version** | 17                             | 17                             | 17                              |
+| **vCPUs**      | 16                             | 16                             | 16                              |
+| **RAM**        | 64 GB                          | 64 GB                          | 128 GB                          |
+| **Disk Size**  | 1 TB                           | 1 TB                           | 1 TB                            |
+| **Disk Type**  | NVMe (unlimited IOPS)          | Network-attached (16,000 IOPS) | Network-attached (IO Optimized) |
 
 **Test configuration:**
 
 ```bash
-# Initialize database (2 GB dataset)
-pgbench -i -s 136
+# Initialize database (500 GB dataset)
+pgbench -i -s 34247
 
-# Warm-up run to load dataset into memory
-pgbench -c 1 -T 60 -S -M prepared
-
-# Run benchmark (read-only, prepared statements)
-pgbench -c 32 -j 16 -T 300 -S -M prepared -P 30
+# Read+Write benchmark
+pgbench -c 256 -j 16 -T 600 -M prepared -P 30
 ```
 
 ### Test 2: IO Intensive - Read-Only (500 GB dataset) {#test2-config}
@@ -81,59 +79,39 @@ pgbench -i -s 34247
 pgbench -c 256 -j 16 -T 600 -M prepared -P 30 -S
 ```
 
-### Test 3: IO Intensive - Read+Write (500 GB dataset) {#test3-config}
+### Test 3: CPU Intensive - Data fits in memory {#test3-config}
 
-This test evaluates mixed read/write performance with a large 500 GB dataset, stressing both read and write paths of the storage subsystem.
+This test evaluates CPU performance when the working set fits entirely in memory, minimizing disk I/O impact.
 
 **Instance configuration:**
 
-| Configuration  | Postgres managed by ClickHouse | RDS with 16k IOPS              | Aurora IO Optimized             |
-|----------------|--------------------------------|--------------------------------|---------------------------------|
-| **PG Version** | 17                             | 17                             | 17                              |
-| **vCPUs**      | 16                             | 16                             | 16                              |
-| **RAM**        | 64 GB                          | 64 GB                          | 128 GB                          |
-| **Disk Size**  | 1 TB                           | 1 TB                           | 1 TB                            |
-| **Disk Type**  | NVMe (unlimited IOPS)          | Network-attached (16,000 IOPS) | Network-attached (IO Optimized) |
+| Configuration  | Postgres managed by ClickHouse | RDS PostgreSQL         |
+|----------------|--------------------------------|------------------------|
+| **PG Version** | 17                             | 17                     |
+| **vCPUs**      | 2                              | 2                      |
+| **RAM**        | 8 GB                           | 8 GB                   |
+| **Disk Type**  | NVMe                           | Network-attached (gp3) |
 
 **Test configuration:**
 
 ```bash
-# Initialize database (500 GB dataset)
-pgbench -i -s 34247
+# Initialize database (2 GB dataset)
+pgbench -i -s 136
 
-# Read+Write benchmark
-pgbench -c 256 -j 16 -T 600 -M prepared -P 30
+# Warm-up run to load dataset into memory
+pgbench -c 1 -T 60 -S -M prepared
+
+# Run benchmark (read-only, prepared statements)
+pgbench -c 32 -j 16 -T 300 -S -M prepared -P 30
 ```
 
 ## Benchmark results {#results}
 
-### Test 1: CPU Intensive (data fits in memory) {#test1-results}
+### Test 1: IO Intensive - Read+Write (500 GB dataset) {#test1-results}
 
-When the working set fits entirely in RAM, this test primarily stresses CPU performance with minimal disk I/O.
+This test evaluates mixed read/write performance with a large 500 GB dataset, stressing both read and write paths of the storage subsystem.
 
-<Image img={computeIntensive} alt="CPU Intensive benchmark results" size="lg" border/>
-
-**Performance improvement:**
-- **12.3% higher TPS** than RDS PostgreSQL
-
-**Analysis**: Even in CPU-bound scenarios where disk I/O is minimal, **Postgres managed by ClickHouse led the pack with 36.5K TPS**. Despite both services hitting 100% CPU utilization, ClickHouse's NVMe storage delivered superior performance with better cache hit rates. The 12% advantage over RDS demonstrates the efficiency of the underlying infrastructure even when workloads are primarily CPU-bound.
-
-### Test 2: IO Intensive - Read-Only (500 GB dataset) {#test2-results}
-
-This test evaluates read performance with a large dataset that exceeds available memory, heavily stressing disk I/O subsystems.
-
-<Image img={ioRead-Only} alt="IO Intensive Read-Only benchmark results" size="lg" border/>
-
-**Performance improvement over RDS (16k IOPS):**
-- **802% higher TPS** (9.0x faster)
-
-**Analysis**: The performance gap widens dramatically for read-intensive workloads that exceed memory capacity. **Postgres managed by ClickHouse delivered 84.8K TPS**, while RDS with 16,000 provisioned IOPS achieved only 9.4K TPS despite having equivalent compute resources. The key difference: ClickHouse's NVMe storage scales with higher concurrency, while network-attached storage remains constrained by provisioned IOPS limits. Even with provisioned IOPS, RDS was still 9x slower than ClickHouse, demonstrating the critical importance of storage architecture for IO-intensive workloads.
-
-### Test 3: IO Intensive - Read+Write (500 GB dataset) {#test3-results}
-
-This test evaluates mixed read/write performance with a large dataset, stressing both read and write paths of the storage subsystem.
-
-<Image img={ioReadWrite} alt="IO Intensive Read+Write benchmark results" size="lg" border/>
+<Image img={ioReadWrite} alt="IO Intensive Read+Write benchmark results" size="md" border/>
 
 **Performance improvement over RDS (16k IOPS):**
 - **326% higher TPS** (4.3x faster)
@@ -143,15 +121,37 @@ This test evaluates mixed read/write performance with a large dataset, stressing
 
 **Analysis**: Mixed read/write workloads showcase the most dramatic performance advantages of NVMe storage. **Postgres managed by ClickHouse achieved 19.8K TPS with higher concurrency**, demonstrating how NVMe storage scales effectively under load. This is **4.3-4.5x faster than RDS and Aurora**. Network-attached storage solutions struggled with write-heavy operations, with RDS and Aurora maxing out at 4.4K-4.6K TPS despite provisioned capacity and even with Aurora's IO Optimized configuration.
 
+### Test 2: IO Intensive - Read-Only (500 GB dataset) {#test2-results}
+
+This test evaluates read performance with a large dataset that exceeds available memory, heavily stressing disk I/O subsystems.
+
+<Image img={ioRead-Only} alt="IO Intensive Read-Only benchmark results" size="md" border/>
+
+**Performance improvement over RDS (16k IOPS):**
+- **802% higher TPS** (9.0x faster)
+
+**Analysis**: The performance gap widens dramatically for read-intensive workloads that exceed memory capacity. **Postgres managed by ClickHouse delivered 84.8K TPS**, while RDS with 16,000 provisioned IOPS achieved only 9.4K TPS despite having equivalent compute resources. The key difference: ClickHouse's NVMe storage scales with higher concurrency, while network-attached storage remains constrained by provisioned IOPS limits. Even with provisioned IOPS, RDS was still 9x slower than ClickHouse, demonstrating the critical importance of storage architecture for IO-intensive workloads.
+
+### Test 3: CPU Intensive (data fits in memory) {#test3-results}
+
+When the working set fits entirely in RAM, this test primarily stresses CPU performance with minimal disk I/O.
+
+<Image img={computeIntensive} alt="CPU Intensive benchmark results" size="md" border/>
+
+**Performance improvement:**
+- **12.3% higher TPS** than RDS PostgreSQL
+
+**Analysis**: Even in CPU-bound scenarios where disk I/O is minimal, **Postgres managed by ClickHouse led the pack with 36.5K TPS**. Despite both services hitting 100% CPU utilization, ClickHouse's NVMe storage delivered superior performance with better cache hit rates. The 12% advantage over RDS demonstrates the efficiency of the underlying infrastructure even when workloads are primarily CPU-bound.
+
 ## Performance summary {#summary}
 
 ### Key findings {#key-findings}
 
 Across all three benchmark scenarios, Postgres managed by ClickHouse consistently delivered superior performance:
 
-1. **CPU-bound workloads**: 12% higher TPS than RDS
+1. **IO-intensive read+write workloads**: 4.3-4.5x higher TPS compared to RDS (16k IOPS) and Aurora IO Optimized
 2. **IO-intensive read workloads**: 9x higher TPS compared to RDS with 16k IOPS
-3. **IO-intensive read+write workloads**: 4.3-4.5x higher TPS compared to RDS (16k IOPS) and Aurora IO Optimized
+3. **CPU-bound workloads**: 12% higher TPS than RDS
 
 ### When Postgres by ClickHouse excels {#when-it-excels}
 
