@@ -44,7 +44,7 @@ For same-region deployments, use SAS tokens instead.
 
 <VerticalStepper headerLevel="h3">
 
-### Find Your ClickHouse Cloud Egress IPs {#find-egress-ips}
+### Find your ClickHouse Cloud egress IPs {#find-egress-ips}
 
 To configure IP-based firewall rules, you need to allowlist the egress IP addresses for your ClickHouse Cloud region.
 
