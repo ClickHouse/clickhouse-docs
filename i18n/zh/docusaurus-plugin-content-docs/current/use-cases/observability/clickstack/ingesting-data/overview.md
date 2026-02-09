@@ -11,13 +11,26 @@ keywords: ['clickstack', '可观测性', '日志', '监控', '平台']
 ---
 
 import Image from '@theme/IdealImage';
-import architecture_with_flow from '@site/static/images/use-cases/observability/simple-architecture-with-flow.png';
+import oss_architecture_with_flow from '@site/static/images/use-cases/observability/clickstack-oss-architecture-with-flow.png';
+import managed_architecture_with_flow from '@site/static/images/use-cases/observability/clickstack-managed-architecture-with-flow.png';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-所有数据都会通过一个 **OpenTelemetry (OTel) collector** 摄取到 ClickStack 中，该 collector 是日志、指标、跟踪和会话数据的主要入口。
+所有数据都会通过一个 **OpenTelemetry (OTel) collector** 摄取到 ClickStack 开源版或托管版 ClickStack 中。该 collector 是日志、指标、跟踪和会话数据的主要入口。
 
-<Image img={architecture_with_flow} alt="Simple architecture with flow" size="md" />
+这两种架构的关键区别在于组件的托管位置。在这两种情况下，你都会运行一个 OpenTelemetry Collector 来接收来自应用的遥测数据。使用 ClickStack 开源版时，你需要自行管理和托管 ClickHouse 以及 ClickStack UI（HyperDX）。使用托管版 ClickStack 时，ClickHouse 和 HyperDX UI 会托管并运行在 ClickHouse Cloud 中，并为你集成了认证与运维管理能力。
 
-该 collector 暴露两个 OTLP 端点：
+<Tabs groupId="architecture">
+  <TabItem value="managed-clickstack" label="托管版 ClickStack" default>
+    <Image img={managed_architecture_with_flow} alt="带数据流的托管架构图" size="md" />
+  </TabItem>
+
+  <TabItem value="oss-clickstack" label="开源版 ClickStack">
+    <Image img={oss_architecture_with_flow} alt="带数据流的简单架构图" size="md" />
+  </TabItem>
+</Tabs>
+
+在这两种部署模型中，collector 都会暴露两个 OTLP 端点：
 
 * **HTTP** - 端口 `4318`
 * **gRPC** - 端口 `4317`

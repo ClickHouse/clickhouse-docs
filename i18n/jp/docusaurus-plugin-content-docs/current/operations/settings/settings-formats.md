@@ -154,11 +154,15 @@ RowBinary 形式における Array の許容される最大サイズです。破
 
 <SettingsInfoBlock type="UInt64" default_value="100000" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "100000"},{"label": "JSON 型バイナリのデシリアライズ時のオブジェクトの最大サイズを制限する新しい設定"}]}]}/>
+
 JSON 型 RowBinary フォーマットにおいて、1 つの Object 内で許可されるパス数の上限です。破損したデータによって大量のメモリが割り当てられることを防ぎます。0 を指定すると上限はありません。
 
 ## format_binary_max_string_size \{#format_binary_max_string_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "22.12"},{"label": "1073741824"},{"label": "大量のメモリ割り当てを防ぐ"}]}]}/>
 
 RowBinary フォーマットにおける String の最大許容サイズ。破損したデータによって大量のメモリが割り当てられてしまうのを防ぎます。0 を指定すると、制限がないことを意味します。
 
@@ -171,6 +175,8 @@ ClickHouse の Enum と CapnProto の Enum を対応付ける方法
 ## format_capn_proto_max_message_size \{#format_capn_proto_max_message_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1073741824"},{"label": "大量のメモリ割り当てを防止"}]}]}/>
 
 1つの CapnProto メッセージの最大サイズ（バイト単位）。誤った形式または破損したデータによる過剰なメモリ割り当てを防ぎます。デフォルトは 1 GiB です。
 
@@ -189,6 +195,8 @@ true に設定されている場合は、ダブルクォーテーションで囲
 ## format_csv_allow_single_quotes \{#format_csv_allow_single_quotes\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "22.7"},{"label": "0"},{"label": "ほとんどのツールは CSV 内のシングルクォートを特別扱いしないため、本設定もデフォルトでは特別扱いしません"}]}]}/>
 
 true に設定されている場合、文字列をシングルクォートで囲むことを許可します。
 
@@ -274,6 +282,8 @@ format_schema が設定されていない場合は、自動生成された Proto
 
 <SettingsInfoBlock type="EscapingRule" default_value="Raw" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "20.10"},{"label": "Raw"},{"label": "Regexp フォーマットに対するデフォルトのエスケープ規則として Raw を使用し、動作をユーザーの期待により近づけます"}]}]}/>
+
 フィールドのエスケープ規則（Regexp フォーマット用）
 
 ## format_regexp_skip_unmatched \{#format_regexp_skip_unmatched\}
@@ -288,6 +298,8 @@ format_schema が設定されていない場合は、自動生成された Proto
 
 ## format_schema_message_name \{#format_schema_message_name\}
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": ""},{"label": "新しい設定"}]}]}/>
+
 `format_schema` で定義されたスキーマ内で、対象とするメッセージ名を定義します。
 レガシーな format_schema 形式（`file_name:message_name`）との互換性を維持するため、動作は次のとおりです。
 
@@ -297,6 +309,8 @@ format_schema が設定されていない場合は、自動生成された Proto
 ## format_schema_source \{#format_schema_source\}
 
 <SettingsInfoBlock type="String" default_value="file" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "file"},{"label": "新しい設定"}]}]}/>
 
 `format_schema` のソースを定義します。
 指定可能な値は次のとおりです:
@@ -320,6 +334,8 @@ format_schema が設定されていない場合は、自動生成された Proto
 
 ## format_template_resultset_format \{#format_template_resultset_format\}
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": ""},{"label": "Template の結果セット用フォーマット文字列はクエリで設定できます"}]}]}/>
+
 結果セット用のフォーマット文字列（Template フォーマットで使用）
 
 ## format_template_row \{#format_template_row\}
@@ -327,6 +343,8 @@ format_schema が設定されていない場合は、自動生成された Proto
 行のフォーマット文字列が格納されたファイルへのパス（Template フォーマット用）
 
 ## format_template_row_format \{#format_template_row_format\}
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": ""},{"label": "Template 行フォーマット文字列をクエリ内で直接設定できるようになりました"}]}]}/>
 
 行用フォーマット文字列（Template フォーマット用）
 
@@ -384,6 +402,8 @@ ORC/Parquet/Arrow 形式の入力フォーマットで読み取り時にシー�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.12"},{"label": "1"},{"label": "デフォルトで Arrow ファイル内の欠落しているカラムを許容"}]}]}/>
+
 Arrow 入力フォーマットの読み取り時に、欠落しているカラムを許容する
 
 ## input_format_arrow_case_insensitive_column_matching \{#input_format_arrow_case_insensitive_column_matching\}
@@ -414,17 +434,23 @@ Avro/AvroConfluent フォーマットの場合: NULL 値を持つ Nullable で�
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "RowBinaryWithNamesAndTypes 入力フォーマットで型名をバイナリ形式で読み取れるようにするための新しい設定を追加"}]}]}/>
+
 RowBinaryWithNamesAndTypes 入力フォーマットで、型名ではなくデータ型をバイナリ形式で読み取ります
 
 ## input_format_binary_max_type_complexity \{#input_format_binary_max_type_complexity\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1000"},{"label": "バイナリ形式の型をデコードする際の型ノードの最大数を制御する新しい設定を追加しました。悪意のある入力から保護します。"}]}]}/>
+
 バイナリ形式の型をデコードする際の型ノードの最大数（深さではなく総数）。`Map(String, UInt32)` は 3 ノードとなります。悪意のある入力から保護するための設定です。0 の場合は無制限です。
 
 ## input_format_binary_read_json_as_string \{#input_format_binary_read_json_as_string\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "0"},{"label": "RowBinary 入力フォーマットにおいて JSON 型の値を JSON 文字列として読み取るための新しい設定を追加"}]}]}/>
 
 RowBinary 入力フォーマットで、[JSON](../../sql-reference/data-types/newjson.md) データ型の値を JSON の [String](../../sql-reference/data-types/string.md) 型の値として読み取ります。
 
@@ -468,11 +494,15 @@ CSV から `Array` を読み込む際に、その要素が入れ子の CSV 形�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "1"},{"label": "CSV 形式で Tuple を解釈するための新しい方法が追加されました。"}]}, {"id": "row-2","items": [{"label": "24.3"},{"label": "1"},{"label": "CSV 形式で Tuple を解釈するための新しい方法が追加されました。"}]}]}/>
+
 true に設定すると、CSV 形式で書き込まれた個々のカラムを 1 つの Tuple カラムにデシリアライズできます。
 
 ## input_format_csv_detect_header \{#input_format_csv_detect_header\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.1"},{"label": "1"},{"label": "デフォルトで CSV 形式のヘッダー行を検出"}]}]}/>
 
 CSV 形式の入力から、カラム名および型を含むヘッダー行を自動検出します
 
@@ -519,6 +549,8 @@ CSV データに引用符付きの UInt64 数値が含まれている場合に�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "1"},{"label": "CSV 形式におけるタプルの解釈方法が新たに追加されました。"}]}, {"id": "row-2","items": [{"label": "24.3"},{"label": "1"},{"label": "CSV 形式におけるタプルの解釈方法が新たに追加されました。"}]}]}/>
+
 入力データ内の引用符で囲まれたタプルを、String 型の値として解釈します。
 
 ## input_format_csv_use_best_effort_in_schema_inference \{#input_format_csv_use_best_effort_in_schema_inference\}
@@ -543,6 +575,8 @@ CustomSeparated 形式の入力で余分なカラム（ファイル側のカラ�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.1"},{"label": "1"},{"label": "CustomSeparated 形式のヘッダー行をデフォルトで検出"}]}]}/>
+
 CustomSeparated 形式で、名前および型を含むヘッダー行を自動検出します
 
 ## input_format_custom_skip_trailing_empty_lines \{#input_format_custom_skip_trailing_empty_lines\}
@@ -554,6 +588,8 @@ CustomSeparated フォーマットで末尾の空行をスキップする
 ## input_format_defaults_for_omitted_fields \{#input_format_defaults_for_omitted_fields\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "19.12"},{"label": "1"},{"label": "一部の入力フォーマットで、省略されたフィールドに対する複雑なデフォルト式の計算を有効化しました。これは期待される動作であるためです"}]}]}/>
 
 `INSERT` クエリを実行する際に、省略された入力カラムの値を、それぞれのカラムのデフォルト値で置き換えます。このオプションは [JSONEachRow](/interfaces/formats/JSONEachRow)（およびその他の JSON フォーマット）、[CSV](/interfaces/formats/CSV)、[TabSeparated](/interfaces/formats/TabSeparated)、[TSKV](/interfaces/formats/TSKV)、[Parquet](/interfaces/formats/Parquet)、[Arrow](/interfaces/formats/Arrow)、[Avro](/interfaces/formats/Avro)、[ORC](/interfaces/formats/ORC)、[Native](/interfaces/formats/Native) フォーマットおよび `WithNames`/`WithNamesAndTypes` サフィックスを持つフォーマットに適用されます。
 
@@ -570,11 +606,15 @@ CustomSeparated フォーマットで末尾の空行をスキップする
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.5"},{"label": "0"},{"label": "必要に応じて省略されたフィールドに対する型のデフォルト値を無効化"}]}]}/>
+
 省略されたフィールドを NULL で強制初期化します
 
 ## input_format_hive_text_allow_variable_number_of_columns \{#input_format_hive_text_allow_variable_number_of_columns\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.4"},{"label": "1"},{"label": "Hive Text 形式の入力で、余分なカラム（ファイル側のカラム数が想定より多い場合）は無視し、不足しているフィールドはデフォルト値として扱います。"}]}]}/>
 
 Hive Text 形式の入力で余分なカラム（ファイル側のカラム数が想定より多い場合）を無視し、Hive Text 形式の入力で不足しているフィールドはデフォルト値として処理します
 
@@ -644,6 +684,8 @@ JSONCompact/JSONCompactEachRow 入力フォーマットで、行ごとのカラ�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.1"},{"label": "1"},{"label": "名前付きタプルの読み取り時に、JSON オブジェクト内の欠落要素をデフォルトで許可"}]}]}/>
+
 名前付きタプルを解析する際に、JSON オブジェクト内で欠落している要素に対してデフォルト値を挿入します。
 この設定は、`input_format_json_named_tuples_as_objects` 設定が有効な場合にのみ機能します。
 
@@ -652,6 +694,8 @@ JSONCompact/JSONCompactEachRow 入力フォーマットで、行ごとのカラ�
 ## input_format_json_empty_as_default \{#input_format_json_empty_as_default\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.9"},{"label": "0"},{"label": "JSON 入力の空フィールドをデフォルト値として扱えるようにする新しい設定を追加しました。"}]}]}/>
 
 有効にすると、JSON 内の空の入力フィールドをデフォルト値に置き換えます。複雑なデフォルト式を使用する場合は、`input_format_defaults_for_omitted_fields` も有効にする必要があります。
 
@@ -664,6 +708,8 @@ JSONCompact/JSONCompactEachRow 入力フォーマットで、行ごとのカラ�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.3"},{"label": "1"},{"label": "JSON オブジェクトを名前付きタプルとしてパースする処理を改善"}]}]}/>
+
 名前付きタプル用の JSON オブジェクト内に含まれる未知のキーを無視します。
 
 デフォルトで有効です。
@@ -672,11 +718,15 @@ JSONCompact/JSONCompactEachRow 入力フォーマットで、行ごとのカラ�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.4"},{"label": "1"},{"label": "不要なフィールドを無視し、それらをパースしません。これを有効にすると、形式が不正であったりフィールドが重複していたりする JSON 文字列に対しても、例外がスローされない場合があります。"}]}]}/>
+
 不要なフィールドを無視し、それらをパースしません。これを有効にすると、形式が不正であったりフィールドが重複していたりする JSON 文字列に対しても、例外がスローされない場合があります。
 
 ## input_format_json_infer_array_of_dynamic_from_array_of_different_types \{#input_format_json_infer_array_of_dynamic_from_array_of_different_types\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "JSON 配列内に異なる型の値が混在する場合に、デフォルトで Array(Dynamic) を推論"}]}]} />
 
 有効にすると、スキーマ推論中に ClickHouse は、異なるデータ型の値を含む JSON 配列に対して Array(Dynamic) 型を使用します。
 
@@ -711,6 +761,8 @@ DESC format(JSONEachRow, '{"a" : [42, "hello", [1, 2, 3]]}');
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.9"},{"label": "1"},{"label": "JSON フォーマットで不完全な型をデフォルトで String として推論できるようにする"}]}]} />
+
 スキーマ推論の際に、データサンプル中で `Null`/`{}`/`[]` のみを含む JSON キーに対して String 型を使用できるようにします。
 JSON フォーマットでは任意の値を String として読み取ることができるため、スキーマ推論時に `Cannot determine type for column 'column_name' by first 25000 rows of data, most likely this column contains only Nulls or empty Arrays/Maps` のようなエラーを、
 型が不明なキーに対して String 型を使用することで回避できます。
@@ -742,6 +794,8 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" :
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.7"},{"label": "0"},{"label": "新しい設定"}]}]}/>
+
 Map 型カラムをタプルの JSON 配列としてデシリアライズします。
 
 デフォルトでは無効です。
@@ -749,6 +803,8 @@ Map 型カラムをタプルの JSON 配列としてデシリアライズしま�
 ## input_format_json_max_depth \{#input_format_json_max_depth\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.8"},{"label": "1000"},{"label": "以前のバージョンでは無制限でしたが、安全性に問題がありました。"}]}]}/>
 
 JSON 内のフィールドの最大深度です。これは厳密な上限ではなく、必ずしも厳密に適用されるとは限りません。
 
@@ -763,6 +819,8 @@ JSON 内のフィールドの最大深度です。これは厳密な上限では
 ## input_format_json_read_arrays_as_strings \{#input_format_json_read_arrays_as_strings\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.9"},{"label": "1"},{"label": "デフォルトで JSON フォーマットで配列を文字列として読み取れるようにする"}]}]} />
 
 JSON 入力フォーマットで、JSON 配列を文字列として解釈できるようにします。
 
@@ -796,6 +854,8 @@ JSON 入力フォーマットでブール値を数値として解析すること
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "1"},{"label": "JSON フォーマットで、ブール値をデフォルトで文字列として読み取れるようにする"}]}]}/>
+
 JSON 入力フォーマットで、ブール値を文字列として解析することを許可します。
 
 デフォルトで有効です。
@@ -804,6 +864,8 @@ JSON 入力フォーマットで、ブール値を文字列として解析する
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.9"},{"label": "1"},{"label": "JSON フォーマットで数値を文字列として読み取ることをデフォルトで許可"}]}]}/>
+
 JSON 形式の入力で、数値を文字列として読み取ることを許可します。
 
 デフォルトで有効です。
@@ -811,6 +873,8 @@ JSON 形式の入力で、数値を文字列として読み取ることを許可
 ## input_format_json_read_objects_as_strings \{#input_format_json_read_objects_as_strings\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.1"},{"label": "1"},{"label": "オブジェクト型が実験的な間は、入れ子の JSON オブジェクトを文字列として読み取ることを有効化"}]}]} />
 
 JSON 入力フォーマットにおいて、JSON オブジェクトを文字列としてパースすることを許可します。
 
@@ -838,6 +902,8 @@ SELECT * FROM test;
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.4"},{"label": "1"},{"label": "不正なエスケープシーケンスを含む JSON 文字列を保存できるようにしました"}]}]}/>
+
 JSON 入力フォーマットで、不正なエスケープシーケンスを含む JSON 文字列があった場合に、例外をスローします。無効にすると、不正なエスケープシーケンスはデータ内にそのまま残ります。
 
 デフォルトで有効です。
@@ -845,6 +911,8 @@ JSON 入力フォーマットで、不正なエスケープシーケンスを含
 ## input_format_json_try_infer_named_tuples_from_objects \{#input_format_json_try_infer_named_tuples_from_objects\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.9"},{"label": "1"},{"label": "デフォルトで JSON オブジェクトから名前付き Tuple を推論しようとする"}]}]} />
 
 有効にすると、スキーマ推論の際に ClickHouse は JSON オブジェクトから名前付き Tuple を推論しようとします。
 生成される名前付き Tuple には、サンプルデータ内の対応するすべての JSON オブジェクトに含まれるすべての要素が含まれます。
@@ -871,6 +939,8 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.9"},{"label": "0"},{"label": "発生しうるパースエラーを防ぐため、デフォルトでは JSON フォーマットで文字列から数値を推論しないようにしました"}]}]}/>
+
 有効にすると、スキーマ推論中に ClickHouse は文字列フィールドの値から数値を推論しようとします。
 JSON データに引用符付きの UInt64 数値が含まれている場合に有用です。
 
@@ -879,6 +949,8 @@ JSON データに引用符付きの UInt64 数値が含まれている場合に�
 ## input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects \{#input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "0"},{"label": "JSON オブジェクトから名前付きタプルを推論する際に、あいまいなパスに対して String 型を使用できるようにします"}]}]}/>
 
 名前付きタプルの推論中に、JSON オブジェクト内のパスがあいまいな場合は、例外を送出する代わりに String 型として扱います
 
@@ -894,6 +966,8 @@ JSON / JSONCompact / JSONColumnsWithMetadata 入力フォーマットに対し�
 ## input_format_max_block_size_bytes \{#input_format_max_block_size_bytes\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "0"},{"label": "入力フォーマットで作成されるブロックのバイト単位のサイズを制限する新しい設定"}]}]}/>
 
 入力フォーマットでデータを解析する際に生成されるブロックのサイズを、バイト単位で制限します。ClickHouse 側でブロックを生成する行ベースの入力フォーマットで使用されます。
 0 はバイト数に制限がないことを意味します。
@@ -930,17 +1004,23 @@ MySQL ダンプ内のテーブルのカラムと ClickHouse テーブルのカ�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.3"},{"label": "1"},{"label": "Native 入力フォーマットでのデータ型変換を許可"}]}]}/>
+
 Native 入力フォーマットでのデータ型の変換を許可する
 
 ## input_format_native_decode_types_in_binary_format \{#input_format_native_decode_types_in_binary_format\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "Native 出力フォーマットで型名をバイナリ形式で読み取れるようにする新しい設定を追加"}]}]}/>
+
 Native 入力フォーマットで、型名ではなくバイナリ形式としてデータ型を読み取ります
 
 ## input_format_null_as_default \{#input_format_null_as_default\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "21.1"},{"label": "1"},{"label": "入力フォーマットで NULL をデフォルト値として挿入することを既定で許可"}]}]}/>
 
 [NULL](/sql-reference/syntax#literals) フィールドのデータ型が [nullable](/sql-reference/data-types/nullable) ではない場合に、これらのフィールドを [デフォルト値](/sql-reference/statements/create/table#default_values) で初期化するかどうかを制御します。
 カラム型が nullable ではなく、この設定が無効な場合、`NULL` を挿入すると例外が発生します。カラム型が nullable の場合、この設定に関係なく、`NULL` 値はそのまま挿入されます。
@@ -958,6 +1038,8 @@ Native 入力フォーマットで、型名ではなくバイナリ形式とし�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.12"},{"label": "1"},{"label": "デフォルトで ORC ファイル内の欠落カラムを許容する"}]}]}/>
+
 ORC 入力フォーマットの読み取り時に、欠落しているカラムを許容する
 
 ## input_format_orc_case_insensitive_column_matching \{#input_format_orc_case_insensitive_column_matching\}
@@ -970,6 +1052,8 @@ ORC カラムと ClickHouse のカラムを照合する際に、大文字と小�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "1"},{"label": "ORC ファイルを読み取る際に、Dictionary エンコードされた ORC カラムを LowCardinality 型のカラムとして扱います"}]}]}/>
+
 ORC ファイルを読み取る際に、Dictionary エンコードされた ORC カラムを LowCardinality 型のカラムとして扱います。
 
 ## input_format_orc_filter_push_down \{#input_format_orc_filter_push_down\}
@@ -981,6 +1065,8 @@ ORC ファイルを読み取る際に、WHERE / PREWHERE 句、min/max 統計情
 ## input_format_orc_reader_time_zone_name \{#input_format_orc_reader_time_zone_name\}
 
 <SettingsInfoBlock type="String" default_value="GMT" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "GMT"},{"label": "ORC 行リーダーのタイムゾーン名です。デフォルトの ORC 行リーダーのタイムゾーンは GMT です。"}]}]}/>
 
 ORC 行リーダーのタイムゾーン名です。デフォルトの ORC 行リーダーのタイムゾーンは GMT です。
 
@@ -1017,17 +1103,23 @@ ORC 形式のスキーマ推論時にサポートされていない型のカラ�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "1"},{"label": "Parquet ファイルで geo カラムを使用できる新しい設定"}]}]}/>
+
 geo カラムパーサーを使用して、Array(UInt8) 型を Point/Linestring/Polygon/MultiLineString/MultiPolygon 型に変換します
 
 ## input_format_parquet_allow_missing_columns \{#input_format_parquet_allow_missing_columns\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.12"},{"label": "1"},{"label": "デフォルトで Parquet ファイル内の欠落しているカラムを許可する"}]}]}/>
+
 Parquet 入力フォーマットの読み込み時に、欠落しているカラムを許可する
 
 ## input_format_parquet_bloom_filter_push_down \{#input_format_parquet_bloom_filter_push_down\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "1"},{"label": "Parquet ファイルを読み取る際に、WHERE/PREWHERE 式と Parquet のメタデータ内のブルームフィルターに基づいて、行グループ全体をスキップします。"}]}, {"id": "row-2","items": [{"label": "24.10"},{"label": "0"},{"label": "Parquet ファイルを読み取る際に、WHERE/PREWHERE 式と Parquet のメタデータ内のブルームフィルターに基づいて、行グループ全体をスキップします。"}]}]}/>
 
 Parquet ファイルを読み取る際に、WHERE 句と Parquet のメタデータ内のブルームフィルターに基づいて、行グループ全体をスキップします。
 
@@ -1041,11 +1133,15 @@ Parquet のカラムを CH のカラムと照合する際に、大文字小文�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "1"},{"label": "Parquet ファイルを読み込む際、JSON カラムを ClickHouse の JSON カラムとして扱います。"}]}]}/>
+
 Parquet ファイルを読み込む際、JSON カラムを ClickHouse の JSON カラムとして扱います。
 
 ## input_format_parquet_enable_row_group_prefetch \{#input_format_parquet_enable_row_group_prefetch\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "1"},{"label": "parquet のパース時に row group のプリフェッチを有効にします。現在は、単一スレッドでのパース時にのみプリフェッチが可能です。"}]}]}/>
 
 parquet のパース時に row group のプリフェッチを有効にします。現在は、単一スレッドでのパース時にのみプリフェッチが可能です。
 
@@ -1065,11 +1161,15 @@ Parquet input format で、読み飛ばし読み込みではなくシークを�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "1"},{"label": "Parquet の 'local time without timezone' 型に対して、より適切な型である DateTime64(..., 'UTC') を使用します。"}]}]}/>
+
 isAdjustedToUTC=false の Parquet タイムスタンプに対して、スキーマ推論時に使用されるデータ型を決定します。true の場合は DateTime64(..., 'UTC')、false の場合は DateTime64(...) となります。ClickHouse にはローカルのウォールクロック時刻用のデータ型が存在しないため、どちらの挙動も完全に正しいわけではありません。直感に反して、'true' の方がまだ誤りが少ない選択肢と考えられます。というのも、'UTC' タイムスタンプを String としてフォーマットすると、結果として正しいローカル時刻の表現が得られるためです。
 
 ## input_format_parquet_max_block_size \{#input_format_parquet_max_block_size\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="65409" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "65409"},{"label": "Parquet リーダー用のブロックサイズを拡大。"}]}]}/>
 
 Parquet リーダー用の最大ブロックサイズ。
 
@@ -1077,11 +1177,15 @@ Parquet リーダー用の最大ブロックサイズ。
 
 <SettingsInfoBlock type="UInt64" default_value="4294967296" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "4294967296"},{"label": "新しい設定"}]}]}/>
+
 Parquet reader v3 の概略的なメモリ上限です。並列に読み込める row group やカラムの数を制限します。1 回のクエリで複数ファイルを読み込む場合、この制限はそれらのファイル全体でのメモリ使用量の合計に適用されます。
 
 ## input_format_parquet_memory_low_watermark \{#input_format_parquet_memory_low_watermark\}
 
 <SettingsInfoBlock type="UInt64" default_value="2097152" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "2097152"},{"label": "新しい設定"}]}]}/>
 
 メモリ使用量がこのしきい値を下回っている場合に、より積極的にプリフェッチをスケジューリングします。多数の小さなブルームフィルタをネットワーク経由で読み取る必要がある場合などに有用となることがあります。
 
@@ -1089,17 +1193,23 @@ Parquet reader v3 の概略的なメモリ上限です。並列に読み込め�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "新しい設定（input_format_parquet_use_native_reader_v3 が無効な場合は効果なし）"}]}]}/>
+
 カラム索引に格納された最小値および最大値に基づいてページをスキップします。
 
 ## input_format_parquet_prefer_block_bytes \{#input_format_parquet_prefer_block_bytes\}
 
 <SettingsInfoBlock type="UInt64" default_value="16744704" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "16744704"},{"label": "Parquet リーダーが出力するブロックの平均バイト数。"}]}]}/>
+
 Parquet リーダーが出力するブロックの平均バイト数
 
 ## input_format_parquet_preserve_order \{#input_format_parquet_preserve_order\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.5"},{"label": "0"},{"label": "並列性を高めるために、Parquet リーダーが行の順序を変更できるようにします。"}]}]}/>
 
 Parquet ファイルから読み取る際に行の並び順が変わらないようにします。行の順序は一般的に保証されておらず、クエリパイプラインの他のパーツによっても崩される可能性があるため、推奨されません。代わりに `ORDER BY _row_number` を使用してください。
 
@@ -1113,17 +1223,23 @@ Parquet フォーマットのスキーマ推論を行う際に、サポートさ
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "新規設定"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "1"},{"label": "安定している模様"}]}]}/>
+
 Parquet リーダー v3 を使用します。
 
 ## input_format_parquet_use_offset_index \{#input_format_parquet_use_offset_index\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "新しい設定（input_format_parquet_use_native_reader_v3 が無効な場合は効果なし）"}]}]}/>
+
 ページフィルタリングを行わない場合における、parquet ファイルからのページの読み取り方法に関する軽微な調整です。
 
 ## input_format_parquet_verify_checksums \{#input_format_parquet_verify_checksums\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "1"},{"label": "新しい設定。"}]}]}/>
 
 Parquet ファイルを読み込む際に、ページチェックサムを検証します。
 
@@ -1136,6 +1252,8 @@ Parquet ファイルを読み込む際に、ページチェックサムを検証
 ## input_format_protobuf_oneof_presence \{#input_format_protobuf_oneof_presence\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "0"},{"label": "新しい設定"}]}]}/>
 
 専用の列に `enum` 値を設定することで、`protobuf oneof` のどのフィールドが検出されたかを示します。
 
@@ -1152,6 +1270,8 @@ Protobuf フォーマットのスキーマ推論時にサポートされてい�
 ## input_format_skip_unknown_fields \{#input_format_skip_unknown_fields\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "22.6"},{"label": "1"},{"label": "一部の入力フォーマットにおけるカラムサブセットの読み取りを最適化"}]}]}/>
 
 余分なデータの挿入をスキップするかどうかを切り替えます。
 
@@ -1191,11 +1311,15 @@ Protobuf フォーマットのスキーマ推論時にサポートされてい�
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.8"},{"label": "0"},{"label": "データ形式で DateTime64 の代わりに DateTime を推論できるようにします"}]}]}/>
+
 input_format_try_infer_datetimes が有効な場合、DateTime 型ではなく DateTime64 型のみを推論対象とします
 
 ## input_format_try_infer_exponent_floats \{#input_format_try_infer_exponent_floats\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": "0"},{"label": "デフォルトでは指数表記の浮動小数点数を推論しません"}]}]}/>
 
 テキスト形式でスキーマ推論を行う際に（指数表記の数値が常に推論される JSON を除き）、指数表記の浮動小数点数を推論しようとします
 
@@ -1210,6 +1334,8 @@ input_format_try_infer_datetimes が有効な場合、DateTime 型ではなく D
 ## input_format_try_infer_variants \{#input_format_try_infer_variants\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.9"},{"label": "0"},{"label": "カラム/配列要素に複数の型候補が存在する場合に、テキストフォーマットで Variant 型を推論しようとする"}]}]}/>
 
 有効化すると、ClickHouse はテキストフォーマットに対するスキーマ推論において、カラム/配列要素に複数の型候補が存在する場合に、[`Variant`](../../sql-reference/data-types/variant.md) 型を推論しようとします。
 
@@ -1228,11 +1354,15 @@ TSV 入力で、ファイルに含まれるカラム数が想定より多い場�
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.5"},{"label": "0"},{"label": "TSV 形式で CRLF の行末記号の読み取りを有効にします"}]}]}/>
+
 true に設定すると、file 関数は行末に \\n ではなく \\r\\n を用いる TSV 形式として読み取ります。
 
 ## input_format_tsv_detect_header \{#input_format_tsv_detect_header\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.1"},{"label": "1"},{"label": "TSV 形式のヘッダーをデフォルトで検出"}]}]}/>
 
 TSV 形式で、名前と型が記載されたヘッダーを自動検出します
 
@@ -1287,6 +1417,8 @@ Values フォーマットの場合: ストリーミングパーサーでフィ�
 ## input_format_with_names_use_header \{#input_format_with_names_use_header\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "20.5"},{"label": "1"},{"label": "WithNames/WithNamesAndTypes サフィックスを持つフォーマットで、名前付きヘッダーの使用を有効にする"}]}]}/>
 
 データを挿入する際に、カラムの順序を検証するかどうかを有効／無効にします。
 
@@ -1388,11 +1520,15 @@ JSON カラムのパース時に、各カラムで作成できる動的サブカ
 
 <SettingsInfoBlock type="ArrowCompression" default_value="lz4_frame" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.3"},{"label": "lz4_frame"},{"label": "Arrow 出力フォーマットでデフォルトの圧縮方式として lz4 を使用"}]}]}/>
+
 Arrow 出力フォーマット用の圧縮方式。サポートされるコーデック：lz4_frame、zstd、none（非圧縮）
 
 ## output_format_arrow_fixed_string_as_fixed_byte_array \{#output_format_arrow_fixed_string_as_fixed_byte_array\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.2"},{"label": "1"},{"label": "FixedString に対してデフォルトで Arrow の FIXED_SIZE_BINARY 型を使用します"}]}]}/>
 
 FixedString 型のカラムに対して、Binary の代わりに Arrow の FIXED_SIZE_BINARY 型を使用します。
 
@@ -1406,17 +1542,23 @@ LowCardinality 型を Dictionary Arrow 型として出力します
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-String カラムには Binary ではなく Arrow String 型を使用します。
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "ClickHouse は String データ型に任意のバイナリデータ（通常は UTF-8 エンコードされた文字列）を許容します。Parquet/ORC/Arrow の String 型は UTF-8 のみをサポートします。そのため、ClickHouse の String データ型に対して、Arrow のデータ型として String と Binary のどちらを使用するかを選択できます。Binary を使用する方がより正確かつ互換性も高いですが、既定で String を使用すると、ほとんどの場合はユーザーの期待に合致します。"}]}]}/>
+
+String カラムに対して Binary ではなく Arrow の String 型を使用します
 
 ## output_format_arrow_use_64_bit_indexes_for_dictionary \{#output_format_arrow_use_64_bit_indexes_for_dictionary\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "Arrow の Dictionary で 64 ビット整数索引型の使用を許可します"}]}, {"id": "row-2","items": [{"label": "24.1"},{"label": "0"},{"label": "Arrow の Dictionary で 64 ビット整数索引型の使用を許可します"}]}]}/>
 
 Arrow 形式の Dictionary の索引には常に 64 ビット整数を使用します
 
 ## output_format_arrow_use_signed_indexes_for_dictionary \{#output_format_arrow_use_signed_indexes_for_dictionary\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "1"},{"label": "推奨に従い、Arrow の Dictionary では既定で符号付き索引型を使用します"}]}]}/>
 
 Arrow 形式で Dictionary の索引に符号付き整数を使用する
 
@@ -1444,11 +1586,15 @@ Avro 形式の場合: AVRO string として扱う String 型カラムを選択�
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "RowBinaryWithNamesAndTypes 出力フォーマットで型名をバイナリ形式で書き込むための新しい設定を追加"}]}]}/>
+
 RowBinaryWithNamesAndTypes 出力フォーマットで、型名ではなくデータ型をバイナリ形式で出力します
 
 ## output_format_binary_write_json_as_string \{#output_format_binary_write_json_as_string\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "0"},{"label": "RowBinary 出力フォーマットで JSON 型の値を JSON 文字列として書き出すための新しい設定を追加"}]}]}/>
 
 [JSON](../../sql-reference/data-types/newjson.md) データ型の値を、RowBinary 出力フォーマットで JSON の [String](../../sql-reference/data-types/string.md) 値として書き出します。
 
@@ -1462,6 +1608,8 @@ String カラムには Binary ではなく BSON String 型を使用します。
 
 <SettingsInfoBlock type="UInt64" default_value="3" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "3"},{"label": "クエリ出力の圧縮レベルを変更できるようにする"}]}]}/>
+
 クエリ出力が圧縮される場合のデフォルトの圧縮レベルです。`SELECT` クエリに `INTO OUTFILE` が含まれている場合、またはテーブル関数 `file`、`url`、`hdfs`、`s3`、`azureBlobStorage` に書き込む場合に、この設定が適用されます。
 
 使用可能な値: `1` から `22` まで
@@ -1469,6 +1617,8 @@ String カラムには Binary ではなく BSON String 型を使用します。
 ## output_format_compression_zstd_window_log \{#output_format_compression_zstd_window_log\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "zstd 圧縮使用時にクエリ出力の zstd window log を変更可能に"}]}]}/>
 
 出力圧縮方式が `zstd` のときに使用できます。`0` より大きい場合、この SETTING は圧縮ウィンドウサイズ（`2` のべき乗）を明示的に設定し、zstd 圧縮のロングレンジモードを有効にします。これにより、より高い圧縮率を達成できる場合があります。
 
@@ -1484,11 +1634,15 @@ true に設定すると、CSV 形式の行末が \\n ではなく \\r\\n にな�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "1"},{"label": "CSV 形式における Tuple の解釈方法が新たに追加されました。"}]}, {"id": "row-2","items": [{"label": "24.3"},{"label": "1"},{"label": "CSV 形式における Tuple の解釈方法が新たに追加されました。"}]}]}/>
+
 true に設定されている場合、CSV 形式内の Tuple は個別のカラムとしてシリアライズされます（つまり、Tuple 内での入れ子構造は失われます）。
 
 ## output_format_decimal_trailing_zeros \{#output_format_decimal_trailing_zeros\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "21.9"},{"label": "0"},{"label": "より見やすい出力のため、デフォルトでは Decimal 型のテキスト表現で末尾のゼロを出力しません"}]}]}/>
 
 Decimal 値を出力する際に末尾のゼロも出力します。例: 1.23 ではなく 1.230000 と表示します。
 
@@ -1554,6 +1708,8 @@ JSON 出力形式において、文字列出力中のスラッシュ（/）を�
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.7"},{"label": "0"},{"label": "新しい設定"}]}]}/>
+
 Map 型のカラムをタプルの JSON 配列としてシリアライズします。
 
 デフォルトでは無効です。
@@ -1562,6 +1718,8 @@ Map 型のカラムをタプルの JSON 配列としてシリアライズしま�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "22.6"},{"label": "1"},{"label": "デフォルトで JSON フォーマットにおいて、名前付きタプルを JSON オブジェクトとしてシリアライズできるようにしました"}]}]}/>
+
 名前付きタプルカラムを JSON オブジェクトとしてシリアライズします。
 
 デフォルトで有効です。
@@ -1569,6 +1727,8 @@ Map 型のカラムをタプルの JSON 配列としてシリアライズしま�
 ## output_format_json_pretty_print \{#output_format_json_pretty_print\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1"},{"label": "デフォルトで JSON 出力フォーマットの値を Pretty 形式で表示"}]}]} />
 
 この設定は、JSON出力フォーマットを使用する際に、`data` 配列の中で Tuples、Maps、Arrays などの入れ子構造がどのように表示されるかを決定します。
 
@@ -1624,6 +1784,8 @@ Map 型のカラムをタプルの JSON 配列としてシリアライズしま�
 ## output_format_json_quote_64bit_integers \{#output_format_json_quote_64bit_integers\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "デフォルトで JSON 内の 64 ビット整数を引用符で囲まないようにする"}]}]}/>
 
 [整数](../../sql-reference/data-types/int-uint.md)（`UInt64` や `Int128` など）のうち 64 ビット以上のものが [JSON](/interfaces/formats/JSON) 形式で出力される際に、引用符で囲むかどうかを制御します。
 これらの整数はデフォルトで引用符で囲まれます。この挙動は、ほとんどの JavaScript 実装と互換性があります。
@@ -1783,11 +1945,15 @@ MsgPack 形式で UUID をどのように出力するかを指定します。
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "Native 出力フォーマットで型名をバイナリ形式で書き込めるようにする新しい設定を追加しました"}]}]}/>
+
 Native 出力フォーマットで、型名ではなくデータ型をバイナリ形式で出力します
 
 ## output_format_native_use_flattened_dynamic_and_json_serialization \{#output_format_native_use_flattened_dynamic_and_json_serialization\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "0"},{"label": "Native 形式にフラット化された Dynamic/JSON シリアライゼーションを追加"}]}]}/>
 
 [JSON](../../sql-reference/data-types/newjson.md) および [Dynamic](../../sql-reference/data-types/dynamic.md) カラムのデータを、すべての型やパスを個別のサブカラムとして扱うフラットな形式で書き出します。
 
@@ -1795,11 +1961,15 @@ Native 出力フォーマットで、型名ではなくデータ型をバイナ�
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "0"},{"label": "JSON カラムを Native フォーマットで単一の String カラムとして書き込めるようにする新しい設定を追加"}]}]}/>
+
 [JSON](../../sql-reference/data-types/newjson.md) カラムのデータを、デフォルトのネイティブな JSON シリアライゼーションではなく、JSON 文字列を含む [String](../../sql-reference/data-types/string.md) カラムとして書き出します。
 
 ## output_format_orc_compression_block_size \{#output_format_orc_compression_block_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="262144" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "262144"},{"label": "新しい設定"}]}]}/>
 
 ORC 出力形式で使用する圧縮ブロックのサイズ（バイト単位）。
 
@@ -1807,11 +1977,15 @@ ORC 出力形式で使用する圧縮ブロックのサイズ（バイト単位�
 
 <SettingsInfoBlock type="ORCCompression" default_value="zstd" />
 
-ORC 出力形式の圧縮方式。サポートされているコーデック: lz4, snappy, zlib, zstd, none (非圧縮)
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "zstd"},{"label": "Parquet/ORC/Arrow は lz4 や zstd を含む多くの圧縮方式をサポートしています。ClickHouse はそれらすべての圧縮方式をサポートしています。一部のツール (例: 'duckdb') では、より高速な `lz4` 圧縮方式がサポートされていないため、デフォルトでは zstd を使用しています。"}]}, {"id": "row-2","items": [{"label": "23.3"},{"label": "lz4_frame"},{"label": "ORC 出力フォーマットでデフォルトとして lz4 圧縮を使用します"}]}]}/>
+
+ORC 出力フォーマットの圧縮方式。サポートされているコーデック: lz4、snappy、zlib、zstd、none (非圧縮)
 
 ## output_format_orc_dictionary_key_size_threshold \{#output_format_orc_dictionary_key_size_threshold\}
 
 <SettingsInfoBlock type="Double" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.9"},{"label": "0"},{"label": "ORC 出力形式における文字列カラムについて、異なる値（ユニーク値）の数が、NULL でない行の総数に対してこの割合を超える場合は、Dictionary エンコーディングを無効にします。それ以外の場合は、Dictionary エンコーディングを有効にします。"}]}]}/>
 
 ORC 出力形式における文字列カラムについて、異なる値（ユニーク値）の数が、NULL でない行の総数に対してこの割合を超える場合は、Dictionary エンコーディングを無効にします。それ以外の場合は、Dictionary エンコーディングを有効にします。
 
@@ -1825,11 +1999,15 @@ ORC 出力フォーマットにおける行インデックスストライドの�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-String 型カラムには Binary ではなく ORC String 型を使用します
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "ClickHouse では、通常は UTF-8 として使用される String データ型に任意のバイナリデータを格納できます。一方、Parquet/ORC/Arrow の String 型は UTF-8 のみをサポートします。そのため、ClickHouse の String データ型に対して Arrow のどのデータ型 (String または Binary) を使用するかを選択できます。Binary の方がより正確かつ互換性がありますが、デフォルトで String を使用することで、ほとんどの場合ユーザーの期待に合致します。"}]}]}/>
+
+String カラムに対して Binary ではなく ORC の String 型を使用します
 
 ## output_format_orc_writer_time_zone_name \{#output_format_orc_writer_time_zone_name\}
 
 <SettingsInfoBlock type="String" default_value="GMT" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "GMT"},{"label": "ORC writer に使用するタイムゾーン名。ORC writer のデフォルトのタイムゾーンは GMT です。"}]}]}/>
 
 ORC writer に使用するタイムゾーン名。ORC writer のデフォルトのタイムゾーンは GMT です。
 
@@ -1854,6 +2032,8 @@ ORC writer に使用するタイムゾーン名。ORC writer のデフォルト�
 
 <SettingsInfoBlock type="Double" default_value="10.5" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "10.5"},{"label": "新しい設定。"}]}]}/>
+
 Parquet 形式のブルームフィルタで、各ユニーク値あたりに使用するビット数のおおよその値です。想定される偽陽性率は次のとおりです:
 
 *  6   bits - 10%
@@ -1866,6 +2046,8 @@ Parquet 形式のブルームフィルタで、各ユニーク値あたりに使
 
 <SettingsInfoBlock type="UInt64" default_value="134217728" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "134217728"},{"label": "新しい設定。"}]}]}/>
+
 parquet ファイル内のどこに Bloom filter を配置するかを制御します。Bloom filter は概ねこのサイズ程度のグループ単位で書き込まれます。具体的には次のとおりです:
 
 * 0 の場合、各 row group の Bloom filter は、その row group の直後に書き込まれます
@@ -1876,11 +2058,15 @@ parquet ファイル内のどこに Bloom filter を配置するかを制御し�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.5"},{"label": "1"},{"label": "出力 Parquet ファイルスキーマの内部フィールド名を変更"}]}]}/>
+
 parquet ファイルスキーマでは、リスト要素に対して 'item' ではなく 'element' という名前を使用します。これは Arrow ライブラリ実装上の歴史的な経緯によるものです。一般的には互換性が向上しますが、一部の古いバージョンの Arrow とは互換性がない場合があります。
 
 ## output_format_parquet_compression_method \{#output_format_parquet_compression_method\}
 
 <SettingsInfoBlock type="ParquetCompression" default_value="zstd" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "zstd"},{"label": "Parquet/ORC/Arrow は、lz4 や zstd を含む多くの圧縮方式をサポートしています。ClickHouse はそれらすべての圧縮方式をサポートします。一部の性能の劣るツール（たとえば 'duckdb'）は、より高速な `lz4` 圧縮方式をサポートしていないため、デフォルトで zstd を設定しています。"}]}, {"id": "row-2","items": [{"label": "23.3"},{"label": "lz4"},{"label": "Parquet 出力形式で、デフォルトで lz4 圧縮を使用します"}]}]}/>
 
 Parquet 出力形式で使用する圧縮方式。サポートされるコーデック: snappy、lz4、brotli、zstd、gzip、none（非圧縮）
 
@@ -1894,11 +2080,15 @@ Parquet 出力形式で使用する圧縮方式。サポートされるコーデ
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "24.12 で導入された軽微な互換性破壊の変更に対する互換性設定を追加しました。"}]}, {"id": "row-2","items": [{"label": "24.12"},{"label": "0"},{"label": "Date を、プレーンな UInt16 の代わりに Date32 として書き込みます（これらは Date に最も近い 2 つの Parquet 型です）。"}]}]}/>
+
 Date 型の値を、32ビットの Parquet DATE 型（読み込み時は Date32）に変換する代わりに、16ビットのプレーンな数値（読み込み時は UInt16）として書き込みます。
 
 ## output_format_parquet_datetime_as_uint32 \{#output_format_parquet_datetime_as_uint32\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.12"},{"label": "0"},{"label": "DateTime を UInt32 ではなく DateTime64(3) として書き込みます（これら 2 つは DateTime に最も近い Parquet 型です）。"}]}]}/>
 
 DateTime の値を、ミリ秒に変換して（読み出し時は DateTime64(3)）書き込むのではなく、生の Unix タイムスタンプ（読み出し時は UInt32）として書き込みます。
 
@@ -1906,11 +2096,15 @@ DateTime の値を、ミリ秒に変換して（読み出し時は DateTime64(3)
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "デフォルトで Enum を Parquet のバイト配列として書き出すように有効にします"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "enum を Parquet の物理型 BYTE_ARRAY および論理型 ENUM として書き出します"}]}]}/>
+
 enum を Parquet の物理型 BYTE_ARRAY および論理型 ENUM として書き出します。
 
 ## output_format_parquet_fixed_string_as_fixed_byte_array \{#output_format_parquet_fixed_string_as_fixed_byte_array\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.2"},{"label": "1"},{"label": "FixedString に対してデフォルトで Parquet の FIXED_LENGTH_BYTE_ARRAY 型を使用します"}]}]}/>
 
 FixedString 型カラムには、Binary ではなく Parquet の FIXED_LEN_BYTE_ARRAY 型を使用します。
 
@@ -1918,11 +2112,15 @@ FixedString 型カラムには、Binary ではなく Parquet の FIXED_LEN_BYTE_
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.7"},{"label": "1"},{"label": "geoカラムに関する情報をParquetメタデータに書き込み、カラムをWKB形式でエンコードできるようにする新しい設定です。"}]}]}/>
+
 geoカラムに関する情報をParquetメタデータに書き込み、カラムをWKB形式でエンコードできるようにします。
 
 ## output_format_parquet_max_dictionary_size \{#output_format_parquet_max_dictionary_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="1048576" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1048576"},{"label": "新規設定"}]}]}/>
 
 Dictionary のサイズがこのバイト数を超えた場合、Dictionary を使用しないエンコーディング方式に切り替えます。Dictionary エンコーディングを無効にするには、0 を設定します。
 
@@ -1948,11 +2146,15 @@ Dictionary のサイズがこのバイト数を超えた場合、Dictionary を�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "ClickHouse は String データ型に任意のバイナリデータを許可しており、一般的には UTF-8 として扱われます。Parquet/ORC/Arrow の String 型は UTF-8 のみをサポートします。そのため、ClickHouse の String データ型に対して使用する Arrow のデータ型として、String か Binary のどちらを使うかを選択できます。Binary を使用する方がより正確かつ互換性がありますが、デフォルトを String にしておく方が、多くの場合ユーザーの期待に沿います。"}]}]}/>
+
 String 型のカラムには、Binary 型ではなく Parquet の String 型を使用します。
 
 ## output_format_parquet_use_custom_encoder \{#output_format_parquet_use_custom_encoder\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.5"},{"label": "1"},{"label": "カスタム Parquet エンコーダーを有効にします。"}]}]}/>
 
 より高速な Parquet エンコーダー実装を使用します。
 
@@ -1960,11 +2162,15 @@ String 型のカラムには、Binary 型ではなく Parquet の String 型を�
 
 <SettingsInfoBlock type="ParquetVersion" default_value="2.latest" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.3"},{"label": "2.latest"},{"label": "出力フォーマットに最新の Parquet フォーマットバージョンを使用"}]}]}/>
+
 出力フォーマットで使用する Parquet フォーマットのバージョン。サポートされているバージョンは 1.0、2.4、2.6、および 2.latest（デフォルト）です。
 
 ## output_format_parquet_write_bloom_filter \{#output_format_parquet_write_bloom_filter\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "1"},{"label": "Parquet の Bloom フィルターの書き込みサポートを追加しました。"}]}]}/>
 
 Parquet ファイルに Bloom フィルターを書き込みます。使用するには output_format_parquet_use_custom_encoder = true である必要があります。
 
@@ -1972,11 +2178,15 @@ Parquet ファイルに Bloom フィルターを書き込みます。使用す�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "1"},{"label": "新しい設定です。"}]}]}/>
+
 CRC32 チェックサムを Parquet のページヘッダーに出力します。
 
 ## output_format_parquet_write_page_index \{#output_format_parquet_write_page_index\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "1"},{"label": "Parquet ファイルにページインデックスを書き込めるようにします。"}]}]}/>
 
 Parquet ファイルにカラム索引およびオフセット索引（各データページに関する統計情報で、読み取り時のフィルタープッシュダウンとして利用される場合があります）を書き込みます。
 
@@ -1984,11 +2194,15 @@ Parquet ファイルにカラム索引およびオフセット索引（各デー
 
 <SettingsInfoBlock type="UInt64Auto" default_value="auto" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "auto"},{"label": "設定が変更され、`auto` 値も許可されました。出力が tty でない場合には ANSI エスケープが無効になります"}]}]}/>
+
 Pretty フォーマットで ANSI エスケープシーケンスを使用します。0 - 無効、1 - 有効、'auto' - 端末上で実行されている場合に有効。
 
 ## output_format_pretty_display_footer_column_names \{#output_format_pretty_display_footer_column_names\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "1"},{"label": "行数が多い場合にフッターにカラム名を表示するための設定を追加。閾値は output_format_pretty_display_footer_column_names_min_rows によって制御されます。"}]}]} />
 
 テーブルの行数が多い場合に、フッターにカラム名を表示します。
 
@@ -2023,11 +2237,15 @@ SELECT *, toTypeName(*) FROM (SELECT * FROM system.numbers LIMIT 1000);
 
 <SettingsInfoBlock type="UInt64" default_value="50" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "50"},{"label": "output_format_pretty_display_footer_column_names_min_rows のしきい値を制御する設定を追加。デフォルトは 50。"}]}]}/>
+
 [output_format_pretty_display_footer_column_names](#output_format_pretty_display_footer_column_names) 設定が有効な場合に、カラム名を含むフッターを表示するための最小行数を設定します。
 
 ## output_format_pretty_fallback_to_vertical \{#output_format_pretty_fallback_to_vertical\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1"},{"label": "新しい設定"}]}]}/>
 
 有効化されている場合、テーブルが横に広く行数が少ないとき、Pretty 形式は Vertical 形式と同様に出力します。
 この挙動を詳細に調整するには、`output_format_pretty_fallback_to_vertical_max_rows_per_chunk` と `output_format_pretty_fallback_to_vertical_min_table_width` を参照してください。
@@ -2036,11 +2254,15 @@ SELECT *, toTypeName(*) FROM (SELECT * FROM system.numbers LIMIT 1000);
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "100"},{"label": "新しい設定"}]}]}/>
+
 chunk 内の行数が指定した値以下の場合にのみ、Vertical 形式へのフォールバック（`output_format_pretty_fallback_to_vertical` を参照）が有効になります。
 
 ## output_format_pretty_fallback_to_vertical_min_columns \{#output_format_pretty_fallback_to_vertical_min_columns\}
 
 <SettingsInfoBlock type="UInt64" default_value="5" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "5"},{"label": "新しい設定"}]}]}/>
 
 Vertical フォーマットへのフォールバック（`output_format_pretty_fallback_to_vertical` を参照）は、カラム数が指定した値より大きい場合にのみ有効化されます。
 
@@ -2048,11 +2270,15 @@ Vertical フォーマットへのフォールバック（`output_format_pretty_f
 
 <SettingsInfoBlock type="UInt64" default_value="250" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "250"},{"label": "新しい設定"}]}]}/>
+
 Vertical 形式へのフォールバック（`output_format_pretty_fallback_to_vertical` を参照）は、テーブル内のカラムの長さの合計が指定された値以上である場合、または少なくとも 1 つの値に改行文字が含まれている場合にのみ有効になります。
 
 ## output_format_pretty_glue_chunks \{#output_format_pretty_glue_chunks\}
 
 <SettingsInfoBlock type="UInt64Auto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "auto"},{"label": "Pretty フォーマットをさらに見やすくする新しい設定。"}]}]}/>
 
 Pretty フォーマットでレンダリングされるデータが、複数の chunk に分かれて（間に遅延があっても）到着し、かつ次の chunk のカラム幅が前の chunk と同じである場合、ANSI エスケープシーケンスを使用して前の行に戻り、前の chunk のフッターを上書きして、新しい chunk のデータを続けて表示します。これにより、出力結果の視認性が向上します。
 
@@ -2068,11 +2294,15 @@ Pretty フォーマットでレンダリングされるデータが、複数の 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "この設定が有効で、かつ出力先がターミナルの場合、千、百万などの桁区切りに相当する各数字を下線で強調表示します。"}]}]}/>
+
 この設定が有効で、かつ出力先がターミナルの場合、千、百万などの桁区切りに相当する各数字を下線で強調表示します。
 
 ## output_format_pretty_highlight_trailing_spaces \{#output_format_pretty_highlight_trailing_spaces\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1"},{"label": "新しい設定。"}]}]}/>
 
 この設定が有効で、かつ出力先がターミナルの場合、行末のスペースを灰色で強調表示し、下線を付けます。
 
@@ -2080,12 +2310,16 @@ Pretty フォーマットでレンダリングされるデータが、複数の 
 
 <SettingsInfoBlock type="UInt64" default_value="24" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "24"},{"label": "新しい設定"}]}]}/>
+
 カラム名が長すぎる場合、この長さまで切り詰めます。
 カラム名の長さが `output_format_pretty_max_column_name_width_cut_to` と `output_format_pretty_max_column_name_width_min_chars_to_cut` の合計より長い場合に、切り詰めが行われます。
 
 ## output_format_pretty_max_column_name_width_min_chars_to_cut \{#output_format_pretty_max_column_name_width_min_chars_to_cut\}
 
 <SettingsInfoBlock type="UInt64" default_value="4" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "4"},{"label": "新しい設定"}]}]}/>
 
 カラム名が長すぎる場合に切り詰める際の最小文字数。
 カラム名の長さが `output_format_pretty_max_column_name_width_cut_to` と `output_format_pretty_max_column_name_width_min_chars_to_cut` を合計した値より長い場合に切り詰められます。
@@ -2100,6 +2334,8 @@ Pretty フォーマットにおいて、カラム内のすべての値をパデ�
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "1000"},{"label": "ユーザビリティが向上し、スクロール量が少なくなります。"}]}]}/>
+
 Pretty フォーマットの行数上限。
 
 ## output_format_pretty_max_value_width \{#output_format_pretty_max_value_width\}
@@ -2113,11 +2349,15 @@ Pretty フォーマットで表示する値の幅の上限。これを超える�
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "0"},{"label": "Pretty フォーマット内の単一の値は切り詰められません。"}]}]}/>
+
 ブロック内に複数の値がある場合にのみ値を切り詰めます（`output_format_pretty_max_value_width` 設定を参照）。単一の値しかない場合は切り詰めずに全体を出力します。これは `SHOW CREATE TABLE` クエリに対して便利です。
 
 ## output_format_pretty_multiline_fields \{#output_format_pretty_multiline_fields\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1"},{"label": "新しい設定"}]}]}/>
 
 有効な場合、Pretty フォーマットはテーブルセル内の複数行フィールドを折り返して表示し、テーブルのレイアウトが保たれるようにします。
 無効な場合は、そのまま出力されるためテーブルの体裁が崩れる可能性があります（オフのままにする利点のひとつとして、複数行の値をコピー＆ペーストしやすくなります）。
@@ -2126,11 +2366,15 @@ Pretty フォーマットで表示する値の幅の上限。これを超える�
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "Pretty 形式で名前付きタプルを JSON オブジェクトとして出力するかどうかを制御する新しい設定"}]}]}/>
+
 Pretty 形式で、名前付きタプルを整形された JSON オブジェクトとして出力するかどうかを制御します。
 
 ## output_format_pretty_row_numbers \{#output_format_pretty_row_numbers\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "ユーザビリティが向上します。"}]}]}/>
 
 Pretty 出力フォーマットでは、各行の先頭に行番号を付加します
 
@@ -2138,11 +2382,15 @@ Pretty 出力フォーマットでは、各行の先頭に行番号を付加し�
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />
 
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": "1000000"},{"label": "ブロックが単一の数値で構成され、その数値がこの値（0 を除く）を超える場合、テーブルの右側に読みやすい形式の数値のヒントを表示します。"}]}]}/>
+
 ブロックが単一の数値で構成され、その数値がこの値（0 を除く）を超える場合、テーブルの右側に読みやすい形式の数値のヒントを表示します。
 
 ## output_format_pretty_squash_consecutive_ms \{#output_format_pretty_squash_consecutive_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="50" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "50"},{"label": "新しい設定を追加"}]}]}/>
 
 次のブロックを、最大で指定されたミリ秒数だけ待機してから、書き込み前に直前のブロックにまとめます。
 これにより、小さすぎるブロックが頻繁に出力されるのを防ぎつつ、データをストリーミング形式で表示できるようにします。
@@ -2150,6 +2398,8 @@ Pretty 出力フォーマットでは、各行の先頭に行番号を付加し�
 ## output_format_pretty_squash_max_wait_ms \{#output_format_pretty_squash_max_wait_ms\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1000"},{"label": "新しい設定を追加"}]}]}/>
 
 前回の出力から指定したミリ秒数以上経過している場合、Pretty 系フォーマットで保留中のブロックを出力します。
 
@@ -2202,6 +2452,8 @@ true に設定した場合、TSV 形式での行末は \\n ではなく \\r\\n �
 ## output_format_values_escape_quote_with_quote \{#output_format_values_escape_quote_with_quote\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": "0"},{"label": "true の場合は ' を '' でエスケープし、それ以外の場合は \\\\' でクォートします"}]}]}/>
 
 true の場合は ' を '' でエスケープし、それ以外の場合は \\' でクォートします。
 
