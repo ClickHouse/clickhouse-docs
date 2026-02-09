@@ -15,7 +15,9 @@ import ioReadWrite from '@site/static/images/managed-postgres/benchmarks/io-inte
 
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="benchmarks" />
 
-This page provides performance benchmark results comparing Postgres managed by ClickHouse against other popular managed PostgreSQL services, including AWS Aurora and RDS. These benchmarks demonstrate the performance advantages of NVMe-backed storage for different workload types.
+## TL;DR
+
+We benchmarked Postgres managed by ClickHouse against AWS RDS (with 16k provisioned IOPS) and Aurora IO Optimized using standard [`pgbench`](https://www.postgresql.org/docs/current/pgbench.html) tests. Results show that ClickHouse's NVMe-backed Postgres delivers **4.3-9x faster performance** for IO-intensive workloads and **12% faster** for CPU-bound scenarios. This exceptional throughput and scalability makes it ideal for fast-growing AI-driven workloads that demand high transaction rates, low-latency data access, and predictable performance without IO bottlenecks.
 
 ## Benchmark overview {#overview}
 
@@ -109,9 +111,9 @@ pgbench -c 32 -j 16 -T 300 -S -M prepared -P 30
 
 ### Test 1: IO Intensive - Read+Write (500 GB dataset) {#test1-results}
 
-This test evaluates mixed read/write performance with a large 500 GB dataset, stressing both read and write paths of the storage subsystem.
-
 <Image img={ioReadWrite} alt="IO Intensive Read+Write benchmark results" size="md" border/>
+
+This test evaluates mixed read/write performance with a large 500 GB dataset, stressing both read and write paths of the storage subsystem.
 
 **Performance improvement over RDS (16k IOPS):**
 - **326% higher TPS** (4.3x faster)
@@ -123,9 +125,9 @@ This test evaluates mixed read/write performance with a large 500 GB dataset, st
 
 ### Test 2: IO Intensive - Read-Only (500 GB dataset) {#test2-results}
 
-This test evaluates read performance with a large dataset that exceeds available memory, heavily stressing disk I/O subsystems.
-
 <Image img={ioRead-Only} alt="IO Intensive Read-Only benchmark results" size="md" border/>
+
+This test evaluates read performance with a large dataset that exceeds available memory, heavily stressing disk I/O subsystems.
 
 **Performance improvement over RDS (16k IOPS):**
 - **802% higher TPS** (9.0x faster)
@@ -134,9 +136,9 @@ This test evaluates read performance with a large dataset that exceeds available
 
 ### Test 3: CPU Intensive (data fits in memory) {#test3-results}
 
-When the working set fits entirely in RAM, this test primarily stresses CPU performance with minimal disk I/O.
-
 <Image img={computeIntensive} alt="CPU Intensive benchmark results" size="md" border/>
+
+When the working set fits entirely in RAM, this test primarily stresses CPU performance with minimal disk I/O.
 
 **Performance improvement:**
 - **12.3% higher TPS** than RDS PostgreSQL
