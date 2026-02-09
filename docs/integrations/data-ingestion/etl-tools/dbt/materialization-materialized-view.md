@@ -355,7 +355,7 @@ select a, b, c from {{ source('raw', 'table_2') }}
 
 Because ClickHouse materialized views act as **insert triggers**, they only capture data while they exist. If a materialized view is dropped and recreated (e.g. during a `--full-refresh`), any rows inserted into the source table during that window will **not** be processed by the MV. This is referred to as the MV being "blind."
 
-Additionally, the **catchup** (both from the MV's `catchup` or from the target table's `repopulate_from_mvs_on_full_refresh`) process runs an `INSERT INTO ... SELECT` using the MV's SQL. If inserts into the source table are happening at the same time, the catch-up query may include rows that the MV has already processed (or will process right after being created), potentially causing **duplicate data** in the target table. Using a deduplicating engine such as `ReplacingMergeTree` on the target table mitigates this risk.
+Additionally, the **catch-up** (both from the MV's `catchup` or from the target table's `repopulate_from_mvs_on_full_refresh`) process runs an `INSERT INTO ... SELECT` using the MV's SQL. If inserts into the source table are happening at the same time, the catch-up query may include rows that the MV has already processed (or will process right after being created), potentially causing **duplicate data** in the target table. Using a deduplicating engine such as `ReplacingMergeTree` on the target table mitigates this risk.
 
 The following table summarizes the safety of each operation when inserts are actively happening on the source table.
 
