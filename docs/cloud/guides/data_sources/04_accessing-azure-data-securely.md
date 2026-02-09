@@ -35,7 +35,7 @@ IP whitelisting fails when:
 - Your ClickHouse Cloud service and storage are in the same Azure region. Use [Shared Access Signatures (SAS)](/integrations/clickpipes/object-storage/abs/overview#authentication) via connection string instead of IP whitelisting or deploy ABS and ClickHouse in different regions.
 :::
 
-## Network Configuration (Cross-Region Only) {#network-config}
+## Network configuration (Cross-region only) {#network-config}
 
 :::warning Cross-Region Only
 This section applies only when your ClickHouse Cloud service and Azure Blob Storage container are in different Azure regions, or when ClickHouse Cloud is on AWS/GCP.
@@ -80,7 +80,7 @@ for which name to use.
 
 See ["Cloud IP addresses"](/manage/data-sources/cloud-endpoints-api) for more details.
 
-### Configure Azure Storage Firewall {#configure-firewall}
+### Configure Azure storage firewall {#configure-firewall}
 
 Navigate to your Storage Account in Azure Portal
 
@@ -98,7 +98,7 @@ See [Configure Azure Storage firewalls docs](https://learn.microsoft.com/en-us/a
 
 </VerticalStepper>
 
-## ClickPipes Configuration {#clickpipes-config}
+## ClickPipes configuration {#clickpipes-config}
 
 When using [ClickPipes](/integrations/clickpipes) with Azure Blob Storage, you need to configure authentication in the ClickPipes UI.
 See ["Creating your first Azure ClickPipe"](/integrations/clickpipes/object-storage/azure-blob-storage/get-started) for more details.
