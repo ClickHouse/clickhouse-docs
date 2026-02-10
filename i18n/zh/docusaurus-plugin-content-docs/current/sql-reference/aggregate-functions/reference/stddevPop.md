@@ -12,7 +12,7 @@ doc_type: 'reference'
 引入于：v1.1
 
 返回数值数据序列的总体标准差。
-结果等于 [`varPop`](/sql-reference/aggregate-functions/reference/varpop) 的平方根。
+结果等于 [`varPop`](/sql-reference/aggregate-functions/reference/varPop) 的平方根。
 
 :::note
 此函数使用数值不稳定的算法。如果在计算中需要[数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)，请使用 [`stddevPopStable`](/sql-reference/aggregate-functions/reference/stddevpopstable) 函数。其运行速度较慢，但计算误差更小。

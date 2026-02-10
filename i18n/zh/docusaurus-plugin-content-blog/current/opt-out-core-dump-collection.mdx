@@ -1,0 +1,56 @@
+---
+date: 2026-02-04
+title: '如何禁用 core dump 收集'
+description: '本文介绍如何在 ClickHouse Cloud 中禁用 core dump 收集'
+tags: ['Cloud 管理']
+---
+
+import optOut from '@site/static/images/crash-reports.png';
+import Image from '@theme/IdealImage';
+
+{frontMatter.description}
+
+{/* truncate */}
+
+## 概览 \{#overview\}
+
+作为我们持续改进云服务稳定性和可靠性工作的一部分，ClickHouse Cloud 将自 **2026 年 2 月 27 日** 起，在服务器发生崩溃时收集核心转储（core dump）。
+
+收集核心转储（core dump）能够帮助我们：
+
+* 更快速地定位崩溃的根本原因
+* 更快地解决问题
+* 改善整体服务体验
+
+## 收集内容 \{#whats-collected\}
+
+Core dump（核心转储）会捕获进程在崩溃时的状态，并且可能包含驻留在内存中的敏感信息，例如：
+
+* 连接凭证
+* 加密密钥
+* 查询字符串
+* 崩溃当时内存中的其他数据
+
+### 数据保护 \{#data-protection\}
+
+* **区域存储**：数据采集与存储均在与您的服务相同的区域内进行
+* **额外防护**：对采集的数据实施增强的安全防护措施
+* **有限保留**：数据仅在短期内保留以支持调试，之后会被安全销毁
+
+## 排除项 \{#exclusions\}
+
+以下服务将**自动**从 core dump 收集中排除：
+
+* 符合 **HIPAA** 合规要求的服务
+* 符合 **PCI** 合规要求的服务
+* **BYOC**（Bring Your Own Cloud，自带 Cloud）服务
+
+## 如何取消参与 \{#how-to-opt-out\}
+
+1. 打开 [ClickHouse Cloud Console](https://clickhouse.cloud)
+2. 选择您的服务
+3. 进入 **Settings（设置）** 选项卡
+4. 在设置页面底部找到 “Share crash reports with ClickHouse” 选项
+5. 将该选项禁用即可取消参与
+
+<Image img={optOut} size="md" alt="在 Cloud UI 中查找退出选项的位置" />

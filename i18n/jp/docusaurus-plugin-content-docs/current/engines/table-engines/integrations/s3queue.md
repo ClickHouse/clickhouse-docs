@@ -437,13 +437,13 @@ S3Queue エンジンには、SELECT クエリ用の特別な設定 `commit_on_se
 
 ## 内部状態の確認 \{#introspection\}
 
-内部状態の確認には、ステートレスな `system.s3queue` テーブルと永続的な `system.s3queue_log` テーブルを使用します。
+内部状態の確認には、ステートレスな `system.s3queue_metadata_cache` テーブルと永続的な `system.s3queue_log` テーブルを使用します。
 
-1. `system.s3queue`。このテーブルは永続化されず、`S3Queue` のメモリ上の状態を表示します。現在処理中のファイル、処理済みのファイル、失敗したファイルを確認できます。
+1. `system.s3queue_metadata_cache`。このテーブルは永続化されず、`S3Queue` のメモリ上の状態を表示します。現在処理中のファイル、処理済みのファイル、失敗したファイルを確認できます。
 
 ```sql
 ┌─statement──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ CREATE TABLE system.s3queue
+│ CREATE TABLE system.s3queue_metadata_cache
 (
     `database` String,
     `table` String,
@@ -465,7 +465,7 @@ COMMENT 'Contains in-memory state of S3Queue metadata and currently processed ro
 ```sql
 
 SELECT *
-FROM system.s3queue
+FROM system.s3queue_metadata_cache
 
 Row 1:
 ──────
@@ -479,7 +479,7 @@ ProfileEvents:         {'ZooKeeperTransactions':3,'ZooKeeperGet':2,'ZooKeeperMul
 exception:
 ```
 
-2. `system.s3queue_log`。永続テーブル。`system.s3queue` と同じ情報を持ちますが、対象は `processed` および `failed` のファイルです。
+2. `system.s3queue_log`。永続テーブル。`system.s3queue_metadata_cache` と同じ情報を持ちますが、対象は `processed` および `failed` のファイルです。
 
 このテーブルは次の構造を持ちます。
 
@@ -508,7 +508,7 @@ ORDER BY (event_date, event_time) │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-`system.s3queue_log` を使用するには、サーバー設定ファイルで構成を定義する必要があります。
+`system.s3queue_log` を使用するには、サーバー設定ファイルで構成を定義します。
 
 ```xml
     <s3queue_log>

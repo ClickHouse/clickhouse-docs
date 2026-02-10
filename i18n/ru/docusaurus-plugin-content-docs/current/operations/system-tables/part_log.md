@@ -18,7 +18,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 Таблица `system.part_log` содержит следующие столбцы:
 
-* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — имя хоста сервера, выполняющего запрос.
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — имя хоста сервера, на котором выполняется запрос.
 * `query_id` ([String](../../sql-reference/data-types/string.md)) — идентификатор запроса `INSERT`, создавшего эту часть данных.
 * `event_type` ([Enum8](../../sql-reference/data-types/enum.md)) — тип события, произошедшего с частью данных. Может принимать одно из следующих значений:
   * `NewPart` — Вставка новой части данных.
@@ -34,32 +34,33 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
   * `RegularMerge` — Обычное слияние.
   * `TTLDeleteMerge` — Удаление просроченных данных.
   * `TTLRecompressMerge` — Повторное сжатие части данных с.
-* `merge_algorithm` ([Enum8](../../sql-reference/data-types/enum.md)) — алгоритм слияния события типа `MERGE_PARTS`. Может принимать одно из следующих значений:
+* `merge_algorithm` ([Enum8](../../sql-reference/data-types/enum.md)) — алгоритм слияния для события типа `MERGE_PARTS`. Может принимать одно из следующих значений:
   * `Не выбрано`
   * `Горизонтальная`
   * `Вертикальная`
 * `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата события.
 * `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — время события.
-* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время события с точностью до микросекунд.
-* `duration_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — продолжительность.
+* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время события с микросекундной точностью.
+* `duration_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — длительность в миллисекундах.
 * `database` ([String](../../sql-reference/data-types/string.md)) — Имя базы данных, в которой хранится часть данных.
 * `table` ([String](../../sql-reference/data-types/string.md)) — Имя таблицы, в которой находится часть данных.
 * `table_uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — UUID таблицы, которой принадлежит часть данных.
 * `part_name` ([String](../../sql-reference/data-types/string.md)) — Имя части данных.
 * `partition_id` ([String](../../sql-reference/data-types/string.md)) — идентификатор раздела, в который была вставлена часть данных. Столбец принимает значение `all`, если разбиение выполняется по `tuple()`.
-* `partition` ([String](../../sql-reference/data-types/string.md)) - Имя раздела.
+* `partition` ([String](../../sql-reference/data-types/string.md)) - Имя партиции.
 * `part_type` ([String](../../sql-reference/data-types/string.md)) - Тип части. Возможные значения: Wide и Compact.
 * `disk_name` ([String](../../sql-reference/data-types/string.md)) - Имя диска, на котором находится часть данных.
-* `path_on_disk` ([String](../../sql-reference/data-types/string.md)) — Абсолютный путь к каталогу с файлами кусков данных.
+* `path_on_disk` ([String](../../sql-reference/data-types/string.md)) — Абсолютный путь к каталогу с файлами части данных.
 * `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Число строк в части данных.
 * `size_in_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — размер части данных в байтах.
-* `merged_from` ([Array(String)](../../sql-reference/data-types/array.md)) — массив имен частей, из которых была сформирована текущая часть (после слияния).
+* `merged_from` ([Array(String)](../../sql-reference/data-types/array.md)) — массив имен частей, из которых была сформирована текущая часть (после слияния или мутаций).
 * `bytes_uncompressed` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Объём несжатых данных (в байтах).
 * `read_rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — Количество строк, прочитанных при слиянии.
 * `read_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — количество байт, прочитанных во время слияния.
 * `peak_memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — максимальная разница между объёмом выделенной и освобождённой памяти в контексте этого потока.
 * `error` ([UInt16](../../sql-reference/data-types/int-uint.md)) — Код возникшей ошибки.
 * `exception` ([String](../../sql-reference/data-types/string.md)) — Текст сообщения о возникшей ошибке.
+* `mutation_ids` ([Array(String)](../../sql-reference/data-types/array.md)) — массив идентификаторов мутаций, применённых к исходной части (`merged_from`) для событий типов `MutatePartsStart` и `MutateParts`.
 * `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map.md)) — счётчики ProfileEvents, измеряющие различные метрики. Их описание приведено в таблице [system.events](/operations/system-tables/events).
 
 Таблица `system.part_log` создаётся после первой вставки данных в таблицу `MergeTree`.
@@ -100,5 +101,6 @@ read_bytes:              1429206946 -- 1.43 billion
 peak_memory_usage:       303611887 -- 303.61 million
 error:                   0
 exception:
+mutation_ids:
 ProfileEvents:           {'FileOpen':703,'ReadBufferFromFileDescriptorRead':3824,'ReadBufferFromFileDescriptorReadBytes':439601681,'WriteBufferFromFileDescriptorWrite':592,'WriteBufferFromFileDescriptorWriteBytes':438988500,'ReadCompressedBytes':439601681,'CompressedReadBufferBlocks':6314,'CompressedReadBufferBytes':1539835748,'OpenedFileCacheHits':50,'OpenedFileCacheMisses':484,'OpenedFileCacheMicroseconds':222,'IOBufferAllocs':1914,'IOBufferAllocBytes':319810140,'ArenaAllocChunks':8,'ArenaAllocBytes':131072,'MarkCacheMisses':7,'CreatedReadBufferOrdinary':534,'DiskReadElapsedMicroseconds':139058,'DiskWriteElapsedMicroseconds':51639,'AnalyzePatchRangesMicroseconds':28,'ExternalProcessingFilesTotal':1,'RowsReadByMainReader':170857759,'WaitMarksLoadMicroseconds':988,'LoadedMarksFiles':7,'LoadedMarksCount':14,'LoadedMarksMemoryBytes':728,'Merge':2,'MergeSourceParts':14,'MergedRows':3285733,'MergedColumns':4,'GatheredColumns':51,'MergedUncompressedBytes':1429207058,'MergeTotalMilliseconds':2158,'MergeExecuteMilliseconds':2155,'MergeHorizontalStageTotalMilliseconds':145,'MergeHorizontalStageExecuteMilliseconds':145,'MergeVerticalStageTotalMilliseconds':2008,'MergeVerticalStageExecuteMilliseconds':2006,'MergeProjectionStageTotalMilliseconds':5,'MergeProjectionStageExecuteMilliseconds':4,'MergingSortedMilliseconds':7,'GatheringColumnMilliseconds':56,'ContextLock':2091,'PartsLockHoldMicroseconds':77,'PartsLockWaitMicroseconds':1,'RealTimeMicroseconds':2157475,'CannotWriteToWriteBufferDiscard':36,'LogTrace':6,'LogDebug':59,'LoggerElapsedNanoseconds':514040,'ConcurrencyControlSlotsGranted':53,'ConcurrencyControlSlotsAcquired':53}
 ```
