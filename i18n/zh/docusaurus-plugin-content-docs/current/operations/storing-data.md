@@ -170,6 +170,26 @@ SETTINGS disk = 's3';
 ```
 
 
+## refresh_parts_interval 和 table_disk \{#refresh-parts-interval-and-table-disk\}
+
+此设置适用于非 Replicated MergeTree 表，这类表的分区片段可能由外部写入，因此必须从存储中重新发现并刷新元数据。
+
+MergeTree 设置 `refresh_parts_interval` 用于定期从底层存储刷新数据分区片段列表（例如发现外部写入的分区片段）。关键区别在于**跨副本共享的元数据**与**副本本地元数据**（例如每个副本都有本地元数据的 S3）：只有在元数据是共享的情况下，新分区片段才会对所有副本可见。仅仅使用对象存储并不意味着元数据是共享的。
+
+- **对象存储（例如 `disk = 's3'`）并不意味着元数据是共享的。** 当元数据按副本本地存储（默认行为）时，每个副本都会独立管理其在对象存储中指向 blob 的指针。在某个副本上所做的更改对其他副本不可见。在这种情况下，`refresh_parts_interval` 不会让新分区片段在副本之间可见，因为每个副本读取的元数据是副本本地的。
+
+- **自动分区片段刷新要求文件系统元数据是共享的**（或者表使用表拥有的、只读的元数据，从而刷新才适用）。将 `table_disk = true` 与表级磁盘一起设置（例如 `SETTINGS disk = disk(type=object_storage, ...), table_disk = true`）是获得正确语义的一种方式：表拥有元数据生命周期，存储被视为只读，因此会运行 `refresh_parts_interval`，从而可以发现外部添加的分区片段。
+
+- **在使用全局定义的磁盘时**（例如在 `storage_configuration` 中配置 `disk = 's3'`）并采用默认的本地元数据，每个副本都有自己的元数据状态。即使 blob 存在于 S3 中，就 `refresh_parts_interval` 而言，该存储也不被视为共享存储，在 ClickHouse 之外或在另一个副本上创建的新分区片段都不会被检测到。
+
+若要实现自动分区片段刷新，请确保元数据是共享的，或者像上面那样使用带有 `table_disk = true` 的表级磁盘。仅依赖 `refresh_parts_interval` 而使用副本本地元数据，将无法按照预期刷新分区片段。
+
+:::note
+`refresh_parts_interval` 不用于 ReplicatedMergeTree 表。
+复制表已经通过复制机制同步分区片段。
+此设置仅适用于非复制 MergeTree 表，这类表的分区片段由外部写入并且需要刷新元数据。
+:::
+
 ## 动态配置 \{#dynamic-configuration\}
 
 还可以在无需在配置文件中预先定义磁盘的情况下指定存储配置，而是通过
@@ -683,6 +703,8 @@ File Cache **磁盘配置设置**：
 | `max_file_segment_size`               | Size    | `8Mi`      | 单个缓存文件的最大大小，可以是字节数或可读格式。                                                                     |
 | `max_elements`                        | Integer | `10000000` | 最大缓存文件数量。                                                                                    |
 | `load_metadata_threads`               | Integer | `16`       | 启动时用于加载缓存元数据的线程数。                                                                            |
+| `use_split_cache`                     | Boolean | `false`    | 将文件划分为 system/data 两部分进行存储。                                                                  |
+| `split_cache_ratio`                   | Double  | `0.1`      | 在 split&#95;cache 中，system 段大小相对于缓存总大小的比例。                                                   |
 
 > **注意**：Size 值支持 `ki`、`Mi`、`Gi` 等单位（例如 `10Gi`）。
 

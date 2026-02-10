@@ -46,19 +46,24 @@ ClickStack は強化されたテレメトリ機能を備えた独自の言語 SD
 
 ## API key による保護 \{#securing-api-key\}
 
+:::Not required for Managed ClickStack
+Managed ClickStack 環境では API key は不要です。
+:::
+
 OTel collector 経由で ClickStack にデータを送信するには、SDK でインジェスト API key を指定する必要があります。これは SDK の `init` 関数で設定するか、`OTEL_EXPORTER_OTLP_HEADERS` 環境変数で指定します。
 
 ```shell
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
-この API キーは HyperDX アプリケーションで生成され、アプリの `Team Settings → API Keys` から取得できます。
+この API キーは ClickStack UI (HyperDX) アプリケーションで生成され、アプリの `Team Settings → API Keys` から取得できます。
 
 ほとんどの [language SDKs](/use-cases/observability/clickstack/sdks) や OpenTelemetry をサポートするテレメトリライブラリでは、アプリケーションで `OTEL_EXPORTER_OTLP_ENDPOINT` 環境変数を設定するか、SDK の初期化時に指定するだけで利用できます。
 
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
+
 
 ## Kubernetes integration \{#kubernetes-integration\}
 
