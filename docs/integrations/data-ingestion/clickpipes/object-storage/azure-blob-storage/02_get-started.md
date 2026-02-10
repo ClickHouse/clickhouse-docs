@@ -49,7 +49,7 @@ Select **Azure Blob Storage** as data type
 4. Enter your container name
 5. Enter your Azure Blob Storage file path, using wildcards if you want to ingest multiple files
 
-Optionally, enable continuous ingestion. See ["Continous Ingestion"](/integrations/clickpipes/object-storage/abs/overview#continuous-ingestion) for more details.
+Optionally, enable continuous ingestion. See ["Continuous Ingestion"](/integrations/clickpipes/object-storage/abs/overview#continuous-ingestion) for more details.
 
 Finally, click **Incoming data**
 
