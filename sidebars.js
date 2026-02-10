@@ -1311,6 +1311,7 @@ const sidebars = {
           items: ['guides/best-practices/skipping-indexes-examples'],
         },
         'guides/best-practices/prewhere',
+        'guides/lazy-materialization',
         'guides/best-practices/bulkinserts',
         'guides/best-practices/asyncinserts',
         'guides/best-practices/avoidmutations',
