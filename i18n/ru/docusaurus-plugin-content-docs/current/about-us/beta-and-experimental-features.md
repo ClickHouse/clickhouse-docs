@@ -79,8 +79,10 @@ doc_type: 'reference'
 | [low_priority_query_wait_time_ms](/operations/settings/settings#low_priority_query_wait_time_ms) | `1000` |
 | [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize) | `1` |
 | [use_statistics](/operations/settings/settings#use_statistics) | `1` |
+| [use_statistics_cache](/operations/settings/settings#use_statistics_cache) | `1` |
 | [enable_full_text_index](/operations/settings/settings#enable_full_text_index) | `0` |
 | [allow_experimental_delta_kernel_rs](/operations/settings/settings#allow_experimental_delta_kernel_rs) | `1` |
+| [enable_join_runtime_filters](/operations/settings/settings#enable_join_runtime_filters) | `1` |
 
 ## Экспериментальные настройки \{#experimental-settings\}
 
@@ -121,7 +123,6 @@ doc_type: 'reference'
 | [join&#95;to&#95;sort&#95;maximum&#95;table&#95;rows](/operations/settings/settings#join_to_sort_maximum_table_rows)                                                                                                                | `10000`                 |
 | [allow&#95;experimental&#95;join&#95;right&#95;table&#95;sorting](/operations/settings/settings#allow_experimental_join_right_table_sorting)                                                                                        | `0`                     |
 | [allow&#95;experimental&#95;statistics](/operations/settings/settings#allow_experimental_statistics)                                                                                                                                | `0`                     |
-| [use&#95;statistics&#95;cache](/operations/settings/settings#use_statistics_cache)                                                                                                                                                  | `0`                     |
 | [allow&#95;experimental&#95;window&#95;view](/operations/settings/settings#allow_experimental_window_view)                                                                                                                          | `0`                     |
 | [window&#95;view&#95;clean&#95;interval](/operations/settings/settings#window_view_clean_interval)                                                                                                                                  | `60`                    |
 | [window&#95;view&#95;heartbeat&#95;interval](/operations/settings/settings#window_view_heartbeat_interval)                                                                                                                          | `15`                    |
@@ -148,7 +149,6 @@ doc_type: 'reference'
 | [allow&#95;experimental&#95;ytsaurus&#95;table&#95;function](/operations/settings/settings#allow_experimental_ytsaurus_table_function)                                                                                              | `0`                     |
 | [allow&#95;experimental&#95;ytsaurus&#95;dictionary&#95;source](/operations/settings/settings#allow_experimental_ytsaurus_dictionary_source)                                                                                        | `0`                     |
 | [distributed&#95;plan&#95;force&#95;shuffle&#95;aggregation](/operations/settings/settings#distributed_plan_force_shuffle_aggregation)                                                                                              | `0`                     |
-| [enable&#95;join&#95;runtime&#95;filters](/operations/settings/settings#enable_join_runtime_filters)                                                                                                                                | `0`                     |
 | [join&#95;runtime&#95;filter&#95;exact&#95;values&#95;limit](/operations/settings/settings#join_runtime_filter_exact_values_limit)                                                                                                  | `10000`                 |
 | [join&#95;runtime&#95;bloom&#95;filter&#95;bytes](/operations/settings/settings#join_runtime_bloom_filter_bytes)                                                                                                                    | `524288`                |
 | [join&#95;runtime&#95;bloom&#95;filter&#95;hash&#95;functions](/operations/settings/settings#join_runtime_bloom_filter_hash_functions)                                                                                              | `3`                     |

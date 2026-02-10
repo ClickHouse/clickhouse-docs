@@ -13,9 +13,9 @@ doc_type: 'reference'
 
 Введена в версии: v1.1
 
-Вычисляет выборочную дисперсию набора данных. В отличие от [`varSamp`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/varsamp), эта функция использует [численно устойчивый](https://en.wikipedia.org/wiki/Numerical_stability) алгоритм. Работает медленнее, но обеспечивает меньшую вычислительную погрешность.
+Вычисляет выборочную дисперсию набора данных. В отличие от [`varSamp`](/sql-reference/aggregate-functions/reference/varSamp), эта функция использует [численно устойчивый](https://en.wikipedia.org/wiki/Numerical_stability) алгоритм. Работает медленнее, но обеспечивает меньшую вычислительную погрешность.
 
-Выборочная дисперсия вычисляется по той же формуле, что и [`varSamp`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/varsamp):
+Выборочная дисперсия вычисляется по той же формуле, что и [`varSamp`](/sql-reference/aggregate-functions/reference/varSamp):
 
 $$
 \frac{\Sigma{(x - \bar{x})^2}}{n-1}
