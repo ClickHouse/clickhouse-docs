@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 カレンダー日付と一日の時刻で表現できる時点を、サブ秒精度を指定して保存できるデータ型です。
 
-ティックサイズ（精度）は 10<sup>-precision</sup> 秒です。指定可能な範囲: [ 0 : 9 ]。\
+ティックサイズ（精度）は 10<sup>-precision</sup> 秒です。指定可能な範囲: [ 0 : 9 ]。
 通常は 3（ミリ秒）、6（マイクロ秒）、9（ナノ秒）が使用されます。
 
 **構文:**
@@ -38,15 +38,20 @@ CREATE TABLE dt64
     `timestamp` DateTime64(3, 'Asia/Istanbul'),
     `event_id` UInt8
 )
-ENGINE = TinyLog;
+ENGINE = MergeTree;
 ```
 
 ```sql
 -- Parse DateTime
--- - from integer interpreted as number of microseconds (because of precision 3) since 1970-01-01,
--- - from decimal interpreted as number of seconds before the decimal part, and based on the precision after the decimal point,
--- - from string.
-INSERT INTO dt64 VALUES (1546300800123, 1), (1546300800.123, 2), ('2019-01-01 00:00:00', 3);
+-- - from an integer interpreted as the number of milliseconds (because of precision 3) since 1970-01-01,
+-- - from a decimal interpreted as the number of seconds before the decimal part, and based on the precision after the decimal point,
+-- - from a string.
+
+INSERT INTO dt64
+VALUES
+(1546300800123, 1),
+(1546300800.123, 2),
+('2019-01-01 00:00:00', 3);
 
 SELECT * FROM dt64;
 ```

@@ -44,6 +44,23 @@ Features:
 
 [ChartDB Source Code](https://github.com/chartdb/chartdb).
 
+### DataStoria \{#datastoria\}
+
+[DataStoria](https://github.com/FrankChen021/datastoria) は、複数の ClickHouse クラスターを一元管理できる、AI 搭載の Web コンソールアプリケーションです。
+
+主な機能:
+
+- **AI-Powered Intelligence**: 自然言語でデータを探索し、SQL クエリを最適化・修正し、データを可視化できます。
+- **Official ClickHouse Agent Skills Integration**: [公式ベストプラクティス](https://github.com/ClickHouse/agent-skills) を活用して、AI にデータベース最適化や改善提案を問い合わせることができます。
+- **Smart Error Diagnostics**: 構文エラーを、該当する行とカラムを正確にハイライトして即座に特定し、ワンクリックで AI による修正候補を取得できます。
+- **System Table Inspection**: 強力な可視化ダッシュボードとフィルターを使って、`system.query_log`、`system.query_views_log`、`system.zookeeper`、`system.ddl_distributed_queue`、`system.part_log`、`system.processes` を詳細に調査し、クラスターの状態を素早く把握できます。
+- **One-Click Explain**: 視覚的な AST とパイプラインビューにより、クエリ実行プランを即座に理解できます。
+- **Dependency Graph**: テーブル間の関係を可視化し、Materialized Views、分散テーブル、外部システム間をまたぐデータフローをトレースできます。
+- **Cluster Monitoring**: すべてのノードについて、リアルタイムメトリクス、マージ処理、レプリケーションの状態、クエリパフォーマンスなどを監視できます。
+- **Privacy & Security**: すべての SQL クエリはブラウザから直接 ClickHouse サーバーに送信されるため、完全なプライバシーが確保されます。
+
+[DataStoria ドキュメント](https://docs.datastoria.app).
+
 ### DataPup \{#datapup\}
 
 [DataPup](https://github.com/DataPupOrg/DataPup) は、ネイティブな ClickHouse サポートを備えた、モダンで AI 支援のクロスプラットフォームデータベースクライアントです。

@@ -27,9 +27,10 @@ import dashboard_services from '@site/static/images/use-cases/observability/hype
 import dashboard_kubernetes from '@site/static/images/use-cases/observability/hyperdx-dashboard-kubernetes.png';
 import Tagging from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_clickstack_tagging.mdx';
 
-ClickStack 支持对事件进行可视化，并在 HyperDX 中内置了图表功能。您可以将这些图表添加到仪表板，与其他用户共享。
+ClickStack 支持对事件进行可视化，并在 ClickStack UI（HyperDX）中内置了图表功能。您可以将这些图表添加到仪表板，与其他用户共享。
 
 可视化可以基于 traces、metrics、logs，或任意用户自定义的宽表事件 schema 创建。
+
 
 ## 创建可视化图表 \{#creating-visualizations\}
 
