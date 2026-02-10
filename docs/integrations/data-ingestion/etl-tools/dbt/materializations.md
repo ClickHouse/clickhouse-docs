@@ -2,7 +2,7 @@
 sidebar_label: 'Materializations'
 slug: /integrations/dbt/materializations
 sidebar_position: 3
-description: 'Materializations available for dbt with ClickHouse'
+description: 'Materializations available and their configurations'
 keywords: ['clickhouse', 'dbt', 'materializations', 'materialized view', 'incremental']
 title: 'Materializations'
 doc_type: 'guide'

@@ -2,7 +2,7 @@
 sidebar_label: 'Materialization: materialized_view'
 slug: /integrations/dbt/materialization-materialized-view
 sidebar_position: 4
-description: 'Using the materialized_view materialization in dbt-clickhouse'
+description: 'Specific documentation for the the materialized_view materialization'
 keywords: ['clickhouse', 'dbt', 'materialized view', 'refreshable', 'external target table', 'catchup']
 title: 'Materialized Views'
 doc_type: 'guide'

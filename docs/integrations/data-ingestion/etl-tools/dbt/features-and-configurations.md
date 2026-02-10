@@ -2,7 +2,7 @@
 sidebar_label: 'Features and configurations'
 slug: /integrations/dbt/features-and-configurations
 sidebar_position: 2
-description: 'Features for using dbt with ClickHouse'
+description: 'Description of the features and general configurations available'
 keywords: ['clickhouse', 'dbt', 'features']
 title: 'Features and Configurations'
 doc_type: 'guide'
