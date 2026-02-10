@@ -23,16 +23,16 @@ $$
 
 <br />
 
-其中:
+Where:
 
-- $x$ 是数据集中的每个数据点
-- $\bar{x}$ 是数据集的算术平均值
-- $n$ 是数据集中的数据点数量
+- $x$ is each individual data point in the data set
+- $\bar{x}$ is the arithmetic mean of the data set
+- $n$ is the number of data points in the data set
 
-该函数假定输入数据集代表从更大总体中抽取的样本。如果您需要计算整个总体的方差(当您拥有完整数据集时),应使用 [`varPop`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/varpop)。
+该函数假定输入数据集代表从更大总体中抽取的样本。如果您需要计算整个总体的方差(当您拥有完整数据集时),应使用 [`varPop`](/sql-reference/aggregate-functions/reference/varPop)。
 
 :::note
-This function uses a numerically unstable algorithm. If you need [numerical stability](https://en.wikipedia.org/wiki/Numerical_stability) in calculations, use the [`varSampStable`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/varsampstable) function. It works slower but provides a lower computational error.
+This function uses a numerically unstable algorithm. If you need [numerical stability](https://en.wikipedia.org/wiki/Numerical_stability) in calculations, use the [`varSampStable`](/sql-reference/aggregate-functions/reference/varsampstable) function. It works slower but provides a lower computational error.
 :::
 
 **Syntax**

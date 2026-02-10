@@ -591,7 +591,7 @@ ClickHouse を使い始めたばかりの場合は、これを変更しないこ
 
 ## concurrent_threads_scheduler \{#concurrent_threads_scheduler\}
 
-<SettingsInfoBlock type="String" default_value="fair_round_robin" />
+<SettingsInfoBlock type="String" default_value="max_min_fair" />
 
 `concurrent_threads_soft_limit_num` と `concurrent_threads_soft_limit_ratio_to_cores` によって指定される CPU スロットをどのようにスケジューリングするかを決定するポリシーです。制限された数の CPU スロットを同時実行中のクエリ間でどのように分配するかを制御するアルゴリズムです。スケジューラはサーバーを再起動せずに、実行中に変更できます。
 
@@ -1645,6 +1645,17 @@ true の場合、ClickHouse は `CREATE VIEW` クエリ内で空の SQL SECURITY
 
 <SettingsInfoBlock type="Double" default_value="0.5" />セカンダリ索引の非圧縮キャッシュにおける保護キューのサイズを、キャッシュ全体サイズに対する比率として指定します（SLRU ポリシーの場合）。
 
+## insert_deduplication_version \{#insert_deduplication_version\}
+
+<SettingsInfoBlock type="InsertDeduplicationVersions" default_value="old_separate_hashes" />
+
+この設定は、同期および非同期の insert に対する重複排除処理が、互いにまったく異なり不透明な方法で実装されているコードバージョンから、同期および非同期の insert をまたいでデータが重複排除されるコードバージョンへ移行できるようにします。
+デフォルト値は `old_separate_hashes` であり、これは ClickHouse が同期 insert と非同期 insert に対して異なる重複排除ハッシュを使用することを意味します（従来と同じ動作です）。
+後方互換性のため、この値をデフォルト値として使用する必要があります。既存のすべての ClickHouse インスタンスは、破壊的な変更を避けるためにこの値を使用する必要があります。
+`compatible_double_hashes` の値は、ClickHouse が 2 種類の重複排除ハッシュを使用することを意味します。1 つは同期または非同期 insert 用の従来のハッシュで、もう 1 つはすべての insert に対して使用される新しいハッシュです。この値は、既存のインスタンスを新しい動作に安全に移行するために使用する必要があります。
+この値は、移行中に同期または非同期の insert が失われないことを確認するために、一定期間有効にしておく必要があります（`replicated_deduplication_window` および `non_replicated_deduplication_window` 設定を参照してください）。
+最後に、`new_unified_hash` の値は、ClickHouse が同期および非同期 insert に対して新しい重複排除ハッシュのみを使用することを意味します。この値は、新規の ClickHouse インスタンス、またはすでに一定期間 `compatible_double_hashes` の値を使用していたインスタンスで有効化できます。
+
 ## interserver_http_credentials \{#interserver_http_credentials\}
 
 [レプリケーション](../../engines/table-engines/mergetree-family/replication.md)中に他のサーバーへ接続する際に使用されるユーザー名とパスワードです。加えて、サーバーはこれらの認証情報を使って他のレプリカを認証します。
@@ -1998,6 +2009,8 @@ listen ソケットのバックログ（保留中接続キューのサイズ）�
 | `async_queue_max_size` | 非同期ロギングを使用する場合、フラッシュ待ちとしてキューに保持されるメッセージの最大数です。上限を超えたメッセージは破棄されます                       |
 | `console` | コンソールへのロギングを有効にします。有効にするには `1` または `true` を設定します。ClickHouse がデーモンモードで動作していない場合のデフォルトは `1`、それ以外は `0` です                            |
 | `console_log_level` | コンソール出力用のログレベル。デフォルトは `level` です。                                                                                                                 |
+| `console_shutdown_log_level` | サーバーのシャットダウン時のコンソールログレベルを指定します。   |
+| `console_startup_log_level` | サーバー起動時のコンソールログレベルを指定します。起動後、ログレベルは `console_log_level` 設定に戻されます。                                   |   
 | `count` | ローテーションポリシー: ClickHouse によって保持される履歴ログファイルの最大数。                                                                                        |
 | `errorlog` | エラーログファイルへのパス。                                                                                                                                    |
 | `formatting.type` | コンソール出力のログフォーマット。現在は `json` のみがサポートされています。                                                                                                 |
@@ -4159,6 +4172,18 @@ true に設定すると、サーバー設定が正しいかどうかのチェッ
 <skip_check_for_incorrect_settings>1</skip_check_for_incorrect_settings>
 ```
 
+
+## snapshot_cleaner_period \{#snapshot_cleaner_period\}
+
+<SettingsInfoBlock type="UInt64" default_value="120" />
+
+SharedMergeTree のスナップショットパーツを完全に削除する間隔。ClickHouse Cloud でのみ使用可能です
+
+## snapshot_cleaner_pool_size \{#snapshot_cleaner_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="128" />
+
+共有 MergeTree スナップショットのクリーンアップを行うためのスレッド数です。ClickHouse Cloud でのみ利用可能です。
 
 ## ssh_server \{#ssh_server\}
 

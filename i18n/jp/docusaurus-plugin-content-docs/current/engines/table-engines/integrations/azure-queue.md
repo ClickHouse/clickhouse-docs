@@ -130,7 +130,7 @@ SELECT * FROM stats ORDER BY key;
 
 イントロスペクション機能は [S3Queue テーブルエンジン](/engines/table-engines/integrations/s3queue#introspection) と同じですが、いくつか明確な違いがあります：
 
-1. サーバーバージョンが &gt;= 25.1 の場合、キューのインメモリ状態には `system.azure_queue` を使用します。古いバージョンでは `system.s3queue` を使用します（こちらにも `azure` テーブルに関する情報が含まれます）。
+1. サーバーバージョンが &gt;= 25.1 の場合、キューのインメモリ状態には `system.azure_queue_metadata_cache` を使用します。古いバージョンでは `system.s3queue_metadata_cache` を使用します（こちらにも `azure` テーブルに関する情報が含まれます）。
 2. メインの ClickHouse 設定で `system.azure_queue_log` を有効化します。例：
 
 ```xml
@@ -140,7 +140,7 @@ SELECT * FROM stats ORDER BY key;
   </azure_queue_log>
 ```
 
-この永続テーブルは、`system.s3queue` と同じ情報を保持しますが、処理済みおよび失敗したファイルに関するものです。
+この永続テーブルは、`system.s3queue_metadata_cache` と同じ情報を保持しますが、処理済みファイルおよび失敗したファイル用です。
 
 このテーブルの構造は次のとおりです。
 

@@ -8,6 +8,7 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+
 # system.query_log \{#systemquery_log\}
 
 <SystemTableCloud/>
@@ -52,37 +53,39 @@ ClickHouse はこのテーブルからデータを自動的に削除しません
 * `query_start_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — マイクロ秒精度でのクエリ実行開始時刻。
 * `query_duration_ms` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — クエリの実行時間（ミリ秒単位）。
 * `read_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — クエリに参加したすべてのテーブルおよびテーブル関数から読み取られた行の総数です。通常のサブクエリに加え、`IN` や `JOIN` 用のサブクエリも含まれます。分散クエリの場合、`read_rows` にはすべてのレプリカで読み取られた行の総数が含まれます。各レプリカは自身の `read_rows` の値を送信し、クエリのイニシエータであるサーバーが、受信した値とローカルの値を合計します。キャッシュ量はこの値に影響しません。
-* `read_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — クエリに関与したすべてのテーブルおよびテーブル関数から読み取られたバイト数の合計です。通常のサブクエリに加え、`IN` および `JOIN` のサブクエリも含まれます。分散クエリの場合、`read_bytes` にはすべてのレプリカで読み取られたバイト数の合計が含まれます。各レプリカはそれぞれの `read_bytes` の値を送信し、クエリのイニシエータであるサーバーが、受信した値とローカルの値を合算します。キャッシュの使用量はこの値に影響しません。
+* `read_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — クエリに関与したすべてのテーブルおよびテーブル関数から読み取られたバイト数の合計です。通常のサブクエリに加え、`IN` および `JOIN` のサブクエリも含まれます。分散クエリの場合、`read_bytes` にはすべてのレプリカで読み取られたバイト数の合計が含まれます。各レプリカは自身の `read_bytes` の値を送信し、クエリのイニシエータであるサーバーが、受信した値とローカルの値を合計します。キャッシュ量はこの値に影響しません。
 * `written_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — `INSERT` クエリでは書き込まれた行数です。それ以外のクエリでは、この列の値は 0 です。
 * `written_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — `INSERT` クエリでは書き込まれたバイト数（非圧縮）を表します。それ以外のクエリでは、この列の値は 0 です。
-* `result_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — `SELECT` クエリ結果の行数、または `INSERT` クエリで挿入される行数。
-* `result_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — クエリ結果の保存に使用される RAM の容量（バイト単位）。
+* `result_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — `SELECT` クエリの結果の行数、または `INSERT` クエリの行数。
+* `result_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — クエリ結果の保存に使用された RAM の量（バイト単位）。
 * `memory_usage` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — クエリによって消費されたメモリ量。
 * `current_database` ([String](../../sql-reference/data-types/string.md)) — 現在のデータベースの名前。
 * `query` ([String](../../sql-reference/data-types/string.md)) — クエリ文字列。
 * `formatted_query` ([String](../../sql-reference/data-types/string.md)) — 整形済みのクエリ文字列。
-* `normalized_query_hash` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — リテラルの値だけが異なるクエリであれば同一になるように計算された数値ハッシュ。
+* `normalized_query_hash` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — リテラルの値だけが異なるクエリであれば同一になるように計算された数値のハッシュ値。
 * `query_kind` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) — クエリの種別。
-* `databases` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — クエリ内で参照されているデータベース名。
-* `tables` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — クエリ内に含まれるテーブルの名前。
+* `databases` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — クエリ内に含まれるデータベース名。
+* `tables` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — クエリ内で参照されているテーブル名。
 * `columns` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — クエリ内に含まれる列名。
-* `partitions` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — クエリに含まれるパーティション名。
-* `projections` ([String](../../sql-reference/data-types/string.md)) — クエリ実行時に使用されるプロジェクション名。
-* `views` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — クエリに含まれる（マテリアライズドビューまたはライブビュー）の名前。
+* `partitions` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — クエリ内に含まれるパーティション名。
+* `projections` ([String](../../sql-reference/data-types/string.md)) — クエリ実行時に使用されたプロジェクションの名前。
+* `views` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — クエリ内で参照されている（マテリアライズドビューまたはライブビュー）の名前。
 * `exception_code` ([Int32](../../sql-reference/data-types/int-uint.md)) — 例外コード。
 * `exception` ([String](../../sql-reference/data-types/string.md)) — 例外メッセージ。
 * `stack_trace` ([String](../../sql-reference/data-types/string.md)) — [スタックトレース](https://en.wikipedia.org/wiki/Stack_trace)。クエリが正常に完了した場合は空文字列となります。
-* `is_initial_query` ([UInt8](../../sql-reference/data-types/int-uint.md)) — クエリ種別。取りうる値:
+* `is_initial_query` ([UInt8](../../sql-reference/data-types/int-uint.md)) — クエリの種別。取りうる値:
   * 1 — クエリがクライアントによって開始された。
   * 0 — クエリが、分散クエリ実行の一部として別のクエリから開始された。
+* `connection_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — 接続元クライアントの IP アドレス。プロキシ経由で接続された場合、この値はプロキシのアドレスになります。
+* `connection_port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — 接続元のクライアントポート。プロキシ経由で接続された場合は、プロキシのポートになります。
 * `user` ([String](../../sql-reference/data-types/string.md)) — 現在のクエリを実行したユーザー名。
 * `query_id` ([String](../../sql-reference/data-types/string.md)) — クエリ ID。
-* `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — クエリの実行に使用されたIPアドレス。
-* `port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — クエリの送信に使用されたクライアントポート。
+* `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — クエリの実行に使用された IP アドレス。プロキシ経由で接続していて、[auth&#95;use&#95;forwarded&#95;address](/operations/server-configuration-parameters/settings#auth_use_forwarded_address) が有効になっている場合、この値はプロキシではなくクライアントのアドレスになります。
+* `port` ([UInt16](/sql-reference/data-types/int-uint#integer-ranges)) — クエリの送信に使用されたクライアントポート。プロキシ経由で接続していて、[auth&#95;use&#95;forwarded&#95;address](/operations/server-configuration-parameters/settings#auth_use_forwarded_address) が有効になっている場合、これはプロキシではなくクライアントのポートになります。
 * `initial_user` ([String](../../sql-reference/data-types/string.md)) — 初期クエリを実行したユーザー名（分散クエリ実行時）。
 * `initial_query_id` ([String](../../sql-reference/data-types/string.md)) — 分散クエリ実行における初期クエリの ID。
-* `initial_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — 親クエリが実行された送信元 IP アドレス。
-* `initial_port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — 親クエリの発行に使用されたクライアントポート。
+* `initial_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — 親クエリが開始された送信元 IP アドレス。
+* `initial_port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — 親クエリの送信に使用されたクライアントポート。
 * `initial_query_start_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 分散クエリ実行における初期クエリの開始時刻。
 * `initial_query_start_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 分散クエリ実行時の初期クエリ開始時刻（マイクロ秒精度）。
 * `interface` ([UInt8](../../sql-reference/data-types/int-uint.md)) — クエリが発行されたインターフェイス。取りうる値:
@@ -93,44 +96,42 @@ ClickHouse はこのテーブルからデータを自動的に削除しません
 * `client_name` ([String](../../sql-reference/data-types/string.md)) — [clickhouse-client](../../interfaces/cli.md) または別の TCP クライアントの名前。
 * `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/cli.md) またはその他の TCP クライアントのリビジョン番号。
 * `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/cli.md) または別の TCP クライアントのメジャーバージョン番号。
-* `client_version_minor` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/cli.md) または別の TCP クライアントのマイナーバージョン。
+* `client_version_minor` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/cli.md) または別の TCP クライアントのマイナーバージョン番号。
 * `client_version_patch` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/cli.md) またはその他の TCP クライアントのバージョン番号のパッチ部分。
 * `script_query_number` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/cli.md) 用の、複数のクエリを含むスクリプト内におけるクエリ番号。
 * `script_line_number` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 複数のクエリを含むスクリプト内で、[clickhouse-client](../../interfaces/cli.md) 用クエリの開始行番号。
-* `http_method` (UInt8) — クエリを実行した HTTP メソッド。取りうる値:
+* `http_method` (UInt8) — クエリを開始した HTTP メソッド。取りうる値:
   * 0 — クエリはTCPインターフェイスから実行されました。
   * 1 — `GET`メソッドが使用されました。
   * 2 — `POST`メソッドが使用されました。
-* `http_user_agent` ([String](../../sql-reference/data-types/string.md)) — HTTP クエリで送信された HTTP ヘッダー `UserAgent`。
-* `http_referer` ([String](../../sql-reference/data-types/string.md)) — HTTP クエリで送信される HTTP ヘッダー `Referer`（クエリを発行したページの絶対 URL または一部の URL を含む）。
+* `http_user_agent` ([String](../../sql-reference/data-types/string.md)) — HTTP クエリで送信された HTTP ヘッダー `UserAgent` の値。
+* `http_referer` ([String](../../sql-reference/data-types/string.md)) — HTTP クエリで送信された HTTP ヘッダー `Referer`（クエリを発行したページの絶対または部分的なアドレスを含む）。
 * `forwarded_for` ([String](../../sql-reference/data-types/string.md)) — HTTP クエリで送信される HTTP ヘッダー `X-Forwarded-For`。
-* `quota_key` ([String](../../sql-reference/data-types/string.md)) — [quotas](../../operations/quotas.md) 設定で指定される `quota key`（`keyed` を参照）。
+* `quota_key` ([String](../../sql-reference/data-types/string.md)) — [quotas](../../operations/quotas.md) 設定で指定された `quota key`（`keyed` を参照）。
 * `revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — ClickHouse のリビジョン番号。
-* `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map.md)) — さまざまな指標を計測する ProfileEvents。これらの説明はテーブル [system.events](/operations/system-tables/events) に記載されています。
+* `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map.md)) — さまざまなメトリクスを計測する ProfileEvents。各イベントの説明はテーブル [system.events](/operations/system-tables/events) に記載されています。
 * `Settings` ([Map(String, String)](../../sql-reference/data-types/map.md)) — クライアントがクエリを実行したときに変更された設定。設定変更のログ記録を有効にするには、`log_query_settings` パラメータを 1 に設定します。
-* `log_comment` ([String](../../sql-reference/data-types/string.md)) — ログコメント。任意の文字列を設定できますが、その長さは [max&#95;query&#95;size](../../operations/settings/settings.md#max_query_size) を超えてはなりません。定義されていない場合は空文字列です。
+* `log_comment` ([String](../../sql-reference/data-types/string.md)) — ログコメント。任意の文字列を設定できますが、その長さは [max&#95;query&#95;size](../../operations/settings/settings.md#max_query_size) を超えてはなりません。この設定が定義されていない場合は空文字列です。
 * `thread_ids` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — クエリ実行に関与したスレッド ID。これらのスレッドが同時に実行されていたとは限りません。
-* `peak_threads_usage` ([UInt64)](../../sql-reference/data-types/int-uint.md)) — クエリの実行に使用された同時スレッド数の最大値。
+* `peak_threads_usage` ([UInt64)](../../sql-reference/data-types/int-uint.md)) — クエリ実行中に同時に実行されていたスレッド数の最大値。
 * `used_aggregate_functions` ([Array(String)](../../sql-reference/data-types/array.md)) — クエリ実行中に使用された `aggregate functions` の正準名。
-* `used_aggregate_function_combinators` ([Array(String)](../../sql-reference/data-types/array.md)) — クエリ実行中に使用された `aggregate function combinators` の正規名。
+* `used_aggregate_function_combinators` ([Array(String)](../../sql-reference/data-types/array.md)) — クエリ実行中に使用された `aggregate function combinators` の正準名。
 * `used_database_engines` ([Array(String)](../../sql-reference/data-types/array.md)) — クエリ実行中に使用されたデータベースエンジンのカノニカル名。
 * `used_data_type_families` ([Array(String)](../../sql-reference/data-types/array.md)) — クエリ実行中に使用された `data type families` の正準名。
-* `used_dictionaries` ([Array(String)](../../sql-reference/data-types/array.md)) — クエリ実行中に使用された `dictionaries` の正規名。XML ファイルで設定されたディクショナリの場合はそのディクショナリ名であり、SQL ステートメントで作成されたディクショナリの場合は、正規名は完全修飾オブジェクト名になります。
+* `used_dictionaries` ([Array(String)](../../sql-reference/data-types/array.md)) — クエリ実行中に使用された `dictionaries` の正規名。XML ファイルで設定されたディクショナリの場合はディクショナリ名であり、SQL ステートメントで作成されたディクショナリの場合は、その正規名は完全修飾オブジェクト名になります。
 * `used_formats` ([Array(String)](../../sql-reference/data-types/array.md)) — クエリ実行中に使用された `formats` の正規名。
 * `used_functions` ([Array(String)](../../sql-reference/data-types/array.md)) — クエリ実行時に使用された `functions` の正規名。
 * `used_storages` ([Array(String)](../../sql-reference/data-types/array.md)) — クエリ実行中に使用された `storages` の正規名。
 * `used_table_functions` ([Array(String)](../../sql-reference/data-types/array.md)) — クエリの実行中に使用された `table functions` の正規名。
 * `used_executable_user_defined_functions` ([Array(String)](../../sql-reference/data-types/array.md)) — クエリ実行中に使用された `executable user defined functions` の正規名。
 * `used_sql_user_defined_functions` ([Array(String)](../../sql-reference/data-types/array.md)) — クエリの実行中に使用された `sql user defined functions` の正規名。
-* `used_privileges` ([Array(String)](../../sql-reference/data-types/array.md)) - クエリ実行中にアクセスチェックに成功した権限。
+* `used_privileges` ([Array(String)](../../sql-reference/data-types/array.md)) - クエリ実行中に正常にチェックされた権限。
 * `missing_privileges` ([Array(String)](../../sql-reference/data-types/array.md)) - クエリ実行時に不足している権限。
 * `query_cache_usage` ([Enum8](../../sql-reference/data-types/enum.md)) — クエリ実行中における [query cache](../query-cache.md) の使用状況。値：
   * `'Unknown'` = ステータスは不明。
   * `'None'` = クエリ結果はクエリキャッシュへの書き込みも読み取りも行われなかった。
   * `'Write'` = クエリ結果がクエリキャッシュに書き込まれた。
   * `'Read'` = クエリ結果がクエリキャッシュから読み取られた。
-
-
 
 ## 例 \{#examples\}
 

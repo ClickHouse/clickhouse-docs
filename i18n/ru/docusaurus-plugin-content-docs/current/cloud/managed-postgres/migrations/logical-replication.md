@@ -44,6 +44,15 @@ dig +short <your-managed-postgres-hostname>
     ```sql
     GRANT rds_replication TO <your-username>;
     ```
+- Роль, которую вы используете для целевой базы данных, должна иметь права на запись на объекты целевой базы данных:
+    ```sql
+    GRANT USAGE ON SCHEMA <schema_i> TO subscriber_user;
+    GRANT CREATE ON DATABASE destination_db TO subscriber_user;
+    GRANT pg_create_subscription TO subscriber_user;
+
+    -- Предоставление прав на таблицы
+    GRANT INSERT, UPDATE, DELETE, TRUNCATE ON ALL TABLES IN SCHEMA <schema_i> TO subscriber_user;
+    ```
 
 Убедитесь, что исходная база данных настроена следующим образом:
 

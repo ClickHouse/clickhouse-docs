@@ -38,14 +38,12 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 有关请求参数的说明，请参阅[请求描述](../../../sql-reference/statements/create/table.md)。
 
+
 ### CoalescingMergeTree 的参数 \{#parameters-of-coalescingmergetree\}
 
 #### 列 \{#columns\}
 
-`columns` - 一个包含需要合并其值的列名的元组（tuple）。可选参数。
-这些列必须是数值类型，并且不能出现在分区键或排序键中。
-
-如果未指定 `columns`，ClickHouse 会合并所有不在排序键中的列的值。
+`columns` - 可选参数。一个包含要合并其值的列名的元组（tuple）。提供的列不能出现在分区键或排序键中。如果未指定 `columns`，ClickHouse 会合并所有不在排序键中的列的值。
 
 ### 查询子句 \{#query-clauses\}
 
@@ -111,7 +109,7 @@ SELECT * FROM test_table ORDER BY key;
 └─────┴───────────┴──────────────┴────────────┘
 ```
 
-获取最终正确结果的推荐查询：
+为获得最终正确结果，推荐使用如下查询：
 
 ```sql
 SELECT * FROM test_table FINAL ORDER BY key;
@@ -128,7 +126,7 @@ SELECT * FROM test_table FINAL ORDER BY key;
 
 :::note
 
-如果底层数据分片（parts）尚未完全合并，使用 `GROUP BY` 的方式可能会返回不正确的结果。
+如果底层分区片段（parts）尚未完全合并，使用 `GROUP BY` 的方式可能会返回不正确的结果。
 
 ```sql
 SELECT key, last_value(value_int), last_value(value_string), last_value(value_date)  FROM test_table GROUP BY key; -- Not recommended.

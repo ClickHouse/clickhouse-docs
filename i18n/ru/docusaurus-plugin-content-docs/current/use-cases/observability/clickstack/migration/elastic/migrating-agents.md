@@ -92,7 +92,7 @@ OpenTelemetry Collector обеспечивает масштабируемое и
   ```
 
   :::note Конфигурация TLS
-  Если требуется взаимная TLS-аутентификация (Mutual TLS), сгенерируйте сертификаты и ключи, используя руководство Elastic [«Configure SSL/TLS for the Logstash output»](https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#use-ls-output). После этого их можно указать в конфигурации, как показано выше.
+  Если требуется взаимная TLS-аутентификация (Mutual TLS), сгенерируйте сертификаты и ключи, используя руководство Elastic [&quot;Configure SSL/TLS for the Logstash output&quot;](https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#use-ls-output). После этого их можно указать в конфигурации, как показано выше.
   :::
 
   События будут получены в формате ECS. Их можно преобразовать в схему OpenTelemetry с помощью трансформера Vector Remap Language (VRL). Настройка этого трансформера проста — файл скрипта хранится отдельно:
@@ -248,7 +248,7 @@ OpenTelemetry Collector обеспечивает масштабируемое и
           authorization: ${YOUR_INGESTION_API_KEY}
   ```
 
-  Значение `YOUR_INGESTION_API_KEY` генерируется ClickStack. Ключ можно найти в приложении HyperDX в разделе `Team Settings → API Keys`.
+  Значение `YOUR_INGESTION_API_KEY` генерируется ClickStack. Ключ можно найти в пользовательском интерфейсе ClickStack (HyperDX) в разделе `Team Settings → API Keys`.
 
   <Image img={ingestion_key} alt="Ключи ингестии" size="lg" />
 
@@ -373,7 +373,7 @@ Elastic Agent включает встроенный EDOT Collector, которы
 
 ```yaml
 exporters:
-  # Экспортер для отправки логов и метрик в Elasticsearch Managed OTLP Input
+  # Exporter to send logs and metrics to Elasticsearch Managed OTLP Input
   otlp:
     endpoint: localhost:4317
     headers:
@@ -382,7 +382,11 @@ exporters:
       insecure: true
 ```
 
-`YOUR_INGESTION_API_KEY` здесь генерируется в ClickStack. Вы можете найти ключ в приложении HyperDX в разделе `Team Settings → API Keys`.
+:::note Управляемый ClickStack
+По умолчанию ключ API для ингестии не требуется, если запускать OpenTelemetry Collector автономно для Управляемого ClickStack. Однако ингестию можно защитить, указав токен аутентификации OTLP. См. [&quot;Защита коллектора&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector).
+:::
+
+`YOUR_INGESTION_API_KEY` здесь генерируется в ClickStack. Вы можете найти ключ в интерфейсе ClickStack в разделе `Team Settings → API Keys`.
 
 <Image img={ingestion_key} alt="Ключи для ингестии" size="lg" />
 
@@ -390,7 +394,7 @@ exporters:
 
 ```yaml
 exporters:
-  # Экспортер для отправки логов и метрик в Elasticsearch Managed OTLP Input
+  # Exporter to send logs and metrics to Elasticsearch Managed OTLP Input
   otlp:
     endpoint: localhost:4317
     headers:
