@@ -348,6 +348,7 @@ const sidebars = {
         'cloud/managed-postgres/security',
         'cloud/managed-postgres/extensions',
         'cloud/managed-postgres/settings',
+        'cloud/managed-postgres/benchmarks',
         'cloud/managed-postgres/faq',
         {
           type: 'category',
@@ -647,7 +648,6 @@ const sidebars = {
             },
           ],
         },
-        'integrations/data-ingestion/clickpipes/aws-privatelink',
         {
           type: 'category',
           label: 'ClickPipes for Postgres',
@@ -800,6 +800,16 @@ const sidebars = {
                 'integrations/data-ingestion/clickpipes/mongodb/source/documentdb',
               ],
             },
+          ],
+        },
+                {
+          type: 'category',
+          label: 'ClickPipes for BigQuery',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'integrations/data-ingestion/clickpipes/bigquery/overview',
+            'integrations/data-ingestion/clickpipes/bigquery/get-started',
           ],
         },
         'integrations/data-ingestion/clickpipes/aws-privatelink',
@@ -1310,6 +1320,7 @@ const sidebars = {
           items: ['guides/best-practices/skipping-indexes-examples'],
         },
         'guides/best-practices/prewhere',
+        'guides/lazy-materialization',
         'guides/best-practices/bulkinserts',
         'guides/best-practices/asyncinserts',
         'guides/best-practices/avoidmutations',

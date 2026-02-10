@@ -1866,6 +1866,7 @@ balancer's
 balancers
 basename
 bcrypt
+benchmarked
 benchmarking
 bfloat
 bigint
@@ -3079,6 +3080,7 @@ permalink
 permalinked
 permalinks
 persistency
+pgbench
 pgRouting
 pgSQL
 pgvector
