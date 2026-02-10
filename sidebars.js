@@ -648,7 +648,6 @@ const sidebars = {
             },
           ],
         },
-        'integrations/data-ingestion/clickpipes/aws-privatelink',
         {
           type: 'category',
           label: 'ClickPipes for Postgres',
@@ -801,6 +800,16 @@ const sidebars = {
                 'integrations/data-ingestion/clickpipes/mongodb/source/documentdb',
               ],
             },
+          ],
+        },
+                {
+          type: 'category',
+          label: 'ClickPipes for BigQuery',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'integrations/data-ingestion/clickpipes/bigquery/overview',
+            'integrations/data-ingestion/clickpipes/bigquery/get-started',
           ],
         },
         'integrations/data-ingestion/clickpipes/aws-privatelink',
