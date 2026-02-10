@@ -439,13 +439,13 @@ SETTINGS
 
 ## Интроспекция \{#introspection\}
 
-Для интроспекции используйте неперсистентную таблицу `system.s3queue` и персистентную таблицу `system.s3queue_log`.
+Для интроспекции используйте неперсистентную таблицу `system.s3queue_metadata_cache` и персистентную таблицу `system.s3queue_log`.
 
-1. `system.s3queue`. Эта таблица неперсистентная и отображает состояние `S3Queue` в памяти: какие файлы в данный момент обрабатываются, какие файлы уже обработаны или завершились с ошибкой.
+1. `system.s3queue_metadata_cache`. Эта таблица неперсистентная и отображает состояние `S3Queue` в памяти: какие файлы в данный момент обрабатываются, какие файлы уже обработаны или завершились с ошибкой.
 
 ```sql
 ┌─statement──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ CREATE TABLE system.s3queue
+│ CREATE TABLE system.s3queue_metadata_cache
 (
     `database` String,
     `table` String,
@@ -467,7 +467,7 @@ COMMENT 'Contains in-memory state of S3Queue metadata and currently processed ro
 ```sql
 
 SELECT *
-FROM system.s3queue
+FROM system.s3queue_metadata_cache
 
 Row 1:
 ──────
@@ -481,7 +481,7 @@ ProfileEvents:         {'ZooKeeperTransactions':3,'ZooKeeperGet':2,'ZooKeeperMul
 exception:
 ```
 
-2. `system.s3queue_log`. Персистентная таблица. Содержит ту же информацию, что и `system.s3queue`, но для файлов со статусами `processed` и `failed`.
+2. `system.s3queue_log`. Персистентная таблица. Содержит ту же информацию, что и `system.s3queue_metadata_cache`, но для файлов со статусами `processed` и `failed`.
 
 Таблица имеет следующую структуру:
 

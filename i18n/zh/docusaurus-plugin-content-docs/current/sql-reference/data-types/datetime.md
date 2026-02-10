@@ -21,6 +21,7 @@ DateTime([timezone])
 
 时间精度：1 秒。
 
+
 ## 速度 \{#speed\}
 
 在 _大多数_ 情况下，`Date` 数据类型比 `DateTime` 更快。
@@ -116,18 +117,19 @@ SELECT toDateTime(now(), 'Asia/Istanbul') AS column, toTypeName(column) AS x
 ```sql
 SELECT
 toDateTime(timestamp, 'Europe/London') AS lon_time,
-toDateTime(timestamp, 'Asia/Istanbul') AS mos_time
+toDateTime(timestamp, 'Asia/Istanbul') AS istanbul_time
 FROM dt
 ```
 
 ```text
-┌───────────lon_time──┬────────────mos_time─┐
+┌───────────lon_time──┬───────istanbul_time─┐
 │ 2019-01-01 00:00:00 │ 2019-01-01 03:00:00 │
 │ 2018-12-31 21:00:00 │ 2019-01-01 00:00:00 │
 └─────────────────────┴─────────────────────┘
 ```
 
-由于时区转换只会更改元数据，因此该操作不会产生计算开销。
+由于时区转换只会修改元数据，因此该操作不会带来任何计算开销。
+
 
 ## 对时区支持的限制 \{#limitations-on-time-zones-support\}
 
@@ -183,6 +185,7 @@ SELECT '2023-03-26 01:30:00'::DateTime('Europe/London') AS time, time + toInterv
 ```
 
 在这种情况下，ClickHouse 会将不存在的时间 `2023-03-26 01:30:00` 调整为 `2023-03-26 00:30:00`。
+
 
 ## 另请参阅 \{#see-also\}
 

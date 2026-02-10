@@ -946,18 +946,19 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
-允许配置在执行 [ALTER](../../sql-reference/statements/alter/index.md)、[OPTIMIZE](../../sql-reference/statements/optimize.md) 或 [TRUNCATE](../../sql-reference/statements/truncate.md) 查询时，是否以及如何等待在副本上执行的操作完成。
+允许配置在执行 [`ALTER`](../../sql-reference/statements/alter/index.md)、[`OPTIMIZE`](../../sql-reference/statements/optimize.md) 或 [`TRUNCATE`](../../sql-reference/statements/truncate.md) 查询时，是否以及如何等待在副本上执行的操作完成。
 
 可选值：
 
 - `0` — 不等待。
 - `1` — 仅等待本副本执行完成。
 - `2` — 等待所有副本执行完成。
+- `3` - 仅等待活动副本执行完成。
 
 Cloud 默认值：`1`。
 
 :::note
-`alter_sync` 仅适用于 `Replicated` 表，对非 `Replicated` 表的 ALTER 不产生任何效果。
+`alter_sync` 仅适用于 `Replicated` 和 `SharedMergeTree` 表，对非 `Replicated` 或 `Shared` 表的 ALTER 不产生任何效果。
 :::
 
 ## alter_update_mode \{#alter_update_mode\}
@@ -2290,15 +2291,6 @@ SETTINGS convert_query_to_cnf = true;
 - enable_when_possible — 如果 `insert_deduplicate` 启用且 SELECT 结果稳定，则启用去重，否则禁用。
 - enable_even_for_bad_queries - 如果 `insert_deduplicate` 启用，则始终启用去重。如果 SELECT 结果不稳定，会记录警告日志，但查询仍然在启用去重的情况下执行。此选项用于向后兼容。建议优先使用其他选项，因为该选项可能导致不符合预期的结果。
 
-## default_dictionary_database \{#default_dictionary_database\}
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": ""},{"label": "New setting"}]}]}/>
-
-在未指定数据库名称时用于搜索外部字典的数据库。
-空字符串表示当前数据库。如果在指定的默认数据库中未找到字典，ClickHouse 会回退使用当前数据库。
-
-在从基于 XML 定义的全局字典迁移到基于 SQL 定义的字典时，这一配置会非常有用。
-
 ## default_materialized_view_sql_security \{#default_materialized_view_sql_security\}
 
 <SettingsInfoBlock type="SQLSecurityType" default_value="DEFINER" />
@@ -3391,11 +3383,11 @@ FORMAT PrettyCompactMonoBlock
 
 ## enable_join_runtime_filters \{#enable_join_runtime_filters\}
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Enabled this optimization"}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 在运行时根据从右侧收集到的一组 JOIN 键来过滤左侧。
 
@@ -7260,7 +7252,9 @@ Cloud 默认值：1 TB。
 例如，如果所需数量的条目在每个数据块中都存在，并且 `max_threads = 8`，那么会读取 8 个数据块，尽管实际上只读取一个就足够。
 `max_threads` 值越小，内存消耗越少。
 
-`max_threads` 的默认值与 ClickHouse 可用的硬件线程数相同。
+`max_threads` 的默认值与 ClickHouse 可用的硬件线程数（CPU 核心数）相同。
+作为一种特殊情况，对于 CPU 核心数少于 32 且启用了 SMT（例如 Intel HyperThreading）的 x86 处理器，ClickHouse 默认使用逻辑核心数（= 2 × 物理核心数）。
+
 在没有 SMT（例如 Intel HyperThreading）的情况下，该值等于 CPU 核心数。
 
 对于 ClickHouse Cloud 用户，默认值会显示为 `auto(N)`，其中 N 对应于服务的 vCPU 规格，例如 2vCPU/8GiB、4vCPU/16GiB 等。
@@ -8536,18 +8530,18 @@ SELECT * FROM test2;
 ```sql
 CREATE TABLE fuse_tbl(a Int8, b Int8) Engine = Log;
 SET optimize_syntax_fuse_functions = 1;
-EXPLAIN SYNTAX SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
+EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
 ```
 
 结果：
 
 ```text
 SELECT
-    sum(a),
-    sumCount(b).1,
-    sumCount(b).2,
-    (sumCount(b).1) / (sumCount(b).2)
-FROM fuse_tbl
+    sum(__table1.a) AS `sum(a)`,
+    tupleElement(sumCount(__table1.b), 1) AS `sum(b)`,
+    tupleElement(sumCount(__table1.b), 2) AS `count(b)`,
+    divide(tupleElement(sumCount(__table1.b), 1), toFloat64(tupleElement(sumCount(__table1.b), 2))) AS `avg(b)`
+FROM default.fuse_tbl AS __table1
 ```
 
 
@@ -11426,6 +11420,22 @@ Cloud 默认值：`1`
 
 对未启用文件系统缓存的远程磁盘使用用户态页缓存。
 
+## use_page_cache_for_local_disks \{#use_page_cache_for_local_disks\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "在本地磁盘上使用用户空间页缓存的新设置"}]}]}/>
+
+从本地磁盘读取数据时使用用户空间页缓存。用于测试，在实际环境中不太可能带来性能提升。需要将 local_filesystem_read_method 设置为 'pread' 或 'read'。不会禁用操作系统页缓存；可以使用 min_bytes_to_use_direct_io 来禁用它。仅影响常规表，不影响 file() 表函数或 File() 表引擎。
+
+## use_page_cache_for_object_storage \{#use_page_cache_for_object_storage\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "用于对象存储表函数启用用户态页缓存的新设置"}]}]}/>
+
+在从对象存储表函数（s3、azure、hdfs）和表引擎（S3、Azure、HDFS）读取时使用用户态页缓存。
+
 ## use_page_cache_with_distributed_cache \{#use_page_cache_with_distributed_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -11443,6 +11453,19 @@ Cloud 默认值：`1`
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置。"}]}]}/>
 
 对 Paimon 表函数使用 Paimon 分区裁剪
+
+## use_parquet_metadata_cache \{#use_parquet_metadata_cache\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "启用 Parquet 文件元数据缓存。"}]}]}/>
+
+如果启用，`parquet` 格式可以使用 Parquet 元数据缓存。
+
+可能的值：
+
+- 0 - 禁用
+- 1 - 启用
 
 ## use_primary_key \{#use_primary_key\}
 
@@ -11589,11 +11612,11 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 ## use_statistics_cache \{#use_statistics_cache\}
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "启用统计信息缓存"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "新增设置"}]}]}/>
 
 在查询中使用统计信息缓存，以避免为每个分区片段分别加载统计信息带来的开销
 
