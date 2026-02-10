@@ -24,7 +24,7 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [BYOC Network Security](/cloud/reference/byoc/reference/network_security) | Deploy ClickHouse on your own cloud infrastructure |
 | [BYOC Observability](/cloud/reference/byoc/observability) | Monitor and observe your BYOC ClickHouse deployment using built-in dashboards and Prometheus metrics |
 | [BYOC Operations and Maintenance](/cloud/reference/byoc/operations) | Deploy ClickHouse on your own cloud infrastructure |
-| [BYOC Priviledge](/cloud/reference/byoc/reference/priviledge) | Deploy ClickHouse on your own cloud infrastructure |
+| [BYOC Privilege](/cloud/reference/byoc/reference/privilege) | Deploy ClickHouse on your own cloud infrastructure |
 | [BYOC security playbook](/cloud/security/audit-logging/byoc-security-playbook) | This page illustrates methods customers can use to identify potential security events |
 | [ClickHouse Cloud production readiness guide](/cloud/guides/production-readiness) | Guide for organizations transitioning from quick start to enterprise-ready ClickHouse Cloud deployments |
 | [ClickHouse Government](/cloud/infrastructure/clickhouse-government) | Overview of ClickHouse Government offering |
