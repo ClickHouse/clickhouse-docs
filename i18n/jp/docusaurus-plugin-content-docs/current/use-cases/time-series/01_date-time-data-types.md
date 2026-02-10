@@ -3,12 +3,12 @@ title: '日付と時刻のデータ型 - 時系列'
 sidebar_label: '日付と時刻のデータ型'
 description: 'ClickHouse における時系列データ向けの日付・時刻データ型。'
 slug: /use-cases/time-series/date-time-data-types
-keywords: ['time-series', 'DateTime', 'DateTime64', 'Date', 'データ型', '時間データ', 'タイムスタンプ']
+keywords: ['time-series', 'DateTime', 'DateTime64', 'Date', 'Time', 'Time64', 'データ型', '時間データ', 'タイムスタンプ']
 show_related_blogs: true
 doc_type: 'reference'
 ---
 
-# 日付および時刻データ型 {#date-and-time-data-types}
+# 日付および時刻データ型 \{#date-and-time-data-types\}
 
 効果的な時系列データ管理のためには、充実した日付および時刻型の体系が不可欠であり、ClickHouse はまさにそれを提供します。
 コンパクトな日付表現からナノ秒精度を持つ高精度タイムスタンプまで、これらの型は、さまざまな時系列アプリケーションにおける実用上の要件とストレージ効率のバランスを取るように設計されています。
@@ -67,7 +67,65 @@ precise_datetime:      2025-03-12 11:39:07.196
 very_precise_datetime: 2025-03-12 11:39:07.196724000
 ```
 
-## タイムゾーン {#time-series-timezones}
+
+## Time と Time64 型 \{#time-series-time-types\}
+
+日付部分を含まない時刻のみを保存する必要がある場合に、ClickHouse では [`Time`](/sql-reference/data-types/time) と [`Time64`](/sql-reference/data-types/time64) 型が提供されています。これらはバージョン 25.6 で導入されたもので、繰り返しスケジュールや日次パターンの表現、あるいは日付と時刻のコンポーネントを分離するのが適切な状況で有用です。
+
+:::note
+`Time` と `Time64` を使用するには、次の設定を有効化する必要があります: `SET enable_time_time64_type = 1;`
+
+これらの型はバージョン 25.6 で導入されました
+:::
+
+`Time` 型は、秒精度で時・分・秒を保存します。内部的には符号付き 32 ビット整数として保存され、`[-999:59:59, 999:59:59]` の範囲をサポートしており、24 時間を超える値も扱えます。これは、経過時間の追跡や、1 日の範囲外の値を生じる算術演算を行う場合に役立ちます。
+
+サブ秒精度が必要な場合、`Time64` は符号付き Decimal64 値として、小数秒を設定可能な形で時刻を保存します。小数桁数を定義するために、精度パラメータ (0–9) を受け取ります。一般的な精度値は 3（ミリ秒）、6（マイクロ秒）、9（ナノ秒）です。
+
+`Time` も `Time64` もタイムゾーンをサポートしません。どちらも地域的な文脈を持たない純粋な時刻のみを表現します。
+
+それでは、Time 型のカラムを持つテーブルを作成してみましょう:
+
+```sql
+SET enable_time_time64_type = 1;
+
+CREATE TABLE time_examples
+(
+    `event_id` UInt8,
+    `basic_time` Time,
+    `precise_time` Time64(3)
+)
+ENGINE = MergeTree
+ORDER BY event_id;
+```
+
+文字列リテラルまたは数値リテラルを使用して時刻値を挿入できます。`Time` の場合、数値は 00:00:00 からの経過秒として解釈されます。`Time64` の場合、数値は 00:00:00 からの経過秒として解釈され、小数部分はカラムの精度に従って解釈されます。
+
+```sql
+INSERT INTO time_examples VALUES 
+    (1, '14:30:25', '14:30:25.123'),
+    (2, 52225, 52225.456),
+    (3, '26:11:10', '26:11:10.789');  -- Values normalize beyond 24 hours
+
+SELECT * FROM time_examples ORDER BY event_id;
+```
+
+```text
+┌─event_id─┬─basic_time─┬─precise_time─┐
+│        1 │ 14:30:25   │ 14:30:25.123 │
+│        2 │ 14:30:25   │ 14:30:25.456 │
+│        3 │ 26:11:10   │ 26:11:10.789 │
+└──────────┴────────────┴──────────────┘
+```
+
+時刻の値は自然にフィルタできます。
+
+```sql
+SELECT * FROM time_examples WHERE basic_time = '14:30:25';
+```
+
+
+## タイムゾーン \{#time-series-timezones\}
 
 多くのユースケースでは、タイムゾーンもあわせて保存しておく必要があります。`DateTime` または `DateTime64` 型の最後の引数として、タイムゾーンを指定できます。
 
@@ -78,7 +136,7 @@ CREATE TABLE dtz
     `dt_1` DateTime('Europe/Berlin'),
     `dt_2` DateTime,
     `dt64_1` DateTime64(9, 'Europe/Berlin'),
-    `dt64_2` DateTime64(9),
+    `dt64_2` DateTime64(9)
 )
 ENGINE = MergeTree
 ORDER BY id;
@@ -133,7 +191,8 @@ dt64_2: 2022-12-12 12:13:15.123456789
 2 行目では、すべての値をタイムゾーンを指定せずに挿入したため、サーバーのローカルタイムゾーンが使用されました。
 1 行目と同様に、`dt_1` と `dt64_1` は `Europe/Berlin` に変換され、`dt_2` と `dt64_2` はサーバーのローカルタイムゾーンを使用します。
 
-## 日付と時刻の関数 {#time-series-date-time-functions}
+
+## 日付と時刻の関数 \{#time-series-date-time-functions\}
 
 ClickHouse には、異なるデータ型同士を変換するための一連の関数も用意されています。
 

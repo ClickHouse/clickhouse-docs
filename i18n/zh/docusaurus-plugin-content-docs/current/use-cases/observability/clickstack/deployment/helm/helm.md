@@ -18,7 +18,7 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 如果您当前正在使用 `hdx-oss-v2` Helm 图表，请迁移到 `clickstack` Helm 图表。`hdx-oss-v2` 图表目前处于维护模式，将不再新增功能。所有新的开发工作都集中在 `clickstack` 图表上，它在提供相同功能的同时改进了命名并具有更清晰的结构组织。
 :::
 
-HyperDX 的 Helm 图表可以在 [此处](https://github.com/hyperdxio/helm-charts) 获取，这是生产环境部署的**推荐**方式。
+ClickStack 的 Helm 图表可以在 [此处](https://github.com/ClickHouse/ClickStack-helm-charts) 获取，这是生产环境部署的**推荐**方式。
 
 默认情况下，Helm 图表会部署所有核心组件，包括：
 
@@ -36,12 +36,13 @@ HyperDX 的 Helm 图表可以在 [此处](https://github.com/hyperdxio/helm-char
 * TLS 和入口配置
 * Secrets 管理和认证设置
 
-### 适用场景 {#suitable-for}
+
+### 适用场景 \{#suitable-for\}
 
 * 概念验证（PoC）
 * 生产环境
 
-## 部署步骤 {#deployment-steps}
+## 部署步骤 \{#deployment-steps\}
 
 <br/>
 
@@ -57,7 +58,7 @@ HyperDX 的 Helm 图表可以在 [此处](https://github.com/hyperdxio/helm-char
   添加 ClickStack Helm 仓库：
 
   ```shell
-  helm repo add clickstack https://hyperdxio.github.io/helm-charts
+  helm repo add clickstack https://clickhouse.github.io/ClickStack-helm-charts
   helm repo update
   ```
 
@@ -71,7 +72,7 @@ HyperDX 的 Helm 图表可以在 [此处](https://github.com/hyperdxio/helm-char
 
   ### 验证安装
 
-  验证安装:
+  验证安装：
 
   ```shell
   kubectl get pods -l "app.kubernetes.io/name=clickstack"
@@ -155,7 +156,7 @@ HyperDX 的 Helm 图表可以在 [此处](https://github.com/hyperdxio/helm-char
 
   #### 使用预配置的 Secret
 
-  该 Helm 图表包含一个默认的 secret 模板，位于 [`charts/clickstack/templates/secrets.yaml`](https://github.com/hyperdxio/helm-charts/blob/main/charts/clickstack/templates/secrets.yaml)。该文件提供了管理 secret 的基础结构。
+  该 Helm 图表包含一个默认的 Secret 模板，位于 [`charts/clickstack/templates/secrets.yaml`](https://github.com/ClickHouse/ClickStack-helm-charts/blob/main/charts/clickstack/templates/secrets.yaml)。该文件提供了管理 Secret 的基础结构。
 
   如果需要手动应用 Secret,请修改并应用所提供的 `secrets.yaml` 模板:
 
@@ -200,7 +201,7 @@ HyperDX 的 Helm 图表可以在 [此处](https://github.com/hyperdxio/helm-char
   ```
 
   :::tip API 密钥管理
-  有关 API 密钥设置的详细说明（包括多种配置方法和 pod（容器组）重启步骤），请参阅 [API 密钥设置指南](/docs/use-cases/observability/clickstack/deployment/helm-configuration#api-key-setup)。
+  有关 API 密钥设置的详细说明（包括多种配置方法和 Pod（容器组）重启步骤），请参阅 [API 密钥设置指南](/docs/use-cases/observability/clickstack/deployment/helm-configuration#api-key-setup)。
   :::
 </VerticalStepper>
 
@@ -317,13 +318,13 @@ helm uninstall my-clickstack
 
 ## 故障排查 {#troubleshooting}
 
-### 查看日志 {#customizing-values}
+### 查看日志 \{#customizing-values\}
 
 ```shell
 kubectl logs -l app.kubernetes.io/name=clickstack
 ```
 
-### 排查安装失败 {#using-secrets}
+### 排查安装失败 \{#using-secrets\}
 
 ```shell
 helm install my-clickstack clickstack/clickstack --debug --dry-run
@@ -384,6 +385,6 @@ helm install my-clickstack clickstack/clickstack \
 ### 其他资源 {#additional-resources}
 
 - [ClickStack 入门指南](/docs/use-cases/observability/clickstack/getting-started) - ClickStack 简介
-- [ClickStack Helm 图表仓库](https://github.com/hyperdxio/helm-charts) - 图表源码和值配置参考
+- [ClickStack Helm 图表仓库](https://github.com/ClickHouse/ClickStack-helm-charts) - 图表源码和值配置参考
 - [Kubernetes 文档](https://kubernetes.io/docs/) - Kubernetes 参考文档
 - [Helm 文档](https://helm.sh/docs/) - Helm 参考文档

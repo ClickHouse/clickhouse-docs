@@ -1,23 +1,23 @@
 ---
 sidebar_label: 'Руководство'
-description: 'Узнайте, как подключить pg_clickhouse к ClickHouse и выполнять запросы к примерному набору данных поездок на такси в Нью-Йорке.'
+description: 'Узнайте, как подключить pg_clickhouse к ClickHouse и выполнять запросы к примерному набору данных о такси Нью‑Йорка.'
 slug: '/integrations/pg_clickhouse/tutorial'
 title: 'Руководство по pg_clickhouse'
 doc_type: 'guide'
-keywords: ['PostgreSQL', 'Postgres', 'FDW', 'обёртка внешних данных', 'pg_clickhouse', 'расширение', 'руководство', 'такси']
+keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension', 'руководство', 'такси']
 ---
 
-# Руководство по pg_clickhouse {#pg_clickhouse-tutorial}
+# Учебное руководство по pg_clickhouse \{#pg_clickhouse-tutorial\}
 
-## Обзор {#overview}
+## Обзор \{#overview\}
 
-В этом руководстве повторяется [ClickHouse tutorial], но все запросы выполняются через
+В этом руководстве мы повторим шаги из [руководства по ClickHouse], но все запросы будут выполняться через
 pg_clickhouse.
 
-## Запустите ClickHouse {#start-clickhouse}
+## Запуск ClickHouse \{#start-clickhouse\}
 
 Сначала создайте базу данных ClickHouse, если у вас её ещё нет. Быстрый способ
-начать — воспользоваться Docker-образом:
+начать — использовать Docker-образ:
 
 ```sh
 docker run -d --network host --name clickhouse -p 8123:8123 -p9000:9000 --ulimit nofile=262144:262144 clickhouse
@@ -25,9 +25,9 @@ docker exec -it clickhouse clickhouse-client
 ```
 
 
-## Создайте таблицу {#create-a-table}
+## Создание таблицы \{#create-a-table\}
 
-Воспользуемся примером из [ClickHouse tutorial], чтобы создать простую базу данных с датасетом нью‑йоркского такси:
+Давайте возьмём пример из [ClickHouse tutorial] и создадим простую базу данных с набором данных такси Нью-Йорка:
 
 ```sql
 CREATE DATABASE taxi;
@@ -90,9 +90,9 @@ ORDER BY pickup_datetime;
 ```
 
 
-## Добавление набора данных {#add-the-data-set}
+## Добавление набора данных \{#add-the-data-set\}
 
-Затем импортируйте данные:
+Теперь импортируйте данные:
 
 ```sql
 INSERT INTO taxi.trips
@@ -152,7 +152,7 @@ SELECT * FROM s3(
 ") SETTINGS input_format_try_infer_datetimes = 0
 ```
 
-Убедитесь, что к нему можно выполнить запрос, затем выйдите из клиента:
+Убедитесь, что мы можем выполнить к нему запрос, а затем выйдите из клиента:
 
 ```sql
 SELECT count() FROM taxi.trips;
@@ -160,46 +160,51 @@ quit
 ```
 
 
-### Установите pg&#95;clickhouse {#install-pg_clickhouse}
+### Установите pg_clickhouse \{#install-pg_clickhouse\}
 
-Соберите и установите pg&#95;clickhouse из [PGXN] или [GitHub]. Или разверните
-контейнер Docker, используя образ [pg&#95;clickhouse image], который просто добавляет
-pg&#95;clickhouse к Docker-образу [Postgres image]:
+Соберите и установите pg&#95;clickhouse из [PGXN] или [GitHub], или разверните
+контейнер Docker, используя [образ pg&#95;clickhouse], который просто добавляет
+pg&#95;clickhouse к Docker-образу [Postgres]:
 
 ```sh
-docker run --network host --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
-       -d ghcr.io/clickhouse/pg_clickhouse:18 -U postgres
+docker run -d --network host --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
+       -d ghcr.io/clickhouse/pg_clickhouse:18
 ```
 
 
-### Подключите pg&#95;clickhouse {#connect-pg_clickhouse}
+### Подключите pg_clickhouse \{#connect-pg_clickhouse\}
 
-Теперь подключитесь к Postgres и создайте pg&#95;clickhouse:
+Теперь подключитесь к Postgres:
+
+```sh
+docker exec -it pg_clickhouse psql -U postgres
+```
+
+И создайте pg&#95;clickhouse:
 
 ```sql
 CREATE EXTENSION pg_clickhouse;
 ```
 
-Создайте внешний сервер, указав имя хоста, порт и базу данных ClickHouse.
+Создайте внешний сервер, указав имя хоста, порт и имя базы данных ClickHouse.
 
 ```sql
 CREATE SERVER taxi_srv FOREIGN DATA WRAPPER clickhouse_fdw
        OPTIONS(driver 'binary', host 'localhost', dbname 'taxi');
 ```
 
-Здесь мы выбрали бинарный драйвер, который использует бинарный протокол ClickHouse. Вы также можете использовать драйвер «http», который использует HTTP-интерфейс.
+Здесь мы решили использовать двоичный драйвер, который работает по двоичному протоколу ClickHouse. Можно также использовать драйвер «http», работающий через HTTP‑интерфейс.
 
-Далее сопоставьте пользователя PostgreSQL с пользователем ClickHouse. Самый простой способ сделать это —
-просто сопоставить текущего пользователя PostgreSQL с удалённым пользователем на внешнем сервере:
+Затем сопоставьте пользователя PostgreSQL с пользователем ClickHouse. Проще всего сделать это, сопоставив текущего пользователя PostgreSQL с удалённым пользователем для внешнего сервера:
 
 ```sql
 CREATE USER MAPPING FOR CURRENT_USER SERVER taxi_srv
        OPTIONS (user 'default');
 ```
 
-Вы также можете указать параметр `password`.
+Вы также можете указать опцию `password`.
 
-Теперь добавьте таблицу taxi: просто импортируйте все таблицы из удалённой
+Теперь добавьте таблицу taxi, просто импортировав все таблицы из удалённой
 базы данных ClickHouse в схему Postgres:
 
 ```sql
@@ -207,12 +212,12 @@ CREATE SCHEMA taxi;
 IMPORT FOREIGN SCHEMA taxi FROM SERVER taxi_srv INTO taxi;
 ```
 
-Теперь таблица должна быть импортирована. В [psql] выполните `\det+`, чтобы её увидеть:
+Теперь таблица должна быть уже импортирована. В [psql] используйте `\det+`, чтобы просмотреть её:
 
 ```pgsql
 taxi=# \det+ taxi.*
                                        List of foreign tables
- Schema | Table |  Server  |                        FDW options                        | Description 
+ Schema | Table |  Server  |                        FDW options                        | Description
 --------+-------+----------+-----------------------------------------------------------+-------------
  taxi   | trips | taxi_srv | (database 'taxi', table_name 'trips', engine 'MergeTree') | [null]
 (1 row)
@@ -224,53 +229,53 @@ taxi=# \det+ taxi.*
 ```pgsql
 taxi=# \d taxi.trips
                                      Foreign table "taxi.trips"
-        Column         |            Type             | Collation | Nullable | Default | FDW options 
+        Column         |            Type             | Collation | Nullable | Default | FDW options
 -----------------------+-----------------------------+-----------+----------+---------+-------------
- trip_id               | bigint                      |           | not null |         | 
- vendor_id             | text                        |           | not null |         | 
- pickup_date           | date                        |           | not null |         | 
- pickup_datetime       | timestamp without time zone |           | not null |         | 
- dropoff_date          | date                        |           | not null |         | 
- dropoff_datetime      | timestamp without time zone |           | not null |         | 
- store_and_fwd_flag    | smallint                    |           | not null |         | 
- rate_code_id          | smallint                    |           | not null |         | 
- pickup_longitude      | double precision            |           | not null |         | 
- pickup_latitude       | double precision            |           | not null |         | 
- dropoff_longitude     | double precision            |           | not null |         | 
- dropoff_latitude      | double precision            |           | not null |         | 
- passenger_count       | smallint                    |           | not null |         | 
- trip_distance         | double precision            |           | not null |         | 
- fare_amount           | numeric(10,2)               |           | not null |         | 
- extra                 | numeric(10,2)               |           | not null |         | 
- mta_tax               | numeric(10,2)               |           | not null |         | 
- tip_amount            | numeric(10,2)               |           | not null |         | 
- tolls_amount          | numeric(10,2)               |           | not null |         | 
- ehail_fee             | numeric(10,2)               |           | not null |         | 
- improvement_surcharge | numeric(10,2)               |           | not null |         | 
- total_amount          | numeric(10,2)               |           | not null |         | 
- payment_type          | text                        |           | not null |         | 
- trip_type             | smallint                    |           | not null |         | 
- pickup                | character varying(25)       |           | not null |         | 
- dropoff               | character varying(25)       |           | not null |         | 
- cab_type              | text                        |           | not null |         | 
- pickup_nyct2010_gid   | smallint                    |           | not null |         | 
- pickup_ctlabel        | real                        |           | not null |         | 
- pickup_borocode       | smallint                    |           | not null |         | 
- pickup_ct2010         | text                        |           | not null |         | 
- pickup_boroct2010     | text                        |           | not null |         | 
- pickup_cdeligibil     | text                        |           | not null |         | 
- pickup_ntacode        | character varying(4)        |           | not null |         | 
- pickup_ntaname        | text                        |           | not null |         | 
- pickup_puma           | integer                     |           | not null |         | 
- dropoff_nyct2010_gid  | smallint                    |           | not null |         | 
- dropoff_ctlabel       | real                        |           | not null |         | 
- dropoff_borocode      | smallint                    |           | not null |         | 
- dropoff_ct2010        | text                        |           | not null |         | 
- dropoff_boroct2010    | text                        |           | not null |         | 
- dropoff_cdeligibil    | text                        |           | not null |         | 
- dropoff_ntacode       | character varying(4)        |           | not null |         | 
- dropoff_ntaname       | text                        |           | not null |         | 
- dropoff_puma          | integer                     |           | not null |         | 
+ trip_id               | bigint                      |           | not null |         |
+ vendor_id             | text                        |           | not null |         |
+ pickup_date           | date                        |           | not null |         |
+ pickup_datetime       | timestamp without time zone |           | not null |         |
+ dropoff_date          | date                        |           | not null |         |
+ dropoff_datetime      | timestamp without time zone |           | not null |         |
+ store_and_fwd_flag    | smallint                    |           | not null |         |
+ rate_code_id          | smallint                    |           | not null |         |
+ pickup_longitude      | double precision            |           | not null |         |
+ pickup_latitude       | double precision            |           | not null |         |
+ dropoff_longitude     | double precision            |           | not null |         |
+ dropoff_latitude      | double precision            |           | not null |         |
+ passenger_count       | smallint                    |           | not null |         |
+ trip_distance         | double precision            |           | not null |         |
+ fare_amount           | numeric(10,2)               |           | not null |         |
+ extra                 | numeric(10,2)               |           | not null |         |
+ mta_tax               | numeric(10,2)               |           | not null |         |
+ tip_amount            | numeric(10,2)               |           | not null |         |
+ tolls_amount          | numeric(10,2)               |           | not null |         |
+ ehail_fee             | numeric(10,2)               |           | not null |         |
+ improvement_surcharge | numeric(10,2)               |           | not null |         |
+ total_amount          | numeric(10,2)               |           | not null |         |
+ payment_type          | text                        |           | not null |         |
+ trip_type             | smallint                    |           | not null |         |
+ pickup                | character varying(25)       |           | not null |         |
+ dropoff               | character varying(25)       |           | not null |         |
+ cab_type              | text                        |           | not null |         |
+ pickup_nyct2010_gid   | smallint                    |           | not null |         |
+ pickup_ctlabel        | real                        |           | not null |         |
+ pickup_borocode       | smallint                    |           | not null |         |
+ pickup_ct2010         | text                        |           | not null |         |
+ pickup_boroct2010     | text                        |           | not null |         |
+ pickup_cdeligibil     | text                        |           | not null |         |
+ pickup_ntacode        | character varying(4)        |           | not null |         |
+ pickup_ntaname        | text                        |           | not null |         |
+ pickup_puma           | integer                     |           | not null |         |
+ dropoff_nyct2010_gid  | smallint                    |           | not null |         |
+ dropoff_ctlabel       | real                        |           | not null |         |
+ dropoff_borocode      | smallint                    |           | not null |         |
+ dropoff_ct2010        | text                        |           | not null |         |
+ dropoff_boroct2010    | text                        |           | not null |         |
+ dropoff_cdeligibil    | text                        |           | not null |         |
+ dropoff_ntacode       | character varying(4)        |           | not null |         |
+ dropoff_ntaname       | text                        |           | not null |         |
+ dropoff_puma          | integer                     |           | not null |         |
 Server: taxi_srv
 FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 ```
@@ -279,41 +284,38 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 
 ```pgsql
  SELECT count(*) FROM taxi.trips;
-   count  
+   count
  ---------
   1999657
  (1 row)
 ```
 
-Обратите внимание, как быстро был выполнен запрос. pg&#95;clickhouse полностью
-передает весь запрос, включая агрегатную функцию `COUNT()`, поэтому он выполняется в ClickHouse и
-возвращает в Postgres только одну строку. Используйте [EXPLAIN], чтобы это увидеть:
-
+Обратите внимание, как быстро выполнился этот запрос. pg&#95;clickhouse передаёт выполнение всего запроса, включая агрегатную функцию `COUNT()`, в ClickHouse, поэтому он выполняется там и возвращает в Postgres только одну строку. Используйте [EXPLAIN], чтобы посмотреть план выполнения:
 
 ```pgsql
  EXPLAIN select count(*) from taxi.trips;
-                    QUERY PLAN                    
+                    QUERY PLAN
  -------------------------------------------------
   Foreign Scan  (cost=1.00..-0.90 rows=1 width=8)
     Relations: Aggregate on (trips)
  (2 rows)
 ```
 
-Обратите внимание, что «Foreign Scan» показан в корне плана, что означает, что
-весь запрос был целиком передан на исполнение в ClickHouse.
+Обратите внимание, что &quot;Foreign Scan&quot; отображается в корне плана, что означает, что
+весь запрос был полностью передан на исполнение в ClickHouse.
 
 
-## Анализ данных {#analyze-the-data}
+## Анализ данных \{#analyze-the-data\}
 
-Выполните несколько запросов, чтобы проанализировать данные. Ознакомьтесь со следующими примерами или попробуйте выполнить собственный SQL‑запрос.
+Выполните несколько запросов, чтобы проанализировать данные. Ознакомьтесь со следующими примерами или попробуйте свой собственный SQL-запрос.
 
-* Рассчитайте среднюю сумму чаевых:
+* Рассчитайте средний размер чаевых:
 
   ```sql
   taxi=# \timing
   Timing is on.
   taxi=# SELECT round(avg(tip_amount), 2) FROM taxi.trips;
-   round 
+   round
   -------
     1.68
   (1 row)
@@ -329,7 +331,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
           avg(total_amount)::NUMERIC(10, 2) AS average_total_amount
       FROM taxi.trips
       GROUP BY passenger_count;
-   passenger_count | average_total_amount 
+   passenger_count | average_total_amount
   -----------------+----------------------
                  0 |                22.68
                  1 |                15.96
@@ -346,7 +348,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 27.266 ms
   ```
 
-* Рассчитайте ежедневное количество посадок по районам:
+* Рассчитайте ежедневное число посадок в каждом районе:
 
   ```pgsql
   taxi=# SELECT
@@ -356,7 +358,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   FROM taxi.trips
   GROUP BY pickup_date, pickup_ntaname
   ORDER BY pickup_date ASC LIMIT 10;
-   pickup_date |         pickup_ntaname         | number_of_trips 
+   pickup_date |         pickup_ntaname         | number_of_trips
   -------------+--------------------------------+-----------------
    2015-07-01  | Williamsburg                   |               1
    2015-07-01  | park-cemetery-etc-Queens       |               6
@@ -373,7 +375,8 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 30.978 ms
   ```
 
-* Вычислите продолжительность каждой поездки в минутах, затем сгруппируйте результаты по её продолжительности:
+* Вычислите продолжительность каждой поездки в минутах, затем сгруппируйте результаты по
+  продолжительности поездки:
 
   ```pgsql
   taxi=# SELECT
@@ -387,7 +390,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   GROUP BY trip_minutes
   ORDER BY trip_minutes DESC
   LIMIT 5;
-        avg_tip      |     avg_fare     |  avg_passenger   | count | trip_minutes 
+        avg_tip      |     avg_fare     |  avg_passenger   | count | trip_minutes
   -------------------+------------------+------------------+-------+--------------
                 1.96 |                8 |                1 |     1 |        27512
                    0 |               12 |                2 |     1 |        27500
@@ -399,7 +402,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 45.477 ms
   ```
 
-* Покажите количество посадок в каждом районе по часам дня:
+* Покажите количество посадок в каждом районе, разбитое по часам суток:
 
   ```pgsql
   taxi=# SELECT
@@ -411,7 +414,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   GROUP BY pickup_ntaname, pickup_hour
   ORDER BY pickup_ntaname, date_part('hour', pickup_datetime)
   LIMIT 5;
-   pickup_ntaname | pickup_hour | pickups 
+   pickup_ntaname | pickup_hour | pickups
   ----------------+-------------+---------
    Airport        |           0 |    3509
    Airport        |           1 |    1184
@@ -423,7 +426,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 36.895 ms
   ```
 
-* Выведите поездки в аэропорты LaGuardia или JFK:
+* Выберите поездки до аэропортов LaGuardia или JFK:
 
   ```pgsql
   taxi=# SELECT
@@ -443,7 +446,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   WHERE dropoff_nyct2010_gid IN (132, 138)
   ORDER BY pickup_datetime
   LIMIT 5;
-     pickup_datetime   |  dropoff_datetime   | total_amount | pickup_nyct2010_gid | dropoff_nyct2010_gid | airport_code | year | day | hour 
+     pickup_datetime   |  dropoff_datetime   | total_amount | pickup_nyct2010_gid | dropoff_nyct2010_gid | airport_code | year | day | hour
   ---------------------+---------------------+--------------+---------------------+----------------------+--------------+------+-----+------
    2015-07-01 00:04:14 | 2015-07-01 00:15:29 |        13.30 |                 -34 |                  132 | JFK          | 2015 |   1 |    0
    2015-07-01 00:09:42 | 2015-07-01 00:12:55 |         6.80 |                  50 |                  138 | LGA          | 2015 |   1 |    0
@@ -455,18 +458,17 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 17.450 ms
   ```
 
-## Создайте словарь {#create-a-dictionary}
+## Создание словаря \{#create-a-dictionary\}
 
 Создайте словарь, связанный с таблицей в вашем сервисе ClickHouse. Таблица и
-словарь основаны на CSV-файле, который содержит строку для каждого
-района Нью-Йорка.
+словарь основаны на CSV‑файле, который содержит строку для каждого района
+Нью‑Йорка.
 
-Районы сопоставляются с названиями пяти боро Нью-Йорка
-(Bronx, Brooklyn, Manhattan, Queens и Staten Island), а также аэропорта Newark
-(EWR).
+Районы сопоставлены с названиями пяти нью‑йоркских боро (Bronx, Brooklyn,
+Manhattan, Queens и Staten Island), а также с Newark Airport (EWR).
 
-Ниже приведен фрагмент используемого CSV-файла в табличном формате. Столбец
-`LocationID` в файле сопоставляется со столбцами `pickup_nyct2010_gid` и
+Ниже приведён фрагмент используемого CSV‑файла в табличном формате. Столбец
+`LocationID` в файле сопоставлен со столбцами `pickup_nyct2010_gid` и
 `dropoff_nyct2010_gid` в вашей таблице `trips`:
 
 | LocationID | Borough       |  Zone                   | service_zone |
@@ -477,9 +479,9 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   |          4 | Manhattan     | Alphabet City           | Yellow Zone  |
   |          5 | Staten Island | Arden Heights           | Boro Zone    |
 
-1.  Находясь по-прежнему в Postgres, используйте функцию `clickhouse_raw_query`, чтобы создать
-    словарь ClickHouse с именем `taxi_zone_dictionary` и заполнить
-    этот словарь из CSV-файла в S3:
+1.  Всё ещё в Postgres, используйте функцию `clickhouse_raw_query`, чтобы
+    создать [словарь] ClickHouse с именем `taxi_zone_dictionary` и заполнить
+    словарь данными из CSV‑файла в S3:
 
     ```sql
     SELECT clickhouse_raw_query($$
@@ -495,37 +497,37 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
         LAYOUT(HASHED_ARRAY())
     $$, 'host=localhost dbname=taxi');
     ```
-    
+
     :::note
-    Установка `LIFETIME` в 0 отключает автоматические обновления, чтобы избежать лишнего
-    трафика к нашему бакету S3. В других случаях вы можете настроить это
-    по-другому. Подробности см. в разделе [Refreshing dictionary data using
-    LIFETIME](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
+    Установка `LIFETIME` в 0 отключает автоматическое обновление, чтобы
+    избежать лишнего трафика к нашему бакету S3. В других случаях вы можете
+    настроить это по‑другому. Подробности см. в разделе [Refreshing dictionary
+    data using LIFETIME](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
     :::
 
     2.  Теперь импортируйте его:
-    
+
     ```sql
     IMPORT FOREIGN SCHEMA taxi LIMIT TO (taxi_zone_dictionary)
     FROM SERVER taxi_srv INTO taxi;
     ```
-    
+
     3.  Убедитесь, что к нему можно выполнять запросы:
-    
+
     ```pgsql
     taxi=# SELECT * FROM taxi.taxi_zone_dictionary limit 3;
-     LocationID |  Borough  |                     Zone                      | service_zone 
+     LocationID |  Borough  |                     Zone                      | service_zone
     ------------+-----------+-----------------------------------------------+--------------
              77 | Brooklyn  | East New York/Pennsylvania Avenue             | Boro Zone
             106 | Brooklyn  | Gowanus                                       | Boro Zone
             103 | Manhattan | Governor's Island/Ellis Island/Liberty Island | Yellow Zone
     (3 rows)
     ```
-    
-    4.  Отлично. Теперь используйте функцию `dictGet`, чтобы получить
-        название боро в запросе. В этом запросе подсчитывается количество поездок
-        на такси по боро, которые заканчиваются либо в аэропорту LaGuardia, либо в аэропорту JFK:
-    
+
+    4.  Отлично. Теперь используйте функцию `dictGet`, чтобы получить название
+        боро в запросе. Этот запрос суммирует количество поездок на такси по
+        боро, которые заканчиваются либо в аэропорту LaGuardia, либо в JFK:
+
     ```pgsql
     taxi=# SELECT
             count(1) AS total,
@@ -537,7 +539,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
         WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
         GROUP BY borough_name
         ORDER BY total DESC;
-     total | borough_name  
+     total | borough_name
     -------+---------------
      23683 | Unknown
       7053 | Manhattan
@@ -547,22 +549,23 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
        554 | Staten Island
         53 | EWR
     (7 rows)
-    
+
     Time: 66.245 ms
     ```
 
-    Этот запрос подсчитывает количество поездок на такси по боро, которые заканчиваются либо
-    в аэропорту LaGuardia, либо в аэропорту JFK. Обратите внимание, что существует довольно много поездок,
-    у которых район отправления неизвестен.
+    Этот запрос суммирует количество поездок на такси по боро, которые
+    заканчиваются либо в аэропорту LaGuardia, либо в JFK. Обратите внимание,
+    что имеется довольно много поездок, для которых район отправления
+    неизвестен.
 
-## Выполнение JOIN {#perform-a-join}
+## Выполните JOIN \{#perform-a-join\}
 
-Напишите несколько запросов, которые выполняют `JOIN` таблицы `taxi_zone_dictionary` с таблицей `trips`.
+Напишите несколько запросов, которые объединяют `taxi_zone_dictionary` с вашей таблицей `trips`.
 
 1.  Начните с простого `JOIN`, который работает аналогично предыдущему
-    запросу по аэропортам:
+    запросу с аэропортом выше:
 
-    ```sql
+    ```pgsql
     taxi=# SELECT
         count(1) AS total,
         "Borough"
@@ -573,7 +576,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
       AND dropoff_nyct2010_gid IN (132, 138)
     GROUP BY "Borough"
     ORDER BY total DESC;
-     total | borough_name  
+     total | borough_name
     -------+---------------
       7053 | Manhattan
       6828 | Brooklyn
@@ -587,12 +590,11 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
     ```
 
     :::note
-    Обратите внимание, что результат указанного выше запроса с `JOIN`
-    такой же, как у приведённого выше запроса с `dictGet` (за
-    исключением того, что значения `Unknown` не включены). Внутренне
-    ClickHouse фактически вызывает функцию `dictGet` для словаря
-    `taxi_zone_dictionary`, но синтаксис `JOIN` более привычен для
-    разработчиков SQL.
+    Обратите внимание, что результат вышеуказанного запроса с `JOIN`
+    совпадает с результатом запроса с `dictGet` выше (за исключением того,
+    что значения `Unknown` не включены). Внутренне ClickHouse фактически
+    вызывает функцию `dictGet` для словаря `taxi_zone_dictionary`, но
+    синтаксис `JOIN` более привычен для SQL‑разработчиков.
     :::
 
     ```pgsql
@@ -606,7 +608,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
           AND dropoff_nyct2010_gid IN (132, 138)
         GROUP BY "Borough"
         ORDER BY total DESC;
-                                  QUERY PLAN                               
+                                  QUERY PLAN
     -----------------------------------------------------------------------
      Foreign Scan  (cost=1.00..5.10 rows=1000 width=40)
        Relations: Aggregate on ((trips) INNER JOIN (taxi_zone_dictionary))
@@ -614,8 +616,9 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
     Time: 2.012 ms
     ```
 
-2.  Этот запрос возвращает строки для 1000 поездок с наибольшей суммой
-    чаевых, а затем выполняет внутренний `JOIN` каждой строки со словарём:
+2.  Этот запрос возвращает строки для 1000 поездок с самой высокой суммой
+    чаевых, а затем выполняет внутреннее соединение каждой строки с
+    соответствующей записью словаря:
 
     ```sql
     taxi=# SELECT *
@@ -628,31 +631,30 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
     ```
 
 :::note
-Как правило, мы избегаем использования `SELECT *` в PostgreSQL и
-ClickHouse. Следует извлекать только те столбцы, которые вам действительно
-нужны.
+Обычно мы избегаем использования `SELECT *` в PostgreSQL и ClickHouse.
+Следует выбирать только те столбцы, которые вам действительно нужны.
 :::
 
-[tutorial]: /tutorial "Расширенный учебник по ClickHouse"
+[tutorial]: /tutorial "Расширенное руководство по ClickHouse"
 
 [psql]: https://www.postgresql.org/docs/current/app-psql.html
-    "PostgreSQL Client Applications: psql"
+    "Клиентские приложения PostgreSQL: psql"
 
 [EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html
-    "SQL Commands: EXPLAIN"
+    "SQL-команды: EXPLAIN"
 
 [dictionary]: /sql-reference/dictionaries/index.md
 
 [PGXN]: https://pgxn.org/dist/pg_clickhouse "pg_clickhouse на PGXN"
 
 [GitHub]: https://github.com/ClickHouse/pg_clickhouse/releases
-    "Релизы pg_clickhouse на GitHub"
+    "pg_clickhouse: релизы на GitHub"
 
 [pg_clickhouse image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse
-    "pg_clickhouse OCI-образ на GitHub"
+    "pg_clickhouse OCI‑образ на GitHub"
 
 [Postgres image]: https://hub.docker.com/_/postgres
-    "Postgres OCI-образ на Docker Hub"
+    "Postgres OCI‑образ на Docker Hub"
 
 [Refreshing dictionary data using LIFETIME]: /sql-reference/dictionaries/index.md#refreshing-dictionary-data-using-lifetime
-    "Документация ClickHouse: Обновление данных словаря с помощью LIFETIME"
+    "Документация ClickHouse: обновление данных словаря с помощью LIFETIME"

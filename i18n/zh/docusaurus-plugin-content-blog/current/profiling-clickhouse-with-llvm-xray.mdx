@@ -34,10 +34,10 @@ PROFILE](https://clickhouse.com/docs/sql-reference/statements/system#instrument-
 想要分析 `sleepForNanoseconds` 函数的性能，这个函数对于检查运行耗时非常方便。
 
 ```sql
-SYSTEM INSTRUMENT ADD `sleepForNanoseconds` PROFILE
+SYSTEM INSTRUMENT ADD 'sleepForNanoseconds' PROFILE
 ```
 
-然后，让它按我们需要的时间段运行以进行分析，结束后再将其停止。
+然后，让它在我们希望的时间段内运行进行分析，结束后将其停止。
 
 ```sql
 SYSTEM INSTRUMENT REMOVE ALL

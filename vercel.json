@@ -22,6 +22,26 @@
       ]
     },
     {
+      "source": "/docs/integrations/clickpipes/secure-kinesis",
+      "destination": "/docs/integrations/clickpipes/kinesis/auth",
+      "permanent": true
+    },
+    {
+      "source": "/docs/en/integrations/clickpipes/secure-kinesis",
+      "destination": "/docs/integrations/clickpipes/kinesis/auth",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/clickpipes/secure-rds",
+      "destination": "/docs/integrations/clickpipes/postgres/auth",
+      "permanent": true
+    },
+    {
+      "source": "/docs/en/integrations/clickpipes/secure-rds",
+      "destination": "/docs/integrations/clickpipes/postgres/auth",
+      "permanent": true
+    },
+    {
       "source": "/docs/en/docs/en/cloud/manage/service-types",
       "destination": "/docs/cloud/manage/cloud-tiers",
       "permanent": true
@@ -3419,10 +3439,6 @@
       "permanent": true
     },
     {
-      "source": "/docs/whats-new/changelog/2025",
-      "destination": "/docs/category/changelog"
-    },
-    {
       "source": "/docs/development/adding_test_queries",
       "destination": "/docs/development/tests#adding-a-new-test"
     },
@@ -3468,7 +3484,7 @@
     },
     {
       "source": "/docs/faq/troubleshooting",
-      "destination": "/docs/knowledge-base/unable-to-access-cloud-service",
+      "destination": "/docs/knowledgebase/unable-to-access-cloud-service",
       "permanent": true
     },
     {
@@ -3699,6 +3715,21 @@
     {
       "source": "/docs/about-us/faq",
       "destination": "/docs/concepts/faq",
+      "permanent": true
+    },
+    {
+      "source": "/docs/engines/table-engines/mergetree-family/invertedindexes",
+      "destination": "/docs/engines/table-engines/mergetree-family/textindexes",
+      "permanent": true
+    },
+    {
+      "source": "/docs/guides/sre/configuring-ssl",
+      "destination": "/docs/guides/sre/tls/configuring-tls",
+      "permanent": true
+    },
+    {
+      "source": "/docs/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud",
+      "destination": "/docs/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud",
       "permanent": true
     }
   ]

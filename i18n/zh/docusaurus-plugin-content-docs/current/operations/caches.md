@@ -8,7 +8,7 @@ keywords: ['cache']
 doc_type: 'reference'
 ---
 
-# 缓存类型 {#cache-types}
+# 缓存类型 \{#cache-types\}
 
 在执行查询时，ClickHouse 使用不同类型的缓存来加速查询，
 并减少对磁盘的读写需求。
@@ -25,7 +25,7 @@ doc_type: 'reference'
 * [Regexp](/interfaces/formats/Regexp) 缓存。
 * 已编译表达式缓存。
 * [向量相似度索引](../engines/table-engines/mergetree-family/annindexes.md)缓存。
-* [文本索引](../engines/table-engines/mergetree-family/invertedindexes.md#caching)缓存。
+* [文本索引](../engines/table-engines/mergetree-family/textindexes.md#caching)缓存。
 * [Avro 格式](/interfaces/formats/Avro) Schema 缓存。
 * [字典](../sql-reference/dictionaries/index.md)数据缓存。
 * Schema 推断缓存。
@@ -36,4 +36,4 @@ doc_type: 'reference'
 * 格式 Schema 缓存。
 
 如果希望出于性能调优、故障排查或数据一致性等原因清除某一种缓存，
-可以使用 [`SYSTEM DROP ... CACHE`](../sql-reference/statements/system.md) 语句。
+可以使用 [`SYSTEM CLEAR ... CACHE`](../sql-reference/statements/system.md) 语句。

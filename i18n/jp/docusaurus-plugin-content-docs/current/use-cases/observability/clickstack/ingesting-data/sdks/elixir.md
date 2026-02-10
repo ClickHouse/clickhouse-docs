@@ -21,9 +21,9 @@ keywords: ['Elixir ClickStack SDK', 'Elixir オブザーバビリティ', 'Hyper
 
 _🚧 OpenTelemetry のメトリクスおよびトレース向け計装は近日対応予定です！_
 
-## はじめに {#getting-started}
+## はじめに \{#getting-started\}
 
-### ClickStack logger backend パッケージをインストールする {#install-hyperdx-logger-backend-package}
+### ClickStack logger backend パッケージをインストールする \{#install-hyperdx-logger-backend-package\}
 
 `mix.exs` の依存関係リストに `hyperdx` を追加することで、パッケージをインストールできます。
 
@@ -35,7 +35,7 @@ def deps do
 end
 ```
 
-### ロガーの設定 {#configure-logger}
+### ロガーの設定 \{#configure-logger\}
 
 次の内容を `config.exs` ファイルに追加してください。
 
@@ -47,7 +47,7 @@ config :logger,
   backends: [:console, {Hyperdx.Backend, :hyperdx}]
 ```
 
-### 環境変数を設定する {#configure-environment-variables}
+### 環境変数を設定する \{#configure-environment-variables\}
 
 ClickStack にテレメトリを送信するために、シェル環境で次の環境変数を設定します。
 

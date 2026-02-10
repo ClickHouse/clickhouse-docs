@@ -8,15 +8,15 @@ title: 'データベース エンジン'
 doc_type: 'landing-page'
 ---
 
-# データベースエンジン {#database-engines}
+# データベースエンジン \{#database-engines\}
 
 データベースエンジンを使用すると、テーブルを扱うことができます。デフォルトでは、ClickHouse は [Atomic](../../engines/database-engines/atomic.md) データベースエンジンを使用します。このエンジンは、設定可能な [テーブルエンジン](../../engines/table-engines/index.md) と [SQL 方言](../../sql-reference/syntax.md) を提供します。
 
 利用可能なデータベースエンジンの一覧は次のとおりです。詳細は各リンク先を参照してください。
 
-{/* このページの目次表は、次のスクリプトによって
+{/* このページの目次表は、次のスクリプトによって自動生成されています 
   https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh
-  YAML フロントマターのフィールド（slug、description、title）から自動生成されています。
+  YAML フロントマターのフィールド（slug、description、title）を元に自動生成されています。
 
   誤りを見つけた場合は、該当ページの YAML フロントマターを編集してください。
   */ }
@@ -27,7 +27,6 @@ doc_type: 'landing-page'
 | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | [Atomic](/engines/database-engines/atomic)                                  | `Atomic` エンジンは、ブロックしない `DROP TABLE` および `RENAME TABLE` クエリと、アトミックな `EXCHANGE TABLES` クエリをサポートします。`Atomic` データベースエンジンがデフォルトとして使用されます。 |
 | [Shared](/engines/database-engines/shared)                                  | ClickHouse Cloud で利用可能な `Shared` データベースエンジンについて説明するページです。                                                                            |
-| [Lazy](/engines/database-engines/lazy)                                      | 最後のアクセスから `expiration_time_in_seconds` 秒間のみテーブルを RAM 上に保持します。Log タイプのテーブルでのみ使用できます。                                                  |
 | [Replicated](/engines/database-engines/replicated)                          | このエンジンは Atomic エンジンを基盤としています。DDL ログを ZooKeeper に書き込み、それを特定のデータベースに属するすべてのレプリカで実行することで、メタデータのレプリケーションをサポートします。                        |
 | [PostgreSQL](/engines/database-engines/postgresql)                          | リモートの PostgreSQL サーバー上のデータベースに接続できるようにします。                                                                                           |
 | [MySQL](/engines/database-engines/mysql)                                    | リモートの MySQL サーバー上のデータベースに接続し、ClickHouse と MySQL 間でデータを交換するための `INSERT` および `SELECT` クエリを実行できるようにします。                                 |

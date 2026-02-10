@@ -8,7 +8,7 @@ keywords: ['cache']
 doc_type: 'reference'
 ---
 
-# Типы кэша {#cache-types}
+# Типы кэша \{#cache-types\}
 
 При выполнении запросов ClickHouse использует различные кэши, чтобы ускорить выполнение запросов
 и сократить необходимость чтения с диска или записи на диск.
@@ -25,7 +25,7 @@ doc_type: 'reference'
 * Кэш [Regexp](/interfaces/formats/Regexp).
 * Кэш скомпилированных выражений.
 * Кэш [индекса векторного сходства](../engines/table-engines/mergetree-family/annindexes.md).
-* Кэш [текстового индекса](../engines/table-engines/mergetree-family/invertedindexes.md#caching).
+* Кэш [текстового индекса](../engines/table-engines/mergetree-family/textindexes.md#caching).
 * Кэш схем [формата Avro](/interfaces/formats/Avro).
 * Кэш данных [словарей](../sql-reference/dictionaries/index.md).
 * Кэш инференса схем.
@@ -35,5 +35,5 @@ doc_type: 'reference'
 * [Кэш условий запросов](query-condition-cache.md).
 * Кэш схем форматов.
 
-Если требуется сбросить один из кэшей для настройки производительности, устранения неполадок или по причинам,
-связанным с согласованностью данных, вы можете использовать оператор [`SYSTEM DROP ... CACHE`](../sql-reference/statements/system.md).
+Если требуется очистить один из кэшей для настройки производительности, устранения неполадок или по причинам,
+связанным с согласованностью данных, вы можете использовать оператор [`SYSTEM CLEAR ... CACHE`](../sql-reference/statements/system.md).

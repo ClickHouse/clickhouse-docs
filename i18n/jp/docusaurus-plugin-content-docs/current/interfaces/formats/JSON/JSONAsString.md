@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|---------|-------|
 | ✔     | ✗       |       |
 
-## 説明 {#description}
+## 説明 \{#description\}
 
 この形式では、1つの JSON オブジェクトは1つの値として解釈されます。  
 入力に複数の JSON オブジェクト（カンマ区切り）が含まれている場合、それぞれが個別の行として解釈されます。  
@@ -27,9 +27,9 @@ doc_type: 'reference'
 
 JSON オブジェクト全体を String にシリアライズしたら、[JSON 関数](/sql-reference/functions/json-functions.md) を使用して処理できます。
 
-## 使用例 {#example-usage}
+## 使用例 \{#example-usage\}
 
-### 基本的な例 {#basic-example}
+### 基本的な例 \{#basic-example\}
 
 ```sql title="Query"
 DROP TABLE IF EXISTS json_as_string;
@@ -46,7 +46,7 @@ SELECT * FROM json_as_string;
 └───────────────────────────────────┘
 ```
 
-### JSON オブジェクトの配列 {#an-array-of-json-objects}
+### JSON オブジェクトの配列 \{#an-array-of-json-objects\}
 
 ```sql title="Query"
 CREATE TABLE json_square_brackets (field String) ENGINE = Memory;
@@ -62,4 +62,4 @@ SELECT * FROM json_square_brackets;
 └────────────────────────────┘
 ```
 
-## フォーマットの設定 {#format-settings}
+## フォーマットの設定 \{#format-settings\}

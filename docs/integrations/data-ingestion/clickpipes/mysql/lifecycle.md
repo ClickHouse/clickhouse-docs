@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/lifecycle
 title: 'Lifecycle of a MySQL ClickPipe'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', 'data ingestion', 'real-time sync']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # Lifecycle of a MySQL ClickPipe {#lifecycle}

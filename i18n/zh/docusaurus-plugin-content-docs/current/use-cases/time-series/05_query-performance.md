@@ -8,13 +8,13 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 时序查询性能 {#time-series-query-performance}
+# 时序查询性能 \{#time-series-query-performance\}
 
 在完成存储优化之后，下一步是提升查询性能。
-本节将探讨两项关键技术：优化 `ORDER BY` 排序键以及使用物化视图。
+本节将探讨两项关键技术：优化 `ORDER BY` 排序键以及使用 materialized view。
 我们将看到，这些方法如何把查询时间从秒级降低到毫秒级。
 
-## 优化 `ORDER BY` 键 {#time-series-optimize-order-by}
+## 优化 `ORDER BY` 键 \{#time-series-optimize-order-by\}
 
 在尝试其他优化之前，您应当先优化排序键，以确保 ClickHouse 能够生成尽可能快的查询结果。
 选择合适的键在很大程度上取决于您将要运行的查询。假设我们的多数查询都按 `project` 和 `subproject` 列进行过滤。
@@ -112,7 +112,7 @@ ORDER BY (project, subproject, time);
   </tbody>
 </table>
 
-## 物化视图 {#time-series-materialized-views}
+## 物化视图 \{#time-series-materialized-views\}
 
 另一种方式是使用物化视图来聚合并存储高频查询的结果。之后可以直接查询这些结果，而无需访问原始表。假设在我们的场景中经常会执行如下查询：
 
@@ -139,11 +139,11 @@ LIMIT 10
 │ 2015_Nepal_earthquake │  1406422 │
 └───────────────────────┴──────────┘
 
-结果集包含 10 行。耗时：2.285 秒。处理了 2.3141 亿行，9.22 GB（每秒 1.0126 亿行，4.03 GB/秒）。
-峰值内存使用：1.50 GiB。
+10 rows in set. Elapsed: 2.285 sec. Processed 231.41 million rows, 9.22 GB (101.26 million rows/s., 4.03 GB/s.)
+Peak memory usage: 1.50 GiB.
 ```
 
-### 创建物化视图 {#time-series-create-materialized-view}
+### 创建物化视图 \{#time-series-create-materialized-view\}
 
 我们可以创建如下的物化视图：
 
@@ -170,7 +170,7 @@ FROM wikistat
 GROUP BY path, month;
 ```
 
-### 回填目标表 {#time-series-backfill-destination-table}
+### 回填目标表 \{#time-series-backfill-destination-table\}
 
 此目标表只有在向 `wikistat` 表插入新记录时才会写入数据，因此我们需要对其进行一些[回填](/docs/data-modeling/backfilling)。
 
@@ -236,7 +236,7 @@ DROP VIEW wikistat_backfill_top_mv;
 DROP TABLE wikistat_backfill;
 ```
 
-现在可以查询物化视图，而无需再查询原始表：
+现在我们可以查询 materialized view，而不是原始表：
 
 ```sql
 SELECT path, sum(hits) AS hits
@@ -261,8 +261,8 @@ LIMIT 10;
 │ 2015_Nepal_earthquake │   726327 │
 └───────────────────────┴──────────┘
 
-共 10 行。用时:0.004 秒。
+10 rows in set. Elapsed: 0.004 sec.
 ```
 
-这里的性能提升非常显著。
-此前执行这个查询得出结果需要 2 秒多一点，而现在只需 4 毫秒。
+在这里，我们的性能提升非常显著。
+之前计算该查询结果需要 2 秒多一点，而现在只需 4 毫秒。

@@ -561,7 +561,7 @@ WHERE hasToken(lower(comment), 'ClickHouse');
 └─────────┘
 ```
 
-Next, you'll create an inverted [index](/engines/table-engines/mergetree-family/invertedindexes) on the "comment" column
+Next, you'll create an inverted [index](/engines/table-engines/mergetree-family/textindexes) on the "comment" column
 in order to speed this query up.
 Note that lowercase comments will be indexed to find terms independent of casing.
 

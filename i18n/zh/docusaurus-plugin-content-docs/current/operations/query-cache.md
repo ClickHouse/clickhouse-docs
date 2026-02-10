@@ -7,12 +7,12 @@ title: '查询缓存'
 doc_type: 'guide'
 ---
 
-# 查询缓存 {#query-cache}
+# 查询缓存 \{#query-cache\}
 
 查询缓存允许某个 `SELECT` 查询只需计算一次，之后再次执行相同查询时可直接从缓存中返回结果。
 根据查询类型的不同，这可以显著降低 ClickHouse 服务器的延迟和资源消耗。
 
-## 背景、设计和限制 {#background-design-and-limitations}
+## 背景、设计和限制 \{#background-design-and-limitations\}
 
 查询缓存通常可以分为事务一致或事务不一致两种类型。
 
@@ -24,7 +24,7 @@ doc_type: 'guide'
 事务不一致的缓存传统上由与数据库交互的客户端工具或代理程序（例如
 [chproxy](https://www.chproxy.org/configuration/caching/)）提供。由此导致相同的缓存逻辑和配置往往会被重复实现。借助 ClickHouse 的查询缓存，缓存逻辑被移到了服务端，从而减少了维护工作量并避免了冗余。
 
-## 配置设置和使用方法 {#configuration-settings-and-usage}
+## 配置设置和使用方法 \{#configuration-settings-and-usage\}
 
 :::note
 在 ClickHouse Cloud 中，必须使用[查询级别设置](/operations/settings/query-level)来编辑查询缓存设置。目前不支持编辑[配置级别设置](/operations/configuration-files)。
@@ -66,10 +66,10 @@ SETTINGS use_query_cache = true, enable_writes_to_query_cache = false;
 `enable_reads_from_query_cache`。也可以在用户或 profile 级别启用缓存（例如通过 `SET
 use_query_cache = true`），但需要注意的是，此时所有 `SELECT` 查询都可能返回缓存结果。
 
-可以使用语句 `SYSTEM DROP QUERY CACHE` 清空查询缓存。查询缓存的内容显示在系统表
+可以使用语句 `SYSTEM CLEAR QUERY CACHE` 清空查询缓存。查询缓存的内容显示在系统表
 [system.query&#95;cache](system-tables/query_cache.md) 中。自数据库启动以来查询缓存命中和未命中的次数，以事件
-`QueryCacheHits` 和 `QueryCacheMisses` 的形式显示在系统表 [system.events](system-tables/events.md) 中。两个计数器仅在
-`SELECT` 查询使用 `use_query_cache = true` 设置运行时才会更新，其他查询不会影响 `QueryCacheMisses`。系统表
+&quot;QueryCacheHits&quot; 和 &quot;QueryCacheMisses&quot; 的形式显示在系统表 [system.events](system-tables/events.md) 中。两个计数器仅在
+`SELECT` 查询使用 `use_query_cache = true` 设置运行时才会更新，其他查询不会影响 &quot;QueryCacheMisses&quot;。系统表
 [system.query&#95;log](system-tables/query_log.md) 中的字段 `query_cache_usage` 会针对每个已执行查询显示其查询结果是写入了查询缓存，
 还是从查询缓存中读取。系统表
 [system.metrics](system-tables/metrics.md) 中的指标 `QueryCacheEntries` 和 `QueryCacheBytes` 显示查询缓存当前包含多少条目/字节。
@@ -84,6 +84,7 @@ use_query_cache = true`），但需要注意的是，此时所有 `SELECT` 查�
 
 查询缓存的总大小（字节数）、最大缓存条目数以及单个缓存条目的最大大小（按字节数和记录数）可以通过不同的
 [服务器配置选项](/operations/server-configuration-parameters/settings#query_cache) 进行配置。
+
 
 ```xml
 <query_cache>
@@ -130,13 +131,16 @@ SETTINGS use_query_cache = true, query_cache_min_query_duration = 5000;
 
 仅当查询运行时间超过 5 秒时才会被缓存。也可以指定查询需要运行多少次其结果才会被缓存——为此请使用设置 [query&#95;cache&#95;min&#95;query&#95;runs](/operations/settings/settings#query_cache_min_query_runs)。
 
-查询缓存中的条目在经过一段时间后会变为陈旧（time-to-live，TTL）。默认情况下，此时间为 60 秒，但可以在会话、配置文件或查询级别使用设置 [query&#95;cache&#95;ttl](/operations/settings/settings#query_cache_ttl) 指定不同的值。查询缓存会“惰性”地淘汰条目，即当一个条目变为陈旧时，并不会立刻从缓存中移除。相反，当要向查询缓存中插入一个新条目时，数据库会检查缓存中是否有足够的可用空间来存放新条目。如果没有，数据库会尝试移除所有陈旧条目。如果缓存仍然没有足够的可用空间，则不会插入新的条目。
+查询缓存中的条目在经过一段时间后会变为陈旧（time-to-live，TTL）。默认情况下，此时间为 60 秒，但可以在会话、配置文件或查询级别使用设置 [query&#95;cache&#95;ttl](/operations/settings/settings#query_cache_ttl) 指定不同的值。查询
+缓存会“惰性”地淘汰条目，即当一个条目变为陈旧时，并不会立刻从缓存中移除。相反，当要向查询缓存中插入一个新条目时，数据库会检查缓存中是否有足够的可用空间来存放新条目。如果没有，数据库会尝试移除所有陈旧条目。如果缓存仍然没有足够的可用空间，则不会插入新的条目。
 
 如果通过 HTTP 运行查询，则 ClickHouse 会设置 `Age` 和 `Expires` 头部，其中包含缓存条目的存活时间（秒）和过期时间戳。
 
 查询缓存中的条目默认会被压缩。这在一定程度上降低了总体内存占用，但会带来写入/读取查询缓存变慢的代价。要禁用压缩，请使用设置 [query&#95;cache&#95;compress&#95;entries](/operations/settings/settings#query_cache_compress_entries)。
 
-有时，为同一个查询保留多个缓存结果是有用的。可以使用设置 [query&#95;cache&#95;tag](/operations/settings/settings#query_cache_tag) 来实现，它充当查询缓存条目的标签（或命名空间）。查询缓存会将同一查询在不同标签下的结果视为不同的结果。
+有时，为同一个查询保留多个缓存结果是有用的。可以使用设置
+[query&#95;cache&#95;tag](/operations/settings/settings#query_cache_tag) 来实现，它充当查询缓存条目的标签（或命名空间）。查询缓存
+会将同一查询在不同标签下的结果视为不同的结果。
 
 为同一个查询创建三个不同查询缓存条目的示例：
 
@@ -146,7 +150,8 @@ SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 1';
 SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 2';
 ```
 
-若只想从查询缓存中移除带有标签 `tag` 的条目，可以使用语句 `SYSTEM DROP QUERY CACHE TAG 'tag'`。
+若只想从查询缓存中移除带有标签 `tag` 的条目，可以使用语句 `SYSTEM CLEAR QUERY CACHE TAG 'tag'`。
+
 
 ClickHouse 读取表数据时，以 [max_block_size](/operations/settings/settings#max_block_size) 行为一个块。由于过滤、聚合等操作，结果块通常远小于 `max_block_size`，但也可能出现远大于该值的情况。[query_cache_squash_partial_results](/operations/settings/settings#query_cache_squash_partial_results)（默认启用）用于控制在将结果块插入查询结果缓存之前，如果结果块很小则将其压缩合并，如果很大则将其拆分为大小为 `max_block_size` 的块。这样会降低写入查询缓存时的性能，但可以提高缓存条目的压缩率，并在稍后从查询缓存返回查询结果时提供更自然的块粒度。
 
@@ -175,6 +180,6 @@ ClickHouse 读取表数据时，以 [max_block_size](/operations/settings/settin
 最后，出于安全原因，查询缓存中的条目不会在用户之间共享。例如，用户 A 不应通过执行与用户 B 相同的查询而绕过表上的 ROW POLICY（而用户 B 上并不存在该策略）。但是，在必要时，可以通过设置
 [query_cache_share_between_users](/operations/settings/settings#query_cache_share_between_users) 将缓存条目标记为可被其他用户访问（即共享）。
 
-## 相关内容 {#related-content}
+## 相关内容 \{#related-content\}
 
 - 博客：[介绍 ClickHouse 查询缓存](https://clickhouse.com/blog/introduction-to-the-clickhouse-query-cache-and-design)

@@ -23,7 +23,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/winI7256Ejk?si=TRThhzCJdq87xg_x" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-## 前置条件 {#prerequisites}
+## 前置条件 \{#prerequisites\}
 
 使用本指南前，您需要具备：
 
@@ -31,7 +31,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 - **[Helm](https://helm.sh/)** v3+
 - 已正确配置、可与集群交互的 **`kubectl`**
 
-## 部署选项 {#deployment-options}
+## 部署选项 \{#deployment-options\}
 
 可以使用以下任一部署选项来完成本指南：
 

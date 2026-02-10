@@ -12,7 +12,6 @@ import postman1 from '@site/static/images/cloud/manage/postman/postman1.png';
 import postman2 from '@site/static/images/cloud/manage/postman/postman2.png';
 import postman3 from '@site/static/images/cloud/manage/postman/postman3.png';
 import postman4 from '@site/static/images/cloud/manage/postman/postman4.png';
-import postman5 from '@site/static/images/cloud/manage/postman/postman5.png';
 import postman6 from '@site/static/images/cloud/manage/postman/postman6.png';
 import postman7 from '@site/static/images/cloud/manage/postman/postman7.png';
 import postman8 from '@site/static/images/cloud/manage/postman/postman8.png';
@@ -52,8 +51,6 @@ The Postman Application is available for use within a web browser or can be down
 <Image img={postman4} size="md" alt="API URL entry" border/>
 
 * Enter the API address: "https://api.clickhouse.cloud/v1" and press 'Enter':
-
-<Image img={postman5} size="md" alt="Import" border/>
 
 * Select "Postman Collection" by clicking on the "Import" button:
 

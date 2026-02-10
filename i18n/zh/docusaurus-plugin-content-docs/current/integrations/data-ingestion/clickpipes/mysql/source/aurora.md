@@ -1,10 +1,13 @@
 ---
 sidebar_label: 'Amazon Aurora MySQL'
-description: '将 Amazon Aurora MySQL 配置为 ClickPipes 数据源的分步指南'
+description: '关于如何将 Amazon Aurora MySQL 设置为 ClickPipes 的数据源的分步指南'
 slug: /integrations/clickpipes/mysql/source/aurora
-title: 'Aurora MySQL 数据源配置指南'
+title: 'Aurora MySQL 源设置指南'
 doc_type: 'guide'
 keywords: ['aurora mysql', 'clickpipes', 'binlog retention', 'gtid mode', 'aws']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
@@ -19,80 +22,85 @@ import edit_button from '@site/static/images/integrations/data-ingestion/clickpi
 import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/enable_gtid.png';
 import Image from '@theme/IdealImage';
 
-# Aurora MySQL 源端设置指南 {#aurora-mysql-source-setup-guide}
 
-本分步指南演示如何配置 Amazon Aurora MySQL，通过 [MySQL ClickPipe](../index.md) 将数据复制到 ClickHouse Cloud。有关 MySQL CDC 的常见问题，请参阅 [MySQL 常见问题页面](/integrations/data-ingestion/clickpipes/mysql/faq.md)。
+# Aurora MySQL 源端设置指南 \{#aurora-mysql-source-setup-guide\}
 
-## 启用二进制日志保留 {#enable-binlog-retention-aurora}
+本分步指南说明如何配置 Amazon Aurora MySQL，通过 [MySQL ClickPipe](../index.md) 将数据复制到 ClickHouse Cloud。关于 MySQL CDC（变更数据捕获）的常见问题，请参阅 [MySQL 常见问题解答页面](/integrations/data-ingestion/clickpipes/mysql/faq.md)。
 
-二进制日志是一组日志文件，其中包含对 MySQL 服务器实例所做数据修改的信息，复制功能依赖这些二进制日志文件。要在 Aurora MySQL 中配置二进制日志保留，必须先[启用二进制日志记录](#enable-binlog-logging)，并[延长 binlog 保留时间间隔](#binlog-retention-interval)。
+## 启用二进制日志保留 \{#enable-binlog-retention-aurora\}
 
-### 1. 通过自动备份启用二进制日志记录 {#enable-binlog-logging}
+二进制日志是一组日志文件，用于记录对 MySQL 服务器实例所做的数据修改，这些二进制日志文件是实现复制所必需的。要在 Aurora MySQL 中配置二进制日志保留策略，您必须[启用二进制日志记录](#enable-binlog-logging)并[增加二进制日志保留时间间隔](#binlog-retention-interval)。
 
-自动备份功能决定是否为 MySQL 启用二进制日志记录。可以在 RDS 控制台中，通过依次进入 **Modify** &gt; **Additional configuration** &gt; **Backup**，并勾选 **Enable automated backups** 复选框（如果尚未勾选），来为实例配置自动备份。
+### 1. 通过自动备份启用二进制日志记录 \{#enable-binlog-logging\}
 
-<Image img={rds_backups} alt="在 Aurora 中启用自动备份" size="lg" border />
+自动备份功能决定 MySQL 的二进制日志是否开启。可以在 RDS 控制台中为实例配置自动备份，路径为 **Modify** > **Additional configuration** > **Backup**，然后勾选 **Enable automated backups** 复选框（如果尚未勾选）。
 
-我们建议根据复制场景，将 **Backup retention period** 设置为一个相对较长的值。
+<Image img={rds_backups} alt="在 Aurora 中启用自动备份" size="lg" border/>
 
-### 2. 延长 binlog 保留时间间隔 {#binlog-retention-interval}
+我们建议根据具体的复制场景，将 **Backup retention period** 设置为相对较长的值。
+
+### 2. 增加 binlog 保留时间间隔 \{#binlog-retention-interval\}
 
 :::warning
-如果 ClickPipes 尝试恢复复制时，所需的 binlog 文件已因配置的 binlog 保留时间被清除，则对应的 ClickPipe 将进入错误状态，并且需要重新进行全量同步。
+如果 ClickPipes 尝试恢复复制时，所需的 binlog 文件已经因为配置的 binlog 保留时间被清理，ClickPipe 将进入出错状态，并且需要执行重新同步。
 :::
 
-默认情况下，Aurora MySQL 会尽快清除二进制日志（即 *lazy purging*）。我们建议将 binlog 保留时间间隔增加到至少 **72 小时**，以便在故障场景下确保用于复制的二进制日志文件仍然可用。要为二进制日志保留设置时间间隔（[`binlog retention hours`](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration-usage-notes.binlog-retention-hours)），请使用 [`mysql.rds_set_configuration`](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration) 存储过程：
+默认情况下，Aurora MySQL 会尽快清理二进制日志（即 *lazy purging*）。我们建议将 binlog 保留时间间隔增加到至少 **72 小时**，以确保在故障场景下用于复制的二进制日志文件仍然可用。要为二进制日志保留设置时间间隔（[`binlog retention hours`](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration-usage-notes.binlog-retention-hours)），请使用 [`mysql.rds_set_configuration`](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration) 存储过程：
 
-[//]: # "注意 大多数 CDC 提供方建议为 Aurora RDS 配置最大保留期（7 天/168 小时）。由于这会影响磁盘使用量，我们保守地建议至少保留 3 天/72 小时。"
+[//]: # "NOTE Most CDC providers recommend the maximum retention period for Aurora RDS (7 days/168 hours). Since this has an impact on disk usage, we conservatively recommend a minimum of 3 days/72 hours."
 
 ```text
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 ```
 
-如果未设置该配置，或将其设置为过短的间隔，可能会导致二进制日志中出现间隙，从而削弱 ClickPipes 恢复复制的能力。
+如果未设置此配置项，或将其设置为过短的间隔，可能会导致二进制日志中出现空缺，从而削弱 ClickPipes 恢复复制的能力。
 
-## 配置 binlog 设置 {#binlog-settings}
 
-在 RDS 控制台中单击 MySQL 实例，然后转到 **Configuration** 选项卡，即可找到参数组（parameter group）。
+## 配置 binlog 设置 \{#binlog-settings\}
+
+在 RDS 控制台中单击 MySQL 实例，然后进入 **Configuration** 选项卡即可找到参数组。
 
 :::tip
-如果您使用的是 MySQL 集群，下面这些参数会在 [DB cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) 参数组中，而不是 DB instance 参数组中。
+如果使用的是 MySQL 集群，则需要在 [DB cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) 参数组中设置以下参数，而不是在 DB instance 参数组中。
 :::
 
-<Image img={aurora_config} alt="在 Aurora 中查找参数组的位置" size="lg" border/>
+<Image img={aurora_config} alt="Where to find parameter group in Aurora" size="lg" border/>
 
 <br/>
-单击参数组链接，会跳转到该参数组的详情页面。您应该能在右上角看到一个 **Edit** 按钮。
 
-<Image img={edit_button} alt="编辑参数组" size="lg" border/>
+单击参数组链接，进入该参数组的详情页。你应该能在右上角看到一个 **Edit** 按钮。
+
+<Image img={edit_button} alt="Edit parameter group" size="lg" border/>
 
 <br/>
-需要按如下方式设置以下参数：
+
+按如下方式设置以下参数：
 
 1. 将 `binlog_format` 设置为 `ROW`。
 
-<Image img={binlog_format} alt="将 binlog_format 设置为 ROW" size="lg" border/>
+<Image img={binlog_format} alt="Binlog format to ROW" size="lg" border/>
 
 2. 将 `binlog_row_metadata` 设置为 `FULL`。
 
-<Image img={binlog_row_metadata} alt="binlog 行元数据" size="lg" border/>
+<Image img={binlog_row_metadata} alt="Binlog row metadata" size="lg" border/>
 
 3. 将 `binlog_row_image` 设置为 `FULL`。
 
-<Image img={binlog_row_image} alt="binlog 行镜像" size="lg" border/>
+<Image img={binlog_row_image} alt="Binlog row image" size="lg" border/>
 
 <br/>
-然后，单击右上角的 **Save Changes**。您可能需要重启实例以使更改生效——判断是否需要重启的一种方法，是查看 Aurora 实例的 **Configuration** 选项卡中，参数组链接旁是否显示 `Pending reboot`。
 
-## 启用 GTID 模式（推荐） {#gtid-mode}
+然后，单击右上角的 **Save Changes**。你可能需要重启实例以使这些更改生效——判断是否需要重启的一种方式是查看 Aurora 实例的 **Configuration** 选项卡，如果在参数组链接旁边看到 `Pending reboot`，则说明需要重启。
+
+## 启用 GTID 模式（推荐） \{#gtid-mode\}
 
 :::tip
-MySQL ClickPipe 也支持在未启用 GTID 模式的情况下进行复制。但为了获得更好的性能并简化故障排查，推荐启用 GTID 模式。
+MySQL ClickPipe 也支持在未启用 GTID 模式的情况下进行复制。不过，出于更好的性能和更易排障的考虑，建议启用 GTID 模式。
 :::
 
-[全局事务标识符（GTID，Global Transaction Identifiers）](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html) 是分配给 MySQL 中每个已提交事务的唯一 ID。它们可以简化 binlog 复制，并使故障排查更加简单直观。我们**推荐**启用 GTID 模式，以便 MySQL ClickPipe 可以使用基于 GTID 的复制。
+[Global Transaction Identifiers (GTIDs)](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html) 是分配给 MySQL 中每个已提交事务的唯一 ID。它们可以简化 binlog 复制，并让故障排查更加直接。我们**建议**启用 GTID 模式，以便 MySQL ClickPipe 可以使用基于 GTID 的复制。
 
-基于 GTID 的复制适用于 Amazon Aurora MySQL v2（MySQL 5.7）和 v3（MySQL 8.0），以及 Aurora Serverless v2。要为 Aurora MySQL 实例启用 GTID 模式，请执行以下步骤：
+基于 GTID 的复制支持 Amazon Aurora MySQL v2（MySQL 5.7）和 v3（MySQL 8.0），以及 Aurora Serverless v2。要为您的 Aurora MySQL 实例启用 GTID 模式，请按照以下步骤操作：
 
 1. 在 RDS 控制台中，点击您的 MySQL 实例。
 2. 点击 **Configuration** 选项卡。
@@ -105,43 +113,43 @@ MySQL ClickPipe 也支持在未启用 GTID 模式的情况下进行复制。但�
 
 <Image img={enable_gtid} alt="已启用 GTID" size="lg" border/>
 
-## 配置数据库用户 {#configure-database-user}
+## 配置数据库用户 \{#configure-database-user\}
 
-以管理员身份连接到 Aurora MySQL 实例，并执行以下命令：
+以管理员用户身份连接到 Aurora MySQL 实例，并执行以下命令：
 
-1. 为 ClickPipes 创建一个专用用户：
+1. 为 ClickPipes 创建一个专用 USER：
 
     ```sql
     CREATE USER 'clickpipes_user'@'%' IDENTIFIED BY 'some-password';
     ```
 
-2. 授予 schema 权限。以下示例展示了为 `mysql` 数据库授予权限。对于每个你希望复制的数据库和主机，重复执行这些命令：
+2. 授予 schema 权限。以下示例展示了为 `mysql` 数据库授予权限的方式。对于每个需要复制的数据库和主机，重复执行这些命令：
 
     ```sql
     GRANT SELECT ON `mysql`.* TO 'clickpipes_user'@'host';
     ```
 
-3. 为该用户授予复制权限：
+3. 为该 USER 授予复制权限：
 
     ```sql
     GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
     GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
     ```
 
-## 配置网络访问 {#configure-network-access}
+## 配置网络访问 \{#configure-network-access\}
 
-### 基于 IP 的访问控制 {#ip-based-access-control}
+### 基于 IP 的访问控制 \{#ip-based-access-control\}
 
-要限制发往 Aurora MySQL 实例的流量，请将[文档中列出的静态 NAT IP](../../index.md#list-of-static-ips) 添加到 Aurora 安全组的 **Inbound rules**（入站规则）中。
+要限制访问 Aurora MySQL 实例的流量，请将[文档中列出的静态 NAT IP](../../index.md#list-of-static-ips) 添加到 Aurora 安全组的 **Inbound rules** 中。
 
-<Image img={security_group_in_rds_mysql} alt="在 Aurora MySQL 中哪里可以找到安全组？" size="lg" border/>
+<Image img={security_group_in_rds_mysql} alt="在 Aurora MySQL 中在哪里找到安全组？" size="lg" border/>
 
 <Image img={edit_inbound_rules} alt="编辑上述安全组的入站规则" size="lg" border/>
 
-### 通过 AWS PrivateLink 的私有访问 {#private-access-via-aws-privatelink}
+### 通过 AWS PrivateLink 进行私有访问 \{#private-access-via-aws-privatelink\}
 
-要通过私有网络连接到 Aurora MySQL 实例，可以使用 AWS PrivateLink。请按照 [ClickPipes 的 AWS PrivateLink 设置指南](/knowledgebase/aws-privatelink-setup-for-clickpipes) 来完成连接配置。
+要通过专用网络连接到您的 Aurora MySQL 实例，可以使用 AWS PrivateLink。请按照[适用于 ClickPipes 的 AWS PrivateLink 配置指南](/knowledgebase/aws-privatelink-setup-for-clickpipes)来建立该连接。
 
-## 下一步 {#whats-next}
+## 下一步 \{#whats-next\}
 
-现在你的 Amazon Aurora MySQL 实例已经配置为使用 binlog 进行复制，并已安全连接到 ClickHouse Cloud，即可[创建第一个 MySQL ClickPipe](/integrations/clickpipes/mysql/#create-your-clickpipe)。关于 MySQL CDC 的常见问题，请参阅 [MySQL 常见问题解答页面](/integrations/data-ingestion/clickpipes/mysql/faq.md)。
+现在，你的 Amazon Aurora MySQL 实例已经完成 binlog 复制配置并且可以安全地连接到 ClickHouse Cloud，你可以[创建你的第一个 MySQL ClickPipe](/integrations/clickpipes/mysql/#create-your-clickpipe)。有关 MySQL CDC 的常见问题，请参阅 [MySQL 常见问题页面](/integrations/data-ingestion/clickpipes/mysql/faq.md)。

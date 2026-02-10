@@ -10,7 +10,7 @@ keywords: ['生产环境', '部署', '版本', '最佳实践', '升级策略']
 
 
 
-# 在生产环境中应该使用哪个 ClickHouse 版本？ {#which-clickhouse-version-to-use-in-production}
+# 在生产环境中应该使用哪个 ClickHouse 版本？ \{#which-clickhouse-version-to-use-in-production\}
 
 首先，来看一下大家为什么会问这个问题。主要有两个原因：
 
@@ -21,7 +21,7 @@ keywords: ['生产环境', '部署', '版本', '最佳实践', '升级策略']
 
 
 
-## 你推荐使用哪个 ClickHouse 版本？ {#which-clickhouse-version-do-you-recommend}
+## 你推荐使用哪个 ClickHouse 版本？ \{#which-clickhouse-version-do-you-recommend\}
 
 人们往往倾向于雇佣顾问，或者依赖一些知名专家，以此来摆脱对生产环境的责任。你安装了某个别人推荐的 ClickHouse 版本；如果这个版本出了问题——那不是你的错，而是别人的错。这种思路是一个大陷阱。没有任何外部人员比你更了解你们公司生产环境中实际发生的情况。
 
@@ -54,7 +54,7 @@ keywords: ['生产环境', '部署', '版本', '最佳实践', '升级策略']
 
 
 
-## 如何在不同 ClickHouse 发行版之间进行选择？ {#how-to-choose-between-clickhouse-releases}
+## 如何在不同 ClickHouse 发行版之间进行选择？ \{#how-to-choose-between-clickhouse-releases\}
 
 如果你查看 ClickHouse 软件包仓库的内容，会看到两类软件包：
 

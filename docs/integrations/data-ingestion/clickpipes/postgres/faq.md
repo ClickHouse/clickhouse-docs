@@ -6,6 +6,9 @@ sidebar_position: 2
 title: 'ClickPipes for Postgres FAQ'
 keywords: ['postgres faq', 'clickpipes', 'toast columns', 'replication slot', 'publications']
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import failover_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/failover_slot.png'
@@ -170,13 +173,7 @@ A Postgres ClickPipe can also be created and managed via [OpenAPI](https://click
 
 You cannot speed up an already running initial load. However, you can optimize future initial loads by adjusting certain settings. By default, the settings are configured with 4 parallel threads and a snapshot number of rows per partition set to 100,000. These are advanced settings and are generally sufficient for most use cases.
 
-For Postgres versions 13 or lower, CTID range scans are slower, and these settings become more critical. In such cases, consider the following process to improve performance:
-
-1. **Drop the existing pipe**: This is necessary to apply new settings.
-2. **Delete destination tables on ClickHouse**: Ensure that the tables created by the previous pipe are removed.
-3. **Create a new pipe with optimized settings**: Typically, increase the snapshot number of rows per partition to between 1 million and 10 million, depending on your specific requirements and the load your Postgres instance can handle.
-
-These adjustments should significantly enhance the performance of the initial load, especially for older Postgres versions. If you are using Postgres 14 or later, these settings are less impactful due to improved support for CTID range scans.
+For Postgres versions 13 or lower, CTID range scans are very slow and therefore ClickPipes does not use them. Instead we read the entire table as a single partition, essentially making it single-threaded (therefore ignoring both number of rows per partition and parallel threads settings). To speed up the initial load in that case, you can increase the `snapshot number of tables in parallel` or specify a custom, indexed partitioning column for large tables.
 
 ### How should I scope my publications when setting up replication? {#how-should-i-scope-my-publications-when-setting-up-replication}
 
@@ -360,4 +357,39 @@ This error suggests a transient issue with the logical decoding of aborted sub-t
 Postgres sends information about changes in the form of messages that have a fixed protocol. These errors arise when the ClickPipe receives a message that it is unable to parse, either due to corruption in transit or invalid messages being sent. While the exact issue tends to vary, we've seen several cases from Neon Postgres sources. In case you are seeing this issue with Neon as well, please raise a support ticket with them. In other cases, please reach out to our support team for guidance.
 
 ### Can I include columns I initially excluded from replication? {#include-excluded-columns}
-This is not yet supported and is in our roadmap, an alternative would be to [resync the table](./table_resync.md) whose columns you want to include.
+This is not yet supported, an alternative would be to [resync the table](./table_resync.md) whose columns you want to include.
+
+### I am noticing that my ClickPipe has entered Snapshot but data is not flowing in, what could be the issue? {#snapshot-no-data-flow}
+This can be for a few reasons, mainly around some prerequisites for snapshotting taking longer than usual. For more information, do read our doc on parallel snapshotting [here](./parallel_initial_load.md).
+#### Parallel snapshotting is taking time to obtain partitions {#parallel-snapshotting-taking-time}
+Parallel snapshotting has a few initial steps to obtain logical partitions for your tables. If your tables are small, this will finish in a matter of seconds however for very large (order of terabytes) tables, this can take longer. You can monitor the queries running on your Postgres source in the **Source** tab to see if there are any long running queries related to obtaining partitions for snapshotting. Once the partitions are obtained, data will start flowing in.
+#### Replication slot creation is transaction locked {#replication-slot-creation-transaction-locked}
+In the **Source** tab under the Activity section, you would see the `CREATE_REPLICATION_SLOT` query stuck in `Lock` state. This could be due to another transaction holding locks on objects that Postgres uses to create replication slots.
+In order to see the blocking queries, you can run the below query on your Postgres source:
+```sql
+SELECT
+  blocked.pid AS blocked_pid,
+  blocked.query AS blocked_query,
+  blocking.pid AS blocking_pid,
+  blocking.query AS blocking_query,
+  blocking.state AS blocking_state
+FROM pg_locks blocked_lock
+JOIN pg_stat_activity blocked
+  ON blocked_lock.pid = blocked.pid
+JOIN pg_locks blocking_lock
+  ON blocking_lock.locktype = blocked_lock.locktype
+  AND blocking_lock.database IS NOT DISTINCT FROM blocked_lock.database
+  AND blocking_lock.relation IS NOT DISTINCT FROM blocked_lock.relation
+  AND blocking_lock.page IS NOT DISTINCT FROM blocked_lock.page
+  AND blocking_lock.tuple IS NOT DISTINCT FROM blocked_lock.tuple
+  AND blocking_lock.virtualxid IS NOT DISTINCT FROM blocked_lock.virtualxid
+  AND blocking_lock.transactionid IS NOT DISTINCT FROM blocked_lock.transactionid
+  AND blocking_lock.classid IS NOT DISTINCT FROM blocked_lock.classid
+  AND blocking_lock.objid IS NOT DISTINCT FROM blocked_lock.objid
+  AND blocking_lock.objsubid IS NOT DISTINCT FROM blocked_lock.objsubid
+  AND blocking_lock.pid != blocked_lock.pid
+JOIN pg_stat_activity blocking
+  ON blocking_lock.pid = blocking.pid
+WHERE NOT blocked_lock.granted;
+```
+Once you identify the blocking query, you can decide to either wait for it to finish or cancel it if it's not critical. After the blocking query is resolved, the replication slot creation should proceed, allowing the snapshot to start and data to flow in.

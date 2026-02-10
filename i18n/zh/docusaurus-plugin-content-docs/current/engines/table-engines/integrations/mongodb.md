@@ -7,14 +7,14 @@ title: 'MongoDB 表引擎'
 doc_type: 'reference'
 ---
 
-# MongoDB 表引擎 {#mongodb-table-engine}
+# MongoDB 表引擎 \{#mongodb-table-engine\}
 
 MongoDB 引擎是一种只读表引擎，用于从远程 [MongoDB](https://www.mongodb.com/) 集合中读取数据。
 
 仅支持 MongoDB v3.6 及更高版本的服务器。
 尚不支持 [种子列表（`mongodb+srv`）](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list)。
 
-## 创建表 {#creating-a-table}
+## 创建表 \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -56,7 +56,7 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 | `collection`  | 远程集合的名称。                                           |
 | `oid_columns` | 以逗号分隔的列名列表，这些列在 WHERE 子句中将被视为 `oid` 类型。默认值为 `_id`。 |
 
-## 类型映射 {#types-mappings}
+## 类型映射 \{#types-mappings\}
 
 | MongoDB                 | ClickHouse                               |
 | ----------------------- | ---------------------------------------- |
@@ -73,7 +73,7 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 
 如果在 MongoDB 文档中未找到键（例如列名不匹配），将插入默认值，或者在列可为 `NULL` 的情况下插入 `NULL`。
 
-### OID {#oid}
+### OID \{#oid\}
 
 如果希望在 WHERE 子句中将某个 `String` 视为 `oid`，只需将该列名作为表引擎的最后一个参数传入。
 在按 `_id` 列查询记录时可能需要这样做，因为在 MongoDB 中 `_id` 列默认具有 `oid` 类型。
@@ -126,7 +126,7 @@ CREATE TABLE sample_oid
 SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; -- will output 1 now
 ```
 
-## 支持的子句 {#supported-clauses}
+## 支持的子句 \{#supported-clauses\}
 
 仅支持包含简单表达式的查询（例如，`WHERE field = <constant> ORDER BY field2 LIMIT <constant>`）。
 此类表达式会被转换为 MongoDB 查询语言并在服务器端执行。
@@ -149,7 +149,7 @@ SELECT * FROM mongo_table WHERE date = '2024-01-01'::Date OR date = toDate('2024
 
 这适用于 `Date`、`Date32`、`DateTime`、`Bool` 和 `UUID` 类型。
 
-## 使用示例 {#usage-example}
+## 使用示例 \{#usage-example\}
 
 假设 MongoDB 中已经加载了 [sample&#95;mflix](https://www.mongodb.com/docs/atlas/sample-data/sample-mflix) 数据集
 
@@ -229,7 +229,7 @@ LIMIT 3;
    └────────────────────────┴────────┘
 ```
 
-## 故障排查 {#troubleshooting}
+## 故障排查 \{#troubleshooting\}
 您可以在 DEBUG 级别日志中看到生成的 MongoDB 查询。
 
 实现细节可以在 [mongocxx](https://github.com/mongodb/mongo-cxx-driver) 和 [mongoc](https://github.com/mongodb/mongo-c-driver) 的文档中找到。

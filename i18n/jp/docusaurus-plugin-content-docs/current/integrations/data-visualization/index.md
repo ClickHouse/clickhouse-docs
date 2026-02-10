@@ -1,14 +1,14 @@
 ---
 sidebar_label: '概要'
 sidebar_position: 1
-keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Fabi.ai', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Databrain','Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'bi', 'visualization', 'tool', 'lightdash']
+keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Fabi.ai', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Databrain','Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'Querio', 'bi', 'visualization', 'tool', 'lightdash']
 title: 'ClickHouse におけるデータ可視化'
 slug: /integrations/data-visualization
 description: 'ClickHouse におけるデータ可視化について学ぶ'
 doc_type: 'guide'
 ---
 
-# ClickHouse でのデータの可視化 {#visualizing-data-in-clickhouse}
+# ClickHouse でのデータの可視化 \{#visualizing-data-in-clickhouse\}
 
 <div class='vimeo-container'>
 <iframe
@@ -42,13 +42,14 @@ doc_type: 'guide'
 - [Metabase](./metabase-and-clickhouse.md)
 - [Mitzu](./community_integrations/mitzu-and-clickhouse.md)
 - [Omni](./omni-and-clickhouse.md)
+- [Querio](./community_integrations/querio-and-clickhouse.md)
 - [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)
 - [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)
 - [Tableau](./tableau/tableau-and-clickhouse.md)
 - [Zing Data](./community_integrations/zingdata-and-clickhouse.md)
 - [Holistics BI](./community_integrations/holistics-and-clickhouse.md)
 
-## ClickHouse Cloud とデータ可視化ツールの互換性 {#clickhouse-cloud-compatibility-with-data-visualization-tools}
+## ClickHouse Cloud とデータ可視化ツールの互換性 \{#clickhouse-cloud-compatibility-with-data-visualization-tools\}
 
 | Tool                                                                    | サポート方法                 | テスト済み | ドキュメント | コメント                                                                                                                                 |
 |-------------------------------------------------------------------------|-------------------------------|--------|------------|-----------------------------------------------------------------------------------------------------------------------------------------|
@@ -75,6 +76,7 @@ doc_type: 'guide'
 | [Omni](./omni-and-clickhouse.md)                     | ネイティブコネクタ              | ✅      | ✅          |                                                                                                                                         |
 | [Power BI Desktop](./powerbi-and-clickhouse.md)      | ClickHouse 公式コネクタ | ✅      | ✅          | ODBC 経由でダイレクトクエリ モードをサポートします                                                                                                    |
 | [Power BI service](/integrations/powerbi#power-bi-service)                                                    | ClickHouse 公式コネクタ | ✅    | ✅          | [Microsoft Data Gateway](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-custom-connectors) のセットアップが必要です |
+| [Querio](./community_integrations/querio-and-clickhouse.md)            | ネイティブコネクタ              | ✅      | ✅          |                                                                                                                                         |
 | [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)     | ネイティブコネクタ              | ✅      | ✅          |
 | [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)            | ネイティブコネクタ              | ✅      | ❌          |                                                                                                                                         |
 | [Tableau Desktop](./tableau/tableau-and-clickhouse.md)       | ClickHouse 公式コネクタ | ✅      | ✅          |                                                                                                               |

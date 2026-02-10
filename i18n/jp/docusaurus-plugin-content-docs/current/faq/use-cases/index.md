@@ -8,7 +8,7 @@ keywords: ['ClickHouse use cases', '時系列データベース', 'キーバリ�
 doc_type: 'landing-page'
 ---
 
-# ClickHouse のユースケースに関する質問 {#questions-about-clickhouse-use-cases}
+# ClickHouse のユースケースに関する質問 \{#questions-about-clickhouse-use-cases\}
 
 * [ClickHouse を時系列データベースとして利用できますか？](/knowledgebase/time-series)
 * [ClickHouse をキーバリューストレージとして利用できますか？](/knowledgebase/key-value)

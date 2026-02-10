@@ -6,11 +6,11 @@ title: 'system.mutations'
 doc_type: 'reference'
 ---
 
-# system.mutations {#systemmutations}
+# system.mutations \{#systemmutations\}
 
-このテーブルには、[MergeTree](/engines/table-engines/mergetree-family/mergetree.md) テーブルに対する[ミューテーション](/sql-reference/statements/alter/index.md#mutations)と、その進行状況に関する情報が含まれます。各ミューテーションコマンドは 1 行で表現されます。
+このテーブルには、[MergeTree](/engines/table-engines/mergetree-family/mergetree.md)テーブルに対する[ミューテーション](/sql-reference/statements/alter/index.md#mutations)と、その進行状況に関する情報が含まれます。各ミューテーションコマンドは1つの行として表されます。
 
-## Columns: {#columns}
+## Columns: \{#columns\}
 
 - `database` ([String](/sql-reference/data-types/string.md)) — ミューテーションが適用されたデータベースの名前。
 - `table` ([String](/sql-reference/data-types/string.md)) — ミューテーションが適用されたテーブルの名前。
@@ -19,11 +19,20 @@ doc_type: 'reference'
 - `create_time` ([DateTime](/sql-reference/data-types/datetime.md)) — ミューテーションコマンドが実行のために送信された日時。
 - `block_numbers.partition_id` ([Array](/sql-reference/data-types/array.md)([String](/sql-reference/data-types/string.md))) — レプリケートされたテーブルのミューテーションの場合、配列にはパーティションのID(各パーティションに1つのレコード)が含まれます。レプリケートされていないテーブルのミューテーションの場合、配列は空です。
 - `block_numbers.number` ([Array](/sql-reference/data-types/array.md)([Int64](/sql-reference/data-types/int-uint.md))) — レプリケートされたテーブルのミューテーションの場合、配列には各パーティションに対して1つのレコードが含まれ、ミューテーションによって取得されたブロック番号が格納されます。パーティション内では、この番号より小さい番号のブロックを含むパートのみがミューテーションされます。レプリケートされていないテーブルでは、すべてのパーティションのブロック番号が単一のシーケンスを形成します。つまり、レプリケートされていないテーブルのミューテーションの場合、この列にはミューテーションによって取得された単一のブロック番号を持つ1つのレコードが含まれます。
-- `parts_to_do_names` ([Array](/sql-reference/data-types/array.md)([String](/sql-reference/data-types/string.md))) — ミューテーションを完了するためにミューテーションする必要があるデータパートの名前の配列。
-- `parts_to_do` ([Int64](/sql-reference/data-types/int-uint.md)) — ミューテーションを完了するためにミューテーションする必要があるデータパートの数。
-- `is_killed` ([UInt8](/sql-reference/data-types/int-uint.md)) — ミューテーションが強制終了されたかどうかを示します。**ClickHouse Cloudでのみ利用可能です。**
+- `parts_in_progress_names` ([Array](/sql-reference/data-types/array.md)([String](/sql-reference/data-types/string.md))) — 現在ミューテーション処理中のデータパーツ名の配列。
+- `parts_to_do_names` ([Array](/sql-reference/data-types/array.md)([String](/sql-reference/data-types/string.md))) — ミューテーションを完了するためにミューテーションする必要があるデータパーツ名の配列。
+- `parts_to_do` ([Int64](/sql-reference/data-types/int-uint.md)) — ミューテーションを完了するためにミューテーションする必要があるデータパーツの数。
+- `parts_postpone_reasons` ([Map](/sql-reference/data-types/map.md)([String](/sql-reference/data-types/string.md))) — パーツ名と、そのパーツが延期されている理由との対応を表すマップ。
 
 :::note
+
+- パーツ名が`parts_postpone_reasons`に含まれておらず、まだミューテーションされていない場合、そのパーツはまだミューテーションのスケジュールが設定されていないことを意味します。
+- パーツ名`all_parts`は、まだミューテーションされていないすべてのパーツを表します。
+:::
+
+- `is_killed` ([UInt8](/sql-reference/data-types/int-uint.md)) — ミューテーションが強制終了されたかどうかを示します。**ClickHouse Cloudでのみ利用可能です。**
+
+:::note 
 `is_killed=1`は、必ずしもミューテーションが完全に終了したことを意味するわけではありません。`is_killed=1`かつ`is_done=0`の状態が長期間続くことがあります。これは、別の長時間実行されているミューテーションが強制終了されたミューテーションをブロックしている場合に発生する可能性があります。これは正常な状況です。
 :::
 
@@ -41,7 +50,7 @@ doc_type: 'reference'
 - `latest_fail_time` ([DateTime](/sql-reference/data-types/datetime.md)) — 最新のパートミューテーション失敗の日時。
 - `latest_fail_reason` ([String](/sql-reference/data-types/string.md)) — 最新のパートミューテーション失敗の原因となった例外メッセージ。
 
-## ミューテーションの監視 {#monitoring-mutations}
+## ミューテーションの監視 \{#monitoring-mutations\}
 
 `system.mutations`テーブルで進行状況を追跡するには、以下のクエリを使用します：
 
@@ -63,6 +72,6 @@ ClickHouse Cloudでは、各ノードの`system.mutations`テーブルにクラ�
 
 **関連項目**
 
-- [ミューテーション](/sql-reference/statements/alter/index.md#mutations)
-- [MergeTree](/engines/table-engines/mergetree-family/mergetree.md)テーブルエンジン
-- [ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication.md)ファミリー
+* [ミューテーション](/sql-reference/statements/alter/index.md#mutations)
+* [MergeTree](/engines/table-engines/mergetree-family/mergetree.md)テーブルエンジン
+* [ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication.md)ファミリー

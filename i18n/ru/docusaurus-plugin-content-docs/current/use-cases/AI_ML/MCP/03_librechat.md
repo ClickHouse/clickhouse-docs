@@ -15,14 +15,14 @@ import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.png';
 
-# Использование MCP-сервера ClickHouse с LibreChat {#using-clickhouse-mcp-server-with-librechat}
+# Использование MCP-сервера ClickHouse с LibreChat \{#using-clickhouse-mcp-server-with-librechat\}
 
 > В данном руководстве описывается настройка LibreChat с MCP-сервером ClickHouse с использованием Docker
 > и подключение к примерам наборов данных ClickHouse.
 
 <VerticalStepper headerLevel="h2">
 
-## Установите Docker {#install-docker}
+## Установите Docker \{#install-docker\}
 
 Вам потребуется Docker для запуска LibreChat и MCP-сервера. Чтобы установить Docker:
 1. Перейдите на [docker.com](https://www.docker.com/products/docker-desktop)
@@ -32,7 +32,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
 <br/>
 Для получения дополнительной информации см. [документацию по Docker](https://docs.docker.com/get-docker/).
 
-## Клонируйте репозиторий LibreChat {#clone-librechat-repo}
+## Клонируйте репозиторий LibreChat \{#clone-librechat-repo\}
 
 Откройте консоль (Command Prompt, терминал или PowerShell) и клонируйте
 репозиторий LibreChat с помощью следующей команды:
@@ -42,7 +42,7 @@ git clone https://github.com/danny-avila/LibreChat.git
 cd LibreChat
 ```
 
-## Создайте и отредактируйте файл .env {#create-and-edit-env-file}
+## Создайте и отредактируйте файл .env \{#create-and-edit-env-file\}
 
 Скопируйте пример конфигурационного файла из `.env.example` в `.env`:
 
@@ -72,7 +72,7 @@ ANTHROPIC_API_KEY=user_provided
 не изменяйте файл .env и переходите к следующим шагам.
 :::
 
-## Создайте файл librechat.yaml {#create-librechat-yaml-file}
+## Создайте файл librechat.yaml \{#create-librechat-yaml-file\}
 
 Выполните следующую команду, чтобы создать новый файл `librechat.yaml`:
 
@@ -82,7 +82,7 @@ cp librechat.example.yaml librechat.yaml
 
 Это создаёт основной [конфигурационный файл](https://www.librechat.ai/docs/configuration/librechat_yaml) для LibreChat.
 
-## Добавление сервера ClickHouse MCP в Docker Compose {#add-clickhouse-mcp-server-to-docker-compose}
+## Добавление сервера ClickHouse MCP в Docker Compose \{#add-clickhouse-mcp-server-to-docker-compose\}
 
 Теперь мы добавим сервер ClickHouse MCP в файл Docker Compose LibreChat,
 чтобы LLM мог взаимодействовать с
@@ -134,7 +134,7 @@ services:
   />
 </Link>
 
-## Настройка сервера MCP в librechat.yaml {#configure-mcp-server-in-librechat-yaml}
+## Настройка сервера MCP в librechat.yaml \{#configure-mcp-server-in-librechat-yaml\}
 
 Откройте `librechat.yaml` и разместите следующую конфигурацию в конце файла:
 
@@ -159,9 +159,9 @@ socialLogins: ['github', 'google', 'discord', 'openid', 'facebook', 'apple', 'sa
 socialLogins: []
 ```
 
-## Добавление локальной LLM‑модели с помощью Ollama (необязательно) {#add-local-llm-using-ollama}
+## Добавление локальной LLM‑модели с помощью Ollama (необязательно) \{#add-local-llm-using-ollama\}
 
-### Установка Ollama {#install-ollama}
+### Установка Ollama \{#install-ollama\}
 
 Перейдите на [сайт Ollama](https://ollama.com/download) и установите Ollama для своей системы.
 
@@ -175,7 +175,7 @@ ollama run qwen3:32b
 
 Список моделей смотрите в [библиотеке Ollama](https://ollama.com/library)
 
-### Настройка Ollama в librechat.yaml {#configure-ollama-in-librechat-yaml}
+### Настройка Ollama в librechat.yaml \{#configure-ollama-in-librechat-yaml\}
 
 После загрузки модели настройте её в `librechat.yaml`:
 
@@ -198,7 +198,7 @@ custom:
     modelDisplayLabel: "Ollama"
 ```
 
-## Запустите все сервисы {#start-all-services}
+## Запустите все сервисы \{#start-all-services\}
 
 Из корневого каталога проекта LibreChat выполните следующую команду, чтобы запустить сервисы:
 
@@ -208,7 +208,7 @@ docker compose up
 
 Дождитесь, пока все сервисы будут полностью запущены.
 
-## Откройте LibreChat в браузере {#open-librechat-in-browser}
+## Откройте LibreChat в браузере \{#open-librechat-in-browser\}
 
 После запуска всех сервисов откройте браузер и перейдите по адресу `http://localhost:3080/`
 

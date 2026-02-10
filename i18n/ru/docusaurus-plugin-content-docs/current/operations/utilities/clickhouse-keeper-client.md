@@ -6,11 +6,11 @@ title: 'Утилита clickhouse-keeper-client'
 doc_type: 'reference'
 ---
 
-# Утилита clickhouse-keeper-client {#clickhouse-keeper-client-utility}
+# Утилита clickhouse-keeper-client \{#clickhouse-keeper-client-utility\}
 
 Клиентское приложение для взаимодействия с clickhouse-keeper по его родному протоколу.
 
-## Ключи {#clickhouse-keeper-client}
+## Ключи \{#clickhouse-keeper-client\}
 
 -   `-q QUERY`, `--query=QUERY` — Запрос для выполнения. Если этот параметр не передан, `clickhouse-keeper-client` запустится в интерактивном режиме.
 -   `-h HOST`, `--host=HOST` — Хост сервера. Значение по умолчанию: `localhost`.
@@ -24,7 +24,7 @@ doc_type: 'reference'
 -   `--no-confirmation` — Если указан, не будет требоваться подтверждение для ряда команд. Значение по умолчанию: `false` для интерактивного режима и `true` для запроса.
 -   `--help` — Показать справочное сообщение.
 
-## Пример {#clickhouse-keeper-client-example}
+## Пример \{#clickhouse-keeper-client-example\}
 
 ```bash
 ./clickhouse-keeper-client -h localhost -p 9181 --connection-timeout 30 --session-timeout 30 --operation-timeout 30
@@ -46,7 +46,7 @@ keeper foo bar
 2
 ```
 
-## Команды {#clickhouse-keeper-client-commands}
+## Команды \{#clickhouse-keeper-client-commands\}
 
 -   `ls '[path]'` -- Выводит список узлов для указанного пути (по умолчанию: cwd)
 -   `cd '[path]'` -- Изменяет рабочий путь (по умолчанию `.`)

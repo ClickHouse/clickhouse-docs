@@ -15,7 +15,7 @@ import jupysql_plot_1 from '@site/static/images/integrations/sql-clients/jupysql
 import jupysql_plot_2 from '@site/static/images/integrations/sql-clients/jupysql-plot-2.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Использование JupySQL с ClickHouse {#using-jupysql-with-clickhouse}
+# Использование JupySQL с ClickHouse \{#using-jupysql-with-clickhouse\}
 
 <CommunityMaintainedBadge />
 

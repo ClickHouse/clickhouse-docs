@@ -6,7 +6,7 @@ title: 'INTO OUTFILE 句'
 doc_type: 'reference'
 ---
 
-# INTO OUTFILE 句 {#into-outfile-clause}
+# INTO OUTFILE 句 \{#into-outfile-clause\}
 
 `INTO OUTFILE` 句は、`SELECT` クエリの結果を **クライアント** 側のファイルにリダイレクトします。
 
@@ -22,7 +22,7 @@ SELECT <expr_list> INTO OUTFILE file_name [AND STDOUT] [APPEND | TRUNCATE] [COMP
 
 `level` は数値リテラルです。サポートされている正の整数の範囲は、`lz4` では `1-12`、`zstd` では `1-22`、その他の圧縮方式では `1-9` です。
 
-## 実装の詳細 {#implementation-details}
+## 実装の詳細 \{#implementation-details\}
 
 * この機能は [command-line client](../../../interfaces/cli.md) と [clickhouse-local](../../../operations/utilities/clickhouse-local.md) で利用できます。したがって、[HTTP interface](/interfaces/http) 経由で送信されたクエリはエラーになります。
 * 同じファイル名のファイルがすでに存在する場合、そのクエリはエラーになります。

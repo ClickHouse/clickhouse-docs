@@ -7,7 +7,7 @@ title: 'ALTER TABLE ... UPDATE 语句'
 doc_type: 'reference'
 ---
 
-# ALTER TABLE ... UPDATE 语句 {#alter-table-update-statements}
+# ALTER TABLE ... UPDATE 语句 \{#alter-table-update-statements\}
 
 ```sql
 ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN PARTITION partition_id] WHERE filter_expr
@@ -30,7 +30,10 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN P
 * [变更（Mutations）](/sql-reference/statements/alter/index.md#mutations)
 * [ALTER 查询的同步方式](/sql-reference/statements/alter/index.md#synchronicity-of-alter-queries)
 * [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync) 设置
+* [轻量级 `UPDATE`](/sql-reference/statements/update) - 使用补丁分区片段实现的替代性轻量级更新
+* [`APPLY PATCHES`](/sql-reference/statements/alter/apply-patches) - 手动应用轻量级更新产生的补丁
 
-## 相关内容 {#related-content}
+
+## 相关内容 \{#related-content\}
 
 - 博客文章：[在 ClickHouse 中处理更新和删除](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

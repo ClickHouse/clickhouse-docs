@@ -8,7 +8,7 @@ doc_type: 'guide'
 keywords: ['跳过索引', '数据跳过', '性能', '索引', '最佳实践']
 ---
 
-# 数据跳过索引示例 {#data-skipping-index-examples}
+# 数据跳过索引示例 \{#data-skipping-index-examples\}
 
 本文汇总了 ClickHouse 中数据跳过索引的示例，展示如何定义每种类型、在什么场景下使用它们，以及如何验证它们是否已生效。所有功能都适用于 [MergeTree-family 表](/engines/table-engines/mergetree-family/mergetree)。
 
@@ -30,7 +30,7 @@ ClickHouse 支持五种跳过索引类型：
 
 每一节都会通过示例数据展示用法，并演示如何在查询执行中验证索引是否被使用。
 
-## MinMax 索引 {#minmax-index}
+## MinMax 索引 \{#minmax-index\}
 
 `minmax` 索引最适合在松散排序的数据上执行范围条件，或用于与 `ORDER BY` 相关联的列。
 
@@ -60,7 +60,7 @@ SELECT count() FROM events WHERE ts >= now() - 3600;
 
 请参阅一个包含 `EXPLAIN` 和剪枝的[示例](/best-practices/use-data-skipping-indices-where-appropriate#example)。
 
-## Set 索引 {#set-index}
+## Set 索引 \{#set-index\}
 
 当本地（按块）基数较低时使用 `set` 索引；如果每个数据块中包含许多不同的值，则效果不明显。
 
@@ -76,7 +76,7 @@ SELECT * FROM events WHERE user_id IN (101, 202);
 
 在[基本操作指南](/optimize/skipping-indexes#basic-operation)中展示了创建/物化流程以及应用前后的效果。
 
-## 通用 Bloom 过滤器（标量） {#generic-bloom-filter-scalar}
+## 通用 Bloom 过滤器（标量） \{#generic-bloom-filter-scalar\}
 
 `bloom_filter` 索引非常适合用于“在干草堆里找针”式的等值/`IN` 成员匹配查询。它接受一个可选参数，用于指定假阳性（误报）率（默认值为 0.025）。
 
@@ -90,7 +90,7 @@ EXPLAIN indexes = 1
 SELECT * FROM events WHERE value IN (7, 42, 99);
 ```
 
-## 用于子串搜索的 N-gram Bloom 过滤器（ngrambf&#95;v1） {#n-gram-bloom-filter-ngrambf-v1-for-substring-search}
+## 用于子串搜索的 N-gram Bloom 过滤器（ngrambf&#95;v1） \{#n-gram-bloom-filter-ngrambf-v1-for-substring-search\}
 
 `ngrambf_v1` 索引将字符串划分为 n-gram。它非常适用于 `LIKE '%...%'` 查询。它支持 String/FixedString/Map（通过 mapKeys/mapValues），并且可以调节大小、哈希次数和种子。有关更多详细信息，请参阅 [N-gram Bloom 过滤器](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) 的文档。
 
@@ -126,7 +126,7 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- ~13
 
 有关完整的调优指导，请参阅[参数文档](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter)。
 
-## 用于基于单词搜索的 Token Bloom 过滤器（tokenbf&#95;v1） {#token-bloom-filter-tokenbf-v1-for-word-based-search}
+## 用于基于单词搜索的 Token Bloom 过滤器（tokenbf&#95;v1） \{#token-bloom-filter-tokenbf-v1-for-word-based-search\}
 
 `tokenbf_v1` 会为由非字母数字字符分隔的 token 建立索引。你应将其与 [`hasToken`](/sql-reference/functions/string-search-functions#hasToken)、`LIKE` 单词模式或 `=` / `IN` 一起使用。它支持 `String` / `FixedString` / `Map` 类型。
 
@@ -145,7 +145,7 @@ SELECT count() FROM logs WHERE hasToken(lower(msg), 'exception');
 
 可在[此处](/use-cases/observability/schema-design#bloom-filters-for-text-search)查看可观测性示例，以及关于 token 与 ngram 的使用指导。
 
-## 在 CREATE TABLE 时添加索引（多个示例） {#add-indexes-during-create-table-multiple-examples}
+## 在 CREATE TABLE 时添加索引（多个示例） \{#add-indexes-during-create-table-multiple-examples\}
 
 跳过索引也支持组合表达式以及 `Map`/`Tuple`/`Nested` 类型。下面的示例对此进行了演示：
 
@@ -166,7 +166,7 @@ ENGINE = MergeTree
 ORDER BY u64;
 ```
 
-## 在现有数据上物化并验证 {#materializing-on-existing-data-and-verifying}
+## 在现有数据上物化并验证 \{#materializing-on-existing-data-and-verifying\}
 
 你可以使用 `MATERIALIZE` 为现有的数据部分添加索引，并通过 `EXPLAIN` 或跟踪日志来检查裁剪效果，如下所示：
 
@@ -182,7 +182,7 @@ SET send_logs_level = 'trace';
 
 此[可运行的 minmax 示例](/best-practices/use-data-skipping-indices-where-appropriate#example)展示了 EXPLAIN 输出的结构及剪枝数量。
 
-## 何时使用跳过索引，何时应避免使用 {#when-use-and-when-to-avoid}
+## 何时使用跳过索引，何时应避免使用 \{#when-use-and-when-to-avoid\}
 
 **在以下情况使用跳过索引：**
 
@@ -199,7 +199,7 @@ SET send_logs_level = 'trace';
 如果某个值在一个数据块中哪怕只出现一次，ClickHouse 也必须读取整个数据块。请使用具有代表性的数据集对索引进行测试，并根据实际性能测试结果调整粒度和特定于类型的参数。
 :::
 
-## 临时忽略或强制使用索引 {#temporarily-ignore-or-force-indexes}
+## 临时忽略或强制使用索引 \{#temporarily-ignore-or-force-indexes\}
 
 在测试和故障排查期间，可以针对单个查询按名称禁用特定索引。也可以通过相关设置在需要时强制使用索引。参见 [`ignore_data_skipping_indices`](/operations/settings/settings#ignore_data_skipping_indices)。
 
@@ -210,13 +210,13 @@ WHERE hasToken(lower(msg), 'exception')
 SETTINGS ignore_data_skipping_indices = 'msg_token';
 ```
 
-## 注意事项与限制 {#notes-and-caveats}
+## 注意事项与限制 \{#notes-and-caveats\}
 
 * 跳过索引仅支持在 [MergeTree 系列表](/engines/table-engines/mergetree-family/mergetree) 上使用；数据裁剪发生在 granule/block 级别。  
 * 基于 Bloom 过滤器的索引是概率性的（假阳性会导致额外的读取操作，但不会遗漏有效数据）。  
 * 应使用 `EXPLAIN` 和 tracing 验证 Bloom 过滤器及其他跳过索引；通过调整粒度在裁剪效果与索引大小之间取得平衡。
 
-## 相关文档 {#related-docs}
+## 相关文档 \{#related-docs\}
 - [数据跳过索引指南](/optimize/skipping-indexes)
 - [最佳实践指南](/best-practices/use-data-skipping-indices-where-appropriate)
 - [数据跳过索引管理](/sql-reference/statements/alter/skipping-index)

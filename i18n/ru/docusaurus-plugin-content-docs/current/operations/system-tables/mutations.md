@@ -7,11 +7,11 @@ title: 'system.mutations'
 doc_type: 'reference'
 ---
 
-# system.mutations {#systemmutations}
+# system.mutations \{#systemmutations\}
 
-Эта таблица содержит информацию о [мутациях](/sql-reference/statements/alter/index.md#mutations) таблиц семейства [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) и прогрессе их выполнения. Каждая операция мутации представлена одной строкой.
+Таблица содержит информацию о [мутациях](/sql-reference/statements/alter/index.md#mutations) таблиц [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) и ходе их выполнения. Каждая команда мутации представлена отдельной строкой.
 
-## Столбцы {#columns}
+## Столбцы \{#columns\}
 
 - `database` ([String](/sql-reference/data-types/string.md)) — Имя базы данных, к которой применена мутация.
 - `table` ([String](/sql-reference/data-types/string.md)) — Имя таблицы, к которой применена мутация.
@@ -20,8 +20,17 @@ doc_type: 'reference'
 - `create_time` ([DateTime](/sql-reference/data-types/datetime.md)) — Дата и время отправки команды мутации на выполнение.
 - `block_numbers.partition_id` ([Array](/sql-reference/data-types/array.md)([String](/sql-reference/data-types/string.md))) — Для мутаций реплицируемых таблиц массив содержит идентификаторы партиций (одна запись для каждой партиции). Для мутаций нереплицируемых таблиц массив пуст.
 - `block_numbers.number` ([Array](/sql-reference/data-types/array.md)([Int64](/sql-reference/data-types/int-uint.md))) — Для мутаций реплицируемых таблиц массив содержит одну запись для каждой партиции с номером блока, полученным мутацией. В партиции будут мутированы только куски, содержащие блоки с номерами меньше этого номера. В нереплицируемых таблицах номера блоков во всех партициях образуют единую последовательность. Это означает, что для мутаций нереплицируемых таблиц столбец будет содержать одну запись с единственным номером блока, полученным мутацией.
+- `parts_in_progress_names` ([Array](/sql-reference/data-types/array.md)([String](/sql-reference/data-types/string.md))) — Массив имён кусков данных, которые в данный момент мутируются.
 - `parts_to_do_names` ([Array](/sql-reference/data-types/array.md)([String](/sql-reference/data-types/string.md))) — Массив имён кусков данных, которые необходимо мутировать для завершения мутации.
 - `parts_to_do` ([Int64](/sql-reference/data-types/int-uint.md)) — Количество кусков данных, которые необходимо мутировать для завершения мутации.
+- `parts_postpone_reasons` ([Map](/sql-reference/data-types/map.md)([String](/sql-reference/data-types/string.md))) — Словарь, сопоставляющий имена кусков причинам, по которым их обработка отложена.
+
+:::note
+
+- Если имя куска отсутствует в `parts_postpone_reasons` и он ещё не был мутирован, это означает, что кусок ещё не поставлен в очередь на мутацию.
+- Имя куска `all_parts` обозначает все куски, которые ещё не были мутированы.
+:::
+
 - `is_killed` ([UInt8](/sql-reference/data-types/int-uint.md)) — Указывает, была ли мутация прервана. **Доступно только в ClickHouse Cloud.**
 
 :::note
@@ -42,7 +51,7 @@ doc_type: 'reference'
 - `latest_fail_time` ([DateTime](/sql-reference/data-types/datetime.md)) — Дата и время последнего сбоя мутации куска.
 - `latest_fail_reason` ([String](/sql-reference/data-types/string.md)) — Сообщение об исключении, вызвавшем последний сбой мутации куска.
 
-## Мониторинг мутаций {#monitoring-mutations}
+## Мониторинг мутаций \{#monitoring-mutations\}
 
 Для отслеживания прогресса мутаций в таблице `system.mutations` используйте следующий запрос:
 
@@ -64,6 +73,6 @@ WHERE is_done = 0 AND table = 'tmp';
 
 **См. также**
 
-- [Мутации](/sql-reference/statements/alter/index.md#mutations)
-- Движок таблиц [MergeTree](/engines/table-engines/mergetree-family/mergetree.md)
-- Семейство [ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication.md)
+* [Мутации](/sql-reference/statements/alter/index.md#mutations)
+* Движок таблиц [MergeTree](/engines/table-engines/mergetree-family/mergetree.md)
+* Семейство [ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication.md)

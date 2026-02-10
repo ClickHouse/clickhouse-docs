@@ -102,6 +102,17 @@ To use [HMAC keys](https://docs.cloud.google.com/storage/docs/authentication/hma
 
 Follow [this guide](https://clickhouse.com/docs/integrations/gcs#create-a-service-account-hmac-key-and-secret) to create a service account with an HMAC key.
 
+### Network access {#network-access}
+
+GCS ClickPipes use two distinct network paths for metadata discovery and data ingestion: the ClickPipes service and the ClickHouse Cloud service, respectively. If you want to configure an additional layer of network security (e.g., for compliance reasons), network access **must be configured for both paths**.
+
+* For **IP-based access control**, the [IP filtering rules](https://docs.cloud.google.com/storage/docs/ip-filtering-overview) for your GCS bucket must allow the static IPs for the ClickPipes service region listed [here](/integrations/clickpipes#list-of-static-ips), as well as the [static IPs](/manage/data-sources/cloud-endpoints-api) for the ClickHouse Cloud service. To obtain the static IPs for your ClickHouse Cloud region, open a terminal and run:
+
+    ```bash
+    # Replace <your-region> with your ClickHouse Cloud region
+    curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.gcp[] | select(.region == "<your-region>") | .egress_ips[]'
+    ```
+
 ## Advanced settings {#advanced-settings}
 
 ClickPipes provides sensible defaults that cover the requirements of most use cases. If your use case requires additional fine-tuning, you can adjust the following settings:

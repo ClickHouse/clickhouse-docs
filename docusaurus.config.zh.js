@@ -287,13 +287,6 @@ const config = {
         },
       };
     },
-    [
-      "vercel-analytics",
-      {
-        debug: false,
-        mode: "auto",
-      },
-    ],
     chHeader,
     ['./plugins/tailwind-config.js', {}],
   ],

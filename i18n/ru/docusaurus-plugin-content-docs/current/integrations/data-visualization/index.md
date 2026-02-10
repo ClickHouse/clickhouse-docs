@@ -1,14 +1,14 @@
 ---
 sidebar_label: 'Обзор'
 sidebar_position: 1
-keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Fabi.ai', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Databrain','Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'bi', 'visualization', 'tool', 'lightdash']
+keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Fabi.ai', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Databrain','Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'Querio', 'bi', 'visualization', 'tool', 'lightdash']
 title: 'Визуализация данных в ClickHouse'
 slug: /integrations/data-visualization
 description: 'Узнайте больше о визуализации данных в ClickHouse'
 doc_type: 'guide'
 ---
 
-# Визуализация данных в ClickHouse {#visualizing-data-in-clickhouse}
+# Визуализация данных в ClickHouse \{#visualizing-data-in-clickhouse\}
 
 <div class='vimeo-container'>
 <iframe
@@ -42,13 +42,14 @@ doc_type: 'guide'
 - [Metabase](./metabase-and-clickhouse.md)
 - [Mitzu](./community_integrations/mitzu-and-clickhouse.md)
 - [Omni](./omni-and-clickhouse.md)
+- [Querio](./community_integrations/querio-and-clickhouse.md)
 - [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)
 - [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)
 - [Tableau](./tableau/tableau-and-clickhouse.md)
 - [Zing Data](./community_integrations/zingdata-and-clickhouse.md)
 - [Holistics BI](./community_integrations/holistics-and-clickhouse.md)
 
-## Совместимость ClickHouse Cloud с инструментами визуализации данных {#clickhouse-cloud-compatibility-with-data-visualization-tools}
+## Совместимость ClickHouse Cloud с инструментами визуализации данных \{#clickhouse-cloud-compatibility-with-data-visualization-tools\}
 
 | Инструмент                                                             | Поддерживается через          | Протестировано | Документировано | Комментарий                                                                                                                             |
 |-------------------------------------------------------------------------|-------------------------------|----------------|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------|
@@ -64,19 +65,20 @@ doc_type: 'guide'
 | [Grafana](./grafana/index.md)                        | Официальный коннектор ClickHouse | ✅      | ✅          |                                                                                                                                         |
 | [Hashboard](./community_integrations/hashboard-and-clickhouse.md)           | Нативный коннектор              | ✅      | ✅          |                                                                                                                                         |
 | [Holistics](./community_integrations/holistics-and-clickhouse.md)           | Нативный коннектор              | ✅      | ✅          |                                                                                                                                         |
-| [Lightdash](./lightdash-and-clickhouse.md)      | Нативный коннектор | ✅      | ✅          |                                                                                                                                         |
+| [Lightdash](./lightdash-and-clickhouse.md)      | Нативный коннектор | ✅      | ✅          | 
+            |
 | [Looker](./looker-and-clickhouse.md)                 | Нативный коннектор              | ✅      | ✅          | Работает с некоторыми ограничениями, подробнее см. [документацию](./looker-and-clickhouse.md).                                        |
 | Looker                                                                  | Интерфейс MySQL               | 🚧     | ❌          |                                                                                                                                         |
 | [Luzmo](./community_integrations/luzmo-and-clickhouse.md)                   | Официальный коннектор ClickHouse | ✅      | ✅          |                                                                                                                                         |
 | [Looker Studio](./looker-studio-and-clickhouse.md)   | Интерфейс MySQL               | ✅      | ✅          |                                                                                                                                         |
-| [Metabase](./metabase-and-clickhouse.md)             | Официальный коннектор ClickHouse | ✅      | ✅          |                                                                                                                                         |
+| [Metabase](./metabase-and-clickhouse.md)             | Официальный коннектор ClickHouse | ✅      | ✅          |
 | [Mitzu](./community_integrations/mitzu-and-clickhouse.md)                   | Нативный коннектор | ✅      | ✅          |                                                                                                                                         |
 | [Omni](./omni-and-clickhouse.md)                     | Нативный коннектор              | ✅      | ✅          |                                                                                                                                         |
 | [Power BI Desktop](./powerbi-and-clickhouse.md)      | Официальный коннектор ClickHouse | ✅      | ✅          | Через ODBC; поддерживает режим DirectQuery.                                                                                            |
 | [Power BI service](/integrations/powerbi#power-bi-service)                                                    | Официальный коннектор ClickHouse | ✅    | ✅          | Требуется настройка [Microsoft Data Gateway](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-custom-connectors). |
-| [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)     | Нативный коннектор              | ✅      | ✅          |                                                                                                                                         |
+| [Querio](./community_integrations/querio-and-clickhouse.md)            | Нативный коннектор              | ✅      | ✅          |                                                                                                                                         |
+| [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)     | Нативный коннектор              | ✅      | ✅          |
 | [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)            | Нативный коннектор              | ✅      | ❌          |                                                                                                                                         |
 | [Tableau Desktop](./tableau/tableau-and-clickhouse.md)       | Официальный коннектор ClickHouse | ✅      | ✅          |                                                                                                               |
 | [Tableau Online](./tableau/tableau-online-and-clickhouse.md) | Интерфейс MySQL               | ✅      | ✅          | Работает с некоторыми ограничениями, подробнее см. [документацию](./tableau/tableau-online-and-clickhouse.md).                        |
 | [Zing Data](./community_integrations/zingdata-and-clickhouse.md)            | Нативный коннектор              | ✅      | ✅          |                                                                                                                                         |
-| [Apache Superset](./superset-and-clickhouse.md)      | Официальный коннектор ClickHouse | ✅      | ✅          |                                                                                                                                         |

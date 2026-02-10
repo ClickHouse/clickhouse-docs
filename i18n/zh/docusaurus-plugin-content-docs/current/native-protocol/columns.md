@@ -1,101 +1,49 @@
 ---
 slug: /native-protocol/columns
 sidebar_position: 4
-title: '列类型'
+title: '原生协议列类型'
 description: '原生协议中的列类型'
 keywords: ['原生协议列类型', '列类型', '数据类型', '协议数据类型', '二进制编码']
 doc_type: 'reference'
 ---
 
-# 列类型 {#column-types}
+# 原生协议列类型 \{#native-protocol-column-types\}
 
-有关通用说明，请参阅 [数据类型](/sql-reference/data-types/)。
-
-## 数值类型 {#numeric-types}
+通用参考请参见 [Data Types](/sql-reference/data-types/)。
 
 :::tip
-
-数值类型的编码与 AMD64 或 ARM64 等小端 CPU 的内存布局相同。
-
-这使得可以实现非常高效的编码和解码。
-
+数值类型的编码与 AMD64 或 ARM64 等小端 CPU 的内存布局一致，从而实现非常高效的编码和解码。
 :::
 
-### 整数 {#integers}
+| Type                                                            | Encoding                                                                                           |
+| --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **Integers** ([Int/UInt](/sql-reference/data-types/int-uint))   | 8、16、32、64、128 或 256 位小端编码                                                                         |
+| **Floats** ([Float32/Float64](/sql-reference/data-types/float)) | IEEE 754 二进制表示                                                                                     |
+| [String](/sql-reference/data-types/string)                      | 字符串数组，以 (len, value) 形式存储                                                                          |
+| [FixedString(N)](/sql-reference/data-types/fixedstring)         | N 字节序列数组                                                                                           |
+| [IPv4](/sql-reference/data-types/ipv4)                          | `UInt32` 的别名，以 UInt32 存储                                                                           |
+| [IPv6](/sql-reference/data-types/ipv6)                          | `FixedString(16)` 的别名，以二进制存储                                                                       |
+| [Tuple](/sql-reference/data-types/tuple)                        | 连续编码的列数组。例如：`Tuple(String, UInt8)` = 两个连续的列                                                        |
+| [Map](/sql-reference/data-types/map)                            | `Map(K, V)` = 三列：`Offsets ColUInt64, Keys K, Values V`。Keys/Values 中的行数 = Offsets 的最后一个值           |
+| [Array](/sql-reference/data-types/array)                        | `Array(T)` = 两列：`Offsets ColUInt64, Data T`。Data 中的行数 = Offsets 的最后一个值                             |
+| [Nullable](/sql-reference/data-types/nullable)                  | `Nullable(T)` = 两列：`Nulls ColUInt8, Values T`，行数相同。Nulls 是掩码：1 表示 null，0 表示 value                  |
+| [UUID](/sql-reference/data-types/uuid)                          | `FixedString(16)` 的别名，以二进制存储                                                                       |
+| [Enum](/sql-reference/data-types/enum)                          | `Int8` 或 `Int16` 的别名，每个整数映射到一个 String 值                                                            |
+| [LowCardinality](/sql-reference/data-types/lowcardinality)      | `LowCardinality(T)` = 两列：`Index T, Keys K`，其中 K 为 UInt8/16/32/64。Index 列存储唯一值，Keys 列存储指向 Index 的索引 |
+| [Bool](/sql-reference/data-types/boolean)                       | `UInt8` 的别名：0=false，1=true                                                                         |
 
-8、16、32、64、128 或 256 位的小端序 Int 和 UInt 类型表示。
+**示例：Nullable 编码**
 
-### 浮点数 {#floats}
-
-IEEE 754 二进制表示的 Float32 和 Float64。
-
-## String {#string}
-
-本质上就是一个由 String 构成的数组，即 (len, value)。
-
-## FixedString(N) {#fixedstringn}
-
-由 N 字节长序列构成的数组。
-
-## IP {#ip}
-
-IPv4 是 `UInt32` 数值类型的别名，并以 `UInt32` 形式表示。
-
-IPv6 是 `FixedString(16)` 的别名，并直接以二进制形式表示。
-
-## Tuple {#tuple}
-
-Tuple 只是一个由列组成的数组。比如，Tuple(String, UInt8) 就是两个按顺序连续编码的列。
-
-## Map {#map}
-
-`Map(K, V)` 由三列组成：`Offsets ColUInt64、Keys K、Values V`。
-
-`Keys` 和 `Values` 列中的行数等于 `Offsets` 列中的最后一个值。
-
-## Array {#array}
-
-`Array(T)` 由两列组成：`Offsets ColUInt64, Data T`。
-
-`Data` 中的行数等于 `Offsets` 中的最后一个值。
-
-## Nullable {#nullable}
-
-`Nullable(T)` 由 `Nulls ColUInt8` 和 `Values T` 构成，且二者的行数相同。
-
-```go
-// Nulls is nullable "mask" on Values column.
-// For example, to encode [null, "", "hello", null, "world"]
-//      Values: ["", "", "hello", "", "world"] (len: 5)
-//      Nulls:  [ 1,  0,       0,  1,       0] (len: 5)
+```text
+To encode [null, "", "hello", null, "world"]:
+  Values: ["", "", "hello", "", "world"] (len: 5)
+  Nulls:  [ 1,  0,       0,  1,       0] (len: 5)
 ```
 
-## UUID {#uuid}
+**示例：LowCardinality 编码**
 
-`FixedString(16)` 的别名，UUID 值以二进制形式表示。
-
-## Enum {#enum}
-
-`Int8` 或 `Int16` 的别名，但每个整数都会映射到某个 `String` 类型的值。
-
-## `LowCardinality` 类型 {#low-cardinality}
-
-`LowCardinality(T)` 由 `Index T` 和 `Keys K` 组成，
-其中 `K` 是 (UInt8, UInt16, UInt32, UInt64) 之一，具体取决于 `Index` 的大小。
-
-```go
-// Index (i.e. dictionary) column contains unique values, Keys column contains
-// sequence of indexes in Index column that represent actual values.
-//
-// For example, ["Eko", "Eko", "Amadela", "Amadela", "Amadela", "Amadela"] can
-// be encoded as:
-//      Index: ["Eko", "Amadela"] (String)
-//      Keys:  [0, 0, 1, 1, 1, 1] (UInt8)
-//
-// The CardinalityKey is chosen depending on Index size, i.e. maximum value
-// of chosen type should be able to represent any index of Index element.
+```text
+To encode ["Eko", "Eko", "Amadela", "Amadela", "Amadela", "Amadela"]:
+  Index: ["Eko", "Amadela"] (String)
+  Keys:  [0, 0, 1, 1, 1, 1] (UInt8)
 ```
-
-## Bool {#bool}
-
-是 `UInt8` 的别名，其中 `0` 表示 `false`，`1` 表示 `true`。

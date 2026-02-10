@@ -9,11 +9,11 @@ doc_type: 'reference'
 
 
 
-# maxSimpleState {#maxsimplestate}
+# maxSimpleState \{#maxsimplestate\}
 
 
 
-## Описание {#description}
+## Описание \{#description\}
 
 Комбинатор [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) может быть применён к функции [`max`](/sql-reference/aggregate-functions/reference/max)
 для получения максимального значения среди всех входных значений. Он возвращает
@@ -21,14 +21,14 @@ doc_type: 'reference'
 
 
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 Пример, приведённый в [`minSimpleState`](/examples/aggregate-function-combinators/minSimpleState/#example-usage),
 демонстрирует использование агрегатов `maxSimpleState` и `minSimpleState`.
 
 
 
-## См. также {#see-also}
+## См. также \{#see-also\}
 - [`max`](/sql-reference/aggregate-functions/reference/max)
 - [`комбинатор SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate)
 - [`тип SimpleAggregateFunction`](/sql-reference/data-types/simpleaggregatefunction)

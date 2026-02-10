@@ -7,7 +7,7 @@ title: '設定プロファイル'
 doc_type: 'reference'
 ---
 
-# 設定プロファイル {#settings-profiles}
+# 設定プロファイル \{#settings-profiles\}
 
 設定プロファイルとは、同じ名前でグループ化された設定の集合です。
 
@@ -41,6 +41,12 @@ SET profile = 'web'
         <!-- The maximum number of threads when running a single query. -->
         <max_threads>8</max_threads>
     </default>
+
+    <!-- Background operations settings -->
+    <background>
+        <!-- Re-defining maximum number of threads for background operations -->
+        <max_threads>12</max_threads>
+    </background>
 
     <!-- Settings for queries from the user interface -->
     <web>
@@ -79,6 +85,8 @@ SET profile = 'web'
 
 この例では、`default` と `web` の 2 つのプロファイルを指定しています。
 
-`default` プロファイルには特別な目的があります。必ず定義されている必要があり、サーバー起動時に適用されます。言い換えると、`default` プロファイルには既定の設定が含まれます。
+`default` プロファイルには特別な目的があります。必ず定義されている必要があり、サーバー起動時に適用されます。言い換えると、`default` プロファイルには既定の設定が含まれます。デフォルトプロファイルの名前は、サーバー設定 `default_profile` で変更できます。
+
+`background` プロファイルには特別な目的があります。バックグラウンド処理用の設定を上書きするために定義されることがあります。このパラメータは任意であり、その名前はサーバー設定 `background_profile` で変更できます。
 
 `web` プロファイルは通常のプロファイルであり、`SET` クエリ、または HTTP クエリ内の URL パラメータを使って設定できます。

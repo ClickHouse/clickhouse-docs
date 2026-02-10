@@ -466,9 +466,9 @@ We recommend deciding on your ordering keys once you have structured your logs. 
 
 ## Using maps {#using-maps}
 
-Earlier examples show the use of map syntax `map['key']` to access values in the `Map(String, String)` columns. As well as using map notation to access the nested keys, specialized ClickHouse [map functions](/sql-reference/functions/tuple-map-functions#mapkeys) are available for filtering or selecting these columns.
+Earlier examples show the use of map syntax `map['key']` to access values in the `Map(String, String)` columns. As well as using map notation to access the nested keys, specialized ClickHouse [map functions](/sql-reference/functions/tuple-map-functions#mapKeys) are available for filtering or selecting these columns.
 
-For example, the following query identifies all of the unique keys available in the `LogAttributes` column using the [`mapKeys` function](/sql-reference/functions/tuple-map-functions#mapkeys) followed by the [`groupArrayDistinctArray` function](/sql-reference/aggregate-functions/combinators) (a combinator).
+For example, the following query identifies all of the unique keys available in the `LogAttributes` column using the [`mapKeys` function](/sql-reference/functions/tuple-map-functions#mapKeys) followed by the [`groupArrayDistinctArray` function](/sql-reference/aggregate-functions/combinators) (a combinator).
 
 ```sql
 SELECT groupArrayDistinctArray(mapKeys(LogAttributes))

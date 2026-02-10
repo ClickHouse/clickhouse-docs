@@ -11,16 +11,16 @@ import Image from '@theme/IdealImage';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import cmek_performance from '@site/static/images/_snippets/cmek-performance.png';
 
-# Шифрование данных {#data-encryption}
+# Шифрование данных \{#data-encryption\}
 
-## Шифрование на уровне хранилища {#storage-encryption}
+## Шифрование на уровне хранилища \{#storage-encryption\}
 
 ClickHouse Cloud по умолчанию использует шифрование данных в состоянии покоя с использованием управляемых облачным провайдером ключей AES‑256. Для получения дополнительной информации см.:
 - [Серверное шифрование S3 в AWS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingServerSideEncryption.html)
 - [Шифрование данных в состоянии покоя по умолчанию в GCP](https://cloud.google.com/docs/security/encryption/default-encryption)
 - [Шифрование данных в состоянии покоя в службе хранилища Azure](https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption)
 
-## Шифрование на уровне базы данных {#database-encryption}
+## Шифрование на уровне базы данных \{#database-encryption\}
 
 <EnterprisePlanFeatureBadge feature="Enhanced Encryption"/>
 
@@ -28,7 +28,7 @@ ClickHouse Cloud по умолчанию использует шифровани
 
 Усиленное шифрование в настоящее время доступно в сервисах AWS и GCP. Поддержка Azure появится позже.
 
-### Transparent Data Encryption (TDE) {#transparent-data-encryption-tde}
+### Transparent Data Encryption (TDE) \{#transparent-data-encryption-tde\}
 
 TDE необходимо включить при создании сервиса. Невозможно зашифровать уже существующие сервисы после их создания. После включения TDE его нельзя отключить. Все данные в сервисе останутся зашифрованными. Если вы хотите отключить TDE после того, как он был включён, необходимо создать новый сервис и перенести в него ваши данные.
 
@@ -38,7 +38,7 @@ TDE необходимо включить при создании сервиса
 4. Откройте выпадающий список Enterprise features и включите опцию Enable Transparent Data Encryption (TDE)
 5. Нажмите `Create service`
 
-### Customer Managed Encryption Keys (CMEK) {#customer-managed-encryption-keys-cmek}
+### Customer Managed Encryption Keys (CMEK) \{#customer-managed-encryption-keys-cmek\}
 
 :::warning
 Удаление ключа KMS, используемого для шифрования сервиса ClickHouse Cloud, приведёт к остановке вашего сервиса ClickHouse, а его данные, включая существующие резервные копии, станут невосстановимыми. Чтобы предотвратить случайную потерю данных при ротации ключей, вы можете сохранить старые ключи KMS на некоторый период времени перед их удалением. 
@@ -100,19 +100,19 @@ TDE необходимо включить при создании сервиса
     
 </details>
 
-#### Ротация ключей {#key-rotation}
+#### Ротация ключей \{#key-rotation\}
 
 После настройки CMEK выполните ротацию ключа, следуя описанным выше процедурам по созданию нового ключа KMS и назначению прав. Вернитесь в настройки сервиса, вставьте новый ARN (AWS) или `Key Resource Path` (GCP) и сохраните настройки. Сервис перезапустится для применения нового ключа.
 
-#### Служба опроса ключей KMS {#kms-key-poller}
+#### Служба опроса ключей KMS \{#kms-key-poller\}
 
 При использовании CMEK валидность предоставленного ключа KMS проверяется каждые 10 минут. Если ключ KMS становится недоступным, служба ClickHouse будет остановлена. Чтобы возобновить работу службы, восстановите доступ к ключу KMS, следуя инструкциям в данном руководстве, а затем перезапустите службу.
 
-### Резервное копирование и восстановление {#backup-and-restore}
+### Резервное копирование и восстановление \{#backup-and-restore\}
 
 Резервные копии шифруются тем же ключом, что и связанная служба. При восстановлении зашифрованной резервной копии создаётся зашифрованный экземпляр, который использует тот же ключ KMS, что и исходный экземпляр. При необходимости вы можете выполнить ротацию ключа KMS после восстановления; дополнительные сведения см. в разделе [Ротация ключей](#key-rotation).
 
-## Производительность {#performance}
+## Производительность \{#performance\}
 
 Шифрование базы данных использует встроенную в ClickHouse [виртуальную файловую систему для шифрования данных](/operations/storing-data#encrypted-virtual-file-system) для шифрования и защиты ваших данных. Для этой функции используется алгоритм `AES_256_CTR`, который, как ожидается, приведёт к снижению производительности на 5–15 % в зависимости от нагрузки:
 

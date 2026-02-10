@@ -13,7 +13,7 @@ doc_type: 'reference'
 |------|-------|------|
 | ✔    | ✗     |      |
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 在这种格式中，单个 JSON 对象会被解释为一个单独的值。  
 如果输入包含多个 JSON 对象（用逗号分隔），它们会被解释为多行记录。  
@@ -27,9 +27,9 @@ doc_type: 'reference'
 
 将整个 JSON 对象序列化为一个 String 值之后，就可以使用 [JSON 函数](/sql-reference/functions/json-functions.md) 来处理它。
 
-## 使用示例 {#example-usage}
+## 使用示例 \{#example-usage\}
 
-### 基本示例 {#basic-example}
+### 基本示例 \{#basic-example\}
 
 ```sql title="Query"
 DROP TABLE IF EXISTS json_as_string;
@@ -46,7 +46,7 @@ SELECT * FROM json_as_string;
 └───────────────────────────────────┘
 ```
 
-### JSON 对象数组 {#an-array-of-json-objects}
+### JSON 对象数组 \{#an-array-of-json-objects\}
 
 ```sql title="Query"
 CREATE TABLE json_square_brackets (field String) ENGINE = Memory;
@@ -62,4 +62,4 @@ SELECT * FROM json_square_brackets;
 └────────────────────────────┘
 ```
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}

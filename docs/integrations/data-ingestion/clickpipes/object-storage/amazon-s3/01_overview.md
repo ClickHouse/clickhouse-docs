@@ -9,6 +9,7 @@ doc_type: 'guide'
 
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
 import DOsvg from '@site/static/images/integrations/logos/digitalocean.svg';
+import OVHpng from '@site/static/images/integrations/logos/ovh.png';
 import R2svg from '@site/static/images/integrations/logos/cloudflare.svg';
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
@@ -21,11 +22,12 @@ S3 ClickPipes can be deployed and managed manually using the ClickPipes UI, as w
 
 ## Supported data sources {#supported-data-sources}
 
-| Name                 | Logo | Details           |
-|----------------------|------|-------------------|
-| **Amazon S3**            | <S3svg class="image" alt="Amazon S3 logo" style={{width: '2.5rem', height: 'auto'}}/> | Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order) by default, but can be configured to [ingest files in any order](#continuous-ingestion-any-order). |
-| **Cloudflare R2** <br></br> _S3-compatible_ | <R2svg class="image" alt="Cloudflare R2 logo" style={{width: '2.5rem', height: 'auto'}}/> | Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order). |
-| **DigitalOcean Spaces** <br></br> _S3-compatible_ | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '2.5rem', height: 'auto'}}/>|  Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order). |
+| Name                 | Logo                                                                                      | Details           |
+|----------------------|-------------------------------------------------------------------------------------------|-------------------|
+| **Amazon S3**            | <S3svg class="image" alt="Amazon S3 logo" style={{width: '2.5rem', height: 'auto'}}/>     | Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order) by default, but can be configured to [ingest files in any order](#continuous-ingestion-any-order). |
+| **Cloudflare R2** <br></br> _S3-compatible_ | <R2svg class="image" alt="Cloudflare R2 logo" style={{width: '2.5rem', height: 'auto'}}/> | Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order). Unordered mode is not supported. |
+| **DigitalOcean Spaces** <br></br> _S3-compatible_ | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '2.5rem', height: 'auto'}}/> |  Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order). Unordered mode is not supported. |
+| **OVH Object Storage** <br></br> _S3-compatible_ | <Image img={OVHpng} alt="Cloud Storage logo" size="logo" border/>                         |  Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order). Unordered mode is not supported. |
 
 :::tip
 Due to differences in URL formats and API implementations across object storage service providers, not all S3-compatible services are supported out-of-the-box. If you're running into issues with a service that is not listed above, please [reach out to our team](https://clickhouse.com/company/contact?loc=clickpipes).
@@ -156,6 +158,24 @@ To use [role-based access](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_r
 <Image img={cp_iam} alt="IAM authentication for S3 ClickPipes" size="lg" border/>
 
 Follow [this guide](/cloud/data-sources/secure-s3) to [create a role](/cloud/data-sources/secure-s3#option-2-manually-create-iam-role) with the required trust policy for S3 access. Then, provide the IAM role ARN under `IAM role ARN`.
+
+### Network access {#network-access}
+
+S3 ClickPipes use two distinct network paths for metadata discovery and data ingestion: the ClickPipes service and the ClickHouse Cloud service, respectively. If you want to configure an additional layer of network security (e.g., for compliance reasons), network access **must be configured for both paths**.
+
+* For **IP-based access control**, the S3 bucket policy must allow the static IPs for the ClickPipes service region listed [here](/integrations/clickpipes#list-of-static-ips), as well as the [static IPs](/manage/data-sources/cloud-endpoints-api) for the ClickHouse Cloud service. To obtain the static IPs for your ClickHouse Cloud region, open a terminal and run:
+
+    ```bash
+    # Replace <your-region> with your ClickHouse Cloud region
+    curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.aws[] | select(.region == "<your-region>") | .egress_ips[]'
+    ```
+
+* For **VPC endpoint-based access control**, the S3 bucket must be in the same region as the ClickHouse Cloud service and restrict `GetObject` operations to the VPC endpoint IDs of the ClickHouse Cloud service. To obtain the VPC endpoints for your ClickHouse Cloud region, open a terminal and run:
+
+    ```bash
+    # Replace <your-region> with your ClickHouse Cloud region
+    curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.aws[] | select(.region == "<your-region>") | .s3_endpoints[]'
+    ```
 
 ## Advanced settings {#advanced-settings}
 

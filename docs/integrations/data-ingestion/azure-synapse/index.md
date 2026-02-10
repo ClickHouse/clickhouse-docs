@@ -5,6 +5,9 @@ description: 'Introduction to Azure Synapse with ClickHouse'
 keywords: ['clickhouse', 'azure synapse', 'azure', 'synapse', 'microsoft', 'azure spark', 'data']
 title: 'Integrating Azure Synapse with ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import TOCInline from '@theme/TOCInline';

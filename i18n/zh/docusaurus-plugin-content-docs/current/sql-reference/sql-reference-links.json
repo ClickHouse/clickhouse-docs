@@ -5,8 +5,8 @@
     "url": "/docs/sql-reference/statements/"
   },
   {
-    "title": "数据库与表引擎",
-    "description": "引擎决定你的数据存储在哪里以及如何存储",
+    "title": "数据库引擎和表引擎",
+    "description": "引擎决定数据的存储位置和方式",
     "url": "/docs/engines/table-engines"
   }
 ]

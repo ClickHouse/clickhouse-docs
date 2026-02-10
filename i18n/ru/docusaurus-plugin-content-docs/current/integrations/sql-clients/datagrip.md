@@ -5,7 +5,7 @@ description: 'DataGrip — это IDE для баз данных с встрое
 title: 'Подключение DataGrip к ClickHouse'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'sql_client'
   - website: 'https://www.jetbrains.com/datagrip/'
 keywords: ['DataGrip', 'IDE для баз данных', 'JetBrains', 'SQL-клиент', 'интегрированная среда разработки']
@@ -19,18 +19,19 @@ import datagrip_6 from '@site/static/images/integrations/sql-clients/datagrip-6.
 import datagrip_7 from '@site/static/images/integrations/sql-clients/datagrip-7.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Подключение DataGrip к ClickHouse {#connecting-datagrip-to-clickhouse}
+# Подключение DataGrip к ClickHouse \{#connecting-datagrip-to-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
-## Запустите или загрузите DataGrip {#start-or-download-datagrip}
+## Запустите или загрузите DataGrip \{#start-or-download-datagrip\}
 
 DataGrip доступен на сайте https://www.jetbrains.com/datagrip/
 
-## 1. Соберите сведения о подключении {#1-gather-your-connection-details}
+## 1. Соберите сведения о подключении \{#1-gather-your-connection-details\}
+
 <ConnectionDetails />
 
-## 2. Загрузите драйвер ClickHouse {#2-load-the-clickhouse-driver}
+## 2. Загрузите драйвер ClickHouse \{#2-load-the-clickhouse-driver\}
 
 1. Запустите DataGrip и на вкладке **Data Sources** в диалоговом окне **Data Sources and Drivers** нажмите значок **+**
 
@@ -51,7 +52,7 @@ DataGrip доступен на сайте https://www.jetbrains.com/datagrip/
 
 <Image img={datagrip_1} size="lg" border alt="Вкладка Drivers в DataGrip с установкой драйвера ClickHouse" />
 
-## 3. Подключение к ClickHouse {#3-connect-to-clickhouse}
+## 3. Подключение к ClickHouse \{#3-connect-to-clickhouse\}
 
 - Укажите параметры подключения к базе данных и нажмите **Test Connection**.  
 На первом шаге вы собрали сведения для подключения — укажите адрес хоста, порт, имя пользователя, пароль и имя базы данных, затем проверьте подключение.
@@ -70,6 +71,6 @@ ClickHouse Cloud требует шифрования SSL для всех под�
 
 <Image img={datagrip_7} border alt="Форма параметров подключения в DataGrip с настройками ClickHouse" />
 
-## Подробнее {#learn-more}
+## Подробнее \{#learn-more\}
 
 Дополнительную информацию о DataGrip см. в его документации.

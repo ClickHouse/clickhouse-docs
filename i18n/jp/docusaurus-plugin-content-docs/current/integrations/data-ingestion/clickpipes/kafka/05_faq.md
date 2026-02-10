@@ -6,13 +6,14 @@ sidebar_position: 1
 title: 'Kafka 向け ClickPipes に関する FAQ'
 doc_type: 'guide'
 keywords: ['kafka faq', 'clickpipes', 'upstash', 'azure event hubs', 'private link']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
+## Kafka ClickPipes に関するよくある質問 \{#faq\}
 
-
-## Kafka ClickPipes に関する FAQ {#faq}
-
-### 一般 {#general}
+### 一般 \{#general\}
 
 <details>
 
@@ -78,7 +79,7 @@ AWS PrivateLink はサポートされています。設定方法の詳細につ�
 
 </details>
 
-### Azure Event Hubs {#azure-eventhubs}
+### Azure Event Hubs \{#azure-eventhubs\}
 
 <details>
 
@@ -87,7 +88,6 @@ AWS PrivateLink はサポートされています。設定方法の詳細につ�
 </summary>
 
 いいえ。ClickPipes を利用するには、Event Hubs のネームスペースで Kafka サーフェスを有効化する必要があります。これは **basic** より上位のティアでのみ利用可能です。詳細は [Azure Event Hubs のドキュメント](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-quickstart-kafka-enabled-event-hubs?tabs=passwordless#create-an-azure-event-hubs-namespace) を参照してください。
-
 </details>
 
 <details>
@@ -95,7 +95,6 @@ AWS PrivateLink はサポートされています。設定方法の詳細につ�
 <summary>Azure Schema Registry は ClickPipes と連携しますか？</summary>
 
 いいえ。ClickPipes がサポートするのは、Confluent Schema Registry と API 互換性のあるスキーマレジストリのみであり、Azure Schema Registry はこれに該当しません。このスキーマレジストリのサポートが必要な場合は、[弊社担当までお問い合わせください](https://clickhouse.com/company/contact?loc=clickpipes)。
-
 </details>
 
 <details>
@@ -105,7 +104,6 @@ AWS PrivateLink はサポートされています。設定方法の詳細につ�
 </summary>
 
 トピックを一覧表示しイベントを取得するには、ClickPipes に付与する共有アクセス ポリシーに、最低限「Listen」クレームが必要です。
-
 </details>
 
 <details>
@@ -113,30 +111,25 @@ AWS PrivateLink はサポートされています。設定方法の詳細につ�
 <summary>Event Hubs からデータが返ってこないのはなぜですか？</summary>
 
 ClickHouse インスタンスが Event Hubs のデプロイメントとは異なるリージョンや大陸にある場合、ClickPipes のオンボーディング時にタイムアウトが発生したり、Event Hub からデータを取得する際に高いレイテンシーが発生したりする可能性があります。パフォーマンス上のオーバーヘッドを回避するため、ClickHouse Cloud と Azure Event Hubs は同じクラウドリージョン、または地理的に近接したリージョンにデプロイすることを推奨します。
-
 </details>
 
 <details>
 
 <summary>Azure Event Hubs にはポート番号を含める必要がありますか？</summary>
 
-
-はい。ClickPipes では、Kafka エンドポイントのポート番号を指定する必要があり、ポート番号は `:9093` にする必要があります。
-
+はい。ClickPipes は Kafka サーフェス用のポート番号が指定されていることを想定しており、その値は `:9093` である必要があります。
 </details>
 
 <details>
 
-<summary>ClickPipes の IP は、Azure Event Hubs でも有効ですか？</summary>
+<summary>Azure Event Hubs でも ClickPipes の IP は重要ですか？</summary>
 
-はい。Event Hubs インスタンスへのトラフィックを制限するには、[ドキュメントに記載されている固定 NAT IP アドレス](../
+はい。Event Hubs インスタンスへのトラフィックを制限するには、[ドキュメントに記載されている固定 NAT IP](../
 /index.md#list-of-static-ips) を追加してください。
-
 </details>
 
 <details>
-<summary>接続文字列は Event Hub 単体用ですか、それとも Event Hub のネームスペース用ですか？</summary>
+<summary>接続文字列は Event Hub 用ですか、それとも Event Hub ネームスペース用ですか？</summary>
 
-どちらでも利用可能です。複数の Event Hub からサンプルを取得するには、**ネームスペース レベル** の共有アクセス ポリシーを使用することを強く推奨します。
-
+どちらも機能します。複数の Event Hubs からサンプルを取得するため、**ネームスペース レベル** の共有アクセス ポリシーを使用することを強く推奨します。
 </details>

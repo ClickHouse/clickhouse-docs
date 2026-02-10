@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/aws-privatelink
 title: 'AWS PrivateLink for ClickPipes'
 doc_type: 'guide'
 keywords: ['aws privatelink', 'ClickPipes security', 'vpc endpoint', 'private connectivity', 'vpc resource']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
@@ -132,6 +135,14 @@ The output will contain a Resource-Configuration ARN, which you will need for th
 #### Create a Resource-Share {#create-resource-share}
 
 Sharing your resource requires a Resource-Share. This is facilitated through the Resource Access Manager (RAM).
+
+:::note
+A Resource-Share can only be used for a single Reverse Private Endpoint and cannot be reused.
+If you need to use the same Resource-Configuration for multiple Reverse Private Endpoints, 
+you must create a separate Resource-Share for each endpoint.
+The Resource-Share remains in your AWS account after a Reverse Private Endpoint is deleted 
+and must be manually removed if no longer needed.
+:::
 
 You can put the Resource-Configuration into the Resource-Share through [AWS console](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html) or by running the following command with ClickPipes account ID `072088201116` (arn:aws:iam::072088201116:root):
 
@@ -292,3 +303,5 @@ cross-region connectivity.
 
 Private endpoints are linked to a specific ClickHouse service and are not transferable between services.
 Multiple ClickPipes for a single ClickHouse service can reuse the same endpoint.
+
+AWS MSK supports only one PrivateLink (VPC endpoint) per MSK cluster per authentication type (SASL_IAM or SASL_SCRAM). As a result, multiple ClickHouse Cloud services or organizations cannot create separate PrivateLink connections to the same MSK cluster using the same auth type.

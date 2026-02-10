@@ -5,6 +5,9 @@ keywords: ['clickhouse', 'dot', 'ai', 'chatbot', 'mysql', 'integrate', 'ui', 'vi
 description: 'AI チャットボット | Dot は、ClickHouse を活用して、ビジネスデータに関する質問に答え、定義や関連するデータ資産を取得し、さらにはデータモデリングも支援できるインテリジェントな仮想データアシスタントです。'
 title: 'Dot'
 doc_type: 'guide'
+integration:
+   - support_level: 'community'
+   - category: 'data_visualization'
 ---
 
 import Image from '@theme/IdealImage';
@@ -12,22 +15,23 @@ import dot_01 from '@site/static/images/integrations/data-visualization/dot_01.p
 import dot_02 from '@site/static/images/integrations/data-visualization/dot_02.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Dot {#dot}
+# Dot \{#dot\}
 
 <CommunityMaintainedBadge/>
 
 [Dot](https://www.getdot.ai/) は、あなたの **AI データアナリスト** です。
 ClickHouse に直接接続し、自然言語でデータに関する質問をしたり、データを探索したり、仮説を検証したり、「なぜ」に関する問いに答えたりできます。これらはすべて、Slack、Microsoft Teams、ChatGPT、あるいはネイティブな Web UI 上からそのまま実行できます。
 
-## 前提条件 {#pre-requisites}
+## 前提条件 \{#pre-requisites\}
 
 - セルフホスト型、または [ClickHouse Cloud](https://clickhouse.com/cloud) 上の ClickHouse データベース  
 - [Dot](https://www.getdot.ai/) のアカウント  
 - [Hashboard](https://www.hashboard.com/) のアカウントとプロジェクト
 
-## Dot を ClickHouse に接続する {#connecting-dot-to-clickhouse}
+## Dot を ClickHouse に接続する \{#connecting-dot-to-clickhouse\}
 
 <Image size="md" img={dot_01} alt="Dot での ClickHouse 接続設定（ライトモード）" border />
+
 <br/>
 
 1. Dot の UI で **Settings → Connections** を開きます。  
@@ -43,7 +47,7 @@ ClickHouse に直接接続し、自然言語でデータに関する質問をし
 
 Dot は **query-pushdown** を利用します。ClickHouse がスケール可能な大規模な数値処理を担当し、Dot はその結果に基づいて正確で信頼性の高い回答を提供します。
 
-## ハイライト {#highlights}
+## ハイライト \{#highlights\}
 
 Dot は、会話を通じてデータを活用できるようにします：
 
@@ -53,7 +57,7 @@ Dot は、会話を通じてデータを活用できるようにします：
 - **信頼できる結果**：Dot がクエリをスキーマや定義と照合して検証し、エラーを最小限に抑えます。  
 - **スケーラブル**：query-pushdown を基盤とし、Dot のインテリジェンスと ClickHouse の高速性を組み合わせています。
 
-## セキュリティとガバナンス {#security}
+## セキュリティとガバナンス \{#security\}
 
 Dot はエンタープライズ対応です。
 
@@ -63,7 +67,7 @@ Dot はエンタープライズ対応です。
 - **ガバナンスと検証**: トレーニング／検証用スペースにより、誤回答（ハルシネーション）の発生を抑制  
 - **コンプライアンス**: SOC 2 Type I 認証取得済み
 
-## 追加リソース {#additional-resources}
+## 追加リソース \{#additional-resources\}
 
 - Dot ウェブサイト: [https://www.getdot.ai/](https://www.getdot.ai/)  
 - ドキュメント: [https://docs.getdot.ai/](https://docs.getdot.ai/)  

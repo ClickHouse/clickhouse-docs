@@ -34,7 +34,7 @@ OPTIMIZE TABLE [db.]name [ON CLUSTER cluster] [PARTITION partition | PARTITION I
 如果 `alter_sync` 设置为 `2`，并且某些副本处于非活动状态的时间超过 `replication_wait_for_inactive_replica_timeout` 设置指定的时长，则会抛出 `UNFINISHED` 异常。
 :::
 
-## BY 表达式 {#by-expression}
+## BY 表达式 \{#by-expression\}
 
 如果希望仅在自定义的一组列上执行去重，而不是在所有列上去重，可以显式指定列列表，或者使用任意组合的 [`*`](../../sql-reference/statements/select/index.md#asterisk)、[`COLUMNS`](/sql-reference/statements/select#select-clause) 或 [`EXCEPT`](/sql-reference/statements/select/except-modifier) 表达式。显式写出或隐式展开得到的列列表必须包含行排序表达式中指定的所有列（包括主键和排序键）以及分区表达式中指定的所有列（分区键）。
 
@@ -103,7 +103,7 @@ SELECT * FROM example;
 
 所有接下来的示例都是在包含 5 行数据的这一状态下执行的。
 
-#### `DEDUPLICATE` {#deduplicate}
+#### `DEDUPLICATE` \{#deduplicate\}
 
 当未指定用于去重的列时，将使用所有列进行去重。只有当该行所有列的值都与前一行对应列的值完全相同时，该行才会被移除：
 
@@ -130,7 +130,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY *` {#deduplicate-by-}
+#### `DEDUPLICATE BY *` \{#deduplicate-by-\}
 
 当未显式指定列时，表会按所有不是 `ALIAS` 或 `MATERIALIZED` 的列进行去重。结合上表，这些列是 `primary_key`、`secondary_key`、`value` 和 `partition_key` 列：
 
@@ -157,7 +157,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY * EXCEPT` {#deduplicate-by--except}
+#### `DEDUPLICATE BY * EXCEPT` \{#deduplicate-by--except\}
 
 根据所有不是 `ALIAS` 或 `MATERIALIZED` 且显式排除 `value` 的列进行去重，即：`primary_key`、`secondary_key` 和 `partition_key` 列。
 
@@ -183,7 +183,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY <list of columns>` {#deduplicate-by-list-of-columns}
+#### `DEDUPLICATE BY <list of columns>` \{#deduplicate-by-list-of-columns\}
 
 显式按 `primary_key`、`secondary_key` 和 `partition_key` 列进行去重：
 
@@ -209,7 +209,7 @@ SELECT * FROM example;
 └─────────────┴───────────────┴───────┴───────────────┘
 ```
 
-#### `DEDUPLICATE BY COLUMNS(<regex>)` {#deduplicate-by-columnsregex}
+#### `DEDUPLICATE BY COLUMNS(<regex>)` \{#deduplicate-by-columnsregex\}
 
 按所有匹配该正则表达式的列进行去重：`primary_key`、`secondary_key` 和 `partition_key` 列：
 

@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# CrewAI と ClickHouse MCP Server を使用して AI エージェントを構築する方法 {#how-to-build-an-ai-agent-with-crewai-and-the-clickhouse-mcp-server}
+# CrewAI と ClickHouse MCP Server を使用して AI エージェントを構築する方法 \{#how-to-build-an-ai-agent-with-crewai-and-the-clickhouse-mcp-server\}
 
 このガイドでは、[ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる [CrewAI](https://docs.crewai.com/) ベースの AI エージェントを、[ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を使って構築する方法を解説します。
 
@@ -18,7 +18,7 @@ doc_type: 'guide'
 この例は、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/crewai/crewai.ipynb) 内のノートブックとして確認できます。
 :::
 
-## 前提条件 {#prerequisites}
+## 前提条件 \{#prerequisites\}
 
 - 環境に Python がインストールされている必要があります。
 - 環境に `pip` がインストールされている必要があります。

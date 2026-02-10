@@ -7,7 +7,7 @@ title: 'Применить маску удалённых строк'
 doc_type: 'reference'
 ---
 
-# Применить маску удалённых строк {#apply-mask-of-deleted-rows}
+# Применить маску удалённых строк \{#apply-mask-of-deleted-rows\}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] APPLY DELETED MASK [IN PARTITION partition_id]

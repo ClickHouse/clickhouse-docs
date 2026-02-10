@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/source/generic
 title: 'Generic MySQL source setup guide'
 doc_type: 'guide'
 keywords: ['generic mysql', 'clickpipes', 'binary logging', 'ssl tls', 'mysql 8.x']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 # Generic MySQL source setup guide
@@ -88,7 +91,7 @@ You NEED to RESTART the MySQL instance for the changes to take effect.
 
 :::note
 
-Column exclusion is not supported for MySQL 5.7 because the `binlog_row_metadata` setting wasn't yet introduced.
+Column exclusion and schema changes are not supported for MySQL 5.7 and older versions. These features depend on table metadata not available in the binlog prior to [MySQL 8.0.1](https://dev.mysql.com/blog-archive/more-metadata-is-written-into-binary-log/).
 
 :::
 

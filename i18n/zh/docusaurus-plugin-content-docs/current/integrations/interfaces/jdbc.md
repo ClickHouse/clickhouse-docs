@@ -7,6 +7,6 @@ title: 'JDBC 驱动'
 doc_type: 'guide'
 ---
 
-# JDBC 驱动程序 {#jdbc-driver}
+# JDBC 驱动程序 \{#jdbc-driver\}
 
 使用[官方 JDBC 驱动程序](/docs/integrations/language-clients/java/jdbc)（以及 Java 客户端）从您的 Java 应用程序访问 ClickHouse。

@@ -448,7 +448,7 @@ The possible header fields are:
 | `written_rows`       | Number of rows written.         |
 | `written_bytes`      | Volume of data written in bytes.|
 | `elapsed_ns`         | Query runtime in nanoseconds.|
-| `memory_usage`       | Memory in bytes used by the query. |
+| `memory_usage`       | Memory in bytes used by the query. (**Available from v25.11**) |
 
 Running requests do not stop automatically if the HTTP connection is lost. Parsing and data formatting are performed on the server-side, and using the network might be ineffective.
 
@@ -813,6 +813,39 @@ For example:
 curl -H 'XXX:TEST_HEADER_VALUE' -H 'PARAMS_XXX:max_final_threads' 'http://localhost:8123/query_param_with_url/max_threads?max_threads=1&max_final_threads=2'
 max_final_threads    2
 max_threads    1
+```
+
+#### Virtual parameter `_request_body` {#virtual-param-request-body}
+
+In addition to URL parameters, headers, and query parameters, `predefined_query_handler` supports a special virtual parameter `_request_body`.
+It contains the raw HTTP request body as a string.
+This allows you to create flexible REST APIs that can accept arbitrary data formats and process them within your queries.
+
+For example, you can use `_request_body` to implement a REST endpoint that accepts JSON data in a POST request and inserts it into a table:
+
+```yaml
+<http_handlers>
+    <rule>
+        <methods>POST</methods>
+        <url>/api/events</url>
+        <handler>
+            <type>predefined_query_handler</type>
+            <query>
+                INSERT INTO events (id, data)
+                SELECT {id:UInt32}, {_request_body:String}
+            </query>
+        </handler>
+    </rule>
+    <defaults/>
+</http_handlers>
+```
+
+You can then send data to this endpoint:
+
+```bash
+curl -X POST 'http://localhost:8123/api/events?id=123' \
+  -H 'Content-Type: application/json' \
+  -d '{"user": "john", "action": "login", "timestamp": "2024-01-01T10:00:00Z"}'
 ```
 
 :::note

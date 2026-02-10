@@ -20,11 +20,11 @@ ClickHouse Cloud 支持将备份写入您自己的云服务提供商（CSP）账
 :::
 
 
-## 前提条件 {#requirements}
+## 前提条件 \{#requirements\}
 
 要将备份导出到或从你自己的 CSP 存储 bucket 中恢复，需要准备以下信息。
 
-### AWS {#aws}
+### AWS \{#aws\}
 
 1. AWS S3 端点，格式如下：
 
@@ -50,13 +50,13 @@ Where:
 :::
 
 
-### Azure {#azure}
+### Azure \{#azure\}
 
 1. Azure 存储连接字符串。
 2. 存储帐户中 Azure 容器的名称。
 3. 容器中的 Azure Blob 对象。
 
-### Google Cloud Storage (GCS) {#google-cloud-storage-gcs}
+### Google Cloud Storage (GCS) \{#google-cloud-storage-gcs\}
 
 1. GCS endpoint，格式如下：
 
@@ -67,11 +67,11 @@ Where:
 
 <hr/>
 
-# 备份与恢复 {#backup-restore}
+# 备份与恢复 \{#backup-restore\}
 
-## 备份 / 恢复到 AWS S3 存储桶 {#backup--restore-to-aws-s3-bucket}
+## 备份 / 恢复到 AWS S3 存储桶 \{#backup--restore-to-aws-s3-bucket\}
 
-### 进行数据库备份 {#take-a-db-backup}
+### 进行数据库备份 \{#take-a-db-backup\}
 
 **完整备份**
 
@@ -96,7 +96,7 @@ SETTINGS base_backup = S3('https://testchbackups.s3.amazonaws.com/backups/<base-
 ```
 
 
-### 从备份中恢复 {#restore-from-a-backup}
+### 从备份中恢复 \{#restore-from-a-backup\}
 
 ```sql
 RESTORE DATABASE test_backups 
@@ -107,9 +107,9 @@ FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<k
 详情请参见：[将 BACKUP/RESTORE 配置为使用 S3 端点](/operations/backup/s3_endpoint)。
 
 
-## 备份 / 恢复到 Azure Blob 存储 {#backup--restore-to-azure-blob-storage}
+## 备份 / 恢复到 Azure Blob 存储 \{#backup--restore-to-azure-blob-storage\}
 
-### 执行数据库备份 {#take-a-db-backup-1}
+### 执行数据库备份 \{#take-a-db-backup-1\}
 
 **完整备份**
 
@@ -129,7 +129,7 @@ SETTINGS base_backup = AzureBlobStorage('<AzureBlobStorage endpoint connection s
 ```
 
 
-### 从备份中恢复 {#restore-from-a-backup-1}
+### 从备份中恢复 \{#restore-from-a-backup-1\}
 
 ```sql
 RESTORE DATABASE test_backups 
@@ -140,9 +140,9 @@ FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<contain
 请参阅：[配置 BACKUP/RESTORE 以使用 AzureBlobStorage 端点](/operations/backup/azure#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) 了解更多详情。
 
 
-## 备份 / 恢复到 Google Cloud Storage (GCS) {#backup--restore-to-google-cloud-storage-gcs}
+## 备份 / 恢复到 Google Cloud Storage (GCS) \{#backup--restore-to-google-cloud-storage-gcs\}
 
-### 执行数据库备份 {#take-a-db-backup-2}
+### 执行数据库备份 \{#take-a-db-backup-2\}
 
 **完整备份**
 
@@ -162,7 +162,7 @@ SETTINGS base_backup = S3('https://storage.googleapis.com/test_gcs_backups/<uuid
 ```
 
 
-### 从备份恢复 {#restore-from-a-backup-2}
+### 从备份恢复 \{#restore-from-a-backup-2\}
 
 ```sql
 RESTORE DATABASE test_backups 

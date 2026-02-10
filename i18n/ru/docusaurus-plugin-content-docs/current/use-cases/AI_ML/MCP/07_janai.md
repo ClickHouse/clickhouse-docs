@@ -26,37 +26,38 @@ import ToolsCalled from '@site/static/images/use-cases/AI_ML/MCP/8_janai_tools_c
 import ToolsCalledExpanded from '@site/static/images/use-cases/AI_ML/MCP/9_janai_tools_called_expanded.png';  
 import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png';
 
-# Использование MCP-сервера ClickHouse с Jan.ai {#using-clickhouse-mcp-server-with-janai}
 
-> В этом руководстве описывается использование MCP-сервера ClickHouse с [Jan.ai](https://jan.ai/docs).
+# Использование ClickHouse MCP Server с Jan.ai \{#using-clickhouse-mcp-server-with-janai\}
+
+> В этом руководстве объясняется, как использовать ClickHouse MCP Server с [Jan.ai](https://jan.ai/docs).
 
 <VerticalStepper headerLevel="h2">
 
-## Установка Jan.ai {#install-janai}
+## Установка Jan.ai \{#install-janai\}
 
-Jan.ai — это открытое приложение, являющееся альтернативой ChatGPT и работающее на 100 % офлайн.
+Jan.ai — это открытое ПО, являющееся альтернативой ChatGPT, которое работает полностью офлайн.
 Вы можете скачать Jan.ai для [Mac](https://jan.ai/docs/desktop/mac), [Windows](https://jan.ai/docs/desktop/windows) или [Linux](https://jan.ai/docs/desktop/linux).
 
-Это нативное приложение, поэтому после загрузки вы можете просто запустить его.
+Это нативное приложение, поэтому после загрузки его можно просто запустить.
 
-## Добавить LLM в Jan.ai {#add-llm-to-janai}
+## Добавление LLM в Jan.ai \{#add-llm-to-janai\}
 
-Мы можем включить модели через меню настроек. 
+Модели можно включить через меню настроек. 
 
-Чтобы включить поддержку OpenAI, нужно указать API-ключ, как показано ниже:
+Чтобы включить OpenAI, нужно указать API-ключ, как показано ниже:
 
 <Image img={OpenAIModels} alt="Включение моделей OpenAI" size="md"/>
 
-## Включение MCP Servers {#enable-mcp-servers}
+## Включение MCP Servers \{#enable-mcp-servers\}
 
-На момент написания этой инструкции MCP Servers являются экспериментальной функцией в Jan.ai.
-Их можно включить, переключив экспериментальные функции:
+На момент написания MCP Servers являются экспериментальной функцией в Jan.ai.
+Их можно включить, активировав экспериментальные функции:
 
-<Image img={MCPServers} alt="Enable MCP servers" size="md"/>
+<Image img={MCPServers} alt="Включение MCP-серверов" size="md"/>
 
-После переключения этого переключателя в левом меню появится пункт `MCP Servers`.
+После включения переключателя в левом меню появится пункт `MCP Servers`.
 
-## Настройка ClickHouse MCP Server {#configure-clickhouse-mcp-server}
+## Настройка ClickHouse MCP Server \{#configure-clickhouse-mcp-server\}
 
 Если нажать на меню `MCP Servers`, откроется список MCP-серверов, к которым можно подключиться:
 
@@ -76,27 +77,27 @@ Jan.ai — это открытое приложение, являющееся а
 
 <Image img={MCPTool} alt="Инструменты ClickHouse MCP Server" size="md"/>
 
-## Общение с ClickHouse MCP Server через Jan.ai {#chat-to-clickhouse-mcp-server}
+## Общение с ClickHouse MCP Server через Jan.ai \{#chat-to-clickhouse-mcp-server\}
 
-Пришло время обсудить данные, хранящиеся в ClickHouse!
-Задайте вопрос:
+Теперь можно поговорить о данных, хранящихся в ClickHouse!
+Зададим вопрос:
 
-<Image img={Question} alt='Вопрос' size='md' />
+<Image img={Question} alt="Вопрос" size="md"/>
 
-Jan.ai запросит подтверждение перед вызовом инструмента:
+Перед вызовом инструмента Jan.ai запросит подтверждение:
 
-<Image img={MCPToolConfirm} alt='Подтверждение инструмента' size='md' />
+<Image img={MCPToolConfirm} alt="Подтверждение вызова инструмента" size="md"/>
 
-Затем отобразится список выполненных вызовов инструментов:
+Затем он покажет список вызовов инструментов, которые были выполнены:
 
-<Image img={ToolsCalled} alt='Вызванные инструменты' size='md' />
+<Image img={ToolsCalled} alt="Вызванные инструменты" size="md"/>
 
-При нажатии на вызов инструмента можно просмотреть детали вызова:
+Если нажать на запись о вызове инструмента, можно увидеть подробности вызова:
 
-<Image img={ToolsCalledExpanded} alt='Развернутый список вызванных инструментов' size='md' />
+<Image img={ToolsCalledExpanded} alt="Подробности вызванных инструментов" size="md"/>    
 
-Ниже представлен результат:
+А ниже будет отображён результат:
 
-<Image img={Result} alt='Результат' size='md' />
+<Image img={Result} alt="Результат" size="md"/>    
 
 </VerticalStepper>

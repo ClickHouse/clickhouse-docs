@@ -7,9 +7,9 @@ doc_type: 'landing-page'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'обёртка внешних данных', 'pg_clickhouse', 'расширение']
 ---
 
-# pg_clickhouse {#pg_clickhouse}
+# pg_clickhouse \{#pg_clickhouse\}
 
-## Введение {#introduction}
+## Введение \{#introduction\}
 
 [pg_clickhouse] — это расширение PostgreSQL с открытым исходным кодом, позволяющее выполнять
 аналитические запросы в ClickHouse прямо из PostgreSQL без переписывания SQL. Оно поддерживает
@@ -21,7 +21,7 @@ PostgreSQL 13 и выше и ClickHouse v23 и выше.
 таблицам, сохраняя текущую кодовую базу и при этом передавая выполнение запросов в
 ClickHouse.
 
-## Первые шаги {#getting-started}
+## Первые шаги \{#getting-started\}
 
 Самый простой способ опробовать pg&#95;clickhouse — использовать [Docker image],
 который представляет собой стандартный Docker-образ PostgreSQL с расширением pg&#95;clickhouse:
@@ -36,48 +36,50 @@ docker exec -it pg_clickhouse psql -U postgres -c 'CREATE EXTENSION pg_clickhous
 запросы на стороне ClickHouse.
 
 
-## Тестовый сценарий: TPC-H {#test-case-tpc-h}
+## Тестовый пример: TPC-H \{#test-case-tpc-h\}
 
 В этой таблице сравнивается производительность запросов [TPC-H] между
-обычными таблицами PostgreSQL и pg_clickhouse, подключённым к ClickHouse,
-в обоих случаях использован коэффициент масштабирования 1; ✅ обозначает
-полный pushdown, а дефис — отмену запроса через 1 минуту. Все тесты
-запускались на MacBook Pro M4 Max с 36 ГБ памяти.
+обычными таблицами PostgreSQL и pg_clickhouse, подключённым к ClickHouse; обе
+загружены с коэффициентом масштабирования 1. ✔︎ обозначает полный
+pushdown, тире — отмену запроса по истечении 1 минуты. Все тесты
+выполнялись на MacBook Pro M4 Max с 36 ГБ памяти.
 
-| Query      | Pushdown | pg_clickhouse | PostgreSQL |
-| ---------: | :------: | ------------: | ---------: |
-|  [Query 1] |     ✅    |         73ms  |     4478ms |
-|  [Query 2] |          |             - |      560ms |
-|  [Query 3] |     ✅    |          74ms |     1454ms |
-|  [Query 4] |     ✅    |          67ms |      650ms |
-|  [Query 5] |     ✅    |         104ms |      452ms |
-|  [Query 6] |     ✅    |          42ms |      740ms |
-|  [Query 7] |     ✅    |          83ms |      633ms |
-|  [Query 8] |     ✅    |         114ms |      320ms |
-|  [Query 9] |     ✅    |         136ms |     3028ms |
-| [Query 10] |     ✅    |          10ms |        6ms |
-| [Query 11] |     ✅    |          78ms |      213ms |
-| [Query 12] |     ✅    |          37ms |     1101ms |
-| [Query 13] |          |        1242ms |      967ms |
-| [Query 14] |     ✅    |          51ms |      193ms |
-| [Query 15] |          |         522ms |     1095ms |
-| [Query 16] |          |        1797ms |      492ms |
-| [Query 17] |          |           9ms |     1802ms |
-| [Query 18] |          |          10ms |     6185ms |
-| [Query 19] |          |         532ms |       64ms |
-| [Query 20] |          |        4595ms |      473ms |
-| [Query 21] |          |        1702ms |     1334ms |
-| [Query 22] |          |         268ms |      257ms |
+<!-- cd dev/tpch && make ch && make pg && make run -->
 
-### Сборка из исходного кода {#compile-from-source}
+|    Запрос  | PostgreSQL | pg_clickhouse | Pushdown |
+| ----------:| ----------:| -------------:|:--------:|
+|  [Query 1] |    4693 ms |        268 ms |     ✔︎    |
+|  [Query 2] |     458 ms |       3446 ms |          |
+|  [Query 3] |     742 ms |        111 ms |     ✔︎    |
+|  [Query 4] |     270 ms |        130 ms |     ✔︎    |
+|  [Query 5] |     337 ms |       1460 ms |     ✔︎    |
+|  [Query 6] |     764 ms |         53 ms |     ✔︎    |
+|  [Query 7] |     619 ms |         96 ms |     ✔︎    |
+|  [Query 8] |     342 ms |        156 ms |     ✔︎    |
+|  [Query 9] |    3094 ms |        298 ms |     ✔︎    |
+| [Query 10] |     581 ms |        197 ms |     ✔︎    |
+| [Query 11] |     212 ms |         24 ms |     ✔︎    |
+| [Query 12] |    1116 ms |         84 ms |     ✔︎    |
+| [Query 13] |     958 ms |       1368 ms |          |
+| [Query 14] |     181 ms |         73 ms |     ✔︎    |
+| [Query 15] |    1118 ms |        557 ms |          |
+| [Query 16] |     497 ms |       1714 ms |          |
+| [Query 17] |    1846 ms |      32709 ms |          |
+| [Query 18] |    5823 ms |      10649 ms |          |
+| [Query 19] |      53 ms |        206 ms |     ✔︎    |
+| [Query 20] |     421 ms |             - |          |
+| [Query 21] |    1349 ms |       4434 ms |          |
+| [Query 22] |     258 ms |       1415 ms |          |
 
-#### Прочие Unix-системы {#general-unix}
+### Сборка из исходного кода \{#compile-from-source\}
+
+#### Прочие Unix-системы \{#general-unix\}
 
 Пакеты разработки для PostgreSQL и curl включают `pg_config` и
 `curl-config` в `PATH`, поэтому вы можете просто выполнить `make` (или
-`gmake`), затем `make install`, а затем выполнить в вашей базе данных команду `CREATE EXTENSION http`.
+`gmake`), затем `make install`, а затем выполнить в вашей базе данных команду `CREATE EXTENSION pg_clickhouse`.
 
-#### Debian / Ubuntu / APT {#debian--ubuntu--apt}
+#### Debian / Ubuntu / APT \{#debian--ubuntu--apt\}
 
 Подробности см. в разделе [PostgreSQL Apt], описывающем использование репозитория PostgreSQL Apt.
 
@@ -93,7 +95,7 @@ sudo apt install \
 ```
 
 
-#### RedHat / CentOS / Yum {#redhat--centos--yum}
+#### RedHat / CentOS / Yum \{#redhat--centos--yum\}
 
 ```sh
 sudo yum install \
@@ -109,7 +111,7 @@ sudo yum install \
 Подробности о получении пакетов из репозитория PostgreSQL Yum см. в разделе [PostgreSQL Yum].
 
 
-#### Установка из PGXN {#install-from-pgxn}
+#### Установка из PGXN \{#install-from-pgxn\}
 
 После установки всех перечисленных выше зависимостей используйте [PGXN client] (доступен в виде пакетов [Homebrew], [Apt] и Yum с именем `pgxnclient`), чтобы загрузить, скомпилировать
 и установить `pg_clickhouse`:
@@ -119,7 +121,7 @@ pgxn install pg_clickhouse
 ```
 
 
-#### Сборка и установка {#compile-and-install}
+#### Сборка и установка \{#compile-and-install\}
 
 Чтобы собрать и установить библиотеку ClickHouse и `pg_clickhouse`, выполните следующую команду:
 
@@ -203,7 +205,7 @@ dynamic_library_path   = '/usr/local/extras/postgresql/lib:$libdir'
 ```
 
 
-#### Тестирование {#testing}
+#### Тестирование \{#testing\}
 
 После установки расширения для запуска набора тестов выполните
 
@@ -224,7 +226,7 @@ make installcheck PGUSER=postgres
 ```
 
 
-### Загрузка {#loading}
+### Загрузка \{#loading\}
 
 После установки `pg_clickhouse` вы можете добавить его в базу данных, подключившись с правами суперпользователя и выполнив следующую команду:
 
@@ -241,13 +243,13 @@ CREATE EXTENSION pg_clickhouse SCHEMA env;
 ```
 
 
-## Зависимости {#dependencies}
+## Зависимости \{#dependencies\}
 
 Для работы расширения `pg_clickhouse` требуются [PostgreSQL] 13 или новее, [libcurl],
 [libuuid]. Для сборки расширения необходимы компилятор C и C++, [libSSL], [GNU
 make] и [CMake].
 
-## Дорожная карта {#road-map}
+## Дорожная карта \{#road-map\}
 
 Наш главный приоритет — завершить покрытие pushdown-оптимизаций для аналитических нагрузок, прежде чем добавлять функции DML. Наша дорожная карта:
 
@@ -265,15 +267,15 @@ make] и [CMake].
 *   Добавить поддержку pushdown для запросов с UNION, когда все они обращаются к удалённой
     базе данных
 
-## Авторы {#authors}
+## Авторы \{#authors\}
 
 *   [David E. Wheeler](https://justatheory.com/)
 *   [Ildus Kurbangaliev](https://github.com/ildus)
 *   [Ibrar Ahmed](https://github.com/ibrarahmad)
 
-## Авторские права {#copyright}
+## Авторские права \{#copyright\}
 
-*   Copyright (c) 2025, ClickHouse
+*   Copyright (c) 2025-2026, ClickHouse
 *   Отдельные части — Copyright (c) 2023-2025, Ildus Kurbangaliev
 *   Отдельные части — Copyright (c) 2019-2023, Adjust GmbH
 *   Отдельные части — Copyright (c) 2012-2019, PostgreSQL Global Development Group
@@ -316,46 +318,25 @@ make] и [CMake].
 
 [TPC-H]: https://www.tpc.org/tpch/
 
-[Query 1]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/1.sql
-
-[Query 2]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/2.sql
-
-[Query 3]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/3.sql
-
-[Query 4]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/4.sql
-
-[Query 5]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/5.sql
-
-[Query 6]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/6.sql
-
-[Query 7]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/7.sql
-
-[Query 8]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/8.sql
-
-[Query 9]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/9.sql
-
-[Query 10]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/10.sql
-
-[Query 11]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/11.sql
-
-[Query 12]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/12.sql
-
-[Query 13]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/13.sql
-
-[Query 14]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/14.sql
-
-[Query 15]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/15.sql
-
-[Query 16]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/16.sql
-
-[Query 17]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/17.sql
-
-[Query 18]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/18.sql
-
-[Query 19]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/19.sql
-
-[Query 20]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/20.sql
-
-[Query 21]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/21.sql
-
-[Query 22]: https://github.com/Vonng/pgtpc/blob/master/tpch/queries/22.sql
+[Запрос 1] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/1.sql
+  [Запрос 2] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/2.sql
+  [Запрос 3] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/3.sql
+  [Запрос 4] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/4.sql
+  [Запрос 5] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/5.sql
+  [Запрос 6] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/6.sql
+  [Запрос 7] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/7.sql
+  [Запрос 8] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/8.sql
+  [Запрос 9] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/9.sql
+  [Запрос 10] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/10.sql
+  [Запрос 11] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/11.sql
+  [Запрос 12] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/12.sql
+  [Запрос 13] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/13.sql
+  [Запрос 14] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/14.sql
+  [Запрос 15] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/15.sql
+  [Запрос 16] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/16.sql
+  [Запрос 17] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/17.sql
+  [Запрос 18] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/18.sql
+  [Запрос 19] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/19.sql
+  [Запрос 20] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/20.sql
+  [Запрос 21] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/21.sql
+  [Запрос 22] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/22.sql

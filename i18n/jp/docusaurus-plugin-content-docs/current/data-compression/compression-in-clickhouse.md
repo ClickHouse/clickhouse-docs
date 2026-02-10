@@ -20,7 +20,7 @@ ClickHouse における圧縮は、主に次の 3 つの要因の影響を受け
 
 これらはすべてスキーマを通じて設定されます。
 
-## 圧縮を最適化するために適切なデータ型を選択する {#choose-the-right-data-type-to-optimize-compression}
+## 圧縮を最適化するために適切なデータ型を選択する \{#choose-the-right-data-type-to-optimize-compression\}
 
 Stack Overflow のデータセットを例として使用します。`posts` テーブルに対して、次のスキーマにおける圧縮に関する統計情報を比較します。
 
@@ -207,7 +207,7 @@ GROUP BY name
 ```
 
 
-## 適切なカラム圧縮コーデックの選択 {#choosing-the-right-column-compression-codec}
+## 適切なカラム圧縮コーデックの選択 \{#choosing-the-right-column-compression-codec\}
 
 カラム圧縮コーデックを使うと、各カラムをエンコードおよび圧縮するために使用されるアルゴリズム（とその設定）を変更できます。
 
@@ -293,6 +293,6 @@ ORDER BY
 ```
 
 
-### Compression in ClickHouse Cloud {#compression-in-clickhouse-cloud}
+### Compression in ClickHouse Cloud \{#compression-in-clickhouse-cloud\}
 
 ClickHouse Cloud では、デフォルトで `ZSTD` 圧縮アルゴリズム（圧縮レベルのデフォルト値は 1）を使用しています。圧縮レベル（高いほど低速）に応じてこのアルゴリズムの圧縮速度は変動しますが、伸長時には一貫して高速（およそ 20% 程度のばらつき）であるうえ、並列化が可能であるという利点があります。過去のテスト結果からも、このアルゴリズムは多くの場合十分に効果的であり、コーデックと組み合わせた `LZ4` を上回ることさえあることが示唆されています。ほとんどのデータ型および情報分布に対して有効であるため、汎用的なデフォルトとして妥当であり、最適化を行わなくてもデフォルトの圧縮結果がすでに非常に優れている理由となっています。

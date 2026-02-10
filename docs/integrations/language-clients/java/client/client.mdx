@@ -6,6 +6,9 @@ description: 'Java ClickHouse Connector'
 slug: /integrations/language-clients/java/client
 title: 'Java Client'
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
 ---
 
 import ClientVersionDropdown from '@theme/ClientVersionDropdown/ClientVersionDropdown';
@@ -41,7 +44,7 @@ The library provides its own API to send requests to a server. The library also 
 <dependency>
     <groupId>com.clickhouse</groupId>
     <artifactId>client-v2</artifactId>
-    <version>0.9.4</version>
+    <version>0.9.6</version>
 </dependency>
 ```
 
@@ -50,14 +53,14 @@ The library provides its own API to send requests to a server. The library also 
 
 ```kotlin
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation("com.clickhouse:client-v2:0.9.4")
+implementation("com.clickhouse:client-v2:0.9.6")
 ```
 </TabItem>
 <TabItem value="gradle" label="Gradle">
 
 ```groovy
 // https://mvnrepository.com/artifact/com.clickhouse/client-v2
-implementation 'com.clickhouse:client-v2:0.9.4'
+implementation 'com.clickhouse:client-v2:0.9.6'
 ```
 
 </TabItem>

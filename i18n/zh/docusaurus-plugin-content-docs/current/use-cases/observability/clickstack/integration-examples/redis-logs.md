@@ -17,7 +17,7 @@ import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
 import log from '@site/static/images/clickstack/redis/redis-log.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# 使用 ClickStack 监控 Redis 日志 {#redis-clickstack}
+# 使用 ClickStack 监控 Redis 日志 \{#redis-clickstack\}
 
 :::note[要点速览]
 本指南演示如何通过配置 OpenTelemetry collector 来摄取 Redis 服务器日志，从而使用 ClickStack 监控 Redis。你将了解如何：
@@ -31,12 +31,12 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 预计耗时：5–10 分钟
 :::
 
-## 与现有 Redis 集成 {#existing-redis}
+## 与现有 Redis 集成 \{#existing-redis\}
 
 本节介绍如何通过修改 ClickStack OTel collector 配置，将现有的 Redis 实例配置为向 ClickStack 发送日志。
 如果希望在配置自己的现有环境之前先测试 Redis 集成，可以在[“演示数据集”](/use-cases/observability/clickstack/integrations/redis#demo-dataset)一节中使用我们预配置的环境和示例数据进行测试。
 
-### 前置条件 {#prerequisites}
+### 前置条件 \{#prerequisites\}
 
 - 正在运行的 ClickStack 实例
 - 已安装的 Redis（3.0 或更高版本）
@@ -191,7 +191,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### 下载示例数据集 {#download-sample}
+#### 下载示例数据集 \{#download-sample\}
 
 下载示例日志文件：
 
@@ -199,7 +199,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-server.log
 ```
 
-#### 创建测试 collector 配置 {#test-config}
+#### 创建测试 collector 配置 \{#test-config\}
 
 创建一个名为 `redis-demo.yaml` 的文件，并写入以下配置：
 
@@ -284,7 +284,7 @@ HyperDX 会按浏览器的本地时区显示时间戳。演示数据覆盖的时
 
 #### <TrackedLink href={useBaseUrl('/examples/redis-logs-dashboard.json')} download="redis-logs-dashboard.json" eventName="docs.redis_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表盘配置 {#download}
 
-#### 导入预构建仪表盘 {#import-dashboard}
+#### 导入预构建仪表盘 \{#import-dashboard\}
 
 1. 打开 HyperDX，并导航到 Dashboards 部分。
 2. 点击右上角省略号菜单中的 "Import Dashboard"。
@@ -295,7 +295,7 @@ HyperDX 会按浏览器的本地时区显示时间戳。演示数据覆盖的时
 
 <Image img={finish_import} alt="完成导入"/>
 
-#### 仪表盘将会被创建，并包含所有预先配置好的可视化图表 {#created-dashboard}
+#### 仪表盘将会被创建，并包含所有预先配置好的可视化图表 \{#created-dashboard\}
 
 :::note
 对于演示数据集，将时间范围设置为 **2025-10-27 10:00:00 - 2025-10-28 10:00:00 (UTC)**（可根据本地时区进行调整）。导入的仪表盘默认不会指定时间范围。

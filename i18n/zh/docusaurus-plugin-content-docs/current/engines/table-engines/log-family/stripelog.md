@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# StripeLog 表引擎 {#stripelog-table-engine}
+# StripeLog 表引擎 \{#stripelog-table-engine\}
 
 <CloudNotSupportedBadge/>
 
@@ -17,7 +17,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 在需要使用大量表且每个表只包含少量数据（少于 100 万行）时，可以使用此引擎。例如，该表可用于存储待转换的传入数据批次，并要求对其进行原子处理。对于单个 ClickHouse 服务器，此类型表最多可支持 10 万个实例。当需要大量表时，应优先选择此表引擎而不是 [Log](./log.md)，其代价是读取效率会有所下降。
 
-## 创建数据表 {#table_engines-stripelog-creating-a-table}
+## 创建数据表 \{#table_engines-stripelog-creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -30,7 +30,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 请参阅 [CREATE TABLE](/sql-reference/statements/create/table) 查询的详细说明。
 
-## 写入数据 {#table_engines-stripelog-writing-the-data}
+## 写入数据 \{#table_engines-stripelog-writing-the-data\}
 
 `StripeLog` 引擎将所有列存储在同一个文件中。对于每个 `INSERT` 查询，ClickHouse 会将数据块追加到表文件末尾，按列依次写入。
 
@@ -41,11 +41,11 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 `StripeLog` 引擎不支持 `ALTER UPDATE` 和 `ALTER DELETE` 操作。
 
-## 读取数据 {#table_engines-stripelog-reading-the-data}
+## 读取数据 \{#table_engines-stripelog-reading-the-data\}
 
 包含标记的文件使 ClickHouse 能够并行读取数据。这意味着 `SELECT` 查询返回的行顺序是不可预测的。使用 `ORDER BY` 子句对行进行排序。
 
-## 使用示例 {#table_engines-stripelog-example-of-use}
+## 使用示例 \{#table_engines-stripelog-example-of-use\}
 
 创建表：
 

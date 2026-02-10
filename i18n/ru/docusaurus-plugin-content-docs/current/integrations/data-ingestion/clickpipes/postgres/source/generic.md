@@ -1,86 +1,107 @@
 ---
-sidebar_label: 'Произвольный Postgres'
-description: 'Настройте любой экземпляр Postgres в качестве источника для ClickPipes'
+sidebar_label: 'Универсальный Postgres'
+description: 'Настройка любого экземпляра Postgres в качестве источника для ClickPipes'
 slug: /integrations/clickpipes/postgres/source/generic
-title: 'Руководство по настройке произвольного источника Postgres'
+title: 'Руководство по настройке универсального источника Postgres'
 doc_type: 'guide'
 keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal level']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
-# Универсальное руководство по настройке источника Postgres {#generic-postgres-source-setup-guide}
+# Общее руководство по настройке источника Postgres \{#generic-postgres-source-setup-guide\}
 
 :::info
 
-Если вы используете одного из поддерживаемых провайдеров (в боковом меню), обратитесь к соответствующему руководству по этому провайдеру.
+Если вы используете одного из поддерживаемых провайдеров (см. боковую панель), обратитесь к соответствующему руководству по этому провайдеру.
 
 :::
 
-ClickPipes поддерживает Postgres версий 12 и выше.
+ClickPipes поддерживает Postgres версии 12 и новее.
 
-## Включение логической репликации {#enable-logical-replication}
+## Включение логической репликации \{#enable-logical-replication\}
 
-1. Чтобы включить репликацию на вашем экземпляре Postgres, необходимо убедиться, что заданы следующие настройки:
+1. Чтобы включить репликацию в вашем экземпляре Postgres, необходимо убедиться, что установлены следующие параметры:
 
     ```sql
     wal_level = logical
     ```
-   Чтобы это проверить, выполните следующую SQL-команду:
+   Чтобы проверить это, выполните следующую SQL-команду:
     ```sql
     SHOW wal_level;
     ```
 
-   Результат должен быть `logical`. Если это не так, выполните:
+   В выводе должно быть значение `logical`. Если это не так, выполните:
     ```sql
     ALTER SYSTEM SET wal_level = logical;
     ```
 
-2. Кроме того, рекомендуется задать на экземпляре Postgres следующие настройки:
+2. Дополнительно рекомендуется установить в экземпляре Postgres следующие параметры:
     ```sql
     max_wal_senders > 1
     max_replication_slots >= 4
     ```
-   Чтобы их проверить, выполните следующие SQL-команды:
+   Чтобы проверить это, выполните следующие SQL-команды:
     ```sql
     SHOW max_wal_senders;
     SHOW max_replication_slots;
     ```
 
-   Если значения не соответствуют рекомендованным, выполните следующие SQL-команды, чтобы их задать:
+   Если значения не соответствуют рекомендуемым, выполните следующие SQL-команды, чтобы задать их:
     ```sql
     ALTER SYSTEM SET max_wal_senders = 10;
     ALTER SYSTEM SET max_replication_slots = 10;
     ```
-3. Если вы внесли какие-либо изменения в конфигурацию, как описано выше, вам НЕОБХОДИМО ПЕРЕЗАПУСТИТЬ экземпляр Postgres, чтобы изменения вступили в силу.
+3. Если вы внесли какие-либо изменения в конфигурацию, как указано выше, вам НЕОБХОДИМО ПЕРЕЗАПУСТИТЬ экземпляр Postgres, чтобы изменения вступили в силу.
 
-## Создание пользователя с правами и публикацией {#creating-a-user-with-permissions-and-publication}
+## Создание пользователя с правами доступа и публикацией \{#creating-a-user-with-permissions-and-publication\}
 
-Создайте нового пользователя для ClickPipes с необходимыми правами, подходящими для CDC,
-а также создайте публикацию, которую мы будем использовать для репликации.
+Подключитесь к вашему экземпляру Postgres под пользователем с правами администратора и выполните следующие команды:
 
-Для этого подключитесь к вашему экземпляру PostgreSQL и выполните следующие SQL-команды:
+1. Создайте отдельного пользователя для ClickPipes:
 
-```sql
-  CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
-  GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-  GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-  ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+   ```sql
+   CREATE USER clickpipes_user PASSWORD 'some-password';
+   ```
 
--- Give replication permission to the USER
-  ALTER USER clickpipes_user REPLICATION;
+2. Предоставьте на уровне схемы доступ только на чтение пользователю, созданному на предыдущем шаге. В следующем примере показаны права для схемы `public`. Повторите эти команды для каждой схемы, содержащей таблицы, которые вы хотите реплицировать:
+   
+    ```sql
+    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+    ```
 
--- Create a publication. We will use this when creating the pipe
-  CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-```
+3. Предоставьте пользователю права на репликацию:
 
-:::note
+   ```sql
+   ALTER USER clickpipes_user WITH REPLICATION;
+   ```
 
-Обязательно замените `clickpipes_user` и `clickpipes_password` на выбранные вами имя пользователя и пароль.
+4. Создайте [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) с таблицами, которые вы хотите реплицировать. Настоятельно рекомендуем включать в публикацию только те таблицы, которые вам необходимы, чтобы избежать лишних накладных расходов и снижения производительности.
 
-:::
+   :::warning
+   Для любой таблицы, включённой в публикацию, должен быть определён **первичный ключ** _или_ для неё должна быть настроена **replica identity** со значением `FULL`. См. раздел [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) для рекомендаций по выбору области публикаций.
+   :::
 
-## Разрешение подключений в pg_hba.conf для пользователя ClickPipes {#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user}
+   - Чтобы создать публикацию для конкретных таблиц:
 
-Если вы развертываете всё самостоятельно, вам необходимо разрешить подключения к пользователю ClickPipes с IP-адресов ClickPipes, выполнив описанные ниже шаги. Если вы используете управляемый сервис, вы можете сделать то же самое, следуя документации провайдера.
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - Чтобы создать публикацию для всех таблиц в определённой схеме:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   Публикация `clickpipes` будет содержать набор событий изменений, формируемых из указанных таблиц, и позже будет использоваться для приёма потока репликации.
+
+## Включение подключений в pg_hba.conf для пользователя ClickPipes \{#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user\}
+
+Если вы управляете базой самостоятельно, вам нужно разрешить подключения к пользователю ClickPipes с IP-адресов ClickPipes, выполнив шаги ниже. Если вы используете управляемый сервис, вы можете сделать то же самое, следуя документации провайдера.
 
 1. Внесите необходимые изменения в файл `pg_hba.conf`, чтобы разрешить подключения к пользователю ClickPipes с IP-адресов ClickPipes. Пример записи в файле `pg_hba.conf` будет выглядеть так:
     ```response
@@ -92,17 +113,17 @@ ClickPipes поддерживает Postgres версий 12 и выше.
     SELECT pg_reload_conf();
     ```
 
-## Увеличение `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
+## Увеличьте `max_slot_wal_keep_size` \{#increase-max_slot_wal_keep_size\}
 
-Это рекомендованное изменение конфигурации, которое позволяет предотвратить удаление слота репликации из‑за крупных транзакций и коммитов.
+Это рекомендуемое изменение конфигурации, чтобы крупные транзакции/коммиты не приводили к удалению слота репликации.
 
-Вы можете увеличить параметр `max_slot_wal_keep_size` для вашего экземпляра PostgreSQL до большего значения (как минимум 100 ГБ или `102400`), обновив файл `postgresql.conf`.
+Вы можете увеличить параметр `max_slot_wal_keep_size` для вашего экземпляра PostgreSQL до более высокого значения (как минимум 100GB или `102400`), обновив файл `postgresql.conf`.
 
 ```sql
 max_slot_wal_keep_size = 102400
 ```
 
-Вы можете перезапустить экземпляр Postgres, чтобы изменения вступили в силу:
+Вы можете перезагрузить экземпляр сервера Postgres, чтобы изменения вступили в силу:
 
 ```sql
 SELECT pg_reload_conf();
@@ -110,11 +131,12 @@ SELECT pg_reload_conf();
 
 :::note
 
-Для более точного подбора этого значения вы можете связаться с командой ClickPipes.
+За более точной рекомендацией по выбору этого значения вы можете обратиться к команде ClickPipes.
 
 :::
 
-## Что дальше? {#whats-next}
 
-Теперь вы можете [создать свой ClickPipe](../index.md) и начать приём данных из вашего экземпляра Postgres в ClickHouse Cloud.
-Обязательно сохраните параметры подключения, которые вы использовали при настройке экземпляра Postgres, — они понадобятся вам при создании ClickPipe.
+## Что дальше? \{#whats-next\}
+
+Теперь вы можете [создать ClickPipe](../index.md) и начать приём данных из вашего экземпляра Postgres в ClickHouse Cloud.
+Обязательно запишите параметры подключения, которые вы использовали при настройке экземпляра Postgres, так как они понадобятся при создании ClickPipe.

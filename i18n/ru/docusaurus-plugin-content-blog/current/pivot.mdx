@@ -235,7 +235,7 @@ LIMIT 10;
 ## Применение функций к значениям Map \{#applying-functions-to-map-values\}
 
 В качестве альтернативы мы можем вычислить среднюю цену с помощью `avgMap`.
-Эти значения содержат много знаков после запятой; мы можем сократить их количество, применив функцию [`mapApply`](/sql-reference/functions/tuple-map-functions#mapapply), чтобы вызвать функцию [`floor`](/sql-reference/functions/rounding-functions#floor) для каждого значения в Map:
+Эти значения содержат много знаков после запятой; мы можем сократить их количество, применив функцию [`mapApply`](/sql-reference/functions/tuple-map-functions#mapApply), чтобы вызвать функцию [`floor`](/sql-reference/functions/rounding-functions#floor) для каждого значения в Map:
 
 ```sql
 WITH year(toStartOfInterval(date, toIntervalYear(10))) AS year

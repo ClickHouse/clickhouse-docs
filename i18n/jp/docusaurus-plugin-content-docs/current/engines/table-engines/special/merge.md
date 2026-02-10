@@ -7,42 +7,42 @@ title: 'Merge テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# Merge テーブルエンジン {#merge-table-engine}
+# Merge テーブルエンジン \{#merge-table-engine\}
 
 `Merge` エンジン（`MergeTree` と混同しないでください）は、自身ではデータを保存せず、任意の数の他のテーブルから同時に読み取ることができます。
 
 読み取りは自動的に並列化されます。テーブルへの書き込みはサポートされていません。読み取り時には、存在する場合は、実際に読み出されるテーブルのインデックスが使用されます。
 
-## テーブルを作成する {#creating-a-table}
+## テーブルを作成する \{#creating-a-table\}
 
 ```sql
 CREATE TABLE ... Engine=Merge(db_name, tables_regexp)
 ```
 
-## エンジンパラメータ {#engine-parameters}
+## エンジンパラメータ \{#engine-parameters\}
 
-### `db_name` {#db_name}
+### `db_name` \{#db_name\}
 
 `db_name` — 指定可能な値:
     - データベース名
     - データベース名の文字列を返す定数式（例: `currentDatabase()`）
     - `REGEXP(expression)`。ここで `expression` は DB 名にマッチする正規表現。
 
-### `tables_regexp` {#tables_regexp}
+### `tables_regexp` \{#tables_regexp\}
 
 `tables_regexp` — 指定した DB または複数の DB 内のテーブル名にマッチさせるための正規表現。
 
 正規表現 — [re2](https://github.com/google/re2)（PCRE のサブセットをサポート）、大文字小文字を区別します。
 正規表現内での記号のエスケープについては「match」セクションの注意事項を参照してください。
 
-## 使用方法 {#usage}
+## 使用方法 \{#usage\}
 
 テーブルを読み取り対象として選択する際は、たとえ正規表現にマッチしても `Merge` テーブル自体は選択されません。これはループを避けるためです。
 互いのデータを延々と読み合おうとする 2 つの `Merge` テーブルを作成することも技術的には可能ですが、これは望ましくありません。
 
 `Merge` エンジンの典型的な使用方法は、多数の `TinyLog` テーブルを 1 つのテーブルであるかのように扱うことです。
 
-## 例 {#examples}
+## 例 \{#examples\}
 
 **例 1**
 
@@ -95,7 +95,7 @@ SELECT * FROM WatchLog;
 └────────────┴────────┴───────────┴─────┘
 ```
 
-## 仮想カラム {#virtual-columns}
+## 仮想カラム \{#virtual-columns\}
 
 - `_table` — データが読み取られたテーブルの名前。型: [String](../../../sql-reference/data-types/string.md)。
 

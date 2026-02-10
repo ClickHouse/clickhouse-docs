@@ -44,10 +44,6 @@ By eliminating the gap between removing existing replicas and adding new ones, M
 It is especially beneficial in scale-up scenarios, where high resource utilization triggers the need for additional capacity, since removing replicas prematurely would only exacerbate the resource constraints.
 As part of this approach, we wait up to an hour to let any existing queries complete on the older replicas before removing them.
 This balances the need for existing queries to complete, while at the same time ensuring that older replicas do not linger around for too long.
-
-Please note that as part of this change: 
-1. Historical system table data is retained for up to a maximum of 30 days as part of scaling events. In addition, any system table data older than December 19, 2024, for services on AWS or GCP and older than January 14, 2025, for services on Azure will not be retained as part of the migration to the new organization tiers.
-2. For services utilizing TDE (Transparent Data Encryption) system table data is currently not maintained after MBB operations. We are working on removing this limitation.
 :::
 
 ### Vertical auto scaling {#vertical-auto-scaling}
@@ -125,11 +121,19 @@ Once the service has scaled, the metrics dashboard in the cloud console should s
 <Image img={scaling_memory_allocation} size="md" alt="Scaling memory allocation" border />
 
 ## Automatic idling {#automatic-idling}
-In the **Settings** page, you can also choose whether or not to allow automatic idling of your service when it is inactive as shown in the image above (i.e. when the service is not executing any user-submitted queries).  Automatic idling reduces the cost of your service, as you are not billed for compute resources when the service is paused.
+In the **Settings** page, you can also choose whether or not to allow automatic idling of your service when it is inactive for a certain duration (i.e. when the service is not executing any user-submitted queries).  Automatic idling reduces the cost of your service, as you are not billed for compute resources when the service is paused.
+
+### Adaptive Idling {#adaptive-idling}
+ClickHouse Cloud implements adaptive idling to prevent disruptions while optimizing cost savings. The system evaluates several conditions before transitioning a service to idle. Adaptive idling overrides the idling duration setting when any of the below listed conditions are met:
+- When the number of parts exceeds the maximum idle parts threshold (default: 10,000), the service is not idled so that background maintenance can continue
+- When there are ongoing merge operations, the service is not idled until those merges complete to avoid interrupting critical data consolidation
+- Additionally, the service also adapts idle timeouts based on server initialization time:
+  - If server initialization time is less than 15 minutes, no adaptive timeout is applied and the customer-configured default idle timeout is used
+  - If server initialization time is between 15 and 30 minutes, the idle timeout is set to 15 minutes
+  - If server initialization time is between 30 and 60 minutes, the idle timeout is set to 30 minutes.
+  - If server initialization time is more than 60 minutes, the idle timeout is set to 1 hour
 
 :::note
-In certain special cases, for instance when a service has a high number of parts, the service will not be idled automatically.
-
 The service may enter an idle state where it suspends refreshes of [refreshable materialized views](/materialized-view/refreshable-materialized-view), consumption from [S3Queue](/engines/table-engines/integrations/s3queue), and scheduling of new merges. Existing merge operations will complete before the service transitions to the idle state. To ensure continuous operation of refreshable materialized views and S3Queue consumption, disable the idle state functionality.
 :::
 

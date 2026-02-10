@@ -13,9 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
-## 説明 {#description}
+## 説明 \{#description\}
 
 `Native` フォーマットは、カラムを行に変換しないという意味で真の「カラム指向」であり、ClickHouse において最も効率的なフォーマットです。  
 
@@ -27,11 +25,3 @@ doc_type: 'reference'
 このフォーマットを使用して、ClickHouse DBMS でのみ読み取ることができるダンプを高速に生成できます。 
 ただし、このフォーマットを手作業で扱うのは現実的ではない場合があります。
 :::
-
-
-
-## 使用例 {#example-usage}
-
-
-
-## 書式設定 {#format-settings}

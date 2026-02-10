@@ -32,6 +32,8 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - af-south-1 (South Africa)
 - eu-north-1 (Stockholm)
 - sa-east-1 (South America)
+- ap-southeast-3 (Jakarta)
+- ap-east-1 (Hong Kong)
  
 ## Google Cloud regions {#google-cloud-regions}
 
@@ -111,3 +113,6 @@ Customers must request onboarding through Sales or Support to set up services in
 - AWS us-east-1 (N. Virginia)
 - AWS us-east-2 (Ohio)
 - AWS us-west-2 (Oregon)
+- GCP europe-west4 (Netherlands)
+- GCP us-central1 (Iowa)
+- GCP us-east1 (South Carolina)

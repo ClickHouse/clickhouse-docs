@@ -7,7 +7,7 @@ title: 'キー式の操作'
 doc_type: 'reference'
 ---
 
-# キー式の操作 {#manipulating-key-expressions}
+# キー式の操作 \{#manipulating-key-expressions\}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY ORDER BY new_expression

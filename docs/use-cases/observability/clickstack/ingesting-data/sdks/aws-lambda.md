@@ -130,8 +130,7 @@ OTEL_TRACES_SAMPLER=always_on
 
 ### Installing the OpenTelemetry collector Lambda layer {#installing-the-otel-collector-layer}
 
-The collector Lambda layer allows you to forward logs, metrics, and traces from your Lambda function to ClickStack without impacting response times due 
-to exporter latency.
+The collector Lambda layer allows you to forward logs, metrics, and traces from your Lambda function to ClickStack without impacting response times due to exporter latency.
 
 **To install the collector layer**:
 
@@ -160,6 +159,9 @@ arn:aws:lambda:<region>:184161586896:layer:opentelemetry-collector-arm64-0_8_0:1
 
 3. Add the following `collector.yaml` file to your project to configure the collector to send to ClickStack:
 
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="Managed ClickStack" default>
+
 ```yaml
 # collector.yaml
 receivers:
@@ -176,7 +178,46 @@ processors:
 
 exporters:
   otlphttp:
-    endpoint: "<YOU_OTEL_COLLECTOR_HTTP_ENDPOINT>
+    endpoint: "<YOU_OTEL_COLLECTOR_HTTP_ENDPOINT>"
+    compression: gzip
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch, decouple]
+      exporters: [otlphttp]
+    metrics:
+      receivers: [otlp]
+      processors: [batch, decouple]
+      exporters: [otlphttp]
+    logs:
+      receivers: [otlp]
+      processors: [batch, decouple]
+      exporters: [otlphttp]
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack Open Source" >
+
+```yaml
+# collector.yaml
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 'localhost:4317'
+      http:
+        endpoint: 'localhost:4318'
+
+processors:
+  batch:
+  decouple:
+
+exporters:
+  otlphttp:
+    endpoint: "<YOU_OTEL_COLLECTOR_HTTP_ENDPOINT>"
     headers:
       authorization: <YOUR_INGESTION_API_KEY>
     compression: gzip
@@ -196,6 +237,9 @@ service:
       processors: [batch, decouple]
       exporters: [otlphttp]
 ```
+
+</TabItem>
+</Tabs>
 
 4. Add the following environment variable:
 
@@ -232,6 +276,9 @@ To debug collector issues, you can enable debug logs by modifying your collector
 configuration file to add the `logging` exporter and setting the telemetry 
 log level to `debug` to enable more verbose logging from the collector lambda layer.
 
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="Managed ClickStack" default>
+
 ```yaml
 # collector.yaml
 receivers:
@@ -246,7 +293,47 @@ exporters:
   logging:
     verbosity: detailed
   otlphttp:
-    endpoint: "https://in-otel.hyperdx.io"
+    endpoint: "<YOU_OTEL_COLLECTOR_HTTP_ENDPOINT>"
+    compression: gzip
+
+service:
+  telemetry:
+    logs:
+      level: "debug"
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch, decouple]
+      exporters: [otlphttp, logging]
+    metrics:
+      receivers: [otlp]
+      processors: [batch, decouple]
+      exporters: [otlphttp, logging]
+    logs:
+      receivers: [otlp]
+      processors: [batch, decouple]
+      exporters: [otlphttp, logging]
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack Open Source">
+
+```yaml
+# collector.yaml
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 'localhost:4317'
+      http:
+        endpoint: 'localhost:4318'
+
+exporters:
+  logging:
+    verbosity: detailed
+  otlphttp:
+    endpoint: "<YOU_OTEL_COLLECTOR_HTTP_ENDPOINT>"
     headers:
       authorization: <YOUR_INGESTION_API_KEY>
     compression: gzip
@@ -269,3 +356,6 @@ service:
       processors: [batch, decouple]
       exporters: [otlphttp, logging]
 ```
+
+</TabItem>
+</Tabs>

@@ -6,7 +6,7 @@ title: 'Клауза ALL'
 doc_type: 'reference'
 ---
 
-# Оператор ALL {#all-clause}
+# Оператор ALL \{#all-clause\}
 
 Если в таблице есть несколько строк, удовлетворяющих условию, то `ALL` возвращает их все. `SELECT ALL` идентичен `SELECT` без `DISTINCT`. Если указаны и `ALL`, и `DISTINCT`, будет выброшено исключение.
 

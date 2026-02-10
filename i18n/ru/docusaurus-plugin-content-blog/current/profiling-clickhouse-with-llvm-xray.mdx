@@ -40,10 +40,10 @@ PROFILE](https://clickhouse.com/docs/sql-reference/statements/system#instrument-
 сколько времени занимает выполнение.
 
 ```sql
-SYSTEM INSTRUMENT ADD `sleepForNanoseconds` PROFILE
+SYSTEM INSTRUMENT ADD 'sleepForNanoseconds' PROFILE
 ```
 
-Затем оставляем его работать в течение требуемого периода профилирования, после чего останавливаем.
+Затем оставляем его запущенным в течение нужного нам периода профилирования, после чего останавливаем.
 
 ```sql
 SYSTEM INSTRUMENT REMOVE ALL

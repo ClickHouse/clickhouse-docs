@@ -14,7 +14,7 @@ import Image from '@theme/IdealImage';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
-# 通过 ACME 配置自动 TLS 证书签发 {#configuring-automatic-tls-provisioning-via-acme}
+# 通过 ACME 配置自动 TLS 证书签发 \{#configuring-automatic-tls-provisioning-via-acme\}
 
 <ExperimentalBadge/>
 
@@ -24,7 +24,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 在启用 ACME 支持后，ClickHouse 可以从 [Let's Encrypt](https://letsencrypt.org/) 或 [ZeroSSL](https://zerossl.com/) 等证书提供者自动获取和续订证书。
 TLS 加密保护客户端与 ClickHouse 服务器之间传输的数据，防止对敏感查询和结果的窃听。
 
-## 概览 {#overview}
+## 概览 \{#overview\}
 
 ACME 协议定义了使用 [Let&#39;s Encrypt](https://letsencrypt.org/) 或 [ZeroSSL](https://zerossl.com/) 等服务自动签发和续期证书的流程。简而言之，作为证书申请方的 ClickHouse 需要通过预定义的质询类型来验证域名所有权，以获取证书。
 
@@ -51,13 +51,13 @@ HTTP 端口本身不必是服务器上的 80 端口；可以通过 `nftables` �
 之后，我们只需要提供一个域名列表即可。
 
 
-### 当前限制 {#current-limitations}
+### 当前限制 \{#current-limitations\}
 
 - 仅支持 `HTTP-01` 挑战类型。
 - 仅支持 `RSA 2048` 密钥。
 - 不处理速率限制。
 
-## 配置参数 {#configuration-parameters}
+## 配置参数 \{#configuration-parameters\}
 
 `acme` 部分中可用的配置选项：
 
@@ -73,9 +73,9 @@ HTTP 端口本身不必是服务器上的 80 端口；可以通过 `nftables` �
 
 请注意，配置默认使用 Let’s Encrypt 的生产目录。为避免因可能的错误配置而触发请求配额限制，建议先使用 [staging 目录（预发布环境）](https://letsencrypt.org/docs/staging-environment/) 测试证书签发流程。
 
-# 管理 {#administration}
+# 管理 \{#administration\}
 
-## 初始部署 {#initial-deployment}
+## 初始部署 \{#initial-deployment\}
 
 在为具有多个副本的集群启用 ACME 客户端时，初始证书签发阶段需要格外注意。
 
@@ -87,7 +87,7 @@ HTTP 端口本身不必是服务器上的 80 端口；可以通过 `nftables` �
 
 在初始证书签发或导入完成后，证书续期不需要特殊处理，因为所有副本此时都已运行 ACME 客户端，并通过 Keeper 共享状态。
 
-## Keeper 的数据结构 {#keeper-data-structure}
+## Keeper 的数据结构 \{#keeper-data-structure\}
 
 ```text
 /clickhouse/acme
@@ -101,7 +101,7 @@ HTTP 端口本身不必是服务器上的 80 端口；可以通过 `nftables` �
 ```
 
 
-## 从其他 ACME 客户端迁移 {#migrating-from-other-acme-clients}
+## 从其他 ACME 客户端迁移 \{#migrating-from-other-acme-clients\}
 
 可以将当前正在使用的 TLS 证书和私钥迁移到 Keeper，以简化迁移过程。
 目前，服务器端仅支持 `RSA 2048` 密钥。

@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Hive 表引擎 {#hive-table-engine}
+# Hive 表引擎 \{#hive-table-engine\}
 
 <CloudNotSupportedBadge />
 
@@ -21,7 +21,7 @@ Hive 引擎允许对 HDFS 中的 Hive 表执行 `SELECT` 查询。目前支持�
 
 * Parquet：支持所有简单标量列类型；复杂类型仅支持 `array` 等
 
-## 创建表 {#creating-a-table}
+## 创建表 \{#creating-a-table\}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -49,9 +49,9 @@ PARTITION BY expr
 
 * `table` — 远程表名称。
 
-## 使用示例 {#usage-example}
+## 使用示例 \{#usage-example\}
 
-### 如何在 HDFS 文件系统中使用本地缓存 {#how-to-use-local-cache-for-hdfs-filesystem}
+### 如何在 HDFS 文件系统中使用本地缓存 \{#how-to-use-local-cache-for-hdfs-filesystem\}
 
 我们强烈建议为远程文件系统启用本地缓存。基准测试结果表明，启用缓存后速度几乎提升 2 倍。
 
@@ -71,9 +71,9 @@ PARTITION BY expr
 * limit&#95;size: 必需。本地缓存文件的最大大小（以字节为单位）。
 * bytes&#95;read&#95;before&#95;flush: 控制从远程文件系统下载文件时，在刷新到本地文件系统之前读取的字节数。默认值为 1MB。
 
-### 使用 ORC 输入格式查询 Hive 表 {#query-hive-table-with-orc-input-format}
+### 使用 ORC 输入格式查询 Hive 表 \{#query-hive-table-with-orc-input-format\}
 
-#### 在 Hive 中创建表 {#create-table-in-hive}
+#### 在 Hive 中创建表 \{#create-table-in-hive\}
 
 ```text
 hive > CREATE TABLE `test`.`test_orc`(
@@ -121,7 +121,7 @@ OK
 Time taken: 0.295 seconds, Fetched: 1 row(s)
 ```
 
-#### 在 ClickHouse 中创建表 {#create-table-in-clickhouse}
+#### 在 ClickHouse 中创建表 \{#create-table-in-clickhouse\}
 
 ClickHouse 中的一个表，用于从上面创建的 Hive 表中读取数据：
 
@@ -194,9 +194,9 @@ day:                  2021-09-18
 1 rows in set. Elapsed: 0.078 sec.
 ```
 
-### 使用 Parquet 输入格式查询 Hive 表 {#query-hive-table-with-parquet-input-format}
+### 使用 Parquet 输入格式查询 Hive 表 \{#query-hive-table-with-parquet-input-format\}
 
-#### 在 Hive 中创建表 {#create-table-in-hive-1}
+#### 在 Hive 中创建表 \{#create-table-in-hive-1\}
 
 ```text
 hive >

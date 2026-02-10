@@ -6,11 +6,14 @@ sidebar_position: 2
 title: 'ClickPipes for MySQL FAQ'
 doc_type: 'reference'
 keywords: ['MySQL ClickPipes FAQ', 'ClickPipes MySQL troubleshooting', 'MySQL ClickHouse replication', 'ClickPipes MySQL support', 'MySQL CDC ClickHouse']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 # ClickPipes for MySQL FAQ
 
-### Does the MySQL ClickPipe support MariaDB?  {#does-the-clickpipe-support-mariadb}
+### Does the MySQL ClickPipe support MariaDB? {#does-the-clickpipe-support-mariadb}
 Yes, the MySQL ClickPipe supports MariaDB 10.0 and above. The configuration for it is very similar to MySQL, using GTID replication by default.
 
 ### Does the MySQL ClickPipe support PlanetScale, Vitess, or TiDB? {#does-the-clickpipe-support-planetscale-vitess}
@@ -50,4 +53,4 @@ PeerDB has a limitation currently where dots in source table identifiers - aka e
 Effort is being made to support input of schema and table separately to get around this limitation.
 
 ### Can I include columns I initially excluded from replication? {#include-excluded-columns}
-This is not yet supported and is in our roadmap, an alternative would be to [resync the table](./table_resync.md) whose columns you want to include.
+This is not yet supported, an alternative would be to [resync the table](./table_resync.md) whose columns you want to include.

@@ -3,7 +3,7 @@ title: 'Date and time data types - Time-series'
 sidebar_label: 'Date and time data types'
 description: 'Time-series data types in ClickHouse.'
 slug: /use-cases/time-series/date-time-data-types
-keywords: ['time-series', 'DateTime', 'DateTime64', 'Date', 'data types', 'temporal data', 'timestamp']
+keywords: ['time-series', 'DateTime', 'DateTime64', 'Date', 'Time', 'Time64', 'data types', 'temporal data', 'timestamp']
 show_related_blogs: true
 doc_type: 'reference'
 ---
@@ -67,6 +67,62 @@ precise_datetime:      2025-03-12 11:39:07.196
 very_precise_datetime: 2025-03-12 11:39:07.196724000
 ```
 
+## Time and Time64 types {#time-series-time-types}
+
+For scenarios where you need to store time-of-day values without date components, ClickHouse provides the [`Time`](/sql-reference/data-types/time) and [`Time64`](/sql-reference/data-types/time64) types, which was introduced in version 25.6. These are useful for representing recurring schedules, daily patterns, or situations where separating date and time components makes sense.
+
+:::note
+Using `Time` and `Time64` requires enabling the setting: `SET enable_time_time64_type = 1;`
+
+These types were introduced in version 25.6
+:::
+
+The `Time` type stores hours, minutes, and seconds with second precision. Internally stored as a signed 32-bit integer, it supports a range of `[-999:59:59, 999:59:59]`, allowing for values that exceed 24 hours. This can be useful when tracking elapsed time or performing arithmetic operations that result in values outside a single day.
+
+For sub-second precision, `Time64` stores time with configurable fractional seconds as a signed Decimal64 value. It accepts a precision parameter (0-9) to define the number of fractional digits. Common precision values are 3 (milliseconds), 6 (microseconds), and 9 (nanoseconds).
+
+Neither `Time` nor `Time64` support timezones - they represent pure time-of-day values without regional context.
+
+Let's create a table with time columns:
+
+```sql
+SET enable_time_time64_type = 1;
+
+CREATE TABLE time_examples
+(
+    `event_id` UInt8,
+    `basic_time` Time,
+    `precise_time` Time64(3)
+)
+ENGINE = MergeTree
+ORDER BY event_id;
+```
+
+We can insert time values using string literals or numeric values. For `Time`, numeric values are interpreted as seconds since 00:00:00. For `Time64`, numeric values are interpreted as seconds since 00:00:00 with the fractional part interpreted according to the column's precision:
+
+```sql
+INSERT INTO time_examples VALUES 
+    (1, '14:30:25', '14:30:25.123'),
+    (2, 52225, 52225.456),
+    (3, '26:11:10', '26:11:10.789');  -- Values normalize beyond 24 hours
+
+SELECT * FROM time_examples ORDER BY event_id;
+```
+
+```text
+┌─event_id─┬─basic_time─┬─precise_time─┐
+│        1 │ 14:30:25   │ 14:30:25.123 │
+│        2 │ 14:30:25   │ 14:30:25.456 │
+│        3 │ 26:11:10   │ 26:11:10.789 │
+└──────────┴────────────┴──────────────┘
+```
+
+Time values can be filtered naturally:
+
+```sql
+SELECT * FROM time_examples WHERE basic_time = '14:30:25';
+```
+
 ## Timezones {#time-series-timezones}
 
 Many use cases require having timezones stored as well. We can set the timezone as the last argument to the `DateTime` or `DateTime64` types:
@@ -78,7 +134,7 @@ CREATE TABLE dtz
     `dt_1` DateTime('Europe/Berlin'),
     `dt_2` DateTime,
     `dt64_1` DateTime64(9, 'Europe/Berlin'),
-    `dt64_2` DateTime64(9),
+    `dt64_2` DateTime64(9)
 )
 ENGINE = MergeTree
 ORDER BY id;

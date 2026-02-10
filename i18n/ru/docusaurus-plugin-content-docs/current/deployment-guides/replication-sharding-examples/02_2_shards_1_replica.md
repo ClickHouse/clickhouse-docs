@@ -33,7 +33,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
 <DedicatedKeeperServers />
 
-## Предварительные требования {#pre-requisites}
+## Предварительные требования \{#pre-requisites\}
 
 - Вы уже развернули [локальный сервер ClickHouse](/install)
 - Вы знакомы с основами конфигурирования ClickHouse, такими как [конфигурационные файлы](/operations/configuration-files)
@@ -808,7 +808,7 @@ Code: 198. DB::NetException: Not found address of host: clickhouse-01: (clickhou
   мы могли вставлять данные даже при отказе одного из хостов.
 </VerticalStepper>
 
-## Заключение {#conclusion}
+## Заключение \{#conclusion\}
 
 Преимущество такой топологии кластера состоит в том, что данные распределяются
 по отдельным хостам и используют вдвое меньше дискового пространства на узел. Что ещё важнее,

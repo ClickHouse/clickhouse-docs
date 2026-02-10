@@ -6,13 +6,14 @@ sidebar_position: 1
 title: 'Kafka ClickPipes 常见问题'
 doc_type: 'guide'
 keywords: ['kafka faq', 'clickpipes', 'upstash', 'azure event hubs', 'private link']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
+## Kafka ClickPipes 常见问题 \{#faq\}
 
-
-## Kafka ClickPipes 常见问题 {#faq}
-
-### 常规 {#general}
+### 常规 \{#general\}
 
 <details>
 
@@ -78,7 +79,7 @@ ClickPipes 是独立于 ClickHouse 服务运行的单独云服务。它连接到
 
 </details>
 
-### Azure Event Hubs {#azure-eventhubs}
+### Azure Event Hubs \{#azure-eventhubs\}
 
 <details>
 
@@ -120,23 +121,22 @@ ClickPipes 是独立于 ClickHouse 服务运行的单独云服务。它连接到
 
 <summary>我应该为 Azure Event Hubs 包含端口号吗?</summary>
 
-
-是的。ClickPipes 要求您包含 Kafka 接口的端口号,应为 `:9093`。
-
-</details>
-
-<details>
-
-<summary>ClickPipes IP 地址对 Azure Event Hubs 仍然适用吗?</summary>
-
-是的。要限制到您的 Event Hubs 实例的流量,请将[文档中记录的静态 NAT IP 地址](../
-/index.md#list-of-static-ips)添加到其中。
+是的。ClickPipes 要求您为 Kafka 接口包含端口号,该端口应为 `:9093`。
 
 </details>
 
 <details>
-<summary>连接字符串是用于 Event Hub 还是 Event Hub 命名空间?</summary>
 
-两者都可以使用。我们强烈建议在**命名空间级别**使用共享访问策略,以便从多个 Event Hubs 检索样本。
+<summary>ClickPipes 的 IP 对 Azure Event Hubs 仍然适用吗?</summary>
+
+适用。若要限制访问您的 Event Hubs 实例的流量,请将[文档中列出的静态 NAT IP](../
+/index.md#list-of-static-ips) 添加到相应的允许列表中。
+
+</details>
+
+<details>
+<summary>连接字符串是针对 Event Hub,还是针对 Event Hub 命名空间?</summary>
+
+两者都可以使用。我们强烈建议在**命名空间级别**使用共享访问策略,以便从多个 Event Hubs 中采集示例数据。
 
 </details>

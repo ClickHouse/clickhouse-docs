@@ -13,11 +13,11 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-## Описание {#description}
+## Описание \{#description\}
 
 Отличается от [`JSONEachRow`](./JSONEachRow.md)/[`JSONStringsEachRow`](./JSONStringsEachRow.md) тем, что ClickHouse также возвращает информацию о прогрессе в формате JSON.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 ```json
 {"row":{"num":42,"str":"hello","arr":[0,1]}}
@@ -26,4 +26,4 @@ doc_type: 'reference'
 {"progress":{"read_rows":"3","read_bytes":"24","written_rows":"0","written_bytes":"0","total_rows_to_read":"3"}}
 ```
 
-## Параметры форматирования {#format-settings}
+## Параметры форматирования \{#format-settings\}

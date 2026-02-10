@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 
 
-# Почему бы не использовать что‑нибудь вроде MapReduce? {#why-not-use-something-like-mapreduce}
+# Почему бы не использовать что‑нибудь вроде MapReduce? \{#why-not-use-something-like-mapreduce\}
 
 Мы можем отнести системы вроде MapReduce к распределённым вычислительным системам, в которых операция reduce основана на распределённой сортировке. Наиболее распространённым open-source‑решением в этом классе является [Apache Hadoop](http://hadoop.apache.org). 
 

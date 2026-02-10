@@ -26,20 +26,21 @@ import ToolsCalled from '@site/static/images/use-cases/AI_ML/MCP/8_janai_tools_c
 import ToolsCalledExpanded from '@site/static/images/use-cases/AI_ML/MCP/9_janai_tools_called_expanded.png';  
 import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png';
 
-# Jan.ai で ClickHouse MCP Server を使用する {#using-clickhouse-mcp-server-with-janai}
 
-> このガイドでは、ClickHouse MCP Server を [Jan.ai](https://jan.ai/docs) と組み合わせて使用する方法について説明します。
+# Jan.ai で ClickHouse MCP server を使用する \{#using-clickhouse-mcp-server-with-janai\}
+
+> このガイドでは、[Jan.ai](https://jan.ai/docs) で ClickHouse MCP Server を使用する方法を説明します。
 
 <VerticalStepper headerLevel="h2">
 
-## Jan.ai をインストールする {#install-janai}
+## Jan.ai をインストールする \{#install-janai\}
 
-Jan.ai は、100% オフラインで動作するオープンソースの ChatGPT の代替ツールです。
-[Mac](https://jan.ai/docs/desktop/mac)、[Windows](https://jan.ai/docs/desktop/windows)、または [Linux](https://jan.ai/docs/desktop/linux) 向けに Jan.ai をダウンロードできます。
+Jan.ai は 100% オフラインで動作するオープンソースの ChatGPT 代替です。
+[Mac](https://jan.ai/docs/desktop/mac)、[Windows](https://jan.ai/docs/desktop/windows)、または [Linux](https://jan.ai/docs/desktop/linux) 向けの Jan.ai をダウンロードできます。
 
-ネイティブアプリなので、ダウンロードが完了したらすぐに起動できます。
+ネイティブアプリなので、ダウンロード後はそのまま起動できます。
 
-## Jan.ai に LLM を追加する {#add-llm-to-janai}
+## Jan.ai に LLM を追加する \{#add-llm-to-janai\}
 
 設定メニューからモデルを有効化できます。
 
@@ -47,16 +48,16 @@ OpenAI を有効にするには、以下のように API キーを入力する�
 
 <Image img={OpenAIModels} alt="OpenAI モデルを有効化" size="md"/>
 
-## MCP サーバーを有効化する {#enable-mcp-servers}
+## MCP Servers を有効化する \{#enable-mcp-servers\}
 
-本記事の執筆時点では、MCP Servers は Jan.ai における実験的な機能です。
-実験的機能のトグルスイッチをオンにすることで有効化できます。
+執筆時点では、MCP Servers は Jan.ai における実験的機能です。
+実験的機能のトグルをオンにすることで有効化できます。
 
-<Image img={MCPServers} alt="MCP サーバーを有効化" size="md"/>
+<Image img={MCPServers} alt="MCP servers を有効化" size="md"/>
 
 トグルをオンにすると、左側のメニューに `MCP Servers` が表示されます。
 
-## ClickHouse MCP Server を構成する {#configure-clickhouse-mcp-server}
+## ClickHouse MCP Server を構成する \{#configure-clickhouse-mcp-server\}
 
 `MCP Servers` メニューをクリックすると、接続可能な MCP サーバーの一覧が表示されます。
 
@@ -70,33 +71,33 @@ ClickHouse MCP Server をインストールするには、`+` アイコンをク
 
 入力が完了したら、まだ有効になっていない場合は ClickHouse Server のトグルをオンにする必要があります。
 
-<Image img={MCPEnabled} alt="MCP サーバーを有効化" size="md"/>
+<Image img={MCPEnabled} alt="ClickHouse MCP Server を有効化" size="md"/>
 
 これで、ClickHouse MCP Server のツールがチャットダイアログ上に表示されるようになります。
 
 <Image img={MCPTool} alt="ClickHouse MCP Server ツール" size="md"/>
 
-## Jan.ai で ClickHouse MCP サーバーとチャットする {#chat-to-clickhouse-mcp-server}
+## Jan.ai で ClickHouse MCP Server と対話する \{#chat-to-clickhouse-mcp-server\}
 
-ClickHouse に保存されているデータについて、会話してみましょう。
-質問を入力してみます：
+ClickHouse に保存されたデータについて会話してみましょう。
+まずは質問を投げかけます。
 
-<Image img={Question} alt='質問' size='md' />
+<Image img={Question} alt="質問" size="md"/>
 
-ツールを呼び出す前に、Jan.ai から確認が求められます：
+Jan.ai はツールを呼び出す前に確認を求めます。
 
-<Image img={MCPToolConfirm} alt='ツール呼び出しの確認' size='md' />
+<Image img={MCPToolConfirm} alt="ツール呼び出しの確認" size="md"/>
 
-その後、実行されたツール呼び出しの一覧が表示されます：
+その後、実行されたツール呼び出しの一覧が表示されます。
 
-<Image img={ToolsCalled} alt='呼び出されたツール' size='md' />
+<Image img={ToolsCalled} alt="呼び出されたツール一覧" size="md"/>
 
-ツール呼び出しをクリックすると、その呼び出し内容の詳細を確認できます：
+ツール呼び出しをクリックすると、その詳細を確認できます。
 
-<Image img={ToolsCalledExpanded} alt='ツール呼び出しの詳細' size='md' />
+<Image img={ToolsCalledExpanded} alt="展開されたツール呼び出し" size="md"/>    
 
-その下に、実行結果が表示されます：
+その下に、ツールの実行結果が表示されます。
 
-<Image img={Result} alt='結果' size='md' />
+<Image img={Result} alt="結果" size="md"/>    
 
 </VerticalStepper>

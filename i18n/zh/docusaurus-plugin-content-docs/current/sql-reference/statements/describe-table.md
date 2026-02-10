@@ -66,6 +66,26 @@ DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 └───────────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┴──────────────┘
 ```
 
+`DESCRIBE` 语句也可以用于子查询或标量表达式：
+
+```SQL
+DESCRIBE SELECT 1 FORMAT TSV;
+```
+
+或
+
+```SQL
+DESCRIBE (SELECT 1) FORMAT TSV;
+```
+
+结果：
+
+```text
+1       UInt8
+```
+
+这种用法会返回指定查询或子查询结果列的元数据。在执行之前，它有助于理解复杂查询的结构。
+
 **另请参阅**
 
 * [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 设置

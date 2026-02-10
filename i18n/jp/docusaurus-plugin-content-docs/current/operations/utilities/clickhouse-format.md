@@ -5,7 +5,7 @@ title: 'clickhouse-format'
 doc_type: 'reference'
 ---
 
-# clickhouse-format ユーティリティ {#clickhouse-format-utility}
+# clickhouse-format ユーティリティ \{#clickhouse-format-utility\}
 
 入力クエリを整形します。
 
@@ -24,7 +24,7 @@ doc_type: 'reference'
 * `--backslash` — 整形されたクエリの各行末にバックスラッシュを追加します。複数行のクエリを Web などからコピーしてコマンドラインで実行したい場合に便利です。
 * `--semicolons_inline` — multiquery モードで、クエリの末尾行では改行せず同じ行にセミコロンを書きます。
 
-## 例 {#examples}
+## 例 \{#examples\}
 
 1. クエリのフォーマット:
 

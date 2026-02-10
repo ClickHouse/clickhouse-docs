@@ -15,9 +15,12 @@ import S3DataSource from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_
 import GCSSDataSource from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/google-cloud-storage/_1-data-source.md';
 import ABSDataSource from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/azure-blob-storage/_1-data-source.md';
 
+import S3Connection from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/amazon-s3/_2-connection.md';
+import GCSConnection from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/google-cloud-storage/_2-connection.md';
+
 <VerticalStepper type="numbered" headerLevel="h2">
 
-## データソースを選択する {#1-select-the-data-source}
+## データソースを選択する \{#1-select-the-data-source\}
 
 **1.** ClickHouse Cloud のメインナビゲーションメニューで **Data sources** を選択し、**Create ClickPipe** をクリックします。
 
@@ -27,17 +30,16 @@ import ABSDataSource from '@site/i18n/jp/docusaurus-plugin-content-docs/current/
 {props.provider === 'gcs' && <GCSSDataSource />}
 {props.provider === 'abs' && <ABSDataSource />}
 
-## ClickPipe 接続をセットアップする {#2-setup-your-clickpipe-connection}
+## ClickPipe 接続をセットアップする \{#2-setup-your-clickpipe-connection\}
 
 **1.** 新しい ClickPipe をセットアップするには、オブジェクトストレージサービスへの接続方法と認証方法の詳細を指定する必要があります。
 
-{props.provider === 's3' && <S3DataSource />}
-{props.provider === 'gcs' && <GCSSDataSource />}
-{props.provider === 'abs' && <ABSDataSource />}
+{props.provider === 's3' && <S3Connection />}
+{props.provider === 'gcs' && <GCSConnection />}
 
 **2.** **Incoming data** をクリックします。ClickPipes が次のステップのためにバケットからメタデータを取得します。
 
-## データフォーマットを選択する {#3-select-data-format}
+## データフォーマットを選択する \{#3-select-data-format\}
 
 UI には、指定したバケット内のファイル一覧が表示されます。
 データフォーマット（現在は ClickHouse フォーマットの一部のみをサポート）と、継続的なインジェストを有効にするかどうかを選択します。
@@ -45,7 +47,7 @@ UI には、指定したバケット内のファイル一覧が表示されま�
 
 <Image img={cp_step3_object_storage} alt="データフォーマットとトピックを設定" size="lg" border/>
 
-## テーブル、スキーマ、設定を構成する {#5-configure-table-schema-settings}
+## テーブル、スキーマ、設定を構成する \{#5-configure-table-schema-settings\}
 
 次のステップでは、新しい ClickHouse テーブルにデータを取り込むか、既存のテーブルを再利用するかを選択できます。
 画面上の指示に従って、テーブル名、スキーマ、および設定を変更します。
@@ -66,7 +68,7 @@ UI には、指定したバケット内のファイル一覧が表示されま�
 `_path` や `_size` などの[仮想カラム](/sql-reference/table-functions/s3#virtual-columns)をフィールドにマッピングすることもできます。
 :::
 
-## 権限を構成する {#6-configure-permissions}
+## 権限を構成する \{#6-configure-permissions\}
 
 最後に、内部 ClickPipes ユーザー用の権限を構成します。
 
@@ -76,7 +78,7 @@ UI には、指定したバケット内のファイル一覧が表示されま�
 
 <Image img={cp_step5} alt="権限" size="lg" border/>
 
-## セットアップを完了する {#7-complete-setup}
+## セットアップを完了する \{#7-complete-setup\}
 
 "Complete Setup" をクリックすると、システムは ClickPipe を登録し、概要テーブルに表示されるようになります。
 

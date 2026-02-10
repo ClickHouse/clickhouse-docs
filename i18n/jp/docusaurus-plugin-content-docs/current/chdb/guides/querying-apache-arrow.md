@@ -10,7 +10,7 @@ doc_type: 'guide'
 [Apache Arrow](https://arrow.apache.org/) は、データコミュニティで広く利用されている標準化されたカラム指向のメモリフォーマットです。
 このガイドでは、`Python` テーブル関数を使用して Apache Arrow をクエリする方法を学びます。
 
-## セットアップ {#setup}
+## セットアップ \{#setup\}
 
 まずは仮想環境を作成します：
 
@@ -40,7 +40,7 @@ ipython
 
 このコードは、Python スクリプトやお好みのノートブック環境でも使用できます。
 
-## ファイルから Apache Arrow テーブルを作成する {#creating-an-apache-arrow-table-from-a-file}
+## ファイルから Apache Arrow テーブルを作成する \{#creating-an-apache-arrow-table-from-a-file\}
 
 まず、[Ookla データセット](https://github.com/teamookla/ookla-open-data)の Parquet ファイルの一つを、[AWS CLI ツール](https://aws.amazon.com/cli/)を使ってダウンロードします。
 
@@ -96,7 +96,7 @@ arrow_table.shape
 (3864546, 11)
 ```
 
-## Apache Arrow をクエリする {#querying-apache-arrow}
+## Apache Arrow をクエリする \{#querying-apache-arrow\}
 
 ここでは、chDB から Apache Arrow テーブルをクエリしてみましょう。
 まず、chDB をインポートします。

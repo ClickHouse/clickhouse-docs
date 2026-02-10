@@ -30,7 +30,7 @@ ordering key を選ぶ際に役立つ、いくつかの単純なルールを適�
 ordering key はテーブル作成時に定義する必要があり、後から追加することはできません。追加の並び順は、projections と呼ばれる機能を用いて、データ挿入の前後を問わずテーブルに付与できます。ただし、その結果データが重複して保存される点に注意してください。詳細は[こちら](/sql-reference/statements/alter/projection)を参照してください。
 :::
 
-## 例 {#example}
+## 例 \{#example\}
 
 次の `posts_unordered` テーブルを考えます。これは Stack Overflow の投稿 1 件ごとに 1 行のデータを含んでいます。
 

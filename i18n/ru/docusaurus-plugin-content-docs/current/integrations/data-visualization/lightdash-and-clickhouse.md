@@ -22,7 +22,7 @@ import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# Lightdash {#lightdash}
+# Lightdash \{#lightdash\}
 
 <PartnerBadge/>
 
@@ -32,7 +32,7 @@ Lightdash — это **AI-first BI-платформа**, созданная дл
 
 Это партнёрство объединяет **скорость ClickHouse** и **удобство Lightdash для разработчиков**, упрощая как никогда ранее исследование, визуализацию и автоматизацию получения инсайтов с помощью ИИ.
 
-## Создание интерактивной панели мониторинга с Lightdash и ClickHouse {#build-an-interactive-dashboard}
+## Создание интерактивной панели мониторинга с Lightdash и ClickHouse \{#build-an-interactive-dashboard\}
 
 В этом руководстве показано, как **Lightdash** подключается к **ClickHouse** для исследования ваших dbt-моделей и создания интерактивных панелей мониторинга.  
 На примере ниже показана готовая панель мониторинга, построенная на данных из ClickHouse.

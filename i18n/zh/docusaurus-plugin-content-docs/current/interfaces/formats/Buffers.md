@@ -13,7 +13,7 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 `Buffers` 是一种非常简单的用于**临时**数据交换的二进制格式，在该格式中，消费者和生产者都已知晓模式（schema）和列顺序。
 
@@ -30,7 +30,7 @@ doc_type: 'reference'
 - 序列化列数据的总字节大小（UInt64，小端序）。
 - 序列化的列数据字节，与 [Native](./Native.md) 格式中的完全一致。
 
-## 示例用法 {#example-usage}
+## 示例用法 \{#example-usage\}
 
 写入到文件：
 
@@ -106,4 +106,4 @@ SELECT * FROM number_squares;
 ```
 
 
-## 格式设置 {#format-settings}
+## 格式设置 \{#format-settings\}

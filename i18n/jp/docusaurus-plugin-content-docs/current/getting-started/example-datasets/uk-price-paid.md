@@ -13,7 +13,7 @@ keywords: ['example dataset', 'uk property', 'sample data', 'real estate', 'gett
 - 項目の説明: https://www.gov.uk/guidance/about-the-price-paid-data
 - HM Land Registry のデータを含みます © Crown copyright and database right 2021。このデータは Open Government Licence v3.0 に基づきライセンスされています。
 
-## テーブルの作成 {#create-table}
+## テーブルの作成 \{#create-table\}
 
 ```sql
 CREATE DATABASE uk;
@@ -39,7 +39,7 @@ ENGINE = MergeTree
 ORDER BY (postcode1, postcode2, addr1, addr2);
 ```
 
-## データの前処理と挿入 {#preprocess-import-data}
+## データの前処理と挿入 \{#preprocess-import-data\}
 
 `url` 関数を使用してデータを ClickHouse にストリーミングします。その前に、受信データの一部を前処理する必要があります。内容は次のとおりです：
 
@@ -93,7 +93,7 @@ FROM url(
 
 データの挿入が完了するまで待ちます。ネットワーク速度にもよりますが、1～2分ほどかかります。
 
-## データを検証する {#validate-data}
+## データを検証する \{#validate-data\}
 
 何行挿入されたかを確認して、正しく動作したことを検証します。
 
@@ -112,11 +112,11 @@ WHERE name = 'uk_price_paid'
 
 Notice the size of the table is just 221.43 MiB!
 
-## Run some queries {#run-queries}
+## Run some queries \{#run-queries\}
 
 Let's run some queries to analyze the data:
 
-### Query 1. Average price per year {#average-price}
+### Query 1. Average price per year \{#average-price\}
 
 ```sql runnable
 SELECT
@@ -129,7 +129,7 @@ GROUP BY year
 ORDER BY year
 ```
 
-### Query 2. average price per year in London {#average-price-london}
+### Query 2. average price per year in London \{#average-price-london\}
 
 ```sql runnable
 SELECT
@@ -145,7 +145,7 @@ ORDER BY year
 
 Something happened to home prices in 2020! But that is probably not a surprise...
 
-### Query 3. The most expensive neighborhoods {#most-expensive-neighborhoods}
+### Query 3. The most expensive neighborhoods \{#most-expensive-neighborhoods\}
 
 ```sql runnable
 SELECT
@@ -164,10 +164,10 @@ ORDER BY price DESC
 LIMIT 100
 ```
 
-## プロジェクションによるクエリの高速化 {#speeding-up-queries-with-projections}
+## プロジェクションによるクエリの高速化 \{#speeding-up-queries-with-projections\}
 
 これらのクエリはプロジェクションを使用することで高速化できます。このデータセットを使った例については、「[Projections](/data-modeling/projections)」を参照してください。
 
-### プレイグラウンドで試してみる {#playground}
+### プレイグラウンドで試してみる \{#playground\}
 
 このデータセットは、[Online Playground](https://sql.clickhouse.com?query_id=TRCWH5ZETY4SEEK8ISCCAX) でも利用できます。

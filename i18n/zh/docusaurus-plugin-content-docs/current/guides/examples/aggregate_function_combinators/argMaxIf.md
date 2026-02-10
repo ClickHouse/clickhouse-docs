@@ -7,9 +7,9 @@ sidebar_label: 'argMaxIf'
 doc_type: 'reference'
 ---
 
-# argMaxIf {#argmaxif}
+# argMaxIf \{#argmaxif\}
 
-## 描述 {#description}
+## 描述 \{#description\}
 
 可以将 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器应用于 [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
 函数，从而在条件为真的行中，找到对应于 `val` 最大值的 `arg` 值，
@@ -18,7 +18,7 @@ doc_type: 'reference'
 当需要在数据集中查找与最大值关联的值，但只针对满足特定
 条件的行时，`argMaxIf` 函数非常有用。
 
-## 使用示例 {#example-usage}
+## 使用示例 \{#example-usage\}
 
 在本示例中，我们将使用一个产品销售示例数据集来演示 `argMaxIf` 的工作方式。我们将查找价格最高的产品名称，但仅限于销售次数至少为 10 次的产品。
 
@@ -51,7 +51,7 @@ FROM product_sales;
    └──────────────────────────┘
 ```
 
-## 另请参阅 {#see-also}
+## 另请参阅 \{#see-also\}
 - [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
 - [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
 - [`argMinIf`](/examples/aggregate-function-combinators/argMinIf)

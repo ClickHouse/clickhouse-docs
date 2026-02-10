@@ -7,7 +7,6 @@ doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';
-import BetaBadge from '@theme/badges/BetaBadge';
 import image_1 from '@site/static/images/deployment-guides/parallel-replicas-1.png'
 import image_2 from '@site/static/images/deployment-guides/parallel-replicas-2.png'
 import image_3 from '@site/static/images/deployment-guides/parallel-replicas-3.png'
@@ -17,8 +16,6 @@ import image_6 from '@site/static/images/deployment-guides/parallel-replicas-6.p
 import image_7 from '@site/static/images/deployment-guides/parallel-replicas-7.png'
 import image_8 from '@site/static/images/deployment-guides/parallel-replicas-8.png'
 import image_9 from '@site/static/images/deployment-guides/parallel-replicas-9.png'
-
-<BetaBadge />
 
 ## はじめに \{#introduction\}
 
@@ -308,7 +305,7 @@ Keeper クラスタは、メタデータに関する単一の信頼できる情�
 | `cluster_for_parallel_replicas`                    | 並列レプリケーションに使用するクラスタ名。ClickHouse Cloud を使用している場合は `default` を指定します。                                                                                                                                                                 |
 | `max_parallel_replicas`                            | 複数レプリカ上でクエリを実行する際に使用するレプリカの最大数。クラスタ内のレプリカ数より小さい値を指定した場合、ノードはランダムに選択されます。この値は水平方向のスケーリングを考慮してオーバーコミットとして設定することもできます。 |
 | `parallel_replicas_min_number_of_rows_per_replica` | 処理が必要な行数に基づいて使用するレプリカ数を制限するのに役立ちます。使用されるレプリカ数は次の式で決まります：<br /> `estimated rows to read` / `min_number_of_rows_per_replica`.                                                               |
-| `allow_experimental_analyzer`                      | `0`: 旧アナライザを使用<br /> `1`: 新アナライザを使用 <br /><br />使用するアナライザによって、並列レプリカの動作が変わる場合があります。                                                                                                                                    |
+| `enable_analyzer`                                  | 並列レプリカを用いたクエリ実行は、アナライザが有効化されている場合にのみサポートされます。                                                                                                                                                                                      |
 
 ## パラレルレプリカに関する問題の調査 \{#investigating-issues-with-parallel-replicas\}
 

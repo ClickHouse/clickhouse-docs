@@ -12,7 +12,7 @@ doc_type: 'guide'
 Во второй версии chDB мы улучшили производительность выполнения запросов к датафреймам Pandas и представили табличную функцию `Python`.
 В этом руководстве мы рассмотрим, как выполнять запросы к Pandas с использованием табличной функции `Python`.
 
-## Настройка {#setup}
+## Настройка \{#setup\}
 
 Сначала создадим виртуальное окружение:
 
@@ -42,7 +42,7 @@ ipython
 
 Вы также можете использовать этот код в скрипте на Python или в вашем любимом ноутбуке (например, Jupyter Notebook).
 
-## Создание DataFrame Pandas из URL {#creating-a-pandas-dataframe-from-a-url}
+## Создание DataFrame Pandas из URL \{#creating-a-pandas-dataframe-from-a-url\}
 
 Мы будем получать данные из [репозитория StatsBomb на GitHub](https://github.com/statsbomb/open-data/tree/master?tab=readme-ov-file).
 Сначала импортируем requests и pandas:
@@ -155,7 +155,7 @@ match_id                                                          3943077
 Name: 0, dtype: object
 ```
 
-## Выполнение запросов к датафреймам Pandas {#querying-pandas-dataframes}
+## Выполнение запросов к датафреймам Pandas \{#querying-pandas-dataframes\}
 
 Теперь давайте посмотрим, как выполнять запросы к этим датафреймам с помощью chDB.
 Импортируем библиотеку:
@@ -279,7 +279,7 @@ LIMIT 10
 9  Carlos Eccehomo Cuesta Figueroa       50
 ```
 
-## Объединение DataFrame в Pandas {#joining-pandas-dataframes}
+## Объединение DataFrame в Pandas \{#joining-pandas-dataframes\}
 
 Мы также можем объединять несколько DataFrame в одном запросе.
 Например, чтобы получить общее представление о матче, мы могли бы написать следующий запрос:
@@ -310,7 +310,7 @@ away_shots                         19
 Name: 0, dtype: object
 ```
 
-## Заполнение таблицы из DataFrame {#populating-a-table-from-a-dataframe}
+## Заполнение таблицы из DataFrame \{#populating-a-table-from-a-dataframe\}
 
 Мы также можем создавать и заполнять таблицы ClickHouse из объектов DataFrame.
 Если мы хотим создать таблицу в chDB, нам нужно использовать Stateful Session API.
@@ -370,7 +370,7 @@ LIMIT 10
 9  Carlos Eccehomo Cuesta Figueroa       50
 ```
 
-## Объединение DataFrame Pandas и таблицы {#joining-a-pandas-dataframe-and-table}
+## Объединение DataFrame Pandas и таблицы \{#joining-a-pandas-dataframe-and-table\}
 
 Наконец, мы можем обновить наш запрос, чтобы объединить DataFrame `matches_df` с таблицей `statsbomb.events`:
 

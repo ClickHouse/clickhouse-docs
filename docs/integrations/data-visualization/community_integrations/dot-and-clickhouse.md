@@ -5,6 +5,9 @@ keywords: ['clickhouse', 'dot', 'ai', 'chatbot', 'mysql', 'integrate', 'ui', 'vi
 description: 'AI Chatbot | Dot is an intelligent virtual data assistant that answers business data questions, retrieves definitions and relevant data assets, and can even assist with data modelling, powered by ClickHouse.'
 title: 'Dot'
 doc_type: 'guide'
+integration:
+   - support_level: 'community'
+   - category: 'data_visualization'
 ---
 
 import Image from '@theme/IdealImage';

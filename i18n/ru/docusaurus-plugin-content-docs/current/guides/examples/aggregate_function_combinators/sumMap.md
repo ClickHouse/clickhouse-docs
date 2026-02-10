@@ -7,14 +7,14 @@ sidebar_label: 'sumMap'
 doc_type: 'reference'
 ---
 
-# sumMap {#summap}
+# sumMap \{#summap\}
 
-## Описание {#description}
+## Описание \{#description\}
 
 Комбинатор [`Map`](/sql-reference/aggregate-functions/combinators#-map) может быть применён к функции [`sum`](/sql-reference/aggregate-functions/reference/sum)
 для вычисления суммы значений в `Map` по каждому ключу с использованием агрегирующего комбинатора `sumMap`.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 В этом примере мы создадим таблицу, в которой хранятся коды статусов и их количества для различных временных интервалов, где каждая строка содержит `Map`, сопоставляющую коды статусов с соответствующими им количествами. Мы будем использовать функцию `sumMap` для вычисления общего количества для каждого кода статуса в каждом временном интервале.
 
@@ -59,6 +59,6 @@ GROUP BY timeslot;
    └─────────────────────┴──────────────────────────────────────┘
 ```
 
-## См. также {#see-also}
+## См. также \{#see-also\}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`Комбинатор Map`](/sql-reference/aggregate-functions/combinators#-map)

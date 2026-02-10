@@ -8,7 +8,7 @@ doc_type: 'reference'
 keywords: ['federated', 'hybrid', 'postgres', 'mysql', 'sqlite', 'odbc', 'jdbc']
 ---
 
-# ClickHouse 是否支持联邦查询？ {#does-clickhouse-support-federated-queries}
+# ClickHouse 是否支持联邦查询？ \{#does-clickhouse-support-federated-queries\}
 
 在分析型数据库中，ClickHouse 对联邦查询和混合查询执行的支持最为全面。
 

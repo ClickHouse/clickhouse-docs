@@ -10,7 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 如何使用 ClickHouse MCP Server 构建 LlamaIndex AI Agent {#how-to-build-a-llamaindex-ai-agent-using-clickhouse-mcp-server}
+# 如何使用 ClickHouse MCP Server 构建 LlamaIndex AI Agent \{#how-to-build-a-llamaindex-ai-agent-using-clickhouse-mcp-server\}
 
 在本指南中，你将学习如何构建一个 [LlamaIndex](https://docs.llamaindex.ai) AI Agent，使其能够通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 进行交互。
 
@@ -18,7 +18,7 @@ doc_type: 'guide'
 该示例可以在 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/llamaindex/llamaindex.ipynb)中以 Notebook 形式查看。
 :::
 
-## 前置条件 {#prerequisites}
+## 前置条件 \{#prerequisites\}
 
 - 您需要在系统上安装 Python。
 - 您需要在系统上安装 `pip`。
@@ -28,7 +28,7 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-## 安装依赖库 {#install-libraries}
+## 安装依赖库 \{#install-libraries\}
 
 运行以下命令来安装所需的依赖库：
 
@@ -37,7 +37,7 @@ pip install -q --upgrade pip
 pip install -q llama-index clickhouse-connect llama-index-llms-anthropic llama-index-tools-mcp
 ```
 
-## 设置凭据 {#setup-credentials}
+## 设置凭据 \{#setup-credentials\}
 
 接下来，您需要提供 Anthropic API 密钥：
 
@@ -55,7 +55,7 @@ Enter Anthropic API Key: ········
 可以在 [LlamaIndex「LLMs」文档](https://docs.llamaindex.ai/en/stable/examples/) 中找到配置凭据的说明。
 :::
 
-## 初始化 MCP Server {#initialize-mcp-and-agent}
+## 初始化 MCP Server \{#initialize-mcp-and-agent\}
 
 现在将 ClickHouse MCP Server 配置为指向 ClickHouse SQL playground。
 你需要将这些 Python 函数转换为 LlamaIndex 工具：

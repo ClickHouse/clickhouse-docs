@@ -7,15 +7,15 @@ sidebar_label: 'sumIf'
 doc_type: 'reference'
 ---
 
-# sumIf {#sumif}
+# sumIf \{#sumif\}
 
-## Описание {#description}
+## Описание \{#description\}
 
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к агрегатной функции [`sum`](/sql-reference/aggregate-functions/reference/sum)
 для вычисления суммы значений по строкам, для которых условие истинно,
 используя агрегатную функцию-комбинатор `sumIf`.
 
-## Пример использования {#example-usage}
+## Пример использования \{#example-usage\}
 
 В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успешности,
 а затем используем `sumIf` для вычисления общей суммы продаж по успешным транзакциям.
@@ -49,7 +49,7 @@ FROM sales;
    └───────────────────────┘
 ```
 
-### Расчет торгового объема по направлению движения цены {#calculate-trading-vol-price-direction}
+### Расчет торгового объема по направлению движения цены \{#calculate-trading-vol-price-direction\}
 
 В этом примере мы используем таблицу `stock`, доступную в [ClickHouse playground](https://sql.clickhouse.com/),
 чтобы рассчитать торговый объем по направлению движения цены за первую половину 2002 года.
@@ -84,7 +84,7 @@ ORDER BY month;
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
 ```
 
-### Рассчитать торговый объём по тикеру {#calculate-trading-volume}
+### Рассчитать торговый объём по тикеру \{#calculate-trading-volume\}
 
 В этом примере мы будем использовать таблицу `stock`, доступную в [ClickHouse playground](https://sql.clickhouse.com/),
 чтобы посчитать объём торгов по биржевому тикеру в 2006 году для трёх крупнейших
@@ -121,6 +121,6 @@ ORDER BY month;
     └────────────┴────────────────┴──────────────────┴────────────────┴──────────────┴───────────────────────┘
 ```
 
-## Смотрите также {#see-also}
+## Смотрите также \{#see-also\}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

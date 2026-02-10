@@ -6,7 +6,7 @@ title: '地理座標を扱うための関数'
 doc_type: 'reference'
 ---
 
-## greatCircleDistance {#greatcircledistance}
+## greatCircleDistance \{#greatcircledistance\}
 
 [大円距離の公式](https://en.wikipedia.org/wiki/Great-circle_distance)を用いて、地球表面上の2点間の距離を計算します。
 
@@ -41,7 +41,7 @@ SELECT greatCircleDistance(55.755831, 37.617673, -55.755831, -37.617673) AS grea
 └─────────────────────┘
 ```
 
-## geoDistance {#geodistance}
+## geoDistance \{#geodistance\}
 
 `greatCircleDistance` と似ていますが、球ではなく WGS-84 楕円体上の距離を計算します。これは地球ジオイドをより正確に近似したものです。
 パフォーマンスは `greatCircleDistance` と同じです（性能低下はありません）。地球上の距離を計算する場合は `geoDistance` の使用を推奨します。
@@ -79,7 +79,7 @@ SELECT geoDistance(38.8976, -77.0366, 39.9496, -75.1503) AS geoDistance
 └─────────────┘
 ```
 
-## greatCircleAngle {#greatcircleangle}
+## greatCircleAngle \{#greatcircleangle\}
 
 [大円距離の公式](https://en.wikipedia.org/wiki/Great-circle_distance)を使用して、地球表面上にある2つの地点間の中心角を計算します。
 
@@ -110,7 +110,7 @@ SELECT greatCircleAngle(0, 0, 45, 0) AS arc
 └─────┘
 ```
 
-## pointInEllipses {#pointinellipses}
+## pointInEllipses \{#pointinellipses\}
 
 点が少なくとも 1 つの楕円に含まれているかどうかを判定します。
 座標はデカルト座標系における幾何学座標です。
@@ -143,7 +143,7 @@ SELECT pointInEllipses(10., 10., 10., 9.1, 1., 0.9999)
 └─────────────────────────────────────────────────┘
 ```
 
-## pointInPolygon {#pointinpolygon}
+## pointInPolygon \{#pointinpolygon\}
 
 点が平面上の多角形内に含まれているかどうかを判定します。
 
