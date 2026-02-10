@@ -192,6 +192,17 @@ df.write
 
 ## Databricks 特有注意事项 \{#considerations\}
 
+### 访问模式要求 \{#access-mode\}
+
+ClickHouse Spark Connector 需要使用 **Dedicated**（原 Single User）访问模式。当启用 Unity Catalog 时，不支持 **Standard**（原 Shared）访问模式，因为在该配置下 Databricks 会阻止外部 DataSource V2 连接器。
+
+| 访问模式 | Unity Catalog | 是否支持 |
+|-------------|---------------|-----------|
+| Dedicated（Single User） | 启用 | ✅ 是 |
+| Dedicated（Single User） | 禁用 | ✅ 是 |
+| Standard（Shared） | 启用 | ❌ 否 |
+| Standard（Shared） | 禁用 | ✅ 是 |
+
 ### 机密管理 \{#secret-management\}
 
 使用 Databricks 的 secret scopes 安全存储 ClickHouse 凭证：

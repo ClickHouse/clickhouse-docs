@@ -1079,9 +1079,12 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 
 另请参阅[配置外部存储选项](/operations/storing-data.md/#configuring-external-storage)。
 
+可以在共享存储上将非复制的 MergeTree 表配置为单写多读场景。这依赖于在读节点上设置的分区片段列表自动刷新机制。注意，这要求在多个副本之间共享文件系统元数据（或者在表级本地磁盘上将 `table_disk = true`）。参见 [refresh&#95;parts&#95;interval and table&#95;disk](/operations/storing-data.md/#refresh-parts-interval-and-table-disk)。
+
 :::note 缓存配置
 ClickHouse 版本 22.3 至 22.7 使用了不同的缓存配置，如果你正在使用这些版本之一，请参阅[使用本地缓存](/operations/storing-data.md/#using-local-cache)。
 :::
+
 
 ## 虚拟列 \{#virtual-columns\}
 

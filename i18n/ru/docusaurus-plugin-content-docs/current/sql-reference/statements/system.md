@@ -106,6 +106,10 @@ SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 
 Очищает кеш метаданных Iceberg.
 
+## SYSTEM DROP PARQUET METADATA CACHE \{#drop-parquet-metadata-cache\}
+
+Очищает кэш метаданных Parquet.
+
 ## SYSTEM CLEAR|DROP TEXT INDEX CACHES \{#drop-text-index-caches\}
 
 Очищает кеш заголовков текстового индекса, кеш словаря и кеш постингов.

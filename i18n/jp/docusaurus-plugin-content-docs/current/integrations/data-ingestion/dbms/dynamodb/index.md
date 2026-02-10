@@ -17,12 +17,12 @@ import Image from '@theme/IdealImage';
 
 # DynamoDB から ClickHouse への CDC \{#cdc-from-dynamodb-to-clickhouse\}
 
-このページでは、ClickPipes を使用して DynamoDB から ClickHouse への CDC を設定する方法を説明します。この連携は、次の 2 つのコンポーネントから構成されます。
+このページでは、ClickPipes を使用して DynamoDB から ClickHouse への CDC（変更データキャプチャ）を構成する方法について説明します。この連携は次の 2 つのコンポーネントから構成されます。
 
 1. S3 ClickPipes による初期スナップショット
 2. Kinesis ClickPipes によるリアルタイム更新
 
-データは `ReplacingMergeTree` に取り込まれます。このテーブルエンジンは、更新操作を反映できるようにするために、CDC シナリオで一般的に使用されます。このパターンの詳細は、次のブログ記事で確認できます。
+データは `ReplacingMergeTree` に取り込まれます。このテーブルエンジンは、更新操作を反映できるようにするため、CDC のシナリオで一般的に使用されます。このパターンの詳細については、次のブログ記事を参照してください。
 
 * [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 1](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1?loc=docs-rockest-migrations)
 * [Change Data Capture (CDC) with PostgreSQL and ClickHouse - Part 2](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-2?loc=docs-rockest-migrations)
@@ -106,24 +106,25 @@ ORDER BY id;
 * テーブルは、パーティションキーをソートキー（`ORDER BY` で指定）として使用する必要があります
   * 同じソートキーを持つ行は、`version` カラムに基づいて重複排除されます。
 
-### スナップショット用 ClickPipe を作成する \{#create-the-snapshot-clickpipe\}
+### スナップショット ClickPipe を作成する \{#create-the-snapshot-clickpipe\}
 
-これで、S3 から ClickHouse へスナップショットデータをロードするための ClickPipe を作成できます。S3 ClickPipe ガイドは[こちら](/integrations/clickpipes/object-storage/s3/overview)を参照し、以下の設定を使用してください。
+これで、S3 から ClickHouse にスナップショットデータをロードするための ClickPipe を作成できます。S3 ClickPipe ガイドは[こちら](/integrations/clickpipes/object-storage/s3/overview)を参照し、次の設定を使用してください。
 
-* **Ingest path**: S3 にエクスポートされた JSON ファイルのパスを特定する必要があります。パスは次のような形式になります。
+* **Ingest path**: S3 内でエクスポートされた JSON ファイルが存在するパスを特定する必要があります。パスは次のような形式になります。
 
 ```text
 https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 ```
 
 * **Format**: JSONEachRow
-* **Table**: スナップショット用のテーブル（例: 上記の例では `default.snapshot`）
+* **Table**: スナップショットテーブル（例: 上記の `default.snapshot`）
 
-作成が完了すると、スナップショットテーブルと宛先テーブルへのデータ投入が始まります。次のステップに進む前に、スナップショットのロード完了を待つ必要はありません。
+`CREATE` が完了すると、スナップショットテーブルと転送先テーブルへのデータ投入が始まります。次の手順に進む前にスナップショットの読み込み完了を待つ必要はありません。
+
 
 ## 4. Kinesis ClickPipe を作成する \{#4-create-the-kinesis-clickpipe\}
 
-ここでは、Kinesis ストリームからのリアルタイムでの変更をキャプチャするための Kinesis ClickPipe をセットアップします。Kinesis ClickPipe ガイドは[こちら](/integrations/data-ingestion/clickpipes/kinesis.md)に従いますが、次の設定を使用してください。
+ここでは、Kinesis ストリームからのリアルタイムでの変更をキャプチャするための Kinesis ClickPipe をセットアップします。Kinesis ClickPipe ガイドは[こちら](/integrations/data-ingestion/clickpipes/kinesis/01_overview.md)に従いますが、次の設定を使用してください。
 
 - **Stream**: ステップ 1 で使用した Kinesis ストリーム
 - **Table**: 宛先テーブル（例: 上記の例では `default.destination`）

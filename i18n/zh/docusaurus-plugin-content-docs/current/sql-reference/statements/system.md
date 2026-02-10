@@ -106,6 +106,10 @@ SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 
 清除 Iceberg 元数据缓存。
 
+## SYSTEM DROP PARQUET METADATA CACHE \{#drop-parquet-metadata-cache\}
+
+清除 Parquet 元数据缓存。
+
 ## SYSTEM CLEAR|DROP TEXT INDEX CACHES \{#drop-text-index-caches\}
 
 清除文本索引头缓存、字典缓存和倒排索引缓存。

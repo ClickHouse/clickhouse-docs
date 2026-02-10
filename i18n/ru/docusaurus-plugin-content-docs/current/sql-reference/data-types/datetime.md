@@ -22,6 +22,7 @@ DateTime([timezone])
 
 Точность: 1 секунда.
 
+
 ## Скорость \{#speed\}
 
 Тип данных `Date` работает быстрее, чем `DateTime` в _большинстве_ случаев.
@@ -100,7 +101,7 @@ SELECT * FROM dt WHERE timestamp = '2019-01-01 00:00:00'
 └─────────────────────┴──────────┘
 ```
 
-**3.** Получение часового пояса для столбца с типом данных `DateTime`:
+**3.** Получение часового пояса для столбца типа `DateTime`:
 
 ```sql
 SELECT toDateTime(now(), 'Asia/Istanbul') AS column, toTypeName(column) AS x
@@ -117,18 +118,19 @@ SELECT toDateTime(now(), 'Asia/Istanbul') AS column, toTypeName(column) AS x
 ```sql
 SELECT
 toDateTime(timestamp, 'Europe/London') AS lon_time,
-toDateTime(timestamp, 'Asia/Istanbul') AS mos_time
+toDateTime(timestamp, 'Asia/Istanbul') AS istanbul_time
 FROM dt
 ```
 
 ```text
-┌───────────lon_time──┬────────────mos_time─┐
+┌───────────lon_time──┬───────istanbul_time─┐
 │ 2019-01-01 00:00:00 │ 2019-01-01 03:00:00 │
 │ 2018-12-31 21:00:00 │ 2019-01-01 00:00:00 │
 └─────────────────────┴─────────────────────┘
 ```
 
 Поскольку преобразование часового пояса затрагивает только метаданные, эта операция не требует вычислительных ресурсов.
+
 
 ## Ограничения поддержки часовых поясов \{#limitations-on-time-zones-support\}
 
@@ -184,6 +186,7 @@ SELECT '2023-03-26 01:30:00'::DateTime('Europe/London') AS time, time + toInterv
 ```
 
 В этом случае ClickHouse переносит несуществующее время `2023-03-26 01:30:00` на `2023-03-26 00:30:00`.
+
 
 ## См. также \{#see-also\}
 
