@@ -3222,12 +3222,6 @@ FORMAT PrettyCompactMonoBlock
 
 启用后，在执行 SELECT FINAL 查询时，来自不同分区的分区片段将不会被合并在一起，合并只会在各自的分区内单独进行。在处理分区表时，这可以显著提升查询性能。
 
-如果未显式设置，当分区键表达式是确定性的，并且分区键表达式中使用的所有列都包含在主键中时，ClickHouse 会自动启用此优化。
-
-这种自动推导可以确保具有相同主键值的行始终属于同一分区，从而保证避免跨分区合并在语义上是安全的。
-
-**默认值：** `false`（但如果未显式设置，可能会根据表结构自动启用）
-
 ## empty_result_for_aggregation_by_constant_keys_on_empty_set \{#empty_result_for_aggregation_by_constant_keys_on_empty_set\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3258,6 +3252,15 @@ FORMAT PrettyCompactMonoBlock
 
 启用在 `IN` 子查询中使用 `DISTINCT`。这是一个权衡型设置：启用后可以大幅减少为分布式 IN 子查询传输的临时表大小，并通过确保只发送唯一值，显著加快分片之间的数据传输。
 但是，启用此设置会在每个节点上增加额外的合并开销，因为必须执行去重（DISTINCT）。当网络传输是瓶颈且可以接受额外的合并开销时再使用此设置。
+
+## enable_automatic_decision_for_merging_across_partitions_for_final \{#enable_automatic_decision_for_merging_across_partitions_for_final\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "新设置"}]}]}/>
+
+如果设置此选项，当分区键表达式是确定性的，并且分区键表达式中使用的所有列都包含在主键中时，ClickHouse 会自动启用此优化。
+这种自动推导可以确保具有相同主键值的行始终属于同一分区，从而保证避免跨分区合并在语义上是安全的。
 
 ## enable_blob_storage_log \{#enable_blob_storage_log\}
 
