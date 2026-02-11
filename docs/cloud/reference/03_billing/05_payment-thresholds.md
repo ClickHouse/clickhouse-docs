@@ -30,9 +30,9 @@ In the example below, the Billing UI in cloud console is shown:
 
 <Image img={billing_1} size="md" alt="Where to find billing in the UI" border/>
 
-As you can see from the above example - there was a threshold invoice sent during the Feb 28-March 31 billing period and then there is another invoice sent during the same billing period for the remaining usage over $10,000.
-
 <Image img={billing_2} size="md" alt="Bill" border/>
+
+As you can see from the above example - there was a threshold invoice sent during the Feb 28-March 31 billing period and then there is another invoice sent during the same billing period for the remaining usage over $10,000.
 
 ## Payment thresholds {#threshholds}
 
