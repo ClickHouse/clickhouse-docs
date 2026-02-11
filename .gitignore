@@ -74,3 +74,11 @@ docs/integrations/data-ingestion/clickpipes/kafka/index.md
 **.translated
 **.translate
 /ClickHouse/
+
+# Header analysis temporary files
+sections_for_analysis.json
+focused_header_issues.json
+header_analysis_preliminary.json
+header_analysis_preliminary.md
+what_is_headers_analysis.json
+candidates_for_ai_review.json
