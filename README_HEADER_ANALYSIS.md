@@ -19,6 +19,13 @@ This directory contains the results of a comprehensive analysis of documentation
    - Includes file path, line number, current header, suggested improvement
    - Ready for import into issue tracking or spreadsheet tools
 
+3. **[HEADER_FIX_GUIDE.md](HEADER_FIX_GUIDE.md)** - Step-by-step fix guide
+   - Quick start instructions
+   - Fix patterns for each category
+   - Before/after examples
+   - Validation checklist
+   - Common mistakes to avoid
+
 ### Analysis Scripts
 
 Scripts used to generate the analysis (can be re-run to update findings):
