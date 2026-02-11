@@ -1513,7 +1513,7 @@ This release enables dictionaries from local ClickHouse table and HTTP sources, 
 
 ### General changes {#general-changes-5}
 
-- Added support for [dictionaries](/sql-reference/dictionaries/index.md) from local ClickHouse table and HTTP sources
+- Added support for [dictionaries](/sql-reference/statements/create/dictionary) from local ClickHouse table and HTTP sources
 - Introduced support for the Mumbai [region](/cloud/reference/supported-regions)
 
 ### Console changes {#console-changes-30}

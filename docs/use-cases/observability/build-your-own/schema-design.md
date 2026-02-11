@@ -578,7 +578,7 @@ Furthermore, timestamps, while benefiting from delta encoding with respect to co
 
 ## Using dictionaries {#using-dictionaries}
 
-[Dictionaries](/sql-reference/dictionaries) are a [key feature](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse) of ClickHouse providing in-memory [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) representation of data from various internal and external [sources](/sql-reference/dictionaries#dictionary-sources), optimized for super-low latency lookup queries.
+[Dictionaries](/sql-reference/statements/create/dictionary) are a [key feature](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse) of ClickHouse providing in-memory [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) representation of data from various internal and external [sources](/sql-reference/statements/create/dictionary/sources#dictionary-sources), optimized for super-low latency lookup queries.
 
 <Image img={observability_12} alt="Observability and dictionaries" size="md"/>
 
@@ -715,7 +715,7 @@ SELECT
 FROM geoip_url
 ```
 
-In order to perform low-latency IP lookups in ClickHouse, we'll leverage dictionaries to store key -> attributes mapping for our Geo IP data in-memory. ClickHouse provides an `ip_trie` [dictionary structure](/sql-reference/dictionaries#ip_trie) to map our network prefixes (CIDR blocks) to coordinates and country codes. The following query specifies a dictionary using this layout and the above table as the source.
+In order to perform low-latency IP lookups in ClickHouse, we'll leverage dictionaries to store key -> attributes mapping for our Geo IP data in-memory. ClickHouse provides an `ip_trie` [dictionary structure](/sql-reference/statements/create/dictionary/layouts/ip-trie) to map our network prefixes (CIDR blocks) to coordinates and country codes. The following query specifies a dictionary using this layout and the above table as the source.
 
 ```sql
 CREATE DICTIONARY ip_trie (
@@ -825,10 +825,10 @@ The above countries and coordinates offer visualization capabilities beyond grou
 
 The parsing of [user agent strings](https://en.wikipedia.org/wiki/User_agent) is a classical regular expression problem and a common requirement in log and trace based datasets. ClickHouse provides efficient parsing of user agents using Regular Expression Tree Dictionaries.
 
-Regular expression tree dictionaries are defined in ClickHouse open-source using the YAMLRegExpTree dictionary source type which provides the path to a YAML file containing the regular expression tree. Should you wish to provide your own regular expression dictionary, the details on the required structure can be found [here](/sql-reference/dictionaries#use-regular-expression-tree-dictionary-in-clickhouse-open-source). Below we focus on user-agent parsing using [uap-core](https://github.com/ua-parser/uap-core) and load our dictionary for the supported CSV format. This approach is compatible with OSS and ClickHouse Cloud.
+Regular expression tree dictionaries are defined in ClickHouse open-source using the YAMLRegExpTree dictionary source type which provides the path to a YAML file containing the regular expression tree. Should you wish to provide your own regular expression dictionary, the details on the required structure can be found [here](/sql-reference/statements/create/dictionary/layouts/regexp-tree#use-regular-expression-tree-dictionary-in-clickhouse-open-source). Below we focus on user-agent parsing using [uap-core](https://github.com/ua-parser/uap-core) and load our dictionary for the supported CSV format. This approach is compatible with OSS and ClickHouse Cloud.
 
 :::note
-In the examples below, we use snapshots of the latest uap-core regular expressions for user-agent parsing from June 2024. The latest file, which is occasionally updated, can be found [here](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml). You can follow the steps [here](/sql-reference/dictionaries#collecting-attribute-values) to load into the CSV file used below.
+In the examples below, we use snapshots of the latest uap-core regular expressions for user-agent parsing from June 2024. The latest file, which is occasionally updated, can be found [here](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml). You can follow the steps [here](/sql-reference/statements/create/dictionary/layouts/regexp-tree#collecting-attribute-values) to load into the CSV file used below.
 :::
 
 Create the following Memory tables. These hold our regular expressions for parsing devices, browsers and operating systems.
@@ -1015,7 +1015,7 @@ For more examples and details on dictionaries, we recommend the following articl
 
 - [Advanced dictionary topics](/dictionary#advanced-dictionary-topics)
 - ["Using Dictionaries to Accelerate Queries"](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [Dictionaries](/sql-reference/dictionaries)
+- [Dictionaries](/sql-reference/statements/create/dictionary)
 
 ## Accelerating queries {#accelerating-queries}
 

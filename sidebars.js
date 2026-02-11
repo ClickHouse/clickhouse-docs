@@ -1229,7 +1229,7 @@ const sidebars = {
           label: 'Dictionary',
           collapsible: true,
           collapsed: true,
-          items: ['dictionary/index', 'sql-reference/dictionaries/index'],
+          items: ['dictionary/index'],
         },
         {
           type: 'category',
