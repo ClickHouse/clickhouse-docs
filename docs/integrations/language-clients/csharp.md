@@ -26,7 +26,7 @@ The library provides two main APIs:
 
 - **`ClickHouseClient`** (recommended): A high-level, thread-safe client designed for singleton use. Provides a simple async API for queries and bulk inserts. Best for most applications.
 
-- **ADO.NET** (`ClickHouseConnection`, `ClickHouseCommand`): Standard .NET database abstractions. Required for ORM integration (Dapper, Linq2db) and when you need ADO.NET compatibility.
+- **ADO.NET** (`ClickHouseDataSource`, `ClickHouseConnection`, `ClickHouseCommand`): Standard .NET database abstractions. Required for ORM integration (Dapper, Linq2db) and when you need ADO.NET compatibility. `ClickHouseBulkCopy` is a helper class for efficiently inserting data using an ADO.NET connection. `ClickHouseBulkCopy` is deprecated and will be removed in a future release; use `ClickHouseClient.InsertBinaryAsync` instead.
 
 Both APIs share the same underlying HTTP connection pool and can be used together in the same application.
 
