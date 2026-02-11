@@ -17,11 +17,11 @@ import clickpy_trace from '@site/static/images/clickstack/session-replay/clickpy
 
 Session replay in ClickStack captures and reconstructs user interactions in your web application, allowing you to visually replay exactly what a user saw and did during their session. Rather than video recording, the SDK records DOM changes, mouse movements, clicks, scrolls, keyboard inputs, console logs, network requests (XHR, Fetch, WebSocket), and JavaScript exceptions — then reconstructs the experience in the browser.
 
-Because session replays are stored in ClickHouse alongside your logs, traces, and metrics, you can go from watching a user's experience to inspecting the backend traces and database queries that powered it — all in a few clicks. This makes session replay useful for debugging production issues, understanding user behavior, identifying UX friction points, and visually confirming issues reported to support.
+Because session replays are stored in ClickHouse alongside your logs, traces, and metrics, you can go from watching a user's experience to inspecting the backend traces and database queries that powered it. This makes session replay useful for debugging production issues, understanding user behavior, identifying UX friction points, and visually confirming issues reported to support.
 
 ## Instrumenting your application {#instrumentation}
 
-ClickStack is fully compatible with OpenTelemetry, so you can send browser telemetry (traces, exceptions) using the standard OpenTelemetry JavaScript SDK or any of the [ClickStack language SDKs](/use-cases/observability/clickstack/sdks). However, **session replay requires the ClickStack Browser SDK** (`@hyperdx/browser`), which extends the OpenTelemetry SDK with session recording, console capture, and network request capture. If you only need traces without session replay, any OTel-compatible browser SDK will work with ClickStack.
+ClickStack is fully compatible with OpenTelemetry, so you can send browser telemetry using the standard OpenTelemetry JavaScript SDK or any of the [ClickStack language SDKs](/use-cases/observability/clickstack/sdks). However, **session replay requires the ClickStack Browser SDK** (`@hyperdx/browser`), which extends the OpenTelemetry SDK with session recording, console capture, and network request capture. If you only need traces without session replay, any OTel-compatible browser SDK will work with ClickStack.
 
 The examples below use the ClickStack Browser SDK. Adding it to your application requires just a package install and a few lines of initialization — the SDK handles all data capture automatically with no further code changes.
 
