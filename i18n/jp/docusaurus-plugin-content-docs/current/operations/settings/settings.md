@@ -2248,7 +2248,9 @@ Decimal 型の算術演算および比較演算におけるオーバーフロー
 
 ## deduplicate_blocks_in_dependent_materialized_views \{#deduplicate_blocks_in_dependent_materialized_views\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "既定で依存する materialized view の重複排除を有効にします。"}]}]}/>
 
 Replicated\* テーブルからデータを受け取る materialized view に対する重複排除チェックを有効または無効にします。
 
@@ -2266,9 +2268,9 @@ Replicated\* テーブルからデータを受け取る materialized view に対
 
 ## deduplicate_insert \{#deduplicate_insert\}
 
-<SettingsInfoBlock type="DeduplicateInsertMode" default_value="backward_compatible_choice" />
+<SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "INSERT クエリに対する重複排除を制御するための新しい設定。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "すべての同期および非同期 INSERT に対して、デフォルトで重複排除を有効化します。"}]}]}/>
 
 `INSERT INTO`（Replicated\* テーブル向け）のブロック単位の重複排除を有効または無効にします。
 この設定は `insert_deduplicate` および `async_insert_deduplicate` の設定を上書きします。
@@ -3222,12 +3224,6 @@ ClickHouse は、クエリに分散テーブルの積（product）が含まれ�
 
 有効にすると、SELECT FINAL クエリの実行時に、異なるパーティションに属するパーツはマージされません。代わりに、各パーティション内だけでマージが行われます。パーティション化されたテーブルを扱う場合、これによりクエリ性能が大きく向上する可能性があります。
 
-明示的に設定しない場合でも、パーティションキー式が決定的であり、そのパーティションキー式で使用されているすべてのカラムがプライマリキーに含まれているときは、ClickHouse がこの最適化を自動的に有効化します。
-
-この自動判定により、同じプライマリキー値を持つ行は必ず同じパーティションに属することが保証されるため、パーティションをまたいだマージを行わなくても安全になります。
-
-**デフォルト値:** `false`（ただし、明示的に設定しない場合はテーブル構造に基づいて自動的に有効化されることがあります）
-
 ## empty_result_for_aggregation_by_constant_keys_on_empty_set \{#empty_result_for_aggregation_by_constant_keys_on_empty_set\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3258,6 +3254,15 @@ ClickHouse は、クエリに分散テーブルの積（product）が含まれ�
 
 `IN` サブクエリで `DISTINCT` を有効にします。これはトレードオフとなる設定です。有効化すると、分散 IN サブクエリで転送される一時テーブルのサイズを大幅に削減し、一意な値のみが送信されるようにすることで、分片間のデータ転送を大幅に高速化できます。
 ただし、この設定を有効にすると、各ノードで重複排除（DISTINCT）を行う必要があるため、追加のマージ処理が発生します。ネットワーク転送がボトルネックとなっており、その追加のマージコストが許容できる場合に、この設定を使用してください。
+
+## enable_automatic_decision_for_merging_across_partitions_for_final \{#enable_automatic_decision_for_merging_across_partitions_for_final\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+パーティションキー式が決定的であり、そのパーティションキー式で使用されているすべてのカラムがプライマリキーに含まれているときは、ClickHouse がこの最適化を自動的に有効化します。
+この自動判定により、同じプライマリキー値を持つ行は必ず同じパーティションに属することが保証されるため、パーティションをまたいだマージを行わなくても安全になります。
 
 ## enable_blob_storage_log \{#enable_blob_storage_log\}
 
