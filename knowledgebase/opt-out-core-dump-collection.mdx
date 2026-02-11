@@ -10,43 +10,48 @@ import Image from '@theme/IdealImage';
 
 {frontMatter.description}
 {/* truncate */}
-
 ## Overview
 
-As part of our ongoing efforts to improve the stability and reliability of our cloud services, ClickHouse Cloud will begin collecting core dumps in the event of server crashes starting on **February 27, 2026**.
+Starting **February 27, 2026**, ClickHouse Cloud will begin collecting core dumps when server crashes occur. This is part of our commitment to improving service reliability for all our users.
 
-Core dump collection enables us to:
-- More quickly identify root causes of crashes
-- Resolve issues faster
-- Improve the overall service experience
+Core dump collection helps us:
+- Identify and understand what caused a crash
+- Fix issues more quickly
+- Continuously improve your service experience
 
 ## What's collected
 
-Core dumps capture the state of a process at the time of a crash and may include sensitive information resident in memory, such as:
+When a crash occurs, core dumps capture a snapshot of the server's state at that moment. We want to be transparent that this may include sensitive information that was in memory, such as:
+
 - Connection credentials
 - Encryption keys
 - Query strings
 - Other data in memory at the time of the crash
 
-### Data protection
+### How we protect your data
 
-- **Regional Storage**: Data is collected and stored in the same region as your service
-- **Additional Protections**: Enhanced security measures are applied to collected data
-- **Limited Retention**: Data is retained only for a short period to support debugging and is securely destroyed afterward
+We take the security of this data seriously:
 
-## Exclusions
+- **Regional Storage**: All data stays in the same region as your service
+- **Enhanced Security**: We apply additional protections to all collected data
+- **Limited Retention**: Data is kept only as long as needed for debugging, then securely deleted
 
-The following services are **automatically excluded** from core dump collection:
-- Services subject to **HIPAA** compliance
-- Services subject to **PCI** compliance
+## Services automatically excluded
+
+Some services are automatically excluded from core dump collection:
+
+- Services with **HIPAA** compliance requirements
+- Services with **PCI** compliance requirements
 - **BYOC** (Bring Your Own Cloud) services
 
 ## How to opt out
 
-1. Navigate to the [ClickHouse Cloud Console](https://clickhouse.cloud)
-2. Select your service
-3. Go to the **Settings** tab
-4. Locate the "Share crash reports with ClickHouse" option at the bottom of the settings page
-5. Disable the option to opt out
+If you'd prefer not to participate in core dump collection, you can easily opt out:
 
-<Image img={optOut} size="md" alt="Where to find the opt out option in Cloud UI"/>
+1. Go to the [ClickHouse Cloud Console](https://clickhouse.cloud)
+2. Select your service
+3. Click on the **Settings** tab
+4. Scroll to find "Share crash reports with ClickHouse"
+5. Toggle the option off to opt out
+
+<Image img={optOut} size="md" alt="Where to find the opt out option in Cloud UI"/> Sonnet 4.5Claude is AI and can make mistakes. Please double-check responses.
