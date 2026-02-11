@@ -12,14 +12,10 @@ import secure_s3 from '@site/static/images/cloud/security/secures3.png';
 import s3_info from '@site/static/images/cloud/security/secures3_arn.png';
 import s3_output from '@site/static/images/cloud/security/secures3_output.png';
 
-この記事では、ClickHouse Cloud のお客様がロールベースのアクセス制御を活用して Amazon Simple Storage Service (S3) の認証を行い、データに安全にアクセスする方法を示します。
+この記事では、ClickHouse Cloud のお客様がロールベースのアクセス制御を活用して Amazon Simple Storage Service (S3) の認証を行い、データに安全にアクセスする方法を説明します。
 安全な S3 アクセスの設定に入る前に、その仕組みを理解しておくことが重要です。以下では、ClickHouse のサービスがどのように顧客の AWS アカウント内でロールを引き受けることで、プライベートな S3 バケットにアクセスできるようになるかの概要を説明します。
 
 <Image img={secure_s3} size="lg" alt="ClickHouse を使用した安全な S3 アクセスの概要" />
-
-<br />
-
-<Image img={secure_s3} size="md" alt="ClickHouse を使用した安全な S3 アクセスの概要" />
 
 <br />
 

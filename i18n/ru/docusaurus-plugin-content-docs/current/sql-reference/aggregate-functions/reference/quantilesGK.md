@@ -13,7 +13,7 @@ doc_type: 'reference'
 
 Вычисляет несколько [квантилей](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных на разных уровнях одновременно, используя алгоритм [Greenwald-Khanna](http://infolab.stanford.edu/~datar/courses/cs361a/papers/quantiles.pdf).
 
-Эта функция работает аналогично [`quantileGK`](/sql-reference/aggregate-functions/reference/quantilegk), но позволяет вычислять несколько уровней квантилей за один проход, что эффективнее, чем вызывать отдельные функции квантилей.
+Эта функция работает аналогично [`quantileGK`](/sql-reference/aggregate-functions/reference/quantileGK), но позволяет вычислять несколько уровней квантилей за один проход, что эффективнее, чем вызывать отдельные функции квантилей.
 
 Алгоритм Greenwald-Khanna — это алгоритм для вычисления квантилей на потоке данных высокоэффективным образом.
 Его предложили Michael Greenwald и Sanjeev Khanna в 2001 году.
@@ -53,7 +53,7 @@ SELECT quantilesGK(1, 0.25, 0.5, 0.75)(number + 1) FROM numbers(1000);
 └──────────────────────────────────────────────────┘
 ```
 
-**Квантили с повышенной точностью**
+**Квантили с более высокой точностью**
 
 ```sql title=Query
 SELECT quantilesGK(100, 0.25, 0.5, 0.75)(number + 1) FROM numbers(1000);

@@ -947,18 +947,19 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
-Позволяет настроить ожидание выполнения действий на репликах при выполнении запросов [ALTER](../../sql-reference/statements/alter/index.md), [OPTIMIZE](../../sql-reference/statements/optimize.md) или [TRUNCATE](../../sql-reference/statements/truncate.md).
+Позволяет задать поведение ожидания выполнения действий на репликах при выполнении запросов [`ALTER`](../../sql-reference/statements/alter/index.md), [`OPTIMIZE`](../../sql-reference/statements/optimize.md) или [`TRUNCATE`](../../sql-reference/statements/truncate.md).
 
 Возможные значения:
 
 - `0` — Не ждать.
 - `1` — Ждать выполнения на собственной реплике.
 - `2` — Ждать выполнения на всех репликах.
+- `3` — Ждать выполнения только на активных репликах.
 
 Значение по умолчанию в Cloud: `1`.
 
 :::note
-`alter_sync` применим только к таблицам `Replicated`; при ALTER таблиц, не являющихся `Replicated`, он не оказывает эффекта.
+`alter_sync` применим только к таблицам `Replicated` и `SharedMergeTree`; при ALTER таблиц, не являющихся `Replicated` или `Shared`, он не оказывает эффекта.
 :::
 
 ## alter_update_mode \{#alter_update_mode\}
@@ -2294,15 +2295,6 @@ SETTINGS convert_query_to_cnf = true;
 - enable_when_possible — дедупликация включена, если `insert_deduplicate` включён и результат SELECT стабилен, иначе отключена.
 - enable_even_for_bad_queries — дедупликация включена, если `insert_deduplicate` включён. Если результат SELECT нестабилен, записывается предупреждение, но запрос выполняется с дедупликацией. Эта опция предназначена для обратной совместимости. Рассмотрите возможность использования других опций, так как это может привести к непредсказуемым результатам.
 
-## default_dictionary_database \{#default_dictionary_database\}
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": ""},{"label": "Новая настройка"}]}]}/>
-
-База данных, в которой выполняется поиск внешних словарей, если имя базы данных не указано.
-Пустая строка задаёт текущую базу данных. Если словарь не найден в указанной базе данных по умолчанию, ClickHouse возвращается к текущей базе данных.
-
-Может быть полезно при миграции с глобальных словарей, определённых в XML, на словари, определённые в SQL.
-
 ## default_materialized_view_sql_security \{#default_materialized_view_sql_security\}
 
 <SettingsInfoBlock type="SQLSecurityType" default_value="DEFINER" />
@@ -3396,11 +3388,11 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 ## enable_join_runtime_filters \{#enable_join_runtime_filters\}
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включена эта оптимизация"}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 Фильтрует левую часть JOIN по множеству ключей, собранных из правой части во время выполнения запроса.
 
@@ -4957,6 +4949,15 @@ Expression ((Projection + Before ORDER BY))
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.4"},{"label": "0"},{"label": "Разрешить игнорирование запросов DROP на сервере с заданной вероятностью в тестовых целях"}]}]}/>
 
 Если параметр включен, сервер будет с указанной вероятностью игнорировать все запросы DROP TABLE (для движков Memory и JOIN он заменит DROP на TRUNCATE). Используется для тестирования.
+
+## ignore_format_null_for_explain \{#ignore_format_null_for_explain\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "FORMAT Null теперь по умолчанию игнорируется для запросов EXPLAIN"}]}]}/>
+
+Если включено, `FORMAT Null` будет игнорироваться для запросов `EXPLAIN`, и вместо него будет использоваться формат вывода по умолчанию.
+Если отключено, запросы `EXPLAIN` с `FORMAT Null` не будут выводить результат (поведение, совместимое с предыдущими версиями).
 
 ## ignore_materialized_views_with_dropped_target_table \{#ignore_materialized_views_with_dropped_target_table\}
 
@@ -7298,7 +7299,9 @@ SELECT getSetting('max_memory_usage_for_user');
 Например, если необходимое количество записей находится в каждом блоке и `max_threads = 8`, то будет прочитано 8 блоков, хотя было бы достаточно прочитать только один.
 Чем меньше значение `max_threads`, тем меньше потребление памяти.
 
-По умолчанию значение настройки `max_threads` соответствует количеству аппаратных потоков, доступных ClickHouse.
+По умолчанию значение настройки `max_threads` соответствует количеству аппаратных потоков (числу ядер CPU), доступных ClickHouse.
+Для x86‑процессоров с менее чем 32 ядрами CPU и с SMT (например, Intel HyperThreading) в качестве особого случая ClickHouse по умолчанию использует количество логических ядер (= 2 x количество физических ядер).
+
 Без SMT (например, Intel HyperThreading) это соответствует числу ядер CPU.
 
 Для пользователей ClickHouse Cloud значение по умолчанию будет отображаться как `auto(N)`, где N совпадает с размером vCPU вашего сервиса, например 2vCPU/8GiB, 4vCPU/16GiB и т. д.
@@ -8572,18 +8575,18 @@ SELECT * FROM test2;
 ```sql
 CREATE TABLE fuse_tbl(a Int8, b Int8) Engine = Log;
 SET optimize_syntax_fuse_functions = 1;
-EXPLAIN SYNTAX SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
+EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
 ```
 
 Результат:
 
 ```text
 SELECT
-    sum(a),
-    sumCount(b).1,
-    sumCount(b).2,
-    (sumCount(b).1) / (sumCount(b).2)
-FROM fuse_tbl
+    sum(__table1.a) AS `sum(a)`,
+    tupleElement(sumCount(__table1.b), 1) AS `sum(b)`,
+    tupleElement(sumCount(__table1.b), 2) AS `count(b)`,
+    divide(tupleElement(sumCount(__table1.b), 1), toFloat64(tupleElement(sumCount(__table1.b), 2))) AS `avg(b)`
+FROM default.fuse_tbl AS __table1
 ```
 
 
@@ -11471,6 +11474,22 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Использовать userspace page cache для удалённых дисков, на которых не включён кэш файловой системы.
 
+## use_page_cache_for_local_disks \{#use_page_cache_for_local_disks\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка для использования кеша страниц в пространстве пользователя (userspace page cache) для локальных дисков"}]}]}/>
+
+Использовать кеш страниц в пространстве пользователя (userspace page cache) при чтении с локальных дисков. Используется для тестирования; маловероятно, что улучшит производительность на практике. Требует, чтобы local_filesystem_read_method было установлено в 'pread' или 'read'. Не отключает кеш страниц ОС; для этого можно использовать min_bytes_to_use_direct_io. Влияет только на обычные таблицы и не затрагивает функцию таблицы file() или движок таблицы File().
+
+## use_page_cache_for_object_storage \{#use_page_cache_for_object_storage\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка для использования пользовательского страничного кэша для табличных функций объектного хранилища"}]}]}/>
+
+Использовать пользовательский страничный кэш при чтении из табличных функций объектного хранилища (s3, azure, hdfs) и Движков таблиц (S3, Azure, HDFS).
+
 ## use_page_cache_with_distributed_cache \{#use_page_cache_with_distributed_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -11488,6 +11507,19 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка."}]}]}/>
 
 Использует отсечение партиций Paimon для табличных функций Paimon
+
+## use_parquet_metadata_cache \{#use_parquet_metadata_cache\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включает кэш метаданных файлов Parquet."}]}]}/>
+
+Если включено, формат Parquet может использовать кэш метаданных файлов Parquet.
+
+Возможные значения:
+
+- 0 — отключено
+- 1 — включено
 
 ## use_primary_key \{#use_primary_key\}
 
@@ -11634,11 +11666,11 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 ## use_statistics_cache \{#use_statistics_cache\}
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включить кэш статистики"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 Использовать кэш статистики в запросе, чтобы избежать накладных расходов на загрузку статистики для каждой части.
 

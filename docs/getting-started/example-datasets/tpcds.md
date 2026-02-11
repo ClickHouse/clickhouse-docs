@@ -37,536 +37,532 @@ The abstract datatypes from the specification are mapped to ClickHouse's native 
 
 | TPC-DS Type      | ClickHouse Type                          |
 |------------------|------------------------------------------|
-| `identifier`     | `Int64` (or `UInt32` for date/time dimension keys) |
-| `integer`        | `Int32`                                  |
+| `identifier`     | `Int64`, except `*_date_sk` and `*_time_sk` columns which use `UInt32` |
+| `integer`        | `Int64`                                  |
 | `decimal(P,S)`   | `Decimal(P,S)`                           |
-| `char(N)`        | `LowCardinality(FixedString(N))`         |
-| `varchar(N)`     | `LowCardinality(String)`                 |
+| `char(N)`        | `FixedString(N)`                         |
+| `varchar(N)`     | `String`                                 |
 | `date`           | `Date`                                   |
-
-For nullability, columns marked with "N" (not null) in the specification have no `Nullable` wrapper as they never contain null values.
-All other columns are wrapped in `Nullable()`.
-For string types, `Nullable` is placed inside `LowCardinality`, e.g. `LowCardinality(Nullable(String))`.
 
 ```sql
 CREATE TABLE call_center(
-      cc_call_center_sk         Int64,
-      cc_call_center_id         LowCardinality(FixedString(16)),
-      cc_rec_start_date         Nullable(Date),
-      cc_rec_end_date           Nullable(Date),
-      cc_closed_date_sk         Nullable(UInt32),
-      cc_open_date_sk           Nullable(UInt32),
-      cc_name                   LowCardinality(Nullable(String)),
-      cc_class                  LowCardinality(Nullable(String)),
-      cc_employees              Nullable(Int32),
-      cc_sq_ft                  Nullable(Int32),
-      cc_hours                  LowCardinality(Nullable(FixedString(20))),
-      cc_manager                LowCardinality(Nullable(String)),
-      cc_mkt_id                 Nullable(Int32),
-      cc_mkt_class              LowCardinality(Nullable(FixedString(50))),
-      cc_mkt_desc               LowCardinality(Nullable(String)),
-      cc_market_manager         LowCardinality(Nullable(String)),
-      cc_division               Nullable(Int32),
-      cc_division_name          LowCardinality(Nullable(String)),
-      cc_company                Nullable(Int32),
-      cc_company_name           LowCardinality(Nullable(FixedString(50))),
-      cc_street_number          LowCardinality(Nullable(FixedString(10))),
-      cc_street_name            LowCardinality(Nullable(String)),
-      cc_street_type            LowCardinality(Nullable(FixedString(15))),
-      cc_suite_number           LowCardinality(Nullable(FixedString(10))),
-      cc_city                   LowCardinality(Nullable(String)),
-      cc_county                 LowCardinality(Nullable(String)),
-      cc_state                  LowCardinality(Nullable(FixedString(2))),
-      cc_zip                    LowCardinality(Nullable(FixedString(10))),
-      cc_country                LowCardinality(Nullable(String)),
-      cc_gmt_offset             Nullable(Decimal(5,2)),
-      cc_tax_percentage         Nullable(Decimal(5,2)),
+      cc_call_center_sk         Int64 NOT NULL,
+      cc_call_center_id         FixedString(16) NOT NULL,
+      cc_rec_start_date         Date,
+      cc_rec_end_date           Date,
+      cc_closed_date_sk         UInt32,
+      cc_open_date_sk           UInt32,
+      cc_name                   String,
+      cc_class                  String,
+      cc_employees              Int64,
+      cc_sq_ft                  Int64,
+      cc_hours                  FixedString(20),
+      cc_manager                String,
+      cc_mkt_id                 Int64,
+      cc_mkt_class              FixedString(50),
+      cc_mkt_desc               String,
+      cc_market_manager         String,
+      cc_division               Int64,
+      cc_division_name          String,
+      cc_company                Int64,
+      cc_company_name           FixedString(50),
+      cc_street_number          FixedString(10),
+      cc_street_name            String,
+      cc_street_type            FixedString(15),
+      cc_suite_number           FixedString(10),
+      cc_city                   String,
+      cc_county                 String,
+      cc_state                  FixedString(2),
+      cc_zip                    FixedString(10),
+      cc_country                String,
+      cc_gmt_offset             Decimal(5,2),
+      cc_tax_percentage         Decimal(5,2),
       PRIMARY KEY (cc_call_center_sk)
 );
 
 CREATE TABLE catalog_page(
-      cp_catalog_page_sk        Int64,
-      cp_catalog_page_id        LowCardinality(FixedString(16)),
-      cp_start_date_sk          Nullable(UInt32),
-      cp_end_date_sk            Nullable(UInt32),
-      cp_department             LowCardinality(Nullable(String)),
-      cp_catalog_number         Nullable(Int32),
-      cp_catalog_page_number    Nullable(Int32),
-      cp_description            LowCardinality(Nullable(String)),
-      cp_type                   LowCardinality(Nullable(String)),
+      cp_catalog_page_sk        Int64 NOT NULL,
+      cp_catalog_page_id        FixedString(16) NOT NULL,
+      cp_start_date_sk          UInt32,
+      cp_end_date_sk            UInt32,
+      cp_department             String,
+      cp_catalog_number         Int64,
+      cp_catalog_page_number    Int64,
+      cp_description            String,
+      cp_type                   String,
       PRIMARY KEY (cp_catalog_page_sk)
 );
 
 CREATE TABLE catalog_returns(
-    cr_returned_date_sk       Nullable(UInt32),
-    cr_returned_time_sk       Nullable(UInt32),
-    cr_item_sk                Int64,
-    cr_refunded_customer_sk   Nullable(Int64),
-    cr_refunded_cdemo_sk      Nullable(Int64),
-    cr_refunded_hdemo_sk      Nullable(Int64),
-    cr_refunded_addr_sk       Nullable(Int64),
-    cr_returning_customer_sk  Nullable(Int64),
-    cr_returning_cdemo_sk     Nullable(Int64),
-    cr_returning_hdemo_sk     Nullable(Int64),
-    cr_returning_addr_sk      Nullable(Int64),
-    cr_call_center_sk         Nullable(Int64),
-    cr_catalog_page_sk        Nullable(Int64),
-    cr_ship_mode_sk           Nullable(Int64),
-    cr_warehouse_sk           Nullable(Int64),
-    cr_reason_sk              Nullable(Int64),
-    cr_order_number           Int64,
-    cr_return_quantity        Nullable(Int32),
-    cr_return_amount          Nullable(Decimal(7,2)),
-    cr_return_tax             Nullable(Decimal(7,2)),
-    cr_return_amt_inc_tax     Nullable(Decimal(7,2)),
-    cr_fee                    Nullable(Decimal(7,2)),
-    cr_return_ship_cost       Nullable(Decimal(7,2)),
-    cr_refunded_cash          Nullable(Decimal(7,2)),
-    cr_reversed_charge        Nullable(Decimal(7,2)),
-    cr_store_credit           Nullable(Decimal(7,2)),
-    cr_net_loss               Nullable(Decimal(7,2)),
+    cr_returned_date_sk       UInt32,
+    cr_returned_time_sk       UInt32,
+    cr_item_sk                Int64 NOT NULL,
+    cr_refunded_customer_sk   Int64,
+    cr_refunded_cdemo_sk      Int64,
+    cr_refunded_hdemo_sk      Int64,
+    cr_refunded_addr_sk       Int64,
+    cr_returning_customer_sk  Int64,
+    cr_returning_cdemo_sk     Int64,
+    cr_returning_hdemo_sk     Int64,
+    cr_returning_addr_sk      Int64,
+    cr_call_center_sk         Int64,
+    cr_catalog_page_sk        Int64,
+    cr_ship_mode_sk           Int64,
+    cr_warehouse_sk           Int64,
+    cr_reason_sk              Int64,
+    cr_order_number           Int64 NOT NULL,
+    cr_return_quantity        Int64,
+    cr_return_amount          Decimal(7,2),
+    cr_return_tax             Decimal(7,2),
+    cr_return_amt_inc_tax     Decimal(7,2),
+    cr_fee                    Decimal(7,2),
+    cr_return_ship_cost       Decimal(7,2),
+    cr_refunded_cash          Decimal(7,2),
+    cr_reversed_charge        Decimal(7,2),
+    cr_store_credit           Decimal(7,2),
+    cr_net_loss               Decimal(7,2),
     PRIMARY KEY (cr_item_sk, cr_order_number)
 );
 
 CREATE TABLE catalog_sales (
-    cs_sold_date_sk           Nullable(UInt32),
-    cs_sold_time_sk           Nullable(UInt32),
-    cs_ship_date_sk           Nullable(UInt32),
-    cs_bill_customer_sk       Nullable(Int64),
-    cs_bill_cdemo_sk          Nullable(Int64),
-    cs_bill_hdemo_sk          Nullable(Int64),
-    cs_bill_addr_sk           Nullable(Int64),
-    cs_ship_customer_sk       Nullable(Int64),
-    cs_ship_cdemo_sk          Nullable(Int64),
-    cs_ship_hdemo_sk          Nullable(Int64),
-    cs_ship_addr_sk           Nullable(Int64),
-    cs_call_center_sk         Nullable(Int64),
-    cs_catalog_page_sk        Nullable(Int64),
-    cs_ship_mode_sk           Nullable(Int64),
-    cs_warehouse_sk           Nullable(Int64),
-    cs_item_sk                Int64,
-    cs_promo_sk               Nullable(Int64),
-    cs_order_number           Int64,
-    cs_quantity               Nullable(Int32),
-    cs_wholesale_cost         Nullable(Decimal(7,2)),
-    cs_list_price             Nullable(Decimal(7,2)),
-    cs_sales_price            Nullable(Decimal(7,2)),
-    cs_ext_discount_amt       Nullable(Decimal(7,2)),
-    cs_ext_sales_price        Nullable(Decimal(7,2)),
-    cs_ext_wholesale_cost     Nullable(Decimal(7,2)),
-    cs_ext_list_price         Nullable(Decimal(7,2)),
-    cs_ext_tax                Nullable(Decimal(7,2)),
-    cs_coupon_amt             Nullable(Decimal(7,2)),
-    cs_ext_ship_cost          Nullable(Decimal(7,2)),
-    cs_net_paid               Nullable(Decimal(7,2)),
-    cs_net_paid_inc_tax       Nullable(Decimal(7,2)),
-    cs_net_paid_inc_ship      Nullable(Decimal(7,2)),
-    cs_net_paid_inc_ship_tax  Nullable(Decimal(7,2)),
-    cs_net_profit             Nullable(Decimal(7,2)),
+    cs_sold_date_sk           UInt32,
+    cs_sold_time_sk           UInt32,
+    cs_ship_date_sk           UInt32,
+    cs_bill_customer_sk       Int64,
+    cs_bill_cdemo_sk          Int64,
+    cs_bill_hdemo_sk          Int64,
+    cs_bill_addr_sk           Int64,
+    cs_ship_customer_sk       Int64,
+    cs_ship_cdemo_sk          Int64,
+    cs_ship_hdemo_sk          Int64,
+    cs_ship_addr_sk           Int64,
+    cs_call_center_sk         Int64,
+    cs_catalog_page_sk        Int64,
+    cs_ship_mode_sk           Int64,
+    cs_warehouse_sk           Int64,
+    cs_item_sk                Int64 NOT NULL,
+    cs_promo_sk               Int64,
+    cs_order_number           Int64 NOT NULL,
+    cs_quantity               Int64,
+    cs_wholesale_cost         Decimal(7,2),
+    cs_list_price             Decimal(7,2),
+    cs_sales_price            Decimal(7,2),
+    cs_ext_discount_amt       Decimal(7,2),
+    cs_ext_sales_price        Decimal(7,2),
+    cs_ext_wholesale_cost     Decimal(7,2),
+    cs_ext_list_price         Decimal(7,2),
+    cs_ext_tax                Decimal(7,2),
+    cs_coupon_amt             Decimal(7,2),
+    cs_ext_ship_cost          Decimal(7,2),
+    cs_net_paid               Decimal(7,2),
+    cs_net_paid_inc_tax       Decimal(7,2),
+    cs_net_paid_inc_ship      Decimal(7,2),
+    cs_net_paid_inc_ship_tax  Decimal(7,2),
+    cs_net_profit             Decimal(7,2),
     PRIMARY KEY (cs_item_sk, cs_order_number)
 );
 
 CREATE TABLE customer_address (
-    ca_address_sk             Int64,
-    ca_address_id             LowCardinality(FixedString(16)),
-    ca_street_number          LowCardinality(Nullable(FixedString(10))),
-    ca_street_name            LowCardinality(Nullable(String)),
-    ca_street_type            LowCardinality(Nullable(FixedString(15))),
-    ca_suite_number           LowCardinality(Nullable(FixedString(10))),
-    ca_city                   LowCardinality(Nullable(String)),
-    ca_county                 LowCardinality(Nullable(String)),
-    ca_state                  LowCardinality(Nullable(FixedString(2))),
-    ca_zip                    LowCardinality(Nullable(FixedString(10))),
-    ca_country                LowCardinality(Nullable(String)),
-    ca_gmt_offset             Nullable(Decimal(5,2)),
-    ca_location_type          LowCardinality(Nullable(FixedString(20))),
+    ca_address_sk             Int64 NOT NULL,
+    ca_address_id             FixedString(16) NOT NULL,
+    ca_street_number          FixedString(10),
+    ca_street_name            String,
+    ca_street_type            FixedString(15),
+    ca_suite_number           FixedString(10),
+    ca_city                   String,
+    ca_county                 String,
+    ca_state                  FixedString(2),
+    ca_zip                    FixedString(10),
+    ca_country                String,
+    ca_gmt_offset             Decimal(5,2),
+    ca_location_type          FixedString(20),
     PRIMARY KEY (ca_address_sk)
 );
 
 CREATE TABLE customer_demographics (
-    cd_demo_sk                Int64,
-    cd_gender                 LowCardinality(Nullable(FixedString(1))),
-    cd_marital_status         LowCardinality(Nullable(FixedString(1))),
-    cd_education_status       LowCardinality(Nullable(FixedString(20))),
-    cd_purchase_estimate      Nullable(Int32),
-    cd_credit_rating          LowCardinality(Nullable(FixedString(10))),
-    cd_dep_count              Nullable(Int32),
-    cd_dep_employed_count     Nullable(Int32),
-    cd_dep_college_count      Nullable(Int32),
+    cd_demo_sk                Int64 NOT NULL,
+    cd_gender                 FixedString(1),
+    cd_marital_status         FixedString(1),
+    cd_education_status       FixedString(20),
+    cd_purchase_estimate      Int64,
+    cd_credit_rating          FixedString(10),
+    cd_dep_count              Int64,
+    cd_dep_employed_count     Int64,
+    cd_dep_college_count      Int64,
     PRIMARY KEY (cd_demo_sk)
 );
 
 CREATE TABLE customer (
-    c_customer_sk             Int64,
-    c_customer_id             LowCardinality(FixedString(16)),
-    c_current_cdemo_sk        Nullable(Int64),
-    c_current_hdemo_sk        Nullable(Int64),
-    c_current_addr_sk         Nullable(Int64),
-    c_first_shipto_date_sk    Nullable(UInt32),
-    c_first_sales_date_sk     Nullable(UInt32),
-    c_salutation              LowCardinality(Nullable(FixedString(10))),
-    c_first_name              LowCardinality(Nullable(FixedString(20))),
-    c_last_name               LowCardinality(Nullable(FixedString(30))),
-    c_preferred_cust_flag     LowCardinality(Nullable(FixedString(1))),
-    c_birth_day               Nullable(Int32),
-    c_birth_month             Nullable(Int32),
-    c_birth_year              Nullable(Int32),
-    c_birth_country           LowCardinality(Nullable(String)),
-    c_login                   LowCardinality(Nullable(FixedString(13))),
-    c_email_address           LowCardinality(Nullable(FixedString(50))),
-    c_last_review_date_sk     Nullable(UInt32),
+    c_customer_sk             Int64 NOT NULL,
+    c_customer_id             FixedString(16) NOT NULL,
+    c_current_cdemo_sk        Int64,
+    c_current_hdemo_sk        Int64,
+    c_current_addr_sk         Int64,
+    c_first_shipto_date_sk    UInt32,
+    c_first_sales_date_sk     UInt32,
+    c_salutation              FixedString(10),
+    c_first_name              FixedString(20),
+    c_last_name               FixedString(30),
+    c_preferred_cust_flag     FixedString(1),
+    c_birth_day               Int64,
+    c_birth_month             Int64,
+    c_birth_year              Int64,
+    c_birth_country           String,
+    c_login                   FixedString(13),
+    c_email_address           FixedString(50),
+    c_last_review_date_sk     UInt32,
     PRIMARY KEY (c_customer_sk)
 );
 
 CREATE TABLE date_dim (
-    d_date_sk                 UInt32,
-    d_date_id                 LowCardinality(FixedString(16)),
-    d_date                    Date,
-    d_month_seq               Nullable(Int32),
-    d_week_seq                Nullable(Int32),
-    d_quarter_seq             Nullable(Int32),
-    d_year                    Nullable(Int32),
-    d_dow                     Nullable(Int32),
-    d_moy                     Nullable(Int32),
-    d_dom                     Nullable(Int32),
-    d_qoy                     Nullable(Int32),
-    d_fy_year                 Nullable(Int32),
-    d_fy_quarter_seq          Nullable(Int32),
-    d_fy_week_seq             Nullable(Int32),
-    d_day_name                LowCardinality(Nullable(FixedString(9))),
-    d_quarter_name            LowCardinality(Nullable(FixedString(6))),
-    d_holiday                 LowCardinality(Nullable(FixedString(1))),
-    d_weekend                 LowCardinality(Nullable(FixedString(1))),
-    d_following_holiday       LowCardinality(Nullable(FixedString(1))),
-    d_first_dom               Nullable(Int32),
-    d_last_dom                Nullable(Int32),
-    d_same_day_ly             Nullable(Int32),
-    d_same_day_lq             Nullable(Int32),
-    d_current_day             LowCardinality(Nullable(FixedString(1))),
-    d_current_week            LowCardinality(Nullable(FixedString(1))),
-    d_current_month           LowCardinality(Nullable(FixedString(1))),
-    d_current_quarter         LowCardinality(Nullable(FixedString(1))),
-    d_current_year            LowCardinality(Nullable(FixedString(1))),
+    d_date_sk                 UInt32 NOT NULL,
+    d_date_id                 FixedString(16) NOT NULL,
+    d_date                    Date NOT NULL,
+    d_month_seq               Int64,
+    d_week_seq                Int64,
+    d_quarter_seq             Int64,
+    d_year                    Int64,
+    d_dow                     Int64,
+    d_moy                     Int64,
+    d_dom                     Int64,
+    d_qoy                     Int64,
+    d_fy_year                 Int64,
+    d_fy_quarter_seq          Int64,
+    d_fy_week_seq             Int64,
+    d_day_name                FixedString(9),
+    d_quarter_name            FixedString(6),
+    d_holiday                 FixedString(1),
+    d_weekend                 FixedString(1),
+    d_following_holiday       FixedString(1),
+    d_first_dom               Int64,
+    d_last_dom                Int64,
+    d_same_day_ly             Int64,
+    d_same_day_lq             Int64,
+    d_current_day             FixedString(1),
+    d_current_week            FixedString(1),
+    d_current_month           FixedString(1),
+    d_current_quarter         FixedString(1),
+    d_current_year            FixedString(1),
     PRIMARY KEY (d_date_sk)
 );
 
 CREATE TABLE household_demographics (
-    hd_demo_sk                Int64,
-    hd_income_band_sk         Nullable(Int64),
-    hd_buy_potential          LowCardinality(Nullable(FixedString(15))),
-    hd_dep_count              Nullable(Int32),
-    hd_vehicle_count          Nullable(Int32),
+    hd_demo_sk                Int64 NOT NULL,
+    hd_income_band_sk         Int64,
+    hd_buy_potential          FixedString(15),
+    hd_dep_count              Int64,
+    hd_vehicle_count          Int64,
     PRIMARY KEY (hd_demo_sk)
 );
 
 CREATE TABLE income_band(
-    ib_income_band_sk         Int64,
-    ib_lower_bound            Nullable(Int32),
-    ib_upper_bound            Nullable(Int32),
+    ib_income_band_sk         Int64 NOT NULL,
+    ib_lower_bound            Int64,
+    ib_upper_bound            Int64,
     PRIMARY KEY (ib_income_band_sk),
 );
 
 CREATE TABLE inventory (
-    inv_date_sk             UInt32,
-    inv_item_sk             Int64,
-    inv_warehouse_sk        Int64,
-    inv_quantity_on_hand    Nullable(Int32),
+    inv_date_sk             UInt32 NOT NULL,
+    inv_item_sk             Int64 NOT NULL,
+    inv_warehouse_sk        Int64 NOT NULL,
+    inv_quantity_on_hand    Int64,
     PRIMARY KEY (inv_date_sk, inv_item_sk, inv_warehouse_sk),
 );
 
 CREATE TABLE item (
-    i_item_sk                 Int64,
-    i_item_id                 LowCardinality(FixedString(16)),
-    i_rec_start_date          Nullable(Date),
-    i_rec_end_date            Nullable(Date),
-    i_item_desc               LowCardinality(Nullable(String)),
-    i_current_price           Nullable(Decimal(7,2)),
-    i_wholesale_cost          Nullable(Decimal(7,2)),
-    i_brand_id                Nullable(Int32),
-    i_brand                   LowCardinality(Nullable(FixedString(50))),
-    i_class_id                Nullable(Int32),
-    i_class                   LowCardinality(Nullable(FixedString(50))),
-    i_category_id             Nullable(Int32),
-    i_category                LowCardinality(Nullable(FixedString(50))),
-    i_manufact_id             Nullable(Int32),
-    i_manufact                LowCardinality(Nullable(FixedString(50))),
-    i_size                    LowCardinality(Nullable(FixedString(20))),
-    i_formulation             LowCardinality(Nullable(FixedString(20))),
-    i_color                   LowCardinality(Nullable(FixedString(20))),
-    i_units                   LowCardinality(Nullable(FixedString(10))),
-    i_container               LowCardinality(Nullable(FixedString(10))),
-    i_manager_id              Nullable(Int32),
-    i_product_name            LowCardinality(Nullable(FixedString(50))),
+    i_item_sk                 Int64 NOT NULL,
+    i_item_id                 FixedString(16) NOT NULL,
+    i_rec_start_date          Date,
+    i_rec_end_date            Date,
+    i_item_desc               String,
+    i_current_price           Decimal(7,2),
+    i_wholesale_cost          Decimal(7,2),
+    i_brand_id                Int64,
+    i_brand                   FixedString(50),
+    i_class_id                Int64,
+    i_class                   FixedString(50),
+    i_category_id             Int64,
+    i_category                FixedString(50),
+    i_manufact_id             Int64,
+    i_manufact                FixedString(50),
+    i_size                    FixedString(20),
+    i_formulation             FixedString(20),
+    i_color                   FixedString(20),
+    i_units                   FixedString(10),
+    i_container               FixedString(10),
+    i_manager_id              Int64,
+    i_product_name            FixedString(50),
     PRIMARY KEY (i_item_sk)
 );
 
 CREATE TABLE promotion (
-    p_promo_sk                Int64,
-    p_promo_id                LowCardinality(FixedString(16)),
-    p_start_date_sk           Nullable(UInt32),
-    p_end_date_sk             Nullable(UInt32),
-    p_item_sk                 Nullable(Int64),
-    p_cost                    Nullable(Decimal(15,2)),
-    p_response_target         Nullable(Int32),
-    p_promo_name              LowCardinality(Nullable(FixedString(50))),
-    p_channel_dmail           LowCardinality(Nullable(FixedString(1))),
-    p_channel_email           LowCardinality(Nullable(FixedString(1))),
-    p_channel_catalog         LowCardinality(Nullable(FixedString(1))),
-    p_channel_tv              LowCardinality(Nullable(FixedString(1))),
-    p_channel_radio           LowCardinality(Nullable(FixedString(1))),
-    p_channel_press           LowCardinality(Nullable(FixedString(1))),
-    p_channel_event           LowCardinality(Nullable(FixedString(1))),
-    p_channel_demo            LowCardinality(Nullable(FixedString(1))),
-    p_channel_details         LowCardinality(Nullable(String)),
-    p_purpose                 LowCardinality(Nullable(FixedString(15))),
-    p_discount_active         LowCardinality(Nullable(FixedString(1))),
+    p_promo_sk                Int64 NOT NULL,
+    p_promo_id                FixedString(16) NOT NULL,
+    p_start_date_sk           UInt32,
+    p_end_date_sk             UInt32,
+    p_item_sk                 Int64,
+    p_cost                    Decimal(15,2),
+    p_response_target         Int64,
+    p_promo_name              FixedString(50),
+    p_channel_dmail           FixedString(1),
+    p_channel_email           FixedString(1),
+    p_channel_catalog         FixedString(1),
+    p_channel_tv              FixedString(1),
+    p_channel_radio           FixedString(1),
+    p_channel_press           FixedString(1),
+    p_channel_event           FixedString(1),
+    p_channel_demo            FixedString(1),
+    p_channel_details         String,
+    p_purpose                 FixedString(15),
+    p_discount_active         FixedString(1),
     PRIMARY KEY (p_promo_sk)
 );
 
 CREATE TABLE reason(
-      r_reason_sk               Int64,
-      r_reason_id               LowCardinality(FixedString(16)),
-      r_reason_desc             LowCardinality(Nullable(FixedString(100))),
+      r_reason_sk               Int64 NOT NULL,
+      r_reason_id               FixedString(16) NOT NULL,
+      r_reason_desc             FixedString(100),
       PRIMARY KEY (r_reason_sk)
 );
 
 CREATE TABLE ship_mode(
-      sm_ship_mode_sk           Int64,
-      sm_ship_mode_id           LowCardinality(FixedString(16)),
-      sm_type                   LowCardinality(Nullable(FixedString(30))),
-      sm_code                   LowCardinality(Nullable(FixedString(10))),
-      sm_carrier                LowCardinality(Nullable(FixedString(20))),
-      sm_contract               LowCardinality(Nullable(FixedString(20))),
+      sm_ship_mode_sk           Int64 NOT NULL,
+      sm_ship_mode_id           FixedString(16) NOT NULL,
+      sm_type                   FixedString(30),
+      sm_code                   FixedString(10),
+      sm_carrier                FixedString(20),
+      sm_contract               FixedString(20),
       PRIMARY KEY (sm_ship_mode_sk)
 );
 
 CREATE TABLE store_returns (
-    sr_returned_date_sk       Nullable(UInt32),
-    sr_return_time_sk         Nullable(UInt32),
-    sr_item_sk                Int64,
-    sr_customer_sk            Nullable(Int64),
-    sr_cdemo_sk               Nullable(Int64),
-    sr_hdemo_sk               Nullable(Int64),
-    sr_addr_sk                Nullable(Int64),
-    sr_store_sk               Nullable(Int64),
-    sr_reason_sk              Nullable(Int64),
-    sr_ticket_number          Int64,
-    sr_return_quantity        Nullable(Int32),
-    sr_return_amt             Nullable(Decimal(7,2)),
-    sr_return_tax             Nullable(Decimal(7,2)),
-    sr_return_amt_inc_tax     Nullable(Decimal(7,2)),
-    sr_fee                    Nullable(Decimal(7,2)),
-    sr_return_ship_cost       Nullable(Decimal(7,2)),
-    sr_refunded_cash          Nullable(Decimal(7,2)),
-    sr_reversed_charge        Nullable(Decimal(7,2)),
-    sr_store_credit           Nullable(Decimal(7,2)),
-    sr_net_loss               Nullable(Decimal(7,2)),
+    sr_returned_date_sk       UInt32,
+    sr_return_time_sk         UInt32,
+    sr_item_sk                Int64 NOT NULL,
+    sr_customer_sk            Int64,
+    sr_cdemo_sk               Int64,
+    sr_hdemo_sk               Int64,
+    sr_addr_sk                Int64,
+    sr_store_sk               Int64,
+    sr_reason_sk              Int64,
+    sr_ticket_number          Int64 NOT NULL,
+    sr_return_quantity        Int64,
+    sr_return_amt             Decimal(7,2),
+    sr_return_tax             Decimal(7,2),
+    sr_return_amt_inc_tax     Decimal(7,2),
+    sr_fee                    Decimal(7,2),
+    sr_return_ship_cost       Decimal(7,2),
+    sr_refunded_cash          Decimal(7,2),
+    sr_reversed_charge        Decimal(7,2),
+    sr_store_credit           Decimal(7,2),
+    sr_net_loss               Decimal(7,2),
     PRIMARY KEY (sr_item_sk, sr_ticket_number)
 );
 
 CREATE TABLE store_sales (
-    ss_sold_date_sk           Nullable(UInt32),
-    ss_sold_time_sk           Nullable(UInt32),
-    ss_item_sk                Int64,
-    ss_customer_sk            Nullable(Int64),
-    ss_cdemo_sk               Nullable(Int64),
-    ss_hdemo_sk               Nullable(Int64),
-    ss_addr_sk                Nullable(Int64),
-    ss_store_sk               Nullable(Int64),
-    ss_promo_sk               Nullable(Int64),
-    ss_ticket_number          Int64,
-    ss_quantity               Nullable(Int32),
-    ss_wholesale_cost         Nullable(Decimal(7,2)),
-    ss_list_price             Nullable(Decimal(7,2)),
-    ss_sales_price            Nullable(Decimal(7,2)),
-    ss_ext_discount_amt       Nullable(Decimal(7,2)),
-    ss_ext_sales_price        Nullable(Decimal(7,2)),
-    ss_ext_wholesale_cost     Nullable(Decimal(7,2)),
-    ss_ext_list_price         Nullable(Decimal(7,2)),
-    ss_ext_tax                Nullable(Decimal(7,2)),
-    ss_coupon_amt             Nullable(Decimal(7,2)),
-    ss_net_paid               Nullable(Decimal(7,2)),
-    ss_net_paid_inc_tax       Nullable(Decimal(7,2)),
-    ss_net_profit             Nullable(Decimal(7,2)),
+    ss_sold_date_sk           UInt32,
+    ss_sold_time_sk           UInt32,
+    ss_item_sk                Int64 NOT NULL,
+    ss_customer_sk            Int64,
+    ss_cdemo_sk               Int64,
+    ss_hdemo_sk               Int64,
+    ss_addr_sk                Int64,
+    ss_store_sk               Int64,
+    ss_promo_sk               Int64,
+    ss_ticket_number          Int64 NOT NULL,
+    ss_quantity               Int64,
+    ss_wholesale_cost         Decimal(7,2),
+    ss_list_price             Decimal(7,2),
+    ss_sales_price            Decimal(7,2),
+    ss_ext_discount_amt       Decimal(7,2),
+    ss_ext_sales_price        Decimal(7,2),
+    ss_ext_wholesale_cost     Decimal(7,2),
+    ss_ext_list_price         Decimal(7,2),
+    ss_ext_tax                Decimal(7,2),
+    ss_coupon_amt             Decimal(7,2),
+    ss_net_paid               Decimal(7,2),
+    ss_net_paid_inc_tax       Decimal(7,2),
+    ss_net_profit             Decimal(7,2),
     PRIMARY KEY (ss_item_sk, ss_ticket_number)
 );
 
 CREATE TABLE store (
-    s_store_sk                Int64,
-    s_store_id                LowCardinality(FixedString(16)),
-    s_rec_start_date          Nullable(Date),
-    s_rec_end_date            Nullable(Date),
-    s_closed_date_sk          Nullable(UInt32),
-    s_store_name              LowCardinality(Nullable(String)),
-    s_number_employees        Nullable(Int32),
-    s_floor_space             Nullable(Int32),
-    s_hours                   LowCardinality(Nullable(FixedString(20))),
-    s_manager                 LowCardinality(Nullable(String)),
-    s_market_id               Nullable(Int32),
-    s_geography_class         LowCardinality(Nullable(String)),
-    s_market_desc             LowCardinality(Nullable(String)),
-    s_market_manager          LowCardinality(Nullable(String)),
-    s_division_id             Nullable(Int32),
-    s_division_name           LowCardinality(Nullable(String)),
-    s_company_id              Nullable(Int32),
-    s_company_name            LowCardinality(Nullable(String)),
-    s_street_number           LowCardinality(Nullable(String)),
-    s_street_name             LowCardinality(Nullable(String)),
-    s_street_type             LowCardinality(Nullable(FixedString(15))),
-    s_suite_number            LowCardinality(Nullable(FixedString(10))),
-    s_city                    LowCardinality(Nullable(String)),
-    s_county                  LowCardinality(Nullable(String)),
-    s_state                   LowCardinality(Nullable(FixedString(2))),
-    s_zip                     LowCardinality(Nullable(FixedString(10))),
-    s_country                 LowCardinality(Nullable(String)),
-    s_gmt_offset              Nullable(Decimal(5,2)),
-    s_tax_percentage          Nullable(Decimal(5,2)),
+    s_store_sk                Int64 NOT NULL,
+    s_store_id                FixedString(16) NOT NULL,
+    s_rec_start_date          Date,
+    s_rec_end_date            Date,
+    s_closed_date_sk          UInt32,
+    s_store_name              String,
+    s_number_employees        Int64,
+    s_floor_space             Int64,
+    s_hours                   FixedString(20),
+    s_manager                 String,
+    s_market_id               Int64,
+    s_geography_class         String,
+    s_market_desc             String,
+    s_market_manager          String,
+    s_division_id             Int64,
+    s_division_name           String,
+    s_company_id              Int64,
+    s_company_name            String,
+    s_street_number           String,
+    s_street_name             String,
+    s_street_type             FixedString(15),
+    s_suite_number            FixedString(10),
+    s_city                    String,
+    s_county                  String,
+    s_state                   FixedString(2),
+    s_zip                     FixedString(10),
+    s_country                 String,
+    s_gmt_offset              Decimal(5,2),
+    s_tax_percentage          Decimal(5,2),
     PRIMARY KEY (s_store_sk)
 );
 
 CREATE TABLE time_dim (
-    t_time_sk                 UInt32,
-    t_time_id                 LowCardinality(FixedString(16)),
-    t_time                    Int32,
-    t_hour                    Nullable(Int32),
-    t_minute                  Nullable(Int32),
-    t_second                  Nullable(Int32),
-    t_am_pm                   LowCardinality(Nullable(FixedString(2))),
-    t_shift                   LowCardinality(Nullable(FixedString(20))),
-    t_sub_shift               LowCardinality(Nullable(FixedString(20))),
-    t_meal_time               LowCardinality(Nullable(FixedString(20))),
+    t_time_sk                 UInt32 NOT NULL,
+    t_time_id                 FixedString(16) NOT NULL,
+    t_time                    Int64 NOT NULL,
+    t_hour                    Int64,
+    t_minute                  Int64,
+    t_second                  Int64,
+    t_am_pm                   FixedString(2),
+    t_shift                   FixedString(20),
+    t_sub_shift               FixedString(20),
+    t_meal_time               FixedString(20),
     PRIMARY KEY (t_time_sk)
 );
 
 CREATE TABLE warehouse(
-      w_warehouse_sk            Int64,
-      w_warehouse_id            LowCardinality(FixedString(16)),
-      w_warehouse_name          LowCardinality(Nullable(String)),
-      w_warehouse_sq_ft         Nullable(Int32),
-      w_street_number           LowCardinality(Nullable(FixedString(10))),
-      w_street_name             LowCardinality(Nullable(String)),
-      w_street_type             LowCardinality(Nullable(FixedString(15))),
-      w_suite_number            LowCardinality(Nullable(FixedString(10))),
-      w_city                    LowCardinality(Nullable(String)),
-      w_county                  LowCardinality(Nullable(String)),
-      w_state                   LowCardinality(Nullable(FixedString(2))),
-      w_zip                     LowCardinality(Nullable(FixedString(10))),
-      w_country                 LowCardinality(Nullable(String)),
-      w_gmt_offset              Nullable(Decimal(5,2)),
+      w_warehouse_sk            Int64 NOT NULL,
+      w_warehouse_id            FixedString(16) NOT NULL,
+      w_warehouse_name          String,
+      w_warehouse_sq_ft         Int64,
+      w_street_number           FixedString(10),
+      w_street_name             String,
+      w_street_type             FixedString(15),
+      w_suite_number            FixedString(10),
+      w_city                    String,
+      w_county                  String,
+      w_state                   FixedString(2),
+      w_zip                     FixedString(10),
+      w_country                 String,
+      w_gmt_offset              Decimal(5,2),
       PRIMARY KEY (w_warehouse_sk)
 );
 
 CREATE TABLE web_page(
-      wp_web_page_sk            Int64,
-      wp_web_page_id            LowCardinality(FixedString(16)),
-      wp_rec_start_date         Nullable(Date),
-      wp_rec_end_date           Nullable(Date),
-      wp_creation_date_sk       Nullable(UInt32),
-      wp_access_date_sk         Nullable(UInt32),
-      wp_autogen_flag           LowCardinality(Nullable(FixedString(1))),
-      wp_customer_sk            Nullable(Int64),
-      wp_url                    LowCardinality(Nullable(String)),
-      wp_type                   LowCardinality(Nullable(FixedString(50))),
-      wp_char_count             Nullable(Int32),
-      wp_link_count             Nullable(Int32),
-      wp_image_count            Nullable(Int32),
-      wp_max_ad_count           Nullable(Int32),
+      wp_web_page_sk            Int64 NOT NULL,
+      wp_web_page_id            FixedString(16) NOT NULL,
+      wp_rec_start_date         Date,
+      wp_rec_end_date           Date,
+      wp_creation_date_sk       UInt32,
+      wp_access_date_sk         UInt32,
+      wp_autogen_flag           FixedString(1),
+      wp_customer_sk            Int64,
+      wp_url                    String,
+      wp_type                   FixedString(50),
+      wp_char_count             Int64,
+      wp_link_count             Int64,
+      wp_image_count            Int64,
+      wp_max_ad_count           Int64,
       PRIMARY KEY (wp_web_page_sk)
 );
 
 CREATE TABLE web_returns (
-    wr_returned_date_sk       Nullable(UInt32),
-    wr_returned_time_sk       Nullable(UInt32),
-    wr_item_sk                Int64,
-    wr_refunded_customer_sk   Nullable(Int64),
-    wr_refunded_cdemo_sk      Nullable(Int64),
-    wr_refunded_hdemo_sk      Nullable(Int64),
-    wr_refunded_addr_sk       Nullable(Int64),
-    wr_returning_customer_sk  Nullable(Int64),
-    wr_returning_cdemo_sk     Nullable(Int64),
-    wr_returning_hdemo_sk     Nullable(Int64),
-    wr_returning_addr_sk      Nullable(Int64),
-    wr_web_page_sk            Nullable(Int64),
-    wr_reason_sk              Nullable(Int64),
-    wr_order_number           Int64,
-    wr_return_quantity        Nullable(Int32),
-    wr_return_amt             Nullable(Decimal(7,2)),
-    wr_return_tax             Nullable(Decimal(7,2)),
-    wr_return_amt_inc_tax     Nullable(Decimal(7,2)),
-    wr_fee                    Nullable(Decimal(7,2)),
-    wr_return_ship_cost       Nullable(Decimal(7,2)),
-    wr_refunded_cash          Nullable(Decimal(7,2)),
-    wr_reversed_charge        Nullable(Decimal(7,2)),
-    wr_account_credit         Nullable(Decimal(7,2)),
-    wr_net_loss               Nullable(Decimal(7,2)),
+    wr_returned_date_sk       UInt32,
+    wr_returned_time_sk       UInt32,
+    wr_item_sk                Int64 NOT NULL,
+    wr_refunded_customer_sk   Int64,
+    wr_refunded_cdemo_sk      Int64,
+    wr_refunded_hdemo_sk      Int64,
+    wr_refunded_addr_sk       Int64,
+    wr_returning_customer_sk  Int64,
+    wr_returning_cdemo_sk     Int64,
+    wr_returning_hdemo_sk     Int64,
+    wr_returning_addr_sk      Int64,
+    wr_web_page_sk            Int64,
+    wr_reason_sk              Int64,
+    wr_order_number           Int64 NOT NULL,
+    wr_return_quantity        Int64,
+    wr_return_amt             Decimal(7,2),
+    wr_return_tax             Decimal(7,2),
+    wr_return_amt_inc_tax     Decimal(7,2),
+    wr_fee                    Decimal(7,2),
+    wr_return_ship_cost       Decimal(7,2),
+    wr_refunded_cash          Decimal(7,2),
+    wr_reversed_charge        Decimal(7,2),
+    wr_account_credit         Decimal(7,2),
+    wr_net_loss               Decimal(7,2),
     PRIMARY KEY (wr_item_sk, wr_order_number)
 );
 
 CREATE TABLE web_sales (
-    ws_sold_date_sk           Nullable(UInt32),
-    ws_sold_time_sk           Nullable(UInt32),
-    ws_ship_date_sk           Nullable(UInt32),
-    ws_item_sk                Int64,
-    ws_bill_customer_sk       Nullable(Int64),
-    ws_bill_cdemo_sk          Nullable(Int64),
-    ws_bill_hdemo_sk          Nullable(Int64),
-    ws_bill_addr_sk           Nullable(Int64),
-    ws_ship_customer_sk       Nullable(Int64),
-    ws_ship_cdemo_sk          Nullable(Int64),
-    ws_ship_hdemo_sk          Nullable(Int64),
-    ws_ship_addr_sk           Nullable(Int64),
-    ws_web_page_sk            Nullable(Int64),
-    ws_web_site_sk            Nullable(Int64),
-    ws_ship_mode_sk           Nullable(Int64),
-    ws_warehouse_sk           Nullable(Int64),
-    ws_promo_sk               Nullable(Int64),
-    ws_order_number           Int64,
-    ws_quantity               Nullable(Int32),
-    ws_wholesale_cost         Nullable(Decimal(7,2)),
-    ws_list_price             Nullable(Decimal(7,2)),
-    ws_sales_price            Nullable(Decimal(7,2)),
-    ws_ext_discount_amt       Nullable(Decimal(7,2)),
-    ws_ext_sales_price        Nullable(Decimal(7,2)),
-    ws_ext_wholesale_cost     Nullable(Decimal(7,2)),
-    ws_ext_list_price         Nullable(Decimal(7,2)),
-    ws_ext_tax                Nullable(Decimal(7,2)),
-    ws_coupon_amt             Nullable(Decimal(7,2)),
-    ws_ext_ship_cost          Nullable(Decimal(7,2)),
-    ws_net_paid               Nullable(Decimal(7,2)),
-    ws_net_paid_inc_tax       Nullable(Decimal(7,2)),
-    ws_net_paid_inc_ship      Nullable(Decimal(7,2)),
-    ws_net_paid_inc_ship_tax  Nullable(Decimal(7,2)),
-    ws_net_profit             Nullable(Decimal(7,2)),
+    ws_sold_date_sk           UInt32,
+    ws_sold_time_sk           UInt32,
+    ws_ship_date_sk           UInt32,
+    ws_item_sk                Int64 NOT NULL,
+    ws_bill_customer_sk       Int64,
+    ws_bill_cdemo_sk          Int64,
+    ws_bill_hdemo_sk          Int64,
+    ws_bill_addr_sk           Int64,
+    ws_ship_customer_sk       Int64,
+    ws_ship_cdemo_sk          Int64,
+    ws_ship_hdemo_sk          Int64,
+    ws_ship_addr_sk           Int64,
+    ws_web_page_sk            Int64,
+    ws_web_site_sk            Int64,
+    ws_ship_mode_sk           Int64,
+    ws_warehouse_sk           Int64,
+    ws_promo_sk               Int64,
+    ws_order_number           Int64 NOT NULL,
+    ws_quantity               Int64,
+    ws_wholesale_cost         Decimal(7,2),
+    ws_list_price             Decimal(7,2),
+    ws_sales_price            Decimal(7,2),
+    ws_ext_discount_amt       Decimal(7,2),
+    ws_ext_sales_price        Decimal(7,2),
+    ws_ext_wholesale_cost     Decimal(7,2),
+    ws_ext_list_price         Decimal(7,2),
+    ws_ext_tax                Decimal(7,2),
+    ws_coupon_amt             Decimal(7,2),
+    ws_ext_ship_cost          Decimal(7,2),
+    ws_net_paid               Decimal(7,2),
+    ws_net_paid_inc_tax       Decimal(7,2),
+    ws_net_paid_inc_ship      Decimal(7,2),
+    ws_net_paid_inc_ship_tax  Decimal(7,2),
+    ws_net_profit             Decimal(7,2),
     PRIMARY KEY (ws_item_sk, ws_order_number)
 );
 
 CREATE TABLE web_site (
-    web_site_sk           Int64,
-    web_site_id           LowCardinality(FixedString(16)),
-    web_rec_start_date    Nullable(Date),
-    web_rec_end_date      Nullable(Date),
-    web_name              LowCardinality(Nullable(String)),
-    web_open_date_sk      Nullable(UInt32),
-    web_close_date_sk     Nullable(UInt32),
-    web_class             LowCardinality(Nullable(String)),
-    web_manager           LowCardinality(Nullable(String)),
-    web_mkt_id            Nullable(Int32),
-    web_mkt_class         LowCardinality(Nullable(String)),
-    web_mkt_desc          LowCardinality(Nullable(String)),
-    web_market_manager    LowCardinality(Nullable(String)),
-    web_company_id        Nullable(Int32),
-    web_company_name      LowCardinality(Nullable(FixedString(50))),
-    web_street_number     LowCardinality(Nullable(FixedString(10))),
-    web_street_name       LowCardinality(Nullable(String)),
-    web_street_type       LowCardinality(Nullable(FixedString(15))),
-    web_suite_number      LowCardinality(Nullable(FixedString(10))),
-    web_city              LowCardinality(Nullable(String)),
-    web_county            LowCardinality(Nullable(String)),
-    web_state             LowCardinality(Nullable(FixedString(2))),
-    web_zip               LowCardinality(Nullable(FixedString(10))),
-    web_country           LowCardinality(Nullable(String)),
-    web_gmt_offset        Nullable(Decimal(5,2)),
-    web_tax_percentage    Nullable(Decimal(5,2)),
+    web_site_sk           Int64 NOT NULL,
+    web_site_id           FixedString(16) NOT NULL,
+    web_rec_start_date    Date,
+    web_rec_end_date      Date,
+    web_name              String,
+    web_open_date_sk      UInt32,
+    web_close_date_sk     UInt32,
+    web_class             String,
+    web_manager           String,
+    web_mkt_id            Int64,
+    web_mkt_class         String,
+    web_mkt_desc          String,
+    web_market_manager    String,
+    web_company_id        Int64,
+    web_company_name      FixedString(50),
+    web_street_number     FixedString(10),
+    web_street_name       String,
+    web_street_type       FixedString(15),
+    web_suite_number      FixedString(10),
+    web_city              String,
+    web_county            String,
+    web_state             FixedString(2),
+    web_zip               FixedString(10),
+    web_country           String,
+    web_gmt_offset        Decimal(5,2),
+    web_tax_percentage    Decimal(5,2),
     PRIMARY KEY (web_site_sk)
 );
 ```
@@ -604,17 +600,18 @@ Then run the generated queries.
 
 ## Queries {#queries}
 
-:::note
+::::note
 The following settings should be enabled to produce correct results according to SQL standard:
 
 ```sql
+SET data_type_default_nullable = 1;
 SET group_by_use_nulls = 1;
 SET intersect_default_mode = 'DISTINCT';
 SET joined_subquery_requires_alias = 0;
 SET union_default_mode = 'DISTINCT';
 SET join_use_nulls = 1;
 ```
-:::
+::::
 
 **Correctness**
 
@@ -972,148 +969,6 @@ ORDER BY
     id
 LIMIT 100;
 ```
-
-::::note
-The query doesn't work out-of-the-box due to https://github.com/ClickHouse/ClickHouse/issues/95299. This alternative formulation with a minor fix works:
-
-```sql
-WITH
-    ssr AS
-    (
-        SELECT
-            s_store_id,
-            sum(sales_price) AS sales,
-            sum(profit) AS profit,
-            sum(return_amt) AS returns,
-            sum(net_loss) AS profit_loss
-        FROM
-        (
-            SELECT
-                ss_store_sk AS store_sk,
-                ss_sold_date_sk AS date_sk,
-                ss_ext_sales_price AS sales_price,
-                ss_net_profit AS profit,
-                CAST(0, 'decimal(7, 2)') AS return_amt,
-                CAST(0, 'decimal(7, 2)') AS net_loss
-            FROM store_sales
-            UNION ALL
-            SELECT
-                sr_store_sk AS store_sk,
-                sr_returned_date_sk AS date_sk,
-                CAST(0, 'decimal(7, 2)') AS sales_price,
-                CAST(0, 'decimal(7, 2)') AS profit,
-                sr_return_amt AS return_amt,
-                sr_net_loss AS net_loss
-            FROM store_returns
-        ) AS salesreturns, date_dim, store
-        WHERE (date_sk = d_date_sk) AND ((d_date >= CAST('2000-08-23', 'date')) AND (d_date <= (CAST('2000-08-23', 'date') + INTERVAL 14 day))) AND (store_sk = s_store_sk)
-        GROUP BY s_store_id
-    ),
-    csr AS
-    (
-        SELECT
-            cp_catalog_page_id,
-            sum(sales_price) AS sales,
-            sum(profit) AS profit,
-            sum(return_amt) AS returns,
-            sum(net_loss) AS profit_loss
-        FROM
-        (
-            SELECT
-                cs_catalog_page_sk AS page_sk,
-                cs_sold_date_sk AS date_sk,
-                cs_ext_sales_price AS sales_price,
-                cs_net_profit AS profit,
-                CAST(0, 'decimal(7, 2)') AS return_amt,
-                CAST(0, 'decimal(7, 2)') AS net_loss
-            FROM catalog_sales
-            UNION ALL
-            SELECT
-                cr_catalog_page_sk AS page_sk,
-                cr_returned_date_sk AS date_sk,
-                CAST(0, 'decimal(7, 2)') AS sales_price,
-                CAST(0, 'decimal(7, 2)') AS profit,
-                cr_return_amount AS return_amt,
-                cr_net_loss AS net_loss
-            FROM catalog_returns
-        ) AS salesreturns, date_dim, catalog_page
-        WHERE (date_sk = d_date_sk) AND (d_date BETWEEN CAST('2000-08-23', 'date') AND CAST('2000-08-23', 'date') + INTERVAL 14 day) AND (page_sk = cp_catalog_page_sk)
-        GROUP BY cp_catalog_page_id
-    ),
-    wsr AS
-    (
-        SELECT
-            web_site_id,
-            sum(sales_price) AS sales,
-            sum(profit) AS profit,
-            sum(return_amt) AS returns,
-            sum(net_loss) AS profit_loss
-        FROM
-        (
-            SELECT
-                ws_web_site_sk AS wsr_web_site_sk,
-                ws_sold_date_sk AS date_sk,
-                ws_ext_sales_price AS sales_price,
-                ws_net_profit AS profit,
-                CAST(0, 'decimal(7, 2)') AS return_amt,
-                CAST(0, 'decimal(7, 2)') AS net_loss
-            FROM web_sales
-            UNION ALL
-            SELECT
-                ws_web_site_sk AS wsr_web_site_sk,
-                wr_returned_date_sk AS date_sk,
-                CAST(0, 'decimal(7, 2)') AS sales_price,
-                CAST(0, 'decimal(7, 2)') AS profit,
-                wr_return_amt AS return_amt,
-                wr_net_loss AS net_loss
-            FROM web_returns
-            LEFT JOIN web_sales ON (wr_item_sk = ws_item_sk) AND (wr_order_number = ws_order_number)
-        ) AS salesreturns, date_dim, web_site
-        WHERE (date_sk = d_date_sk) AND ((d_date >= CAST('2000-08-23', 'date')) AND (d_date <= (CAST('2000-08-23', 'date') + INTERVAL 14 day))) AND (wsr_web_site_sk = web_site_sk)
-        GROUP BY web_site_id
-    )
-SELECT
-    channel,
-    id,
-    sum(sales) AS sales,
-    sum(returns) AS returns,
-    sum(profit) AS profit
-FROM
-(
-    SELECT
-        'store channel' AS channel,
-        CAST(concat('store', s_store_id) AS String) AS id,
-        sales,
-        returns,
-        profit - profit_loss AS profit
-    FROM ssr
-    UNION ALL
-    SELECT
-        'catalog channel' AS channel,
-        concat('catalog_page', cp_catalog_page_id) AS id,
-        sales,
-        returns,
-        profit - profit_loss AS profit
-    FROM csr
-    UNION ALL
-    SELECT
-        'web channel' AS channel,
-        concat('web_site', web_site_id) AS id,
-        sales,
-        returns,
-        profit - profit_loss AS profit
-    FROM wsr
-) AS x
-GROUP BY
-    channel,
-    id
-    WITH ROLLUP
-ORDER BY
-    channel,
-    id
-LIMIT 100;
-```
-::::
 
 **Q6**
 
@@ -2349,36 +2204,6 @@ ORDER BY
     s_state
 LIMIT 100;
 ```
-
-::::note
-The query doesn't work out-of-the-box due to https://github.com/ClickHouse/ClickHouse/issues/95299. This alternative formulation with a minor fix works:
-
-```sql
-SELECT
-    CAST(i_item_id AS String),
-    s_state,
-    grouping(s_state) AS g_state,
-    avg(ss_quantity) AS agg1,
-    avg(ss_list_price) AS agg2,
-    avg(ss_coupon_amt) AS agg3,
-    avg(ss_sales_price) AS agg4
-FROM store_sales, customer_demographics, date_dim, store, item
-WHERE (ss_sold_date_sk = d_date_sk)
-    AND (ss_item_sk = i_item_sk)
-    AND (ss_store_sk = s_store_sk)
-    AND (ss_cdemo_sk = cd_demo_sk)
-    AND (cd_gender = 'M')
-    AND (cd_marital_status = 'S')
-    AND (cd_education_status = 'College')
-    AND (d_year = 2002)
-    AND (s_state IN ('TN', 'TN', 'TN', 'TN', 'TN', 'TN'))
-GROUP BY ROLLUP(CAST(i_item_id AS String), s_state)
-ORDER BY
-    CAST(i_item_id AS String),
-    s_state
-LIMIT 100;
-```
-::::
 
 **Q28**
 
@@ -5708,108 +5533,6 @@ ORDER BY
     id
 LIMIT 100;
 ```
-
-::::note
-The query doesn't work out-of-the-box due to https://github.com/ClickHouse/ClickHouse/issues/95299. This alternative formulation with a minor fix works:
-
-```sql
-WITH
-    ssr AS
-    (
-        SELECT
-            s_store_id AS store_id,
-            sum(ss_ext_sales_price) AS sales,
-            sum(coalesce(sr_return_amt, 0)) AS returns,
-            sum(ss_net_profit - coalesce(sr_net_loss, 0)) AS profit
-        FROM store_sales
-        LEFT JOIN store_returns ON (ss_item_sk = sr_item_sk) AND (ss_ticket_number = sr_ticket_number), date_dim, store, item, promotion
-        WHERE (ss_sold_date_sk = d_date_sk)
-            AND ((d_date >= CAST('2000-08-23', 'date')) AND (d_date <= (CAST('2000-08-23', 'date') + INTERVAL 30 DAY)))
-            AND (ss_store_sk = s_store_sk)
-            AND (ss_item_sk = i_item_sk)
-            AND (i_current_price > 50)
-            AND (ss_promo_sk = p_promo_sk)
-            AND (p_channel_tv = 'N')
-        GROUP BY s_store_id
-    ),
-    csr AS
-    (
-        SELECT
-            cp_catalog_page_id AS catalog_page_id,
-            sum(cs_ext_sales_price) AS sales,
-            sum(coalesce(cr_return_amount, 0)) AS returns,
-            sum(cs_net_profit - coalesce(cr_net_loss, 0)) AS profit
-        FROM catalog_sales
-        LEFT JOIN catalog_returns ON (cs_item_sk = cr_item_sk) AND (cs_order_number = cr_order_number), date_dim, catalog_page, item, promotion
-        WHERE (cs_sold_date_sk = d_date_sk)
-            AND ((d_date >= CAST('2000-08-23', 'date')) AND (d_date <= (CAST('2000-08-23', 'date') + INTERVAL 30 DAY)))
-            AND (cs_catalog_page_sk = cp_catalog_page_sk)
-            AND (cs_item_sk = i_item_sk)
-            AND (i_current_price > 50)
-            AND (cs_promo_sk = p_promo_sk)
-            AND (p_channel_tv = 'N')
-        GROUP BY cp_catalog_page_id
-    ),
-    wsr AS
-    (
-        SELECT
-            web_site_id,
-            sum(ws_ext_sales_price) AS sales,
-            sum(coalesce(wr_return_amt, 0)) AS returns,
-            sum(ws_net_profit - coalesce(wr_net_loss, 0)) AS profit
-        FROM web_sales
-        LEFT JOIN web_returns ON (ws_item_sk = wr_item_sk) AND (ws_order_number = wr_order_number), date_dim, web_site, item, promotion
-        WHERE (ws_sold_date_sk = d_date_sk)
-            AND ((d_date >= CAST('2000-08-23', 'date')) AND (d_date <= (CAST('2000-08-23', 'date') + INTERVAL 30 DAY)))
-            AND (ws_web_site_sk = web_site_sk)
-            AND (ws_item_sk = i_item_sk)
-            AND (i_current_price > 50)
-            AND (ws_promo_sk = p_promo_sk)
-            AND (p_channel_tv = 'N')
-        GROUP BY web_site_id
-    )
-SELECT
-    channel,
-    CAST(id AS String) AS id,
-    sum(sales) AS sales,
-    sum(returns) AS returns,
-    sum(profit) AS profit
-FROM
-(
-    SELECT
-        'store channel' AS channel,
-        concat('store', store_id) AS id,
-        sales,
-        returns,
-        profit
-    FROM ssr
-    UNION ALL
-    SELECT
-        'catalog channel' AS channel,
-        concat('catalog_page', catalog_page_id) AS id,
-        sales,
-        returns,
-        profit
-    FROM csr
-    UNION ALL
-    SELECT
-        'web channel' AS channel,
-        concat('web_site', web_site_id) AS id,
-        sales,
-        returns,
-        profit
-    FROM wsr
-) AS x
-GROUP BY
-    channel,
-    id
-    WITH ROLLUP
-ORDER BY
-    channel,
-    id
-LIMIT 100;
-```
-::::
 
 **Q81**
 
