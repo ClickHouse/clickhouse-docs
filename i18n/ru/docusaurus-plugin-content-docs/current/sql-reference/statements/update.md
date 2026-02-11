@@ -52,7 +52,7 @@ UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 
 ## Требования к лёгким обновлениям \{#lightweight-update-requirements\}
 
-Лёгкие обновления поддерживаются для движков [`MergeTree`](/engines/table-engines/mergetree-family/mergetree), [`ReplacingMergeTree`](/engines/table-engines/mergetree-family/replacingmergetree), [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) и их вариантов [`Replicated`](/engines/table-engines/mergetree-family/replication.md) и [`Shared`](/cloud/reference/shared-merge-tree).
+Лёгкие обновления поддерживаются для движков [`MergeTree`](/engines/table-engines/mergetree-family/mergetree), [`ReplacingMergeTree`](/engines/table-engines/mergetree-family/replacingmergetree), [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree), [`VersionedCollapsingMergeTree`](https://clickhouse.com/docs/engines/table-engines/mergetree-family/versionedcollapsingmergetree) и их вариантов [`Replicated`](/engines/table-engines/mergetree-family/replication.md) и [`Shared`](/cloud/reference/shared-merge-tree).
 
 Чтобы использовать лёгкие обновления, необходимо включить материализацию столбцов `_block_number` и `_block_offset` с помощью настроек таблицы [`enable_block_number_column`](/operations/settings/merge-tree-settings#enable_block_number_column) и [`enable_block_offset_column`](/operations/settings/merge-tree-settings#enable_block_offset_column).
 

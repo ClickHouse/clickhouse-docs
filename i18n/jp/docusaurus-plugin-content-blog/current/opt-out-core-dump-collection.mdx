@@ -1,0 +1,56 @@
+---
+date: 2026-02-04
+title: 'コアダンプ収集を無効化する方法'
+description: 'この記事では、ClickHouse Cloud 上でコアダンプ収集を無効化する方法を説明します'
+tags: ['Cloud の管理']
+---
+
+import optOut from '@site/static/images/crash-reports.png';
+import Image from '@theme/IdealImage';
+
+{frontMatter.description}
+
+{/* truncate */}
+
+## 概要 \{#overview\}
+
+Cloud サービスの安定性と信頼性を継続的に向上させる取り組みの一環として、ClickHouse Cloud は **2026 年 2 月 27 日** から、サーバークラッシュ発生時にコアダンプの収集を開始します。
+
+コアダンプの収集により、次のことが可能になります。
+
+* クラッシュの根本原因をより迅速に特定する
+* 問題をより速く解決する
+* サービス全体の利用体験を改善する
+
+## 収集される内容 \{#whats-collected\}
+
+コアダンプは、クラッシュ時点のプロセスの状態をキャプチャし、メモリ上に存在する機密情報を含む場合があります。たとえば次のようなものです。
+
+* 接続認証情報
+* 暗号化キー
+* クエリ文字列
+* クラッシュ時点にメモリ上に存在していたその他のデータ
+
+### データ保護 \{#data-protection\}
+
+* **リージョン内ストレージ**: データはご利用のサービスと同一リージョン内で収集および保存されます
+* **追加の保護**: 収集されたデータには強化されたセキュリティ対策が適用されます
+* **保持期間の制限**: デバッグを支援するための短期間のみデータを保持し、その後は安全に破棄されます
+
+## 除外対象 \{#exclusions\}
+
+以下のサービスは、コアダンプの収集から**自動的に除外**されます。
+
+* **HIPAA** 準拠の対象となるサービス
+* **PCI** 準拠の対象となるサービス
+* **BYOC** (Bring Your Own Cloud) サービス
+
+## オプトアウトの方法 \{#how-to-opt-out\}
+
+1. [ClickHouse Cloud Console](https://clickhouse.cloud) にアクセスします
+2. 対象のサービスを選択します
+3. **Settings** タブを開きます
+4. 設定ページの一番下にある「Share crash reports with ClickHouse」オプションを探します
+5. オプションを無効にしてオプトアウトします
+
+<Image img={optOut} size="md" alt="Cloud UI でオプトアウトオプションを見つける場所" />

@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 引入版本：v22.1
 
-`contingency` 函数用于计算[列联系数（contingency coefficient）](https://en.wikipedia.org/wiki/Contingency_table#Cram%C3%A9r's_V_and_the_contingency_coefficient_C)，该值用于衡量表中两列之间的关联强度。它的计算方式与 [`cramersV` 函数](./cramersV.md)类似，但在平方根中的分母不同。
+`contingency` 函数用于计算[列联系数（contingency coefficient）](https://en.wikipedia.org/wiki/Contingency_table#Cram%C3%A9r's_V_and_the_contingency_coefficient_C)，该值用于衡量表中两列之间的关联强度。它的计算方式与 [`cramersV` 函数](/sql-reference/aggregate-functions/reference/cramersv)类似，但在平方根中的分母不同。
 
 **语法**
 
