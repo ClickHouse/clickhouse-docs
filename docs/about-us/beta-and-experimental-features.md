@@ -90,6 +90,8 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_experimental_replacing_merge_with_cleanup](/operations/settings/merge-tree-settings#allow_experimental_replacing_merge_with_cleanup) | `0` |
 | [allow_experimental_reverse_key](/operations/settings/merge-tree-settings#allow_experimental_reverse_key) | `0` |
 | [allow_remote_fs_zero_copy_replication](/operations/settings/merge-tree-settings#allow_remote_fs_zero_copy_replication) | `0` |
+| [distributed_index_analysis_min_indexes_bytes_to_activate](/operations/settings/merge-tree-settings#distributed_index_analysis_min_indexes_bytes_to_activate) | `1073741824` |
+| [distributed_index_analysis_min_parts_to_activate](/operations/settings/merge-tree-settings#distributed_index_analysis_min_parts_to_activate) | `10` |
 | [enable_replacing_merge_with_cleanup_for_min_age_to_force_merge](/operations/settings/merge-tree-settings#enable_replacing_merge_with_cleanup_for_min_age_to_force_merge) | `0` |
 | [force_read_through_cache_for_merges](/operations/settings/merge-tree-settings#force_read_through_cache_for_merges) | `0` |
 | [merge_selector_algorithm](/operations/settings/merge-tree-settings#merge_selector_algorithm) | `Simple` |
