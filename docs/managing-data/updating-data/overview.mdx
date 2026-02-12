@@ -7,7 +7,7 @@ doc_type: 'guide'
 ---
 
 When it comes to handling updates analytical and transactional databases diverge significantly due to their underlying design philosophies and target use cases.
-For example, PostgreSQL, a row-oriented, ACID-compliant relational database, supports robust and transactional update and delete operations, ensuring data consistency and integrity through mechanisms like Multi-Version Concurrency Control (MVCC).
+For example, PostgreSQL, a row-oriented, ACID-compliant relational database, supports robust and transactional update and delete operations, ensuring data consistency and integrity through mechanisms like Multi-Version Concurrency Control ([MVCC](https://en.wikipedia.org/wiki/Multiversion_concurrency_control)).
 This allows for safe and reliable modifications even in high-concurrency environments.
 
 Conversely, ClickHouse is a column-oriented database optimized for read-heavy analytics and high throughput append-only operations.
