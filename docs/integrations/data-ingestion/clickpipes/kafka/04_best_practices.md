@@ -21,7 +21,7 @@ To learn more about message compression in Kafka, we recommend starting with thi
 ## Limitations {#limitations}
 
 - [`DEFAULT`](/sql-reference/statements/create/table#default) is not supported.
-- Individual messages are limited to 8MB (uncompressed) by default when running with the smallest (XS) replica size, and 16MB (uncompressed) with larger replicas.  Messages that exceed this limit will be rejected with an error.  If you have a need for larger messages, please contact support.
+- Individual messages are limited to 2MB (uncompressed) by default when running with the smallest (XS) replica size, and 8MB (uncompressed) with larger replicas.  Messages that exceed this limit will be rejected with an error.  If you have a need for larger messages, please contact support.
 
 ## Delivery semantics {#delivery-semantics}
 ClickPipes for Kafka provides `at-least-once` delivery semantics (as one of the most commonly used approaches). We'd love to hear your feedback on delivery semantics [contact form](https://clickhouse.com/company/contact?loc=clickpipes). If you need exactly-once semantics, we recommend using our official [`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse) sink.
@@ -119,7 +119,7 @@ Upload of client certificates and keys is also supported for mutual TLS (mTLS) b
 ClickPipes inserts data into ClickHouse in batches. This is to avoid creating too many parts in the database which can lead to performance issues in the cluster.
 
 Batches are inserted when one of the following criteria has been met:
-- The batch size has reached the maximum size (100,000 rows or 32MB per 1GB of pod memory)
+- The batch size has reached the maximum size (100,000 rows or 28MB per 1GB of pod memory)
 - The batch has been open for a maximum amount of time (5 seconds)
 
 ### Latency {#latency}
