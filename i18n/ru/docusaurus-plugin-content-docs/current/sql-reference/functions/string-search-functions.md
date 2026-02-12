@@ -465,6 +465,7 @@ hasAllTokens(input, needles)
 
 * `input` — входной столбец. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring) или [`Array(String)`](/sql-reference/data-types/array) или [`Array(FixedString)`](/sql-reference/data-types/array)
 * `needles` — токены, которые требуется найти. [`String`](/sql-reference/data-types/string) или [`Array(String)`](/sql-reference/data-types/array)
+* `tokenizer` — токенизатор, который следует использовать. Допустимые значения: `splitByNonAlpha`, `ngrams`, `splitByString`, `array` и `sparseGrams`. Необязательный параметр, если явно не задан, по умолчанию используется `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
@@ -472,7 +473,7 @@ hasAllTokens(input, needles)
 
 **Примеры**
 
-**Пример использования для строкового столбца**
+**Базовое использование со строковым аргументом needle**
 
 ```sql title=Query
 CREATE TABLE table (
@@ -518,6 +519,18 @@ SELECT count() FROM table WHERE hasAllTokens(msg, tokens('a()d', 'splitByString'
 └─────────┘
 ```
 
+**Использование пользовательского токенизатора через третий аргумент**
+
+```sql title=Query
+SELECT hasAllTokens('abcdef', 'abc', 'ngrams(3)');
+```
+
+```response title=Response
+┌─hasAllTokens('abcdef', 'abc', 'ngrams(3)')─┐
+│                                            1 │
+└──────────────────────────────────────────────┘
+```
+
 **Примеры использования столбцов типов Array и Map**
 
 ```sql title=Query
@@ -540,7 +553,7 @@ INSERT INTO log VALUES
 ```response title=Response
 ```
 
-**Пример со столбцом типа массив**
+**Пример со столбцом типа Array**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAllTokens(tags, 'clickhouse');
@@ -590,7 +603,7 @@ SELECT count() FROM log WHERE hasAllTokens(mapValues(attributes), ['192.0.0.1', 
 Перед поиском функция выполняет токенизацию
 
 * аргумента `input` (всегда) и
-* аргумента `needle` (если он задан как [String](../../sql-reference/data-types/string.md)),
+* аргумент `needle` (если он задан как [String](../../sql-reference/data-types/string.md)),
   используя токенизатор, указанный для текстового индекса.
   Если для столбца не определён текстовый индекс, вместо него используется токенизатор `splitByNonAlpha`.
   Если аргумент `needle` имеет тип [Array(String)](../../sql-reference/data-types/array.md), каждый элемент массива рассматривается как отдельный токен — дополнительная токенизация не выполняется.
@@ -610,6 +623,7 @@ hasAnyTokens(input, needles)
 
 * `input` — Входной столбец. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring) или [`Array(String)`](/sql-reference/data-types/array) или [`Array(FixedString)`](/sql-reference/data-types/array)
 * `needles` — Токены, которые нужно найти. [`String`](/sql-reference/data-types/string) или [`Array(String)`](/sql-reference/data-types/array)
+* `tokenizer` — Токенизатор, который будет использоваться. Допустимые аргументы: `splitByNonAlpha`, `ngrams`, `splitByString`, `array` и `sparseGrams`. Необязательный параметр: если явно не задан, по умолчанию используется `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
@@ -617,7 +631,7 @@ hasAnyTokens(input, needles)
 
 **Примеры**
 
-**Пример использования для строкового столбца**
+**Базовое использование со строковым needle**
 
 ```sql title=Query
 CREATE TABLE table (

@@ -3021,7 +3021,7 @@ FORMAT PrettyCompactMonoBlock
 
 - [distributed_index_analysis_for_non_shared_merge_tree](#distributed_index_analysis_for_non_shared_merge_tree)
 - [distributed_index_analysis_min_parts_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_parts_to_activate)
-- [distributed_index_analysis_min_indexes_size_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_size_to_activate)
+- [distributed_index_analysis_min_indexes_bytes_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_bytes_to_activate)
 
 ## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
 

@@ -528,7 +528,9 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 Имя диска хранения данных. Может быть указано вместо политики хранения.
 
-## distributed_index_analysis_min_indexes_size_to_activate \{#distributed_index_analysis_min_indexes_size_to_activate\}
+## distributed_index_analysis_min_indexes_bytes_to_activate \{#distributed_index_analysis_min_indexes_bytes_to_activate\}
+
+<ExperimentalBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
@@ -537,6 +539,8 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 Минимальные размеры индексов (data skipping и первичного ключа) на диске (в несжатом виде), при которых активируется распределённый анализ индексов
 
 ## distributed_index_analysis_min_parts_to_activate \{#distributed_index_analysis_min_parts_to_activate\}
+
+<ExperimentalBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -578,9 +582,9 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 ## enable_max_bytes_limit_for_min_age_to_force_merge \{#enable_max_bytes_limit_for_min_age_to_force_merge\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "Новая настройка"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "Добавлена новая настройка для ограничения максимального объёма байт для min_age_to_force_merge."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "По умолчанию ограничивает размер частей даже при использовании min_age_to_force_merge_seconds"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "Добавлена новая настройка для ограничения максимального объёма байт для min_age_to_force_merge."}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
 
 Определяет, должны ли настройки `min_age_to_force_merge_seconds` и
 `min_age_to_force_merge_on_partition_only` учитывать настройку

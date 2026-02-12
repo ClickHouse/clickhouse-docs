@@ -495,7 +495,9 @@ Marks 支持压缩，有助于减小标记文件大小并加快网络传输。
 
 存储磁盘的名称。可以作为 `storage policy` 的替代进行指定。
 
-## distributed_index_analysis_min_indexes_size_to_activate \{#distributed_index_analysis_min_indexes_size_to_activate\}
+## distributed_index_analysis_min_indexes_bytes_to_activate \{#distributed_index_analysis_min_indexes_bytes_to_activate\}
+
+<ExperimentalBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
@@ -504,6 +506,8 @@ Marks 支持压缩，有助于减小标记文件大小并加快网络传输。
 用于激活分布式索引分析的磁盘上（未压缩）数据跳过索引和主键索引的最小大小
 
 ## distributed_index_analysis_min_parts_to_activate \{#distributed_index_analysis_min_parts_to_activate\}
+
+<ExperimentalBadge/>
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
@@ -545,9 +549,9 @@ Dynamic 数据类型的序列化版本。用于确保兼容性。
 
 ## enable_max_bytes_limit_for_min_age_to_force_merge \{#enable_max_bytes_limit_for_min_age_to_force_merge\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新增设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认情况下，即使使用 min_age_to_force_merge_seconds 也限制 part 大小"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新增设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}]}/>
 
 用于控制设置 `min_age_to_force_merge_seconds` 和
 `min_age_to_force_merge_on_partition_only` 是否遵循设置

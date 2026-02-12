@@ -40,12 +40,14 @@ import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
 | `select_from_system_db_requires_grant`          | 设置 `SELECT * FROM system.<table>` 是否需要任何权限，还是可以由任意用户执行。如果设置为 `true`，则该查询需要 `GRANT SELECT ON system.<table>`，与非 system 表相同。例外情况：部分 system 表（`tables`、`columns`、`databases`，以及一些常量表，如 `one`、`contributors`）仍对所有人可访问；并且如果授予了某个 `SHOW` 权限（例如 `SHOW USERS`），则相应的 system 表（即 `system.users`）将可访问。 | `true`  |
 | `settings_constraints_replace_previous`         | 设置在某个 SETTINGS PROFILE 中针对某个设置定义的约束，是否会覆盖该设置上先前的约束（这些先前约束定义在其他 profile 中），包括新约束未显式设置的字段。该选项还会启用 `changeable_in_readonly` 约束类型。                                                                                                                                                              | `true`  |
 | `table_engines_require_grant`                   | 设置在使用特定表引擎创建表时，是否需要相应权限。                                                                                                                                                                                                                                                                    | `false` |
+| `throw_on_unmatched_row_policies`               | 设置当从表中读取数据时，如果该表存在 ROW POLICY，但没有任何一条适用于当前用户，是否应抛出异常。                                                                                                                                                                                                                                       | `false` |
 | `users_without_row_policies_can_read_rows`      | 设置没有宽松 ROW POLICY 的用户是否仍然可以通过 `SELECT` 查询读取行。例如，如果有两个用户 A 和 B，并且只为 A 定义了 ROW POLICY，那么当此设置为 `true` 时，用户 B 将能看到所有行；当此设置为 `false` 时，用户 B 将看不到任何行。                                                                                                                                             | `true`  |
 
-示例：
+Example:
 
 ```xml
 <access_control_improvements>
+    <throw_on_unmatched_row_policies>true</throw_on_unmatched_row_policies>
     <users_without_row_policies_can_read_rows>true</users_without_row_policies_can_read_rows>
     <on_cluster_queries_require_cluster_grant>true</on_cluster_queries_require_cluster_grant>
     <select_from_system_db_requires_grant>true</select_from_system_db_requires_grant>
