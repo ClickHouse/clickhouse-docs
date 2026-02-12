@@ -3482,7 +3482,7 @@ SharedMergeTree のパーツを完全に削除するまでの猶予期間。Clic
 
 <SettingsInfoBlock type="UInt64" default_value="128" />
 
-共有 MergeTree の古いパーツをクリーンアップするためのスレッド数。ClickHouse Cloud でのみ利用可能です
+共有 MergeTree の parts killer スレッドをクリーンアップするためのスレッド数。ClickHouse Cloud でのみ利用可能です
 
 ## path \{#path\}
 

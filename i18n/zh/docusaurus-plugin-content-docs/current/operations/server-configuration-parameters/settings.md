@@ -3483,7 +3483,7 @@ ZooKeeper 客户端中用于发送和接收线程的 Linux nice 值。值越低�
 
 <SettingsInfoBlock type="UInt64" default_value="128" />
 
-用于清理共享 MergeTree 过期分区片段的线程数。仅在 ClickHouse Cloud 中可用。
+用于清理共享 MergeTree 分区片段的清理线程数。仅在 ClickHouse Cloud 中可用。
 
 ## path \{#path\}
 
