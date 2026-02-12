@@ -27,7 +27,7 @@ When you use the `materialized_view` materialization, dbt-clickhouse needs to cr
 | Approach | Description | Status   |
 |----------|-------------|----------|
 | **Implicit target** | dbt-clickhouse creates and manages the target table automatically within the same model. The target table schema is inferred from the MV's SQL. | Stable   |
-| **Explicit target** | You define the target table as a separate `table` materialization and reference it from your MV model using the `materialization_target_table()` macro. The MV is created with a `TO` clause pointing to that table. | **Beta** |
+| **Explicit target** | You define the target table as a separate `table` materialization and reference it from your MV model using the `materialization_target_table()` macro. The MV is created with a `TO` clause pointing to that table. This functionality is available starting from **dbt-clickhouse version 1.10**. **Caution**: This feature is in beta and the API may change based on community feedback. | **Beta** |
 
 The approach you choose affects how schema changes, full refreshes, and multi-MV setups are handled. The following sections describe each approach in detail.
 
@@ -123,10 +123,10 @@ By default, when creating or recreating a materialized view (MV), the target tab
 Using `catchup: False` with `dbt run --full-refresh` will **discard all existing data** in the target table. The table will be recreated empty and only capture new data going forward. Ensure you have backups if the historical data might be needed later.
 :::
 
-## Materialization with explicit target (Experimental) {#explicit-target}
+## Materialization with explicit target (Beta) {#explicit-target}
 
-:::warning Experimental
-This feature is experimental and available starting from **dbt-clickhouse version 1.10**. The API may change based on community feedback.
+:::warning Beta
+This feature is in beta and available starting from **dbt-clickhouse version 1.10**. The API may change based on community feedback.
 :::
 
 By default, dbt-clickhouse creates and manages both the target table and the materialized view(s) within a single model (the [implicit target](#implicit-target) approach described above). This approach has some limitations:
@@ -213,7 +213,7 @@ When using explicit target tables, the following configurations apply:
 
 | Option | Description | Default |
 |--------|-------------|---------|
-| `on_schema_change` | How to handle schema changes when the table is used by dbt-managed MVs. Set to `fail` by default for tables with MVs pointing to them. Follows the same behavior as the `on_schema_change` config [in incremental models](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change).| A `materialized='table'` model will behave as usual if it doesn't have MVs pointing to it. If it does, it will be configured with `on_schema_change='fail'` to protect the data from the MVs. |
+| `mv_on_schema_change` | How to handle schema changes when the table is used by dbt-managed MVs. Follows the same behavior as the `on_schema_change` config [in incremental models](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change).| **Caution**: A `materialized='table'` model will behave as usual if it doesn't have MVs pointing to it, so even if this setting is defined, it will be ignored. If the table is target of MVs, this config will have the default value of `mv_on_schema_change='fail'` to protect the data inside these tables. |
 | `repopulate_from_mvs_on_full_refresh` | On `--full-refresh`, instead of running the table's SQL, rebuild the table by executing INSERT-SELECTs using the SQL from all MVs pointing to it. | `False` |
 
 **On the materialized view (`materialized='materialized_view'`):**
@@ -226,15 +226,9 @@ When using explicit target tables, the following configurations apply:
 You'll usually only want to set `catchup` to `True` in MVs or `repopulate_from_mvs_on_full_refresh` to `True` in their target tables. If you set both to `True`, it may duplicate data.
 :::
 
-### Behavior comparison between implicit and explicit target approaches{#explicit-target-behavior}
+### Common operations {#explicit-target-common-operations}
 
-| Operation | Current implementation | New implementation |
-| --- | --- | --- |
-| First dbt run | All resources created | All resources created |
-| Next dbt run |  **Individual resources cannot be managed, all happen together:**<br /><br />**target table**: <br /> changes managed with the `on_schema_change` setting. By default it has the setting `ignore` so new columns are not processed.<br /><br />**MVs**: all updated with `alter table modify query` operations | **Changes can be applied individually:<br /><br />target table**: <br />automatic detection to know if they are target tables from dbt defined MVs. If they are, the columns evolution is managed by default with the `on_schema_change` setting with `fail` value so it will fail if columns changes. We added this default value as a protection layer<br /><br />**MVs**: Their SQL gets updated with `alter table modify query` operations. |
-| dbt run --full-refresh | **Individual resources cannot be managed, all happen together:<br /><br />target table**: <br />target table recreated empty. `catchup` available to configure a backfill with the SQL of all the MVs together. `catchup` is `True` by default<br /><br />**MVs**: all get recreated. | **Changes will be applied individually:<br /><br />target table:** will be recreated as usual.<br /><br />**MVs**: drop and recreate. `catchup` available for an initial backfill. `catchup` is `True` by default. <br /><br />**Note: During the process, the target table will be empty or partially loaded until the MVs are recreated. To avoid this, check the next section about how to iterate the target table.**|
-
-### Full refresh with explicit targets {#explicit-target-full-refresh}
+#### Full refresh with explicit targets {#explicit-target-full-refresh}
 
 When using `--full-refresh`, explicit target tables will be recreated (so you may loss data if ingestion is happening during this process). This will behave in different ways depending on your configurations:
 
@@ -276,13 +270,21 @@ So the users of your table will not see empty data while the MVs are being recre
 ...
 ```
 
-### Changing the target table {#explicit-target-changing}
+#### Changing the target table {#explicit-target-changing}
 
 You cannot change the target table of an MV without a `--full-refresh`. If you try to run a regular `dbt run` after changing the `materialization_target_table()` reference, the build will fail with an error message indicating that the target has changed.
 
 To change the target:
 1. Update the `materialization_target_table()` call
 2. Run `dbt run --full-refresh -s your_mv_model`
+
+### Behavior comparison between implicit and explicit target approaches{#explicit-target-behavior}
+
+| Operation | Implicit target | Explicit target |
+| --- | --- | --- |
+| First dbt run | All resources created | All resources created |
+| Next dbt run |  **Individual resources cannot be managed, all happen together:**<br /><br />**target table**: <br /> changes managed with the `on_schema_change` setting. By default it has the setting `ignore` so new columns are not processed.<br /><br />**MVs**: all updated with `alter table modify query` operations | **Changes can be applied individually:<br /><br />target table**: <br />automatic detection to know if they are target tables from dbt defined MVs. If they are, the columns evolution is managed by default with the `mv_on_schema_change` setting with `fail` value so it will fail if columns changes. We added this default value as a protection layer<br /><br />**MVs**: Their SQL gets updated with `alter table modify query` operations. |
+| dbt run --full-refresh | **Individual resources cannot be managed, all happen together:<br /><br />target table**: <br />target table recreated empty. `catchup` available to configure a backfill with the SQL of all the MVs together. `catchup` is `True` by default<br /><br />**MVs**: all get recreated. | **Changes will be applied individually:<br /><br />target table:** will be recreated as usual.<br /><br />**MVs**: drop and recreate. `catchup` available for an initial backfill. `catchup` is `True` by default. <br /><br />**Note: During the process, the target table will be empty or partially loaded until the MVs are recreated. To avoid this, check the next section about how to iterate the target table.**|
 
 ### Migrating from implicit to explicit target {#migration-implicit-to-explicit}
 
@@ -376,7 +378,7 @@ The following table summarizes the safety of each operation when inserts are act
 
 | Operation | Internal process | Safety while inserts are happening |
 |-----------|------------------|------------------------------------|
-| `dbt run` | Schema changes applied if `on_schema_change` is configured | ✅ Safe. No data movement. |
+| `dbt run` | Schema changes applied following the `mv_on_schema_change` setting | ✅ Safe. No data movement. |
 | `dbt run --full-refresh` (default) | Recreate the table (leaves it empty) | ⚠️ **Target table is empty** until MVs backfill it. MVs continue inserting into the new table once it exists. |
 | `dbt run --full-refresh` with `repopulate_from_mvs_on_full_refresh=True` | 1. Create backup table<br/>2. Insert data using each MV's SQL<br/>3. Exchange tables atomically | ⚠️ **MV is blind during recreation.** Data inserted between steps 1 and 3 will not appear in the new table. **This may change in next versions**|
 
