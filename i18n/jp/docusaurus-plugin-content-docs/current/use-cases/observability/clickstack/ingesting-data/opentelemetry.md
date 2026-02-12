@@ -16,7 +16,7 @@ import TabItem from '@theme/TabItem';
 
 すべてのデータは **OpenTelemetry (OTel) collector** インスタンス経由で ClickStack に取り込まれます。このインスタンスは、ログ、メトリクス、トレース、およびセッションデータの主な入口として機能します。この用途には、collector の公式ディストリビューションである [ClickStack distribution](#installing-otel-collector) を使用することを推奨します。
 
-ユーザーは、この collector に対して、[language SDKs](/use-cases/observability/clickstack/sdks) から、あるいはインフラストラクチャのメトリクスやログを収集するデータ収集エージェント経由でデータを送信します（[agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) ロールで動作する OTel collector や、[Fluentd](https://www.fluentd.org/)、[Vector](https://vector.dev/) などの他のテクノロジーなど）。セットアップを効率化するには、[Bindplane](/use-cases/observability/clickstack/integration-partners/bindplane) を使用します。Bindplane は OpenTelemetry ネイティブなテレメトリパイプラインで、ClickStack をネイティブな宛先としてサポートしており、ClickStack へのテレメトリの収集・処理・ルーティングを簡素化します。
+ユーザーは、この collector に対して、[language SDKs](/use-cases/observability/clickstack/sdks) から、あるいはインフラストラクチャのメトリクスやログを収集するデータ収集エージェント経由でデータを送信します（[agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) ロールで動作する OTel collector や、[Fluentd](https://www.fluentd.org/)、[Vector](https://vector.dev/) などの他のテクノロジーなど）。管理された OpenTelemetry パイプラインを利用したいチーム向けに、[Bindplane](/use-cases/observability/clickstack/integration-partners/bindplane)は ClickStack をネイティブな宛先としてサポートする OpenTelemetry ネイティブなソリューションを提供し、テレメトリの収集・処理・ルーティングを簡素化します。
 
 
 ## OpenTelemetry データの送信 \{#sending-otel-data\}
