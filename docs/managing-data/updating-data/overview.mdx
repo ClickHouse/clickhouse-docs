@@ -170,7 +170,7 @@ ALTER TABLE posts UPDATE AnswerCount = AnswerCount + 1 WHERE AnswerCount = 0
 
 Use mutations when regulatory compliance requires guaranteed physical data removal, or for infrequent bulk update operations where you can tolerate the I/O overhead.
 
-Mutations are extremely I/O-heavy, rewriting all parts that match the `WHERE` expression. There is no atomicity to this process—parts are substituted for mutated parts as soon as they are ready, and a `SELECT` query that starts executing during a mutation will see data from parts that have already been mutated along with data from parts that have not been mutated yet. You can track the state of progress via the [`system.mutations`](/operations/system-tables/mutations) table.
+Mutations are quite I/O-heavy, rewriting all parts that match the `WHERE` expression. There is no atomicity to this process—parts are substituted for mutated parts as soon as they are ready, and a `SELECT` query that starts executing during a mutation will see data from parts that have already been mutated along with data from parts that have not been mutated yet. You can track the state of progress via the [`system.mutations`](/operations/system-tables/mutations) table.
 
 :::warning
 Mutations are I/O intensive and should be used sparingly as they can impact cluster `SELECT` performance. If mutations queue faster than they process, query performance will degrade. Monitor the queue via `system.mutations`.
