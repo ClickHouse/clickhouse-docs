@@ -441,9 +441,9 @@ SELECT extractAllGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 テキスト索引が定義されていない場合、この関数は総当たりのカラム走査を実行し、これは索引検索よりも桁違いに遅くなります。
 :::
 
-検索の前に、この関数は次をトークン化します:
+検索の前に、この関数は次をトークン化します
 
-* `input` 引数（常に）、および
+* `input` 引数（常に）および
 * `needle` 引数（[String](../../sql-reference/data-types/string.md) として与えられた場合）
   に対して、テキスト索引に指定されたトークナイザを使用します。
   カラムにテキスト索引が定義されていない場合は、代わりに `splitByNonAlpha` トークナイザが使用されます。
@@ -463,7 +463,8 @@ hasAllTokens(input, needles)
 **引数**
 
 * `input` — 入力カラム。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Array(String)`](/sql-reference/data-types/array) または [`Array(FixedString)`](/sql-reference/data-types/array)
-* `needles` — 検索するトークン。[`String`](/sql-reference/data-types/string) または [`Array(String)`](/sql-reference/data-types/array)
+* `needles` — 検索対象のトークン。[`String`](/sql-reference/data-types/string) または [`Array(String)`](/sql-reference/data-types/array)
+* `tokenizer` — 使用するトークナイザ。有効な引数は `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams` です。省略可能であり、明示的に設定しない場合は `splitByNonAlpha` がデフォルトになります。[`const String`](/sql-reference/data-types/string)
 
 **戻り値**
 
@@ -471,7 +472,7 @@ hasAllTokens(input, needles)
 
 **例**
 
-**文字列カラムに対する使用例**
+**文字列ニードルを使った基本的な使用法**
 
 ```sql title=Query
 CREATE TABLE table (
@@ -515,6 +516,18 @@ SELECT count() FROM table WHERE hasAllTokens(msg, tokens('a()d', 'splitByString'
 ┌─count()─┐
 │       1 │
 └─────────┘
+```
+
+**第3引数でカスタムトークナイザを使用する**
+
+```sql title=Query
+SELECT hasAllTokens('abcdef', 'abc', 'ngrams(3)');
+```
+
+```response title=Response
+┌─hasAllTokens('abcdef', 'abc', 'ngrams(3)')─┐
+│                                            1 │
+└──────────────────────────────────────────────┘
 ```
 
 **配列カラムとマップカラムの使用例**
@@ -563,7 +576,7 @@ SELECT count() FROM log WHERE hasAllTokens(mapKeys(attributes), ['address', 'log
 └─────────┘
 ```
 
-**mapValues を使った例**
+**mapValues の例**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAllTokens(mapValues(attributes), ['192.0.0.1', 'DEBUG']);
@@ -583,14 +596,13 @@ SELECT count() FROM log WHERE hasAllTokens(mapValues(attributes), ['192.0.0.1', 
 
 :::note
 最適なパフォーマンスのため、カラム `input` には [text index](../../engines/table-engines/mergetree-family/textindexes) が定義されている必要があります。
-text index が定義されていない場合、この関数はブルートフォースによるカラムスキャンを実行し、INDEX ルックアップと比べて桁違いに遅くなります。
+text index が定義されていない場合、この関数はブルートフォースによるカラムスキャンを実行し、索引ルックアップと比べて桁違いに遅くなります。
 :::
 
 検索を行う前に、この関数は次をトークン化します。
 
-* `input` 引数（常に）
+* `input` 引数（常に）と
 * `needle` 引数（[String](../../sql-reference/data-types/string.md) として指定された場合）
-
   これらには、text index に対して指定された tokenizer が使用されます。
   カラムに text index が定義されていない場合は、代わりに `splitByNonAlpha` tokenizer が使用されます。
   `needle` 引数が [Array(String)](../../sql-reference/data-types/array.md) 型の場合、各配列要素はそれ自体がトークンとして扱われ、追加のトークン化は行われません。
@@ -610,6 +622,7 @@ hasAnyTokens(input, needles)
 
 * `input` — 入力カラム。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Array(String)`](/sql-reference/data-types/array) または [`Array(FixedString)`](/sql-reference/data-types/array)
 * `needles` — 検索するトークン。[`String`](/sql-reference/data-types/string) または [`Array(String)`](/sql-reference/data-types/array)
+* `tokenizer` — 使用する tokenizer を指定します。利用可能な値は `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams` です。省略可能で、明示的に指定しない場合は `splitByNonAlpha` がデフォルト値になります。[`const String`](/sql-reference/data-types/string)
 
 **戻り値**
 
@@ -617,7 +630,7 @@ hasAnyTokens(input, needles)
 
 **例**
 
-**文字列カラムに対する使用例**
+**文字列 needle の基本的な使用方法**
 
 ```sql title=Query
 CREATE TABLE table (
@@ -709,7 +722,7 @@ SELECT count() FROM log WHERE hasAnyTokens(mapKeys(attributes), ['address', 'log
 └─────────┘
 ```
 
-**mapValues の例**
+**mapValues の使用例**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 'DEBUG']);

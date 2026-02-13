@@ -46,7 +46,9 @@ sudo apt-get install build-essential git cmake ccache python3 ninja-build nasm y
 Ubuntu/Debian に Clang をインストールするには、[こちら](https://apt.llvm.org/) から LLVM の自動インストールスクリプトを使用してください。
 
 ```bash
-sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+wget https://apt.llvm.org/llvm.sh
+chmod +x llvm.sh
+sudo ./llvm.sh 21
 ```
 
 他の Linux ディストリビューションについては、LLVM の[事前ビルド済みパッケージ](https://releases.llvm.org/download.html)をインストールできるか確認してください。

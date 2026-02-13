@@ -510,15 +510,12 @@ WHERE string_search_function(column_with_text_index)
 ```
 
 ClickHouse 中的直接读取优化会仅使用文本索引来回答查询（即通过文本索引查找），而无需访问底层文本列。
-
 文本索引查找读取的数据量相对较少，因此比 ClickHouse 中常规的 skip 索引快得多（后者会先执行 skip 索引查找，然后再加载并过滤剩余的数据颗粒 granules）。
 
 直接读取由两个设置控制：
 
 * 设置 [query&#95;plan&#95;direct&#95;read&#95;from&#95;text&#95;index](../../../operations/settings/settings#query_plan_direct_read_from_text_index)（默认值为 true），用于指定是否全局启用直接读取。
 * 设置 [use&#95;skip&#95;indexes&#95;on&#95;data&#95;read](../../../operations/settings/settings#use_skip_indexes_on_data_read)，这是启用直接读取的另一个前提条件。在 ClickHouse 版本 &gt;= 26.1 中，该设置默认启用。在更早的版本中，需要显式执行 `SET use_skip_indexes_on_data_read = 1`。
-
-此外，要使用直接读取，文本索引必须已完全物化（为此请使用 `ALTER TABLE ... MATERIALIZE INDEX`）。
 
 **支持的函数**
 
@@ -551,7 +548,7 @@ Actions: INPUT : 0 -> col String : 0
 [...]
 ```
 
-而在将 `query_plan_direct_read_from_text_index = 1` 设置为 1 时运行相同的查询
+而在使用 `query_plan_direct_read_from_text_index = 1` 运行相同的查询时
 
 ```sql
 EXPLAIN PLAN actions = 1
@@ -562,7 +559,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, -- enable direct read
          use_skip_indexes_on_data_read = 1;
 ```
 
-返回值
+返回
 
 ```text
 [...]
