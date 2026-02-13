@@ -15,6 +15,9 @@ import S3DataSource from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_
 import GCSSDataSource from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/google-cloud-storage/_1-data-source.md';
 import ABSDataSource from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/azure-blob-storage/_1-data-source.md';
 
+import S3Connection from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/amazon-s3/_2-connection.md';
+import GCSConnection from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/google-cloud-storage/_2-connection.md';
+
 <VerticalStepper type="numbered" headerLevel="h2">
 
 ## データソースを選択する \{#1-select-the-data-source\}
@@ -25,15 +28,13 @@ import ABSDataSource from '@site/i18n/jp/docusaurus-plugin-content-docs/current/
 
 {props.provider === 's3' && <S3DataSource />}
 {props.provider === 'gcs' && <GCSSDataSource />}
-{props.provider === 'abs' && <ABSDataSource />}
 
 ## ClickPipe 接続をセットアップする \{#2-setup-your-clickpipe-connection\}
 
 **1.** 新しい ClickPipe をセットアップするには、オブジェクトストレージサービスへの接続方法と認証方法の詳細を指定する必要があります。
 
-{props.provider === 's3' && <S3DataSource />}
-{props.provider === 'gcs' && <GCSSDataSource />}
-{props.provider === 'abs' && <ABSDataSource />}
+{props.provider === 's3' && <S3Connection />}
+{props.provider === 'gcs' && <GCSConnection />}
 
 **2.** **Incoming data** をクリックします。ClickPipes が次のステップのためにバケットからメタデータを取得します。
 

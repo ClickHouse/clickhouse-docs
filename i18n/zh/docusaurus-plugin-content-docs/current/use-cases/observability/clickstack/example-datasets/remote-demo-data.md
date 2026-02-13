@@ -40,12 +40,12 @@ import demo_sources from '@site/static/images/use-cases/observability/hyperdx-de
 import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
 import DemoArchitecture from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
 
-**本指南假设您已按照[一体化镜像部署说明](/use-cases/observability/clickstack/getting-started)或[仅本地模式](/use-cases/observability/clickstack/deployment/local-mode-only)部署了 ClickStack，并完成了初始用户创建。或者，您也可以跳过所有本地环境搭建，直接连接到我们托管的 ClickStack 演示实例 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)，该实例使用的就是本数据集。**
+**本指南假设您已按照[一体化镜像部署说明](/use-cases/observability/clickstack/getting-started/oss)或[仅本地模式](/use-cases/observability/clickstack/deployment/local-mode-only)部署了开源版 ClickStack，并完成了初始用户创建。或者，您也可以跳过所有本地环境搭建，直接连接到我们托管的 ClickStack 演示实例 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)，该实例使用的就是本数据集。**
 
 本指南使用托管在公共 ClickHouse playground [sql.clickhouse.com](https://sql.clickhpouse.com) 上的示例数据集，您可以从本地部署的 ClickStack 连接到该数据集。
 
-:::warning Not supported with HyperDX in ClickHouse Cloud
-当 HyperDX 托管在 ClickHouse Cloud 中时，不支持远程数据库。因此，在该环境中无法使用此数据集。
+:::warning Not supported with Managed ClickStack
+使用 Managed ClickStack 时不支持远程数据库。因此，在该环境中无法使用此数据集。
 :::
 
 
@@ -149,9 +149,9 @@ SRE 团队将使用 HyperDX 分析日志、追踪和指标，以诊断并解决�
 
   `扣款失败：无法对卡进行扣款：rpc error: code = Unknown desc = Visa 缓存已满：无法添加新项目。`
 
-  <Image img={step_6} alt="步骤 6" size="lg" />
+  <Image img={step_6} alt="第 6 步" size="lg" />
 
-  ### 探索基础架构
+  ### 探索基础设施
 
   我们已识别出一个缓存相关错误,该错误可能导致支付失败。我们仍需定位此问题在微服务架构中的来源。
 
@@ -189,7 +189,7 @@ SRE 团队将使用 HyperDX 分析日志、追踪和指标，以诊断并解决�
 
   通过选择 `Event Patterns` 对追踪数据应用事件聚类，即可立即发现 `payment` 服务的缓存问题。
 
-  <Image img={step_12} alt="步骤 12" size="lg" />
+  <Image img={step_12} alt="第 12 步" size="lg" />
 
   ### 探索追踪的基础设施
 
@@ -201,7 +201,7 @@ SRE 团队将使用 HyperDX 分析日志、追踪和指标，以诊断并解决�
 
   <Image img={step_14} alt="步骤 14" size="lg" />
 
-  通过关联追踪数据与指标数据，我们可以看到 `payment` 服务的内存和 CPU 使用率上升，随后骤降至 `0`（可归因于 pod（容器组）重启）——这表明缓存问题引发了资源问题。可以预期这已影响支付完成时间。
+  通过关联追踪数据与指标数据,可以看到 `payment` 服务的内存和 CPU 使用率上升,随后骤降至 `0`(可归因于 pod(容器组)重启)——这表明缓存问题引发了资源问题。可以预期这已影响支付完成时间。
 
   ### 事件增量加速问题解决
 
@@ -213,7 +213,7 @@ SRE 团队将使用 HyperDX 分析日志、追踪和指标，以诊断并解决�
 
   <Image img={step_15} alt="步骤 15" size="lg" />
 
-  移除错误过滤器,然后从左侧的 `分析模式` 菜单中选择 `事件增量`。
+  移除错误过滤器,然后从左侧的 `Analysis Mode` 菜单中选择 `Event Deltas`。
 
   <Image img={step_16} alt="步骤 16" size="lg" />
 
@@ -221,7 +221,7 @@ SRE 团队将使用 HyperDX 分析日志、追踪和指标，以诊断并解决�
 
   选择持续时间大于 `200ms` 的事件，并应用 `Filter by selection` 过滤器，即可将分析范围限定为较慢的事件：
 
-  <Image img={step_17} alt="第 17 步" size="lg" />
+  <Image img={step_17} alt="步骤 17" size="lg" />
 
   通过对数据子集的分析,可以看到大多数性能峰值与 `visa` 交易相关。
 
@@ -229,22 +229,22 @@ SRE 团队将使用 HyperDX 分析日志、追踪和指标，以诊断并解决�
 
   在 ClickStack 中,我们可以将日志、追踪或指标中的任何数值绘制成图表,以获取更丰富的上下文信息。
 
-  我们已经完成了以下配置：
+  我们已确认：
 
   * 我们的问题出在支付服务上
   * 缓存已满
   * 这导致资源消耗上升
-  * 该问题导致 Visa 支付无法完成，或者至少会严重拖慢支付完成时间。
+  * 该问题导致 Visa 支付无法完成，或者至少会大幅延长支付完成所需时间。
 
   <br />
 
   从左侧菜单中选择 `Chart Explorer`。填写以下值，按图表类型绘制支付完成所需时间：
 
   * `数据源`：`跟踪`
-  * `指标`: `最大值`
-  * `SQL 列`：`Duration`
-  * `其中：` `ServiceName: payment`
-  * `时间范围`: `最近 1 天`
+  * `Metric`: `最大值`
+  * `SQL 列`: `Duration`
+  * `Where`: `ServiceName: payment`
+  * `Timespan`: `最近 1 天`
 
   <br />
 
@@ -267,8 +267,8 @@ SRE 团队将使用 HyperDX 分析日志、追踪和指标，以诊断并解决�
   * `数据源`：`指标`
   * `Metric`: `最大值`
   * `SQL Column`: `visa_validation_cache.size (gauge)`（只需输入 `cache` 即可自动补全）
-  * `Where`: `ServiceName: payment`
-  * `Group By`：`<empty>`
+  * `其中：` `ServiceName: payment`
+  * `Group By`: `<empty>`
 
   我们可以看到缓存大小在 4-5 小时内逐渐增加(可能是在软件部署之后),最终达到 `100,000` 的最大值。从 `Sample Matched Events` 中可以看到,我们的错误与缓存达到此限制关联,之后缓存大小被记录为 `0`,响应时间也变为 `0s`。
 
@@ -277,8 +277,8 @@ SRE 团队将使用 HyperDX 分析日志、追踪和指标，以诊断并解决�
   综上所述,通过探索日志、追踪和指标,我们得出以下结论:
 
   * 我们的问题出在支付服务上
-  * 服务行为发生变化（很可能是由一次部署引起），导致签证缓存的大小在 4–5 小时内缓慢增长，最终达到 `100,000` 的峰值。
-  * 随着缓存规模不断增大，资源消耗也随之增加，这很可能是由于实现不当所致
+  * 服务行为发生变化（很可能是由一次部署引起），导致 Visa 缓存大小在 4–5 小时内缓慢增长，最终达到 `100,000` 的最大值。
+  * 随着缓存规模不断增加，资源消耗也随之上升——这很可能是由于实现不佳所致
   * 随着缓存不断增大，Visa 支付的性能逐渐下降
   * 在达到最大容量时，缓存会拒绝支付请求，并将自身报告为大小为 `0`。
 
@@ -292,7 +292,7 @@ SRE 团队将使用 HyperDX 分析日志、追踪和指标，以诊断并解决�
 
   从左侧菜单导航至 `Client Sessions` 选项卡,并确保数据源设置为 `Sessions`,时间段设置为 `Last 1 day`:
 
-  <Image img={step_21} alt="步骤 21" size="lg" />
+  <Image img={step_21} alt="第 21 步" size="lg" />
 
   搜索 `SpanAttributes.userEmail: Braulio` 以查找客户会话。选择该会话后,左侧将显示该客户会话的浏览器事件和关联 span,右侧将重现用户的浏览器操作过程:
 
@@ -300,7 +300,7 @@ SRE 团队将使用 HyperDX 分析日志、追踪和指标，以诊断并解决�
 
   ### 回放会话
 
-  点击 ▶️ 按钮即可回放会话。在 `Highlighted` 和 `All Events` 之间切换可调整 span 的粒度级别，前者突出显示关键事件和错误。
+  点击 ▶️ 按钮即可回放会话。在 `Highlighted` 和 `All Events` 之间切换可调整 span 的粒度级别,前者突出显示关键事件和错误。
 
   滚动到 span 列表底部,可以看到与 `/api/checkout` 关联的 `500` 错误。点击该 span 的 ▶️ 按钮,回放将跳转到会话中的此时间点,从而确认客户的实际体验——支付功能无法正常工作,且未显示任何错误信息。
 

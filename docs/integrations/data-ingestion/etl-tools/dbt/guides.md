@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Guides'
 slug: /integrations/dbt/guides
-sidebar_position: 2
+sidebar_position: 4
 description: 'Guides for using dbt with ClickHouse'
 keywords: ['clickhouse', 'dbt', 'guides']
 title: 'Guides'
@@ -32,7 +32,7 @@ This section provides guides on setting up dbt and the ClickHouse adapter, as we
 5. Creating a snapshot model.
 6. Using materialized views.
 
-These guides are designed to be used in conjunction with the rest of the [documentation](/integrations/dbt) and the [features and configurations](/integrations/dbt/features-and-configurations).
+These guides are designed to be used in conjunction with the rest of the [documentation](/integrations/dbt), the [features and configurations](/integrations/dbt/features-and-configurations) and the [materializations reference](/integrations/dbt/materializations).
 
 <TOCInline toc={toc}  maxHeadingLevel={2} />
 

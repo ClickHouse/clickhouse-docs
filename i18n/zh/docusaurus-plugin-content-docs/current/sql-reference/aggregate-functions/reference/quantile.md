@@ -15,7 +15,7 @@ doc_type: 'reference'
 
 此函数对样本应用 [reservoir sampling](https://en.wikipedia.org/wiki/Reservoir_sampling) 算法，蓄水池大小最多为 8192，并使用随机数生成器进行采样。
 结果是非确定性的。
-若要获取精确分位数，请使用 [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileexact) 函数。
+若要获取精确分位数，请使用 [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileExact) 函数。
 
 在一个查询中使用多个带有不同 level 的 `quantile*` 函数时，其内部状态不会被合并（也就是说，该查询的执行效率会低于本可以达到的水平）。
 在这种情况下，请使用 [`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 函数。

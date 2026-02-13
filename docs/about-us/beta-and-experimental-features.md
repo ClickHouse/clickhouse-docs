@@ -49,24 +49,6 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 
 | Name | Default |
 |------|--------|
-| [geotoh3_argument_order](/operations/settings/settings#geotoh3_argument_order) | `lat_lon` |
-| [enable_lightweight_update](/operations/settings/settings#enable_lightweight_update) | `1` |
-| [allow_experimental_correlated_subqueries](/operations/settings/settings#allow_experimental_correlated_subqueries) | `1` |
-| [parallel_replicas_count](/operations/settings/settings#parallel_replicas_count) | `0` |
-| [parallel_replica_offset](/operations/settings/settings#parallel_replica_offset) | `0` |
-| [parallel_replicas_custom_key](/operations/settings/settings#parallel_replicas_custom_key) | `` |
-| [parallel_replicas_custom_key_range_lower](/operations/settings/settings#parallel_replicas_custom_key_range_lower) | `0` |
-| [parallel_replicas_custom_key_range_upper](/operations/settings/settings#parallel_replicas_custom_key_range_upper) | `0` |
-| [allow_experimental_database_iceberg](/operations/settings/settings#allow_experimental_database_iceberg) | `0` |
-| [allow_experimental_database_unity_catalog](/operations/settings/settings#allow_experimental_database_unity_catalog) | `0` |
-| [allow_experimental_database_glue_catalog](/operations/settings/settings#allow_experimental_database_glue_catalog) | `0` |
-| [session_timezone](/operations/settings/settings#session_timezone) | `` |
-| [low_priority_query_wait_time_ms](/operations/settings/settings#low_priority_query_wait_time_ms) | `1000` |
-| [enable_qbit_type](/operations/settings/settings#enable_qbit_type) | `1` |
-| [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize) | `1` |
-| [use_statistics](/operations/settings/settings#use_statistics) | `1` |
-| [enable_full_text_index](/operations/settings/settings#enable_full_text_index) | `0` |
-| [allow_experimental_delta_kernel_rs](/operations/settings/settings#allow_experimental_delta_kernel_rs) | `1` |
 | [shared_merge_tree_activate_coordinated_merges_tasks](/operations/settings/merge-tree-settings#shared_merge_tree_activate_coordinated_merges_tasks) | `0` |
 | [shared_merge_tree_enable_coordinated_merges](/operations/settings/merge-tree-settings#shared_merge_tree_enable_coordinated_merges) | `0` |
 | [shared_merge_tree_enable_keeper_parts_extra_data](/operations/settings/merge-tree-settings#shared_merge_tree_enable_keeper_parts_extra_data) | `0` |
@@ -79,6 +61,26 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [shared_merge_tree_merge_coordinator_min_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_min_period_ms) | `1` |
 | [shared_merge_tree_merge_worker_fast_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_fast_timeout_ms) | `100` |
 | [shared_merge_tree_merge_worker_regular_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_regular_timeout_ms) | `10000` |
+| [geotoh3_argument_order](/operations/settings/settings#geotoh3_argument_order) | `lat_lon` |
+| [enable_lightweight_update](/operations/settings/settings#enable_lightweight_update) | `1` |
+| [allow_experimental_correlated_subqueries](/operations/settings/settings#allow_experimental_correlated_subqueries) | `1` |
+| [parallel_replicas_count](/operations/settings/settings#parallel_replicas_count) | `0` |
+| [parallel_replica_offset](/operations/settings/settings#parallel_replica_offset) | `0` |
+| [parallel_replicas_custom_key](/operations/settings/settings#parallel_replicas_custom_key) | `` |
+| [parallel_replicas_custom_key_range_lower](/operations/settings/settings#parallel_replicas_custom_key_range_lower) | `0` |
+| [parallel_replicas_custom_key_range_upper](/operations/settings/settings#parallel_replicas_custom_key_range_upper) | `0` |
+| [parallel_replicas_filter_pushdown](/operations/settings/settings#parallel_replicas_filter_pushdown) | `0` |
+| [allow_experimental_database_iceberg](/operations/settings/settings#allow_experimental_database_iceberg) | `0` |
+| [allow_experimental_database_unity_catalog](/operations/settings/settings#allow_experimental_database_unity_catalog) | `0` |
+| [allow_experimental_database_glue_catalog](/operations/settings/settings#allow_experimental_database_glue_catalog) | `0` |
+| [session_timezone](/operations/settings/settings#session_timezone) | `` |
+| [low_priority_query_wait_time_ms](/operations/settings/settings#low_priority_query_wait_time_ms) | `1000` |
+| [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize) | `1` |
+| [use_statistics](/operations/settings/settings#use_statistics) | `1` |
+| [use_statistics_cache](/operations/settings/settings#use_statistics_cache) | `1` |
+| [enable_full_text_index](/operations/settings/settings#enable_full_text_index) | `0` |
+| [allow_experimental_delta_kernel_rs](/operations/settings/settings#allow_experimental_delta_kernel_rs) | `1` |
+| [enable_join_runtime_filters](/operations/settings/settings#enable_join_runtime_filters) | `1` |
 
 
 ## Experimental settings {#experimental-settings}
@@ -120,7 +122,6 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [join_to_sort_maximum_table_rows](/operations/settings/settings#join_to_sort_maximum_table_rows) | `10000` |
 | [allow_experimental_join_right_table_sorting](/operations/settings/settings#allow_experimental_join_right_table_sorting) | `0` |
 | [allow_experimental_statistics](/operations/settings/settings#allow_experimental_statistics) | `0` |
-| [use_statistics_cache](/operations/settings/settings#use_statistics_cache) | `0` |
 | [allow_experimental_window_view](/operations/settings/settings#allow_experimental_window_view) | `0` |
 | [window_view_clean_interval](/operations/settings/settings#window_view_clean_interval) | `60` |
 | [window_view_heartbeat_interval](/operations/settings/settings#window_view_heartbeat_interval) | `15` |
@@ -147,7 +148,6 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_experimental_ytsaurus_table_function](/operations/settings/settings#allow_experimental_ytsaurus_table_function) | `0` |
 | [allow_experimental_ytsaurus_dictionary_source](/operations/settings/settings#allow_experimental_ytsaurus_dictionary_source) | `0` |
 | [distributed_plan_force_shuffle_aggregation](/operations/settings/settings#distributed_plan_force_shuffle_aggregation) | `0` |
-| [enable_join_runtime_filters](/operations/settings/settings#enable_join_runtime_filters) | `0` |
 | [join_runtime_filter_exact_values_limit](/operations/settings/settings#join_runtime_filter_exact_values_limit) | `10000` |
 | [join_runtime_bloom_filter_bytes](/operations/settings/settings#join_runtime_bloom_filter_bytes) | `524288` |
 | [join_runtime_bloom_filter_hash_functions](/operations/settings/settings#join_runtime_bloom_filter_hash_functions) | `3` |

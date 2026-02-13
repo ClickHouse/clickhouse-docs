@@ -33,6 +33,8 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - af-south-1 (Южная Африка)
 - eu-north-1 (Стокгольм)
 - sa-east-1 (Южная Америка)
+- ap-southeast-3 (Джакарта)
+- ap-east-1 (Гонконг)
 
 ## Регионы Google Cloud \{#google-cloud-regions\}
 
@@ -115,3 +117,6 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - AWS us-east-1 (Северная Вирджиния)
 - AWS us-east-2 (Огайо)
 - AWS us-west-2 (Орегон)
+- GCP europe-west4 (Нидерланды)
+- GCP us-central1 (Айова)
+- GCP us-east1 (Южная Каролина)

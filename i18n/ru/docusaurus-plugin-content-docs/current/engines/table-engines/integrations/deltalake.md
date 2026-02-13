@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # Табличный движок DeltaLake \{#deltalake-table-engine\}
 
-Этот табличный движок обеспечивает доступ только для чтения к существующим таблицам [Delta Lake](https://github.com/delta-io/delta) в Amazon S3.
+Этот табличный движок обеспечивает интеграцию с существующими таблицами [Delta Lake](https://github.com/delta-io/delta) в Amazon S3 и поддерживает как чтение, так и запись (начиная с v25.10).
 
 ## Создание таблицы \{#create-table\}
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 ```sql
 CREATE TABLE deltalake
-    ENGINE = DeltaLake(url, [aws_access_key_id, aws_secret_access_key,])
+ENGINE = DeltaLake(url, [aws_access_key_id, aws_secret_access_key,])
 ```
 
 **Параметры движка**
@@ -30,7 +30,8 @@ CREATE TABLE deltalake
 **Пример**
 
 ```sql
-CREATE TABLE deltalake ENGINE=DeltaLake('http://mars-doc-test.s3.amazonaws.com/clickhouse-bucket-3/test_table/', 'ABC123', 'Abc+123')
+CREATE TABLE deltalake
+ENGINE = DeltaLake('http://mars-doc-test.s3.amazonaws.com/clickhouse-bucket-3/test_table/', 'ABC123', 'Abc+123')
 ```
 
 Использование именованных коллекций:
@@ -48,12 +49,26 @@ CREATE TABLE deltalake ENGINE=DeltaLake('http://mars-doc-test.s3.amazonaws.com/c
 ```
 
 ```sql
-CREATE TABLE deltalake ENGINE=DeltaLake(deltalake_conf, filename = 'test_table')
+CREATE TABLE deltalake
+ENGINE = DeltaLake(deltalake_conf, filename = 'test_table')
 ```
+
 
 ### Кэш данных \{#data-cache\}
 
-Движок таблиц `Iceberg` и табличная функция поддерживают кэширование данных так же, как хранилища `S3`, `AzureBlobStorage`, `HDFS`. См. [здесь](../../../engines/table-engines/integrations/s3.md#data-cache).
+Движок таблиц `DeltaLake` и табличная функция поддерживают кэширование данных так же, как хранилища `S3`, `AzureBlobStorage`, `HDFS`. См. [здесь](../../../engines/table-engines/integrations/s3.md#data-cache).
+
+## Вставка данных \{#insert-data\}
+
+После того как вы создали таблицу с использованием табличного движка DeltaLake, вы можете вставить в неё данные следующим образом:
+
+```sql
+SET allow_experimental_delta_lake_writes = 1;
+
+INSERT INTO deltalake(id, firstname, lastname, gender, age)
+VALUES (1, 'John', 'Smith', 'M', 32);
+```
+
 
 ## См. также \{#see-also\}
 

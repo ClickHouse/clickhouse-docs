@@ -18,7 +18,7 @@ doc_type: 'guide'
 pip install chdb
 ```
 
-## Usage {#usage} 
+## Usage {#usage}
 
 ### Command line interface {#command-line-interface}
 

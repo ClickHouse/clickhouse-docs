@@ -192,7 +192,7 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
   オプションのパラメータ `posting_list_codec` (デフォルト: `none`) は、posting list のコーデックを指定します:
 
   * `none` - posting list を追加の圧縮なしで保存します。
-  * `bitpacking` - [差分 (デルタ) 符号化](https://en.wikipedia.org/wiki/Delta_encoding) を適用し、その後に [bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70) を適用します (いずれも固定サイズのブロックごと)。
+  * `bitpacking` - [差分 (デルタ) 符号化](https://en.wikipedia.org/wiki/Delta_encoding) を適用し、その後に [bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70) を適用します (いずれも固定サイズのブロックごと)。SELECT クエリを低速化するため、現時点では推奨されません。
 </details>
 
 テキスト索引は、テーブル作成後にカラムへ追加したり、カラムから削除したりできます。
@@ -671,6 +671,14 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 | [text_index_postings_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_postings_cache_max_entries)   | キャッシュ内のデシリアライズ済みポスティングの最大数。                                                 |
 | [text_index_postings_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_postings_cache_size_ratio)     | テキストインデックスのポスティングリストキャッシュにおける保護キューのサイズが、キャッシュ全体サイズに占める割合。 |
 
+## 制限事項 \{#limitations\}
+
+テキストインデックスには、現在次のような制限があります。
+
+- トークン数が非常に多いテキストインデックス（例: 100億トークン）をマテリアライズすると、大量のメモリを消費する可能性があります。テキスト
+  インデックスのマテリアライズは、直接（`ALTER TABLE <table> MATERIALIZE INDEX <index>`）行われる場合もあれば、パーツのマージ時に間接的に行われる場合もあります。
+- 1つのパーツ内の行数が 4.294.967.296（= 2^32 ≒ 42億）を超える場合、そのパーツ上のテキストインデックスをマテリアライズすることはできません。テキストインデックスがマテリアライズされていない場合、クエリはそのパーツ内での低速な総当たり検索にフォールバックします。最悪の場合の見積もりとして、1つのパーツが String 型の単一カラムだけを持ち、MergeTree の設定項目 `max_bytes_to_merge_at_max_space_in_pool`（デフォルト: 150 GB）が変更されていないと仮定します。この場合、そのカラムの1行あたりの平均文字数が 29.5 文字未満であれば、上記の状況が発生します。実際には、テーブルは他のカラムも含んでいるため、閾値は（他のカラムの数、型、サイズに応じて）その何分の一にも小さくなります。
+
 ## 実装の詳細 \{#implementation\}
 
 各テキスト索引は、2 つの（抽象的な）データ構造から構成されます:
@@ -937,6 +945,11 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 
 
 ## 関連情報 \{#related-content\}
+
+- プレゼンテーション: https://github.com/ClickHouse/clickhouse-presentations/blob/master/2025-tumuchdata-munich/ClickHouse_%20full-text%20search%20-%2011.11.2025%20Munich%20Database%20Meetup.pdf
+- プレゼンテーション: https://presentations.clickhouse.com/2026-fosdem-inverted-index/Inverted_indexes_the_what_the_why_the_how.pdf
+
+**古い資料**
 
 - ブログ: [Introducing Inverted Indices in ClickHouse](https://clickhouse.com/blog/clickhouse-search-with-inverted-indices)
 - ブログ: [Inside ClickHouse full-text search: fast, native, and columnar](https://clickhouse.com/blog/clickhouse-full-text-search)

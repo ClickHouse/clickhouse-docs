@@ -33,6 +33,8 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - af-south-1（南非）
 - eu-north-1（斯德哥尔摩）
 - sa-east-1（南美洲）
+- ap-southeast-3（雅加达）
+- ap-east-1（香港）
 
 ## Google Cloud 区域 \{#google-cloud-regions\}
 
@@ -115,3 +117,6 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - AWS us-east-1（弗吉尼亚北部）
 - AWS us-east-2（俄亥俄）
 - AWS us-west-2（俄勒冈）
+- GCP europe-west4（荷兰）
+- GCP us-central1（爱荷华）
+- GCP us-east1（南卡罗来纳）

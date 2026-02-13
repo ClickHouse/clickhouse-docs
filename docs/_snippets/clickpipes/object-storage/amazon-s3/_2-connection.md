@@ -3,7 +3,7 @@ import Image from '@theme/IdealImage';
 
     <Image img={cp_step2} alt="Fill out connection details" size="lg" border/>
 
-    * **Authentication method**: the S3 ClickPipe supports [IAM credentials](/integrations/clickpipes/object-storage/amazon-s3/overview/#iam-credentials) (`Credentials`) and [IAM role-based authentication](/integrations/clickpipes/object-storage/amazon-s3/overview/#iam-role) (`IAM role`). See the [reference documentation](/integrations/clickpipes/object-storage/overview/#access-control) for guidance on authentication and permissions.
+    * **Authentication method**: the S3 ClickPipe supports [IAM credentials](/integrations/clickpipes/object-storage/s3/overview#iam-credentials) (`Credentials`) and [IAM role-based authentication](/integrations/clickpipes/object-storage/s3/overview#iam-role) (`IAM role`). See the [reference documentation](/integrations/clickpipes/object-storage/s3/overview#access-control) for guidance on authentication and permissions.
 
     * **S3 file path**: the S3 ClickPipe expects a [virtual-hosted-style URI](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#virtual-hosted-style-access).
 
@@ -11,4 +11,4 @@ import Image from '@theme/IdealImage';
         https://bucket-name.s3.region-code.amazonaws.com/key-name
         ```
 
-        You can use POSIX wildcards to match multiple files or prefixes. See the [reference documentation](/integrations/clickpipes/object-storage/overview/#file-pattern-matching) for guidance on supported patterns.
+        You can use POSIX wildcards to match multiple files or prefixes. See the [reference documentation](/integrations/clickpipes/object-storage/s3/overview#file-pattern-matching) for guidance on supported patterns.

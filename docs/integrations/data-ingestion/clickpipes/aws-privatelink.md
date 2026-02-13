@@ -136,6 +136,14 @@ The output will contain a Resource-Configuration ARN, which you will need for th
 
 Sharing your resource requires a Resource-Share. This is facilitated through the Resource Access Manager (RAM).
 
+:::note
+A Resource-Share can only be used for a single Reverse Private Endpoint and cannot be reused.
+If you need to use the same Resource-Configuration for multiple Reverse Private Endpoints, 
+you must create a separate Resource-Share for each endpoint.
+The Resource-Share remains in your AWS account after a Reverse Private Endpoint is deleted 
+and must be manually removed if no longer needed.
+:::
+
 You can put the Resource-Configuration into the Resource-Share through [AWS console](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html) or by running the following command with ClickPipes account ID `072088201116` (arn:aws:iam::072088201116:root):
 
 ```bash
@@ -297,3 +305,23 @@ Private endpoints are linked to a specific ClickHouse service and are not transf
 Multiple ClickPipes for a single ClickHouse service can reuse the same endpoint.
 
 AWS MSK supports only one PrivateLink (VPC endpoint) per MSK cluster per authentication type (SASL_IAM or SASL_SCRAM). As a result, multiple ClickHouse Cloud services or organizations cannot create separate PrivateLink connections to the same MSK cluster using the same auth type.
+
+### Automatic cleanup of inactive endpoints {#automatic-cleanup}
+
+Reverse private endpoints that remain in a terminal state are automatically removed after a defined grace period.
+This ensures unused or misconfigured endpoints do not persist indefinitely.
+
+The following grace periods apply based on the endpoint status:
+
+| Status | Grace Period | Description |
+|---|---|---|
+| **Failed** | 7 days | The endpoint encountered an error during provisioning. |
+| **Pending Acceptance** | 1 day | The endpoint connection has not been accepted by the service owner. |
+| **Rejected** | 1 day | The endpoint connection was rejected by the service owner. |
+| **Expired** | Immediate | The endpoint has already expired and is removed promptly. |
+
+Once the grace period elapses, the endpoint and all associated resources are automatically deleted.
+
+To prevent automatic removal, resolve the underlying issue before the grace period expires.
+For example, accept a pending connection request in your AWS console,
+or recreate the endpoint if it has entered a failed state.

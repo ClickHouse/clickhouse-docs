@@ -2,8 +2,6 @@ import Image from '@theme/IdealImage';
 import AdvancedDashboard from '@site/static/images/cloud/manage/monitoring/advanced_dashboard.png';
 import NativeAdvancedDashboard from '@site/static/images/cloud/manage/monitoring/native_advanced_dashboard.png';
 
-
-
 ## 連携例 \{#examples\}
 
 外部連携を活用することで、組織は既存のモニタリングワークフローを維持しつつ、慣れ親しんだツールに関するチームの専門性を生かし、現在のプロセスを妨げたり大規模な再トレーニング投資を行ったりすることなく、ClickHouse のモニタリングをインフラ全体のオブザーバビリティに統合できます。
@@ -14,6 +12,7 @@ import NativeAdvancedDashboard from '@site/static/images/cloud/manage/monitoring
 Grafana は、ネイティブプラグイン連携と Prometheus ベースのアプローチの両方を通じて ClickHouse のモニタリングを提供します。Prometheus エンドポイント連携により、モニタリングワークロードと本番ワークロードの運用上の分離を維持しながら、既存の Grafana Cloud インフラ内での可視化を可能にします。設定方法については [Grafana の ClickHouse ドキュメント](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-clickhouse/) を参照してください。
 
 ### Datadog によるモニタリング \{#datadog\}
+
 Datadog は、サービスのアイドル状態の挙動を考慮しつつ、適切なクラウドサービスモニタリングを提供する専用の API 連携を開発中です。それまでの間、チームは ClickHouse の Prometheus エンドポイント経由で OpenMetrics 連携アプローチを利用することで、運用上の分離とコスト効率の高いモニタリングを実現できます。設定方法については [Datadog の Prometheus および OpenMetrics 連携ドキュメント](https://docs.datadoghq.com/integrations/openmetrics/) を参照してください。
 
 ### ClickStack \{#clickstack\}

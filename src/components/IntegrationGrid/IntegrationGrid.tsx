@@ -192,7 +192,7 @@ function useCMSIntegrations() {
       // Step 1: Load fallback data first for immediate display
       try {
         const fallbackResponse = await fetch(fallbackPath, {
-          cache: 'force-cache' // Use cached version if available
+          cache: 'no-cache' // Always revalidate with server to get fresh data
         });
 
         if (fallbackResponse.ok) {

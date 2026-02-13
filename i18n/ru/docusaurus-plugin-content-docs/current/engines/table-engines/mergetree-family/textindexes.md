@@ -192,7 +192,7 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
   Необязательный параметр `posting_list_codec` (по умолчанию: `none`) указывает кодек для списка вхождений:
 
   * `none` - списки вхождений сохраняются без дополнительного сжатия.
-  * `bitpacking` - применяется [дифференциальное (дельта) кодирование](https://en.wikipedia.org/wiki/Delta_encoding), за которым следует [bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70) (каждое в пределах блоков фиксированного размера).
+  * `bitpacking` - применяется [дифференциальное (дельта) кодирование](https://en.wikipedia.org/wiki/Delta_encoding), за которым следует [bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70) (каждое в пределах блоков фиксированного размера). Замедляет запросы SELECT и в настоящий момент не рекомендуется.
 </details>
 
 Текстовые индексы могут быть добавлены к столбцу или удалены из него после создания таблицы:
@@ -671,6 +671,14 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 | [text_index_postings_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_postings_cache_max_entries)   | Максимальное количество десериализованных списков вхождений в кэше.                                    |
 | [text_index_postings_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_postings_cache_size_ratio)     | Размер защищённой очереди в кэше списков вхождений текстового индекса относительно общего размера кэша. |
 
+## Ограничения \{#limitations\}
+
+В настоящий момент текстовый индекс имеет следующие ограничения:
+
+- Материализация текстовых индексов с большим количеством токенов (например, 10 миллиардов токенов) может потреблять значительный объем памяти. Материализация текстового
+  индекса может выполняться напрямую (`ALTER TABLE <table> MATERIALIZE INDEX <index>`) или косвенно при слиянии частей.
+- Невозможно материализовать текстовые индексы на частях с более чем 4.294.967.296 (= 2^32 = примерно 4,2 миллиарда) строк. Без материализованного текстового индекса запросы переключаются на медленный поиск полным перебором внутри части. В худшем случае можно оценивать так: предположим, что часть содержит один столбец типа String и настройка MergeTree `max_bytes_to_merge_at_max_space_in_pool` (значение по умолчанию: 150 GB) не изменялась. В этом случае такая ситуация возникает, если столбец в среднем содержит менее 29,5 символов на строку. На практике таблицы также содержат другие столбцы, и порог в несколько раз меньше (в зависимости от количества, типа и размера других столбцов).
+
 ## Подробности реализации \{#implementation\}
 
 Каждый текстовый индекс состоит из двух (абстрактных) структур данных:
@@ -937,6 +945,11 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 
 
 ## Связанные материалы \{#related-content\}
+
+- Презентация: https://github.com/ClickHouse/clickhouse-presentations/blob/master/2025-tumuchdata-munich/ClickHouse_%20full-text%20search%20-%2011.11.2025%20Munich%20Database%20Meetup.pdf
+- Презентация: https://presentations.clickhouse.com/2026-fosdem-inverted-index/Inverted_indexes_the_what_the_why_the_how.pdf
+
+**Устаревшие материалы**
 
 - Статья в блоге: [Introducing Inverted Indices in ClickHouse](https://clickhouse.com/blog/clickhouse-search-with-inverted-indices)
 - Статья в блоге: [Inside ClickHouse full-text search: fast, native, and columnar](https://clickhouse.com/blog/clickhouse-full-text-search)

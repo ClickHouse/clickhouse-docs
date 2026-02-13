@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # Delta Lake 表引擎 \{#deltalake-table-engine\}
 
-此引擎与 Amazon S3 中现有的 [Delta Lake](https://github.com/delta-io/delta) 表进行只读集成。
+此引擎与 Amazon S3 中现有的 [Delta Lake](https://github.com/delta-io/delta) 表进行集成，并支持读写（自 v25.10 起）。
 
 ## 创建表 \{#create-table\}
 
@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 ```sql
 CREATE TABLE deltalake
-    ENGINE = DeltaLake(url, [aws_access_key_id, aws_secret_access_key,])
+ENGINE = DeltaLake(url, [aws_access_key_id, aws_secret_access_key,])
 ```
 
 **引擎参数**
@@ -30,7 +30,8 @@ CREATE TABLE deltalake
 **示例**
 
 ```sql
-CREATE TABLE deltalake ENGINE=DeltaLake('http://mars-doc-test.s3.amazonaws.com/clickhouse-bucket-3/test_table/', 'ABC123', 'Abc+123')
+CREATE TABLE deltalake
+ENGINE = DeltaLake('http://mars-doc-test.s3.amazonaws.com/clickhouse-bucket-3/test_table/', 'ABC123', 'Abc+123')
 ```
 
 使用命名集合：
@@ -48,12 +49,26 @@ CREATE TABLE deltalake ENGINE=DeltaLake('http://mars-doc-test.s3.amazonaws.com/c
 ```
 
 ```sql
-CREATE TABLE deltalake ENGINE=DeltaLake(deltalake_conf, filename = 'test_table')
+CREATE TABLE deltalake
+ENGINE = DeltaLake(deltalake_conf, filename = 'test_table')
 ```
+
 
 ### 数据缓存 \{#data-cache\}
 
-`Iceberg` 表引擎和表函数支持与 `S3`、`AzureBlobStorage`、`HDFS` 存储相同的数据缓存机制。请参阅[此处](../../../engines/table-engines/integrations/s3.md#data-cache)。
+`DeltaLake` 表引擎和表函数支持与 `S3`、`AzureBlobStorage`、`HDFS` 存储相同的数据缓存机制。请参阅[此处](../../../engines/table-engines/integrations/s3.md#data-cache)。
+
+## 插入数据 \{#insert-data\}
+
+使用 DeltaLake 表引擎创建表之后，就可以使用以下语句插入数据：
+
+```sql
+SET allow_experimental_delta_lake_writes = 1;
+
+INSERT INTO deltalake(id, firstname, lastname, gender, age)
+VALUES (1, 'John', 'Smith', 'M', 32);
+```
+
 
 ## 另请参阅 \{#see-also\}
 

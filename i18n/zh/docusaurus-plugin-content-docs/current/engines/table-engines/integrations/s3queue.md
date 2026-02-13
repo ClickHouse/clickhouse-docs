@@ -213,10 +213,13 @@ SETTINGS
 
 ### `keeper_path` \{#keeper_path\}
 
-ZooKeeper 中的路径可以通过表引擎设置单独指定；如果未指定，则默认路径由全局配置中提供的路径和表的 UUID 组成。
+ZooKeeper 中队列元数据的路径。如果未显式指定，ClickHouse 会基于 `s3queue_default_zookeeper_path`、数据库 UUID 和表 UUID 构建该路径。绝对路径值（以 `/` 开头）会按原样使用，而相对路径值会附加到已配置的前缀之后。在引擎连接 ZooKeeper 之前，会先展开 `{database}` 或 `{uuid}` 等宏。
+
+要使用辅助 ZooKeeper 集群，请在该值前加上已配置的名称前缀，例如 `analytics_keeper:/clickhouse/queue/orders`。该名称必须存在于 `<auxiliary_zookeepers>` 中；否则引擎会报告 `Unknown auxiliary ZooKeeper name ...`。完整字符串（包括该前缀）会保留在 `SHOW CREATE TABLE` 中，从而可以对该语句进行原样复制。
+
 可能的取值：
 
-* 字符串。
+- 字符串。
 
 默认值：`/`。
 
@@ -434,13 +437,13 @@ S3Queue 引擎为 SELECT 查询提供了一个特殊设置：`commit_on_select`�
 
 ## 自省 \{#introspection\}
 
-要进行自省，请使用无状态表 `system.s3queue` 和持久化表 `system.s3queue_log`。
+要进行自省，请使用无状态表 `system.s3queue_metadata_cache` 和持久化表 `system.s3queue_log`。
 
-1. `system.s3queue`。此表为非持久化表，用于显示 `S3Queue` 的内存中状态：当前正在处理哪些文件、哪些文件已处理完成或处理失败。
+1. `system.s3queue_metadata_cache`。此表为非持久化表，用于显示 `S3Queue` 的内存中状态：当前正在处理哪些文件、哪些文件已处理完成或处理失败。
 
 ```sql
 ┌─statement──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ CREATE TABLE system.s3queue
+│ CREATE TABLE system.s3queue_metadata_cache
 (
     `database` String,
     `table` String,
@@ -462,7 +465,7 @@ COMMENT 'Contains in-memory state of S3Queue metadata and currently processed ro
 ```sql
 
 SELECT *
-FROM system.s3queue
+FROM system.s3queue_metadata_cache
 
 Row 1:
 ──────
@@ -476,7 +479,7 @@ ProfileEvents:         {'ZooKeeperTransactions':3,'ZooKeeperGet':2,'ZooKeeperMul
 exception:
 ```
 
-2. `system.s3queue_log`。持久化表。包含与 `system.s3queue` 相同的信息，但仅针对 `processed` 和 `failed` 状态的文件。
+2. `system.s3queue_log`。持久化表。包含与 `system.s3queue_metadata_cache` 相同的信息，但仅针对 `processed` 和 `failed` 状态的文件。
 
 该表的结构如下：
 
@@ -505,7 +508,7 @@ ORDER BY (event_date, event_time) │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-要使用 `system.s3queue_log`，需要在服务器配置文件中进行相应配置：
+要使用 `system.s3queue_log`，需在服务器配置文件中定义其配置：
 
 ```xml
     <s3queue_log>

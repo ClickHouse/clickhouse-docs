@@ -30,6 +30,9 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN P
 * [Мутации](/sql-reference/statements/alter/index.md#mutations)
 * [Синхронность ALTER-запросов](/sql-reference/statements/alter/index.md#synchronicity-of-alter-queries)
 * Настройка [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync)
+* [Легковесное `UPDATE`](/sql-reference/statements/update) — альтернативное легковесное обновление с использованием частей патча
+* [`APPLY PATCHES`](/sql-reference/statements/alter/apply-patches) — ручное применение патчей из легковесных обновлений
+
 
 ## Связанные материалы \{#related-content\}
 

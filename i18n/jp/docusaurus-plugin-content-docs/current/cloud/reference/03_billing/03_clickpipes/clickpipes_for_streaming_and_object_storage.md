@@ -14,8 +14,6 @@ import ClickPipesFAQ from '../../../_snippets/_clickpipes_faq.md'
 
 このセクションでは、ストリーミングおよびオブジェクトストレージ向け ClickPipes の料金モデルについて説明します。
 
-
-
 ## ClickPipes の料金体系はどのようになっていますか？ \{#what-does-the-clickpipes-pricing-structure-look-like\}
 
 2 つの要素で構成されています。
@@ -28,21 +26,15 @@ import ClickPipesFAQ from '../../../_snippets/_clickpipes_faq.md'
   (Kafka, Confluent, Amazon MSK, Amazon Kinesis, Redpanda, WarpStream, Azure Event Hubs)
   に適用されます。取り込まれるデータサイズ (GB) は、ソースから受信したバイト数 (非圧縮または圧縮) に基づいて課金されます。
 
-
-
 ## ClickPipes レプリカとは何ですか？ \{#what-are-clickpipes-replicas\}
 
 ClickPipes は、ClickHouse Cloud サービスとは独立して実行およびスケールする専用インフラストラクチャを介して、リモートデータソースからデータを取り込みます。
 そのため、専用のコンピュート レプリカを使用します。
 
-
-
 ## デフォルトのレプリカ数とそのサイズは何ですか？ \{#what-is-the-default-number-of-replicas-and-their-size\}
 
 各 ClickPipe はデフォルトでレプリカ 1 の構成となっており、512 MiB の RAM と 0.125 vCPU（XS）が割り当てられています。
 これは **0.0625** ClickHouse コンピュートユニット（1 ユニット = 8 GiB RAM、2 vCPU）に相当します。
-
-
 
 ## ClickPipes の公開料金は？ \{#what-are-the-clickpipes-public-prices\}
 
@@ -58,8 +50,6 @@ Compute の料金は、ClickPipe 内のレプリカの**数**と**サイズ**に
 | Medium (M)                 | 0.25          | 2 GiB   | 0.5    | $0.05          |
 | Large (L)                  | 0.5           | 4 GiB   | 1.0    | $0.10          |
 | Extra Large (XL)           | 1.0           | 8 GiB   | 2.0    | $0.20          |
-
-
 
 ## 例ではどのようになるでしょうか？ \{#how-does-it-look-in-an-illustrative-example\}
 
@@ -89,8 +79,6 @@ Compute の料金は、ClickPipe 内のレプリカの**数**と**サイズ**に
 </table>
 
 $^1$ _オーケストレーション用のコンピュートとして課金されるのは ClickPipes のみであり、実際のデータ転送は基盤となる ClickHouse Service によって行われるものと想定しています_
-
-
 
 ## ストリーミングおよびオブジェクトストレージ用 ClickPipes に関する FAQ \{#faq-streaming-and-object-storage\}
 

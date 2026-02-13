@@ -28,6 +28,7 @@ UPDATE [db.]table [ON CLUSTER cluster] SET column1 = expr1 [, ...] [IN PARTITION
 `filter_expr` は `UInt8` 型でなければなりません。このクエリは、`filter_expr` が非ゼロの値を取る行について、指定された列の値を対応する式の評価結果に更新します。
 値は `CAST` 演算子を使用して列の型にキャストされます。プライマリキーまたはパーティションキーの計算に使用されている列の更新はサポートされていません。
 
+
 ## 例 \{#examples\}
 
 ```sql
@@ -36,20 +37,22 @@ UPDATE hits SET Title = 'Updated Title' WHERE EventDate = today();
 UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 ```
 
+
 ## 軽量な更新はデータを即時には更新しない \{#lightweight-update-does-not-update-data-immediately\}
 
 軽量な `UPDATE` は **パッチパーツ (patch parts)** を用いて実装されています。パッチパーツは、更新対象の列と行のみを含む特殊な種類のデータパーツです。
 軽量な `UPDATE` はパッチパーツを作成しますが、ストレージ上の元のデータはすぐに物理的に書き換えられるわけではありません。
 更新処理は `INSERT ... SELECT ...` クエリに似ていますが、`UPDATE` クエリはパッチパーツの作成が完了するまで待機してから結果を返します。
 
-更新された値は次のとおりです:
-- パッチの適用により `SELECT` クエリで**即座に参照可能**になります
-- 後続のマージおよびミューテーション時にのみ**物理的にマテリアライズ**されます
-- すべてのアクティブなパーツでパッチがマテリアライズされると**自動的にクリーンアップ**されます
+更新された値は次のように扱われます:
+
+- パッチの適用により `SELECT` クエリからは**即座に参照可能**になります
+- 後続のマージおよびミューテーション時にのみ**物理的に反映**されます
+- すべてのアクティブなパーツでパッチが物理的に反映されると**自動的にクリーンアップ（削除）**されます
 
 ## 軽量アップデートの要件 \{#lightweight-update-requirements\}
 
-軽量アップデートは、[`MergeTree`](/engines/table-engines/mergetree-family/mergetree)、[`ReplacingMergeTree`](/engines/table-engines/mergetree-family/replacingmergetree)、[`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) エンジンおよびそれらの [`Replicated`](/engines/table-engines/mergetree-family/replication.md) と [`Shared`](/cloud/reference/shared-merge-tree) バージョンでサポートされています。
+軽量アップデートは、[`MergeTree`](/engines/table-engines/mergetree-family/mergetree)、[`ReplacingMergeTree`](/engines/table-engines/mergetree-family/replacingmergetree)、[`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree)、[`VersionedCollapsingMergeTree`](https://clickhouse.com/docs/engines/table-engines/mergetree-family/versionedcollapsingmergetree) エンジンおよびそれらの [`Replicated`](/engines/table-engines/mergetree-family/replication.md) と [`Shared`](/cloud/reference/shared-merge-tree) バージョンでサポートされています。
 
 軽量アップデートを使用するには、テーブル設定 [`enable_block_number_column`](/operations/settings/merge-tree-settings#enable_block_number_column) および [`enable_block_offset_column`](/operations/settings/merge-tree-settings#enable_block_offset_column) により `_block_number` および `_block_offset` カラムのマテリアライズを有効にする必要があります。
 
@@ -60,12 +63,14 @@ UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 ## パフォーマンスに関する考慮事項 \{#performance-considerations\}
 
 **軽量アップデートの利点:**
+
 - アップデートのレイテンシは、`INSERT ... SELECT ...` クエリのレイテンシと同程度
 - データパーツ内の列全体ではなく、更新された列と値のみが書き込まれる
 - 現在実行中のマージやミューテーションの完了を待つ必要がないため、アップデートのレイテンシを予測しやすい
 - 軽量アップデートは並列実行が可能
 
 **想定されるパフォーマンスへの影響:**
+
 - パッチを適用する必要がある `SELECT` クエリにはオーバーヘッドが発生する
 - パッチを適用すべきデータパーツ内の列には[スキップインデックス](/engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-data_skipping-indexes)が使用されない。テーブルにパッチパーツが存在する場合は、パッチを適用する必要がないデータパーツであっても[プロジェクション](/engines/table-engines/mergetree-family/mergetree.md/#projections)は使用されない。
 - ごく小さいアップデートを高頻度で行うと「too many parts」エラーにつながる可能性がある。`WHERE` 句内の単一の `IN` 句にアップデート対象の ID をまとめるなどして、複数のアップデートを 1 つのクエリにバッチ処理することが推奨される
@@ -78,11 +83,12 @@ UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 
 ## 更新権限 \{#update-permissions\}
 
-`UPDATE` には `ALTER UPDATE` 権限が必要です。特定のユーザーに対して特定のテーブルで `UPDATE` ステートメントを有効にするには、以下を実行します。
+`UPDATE` には `ALTER UPDATE` 権限が必要です。特定のユーザーに対して特定のテーブルで `UPDATE` 文を有効にするには、以下を実行します。
 
 ```sql
 GRANT ALTER UPDATE ON db.table TO username;
 ```
+
 
 ## 実装の詳細 \{#details-of-the-implementation\}
 
@@ -123,3 +129,4 @@ GRANT ALTER UPDATE ON db.table TO username;
 
 - [`ALTER UPDATE`](/sql-reference/statements/alter/update) - 負荷の大きい `UPDATE` 操作
 - [軽量な `DELETE`](/sql-reference/statements/delete) - 軽量な `DELETE` 操作
+- [`APPLY PATCHES`](/sql-reference/statements/alter/apply-patches) - データパーツに対するパッチの物理的マテリアライズを強制する（ミューテーション操作）

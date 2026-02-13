@@ -1,0 +1,58 @@
+---
+date: 2026-02-04
+title: 'How to opt out of core dump collection'
+description: 'This article shows you how you can opt out of core dump collection on ClickHouse Cloud'
+tags: ['Managing Cloud']
+---
+
+import optOut from '@site/static/images/crash-reports.png';
+import Image from '@theme/IdealImage';
+
+{frontMatter.description}
+{/* truncate */}
+
+## Overview
+
+Starting **February 27, 2026**, ClickHouse Cloud will begin collecting core dumps when server crashes occur. This is part of our commitment to improving service reliability for all our users.
+
+Core dump collection helps us:
+- Identify and understand what caused a crash
+- Fix issues more quickly
+- Continuously improve your service experience
+
+## What's collected
+
+When a crash occurs, core dumps capture a snapshot of the server's state at that moment. We want to be transparent that this may include sensitive information that was in memory, such as:
+
+- Connection credentials
+- Encryption keys
+- Query strings
+- Other data in memory at the time of the crash
+
+### How we protect your data
+
+We take the security of this data seriously:
+
+- **Regional Storage**: All data stays in the same region as your service
+- **Enhanced Security**: We apply additional protections to all collected data
+- **Limited Retention**: Data is kept only as long as needed for debugging, then securely deleted
+
+## Services automatically excluded
+
+Some services are automatically excluded from core dump collection:
+
+- Services with **HIPAA** compliance requirements
+- Services with **PCI** compliance requirements
+- **BYOC** (Bring Your Own Cloud) services
+
+## How to opt out
+
+If you'd prefer not to participate in core dump collection, you can easily opt out:
+
+1. Go to the [ClickHouse Cloud Console](https://clickhouse.cloud)
+2. Select your service
+3. Click on the **Settings** tab
+4. Scroll to find "Share crash reports with ClickHouse"
+5. Toggle the option off to opt out
+
+<Image img={optOut} size="md" alt="Where to find the opt out option in Cloud UI"/>

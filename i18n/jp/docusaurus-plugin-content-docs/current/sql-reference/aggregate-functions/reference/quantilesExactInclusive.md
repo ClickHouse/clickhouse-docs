@@ -13,7 +13,7 @@ doc_type: 'reference'
 
 数値データ系列に対して、インクルーシブ方式を用いて複数の異なるレベルの[分位数](https://en.wikipedia.org/wiki/Quantile)を同時に厳密に計算します。
 
-この関数は [`quantileExactInclusive`](/sql-reference/aggregate-functions/reference/quantileexactinclusive) と同等ですが、複数の分位数レベルを 1 回の処理で計算できるため、個々の分位数関数をそれぞれ呼び出すよりも効率的です。
+この関数は [`quantileExactInclusive`](/sql-reference/aggregate-functions/reference/quantileExactInclusive) と同等ですが、複数の分位数レベルを 1 回の処理で計算できるため、個々の分位数関数をそれぞれ呼び出すよりも効率的です。
 
 この関数は、[R-7 method](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample) で説明されているように、分位数の計算にインクルーシブ方式を使用します。
 これは Excel の関数 [PERCENTILE.INC](https://support.microsoft.com/en-us/office/percentile-inc-function-680f9539-45eb-410b-9a5e-c1355e5fe2ed) と同等です。

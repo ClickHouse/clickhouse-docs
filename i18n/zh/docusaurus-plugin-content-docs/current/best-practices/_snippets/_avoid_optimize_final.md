@@ -24,6 +24,7 @@ OPTIMIZE TABLE <table> FINAL;
 如果查询在与主键相同的列上进行过滤，那么使用 `FINAL` 是可以接受的。
 :::
 
+
 ## 为什么要避免？ \{#why-avoid\}
 
 ### 成本高昂 \{#its-expensive\}

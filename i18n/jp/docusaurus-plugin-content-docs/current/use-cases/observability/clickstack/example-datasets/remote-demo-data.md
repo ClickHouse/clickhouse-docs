@@ -40,12 +40,12 @@ import demo_sources from '@site/static/images/use-cases/observability/hyperdx-de
 import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
 import DemoArchitecture from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
 
-**以下のガイドでは、[all-in-one イメージ用の手順](/use-cases/observability/clickstack/getting-started) または [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only) の手順に従って ClickStack をデプロイし、初回ユーザー作成を完了していることを前提としています。あるいは、ローカルでのセットアップをすべて省略し、このデータセットを使用している ClickStack ホスト済みデモ環境 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) に接続することもできます。**
+**以下のガイドでは、[all-in-one イメージ用の手順](/use-cases/observability/clickstack/getting-started/oss) または [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only) の手順に従って Open Source ClickStack をデプロイし、初回ユーザー作成を完了していることを前提としています。あるいは、ローカルでのセットアップをすべて省略し、このデータセットを使用している ClickStack ホスト済みデモ環境 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) に接続することもできます。**
 
 このガイドで使用するサンプルデータセットは、パブリックな ClickHouse Playground である [sql.clickhouse.com](https://sql.clickhpouse.com) 上にホストされており、ローカルの ClickStack デプロイメントから接続できます。
 
-:::warning ClickHouse Cloud 上の HyperDX ではサポートされません
-HyperDX が ClickHouse Cloud 上でホストされている場合、リモートデータベースはサポートされません。そのため、このデータセットもサポート対象外です。
+:::warning Managed ClickStack ではサポートされません
+Managed ClickStack を使用している場合、リモートデータベースはサポートされません。そのため、このデータセットもサポート対象外です。
 :::
 
 
@@ -89,7 +89,7 @@ SRE チームは HyperDX を使用してログ、トレース、メトリクス�
   * `接続名`: `Demo`
   * `Host`: `https://sql-clickhouse.clickhouse.com`
   * `ユーザー名`: `otel_demo`
-  * `Password`: 空欄のままにします
+  * `Password`: 空欄のままにしてください
 
   <Image img={edit_demo_connection} alt="デモ接続を編集" size="lg" />
 
@@ -101,7 +101,7 @@ SRE チームは HyperDX を使用してログ、トレース、メトリクス�
 
   `Sources`まで上にスクロールし、各ソース（`Logs`、`Traces`、`Metrics`、`Sessions`）を変更して`otel_v2`データベースを使用するように設定してください。
 
-  <Image img={edit_demo_source} alt="デモ用ソースを編集" size="lg" />
+  <Image img={edit_demo_source} alt="デモソースを編集" size="lg" />
 
   :::note
   各ソースにデータベースの完全なリストが表示されるようにするには、ページの再読み込みが必要になる場合があります。
@@ -111,9 +111,9 @@ SRE チームは HyperDX を使用してログ、トレース、メトリクス�
 
   右上の時間選択ツールを使用して、過去`1日`のすべてのデータを表示するように時間範囲を調整します。
 
-  <Image img={step_2} alt="ステップ 2" size="lg" />
+  <Image img={step_2} alt="手順 2" size="lg" />
 
-  概要バーチャートのエラー数にわずかな差異が確認でき、連続する複数のバーで赤色の表示がわずかに増加しています。
+  概要バーチャートのエラー数にわずかな差異が確認でき、連続する複数のバーで赤色の表示がわずかに増加している可能性があります。
 
   :::note
   バーの位置は、データセットをクエリするタイミングによって異なります。
@@ -123,7 +123,7 @@ SRE チームは HyperDX を使用してログ、トレース、メトリクス�
 
   エラーの発生を強調表示するには、`SeverityText` フィルタを使用して `error` を選択し、エラーレベルのエントリのみを表示します。
 
-  エラーがより明確になります：
+  エラーがより明確に表示されます：
 
   <Image img={step_3} alt="手順 3" size="lg" />
 
@@ -139,17 +139,17 @@ SRE チームは HyperDX を使用してログ、トレース、メトリクス�
 
   ### エラーパターンを調査する
 
-  ユーザーが支払いを完了できないという報告された問題に相関する、最も明白なエラークラスターをクリックします：`Failed to place order`。
+  ユーザーが支払いを完了できないという報告された問題に相関付けられる、最も明白なエラークラスターをクリックします：`Failed to place order`。
 
   これにより、`frontend` サービスに関連付けられたこのエラーの全発生箇所が一覧表示されます:
 
   <Image img={step_5} alt="手順 5" size="lg" />
 
-  結果として表示されたエラーのいずれかを選択します。ログのメタデータが詳細に表示されます。`Overview`と`Column Values`の両方をスクロールすると、キャッシュに起因するcharging cardsの問題が示唆されます:
+  結果として表示されたエラーのいずれかを選択します。ログのメタデータが詳細に表示されます。`Overview`と`Column Values`の両方をスクロールすると、キャッシュに起因するカード決済の問題が示唆されます:
 
   `カードへの請求に失敗しました: カードに請求できませんでした: rpc error: code = Unknown desc = Visa cache full: cannot add new item.`
 
-  <Image img={step_6} alt="手順 6" size="lg" />
+  <Image img={step_6} alt="ステップ 6" size="lg" />
 
   ### インフラストラクチャを確認する
 
@@ -161,7 +161,7 @@ SRE チームは HyperDX を使用してログ、トレース、メトリクス�
 
   <Image img={step_7} alt="ステップ 7" size="lg" />
 
-  この問題はインフラストラクチャに関連していないと考えられます。エラー発生前後の期間において、メトリクスに顕著な変化は確認されていません。インフラストラクチャタブを閉じます。
+  この問題はインフラストラクチャに関連していないと考えられます。エラー発生前後の期間において、メトリクスに顕著な変化は確認されていません。インフラストラクチャタブを閉じてください。
 
   ### トレースを調査する
 
@@ -169,11 +169,11 @@ SRE チームは HyperDX を使用してログ、トレース、メトリクス�
 
   `Trace` を選択して、関連するトレースを可視化します。続く画面を下にスクロールすると、HyperDX がマイクロサービス全体の分散トレースを可視化し、各サービスのスパンを接続している様子を確認できます。決済処理には、チェックアウトや通貨換算を実行するマイクロサービスなど、複数のマイクロサービスが関与していることが明確に分かります。
 
-  <Image img={step_8} alt="手順 8" size="lg" />
+  <Image img={step_8} alt="ステップ 8" size="lg" />
 
   ビューの下部までスクロールすると、`payment`サービスがエラーの原因であり、それが呼び出しチェーンを遡って伝播していることが確認できます。
 
-  <Image img={step_9} alt="手順 9" size="lg" />
+  <Image img={step_9} alt="ステップ 9" size="lg" />
 
   ### トレースの検索
 
@@ -185,7 +185,7 @@ SRE チームは HyperDX を使用してログ、トレース、メトリクス�
 
   このビューには過去1日間のすべてのトレースが表示されます。問題の原因が決済サービスにあることが判明しているため、`ServiceName`に`payment`フィルタを適用します。
 
-  <Image img={step_11} alt="手順 11" size="lg" />
+  <Image img={step_11} alt="ステップ 11" size="lg" />
 
   `Event Patterns`を選択してトレースにイベントクラスタリングを適用することで、`payment`サービスのキャッシュ問題を即座に確認できます。
 
@@ -195,7 +195,7 @@ SRE チームは HyperDX を使用してログ、トレース、メトリクス�
 
   `Results table`をクリックして結果ビューに切り替えます。`StatusCode`フィルターで`Error`値を指定してエラーをフィルタリングします。
 
-  <Image img={step_13} alt="手順 13" size="lg" />
+  <Image img={step_13} alt="ステップ 13" size="lg" />
 
   `Error: Visa cache full: cannot add new item.` エラーを選択し、`Infrastructure` タブに切り替えて、時間範囲を `1d` に拡大します。
 
@@ -229,11 +229,11 @@ SRE チームは HyperDX を使用してログ、トレース、メトリクス�
 
   ClickStackでは、ログ、トレース、メトリクスから任意の数値をグラフ化して、より詳細なコンテキストを取得できます。
 
-  以下を設定しました：
+  以下を確認しました：
 
   * 問題は決済サービス側にあります
-  * キャッシュがいっぱいです
-  * これによりリソースの消費量が増加しました
+  * キャッシュが満杯です
+  * これによりリソース消費が増加しました
   * この問題により、Visaカードでの支払いが完了しなくなる、あるいは完了までに非常に長い時間がかかる状態になっていました。
 
   <br />
@@ -254,7 +254,7 @@ SRE チームは HyperDX を使用してログ、トレース、メトリクス�
 
   `Group By`を`SpanAttributes['app.payment.card_type']`に設定すると（オートコンプリートには`card`と入力するだけで表示されます）、Mastercardと比較してVisaトランザクションでサービスのパフォーマンスがどのように低下したかを確認できます：
 
-  <Image img={step_19} alt="手順 19" size="lg" />
+  <Image img={step_19} alt="ステップ 19" size="lg" />
 
   エラーが発生すると、レスポンスは`0s`で返されることに注意してください。
 
@@ -262,7 +262,7 @@ SRE チームは HyperDX を使用してログ、トレース、メトリクス�
 
   最後に、キャッシュサイズをメトリックとしてプロットし、時系列での挙動を確認することで、より詳細なコンテキストを把握できます。
 
-  以下の値を設定してください：
+  以下の値を入力してください：
 
   * `データソース`: `メトリクス`
   * `メトリクス`: `最大`
@@ -272,15 +272,15 @@ SRE チームは HyperDX を使用してログ、トレース、メトリクス�
 
   キャッシュサイズが4～5時間かけて増加し（おそらくソフトウェアのデプロイメント後）、最大サイズ`100,000`に到達したことが確認できます。`Sample Matched Events`から、エラーがキャッシュのこの上限到達と相関付けられており、その後サイズが`0`として記録され、レスポンスも`0s`で返されていることがわかります。
 
-  <Image img={step_20} alt="手順20" size="lg" />
+  <Image img={step_20} alt="手順 20" size="lg" />
 
   要約すると、ログ、トレース、メトリクスを順に調査した結果、以下の結論に至りました:
 
   * 問題は決済サービス側にあります
-  * サービスの挙動が変化し、おそらくデプロイメントが原因で、4〜5時間かけてvisaキャッシュが緩やかに増加し、最大で `100,000` に達しました。
-  * キャッシュのサイズが大きくなるにつれてリソース消費が増加しました。これは、おそらく実装が不十分だったことが原因です。
+  * サービスの挙動が変化し、おそらくデプロイメントが原因で、4〜5時間にわたって Visa キャッシュが徐々に増加し、最終的にサイズが最大 `100,000` に達しました。
+  * キャッシュのサイズ増加に伴いリソース消費も増大しました。おそらく実装が不適切だったことが原因です。
   * キャッシュが大きくなるにつれて、Visa決済の処理性能が低下しました
-  * キャッシュが最大サイズに達すると、支払いを拒否し、自身のサイズを `0` と報告しました。
+  * キャッシュが最大サイズに達すると、決済を拒否し、自身のサイズを`0`として報告しました。
 
   ### セッションの使用
 
@@ -292,11 +292,11 @@ SRE チームは HyperDX を使用してログ、トレース、メトリクス�
 
   左側のメニューから`Client Sessions`タブに移動し、データソースが`Sessions`に設定されていること、および期間が`Last 1 day`に設定されていることを確認します:
 
-  <Image img={step_21} alt="手順 21" size="lg" />
+  <Image img={step_21} alt="ステップ 21" size="lg" />
 
   `SpanAttributes.userEmail: Braulio` を検索して顧客のセッションを特定します。セッションを選択すると、左側に当該顧客のセッションに関連するブラウザイベントとスパンが表示され、右側にユーザーのブラウザ操作が再現されます:
 
-  <Image img={step_22} alt="手順 22" size="lg" />
+  <Image img={step_22} alt="ステップ 22" size="lg" />
 
   ### セッションの再生
 

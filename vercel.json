@@ -22,6 +22,26 @@
       ]
     },
     {
+      "source": "/docs/integrations/clickpipes/secure-kinesis",
+      "destination": "/docs/integrations/clickpipes/kinesis/auth",
+      "permanent": true
+    },
+    {
+      "source": "/docs/en/integrations/clickpipes/secure-kinesis",
+      "destination": "/docs/integrations/clickpipes/kinesis/auth",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/clickpipes/secure-rds",
+      "destination": "/docs/integrations/clickpipes/postgres/auth",
+      "permanent": true
+    },
+    {
+      "source": "/docs/en/integrations/clickpipes/secure-rds",
+      "destination": "/docs/integrations/clickpipes/postgres/auth",
+      "permanent": true
+    },
+    {
       "source": "/docs/en/docs/en/cloud/manage/service-types",
       "destination": "/docs/cloud/manage/cloud-tiers",
       "permanent": true
@@ -3417,10 +3437,6 @@
       "source": "/docs/getting-started/example-datasets/recipes",
       "destination": "/docs/getting-started/example-datasets",
       "permanent": true
-    },
-    {
-      "source": "/docs/whats-new/changelog/2025",
-      "destination": "/docs/category/changelog"
     },
     {
       "source": "/docs/development/adding_test_queries",

@@ -945,18 +945,19 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
-[ALTER](../../sql-reference/statements/alter/index.md)、[OPTIMIZE](../../sql-reference/statements/optimize.md)、[TRUNCATE](../../sql-reference/statements/truncate.md) クエリによりレプリカ上での操作が実行されるまで待機するかどうかを設定します。
+[`ALTER`](../../sql-reference/statements/alter/index.md)、[`OPTIMIZE`](../../sql-reference/statements/optimize.md)、[`TRUNCATE`](../../sql-reference/statements/truncate.md) クエリによりレプリカ上での操作が実行されるまで待機するかどうかを設定します。
 
 設定可能な値:
 
 - `0` — 待機しない。
 - `1` — 自身での実行が完了するまで待機する。
 - `2` — すべてのレプリカでの実行が完了するまで待機する。
+- `3` - アクティブなレプリカのみを待機する。
 
 Cloud でのデフォルト値: `1`。
 
 :::note
-`alter_sync` は `Replicated` テーブルにのみ適用され、`Replicated` ではないテーブルに対する ALTER には何も影響しません。
+`alter_sync` は `Replicated` および `SharedMergeTree` テーブルにのみ適用され、`Replicated` または `Shared` ではないテーブルに対する ALTER には何も影響しません。
 :::
 
 ## alter_update_mode \{#alter_update_mode\}
@@ -1247,6 +1248,7 @@ true に設定すると、非同期挿入に対して適応型ビジータイム
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1048576"},{"label": "テスト結果に基づいて導出された、より適切なデフォルト値"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 `automatic_parallel_replicas_mode`=1 の場合に、parallel replicas を自動的に有効化するための、レプリカごとの読み取りバイト数のしきい値です。0 を指定すると、しきい値はありません。
+読み取るバイト数の合計は、収集された統計情報に基づいて推定されます。
 
 ## automatic_parallel_replicas_mode \{#automatic_parallel_replicas_mode\}
 
@@ -2246,7 +2248,9 @@ Decimal 型の算術演算および比較演算におけるオーバーフロー
 
 ## deduplicate_blocks_in_dependent_materialized_views \{#deduplicate_blocks_in_dependent_materialized_views\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "既定で依存する materialized view の重複排除を有効にします。"}]}]}/>
 
 Replicated\* テーブルからデータを受け取る materialized view に対する重複排除チェックを有効または無効にします。
 
@@ -2262,15 +2266,29 @@ Replicated\* テーブルからデータを受け取る materialized view に対
 
 - [IN 演算子における NULL の処理](/guides/developer/deduplicating-inserts-on-retries#insert-deduplication-with-materialized-views)
 
+## deduplicate_insert \{#deduplicate_insert\}
+
+<SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "すべての同期および非同期 INSERT に対して、デフォルトで重複排除を有効化します。"}]}]}/>
+
+`INSERT INTO`（Replicated\* テーブル向け）のブロック単位の重複排除を有効または無効にします。
+この設定は `insert_deduplicate` および `async_insert_deduplicate` の設定を上書きします。
+この設定には次の 3 つの値を指定できます。
+
+- disable — `INSERT INTO` クエリに対する重複排除を無効にします。
+- enable — `INSERT INTO` クエリに対する重複排除を有効にします。
+- backward_compatible_choice — 特定の INSERT の種類に対して `insert_deduplicate` または `async_insert_deduplicate` が有効な場合に、重複排除を有効にします。
+
 ## deduplicate_insert_select \{#deduplicate_insert_select\}
 
 <SettingsInfoBlock type="DeduplicateInsertSelectMode" default_value="enable_when_possible" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "deduplicate_insert_select のデフォルト動作を ENABLE_WHEN_PROSSIBLE に変更"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "新しい設定。insert_select_deduplicate を置き換えます。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "deduplicate_insert_select のデフォルト動作を ENABLE_WHEN_POSSIBLE に変更"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "新しい設定。insert_select_deduplicate を置き換えます。"}]}]}/>
 
 `INSERT SELECT`（Replicated\* テーブル向け）のブロック単位の重複排除を有効または無効にします。
-この設定は、`INSERT SELECT` クエリに対して `insert_deduplicate` を上書きします。
-この設定には次の 3 つの値を指定できます:
+この設定は、`INSERT SELECT` クエリに対して `insert_deduplicate` および `deduplicate_insert` を上書きします。
+この設定には次の 4 つの値を指定できます:
 
 - disable — `INSERT SELECT` クエリに対して重複排除を無効にします。
 - force_enable — `INSERT SELECT` クエリに対して重複排除を有効にします。SELECT の結果が安定していない場合は例外がスローされます。
@@ -2999,6 +3017,12 @@ FORMAT PrettyCompactMonoBlock
 
 索引の解析処理がレプリカ間で分散実行されます。共有ストレージを使用している場合や、クラスター内のデータ量が非常に多い場合に有益です。`cluster_for_parallel_replicas` のレプリカを使用します。
 
+**関連項目**
+
+- [distributed_index_analysis_for_non_shared_merge_tree](#distributed_index_analysis_for_non_shared_merge_tree)
+- [distributed_index_analysis_min_parts_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_parts_to_activate)
+- [distributed_index_analysis_min_indexes_size_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_size_to_activate)
+
 ## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -3196,7 +3220,9 @@ ClickHouse は、クエリに分散テーブルの積（product）が含まれ�
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-SELECT FINAL で、単一のパーティション内にあるパーツのみをマージします
+異なるパーティション間でのマージを回避して、FINAL クエリを効率化します。
+
+有効にすると、SELECT FINAL クエリの実行時に、異なるパーティションに属するパーツはマージされません。代わりに、各パーティション内だけでマージが行われます。パーティション化されたテーブルを扱う場合、これによりクエリ性能が大きく向上する可能性があります。
 
 ## empty_result_for_aggregation_by_constant_keys_on_empty_set \{#empty_result_for_aggregation_by_constant_keys_on_empty_set\}
 
@@ -3228,6 +3254,15 @@ SELECT FINAL で、単一のパーティション内にあるパーツのみを�
 
 `IN` サブクエリで `DISTINCT` を有効にします。これはトレードオフとなる設定です。有効化すると、分散 IN サブクエリで転送される一時テーブルのサイズを大幅に削減し、一意な値のみが送信されるようにすることで、分片間のデータ転送を大幅に高速化できます。
 ただし、この設定を有効にすると、各ノードで重複排除（DISTINCT）を行う必要があるため、追加のマージ処理が発生します。ネットワーク転送がボトルネックとなっており、その追加のマージコストが許容できる場合に、この設定を使用してください。
+
+## enable_automatic_decision_for_merging_across_partitions_for_final \{#enable_automatic_decision_for_merging_across_partitions_for_final\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+パーティションキー式が決定的であり、そのパーティションキー式で使用されているすべてのカラムがプライマリキーに含まれているときは、ClickHouse がこの最適化を自動的に有効化します。
+この自動判定により、同じプライマリキー値を持つ行は必ず同じパーティションに属することが保証されるため、パーティションをまたいだマージを行わなくても安全になります。
 
 ## enable_blob_storage_log \{#enable_blob_storage_log\}
 
@@ -3352,11 +3387,11 @@ HTTP リクエストに対するレスポンスで、データ圧縮を有効ま
 
 ## enable_join_runtime_filters \{#enable_join_runtime_filters\}
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "この最適化を有効にした"}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 実行時に右側から収集した JOIN キーの Set を用いて、左側の行をフィルタリングします。
 
@@ -3554,18 +3589,6 @@ PROJECTION 定義における位置引数のサポートの有無を切り替え
 メモリ効率の高い集約（`distributed_aggregation_memory_efficient` を参照）で、バケットを順不同で生成できるようにします。
 これにより、集約バケットのサイズに偏りがある場合に、あるレプリカが低い ID の重いバケットをまだ処理している間でも、より高い ID のバケットをイニシエータへ送信できるようになり、パフォーマンスが向上する可能性があります。
 その代償として、メモリ使用量が増加する可能性があります。
-
-## enable_qbit_type \{#enable_qbit_type\}
-
-<BetaBadge/>
-
-**エイリアス**: `allow_experimental_qbit_type`
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "QBit が Beta 機能に移行されました。設定 'allow_experimental_qbit_type' のエイリアスが追加されました。"}]}]}/>
-
-[QBit](../../sql-reference/data-types/qbit.md) データ型の作成を許可します。
 
 ## enable_reads_from_query_cache \{#enable_reads_from_query_cache\}
 
@@ -4926,6 +4949,15 @@ MergeTree ファミリーに属するテーブルで動作します。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.4"},{"label": "0"},{"label": "テスト目的で、指定した確率でサーバーが DROP クエリを無視できるようにする"}]}]}/>
 
 有効にすると、サーバーは指定した確率で、すべての DROP TABLE クエリを無視します（Memory および JOIN エンジンの場合は、DROP を TRUNCATE に置き換えます）。テスト目的で使用されます。
+
+## ignore_format_null_for_explain \{#ignore_format_null_for_explain\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "FORMAT Null はデフォルトで EXPLAIN クエリでは無視されるようになりました"}]}]}/>
+
+有効にすると、`EXPLAIN` クエリに対する `FORMAT Null` は無視され、代わりにデフォルトの出力フォーマットが使用されます。
+無効にすると、`FORMAT Null` を指定した `EXPLAIN` クエリは出力を生成しません（従来の動作との互換性を維持）。
 
 ## ignore_materialized_views_with_dropped_target_table \{#ignore_materialized_views_with_dropped_target_table\}
 
@@ -7253,6 +7285,7 @@ LIMIT によりすぐに完了するクエリについては、より低い `max
 `max_threads` の値が小さいほど、消費されるメモリ量は少なくなります。
 
 `max_threads` 設定のデフォルト値は、ClickHouse に対して利用可能なハードウェアスレッド数に一致します。
+特別なケースとして、CPU コア数が 32 未満で SMT（例: Intel HyperThreading）を有効にした x86 プロセッサでは、ClickHouse はデフォルトで論理コア数（= 物理コア数 × 2）を使用します。
 SMT（例: Intel HyperThreading）がない場合、これは CPU コア数に相当します。
 
 ClickHouse Cloud ユーザーの場合、デフォルト値は `auto(N)` と表示され、N はサービスの vCPU サイズ（例: 2vCPU/8GiB、4vCPU/16GiB など）に対応します。
@@ -8528,18 +8561,18 @@ Possible values:
 ```sql
 CREATE TABLE fuse_tbl(a Int8, b Int8) Engine = Log;
 SET optimize_syntax_fuse_functions = 1;
-EXPLAIN SYNTAX SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
+EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
 ```
 
 結果:
 
 ```text
 SELECT
-    sum(a),
-    sumCount(b).1,
-    sumCount(b).2,
-    (sumCount(b).1) / (sumCount(b).2)
-FROM fuse_tbl
+    sum(__table1.a) AS `sum(a)`,
+    tupleElement(sumCount(__table1.b), 1) AS `sum(b)`,
+    tupleElement(sumCount(__table1.b), 2) AS `count(b)`,
+    divide(tupleElement(sumCount(__table1.b), 1), toFloat64(tupleElement(sumCount(__table1.b), 2))) AS `avg(b)`
+FROM default.fuse_tbl AS __table1
 ```
 
 
@@ -8803,6 +8836,16 @@ parallel replicas を用いたクエリ実行中に、リモートのレプリ�
 [parallel_replicas_custom_key_range_lower](#parallel_replicas_custom_key_range_lower) と併用すると、範囲 `[parallel_replicas_custom_key_range_lower, parallel_replicas_custom_key_range_upper]` に対して、フィルタがレプリカ間で作業を均等に分割できるようになります。
 
 注意: この設定によってクエリ処理中に追加のデータがフィルタされることはありません。代わりに、並列処理のために range フィルタが範囲 `[0, INT_MAX]` をどの位置で分割するかが変更されます。
+
+## parallel_replicas_filter_pushdown \{#parallel_replicas_filter_pushdown\}
+
+<BetaBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+並列レプリカが実行対象として選択したクエリ部分へのフィルタのプッシュダウンを許可します
 
 ## parallel_replicas_for_cluster_engines \{#parallel_replicas_for_cluster_engines\}
 
@@ -9342,21 +9385,6 @@ promql 方言で使用される評価時刻を設定します。`auto` は現在
 指定可能な値:
 
 - 0 以上の正の整数。
-
-## query_condition_cache_store_conditions_as_plaintext \{#query_condition_cache_store_conditions_as_plaintext\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "0"},{"label": "New setting"}]}]}/>
-
-[query condition cache](/operations/query-condition-cache) 用のフィルタ条件を平文で格納します。
-有効にすると、system.query_condition_cache にフィルタ条件がそのままの形で表示されるため、キャッシュに関する問題のデバッグが容易になります。
-平文のフィルタ条件によって機密情報が露出する可能性があるため、デフォルトでは無効です。
-
-設定可能な値:
-
-- 0 - 無効
-- 1 - 有効
 
 ## query_metric_log_interval \{#query_metric_log_interval\}
 
@@ -11424,6 +11452,22 @@ IN 演算子の右辺にある Set の最大サイズ。この制限以内であ
 
 ファイルシステムキャッシュが有効化されていないリモートディスクに対して、ユーザー空間ページキャッシュを使用します。
 
+## use_page_cache_for_local_disks \{#use_page_cache_for_local_disks\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "ローカルディスクでユーザー空間ページキャッシュを使用するための新しい設定"}]}]}/>
+
+ローカルディスクから読み取る際にユーザー空間ページキャッシュを使用します。テスト用途を想定しており、実運用環境で性能が向上する可能性は低いです。`local_filesystem_read_method = 'pread'` または `'read'` が必要です。OS のページキャッシュは無効化しません。OS のページキャッシュを無効化するには `min_bytes_to_use_direct_io` を使用できます。`file()` テーブル関数や `File()` テーブルエンジンではなく、通常のテーブルにのみ影響します。
+
+## use_page_cache_for_object_storage \{#use_page_cache_for_object_storage\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "オブジェクトストレージのテーブル関数でユーザー空間ページキャッシュを使用するための新しい設定"}]}]}/>
+
+オブジェクトストレージのテーブル関数（s3、azure、hdfs）およびテーブルエンジン（S3、Azure、HDFS）から読み取る際に、ユーザー空間ページキャッシュを使用します。
+
 ## use_page_cache_with_distributed_cache \{#use_page_cache_with_distributed_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -11441,6 +11485,19 @@ IN 演算子の右辺にある Set の最大サイズ。この制限以内であ
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
 
 Paimon テーブル関数で Paimon のパーティションプルーニングを使用します
+
+## use_parquet_metadata_cache \{#use_parquet_metadata_cache\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Parquet ファイルメタデータのキャッシュを有効にします。"}]}]}/>
+
+有効にすると、Parquet フォーマットは Parquet メタデータキャッシュを利用できます。
+
+設定可能な値:
+
+- 0 - 無効
+- 1 - 有効
 
 ## use_primary_key \{#use_primary_key\}
 
@@ -11585,11 +11642,11 @@ TopK フィルタリングにデータスキッピングインデックスを使
 
 ## use_statistics_cache \{#use_statistics_cache\}
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "新しい設定"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "statistics キャッシュを有効化"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "新しい設定"}]}]}/>
 
 すべてのパーツの統計情報を読み込むオーバーヘッドを回避するために、クエリで statistics キャッシュを使用します
 

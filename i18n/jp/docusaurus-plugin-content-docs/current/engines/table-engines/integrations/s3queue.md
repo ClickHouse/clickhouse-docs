@@ -213,12 +213,15 @@ Azure コンテナから別の Azure コンテナに移動するには、Blob St
 
 ### `keeper_path` \{#keeper_path\}
 
-ZooKeeper 内のパスはテーブルエンジンの設定として指定するか、グローバル設定で指定されたパスとテーブル UUID から既定パスを生成できます。
-取り得る値:
+ZooKeeper 内のキューのメタデータへのパス。明示的に指定されていない場合、ClickHouse は `s3queue_default_zookeeper_path`、データベース UUID、およびテーブル UUID からパスを構築します。絶対パス値（`/` で始まるもの）はそのまま使用され、相対パス値は設定済みプレフィックスに連結されます。`{database}` や `{uuid}` などのマクロは、エンジンが ZooKeeper に接続する前に展開されます。
 
-* 文字列。
+補助 ZooKeeper クラスターを対象にするには、設定済みの名前を値の先頭に付けます。たとえば `analytics_keeper:/clickhouse/queue/orders` のようにします。名前は `<auxiliary_zookeepers>` に存在している必要があり、存在しない場合、エンジンは `Unknown auxiliary ZooKeeper name ...` を報告します。プレフィックスを含む完全な文字列は `SHOW CREATE TABLE` に保持されるため、ステートメントをそのままレプリケートできます。
 
-既定値: `/`。
+設定可能な値:
+
+- 文字列。
+
+デフォルト値: `/`。
 
 ### `loading_retries` \{#loading_retries\}
 
@@ -434,13 +437,13 @@ S3Queue エンジンには、SELECT クエリ用の特別な設定 `commit_on_se
 
 ## 内部状態の確認 \{#introspection\}
 
-内部状態の確認には、ステートレスな `system.s3queue` テーブルと永続的な `system.s3queue_log` テーブルを使用します。
+内部状態の確認には、ステートレスな `system.s3queue_metadata_cache` テーブルと永続的な `system.s3queue_log` テーブルを使用します。
 
-1. `system.s3queue`。このテーブルは永続化されず、`S3Queue` のメモリ上の状態を表示します。現在処理中のファイル、処理済みのファイル、失敗したファイルを確認できます。
+1. `system.s3queue_metadata_cache`。このテーブルは永続化されず、`S3Queue` のメモリ上の状態を表示します。現在処理中のファイル、処理済みのファイル、失敗したファイルを確認できます。
 
 ```sql
 ┌─statement──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ CREATE TABLE system.s3queue
+│ CREATE TABLE system.s3queue_metadata_cache
 (
     `database` String,
     `table` String,
@@ -462,7 +465,7 @@ COMMENT 'Contains in-memory state of S3Queue metadata and currently processed ro
 ```sql
 
 SELECT *
-FROM system.s3queue
+FROM system.s3queue_metadata_cache
 
 Row 1:
 ──────
@@ -476,7 +479,7 @@ ProfileEvents:         {'ZooKeeperTransactions':3,'ZooKeeperGet':2,'ZooKeeperMul
 exception:
 ```
 
-2. `system.s3queue_log`。永続テーブル。`system.s3queue` と同じ情報を持ちますが、対象は `processed` および `failed` のファイルです。
+2. `system.s3queue_log`。永続テーブル。`system.s3queue_metadata_cache` と同じ情報を持ちますが、対象は `processed` および `failed` のファイルです。
 
 このテーブルは次の構造を持ちます。
 
@@ -505,7 +508,7 @@ ORDER BY (event_date, event_time) │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-`system.s3queue_log` を使用するには、サーバー設定ファイルで構成を定義する必要があります。
+`system.s3queue_log` を使用するには、サーバー設定ファイルで構成を定義します。
 
 ```xml
     <s3queue_log>

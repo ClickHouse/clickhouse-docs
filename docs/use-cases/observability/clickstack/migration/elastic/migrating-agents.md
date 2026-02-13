@@ -39,7 +39,7 @@ The OpenTelemetry Collector provides a sustainable and vendor-neutral solution f
 
 All data is ingested into ClickStack via an **OpenTelemetry (OTel) collector** instance, which acts as the primary entry point for logs, metrics, traces, and session data. We recommend using the official [ClickStack distribution](/use-cases/observability/clickstack/ingesting-data/opentelemetry#installing-otel-collector) of the collector for this instance, if not [already bundled in your ClickStack deployment model](/use-cases/observability/clickstack/deployment).
 
-Users send data to this collector from [language SDKs](/use-cases/observability/clickstack/sdks) or through data collection agents collecting infrastructure metrics and logs (such OTel collectors in an [agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) role or other technologies e.g. [Fluentd](https://www.fluentd.org/) or [Vector](https://vector.dev/)).
+Users send data to this collector from [language SDKs](/use-cases/observability/clickstack/sdks) or through data collection agents collecting infrastructure metrics and logs (such OTel collectors in an [agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) role or other technologies e.g. [Fluentd](https://www.fluentd.org/) or [Vector](https://vector.dev/)). For teams that want a managed OpenTelemetry pipeline, [Bindplane](/use-cases/observability/clickstack/integration-partners/bindplane)offers an OpenTelemetry-native solution with a native ClickStack destination, simplifying telemetry collection, processing, and routing.
 
 **We assume this collector is available for all agent migration steps**.
 
@@ -249,7 +249,7 @@ sinks:
         authorization: ${YOUR_INGESTION_API_KEY}
 ```
 
-The `YOUR_INGESTION_API_KEY` here is produced by ClickStack. You can find the key in the HyperDX app under `Team Settings → API Keys`.
+The `YOUR_INGESTION_API_KEY` here is produced by ClickStack. You can find the key in the ClickStack UI (HyperDX) under `Team Settings → API Keys`.
 
 <Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
 
@@ -384,7 +384,11 @@ exporters:
       insecure: true
 ```
 
-The `YOUR_INGESTION_API_KEY` here is produced by ClickStack. You can find the key in the HyperDX app under `Team Settings → API Keys`.
+:::note Managed ClickStack
+By default, an API ingestion key is not required if running an OpenTelemetry Collector standalone for Managed ClickStack. Ingestion can be secured however, by specifying an OTLP auth token. See ["Securing the collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector).
+:::
+
+The `YOUR_INGESTION_API_KEY` here is produced by ClickStack. You can find the key in the ClickStack UI under `Team Settings → API Keys`.
 
 <Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
 

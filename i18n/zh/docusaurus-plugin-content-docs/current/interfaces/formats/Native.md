@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 描述 \{#description\}
 
 `Native` 格式是 ClickHouse 中最高效的格式，因为它是真正意义上的“列式”格式，
@@ -29,11 +27,3 @@ doc_type: 'reference'
 你可以使用这种格式快速生成只能由 ClickHouse 数据库管理系统（DBMS）读取的转储文件。
 自己直接使用这种格式进行操作可能并不实用。
 :::
-
-
-
-## 使用示例 \{#example-usage\}
-
-
-
-## 格式设置 \{#format-settings\}

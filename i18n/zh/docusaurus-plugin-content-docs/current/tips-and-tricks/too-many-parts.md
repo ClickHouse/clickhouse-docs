@@ -22,6 +22,7 @@ description: 'Too Many Parts 问题的解决方案与预防'
 ---
 
 # 部分过多问题 \{#the-too-many-parts-problem\}
+
 *本指南属于一系列基于社区线下交流与经验分享整理而成的内容。若想获取更多真实场景下的解决方案和见解，可以[按具体问题浏览](./community-wisdom.md)。*
 *需要更多性能优化方面的建议？请查看[性能优化](./performance-optimization.md)社区洞见指南。*
 
@@ -30,6 +31,7 @@ description: 'Too Many Parts 问题的解决方案与预防'
 ClickHouse 会抛出 “Too many parts” 错误，以避免出现严重的性能下降。过多的小 part 会引发多种问题：查询期间需要读取和合并更多文件，导致查询性能下降；内存使用增加，因为每个 part 都需要在内存中保存元数据；压缩效率降低，因为更小的数据块压缩效果更差；由于更多的文件句柄和寻道操作而带来更高的 I/O 开销；以及后台合并变慢，使合并调度器的工作量显著增加。
 
 **相关文档**
+
 - [MergeTree Engine](/engines/table-engines/mergetree-family/mergetree)
 - [Parts](/parts)
 - [Parts System Table](/operations/system-tables/parts)
@@ -39,8 +41,8 @@ ClickHouse 会抛出 “Too many parts” 错误，以避免出现严重的性�
 此查询通过分析所有活动表的分片数量和大小来监控表碎片情况。它会识别出分片数量过多或过小、可能需要合并优化的表。请定期使用此查询，在碎片问题影响查询性能之前将其发现。
 
 ```sql runnable editable
--- 挑战：在生产环境中替换为实际的数据库和表名
--- 实验：根据您的系统调整数据分片数量阈值（1000、500、100）
+-- Challenge: Replace with your actual database and table names for production use
+-- Experiment: Adjust the part count thresholds (1000, 500, 100) based on your system
 SELECT 
     database,
     table,
@@ -51,16 +53,16 @@ SELECT
     max(rows) as max_rows_per_part,
     round(sum(bytes_on_disk) / 1024 / 1024, 2) as total_size_mb,
     CASE 
-        WHEN count() > 1000 THEN 'CRITICAL - 数据分片过多 (>1000)'
-        WHEN count() > 500 THEN 'WARNING - 数据分片较多 (>500)'
-        WHEN count() > 100 THEN 'CAUTION - 数据分片数量增多 (>100)'
-        ELSE 'OK - 数据分片数量合理'
+        WHEN count() > 1000 THEN 'CRITICAL - Too many parts (>1000)'
+        WHEN count() > 500 THEN 'WARNING - Many parts (>500)'
+        WHEN count() > 100 THEN 'CAUTION - Getting many parts (>100)'
+        ELSE 'OK - Reasonable part count'
     END as parts_assessment,
     CASE 
-        WHEN avg(rows) < 1000 THEN 'POOR - 数据分片过小'
-        WHEN avg(rows) < 10000 THEN 'FAIR - 数据分片较小'
-        WHEN avg(rows) < 100000 THEN 'GOOD - 数据分片中等'
-        ELSE 'EXCELLENT - 数据分片较大'
+        WHEN avg(rows) < 1000 THEN 'POOR - Very small parts'
+        WHEN avg(rows) < 10000 THEN 'FAIR - Small parts'
+        WHEN avg(rows) < 100000 THEN 'GOOD - Medium parts'
+        ELSE 'EXCELLENT - Large parts'
     END as part_size_assessment
 FROM system.parts
 WHERE active = 1
@@ -69,6 +71,7 @@ GROUP BY database, table
 ORDER BY total_parts DESC
 LIMIT 20;
 ```
+
 
 ## 视频资源 \{#video-sources\}
 

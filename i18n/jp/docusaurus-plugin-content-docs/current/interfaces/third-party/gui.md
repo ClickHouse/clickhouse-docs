@@ -44,6 +44,23 @@ Features:
 
 [ChartDB Source Code](https://github.com/chartdb/chartdb).
 
+### DataStoria \{#datastoria\}
+
+[DataStoria](https://github.com/FrankChen021/datastoria) は、複数の ClickHouse クラスターを一元管理できる、AI 搭載の Web コンソールアプリケーションです。
+
+主な機能:
+
+- **AI-Powered Intelligence**: 自然言語でデータを探索し、SQL クエリを最適化・修正し、データを可視化できます。
+- **Official ClickHouse Agent Skills Integration**: [公式ベストプラクティス](https://github.com/ClickHouse/agent-skills) を活用して、AI にデータベース最適化や改善提案を問い合わせることができます。
+- **Smart Error Diagnostics**: 構文エラーを、該当する行とカラムを正確にハイライトして即座に特定し、ワンクリックで AI による修正候補を取得できます。
+- **System Table Inspection**: 強力な可視化ダッシュボードとフィルターを使って、`system.query_log`、`system.query_views_log`、`system.zookeeper`、`system.ddl_distributed_queue`、`system.part_log`、`system.processes` を詳細に調査し、クラスターの状態を素早く把握できます。
+- **One-Click Explain**: 視覚的な AST とパイプラインビューにより、クエリ実行プランを即座に理解できます。
+- **Dependency Graph**: テーブル間の関係を可視化し、Materialized Views、分散テーブル、外部システム間をまたぐデータフローをトレースできます。
+- **Cluster Monitoring**: すべてのノードについて、リアルタイムメトリクス、マージ処理、レプリケーションの状態、クエリパフォーマンスなどを監視できます。
+- **Privacy & Security**: すべての SQL クエリはブラウザから直接 ClickHouse サーバーに送信されるため、完全なプライバシーが確保されます。
+
+[DataStoria ドキュメント](https://docs.datastoria.app).
+
 ### DataPup \{#datapup\}
 
 [DataPup](https://github.com/DataPupOrg/DataPup) は、ネイティブな ClickHouse サポートを備えた、モダンで AI 支援のクロスプラットフォームデータベースクライアントです。
@@ -319,6 +336,19 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 
 [Telescope ソースコード](https://github.com/iamtelescope/telescope) · [ライブデモ](https://demo.iamtelescope.net)
 
+### ClickLens \{#clicklens\}
+
+[ClickLens](https://ntk148v.github.io/clicklens/) は、ClickHouse データベースの管理と監視のための、モダンで強力かつユーザーフレンドリーな Web インターフェイスです。開発者、アナリスト、管理者が ClickHouse クラスターを効率的に操作できる包括的なツール群を提供します。ClickHouse は非常に優れた分析データベースですが、CLI や基本的なツールだけで管理するのは困難な場合があります。ClickLens は次の機能を提供することで、そのギャップを埋めます。
+
+- Discover - 任意のテーブルに対して柔軟に利用できる、Kibana ライクなデータ探索
+- SQL Console - 構文ハイライトとストリーミング結果付きでクエリを記述・実行・分析
+- Real-time Monitoring - クラスターの健全性、クエリ性能、リソース使用状況をリアルタイムに監視
+- Schema Explorer - データベース、テーブル、カラム、パーツなどを参照
+- Access Control - UI から直接ユーザーとロールを管理
+- Native RBAC - UI の権限は ClickHouse の GRANT から直接派生
+
+[ClickLens ソースコード](https://github.com/ntk148v/clicklens)
+
 ## 商用 \{#commercial\}
 
 ### DataGrip \{#datagrip\}
@@ -397,7 +427,7 @@ SeekTable は、個人／個人用途での利用については[無料](https:/
 
 ### TABLUM.IO \{#tablum_io\}
 
-[TABLUM.IO](https://tablum.io/) は、ETL と可視化のためのオンラインクエリおよび分析ツールです。ClickHouse へ接続し、柔軟な SQL コンソール経由でデータをクエリできるほか、静的ファイルやサードパーティサービスからデータをロードすることもできます。TABLUM.IO は、クエリ結果データをチャートやテーブルとして可視化できます。
+[TABLUM.IO](https://tablum.io/) は、ETL および可視化のためのオンラインのクエリおよび分析ツールです。ClickHouse に接続し、多機能な SQL コンソールを通じてデータをクエリできるほか、静的ファイルやサードパーティサービスからデータをロードすることもできます。TABLUM.IO は、チャートやテーブルとしてクエリ結果を可視化できます。
 
 機能:
 - ETL: 一般的なデータベース、ローカルおよびリモートファイル、API 呼び出しからのデータのロード。

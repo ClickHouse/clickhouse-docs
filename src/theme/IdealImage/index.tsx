@@ -16,6 +16,52 @@ import styles from "./styles.module.css";
 
 import type { Props, SrcType } from "@theme/IdealImage";
 
+// Hook to detect when an element becomes visible after being hidden (e.g., in tabs)
+function useVisibilityChange(ref: React.RefObject<HTMLElement>) {
+  const [becameVisible, setBecameVisible] = useState(false);
+  const wasHiddenRef = useRef(false);
+
+  useEffect(() => {
+    if (!ref.current) return;
+
+    const element = ref.current;
+
+    // Check if any ancestor has the hidden attribute
+    const isHidden = () => {
+      let el: HTMLElement | null = element;
+      while (el) {
+        if (el.hasAttribute('hidden')) return true;
+        el = el.parentElement;
+      }
+      return false;
+    };
+
+    // Initial check
+    wasHiddenRef.current = isHidden();
+
+    // Use MutationObserver to watch for hidden attribute changes on ancestors
+    const observer = new MutationObserver(() => {
+      const currentlyHidden = isHidden();
+      if (wasHiddenRef.current && !currentlyHidden) {
+        // Transitioned from hidden to visible
+        setBecameVisible(true);
+      }
+      wasHiddenRef.current = currentlyHidden;
+    });
+
+    // Observe changes on all ancestors
+    let el: HTMLElement | null = element;
+    while (el) {
+      observer.observe(el, { attributes: true, attributeFilter: ['hidden'] });
+      el = el.parentElement;
+    }
+
+    return () => observer.disconnect();
+  }, [ref]);
+
+  return becameVisible;
+}
+
 // Adopted from https://github.com/endiliey/react-ideal-image/blob/master/src/components/helpers.js#L59-L65
 function bytesToSize(bytes: number) {
   const sizes = ["B", "KB", "MB", "GB", "TB"];
@@ -181,7 +227,12 @@ export default function IdealImage(
   const [isZoomed, setIsZoomed] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const imageRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [networkType, setNetworkType] = useState<string | null>(null);
+
+  // Detect when this image becomes visible after being hidden (e.g., in tabs)
+  // This is used to force ReactIdealImage to remount and properly detect viewport entry
+  const becameVisible = useVisibilityChange(containerRef);
 
   useEffect(() => {
     if (!imageRef.current) return;
@@ -268,6 +319,9 @@ export default function IdealImage(
       />
   ) : (
       <ReactIdealImage
+          // Key changes when element becomes visible after being hidden (e.g., in tabs)
+          // This forces ReactIdealImage to remount and properly detect viewport entry
+          key={becameVisible ? 'visible' : 'initial'}
           {...propsRest}
           height={isGif ? undefined : (currentImage.height ?? 100)}
           alt={alt}
@@ -333,7 +387,7 @@ export default function IdealImage(
   }, [currentImage.path]);
 
   return (
-      <div style={containerStyles}>
+      <div ref={containerRef} style={containerStyles}>
         {/* Zoomed Image */}
         {networkType == "4g" && (
             <ControlledZoom
