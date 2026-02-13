@@ -1,12 +1,12 @@
 ---
-slug: /use-cases/observability/clickstack/integrations/cloudflare
+slug: /use-cases/observability/clickstack/integrations/cloudflare-logs
 title: 'Monitoring Cloudflare Logs with ClickStack'
 sidebar_label: 'Cloudflare Logs'
 pagination_prev: null
 pagination_next: null
 description: 'Monitoring Cloudflare Logs with ClickStack'
 doc_type: 'guide'
-keywords: ['Cloudflare', 'CDN', 'WAF', 'logs', 'ClickStack', 'ClickPipes', 'S3', 'SQS']
+keywords: ['Cloudflare', 'logs', 'ClickStack', 'ClickPipes', 'S3', 'SQS']
 ---
 
 import Image from '@theme/IdealImage';
@@ -17,47 +17,40 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Monitoring Cloudflare Logs with ClickStack {#cloudflare-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to ingest Cloudflare logs into ClickStack using AWS S3, SQS, and ClickPipes. You'll learn how to:
+This guide shows you how to ingest Cloudflare logs into ClickStack using ClickPipes. You'll configure event-driven ingestion via SQS and set up ClickPipes to continuously ingest logs from S3 into ClickHouse.
 
-- Configure AWS infrastructure (S3, SQS, IAM roles) for event-driven ingestion
-- Set up Cloudflare Logpush to export logs to S3
-- Create a ClickPipes job to continuously ingest logs into ClickHouse
-- Use pre-built dashboards to visualize security, performance, and traffic metrics
+A demo dataset is available if you want to test before configuring production.
 
-A demo dataset with sample logs is available if you want to test the integration before configuring your production Cloudflare account.
-
-Time Required: 30-40 minutes
+Time Required: 15-20 minutes
 :::
 
-## Overview {#overview}
+## Integration with existing Cloudflare Logpush {#existing-cloudflare}
 
-Cloudflare logs capture security events, cache performance, and traffic patterns from requests passing through Cloudflare's CDN. This guide shows how to ingest these logs into ClickHouse using ClickPipes and AWS S3. This integration uses [ClickPipes](/integrations/clickpipes) instead of the OpenTelemetry Collector because Cloudflare exports logs as JSON files to object storage rather than via OTLP protocol. ClickPipes provides managed S3 ingestion with exactly-once semantics.
-
-## Integration with existing Cloudflare account {#existing-cloudflare}
-
-This section covers configuring your existing Cloudflare account to export logs to ClickStack via AWS S3 and ClickPipes.
-
-If you would like to test the integration before configuring your production setup, you can test with our demo dataset in the [demo dataset section](#demo-dataset).
+This section assumes you have Cloudflare Logpush configured to export logs to S3. If not, follow [Cloudflare's AWS S3 setup guide](https://developers.cloudflare.com/logs/get-started/enable-destinations/aws-s3/) first.
 
 ### Prerequisites {#prerequisites}
 
 - ClickStack instance running
-- Cloudflare account with Logpush access (requires Workers Paid plan)
-- AWS account with permissions to create S3, SQS, and IAM resources
+- Cloudflare Logpush actively writing logs to an S3 bucket
+- AWS permissions to create SQS queues and IAM roles
+- S3 bucket name and region where Cloudflare writes logs
 
 <VerticalStepper headerLevel="h4">
 
-#### Create S3 bucket {#create-s3}
-
-Create an S3 bucket named `cloudflare-logs-YOUR-COMPANY` in the same AWS region as your ClickHouse instance.
-
 #### Create SQS queue {#create-sqs}
 
-Create a Standard SQS queue named `cloudflare-logs-queue`. Copy the Queue URL for later.
+Create an SQS queue to receive notifications when Cloudflare uploads new log files to S3.
 
-**Configure trust policy:**
+**Via AWS Console:**
+1. Navigate to SQS → **Create queue**
+2. **Type**: Standard
+3. **Name**: `cloudflare-logs-queue`
+4. Click **Create queue**
+5. Copy the **Queue URL**
 
-Select your queue → **Access Policy** tab → Edit → paste:
+**Configure access policy:**
+
+Select your queue → **Access policy** tab → **Edit** → Replace with:
 ```json
 {
   "Version": "2012-10-17",
@@ -67,90 +60,77 @@ Select your queue → **Access Policy** tab → Edit → paste:
     "Action": "SQS:SendMessage",
     "Resource": "arn:aws:sqs:REGION:ACCOUNT_ID:cloudflare-logs-queue",
     "Condition": {
-      "ArnLike": {
-        "aws:SourceArn": "arn:aws:s3:::cloudflare-logs-YOUR-COMPANY"
+      "ArnEquals": {
+        "aws:SourceArn": "arn:aws:s3:::YOUR-BUCKET-NAME"
       }
     }
   }]
 }
 ```
 
-**Replace:**
-- `REGION` → Your AWS region (e.g., `us-east-1`)
-- `ACCOUNT_ID` → Your AWS account ID
-- `cloudflare-logs-YOUR-COMPANY` → Your bucket name
+Replace `REGION`, `ACCOUNT_ID`, and `YOUR-BUCKET-NAME` with your values.
 
 #### Configure S3 event notifications {#s3-notifications}
 
-1. Go to your S3 bucket → **Properties** tab
-2. Scroll to **Event notifications** → **Create event notification**
-3. **Name**: `cloudflare-new-file`
-4. **Event types**: ✓ All object create events (`s3:ObjectCreated:*`)
-5. **Destination**: SQS Queue
-6. **SQS Queue**: Select `cloudflare-logs-queue`
-7. Click **Save changes**
+Configure your S3 bucket to notify the queue when new files arrive.
 
-#### Create IAM role for ClickHouse Cloud {#create-iam}
+1. S3 bucket → **Properties** → **Event notifications** → **Create event notification**
+2. **Name**: `cloudflare-new-file`
+3. **Event types**: ✓ All object create events
+4. **Destination**: SQS queue → Select `cloudflare-logs-queue`
+5. Click **Save changes**
 
-:::tip
-If you already have a ClickPipes IAM role for S3 access, you can add the permissions from this step to that existing role instead of creating a new one.
-:::
+#### Create IAM role for ClickPipes {#create-iam}
+
+ClickPipes needs permission to read from S3 and consume SQS messages.
 
 **Get ClickHouse Cloud IAM ARN:**
-
 1. ClickHouse Cloud Console → **Settings** → **Network Security Information**
-2. Copy the **IAM Role ARN** (e.g., `arn:aws:iam::123456789:role/clickhouse-cloud-prod-us-east-1`)
+2. Copy the **IAM Role ARN**
 
 **Create IAM role:**
-
-1. AWS Console → IAM → Roles → **Create Role**
-2. **Trusted entity type**: Custom trust policy
-3. Paste this policy:
+1. AWS Console → IAM → **Roles** → **Create role**
+2. **Trusted entity**: Custom trust policy
+3. Paste:
 ```json
 {
   "Version": "2012-10-17",
   "Statement": [{
     "Effect": "Allow",
     "Principal": {
-      "AWS": "CLICKHOUSE_CLOUD_ARN"
+      "AWS": "YOUR-CLICKHOUSE-CLOUD-ARN"
     },
     "Action": "sts:AssumeRole"
   }]
 }
 ```
-
 4. **Role name**: `clickhouse-clickpipes-cloudflare`
 5. Click **Create role**
 
-**Add permissions policy:**
-
-1. Select your new role → **Add permissions** → **Create inline policy**
-2. Paste this policy:
+**Add permissions:**
+1. Select role → **Add permissions** → **Create inline policy**
+2. Paste:
 ```json
 {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "S3Access",
       "Effect": "Allow",
       "Action": [
+        "s3:GetObject",
         "s3:GetBucketLocation",
-        "s3:ListBucket",
-        "s3:Get*",
-        "s3:List*"
+        "s3:ListBucket"
       ],
       "Resource": [
-        "arn:aws:s3:::cloudflare-logs-YOUR-COMPANY",
-        "arn:aws:s3:::cloudflare-logs-YOUR-COMPANY/*"
+        "arn:aws:s3:::YOUR-BUCKET-NAME",
+        "arn:aws:s3:::YOUR-BUCKET-NAME/*"
       ]
     },
     {
-      "Sid": "SQSAccess",
       "Effect": "Allow",
       "Action": [
-        "sqs:DeleteMessage",
-        "sqs:ListQueues",
         "sqs:ReceiveMessage",
+        "sqs:DeleteMessage",
         "sqs:GetQueueAttributes"
       ],
       "Resource": "arn:aws:sqs:REGION:ACCOUNT_ID:cloudflare-logs-queue"
@@ -158,94 +138,65 @@ If you already have a ClickPipes IAM role for S3 access, you can add the permiss
   ]
 }
 ```
-
 3. **Policy name**: `ClickPipesCloudflareAccess`
-4. Copy the **Role ARN** for ClickPipes configuration
-
-#### Configure Cloudflare Logpush {#configure-logpush}
-
-Configure Cloudflare to export logs to your S3 bucket. Follow Cloudflare's step-by-step guide: [Enable Logpush to Amazon S3](https://developers.cloudflare.com/logs/logpush/logpush-job/enable-destinations/aws-s3/)
-
-**Use these settings:**
-- **Dataset**: HTTP Requests
-- **Bucket**: `cloudflare-logs-YOUR-COMPANY` (from Step 1)
-- **Path**: `logs/`
-- **Daily subfolders**: ✓ Enabled
-- **Timestamp format**: RFC3339
-
-**Recommended fields:** `ClientIP`, `EdgeStartTimestamp`, `EdgeResponseStatus`, `ClientCountry`, `ClientRequestMethod`, `ClientRequestPath`, `CacheCacheStatus`, `BotScore`, `WAFAction`, `RayID`
-
-For complete field reference: [Cloudflare HTTP Request Fields](https://developers.cloudflare.com/logs/reference/log-fields/zone/http_requests/)
-
-**Verify logs flowing:**
-```bash
-# After 2-3 minutes, check S3
-aws s3 ls s3://cloudflare-logs-YOUR-COMPANY/logs/ --recursive
-```
+4. Copy the **Role ARN**
 
 #### Create ClickPipes job {#create-clickpipes}
 
 1. ClickHouse Cloud Console → **Data Sources** → **Create ClickPipe**
 2. **Source**: Amazon S3
 
-**Connection details:**
-- **Bucket**: `cloudflare-logs-YOUR-COMPANY`
-- **Path**: `logs/`
-- **Region**: Your S3 region
-- **Authentication**: IAM Role
-- **IAM Role ARN**: Paste from Step 4
+**Connection:**
+- **Bucket**: Your Cloudflare logs bucket
+- **Region**: Your bucket region
+- **Authentication**: IAM Role → Paste Role ARN from previous step
 
-**Ingestion settings:**
+**Ingestion:**
 - **Mode**: Continuous
-- **Order**: Any order (unordered mode)
+- **Ordering**: Any order
 - ✓ **Enable SQS**
-- **Queue URL**: Paste from Step 2
+- **Queue URL**: Paste from Step 1
 
-**Schema configuration:**
+**Schema:**
 
-ClickPipes will auto-detect the schema from your Cloudflare logs. Review and adjust field types as needed:
+ClickPipes auto-detects schema from your logs. Review and adjust field types as needed.
+
+**Example schema:**
 ```sql
 CREATE TABLE cloudflare_logs (
     EdgeStartTimestamp DateTime64(3),
     ClientIP String,
     ClientCountry LowCardinality(String),
-    ClientDeviceType LowCardinality(String),
     ClientRequestMethod LowCardinality(String),
     ClientRequestPath String,
-    ClientRequestURI String,
     EdgeResponseStatus UInt16,
     EdgeResponseBytes UInt64,
     CacheCacheStatus LowCardinality(String),
-    BotScore UInt8,
-    WAFAction LowCardinality(String),
+    BotScore Nullable(UInt16),
+    SecurityAction LowCardinality(Nullable(String)),
     RayID String
 ) ENGINE = MergeTree()
 ORDER BY (EdgeStartTimestamp, ClientCountry, EdgeResponseStatus)
 PARTITION BY toYYYYMMDD(EdgeStartTimestamp);
 ```
 
-**Optimization tips:**
-- Use `LowCardinality` for fields with fewer than 10k unique values
-- Partition by date for efficient time-range queries
-- Include commonly filtered fields in `ORDER BY`
-
 Click **Create ClickPipe**
 
-#### Verify data in ClickHouse {#verify-clickhouse}
+#### Verify data in ClickHouse {#verify-data}
 
-Wait 2-3 minutes for data to flow, then query:
+Wait 2-3 minutes for initial ingestion, then query:
 ```sql
--- Check data is arriving
+-- Check row count
 SELECT count() FROM cloudflare_logs;
 
 -- View recent requests
 SELECT 
     EdgeStartTimestamp,
     ClientIP,
+    ClientCountry,
     ClientRequestMethod,
     ClientRequestPath,
-    EdgeResponseStatus,
-    CacheCacheStatus
+    EdgeResponseStatus
 FROM cloudflare_logs
 ORDER BY EdgeStartTimestamp DESC
 LIMIT 10;
@@ -255,72 +206,62 @@ LIMIT 10;
 
 ## Demo dataset {#demo-dataset}
 
-For users who want to test the Cloudflare logs integration before configuring their production account, we provide a sample dataset with realistic HTTP request patterns.
+For users who want to test before configuring production, we provide sample Cloudflare logs.
 
 <VerticalStepper headerLevel="h4">
 
-#### Download the sample dataset {#download-sample}
+#### Download sample dataset {#download-sample}
 ```bash
-curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/cloudflare/cloudflare-http-requests.json.gz
+curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/cloudflare/cloudflare-logs.json.gz
 ```
 
-The dataset includes 24 hours of HTTP requests with realistic patterns:
-- Geographic distribution across 10 countries
-- Mix of desktop, mobile, and bot traffic
-- Cache hits, misses, and dynamic content
-- Security events (bot detections, WAF actions)
-- Performance variations by region and endpoint
+The dataset includes 24 hours of HTTP requests with realistic patterns covering traffic spikes, security events, and geographic distribution.
 
-#### Upload to S3 for testing {#upload-demo}
+#### Upload to S3 {#upload-demo}
 ```bash
-# Upload to your S3 bucket
-aws s3 cp cloudflare-http-requests.json.gz \
-  s3://cloudflare-logs-YOUR-COMPANY/logs/demo/20250127T100000Z_20250127T110000Z_demo.json.gz
-
-# This will trigger SQS notification → ClickPipes will process automatically
+aws s3 cp cloudflare-logs.json.gz \
+  s3://YOUR-BUCKET-NAME/demo/20250127_demo.json.gz
 ```
 
-#### Verify demo data in ClickHouse {#verify-demo}
+This triggers SQS notification → ClickPipes processes automatically.
 
-Once uploaded and processed:
-
-1. Query the data:
+#### Verify demo data {#verify-demo}
 ```sql
 SELECT count() FROM cloudflare_logs;
+-- Should show demo records
 
--- Should show ~1000 demo records
+SELECT 
+    toDate(EdgeStartTimestamp) as date,
+    count() as requests
+FROM cloudflare_logs
+GROUP BY date
+ORDER BY date DESC;
 ```
-
-2. Set time range in HyperDX to **2025-01-27 10:00:00 - 2025-01-27 11:00:00**
 
 </VerticalStepper>
 
 ## Dashboards and visualization {#dashboards}
 
-To help you monitor Cloudflare with ClickStack, we provide pre-built dashboards with essential visualizations.
-
 <VerticalStepper headerLevel="h4">
 
 #### <TrackedLink href={useBaseUrl('/examples/cloudflare-logs-dashboard.json')} download="cloudflare-logs-dashboard.json" eventName="docs.cloudflare_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
-#### Import the pre-built dashboard {#import-dashboard}
+#### Import dashboard {#import-dashboard}
 
-1. Open HyperDX and navigate to the Dashboards section
-2. Click **Import Dashboard** in the upper right corner under the ellipses
+1. HyperDX → **Dashboards** → **Import Dashboard**
 
-<Image img={import_dashboard} alt="Import dashboard button"/>
+<Image img={import_dashboard} alt="Import dashboard"/>
 
-3. Upload the `cloudflare-logs-dashboard.json` file and click **Finish Import**
+2. Upload `cloudflare-logs-dashboard.json` → **Finish Import**
 
-#### View the dashboard {#view-dashboard}
+#### View dashboard {#view-dashboard}
 
-The dashboard includes visualizations for:
-- Request rate and traffic volume over time
-- Geographic distribution (top countries)
-- Cache hit rate and performance
+The dashboard includes:
+- Request rate and traffic volume
+- Geographic distribution
+- Cache hit rates
 - Error rates by status code
-- Bot traffic and security events
-- Top endpoints by request volume
+- Security events
 
 </VerticalStepper>
 
@@ -328,48 +269,36 @@ The dashboard includes visualizations for:
 
 ### No files appearing in S3 {#no-s3-files}
 
-**Check Cloudflare Logpush job status:**
-```bash
-# Via Cloudflare dashboard
-Analytics & Logs → Logs → Verify job shows "Healthy"
-```
+**Verify Cloudflare Logpush is active:**
+- Cloudflare Dashboard → Analytics & Logs → Logs → Check job status
 
 **Generate test traffic:**
 ```bash
 curl https://your-cloudflare-domain.com
 ```
 
-Wait 2-3 minutes and check S3:
-```bash
-aws s3 ls s3://cloudflare-logs-YOUR-COMPANY/logs/ --recursive
-```
+Wait 2-3 minutes and check S3.
 
-### SQS not receiving notifications {#no-sqs-messages}
+### SQS not receiving messages {#no-sqs-messages}
 
-**Verify S3 event notifications configured:**
-- S3 Console → Bucket → Properties → Event notifications
-- Confirm notification exists for `s3:ObjectCreated:*` events
+**Verify S3 event notification:**
+- S3 bucket → Properties → Event notifications → Confirm configuration exists
 
-**Check SQS trust policy:**
+**Test SQS policy:**
 ```bash
 aws sqs get-queue-attributes \
-  --queue-url YOUR_QUEUE_URL \
+  --queue-url YOUR-QUEUE-URL \
   --attribute-names Policy
 ```
 
 ### ClickPipes not processing files {#clickpipes-errors}
 
-**Check IAM role permissions:**
-- Verify ClickHouse Cloud can assume the role
-- Confirm role has access to both S3 bucket and SQS queue
+**Check IAM permissions:**
+- Verify ClickHouse can assume the role
+- Confirm S3 and SQS permissions are correct
 
 **View ClickPipes logs:**
-- ClickHouse Cloud Console → Data Sources → Your ClickPipe → Logs tab
-
-**Common errors:**
-- `Access Denied` → IAM permissions insufficient
-- `Queue not found` → Verify SQS URL is correct
-- `Schema mismatch` → Check Cloudflare fields match table schema
+- ClickHouse Cloud Console → Data Sources → Your ClickPipe → **Logs**
 
 ### Data not appearing in ClickHouse {#no-data}
 
@@ -378,7 +307,7 @@ aws sqs get-queue-attributes \
 SHOW TABLES FROM default LIKE 'cloudflare_logs';
 ```
 
-**Check for processing errors:**
+**Check for schema errors:**
 ```sql
 SELECT * FROM system.query_log 
 WHERE type = 'ExceptionWhileProcessing'
@@ -389,23 +318,14 @@ LIMIT 10;
 
 ## Next steps {#next-steps}
 
-- Set up [alerts](/use-cases/observability/clickstack/alerts) for security events (bot attacks, WAF blocks, error rate spikes)
-- Create [custom dashboards](/use-cases/observability/clickstack/dashboards) for your specific use cases
+- Set up [alerts](/use-cases/observability/clickstack/alerts) for security events
 - Optimize [retention policies](/use-cases/observability/clickstack/ttl) based on data volume
+- Create custom dashboards for specific use cases
 
 ## Going to production {#going-to-production}
 
-This guide demonstrates ClickPipes for managed ingestion from S3. For production deployments:
-
-- Enable daily subfolders in Cloudflare Logpush for better S3 organization
-- Configure SQS Dead Letter Queue (DLQ) for failed message handling
-- Set up CloudWatch alarms for SQS queue depth
-- Consider partitioning strategy based on query patterns (by date, country, or status)
-- Review ClickPipes monitoring dashboards for ingestion health
-
-## Additional resources {#resources}
-
-- [Cloudflare Logpush Documentation](https://developers.cloudflare.com/logs/logpush/)
-- [Cloudflare HTTP Request Fields](https://developers.cloudflare.com/logs/reference/log-fields/zone/http_requests/)
-- [ClickPipes S3 Integration](https://clickhouse.com/docs/integrations/clickpipes/object-storage/s3)
-- [ClickPipes Unordered Mode](https://clickhouse.com/blog/clickpipes-s3-unordered-mode)
+For production deployments:
+- Enable daily subfolders in Cloudflare Logpush for better organization
+- Configure SQS Dead Letter Queue for failed message handling
+- Set up CloudWatch alarms for queue depth monitoring
+- Review partitioning strategy based on query patterns
