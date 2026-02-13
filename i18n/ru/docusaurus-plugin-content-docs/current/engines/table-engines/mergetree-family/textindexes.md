@@ -517,8 +517,6 @@ WHERE string_search_function(column_with_text_index)
 * Настройка [query&#95;plan&#95;direct&#95;read&#95;from&#95;text&#95;index](../../../operations/settings/settings#query_plan_direct_read_from_text_index) (по умолчанию true), которая определяет, включено ли прямое чтение в целом.
 * Настройка [use&#95;skip&#95;indexes&#95;on&#95;data&#95;read](../../../operations/settings/settings#use_skip_indexes_on_data_read), ещё одно обязательное условие для прямого чтения. В версиях ClickHouse &gt;= 26.1 эта настройка включена по умолчанию. В более ранних версиях вам нужно явно выполнить `SET use_skip_indexes_on_data_read = 1`.
 
-Кроме того, текстовый индекс должен быть полностью материализован для использования прямого чтения (для этого используйте `ALTER TABLE ... MATERIALIZE INDEX`).
-
 **Поддерживаемые функции**
 
 Оптимизация прямого чтения поддерживает функции `hasToken`, `hasAllTokens` и `hasAnyTokens`.

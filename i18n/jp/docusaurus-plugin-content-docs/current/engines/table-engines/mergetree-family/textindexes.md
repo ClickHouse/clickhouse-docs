@@ -517,8 +517,6 @@ Direct read は次の 2 つの設定で制御されます。
 * Setting [query&#95;plan&#95;direct&#95;read&#95;from&#95;text&#95;index](../../../operations/settings/settings#query_plan_direct_read_from_text_index)（デフォルトで true）。direct read を全般的に有効にするかどうかを指定します。
 * Setting [use&#95;skip&#95;indexes&#95;on&#95;data&#95;read](../../../operations/settings/settings#use_skip_indexes_on_data_read)。direct read のもう一つの前提条件です。ClickHouse バージョン &gt;= 26.1 では、この設定はデフォルトで有効です。以前のバージョンでは、明示的に `SET use_skip_indexes_on_data_read = 1` を実行する必要があります。
 
-また、direct read を使用するには、テキスト索引が完全にマテリアライズされている必要があります（そのためには `ALTER TABLE ... MATERIALIZE INDEX` を使用します）。
-
 **サポートされる関数**
 
 Direct read 最適化は、関数 `hasToken`、`hasAllTokens`、および `hasAnyTokens` をサポートします。
@@ -550,7 +548,7 @@ Actions: INPUT : 0 -> col String : 0
 [...]
 ```
 
-一方、同じクエリを `query_plan_direct_read_from_text_index = 1` の設定で実行すると
+一方、同じクエリを `query_plan_direct_read_from_text_index = 1` に設定して実行すると
 
 ```sql
 EXPLAIN PLAN actions = 1

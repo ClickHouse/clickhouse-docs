@@ -30,6 +30,7 @@ import fast_releases from '@site/static/images/cloud/reference/june-13-fast-rele
 import share_queries from '@site/static/images/cloud/reference/may-30-share-queries.png';
 import query_endpoints from '@site/static/images/cloud/reference/may-17-query-endpoints.png';
 import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.png';
+import crash_reports_collection from '@site/static/images/cloud/reference/crash-reports-collection.png';
 
 この ClickHouse Cloud の変更履歴に加えて、[Cloud Compatibility](/whats-new/cloud-compatibility) ページも参照してください。
 
@@ -41,6 +42,17 @@ import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.pn
 
 :::
 
+
+## 2026年2月13日 \{#february-13-2026\}
+
+- [BigQuery Connector](/integrations/clickpipes/bigquery/overview) がプライベートプレビューとして利用可能になりました。詳細についてはこの[ブログ記事](https://clickhouse.com/blog/bigquery-clickpipe-private-preview)を参照し、アクセスを希望される方は[ウェイトリスト](https://clickhouse.com/cloud/clickpipes/bigquery-connector)にご登録ください。
+- Google Cloud 向けの PCI 準拠デプロイメントのサポートを開始しました。対応リージョン: 
+  - GCP europe-west4（オランダ）
+  - GCP us-central1（アイオワ）
+  - GCP us-east1（サウスカロライナ）
+- クラッシュレポート収集の設定を、組織レベルで構成できるようになりました。この設定はこれまではサービスレベルでのみ利用可能でした。組織レベルで無効化すると、既存および今後作成されるすべてのサービスは自動的にオプトアウトされます。
+
+<Image img={crash_reports_collection} size="md" alt="クラッシュレポートの収集" />
 
 ## 2026年1月23日 \{#january-23-2026\}
 

@@ -25,7 +25,7 @@ doc_type: 'reference'
 | [file](/sql-reference/table-functions/file)                                            | 一种表引擎，它提供类似表的接口，可对文件执行 SELECT 和 INSERT 操作，类似于 s3 表函数。处理本地文件时使用 `file()`，处理对象存储（如 S3、GCS 或 MinIO）中的 bucket 时使用 `s3()`。 |
 | [fileCluster](/sql-reference/table-functions/fileCluster)                              | 在集群中的多个节点上并行处理匹配指定路径的文件。发起节点会与工作节点建立连接，展开文件路径中的通配符，并将文件读取任务委派给工作节点。每个工作节点都会向发起节点请求下一个要处理的文件，如此反复，直到所有任务完成（即所有文件都被读取）。 |
 | [format](/sql-reference/table-functions/format)                                        | 按照指定的输入格式从参数中解析数据。若未指定 structure 参数，则会从数据中自动推断结构。                                                                     |
-| [gcs](/sql-reference/table-functions/gcs)                                              | 提供类似表的接口，用于对 Google Cloud Storage 中的数据执行 `SELECT` 和 `INSERT` 操作。需要具备 `Storage Object User` IAM 角色。                    |
+| [gcs](/sql-reference/table-functions/gcs)                                              | 提供类似表的接口，可对 Google Cloud Storage 中的数据执行 `SELECT` 和 `INSERT` 操作。需要具备 `Storage Object User` IAM 角色。                     |
 | [fuzzJSON](/sql-reference/table-functions/fuzzJSON)                                    | 对 JSON 字符串进行随机扰动处理。                                                                                                   |
 | [fuzzQuery](/sql-reference/table-functions/fuzzQuery)                                  | 对给定的查询字符串进行随机扰动处理。                                                                                                    |
 | [generateRandom](/sql-reference/table-functions/generate)                              | 根据指定的 schema 生成随机数据，可使用生成的数据填充测试表。并非所有数据类型均受支持。                                                                       |
@@ -46,8 +46,8 @@ doc_type: 'reference'
 | [mongodb](/sql-reference/table-functions/mongodb)                                      | 允许对存储在远程 MongoDB 服务器中的数据执行 `SELECT` 查询。                                                                               |
 | [mysql](/sql-reference/table-functions/mysql)                                          | 允许对存储在远程 MySQL 服务器上的数据执行 `SELECT` 和 `INSERT` 查询。                                                                      |
 | [null](/sql-reference/table-functions/null)                                            | 使用 Null 表引擎创建具有指定结构的临时表。该函数便于编写测试和进行演示。                                                                               |
-| [numbers](/sql-reference/table-functions/numbers)                                      | 返回仅包含一个 `number` 列的表，该列包含可指定的整数。                                                                                      |
-| [primes](/sql-reference/table-functions/primes)                                        | 返回仅包含一个 `prime` 列的表，该列包含素数。                                                                                           |
+| [numbers](/sql-reference/table-functions/numbers)                                      | 返回仅包含一个 `number` 列的表，该列中包含一个整数序列。                                                                                     |
+| [primes](/sql-reference/table-functions/primes)                                        | 返回仅包含一个名为 `prime` 的列的表，该列中存储素数。                                                                                       |
 | [prometheusQuery](/sql-reference/table-functions/prometheusQuery)                      | 基于 TimeSeries 表中的数据评估 Prometheus 查询。                                                                                  |
 | [prometheusQueryRange](/sql-reference/table-functions/prometheusQueryRange)            | 基于 TimeSeries 表中的数据评估 Prometheus 查询。                                                                                  |
 | [timeSeriesData](/sql-reference/table-functions/timeSeriesData)                        | timeSeriesData 返回表 `db_name.time_series_table` 所使用的数据表，该表的表引擎为 TimeSeries。                                            |
@@ -55,16 +55,16 @@ doc_type: 'reference'
 | [timeSeriesSelector](/sql-reference/table-functions/timeSeriesSelector)                | 从 TimeSeries 表中读取时间序列数据，根据选择器进行过滤，并限定时间戳在指定时间区间内。                                                                     |
 | [timeSeriesTags](/sql-reference/table-functions/timeSeriesTags)                        | timeSeriesTags 表函数返回表 `db_name.time_series_table` 所使用的标签表，该表的表引擎为 TimeSeries。                                         |
 | [zeros](/sql-reference/table-functions/zeros)                                          | 用于测试场景，是生成大量行的最快方式。类似于 `system.zeros` 和 `system.zeros_mt` 系统表。                                                        |
-| [generate&#95;series (generateSeries)](/sql-reference/table-functions/generate_series) | 返回一张仅包含一个名为 `generate_series` 的列（类型为 UInt64）的表，该列包含从 start 到 stop（含端点）范围内的所有整数。                                       |
+| [generate&#95;series (generateSeries)](/sql-reference/table-functions/generate_series) | 返回一张仅包含名为 `generate_series` 的单列（类型为 UInt64）的表，该列包含从 start 到 stop（含端点）之间的所有整数。                                         |
 | [odbc](/sql-reference/table-functions/odbc)                                            | 返回一张通过 ODBC 连接的表。                                                                                                     |
 | [postgresql](/sql-reference/table-functions/postgresql)                                | 允许对存储在远程 PostgreSQL 服务器上的数据进行 `SELECT` 和 `INSERT` 查询。                                                                 |
 | [redis](/sql-reference/table-functions/redis)                                          | 该表函数可将 ClickHouse 与 Redis 集成。                                                                                         |
-| [remote, remoteSecure](/sql-reference/table-functions/remote)                          | 表函数 `remote` 允许按需访问远程服务器，即无需创建分布式表。表函数 `remoteSecure` 与 `remote` 相同，但通过安全连接访问。                                        |
+| [remote, remoteSecure](/sql-reference/table-functions/remote)                          | 表函数 `remote` 允许按需访问远程服务器，即无需创建分布式表。表函数 `remoteSecure` 与 `remote` 功能相同，只是通过安全连接进行访问。                                   |
 | [S3 表函数](/sql-reference/table-functions/s3)                                            | 提供类似表的接口，用于在 Amazon S3 和 Google Cloud Storage 中选择/插入文件。该表函数与 `hdfs` 表函数类似，但提供了 S3 特有的功能。                              |
 | [s3Cluster](/sql-reference/table-functions/s3Cluster)                                  | 是对 `s3` 表函数的扩展，用于在指定集群的多个节点上并行处理来自 Amazon S3 和 Google Cloud Storage 的文件。                                              |
 | [sqlite](/sql-reference/table-functions/sqlite)                                        | 允许对存储在 SQLite 数据库中的数据进行查询。                                                                                            |
 | [arrowFlight](/sql-reference/table-functions/arrowflight)                              | 允许对由 Apache Arrow Flight 服务器提供的数据执行查询。                                                                                |
-| [url](/sql-reference/table-functions/url)                                              | 根据给定的 `format` 和 `structure` 从 `URL` 创建一张表                                                                            |
+| [url](/sql-reference/table-functions/url)                                              | 根据给定的 `format` 和 `structure`，从 `URL` 创建一张表                                                                            |
 | [urlCluster](/sql-reference/table-functions/urlCluster)                                | 允许在指定集群内的多个节点上并行处理来自 URL 的文件。                                                                                         |
 | [values](/sql-reference/table-functions/values)                                        | 创建一个临时存储，用指定的值填充各列。                                                                                                   |
 | [view](/sql-reference/table-functions/view)                                            | 将子查询转换为一张表。该函数用于实现视图。                                                                                                 |
