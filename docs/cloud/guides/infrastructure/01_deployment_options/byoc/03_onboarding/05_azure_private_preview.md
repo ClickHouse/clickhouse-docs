@@ -27,6 +27,8 @@ Other aspects of the deployment—such as [architecture](/cloud/reference/byoc/a
 
 ## Onboarding {#onboarding}
 
+<VerticalStepper headerLevel="h3">
+
 ### 1. Apply the Terraform module {#apply-terraform-module}
 
 To start BYOC Azure onboarding, apply the [Terraform module for Azure](https://github.com/ClickHouse/terraform-byoc-onboarding/tree/main/modules/azure) provided by ClickHouse in your **target tenant and subscription**.
@@ -43,6 +45,8 @@ Share the following with the ClickHouse team:
 - **VNet CIDR range** — The IP address range you would like used for the BYOC VNet. 
 
 The ClickHouse team will use these to create the BYOC infrastructure and complete the onboarding
+
+</VerticalStepper>
 
 ### How cross-tenant authentication works {#cross-tenant-auth}
 
