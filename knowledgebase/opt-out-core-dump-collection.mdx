@@ -6,6 +6,8 @@ tags: ['Managing Cloud']
 ---
 
 import optOut from '@site/static/images/crash-reports.png';
+import crash_reports_collection from '@site/static/images/cloud/crash-reports-collection.png';
+
 import Image from '@theme/IdealImage';
 
 {frontMatter.description}
@@ -56,3 +58,10 @@ If you'd prefer not to participate in core dump collection, you can easily opt o
 5. Toggle the option off to opt out
 
 <Image img={optOut} size="md" alt="Where to find the opt out option in Cloud UI"/>
+
+:::note
+In addition to the service setting, we also support configuring preferences for the organization. If the setting is disabled, i.e., opt out of the crash report collection, all existing and new services will be opted out automatically.
+If you set the preference to enabled i.e. opt in, you can selectively disable at the service level to override and opt out.
+:::
+
+<Image img={crash_reports_collection} size="md" alt="Crash reports collection"/>
