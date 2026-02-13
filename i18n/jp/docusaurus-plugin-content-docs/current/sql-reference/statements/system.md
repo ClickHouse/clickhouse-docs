@@ -107,10 +107,6 @@ ClickHouse の内部 DNS キャッシュをクリアします。インフラス�
 
 Icebergメタデータキャッシュをクリアします。
 
-## SYSTEM DROP PARQUET METADATA CACHE \{#drop-parquet-metadata-cache\}
-
-Parquet メタデータキャッシュをクリアします。
-
 ## SYSTEM CLEAR|DROP TEXT INDEX CACHES \{#drop-text-index-caches\}
 
 テキスト索引ヘッダーキャッシュ、Dictionaryキャッシュおよびポスティングキャッシュをクリアします。

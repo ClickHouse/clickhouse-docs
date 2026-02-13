@@ -70,6 +70,10 @@ Union
 
 クエリの AST をダンプします。`SELECT` だけでなく、あらゆる種類のクエリをサポートします。
 
+設定:
+
+* `graph` – AST を、[DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) グラフ記述言語で記述されたグラフとして出力します。デフォルト値: 0。
+
 例：
 
 ```sql
@@ -99,6 +103,7 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
        Function today (children 1)
         ExpressionList
 ```
+
 
 ### EXPLAIN SYNTAX \{#explain-syntax\}
 
@@ -179,11 +184,14 @@ QUERY id: 0
 
 Settings:
 
+* `optimize` — プランを表示する前にクエリプランの最適化を適用するかどうかを制御します。デフォルト: 1。
 * `header` — ステップの出力ヘッダーを表示します。デフォルト: 0。
 * `description` — ステップの説明を表示します。デフォルト: 1。
 * `indexes` — 使用された索引、それぞれの索引に対してフィルタリングされたパーツ数およびフィルタリングされたグラニュール数を表示します。デフォルト: 0。[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルでサポートされています。ClickHouse &gt;= v25.9 以降、このステートメントは `SETTINGS use_query_condition_cache = 0, use_skip_indexes_on_data_read = 0` と併用した場合にのみ有用な出力を表示します。
 * `projections` — 解析されたすべての PROJECTION と、その PROJECTION のプライマリキー条件に基づくパーツレベルのフィルタリングへの影響を表示します。各 PROJECTION について、このセクションには、PROJECTION のプライマリキーを使用して評価されたパーツ数、行数、マーク数、レンジ数などの統計情報が含まれます。また、PROJECTION 自体を読み取ることなく、このフィルタリングによってスキップされたデータパーツの数も表示します。PROJECTION が実際に読み取りに使用されたのか、それともフィルタリングのために解析されたのみなのかは、`description` フィールドによって判別できます。デフォルト: 0。[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルでサポートされています。
 * `actions` — ステップのアクションに関する詳細情報を表示します。デフォルト: 0。
+* `sorting` — ソートされた出力を生成する各プランステップについて、ソート内容の説明を表示します。デフォルト: 0。
+* `keep_logical_steps` — JOIN に対する論理プランステップを、物理的な JOIN 実装へ変換せずに保持します。デフォルト: 0。
 * `json` — クエリプランのステップを [JSON](/interfaces/formats/JSON) 形式の 1 行として表示します。デフォルト: 0。[TabSeparatedRaw (TSVRaw)](/interfaces/formats/TabSeparatedRaw) 形式を使用して不要なエスケープを避けることを推奨します。
 * `input_headers` — ステップの入力ヘッダーを表示します。デフォルト: 0。主に入力と出力のヘッダー不一致に関連する問題をデバッグする開発者にとって有用です。
 * `column_structure` — 名前と型に加えて、ヘッダー内のカラム構造も表示します。デフォルト: 0。主に入力と出力のヘッダー不一致に関連する問題をデバッグする開発者にとって有用です。
@@ -269,6 +277,7 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ```
 
+
 ```json
 [
   {
@@ -302,15 +311,15 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-`indexes` = 1 の場合、`Indexes` キーが追加されます。これは使用された索引の配列を含みます。各索引は JSON で表現され、`Type` キー（文字列 `MinMax`、`Partition`、`PrimaryKey` または `Skip`）と、以下の任意のキーを持つ場合があります:
+`indexes` = 1 の場合、`Indexes` キーが追加されます。`Indexes` キーには、使用される索引の配列が含まれます。各索引は JSON オブジェクトで表され、`Type` キー（文字列 `MinMax`、`Partition`、`PrimaryKey` または `Skip`）と、以下の任意のキーを持ちます:
 
-* `Name` — 索引名（現在は `Skip` 索引でのみ使用されます）。
+* `Name` — 索引名（現在は `Skip` 索引用でのみ使用されます）。
 * `Keys` — 索引で使用されるカラムの配列。
-* `Condition` — 適用された条件。
-* `Description` — 索引の説明（現在は `Skip` 索引でのみ使用されます）。
-* `Parts` — 索引適用の前後におけるパーツの数。
-* `Granules` — 索引適用の前後におけるグラニュールの数。
-* `Ranges` — 索引適用後のグラニュール範囲の数。
+* `Condition` — 使用される条件。
+* `Description` — 索引の説明（現在は `Skip` 索引用でのみ使用されます）。
+* `Parts` — 索引が適用される前後のパーツ数。
+* `Granules` — 索引が適用される前後のグラニュール数。
+* `Ranges` — 索引が適用された後のグラニュール範囲の数。
 
 例:
 
@@ -356,18 +365,18 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-`projections` = 1 の場合、`Projections` キーが追加されます。これは解析された projection の配列を含みます。各 projection は、次のキーを持つ JSON で表現されます。
+`projections` = 1 の場合、`Projections` キーが追加されます。これは解析済みプロジェクションの配列を含みます。各プロジェクションは、以下のキーを持つ JSON として記述されます。
 
-* `Name` — projection 名。
-* `Condition` — 使用された projection の primary key 条件。
-* `Description` — projection の使用方法の説明（例: パーツレベルのフィルタリング）。
-* `Selected Parts` — projection によって選択されたパーツの数。
-* `Selected Marks` — 選択された mark の数。
-* `Selected Ranges` — 選択された range の数。
-* `Selected Rows` — 選択された行の数。
-* `Filtered Parts` — パーツレベルのフィルタリングによりスキップされたパーツの数。
+* `Name` — プロジェクション名。
+* `Condition` — そのプロジェクションで使用されるプライマリキー条件。
+* `Description` — プロジェクションの使用方法の説明（例：パーツレベルのフィルタリング）。
+* `Selected Parts` — プロジェクションによって選択されたパーツ数。
+* `Selected Marks` — 選択されたマーク数。
+* `Selected Ranges` — 選択されたレンジ数。
+* `Selected Rows` — 選択された行数。
+* `Filtered Parts` — パーツレベルのフィルタリングによりスキップされたパーツ数。
 
-例:
+例：
 
 ```json
 "Node Type": "ReadFromMergeTree",
@@ -396,6 +405,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
   }
 ]
 ```
+
 
 `actions` = 1 の場合、どのキーが追加されるかはステップの種類によって異なります。
 
@@ -502,13 +512,13 @@ Expression ((Project names + Projection))
 
 ### EXPLAIN PIPELINE \{#explain-pipeline\}
 
-設定:
+設定：
 
-* `header` — 各出力ポートごとにヘッダーを出力します。デフォルト: 0。
-* `graph` — [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) グラフ記述言語で表現されたグラフを出力します。デフォルト: 0。
-* `compact` — `graph` 設定が有効な場合に、グラフをコンパクトモードで出力します。デフォルト: 1。
+* `header` — 各出力ポートのヘッダーを出力します。デフォルト: 0。
+* `graph` — [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) グラフ記述言語で記述されたグラフを出力します。デフォルト: 0。
+* `compact` — `graph` 設定が有効な場合、グラフをコンパクトモードで出力します。デフォルト: 1。
 
-`compact=0` かつ `graph=1` のとき、プロセッサー名には、一意のプロセッサー識別子を含む追加のサフィックスが付きます。
+`compact=0` かつ `graph=1` の場合、プロセッサ名には一意のプロセッサ識別子を含む追加のサフィックスが付与されます。
 
 例:
 
@@ -531,6 +541,7 @@ ExpressionTransform
             (ReadFromStorage)
             NumbersRange × 2 0 → 1
 ```
+
 
 ### EXPLAIN ESTIMATE \{#explain-estimate\}
 

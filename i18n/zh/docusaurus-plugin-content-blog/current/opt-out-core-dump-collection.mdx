@@ -1,11 +1,13 @@
 ---
 date: 2026-02-04
-title: '如何禁用 core dump 收集'
-description: '本文介绍如何在 ClickHouse Cloud 中禁用 core dump 收集'
+title: '如何禁用崩溃报告收集'
+description: '本文介绍如何在 ClickHouse Cloud 中禁用崩溃报告收集'
 tags: ['Cloud 管理']
 ---
 
 import optOut from '@site/static/images/crash-reports.png';
+import crash_reports_collection from '@site/static/images/cloud/crash-reports-collection.png';
+
 import Image from '@theme/IdealImage';
 
 {frontMatter.description}
@@ -14,9 +16,9 @@ import Image from '@theme/IdealImage';
 
 ## 概述 \{#overview\}
 
-自 **2026 年 2 月 27 日** 起，ClickHouse Cloud 将在服务器发生崩溃时开始收集核心转储（core dump）。这是我们致力于为所有用户提升服务可靠性的一部分。
+自 **2026 年 2 月 27 日** 起，ClickHouse Cloud 将在服务器发生崩溃时开始收集崩溃报告（crash report）。这是我们致力于为所有用户提升服务可靠性的一部分。
 
-收集核心转储有助于我们：
+收集崩溃报告有助于我们：
 
 * 识别并理解导致崩溃的原因
 * 更快地修复问题
@@ -24,7 +26,7 @@ import Image from '@theme/IdealImage';
 
 ## 收集内容 \{#whats-collected\}
 
-当发生崩溃时，Core dump（核心转储）会捕获当时服务器状态的快照。我们在此坦诚说明，其中可能包含当时驻留在内存中的敏感信息，例如：
+当发生崩溃时，崩溃报告会捕获当时服务器状态的快照。我们在此坦诚说明，其中可能包含当时驻留在内存中的敏感信息，例如：
 
 * 连接凭证
 * 加密密钥
@@ -41,7 +43,7 @@ import Image from '@theme/IdealImage';
 
 ## 自动排除的服务 \{#services-automatically-excluded\}
 
-以下服务会自动从核心转储收集中排除：
+以下服务会自动从崩溃报告收集中排除：
 
 * 具有 **HIPAA** 合规要求的服务
 * 具有 **PCI** 合规要求的服务
@@ -49,7 +51,7 @@ import Image from '@theme/IdealImage';
 
 ## 如何取消参与 \{#how-to-opt-out\}
 
-如果你不想参与 core dump 收集，可以轻松选择退出：
+如果你不想参与崩溃报告收集，可以轻松选择退出：
 
 1. 打开 [ClickHouse Cloud Console](https://clickhouse.cloud)
 2. 选择您的服务
@@ -58,3 +60,9 @@ import Image from '@theme/IdealImage';
 5. 将该选项切换为关闭以退出
 
 <Image img={optOut} size="md" alt="在 Cloud UI 中查找退出选项的位置" />
+
+:::note
+除了服务级别的设置之外，我们还支持在组织级别配置偏好。如果该设置被禁用，即选择退出崩溃报告收集，那么所有现有和新创建的服务都将自动退出。如果您将偏好设置为启用，即选择加入，则可以在服务级别按需禁用该功能，以覆盖组织级别设置并选择退出。
+:::
+
+<Image img={crash_reports_collection} size="md" alt="崩溃报告收集" />
