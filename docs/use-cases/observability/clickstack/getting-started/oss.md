@@ -58,7 +58,7 @@ For example:
 ```shell
 # modify command to mount paths
 docker run \
-  --name clickstack
+  --name clickstack \
   -p 8123:8123 \
   -p 8080:8080 \
   -p 4317:4317 \
