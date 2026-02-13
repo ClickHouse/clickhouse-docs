@@ -30,7 +30,7 @@ All **public regions** listed in our [supported regions](https://clickhouse.com/
 
 Besides the ClickHouse instances themselves (ClickHouse servers and ClickHouse Keeper), we also run supporting services such as `clickhouse-operator`, `aws-cluster-autoscaler`, Istio, and the monitoring stack.
 
-The resource consumption of these shared components is relatively stable and does not grow linearly with the number or size of your ClickHouse services. As a rough guideline, in AWS we typically use a dedicated node group of about four `4xlarge` EC2 instances to run these workloads.
+The resource consumption of these shared components is relatively stable and doesn't grow linearly with the number or size of your ClickHouse services. As a rough guideline, in AWS we typically use a dedicated node group of about four `4xlarge` EC2 instances to run these workloads.
 
 </details>
 
