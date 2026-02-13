@@ -48,7 +48,7 @@ Following [Azure guidance for cross-tenant authentication](https://learn.microso
 
 This allows the ClickHouse Cloud provisioner to create and manage Azure resources (such as resource groups, AKS, storage, and networking) within your subscription, without storing your Azure credentials in ClickHouse.
 
-For more detail on multitenant apps and cross-tenant scenarios in Azure, see:
+For more detail on multi-tenant apps and cross-tenant scenarios in Azure, see:
 
 - [Single and multi-tenant apps in Microsoft Entra ID](https://learn.microsoft.com/en-us/entra/identity-platform/single-and-multi-tenant-apps)
 - [Authorize cross-tenant access (Azure SignalR example)](https://learn.microsoft.com/en-us/azure/azure-signalr/signalr-howto-authorize-cross-tenant)
