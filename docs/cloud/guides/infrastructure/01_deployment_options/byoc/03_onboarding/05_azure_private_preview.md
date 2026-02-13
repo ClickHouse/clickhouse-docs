@@ -7,6 +7,9 @@ description: 'Onboard ClickHouse BYOC on Azure using the Terraform module and cr
 doc_type: 'reference'
 ---
 
+import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+
+<PrivatePreviewBadge/>
 :::note
 BYOC on Azure is in **private preview**. To participate, [contact the ClickHouse team](https://clickhouse.com/cloud/bring-your-own-cloud).
 :::
