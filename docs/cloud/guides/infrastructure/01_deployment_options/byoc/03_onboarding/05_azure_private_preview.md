@@ -36,8 +36,10 @@ Share the following with the ClickHouse team:
 
 - **Target subscription ID** — The Azure subscription where BYOC resources will be created
 - **Target tenant ID** — The Azure AD (Entra) tenant that owns that subscription
+- **Region** — The Azure region(s) where you want to deploy your ClickHouse services.
+- **VNet CIDR range** — The IP address range you would like used for the BYOC VNet. 
 
-The ClickHouse team will use these to complete the onboarding and connect the provisioner to your environment.
+The ClickHouse team will use these to create the BYOC infrastructure and complete the onboarding
 
 ### How cross-tenant authentication works {#cross-tenant-auth}
 
@@ -46,7 +48,7 @@ Following [Azure guidance for cross-tenant authentication](https://learn.microso
 1. **Provisions a multi-tenant application** as an **Enterprise Application** (service principal) in your target tenant
 2. **Assigns the required permissions** to that application, scoped to your target subscription
 
-This allows the ClickHouse Cloud provisioner to create and manage Azure resources (such as resource groups, AKS, storage, and networking) within your subscription, without storing your Azure credentials in ClickHouse.
+This allows the ClickHouse Cloud Control Plane to create and manage Azure resources (such as resource groups, AKS, storage, and networking) within your subscription, without storing your Azure credentials in ClickHouse.
 
 For more detail on multi-tenant apps and cross-tenant scenarios in Azure, see:
 
