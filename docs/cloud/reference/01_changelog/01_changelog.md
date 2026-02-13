@@ -30,6 +30,7 @@ import fast_releases from '@site/static/images/cloud/reference/june-13-fast-rele
 import share_queries from '@site/static/images/cloud/reference/may-30-share-queries.png';
 import query_endpoints from '@site/static/images/cloud/reference/may-17-query-endpoints.png';
 import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.png';
+import crash_reports_collection from '@site/static/images/cloud/reference/crash-reports-collection.png';
 
 In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibility](/whats-new/cloud-compatibility) page.
 
@@ -38,6 +39,16 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
     Subscribe to Cloud Changelog via RSS
   </a>
 :::
+
+## February 13, 2026 {#february-13-2026}
+- [BigQuery Connector](/integrations/clickpipes/bigquery/overview) is now in Private Preview. Read this [blogpost](https://clickhouse.com/blog/bigquery-clickpipe-private-preview) for more details and join the [waitlist](https://clickhouse.com/cloud/clickpipes/bigquery-connector) for access.
+- We are pleased to announce support for PCI deployments for Google Cloud. Regions supported: 
+  - GCP europe-west4 (Netherlands)
+  - GCP us-central1 (Iowa)
+  - GCP us-east1 (South Carolina)
+- Crash report collection preferences can now be configured at the organization level. This setting was previously available only at the service level. When disabled at the organization level, all existing and future services will be opted out automatically.
+
+<Image img={crash_reports_collection} size="md" alt="Crash reports collection" />
 
 ## January 23, 2026 {#january-23-2026}
 - ClickPipes is now available in AWS `eu-west-1`. For new ClickHouse Cloud services created from January 20 in that region, the matching region will be used for ClickPipes. For older services, ClickPipes defaults to `eu-central-1`. See the [documentation](/integrations/clickpipes#list-of-static-ips) for more details.
