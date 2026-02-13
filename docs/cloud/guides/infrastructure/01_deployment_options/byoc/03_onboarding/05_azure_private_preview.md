@@ -1,0 +1,54 @@
+---
+title: 'Azure Private Preview'
+slug: /cloud/reference/byoc/onboarding/azure-private-preview
+sidebar_label: 'Azure (Private Preview)'
+keywords: ['BYOC', 'cloud', 'bring your own cloud', 'azure']
+description: 'Onboard ClickHouse BYOC on Azure using the Terraform module and cross-tenant authentication'
+doc_type: 'reference'
+---
+
+:::note
+BYOC on Azure is in **private preview**. To participate, [contact the ClickHouse team](https://clickhouse.com/cloud/bring-your-own-cloud).
+:::
+
+## Overview {#overview}
+
+BYOC on Azure lets you run ClickHouse in your own Azure subscription. Onboarding uses a Terraform module that provisions the cross-tenant authentication required for ClickHouse Cloud's provisioner to create and manage Azure resources in your tenant and subscription.
+
+Other aspects of the deployment—such as [architecture](/cloud/reference/byoc/architecture), [network security](/cloud/reference/byoc/reference/network_security), [features](/cloud/reference/byoc/overview#features), and [connectivity](/cloud/reference/byoc/connect)—are broadly similar to the AWS and GCP BYOC offerings; refer to those pages for more details.
+
+## Prerequisites {#prerequisites}
+
+- An Azure **subscription** and **tenant** where you want to host the BYOC deployment
+- The **subscription ID** and **tenant ID** to share with the ClickHouse team
+
+## Onboarding {#onboarding}
+
+### 1. Apply the Terraform module {#apply-terraform-module}
+
+To start BYOC Azure onboarding, apply the [Terraform module for Azure](https://github.com/ClickHouse/terraform-byoc-onboarding/tree/main/modules/azure) provided by ClickHouse in your **target tenant and subscription**.
+
+Use the module's documentation for required variables and apply steps. After applying, the module will have set up the necessary identity and permissions in your Azure environment.
+
+### 2. Provide IDs to ClickHouse {#provide-ids}
+
+Share the following with the ClickHouse team:
+
+- **Target subscription ID** — The Azure subscription where BYOC resources will be created
+- **Target tenant ID** — The Azure AD (Entra) tenant that owns that subscription
+
+The ClickHouse team will use these to complete the onboarding and connect the provisioner to your environment.
+
+### How cross-tenant authentication works {#cross-tenant-auth}
+
+Following [Azure guidance for cross-tenant authentication](https://learn.microsoft.com/en-us/entra/identity-platform/single-and-multi-tenant-apps), the Terraform module:
+
+1. **Provisions a multitenant application** as an **Enterprise Application** (service principal) in your target tenant
+2. **Assigns the required permissions** to that application, scoped to your target subscription
+
+This allows the ClickHouse Cloud provisioner to create and manage Azure resources (such as resource groups, AKS, storage, and networking) within your subscription, without storing your Azure credentials in ClickHouse.
+
+For more detail on multitenant apps and cross-tenant scenarios in Azure, see:
+
+- [Single and multi-tenant apps in Microsoft Entra ID](https://learn.microsoft.com/en-us/entra/identity-platform/single-and-multi-tenant-apps)
+- [Authorize cross-tenant access (Azure SignalR example)](https://learn.microsoft.com/en-us/azure/azure-signalr/signalr-howto-authorize-cross-tenant)
