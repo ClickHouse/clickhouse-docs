@@ -43,7 +43,7 @@ The ClickHouse team will use these to complete the onboarding and connect the pr
 
 Following [Azure guidance for cross-tenant authentication](https://learn.microsoft.com/en-us/entra/identity-platform/single-and-multi-tenant-apps), the Terraform module:
 
-1. **Provisions a multitenant application** as an **Enterprise Application** (service principal) in your target tenant
+1. **Provisions a multi-tenant application** as an **Enterprise Application** (service principal) in your target tenant
 2. **Assigns the required permissions** to that application, scoped to your target subscription
 
 This allows the ClickHouse Cloud provisioner to create and manage Azure resources (such as resource groups, AKS, storage, and networking) within your subscription, without storing your Azure credentials in ClickHouse.

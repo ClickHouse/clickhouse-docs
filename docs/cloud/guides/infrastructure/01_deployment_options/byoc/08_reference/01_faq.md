@@ -21,16 +21,16 @@ Yes. The infrastructure only needs to be provisioned once for every AWS account 
 <details>
 <summary>Which regions do you support for BYOC?</summary>
 
-BYOC supports the same set of [regions](/cloud/reference/supported-regions#aws-regions ) as ClickHouse Cloud.
+All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments. Private regions are not currently supported.
 
 </details>
 
 <details>
 <summary>Will there be some resource overhead? What are the resources needed to run services other than ClickHouse instances?</summary>
 
-Besides Clickhouse instances (ClickHouse servers and ClickHouse Keeper), we run services such as `clickhouse-operator`, `aws-cluster-autoscaler`, Istio etc. and our monitoring stack.
+Besides the ClickHouse instances themselves (ClickHouse servers and ClickHouse Keeper), we also run supporting services such as `clickhouse-operator`, `aws-cluster-autoscaler`, Istio, and the monitoring stack.
 
-Currently, we have three m5.xlarge nodes (one for each AZ) in a dedicated node group to run those workloads.
+The resource consumption of these shared components is relatively stable and does not grow linearly with the number or size of your ClickHouse services. As a rough guideline, in AWS we typically use a dedicated node group of about four `4xlarge` EC2 instances to run these workloads.
 
 </details>
 
