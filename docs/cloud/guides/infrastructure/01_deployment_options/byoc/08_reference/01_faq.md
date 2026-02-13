@@ -21,7 +21,7 @@ Yes. The infrastructure only needs to be provisioned once for every AWS account 
 <details>
 <summary>Which regions do you support for BYOC?</summary>
 
-All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments. Private regions are not currently supported.
+All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments. Private regions aren't supported.
 
 </details>
 
