@@ -47,7 +47,7 @@ _Note: the connector has not been tested against Flink versions earlier than 1.1
 
 ## Installation & Setup {#installation--setup}
 ### Import as a Dependency {#import-as-a-dependency}
-#### For Flink 2.0+
+#### For Flink 2.0+ {#flink-2.0}
 
 <Tabs>
 <TabItem value="Maven" label="Maven" default>
@@ -78,7 +78,7 @@ libraryDependencies += "com.clickhouse.flink" % "flink-connector-clickhouse-2.0.
 </TabItem>
 </Tabs>
 
-#### For Flink 1.17+
+#### For Flink 1.17+ {#flink-1.17}
 <Tabs>
 <TabItem value="Maven" label="Maven" default>
 
@@ -123,7 +123,7 @@ where:
 You can find all available released JAR files in the [Maven Central Repository](https://repo1.maven.org/maven2/com/clickhouse/flink/).
 
 ## Using the DataStream API {#using-the-datastream-api}
-### Snippet
+### Snippet {#snippet}
 
 Configure ClickHouseClient
 
@@ -143,15 +143,15 @@ ElementConverter<String, ClickHousePayload> convertorString = new ClickHouseConv
 
 ```java
 ClickHouseAsyncSink<String> csvSink = new ClickHouseAsyncSink<>(
-				convertorString,
-				MAX_BATCH_SIZE,
-				MAX_IN_FLIGHT_REQUESTS,
-				MAX_BUFFERED_REQUESTS,
-				MAX_BATCH_SIZE_IN_BYTES,
-				MAX_TIME_IN_BUFFER_MS,
-				MAX_RECORD_SIZE_IN_BYTES,
-				clickHouseClientConfig
-		);
+        convertorString, 
+        MAX_BATCH_SIZE,
+        MAX_IN_FLIGHT_REQUESTS, 
+        MAX_BUFFERED_REQUESTS, 
+        MAX_BATCH_SIZE_IN_BYTES, 
+        MAX_TIME_IN_BUFFER_MS, 
+        MAX_RECORD_SIZE_IN_BYTES, 
+        clickHouseClientConfig
+);
 
 csvSink.setClickHouseFormat(ClickHouseFormat.CSV);
 ```
@@ -166,7 +166,7 @@ More examples and snippets can be found in our tests:
 - [flink-connector-clickhouse-1.17](https://github.com/ClickHouse/flink-connector-clickhouse/tree/main/flink-connector-clickhouse-1.17/src/test/java/org/apache/flink/connector/clickhouse/sink)
 - [flink-connector-clickhouse-2.0.0](https://github.com/ClickHouse/flink-connector-clickhouse/tree/main/flink-connector-clickhouse-2.0.0/src/test/java/org/apache/flink/connector/clickhouse/sink)
 
-### Quick Start Example
+### Quick Start Example {#quick-start}
 
 We have created maven-based example for an easy start with the ClickHouse Sink:
 
@@ -176,7 +176,7 @@ We have created maven-based example for an easy start with the ClickHouse Sink:
 For more detailed instructions, see the [Example Guide](https://github.com/ClickHouse/flink-connector-clickhouse/blob/main/examples/README.md)
 
 ### DataStream API Connection Options {#datastream-api-connection-options}
-#### Clickhouse Client Options
+#### Clickhouse Client Options {#client-options}
 
 | Parameters | Description                    | Default Value |
 |------------|--------------------------------|---------------|
@@ -186,7 +186,7 @@ For more detailed instructions, see the [Example Guide](https://github.com/Click
 | `database` | ClickHouse database name       | N/A           |
 | `table`    | ClickHouse table name          | N/A           |
 
-#### Sink Options
+#### Sink Options {#sink-options}
 
 The following options come directly from Flink's `AsyncSinkBase`:
 
@@ -203,11 +203,11 @@ The following options come directly from Flink's `AsyncSinkBase`:
 
 Table API support is planned for a future release. This section will be updated once available.
 
-### Snippet
+### Snippet {#snippet}
 
 Planned for a future release — this section will provide a usage snippet for configuring the Table API.
 
-### Quick Start Example
+### Quick Start Example {#quick-start}
 
 Planned for a future release — a complete end-to-end example will be added once Table API support becomes available.
 
@@ -271,7 +271,7 @@ Notes:
 * Precision and scale must be provided when performing decimal operations.
 * In order for ClickHouse to parse a Java String as JSON, you need to enable `enableJsonSupportAsString` in `ClickHouseClientConfig`.
 
-## Metrics
+## Metrics {#metrics}
 
 The connector exposes the following additional metrics on top of Flink's existing metrics:
 
@@ -302,7 +302,7 @@ The connector exposes the following additional metrics on top of Flink's existin
 - All artifacts and versions of the connector are tested with all [active LTS versions](https://github.com/ClickHouse/ClickHouse/pulls?q=is%3Aopen+is%3Apr+label%3Arelease) of ClickHouse.
 - See the [ClickHouse security policy](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md#security-change-log-and-support) for known security vulnerabilities and how to report a vulnerability.
 - We recommend upgrading the connector continuously to not miss security fixes and new improvements.
-    - If you have an issue with migration, please create a GitHub [issue](https://github.com/ClickHouse/flink-connector-clickhouse/issues) and we will respond!
+- If you have an issue with migration, please create a GitHub [issue](https://github.com/ClickHouse/flink-connector-clickhouse/issues) and we will respond!
 
 ## Contributing and Support {#contributing-and-support}
 
