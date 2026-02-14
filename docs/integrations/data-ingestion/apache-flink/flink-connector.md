@@ -275,21 +275,21 @@ Notes:
 
 The connector exposes the following additional metrics on top of Flink's existing metrics:
 
-| Metric                                | Description                                                         | Type      | Status |
-|---------------------------------------|---------------------------------------------------------------------|-----------|--------|
-| numBytesSend                          | Total number of bytes sent to ClickHouse                            | Counter   | ✅      |
-| numRecordSend                         | Total number of records sent to ClickHouse                          | Counter   | ✅      |
-| numRequestSubmitted                   | Total number of requests sent (actual number of flushes performed)  | Counter   | ✅      |
-| numOfDroppedBatches                   | Total number of batches dropped due to non-retryable failures       | Counter   | ✅      |
-| numOfDroppedRecords                   | Total number of records dropped due to non-retryable failures       | Counter   | ✅      |
-| totalBatchRetries                     | Total number of batch retries due to retryable failures             | Counter   | ✅      |
-| writeLatencyHistogram                 | Histogram of successful write latency distribution (ms)             | Histogram | ✅      |
-| writeFailureLatencyHistogram          | Histogram of failed write latency distribution (ms)                 | Histogram | ✅      |
-| triggeredByMaxBatchSizeCounter        | Total number of flushes triggered by reaching `maxBatchSize`        | Counter   | ✅      |
-| triggeredByMaxBatchSizeInBytesCounter | Total number of flushes triggered by reaching `maxBatchSizeInBytes` | Counter   | ✅      |
-| triggeredByMaxTimeInBufferMSCounter   | Total number of flushes triggered by reaching `maxTimeInBufferMS`   | Counter   | ✅      |
-| actualRecordsPerBatch                 | Histogram of actual batch size distribution                         | Histogram | ✅      |
-| actualBytesPerBatch                   | Histogram of actual bytes per batch distribution                    | Histogram | ✅      |
+| Metric                                  | Description                                                         | Type      | Status |
+|-----------------------------------------|---------------------------------------------------------------------|-----------|--------|
+| `numBytesSend`                          | Total number of bytes sent to ClickHouse                            | Counter   | ✅      |
+| `numRecordSend`                         | Total number of records sent to ClickHouse                          | Counter   | ✅      |
+| `numRequestSubmitted`                   | Total number of requests sent (actual number of flushes performed)  | Counter   | ✅      |
+| `numOfDroppedBatches`                   | Total number of batches dropped due to non-retryable failures       | Counter   | ✅      |
+| `numOfDroppedRecords`                   | Total number of records dropped due to non-retryable failures       | Counter   | ✅      |
+| `totalBatchRetries`                     | Total number of batch retries due to retryable failures             | Counter   | ✅      |
+| `writeLatencyHistogram`                 | Histogram of successful write latency distribution (ms)             | Histogram | ✅      |
+| `writeFailureLatencyHistogram`          | Histogram of failed write latency distribution (ms)                 | Histogram | ✅      |
+| `triggeredByMaxBatchSizeCounter`        | Total number of flushes triggered by reaching `maxBatchSize`        | Counter   | ✅      |
+| `triggeredByMaxBatchSizeInBytesCounter` | Total number of flushes triggered by reaching `maxBatchSizeInBytes` | Counter   | ✅      |
+| `triggeredByMaxTimeInBufferMSCounter`   | Total number of flushes triggered by reaching `maxTimeInBufferMS`   | Counter   | ✅      |
+| `actualRecordsPerBatch`                 | Histogram of actual batch size distribution                         | Histogram | ✅      |
+| `actualBytesPerBatch`                   | Histogram of actual bytes per batch distribution                    | Histogram | ✅      |
 
 [//]: # (| actualTimeInBuffer           | Histogram of actual time in buffer before flush distribution       | Histogram | ❌      |)
 
