@@ -47,7 +47,7 @@ _Note: the connector has not been tested against Flink versions earlier than 1.1
 
 ## Installation & Setup {#installation--setup}
 ### Import as a Dependency {#import-as-a-dependency}
-#### For Flink 2.0+ {#flink-2.0}
+#### For Flink 2.0+ {#flink-2}
 
 <Tabs>
 <TabItem value="Maven" label="Maven" default>
@@ -78,7 +78,7 @@ libraryDependencies += "com.clickhouse.flink" % "flink-connector-clickhouse-2.0.
 </TabItem>
 </Tabs>
 
-#### For Flink 1.17+ {#flink-1.17}
+#### For Flink 1.17+ {#flink-117}
 <Tabs>
 <TabItem value="Maven" label="Maven" default>
 
@@ -123,7 +123,7 @@ where:
 You can find all available released JAR files in the [Maven Central Repository](https://repo1.maven.org/maven2/com/clickhouse/flink/).
 
 ## Using the DataStream API {#using-the-datastream-api}
-### Snippet {#snippet}
+### Snippet {#datastream-snippet}
 
 Configure ClickHouseClient
 
@@ -166,7 +166,7 @@ More examples and snippets can be found in our tests:
 - [flink-connector-clickhouse-1.17](https://github.com/ClickHouse/flink-connector-clickhouse/tree/main/flink-connector-clickhouse-1.17/src/test/java/org/apache/flink/connector/clickhouse/sink)
 - [flink-connector-clickhouse-2.0.0](https://github.com/ClickHouse/flink-connector-clickhouse/tree/main/flink-connector-clickhouse-2.0.0/src/test/java/org/apache/flink/connector/clickhouse/sink)
 
-### Quick Start Example {#quick-start}
+### Quick Start Example {#datastream-quick-start}
 
 We have created maven-based example for an easy start with the ClickHouse Sink:
 
@@ -203,11 +203,11 @@ The following options come directly from Flink's `AsyncSinkBase`:
 
 Table API support is planned for a future release. This section will be updated once available.
 
-### Snippet {#snippet}
+### Snippet {#table-snippet}
 
 Planned for a future release — this section will provide a usage snippet for configuring the Table API.
 
-### Quick Start Example {#quick-start}
+### Quick Start Example {#table-quick-start}
 
 Planned for a future release — a complete end-to-end example will be added once Table API support becomes available.
 
