@@ -40,7 +40,7 @@ OpenTelemetry Collector は、オブザーバビリティデータのインジ�
 
 すべてのデータは **OpenTelemetry (OTel) collector** インスタンスを経由して ClickStack に取り込まれます。このインスタンスが、ログ、メトリクス、トレース、およびセッションデータの主なエントリポイントとして機能します。このインスタンスには、[ClickStack ディストリビューション](/use-cases/observability/clickstack/ingesting-data/opentelemetry#installing-otel-collector) に含まれる公式 collector を使用することを推奨します（[ClickStack のデプロイメントモデルにすでにバンドルされていない場合](/use-cases/observability/clickstack/deployment)）。
 
-ユーザーは、この collector に対して、[言語 SDKs](/use-cases/observability/clickstack/sdks) から、またはインフラストラクチャのメトリクスとログを収集するデータ収集エージェント（[agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) ロールで動作する OTel collector や、[Fluentd](https://www.fluentd.org/)、[Vector](https://vector.dev/) などの他のテクノロジー）を通じてデータを送信します。セットアップを簡素化するために、[Bindplane](/use-cases/observability/clickstack/integration-partners/bindplane) は OpenTelemetry ネイティブのテレメトリパイプラインであり、ClickStack をネイティブな宛先としてサポートしているため、テレメトリの収集・処理および ClickStack へのルーティングを簡素化します。
+ユーザーは、この collector に対して、[言語 SDKs](/use-cases/observability/clickstack/sdks) から、またはインフラストラクチャのメトリクスとログを収集するデータ収集エージェント（[agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) ロールで動作する OTel collector や、[Fluentd](https://www.fluentd.org/)、[Vector](https://vector.dev/) などの他のテクノロジー）を通じてデータを送信します。マネージドな OpenTelemetry パイプラインを必要とするチーム向けに、[Bindplane](/use-cases/observability/clickstack/integration-partners/bindplane)は ClickStack をネイティブな宛先としてサポートする OpenTelemetry ネイティブソリューションを提供しており、テレメトリの収集・処理および ClickStack へのルーティングを簡素化します。
 
 **以降のすべてのエージェント移行手順において、この collector が利用可能であることを前提とします。**
 
