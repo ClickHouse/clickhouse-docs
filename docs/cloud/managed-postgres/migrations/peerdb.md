@@ -54,7 +54,7 @@ To mirror the setup of the source database in the target database, we need to ob
 pg_dump -d 'postgresql://<user>:<password>@<host>:<port>/<database>'  -s > source_schema.sql
 ```
 
-Before applying this to the target database, we need to remove UNIQUE constraints and indexes from the dump file so that PeerDB's ingestion to target tables is not blocked by these constraints. These can be removed using:
+Before applying this to the target database, we need to remove UNIQUE constraints and indexes from the dump file so that PeerDB ingestion to target tables is not blocked by these constraints. These can be removed using:
 ```shell
 # Preview
 grep -n "CONSTRAINT.*UNIQUE" <dump_file_path>
