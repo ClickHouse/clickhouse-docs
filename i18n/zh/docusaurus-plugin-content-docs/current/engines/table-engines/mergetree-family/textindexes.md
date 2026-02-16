@@ -510,15 +510,12 @@ WHERE string_search_function(column_with_text_index)
 ```
 
 ClickHouse 中的直接读取优化会仅使用文本索引来回答查询（即通过文本索引查找），而无需访问底层文本列。
-
 文本索引查找读取的数据量相对较少，因此比 ClickHouse 中常规的 skip 索引快得多（后者会先执行 skip 索引查找，然后再加载并过滤剩余的数据颗粒 granules）。
 
 直接读取由两个设置控制：
 
 * 设置 [query&#95;plan&#95;direct&#95;read&#95;from&#95;text&#95;index](../../../operations/settings/settings#query_plan_direct_read_from_text_index)（默认值为 true），用于指定是否全局启用直接读取。
 * 设置 [use&#95;skip&#95;indexes&#95;on&#95;data&#95;read](../../../operations/settings/settings#use_skip_indexes_on_data_read)，这是启用直接读取的另一个前提条件。在 ClickHouse 版本 &gt;= 26.1 中，该设置默认启用。在更早的版本中，需要显式执行 `SET use_skip_indexes_on_data_read = 1`。
-
-此外，要使用直接读取，文本索引必须已完全物化（为此请使用 `ALTER TABLE ... MATERIALIZE INDEX`）。
 
 **支持的函数**
 
@@ -551,7 +548,7 @@ Actions: INPUT : 0 -> col String : 0
 [...]
 ```
 
-而在将 `query_plan_direct_read_from_text_index = 1` 设置为 1 时运行相同的查询
+而在使用 `query_plan_direct_read_from_text_index = 1` 运行相同的查询时
 
 ```sql
 EXPLAIN PLAN actions = 1
@@ -562,7 +559,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, -- enable direct read
          use_skip_indexes_on_data_read = 1;
 ```
 
-返回值
+返回
 
 ```text
 [...]
@@ -678,6 +675,37 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 
 - 对包含大量 tokens（例如 100 亿 tokens）的文本索引进行物化时，可能会消耗大量内存。文本索引的物化可以直接进行（`ALTER TABLE <table> MATERIALIZE INDEX <index>`），也可以在分区片段合并时通过间接方式发生。
 - 无法在包含超过 4.294.967.296（= 2^32 ≈ 42 亿）行的分区片段上物化文本索引。如果没有物化的文本索引，查询会退回到在该分区片段内执行低效的暴力搜索。作为一种最坏情况的估算，假设某个分区片段只包含一个类型为 String 的列，并且 MergeTree 设置 `max_bytes_to_merge_at_max_space_in_pool`（默认值：150 GB）未被修改。在这种假设下，只要该列平均每行少于 29.5 个字符，就会出现上述情况。实际上，表中通常还包含其他列，因此阈值通常会小好几倍（具体取决于其他列的数量、类型和大小）。
+
+## 文本索引 vs 基于 Bloom Filter 的索引 \{#text-index-vs-bloom-filter-indexes\}
+
+可以通过使用文本索引和基于 Bloom Filter 的索引（索引类型 `bloom_filter`、`ngrambf_v1`、`tokenbf_v1`、`sparse_grams`）来加速字符串谓词，但两者在设计和预期使用场景上从根本上是不同的：
+
+**Bloom Filter 索引**
+
+- 基于可能产生假阳性的概率型数据结构。
+- 只能回答集合成员关系问题，即：该列可能包含 token X，或可以确定不包含 X。
+- 存储粒度级信息，以便在查询执行期间跳过粗粒度范围。
+- 难以正确调优（示例参见[此处](mergetree#n-gram-bloom-filter)）。
+- 相对紧凑（每个 part 通常只有几 KB 或几 MB）。
+
+**文本索引**
+
+- 在 token 之上构建确定性的倒排索引，索引本身不会产生假阳性。
+- 专门针对文本搜索类工作负载进行了优化。
+- 存储行级信息，从而支持高效的词项查找。
+- 体积相对较大（每个 part 通常为数十到数百 MB）。
+
+基于 Bloom Filter 的索引对全文搜索的支持只是一种“副作用”：
+
+- 不支持高级分词和预处理。
+- 不支持多 token 搜索。
+- 无法提供倒排索引所期望的性能特征。
+
+相比之下，文本索引是为全文搜索专门构建的：
+
+- 提供分词和预处理能力。
+- 高效支持 `hasAllTokens`、`LIKE`、`match` 以及类似的文本搜索函数。
+- 在处理大型文本语料库时具有显著更好的可扩展性。
 
 ## Implementation Details \{#implementation\}
 

@@ -2272,7 +2272,7 @@ SETTINGS convert_query_to_cnf = true;
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "Включает дедупликацию по умолчанию для всех синхронных и асинхронных вставок."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "Включает дедупликацию по умолчанию для всех синхронных и асинхронных вставок."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "Новая настройка для управления дедупликацией для запросов INSERT."}]}]}/>
 
 Включает или отключает блочную дедупликацию при выполнении `INSERT INTO` (для таблиц Replicated\*).
 Эта настройка переопределяет настройки `insert_deduplicate` и `async_insert_deduplicate`.
@@ -3026,7 +3026,7 @@ FORMAT PrettyCompactMonoBlock
 
 - [distributed_index_analysis_for_non_shared_merge_tree](#distributed_index_analysis_for_non_shared_merge_tree)
 - [distributed_index_analysis_min_parts_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_parts_to_activate)
-- [distributed_index_analysis_min_indexes_size_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_size_to_activate)
+- [distributed_index_analysis_min_indexes_bytes_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_bytes_to_activate)
 
 ## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
 
@@ -3629,7 +3629,7 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 Если отключено, объявления в родительских предложениях WITH будут рассматриваться так, как если бы они были сделаны в текущей области видимости.
 
-Обратите внимание, что это параметр совместимости для нового анализатора, который позволяет выполнять некоторые некорректные запросы, которые старый анализатор мог исполнять.
+Обратите внимание, что это параметр совместимости для анализатора, который позволяет выполнять некоторые некорректные запросы, которые старый анализатор мог исполнять.
 
 ## enable_shared_storage_snapshot_in_query \{#enable_shared_storage_snapshot_in_query\}
 
@@ -8060,6 +8060,20 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 ```
 
 
+## opentelemetry_start_keeper_trace_probability \{#opentelemetry_start_keeper_trace_probability\}
+
+<SettingsInfoBlock type="FloatAuto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+Вероятность начала трассировки для запроса ZooKeeper — вне зависимости от того, существует родительская трассировка или нет.
+
+Возможные значения:
+
+- 'auto' — равна значению настройки opentelemetry_start_trace_probability
+- 0 — трассировка отключена
+- от 0 до 1 — вероятность (например, 1.0 = всегда включать)
+
 ## opentelemetry_start_trace_probability \{#opentelemetry_start_trace_probability\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
@@ -9649,7 +9663,7 @@ a   Tuple(
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "Разрешает объединение фильтров в плане запроса"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "Разрешает объединение фильтров в плане запроса. Это необходимо для корректной поддержки проталкивания фильтров (filter push-down) новым анализатором."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "Разрешает объединение фильтров в плане запроса"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "Разрешает объединение фильтров в плане запроса. Это необходимо для корректной поддержки проталкивания фильтров (filter push-down) анализатором."}]}]}/>
 
 Разрешает объединение фильтров в плане запроса.
 
@@ -11512,19 +11526,6 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка."}]}]}/>
 
 Использует отсечение партиций Paimon для табличных функций Paimon
-
-## use_parquet_metadata_cache \{#use_parquet_metadata_cache\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включает кэш метаданных файлов Parquet."}]}]}/>
-
-Если включено, формат Parquet может использовать кэш метаданных файлов Parquet.
-
-Возможные значения:
-
-- 0 — отключено
-- 1 — включено
 
 ## use_primary_key \{#use_primary_key\}
 

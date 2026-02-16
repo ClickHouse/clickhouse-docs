@@ -30,6 +30,7 @@ import fast_releases from '@site/static/images/cloud/reference/june-13-fast-rele
 import share_queries from '@site/static/images/cloud/reference/may-30-share-queries.png';
 import query_endpoints from '@site/static/images/cloud/reference/may-17-query-endpoints.png';
 import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.png';
+import crash_reports_collection from '@site/static/images/cloud/reference/crash-reports-collection.png';
 
 В дополнение к этому списку изменений ClickHouse Cloud ознакомьтесь со страницей [Cloud Compatibility](/whats-new/cloud-compatibility).
 
@@ -41,6 +42,17 @@ import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.pn
 
 :::
 
+
+## 13 февраля 2026 г. \{#february-13-2026\}
+
+- [BigQuery Connector](/integrations/clickpipes/bigquery/overview) теперь доступен в режиме Private Preview. Прочитайте эту [публикацию в блоге](https://clickhouse.com/blog/bigquery-clickpipe-private-preview) для получения дополнительной информации и присоединяйтесь к [листу ожидания](https://clickhouse.com/cloud/clickpipes/bigquery-connector), чтобы получить доступ.
+- Мы рады объявить о поддержке развертываний с соответствием PCI для Google Cloud. Поддерживаемые регионы: 
+  - GCP europe-west4 (Нидерланды)
+  - GCP us-central1 (Айова)
+  - GCP us-east1 (Южная Каролина)
+- Параметры сбора отчетов о сбоях теперь можно настраивать на уровне организации. Ранее этот параметр был доступен только на уровне сервиса. При отключении на уровне организации все существующие и будущие сервисы будут автоматически исключены из сбора.
+
+<Image img={crash_reports_collection} size="md" alt="Сбор отчетов о сбоях" />
 
 ## 23 января 2026 г. \{#january-23-2026\}
 

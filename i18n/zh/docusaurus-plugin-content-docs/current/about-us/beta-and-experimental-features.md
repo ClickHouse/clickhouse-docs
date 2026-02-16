@@ -51,18 +51,6 @@ doc_type: 'reference'
 
 | 名称 | 默认值 |
 |------|--------|
-| [shared_merge_tree_activate_coordinated_merges_tasks](/operations/settings/merge-tree-settings#shared_merge_tree_activate_coordinated_merges_tasks) | `0` |
-| [shared_merge_tree_enable_coordinated_merges](/operations/settings/merge-tree-settings#shared_merge_tree_enable_coordinated_merges) | `0` |
-| [shared_merge_tree_enable_keeper_parts_extra_data](/operations/settings/merge-tree-settings#shared_merge_tree_enable_keeper_parts_extra_data) | `0` |
-| [shared_merge_tree_merge_coordinator_election_check_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_election_check_period_ms) | `30000` |
-| [shared_merge_tree_merge_coordinator_factor](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_factor) | `1.1` |
-| [shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_fetch_fresh_metadata_period_ms) | `10000` |
-| [shared_merge_tree_merge_coordinator_max_merge_request_size](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_merge_request_size) | `20` |
-| [shared_merge_tree_merge_coordinator_max_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_max_period_ms) | `10000` |
-| [shared_merge_tree_merge_coordinator_merges_prepare_count](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_merges_prepare_count) | `100` |
-| [shared_merge_tree_merge_coordinator_min_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_min_period_ms) | `1` |
-| [shared_merge_tree_merge_worker_fast_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_fast_timeout_ms) | `100` |
-| [shared_merge_tree_merge_worker_regular_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_regular_timeout_ms) | `10000` |
 | [geotoh3_argument_order](/operations/settings/settings#geotoh3_argument_order) | `lat_lon` |
 | [enable_lightweight_update](/operations/settings/settings#enable_lightweight_update) | `1` |
 | [allow_experimental_correlated_subqueries](/operations/settings/settings#allow_experimental_correlated_subqueries) | `1` |
@@ -91,6 +79,8 @@ doc_type: 'reference'
 | [allow&#95;experimental&#95;replacing&#95;merge&#95;with&#95;cleanup](/operations/settings/merge-tree-settings#allow_experimental_replacing_merge_with_cleanup)                                                                     | `0`                     |
 | [allow&#95;experimental&#95;reverse&#95;key](/operations/settings/merge-tree-settings#allow_experimental_reverse_key)                                                                                                               | `0`                     |
 | [allow&#95;remote&#95;fs&#95;zero&#95;copy&#95;replication](/operations/settings/merge-tree-settings#allow_remote_fs_zero_copy_replication)                                                                                         | `0`                     |
+| [distributed&#95;index&#95;analysis&#95;min&#95;indexes&#95;bytes&#95;to&#95;activate](/operations/settings/merge-tree-settings#distributed_index_analysis_min_indexes_bytes_to_activate)                                           | `1073741824`            |
+| [distributed&#95;index&#95;analysis&#95;min&#95;parts&#95;to&#95;activate](/operations/settings/merge-tree-settings#distributed_index_analysis_min_parts_to_activate)                                                               | `10`                    |
 | [enable&#95;replacing&#95;merge&#95;with&#95;cleanup&#95;for&#95;min&#95;age&#95;to&#95;force&#95;merge](/operations/settings/merge-tree-settings#enable_replacing_merge_with_cleanup_for_min_age_to_force_merge)                   | `0`                     |
 | [force&#95;read&#95;through&#95;cache&#95;for&#95;merges](/operations/settings/merge-tree-settings#force_read_through_cache_for_merges)                                                                                             | `0`                     |
 | [merge&#95;selector&#95;algorithm](/operations/settings/merge-tree-settings#merge_selector_algorithm)                                                                                                                               | `Simple`                |

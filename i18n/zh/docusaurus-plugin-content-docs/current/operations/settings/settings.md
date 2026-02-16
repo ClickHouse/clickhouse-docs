@@ -2268,7 +2268,7 @@ SETTINGS convert_query_to_cnf = true;
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "默认对所有同步和异步插入启用去重。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "默认对所有同步和异步插入启用去重。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "用于控制 INSERT 查询去重的新设置。"}]}]}/>
 
 启用或禁用 `INSERT INTO` 的块级去重（适用于 Replicated\* 表）。
 该设置会覆盖 `insert_deduplicate` 和 `async_insert_deduplicate` 两个设置。
@@ -3021,7 +3021,7 @@ FORMAT PrettyCompactMonoBlock
 
 - [distributed_index_analysis_for_non_shared_merge_tree](#distributed_index_analysis_for_non_shared_merge_tree)
 - [distributed_index_analysis_min_parts_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_parts_to_activate)
-- [distributed_index_analysis_min_indexes_size_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_size_to_activate)
+- [distributed_index_analysis_min_indexes_bytes_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_bytes_to_activate)
 
 ## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
 
@@ -3624,7 +3624,7 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 如果禁用该设置，上级 `WITH` 子句中的声明将被视为在当前作用域中声明，从而与当前作用域具有相同的作用域。
 
-请注意，这是为新分析器提供的兼容性设置，用于允许运行一些在语义上无效但旧分析器仍能执行的查询。
+请注意，这是为分析器提供的兼容性设置，用于允许运行一些在语义上无效但旧分析器仍能执行的查询。
 
 ## enable_shared_storage_snapshot_in_query \{#enable_shared_storage_snapshot_in_query\}
 
@@ -8024,6 +8024,20 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 ```
 
 
+## opentelemetry_start_keeper_trace_probability \{#opentelemetry_start_keeper_trace_probability\}
+
+<SettingsInfoBlock type="FloatAuto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+为 ZooKeeper 请求启动 trace 的概率，与是否存在父 trace 无关。
+
+可能的取值：
+
+- 'auto' — 等同于 `opentelemetry_start_trace_probability` 设置
+- 0 — 禁用追踪
+- 0 到 1 — 概率（例如，1.0 = 始终启用）
+
 ## opentelemetry_start_trace_probability \{#opentelemetry_start_trace_probability\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
@@ -9611,7 +9625,7 @@ a   Tuple(
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "允许在查询计划中合并过滤条件"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "允许在查询计划中合并过滤条件。在使用新分析器时，为了正确支持过滤下推，这是必需的。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "允许在查询计划中合并过滤条件"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "允许在查询计划中合并过滤条件。在使用分析器时，为了正确支持过滤下推，这是必需的。"}]}]}/>
 
 允许在查询计划中合并过滤条件。
 
@@ -11467,19 +11481,6 @@ Cloud 默认值：`1`
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置。"}]}]}/>
 
 对 Paimon 表函数使用 Paimon 分区裁剪
-
-## use_parquet_metadata_cache \{#use_parquet_metadata_cache\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "启用 Parquet 文件元数据缓存。"}]}]}/>
-
-如果启用，`parquet` 格式可以使用 Parquet 元数据缓存。
-
-可能的值：
-
-- 0 - 禁用
-- 1 - 启用
 
 ## use_primary_key \{#use_primary_key\}
 

@@ -26,9 +26,9 @@ doc_type: 'reference'
 | [system.asynchronous&#95;insert&#95;log](/operations/system-tables/asynchronous_insert_log)               | 包含异步插入操作信息的系统表。每条记录对应一个已被缓冲为异步插入的插入查询。                                                |
 | [system.asynchronous&#95;inserts](/operations/system-tables/asynchronous_inserts)                         | 包含队列中待处理异步插入操作信息的系统表。                                                                 |
 | [system.asynchronous&#95;loader](/operations/system-tables/asynchronous_loader)                           | 包含最近异步作业（例如正在加载的表）相关信息和状态的系统表。表中每一行对应一个作业。                                            |
-| [system.asynchronous&#95;metric&#95;log](/operations/system-tables/asynchronous_metric_log)               | 包含 `system.asynchronous_metrics` 历史值的系统表，这些值按固定时间间隔（默认每秒一次）保存                         |
+| [system.asynchronous&#95;metric&#95;log](/operations/system-tables/asynchronous_metric_log)               | 包含 `system.asynchronous_metrics` 历史值的系统表，这些值会按固定时间间隔（默认每秒一次）保存                        |
 | [system.asynchronous&#95;metrics](/operations/system-tables/asynchronous_metrics)                         | 包含在后台周期性计算的指标的系统表。例如，当前使用的内存量。                                                        |
-| [system.azure&#95;queue&#95;settings](/operations/system-tables/azure_queue_settings)                     | 包含 AzureQueue 表相关设置信息的系统表。从服务器版本 `24.10` 起可用。                                         |
+| [system.azure&#95;queue&#95;settings](/operations/system-tables/azure_queue_settings)                     | 包含 AzureQueue 表设置信息的系统表。从服务器版本 `24.10` 起可用。                                           |
 | [system.background&#95;schedule&#95;pool](/operations/system-tables/background_schedule_pool)             | 包含后台调度池中任务相关信息的系统表。                                                                   |
 | [system.background&#95;schedule&#95;pool&#95;log](/operations/system-tables/background_schedule_pool_log) | 记录后台调度池中任务执行历史的系统表。                                                                   |
 | [system.backup&#95;log](/operations/system-tables/backup_log)                                             | 包含 `BACKUP` 和 `RESTORE` 操作相关日志记录的系统表。                                                 |
@@ -41,7 +41,7 @@ doc_type: 'reference'
 | [system.contributors](/operations/system-tables/contributors)                                             | 包含贡献者信息的系统表。                                                                          |
 | [system.crash&#95;log](/operations/system-tables/crash_log)                                               | 包含致命错误堆栈跟踪信息的系统表。                                                                     |
 | [system.current&#95;roles](/operations/system-tables/current_roles)                                       | 包含当前 USER 的活动角色的系统表。                                                                  |
-| [system.dashboards](/operations/system-tables/dashboards)                                                 | 包含可通过 HTTP 接口访问的 `/dashboard` 页面所使用的查询，对监控和故障排查很有帮助。                                  |
+| [system.dashboards](/operations/system-tables/dashboards)                                                 | 包含通过 HTTP 接口访问的 `/dashboard` 页面所使用的查询，可用于监控和故障排查。                                     |
 | [system.data&#95;skipping&#95;indices](/operations/system-tables/data_skipping_indices)                   | 包含所有表中现有数据跳过索引信息的系统表。                                                                 |
 | [system.data&#95;type&#95;families](/operations/system-tables/data_type_families)                         | 包含受支持的数据类型信息的系统表                                                                      |
 | [system.database&#95;engines](/operations/system-tables/database_engines)                                 | 包含服务器所支持的数据库引擎列表的系统表。                                                                 |
@@ -58,14 +58,14 @@ doc_type: 'reference'
 | [system.distribution&#95;queue](/operations/system-tables/distribution_queue)                             | 包含队列中待发送到各分片的本地文件信息的系统表。                                                              |
 | [system.dns&#95;cache](/operations/system-tables/dns_cache)                                               | 包含缓存的 DNS 记录信息的系统表。                                                                   |
 | [system.dropped&#95;tables](/operations/system-tables/dropped_tables)                                     | 包含已执行 DROP TABLE 操作但尚未完成数据清理的表的信息的系统表                                                 |
-| [system.dropped&#95;tables&#95;parts](/operations/system-tables/dropped_tables_parts)                     | 包含 `system.dropped_tables` 中 MergeTree 已删除表的分区片段信息的系统表                                |
+| [system.dropped&#95;tables&#95;parts](/operations/system-tables/dropped_tables_parts)                     | 包含 `system.dropped_tables` 中 MergeTree 已删除表各分区片段信息的系统表                                |
 | [system.enabled&#95;roles](/operations/system-tables/enabled_roles)                                       | 包含当前所有有效角色的系统表,包括当前 USER 的当前角色以及授予该角色的角色                                              |
 | [system.error&#95;log](/operations/system-tables/system-error-log)                                        | 系统表，包含来自表 `system.errors` 的错误值历史记录，并会定期刷新到磁盘。                                         |
 | [system.errors](/operations/system-tables/errors)                                                         | 包含错误代码及其被触发次数的系统表。                                                                    |
 | [system.events](/operations/system-tables/events)                                                         | 包含系统中已发生事件次数信息的系统表。                                                                   |
 | [system.functions](/operations/system-tables/functions)                                                   | 包含普通函数和聚合函数信息的系统表。                                                                    |
 | [system.grants](/operations/system-tables/grants)                                                         | 系统表,用于显示授予 ClickHouse 用户账号的各项权限。                                                      |
-| [system.graphite&#95;retentions](/operations/system-tables/graphite_retentions)                           | 系统表，包含在使用 `GraphiteMergeTree` 类型引擎的表中使用的 `graphite_rollup` 参数信息。                      |
+| [system.graphite&#95;retentions](/operations/system-tables/graphite_retentions)                           | 包含在 `GraphiteMergeTree` 类型引擎表中使用的 `graphite_rollup` 参数相关信息的系统表。                       |
 | [system.histogram&#95;metrics](/operations/system-tables/histogram_metrics)                               | 该表包含可实时计算并以 Prometheus 格式导出的直方图指标，且始终保持最新。                                            |
 | [system.iceberg&#95;history](/operations/system-tables/iceberg_history)                                   | 系统中的 Iceberg 快照历史                                                                     |
 | [system.iceberg&#95;metadata&#95;log](/operations/system-tables/iceberg_metadata_log)                     | 包含从 Iceberg 表读取的元数据文件信息的系统表。每条记录表示一个根元数据文件、从某个 Avro 文件中提取的元数据,或某个 Avro 文件对应的一条条目。     |
@@ -81,15 +81,15 @@ doc_type: 'reference'
 | [system.moves](/operations/system-tables/moves)                                                           | 包含 MergeTree 表正在进行的数据部件移动信息的系统表。每个数据部件的移动对应一行记录。                                      |
 | [system.mutations](/operations/system-tables/mutations)                                                   | 包含 MergeTree 表 mutation 操作及其进度信息的系统表。每个 mutation 命令对应一行记录。                            |
 | [system.numbers](/operations/system-tables/numbers)                                                       | 系统表，只包含一个名为 `number` 的 UInt64 列，存储从零开始的几乎所有自然数。                                       |
-| [system.numbers&#95;mt](/operations/system-tables/numbers_mt)                                             | 与 `system.numbers` 类似的系统表，但读取会并行执行，返回的数字顺序可能是任意的。                                     |
-| [system.one](/operations/system-tables/one)                                                               | 仅包含一行，且只有一个名为 `dummy`、类型为 UInt8、值为 0 的列的系统表。类似于其他数据库管理系统中的 `DUAL` 表。                  |
+| [system.numbers&#95;mt](/operations/system-tables/numbers_mt)                                             | 与 `system.numbers` 类似的系统表，但读取是并行执行的，返回的数字顺序可能不固定。                                     |
+| [system.one](/operations/system-tables/one)                                                               | 仅包含一行且只有一个名为 `dummy`、类型为 UInt8、值为 0 的列的系统表。类似于其他数据库管理系统中的 `DUAL` 表。                   |
 | [system.opentelemetry&#95;span&#95;log](/operations/system-tables/opentelemetry_span_log)                 | 包含已执行查询的 trace spans 信息的系统表。                                                          |
 | [system.part&#95;log](/operations/system-tables/part_log)                                                 | 包含 MergeTree 系列表中数据分区片段相关事件信息的系统表,例如数据添加或合并等操作。                                       |
 | [system.parts](/operations/system-tables/parts)                                                           | 包含 MergeTree 表分区片段相关信息的系统表                                                            |
 | [system.parts&#95;columns](/operations/system-tables/parts_columns)                                       | 包含 MergeTree 表的分区片段和列信息的系统表。                                                          |
-| [system.primes](/operations/system-tables/primes)                                                         | 系统表,只包含一个名为 `prime` 的 UInt64 列,其中存储按升序排列的质数,从 2 开始。                                   |
+| [system.primes](/operations/system-tables/primes)                                                         | 系统表，仅包含一个名为 `prime` 的 UInt64 类型列，该列按升序存储从 2 开始的质数。                                    |
 | [system.processes](/operations/system-tables/processes)                                                   | 用于实现 `SHOW PROCESSLIST` 查询的系统表。                                                       |
-| [system.processors&#95;profile&#95;log](/operations/system-tables/processors_profile_log)                 | 系统表，包含处理器层面的性能分析信息（可在 `EXPLAIN PIPELINE` 中查看）                                         |
+| [system.processors&#95;profile&#95;log](/operations/system-tables/processors_profile_log)                 | 系统表，包含在处理器层面进行性能分析的信息（可在 `EXPLAIN PIPELINE` 中查看）                                      |
 | [system.projection&#95;parts](/operations/system-tables/projection_parts)                                 | 包含 MergeTree 系列表的投影分区片段相关信息的系统表。                                                      |
 | [system.projection&#95;parts&#95;columns](/operations/system-tables/projection_parts_columns)             | 包含 MergeTree 系列表中投影分区片段的列信息的系统表                                                       |
 | [system.projections](/operations/system-tables/projections)                                               | 包含所有表中现有 PROJECTION 相关信息的系统表。                                                         |
@@ -113,7 +113,7 @@ doc_type: 'reference'
 | [system.s3&#95;queue&#95;settings](/operations/system-tables/s3_queue_settings)                           | 包含 S3Queue 表相关设置信息的系统表。从服务器版本 `24.10` 起可用。                                            |
 | [system.scheduler](/operations/system-tables/scheduler)                                                   | 包含本地服务器上调度节点信息和状态的系统表。                                                                |
 | [system.schema&#95;inference&#95;cache](/operations/system-tables/schema_inference_cache)                 | 包含所有已缓存文件模式信息的系统表。                                                                    |
-| [system.server&#95;settings](/operations/system-tables/server_settings)                                   | 包含在 `config.xml` 中指定的服务器全局设置信息的系统表。                                                   |
+| [system.server&#95;settings](/operations/system-tables/server_settings)                                   | 包含关于服务器全局设置信息的系统表，这些设置在 `config.xml` 中指定。                                             |
 | [system.session&#95;log](/operations/system-tables/session_log)                                           | 记录所有成功和失败登录与登出事件信息的系统表。                                                               |
 | [system.settings](/operations/system-tables/settings)                                                     | 包含当前用户会话设置信息的系统表。                                                                     |
 | [system.settings&#95;changes](/operations/system-tables/settings_changes)                                 | 包含此前 ClickHouse 各版本中设置变更信息的系统表。                                                       |
@@ -121,11 +121,12 @@ doc_type: 'reference'
 | [system.settings&#95;profiles](/operations/system-tables/settings_profiles)                               | 包含所有已配置的设置配置文件属性的系统表。                                                                 |
 | [system.stack&#95;trace](/operations/system-tables/stack_trace)                                           | 包含所有服务器线程堆栈跟踪信息的系统表。便于开发人员检查服务器状态。                                                    |
 | [system.storage&#95;policies](/operations/system-tables/storage_policies)                                 | 包含有关在服务器配置中定义的存储策略和卷信息的系统表。                                                           |
-| [system.symbols](/operations/system-tables/symbols)                                                       | 对 C++ 专家和 ClickHouse 工程师有用的系统表，包含用于对 `clickhouse` 二进制可执行文件进行自省的信息。                    |
+| [system.symbols](/operations/system-tables/symbols)                                                       | 对 C++ 专家和 ClickHouse 工程师有用的系统表，包含用于对 `clickhouse` 二进制文件进行自省的信息。                       |
 | [system.table&#95;engines](/operations/system-tables/table_engines)                                       | 系统表，包含服务器支持的表引擎及其所支持特性的描述。                                                            |
 | [system.tables](/operations/system-tables/tables)                                                         | 包含服务器已知的每个表元数据的系统表。                                                                   |
 | [system.text&#95;log](/operations/system-tables/text_log)                                                 | 包含日志记录项的系统表。                                                                          |
 | [system.time&#95;zones](/operations/system-tables/time_zones)                                             | 包含 ClickHouse 服务器所支持的时区列表的系统表。                                                        |
+| [system.tokenizers](/operations/system-tables/tokenizers)                                                 | 显示所有可用分词器的系统表。                                                                        |
 | [system.trace&#95;log](/operations/system-tables/trace_log)                                               | 包含由采样查询分析器收集的堆栈跟踪信息的系统表。                                                              |
 | [system.unicode](/operations/system-tables/unicode)                                                       | 包含 Unicode 字符及其属性列表的系统表。                                                              |
 | [system.user&#95;defined&#95;functions](/operations/system-tables/user_defined_functions)                 | 包含用户自定义函数 (UDF) 加载状态和配置元数据的系统表。                                                       |

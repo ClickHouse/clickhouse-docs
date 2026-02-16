@@ -1523,6 +1523,14 @@ Parquet 读取器输出的平均块大小（字节）
 
 Arrow 输出格式使用的压缩算法。支持的编解码器：lz4_frame、zstd、none（不压缩）
 
+## output_format_arrow_date_as_uint16 \{#output_format_arrow_date_as_uint16\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "默认将 Date 写为 Arrow DATE32，而不是普通的 UInt16。"}]}]}/>
+
+将 Date 值写为普通的 16 位无符号整数（读取时为 UInt16），而不是转换为 32 位的 Arrow DATE32 类型（读取时为 Date32）。
+
 ## output_format_arrow_fixed_string_as_fixed_byte_array \{#output_format_arrow_fixed_string_as_fixed_byte_array\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
