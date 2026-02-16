@@ -16,6 +16,7 @@ import createMirror from '@site/static/images/managed-postgres/peerdb/create-mir
 import tablePicker from '@site/static/images/managed-postgres/peerdb/table-picker.png';
 import initialLoad from '@site/static/images/managed-postgres/peerdb/initial-load.png';
 import mirrors from '@site/static/images/managed-postgres/peerdb/mirrors.png';
+import settings from '@site/static/images/managed-postgres/peerdb/settings.png';
 
 # Migrate to Managed Postgres using PeerDB {#peerdb-migration}
 This guide provides step-by-step instructions on how to migrate your PostgreSQL database to ClickHouse Managed Postgres using PeerDB.
@@ -47,14 +48,50 @@ Similarly, create a peer for your ClickHouse Managed Postgres instance by provid
 Now, you should see both the source and target peers listed in the "Peers" section.
 <Image img={peers} alt="Peers List" size="md" border />
 
+### Obtain source schema dump {#migration-peerdb-source-schema-dump}
+To mirror the setup of the source database in the target database, we need to obtain a schema dump of the source database. You can use `pg_dump` to create a schema-only dump of your source PostgreSQL database:
+```shell
+pg_dump -d 'postgresql://<user>:<password>@<host>:<port>/<database>'  -s > source_schema.sql
+```
+
+Before applying this to the target database, we need to remove UNIQUE constraints and indexes from the dump file so that PeerDB's ingestion to target tables is not blocked by these constraints. These can be removed using:
+```shell
+# Preview
+grep -n "CONSTRAINT.*UNIQUE" <dump_file_path>
+grep -n "CREATE UNIQUE INDEX" <dump_file_path>
+grep -n -E "(CONSTRAINT.*UNIQUE|CREATE UNIQUE INDEX)" <dump_file_path>
+
+# Remove
+sed -i.bak -E '/CREATE UNIQUE INDEX/,/;/d; /(CONSTRAINT.*UNIQUE|ADD CONSTRAINT.*UNIQUE)/d' <dump_file_path>
+```
+
+### Apply schema dump to target database {#migration-peerdb-apply-schema-dump}
+After cleaning up the schema dump file, you can apply it to your target ClickHouse Managed Postgres database by [connecting](../connection) via `psql` and running the schema dump file:
+```shell
+psql -h <target_host> -p <target_port> -U <target_username> -d <target_database> -f source_schema.sql
+```
+
+Here on the target side, we do not want PeerDB ingestion to be blocked by foreign key constraints. For this, we can alter the target role (used above in the target peer) to have `session_replication_role` set to `replica`:
+```sql
+ALTER ROLE <target_role> SET session_replication_role = replica;
+```
+
 ## Create a mirror {#migration-peerdb-create-mirror}
 Next, we need to create a mirror to define the data migration process between the source and target peers. In PeerDB UI, navigate to the "Mirrors" section by clicking on "Mirrors" in the sidebar. To create a new mirror, click on the `+ New mirror` button.
 <Image img={createMirror} alt="Create Mirror" size="md" border />
 1. Give your mirror a name that describes the migration.
 2. Select the source and target peers you created earlier from the dropdown menus.
-3. You may choose to enable continuous replication if you want to keep the target database in sync with the source after the initial migration. Otherwise, under **Advanced settings**, you can enable **Initial copy only** to perform a one-time migration.
+3. Make sure that:
+- Soft delete is OFF.
+- Expand `Advanced settings`. Make sure that the **Postgres type system is enabled** and **PeerDB columns are disabled**.
+<Image img={settings} alt="Mirror Settings" size="md" border />
 4. Select the tables you want to migrate. You can choose specific tables or select all tables from the source database.
 <Image img={tablePicker} alt="Table Picker" size="md" border />
+
+:::info Selecting tables
+Make sure the destination table names are the same as the source table names in the target database, as we have migrated the schema as is in the earlier step.
+:::
+
 5. Once you have configured the mirror settings, click on the `Create mirror` button.
 
 You should see your newly created mirror in the "Mirrors" section.
