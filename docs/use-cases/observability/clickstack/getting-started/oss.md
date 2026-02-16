@@ -124,7 +124,7 @@ The self-hosted local mode image comes with an OpenTelemetry collector, the Clic
 docker run -p 8080:8080 clickhouse/clickstack-local:latest
 ```
 
-Unlike the "All in one" image, you will not be promoted to create a user as **local mode does not include authentication**.
+Unlike the "All in one" image, you will not be prompted to create a user as **local mode does not include authentication**.
 
 ### Complete connection credentials {#complete-connection-credentials}
 
