@@ -13,7 +13,7 @@ doc_type: 'reference'
 
 排他的手法 (exclusive method) を用いて、数値データシーケンスの複数の[分位数](https://en.wikipedia.org/wiki/Quantile) を異なるレベルで同時に厳密に計算します。
 
-この関数は [`quantileExactExclusive`](/sql-reference/aggregate-functions/reference/quantileexactexclusive) と同等ですが、複数の分位レベルを単一パスで計算できるため、個々の分位数関数を別々に呼び出す場合よりも効率的です。
+この関数は [`quantileExactExclusive`](/sql-reference/aggregate-functions/reference/quantileExactExclusive) と同等ですが、複数の分位レベルを単一パスで計算できるため、個々の分位数関数を別々に呼び出す場合よりも効率的です。
 
 この関数は、[R-6 method](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample) で説明されている排他的手法を用いて分位数を計算します。
 これは Excel の [PERCENTILE.EXC](https://support.microsoft.com/en-us/office/percentile-exc-function-bbaa7204-e9e1-4010-85bf-c31dc5dce4ba) 関数と同等です。

@@ -151,7 +151,7 @@ The `ClickHouseConnection` class normally allows for parallel operation (multipl
 | Roles | `IReadOnlyList<string>` | Empty | `Roles` | Comma-separated ClickHouse roles (e.g., `Roles=admin,reader`) |
 
 :::note
-When using a connection string to set custom settings, use the `set_` prefix, e.g. "set_max_threads=4". When using a ClickHouseClientSettings object, do not use the `set_` prefix.
+When using a connection string to set custom settings, use the `set_` prefix, e.g. "set_max_threads=4". When using a ClickHouseClientSettings object, don't use the `set_` prefix.
 
 For a full list of available settings, see [here](https://clickhouse.com/docs/operations/settings/settings).
 :::
@@ -262,7 +262,7 @@ Choose **C#**. Connection details are displayed below.
 
 <Image img={connection_details_csharp} size="md" alt="ClickHouse Cloud C# connection details" border />
 
-If you are using self-managed ClickHouse, the connection details are set by your ClickHouse administrator.
+If you're using self-managed ClickHouse, the connection details are set by your ClickHouse administrator.
 
 Using a connection string:
 
@@ -458,7 +458,7 @@ var reader = await client.ExecuteReaderAsync(
 ```
 
 :::tip
-If you are specifying a custom `QueryId`, ensure it is unique for every call. A random GUID is a good choice.
+If you're specifying a custom `QueryId`, ensure it is unique for every call. A random GUID is a good choice.
 :::
 
 ---
@@ -696,7 +696,7 @@ settings.CustomSettings["wait_for_async_insert"] = 1; // Recommended: wait for f
 | `wait_for_async_insert=0` | Insert returns immediately when data is buffered. No guarantee data will be persisted. | Only when data loss is acceptable |
 
 :::warning
-With `wait_for_async_insert=0`, errors only surface during flush and cannot be traced back to the original insert. The client also provides no backpressure, risking server overload.
+With `wait_for_async_insert=0`, errors only surface during flush and can't be traced back to the original insert. The client also provides no backpressure, risking server overload.
 :::
 
 **Key settings:**
@@ -1368,7 +1368,7 @@ This will log:
 
 ### Debug mode: network tracing and diagnostics {#logging-debugmode}
 
-To help with diagnosing networking issues, the driver library includes a helper that enables low-level tracing of .NET networking internals. To enable it you must pass a LoggerFactory with the level set to Trace, and set EnableDebugMode to true (or manually enable it via the `ClickHouse.Driver.Diagnostic.TraceHelper` class). Events will be logged to the `ClickHouse.Driver.NetTrace` category. Warning: this will generate extremely verbose logs, and impact performance. It is not recommended to enable debug mode in production.
+To help with diagnosing networking issues, the driver library includes a helper that enables low-level tracing of .NET networking internals. To enable it you must pass a LoggerFactory with the level set to Trace, and set EnableDebugMode to true (or manually enable it via the `ClickHouse.Driver.Diagnostic.TraceHelper` class). Events will be logged to the `ClickHouse.Driver.NetTrace` category. Warning: this will generate extremely verbose logs, and impact performance. It isn't recommended to enable debug mode in production.
 
 ```csharp
 var loggerFactory = LoggerFactory.Create(builder =>
@@ -1494,7 +1494,7 @@ using var client = new ClickHouseClient(settings);
 
 :::note 
 Important considerations when providing a custom HttpClient
-- **Automatic decompression**: You must enable `AutomaticDecompression` if compression is not disabled (compression is enabled by default).
+- **Automatic decompression**: You must enable `AutomaticDecompression` if compression isn't disabled (compression is enabled by default).
 - **Idle timeout**: Set `PooledConnectionIdleTimeout` smaller than the server's `keep_alive_timeout` (10 seconds for ClickHouse Cloud) to avoid connection errors from half-open connections.
 :::
 
@@ -1513,7 +1513,7 @@ await using var connection = await dataSource.OpenConnectionAsync();
 
 ### Dapper {#orm-support-dapper}
 
-`ClickHouse.Driver` can be used with Dapper, but anonymous objects are not supported.
+`ClickHouse.Driver` can be used with Dapper, but anonymous objects aren't supported.
 
 **Working example:**
 
@@ -1601,7 +1601,7 @@ Entity Framework Core is currently not supported.
 
 ### AggregateFunction columns {#aggregatefunction-columns}
 
-Columns of type `AggregateFunction(...)` cannot be queried or inserted directly.
+Columns of type `AggregateFunction(...)` can't be queried or inserted directly.
 
 To insert:
 

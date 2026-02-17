@@ -32,7 +32,7 @@ Elastic Stack と ClickStack はどちらもオブザーバビリティプラッ
 
 | **Role** | **Elastic Stack** | **ClickStack** | **Comments** |
 |--------------------------|--------------------------------------------------|--------------------------------------------------|--------------|
-| **UI & Alerting** | **Kibana** — ダッシュボード、検索、アラート      | **HyperDX** — リアルタイム UI、検索、アラート   | いずれもユーザー向けの主要インターフェイスであり、可視化とアラート管理を提供します。HyperDX はオブザーバビリティ向けに特化して設計されており、OpenTelemetry のセマンティクスと密接に結合しています。 |
+| **UI & Alerting** | **Kibana** — ダッシュボード、検索、アラート      | **ClickStack UI (HyperDX)** — リアルタイム UI、検索、アラート   | いずれもユーザー向けの主要インターフェイスであり、可視化とアラート管理を提供します。ClickStack UI はオブザーバビリティ向けに特化して設計されており、OpenTelemetry のセマンティクスと密接に結合しています。 |
 | **Storage & Query Engine** | **Elasticsearch** — 倒立インデックスを持つ JSON ドキュメントストア | **ClickHouse** — ベクトル化エンジンを備えたカラム指向データベース | Elasticsearch は検索に最適化された倒立インデックスを使用し、ClickHouse はカラムナストレージと SQL を用いて、構造化および半構造化データに対する高速な分析を実現します。 |
 | **Data Collection** | **Elastic Agent**、**Beats**（例: Filebeat, Metricbeat） | **OpenTelemetry Collector**（エッジ + ゲートウェイ）     | Elastic はカスタムシッパーと、Fleet によって管理される統合エージェントをサポートします。ClickStack は OpenTelemetry を採用しており、ベンダーニュートラルなデータ収集と処理を可能にします。 |
 | **Instrumentation SDKs** | **Elastic APM agents**（プロプライエタリ）             | **OpenTelemetry SDKs**（ClickStack により提供） | Elastic の SDK は Elastic スタックに密接に結び付けられています。ClickStack は主要言語向けのログ、メトリクス、トレースについて OpenTelemetry SDKs を基盤として構築しています。 |
@@ -75,7 +75,7 @@ Elasticsearch では、インデックス作成前にドキュメントを変換
 
 Elasticsearch は、[DSL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/querydsl)、[ES|QL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/esql)、[EQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/eql)、[KQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/kql)（Lucene 形式）クエリを含む[複数のクエリ言語](https://www.elastic.co/docs/explore-analyze/query-filter/languages)をサポートしていますが、結合のサポートは限定的で、**左外部結合**のみが[`ES|QL`](https://www.elastic.co/guide/en/elasticsearch/reference/8.x/esql-commands.html#esql-lookup-join)経由で利用可能です。ClickHouse は **完全な SQL 構文** をサポートしており、[すべての結合タイプ](/sql-reference/statements/select/join#supported-types-of-join)、[ウィンドウ関数](/sql-reference/window-functions)、サブクエリ（相関サブクエリを含む）、および CTE を利用できます。これは、オブザーバビリティ シグナルとビジネスデータやインフラストラクチャデータとの間を相関付ける必要がある場合に、大きな利点となります。
 
-ClickStack では、[HyperDX が Lucene 互換の検索インターフェース](/use-cases/observability/clickstack/search)を提供し、スムーズな移行を支援するとともに、ClickHouse バックエンド経由で完全な SQL サポートも提供します。この構文は、[Elastic query string](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax) 構文と同等のものです。この構文の詳細な比較については、["Searching in ClickStack and Elastic"](/use-cases/observability/clickstack/migration/elastic/search) を参照してください。
+ClickStack では、[UI が Lucene 互換の検索インターフェース](/use-cases/observability/clickstack/search)を提供し、スムーズな移行を支援するとともに、ClickHouse バックエンド経由で完全な SQL サポートも提供します。この構文は、[Elastic query string](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax) 構文と同等のものです。この構文の詳細な比較については、["Searching in ClickStack and Elastic"](/use-cases/observability/clickstack/migration/elastic/search) を参照してください。
 
 ### ファイル形式とインターフェース \{#file-formats-and-interfaces\}
 
@@ -253,4 +253,4 @@ ClickHouse のレイクハウス機能は、単にデータを読み取るだけ
 - **増分ロード**: [S3Queue](/engines/table-engines/integrations/s3queue) や [ClickPipes](/integrations/clickpipes) などの機能を利用し、レイクハウステーブルからローカルの [MergeTree](/engines/table-engines/mergetree-family/mergetree) テーブルへの継続的なロードをサポートします。
 - **パフォーマンス最適化**: [cluster 関数](/sql-reference/table-functions/cluster) を用いたレイクハウスデータに対する分散クエリ実行により、パフォーマンスを向上させます。
 
-これらの機能により、ClickHouse はレイクハウスアーキテクチャを採用する組織にとって自然な選択肢となり、データレイクの柔軟性とカラムナデータベースの性能の両方を活用できるようにします。 
+これらの機能により、ClickHouse はレイクハウスアーキテクチャを採用する組織にとって自然な選択肢となり、データレイクの柔軟性とカラムナデータベースの性能の両方を活用できるようにします。

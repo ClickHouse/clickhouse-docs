@@ -40,12 +40,12 @@ import demo_sources from '@site/static/images/use-cases/observability/hyperdx-de
 import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
 import DemoArchitecture from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
 
-**本指南假设您已按照[一体化镜像部署说明](/use-cases/observability/clickstack/getting-started)或[仅本地模式](/use-cases/observability/clickstack/deployment/local-mode-only)部署了 ClickStack，并完成了初始用户创建。或者，您也可以跳过所有本地环境搭建，直接连接到我们托管的 ClickStack 演示实例 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)，该实例使用的就是本数据集。**
+**本指南假设您已按照[一体化镜像部署说明](/use-cases/observability/clickstack/getting-started/oss)或[仅本地模式](/use-cases/observability/clickstack/deployment/local-mode-only)部署了开源版 ClickStack，并完成了初始用户创建。或者，您也可以跳过所有本地环境搭建，直接连接到我们托管的 ClickStack 演示实例 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)，该实例使用的就是本数据集。**
 
 本指南使用托管在公共 ClickHouse playground [sql.clickhouse.com](https://sql.clickhpouse.com) 上的示例数据集，您可以从本地部署的 ClickStack 连接到该数据集。
 
-:::warning Not supported with HyperDX in ClickHouse Cloud
-当 HyperDX 托管在 ClickHouse Cloud 中时，不支持远程数据库。因此，在该环境中无法使用此数据集。
+:::warning Not supported with Managed ClickStack
+使用 Managed ClickStack 时不支持远程数据库。因此，在该环境中无法使用此数据集。
 :::
 
 

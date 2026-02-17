@@ -39,21 +39,21 @@ With this option, only a primary node is provisioned in your selected size. No s
 
 Standbys and read replicas serve different purposes in Managed Postgres and are configured separately.
 
-**Standbys** are dedicated exclusively to high availability and automatic failover. They replicate data from the primary using streaming replication and are always ready to be promoted if the primary fails. Standbys are not exposed for read queries.
+**Standbys** are dedicated exclusively to high availability and automatic failover. They replicate data from the primary using streaming replication and are always ready to be promoted if the primary fails. Standbys aren't exposed for read queries.
 
 **Read replicas** are designed for read scaling. They pull WAL (Write-Ahead Log) data from object storage and run in a separate network environment with their own connection endpoint. Read replicas allow you to offload read traffic from your primary without impacting HA guarantees.
 
 ### Why standbys don't serve read queries {#why-standbys-dont-serve-read-queries}
 
-While some database providers expose hot standbys for read-only queries, Managed Postgres intentionally does not. Allowing read queries on standbys can compromise their primary purpose: being ready to take over instantly when the primary fails.
+While some database providers expose hot standbys for read-only queries, Managed Postgres intentionally doesn't. Allowing read queries on standbys can compromise their primary purpose: being ready to take over instantly when the primary fails.
 
 There are two main concerns:
 
 1. **WAL replay competition**: Under write-heavy workloads, read queries on a standby compete with WAL replay for system resources. This competition can cause high replication lag, meaning the standby falls behind the primary. If a failover occurs while the standby is lagging, it won't have the most recent data and may not be ready to take over cleanly.
 
-2. **VACUUM interference**: Long-running read queries on a standby can prevent `VACUUM` (and `AUTOVACUUM`) from cleaning up dead tuples on the primary. PostgreSQL cannot remove rows that an active query on any replica might still need to access. This can lead to table bloat and degraded performance over time.
+2. **VACUUM interference**: Long-running read queries on a standby can prevent `VACUUM` (and `AUTOVACUUM`) from cleaning up dead tuples on the primary. PostgreSQL can't remove rows that an active query on any replica might still need to access. This can lead to table bloat and degraded performance over time.
 
-By keeping standbys dedicated to failover, Managed Postgres ensures they are always synchronized and ready to take over with minimal data loss and downtime. For read scaling, use [read replicas](/cloud/managed-postgres/read-replicas) instead.
+By keeping standbys dedicated to failover, Managed Postgres ensures they're always synchronized and ready to take over with minimal data loss and downtime. For read scaling, use [read replicas](/cloud/managed-postgres/read-replicas) instead.
 
 ## Handling failures {#handling-failures}
 

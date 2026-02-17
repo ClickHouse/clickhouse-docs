@@ -79,7 +79,8 @@ SSL-подключение:
 
 
 Для безопасного соединения используйте `nats_secure = 1`.
-Поведение используемой библиотеки по умолчанию состоит в том, что она не проверяет, достаточно ли безопасно установленное TLS‑соединение. Просрочен ли сертификат, самоподписан, отсутствует или недействителен — соединение всё равно устанавливается. Более строгая проверка сертификатов может быть реализована в будущем.
+Проверка сертификата управляется переменной окружения `CLICKHOUSE_NATS_TLS_SECURE`;
+если сертификат просрочен, самоподписан, отсутствует или по другим причинам недействителен, отключите проверку, установив `CLICKHOUSE_NATS_TLS_SECURE=0`.
 
 Запись в таблицу NATS:
 
@@ -87,6 +88,41 @@ SSL-подключение:
 Однако, если таблица читает из нескольких subject, необходимо указать, в какой subject мы хотим публиковать.
 Поэтому при вставке в таблицу с несколькими subject требуется установить `stream_like_engine_insert_queue`.
 Вы можете выбрать один из subject, из которых читает таблица, и публиковать туда свои данные. Например:
+
+CREATE TABLE queue (
+key UInt64,
+value UInt64
+) ENGINE = NATS
+SETTINGS nats&#95;url = &#39;localhost:4444&#39;,
+nats&#95;subjects = &#39;subject1,subject2&#39;,
+nats&#95;format = &#39;JSONEachRow&#39;;
+
+INSERT INTO queue
+SETTINGS stream&#95;like&#95;engine&#95;insert&#95;queue = &#39;subject2&#39;
+VALUES (1, 1);
+
+Параметры форматирования можно указать вместе с настройками, связанными с NATS.
+
+Пример:
+
+CREATE TABLE queue (
+key UInt64,
+value UInt64,
+date DateTime
+) ENGINE = NATS
+SETTINGS nats&#95;url = &#39;localhost:4444&#39;,
+nats&#95;subjects = &#39;subject1&#39;,
+nats&#95;format = &#39;JSONEachRow&#39;,
+date&#95;time&#95;input&#95;format = &#39;best&#95;effort&#39;;
+
+Конфигурацию сервера NATS можно задать в конфигурационном файле ClickHouse.
+В частности, вы можете указать свой пароль для движка NATS:
+
+<nats>
+  <user>click</user>
+  <password>house</password>
+  <token>clickhouse</token>
+</nats>
 
 ```sql
   CREATE TABLE queue (

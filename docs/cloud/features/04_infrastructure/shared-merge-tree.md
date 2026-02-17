@@ -101,17 +101,17 @@ ORDER BY key
 
 Some settings behavior is significantly changed:
 
-- `insert_quorum` -- all inserts to SharedMergeTree are quorum inserts (written to shared storage) so this setting is not needed when using SharedMergeTree table engine.
-- `insert_quorum_parallel` -- all inserts to SharedMergeTree are quorum inserts (written to shared storage) so this setting is not needed when using SharedMergeTree table engine.
+- `insert_quorum` -- all inserts to SharedMergeTree are quorum inserts (written to shared storage) so this setting isn't needed when using SharedMergeTree table engine.
+- `insert_quorum_parallel` -- all inserts to SharedMergeTree are quorum inserts (written to shared storage) so this setting isn't needed when using SharedMergeTree table engine.
 - `select_sequential_consistency` -- doesn't require quorum inserts, will trigger additional load to clickhouse-keeper on `SELECT` queries
 
 ## Consistency {#consistency}
 
 SharedMergeTree provides better lightweight consistency than ReplicatedMergeTree. When inserting into SharedMergeTree, you don't need to provide settings such as `insert_quorum` or `insert_quorum_parallel`. Inserts are quorum inserts, meaning that the metadata will be stored in ClickHouse-Keeper, and the metadata is replicated to at least the quorum of ClickHouse-keepers. Each replica in your cluster will asynchronously fetch new information from ClickHouse-Keeper.
 
-Most of the time, you should not be using `select_sequential_consistency` or `SYSTEM SYNC REPLICA LIGHTWEIGHT`. The asynchronous replication should cover most scenarios and has very low latency. In the rare case where you absolutely need to prevent stale reads, follow these recommendations in order of preference:
+Most of the time, you shouldn't be using `select_sequential_consistency` or `SYSTEM SYNC REPLICA LIGHTWEIGHT`. The asynchronous replication should cover most scenarios and has very low latency. In the rare case where you absolutely need to prevent stale reads, follow these recommendations in order of preference:
 
-1. If you are executing your queries in the same session or the same node for your reads and writes, using `select_sequential_consistency` is not needed because your replica will already have the most recent metadata.
+1. If you're executing your queries in the same session or the same node for your reads and writes, using `select_sequential_consistency` isn't needed because your replica will already have the most recent metadata.
 
 2. If you write to one replica and read from another, you can use `SYSTEM SYNC REPLICA LIGHTWEIGHT` to force the replica to fetch the metadata from ClickHouse-Keeper.
 

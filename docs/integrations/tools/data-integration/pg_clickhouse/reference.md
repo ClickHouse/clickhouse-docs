@@ -61,7 +61,7 @@ Once installed, PostgreSQL tracks two variations of the version:
 
 In practice this means that a release that increments the patch version, e.g.
 from `v0.1.0` to `v0.1.1`, benefits all databases that have loaded `v0.1` and
-do not need to run `ALTER EXTENSION` to benefit from the upgrade.
+don't need to run `ALTER EXTENSION` to benefit from the upgrade.
 
 A release that increments the minor or major versions, on the other hand, will
 be accompanied by SQL upgrade scripts, and all existing database that contain
@@ -139,9 +139,9 @@ The supported options are:
 * `port`: The port to connect to on the ClickHouse server. Defaults as
     follows:
   * 9440 if `driver` is "binary" and `host` is a ClickHouse Cloud host
-  * 9004 if `driver` is "binary" and `host` is not a ClickHouse Cloud host
+  * 9004 if `driver` is "binary" and `host` isn't a ClickHouse Cloud host
   * 8443 if `driver` is "http" and `host` is a ClickHouse Cloud host
-  * 8123 if `driver` is "http" and `host` is not a ClickHouse Cloud host
+  * 8123 if `driver` is "http" and `host` isn't a ClickHouse Cloud host
 
 ### ALTER SERVER {#alter-server}
 
@@ -238,7 +238,7 @@ FOREIGN TABLE](#create-foreign-table).
  names it imports, which double-quotes identifiers with uppercase characters
  or blank spaces. Such table and column names thus must be double-quoted in
  PostgreSQL queries. Names with all lowercase and no blank space characters
- do not need to be quoted.
+ don't need to be quoted.
 
  For example, given this ClickHouse table:
 
@@ -640,7 +640,7 @@ try=# COPY logs FROM stdin CSV;
 
 > **⚠️ Batch API Limitations**
 >
-> pg_clickhouse has not yet implemented support for the PostgreSQL FDW batch
+> pg_clickhouse hasn't yet implemented support for the PostgreSQL FDW batch
 > insert API. Thus [COPY] currently uses [INSERT](#insert) statements to
 > insert records. This will be improved in a future release.
 
@@ -714,7 +714,7 @@ SET pg_clickhouse.session_settings TO $$
 $$;
 ```
 
-pg_clickhouse does not validate the settings, but passes them on to ClickHouse
+pg_clickhouse doesn't validate the settings, but passes them on to ClickHouse
 for every query. It thus supports all settings for each ClickHouse version.
 
 Note that pg_clickhouse must be loaded before setting
@@ -888,7 +888,7 @@ maps the following functions:
 
 These custom functions created by `pg_clickhouse` provide foreign query
 pushdown for select ClickHouse functions with no PostgreSQL equivalents. If
-any of these functions cannot be pushed down they will raise an exception.
+any of these functions can't be pushed down they will raise an exception.
 
 * [dictGet](https://clickhouse.com/docs/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull)
 
@@ -899,7 +899,7 @@ data types. For incompatible types the pushdown will fail; if `x` in this
 example is a ClickHouse `UInt64`, ClickHouse will refuse to cast the value.
 
 In order to push down casts to incompatible data types, pg_clickhouse provides
-the following functions. They raise an exception in PostgreSQL if they are not
+the following functions. They raise an exception in PostgreSQL if they're not
 pushed down.
 
 * [toUInt8](https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#touint8)
@@ -922,7 +922,7 @@ These PostgreSQL aggregate functions pushdown to ClickHouse.
 
 These custom aggregate functions created by `pg_clickhouse` provide foreign
 query pushdown for select ClickHouse aggregate functions with no PostgreSQL
-equivalents. If any of these functions cannot be pushed down they will raise
+equivalents. If any of these functions can't be pushed down they will raise
 an exception.
 
 * [argMax](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/argmax)
@@ -953,7 +953,7 @@ SELECT quantile(0.25)(a) FROM t1;
 ```
 
 Note that the non-default `ORDER BY` suffixes `DESC` and `NULLS FIRST`
-are not supported and will raise an error.
+aren't supported and will raise an error.
 
 * `percentile_cont(double)`: [quantile](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantile)
 * `quantile(double)`: [quantile](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/quantile)

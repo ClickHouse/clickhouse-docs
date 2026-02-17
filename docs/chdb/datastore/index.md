@@ -7,11 +7,14 @@ keywords: ['chdb', 'datastore', 'pandas', 'dataframe', 'sql', 'lazy evaluation']
 doc_type: 'guide'
 ---
 
-# DataStore: Pandas-Compatible API with SQL Optimization
+import Image from '@theme/IdealImage';
+import data_store from '@site/static/images/chdb/datastore_architecture.png'
 
-DataStore is chDB's pandas-compatible API that combines the familiar pandas DataFrame interface with the power of SQL query optimization. Write pandas-style code, get ClickHouse performance.
+# DataStore: Pandas-compatible API with SQL optimization
 
-## Key Features {#key-features}
+DataStore is chDB's pandas-compatible API that combines the familiar pandas DataFrame interface with the power of SQL query optimization and allows you to write pandas-style code while getting ClickHouse performance.
+
+## Key features {#key-features}
 
 - **Pandas Compatibility**: 209 pandas DataFrame methods, 56 `.str` methods, 42+ `.dt` methods
 - **SQL Optimization**: Operations automatically compile to optimized SQL queries
@@ -21,9 +24,7 @@ DataStore is chDB's pandas-compatible API that combines the familiar pandas Data
 
 ## Architecture {#architecture}
 
-<div style={{textAlign: 'center'}}>
-  <img src={require('../images/datastore_architecture.png').default} alt="DataStore Architecture" style={{maxWidth: '700px', width: '100%'}} />
-</div>
+<Image size="md" img={data_store} alt="DataStore Architecture" />
 
 DataStore uses **lazy evaluation** with **dual-engine execution**:
 
@@ -33,7 +34,7 @@ DataStore uses **lazy evaluation** with **dual-engine execution**:
 
 See [Execution Model](execution-model.md) for details.
 
-## One-Line Migration from Pandas {#migration}
+## One-Line migration from Pandas {#migration}
 
 ```python
 # Before (pandas)
@@ -49,7 +50,7 @@ result = df[df['age'] > 25].groupby('city')['salary'].mean()
 
 Your existing pandas code works unchanged, but now runs on the ClickHouse engine.
 
-## Performance Comparison {#performance}
+## Performance comparison {#performance}
 
 DataStore delivers significant performance improvements over pandas, especially for aggregation and complex pipelines:
 
@@ -62,7 +63,7 @@ DataStore delivers significant performance improvements over pandas, especially 
 
 *Benchmark on 10M rows. See [benchmark script](https://github.com/chdb-io/chdb/blob/main/refs/benchmark_datastore_vs_pandas.py) and [Performance Guide](../guides/pandas-performance.md) for details.*
 
-## When to Use DataStore {#when-to-use}
+## When to use DataStore {#when-to-use}
 
 **Use DataStore when:**
 - Working with large datasets (millions of rows)
@@ -76,7 +77,7 @@ DataStore delivers significant performance improvements over pandas, especially 
 - You need fine-grained control over query execution
 - Working with ClickHouse-specific features not exposed in pandas API
 
-## Feature Comparison {#comparison}
+## Feature comparison {#comparison}
 
 | Feature | Pandas | Polars  | DuckDB | DataStore |
 |---------|--------|---------|--------|-----------|
@@ -89,7 +90,7 @@ DataStore delivers significant performance improvements over pandas, especially 
 | Direct file queries | No     | Yes     | Yes | **Yes** |
 | Cloud storage support | No     | Limited | Yes | **Yes** |
 
-## API Statistics {#api-stats}
+## API statistics {#api-stats}
 
 | Category | Count | Coverage |
 |----------|-------|----------|
@@ -103,13 +104,13 @@ DataStore delivers significant performance improvements over pandas, especially 
 | Series.geo accessor | 14 | ClickHouse-specific |
 | **Total API methods** | **630+** | - |
 
-## Documentation Navigation {#navigation}
+## Documentation navigation {#navigation}
 
 ### Getting Started {#getting-started}
 - [Quickstart](quickstart.md) - Installation and basic usage
 - [Migration from Pandas](../guides/migration-from-pandas.md) - Step-by-step migration guide
 
-### API Reference {#api-reference}
+### API reference {#api-reference}
 - [Factory Methods](factory-methods.md) - Creating DataStore from various sources
 - [Query Building](query-building.md) - SQL-style query operations
 - [Pandas Compatibility](pandas-compat.md) - All 209 pandas-compatible methods
@@ -117,21 +118,22 @@ DataStore delivers significant performance improvements over pandas, especially 
 - [Aggregation](aggregation.md) - Aggregate and window functions
 - [I/O Operations](io.md) - Reading and writing data
 
-### Advanced Topics {#advanced-topics}
+### Advanced topics {#advanced-topics}
 - [Execution Model](execution-model.md) - Lazy evaluation and caching
 - [Class Reference](class-reference.md) - Complete API reference
 
-### Configuration & Debugging {#configuration-debugging}
+### Configuration & debugging {#configuration-debugging}
 - [Configuration](../configuration/index.md) - All configuration options
+- [Performance Mode](../configuration/performance-mode.md) - SQL-first mode for maximum throughput
 - [Debugging](../debugging/index.md) - Explain, profiling, and logging
 
-### Pandas User Guides {#pandas-user-guides}
+### Pandas user guides {#pandas-user-guides}
 - [Pandas Cookbook](../guides/pandas-cookbook.md) - Common patterns
 - [Key Differences](../guides/pandas-differences.md) - Important differences from pandas
 - [Performance Guide](../guides/pandas-performance.md) - Optimization tips
 - [SQL for Pandas Users](../guides/pandas-to-sql.md) - Understanding the SQL behind pandas operations
 
-## Quick Example {#quick-example}
+## Quick example {#quick-example}
 
 ```python
 from chdb import datastore as pd
@@ -157,7 +159,7 @@ print(result.to_sql())
 df = result.to_df()  # Returns pandas DataFrame
 ```
 
-## Next Steps {#next-steps}
+## Next steps {#next-steps}
 
 - **New to DataStore?** Start with the [Quickstart Guide](quickstart.md)
 - **Coming from pandas?** Read the [Migration Guide](../guides/migration-from-pandas.md)

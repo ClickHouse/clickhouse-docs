@@ -13,8 +13,7 @@ ClickHouse ODBC ドライバーは、ODBC 互換アプリケーションを Clic
 
 このドライバーは、[HTTP プロトコル](/interfaces/http) を使用して ClickHouse サーバーと通信します。これは、すべての ClickHouse デプロイメントでサポートされている主要なプロトコルです。これにより、ローカルインストール、クラウドマネージドサービス、HTTP ベースのアクセスのみが利用可能な環境など、多様な環境でドライバーを一貫して動作させることができます。
 
-ドライバーのソースコードは、[ClickHouse-ODBC GitHub Repository](
-https://github.com/ClickHouse/clickhouse-odbc) で入手できます。
+ドライバーのソースコードは、[ClickHouse-ODBC GitHub Repository](https://github.com/ClickHouse/clickhouse-odbc) で入手できます。
 
 :::tip
 より高い互換性のため、ClickHouse サーバーをバージョン 24.11 以降に更新することを強く推奨します。
@@ -23,23 +22,25 @@ https://github.com/ClickHouse/clickhouse-odbc) で入手できます。
 :::note
 このドライバーは現在も積極的に開発されています。一部の ODBC 機能はまだ完全には実装されていない可能性があります。現行バージョンは、基本的な接続性と中核となる ODBC 機能の提供に重点を置いており、追加機能は今後のリリースで提供される予定です。
 
-皆様からのフィードバックは非常に重要であり、新機能や改善の優先順位付けに役立ちます。制約や不足している機能、予期しない動作に遭遇した場合は、観察内容や機能要望を https://github.com/ClickHouse/clickhouse-odbc/issues の issue tracker から共有してください。
+皆様からのフィードバックは非常に重要であり、新機能や改善の優先順位付けに役立ちます。制約や不足している機能、予期しない動作に遭遇した場合は、観察内容や機能要望を [https://github.com/ClickHouse/clickhouse-odbc/issues](https://github.com/ClickHouse/clickhouse-odbc/issues) の issue tracker から共有してください。
 :::
 
 ## Windows へのインストール \{#installation-on-windows\}
 
-最新バージョンのドライバーは https://github.com/ClickHouse/clickhouse-odbc/releases/latest から入手できます。
+最新バージョンのドライバーは
+[https://github.com/ClickHouse/clickhouse-odbc/releases/latest](https://github.com/ClickHouse/clickhouse-odbc/releases/latest)
+から入手できます。
 このページから MSI インストーラーをダウンロードして実行し、表示される簡単なインストール手順に従ってください。
 
 ## テスト \{#testing\}
 
 次の簡単な PowerShell スクリプトを実行して、ドライバーをテストできます。以下のテキストをコピーし、URL、ユーザー名、パスワードを設定してから、
-PowerShell のコマンドプロンプトに貼り付けて実行してください。$reader.GetValue(0) を実行すると、ClickHouse
+PowerShell のコマンドプロンプトに貼り付けて実行してください。`$reader.GetValue(0)` を実行すると、ClickHouse
 サーバーのバージョンが表示されるはずです。
 
 ```powershell
 $url = "http://127.0.0.1:8123/"
-$user = "default"
+$username = "default"
 $password = ""
 $conn = New-Object System.Data.Odbc.OdbcConnection("`
     Driver={ClickHouse ODBC Driver (Unicode)};`
@@ -74,7 +75,7 @@ $conn.Close()
 * WSL インスタンス上にローカルにインストールされた ClickHouse サーバー
 
 ```plaintext
-Driver={ClickHouse ODBC Driver (Unicode)};Url=http://localhost:8123//;Username=default
+Driver={ClickHouse ODBC Driver (Unicode)};Url=http://localhost:8123/;Username=default
 ```
 
 * ClickHouse Cloud のインスタンス。
@@ -84,7 +85,7 @@ Driver={ClickHouse ODBC Driver (Unicode)};Url=https://you-instance-url.gcp.click
 ```
 
 
-## Microsoft Power BI との統合 \{#powerbi-Integration\}
+## Microsoft Power BI との統合 \{#powerbi-integration\}
 
 ODBC ドライバーを使用して、Microsoft Power BI を ClickHouse サーバーに接続できます。Power BI では 2 つの接続オプションを提供しており、いずれも標準の Power BI インストールに含まれています。1 つは汎用 ODBC Connector、もう 1 つは ClickHouse Connector です。
 
@@ -96,6 +97,6 @@ ODBC ドライバーを使用して、Microsoft Power BI を ClickHouse サー�
 - ODBC Connector
   Import モードのみをサポートします。Power BI はユーザーが指定したクエリを実行（またはテーブル全体を選択）し、結果セット全体を Power BI にインポートします。その後の更新では、データセット全体が再インポートされます。
 
-用途に応じてコネクタを選択してください。大規模なデータセットに対してインタラクティブなダッシュボードを構築・利用する場合は DirectQuery を、データの完全なローカルコピーが必要な場合は Import モードを使用します。
+ユースケースに応じてコネクタを選択してください。DirectQuery は、大規模なデータセットに対してインタラクティブなダッシュボードを構築する場合に最適です。データの完全なローカルコピーが必要な場合は Import モードを選択してください。
 
-Microsoft Power BI と ClickHouse の統合の詳細については、[Power BI 連携に関する ClickHouse ドキュメントページ](http://localhost:3000/docs/integrations/powerbi)を参照してください。
+Microsoft Power BI と ClickHouse の統合の詳細については、[Power BI 連携に関する ClickHouse ドキュメントページ](/integrations/powerbi)を参照してください。

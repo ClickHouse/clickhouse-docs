@@ -1,40 +1,110 @@
 ---
 description: 'テキスト内の検索語をすばやく見つけます。'
 keywords: ['全文検索', 'テキストインデックス', '索引', '索引']
-sidebar_label: 'テキストインデックスを使用した全文検索'
+sidebar_label: 'テキストインデックスによる全文検索'
 slug: /engines/table-engines/mergetree-family/textindexes
-title: 'テキストインデックスを使用した全文検索'
+title: 'テキストインデックスによる全文検索'
 doc_type: 'reference'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
 
-# テキスト索引を使用した全文検索 \{#full-text-search-using-text-indexes\}
+# テキストインデックスによる全文検索 \{#full-text-search-with-text-indexes\}
 
-<BetaBadge/>
+<BetaBadge />
 
-ClickHouse のテキスト索引（["inverted indexes"](https://en.wikipedia.org/wiki/Inverted_index) としても知られています）は、文字列データに対して高速な全文検索機能を提供します。
-この索引は、カラム内の各トークンを、そのトークンを含む行にマッピングします。
-トークンはトークナイズと呼ばれる処理によって生成されます。
-例えば、ClickHouse は英語の文 "All cat like mice." をデフォルトで ["All", "cat", "like", "mice"] のようにトークナイズします（末尾のドットは無視されることに注意してください）。
-ログデータ向けなど、より高度なトークナイザーも利用できます。
+テキストインデックス（[inverted indexes](https://en.wikipedia.org/wiki/Inverted_index) とも呼ばれます）は、テキストデータに対する高速な全文検索を可能にします。
+テキストインデックスは、トークンから、それぞれのトークンを含む行番号への対応関係を格納します。
+トークンは、トークナイゼーションと呼ばれる処理によって生成されます。
+たとえば、ClickHouse のデフォルトトークナイザーは、英語の文 &quot;The cat likes mice.&quot; をトークン [&quot;The&quot;, &quot;cat&quot;, &quot;likes&quot;, &quot;mice&quot;] に変換します。
 
-## テキスト索引の作成 \{#creating-a-text-index\}
+例として、1 つのカラムと 3 行を持つテーブルを考えます。
 
-テキスト索引を作成するには、まず対応する実験的な SETTING を有効化します。
+```result
+1: The cat likes mice.
+2: Mice are afraid of dogs.
+3: I have two dogs and a cat.
+```
+
+対応するトークンは以下のとおりです：
+
+```result
+1: The, cat, likes, mice
+2: Mice, are, afraid, of, dogs
+3: I, have, two, dogs, and, a, cat
+```
+
+通常、検索は大文字小文字を区別しない形で行うため、トークンを小文字化します。
+
+```result
+1: the, cat, likes, mice
+2: mice, are, afraid, of, dogs
+3: i, have, two, dogs, and, a, cat
+```
+
+また、「I」「the」「and」など、ほぼすべての行に含まれるフィラーワードも削除します。
+
+```result
+1: cat, likes, mice
+2: mice, afraid, dogs
+3: have, two, dogs, cat
+```
+
+テキスト索引には（概念的には）次のような情報が含まれます。
+
+```result
+afraid : [2]
+cat    : [1, 3]
+dogs   : [2, 3]
+have   : [3]
+likes  : [1]
+mice   : [1]
+two    : [3]
+```
+
+検索トークンが与えられると、この索引構造によって一致するすべての行を高速に検索できます。
+
+
+## テキストインデックスの作成 \{#creating-a-text-index\}
+
+テキストインデックスは ClickHouse バージョン 26.2 以降で一般提供 (GA) されています。
+これらのバージョンでは、テキストインデックスを使用するために特別な設定は不要です。
+本番環境では ClickHouse バージョン 26.2 以上の使用を強く推奨します。
+
+:::note
+ClickHouse バージョン 26.2 より古いバージョンからアップグレードした場合 (または、たとえば ClickHouse Cloud で自動的にアップグレードされた場合)、[compatibility](../../../operations/settings/settings#compatibility) 設定が存在すると、インデックスが無効化されたままになったり、テキストインデックス関連のパフォーマンス最適化が無効化されたりする可能性があります。
+
+If query
+
+```sql
+SELECT value FROM system.settings WHERE name = 'compatibility';
+```
+
+返り値
+
+```text
+25.4
+```
+
+または値を 26.2 より小さくする場合は、テキスト索引を使用するために、さらに 3 つの設定を行う必要があります。
 
 ```sql
 SET enable_full_text_index = true;
+SET query_plan_direct_read_from_text_index = true;
+SET use_skip_indexes_on_data_read = true;
 ```
 
-テキスト索引は、次の構文を使用して、[String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md)、および [Map](/sql-reference/data-types/map.md)（[mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) および [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) の map 関数経由）カラムに定義できます。
+または、[compatibility](../../../operations/settings/settings#compatibility) 設定を `26.2` 以降に引き上げることもできます。ただし、これは多くの設定に影響し、通常は事前のテストが必要です。
+:::
+
+テキスト索引は、次の構文を使用して、[String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md)、および [Map](/sql-reference/data-types/map.md)（[mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) および [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) の map 関数を通じて）のカラムに定義できます。
 
 ```sql
-CREATE TABLE tab
+CREATE TABLE table
 (
-    `key` UInt64,
-    `str` String,
+    key UInt64,
+    str String,
     INDEX text_idx(str) TYPE text(
                                 -- Mandatory parameters:
                                 tokenizer = splitByNonAlpha
@@ -55,42 +125,72 @@ ENGINE = MergeTree
 ORDER BY key
 ```
 
-**Tokenizer 引数（必須）**。`tokenizer` 引数は使用するトークナイザーを指定します:
+別の方法として、既存のテーブルにテキスト索引を追加するには、次のようにします：
 
-* `splitByNonAlpha` は、英数字以外の ASCII 文字で文字列を分割します（関数 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha) も参照）。
-* `splitByString(S)` は、ユーザー定義の区切り文字列 `S` ごとに文字列を分割します（関数 [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString) も参照）。
-  区切り文字列はオプションのパラメータで指定できます。例えば、`tokenizer = splitByString([', ', '; ', '\n', '\\'])` のように指定します。
-  各区切り文字列は複数文字から構成されてもかまわず（例では `', '`）、そのまま 1 つの区切り文字列として扱われます。
-  区切り文字列のリストを明示的に指定しなかった場合（例えば `tokenizer = splitByString`）、デフォルトの区切り文字は単一の空白 `[' ']` です。
-* `ngrams(N)` は、文字列を固定長 `N` の N-gram に分割します（関数 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams) も参照）。
-  N-gram の長さは 1 から 8 の整数のオプション引数で指定でき、例えば `tokenizer = ngrams(3)` のように指定します。
-  N-gram サイズを明示的に指定しなかった場合（例えば `tokenizer = ngrams`）、デフォルト値は 3 です。
-* `sparseGrams(min_length, max_length, min_cutoff_length)` は、`min_length` 文字以上 `max_length` 文字以下（両端を含む）の可変長 N-gram に文字列を分割します（関数 [sparseGrams](/sql-reference/functions/string-functions#sparseGrams) も参照）。
-  明示的に指定しない場合、`min_length` と `max_length` のデフォルトはそれぞれ 3 と 100 です。
-  パラメータ `min_cutoff_length` を指定すると、長さが `min_cutoff_length` 以上の N-gram のみが返されます。
-  `ngrams(N)` と比べて、`sparseGrams` トークナイザーは可変長 N-gram を生成するため、元テキストのより柔軟な表現が可能です。
-  例えば、`tokenizer = sparseGrams(3, 5, 4)` は内部的には入力文字列から 3-, 4-, 5-gram を生成しますが、返されるのは 4-gram と 5-gram のみです。
-* `array` はトークナイズを行いません。すなわち、各行の値全体が 1 つのトークンになります（関数 [array](/sql-reference/functions/array-functions.md/#array) も参照）。
+```sql
+ALTER TABLE table
+    ADD INDEX text_idx(str) TYPE text(
+                                -- Mandatory parameters:
+                                tokenizer = splitByNonAlpha
+                                            | splitByString[(S)]
+                                            | ngrams[(N)]
+                                            | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
+                                            | array
+                                -- Optional parameters:
+                                [, preprocessor = expression(str)]
+                                -- Optional advanced parameters:
+                                [, dictionary_block_size = D]
+                                [, dictionary_block_frontcoding_compression = B]
+                                [, posting_list_block_size = C]
+                                [, posting_list_codec = 'none' | 'bitpacking' ]
+                            )
+
+```
+
+既存のテーブルに索引を追加する場合、既存テーブルのパーツに対してその索引をマテリアライズすることを推奨します（そうしないと、索引のないパーツでの検索は低速な総当たりスキャンにフォールバックします）。
+
+```sql
+ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
+```
+
+テキスト索引を削除するには、次のコマンドを実行します。
+
+```sql
+ALTER TABLE table DROP INDEX text_idx;
+```
+
+**Tokenizer 引数（必須）**。`tokenizer` 引数で使用するトークナイザーを指定します。
+
+
+* `splitByNonAlpha` は、英数字ではない ASCII 文字で文字列を分割します（関数 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha) を参照）。
+* `splitByString(S)` は、ユーザー定義のセパレーター文字列 `S` で文字列を分割します（関数 [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString) を参照）。
+  セパレーターはオプション引数で指定できます。たとえば `tokenizer = splitByString([', ', '; ', '\n', '\\'])` のように指定します。
+  各セパレーター文字列は複数文字から構成できる点に注意してください（この例では `', '`）。
+  セパレーターリストを明示的に指定しない場合（たとえば `tokenizer = splitByString`）、デフォルトのセパレーターリストは空白 1 文字 `[' ']` です。
+* `ngrams(N)` は、文字列を同じ長さの `N`-gram に分割します（関数 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams) を参照）。
+  N-gram の長さは 1 から 8 までの整数をオプション引数として指定できます。たとえば `tokenizer = ngrams(3)` のように指定します。
+  N-gram のサイズを明示的に指定しない場合（たとえば `tokenizer = ngrams`）、デフォルトのサイズは 3 です。
+* `sparseGrams(min_length, max_length, min_cutoff_length)` は、`min_length` 以上 `max_length` 以下（両端を含む）の長さを持つ可変長の n-gram に文字列を分割します（関数 [sparseGrams](/sql-reference/functions/string-functions#sparseGrams) を参照）。
+  `min_length` と `max_length` は、明示的に指定しない場合はそれぞれ 3 と 100 がデフォルト値です。
+  パラメータ `min_cutoff_length` を指定すると、長さが `min_cutoff_length` 以上の n-gram のみが返されます。
+  `ngrams(N)` と比較して、`sparseGrams` トークナイザーは可変長の N-gram を生成するため、元のテキストをより柔軟に表現できます。
+  たとえば、`tokenizer = sparseGrams(3, 5, 4)` は内部的には入力文字列から 3-, 4-, 5-gram を生成しますが、返されるのは 4-gram と 5-gram のみです。
+* `array` はトークナイズ処理を行いません。つまり、各行の値全体が 1 つのトークンになります（関数 [array](/sql-reference/functions/array-functions.md/#array) を参照）。
+
+利用可能なすべてのトークナイザーは [system.tokenizers](../../../operations/system-tables/tokenizers.md) に一覧表示されています。
 
 :::note
-`splitByString` トークナイザーは、左から右へ順に区切り文字列を適用します。
-これによりあいまいさが生じる場合があります。
-例えば、区切り文字列を `['%21', '%']` とすると、`%21abc` は `['abc']` としてトークナイズされますが、区切り文字列の順序を `['%', '%21']` と入れ替えると、`['21abc']` が出力されます。
-多くの場合、マッチングではより長い区切り文字列を優先的にマッチさせたいはずです。
-これは一般的に、区切り文字列を長い順（長さの降順）で渡すことで実現できます。
-区切り文字列が [prefix code](https://en.wikipedia.org/wiki/Prefix_code) を形成している場合には、任意の順序で渡しても問題ありません。
+`splitByString` トークナイザーは、左から右へ順にセパレーターを適用します。
+これにより曖昧さが生じる場合があります。
+たとえば、セパレーター文字列を `['%21', '%']` と指定すると、`%21abc` は `['abc']` にトークナイズされますが、両方のセパレーター文字列を入れ替えて `['%', '%21']` とすると、出力は `['21abc']` になります。
+多くの場合、より長いセパレーターが優先的にマッチすることが望ましいです。
+これは一般に、セパレーター文字列を長さの降順で指定することで実現できます。
+セパレーター文字列が [prefix code](https://en.wikipedia.org/wiki/Prefix_code) を構成している場合は、任意の順序で指定できます。
 :::
 
+トークナイザーが入力文字列をどのように分割したかを確認するには、[tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) 関数を使用できます。
 
-:::warning
-現時点では、中国語などの非西洋言語のテキストに対してテキスト索引を作成することは推奨されません。
-現在サポートされているトークナイザでは、索引サイズが非常に大きくなり、クエリの実行時間が長くなる可能性があります。
-今後、これらのケースをより適切に処理できる、言語ごとに特化したトークナイザを追加する予定です。
-:::
-
-トークナイザが入力文字列をどのように分割するかをテストするには、ClickHouse の [tokens](/sql-reference/functions/splitting-merging-functions.md/#tokens) 関数を使用できます。
-
-例：
+例:
 
 ```sql
 SELECT tokens('abc def', 'ngrams', 3);
@@ -102,15 +202,22 @@ SELECT tokens('abc def', 'ngrams', 3);
 ['abc','bc ','c d',' de','def']
 ```
 
-**前処理引数（オプション）**。引数 `preprocessor` は、トークン化の前に入力文字列に適用される式です。
+*非 ASCII 入力の扱い。*
+テキスト索引は、原理的には任意の言語や文字セットのテキストデータに対して構築できますが、現時点では拡張 ASCII 文字セット、すなわち西欧言語での入力に対してのみ利用することを推奨します。
+特に、中国語、日本語、韓国語については、現時点では包括的なインデックス作成サポートが存在しないため、索引サイズが非常に大きくなり、クエリの実行時間も長くなる可能性があります。
+これらのケースをより適切に処理するために、今後は言語固有のトークナイザーを追加する予定です。
+:::
 
-`preprocessor` 引数の代表的なユースケースには次のようなものがあります。
+**Preprocessor 引数 (オプション)**。Preprocessor とは、トークナイズの前に入力文字列に適用される式を指します。
 
-1. 大文字化／小文字化による大文字小文字を区別しないマッチングの実現。例: [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8)（以下の最初の例を参照）。
-2. UTF-8 正規化。例: [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC), [normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD), [normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC), [normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD), [toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)。
-3. 不要な文字や部分文字列の削除または変換。例: [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML), [substring](/sql-reference/functions/string-functions.md/#substring), [idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode)。
+Preprocessor 引数の典型的なユースケースには次のようなものがあります。
 
-`preprocessor` 式は、型 [String](/sql-reference/data-types/string.md) または [FixedString](/sql-reference/data-types/fixedstring.md) の入力値を、同じ型の値に変換しなければなりません。
+
+1. 小文字化または大文字化を行い、大文字小文字を区別しないマッチングを有効にします。例: [lower](/sql-reference/functions/string-functions.md/#lower)、[lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8)（以下の最初の例を参照）。
+2. UTF-8 正規化。例: [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC)、[normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD)、[normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC)、[normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD)、[toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)。
+3. 不要な文字や部分文字列の削除または変換。例: [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML)、[substring](/sql-reference/functions/string-functions.md/#substring)、[idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode)、[translate](./sql-reference/functions/string-replace-functions.md/#translate)。
+
+preprocessor 式は、[String](/sql-reference/data-types/string.md) 型または [FixedString](/sql-reference/data-types/fixedstring.md) 型の入力値を、同じ型の値に変換しなければなりません。
 
 例:
 
@@ -118,63 +225,84 @@ SELECT tokens('abc def', 'ngrams', 3);
 * `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = substringIndex(col, '\n', 1))`
 * `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col))`
 
-また、`preprocessor` 式は、そのテキストインデックスが定義されているカラムのみを参照しなければなりません。
-非決定的な関数を使用することはできません。
-
-`preprocessor` は [Array(String)](/sql-reference/data-types/array.md) および [Array(FixedString)](/sql-reference/data-types/array.md) カラムでも使用できます。
-この場合、`preprocessor` 式は配列要素を個別に変換します。
+また、preprocessor 式は、テキストインデックスが定義されているカラムまたは式のみを参照しなければなりません。
 
 例:
 
-```sql
-CREATE TABLE tab
-(
-    col Array(String),
-    INDEX idx col TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))
+* `INDEX idx(lower(col)) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = upper(lower(col)))`
+* `INDEX idx(lower(col)) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = concat(lower(col), lower(col)))`
+* 許可されない例: `INDEX idx(lower(col)) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = concat(col, col))`
 
-    -- This is not legal:
-    INDEX idx_illegal col TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = arraySort(col))
-)
-ENGINE = MergeTree
-ORDER BY tuple();
-```
+非決定的関数の使用は許可されていません。
 
-[hasToken](/sql-reference/functions/string-search-functions.md/#hasToken)、[hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)、[hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) 関数は、検索語をトークン化する前に `preprocessor` を使って検索語を変換します。
+関数 [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken)、[hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)、[hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) は、トークン化する前に検索語句を変換するために preprocessor を使用します。
 
-例:
+例えば、
 
 ```sql
-CREATE TABLE tab
+CREATE TABLE table
 (
-    key UInt64,
     str String,
     INDEX idx(str) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(str))
 )
 ENGINE = MergeTree
 ORDER BY tuple();
 
-SELECT count() FROM tab WHERE hasToken(str, 'Foo');
+SELECT count() FROM table WHERE hasToken(str, 'Foo');
 ```
 
-と同等です:
+は以下と同等です：
 
 ```sql
-CREATE TABLE tab
+CREATE TABLE table
 (
-    key UInt64,
     str String,
     INDEX idx(lower(str)) TYPE text(tokenizer = 'splitByNonAlpha')
 )
 ENGINE = MergeTree
 ORDER BY tuple();
 
-SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
+SELECT count() FROM table WHERE hasToken(str, lower('Foo'));
 ```
 
-**その他の引数 (オプション)**。ClickHouse のテキスト索引は[セカンダリ索引](/engines/table-engines/mergetree-family/mergetree.md/#skip-index-types)として実装されています。
-ただし、他のスキップ索引と異なり、テキスト索引は実質的に無限の粒度を持ちます。つまり、テキスト索引はパーツ全体に対して作成され、明示的に指定された索引粒度は無視されます。
-この既定値は経験的に選択されたもので、ほとんどのユースケースで速度と索引サイズの間の良好なトレードオフを提供します。
-上級ユーザーは別の索引粒度を指定できますが、推奨はしません。
+プリプロセッサは、[Array(String)](/sql-reference/data-types/array.md) および [Array(FixedString)](/sql-reference/data-types/array.md) カラムに対しても使用できます。
+この場合、プリプロセッサ式は配列の各要素を個別に変換します。
+
+例：
+
+```sql
+CREATE TABLE table
+(
+    arr Array(String),
+    INDEX idx arr TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(arr))
+
+    -- This is not legal:
+    INDEX idx_illegal arr TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = arraySort(arr))
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+
+SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
+```
+
+[`Map`](/sql-reference/data-types/map.md) 型カラム上のテキスト索引用プリプロセッサを定義するには、索引を
+Map のキーに対して作成するか、値に対して作成するかを決める必要があります。
+
+例：
+
+```sql
+CREATE TABLE table
+(
+    map Map(String, String),
+    INDEX idx mapKeys(map)  TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(mapKeys(map)))
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+
+SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
+```
+
+**その他の引数（任意）**。
 
 
 <details markdown="1">
@@ -192,21 +320,57 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
   オプションのパラメータ `posting_list_codec` (デフォルト: `none`) は、posting list のコーデックを指定します:
 
   * `none` - posting list を追加の圧縮なしで保存します。
-  * `bitpacking` - [差分 (デルタ) 符号化](https://en.wikipedia.org/wiki/Delta_encoding) を適用し、その後に [bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70) を適用します (いずれも固定サイズのブロックごと)。
+  * `bitpacking` - [差分 (デルタ) 符号化](https://en.wikipedia.org/wiki/Delta_encoding) を適用し、その後に [bit-packing](https://dev.to/madhav_baby_giraffe/bit-packing-the-secret-to-optimizing-data-storage-and-transmission-m70) を適用します (いずれも固定サイズのブロックごと)。SELECT クエリを低速化するため、現時点では推奨されません。
 </details>
 
-テキスト索引は、テーブル作成後にカラムへ追加したり、カラムから削除したりできます。
+*索引の粒度。*
+テキスト索引は、ClickHouse 内では [skip indexes](/engines/table-engines/mergetree-family/mergetree.md/#skip-index-types) の一種として実装されています。
+ただし、他の skip 索引とは異なり、テキスト索引は無限の粒度 (1 億) を使用します。
+これはテキスト索引のテーブル定義で確認できます。
+
+例:
 
 ```sql
-ALTER TABLE tab DROP INDEX text_idx;
-ALTER TABLE tab ADD INDEX text_idx(s) TYPE text(tokenizer = splitByNonAlpha);
+CREATE TABLE table(
+    k UInt64,
+    s String,
+    INDEX idx(s) TYPE text(tokenizer = ngrams(2)))
+ENGINE = MergeTree()
+ORDER BY k;
+
+SHOW CREATE TABLE table;
 ```
+
+結果:
+
+```result
+┌─statement──────────────────────────────────────────────────────────────┐
+│ CREATE TABLE default.table                                            ↴│
+│↳(                                                                     ↴│
+│↳    `k` UInt64,                                                       ↴│
+│↳    `s` String,                                                       ↴│
+│↳    INDEX idx s TYPE text(tokenizer = ngrams(2)) GRANULARITY 100000000↴│ <-- here
+│↳)                                                                     ↴│
+│↳ENGINE = MergeTree                                                    ↴│
+│↳ORDER BY k                                                            ↴│
+│↳SETTINGS index_granularity = 8192                                      │
+└────────────────────────────────────────────────────────────────────────┘
+```
+
+非常に大きな索引の粒度により、テキスト索引はパーツ全体に対して作成されます。
+明示的に指定された索引の粒度は無視されます。
 
 
 ## テキスト索引の使用 \{#using-a-text-index\}
 
 SELECT クエリでテキスト索引を利用するのは容易で、一般的な文字列検索関数は自動的にその索引を活用します。
-索引が存在しない場合、以下の文字列検索関数は低速な総当たりスキャンを行います。
+カラムまたはテーブルパーツに索引が存在しない場合、文字列検索関数は低速な総当たりスキャンにフォールバックします。
+
+:::note
+テキスト索引の検索には `hasAnyTokens` と `hasAllTokens` 関数の使用を推奨します。詳しくは[下記](#functions-example-hasanytokens-hasalltokens)を参照してください。
+これらの関数は、利用可能なすべてのトークナイザーおよびあらゆるプリプロセッサ式と連携して動作します。
+他の対応関数は、歴史的にテキスト索引より先に存在していたため、多くの場合で従来の動作（例: プリプロセッサの未対応）を維持する必要があります。
+:::
 
 ### サポートされている関数 \{#functions-support\}
 
@@ -226,7 +390,7 @@ WHERE string_search_function(column_with_text_index)
 例:
 
 ```sql
-SELECT * from tab WHERE str = 'Hello';
+SELECT * from table WHERE str = 'Hello';
 ```
 
 テキスト索引は `=` と `!=` をサポートしますが、`array` tokenizer を使う場合にのみ、等号／不等号による検索が意味を持ちます（その場合、索引には行全体の値が格納されるためです）。
@@ -239,7 +403,7 @@ SELECT * from tab WHERE str = 'Hello';
 例:
 
 ```sql
-SELECT * from tab WHERE str IN ('Hello', 'World');
+SELECT * from table WHERE str IN ('Hello', 'World');
 ```
 
 `=` および `!=` と同じ制限が適用されます。つまり、`IN` と `NOT IN` は `array` トークナイザーと併用する場合にのみ有効です。
@@ -257,7 +421,7 @@ SELECT * from tab WHERE str IN ('Hello', 'World');
 `splitByNonAlpha` tokenizer を持つテキストインデックスの例:
 
 ```sql
-SELECT count() FROM tab WHERE comment LIKE 'support%';
+SELECT count() FROM table WHERE comment LIKE 'support%';
 ```
 
 この例の `support` は、`support`、`supports`、`supporting` などにマッチし得ます。
@@ -266,7 +430,7 @@ SELECT count() FROM tab WHERE comment LIKE 'support%';
 LIKE クエリでテキスト索引を活用するには、LIKE パターンを次のように書き換える必要があります。
 
 ```sql
-SELECT count() FROM tab WHERE comment LIKE ' support %'; -- or `% support %`
+SELECT count() FROM table WHERE comment LIKE ' support %'; -- or `% support %`
 ```
 
 `support` の左右に空白を入れておくことで、その語をトークンとして抽出できるようにします。
@@ -280,7 +444,7 @@ SELECT count() FROM tab WHERE comment LIKE ' support %'; -- or `% support %`
 `splitByNonAlpha` トークナイザーを用いたテキストインデックスの例:
 
 ```sql
-SELECT count() FROM tab WHERE startsWith(comment, 'clickhouse support');
+SELECT count() FROM table WHERE startsWith(comment, 'clickhouse support');
 ```
 
 この例では、`clickhouse` だけがトークンとして扱われます。
@@ -292,14 +456,19 @@ SELECT count() FROM tab WHERE startsWith(comment, 'clickhouse support');
 startsWith(comment, 'clickhouse supports ')`
 ```
 
-同様に、`endsWith` は先頭にスペース（空白）を付けて使用します。
+同様に、`endsWith` を使用する場合は、先頭にスペース（空白）を付けてください。
 
 ```sql
-SELECT count() FROM tab WHERE endsWith(comment, ' olap engine');
+SELECT count() FROM table WHERE endsWith(comment, ' olap engine');
 ```
 
 
 #### `hasToken` および `hasTokenOrNull` \{#functions-example-hastoken-hastokenornull\}
+
+:::note
+関数 `hasToken` は一見すると扱いやすそうに見えますが、デフォルト以外のトークナイザや preprocessor 式を使用する場合にいくつかの落とし穴があります。
+代わりに関数 `hasAnyTokens` および `hasAllTokens` を使用することを推奨します。
+:::
 
 関数 [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken) と [hasTokenOrNull](/sql-reference/functions/string-search-functions.md/#hasTokenOrNull) は、指定された 1 つのトークンとの照合を行います。
 
@@ -308,10 +477,8 @@ SELECT count() FROM tab WHERE endsWith(comment, ' olap engine');
 例:
 
 ```sql
-SELECT count() FROM tab WHERE hasToken(comment, 'clickhouse');
+SELECT count() FROM table WHERE hasToken(comment, 'clickhouse');
 ```
-
-関数 `hasToken` と `hasTokenOrNull` は、`text` 索引と組み合わせて使用できる最も高性能な関数です。
 
 
 #### `hasAnyTokens` と `hasAllTokens` \{#functions-example-hasanytokens-hasalltokens\}
@@ -325,12 +492,12 @@ SELECT count() FROM tab WHERE hasToken(comment, 'clickhouse');
 
 ```sql
 -- Search tokens passed as string argument
-SELECT count() FROM tab WHERE hasAnyTokens(comment, 'clickhouse olap');
-SELECT count() FROM tab WHERE hasAllTokens(comment, 'clickhouse olap');
+SELECT count() FROM table WHERE hasAnyTokens(comment, 'clickhouse olap');
+SELECT count() FROM table WHERE hasAllTokens(comment, 'clickhouse olap');
 
 -- Search tokens passed as Array(String)
-SELECT count() FROM tab WHERE hasAnyTokens(comment, ['clickhouse', 'olap']);
-SELECT count() FROM tab WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
+SELECT count() FROM table WHERE hasAnyTokens(comment, ['clickhouse', 'olap']);
+SELECT count() FROM table WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 ```
 
 
@@ -341,7 +508,7 @@ SELECT count() FROM tab WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 例:
 
 ```sql
-SELECT count() FROM tab WHERE has(array, 'clickhouse');
+SELECT count() FROM table WHERE has(array, 'clickhouse');
 ```
 
 
@@ -354,9 +521,9 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 例:
 
 ```sql
-SELECT count() FROM tab WHERE mapContainsKey(map, 'clickhouse');
+SELECT count() FROM table WHERE mapContainsKey(map, 'clickhouse');
 -- OR
-SELECT count() FROM tab WHERE mapContains(map, 'clickhouse');
+SELECT count() FROM table WHERE mapContains(map, 'clickhouse');
 ```
 
 
@@ -369,7 +536,7 @@ SELECT count() FROM tab WHERE mapContains(map, 'clickhouse');
 例:
 
 ```sql
-SELECT count() FROM tab WHERE mapContainsValue(map, 'clickhouse');
+SELECT count() FROM table WHERE mapContainsValue(map, 'clickhouse');
 ```
 
 
@@ -380,8 +547,8 @@ SELECT count() FROM tab WHERE mapContainsValue(map, 'clickhouse');
 例:
 
 ```sql
-SELECT count() FROM tab WHERE mapContainsKeyLike(map, '% clickhouse %');
-SELECT count() FROM tab WHERE mapContainsValueLike(map, '% clickhouse %');
+SELECT count() FROM table WHERE mapContainsKeyLike(map, '% clickhouse %');
+SELECT count() FROM table WHERE mapContainsValueLike(map, '% clickhouse %');
 ```
 
 
@@ -392,7 +559,7 @@ SELECT count() FROM tab WHERE mapContainsValueLike(map, '% clickhouse %');
 例：
 
 ```sql
-SELECT count() FROM tab WHERE map['engine'] = 'clickhouse';
+SELECT count() FROM table WHERE map['engine'] = 'clickhouse';
 ```
 
 テキスト索引と併用する `Array(T)` 型および `Map(K, V)` 型カラムの例を以下に示します。
@@ -454,14 +621,14 @@ ENGINE = MergeTree
 ORDER BY (timestamp);
 ```
 
-テキストインデックスがない場合、[Map](/sql-reference/data-types/map.md) データの検索にはテーブル全体のフルスキャンが必要になります。
+テキストインデックスがない場合、[Map](/sql-reference/data-types/map.md) データを検索するにはテーブル全体をフルスキャンする必要があります。
 
 ```sql
 -- Finds all logs with rate limiting data:
-SELECT count() FROM logs WHERE has(mapKeys(attributes), 'rate_limit'); -- slow full-table scan
+SELECT * FROM logs WHERE has(mapKeys(attributes), 'rate_limit'); -- slow full-table scan
 
 -- Finds all logs from a specific IP:
-SELECT count() FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- slow full-table scan
+SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- slow full-table scan
 ```
 
 ログ量が増えるにつれて、これらのクエリは遅くなります。
@@ -481,7 +648,7 @@ ALTER TABLE logs ADD INDEX attributes_vals_idx mapValues(attributes) TYPE text(t
 ALTER TABLE posts MATERIALIZE INDEX attributes_vals_idx;
 ```
 
-クエリ例:
+クエリの例:
 
 ```sql
 -- Find all rate-limited requests:
@@ -517,8 +684,6 @@ Direct read は次の 2 つの設定で制御されます。
 * Setting [query&#95;plan&#95;direct&#95;read&#95;from&#95;text&#95;index](../../../operations/settings/settings#query_plan_direct_read_from_text_index)（デフォルトで true）。direct read を全般的に有効にするかどうかを指定します。
 * Setting [use&#95;skip&#95;indexes&#95;on&#95;data&#95;read](../../../operations/settings/settings#use_skip_indexes_on_data_read)。direct read のもう一つの前提条件です。ClickHouse バージョン &gt;= 26.1 では、この設定はデフォルトで有効です。以前のバージョンでは、明示的に `SET use_skip_indexes_on_data_read = 1` を実行する必要があります。
 
-また、direct read を使用するには、テキスト索引が完全にマテリアライズされている必要があります（そのためには `ALTER TABLE ... MATERIALIZE INDEX` を使用します）。
-
 **サポートされる関数**
 
 Direct read 最適化は、関数 `hasToken`、`hasAllTokens`、および `hasAnyTokens` をサポートします。
@@ -532,7 +697,7 @@ Direct read 最適化は、関数 `hasToken`、`hasAllTokens`、および `hasAn
 ```sql
 EXPLAIN PLAN actions = 1
 SELECT count()
-FROM tab
+FROM table
 WHERE hasToken(col, 'some_token')
 SETTINGS query_plan_direct_read_from_text_index = 0, -- disable direct read
          use_skip_indexes_on_data_read = 1;
@@ -550,12 +715,12 @@ Actions: INPUT : 0 -> col String : 0
 [...]
 ```
 
-一方、同じクエリを `query_plan_direct_read_from_text_index = 1` の設定で実行すると
+一方、同じクエリを `query_plan_direct_read_from_text_index = 1` を指定して実行すると
 
 ```sql
 EXPLAIN PLAN actions = 1
 SELECT count()
-FROM tab
+FROM table
 WHERE hasToken(col, 'some_token')
 SETTINGS query_plan_direct_read_from_text_index = 1, -- enable direct read
          use_skip_indexes_on_data_read = 1;
@@ -596,7 +761,7 @@ WHERE 句のフィルタがテキスト検索関数のみで構成されてい�
 ```sql
 EXPLAIN actions = 1
 SELECT count()
-FROM tab
+FROM table
 WHERE (col LIKE '%some-token%') AND (d >= today())
 SETTINGS use_skip_indexes_on_data_read = 1, query_plan_text_index_add_hint = 0
 FORMAT TSV
@@ -610,12 +775,12 @@ Prewhere filter column: and(like(__table1.col, \'%some-token%\'_String), greater
 [...]
 ```
 
-一方、同じクエリを `query_plan_text_index_add_hint = 1` を有効にして実行した場合は
+一方、同じクエリを `query_plan_text_index_add_hint = 1` に設定して実行した場合は
 
 ```sql
 EXPLAIN actions = 1
 SELECT count()
-FROM tab
+FROM table
 WHERE col LIKE '%some-token%'
 SETTINGS use_skip_indexes_on_data_read = 1, query_plan_text_index_add_hint = 1
 ```
@@ -640,7 +805,7 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 現在、I/O を削減するために、デシリアライズ済みの Dictionary ブロック、テキストインデックスのヘッダー、およびポスティングリスト用のキャッシュが用意されています。
 これらは、設定 [use_text_index_dictionary_cache](/operations/settings/settings#use_text_index_dictionary_cache)、[use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache)、および [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache) によって有効化できます。
 デフォルトでは、すべてのキャッシュは無効になっています。
-キャッシュを破棄するには、文 [SYSTEM DROP TEXT INDEX CACHES](../../../sql-reference/statements/system#drop-text-index-caches) を使用します。
+キャッシュをクリアするには、文 [SYSTEM CLEAR TEXT INDEX CACHES](../../../sql-reference/statements/system#drop-text-index-caches) を使用します。
 
 キャッシュを構成するには、以下のサーバー設定を参照してください。
 
@@ -678,6 +843,37 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 - トークン数が非常に多いテキストインデックス（例: 100億トークン）をマテリアライズすると、大量のメモリを消費する可能性があります。テキスト
   インデックスのマテリアライズは、直接（`ALTER TABLE <table> MATERIALIZE INDEX <index>`）行われる場合もあれば、パーツのマージ時に間接的に行われる場合もあります。
 - 1つのパーツ内の行数が 4.294.967.296（= 2^32 ≒ 42億）を超える場合、そのパーツ上のテキストインデックスをマテリアライズすることはできません。テキストインデックスがマテリアライズされていない場合、クエリはそのパーツ内での低速な総当たり検索にフォールバックします。最悪の場合の見積もりとして、1つのパーツが String 型の単一カラムだけを持ち、MergeTree の設定項目 `max_bytes_to_merge_at_max_space_in_pool`（デフォルト: 150 GB）が変更されていないと仮定します。この場合、そのカラムの1行あたりの平均文字数が 29.5 文字未満であれば、上記の状況が発生します。実際には、テーブルは他のカラムも含んでいるため、閾値は（他のカラムの数、型、サイズに応じて）その何分の一にも小さくなります。
+
+## テキストインデックスと Bloom Filter ベースのインデックス \{#text-index-vs-bloom-filter-indexes\}
+
+文字列述語はテキストインデックスと Bloom Filter ベースのインデックス（インデックスタイプ `bloom_filter`, `ngrambf_v1`, `tokenbf_v1`, `sparse_grams`）を使って高速化できますが、両者は設計と想定されるユースケースが根本的に異なります。
+
+**Bloom Filter インデックス**
+
+- 確率的データ構造に基づいており、偽陽性が発生する可能性があります。
+- 集合への所属、すなわち「カラムにトークン X が含まれる可能性があるか vs. X を含まないことが確実か」といった問いにのみ答えることができます。
+- クエリ実行時に大まかな範囲スキップを可能にするため、granule 単位の情報を保存します。
+- 適切にチューニングするのが難しいです（例については[こちら](mergetree#n-gram-bloom-filter)を参照）。
+- 比較的コンパクトです（パートあたり数キロバイトから数メガバイト程度）。
+
+**テキストインデックス**
+
+- トークンに対して決定論的な転置インデックスを構築します。インデックス自体が偽陽性を発生させることはありません。
+- テキスト検索ワークロード向けに特化して最適化されています。
+- 行レベルの情報を保持し、効率的なトークンのルックアップを可能にします。
+- 比較的大きくなります（パートあたり数十〜数百メガバイト）。
+
+Bloom Filter ベースのインデックスは、フルテキスト検索をあくまで「副次的な結果」としてのみサポートします。
+
+- 高度なトークナイズや前処理をサポートしません。
+- 複数トークンの検索をサポートしません。
+- 転置インデックスに期待される性能特性を提供しません。
+
+一方でテキストインデックスは、フルテキスト検索のために専用設計されています。
+
+- トークナイズおよび前処理を提供します。
+- `hasAllTokens`, `LIKE`, `match` などのテキスト検索関数を効率的にサポートします。
+- 大規模なテキストコーパスに対して、はるかに優れたスケーラビリティを持ちます。
 
 ## 実装の詳細 \{#implementation\}
 
@@ -797,7 +993,7 @@ ALTER TABLE hackernews MATERIALIZE INDEX comment_idx SETTINGS mutations_sync = 2
 SELECT count()
 FROM hackernews
 WHERE hasToken(comment, 'ClickHouse')
-SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_read = 0;
+SETTINGS query_plan_direct_read_from_text_index = 0;
 
 ┌─count()─┐
 │     516 │
@@ -813,7 +1009,7 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 SELECT count()
 FROM hackernews
 WHERE hasToken(comment, 'ClickHouse')
-SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_read = 1;
+SETTINGS query_plan_direct_read_from_text_index = 1;
 
 ┌─count()─┐
 │     516 │
@@ -945,6 +1141,11 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 
 
 ## 関連情報 \{#related-content\}
+
+- プレゼンテーション: https://github.com/ClickHouse/clickhouse-presentations/blob/master/2025-tumuchdata-munich/ClickHouse_%20full-text%20search%20-%2011.11.2025%20Munich%20Database%20Meetup.pdf
+- プレゼンテーション: https://presentations.clickhouse.com/2026-fosdem-inverted-index/Inverted_indexes_the_what_the_why_the_how.pdf
+
+**古い資料**
 
 - ブログ: [Introducing Inverted Indices in ClickHouse](https://clickhouse.com/blog/clickhouse-search-with-inverted-indices)
 - ブログ: [Inside ClickHouse full-text search: fast, native, and columnar](https://clickhouse.com/blog/clickhouse-full-text-search)

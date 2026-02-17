@@ -24,7 +24,7 @@ brew install --cask clickhouse
 ## Fix the developer verification error in macOS {#fix-developer-verification-error-macos}
 
 If you install ClickHouse using `brew`, you may encounter an error from MacOS.
-By default, MacOS will not run applications or tools created by a developer who cannot be verified.
+By default, MacOS won't run applications or tools created by a developer who can't be verified.
 
 When attempting to run any `clickhouse` command, you may see this error:
 
@@ -41,7 +41,7 @@ The easiest way to remove the `clickhouse` executable from the quarantine bin is
 
     <Image img={privacy_default} size="md" alt="MacOS Privacy & Security settings default view" border />
 
-1. Scroll to the bottom of the window to find a message saying _"clickhouse-macos-aarch64" was blocked from use because it is not from an identified developer".
+1. Scroll to the bottom of the window to find a message saying _"clickhouse-macos-aarch64" was blocked from use because it isn't from an identified developer".
 1. Click **Allow Anyway**.
 
     <Image img={privacy_allow} size="md" alt="MacOS Privacy & Security settings showing Allow Anyway button" border />

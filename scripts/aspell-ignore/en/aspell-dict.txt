@@ -1,4 +1,4 @@
-personal_ws-1.1 en 4016 
+personal_ws-1.1 en 4035 
 AArch
 ACLs
 AICPA
@@ -336,6 +336,8 @@ DataLakeCatalog
 DataLens
 DataPacket
 DataSource
+DataStore
+DataStores
 DataTime
 DataTypes
 DatabaseCatalog
@@ -409,6 +411,8 @@ Doxygen
 Draxlr
 Dremio
 Dresseler
+Dtype
+DuckDB
 Dunamalijevs
 Durre
 ECMA
@@ -752,11 +756,13 @@ LOCALTIMESTAMP
 LONGLONG
 LOONGARCH
 LaGuardia
+LaTeX
 Lakehouses
 Lakekeeper
 LangChain
 LangGraph
 Langchain
+Langfuse
 Lemire
 Levenshtein
 Lhotsky
@@ -900,6 +906,7 @@ Monotonicity
 Montreal
 MsgPack
 MsgPackUUIDRepresentation
+MultiIndex
 MultiLineString
 MultiPolygon
 Multiline
@@ -1125,6 +1132,7 @@ PointDistKm
 PointDistM
 PointDistRads
 PolarDB
+Polars
 PooledConnectionLifetime
 PostGIS
 PostHistory
@@ -1200,6 +1208,7 @@ QueryPreempted
 QueryThread
 QuickAssist
 QuickSight
+Quickstarts
 QuoteMeta
 RBAC
 RClickHouse
@@ -1815,6 +1824,7 @@ auditability
 auth
 authenticator
 authenticators
+autoPlay
 autocomplete
 autocompletion
 autodetect
@@ -1863,6 +1873,7 @@ balancer's
 balancers
 basename
 bcrypt
+benchmarked
 benchmarking
 bfloat
 bigint
@@ -1918,9 +1929,11 @@ bool
 boolean
 booleans
 bools
+borderRadius
 boringssl
 bottlenecked
 boundingRatio
+boxShadow
 bozerkins
 brainer
 brotli
@@ -2262,6 +2275,7 @@ dplyr
 dragonbox
 dropdown
 dropoff
+dtype
 dumpColumnStructure
 durations
 ePHI
@@ -3076,6 +3090,7 @@ permalinks
 persistency
 pgRouting
 pgSQL
+pgbench
 pgvector
 phpclickhouse
 picklist
@@ -3083,6 +3098,7 @@ pipelined
 pipelining
 plaintext
 plantuml
+playsInline
 plperl
 plperlu
 plpgsql
@@ -3183,6 +3199,7 @@ protobuf
 protobuflist
 protobufsingle
 protocol
+provisioner
 proxied
 prql
 pseudorandom
@@ -3356,6 +3373,7 @@ retryable
 reusability
 reverseUTF
 rewritable
+rgba
 rightPad
 rightPadUTF
 rightUTF
@@ -4016,9 +4034,3 @@ znode
 znodes
 zookeeperSessionUptime
 zstd
-DataStore
-DataStores
-Dtype
-LaTeX
-DuckDB
-Polars

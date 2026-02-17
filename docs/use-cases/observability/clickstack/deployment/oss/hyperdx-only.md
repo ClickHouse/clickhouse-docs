@@ -71,7 +71,7 @@ You can modify the [Docker Compose configuration](/use-cases/observability/click
 
 ## ClickStack OpenTelemetry collector {#otel-collector}
 
-Even if you are managing your own OpenTelemetry collector, independent of the other components in the stack, we still recommend using the ClickStack distribution of the collector. This ensures the default schema is used and best practices for ingestion are applied.
+Even if you're managing your own OpenTelemetry collector, independent of the other components in the stack, we still recommend using the ClickStack distribution of the collector. This ensures the default schema is used and best practices for ingestion are applied.
 
 For details on deploying and configuring a standalone collector see ["Ingesting with OpenTelemetry"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).
 

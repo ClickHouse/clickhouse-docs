@@ -67,99 +67,106 @@ import Image from '@theme/IdealImage';
 3. Создайте общий доступ к ресурсу
 
 <VerticalStepper headerLevel="h4">
+  #### Создайте resource gateway
 
-#### Создайте resource gateway \{#create-resource-gateway\}
+  Resource gateway — это точка, которая принимает трафик для указанных ресурсов в вашей VPC.
 
-Resource gateway — это точка, которая принимает трафик для указанных ресурсов в вашей VPC.
+  :::note
+  Рекомендуется, чтобы подсети, к которым подключён ваш resource gateway, имели достаточно доступных IP-адресов.
+  Желательно использовать маску подсети не менее `/26` для каждой подсети.
 
-:::note
-Рекомендуется, чтобы подсети, к которым подключён ваш resource gateway, имели достаточно доступных IP-адресов.
-Желательно использовать маску подсети не менее `/26` для каждой подсети.
+  Для каждого VPC endpoint (каждого Reverse Private Endpoint) AWS требует последовательный блок из 16 IP-адресов на подсеть (маска подсети `/28`).
+  Если это требование не выполняется, Reverse Private Endpoint перейдёт в состояние ошибки.
+  :::
 
-Для каждого VPC endpoint (каждого Reverse Private Endpoint) AWS требует последовательный блок из 16 IP-адресов на подсеть (маска подсети `/28`).
-Если это требование не выполняется, Reverse Private Endpoint перейдёт в состояние ошибки.
-:::
+  Вы можете создать resource gateway из [консоли AWS](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-gateway.html) или с помощью следующей команды:
 
-Вы можете создать resource gateway из [консоли AWS](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-gateway.html) или с помощью следующей команды:
+  ```bash
+  aws vpc-lattice create-resource-gateway \
+      --vpc-identifier <VPC_ID> \
+      --subnet-ids <SUBNET_IDS> \
+      --security-group-ids <SG_IDs> \
+      --name <RESOURCE_GATEWAY_NAME>
+  ```
 
-```bash
-aws vpc-lattice create-resource-gateway \
-    --vpc-identifier <VPC_ID> \
-    --subnet-ids <SUBNET_IDS> \
-    --security-group-ids <SG_IDs> \
-    --name <RESOURCE_GATEWAY_NAME>
-```
+  Результат выполнения команды будет содержать идентификатор resource gateway, который понадобится вам на следующем шаге.
 
-Результат выполнения команды будет содержать идентификатор resource gateway, который понадобится вам на следующем шаге.
+  Прежде чем продолжить, необходимо дождаться, пока resource gateway не перейдёт в состояние `Active`. Вы можете проверить состояние, выполнив следующую команду:
 
-Прежде чем продолжить, необходимо дождаться, пока resource gateway не перейдёт в состояние `Active`. Вы можете проверить состояние, выполнив следующую команду:
+  ```bash
+  aws vpc-lattice get-resource-gateway \
+      --resource-gateway-identifier <RESOURCE_GATEWAY_ID>
+  ```
 
-```bash
-aws vpc-lattice get-resource-gateway \
-    --resource-gateway-identifier <RESOURCE_GATEWAY_ID>
-```
+  #### Создайте VPC Resource-Configuration
 
-#### Создайте VPC Resource-Configuration \{#create-resource-configuration\}
+  Resource-Configuration ассоциируется с resource gateway, чтобы сделать ваш ресурс доступным.
 
-Resource-Configuration ассоциируется с resource gateway, чтобы сделать ваш ресурс доступным.
+  Вы можете создать Resource-Configuration из [консоли AWS](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-configuration.html) или с помощью следующей команды:
 
-Вы можете создать Resource-Configuration из [консоли AWS](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-configuration.html) или с помощью следующей команды:
+  ```bash
+  aws vpc-lattice create-resource-configuration \
+      --resource-gateway-identifier <RESOURCE_GATEWAY_ID> \
+      --type <RESOURCE_CONFIGURATION_TYPE> \
+      --resource-configuration-definition <RESOURCE_CONFIGURATION_DEFINITION> \
+      --name <RESOURCE_CONFIGURATION_NAME>
+  ```
 
-```bash
-aws vpc-lattice create-resource-configuration \
-    --resource-gateway-identifier <RESOURCE_GATEWAY_ID> \
-    --type <RESOURCE_CONFIGURATION_TYPE> \
-    --resource-configuration-definition <RESOURCE_CONFIGURATION_DEFINITION> \
-    --name <RESOURCE_CONFIGURATION_NAME>
-```
+  Самый простой [тип конфигурации ресурса](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types) — одиночная Resource-Configuration. Вы можете задать её напрямую через ARN или указать IP-адрес либо доменное имя, которое публично резолвится.
 
-Самый простой [тип конфигурации ресурса](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types) — одиночная Resource-Configuration. Вы можете задать её напрямую через ARN или указать IP-адрес либо доменное имя, которое публично резолвится.
+  Например, чтобы настроить конфигурацию по ARN кластера RDS:
 
-Например, чтобы настроить конфигурацию по ARN кластера RDS:
+  ```bash
+  aws vpc-lattice create-resource-configuration \
+      --name my-rds-cluster-config \
+      --type ARN \
+      --resource-gateway-identifier rgw-0bba03f3d56060135 \
+      --resource-configuration-definition 'arnResource={arn=arn:aws:rds:us-east-1:123456789012:cluster:my-rds-cluster}'
+  ```
 
-```bash
-aws vpc-lattice create-resource-configuration \
-    --name my-rds-cluster-config \
-    --type ARN \
-    --resource-gateway-identifier rgw-0bba03f3d56060135 \
-    --resource-configuration-definition 'arnResource={arn=arn:aws:rds:us-east-1:123456789012:cluster:my-rds-cluster}'
-```
+  :::note
+  Вы не можете создать конфигурацию ресурса для кластера с публичным доступом.
+  Если ваш кластер доступен публично, вы должны изменить настройки кластера,
+  чтобы сделать его приватным перед созданием конфигурации ресурса
+  или вместо этого использовать [список разрешённых IP](/integrations/clickpipes#list-of-static-ips).
+  Дополнительные сведения см. в [документации AWS](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html#resource-definition).
+  :::
 
-:::note
-Вы не можете создать конфигурацию ресурса для кластера с публичным доступом.
-Если ваш кластер доступен публично, вы должны изменить настройки кластера,
-чтобы сделать его приватным перед созданием конфигурации ресурса
-или вместо этого использовать [список разрешённых IP](/integrations/clickpipes#list-of-static-ips).
-Дополнительные сведения см. в [документации AWS](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html#resource-definition).
-:::
+  Результат выполнения команды будет содержать ARN Resource-Configuration, который понадобится вам на следующем шаге. Он также будет содержать идентификатор Resource-Configuration, который потребуется для настройки подключения ClickPipe к ресурсу VPC.
 
-Результат выполнения команды будет содержать ARN Resource-Configuration, который понадобится вам на следующем шаге. Он также будет содержать идентификатор Resource-Configuration, который потребуется для настройки подключения ClickPipe к ресурсу VPC.
+  #### Создайте Resource-Share
 
-#### Создайте Resource-Share \{#create-resource-share\}
+  Для общего доступа к ресурсу требуется Resource-Share. Это реализуется через Resource Access Manager (RAM).
 
-Для общего доступа к ресурсу требуется Resource-Share. Это реализуется через Resource Access Manager (RAM).
+  :::note
+  Resource-Share может использоваться только для одного Reverse Private Endpoint и не может быть использован повторно.
+  Если вам необходимо использовать одну и ту же Resource-Configuration для нескольких Reverse Private Endpoints,
+  вы должны создать отдельный Resource-Share для каждого endpoint.
+  Resource-Share остаётся в вашем аккаунте AWS после удаления Reverse Private Endpoint
+  и должен быть удалён вручную, если больше не требуется.
+  :::
 
-Вы можете добавить Resource-Configuration в Resource-Share через [консоль AWS](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html) или выполнив следующую команду с использованием идентификатора аккаунта ClickPipes `072088201116` (arn:aws:iam::072088201116:root):
+  Вы можете добавить Resource-Configuration в Resource-Share через [консоль AWS](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html) или выполнив следующую команду с использованием идентификатора аккаунта ClickPipes `072088201116` (arn:aws:iam::072088201116:root):
 
-```bash
-aws ram create-resource-share \
-    --principals 072088201116 \
-    --resource-arns <RESOURCE_CONFIGURATION_ARN> \
-    --name <RESOURCE_SHARE_NAME>
-```
+  ```bash
+  aws ram create-resource-share \
+      --principals 072088201116 \
+      --resource-arns <RESOURCE_CONFIGURATION_ARN> \
+      --name <RESOURCE_SHARE_NAME>
+  ```
 
-Результат выполнения команды будет содержать ARN Resource-Share, который потребуется для настройки подключения ClickPipe к ресурсу VPC.
+  Результат выполнения команды будет содержать ARN Resource-Share, который потребуется для настройки подключения ClickPipe к ресурсу VPC.
 
-Теперь вы готовы [создать ClickPipe с Reverse private endpoint](#creating-clickpipe), используя ресурс VPC. Вам нужно:
-- Установить `VPC endpoint type` в значение `VPC Resource`.
-- Установить `Resource configuration ID` в идентификатор Resource-Configuration, созданной на шаге 2.
-- Установить `Resource share ARN` в ARN Resource-Share, созданного на шаге 3.
+  Теперь вы готовы [создать ClickPipe с Reverse private endpoint](#creating-clickpipe), используя ресурс VPC. Вам нужно:
 
-Для получения дополнительной информации о PrivateLink с ресурсом VPC см. [документацию AWS](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html).
+  * Установите `VPC endpoint type` в значение `VPC Resource`.
+  * Установить `Resource configuration ID` в идентификатор Resource-Configuration, созданной на шаге 2.
+  * Установить `Resource share ARN` в ARN Resource-Share, созданного на шаге 3.
 
+  Для получения дополнительной информации о PrivateLink с ресурсом VPC см. [документацию AWS](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html).
 </VerticalStepper>
 
-### Мульти-VPC-подключение MSK \{#msk-multi-vpc\}
+### Мульти-VPC-подключение MSK {#msk-multi-vpc}
 
 [Мульти-VPC-подключение](https://docs.aws.amazon.com/msk/latest/developerguide/aws-access-mult-vpc.html) — это встроенная возможность AWS MSK, которая позволяет подключать несколько VPC к одному кластеру MSK.
 Поддержка частного DNS доступна по умолчанию и не требует дополнительной конфигурации.
@@ -175,7 +182,7 @@ aws ram create-resource-share \
 
 Следуйте нашему [руководству по настройке MSK для ClickPipes](/knowledgebase/aws-privatelink-setup-for-msk-clickpipes), чтобы узнать, как настроить подключение.
 
-### Служба конечной точки VPC \{#vpc-endpoint-service\}
+### Служба конечной точки VPC {#vpc-endpoint-service}
 
 [Служба конечной точки VPC](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html) — это альтернативный способ предоставить доступ к вашему источнику данных для ClickPipes.
 Для этого требуется настроить NLB (Network Load Balancer) перед вашим источником данных
@@ -201,7 +208,7 @@ aws ram create-resource-share \
 можно настроить для ClickPipes. Добавьте [ваш регион ClickPipe](#aws-privatelink-regions) в список разрешённых регионов в вашей службе конечной точки VPC.
 :::
 
-## Создание ClickPipe с reverse private endpoint \{#creating-clickpipe\}
+## Создание ClickPipe с reverse private endpoint {#creating-clickpipe}
 
 <VerticalStepper headerLevel="list">
 
@@ -261,7 +268,7 @@ aws ram create-resource-share \
 
 </VerticalStepper>
 
-## Управление существующими обратными приватными конечными точками \{#managing-existing-endpoints\}
+## Управление существующими обратными приватными конечными точками {#managing-existing-endpoints}
 
 Вы можете управлять существующими обратными приватными конечными точками в настройках сервиса ClickHouse Cloud:
 
@@ -281,7 +288,7 @@ aws ram create-resource-share \
 
 </VerticalStepper>
 
-## Поддерживаемые регионы AWS \{#aws-privatelink-regions\}
+## Поддерживаемые регионы AWS {#aws-privatelink-regions}
 
 Поддержка AWS PrivateLink для ClickPipes ограничена отдельными регионами AWS.
 См. [список регионов ClickPipes](/integrations/clickpipes#list-of-static-ips), чтобы узнать доступные регионы.
@@ -300,3 +307,23 @@ aws ram create-resource-share \
 Несколько ClickPipes для одного сервиса ClickHouse могут повторно использовать одну и ту же конечную точку.
 
 AWS MSK поддерживает только один PrivateLink (конечную точку VPC) на кластер MSK для каждого типа аутентификации (SASL_IAM или SASL_SCRAM). В результате несколько сервисов или организаций ClickHouse Cloud не могут создавать отдельные подключения PrivateLink к одному и тому же кластеру MSK, используя один и тот же тип аутентификации.
+
+### Автоматическая очистка неактивных конечных точек {#automatic-cleanup}
+
+Обратные приватные конечные точки, находящиеся в терминальном состоянии, автоматически удаляются по истечении заданного льготного периода.
+Это гарантирует, что неиспользуемые или неправильно сконфигурированные конечные точки не будут сохраняться неограниченно долго.
+
+Ниже приведены льготные периоды в зависимости от статуса конечной точки:
+
+| Status | Grace Period | Description |
+|---|---|---|
+| **Failed** | 7 days | При подготовке конечной точки произошла ошибка. |
+| **Pending Acceptance** | 1 day | Подключение конечной точки не было принято владельцем сервиса. |
+| **Rejected** | 1 day | Подключение конечной точки было отклонено владельцем сервиса. |
+| **Expired** | Immediate | Срок действия конечной точки уже истёк, и она удаляется немедленно. |
+
+После истечения льготного периода конечная точка и все связанные с ней ресурсы автоматически удаляются.
+
+Чтобы предотвратить автоматическое удаление, устраните первопричину проблемы до истечения льготного периода.
+Например, примите запрос на подключение в состоянии Pending Acceptance в консоли AWS
+или пересоздайте конечную точку, если она перешла в состояние Failed.

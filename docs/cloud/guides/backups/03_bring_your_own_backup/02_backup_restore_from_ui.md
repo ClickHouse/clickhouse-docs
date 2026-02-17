@@ -182,7 +182,7 @@ If you move the backups to another location, you will need to customize the rest
 For the Restore command you can also optionally add an `ASYNC` command at the end for large restores.
 This allows the restores to happen asynchronously, so that if connection is lost, the restore keeps running.
 It is important to note that the ASYNC command immediately returns a status of success.
-This does not mean the restore was successful.
+This doesn't mean the restore was successful.
 You will need to monitor the `system.backups` table to see if the restore has finished and if it succeeded or failed.
 :::
 
@@ -226,7 +226,7 @@ Generate an HMAC Key and Secret, which is required for password-based authentica
 
 * c. Securely store the credentials:
   * I. The system will display the Access ID (your HMAC key) and the Secret (your HMAC secret). Save these values, as 
-       the secret will not be displayed again after you close this window.
+       the secret won't be displayed again after you close this window.
 
 </VerticalStepper>
 
@@ -296,7 +296,7 @@ If you move the backups to another location, you will need to customize the rest
 For the Restore command you can also optionally add an `ASYNC` command at the end for large restores.
 This allows the restores to happen asynchronously, so that if connection is lost, the restore keeps running.
 It is important to note that the ASYNC command immediately returns a status of success.
-This does not mean the restore was successful.
+This doesn't mean the restore was successful.
 You will need to monitor the `system.backups` table to see if the restore has finished and if it succeeded or failed.
 :::
 
@@ -398,7 +398,7 @@ If you move the backups to another location, you will need to customize the rest
 For the Restore command you can also optionally add an `ASYNC` command at the end for large restores.
 This allows the restores to happen asynchronously, so that if connection is lost, the restore keeps running.
 It is important to note that the ASYNC command immediately returns a status of success.
-This does not mean the restore was successful.
+This doesn't mean the restore was successful.
 You will need to monitor the `system.backups` table to see if the restore has finished and if it succeeded or failed.
 :::
 

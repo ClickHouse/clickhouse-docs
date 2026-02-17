@@ -297,4 +297,12 @@ config.use_chdb()
 
 # Filter early to reduce data size
 result = ds.filter(ds['date'] >= '2024-01-01').to_df()
+
+# For maximum throughput on large datasets, use performance mode
+# which enables parallel Parquet reading and single-SQL aggregation
+config.use_performance_mode()
 ```
+
+:::tip Performance Mode
+If you are running heavy aggregation workloads and don't need exact pandas output compatibility (row order, MultiIndex, dtype corrections), consider using [Performance Mode](performance-mode.md). It automatically sets the engine to `chdb` and removes all pandas compatibility overhead.
+:::

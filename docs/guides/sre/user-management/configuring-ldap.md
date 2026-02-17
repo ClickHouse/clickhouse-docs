@@ -71,7 +71,7 @@ ClickHouse can be configured to use LDAP to authenticate ClickHouse database use
     |tls_require_cert |whether to require certificate for connection|never|
 
     :::note
-    In this example, since the public server uses 389 and does not use a secure port, we disable TLS for demonstration purposes.
+    In this example, since the public server uses 389 and doesn't use a secure port, we disable TLS for demonstration purposes.
     :::
 
     :::note

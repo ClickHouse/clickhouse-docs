@@ -51,7 +51,7 @@ For workloads that need to optimize for concurrency (100+ queries per second), w
 
 **Data warehousing use case**
 
-For data warehousing workloads and ad-hoc analytical queries, we recommend the [R-type series](https://aws.amazon.com/ec2/instance-types/#Memory_Optimized) from AWS or the equivalent offering from your cloud provider as they are memory optimized.
+For data warehousing workloads and ad-hoc analytical queries, we recommend the [R-type series](https://aws.amazon.com/ec2/instance-types/#Memory_Optimized) from AWS or the equivalent offering from your cloud provider as they're memory optimized.
 
 ---
 
@@ -82,9 +82,9 @@ If your use case is sensitive to price, lower amounts of memory will work as it 
 
 ### What should the memory-to-storage ratio be? {#what-should-the-memory-to-storage-ratio-be}
 
-For low data volumes, a 1:1 memory-to-storage ratio is acceptable but total memory should not be below 8GB.
+For low data volumes, a 1:1 memory-to-storage ratio is acceptable but total memory shouldn't be below 8GB.
 
-For use cases with long retention periods for your data or with high data volumes, we recommend a 1:100 to 1:130 memory-to-storage ratio. For example, 100GB of RAM per replica if you are storing 10TB of data.
+For use cases with long retention periods for your data or with high data volumes, we recommend a 1:100 to 1:130 memory-to-storage ratio. For example, 100GB of RAM per replica if you're storing 10TB of data.
 
 For use cases with frequent access such as for customer-facing workloads, we recommend using more memory at a 1:30 to 1:50 memory-to-storage ratio.
 
@@ -92,7 +92,7 @@ For use cases with frequent access such as for customer-facing workloads, we rec
 
 We recommend having at least three replicas per shard (or two replicas with [Amazon EBS](https://aws.amazon.com/ebs/)). Additionally, we suggest vertically scaling all replicas prior to adding additional replicas (horizontal scaling).
 
-ClickHouse does not automatically shard, and re-sharding your dataset will require significant compute resources. Therefore, we generally recommend using the largest server available to prevent having to re-shard your data in the future.
+ClickHouse doesn't automatically shard, and re-sharding your dataset will require significant compute resources. Therefore, we generally recommend using the largest server available to prevent having to re-shard your data in the future.
 
 Consider using [ClickHouse Cloud](https://clickhouse.com/cloud) which scales automatically and allows you to easily control the number of replicas for your use case.
 

@@ -16,7 +16,7 @@ we recommend that you try them and then adjust them to suit your needs. You may 
 an example here that fits your requirements exactly.
 
 We offer 'recipes' of a number of different topologies in the [example repo](https://github.com/ClickHouse/examples/tree/main/docker-compose-recipes/recipes)
-and recommend taking a look at them if the examples in this section do not fit your
+and recommend taking a look at them if the examples in this section don't fit your
 needs exactly.
 
 <ReplicationShardingTerminology />

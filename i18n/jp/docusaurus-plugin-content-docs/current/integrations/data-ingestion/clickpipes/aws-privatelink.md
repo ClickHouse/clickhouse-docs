@@ -67,99 +67,106 @@ VPC リソースに対して PrivateLink をセットアップするには、次
 3. リソース共有を作成する
 
 <VerticalStepper headerLevel="h4">
+  #### リソースゲートウェイを作成する
 
-#### リソースゲートウェイを作成する \{#create-resource-gateway\}
+  リソースゲートウェイは、VPC 内で指定したリソース向けのトラフィックを受信するポイントです。
 
-リソースゲートウェイは、VPC 内で指定したリソース向けのトラフィックを受信するポイントです。
+  :::note
+  リソースゲートウェイにアタッチするサブネットには、十分な数の IP アドレスが確保されていることが推奨されます。
+  各サブネットについて、少なくとも `/26` のサブネットマスクを使用することを推奨します。
 
-:::note
-リソースゲートウェイにアタッチするサブネットには、十分な数の IP アドレスが確保されていることが推奨されます。
-各サブネットについて、少なくとも `/26` のサブネットマスクを使用することを推奨します。
+  VPC エンドポイント（各 Reverse Private Endpoint）ごとに、AWS はサブネットごとに連続した 16 個の IP アドレスブロック（`/28` サブネットマスク）を要求します。
+  この要件を満たしていない場合、Reverse Private Endpoint は失敗状態に遷移します。
+  :::
 
-VPC エンドポイント（各 Reverse Private Endpoint）ごとに、AWS はサブネットごとに連続した 16 個の IP アドレスブロック（`/28` サブネットマスク）を要求します。
-この要件を満たしていない場合、Reverse Private Endpoint は失敗状態に遷移します。
-:::
+  [AWS コンソール](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-gateway.html)から、または次のコマンドを使用してリソースゲートウェイを作成できます。
 
-[AWS コンソール](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-gateway.html)から、または次のコマンドを使用してリソースゲートウェイを作成できます。
+  ```bash
+  aws vpc-lattice create-resource-gateway \
+      --vpc-identifier <VPC_ID> \
+      --subnet-ids <SUBNET_IDS> \
+      --security-group-ids <SG_IDs> \
+      --name <RESOURCE_GATEWAY_NAME>
+  ```
 
-```bash
-aws vpc-lattice create-resource-gateway \
-    --vpc-identifier <VPC_ID> \
-    --subnet-ids <SUBNET_IDS> \
-    --security-group-ids <SG_IDs> \
-    --name <RESOURCE_GATEWAY_NAME>
-```
+  出力にはリソースゲートウェイ ID が含まれます。この ID は次のステップで必要になります。
 
-出力にはリソースゲートウェイ ID が含まれます。この ID は次のステップで必要になります。
+  先に進む前に、リソースゲートウェイが `Active` 状態になるまで待つ必要があります。状態は次のコマンドで確認できます。
 
-先に進む前に、リソースゲートウェイが `Active` 状態になるまで待つ必要があります。状態は次のコマンドで確認できます。
+  ```bash
+  aws vpc-lattice get-resource-gateway \
+      --resource-gateway-identifier <RESOURCE_GATEWAY_ID>
+  ```
 
-```bash
-aws vpc-lattice get-resource-gateway \
-    --resource-gateway-identifier <RESOURCE_GATEWAY_ID>
-```
+  #### VPC Resource-Configuration を作成する
 
-#### VPC Resource-Configuration を作成する \{#create-resource-configuration\}
+  Resource-Configuration はリソースゲートウェイに関連付けられ、リソースへのアクセスを可能にします。
 
-Resource-Configuration はリソースゲートウェイに関連付けられ、リソースへのアクセスを可能にします。
+  [AWS コンソール](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-configuration.html)から、または次のコマンドを使用して Resource-Configuration を作成できます。
 
-[AWS コンソール](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-configuration.html)から、または次のコマンドを使用して Resource-Configuration を作成できます。
+  ```bash
+  aws vpc-lattice create-resource-configuration \
+      --resource-gateway-identifier <RESOURCE_GATEWAY_ID> \
+      --type <RESOURCE_CONFIGURATION_TYPE> \
+      --resource-configuration-definition <RESOURCE_CONFIGURATION_DEFINITION> \
+      --name <RESOURCE_CONFIGURATION_NAME>
+  ```
 
-```bash
-aws vpc-lattice create-resource-configuration \
-    --resource-gateway-identifier <RESOURCE_GATEWAY_ID> \
-    --type <RESOURCE_CONFIGURATION_TYPE> \
-    --resource-configuration-definition <RESOURCE_CONFIGURATION_DEFINITION> \
-    --name <RESOURCE_CONFIGURATION_NAME>
-```
+  最も単純な[リソース構成タイプ](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types)は、単一の Resource-Configuration です。ARN を直接指定するか、パブリックに名前解決可能な IP アドレスまたはドメイン名を共有して構成できます。
 
-最も単純な[リソース構成タイプ](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types)は、単一の Resource-Configuration です。ARN を直接指定するか、パブリックに名前解決可能な IP アドレスまたはドメイン名を共有して構成できます。
+  例として、RDS クラスターの ARN で構成する場合は次のようになります。
 
-例として、RDS クラスターの ARN で構成する場合は次のようになります。
+  ```bash
+  aws vpc-lattice create-resource-configuration \
+      --name my-rds-cluster-config \
+      --type ARN \
+      --resource-gateway-identifier rgw-0bba03f3d56060135 \
+      --resource-configuration-definition 'arnResource={arn=arn:aws:rds:us-east-1:123456789012:cluster:my-rds-cluster}'
+  ```
 
-```bash
-aws vpc-lattice create-resource-configuration \
-    --name my-rds-cluster-config \
-    --type ARN \
-    --resource-gateway-identifier rgw-0bba03f3d56060135 \
-    --resource-configuration-definition 'arnResource={arn=arn:aws:rds:us-east-1:123456789012:cluster:my-rds-cluster}'
-```
+  :::note
+  パブリックアクセス可能なクラスターに対しては、リソース構成を作成できません。
+  クラスターがパブリックアクセス可能な場合、リソース構成を作成する前に
+  クラスターをプライベートに変更するか、
+  代わりに [IP アローリスト](/integrations/clickpipes#list-of-static-ips) を使用する必要があります。
+  詳細については、[AWS のドキュメント](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html#resource-definition)を参照してください。
+  :::
 
-:::note
-パブリックアクセス可能なクラスターに対しては、リソース構成を作成できません。
-クラスターがパブリックアクセス可能な場合、リソース構成を作成する前に
-クラスターをプライベートに変更するか、
-代わりに [IP アローリスト](/integrations/clickpipes#list-of-static-ips) を使用する必要があります。
-詳細については、[AWS のドキュメント](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html#resource-definition)を参照してください。
-:::
+  出力には Resource-Configuration ARN が含まれ、これは次のステップで必要になります。また、Resource-Configuration ID も含まれており、VPC リソースを用いた ClickPipe 接続の設定時に必要です。
 
-出力には Resource-Configuration ARN が含まれ、これは次のステップで必要になります。また、Resource-Configuration ID も含まれており、VPC リソースを用いた ClickPipe 接続の設定時に必要です。
+  #### Resource-Share を作成する
 
-#### Resource-Share を作成する \{#create-resource-share\}
+  リソースを共有するには Resource-Share が必要です。これは Resource Access Manager (RAM) を通じて行われます。
 
-リソースを共有するには Resource-Share が必要です。これは Resource Access Manager (RAM) を通じて行われます。
+  :::note
+  Resource-Share は単一の Reverse Private Endpoint に対してのみ使用でき、再利用することはできません。
+  同じ Resource-Configuration を複数の Reverse Private Endpoint で使用する必要がある場合は、
+  エンドポイントごとに個別の Resource-Share を作成する必要があります。
+  Resource-Share は Reverse Private Endpoint が削除された後も AWS アカウントに残るため、
+  不要になった場合は手動で削除する必要があります。
+  :::
 
-[AWS コンソール](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html)を使用するか、ClickPipes アカウント ID `072088201116`（arn:aws:iam::072088201116:root）を指定して次のコマンドを実行することで、Resource-Configuration を Resource-Share に追加できます。
+  [AWS コンソール](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html)を使用するか、ClickPipes アカウント ID `072088201116`（arn:aws:iam::072088201116:root）を指定して次のコマンドを実行することで、Resource-Configuration を Resource-Share に追加できます。
 
-```bash
-aws ram create-resource-share \
-    --principals 072088201116 \
-    --resource-arns <RESOURCE_CONFIGURATION_ARN> \
-    --name <RESOURCE_SHARE_NAME>
-```
+  ```bash
+  aws ram create-resource-share \
+      --principals 072088201116 \
+      --resource-arns <RESOURCE_CONFIGURATION_ARN> \
+      --name <RESOURCE_SHARE_NAME>
+  ```
 
-出力には Resource-Share ARN が含まれており、これは VPC リソースを用いた ClickPipe 接続の設定時に必要です。
+  出力には Resource-Share ARN が含まれており、これは VPC リソースを用いた ClickPipe 接続の設定時に必要です。
 
-これで、VPC リソースを使用して[Reverse private endpoint を利用した ClickPipe を作成](#creating-clickpipe)する準備ができました。次の設定を行う必要があります。
-- `VPC endpoint type` を `VPC Resource` に設定します。
-- `Resource configuration ID` を、ステップ 2 で作成した Resource-Configuration の ID に設定します。
-- `Resource share ARN` を、ステップ 3 で作成した Resource-Share の ARN に設定します。
+  これで、VPC リソースを使用して[Reverse private endpoint を利用した ClickPipe を作成](#creating-clickpipe)する準備ができました。次の設定を行う必要があります。
 
-VPC リソースと組み合わせた PrivateLink の詳細については、[AWS ドキュメント](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html)を参照してください。
+  * `VPC endpoint type` を `VPC Resource` に設定します。
+  * `Resource configuration ID` を、ステップ 2 で作成した Resource-Configuration の ID に設定します。
+  * `Resource share ARN` をステップ 3 で作成した Resource-Share の ARN に設定します。
 
+  VPC リソースと組み合わせた PrivateLink の詳細については、[AWS ドキュメント](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html)を参照してください。
 </VerticalStepper>
 
-### MSK マルチ VPC 接続 \{#msk-multi-vpc\}
+### MSK マルチ VPC 接続 {#msk-multi-vpc}
 
 [Multi-VPC connectivity](https://docs.aws.amazon.com/msk/latest/developerguide/aws-access-mult-vpc.html) は、複数の VPC を 1 つの MSK クラスターに接続できる AWS MSK の組み込み機能です。
 プライベート DNS は標準でサポートされており、追加の設定は不要です。
@@ -175,7 +182,7 @@ MSK クラスターのポリシーを更新し、MSK クラスターで許可さ
 
 接続のセットアップ方法については、[ClickPipes 向け MSK セットアップガイド](/knowledgebase/aws-privatelink-setup-for-msk-clickpipes) を参照してください。
 
-### VPC エンドポイントサービス \{#vpc-endpoint-service\}
+### VPC エンドポイントサービス {#vpc-endpoint-service}
 
 [VPC エンドポイントサービス](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html) は、データソースを ClickPipes と共有するためのもう 1 つの方法です。
 データソースの前段に NLB（Network Load Balancer）を設定し、
@@ -201,7 +208,7 @@ ClickPipes のアカウント ID `072088201116` を、VPC エンドポイント�
 は ClickPipes に対して構成できます。お使いの VPC エンドポイントサービスの許可リージョンに、[ClickPipe のリージョン](#aws-privatelink-regions) を追加してください。
 :::
 
-## リバースプライベートエンドポイントを使用した ClickPipe の作成 \{#creating-clickpipe\}
+## リバースプライベートエンドポイントを使用した ClickPipe の作成 {#creating-clickpipe}
 
 <VerticalStepper headerLevel="list">
 
@@ -261,7 +268,7 @@ RDS へのリージョンをまたぐアクセスが必要な場合は、VPC エ
 
 </VerticalStepper>
 
-## 既存のリバースプライベートエンドポイントの管理 \{#managing-existing-endpoints\}
+## 既存のリバースプライベートエンドポイントの管理 {#managing-existing-endpoints}
 
 ClickHouse Cloud のサービス設定で、既存のリバースプライベートエンドポイントを管理できます:
 
@@ -281,7 +288,7 @@ ClickHouse Cloud のサービス設定で、既存のリバースプライベー
 
 </VerticalStepper>
 
-## サポートされている AWS リージョン \{#aws-privatelink-regions\}
+## サポートされている AWS リージョン {#aws-privatelink-regions}
 
 AWS PrivateLink のサポートは、ClickPipes 向けには特定の AWS リージョンに限定されています。
 利用可能なリージョンについては、[ClickPipes のリージョン一覧](/integrations/clickpipes#list-of-static-ips) を参照してください。
@@ -300,3 +307,23 @@ ClickHouse Cloud サービスと同じ AWS リージョン内に作成される�
 1 つの ClickHouse サービスに対する複数の ClickPipes では、同じエンドポイントを再利用できます。
 
 AWS MSK は、認証タイプ（SASL_IAM または SASL_SCRAM）ごとに、MSK クラスターあたり 1 つの PrivateLink（VPC エンドポイント）のみをサポートします。その結果、複数の ClickHouse Cloud サービスまたは組織が、同じ認証タイプを使用して同一の MSK クラスターに対して個別の PrivateLink 接続を作成することはできません。
+
+### 非アクティブなエンドポイントの自動クリーンアップ {#automatic-cleanup}
+
+終了状態のまま残っている reverse private endpoint は、定義された猶予期間の後に自動的に削除されます。
+これにより、未使用または誤って構成されたエンドポイントが無期限に残り続けることを防ぎます。
+
+エンドポイントのステータスごとの猶予期間は次のとおりです。
+
+| Status | Grace Period | Description |
+|---|---|---|
+| **Failed** | 7 days | エンドポイントのプロビジョニング中にエラーが発生しました。 |
+| **Pending Acceptance** | 1 day | エンドポイント接続がサービス所有者によってまだ承諾されていません。 |
+| **Rejected** | 1 day | エンドポイント接続はサービス所有者によって拒否されました。 |
+| **Expired** | Immediate | エンドポイントは既に有効期限切れであり、直ちに削除されます。 |
+
+猶予期間が経過すると、エンドポイントと関連するすべてのリソースは自動的に削除されます。
+
+自動削除を防ぐには、猶予期間が切れる前に根本的な問題を解消してください。
+たとえば、AWS コンソールで保留中の接続要求を承諾するか、
+Failed 状態になったエンドポイントを再作成します。

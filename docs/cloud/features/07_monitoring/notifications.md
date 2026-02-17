@@ -15,7 +15,7 @@ import notifications_4 from '@site/static/images/cloud/manage/notifications-4.pn
 ClickHouse Cloud sends notifications about critical events related to your service or organization. There are a few concepts to keep in mind to understand how notifications are sent and configured:
 
 1. **Notification category**: Refers to groups of notifications such as billing notifications, service related notifications etc. Within each category, there are multiple notifications for which the delivery mode can be configured.
-2. **Notification severity**: Notification severity can be `info`, `warning`, or `critical` depending on how important a notification is. This is not configurable.
+2. **Notification severity**: Notification severity can be `info`, `warning`, or `critical` depending on how important a notification is. This isn't configurable.
 3. **Notification channel**: Channel refers to the mode by which the notification is received such as UI, email, Slack etc. This is configurable for most notifications.
 
 ## Receiving notifications {#receiving-notifications}
@@ -39,7 +39,7 @@ To configure delivery for a specific notification, click on the pencil icon to m
 <Image img={notifications_4} size="md" alt="ClickHouse Cloud notification delivery settings" border/>
 
 :::note
-Certain **required** notifications such as **Payment failed** are not configurable.
+Certain **required** notifications such as **Payment failed** aren't configurable.
 :::
 
 ## Supported notifications {#supported-notifications}
