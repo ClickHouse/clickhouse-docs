@@ -316,7 +316,7 @@ WHERE database = 'your_schema'
   AND engine = 'MaterializedView'
 ```
 
-#### Check if dbt recognizes a table as an MV target {#check-dbt-recognition}
+#### Check if dbt recognizes a table as a materialized view target {#check-dbt-recognition}
 During a dbt run, look for this log message:
 
 >Table `<table_name>` is used as a target by a dbt-managed materialized view. Defaulting mv_on_schema_change to "fail" to prevent data loss.
