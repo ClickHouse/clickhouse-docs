@@ -71,7 +71,7 @@ We recommend always using the setting [`ttl_only_drop_parts=1`](/operations/sett
 By default, data with an expired TTL is removed when ClickHouse [merges data parts](/engines/table-engines/mergetree-family/mergetree#mergetree-data-storage). When ClickHouse detects that data is expired, it performs an off-schedule merge.
 
 :::note TTL schedule
-TTLs are not applied immediately but rather on a schedule, as noted above. The MergeTree table setting `merge_with_ttl_timeout` sets the minimum delay in seconds before repeating a merge with delete TTL. The default value is 14400 seconds (4 hours). But that is just the minimum delay; it can take longer until a TTL merge is triggered. If the value is too low, it will perform many off-schedule merges that may consume a lot of resources. A TTL expiration can be forced using the command `ALTER TABLE my_table MATERIALIZE TTL`.
+TTLs aren't applied immediately but rather on a schedule, as noted above. The MergeTree table setting `merge_with_ttl_timeout` sets the minimum delay in seconds before repeating a merge with delete TTL. The default value is 14400 seconds (4 hours). But that is just the minimum delay; it can take longer until a TTL merge is triggered. If the value is too low, it will perform many off-schedule merges that may consume a lot of resources. A TTL expiration can be forced using the command `ALTER TABLE my_table MATERIALIZE TTL`.
 :::
 
 ## Modifying TTL {#modifying-ttl}
@@ -85,7 +85,7 @@ ALTER TABLE default.otel_logs
 MODIFY TTL TimestampTime + toIntervalDay(7);
 ```
 
-2. **Modify the OTel collector**. The ClickStack OpenTelemetry collector creates tables in ClickHouse if they do not exist. This is achieved via the ClickHouse exporter, which itself exposes a `ttl` parameter used for controlling the default TTL expression e.g.
+2. **Modify the OTel collector**. The ClickStack OpenTelemetry collector creates tables in ClickHouse if they don't exist. This is achieved via the ClickHouse exporter, which itself exposes a `ttl` parameter used for controlling the default TTL expression e.g.
 
 ```yaml
 exporters:
@@ -96,7 +96,7 @@ exporters:
 
 ### Column level TTL {#column-level-ttl}
 
-The above examples expire data at a table level. You can also expire data at a column level. As data ages, this can be used to drop columns whose value in investigations does not justify their resource overhead to retain. For example, we recommend retaining the `Body` column in case new dynamic metadata is added that has not been extracted at insert time, e.g., a new Kubernetes label. After a period e.g. 1 month, it might be obvious that this additional metadata is not useful - thus limiting the value in retaining the `Body` column.
+The above examples expire data at a table level. You can also expire data at a column level. As data ages, this can be used to drop columns whose value in investigations doesn't justify their resource overhead to retain. For example, we recommend retaining the `Body` column in case new dynamic metadata is added that hasn't been extracted at insert time, e.g., a new Kubernetes label. After a period e.g. 1 month, it might be obvious that this additional metadata isn't useful - thus limiting the value in retaining the `Body` column.
 
 Below, we show how the `Body` column can be dropped after 30 days.
 
@@ -112,5 +112,5 @@ ORDER BY (ServiceName, Timestamp)
 ```
 
 :::note
-Specifying a column level TTL requires users to specify their own schema. This cannot be specified in the OTel collector.
+Specifying a column level TTL requires users to specify their own schema. This can't be specified in the OTel collector.
 :::

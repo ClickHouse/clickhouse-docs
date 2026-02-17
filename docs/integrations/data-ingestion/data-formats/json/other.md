@@ -18,9 +18,9 @@ Different techniques may be applied to different objects in the same schema. For
 
 If the objects are highly dynamic, with no predictable structure and contain arbitrary nested objects, you should use the `String` type. Values can be extracted at query time using JSON functions as we show below.
 
-Handling data using the structured approach described above is often not viable for those users with dynamic JSON, which is either subject to change or for which the schema is not well understood. For absolute flexibility, you can simply store JSON as `String`s before using functions to extract fields as required. This represents the extreme opposite of handling JSON as a structured object. This flexibility incurs costs with significant disadvantages - primarily an increase in query syntax complexity as well as degraded performance.
+Handling data using the structured approach described above is often not viable for those users with dynamic JSON, which is either subject to change or for which the schema isn't well understood. For absolute flexibility, you can simply store JSON as `String`s before using functions to extract fields as required. This represents the extreme opposite of handling JSON as a structured object. This flexibility incurs costs with significant disadvantages - primarily an increase in query syntax complexity as well as degraded performance.
 
-As noted earlier, for the [original person object](/integrations/data-formats/json/schema#static-vs-dynamic-json), we cannot ensure the structure of the `tags` column. We insert the original row (including `company.labels`, which we ignore for now), declaring the `Tags` column as a `String`:
+As noted earlier, for the [original person object](/integrations/data-formats/json/schema#static-vs-dynamic-json), we can't ensure the structure of the `tags` column. We insert the original row (including `company.labels`, which we ignore for now), declaring the `Tags` column as a `String`:
 
 ```sql
 CREATE TABLE people
@@ -160,7 +160,7 @@ A faster and more strict set of functions are available. These `simpleJSON*` fun
 - Field names must be constants
 - Consistent encoding of field names e.g. `simpleJSONHas('{"abc":"def"}', 'abc') = 1`, but `visitParamHas('{"\\u0061\\u0062\\u0063":"def"}', 'abc') = 0`
 - The field names are unique across all nested structures. No differentiation is made between nesting levels and matching is indiscriminate. In the event of multiple matching fields, the first occurrence is used.
-- No special characters outside of string literals. This includes spaces. The following is invalid and will not parse.
+- No special characters outside of string literals. This includes spaces. The following is invalid and won't parse.
 
     ```json
     {"@timestamp": 893964617, "clientip": "40.135.0.0", "request": {"method": "GET",

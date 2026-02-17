@@ -12,7 +12,7 @@ doc_type: 'reference'
 
 ## Raw API {#raw-api}
 
-For use cases which do not require transformation between ClickHouse data and native or third party data types and structures, the ClickHouse Connect client provides methods for direct usage of the ClickHouse connection.
+For use cases which don't require transformation between ClickHouse data and native or third party data types and structures, the ClickHouse Connect client provides methods for direct usage of the ClickHouse connection.
 
 ### Client `raw_query` method {#client-rawquery-method}
 
@@ -39,7 +39,7 @@ The `Client.raw_insert` method allows direct inserts of `bytes` objects or `byte
 | Parameter    | Type                                   | Default    | Description                                                                                 |
 |--------------|----------------------------------------|------------|---------------------------------------------------------------------------------------------|
 | table        | str                                    | *Required* | Either the simple or database qualified table name                                          |
-| column_names | Sequence[str]                          | *None*     | Column names for the insert block. Required if the `fmt` parameter does not include names   |
+| column_names | Sequence[str]                          | *None*     | Column names for the insert block. Required if the `fmt` parameter doesn't include names   |
 | insert_block | str, bytes, Generator[bytes], BinaryIO | *Required* | Data to insert. Strings will be encoded with the client encoding.                           |
 | settings     | dict                                   | *None*     | See [settings description](driver-api.md#settings-argument).                                |
 | fmt          | str                                    | *None*     | ClickHouse Input Format of the `insert_block` bytes. (ClickHouse uses TSV if not specified) |
@@ -80,7 +80,7 @@ Similarly, you could save data in [TabSeparated](/interfaces/formats/TabSeparate
 
 ClickHouse Connect works well in multithreaded, multiprocess, and event-loop-driven/asynchronous applications. All query and insert processing occurs within a single thread, so operations are generally thread-safe. (Parallel processing of some operations at a low level is a possible future enhancement to overcome the performance penalty of a single thread, but even in that case thread safety will be maintained.)
 
-Because each query or insert executed maintains state in its own `QueryContext` or `InsertContext` object, respectively, these helper objects are not thread-safe, and they should not be shared between multiple processing streams. See the additional discussion about context objects in the [QueryContexts](advanced-querying.md#querycontexts) and [InsertContexts](advanced-inserting.md#insertcontexts) sections.
+Because each query or insert executed maintains state in its own `QueryContext` or `InsertContext` object, respectively, these helper objects aren't thread-safe, and they shouldn't be shared between multiple processing streams. See the additional discussion about context objects in the [QueryContexts](advanced-querying.md#querycontexts) and [InsertContexts](advanced-inserting.md#insertcontexts) sections.
 
 Additionally, in an application that has two or more queries and/or inserts "in flight" at the same time, there are two further considerations to keep in mind. The first is the ClickHouse "session" associated with the query/insert, and the second is the HTTP connection pool used by ClickHouse Connect Client instances.
 
@@ -106,7 +106,7 @@ async def main():
 asyncio.run(main())
 ```
 
-`AsyncClient` has the same methods with the same parameters as the standard `Client`, but they are coroutines when applicable. Internally, these methods from the `Client` that perform I/O operations are wrapped in a [run_in_executor](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor) call.
+`AsyncClient` has the same methods with the same parameters as the standard `Client`, but they're coroutines when applicable. Internally, these methods from the `Client` that perform I/O operations are wrapped in a [run_in_executor](https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.run_in_executor) call.
 
 Multithreaded performance will increase when using the `AsyncClient` wrapper, as the execution threads and the GIL will be released while waiting for I/O operations to complete.
 
@@ -120,9 +120,9 @@ Each ClickHouse query occurs within the context of a ClickHouse "session". Sessi
 - To associate specific ClickHouse settings with multiple queries (see the [user settings](/operations/settings/settings.md)). The ClickHouse `SET` command is used to change the settings for the scope of a user session.
 - To track [temporary tables.](/sql-reference/statements/create/table#temporary-tables)
 
-By default, each query executed with a ClickHouse Connect `Client` instance uses that client's session ID. `SET` statements and temporary tables work as expected when using a single client. However, the ClickHouse server does not allow concurrent queries within the same session (the client will raise a `ProgrammingError` if attempted). For applications that execute concurrent queries, use one of the following patterns:
+By default, each query executed with a ClickHouse Connect `Client` instance uses that client's session ID. `SET` statements and temporary tables work as expected when using a single client. However, the ClickHouse server doesn't allow concurrent queries within the same session (the client will raise a `ProgrammingError` if attempted). For applications that execute concurrent queries, use one of the following patterns:
 1. Create a separate `Client` instance for each thread/process/event handler that needs session isolation. This preserves per-client session state (temporary tables and `SET` values).
-2. Use a unique `session_id` for each query via the `settings` argument when calling `query`, `command`, or `insert`, if you do not require shared session state.
+2. Use a unique `session_id` for each query via the `settings` argument when calling `query`, `command`, or `insert`, if you don't require shared session state.
 3. Disable sessions on a shared client by setting `autogenerate_session_id=False` before creating the client (or pass it directly to `get_client`).
 
 ```python
@@ -135,7 +135,7 @@ client = clickhouse_connect.get_client(host='somehost.com', user='dbuser', passw
 
 Alternatively, pass `autogenerate_session_id=False` directly to `get_client(...)`.
 
-In this case ClickHouse Connect does not send a `session_id`; the server does not treat separate requests as belonging to the same session. Temporary tables and session-level settings will not persist across requests.
+In this case ClickHouse Connect doesn't send a `session_id`; the server doesn't treat separate requests as belonging to the same session. Temporary tables and session-level settings won't persist across requests.
 
 ## Customizing the HTTP connection pool {#customizing-the-http-connection-pool}
 

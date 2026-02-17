@@ -30,8 +30,8 @@ This guide provides step-by-step instructions on how to migrate your PostgreSQL 
 ## Considerations before migration {#migration-peerdb-considerations-before}
 Before starting your migration, keep the following in mind:
 
-- **Database objects**: PeerDB will create tables automatically in the target database based on the source schema. However, certain database objects like indexes, constraints, and triggers will not be migrated automatically. You'll need to recreate these objects manually in the target database after the migration.
-- **DDL changes**: If you enable continuous replication, PeerDB will keep the target database in sync with the source for DML operations (INSERT, UPDATE, DELETE) and will propagate ADD COLUMN operations. However, other DDL changes (like DROP COLUMN, ALTER COLUMN) are not propagated automatically. More on schema changes support [here](/integrations/clickpipes/postgres/schema-changes)
+- **Database objects**: PeerDB will create tables automatically in the target database based on the source schema. However, certain database objects like indexes, constraints, and triggers won't be migrated automatically. You'll need to recreate these objects manually in the target database after the migration.
+- **DDL changes**: If you enable continuous replication, PeerDB will keep the target database in sync with the source for DML operations (INSERT, UPDATE, DELETE) and will propagate ADD COLUMN operations. However, other DDL changes (like DROP COLUMN, ALTER COLUMN) aren't propagated automatically. More on schema changes support [here](/integrations/clickpipes/postgres/schema-changes)
 - **Network connectivity**: Ensure that both the source and target databases are reachable from the machine where PeerDB is running. You may need to configure firewall rules or security group settings to allow connectivity.
 
 ## Create peers {#migration-peerdb-create-peers}
@@ -111,12 +111,12 @@ If you click on the source peer, you can see a list of running commands which Pe
 ## Post-migration tasks {#migration-peerdb-considerations}
 After the migration is complete:
 
-- **Recreate database objects**: Remember to manually recreate indexes, constraints, and triggers in the target database, as these are not migrated automatically.
+- **Recreate database objects**: Remember to manually recreate indexes, constraints, and triggers in the target database, as these aren't migrated automatically.
 - **Test your application**: Make sure to test your application against the ClickHouse Managed Postgres instance to ensure everything is working as expected.
-- **Clean up resources**: Once you are satisfied with the migration and have switched your application to use ClickHouse Managed Postgres, you can delete the mirror and peers in PeerDB to clean up resources.
+- **Clean up resources**: Once you're satisfied with the migration and have switched your application to use ClickHouse Managed Postgres, you can delete the mirror and peers in PeerDB to clean up resources.
 
 :::info Replication slots
-If you enabled continuous replication, PeerDB will create a **replication slot** on the source PostgreSQL database. Make sure to drop the replication slot manually from the source database after you are done with the migration to avoid unnecessary resource usage.
+If you enabled continuous replication, PeerDB will create a **replication slot** on the source PostgreSQL database. Make sure to drop the replication slot manually from the source database after you're done with the migration to avoid unnecessary resource usage.
 :::
 
 ## References {#migration-peerdb-references}
@@ -125,5 +125,5 @@ If you enabled continuous replication, PeerDB will create a **replication slot**
 - [Postgres ClickPipe FAQ (holds true for PeerDB as well)](../../../integrations/data-ingestion/clickpipes/postgres/faq.md)
 
 ## Next steps {#migration-pgdump-pg-restore-next-steps}
-Congratulations! You have successfully migrated your PostgreSQL database to ClickHouse Managed Postgres using pg_dump and pg_restore. You are now all set to explore Managed Postgres features and its integration with ClickHouse. Here's a 10 minute quickstart to get you going:
+Congratulations! You have successfully migrated your PostgreSQL database to ClickHouse Managed Postgres using pg_dump and pg_restore. You're now all set to explore Managed Postgres features and its integration with ClickHouse. Here's a 10 minute quickstart to get you going:
 - [Managed Postgres Quickstart Guide](../quickstart)

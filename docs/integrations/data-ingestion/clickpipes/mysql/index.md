@@ -40,7 +40,7 @@ MySQL ClickPipes can be deployed and managed manually using the ClickPipes UI. I
 
 ## Prerequisites {#prerequisites}
 
-[//]: # "TODO Binlog replication configuration is not needed for one-time ingestion pipes. This has been a source of confusion in the past, so we should also provide the bare minimum requirements for bulk loads to avoid scaring users off."
+[//]: # "TODO Binlog replication configuration isn't needed for one-time ingestion pipes. This has been a source of confusion in the past, so we should also provide the bare minimum requirements for bulk loads to avoid scaring users off."
 
 To get started, you first need to ensure that your MySQL database is correctly configured for binlog replication. The configuration steps depend on how you're deploying MySQL, so please follow the relevant guide below:
 
@@ -60,7 +60,7 @@ Once your source MySQL database is set up, you can continue creating your ClickP
 
 ## Create your ClickPipe {#create-your-clickpipe}
 
-Make sure you are logged in to your ClickHouse Cloud account. If you don't have an account yet, you can sign up [here](https://cloud.clickhouse.com/).
+Make sure you're logged in to your ClickHouse Cloud account. If you don't have an account yet, you can sign up [here](https://cloud.clickhouse.com/).
 
 [//]: # (   TODO update image here)
 1. In the ClickHouse Cloud console, navigate to your ClickHouse Cloud Service.
@@ -88,7 +88,7 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
 
 #### (Optional) Set up SSH Tunneling {#optional-set-up-ssh-tunneling}
 
-You can specify SSH tunneling details if your source MySQL database is not publicly accessible.
+You can specify SSH tunneling details if your source MySQL database isn't publicly accessible.
 
 1. Enable the "Use SSH Tunnelling" toggle.
 2. Fill in the SSH connection details.
@@ -132,6 +132,6 @@ Finally, please refer to the ["ClickPipes for MySQL FAQ"](/integrations/clickpip
 
 ## What's next? {#whats-next}
 
-[//]: # "TODO Write a MySQL-specific migration guide and best practices similar to the existing one for PostgreSQL. The current migration guide points to the MySQL table engine, which is not ideal."
+[//]: # "TODO Write a MySQL-specific migration guide and best practices similar to the existing one for PostgreSQL. The current migration guide points to the MySQL table engine, which isn't ideal."
 
 Once you've set up your ClickPipe to replicate data from MySQL to ClickHouse Cloud, you can focus on how to query and model your data for optimal performance. For common questions around MySQL CDC and troubleshooting, see the [MySQL FAQs page](/integrations/data-ingestion/clickpipes/mysql/faq.md).

@@ -102,9 +102,9 @@ Alternatively, you can connect to a demo cluster where you can explore a larger 
 
 Local mode is a way to deploy HyperDX without needing to authenticate. 
 
-**Authentication is not supported**. 
+**Authentication isn't supported**. 
 
-This mode is intended to be used for quick testing, development, demos and debugging use cases where authentication and settings persistence is not necessary.
+This mode is intended to be used for quick testing, development, demos and debugging use cases where authentication and settings persistence isn't necessary.
 
 For further details on this deployment model, see ["Local Mode Only"](/use-cases/observability/clickstack/deployment/local-mode-only).
 

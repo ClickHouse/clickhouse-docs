@@ -27,7 +27,7 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
 </div>
 
 ## Prerequisites {#prerequisites}
-We assume you are familiar with:
+We assume you're familiar with:
 * [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
 * Confluent Platform and [Custom Connectors](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/overview.html).
 
@@ -43,7 +43,7 @@ Creating a topic on Confluent Platform is fairly simple, and there are detailed 
 #### Important notes {#important-notes}
 
 * The Kafka topic name must be the same as the ClickHouse table name. The way to tweak this is by using a transformer (for example [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)).
-* More partitions does not always mean more performance - see our upcoming guide for more details and performance tips.
+* More partitions doesn't always mean more performance - see our upcoming guide for more details and performance tips.
 
 #### Install connector {#install-connector}
 You can download the connector from our [repository](https://github.com/ClickHouse/clickhouse-kafka-connect/releases) - please feel free to submit comments and issues there as well!

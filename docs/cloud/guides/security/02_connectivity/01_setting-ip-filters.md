@@ -81,7 +81,7 @@ This screenshot shows an access list which allows traffic from a range of IP add
 
 4. Switch to allow access from **Anywhere**
 
-  This is not recommended, but it is allowed.  We recommend that you expose an application built on top of ClickHouse to the public and restrict access to the back-end ClickHouse Cloud service.
+  This isn't recommended, but it is allowed.  We recommend that you expose an application built on top of ClickHouse to the public and restrict access to the back-end ClickHouse Cloud service.
 
 To apply the changes you made, you must click **Save**.
 

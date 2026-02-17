@@ -30,7 +30,7 @@ import Image from '@theme/IdealImage';
 </div>
 
 ## Prerequisites {#prerequisites}
-We assume you are familiar with:
+We assume you're familiar with:
 * [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
 * Confluent Cloud
 
@@ -42,7 +42,7 @@ Creating a topic on Confluent Cloud is fairly simple, and there are detailed ins
 #### Important notes {#important-notes}
 
 * The Kafka topic name must be the same as the ClickHouse table name. The way to tweak this is by using a transformer (for example [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)).
-* More partitions does not always mean more performance - see our upcoming guide for more details and performance tips.
+* More partitions doesn't always mean more performance - see our upcoming guide for more details and performance tips.
 
 #### Gather your connection details {#gather-your-connection-details}
 <ConnectionDetails />

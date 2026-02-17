@@ -152,7 +152,7 @@ For a new setup, download the binary from https://nifi.apache.org/download.html 
     | Database Connection Pooling Service | ClickHouse JDBC | Select the ClickHouse controller service                                                                                                 |
     | Table Name                          | tbl             | Input your table name here                                                                                                               |
     | Translate Field Names               | false           | Set to "false" so that field names inserted must match the column name                                                                                      |
-    | Maximum Batch Size                  | 1000            | Maximum number of rows per insert. This value should not be lower than the value of "Minimum Number of Records" in `MergeRecord` processor |
+    | Maximum Batch Size                  | 1000            | Maximum number of rows per insert. This value shouldn't be lower than the value of "Minimum Number of Records" in `MergeRecord` processor |
 
 4. To confirm that each insert contains multiple rows, check that the row count in the table is incrementing by at least the value of "Minimum Number of Records" defined in `MergeRecord`.
 

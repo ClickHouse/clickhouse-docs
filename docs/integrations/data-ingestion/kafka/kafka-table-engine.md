@@ -30,7 +30,7 @@ To use the Kafka table engine, you should be broadly familiar with [ClickHouse m
 
 Initially, we focus on the most common use case: using the Kafka table engine to insert data into ClickHouse from Kafka.
 
-The Kafka table engine allows ClickHouse to read from a Kafka topic directly. Whilst useful for viewing messages on a topic, the engine by design only permits one-time retrieval, i.e. when a query is issued to the table, it consumes data from the queue and increases the consumer offset before returning results to the caller. Data cannot, in effect, be re-read without resetting these offsets.
+The Kafka table engine allows ClickHouse to read from a Kafka topic directly. Whilst useful for viewing messages on a topic, the engine by design only permits one-time retrieval, i.e. when a query is issued to the table, it consumes data from the queue and increases the consumer offset before returning results to the caller. Data can't, in effect, be re-read without resetting these offsets.
 
 To persist this data from a read of the table engine, we need a means of capturing the data and inserting it into another table. Trigger-based materialized views natively provide this functionality. A materialized view initiates a read on the table engine, receiving batches of documents. The TO clause determines the destination of the data - typically a table of the [Merge Tree family](../../../engines/table-engines/mergetree-family/index.md). This process is visualized below:
 
@@ -44,7 +44,7 @@ If you have data populated on a target topic, you can adapt the following for us
 
 ##### 2. Configure ClickHouse {#2-configure-clickhouse}
 
-This step is required if you are connecting to a secure Kafka. These settings cannot be passed through the SQL DDL commands and must be configured in the ClickHouse config.xml. We assume you are connecting to a SASL secured instance. This is the simplest method when interacting with Confluent Cloud.
+This step is required if you're connecting to a secure Kafka. These settings can't be passed through the SQL DDL commands and must be configured in the ClickHouse config.xml. We assume you're connecting to a SASL secured instance. This is the simplest method when interacting with Confluent Cloud.
 
 ```xml
 <clickhouse>
@@ -220,7 +220,7 @@ To stop message consumption, you can detach the Kafka engine table:
 DETACH TABLE github_queue;
 ```
 
-This will not impact the offsets of the consumer group. To restart consumption, and continue from the previous offset, reattach the table.
+This won't impact the offsets of the consumer group. To restart consumption, and continue from the previous offset, reattach the table.
 
 ```sql
 ATTACH TABLE github_queue;
@@ -289,11 +289,11 @@ The result looks like:
 
 ##### Modify Kafka engine settings {#modify-kafka-engine-settings}
 
-We recommend dropping the Kafka engine table and recreating it with the new settings. The materialized view does not need to be modified during this process - message consumption will resume once the Kafka engine table is recreated.
+We recommend dropping the Kafka engine table and recreating it with the new settings. The materialized view doesn't need to be modified during this process - message consumption will resume once the Kafka engine table is recreated.
 
 ##### Debugging Issues {#debugging-issues}
 
-Errors such as authentication issues are not reported in responses to Kafka engine DDL. For diagnosing issues, we recommend using the main ClickHouse log file clickhouse-server.err.log. Further trace logging for the underlying Kafka client library [librdkafka](https://github.com/edenhill/librdkafka) can be enabled through configuration.
+Errors such as authentication issues aren't reported in responses to Kafka engine DDL. For diagnosing issues, we recommend using the main ClickHouse log file clickhouse-server.err.log. Further trace logging for the underlying Kafka client library [librdkafka](https://github.com/edenhill/librdkafka) can be enabled through configuration.
 
 ```xml
 <kafka>
@@ -303,10 +303,10 @@ Errors such as authentication issues are not reported in responses to Kafka engi
 
 ##### Handling malformed messages {#handling-malformed-messages}
 
-Kafka is often used as a "dumping ground" for data. This leads to topics containing mixed message formats and inconsistent field names. Avoid this and utilize Kafka features such Kafka Streams or ksqlDB to ensure messages are well-formed and consistent before insertion into Kafka. If these options are not possible, ClickHouse has some features that can help.
+Kafka is often used as a "dumping ground" for data. This leads to topics containing mixed message formats and inconsistent field names. Avoid this and utilize Kafka features such Kafka Streams or ksqlDB to ensure messages are well-formed and consistent before insertion into Kafka. If these options aren't possible, ClickHouse has some features that can help.
 
-* Treat the message field as strings. Functions can be used in the materialized view statement to perform cleansing and casting if required. This should not represent a production solution but might assist in one-off ingestion.
-* If you're consuming JSON from a topic, using the JSONEachRow format, use the setting [`input_format_skip_unknown_fields`](/operations/settings/formats#input_format_skip_unknown_fields). When writing data, by default, ClickHouse throws an exception if input data contains columns that do not exist in the target table. However, if this option is enabled, these excess columns will be ignored. Again this is not a production-level solution and might confuse others.
+* Treat the message field as strings. Functions can be used in the materialized view statement to perform cleansing and casting if required. This shouldn't represent a production solution but might assist in one-off ingestion.
+* If you're consuming JSON from a topic, using the JSONEachRow format, use the setting [`input_format_skip_unknown_fields`](/operations/settings/formats#input_format_skip_unknown_fields). When writing data, by default, ClickHouse throws an exception if input data contains columns that don't exist in the target table. However, if this option is enabled, these excess columns will be ignored. Again this isn't a production-level solution and might confuse others.
 * Consider the setting `kafka_skip_broken_messages`. This requires the user to specify the level of tolerance per block for malformed messages - considered in the context of kafka_max_block_size. If this tolerance is exceeded (measured in absolute messages) the usual exception behaviour will revert, and other messages will be skipped.
 
 ##### Delivery Semantics and challenges with duplicates {#delivery-semantics-and-challenges-with-duplicates}
@@ -459,7 +459,7 @@ Although an elaborate example, this illustrates the power of materialized views 
 
 #### Working with ClickHouse Clusters {#working-with-clickhouse-clusters}
 
-Through Kafka consumer groups, multiple ClickHouse instances can potentially read from the same topic. Each consumer will be assigned to a topic partition in a 1:1 mapping. When scaling ClickHouse consumption using the Kafka table engine, consider that the total number of consumers within a cluster cannot exceed the number of partitions on the topic. Therefore ensure partitioning is appropriately configured for the topic in advance.
+Through Kafka consumer groups, multiple ClickHouse instances can potentially read from the same topic. Each consumer will be assigned to a topic partition in a 1:1 mapping. When scaling ClickHouse consumption using the Kafka table engine, consider that the total number of consumers within a cluster can't exceed the number of partitions on the topic. Therefore ensure partitioning is appropriately configured for the topic in advance.
 
 Multiple ClickHouse instances can all be configured to read from a topic using the same consumer group id - specified during the Kafka table engine creation. Therefore, each instance will read from one or more partitions, inserting segments to their local target table. The target tables can, in turn, be configured to use a ReplicatedMergeTree to handle duplication of the data. This approach allows Kafka reads to be scaled with the ClickHouse cluster, provided there are sufficient Kafka partitions.
 
@@ -469,14 +469,14 @@ Multiple ClickHouse instances can all be configured to read from a topic using t
 
 Consider the following when looking to increase Kafka Engine table throughput performance:
 
-* The performance will vary depending on the message size, format, and target table types. 100k rows/sec on a single table engine should be considered obtainable. By default, messages are read in blocks, controlled by the parameter kafka_max_block_size. By default, this is set to the [max_insert_block_size](/operations/settings/settings#max_insert_block_size), defaulting to 1,048,576. Unless messages are extremely large, this should nearly always be increased. Values between 500k to 1M are not uncommon. Test and evaluate the effect on throughput performance.
+* The performance will vary depending on the message size, format, and target table types. 100k rows/sec on a single table engine should be considered obtainable. By default, messages are read in blocks, controlled by the parameter kafka_max_block_size. By default, this is set to the [max_insert_block_size](/operations/settings/settings#max_insert_block_size), defaulting to 1,048,576. Unless messages are extremely large, this should nearly always be increased. Values between 500k to 1M aren't uncommon. Test and evaluate the effect on throughput performance.
 * The number of consumers for a table engine can be increased using kafka_num_consumers. However, by default, inserts will be linearized in a single thread unless kafka_thread_per_consumer is changed from the default value of 1. Set this to 1 to ensure flushes are performed in parallel. Note that creating a Kafka engine table with N consumers (and kafka_thread_per_consumer=1) is logically equivalent to creating N Kafka engines, each with a materialized view and kafka_thread_per_consumer=0.
-* Increasing consumers is not a free operation. Each consumer maintains its own buffers and threads, increasing the overhead on the server. Be conscious of the overhead of consumers and scale linearly across your cluster first and if possible.
+* Increasing consumers isn't a free operation. Each consumer maintains its own buffers and threads, increasing the overhead on the server. Be conscious of the overhead of consumers and scale linearly across your cluster first and if possible.
 * If the throughput of Kafka messages is variable and delays are acceptable, consider increasing the stream_flush_interval_ms to ensure larger blocks are flushed.
 * [background_message_broker_schedule_pool_size](/operations/server-configuration-parameters/settings#background_message_broker_schedule_pool_size) sets the number of threads performing background tasks. These threads are used for Kafka streaming. This setting is applied at the ClickHouse server start and can't be changed in a user session, defaulting to 16. If you see timeouts in the logs, it may be appropriate to increase this.
 * For communication with Kafka, the librdkafka library is used, which itself creates threads. Large numbers of Kafka tables, or consumers, can thus result in large numbers of context switches. Either distribute this load across the cluster, only replicating the target tables if possible, or consider using a table engine to read from multiple topics - a list of values is supported. Multiple materialized views can be read from a single table, each filtering to the data from a specific topic.
 
-Any settings changes should be tested. We recommend monitoring Kafka consumer lags to ensure you are properly scaled.
+Any settings changes should be tested. We recommend monitoring Kafka consumer lags to ensure you're properly scaled.
 
 #### Additional settings {#additional-settings}
 

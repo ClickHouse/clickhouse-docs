@@ -25,7 +25,7 @@ The optimizations are presented in a deliberate order, starting with the simples
 
 Before applying any of the optimizations described in this guide, it's important to be familiar with a few core ClickHouse concepts.
 
-In ClickStack, each **data source maps directly to one or more ClickHouse tables**. When using OpenTelemetry, ClickStack creates and manages a set of default tables that store logs, traces, and metrics data. If you are using custom schemas or managing your own tables, you may already be familiar with these concepts. However, if you are simply sending data via the OpenTelemetry Collector, these tables are created automatically, and are where all optimizations described below will be applied.
+In ClickStack, each **data source maps directly to one or more ClickHouse tables**. When using OpenTelemetry, ClickStack creates and manages a set of default tables that store logs, traces, and metrics data. If you're using custom schemas or managing your own tables, you may already be familiar with these concepts. However, if you're simply sending data via the OpenTelemetry Collector, these tables are created automatically, and are where all optimizations described below will be applied.
 
 | Data type                        | Table                                                                                                                  |
 |----------------------------------|------------------------------------------------------------------------------------------------------------------------|
@@ -57,7 +57,7 @@ At a minimum, you should understand the following ClickHouse fundamentals:
 
 These concepts are central to ClickHouse performance. They determine how data is written, how it's structured on disk, and how efficiently ClickHouse can skip reading data at query time. Every optimization in this guide, whether materialized columns, skip indexes, primary keys, projections, or materialized views, builds on these core mechanisms.
 
-You are recommended to review the following ClickHouse documentation before undertaking any tuning:
+You're recommended to review the following ClickHouse documentation before undertaking any tuning:
 
 - [Creating tables in ClickHouse](/guides/creating-tables) - A simple introduction to tables.
 - [Parts](/parts)
@@ -526,7 +526,7 @@ On identifying the subset of columns for the ordering key, they must be declared
 
 ### Changing the primary key {#changing-the-primary-key}
 
-If you are confident of your access patterns prior to data ingestion, simply drop and re-create the table for the relevant data type.
+If you're confident of your access patterns prior to data ingestion, simply drop and re-create the table for the relevant data type.
 
 The example below shows a simple way to create a new logs table with the existing schema, but with a new primary key that includes the column `SeverityText` before the `ServiceName`.
 
@@ -743,7 +743,7 @@ ORDER BY t;
 Queries that don't constrain `TraceId`, or that primarily filter on other dimensions that aren't leading in the projection’s ordering key, typically won't benefit (and may read via the base layout instead).
 
 :::note
-Projections can also store aggregations (similar to materialized views). In ClickStack, projection-based aggregations are not generally recommended because selection depends on the ClickHouse analyzer, and usage can be harder to control and reason about. Instead, prefer explicit materialized views that ClickStack can register and select intentionally at the application layer.
+Projections can also store aggregations (similar to materialized views). In ClickStack, projection-based aggregations aren't generally recommended because selection depends on the ClickHouse analyzer, and usage can be harder to control and reason about. Instead, prefer explicit materialized views that ClickStack can register and select intentionally at the application layer.
 :::
 
 In practice, projections are best suited for workflows where you frequently pivot from a broader search to a trace-centric drill down (for example, fetching all spans for a specific TraceId).
@@ -764,7 +764,7 @@ For a deeper background, see:
 <BetaBadge/>
 
 :::note[Lightweight projections are Beta for ClickStack]
-`_part_offset-based` lightweight projections are not recommended for ClickStack workloads. While they reduce storage and write I/O, they can introduce more random access at query time, and their production behavior at the observability scale is still being evaluated. This recommendation may change as the feature matures and we gain more operational data.
+`_part_offset-based` lightweight projections aren't recommended for ClickStack workloads. While they reduce storage and write I/O, they can introduce more random access at query time, and their production behavior at the observability scale is still being evaluated. This recommendation may change as the feature matures and we gain more operational data.
 :::
 
 Newer ClickHouse versions also support more lightweight projections that store only the projection sorting key plus a `_part_offset` pointer into the base table, rather than duplicating full rows. This can greatly reduce storage overhead, and recent improvements enable granule-level pruning, making them behave more like true secondary indexes. See:

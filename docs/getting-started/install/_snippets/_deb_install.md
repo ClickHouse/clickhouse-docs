@@ -91,7 +91,7 @@ clickhouse-client --password
 :::tip
 In production environments we strongly recommend running ClickHouse Keeper on dedicated nodes.
 In test environments, if you decide to run ClickHouse Server and ClickHouse Keeper on the same server, 
-then you do not need to install ClickHouse Keeper as it is included with ClickHouse server.
+then you don't need to install ClickHouse Keeper as it is included with ClickHouse server.
 :::
 
 To install `clickhouse-keeper` on standalone ClickHouse Keeper servers, run:
@@ -120,7 +120,7 @@ The various deb packages available are detailed below:
 | `clickhouse-server`            | Creates a symbolic link for `clickhouse-server` and installs the default server configuration.                                                                                                                                                                                         |
 | `clickhouse-client`            | Creates a symbolic link for `clickhouse-client` and other client-related tools. and installs client configuration files.                                                                                                                                                               |
 | `clickhouse-common-static-dbg` | Installs ClickHouse compiled binary files with debug info.                                                                                                                                                                                                                             |
-| `clickhouse-keeper`            | Used to install ClickHouse Keeper on dedicated ClickHouse Keeper nodes.  If you are running ClickHouse Keeper on the same server as ClickHouse server, then you do not need to install this package. Installs ClickHouse Keeper and the default ClickHouse Keeper configuration files. |
+| `clickhouse-keeper`            | Used to install ClickHouse Keeper on dedicated ClickHouse Keeper nodes.  If you're running ClickHouse Keeper on the same server as ClickHouse server, then you don't need to install this package. Installs ClickHouse Keeper and the default ClickHouse Keeper configuration files. |
 
 <br/>
 :::info

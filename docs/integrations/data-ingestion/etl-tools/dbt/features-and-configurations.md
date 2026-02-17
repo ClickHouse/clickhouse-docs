@@ -63,14 +63,14 @@ your_profile_name:
 ```
 ### Schema vs Database {#schema-vs-database}
 
-The dbt model relation identifier `database.schema.table` is not compatible with Clickhouse because Clickhouse does not
+The dbt model relation identifier `database.schema.table` isn't compatible with Clickhouse because Clickhouse doesn't
 support a `schema`.
 So we use a simplified approach `schema.table`, where `schema` is the Clickhouse database. Using the `default` database
-is not recommended.
+isn't recommended.
 
 ### SET Statement Warning {#set-statement-warning}
 
-In many environments, using the SET statement to persist a ClickHouse setting across all DBT queries is not reliable
+In many environments, using the SET statement to persist a ClickHouse setting across all DBT queries isn't reliable
 and can cause unexpected failures. This is particularly true when using HTTP connections through a load balancer that
 distributes queries across multiple nodes (such as ClickHouse cloud), although in some circumstances this can also
 happen with native ClickHouse connections. Accordingly, we recommend configuring any required ClickHouse settings in the
@@ -90,7 +90,7 @@ seeds:
 
 When using a ClickHouse cluster, you need to consider two things:
 - Setting the `cluster` setting.
-- Ensuring read-after-write consistency, especially if you are using more than one `threads`.
+- Ensuring read-after-write consistency, especially if you're using more than one `threads`.
 
 #### Cluster Setting {#cluster-setting}
 
@@ -101,7 +101,7 @@ The `cluster` setting in profile enables dbt-clickhouse to run against a ClickHo
 - Table and incremental materializations
 - Distributed materializations
 
-Replicated engines will **not** include the `ON CLUSTER` clause, as they are designed to manage replication internally.
+Replicated engines will **not** include the `ON CLUSTER` clause, as they're designed to manage replication internally.
 
 To **opt out** of cluster-based creation for a specific model, add the `disable_on_cluster` config:
 
@@ -115,7 +115,7 @@ To **opt out** of cluster-based creation for a specific model, add the `disable_
 
 ```
 
-table and incremental materializations with non-replicated engine will not be affected by `cluster` setting (model would
+table and incremental materializations with non-replicated engine won't be affected by `cluster` setting (model would
 be created on the connected node only).
 
 **Compatibility**
@@ -125,9 +125,9 @@ without `on cluster` clause for this model.
 
 #### Read-after-write Consistency {#read-after-write-consistency}
 
-dbt relies on a read-after-insert consistency model. This is not compatible with ClickHouse clusters that have more than one replica if you cannot guarantee that all operations will go to the same replica. You may not encounter problems in your day-to-day usage of dbt, but there are some strategies depending on your cluster to have this guarantee in place:
-- If you are using a ClickHouse Cloud cluster, you only need to set `select_sequential_consistency: 1` in your profile's `custom_settings` property. You can find more information about this setting [here](/operations/settings/settings#select_sequential_consistency).
-- If you are using a self-hosted cluster, make sure all dbt requests are sent to the same ClickHouse replica. If you have a load balancer on top of it, try using some `replica aware routing`/`sticky sessions` mechanism to be able to always reach the same replica. Adding the setting `select_sequential_consistency = 1` in clusters outside ClickHouse Cloud is [not recommended](/operations/settings/settings#select_sequential_consistency).
+dbt relies on a read-after-insert consistency model. This isn't compatible with ClickHouse clusters that have more than one replica if you can't guarantee that all operations will go to the same replica. You may not encounter problems in your day-to-day usage of dbt, but there are some strategies depending on your cluster to have this guarantee in place:
+- If you're using a ClickHouse Cloud cluster, you only need to set `select_sequential_consistency: 1` in your profile's `custom_settings` property. You can find more information about this setting [here](/operations/settings/settings#select_sequential_consistency).
+- If you're using a self-hosted cluster, make sure all dbt requests are sent to the same ClickHouse replica. If you have a load balancer on top of it, try using some `replica aware routing`/`sticky sessions` mechanism to be able to always reach the same replica. Adding the setting `select_sequential_consistency = 1` in clusters outside ClickHouse Cloud is [not recommended](/operations/settings/settings#select_sequential_consistency).
 
 ## Additional ClickHouse macros {#additional-clickhouse-macros}
 
@@ -187,7 +187,7 @@ dbt-clickhouse supports most of the cross database macros now included in `dbt C
 
 ### dbt Catalog Integration Status {#dbt-catalog-integration-status}
 
-dbt Core v1.10 introduced catalog integration support, which allows adapters to materialize models into external catalogs that manage open table formats like Apache Iceberg. **This feature is not yet natively implemented in dbt-clickhouse.** You can track the progress of this feature implementation in [GitHub issue #489](https://github.com/ClickHouse/dbt-clickhouse/issues/489).
+dbt Core v1.10 introduced catalog integration support, which allows adapters to materialize models into external catalogs that manage open table formats like Apache Iceberg. **This feature isn't yet natively implemented in dbt-clickhouse.** You can track the progress of this feature implementation in [GitHub issue #489](https://github.com/ClickHouse/dbt-clickhouse/issues/489).
 
 ### ClickHouse Catalog Support {#clickhouse-catalog-support}
 
@@ -248,5 +248,5 @@ The good things about these workarounds are:
 
 But there are currently some limitations:
 * **Manual setup:** Iceberg tables and catalog databases must be created manually in ClickHouse before they can be referenced in dbt.
-* **No catalog-level DDL:** dbt cannot manage catalog-level operations like creating or dropping Iceberg tables in external catalogs. So you will not be able to create them right now from the dbt connector. Creating tables with the Iceberg() engines may be added in the future.
+* **No catalog-level DDL:** dbt can't manage catalog-level operations like creating or dropping Iceberg tables in external catalogs. So you won't be able to create them right now from the dbt connector. Creating tables with the Iceberg() engines may be added in the future.
 * **Write operations:** Currently, writing into Iceberg/Data Catalog tables is limited. Check the ClickHouse documentation to understand which options are available.

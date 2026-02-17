@@ -99,7 +99,7 @@ The ClickStack OpenTelemetry collector is included in most ClickStack distributi
 
 The ClickStack OTel collector can also be deployed standalone, independent of other components of the stack.
 
-If you're using the [HyperDX-only](/use-cases/observability/clickstack/deployment/hyperdx-only) distribution, you are responsible for delivering data into ClickHouse yourself. This can be done by:
+If you're using the [HyperDX-only](/use-cases/observability/clickstack/deployment/hyperdx-only) distribution, you're responsible for delivering data into ClickHouse yourself. This can be done by:
 
 - Running your own OpenTelemetry collector and pointing it at ClickHouse - see below.
 - Sending directly to ClickHouse using alternative tooling, such as [Vector](https://vector.dev/), [Fluentd](https://www.fluentd.org/) etc, or even the default [OTel contrib collector distribution](https://github.com/open-telemetry/opentelemetry-collector-contrib).

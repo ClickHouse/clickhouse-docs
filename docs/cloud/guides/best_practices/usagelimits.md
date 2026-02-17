@@ -14,7 +14,7 @@ Cloud enforces limits across several operational dimensions.
 The details of these guardrails are listed below.
 
 :::tip
-If you've run up against one of these guardrails, it's possible that you are 
+If you've run up against one of these guardrails, it's possible that you're 
 implementing your use case in an unoptimized way. Contact our support team and 
 we will gladly help you refine your use case to avoid exceeding the guardrails 
 or look together at how we can increase them in a controlled manner. 
