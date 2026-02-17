@@ -34,8 +34,9 @@ ClickHouse server provides embedded visual interfaces for power users:
 - Binary symbols viewer for ClickHouse engineers: open `/binary` in the browser;
 - ClickStack UI for observability: open `/clickstack` in the browser;
 
-!!! info "ClickStack"
-    The version of ClickStack is great for local debugging and quick investigation, but is not meant for a production environment. For production ready full-featured clickstack, see [Open Source ClickStack](/use-cases/observability/clickstack/getting-started/oss).
+:::info[ClickStack]
+This version of ClickStack is great for local debugging and quick investigation, but isn't meant for production environments. For production ready full-featured ClickStack, see [Open Source ClickStack](/use-cases/observability/clickstack/getting-started/oss).
+:::
 
 There are also a wide range of third-party libraries for working with ClickHouse:
 
