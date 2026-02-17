@@ -22,7 +22,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 This is the official Apache Flink Sink Connector supported by ClickHouse. It is built using Flink's [AsyncSinkBase](https://cwiki.apache.org/confluence/display/FLINK/FLIP-171%3A+Async+Sink) and the official ClickHouse [java client](https://github.com/ClickHouse/clickhouse-java).
 
-The connector supports Apache Flink's DataStream API. Table API support is planned for a future release.
+The connector supports Apache Flink's DataStream API. Table API support is [planned for a future release](https://github.com/ClickHouse/flink-connector-clickhouse/issues/42).
 
 ## Requirements {#requirements}
 
@@ -125,42 +125,51 @@ You can find all available released JAR files in the [Maven Central Repository](
 ## Using the DataStream API {#using-the-datastream-api}
 ### Snippet {#datastream-snippet}
 
-Configure ClickHouseClient
+Let's say you want to insert raw CSV data into ClickHouse:
+
+<Tabs groupId="raw_csv_java_example">
+<TabItem value="Java" label="Java" default>
 
 ```java
-ClickHouseClientConfig clickHouseClientConfig = new ClickHouseClientConfig(url, username, password, database, tableName);
+public static void main(String[] args) {
+    // Configure ClickHouseClient
+    ClickHouseClientConfig clickHouseClientConfig = new ClickHouseClientConfig(url, username, password, database, tableName);
+
+    // Create an ElementConverter
+    ElementConverter<String, ClickHousePayload> convertorString = new ClickHouseConvertor<>(String.class);
+
+    // Create the sink and set the format using `setClickHouseFormat`
+    ClickHouseAsyncSink<String> csvSink = new ClickHouseAsyncSink<>(
+            convertorString,
+            MAX_BATCH_SIZE,
+            MAX_IN_FLIGHT_REQUESTS,
+            MAX_BUFFERED_REQUESTS,
+            MAX_BATCH_SIZE_IN_BYTES,
+            MAX_TIME_IN_BUFFER_MS,
+            MAX_RECORD_SIZE_IN_BYTES,
+            clickHouseClientConfig
+    );
+
+    csvSink.setClickHouseFormat(ClickHouseFormat.CSV);
+
+    // Finally, connect your DataStream to the sink.
+    final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
+    Path csvFilePath = new Path(fileFullName);
+    FileSource<String> csvSource = FileSource
+            .forRecordStreamFormat(new TextLineInputFormat(), csvFilePath)
+            .build();
+
+    env.fromSource(
+            csvSource,
+            WatermarkStrategy.noWatermarks(),
+            "GzipCsvSource"
+    ).sinkTo(csvSink);
+}
 ```
 
-Let's say you want to insert RAW CSV data as is:
-
-1. Create an ElementConverter
-
-```java
-ElementConverter<String, ClickHousePayload> convertorString = new ClickHouseConvertor<>(String.class);
-```
-
-2. Create the sink and set the format using `setClickHouseFormat`
-
-```java
-ClickHouseAsyncSink<String> csvSink = new ClickHouseAsyncSink<>(
-        convertorString, 
-        MAX_BATCH_SIZE,
-        MAX_IN_FLIGHT_REQUESTS, 
-        MAX_BUFFERED_REQUESTS, 
-        MAX_BATCH_SIZE_IN_BYTES, 
-        MAX_TIME_IN_BUFFER_MS, 
-        MAX_RECORD_SIZE_IN_BYTES, 
-        clickHouseClientConfig
-);
-
-csvSink.setClickHouseFormat(ClickHouseFormat.CSV);
-```
-
-3. Finally, connect your DataStream to the sink.
-
-```java
-data.sinkTo(csvSink);
-```
+</TabItem>
+</Tabs>
 
 More examples and snippets can be found in our tests:
 - [flink-connector-clickhouse-1.17](https://github.com/ClickHouse/flink-connector-clickhouse/tree/main/flink-connector-clickhouse-1.17/src/test/java/org/apache/flink/connector/clickhouse/sink)
@@ -178,13 +187,40 @@ For more detailed instructions, see the [Example Guide](https://github.com/Click
 ### DataStream API Connection Options {#datastream-api-connection-options}
 #### Clickhouse Client Options {#client-options}
 
-| Parameters | Description                    | Default Value |
-|------------|--------------------------------|---------------|
-| `url`      | Fully qualified Clickhouse URL | N/A           |
-| `username` | ClickHouse database username   | N/A           |
-| `password` | ClickHouse database password   | N/A           |
-| `database` | ClickHouse database name       | N/A           |
-| `table`    | ClickHouse table name          | N/A           |
+| Parameters | Description                    | Default Value | Required |
+|------------|--------------------------------|---------------|----------|
+| `url`      | Fully qualified Clickhouse URL | N/A           | Yes      |
+| `username` | ClickHouse database username   | N/A           | Yes      |
+| `password` | ClickHouse database password   | N/A           | Yes      |
+| `database` | ClickHouse database name       | N/A           | Yes      |
+| `table`    | ClickHouse table name          | N/A           | Yes      |
+
+Additional options can be passed to the client as a `Map<String, String>`.
+All available client options are listed in [ClientConfigProperties.java](https://github.com/ClickHouse/clickhouse-java/blob/main/client-v2/src/main/java/com/clickhouse/client/api/ClientConfigProperties.java).
+For example:
+
+<Tabs groupId="client_options_example">
+<TabItem value="Java" label="Java" default>
+
+```java
+Map<String, String> additionalProperties = Map.of(
+    ClientConfigProperties.CA_CERTIFICATE.getKey(), "<my_CA_cert>",
+    ClientConfigProperties.SERVER_TIMEZONE.getKey(), "America/Los_Angeles"
+);
+
+ClickHouseClientConfig clickHouseClientConfig = new ClickHouseClientConfig(
+    url,
+    username,
+    password,
+    database,
+    tableName,
+    additionalProperties,
+    Map.of(), // serverSettings
+    false // enableJsonSupportAsString
+);
+```
+</TabItem>
+</Tabs>
 
 #### Sink Options {#sink-options}
 
@@ -198,22 +234,6 @@ The following options come directly from Flink's `AsyncSinkBase`:
 | `maxBatchSizeInBytes`  | The maximum size (in bytes) a batch may become. All batches sent will be smaller than or equal to this size | N/A           |
 | `maxTimeInBufferMS`    | The maximum time a record may stay in the sink before being flushed                                         | N/A           |
 | `maxRecordSizeInBytes` | The maximum record size that the sink will accept, records larger than this will be automatically rejected  | N/A           |
-
-## Using the Table API {#using-the-table-api}
-
-Table API support is planned for a future release. This section will be updated once available.
-
-### Snippet {#table-snippet}
-
-Planned for a future release — this section will provide a usage snippet for configuring the Table API.
-
-### Quick Start Example {#table-quick-start}
-
-Planned for a future release — a complete end-to-end example will be added once Table API support becomes available.
-
-### Table API Connection Options {#table-api-connection-options}
-
-Planned for a future release — this section will be updated once available.
 
 ## Supported data types {#supported-data-types}
 
@@ -268,7 +288,7 @@ The table below provides a quick reference for converting data types when insert
 
 Notes:
 * A `ZoneId` must be provided when performing date operations.
-* Precision and scale must be provided when performing decimal operations.
+* [Precision and scale](https://clickhouse.com/docs/sql-reference/data-types/decimal#decimal-value-ranges) must be provided when performing decimal operations.
 * In order for ClickHouse to parse a Java String as JSON, you need to enable `enableJsonSupportAsString` in `ClickHouseClientConfig`.
 
 ## Metrics {#metrics}
@@ -295,11 +315,13 @@ The connector exposes the following additional metrics on top of Flink's existin
 
 ## Limitations {#limitations}
 
-* Currently, the sink does not support exactly-once semantics.
+* The sink does not support exactly-once delivery - it currently only provides an at-least-once guarantee. This feature is tracked [here](https://github.com/ClickHouse/flink-connector-clickhouse/issues/106).
+* The sink does not support a dead-letter queue (DLQ) to buffer unprocessed messages. Currently, the connector will fail at the first row it cannot process. This feature is tracked [here](https://github.com/ClickHouse/flink-connector-clickhouse/issues/105).
+* The sink does not support creation via Flink's Table API/Flink SQL. This feature is tracked [here](https://github.com/ClickHouse/flink-connector-clickhouse/issues/42).
 
 ## ClickHouse Version Compatibility and Security {#compatibility-and-security}
 
-- All artifacts and versions of the connector are tested with all [active LTS versions](https://github.com/ClickHouse/ClickHouse/pulls?q=is%3Aopen+is%3Apr+label%3Arelease) of ClickHouse.
+- All artifacts and versions of the connector are tested with all [active and LTS versions](https://github.com/ClickHouse/ClickHouse/pulls?q=is%3Aopen+is%3Apr+label%3Arelease) of ClickHouse.
 - See the [ClickHouse security policy](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md#security-change-log-and-support) for known security vulnerabilities and how to report a vulnerability.
 - We recommend upgrading the connector continuously to not miss security fixes and new improvements.
 - If you have an issue with migration, please create a GitHub [issue](https://github.com/ClickHouse/flink-connector-clickhouse/issues) and we will respond!
