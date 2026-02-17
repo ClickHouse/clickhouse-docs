@@ -301,7 +301,7 @@ ClickHouse materialized views act as insert triggers — they only capture data 
 
 #### Check the current target of an MV in ClickHouse {#check-mv-target}
 
-Query `system.tables` to see where an MV is writing:
+Query `system.tables` to see where a materialized view is writing:
 
 ```sql
 SELECT
