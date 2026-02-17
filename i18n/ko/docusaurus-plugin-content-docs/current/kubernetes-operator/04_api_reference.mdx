@@ -1,0 +1,438 @@
+---
+position: 1
+slug: /clickhouse-operator/reference/api-reference
+title: 'ClickHouse Operator API 참조'
+keywords: ['kubernetes']
+description: '이 문서는 ClickHouse Operator 사용자 정의 리소스(Custom Resource)에 대한 상세한 API 참조를 제공합니다.'
+doc_type: 'reference'
+sidebar_label: 'API 참조'
+---
+
+# ClickHouse Operator API 참조 \{#clickhouse-operator-api-reference\}
+
+이 문서는 ClickHouse Operator 사용자 정의 리소스(Custom Resource)에 대한 자세한 API 참조 정보를 제공합니다.
+
+## ClickHouseCluster \{#clickhousecluster\}
+
+ClickHouseCluster는 ClickHouse 클러스터 API의 스키마 정의입니다.
+
+### API 버전 및 Kind \{#api-version-and-kind\}
+
+```yaml
+apiVersion: clickhouse.com/v1alpha1
+kind: ClickHouseCluster
+```
+
+
+### ClickHouseClusterSpec \{#clickhouseclusterspec\}
+
+ClickHouseClusterSpec은(는) ClickHouse 클러스터의 의도한 상태를 정의합니다.
+
+| Field                 | Type                        | Required | Default      | Description                                                |
+|-----------------------|-----------------------------|----------|--------------|------------------------------------------------------------|
+| `replicas`            | `*int32`                    | No       | `3`          | 단일 세그먼트 내 레플리카 개수입니다. 0 이상이어야 합니다. |
+| `shards`              | `*int32`                    | No       | `1`          | 클러스터의 세그먼트 개수입니다. 0 이상이어야 합니다.        |
+| `keeperClusterRef`    | `LocalObjectReference`      | Yes      | -            | 조정에 사용되는 KeeperCluster 리소스에 대한 참조입니다.     |
+| `podTemplate`         | `PodTemplateSpec`           | No       | -            | 파드 스펙에 대한 매개변수입니다.                            |
+| `containerTemplate`   | `ContainerTemplateSpec`     | No       | 기본값 참조  | ClickHouse 컨테이너 스펙에 대한 매개변수입니다.             |
+| `dataVolumeClaimSpec` | `PersistentVolumeClaimSpec` | Yes      | -            | 데이터 볼륨에 대한 스토리지 구성입니다.                     |
+| `labels`              | `map[string]string`         | No       | -            | 모든 리소스에 적용되는 레이블입니다.                        |
+| `annotations`         | `map[string]string`         | No       | -            | 모든 리소스에 적용되는 애노테이션입니다.                    |
+| `settings`            | `ClickHouseConfig`          | No       | -            | ClickHouse 구성 매개변수입니다.                             |
+
+#### 예제 \{#example\}
+
+```yaml
+apiVersion: clickhouse.com/v1alpha1
+kind: ClickHouseCluster
+metadata:
+  name: example-cluster
+spec:
+  replicas: 3
+  shards: 2
+  keeperClusterRef:
+    name: example-keeper
+  dataVolumeClaimSpec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 100Gi
+  containerTemplate:
+    image:
+      repository: clickhouse/clickhouse-server
+      tag: "25.12"
+    resources:
+      requests:
+        cpu: "2"
+        memory: "8Gi"
+      limits:
+        cpu: "4"
+        memory: "16Gi"
+  settings:
+    defaultUserPassword:
+      secret:
+        name: clickhouse-password
+        key: password
+    tls:
+      enabled: true
+      required: true
+      serverCertSecret:
+        name: clickhouse-cert
+```
+
+
+### ClickHouseConfig \{#clickhouseconfig\}
+
+ClickHouse 구성 매개변수입니다.
+
+| Field                 | Type                       | Required | Default      | Description                                                                |
+|-----------------------|----------------------------|----------|--------------|----------------------------------------------------------------------------|
+| `defaultUserPassword` | `*DefaultPasswordSelector` | No       | -            | Secret 또는 ConfigMap에서 가져오는 'default' 사용자 비밀번호입니다.        |
+| `logger`              | `LoggerConfig`             | No       | See defaults | 로거 구성입니다.                                                           |
+| `tls`                 | `ClusterTLSSpec`           | No       | -            | ClickHouse용 TLS 설정입니다.                                               |
+| `enableDatabaseSync`  | `bool`                     | No       | `true`       | 새 레플리카에 데이터베이스를 동기화하도록 활성화합니다.                    |
+| `extraConfig`         | `runtime.RawExtension`     | No       | -            | 추가 ClickHouse 구성입니다(기본값과 병합됨).                               |
+| `extraUsersConfig`    | `runtime.RawExtension`     | No       | -            | 추가 ClickHouse 사용자 구성입니다(기본값과 병합됨).                        |
+
+### ClickHouseClusterStatus \{#clickhouseclusterstatus\}
+
+ClickHouseClusterStatus는 ClickHouse 클러스터의 관찰된 상태를 정의합니다.
+
+| Field                   | Type                 | Description                                            |
+|-------------------------|----------------------|--------------------------------------------------------|
+| `conditions`            | `[]metav1.Condition` | 클러스터의 현재 상태 조건입니다.                       |
+| `observedGeneration`    | `int64`              | 가장 최근에 관찰된 generation입니다.                   |
+| `replicas`              | `int32`              | 현재 실행 중인 레플리카의 개수입니다.                  |
+| `readyReplicas`         | `int32`              | 준비 완료 상태인 레플리카의 개수입니다.                |
+| `configurationRevision` | `string`             | 오퍼레이터가 적용한 대상 configuration revision입니다. |
+| `statefulSetRevision`   | `string`             | 대상 StatefulSet 컨트롤러 revision입니다.              |
+| `currentRevision`       | `string`             | 마지막으로 적용된 클러스터 spec revision입니다.       |
+| `updateRevision`        | `string`             | 마지막으로 요청된 클러스터 spec revision입니다.       |
+
+## KeeperCluster \{#keepercluster\}
+
+KeeperCluster는 ClickHouse Keeper 클러스터 API에 대한 스키마 정의입니다.
+
+### API 버전 및 Kind \{#keeper-api-version-and-kind\}
+
+```yaml
+apiVersion: clickhouse.com/v1alpha1
+kind: KeeperCluster
+```
+
+
+### KeeperClusterSpec \{#keeperclusterspec\}
+
+KeeperClusterSpec은 Keeper 클러스터의 의도된 상태를 정의합니다.
+
+| Field                 | Type                        | Required | Default      | Description                                                                 |
+|-----------------------|-----------------------------|----------|--------------|-----------------------------------------------------------------------------|
+| `replicas`            | `*int32`                    | No       | `3`          | 레플리카 개수입니다. 반드시 0, 1, 3, 5, 7, 9, 11, 13, 15 중 하나의 홀수여야 합니다. |
+| `podTemplate`         | `PodTemplateSpec`           | No       | -            | 파드 스펙에 대한 매개변수입니다.                                           |
+| `containerTemplate`   | `ContainerTemplateSpec`     | No       | 기본값 참조  | Keeper 컨테이너 스펙에 대한 매개변수입니다.                                 |
+| `dataVolumeClaimSpec` | `PersistentVolumeClaimSpec` | Yes      | -            | 데이터 볼륨용 스토리지 구성입니다.                                         |
+| `labels`              | `map[string]string`         | No       | -            | 모든 리소스에 추가되는 레이블입니다.                                       |
+| `annotations`         | `map[string]string`         | No       | -            | 모든 리소스에 추가되는 어노테이션입니다.                                   |
+| `settings`            | `KeeperConfig`              | No       | -            | Keeper 설정 매개변수입니다.                                                |
+
+#### 예제 \{#example\}
+
+```yaml
+apiVersion: clickhouse.com/v1alpha1
+kind: KeeperCluster
+metadata:
+  name: example-keeper
+spec:
+  replicas: 3
+  dataVolumeClaimSpec:
+    storageClassName: fast-ssd
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+  containerTemplate:
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "512Mi"
+      limits:
+        cpu: "1"
+        memory: "1Gi"
+  podTemplate:
+    topologyZoneKey: topology.kubernetes.io/zone
+  settings:
+    tls:
+      enabled: true
+      required: true
+      serverCertSecret:
+        name: keeper-cert
+```
+
+
+### KeeperConfig \{#keeperconfig\}
+
+Keeper 구성 매개변수입니다.
+
+| Field         | Type                   | Required | Default      | Description                                           |
+|---------------|------------------------|----------|--------------|-------------------------------------------------------|
+| `logger`      | `LoggerConfig`         | No       | See defaults | 로거 구성입니다.                                      |
+| `tls`         | `ClusterTLSSpec`       | No       | -            | Keeper에 대한 TLS 설정입니다.                         |
+| `extraConfig` | `runtime.RawExtension` | No       | -            | 추가 Keeper 구성으로, 기본값과 병합되어 적용됩니다. |
+
+### KeeperClusterStatus \{#keeperclusterstatus\}
+
+KeeperClusterStatus는 Keeper 클러스터의 관측된 상태를 정의합니다.
+
+| Field                   | Type                 | Description                                              |
+|-------------------------|----------------------|----------------------------------------------------------|
+| `conditions`            | `[]metav1.Condition` | 클러스터의 현재 condition 목록입니다.                    |
+| `observedGeneration`    | `int64`              | 가장 최근에 관측된 generation 값입니다.                  |
+| `replicas`              | `int32`              | 현재 실행 중인 레플리카 개수입니다.                      |
+| `readyReplicas`         | `int32`              | 준비 완료된 레플리카 개수입니다.                        |
+| `configurationRevision` | `string`             | 오퍼레이터가 적용한 대상 configuration 리비전입니다.     |
+| `statefulSetRevision`   | `string`             | 대상 StatefulSet 컨트롤러 리비전입니다.                 |
+| `currentRevision`       | `string`             | 마지막으로 적용된 클러스터 spec 리비전입니다.           |
+| `updateRevision`        | `string`             | 마지막으로 요청된 클러스터 spec 리비전입니다.           |
+
+## 공통 타입 \{#common-types\}
+
+### PodTemplateSpec \{#podtemplatespec\}
+
+파드 구성을 위한 매개변수입니다.
+
+| Field             | Type                         | Required | Description                                                                          |
+|-------------------|------------------------------|----------|--------------------------------------------------------------------------------------|
+| `topologyZoneKey` | `string`                     | No       | 영역 분산을 위한 Kubernetes 토폴로지 키입니다(예: `topology.kubernetes.io/zone`).     |
+| `nodeHostnameKey` | `string`                     | No       | 노드 호스트명을 위한 Kubernetes 레이블 키입니다(예: `kubernetes.io/hostname`).        |
+| `nodeSelector`    | `map[string]string`          | No       | 파드 배치를 위한 노드 셀렉터입니다.                                                   |
+| `affinity`        | `corev1.Affinity`            | No       | 파드 어피니티/안티-어피니티 규칙입니다.                                              |
+| `tolerations`     | `[]corev1.Toleration`        | No       | taint가 설정된 노드에 대한 톨러레이션입니다.                                         |
+| `securityContext` | `*corev1.PodSecurityContext` | No       | 파드 보안 컨텍스트입니다.                                                            |
+
+#### 예제 \{#example\}
+
+```yaml
+podTemplate:
+  topologyZoneKey: topology.kubernetes.io/zone
+  nodeHostnameKey: kubernetes.io/hostname
+  nodeSelector:
+    disktype: ssd
+  tolerations:
+  - key: "dedicated"
+    operator: "Equal"
+    value: "clickhouse"
+    effect: "NoSchedule"
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: clickhouse
+        topologyKey: kubernetes.io/hostname
+```
+
+
+### ContainerTemplateSpec \{#containertemplatespec\}
+
+컨테이너 구성을 위한 매개변수입니다.
+
+| Field             | Type                          | Required | Description                                      |
+|-------------------|-------------------------------|----------|--------------------------------------------------|
+| `image`           | `ContainerImage`              | No       | 컨테이너 이미지 구성입니다.                      |
+| `imagePullPolicy` | `corev1.PullPolicy`           | No       | 이미지 Pull 정책입니다(Always, IfNotPresent, Never). |
+| `resources`       | `corev1.ResourceRequirements` | No       | CPU 및 메모리 리소스 요구 사항입니다.           |
+| `env`             | `[]corev1.EnvVar`             | No       | 환경 변수입니다.                                 |
+| `volumeMounts`    | `[]corev1.VolumeMount`        | No       | 추가 볼륨 마운트입니다.                          |
+| `securityContext` | `*corev1.SecurityContext`     | No       | 컨테이너 보안 컨텍스트입니다.                   |
+
+#### 예제 \{#containertemplatespec-example\}
+
+```yaml
+containerTemplate:
+  image:
+    repository: clickhouse/clickhouse-server
+    tag: "25.12"
+  imagePullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: "2"
+      memory: "8Gi"
+    limits:
+      cpu: "4"
+      memory: "16Gi"
+  env:
+  - name: TZ
+    value: "UTC"
+```
+
+
+### ContainerImage \{#containerimage\}
+
+컨테이너 이미지 명세입니다.
+
+| Field        | Type     | Required | Default                                                                              | Description                 |
+|--------------|----------|----------|--------------------------------------------------------------------------------------|-----------------------------|
+| `repository` | `string` | No       | ClickHouse: `clickhouse/clickhouse-server`<br/>Keeper: `clickhouse/clickhouse-keeper` | 컨테이너 이미지 리포지토리입니다. |
+| `tag`        | `string` | No       | `latest`                                                                             | 이미지 태그입니다.          |
+
+### ClusterTLSSpec \{#clustertlsspec\}
+
+클러스터에 대한 TLS 설정입니다.
+
+| Field              | Type                          | Required | Description                                                     |
+|--------------------|-------------------------------|----------|-----------------------------------------------------------------|
+| `enabled`          | `bool`                        | No       | TLS를 활성화합니다.                                             |
+| `required`         | `bool`                        | No       | 모든 연결에서 TLS를 필수로 사용합니다(암호화되지 않은 엔드포인트를 비활성화합니다). |
+| `serverCertSecret` | `corev1.LocalObjectReference` | No       | 서버 인증서(tls.crt, tls.key)를 포함하는 Secret입니다.          |
+| `caBundle`         | `*SecretKeySelector`          | No       | 검증에 사용할 CA 번들을 포함하는 Secret입니다.                  |
+
+#### 예제 \{#clustertlsspec-example\}
+
+```yaml
+tls:
+  enabled: true
+  required: true
+  serverCertSecret:
+    name: clickhouse-cert
+  caBundle:
+    secretKeyRef:
+      name: ca-cert-secret
+      key: ca.crt
+```
+
+
+### LoggerConfig \{#loggerconfig\}
+
+ClickHouse 및 Keeper용 로거 설정입니다.
+
+| Field       | Type     | Required | Default   | Description                                         |
+|-------------|----------|----------|-----------|-----------------------------------------------------|
+| `logToFile` | `bool`   | No       | `true`    | 로그를 파일에 기록합니다.                          |
+| `level`     | `string` | No       | `"trace"` | 로그 레벨을 지정합니다: trace, debug, information, warning, error. |
+| `size`      | `string` | No       | `"1000M"` | 최대 로그 파일 크기입니다.                         |
+| `count`     | `int`    | No       | `50`      | 유지할 로그 파일 개수입니다.                       |
+
+#### 예제 \{#loggerconfig-example\}
+
+```yaml
+logger:
+  logToFile: true
+  level: "information"
+  size: "1000M"
+  count: 50
+```
+
+
+### DefaultPasswordSelector \{#defaultpasswordselector\}
+
+암호가 포함된 Secret 또는 ConfigMap 키를 참조합니다.
+
+| Field          | Type                    | Required | Default     | Description                                                                                                                                                                                                                                                    |
+|----------------|-------------------------|----------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `passwordType` | `string`                | No       | `plaintext` | 암호 인코딩 방식입니다. 가능한 값: `plaintext`, `sha256_password`, `sha256_hash`, `double_sha1_password`, `double_sha1_hash`. 자세한 내용은 [ClickHouse 문서](/operations/settings/settings-users#user-namepassword)를 참조하십시오. |
+| `secret`       | `*SecretKeySelector`    | No       | -           | Secret 키에서 암호를 참조합니다. `configMap`과 상호 배타적입니다.                                                                                                                                                                                             |
+| `configMap`    | `*ConfigMapKeySelector` | No       | -           | ConfigMap 키에서 암호를 참조합니다. `secret`과 상호 배타적입니다.                                                                                                                                                                                             |
+
+:::note
+`secret` 또는 `configMap` 중 하나만 지정해야 하며, 둘 다 지정해서는 안 됩니다.
+:::
+
+#### Secret을 사용하는 예시(권장) \{#defaultpasswordselector-example-secret\}
+
+```yaml
+defaultUserPassword:
+  passwordType: plaintext  # Optional, default
+  secret:
+    name: clickhouse-password
+    key: password
+```
+
+
+#### SHA256 예시 \{#defaultpasswordselector-example-sha256\}
+
+```yaml
+defaultUserPassword:
+  passwordType: sha256_password
+  secret:
+    name: clickhouse-password
+    key: password_hash
+```
+
+
+#### ConfigMap 예제 \{#defaultpasswordselector-example-configmap\}
+
+```yaml
+defaultUserPassword:
+  passwordType: plaintext
+  configMap:
+    name: clickhouse-config
+    key: default_password
+```
+
+
+## 기본값 \{#default-values\}
+
+### ClickHouse 기본값 \{#clickhouse-defaults\}
+
+| 설정                   | 기본값                         |
+|------------------------|--------------------------------|
+| 레플리카 수            | `3`                            |
+| 세그먼트 수            | `1`                            |
+| 이미지 리포지토리      | `clickhouse/clickhouse-server` |
+| 이미지 태그            | `latest`                       |
+| 이미지 Pull 정책       | `IfNotPresent`                 |
+| CPU 요청               | `2`                            |
+| CPU 제한               | `4`                            |
+| 메모리 요청            | `4Gi`                          |
+| 메모리 제한            | `8Gi`                          |
+| Logger 로그 레벨       | `trace`                        |
+| Logger 파일 로그 사용  | `true`                         |
+| Logger 크기            | `1000M`                        |
+| Logger 개수            | `50`                           |
+| 데이터베이스 동기화 사용 | `true`                       |
+
+### Keeper 기본값 \{#keeper-defaults\}
+
+| 설정               | 기본값                         |
+|--------------------|--------------------------------|
+| 레플리카 수        | `3`                            |
+| 이미지 저장소      | `clickhouse/clickhouse-keeper` |
+| 이미지 태그        | `latest`                       |
+| 이미지 Pull 정책   | `IfNotPresent`                 |
+| CPU 요청           | `500m`                         |
+| CPU 제한           | `1`                            |
+| 메모리 요청        | `512Mi`                        |
+| 메모리 제한        | `1Gi`                          |
+| 로거 레벨          | `trace`                        |
+| 로거 파일 기록 여부 | `true`                        |
+| 로거 크기          | `1000M`                        |
+| 로거 개수          | `50`                           |
+
+## 조건 \{#conditions\}
+
+### ClickHouseCluster 조건 \{#clickhousecluster-conditions\}
+
+| Type                      | Description                                                                                             |
+|---------------------------|---------------------------------------------------------------------------------------------------------|
+| `SpecValid`               | ClickHouseCluster CustomResource가 유효성 검사를 통과하는지 여부입니다. 웹훅이 구성되지 않은 배포 환경에서 유용합니다. |
+| `ReconcileSucceeded`      | 마지막 조정 사이클이 성공했는지 여부입니다.                                                             |
+| `ReplicaStartupSucceeded` | ClickHouseCluster의 모든 레플리카를 시작할 수 있는지 여부입니다.                                         |
+| `Healthy`                 | 요청된 모든 레플리카의 준비 상태입니다.                                                                 |
+| `ClusterSizeAligned`      | 클러스터가 요청된 것과 동일한 수의 레플리카와 세그먼트를 보유하는지 여부입니다.                        |
+| `ConfigurationInSync`     | 구성 배포 상태를 나타냅니다.                                                                            |
+| `Ready`                   | ClickHouseCluster가 클라이언트 요청을 처리할 준비가 되었는지 여부입니다. 각 세그먼트마다 최소 하나의 레플리카가 Ready 상태여야 합니다. |
+| `SchemaInSync`            | 스케일링 작업 이후 모든 레플리카가 동일한 데이터베이스 스키마를 가지고 있는지 여부입니다.                |
+
+### KeeperCluster 조건 \{#keepercluster-conditions\}
+
+| Type                      | Description                                                                                                          |
+|---------------------------|----------------------------------------------------------------------------------------------------------------------|
+| `SpecValid`               | KeeperCluster 커스텀 리소스(CustomResource)가 유효성 검사를 통과하는지 여부입니다. 웹훅이 없는 배포 환경에서 유용합니다. |
+| `ReconcileSucceeded`      | 마지막 조정 사이클이 성공했는지 여부입니다.                                                                          |
+| `ReplicaStartupSucceeded` | KeeperCluster의 모든 레플리카가 정상적으로 시작할 수 있는지 여부입니다.                                              |
+| `Healthy`                 | 요청된 모든 레플리카의 준비 상태입니다.                                                                             |
+| `ClusterSizeAligned`      | 클러스터의 레플리카 개수가 요청된 개수와 동일한지 여부입니다.                                                       |
+| `ConfigurationInSync`     | 설정(Configuration) 배포 상태를 나타냅니다.                                                                         |
+| `Ready`                   | KeeperCluster가 클라이언트 요청을 처리할 준비가 되었는지 여부입니다. 리더가 선출된 상태입니다.                      |

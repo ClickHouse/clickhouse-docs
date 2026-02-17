@@ -648,6 +648,24 @@ EXCHANGE TABLES otel_logs AND otel_logs_23_01_2025
 
 </VerticalStepper>
 
+<Image img={select_merge_table} size="lg" alt="Merge テーブルを選択"/>
+
+この時点でも、書き込みは元のプライマリキーを持つ `otel_logs` に対して行われる一方で、読み取りは Merge テーブルを使用します。ユーザーにとって見える変更もなく、インジェストへの影響もありません。
+
+#### テーブルを入れ替える \{#exchange-the-tables\}
+
+`EXCHANGE` ステートメントを使用して、`otel_logs` と `otel_logs_23_01_2025` のテーブル名をアトミックに入れ替えます。
+
+```sql
+EXCHANGE TABLES otel_logs AND otel_logs_23_01_2025
+```
+
+以降の書き込みは、更新されたプライマリキーを持つ新しい `otel_logs` テーブルに対して行われます。既存データは `otel_logs_23_01_2025` に残り、引き続き Merge テーブル経由でアクセス可能です。サフィックスは変更が適用された日付を示し、そのテーブルに含まれる最新のタイムスタンプを表します。
+
+この手順により、インジェストを中断することなく、またユーザーから見える影響なしにプライマリキーを変更できます。
+
+</VerticalStepper>
+
 このプロセスは、プライマリキーに対してさらに変更が必要になった場合にも再利用できます。たとえば、1週間後に、`SeverityText` ではなく `SeverityNumber` をプライマリキーの一部にすることにした場合などです。以下のプロセスは、プライマリキーの変更が必要になるたびに、何度でも繰り返し適用できます。
 
 <VerticalStepper headerLevel="h4">

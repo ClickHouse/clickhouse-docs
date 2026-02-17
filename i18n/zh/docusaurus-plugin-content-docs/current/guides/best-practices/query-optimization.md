@@ -612,6 +612,88 @@ ClickHouse 支持的其他选项，例如 Projection（投影）或物化视图�
 
 目前，我们将遵循以下简单的实践准则： 
 
+使用在大多数查询中过滤时会用到的字段
+
+优先选择基数较低的列 
+
+在主键中考虑时间相关的组件，因为在时间戳数据集中按时间过滤非常常见。 
+
+在我们的示例中，我们将尝试使用以下主键：`passenger_count`、`pickup_datetime` 和 `dropoff_datetime`。 
+
+`passenger_count` 的基数较小（24 个唯一值），并且在我们的慢查询中会被使用。我们还添加时间戳字段（`pickup_datetime` 和 `dropoff_datetime`），因为它们经常用于过滤。
+
+创建一个带有这些主键的新表并重新摄取数据。
+
+CREATE TABLE trips_small_pk
+(
+    `vendor_id` UInt8,
+    `pickup_datetime` DateTime,
+    `dropoff_datetime` DateTime,
+    `passenger_count` UInt8,
+    `trip_distance` Float32,
+    `ratecode_id` LowCardinality(String),
+    `pickup_location_id` UInt16,
+    `dropoff_location_id` UInt16,
+    `payment_type` Nullable(UInt8),
+    `fare_amount` Decimal32(2),
+    `extra` Decimal32(2),
+    `mta_tax` Nullable(Decimal32(2)),
+    `tip_amount` Decimal32(2),
+    `tolls_amount` Decimal32(2),
+    `total_amount` Decimal32(2)
+)
+PRIMARY KEY (passenger_count, pickup_datetime, dropoff_datetime);
+
+-- Insert the data
+INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
+
+然后重新运行查询。我们汇总三次实验的结果，以观察在耗时、处理行数和内存占用方面的改进情况。
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="4">Query 1</th>
+    </tr>
+
+    <tr>
+      <th />
+
+      <th>第 1 次运行</th>
+      <th>第 2 次运行</th>
+      <th>第 3 次运行</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>耗时</td>
+      <td>1.699 秒</td>
+      <td>1.353 秒</td>
+      <td>0.765 秒</td>
+    </tr>
+
+    <tr>
+      <td>处理行数</td>
+      <td>3.2904 亿</td>
+      <td>3.2904 亿</td>
+      <td>3.2904 亿</td>
+    </tr>
+
+    <tr>
+      <td>峰值内存占用</td>
+      <td>440.24 MiB</td>
+      <td>337.12 MiB</td>
+      <td>444.19 MiB</td>
+    </tr>
+  </tbody>
+</table> 
+
+### 选择主键
+
+选择正确的主键集合是一个复杂的话题，可能需要权衡和试验，才能找到最佳组合。 
+
+目前，我们将遵循以下简单的实践准则： 
+
 * 使用在大多数查询中过滤时会用到的字段
 * 优先选择基数较低的列 
 * 在主键中考虑时间相关的组件，因为在时间戳数据集中按时间过滤非常常见。 
