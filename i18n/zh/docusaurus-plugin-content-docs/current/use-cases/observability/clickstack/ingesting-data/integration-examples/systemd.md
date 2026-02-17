@@ -206,10 +206,6 @@ docker compose up -d
 
 </VerticalStepper>
 
-<Image img={log_view} alt="日志视图"/>
-
-</VerticalStepper>
-
 ## 演示数据集 \{#demo-dataset\}
 
 对于希望在配置生产系统之前先测试 systemd 日志集成的用户，我们提供了一份预生成的、带有接近真实日志模式的 systemd 日志演示数据集。
