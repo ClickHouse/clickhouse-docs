@@ -66,8 +66,9 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize) | `1` |
 | [use_statistics](/operations/settings/settings#use_statistics) | `1` |
 | [use_statistics_cache](/operations/settings/settings#use_statistics_cache) | `1` |
-| [enable_full_text_index](/operations/settings/settings#enable_full_text_index) | `0` |
+| [enable_full_text_index](/operations/settings/settings#enable_full_text_index) | `1` |
 | [allow_experimental_delta_kernel_rs](/operations/settings/settings#allow_experimental_delta_kernel_rs) | `1` |
+| [allow_insert_into_iceberg](/operations/settings/settings#allow_insert_into_iceberg) | `0` |
 | [enable_join_runtime_filters](/operations/settings/settings#enable_join_runtime_filters) | `1` |
 
 
@@ -124,7 +125,6 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_experimental_kusto_dialect](/operations/settings/settings#allow_experimental_kusto_dialect) | `0` |
 | [allow_experimental_prql_dialect](/operations/settings/settings#allow_experimental_prql_dialect) | `0` |
 | [enable_adaptive_memory_spill_scheduler](/operations/settings/settings#enable_adaptive_memory_spill_scheduler) | `0` |
-| [allow_experimental_insert_into_iceberg](/operations/settings/settings#allow_experimental_insert_into_iceberg) | `0` |
 | [allow_experimental_iceberg_compaction](/operations/settings/settings#allow_experimental_iceberg_compaction) | `0` |
 | [write_full_path_in_iceberg_metadata](/operations/settings/settings#write_full_path_in_iceberg_metadata) | `0` |
 | [iceberg_metadata_compression_method](/operations/settings/settings#iceberg_metadata_compression_method) | `` |
