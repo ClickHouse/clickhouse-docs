@@ -286,7 +286,7 @@ There are a few reasons why this can happen:
 - While a `dbt run --full-refresh` is executed, if the materialized views use the `catchup=True` default, the target will get recreated and the MVs will reinsert the data sequentially. To avoid this situation, check the [Full refresh with explicit targets](#explicit-target-full-refresh)
 
 #### `dbt run --full-refresh` in a target table with `repopulate_from_mvs_on_full_refresh=True` uses the logic from old materialized view versions, not from the SQL that is currently in the project {#full-refresh-with-repopulate-from-mvs-on-full-refresh}
-`repopulate_from_mvs_on_full_refresh=True` uses the existing MV SQL that's already defined in ClickHouse. To make sure the new MV definition is used, do a `dbt run` for each MV before doing a `dbt run --full-refresh` in the target table.
+`repopulate_from_mvs_on_full_refresh=True` uses the existing MV SQL that's already defined in ClickHouse. To make sure the new materialized view definition is used, do a `dbt run` for each materialized view before doing a `dbt run --full-refresh` in the target table.
 
 #### There's duplicate data after a run is executed {#duplicate-data}
 Possible reasons:
