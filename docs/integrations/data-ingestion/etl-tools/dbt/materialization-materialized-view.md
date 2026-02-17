@@ -401,8 +401,8 @@ select a, b, c from {{ source('raw', 'table_2') }}
 ### Behavior during active ingestion {#behavior-during-active-ingestion}
 
 When iterating your models, you need to be aware of how the different operations interact with the data being inserted:
-- As ClickHouse materialized views act as **insert triggers**, they only capture data while they exist. If a materialized view is dropped and recreated (e.g. during a `--full-refresh`), any rows inserted into the source table during that window will **not** be processed by the MV. This is referred to as the MV being "blind".
-- The different `catchup` processes are all based on `INSERT INTO ... SELECT` operations using the MV's SQL and are independent of how the MVs work. Once the `INSERT` starts, new data is not captured by it, but it will be captured by the attached MVs.
+- As ClickHouse materialized views act as **insert triggers**, they only capture data while they exist. If a materialized view is dropped and recreated (e.g. during a `--full-refresh`), any rows inserted into the source table during that window will **not** be processed by the materialized view. This is referred to as the materialized view being "blind".
+- The different `catchup` processes are all based on `INSERT INTO ... SELECT` operations using the materialized views SQL and are independent of how the materialized views work. Once the `INSERT` starts, new data is not captured by it, but it will be captured by the attached materialized view.
 
 The following table summarizes the safety of each operation when inserts are actively happening on the source table.
 
