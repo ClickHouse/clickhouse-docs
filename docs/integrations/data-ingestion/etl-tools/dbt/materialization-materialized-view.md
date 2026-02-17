@@ -321,10 +321,10 @@ During a dbt run, look for this log message:
 
 >Table `<table_name>` is used as a target by a dbt-managed materialized view. Defaulting mv_on_schema_change to "fail" to prevent data loss.
 
-If this message appears, dbt has detected that the table is targeted by at least one dbt-managed MV. If you expect this message but don't see it, verify that:
-- The MV model defines `{{ materialization_target_table(ref('your_target')) }}` correctly
-- The MV model has `materialized='materialized_view'` in its config
-- Both the MV and the target table have been run at least once
+If this message appears, dbt has detected that the table is targeted by at least one dbt-managed materialized view. If you expect this message but don't see it, verify that:
+- The materialized view model defines `{{ materialization_target_table(ref('your_target')) }}` correctly
+- The materialized view model has `materialized='materialized_view'` in its config
+- Both the materialized view and the target table have been run at least once
 
 ### Migrating from implicit to explicit target {#migration-implicit-to-explicit}
 
