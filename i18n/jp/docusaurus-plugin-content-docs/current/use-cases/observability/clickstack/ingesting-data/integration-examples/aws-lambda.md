@@ -46,7 +46,9 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 <VerticalStepper headerLevel="h4">
   #### 適切なRotel Lambda Extensionレイヤーを選択する
 
-  Lambda ランタイムアーキテクチャに対応する Lambda レイヤーを選択してください。`{version}` フィールドは、デプロイ先の AWS リージョンに依存します。お使いのリージョンに対応する最新のバージョン番号については、[リリース](https://github.com/streamfold/rotel-lambda-extension/releases)ページを確認してください。
+  Choose the Lambda layer that matches your Lambda runtime architecture. The `{version}` field
+  は、デプロイ先の AWS リージョンに依存します。お使いのリージョンに対応する最新のバージョン番号については、[リリース](https://github.com/streamfold/rotel-lambda-extension/releases)
+  page for the latest version numbers that correspond to your region.
 
   | アーキテクチャ      | ARN                                                                          |
   | ------------ | ---------------------------------------------------------------------------- |
@@ -69,7 +71,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   ##### オプション1：AWSコンソール
 
   1. AWS Lambda コンソールを開きます
-  2. 対象の Lambda 関数に移動します
+  2. 目的の Lambda 関数を開きます
   3. **Layers** セクションまでスクロールし、**Add a layer** をクリックします。
   4. ［**ARN を指定**］を選択します
   5. Rotel レイヤーの ARN を入力してください:
@@ -193,7 +195,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   ```
 
   :::note
-  シークレット取得のためのAWS API呼び出しにより、コールドスタート時のレイテンシが100〜150ミリ秒増加します。シークレットはバッチ処理（最大10個）で取得され、初期化時のみ実行されるため、以降の呼び出しには影響しません。
+  シークレット取得のためのAWS API呼び出しにより、コールドスタート時のレイテンシが100〜150ミリ秒増加します。シークレットはバッチ処理(最大10個)で取得され、初期化時のみ実行されるため、以降の呼び出しには影響しません。
   :::
 
   #### 統合をテストする

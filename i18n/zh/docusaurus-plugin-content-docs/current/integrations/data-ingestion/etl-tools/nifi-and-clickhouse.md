@@ -43,17 +43,17 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   ## 下载并运行 Apache NiFi \{#2-download-and-run-apache-nifi\}
 
-  对于全新安装,请从 https://nifi.apache.org/download.html 下载二进制文件,然后运行 `./bin/nifi.sh start` 启动
+  对于全新安装，请从 https://nifi.apache.org/download.html 下载二进制文件，然后运行 `./bin/nifi.sh start` 启动
 
   ## 下载 ClickHouse JDBC 驱动 \{#3-download-the-clickhouse-jdbc-driver\}
 
-  1. 前往 GitHub 上的 <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">ClickHouse JDBC 驱动发布页面</a>，查找最新的 JDBC 发行版。
+  1. 访问 GitHub 上的 <a href="https://github.com/ClickHouse/clickhouse-java/releases" target="_blank">ClickHouse JDBC 驱动发布页面</a>，查找最新发布的 JDBC 版本
   2. 在发布页面中，点击 “Show all xx assets”，然后查找包含关键字 “shaded” 或 “all” 的 JAR 文件，例如 `clickhouse-jdbc-0.5.0-all.jar`
-  3. 将 JAR 文件放置在 Apache NiFi 可访问的文件夹中，并记下其绝对路径
+  3. 将 JAR 文件放在 Apache NiFi 可访问的文件夹中，并记录其绝对路径
 
   ## 添加 `DBCPConnectionPool` Controller Service 并配置其属性 \{#4-add-dbcpconnectionpool-controller-service-and-configure-its-properties\}
 
-  1. 要在 Apache NiFi 中配置 Controller Service，点击“齿轮”按钮打开 NiFi Flow Configuration 页面
+  1. 要在 Apache NiFi 中配置 Controller Service，请点击“齿轮”按钮进入 NiFi Flow Configuration 页面
 
      <Image img={nifi01} size="sm" border alt="高亮显示齿轮按钮的 NiFi Flow Configuration 页面" />
 
@@ -63,27 +63,27 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   3. 搜索 `DBCPConnectionPool` 并点击 “Add” 按钮
 
-     <Image img={nifi03} size="lg" border alt="在 Controller Service 选择对话框中高亮显示 DBCPConnectionPool" />
+     <Image img={nifi03} size="lg" border alt="Controller Service 选择对话框，高亮显示 DBCPConnectionPool" />
 
-  4. 新添加的 `DBCPConnectionPool` 默认处于 Invalid 状态。点击“齿轮”按钮开始配置
+  4. 新添加的 `DBCPConnectionPool` 默认会处于 Invalid 状态。点击“齿轮”按钮开始配置
 
      <Image img={nifi04} size="lg" border alt="Controller Services 列表中显示无效的 DBCPConnectionPool 并高亮显示齿轮按钮" />
 
   5. 在 Properties 部分中，输入以下值
 
-  | Property                    | Value                                                              | Remark                         |
-  | --------------------------- | ------------------------------------------------------------------ | ------------------------------ |
-  | Database Connection URL     | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | 根据实际情况替换连接 URL 中的 HOSTNAME     |
-  | Database Driver Class Name  | com.clickhouse.jdbc.ClickHouseDriver                               |                                |
-  | Database Driver Location(s) | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | ClickHouse JDBC 驱动 JAR 文件的绝对路径 |
-  | Database User               | default                                                            | ClickHouse 用户名                 |
-  | Password                    | password                                                           | ClickHouse 密码                  |
+  | 属性        | 值                                                                  | 备注                             |
+  | --------- | ------------------------------------------------------------------ | ------------------------------ |
+  | 数据库连接 URL | jdbc:ch:https://HOSTNAME:8443/default?ssl=true                     | 根据实际情况替换连接 URL 中的 HOSTNAME     |
+  | 数据库驱动类名   | com.clickhouse.jdbc.ClickHouseDriver                               |                                |
+  | 数据库驱动位置   | /etc/nifi/nifi-X.XX.X/lib/clickhouse-jdbc-0.X.X-patchXX-shaded.jar | ClickHouse JDBC 驱动 JAR 文件的绝对路径 |
+  | 数据库用户     | default                                                            | ClickHouse 用户名                 |
+  | 密码        | password                                                           | ClickHouse 密码                  |
 
   6. 在 Settings 部分，将该 Controller Service 的名称修改为 “ClickHouse JDBC”，以便于识别
 
      <Image img={nifi05} size="lg" border alt="DBCPConnectionPool 配置对话框，展示已填写的属性" />
 
-  7. 点击“闪电”按钮，然后点击 “Enable” 按钮，激活 `DBCPConnectionPool` Controller Service
+  7. 点击“闪电”按钮，然后点击 “Enable” 按钮，以激活 `DBCPConnectionPool` Controller Service
 
      <Image img={nifi06} size="lg" border alt="在 Controller Services 列表中高亮显示闪电按钮" />
 
@@ -91,7 +91,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
      <Image img={nifi07} size="lg" border alt="启用 Controller Service 的确认对话框" />
 
-  8. 检查 Controller Services 选项卡，确认该 Controller Service 已启用
+  8. 检查 Controller Services 选项卡，确保该 Controller Service 已启用
 
      <Image img={nifi08} size="lg" border alt="Controller Services 列表中显示已启用的 ClickHouse JDBC 服务" />
 
@@ -108,7 +108,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      | Database Connection Pooling Service | ClickHouse JDBC              | 选择为 ClickHouse 配置的 Controller Service |
      | SQL select query                    | SELECT * FROM system.metrics | 在此输入查询                                |
 
-  3. 启动 `ExecuteSQL` Processor
+  3. 启动 `ExecuteSQL` 处理器
 
      <Image img={nifi10} size="lg" border alt="ExecuteSQL 处理器配置，展示已填写的属性" />
 
@@ -116,9 +116,9 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
      <Image img={nifi11} size="lg" border alt="List queue 对话框中显示可供检查的 flowfiles" />
 
-  5. 将视图切换为“formatted”，以查看 `FlowFile` 的输出结果
+  5. 将视图切换到 &quot;formatted&quot;，以查看输出 `FlowFile` 的结果
 
-     <Image img={nifi12} size="lg" border alt="FlowFile 内容查看器以格式化视图显示查询结果" />
+     <Image img={nifi12} size="lg" border alt="FlowFile 内容查看器在格式化视图中显示查询结果" />
 
   ## 使用 `MergeRecord` 和 `PutDatabaseRecord` 处理器写入表 \{#6-write-to-a-table-using-mergerecord-and-putdatabaserecord-processor\}
 
@@ -137,11 +137,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
      输入
 
-     <Image img={nifi13} size="sm" border alt="包含单条记录的 MergeRecord 处理器输入" />
+     <Image img={nifi13} size="sm" border alt="展示单条记录的 MergeRecord 处理器输入" />
 
      输出
 
-     <Image img={nifi14} size="sm" border alt="MergeRecord Processor 输出，显示合并后的记录数组" />
+     <Image img={nifi14} size="sm" border alt="MergeRecord 处理器输出，显示合并后的记录数组" />
 
   4. 在 `PutDatabaseRecord` processor 的 Properties 部分中，输入以下值
 
@@ -155,7 +155,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
      | Translate Field Names               | false            | 设置为 &quot;false&quot;，这样插入的字段名必须与列名匹配                                        |
      | Maximum Batch Size                  | 1000             | 每次插入的最大行数。该值不应小于 `MergeRecord` 处理器中 &quot;Minimum Number of Records&quot; 的值 |
 
-  5. 要确认每次插入都包含多行，请检查表中的行数在每次插入后是否至少增加 `MergeRecord` 中定义的 &quot;Minimum Number of Records&quot; 的数值。
+  5. 要确认每次插入都包含多行，请检查表中的行数在每次插入后是否至少增加了 `MergeRecord` 中定义的 &quot;Minimum Number of Records&quot;。
 
      <Image img={nifi15} size="sm" border alt="查询结果显示目标表的行数" />
 

@@ -55,7 +55,7 @@ import TabItem from '@theme/TabItem';
 
       从左侧菜单中选择 `ClickStack`,导航至 ClickStack UI,系统将自动完成身份验证。
 
-      <Image img={hyperdx} alt="ClickStack 用户界面" size="lg" />
+      <Image img={hyperdx} alt="ClickStack UI" size="lg" />
 
       ### 下载示例数据
 
@@ -228,7 +228,7 @@ import TabItem from '@theme/TabItem';
 
       返回到 `Search` 视图,您应该会看到数据已开始加载(如果数据未显示,请将时间范围调整为 `最近 1 小时`):
 
-      <Image img={hyperdx_10} alt="HyperDX 搜索界面" size="lg" />
+      <Image img={hyperdx_10} alt="HyperDX 搜索" size="lg" />
 
       数据加载需要几分钟时间。请等待加载完成后再进行后续步骤。
 
@@ -256,7 +256,7 @@ import TabItem from '@theme/TabItem';
 
       用户无法下单,且未显示明显错误。向下滚动至左侧面板底部,该面板包含来自用户浏览器的网络和控制台事件。您会注意到在调用 `/api/checkout` 时抛出了 500 错误。
 
-      <Image img={hyperdx_13} alt="会话错误" size="lg" />
+      <Image img={hyperdx_13} alt="会话中的错误" size="lg" />
 
       选择此 `500` 错误。`Overview` 和 `Column Values` 均未指出问题的来源,仅表明该错误是意外的,并导致了 `Internal Error`。
 
@@ -264,7 +264,7 @@ import TabItem from '@theme/TabItem';
 
       导航至 `Trace` 选项卡以查看完整的分布式跟踪。
 
-      <Image img={hyperdx_14} alt="会话跟踪" size="lg" />
+      <Image img={hyperdx_14} alt="会话追踪" size="lg" />
 
       向下滚动追踪信息以查看错误的来源 - `checkout` 服务 span。选择 `Payment` 服务 span。
 

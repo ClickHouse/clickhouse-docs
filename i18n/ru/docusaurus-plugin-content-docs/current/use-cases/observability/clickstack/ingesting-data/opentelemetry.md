@@ -22,7 +22,7 @@ import TabItem from '@theme/TabItem';
 ## Отправка данных OpenTelemetry \{#sending-otel-data\}
 
 <Tabs groupId="os-type">
-  <TabItem value="managed-clickstack" label="Управляемый сервис ClickStack" default>
+  <TabItem value="managed-clickstack" label="Управляемый ClickStack" default>
     ### Установка ClickStack OpenTelemetry collector
 
     Чтобы отправлять данные в Managed ClickStack, OTel collector должен быть развернут в роли [gateway](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles). Совместимое с OTel инструментирование будет отправлять события в этот коллектор по OTLP через HTTP или gRPC.
@@ -110,12 +110,12 @@ import TabItem from '@theme/TabItem';
 
     ### Отправка данных в коллектор
 
-    Чтобы отправлять данные в ClickStack, направьте вашу OpenTelemetry-инструментацию на следующие эндпоинты, предоставляемые OpenTelemetry collector:
+    Чтобы отправлять данные в ClickStack, направьте вашу OpenTelemetry-инструментацию на следующие конечные точки, предоставляемые OpenTelemetry collector:
 
     * **HTTP (OTLP):** `http://localhost:4318`
     * **gRPC (OTLP):** `localhost:4317`
 
-    Для [языковых SDKs](/use-cases/observability/clickstack/sdks) и библиотек телеметрии, поддерживающих OpenTelemetry, достаточно задать переменную окружения `OTEL_EXPORTER_OTLP_ENDPOINT` в вашем приложении:
+    Для [языковых SDKs](/use-cases/observability/clickstack/sdks) и библиотек телеметрии, поддерживающих OpenTelemetry, вы можете просто задать переменную окружения `OTEL_EXPORTER_OTLP_ENDPOINT` в вашем приложении:
 
     ```shell
     export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318

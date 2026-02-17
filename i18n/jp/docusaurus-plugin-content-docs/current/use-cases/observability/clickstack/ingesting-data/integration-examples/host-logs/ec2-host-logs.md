@@ -61,10 +61,10 @@ EC2 インスタンスに OpenTelemetry Collector をインストールして、
   EC2インスタンスから、メタデータサービスにアクセス可能であることを確認します:
 
   ```bash
-  # メタデータトークンを取得 (IMDSv2)
+  # Get metadata token (IMDSv2)
   TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 
-  # インスタンスメタデータを検証
+  # Verify instance metadata
   curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id
   curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region
   curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-type
@@ -73,8 +73,8 @@ EC2 インスタンスに OpenTelemetry Collector をインストールして、
   インスタンスID、リージョン、およびインスタンスタイプが表示されるはずです。これらのコマンドが失敗した場合は、以下を確認してください:
 
   * インスタンスメタデータサービスが有効になっている
-  * IMDSv2 がセキュリティグループやネットワーク ACL によってブロックされていないこと
-  * これらのコマンドは EC2 インスタンス上で直接実行します
+  * IMDSv2 がセキュリティグループやネットワークACLによってブロックされていないこと
+  * これらのコマンドを EC2 インスタンス上で直接実行していること
 
   :::note
   EC2メタデータは、インスタンス内から`http://169.254.169.254`で利用できます。OpenTelemetryの`resourcedetection`プロセッサは、このエンドポイントを使用してログにクラウドコンテキストを自動的に付与します。
@@ -85,15 +85,15 @@ EC2 インスタンスに OpenTelemetry Collector をインストールして、
   EC2インスタンスがsyslogファイルを書き込んでいることを確認します:
 
   ```bash
-  # Ubuntuインスタンス
+  # Ubuntu instances
   ls -la /var/log/syslog
 
-  # Amazon Linux / RHELインスタンス
+  # Amazon Linux / RHEL instances
   ls -la /var/log/messages
 
-  # 最近のエントリを表示
+  # View recent entries
   tail -20 /var/log/syslog
-  # または
+  # or
   tail -20 /var/log/messages
   ```
 
@@ -102,14 +102,14 @@ EC2 インスタンスに OpenTelemetry Collector をインストールして、
   EC2インスタンスにOpenTelemetry Collector Contribディストリビューションをインストールします：
 
   ```bash
-  # 最新リリースをダウンロード
+  # Download the latest release
   wget https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.114.0/otelcol-contrib_0.114.0_linux_amd64.tar.gz
 
-  # 展開してインストール
+  # Extract and install
   tar -xvf otelcol-contrib_0.114.0_linux_amd64.tar.gz
   sudo mv otelcol-contrib /usr/local/bin/
 
-  # インストールを確認
+  # Verify installation
   otelcol-contrib --version
   ```
 
@@ -239,14 +239,14 @@ EC2 インスタンスに OpenTelemetry Collector をインストールして、
   **設定内の以下の項目を置き換えてください:**
 
   * `YOUR_CLICKSTACK_HOST`: ClickStack が稼働しているホスト名または IP アドレス
-  * ローカルでのテストには SSH トンネルを使用できます（[トラブルシューティングのセクション](#troubleshooting)を参照してください）
+  * ローカルでテストする場合は SSH トンネルを利用できます（[トラブルシューティングのセクション](#troubleshooting)を参照してください）
 
   この設定:
 
-  * 一般的な場所にあるシステムログファイルを読み取ります（Ubuntu では `/var/log/syslog`、Amazon Linux/RHEL では `/var/log/messages`）
+  * 標準的な場所にあるシステムログファイルを読み取ります（Ubuntu では `/var/log/syslog`、Amazon Linux/RHEL では `/var/log/messages`）
   * syslog 形式を解析し、タイムスタンプ、ホスト名、ユニット/サービス、PID、メッセージといった構造化フィールドを抽出します
-  * `resourcedetection` プロセッサーを使用して **EC2 メタデータを自動的に検出して追加します**
-  * オプションで、存在する場合は EC2 タグ（Name、Environment、Team）も含めます
+  * `resourcedetection` プロセッサーを使用して **EC2 メタデータを自動検出して追加します**
+  * オプションで、存在する EC2 タグ（Name、Environment、Team）も含めます
   * OTLP HTTP 経由で ClickStack にログを送信します
 
   :::note[EC2メタデータエンリッチメント]
@@ -260,6 +260,7 @@ EC2 インスタンスに OpenTelemetry Collector をインストールして、
   * `host.id`: EC2 インスタンスの ID（例: &quot;i-1234567890abcdef0&quot;）
   * `host.type`: インスタンスタイプ（例：「t3.medium」）
   * `host.name`: インスタンスのホスト名
+    :::
 
   #### ClickStack APIキーの設定
 
@@ -272,7 +273,7 @@ EC2 インスタンスに OpenTelemetry Collector をインストールして、
   再起動後も設定を永続化するには、シェルプロファイルに追加してください:
 
   ```bash
-  echo 'export CLICKSTACK_API_KEY="ここにあなたのAPIキーを入力"' >> ~/.bashrc
+  echo 'export CLICKSTACK_API_KEY="your-api-key-here"' >> ~/.bashrc
   source ~/.bashrc
   ```
 
@@ -292,10 +293,10 @@ EC2 インスタンスに OpenTelemetry Collector をインストールして、
 
   コレクターが実行されたら、HyperDXにログインし、EC2メタデータを含むログが流入していることを確認します：
 
-  1. 検索ビューに移動する
+  1. 検索ビューに移動します
   2. ソースを `Logs` に設定します
   3. `source:ec2-host-logs` でフィルタリングします
-  4. ログエントリをクリックして詳細を表示します
+  4. ログエントリをクリックして展開します
   5. リソース属性に EC2 メタデータが含まれていることを確認します:
      * `cloud.provider`
      * `cloud.region`
@@ -485,10 +486,10 @@ ClickStack で EC2 ホストログのモニタリングを始めやすくする�
 **EC2 メタデータサービスへアクセス可能か確認する:**
 
 ```bash
-# メタデータトークンを取得
+# Get metadata token
 TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 
-# メタデータエンドポイントをテストする
+# Test metadata endpoint
 curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id
 ```
 
@@ -501,10 +502,10 @@ curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-da
 **メタデータ関連のエラーがないか、コレクターのログを確認してください。**
 
 ```bash
-# systemdサービスとして実行している場合
+# If running as systemd service
 sudo journalctl -u otelcol-contrib -f | grep -i "ec2\|metadata\|resourcedetection"
 
-# フォアグラウンドで実行している場合は、標準出力を確認
+# If running in foreground, check stdout
 ```
 
 

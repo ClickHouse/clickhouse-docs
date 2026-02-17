@@ -95,7 +95,7 @@ async function bootstrap() {
 bootstrap();
 ```
 
-メインモジュールを変更して、Logger サービスを提供するようにします：
+メインモジュールを変更して Logger サービスを提供するようにしてください：
 
 ```javascript
 import { Logger, Module } from '@nestjs/common';

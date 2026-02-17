@@ -3732,6 +3732,11 @@
       "source": "/docs/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud",
       "destination": "/docs/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud",
       "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/compliance/hipaa-onboarding#deploy-hippa-services",
+      "destination": "/docs/cloud/security/compliance/hipaa-onboarding#deploy-hipaa-services",
+      "permanent": true
     }
   ]
 }

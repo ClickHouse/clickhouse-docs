@@ -49,7 +49,7 @@ ENGINE = AggregatingMergeTree()
 ORDER BY post_id;
 ```
 
-次に、`SimpleAggregateFunction` 型の列を持つマテリアライズドビューを作成します。
+次に、`SimpleAggregateFunction` 型のカラムを持つ materialized view を作成します。
 
 ```sql
 CREATE MATERIALIZED VIEW mv_vote_processor TO vote_aggregates
@@ -65,7 +65,7 @@ SELECT
 FROM raw_votes;
 ```
 
-サンプルデータを挿入する：
+サンプルデータを挿入します：
 
 ```sql
 INSERT INTO raw_votes VALUES
@@ -98,7 +98,9 @@ ORDER BY post_id ASC;
 └─────────┴───────────────┴─────────────────┴─────────────┘
 ```
 
+
 ## 関連項目 \{#see-also\}
+
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`SimpleState combinator`](/sql-reference/aggregate-functions/combinators#-simplestate)
 - [`SimpleAggregateFunction type`](/sql-reference/data-types/simpleaggregatefunction)

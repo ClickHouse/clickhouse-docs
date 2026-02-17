@@ -75,7 +75,7 @@ VPC リソースに対して PrivateLink をセットアップするには、次
   リソースゲートウェイにアタッチするサブネットには、十分な数の IP アドレスが確保されていることが推奨されます。
   各サブネットについて、少なくとも `/26` のサブネットマスクを使用することを推奨します。
 
-  VPC エンドポイント（各 Reverse Private Endpoint）ごとに、AWS はサブネットごとに連続した 16 個の IP アドレスブロック（`/28` サブネットマスク）を要求します。
+  VPC エンドポイント(各 Reverse Private Endpoint)ごとに、AWS はサブネットごとに連続した 16 個の IP アドレスブロック(`/28` サブネットマスク)を要求します。
   この要件を満たしていない場合、Reverse Private Endpoint は失敗状態に遷移します。
   :::
 
@@ -146,7 +146,7 @@ VPC リソースに対して PrivateLink をセットアップするには、次
   不要になった場合は手動で削除する必要があります。
   :::
 
-  [AWS コンソール](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html)を使用するか、ClickPipes アカウント ID `072088201116`（arn:aws:iam::072088201116:root）を指定して次のコマンドを実行することで、Resource-Configuration を Resource-Share に追加できます。
+  [AWS コンソール](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html)を使用するか、ClickPipes アカウント ID `072088201116`(arn:aws:iam::072088201116:root)を指定して次のコマンドを実行することで、Resource-Configuration を Resource-Share に追加できます。
 
   ```bash
   aws ram create-resource-share \
@@ -161,7 +161,7 @@ VPC リソースに対して PrivateLink をセットアップするには、次
 
   * `VPC endpoint type` を `VPC Resource` に設定します。
   * `Resource configuration ID` を、ステップ 2 で作成した Resource-Configuration の ID に設定します。
-  * `Resource share ARN` をステップ 3 で作成した Resource-Share の ARN に設定します。
+  * `Resource share ARN` を、ステップ 3 で作成した Resource-Share の ARN に設定します。
 
   VPC リソースと組み合わせた PrivateLink の詳細については、[AWS ドキュメント](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html)を参照してください。
 </VerticalStepper>

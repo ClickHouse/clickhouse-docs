@@ -58,7 +58,6 @@ SYSTEM SYNC REPLICA table
 在上文中，我们强调了在使用 ReplacingMergeTree 时必须满足的一个重要附加约束：`ORDER BY` 中各列的取值在发生变更时必须能够在全局范围内唯一标识一行。如果是从 Postgres 这类事务型数据库迁移，那么原始的 Postgres 主键应当被包含在 ClickHouse 的 `ORDER BY` 子句中。
 
 熟悉 ClickHouse 的用户已经习惯于为其表的 `ORDER BY` 子句选择列，以[优化查询性能](/data-modeling/schema-design#choosing-an-ordering-key)。一般来说，这些列应当根据[常用查询选择，并按基数从低到高的顺序列出](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales)。需要特别注意的是，ReplacingMergeTree 引入了一个额外约束——这些列必须是不可变的。也就是说，如果是从 Postgres 进行复制，只有当某列在底层 Postgres 数据中不会发生变化时，才应将其加入该子句。虽然其他列可以变化，但用于唯一行标识的这些列必须保持一致。
-
 对于分析型工作负载而言，Postgres 主键通常用途不大，因为你很少会执行单行点查。鉴于我们推荐按基数递增的顺序对列进行排序，以及[ORDER BY 中靠前的列通常能更快完成匹配和过滤](/guides/best-practices/sparse-primary-indexes#ordering-key-columns-efficiently)这一事实，Postgres 主键应当追加在 `ORDER BY` 的末尾（除非它本身具有分析价值）。如果在 Postgres 中主键由多个列组成，则应按其基数及其对查询价值的可能性，将这些列依次追加到 `ORDER BY` 中。你也可以选择通过 `MATERIALIZED` 列，将多个取值连接起来生成一个唯一主键。
 
 来看 Stack Overflow 数据集中的 posts 表。
@@ -260,7 +259,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 0 rows in set. Elapsed: 182.895 sec. Processed 59.82 million rows, 38.07 GB (327.07 thousand rows/s., 208.17 MB/s.)
 ```
 
-为了确保 `FINAL` 确实需要做一些工作，我们更新 100 万行数据——通过插入重复行来增加它们的 `AnswerCount` 值。
+为了确保 `FINAL` 确实需要做一些实际工作，我们更新 100 万行数据——通过插入重复行来将它们的 `AnswerCount` 增加 1。
 
 ```sql
 INSERT INTO posts_no_part SELECT Version + 1 AS Version, Deleted, Id, PostTypeId, AcceptedAnswerId, CreationDate, Score, ViewCount, Body, OwnerUserId, OwnerDisplayName, LastEditorUserId, LastEditorDisplayName, LastEditDate, LastActivityDate, Title, Tags, AnswerCount + 1 AS AnswerCount, CommentCount, FavoriteCount, ContentLicense, ParentId, CommunityOwnedDate, ClosedDate

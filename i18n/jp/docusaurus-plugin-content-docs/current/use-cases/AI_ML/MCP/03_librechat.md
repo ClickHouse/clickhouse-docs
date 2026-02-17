@@ -26,7 +26,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
   LibreChat と MCP サーバーを実行するには Docker が必要です。Docker を入手するには:
 
   1. [docker.com](https://www.docker.com/products/docker-desktop) にアクセスしてください
-  2. お使いの OS 向けの Docker Desktop をダウンロードする
+  2. お使いの OS 向けの Docker Desktop をダウンロードしてください
   3. お使いのオペレーティングシステム向けの手順に従って、Docker をインストールしてください
   4. Docker Desktop を起動し、実行中であることを確認します
 
@@ -68,7 +68,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
 
   :::note ローカル LLM の使用
   API キーをお持ちでない場合は、Ollama のようなローカル LLM を使用できます。これについては、
-  後の手順 [&quot;Ollama のインストール&quot;](#add-local-llm-using-ollama) で説明します。今のところ
+  後の手順 [&quot;Ollama をインストールする&quot;](#add-local-llm-using-ollama) で説明します。今のところ
   .env ファイルは変更せず、次の手順に進んでください。
   :::
 
@@ -122,8 +122,8 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
       badgeText=""
       description="
 まだ Cloud アカウントをお持ちでない場合は、今すぐ ClickHouse Cloud を使い始めて
-300 ドル分のクレジットを獲得できます。30 日間の無料トライアル終了後は、
-従量課金プランを継続するか、ボリュームベースの割引についてお問い合わせください。
+300 ドル分のクレジットを受け取ることができます。30 日間の無料トライアル終了後は、
+従量課金プランを継続するか、利用量に応じた割引についてお問い合わせください。
 詳細は料金ページをご覧ください。
 "
       icon="cloud"

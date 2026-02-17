@@ -1,0 +1,33 @@
+---
+title: 쿼리 실행 시간 제한 설정
+description: "최대 쿼리 실행 시간을 제한하는 방법"
+date: 2022-07-10
+tags: ['Cloud 관리', '설정']
+---
+
+{frontMatter.description}
+
+{/* 이하 생략 */}
+
+## 질문 \{#question\}
+
+쿼리 실행 시간 제한을 어떻게 설정합니까?
+
+## 답변 \{#answer\}
+
+[`max_execution_time`](/docs/operations/settings/settings#max_execution_time) 설정(초 단위로 지정)을 사용할 수 있습니다.
+
+```sql
+clickhouse-cloud :) SELECT 1 SETTINGS max_execution_time=0.0001
+
+SELECT 1
+SETTINGS max_execution_time = 0.0001
+
+Query id: 3db752a7-b94f-4456-b3b9-ccbf290d1394
+
+
+0 rows in set. Elapsed: 0.113 sec.
+
+Received exception from server (version 23.5.1):
+Code: 159. DB::Exception: Received from service.aws.clickhouse.cloud:9440. DB::Exception: Timeout exceeded: elapsed 0.000557862 seconds, maximum: 0.0001. (TIMEOUT_EXCEEDED)
+```

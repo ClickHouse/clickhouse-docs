@@ -212,6 +212,7 @@ curl -X POST http://localhost:4318/v1/traces \
 
 这是一个已知问题，只会在通过 curl 使用演示方案时出现，不会影响已完成埋点的生产环境应用程序。
 
+
 ### 在 HyperDX 中未看到任何 Trace 数据 \{#no-traces\}
 
 **检查环境变量是否已设置：**

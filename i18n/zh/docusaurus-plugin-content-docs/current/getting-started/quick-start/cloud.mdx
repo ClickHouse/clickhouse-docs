@@ -29,10 +29,10 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 <VerticalStepper type="numbered">
   ## 创建 ClickHouse 服务 \{#1-create-a-clickhouse-service\}
 
-  要在 [ClickHouse Cloud](https://console.clickhouse.cloud) 中创建免费的 ClickHouse 服务，只需按照以下步骤完成注册：
+  要在 [ClickHouse Cloud](https://console.clickhouse.cloud) 中创建免费的 ClickHouse 服务,只需按照以下步骤完成注册:
 
   * 在[注册页面](https://console.clickhouse.cloud/signUp)上创建账户
-  * 你可以选择使用邮箱注册，或通过 Google SSO、Microsoft SSO、AWS Marketplace、Google Cloud 或 Microsoft Azure 注册
+  * 你可以选择使用邮箱注册，或者通过 Google SSO、Microsoft SSO、AWS Marketplace、Google Cloud 或 Microsoft Azure 注册
   * 如果你使用邮箱和密码注册，请记得在接下来的 24 小时内，通过邮件中提供的链接验证你的邮箱地址
   * 使用刚刚创建的用户名和密码登录
 
@@ -40,7 +40,7 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  登录后,ClickHouse Cloud 会启动引导向导,引导您完成新 ClickHouse 服务的创建。请选择部署服务的区域,并为新服务指定名称:
+  登录后，ClickHouse Cloud 会启动入门向导，带您完成新 ClickHouse 服务的创建。请选择要部署服务的区域，并为新服务命名：
 
   <Image img={createservice1} size="md" alt="新建 ClickHouse 服务" border />
 
@@ -48,26 +48,26 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
   默认情况下,新组织将采用 Scale 层级,并创建 3 个^^副本^^,每个副本配置 4 个 vCPU 和 16 GiB 内存。Scale 层级默认启用[垂直自动扩展](/manage/scaling#vertical-auto-scaling)。您可以稍后在&quot;Plans&quot;页面更改组织层级。
 
-  如有需要,可通过指定副本扩缩容的最小和最大数量来自定义服务资源。准备就绪后,选择 `Create service`。
+  如有需要，可通过指定副本的最小和最大数量来自定义服务资源以进行扩缩容。准备就绪后，选择 `Create service`。
 
   <Image img={scaling_limits} size="md" alt="扩缩容限制" border />
 
   <br />
 
-  恭喜!您的 ClickHouse Cloud 服务已启动并运行,初始配置已完成。请继续阅读,了解如何开始摄取和查询数据。
+  恭喜！您的 ClickHouse Cloud 服务已启动并运行，初始配置已完成。请继续阅读，了解如何开始摄取并查询您的数据。
 
   ## 连接到 ClickHouse \{#2-connect-to-clickhouse\}
 
-  连接到 ClickHouse 有两种方式：
+  连接 ClickHouse 有两种方式：
 
   * 通过我们的基于 Web 的 SQL 控制台进行连接
-  * 连接您的应用
+  * 使用您的应用程序连接
 
   <br />
 
   ### 使用 SQL 控制台连接 \{#connect-using-sql-console\}
 
-  为便于快速上手,ClickHouse 提供了基于 Web 的 SQL 控制台,完成初始配置后将自动跳转至该控制台。
+  为便于快速上手,ClickHouse 提供了基于 Web 的 SQL 控制台,完成初始配置后系统会将您自动重定向到该控制台。
 
   <Image img={createservice8} size="md" alt="SQL 控制台" border />
 
@@ -77,7 +77,7 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
   SHOW databases
   ```
 
-  您应该在列表中看到 4 个数据库,以及您可能添加的其他数据库。
+  您应该在列表中看到 4 个数据库，以及您可能添加的任何数据库。
 
   <Image img={show_databases} size="md" alt="SQL 控制台" border />
 
@@ -89,7 +89,7 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
   从导航菜单中点击连接按钮。将弹出一个对话框，显示您的服务凭据，并提供使用界面或语言客户端进行连接的操作说明。
 
-  <Image img={service_connect} size="md" alt="服务连接界面" border />
+  <Image img={service_connect} size="md" alt="服务连接" border />
 
   <br />
 
@@ -97,7 +97,7 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
   ## 添加数据 \{#3-add-data\}
 
-  ClickHouse 需要数据才能发挥最佳性能!添加数据有多种方式,大部分可通过导航菜单中的数据源页面访问。
+  ClickHouse 需要数据才能发挥最佳性能！添加数据有多种方式，大部分可通过导航菜单中的“数据源”页面访问。
 
   <Image img={data_sources} size="md" alt="数据源" border />
 
@@ -105,15 +105,15 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
   您可以使用以下方法上传数据：
 
-  * 设置 ClickPipe，以开始从 S3、Postgres、Kafka、GCS 等数据源摄取数据
+  * 设置 ClickPipe，以从 S3、Postgres、Kafka、GCS 等数据源开始摄取数据
   * 使用 SQL 控制台
   * 使用 ClickHouse 客户端
-  * 上传文件 - 接受的格式包括 JSON、CSV 和 TSV
-  * 从文件 URL 上传数据
+  * 上传文件 - 支持的格式包括 JSON、CSV 和 TSV
+  * 通过文件 URL 上传数据
 
   ### ClickPipes \{#clickpipes\}
 
-  [ClickPipes](http://clickhouse.com/docs/integrations/clickpipes) 是一个托管集成平台,只需点击几下即可轻松完成从各种数据源摄取数据。ClickPipes 专为最苛刻的工作负载而设计,其强大且可扩展的架构确保了一致的性能和可靠性。ClickPipes 既可用于长期流式传输需求,也可用于一次性数据加载作业。
+  [ClickPipes](http://clickhouse.com/docs/integrations/clickpipes) 是一个托管的集成平台，只需点击几下即可轻松从多种来源摄取数据。ClickPipes 专为最苛刻的工作负载而设计，其强大且可扩展的架构确保了持续的性能和可靠性。ClickPipes 可用于长期的流式处理需求或一次性的数据加载任务。
 
   <Image img={select_data_source} size="md" alt="选择数据源" border />
 
@@ -144,8 +144,8 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
   在上述示例中，`my_first_table` 是一个 [`MergeTree`](../../engines/table-engines/mergetree-family/mergetree.md) 表，包含四列：
 
   * `user_id`:  32 位无符号整数（[UInt32](../../sql-reference/data-types/int-uint.md)）
-  * `message`：一种 [String](../../sql-reference/data-types/string.md) 类型，用于替代其他数据库系统中的 `VARCHAR`、`BLOB`、`CLOB` 等数据类型
-  * `timestamp`：一个 [DateTime](../../sql-reference/data-types/datetime.md) 值，表示某一时间点
+  * `message`：一种 [String](../../sql-reference/data-types/string.md) 数据类型，用于替代其他数据库系统中的 `VARCHAR`、`BLOB`、`CLOB` 等数据类型
+  * `timestamp`：一个 [DateTime](../../sql-reference/data-types/datetime.md) 值，表示某个具体时间点
   * `metric`：32 位浮点数（[Float32](../../sql-reference/data-types/float.md)）
 
   :::note 表引擎
@@ -157,23 +157,23 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  有多种表引擎可供选择,但对于单节点 ClickHouse 服务器上的简单表,建议使用 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md)。
+  有多种表引擎可供选择，但对于单节点 ClickHouse 服务器上的简单表，建议使用 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md)。
   :::
 
   #### 主键简介 \{#a-brief-intro-to-primary-keys\}
 
   在继续操作之前,务必了解 ClickHouse 中主键的工作原理(主键的实现方式可能会出乎意料!):
 
-  * 在 ClickHouse 中，表中每一行的主&#x952E;***并非唯一***
+  * 在 ClickHouse 中，表中每一行的主&#x952E;***不是唯一的***
 
-  ClickHouse 表的^^主键^^决定了数据写入磁盘时的排序方式。每 8,192 行或 10MB 的数据(称为**索引粒度**)会在^^主键^^索引文件中创建一个条目。这种粒度概念创建了一个可以轻松载入内存的**^^稀疏索引^^**,而颗粒(granule)代表了在 `SELECT` 查询期间处理的最小列数据单元。
+  ClickHouse 表的^^主键^^决定了数据写入磁盘时的排序方式。每 8,192 行或 10MB 的数据（称为 **索引粒度**）都会在^^主键^^索引文件中创建一个条目。这种粒度设计形成了一个可以轻松放入内存的 **^^稀疏索引^^**，而 granule 则表示在 `SELECT` 查询期间会被处理的最小列数据条带。
 
-  ^^主键^^可以使用 `PRIMARY KEY` 参数定义。如果在定义表时未指定 `PRIMARY KEY`,
-  则主键将默认为 `ORDER BY` 子句中指定的元组。如果同时指定了 `PRIMARY KEY` 和 `ORDER BY`,则^^主键^^必须是排序键的子集。
+  ^^主键^^可以使用 `PRIMARY KEY` 参数定义。如果在定义表时未指定 `PRIMARY KEY`，
+  则该键为 `ORDER BY` 子句中指定的元组。如果同时指定了 `PRIMARY KEY` 和 `ORDER BY`，则 ^^主键^^ 必须是排序键的子集。
 
-  ^^主键^^同时也是^^排序键^^,是一个 `(user_id, timestamp)` 元组。因此,每个列文件中存储的数据将先按 `user_id` 排序,再按 `timestamp` 排序。
+  ^^主键^^同时也是^^排序键^^，为 `(user_id, timestamp)` 这一元组。因此，每个列文件中存储的数据会先按 `user_id`，再按 `timestamp` 排序。
 
-  如需深入了解 ClickHouse 核心概念，请参阅[&quot;核心概念&quot;](../../managing-data/core-concepts/index.md)。
+  如需深入了解 ClickHouse 的核心概念，请参阅[“核心概念”](../../managing-data/core-concepts/index.md)。
 
   #### 向表中插入数据 \{#insert-data-into-your-table\}
 
@@ -185,7 +185,7 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  即使是简单示例,也可以一次插入多行数据:
+  即使是这个简单示例，我们也一次插入多行数据：
 
   ```sql
   INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALUES
@@ -207,9 +207,9 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
   ### 使用 ClickHouse 客户端添加数据 \{#add-data-using-the-clickhouse-client\}
 
-  您还可以使用名为 [**clickhouse client**](/interfaces/cli) 的命令行工具连接到 ClickHouse Cloud 服务。点击左侧菜单中的 `Connect` 访问相关详细信息。在弹出的对话框中,从下拉菜单选择 `Native`:
+  您还可以使用名为 [**clickhouse client**](/interfaces/cli) 的命令行工具连接到 ClickHouse Cloud 服务。点击左侧菜单中的 `Connect` 以查看这些详细信息。在弹出的对话框中从下拉菜单选择 `Native`：
 
-  <Image img={client_details} size="md" alt="ClickHouse 客户端连接详情" border />
+  <Image img={client_details} size="md" alt="ClickHouse 客户端连接详细信息" border />
 
   <br />
 
@@ -264,7 +264,7 @@ import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
   FORMAT TabSeparated
   ```
 
-  在上述查询中,输出结果以制表符分隔的形式返回:
+  在上述查询中，输出结果以制表符分隔的格式返回：
 
   ```response
   Query id: 3604df1c-acfd-4117-9c56-f86c69721121

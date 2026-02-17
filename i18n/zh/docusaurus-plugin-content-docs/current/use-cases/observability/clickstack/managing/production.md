@@ -161,7 +161,7 @@ import TabItem from '@theme/TabItem';
 
     #### 创建摄取用户 \{#create-a-database-ingestion-user-oss\}
 
-    建议为 OTel collector 创建专用用户以便将数据摄取到 ClickHouse,并确保摄取的数据发送到特定数据库,例如 `otel`。有关更多详细信息,请参阅[&quot;创建摄取用户&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)。
+    建议为 OTel collector 创建专用用户以便将数据摄取到 ClickHouse，并确保将摄取的数据发送到特定的数据库，例如 `otel`。有关更多详细信息，请参阅[&quot;创建摄取用户&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)。
 
     ### ClickHouse \{#clickhouse\}
 
@@ -173,16 +173,16 @@ import TabItem from '@theme/TabItem';
 
     ClickHouse OSS 开箱即用提供了强大的安全功能。但是,这些功能需要配置:
 
-    * **使用 TLS**，通过在 `config.xml` 中配置 `tcp_port_secure` 和 `<openSSL>` 实现。参见 [guides/sre/configuring-tls](/guides/sre/tls/configuring-tls)。
-    * 为 `default` USER **设置强密码**，或者将其禁用。
-    * **避免将 ClickHouse 对外暴露**，除非是出于明确目的。默认情况下，除非修改 `listen_host`，ClickHouse 只绑定到 `localhost`。
+    * **使用 TLS**，在 `config.xml` 中通过配置 `tcp_port_secure` 和 `<openSSL>` 实现。参见 [guides/sre/configuring-tls](/guides/sre/tls/configuring-tls)。
+    * 为 `default` 用户 **设置强密码**，或者将其禁用。
+    * **避免将 ClickHouse 对外暴露**，除非明确需要这样做。默认情况下，除非修改 `listen_host`，ClickHouse 只绑定到 `localhost`。
     * **使用身份验证方式**，例如密码、证书、SSH 密钥或[外部身份验证器](/operations/external-authenticators)。
-    * 使用 IP 过滤和 `HOST` 子句来**限制访问**。参见 [sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host)。
+    * **限制访问**，使用 IP 过滤和 `HOST` 子句。参见 [sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host)。
     * **启用基于角色的访问控制（RBAC）** 以授予更细粒度的访问权限。请参阅 [operations/access-rights](/operations/access-rights)。
-    * **通过使用 [quotas](/operations/quotas)、[settings profiles](/operations/settings/settings-profiles) 和只读模式来实施配额和限制。**
+    * **使用 [quotas](/operations/quotas)、[settings profiles](/operations/settings/settings-profiles) 和只读模式强制执行配额和限制。**
     * **对静态数据进行加密**，并使用安全的外部存储。请参阅 [operations/storing-data](/operations/storing-data) 和 [cloud/security/CMEK](/cloud/security/cmek)。
-    * **避免硬编码凭证。** 请在 ClickHouse Cloud 中使用 [命名集合](/operations/named-collections) 或 IAM 角色。
-    * 使用[系统日志](/operations/system-tables/query_log)和[会话日志](/operations/system-tables/session_log)审计访问和查询。
+    * **避免硬编码凭证。** 在 ClickHouse Cloud 中使用 [命名集合](/operations/named-collections) 或 IAM 角色。
+    * **使用[系统日志](/operations/system-tables/query_log)和[会话日志](/operations/system-tables/session_log)对访问和查询进行审计。**
 
     另请参阅[外部身份验证器](/operations/external-authenticators)和[查询复杂度设置](/operations/settings/query-complexity),用于管理用户并确保查询/资源限制。
 
@@ -190,12 +190,12 @@ import TabItem from '@theme/TabItem';
 
     ClickStack UI 使用的 ClickHouse 用户只需设置为 `readonly` 用户,并授予修改以下设置的权限:
 
-    * `max_rows_to_read`（至少设置为 100 万）
+    * `max_rows_to_read`（至少允许到 100 万行）
     * `read_overflow_mode`
     * `cancel_http_readonly_queries_on_client_close`
     * `wait_end_of_query`
 
-    默认情况下,OSS 和 ClickHouse Cloud 中的 `default` 用户都拥有这些权限,但建议创建一个具有这些权限的新用户。
+    默认情况下，OSS 和 ClickHouse Cloud 中的 `default` 用户会拥有这些权限，但建议创建一个具有这些权限的新用户。
 
     ### 配置生存时间 (TTL) \{#configure-ttl\}
 

@@ -1,29 +1,30 @@
 ---
-sidebar_label: 'イントロダクション'
-description: 'SQL を書き換えることなく、PostgreSQL から直接 ClickHouse に対して分析クエリを実行できます'
+sidebar_label: 'はじめに'
+description: 'SQL を書き換えることなく、PostgreSQL から直接 ClickHouse 上で分析クエリを実行できます'
 slug: '/integrations/pg_clickhouse'
 title: 'pg_clickhouse リファレンスドキュメント'
 doc_type: 'landing-page'
-keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', '拡張機能']
+keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension']
 ---
 
 # pg_clickhouse \{#pg_clickhouse\}
 
 ## はじめに \{#introduction\}
 
-[pg_clickhouse] はオープンソースの PostgreSQL 拡張機能であり、SQL を書き換えることなく、
-PostgreSQL から直接 ClickHouse 上で分析クエリを実行できます。PostgreSQL 13 以降および
-ClickHouse v23 以降をサポートしています。
+[pg_clickhouse] はオープンソースの PostgreSQL 拡張機能で、SQL を書き換えることなく、
+PostgreSQL から直接 ClickHouse 上で分析クエリを実行できます。PostgreSQL 13 以降と
+ClickHouse v23 以降をサポートします。
 
-[ClickPipes](/integrations/clickpipes) が ClickHouse へのデータ同期を開始したら、
-pg_clickhouse を使って PostgreSQL スキーマに対して [import foreign tables] を素早く簡単に
-実行できます。あとは既存の PostgreSQL クエリをそれらのテーブルに対して実行するだけで、
-実行を ClickHouse 側へ委譲しつつ、既存のコードベースをそのまま維持できます。
+[ClickPipes](/integrations/clickpipes) が ClickHouse へのデータの同期を開始したら、
+pg_clickhouse を使って PostgreSQL スキーマに [import foreign tables] を
+迅速かつ簡単にインポートします。既存の PostgreSQL クエリをそのテーブルに対して
+そのまま実行することで、処理を ClickHouse に委譲しつつ、既存のコードベースを
+維持できます。
 
 ## はじめに \{#getting-started\}
 
-pg&#95;clickhouse を試す最も簡単な方法は [Docker image] を使うことです。
-このイメージは、標準的な PostgreSQL の Docker イメージに pg&#95;clickhouse 拡張機能を追加したものです。
+pg&#95;clickhouse を試す最も簡単な方法は、[Docker image] を利用することです。
+これは、標準の PostgreSQL Docker image に pg&#95;clickhouse 拡張機能を組み込んだものです。
 
 ```sh
 docker run --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
@@ -31,51 +32,56 @@ docker run --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
 docker exec -it pg_clickhouse psql -U postgres -c 'CREATE EXTENSION pg_clickhouse'
 ```
 
-ClickHouse テーブルのインポートやクエリのプッシュダウンを始めるには、[tutorial] を参照してください。
+ClickHouse テーブルのインポートおよびクエリのプッシュダウンを開始するには、[チュートリアル] を参照してください。
 
 
 ## テストケース: TPC-H \{#test-case-tpc-h\}
 
-この表は、スケールファクター 1 でロードした通常の PostgreSQL テーブルと、ClickHouse に接続した pg_clickhouse 間の [TPC-H] クエリ性能を比較したものです。✔︎ は完全なプッシュダウンを示し、ダッシュはクエリを 1 分後にキャンセルしたことを示します。すべてのテストは、メモリ 36 GB を搭載した MacBook Pro M4 Max 上で実行しました。
+この表は、スケーリングファクター 1 でデータをロードした通常の PostgreSQL
+テーブルと ClickHouse に接続された pg&#95;clickhouse 間での [TPC-H] クエリ
+パフォーマンスを比較したものです。✔︎ は完全なプッシュダウンを示し、ダッシュは 1 分経過後に
+クエリがキャンセルされたことを示します。すべてのテストは、メモリ 36 GB 搭載の MacBook Pro M4 Max 上で実行しました。
 
-<!-- cd dev/tpch && make ch && make pg && make run -->
+{/* cd dev/tpch && make ch && make pg && make run */ }
 
-|    Query   | PostgreSQL | pg_clickhouse | プッシュダウン |
-| ----------:| ----------:| -------------:|:--------------:|
-|  [Query 1] |    4693 ms |        268 ms |       ✔︎        |
-|  [Query 2] |     458 ms |       3446 ms |                |
-|  [Query 3] |     742 ms |        111 ms |       ✔︎        |
-|  [Query 4] |     270 ms |        130 ms |       ✔︎        |
-|  [Query 5] |     337 ms |       1460 ms |       ✔︎        |
-|  [Query 6] |     764 ms |         53 ms |       ✔︎        |
-|  [Query 7] |     619 ms |         96 ms |       ✔︎        |
-|  [Query 8] |     342 ms |        156 ms |       ✔︎        |
-|  [Query 9] |    3094 ms |        298 ms |       ✔︎        |
-| [Query 10] |     581 ms |        197 ms |       ✔︎        |
-| [Query 11] |     212 ms |         24 ms |       ✔︎        |
-| [Query 12] |    1116 ms |         84 ms |       ✔︎        |
-| [Query 13] |     958 ms |       1368 ms |                |
-| [Query 14] |     181 ms |         73 ms |       ✔︎        |
-| [Query 15] |    1118 ms |        557 ms |                |
-| [Query 16] |     497 ms |       1714 ms |                |
-| [Query 17] |    1846 ms |      32709 ms |                |
-| [Query 18] |    5823 ms |      10649 ms |                |
-| [Query 19] |      53 ms |        206 ms |       ✔︎        |
-| [Query 20] |     421 ms |             - |                |
-| [Query 21] |    1349 ms |       4434 ms |                |
-| [Query 22] |     258 ms |       1415 ms |                |
+|      クエリ | PostgreSQL | pg&#95;clickhouse | プッシュダウン |
+| -------: | ---------: | ----------------: | :-----: |
+|  [クエリ 1] |    4693 ms |            268 ms |    ✔︎   |
+|  [クエリ 2] |     458 ms |           3446 ms |         |
+|  [クエリ 3] |     742 ms |            111 ms |    ✔︎   |
+|  [クエリ 4] |     270 ms |            130 ms |    ✔︎   |
+|  [クエリ 5] |     337 ms |           1460 ms |    ✔︎   |
+|  [クエリ 6] |     764 ms |             53 ms |    ✔︎   |
+|  [クエリ 7] |     619 ms |             96 ms |    ✔︎   |
+|  [クエリ 8] |     342 ms |            156 ms |    ✔︎   |
+|  [クエリ 9] |    3094 ms |            298 ms |    ✔︎   |
+| [クエリ 10] |     581 ms |            197 ms |    ✔︎   |
+| [クエリ 11] |     212 ms |             24 ms |    ✔︎   |
+| [クエリ 12] |    1116 ms |             84 ms |    ✔︎   |
+| [クエリ 13] |     958 ms |           1368 ms |         |
+| [クエリ 14] |     181 ms |             73 ms |    ✔︎   |
+| [クエリ 15] |    1118 ms |            557 ms |         |
+| [クエリ 16] |     497 ms |           1714 ms |         |
+| [クエリ 17] |    1846 ms |          32709 ms |         |
+| [クエリ 18] |    5823 ms |          10649 ms |         |
+| [クエリ 19] |      53 ms |            206 ms |    ✔︎   |
+| [クエリ 20] |     421 ms |                 - |         |
+| [クエリ 21] |    1349 ms |           4434 ms |         |
+| [クエリ 22] |     258 ms |           1415 ms |         |
 
-### ソースからビルドする \{#compile-from-source\}
+
+### ソースコードからコンパイル \{#compile-from-source\}
 
 #### 一般的な Unix \{#general-unix\}
 
-PostgreSQL と curl の開発用パッケージにはパス内に `pg_config` と
-`curl-config` が含まれているため、そのまま `make`（または
-`gmake`）を実行し、続けて `make install` を実行し、最後にデータベース上で `CREATE EXTENSION pg_clickhouse` を実行すれば十分です。
+PostgreSQL と curl の開発用パッケージには `pg_config` と
+`curl-config` が PATH に含まれているため、そのまま `make`（または
+`gmake`）を実行し、続けて `make install` を実行し、最後にデータベース内で
+`CREATE EXTENSION pg_clickhouse` を実行できるはずです。
 
 #### Debian / Ubuntu / APT \{#debian--ubuntu--apt\}
 
-PostgreSQL Apt リポジトリからパッケージを取得する方法の詳細については、[PostgreSQL Apt] を参照してください。
+PostgreSQL Apt リポジトリからパッケージを取得する手順の詳細については、[PostgreSQL Apt] を参照してください。
 
 ```sh
 sudo apt install \
@@ -102,29 +108,29 @@ sudo yum install \
   gcc
 ```
 
-PostgreSQL Yum リポジトリから取得する方法の詳細については、[PostgreSQL Yum] を参照してください。
+PostgreSQL Yum リポジトリからパッケージを取得する方法の詳細は、[PostgreSQL Yum] を参照してください。
 
 
 #### PGXN からインストール \{#install-from-pgxn\}
 
-上記の依存関係を満たしたら、[PGXN client]（[Homebrew]、[Apt]、および `pgxnclient` という名前の Yum パッケージとして利用可能）を使用して `pg_clickhouse` をダウンロード、コンパイル、インストールします。
+上記の依存関係が満たされたら、[PGXN client]（[Homebrew]、[Apt]、および `pgxnclient` という名前の Yum パッケージとして利用可能）を使用して、`pg_clickhouse` をダウンロード、コンパイル、インストールします。
 
 ```sh
 pgxn install pg_clickhouse
 ```
 
 
-#### コンパイルとインストール \{#compile-and-install\}
+#### コンパイルおよびインストール \{#compile-and-install\}
 
-ClickHouse ライブラリと `pg_clickhouse` をビルドしてインストールするには、次のコマンドを実行します。
+ClickHouse ライブラリと `pg_clickhouse` をビルドしてインストールするには、以下を実行します。
 
 ```sh
 make
 sudo make install
 ```
 
-{/* XXX DSO は現在無効化されています。
-  デフォルトでは、`make` は `clickhouse-cpp` ライブラリを動的リンクします（動的な `clickhouse-cpp` ライブラリがまだサポートされていない macOS を除く）。ClickHouse ライブラリを `pg_clickhouse` に静的リンクするには、
+{/* XXX DSO は現在無効になっています。
+  デフォルトでは、`make` は（動的な `clickhouse-cpp` ライブラリがまだサポートされていない macOS を除き）`clickhouse-cpp` ライブラリを動的にリンクします。ClickHouse ライブラリを `pg_clickhouse` に静的リンクで組み込んでコンパイルするには、
   `CH_BUILD=static` を指定します:
 
   ```sh
@@ -133,7 +139,7 @@ sudo make install
   ```
   */ }
 
-ホストに複数の PostgreSQL がインストールされている場合は、適切なバージョンの `pg_config` を明示的に指定する必要があります。
+ホストに複数の PostgreSQL インストールがある場合、適切なバージョンの `pg_config` を指定する必要がある場合があります。
 
 ```sh
 export PG_CONFIG=/usr/lib/postgresql/18/bin/pg_config
@@ -141,7 +147,7 @@ make
 sudo make install
 ```
 
-ホスト上で `curl-config` が PATH に含まれていない場合は、そのパスを明示的に指定できます：
+ホスト上で `curl-config` が PATH に存在しない場合は、そのパスを明示的に指定できます。
 
 ```sh
 export CURL_CONFIG=/opt/homebrew/opt/curl/bin/curl-config
@@ -149,15 +155,13 @@ make
 sudo make install
 ```
 
-次のようなエラーが発生した場合は、
+次のようなエラーが発生した場合:
 
 ```text
 "Makefile", line 8: Need an operator
 ```
 
-GNU make を使用する必要があります。システムによっては、
-`gmake`
-としてインストールされている場合があります。
+GNU make を使用する必要があります。お使いのシステムでは `gmake` としてインストールされている場合があります。
 
 ```sh
 gmake
@@ -171,7 +175,7 @@ gmake installcheck
 make: pg_config: Command not found
 ```
 
-`pg_config` がインストールされており、パスが通っていることを確認してください。RPM などのパッケージ管理システムを使って PostgreSQL をインストールした場合は、`-devel` パッケージもインストールされていることを確認してください。必要であれば、ビルドプロセスに対して `pg_config` の場所を指定してください。
+`pg_config` がインストールされており、`PATH` で参照できることを確認してください。RPM などのパッケージ管理システムを使用して PostgreSQL をインストールした場合は、`-devel` パッケージもインストールされていることを確認してください。必要に応じて、ビルドプロセスに対してその場所を指定してください。
 
 ```sh
 export PG_CONFIG=/path/to/pg_config
@@ -179,14 +183,14 @@ make
 sudo make install
 ```
 
-PostgreSQL 18 以降でカスタムのインストールプレフィックスに拡張機能をインストールするには、
-`install` に `prefix` 引数だけを渡します（他の `make` ターゲットは指定しません）。
+PostgreSQL 18 以降でカスタムプレフィックス配下に拡張機能をインストールするには、
+（他のどの `make` ターゲットも指定せずに）`install` に `prefix` 引数を渡してください。
 
 ```sh
 sudo make install prefix=/usr/local/extras
 ```
 
-次に、以下の [`postgresql.conf` のパラメータ] にそのプレフィックスが含まれていることを確認してください。
+その後、次の [`postgresql.conf` のパラメータ] にそのプレフィックスが含まれていることを確認します。
 
 ```ini
 extension_control_path = '/usr/local/extras/postgresql/share:$system'
@@ -196,7 +200,7 @@ dynamic_library_path   = '/usr/local/extras/postgresql/lib:$libdir'
 
 #### テスト \{#testing\}
 
-拡張機能をインストールしたら、次のコマンドでテストスイートを実行します。
+拡張機能をインストールしたら、テストスイートを実行するには次を実行します。
 
 ```sh
 make installcheck
@@ -208,22 +212,22 @@ make installcheck
 ERROR:  must be owner of database regression
 ```
 
-テストスイートは、デフォルトのスーパーユーザーである「postgres」などのスーパーユーザーを使用して実行する必要があります。
+テストスイートは、デフォルトのスーパーユーザー「postgres」などのスーパーユーザー権限を持つユーザーで実行する必要があります。
 
 ```sh
 make installcheck PGUSER=postgres
 ```
 
 
-### ロード \{#loading\}
+### 読み込み \{#loading\}
 
-`pg_clickhouse` がインストールされたら、スーパーユーザー権限で接続し、次のコマンドを実行してデータベースに追加します。
+`pg_clickhouse` がインストールされたら、スーパーユーザーとして接続し、次のコマンドを実行してデータベースに追加します。
 
 ```sql
 CREATE EXTENSION pg_clickhouse;
 ```
 
-`pg_clickhouse` と、その関連するすべてのオブジェクトを特定のスキーマにインストールしたい場合は、次のように `SCHEMA` 句を使ってスキーマを指定します。
+`pg_clickhouse` とそのすべての関連オブジェクトを特定のスキーマにインストールする場合は、次のように `SCHEMA` 句を使用してスキーマを指定します。
 
 ```sql
 CREATE SCHEMA env;
@@ -233,22 +237,23 @@ CREATE EXTENSION pg_clickhouse SCHEMA env;
 
 ## 依存関係 \{#dependencies\}
 
-`pg_clickhouse` 拡張には、[PostgreSQL] 13 以上、[libcurl]、[libuuid] が必要です。この拡張をビルドするには、C および C++ コンパイラ、[libSSL]、[GNU make]、[CMake] が必要です。
+`pg_clickhouse` 拡張機能には [PostgreSQL] 13 以上、[libcurl]、[libuuid] が必要です。この拡張機能をビルドするには、C および C++ コンパイラ、[libSSL]、[GNU
+make]、[CMake] が必要です。
 
-## ロードマップ \{#road-map\}
+## 今後のロードマップ \{#road-map\}
 
-現在の最優先事項は、DML 機能を追加する前に、分析ワークロード向けのプッシュダウン対応を完了することです。今後のロードマップは次のとおりです。
+現在の最優先事項は、DML 機能を追加する前に、分析系ワークロード向けのプッシュダウン対応を完了させることです。今後のロードマップは次のとおりです。
 
-*   まだプッシュダウンされていない残り 10 個の TPC-H クエリについて、最適な実行計画となるようにする
-*   ClickBench クエリに対するプッシュダウンをテストし、修正する
+*   未対応の 10 個の TPC-H クエリについて、最適な実行計画でプッシュダウンできるようにする
+*   ClickBench クエリに対してプッシュダウンをテストし、不具合を修正する
 *   すべての PostgreSQL 集約関数の透過的なプッシュダウンをサポートする
 *   すべての PostgreSQL 関数の透過的なプッシュダウンをサポートする
-*   CREATE SERVER と GUC を通じて、サーバーレベルおよびセッションレベルの ClickHouse 設定を行えるようにする
+*   CREATE SERVER と GUC を通じて、サーバーレベルおよびセッションレベルの ClickHouse の設定を指定できるようにする
 *   すべての ClickHouse データ型をサポートする
-*   論理削除（lightweight DELETE）および UPDATE をサポートする
-*   COPY によるバッチ挿入をサポートする
+*   論理削除 (lightweight DELETE) と UPDATE をサポートする
+*   COPY 経由でのバッチ挿入をサポートする
 *   任意の ClickHouse クエリを実行し、その結果をテーブルとして返す関数を追加する
-*   すべてがリモートデータベースを対象としている場合に、UNION クエリのプッシュダウンをサポートする
+*   すべてがリモートデータベースを参照している場合に、UNION クエリのプッシュダウンをサポートする
 
 ## 著者 \{#authors\}
 
@@ -259,9 +264,9 @@ CREATE EXTENSION pg_clickhouse SCHEMA env;
 ## 著作権 \{#copyright\}
 
 *   Copyright (c) 2025-2026, ClickHouse
-*   一部 Copyright (c) 2023-2025, Ildus Kurbangaliev
-*   一部 Copyright (c) 2019-2023, Adjust GmbH
-*   一部 Copyright (c) 2012-2019, PostgreSQL Global Development Group
+*   一部の Copyright (c) 2023-2025, Ildus Kurbangaliev
+*   一部の Copyright (c) 2019-2023, Adjust GmbH
+*   一部の Copyright (c) 2012-2019, PostgreSQL Global Development Group
 
 [pg_clickhouse]: https://github.com/clickHouse/pg_clickhouse
     "GitHub 上の pg_clickhouse"
@@ -287,11 +292,11 @@ CREATE EXTENSION pg_clickhouse SCHEMA env;
 
 [`postgresql.conf` parameters]: https://www.postgresql.org/docs/devel/runtime-config-client.html#RUNTIME-CONFIG-CLIENT-OTHER
 
-[PostgreSQL]: https://www.postgresql.org "PostgreSQL: 世界で最も先進的なオープンソースリレーショナルデータベース"
+[PostgreSQL]: https://www.postgresql.org "PostgreSQL: 世界で最も先進的なオープンソースのリレーショナル・データベース"
 
 [libcurl]: https://curl.se/libcurl/ "libcurl — ネットワーク転送ライブラリ"
 
-[libuuid]: https://linux.die.net/man/3/libuuid "libuuid - DCE 互換の Universally Unique Identifier (UUID) ライブラリ"
+[libuuid]: https://linux.die.net/man/3/libuuid "libuuid - DCE 互換の汎用一意識別子 (UUID) ライブラリ"
 
 [GNU make]: https://www.gnu.org/software/make "GNU Make"
 

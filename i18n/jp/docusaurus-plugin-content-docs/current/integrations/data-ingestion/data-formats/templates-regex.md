@@ -84,14 +84,16 @@ GROUP BY request
 └──────────────────────────────────────────────────┴─────────┘
 ```
 
+
 ### 空白のスキップ \{#skipping-whitespaces\}
 
-テンプレート内の区切り文字同士の間にある空白を無視できるようにするには、[TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces) の利用を検討してください。
+テンプレート内の区切り文字間の空白文字をスキップしたい場合は、[TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces) の利用を検討してください。
 
 ```text
 Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
 TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 ```
+
 
 ## テンプレートを使用したデータのエクスポート \{#exporting-data-using-templates\}
 
@@ -111,7 +113,7 @@ ${data}
 ${ip:Escaped} generated ${total:Escaped} requests
 ```
 
-では、これらのテンプレートを使って次のクエリをエクスポートしてみましょう。
+では、これらのテンプレートを使用して次のクエリをエクスポートしてみましょう。
 
 ```sql
 SELECT
@@ -137,6 +139,7 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 --- 1000 rows read in 0.001380604 ---
 ```
 
+
 ### HTML ファイルへのエクスポート \{#exporting-to-html-files\}
 
 テンプレートベースの結果は、[`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) 句を使用してファイルにエクスポートすることもできます。次の [resultset](assets/html.results) および [row](assets/html.row) のフォーマットに基づいて HTML ファイルを生成してみましょう。
@@ -151,6 +154,7 @@ FORMAT Template
 SETTINGS format_template_resultset = 'html.results',
          format_template_row = 'html.row'
 ```
+
 
 ### XML へのエクスポート \{#exporting-to-xml\}
 
@@ -196,6 +200,7 @@ FORMAT XML
 </result>
 
 ```
+
 
 ## 正規表現に基づくデータのインポート \{#importing-data-based-on-regular-expressions\}
 
@@ -244,6 +249,7 @@ SELECT * FROM error_log LIMIT 5
 ```sql
 SET format_regexp_skip_unmatched = 1;
 ```
+
 
 ## その他のフォーマット \{#other-formats\}
 

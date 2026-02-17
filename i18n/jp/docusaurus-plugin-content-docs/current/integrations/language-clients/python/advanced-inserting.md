@@ -29,7 +29,8 @@ assert qr.row_count == 4
 assert qr[0][0] == 4
 ```
 
-`InsertContext` には挿入処理中に更新される可変な状態が含まれるため、スレッドセーフではありません。
+`InsertContext` には挿入処理の過程で更新される可変状態が含まれるため、スレッドセーフではありません。
+
 
 ### 書き込みフォーマット \{#write-formats\}
 

@@ -781,7 +781,7 @@ Processed 8.81 million rows,
 
 从上面的示例 trace 日志中可以看到，通过 marks，在 1083 个 granule 中有 1076 个被选为可能包含具有匹配 URL 值的行。
 
-这会导致有 881 万行数据被流式加载到 ClickHouse 引擎中（通过 10 个流并行处理），以便识别哪些行实际上包含 URL 值 &quot;[http://public&#95;search&quot;。](http://public\&#95;search\&quot;。)
+这会导致有 881 万行数据被流式加载到 ClickHouse 引擎中（通过 10 个流并行处理），以便识别哪些行实际上包含 URL 值 &quot;http://public&#95;search&quot;。
 
 然而，正如我们稍后将看到的，在选出的这 1076 个 granule 中，实际上只有 39 个 granule 包含匹配的行。
 
@@ -942,13 +942,13 @@ Ok.
 0 rows in set. Elapsed: 2.898 sec. Processed 8.87 million rows, 838.84 MB (3.06 million rows/s., 289.46 MB/s.)
 ```
 
-最后，优化该表：
+最后，对该表执行优化：
 
 ```sql
 OPTIMIZE TABLE hits_URL_UserID FINAL;
 ```
 
-由于我们调整了主键中列的顺序，插入的行现在在磁盘上的字典序顺序（与我们的[原始表](#a-table-with-a-primary-key)相比）也发生了变化，因此该表的 1083 个 granule 中所包含的值也与之前不同：
+由于我们调整了主键中列的顺序，插入的行现在在磁盘上的字典序存储顺序（与我们的[原始表](#a-table-with-a-primary-key)相比）也发生了变化，因此该表的 1083 个 granule 中所包含的值也与之前不同：
 
 <Image img={sparsePrimaryIndexes10} size="md" alt="Sparse Primary Indices 10" background="white" />
 
@@ -956,7 +956,7 @@ OPTIMIZE TABLE hits_URL_UserID FINAL;
 
 <Image img={sparsePrimaryIndexes11} size="md" alt="Sparse Primary Indices 11" background="white" />
 
-现在可以利用它显著加速我们示例查询的执行：该查询在 URL 列上进行过滤，用于计算在 URL &quot;[http://public&#95;search](http://public\&#95;search)&quot; 上点击最频繁的前 10 个用户：
+现在可以利用它显著加速我们示例查询的执行：该查询在 URL 列上进行过滤，用于计算在 URL &quot;http://public&#95;search&quot; 上点击次数最多的前 10 个用户：
 
 ```sql
 SELECT UserID, count(UserID) AS Count
@@ -1180,7 +1180,7 @@ ALTER TABLE hits_UserID_URL
     );
 ```
 
-并将该 PROJECTION 物化：
+然后物化该 PROJECTION：
 
 ```sql
 ALTER TABLE hits_UserID_URL
@@ -1217,7 +1217,7 @@ ORDER BY Count DESC
 LIMIT 10;
 ```
 
-响应如下：
+返回结果如下：
 
 ```response
 ┌─────UserID─┬─Count─┐

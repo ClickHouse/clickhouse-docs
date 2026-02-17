@@ -69,7 +69,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   ##### 选项 1：AWS 控制台
 
   1. 打开 AWS Lambda 控制台
-  2. 导航到你的 Lambda 函数
+  2. 转到您的 Lambda 函数
   3. 向下滚动至 **Layers** 部分，然后单击 **Add a layer**
   4. 选择 **Specify an ARN**
   5. 请输入 Rotel 层的 ARN：

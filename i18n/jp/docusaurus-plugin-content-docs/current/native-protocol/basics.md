@@ -20,6 +20,7 @@ import TabItem from '@theme/TabItem';
 
 このドキュメントでは、ClickHouse の TCP クライアント向けバイナリプロトコルについて説明します。
 
+
 ## Varint \{#varint\}
 
 長さやパケットコードなどには、*unsigned varint* エンコード方式が使われます。
@@ -137,16 +138,17 @@ fmt.Println(d) // 1000
 <Tabs>
   <TabItem value="hexdump" label="Hexダンプ">
     ```hexdump
-00000000  e8 03 00 00 00 00 00 00                           |........|
-```
+    00000000  e8 03 00 00 00 00 00 00                           |........|
+    ```
   </TabItem>
 
   <TabItem value="base64" label="Base64">
     ```text
-6AMAAAAAAAA
-```
+    6AMAAAAAAAA
+    ```
   </TabItem>
 </Tabs>
+
 
 ## Boolean \{#boolean\}
 

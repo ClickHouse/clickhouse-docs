@@ -21,6 +21,7 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
+
 # Приём данных из Postgres в ClickHouse (с использованием CDC) \{#ingesting-data-from-postgres-to-clickhouse-using-cdc\}
 
 Вы можете использовать ClickPipes для приёма данных из исходной базы данных Postgres в ClickHouse Cloud. Исходная база данных Postgres может быть развернута в локальной инфраструктуре (on-premises) или в облаке, включая Amazon RDS, Google Cloud SQL, Azure Database for Postgres, Supabase и другие.
@@ -133,10 +134,10 @@ import Image from '@theme/IdealImage';
 
    <Image img={select_destination_db} alt="Выбор целевой базы данных" size="lg" border/>
 
-7. Вы можете выбрать таблицы, которые нужно реплицировать из исходной базы данных Postgres. При выборе таблиц вы также можете переименовать их в целевой базе данных ClickHouse, а также исключить определённые столбцы.
+7. Вы можете выбрать таблицы, которые хотите реплицировать из исходной базы данных Postgres. При выборе таблиц вы также можете переименовать их в целевой базе данных ClickHouse, а также исключить отдельные столбцы.
 
    :::warning
-   Если вы задаёте ключ упорядочивания в ClickHouse, отличающийся от первичного ключа в Postgres, не забудьте ознакомиться со всеми [рекомендациями](/integrations/clickpipes/postgres/ordering_keys), связанными с этим.
+   Если вы задаете ключ упорядочивания в ClickHouse, отличающийся от первичного ключа в Postgres, не забудьте ознакомиться со всеми [рекомендациями](/integrations/clickpipes/postgres/ordering_keys), касающимися этой настройки.
    :::
 
 ### Проверьте права доступа и запустите ClickPipe \{#review-permissions-and-start-the-clickpipe\}
