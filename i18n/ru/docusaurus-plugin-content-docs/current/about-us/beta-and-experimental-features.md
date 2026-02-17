@@ -68,8 +68,9 @@ doc_type: 'reference'
 | [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize) | `1` |
 | [use_statistics](/operations/settings/settings#use_statistics) | `1` |
 | [use_statistics_cache](/operations/settings/settings#use_statistics_cache) | `1` |
-| [enable_full_text_index](/operations/settings/settings#enable_full_text_index) | `0` |
+| [enable_full_text_index](/operations/settings/settings#enable_full_text_index) | `1` |
 | [allow_experimental_delta_kernel_rs](/operations/settings/settings#allow_experimental_delta_kernel_rs) | `1` |
+| [allow_insert_into_iceberg](/operations/settings/settings#allow_insert_into_iceberg) | `0` |
 | [enable_join_runtime_filters](/operations/settings/settings#enable_join_runtime_filters) | `1` |
 
 ## Экспериментальные настройки \{#experimental-settings\}
@@ -125,7 +126,6 @@ doc_type: 'reference'
 | [allow&#95;experimental&#95;kusto&#95;dialect](/operations/settings/settings#allow_experimental_kusto_dialect)                                                                                                                      | `0`                     |
 | [allow&#95;experimental&#95;prql&#95;dialect](/operations/settings/settings#allow_experimental_prql_dialect)                                                                                                                        | `0`                     |
 | [enable&#95;adaptive&#95;memory&#95;spill&#95;scheduler](/operations/settings/settings#enable_adaptive_memory_spill_scheduler)                                                                                                      | `0`                     |
-| [allow&#95;experimental&#95;insert&#95;into&#95;iceberg](/operations/settings/settings#allow_experimental_insert_into_iceberg)                                                                                                      | `0`                     |
 | [allow&#95;experimental&#95;iceberg&#95;compaction](/operations/settings/settings#allow_experimental_iceberg_compaction)                                                                                                            | `0`                     |
 | [write&#95;full&#95;path&#95;in&#95;iceberg&#95;metadata](/operations/settings/settings#write_full_path_in_iceberg_metadata)                                                                                                        | `0`                     |
 | [iceberg&#95;metadata&#95;compression&#95;method](/operations/settings/settings#iceberg_metadata_compression_method)                                                                                                                | ``                      |

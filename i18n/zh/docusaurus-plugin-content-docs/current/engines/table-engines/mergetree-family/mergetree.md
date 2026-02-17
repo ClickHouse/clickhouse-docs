@@ -355,6 +355,8 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`bloom_filter`](#bloom-filter) 索引
 - [`ngrambf_v1`](#n-gram-bloom-filter) 索引
 - [`tokenbf_v1`](#token-bloom-filter) 索引
+- [`text`]({#text}) 索引
+- [`vector_similarity`]({#vector-similarity}) 索引
 
 #### MinMax 跳过索引 \{#minmax\}
 
@@ -494,7 +496,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 ### 文本索引 \{#text\}
 
-支持全文检索，详见[此处](textindexes.md)。
+在分词后的字符串数据之上构建倒排索引，实现高效且确定性的全文检索。详见[此处](textindexes.md)。
 
 #### 向量相似度 \{#vector-similarity\}
 

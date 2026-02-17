@@ -437,16 +437,6 @@ delta-kernel の書き込み機能を有効にします。
 
 Iceberg テーブルに対して 'OPTIMIZE' を明示的に使用できるようにします。
 
-## allow_experimental_insert_into_iceberg \{#allow_experimental_insert_into_iceberg\}
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
-
-Iceberg テーブルに対する `insert` クエリの実行を許可します。
-
 ## allow_experimental_join_right_table_sorting \{#allow_experimental_join_right_table_sorting\}
 
 <ExperimentalBadge/>
@@ -635,6 +625,16 @@ YTsaurus との統合向けの実験的なテーブルエンジンです。
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Hyperscan ライブラリを使用する関数の利用を許可します。コンパイル時間が長くなったり、リソース使用量が過剰になったりする可能性を避ける場合は無効にします。
+
+## allow_insert_into_iceberg \{#allow_insert_into_iceberg\}
+
+<BetaBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Insert into iceberg was moved to Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+Iceberg テーブルに対する `insert` クエリの実行を許可します。
 
 ## allow_introspection_functions \{#allow_introspection_functions\}
 
@@ -2270,7 +2270,7 @@ Replicated\* テーブルからデータを受け取る materialized view に対
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "すべての同期および非同期 INSERT に対して、デフォルトで重複排除を有効化します。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "INSERT クエリの重複排除を制御するための新しい設定です。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "INSERT クエリの重複排除を制御するための新しい設定です。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "すべての同期および非同期 INSERT に対して、デフォルトで重複排除を有効化します。"}]}]}/>
 
 `INSERT INTO`（Replicated\* テーブル向け）のブロック単位の重複排除を有効または無効にします。
 この設定は `insert_deduplicate` および `async_insert_deduplicate` の設定を上書きします。
@@ -3340,9 +3340,9 @@ BLOB ストレージの操作情報を system.blob_storage_log テーブルに�
 
 **別名**: `allow_experimental_full_text_index`
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Text index was moved to Beta."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "The text index is now GA"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "Text index was moved to Beta."}]}]}/>
 
 true に設定すると、テキスト索引を使用できるようになります。
 
@@ -3623,7 +3623,7 @@ true に設定すると、スカラーサブクエリによる大きなスカラ
 
 この設定を無効化すると、親の WITH 句での宣言は、現在のスコープで宣言されたものと同じスコープとして扱われます。
 
-これは、新しいアナライザーにおいて、古いアナライザーで実行可能だった一部の不正なクエリを実行できるようにするための互換性設定であることに注意してください。
+これは、アナライザーにおいて、古いアナライザーで実行可能だった一部の不正なクエリを実行できるようにするための互換性設定であることに注意してください。
 
 ## enable_shared_storage_snapshot_in_query \{#enable_shared_storage_snapshot_in_query\}
 
@@ -8041,6 +8041,20 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 ```
 
 
+## opentelemetry_start_keeper_trace_probability \{#opentelemetry_start_keeper_trace_probability\}
+
+<SettingsInfoBlock type="FloatAuto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "新しい設定"}]}]}/>
+
+ZooKeeper リクエストに対してトレースを開始する確率（親トレースの有無にかかわらず）。
+
+可能な値:
+
+- 'auto' - `opentelemetry_start_trace_probability` 設定と同じ
+- 0 — トレースは無効
+- 0 ～ 1 — 確率（例: 1.0 = 常に有効）
+
 ## opentelemetry_start_trace_probability \{#opentelemetry_start_trace_probability\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
@@ -9628,7 +9642,7 @@ EXPLAIN PLAN におけるステップの説明の最大の長さ。
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "クエリプラン内のフィルタをマージできるようにする"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "クエリプラン内のフィルタをマージできるようにする。これは、新しいアナライザでの filter-push-down を正しくサポートするために必要です。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "クエリプラン内のフィルタをマージできるようにする"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "クエリプラン内のフィルタをマージできるようにする。これは、アナライザでの filter-push-down を正しくサポートするために必要です。"}]}]}/>
 
 クエリプラン内のフィルタをマージできるようにします。
 

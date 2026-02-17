@@ -1524,6 +1524,14 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 
 Метод сжатия для формата вывода Arrow. Поддерживаемые кодеки: lz4_frame, zstd, none (без сжатия).
 
+## output_format_arrow_date_as_uint16 \{#output_format_arrow_date_as_uint16\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "По умолчанию записывать Date как Arrow DATE32 вместо простого UInt16."}]}]}/>
+
+Записывать значения Date как простые 16-битные числа (при чтении — как UInt16), вместо преобразования их в 32-битный тип Arrow DATE32 (при чтении — как Date32).
+
 ## output_format_arrow_fixed_string_as_fixed_byte_array \{#output_format_arrow_fixed_string_as_fixed_byte_array\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
