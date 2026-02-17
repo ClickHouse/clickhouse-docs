@@ -1394,6 +1394,7 @@ Spearman's
 Splunk
 Splunkbase
 Splunkd
+SqlCompatibilitySettings
 SquaredDistance
 SquaredNorm
 StartTLS
