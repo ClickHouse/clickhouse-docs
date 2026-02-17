@@ -32,6 +32,10 @@ ClickHouse server provides embedded visual interfaces for power users:
 - Play UI: open `/play` in the browser;
 - Advanced Dashboard: open `/dashboard` in the browser;
 - Binary symbols viewer for ClickHouse engineers: open `/binary` in the browser;
+- ClickStack UI for observability: open `/clickstack` in the browser;
+
+!!! info "ClickStack"
+    The version of ClickStack is great for local debugging and quick investigation, but is not meant for a production environment. For production ready full-featured clickstack, see [Open Source ClickStack](/use-cases/observability/clickstack/getting-started/oss).
 
 There are also a wide range of third-party libraries for working with ClickHouse:
 
