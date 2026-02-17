@@ -1832,7 +1832,7 @@ SELECT leftUTF8('Привет', -4)
 lengthUTF8(s)
 ```
 
-**Псевдонимы**: `CHAR_LENGTH`, `CHARACTER_LENGTH`
+**Псевдонимы**: `CHARACTER_LENGTH`, `CHAR_LENGTH`
 
 **Аргументы**
 
