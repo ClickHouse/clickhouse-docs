@@ -151,15 +151,15 @@ import TabItem from '@theme/TabItem';
 
     Не фиксируйте секреты в системе контроля версий. В продакшене используйте инструменты управления переменными окружения (например, Docker Secrets, HashiCorp Vault или конфигурации CI/CD для конкретных окружений).
 
-    ### Безопасная ингестия \{#secure-ingestion\}
+    ### Защита ингестии \{#secure-ingestion\}
 
     Весь приём данных должен осуществляться через порты OTLP, предоставляемые дистрибутивом ClickStack коллектора OpenTelemetry (OTel). По умолчанию для этого требуется защищённый ключ API для приёма данных, сгенерированный при запуске. Этот ключ необходим при отправке данных на порты OTel и находится в интерфейсе HyperDX в разделе `Team Settings → API Keys`.
 
-    <Image img={ingestion_key} alt="Ключи для ингестии" size="lg" />
+    <Image img={ingestion_key} alt="Ключи ингестии" size="lg" />
 
     Кроме того, рекомендуется включить TLS для конечных точек OTLP.
 
-    #### Создайте пользователя для ингестии \{#create-a-database-ingestion-user-oss\}
+    #### Создание пользователя для ингестии \{#create-a-database-ingestion-user-oss\}
 
     Рекомендуется создать выделенного пользователя для OTel collector для ингестии в ClickHouse и обеспечить, чтобы данные ингестии отправлялись в конкретную базу данных, например `otel`. Подробнее см. [&quot;Создание пользователя для ингестии&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user).
 
@@ -175,13 +175,13 @@ import TabItem from '@theme/TabItem';
 
     * **Используйте TLS** с помощью `tcp_port_secure` и `<openSSL>` в `config.xml`. См. раздел [guides/sre/configuring-tls](/guides/sre/tls/configuring-tls).
     * **Установите надежный пароль** для пользователя `default` или отключите этого пользователя.
-    * **Не открывайте доступ к ClickHouse извне**, если это не требуется явно. По умолчанию ClickHouse привязывается только к `localhost`, пока не будет изменён параметр `listen_host`.
+    * **Не открывайте доступ к ClickHouse извне**, если только это не требуется явно. По умолчанию ClickHouse слушает только `localhost`, пока не будет изменён параметр `listen_host`.
     * **Используйте методы аутентификации**, например пароли, сертификаты, SSH-ключи или [внешние аутентификаторы](/operations/external-authenticators).
-    * **Ограничьте доступ** с помощью IP-фильтрации и условия `HOST`. См. [sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host).
-    * **Включите управление доступом на основе ролей (RBAC)**, чтобы предоставлять гранулярные права доступа. См. [operations/access-rights](/operations/access-rights).
+    * **Ограничьте доступ** с помощью фильтрации по IP и предложения `HOST`. См. [sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host).
+    * **Включите ролевое управление доступом (RBAC)**, чтобы предоставлять детализированные права доступа. См. [operations/access-rights](/operations/access-rights).
     * **Устанавливайте квоты и ограничения** с помощью [квот](/operations/quotas), [профилей настроек](/operations/settings/settings-profiles) и режимов «только для чтения».
     * **Шифруйте данные при хранении** и используйте безопасное внешнее хранилище. См. [operations/storing-data](/operations/storing-data) и [cloud/security/CMEK](/cloud/security/cmek).
-    * **Не хардкодьте учетные данные.** Используйте [именованные коллекции](/operations/named-collections) или роли IAM в ClickHouse Cloud.
+    * **Не размещайте учетные данные в коде.** Используйте [именованные коллекции](/operations/named-collections) или роли IAM в ClickHouse Cloud.
     * **Проводите аудит доступа и запросов** с помощью [системных журналов](/operations/system-tables/query_log) и [журналов сессий](/operations/system-tables/session_log).
 
     См. также [внешние аутентификаторы](/operations/external-authenticators) и [настройки сложности запросов](/operations/settings/query-complexity) для управления пользователями и установки ограничений на запросы и ресурсы.
@@ -190,16 +190,16 @@ import TabItem from '@theme/TabItem';
 
     Пользователю ClickHouse для интерфейса ClickStack достаточно иметь права `readonly` с доступом к изменению следующих настроек:
 
-    * `max_rows_to_read` (не менее 1 000 000)
+    * `max_rows_to_read` (как минимум до 1 000 000)
     * `read_overflow_mode`
     * `cancel_http_readonly_queries_on_client_close`
     * `wait_end_of_query`
 
     По умолчанию пользователь `default` как в OSS, так и в ClickHouse Cloud имеет эти разрешения, однако рекомендуется создать нового пользователя с этими разрешениями.
 
-    ### Настройка TTL (Time To Live) \{#configure-ttl\}
+    ### Настройка Time To Live (TTL) \{#configure-ttl\}
 
-    Убедитесь, что [Time To Live (TTL)](/use-cases/observability/clickstack/ttl) [правильно настроен](/use-cases/observability/clickstack/ttl#modifying-ttl) для вашего развертывания ClickStack. Это определяет, как долго хранятся данные — значение по умолчанию 3 дня часто требует изменения.
+    Убедитесь, что [Time To Live (TTL)](/use-cases/observability/clickstack/ttl) [корректно настроен](/use-cases/observability/clickstack/ttl#modifying-ttl) для вашего развертывания ClickStack. Это управляет сроком хранения данных — значение по умолчанию в 3 дня часто требует изменения.
 
     ### Рекомендации MongoDB \{#mongodb-guidelines\}
 

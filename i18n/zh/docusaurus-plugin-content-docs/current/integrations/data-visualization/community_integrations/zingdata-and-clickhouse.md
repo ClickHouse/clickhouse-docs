@@ -3,7 +3,7 @@ sidebar_label: 'Zing Data'
 sidebar_position: 206
 slug: /integrations/zingdata
 keywords: ['Zing Data']
-description: 'Zing Data 是为 ClickHouse 打造的简洁易用的社交化商业智能平台，适用于 iOS、Android 和 Web。'
+description: 'Zing Data 是面向 ClickHouse 的简单易用的社交化商业智能工具，适用于 iOS、Android 和 Web。'
 title: '将 Zing Data 连接到 ClickHouse'
 show_related_blogs: true
 doc_type: 'guide'
@@ -25,11 +25,12 @@ import zing_08 from '@site/static/images/integrations/data-visualization/zing_08
 import zing_09 from '@site/static/images/integrations/data-visualization/zing_09.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+
 # 将 Zing Data 连接到 ClickHouse \{#connect-zing-data-to-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
-<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> 是一个数据探索与可视化平台。Zing Data 使用 ClickHouse 提供的 JS 驱动程序连接到 ClickHouse。
+<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> 是一个数据探索与可视化平台。Zing Data 使用 ClickHouse 提供的 JavaScript 驱动程序进行连接。
 
 ## 如何连接 \{#how-to-connect\}
 
@@ -39,38 +40,38 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 2. 下载或访问 Zing Data
 
-    * 如需在移动端将 ClickHouse 与 Zing Data 一起使用，请在 [Google Play Store](https://play.google.com/store/apps/details?id=com.getzingdata.android) 或 [Apple App Store](https://apps.apple.com/us/app/zing-data-collaborative-bi/id1563294091) 下载 Zing Data 应用。
+    * 要在移动端将 ClickHouse 与 Zing Data 一起使用，请在 [Google Play Store](https://play.google.com/store/apps/details?id=com.getzingdata.android) 或 [Apple App Store](https://apps.apple.com/us/app/zing-data-collaborative-bi/id1563294091) 下载 Zing Data 应用。
 
-    * 如需在 Web 上将 ClickHouse 与 Zing Data 一起使用，请访问 [Zing web 控制台](https://console.getzingdata.com/) 并创建一个账户。
+    * 要在 Web 端将 ClickHouse 与 Zing Data 一起使用，请访问 [Zing web console](https://console.getzingdata.com/) 并创建账号。
 
-3. 添加数据源
+3. 添加一个数据源
 
-    * 若要在 Zing Data 中操作你的 ClickHouse 数据，你需要先定义一个 **_datasource_**（数据源）。在 Zing Data 移动应用的菜单中，选择 **Sources**，然后点击 **Add a Datasource**。
+    * 要在 Zing Data 中操作你的 ClickHouse 数据，你需要定义一个 **_datasource_**（数据源）。在 Zing Data 移动应用的菜单中选择 **Sources**，然后点击 **Add a Datasource**。
 
-    * 若要在 Web 端添加数据源，点击顶部菜单中的 **Data Sources**，再点击 **New Datasource**，并在下拉菜单中选择 **Clickhouse**。
+    * 要在 Web 端添加数据源，点击顶部菜单中的 **Data Sources**，再点击 **New Datasource**，并在下拉菜单中选择 **ClickHouse**。
 
     <Image size="md" img={zing_01} alt="Zing Data 界面显示 New Datasource 按钮以及下拉菜单中的 ClickHouse 选项" border />
     <br/>
 
-4. 填写连接信息并点击 **Check Connection**。
+4. 填写连接信息，然后点击 **Check Connection**。
 
-    <Image size="md" img={zing_02} alt="ClickHouse connection configuration form in Zing Data with fields for server, port, database, username and password" border />
+    <Image size="md" img={zing_02} alt="Zing Data 中的 ClickHouse 连接配置表单，包含 server、port、database、username 和 password 字段" border />
     <br/>
 
-5. 如果连接成功，Zing 会进入表选择页面。选择所需的数据表并点击 **Save**。如果 Zing 无法连接到你的数据源，你会看到一条消息，提示你检查凭据并重试。如果在检查凭据并重试后仍然遇到问题，请 <a id="contact_link" href="mailto:hello@getzingdata.com">联系 Zing 支持。</a>
+5. 如果连接成功，Zing 会进入数据表选择界面。选择所需的数据表并点击 **Save**。如果 Zing 无法连接到你的数据源，你会看到一条消息，提示你检查凭据并重试。如果在检查凭据并重试后仍然遇到问题，请<a id="contact_link" href="mailto:hello@getzingdata.com">通过此处联系 Zing 支持。</a>
 
-    <Image size="md" img={zing_03} alt="Zing Data 表选择界面，显示带复选框的可用 ClickHouse 数据表" border />
+    <Image size="md" img={zing_03} alt="Zing Data 数据表选择界面，显示可用的 ClickHouse 数据表及复选框" border />
     <br/>
 
-6. 一旦添加了 ClickHouse 数据源，它将在你的 Zing 组织中对所有成员可见，位于 **Data Sources** / **Sources** 选项卡下。
+6. 一旦添加了 ClickHouse 数据源，你的 Zing 组织中的所有人都可以在 **Data Sources** / **Sources** 选项卡下访问它。
 
 ## 在 Zing Data 中创建图表和仪表板 \{#creating-charts-and-dashboards-in-zing-data\}
 
-1. 在添加好 ClickHouse 数据源之后，在 Web 端点击 **Zing App**，或在移动端点击该数据源以开始创建图表。
+1. 添加 ClickHouse 数据源后，在 Web 端点击 **Zing App**，或在移动端点击该数据源开始创建图表。
 
-2. 在表列表中点击某个表以创建图表。
+2. 在表列表中点击某个表来创建图表。
 
-    <Image size="sm" img={zing_04} alt="Zing Data 界面显示表列表以及可用的 ClickHouse 表" border />
+    <Image size="sm" img={zing_04} alt="Zing Data 界面显示表列表及可用的 ClickHouse 表" border />
     <br/>
 
 3. 使用可视化查询构建器选择所需字段、聚合等，然后点击 **Run Question**。
@@ -81,20 +82,20 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 4. 如果熟悉 SQL，也可以编写自定义 SQL 来运行查询并创建图表。
 
     <Image size="md" img={zing_06} alt="Zing Data 中的 SQL 编辑器模式，展示 SQL 查询编写界面" border />
-    <Image size="md" img={zing_07} alt="Zing Data 中 SQL 查询结果，以表格形式展示的数据" border />
+    <Image size="md" img={zing_07} alt="Zing Data 中 SQL 查询结果，以表格形式展示数据" border />
 
-5. 示例图表如下所示。可以通过三点菜单保存该问题。你可以在图表上发表评论、@ 提及团队成员、创建实时告警、更改图表类型等。
+5. 一个示例图表如下所示。可以通过右上角的三点菜单保存该问题。还可以对图表发表评论、@ 标签团队成员、创建实时告警、更改图表类型等。
 
-    <Image size="md" img={zing_08} alt="Zing Data 中的示例图表可视化，展示来自 ClickHouse 的数据以及选项菜单" border />
+    <Image size="md" img={zing_08} alt="Zing Data 中的示例图表可视化，展示来自 ClickHouse 的数据及选项菜单" border />
     <br/>
 
-6. 可以在首页的 **Dashboards** 下，通过点击“+”图标来创建仪表板。可以将已有的问题拖拽进来，以显示在仪表板上。
+6. 可以在主页的 **Dashboards** 下通过点击 “+” 图标来创建仪表板。可以将已有的问题拖入其中，以在仪表板上展示。
 
-    <Image size="md" img={zing_09} alt="Zing Data 仪表板视图，展示在仪表板布局中排列的多个可视化图表" border />
+    <Image size="md" img={zing_09} alt="Zing Data 仪表板视图，显示多个可视化按仪表板布局排列" border />
     <br/>
 
 ## 相关内容 \{#related-content\}
 
 - [文档](https://docs.getzingdata.com/docs/)
-- [快速入门](https://getzingdata.com/quickstart/)
-- [创建仪表板](https://getzingdata.com/blog/new-feature-create-multi-question-dashboards/)操作指南
+- [快速开始](https://getzingdata.com/quickstart/)
+- 关于[创建仪表盘](https://getzingdata.com/blog/new-feature-create-multi-question-dashboards/)的指南

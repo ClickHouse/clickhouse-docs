@@ -117,11 +117,13 @@ Replicated 引擎**不会**包含 `ON CLUSTER` 子句，因为它们被设计为
 
 ```
 
-使用非副本引擎（non-replicated engine）的 table 和 incremental 物化不会受到 `cluster` 设置的影响（模型只会在当前连接的节点上创建）。
+使用非副本引擎（non-replicated engine）的 table 和 incremental 物化不会受到 `cluster` 设置的影响（模型只会
+在当前连接的节点上创建）。
 
 **兼容性**
 
-如果某个模型是在未使用 `cluster` 设置的情况下创建的，dbt-clickhouse 会检测到这种情况，并在针对该模型执行所有 DDL/DML 时，不使用 `on cluster` 子句。
+如果某个模型是在未使用 `cluster` 设置的情况下创建的，dbt-clickhouse 会检测到这种情况，并在针对该模型执行所有 DDL/DML
+时，不使用 `on cluster` 子句。
 
 
 #### 写后读一致性 \{#read-after-write-consistency\}

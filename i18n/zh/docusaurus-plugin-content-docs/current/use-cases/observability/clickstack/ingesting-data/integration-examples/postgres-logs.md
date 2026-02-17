@@ -326,13 +326,13 @@ HyperDX 会以浏览器的本地时区显示时间戳。该演示数据覆盖的
 
 3. 上传 `postgresql-logs-dashboard.json` 文件并点击 **Finish Import**
 
-<Image img={finish_import} alt="完成导入"/>
+<Image img={finish_import} alt="Finish import"/>
 
 #### 查看仪表板 \{#created-dashboard\}
 
 系统会创建一个已预先配置好所有可视化内容的仪表板：
 
-<Image img={logs_dashboard} alt="日志仪表板"/>
+<Image img={logs_dashboard} alt="Logs dashboard"/>
 
 :::note
 对于演示数据集，将时间范围设置为 **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)**（可根据本地时区进行调整）。导入的仪表板默认未指定时间范围。

@@ -192,7 +192,7 @@ using var connection = new ClickHouseConnection("Host=localhost;Username=default
 await connection.OpenAsync();
 ```
 
-または `ClickHouseClientSettings` を使用する:
+または `ClickHouseClientSettings` を使用します:
 
 ```csharp
 var settings = new ClickHouseClientSettings

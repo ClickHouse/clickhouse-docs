@@ -99,7 +99,7 @@ import TabItem from '@theme/TabItem';
 
     本番環境で必要なポートのみを公開してください。通常はOTLPエンドポイント、APIサーバー、フロントエンドです。
 
-    例えば、`docker-compose.yml` ファイル内の不要なポートマッピングを削除するか、コメントアウトします:
+    例えば、`docker-compose.yml` ファイル内の不要なポートマッピングを削除するかコメントアウトします。
 
     ```yaml
     ports:
@@ -143,7 +143,7 @@ import TabItem from '@theme/TabItem';
           - db1
     ```
 
-    `openssl`を使用して強力なシークレットを生成できます:
+    `openssl` を使用して強度の高いシークレットを生成できます:
 
     ```shell
     openssl rand -hex 32
@@ -151,7 +151,7 @@ import TabItem from '@theme/TabItem';
 
     シークレットをソース管理にコミットすることは避けてください。本番環境では、環境変数管理ツール(例: Docker Secrets、HashiCorp Vault、環境固有のCI/CD設定など)の使用を検討してください。
 
-    ### インジェストのセキュリティ確保 \{#secure-ingestion\}
+    ### インジェストのセキュリティ保護 \{#secure-ingestion\}
 
     すべてのインジェストは、ClickStack ディストリビューションの OpenTelemetry (OTel) コレクターによって公開される OTLP ポート経由で行う必要があります。デフォルトでは、起動時に生成されるセキュアなインジェスト API key が必要です。このキーは OTel ポートにデータを送信する際に必須であり、HyperDX UI の `Team Settings → API Keys` で確認できます。
 
@@ -159,7 +159,7 @@ import TabItem from '@theme/TabItem';
 
     また、OTLPエンドポイントに対してTLSを有効化することを推奨します。
 
-    #### インジェストユーザーの作成 \{#create-a-database-ingestion-user-oss\}
+    #### インジェスト用ユーザーの作成 \{#create-a-database-ingestion-user-oss\}
 
     ClickHouseへのインジェスト用にOTel collector専用のユーザーを作成し、インジェストが特定のデータベース(例: `otel`)に送信されるようにすることを推奨します。詳細については、[&quot;インジェストユーザーの作成&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)を参照してください。
 
@@ -171,18 +171,18 @@ import TabItem from '@theme/TabItem';
 
     独自のClickHouseインスタンスを管理している場合、**TLS**の有効化、認証の強制、およびアクセス強化のベストプラクティスの遵守が不可欠です。実際の設定ミスとその回避方法については、[このブログ記事](https://www.wiz.io/blog/clickhouse-and-wiz)を参照してください。
 
-    ClickHouse OSSは、標準で堅牢なセキュリティ機能を提供しています。ただし、これらの機能を使用するには設定が必要です:
+    ClickHouse OSSは標準で堅牢なセキュリティ機能を提供しています。ただし、これらを利用するには設定が必要です。
 
-    * `config.xml` で `tcp_port_secure` と `<openSSL>` を設定して **TLS を有効化** します。詳細は [guides/sre/configuring-tls](/guides/sre/tls/configuring-tls) を参照してください。
+    * `config.xml` で `tcp_port_secure` と `<openSSL>` を設定して **TLS を使用**します。詳細は [guides/sre/configuring-tls](/guides/sre/tls/configuring-tls) を参照してください。
     * `default` USER のパスワードを **強力なものに設定** するか、そのユーザーを無効化してください。
     * **明示的にその意図がある場合を除き、ClickHouse を外部に公開しないでください。** デフォルトでは、`listen_host` を変更しない限り、ClickHouse は `localhost` のみにバインドされます。
-    * パスワード、証明書、SSHキー、[外部認証機構](/operations/external-authenticators)などの**認証手段を使用**します。
-    * IP フィルタリングおよび `HOST` 句を使用して、**アクセスを制限**します。[sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host) を参照してください。
+    * **認証手段を使用**します。パスワード、証明書、SSHキー、[外部認証機構](/operations/external-authenticators) などがあります。
+    * IP フィルタリングと `HOST` 句を使用して、**アクセスを制限**します。[sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host) を参照してください。
     * **ロールベースアクセス制御（RBAC）を有効に**して、きめ細かな権限付与を行います。詳細は [operations/access-rights](/operations/access-rights) を参照してください。
     * **クォータおよびその他の制限を厳格に適用**するには、[クォータ](/operations/quotas)、[settings profiles](/operations/settings/settings-profiles)、および読み取り専用モードを使用します。
     * **保存されているデータを暗号化**し、安全な外部ストレージを使用してください。[operations/storing-data](/operations/storing-data) および [cloud/security/CMEK](/cloud/security/cmek) を参照してください。
     * **認証情報のハードコードは避けてください。** [named collections](/operations/named-collections) または ClickHouse Cloud の IAM ロールを使用してください。
-    * [システムログ](/operations/system-tables/query_log) と [セッションログ](/operations/system-tables/session_log) を使用して、**アクセスやクエリを監査**します。
+    * [system logs](/operations/system-tables/query_log) と [session logs](/operations/system-tables/session_log) を使用して、**アクセスやクエリを監査**します。
 
     ユーザー管理とクエリ/リソース制限の確保については、[外部認証機能](/operations/external-authenticators)および[クエリ複雑度設定](/operations/settings/query-complexity)も参照してください。
 
@@ -195,7 +195,7 @@ import TabItem from '@theme/TabItem';
     * `cancel_http_readonly_queries_on_client_close`
     * `wait_end_of_query`
 
-    デフォルトでは、OSSとClickHouse Cloudの両方で`default`ユーザーにこれらの権限が利用可能ですが、これらの権限を持つ新しいユーザーを作成することを推奨します。
+    デフォルトでは、OSS と ClickHouse Cloud の両方で `default` ユーザーにこれらの権限が付与されていますが、これらの権限を持つ新しいユーザーを作成することを推奨します。
 
     ### 有効期限 (TTL) の設定 \{#configure-ttl\}
 

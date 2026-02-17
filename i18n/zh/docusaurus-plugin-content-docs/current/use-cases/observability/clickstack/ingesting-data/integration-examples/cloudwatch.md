@@ -67,12 +67,12 @@ AWS CloudWatch 是一项用于监控 AWS 资源和应用程序的服务。虽然
 <VerticalStepper headerLevel="h4">
   #### 获取 ClickStack API 密钥
 
-  OpenTelemetry Collector 将数据发送到 ClickStack 的 OTLP 端点，该端点需要进行身份验证。
+  OpenTelemetry Collector 将数据发送到 ClickStack 的 OTLP 端点,该端点需要进行身份验证。
 
-  1. 在你的 ClickStack 地址（例如 [http://localhost:8080](http://localhost:8080)）打开 HyperDX
+  1. 在浏览器中打开你的 ClickStack URL（例如 http://localhost:8080）以访问 HyperDX
   2. 如有需要，请先创建账户或登录
   3. 前往 **Team Settings → API Keys**
-  4. 复制您的**摄取 API key**
+  4. 复制您的 **摄取 API key**
 
   <Image img={api_key} alt="ClickStack API 密钥" />
 
@@ -139,7 +139,7 @@ AWS CloudWatch 是一项用于监控 AWS 资源和应用程序的服务。虽然
 
   创建一个 `otel-collector-config.yaml` 文件,配置 CloudWatch 接收器。
 
-  **示例 1：命名日志组（推荐）**
+  **示例 1:命名日志组(推荐)**
 
   此配置从特定的命名日志组中收集日志：
 
@@ -212,17 +212,17 @@ AWS CloudWatch 是一项用于监控 AWS 资源和应用程序的服务。虽然
 
   * `region`: 日志组所在的 AWS 区域
   * `poll_interval`: 检查新日志的时间间隔（例如，`1m`、`5m`）
-  * `max_events_per_request`: 每个请求可拉取的日志事件数量上限
-  * `groups.autodiscover.limit`: 自动发现的日志组的最大数量
-  * `groups.autodiscover.prefix`: 根据前缀筛选日志组
-  * `groups.named`: 显式列出要收集的日志组名称
+  * `max_events_per_request`: 每个请求最多获取的日志事件数量
+  * `groups.autodiscover.limit`: 自动发现的日志组最大数量
+  * `groups.autodiscover.prefix`: 通过前缀过滤日志组
+  * `groups.named`: 明确列出需要收集的日志组名称
 
-  如需了解更多配置选项，请参阅 [CloudWatch 接收器文档](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/awscloudwatchreceiver)。
+  如需了解更多配置选项,请参阅 [CloudWatch 接收器文档](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/awscloudwatchreceiver)。
 
   **替换以下内容：**
 
   * `${CLICKSTACK_API_KEY}` → 使用您先前设置的环境变量
-  * `http://localhost:4318` → ClickStack 端点地址（如为远程部署，请使用 ClickStack 主机地址）
+  * `http://localhost:4318` → ClickStack 端点（如果是远程运行，请使用 ClickStack 主机地址）
   * `us-east-1` → 您的 AWS 区域
   * 日志组名称/前缀 → 您实际的 CloudWatch 日志组
 
@@ -268,9 +268,9 @@ AWS CloudWatch 是一项用于监控 AWS 资源和应用程序的服务。虽然
 
   收集器运行后：
 
-  1. 在浏览器中打开 [http://localhost:8080](http://localhost:8080)（或您的 ClickStack URL）以访问 HyperDX
+  1. 在浏览器中打开 http://localhost:8080（或您的 ClickStack URL）以访问 HyperDX
   2. 转到 **Logs** 视图
-  3. 等待 1–2 分钟，日志会开始出现（具体时间取决于你的轮询间隔设置）
+  3. 等待 1–2 分钟，日志会开始出现（具体时间取决于您的轮询间隔设置）
   4. 在 CloudWatch 日志组中搜索日志
 
   <Image img={log_search_view} alt="日志搜索视图" />
@@ -280,7 +280,7 @@ AWS CloudWatch 是一项用于监控 AWS 资源和应用程序的服务。虽然
   * `ResourceAttributes['aws.region']`：您的 AWS 区域（例如：“us-east-1”）
   * `ResourceAttributes['cloudwatch.log.group.name']`：CloudWatch 日志组名称
   * `ResourceAttributes['cloudwatch.log.stream']`: 日志流名称
-  * `Body`: 实际的日志消息内容
+  * `Body`: 日志消息的实际内容
 
   <Image img={error_log_column_values} alt="错误日志列值" />
 </VerticalStepper>

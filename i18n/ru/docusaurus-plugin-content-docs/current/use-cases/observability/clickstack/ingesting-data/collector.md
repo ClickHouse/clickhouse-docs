@@ -66,7 +66,7 @@ import ExtendingConfig from '@site/i18n/ru/docusaurus-plugin-content-docs/curren
 
     #### Настройка экземпляра Managed ClickStack
 
-    Все Docker-образы, включающие OpenTelemetry collector, можно настроить для использования экземпляра Managed ClickStack через переменные окружения `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` и `CLICKHOUSE_PASSWORD`:
+    Все Docker-образы, включающие коллектор OpenTelemetry, можно настроить для использования экземпляра Managed ClickStack через переменные окружения `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` и `CLICKHOUSE_PASSWORD`:
 
     Например, образ «all-in-one»:
 
@@ -159,7 +159,7 @@ import ExtendingConfig from '@site/i18n/ru/docusaurus-plugin-content-docs/curren
 
     #### Docker Compose
 
-    При использовании Docker Compose изменяйте конфигурацию коллектора, используя те же переменные окружения, что и выше:
+    При использовании Docker Compose изменяйте конфигурацию коллектора с помощью тех же переменных окружения, что и выше:
 
     ```yaml
       otel-collector:
@@ -513,7 +513,7 @@ export BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true
 
 </VerticalStepper>
 
-#### Перенос существующих данных (необязательно) {#migrating-existing-data}
+#### Перенос существующих данных (необязательно)
 
 Чтобы перенести старые данные в новые таблицы формата JSON:
 

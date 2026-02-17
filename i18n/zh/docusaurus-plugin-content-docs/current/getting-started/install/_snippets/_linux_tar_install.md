@@ -1,20 +1,19 @@
-# 使用 tgz 归档文件安装 ClickHouse \{#install-clickhouse-using-tgz-archives\}
+# 使用 tgz 压缩包安装 ClickHouse \{#install-clickhouse-using-tgz-archives\}
 
-> 对于无法安装 `deb` 或 `rpm` 软件包的 Linux 发行版,建议使用官方预编译的 `tgz` 归档文件。
+> 建议在无法安装 `deb` 或 `rpm` 软件包的所有 Linux 发行版上使用官方预编译的 `tgz` 压缩包进行安装。
 
 <VerticalStepper>
 
 ## 下载并安装最新稳定版本 \{#install-latest-stable\}
 
-所需版本可以使用 `curl` 或 `wget` 从仓库 https://packages.clickhouse.com/tgz/ 下载。
-随后需要将下载的压缩包解压缩，并使用安装脚本完成安装。
+可以使用 `curl` 或 `wget` 从仓库 https://packages.clickhouse.com/tgz/ 下载所需版本。
+然后解压下载的压缩包，并使用安装脚本进行安装。
 
 下面是安装最新稳定版本的示例。
 
 :::note
-对于生产环境，推荐使用最新的 `stable` 版本。
-你可以在这个 [GitHub 页面](https://github.com/ClickHouse/ClickHouse/tags)
-中查找到带有 `-stable` 后缀的发布版本号。
+在生产环境中，建议使用最新的 `stable` 版本。
+您可以在这个 [GitHub 页面](https://github.com/ClickHouse/ClickHouse/tags) 上找到带有 `-stable` 后缀的发行版本号。
 :::
 
 ## 获取最新的 ClickHouse 版本 \{#get-latest-version\}
@@ -29,20 +28,20 @@ export LATEST_VERSION
 
 ## 检测系统架构 \{#detect-system-architecture\}
 
-检测系统架构，并相应设置 ARCH 变量：
+检测系统架构并相应地设置 ARCH 变量：
 
 ```bash
 case $(uname -m) in
-  x86_64) ARCH=amd64 ;;         # For Intel/AMD 64-bit processors
-  aarch64) ARCH=arm64 ;;        # For ARM 64-bit processors
-  *) echo "Unknown architecture $(uname -m)"; exit 1 ;; # Exit if architecture isn't supported
+  x86_64) ARCH=amd64 ;;         # 对于 Intel/AMD 64 位处理器
+  aarch64) ARCH=arm64 ;;        # 对于 ARM 64 位处理器
+  *) echo "Unknown architecture $(uname -m)"; exit 1 ;; # 如果架构不受支持则退出
 esac
 ```
 
-## 为每个 ClickHouse 组件下载 tar 包 \{#download-tarballs\}
+## 为每个 ClickHouse 组件下载压缩包 \{#download-tarballs\}
 
-为每个 ClickHouse 组件下载 tar 包。该循环会优先尝试特定架构的
-软件包，如果不存在则退回到通用软件包。
+为每个 ClickHouse 组件下载压缩包。该循环会优先尝试与架构相关的
+软件包，如果失败则回退到通用包。
 
 ```bash
 for PKG in clickhouse-common-static clickhouse-common-static-dbg clickhouse-server clickhouse-client clickhouse-keeper
@@ -54,39 +53,39 @@ done
 
 ## 解压并安装软件包 \{#extract-and-install\}
 
-运行下面的命令以解压并安装下列软件包：
+运行以下命令来解压并安装这些软件包：
 - `clickhouse-common-static`
 
 ```bash
-# Extract and install clickhouse-common-static package
+# 解压并安装 clickhouse-common-static 软件包
 tar -xzvf "clickhouse-common-static-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
 ```
 
-* `clickhouse-common-static-dbg`
+- `clickhouse-common-static-dbg`
 
 ```bash
-# Extract and install debug symbols package
+# 解压并安装调试符号软件包
 tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
 ```
 
-* `clickhouse-server`
+- `clickhouse-server`
 
 ```bash
-# Extract and install server package with configuration
+# 解压并安装包含配置的服务端软件包
 tar -xzvf "clickhouse-server-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-server-$LATEST_VERSION.tgz"
 sudo "clickhouse-server-$LATEST_VERSION/install/doinst.sh" configure
-sudo /etc/init.d/clickhouse-server start  # Start the server
+sudo /etc/init.d/clickhouse-server start  # 启动服务端
 ```
 
-* `clickhouse-client`
+- `clickhouse-client`
 
 ```bash
-# Extract and install client package
+# 解压并安装客户端软件包
 tar -xzvf "clickhouse-client-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-client-$LATEST_VERSION.tgz"
 sudo "clickhouse-client-$LATEST_VERSION/install/doinst.sh"

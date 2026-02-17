@@ -110,7 +110,7 @@ import TabItem from '@theme/TabItem';
 
     ### コレクターへのデータ送信
 
-    ClickStack にデータを送信するには、OpenTelemetry collector が公開している次のエンドポイントを OpenTelemetry インストルメンテーションの送信先として指定します。
+    ClickStack にデータを送信するには、OpenTelemetry collector が公開している次のエンドポイントを OpenTelemetry インストゥルメンテーションの送信先として指定します。
 
     * **HTTP (OTLP):** `http://localhost:4318`
     * **gRPC (OTLP):** `localhost:4317`
@@ -131,7 +131,7 @@ import TabItem from '@theme/TabItem';
     OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
     ```
 
-    エージェントも同様に、すべての OTLP 通信にこの認可ヘッダーを含める必要があります。たとえば、エージェントとして [OTel collector の contrib distribution](https://github.com/open-telemetry/opentelemetry-collector-contrib) をデプロイする場合、OTLP exporter を使用できます。この [構造化ログファイル](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz) を取り込むエージェント構成の例を以下に示します。認可キーを指定する必要がある点に注意してください（`<YOUR_API_INGESTION_KEY>` を参照）。
+    エージェントも同様に、すべての OTLP 通信にこの Authorization ヘッダーを含める必要があります。たとえば、エージェントとして [OTel collector の contrib distribution](https://github.com/open-telemetry/opentelemetry-collector-contrib) をデプロイする場合、OTLP exporter を使用できます。この [構造化ログファイル](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz) を取り込むエージェント構成の例を以下に示します。API インジェストキーを指定する必要がある点に注意してください（`<YOUR_API_INGESTION_KEY>` を参照）。
 
     ```yaml
     # clickhouse-agent-config.yaml

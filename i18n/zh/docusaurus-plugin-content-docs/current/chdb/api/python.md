@@ -2066,7 +2066,7 @@ query(sql, fmt='CSV')
 它不反映通过游标执行的查询。
 :::
 
-***
+---
 
 #### `rollback` \{#rollback\}
 

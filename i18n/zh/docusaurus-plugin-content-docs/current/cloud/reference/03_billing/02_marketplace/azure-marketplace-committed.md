@@ -28,8 +28,6 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 - ClickHouse 基于特定合同条款提供的专属报价。
 
-
-
 ## 注册步骤 \{#steps-to-sign-up\}
 
 1. 您应该已经收到一封包含链接的电子邮件，用于查看并接受您的专属私有优惠（private offer）。

@@ -110,12 +110,12 @@ import TabItem from '@theme/TabItem';
 
     ### 向 collector 发送数据
 
-    要向 ClickStack 发送数据，请将您的 OpenTelemetry 插桩配置为指向由 OpenTelemetry collector 提供的以下端点：
+    要向 ClickStack 发送数据，请将您的 OpenTelemetry 埋点指向由 OpenTelemetry collector 暴露的以下端点：
 
     * **HTTP (OTLP)：** `http://localhost:4318`
     * **gRPC (OTLP)：** `localhost:4317`
 
-    对于支持 OpenTelemetry 的[语言 SDK](/use-cases/observability/clickstack/sdks) 和遥测库，您只需在应用程序中设置 `OTEL_EXPORTER_OTLP_ENDPOINT` 环境变量即可：
+    对于支持 OpenTelemetry 的[语言 SDK](/use-cases/observability/clickstack/sdks)和遥测库，您只需在应用中设置 `OTEL_EXPORTER_OTLP_ENDPOINT` 环境变量即可：
 
     ```shell
     export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318

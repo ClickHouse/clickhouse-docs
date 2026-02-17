@@ -4,7 +4,7 @@ title: 'Helm'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 2
-description: 'Развертывание ClickStack с помощью Helm — стек обсервабилити ClickHouse'
+description: 'Развертывание ClickStack с помощью Helm — стек обсервабилити для ClickHouse'
 doc_type: 'guide'
 keywords: ['Helm-чарт ClickStack', 'развертывание ClickHouse с помощью Helm', 'установка HyperDX с помощью Helm', 'Kubernetes-стек обсервабилити', 'развертывание ClickStack в Kubernetes']
 ---

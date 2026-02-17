@@ -53,6 +53,7 @@ ENGINE = Null
 Null テーブルに対してマテリアライズドビューを作成できます。つまり、テーブルに書き込まれたデータはビューには反映されますが、元の生データそのものは破棄されます。
 :::
 
+
 ## 月次集計テーブルとマテリアライズドビュー \{#monthly-aggregated-table-and-materialized-view\}
 
 最初のマテリアライズドビューのために `Target` テーブルを作成する必要があります。この例では `analytics.monthly_aggregated_data` とし、月単位およびドメイン名単位でビュー数の合計を保存します。
@@ -83,6 +84,7 @@ GROUP BY
     domain_name,
     month
 ```
+
 
 ## 年次集計テーブルとマテリアライズドビュー \{#yearly-aggregated-table-and-materialized-view\}
 
@@ -129,6 +131,7 @@ GROUP BY
 もし CollapsingMergeTree、ReplacingMergeTree、あるいは SummingMergeTree を使用していて、カスケード構成のマテリアライズドビューを作成する予定がある場合は、ここで説明している制限事項を理解しておく必要があります。
 :::
 
+
 ## サンプルデータ \{#sample-data\}
 
 ここで、カスケードマテリアライズドビューをテストするために、いくつかのデータを挿入します。
@@ -154,6 +157,7 @@ Ok.
 ```
 
 ここでは、期待どおりの結果と突き合わせて検証しやすいように、小さなデータセットを使用しています。小さなデータセットでフローが正しく動作することを確認できたら、その設定のまま大規模なデータに切り替えることができます。
+
 
 ## 結果 \{#results\}
 
@@ -252,6 +256,7 @@ GROUP BY
 2 rows in set. Elapsed: 0.004 sec.
 ```
 
+
 ## 複数のソーステーブルを単一のターゲットテーブルに結合する \{#combining-multiple-source-tables-to-single-target-table\}
 
 マテリアライズドビューは、複数のソーステーブルを 1 つのターゲットテーブルに結合するためにも使用できます。これは、`UNION ALL` のロジックに近いマテリアライズドビューを作成する際に有用です。
@@ -274,7 +279,7 @@ CREATE TABLE analytics.clicks
 ;
 ```
 
-次に、結合済みのメトリクスセットを格納する `Target` テーブルを作成します。
+次に、結合されたメトリクスのセットを格納する `Target` テーブルを作成します。
 
 ```sql
 CREATE TABLE analytics.daily_overview
@@ -320,7 +325,7 @@ GROUP BY
 ;
 ```
 
-これで値を挿入すると、その値は `Target` テーブルの対応する列ごとに集計されます。
+これで値を挿入すると、その値は `Target` テーブルの対応するカラムごとに集計されます。
 
 ```sql
 INSERT INTO analytics.impressions (domain_name, event_time)
@@ -353,7 +358,7 @@ GROUP BY
 ;
 ```
 
-このクエリを実行すると、次のような結果が得られます。
+このクエリを実行すると、次のような出力になります。
 
 ```response
 ┌────on_date─┬─domain_name────┬─impressions─┬─clicks─┐

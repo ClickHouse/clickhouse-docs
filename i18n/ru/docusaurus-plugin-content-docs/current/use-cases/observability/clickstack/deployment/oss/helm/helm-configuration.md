@@ -198,6 +198,7 @@ spec:
 kubectl -n ingress-nginx get pods -l app.kubernetes.io/name=ingress-nginx -o jsonpath="{.items[0].spec.containers[0].image}"
 ```
 
+
 ## Входной шлюз для OTel collector \{#otel-collector-ingress\}
 
 Если вам необходимо опубликовать конечные точки OTel collector (для трассировок, метрик и логов) через входной шлюз, используйте конфигурацию `additionalIngresses`. Это полезно для отправки телеметрических данных из‑вне кластера или при использовании пользовательского домена для collector.
@@ -233,6 +234,7 @@ hyperdx:
 :::note
 Если вам не нужно открывать OTel collector во внешний доступ, вы можете пропустить эту конфигурацию. Для большинства пользователей достаточно общей настройки входного шлюза.
 :::
+
 
 ## Диагностика проблем с входным шлюзом \{#troubleshooting-ingress\}
 
@@ -270,6 +272,7 @@ curl -I https://hyperdx.yourdomain.com/_next/static/chunks/main-xxxx.js
 **Очистите кэш браузера и CDN:**
 
 * После изменений очистите кэш браузера и кэш CDN/прокси, чтобы избежать использования устаревших версий ресурсов
+
 
 ## Настройка значений \{#customizing-values\}
 

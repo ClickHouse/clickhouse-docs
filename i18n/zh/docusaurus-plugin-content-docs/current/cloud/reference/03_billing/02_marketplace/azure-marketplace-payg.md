@@ -144,8 +144,6 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <Image img={azure_marketplace_payg_12} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
 
-
-
 <br />
 
-14. 如果您遇到任何问题，欢迎随时联系[我们的支持团队](https://clickhouse.com/support/program)。
+14. 如果遇到任何问题，请随时联系[我们的支持团队](https://clickhouse.com/support/program)。

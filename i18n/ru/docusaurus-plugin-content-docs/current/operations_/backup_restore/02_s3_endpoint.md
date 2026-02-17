@@ -8,6 +8,7 @@ doc_type: 'guide'
 
 import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
+
 # РЕЗЕРВНОЕ КОПИРОВАНИЕ / ВОССТАНОВЛЕНИЕ на или с S3-эндпоинта \{#backup-to-a-local-disk\}
 
 В этой статье рассматривается создание и восстановление резервных копий в/из бакета S3 через S3-эндпоинт.
@@ -28,11 +29,11 @@ import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operati
 
 Для использования этого метода потребуется следующая информация:
 
-| Параметр          | Пример                                                       |
-| ----------------- | ------------------------------------------------------------ |
-| Конечная точка S3 | `https://backup-ch-docs.s3.us-east-1.amazonaws.com/backups/` |
-| Идентификатор ключа доступа     | `BKIOZLE2VYN3VXXTP9RC`                                       |
-| Секретный ключ доступа | `40bwYnbqN7xU8bVePaUCh3+YEyGXu8UOMV9ANpwL`                   |
+| Параметр                    | Пример                                                       |
+| --------------------------- | ------------------------------------------------------------ |
+| Конечная точка S3           | `https://backup-ch-docs.s3.us-east-1.amazonaws.com/backups/` |
+| Идентификатор ключа доступа | `BKIOZLE2VYN3VXXTP9RC`                                       |
+| Секретный ключ доступа      | `40bwYnbqN7xU8bVePaUCh3+YEyGXu8UOMV9ANpwL`                   |
 
 :::tip
 Создание корзины S3 рассматривается в разделе [«Использование объектного хранилища S3 в качестве диска ClickHouse»](/integrations/data-ingestion/s3/index.md#configuring-s3-for-clickhouse-use)
@@ -44,7 +45,9 @@ import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operati
 S3('<s3 endpoint>/<directory>', '<access key id>', '<secret access key>', '<extra_credentials>')
 ```
 
-<br/>
+<br />
+
+
 <VerticalStepper headerLevel="h4">
 
 #### Настройка \{#create-a-table\}
@@ -142,9 +145,9 @@ RESTORE TABLE data AS test_db.test_table_restored FROM S3(
 └──────────────────────────────────────┴──────────┘
 ```
 
-#### Проверка количества записей \{#verify-the-count\}
+#### Проверка количества строк \{#verify-the-count\}
 
-В исходную таблицу `data` было выполнено две вставки: одна на 1 000 строк и одна на 100 строк, всего 1 100 строк.
+В исходную таблицу `data` выполнялись две вставки: одна на 1 000 строк и одна на 100 строк, всего 1 100. 
 Убедитесь, что восстановленная таблица содержит 1 100 строк:
 
 ```sql
@@ -160,7 +163,7 @@ FROM test_db.test_table_restored
 
 #### Проверка содержимого \{#verify-the-content\}
 
-Следующий запрос сравнивает содержимое исходной таблицы `test_table` с восстановленной таблицей `test_table_restored`:
+Это сравнивает содержимое исходной таблицы `test_table` с восстановленной таблицей `test_table_restored`:
 
 ```sql
 SELECT throwIf((

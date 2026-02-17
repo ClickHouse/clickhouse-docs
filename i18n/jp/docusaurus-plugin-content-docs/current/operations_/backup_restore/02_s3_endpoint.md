@@ -8,6 +8,7 @@ doc_type: 'guide'
 
 import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
+
 # S3 エンドポイントを利用したバックアップ / リストア \{#backup-to-a-local-disk\}
 
 この記事では、S3 エンドポイント経由で S3 バケットにバックアップを保存したり、S3 バケット上のバックアップからリストアしたりする方法について説明します。
@@ -28,8 +29,8 @@ import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operati
 
 この方法を使用するには、以下の情報が必要です:
 
-| パラメータ         | 例                                                      |
-| ----------------- | ------------------------------------------------------------ |
+| パラメータ        | 例                                                            |
+| ------------ | ------------------------------------------------------------ |
 | S3エンドポイント    | `https://backup-ch-docs.s3.us-east-1.amazonaws.com/backups/` |
 | アクセスキーID     | `BKIOZLE2VYN3VXXTP9RC`                                       |
 | シークレットアクセスキー | `40bwYnbqN7xU8bVePaUCh3+YEyGXu8UOMV9ANpwL`                   |
@@ -44,7 +45,9 @@ S3バケットの作成については、[「S3オブジェクトストレージ
 S3('<s3 endpoint>/<directory>', '<access key id>', '<secret access key>', '<extra_credentials>')
 ```
 
-<br/>
+<br />
+
+
 <VerticalStepper headerLevel="h4">
 
 #### セットアップ \{#create-a-table\}
@@ -142,10 +145,10 @@ RESTORE TABLE data AS test_db.test_table_restored FROM S3(
 └──────────────────────────────────────┴──────────┘
 ```
 
-#### 件数の検証 \{#verify-the-count\}
+#### 行数の検証 \{#verify-the-count\}
 
-元のテーブル`data`には2回の挿入が行われ、1回目は1,000行、2回目は100行で、合計1,100行です。
-復元されたテーブルに1,100行が含まれていることを検証します:
+元のテーブル`data`には2回のINSERTが行われており、1回目は1,000行、2回目は100行で、合計は1,100行です。
+復元されたテーブルに1,100行が存在することを検証します:
 
 ```sql
 SELECT count()
@@ -160,7 +163,7 @@ FROM test_db.test_table_restored
 
 #### 内容の検証 \{#verify-the-content\}
 
-元のテーブル`test_table`の内容と復元されたテーブル`test_table_restored`の内容を比較します:
+これは、元のテーブル`test_table`の内容と、復元されたテーブル`test_table_restored`の内容を比較します:
 
 ```sql
 SELECT throwIf((

@@ -3,12 +3,12 @@
 ## Требования \{#requirements\}
 
 :::note
-Для установки ClickHouse в Windows потребуется WSL (подсистема Windows для Linux).
+Для установки ClickHouse на Windows вам понадобится WSL (Windows Subsystem for Linux).
 :::
 
 <VerticalStepper>
 
-## Установка WSL \{#install-wsl\}
+## Установите WSL \{#install-wsl\}
 
 Откройте Windows PowerShell от имени администратора и выполните следующую команду:
 
@@ -16,31 +16,32 @@
 wsl --install
 ```
 
-Вас попросят ввести новое имя пользователя UNIX и пароль. После ввода выбранных имени пользователя и пароля должно появиться сообщение, подобное следующему:
+Вас попросят ввести новое имя пользователя и пароль UNIX. После того как вы
+введёте желаемые имя пользователя и пароль, вы должны увидеть сообщение, похожее на:
 
 ```bash
 Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
 ```
 
-## Установите ClickHouse с помощью скрипта curl \{#install-clickhouse-via-script-using-curl\}
+## Установите ClickHouse с помощью скрипта через curl \{#install-clickhouse-via-script-using-curl\}
 
-Выполните следующую команду, чтобы установить ClickHouse с помощью скрипта curl:
+Выполните следующую команду, чтобы установить ClickHouse с помощью скрипта через curl:
 
 ```bash
 curl https://clickhouse.com/ | sh
 ```
 
-Если скрипт успешно выполнен, вы увидите сообщение:
+Если скрипт был успешно выполнен, вы увидите сообщение:
 
 ```bash
 Successfully downloaded the ClickHouse binary, you can run it as:
   ./clickhouse
 ```
 
-## Запуск clickhouse-local \{#start-clickhouse-local\}
+## Запустите clickhouse-local \{#start-clickhouse-local\}
 
-`clickhouse-local` позволяет обрабатывать локальные и удалённые файлы с
-использованием мощного SQL-синтаксиса ClickHouse и без необходимости настройки. Данные таблиц
+`clickhouse-local` позволяет обрабатывать локальные и удалённые файлы, используя
+мощный SQL-синтаксис ClickHouse, без необходимости в конфигурации. Данные таблиц
 хранятся во временном каталоге, поэтому после перезапуска `clickhouse-local`
 ранее созданные таблицы больше недоступны.
 
@@ -50,9 +51,9 @@ Successfully downloaded the ClickHouse binary, you can run it as:
 ./clickhouse
 ```
 
-## Запуск clickhouse-server \{#start-clickhouse-server\}
+## Запустите clickhouse-server \{#start-clickhouse-server\}
 
-Если вы хотите обеспечить сохранность данных, вам нужно запустить `clickhouse-server`. Вы можете
+Если вы хотите сохранять данные, вам потребуется запустить `clickhouse-server`. Вы можете
 запустить сервер ClickHouse с помощью следующей команды:
 
 ```bash

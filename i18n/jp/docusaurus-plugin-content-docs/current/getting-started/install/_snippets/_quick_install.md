@@ -1,26 +1,24 @@
-# curl でスクリプトを実行して ClickHouse をインストールする \{#install-clickhouse-via-script-using-curl\}
+# curl を使用したスクリプトによる ClickHouse のインストール \{#install-clickhouse-via-script-using-curl\}
 
-本番環境向けに ClickHouse をインストールする必要がない場合、最も手早くセットアップする方法は、curl を使ってインストールスクリプトを実行することです。このスクリプトは、利用中の OS に適したバイナリを自動的に判別します。
+本番環境向けに ClickHouse をインストールする必要がない場合、最も手早くセットアップする方法は、curl を使ってインストールスクリプトを実行することです。このスクリプトは、使用している OS に適したバイナリを自動的に判別します。
 
 <VerticalStepper>
 
 ## curl を使用して ClickHouse をインストールする \{#install-clickhouse-using-curl\}
 
-以下のコマンドを実行して、使用しているオペレーティングシステム向けの単一のバイナリをダウンロードします。
+お使いのオペレーティングシステム向けの単一バイナリをダウンロードするには、次のコマンドを実行します。
 
 ```bash
 curl https://clickhouse.com/ | sh
 ```
 
 :::note
-Mac をお使いの方へ: バイナリの開発元を検証できないというエラーが発生する場合は、[こちら](/knowledgebase/fix-developer-verification-error-in-macos) を参照してください。
+Mac ユーザー向け: バイナリの開発元を検証できないというエラーが発生する場合は、[こちら](/knowledgebase/fix-developer-verification-error-in-macos)を参照してください。
 :::
 
 ## clickhouse-local を起動する \{#start-clickhouse-local\}
 
-`clickhouse-local` を使用すると、ClickHouse の強力な SQL 構文を利用して、
-ローカルおよびリモートファイルを事前の設定なしに処理できます。テーブルデータは一時領域に保存されるため、
-`clickhouse-local` を再起動すると、以前に作成したテーブルは利用できなくなります。
+`clickhouse-local` を使用すると、ClickHouse の強力な SQL 構文を用いてローカルおよびリモートファイルを処理でき、追加の設定も不要です。テーブルデータは一時的な場所に保存されるため、`clickhouse-local` を再起動すると、以前に作成したテーブルは利用できなくなります。
 
 [clickhouse-local](/operations/utilities/clickhouse-local) を起動するには、次のコマンドを実行します。
 
@@ -30,7 +28,7 @@ Mac をお使いの方へ: バイナリの開発元を検証できないとい�
 
 ## clickhouse-server を起動する \{#start-clickhouse-server\}
 
-データを永続化する場合は、`clickhouse-server` を起動します。ClickHouse サーバーは、次のコマンドで起動できます。
+データを永続化したい場合は、`clickhouse-server` を実行する必要があります。ClickHouse サーバーは次のコマンドで起動できます。
 
 ```bash
 ./clickhouse server

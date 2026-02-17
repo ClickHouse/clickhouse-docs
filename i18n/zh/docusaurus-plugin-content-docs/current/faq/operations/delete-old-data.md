@@ -37,6 +37,7 @@ SET allow_experimental_lightweight_delete = true;
 
 :::
 
+
 ## ALTER DELETE \{#alter-delete\}
 
 ALTER DELETE 使用异步批处理操作来删除行。与 DELETE FROM 不同，在执行 ALTER DELETE 之后但在批处理操作完成之前运行的查询，仍然会包含计划删除的行。有关更多详细信息，请参阅 [ALTER DELETE](/sql-reference/statements/alter/delete.md) 文档。
