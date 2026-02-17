@@ -1,4 +1,4 @@
-personal_ws-1.1 en 4016 
+personal_ws-1.1 en 4035 
 AArch
 ACLs
 AICPA
@@ -336,6 +336,8 @@ DataLakeCatalog
 DataLens
 DataPacket
 DataSource
+DataStore
+DataStores
 DataTime
 DataTypes
 DatabaseCatalog
@@ -409,6 +411,8 @@ Doxygen
 Draxlr
 Dremio
 Dresseler
+Dtype
+DuckDB
 Dunamalijevs
 Durre
 ECMA
@@ -752,6 +756,7 @@ LOCALTIMESTAMP
 LONGLONG
 LOONGARCH
 LaGuardia
+LaTeX
 Lakehouses
 Lakekeeper
 LangChain
@@ -901,6 +906,7 @@ Monotonicity
 Montreal
 MsgPack
 MsgPackUUIDRepresentation
+MultiIndex
 MultiLineString
 MultiPolygon
 Multiline
@@ -1126,6 +1132,7 @@ PointDistKm
 PointDistM
 PointDistRads
 PolarDB
+Polars
 PooledConnectionLifetime
 PostGIS
 PostHistory
@@ -2268,6 +2275,7 @@ dplyr
 dragonbox
 dropdown
 dropoff
+dtype
 dumpColumnStructure
 durations
 ePHI
@@ -3080,9 +3088,9 @@ permalink
 permalinked
 permalinks
 persistency
-pgbench
 pgRouting
 pgSQL
+pgbench
 pgvector
 phpclickhouse
 picklist
@@ -3191,6 +3199,7 @@ protobuf
 protobuflist
 protobufsingle
 protocol
+provisioner
 proxied
 prql
 pseudorandom
@@ -4025,11 +4034,3 @@ znode
 znodes
 zookeeperSessionUptime
 zstd
-DataStore
-DataStores
-Dtype
-LaTeX
-DuckDB
-Polars
-MultiIndex
-dtype

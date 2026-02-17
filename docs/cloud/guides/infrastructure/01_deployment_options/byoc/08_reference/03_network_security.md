@@ -10,6 +10,19 @@ doc_type: 'reference'
 import Image from '@theme/IdealImage';
 import byoc_tailscale from '@site/static/images/cloud/reference/byoc-tailscale-1.png';
 
+## Connections between ClickHouse Control Plane and Your BYOC VPC {#connection-between-clickhouse-and-byoc}
+
+The ClickHouse Cloud control plane maintains several types of connections to operate and support your BYOC deployment:
+
+| Purpose | Connection type | Notes |
+|---------|-----------------|-------|
+| **Daily operations — Kubernetes API server** | Public with IP filtering (default) or Tailscale | Management services talk to the EKS API server over the public network, restricted by IP allow lists. After initial deployment, you can optionally switch this to Tailscale for private access. |
+| **Daily operations — AWS APIs** | ClickHouse VPC → AWS | Management services call AWS APIs (e.g., EKS, EC2) from ClickHouse Cloud’s own VPC to AWS. This does not involve your VPC or Tailscale. |
+| **Troubleshooting — ClickHouse service** | Tailscale | ClickHouse engineers access the ClickHouse service (e.g., system tables) for diagnostics via Tailscale. |
+| **Troubleshooting — Kubernetes API server** | Tailscale | ClickHouse engineers access the EKS API server for cluster diagnostics via Tailscale. |
+
+The following section describes how the **Tailscale** private network is used for troubleshooting and optional management access.
+
 ## Tailscale Private Network {#tailscale-private-network}
 
 Tailscale provides a zero-trust, private network connection between ClickHouse Cloud's management services and your BYOC deployment. This secure channel enables ClickHouse engineers to perform troubleshooting and management operations without requiring public internet access or complex VPN configurations.

@@ -61,7 +61,7 @@ ClickHouse Cloud needs cross-account IAM permissions to provision and manage res
 
 These permissions are granted through a cross-account IAM role (AWS) or service account (GCP) that you create during the initial onboarding process. The role follows the principle of least privilege, with permissions scoped to only what's necessary for BYOC operations.
 
-For detailed information about the specific permissions required, see the [BYOC Privilege Reference](/cloud/reference/byoc/reference/priviledge).
+For detailed information about the specific permissions required, see the [BYOC Privilege Reference](/cloud/reference/byoc/reference/privilege).
 
 ### Tailscale Private Network Connection {#tailscale-private-network}
 
