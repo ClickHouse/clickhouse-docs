@@ -16,6 +16,7 @@ import createMirror from '@site/static/images/managed-postgres/peerdb/create-mir
 import tablePicker from '@site/static/images/managed-postgres/peerdb/table-picker.png';
 import initialLoad from '@site/static/images/managed-postgres/peerdb/initial-load.png';
 import mirrors from '@site/static/images/managed-postgres/peerdb/mirrors.png';
+import settings from '@site/static/images/managed-postgres/peerdb/settings.png';
 
 
 # 使用 PeerDB 迁移到托管 Postgres \{#peerdb-migration\}
@@ -58,6 +59,42 @@ import mirrors from '@site/static/images/managed-postgres/peerdb/mirrors.png';
 
 <Image img={peers} alt="Peers 列表" size="md" border />
 
+### 获取源数据库的模式转储 \{#migration-peerdb-source-schema-dump\}
+
+为了在目标数据库中复刻源数据库的结构，我们需要获取源数据库的模式转储。可以使用 `pg_dump` 为源 PostgreSQL 数据库创建仅包含模式的转储：
+
+```shell
+pg_dump -d 'postgresql://<user>:<password>@<host>:<port>/<database>'  -s > source_schema.sql
+```
+
+在将其应用到目标数据库之前，我们需要从 dump 文件中移除 UNIQUE 约束和索引，以避免这些约束阻止 PeerDB 向目标表摄取数据。可以使用以下方式将它们移除：
+
+```shell
+# Preview
+grep -n "CONSTRAINT.*UNIQUE" <dump_file_path>
+grep -n "CREATE UNIQUE INDEX" <dump_file_path>
+grep -n -E "(CONSTRAINT.*UNIQUE|CREATE UNIQUE INDEX)" <dump_file_path>
+
+# Remove
+sed -i.bak -E '/CREATE UNIQUE INDEX/,/;/d; /(CONSTRAINT.*UNIQUE|ADD CONSTRAINT.*UNIQUE)/d' <dump_file_path>
+```
+
+
+### 将 schema dump 应用于目标数据库 \{#migration-peerdb-apply-schema-dump\}
+
+在清理完 schema dump 文件后，可以通过 `psql` [连接](../connection) 到目标 ClickHouse Managed Postgres 数据库，并执行该 schema dump 文件，将其应用到目标数据库中：
+
+```shell
+psql -h <target_host> -p <target_port> -U <target_username> -d <target_database> -f source_schema.sql
+```
+
+在目标端，我们希望 PeerDB 的数据摄取不会因为外键约束而被阻塞。为此，可以修改（在上文 target peer 中使用的）目标角色，将其 `session_replication_role` 设置为 `replica`：
+
+```sql
+ALTER ROLE <target_role> SET session_replication_role = replica;
+```
+
+
 ## 创建 mirror \{#migration-peerdb-create-mirror\}
 
 接下来，我们需要创建一个 mirror，用于定义源和目标 peer 之间的数据迁移流程。在 PeerDB UI 中，点击侧边栏中的 "Mirrors"，进入 "Mirrors" 部分。要创建一个新的 mirror，点击 `+ New mirror` 按钮。
@@ -66,10 +103,20 @@ import mirrors from '@site/static/images/managed-postgres/peerdb/mirrors.png';
 
 1. 为你的 mirror 指定一个能够描述此次迁移的名称。
 2. 从下拉菜单中选择之前创建的源和目标 peer。
-3. 如果你希望在初始迁移后持续保持目标数据库与源数据库同步，可以选择启用 continuous replication。否则，在 **Advanced settings** 中，可以启用 **Initial copy only** 来执行一次性迁移。
+3. 请确保：
+
+- Soft delete 为关闭状态（OFF）。
+- 展开 `Advanced settings`。确保 **Postgres type system is enabled** 已启用，并且 **PeerDB columns are disabled** 处于禁用状态。
+
+<Image img={settings} alt="Mirror Settings" size="md" border />
+
 4. 选择你要迁移的表。你可以选择特定的表，也可以从源数据库中选择所有表。
 
 <Image img={tablePicker} alt="Table Picker" size="md" border />
+
+:::info Selecting tables
+请确保目标数据库中的目标表名与源表名保持一致，因为在前面的步骤中我们是直接迁移了 schema 本身。
+:::
 
 5. 配置完成 mirror 的相关设置后，点击 `Create mirror` 按钮。
 

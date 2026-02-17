@@ -5056,16 +5056,18 @@ ClickHouse использует этот параметр для всех таб
 
 Следующие настройки могут быть сконфигурированы с помощью подтегов:
 
-| Setting                                    | Description                                                                                                                                                                                                                                   |
-| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `node`                                     | Конечная точка (endpoint) ZooKeeper. Можно задать несколько конечных точек. Например: `<node index="1"><host>example_host</host><port>2181</port></node>`. Атрибут `index` задает порядок узлов при попытке подключения к кластеру ZooKeeper. |
-| `operation_timeout_ms`                     | Максимальный таймаут одной операции в миллисекундах.                                                                                                                                                                                          |
-| `session_timeout_ms`                       | Максимальный таймаут клиентской сессии в миллисекундах.                                                                                                                                                                                       |
-| `root` (optional)                          | znode, который используется как корневой для znode-ов, используемых сервером ClickHouse.                                                                                                                                                      |
-| `fallback_session_lifetime.min` (optional) | Минимальный предел времени жизни сессии ZooKeeper на fallback-узле, когда основной узел недоступен (балансировка нагрузки). Задается в секундах. По умолчанию: 3 часа.                                                                        |
-| `fallback_session_lifetime.max` (optional) | Максимальный предел времени жизни сессии ZooKeeper на fallback-узле, когда основной узел недоступен (балансировка нагрузки). Задается в секундах. По умолчанию: 6 часов.                                                                      |
-| `identity` (optional)                      | Пользователь и пароль, требуемые ZooKeeper для доступа к запрашиваемым znode-ам.                                                                                                                                                              |
-| `use_compression` (optional)               | Включает сжатие в протоколе Keeper, если установлено значение true.                                                                                                                                                                           |
+| Setting                                         | Description                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `node`                                          | Конечная точка (endpoint) ZooKeeper. Можно задать несколько конечных точек. Например: `<node index="1"><host>example_host</host><port>2181</port></node>`. Атрибут `index` задает порядок узлов при попытке подключения к кластеру ZooKeeper.                                                                                                                                                                   |
+| `operation_timeout_ms`                          | Максимальный таймаут одной операции в миллисекундах.                                                                                                                                                                                                                                                                                                                                                            |
+| `session_timeout_ms`                            | Максимальный таймаут клиентской сессии в миллисекундах.                                                                                                                                                                                                                                                                                                                                                         |
+| `root` (optional)                               | znode, который используется как корневой для znode-ов, используемых сервером ClickHouse.                                                                                                                                                                                                                                                                                                                        |
+| `fallback_session_lifetime.min` (optional)      | Минимальный предел времени жизни сессии ZooKeeper на fallback-узле, когда основной узел недоступен (балансировка нагрузки). Задается в секундах. По умолчанию: 3 часа.                                                                                                                                                                                                                                          |
+| `fallback_session_lifetime.max` (optional)      | Максимальный предел времени жизни сессии ZooKeeper на fallback-узле, когда основной узел недоступен (балансировка нагрузки). Задается в секундах. По умолчанию: 6 часов.                                                                                                                                                                                                                                        |
+| `identity` (optional)                           | Пользователь и пароль, требуемые ZooKeeper для доступа к запрашиваемым znode-ам.                                                                                                                                                                                                                                                                                                                                |
+| `use_compression` (optional)                    | Включает сжатие в протоколе Keeper, если установлено значение true.                                                                                                                                                                                                                                                                                                                                             |
+| `use_xid_64` (optional)                         | Включает 64-битные идентификаторы транзакций. Установите значение `true`, чтобы включить расширенный формат идентификаторов транзакций. По умолчанию: `false`.                                                                                                                                                                                                                                                  |
+| `pass_opentelemetry_tracing_context` (optional) | Включает передачу контекста трассировки OpenTelemetry в запросы Keeper. При включении для операций Keeper создаются спаны трассировки, что позволяет выполнять распределённую трассировку между ClickHouse и Keeper. Требует включённой настройки `use_xid_64`. См. [Tracing ClickHouse Keeper Requests](/operations/opentelemetry#tracing-clickhouse-keeper-requests) для подробностей. По умолчанию: `false`. |
 
 Также существует настройка `zookeeper_load_balancing` (optional), которая позволяет выбрать алгоритм выбора узла ZooKeeper:
 
@@ -5098,15 +5100,19 @@ ClickHouse использует этот параметр для всех таб
     <identity>user:password</identity>
     <!--<zookeeper_load_balancing>random / in_order / nearest_hostname / hostname_levenshtein_distance / first_or_random / round_robin</zookeeper_load_balancing>-->
     <zookeeper_load_balancing>random</zookeeper_load_balancing>
+    <!-- Optional. Enable 64-bit transaction IDs. -->
+    <use_xid_64>false</use_xid_64>
+    <!-- Optional. Enable OpenTelemetry tracing context propagation (requires use_xid_64). -->
+    <pass_opentelemetry_tracing_context>false</pass_opentelemetry_tracing_context>
 </zookeeper>
 ```
 
 **См. также**
 
-* [Репликация](../../engines/table-engines/mergetree-family/replication.md)
-* [ZooKeeper Programmer&#39;s Guide](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
-* [Опциональное защищённое взаимодействие между ClickHouse и ZooKeeper](/operations/ssl-zookeeper)
 
+- [Репликация](../../engines/table-engines/mergetree-family/replication.md)
+- [ZooKeeper Programmer&#39;s Guide](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
+- [Опциональное защищённое взаимодействие между ClickHouse и ZooKeeper](/operations/ssl-zookeeper)
 
 ## zookeeper_log \{#zookeeper_log\}
 

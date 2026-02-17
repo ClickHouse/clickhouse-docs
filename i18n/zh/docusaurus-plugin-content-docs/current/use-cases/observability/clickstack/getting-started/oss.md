@@ -59,7 +59,7 @@ ClickStack 镜像现在发布为 `clickhouse/clickstack-*`（之前为 `docker.h
 ```shell
 # 修改命令以挂载路径
 docker run \
-  --name clickstack
+  --name clickstack \
   -p 8123:8123 \
   -p 8080:8080 \
   -p 4317:4317 \

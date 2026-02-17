@@ -59,7 +59,7 @@ ClickStack イメージは現在 `clickhouse/clickstack-*` として公開され
 ```shell
 # パスをマウントするようにコマンドを変更
 docker run \
-  --name clickstack
+  --name clickstack \
   -p 8123:8123 \
   -p 8080:8080 \
   -p 4317:4317 \

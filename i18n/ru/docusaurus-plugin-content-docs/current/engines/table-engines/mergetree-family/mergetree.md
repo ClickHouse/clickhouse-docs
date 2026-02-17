@@ -349,14 +349,16 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 
 Движок таблицы `MergeTree` поддерживает следующие типы индексов пропуска данных.
 Подробнее о том, как индексы пропуска данных могут использоваться для оптимизации производительности,
-см. раздел «Понимание индексов пропуска данных в ClickHouse»(/optimize/skipping-indexes).
+см. раздел ["Понимание индексов пропуска данных в ClickHouse"](/optimize/skipping-indexes).
 
 - [`MinMax`](#minmax) индекс
 - [`Set`](#set) индекс
 - [`bloom_filter`](#bloom-filter) индекс
 - [`ngrambf_v1`](#n-gram-bloom-filter) индекс
 - [`tokenbf_v1`](#token-bloom-filter) индекс
-- [Параметры индексов пропуска данных](/optimize/skipping-indexes)
+- [`text`]({#text}) индекс
+- [`vector_similarity`]({#vector-similarity}) индекс
+- [`unknown`]({#unknown}) индекс
 
 #### Индекс MinMax \{#minmax\}
 
@@ -496,7 +498,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 ### Текстовый индекс \{#text\}
 
-Поддерживает полнотекстовый поиск, подробнее см. [здесь](textindexes.md).
+Строит инвертированный индекс по токенизированным строковым данным, обеспечивая эффективный и детерминированный полнотекстовый поиск. Подробнее см. [здесь](textindexes.md).
 
 #### Сходство векторов \{#vector-similarity\}
 

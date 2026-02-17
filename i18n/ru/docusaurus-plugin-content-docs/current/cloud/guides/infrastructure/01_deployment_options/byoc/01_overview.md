@@ -43,17 +43,16 @@ BYOC разработан специально для крупномасштаб
   - Просмотр сервисов и их статуса.
 - **Управляемое резервное копирование и восстановление**
 - **Ручное вертикальное и горизонтальное масштабирование.**
-- **Автоматический режим простоя (auto idling)**
+- **Автоматический режим простоя и пробуждения (auto idling/wake up)**
 - **Warehouses**: разделение вычислительных ресурсов (Compute-Compute Separation).
 - **Сеть с нулевым доверием через Tailscale.**
 - **Мониторинг**:
-  - Облачная консоль включает встроенные дашборды состояния для мониторинга работоспособности сервиса.
-  - Сбор метрик Prometheus для централизованного мониторинга с помощью Prometheus, Grafana и Datadog. Инструкции по настройке см. в [документации по Prometheus](/cloud/reference/byoc/observability#prometheus-monitoring).
+  - Сбор метрик Prometheus для централизованного мониторинга с помощью Prometheus, Grafana и Datadog. Инструкции по настройке см. в разделе [BYOC Observability](/cloud/reference/byoc/observability).
 - **VPC Peering**
-- **Интеграции**: полный список см. [на этой странице](/integrations).
 - **Защищённый S3**
 - **[AWS PrivateLink](https://aws.amazon.com/privatelink/)**
 - **[GCP Private Service Connect](https://docs.cloud.google.com/vpc/docs/private-service-connect)**
+- **Интеграции**: полный список см. [на этой странице](/integrations).
 
 ### Планируемые возможности (в настоящее время не поддерживаются) \{#planned-features-currently-unsupported\}
 

@@ -439,16 +439,6 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает явное использование команды `OPTIMIZE` для таблиц Iceberg.
 
-## allow_experimental_insert_into_iceberg \{#allow_experimental_insert_into_iceberg\}
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
-
-Разрешает выполнение запросов `insert` в Iceberg.
-
 ## allow_experimental_join_right_table_sorting \{#allow_experimental_join_right_table_sorting\}
 
 <ExperimentalBadge/>
@@ -637,6 +627,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Разрешает использование функций, которые используют библиотеку Hyperscan. Отключите, чтобы избежать потенциально длительного времени компиляции и чрезмерного использования ресурсов.
+
+## allow_insert_into_iceberg \{#allow_insert_into_iceberg\}
+
+<BetaBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Вставка в Iceberg переведена в стадию Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+Разрешает выполнение запросов `insert` в Iceberg.
 
 ## allow_introspection_functions \{#allow_introspection_functions\}
 
@@ -2272,7 +2272,7 @@ SETTINGS convert_query_to_cnf = true;
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "Включает дедупликацию по умолчанию для всех синхронных и асинхронных вставок."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "Новая настройка для управления дедупликацией для запросов INSERT."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "Новая настройка для управления дедупликацией для запросов INSERT."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "Включает дедупликацию по умолчанию для всех синхронных и асинхронных вставок."}]}]}/>
 
 Включает или отключает блочную дедупликацию при выполнении `INSERT INTO` (для таблиц Replicated\*).
 Эта настройка переопределяет настройки `insert_deduplicate` и `async_insert_deduplicate`.
@@ -3346,9 +3346,9 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 **Псевдонимы**: `allow_experimental_full_text_index`
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Текстовый индекс был переведён в статус Beta."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Текстовый индекс получил статус GA."}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "Текстовый индекс был переведён в статус Beta."}]}]}/>
 
 Если имеет значение true, разрешает использование текстового индекса.
 
@@ -3629,7 +3629,7 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 Если отключено, объявления в родительских предложениях WITH будут рассматриваться так, как если бы они были сделаны в текущей области видимости.
 
-Обратите внимание, что это параметр совместимости для нового анализатора, который позволяет выполнять некоторые некорректные запросы, которые старый анализатор мог исполнять.
+Обратите внимание, что это параметр совместимости для анализатора, который позволяет выполнять некоторые некорректные запросы, которые старый анализатор мог исполнять.
 
 ## enable_shared_storage_snapshot_in_query \{#enable_shared_storage_snapshot_in_query\}
 
@@ -8060,6 +8060,20 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 ```
 
 
+## opentelemetry_start_keeper_trace_probability \{#opentelemetry_start_keeper_trace_probability\}
+
+<SettingsInfoBlock type="FloatAuto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+Вероятность начала трассировки для запроса ZooKeeper — вне зависимости от того, существует родительская трассировка или нет.
+
+Возможные значения:
+
+- 'auto' — равна значению настройки opentelemetry_start_trace_probability
+- 0 — трассировка отключена
+- от 0 до 1 — вероятность (например, 1.0 = всегда включать)
+
 ## opentelemetry_start_trace_probability \{#opentelemetry_start_trace_probability\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
@@ -9649,7 +9663,7 @@ a   Tuple(
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "Разрешает объединение фильтров в плане запроса"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "Разрешает объединение фильтров в плане запроса. Это необходимо для корректной поддержки проталкивания фильтров (filter push-down) новым анализатором."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "Разрешает объединение фильтров в плане запроса"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "Разрешает объединение фильтров в плане запроса. Это необходимо для корректной поддержки проталкивания фильтров (filter push-down) анализатором."}]}]}/>
 
 Разрешает объединение фильтров в плане запроса.
 

@@ -5051,16 +5051,18 @@ ClickHouse が [ZooKeeper](http://zookeeper.apache.org/) クラスターと連�
 
 以下の設定はサブタグで指定できます:
 
-| Setting                                    | Description                                                                                                                                                    |
-| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `node`                                     | ZooKeeper のエンドポイント。複数のエンドポイントを指定できます。例: `<node index="1"><host>example_host</host><port>2181</port></node>`。`index` 属性は ZooKeeper クラスターへ接続を試行する際のノードの順序を指定します。 |
-| `operation_timeout_ms`                     | 1 回の操作の最大タイムアウト時間 (ミリ秒)。                                                                                                                                       |
-| `session_timeout_ms`                       | クライアントセッションの最大タイムアウト時間 (ミリ秒)。                                                                                                                                  |
-| `root` (optional)                          | ClickHouse サーバーが使用する znode 群のルートとして使用される znode。                                                                                                                |
-| `fallback_session_lifetime.min` (optional) | プライマリが利用できない場合にフォールバックノードへの ZooKeeper セッションの存続期間に対する最小制限 (ロードバランシング)。秒単位で指定します。デフォルト: 3 時間。                                                                    |
-| `fallback_session_lifetime.max` (optional) | プライマリが利用できない場合にフォールバックノードへの ZooKeeper セッションの存続期間に対する最大制限 (ロードバランシング)。秒単位で指定します。デフォルト: 6 時間。                                                                    |
-| `identity` (optional)                      | 指定された znode にアクセスするために ZooKeeper が要求するユーザー名およびパスワード。                                                                                                           |
-| `use_compression` (optional)               | true に設定すると Keeper プロトコルで圧縮を有効にします。                                                                                                                            |
+| Setting                                         | Description                                                                                                                                                                                                                                                                                             |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `node`                                          | ZooKeeper のエンドポイント。複数のエンドポイントを指定できます。例: `<node index="1"><host>example_host</host><port>2181</port></node>`。`index` 属性は ZooKeeper クラスターへ接続を試行する際のノードの順序を指定します。                                                                                                                                          |
+| `operation_timeout_ms`                          | 1 回の操作の最大タイムアウト時間 (ミリ秒)。                                                                                                                                                                                                                                                                                |
+| `session_timeout_ms`                            | クライアントセッションの最大タイムアウト時間 (ミリ秒)。                                                                                                                                                                                                                                                                           |
+| `root` (optional)                               | ClickHouse サーバーが使用する znode 群のルートとして使用される znode。                                                                                                                                                                                                                                                         |
+| `fallback_session_lifetime.min` (optional)      | プライマリが利用できない場合にフォールバックノードへの ZooKeeper セッションの存続期間に対する最小制限 (ロードバランシング)。秒単位で指定します。デフォルト: 3 時間。                                                                                                                                                                                                             |
+| `fallback_session_lifetime.max` (optional)      | プライマリが利用できない場合にフォールバックノードへの ZooKeeper セッションの存続期間に対する最大制限 (ロードバランシング)。秒単位で指定します。デフォルト: 6 時間。                                                                                                                                                                                                             |
+| `identity` (optional)                           | 指定された znode にアクセスするために ZooKeeper が要求するユーザー名およびパスワード。                                                                                                                                                                                                                                                    |
+| `use_compression` (optional)                    | true に設定すると Keeper プロトコルで圧縮を有効にします。                                                                                                                                                                                                                                                                     |
+| `use_xid_64` (optional)                         | 64 ビットのトランザクション ID を有効にします。拡張トランザクション ID 形式を有効にするには `true` を設定します。デフォルト: `false`。                                                                                                                                                                                                                       |
+| `pass_opentelemetry_tracing_context` (optional) | OpenTelemetry のトレーシングコンテキストを Keeper リクエストへ伝播させます。有効にすると Keeper の各操作に対してトレーススパンが作成され、ClickHouse と Keeper をまたいだ分散トレーシングが可能になります。この設定を利用するには `use_xid_64` を有効にしておく必要があります。詳細は [Tracing ClickHouse Keeper Requests](/operations/opentelemetry#tracing-clickhouse-keeper-requests) を参照してください。デフォルト: `false`。 |
 
 `zookeeper_load_balancing` 設定 (オプション) もあり、ZooKeeper ノード選択のアルゴリズムを指定できます:
 
@@ -5093,15 +5095,19 @@ ClickHouse が [ZooKeeper](http://zookeeper.apache.org/) クラスターと連�
     <identity>user:password</identity>
     <!--<zookeeper_load_balancing>random / in_order / nearest_hostname / hostname_levenshtein_distance / first_or_random / round_robin</zookeeper_load_balancing>-->
     <zookeeper_load_balancing>random</zookeeper_load_balancing>
+    <!-- Optional. Enable 64-bit transaction IDs. -->
+    <use_xid_64>false</use_xid_64>
+    <!-- Optional. Enable OpenTelemetry tracing context propagation (requires use_xid_64). -->
+    <pass_opentelemetry_tracing_context>false</pass_opentelemetry_tracing_context>
 </zookeeper>
 ```
 
 **関連項目**
 
-* [レプリケーション](../../engines/table-engines/mergetree-family/replication.md)
-* [ZooKeeper プログラマーズガイド](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
-* [ClickHouse と ZooKeeper 間のセキュア通信（オプション）](/operations/ssl-zookeeper)
 
+- [レプリケーション](../../engines/table-engines/mergetree-family/replication.md)
+- [ZooKeeper プログラマーズガイド](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
+- [ClickHouse と ZooKeeper 間のセキュア通信（オプション）](/operations/ssl-zookeeper)
 
 ## zookeeper_log \{#zookeeper_log\}
 

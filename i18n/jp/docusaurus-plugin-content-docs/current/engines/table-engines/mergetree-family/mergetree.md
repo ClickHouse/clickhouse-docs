@@ -356,6 +356,8 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`bloom_filter`](#bloom-filter) インデックス
 - [`ngrambf_v1`](#n-gram-bloom-filter) インデックス
 - [`tokenbf_v1`](#token-bloom-filter) インデックス
+- [`text`]({#text}) インデックス
+- [`vector_similarity`]({#vector-similarity}) インデックス
 
 #### MinMax スキップインデックス \{#minmax\}
 
@@ -495,7 +497,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 ### テキスト索引 \{#text\}
 
-全文検索をサポートしています。詳細は[こちら](textindexes.md)を参照してください。
+トークン化された文字列データに対して倒立索引を構築し、効率的かつ決定論的な全文検索を実現します。詳細は[こちら](textindexes.md)を参照してください。
 
 #### ベクトル類似性 \{#vector-similarity\}
 
