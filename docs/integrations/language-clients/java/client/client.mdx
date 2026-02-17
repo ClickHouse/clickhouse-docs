@@ -763,6 +763,74 @@ Complete examples code is stored in the repo in a 'example` [folder](https://git
 - [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - example of how to use the client in a Spring Boot application.
 - [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - example of how to use the client in Ktor (Kotlin) application.
 
+
+## Reading Data {#reading-data}
+
+There are two common ways to read data:
+
+- `query()` method and using `ClickHouseBinaryFormatReader` for streaming reads. In this case only active record is loaded into memory. 
+This method requires fast read otherwise it may cause server write timeout. 
+- `queryAll()` method and using `GenericRecord` for convenient row access. In this case the whole result set is loaded into memory.
+
+### Reading Arrays {#reading-arrays}
+
+**`ClickHouseBinaryFormatReader` Methods**
+
+- `getList(...)` - reads any `Array(...)` as `List<T>`. Good default for flexible typed reads.
+- `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)`
+  - best for 1D arrays of primitive-compatible values.
+- `getStringArray(...)`
+  - for `Array(String)` (and enum values represented as names).
+- `getObjectArray(...)`
+  - generic option for any `Array(...)` element type, including nested arrays. Use to read arrays with nullable values and nested arrays.
+
+Index-based and name-based overloads are available for all methods. Index is 1-based. Index-based do dirrect access to a column. 
+Name-based methods require index lookup each time.
+
+
+```java
+try (QueryResponse response = client.query("SELECT * FROM my_table").get()) {
+    ClickHouseBinaryFormatReader reader = client.newBinaryFormatReader(response);
+    while (reader.next() != null) {
+        
+        Object[] uint64 = reader.getObjectArray("uint64_arr"); // Array(UInt64) -> BigInteger[]
+        Object[] arr2d = reader.getObjectArray("arr2d");       // Array(Array(Int64)) -> Object[]
+
+        // nested arrays are returned as nested Object[]:
+        Object[] firstInner = (Object[]) arr2d[0];
+        Long firstValue = (Long) firstInner[0];
+    }
+}
+```
+
+**`GenericRecord` Methods**
+
+- `getObjectArray(...)` - reads any `Array(...)` as `Object[]`. Good default for flexible typed reads.
+- `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)`
+  - best for 1D arrays of primitive-compatible values.
+- `getStringArray(...)`
+  - for `Array(String)` (and enum values represented as names).
+- `getObjectArray(...)`
+  - generic option for any `Array(...)` element type, including nested arrays. Use to read arrays with nullable values.
+
+Index-based and name-based overloads are available for all methods. Index is 1-based. Index-based do dirrect access to a column. 
+Name-based methods require index lookup each time.
+
+```java
+try (QueryResponse response = client.query("SELECT * FROM my_table").get()) {
+    List<GenericRecord> rows = client.queryAll(
+        "SELECT int_arr, arr2d_nullable FROM test_arrays ORDER BY id");
+
+    for (GenericRecord row : rows) {
+        Object[] intArr = row.getObjectArray("int_arr");                 // Array(Int32) -> Integer[]
+        Object[] arr2d = row.getObjectArray("arr2d_nullable");           // Array(Array(Nullable(Int32)))
+
+        Object[] inner = (Object[]) arr2d[0];
+        Object maybeNull = inner[1]; // may be null
+    }
+}
+
+
 ## Migration Guide {#migration_guide}
 
 
