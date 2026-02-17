@@ -3733,8 +3733,8 @@
       "permanent": true
     },
     {
-      "source": "/docs/cloud/security/compliance/hipaa-onboarding#deploy-hippa-services",
-      "destination": "/docs/cloud/security/compliance/hipaa-onboarding#deploy-hipaa-services",
+      "source": "/docs/cloud/security/compliance/hipaa-onboarding/#deploy-hippa-services",
+      "destination": "/docs/cloud/security/compliance/hipaa-onboarding/#deploy-hipaa-services",
       "permanent": true
     }
   ]
