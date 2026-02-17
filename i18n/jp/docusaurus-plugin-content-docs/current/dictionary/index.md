@@ -293,7 +293,7 @@ INSERT INTO posts_with_location SELECT Id, PostTypeId::UInt8, AcceptedAnswerId, 
 0 rows in set. Elapsed: 36.830 sec. Processed 238.98 million rows, 2.64 GB (6.49 million rows/s., 71.79 MB/s.)
 ```
 
-これで、投稿の大半が発信されている場所の名称を取得できるようになりました。
+これで、投稿の大半がどの場所から来ているか、その場所名を取得できるようになりました。
 
 ```sql
 SELECT Location, count() AS c
@@ -313,6 +313,7 @@ LIMIT 4
 4 rows in set. Elapsed: 0.142 sec. Processed 59.82 million rows, 1.08 GB (420.73 million rows/s., 7.60 GB/s.)
 Peak memory usage: 666.82 MiB.
 ```
+
 
 ## Dictionary の高度なトピック \{#advanced-dictionary-topics\}
 

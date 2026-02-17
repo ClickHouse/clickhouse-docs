@@ -348,7 +348,6 @@ ORDER BY
 
 **Q5**
 
-
 ```sql
 SELECT
     n_name,
@@ -391,7 +390,7 @@ WHERE
 ```
 
 ::::note
-2025年2月時点では、Decimal 型の加算に関するバグにより、このクエリはそのままでは動作しません。対応する Issue: [https://github.com/ClickHouse/ClickHouse/issues/70136](https://github.com/ClickHouse/ClickHouse/issues/70136)
+2025年2月時点では、Decimal 型の加算に関するバグにより、このクエリはそのままでは動作しません。対応する Issue: https://github.com/ClickHouse/ClickHouse/issues/70136
 
 以下の代替クエリは正常に動作し、リファレンス結果が返ることを確認済みです。
 
@@ -845,7 +844,6 @@ WHERE
 ```
 
 **Q20**
-
 
 ```sql
 SELECT

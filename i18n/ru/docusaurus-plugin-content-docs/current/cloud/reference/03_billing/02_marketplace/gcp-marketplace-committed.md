@@ -29,8 +29,6 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 - Индивидуальное предложение от ClickHouse на основе определённых условий контракта.
 
-
-
 ## Порядок регистрации \{#steps-to-sign-up\}
 
 1. Вы должны были получить электронное письмо со ссылкой для просмотра и принятия вашего индивидуального предложения.
@@ -132,6 +130,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 9. Вы должны получить электронное письмо, подтверждающее регистрацию:
 
 <br />
+
 <br />
 
 <Image img={gcp_marketplace_payg_6} size="md" alt="Подтверждающее письмо GCP Marketplace" border/>

@@ -9,6 +9,7 @@ doc_type: 'guide'
 
 import CommonUserRolesContent from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
 
+
 # 常见访问管理查询 \{#common-access-management-queries\}
 
 :::tip 自托管
@@ -29,7 +30,7 @@ IDENTIFIED WITH sha256_password BY 'P!@ssword42!';
 ```
 
 ```sql
-授予 default_role 给 clickhouse_admin;
+GRANT default_role TO clickhouse_admin;
 ```
 
 :::note
@@ -37,6 +38,7 @@ IDENTIFIED WITH sha256_password BY 'P!@ssword42!';
 
 这些自动创建的 SQL Console 用户具有 `default` 角色。
 :::
+
 
 ## 免密认证 \{#passwordless-authentication\}
 
@@ -57,9 +59,9 @@ GRANT <some grants> TO sql-console-role:<email>;
 
 ```sql
 CREATE ROLE OR REPLACE sql_console_sa_role;
-GRANT <所需的具体访问级别> TO sql_console_sa_role;
+GRANT <whatever level of access> TO sql_console_sa_role;
 CREATE ROLE OR REPLACE sql_console_pm_role;
-GRANT <所需的具体访问级别> TO sql_console_pm_role;
+GRANT <whatever level of access> TO sql_console_pm_role;
 CREATE ROLE OR REPLACE `sql-console-role:christoph@clickhouse.com`;
 CREATE ROLE OR REPLACE `sql-console-role:jake@clickhouse.com`;
 CREATE ROLE OR REPLACE `sql-console-role:zach@clickhouse.com`;

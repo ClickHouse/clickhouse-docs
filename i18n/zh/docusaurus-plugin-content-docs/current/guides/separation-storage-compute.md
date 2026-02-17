@@ -142,7 +142,7 @@ INSERT INTO my_s3_table (id, column1)
   VALUES (1, 'abc'), (2, 'xyz');
 ```
 
-让我们来确认一下这些行是否已成功插入：
+让我们来验证一下这些行是否已成功插入：
 
 ```sql
 SELECT * FROM my_s3_table;

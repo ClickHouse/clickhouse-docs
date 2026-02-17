@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Amazon RDS Postgres'
-description: '将 Amazon RDS Postgres 配置为 ClickPipes 的数据源'
+description: '将 Amazon RDS Postgres 设置为 ClickPipes 的数据源'
 slug: /integrations/clickpipes/postgres/source/rds
-title: 'RDS Postgres 数据源设置指南'
+title: 'RDS Postgres 源设置指南'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
 integration:
@@ -19,20 +19,21 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-# RDS Postgres 数据源配置指南 \{#rds-postgres-source-setup-guide\}
+
+# RDS Postgres 源配置指南 \{#rds-postgres-source-setup-guide\}
 
 ## 支持的 Postgres 版本 \{#supported-postgres-versions\}
 
-ClickPipes 支持 Postgres 12 及以上版本。
+ClickPipes 支持 Postgres 12 及更高版本。
 
 ## 启用逻辑复制 \{#enable-logical-replication\}
 
-如果您的 RDS 实例已配置以下设置，则可以跳过本节：
+如果您的 RDS 实例已经配置了以下设置，可以跳过本节：
 
 * `rds.logical_replication = 1`
 * `wal_sender_timeout = 0`
 
-如果您之前使用过其他数据复制工具，这些设置通常已经为您预先配置好了。
+如果您之前已经使用过其他数据复制工具，这些设置通常已经预先配置好。
 
 ```text
 postgres=> SHOW rds.logical_replication ;
@@ -48,13 +49,13 @@ postgres=> SHOW wal_sender_timeout ;
 (1 row)
 ```
 
-如果尚未进行相应配置，请按照以下步骤操作：
+如果尚未完成配置，请按照以下步骤操作：
 
-1. 为您的 Postgres 版本创建一个包含所需设置的新参数组：
+1. 针对您的 Postgres 版本创建一个新的参数组，并配置以下必需参数：
    * 将 `rds.logical_replication` 设置为 1
    * 将 `wal_sender_timeout` 设置为 0
 
-<Image img={parameter_group_in_blade} alt="在 RDS 中哪里可以找到参数组？" size="lg" border />
+<Image img={parameter_group_in_blade} alt="在 RDS 中在哪里找到参数组？" size="lg" border />
 
 <Image img={change_rds_logical_replication} alt="修改 rds.logical_replication" size="lg" border />
 
@@ -62,16 +63,16 @@ postgres=> SHOW wal_sender_timeout ;
 
 2. 将新的参数组应用到您的 RDS Postgres 数据库
 
-<Image img={modify_parameter_group} alt="为 RDS Postgres 应用新的参数组" size="lg" border />
+<Image img={modify_parameter_group} alt="使用新参数组修改 RDS Postgres" size="lg" border />
 
-3. 重启您的 RDS 实例以使更改生效
+3. 重启您的 RDS 实例以应用更改
 
 <Image img={reboot_rds} alt="重启 RDS Postgres" size="lg" border />
 
 
 ## 配置数据库用户 \{#configure-database-user\}
 
-以管理员身份连接到你的 RDS Postgres 实例，并执行以下命令：
+以管理员用户身份连接到你的 RDS Postgres 实例，并执行以下命令：
 
 1. 为 ClickPipes 创建一个专用用户：
 
@@ -79,7 +80,7 @@ postgres=> SHOW wal_sender_timeout ;
     CREATE USER clickpipes_user PASSWORD 'some-password';
     ```
 
-2. 为你在上一步创建的用户授予 schema 级别的只读访问权限。以下示例展示了对 `public` schema 的权限配置。对于每个包含你希望复制的表的 schema，重复执行这些命令：
+2. 为你在上一步创建的用户授予模式级别的只读访问权限。以下示例展示了对 `public` 模式的权限设置。对于每个包含你希望复制的表的模式，请重复执行这些命令：
 
     ```sql
     GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -93,10 +94,10 @@ postgres=> SHOW wal_sender_timeout ;
     GRANT rds_replication TO clickpipes_user;
     ```
 
-4. 使用你希望复制的表创建一个 [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html)。我们强烈建议仅在该 publication 中包含所需的表，以避免额外的性能开销。
+4. 为你希望复制的表创建一个[publication](https://www.postgresql.org/docs/current/logical-replication-publication.html)。我们强烈建议只在 publication 中包含你需要的表，以避免性能开销。
 
    :::warning
-   任何包含在 publication 中的表都必须定义 **primary key（主键）**，_或者_ 将其 **replica identity** 配置为 `FULL`。关于作用域设置的指导，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
+   任何包含在 publication 中的表必须定义有 **primary key**，_或者_ 将其 **replica identity** 配置为 `FULL`。有关如何设置 publication 作用范围的指导，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
    :::
 
    - 为特定表创建 publication：
@@ -105,38 +106,38 @@ postgres=> SHOW wal_sender_timeout ;
       CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
       ```
 
-   - 为特定 schema 中的所有表创建 publication：
+   - 为特定模式中的所有表创建 publication：
 
       ```sql
       CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
       ```
 
-   `clickpipes` publication 将包含由指定表生成的一组变更事件，之后会被用来摄取复制流。
+   `clickpipes` publication 将包含由指定表生成的一组变更事件，并将在后续用于摄取该复制流。
 
 ## 配置网络访问 \{#configure-network-access\}
 
 ### 基于 IP 的访问控制 \{#ip-based-access-control\}
 
-如果你想限制到 RDS 实例的访问流量，请将[文档中列出的静态 NAT IP](../../index.md#list-of-static-ips)添加到 RDS 安全组的 `Inbound rules` 中。
+如果您希望限制访问 RDS 实例的流量，请将[文档中列出的静态 NAT IP](../../index.md#list-of-static-ips) 添加到 RDS 安全组的 `Inbound rules` 中。
 
-<Image img={security_group_in_rds_postgres} alt="在 RDS Postgres 中哪里可以找到安全组？" size="lg" border/>
+<Image img={security_group_in_rds_postgres} alt="在 RDS Postgres 中查找安全组的位置" size="lg" border/>
 
-<Image img={edit_inbound_rules} alt="编辑上述安全组的入站规则" size="lg" border/>
+<Image img={edit_inbound_rules} alt="为上述安全组编辑入站规则" size="lg" border/>
 
-### 通过 AWS PrivateLink 的私有访问 \{#private-access-via-aws-privatelink\}
+### 通过 AWS PrivateLink 进行私有访问 \{#private-access-via-aws-privatelink\}
 
-要通过私有网络连接到 RDS 实例，可以使用 AWS PrivateLink。请按照我们的[适用于 ClickPipes 的 AWS PrivateLink 配置指南](/knowledgebase/aws-privatelink-setup-for-clickpipes)来完成连接设置。
+要通过私有网络连接到您的 RDS 实例，可以使用 AWS PrivateLink。请参阅我们的 [适用于 ClickPipes 的 AWS PrivateLink 设置指南](/knowledgebase/aws-privatelink-setup-for-clickpipes) 来完成连接配置。
 
-### RDS Proxy 的变通方案 \{#workarounds-for-rds-proxy\}
+### 针对 RDS Proxy 的变通方案 \{#workarounds-for-rds-proxy\}
 
-RDS Proxy 不支持逻辑复制类型的连接。如果你在 RDS 中使用动态 IP 地址且无法使用 DNS 名称或 Lambda 函数，可以考虑以下替代方案：
+RDS Proxy 不支持逻辑复制连接。如果你的 RDS 使用动态 IP 地址，且无法使用 DNS 名称或 Lambda 函数，可以考虑以下替代方案：
 
 1. 使用 cron 作业，定期解析 RDS 端点的 IP，并在发生变化时更新 NLB。
-2. 使用带有 EventBridge/SNS 的 RDS 事件通知：利用 AWS RDS 事件通知自动触发更新。
-3. 固定的 EC2 实例：部署一个 EC2 实例，作为轮询服务或基于 IP 的代理。
-4. 使用 Terraform 或 CloudFormation 等工具实现 IP 地址管理自动化。
+2. 使用结合 EventBridge/SNS 的 RDS 事件通知（RDS Event Notifications）：利用 AWS RDS 事件通知自动触发更新。
+3. 使用稳定的 EC2 实例：部署一个 EC2 实例作为轮询服务或基于 IP 的代理。
+4. 使用 Terraform 或 CloudFormation 等工具自动化 IP 地址管理。
 
 ## 下一步 \{#whats-next\}
 
-现在你可以[创建 ClickPipe](../index.md)，并开始将 Postgres 实例中的数据摄取到 ClickHouse Cloud 中。
-请务必记录下在设置 Postgres 实例时使用的连接信息，因为在创建 ClickPipe 时将会用到这些信息。
+现在您可以[创建您的 ClickPipe](../index.md)，并开始将 Postgres 实例中的数据摄取到 ClickHouse Cloud 中。
+请务必记录在设置 Postgres 实例时使用的连接详情，因为在创建 ClickPipe 的过程中您将需要用到这些信息。

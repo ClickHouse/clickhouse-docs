@@ -39,14 +39,10 @@ JOIN のパフォーマンスを改善するには、次のベストプラクテ
 * **ディスクへのスピルを伴う JOIN を避ける**: JOIN の中間状態（例: ハッシュテーブル）が非常に大きくなり、メインメモリに収まりきらない場合があります。この状況では、ClickHouse はデフォルトで out-of-memory エラーを返します。一部の JOIN アルゴリズム（下記参照。例えば [`grace_hash`](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2)、[`partial_merge`](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3)、[`full_sorting_merge`](https://clickhouse.com/blog/clickhouse-fully-supports-joins-full-sort-partial-merge-part3)）は、中間状態をディスクにスピルしつつクエリ実行を継続できます。ただし、ディスクアクセスは JOIN 処理を大きく低速化し得るため、これらのアルゴリズムを使用する際は注意が必要です。代わりに、JOIN クエリ自体を他の方法で最適化し、中間状態のサイズを削減することを推奨します。
 * **外部 JOIN における不一致のマーカーとしてのデフォルト値**: left/right/full outer join では、左/右/両方のテーブルからすべての値が含まれます。ある値に対して他方のテーブル側に JOIN パートナーが見つからない場合、ClickHouse は JOIN パートナーを特別なマーカーに置き換えます。SQL 標準では、このようなマーカーとしてデータベースは NULL を使用することが求められています。ClickHouse でこれを行うには、結果列を Nullable でラップする必要があり、その分メモリおよびパフォーマンスのオーバーヘッドが発生します。代替手段として、設定 `join_use_nulls = 0` を構成し、結果列のデータ型のデフォルト値をマーカーとして使用できます。
 
-
-
 :::note 辞書の使用には注意する
 ClickHouse で JOIN に辞書を使用する場合、設計上、辞書は重複キーを許可しないことを理解しておくことが重要です。データ読み込み時には、重複するキーは自動的に重複排除され、そのキーに対して最後に読み込まれた値だけが保持されます。この挙動により、辞書は最新または権威となる値のみが必要な 1 対 1 や多対 1 の関係に最適です。  
 一方で、1 対多や多対多の関係（例: 1 人の俳優が複数の役を持つような、役と俳優の JOIN）に辞書を使用すると、マッチした行のうち 1 行を除いてすべてが破棄され、気付かないうちにデータが失われます。結果として、辞書は複数マッチにわたって完全なリレーショナル整合性が求められるシナリオには適していません。
 :::
-
-
 
 ## 正しい JOIN アルゴリズムの選択 \{#choosing-the-right-join-algorithm\}
 

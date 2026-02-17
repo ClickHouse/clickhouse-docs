@@ -21,6 +21,7 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
+
 # 使用 CDC 将数据从 Postgres 摄取到 ClickHouse \{#ingesting-data-from-postgres-to-clickhouse-using-cdc\}
 
 你可以使用 ClickPipes 将源 Postgres 数据库中的数据摄取到 ClickHouse Cloud。源 Postgres 数据库可以托管在本地环境或云端，例如 Amazon RDS、Google Cloud SQL、Azure Database for Postgres、Supabase 等。
@@ -132,10 +133,10 @@ PgBouncer、RDS Proxy、Supabase Pooler 等 Postgres 代理不支持基于 CDC�
 
    <Image img={select_destination_db} alt="选择目标数据库" size="lg" border/>
 
-7. 你可以从源 Postgres 数据库中选择要复制的表。在选择表时，你还可以在目标 ClickHouse 数据库中重命名这些表，并排除特定列。
+7. 你可以选择希望从源 Postgres 数据库复制的表。在选择表的同时，你也可以为目标 ClickHouse 数据库中的表重命名，并排除特定的列。
 
    :::warning
-   如果你在 ClickHouse 中定义的排序键与 Postgres 中的主键不同，别忘了阅读与其相关的所有[注意事项](/integrations/clickpipes/postgres/ordering_keys)。
+   如果你在 ClickHouse 中定义的排序键和 Postgres 中的主键不同，请务必阅读与此相关的所有[注意事项](/integrations/clickpipes/postgres/ordering_keys)
    :::
 
 ### 检查权限并启动 ClickPipe \{#review-permissions-and-start-the-clickpipe\}

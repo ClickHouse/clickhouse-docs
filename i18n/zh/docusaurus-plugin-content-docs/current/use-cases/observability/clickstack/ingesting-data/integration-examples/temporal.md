@@ -52,14 +52,14 @@ Temporal 提供了一种抽象，用于构建简单、精巧且具备高弹性�
   确保您已拥有 Temporal Cloud API 密钥。您可以参照 Temporal 文档中的[身份验证指南](https://docs.temporal.io/production-deployment/cloud/metrics/openmetrics/api-reference#authentication)来创建该密钥。
 
   :::important 密钥文件
-  确保将这些凭据存储在名为 `temporal.key` 的文件中,该文件应与下方创建的配置文件位于同一目录下。此密钥应以纯文本形式存储,前后不能有空格。
+  确保将这些凭据存储在名为 `temporal.key` 的文件中，该文件应与下方创建的配置文件位于同一目录下。此密钥应以纯文本形式存储，前后不能有空格。
   :::
 
   #### 创建自定义 OTel collector 配置
 
   ClickStack 允许您通过挂载自定义配置文件并设置环境变量来扩展基础 OpenTelemetry 收集器配置。自定义配置会与 HyperDX 通过 OpAMP 管理的基础配置进行合并。
 
-  创建名为 `temporal-metrics.yaml` 的文件，包含以下配置：
+  创建名为 `temporal-metrics.yaml` 的文件,包含以下配置:
 
   ```yaml title="temporal-metrics.yaml"
   receivers:
@@ -99,7 +99,7 @@ Temporal 提供了一种抽象，用于构建简单、精巧且具备高弹性�
 
   此配置：
 
-  * 连接到 `metrics.temporal.io` 上的 Temporal Cloud
+  * 连接到 Temporal Cloud 的 `metrics.temporal.io` 端点
   * 每 60 秒采集一次指标
   * 收集[关键性能指标](https://docs.temporal.io/production-deployment/cloud/metrics/openmetrics/metrics-reference)
   * **按照 [OpenTelemetry 语义约定](https://opentelemetry.io/docs/specs/semconv/resource/#service) 设置必需的 `service.name` 资源属性**
@@ -110,7 +110,7 @@ Temporal 提供了一种抽象，用于构建简单、精巧且具备高弹性�
   * 只需在自定义配置中定义新的 receiver、processor 和 pipeline 即可
   * `memory_limiter` 和 `batch` 处理器以及 `clickhouse` exporter 已在基础 ClickStack 配置中定义完毕——只需按名称引用它们即可
   * `resource` 处理器按照 OpenTelemetry 语义约定设置必需的 `service.name` 属性
-  * 对于多个 Temporal Cloud 账户，请自定义 `service.name` 以区分它们（例如 `"temporal-prod"`、`"temporal-dev"`）
+  * 对于存在多个 Temporal Cloud 账户的情况，请自定义 `service.name` 以区分不同账户（例如 `"temporal-prod"`、`"temporal-dev"`）
     :::
 
   #### 配置 ClickStack 加载自定义配置
@@ -119,10 +119,10 @@ Temporal 提供了一种抽象，用于构建简单、精巧且具备高弹性�
 
   1. 将自定义配置文件挂载至 `/etc/otelcol-contrib/custom.config.yaml`
   2. 设置环境变量 `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
-  3. 将 `temporal.key` 文件挂载到 `/etc/otelcol-contrib/temporal.key` 路径
-  4. 确保 ClickStack 与 Temporal 之间网络互通
+  3. 将 `temporal.key` 文件挂载到 `/etc/otelcol-contrib/temporal.key` 路径下
+  4. 确保 ClickStack 与 Temporal 之间的网络连通性
 
-  所有命令均假定在存储 `temporal-metrics.yaml` 和 `temporal.key` 文件的示例目录下执行。
+  所有命令均假定在存放 `temporal-metrics.yaml` 和 `temporal.key` 文件的示例目录下执行。
 
   ##### 选项 1：Docker Compose
 
@@ -157,9 +157,9 @@ Temporal 提供了一种抽象，用于构建简单、精巧且具备高弹性�
 
   配置完成后,登录 HyperDX 并验证指标数据是否正常流入:
 
-  1. 导航到 Metrics Explorer
+  1. 进入 Metrics Explorer
   2. 搜索以 `temporal` 开头的指标（例如 `temporal_cloud_v1_workflow_success_count`、`temporal_cloud_v1_poll_timeout_count`）
-  3. 你应该会按你配置的采集间隔看到指标数据点开始出现
+  3. 你应该会看到指标数据点按照你配置的采集间隔陆续出现
 
   <Image img={temporal_metrics} alt="Temporal 指标" size="md" />
 </VerticalStepper>

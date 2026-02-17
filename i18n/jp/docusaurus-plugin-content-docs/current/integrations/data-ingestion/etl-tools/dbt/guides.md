@@ -826,7 +826,7 @@ Performs the following steps:
 This approach has the following advantages:
 
 * It is faster than the default strategy because it doesn&#39;t copy the entire table.
-* It is safer than other strategies because it doesn&#39;t modify the original table until the INSERT operation completes successfully: in case of intermediate failure, the original table is not modified.
+* It is safer than other strategies because it doesn&#39;t modify the original table until the INSERT operation completes successfully: in case of intermediate failure, the original table isn&#39;t modified.
 * It implements &quot;partitions immutability&quot; data engineering best practice. Which simplifies incremental and parallel data processing, rollbacks, etc.
 
 <Image img={dbt_07} size="lg" alt="insert overwrite インクリメンタル" />
@@ -1038,29 +1038,29 @@ dbt には、CSV ファイルからデータをロードする機能がありま
     17:03:24
     17:03:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
     ```
-
 3. データがロードされたことを確認します:
 
-```sql
-SELECT * FROM imdb_dbt.genre_codes LIMIT 10;
-```
-```response
-+-------+----+
-|genre  |code|
-+-------+----+
-|Drama  |DRA |
-|Romance|ROM |
-|Short  |SHO |
-|Mystery|MYS |
-|Adult  |ADU |
-|Family |FAM |
+    ```sql
+    SELECT * FROM imdb_dbt.genre_codes LIMIT 10;
+    ```
 
-|Action |ACT |
-|Sci-Fi |SCI |
-|Horror |HOR |
-|War    |WAR |
-+-------+----+=
-```
+    ```response
+    +-------+----+
+    |genre  |code|
+    +-------+----+
+    |Drama  |DRA |
+    |Romance|ROM |
+    |Short  |SHO |
+    |Mystery|MYS |
+    |Adult  |ADU |
+    |Family |FAM |
+
+    |Action |ACT |
+    |Sci-Fi |SCI |
+    |Horror |HOR |
+    |War    |WAR |
+    +-------+----+=
+    ```
 
 ## さらに詳しい情報 \{#further-information\}
 

@@ -35,7 +35,7 @@ ENGINE = MergeTree()
 ORDER BY (page_id, viewed_at);
 ```
 
-平均応答時間を格納する集約テーブルを作成します。なお、`avg` は複合的な状態（合計値とカウント）を必要とするため、`SimpleAggregateFunction` 型は使用できません。そのため、`AggregateFunction` 型を使用します。
+平均応答時間を格納する集約テーブルを作成します。なお、`avg` は複合的な状態（合計値とカウント）を必要とするため、`SimpleAggregateFunction` 型は使用できません。そのため、`AggregateFunction` 型を使用します:
 
 ```sql
 CREATE TABLE page_performance
@@ -48,7 +48,7 @@ ENGINE = AggregatingMergeTree()
 ORDER BY page_id;
 ```
 
-増分更新マテリアライズドビューを作成します。このビューは新しいデータに対する挿入トリガーとして機能し、上で定義した対象テーブルに中間状態のデータを保存します。
+インクリメンタルmaterialized view を作成します。このビューは新しいデータに対する挿入トリガーとして機能し、上で定義した対象テーブルに中間状態のデータを保存します。
 
 ```sql
 CREATE MATERIALIZED VIEW page_performance_mv
@@ -73,7 +73,7 @@ INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
     (3, 'About', 90);
 ```
 
-ディスク上に2つ目のパートを作成するため、データをもう少し挿入します。
+ディスク上に2つ目のパーツを作成するために、さらにデータを挿入してください:
 
 ```sql
 INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
@@ -116,7 +116,7 @@ FROM page_performance
 計算のために最適化されたバイナリ形式で保持しているためです。このバイナリ状態には、
 平均値を計算するために必要なすべての情報が含まれています。
 
-これを利用するには、`Merge` コンビネータを使用してください。
+これを利用するには、`Merge` コンビネータを使用してください:
 
 ```sql
 SELECT
@@ -140,5 +140,6 @@ ORDER BY page_id;
 ```
 
 ## 関連情報 \{#see-also\}
+
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`State`](/sql-reference/aggregate-functions/combinators#-state)

@@ -46,19 +46,19 @@ bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exp
 在 `config/initializers` 目录中创建一个名为 `hyperdx.rb` 的文件，并添加以下内容：
 
 ```ruby
-# config/initializers/hyperdx.rb {#configinitializershyperdxrb}
+# config/initializers/hyperdx.rb
 
 require 'opentelemetry-exporter-otlp'
 require 'opentelemetry/instrumentation/all'
 require 'opentelemetry/sdk'
 
 OpenTelemetry::SDK.configure do |c|
-  c.use_all() # 启用所有追踪埋点！
+  c.use_all() # enables all trace instrumentation!
 end
 
 Rails.application.configure do
   Rails.logger = Logger.new(STDOUT)
-  # Rails.logger.log_level = Logger::INFO # 默认为 DEBUG，但在生产环境中可能需要 INFO 或更高级别
+  # Rails.logger.log_level = Logger::INFO # default is DEBUG, but you might want INFO or above in production
   Rails.logger.formatter = proc do |severity, time, progname, msg|
     span_id = OpenTelemetry::Trace.current_span.context.hex_span_id
     trace_id = OpenTelemetry::Trace.current_span.context.hex_trace_id
@@ -72,9 +72,10 @@ Rails.application.configure do
       "operation" => operation }.to_json + "\n"
   end
 
-  Rails.logger.info "日志记录器已初始化!! 🐱"
+  Rails.logger.info "Logger initialized !! 🐱"
 end
 ```
+
 
 ### 配置环境变量 \{#configure-environment-variables\}
 

@@ -46,7 +46,7 @@ INSERT 操作与 SELECT 查询完全隔离，已插入数据片段的合并在�
 
 * **聚合合并（aggregating merges）**：将输入分片中的中间聚合状态合并为一个新的聚合状态。虽然这看起来有些难以理解，但本质上只是实现了增量聚合。
 
-* **TTL（time-to-live，存活时间）合并**：根据某些基于时间的规则对行进行压缩、移动或删除。
+* **TTL（time-to-live，生存时间）合并**：根据某些基于时间的规则对行进行压缩、移动或删除。
 
 这些转换的目的是将工作量（计算）从用户查询执行的时间点转移到合并阶段。这在两个方面很重要：
 
@@ -133,13 +133,13 @@ INSERT 操作与 SELECT 查询完全隔离，已插入数据片段的合并在�
 
 ## VLDB 2024 论文 \{#vldb-2024-paper\}
 
-在 2024 年 8 月，我们的第一篇研究论文被 VLDB 会议接收并发表。
-VLDB 是一个专注于超大规模数据库的国际会议，被广泛认为是数据管理领域的顶级会议之一。
+在 2024 年 8 月，我们的第一篇研究论文在 VLDB 上被接收并发表。\
+VLDB 是一个专注于超大规模数据库的国际会议，被普遍认为是数据管理领域最重要的会议之一。\
 在数百篇投稿中，VLDB 的录用率通常约为 20%。
 
-您可以阅读这篇论文的 [PDF 版本](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf)，或者我们的[网页版本](/docs/academic_overview)，其中简要介绍了 ClickHouse 中一些最有趣、也是使其如此之快的架构和系统设计组件。
+你可以阅读[论文的 PDF](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf)，或者查看我们的[网页版本](/docs/academic_overview)，其中对 ClickHouse 中最有趣、也是让它如此高速的关键架构和系统设计组件进行了简明扼要的介绍。
 
-ClickHouse 的创始人兼 CTO Alexey Milovidov 在会上进行了论文报告（幻灯片在[这里](https://raw.githubusercontent.com/ClickHouse/clickhouse-presentations/master/2024-vldb/VLDB_2024_presentation.pdf)），之后进行了问答环节（很快就时间不够了！）。
-您可以在这里观看录制的演讲：
+我们的 CTO、ClickHouse 的创建者 Alexey Milovidov 在会上做了论文报告（演示文稿在[这里](https://raw.githubusercontent.com/ClickHouse/clickhouse-presentations/master/2024-vldb/VLDB_2024_presentation.pdf)），随后进行了问答环节（时间很快就用完了！）。\
+你可以在这里观看录制的报告：
 
-<iframe width="1024" height="576" src="https://www.youtube.com/embed/7QXKBKDOkJE?si=5uFerjqPSXQWqDkF" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+<iframe width="1024" height="576" src="https://www.youtube.com/embed/7QXKBKDOkJE?si=5uFerjqPSXQWqDkF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />

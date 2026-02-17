@@ -314,10 +314,6 @@ ClickHouse Cloud 预付额度（无论是直接通过 ClickHouse 购买，还是
 通过云市场计费和直接在 ClickHouse 注册之间，在定价上没有任何差异。
 在这两种情况下，你对 ClickHouse Cloud 的使用量都会以 ClickHouse Cloud Credits（CHC）为单位进行计量，并据此计费。
 
-通过 marketplace 计费和直接向 ClickHouse 注册在价格上没有差异。  
-在这两种情况下，您对 ClickHouse Cloud 的使用量都会以 ClickHouse Cloud Credits (CHCs) 为单位进行计量和跟踪，  
-计量方式相同，并据此计费。
-
 ### 计算-计算分离如何计费？ \{#how-is-compute-compute-separation-billed\}
 
 在现有服务之外再创建一个服务时，  

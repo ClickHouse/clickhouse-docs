@@ -15,6 +15,7 @@ keywords: ['mysql', 'интеграция с базой данных', 'внеш
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
+
 # Интеграция MySQL с ClickHouse \{#integrating-mysql-with-clickhouse\}
 
 На этой странице рассматривается использование табличного движка `MySQL` для чтения данных из таблицы MySQL.
@@ -32,39 +33,39 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 1. Создайте базу данных в MySQL:
 
 ```sql
-CREATE DATABASE db1;
+  CREATE DATABASE db1;
 ```
 
 2. Создайте таблицу:
 
 ```sql
-CREATE TABLE db1.table1 (
-  id INT,
-  column1 VARCHAR(255)
-);
+  CREATE TABLE db1.table1 (
+    id INT,
+    column1 VARCHAR(255)
+  );
 ```
 
 3. Добавьте несколько строк‑примеров:
 
 ```sql
-INSERT INTO db1.table1
-  (id, column1)
-VALUES
-  (1, 'abc'),
-  (2, 'def'),
-  (3, 'ghi');
+  INSERT INTO db1.table1
+    (id, column1)
+  VALUES
+    (1, 'abc'),
+    (2, 'def'),
+    (3, 'ghi');
 ```
 
 4. Создайте пользователя для подключения к ClickHouse:
 
 ```sql
-CREATE USER 'mysql_clickhouse'@'%' IDENTIFIED BY 'Password123!';
+  CREATE USER 'mysql_clickhouse'@'%' IDENTIFIED BY 'Password123!';
 ```
 
-5. Предоставьте необходимые привилегии. (В демонстрационных целях пользователю `mysql_clickhouse` предоставляются административные привилегии.)
+5. Предоставьте необходимые привилегии. (В демонстрационных целях пользователю `mysql_clickhouse` назначаются административные привилегии.)
 
 ```sql
-GRANT ALL PRIVILEGES ON *.* TO 'mysql_clickhouse'@'%';
+  GRANT ALL PRIVILEGES ON *.* TO 'mysql_clickhouse'@'%';
 ```
 
 :::note
@@ -72,16 +73,17 @@ GRANT ALL PRIVILEGES ON *.* TO 'mysql_clickhouse'@'%';
 Обратитесь к ClickHouse [Cloud Endpoints API](//cloud/get-started/query-endpoints.md) для получения сведений об исходящем трафике.
 :::
 
+
 ### 2. Определите таблицу в ClickHouse \{#2-define-a-table-in-clickhouse\}
 
-1. Теперь давайте создадим таблицу ClickHouse, которая использует движок таблицы `MySQL`:
+1. Теперь давайте создадим таблицу ClickHouse, которая использует табличный движок `MySQL`:
 
 ```sql
-CREATE TABLE mysql_table1 (
-  id UInt64,
-  column1 String
-)
-ENGINE = MySQL('mysql-host.domain.com','db1','table1','mysql_clickhouse','Password123!')
+  CREATE TABLE mysql_table1 (
+    id UInt64,
+    column1 String
+  )
+  ENGINE = MySQL('mysql-host.domain.com','db1','table1','mysql_clickhouse','Password123!')
 ```
 
 Минимальный набор параметров:
@@ -98,71 +100,73 @@ ENGINE = MySQL('mysql-host.domain.com','db1','table1','mysql_clickhouse','Passwo
 См. страницу документации [MySQL table engine](/engines/table-engines/integrations/mysql.md) для полного списка параметров.
 :::
 
+
 ### 3. Протестируйте интеграцию \{#3-test-the-integration\}
 
 1. В MySQL вставьте пример строки:
 
 ```sql
-INSERT INTO db1.table1
-  (id, column1)
-VALUES
-  (4, 'jkl');
+  INSERT INTO db1.table1
+    (id, column1)
+  VALUES
+    (4, 'jkl');
 ```
 
-2. Обратите внимание, что таблица ClickHouse теперь содержит существующие записи из таблицы MySQL, а также новую запись, которую вы только что добавили:
+2. Обратите внимание, что таблица ClickHouse теперь содержит существующие строки из таблицы MySQL, а также новую строку, которую вы только что добавили:
 
 ```sql
-SELECT
-    id,
-    column1
-FROM mysql_table1
+  SELECT
+      id,
+      column1
+  FROM mysql_table1
 ```
 
 Должны отобразиться 4 строки:
 
 ```response
-Query id: 6d590083-841e-4e95-8715-ef37d3e95197
+  Query id: 6d590083-841e-4e95-8715-ef37d3e95197
 
-┌─id─┬─column1─┐
-│  1 │ abc     │
-│  2 │ def     │
-│  3 │ ghi     │
-│  4 │ jkl     │
-└────┴─────────┘
+  ┌─id─┬─column1─┐
+  │  1 │ abc     │
+  │  2 │ def     │
+  │  3 │ ghi     │
+  │  4 │ jkl     │
+  └────┴─────────┘
 
-Получено 4 строк. Затрачено: 0,044 сек.
+  4 rows in set. Elapsed: 0.044 sec.
 ```
 
 3. Добавим строку в таблицу ClickHouse:
 
 ```sql
-INSERT INTO mysql_table1
-  (id, column1)
-VALUES
-  (5,'mno')
+  INSERT INTO mysql_table1
+    (id, column1)
+  VALUES
+    (5,'mno')
 ```
 
 4. Обратите внимание, что в MySQL появилась новая запись:
 
 ```bash
-mysql> select id,column1 from db1.table1;
+  mysql> select id,column1 from db1.table1;
 ```
 
 Теперь вы должны увидеть новую строку:
 
 ```response
-+------+---------+
-| id   | column1 |
-+------+---------+
-|    1 | abc     |
-|    2 | def     |
-|    3 | ghi     |
-|    4 | jkl     |
-|    5 | mno     |
-+------+---------+
-5 rows in set (0.01 sec)
+  +------+---------+
+  | id   | column1 |
+  +------+---------+
+  |    1 | abc     |
+  |    2 | def     |
+  |    3 | ghi     |
+  |    4 | jkl     |
+  |    5 | mno     |
+  +------+---------+
+  5 rows in set (0.01 sec)
 ```
 
-### Итоги \{#summary\}
+
+### Краткое содержание \{#summary\}
 
 Движок таблицы `MySQL` позволяет подключить ClickHouse к MySQL для двустороннего обмена данными. Подробности смотрите на странице документации по [движку таблицы `MySQL`](/sql-reference/table-functions/mysql.md).

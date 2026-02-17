@@ -198,6 +198,7 @@ spec:
 kubectl -n ingress-nginx get pods -l app.kubernetes.io/name=ingress-nginx -o jsonpath="{.items[0].spec.containers[0].image}"
 ```
 
+
 ## OTel collector のイングレス \{#otel-collector-ingress\}
 
 OTel collector のエンドポイント（traces、metrics、logs）をイングレス経由で公開する必要がある場合は、`additionalIngresses` 設定を使用します。これは、クラスター外からテレメトリデータを送信する場合や、OTel collector 用にカスタムドメインを使用する場合に便利です。
@@ -233,6 +234,7 @@ hyperdx:
 :::note
 OTEL collector を外部公開する必要がない場合は、この設定を省略できます。ほとんどのユーザーにとっては、通常のイングレス設定だけで十分です。
 :::
+
 
 ## イングレスのトラブルシューティング \{#troubleshooting-ingress\}
 
@@ -270,6 +272,7 @@ curl -I https://hyperdx.yourdomain.com/_next/static/chunks/main-xxxx.js
 **ブラウザと CDN キャッシュのクリア:**
 
 * 設定変更後は、ブラウザキャッシュと CDN/プロキシキャッシュをクリアして、古いアセットが配信されるのを避ける
+
 
 ## 値のカスタマイズ \{#customizing-values\}
 
