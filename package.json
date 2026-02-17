@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@algolia/client-search": "^5.47.0",
-    "@clickhouse/click-ui": "^0.0.235",
+    "@clickhouse/click-ui": "^0.0.250",
     "@clickhouse/client-web": "^1.11.1",
     "@docsearch/react": "^4.5.3",
     "@docusaurus/core": "3.7.0",
