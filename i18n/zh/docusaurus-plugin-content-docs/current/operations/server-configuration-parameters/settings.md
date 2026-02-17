@@ -42,7 +42,7 @@ import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
 | `table_engines_require_grant`                   | 设置在使用特定表引擎创建表时，是否需要相应权限。                                                                                                                                                                                                                                                                    | `false` |
 | `users_without_row_policies_can_read_rows`      | 设置没有宽松 ROW POLICY 的用户是否仍然可以通过 `SELECT` 查询读取行。例如，如果有两个用户 A 和 B，并且只为 A 定义了 ROW POLICY，那么当此设置为 `true` 时，用户 B 将能看到所有行；当此设置为 `false` 时，用户 B 将看不到任何行。                                                                                                                                             | `true`  |
 
-示例：
+Example:
 
 ```xml
 <access_control_improvements>
@@ -3427,22 +3427,6 @@ ZooKeeper 客户端中用于发送和接收线程的 Linux nice 值。值越低�
 
 <SettingsInfoBlock type="Double" default_value="0.5" />用户态页面缓存中受保护队列的大小，占该缓存总大小的比例。
 
-## parquet_metadata_cache_max_entries \{#parquet_metadata_cache_max_entries\}
-
-<SettingsInfoBlock type="UInt64" default_value="5000" />parquet 元数据文件缓存的最大条目数。设置为 0 表示禁用。
-
-## parquet_metadata_cache_policy \{#parquet_metadata_cache_policy\}
-
-<SettingsInfoBlock type="String" default_value="SLRU" />Parquet 元数据缓存策略的名称。
-
-## parquet_metadata_cache_size \{#parquet_metadata_cache_size\}
-
-<SettingsInfoBlock type="UInt64" default_value="536870912" />parquet 元数据缓存的最大容量（以字节为单位）。值为 0 表示禁用。
-
-## parquet_metadata_cache_size_ratio \{#parquet_metadata_cache_size_ratio\}
-
-<SettingsInfoBlock type="Double" default_value="0.5" />在采用 SLRU 策略时，parquet 元数据缓存中受保护队列的大小，占该缓存总大小的比例。
-
 ## part_log \{#part_log\}
 
 记录与 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 相关的日志事件，例如添加或合并数据。可以使用该日志来模拟合并算法并比较它们的特性，也可以将合并过程可视化。
@@ -3483,7 +3467,7 @@ ZooKeeper 客户端中用于发送和接收线程的 Linux nice 值。值越低�
 
 <SettingsInfoBlock type="UInt64" default_value="128" />
 
-用于清理共享 MergeTree 过期分区片段的线程数。仅在 ClickHouse Cloud 中可用。
+用于清理共享 MergeTree 分区片段的清理线程数。仅在 ClickHouse Cloud 中可用。
 
 ## path \{#path\}
 

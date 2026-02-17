@@ -2246,7 +2246,9 @@ SETTINGS convert_query_to_cnf = true;
 
 ## deduplicate_blocks_in_dependent_materialized_views \{#deduplicate_blocks_in_dependent_materialized_views\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认启用对依赖 materialized view 的去重。"}]}]}/>
 
 启用或禁用对从 Replicated\* 表接收数据的 materialized view 进行去重检查。
 
@@ -2264,9 +2266,9 @@ SETTINGS convert_query_to_cnf = true;
 
 ## deduplicate_insert \{#deduplicate_insert\}
 
-<SettingsInfoBlock type="DeduplicateInsertMode" default_value="backward_compatible_choice" />
+<SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "用于控制 INSERT 查询去重行为的新设置。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "默认对所有同步和异步插入启用去重。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "用于控制 INSERT 查询去重的新设置。"}]}]}/>
 
 启用或禁用 `INSERT INTO` 的块级去重（适用于 Replicated\* 表）。
 该设置会覆盖 `insert_deduplicate` 和 `async_insert_deduplicate` 两个设置。
@@ -3019,7 +3021,7 @@ FORMAT PrettyCompactMonoBlock
 
 - [distributed_index_analysis_for_non_shared_merge_tree](#distributed_index_analysis_for_non_shared_merge_tree)
 - [distributed_index_analysis_min_parts_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_parts_to_activate)
-- [distributed_index_analysis_min_indexes_size_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_size_to_activate)
+- [distributed_index_analysis_min_indexes_bytes_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_bytes_to_activate)
 
 ## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
 
@@ -3222,12 +3224,6 @@ FORMAT PrettyCompactMonoBlock
 
 启用后，在执行 SELECT FINAL 查询时，来自不同分区的分区片段将不会被合并在一起，合并只会在各自的分区内单独进行。在处理分区表时，这可以显著提升查询性能。
 
-如果未显式设置，当分区键表达式是确定性的，并且分区键表达式中使用的所有列都包含在主键中时，ClickHouse 会自动启用此优化。
-
-这种自动推导可以确保具有相同主键值的行始终属于同一分区，从而保证避免跨分区合并在语义上是安全的。
-
-**默认值：** `false`（但如果未显式设置，可能会根据表结构自动启用）
-
 ## empty_result_for_aggregation_by_constant_keys_on_empty_set \{#empty_result_for_aggregation_by_constant_keys_on_empty_set\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3258,6 +3254,15 @@ FORMAT PrettyCompactMonoBlock
 
 启用在 `IN` 子查询中使用 `DISTINCT`。这是一个权衡型设置：启用后可以大幅减少为分布式 IN 子查询传输的临时表大小，并通过确保只发送唯一值，显著加快分片之间的数据传输。
 但是，启用此设置会在每个节点上增加额外的合并开销，因为必须执行去重（DISTINCT）。当网络传输是瓶颈且可以接受额外的合并开销时再使用此设置。
+
+## enable_automatic_decision_for_merging_across_partitions_for_final \{#enable_automatic_decision_for_merging_across_partitions_for_final\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "新设置"}]}]}/>
+
+如果设置此选项，当分区键表达式是确定性的，并且分区键表达式中使用的所有列都包含在主键中时，ClickHouse 会自动启用此优化。
+这种自动推导可以确保具有相同主键值的行始终属于同一分区，从而保证避免跨分区合并在语义上是安全的。
 
 ## enable_blob_storage_log \{#enable_blob_storage_log\}
 
@@ -11462,19 +11467,6 @@ Cloud 默认值：`1`
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置。"}]}]}/>
 
 对 Paimon 表函数使用 Paimon 分区裁剪
-
-## use_parquet_metadata_cache \{#use_parquet_metadata_cache\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "启用 Parquet 文件元数据缓存。"}]}]}/>
-
-如果启用，`parquet` 格式可以使用 Parquet 元数据缓存。
-
-可能的值：
-
-- 0 - 禁用
-- 1 - 启用
 
 ## use_primary_key \{#use_primary_key\}
 

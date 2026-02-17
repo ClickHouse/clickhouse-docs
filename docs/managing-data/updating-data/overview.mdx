@@ -2,122 +2,138 @@
 slug: /updating-data/overview
 title: 'Overview'
 description: 'How to update data in ClickHouse'
-keywords: ['update', 'updating data']
+keywords: ['update', 'updating data', 'mutations', 'lightweight updates']
 doc_type: 'guide'
 ---
 
-## Differences between updating data in ClickHouse and OLTP databases \{#differences-between-updating-data-in-clickhouse-and-oltp-databases\}
+When it comes to handling updates analytical and transactional databases diverge significantly due to their underlying design philosophies and target use cases.
+For example, PostgreSQL, a row-oriented, ACID-compliant relational database, supports robust and transactional update and delete operations, ensuring data consistency and integrity through mechanisms like Multi-Version Concurrency Control ([MVCC](https://en.wikipedia.org/wiki/Multiversion_concurrency_control)).
+This allows for safe and reliable modifications even in high-concurrency environments.
 
-When it comes to handling updates, ClickHouse and OLTP databases diverge significantly due to their underlying design philosophies and target use cases. For example, PostgreSQL, a row-oriented, ACID-compliant relational database, supports robust and transactional update and delete operations, ensuring data consistency and integrity through mechanisms like Multi-Version Concurrency Control (MVCC). This allows for safe and reliable modifications even in high-concurrency environments.
+Conversely, ClickHouse is a column-oriented database optimized for read-heavy analytics and high throughput append-only operations.
+While it does natively support in-place updates and delete, they must be used carefully to avoid high I/O.
+Alternatively, tables can be restructured to convert delete and update into appended operations where they are processed asynchronously and/or at read time, thus reflecting the focus on high-throughput data ingestion and efficient query performance over real-time data manipulation.
 
-Conversely, ClickHouse is a column-oriented database optimized for read-heavy analytics and high throughput append-only operations. While it does natively support in-place updates and delete, they must be used carefully to avoid high I/O. Alternatively, tables can be restructured to convert delete and update into appended operations where they're processed asynchronously and/or at read time, thus reflecting the focus on high-throughput data ingestion and efficient query performance over real-time data manipulation.
+This guide provides an overview of available update methods in ClickHouse, and helps you choose the right update strategy for your use case.
 
-## Methods to update data in ClickHouse \{#methods-to-update-data-in-clickhouse\}
+## Choosing an update strategy {#choosing-an-update-strategy}
 
-There are several ways to update data in ClickHouse, each with its own advantages and performance characteristics. You should select the appropriate method based on your data model and the amount of data you intend to update.
+There are two fundamental approaches to updating data in ClickHouse:
 
-For both operations, if the number of submitted mutations constantly exceeds the number of mutations that are processed in the background over some time interval, the queue of non-materialized mutations that have to be applied will continue to grow. This will result in the eventual degradation of `SELECT` query performance.
+1. Using **specialized table engines** that handle updates through inserts via specialized table engines
+2. Using **declarative updates** like [`UPDATE ... SET`](/sql-reference/statements/update) or [`ALTER TABLE ... UPDATE`](/sql-reference/statements/alter/update) statements
 
-In summary, update operations should be issued carefully, and the mutations queue should be tracked closely using the `system.mutations` table. Don't issue updates frequently as you would in OLTP databases. If you have a requirement for frequent updates, see [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree).
-| Method                                                                                | Syntax                               | When to use                                                                                                                                                                                                                              |
+Within each of the two categories above, there are several ways to update data.
+Each has its advantages and performance characteristics and you should select the appropriate method based on your data model and the amount of data you intend to update.
+
+### When to use specialized table engines
+
+Specialized table engines are the better choice when you have large volumes of updates, frequent row-level changes, or need to process a continuous stream of update and delete events.
+
+The engines you will commonly encounter are:
+
+| Engine                                                                                | Syntax                               | When to use                                                                                                                                                                                                                              |
 |---------------------------------------------------------------------------------------|--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Update mutation](/sql-reference/statements/alter/update)                          | `ALTER TABLE [table] UPDATE`         | Use when data must be updated to disk immediately (e.g. for compliance). Negatively affects `SELECT` performance.                                                                                                                        |
-| [Lightweight updates](/sql-reference/statements/update)                            | `UPDATE [table] SET ... WHERE`       | Use for updating small amounts of data (up to ~10% of table). Creates patch parts for immediate visibility without rewriting entire columns. Adds overhead to `SELECT` queries but has predictable latency. Currently experimental.      |
-| [On-the-fly updates](/guides/developer/on-the-fly-mutations)                         | `ALTER TABLE [table] UPDATE`         | Enable using `SET apply_mutations_on_fly = 1;`. Use when updating small amounts of data. Rows are immediately returned with updated data in all subsequent `SELECT` queries but are initially only internally marked as updated on disk. |
 | [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)   | `ENGINE = ReplacingMergeTree`        | Use when updating large amounts of data. This table engine is optimized for data deduplication on merges.                                                                                                                                |
+| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree) | `ENGINE = CoalescingMergeTree`       | Use when data arrives in fragments and you need column-level coalescing rather than full row replacement.                                                                                                                                |
 | [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | `ENGINE = CollapsingMergeTree(Sign)` | Use when updating individual rows frequently, or for scenarios where you need to maintain the latest state of objects that change over time. For example, tracking user activity or article stats.                                       |
 
-## Update mutations \{#update-mutations\}
+As MergeTree-family table engines merge data parts in the background, they offer _eventual consistency_, and the [`FINAL`](/sql-reference/statements/select/from#final-modifier) keyword needs to be used to ensure proper deduplication in the interim when querying the table.
+There are other [engine types](/engines/table-engines/mergetree-family) too, but these are the most commonly used ones.
 
-Update mutations can be issued through a `ALTER TABLE ... UPDATE` command e.g.
+### When to use declarative updates
 
-```sql
-ALTER TABLE posts_temp
-        (UPDATE AnswerCount = AnswerCount + 1 WHERE AnswerCount = 0)
-```
-These are extremely IO-heavy, rewriting all the parts that match the `WHERE` expression. There is no atomicity to this process - parts are substituted for mutated parts as soon as they're ready, and a `SELECT` query that starts executing during a mutation will see data from parts that have already been mutated along with data from parts that haven't been mutated yet. Users can track the state of the progress via the [systems.mutations](/operations/system-tables/mutations) table. These are I/O intense operations and should be used sparingly as they can impact cluster `SELECT` performance.
+Declarative UPDATE statements can be more straightforward for simple update operations without the complexity of managing deduplication logic, but they are generally better suited for updating smaller numbers of rows, less frequently, than with specialised engines.
 
-Read more about [update mutations](/sql-reference/statements/alter/update).
+| Method                                                       | Syntax                         | When to use                                                                                                                                                                                                                              |
+|--------------------------------------------------------------|--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Update mutation](/sql-reference/statements/alter/update)    | `ALTER TABLE [table] UPDATE`   | Use when data must be updated to disk immediately (e.g. for compliance). Negatively affects `SELECT` performance.                                                                                                                        |
+| [On-the-fly updates](/guides/developer/on-the-fly-mutations) | `ALTER TABLE [table] UPDATE`   | Use when updating small amounts of data. Rows are immediately returned with updated data in all subsequent `SELECT` queries but are initially only internally marked as updated on disk. Enable using `SET apply_mutations_on_fly = 1;`.  |
+| [Lightweight updates](/sql-reference/statements/update)      | `UPDATE [table] SET ... WHERE` | Use for updating small amounts of data (up to ~10% of table). Creates patch parts for immediate visibility without rewriting entire columns. Adds overhead to `SELECT` queries but has predictable latency.                              |
 
-## Lightweight updates \{#lightweight-updates\}
+## Updates using specialized table engines {#insert-based-updates}
 
-Lightweight updates are a ClickHouse feature that updates rows using "patch parts" - special data parts containing only the updated columns and rows, rather than rewriting entire columns like traditional mutations. The Lightweight UPDATE
-Key characteristics:
+### ReplacingMergeTree {#replacingmergetree}
 
-- Uses the standard `UPDATE` syntax and creates patch parts immediately without waiting for merges
-- Updated values are immediately visible in `SELECT` queries through patch application, but physically materialized only during subsequent merges
-- Designed for small updates (up to ~10% of table) with predictable latency
-- Adds overhead to `SELECT` queries that need to apply patches, but avoids rewriting entire columns
-
-For more details see ["The Lightweight UPDATE Statement"](/sql-reference/statements/update)
-
-## On-the-fly Updates \{#on-the-fly-updates\}
-
-On-the-fly updates provide a mechanism to update rows such that they're updated immediately, and subsequent `SELECT` queries will automatically return with the changed values (this incurs an overhead and will slow queries). This effectively addresses the atomicity limitation of normal mutations. We show an example below:
+The `ReplacingMergeTree` deduplicates rows with the same sorting key during background merges, keeping only the latest version.
 
 ```sql
-SET apply_mutations_on_fly = 1;
-
-SELECT ViewCount
-FROM posts
-WHERE Id = 404346
-
-┌─ViewCount─┐
-│   26762   │
-└───────────┘
-
-1 row in set. Elapsed: 0.115 sec. Processed 59.55 million rows, 238.25 MB (517.83 million rows/s., 2.07 GB/s.)
-Peak memory usage: 113.65 MiB.
-
--increment count
-ALTER TABLE posts
-        (UPDATE ViewCount = ViewCount + 1 WHERE Id = 404346)
-
-SELECT ViewCount
-FROM posts
-WHERE Id = 404346
-
-┌─ViewCount─┐
-│       26763   │
-└───────────┘
-
-1 row in set. Elapsed: 0.149 sec. Processed 59.55 million rows, 259.91 MB (399.99 million rows/s., 1.75 GB/s.)
+CREATE TABLE posts
+(
+    Id UInt32,
+    Title String,
+    ViewCount UInt32,
+    Version UInt32
+)
+ENGINE = ReplacingMergeTree(Version)
+ORDER BY Id
 ```
 
-Note that for on-the-fly updates, a mutation is still used to update the data; it is just not materialized immediately and applied during `SELECT` queries. It will still be applied in the background as an asynchronous process and incurs the same heavy overhead as a mutation and thus is an I/O intense operation that should be used sparingly. The expressions that can be used with this operation are also limited (see here for [details](/guides/developer/on-the-fly-mutations#support-for-subqueries-and-non-deterministic-functions)).
+This engine is ideal for high-frequency updates to individual rows where updates are identified by a stable key.
+Benchmarks show it can be up to 4,700x faster than mutations for single-row updates.
 
-Read more about [on-the-fly updates](/guides/developer/on-the-fly-mutations).
+To update a row, simply insert a new version with the same sorting key values and a higher version number. Older versions are removed during background merges. Since deduplication is eventual (it only happens during merges), you should use the `FINAL` modifier or equivalent query logic to get correct, deduplicated results. The `FINAL` modifier adds query overhead ranging from 21-550% depending on the data.
 
-## `CollapsingMergeTree` \{#collapsing-merge-tree\}
+ReplacingMergeTree cannot update sorting key values. It also supports a `Deleted` column for logical deletes.
 
-Stemming from the idea that updates are expensive but inserts can be leveraged to perform updates,
-the [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) table engine
-can be used together with a `sign` column as a way to tell ClickHouse to update a specific row by collapsing (deleting)
-a pair of rows with sign `1` and `-1`.
-If `-1` is inserted for the `sign` column, the whole row will be deleted.
-If `1` is inserted for the `sign` column, ClickHouse will keep the row.
-Rows to update are identified based on the sorting key used in the `ORDER BY ()` statement when creating the table.
+Read more: [ReplacingMergeTree guide](/guides/replacing-merge-tree) | [ReplacingMergeTree reference](/engines/table-engines/mergetree-family/replacingmergetree)
+
+### CoalescingMergeTree {#coalescingmergetree}
+
+CoalescingMergeTree consolidates sparse records by keeping the latest non-null value for each column during merges. This enables column-level upserts rather than full row replacements.
 
 ```sql
-CREATE TABLE UAct
+CREATE TABLE electric_vehicle_state
+(
+    vin String, -- vehicle identification number
+    last_update DateTime64 Materialized now64(), -- optional (used with argMax)
+    battery_level Nullable(UInt8), -- in %
+    lat Nullable(Float64), -- latitude (°)
+    lon Nullable(Float64), -- longitude (°)
+    firmware_version Nullable(String),
+    cabin_temperature Nullable(Float32), -- in °C
+    speed_kmh Nullable(Float32) -- from sensor
+)
+ENGINE = CoalescingMergeTree
+ORDER BY vin;
+```
+
+This engine is designed for scenarios where data arrives in fragments from multiple sources, or where different columns are populated at different times. Common use cases include IoT telemetry from fragmented subsystems, user profile enrichment, and ETL pipelines with delayed dimensions.
+
+When rows with the same sorting key are merged, CoalescingMergeTree keeps the latest non-null value for each column rather than replacing the entire row. Non-key columns should be `Nullable` for this to work as intended. As with ReplacingMergeTree, use `FINAL` for correct, coalesced results.
+
+This engine is available from ClickHouse 25.6.
+
+Read more: [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree)
+
+### CollapsingMergeTree {#collapsingmergetree}
+
+Stemming from the idea that updates are expensive but inserts can be leveraged to perform updates, `CollapsingMergeTree` uses a `Sign` column to tell ClickHouse how to handle rows during merges. If `-1` is inserted for the sign column, the row will be collapsed (deleted) when paired with a matching `+1` row. Rows to update are identified based on the sorting key used in the `ORDER BY` clause when creating the table.
+
+```sql
+CREATE TABLE user_activity
 (
     UserID UInt64,
     PageViews UInt8,
     Duration UInt8,
-    Sign Int8 -- A special column used with the CollapsingMergeTree table engine
+    Sign Int8
 )
 ENGINE = CollapsingMergeTree(Sign)
 ORDER BY UserID
 
-INSERT INTO UAct VALUES (4324182021466249494, 5, 146, 1)
-INSERT INTO UAct VALUES (4324182021466249494, 5, 146, -1) -- sign = -1 signals to update the state of this row
-INSERT INTO UAct VALUES (4324182021466249494, 6, 185, 1) -- the row is replaced with the new state
+-- Initial state
+INSERT INTO user_activity VALUES (4324182021466249494, 5, 146, 1)
 
+-- Cancel old row and insert new state
+INSERT INTO user_activity VALUES (4324182021466249494, 5, 146, -1)
+INSERT INTO user_activity VALUES (4324182021466249494, 6, 185, 1)
+
+-- Query with proper aggregation
 SELECT
     UserID,
     sum(PageViews * Sign) AS PageViews,
     sum(Duration * Sign) AS Duration
-FROM UAct
+FROM user_activity
 GROUP BY UserID
 HAVING sum(Sign) > 0
 
@@ -126,15 +142,106 @@ HAVING sum(Sign) > 0
 └─────────────────────┴───────────┴──────────┘
 ```
 
-:::note
-The approach above for updating requires users to maintain state client side.
-While this is most efficient from ClickHouse's perspective, it can be complex to work with at scale.
+Unlike `ReplacingMergeTree`, `CollapsingMergeTree` allows you to modify sorting key values. It's well-suited for reversible operations with cancellation semantics, such as financial transactions or game state tracking.
 
-We recommend reading the documentation
-for [`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree)
-for a more comprehensive overview.
+:::note
+The approach above for updating requires your application to maintain state client-side in order to insert the cancellation row. While this is most efficient from ClickHouse's perspective, it can be complex to work with at scale. Queries also need aggregation with sign multiplication to produce correct results.
 :::
 
-## More resources \{#more-resources\}
+Read more: [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)
 
-- [Handling Updates and Deletes in ClickHouse](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)
+## Declarative updates {#sql-style-updates}
+
+These methods work with tables using [MergeTree family](/engines/table-engines/mergetree-family) engines.
+
+| Method | Syntax | Best for | Trade-offs |
+|--------|--------|----------|------------|
+| [Mutations](#mutations) | `ALTER TABLE ... UPDATE` | Compliance requiring physical removal; infrequent bulk updates | Heavy I/O; rewrites columns |
+| [Lightweight updates](#lightweight-updates) | `UPDATE ... SET ... WHERE` | Small updates (~0.1-10% of rows); frequent updates needing performance | Adds SELECT overhead; patch parts count toward limits |
+| [On-the-fly mutations](#on-the-fly-mutations) | `ALTER TABLE ... UPDATE` with `apply_mutations_on_fly=1` | Immediate visibility; limited number of operations | Keeper dependency; scale limited to dozens of ops |
+
+### Mutations {#mutations}
+
+Mutations (`ALTER TABLE ... UPDATE`) rewrite all parts containing rows that match the `WHERE` expression. This guarantees physical data modification on disk.
+
+```sql
+ALTER TABLE posts UPDATE AnswerCount = AnswerCount + 1 WHERE AnswerCount = 0
+```
+
+Use mutations when regulatory compliance requires guaranteed physical data removal, or for infrequent bulk update operations where you can tolerate the I/O overhead.
+
+Mutations are quite I/O-heavy, rewriting all parts that match the `WHERE` expression. There is no atomicity to this process—parts are substituted for mutated parts as soon as they are ready, and a `SELECT` query that starts executing during a mutation will see data from parts that have already been mutated along with data from parts that have not been mutated yet. You can track the state of progress via the [`system.mutations`](/operations/system-tables/mutations) table.
+
+:::warning
+Mutations are I/O intensive and should be used sparingly as they can impact cluster `SELECT` performance. If mutations queue faster than they process, query performance will degrade. Monitor the queue via `system.mutations`.
+:::
+
+Read more: [ALTER TABLE UPDATE](/sql-reference/statements/alter/update)
+
+### Lightweight updates {#lightweight-updates}
+
+Lightweight updates use "patch parts"—special data parts containing only the updated columns and rows—rather than rewriting entire columns like traditional mutations.
+
+```sql
+UPDATE posts SET AnswerCount = AnswerCount + 1 WHERE Id = 404346
+```
+
+This approach uses the standard `UPDATE` syntax and creates patch parts immediately without waiting for merges. Updated values are immediately visible in `SELECT` queries through patch application, but are physically materialized only during subsequent merges. This makes lightweight updates ideal for updating a small percentage of rows (up to ~10% of the table) with predictable latency. Benchmarks show they can be up to 23x faster than mutations.
+
+The trade-off is that `SELECT` queries incur overhead when applying patches, and patch parts count toward part limits. Beyond the ~10% threshold, patch-on-read overhead grows proportionally, making synchronous mutations more efficient for larger updates.
+
+Read more: [Lightweight UPDATE](/sql-reference/statements/update)
+
+### On-the-fly mutations {#on-the-fly-mutations}
+
+On-the-fly mutations provide a mechanism to update rows such that subsequent `SELECT` queries automatically return the changed values without waiting for background processing. This effectively addresses the atomicity limitation of normal mutations.
+
+```sql
+SET apply_mutations_on_fly = 1;
+
+SELECT ViewCount FROM posts WHERE Id = 404346
+
+┌─ViewCount─┐
+│     26762 │
+└───────────┘
+
+-- Increment the count
+ALTER TABLE posts UPDATE ViewCount = ViewCount + 1 WHERE Id = 404346
+
+-- The updated value is immediately visible
+SELECT ViewCount FROM posts WHERE Id = 404346
+
+┌─ViewCount─┐
+│     26763 │
+└───────────┘
+```
+
+Both the mutation and subsequent `SELECT` queries need the `apply_mutations_on_fly = 1` setting enabled. The mutation conditions are stored in ClickHouse Keeper, which keeps everything in memory, and applied on-the-fly during queries.
+
+Note that a mutation is still used to update the data—it is just not materialized immediately. The mutation will still be applied in the background as an asynchronous process and incurs the same heavy overhead as a regular mutation. The expressions that can be used with this operation are also limited (see [details](/guides/developer/on-the-fly-mutations#support-for-subqueries-and-non-deterministic-functions)).
+
+:::warning
+On-the-fly mutations should only be used for a small number of operations—perhaps a few dozen at most. Keeper stores conditions in memory, so excessive use impacts cluster stability. Heavy Keeper load can cause session timeouts that affect unrelated tables.
+:::
+
+Read more: [On-the-fly mutations](/guides/developer/on-the-fly-mutations)
+
+## Comparison summary {#comparison-summary}
+
+The following table summarizes query performance overhead based on [benchmarks](https://clickhouse.com/blog/updates-in-clickhouse-3-benchmarks). Mutations serve as the baseline since queries run at full speed once the mutation completes and data is physically rewritten.
+
+| Method | Query slowdown | Memory overhead | Notes |
+|--------|----------------|-----------------|-------|
+| [Mutations](/sql-reference/statements/alter/update) | Baseline | Baseline | Full speed after completion; data physically rewritten |
+| [On-the-fly mutations](/guides/developer/on-the-fly-mutations) | Variable | Variable | Instant visibility; perform degrades if many updates accumulate |
+| [Lightweight updates](/sql-reference/statements/update#lightweight-update-requirements) | 7–18% (avg ~12%) | +20–210% | Most efficient for queries; best for updating ≤10% of table |
+| [ReplacingMergeTree](/guides/replacing-merge-tree) + `FINAL` | 21–550% (avg ~280%) | 20–200× baseline | Must read all row versions; heaviest query overhead |
+| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree) + `FINAL` | Similar to ReplacingMergeTree | Similar to ReplacingMergeTree | Column-level coalescing adds comparable overhead |
+| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | Aggregation dependent | Aggregation dependent | Overhead depends on query complexity |
+
+## More resources {#more-resources}
+
+If you're interested in a deep-dive of how updates in ClickHouse have evolved over time, along with benchmarking analysis, see:
+- [Updates in ClickHouse Part 1: Purpose-Built Engines](https://clickhouse.com/blog/updates-in-clickhouse-1-purpose-built-engines)
+- [Updates in ClickHouse Part 2: SQL-Style Updates](https://clickhouse.com/blog/updates-in-clickhouse-2-sql-style-updates)
+- [Updates in ClickHouse Part 3: Benchmarks](https://clickhouse.com/blog/updates-in-clickhouse-3-benchmarks)

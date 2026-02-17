@@ -264,7 +264,8 @@ Blanc
 Clicky
 --docs/integrations/data-ingestion/etl-tools/dbt/index.md--
 Microbatch
-schena
+DocPageList
+useCurrentSidebarCategory
 --docs/integrations/data-ingestion/etl-tools/dbt/features-and-configurations.md--
 ClickhouseAccess
 Microbatch
@@ -274,6 +275,10 @@ microbatch
 prehook
 preload
 preloads
+--docs/integrations/data-ingestion/etl-tools/dbt/materializations.md--
+Microbatch
+dbt's
+microbatch
 --docs/integrations/data-ingestion/clickpipes/postgres/faq.md--
 CTID
 autovacuum
@@ -1275,3 +1280,6 @@ dtype
 dtypes
 groupby
 skipna
+--docs/cloud/guides/infrastructure/01_deployment_options/byoc/03_onboarding/05_azure_private_preview.md--
+SignalR
+provisioner

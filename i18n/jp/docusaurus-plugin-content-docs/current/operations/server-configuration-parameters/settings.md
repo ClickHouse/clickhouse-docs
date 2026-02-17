@@ -3426,22 +3426,6 @@ CAP_SYS_NICE ケーパビリティが必要で、付与されていない場合�
 
 <SettingsInfoBlock type="Double" default_value="0.5" />ユーザースペースのページキャッシュにおける保護キューのサイズの、キャッシュ全体サイズに対する比率です。
 
-## parquet_metadata_cache_max_entries \{#parquet_metadata_cache_max_entries\}
-
-<SettingsInfoBlock type="UInt64" default_value="5000" />parquet メタデータファイルキャッシュの最大サイズ（エントリ数）。0 の場合は無効です。
-
-## parquet_metadata_cache_policy \{#parquet_metadata_cache_policy\}
-
-<SettingsInfoBlock type="String" default_value="SLRU" />Parquet のメタデータキャッシュポリシー名。
-
-## parquet_metadata_cache_size \{#parquet_metadata_cache_size\}
-
-<SettingsInfoBlock type="UInt64" default_value="536870912" />parquet メタデータキャッシュの最大サイズ（バイト単位）。0 の場合はキャッシュが無効になります。
-
-## parquet_metadata_cache_size_ratio \{#parquet_metadata_cache_size_ratio\}
-
-<SettingsInfoBlock type="Double" default_value="0.5" />parquet メタデータキャッシュにおける保護キュー（SLRU ポリシーの場合）のサイズを、キャッシュ全体サイズに対する比率で表します。
-
 ## part_log \{#part_log\}
 
 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) に関連するイベントをログに記録します。たとえば、データの追加やマージなどです。ログを使用してマージアルゴリズムをシミュレートし、その特性を比較できます。マージ処理を可視化することもできます。
@@ -3482,7 +3466,7 @@ SharedMergeTree のパーツを完全に削除するまでの猶予期間。Clic
 
 <SettingsInfoBlock type="UInt64" default_value="128" />
 
-共有 MergeTree の古いパーツをクリーンアップするためのスレッド数。ClickHouse Cloud でのみ利用可能です
+共有 MergeTree の parts killer スレッドをクリーンアップするためのスレッド数。ClickHouse Cloud でのみ利用可能です
 
 ## path \{#path\}
 

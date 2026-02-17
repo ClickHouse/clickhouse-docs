@@ -2250,7 +2250,9 @@ SETTINGS convert_query_to_cnf = true;
 
 ## deduplicate_blocks_in_dependent_materialized_views \{#deduplicate_blocks_in_dependent_materialized_views\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включить дедупликацию для зависимых materialized view по умолчанию."}]}]}/>
 
 Включает или отключает проверку дедупликации для materialized view, получающих данные из таблиц Replicated\*.
 
@@ -2268,9 +2270,9 @@ SETTINGS convert_query_to_cnf = true;
 
 ## deduplicate_insert \{#deduplicate_insert\}
 
-<SettingsInfoBlock type="DeduplicateInsertMode" default_value="backward_compatible_choice" />
+<SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "Новая настройка для управления дедупликацией для запросов INSERT."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "Включает дедупликацию по умолчанию для всех синхронных и асинхронных вставок."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "Новая настройка для управления дедупликацией для запросов INSERT."}]}]}/>
 
 Включает или отключает блочную дедупликацию при выполнении `INSERT INTO` (для таблиц Replicated\*).
 Эта настройка переопределяет настройки `insert_deduplicate` и `async_insert_deduplicate`.
@@ -3024,7 +3026,7 @@ FORMAT PrettyCompactMonoBlock
 
 - [distributed_index_analysis_for_non_shared_merge_tree](#distributed_index_analysis_for_non_shared_merge_tree)
 - [distributed_index_analysis_min_parts_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_parts_to_activate)
-- [distributed_index_analysis_min_indexes_size_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_size_to_activate)
+- [distributed_index_analysis_min_indexes_bytes_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_bytes_to_activate)
 
 ## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
 
@@ -3227,12 +3229,6 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Когда параметр включён, при выполнении запросов SELECT FINAL части из разных партиций не будут объединяться друг с другом. Вместо этого слияние будет происходить только внутри каждой партиции отдельно. Это может значительно повысить производительность запросов при работе с партиционированными таблицами.
 
-Если параметр явно не установлен, ClickHouse автоматически включит эту оптимизацию, когда выражение ключа партиционирования является детерминированным и все столбцы, используемые в выражении ключа партиционирования, включены в первичный ключ.
-
-Такое автоматическое определение гарантирует, что строки с одинаковыми значениями первичного ключа всегда будут принадлежать одной и той же партиции, что делает безопасным отказ от слияний между партициями.
-
-**Значение по умолчанию:** `false` (но может быть автоматически включено на основе структуры таблицы, если не задано явно)
-
 ## empty_result_for_aggregation_by_constant_keys_on_empty_set \{#empty_result_for_aggregation_by_constant_keys_on_empty_set\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3263,6 +3259,15 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Включает использование `DISTINCT` в подзапросах `IN`. Это компромиссная настройка: её включение может существенно уменьшить размер временных таблиц, передаваемых для распределённых подзапросов IN, и значительно ускорить передачу данных между сегментами за счёт отправки только уникальных значений.
 Однако включение этой настройки добавляет дополнительные операции слияния на каждом узле, поскольку необходимо выполнять дедупликацию (DISTINCT). Используйте эту настройку, когда сетевая передача является узким местом и дополнительные накладные расходы на слияние приемлемы.
+
+## enable_automatic_decision_for_merging_across_partitions_for_final \{#enable_automatic_decision_for_merging_across_partitions_for_final\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+Если параметр установлен, ClickHouse автоматически включит эту оптимизацию, когда выражение ключа партиционирования является детерминированным и все столбцы, используемые в выражении ключа партиционирования, включены в первичный ключ.
+Такое автоматическое определение гарантирует, что строки с одинаковыми значениями первичного ключа всегда будут принадлежать одной и той же партиции, что делает безопасным отказ от слияний между партициями.
 
 ## enable_blob_storage_log \{#enable_blob_storage_log\}
 
@@ -11507,19 +11512,6 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка."}]}]}/>
 
 Использует отсечение партиций Paimon для табличных функций Paimon
-
-## use_parquet_metadata_cache \{#use_parquet_metadata_cache\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включает кэш метаданных файлов Parquet."}]}]}/>
-
-Если включено, формат Parquet может использовать кэш метаданных файлов Parquet.
-
-Возможные значения:
-
-- 0 — отключено
-- 1 — включено
 
 ## use_primary_key \{#use_primary_key\}
 

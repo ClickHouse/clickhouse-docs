@@ -184,7 +184,5 @@ The following table shows the equivalent ClickHouse data types for Postgres.
 | `HSTORE` | [Map(K, V)](/sql-reference/data-types/map), [Map](/sql-reference/data-types/map)(K,[Variant](/sql-reference/data-types/variant)) |
 | `UUID` | [UUID](/sql-reference/data-types/uuid) |
 | `ARRAY<T>` | [ARRAY(T)](/sql-reference/data-types/array) |
-| `JSON*` | [String](/sql-reference/data-types/string), [Variant](/sql-reference/data-types/variant), [Nested](/sql-reference/data-types/nested-data-structures/nested#nestedname1-type1-name2-type2-), [Tuple](/sql-reference/data-types/tuple) |
+| `JSON` | [String](/sql-reference/data-types/string), [Variant](/sql-reference/data-types/variant), [Nested](/sql-reference/data-types/nested-data-structures/nested#nestedname1-type1-name2-type2-), [Tuple](/sql-reference/data-types/tuple) |
 | `JSONB` | [String](/sql-reference/data-types/string) |
-
-*\* Production support for JSON in ClickHouse is under development. Currently you can either map JSON as String, and use [JSON functions](/sql-reference/functions/json-functions), or map the JSON directly to [Tuples](/sql-reference/data-types/tuple) and [Nested](/sql-reference/data-types/nested-data-structures/nested) if the structure is predictable. Read more about JSON [here](/integrations/data-formats/json/overview).*

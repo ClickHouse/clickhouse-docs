@@ -41,17 +41,16 @@ All **public regions** listed in our [supported regions](https://clickhouse.com/
   - View services and status.
 - **Managed backup and restore**
 - **Manual vertical and horizontal scaling.**
-- **Auto Idling**
+- **Auto Idling/Wake up**
 - **Warehouses**: Compute-Compute Separation
 - **Zero Trust Network via Tailscale.**
 - **Monitoring**:
-  - The Cloud console includes built-in health dashboards for monitoring service health.
-  - Prometheus scraping for centralized monitoring with Prometheus, Grafana, and Datadog. See the [Prometheus documentation](/cloud/reference/byoc/observability#prometheus-monitoring) for setup instructions.
+  - Prometheus scraping for centralized monitoring with Prometheus, Grafana, and Datadog. See the [BYOC Observability](/cloud/reference/byoc/observability) for setup instructions.
 - **VPC Peering**
-- **Integrations**: See the full list on [this page](/integrations).
 - **Secure S3**
 - **[AWS PrivateLink](https://aws.amazon.com/privatelink/)**
 - **[GCP Private Service Connect](https://docs.cloud.google.com/vpc/docs/private-service-connect)**
+- **Integrations**: See the full list on [this page](/integrations).
 
 ### Planned features (currently unsupported) {#planned-features-currently-unsupported}
 

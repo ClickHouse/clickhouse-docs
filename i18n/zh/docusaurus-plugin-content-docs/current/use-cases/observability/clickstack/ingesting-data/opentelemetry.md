@@ -16,7 +16,7 @@ import TabItem from '@theme/TabItem';
 
 所有数据都会通过一个 **OpenTelemetry (OTel) collector** 实例摄取到 ClickStack 中，该实例是日志、指标、追踪和会话数据的主要入口。对于这个实例，我们建议使用官方的 [ClickStack 发行版](#installing-otel-collector)的 collector。
 
-用户可以通过 [language SDKs](/use-cases/observability/clickstack/sdks) 将数据发送到该 collector，或者通过采集基础设施指标和日志的数据采集代理发送数据（例如以 [agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) 角色运行的 OTel collector，或其他技术，如 [Fluentd](https://www.fluentd.org/) 或 [Vector](https://vector.dev/)）。为了获得更简化的部署体验，[Bindplane](/use-cases/observability/clickstack/integration-partners/bindplane) 是一个原生支持 OpenTelemetry 的遥测管道（telemetry pipeline），内置对 ClickStack 的目标端支持，从而简化将遥测数据采集、处理并路由到 ClickStack 的过程。
+用户可以通过 [language SDKs](/use-cases/observability/clickstack/sdks) 将数据发送到该 collector，或者通过采集基础设施指标和日志的数据采集代理发送数据（例如以 [agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) 角色运行的 OTel collector，或其他技术，如 [Fluentd](https://www.fluentd.org/) 或 [Vector](https://vector.dev/)）。对于希望使用托管 OpenTelemetry 管道的团队，[Bindplane](/use-cases/observability/clickstack/integration-partners/bindplane)提供一个原生支持 OpenTelemetry 的解决方案，内置 ClickStack 目标端，从而简化遥测数据的采集、处理和路由。
 
 
 ## 发送 OpenTelemetry 数据 \{#sending-otel-data\}

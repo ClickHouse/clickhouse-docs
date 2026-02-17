@@ -430,16 +430,16 @@ SELECT extractAllGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 ## hasAllTokens \{#hasAllTokens\}
 
-引入版本：v25.10
+引入版本:v25.10
 
 与 [`hasAnyTokens`](#hasAnyTokens) 类似，但当 `needle` 字符串或数组中的所有标记都与 `input` 字符串匹配时返回 1，否则返回 0。如果 `input` 是一列，则返回所有满足此条件的行。
 
 :::note
-为获得最佳性能，应为列 `input` 定义 [text index](../../engines/table-engines/mergetree-family/textindexes)。
-如果未定义 text index，该函数会对整列执行全列扫描，其速度会比索引查找慢多个数量级。
+为获得最佳性能,应为列 `input` 定义 [text index](../../engines/table-engines/mergetree-family/textindexes)。
+如果未定义 text index,该函数会对整列执行全列扫描,其速度会比索引查找慢多个数量级。
 :::
 
-在搜索之前，函数会对以下内容进行分词（tokenize）：
+在搜索之前,函数会对以下内容进行分词(tokenize):
 
 * `input` 参数（始终），以及
 * `needle` 参数（如果以 [String](../../sql-reference/data-types/string.md) 形式给出），
@@ -448,7 +448,7 @@ SELECT extractAllGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
   如果 `needle` 参数的类型为 [Array(String)](../../sql-reference/data-types/array.md)，则数组中的每个元素都被视为一个标记——不会进行额外的分词。
 
 重复的标记会被忽略。
-例如，needles = [&#39;ClickHouse&#39;, &#39;ClickHouse&#39;] 与 [&#39;ClickHouse&#39;] 的处理方式相同。
+例如,needles = [&#39;ClickHouse&#39;, &#39;ClickHouse&#39;] 与 [&#39;ClickHouse&#39;] 的处理方式相同。
 
 **语法**
 
@@ -456,20 +456,21 @@ SELECT extractAllGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 hasAllTokens(input, needles)
 ```
 
-**别名**：`hasAllToken`
+**别名**: `hasAllToken`
 
 **参数**
 
 * `input` — 输入列。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Array(String)`](/sql-reference/data-types/array) 或 [`Array(FixedString)`](/sql-reference/data-types/array)
 * `needles` — 要搜索的词元（token）。[`String`](/sql-reference/data-types/string) 或 [`Array(String)`](/sql-reference/data-types/array)
+* `tokenizer` — 要使用的 tokenizer。有效参数包括 `splitByNonAlpha`、`ngrams`、`splitByString`、`array` 和 `sparseGrams`。可选参数，如果未显式设置，则默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
 
 **返回值**
 
-如果所有词元都匹配则返回 1，否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
+如果所有词元都匹配则返回 1,否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **示例**
 
-**字符串列的使用示例**
+**使用字符串 needle 的基本用法**
 
 ```sql title=Query
 CREATE TABLE table (
@@ -515,6 +516,18 @@ SELECT count() FROM table WHERE hasAllTokens(msg, tokens('a()d', 'splitByString'
 └─────────┘
 ```
 
+**通过第 3 个参数使用自定义 tokenizer**
+
+```sql title=Query
+SELECT hasAllTokens('abcdef', 'abc', 'ngrams(3)');
+```
+
+```response title=Response
+┌─hasAllTokens('abcdef', 'abc', 'ngrams(3)')─┐
+│                                            1 │
+└──────────────────────────────────────────────┘
+```
+
 **数组和 Map 列的用法示例**
 
 ```sql title=Query
@@ -537,7 +550,7 @@ INSERT INTO log VALUES
 ```response title=Response
 ```
 
-**包含数组类型列的示例**
+**数组列示例**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAllTokens(tags, 'clickhouse');
@@ -575,25 +588,24 @@ SELECT count() FROM log WHERE hasAllTokens(mapValues(attributes), ['192.0.0.1', 
 
 ## hasAnyTokens \{#hasAnyTokens\}
 
-引入版本：v25.10
+引入版本:v25.10
 
-如果 `needle` 字符串或数组中至少有一个 token 与 `input` 字符串匹配，则返回 1，否则返回 0。若 `input` 是一列，则返回所有满足此条件的行。
+如果 `needle` 字符串或数组中至少有一个 token 与 `input` 字符串匹配,则返回 1,否则返回 0。若 `input` 是一列,则返回所有满足此条件的行。
 
 :::note
-为获得最佳性能，应为列 `input` 定义 [text 索引](../../engines/table-engines/mergetree-family/textindexes)。
-如果未定义 text 索引，该函数会对整列执行暴力扫描，其速度会比使用索引查找慢几个数量级。
+为获得最佳性能,应为列 `input` 定义 [text 索引](../../engines/table-engines/mergetree-family/textindexes)。
+如果未定义 text 索引,该函数会对整列执行暴力扫描,其速度会比使用索引查找慢几个数量级。
 :::
 
-在搜索之前，函数会对以下内容进行分词（tokenize）：
+在搜索之前,函数会对以下内容进行分词(tokenize):
 
 * `input` 参数（始终），以及
-* `needle` 参数（如果以 [String](../../sql-reference/data-types/string.md) 形式给出），
-  使用为 text 索引指定的分词器。
+* `needle` 参数（如果以 [String](../../sql-reference/data-types/string.md) 形式给出）使用为 text 索引指定的分词器。
   如果该列未定义 text 索引，则会使用 `splitByNonAlpha` 分词器。
   如果 `needle` 参数的类型为 [Array(String)](../../sql-reference/data-types/array.md)，则数组中的每个元素都被视为一个 token——不会进行额外的分词。
 
 重复的 token 会被忽略。
-例如，[&#39;ClickHouse&#39;, &#39;ClickHouse&#39;] 与 [&#39;ClickHouse&#39;] 被视为相同。
+例如,[&#39;ClickHouse&#39;, &#39;ClickHouse&#39;] 与 [&#39;ClickHouse&#39;] 被视为相同。
 
 **语法**
 
@@ -607,14 +619,15 @@ hasAnyTokens(input, needles)
 
 * `input` — 输入列。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Array(String)`](/sql-reference/data-types/array) 或 [`Array(FixedString)`](/sql-reference/data-types/array)
 * `needles` — 要搜索的标记（token）。[`String`](/sql-reference/data-types/string) 或 [`Array(String)`](/sql-reference/data-types/array)
+* `tokenizer` — 要使用的分词器。有效参数包括 `splitByNonAlpha`、`ngrams`、`splitByString`、`array` 和 `sparseGrams`。可选。如果未显式设置，则默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
 
 **返回值**
 
-如果存在至少一个匹配项，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+如果存在至少一个匹配项,则返回 `1`,否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **示例**
 
-**字符串列的用法示例**
+**使用字符串作为搜索词的基本用法**
 
 ```sql title=Query
 CREATE TABLE table (
@@ -682,7 +695,7 @@ INSERT INTO log VALUES
 ```response title=Response
 ```
 
-**包含数组列的示例**
+**数组列的使用示例**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAnyTokens(tags, 'clickhouse');
