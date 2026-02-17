@@ -14,8 +14,11 @@ doc_type: 'reference'
 ## 構文 \{#syntax\}
 
 ```sql
-mongodb(host:port, database, collection, user, password, structure[, options[, oid_columns]])
+mongodb(host:port, database, collection, user, password, structure[, options[, oid_columns]]);
+mongodb(uri, collection, structure[, oid_columns]);
+mongodb(named_collection_name[, <arg>=<value>...]);
 ```
+
 
 ## 引数 \{#arguments\}
 
@@ -51,6 +54,16 @@ mongodb(uri, collection, structure[, oid_columns])
 | `collection`  | リモートコレクション名。                                       |
 | `structure`   | この関数から返される ClickHouse テーブルのスキーマ。                   |
 | `oid_columns` | WHERE 句で `oid` として扱う列をカンマ区切りで指定したリスト。デフォルトは `_id`。 |
+| :::           |                                                    |
+
+名前付きコレクションを使用して引数を渡すこともできます。
+
+```sql
+mongodb(_named_collection_[, host][, port][, database][, collection][, user][, password][, structure][, options][, oid_columns])
+-- or
+mongodb(_named_collection_[, uri][, structure][, oid_columns])
+```
+
 
 ## 返される値 \{#returned_value\}
 
@@ -97,6 +110,21 @@ SELECT * FROM mongodb(
     'log_type String, host String, command String'
 )
 ```
+
+または:
+
+```sql
+CREATE NAMED COLLECTION mongo_creds AS
+       uri='mongodb://test_user:password@127.0.0.1:27017/test?connectionTimeoutMS=10000',
+       collection='default_collection';
+
+SELECT * FROM mongodb(
+        mongo_creds,
+        collection = 'my_collection',
+        structure = 'log_type String, host String, command String'
+)
+```
+
 
 ## 関連項目 \{#related\}
 

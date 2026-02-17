@@ -1832,7 +1832,7 @@ SELECT leftUTF8('Привет', -4)
 lengthUTF8(s)
 ```
 
-**别名**: `CHAR_LENGTH`, `CHARACTER_LENGTH`
+**别名**: `CHARACTER_LENGTH`, `CHAR_LENGTH`
 
 **参数**
 
