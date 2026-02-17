@@ -1,6 +1,7 @@
 {
   "rewrites": [
     { "source": "/docs/jp/:path*", "destination": "/:path*" },
+    { "source": "/docs/ko/:path*", "destination": "/:path*" },
     { "source": "/docs/zh/:path*", "destination": "/:path*" },
     { "source": "/docs/ru/:path*", "destination": "/:path*" },
     { "source": "/docs/:path*", "destination": "/:path*" }
