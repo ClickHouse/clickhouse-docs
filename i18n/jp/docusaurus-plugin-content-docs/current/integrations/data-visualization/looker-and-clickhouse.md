@@ -18,6 +18,7 @@ import looker_03 from '@site/static/images/integrations/data-visualization/looke
 import looker_04 from '@site/static/images/integrations/data-visualization/looker_04.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+
 # Looker \{#looker\}
 
 <PartnerBadge/>
@@ -25,6 +26,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 Looker は公式の ClickHouse データソースを通じて、ClickHouse Cloud またはオンプレミス環境の ClickHouse デプロイメントに接続できます。
 
 ## 1. 接続情報を確認する \{#1-gather-your-connection-details\}
+
 <ConnectionDetails />
 
 ## 2. ClickHouse データソースを作成する \{#2-create-a-clickhouse-data-source\}
@@ -32,21 +34,25 @@ Looker は公式の ClickHouse データソースを通じて、ClickHouse Cloud
 Admin -> Database -> Connections ページに移動し、右上の「Add Connection」ボタンをクリックします。
 
 <Image size="md" img={looker_01} alt="Looker のデータベース管理インターフェースで新しい接続を追加する画面" border />
+
 <br/>
 
 データソースの名前を指定し、dialect のドロップダウンから `ClickHouse` を選択します。フォームに認証情報を入力します。
 
 <Image size="md" img={looker_02} alt="Looker の接続フォームで ClickHouse の認証情報を指定する画面" border />
+
 <br/>
 
 ClickHouse Cloud を使用している場合、またはデプロイメントで SSL が必要な構成になっている場合は、追加設定で SSL が有効になっていることを確認します。
 
 <Image size="md" img={looker_03} alt="Looker の設定で ClickHouse 接続に対して SSL を有効化する画面" border />
+
 <br/>
 
 最初に接続テストを行い、完了したら新しい ClickHouse データソースに接続します。
 
 <Image size="md" img={looker_04} alt="ClickHouse データソースへの接続をテストして確立する画面" border />
+
 <br/>
 
 これで、Looker プロジェクトに ClickHouse データソースを関連付けられるようになります。

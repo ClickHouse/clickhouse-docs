@@ -8,8 +8,6 @@ doc_type: 'guide'
 keywords: ['生产环境', '部署', '版本', '最佳实践', '升级策略']
 ---
 
-
-
 # 在生产环境中应该使用哪个 ClickHouse 版本？ \{#which-clickhouse-version-to-use-in-production\}
 
 首先，来看一下大家为什么会问这个问题。主要有两个原因：
@@ -18,8 +16,6 @@ keywords: ['生产环境', '部署', '版本', '最佳实践', '升级策略']
 2.  有些用户不想花时间去摸索哪个版本最适合自己的使用场景，而是希望直接采纳他人的建议。
 
 第二个原因更为根本，所以我们先从这一点说起，然后再回到如何在各个 ClickHouse 版本之间做出选择。
-
-
 
 ## 你推荐使用哪个 ClickHouse 版本？ \{#which-clickhouse-version-do-you-recommend\}
 
@@ -51,8 +47,6 @@ keywords: ['生产环境', '部署', '版本', '最佳实践', '升级策略']
 4.  如果没有发现重大问题，就可以认为开始将该 ClickHouse 发行版部署到生产环境是安全的。投入精力实现渐进发布自动化，采用类似 [金丝雀发布](https://martinfowler.com/bliki/CanaryRelease.html) 或 [蓝绿部署](https://martinfowler.com/bliki/BlueGreenDeployment.html) 的方法，可以进一步降低生产环境中出现问题的风险。
 
 如你所见，上述方法中没有任何内容是 ClickHouse 特有的——只要认真对待生产环境，人们对任何他们所依赖的基础设施组件都会这样做。
-
-
 
 ## 如何在不同 ClickHouse 发行版之间进行选择？ \{#how-to-choose-between-clickhouse-releases\}
 

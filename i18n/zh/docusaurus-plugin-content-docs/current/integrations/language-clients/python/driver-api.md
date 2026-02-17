@@ -280,7 +280,7 @@ WHERE date >= '2022-10-01 15:20:05'
 ```
 
 :::warning
-服务器端绑定（由 ClickHouse 服务器实现）目前仅支持 `SELECT` 查询。不支持 `ALTER`、`DELETE`、`INSERT` 或其他类型的查询。未来可能会有所变化；详见 [https://github.com/ClickHouse/ClickHouse/issues/42092](https://github.com/ClickHouse/ClickHouse/issues/42092)。
+服务器端绑定（由 ClickHouse 服务器实现）目前仅支持 `SELECT` 查询。不支持 `ALTER`、`DELETE`、`INSERT` 或其他类型的查询。未来可能会有所变化；详见 https://github.com/ClickHouse/ClickHouse/issues/42092。
 :::
 
 

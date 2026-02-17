@@ -404,7 +404,7 @@ CREATE ROLE masked_order_viewer;
 GRANT SELECT ON orders TO masked_data_reader;
 ```
 
-Отзовите доступ к любым конфиденциальным столбцам:
+Отзовите доступ к чувствительным столбцам:
 
 ```sql
 REVOKE SELECT(name) ON orders FROM masked_data_reader;

@@ -64,19 +64,19 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   #### Добавьте слой Rotel в вашу Lambda-функцию
 
-  *В этих примерах замените `{arch}`, `{region}` и `{version}` соответствующими значениями, указанными выше.*
+  *В этих примерах замените `{arch}`, `{region}` и `{version}` на соответствующие значения, приведённые выше.*
 
   ##### Вариант 1: Консоль AWS
 
   1. Откройте консоль AWS Lambda
-  2. Перейдите к своей функции Lambda
-  3. Прокрутите страницу до раздела **Layers** и нажмите **Add a layer**
-  4. Выберите **Specify an ARN**
+  2. Перейдите к вашей Lambda-функции
+  3. Прокрутите страницу вниз до раздела **Layers** и нажмите **Add a layer**
+  4. Выберите пункт **Specify an ARN**
   5. Введите ARN слоя Rotel:
      ```text
      arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version}
      ```
-  6. Нажмите кнопку **Add**
+  6. Нажмите **Add**
 
   ##### Вариант 2: AWS CLI
 
@@ -146,7 +146,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:secretsmanager:us-east-1:123456789012:secret:clickstack-api-key-abc123}"
   ```
 
-  **Пример хранилища параметров AWS (AWS Parameter Store):**
+  **Пример использования AWS Parameter Store:**
 
   ```bash
   ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
@@ -155,7 +155,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   **Требуемые разрешения IAM:**
 
-  Добавьте эти разрешения в роль выполнения Lambda:
+  Добавьте эти разрешения к роли выполнения Lambda:
 
   Для Secrets Manager:
 

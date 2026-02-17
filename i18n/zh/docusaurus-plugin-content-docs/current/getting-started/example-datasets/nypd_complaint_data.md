@@ -179,7 +179,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 └─────────────────────┘
 ```
 
-来看一些公园名称：
+来看一下部分公园名称：
 
 ```sql
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \

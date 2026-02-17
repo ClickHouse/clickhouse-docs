@@ -50,8 +50,6 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 После того как в организации будет как минимум один пользователь SAML с ролью Organization Admin, удалите из организации пользователей, использующих другие методы аутентификации, чтобы обеспечить использование в организации только аутентификации SAML.
 
-
-
 ## Управление назначениями ролей пользователей \{#manage-role-assignments\}
 
 Пользователи с ролью Organization Admin могут в любое время обновлять разрешения для других пользователей.
@@ -100,9 +98,8 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 </VerticalStepper>
 
-
-
 ## Удаление пользователя \{#remove-user\}
+
 :::note Удаление пользователей SAML
 Пользователи SAML, для которых в вашем провайдере идентификации была отменена привязка к приложению ClickHouse, не могут войти в ClickHouse Cloud. При этом учетная запись не удаляется из консоли и должна быть удалена вручную.
 :::

@@ -9,6 +9,7 @@ doc_type: 'guide'
 
 import CommonUserRolesContent from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
 
+
 # 一般的なアクセス管理クエリ \{#common-access-management-queries\}
 
 :::tip 自前運用
@@ -38,6 +39,7 @@ SQL Console を使用する場合、SQL ステートメントは `default` ユ�
 これら自動的に生成される SQL Console ユーザーには、`default` ロールが付与されています。
 :::
 
+
 ## パスワードレス認証 \{#passwordless-authentication\}
 
 SQL コンソールには 2 種類のロールが利用可能です。`sql_console_admin` は `default_role` と同一の権限を持ち、`sql_console_read_only` は読み取り専用の権限を持ちます。
@@ -46,7 +48,7 @@ SQL コンソールには 2 種類のロールが利用可能です。`sql_conso
 
 ### きめ細かなアクセス制御 \{#granular-access-control\}
 
-このアクセス制御機能は、ユーザー単位でも手動で設定できます。新しい `sql_console_*` ロールをユーザーに割り当てる前に、名前空間 `sql-console-role:<email>` に一致する、SQL コンソール用のユーザー固有データベースロールを作成しておく必要があります。例えば次のとおりです。
+このアクセス制御機能は、ユーザー単位でも手動で設定できます。新しい `sql_console_*` ロールをユーザーに割り当てる前に、名前空間 `sql-console-role:&lt;email&gt;` に一致する、SQL コンソール用のユーザー固有データベースロールを作成しておく必要があります。例えば次のとおりです。
 
 ```sql
 CREATE ROLE OR REPLACE sql-console-role:<email>;

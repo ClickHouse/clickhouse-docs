@@ -36,8 +36,6 @@ AWS 上でコミット済み契約を表示および受諾するために必要�
 - AWS マネージドポリシーを使用しない場合、以下の権限が必要です:
   - IAM アクション `aws-marketplace:ListPrivateListings` および `aws-marketplace:ViewSubscriptions`
 
-
-
 ## サインアップ手順 \{#steps-to-sign-up\}
 
 <VerticalStepper headerLevel="h3">

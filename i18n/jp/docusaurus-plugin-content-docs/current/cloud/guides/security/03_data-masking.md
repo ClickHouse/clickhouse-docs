@@ -325,7 +325,7 @@ REVOKE SELECT ON orders FROM masked_orders_viewer;
 GRANT masked_orders_viewer TO your_user;
 ```
 
-これにより、`masked_orders_viewer` ロールを持つユーザーは、ビューからマスクされたデータのみを閲覧でき、テーブルにある元のマスクされていないデータは閲覧できなくなります。
+これにより、`masked_orders_viewer` ロールを持つユーザーは、ビューからマスキングされたデータのみを閲覧でき、テーブルにある元のマスクされていないデータは閲覧できなくなります。
 
 
 ## `MATERIALIZED` カラムとカラムレベルのアクセス制限を使用する \{#materialized-ephemeral-column-restrictions\}
@@ -397,7 +397,7 @@ DROP ROLE IF EXISTS masked_order_viewer;
 CREATE ROLE masked_order_viewer;
 ```
 
-次に、`orders` テーブルに対して `SELECT` 権限を付与します。
+次に、`orders` テーブルに `SELECT` 権限を付与します。
 
 ```sql
 GRANT SELECT ON orders TO masked_data_reader;

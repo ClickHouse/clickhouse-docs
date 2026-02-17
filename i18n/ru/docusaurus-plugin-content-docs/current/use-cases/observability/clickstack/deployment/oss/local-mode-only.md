@@ -39,8 +39,8 @@ import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/us
   В локальном режиме интерфейс HyperDX запускается на порту 8080.
 
   ```shell
-docker run -p 8080:8080 clickhouse/clickstack-local:latest
-```
+  docker run -p 8080:8080 clickhouse/clickstack-local:latest
+  ```
 
   ### Перейдите в интерфейс HyperDX
 
@@ -59,7 +59,7 @@ docker run -p 8080:8080 clickhouse/clickstack-local:latest
 
 <JSONSupport />
 
-Для образа, предназначенного только для локального режима, пользователям нужно задать только параметр `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`, например:
+Для образа, предназначенного только для локального режима, пользователям нужно задать только параметр `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`, например,
 
 ```shell
 docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -p 8080:8080 clickhouse/clickstack-local:latest

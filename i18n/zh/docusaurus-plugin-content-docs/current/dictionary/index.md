@@ -290,10 +290,10 @@ ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 ```sql
 INSERT INTO posts_with_location SELECT Id, PostTypeId::UInt8, AcceptedAnswerId, CreationDate, Score, ViewCount, Body, OwnerUserId, OwnerDisplayName, LastEditorUserId, LastEditorDisplayName, LastEditDate, LastActivityDate, Title, Tags, AnswerCount, CommentCount, FavoriteCount, ContentLicense, ParentId, CommunityOwnedDate, ClosedDate FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
 
-返回 0 行。耗时：36.830 秒。处理了 2.3898 亿行，2.64 GB（649 万行/秒，71.79 MB/秒）
+0 rows in set. Elapsed: 36.830 sec. Processed 238.98 million rows, 2.64 GB (6.49 million rows/s., 71.79 MB/s.)
 ```
 
-现在我们可以获取大多数帖子发布地的名称：
+现在我们可以获取大多数帖子来源地的名称：
 
 ```sql
 SELECT Location, count() AS c
@@ -310,9 +310,10 @@ LIMIT 4
 │ London, United Kingdom │ 538738 │
 └────────────────────────┴────────┘
 
-返回 4 行。用时:0.142 秒。已处理 5982 万行,1.08 GB(420.73 百万行/秒,7.60 GB/秒)。
-内存峰值:666.82 MiB。
+4 rows in set. Elapsed: 0.142 sec. Processed 59.82 million rows, 1.08 GB (420.73 million rows/s., 7.60 GB/s.)
+Peak memory usage: 666.82 MiB.
 ```
+
 
 ## 字典高级主题 \{#advanced-dictionary-topics\}
 

@@ -290,7 +290,7 @@ ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 ```sql
 INSERT INTO posts_with_location SELECT Id, PostTypeId::UInt8, AcceptedAnswerId, CreationDate, Score, ViewCount, Body, OwnerUserId, OwnerDisplayName, LastEditorUserId, LastEditorDisplayName, LastEditDate, LastActivityDate, Title, Tags, AnswerCount, CommentCount, FavoriteCount, ContentLicense, ParentId, CommunityOwnedDate, ClosedDate FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
 
-0 строк в наборе. Затрачено: 36.830 сек. Обработано 238.98 млн строк, 2.64 ГБ (6.49 млн строк/с., 71.79 МБ/с.)
+0 rows in set. Elapsed: 36.830 sec. Processed 238.98 million rows, 2.64 GB (6.49 million rows/s., 71.79 MB/s.)
 ```
 
 Теперь мы можем узнать название места, из которого поступает большинство записей:
@@ -310,9 +310,10 @@ LIMIT 4
 │ London, United Kingdom │ 538738 │
 └────────────────────────┴────────┘
 
-Получено 4 строки. Прошло: 0.142 сек. Обработано 59.82 млн строк, 1.08 ГБ (420.73 млн строк/сек., 7.60 ГБ/сек.)
-Пиковое использование памяти: 666.82 МиБ.
+4 rows in set. Elapsed: 0.142 sec. Processed 59.82 million rows, 1.08 GB (420.73 million rows/s., 7.60 GB/s.)
+Peak memory usage: 666.82 MiB.
 ```
+
 
 ## Расширенные темы о словарях \{#advanced-dictionary-topics\}
 

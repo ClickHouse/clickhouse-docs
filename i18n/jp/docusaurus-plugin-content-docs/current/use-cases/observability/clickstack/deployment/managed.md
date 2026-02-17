@@ -71,7 +71,7 @@ import TabItem from '@theme/TabItem';
 このガイドでは、すでに ClickHouse Cloud サービスを作成済みであることを前提としています。まだサービスを作成していない場合は、Managed ClickStack 用の [はじめに](/use-cases/observability/clickstack/getting-started/managed) ガイドに従ってください。これにより、本ガイドと同じ状態、すなわち ClickStack が有効化され、オブザーバビリティデータをインジェストする準備が整ったサービスが用意されます。
 
 <Tabs groupId="service-create-select">
-  <TabItem value="CREATE" label="新しいサービスを作成する" default>
+  <TabItem value="create" label="新しいサービスを作成する" default>
     <br />
 
     <VerticalStepper headerLevel="h3">
@@ -99,7 +99,7 @@ import TabItem from '@theme/TabItem';
     </VerticalStepper>
   </TabItem>
 
-  <TabItem value="選択" label="既存のサービスを使用する">
+  <TabItem value="選択する" label="既存のサービスを使用する">
     <br />
 
     <VerticalStepper headerLevel="h3">
@@ -115,23 +115,23 @@ import TabItem from '@theme/TabItem';
 
       <Image img={select_service} alt="サービスを選択" size="lg" />
 
-      ### ClickStack UIに移動する
+      ### ClickStack UI に移動する
 
       左側のナビゲーションメニューから&#39;ClickStack&#39;を選択します。ClickStack UIにリダイレクトされ、ClickHouse Cloudの権限に基づいて自動的に認証されます。
 
-      サービス内にOpenTelemetryテーブルが既に存在する場合、自動的に検出され、対応するデータソースが作成されます。
+      サービス内に OpenTelemetry テーブルが既に存在する場合、自動的に検出され、対応するデータソースが作成されます。
 
       :::note データソースの自動検出
       自動検出は、ClickStack ディストリビューションの OpenTelemetry コレクターが提供する標準 OpenTelemetry テーブルスキーマに依存しています。最も完全なテーブルセットを持つデータベースに対してソースが作成されます。必要に応じて、追加のテーブルを[個別のデータソース](/use-cases/observability/clickstack/config#datasource-settings)として追加することができます。
       :::
 
-      自動検出が成功すると、検索ビューにリダイレクトされ、すぐにデータの探索を開始できます。
+      自動検出が成功すると、検索ビューに遷移し、すぐにデータの探索を開始できます。
 
       <Image img={clickstack_managed_ui} size="lg" alt="ClickStack UI" />
 
       このステップが成功した場合、これで完了です 🎉。そうでない場合は、インジェストのセットアップに進んでください。
 
-      ### インジェストの設定
+      ### インジェストをセットアップする
 
       自動検出が失敗した場合、または既存のテーブルが存在しない場合は、インジェストの設定を求められます。
 
@@ -218,7 +218,7 @@ import TabItem from '@theme/TabItem';
           CREATE DATABASE IF NOT EXISTS logs
           ```
 
-          次に、ログデータの構造に対応したスキーマを持つテーブルを作成します。以下の例では、一般的な Nginx アクセスログ形式を想定しています。
+          次に、ログデータの構造に合致したスキーマを持つテーブルを作成します。以下の例では、一般的な Nginx アクセスログ形式を想定しています。
 
           ```sql
           CREATE TABLE logs.nginx_logs
@@ -254,7 +254,7 @@ import TabItem from '@theme/TabItem';
         </TabItem>
       </Tabs>
 
-      ### ClickStack UIに移動する
+      ### ClickStack UI に移動する
 
       インジェストの設定を完了し、データの送信を開始したら、&quot;Next&quot;を選択してください。
 

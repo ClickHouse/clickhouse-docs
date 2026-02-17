@@ -544,10 +544,13 @@ Bloom フィルタは、高カーディナリティな文字列カラムで各�
 
 ORDER BY キーを選択する際には、いくつかの簡潔なルールを適用できます。以下のルール同士が競合することもあるため、記載順に検討してください。このプロセスから選択するキーは最大 4～5 個を目安とします。
 
-1. よく使うフィルタやアクセスパターンに合致するカラムを選択します。典型的に、特定のカラム（例: ポッド名）でフィルタしてからオブザーバビリティの調査を開始する場合、そのカラムは `WHERE` 句で頻繁に使用されます。このようなカラムを、使用頻度の低いカラムよりも優先してキーに含めてください。
-2. フィルタ時に総行数の大部分を除外できるカラムを優先します。これにより、読み取る必要のあるデータ量を削減できます。サービス名やステータスコードは、多くの場合で良い候補になります。ただし後者については、ほとんどの行を除外できる値でフィルタする場合に限ります。たとえば、多くのシステムでは 200 コードでフィルタすると大半の行に一致しますが、500 エラーは行全体のごく一部にしか対応しません。
-3. テーブル内の他のカラムと高い相関が見込まれるカラムを優先します。これにより、これらの値が連続して格納されやすくなり、圧縮効率が向上します。
-4. ORDER BY キーに含まれるカラムに対する `GROUP BY`（チャート向けの集約）や `ORDER BY`（ソート）の処理は、よりメモリ効率良く実行できます。
+よく使うフィルタやアクセスパターンに合致するカラムを選択します。典型的に、特定のカラム（例: ポッド名）でフィルタしてからオブザーバビリティの調査を開始する場合、そのカラムは `WHERE` 句で頻繁に使用されます。このようなカラムを、使用頻度の低いカラムよりも優先してキーに含めてください。
+
+フィルタ時に総行数の大部分を除外できるカラムを優先します。これにより、読み取る必要のあるデータ量を削減できます。サービス名やステータスコードは、多くの場合で良い候補になります。ただし後者については、ほとんどの行を除外できる値でフィルタする場合に限ります。たとえば、多くのシステムでは 200 コードでフィルタすると大半の行に一致しますが、500 エラーは行全体のごく一部にしか対応しません。
+
+テーブル内の他のカラムと高い相関が見込まれるカラムを優先します。これにより、これらの値が連続して格納されやすくなり、圧縮効率が向上します。
+
+ORDER BY キーに含まれるカラムに対する `GROUP BY`（チャート向けの集約）や `ORDER BY`（ソート）の処理は、よりメモリ効率良く実行できます。
 
 ORDER BY キーとして選択したカラムの部分集合が決まったら、それらを特定の順序で定義する必要があります。この順序は、クエリでキーの後続カラムを対象とするフィルタリング効率と、テーブルのデータファイルにおける圧縮率の両方に大きく影響します。一般的には、カーディナリティが低いものから高いものへと昇順に並べるのが最適です。ただし、ORDER BY キーのタプル内で後ろに位置するカラムに対するフィルタは、前に位置するカラムに対するフィルタよりも非効率になることとのバランスを取る必要があります。これらの挙動を考慮しつつ、アクセスパターンを踏まえて判断してください。何よりも、いくつかのバリエーションをテストすることが重要です。ORDER BY キーの理解と最適化方法について、さらに詳細な解説が必要な場合は、["Choosing a Primary Key."](/best-practices/choosing-a-primary-key) を参照してください。プライマリキーのチューニングおよび内部データ構造について、より深い洞察が必要な場合は、["A practical introduction to primary indexes in ClickHouse."](/guides/best-practices/sparse-primary-indexes) を参照することを推奨します。
 
@@ -627,22 +630,21 @@ ENGINE = Merge(currentDatabase(), 'otel_logs*')
 
 HyperDX を構成し、ログのデータソース用テーブルとして `otel_logs_merge` を使用するようにします。
 
-
 <Image img={select_merge_table} size="lg" alt="Merge テーブルを選択"/>
 
-この時点でも、書き込みは元のプライマリキーを持つ `otel_logs` に対して行われる一方で、読み取りは Merge テーブルを使用します。ユーザーにとって見える変更もなく、インジェストへの影響もありません。
+この時点では、書き込みは引き続き元のプライマリキーを持つ `otel_logs` に対して行われ、読み取りは Merge テーブルを経由します。ユーザーから見える変更はなく、インジェストへの影響もありません。
 
 #### テーブルを入れ替える \{#exchange-the-tables\}
 
-`EXCHANGE` ステートメントを使用して、`otel_logs` と `otel_logs_23_01_2025` のテーブル名をアトミックに入れ替えます。
+ここで、`EXCHANGE` ステートメントを使用して、`otel_logs` と `otel_logs_23_01_2025` テーブルの名前をアトミックに入れ替えます。
 
 ```sql
 EXCHANGE TABLES otel_logs AND otel_logs_23_01_2025
 ```
 
-以降の書き込みは、更新されたプライマリキーを持つ新しい `otel_logs` テーブルに対して行われます。既存データは `otel_logs_23_01_2025` に残り、引き続き Merge テーブル経由でアクセス可能です。サフィックスは変更が適用された日付を示し、そのテーブルに含まれる最新のタイムスタンプを表します。
+これ以降、書き込みは更新されたプライマリキーを持つ新しい `otel_logs` テーブルに送られます。既存データは `otel_logs_23_01_2025` に残り、Merge テーブル経由で引き続きアクセス可能です。このサフィックスは変更を適用した日付を表し、そのテーブルに含まれる最新のタイムスタンプを示します。
 
-この手順により、インジェストを中断することなく、またユーザーから見える影響なしにプライマリキーを変更できます。
+このプロセスにより、インジェストを中断することなく、かつユーザーから見て影響がない形でプライマリキーを変更できます。
 
 </VerticalStepper>
 
@@ -662,7 +664,7 @@ PRIMARY KEY (SeverityNumber, ServiceName, TimestampTime)
 ORDER BY (SeverityNumber, ServiceName, TimestampTime)
 ```
 
-#### テーブルを入れ替える \{#exchange-the-tables-v2\}
+#### テーブルを入れ替える {#exchange-the-tables-v2}
 
 `EXCHANGE` ステートメントを使用して、`otel_logs` テーブルと `otel_logs_30_01_2025` テーブルの名前をアトミックに入れ替えます。
 
@@ -687,13 +689,13 @@ ClickStack は、集約処理が重いクエリ（例: 時系列での 1 分あ�
 
 ClickStack でこの機能を使用する方法の詳細については、専用ガイド ["ClickStack - Materialized Views."](/use-cases/observability/clickstack/materialized_views) を参照してください。
 
-## Optimization 5. Exploiting Projections \{#exploting-projections\}
+## Optimization 5. Exploiting Projections {#exploting-projections}
 
 PROJECTION は、materialized columns、skip indexes、primary keys、および materialized views を検討し終えた後に考慮できる、最終段階かつ高度な最適化手法です。PROJECTION と materialized view は見かけ上は似ていますが、ClickStack においては異なる目的を持ち、異なるシナリオで使うのが最適です。
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6CdnUdZSEG0?si=1zUyrP-tCvn9tXse" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-### プロジェクションの例 \{#example-projections\}
+### プロジェクションの例 \{#projection-costs-and-guidance\}
 
 traces テーブルがデフォルトの ClickStack のアクセスパターンに合わせて最適化されているとします。
 
@@ -770,20 +772,20 @@ WHERE TraceId = 'aeea7f401feb75fc5af8eb25ebc8e974'
   AND Timestamp >= now() - INTERVAL 1 DAY
 GROUP BY t
 
-ORDER BY t;
-```
+### `_part_offset` を用いた軽量 projection \{#lightweight-projections\}
 
-`TraceId` を絞り込まないクエリや、projection の並び順キーの先頭になっていない他の次元を主なフィルタ条件とするクエリは、通常はメリットがなく（その場合は代わりにベースレイアウト経由で読み取りが行われる可能性があります）。
+<BetaBadge/>
 
-:::note
-Projection は集計結果も保存できます（materialized view に近い動作です）。しかし ClickStack では、projection ベースの集計は一般的には推奨されません。どの projection が選択されるかが ClickHouse の analyzer に依存しており、その利用を制御したり理解したりすることが難しくなりがちだからです。代わりに、ClickStack がアプリケーション層で明示的に登録し、意図的に選択できる materialized view を利用することを推奨します。
+:::note[軽量 projection は ClickStack では Beta 機能です]
+`_part_offset` ベースの軽量 projection は、ClickStack のワークロードには推奨されません。ストレージと書き込み I/O を削減できる一方で、クエリ実行時のランダムアクセスを増加させる可能性があり、オブザーバビリティ規模での本番環境での挙動については、まだ評価中です。この推奨事項は、機能の成熟と運用データの蓄積に伴い、将来的に変更される可能性があります。
 :::
 
-実際には、projection は、広い検索からトレース中心のドリルダウンへ頻繁にピボットするワークフロー（たとえば、特定の `TraceId` に対するすべての span を取得するようなケース）に最も適しています。
+新しい ClickHouse のバージョンでは、projection のソートキーと、ベーステーブルへの `_part_offset` ポインタだけを保持し、完全な行を複製しない、より軽量な projection もサポートされています。これによりストレージのオーバーヘッドを大幅に削減でき、最近の改善により granule レベルでのプルーニングが可能になったことで、実質的なセカンダリ索引に近い挙動をするようになっています。詳細は次を参照してください。
 
+- [`_part_offset` を用いたよりスマートなストレージ](/data-modeling/projections#smarter_storage_with_part_offset)
+- [ブログでの解説と例](https://clickhouse.com/blog/projections-secondary-indices#example-combining-multiple-projection-indexes)
 
-
-### コストと指針 {#projection-costs-and-guidance}
+### コストと指針 \{#projection-costs-and-guidance\}
 
 - **挿入時のオーバーヘッド**: 異なる並び替えキーを持つ `SELECT *` の projection は、実質的にデータを 2 回書き込むことになり、書き込み I/O が増加し、インジェストを維持するために追加の CPU およびディスクスループットが必要になる場合があります。
 - **慎重に利用する**: projection は、2 つ目の物理的な並び順によって多くのクエリに対して有意なプルーニングが可能になるような、実際に多様なアクセスパターンが存在する場合に限定して利用するのが最適です。例えば、2 つのチームが同じデータセットに対して本質的に異なる方法でクエリを実行するようなケースです。

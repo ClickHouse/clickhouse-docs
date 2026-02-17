@@ -67,7 +67,7 @@ LIMIT 100;
 └────────────┴──────────────┴───────────────┴──────────────┴───────────────┴────────────┴──────────────────────┴─────────────────────┴──────────────────────┴───────────────────┘
 ```
 
-3. 现在我们已经了解了数据的结构，来创建一张表：
+3. 现在我们已经了解了数据的情况，可以创建一张表：
 
 ```sql
 CREATE TABLE covid19 (
@@ -86,7 +86,7 @@ ENGINE = MergeTree
 ORDER BY (location_key, date);
 ```
 
-4. 使用以下命令将整个数据集插入到 `covid19` 表中：
+4. 使用以下命令将整个数据集插入 `covid19` 表：
 
 ```sql
 INSERT INTO covid19
@@ -121,7 +121,7 @@ FROM covid19;
 └─────────────────────────────────┘
 ```
 
-6. 来看一下共记录了多少例新冠肺炎（COVID-19）病例：
+6. 让我们来看一下共记录了多少例 COVID-19 病例：
 
 ```sql
 SELECT formatReadableQuantity(sum(new_confirmed))
@@ -133,6 +133,7 @@ FROM covid19;
 │ 1.39 billion                               │
 └────────────────────────────────────────────┘
 ```
+
 
 7. 你会注意到数据中有很多日期对应的数值为 0——要么是周末，要么是某些天没有按日上报数据。我们可以使用窗口函数来平滑新确诊病例的每日平均值：
 
@@ -231,6 +232,7 @@ WHERE location_key = 'US_DC';
 
 结果如下：
 
+
 ```response
 ┌───────date─┬─new_confirmed─┬─percent_change─┬─trend─────┐
 │ 2020-03-08 │             0 │            nan │ decrease  │
@@ -263,5 +265,5 @@ WHERE location_key = 'US_DC';
 ```
 
 :::note
-正如 [GitHub 仓库](https://github.com/GoogleCloudPlatform/covid-19-open-data) 中所述，自 2022 年 9 月 15 日起，该数据集不再更新。
+如 [GitHub 仓库](https://github.com/GoogleCloudPlatform/covid-19-open-data) 中所述，自 2022 年 9 月 15 日起，该数据集不再更新。
 :::
