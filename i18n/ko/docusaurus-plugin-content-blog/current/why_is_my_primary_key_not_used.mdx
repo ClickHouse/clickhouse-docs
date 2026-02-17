@@ -1,0 +1,246 @@
+---
+title: 기본 키가 사용되지 않는 이유는 무엇입니까? 어떻게 확인할 수 있습니까?
+description: "정렬 시 기본 키가 사용되지 않는 일반적인 원인과 이를 확인하는 방법을 설명합니다"
+date: 2024-12-12
+tags: ['성능 및 최적화']
+keywords: ['기본 키']
+---
+
+{frontMatter.description}
+
+{{/* truncate */}}
+
+## 기본 키 확인하기 \{#checking-your-primary-key\}
+
+기본 키로 정렬하거나 필터링하고 있다고 생각하지만 실제로는 쿼리 속도가 기대에 미치지 못하는 경우가 있을 수 있습니다. 이 글에서는 기본 키가 실제로 사용되고 있는지 확인하는 방법과, 기본 키가 사용되지 않는 일반적인 원인을 설명합니다.
+
+## 테이블 생성 \{#create-table\}
+
+다음과 같은 간단한 테이블이 있다고 가정합니다.
+
+```sql
+CREATE TABLE logs
+(
+    `code` LowCardinality(String),
+    `timestamp` DateTime64(3)
+)
+ENGINE = MergeTree
+ORDER BY (code, toUnixTimestamp(timestamp))
+```
+
+정렬 키에 `toUnixTimestamp(timestamp)`가 두 번째 항목으로 포함되어 있다는 점에 주목하십시오.
+
+## 데이터 채우기 \{#populate-data\}
+
+이 테이블에 1억 개의 행을 채우십시오:
+
+```sql
+INSERT INTO logs SELECT
+ ['200', '404', '502', '403'][toInt32(randBinomial(4, 0.1)) + 1] AS code,
+    now() + toIntervalMinute(number) AS timestamp
+FROM numbers(100000000)
+
+0 rows in set. Elapsed: 15.845 sec. Processed 100.00 million rows, 800.00 MB (6.31 million rows/s., 50.49 MB/s.)
+
+SELECT count()
+FROM logs
+
+┌───count()─┐
+│ 100000000 │ -- 100.00 million
+└───────────┘
+
+1 row in set. Elapsed: 0.002 sec.
+```
+
+## 기본 필터링 \{#basic-filtering\}
+
+코드로 필터링하면 출력에서 스캔된 행 수를 확인할 수 있습니다. - `49.15 thousand`. 이는 전체 1억 행 중 일부라는 점에 유의하십시오.
+
+```sql
+SELECT count() AS c
+FROM logs
+WHERE code = '200'
+
+┌────────c─┐
+│ 65607542 │ -- 65.61 million
+└──────────┘
+
+1 row in set. Elapsed: 0.021 sec. Processed 49.15 thousand rows, 49.17 KB (2.34 million rows/s., 2.34 MB/s.)
+Peak memory usage: 92.70 KiB.
+```
+
+또한 `EXPLAIN indexes=1` 절을 통해 인덱스 사용 여부를 확인할 수 있습니다.
+
+```sql
+EXPLAIN indexes = 1
+SELECT count() AS c
+FROM logs
+WHERE code = '200'
+
+┌─explain────────────────────────────────────────────────────────────┐
+│ Expression ((Project names + Projection))                          │
+│   AggregatingProjection                                            │
+│     Expression (Before GROUP BY)                                   │
+│       Filter ((WHERE + Change column names to column identifiers)) │
+│         ReadFromMergeTree (default.logs)                           │
+│         Indexes:                                                   │
+│           PrimaryKey                                               │
+│             Keys:                                                  │
+│               code                                                 │
+│             Condition: (code in ['200', '200'])                    │
+│             Parts: 3/3 │
+│             Granules: 8012/12209 │
+│     ReadFromPreparedSource (_minmax_count_projection)              │
+└────────────────────────────────────────────────────────────────────┘
+```
+
+스캔된 그래뉼 수 `8012`가 전체 `12209`의 일부에 불과하다는 점에 주목하십시오. 아래에 강조된 부분은 기본 키 코드가 사용되고 있음을 보여 줍니다.
+
+```bash
+PrimaryKey
+  Keys: 
+   code 
+```
+
+그래뉼은 ClickHouse에서 데이터 처리 단위이며, 각 그래뉼에는 일반적으로 8192개의 행이 포함됩니다. 그래뉼 및 그래뉼이 어떻게 필터링되는지에 대한 자세한 내용은 [이 가이드](/guides/best-practices/sparse-primary-indexes#mark-files-are-used-for-locating-granules)를 참고하십시오.
+
+:::note
+ordering key에서 뒤쪽에 있는 키를 기준으로 필터링하는 것은 tuple에서 앞쪽에 있는 키를 기준으로 필터링하는 것만큼 효율적이지 않습니다. 그 이유는 [여기](/guides/best-practices/sparse-primary-indexes#secondary-key-columns-can-not-be-inefficient)를 참고하십시오.
+:::
+
+## 다중 키 필터링 \{#multi-key-filtering\}
+
+`code`와 `timestamp`로 필터링하는 경우를 가정해 보겠습니다:
+
+```sql
+SELECT count()
+FROM logs
+WHERE (code = '200') AND (timestamp >= '2025-01-01 00:00:00') AND (timestamp <= '2026-01-01 00:00:00')
+
+┌─count()─┐
+│  689742 │
+└─────────┘
+
+1 row in set. Elapsed: 0.008 sec. Processed 712.70 thousand rows, 6.41 MB (88.92 million rows/s., 799.27 MB/s.)
+
+
+EXPLAIN indexes = 1
+SELECT count()
+FROM logs
+WHERE (code = '200') AND (timestamp >= '2025-01-01 00:00:00') AND (timestamp <= '2026-01-01 00:00:00')
+
+┌─explain───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ Expression ((Project names + Projection))                                                                                                                         │
+│   Aggregating                                                                                                                                                     │
+│     Expression (Before GROUP BY)                                                                                                                                  │
+│       Expression                                                                                                                                                  │
+│         ReadFromMergeTree (default.logs)                                                                                                                          │
+│         Indexes:                                                                                                                                                  │
+│           PrimaryKey                                                                                                                                              │
+│             Keys:                                                                                                                                                 │
+│               code                                                                                                                                                │
+│               toUnixTimestamp(timestamp)                                                                                                                          │
+│             Condition: and((toUnixTimestamp(timestamp) in (-Inf, 1767225600]), and((toUnixTimestamp(timestamp) in [1735689600, +Inf)), (code in ['200', '200']))) │
+│             Parts: 3/3 │
+│             Granules: 87/12209 │
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+13 rows in set. Elapsed: 0.002 sec.
+
+```
+
+이 경우 두 정렬 키가 모두 행을 필터링하는 데 사용되므로 `87`개의 그래뉼만 읽기만 하면 됩니다.
+
+## 정렬에서 키 사용하기 \{#using-keys-in-sorting\}
+
+ClickHouse는 정렬을 효율적으로 수행하기 위해 정렬 키도 활용합니다. 구체적으로,
+
+[optimize&#95;read&#95;in&#95;order](/sql-reference/statements/select/order-by#optimization-of-data-reading) 설정이 활성화되어 있을 때(기본값), ClickHouse 서버는 테이블 인덱스를 사용하여 데이터를 ORDER BY 키 순서대로 읽습니다. 이를 통해 LIMIT가 지정된 경우 모든 데이터를 읽지 않아도 됩니다. 따라서 대용량 데이터에 대해 LIMIT 값이 작은 쿼리는 더 빠르게 처리됩니다. 자세한 내용은 [여기](/sql-reference/statements/select/order-by#optimization-of-data-reading)와 [여기](/docs/knowledgebase/async_vs_optimize_read_in_order#what-about-optimize_read_in_order)를 참고하십시오.
+
+다만 이를 위해서는 사용되는 키가 서로 일치해야 합니다.
+
+예를 들어, 다음과 같은 쿼리를 살펴보십시오:
+
+```sql
+SELECT *
+FROM logs
+WHERE (code = '200') AND (timestamp >= '2025-01-01 00:00:00') AND (timestamp <= '2026-01-01 00:00:00')
+ORDER BY timestamp ASC
+LIMIT 10
+
+┌─code─┬───────────────timestamp─┐
+│ 200 │ 2025-01-01 00:00:01.000 │
+│ 200 │ 2025-01-01 00:00:45.000 │
+│ 200 │ 2025-01-01 00:01:01.000 │
+│ 200 │ 2025-01-01 00:01:45.000 │
+│ 200 │ 2025-01-01 00:02:01.000 │
+│ 200 │ 2025-01-01 00:03:01.000 │
+│ 200 │ 2025-01-01 00:03:45.000 │
+│ 200 │ 2025-01-01 00:04:01.000 │
+│ 200 │ 2025-01-01 00:05:45.000 │
+│ 200 │ 2025-01-01 00:06:01.000 │
+└──────┴─────────────────────────
+
+10 rows in set. Elapsed: 0.009 sec. Processed 712.70 thousand rows, 6.41 MB (80.13 million rows/s., 720.27 MB/s.)
+Peak memory usage: 125.50 KiB.
+```
+
+`EXPLAIN pipeline`을 사용하여 이 경우 최적화가 적용되지 않았음을 확인할 수 있습니다:
+
+```sql
+EXPLAIN PIPELINE
+SELECT *
+FROM logs
+WHERE (code = '200') AND (timestamp >= '2025-01-01 00:00:00') AND (timestamp <= '2026-01-01 00:00:00')
+ORDER BY timestamp ASC
+LIMIT 10
+
+┌─explain───────────────────────────────────────────────────────────────────────┐
+│ (Expression)                                                                  │
+│ ExpressionTransform                                                           │
+│   (Limit)                                                                     │
+│   Limit │
+│     (Sorting)                                                                 │
+│     MergingSortedTransform 12 → 1 │
+│       MergeSortingTransform × 12 │
+│         LimitsCheckingTransform × 12 │
+│           PartialSortingTransform × 12 │
+│             (Expression)                                                      │
+│             ExpressionTransform × 12 │
+│               (Expression)                                                    │
+│               ExpressionTransform × 12 │
+│                 (ReadFromMergeTree)                                           │
+│                 MergeTreeSelect(pool: ReadPool, algorithm: Thread) × 12 0 → 1 │
+└───────────────────────────────────────────────────────────────────────────────┘
+
+15 rows in set. Elapsed: 0.004 sec.
+```
+
+여기에서 `MergeTreeSelect(pool: ReadPool, algorithm: Thread)` 행은 최적화 사용을 나타내는 것이 아니라 일반적인 읽기 작업을 의미합니다. 이는 테이블 정렬 키에서 `timestamp`가 아니라 `toUnixTimestamp(Timestamp)`를 사용하고 있기 때문에 발생합니다. 이 불일치를 수정하면 문제가 해결됩니다:
+
+```sql
+EXPLAIN PIPELINE
+SELECT *
+FROM logs
+WHERE (code = '200') AND (timestamp >= '2025-01-01 00:00:00') AND (timestamp <= '2026-01-01 00:00:00')
+ORDER BY toUnixTimestamp(timestamp) ASC
+LIMIT 10
+
+┌─explain──────────────────────────────────────────────────────────────────────────┐
+│ (Expression)                                                                     │
+│ ExpressionTransform                                                              │
+│   (Limit)                                                                        │
+│   Limit │
+│     (Sorting)                                                                    │
+│     MergingSortedTransform 3 → 1 │
+│       BufferChunks × 3 │
+│         (Expression)                                                             │
+│         ExpressionTransform × 3 │
+│           (Expression)                                                           │
+│           ExpressionTransform × 3 │
+│             (ReadFromMergeTree)                                                  │
+│             MergeTreeSelect(pool: ReadPoolInOrder, algorithm: InOrder) × 3 0 → 1 │
+└──────────────────────────────────────────────────────────────────────────────────┘
+
+13 rows in set. Elapsed: 0.003 sec.
+```

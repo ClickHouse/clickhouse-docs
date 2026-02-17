@@ -15,12 +15,9 @@ import select_merge_table from '@site/static/images/clickstack/performance_guide
 
 import Image from '@theme/IdealImage';
 
-
-
 ## はじめに \{#introduction\}
 
 このガイドでは、ClickStack 向けの、最も一般的かつ効果的なパフォーマンス最適化手法に焦点を当てます。これらは、実運用環境における大半のオブザーバビリティワークロードに対して十分な最適化を提供し、通常は 1 日あたり数十テラバイト規模のデータまでを対象とします。
-
 
 ## ClickHouse の概念 \{#clickhouse-concepts\}
 
@@ -75,7 +72,6 @@ ClickStack では、各 **データソースは 1 つ以上の ClickHouse テー
 以下で説明するすべての最適化は、標準的な ClickHouse SQL を使用して、[ClickHouse Cloud SQL console](/integrations/sql-clients/sql-console) または [ClickHouse client](/interfaces/cli) から元となるテーブルに直接適用できます。
 
 ## 最適化 1. よくクエリされる属性をマテリアライズする \{#materialize-frequently-queried-attributes\}
-
 
 ClickStack ユーザー向けの最初かつ最も簡単な最適化は、`LogAttributes`、`ScopeAttributes`、`ResourceAttributes` 内で頻繁にクエリされる属性を特定し、マテリアライズドカラムを使ってそれらをトップレベルのカラムとして昇格させることです。
 
@@ -173,7 +169,6 @@ MATERIALIZED ResourceAttributes['k8s.pod.name']
 
 この時点以降、新規に挿入されるデータでは、ポッド名が専用のカラム `PodName` に保存されます。
 
-
 ユーザーは Lucene 構文を使って、`PodName:"checkout-675775c4cc-f2p9c"` のようにポッド名を効率的にクエリできます。
 
 <Image img={trace_filtering_v2} size="lg" alt="Trace filtering v2" />
@@ -186,7 +181,6 @@ MATERIALIZED ResourceAttributes['k8s.pod.name']
 ```sql
 PodName = 'checkout-675775c4cc-f2p9c'
 ```
-
 
 これにより、ダッシュボード、アラート、保存済みクエリを変更することなく、ユーザーは最適化の恩恵を受けられます。
 
@@ -340,7 +334,6 @@ ADD COLUMN KafkaOffset UInt64
 MATERIALIZED toUInt64(SpanAttributes['messaging.kafka.offset'])
 ```
 
-
 次に、minmax 索引を追加します:
 
 ```sql
@@ -405,7 +398,6 @@ WHERE database = 'otel'
   AND table = 'otel_traces'
   AND name = 'idx_kafka_offset';
 ```
-
 
 ゼロ以外の値は、索引が正常にマテリアライズされていることを示します。
 
@@ -485,7 +477,6 @@ Peak memory usage: 198.39 MiB.
 
 `use_query_condition_cache` を無効化すると、キャッシュされたフィルタリング判定によって結果が影響を受けなくなり、`use_skip_indexes = 0` を設定することで比較用のクリーンなベースラインが得られます。プルーニングが有効で、索引評価コストが低い場合は、上記の例のように、索引付きクエリの方が体感できるほど高速になるはずです。
 
-
 :::tip
 `EXPLAIN` の出力で granule のプルーニングがほとんど行われていない場合や、skip index が非常に大きい場合は、索引の評価コストが利点を相殺してしまうことがあります。`EXPLAIN indexes = 1` を使用してプルーニングを確認し、その後ベンチマークを実施してエンドツーエンドのパフォーマンス改善を検証してください。
 :::
@@ -515,7 +506,6 @@ Bloom フィルタは、高カーディナリティな文字列カラムで各�
 
 プライマリキーを変更する前に、ClickHouse における[プライマリ索引の仕組みを理解するガイド](/primary-indexes)に目を通すことを強く推奨します。
 
-
 プライマリキーのチューニングは、テーブルおよびデータ種別ごとに固有です。あるテーブルやデータ種別に有効な変更が、他には当てはまらない場合があります。目標は常に、特定のデータ種別（例: ログ）に対して最適化することです。
 
 **一般的には、ログおよびトレースのテーブルを最適化することになります。その他のデータ種別について、プライマリキーを変更する必要があるケースはまれです。**
@@ -532,7 +522,6 @@ Bloom フィルタは、高カーディナリティな文字列カラムで各�
 **プライマリキーの変更はテーブルごとに個別に行う必要があります。ログで意味のあることが、トレースやメトリクスでも意味があるとは限りません。**
 
 ### プライマリキーの選択 \{#choosing-a-primary-key\}
-
 
 まず、特定のテーブルについて、アクセスパターンがデフォルト設定と大きく異なっているかどうかを確認します。たとえば、Kubernetes ノードでフィルタしてからサービス名でフィルタする、という形でログを参照することが最も一般的であり、これが主要なワークフローである場合は、プライマリキーを変更する十分な理由になりえます。
 
@@ -664,10 +653,9 @@ PRIMARY KEY (SeverityNumber, ServiceName, TimestampTime)
 ORDER BY (SeverityNumber, ServiceName, TimestampTime)
 ```
 
-#### テーブルを入れ替える {#exchange-the-tables-v2}
+#### テーブルを入れ替える \{#exchange-the-tables-v2\}
 
 `EXCHANGE` ステートメントを使用して、`otel_logs` テーブルと `otel_logs_30_01_2025` テーブルの名前をアトミックに入れ替えます。
-
 
 ```sql
 EXCHANGE TABLES otel_logs AND otel_logs_30_01_2025
@@ -689,13 +677,13 @@ ClickStack は、集約処理が重いクエリ（例: 時系列での 1 分あ�
 
 ClickStack でこの機能を使用する方法の詳細については、専用ガイド ["ClickStack - Materialized Views."](/use-cases/observability/clickstack/materialized_views) を参照してください。
 
-## Optimization 5. Exploiting Projections {#exploting-projections}
+## Optimization 5. Exploiting Projections \{#exploting-projections\}
 
 PROJECTION は、materialized columns、skip indexes、primary keys、および materialized views を検討し終えた後に考慮できる、最終段階かつ高度な最適化手法です。PROJECTION と materialized view は見かけ上は似ていますが、ClickStack においては異なる目的を持ち、異なるシナリオで使うのが最適です。
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6CdnUdZSEG0?si=1zUyrP-tCvn9tXse" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-### プロジェクションの例 \{#projection-costs-and-guidance\}
+### プロジェクションの例 \{#example-projections\}
 
 traces テーブルがデフォルトの ClickStack のアクセスパターンに合わせて最適化されているとします。
 
@@ -759,7 +747,6 @@ projection には、集計結果を格納することもできます（materiali
 :::
 
 実務上、projection は、広い検索結果からトレース中心のドリルダウンに頻繁にピボットするようなワークフロー（たとえば、特定の TraceId に属するすべての span を取得する処理）に最も適しています。
-
 
 ORDER BY Timestamp;
 

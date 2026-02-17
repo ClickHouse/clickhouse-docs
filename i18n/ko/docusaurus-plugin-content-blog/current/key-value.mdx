@@ -1,0 +1,23 @@
+---
+title: ClickHouse를 키-값 저장소로 사용할 수 있습니까?
+description: "간단한 대답은 **\"아니요\"**입니다. 키-값 워크로드는 ClickHouse를 사용하지 말아야 하는 사례 목록에서 최상위에 속합니다."
+date: 2021-09-01
+tags: ['개념', '사용 사례']
+keywords: ['키-값 저장소']
+---
+
+{frontMatter.description}
+
+{/* 요약 구분 */}
+
+## 간단한 대답은 &quot;아니요&quot;입니다 \{#the-short-answer-is-no\}
+
+간단한 대답은 **&quot;아니요&quot;**입니다. 키-값 워크로드는 ClickHouse를 <span class="text-danger">**사용하면 안 되는**</span> 사례 목록에서 상위에 위치합니다. 결국 ClickHouse는 [OLAP](https://clickhouse.com/docs/faq/general/olap) 시스템이며, 이미 뛰어난 키-값 저장 시스템이 많이 존재합니다.
+
+하지만 그럼에도 불구하고, 키-값 형태의 쿼리에 ClickHouse를 사용하는 것이 의미가 있을 수 있는 상황이 있습니다. 일반적으로 예산이 넉넉하지 않은 제품에서, 주요 워크로드는 분석 위주라 ClickHouse에 잘 맞지만, 이와 별도로 그다지 높은 요청 처리량이나 엄격한 지연 시간 요구 사항이 없는 키-값 패턴이 필요한 2차적인 프로세스가 존재하는 경우입니다. 예산이 무제한이라면 이러한 보조 워크로드를 위해 별도의 키-값 데이터베이스를 추가로 도입했을 것이지만, 실제로는 하나의 저장 시스템을 더 운영하는 데 드는 추가 비용(모니터링, 백업 등)을 피하고 싶은 경우가 많습니다.
+
+권장 사항과 다르게 ClickHouse에 대해 키-값 유사 쿼리를 실행하기로 했다면, 다음과 같은 팁을 참고하십시오.
+
+* ClickHouse에서 포인트 쿼리 비용이 큰 주된 이유는, 주요 [MergeTree table engine family](https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree)의 희소 기본 인덱스 때문입니다. 이 인덱스는 각 데이터 행을 직접 가리킬 수 없고, 대신 매 N번째 행을 가리키므로, 시스템은 인접한 N번째 행부터 원하는 행까지 스캔하면서 그 과정에서 불필요한 데이터를 읽어야 합니다. 키-값 시나리오에서는 `index_granularity` 설정 값을 줄이는 것이 도움이 될 수 있습니다.
+* ClickHouse는 각 컬럼을 별도의 파일 집합에 저장하므로, 하나의 완전한 행을 조립하려면 이러한 각 파일을 모두 읽어야 합니다. 파일 개수는 컬럼 수에 비례하여 선형적으로 증가하므로, 키-값 시나리오에서는 많은 컬럼 사용을 피하고 모든 페이로드를 JSON, Protobuf 등 적절한 직렬화 포맷으로 인코딩하여 하나의 `String` 컬럼에 넣는 것이 더 나을 수 있습니다.
+* 일반적인 `MergeTree` 테이블 대신 [Join](https://clickhouse.com/docs/engines/table-engines/special/join) table engine을 사용하고, 데이터를 조회하기 위해 [joinGet](https://clickhouse.com/docs/sql-reference/functions/other-functions/#joinget) 함수를 사용하는 대안적 접근 방식도 있습니다. 이 방식은 더 나은 쿼리 성능을 제공할 수 있지만, 사용성과 신뢰성 측면에서 일부 문제가 있을 수 있습니다. [사용 예시](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00800_versatile_storage_join.sql#L49-L51)는 여기에서 확인할 수 있습니다.
