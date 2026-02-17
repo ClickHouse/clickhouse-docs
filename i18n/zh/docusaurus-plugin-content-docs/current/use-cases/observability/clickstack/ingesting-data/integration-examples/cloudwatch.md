@@ -21,7 +21,6 @@ import error_log_overview from '@site/static/images/clickstack/cloudwatch/error-
 import error_log_column_values from '@site/static/images/clickstack/cloudwatch/error-log-column-values.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # 使用 ClickStack 监控 AWS CloudWatch 日志 \{#cloudwatch-clickstack\}
 
 :::note[摘要]
@@ -69,7 +68,7 @@ AWS CloudWatch 是一项用于监控 AWS 资源和应用程序的服务。虽然
 
   OpenTelemetry Collector 将数据发送到 ClickStack 的 OTLP 端点,该端点需要进行身份验证。
 
-  1. 在浏览器中打开你的 ClickStack URL（例如 http://localhost:8080）以访问 HyperDX
+  1. 在浏览器中打开你的 ClickStack URL (例如 http://localhost:8080) 以访问 HyperDX
   2. 如有需要，请先创建账户或登录
   3. 前往 **Team Settings → API Keys**
   4. 复制您的 **摄取 API key**
@@ -268,7 +267,7 @@ AWS CloudWatch 是一项用于监控 AWS 资源和应用程序的服务。虽然
 
   收集器运行后：
 
-  1. 在浏览器中打开 http://localhost:8080（或您的 ClickStack URL）以访问 HyperDX
+  1. 在浏览器中打开 http://localhost:8080 (或您的 ClickStack URL) 以访问 HyperDX
   2. 转到 **Logs** 视图
   3. 等待 1–2 分钟，日志会开始出现（具体时间取决于您的轮询间隔设置）
   4. 在 CloudWatch 日志组中搜索日志
@@ -418,7 +417,6 @@ aws logs filter-log-events \
   --max-items 5
 ```
 
-
 ### 只看到旧日志或缺少最新日志
 
 **CloudWatch receiver 默认从“当前时间”开始：**
@@ -439,7 +437,6 @@ docker run --rm ...
 
 接收器将创建一个新的检查点，并从当前时间开始拉取日志。
 
-
 ### 安全令牌无效 / 凭证已过期
 
 如果使用临时凭证（AWS SSO、assumed role），这些凭证会在一段时间后失效。
@@ -459,7 +456,6 @@ export AWS_SECRET_ACCESS_KEY="your-secret"
 docker restart <container-id>
 ```
 
-
 ### 高延迟或缺失最近日志
 
 **缩短轮询间隔：**
@@ -471,7 +467,6 @@ logs:
 ```
 
 **注意：** 轮询间隔越短，对 AWS API 的调用次数越多，可能会导致更高的 CloudWatch API 费用。
-
 
 ### Collector 内存占用过高
 
@@ -491,7 +486,6 @@ groups:
   autodiscover:
     limit: 50  # Reduce from 100 to 50
 ```
-
 
 ## 后续步骤 {#next-steps}
 
