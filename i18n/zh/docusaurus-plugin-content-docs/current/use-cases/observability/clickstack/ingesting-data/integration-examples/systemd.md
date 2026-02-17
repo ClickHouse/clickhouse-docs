@@ -19,8 +19,6 @@ import search_view from '@site/static/images/clickstack/systemd/systemd-search-v
 import log_view from '@site/static/images/clickstack/systemd/systemd-log-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-
 # 使用 ClickStack 监控 systemd 日志 \{#systemd-logs-clickstack\}
 
 :::note[TL;DR]
@@ -322,7 +320,6 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据覆盖的时
 
 <Image img={example_dashboard} alt="Example dashboard"/>
 
-
 :::note
 
 对于演示数据集，将时间范围设置为 **2025-11-15 00:00:00 - 2025-11-16 00:00:00 (UTC)**（可根据您的本地时区进行调整）。
@@ -360,7 +357,6 @@ otelcol-contrib --config=otel-config.yaml
 ```
 
 2. **使用文本导出方案**（类似 demo），让 `filelog` receiver 读取 journald 导出文件
-
 
 wget https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.115.0/otelcol-contrib_0.115.0_linux_amd64.tar.gz
 tar -xzf otelcol-contrib_0.115.0_linux_amd64.tar.gz

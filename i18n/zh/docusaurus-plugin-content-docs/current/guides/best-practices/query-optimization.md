@@ -10,7 +10,6 @@ keywords: ['query optimization', 'performance', 'best practices', 'query tuning'
 import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices/query_optimization_diagram_1.png';
 import Image from '@theme/IdealImage';
 
-
 # 查询优化简明指南 \{#a-simple-guide-for-query-optimization\}
 
 本节通过常见场景示例说明如何使用不同的性能优化技术，例如 [analyzer](/operations/analyzer)、[query profiling](/operations/optimizing-performance/sampling-query-profiler) 或 [avoid nullable Columns](/optimize/avoid-nullable-columns)，从而提升 ClickHouse 查询性能。
@@ -104,7 +103,6 @@ CREATE TABLE nyc_taxi.trips_small_inferred
 )
 ORDER BY tuple()
 ```
-
 
 ## 找出慢查询 \{#spot-the-slow-queries\}
 
@@ -221,7 +219,6 @@ tables:            ['nyc_taxi.trips_small_inferred']
 
 你可能还希望了解哪些查询正在给系统带来压力，例如通过找出消耗内存或 CPU 最高的查询来分析。
 
-
 ```sql
 -- Top queries by memory usage
 SELECT
@@ -312,7 +309,6 @@ Peak memory usage: 451.53 MiB.
 
 这些查询本身都没有进行非常复杂的处理，唯一的例外是第一个查询，它在每次执行时都会在查询过程中动态计算行程时间。不过，这些查询中每一个都需要超过一秒钟才能执行完成，而在 ClickHouse 的世界里，这已经是非常长的时间了。我们也可以注意到这些查询的内存使用情况：每个查询大约消耗 400 MB 内存，这已经相当可观。此外，每个查询似乎都读取了相同数量的行（即 3.2904 亿）。我们先快速确认一下这个表中到底有多少行数据。
 
-
 ```sql
 -- Count number of rows in table
 SELECT count()
@@ -326,7 +322,6 @@ Query id: 733372c5-deaf-4719-94e3-261540933b23
 ```
 
 该表包含 3.2904 亿行数据，因此每次查询都会对该表执行一次全表扫描。
-
 
 ### Explain 语句 \{#explain-statement\}
 
@@ -397,7 +392,6 @@ Query id: c7e11e7b-d970-4e35-936c-ecfc24e3b879
 在这里，我们可以看到用于执行该查询的线程数量为 59 个，这表明并行度很高。这加快了查询执行速度，而在较小的机器上执行则会耗时更长。大量并行运行的线程数量也可以解释该查询为何会使用如此多的内存。 
 
 理想情况下，您应以同样的方式排查所有慢查询，以识别不必要的复杂查询计划，并了解每个查询读取的行数以及其消耗的资源。
-
 
 ## 方法论 \{#methodology\}
 
@@ -473,7 +467,6 @@ dropoff_location_id_nulls: 0
 
 我们只有两列存在 null 值：`mta_tax` 和 `payment_type`。其余字段不应该使用 `Nullable` 列类型。
 
-
 ### 低基数（Low cardinality） \{#low-cardinality\}
 
 对于 String 类型列，一个简单易行的优化是充分利用 LowCardinality 数据类型。正如低基数[文档](/sql-reference/data-types/lowcardinality)中所述，ClickHouse 会对 LowCardinality 列应用字典编码，从而显著提升查询性能。 
@@ -504,7 +497,6 @@ uniq(vendor_id):           3
 
 在基数较低的情况下，这四列 `ratecode_id`、`pickup_location_id`、`dropoff_location_id` 和 `vendor_id` 非常适合使用 LowCardinality 类型。
 
-
 ### 优化数据类型 \{#optimize-data-type\}
 
 ClickHouse 支持丰富的数据类型。请务必为你的用例选择尽可能小且合适的数据类型，以优化性能并减少磁盘上的数据存储空间。 
@@ -526,7 +518,6 @@ Query id: 4306a8e1-2a9c-4b06-97b4-4d902d2233eb
 ```
 
 对于日期，你应选择既符合数据集特性、又最适合支持你计划执行查询的精度。
-
 
 ### 应用这些优化 \{#apply-the-optimizations\}
 
@@ -593,7 +584,6 @@ Query id: 72b5eb1c-ff33-4fdb-9d29-dd076ac6f532
 
 新表相比之前的表小了很多。可以看到，该表的磁盘空间占用减少了约 34%（从 7.38 GiB 降至 4.89 GiB）。
 
-
 ## 主键的重要性 \{#the-importance-of-primary-keys\}
 
 ClickHouse 中的主键与大多数传统数据库系统中的工作方式不同。在那些系统中，主键用于保证唯一性和数据完整性。任何插入重复主键值的尝试都会被拒绝，并且通常会创建基于 B-tree 或哈希的索引用于快速查找。 
@@ -654,16 +644,13 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
     <tr>
       <th colspan="4">Query 1</th>
     </tr>
-
     <tr>
-      <th />
-
+      <th></th>
       <th>第 1 次运行</th>
       <th>第 2 次运行</th>
       <th>第 3 次运行</th>
     </tr>
   </thead>
-
   <tbody>
     <tr>
       <td>耗时</td>
@@ -671,14 +658,12 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
       <td>1.353 秒</td>
       <td>0.765 秒</td>
     </tr>
-
     <tr>
       <td>处理行数</td>
       <td>3.2904 亿</td>
       <td>3.2904 亿</td>
       <td>3.2904 亿</td>
     </tr>
-
     <tr>
       <td>峰值内存占用</td>
       <td>440.24 MiB</td>
@@ -693,16 +678,13 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
     <tr>
       <th colspan="4">Query 2</th>
     </tr>
-
     <tr>
-      <th />
-
+      <th></th>
       <th>第 1 次运行</th>
       <th>第 2 次运行</th>
       <th>第 3 次运行</th>
     </tr>
   </thead>
-
   <tbody>
     <tr>
       <td>耗时</td>
@@ -710,14 +692,12 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
       <td>1.171 秒</td>
       <td>0.248 秒</td>
     </tr>
-
     <tr>
       <td>处理行数</td>
       <td>3.2904 亿</td>
       <td>3.2904 亿</td>
       <td>4146 万</td>
     </tr>
-
     <tr>
       <td>峰值内存占用</td>
       <td>546.75 MiB</td>
@@ -727,22 +707,18 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
   </tbody>
 </table>
 
-
 <table>
   <thead>
     <tr>
       <th colspan="4">查询 3</th>
     </tr>
-
     <tr>
-      <th />
-
+      <th></th>
       <th>运行 1</th>
       <th>运行 2</th>
       <th>运行 3</th>
     </tr>
   </thead>
-
   <tbody>
     <tr>
       <td>耗时</td>
@@ -750,14 +726,12 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
       <td>1.188 秒</td>
       <td>0.431 秒</td>
     </tr>
-
     <tr>
       <td>处理行数</td>
       <td>329.04 百万行</td>
       <td>329.04 百万行</td>
       <td>276.99 百万行</td>
     </tr>
-
     <tr>
       <td>峰值内存</td>
       <td>451.53 MiB</td>
@@ -806,8 +780,7 @@ Query id: 30116a77-ba86-4e9f-a9a2-a01670ad2e15
 
 由于有主键，仅选中了表中的一部分 granule。这一点本身就能大幅提升查询性能，因为 ClickHouse 需要处理的数据量大大减少。
 
-
-## 下一步 {#next-steps}
+## 下一步 \{#next-steps\}
 
 希望本指南能够帮助你更好地理解如何在 ClickHouse 中分析慢查询，以及如何让它们运行得更快。若想进一步深入这一主题，你可以阅读 [query analyzer](/operations/analyzer) 和 [profiling](/operations/optimizing-performance/sampling-query-profiler)，以更好地理解 ClickHouse 究竟是如何执行你的查询的。
 

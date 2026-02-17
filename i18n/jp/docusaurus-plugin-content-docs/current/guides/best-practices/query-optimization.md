@@ -10,7 +10,6 @@ keywords: ['クエリ最適化', 'パフォーマンス', 'ベストプラクテ
 import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices/query_optimization_diagram_1.png';
 import Image from '@theme/IdealImage';
 
-
 # クエリ最適化のシンプルガイド \{#a-simple-guide-for-query-optimization\}
 
 このセクションでは、[アナライザー](/operations/analyzer)、[クエリプロファイリング](/operations/optimizing-performance/sampling-query-profiler)、[Nullable列の回避](/optimize/avoid-nullable-columns)などの様々なパフォーマンスと最適化テクニックを使用して、ClickHouseのクエリパフォーマンスを向上させる方法を一般的なシナリオを通じて説明します。
@@ -104,7 +103,6 @@ CREATE TABLE nyc_taxi.trips_small_inferred
 )
 ORDER BY tuple()
 ```
-
 
 ## 遅いクエリを見つける \{#spot-the-slow-queries\}
 
@@ -221,7 +219,6 @@ tables:            ['nyc_taxi.trips_small_inferred']
 
 また、最もメモリやCPUを消費しているクエリを調べることで、システムに負荷をかけているクエリを知りたい場合もあるでしょう。
 
-
 ```sql
 -- Top queries by memory usage
 SELECT
@@ -312,7 +309,6 @@ Peak memory usage: 451.53 MiB.
 
 これらのクエリはいずれも非常に複雑な処理を行っていませんが、クエリが実行されるたびにその場で乗車時間を計算する最初のクエリを除いて、各クエリの実行には1秒以上かかります。これは、ClickHouseの世界では非常に長い時間です。また、これらのクエリのメモリ使用量にも注目できます。各クエリで約400Mbはかなり多くのメモリです。また、各クエリが同じ行数（つまり329.04 million）を読み取っているように見えます。このテーブルに何行あるか簡単に確認しましょう。
 
-
 ```sql
 -- Count number of rows in table
 SELECT count()
@@ -326,7 +322,6 @@ Query id: 733372c5-deaf-4719-94e3-261540933b23
 ```
 
 テーブルには3.2904億行が含まれているため、各クエリはテーブルをフルスキャンしています。
-
 
 ### Explain文 \{#explain-statement\}
 
@@ -397,7 +392,6 @@ Query id: c7e11e7b-d970-4e35-936c-ecfc24e3b879
 ここでは、クエリの実行に 59 個のスレッドが使用されていることが分かります。これは高い並列度を示しており、より小さなマシンであればより長い時間がかかるクエリの実行を高速化します。多数のスレッドが並列に実行されていることが、クエリによるメモリ消費量の多さを説明できます。
 
 理想的には、すべての低速なクエリについて同様の調査を行い、不要に複雑なクエリプランを特定するとともに、各クエリが読み取る行数と消費するリソースを把握するべきです。
-
 
 ## 方法論 \{#methodology\}
 
@@ -473,7 +467,6 @@ dropoff_location_id_nulls: 0
 
 null値を持つ列は`mta_tax`と`payment_type`の2つだけです。残りのフィールドは`Nullable`列を使用すべきではありません。
 
-
 ### Low cardinality \{#low-cardinality\}
 
 文字列に適用する簡単な最適化は、LowCardinalityデータ型を最大限に活用することです。lowcardinality[ドキュメント](/sql-reference/data-types/lowcardinality)で説明されているように、ClickHouseはLowCardinality列に辞書コーディングを適用し、クエリパフォーマンスを大幅に向上させます。
@@ -504,7 +497,6 @@ uniq(vendor_id):           3
 
 カーディナリティが低いため、これらの4つの列、`ratecode_id`、`pickup_location_id`、`dropoff_location_id`、`vendor_id`は、LowCardinalityフィールドタイプの良い候補です。
 
-
 ### データ型の最適化 \{#optimize-data-type\}
 
 ClickHouse は多数のデータ型をサポートしています。パフォーマンスを最適化し、ディスク上のデータの保存容量を削減するために、ユースケースを満たす範囲で可能な限り小さいデータ型を選択してください。 
@@ -526,7 +518,6 @@ Query id: 4306a8e1-2a9c-4b06-97b4-4d902d2233eb
 ```
 
 日付の場合、データセットに一致し、実行を計画しているクエリに最適な精度を選択する必要があります。
-
 
 ### 最適化の適用 \{#apply-the-optimizations\}
 
@@ -593,7 +584,6 @@ Query id: 72b5eb1c-ff33-4fdb-9d29-dd076ac6f532
 
 新しいテーブルは以前のテーブルよりもかなり小さくなっています。テーブルのディスクスペースが約34%削減されています（7.38 GiB vs 4.89 GiB）。
 
-
 ## プライマリキーの重要性 \{#the-importance-of-primary-keys\}
 
 ClickHouseのプライマリキーは、ほとんどの従来のデータベースシステムとは異なる働きをします。これらのシステムでは、プライマリキーは一意性とデータ整合性を強制します。重複するプライマリキー値を挿入しようとすると拒否され、通常、高速検索のためにB-treeまたはハッシュベースのインデックスが作成されます。
@@ -654,16 +644,13 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
     <tr>
       <th colspan="4">クエリ1</th>
     </tr>
-
     <tr>
-      <th />
-
+      <th></th>
       <th>実行1</th>
       <th>実行2</th>
       <th>実行3</th>
     </tr>
   </thead>
-
   <tbody>
     <tr>
       <td>経過時間</td>
@@ -671,14 +658,12 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
       <td>1.353 sec</td>
       <td>0.765 sec</td>
     </tr>
-
     <tr>
       <td>処理行数</td>
       <td>329.04 million</td>
       <td>329.04 million</td>
       <td>329.04 million</td>
     </tr>
-
     <tr>
       <td>ピークメモリ</td>
       <td>440.24 MiB</td>
@@ -693,16 +678,13 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
     <tr>
       <th colspan="4">クエリ2</th>
     </tr>
-
     <tr>
-      <th />
-
+      <th></th>
       <th>実行1</th>
       <th>実行2</th>
       <th>実行3</th>
     </tr>
   </thead>
-
   <tbody>
     <tr>
       <td>経過時間</td>
@@ -710,14 +692,12 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
       <td>1.171 sec</td>
       <td>0.248 sec</td>
     </tr>
-
     <tr>
       <td>処理行数</td>
       <td>329.04 million</td>
       <td>329.04 million</td>
       <td>41.46 million</td>
     </tr>
-
     <tr>
       <td>ピークメモリ</td>
       <td>546.75 MiB</td>
@@ -727,22 +707,18 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
   </tbody>
 </table>
 
-
 <table>
   <thead>
     <tr>
       <th colspan="4">クエリ3</th>
     </tr>
-
     <tr>
-      <th />
-
+      <th></th>
       <th>実行1</th>
       <th>実行2</th>
       <th>実行3</th>
     </tr>
   </thead>
-
   <tbody>
     <tr>
       <td>経過時間</td>
@@ -750,14 +726,12 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
       <td>1.188 sec</td>
       <td>0.431 sec</td>
     </tr>
-
     <tr>
       <td>処理行数</td>
       <td>329.04 million</td>
       <td>329.04 million</td>
       <td>276.99 million</td>
     </tr>
-
     <tr>
       <td>ピークメモリ</td>
       <td>451.53 MiB</td>
@@ -805,7 +779,6 @@ Query id: 30116a77-ba86-4e9f-a9a2-a01670ad2e15
 ```
 
 プライマリキーのおかげで、テーブルグラニュールのサブセットのみが選択されました。ClickHouseが処理する必要のあるデータが大幅に少なくなるため、これだけでクエリパフォーマンスが大幅に向上します。
-
 
 ## 次のステップ \{#next-steps\}
 

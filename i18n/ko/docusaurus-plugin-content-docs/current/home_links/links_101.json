@@ -1,0 +1,27 @@
+[
+  {
+    "title": "SQL 참조 문서",
+    "description": "사용할 수 있는 SQL 문, 함수, 데이터 타입을 확인하십시오",
+    "url": "/docs/sql-reference"
+  },
+  {
+    "title": "데이터 수집",
+    "description": "데이터를 ClickHouse로 수집하는 다양한 방법을 살펴보십시오",
+    "url": "/docs/integrations/data-ingestion/"
+  },
+  {
+    "title": "데이터 시각화",
+    "description": "이제 데이터가 ClickHouse에 저장되었으므로 이를 분석할 차례입니다",
+    "url": "/docs/integrations/data-visualization/"
+  },
+  {
+    "title": "데이터 최적화",
+    "description": "ClickHouse 서비스 성능 최적화",
+    "url": "/docs/optimize/"
+  },
+  {
+    "title": "데이터 마이그레이션",
+    "description": "외부 소스 데이터를 ClickHouse로 가져오기",
+    "url": "/docs/integrations/migration/"
+  }
+]
