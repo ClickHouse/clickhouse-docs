@@ -81,7 +81,7 @@ const config = {
         path: "ru",
       },
       ko: {
-        label: "Korean",
+        label: "한국어",
         htmlLang: "ko",
         path: "ko",
       }

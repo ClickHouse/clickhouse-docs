@@ -58,7 +58,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 ClickStack의 OTLP 엔드포인트로 트레이스를 전송하기 위한 수집 API key입니다.
 
-1. ClickStack URL에서 HyperDX를 엽니다 (예: http://localhost:8080)
+1. ClickStack URL에서 HyperDX를 엽니다 (예: `http://localhost:8080`)
 2. 필요하면 계정을 생성하거나 로그인합니다.
 3. **Team Settings → API Keys**로 이동합니다.
 4. **Ingestion API Key**를 복사합니다.
@@ -129,7 +129,7 @@ docker run -d --name clickstack-demo \
 
 ClickStack의 OTLP 엔드포인트로 트레이스를 전송하려면 API key가 필요합니다.
 
-1. ClickStack URL(예: http://localhost:8080)에서 HyperDX를 엽니다.
+1. ClickStack URL(예: `http://localhost:8080`)에서 HyperDX를 엽니다.
 2. 필요하다면 계정을 생성하거나 로그인합니다.
 3. **Team Settings → API Keys**로 이동합니다.
 4. **Ingestion API Key(수집 API key)**를 복사합니다.
