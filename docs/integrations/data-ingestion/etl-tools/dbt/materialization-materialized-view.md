@@ -410,9 +410,9 @@ The following table summarizes the safety of each operation when inserts are act
 
 | Operation | Internal process | Safety while inserts are happening |
 |-----------|------------------|------------------------------------|
-| First `dbt run` | 1. Create target table<br/>2. Insert data (if `catchup=True`)<br/>3. Create MV(s) | ⚠️ **MV is blind between steps 1 and 3.** Any rows inserted into the source during this window are not captured. |
-| Subsequent `dbt run` | `ALTER TABLE ... MODIFY QUERY` | ✅ Safe. The MV is updated atomically. |
-| `dbt run --full-refresh` | 1. Create backup table<br/>2. Insert data (if `catchup=True`)<br/>3. Drop MV(s)<br/>4. Exchange tables<br/>5. Recreate MV(s) | ⚠️ **MV is blind during recreation.** Data inserted into the source between steps 3 and 5 will not appear in the new target table. |
+| First `dbt run` | 1. Create target table<br/>2. Insert data (if `catchup=True`)<br/>3. Create materialized view(s) | ⚠️ **Materialized view is blind between steps 1 and 3.** Any rows inserted into the source during this window are not captured. |
+| Subsequent `dbt run` | `ALTER TABLE ... MODIFY QUERY` | ✅ Safe. The materialized view is updated atomically. |
+| `dbt run --full-refresh` | 1. Create backup table<br/>2. Insert data (if `catchup=True`)<br/>3. Drop materialized view(s)<br/>4. Exchange tables<br/>5. Recreate materialized view(s) | ⚠️ **Materialized view is blind during recreation.** Data inserted into the source between steps 3 and 5 will not appear in the new target table. |
 
 #### Explicit target operations {#ingestion-explicit-target}
 
