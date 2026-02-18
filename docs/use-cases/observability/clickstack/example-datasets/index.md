@@ -15,3 +15,4 @@ This section provides various sample datasets and examples to help you get start
 | [Sample Data](sample-data.md) | Load a sample dataset containing logs, traces and metrics from our demo environment |
 | [Local Data](local-data.md) | Collect local system metrics and logs sending them to ClickStack for analysis |
 | [Remote Demo Data](remote-demo-data.md) | Connect to our remote demo cluster and explore an issue |
+| [Session Replay Demo](session-replay.md) | Instrument a demo web application for session replay and view your interactions in ClickStack |
