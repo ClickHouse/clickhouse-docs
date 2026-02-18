@@ -65,8 +65,7 @@ SETTINGS use_query_condition_cache = true;
 
 缓存的内容显示在系统表 [system.query_condition_cache](system-tables/query_condition_cache.md) 中。
 要计算当前查询条件缓存在 MB 中的大小，运行 `SELECT formatReadableSize(sum(entry_size)) FROM system.query_condition_cache`。
-如需分析单个过滤条件，可以检查 `system.query_condition_cache` 中的 `condition` 字段。
-请注意，只有在启用了设置 [query_condition_cache_store_conditions_as_plaintext](settings/settings#query_condition_cache_store_conditions_as_plaintext) 的情况下运行查询时，该字段才会被填充。
+如需分析单个过滤条件，可以检查 `system.query_condition_cache` 中的 `condition` 字段。请注意，该字段仅在 debug 构建中可用。
 
 自数据库启动以来查询条件缓存在命中与未命中次数，分别作为事件 "QueryConditionCacheHits" 和 "QueryConditionCacheMisses" 显示在系统表 [system.events](system-tables/events.md) 中。
 这两个计数器仅在设置 `use_query_condition_cache = true` 的 `SELECT` 查询时才会更新，其他查询不会影响 "QueryCacheMisses"。

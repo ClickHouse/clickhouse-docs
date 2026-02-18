@@ -76,7 +76,7 @@ ENGINE = MergeTree
 ORDER BY (timestamp, sensor_id);
 ```
 
-3. ClickHouse Cloud services have a cluster named `default`. We will use the `s3Cluster` table function, which reads S3 files in parallel from the nodes in your cluster. (If you do not have a cluster, just use the `s3` function and remove the cluster name.)
+3. ClickHouse Cloud services have a cluster named `default`. We will use the `s3Cluster` table function, which reads S3 files in parallel from the nodes in your cluster. (If you don't have a cluster, just use the `s3` function and remove the cluster name.)
 
 This query will take a while - it's about 1.67T of data uncompressed:
 

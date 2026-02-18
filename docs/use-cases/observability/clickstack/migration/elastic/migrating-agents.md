@@ -23,7 +23,7 @@ The Elastic Stack provides a number of Observability data collection agents. Spe
 
 - The [Beats family](https://www.elastic.co/beats) - such as [Filebeat](https://www.elastic.co/beats/filebeat), [Metricbeat](https://www.elastic.co/beats/metricbeat), and [Packetbeat](https://www.elastic.co/beats/packetbeat) - all based on the `libbeat` library. These Beats support [sending data to Elasticsearch, Kafka, Redis, or Logstash](https://www.elastic.co/docs/reference/beats/filebeat/configuring-output) over the Lumberjack protocol.
 - The [`Elastic Agent`](https://www.elastic.co/elastic-agent) provides a unified agent capable of collecting logs, metrics, and traces. This agent can be centrally managed via the [Elastic Fleet Server](https://www.elastic.co/docs/reference/fleet/manage-elastic-agents-in-fleet) and supports output to Elasticsearch, Logstash, Kafka, or Redis.
-- Elastic also provides a distribution of the [OpenTelemetry Collector - EDOT](https://www.elastic.co/docs/reference/opentelemetry). While it currently cannot be orchestrated by the Fleet Server, it offers a more flexible and open path if you're migrating to ClickStack.
+- Elastic also provides a distribution of the [OpenTelemetry Collector - EDOT](https://www.elastic.co/docs/reference/opentelemetry). While it currently can't be orchestrated by the Fleet Server, it offers a more flexible and open path if you're migrating to ClickStack.
 
 The best migration path depends on the agent(s) currently in use. In the sections that follow, we document migration options for each major agent type. Our goal is to minimize friction and, where possible, allow you to continue using your existing agents during the transition.
 
@@ -39,7 +39,7 @@ The OpenTelemetry Collector provides a sustainable and vendor-neutral solution f
 
 All data is ingested into ClickStack via an **OpenTelemetry (OTel) collector** instance, which acts as the primary entry point for logs, metrics, traces, and session data. We recommend using the official [ClickStack distribution](/use-cases/observability/clickstack/ingesting-data/opentelemetry#installing-otel-collector) of the collector for this instance, if not [already bundled in your ClickStack deployment model](/use-cases/observability/clickstack/deployment).
 
-Users send data to this collector from [language SDKs](/use-cases/observability/clickstack/sdks) or through data collection agents collecting infrastructure metrics and logs (such OTel collectors in an [agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) role or other technologies e.g. [Fluentd](https://www.fluentd.org/) or [Vector](https://vector.dev/)).
+Users send data to this collector from [language SDKs](/use-cases/observability/clickstack/sdks) or through data collection agents collecting infrastructure metrics and logs (such OTel collectors in an [agent](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) role or other technologies e.g. [Fluentd](https://www.fluentd.org/) or [Vector](https://vector.dev/)). For teams that want a managed OpenTelemetry pipeline, [Bindplane](/use-cases/observability/clickstack/integration-partners/bindplane)offers an OpenTelemetry-native solution with a native ClickStack destination, simplifying telemetry collection, processing, and routing.
 
 **We assume this collector is available for all agent migration steps**.
 
@@ -249,7 +249,7 @@ sinks:
         authorization: ${YOUR_INGESTION_API_KEY}
 ```
 
-The `YOUR_INGESTION_API_KEY` here is produced by ClickStack. You can find the key in the HyperDX app under `Team Settings → API Keys`.
+The `YOUR_INGESTION_API_KEY` here is produced by ClickStack. You can find the key in the ClickStack UI (HyperDX) under `Team Settings → API Keys`.
 
 <Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
 
@@ -368,7 +368,7 @@ sources:
 The Elastic Agent includes an embedded EDOT Collector that allows you to instrument your applications and infrastructure once and send data to multiple vendors and backends.
 
 :::note Agent integrations and orchestration
-Users running the EDOT collector distributed with Elastic Agent will not be able to exploit the [existing integrations offered by the agent](https://www.elastic.co/docs/reference/fleet/manage-integrations). Additionally, the collector cannot be centrally managed by Fleet - forcing the user to run the [agent in standalone mode](https://www.elastic.co/docs/reference/fleet/configure-standalone-elastic-agents), managing configuration themselves.
+Users running the EDOT collector distributed with Elastic Agent won't be able to exploit the [existing integrations offered by the agent](https://www.elastic.co/docs/reference/fleet/manage-integrations). Additionally, the collector can't be centrally managed by Fleet - forcing the user to run the [agent in standalone mode](https://www.elastic.co/docs/reference/fleet/configure-standalone-elastic-agents), managing configuration themselves.
 :::
 
 To run the Elastic Agent with the EDOT collector, see the [official Elastic guide](https://www.elastic.co/docs/reference/fleet/otel-agent-transform). Rather than configuring the Elastic endpoint, as indicated in the guide, remove existing `exporters` and configure the OTLP output - sending data to the ClickStack OpenTelemetry collector. For example, the configuration for the exporters becomes:
@@ -384,7 +384,11 @@ exporters:
       insecure: true
 ```
 
-The `YOUR_INGESTION_API_KEY` here is produced by ClickStack. You can find the key in the HyperDX app under `Team Settings → API Keys`.
+:::note Managed ClickStack
+By default, an API ingestion key isn't required if running an OpenTelemetry Collector standalone for Managed ClickStack. Ingestion can be secured however, by specifying an OTLP auth token. See ["Securing the collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector).
+:::
+
+The `YOUR_INGESTION_API_KEY` here is produced by ClickStack. You can find the key in the ClickStack UI under `Team Settings → API Keys`.
 
 <Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
 

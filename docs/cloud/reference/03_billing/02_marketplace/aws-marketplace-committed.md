@@ -54,7 +54,7 @@ This should take you to your AWS Marketplace page with the private offer details
 
 Complete the steps to subscribe on the AWS portal and click on **"Set up your account"**.
 It is critical to redirect to ClickHouse Cloud at this point and either register for a new account, or sign in with an existing account.
-Without completing this step, we will not be able to link your AWS Marketplace contract to ClickHouse Cloud.
+Without completing this step, we won't be able to link your AWS Marketplace contract to ClickHouse Cloud.
 
 <Image img={mp_committed_spend_2} size="md" alt="AWS Marketplace private offer email"/>
 
@@ -67,18 +67,18 @@ This step is necessary so that we can bind your ClickHouse Cloud organization to
 
 ### Register if new {#register}
 
-If you are a new ClickHouse Cloud user, click "Register" at the bottom of the page.
+If you're a new ClickHouse Cloud user, click "Register" at the bottom of the page.
 You will be prompted to create a new user and verify the email.
 After verifying your email, you can leave the ClickHouse Cloud login page and login using the new username at [https://console.clickhouse.cloud](https://console.clickhouse.cloud).
 
-Note that if you are a new user, you will also need to provide some basic information about your business.
+Note that if you're a new user, you will also need to provide some basic information about your business.
 See the screenshots below.
 
 <Image img={mp_committed_spend_4} size="md" alt="Provide business information"/>
 
 <Image img={mp_committed_spend_5} size="md" alt="Provide business information"/>
 
-If you are an existing ClickHouse Cloud user, simply log in using your credentials.
+If you're an existing ClickHouse Cloud user, simply log in using your credentials.
 
 ### Create or select organization to bill {#create-select-org-to-bill}
 
@@ -91,6 +91,6 @@ You can confirm from the organization's billing page in the ClickHouse UI that b
 
 <Image img={mp_committed_spend_7} size="md" alt="Confirm set up is complete"/>
 
-If you run into any issues, please do not hesitate to contact our [support team](https://clickhouse.com/support/program).
+If you run into any issues, please don't hesitate to contact our [support team](https://clickhouse.com/support/program).
 
 </VerticalStepper>

@@ -23,7 +23,7 @@ To create a custom role for a SQL console user and grant it a general role, run 
 
 <VerticalStepper headerLevel="h4">
 
-#### Create `database_developer` and grant permissions {#create-role-grant-permissions} 
+#### Create `database_developer` and grant permissions {#create-role-grant-permissions}
 
 Create the `database_developer` role and grant `SHOW`, `CREATE`, `ALTER`, and `DELETE` permissions.
     
@@ -35,7 +35,7 @@ GRANT ALTER ON * TO database_developer;
 GRANT DELETE ON * TO database_developer;
 ```
 
-#### Create SQL console user role {#create-sql-console-user-role} 
+#### Create SQL console user role {#create-sql-console-user-role}
 
 Create a role for the SQL console user my.user@domain.com and assign it the database_developer role.
     
@@ -57,7 +57,7 @@ The user will be assigned the role associated with their email address whenever 
 Use the SHA256_hash method when [creating user accounts](/sql-reference/statements/create/user.md) to secure passwords. ClickHouse database passwords must contain a minimum of 12 characters and meet complexity requirements: upper case characters, lower case characters, numbers and/or special characters.
 
 :::tip Generate passwords securely
-Since users with less than administrative privileges cannot set their own password, ask the user to hash their password using a generator
+Since users with less than administrative privileges can't set their own password, ask the user to hash their password using a generator
 such as [this one](https://tools.keycdn.com/sha256-online-generator) before providing it to the admin to setup the account. 
 :::
 
@@ -84,7 +84,7 @@ Configure the following within the services and databases using the SQL [GRANT](
 | Default               | Full administrative access to services                                        |
 | Custom                | Configure using the SQL [`GRANT`](/sql-reference/statements/grant) statement |
 
-- Database roles are additive. This means if a user is a member of two roles, the user has the most access granted to the two roles. They do not lose access by adding roles.
+- Database roles are additive. This means if a user is a member of two roles, the user has the most access granted to the two roles. They don't lose access by adding roles.
 - Database roles can be granted to other roles, resulting in a hierarchical structure. Roles inherit all permissions of the roles for which it is a member.
 - Database roles are unique per service and may be applied across multiple databases within the same service.
 
@@ -92,8 +92,8 @@ The illustration below shows the different ways a user could be granted permissi
 
 <Image img={user_grant_permissions_options} alt='An illustration showing the different ways a user could be granted permissions' size="md" background="black"/>
 
-### Initial settings {#initial-settings} 
-Databases have an account named `default` that is added automatically and granted the default_role upon service creation. The user that creates the service is presented with the automatically generated, random password that is assigned to the `default` account when the service is created. The password is not shown after initial setup, but may be changed by any user with Service Admin permissions in the console at a later time. This account or an account with Service Admin privileges within the console may set up additional database users and roles at any time.
+### Initial settings {#initial-settings}
+Databases have an account named `default` that is added automatically and granted the default_role upon service creation. The user that creates the service is presented with the automatically generated, random password that is assigned to the `default` account when the service is created. The password isn't shown after initial setup, but may be changed by any user with Service Admin permissions in the console at a later time. This account or an account with Service Admin privileges within the console may set up additional database users and roles at any time.
 
 :::note
 To change the password assigned to the `default` account in the console, go to the Services menu on the left, access the service, go to the Settings tab and click the Reset password button.
@@ -106,7 +106,7 @@ We recommend creating a new user account associated with a person and granting t
   GRANT default_role to userID;
   ```
 
-You can use a SHA256 hash generator or code function such as `hashlib` in Python to convert a 12+ character password with appropriate complexity to a SHA256 string to provide to the system administrator as the password. This ensures the administrator does not see or handle clear text passwords.
+You can use a SHA256 hash generator or code function such as `hashlib` in Python to convert a 12+ character password with appropriate complexity to a SHA256 string to provide to the system administrator as the password. This ensures the administrator doesn't see or handle clear text passwords.
 
 ### Database access listings with SQL console users {#database-access-listings-with-sql-console-users}
 The following process can be used to generate a complete access listing across the SQL console and databases in your organization.

@@ -70,7 +70,7 @@ The full PyPI dataset, consisting of over 1 trillion rows, is available in our p
 
 ## Backfilling scenarios {#backfilling-scenarios}
 
-Backfilling is typically needed when a stream of data is being consumed from a point in time. This data is being inserted into ClickHouse tables with [incremental materialized views](/materialized-view/incremental-materialized-view), triggering on blocks as they are inserted. These views may be transforming the data prior to insert or computing aggregates and sending results to target tables for later use in downstream applications.
+Backfilling is typically needed when a stream of data is being consumed from a point in time. This data is being inserted into ClickHouse tables with [incremental materialized views](/materialized-view/incremental-materialized-view), triggering on blocks as they're inserted. These views may be transforming the data prior to insert or computing aggregates and sending results to target tables for later use in downstream applications.
 
 We will attempt to cover the following scenarios:
 
@@ -146,7 +146,7 @@ Peak memory usage: 682.38 KiB.
 
 Suppose we wish to load another subset `{101..200}`. While we could insert directly into `pypi`, we can do this backfill in isolation by creating duplicate tables.
 
-Should the backfill fail, we have not impacted our main tables and can simply [truncate](/managing-data/truncate) our duplicate tables and repeat.
+Should the backfill fail, we haven't impacted our main tables and can simply [truncate](/managing-data/truncate) our duplicate tables and repeat.
 
 To create new copies of these views, we can use the `CREATE TABLE AS` clause with the suffix `_v2`:
 
@@ -259,7 +259,7 @@ ClickPipes uses this approach when loading data from object storage, automatical
 
 ## Scenario 1: Backfilling data with existing data ingestion {#scenario-1-backfilling-data-with-existing-data-ingestion}
 
-In this scenario, we assume that the data to backfill is not in an isolated bucket and thus filtering is required. Data is already inserting and a timestamp or monotonically increasing column can be identified from which historical data needs to be backfilled.
+In this scenario, we assume that the data to backfill isn't in an isolated bucket and thus filtering is required. Data is already inserting and a timestamp or monotonically increasing column can be identified from which historical data needs to be backfilled.
 
 This process follows the following steps:
 
@@ -313,18 +313,18 @@ ALTER TABLE pypi_v2 MOVE PARTITION () TO pypi
 ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 ```
 
-If the historical data is an isolated bucket, the above time filter is not required. If a time or monotonic column is unavailable, isolate your historical data.
+If the historical data is an isolated bucket, the above time filter isn't required. If a time or monotonic column is unavailable, isolate your historical data.
 
 :::note Just use ClickPipes in ClickHouse Cloud
-If you are using ClickHouse Cloud you should use ClickPipes for restoring historical backups if the data can be isolated in its own bucket (and a filter is not required). In addition to reducing the load time by parallelizing the load with multiple workers, ClickPipes automates the above process and creates duplicate tables for both the main table and materialized views.
+If you're using ClickHouse Cloud you should use ClickPipes for restoring historical backups if the data can be isolated in its own bucket (and a filter isn't required). In addition to reducing the load time by parallelizing the load with multiple workers, ClickPipes automates the above process and creates duplicate tables for both the main table and materialized views.
 :::
 
 ## Scenario 2: Adding materialized views to existing tables {#scenario-2-adding-materialized-views-to-existing-tables}
 
-It is not uncommon for new materialized views to need to be added to a setup for which significant data has been populated and data is being inserted. A timestamp or monotonically increasing column, which can be used to identify a point in the stream, is useful here and avoids pauses in data ingestion. In the examples below, we assume both cases, preferring approaches that avoid pauses in ingestion.
+It isn't uncommon for new materialized views to need to be added to a setup for which significant data has been populated and data is being inserted. A timestamp or monotonically increasing column, which can be used to identify a point in the stream, is useful here and avoids pauses in data ingestion. In the examples below, we assume both cases, preferring approaches that avoid pauses in ingestion.
 
 :::note Avoid POPULATE
-We do not recommend using the [`POPULATE`](/sql-reference/statements/create/view#materialized-view) command for backfilling materialized views for anything other than small datasets where ingest is paused. This operator can miss rows inserted into its source table, with the materialized view created after the populate hash is finished. Furthermore, this populate runs against all data and is vulnerable to interruptions or memory limits on large datasets.
+We don't recommend using the [`POPULATE`](/sql-reference/statements/create/view#materialized-view) command for backfilling materialized views for anything other than small datasets where ingest is paused. This operator can miss rows inserted into its source table, with the materialized view created after the populate hash is finished. Furthermore, this populate runs against all data and is vulnerable to interruptions or memory limits on large datasets.
 :::
 
 ### Timestamp or Monotonically increasing column available {#timestamp-or-monotonically-increasing-column-available}
@@ -399,14 +399,14 @@ In the above example our target table is a [SummingMergeTree](/engines/table-eng
 
 In our case, this is a relatively lightweight aggregation that completes in under 3s and uses less than 600MiB of memory. For more complex or longer-running aggregations, you can make this process more resilient by using the earlier duplicate table approach i.e. create a shadow target table, e.g., `pypi_downloads_per_day_v2`, insert into this, and attach its resulting partitions to `pypi_downloads_per_day`.
 
-Often materialized view's query can be more complex (not uncommon as otherwise users wouldn't use a view!) and consume resources. In rarer cases, the resources for the query are beyond that of the server. This highlights one of the advantages of ClickHouse materialized views - they are incremental and don't process the entire dataset in one go!
+Often materialized view's query can be more complex (not uncommon as otherwise users wouldn't use a view!) and consume resources. In rarer cases, the resources for the query are beyond that of the server. This highlights one of the advantages of ClickHouse materialized views - they're incremental and don't process the entire dataset in one go!
 
 In this case, users have several options:
 
 1. Modify your query to backfill ranges e.g. `WHERE timestamp BETWEEN 2024-12-17 08:00:00 AND 2024-12-17 09:00:00`, `WHERE timestamp BETWEEN 2024-12-17 07:00:00 AND 2024-12-17 08:00:00` etc.
 2. Use a [Null table engine](/engines/table-engines/special/null) to fill the materialized view. This replicates the typical incremental population of a materialized view, executing it's query over blocks of data (of configurable size).
 
-(1) represents the simplest approach is often sufficient. We do not include examples for brevity.
+(1) represents the simplest approach is often sufficient. We don't include examples for brevity.
 
 We explore (2) further below.
 
@@ -463,11 +463,15 @@ Notice our memory usage here is `639.47 MiB`.
 Several factors will determine the performance and resources used in the above scenario. Before attempting to tune, we recommend readers understand the insert mechanics documented in detail in the [Using Threads for Reads](/integrations/s3/performance#using-threads-for-reads) section of the [Optimizing for S3 Insert and Read Performance guide](/integrations/s3/performance). In summary:
 
 - **Read Parallelism** - The number of threads used to read. Controlled through [`max_threads`](/operations/settings/settings#max_threads). In ClickHouse Cloud this is determined by the instance size with it defaulting to the number of vCPUs. Increasing this value may improve read performance at the expense of greater memory usage.
-- **Insert Parallelism** - The number of insert threads used to insert. Controlled through [`max_insert_threads`](/operations/settings/settings#max_insert_threads). In ClickHouse Cloud this is determined by the instance size (between 2 and 4) and is set to 1 in OSS. Increasing this value may improve performance at the expense of greater memory usage.
+- **Insert Parallelism** - The number of insert threads used to insert. Controlled through [`max_insert_threads`](/operations/settings/settings#max_insert_threads). **Note**: This value is capped by `max_threads`, so the effective insert parallelism is `min(max_insert_threads, max_threads)`. In ClickHouse Cloud this is determined by the instance size (between 2 and 4) and is set to 1 in OSS. Increasing this value may improve performance at the expense of greater memory usage.
 - **Insert Block Size** -  data is processed in a loop where it is pulled, parsed, and formed into in-memory insert blocks based on the [partitioning key](/engines/table-engines/mergetree-family/custom-partitioning-key). These blocks are sorted, optimized, compressed, and written to storage as new [data parts](/parts). The size of the insert block, controlled by settings [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows) and [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes) (uncompressed), impacts memory usage and disk I/O. Larger blocks use more memory but create fewer parts, reducing I/O and background merges. These settings represent minimum thresholds (whichever is reached first triggers a flush).
 - **Materialized view block size** - As well as the above mechanics for the main insert, prior to insertion into materialized views, blocks are also squashed for more efficient processing. The size of these blocks is determined by the settings [`min_insert_block_size_bytes_for_materialized_views`](/operations/settings/settings#min_insert_block_size_bytes_for_materialized_views) and [`min_insert_block_size_rows_for_materialized_views`](/operations/settings/settings#min_insert_block_size_rows_for_materialized_views). Larger blocks allow more efficient processing at the expense of greater memory usage. By default, these settings revert to the values of the source table settings [`min_insert_block_size_rows`](/operations/settings/settings#min_insert_block_size_rows) and [`min_insert_block_size_bytes`](/operations/settings/settings#min_insert_block_size_bytes), respectively.
 
-For improving performance, you can follow the guidelines outlined in the [Tuning Threads and Block Size for Inserts](/integrations/s3/performance#tuning-threads-and-block-size-for-inserts) section of the [Optimizing for S3 Insert and Read Performance guide](/integrations/s3/performance). It should not be necessary to also modify `min_insert_block_size_bytes_for_materialized_views` and `min_insert_block_size_rows_for_materialized_views` to improve performance in most cases. If these are modified, use the same best practices as discussed for `min_insert_block_size_rows` and `min_insert_block_size_bytes`.
+:::note
+**Tip for trivial INSERT SELECT queries**: For simple `INSERT INTO t1 SELECT * FROM t2` queries without complex transformations, consider enabling `optimize_trivial_insert_select=1`. This setting (disabled by default since version 24.7) automatically adjusts the SELECT parallelism to match `max_insert_threads`, reducing resource usage and the number of parts created. This is particularly useful for bulk data migrations between tables.
+:::
+
+For improving performance, you can follow the guidelines outlined in the [Tuning Threads and Block Size for Inserts](/integrations/s3/performance#tuning-threads-and-block-size-for-inserts) section of the [Optimizing for S3 Insert and Read Performance guide](/integrations/s3/performance). It shouldn't be necessary to also modify `min_insert_block_size_bytes_for_materialized_views` and `min_insert_block_size_rows_for_materialized_views` to improve performance in most cases. If these are modified, use the same best practices as discussed for `min_insert_block_size_rows` and `min_insert_block_size_bytes`.
 
 To minimize memory, you may wish to experiment with these settings. This will invariably lower performance. Using the earlier query, we show examples below.
 

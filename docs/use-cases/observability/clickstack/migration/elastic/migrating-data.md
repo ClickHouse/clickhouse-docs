@@ -20,32 +20,36 @@ When migrating from Elastic to ClickStack for observability use cases, we recomm
 3. **Simplified migration**: no need for complex data transfer tools or processes to move historical data between systems.
 <br/>
 :::note Migrating data
-We demonstrate an approach for migrating essential data from Elasticsearch to ClickHouse in the section ["Migrating data"](#migrating-data). This should not be used for larger datasets as it is rarely performant - limited by the ability for Elasticsearch to export efficiently, with only JSON format supported.
+We demonstrate an approach for migrating essential data from Elasticsearch to ClickHouse in the section ["Migrating data"](#migrating-data). This shouldn't be used for larger datasets as it is rarely performant - limited by the ability for Elasticsearch to export efficiently, with only JSON format supported.
 :::
 
 ### Implementation steps {#implementation-steps}
 
-1. **Configure Dual Ingestion**
-<br/>
+<VerticalStepper headerLevel="h4">
+
+#### Configure dual ingestion {#configure-dual-ingestion}
+
 Set up your data collection pipeline to send data to both Elastic and ClickStack simultaneously. 
 
 How this is achieved depends on your current agents for collection - see ["Migrating Agents"](/use-cases/observability/clickstack/migration/elastic/migrating-agents).
 
-2. **Adjust Retention Periods**
-<br/>
+#### Adjust retention periods {#adjust-retention-period}
+
 Configure Elastic's TTL settings to match your desired retention period. Set up the ClickStack [TTL](/use-cases/observability/clickstack/production#configure-ttl) to maintain data for the same duration.
 
-3. **Validate and Compare**:
-<br/>
+#### Validate and compare {#validate-and-compare}
+
 - Run queries against both systems to ensure data consistency
 - Compare query performance and results
 - Migrate dashboards and alerts to ClickStack. This is currently a manual process.
 - Verify that all critical dashboards and alerts work as expected in ClickStack
 
-4. **Gradual Transition**:
-<br/>
+#### Gradual transition {#graudal-transition}
+
 - As data naturally expires from Elastic, you will increasingly rely on ClickStack
 - Once confidence in ClickStack is established, you can begin redirecting queries and dashboards
+
+</VerticalStepper>
 
 ### Long-term retention {#long-term-retention}
 
@@ -569,7 +573,7 @@ Where possible, we recommend running both ClickHouse, Elasticsearch, and `elasti
 
 ### Install ClickHouse client {#install-clickhouse-client}
 
-Ensure ClickHouse is [installed on the server](/install) on which `elasticdump` is located. **Do not start a ClickHouse server** - these steps only require the client.
+Ensure ClickHouse is [installed on the server](/install) on which `elasticdump` is located. **Don't start a ClickHouse server** - these steps only require the client.
 
 ### Stream data {#stream-data}
 

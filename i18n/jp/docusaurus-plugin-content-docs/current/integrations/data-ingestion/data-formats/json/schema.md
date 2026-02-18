@@ -230,7 +230,7 @@ JSON オブジェクトは構造化されていても、多くの場合は既知
 }
 ```
 
-次のとおり、この行は正常に挿入できていることがわかります。
+以下のとおり、この行は問題なく挿入できていることがわかります。
 
 ```sql
 INSERT INTO people FORMAT JSONEachRow
@@ -371,7 +371,7 @@ SELECT id, nickname FROM people
 * 厳密な型付けが現実的ではなく、スキーマの柔軟性が必要である。
 * パスが **数百から数千** 存在し、それらは静的だが、明示的に宣言するのが現実的ではない場合（これはまれなケースです）。
 
-[`company.labels`](/integrations/data-formats/json/schema#static-vs-dynamic-json) オブジェクトが動的であると判断された、[先ほどの person JSON](/integrations/data-formats/json/schema#static-vs-dynamic-json) を考えてみます。
+[先ほどの person JSON](/integrations/data-formats/json/schema#static-vs-dynamic-json) では、`company.labels` オブジェクトが動的であると判断されました。
 
 `company.labels` が任意のキーを含んでいると仮定しましょう。さらに、この構造内の任意のキーの型は、行ごとに一貫していない可能性があります。例えば、次のようなケースです:
 

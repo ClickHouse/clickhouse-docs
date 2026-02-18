@@ -39,7 +39,8 @@ import { HyperDXNestLoggerModule } from '@hyperdx/node-logger';
 @Module({
   imports: [
     HyperDXNestLoggerModule.forRoot({
-      apiKey: ***YOUR_INGESTION_API_KEY***,
+      url: 'http://your-otel-collector:4318',
+      apiKey: ***YOUR_INGESTION_API_KEY***, // Not need for Managed ClickStack
       maxLevel: 'info',
       service: 'my-app',
     }),
@@ -71,12 +72,12 @@ export class CatsController {
 ### Replacing the Nest logger (also for bootstrapping) {#replacing-the-nest-logger}
 
 :::note Important
-By doing this, you give up the dependency injection, meaning that `forRoot` and `forRootAsync` are not needed and shouldn't be used. Remove them from your main module.
+By doing this, you give up the dependency injection, meaning that `forRoot` and `forRootAsync` aren't needed and shouldn't be used. Remove them from your main module.
 :::
 
 Using the dependency injection has one minor drawback. Nest has to bootstrap the
 application first (instantiating modules and providers, injecting dependencies,
-etc.) and during this process the instance of `HyperDXNestLogger` is not yet
+etc.) and during this process the instance of `HyperDXNestLogger` isn't yet
 available, which means that Nest falls back to the internal logger.
 
 One solution is to create the logger outside of the application lifecycle, using
@@ -92,7 +93,8 @@ import { HyperDXNestLoggerModule } from '@hyperdx/node-logger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: HyperDXNestLoggerModule.createLogger({
-      apiKey: ***YOUR_INGESTION_API_KEY***,
+      url: 'http://your-otel-collector:4318',
+      apiKey: ***YOUR_INGESTION_API_KEY***, // Not needed for Managed ClickStack
       maxLevel: 'info',
       service: 'my-app',
     })

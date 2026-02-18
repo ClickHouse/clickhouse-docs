@@ -33,20 +33,6 @@ import TabItem from '@theme/TabItem';
 We recommend using the latest java client directly if performance/direct access is critical.
 :::
 
-## Changes from 0.7.x {#changes-from-07x}
-In 0.8 we tried to make the driver more strictly follow the JDBC specification, so there are some removed features that may affect you:
-
-| Old Feature                      | Notes                                                                                                                                                                                                                                                                                                           |
-|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Transaction Support              | Early versions of the driver only **simulated** transaction support, which could have unexpected results.                                                                                                                                                                                                       |
-| Response Column Renaming         | `ResultSet` was mutable - for efficiency sake they're now read-only                                                                                                                                                                                                                                             |
-| Multi-Statement SQL              | Multi-statement support was only **simulated**, now it strictly follows 1:1                                                                                                                                                                                                                                     |
-| Named Parameters                 | Not part of the JDBC spec                                                                                                                                                                                                                                                                                       |
-| Stream-based `PreparedStatement` | Early version of the driver allowed for non-jdbc usage of `PreparedStatement` - if you desire such options, we recommend looking at the [Java Client](/integrations/language-clients/java/client/client.mdx) and its [examples](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2). |
-
-:::note
-`Date` is stored without timezone, while `DateTime` is stored with timezone. This can lead to unexpected results if you're not careful.
-:::
 
 ## Environment requirements {#environment-requirements}
 
@@ -62,7 +48,7 @@ In 0.8 we tried to make the driver more strictly follow the JDBC specification, 
         <dependency>
             <groupId>com.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
-            <version>0.9.4</version>
+            <version>0.9.6</version>
             <classifier>all</classifier>
         </dependency>
         ```
@@ -72,14 +58,14 @@ In 0.8 we tried to make the driver more strictly follow the JDBC specification, 
 
         ```kotlin
         // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        implementation("com.clickhouse:clickhouse-jdbc:0.9.4:all")
+        implementation("com.clickhouse:clickhouse-jdbc:0.9.6:all")
         ```
     </TabItem>
     <TabItem value="gradle" label="Gradle">
 
         ```groovy
         // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc
-        implementation 'com.clickhouse:clickhouse-jdbc:0.9.4:all'
+        implementation 'com.clickhouse:clickhouse-jdbc:0.9.6:all'
         ```
 
     </TabItem>
@@ -89,24 +75,44 @@ In 0.8 we tried to make the driver more strictly follow the JDBC specification, 
 
 **Driver Class**: `com.clickhouse.jdbc.ClickHouseDriver`
 
-**URL Syntax**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint1[,endpoint2,...][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`, for example:
+:::note
+`com.clickhouse.jdbc.ClickHouseDriver` is a facade class for the new and old JDBC implementations. It uses the new JDBC implementation by default. 
+You can use the old JDBC implementation by setting the `clickhouse.jdbc.v1` property to `true` in the connection properties.
+
+`com.clickhouse.jdbc.Driver` is new JDBC implementation. 
+`com.clickhouse.jdbc.DriverV1` is old JDBC implementation.
+
+:::
+
+**URL Syntax**: `jdbc:(ch|clickhouse)[:<protocol>]://endpoint[:port][/<database>][?param1=value1&param2=value2][#tag1,tag2,...]`, for example:
 
 - `jdbc:clickhouse:http://localhost:8123`
 - `jdbc:clickhouse:https://localhost:8443?ssl=true`
 
+There are a few things to note about the URL syntax:
+- **only** one endpoint is allowed in the URL
+- protocol should be specified when it isn't the default one - 'HTTP'
+- port should be specified when it isn't the default one '8123'
+- driver don't guess the protocol from the port, you need to specify it explicitly
+- `ssl` parameter isn't required when protocol is specified.
+
 ### Connection Properties
+Main configuration parameters are defined in the [java client](/integrations/language-clients/java/client#client-configuration). They should be passed 
+as is to the driver. Driver has some own properties that aren't part of the client configuration they're listed below.
 
-Beyond standard JDBC properties, the driver supports the ClickHouse-specific properties offered by the underlying [java client](/integrations/language-clients/java/client#client-configuration).
-Where possible methods will return an `SQLFeatureNotSupportedException` if the feature is not supported. Other custom properties include:
-
+**Driver properties**:
 | Property                         | Default | Description                                                    |
 |----------------------------------|---------|----------------------------------------------------------------|
 | `disable_frameworks_detection`   | `true`  | Disable frameworks detection for User-Agent                    |
-| `jdbc_ignore_unsupported_values` | `false` | Suppresses `SQLFeatureNotSupportedException`                   |
+| `jdbc_ignore_unsupported_values` | `false` | Suppresses `SQLFeatureNotSupportedException` where is doesn't affect the driver work |
 | `clickhouse.jdbc.v1`             | `false` | Use older JDBC implementation instead of new JDBC              |
 | `default_query_settings`         | `null`  | Allows passing of default query settings with query operations |
 | `jdbc_resultset_auto_close`      | `true`  | Automatically closes `ResultSet` when `Statement` is closed    |
 | `beta.row_binary_for_simple_insert` | `false` | Use `PreparedStatement` implementation based on `RowBinary` writer. Works only for `INSERT INTO ... VALUES` queries. |
+| `jdbc_resultset_auto_close` | `true` | Automatically closes `ResultSet` when `Statement` is closed |
+| `jdbc_use_max_result_rows` | `false` | Enables using server property `max_result_rows` to limit number of rows returned by query. When enabled, overrides user-set overflow mode. See JavaDoc for details. |
+| `jdbc_sql_parser` | `JAVACC` | Configures which SQL parser to use. Choices: `ANTLR4`, `ANTLR4_PARAMS_PARSER`, `JAVACC`. |
+
 
 :::note Server Settings
 
@@ -125,14 +131,170 @@ Connection conn = Driver.connect("jdbc:ch:http://localhost:8123/", config);
 ```
 :::
 
+**Example configuration**:
+```java
+Properties properties = new Properties();
+properties.setProperty("user", "default");
+properties.setProperty("password", getPassword());
+properties.setProperty("client_name", "my-app-01"); // when http protocol is used it will be `http_user_agent` in the query log but not `client_name`.
+
+Connection conn = Driver.connect("jdbc:ch:http://localhost:8123/", properties);
+```
+
+what will be equivalent to the following JDBC URL:
+
+```sql
+jdbc:ch:http://localhost:8123/?user=default&password=password&client_name=my-app-01 
+// credentials shoud be passed in `Properties`. Here it is just for example.
+```
+Note: no need to url encode JDBC URL or properties, they will be automatically encoded.
+
 ## Supported data types {#supported-data-types}
 
 JDBC Driver supports the same data formats as the underlying [java client](/integrations/java#supported-data-types).
+
+### JDBC Type Mapping {#jdbc-type-mapping}
+
+Following mapping applies to: 
+- `ResultSet#getObject(columnIndex)` - method will return object of the corresponding Java class. (`Int8` -> `java.lang.Byte`, `Int16` -> `java.lang.Short`, etc.)
+- `ResultSetMetaData#getColumnType(columnIndex)` - method will return the corresponding JDBC type. (`Int8` -> `java.lang.Byte`, `Int16` -> `java.lang.Short`, etc.)
+
+There are few ways to change the mapping:
+- `ResultSet#getObject(columnIndex, class)` - method will try to convert value to `class` type. There are some conversion limitations. See each section for details.
+
+
+**Numeric Types**
+
+| ClickHouse Type             | JDBC Type                    | Java Class                  |
+|-----------------------------|------------------------------|-----------------------------|
+| Int8                        | TINYINT                      | java.lang.Byte              |
+| Int16                       | SMALLINT                     | java.lang.Short             |
+| Int32                       | INTEGER                      | java.lang.Integer           |
+| Int64                       | BIGINT                       | java.lang.Long              |
+| Int128                      | OTHER                        | java.math.BigInteger        |
+| Int256                      | OTHER                        | java.math.BigInteger        |
+| UInt8                       | OTHER                        | java.lang.Short             |
+| UInt16                      | OTHER                        | java.lang.Integer           |
+| UInt32                      | OTHER                        | java.lang.Long              |
+| UInt64                      | OTHER                        | java.math.BigInteger        |
+| UInt128                     | OTHER                        | java.math.BigInteger        |
+| UInt256                     | OTHER                        | java.math.BigInteger        |
+| Float32                     | REAL                         | java.lang.Float             |
+| Float64                     | DOUBLE                       | java.lang.Double            |
+| Decimal32                   | DECIMAL                      | java.math.BigDecimal        |
+| Decimal64                   | DECIMAL                      | java.math.BigDecimal        |
+| Decimal128                  | DECIMAL                      | java.math.BigDecimal        |
+| Decimal256                  | DECIMAL                      | java.math.BigDecimal        |
+| Bool                        | BOOLEAN                      | java.lang.Boolean           |
+
+- numeric types are interconvertible. So `Int8` can be get as `Float64` and vice versa.:
+    - `rs.getObject(1, Float64.class)` will return `Float64` value of `Int8` column.
+    - `rs.getLong(1)` will return `Long` value of `Int8` column.
+    - `rs.getByte(1)` can return `Byte` value of `Int16` column if it fits into `Byte`.
+- conversion from wider to narrower type isn't recommend because of data coruption risk.
+- `Bool` type acts as number, too.
+- All number types can be read as `java.lang.String`.
+
+
+**String Types**
+
+| ClickHouse Type             | JDBC Type                    | Java Class                  |
+|-----------------------------|------------------------------|-----------------------------|
+| String                      | VARCHAR                      | java.lang.String            |
+| FixedString                 | VARCHAR                      | java.lang.String            |
+
+- `String` can be read only as `java.lang.String` or `byte[]`.
+- `FixedString` is read as is and will be padded with zeros to the length of the column. (For example `FixedString(10)` for `'John'` will be read as `'John\0\0\0\0\0\0\0\0\0'`.)
+
+
+**Enum Types**
+
+| ClickHouse Type             | JDBC Type                    | Java Class                  |
+|-----------------------------|------------------------------|-----------------------------|
+| Enum8                       | OTHER                        | java.lang.String            |
+| Enum16                      | OTHER                        | java.lang.String            |
+
+- `Enum8` and `Enum16` are mapped to `java.lang.String` by default.
+- Enum values can be read as numeric values using designtated getter method or `getObject(columnIndex, Integer.class)` method.
+- `Enum16` is mapped to short and Enum8 is mapped to byte internally. Reading `Enum16` as byte should be avoided because of data coruption risk.
+- Enum values can be set as string or numeric value in `PreparedStatement`. 
+
+
+**Date/Time Types**
+
+| ClickHouse Type             | JDBC Type                    | Java Class                  |
+|-----------------------------|------------------------------|-----------------------------|
+| Date                        | DATE                         | java.sql.Date               |
+| Date32                      | DATE                         | java.sql.Date               |
+| DateTime                    | TIMESTAMP                    | java.sql.Timestamp          |
+| DateTime64                  | TIMESTAMP                    | java.sql.Timestamp          |
+| Time                        | TIME                         | java.sql.Time               |
+| Time64                      | TIME                         | java.sql.Time               |
+
+- Date / Time types are mapped to `java.sql` types for better compatibility with JDBC. However getting `java.time.LocalDate`, `java.time.LocalDateTime`, `java.time.LocalTime` is possible by using `ResultSet#getObject(columnIndex, Class<T>)` with the corresponding class as the second argument.
+    - `rs.getObject(1, java.time.LocalDate.class)` will return `java.time.LocalDate` value of `Date` column.
+    - `rs.getObject(1, java.time.LocalDateTime.class)` will return `java.time.LocalDateTime` value of `DateTime` column.
+    - `rs.getObject(1, java.time.LocalTime.class)` will return `java.time.LocalTime` value of `Time` column.
+- `Date`, `Date32`, `Time`, `Time64` isn't affected by the timezone of the server. 
+- `DateTime`, `DateTime64` is affected by the timezone of the server or session timezone. 
+- `DateTime` and `DateTime64` can be retrieved as `ZonedDateTime` by using `getObject(colIndex, ZonedDateTime.class)`.
+
+
+**Collection Types**
+
+| ClickHouse Type             | JDBC Type                    | Java Class                  |
+|-----------------------------|------------------------------|-----------------------------|
+| Array                       | ARRAY                        | java.sql.Array              |
+| Tuple                       | OTHER                        | Object[]                    |
+| Map                         | JAVA_OBJECT                  | java.util.Map               |
+
+- `Array` is mapped to `java.sql.Array` by default to be compatible with JDBC. This is also done to give more information about returned array value. Useful for type inference.
+- `Array` implements `getResultSet()` method to return `java.sql.ResultSet` with the same content as the original array.
+- Collection types shouldn't be read as `java.lang.String` because it isn't a valid way to represent the data (Ex. there is no quoting for string values in array). 
+- `Map` is mapped to `JAVA_OBJECT` because value can be read only with `getObject(columnIndex, Class<T>)` method. 
+    - `Map` isn't a `java.sql.Struct` because it doesn't have named columns.
+- `Tuple` is mapped to `Object[]` because it can contain different types and using `List` isn't valid. 
+- `Tuple` can be read as `Array` by using `getObject(columnIndex, Array.class)` method. In this case `Array#baseTypeName` will return `Tuple` column definition. 
+
+
+**Geo Types**
+
+| ClickHouse Type             | JDBC Type                    | Java Class                  |
+|-----------------------------|------------------------------|-----------------------------|
+| Point                       | OTHER                        | double[]                    |
+| Ring                        | OTHER                        | double[][]                  |
+| Polygon                     | OTHER                        | double[][][]                |
+| MultiPolygon                | OTHER                        | double[][][][]              |
+
+**Nullable and LowCardinality Types**
+
+- `Nullable` and `LowCardinality` are special types that wrap other types. 
+- `Nullable` affects how type names are returned in `ResultSetMetaData`
+
+**Special Types**
+
+| ClickHouse Type             | JDBC Type                    | Java Class                  |
+|-----------------------------|------------------------------|-----------------------------|
+| UUID                        | OTHER                        | java.util.UUID              |
+| IPv4                        | OTHER                        | java.net.Inet4Address       |
+| IPv6                        | OTHER                        | java.net.Inet6Address       |
+| JSON                        | OTHER                        | java.lang.String            |
+| AggregateFunction           | OTHER                        | (binary representation)     |
+| SimpleAggregateFunction     | (wrapped type)               | (wrapped class)             |
+
+- `UUID` isn't JDBC standard type. However it is part of JDK. By default `java.util.UUID` is returned on `getObject()` method.
+- `UUID` can be read/written as `String` by using `getObject(columnIndex, String.class)` method.
+- `IPv4` and `IPv6` aren't JDBC standard types. However they're part of JDK. By default `java.net.Inet4Address` and `java.net.Inet6Address` are returned on `getObject()` method.
+- `IPv4` and `IPv6` can be read/written as `String` by using `getObject(columnIndex, String.class)` method.
 
 ### Handling Dates, Times, and Timezones {#handling-dates-times-and-timezones}
 `java.sql.Date`, `java.sql.Time`, and `java.sql.Timestamp` can complicate how Timezones are calculated - though they're of course supported,
 you may want to consider using the [java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html) package. `ZonedDateTime` and
 `OffsetDateTime` are both great replacements for java.sql.Timestamp, java.sql.Date, and java.sql.Time.
+
+:::note[Date vs DateTime]
+`Date` is stored without timezone, while `DateTime` is stored with timezone. This can lead to unexpected results if you're not careful.
+:::
 
 ## Creating Connection {#creating-connection}
 
@@ -144,6 +306,7 @@ DataSource dataSource = new DataSource(url, properties);//DataSource or DriverMa
 try (Connection conn = dataSource.getConnection()) {
 ... // do something with the connection
 ```
+
 
 ## Supplying Credentials and Settings {#supplying-credentials-and-settings}
 
@@ -268,6 +431,165 @@ After Setting those settings, you need to ensure that your client enables the Ke
 properties.setProperty("socket_keepalive", "true");
 ```
 
+## Migration Guide {#migration-guide}
+
+### Key Changes {#key-changes}
+
+| Feature | V1 (Old) | V2 (New) |
+|---------|----------|----------|
+| Transaction Support | Partially supported | Not supported |
+| Response Column Renaming | Partially supported | Not supported |
+| Multi-Statement SQL | Not supported | Not allowed |
+| Named Parameters | Supported | Not supported (not in JDBC spec) |
+| Streaming Data With `PreparedStatement` | Supported | Not supported |
+
+- JDBC V2 is implemented to be more lightweight and some features were removed.
+    - Streaming Data isn't supported in JDBC V2 because it isn't part of the JDBC spec and Java.
+- JDBC V2 expects explicit configuration. No failover defaults.
+    - Protocol should be specified in the URL. No implicit protocol detection using port numbers.
+
+### Configuration Changes {#configuration-changes}
+
+There are only two enums:
+- `com.clickhouse.jdbc.DriverProperties` - the driver own configuration properties.
+- `com.clickhouse.client.api.ClientConfigProperties` - the client configuration properties. Client configuration
+ changes are described in the [Java Client documentation](/integrations/language-clients/java/client/client.mdx#migration_from_v1_config).
+
+Connection properties are parsed in the following way:
+- URL is parsed first for properties. They override all other properties.
+- Driver properties aren't passed to the client.
+- Endpoints (host, port, protocol) are parsed from the URL. 
+
+Example:
+```java
+String url = "jdbc:ch://my-server:8443/default?" +
+            "jdbc_ignore_unsupported_values=true&" +
+            "socket_rcvbuf=800000";
+
+Properties properties = new Properties();
+properties.setProperty("socket_rcvbuf", "900000");
+try (Connection conn = DriverManager.getConnection(url, properties)) {
+    // Connection will use socket_rcvbuf=800000 and jdbc_ignore_unsupported_values=true
+    // Endpoints: my-server:8443 protocol: http (not secure)
+    // Database: default
+}
+```
+
+### Data Types Changes {#data-types-changes}
+
+**Numeric Types**
+
+| ClickHouse Type             | Compatible with V1 | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
+|-----------------------------|-------------------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
+| Int8                        | ✅                 | TINYINT                    | java.lang.Byte             | TINYINT                    | java.lang.Byte                          |
+| Int16                       | ✅                 | SMALLINT                   | java.lang.Short            | SMALLINT                   | java.lang.Short                         |
+| Int32                       | ✅                 | INTEGER                    | java.lang.Integer          | INTEGER                    | java.lang.Integer                       |
+| Int64                       | ✅                 | BIGINT                     | java.lang.Long             | BIGINT                     | java.lang.Long                          |
+| Int128                      | ✅                 | OTHER                      | java.math.BigInteger       | OTHER                      | java.math.BigInteger                    |
+| Int256                      | ✅                 | OTHER                      | java.math.BigInteger       | OTHER                      | java.math.BigInteger                    |
+| UInt8                       | ❌                 | OTHER                      | java.lang.Short            | OTHER                      | com.clickhouse.data.value.UnsignedByte  |
+| UInt16                      | ❌                 | OTHER                      | java.lang.Integer          | OTHER                      | com.clickhouse.data.value.UnsignedShort |
+| UInt32                      | ❌                 | OTHER                      | java.lang.Long             | OTHER                      | com.clickhouse.data.value.UnsignedInteger |
+| UInt64                      | ❌                 | OTHER                      | java.math.BigInteger       | OTHER                      | com.clickhouse.data.value.UnsignedLong  |
+| UInt128                     | ✅                 | OTHER                      | java.math.BigInteger       | OTHER                      | java.math.BigInteger                    |
+| UInt256                     | ✅                 | OTHER                      | java.math.BigInteger       | OTHER                      | java.math.BigInteger                    |
+| Float32                     | ✅                 | REAL                       | java.lang.Float            | REAL                       | java.lang.Float                         |
+| Float64                     | ✅                 | DOUBLE                     | java.lang.Double           | DOUBLE                     | java.lang.Double                        |
+| Decimal32                   | ✅                 | DECIMAL                    | java.math.BigDecimal       | DECIMAL                    | java.math.BigDecimal                    |
+| Decimal64                   | ✅                 | DECIMAL                    | java.math.BigDecimal       | DECIMAL                    | java.math.BigDecimal                    |
+| Decimal128                  | ✅                 | DECIMAL                    | java.math.BigDecimal       | DECIMAL                    | java.math.BigDecimal                    |
+| Decimal256                  | ✅                 | DECIMAL                    | java.math.BigDecimal       | DECIMAL                    | java.math.BigDecimal                    |
+| Bool                        | ✅                 | BOOLEAN                    | java.lang.Boolean          | BOOLEAN                    | java.lang.Boolean                       |
+
+- The biggest differences is that unsigned types are mapped to java types for better portability. 
+
+**String Types**
+
+| ClickHouse Type             | Compatible with V1 | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
+|-----------------------------|-------------------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
+| String                      | ✅                 | VARCHAR                    | java.lang.String           | VARCHAR                    | java.lang.String                        |
+| FixedString                 | ✅                 | VARCHAR                    | java.lang.String           | VARCHAR                    | java.lang.String                        |
+
+- `FixedString` is read as is in both versions. For example `FixedString(10)` for `'John'` will be read as `'John\0\0\0\0\0\0\0\0\0'`.
+- When `PreparedStatement#setBytes` is used it will be converted to `unhex('<hex_string>')` and then read as `String`.
+
+**Date/Time Types**
+
+| ClickHouse Type             | Compatible with V1 | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
+|-----------------------------|-------------------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
+| Date                        | ❌                 | DATE                       | java.sql.Date              | DATE                       | java.time.LocalDate                     |
+| Date32                      | ❌                 | DATE                       | java.sql.Date              | DATE                       | java.time.LocalDate                     |
+| DateTime                    | ❌                 | TIMESTAMP                  | java.sql.Timestamp         | TIMESTAMP                  | java.time.OffsetDateTime                |
+| DateTime64                  | ❌                 | TIMESTAMP                  | java.sql.Timestamp         | TIMESTAMP                  | java.time.OffsetDateTime                |
+| Time                        | ✅                 | TIME                       | java.sql.Time              | new type/not supported     | new type/not supported                  |
+| Time64                      | ✅                 | TIME                       | java.sql.Time              | new type/not supported     | new type/not supported                  |
+
+- `Time` and `Time64` are supported in V2 only as new types. 
+- `DateTime` and `DateTime64` are mapped to `java.sql.Timestamp` for better compatibility with JDBC.
+
+**Enum Types**
+
+| ClickHouse Type             | Compatible with V1 | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
+|-----------------------------|-------------------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
+| Enum                        | ✅                 | VARCHAR                    | java.lang.String           | OTHER                      | java.lang.String                        |
+| Enum8                       | ✅                 | VARCHAR                    | java.lang.String           | OTHER                      | java.lang.String                        |
+| Enum16                      | ✅                 | VARCHAR                    | java.lang.String           | OTHER                      | java.lang.String                        |
+
+**Collection Types**
+
+| ClickHouse Type             | Compatible with V1 | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
+|-----------------------------|-------------------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
+| Array                       | ❌                  | ARRAY                      | java.sql.Array            | ARRAY                      | Object[] or array of primitive types   |
+| Tuple                       | ❌                  | OTHER                     | Object[]                   | STRUCT                     | java.sql.Struct                        |
+| Map                         | ❌                  | JAVA_OBJECT               | java.util.Map              | STRUCT                     | java.util.Map                          |
+
+- In V2 `Array` is mapped to `java.sql.Array` by default to be compatible with JDBC. This is also done to give more information about returned array value. Useful for type inference.
+- In V2 `Array` implements `getResultSet()` method to return `java.sql.ResultSet` with the same content as the original array.
+- V1 uses `STRUCT` for `Map` but returns `java.util.Map` object always. V2 fixes this by mapping `Map` to `JAVA_OBJECT`. Besides `STRUCT` is invalid for `Map` because it doesn't have named columns.
+- V1 uses `STRUCT` for `Tuple` but returns `List<Object>` object always. V2 fixes this by mapping `Tuple` to `OTHER` and returns `Object[]` because using `List` is not valid as different types can be present.
+- `PreparedStatement#setBytes` and `ResultSet#getBytes` cannot be used with collection types. These methods are designed to work with binary strings.
+- Normally `java.sql.Array` is used to write and read Array types. JDBC driver has full support for this. 
+
+**Geo Types**
+
+| ClickHouse Type             | Compatible with V1 | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
+|-----------------------------|-------------------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
+| Point                       | ✅                 | OTHER                      | double[]                   | OTHER                      | double[]                                |
+| Ring                        | ✅                 | OTHER                      | double[][]                 | OTHER                      | double[][]                              |
+| Polygon                     | ✅                 | OTHER                      | double[][][]               | OTHER                      | double[][][]                            |
+| MultiPolygon                | ✅                 | OTHER                      | double[][][][]             | OTHER                      | double[][][][]                          |
+
+**Nullable and LowCardinality Types**
+
+- `Nullable` and `LowCardinality` are special types that wrap other types. 
+- No changes are made to these types in V2.
+
+**Special Types**
+
+| ClickHouse Type             | Compatible with V1 | JDBC Type (V2)             | Java Class (V2)            | JDBC Type (V1)             | Java Class (V1)                         |
+|-----------------------------|-------------------|----------------------------|----------------------------|----------------------------|-----------------------------------------|
+| JSON                        | ❌                 | OTHER                      | java.lang.String           | not supported              | not supported                           |
+| AggregateFunction           | ✅                 | OTHER                      | (binary representation)    | OTHER                      | (binary representation)                 |
+| SimpleAggregateFunction     | ✅                 | (wrapped type)             | (wrapped class)            | (wrapped type)             | (wrapped class)                         |
+| UUID                        | ✅                 | OTHER                      | java.util.UUID             | VARCHAR                    | java.util.UUID                          |
+| IPv4                        | ✅                 | OTHER                      | java.net.Inet4Address      | VARCHAR                    | java.net.Inet4Address                   |
+| IPv6                        | ✅                 | OTHER                      | java.net.Inet6Address      | VARCHAR                    | java.net.Inet6Address                   |
+| Dynamic                     | ❌                 | OTHER                      | java.Object                | not supported              | not supported                           |
+| Variant                     | ❌                 | OTHER                      | java.Object                | not supported              | not supported                           |
+
+- V1 uses `VARCHAR` for `UUID` but returns `java.util.UUID` object always. V2 fixes this by mapping `UUID` to `OTHER` and returns `java.util.UUID` object.
+- V1 uses `VARCHAR` for `IPv4` and `IPv6` but returns `java.net.Inet4Address` and `java.net.Inet6Address` objects always. V2 fixes this by mapping `IPv4` and `IPv6` to `OTHER` and returns `java.net.Inet4Address` and `java.net.Inet6Address` objects.
+- `Dynamic` and `Variant` are new types in V2. Not supported in V1.
+- `JSON` is based on `Dynamic` type. Therefore it is supported only in V2.
+- IPv4 and IPv6 values can be read as `byte[]` by using `getBytes(columnIndex)` method. However it is recommended to use designated classes for these types.
+- V2 do not support reading IP address as numeric values because convertion is better implementation in InetAddress classes.
+
+### Database Metadata Changes {#database-metadata-changes}
+
+- V2 uses only `Schema` term to name databases. `Catalog` term is reserved for future use.
+- V2 returns `false` for `DatabaseMetaData.supportsTransactions()` and `DatabaseMetaData.supportsSavepoints()`. This will be changed in the future development.
+
+
 </Version>
 
 <Version>
@@ -321,7 +643,7 @@ Latest JDBC (0.7.2) version uses Client-V1
     </TabItem>
 </Tabs>
 
-Since version `0.5.0`, we are using Apache HTTP Client that's packed the Client. Since there is not a shared version of the package, you need to add a logger as a dependency.
+Since version `0.5.0`, we're using Apache HTTP Client that's packed the Client. Since there isn't a shared version of the package, you need to add a logger as a dependency.
 
 <Tabs groupId="client-v1-compression-deps">
     <TabItem value="maven" label="Maven" >
@@ -368,7 +690,7 @@ Since version `0.5.0`, we are using Apache HTTP Client that's packed the Client.
 | Property                 | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                |
 | ------------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `continueBatchOnError`     | `false` | Whether to continue batch processing when error occurred                                                                                                                                                                                                                                                                                                                                                                   |
-| `createDatabaseIfNotExist` | `false` | Whether to create database if it does not exist                                                                                                                                                                                                                                                                                                                                                                            |
+| `createDatabaseIfNotExist` | `false` | Whether to create database if it doesn't exist                                                                                                                                                                                                                                                                                                                                                                            |
 | `custom_http_headers`      |         | comma separated custom http headers, for example: `User-Agent=client1,X-Gateway-Id=123`                                                                                                                                                                                                                                                                                                                                    |
 | `custom_http_params`       |         | comma separated custom http query parameters, for example: `extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                                                                |
 | `nullAsDefault`            | `0`     | `0` - treat null value as is and throw exception when inserting null into non-nullable column; `1` - treat null value as is and disable null-check for inserting; `2` - replace null to default value of corresponding data type for both query and insert                                                                                                                                                                 |
@@ -383,7 +705,7 @@ Note: please refer to [JDBC specific configuration](https://github.com/ClickHous
 JDBC Driver supports same data formats as client library does.
 
 :::note
-- AggregatedFunction - :warning: does not support `SELECT * FROM table ...`
+- AggregatedFunction - :warning: doesn't support `SELECT * FROM table ...`
 - Decimal - `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency
 - Enum - can be treated as both string and integer
 - UInt64 - mapped to `long` (in client-v1)
@@ -638,7 +960,7 @@ properties.setProperty("socket_keepalive", "true");
 ```
 
 :::note
-Currently, you must use Apache HTTP Client library when setting the socket keep-alive, as the other two HTTP client libraries supported by `clickhouse-java` do not allow setting socket options. For a detailed guide, see [Configuring HTTP library](#v07-configuring-http-library).
+Currently, you must use Apache HTTP Client library when setting the socket keep-alive, as the other two HTTP client libraries supported by `clickhouse-java` don't allow setting socket options. For a detailed guide, see [Configuring HTTP library](#v07-configuring-http-library).
 :::
 
 Alternatively, you can add equivalent parameters to the JDBC URL.

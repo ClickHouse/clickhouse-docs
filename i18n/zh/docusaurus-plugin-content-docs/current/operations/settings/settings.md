@@ -437,16 +437,6 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许显式对 Iceberg 表使用 `OPTIMIZE`。
 
-## allow_experimental_insert_into_iceberg \{#allow_experimental_insert_into_iceberg\}
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
-
-允许执行向 Iceberg 插入数据的 `insert` 查询。
-
 ## allow_experimental_join_right_table_sorting \{#allow_experimental_join_right_table_sorting\}
 
 <ExperimentalBadge/>
@@ -636,6 +626,16 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 允许使用 Hyperscan 库的函数。禁用该设置可避免潜在的长时间编译以及过多的资源消耗。
+
+## allow_insert_into_iceberg \{#allow_insert_into_iceberg\}
+
+<BetaBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "向 Iceberg 插入数据的功能已移至 Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "新设置。"}]}]}/>
+
+允许执行向 Iceberg 插入数据的 `insert` 查询。
 
 ## allow_introspection_functions \{#allow_introspection_functions\}
 
@@ -946,18 +946,19 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
 
-允许配置在执行 [ALTER](../../sql-reference/statements/alter/index.md)、[OPTIMIZE](../../sql-reference/statements/optimize.md) 或 [TRUNCATE](../../sql-reference/statements/truncate.md) 查询时，是否以及如何等待在副本上执行的操作完成。
+允许配置在执行 [`ALTER`](../../sql-reference/statements/alter/index.md)、[`OPTIMIZE`](../../sql-reference/statements/optimize.md) 或 [`TRUNCATE`](../../sql-reference/statements/truncate.md) 查询时，是否以及如何等待在副本上执行的操作完成。
 
 可选值：
 
 - `0` — 不等待。
 - `1` — 仅等待本副本执行完成。
 - `2` — 等待所有副本执行完成。
+- `3` - 仅等待活动副本执行完成。
 
 Cloud 默认值：`1`。
 
 :::note
-`alter_sync` 仅适用于 `Replicated` 表，对非 `Replicated` 表的 ALTER 不产生任何效果。
+`alter_sync` 仅适用于 `Replicated` 和 `SharedMergeTree` 表，对非 `Replicated` 或 `Shared` 表的 ALTER 不产生任何效果。
 :::
 
 ## alter_update_mode \{#alter_update_mode\}
@@ -1245,6 +1246,7 @@ Cloud 默认值：`1`。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1048576"},{"label": "基于测试结果得出的更优默认值"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置"}]}]}/>
 
 用于自动启用并行副本时的每个副本最小读取字节数阈值（仅在 `automatic_parallel_replicas_mode`=1 时生效）。0 表示不设阈值。
+总计需要读取的字节数根据收集到的统计信息进行估算。
 
 ## automatic_parallel_replicas_mode \{#automatic_parallel_replicas_mode\}
 
@@ -1752,6 +1754,14 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 在将 String 转换为 Variant 时使用类型推断。
 
+## check_named_collection_dependencies \{#check_named_collection_dependencies\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "用于在删除命名集合前检查是否会破坏依赖它的表的新设置。"}]}]}/>
+
+用于检查执行 DROP NAMED COLLECTION 不会破坏依赖它的表
+
 ## check_query_single_value_result \{#check_query_single_value_result\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2244,7 +2254,9 @@ SETTINGS convert_query_to_cnf = true;
 
 ## deduplicate_blocks_in_dependent_materialized_views \{#deduplicate_blocks_in_dependent_materialized_views\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认启用对依赖 materialized view 的去重。"}]}]}/>
 
 启用或禁用对从 Replicated\* 表接收数据的 materialized view 进行去重检查。
 
@@ -2260,14 +2272,28 @@ SETTINGS convert_query_to_cnf = true;
 
 - [IN 运算符中的 NULL 处理](/guides/developer/deduplicating-inserts-on-retries#insert-deduplication-with-materialized-views)
 
+## deduplicate_insert \{#deduplicate_insert\}
+
+<SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "默认对所有同步和异步插入启用去重。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "用于控制 INSERT 查询去重的新设置。"}]}]}/>
+
+启用或禁用 `INSERT INTO` 的块级去重（适用于 Replicated\* 表）。
+该设置会覆盖 `insert_deduplicate` 和 `async_insert_deduplicate` 两个设置。
+该设置支持以下三个取值：
+
+- disable — 对 `INSERT INTO` 查询禁用去重。
+- enable — 对 `INSERT INTO` 查询启用去重。
+- backward_compatible_choice — 如果针对特定插入类型启用了 `insert_deduplicate` 或 `async_insert_deduplicate`，则启用去重。
+
 ## deduplicate_insert_select \{#deduplicate_insert_select\}
 
 <SettingsInfoBlock type="DeduplicateInsertSelectMode" default_value="enable_when_possible" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "change the default behavior of deduplicate_insert_select to ENABLE_WHEN_PROSSIBLE"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "New setting, replace insert_select_deduplicate"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "enable_when_possible"},{"label": "change the default behavior of deduplicate_insert_select to ENABLE_WHEN_POSSIBLE"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "enable_even_for_bad_queries"},{"label": "New setting, replace insert_select_deduplicate"}]}]}/>
 
 启用或禁用 `INSERT SELECT` 的块去重（适用于 Replicated\* 表）。
-该设置会覆盖 `INSERT SELECT` 查询中 `insert_deduplicate` 的行为。
+该设置会覆盖 `INSERT SELECT` 查询中 `insert_deduplicate` 和 `deduplicate_insert` 的行为。
 该设置有四种可能取值：
 
 - disable — 对 `INSERT SELECT` 查询禁用去重。
@@ -2999,6 +3025,12 @@ FORMAT PrettyCompactMonoBlock
 对于共享存储以及集群中海量数据的场景非常有利。
 使用来自 cluster_for_parallel_replicas 的副本。
 
+**另请参阅**
+
+- [distributed_index_analysis_for_non_shared_merge_tree](#distributed_index_analysis_for_non_shared_merge_tree)
+- [distributed_index_analysis_min_parts_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_parts_to_activate)
+- [distributed_index_analysis_min_indexes_bytes_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_bytes_to_activate)
+
 ## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -3196,7 +3228,9 @@ FORMAT PrettyCompactMonoBlock
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-在 `SELECT FINAL` 查询中仅合并同一分区内的分区片段
+通过避免跨不同分区的合并来优化 FINAL 查询。
+
+启用后，在执行 SELECT FINAL 查询时，来自不同分区的分区片段将不会被合并在一起，合并只会在各自的分区内单独进行。在处理分区表时，这可以显著提升查询性能。
 
 ## empty_result_for_aggregation_by_constant_keys_on_empty_set \{#empty_result_for_aggregation_by_constant_keys_on_empty_set\}
 
@@ -3228,6 +3262,15 @@ FORMAT PrettyCompactMonoBlock
 
 启用在 `IN` 子查询中使用 `DISTINCT`。这是一个权衡型设置：启用后可以大幅减少为分布式 IN 子查询传输的临时表大小，并通过确保只发送唯一值，显著加快分片之间的数据传输。
 但是，启用此设置会在每个节点上增加额外的合并开销，因为必须执行去重（DISTINCT）。当网络传输是瓶颈且可以接受额外的合并开销时再使用此设置。
+
+## enable_automatic_decision_for_merging_across_partitions_for_final \{#enable_automatic_decision_for_merging_across_partitions_for_final\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "新设置"}]}]}/>
+
+如果设置此选项，当分区键表达式是确定性的，并且分区键表达式中使用的所有列都包含在主键中时，ClickHouse 会自动启用此优化。
+这种自动推导可以确保具有相同主键值的行始终属于同一分区，从而保证避免跨分区合并在语义上是安全的。
 
 ## enable_blob_storage_log \{#enable_blob_storage_log\}
 
@@ -3306,9 +3349,9 @@ FORMAT PrettyCompactMonoBlock
 
 **别名**: `allow_experimental_full_text_index`
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "文本索引已移至 Beta 阶段。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "文本索引现已进入 GA 阶段。"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "文本索引已移至 Beta 阶段。"}]}]}/>
 
 如果设置为 true，则允许使用文本索引。
 
@@ -3353,11 +3396,11 @@ FORMAT PrettyCompactMonoBlock
 
 ## enable_join_runtime_filters \{#enable_join_runtime_filters\}
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Enabled this optimization"}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 在运行时根据从右侧收集到的一组 JOIN 键来过滤左侧。
 
@@ -3556,18 +3599,6 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 当各聚合 bucket 的大小分布不均衡时，通过允许副本在自身仍在处理一些较大的低 ID bucket 的同时，将较高 ID 的 bucket 提前发送给发起方，可以提升性能。
 其缺点是可能会占用更多内存。
 
-## enable_qbit_type \{#enable_qbit_type\}
-
-<BetaBadge/>
-
-**别名**: `allow_experimental_qbit_type`
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "QBit 已移至 Beta 阶段。为设置 `allow_experimental_qbit_type` 添加了别名。"}]}]}/>
-
-允许创建 [QBit](../../sql-reference/data-types/qbit.md) 数据类型。
-
 ## enable_reads_from_query_cache \{#enable_reads_from_query_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3601,7 +3632,7 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 如果禁用该设置，上级 `WITH` 子句中的声明将被视为在当前作用域中声明，从而与当前作用域具有相同的作用域。
 
-请注意，这是为新分析器提供的兼容性设置，用于允许运行一些在语义上无效但旧分析器仍能执行的查询。
+请注意，这是为分析器提供的兼容性设置，用于允许运行一些在语义上无效但旧分析器仍能执行的查询。
 
 ## enable_shared_storage_snapshot_in_query \{#enable_shared_storage_snapshot_in_query\}
 
@@ -4925,6 +4956,15 @@ Expression ((Projection + Before ORDER BY))
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.4"},{"label": "0"},{"label": "允许服务器以指定概率忽略 DROP 表查询，用于测试目的"}]}]}/>
 
 如果启用，服务器会以指定的概率忽略所有 DROP TABLE 查询（对于 Memory 和 JOIN 引擎，会将 DROP 替换为 TRUNCATE），用于测试目的。
+
+## ignore_format_null_for_explain \{#ignore_format_null_for_explain\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认情况下，EXPLAIN 查询会忽略 FORMAT Null"}]}]}/>
+
+如果启用，该设置会在 `EXPLAIN` 查询中忽略 `FORMAT Null`，并使用默认的输出格式。
+如果禁用，带有 `FORMAT Null` 的 `EXPLAIN` 查询将不会产生任何输出（保持向后兼容行为）。
 
 ## ignore_materialized_views_with_dropped_target_table \{#ignore_materialized_views_with_dropped_target_table\}
 
@@ -7234,7 +7274,9 @@ Cloud 默认值：1 TB。
 例如，如果所需数量的条目在每个数据块中都存在，并且 `max_threads = 8`，那么会读取 8 个数据块，尽管实际上只读取一个就足够。
 `max_threads` 值越小，内存消耗越少。
 
-`max_threads` 的默认值与 ClickHouse 可用的硬件线程数相同。
+`max_threads` 的默认值与 ClickHouse 可用的硬件线程数（CPU 核心数）相同。
+作为一种特殊情况，对于 CPU 核心数少于 32 且启用了 SMT（例如 Intel HyperThreading）的 x86 处理器，ClickHouse 默认使用逻辑核心数（= 2 × 物理核心数）。
+
 在没有 SMT（例如 Intel HyperThreading）的情况下，该值等于 CPU 核心数。
 
 对于 ClickHouse Cloud 用户，默认值会显示为 `auto(N)`，其中 N 对应于服务的 vCPU 规格，例如 2vCPU/8GiB、4vCPU/16GiB 等。
@@ -7990,6 +8032,20 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 ```
 
 
+## opentelemetry_start_keeper_trace_probability \{#opentelemetry_start_keeper_trace_probability\}
+
+<SettingsInfoBlock type="FloatAuto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+为 ZooKeeper 请求启动 trace 的概率，与是否存在父 trace 无关。
+
+可能的取值：
+
+- 'auto' — 等同于 `opentelemetry_start_trace_probability` 设置
+- 0 — 禁用追踪
+- 0 到 1 — 概率（例如，1.0 = 始终启用）
+
 ## opentelemetry_start_trace_probability \{#opentelemetry_start_trace_probability\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
@@ -8510,18 +8566,18 @@ SELECT * FROM test2;
 ```sql
 CREATE TABLE fuse_tbl(a Int8, b Int8) Engine = Log;
 SET optimize_syntax_fuse_functions = 1;
-EXPLAIN SYNTAX SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
+EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT sum(a), sum(b), count(b), avg(b) from fuse_tbl FORMAT TSV;
 ```
 
 结果：
 
 ```text
 SELECT
-    sum(a),
-    sumCount(b).1,
-    sumCount(b).2,
-    (sumCount(b).1) / (sumCount(b).2)
-FROM fuse_tbl
+    sum(__table1.a) AS `sum(a)`,
+    tupleElement(sumCount(__table1.b), 1) AS `sum(b)`,
+    tupleElement(sumCount(__table1.b), 2) AS `count(b)`,
+    divide(tupleElement(sumCount(__table1.b), 1), toFloat64(tupleElement(sumCount(__table1.b), 2))) AS `avg(b)`
+FROM default.fuse_tbl AS __table1
 ```
 
 
@@ -8785,6 +8841,16 @@ FROM fuse_tbl
 当与 [parallel_replicas_custom_key_range_lower](#parallel_replicas_custom_key_range_lower) 结合使用时，它允许过滤器在范围 `[parallel_replicas_custom_key_range_lower, parallel_replicas_custom_key_range_upper]` 内在副本之间平均划分工作。
 
 注意：此设置不会在查询处理期间额外过滤任何数据，而是改变范围过滤器将范围 `[0, INT_MAX]` 拆分为并行处理子范围的切分点。
+
+## parallel_replicas_filter_pushdown \{#parallel_replicas_filter_pushdown\}
+
+<BetaBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+允许将过滤条件下推到查询中由并行副本选择执行的部分
 
 ## parallel_replicas_for_cluster_engines \{#parallel_replicas_for_cluster_engines\}
 
@@ -9325,21 +9391,6 @@ a   Tuple(
 
 - 大于等于 0 的正整数。
 
-## query_condition_cache_store_conditions_as_plaintext \{#query_condition_cache_store_conditions_as_plaintext\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "0"},{"label": "新设置"}]}]}/>
-
-以明文形式存储 [query condition cache](/operations/query-condition-cache) 的过滤条件。
-如果启用，system.query_condition_cache 会显示原始的过滤条件，从而便于调试缓存相关的问题。
-默认禁用，因为明文过滤条件可能暴露敏感信息。
-
-可能的取值：
-
-- 0 - 禁用
-- 1 - 启用
-
 ## query_metric_log_interval \{#query_metric_log_interval\}
 
 <SettingsInfoBlock type="Int64" default_value="-1" />
@@ -9582,7 +9633,7 @@ a   Tuple(
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "允许在查询计划中合并过滤条件"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "允许在查询计划中合并过滤条件。在使用新分析器时，为了正确支持过滤下推，这是必需的。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "允许在查询计划中合并过滤条件"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "允许在查询计划中合并过滤条件。在使用分析器时，为了正确支持过滤下推，这是必需的。"}]}]}/>
 
 允许在查询计划中合并过滤条件。
 
@@ -11405,6 +11456,22 @@ Cloud 默认值：`1`
 
 对未启用文件系统缓存的远程磁盘使用用户态页缓存。
 
+## use_page_cache_for_local_disks \{#use_page_cache_for_local_disks\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "在本地磁盘上使用用户空间页缓存的新设置"}]}]}/>
+
+从本地磁盘读取数据时使用用户空间页缓存。用于测试，在实际环境中不太可能带来性能提升。需要将 local_filesystem_read_method 设置为 'pread' 或 'read'。不会禁用操作系统页缓存；可以使用 min_bytes_to_use_direct_io 来禁用它。仅影响常规表，不影响 file() 表函数或 File() 表引擎。
+
+## use_page_cache_for_object_storage \{#use_page_cache_for_object_storage\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "用于对象存储表函数启用用户态页缓存的新设置"}]}]}/>
+
+在从对象存储表函数（s3、azure、hdfs）和表引擎（S3、Azure、HDFS）读取时使用用户态页缓存。
+
 ## use_page_cache_with_distributed_cache \{#use_page_cache_with_distributed_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -11568,11 +11635,11 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 ## use_statistics_cache \{#use_statistics_cache\}
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "启用统计信息缓存"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "新增设置"}]}]}/>
 
 在查询中使用统计信息缓存，以避免为每个分区片段分别加载统计信息带来的开销
 

@@ -29,7 +29,7 @@ icebergLocal(named_collection[, option=value [,..]])
 
 ## 引数 \{#arguments\}
 
-引数の説明は、対応するテーブル関数 `s3`、`azureBlobStorage`、`HDFS`、`file` における引数の説明と同様です。  
+引数の説明は、テーブル関数 `s3`、`azureBlobStorage`、`HDFS`、`file` の引数の説明とそれぞれ同様です。  
 `format` は、Iceberg テーブル内のデータファイルの形式を表します。
 
 ### 返される値 \{#returned-value\}
@@ -48,7 +48,7 @@ ClickHouse は現在、`icebergS3`、`icebergAzure`、`icebergHDFS`、`icebergLo
 
 ## 名前付きコレクションの定義 \{#defining-a-named-collection\}
 
-URL と認証情報を保存するための名前付きコレクションを構成する例を次に示します。
+URL と認証情報を保存するための名前付きコレクションを定義する例を次に示します。
 
 ```xml
 <clickhouse>
@@ -69,17 +69,18 @@ SELECT * FROM icebergS3(iceberg_conf, filename = 'test_table')
 DESCRIBE icebergS3(iceberg_conf, filename = 'test_table')
 ```
 
-## データカタログの使用 \{#iceberg-writes-catalogs\}
+
+## データカタログの利用 \{#iceberg-writes-catalogs\}
 
 Iceberg テーブルは、[REST Catalog](https://iceberg.apache.org/rest-catalog-spec/)、[AWS Glue Data Catalog](https://docs.aws.amazon.com/prescriptive-guidance/latest/serverless-etl-aws-glue/aws-glue-data-catalog.html)、[Unity Catalog](https://www.unitycatalog.io/) など、さまざまなデータカタログと併用できます。
 
 :::important
-カタログを使用する場合、ほとんどのユーザーは `DataLakeCatalog` データベースエンジンを使用することになるでしょう。これは ClickHouse をカタログに接続し、テーブルを検出できるようにします。このデータベースエンジンを使用すれば、`IcebergS3` テーブルエンジンで個々のテーブルを手動で作成する必要がなくなります。
+カタログを使用する場合、ほとんどのユーザーは `DataLakeCatalog` データベースエンジンを使用することになるでしょう。これは、ClickHouse をカタログに接続してテーブルを検出できるようにするものです。個々のテーブルを `IcebergS3` テーブルエンジンで手動で作成する代わりに、このデータベースエンジンを使用できます。
 :::
 
-これらのカタログを使用するには、`IcebergS3` エンジンでテーブルを作成し、必要な設定を指定します。
+これらを使用するには、`IcebergS3` エンジンを使用してテーブルを作成し、必要な設定を指定します。
 
-たとえば、MinIO ストレージと REST Catalog を使用する場合は次のとおりです。
+例として、MinIO ストレージで REST Catalog を使用する場合:
 
 ```sql
 CREATE TABLE `database_name.table_name`
@@ -96,7 +97,7 @@ SETTINGS
   storage_catalog_url="http://rest:8181/v1"
 ```
 
-または、S3 と併用して AWS Glue Data Catalog を使う場合:
+または、AWS Glue Data Catalog と S3 を併用する場合：
 
 ```sql
 CREATE TABLE `my_database.my_table`  
@@ -113,15 +114,16 @@ SETTINGS
   storage_catalog_url = 'https://glue.us-east-1.amazonaws.com/iceberg/v1'
 ```
 
+
 ## スキーマの進化 \{#schema-evolution\}
 
-現時点では、CH を利用することで、時間の経過とともにスキーマが変更された iceberg テーブルを読み込むことができます。現在、カラムの追加・削除やカラム順の変更が行われたテーブルの読み取りをサポートしています。また、値が必須だったカラムを、NULL を許可するカラムに変更することもできます。さらに、単純な型に対する許可された型キャストもサポートしており、具体的には次のとおりです。  
+現時点では、CH を使用して、時間の経過とともにスキーマが変更されてきた iceberg テーブルを読み取ることができます。現在、カラムの追加・削除や、カラム順の変更が行われたテーブルの読み取りをサポートしています。また、値が必須だったカラムを、NULL を許容するカラムに変更することもできます。さらに、プリミティブ型に対して許可される型キャストもサポートしており、具体的には次のとおりです。  
 
 * int -> long
 * float -> double
-* decimal(P, S) -> decimal(P', S) （P' > P の場合）
+* decimal(P, S) -> decimal(P', S)（ここで P' > P）
 
-現在のところ、ネストされた構造や、配列およびマップ内の要素の型を変更することはできません。
+今のところ、ネストした構造や、配列およびマップ内の要素型を変更することはできません。
 
 ## パーティションプルーニング \{#partition-pruning\}
 
@@ -158,9 +160,9 @@ ClickHouse は Iceberg テーブルに対するタイムトラベルをサポー
 
 * **スナップショット** は通常、次のような場合に作成されます：
 * 新しいデータがテーブルに書き込まれたとき
-* 何らかのデータコンパクションが実行されたとき
+* 何らかのデータ圧縮処理（コンパクション）が実行されたとき
 
-* **スキーマ変更によってスナップショットが作成されることは通常ありません** - これは、スキーマ進化が行われたテーブルでタイムトラベルを使用する際の重要な挙動につながります。
+* **スキーマ変更では通常スナップショットは作成されません** — その結果、スキーマ進化が行われたテーブルでタイムトラベルを使用する場合の重要な挙動につながります。
 
 ### サンプルシナリオ \{#example-scenarios\}
 
@@ -226,9 +228,9 @@ CH はまだ Iceberg テーブルへの書き込みをサポートしていな�
 * ts1 および ts2 では: 元の 2 つのカラムのみが表示される
 * ts3 では: 3 つすべてのカラムが表示され、1 行目の価格は NULL になる
 
-#### シナリオ 2:  過去と現在のスキーマの差異 \{#scenario-2\}
+#### シナリオ 2:  過去のスキーマと現在のスキーマの差異 \{#scenario-2\}
 
-現在時点でタイムトラベルクエリを実行すると、テーブルの現在のスキーマとは異なるスキーマが表示される場合があります。
+現在時点でのタイムトラベルクエリでは、現在のテーブルとは異なるスキーマが表示される場合があります:
 
 ```sql
 -- Create a table
@@ -266,11 +268,12 @@ CH はまだ Iceberg テーブルへの書き込みをサポートしていな�
     +------------+------------+-----+
 ```
 
-これは、`ALTER TABLE` は新しいスナップショットを作成しない一方で、Spark が現在のテーブルについてスナップショットではなく最新のメタデータファイルから `schema_id` の値を取得するために発生します。
+これは、`ALTER TABLE` が新しいスナップショットを作成しない一方で、Spark が現在のテーブルについて、スナップショットではなく最新のメタデータファイルから `schema_id` の値を取得するために起こります。
 
-#### シナリオ 3:  過去のスキーマと現在のスキーマの違い \{#scenario-3\}
 
-2つ目の制約は、タイムトラベルを行う際、テーブルに一切データが書き込まれる前の状態は取得できないという点です。
+#### シナリオ 3:  過去と現在のスキーマの違い \{#scenario-3\}
+
+2つ目の制約は、タイムトラベル機能を使用しても、テーブルにまだ一度もデータが書き込まれていない時点の状態は取得できない、という点です。
 
 ```sql
 -- Create a table
@@ -287,11 +290,12 @@ CH はまだ Iceberg テーブルへの書き込みをサポートしていな�
   SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- Finises with error: Cannot find a snapshot older than ts.
 ```
 
-ClickHouse における挙動は Spark と同様です。頭の中で Spark の SELECT クエリを ClickHouse の SELECT クエリに置き換えて考えれば、同じように動作します。
+ClickHouse でも、動作は Spark と同様です。頭の中で Spark の SELECT クエリを ClickHouse の SELECT クエリに置き換えても、同じように動作します。
+
 
 ## メタデータファイルの解決 \{#metadata-file-resolution\}
 
-ClickHouse で `iceberg` テーブル関数を使用する場合、Iceberg テーブルの構造を記述している正しい metadata.json ファイルを特定する必要があります。ここでは、この解決プロセスがどのように行われるかを説明します。
+ClickHouse で `iceberg` テーブル関数を使用する場合、Iceberg テーブル構造を記述した正しい metadata.json ファイルを特定する必要があります。このときの解決方法は次のとおりです。
 
 ### 候補検索（優先順） \{#candidate-search\}
 
@@ -333,7 +337,7 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 
 ## メタデータキャッシュ \{#metadata-cache\}
 
-`Iceberg` テーブルエンジンおよびテーブル関数は、マニフェストファイル、マニフェストリスト、メタデータ JSON の情報を保持するメタデータキャッシュに対応しています。キャッシュはメモリ上に保存されます。この機能は `use_iceberg_metadata_files_cache` によって制御されており、デフォルトで有効です。
+`Iceberg` テーブルエンジンおよびテーブル関数は、マニフェストファイル、マニフェストリスト、およびメタデータ JSON の情報を格納するメタデータキャッシュをサポートします。キャッシュはメモリ上に保存されます。この機能は設定項目 `use_iceberg_metadata_files_cache` によって制御されており、デフォルトで有効になっています。
 
 ## エイリアス \{#aliases\}
 
@@ -354,13 +358,14 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 これは現在実験的な機能のため、まず明示的に有効化する必要があります。
 
 ```sql
-SET allow_experimental_insert_into_iceberg = 1;
+SET allow_insert_into_iceberg = 1;
 ```
+
 
 ### テーブルの作成 \{#create-iceberg-table\}
 
-空の独自の Iceberg テーブルを作成するには、読み取り時に使用したものと同じコマンドを利用しつつ、スキーマを明示的に指定します。
-書き込み処理では、Parquet、Avro、ORC など、Iceberg 仕様で定義されているすべてのデータ形式をサポートします。
+空の Iceberg テーブルを作成するには、読み取り時と同じコマンドを使用しますが、スキーマを明示的に指定します。
+書き込み処理では、Parquet、Avro、ORC など、Iceberg の仕様に含まれるすべてのデータ形式をサポートしています。
 
 ### 例 \{#example-iceberg-writes-create\}
 
@@ -378,7 +383,7 @@ metadata.json ファイルを圧縮する場合は、`iceberg_metadata_compressi
 
 ### INSERT \{#writes-inserts\}
 
-新しいテーブルを作成した後、通常の ClickHouse 構文を使用してデータを挿入できます。
+新しいテーブルを作成したら、通常どおり ClickHouse の構文を使ってデータを挿入できます。
 
 ### 例 \{#example-iceberg-writes-insert\}
 
@@ -402,12 +407,12 @@ y: 993
 
 ### DELETE \{#iceberg-writes-delete\}
 
-merge-on-read フォーマットで不要な行を削除することも、ClickHouse でサポートされています。
+`merge-on-read` フォーマットで余分な行を削除することも、ClickHouse でサポートされています。
 このクエリは、position delete ファイルを含む新しいスナップショットを作成します。
 
-注記: 将来、他の Iceberg エンジン（Spark など）でテーブルを読み取りたい場合は、`output_format_parquet_use_custom_encoder` と `output_format_parquet_parallel_encoding` の設定を無効にする必要があります。
-これは、Spark は Parquet の field-id によってこれらのファイルを読み取る一方で、ClickHouse はこれらのフラグが有効な場合、field-id の書き込みを現在サポートしていないためです。
-この挙動は将来的に修正する予定です。
+NOTE: 将来、他の Iceberg エンジン（Spark など）でテーブルを読み取りたい場合は、`output_format_parquet_use_custom_encoder` と `output_format_parquet_parallel_encoding` の設定を無効化する必要があります。
+これは、Spark がこれらのファイルを Parquet の field-id によって読み取る一方、ClickHouse はこれらのフラグが有効な場合に field-id の書き込みを現在サポートしていないためです。
+この動作は今後修正する予定です。
 
 ### 例 \{#example-iceberg-writes-delete\}
 
@@ -426,7 +431,7 @@ y: 993
 
 ### スキーマの進化 \{#iceberg-writes-schema-evolution\}
 
-ClickHouse では、単純な型（タプル型、配列型、マップ型以外）のカラムを追加、削除、または変更できます。
+ClickHouse では、タプル・配列・マップ以外の単純な型を持つカラムの追加・削除・変更が可能です。
 
 ### 例 \{#example-iceberg-writes-evolution\}
 
@@ -487,11 +492,11 @@ x: Ivanov
 y: 993
 ```
 
-### 圧縮処理（コンパクション） \{#iceberg-writes-compaction\}
+### コンパクション \{#iceberg-writes-compaction\}
 
-ClickHouse は Iceberg テーブルのコンパクションをサポートしています。現在は、メタデータを更新しつつ、position delete ファイルをデータファイルにマージできます。以前のスナップショット ID とタイムスタンプは変更されないため、タイムトラベル機能は同じ値で引き続き使用できます。
+ClickHouse は Iceberg テーブルのコンパクションをサポートしています。現在、メタデータを更新しながら position delete ファイルをデータファイルにマージできます。以前のスナップショット ID とタイムスタンプは変更されないため、同じ値を使ってタイムトラベル機能を引き続き利用できます。
 
-使用方法：
+使用方法:
 
 ```sql
 SET allow_experimental_iceberg_compaction = 1
@@ -507,6 +512,7 @@ Row 1:
 x: Ivanov
 y: 993
 ```
+
 
 ## 関連項目 \{#see-also\}
 

@@ -164,7 +164,7 @@ ClickHouse не выполняет автоматическое шардиров
     </tr>
 </table>
 
-### Телеком-оператор из списка Fortune 500 для сценария логирования \{#fortune-500-telecom-operator-for-a-logging-use-case\}
+### Оператор связи из списка Fortune 500 для сценария логирования \{#fortune-500-telecom-operator-for-a-logging-use-case\}
 
 <table>
     <tr>

@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 ## Account closure and deletion {#account-close--deletion}
 
-Our goal is to help you be successful in your project. If you have questions that are not answered on this site or need help evaluating a
+Our goal is to help you be successful in your project. If you have questions that aren't answered on this site or need help evaluating a
 unique use case, please contact us at [support@clickhouse.com](mailto:support@clickhouse.com).
 
 We know there are circumstances that sometimes necessitate account closure. This guide will help you through the process.
@@ -21,7 +21,7 @@ You will also continue receiving product updates so that you know if a feature y
 closed accounts may be reopened at any time to start new services.
 
 Customers requesting personal data deletion should be aware this is an irreversible process. The account and related information will no longer
-be available. You will not receive product updates and may not reopen the account. This will not affect any newsletter subscriptions.
+be available. You won't receive product updates and may not reopen the account. This won't affect any newsletter subscriptions.
 
 Newsletter subscribers can unsubscribe at any time by using the unsubscribe link at the bottom of the newsletter email without closing their account or
 deleting their information.
@@ -32,11 +32,11 @@ Before requesting account closure, please take the following steps to prepare th
 1. Export any data from your service that you need to keep.
 2. Stop and delete your services. This will keep additional charges from accruing on your account.
 3. Remove all users except the admin that will request closure. This will help you ensure no new services are created while the process completes.
-4. Review the 'Usage' and 'Billing' tabs in the control panel to verify all charges have been paid. We are not able to close accounts with unpaid balances.
+4. Review the 'Usage' and 'Billing' tabs in the control panel to verify all charges have been paid. We're not able to close accounts with unpaid balances.
 
 ## Request an account closure {#request-account-closure}
 
-We are required to authenticate requests for both closure and deletion. To ensure your request can be processed quickly, please follow the steps outlined
+We're required to authenticate requests for both closure and deletion. To ensure your request can be processed quickly, please follow the steps outlined
 below.
 1. Sign into your clickhouse.cloud account.
 2. Complete any remaining steps in the _Preparing for Closure_ section above.
@@ -54,7 +54,7 @@ Description: We would appreciate it if you would share a brief note about why yo
 6. We will close your account and send a confirmation email to let you know when it is complete.
 
 ## Request deletion of your personal data {#request-personal-data-deletion}
-Please note, only account administrators may request personal data deletion from ClickHouse. If you are not an account administrator, please contact
+Please note, only account administrators may request personal data deletion from ClickHouse. If you're not an account administrator, please contact
 your ClickHouse account administrator to request to be removed from the account.
 
 To request data deletion, follow the steps in 'Request Account Closure' above. When entering the case information, change the subject to

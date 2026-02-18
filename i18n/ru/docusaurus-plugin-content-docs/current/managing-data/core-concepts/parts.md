@@ -10,6 +10,7 @@ import merges from '@site/static/images/managing-data/core-concepts/merges.png';
 import part from '@site/static/images/managing-data/core-concepts/part.png';
 import Image from '@theme/IdealImage';
 
+
 ## Что такое части таблицы в ClickHouse? \{#what-are-table-parts-in-clickhouse\}
 
 <br />
@@ -51,6 +52,7 @@ ORDER BY (town, street);
 В зависимости от конкретного движка таблицы дополнительные преобразования [могут](/operations/settings/settings) выполняться вместе с сортировкой.
 
 Части ^^данных^^ являются самодостаточными и включают все метаданные, необходимые для интерпретации их содержимого без обращения к центральному каталогу. Помимо разреженного первичного индекса, ^^части^^ содержат дополнительные метаданные, такие как вторичные [индексы пропуска данных](/optimize/skipping-indexes), [статистика столбцов](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere), контрольные суммы, min-max индексы (если используется [partitioning](/partitions)) и [другое](https://github.com/ClickHouse/ClickHouse/blob/a065b11d591f22b5dd50cb6224fab2ca557b4989/src/Storages/MergeTree/MergeTreeData.h#L104).
+
 
 ## Слияния частей \{#part-merges\}
 
@@ -101,4 +103,4 @@ ORDER BY name ASC;
    └─────────────┴───────┴─────────┘
 ```
 
-Уровень слияния увеличивается на единицу при каждом дополнительном слиянии этой части. Уровень 0 означает, что это новая часть, которая ещё ни разу не сливалась.
+Уровень слияния увеличивается на единицу при каждом очередном слиянии части. Уровень 0 означает, что это новая часть, которая ещё ни разу не участвовала в слияниях.

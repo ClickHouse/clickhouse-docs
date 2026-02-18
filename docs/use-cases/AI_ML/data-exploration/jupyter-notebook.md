@@ -113,7 +113,7 @@ print(result)
 
 With the UK price paid data set up and chDB up and running in a Jupyter notebook, we can now get started exploring our data.
 
-Let's imagine we are interested in checking how price has changed with time for a specific area in the UK such as the capital city, London.
+Let's imagine we're interested in checking how price has changed with time for a specific area in the UK such as the capital city, London.
 ClickHouse's [`remoteSecure`](/sql-reference/table-functions/remote) function allows you to easily retrieve the data from ClickHouse Cloud.
 You can instruct chDB to return this data in process as a Pandas data frame - which is a convenient and familiar way of working with data.
 
@@ -153,7 +153,7 @@ df.head()
 ```
 
 In the snippet above, `chdb.query(query, "DataFrame")` runs the specified query and outputs the result to the terminal as a Pandas DataFrame.
-In the query we are using the `remoteSecure` function to connect to ClickHouse Cloud.
+In the query we're using the `remoteSecure` function to connect to ClickHouse Cloud.
 The `remoteSecure` functions takes as parameters:
 - a connection string
 - the name of the database and table to use
@@ -265,7 +265,7 @@ ORDER BY year;
 
 <Image size="md" img={image_8} alt="dataframe preview"/>
 
-Although we are missing data from 2020 onwards, we can plot the two datasets against each other for the years 1995 to 2019.
+Although we're missing data from 2020 onwards, we can plot the two datasets against each other for the years 1995 to 2019.
 In a new cell run the following command:
 
 ```python

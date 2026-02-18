@@ -31,11 +31,11 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 <VerticalStepper type="numbered">
   ## Создайте сервис ClickHouse \{#1-create-a-clickhouse-service\}
 
-  Чтобы создать бесплатный сервис ClickHouse в [ClickHouse Cloud](https://console.clickhouse.cloud), необходимо зарегистрироваться, выполнив следующие действия:
+  Чтобы создать бесплатный сервис ClickHouse в [ClickHouse Cloud](https://console.clickhouse.cloud), вам нужно просто зарегистрироваться, выполнив следующие шаги:
 
   * Создайте учётную запись на [странице регистрации](https://console.clickhouse.cloud/signUp)
-  * Вы можете зарегистрироваться, используя адрес электронной почты или с помощью Google SSO, Microsoft SSO, AWS Marketplace, Google Cloud или Microsoft Azure
-  * Если вы регистрируетесь с помощью адреса электронной почты и пароля, не забудьте подтвердить свой адрес электронной почты по ссылке из письма в течение ближайших 24 часов.
+  * Вы можете зарегистрироваться с помощью адреса электронной почты, Google SSO, Microsoft SSO, AWS Marketplace, Google Cloud или Microsoft Azure
+  * Если вы зарегистрировались с помощью адреса электронной почты и пароля, не забудьте в течение ближайших 24 часов подтвердить свой адрес по ссылке из полученного письма.
   * Войдите, используя имя пользователя и пароль, которые вы только что создали
 
   <Image img={signup_page} size="md" alt="Выбор плана" border />
@@ -52,7 +52,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
   При необходимости можно настроить ресурсы сервиса, указав минимальное и максимальное количество реплик для масштабирования. Когда всё готово, нажмите `Create service`.
 
-  <Image img={scaling_limits} size="md" alt="Ограничения масштабирования" border />
+  <Image img={scaling_limits} size="md" alt="Лимиты масштабирования" border />
 
   <br />
 
@@ -62,7 +62,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
   Существует два способа подключения к ClickHouse:
 
-  * Подключитесь с помощью нашей веб-консоли SQL
+  * Подключитесь через нашу веб-консоль SQL
   * Подключение приложения
 
   <br />
@@ -99,19 +99,19 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
   ## Добавление данных \{#3-add-data\}
 
-  ClickHouse эффективнее всего работает с данными! Существует несколько способов добавления данных, большинство из которых доступны на странице Data Sources в навигационном меню.
+  ClickHouse эффективнее всего работает с данными! Существует несколько способов добавления данных, большинство из которых доступны на странице Data Sources, доступной из навигационного меню.
 
   <Image img={data_sources} size="md" alt="Источники данных" border />
 
   <br />
 
-  Загрузить данные можно следующими способами:
+  Вы можете загрузить данные следующими способами:
 
-  * Настройте ClickPipe для приёма данных из таких источников, как S3, Postgres, Kafka и GCS
+  * Настройте ClickPipe для приёма данных из таких источников, как S3, Postgres, Kafka или GCS
   * Используйте SQL-консоль
   * Используйте клиент ClickHouse
   * Загрузите файл — поддерживаются форматы JSON, CSV и TSV
-  * Загрузите данные из файла по URL
+  * Загрузите данные из файла по URL-адресу
 
   ### ClickPipes \{#clickpipes\}
 
@@ -146,8 +146,8 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
   В приведённом выше примере `my_first_table` — это таблица [`MergeTree`](../../engines/table-engines/mergetree-family/mergetree.md) с четырьмя столбцами:
 
   * `user_id`:  32-битное целое число без знака ([UInt32](../../sql-reference/data-types/int-uint.md))
-  * `message`: тип данных [String](../../sql-reference/data-types/string.md), который заменяет такие типы, как `VARCHAR`, `BLOB`, `CLOB` и другие в других системах управления базами данных
-  * `timestamp`: значение типа [DateTime](../../sql-reference/data-types/datetime.md), представляющее конкретный момент времени
+  * `message`: тип данных [String](../../sql-reference/data-types/string.md), который заменяет такие типы, как `VARCHAR`, `BLOB`, `CLOB` и другие типы в сторонних системах управления базами данных
+  * `timestamp`: значение типа [DateTime](../../sql-reference/data-types/datetime.md), представляющее момент времени
   * `metric`: 32-битное число с плавающей запятой ([Float32](../../sql-reference/data-types/float.md))
 
   :::note Движки таблиц
@@ -159,7 +159,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  Существует множество движков таблиц на выбор, но для простой таблицы на одноузловом сервере ClickHouse оптимальным выбором будет [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md).
+  Существует множество движков таблиц, но для простой таблицы на одноузловом сервере ClickHouse чаще всего выбирают [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md).
   :::
 
   #### Краткое введение в первичные ключи \{#a-brief-intro-to-primary-keys\}
@@ -174,12 +174,12 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
   столбцов, обрабатываемых во время выполнения запросов `SELECT`.
 
   ^^Первичный ключ^^ определяется с помощью параметра `PRIMARY KEY`. Если таблица создаётся без указания `PRIMARY KEY`,
-  ключом становится кортеж, заданный в секции ORDER BY. При одновременном указании `PRIMARY KEY` и ORDER BY ^^первичный ключ^^ должен быть подмножеством ключа сортировки.
+  ключом становится кортеж, заданный в предложении `ORDER BY`. При одновременном указании `PRIMARY KEY` и `ORDER BY` ^^первичный ключ^^ должен быть подмножеством порядка сортировки.
 
   ^^Первичный ключ^^ также является ^^ключом сортировки^^ и представляет собой кортеж `(user_id, timestamp)`. Таким образом, данные в каждом
   файле столбца будут отсортированы сначала по `user_id`, затем по `timestamp`.
 
-  Для углубленного изучения основных концепций ClickHouse см. [&quot;Основные концепции&quot;](../../managing-data/core-concepts/index.md).
+  Для более глубокого изучения основных концепций ClickHouse см. [&quot;Основные концепции&quot;](../../managing-data/core-concepts/index.md).
 
   #### Вставка данных в таблицу \{#insert-data-into-your-table\}
 
@@ -202,7 +202,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
   ```
 
   :::note
-  Обратите внимание, что столбец `timestamp` заполняется с помощью различных функций [**Date**](../../sql-reference/data-types/date.md) и [**DateTime**](../../sql-reference/data-types/datetime.md). ClickHouse предоставляет сотни полезных функций, которые можно [просмотреть в разделе **Функции**](/sql-reference/functions/).
+  Обратите внимание, что столбец `timestamp` заполняется с помощью различных функций [**Date**](../../sql-reference/data-types/date.md) и [**DateTime**](../../sql-reference/data-types/datetime.md). В ClickHouse есть сотни полезных функций, которые вы можете [просмотреть в разделе **Функции**](/sql-reference/functions/).
   :::
 
   Проверим, что всё работает:
@@ -213,9 +213,9 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
   ### Добавление данных с помощью клиента ClickHouse \{#add-data-using-the-clickhouse-client\}
 
-  Вы также можете подключиться к вашему сервису ClickHouse Cloud с помощью инструмента командной строки [**clickhouse client**](/interfaces/cli). Нажмите `Connect` в левом меню для доступа к этим данным. В диалоговом окне выберите `Native` из выпадающего списка:
+  Вы также можете подключиться к сервису ClickHouse Cloud с помощью утилиты командной строки [**clickhouse client**](/interfaces/cli). Нажмите `Connect` в левом меню, чтобы получить эти сведения. В диалоговом окне выберите `Native` из выпадающего списка:
 
-  <Image img={client_details} size="md" alt="параметры подключения клиента ClickHouse" border />
+  <Image img={client_details} size="md" alt="параметры подключения для clickhouse client" border />
 
   <br />
 
@@ -270,7 +270,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
   FORMAT TabSeparated
   ```
 
-  В приведенном выше запросе результат возвращается в формате с разделителями-табуляциями:
+  В приведённом выше запросе результат возвращается в виде значений, разделённых символами табуляции:
 
   ```response
   Query id: 3604df1c-acfd-4117-9c56-f86c69721121
@@ -295,7 +295,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
   Распространённая задача при начале работы с базой данных — загрузить имеющиеся данные из файлов. Мы предоставляем образцы данных онлайн, которые можно использовать для демонстрации работы с данными о кликах (clickstream) — они включают идентификатор пользователя, посещённый URL и временную метку события.
 
-  Предположим, у нас есть следующий текст в CSV-файле `data.csv`:
+  Предположим, у нас есть следующий текст в CSV-файле с именем `data.csv`:
 
   ```bash title="data.csv"
   102,This is data in a file,2022-02-22 10:43:28,123.45
@@ -323,6 +323,11 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
   <br />
 </VerticalStepper>
+
+:::tip[Фильтрация по IP-списку доступа]
+Прежде чем продолжить, рекомендуем настроить фильтрацию по IP-списку доступа.
+Подробности см. в разделе «[Настройка IP-фильтров](/cloud/security/setting-ip-filters)».
+:::
 
 ## Что дальше? \{#whats-next\}
 

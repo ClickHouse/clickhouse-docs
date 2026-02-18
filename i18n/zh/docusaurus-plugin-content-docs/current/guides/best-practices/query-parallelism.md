@@ -269,7 +269,7 @@ MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 59
 * 实际的通道数量取决于被选中用于处理的数据量大小。
 * 使用 `EXPLAIN PIPELINE` 和跟踪日志来分析通道的使用情况。
 
-## 在哪里可以了解更多信息  \{#where-to-find-more-information\}
+## 在哪里可以了解更多信息 \{#where-to-find-more-information\}
 
 如果你希望更深入地了解 ClickHouse 如何并行执行查询，以及它如何在大规模场景下实现高性能，可以查阅以下资源： 
 

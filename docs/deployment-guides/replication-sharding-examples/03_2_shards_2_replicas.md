@@ -33,7 +33,7 @@ The architecture of the cluster you will be setting up is shown below:
 ## Prerequisites {#prerequisites}
 
 - You've set up a [local ClickHouse server](/install) before
-- You are familiar with basic configuration concepts of ClickHouse such as [configuration files](/operations/configuration-files)
+- You're familiar with basic configuration concepts of ClickHouse such as [configuration files](/operations/configuration-files)
 - You have docker installed on your machine
 
 <VerticalStepper level="h2">
@@ -333,7 +333,7 @@ across the cluster using the `ON CLUSTER` clause.
 #### Keeper configuration {#keeper-config-explanation}
 
 The `<ZooKeeper>` section tells ClickHouse where ClickHouse Keeper (or ZooKeeper) is running.
-As we are using a ClickHouse Keeper cluster, each `<node>` of the cluster needs to be specified, 
+As we're using a ClickHouse Keeper cluster, each `<node>` of the cluster needs to be specified, 
 along with its hostname and port number using the `<host>` and `<port>` tags respectively.
 
 Set up of ClickHouse Keeper is explained in the next step of the tutorial.
@@ -661,7 +661,7 @@ SHOW TABLES IN uk;
 
 ## Insert data into a distributed table {#inserting-data-using-distributed}
 
-To insert data into the table, `ON CLUSTER` cannot be used as it does
+To insert data into the table, `ON CLUSTER` can't be used as it does
 not apply to DML (Data Manipulation Language) queries such as `INSERT`, `UPDATE`,
 and `DELETE`. To insert data, it is necessary to make use of the 
 [`Distributed`](/engines/table-engines/special/distributed) table engine.

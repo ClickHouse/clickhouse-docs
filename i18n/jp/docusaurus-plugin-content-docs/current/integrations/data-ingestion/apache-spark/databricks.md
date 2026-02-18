@@ -2,7 +2,7 @@
 sidebar_label: 'Databricks'
 sidebar_position: 3
 slug: /integrations/data-ingestion/apache-spark/databricks
-description: 'ClickHouse を Databricks と連携させる'
+description: 'ClickHouse を Databricks と連携する'
 keywords: ['clickhouse', 'databricks', 'spark', 'unity catalog', 'data']
 title: 'ClickHouse と Databricks の連携'
 doc_type: 'guide'
@@ -13,33 +13,34 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+
 # ClickHouse と Databricks の統合 \{#integrating-clickhouse-with-databricks\}
 
 <ClickHouseSupportedBadge/>
 
-ClickHouse Spark コネクタは Databricks とシームレスに連携します。このガイドでは、Databricks 向けのプラットフォーム固有の設定、インストール方法、および利用パターンについて説明します。
+ClickHouse Spark コネクタは Databricks とシームレスに連携します。このガイドでは、Databricks 向けのプラットフォーム固有のセットアップ、インストール手順、および利用方法のパターンについて説明します。
 
-## Databricks における API の選択 \{#api-selection\}
+## Databricks 向けの API 選択 \{#api-selection\}
 
-デフォルトでは Databricks は Unity Catalog を使用しており、これにより Spark カタログへの登録がブロックされます。この場合、**必ず** **TableProvider API**（フォーマットベースのアクセス）を使用する必要があります。
+デフォルトでは、Databricks は Unity Catalog を使用しており、これによって Spark カタログの登録がブロックされます。この場合は、**必ず** **TableProvider API**（フォーマットベースのアクセス）を使用する必要があります。
 
-ただし、**No isolation shared** アクセスモードでクラスタを作成して Unity Catalog を無効化した場合は、代わりに **Catalog API** を使用できます。Catalog API は、中央集約的な設定管理とネイティブな Spark SQL との統合を提供します。
+一方、**No isolation shared** アクセスモードでクラスターを作成して Unity Catalog を無効化した場合は、代わりに **Catalog API** を使用できます。Catalog API は集中管理された構成とネイティブな Spark SQL 連携を提供します。
 
-| Unity Catalog の状態 | 推奨される API | 備考 |
+| Unity Catalog の状態 | 推奨 API | 備考 |
 |---------------------|------------------|-------|
-| **有効**（デフォルト） | TableProvider API（フォーマットベース） | Unity Catalog が Spark カタログへの登録をブロックする |
-| **無効**（No isolation shared） | Catalog API | 「No isolation shared」アクセスモードのクラスタが必要 |
+| **有効**（デフォルト） | TableProvider API（フォーマットベース） | Unity Catalog により Spark カタログの登録がブロックされる |
+| **無効**（No isolation shared） | Catalog API | "No isolation shared" アクセスモードのクラスターが必要 |
 
-## Databricks へのインストール \{#installation\}
+## Databricks でのインストール \{#installation\}
 
-### オプション 1: Databricks UI を使用して JAR をアップロードする \{#installation-ui\}
+### オプション 1: Databricks UI から JAR をアップロードする \{#installation-ui\}
 
-1. ランタイム JAR をビルドするか、[ダウンロード](https://repo1.maven.org/maven2/com/clickhouse/spark/)します。
+1. ランタイム JAR をビルドするか、[ダウンロード](https://repo1.maven.org/maven2/com/clickhouse/spark/) します:
    ```bash
    clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}-{{ stable_version }}.jar
    ```
 
-2. JAR を Databricks ワークスペースにアップロードします:
+2. Databricks ワークスペースに JAR をアップロードします:
    - **Workspace** に移動し、目的のフォルダに移動します
    - **Upload** をクリックし、JAR ファイルを選択します
    - JAR はワークスペース内に保存されます
@@ -48,14 +49,14 @@ ClickHouse Spark コネクタは Databricks とシームレスに連携します
    - **Compute** に移動し、対象のクラスターを選択します
    - **Libraries** タブをクリックします
    - **Install New** をクリックします
-   - **DBFS** または **Workspace** を選択し、アップロードした JAR ファイルに移動します
+   - **DBFS** または **Workspace** を選択し、アップロードした JAR ファイルを指定します
    - **Install** をクリックします
 
 <Image img={require('@site/static/images/integrations/data-ingestion/apache-spark/databricks/databricks-libraries-tab.png')} alt="Databricks の Libraries タブ" />
 
-<Image img={require('@site/static/images/integrations/data-ingestion/apache-spark/databricks/databricks-install-from-volume.png')} alt="ワークスペースのボリュームからライブラリをインストールする" />
+<Image img={require('@site/static/images/integrations/data-ingestion/apache-spark/databricks/databricks-install-from-volume.png')} alt="ワークスペースボリュームからライブラリをインストール" />
 
-4. ライブラリを読み込むため、クラスターを再起動します
+4. ライブラリを読み込むためにクラスターを再起動します
 
 ### オプション 2: Databricks CLI を使用してインストールする \{#installation-cli\}
 
@@ -74,25 +75,25 @@ databricks libraries install \
 ### オプション 3: Maven Coordinates（推奨） \{#installation-maven\}
 
 1. Databricks ワークスペースに移動します:
-   * **Compute** に移動し、クラスタを選択します
+   * **Compute** を開き、クラスタを選択します
    * **Libraries** タブをクリックします
    * **Install New** をクリックします
    * **Maven** タブを選択します
 
-2. Maven coordinates を追加します:
+2. Maven の座標を追加します:
 
 ```text
 com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}
 ```
 
-&lt;Image img=&#123;require(&#39;@site/static/images/integrations/data-ingestion/apache-spark/databricks/databricks-maven-tab.png&#39;)&#125; alt=&quot;Databricks Maven ライブラリ構成&quot; /&gt;
+<Image img={require('@site/static/images/integrations/data-ingestion/apache-spark/databricks/databricks-maven-tab.png')} alt="Databricks の Maven ライブラリ設定" />
 
-3. **Install** をクリックし、ライブラリを読み込むためにクラスターを再起動します
+3. **Install** をクリックし、ライブラリを有効にするためにクラスタを再起動します
 
 
-## TableProvider API の使用 \{#tableprovider-api\}
+## TableProvider API を使用する \{#tableprovider-api\}
 
-Unity Catalog が有効な場合（既定）、Unity Catalog が Spark カタログへの登録をブロックするため、**必ず** TableProvider API（フォーマットベースのアクセス）を使用する必要があります。クラスターで "No isolation shared" アクセスモードを使用して Unity Catalog を無効にしている場合は、代わりに [Catalog API](/docs/integrations/data-ingestion/apache-spark/spark-native-connector#register-the-catalog-required) を使用できます。
+Unity Catalog が有効な場合（デフォルト）には、Unity Catalog によって Spark カタログへの登録がブロックされるため、**必ず** TableProvider API（フォーマットベースのアクセス）を使用する必要があります。クラスターで "No isolation shared" アクセスモードを使用して Unity Catalog を無効化している場合は、代わりに [Catalog API](/integrations/apache-spark/spark-native-connector#register-the-catalog-required) を使用できます。
 
 ### データの読み込み \{#reading-data-table-provider\}
 
@@ -100,7 +101,7 @@ Unity Catalog が有効な場合（既定）、Unity Catalog が Spark カタロ
 <TabItem value="Python" label="Python" default>
 
 ```python
-# Read from ClickHouse using TableProvider API
+# TableProvider API を使用して ClickHouse から読み込む
 df = spark.read \
     .format("clickhouse") \
     .option("host", "your-clickhouse-cloud-host.clickhouse.cloud") \
@@ -113,7 +114,7 @@ df = spark.read \
     .option("ssl", "true") \
     .load()
 
-# Schema is automatically inferred
+# スキーマは自動的に推論されます
 df.display()
 ```
 
@@ -139,14 +140,13 @@ df.show()
 </TabItem>
 </Tabs>
 
-
 ### データの書き込み \{#writing-data-unity\}
 
 <Tabs groupId="databricks_usage">
 <TabItem value="Python" label="Python" default>
 
 ```python
-# Write to ClickHouse - table will be created automatically if it doesn't exist
+# ClickHouse に書き込み - テーブルが存在しない場合は自動的に作成されます
 df.write \
     .format("clickhouse") \
     .option("host", "your-clickhouse-cloud-host.clickhouse.cloud") \
@@ -157,8 +157,8 @@ df.write \
     .option("user", "default") \
     .option("password", dbutils.secrets.get(scope="clickhouse", key="password")) \
     .option("ssl", "true") \
-    .option("order_by", "id") \  # Required: specify ORDER BY when creating a new table
-    .option("settings.allow_nullable_key", "1") \  # Required for ClickHouse Cloud if ORDER BY has nullable columns
+    .option("order_by", "id") \  # 必須: 新しいテーブルを作成する際に ORDER BY を指定します
+    .option("settings.allow_nullable_key", "1") \  # ORDER BY 句に Nullable カラムが含まれる場合、ClickHouse Cloud では必須です
     .mode("append") \
     .save()
 ```
@@ -177,8 +177,8 @@ df.write
   .option("user", "default")
   .option("password", dbutils.secrets.get(scope="clickhouse", key="password"))
   .option("ssl", "true")
-  .option("order_by", "id")  // Required: specify ORDER BY when creating a new table
-  .option("settings.allow_nullable_key", "1")  // Required for ClickHouse Cloud if ORDER BY has nullable columns
+  .option("order_by", "id")  // 必須: 新しいテーブルを作成する際に ORDER BY を指定します
+  .option("settings.allow_nullable_key", "1")  // ORDER BY 句に Nullable カラムが含まれる場合、ClickHouse Cloud では必須です
   .mode("append")
   .save()
 ```
@@ -187,31 +187,41 @@ df.write
 </Tabs>
 
 :::note
-この例では、Databricks でシークレットスコープがあらかじめ設定されていることを前提としています。設定手順については、Databricks の [Secret management documentation](https://docs.databricks.com/aws/en/security/secrets/) を参照してください。
+この例では、Databricks でシークレットスコープが事前に構成されていることを前提としています。セットアップ方法については、Databricks の [Secret management documentation](https://docs.databricks.com/aws/en/security/secrets/) を参照してください。
 :::
 
+## Databricks 特有の考慮事項 \{#considerations\}
 
-## Databricks 固有の注意事項 \{#considerations\}
+### アクセスモードの要件 \{#access-mode\}
+
+ClickHouse Spark Connector を使用するには、**Dedicated**（旧 Single User）アクセスモードが必須です。Unity Catalog が有効な場合、その構成では Databricks が外部の DataSource V2 コネクタをブロックするため、**Standard**（旧 Shared）アクセスモードはサポートされません。
+
+| アクセスモード | Unity Catalog | サポート状況 |
+|-------------|---------------|-----------|
+| Dedicated (Single User) | 有効 | ✅ Yes |
+| Dedicated (Single User) | 無効 | ✅ Yes |
+| Standard (Shared) | 有効 | ❌ No |
+| Standard (Shared) | 無効 | ✅ Yes |
 
 ### シークレット管理 \{#secret-management\}
 
-ClickHouse の認証情報を安全に保存するには、Databricks のシークレットスコープを使用します。
+Databricks のシークレットスコープを利用して、ClickHouse の認証情報を安全に格納します。
 
 ```python
 # Access secrets
 password = dbutils.secrets.get(scope="clickhouse", key="password")
 ```
 
-セットアップ方法については、Databricks の[シークレット管理ドキュメント](https://docs.databricks.com/aws/en/security/secrets/)を参照してください。
+セットアップ手順については、Databricks の[シークレット管理に関するドキュメント](https://docs.databricks.com/aws/en/security/secrets/)を参照してください。
 
-<!-- TODO: Databricks のシークレットスコープ構成のスクリーンショットを追加する -->
+{/* TODO: Databricks のシークレットスコープ構成のスクリーンショットを追加 */ }
 
 
-### ClickHouse Cloud 接続 \{#clickhouse-cloud\}
+### ClickHouse Cloud への接続 \{#clickhouse-cloud\}
 
-Databricks から ClickHouse Cloud に接続する場合は、次のように設定します。
+Databricks から ClickHouse Cloud に接続する場合には:
 
-1. **HTTPS プロトコル** を使用します（`protocol: https`, `http_port: 8443`）
+1. **HTTPS プロトコル** を使用します（`protocol: https`、`http_port: 8443`）
 2. **SSL** を有効にします（`ssl: true`）
 
 ## 例 \{#examples\}
@@ -225,12 +235,12 @@ Databricks から ClickHouse Cloud に接続する場合は、次のように設
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
 
-# Initialize Spark with ClickHouse connector
+# ClickHouse コネクタを使用して Spark を初期化
 spark = SparkSession.builder \
     .config("spark.jars.packages", "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.9.0") \
     .getOrCreate()
 
-# Read from ClickHouse
+# ClickHouse から読み込む
 df = spark.read \
     .format("clickhouse") \
     .option("host", "your-host.clickhouse.cloud") \
@@ -243,10 +253,10 @@ df = spark.read \
     .option("ssl", "true") \
     .load()
 
-# Transform data
+# データを変換する
 transformed_df = df.filter(col("status") == "active")
 
-# Write to ClickHouse
+# ClickHouse に書き込む
 transformed_df.write \
     .format("clickhouse") \
     .option("host", "your-host.clickhouse.cloud") \
@@ -269,12 +279,12 @@ transformed_df.write \
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.col
 
-// Initialize Spark with ClickHouse connector
+// ClickHouse コネクタを使用して Spark を初期化
 val spark = SparkSession.builder
   .config("spark.jars.packages", "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.9.0")
   .getOrCreate()
 
-// Read from ClickHouse
+// ClickHouse から読み込む
 val df = spark.read
   .format("clickhouse")
   .option("host", "your-host.clickhouse.cloud")
@@ -287,10 +297,10 @@ val df = spark.read
   .option("ssl", "true")
   .load()
 
-// Transform data
+// データを変換する
 val transformedDF = df.filter(col("status") === "active")
 
-// Write to ClickHouse
+// ClickHouse に書き込む
 transformedDF.write
   .format("clickhouse")
   .option("host", "your-host.clickhouse.cloud")
@@ -309,9 +319,8 @@ transformedDF.write
 </TabItem>
 </Tabs>
 
-
 ## 関連ドキュメント \{#related\}
 
-- [Spark ネイティブコネクターガイド](/docs/integrations/data-ingestion/apache-spark/spark-native-connector) - コネクターに関する詳細なドキュメント
-- [TableProvider API ドキュメント](/docs/integrations/data-ingestion/apache-spark/spark-native-connector#using-the-tableprovider-api-format-based-access) - フォーマットベースのアクセスに関する詳細
-- [Catalog API ドキュメント](/docs/integrations/data-ingestion/apache-spark/spark-native-connector#register-the-catalog-required) - カタログベースのアクセスに関する詳細
+- [Spark ネイティブコネクタ ガイド](/integrations/apache-spark/spark-native-connector) - コネクタに関する包括的なドキュメント
+- [TableProvider API ドキュメント](/integrations/apache-spark/spark-native-connector#using-the-tableprovider-api) - フォーマットベースのアクセス方法の詳細
+- [Catalog API ドキュメント](/integrations/apache-spark/spark-native-connector#register-the-catalog-required) - カタログベースのアクセス方法の詳細

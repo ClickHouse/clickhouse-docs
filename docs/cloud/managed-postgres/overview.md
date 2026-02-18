@@ -4,6 +4,8 @@ title: 'Managed Postgres'
 description: 'Fast, scalable, enterprise-grade Postgres backed by NVMe storage with native ClickHouse integration for real-time analytics'
 keywords: ['managed postgres', 'postgresql', 'cloud database', 'postgres service', 'nvme postgres', 'clickhouse integration']
 doc_type: 'guide'
+pagination_next: cloud/managed-postgres/quickstart
+pagination_prev: null
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
@@ -11,7 +13,7 @@ import Image from '@theme/IdealImage';
 
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="overview" />
 
-ClickHouse Managed Postgres is an enterprise-grade managed Postgres service built for performance and scale. Backed by NVMe storage that is physically colocated with compute, it delivers up to 10x faster performance for workloads that are disk-bound compared to alternatives using network-attached storage like EBS.
+ClickHouse Managed Postgres is an enterprise-grade managed Postgres service built for performance and scale. Backed by NVMe storage that is physically collocated with compute, it delivers up to 10x faster performance for workloads that are disk-bound compared to alternatives using network-attached storage like EBS.
 
 Built in partnership with [Ubicloud](https://www.ubicloud.com/), whose founding team has a track record of delivering world-class Postgres at Citus Data, Heroku, and Microsoft, Managed Postgres solves the performance challenges that fast-growing applications commonly face: slower ingestion and updates, slow vacuums, increased tail latency, and WAL spikes caused by limited disk IOPS.
 

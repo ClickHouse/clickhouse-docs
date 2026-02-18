@@ -21,6 +21,7 @@ import async_inserts from '@site/static/images/bestpractices/async_inserts.png';
 
 这一批处理过程对客户端是透明的，有助于 ClickHouse 高效合并来自多个源的插入流量。但在刷新发生之前，这些数据无法被查询。需要注意的是，对于每种插入数据结构（insert shape）与设置组合会有多个缓冲区，在集群中，缓冲区按节点维护——从而在多租户环境中实现细粒度控制。其余插入机制与[同步插入](/best-practices/selecting-an-insert-strategy#synchronous-inserts-by-default)中描述的相同。
 
+
 ### 选择返回模式 \{#choosing-a-return-mode\}
 
 异步插入的行为可通过 [`wait_for_async_insert`](/operations/settings/settings#wait_for_async_insert) 设置进行进一步细化。

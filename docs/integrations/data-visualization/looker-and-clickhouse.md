@@ -39,7 +39,7 @@ Choose a name for your data source, and select `ClickHouse` from the dialect dro
 <Image size="md" img={looker_02} alt="Specifying your ClickHouse credentials in Looker connection form" border />
 <br/>
 
-If you are using ClickHouse Cloud or your deployment requires SSL, make sure you have SSL turned on in the additional settings.
+If you're using ClickHouse Cloud or your deployment requires SSL, make sure you have SSL turned on in the additional settings.
 
 <Image size="md" img={looker_03} alt="Enabling SSL for ClickHouse connection in Looker settings" border />
 <br/>
@@ -54,7 +54,7 @@ Now you should be able to attach ClickHouse Datasource to your Looker project.
 ## 3. Known limitations {#3-known-limitations}
 
 1. The following data types are handled as strings by default:
-   * Array - serialization does not work as expected due to the JDBC driver limitations
+   * Array - serialization doesn't work as expected due to the JDBC driver limitations
    * Decimal* - can be changed to number in the model
    * LowCardinality(...) - can be changed to a proper type in the model
    * Enum8, Enum16
@@ -69,5 +69,5 @@ Now you should be able to attach ClickHouse Datasource to your Looker project.
      * Polygon
      * Point
      * Ring
-2. [Symmetric aggregate feature](https://cloud.google.com/looker/docs/reference/param-explore-symmetric-aggregates) is not supported
-3. [Full outer join](https://cloud.google.com/looker/docs/reference/param-explore-join-type#full_outer) is not yet implemented in the driver
+2. [Symmetric aggregate feature](https://cloud.google.com/looker/docs/reference/param-explore-symmetric-aggregates) isn't supported
+3. [Full outer join](https://cloud.google.com/looker/docs/reference/param-explore-join-type#full_outer) isn't yet implemented in the driver

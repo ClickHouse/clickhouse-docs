@@ -171,7 +171,7 @@ Once installed, you can run a model like this:
 ollama run qwen3:32b
 ```
 
-This will pull the model to your local machine if it is not present.
+This will pull the model to your local machine if it isn't present.
 
 For a list of models see the [Ollama library](https://ollama.com/library)
 
@@ -227,3 +227,19 @@ What datasets do you have access to?
 ```
 
 </VerticalStepper>
+
+:::note
+If the MCP server option doesn't appear in the LibreChat UI,
+check that the proper permissions are set in your `librechat.yaml` file. 
+:::
+
+If `use` is set to `false` in the `mcpServers` section under `interface`, the MCP selection dropdown won't appear in chat:
+
+```yml title="librechat.yaml"
+interface:
+  mcpServers:
+    use: true
+    share: false
+    create: false
+    public: false
+```

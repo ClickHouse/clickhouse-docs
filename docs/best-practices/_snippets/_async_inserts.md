@@ -4,7 +4,7 @@ import async_inserts from '@site/static/images/bestpractices/async_inserts.png';
 Asynchronous inserts in ClickHouse provide a powerful alternative when client-side batching isn't feasible. This is especially valuable in observability workloads, where hundreds or thousands of agents send data continuously—logs, metrics, traces—often in small, real-time payloads. Buffering data client-side in these environments increases complexity, requiring a centralized queue to ensure sufficiently large batches can be sent.
 
 :::note
-Sending many small batches in synchronous mode is not recommended, leading to many parts being created. This will lead to poor query performance and ["too many part"](/knowledgebase/exception-too-many-parts) errors.
+Sending many small batches in synchronous mode isn't recommended, leading to many parts being created. This will lead to poor query performance and ["too many part"](/knowledgebase/exception-too-many-parts) errors.
 :::
 
 Asynchronous inserts shift batching responsibility from the client to the server by writing incoming data to an in-memory buffer, then flushing it to storage based on configurable thresholds. This approach significantly reduces part creation overhead, lowers CPU usage, and ensures ingestion remains efficient—even under high concurrency.
@@ -19,7 +19,7 @@ When enabled (1), inserts are buffered and only written to disk once one of the 
 (2) a time threshold elapses (async_insert_busy_timeout_ms) or 
 (3) a maximum number of insert queries accumulate (async_insert_max_query_number). 
 
-This batching process is invisible to clients and helps ClickHouse efficiently merge insert traffic from multiple sources. However, until a flush occurs, the data cannot be queried. Importantly, there are multiple buffers per insert shape and settings combination, and in clusters, buffers are maintained per node—enabling fine-grained control across multi-tenant environments. Insert mechanics are otherwise identical to those described for [synchronous inserts](/best-practices/selecting-an-insert-strategy#synchronous-inserts-by-default).
+This batching process is invisible to clients and helps ClickHouse efficiently merge insert traffic from multiple sources. However, until a flush occurs, the data can't be queried. Importantly, there are multiple buffers per insert shape and settings combination, and in clusters, buffers are maintained per node—enabling fine-grained control across multi-tenant environments. Insert mechanics are otherwise identical to those described for [synchronous inserts](/best-practices/selecting-an-insert-strategy#synchronous-inserts-by-default).
 
 ### Choosing a return mode {#choosing-a-return-mode}
 
@@ -39,7 +39,7 @@ Our strong recommendation is to use `async_insert=1,wait_for_async_insert=1` if 
 
 ### Deduplication and reliability {#deduplication-and-reliability}
 
-By default, ClickHouse performs automatic deduplication for synchronous inserts, which makes retries safe in failure scenarios. However, this is disabled for asynchronous inserts unless explicitly enabled (this should not be enabled if you have dependent materialized views—[see issue](https://github.com/ClickHouse/ClickHouse/issues/66003)). 
+By default, ClickHouse performs automatic deduplication for synchronous inserts, which makes retries safe in failure scenarios. However, this is disabled for asynchronous inserts unless explicitly enabled (this shouldn't be enabled if you have dependent materialized views—[see issue](https://github.com/ClickHouse/ClickHouse/issues/66003)). 
 
 In practice, if deduplication is turned on and the same insert is retried—due to, for instance, a timeout or network drop—ClickHouse can safely ignore the duplicate. This helps maintain idempotency and avoids double-writing data. Still, it's worth noting that insert validation and schema parsing happen only during buffer flush—so errors (like type mismatches) will only surface at that point.
 

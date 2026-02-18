@@ -14,8 +14,6 @@ import ClickPipesFAQ from '../../../_snippets/_clickpipes_faq.md'
 
 本节概述 ClickPipes 在流式传输和对象存储场景下的定价模型。
 
-
-
 ## ClickPipes 的定价结构是什么样的？ \{#what-does-the-clickpipes-pricing-structure-look-like\}
 
 ClickPipes 的定价由两个维度组成：
@@ -28,22 +26,16 @@ ClickPipes 的定价由两个维度组成：
   （Kafka、Confluent、Amazon MSK、Amazon Kinesis、Redpanda、WarpStream、Azure Event Hubs），
   针对通过副本 pod（容器组）传输的数据进行计费。已摄取数据大小（GB）根据从源端接收到的字节数（无论是否压缩）折算为 GB 后计费。
 
-
-
 ## 什么是 ClickPipes 副本？ \{#what-are-clickpipes-replicas\}
 
 ClickPipes 通过专用基础设施从远程数据源摄取数据，
 该基础设施在运行和伸缩方面独立于 ClickHouse Cloud 服务。
 因此，它使用专用的计算副本。
 
-
-
 ## 默认的副本数量及其规格是多少？ \{#what-is-the-default-number-of-replicas-and-their-size\}
 
 每个 ClickPipe 默认为 1 个副本，规格为 512 MiB 内存和 0.125 个 vCPU（XS）。
 这相当于 **0.0625** 个 ClickHouse 计算单元（1 个单元 = 8 GiB 内存、2 个 vCPU）。
-
-
 
 ## ClickPipes 公开价格是多少？ \{#what-are-the-clickpipes-public-prices\}
 
@@ -59,8 +51,6 @@ Compute 计费维度的价格取决于 ClickPipe 中副本的**数量**和**规�
 | Medium (M)                 | 0.25         | 2 GiB   | 0.5    | $0.05          |
 | Large (L)                  | 0.5          | 4 GiB   | 1.0    | $0.10          |
 | Extra Large (XL)           | 1.0          | 8 GiB   | 2.0    | $0.20          |
-
-
 
 ## 在示例场景中是什么样子？ \{#how-does-it-look-in-an-illustrative-example\}
 
@@ -90,8 +80,6 @@ Compute 计费维度的价格取决于 ClickPipe 中副本的**数量**和**规�
 </table>
 
 $^1$ _此处仅计入用于编排的 ClickPipes 计算成本，实际数据传输由底层 ClickHouse Service 负责_
-
-
 
 ## 关于流式传输和对象存储 ClickPipes 的常见问题解答 \{#faq-streaming-and-object-storage\}
 

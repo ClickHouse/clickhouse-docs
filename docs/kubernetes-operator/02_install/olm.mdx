@@ -18,7 +18,7 @@ This guide covers installing the ClickHouse Operator using Operator Lifecycle Ma
 
 ## Install OLM {#install-olm}
 
-If OLM is not already installed in your cluster, install it:
+If OLM isn't already installed in your cluster, install it:
 
 ```bash
 # Check if OLM is installed
@@ -70,7 +70,7 @@ metadata:
   name: clickhouse-operator
   namespace: clickhouse-operator-system
 spec:
-  channel: stable
+  channel: stable-v0
   name: clickhouse-operator
   source: clickhouse-operator-catalog
   sourceNamespace: clickhouse-operator-system
@@ -97,3 +97,4 @@ More info about uninstalling can be found in the [OLM documentation](https://olm
 ## Additional Resources {#additional-resources}
 
 - [Operator Lifecycle Manager Documentation](https://olm.operatorframework.io/docs)
+

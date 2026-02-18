@@ -11,6 +11,7 @@ import S3Settings from '@site/i18n/zh/docusaurus-plugin-content-docs/current/ope
 import ExampleSetup from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
+
 # 备份/恢复到磁盘 \{#backup-to-a-local-disk\}
 
 ## 语法 \{#syntax\}
@@ -21,7 +22,7 @@ import Syntax from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operati
 
 ### 为本地磁盘配置备份目标 \{#configure-a-backup-destination\}
 
-在下面的示例中，可以看到备份目标被指定为 `Disk('backups', '1.zip')`。\
+在下面的示例中，可以看到备份目标被指定为 `Disk('backups', '1.zip')`。
 要使用 `Disk` 备份引擎，必须先在以下路径添加一个文件，用于指定备份目标：
 
 ```text
@@ -49,6 +50,7 @@ import Syntax from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operati
 <!--highlight-end -->
 </clickhouse>
 ```
+
 
 ### 为 S3 磁盘配置备份目标 \{#backuprestore-using-an-s3-disk\}
 
@@ -93,9 +95,10 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
 
 * 该磁盘不应直接用于 `MergeTree` 本身，只应用于 `BACKUP`/`RESTORE`。
 * 如果你的表后端使用的是 S3 存储，并且这些磁盘的类型不同，
-  将不会通过 `CopyObject` 调用将数据分片复制到目标 bucket，而是先下载再上传，这非常低效。在这种情况下，建议针对该场景使用
-  `BACKUP ... TO S3(&lt;endpoint&gt;)` 语法。
+  将不会通过 `CopyObject` 调用将分区片段复制到目标 bucket，而是先下载再上传，这非常低效。在这种情况下，建议针对该场景使用
+  `BACKUP ... TO S3(<endpoint>)` 语法。
   :::
+
 
 ## 本地磁盘备份/恢复的使用示例 \{#usage-examples\}
 
@@ -147,7 +150,7 @@ SETTINGS allow_non_empty_tables=true
 RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
 ```
 
-此备份对应的归档文件具有以下结构：
+此备份的归档文件结构如下：
 
 ```text
 ├── .backup
@@ -157,11 +160,12 @@ RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backu
 ```
 
 {/* TO DO: 
-  在此补充有关备份格式的说明。参见 Issue 24a
+  在此添加关于备份格式的说明。参见 Issue 24a
   https://github.com/ClickHouse/clickhouse-docs/issues/3968
   */ }
 
 除了 zip 之外，还可以使用其他格式。有关更多详细信息，请参见下文[“将备份保存为 tar 归档文件”](#backups-as-tar-archives)。
+
 
 ### 磁盘增量备份 \{#incremental-backups\}
 
@@ -182,12 +186,13 @@ BACKUP TABLE test_db.test_table TO Disk('backups', 'incremental-a.zip')
 SETTINGS base_backup = Disk('backups', 'd.zip')
 ```
 
-可以使用以下命令，将增量备份和全量备份中的所有数据恢复到新表 `test_db.test_table2` 中：
+可以通过以下命令，将增量备份和基础备份中的所有数据恢复到新表 `test_db.test_table2` 中：
 
 ```sql
 RESTORE TABLE test_db.test_table AS test_db.test_table2
 FROM Disk('backups', 'incremental-a.zip');
 ```
+
 
 ### 保护备份 \{#assign-a-password-to-the-backup\}
 
@@ -208,19 +213,20 @@ FROM Disk('backups', 'password-protected.zip')
 SETTINGS password='qwerty'
 ```
 
-### 以 tar 归档形式存储备份 \{#backups-as-tar-archives\}
 
-备份不仅可以存储为 zip 归档，还可以存储为 tar 归档。
-其功能与 zip 归档相同，只是 tar 归档不支持密码保护。
-此外，tar 归档支持多种压缩方式。
+### 以 tar 归档形式的备份 \{#backups-as-tar-archives\}
 
-要将表备份为 tar 归档：
+备份不仅可以存储为 zip 归档文件，也可以存储为 tar 归档文件。
+其功能与 zip 归档相同，只是 tar 归档文件不支持密码保护。
+此外，tar 归档文件支持多种压缩方法。
+
+要将表备份为 tar 归档文件：
 
 ```sql
 BACKUP TABLE test_db.test_table TO Disk('backups', '1.tar')
 ```
 
-从 tar 归档文件恢复：
+从 tar 存档恢复：
 
 ```sql
 RESTORE TABLE test_db.test_table FROM Disk('backups', '1.tar')
@@ -242,12 +248,13 @@ BACKUP TABLE test_db.test_table TO Disk('backups', '1.tar.gz')
 * `.tzst`
 * `.tar.xz`
 
+
 ### 压缩设置 \{#compression-settings\}
 
 可以分别通过设置 `compression_method` 和 `compression_level` 来指定压缩方法和压缩级别。
 
 {/* 待办事项：
-  需要补充这些设置的详细说明，以及在什么情况下你会选择这样配置
+  需要补充这些设置的详细说明，以及在什么情况下/出于什么原因需要这样配置
   */ }
 
 ```sql
@@ -255,6 +262,7 @@ BACKUP TABLE test_db.test_table
 TO Disk('backups', 'filename.zip')
 SETTINGS compression_method='lzma', compression_level=3
 ```
+
 
 ### 恢复特定分区 \{#restore-specific-partitions\}
 
@@ -267,42 +275,42 @@ SETTINGS compression_method='lzma', compression_level=3
   <summary>设置</summary>
 
   ```sql
-CREATE IF NOT EXISTS test_db;
-       
--- Create a partitioend table
-CREATE TABLE test_db.partitioned (
-    id UInt32,
-    data String,
-    partition_key UInt8
-) ENGINE = MergeTree()
-PARTITION BY partition_key
-ORDER BY id;
+  CREATE IF NOT EXISTS test_db;
+         
+  -- Create a partitioend table
+  CREATE TABLE test_db.partitioned (
+      id UInt32,
+      data String,
+      partition_key UInt8
+  ) ENGINE = MergeTree()
+  PARTITION BY partition_key
+  ORDER BY id;
 
-INSERT INTO test_db.partitioned VALUES
-(1, 'data1', 1),
-(2, 'data2', 2),
-(3, 'data3', 3),
-(4, 'data4', 4);
+  INSERT INTO test_db.partitioned VALUES
+  (1, 'data1', 1),
+  (2, 'data2', 2),
+  (3, 'data3', 3),
+  (4, 'data4', 4);
 
-SELECT count() FROM test_db.partitioned;
+  SELECT count() FROM test_db.partitioned;
 
-SELECT partition_key, count() 
-FROM test_db.partitioned
-GROUP BY partition_key
-ORDER BY partition_key;
-```
+  SELECT partition_key, count() 
+  FROM test_db.partitioned
+  GROUP BY partition_key
+  ORDER BY partition_key;
+  ```
 
   ```response
-   ┌─count()─┐
-1. │       4 │
-   └─────────┘
-   ┌─partition_key─┬─count()─┐
-1. │             1 │       1 │
-2. │             2 │       1 │
-3. │             3 │       1 │
-4. │             4 │       1 │
-   └───────────────┴─────────┘
-```
+     ┌─count()─┐
+  1. │       4 │
+     └─────────┘
+     ┌─partition_key─┬─count()─┐
+  1. │             1 │       1 │
+  2. │             2 │       1 │
+  3. │             3 │       1 │
+  4. │             4 │       1 │
+     └───────────────┴─────────┘
+  ```
 </details>
 
 运行以下命令备份分区 1 和 4：

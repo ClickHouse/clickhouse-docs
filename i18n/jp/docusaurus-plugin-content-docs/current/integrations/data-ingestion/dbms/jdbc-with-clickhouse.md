@@ -61,7 +61,7 @@ cd ~/clickhouse-jdbc-bridge
 wget https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v2.0.7/clickhouse-jdbc-bridge-2.0.7-shaded.jar
 ```
 
-MySQL に接続するために、名前付きデータソースを作成します。
+MySQL に接続できるよう、名前付きデータソースを作成します。
 
 ```bash
  cd ~/clickhouse-jdbc-bridge

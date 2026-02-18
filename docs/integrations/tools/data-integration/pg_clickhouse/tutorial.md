@@ -194,7 +194,7 @@ CREATE SERVER taxi_srv FOREIGN DATA WRAPPER clickhouse_fdw
 Here we've elected to use the binary driver, which uses the ClickHouse binary
 protocol. You can also use the "http" driver, which uses the HTTP interface.
 
-Next, map a PostgreSQLu user to a ClickHouse user. The simplest way to do so
+Next, map a PostgreSQL user to a ClickHouse user. The simplest way to do so
 is just to map the current PostgreSQL user to a remote user for the foreign
 server:
 
@@ -594,7 +594,7 @@ table.
 
     :::note
     Notice the output of the above `JOIN` query is the same as the `dictGet`
-    query above, (except that the `Unknown` values are not included). Behind
+    query above, (except that the `Unknown` values aren't included). Behind
     the scenes, ClickHouse is actually calling the `dictGet` function for
     the `taxi_zone_dictionary` dictionary, but the `JOIN` syntax is more
     familiar for SQL developers.

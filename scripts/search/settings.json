@@ -71,9 +71,6 @@
     "paginationLimitedTo": 1000,
     "attributeForDistinct": "url",
     "exactOnSingleWordQuery": "word",
-    "disableExactOnAttributes": [
-      "content"
-    ],
     "disablePrefixOnAttributes": [],
     "ranking": [
       "typo",

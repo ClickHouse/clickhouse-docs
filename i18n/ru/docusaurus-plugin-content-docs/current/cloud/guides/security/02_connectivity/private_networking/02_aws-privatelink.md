@@ -18,6 +18,7 @@ import pe_remove_private_endpoint from '@site/static/images/cloud/security/pe-re
 import aws_private_link_pe_filters from '@site/static/images/cloud/security/aws-privatelink-pe-filters.png';
 import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-privatelink-pe-dns-name.png';
 
+
 # AWS PrivateLink \{#aws-privatelink\}
 
 <ScalePlanFeatureBadge feature="AWS PrivateLink"/>
@@ -114,7 +115,7 @@ INSTANCE_ID=$(curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 jq ".result[] | select (.region==\"${REGION:?}\" and .provider==\"${PROVIDER:?}\" and .name==\"${SERVICE_NAME:?}\") | .id " -r)
 ```
 
-Получите значения параметров `endpointServiceId` и `privateDnsHostname` для конфигурации PrivateLink:
+Получите значения `endpointServiceId` и `privateDnsHostname` для конфигурации PrivateLink:
 
 ```bash
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
@@ -122,7 +123,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 jq .result
 ```
 
-Эта команда должна вывести примерно следующее:
+Эта команда должна вернуть примерно такой результат:
 
 ```result
 {
@@ -133,12 +134,13 @@ jq .result
 
 Запишите значения `endpointServiceId` и `privateDnsHostname` и [перейдите к следующему шагу](#create-aws-endpoint).
 
+
 ### Создание AWS endpoint \{#create-aws-endpoint\}
 
 :::important
-В этом разделе описаны специфичные для ClickHouse детали настройки ClickHouse через AWS PrivateLink. Шаги, относящиеся к AWS, приведены как справочная информация, чтобы подсказать, где именно нужно проводить настройки, однако со временем они могут измениться без уведомления со стороны облачного провайдера AWS. Настраивайте конфигурацию AWS исходя из вашего конкретного сценария использования.
+В этом разделе описаны специфичные для ClickHouse детали настройки ClickHouse через AWS PrivateLink. Шаги, относящиеся к AWS, приведены как справочная информация, чтобы подсказать, где именно нужно проводить настройки, однако со временем они могут измениться без уведомления со стороны облачного провайдера AWS. Настраивайте конфигурацию AWS исходя из вашего конкретного сценария использования.  
 
-Обратите внимание, что ClickHouse не несет ответственности за настройку необходимых AWS VPC endpoint, правил групп безопасности (security groups) или DNS-записей.
+Обратите внимание, что ClickHouse не несет ответственности за настройку необходимых AWS VPC endpoint, правил групп безопасности (security groups) или DNS-записей.  
 
 Если вы ранее включали «private DNS names» при настройке PrivateLink и сейчас испытываете сложности с конфигурацией новых сервисов через PrivateLink, обратитесь в службу поддержки ClickHouse. По всем остальным вопросам, связанным с задачами конфигурации AWS, обращайтесь напрямую в службу поддержки AWS.
 :::
@@ -153,7 +155,7 @@ jq .result
 
 Если вы хотите установить межрегиональное подключение через PrivateLink, установите флажок «Cross region endpoint» и укажите регион сервиса. Регион сервиса — это регион, в котором запущен экземпляр ClickHouse.
 
-Если вы видите сообщение об ошибке «Service name could not be verified.», обратитесь в службу поддержки ClickHouse с запросом на добавление новых регионов в список поддерживаемых регионов.
+Если вы видите сообщение об ошибке «Service name couldn't be verified.», обратитесь в службу поддержки ClickHouse с запросом на добавление новых регионов в список поддерживаемых регионов.
 
 Далее выберите ваш VPC и подсети:
 
@@ -195,9 +197,10 @@ Resources:
 
 После создания VPC Endpoint запишите значение `Endpoint ID` — оно понадобится на одном из следующих шагов.
 
+
 #### Вариант 3: Terraform \{#option-3-terraform\}
 
-`service_name` ниже — это `Service name`<sup>console</sup> или `endpointServiceId`<sup>API</sup>, полученное на шаге [Obtain Endpoint &quot;Service name&quot; ](#obtain-endpoint-service-info).
+`service_name` ниже — это `Service name`<sup>console</sup> или `endpointServiceId`<sup>API</sup>, полученные на шаге [Obtain Endpoint &quot;Service name&quot; ](#obtain-endpoint-service-info)
 
 ```json
 resource "aws_vpc_endpoint" "this" {
@@ -214,6 +217,7 @@ resource "aws_vpc_endpoint" "this" {
 ```
 
 После создания VPC Endpoint запишите значение `Endpoint ID` — оно понадобится на одном из следующих шагов.
+
 
 #### Настройка приватного DNS-имени для endpoint \{#set-private-dns-name-for-endpoint\}
 
@@ -235,7 +239,7 @@ resource "aws_vpc_endpoint" "this" {
 
 <Image img={aws_private_link_pe_filters} size="md" alt="Фильтр Private Endpoints" border />
 
-Чтобы удалить endpoint, перейдите в консоль ClickHouse Cloud, найдите нужный сервис, затем перейдите в **Settings** этого сервиса, найдите endpoint, который вы хотите удалить, и удалите его из списка endpoints.
+Чтобы удалить endpoint, перейдите в консоль ClickHouse Cloud, найдите нужный сервис, затем перейдите в **Settings** этого сервиса, найдите endpoint, который вы хотите удалить, и удалите его из списка endpoints. 
 
 #### Вариант 2: API \{#option-2-api-2\}
 
@@ -273,7 +277,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 -d @pl_config.json | jq
 ```
 
-Чтобы удалить идентификатор конечной точки из списка разрешённых конечных точек:
+Чтобы удалить идентификатор конечной точки из списка разрешённых:
 
 ```bash
 cat <<EOF | tee pl_config.json
@@ -291,6 +295,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" \
 -d @pl_config.json | jq
 ```
+
 
 ### Доступ к экземпляру с использованием PrivateLink \{#accessing-an-instance-using-privatelink\}
 
@@ -334,6 +339,7 @@ jq .result
 
 В этом примере соединение по имени хоста со значением `privateDnsHostname` будет маршрутизировано через PrivateLink, а соединение по имени хоста со значением `endpointServiceId` — через интернет.
 
+
 ## Устранение неполадок \{#troubleshooting\}
 
 ### Несколько PrivateLink в одном регионе \{#multiple-privatelinks-in-one-region\}
@@ -366,7 +372,7 @@ ORG_ID=<please set ClickHouse organization ID>
 INSTANCE_ID=<Instance ID>
 ```
 
-`INSTANCE_ID` можно получить на [шаге](#option-2-api).
+`INSTANCE_ID` можно получить из [шага](#option-2-api).
 
 ```shell
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
@@ -374,6 +380,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" | \
 jq .result.privateEndpointIds
 ```
+
 
 ### Подключение к удалённой базе данных \{#connecting-to-a-remote-database\}
 

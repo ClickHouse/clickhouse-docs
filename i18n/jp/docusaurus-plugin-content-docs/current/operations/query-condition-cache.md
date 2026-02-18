@@ -65,7 +65,7 @@ SETTINGS use_query_condition_cache = true;
 キャッシュの内容は、システムテーブル [system.query_condition_cache](system-tables/query_condition_cache.md) に表示されます。
 現在のクエリ条件キャッシュのサイズを MB 単位で取得するには、`SELECT formatReadableSize(sum(entry_size)) FROM system.query_condition_cache` を実行します。
 個別のフィルター条件を調査したい場合は、`system.query_condition_cache` の `condition` フィールドを確認できます。
-このフィールドは、設定 [query_condition_cache_store_conditions_as_plaintext](settings/settings#query_condition_cache_store_conditions_as_plaintext) を有効にしてクエリを実行した場合にのみ値が設定される点に注意してください。
+なお、このフィールドはデバッグビルドでのみ利用可能です。
 
 データベースの起動以降のクエリ条件キャッシュのヒット数とミス数は、システムテーブル [system.events](system-tables/events.md) において、イベント "QueryConditionCacheHits" および "QueryConditionCacheMisses" として表示されます。
 いずれのカウンタも、設定 `use_query_condition_cache = true` を有効にして実行された `SELECT` クエリに対してのみ更新され、その他のクエリは "QueryCacheMisses" に影響しません。

@@ -448,11 +448,11 @@ FROM system.numbers LIMIT 5
 
 ## buildId \{#buildId\}
 
-引入版本：v20.5
+引入于：v20.5
 
-返回编译器为正在运行的 ClickHouse 服务器二进制文件生成的构建 ID。
-如果在分布式表的上下文中执行，该函数会生成一个普通列，其中的值对应各个分片。
-否则将返回一个常量。
+返回由编译器为正在运行的 ClickHouse 服务器二进制文件生成的构建 ID。
+如果在分布式表的上下文中执行，该函数会生成一个普通列，其值对应各个分片。
+否则，它会生成一个常量值。
 
 **语法**
 
@@ -466,7 +466,7 @@ buildId()
 
 **返回值**
 
-返回构建 ID。[`String`](/sql-reference/data-types/string)
+返回构建 ID，类型为 [`String`](/sql-reference/data-types/string)。
 
 **示例**
 
@@ -594,6 +594,77 @@ SELECT catboostEvaluate('/root/occupy.bin', Temperature, Humidity, Light, CO2, H
 4.695691092573497
 ```
 
+## colorOKLABToSRGB \{#colorOKLABToSRGB\}
+
+引入于：v26.2
+
+将颜色从 OKLab 感知颜色空间转换为 sRGB 颜色空间。
+
+输入颜色在 OKLab 颜色空间中指定。如果输入值超出 OKLab 的典型取值范围，则结果由具体实现定义。
+
+OKLab 使用三个分量：
+
+* L：感知亮度（通常在 [0..1] 范围内）
+  * a：绿-红对立轴
+  * b：蓝-黄对立轴
+
+a 和 b 分量在理论上不受限制，但在实践中介于 -0.4 和 0.4 之间。
+OKLab 的设计目标是在计算成本较低的情况下实现感知上的均匀性。
+
+该转换旨在作为 colorSRGBToOKLAB 的逆运算，并包括以下阶段：
+
+1. 从 OKLab 转换为线性 sRGB。
+   2) 从线性 sRGB 转换为伽马编码的 sRGB。
+
+可选参数 gamma 指定从线性 sRGB 转换为伽马编码 RGB 值时使用的指数。
+如果未指定，则使用默认的 gamma 值，以与 colorSRGBToOKLAB 保持一致。
+
+有关 OKLab 颜色空间及其与 sRGB 之间关系的更多信息，请参阅 https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color&#95;value/oklab
+。
+
+**语法**
+
+```sql
+colorOKLABToSRGB(tuple [, gamma])
+```
+
+**参数**
+
+* `tuple` — 一个包含三个数值 `L`、`a`、`b` 的元组，其中 `L` 的取值范围为 `[0...1]`。[`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+* `gamma` — 可选。用于将线性 sRGB 转换回 sRGB 的指数，对每个通道 `x` 应用 `(x ^ (1 / gamma)) * 255`。默认值为 `2.2`。[`Float64`](/sql-reference/data-types/float)
+
+**返回值**
+
+返回一个表示 sRGB 颜色值的元组 (R, G, B)。[`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+
+**示例**
+
+**将 OKLAB 转换为 sRGB（浮点数）**
+
+```sql title=Query
+SELECT colorOKLABToSRGB((0.4466, 0.0991, 0.44)) AS rgb;
+```
+
+```response title=Response
+┌─rgb──────────────────────┐
+│ (198.07056923258935,0,0) │
+└──────────────────────────┘
+```
+
+**将 OKLAB 转换为 sRGB（UInt8）**
+
+```sql title=Query
+WITH colorOKLABToSRGB((0.7, 0.1, 0.54)) AS t
+SELECT tuple(toUInt8(t.1), toUInt8(t.2), toUInt8(t.3)) AS RGB;
+```
+
+```response title=Response
+┌─RGB──────────┐
+│ (255,0,0)    │
+└──────────────┘
+```
+
+
 ## colorOKLCHToSRGB \{#colorOKLCHToSRGB\}
 
 引入于：v25.7
@@ -638,18 +709,77 @@ colorOKLCHToSRGB(tuple [, gamma])
 **将 OKLCH 转换为 sRGB**
 
 ```sql title=Query
-SELECT colorOKLCHToSRGB((0.4466, 0.0991, 45.44), 2.2) AS rgb
-WITH colorOKLCHToSRGB((0.7, 0.1, 54)) as t SELECT tuple(toUInt8(t.1), toUInt8(t.2), toUInt8(t.3)) AS RGB
+SELECT colorOKLCHToSRGB((0.6, 0.12, 40)) AS rgb;
 ```
 
 ```response title=Response
-┌─rgb──────────────────────────────────────────────────────┐
-│ (127.03349738778945,66.06672044472008,37.11802592155851) │
-└──────────────────────────────────────────────────────────┘
+┌─rgb───────────────────────────────────────────────────────┐
+│ (186.02058688365264,100.68677189684993,71.67819977081575) │
+└───────────────────────────────────────────────────────────┘
+```
+
+**将 OKLCH 转换为 sRGB（UInt8）**
+
+```sql title=Query
+WITH colorOKLCHToSRGB((0.6, 0.12, 40)) AS t
+SELECT tuple(toUInt8(t.1), toUInt8(t.2), toUInt8(t.3)) AS RGB;
+```
+
+```response title=Response
 ┌─RGB──────────┐
-│ (205,139,97) │
+│ (186,100,71) │
 └──────────────┘
 ```
+
+
+## colorSRGBToOKLAB \{#colorSRGBToOKLAB\}
+
+引入版本：v26.2
+
+将编码在 **sRGB** 颜色空间中的颜色转换为感知均匀的 **OKLAB** 颜色空间。
+
+如果任一输入通道超出 `[0...255]` 范围，或 gamma 值为非正数，其行为由具体实现定义。
+
+:::note
+**OKLAB** 是一种感知均匀的颜色空间。
+它的三个坐标分别是 `L`（亮度，范围为 `[0...1]`）、`a`（绿-红轴）和 `b`（蓝-黄轴）。
+OKLab 被设计为在保持计算开销较低的同时尽可能做到感知均匀。
+:::
+
+转换包括两个阶段：
+
+1. sRGB 到线性 sRGB
+   2) 线性 sRGB 到 OKLab
+
+**语法**
+
+```sql
+colorSRGBToOKLAB(tuple[, gamma])
+```
+
+**参数**
+
+* `tuple` — 一个由 R、G、B 三个通道值组成的元组，每个通道取值范围为 `[0...255]`。[`Tuple(UInt8, UInt8, UInt8)`](/sql-reference/data-types/tuple)
+* `gamma` — 可选。用于将 sRGB 线性化的指数，通过对每个通道 `x` 应用 `(x / 255)^gamma` 实现。默认值为 `2.2`。[`Float64`](/sql-reference/data-types/float)
+
+**返回值**
+
+返回一个表示 OKLAB 颜色空间中数值的元组 (L, a, b)。[`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+
+**示例**
+
+**将 sRGB 转换为 OKLAB**
+
+```sql title=Query
+SELECT colorSRGBToOKLAB((128, 64, 32), 2.2) AS lab;
+```
+
+```response title=Response
+┌─lab──────────────────────────────────────────────────────────┐
+│ (0.4436238384931984,0.07266246769242975,0.07500108778529994) │
+└──────────────────────────────────────────────────────────────┘
+```
+
 
 ## colorSRGBToOKLCH \{#colorSRGBToOKLCH\}
 
@@ -668,8 +798,8 @@ OKLab/OKLCH 被设计为在保持计算开销较低的同时尽可能做到感�
 转换包括三个阶段：
 
 1. sRGB 到线性 sRGB
-2. 线性 sRGB 到 OKLab
-3. OKLab 到 OKLCH。
+   2) 线性 sRGB 到 OKLab
+   3) OKLab 到 OKLCH。
 
 关于 OKLCH 空间中的颜色参考，以及它们与 sRGB 颜色之间的对应关系，请参见 [https://OKLCH.com/](https://OKLCH.com/)。
 
@@ -693,14 +823,15 @@ colorSRGBToOKLCH(tuple[, gamma])
 **将 sRGB 转换为 OKLCH**
 
 ```sql title=Query
-SELECT colorSRGBToOKLCH((128, 64, 32), 2.2) AS lch
+SELECT colorSRGBToOKLCH((128, 64, 32), 2.2) AS lch;
 ```
 
 ```response title=Response
-┌─lch─────────────────────────────────────────────────────────┐
-│ (0.4436238384931984,0.10442699545678624,45.907345481930236) │
-└─────────────────────────────────────────────────────────────┘
+┌─lch───────────────────────────────────────────────────────┐
+│ (0.4436238384931984,0.1044269954567863,45.90734548193018) │
+└───────────────────────────────────────────────────────────┘
 ```
+
 
 ## connectionId \{#connectionId\}
 

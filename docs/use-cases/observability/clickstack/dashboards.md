@@ -27,7 +27,7 @@ import dashboard_services from '@site/static/images/use-cases/observability/hype
 import dashboard_kubernetes from '@site/static/images/use-cases/observability/hyperdx-dashboard-kubernetes.png';
 import Tagging from '@site/docs/_snippets/_clickstack_tagging.mdx';
 
-ClickStack supports visualizing events, with built-in support for charting in HyperDX. These charts can be added to dashboards for sharing with other users.
+ClickStack supports visualizing events, with built-in support for charting in ClickStack UI (HyperDX). These charts can be added to dashboards for sharing with other users.
 
 Visualizations can be created from traces, metrics, logs, or any user-defined wide event schemas.
 
@@ -95,7 +95,7 @@ Select `Dashboards` from the left menu.
 
 By default, dashboards are temporary to support ad-hoc investigations. 
 
-If using your own HyperDX instance you can ensure this dashboard can later be saved, by clicking `Create New Saved Dashboard`. This option will not be available if using the read-only environment [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com).
+If using your own HyperDX instance you can ensure this dashboard can later be saved, by clicking `Create New Saved Dashboard`. This option won't be available if using the read-only environment [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com).
 
 ### Create a visualization – average request time by service {#create-a-tile}
 

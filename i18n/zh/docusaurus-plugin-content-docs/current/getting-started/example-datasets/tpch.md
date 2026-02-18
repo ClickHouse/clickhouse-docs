@@ -349,7 +349,6 @@ ORDER BY
 
 **问题 5**
 
-
 ```sql
 SELECT
     n_name,
@@ -392,7 +391,7 @@ WHERE
 ```
 
 ::::note
-截至 2025 年 2 月，由于 Decimal 加法中的一个错误，此查询无法开箱即用。对应的 issue： [https://github.com/ClickHouse/ClickHouse/issues/70136](https://github.com/ClickHouse/ClickHouse/issues/70136)
+截至 2025 年 2 月，由于 Decimal 加法中的一个缺陷，此查询在默认配置下无法正常工作。对应的 issue： https://github.com/ClickHouse/ClickHouse/issues/70136
 
 下面的替代写法可以正常工作，并已验证能够返回参考结果。
 
@@ -846,7 +845,6 @@ WHERE
 ```
 
 **Q20**
-
 
 ```sql
 SELECT

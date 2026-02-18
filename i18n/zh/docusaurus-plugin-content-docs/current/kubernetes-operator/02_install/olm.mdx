@@ -1,0 +1,104 @@
+---
+slug: /clickhouse-operator/install/olm
+title: '使用 Operator Lifecycle Manager（OLM）安装 ClickHouse Operator'
+keywords: ['kubernetes']
+description: '本指南介绍如何使用 kubectl 和清单文件安装 ClickHouse Operator。'
+doc_type: 'guide'
+sidebar_label: 'OLM'
+---
+
+本指南介绍如何使用 Operator Lifecycle Manager（OLM）安装 ClickHouse Operator。
+
+## 先决条件 \{#prerequisites\}
+
+- Kubernetes 集群版本 1.33.0 及以上
+- 已配置可访问集群的 kubectl
+- 集群管理员权限
+- 已安装 OLM（Operator Lifecycle Manager）
+
+## 安装 OLM \{#install-olm\}
+
+如果集群中尚未安装 OLM，请先进行安装：
+
+```bash
+# Check if OLM is installed
+kubectl get ns olm
+
+# If not installed, install OLM
+curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.28.0/install.sh | bash -s v0.28.0
+```
+
+
+## 安装 Operator \{#install-the-operator\}
+
+### 通过 GitHub Catalog 安装 \{#install-from-github-catalog\}
+
+```bash
+# Create the operator namespace
+kubectl create namespace clickhouse-operator-system
+
+# Create a CatalogSource
+kubectl apply -f - <<EOF
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: clickhouse-operator-catalog
+  namespace: clickhouse-operator-system
+spec:
+  sourceType: grpc
+  image: ghcr.io/clickhouse/clickhouse-operator-catalog:latest
+  displayName: ClickHouse Operator
+  publisher: ClickHouse
+  updateStrategy:
+    registryPoll:
+      interval: 30m
+EOF
+
+# Create the OperatorGroup
+kubectl apply -f - <<EOF
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: clickhouse-operator-group
+  namespace: clickhouse-operator-system
+EOF
+
+# Create the Subscription
+kubectl apply -f - <<EOF
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: clickhouse-operator
+  namespace: clickhouse-operator-system
+spec:
+  channel: stable-v0
+  name: clickhouse-operator
+  source: clickhouse-operator-catalog
+  sourceNamespace: clickhouse-operator-system
+  installPlanApproval: Automatic
+EOF
+```
+
+
+## 卸载 \{#uninstall\}
+
+```bash
+# Delete the subscription
+kubectl delete subscription clickhouse-operator -n clickhouse-operator-system
+# Find all associated resources
+kubectl get operator clickhouse-operator.clickhouse-operator-system -o=jsonpath="{.status.components.refs}" | jq 'map({kind, name})'
+# Delete associated resources (CRDs, Deployments, etc.)
+kubectl delete <resource> <name> [-n <namespace>]  # Repeat for each resource found
+
+# Delete the OperatorGroup (optional):
+kubectl delete operatorgroup clickhouse-operator-group -n clickhouse-operator-system
+# Delete the Operator view
+kubectl delete operator clickhouse-operator.clickhouse-operator-system
+```
+
+如需了解有关卸载的更多信息，请参阅 [OLM 文档](https://olm.operatorframework.io/docs/tasks/uninstall-operator/)。
+
+
+## 其他资源 \{#additional-resources\}
+
+- [Operator Lifecycle Manager 文档](https://olm.operatorframework.io/docs)

@@ -144,8 +144,6 @@ PAYG（従量課金制）のパブリックオファーを通じて、[Azure Mar
 
 <Image img={azure_marketplace_payg_12} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border/>
 
-
-
 <br />
 
-14. 問題が発生した場合は、[弊社サポートチーム](https://clickhouse.com/support/program)まで遠慮なくお問い合わせください。
+14. 問題が発生した場合は、遠慮なく[サポートチーム](https://clickhouse.com/support/program)までお問い合わせください。

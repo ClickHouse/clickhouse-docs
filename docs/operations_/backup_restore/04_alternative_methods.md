@@ -38,9 +38,9 @@ might work as well.
 
 ClickHouse allows using the `ALTER TABLE ... FREEZE PARTITION ...` query to create
 a local copy of table partitions. This is implemented using hardlinks to the `/var/lib/clickhouse/shadow/`
-folder, so it usually does not consume extra disk space for old data. The created 
-copies of files are not handled by ClickHouse server, so you can just leave them there:
-you will have a simple backup that does not require any additional external system,
+folder, so it usually doesn't consume extra disk space for old data. The created 
+copies of files aren't handled by ClickHouse server, so you can just leave them there:
+you will have a simple backup that doesn't require any additional external system,
 but it will still be prone to hardware issues. For this reason, it's better to 
 remotely copy them to another location and then remove the local copies. 
 Distributed filesystems and object stores are still a good options for this, 

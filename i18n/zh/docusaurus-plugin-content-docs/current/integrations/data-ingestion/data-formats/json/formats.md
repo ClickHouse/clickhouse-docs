@@ -57,7 +57,7 @@ LIMIT 5
 5 rows in set. Elapsed: 0.338 sec.
 ```
 
-`JSONAsObject` 在需要使用单个 JSON 对象列向表中插入数据行时非常有用，例如：
+`JSONAsObject` 在需要通过单个 JSON 对象列向表中插入行时非常有用，例如：
 
 ```sql
 CREATE TABLE pypi

@@ -64,8 +64,7 @@ SETTINGS use_query_condition_cache = true;
 
 Содержимое кэша отображается в системной таблице [system.query_condition_cache](system-tables/query_condition_cache.md).
 Чтобы вычислить текущий размер кэша условий запросов в МБ, выполните `SELECT formatReadableSize(sum(entry_size)) FROM system.query_condition_cache`.
-Если требуется исследовать отдельные фильтрующие условия, проверьте поле `condition` в `system.query_condition_cache`.
-Обратите внимание, что это поле заполняется только в том случае, если запрос выполняется с включённой настройкой [query_condition_cache_store_conditions_as_plaintext](settings/settings#query_condition_cache_store_conditions_as_plaintext).
+Если требуется исследовать отдельные фильтрующие условия, проверьте поле `condition` в `system.query_condition_cache`. Обратите внимание, что это поле доступно только в отладочных (debug) сборках.
 
 Количество попаданий и промахов кэша условий запросов с момента запуска базы данных отображается как события «QueryConditionCacheHits» и «QueryConditionCacheMisses» в системной таблице [system.events](system-tables/events.md).
 Оба счётчика обновляются только для запросов `SELECT`, которые выполняются с настройкой `use_query_condition_cache = true`, другие запросы не влияют на счётчик «QueryCacheMisses».

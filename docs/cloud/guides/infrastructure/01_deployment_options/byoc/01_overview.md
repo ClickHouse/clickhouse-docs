@@ -24,11 +24,11 @@ BYOC is designed specifically for large-scale deployments, and requires customer
 
 **Supported Cloud Service Providers:**
 * AWS (GA)
-* GCP (Private Preview). Please join the waitlist [here](https://clickhouse.com/cloud/bring-your-own-cloud) if you are interested.
-* Azure (Roadmap). Please join the waitlist [here](https://clickhouse.com/cloud/bring-your-own-cloud) if you are interested.
+* GCP (Private Preview). Please join the waitlist [here](https://clickhouse.com/cloud/bring-your-own-cloud) if you're interested.
+* Azure (Roadmap). Please join the waitlist [here](https://clickhouse.com/cloud/bring-your-own-cloud) if you're interested.
 
 **Supported Cloud Regions:**
-All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments. Private regions are not currently supported.
+All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments. Private regions aren't currently supported.
 
 ## Features {#features}
 
@@ -41,17 +41,16 @@ All **public regions** listed in our [supported regions](https://clickhouse.com/
   - View services and status.
 - **Managed backup and restore**
 - **Manual vertical and horizontal scaling.**
-- **Auto Idling**
+- **Auto Idling/Wake up**
 - **Warehouses**: Compute-Compute Separation
 - **Zero Trust Network via Tailscale.**
 - **Monitoring**:
-  - The Cloud console includes built-in health dashboards for monitoring service health.
-  - Prometheus scraping for centralized monitoring with Prometheus, Grafana, and Datadog. See the [Prometheus documentation](/integrations/prometheus) for setup instructions.
+  - Prometheus scraping for centralized monitoring with Prometheus, Grafana, and Datadog. See the [BYOC Observability](/cloud/reference/byoc/observability) for setup instructions.
 - **VPC Peering**
-- **Integrations**: See the full list on [this page](/integrations).
 - **Secure S3**
 - **[AWS PrivateLink](https://aws.amazon.com/privatelink/)**
 - **[GCP Private Service Connect](https://docs.cloud.google.com/vpc/docs/private-service-connect)**
+- **Integrations**: See the full list on [this page](/integrations).
 
 ### Planned features (currently unsupported) {#planned-features-currently-unsupported}
 

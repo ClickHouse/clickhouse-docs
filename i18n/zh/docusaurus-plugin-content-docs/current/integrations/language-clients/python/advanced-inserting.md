@@ -31,6 +31,7 @@ assert qr[0][0] == 4
 
 `InsertContext` 包含在插入过程中会被更新的可变状态，因此并不是线程安全的。
 
+
 ### 写入格式 \{#write-formats\}
 
 当前仅对少量类型实现了写入格式支持。在大多数情况下，ClickHouse Connect 会尝试通过检查首个（非空）数据值的类型，自动推断列的正确写入格式。举例来说，如果要向 `DateTime` 列插入数据，并且该列的第一个插入值是一个 Python 整数，ClickHouse Connect 会在假定该值实际表示 Unix epoch 秒数的前提下，直接插入该整数值。

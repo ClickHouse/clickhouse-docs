@@ -31,7 +31,7 @@ We also recommend going through the MySQL FAQs [here](/integrations/data-ingesti
 ## Enable binary log retention {#enable-binlog-retention-rds}
 The binary log is a set of log files that contain information about data modifications made to a MySQL server instance. Binary log files are required for replication. Both of the steps below must be followed:
 
-### 1. Enable binary logging via automated backup{#enable-binlog-logging-rds}
+### 1. Enable binary logging via automated backup {#enable-binlog-logging-rds}
 
 The automated backups feature determines whether binary logging is turned on or off for MySQL. It can be set in the AWS console:
 
@@ -39,8 +39,8 @@ The automated backups feature determines whether binary logging is turned on or 
 
 Setting backup retention to a reasonably long value depending on the replication use-case is advisable.
 
-### 2. Binlog retention hours{#binlog-retention-hours-rds}
-Amazon RDS for MariaDB has a different method of setting binlog retention duration, which is the amount of time a binlog file containing changes is kept. If some changes are not read before the binlog file is removed, replication will be unable to continue. The default value of binlog retention hours is NULL, which means binary logs aren't retained.
+### 2. Binlog retention hours {#binlog-retention-hours-rds}
+Amazon RDS for MariaDB has a different method of setting binlog retention duration, which is the amount of time a binlog file containing changes is kept. If some changes aren't read before the binlog file is removed, replication will be unable to continue. The default value of binlog retention hours is NULL, which means binary logs aren't retained.
 
 To specify the number of hours to retain binary logs on a DB instance, use the mysql.rds_set_configuration function with a binlog retention period long enough for replication to occur. `24 hours` is the recommended minimum.
 

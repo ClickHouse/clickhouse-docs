@@ -173,7 +173,7 @@ def split_large_document(doc, max_size=10000):
 
 def clean_content(content):
     content = re.sub(r'\\(\S)', r'\\\\\1', content)  # Replace `\` followed by a non-whitespace character
-    content = re.sub(r'```.*?```', '', content, flags=re.DOTALL)  # replace code blocks
+    # content = re.sub(r'```.*?```', '', content, flags=re.DOTALL)  # replace code blocks - DISABLED to allow code block indexing
     content = re.sub(r'<iframe.*?</iframe>', '', content, flags=re.DOTALL) # remove iframe
     content = re.sub(r'<div.*?</div>', '', content, flags=re.DOTALL)
     return content

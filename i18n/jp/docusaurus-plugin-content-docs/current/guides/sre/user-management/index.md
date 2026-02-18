@@ -325,7 +325,7 @@ Query id: 706befbc-525e-4ec1-a1a2-ba2508cc09e3
 GRANT ALTER COLUMN ON my_db.my_table TO my_user;
 ```
 
-権限は次のように設定されます：
+付与される権限は次のとおりです：
 
 ```sql
 SHOW GRANTS FOR my_user;
@@ -523,7 +523,7 @@ GRANT SELECT, ALTER COLUMN ON my_db.my_table TO my_alter_admin WITH GRANT OPTION
 clickhouse-client --user my_alter_admin --password password --port 9000 --host <my_clickhouse_host>
 ```
 
-7. サブ権限を付与する
+7. 下位権限を付与する
 
 ```sql
 GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user;

@@ -23,6 +23,58 @@ ClickHouse 接收符合 [W3C 规范](https://www.w3.org/TR/trace-context/)的 tr
 
 * [url](../sql-reference/table-functions/url.md) 表函数。trace 上下文信息会通过 HTTP 请求头发送。
 
+## 跟踪 ClickHouse Keeper 请求 \{#tracing-clickhouse-keeper-requests\}
+
+ClickHouse 支持对 [ClickHouse Keeper](../guides/sre/keeper/index.md) 请求（兼容 ZooKeeper 的协调服务）启用 OpenTelemetry 跟踪。借助此功能，可以对 Keeper 操作从客户端请求提交到服务端处理的完整生命周期获得细粒度可见性。
+
+### 启用 Keeper 追踪 \{#enabling-keeper-tracing\}
+
+要为 Keeper 请求启用追踪，请在 ZooKeeper/Keeper 客户端配置中进行如下配置：
+
+```xml
+<clickhouse>
+    <zookeeper>
+        <node>
+            <host>keeper1</host>
+            <port>9181</port>
+        </node>
+        <!-- Enable OpenTelemetry tracing context propagation -->
+        <pass_opentelemetry_tracing_context>true</pass_opentelemetry_tracing_context>
+    </zookeeper>
+</clickhouse>
+```
+
+
+### Keeper Span 类型 \{#keeper-span-types\}
+
+启用 tracing 后，ClickHouse 会为 Keeper 的客户端和服务端操作创建 span：
+
+**客户端 span：**
+
+- `zookeeper.create` — 创建新节点
+- `zookeeper.get` — 获取节点数据
+- `zookeeper.set` — 设置节点数据
+- `zookeeper.remove` — 删除节点
+- `zookeeper.list` — 列出子节点
+- `zookeeper.exists` — 检查节点是否存在
+- `zookeeper.multi` — 以原子方式执行多个操作
+- `zookeeper.client.requests_queue` — 请求在发送前排队所花费的时间
+
+**服务端 span（Keeper）：**
+
+- `keeper.receive_request` — 接收并解析来自客户端的请求
+- `keeper.dispatcher.requests_queue` — Dispatcher 中的请求排队
+- `keeper.write.pre_commit` — 在 Raft commit 前预处理写请求
+- `keeper.write.commit` — 在 Raft commit 后处理写请求
+- `keeper.read.wait_for_write` — 读请求等待其依赖的写请求完成
+- `keeper.read.process` — 处理读请求
+- `keeper.dispatcher.responses_queue` — Dispatcher 中的响应排队
+- `keeper.send_response` — 向客户端发送响应
+
+### 采样与性能 \{#sampling-and-performance\}
+
+为控制链路追踪开销，Keeper 实现了动态采样。采样率会根据请求大小在 1/10,000 到 1/10 之间自动调整。所有请求（无论是否被采样）其持续时间都会记录到直方图指标中，用于性能监控。
+
 ## 对 ClickHouse 本身进行追踪 \{#tracing-the-clickhouse-itself\}
 
 ClickHouse 会为每个查询以及部分查询执行阶段（例如查询规划或分布式查询）创建 `trace spans`。
@@ -63,6 +115,7 @@ FROM system.opentelemetry_span_log
 ```
 
 如果发生任何错误，发生错误的那部分日志数据将被静默丢弃。若数据未到达，请检查服务器日志中的错误消息。
+
 
 ## 相关内容 \{#related-content\}
 

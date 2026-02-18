@@ -30,7 +30,7 @@ In this section, we will look at those tools and how to use them. 
 
 To understand query performance, let's look at what happens in ClickHouse when a query is executed. 
 
-The following part is deliberately simplified and takes some shortcuts; the idea here is not to drown you with details but to get you up to speed with the basic concepts. For more information you can read about [query analyzer](/operations/analyzer). 
+The following part is deliberately simplified and takes some shortcuts; the idea here isn't to drown you with details but to get you up to speed with the basic concepts. For more information you can read about [query analyzer](/operations/analyzer). 
 
 From a very high-level standpoint, when ClickHouse executes a query, the following happens: 
 
@@ -60,7 +60,7 @@ We'll use a real example to illustrate how we approach query performances. 
 
 Let's use the NYC Taxi dataset, which contains taxi ride data in NYC. First, we start by ingesting the NYC taxi dataset with no optimization.
 
-Below is the command to create the table and insert data from an S3 bucket. Note that we infer the schema from the data voluntarily, which is not optimized.
+Below is the command to create the table and insert data from an S3 bucket. Note that we infer the schema from the data voluntarily, which isn't optimized.
 
 ```sql
 -- Create table with inferred schema
@@ -325,7 +325,7 @@ The table contains 329.04 million rows, therefore each query is doing a full sca
 
 ### Explain statement {#explain-statement}
 
-Now that we have some long-running queries, let's understand how they are executed. For this, ClickHouse supports the [EXPLAIN statement command](/sql-reference/statements/explain). It is a very useful tool that provides a very detailed view of all the query execution stages without actually running the query. While it can be overwhelming to look at for a non-ClickHouse expert, it remains an essential tool for gaining insight into how your query is executed.
+Now that we have some long-running queries, let's understand how they're executed. For this, ClickHouse supports the [EXPLAIN statement command](/sql-reference/statements/explain). It is a very useful tool that provides a very detailed view of all the query execution stages without actually running the query. While it can be overwhelming to look at for a non-ClickHouse expert, it remains an essential tool for gaining insight into how your query is executed.
 
 The documentation provides a detailed [guide](/guides/developer/understanding-query-execution-with-the-analyzer) on what the EXPLAIN statement is and how to use it to analyze your query execution. Rather than repeating what is in this guide, let's focus on a few commands that will help us find bottlenecks in query execution performance. 
 
@@ -465,7 +465,7 @@ pickup_location_id_nulls:  0
 dropoff_location_id_nulls: 0
 ```
 
-We have only two columns with null values: `mta_tax` and `payment_type`. The rest of the fields should not be using a `Nullable` column.
+We have only two columns with null values: `mta_tax` and `payment_type`. The rest of the fields shouldn't be using a `Nullable` column.
 
 ### Low cardinality {#low-cardinality}
 
@@ -588,7 +588,7 @@ The new table is considerably smaller than the previous one. We see a reduction 
 
 Primary keys in ClickHouse work differently than in most traditional database systems. In those systems, primary keys enforce uniqueness and data integrity. Any attempt to insert duplicate primary key values is rejected, and a B-tree or hash-based index is usually created for fast lookup. 
 
-In ClickHouse, the primary key's [objective](/guides/best-practices/sparse-primary-indexes#a-table-with-a-primary-key) is different; it does not enforce uniqueness or help with data integrity. Instead, it is designed to optimize query performance. The primary key defines the order in which the data is stored on disk and is implemented as a sparse index that stores pointers to the first row of each granule.
+In ClickHouse, the primary key's [objective](/guides/best-practices/sparse-primary-indexes#a-table-with-a-primary-key) is different; it doesn't enforce uniqueness or help with data integrity. Instead, it is designed to optimize query performance. The primary key defines the order in which the data is stored on disk and is implemented as a sparse index that stores pointers to the first row of each granule.
 
 > Granules in ClickHouse are the smallest units of data read during query execution. They contain up to a fixed number of rows, determined by index_granularity, with a default value of 8192 rows. Granules are stored contiguously and sorted by the primary key. 
 

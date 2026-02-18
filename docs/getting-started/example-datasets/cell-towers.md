@@ -283,7 +283,7 @@ The schema for this table was designed for compact storage on disk and query spe
 - `mcc` or Mobile country code, is stored as a `UInt16` as we know the range is 1 - 999.
 - `lon` and `lat` are `Float64`.
 
-None of the other fields are used in the queries or visualizations in this guide, but they are described in the forum linked above if you are interested.
+None of the other fields are used in the queries or visualizations in this guide, but they're described in the forum linked above if you're interested.
 
 ## Build visualizations with Apache Superset {#build-visualizations-with-apache-superset}
 
@@ -310,7 +310,7 @@ To build a Superset dashboard using the OpenCelliD dataset you should:
   <Image img={choose_clickhouse_connect} size="md" alt="Choose clickhouse connect as database type"/>
 
 :::note
-  If **ClickHouse Connect** is not one of your options, then you will need to install it. The command is `pip install clickhouse-connect`, and more info is [available here](https://pypi.org/project/clickhouse-connect/).
+  If **ClickHouse Connect** isn't one of your options, then you will need to install it. The command is `pip install clickhouse-connect`, and more info is [available here](https://pypi.org/project/clickhouse-connect/).
 :::
 
 #### Add your connection details {#add-your-connection-details}
@@ -357,7 +357,7 @@ Click on **UPDATE CHART** to render the visualization.
 
 ### Add the charts to a **dashboard** {#add-the-charts-to-a-dashboard}
 
-This screenshot shows cell tower locations with LTE, UMTS, and GSM radios.  The charts are all created in the same way, and they are added to a dashboard.
+This screenshot shows cell tower locations with LTE, UMTS, and GSM radios.  The charts are all created in the same way, and they're added to a dashboard.
 
 <Image img={superset_cell_tower_dashboard} size="md" alt="Dashboard of cell towers by radio type in mcc 204"/>
 
@@ -366,5 +366,5 @@ The data is also available for interactive queries in the [Playground](https://s
 
 This [example](https://sql.clickhouse.com?query_id=UV8M4MAGS2PWAUOAYAAARM) will populate the username and even the query for you.
 
-Although you cannot create tables in the Playground, you can run all of the queries and even use Superset (adjust the host name and port number).
+Although you can't create tables in the Playground, you can run all of the queries and even use Superset (adjust the host name and port number).
 :::

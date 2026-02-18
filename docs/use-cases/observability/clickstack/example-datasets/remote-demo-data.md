@@ -40,12 +40,12 @@ import demo_sources from '@site/static/images/use-cases/observability/hyperdx-de
 import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
 import DemoArchitecture from '@site/docs/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
 
-**The following guide assumes you have deployed ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started), or [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only) and completed initial user creation. Alternatively, you can skip all local setup and simply connect to our ClickStack hosted demo [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) which uses this dataset.**
+**The following guide assumes you have deployed Open Source ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started/oss), or [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only) and completed initial user creation. Alternatively, you can skip all local setup and simply connect to our ClickStack hosted demo [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) which uses this dataset.**
 
 This guide uses a sample dataset hosted on the public ClickHouse playground at [sql.clickhouse.com](https://sql.clickhpouse.com), which you can connect to from your local ClickStack deployment.
 
-:::warning Not supported with HyperDX in ClickHouse Cloud
-Remote databases are not supported when HyperDX is hosted in ClickHouse Cloud. This dataset is therefore not supported. 
+:::warning Not supported with Managed ClickStack
+Remote databases aren't supported when using Managed ClickStack. This dataset is therefore not supported. 
 :::
 
 It contains approximately 40 hours of data captured from the ClickHouse version of the official OpenTelemetry (OTel) demo. The data is replayed nightly with timestamps adjusted to the current time window, allowing users to explore system behavior using HyperDX's integrated logs, traces, and metrics.
@@ -62,7 +62,7 @@ The customer support team has reported that users are experiencing issues comple
 
 Using HyperDX, the SRE team will analyze logs, traces, and metrics to diagnose and resolve the issue—then review session data to confirm whether their conclusions align with actual user behavior.
 
-## Open Telemetry Demo {#otel-demo}
+## OpenTelemetry Demo {#otel-demo}
 
 This demo uses a [ClickStack maintained fork](https://github.com/ClickHouse/opentelemetry-demo) of the official OpenTelemetry demo.
 
@@ -161,7 +161,7 @@ Select the `Infrastructure` tab to view the metrics associated with the underlyi
 
 <Image img={step_7} alt="Step 7" size="lg"/>
 
-The issue does not seem to infrastructure related - no metrics have appreciably changed over the time period: either before or after the error. Close the infrastructure tab.
+The issue doesn't seem to infrastructure related - no metrics have appreciably changed over the time period: either before or after the error. Close the infrastructure tab.
 
 ### Explore a trace {#explore-a-trace}
 
@@ -175,7 +175,7 @@ By scrolling to the bottom of the view we can see that the `payment` service is 
 
 <Image img={step_9} alt="Step 9" size="lg"/>
 
-### Searching traces {#searching-traces} 
+### Searching traces {#searching-traces}
 
 We have established users are failing to complete purchases due to a cache issue in the payment service. Let's explore the traces for this service in more detail to see if we can learn more about the root cause.
 
@@ -203,7 +203,7 @@ Select a `Error: Visa cache full: cannot add new item.` error, switch to the `In
 
 By correlating traces with metrics we can see that memory and CPU increased with the `payment` service, before collapsing to `0` (we can attribute this to a pod restart) - suggesting the cache issue caused resource issues. We can expect this has impacted payment completion times.
 
-### Event deltas for faster resolution {#event-deltas-for-faster-resolution} 
+### Event deltas for faster resolution {#event-deltas-for-faster-resolution}
 
 Event Deltas help surface anomalies by attributing changes in performance or error rates to specific subsets of data—making it easier to quickly pinpoint the root cause. 
 
@@ -282,9 +282,9 @@ In summary, by exploring logs, traces and finally metrics we have concluded:
 - As the cache grew, the performance of Visa payments degraded
 - On reaching the maximum size, the cache rejected payments and reported itself as size `0`.
 
-### Using sessions {#using-sessions} 
+### Using sessions {#using-sessions}
 
-Sessions allow us to replay the user experience, offering a visual account of how an error occurred from the user's perspective. While not typically used to diagnose root causes, they are valuable for confirming issues reported to customer support and can serve as a starting point for deeper investigation.
+Sessions allow us to replay the user experience, offering a visual account of how an error occurred from the user's perspective. While not typically used to diagnose root causes, they're valuable for confirming issues reported to customer support and can serve as a starting point for deeper investigation.
 
 In HyperDX, sessions are linked to traces and logs, providing a complete view of the underlying cause.
 
@@ -298,7 +298,7 @@ Search for `SpanAttributes.userEmail: Braulio` to find our customer's session. S
 
 <Image img={step_22} alt="Step 22" size="lg"/>
 
-### Replaying sessions {#replaying-sessions} 
+### Replaying sessions {#replaying-sessions}
 
 Sessions can be replayed by pressing the ▶️ button. Switching between `Highlighted` and `All Events` allows varying degrees of span granularity, with the former highlighting key events and errors. 
 
@@ -306,7 +306,7 @@ If we scroll to the bottom of the spans we can see a `500` error associated with
 
 <Image img={step_23} alt="Step 23" size="lg"/>
 
-Selecting the span we can confirm this was caused by an internal error. By clicking the `Trace` tab and scrolling though the connected spans, we are able to confirm the customer indeed was a victim of our cache issue.
+Selecting the span we can confirm this was caused by an internal error. By clicking the `Trace` tab and scrolling though the connected spans, we're able to confirm the customer indeed was a victim of our cache issue.
 
 <Image img={step_24} alt="Step 24" size="lg"/>
 

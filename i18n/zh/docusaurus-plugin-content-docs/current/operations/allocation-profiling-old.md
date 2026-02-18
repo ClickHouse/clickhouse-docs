@@ -9,6 +9,7 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
 # 25.9 之前版本的分配分析 \{#allocation-profiling-for-versions-before-259\}
 
 ClickHouse 使用 [jemalloc](https://github.com/jemalloc/jemalloc) 作为其全局分配器。jemalloc 自带了一些用于分配采样和分析的工具。  
@@ -19,7 +20,7 @@ ClickHouse 使用 [jemalloc](https://github.com/jemalloc/jemalloc) 作为其全�
 如果你想在 `jemalloc` 中对内存分配进行采样和分析，需要通过设置环境变量 `MALLOC_CONF`，在启用分析功能的情况下启动 ClickHouse/Keeper：
 
 ```sh
-MALLOC_CONF=background_thread:true,prof:true
+MALLOC_CONF=background_thread:true,prof:true,prof_active:true
 ```
 
 `jemalloc` 会对内存分配进行采样，并在内部存储相关信息。
@@ -40,28 +41,29 @@ MALLOC_CONF=background_thread:true,prof:true
   </TabItem>
 </Tabs>
 
-默认情况下，堆 profile 文件会生成在 `/tmp/jemalloc_clickhouse._pid_._seqnum_.heap`，其中 `_pid_` 是 ClickHouse 的 PID，`_seqnum_` 是当前堆 profile 的全局序列号。\
+默认情况下，堆 profile 文件会生成在 `/tmp/jemalloc_clickhouse._pid_._seqnum_.heap`，其中 `_pid_` 是 ClickHouse 的 PID，`_seqnum_` 是当前堆 profile 的全局序列号。
 对于 Keeper，默认文件为 `/tmp/jemalloc_keeper._pid_._seqnum_.heap`，规则相同。
 
-可以通过在 `MALLOC_CONF` 环境变量中追加 `prof_prefix` 选项来指定不同的位置。\
+可以通过在 `MALLOC_CONF` 环境变量中追加 `prof_prefix` 选项来指定不同的位置。
 例如，如果你希望在 `/data` 目录中生成 profile，并将文件名前缀设置为 `my_current_profile`，可以在运行 ClickHouse/Keeper 时设置如下环境变量：
 
 ```sh
 MALLOC_CONF=background_thread:true,prof:true,prof_prefix:/data/my_current_profile
 ```
 
-生成的文件名会在前缀后追加 PID 和序列号。
+生成的文件名会在前缀后附加 PID 和序列号。
+
 
 ## 分析堆内存剖析文件 \{#analyzing-heap-profiles\}
 
-生成堆内存剖析文件后，需要对其进行分析。\
+生成堆内存剖析文件后，需要对其进行分析。
 为此，可以使用 `jemalloc` 的工具 [jeprof](https://github.com/jemalloc/jemalloc/blob/dev/bin/jeprof.in)。它可以通过多种方式安装：
 
 * 使用系统的包管理器
 * 克隆 [jemalloc 代码仓库](https://github.com/jemalloc/jemalloc)，并在根目录下运行 `autogen.sh`。这会在 `bin` 目录中生成 `jeprof` 脚本
 
 :::note
-`jeprof` 使用 `addr2line` 来生成调用栈，这个过程可能会非常慢。\
+`jeprof` 使用 `addr2line` 来生成调用栈，这个过程可能会非常慢。
 如果出现这种情况，建议安装该工具的[替代实现](https://github.com/gimli-rs/addr2line)。
 
 ```bash
@@ -73,27 +75,28 @@ cp ./target/release/addr2line path/to/current/addr2line
 
 :::
 
-使用 `jeprof` 可以从堆分析文件生成多种不同的输出格式。
+使用 `jeprof` 可以从堆内存剖析文件生成多种不同的输出格式。
 建议运行 `jeprof --help` 来了解该工具的用法以及它提供的各种选项。
 
 一般来说，`jeprof` 命令通常这样使用：
 
 ```sh
-jeprof 二进制文件路径 堆配置文件路径 --output_format [ > 输出文件]
+jeprof path/to/binary path/to/heap/profile --output_format [ > output_file]
 ```
 
-如果你想比较在两个性能分析结果之间新增了哪些内存分配，可以设置 `base` 参数：
+如果你想比较两份堆内存剖析文件之间发生了哪些内存分配变化，可以设置 `base` 参数：
 
 ```sh
-jeprof 二进制文件路径 --base 第一个堆配置文件路径 第二个堆配置文件路径 --output_format [ > 输出文件]
+jeprof path/to/binary --base path/to/first/heap/profile path/to/second/heap/profile --output_format [ > output_file]
 ```
+
 
 ### 示例 \{#examples\}
 
 * 如果你想生成一个文本文件，每行写一个存储过程：
 
 ```sh
-jeprof 二进制文件路径 堆配置文件路径 --text > result.txt
+jeprof path/to/binary path/to/heap/profile --text > result.txt
 ```
 
 * 如果需要生成包含调用图的 PDF 文件：
@@ -101,6 +104,7 @@ jeprof 二进制文件路径 堆配置文件路径 --text > result.txt
 ```sh
 jeprof path/to/binary path/to/heap/profile --pdf > result.pdf
 ```
+
 
 ### 生成火焰图 \{#generating-flame-graph\}
 
@@ -120,7 +124,8 @@ jeprof path/to/binary path/to/heap/profile --collapsed > result.collapsed
 cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Allocation Flame Graph" --width 2400 > result.svg
 ```
 
-另一个值得一提的工具是 [speedscope](https://www.speedscope.app/)，它可以让你以更交互的方式分析采集到的堆栈数据。
+另一个值得一提的工具是 [speedscope](https://www.speedscope.app/)，它可以让你以更为交互的方式分析采集到的堆栈数据。
+
 
 ## 在运行时控制分配分析器 \{#controlling-allocation-profiler-during-runtime\}
 
@@ -159,7 +164,7 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
   </TabItem>
 </Tabs>
 
-还可以通过设置 `prof_active` 选项来控制分析器的初始状态，该选项默认启用。\
+还可以通过设置 `prof_active` 选项来控制分析器的初始状态，该选项默认启用。
 例如，如果不希望在启动期间采样分配，而只在启动完成后开始采样，可以在之后再启用分析器。可以使用以下环境变量来启动 ClickHouse/Keeper：
 
 ```sh
@@ -167,6 +172,7 @@ MALLOC_CONF=background_thread:true,prof:true,prof_active:false
 ```
 
 稍后可以启用分析器。
+
 
 ## 分析器的其他选项 \{#additional-options-for-profiler\}
 
@@ -194,6 +200,7 @@ FORMAT Vertical
 ```
 
 [参考](/operations/system-tables/asynchronous_metrics)
+
 
 ### 系统表 `jemalloc_bins` \{#system-table-jemalloc_bins\}
 

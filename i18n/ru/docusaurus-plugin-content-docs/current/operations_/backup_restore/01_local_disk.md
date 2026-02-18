@@ -11,6 +11,7 @@ import S3Settings from '@site/i18n/ru/docusaurus-plugin-content-docs/current/ope
 import ExampleSetup from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
+
 # Резервное копирование и восстановление на локальный диск \{#backup-to-a-local-disk\}
 
 ## Синтаксис \{#syntax\}
@@ -21,7 +22,7 @@ import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operati
 
 ### Настройка пути назначения резервного копирования для локального диска \{#configure-a-backup-destination\}
 
-В приведённых ниже примерах вы увидите, что путь назначения резервного копирования указан как `Disk('backups', '1.zip')`.\
+В приведённых ниже примерах вы увидите, что путь назначения резервного копирования указан как `Disk('backups', '1.zip')`.
 Чтобы использовать движок резервного копирования `Disk`, необходимо сначала создать файл, задающий путь назначения резервного копирования, по следующему пути:
 
 ```text
@@ -49,6 +50,7 @@ import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operati
 <!--highlight-end -->
 </clickhouse>
 ```
+
 
 ### Настройка назначения резервного копирования для диска S3 \{#backuprestore-using-an-s3-disk\}
 
@@ -84,7 +86,7 @@ import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operati
 </clickhouse>
 ```
 
-Операции `BACKUP`/`RESTORE` для диска S3 выполняются так же, как и для локального диска:
+Операции `BACKUP` и `RESTORE` для диска S3 выполняются аналогично операциям для локального диска:
 
 ```sql
 BACKUP TABLE data TO Disk('s3_plain', 'cloud_backup');
@@ -99,6 +101,7 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
   данные сначала скачиваются, а затем загружаются, что крайне неэффективно. В таком случае рекомендуется использовать
   синтаксис `BACKUP ... TO S3(<endpoint>)` для этого сценария.
   :::
+
 
 ## Примеры использования операций резервного копирования и восстановления на локальный диск \{#usage-examples\}
 
@@ -118,7 +121,7 @@ BACKUP TABLE test_db.test_table TO Disk('backups', '1.zip')
    └──────────────────────────────────────┴────────────────┘
 ```
 
-Таблицу можно восстановить из резервной копии с помощью следующей команды, если таблица пустая:
+Таблицу можно восстановить из резервной копии следующей командой, если она пустая:
 
 ```sql title="Query"
 RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
@@ -144,7 +147,7 @@ RESTORE TABLE test_db.table_table FROM Disk('backups', '1.zip')
 SETTINGS allow_non_empty_tables=true
 ```
 
-Таблицы можно восстанавливать или создавать их резервные копии под новыми именами:
+Таблицы можно восстанавливать или создавать их резервные копии с новыми именами:
 
 ```sql
 RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
@@ -160,12 +163,13 @@ RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backu
 ```
 
 {/* TO DO: 
-  Здесь должно быть объяснение формата резервной копии. См. задачу 24a
+  Здесь должно быть объяснение формата резервной копии. См. задачу 24a.
   https://github.com/ClickHouse/clickhouse-docs/issues/3968
   */ }
 
-Могут использоваться и другие форматы, помимо zip. См. раздел [&quot;Резервные копии в виде tar-архивов&quot;](#backups-as-tar-archives)
+Можно использовать и другие форматы, помимо zip. См. раздел [&quot;Резервные копии в виде tar-архивов&quot;](#backups-as-tar-archives)
 ниже для получения дополнительной информации.
+
 
 ### Инкрементные резервные копии на диск \{#incremental-backups\}
 
@@ -191,13 +195,14 @@ BACKUP TABLE test_db.test_table TO Disk('backups', 'incremental-a.zip')
 SETTINGS base_backup = Disk('backups', 'd.zip')
 ```
 
-Все данные из инкрементной и базовой резервных копий могут быть восстановлены в
-новую таблицу `test_db.test_table2` с помощью следующей команды:
+Все данные из инкрементной и базовой резервных копий можно восстановить в
+новую таблицу `test_db.test_table2` командой:
 
 ```sql
 RESTORE TABLE test_db.test_table AS test_db.test_table2
 FROM Disk('backups', 'incremental-a.zip');
 ```
+
 
 ### Защита резервной копии \{#assign-a-password-to-the-backup\}
 
@@ -210,8 +215,8 @@ TO Disk('backups', 'password-protected.zip')
 SETTINGS password='qwerty'
 ```
 
-Для восстановления резервной копии, защищённой паролем, следует повторно
-указать пароль в настройке `password`:
+Для восстановления резервной копии, защищённой паролем, необходимо снова
+указать пароль с помощью настройки `password`:
 
 ```sql
 RESTORE TABLE test_db.test_table
@@ -219,12 +224,13 @@ FROM Disk('backups', 'password-protected.zip')
 SETTINGS password='qwerty'
 ```
 
+
 ### Резервные копии в виде tar-архивов \{#backups-as-tar-archives\}
 
-Резервные копии могут храниться не только в виде zip-архивов, но и в виде tar-архивов.
-Функциональность аналогична zip, за исключением того, что защита паролем не
-поддерживается для tar-архивов. Кроме того, tar-архивы поддерживают различные
-методы сжатия.
+Резервные копии можно хранить не только в виде zip-архивов, но и в виде tar-архивов.
+Функциональность такая же, как для zip, за исключением того, что защита паролем
+для tar-архивов не поддерживается. Кроме того, tar-архивы поддерживают
+различные методы сжатия.
 
 Чтобы создать резервную копию таблицы в формате tar:
 
@@ -255,12 +261,13 @@ BACKUP TABLE test_db.test_table TO Disk('backups', '1.tar.gz')
 * `.tzst`
 * `.tar.xz`
 
+
 ### Настройки сжатия \{#compression-settings\}
 
 Метод сжатия и степень сжатия можно задать с помощью параметров `compression_method` и `compression_level` соответственно.
 
 {/* TO DO:
-  Требуется более подробная информация об этих настройках и о том, в каких случаях и зачем их имеет смысл использовать 
+    Нужна более подробная информация об этих настройках и о том, когда и зачем их использовать 
   */ }
 
 ```sql
@@ -268,6 +275,7 @@ BACKUP TABLE test_db.test_table
 TO Disk('backups', 'filename.zip')
 SETTINGS compression_method='lzma', compression_level=3
 ```
+
 
 ### Восстановление отдельных партиций \{#restore-specific-partitions\}
 
@@ -280,42 +288,42 @@ SETTINGS compression_method='lzma', compression_level=3
   <summary>Setup</summary>
 
   ```sql
-CREATE IF NOT EXISTS test_db;
-       
--- Create a partitioend table
-CREATE TABLE test_db.partitioned (
-    id UInt32,
-    data String,
-    partition_key UInt8
-) ENGINE = MergeTree()
-PARTITION BY partition_key
-ORDER BY id;
+  CREATE IF NOT EXISTS test_db;
+         
+  -- Create a partitioend table
+  CREATE TABLE test_db.partitioned (
+      id UInt32,
+      data String,
+      partition_key UInt8
+  ) ENGINE = MergeTree()
+  PARTITION BY partition_key
+  ORDER BY id;
 
-INSERT INTO test_db.partitioned VALUES
-(1, 'data1', 1),
-(2, 'data2', 2),
-(3, 'data3', 3),
-(4, 'data4', 4);
+  INSERT INTO test_db.partitioned VALUES
+  (1, 'data1', 1),
+  (2, 'data2', 2),
+  (3, 'data3', 3),
+  (4, 'data4', 4);
 
-SELECT count() FROM test_db.partitioned;
+  SELECT count() FROM test_db.partitioned;
 
-SELECT partition_key, count() 
-FROM test_db.partitioned
-GROUP BY partition_key
-ORDER BY partition_key;
-```
+  SELECT partition_key, count() 
+  FROM test_db.partitioned
+  GROUP BY partition_key
+  ORDER BY partition_key;
+  ```
 
   ```response
-   ┌─count()─┐
-1. │       4 │
-   └─────────┘
-   ┌─partition_key─┬─count()─┐
-1. │             1 │       1 │
-2. │             2 │       1 │
-3. │             3 │       1 │
-4. │             4 │       1 │
-   └───────────────┴─────────┘
-```
+     ┌─count()─┐
+  1. │       4 │
+     └─────────┘
+     ┌─partition_key─┬─count()─┐
+  1. │             1 │       1 │
+  2. │             2 │       1 │
+  3. │             3 │       1 │
+  4. │             4 │       1 │
+     └───────────────┴─────────┘
+  ```
 </details>
 
 Выполните следующую команду, чтобы создать резервную копию партиций 1 и 4:

@@ -55,10 +55,10 @@ import clickpipesPricingFaq3 from '@site/static/images/cloud/manage/jan2025_faq/
 
   它由两个维度组成：
 
-  * **Compute**：按单元每小时计费\
+  * **Compute**：按单元每小时计费
     Compute 表示运行 ClickPipes 副本 Pod（容器组）的成本，无论它们当前是否在摄取数据。
     适用于所有类型的 ClickPipes。
-  * **Ingested data**：按 GB 计费\
+  * **Ingested data**：按 GB 计费
     摄取数据费率适用于所有流式 ClickPipes
     （Kafka、Confluent、Amazon MSK、Amazon Kinesis、Redpanda、WarpStream、
     Azure Event Hubs），按通过副本 Pod（容器组）传输的数据计费。

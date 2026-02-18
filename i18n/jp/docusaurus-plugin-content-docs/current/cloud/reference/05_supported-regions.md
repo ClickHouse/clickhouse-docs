@@ -33,6 +33,8 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - af-south-1 (南アフリカ)
 - eu-north-1 (ストックホルム)
 - sa-east-1 (南米)
+- ap-southeast-3 (ジャカルタ)
+- ap-east-1 (香港)
 
 ## Google Cloud リージョン \{#google-cloud-regions\}
 
@@ -115,3 +117,6 @@ PCI 準拠リージョンでサービスをセットアップするには、Sale
 - AWS us-east-1 (N. Virginia)
 - AWS us-east-2 (Ohio)
 - AWS us-west-2 (Oregon)
+- GCP europe-west4 (Netherlands)
+- GCP us-central1 (Iowa)
+- GCP us-east1 (South Carolina)

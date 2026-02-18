@@ -27,7 +27,7 @@ If you need a more customized setup (for example, deploying into an existing VPC
 
 To start the onboarding process, please [contact us](https://clickhouse.com/cloud/bring-your-own-cloud). Our team will guide you through the BYOC requirements, help you select the most suitable deployment options, and add your account to the allowlist.
 
-## Onboarding {#onboarding-process} 
+## Onboarding {#onboarding-process}
 
 ### Prepare an AWS account/GCP project {#prepare-an-aws-account}
 
@@ -41,12 +41,12 @@ Prepare a fresh AWS account or GCP project under your organization. Visit our we
 
 ### Account/Project setup {#account-setup}
 
-The initial BYOC setup can be performed using either a [CloudFormation template(AWS)](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml) or a [Terraform module(GCP)](https://github.com/ClickHouse/terraform-byoc-onboarding/tree/main/modules/gcp). It creates a high priviledged IAM role, enabling BYOC controllers from ClickHouse Cloud to manage your infrastructure. 
+The initial BYOC setup can be performed using either a [CloudFormation template(AWS)](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml) or a [Terraform module(GCP)](https://github.com/ClickHouse/terraform-byoc-onboarding/tree/main/modules/gcp). It creates a high privileged IAM role, enabling BYOC controllers from ClickHouse Cloud to manage your infrastructure. 
 
 <Image img={byoc_onboarding_2} size="lg" alt="BYOC initialize account" background='black'/>
 
 :::note
-Storage buckets, VPC, Kubernetes cluster, and compute resources required for running ClickHouse are not included in this initial setup. They will be provisioned in the next step.
+Storage buckets, VPC, Kubernetes cluster, and compute resources required for running ClickHouse aren't included in this initial setup. They will be provisioned in the next step.
 :::
 #### Alternative Terraform Module for AWS {#terraform-module-aws}
 
@@ -62,11 +62,11 @@ module "clickhouse_onboarding" {
 
 ### Set up BYOC infrastructure {#setup-byoc-infrastructure}
 
-You will be prompted to set up the infrastructure, including S3 buckets, VPC, and the Kubernetes cluster, from the ClickHouse Cloud console. Certain configurations must be determined at this stage, as they cannot be changed later. Specifically:
+You will be prompted to set up the infrastructure, including S3 buckets, VPC, and the Kubernetes cluster, from the ClickHouse Cloud console. Certain configurations must be determined at this stage, as they can't be changed later. Specifically:
 
-- **Region**: All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments. Private regions are not currently supported.
+- **Region**: All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments. Private regions aren't currently supported.
 
-- **VPC CIDR range**: By default, we use `10.0.0.0/16` for the BYOC VPC CIDR range. If you plan to use VPC peering with another account, ensure the CIDR ranges do not overlap. Allocate a proper CIDR range for BYOC, with a minimum size of `/22` to accommodate necessary workloads.
+- **VPC CIDR range**: By default, we use `10.0.0.0/16` for the BYOC VPC CIDR range. If you plan to use VPC peering with another account, ensure the CIDR ranges don't overlap. Allocate a proper CIDR range for BYOC, with a minimum size of `/22` to accommodate necessary workloads.
 
 - **Availability Zones**: If you plan to use VPC peering, aligning availability zones between the source and BYOC accounts can help reduce cross-AZ traffic costs. For example, in AWS, availability zone suffixes (`a`, `b`, `c`) may represent different physical zone IDs across accounts. See the [AWS guide](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html) for details.
 
