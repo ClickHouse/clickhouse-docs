@@ -106,7 +106,7 @@ Navigate to **Client Sessions** from the left sidebar in the ClickStack UI (Hype
 
 <Image img={replay_search} alt="Session replay search view" size="lg"/>
 
-Click the ▶️ button on any session to replay it. The replay view shows the reconstructed user experience on the right, with a timeline of browser events — network requests, console logs, and errors — on the left.
+Click the play button on any session to replay it. The replay view shows the reconstructed user experience on the right, with a timeline of browser events — network requests, console logs, and errors — on the left.
 
 <Image img={session_replay} alt="Session replay playback" size="lg"/>
 
