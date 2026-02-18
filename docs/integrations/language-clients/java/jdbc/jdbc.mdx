@@ -253,7 +253,7 @@ There are few ways to change the mapping:
 | ClickHouse Type             | JDBC Type                    | Java Class                  |
 |-----------------------------|------------------------------|-----------------------------|
 | Array                       | ARRAY                        | java.sql.Array              |
-| Tuple                       | OTHER                        | java.sql.Array              |
+| Tuple                       | OTHER                        | com.clickhouse.data.Tuple              |
 | Map                         | JAVA_OBJECT                  | java.util.Map               |
 | Nested                      | ARRAY                        | java.sql.Array              |
 
@@ -318,28 +318,32 @@ try (Connection conn = ...) {
 
 **Writing Tuples**
 
-Tuples are mapped to `OTHER` but `java.sql.Array` should be used to write values because this object can define the type of the tuple elements.
-Then `Array` is created with base type naem of `Tuple` column definition it is treaded as `Tuple` type and will be encoded in that way..
-Array of tuples should be defined as `Array(Tuple(Int32, String))`.
-
+Tuples are mapped to `com.clickhouse.data.Tuple` object and should be written as this object by calling `setObject(columnIndex, tuple)` method.
+It is possible to use `java.sql.Struct` object to write tuples for better portability. 
 
 **Example**
 ```java
 try (Connection conn = ...) {
-    try (PreparedStatement stmt = conn.prepareStatement("SELECT ?::Tuple(String, Int32, Date)")) {
-        Array tuple = conn.createArrayOf("Tuple(String, Int32, Date)",  new Object[]{"test", 123, LocalDate.parse("2026-03-02")});
-        stmt.setObject(1, tuple);
-        try (ResultSet rs = stmt.executeQuery()) {
-            // reading data 
-        }
+    Tuple tuple = new Tuple(1, "test", LocalDate.parse("2026-03-02"));
+    try (PreparedStatement ps = conn.prepareStatement("INSERT INTO mytable (tuple) VALUES (?)")) {
+        ps.setObject(1, tuple);
+        ps.executeUpdate();
+    }
+}
+
+try (Connection conn = ...) {
+    Struct struct = conn.createStruct("Tuple(Int32, String, Date)", new Object[] {1, "test", LocalDate.parse("2026-03-02")});
+    try (PreparedStatement ps = conn.prepareStatement("INSERT INTO mytable (tuple) VALUES (?)")) {
+        ps.setStruct(1, struct);
+        ps.executeUpdate();
     }
 }
 ```
 
 **Reading Tuples**
 
-By default tuples are read as `Object[]` by using `getObject(columnIndex)` method. Tuples can be read as `java.sql.Array` by using `getObject(columnIndex, Array.class)` method.
-In this case `Array#baseTypeName` will return `Tuple` column definition.
+The method `getObject(columnIndex)` will return `Object[]`. Tuples can be read as `java.sql.Array` by using `getObject(columnIndex, Array.class)` method.
+
 
 **Example**
 ```java
@@ -378,9 +382,7 @@ try (Connection conn = ...) {
 
 **Reading Maps**
 
-Use `ResultSet#getStruct(columnIndex, StructDescriptor)` to read `Map` object. Object can be used to access map of any nested depth. 
-`Struct#getResultSet()` method can be used to read map elements in more unified way as `java.sql.ResultSet`. It is useful
-when exact type of map elements is unknown.
+Map can be read as `java.collections.Map` object by using `getObject(columnIndex, Map.class)` method.
 
 **Example**
 ```java
@@ -389,15 +391,8 @@ try (Connection conn = ...) {
         ps.setStruct(1, struct);
         try (ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                Struct struct = rs.getStruct(1);
-                Object[] tuple = (Object[]) struct;
-                Arrays.stream(tuple).forEach(this::handleTupleElement);
-
-                // or by using `ResultSet`
-                ResultSet resultSet = struct.getResultSet();
-                while (resultSet.next()) {
-                    // ...
-                }
+                Map<String, Integer> map = rs.getObject(1, Map.class);
+                // ...
             }
         }
     }
@@ -743,12 +738,13 @@ try (Connection conn = DriverManager.getConnection(url, properties)) {
 
 - In V2 `Array` is mapped to `java.sql.Array` by default to be compatible with JDBC. This is also done to give more information about returned array value. Useful for type inference.
 - In V2 `Array` implements `getResultSet()` method to return `java.sql.ResultSet` with the same content as the original array.
-- V1 uses `STRUCT` for `Map` but returns `java.util.Map` object always. V2 fixes this by mapping `Map` to `JAVA_OBJECT`. Besides `STRUCT` is invalid for `Map` because it doesn't have named columns.
-- V1 uses `STRUCT` for `Tuple` but returns `List<Object>` object always. V2 fixes this by mapping `Tuple` to `OTHER` and returns `Object[]` because using `List` is not valid as different types can be present.
+- V1 uses `STRUCT` for `Map` but returns `java.util.Map` object always. V2 fixes this by mapping `Map` to `JAVA_OBJECT`.
+- V1 uses `STRUCT` for `Tuple` but returns `List<Object>` object always. V2 maps `Tuple` to `OTHER` and returns `Object[]` by default.
+- V2 introduces `com.clickhouse.data.Tuple#Tuple` to write tuples. It simplifies determining if value is a tuple or and array.
 - `PreparedStatement#setBytes` and `ResultSet#getBytes` cannot be used with collection types. These methods are designed to work with binary strings.
 - Normally `java.sql.Array` is used to write and read Array types. JDBC driver has full support for this.
-- `Nested` is mapped to `OTHER` because it can contain different types and using `List` isn't valid.
-- V2 doesn't support `java.sql.Struct` because this type doesn't support key-value pairs what is required for nested types.
+- V2 `Nested` is mapped to `Array` and presents it as array of tuples.
+- V2 has partial support for `java.sql.Struct` because it very similar to Array type and doesn't support key-value pairs. `Struct` can be used to write `Tuple` values.
 
 **Geo Types**
 
