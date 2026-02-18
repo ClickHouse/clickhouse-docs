@@ -291,7 +291,7 @@ There are a few reasons why this can happen:
 #### There's duplicate data after a run is executed {#duplicate-data}
 Possible reasons:
 - Both `catchup=True` on the materialized view(s) and `repopulate_from_mvs_on_full_refresh=True` on the target table may be enabled: Keep only one of them depending on the operations you want to run. Check the [configuration section](#explicit-target-configuration) for more details.
-- Target table is not defined with `WHERE 0`: target table should be created empty, but the internal query may insert data if the `WHERE 0` is not included. Make sure it contains it.
+- Target table is not defined with `WHERE 0`: target table should be created empty, but the internal query may insert data if the `WHERE 0` is not included. Make sure the clause is included.
 
 #### Data loss during active ingestion after a `dbt run --full-refresh` is executed {#data-loss-active-ingestion}
 Some rows from the source table are missing in the target table after a `dbt run --full-refresh` is executed.
