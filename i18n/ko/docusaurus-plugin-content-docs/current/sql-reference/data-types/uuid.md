@@ -7,13 +7,11 @@ title: 'UUID'
 doc_type: 'reference'
 ---
 
-
-
 # UUID \{#uuid\}
 
 범용 고유 식별자(UUID, Universally Unique Identifier)는 레코드를 식별하는 데 사용되는 16바이트 값입니다. UUID에 대한 자세한 정보는 [Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier)를 참조하십시오.
 
-여러 UUID 변형이 존재하지만(참고: [여기](https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis)), ClickHouse는 삽입된 UUID가 특정 변형을 준수하는지 검증하지 않습니다.
+UUIDv4 및 UUIDv7과 같이 여러 UUID 변형이 존재하지만(참고: [여기](https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis)), ClickHouse는 삽입된 UUID가 특정 변형을 준수하는지 검증하지 않습니다.
 UUID는 내부적으로 16개의 임의 바이트 시퀀스로 취급되며, SQL 수준에서는 [8-4-4-4-12 표현](https://en.wikipedia.org/wiki/Universally_unique_identifier#Textual_representation)으로 표시됩니다.
 
 UUID 값 예시:
@@ -28,15 +26,23 @@ UUID 값 예시:
 00000000-0000-0000-0000-000000000000
 ```
 
+:::warning
 역사적인 이유로 UUID는 뒤쪽 절반을 기준으로 정렬됩니다.
-따라서 UUID는 테이블의 기본 키, 정렬 키 또는 파티션 키로 직접 사용하면 안 됩니다.
+
+이는 UUIDv4 값에는 문제가 없지만, 기본 키 인덱스 정의에 사용되는 UUIDv7 컬럼(정렬 키나 파티션 키에서 사용하는 것은 괜찮습니다)의 경우 성능을 저하시킬 수 있습니다.
+좀 더 구체적으로 말하면, UUIDv7 값은 앞쪽 절반에 타임스탬프, 뒤쪽 절반에 카운터가 포함되어 있습니다.
+따라서 희소 기본 키 인덱스(예: 각 인덱스 그래뉼(granule)의 첫 번째 값)에서 UUIDv7은 카운터 필드를 기준으로 정렬됩니다.
+만약 UUID가 앞쪽 절반(타임스탬프)을 기준으로 정렬된다면, 쿼리 시작 시 기본 키 인덱스 분석 단계에서 하나의 파트를 제외한 모든 파트의 모든 마크를 제거(prune)할 것으로 예상됩니다.
+그러나 뒤쪽 절반(카운터)을 기준으로 정렬되면, 모든 파트에 대해 최소 한 개의 마크가 반환될 것으로 예상되며, 이로 인해 불필요한 디스크 액세스가 발생합니다.
+:::
 
 예시:
 
 ```sql
-CREATE TABLE tab (uuid UUID) ENGINE = Memory;
-INSERT INTO tab SELECT generateUUIDv4() FROM numbers(50);
-SELECT * FROM tab ORDER BY uuid;
+CREATE TABLE tab (uuid UUID) ENGINE = MergeTree PRIMARY KEY (uuid);
+
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(50);
+SELECT * FROM tab;
 ```
 
 결과:
@@ -57,40 +63,22 @@ SELECT * FROM tab ORDER BY uuid;
 └──────────────────────────────────────┘
 ```
 
-우회 방법으로 UUID를 직관적으로 정렬되는 타입으로 변환할 수 있습니다.
-
-UInt128로 변환하는 예시는 다음과 같습니다:
+우회 방법으로, UUID를 뒤쪽 절반에서 추출한 타임스탬프로 변환할 수 있습니다:
 
 ```sql
-CREATE TABLE tab (uuid UUID) ENGINE = Memory;
-INSERT INTO tab SELECT generateUUIDv4() FROM numbers(50);
-SELECT * FROM tab ORDER BY toUInt128(uuid);
+CREATE TABLE tab (uuid UUID) ENGINE = MergeTree PRIMARY KEY (UUIDv7ToDateTime(uuid));
+-- Or alternatively:                      [...] PRIMARY KEY (toStartOfHour(UUIDv7ToDateTime(uuid)));
+
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(50);
+SELECT * FROM tab;
 ```
 
-결과:
-
-```sql
-┌─uuid─────────────────────────────────┐
-│ 018b81cd-aca1-4e9c-9e56-a84a074dc1a8 │
-│ 02380033-c96a-438e-913f-a2c67e341def │
-│ 057cf435-7044-456a-893b-9183a4475cea │
-│ 0a3c1d4c-f57d-44cc-8567-60cb0c46f76e │
-│ 0c15bf1c-8633-4414-a084-7017eead9e41 │
-│                [...]                 │
-│ f808cf05-ea57-4e81-8add-29a195bde63d │
-│ f859fb5d-764b-4a33-81e6-9e4239dae083 │
-│ fb1b7e37-ab7b-421a-910b-80e60e2bf9eb │
-│ fc3174ff-517b-49b5-bfe2-9b369a5c506d │
-│ fece9bf6-3832-449a-b058-cd1d70a02c8b │
-└──────────────────────────────────────┘
-```
+ORDER BY (UUIDv7ToDateTime(uuid), uuid)
 
 
 ## UUID 생성 \{#generating-uuids\}
 
 ClickHouse는 무작위 UUID 버전 4 값을 생성하는 함수 [generateUUIDv4](../../sql-reference/functions/uuid-functions.md)를 제공합니다.
-
-
 
 ## 사용 예시 \{#usage-example\}
 

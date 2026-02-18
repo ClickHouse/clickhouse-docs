@@ -2276,7 +2276,7 @@ SETTINGS convert_query_to_cnf = true;
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "默认对所有同步和异步插入启用去重。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "用于控制 INSERT 查询去重的新设置。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "用于控制 INSERT 查询去重的新设置。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "默认对所有同步和异步插入启用去重。"}]}]}/>
 
 启用或禁用 `INSERT INTO` 的块级去重（适用于 Replicated\* 表）。
 该设置会覆盖 `insert_deduplicate` 和 `async_insert_deduplicate` 两个设置。
@@ -8036,7 +8036,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 <SettingsInfoBlock type="FloatAuto" default_value="auto" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "auto"},{"label": "New setting"}]}]}/>
 
 为 ZooKeeper 请求启动 trace 的概率，与是否存在父 trace 无关。
 
@@ -8761,6 +8761,16 @@ FROM default.fuse_tbl AS __table1
 
 当使用基于哈希的 join 算法时，此阈值用于在 `hash` 和 `parallel_hash` 之间进行选择（仅当可以估算右表大小时适用）。
 当我们知道右表大小低于该阈值时，会使用前者。
+
+## parallel_non_joined_rows_processing \{#parallel_non_joined_rows_processing\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "用于在 RIGHT/FULL parallel_hash JOIN 中启用对右表未匹配行进行并行处理的新设置。"}]}]}/>
+
+允许在 RIGHT 和 FULL JOIN 期间，由多个线程并行处理右表中的未匹配行。
+在对大表使用 `parallel_hash` JOIN 算法时，这可以加速未匹配行处理阶段。
+当禁用该设置时，未匹配行将由单个线程处理。
 
 ## parallel_replica_offset \{#parallel_replica_offset\}
 
