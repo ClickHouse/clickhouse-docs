@@ -53,7 +53,8 @@ SETTINGS index_granularity=8192;
 INSERT INTO skip_table SELECT number, intDiv(number,4096) FROM numbers(100000000);
 ```
 
-主キーを使わない単純なクエリを実行すると、`my_value` 列の 1 億件すべてのエントリがスキャンされます。
+主キーを使わない単純なクエリを実行すると、`my_value`
+カラムの 1 億件すべてのエントリがスキャンされます。
 
 ```sql
 SELECT * FROM skip_table WHERE my_value IN (125, 700)
@@ -67,7 +68,7 @@ SELECT * FROM skip_table WHERE my_value IN (125, 700)
 8192 rows in set. Elapsed: 0.079 sec. Processed 100.00 million rows, 800.10 MB (1.26 billion rows/s., 10.10 GB/s.
 ```
 
-ここで、ごく基本的なスキップインデックスを追加してみます：
+ここで、ごく基本的なスキップインデックスを追加します：
 
 ```sql
 ALTER TABLE skip_table ADD INDEX vix my_value TYPE set(100) GRANULARITY 2;
@@ -191,16 +192,6 @@ Bloom フィルターに基づくデータスキッピングインデックス�
 ```sql
 SELECT timestamp, url FROM table WHERE visitor_id = 1001`
 ```
-
-スキップインデックスは必ずしも直感的ではなく、特に RDBMS の行ベースのセカンダリインデックスやドキュメントストアの転置インデックスに慣れたユーザーにはわかりにくいものです。効果を得るには、ClickHouse のデータスキップインデックスを適用することで、インデックスを計算するコストを上回るだけの十分なグラニュールの読み取りを回避する必要があります。重要なのは、インデックス化されたブロック内にある値が 1 回でも出現すると、そのブロック全体をメモリに読み込んで評価しなければならず、その場合インデックスのコストが無駄に発生してしまうという点です。
-
-次のようなデータ分布を考えてみます:
-
-<Image img={bad_skip} size="md" alt="不適切なスキップインデックス" />
-
-`timestamp` が primary/ORDER BY キーであり、`visitor_id` にインデックスがあるとします。次のクエリを考えてみます:
-
-SELECT timestamp, url FROM table WHERE visitor&#95;id = 1001`
 
 このようなデータ分布では、従来型のセカンダリインデックスは非常に有利に働きます。要求された visitor&#95;id を持つ 5 行を見つけるために
 32768 行すべてを読み取る代わりに、セカンダリインデックスには 5 行分の位置だけが格納され、それら 5 行だけがディスクから

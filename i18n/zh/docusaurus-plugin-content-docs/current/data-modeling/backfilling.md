@@ -165,7 +165,7 @@ FROM pypi_v2
 GROUP BY project
 ```
 
-我们将第二个大小大致相同的数据子集写入该表，并确认加载成功。
+我们将第二个规模大致相同的数据子集加载到该表中，并确认加载成功。
 
 ```sql
 INSERT INTO pypi_v2 SELECT *

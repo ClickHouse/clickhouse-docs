@@ -6,5 +6,5 @@ import Image from '@theme/IdealImage';
     <Image img={cp_step1} alt="Select imports" size="lg" border/>
 
     :::tip
-    Due to differences in URL formats and API implementations across object storage service providers, not all S3-compatible services are supported out-of-the-box. If you're running into issues with a service that is not listed under [supported data sources](/integrations/clickpipes/object-storage/s3/overview#supported-data-sources), please [reach out to our team](https://clickhouse.com/company/contact?loc=clickpipes).
+    Due to differences in URL formats and API implementations across object storage service providers, not all S3-compatible services are supported out-of-the-box. If you're running into issues with a service that isn't listed under [supported data sources](/integrations/clickpipes/object-storage/s3/overview#supported-data-sources), please [reach out to our team](https://clickhouse.com/company/contact?loc=clickpipes).
     :::

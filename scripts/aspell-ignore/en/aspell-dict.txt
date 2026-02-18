@@ -1395,6 +1395,7 @@ Spearman's
 Splunk
 Splunkbase
 Splunkd
+SqlCompatibilitySettings
 SquaredDistance
 SquaredNorm
 StartTLS
@@ -3201,6 +3202,7 @@ protobuf
 protobuflist
 protobufsingle
 protocol
+provisioner
 proxied
 prql
 pseudorandom

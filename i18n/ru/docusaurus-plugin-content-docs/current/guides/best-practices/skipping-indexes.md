@@ -53,7 +53,7 @@ SETTINGS index_granularity=8192;
 INSERT INTO skip_table SELECT number, intDiv(number,4096) FROM numbers(100000000);
 ```
 
-При выполнении простого запроса без использования первичного ключа сканируются все 100 миллионов записей столбца `my_value`:
+При выполнении простого запроса без использования первичного ключа сканируются все 100 миллионов записей в столбце `my_value`:
 
 ```sql
 SELECT * FROM skip_table WHERE my_value IN (125, 700)
@@ -67,7 +67,7 @@ SELECT * FROM skip_table WHERE my_value IN (125, 700)
 8192 rows in set. Elapsed: 0.079 sec. Processed 100.00 million rows, 800.10 MB (1.26 billion rows/s., 10.10 GB/s.
 ```
 
-Теперь добавьте очень простой индекс пропуска данных:
+Теперь добавьте простейший индекс пропуска данных:
 
 ```sql
 ALTER TABLE skip_table ADD INDEX vix my_value TYPE set(100) GRANULARITY 2;
@@ -81,7 +81,7 @@ ALTER TABLE skip_table ADD INDEX vix my_value TYPE set(100) GRANULARITY 2;
 ALTER TABLE skip_table MATERIALIZE INDEX vix;
 ```
 
-Повторно выполните запрос с только что созданным индексом:
+Повторно выполните запрос, используя только что созданный индекс:
 
 ```sql
 SELECT * FROM skip_table WHERE my_value IN (125, 700)

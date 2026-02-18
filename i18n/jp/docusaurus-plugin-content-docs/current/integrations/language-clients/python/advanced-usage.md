@@ -115,6 +115,7 @@ asyncio.run(main())
 
 関連項目: [run&#95;async の例](https://github.com/ClickHouse/clickhouse-connect/blob/main/examples/run_async.py)。
 
+
 ## ClickHouse セッション ID の管理 \{#managing-clickhouse-session-ids\}
 
 各 ClickHouse クエリは、ClickHouse の「セッション」コンテキスト内で実行されます。セッションは現在、次の 2 つの目的で使用されています。
@@ -139,6 +140,7 @@ client = clickhouse_connect.get_client(host='somehost.com', user='dbuser', passw
 または、`autogenerate_session_id=False` を直接 `get_client(...)` に渡します。
 
 この場合、ClickHouse Connect は `session_id` を送信せず、サーバーは個々のリクエストを同じセッションに属するものとして扱いません。一時テーブルおよびセッションレベルの設定は、リクエスト間で保持されません。
+
 
 ## HTTP コネクションプールのカスタマイズ \{#customizing-the-http-connection-pool\}
 

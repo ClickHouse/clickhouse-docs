@@ -1,0 +1,34 @@
+---
+date: 2023-06-07
+title: 왜 ZooKeeper 대신 ClickHouse Keeper를 권장하나요?
+description: ClickHouse Keeper는 ZooKeeper 대비 디스크 공간 절감, 더 빠른 복구, 더 낮은 메모리 사용량 등 여러 향상점을 제공하여 ClickHouse 클러스터에서 더 우수한 성능을 발휘합니다.
+tags: ['핵심 데이터 개념']
+keywords: ['ClickHouse Keeper', 'ZooKeeper']
+---
+
+{frontMatter.description}
+
+{{/* 생략 */}}
+
+***
+
+## Question \{#question\}
+
+ClickHouse Keeper는 데이터 복제(replication)와 분산 DDL(distributed DDL) 쿼리 실행을 조정하는 시스템을 제공합니다. ClickHouse Keeper는 ZooKeeper와 호환되지만, ZooKeeper 대신 ClickHouse Keeper를 사용해야 하는 이유가 명확하지 않을 수 있습니다. 이 문서에서는 Keeper의 몇 가지 이점을 설명합니다.
+
+## Answer \{#answer\}
+
+[ClickHouse Cloud](https://console.clickhouse.cloud/)는 멀티 테넌트 환경에서 수천 개의 서비스를 대상으로 대규모로 `clickhouse-keeper`를 사용합니다. Java 기반 ZooKeeper 구현체에 대한 의존성을 제거하기 위해 Keeper를 설계하고 구현했습니다. ClickHouse Keeper는 ZooKeeper의 잘 알려진 여러 단점을 해결하고 다음과 같은 추가 개선 사항을 제공합니다:
+
+* 더 나은 압축 덕분에 스냅샷과 로그가 훨씬 적은 디스크 공간을 사용함
+* 기본 패킷 및 노드 데이터 크기에 대한 제한이 없음(ZooKeeper에서는 1 MB)
+* `zxid` 오버플로 문제 없음(ZooKeeper에서는 20억 트랜잭션마다 재시작이 필요함)
+* 더 나은 분산 합의 프로토콜을 사용하여 네트워크 파티션 이후 더 빠른 복구
+* 동일한 데이터 양에 대해 더 적은 메모리 사용
+* 설정이 더 간단하며, JVM 힙 크기나 커스텀 가비지 컬렉션 구현을 지정할 필요가 없음
+* 프로토콜에 몇 가지 커스텀 명령을 추가하여 `ReplicatedMergeTree` 테이블에서 더 빠른 작업 수행 가능
+* Jepsen 테스트로 더 넓은 범위가 검증됨
+
+또한 ClickHouse Support는 ZooKeeper 대신 `clickhouse-keeper`를 사용하는 사이트에서 클러스터 문제 발생이 크게 감소한 것을 확인했습니다.
+
+ClickHouse Keeper를 구성하고 실행하는 방법에 대한 자세한 내용은 [Keeper 문서 페이지](https://clickhouse.com/docs/guides/sre/keeper/clickhouse-keeper)를 확인하십시오.

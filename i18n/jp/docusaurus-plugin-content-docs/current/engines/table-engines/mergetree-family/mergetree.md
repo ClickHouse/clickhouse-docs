@@ -356,6 +356,8 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`bloom_filter`](#bloom-filter) インデックス
 - [`ngrambf_v1`](#n-gram-bloom-filter) インデックス
 - [`tokenbf_v1`](#token-bloom-filter) インデックス
+- [`text`]({#text}) インデックス
+- [`vector_similarity`]({#vector-similarity}) インデックス
 
 #### MinMax スキップインデックス \{#minmax\}
 
@@ -495,7 +497,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 ### テキスト索引 \{#text\}
 
-全文検索をサポートしています。詳細は[こちら](textindexes.md)を参照してください。
+トークン化された文字列データに対して倒立索引を構築し、効率的かつ決定論的な全文検索を実現します。詳細は[こちら](textindexes.md)を参照してください。
 
 #### ベクトル類似性 \{#vector-similarity\}
 
@@ -1080,9 +1082,12 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 
 [外部ストレージオプションの設定](/operations/storing-data.md/#configuring-external-storage)も参照してください。
 
+共有ストレージ上で、1 ライター/多リーダー構成の非レプリケートな MergeTree テーブルを構成することが可能です。これは、リーダー側で設定できるパーツリストの自動リフレッシュによって実現されます。この機能には、レプリカ間でファイルシステムのメタデータを共有していること（またはテーブルローカルディスクを使用する場合の `table_disk = true`）が必要であることに注意してください。[refresh&#95;parts&#95;interval と table&#95;disk](/operations/storing-data.md/#refresh-parts-interval-and-table-disk)を参照してください。
+
 :::note キャッシュ設定
 ClickHouse バージョン 22.3 から 22.7 までは異なるキャッシュ設定が使用されています。これらのバージョンのいずれかを使用している場合は、[ローカルキャッシュの使用](/operations/storing-data.md/#using-local-cache)を参照してください。
 :::
+
 
 ## 仮想カラム \{#virtual-columns\}
 

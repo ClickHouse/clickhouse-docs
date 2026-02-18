@@ -191,6 +191,7 @@ TTL 不是立即应用，而是按计划执行，如上所述。MergeTree 表设
 
 **重要：我们推荐使用设置 [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts)**（默认模式中已应用）。启用该设置后，当一个数据分片中的所有行都已过期时，ClickHouse 会直接删除整个分片。相比于在 `ttl_only_drop_parts=0` 时通过资源消耗较大的 mutation 对 TTL 过期的行进行部分清理，删除整个分片可以缩短 `merge_with_ttl_timeout` 的时间，并降低对系统性能的影响。如果数据按与执行 TTL 过期相同的时间单位进行分区，例如按天分区，那么各个分片自然只会包含该时间区间的数据。这将确保可以高效地应用 `ttl_only_drop_parts=1`。
 
+
 ### 列级 TTL \{#column-level-ttl\}
 
 上面的示例是在表级别设置数据过期。你也可以在列级别设置数据过期。随着数据变旧，可以用这种方式删除那些在排障或分析中价值不足以抵消其保留成本的列。例如，我们建议保留 `Body` 列，以防新增的动态元数据在插入时尚未被提取出来，比如一个新的 Kubernetes 标签。在经过一段时间（例如 1 个月）后，如果显然这些附加元数据并没有带来实际价值，那么继续保留 `Body` 列的意义就有限了。

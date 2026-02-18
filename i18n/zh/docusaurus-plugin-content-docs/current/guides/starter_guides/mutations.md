@@ -57,6 +57,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 无法更新属于主键或排序键的列。
 :::
 
+
 ## 删除数据 \{#deleting-data\}
 
 使用 `ALTER TABLE` 命令删除行：
@@ -84,6 +85,7 @@ ALTER TABLE [<database>.]<table> DELETE WHERE <filter_expr>
 :::
 
 请参阅 [`DELETE` 语句](/sql-reference/statements/delete.md) 文档页面了解更多详细信息。
+
 
 ## 轻量级删除 \{#lightweight-deletes\}
 

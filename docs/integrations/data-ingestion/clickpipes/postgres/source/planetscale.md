@@ -94,7 +94,7 @@ Connect to your PlanetScale Postgres instance using the default `postgres.<...>`
 
 ## Caveats {#caveats}
 1. To connect to PlanetScale Postgres, the current branch needs to be appended to the username created above. For example, if the created user was named `clickpipes_user`, the actual user provided during the ClickPipe creation needs to be `clickpipes_user`.`branch` where `branch` refers to the "id" of the current PlanetScale Postgres [branch](https://planetscale.com/docs/postgres/branching). To quickly determine this, you can refer to the username of the `postgres` user you used to create the user earlier, the part after the period would be the branch id.
-2. Do not use the `PSBouncer` port (currently `6432`) for CDC pipes connecting to PlanetScale Postgres, the normal port `5432` must be used. Either port may be used for initial-load only pipes.
+2. Don't use the `PSBouncer` port (currently `6432`) for CDC pipes connecting to PlanetScale Postgres, the normal port `5432` must be used. Either port may be used for initial-load only pipes.
 3. Please ensure you're connecting only to the primary instance, [connecting to replica instances](https://planetscale.com/docs/postgres/scaling/replicas#how-to-query-postgres-replicas) is currently not supported. 
 
 ## What's next? {#whats-next}

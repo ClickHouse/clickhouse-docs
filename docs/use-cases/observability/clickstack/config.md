@@ -210,7 +210,7 @@ Highlighted Attributes and Highlighted Trace Attributes can be configured on Log
 - Highlighted Attributes are columns or expressions which are displayed for each log or span, when viewing log or span details.
 - Highlighted Trace Attributes are columns or expressions which are queried from each log or span in a trace, and displayed above the trace waterfall.
 
-These attributes are defined in the source configuration and can be arbitrary SQL expressions. If the SQL expression returns a value that is in the format of a URL, then the attribute will be displayed as a link. Empty values are not displayed.
+These attributes are defined in the source configuration and can be arbitrary SQL expressions. If the SQL expression returns a value that is in the format of a URL, then the attribute will be displayed as a link. Empty values aren't displayed.
 
 For example, this trace source has been configured with a Highlighted Attribute and a Highlighted Trace Attribute:
 

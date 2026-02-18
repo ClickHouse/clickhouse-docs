@@ -13,9 +13,9 @@ doc_type: 'reference'
 
 引入版本:v1.1
 
-计算数据集的样本方差。与 [`varSamp`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/varsamp) 不同,该函数使用[数值稳定](https://en.wikipedia.org/wiki/Numerical_stability)算法。运行速度较慢,但计算误差更小。
+计算数据集的样本方差。与 [`varSamp`](/sql-reference/aggregate-functions/reference/varSamp) 不同,该函数使用[数值稳定](https://en.wikipedia.org/wiki/Numerical_stability)算法。运行速度较慢,但计算误差更小。
 
-样本方差的计算公式与 [`varSamp`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/varsamp) 相同:
+样本方差的计算公式与 [`varSamp`](/sql-reference/aggregate-functions/reference/varSamp) 相同:
 
 $$
 \frac{\Sigma{(x - \bar{x})^2}}{n-1}
@@ -23,29 +23,29 @@ $$
 
 <br />
 
-Where:
+其中:
 
-- $x$ is each individual data point in the data set
-- $\bar{x}$ is the arithmetic mean of the data set
-- $n$ is the number of data points in the data set
+- $x$ 是数据集中的每个单独数据点
+- $\bar{x}$ 是数据集的算术平均值
+- $n$ 是数据集中的数据点数量
 
-**Syntax**
+**语法**
 
 ```sql
 varSampStable(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The population for which you want to calculate the sample variance. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+- `x` — 要计算样本方差的总体。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
-**Returned value**
+**返回值**
 
-Returns the sample variance of the input data set. [`Float64`](/sql-reference/data-types/float)
+返回输入数据集的样本方差。[`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**示例**
 
-**Computing stable sample variance**
+**计算稳定样本方差**
 
 ```sql title=Query
 DROP TABLE IF EXISTS test_data;

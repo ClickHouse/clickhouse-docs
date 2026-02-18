@@ -62,7 +62,7 @@ ClickHouse Cloud 需要跨账户 IAM 权限，才能在你的云账户中创建�
 
 这些权限通过你在初始接入流程中创建的跨账户 IAM 角色（AWS）或 service account（GCP）授予。该角色遵循最小权限原则，权限范围仅限于 BYOC 运行所必需的内容。
 
-有关所需具体权限的详细信息，请参阅 [BYOC 权限参考](/cloud/reference/byoc/reference/priviledge)。
+有关所需具体权限的详细信息，请参阅 [BYOC 权限参考](/cloud/reference/byoc/reference/privilege)。
 
 ### Tailscale 私有网络连接 \{#tailscale-private-network\}
 

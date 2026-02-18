@@ -28,8 +28,6 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 - Индивидуальное предложение от ClickHouse с особыми условиями контракта.
 
-
-
 ## Шаги для регистрации \{#steps-to-sign-up\}
 
 1. Вы должны были получить электронное письмо со ссылкой для просмотра и принятия приватного предложения.
@@ -97,6 +95,8 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 <br />
 
 <Image img={azure_marketplace_committed_8} size="md" alt="Страница отправки подписки Azure Marketplace" border/>
+
+<br />
 
 <br />
 

@@ -31,7 +31,7 @@ SET my_setting=value;
 In 99% of cases you don't need the Advanced tab, for the remaining 1% you can use the following settings:
 - **Custom Connection Parameters**. By default, `socket_timeout` is already specified, this parameter may need to be changed if some extracts are updated for a very long time. The value of this parameter is specified in milliseconds. The rest of the parameters can be found [here](https://github.com/ClickHouse/clickhouse-jdbc/blob/master/clickhouse-client/src/main/java/com/clickhouse/client/config/ClickHouseClientOption.java), add them in this field separated by commas
 - **JDBC Driver custom_http_params**. This field allows you to drop some parameters into the ClickHouse connection string by passing values to the [`custom_http_params` parameter of the driver](https://github.com/ClickHouse/clickhouse-jdbc#configuration). For example, this is how `session_id` is specified when the *Set Session ID* checkbox is activated
-- **JDBC Driver `typeMappings`**. This field allows you to [pass a list of ClickHouse data type mappings to Java data types used by the JDBC driver](https://github.com/ClickHouse/clickhouse-jdbc#configuration). The connector automatically displays large Integers as strings thanks to this parameter, you can change this by passing your mapping set *(I do not know why)* using
+- **JDBC Driver `typeMappings`**. This field allows you to [pass a list of ClickHouse data type mappings to Java data types used by the JDBC driver](https://github.com/ClickHouse/clickhouse-jdbc#configuration). The connector automatically displays large Integers as strings thanks to this parameter, you can change this by passing your mapping set *(I don't know why)* using
     ```text
     UInt256=java.lang.Double,Int256=java.lang.Double
     ```
@@ -55,4 +55,4 @@ However, such fields are most often used to find the number of unique values *(I
 ```text
 COUNTD([myUInt256]) // Works well too!
 ```
-When using the data preview (View data) of a table with UInt64 fields, an error does not appear now.
+When using the data preview (View data) of a table with UInt64 fields, an error doesn't appear now.

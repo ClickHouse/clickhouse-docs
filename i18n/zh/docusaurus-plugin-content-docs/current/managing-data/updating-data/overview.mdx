@@ -2,123 +2,140 @@
 slug: /updating-data/overview
 title: '概览'
 description: '如何在 ClickHouse 中更新数据'
-keywords: ['更新', '更新数据']
+keywords: ['update', 'updating data', 'mutations', 'lightweight updates']
 doc_type: 'guide'
 ---
 
-## 在 ClickHouse 和 OLTP 数据库中更新数据的差异 \{#differences-between-updating-data-in-clickhouse-and-oltp-databases\}
+在处理更新操作时，分析型数据库与事务型数据库由于其底层设计理念和目标使用场景的不同而存在显著差异。
+比如，PostgreSQL 作为一种行式、符合 ACID 的关系型数据库，支持健壮且具事务性的更新和删除操作，并通过多版本并发控制（Multi-Version Concurrency Control，[MVCC](https://en.wikipedia.org/wiki/Multiversion_concurrency_control)）等机制来确保数据的一致性和完整性。
+这使得即便在高并发环境下，也能够安全可靠地进行数据修改。
 
-在处理更新操作时，ClickHouse 与 OLTP 数据库由于其底层设计理念和目标使用场景的不同而存在显著差异。比如，PostgreSQL 作为一种行式、符合 ACID 的关系型数据库，支持健壮且具事务性的更新和删除操作，并通过多版本并发控制（Multi-Version Concurrency Control，MVCC）等机制来确保数据的一致性和完整性。这使得即便在高并发环境下，也能够安全可靠地进行数据修改。
+相反，ClickHouse 是一种列式数据库，针对读取为主的分析场景以及高吞吐的仅追加写入操作进行了优化。
+虽然它原生支持就地更新和删除操作，但必须谨慎使用以避免过高的 I/O。
+作为替代方案，可以通过重构表结构，将删除和更新转换为追加型操作，使其在异步和/或读时进行处理，从而体现出其对高吞吐数据摄取和高效查询性能的侧重，而非实时数据变更。
 
-相反，ClickHouse 是一种列式数据库，针对读取为主的分析场景以及高吞吐的仅追加写入操作进行了优化。虽然它原生支持原位更新和删除操作，但必须谨慎使用以避免过高的 I/O。作为替代方案，可以通过重构表结构，将删除和更新转换为追加型操作，使其在异步和/或读时被处理，从而体现出其对高吞吐数据摄取和高效查询性能的侧重，而非实时数据变更。
+本指南概述了 ClickHouse 中可用的更新方法，并帮助你根据具体用例选择合适的更新策略。
 
-## 在 ClickHouse 中更新数据的方法 \{#methods-to-update-data-in-clickhouse\}
+## 选择更新策略 \{#choosing-an-update-strategy\}
 
-在 ClickHouse 中有多种方法可以更新数据，每种方法都有各自的优势和性能特征。应根据数据模型以及计划更新的数据量选择合适的方法。
+在 ClickHouse 中更新数据大致有两种基本方法：
 
-对于这两类操作，如果在一段时间内提交的变更数量持续超过后台实际处理的变更数量，那么需要被应用的未物化变更队列会不断增长。这将最终导致 `SELECT` 查询性能下降。
+1. 使用**专用表引擎**，通过插入操作来处理更新
+2. 使用诸如 [`UPDATE ... SET`](/sql-reference/statements/update) 或 [`ALTER TABLE ... UPDATE`](/sql-reference/statements/alter/update) 之类的**声明式更新**语句
 
-总之，应谨慎执行更新操作，并通过 `system.mutations` 表密切监控变更队列。不要像在 OLTP 数据库中那样频繁执行更新。如果确实有频繁更新的需求，请参阅 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)。
+在上述两大类别中，各自都有多种更新数据的方式。
+每种方式都有其各自的优点和性能特征，你应根据数据模型以及计划更新的数据量来选择合适的方法。
 
-| 方法                                                                                 | 语法                                | 使用场景                                                                                                                                                                                                                                  |
+### 何时使用专用表引擎 \{#when-to-use-specialized-table-engines\}
+
+当存在大量更新、频繁的行级变更，或需要处理持续不断的更新与删除事件流时，专用表引擎是更好的选择。
+
+通常会遇到的引擎包括：
+
+| Engine                                                                                | Syntax                               | When to use                                                                                                                                                                                                                              |
 |---------------------------------------------------------------------------------------|--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Update 变更](/sql-reference/statements/alter/update)                          | `ALTER TABLE [table] UPDATE`         | 当数据必须立即落盘更新时使用（例如，为了满足合规要求）。会对 `SELECT` 性能产生负面影响。                                                                                                                        |
-| [轻量级更新](/sql-reference/statements/update)                            | `UPDATE [table] SET ... WHERE`       | 用于更新少量数据（最多约占整张表的 10%）。创建补丁部件以实现立即可见，而无需重写整个列。会为 `SELECT` 查询增加开销，但延迟可预测。目前为实验特性。      |
-| [即时更新](/guides/developer/on-the-fly-mutations)                         | `ALTER TABLE [table] UPDATE`         | 通过 `SET apply_mutations_on_fly = 1;` 启用。用于更新少量数据。后续所有 `SELECT` 查询会立即返回已更新的数据，但这些行在磁盘上最初仅在内部被标记为已更新。 |
 | [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)   | `ENGINE = ReplacingMergeTree`        | 在更新大量数据时使用。此表引擎针对合并过程中的数据去重进行了优化。                                                                                                                                |
+| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree) | `ENGINE = CoalescingMergeTree`       | 当数据以碎片形式到达，并且你需要在列级进行合并而不是整行替换时使用。                                                                                                                                |
 | [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | `ENGINE = CollapsingMergeTree(Sign)` | 在需要频繁更新单行记录，或需要维护随时间变化对象的最新状态的场景中使用。例如，用于跟踪用户活动或文章统计数据。                                       |
 
-## 更新变更 \{#update-mutations\}
+由于 MergeTree 系列表引擎会在后台合并数据分区片段，它们提供的是_最终一致性_，因此在查询表时，需要使用 [`FINAL`](/sql-reference/statements/select/from#final-modifier) 关键字，以确保在此期间能够正确完成去重。
+还有其他[引擎类型](/engines/table-engines/mergetree-family)，但以上这些是最常用的几种。
 
-可以通过 `ALTER TABLE ... UPDATE` 命令发起更新变更，例如：
+### 何时使用声明式更新 \{#when-to-use-declarative-updates\}
+
+对于不需要自行管理去重逻辑的简单更新操作，声明式 `UPDATE` 语句会更直接，但相较于使用专用引擎，它通常更适合不太频繁地更新较少数量的行。
+
+| 方法                                                       | 语法                         | 使用场景                                                                                                                                                                                                                                  |
+|--------------------------------------------------------------|--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Update 变更](/sql-reference/statements/alter/update)    | `ALTER TABLE [table] UPDATE`   | 当数据必须立即落盘更新时使用（例如，为了满足合规要求）。会对 `SELECT` 性能产生负面影响。                                                                                                                        |
+| [即时更新](/guides/developer/on-the-fly-mutations) | `ALTER TABLE [table] UPDATE`   | 用于更新少量数据。后续所有 `SELECT` 查询会立即返回已更新的数据，但这些行在磁盘上最初仅在内部被标记为已更新。通过 `SET apply_mutations_on_fly = 1;` 启用。  |
+| [轻量级更新](/sql-reference/statements/update)      | `UPDATE [table] SET ... WHERE` | 用于更新少量数据（最多约占整张表的 10%）。创建补丁部件以实现立即可见，而无需重写整个列。会为 `SELECT` 查询增加开销，但延迟可预测。                              |
+
+## 使用专用表引擎进行数据更新 \{#insert-based-updates\}
+
+### ReplacingMergeTree \{#replacingmergetree\}
+
+`ReplacingMergeTree` 在后台合并过程中，会对具有相同排序键的行进行去重，只保留其中最新版本的数据。
 
 ```sql
-ALTER TABLE posts_temp
-        (UPDATE AnswerCount = AnswerCount + 1 WHERE AnswerCount = 0)
+CREATE TABLE posts
+(
+    Id UInt32,
+    Title String,
+    ViewCount UInt32,
+    Version UInt32
+)
+ENGINE = ReplacingMergeTree(Version)
+ORDER BY Id
 ```
 
-这些操作是极其 I/O 密集型的，会重写所有符合 `WHERE` 表达式的数据部分。此过程不具备原子性——一旦变更后的数据部分准备就绪，就会立即替换原有部分；在变更执行期间启动的 `SELECT` 查询会同时看到已经变更的数据部分和尚未变更的数据部分。用户可以通过 [systems.mutations](/operations/system-tables/mutations) 表跟踪进度状态。这些操作的 I/O 开销很大，应尽量少用，因为它们会影响集群的 `SELECT` 性能。
+此引擎非常适合对由稳定键标识的单行数据进行高频更新。
+基准测试表明，在单行更新场景下，它的速度最高可比使用 mutation 的方式快 4,700 倍。
 
-在[更新变更](/sql-reference/statements/alter/update)中了解更多信息。
+要更新一行，只需插入一个具有相同排序键值且版本号更高的新版本。旧版本会在后台合并过程中被移除。由于去重是最终完成的（仅在合并期间发生），应使用 `FINAL` 修饰符或等效的查询逻辑来获得正确且已去重的结果。`FINAL` 修饰符会带来约 21–550% 的查询开销，具体取决于数据情况。
 
-## 轻量级更新 \{#lightweight-updates\}
+ReplacingMergeTree 无法更新排序键的值。它还支持用于逻辑删除的 `Deleted` 列。
 
-轻量级更新是 ClickHouse 的一项功能，它通过“补丁分片（patch parts）”来更新行——这些是只包含已更新列和行的特殊数据分片，而不是像传统变更那样重写整个列。轻量级 `UPDATE` 的主要特性：
+了解更多： [ReplacingMergeTree 指南](/guides/replacing-merge-tree) | [ReplacingMergeTree 参考](/engines/table-engines/mergetree-family/replacingmergetree)
 
-* 使用标准的 `UPDATE` 语法，并立即创建补丁分片，而无需等待合并
-* 更新后的值会通过补丁应用即时在 `SELECT` 查询中可见，但只会在后续合并期间才被物理写入（物化）
-* 为小规模更新（最多约占表的 10%）而设计，具备可预期的延迟
-* 会给需要应用补丁的 `SELECT` 查询增加开销，但避免了重写整个列
 
-更多详细信息请参考 [&quot;The Lightweight UPDATE Statement&quot;](/sql-reference/statements/update)
+### CoalescingMergeTree \{#coalescingmergetree\}
 
-## 即时更新 \{#on-the-fly-updates\}
-
-即时更新提供了一种机制，可以对行进行更新，使其立即生效，后续的 `SELECT` 查询会自动返回更新后的值（这会带来额外开销并降低查询性能）。这在效果上解决了普通变更操作在原子性方面的限制。下面给出一个示例：
+CoalescingMergeTree 在合并过程中通过对每一列保留最新的非空值来整合稀疏记录。这样可以在列级别执行 upsert 操作，而无需替换整行数据。
 
 ```sql
-SET apply_mutations_on_fly = 1;
-
-SELECT ViewCount
-FROM posts
-WHERE Id = 404346
-
-┌─ViewCount─┐
-│   26762   │
-└───────────┘
-
-1 row in set. Elapsed: 0.115 sec. Processed 59.55 million rows, 238.25 MB (517.83 million rows/s., 2.07 GB/s.)
-Peak memory usage: 113.65 MiB.
-
--递增计数
-ALTER TABLE posts
-        (UPDATE ViewCount = ViewCount + 1 WHERE Id = 404346)
-
-SELECT ViewCount
-FROM posts
-WHERE Id = 404346
-
-┌─ViewCount─┐
-│       26763   │
-└───────────┘
-
-1 row in set. Elapsed: 0.149 sec. Processed 59.55 million rows, 259.91 MB (399.99 million rows/s., 1.75 GB/s.)
+CREATE TABLE electric_vehicle_state
+(
+    vin String, -- vehicle identification number
+    last_update DateTime64 Materialized now64(), -- optional (used with argMax)
+    battery_level Nullable(UInt8), -- in %
+    lat Nullable(Float64), -- latitude (°)
+    lon Nullable(Float64), -- longitude (°)
+    firmware_version Nullable(String),
+    cabin_temperature Nullable(Float32), -- in °C
+    speed_kmh Nullable(Float32) -- from sensor
+)
+ENGINE = CoalescingMergeTree
+ORDER BY vin;
 ```
 
-请注意，对于即时更新，仍然会使用 mutation 来更新数据；只是不会立即物化，而是在执行 `SELECT` 查询时才被应用。它仍会在后台以异步进程的方式执行，并会产生与 mutation 相同的高昂开销，因此是一种 I/O 密集型操作，应谨慎使用。此操作可使用的表达式也有限制（请参见[此处](/guides/developer/on-the-fly-mutations#support-for-subqueries-and-non-deterministic-functions)了解详细信息）。
+该引擎专为数据以碎片形式从多个来源到达，或不同列在不同时间被写入的场景而设计。常见用例包括来自碎片化子系统的 IoT 遥测、用户画像丰富，以及存在延迟维度的 ETL 管道。
 
-进一步了解[即时更新](/guides/developer/on-the-fly-mutations)。
+当具有相同排序键的行被合并时，CoalescingMergeTree 会为每一列保留最新的非空值，而不是替换整行。为使其按预期工作，非键列应为 `Nullable`。与 ReplacingMergeTree 一样，使用 `FINAL` 以获得正确且合并后的结果。
 
-## `CollapsingMergeTree` \{#collapsing-merge-tree\}
+该引擎从 ClickHouse 25.6 版本开始可用。
 
-源于这样一个理念：更新操作代价高昂，而插入操作却可以被用来执行更新，
-[`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) 表引擎
-可以与一个 `sign` 列配合使用，通过折叠（删除）
-`sign` 为 `1` 和 `-1` 的成对行，让 ClickHouse 更新特定行。
-如果为 `sign` 列插入 `-1`，整行将被删除。
-如果为 `sign` 列插入 `1`，ClickHouse 将保留该行。
-需要更新的行根据建表时在 `ORDER BY ()` 语句中所使用的排序键来识别。
+进一步阅读：[CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree)
+
+
+### CollapsingMergeTree \{#collapsingmergetree\}
+
+基于这样一种思路：更新开销很大，但可以利用插入操作来完成更新，`CollapsingMergeTree` 使用一个 `Sign` 列来告诉 ClickHouse 在合并期间如何处理行。如果为 `Sign` 列插入 `-1`，则当其与匹配的 `+1` 行配对时，该行会被折叠（删除）。要更新的行是根据在创建表时 `ORDER BY` 子句中使用的排序键来识别的。
 
 ```sql
-CREATE TABLE UAct
+CREATE TABLE user_activity
 (
     UserID UInt64,
     PageViews UInt8,
     Duration UInt8,
-    Sign Int8 -- 用于 CollapsingMergeTree 表引擎的特殊列
+    Sign Int8
 )
 ENGINE = CollapsingMergeTree(Sign)
 ORDER BY UserID
 
-INSERT INTO UAct VALUES (4324182021466249494, 5, 146, 1)
-INSERT INTO UAct VALUES (4324182021466249494, 5, 146, -1) -- sign = -1 表示更新该行状态
-INSERT INTO UAct VALUES (4324182021466249494, 6, 185, 1) -- 该行将被新状态替换
+-- Initial state
+INSERT INTO user_activity VALUES (4324182021466249494, 5, 146, 1)
 
+-- Cancel old row and insert new state
+INSERT INTO user_activity VALUES (4324182021466249494, 5, 146, -1)
+INSERT INTO user_activity VALUES (4324182021466249494, 6, 185, 1)
+
+-- Query with proper aggregation
 SELECT
     UserID,
     sum(PageViews * Sign) AS PageViews,
     sum(Duration * Sign) AS Duration
-FROM UAct
+FROM user_activity
 GROUP BY UserID
 HAVING sum(Sign) > 0
 
@@ -127,15 +144,111 @@ HAVING sum(Sign) > 0
 └─────────────────────┴───────────┴──────────┘
 ```
 
-:::note
-上述用于更新的方案要求用户在客户端维护状态信息。
-虽然从 ClickHouse 的角度来看这是最高效的方式，但在大规模场景下使用可能会比较复杂。
+与 `ReplacingMergeTree` 不同，`CollapsingMergeTree` 允许你修改排序键的值。它非常适合具有可撤销语义的可逆操作，例如金融交易或游戏状态跟踪。
 
-我们建议阅读
-[`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree)
-的文档，以获得更全面的概览。
+:::note
+上述更新方法要求你的应用程序在客户端维护状态，以便插入撤销行（cancellation row）。虽然从 ClickHouse 的角度来看这是最高效的，但在大规模场景下使用可能会比较复杂。查询还需要结合符号相乘的聚合才能生成正确结果。
 :::
+
+延伸阅读：[CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)
+
+
+## 声明式更新 \{#sql-style-updates\}
+
+这些方法适用于使用 [MergeTree family](/engines/table-engines/mergetree-family) 引擎的表。
+
+| 方法 | 语法 | 最佳适用场景 | 权衡 |
+|--------|--------|----------|------------|
+| [Mutations](#mutations) | `ALTER TABLE ... UPDATE` | 需要满足合规要求且必须物理删除数据的场景；不频繁的大批量更新 | I/O 开销大；重写列数据 |
+| [Lightweight updates](#lightweight-updates) | `UPDATE ... SET ... WHERE` | 小规模更新（约 0.1–10% 的行）；对性能要求较高的高频更新 | 增加 SELECT 开销；补丁分区片段数量计入分区片段数量限制 |
+| [On-the-fly mutations](#on-the-fly-mutations) | `ALTER TABLE ... UPDATE` 并设置 `apply_mutations_on_fly=1` | 变更可立即可见；适用于数量有限的操作 | 依赖 Keeper；扩展能力大致限制在数十个操作 |
+
+### 变更操作（Mutations） \{#mutations\}
+
+变更操作（`ALTER TABLE ... UPDATE`）会重写所有包含匹配 `WHERE` 表达式的行的分区片段，从而保证对磁盘上的物理数据进行实际修改。
+
+```sql
+ALTER TABLE posts UPDATE AnswerCount = AnswerCount + 1 WHERE AnswerCount = 0
+```
+
+当出于合规要求需要保证物理删除数据时，或在你可以接受 I/O 开销的低频批量更新场景中，使用 mutations。
+
+Mutations 的 I/O 开销较大，会重写所有匹配 `WHERE` 表达式的分区片段。该过程不具备原子性——一旦变更完成，相应分区片段就会被替换，且在 mutation 执行期间启动的 `SELECT` 查询会同时看到已经被变更的分区片段数据和尚未被变更的分区片段数据。你可以通过 [`system.mutations`](/operations/system-tables/mutations) 表跟踪其进度状态。
+
+:::warning
+Mutations 是 I/O 密集型操作，应谨慎使用，因为它们会影响集群的 `SELECT` 性能。如果 mutations 入队速度快于处理速度，查询性能将会下降。请通过 `system.mutations` 监控队列。
+:::
+
+延伸阅读：[ALTER TABLE UPDATE](/sql-reference/statements/alter/update)
+
+
+### 轻量级更新 \{#lightweight-updates\}
+
+轻量级更新使用“patch 分区片段”——这些仅包含已更新列和行的特殊数据分区片段——而不是像传统 mutation 那样重写整个列。
+
+```sql
+UPDATE posts SET AnswerCount = AnswerCount + 1 WHERE Id = 404346
+```
+
+这种方法使用标准的 `UPDATE` 语法，无需等待合并即可立即创建补丁分区片段。更新后的值通过应用补丁在 `SELECT` 查询中会立即可见，但只有在后续合并期间才会真正写入存储。这使得轻量级更新非常适合在可预测的延迟下更新较小比例的行（最高约为整张表的 10%）。基准测试表明，其速度最多可比 mutations 快 23 倍。
+
+其代价在于，`SELECT` 查询在应用补丁时会产生额外开销，并且补丁分区片段会计入分区片段数量上限。超过约 10% 的阈值后，读时打补丁的开销会按比例增长，对于更大规模的更新，同步 mutations 会更高效。
+
+阅读更多：[Lightweight UPDATE](/sql-reference/statements/update)
+
+
+### 实时变更 \{#on-the-fly-mutations\}
+
+实时变更提供了一种机制，用于更新行，使得后续的 `SELECT` 查询无需等待后台处理完成即可自动返回更新后的值，从而有效弥补普通变更在原子性方面的限制。
+
+```sql
+SET apply_mutations_on_fly = 1;
+
+SELECT ViewCount FROM posts WHERE Id = 404346
+
+┌─ViewCount─┐
+│     26762 │
+└───────────┘
+
+-- Increment the count
+ALTER TABLE posts UPDATE ViewCount = ViewCount + 1 WHERE Id = 404346
+
+-- The updated value is immediately visible
+SELECT ViewCount FROM posts WHERE Id = 404346
+
+┌─ViewCount─┐
+│     26763 │
+└───────────┘
+```
+
+变更操作和后续的 `SELECT` 查询都需要启用 `apply_mutations_on_fly = 1` SETTING。变更条件存储在 ClickHouse Keeper 中（Keeper 将所有内容保存在内存中），并在查询时按需实时应用。
+
+请注意，更新数据依然是通过变更来完成——只是不会立即物化。该变更仍会在后台以异步方式执行，并带来与常规变更相同的较大开销。可与此操作一起使用的表达式也受到限制（参见[详细说明](/guides/developer/on-the-fly-mutations#support-for-subqueries-and-non-deterministic-functions)）。
+
+:::warning
+On-the-fly 变更应仅用于少量操作——最多可能几十个。Keeper 将条件存储在内存中，因此过度使用会影响集群稳定性。Keeper 负载过高可能导致会话超时，并影响到无关的表。
+:::
+
+延伸阅读：[On-the-fly 变更](/guides/developer/on-the-fly-mutations)
+
+
+## 对比总结 \{#comparison-summary\}
+
+下表基于[基准测试](https://clickhouse.com/blog/updates-in-clickhouse-3-benchmarks)总结了对查询性能的开销。以变更（mutations）为基线，因为一旦变更完成且数据在物理层面被重写，查询就能以全速运行。
+
+| Method | 查询减速 | 内存开销 | 说明 |
+|--------|----------------|-----------------|-------|
+| [Mutations](/sql-reference/statements/alter/update) | 基线 | 基线 | 完成后可全速运行；数据在物理层面被重写 |
+| [On-the-fly mutations](/guides/developer/on-the-fly-mutations) | 可变 | 可变 | 结果即时可见；若累计大量更新则性能下降 |
+| [Lightweight updates](/sql-reference/statements/update#lightweight-update-requirements) | 7–18%（平均约 12%） | +20–210% | 对查询最为高效；最适合更新不超过表的 10% |
+| [ReplacingMergeTree](/guides/replacing-merge-tree) + `FINAL` | 21–550%（平均约 280%） | 为基线的 20–200 倍 | 必须读取所有行版本；查询开销最大 |
+| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree) + `FINAL` | 与 ReplacingMergeTree 类似 | 与 ReplacingMergeTree 类似 | 列级合并带来相近的开销 |
+| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) | 取决于聚合 | 取决于聚合 | 开销取决于查询复杂度 |
 
 ## 更多资源 \{#more-resources\}
 
-* [在 ClickHouse 中处理更新和删除](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)
+如果你对 ClickHouse 中更新机制如何随着时间演进，以及相关的基准测试分析感兴趣，请参阅：
+
+- [ClickHouse 更新（第 1 部分）：专用引擎](https://clickhouse.com/blog/updates-in-clickhouse-1-purpose-built-engines)
+- [ClickHouse 更新（第 2 部分）：SQL 风格的更新](https://clickhouse.com/blog/updates-in-clickhouse-2-sql-style-updates)
+- [ClickHouse 更新（第 3 部分）：基准测试](https://clickhouse.com/blog/updates-in-clickhouse-3-benchmarks)

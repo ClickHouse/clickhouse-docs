@@ -73,6 +73,7 @@ CREATE DATABASE my_database;
 
 ClickHouse Cloud 会自动为数据库分配 Shared 数据库引擎。在此类数据库中创建的、使用无状态引擎的任意表，都将自动具备 Shared Catalog 的复制与协调能力。
 
+
 ## 概要 \{#summary\}
 
 Shared Catalog 和 Shared 数据库引擎具备以下特性：

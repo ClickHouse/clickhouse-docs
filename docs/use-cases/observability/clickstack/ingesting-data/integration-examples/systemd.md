@@ -143,7 +143,7 @@ EOF
 #### Deploy with Docker Compose {#deploy-docker-compose}
 
 :::note
-The `journald` receiver requires the `journalctl` binary to read journal files. The official `otel/opentelemetry-collector-contrib` image does not include `journalctl` by default.
+The `journald` receiver requires the `journalctl` binary to read journal files. The official `otel/opentelemetry-collector-contrib` image doesn't include `journalctl` by default.
 
 For containerized deployments, you can either install the collector directly on the host or build a custom image with systemd utilities. See the [troubleshooting section](#journalctl-not-found) for details.
 :::
@@ -348,7 +348,7 @@ docker logs otel-collector | grep -i "error\|journald" | tail -20
 
 If you see `exec: "journalctl": executable file not found in $PATH`:
 
-The `otel/opentelemetry-collector-contrib` image does not include `journalctl`. You can either:
+The `otel/opentelemetry-collector-contrib` image doesn't include `journalctl`. You can either:
 
 1. **Install the collector on the host**:
 ```bash

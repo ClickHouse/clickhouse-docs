@@ -774,6 +774,8 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 | `async_queue_max_size` | 使用异步日志时，队列中等待刷盘的最大消息数量。超过该数量的多余消息将被丢弃。                       |
 | `console` | 启用将日志输出到控制台。设置为 `1` 或 `true` 以启用。如果 ClickHouse 不在守护进程模式下运行，默认是 `1`，否则为 `0`。                            |
 | `console_log_level` | 控制台输出的日志级别。默认为 `level`。                                                                                                                 |
+| `console_shutdown_log_level` | 关闭级别，用于在服务器关闭时设置控制台日志级别。   |
+| `console_startup_log_level` | 启动级别，用于在服务器启动时设置控制台日志级别。启动完成后，日志级别会恢复为 `console_log_level` 配置的值。                                   |   
 | `count` | 轮转策略：ClickHouse 最多保留的历史日志文件数量。                                                                                        |
 | `errorlog` | 错误日志文件的路径。                                                                                                                                    |
 | `formatting.type` | 控制台输出的日志格式。目前仅支持 `json`。                                                                                                 |
@@ -1958,16 +1960,18 @@ curl 127.0.0.1:9363/metrics
 
 以下设置可以通过子标签进行配置：
 
-| Setting                                    | Description                                                                                                                        |
-| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `node`                                     | ZooKeeper 端点。可以设置多个端点。例如：`<node index="1"><host>example_host</host><port>2181</port></node>`。`index` 属性指定在尝试连接 ZooKeeper 集群时节点的顺序。 |
-| `operation_timeout_ms`                     | 单个操作的最大超时时间，单位为毫秒。                                                                                                                 |
-| `session_timeout_ms`                       | 客户端会话的最大超时时间，单位为毫秒。                                                                                                                |
-| `root` (optional)                          | ClickHouse 服务器用于其 znodes 的根 znode。                                                                                                 |
-| `fallback_session_lifetime.min` (optional) | 当主节点不可用时（负载均衡场景），到回退节点的 ZooKeeper 会话生命周期的最小限制。单位为秒。默认值：3 小时。                                                                       |
-| `fallback_session_lifetime.max` (optional) | 当主节点不可用时（负载均衡场景），到回退节点的 ZooKeeper 会话生命周期的最大限制。单位为秒。默认值：6 小时。                                                                       |
-| `identity` (optional)                      | 访问目标 znodes 时 ZooKeeper 所需的用户名和密码。                                                                                                 |
-| `use_compression` (optional)               | 若设为 true，则在 Keeper 协议中启用压缩。                                                                                                        |
+| Setting                                         | Description                                                                                                                                                                                                                                        |
+| ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `node`                                          | ZooKeeper 端点。可以设置多个端点。例如：`<node index="1"><host>example_host</host><port>2181</port></node>`。`index` 属性指定在尝试连接 ZooKeeper 集群时节点的顺序。                                                                                                                 |
+| `operation_timeout_ms`                          | 单个操作的最大超时时间，单位为毫秒。                                                                                                                                                                                                                                 |
+| `session_timeout_ms`                            | 客户端会话的最大超时时间，单位为毫秒。                                                                                                                                                                                                                                |
+| `root` (optional)                               | ClickHouse 服务器用于其 znodes 的根 znode。                                                                                                                                                                                                                 |
+| `fallback_session_lifetime.min` (optional)      | 当主节点不可用时（负载均衡场景），到回退节点的 ZooKeeper 会话生命周期的最小限制。单位为秒。默认值：3 小时。                                                                                                                                                                                       |
+| `fallback_session_lifetime.max` (optional)      | 当主节点不可用时（负载均衡场景），到回退节点的 ZooKeeper 会话生命周期的最大限制。单位为秒。默认值：6 小时。                                                                                                                                                                                       |
+| `identity` (optional)                           | 访问目标 znodes 时 ZooKeeper 所需的用户名和密码。                                                                                                                                                                                                                 |
+| `use_compression` (optional)                    | 若设为 true，则在 Keeper 协议中启用压缩。                                                                                                                                                                                                                        |
+| `use_xid_64` (optional)                         | 启用 64 位事务 ID。设为 `true` 时启用扩展事务 ID 格式。默认值：`false`。                                                                                                                                                                                                  |
+| `pass_opentelemetry_tracing_context` (optional) | 启用将 OpenTelemetry 跟踪上下文传播到 Keeper 请求。当启用时，会为 Keeper 操作创建 tracing span，从而在 ClickHouse 与 Keeper 之间实现分布式追踪。需要同时启用 `use_xid_64`。更多细节参见 [Tracing ClickHouse Keeper Requests](/operations/opentelemetry#tracing-clickhouse-keeper-requests)。默认值：`false`。 |
 
 还有一个可选设置 `zookeeper_load_balancing`，用于选择 ZooKeeper 节点的负载均衡算法：
 
@@ -2000,15 +2004,19 @@ curl 127.0.0.1:9363/metrics
     <identity>user:password</identity>
     <!--<zookeeper_load_balancing>random / in_order / nearest_hostname / hostname_levenshtein_distance / first_or_random / round_robin</zookeeper_load_balancing>-->
     <zookeeper_load_balancing>random</zookeeper_load_balancing>
+    <!-- Optional. Enable 64-bit transaction IDs. -->
+    <use_xid_64>false</use_xid_64>
+    <!-- Optional. Enable OpenTelemetry tracing context propagation (requires use_xid_64). -->
+    <pass_opentelemetry_tracing_context>false</pass_opentelemetry_tracing_context>
 </zookeeper>
 ```
 
 **另请参阅**
 
-* [复制](../../engines/table-engines/mergetree-family/replication.md)
-* [ZooKeeper 程序员指南](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
-* [ClickHouse 与 ZooKeeper 之间的可选安全通信](/operations/ssl-zookeeper)
 
+- [复制](../../engines/table-engines/mergetree-family/replication.md)
+- [ZooKeeper 程序员指南](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
+- [ClickHouse 与 ZooKeeper 之间的可选安全通信](/operations/ssl-zookeeper)
 
 ## use_minimalistic_part_header_in_zookeeper \{#use_minimalistic_part_header_in_zookeeper\}
 

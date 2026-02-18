@@ -29,6 +29,7 @@ import tableau_workbook6 from '@site/static/images/integrations/data-visualizati
 import tableau_workbook7 from '@site/static/images/integrations/data-visualization/tableau_workbook7.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+
 # 将 Tableau 连接到 ClickHouse \{#connecting-tableau-to-clickhouse\}
 
 <ClickHouseSupportedBadge/>
@@ -70,6 +71,7 @@ ClickHouse 提供了官方 Tableau 连接器，该连接器已发布在
 2. 在左侧菜单的 **To a Server** 部分下点击 **More**。在可用连接器列表中搜索 **ClickHouse by ClickHouse**：
 
 <Image size="md" img={tableau_connecttoserver} alt="Tableau 连接界面，展示带有高亮 ClickHouse by ClickHouse 选项的连接器选择菜单" border />
+
 <br/>
 
 :::note
@@ -80,12 +82,14 @@ ClickHouse 提供了官方 Tableau 连接器，该连接器已发布在
 3. 点击 **ClickHouse by ClickHouse**，随后会弹出如下对话框：
 
 <Image size="md" img={tableau_connector_details} alt="Tableau 连接器安装对话框，展示 ClickHouse JDBC 连接器详情和安装按钮" border />
+
 <br/>
- 
+
 4. 点击 **Install and Restart Tableau**。重启应用程序。
 5. 重启后，连接器会显示其完整名称：`ClickHouse JDBC by ClickHouse, Inc.`。点击它后，会弹出如下对话框：
 
 <Image size="md" img={tableau_connector_dialog} alt="Tableau 中的 ClickHouse 连接对话框，展示 server、port、database、username 和 password 等字段" border />
+
 <br/>
 
 6. 输入你的连接设置：
@@ -101,6 +105,7 @@ ClickHouse 提供了官方 Tableau 连接器，该连接器已发布在
 :::note
 在使用 ClickHouse Cloud 时，必须勾选 SSL 复选框以启用安全连接。
 :::
+
 <br/>
 
 :::note
@@ -110,11 +115,13 @@ ClickHouse 提供了官方 Tableau 连接器，该连接器已发布在
 7. 点击 **Sign In** 按钮，你应当会看到一个新的 Tableau 工作簿：
 
 <Image size="md" img={tableau_newworkbook} alt="新的 Tableau 工作簿，展示包含数据库选择选项的初始连接界面" border />
+
 <br/>
 
 8. 从 **Schema** 下拉列表中选择 **TPCD**，你应当会看到 **TPCD** 中的表列表：
 
 <Image size="md" img={tableau_tpcdschema} alt="Tableau 中的 schema 选择界面，展示 TPCD 数据库表，包括 CUSTOMER、LINEITEM、NATION、ORDERS 等" border />
+
 <br/>
 
 现在你已经可以在 Tableau 中开始构建可视化报表了！
@@ -126,6 +133,7 @@ ClickHouse 提供了官方 Tableau 连接器，该连接器已发布在
 1. 将 **CUSTOMER** 表拖到工作簿中。注意列已经显示出来，但数据表仍然是空的：
 
 <Image size="md" img={tableau_workbook1} alt="Tableau 工作簿中将 CUSTOMER 表拖到画布后，只显示列标题但没有数据" border />
+
 <br/>
 
 2. 点击 **Update Now** 按钮，来自 **CUSTOMER** 的 100 行数据就会填充到表中。
@@ -133,12 +141,14 @@ ClickHouse 提供了官方 Tableau 连接器，该连接器已发布在
 3. 将 **ORDERS** 表拖入工作簿，然后将 **Custkey** 设置为两个表之间的关联字段：
 
 <Image size="md" img={tableau_workbook2} alt="Tableau 关系编辑器，显示 CUSTOMER 和 ORDERS 两个表通过 Custkey 字段建立连接" border />
+
 <br/>
 
 4. 现在您已经将 **ORDERS** 和 **LINEITEM** 表彼此关联作为您的数据源，因此可以利用
    这一关系来回答关于数据的问题。选择工作簿底部的 **Sheet 1** 选项卡。
 
 <Image size="md" img={tableau_workbook3} alt="Tableau 工作表，显示可用于分析的来自 ClickHouse 表的维度和度量" border />
+
 <br/>
 
 5. 假设您想知道每年订购了多少某个具体商品。将 **ORDERS** 中的 **OrderDate** 拖到
@@ -146,6 +156,7 @@ ClickHouse 提供了官方 Tableau 连接器，该连接器已发布在
    生成如下折线图：
 
 <Image size="sm" img={tableau_workbook4} alt="Tableau 折线图，展示按年份统计的订购数量（来源于 ClickHouse 数据）" border />
+
 <br/>
 
 这个折线图并不算精彩，因为数据集是通过脚本生成的，主要用于测试查询性能，所以
@@ -161,18 +172,21 @@ ClickHouse 提供了官方 Tableau 连接器，该连接器已发布在
 您应该会看到如下内容：
 
 <Image size="sm" img={tableau_workbook5} alt="Tableau 交叉表视图，列为季度，行为运输方式" border />
+
 <br/>
 
 7. **Abc** 值只是占位符，用来填充空间，直到您将某个度量拖到表中。将 **Totalprice** 从 *
    *ORDERS** 拖到表格上。注意默认计算方式是对 **Totalprices** 求 **SUM**：
 
 <Image size="md" img={tableau_workbook6} alt="Tableau 交叉表，展示按季度和运输方式汇总的总价之和" border />
+
 <br/>
 
 8. 点击 **SUM**，将 **Measure** 修改为 **Average**。在同一个下拉菜单中选择 **Format**，将
    **Numbers** 设置为 **Currency (Standard)**：
 
 <Image size="md" img={tableau_workbook7} alt="Tableau 交叉表，展示按季度和运输方式统计的平均订单价格，并采用货币格式显示" border />
+
 <br/>
 
 恭喜！您已经成功将 Tableau 连接到了 ClickHouse，并为分析和可视化您的 ClickHouse 数据
@@ -194,7 +208,9 @@ ClickHouse 提供了官方 Tableau 连接器，该连接器已发布在
 请访问[连接技巧](/integrations/tableau/connection-tips)和[分析技巧](/integrations/tableau/analysis-tips)。
 
 ## 测试 \{#tests\}
+
 该连接器正在使用 [TDVT 框架](https://tableau.github.io/connector-plugin-sdk/docs/tdvt) 进行测试，目前测试覆盖率为 97%。
 
 ## 摘要 \{#summary\}
+
 可以使用通用的 ClickHouse ODBC/JDBC 驱动将 Tableau 连接到 ClickHouse。不过，本连接器可以简化连接配置过程。如果在使用该连接器时遇到任何问题，欢迎前往 <a href="https://github.com/ClickHouse/clickhouse-tableau-connector-jdbc/issues" target="_blank"  >GitHub</a> 反馈。

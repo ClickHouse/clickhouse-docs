@@ -73,7 +73,7 @@ others indirectly via `_part_offset`.
 
 ## When to use Projections? {#when-to-use-projections}
 
-Projections are an appealing feature for new users as they are automatically 
+Projections are an appealing feature for new users as they're automatically 
 maintained as data is inserted. Furthermore, queries can just be sent to a 
 single table where the projections are exploited where possible to speed up 
 the response time.
@@ -88,9 +88,9 @@ you should be aware of and thus should be deployed sparingly.
 
 - Projections don't allow using different TTL for the source table and the 
   (hidden) target table, materialized views allow different TTLs.
-- Lightweight updates and deletes are not supported for tables with projections.
+- Lightweight updates and deletes aren't supported for tables with projections.
 - Materialized Views can be chained: the target table of one materialized view 
-  can be the source table of another materialized view, and so on. This is not 
+  can be the source table of another materialized view, and so on. This isn't 
   possible with projections.
 - Projection definitions don't support joins, but Materialized Views do. However, queries on tables with projections can use joins freely.
 - Projection definitions don't support filters (`WHERE` clause), but Materialized Views do. However, queries on tables with projections can filter freely.
@@ -113,7 +113,7 @@ We recommend using projections when:
 
 In this example, we'll show you how to add a projection to a table.
 We'll also look at how the projection can be used to speed up queries which filter
-on columns which are not in the primary key of a table.
+on columns which aren't in the primary key of a table.
 
 For this example, we'll be using the New York Taxi Data
 dataset available at [sql.clickhouse.com](https://sql.clickhouse.com/) which is ordered 
@@ -131,7 +131,7 @@ FROM nyc_taxi.trips WHERE tip_amount > 200 AND trip_duration_min > 0
 ORDER BY tip_amount, trip_id ASC
 ```
 
-Notice that because we are filtering on `tip_amount` which is not in the `ORDER BY`, ClickHouse 
+Notice that because we're filtering on `tip_amount` which isn't in the `ORDER BY`, ClickHouse 
 had to do a full table scan. Let's speed this query up.
 
 So as to preserve the original table and results, we'll create a new table and copy the data using an `INSERT INTO SELECT`:
@@ -590,7 +590,7 @@ INSERT INTO page_views VALUES (
 
 :::note
 Note: The table uses custom settings for illustration, such as one-row granules 
-and disabled part merges, which are not recommended for production use.
+and disabled part merges, which aren't recommended for production use.
 :::
 
 This setup produces:

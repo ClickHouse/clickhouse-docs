@@ -26,104 +26,102 @@ _本指南适用于 ClickHouse Cloud 以及自托管的 ClickHouse v23.5 及以�
 | 总计                                                                                             | 82.6 亿  | 23,577         | 3.982TB   | 8 分 3 秒     | \> 6 天 5 小时 | 53 分 45 秒   |
 
 <VerticalStepper headerLevel="h2">
+  ## 将表数据导出到 GCS
 
-## 将表数据导出到 GCS \{#1-export-table-data-to-gcs\}
+  在此步骤中,我们使用 [BigQuery SQL workspace](https://cloud.google.com/bigquery/docs/bigquery-web-ui) 来执行 SQL 命令。下面,我们使用 [`EXPORT DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements) 语句将名为 `mytable` 的 BigQuery 表导出到 GCS 存储桶。
 
-在此步骤中，我们使用 [BigQuery SQL workspace](https://cloud.google.com/bigquery/docs/bigquery-web-ui) 来执行 SQL 命令。下面的示例中，我们使用 [`EXPORT DATA`](https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements) 语句，将名为 `mytable` 的 BigQuery 表导出到一个 GCS 存储桶中。
+  ```sql
+  DECLARE export_path STRING;
+  DECLARE n INT64;
+  DECLARE i INT64;
+  SET i = 0;
 
-```sql
-DECLARE export_path STRING;
-DECLARE n INT64;
-DECLARE i INT64;
-SET i = 0;
+  -- We recommend setting n to correspond to x billion rows. So 5 billion rows, n = 5
+  SET n = 100;
 
--- We recommend setting n to correspond to x billion rows. So 5 billion rows, n = 5
-SET n = 100;
+  WHILE i < n DO
+    SET export_path = CONCAT('gs://mybucket/mytable/', i,'-*.parquet');
+    EXPORT DATA
+      OPTIONS (
+        uri = export_path,
+        format = 'PARQUET',
+        overwrite = true
+      )
+    AS (
+      SELECT * FROM mytable WHERE export_id = i
+    );
+    SET i = i + 1;
+  END WHILE;
+  ```
 
-WHILE i < n DO
-  SET export_path = CONCAT('gs://mybucket/mytable/', i,'-*.parquet');
-  EXPORT DATA
-    OPTIONS (
-      uri = export_path,
-      format = 'PARQUET',
-      overwrite = true
-    )
-  AS (
-    SELECT * FROM mytable WHERE export_id = i
+  在上述查询中,我们将 BigQuery 表导出为 [Parquet 数据格式](https://parquet.apache.org/)。我们还在 `uri` 参数中使用了 `*` 字符。这可以确保当导出数据超过 1GB 时,输出会被分片到多个文件中,并带有数字递增的后缀。
+
+  这种方法具有以下优势:
+
+  * Google 允许每天免费向 GCS 导出最多 50TB 的数据，用户只需支付 GCS 的存储费用。
+  * 导出会自动生成多个文件，并将每个文件中的表数据量限制为最多 1GB。这样有利于 ClickHouse，因为这使导入操作可以并行执行。
+  * Parquet 作为一种列式格式，是更优的数据交换格式，因为它天然具备压缩特性，使 BigQuery 导出数据和 ClickHouse 执行查询的速度更快
+
+  ## 将数据从 GCS 导入 ClickHouse
+
+  导出完成后,我们即可将这些数据导入到 ClickHouse 表中。可以使用 [ClickHouse SQL console](/integrations/sql-clients/sql-console) 或 [`clickhouse-client`](/interfaces/cli) 来执行以下命令。
+
+  首先,需要在 ClickHouse 中[创建表](/sql-reference/statements/create/table):
+
+  ```sql
+  -- If your BigQuery table contains a column of type STRUCT, you must enable this setting
+  -- to map that column to a ClickHouse column of type Nested
+  SET input_format_parquet_import_nested = 1;
+
+  CREATE TABLE default.mytable
+  (
+          `timestamp` DateTime64(6),
+          `some_text` String
+  )
+  ENGINE = MergeTree
+  ORDER BY (timestamp);
+  ```
+
+  创建表之后,如果集群中有多个 ClickHouse 副本,请启用 `parallel_distributed_insert_select` 设置以加快导出速度。如果只有一个 ClickHouse 节点,可以跳过此步骤:
+
+  ```sql
+  SET parallel_distributed_insert_select = 1;
+  ```
+
+  最后,我们可以使用 [`INSERT INTO SELECT` 命令](/sql-reference/statements/insert-into#inserting-the-results-of-select),将来自 GCS 的数据插入到 ClickHouse 表中。该命令会根据 `SELECT` 查询的结果向表中插入数据。
+
+  为了获取要 `INSERT` 的数据,我们可以使用 [s3Cluster 函数](/sql-reference/table-functions/s3Cluster) 从 GCS 存储桶中读取数据,因为 GCS 与 [Amazon S3](https://aws.amazon.com/s3/) 兼容。如果您只有一个 ClickHouse 节点,可以使用 [s3 表函数](/sql-reference/table-functions/s3) 来替代 `s3Cluster` 函数。
+
+  ```sql
+  INSERT INTO mytable
+  SELECT
+      timestamp,
+      ifNull(some_text, '') AS some_text
+  FROM s3Cluster(
+      'default',
+      'https://storage.googleapis.com/mybucket/mytable/*.parquet.gz',
+      '<ACCESS_ID>',
+      '<SECRET>'
   );
-  SET i = i + 1;
-END WHILE;
-```
+  ```
 
-在上述查询中，我们将 BigQuery 表导出为 [Parquet 数据格式](https://parquet.apache.org/)。我们在 `uri` 参数中还使用了一个 `*` 字符。这可以确保当导出数据超过 1GB 时，输出会被切分为多个文件，并带有数值递增的后缀。
+  上述查询中使用的 `ACCESS_ID` 和 `SECRET` 是与您的 GCS 存储桶关联的 [HMAC key](https://cloud.google.com/storage/docs/authentication/hmackeys)。
 
-这种方法有多项优势：
+  :::note 在导出可为 NULL 的列时使用 `ifNull`
+  在上述查询中,我们对 `some_text` 列使用了 [`ifNull` 函数](/sql-reference/functions/functions-for-nulls#ifNull),以默认值向 ClickHouse 表插入数据。您也可以在 ClickHouse 中将列类型设置为 [`Nullable`](/sql-reference/data-types/nullable),但不推荐这样做,因为这可能会对性能产生负面影响。
 
-* Google 允许每天最多将 50TB 数据免费导出到 GCS。用户只需为 GCS 存储付费。
-* 导出会自动生成多个文件，将每个文件限制在最多 1GB 的表数据。这对 ClickHouse 有利，因为这样可以并行导入。
-* Parquet 作为列式格式，是更好的交换格式，因为它天然具备压缩特性，并且对 BigQuery 导出和 ClickHouse 查询都更快。
+  或者,您可以设置 `SET input_format_null_as_default=1`,此时任何缺失或 NULL 值都会被其对应列的默认值替换(前提是这些列已指定默认值)。
+  :::
 
-## 将数据从 GCS 导入 ClickHouse \{#2-importing-data-into-clickhouse-from-gcs\}
+  ## 测试数据导出是否成功
 
-导出完成后，我们即可将这些数据导入到 ClickHouse 表中。可以使用 [ClickHouse SQL console](/integrations/sql-clients/sql-console) 或 [`clickhouse-client`](/interfaces/cli) 来执行以下命令。
+  要测试数据是否已正确插入,只需在新表上运行 `SELECT` 查询即可:
 
-首先，需要在 ClickHouse 中[创建表](/sql-reference/statements/create/table)：
+  ```sql
+  SELECT * FROM mytable LIMIT 10;
+  ```
 
-```sql
--- If your BigQuery table contains a column of type STRUCT, you must enable this setting
--- to map that column to a ClickHouse column of type Nested
-SET input_format_parquet_import_nested = 1;
-
-CREATE TABLE default.mytable
-(
-        `timestamp` DateTime64(6),
-        `some_text` String
-)
-ENGINE = MergeTree
-ORDER BY (timestamp);
-```
-
-创建表之后，如果集群中有多个 ClickHouse 副本，请启用 `parallel_distributed_insert_select` 设置以加快导出速度。如果只有一个 ClickHouse 节点，可以跳过此步骤：
-
-```sql
-SET parallel_distributed_insert_select = 1;
-```
-
-最后，我们可以使用 [`INSERT INTO SELECT` 命令](/sql-reference/statements/insert-into#inserting-the-results-of-select)，将来自 GCS 的数据插入到 ClickHouse 表中。该命令会根据 `SELECT` 查询的结果向表中插入数据。
-
-为了获取要 `INSERT` 的数据，我们可以使用 [s3Cluster 函数](/sql-reference/table-functions/s3Cluster) 从 GCS 存储桶中读取数据，因为 GCS 与 [Amazon S3](https://aws.amazon.com/s3/) 兼容。如果您只有一个 ClickHouse 节点，可以使用 [s3 表函数](/sql-reference/table-functions/s3) 来替代 `s3Cluster` 函数。
-
-```sql
-INSERT INTO mytable
-SELECT
-    timestamp,
-    ifNull(some_text, '') AS some_text
-FROM s3Cluster(
-    'default',
-    'https://storage.googleapis.com/mybucket/mytable/*.parquet.gz',
-    '<ACCESS_ID>',
-    '<SECRET>'
-);
-```
-
-上述查询中使用的 `ACCESS_ID` 和 `SECRET` 是与您的 GCS 存储桶关联的 [HMAC key](https://cloud.google.com/storage/docs/authentication/hmackeys)。
-
-:::note 在导出可为 NULL 的列时使用 `ifNull`
-在上述查询中，我们对 `some_text` 列使用了 [`ifNull` 函数](/sql-reference/functions/functions-for-nulls#ifNull)，以默认值向 ClickHouse 表插入数据。您也可以在 ClickHouse 中将列类型设置为 [`Nullable`](/sql-reference/data-types/nullable)，但不推荐这样做，因为这可能会对性能产生负面影响。
-
-或者，您可以设置 `SET input_format_null_as_default=1`，此时任何缺失或 NULL 值都会被其对应列的默认值替换（前提是这些列已指定默认值）。
-:::
-
-## 测试数据导出是否成功 \{#3-testing-successful-data-export\}
-
-要测试数据是否已正确插入,只需对新表执行 `SELECT` 查询:
-
-```sql
-SELECT * FROM mytable LIMIT 10;
-```
-
-如需导出更多 BigQuery 表,只需对每个额外的表重复上述步骤即可。
-
+  如需导出更多 BigQuery 表,只需对每个额外的表重复上述步骤即可。
 </VerticalStepper>
 
 ## 延伸阅读与支持 \{#further-reading-and-support\}

@@ -43,17 +43,16 @@ BYOC は特に大規模なデプロイメント向けに設計されており、
   - サービスとそのステータスを表示。
 - **マネージドバックアップとリストア**
 - **手動による垂直および水平スケーリング。**
-- **自動アイドリング機能**
+- **自動アイドリング／ウェイクアップ機能**
 - **Warehouse**: Compute-Compute 分離
 - **Tailscale を用いたゼロトラストネットワーク。**
 - **監視**:
-  - Cloud コンソールには、サービスの健全性を監視するための組み込みヘルスダッシュボードが用意されています。
-  - Prometheus、Grafana、Datadog を用いた集中監視のための Prometheus スクレイピング。セットアップ手順については [Prometheus ドキュメント](/cloud/reference/byoc/observability#prometheus-access) を参照してください。
+  - Prometheus、Grafana、Datadog を用いた集中監視のための Prometheus スクレイピング。セットアップ手順については [BYOC Observability](/cloud/reference/byoc/observability) を参照してください。
 - **VPC ピアリング**
-- **インテグレーション**: 完全な一覧は[このページ](/integrations)を参照してください。
 - **セキュアな S3**
 - **[AWS PrivateLink](https://aws.amazon.com/privatelink/)**
 - **[GCP Private Service Connect](https://docs.cloud.google.com/vpc/docs/private-service-connect)**
+- **インテグレーション**: 完全な一覧は[このページ](/integrations)を参照してください。
 
 ### 計画中の機能（現在は未サポート） \{#planned-features-currently-unsupported\}
 

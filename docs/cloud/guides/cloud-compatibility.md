@@ -12,11 +12,11 @@ doc_type: 'guide'
 This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud. While ClickHouse Cloud is based on the open-source ClickHouse distribution, there may be some differences in architecture and implementation. You may find this blog on [how we built ClickHouse Cloud](https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year) interesting and relevant to read as background.
 
 ## ClickHouse Cloud architecture {#clickhouse-cloud-architecture}
-ClickHouse Cloud significantly simplifies operational overhead and reduces the costs of running ClickHouse at scale. There is no need to size your deployment upfront, set up replication for high availability, manually shard your data, scale up your servers when your workload increases, or scale them down when you are not using them — we handle this for you.
+ClickHouse Cloud significantly simplifies operational overhead and reduces the costs of running ClickHouse at scale. There is no need to size your deployment upfront, set up replication for high availability, manually shard your data, scale up your servers when your workload increases, or scale them down when you're not using them — we handle this for you.
 
 These benefits come as a result of architectural choices underlying ClickHouse Cloud:
-- Compute and storage are separated and thus can be automatically scaled along separate dimensions, so you do not have to over-provision either storage or compute in static instance configurations.
-- Tiered storage on top of object store and multi-level caching provides virtually limitless scaling and good price/performance ratio, so you do not have to size your storage partition upfront and worry about high storage costs.
+- Compute and storage are separated and thus can be automatically scaled along separate dimensions, so you don't have to over-provision either storage or compute in static instance configurations.
+- Tiered storage on top of object store and multi-level caching provides virtually limitless scaling and good price/performance ratio, so you don't have to size your storage partition upfront and worry about high storage costs.
 - High availability is on by default and replication is transparently managed, so you can focus on building your applications or analyzing your data.
 - Automatic scaling for variable continuous workloads is on by default, so you don't have to size your service upfront, scale up your servers when your workload increases, or manually scale down your servers when you have less activity
 - Seamless hibernation for intermittent workloads is on by default. We automatically pause your compute resources after a period of inactivity and transparently start it again when a new query arrives, so you don't have to pay for idle resources.
@@ -27,7 +27,7 @@ ClickHouse Cloud provides access to a curated set of capabilities in the open so
 
 ### Database and table engines {#database-and-table-engines}
 
-ClickHouse Cloud provides a highly-available, replicated service by default. As a result, all database and table engines are "Replicated". You do not need to specify "Replicated"–for example, `ReplicatedMergeTree` and `MergeTree` are identical when used in ClickHouse Cloud.
+ClickHouse Cloud provides a highly-available, replicated service by default. As a result, all database and table engines are "Replicated". You don't need to specify "Replicated"–for example, `ReplicatedMergeTree` and `MergeTree` are identical when used in ClickHouse Cloud.
 
 **Supported table engines**
 
@@ -77,7 +77,7 @@ We support federated ClickHouse queries for cross-cluster communication in the c
 - PostgreSQL
 - S3
 
-Federated queries with some external database and table engines, such as SQLite, ODBC, JDBC, Redis, HDFS and Hive are not yet supported.
+Federated queries with some external database and table engines, such as SQLite, ODBC, JDBC, Redis, HDFS and Hive aren't yet supported.
 
 ### User defined functions {#user-defined-functions}
 
@@ -86,13 +86,13 @@ User-defined functions in ClickHouse Cloud are in [private preview](https://clic
 #### Settings behavior {#udf-settings-behavior}
 
 :::warning Important
-UDFs in ClickHouse Cloud **do not inherit user-level settings**. They execute with default system settings.
+UDFs in ClickHouse Cloud **don't inherit user-level settings**. They execute with default system settings.
 :::
 
 This means:
-- Session-level settings (set via `SET` statement) are not propagated to UDF execution context
-- User profile settings are not inherited by UDFs
-- Query-level settings do not apply within UDF execution
+- Session-level settings (set via `SET` statement) aren't propagated to UDF execution context
+- User profile settings aren't inherited by UDFs
+- Query-level settings don't apply within UDF execution
 
 ### Experimental features {#experimental-features}
 
@@ -100,7 +100,7 @@ Experimental features are disabled in ClickHouse Cloud services to ensure the st
 
 ### Named collections {#named-collections}
 
-[Named collections](/operations/named-collections) are not currently supported in ClickHouse Cloud.
+[Named collections](/operations/named-collections) aren't currently supported in ClickHouse Cloud.
 
 ## Operational defaults and considerations {#operational-defaults-and-considerations}
 The following are default settings for ClickHouse Cloud services. In some cases, these settings are fixed to ensure the correct operation of the service, and in others, they can be adjusted.
@@ -120,11 +120,11 @@ depending on the number of replicas configured.
 Increased this setting from 50GB to allow for dropping of tables/partitions up to 1TB.
 
 ### System settings {#system-settings}
-ClickHouse Cloud is tuned for variable workloads, and for that reason most system settings are not configurable at this time. We do not anticipate the need to tune system settings for most users, but if you have a question about advanced system tuning, please contact ClickHouse Cloud Support.
+ClickHouse Cloud is tuned for variable workloads, and for that reason most system settings aren't configurable at this time. We don't anticipate the need to tune system settings for most users, but if you have a question about advanced system tuning, please contact ClickHouse Cloud Support.
 
 ### Advanced security administration {#advanced-security-administration}
-As part of creating the ClickHouse service, we create a default database, and the default user that has broad permissions to this database. This initial user can create additional users and assign their permissions to this database. Beyond this, the ability to enable the following security features within the database using Kerberos, LDAP, or SSL X.509 certificate authentication are not supported at this time.
+As part of creating the ClickHouse service, we create a default database, and the default user that has broad permissions to this database. This initial user can create additional users and assign their permissions to this database. Beyond this, the ability to enable the following security features within the database using Kerberos, LDAP, or SSL X.509 certificate authentication aren't supported at this time.
 
 ## Roadmap {#roadmap}
 
-We are evaluating demand for many other features in ClickHouse Cloud. If you have feedback and would like to ask for a specific feature, please [submit it here](https://console.clickhouse.cloud/support).
+We're evaluating demand for many other features in ClickHouse Cloud. If you have feedback and would like to ask for a specific feature, please [submit it here](https://console.clickhouse.cloud/support).

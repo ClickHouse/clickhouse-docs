@@ -17,6 +17,7 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 
 ClickHouse Keeper 为数据[复制](/engines/table-engines/mergetree-family/replication.md)和[分布式 DDL](/sql-reference/distributed-ddl.md) 查询执行提供协调系统。ClickHouse Keeper 与 ZooKeeper 兼容。
 
+
 ### 实现细节 \{#implementation-details\}
 
 ZooKeeper 是最早广为人知的开源协调系统之一。它用 Java 实现，具有相当简单而强大的数据模型。ZooKeeper 的协调算法 ZooKeeper Atomic Broadcast (ZAB) 不为读操作提供线性一致性保证，因为每个 ZooKeeper 节点本地提供读服务。与 ZooKeeper 不同，ClickHouse Keeper 使用 C++ 编写，并采用 [RAFT 算法](https://raft.github.io/)的[实现](https://github.com/eBay/NuRaft)。该算法允许对读写操作提供线性一致性，并且在不同语言中有多种开源实现。
@@ -33,9 +34,9 @@ ClickHouse Keeper 以与 [ZooKeeper](https://zookeeper.apache.org/doc/r3.1.2/zoo
 
 ClickHouse Keeper 可以作为 ZooKeeper 的独立替代品，或作为 ClickHouse 服务器的内部组件使用。在这两种情况下，配置文件几乎相同，都是 `.xml` 文件。
 
-#### Keeper 配置设置 \{#keeper-configuration-settings\}
+#### Keeper 配置参数 \{#keeper-configuration-settings\}
 
-ClickHouse Keeper 主要的配置标签是 `<keeper_server>`，并包含以下参数：
+主要的 ClickHouse Keeper 配置标签是 `<keeper_server>`，其包含以下参数：
 
 | Parameter                            | Description                                                                                                                                                                                                                                         | Default                                                                                                      |
 |--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
@@ -146,6 +147,7 @@ ClickHouse Keeper 主要的配置标签是 `<keeper_server>`，并包含以下�
 </keeper_server>
 ```
 
+
 ### 如何运行 \{#how-to-run\}
 
 ClickHouse Keeper 已打包在 ClickHouse 服务器安装包中，只需在 `/etc/your_path_to_config/clickhouse-server/config.xml` 中添加 `<keeper_server>` 的配置，然后像平常一样启动 ClickHouse 服务器即可。如果你想以独立方式运行 ClickHouse Keeper，可以通过类似的方式启动它：
@@ -154,27 +156,28 @@ ClickHouse Keeper 已打包在 ClickHouse 服务器安装包中，只需在 `/et
 clickhouse-keeper --config /etc/your_path_to_config/config.xml
 ```
 
-如果尚未创建名为 `clickhouse-keeper` 的符号链接，可以手动创建，或者在运行 `clickhouse` 时将 `keeper` 作为参数指定：
+如果没有名为 `clickhouse-keeper` 的符号链接，可以创建一个，或者在运行 `clickhouse` 时将 `keeper` 作为参数传入：
 
 ```bash
 clickhouse keeper --config /etc/your_path_to_config/config.xml
 ```
 
-### 四字母命令 \{#four-letter-word-commands\}
 
-ClickHouse Keeper 也提供了与 ZooKeeper 基本相同的 4lw 命令。每个命令由四个字母组成，例如 `mntr`、`stat` 等。其中有一些更为实用的命令：`stat` 提供关于服务器及其已连接客户端的一些通用信息，而 `srvr` 和 `cons` 则分别提供关于服务器和连接的详细信息。
+### 四字命令 \{#four-letter-word-commands\}
+
+ClickHouse Keeper 也提供了与 Zookeeper 几乎相同的 4lw 命令。每个命令由四个字母组成，例如 `mntr`、`stat` 等。有一些更有用的命令：`stat` 提供有关服务器和已连接客户端的一些通用信息，而 `srvr` 和 `cons` 分别提供关于服务器和连接的详细信息。
 
 4lw 命令有一个白名单配置项 `four_letter_word_white_list`，其默认值为 `conf,cons,crst,envi,ruok,srst,srvr,stat,wchs,dirs,mntr,isro,rcvr,apiv,csnp,lgif,rqld,ydld`。
 
-你可以通过 telnet 或 nc 在客户端端口向 ClickHouse Keeper 发送这些命令。
+你可以通过客户端端口使用 telnet 或 nc 向 ClickHouse Keeper 发送这些命令。
 
 ```bash
 echo mntr | nc localhost 9181
 ```
 
-下面是详细的 4lw 命令：
+Bellow is the detailed 4lw commands:
 
-* `ruok`：测试服务器是否在非错误状态下运行。如果服务器正在运行，则会响应 `imok`，否则将完全不会有任何响应。`imok` 的响应并不一定表示服务器已加入仲裁，只表明服务器进程处于活动状态并已绑定到指定的客户端端口。使用 &quot;stat&quot; 获取有关仲裁状态和客户端连接信息的详细内容。
+* `ruok`: 测试服务器是否在非错误状态下运行。如果服务器正在运行，会返回 `imok`。否则，不会有任何响应。收到 `imok` 并不一定表示服务器已经加入仲裁（quorum），只能说明服务器进程是活动的并已绑定到指定的客户端端口。使用“stat”获取关于仲裁状态及客户端连接信息的详细内容。
 
 ```response
 imok
@@ -272,20 +275,21 @@ compress_snapshots_with_zstd_format=true
 configuration_change_tries_count=20
 ```
 
-* `cons`: 列出当前连接到此服务器的所有客户端的完整连接/会话详情。包括接收/发送的数据包数量、会话 ID、操作延迟、最近一次执行的操作等。
+
+* `cons`: 列出连接到该服务器的所有客户端的完整连接/会话详细信息。包括已接收/已发送的数据包数量、会话 ID、操作延迟、最后执行的操作等信息。
 
 ```response
  192.168.1.1:52163(recved=0,sent=0,sid=0xffffffffffffffff,lop=NA,est=1636454787393,to=30000,lzxid=0xffffffffffffffff,lresp=0,llat=0,minlat=0,avglat=0,maxlat=0)
  192.168.1.1:52042(recved=9,sent=18,sid=0x0000000000000001,lop=List,est=1636454739887,to=30000,lcxid=0x0000000000000005,lzxid=0x0000000000000005,lresp=1636454739892,llat=0,minlat=0,avglat=0,maxlat=0)
 ```
 
-* `crst`: 重置所有连接/会话的统计信息。
+* `crst`: 重置所有连接的连接与会话统计数据。
 
 ```response
 Connection stats reset.
 ```
 
-* `envi`: 打印当前服务环境的详细信息
+* `envi`: 输出服务运行环境的详细信息
 
 ```response
 Environment:
@@ -365,13 +369,14 @@ target_committed_log_idx    101
 last_snapshot_idx   50
 ```
 
-* `rqld`: 请求成为新的 leader。若请求已发送则返回 `Sent leadership request to leader.`，若请求未发送则返回 `Failed to send leadership request to leader.`。注意，如果该节点已经是 leader，则结果与请求已发送时相同。
+
+* `rqld`: 请求成为新的 leader。如果请求已发送，则返回 `Sent leadership request to leader.`；如果请求未发送，则返回 `Failed to send leadership request to leader.`。注意，如果节点已经是 leader，则返回结果与请求已发送时相同。
 
 ```response
 Sent leadership request to leader.
 ```
 
-* `ftfl`: 列出所有功能开关以及这些开关在该 Keeper 实例中是否已启用。
+* `ftfl`: 列出所有功能开关以及它们在该 Keeper 实例上是否已启用。
 
 ```response
 filtered_list   1
@@ -379,13 +384,13 @@ multi_read  1
 check_not_exists    0
 ```
 
-* `ydld`：请求让出领导权并转为 follower 角色。如果接收该请求的服务器是 leader，它会先暂停写操作，等待继任者（当前 leader 本身永远不会被选为继任者）完成对最新日志的追赶，然后再辞去领导身份。继任者将自动选出。如果请求已发送，则返回 `Sent yield leadership request to leader.`，如果请求未发送，则返回 `Failed to send yield leadership request to leader.`。注意，如果节点已经是 follower，则效果等同于请求已成功发送。
+* `ydld`: 请求让出领导权并成为 follower。如果接收请求的服务器是 leader，它会先暂停写入操作，等待接任节点（当前 leader 永远不能成为接任节点）完成对最新日志的追赶，然后再主动退位。接任节点将自动选出。如果请求已发送则返回 `Sent yield leadership request to leader.`，如果请求未发送则返回 `Failed to send yield leadership request to leader.`。请注意，如果节点已经是 follower，则结果与请求已发送时相同。
 
 ```response
 Sent yield leadership request to leader.
 ```
 
-* `pfev`: 返回所有已收集事件的值。对于每个事件，返回事件名称、事件值以及事件描述。
+* `pfev`: 返回所有已收集到的事件的值。对于每个事件，它会返回事件名称、事件值以及该事件的描述。
 
 ```response
 FileOpen        62      Number of files opened.
@@ -408,9 +413,10 @@ AIOWriteBytes   0       Number of bytes written with Linux or FreeBSD AIO interf
 ...
 ```
 
+
 ### HTTP 控制接口 \{#http-control\}
 
-ClickHouse Keeper 提供了一个 HTTP 接口，用于检查副本是否已准备好接收请求。它可用于云环境中，例如 [Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)。
+ClickHouse Keeper 提供了一个 HTTP 接口，用于检查副本是否已准备好接收流量。它可用于云环境中，例如 [Kubernetes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)。
 
 启用 `/ready` 端点的配置示例：
 
@@ -426,6 +432,7 @@ ClickHouse Keeper 提供了一个 HTTP 接口，用于检查副本是否已准�
     </keeper_server>
 </clickhouse>
 ```
+
 
 ### 功能开关（Feature flags） \{#feature-flags\}
 
@@ -447,20 +454,21 @@ Keeper 与 ZooKeeper 及其客户端完全兼容，但它也为 ClickHouse 客�
 </clickhouse>
 ```
 
-可用的功能如下：
+The following features are available:
 
-| 功能                     | 描述                                                                    | 默认值 |
-| ---------------------- | --------------------------------------------------------------------- | --- |
-| `multi_read`           | 支持多读（multi read）请求                                                    | `1` |
-| `filtered_list`        | 支持按节点类型（临时节点或持久节点）过滤结果的列表请求                                           | `1` |
-| `check_not_exists`     | 支持 `CheckNotExists` 请求，用于断言某个节点不存在                                    | `1` |
-| `create_if_not_exists` | 支持 `CreateIfNotExists` 请求：如果节点不存在则尝试创建该节点；如果节点已存在，则不会应用任何更改，并返回 `ZOK` | `1` |
-| `remove_recursive`     | 支持 `RemoveRecursive` 请求，用于删除该节点及其整个子树                                 | `1` |
+| Feature                | Description                                                                                                                                                  | Default |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- |
+| `multi_read`           | Support for read multi request                                                                                                                               | `1`     |
+| `filtered_list`        | Support for list request which filters results by the type of node (ephemeral or persistent)                                                                 | `1`     |
+| `check_not_exists`     | Support for `CheckNotExists` request, which asserts that node doesn&#39;t exist                                                                              | `1`     |
+| `create_if_not_exists` | Support for `CreateIfNotExists` request, which will try to create a node if it doesn&#39;t exist. If it exists, no changes are applied and `ZOK` is returned | `1`     |
+| `remove_recursive`     | Support for `RemoveRecursive` request, which removes the node along with its subtree                                                                         | `1`     |
 
 :::note
-从 25.7 版本开始，部分功能标志（feature flag）默认启用。\
-将 Keeper 升级到 25.7+ 的推荐方式是先升级到 24.9+ 版本。
+Some of the feature flags are enabled by default from version 25.7.
+The recommended way of upgrading Keeper to 25.7+ is to first upgrade to version 24.9+.
 :::
+
 
 ### 从 ZooKeeper 迁移 \{#migration-from-zookeeper\}
 
@@ -486,8 +494,9 @@ clickhouse-keeper-converter --zookeeper-logs-dir /var/lib/zookeeper/version-2 --
 clickhouse keeper-converter ...
 ```
 
-Otherwise, you can [download the binary](/getting-started/quick-start/oss#download-the-binary) and run the tool as described above without installing ClickHouse.
+否则，你可以[下载该二进制文件](/getting-started/quick-start/oss#download-the-binary)，在不安装 ClickHouse 的情况下按照上述方式运行该工具。
 :::
+
 
 ### 在丢失法定人数后的恢复 \{#recovering-after-losing-quorum\}
 
@@ -595,6 +604,7 @@ Keeper 实例的一种可能存储配置如下所示：
 此实例会将除最新日志外的所有日志存储在 `log_s3_plain` 磁盘上，而最新日志将存储在 `log_local` 磁盘上。
 同样的逻辑也适用于快照：除最新快照外的所有快照将存储在 `snapshot_s3_plain` 磁盘上，而最新快照将存储在 `snapshot_local` 磁盘上。
 
+
 ### 更改磁盘配置 \{#changing-disk-setup\}
 
 :::important
@@ -622,8 +632,9 @@ Keeper 实例的一种可能存储配置如下所示：
 </clickhouse>
 ```
 
-在启动时，所有日志文件都会从 `log_local` 和 `log_s3_plain` 移动到 `log_local2` 磁盘。
-同样，所有快照文件都会从 `snapshot_local` 和 `snapshot_s3_plain` 移动到 `snapshot_local2` 磁盘。
+在启动时，所有日志文件将从 `log_local` 和 `log_s3_plain` 移动到 `log_local2` 磁盘。
+同样，所有快照文件将从 `snapshot_local` 和 `snapshot_s3_plain` 移动到 `snapshot_local2` 磁盘。
+
 
 ## 配置日志缓存 \{#configuring-logs-cache\}
 
@@ -654,29 +665,31 @@ Keeper 可以对 [Prometheus](https://prometheus.io) 暴露指标数据，以供
 
 **示例**
 
-```
-
-Check (replace `127.0.0.1` with the IP addr or hostname of your ClickHouse server):
+```xml
+<clickhouse>
+    <listen_host>0.0.0.0</listen_host>
+    <http_port>8123</http_port>
+    <tcp_port>9000</tcp_port>
+    <!-- highlight-start -->
+    <prometheus>
+        <endpoint>/metrics</endpoint>
+        <port>9363</port>
+        <metrics>true</metrics>
+        <events>true</events>
+        <asynchronous_metrics>true</asynchronous_metrics>
+    </prometheus>
+    <!-- highlight-end -->
+</clickhouse>
 ```
 
 检查（将 `127.0.0.1` 替换为 ClickHouse 服务器的 IP 地址或主机名）：
 
+```bash
+curl 127.0.0.1:9363/metrics
 ```
 
-Please also see the ClickHouse Cloud [Prometheus integration](/integrations/prometheus).
-
-## ClickHouse Keeper user guide {#clickhouse-keeper-user-guide}
-
-This guide provides simple and minimal settings to configure ClickHouse Keeper with an example on how to test distributed operations. This example is performed using 3 nodes on Linux.
-
-### 1. Configure nodes with Keeper settings {#1-configure-nodes-with-keeper-settings}
-
-1. Install 3 ClickHouse instances on 3 hosts (`chnode1`, `chnode2`, `chnode3`). (View the [Quick Start](/getting-started/install/install.mdx) for details on installing ClickHouse.)
-
-2. On each node, add the following entry to allow external communication through the network interface.
-    ```
-
 另请参阅 ClickHouse Cloud 的 [Prometheus 集成](/integrations/prometheus)。
+
 
 ## ClickHouse Keeper 用户指南 \{#clickhouse-keeper-user-guide\}
 
@@ -686,222 +699,255 @@ This guide provides simple and minimal settings to configure ClickHouse Keeper w
 
 1. 在 3 台主机（`chnode1`、`chnode2`、`chnode3`）上安装 3 个 ClickHouse 实例。（有关安装 ClickHouse 的详细信息，请参阅[快速开始](/getting-started/install/install.mdx)。）
 
-2. 在每个节点上添加以下条目，以允许通过网络接口进行外部通信。
-    ```
-
-3. Add the following ClickHouse Keeper configuration to all three servers updating the `<server_id>` setting for each server; for `chnode1` would be `1`, `chnode2` would be `2`, etc.
-    ```
+2. 在每个节点上添加以下条目，以允许通过网络接口对外通信。
+   ```xml
+   <listen_host>0.0.0.0</listen_host>
+   ```
 
 3. 在所有三台服务器上添加以下 ClickHouse Keeper 配置，并为每台服务器更新 `<server_id>` 设置；例如 `chnode1` 为 `1`，`chnode2` 为 `2`，依此类推。
-    ```
 
-    These are the basic settings used above:
+   ```xml
+   <keeper_server>
+       <tcp_port>9181</tcp_port>
+       <server_id>1</server_id>
+       <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
+       <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
 
-    |Parameter |Description                   |Example              |
-    |----------|------------------------------|---------------------|
-    |tcp_port   |port to be used by clients of keeper|9181 default equivalent of 2181 as in zookeeper|
-    |server_id| identifier for each ClickHouse Keeper server used in raft configuration| 1|
-    |coordination_settings| section to parameters such as timeouts| timeouts: 10000, log level: trace|
-    |server    |definition of server participating|list of each server definition|
-    |raft_configuration| settings for each server in the keeper cluster| server and settings for each|
-    |id      |numeric id of the server for keeper services|1|
-    |hostname   |hostname, IP or FQDN of each server in the keeper cluster|`chnode1.domain.com`|
-    |port|port to listen on for interserver keeper connections|9234|
+       <coordination_settings>
+           <operation_timeout_ms>10000</operation_timeout_ms>
+           <session_timeout_ms>30000</session_timeout_ms>
+           <raft_logs_level>warning</raft_logs_level>
+       </coordination_settings>
 
-4.  Enable the Zookeeper component. It will use the ClickHouse Keeper engine:
-    ```
+       <raft_configuration>
+           <server>
+               <id>1</id>
+               <hostname>chnode1.domain.com</hostname>
+               <port>9234</port>
+           </server>
+           <server>
+               <id>2</id>
+               <hostname>chnode2.domain.com</hostname>
+               <port>9234</port>
+           </server>
+           <server>
+               <id>3</id>
+               <hostname>chnode3.domain.com</hostname>
+               <port>9234</port>
+           </server>
+       </raft_configuration>
+   </keeper_server>
+   ```
 
-    上面使用的是以下基本设置：
+   上面使用的是以下基本设置：
 
-    |Parameter |Description                   |Example              |
-    |----------|------------------------------|---------------------|
-    |tcp_port   |供 keeper 客户端使用的端口|9181，等同于 zookeeper 中的默认端口 2181|
-    |server_id| 在 raft 配置中为每个 ClickHouse Keeper 服务器设置的标识符| 1|
-    |coordination_settings| 用于配置诸如超时等参数的部分| 超时：10000，日志级别：trace|
-    |server    |参与的服务器的定义|每台服务器的定义列表|
-    |raft_configuration| keeper 集群中每台服务器的设置| 每台服务器及其相关设置|
-    |id      |keeper 服务中服务器的数字 ID|1|
-    |hostname   |keeper 集群中每台服务器的主机名、IP 或 FQDN|`chnode1.domain.com`|
-    |port|用于 keeper 服务器间连接监听的端口|9234|
+   | Parameter                 | Description                               | Example                        |
+   | ------------------------- | ----------------------------------------- | ------------------------------ |
+   | tcp&#95;port              | 供 keeper 客户端使用的端口                         | 9181，等同于 zookeeper 中的默认端口 2181 |
+   | server&#95;id             | 在 raft 配置中为每个 ClickHouse Keeper 服务器设置的标识符 | 1                              |
+   | coordination&#95;settings | 用于配置诸如超时等参数的部分                            | 超时：10000，日志级别：trace            |
+   | server                    | 参与的服务器的定义                                 | 每台服务器的定义列表                     |
+   | raft&#95;configuration    | keeper 集群中每台服务器的设置                        | 每台服务器及其相关设置                    |
+   | id                        | keeper 服务中服务器的数字 ID                       | 1                              |
+   | hostname                  | keeper 集群中每台服务器的主机名、IP 或 FQDN             | `chnode1.domain.com`           |
+   | port                      | 用于 keeper 服务器间连接监听的端口                     | 9234                           |
 
 4. 启用 Zookeeper 组件。它将使用 ClickHouse Keeper 引擎：
-    ```
 
-    These are the basic settings used above:
+   ```xml
+       <zookeeper>
+           <node>
+               <host>chnode1.domain.com</host>
+               <port>9181</port>
+           </node>
+           <node>
+               <host>chnode2.domain.com</host>
+               <port>9181</port>
+           </node>
+           <node>
+               <host>chnode3.domain.com</host>
+               <port>9181</port>
+           </node>
+       </zookeeper>
+   ```
 
-    |Parameter |Description                   |Example              |
-    |----------|------------------------------|---------------------|
-    |node   |list of nodes for ClickHouse Keeper connections|settings entry for each server|
-    |host|hostname, IP or FQDN of each ClickHouse keeper node| `chnode1.domain.com`|
-    |port|ClickHouse Keeper client port| 9181|
+   上述示例中使用的基本配置如下：
 
-5. Restart ClickHouse and verify that each Keeper instance is running. Execute the following command on each server. The `ruok` command returns `imok` if Keeper is running and healthy:
-    ```
-
-    上面使用的是以下基本设置：
-
-    |Parameter |Description                   |Example              |
-    |----------|------------------------------|---------------------|
-    |node   |用于 ClickHouse Keeper 连接的节点列表|每台服务器的一条配置记录|
-    |host|每个 ClickHouse Keeper 节点的主机名、IP 或 FQDN| `chnode1.domain.com`|
-    |port|ClickHouse Keeper 客户端端口| 9181|
+   | Parameter | Description                           | Example              |
+   | --------- | ------------------------------------- | -------------------- |
+   | node      | 用于 ClickHouse Keeper 连接的节点列表          | 每台服务器的一条配置记录         |
+   | host      | 每个 ClickHouse Keeper 节点的主机名、IP 或 FQDN | `chnode1.domain.com` |
+   | port      | ClickHouse Keeper 客户端端口               | 9181                 |
 
 5. 重启 ClickHouse 并验证每个 Keeper 实例是否正在运行。在每台服务器上执行以下命令。如果 Keeper 正常运行且处于健康状态，`ruok` 命令将返回 `imok`：
-    ```
-
-6. The `system` database has a table named `zookeeper` that contains the details of your ClickHouse Keeper instances. Let's view the table:
-    ```
+   ```bash
+   # echo ruok | nc localhost 9181; echo
+   imok
+   ```
 
 6. `system` 数据库中有一张名为 `zookeeper` 的表，其中包含 ClickHouse Keeper 实例的详细信息。我们来查看该表：
-    ```
 
-    The table looks like:
-    ```
+   ```sql
+   SELECT *
+   FROM system.zookeeper
+   WHERE path IN ('/', '/clickhouse')
+   ```
 
-该表如下所示：
+   该表如下所示：
 
-```
-
-### 2.  Configure a cluster in ClickHouse {#2--configure-a-cluster-in-clickhouse}
-
-1. Let's configure a simple cluster with 2 shards and only one replica on 2 of the nodes. The third node will be used to achieve a quorum for the requirement in ClickHouse Keeper. Update the configuration on `chnode1` and `chnode2`. The following cluster defines 1 shard on each node for a total of 2 shards with no replication. In this example, some of the data will be on node and some will be on the other node:
-    ```
+   ```response
+   ┌─name───────┬─value─┬─czxid─┬─mzxid─┬───────────────ctime─┬───────────────mtime─┬─version─┬─cversion─┬─aversion─┬─ephemeralOwner─┬─dataLength─┬─numChildren─┬─pzxid─┬─path────────┐
+   │ clickhouse │       │   124 │   124 │ 2022-03-07 00:49:34 │ 2022-03-07 00:49:34 │       0 │        2 │        0 │              0 │          0 │           2 │  5693 │ /           │
+   │ task_queue │       │   125 │   125 │ 2022-03-07 00:49:34 │ 2022-03-07 00:49:34 │       0 │        1 │        0 │              0 │          0 │           1 │   126 │ /clickhouse │
+   │ tables     │       │  5693 │  5693 │ 2022-03-07 00:49:34 │ 2022-03-07 00:49:34 │       0 │        3 │        0 │              0 │          0 │           3 │  6461 │ /clickhouse │
+   └────────────┴───────┴───────┴───────┴─────────────────────┴─────────────────────┴─────────┴──────────┴──────────┴────────────────┴────────────┴─────────────┴───────┴─────────────┘
+   ```
 
 ### 2.  在 ClickHouse 中配置集群 \{#2--configure-a-cluster-in-clickhouse\}
 
-1. 让我们在 2 个节点上配置一个包含 2 个分片且每个分片只有 1 个副本的简单集群。第三个节点将用于满足 ClickHouse Keeper 的仲裁（quorum）要求。在 `chnode1` 和 `chnode2` 上更新配置。下面的集群配置在每个节点上定义了 1 个分片，总计 2 个分片且无复制。在此示例中，一部分数据会位于一个节点上，另一部分数据会位于另一个节点上：
-
-   ```
-
-    |Parameter |Description                   |Example              |
-    |----------|------------------------------|---------------------|
-    |shard   |list of replicas on the cluster definition|list of replicas for each shard|
-    |replica|list of settings for each replica|settings entries for each replica|
-    |host|hostname, IP or FQDN of server that will host a replica shard|`chnode1.domain.com`|
-    |port|port used to communicate using the native tcp protocol|9000|
-    |user|username that will be used to authenticate to the cluster instances|default|
-    |password|password for the user define to allow connections to cluster instances|`ClickHouse123!`|
-
-2. Restart ClickHouse and verify the cluster was created:
+1. 让我们在 2 个节点上配置一个包含 2 个分片且每个分片只有 1 个副本的简单集群。第三个节点将用于满足 ClickHouse Keeper 的仲裁（quorum）要求。在 `chnode1` 和 `chnode2` 上更新配置。下面的集群配置在每个节点上定义了 1 个分片，总计 2 个分片且不启用复制。在此示例中，一部分数据会位于一个节点上，另一部分数据会位于另一个节点上：
+    ```xml
+        <remote_servers>
+            <cluster_2S_1R>
+                <shard>
+                    <replica>
+                        <host>chnode1.domain.com</host>
+                        <port>9000</port>
+                        <user>default</user>
+                        <password>ClickHouse123!</password>
+                    </replica>
+                </shard>
+                <shard>
+                    <replica>
+                        <host>chnode2.domain.com</host>
+                        <port>9000</port>
+                        <user>default</user>
+                        <password>ClickHouse123!</password>
+                    </replica>
+                </shard>
+            </cluster_2S_1R>
+        </remote_servers>
     ```
 
-   | Parameter | Description               | Example              |
-   | --------- | ------------------------- | -------------------- |
-   | shard     | 集群定义中的分片列表                | 每个分片的副本列表            |
-   | replica   | 每个副本的配置列表                 | 每个副本的配置项             |
-   | host      | 将托管副本分片的服务器的主机名、IP 或 FQDN | `chnode1.domain.com` |
-   | port      | 使用原生 TCP 协议进行通信的端口        | 9000                 |
-   | user      | 用于对集群实例进行身份验证的用户名         | default              |
-   | password  | 为该用户设置的密码，用于允许连接到集群实例     | `ClickHouse123!`     |
+    | Parameter | Description                              | Example              |
+    |----------|------------------------------------------|---------------------|
+    | shard    | 集群定义中的分片列表                     | 每个分片的副本列表   |
+    | replica  | 每个副本的配置列表                       | 每个副本的配置项     |
+    | host     | 将托管副本分片的服务器的主机名、IP 或 FQDN | `chnode1.domain.com`|
+    | port     | 使用原生 TCP 协议进行通信的端口          | 9000                |
+    | user     | 用于对集群实例进行身份验证的用户名       | default             |
+    | password | 为该用户设置的密码，用于允许连接到集群实例 | `ClickHouse123!`    |
 
 2. 重启 ClickHouse 并验证集群是否已创建：
-
-   ```
-
-    You should see your cluster:
+    ```bash
+    SHOW clusters;
     ```
 
-   你应该能看到你的集群：
-
-   ```
-
-### 3. Create and test distributed table {#3-create-and-test-distributed-table}
-
-1.  Create a new database on the new cluster using ClickHouse client on `chnode1`. The `ON CLUSTER` clause automatically creates the database on both nodes.
+    你应该能看到你的集群：
+    ```response
+    ┌─cluster───────┐
+    │ cluster_2S_1R │
+    └───────────────┘
     ```
 
 ### 3. 创建并测试分布式表 \{#3-create-and-test-distributed-table\}
 
-1. 使用 `chnode1` 上的 ClickHouse 客户端在新集群上创建一个新的数据库。`ON CLUSTER` 子句会自动在两个节点上创建该数据库。
-   ```
-
-2. Create a new table on the `db1` database. Once again, `ON CLUSTER` creates the table on both nodes.
+1. 在新集群中，使用 `chnode1` 上的 ClickHouse 客户端创建一个新数据库。`ON CLUSTER` 子句会自动在两个节点上创建该数据库。
+    ```sql
+    CREATE DATABASE db1 ON CLUSTER 'cluster_2S_1R';
     ```
 
 2. 在 `db1` 数据库中创建一个新表。同样，`ON CLUSTER` 会在两个节点上创建该表。
-    ```
-
-3. On the `chnode1` node, add a couple of rows:
+    ```sql
+    CREATE TABLE db1.table1 on cluster 'cluster_2S_1R'
+    (
+        `id` UInt64,
+        `column1` String
+    )
+    ENGINE = MergeTree
+    ORDER BY column1
     ```
 
 3. 在 `chnode1` 节点上添加几行数据：
-    ```
-
-4. Add a couple of rows on the `chnode2` node:
+    ```sql
+    INSERT INTO db1.table1
+        (id, column1)
+    VALUES
+        (1, 'abc'),
+        (2, 'def')
     ```
 
 4. 在 `chnode2` 节点上添加几行数据：
-    ```
-
-5. Notice that running a `SELECT` statement on each node only shows the data on that node. For example, on `chnode1`:
+    ```sql
+    INSERT INTO db1.table1
+        (id, column1)
+    VALUES
+        (3, 'ghi'),
+        (4, 'jkl')
     ```
 
 5. 注意，在每个节点上运行 `SELECT` 语句时，只会显示该节点上的数据。例如，在 `chnode1` 上：
+    ```sql
+    SELECT *
+    FROM db1.table1
     ```
 
-    ```
+    ```response
+    Query id: 7ef1edbc-df25-462b-a9d4-3fe6f9cb0b6d
 
-    ```
+    ┌─id─┬─column1─┐
+    │  1 │ abc     │
+    │  2 │ def     │
+    └────┴─────────┘
 
-    On `chnode2`:
-6.
+    2 rows in set. Elapsed: 0.006 sec.
     ```
 
     在 `chnode2` 上：
 6.
+    ```sql
+    SELECT *
+    FROM db1.table1
     ```
 
-    ```
+    ```response
+    Query id: c43763cc-c69c-4bcc-afbe-50e764adfcbf
 
-    ```
-
-6. You can create a `Distributed` table to represent the data on the two shards. Tables with the `Distributed` table engine do not store any data of their own, but allow distributed query processing on multiple servers. Reads hit all the shards, and writes can be distributed across the shards. Run the following query on `chnode1`:
+    ┌─id─┬─column1─┐
+    │  3 │ ghi     │
+    │  4 │ jkl     │
+    └────┴─────────┘
     ```
 
 6. 可以创建一个 `Distributed` 表来汇总表示两个分片上的数据。使用 `Distributed` 表引擎的表本身不存储任何数据，但允许在多个服务器上进行分布式查询处理。读操作会访问所有分片，写操作可以分布到各个分片上。在 `chnode1` 上运行以下查询：
-    ```
-
-7. Notice querying `dist_table` returns all four rows of data from the two shards:
+    ```sql
+    CREATE TABLE db1.dist_table (
+        id UInt64,
+        column1 String
+    )
+    ENGINE = Distributed(cluster_2S_1R,db1,table1)
     ```
 
 7. 注意，对 `dist_table` 发起查询会返回来自两个分片的全部四行数据：
+    ```sql
+    SELECT *
+    FROM db1.dist_table
     ```
 
+    ```response
+    Query id: 495bffa0-f849-4a0c-aeea-d7115a54747a
+
+    ┌─id─┬─column1─┐
+    │  1 │ abc     │
+    │  2 │ def     │
+    └────┴─────────┘
+    ┌─id─┬─column1─┐
+    │  3 │ ghi     │
+    │  4 │ jkl     │
+    └────┴─────────┘
+
+    4 rows in set. Elapsed: 0.018 sec.
     ```
-
-    ```
-
-### Summary {#summary}
-
-This guide demonstrated how to set up a cluster using ClickHouse Keeper. With ClickHouse Keeper, you can configure clusters and define distributed tables that can be replicated across shards.
-
-## Configuring ClickHouse Keeper with unique paths {#configuring-clickhouse-keeper-with-unique-paths}
-
-<SelfManaged />
-
-### Description {#description}
-
-This article describes how to use the built-in `{uuid}` macro setting
-to create unique entries in ClickHouse Keeper or ZooKeeper. Unique
-paths help when creating and dropping tables frequently because
-this avoids having to wait several minutes for Keeper garbage collection
-to remove path entries as each time a path is created a new `uuid` is used
-in that path; paths are never reused.
-
-### Example environment {#example-environment}
-A three node cluster that will be configured to have ClickHouse Keeper
-on all three nodes, and ClickHouse on two of the nodes. This provides
-ClickHouse Keeper with three nodes (including a tiebreaker node), and
-a single ClickHouse shard made up of two replicas.
-
-|node|description|
-|-----|-----|
-|`chnode1.marsnet.local`|data node - cluster `cluster_1S_2R`|
-|`chnode2.marsnet.local`|data node - cluster `cluster_1S_2R`|
-|`chnode3.marsnet.local`| ClickHouse Keeper tie breaker node|
-
-Example config for cluster:
-```
 
 ### 总结 \{#summary\}
 
@@ -934,26 +980,40 @@ Example config for cluster:
 
 集群示例配置：
 
+```xml
+    <remote_servers>
+        <cluster_1S_2R>
+            <shard>
+                <replica>
+                    <host>chnode1.marsnet.local</host>
+                    <port>9440</port>
+                    <user>default</user>
+                    <password>ClickHouse123!</password>
+                    <secure>1</secure>
+                </replica>
+                <replica>
+                    <host>chnode2.marsnet.local</host>
+                    <port>9440</port>
+                    <user>default</user>
+                    <password>ClickHouse123!</password>
+                    <secure>1</secure>
+                </replica>
+            </shard>
+        </cluster_1S_2R>
+    </remote_servers>
 ```
 
-### Procedures to set up tables to use `{uuid}` {#procedures-to-set-up-tables-to-use-uuid}
-
-1. Configure Macros on each server
-example for server 1:
-```
 
 ### 将表设置为使用 `{uuid}` 的步骤 \{#procedures-to-set-up-tables-to-use-uuid\}
 
-1. 在每台服务器上配置宏（Macros）\
+1. 在每台服务器上配置宏（Macros）
    以服务器 1 为例：
 
-```
-:::note
-Notice that we define macros for `shard` and `replica`, but that `{uuid}` is not defined here, it is built-in and there is no need to define.
-:::
-
-2. Create a Database
-
+```xml
+    <macros>
+        <shard>1</shard>
+        <replica>replica_1</replica>
+    </macros>
 ```
 
 :::note
@@ -962,34 +1022,54 @@ Notice that we define macros for `shard` and `replica`, but that `{uuid}` is not
 
 2. 创建数据库
 
+```sql
+CREATE DATABASE db_uuid
+      ON CLUSTER 'cluster_1S_2R'
+      ENGINE Atomic;
 ```
 
-```
+```response
+CREATE DATABASE db_uuid ON CLUSTER cluster_1S_2R
+ENGINE = Atomic
 
-```
+Query id: 07fb7e65-beb4-4c30-b3ef-bd303e5c42b5
 
-3. Create a table on the cluster using the macros and `{uuid}`
-
+┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
+│ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
+└───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
 3. 利用宏和 `{uuid}` 在集群上创建表
 
+```sql
+CREATE TABLE db_uuid.uuid_table1 ON CLUSTER 'cluster_1S_2R'
+   (
+     id UInt64,
+     column1 String
+   )
+   ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/db_uuid/{uuid}', '{replica}' )
+   ORDER BY (id);
 ```
 
-```
+```response
+CREATE TABLE db_uuid.uuid_table1 ON CLUSTER cluster_1S_2R
+(
+    `id` UInt64,
+    `column1` String
+)
+ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/db_uuid/{uuid}', '{replica}')
+ORDER BY id
 
-```
+Query id: 8f542664-4548-4a02-bd2a-6f2c973d0dc4
 
-4.  Create a distributed table
-
-```
-
-┌─host──────────────────┬─port─┬─status─┬─error─┬─num&#95;hosts&#95;remaining─┬─num&#95;hosts&#95;active─┐
+┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
 │ chnode1.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
 │ chnode2.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
 └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-
 ```
+
+4. 创建分布式表
 
 ```sql
 CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER 'cluster_1S_2R'
@@ -1000,8 +1080,6 @@ CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER 'cluster_1S_2R'
    ENGINE = Distributed('cluster_1S_2R', 'db_uuid', 'uuid_table1' );
 ```
 
-### Testing {#testing}
-1.  Insert data into first node (e.g `chnode1`)
 ```response
 CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER cluster_1S_2R
 (
@@ -1018,6 +1096,11 @@ Query id: 3bc7f339-ab74-4c7d-a752-1ffe54219c0e
 └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 ```
 
+
+### 测试 \{#testing\}
+
+1. 在第一个节点上插入数据（例如 `chnode1`）
+
 ```sql
 INSERT INTO db_uuid.uuid_table1
    ( id, column1)
@@ -1025,7 +1108,6 @@ INSERT INTO db_uuid.uuid_table1
    ( 1, 'abc');
 ```
 
-2. Insert data into second node (e.g., `chnode2`)
 ```response
 INSERT INTO db_uuid.uuid_table1 (id, column1) FORMAT Values
 
@@ -1033,8 +1115,10 @@ Query id: 0f178db7-50a6-48e2-9a1b-52ed14e6e0f9
 
 Ok.
 
-1 行数据。耗时: 0.033 秒。
+1 row in set. Elapsed: 0.033 sec.
 ```
+
+2. 向第二个节点插入数据（例如 `chnode2`）
 
 ```sql
 INSERT INTO db_uuid.uuid_table1
@@ -1043,30 +1127,27 @@ INSERT INTO db_uuid.uuid_table1
    ( 2, 'def');
 ```
 
-3. View records using distributed table
 ```response
 INSERT INTO db_uuid.uuid_table1 (id, column1) FORMAT Values
 
-查询 ID: edc6f999-3e7d-40a0-8a29-3137e97e3607
+Query id: edc6f999-3e7d-40a0-8a29-3137e97e3607
 
-完成。
+Ok.
 
-结果集包含 1 行。耗时: 0.529 秒。
+1 row in set. Elapsed: 0.529 sec.
 ```
+
+3. 使用分布式表查看记录
 
 ```sql
 SELECT * FROM db_uuid.dist_uuid_table1;
 ```
 
-### Alternatives {#alternatives}
-The default replication path can be defined beforehand by macros and using also `{uuid}`
-
-1. Set default for tables on each node
 ```response
 SELECT *
 FROM db_uuid.dist_uuid_table1
 
-查询 ID: 6cbab449-9e7f-40fe-b8c2-62d46ba9f5c8
+Query id: 6cbab449-9e7f-40fe-b8c2-62d46ba9f5c8
 
 ┌─id─┬─column1─┐
 │  1 │ abc     │
@@ -1075,17 +1156,26 @@ FROM db_uuid.dist_uuid_table1
 │  2 │ def     │
 └────┴─────────┘
 
-返回 2 行。用时:0.007 秒。
+2 rows in set. Elapsed: 0.007 sec.
 ```
-:::tip
-You can also define a macro `{database}` on each node if nodes are used for certain databases.
-:::
 
-2. Create table without explicit parameters:
+
+### Alternatives \{#alternatives\}
+
+The default replication path can be defined beforehand by macros and using also `{uuid}`
+
+1. Set default for tables on each node
+
 ```xml
 <default_replica_path>/clickhouse/tables/{shard}/db_uuid/{uuid}</default_replica_path>
 <default_replica_name>{replica}</default_replica_name>
 ```
+
+:::tip
+如果这些节点用于特定数据库，还可以在每个节点上定义宏 `{database}`。
+:::
+
+2. 在不显式指定参数的情况下创建表：
 
 ```sql
 CREATE TABLE db_uuid.uuid_table1 ON CLUSTER 'cluster_1S_2R'
@@ -1097,7 +1187,6 @@ CREATE TABLE db_uuid.uuid_table1 ON CLUSTER 'cluster_1S_2R'
    ORDER BY (id);
 ```
 
-3. Verify it used the settings used in default config
 ```response
 CREATE TABLE db_uuid.uuid_table1 ON CLUSTER cluster_1S_2R
 (
@@ -1106,143 +1195,138 @@ CREATE TABLE db_uuid.uuid_table1 ON CLUSTER cluster_1S_2R
 )
 ENGINE = ReplicatedMergeTree
 ORDER BY id
+
+Query id: ab68cda9-ae41-4d6d-8d3b-20d8255774ee
+
+┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
+│ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
+└───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+
+2 rows in set. Elapsed: 1.175 sec.
 ```
 
+3. 验证其是否使用了默认配置中的设置
+
+```sql
+SHOW CREATE TABLE db_uuid.uuid_table1;
 ```
 
-3. 验证其使用了默认配置中的设置
+```response
+SHOW CREATE TABLE db_uuid.uuid_table1
+
+CREATE TABLE db_uuid.uuid_table1
+(
+    `id` UInt64,
+    `column1` String
+)
+ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/db_uuid/{uuid}', '{replica}')
+ORDER BY id
+
+1 row in set. Elapsed: 0.003 sec.
 ```
 
-### Troubleshooting {#troubleshooting}
-
-Example command to get table information and UUID:
-```
-
-```
-
-Example command to get information about the table in zookeeper with UUID for the table above
-```
 
 ### 故障排查 \{#troubleshooting\}
 
 示例命令，用于获取表信息和 UUID：
 
+```sql
+SELECT * FROM system.tables
+WHERE database = 'db_uuid' AND name = 'uuid_table1';
 ```
 
-:::note
-Database must be `Atomic`, if upgrading from a previous version, the
-`default` database is likely of `Ordinary` type.
-:::
+用于获取 ZooKeeper 中上述表对应 UUID 信息的示例命令
 
-To check:
-
-For example,
-
-```
-
-用于获取 ZooKeeper 中上述表的 UUID 相关信息的示例命令
-
-```
-
+```sql
+SELECT * FROM system.zookeeper
+WHERE path = '/clickhouse/tables/1/db_uuid/9e8a3cc2-0dec-4438-81a7-c3e63ce2a1cf/replicas';
 ```
 
 :::note
 数据库必须为 `Atomic`。如果是从之前的版本升级，则 `default` 数据库很可能是 `Ordinary` 类型。
 :::
 
-检查方式：
+检查方法：
 
 例如，
 
+```sql
+SELECT name, engine FROM system.databases WHERE name = 'db_uuid';
 ```
 
-## ClickHouse Keeper dynamic reconfiguration {#reconfiguration}
+```response
+SELECT
+    name,
+    engine
+FROM system.databases
+WHERE name = 'db_uuid'
 
-<SelfManaged />
+Query id: b047d459-a1d2-4016-bcf9-3e97e30e49c2
 
-### Description {#description-1}
+┌─name────┬─engine─┐
+│ db_uuid │ Atomic │
+└─────────┴────────┘
 
-ClickHouse Keeper partially supports ZooKeeper [`reconfig`](https://zookeeper.apache.org/doc/r3.5.3-beta/zookeeperReconfig.html#sc_reconfig_modifying)
-command for dynamic cluster reconfiguration if `keeper_server.enable_reconfiguration` is turned on.
-
-:::note
-If this setting is turned off, you may reconfigure the cluster by altering the replica's `raft_configuration`
-section manually. Make sure you the edit files on all replicas as only the leader will apply changes.
-Alternatively, you can send a `reconfig` query through any ZooKeeper-compatible client.
-:::
-
-A virtual node `/keeper/config` contains last committed cluster configuration in the following format:
-
+1 row in set. Elapsed: 0.004 sec.
 ```
 
-```
 
-- Each server entry is delimited by a newline.
-- `server_type` is either `participant` or `learner` ([learner](https://github.com/eBay/NuRaft/blob/master/docs/readonly_member.md) does not participate in leader elections).
-- `server_priority` is a non-negative integer telling [which nodes should be prioritised on leader elections](https://github.com/eBay/NuRaft/blob/master/docs/leader_election_priority.md).
-  Priority of 0 means server will never be a leader.
-
-Example:
-
-```
-
-## ClickHouse Keeper 动态重新配置 {#reconfiguration}
+## ClickHouse Keeper 动态重新配置 \{#reconfiguration\}
 
 <SelfManaged />
 
 ### 描述 \{#description-1\}
 
-如果开启了 `keeper_server.enable_reconfiguration`，ClickHouse Keeper 对用于动态集群重新配置的 ZooKeeper [`reconfig`](https://zookeeper.apache.org/doc/r3.5.3-beta/zookeeperReconfig.html#sc_reconfig_modifying) 命令提供部分支持。
+当启用 `keeper_server.enable_reconfiguration` 时,ClickHouse Keeper 对 ZooKeeper 的 [`reconfig`](https://zookeeper.apache.org/doc/r3.5.3-beta/zookeeperReconfig.html#sc_reconfig_modifying)
+命令提供部分支持,以便对集群进行动态重新配置。
 
 :::note
-如果该设置关闭，您可以通过手动修改各副本的 `raft_configuration` 节来重新配置集群。请确保在所有副本上都编辑这些文件，因为只有 leader 会应用更改。
-或者，您也可以通过任何兼容 ZooKeeper 的客户端发送 `reconfig` 查询。
+如果禁用该设置,您可以通过手动修改副本的 `raft_configuration` 部分来重新配置集群。请确保在所有副本上编辑这些文件,因为只有 leader 会应用更改。
+或者,您也可以通过任意兼容 ZooKeeper 的客户端发送 `reconfig` 查询。
 :::
 
-虚拟节点 `/keeper/config` 中包含最近一次提交的集群配置，格式如下：
+虚拟节点 `/keeper/config` 以如下格式包含最近一次提交的集群配置:
 
-```
-
-You can use `reconfig` command to add new servers, remove existing ones, and change existing servers'
-priorities, here are examples (using `clickhouse-keeper-client`):
-
+```text
+server.id = server_host:server_port[;server_type][;server_priority]
+server.id2 = ...
+...
 ```
 
 * 每个服务器条目以换行符分隔。
-* `server_type` 可以是 `participant` 或 `learner`（[learner](https://github.com/eBay/NuRaft/blob/master/docs/readonly_member.md) 不参与 leader 选举）。
-* `server_priority` 是一个非负整数，用于指定[在 leader 选举时应优先选择哪些节点](https://github.com/eBay/NuRaft/blob/master/docs/leader_election_priority.md)。
-  优先级为 0 表示该服务器永远不会成为 leader。
+* `server_type` 为 `participant` 或 `learner` ([learner](https://github.com/eBay/NuRaft/blob/master/docs/readonly_member.md) 不参与领导者选举)。
+* `server_priority` 是一个非负整数，用于指定[在领导者选举中应优先选择哪些节点](https://github.com/eBay/NuRaft/blob/master/docs/leader_election_priority.md)。
+  优先级为 0 表示该服务器永远不会成为领导者。
 
 示例：
 
+```sql
+:) get /keeper/config
+server.1=zoo1:9234;participant;1
+server.2=zoo2:9234;participant;1
+server.3=zoo3:9234;participant;1
 ```
 
-And here are examples for `kazoo`:
-
-```
-
-可以使用 `reconfig` 命令来添加新服务器、删除现有服务器以及修改现有服务器的优先级，下面是一些示例（使用 `clickhouse-keeper-client`）：
+您可以使用 `reconfig` 命令来添加新服务器、删除现有服务器以及修改现有服务器的优先级。以下是示例（使用 `clickhouse-keeper-client`）：
 
 ```bash
-# 添加两台新服务器 {#add-two-new-servers}
+# Add two new servers
 reconfig add "server.5=localhost:123,server.6=localhost:234;learner"
-# 移除另外两台服务器 {#remove-two-other-servers}
+# Remove two other servers
 reconfig remove "3,4"
-# 将现有服务器的优先级更改为 8 {#change-existing-server-priority-to-8}
+# Change existing server priority to 8
 reconfig add "server.5=localhost:5123;participant;8"
 ```
 
 以下是 `kazoo` 的示例：
 
 ```python
-# 添加两台新服务器，移除两台现有服务器 {#add-two-new-servers-remove-two-other-servers}
+# Add two new servers, remove two other servers
 reconfig(joining="server.5=localhost:123,server.6=localhost:234;learner", leaving="3,4")
-```
 
-# 将现有服务器的优先级更改为 8 {#change-existing-server-priority-to-8}
-
-reconfig(joining=&quot;server.5=localhost:5123;participant;8&quot;, leaving=None)
-
+# Change existing server priority to 8
+reconfig(joining="server.5=localhost:5123;participant;8", leaving=None)
 ```
 
 `joining` 中的服务器应采用上述服务器格式。服务器条目之间应以逗号分隔。
@@ -1256,22 +1340,25 @@ reconfig(joining=&quot;server.5=localhost:5123;participant;8&quot;, leaving=None
 
 Keeper 重新配置实现中存在以下注意事项:
 
-- 仅支持增量重新配置。包含非空 `new_members` 的请求将被拒绝。
+* 仅支持增量重新配置。包含非空 `new_members` 的请求将被拒绝。
 
   ClickHouse Keeper 实现依赖 NuRaft API 来动态更改成员关系。NuRaft 提供了每次添加或删除单个服务器的方式。这意味着每次配置更改(`joining` 的每个部分、`leaving` 的每个部分)必须单独决定。因此不提供批量重新配置功能,因为这会对最终用户造成误导。
 
   更改服务器类型(participant/learner)也不可行,因为 NuRaft 不支持此功能,唯一的方法是先删除再添加服务器,这同样会造成误导。
 
-- 无法使用返回的 `znodestat` 值。
-- 不使用 `from_version` 字段。所有设置了 `from_version` 的请求都将被拒绝。
+* 无法使用返回的 `znodestat` 值。
+
+* 不使用 `from_version` 字段。所有设置了 `from_version` 的请求都将被拒绝。
   这是因为 `/keeper/config` 是一个虚拟节点,这意味着它不存储在持久化存储中,而是针对每个请求使用指定的节点配置动态生成。
   做出此决定是为了避免数据重复,因为 NuRaft 已经存储了此配置。
-- 与 ZooKeeper 不同,无法通过提交 `sync` 命令来等待集群重新配置完成。
-  新配置将_最终_应用,但无法保证具体时间。
-- `reconfig` 命令可能因各种原因失败。您可以检查集群状态以确认更新是否已应用。
-```
 
-## 将单节点 keeper 转换为集群 {#converting-a-single-node-keeper-into-a-cluster}
+* 与 ZooKeeper 不同,无法通过提交 `sync` 命令来等待集群重新配置完成。
+  新配置将&#95;最终&#95;应用,但无法保证具体时间。
+
+* `reconfig` 命令可能因各种原因失败。您可以检查集群状态以确认更新是否已应用。
+
+
+## 将单节点 keeper 转换为集群 \{#converting-a-single-node-keeper-into-a-cluster\}
 
 有时需要将用于实验的单个 keeper 节点扩展为一个集群。下面是将其一步步扩展为 3 节点集群的示意流程：
 

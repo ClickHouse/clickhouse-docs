@@ -1,11 +1,11 @@
 ---
-sidebar_label: 'Регулярные выражения и шаблоны'
+sidebar_label: 'Regexp и Template'
 sidebar_position: 3
 slug: /integrations/data-formats/templates-regexp
-title: 'Импорт и экспорт пользовательских текстовых данных с помощью шаблонов и регулярных выражений в ClickHouse'
-description: 'Страница, описывающая, как импортировать и экспортировать пользовательский текст с помощью шаблонов и регулярных выражений в ClickHouse'
+title: 'Импорт и экспорт пользовательских текстовых данных с помощью Template и Regex в ClickHouse'
+description: 'Страница, описывающая, как импортировать и экспортировать пользовательский текст с помощью Template и Regex в ClickHouse'
 doc_type: 'guide'
-keywords: ['форматы данных', 'шаблоны', 'regex', 'пользовательские форматы', 'парсинг']
+keywords: ['форматы данных', 'Template', 'regex', 'пользовательские форматы', 'парсинг']
 ---
 
 # Импорт и экспорт произвольных текстовых данных с помощью форматов Template и Regex в ClickHouse \{#importing-and-exporting-custom-text-data-using-templates-and-regex-in-clickhouse\}
@@ -33,7 +33,7 @@ head error.log
 <time> [error] client: <ip>, server: <host> "<request>"
 ```
 
-Создадим таблицу для импорта данных:
+Создадим таблицу, в которую будем импортировать данные:
 
 ```sql
 CREATE TABLE error_log
@@ -63,7 +63,7 @@ SETTINGS format_template_row = 'row.template'
 FORMAT Template
 ```
 
-Теперь можно убедиться, что данные были загружены в таблицу:
+Теперь мы можем убедиться, что данные были загружены в таблицу:
 
 ```sql
 SELECT
@@ -84,6 +84,7 @@ GROUP BY request
 └──────────────────────────────────────────────────┴─────────┘
 ```
 
+
 ### Пропуск пробелов \{#skipping-whitespaces\}
 
 Рекомендуется использовать [TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces), который позволяет игнорировать пробелы между разделителями в шаблоне:
@@ -92,6 +93,7 @@ GROUP BY request
 Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
 TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 ```
+
 
 ## Экспорт данных с использованием шаблонов \{#exporting-data-using-templates\}
 
@@ -137,6 +139,7 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 --- 1000 rows read in 0.001380604 ---
 ```
 
+
 ### Экспорт в HTML-файлы \{#exporting-to-html-files\}
 
 Результаты, сформированные по шаблону, также можно экспортировать в файлы с помощью предложения [`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md). Сгенерируем HTML-файлы на основе указанных форматов [resultset](assets/html.results) и [row](assets/html.row):
@@ -151,6 +154,7 @@ FORMAT Template
 SETTINGS format_template_resultset = 'html.results',
          format_template_row = 'html.row'
 ```
+
 
 ### Экспорт в XML \{#exporting-to-xml\}
 
@@ -196,6 +200,7 @@ FORMAT XML
 </result>
 
 ```
+
 
 ## Импорт данных на основе регулярных выражений \{#importing-data-based-on-regular-expressions\}
 
@@ -244,6 +249,7 @@ SELECT * FROM error_log LIMIT 5
 ```sql
 SET format_regexp_skip_unmatched = 1;
 ```
+
 
 ## Другие форматы \{#other-formats\}
 

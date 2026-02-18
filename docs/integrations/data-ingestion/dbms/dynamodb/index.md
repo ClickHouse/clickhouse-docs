@@ -114,7 +114,7 @@ https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 - **Format**: JSONEachRow
 - **Table**: Your snapshot table (e.g. `default.snapshot` in example above)
 
-Once created, data will begin populating in the snapshot and destination tables. You do not need to wait for the snapshot load to finish before moving on to the next step.
+Once created, data will begin populating in the snapshot and destination tables. You don't need to wait for the snapshot load to finish before moving on to the next step.
 
 ## 4. Create the Kinesis ClickPipe {#4-create-the-kinesis-clickpipe}
 

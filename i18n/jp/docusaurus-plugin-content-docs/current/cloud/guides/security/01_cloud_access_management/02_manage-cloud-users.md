@@ -27,6 +27,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 管理者は、一度に最大 3 名までのユーザーを招待でき、招待時に組織およびサービスレベルのロールを割り当てることができます。
 
 ユーザーを招待するには:
+
 1. 左下隅の組織名を選択します
 2. `Users and roles` をクリックします
 3. 左上隅の `Invite members` を選択します
@@ -49,8 +50,6 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 ### SAML のみの認証を強制する \{#enforce-saml\}
 
 少なくとも 1 名の SAML ユーザーが Organization Admin ロールに割り当てられている状態になったら、その他の認証方法を使用するユーザーを組織から削除し、組織に対して SAML のみの認証を強制します。
-
-
 
 ## ユーザーのロール割り当てを管理する \{#manage-role-assignments\}
 
@@ -99,8 +98,6 @@ Services ページから、組織名を選択します:
 <Image img={step_7} size="md"/>
 
 </VerticalStepper>
-
-
 
 ## ユーザーを削除する \{#remove-user\}
 :::note SAML ユーザーの削除

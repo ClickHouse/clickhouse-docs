@@ -19,4 +19,4 @@ Choose **Native**, and the details are available in an example `clickhouse-clien
 
 <Image img={connection_details_native} size="md" alt="ClickHouse Cloud Native TCP connection details" border/>
 
-If you are using self-managed ClickHouse, the connection details are set by your ClickHouse administrator.
+If you're using self-managed ClickHouse, the connection details are set by your ClickHouse administrator.

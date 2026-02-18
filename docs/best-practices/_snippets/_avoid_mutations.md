@@ -1,4 +1,4 @@
-In ClickHouse, **mutations** refer to operations that modify or delete existing data in a table—typically using `ALTER TABLE ... DELETE` or `ALTER TABLE ... UPDATE`. While these statements may appear similar to standard SQL operations, they are fundamentally different under the hood. 
+In ClickHouse, **mutations** refer to operations that modify or delete existing data in a table—typically using `ALTER TABLE ... DELETE` or `ALTER TABLE ... UPDATE`. While these statements may appear similar to standard SQL operations, they're fundamentally different under the hood. 
 
 Rather than modifying rows in place, mutations in ClickHouse are asynchronous background processes that rewrite entire [data parts](/parts) affected by the change. This approach is necessary due to ClickHouse's column-oriented, immutable storage model, and it can lead to significant I/O and resource usage.
 
@@ -10,7 +10,7 @@ For large datasets, this can produce a substantial spike in disk I/O and degrade
 For how to monitor the number of active or queued mutations refer to the following [knowledge base article](/knowledgebase/view_number_of_active_mutations).
 :::
 
-Mutations are **totally ordered**: they apply to data inserted before the mutation was issued, while newer data remains unaffected. They do not block inserts but can still overlap with other ongoing queries. A SELECT running during a mutation may read a mix of mutated and unmutated parts, which can lead to inconsistent views of the data during execution. ClickHouse executes mutations in parallel per part, which can further intensify memory and CPU usage, especially when complex subqueries (like x IN (SELECT ...)) are involved.
+Mutations are **totally ordered**: they apply to data inserted before the mutation was issued, while newer data remains unaffected. They don't block inserts but can still overlap with other ongoing queries. A SELECT running during a mutation may read a mix of mutated and unmutated parts, which can lead to inconsistent views of the data during execution. ClickHouse executes mutations in parallel per part, which can further intensify memory and CPU usage, especially when complex subqueries (like x IN (SELECT ...)) are involved.
 
 As a rule, **avoid frequent or large-scale mutations**, especially on high-volume tables. Instead, use alternative table engines such as [ReplacingMergeTree](/guides/replacing-merge-tree) or [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree), which are designed to handle data corrections more efficiently at query time or during merges. If mutations are absolutely necessary, monitor them carefully using the system.mutations table and use `KILL MUTATION` if a process is stuck or misbehaving. Misusing mutations can lead to degraded performance, excessive storage churn, and potential service instability—so apply them with caution and sparingly.
 

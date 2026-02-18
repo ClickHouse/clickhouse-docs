@@ -1,0 +1,9 @@
+{
+  "label": "변경 로그",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "문서",
+    "id": "cloud/reference/changelog/index"
+  }
+}
