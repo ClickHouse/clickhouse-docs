@@ -83,7 +83,7 @@ This architecture preserves the user experience - people still see meaningful la
 - Lower network transfer costs for large result sets
 
 :::note
-This is a an example specifically used for Microsoft Clarity's data scenario. If you have all your data in ClickHouse or do not have constraints against moving data to ClickHouse, try using [dictionaries](/dictionary) instead.
+This is a an example specifically used for Microsoft Clarity's data scenario. If you have all your data in ClickHouse or don't have constraints against moving data to ClickHouse, try using [dictionaries](/dictionary) instead.
 :::
 
 ## Video sources {#video-sources}

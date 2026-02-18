@@ -20,6 +20,7 @@ import TabItem from '@theme/TabItem';
 
 本文档描述了 ClickHouse TCP 客户端使用的二进制协议。
 
+
 ## Varint \{#varint\}
 
 对于长度、数据包代码以及其他场景，采用 *无符号 varint* 编码。
@@ -106,7 +107,7 @@ DUhlbGxvLCB3b3JsZCE
 
 ```go
 data := []byte{
-    0xd, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c,
+    0xd, 0x48, 0x65, 0x6c, 0x6f, 0x2c,
     0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
 }
 ```
@@ -137,16 +138,17 @@ fmt.Println(d) // 1000
 <Tabs>
   <TabItem value="hexdump" label="十六进制转储">
     ```hexdump
-00000000  e8 03 00 00 00 00 00 00                           |........|
-```
+    00000000  e8 03 00 00 00 00 00 00                           |........|
+    ```
   </TabItem>
 
   <TabItem value="base64" label="Base64">
     ```text
-6AMAAAAAAAA
-```
+    6AMAAAAAAAA
+    ```
   </TabItem>
 </Tabs>
+
 
 ## 布尔值 \{#boolean\}
 

@@ -657,7 +657,7 @@ SET pg_clickhouse.session_settings = '';
 SET pg_clickhouse.session_settings = 'join_algorithm grace_hash\,hash';
 ```
 
-または、スペースやカンマをエスケープする必要がないように、値をシングルクォートで囲みます。ダブルクォートで囲む必要がないようにするには、[dollar quoting] の使用を検討してください。
+または、スペースやカンマをエスケープせずに済むよう、値をシングルクォートで囲みます。ダブルクォートを二重に記述する必要を避けるために、[dollar quoting] の使用を検討してください。
 
 ```sql
 SET pg_clickhouse.session_settings = $$join_algorithm 'grace_hash,hash'$$;

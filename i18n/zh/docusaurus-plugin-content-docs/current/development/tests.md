@@ -46,9 +46,9 @@ PATH=<path to clickhouse-client>:$PATH tests/clickhouse-test 01428_hash_set_nan_
 也可以选择并行运行测试，或以随机顺序运行测试。
 
 
-### 运行全部测试 \{#running-all-tests\}
+### 运行快速测试 \{#running-fast-tests\}
 
-要运行全部测试，你可能需要一台性能相对较强的机器。以下步骤已在 `t3.2xlarge` AWS amd64 Ubuntu 实例（100 GB 存储）上验证可行。
+要运行一部分测试（称为“Fast test”），你可能需要一台性能相对较强的机器。以下步骤已在 `t3.2xlarge` AWS amd64 Ubuntu 实例（100 GB 存储）上验证可行。
 
 1. 安装依赖并重新登录。
 
@@ -71,13 +71,59 @@ cd ClickHouse
 python3 -m ci.praktika run "Fast test"
 ```
 
-4. 你应当得到
+你应当得到
 
 ```sh
 Failed: 0, Passed: 7394, Skipped: 1795
 ```
 
 如果需要无人值守地运行，可以使用 `nohup` 或 `disown`，以便在 `ssh` 连接断开后进程仍能继续运行。
+
+
+### 运行无状态测试 \{#running-stateless-tests\}
+
+运行无状态测试可能需要一台配置较高的机器。以下内容已在具有 200 GB 存储空间的 `m7i.8xlarge` AWS amd64 Ubuntu 实例上验证可行。
+
+1. 安装必要依赖并重新登录。
+
+```sh
+sudo apt-get update
+sudo apt-get install docker.io
+sudo usermod -aG docker ubuntu
+sudo tee /etc/docker/daemon.json <<'EOF'
+{
+  "ipv6": true,
+  "ip6tables": true
+}
+EOF
+sudo systemctl restart docker
+```
+
+2. 获取源码。
+
+```sh
+git clone --single-branch https://github.com/ClickHouse/ClickHouse
+cd ClickHouse
+```
+
+3. 构建代码。
+
+```sh
+python3 -m ci.praktika run "Build (amd_debug)"
+cp ci/tmp/build/programs/clickhouse ci/tmp
+```
+
+4. 运行无状态测试，这些测试可以并行运行。
+
+```sh
+python3 -m ci.praktika run "Stateless tests (amd_debug, parallel)"
+```
+
+你应当会看到
+
+```sh
+Failed: 0, Passed: 8497, Skipped: 103
+```
 
 
 ### 添加新测试 \{#adding-a-new-test\}

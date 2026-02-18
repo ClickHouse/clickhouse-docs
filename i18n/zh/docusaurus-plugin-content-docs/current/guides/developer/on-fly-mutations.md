@@ -17,6 +17,7 @@ doc_type: 'guide'
 SET apply_mutations_on_fly = 1;
 ```
 
+
 ## 示例 \{#example\}
 
 让我们创建一张表并执行一些变更操作（mutation）：
@@ -75,6 +76,7 @@ SELECT id, v FROM test_on_fly_mutations ORDER BY id;
 │  3 │ c │
 └────┴───┘
 ```
+
 
 ## 性能影响 \{#performance-impact\}
 

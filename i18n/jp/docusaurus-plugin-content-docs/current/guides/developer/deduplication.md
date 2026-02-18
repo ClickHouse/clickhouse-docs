@@ -11,6 +11,7 @@ doc_type: 'guide'
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
 import Image from '@theme/IdealImage';
 
+
 # 重複排除の戦略 \{#deduplication-strategies\}
 
 **重複排除（Deduplication）** とは、***データセットから重複した行を削除する*** プロセスを指します。OLTP データベースでは、各行に一意のプライマリキーがあるため、これは容易に実現できますが、その代わり挿入処理は遅くなります。挿入される各行について、まず既存行の検索が必要となり、見つかった場合はそれを置き換える必要があるためです。
@@ -111,9 +112,10 @@ FINAL
 取得するための、より良い方法について説明します。
 :::
 
-### FINAL の使用を避ける \{#avoiding-final\}
 
-2 つの一意な行それぞれについて、再度 `views` カラムを更新してみましょう。
+### `FINAL` を避ける \{#avoiding-final\}
+
+両方のユニークな行に対して、もう一度 `views` カラムを更新してみましょう。
 
 ```sql
 INSERT INTO hackernews_rmt VALUES
@@ -121,7 +123,7 @@ INSERT INTO hackernews_rmt VALUES
    (2, 'ch_fan', 'This is post #2', 250)
 ```
 
-実際のマージはまだ行われていないため、現在テーブルには 6 行あります（`FINAL` を使用したクエリ時のマージのみが行われています）。
+このテーブルは現在 6 行のままです。まだ実際のマージは発生しておらず（`FINAL` を使用したときのクエリ実行時のマージしか行われていない）ためです。
 
 ```sql
 SELECT *
@@ -165,6 +167,7 @@ GROUP BY (id, author, comment)
 上記のクエリのようにグループ化することは、クエリパフォーマンスの観点からは、`FINAL` キーワードを使用するよりも実際に効率的になる場合があります。
 
 [Deleting and Updating Data トレーニングモジュール](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse\&utm_medium=docs)では、この例をさらに掘り下げ、`ReplacingMergeTree` で `version` 列を使用する方法などについて解説しています。
+
 
 ## CollapsingMergeTree を使った頻繁に更新されるカラムの処理 \{#using-collapsingmergetree-for-updating-columns-frequently\}
 
@@ -251,6 +254,7 @@ INSERT INTO hackernews_views(id, author, sign) VALUES
 
 :::
 
+
 ## 複数スレッドからのリアルタイム更新 \{#real-time-updates-from-multiple-threads\}
 
 `CollapsingMergeTree` テーブルでは、行は sign 列を使って互いに打ち消し合い、行の状態は最後に挿入された行によって決まります。しかし、複数のスレッドから行を挿入していて、行が順不同で挿入される可能性がある場合には問題になります。このような状況では「最後」の行を使う方法は通用しません。
@@ -297,7 +301,7 @@ INSERT INTO hackernews_views_vcmt VALUES
    (3, 'kenny', 1000, 1, 2)
 ```
 
-先ほどと同じクエリを実行します。これは、`sign` 列に応じて値を加算・減算するものです。
+先ほどと同じクエリを実行します。これは `sign` カラムに基づいて値を巧妙に加算・減算します。
 
 ```sql
 SELECT
@@ -340,6 +344,7 @@ FROM hackernews_views_vcmt
 ```
 
 `VersionedCollapsingMergeTree` テーブルは、複数のクライアントやスレッドから行を挿入する際に重複排除を行いたい場合に非常に便利です。
+
 
 ## なぜ行が重複排除されないのですか？ \{#why-arent-my-rows-being-deduplicated\}
 

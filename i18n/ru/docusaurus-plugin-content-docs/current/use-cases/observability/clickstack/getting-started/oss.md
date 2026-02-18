@@ -59,7 +59,7 @@ docker run --name clickstack -p 8123:8123 -p 8080:8080 -p 4317:4317 -p 4318:4318
 ```shell
 # modify command to mount paths
 docker run \
-  --name clickstack
+  --name clickstack \
   -p 8123:8123 \
   -p 8080:8080 \
   -p 4317:4317 \

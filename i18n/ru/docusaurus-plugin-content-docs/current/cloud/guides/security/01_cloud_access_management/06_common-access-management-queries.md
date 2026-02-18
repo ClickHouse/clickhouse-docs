@@ -9,6 +9,7 @@ doc_type: 'guide'
 
 import CommonUserRolesContent from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
 
+
 # Распространённые вопросы по управлению доступом \{#common-access-management-queries\}
 
 :::tip Самостоятельное развертывание
@@ -37,6 +38,7 @@ GRANT default_role TO clickhouse_admin;
 
 Эти автоматически создаваемые пользователи SQL Console имеют роль `default`.
 :::
+
 
 ## Аутентификация без пароля \{#passwordless-authentication\}
 

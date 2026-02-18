@@ -21,7 +21,7 @@ CREATE DATABASE IF NOT EXISTS helloworld
 
 以下のテーブル `my_first_table` は、`helloworld` データベース内に作成されます。
 
-  ```sql
+```sql
   CREATE TABLE helloworld.my_first_table
   (
       user_id UInt32,
@@ -31,7 +31,7 @@ CREATE DATABASE IF NOT EXISTS helloworld
   )
   ENGINE = MergeTree()
   PRIMARY KEY (user_id, timestamp)
-  ```
+```
 
 上記の例では、`my_first_table` は 4 つのカラムを持つ `MergeTree` テーブルです。
 
@@ -49,6 +49,7 @@ CREATE DATABASE IF NOT EXISTS helloworld
 
 選択できるエンジンは多数ありますが、単一ノードの ClickHouse サーバー上にシンプルなテーブルを作成する場合は、[MergeTree](/engines/table-engines/mergetree-family/mergetree.md) が最も一般的な選択肢となるでしょう。
 :::
+
 
 ## プライマリキーの概要 \{#a-brief-intro-to-primary-keys\}
 

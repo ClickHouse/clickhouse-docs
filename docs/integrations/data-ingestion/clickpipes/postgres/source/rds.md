@@ -126,7 +126,7 @@ If you want to restrict traffic to your RDS instance, please add the [documented
 To connect to your RDS instance through a private network, you can use AWS PrivateLink. Follow our [AWS PrivateLink setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes) to set up the connection.
 
 ### Workarounds for RDS Proxy {#workarounds-for-rds-proxy}
-RDS Proxy does not support logical replication connections. If you have dynamic IP addresses in RDS and cannot use DNS name or a lambda, here are some alternatives:
+RDS Proxy doesn't support logical replication connections. If you have dynamic IP addresses in RDS and can't use DNS name or a lambda, here are some alternatives:
 
 1. Using a cron job, resolve the RDS endpoint's IP periodically and update the NLB if it has changed.
 2. Using RDS Event Notifications with EventBridge/SNS: Trigger updates automatically using AWS RDS event notifications

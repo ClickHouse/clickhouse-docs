@@ -1432,7 +1432,7 @@ ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
 ```
 
-需要注意的是,如果通过 `ALTER` 创建 projection,在执行 `MATERIALIZE PROJECTION` 命令时,其创建过程是异步的。您可以使用以下查询来确认此操作的进度,等待 `is_done=1`。
+需要注意的是,如果通过 `ALTER` 创建 PROJECTION,在执行 `MATERIALIZE PROJECTION` 命令时,其创建过程是异步的。您可以使用以下查询来确认此操作的进度,等待 `is_done=1`。
 
 ```sql
 SELECT parts_to_do, is_done, latest_fail_reason
@@ -1487,7 +1487,7 @@ SELECT tokens('https://www.zanbil.ir/m/filter/b113')
 1 row in set. Elapsed: 0.008 sec.
 ```
 
-`ngram` 函数提供了类似的功能，可以通过第二个参数指定 `ngram` 的大小：
+`ngram` 函数提供了类似的能力，其中 `ngram` 的大小可以通过第二个参数指定：`
 
 ```sql
 SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
@@ -1545,7 +1545,8 @@ ENGINE = MergeTree
 ORDER BY (Timestamp)
 ```
 
-此处的索引 `ngrambf_v1(3, 10000, 3, 7)` 接受四个参数。最后一个参数(值为 7)表示种子值。其他参数分别表示 ngram 大小(3)、值 `m`(过滤器大小)以及哈希函数数量 `k`(7)。`k` 和 `m` 需要调优,其取值取决于唯一 ngram/token 的数量以及过滤器产生真阴性结果的概率——从而确认某个值不存在于颗粒中。我们建议使用[这些函数](/engines/table-engines/mergetree-family/mergetree#bloom-filter)来帮助确定这些值。
+此处的索引 `ngrambf_v1(3, 10000, 3, 7)` 接受四个参数。最后一个参数(值为 7)表示种子值。其他参数分别表示 ngram 大小(3)、值 `m`(过滤器大小)以及哈希函数数量 `k`(7)。`k` 和 `m` 需要进行调优,其取值依赖于唯一 ngram/token 的个数以及过滤器返回真阴性结果的概率——从而确认某个值不存在于颗粒中。我们建议使用[这些函数](/engines/table-engines/mergetree-family/mergetree#bloom-filter)来帮助确定这些值。
+
 
 如果调优得当，性能提升会非常显著：
 

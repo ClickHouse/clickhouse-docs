@@ -50,7 +50,7 @@ For other managed services, please raise a support ticket with your provider to 
 it isn't already.
 
 :::info
-Timescale Cloud does not support enabling logical replication, which is needed for Postgres pipes in CDC mode.
+Timescale Cloud doesn't support enabling logical replication, which is needed for Postgres pipes in CDC mode.
 As a result, users of Timescale Cloud can only perform a one-time load of their data (`Initial Load Only`) with the
 Postgres ClickPipe.
 :::
@@ -58,7 +58,7 @@ Postgres ClickPipe.
 ## Configuration {#configuration}
 
 Timescale hypertables don't store any data inserted into them. Instead, the data is stored in multiple corresponding 
-"chunk" tables which are in the `_timescaledb_internal` schema. For running queries on the hypertables, this is not an
+"chunk" tables which are in the `_timescaledb_internal` schema. For running queries on the hypertables, this isn't an
 issue. But during logical replication, instead of detecting changes in the hypertable we detect them in the chunk table
 instead. The Postgres ClickPipe has logic to automatically remap changes from the chunk tables to the parent hypertable,
 but this requires additional steps.

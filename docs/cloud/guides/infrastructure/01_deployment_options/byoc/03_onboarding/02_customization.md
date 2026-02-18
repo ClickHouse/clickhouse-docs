@@ -41,14 +41,14 @@ If your VPC doesn't already have an S3 Gateway Endpoint configured, you'll need 
 Your VPC must permit at least outbound internet access so that ClickHouse BYOC components can communicate with the Tailscale control plane. Tailscale is used to provide secure, zero-trust networking for private management operations. Initial registration and setup with Tailscale require public internet connectivity, which can be achieved either directly or via a NAT gateway. This connectivity is required to maintain both the privacy and security of your BYOC deployment.
 
 **DNS Resolution**  
-Ensure your VPC has working DNS resolution and does not block, interfere with, or overwrite standard DNS names. ClickHouse BYOC relies on DNS to resolve Tailscale control servers as well as ClickHouse service endpoints. If DNS is unavailable or misconfigured, BYOC services may fail to connect or operate properly.
+Ensure your VPC has working DNS resolution and doesn't block, interfere with, or overwrite standard DNS names. ClickHouse BYOC relies on DNS to resolve Tailscale control servers as well as ClickHouse service endpoints. If DNS is unavailable or misconfigured, BYOC services may fail to connect or operate properly.
 
 ### Configure your AWS account {#configure-aws-account}
 
 To allow ClickHouse Cloud to deploy into your existing VPC, you need to grant the necessary IAM permissions within your AWS account. This is accomplished by launching a bootstrap CloudFormation stack or Terraform module, similar to the process used for standard onboarding.
 
 1. Deploy the [CloudFormation template](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc_v2.yaml) or [Terraform module](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/tf/byoc.tar.gz) to create the required IAM role.
-2. Set the `IncludeVPCWritePermissions` parameter to `false` to ensure ClickHouse Cloud does not receive permissions to modify your customer-managed VPC.
+2. Set the `IncludeVPCWritePermissions` parameter to `false` to ensure ClickHouse Cloud doesn't receive permissions to modify your customer-managed VPC.
 3. This will create the `ClickHouseManagementRole` in your AWS account, granting ClickHouse Cloud only the minimum permissions needed to provision and manage your BYOC deployment.
 
 :::note

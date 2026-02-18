@@ -93,7 +93,7 @@ Dataset.
 
 :::warning
 Make sure that **Allow storage account key access** is enabled for your storage
-account, otherwise you will not be able to use the account keys to access the
+account, otherwise you won't be able to use the account keys to access the
 data.
 :::
 

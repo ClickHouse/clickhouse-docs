@@ -75,7 +75,7 @@ VPC リソースに対して PrivateLink をセットアップするには、次
   リソースゲートウェイにアタッチするサブネットには、十分な数の IP アドレスが確保されていることが推奨されます。
   各サブネットについて、少なくとも `/26` のサブネットマスクを使用することを推奨します。
 
-  VPC エンドポイント（各 Reverse Private Endpoint）ごとに、AWS はサブネットごとに連続した 16 個の IP アドレスブロック（`/28` サブネットマスク）を要求します。
+  VPC エンドポイント(各 Reverse Private Endpoint)ごとに、AWS はサブネットごとに連続した 16 個の IP アドレスブロック(`/28` サブネットマスク)を要求します。
   この要件を満たしていない場合、Reverse Private Endpoint は失敗状態に遷移します。
   :::
 
@@ -146,7 +146,7 @@ VPC リソースに対して PrivateLink をセットアップするには、次
   不要になった場合は手動で削除する必要があります。
   :::
 
-  [AWS コンソール](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html)を使用するか、ClickPipes アカウント ID `072088201116`（arn:aws:iam::072088201116:root）を指定して次のコマンドを実行することで、Resource-Configuration を Resource-Share に追加できます。
+  [AWS コンソール](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html)を使用するか、ClickPipes アカウント ID `072088201116`(arn:aws:iam::072088201116:root)を指定して次のコマンドを実行することで、Resource-Configuration を Resource-Share に追加できます。
 
   ```bash
   aws ram create-resource-share \
@@ -161,7 +161,7 @@ VPC リソースに対して PrivateLink をセットアップするには、次
 
   * `VPC endpoint type` を `VPC Resource` に設定します。
   * `Resource configuration ID` を、ステップ 2 で作成した Resource-Configuration の ID に設定します。
-  * `Resource share ARN` をステップ 3 で作成した Resource-Share の ARN に設定します。
+  * `Resource share ARN` を、ステップ 3 で作成した Resource-Share の ARN に設定します。
 
   VPC リソースと組み合わせた PrivateLink の詳細については、[AWS ドキュメント](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html)を参照してください。
 </VerticalStepper>
@@ -307,3 +307,23 @@ ClickHouse Cloud サービスと同じ AWS リージョン内に作成される�
 1 つの ClickHouse サービスに対する複数の ClickPipes では、同じエンドポイントを再利用できます。
 
 AWS MSK は、認証タイプ（SASL_IAM または SASL_SCRAM）ごとに、MSK クラスターあたり 1 つの PrivateLink（VPC エンドポイント）のみをサポートします。その結果、複数の ClickHouse Cloud サービスまたは組織が、同じ認証タイプを使用して同一の MSK クラスターに対して個別の PrivateLink 接続を作成することはできません。
+
+### 非アクティブなエンドポイントの自動クリーンアップ {#automatic-cleanup}
+
+終了状態のまま残っている reverse private endpoint は、定義された猶予期間の後に自動的に削除されます。
+これにより、未使用または誤って構成されたエンドポイントが無期限に残り続けることを防ぎます。
+
+エンドポイントのステータスごとの猶予期間は次のとおりです。
+
+| Status | Grace Period | Description |
+|---|---|---|
+| **Failed** | 7 days | エンドポイントのプロビジョニング中にエラーが発生しました。 |
+| **Pending Acceptance** | 1 day | エンドポイント接続がサービス所有者によってまだ承諾されていません。 |
+| **Rejected** | 1 day | エンドポイント接続はサービス所有者によって拒否されました。 |
+| **Expired** | Immediate | エンドポイントは既に有効期限切れであり、直ちに削除されます。 |
+
+猶予期間が経過すると、エンドポイントと関連するすべてのリソースは自動的に削除されます。
+
+自動削除を防ぐには、猶予期間が切れる前に根本的な問題を解消してください。
+たとえば、AWS コンソールで保留中の接続要求を承諾するか、
+Failed 状態になったエンドポイントを再作成します。

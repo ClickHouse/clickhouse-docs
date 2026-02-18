@@ -42,7 +42,7 @@ OpenTelemetry collector 可以以两种主要角色进行部署：
 
 <Tabs groupId="otel-collector">
   <TabItem value="managed-clickstack" label="托管型 ClickStack" default>
-    在可能的情况下，当向托管版 ClickStack 发送数据时，我们[推荐使用 ClickStack 提供的官方 collector 发行版](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector)来承担网关角色。若你选择自建 collector，请确保其中包含 [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)。
+    在可能的情况下，当向托管型 ClickStack 发送数据时，我们[推荐使用 ClickStack 提供的官方 collector 发行版](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector)来承担网关角色。若你选择自建 collector，请确保其中包含 [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)。
 
     要以独立模式部署 ClickStack 发行版的 OTel connector，运行以下 Docker 命令：
 
@@ -513,7 +513,7 @@ export BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true
 
 </VerticalStepper>
 
-#### 迁移现有数据（可选） {#migrating-existing-data}
+#### 迁移现有数据（可选）
 
 要将旧数据导入到新的 JSON 表中：
 

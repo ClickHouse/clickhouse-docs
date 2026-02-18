@@ -21,6 +21,7 @@ import azure_connection_details from '@site/static/images/cloud/manage/backups/a
 import view_backups_azure from '@site/static/images/cloud/manage/backups/view_backups_azure.png'
 import restore_backups_azure from '@site/static/images/cloud/manage/backups/restore_backups_azure.png'
 
+
 # 通过用户界面备份和恢复 \{#ui-experience\}
 
 ## AWS \{#AWS\}
@@ -109,7 +110,6 @@ AWS 使用基于角色的身份验证,因此需要创建一个 IAM 角色,使 Cl
   ]
 }
 ```
-
 </VerticalStepper>
 
 #### 2. 在 ClickHouse Cloud 中执行的步骤 \{#cloud-steps\}
@@ -154,11 +154,11 @@ AWS 使用基于角色的身份验证,因此需要创建一个 IAM 角色,使 Cl
 
 ### 从 AWS 恢复备份 \{#restoring-backups-from-aws\}
 
-执行以下步骤从 AWS 恢复备份:
+按照以下步骤从 AWS 恢复备份：
 
 <VerticalStepper headerLevel="h5">
 
-##### 创建新服务以进行恢复 \{#create-new-service-to-restore-to\}
+##### 创建一个新服务用于恢复 \{#create-new-service-to-restore-to\}
 
 创建一个新服务用于恢复备份。
 
@@ -295,16 +295,16 @@ Backups 页面应在单独的表中显示您的存储桶中的这些备份，如
 :::
 
 :::tip ASYNC 命令
-对于 Restore 命令，您可以选择在末尾添加 `ASYNC` 命令来处理大型恢复操作。
-这样可以使恢复过程异步执行，即使连接中断，恢复操作也会继续运行。
+对于恢复命令，您还可以在末尾可选地添加一个 `ASYNC` 命令，用于大规模恢复任务。
+这允许恢复过程异步执行，因此即使连接丢失，恢复也会继续运行。
 需要注意的是，ASYNC 命令会立即返回成功状态。
-但这并不代表恢复操作已成功完成。
-您需要监控 `system.backups` 表来查看恢复是否已完成以及执行结果。
+这并不意味着恢复已成功完成。
+您需要监控 `system.backups` 表，以查看恢复是否已完成，以及是否成功或失败。
 :::
 
-##### 运行 SQL 命令恢复备份 \{#gcp-run-sql-command-to-restore-backup\}
+##### 运行用于恢复备份的 SQL 命令 \{#gcp-run-sql-command-to-restore-backup\}
 
-在新创建的服务的 SQL 控制台中运行恢复命令来恢复备份。
+在新创建服务的 SQL 控制台中运行该恢复命令以恢复备份。
 
 </VerticalStepper>
 

@@ -23,7 +23,7 @@ Let's look at a practical example using a table that tracks votes on posts.
 For each post, we want to maintain running totals of upvotes, downvotes, and an 
 overall score. Using the `SimpleAggregateFunction` type with sum is suited for
 this use case as we only need to store the running totals, not the entire state 
-of the aggregation. As a result, it will be faster and will not require merging 
+of the aggregation. As a result, it will be faster and won't require merging 
 of partial aggregate states.
 
 First, we create a table for the raw data:

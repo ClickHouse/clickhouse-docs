@@ -69,7 +69,7 @@ Pricing considerations: AWS will charge users for cross region data transfer, se
 Find Terraform examples [here](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/).
 
 ## Important considerations {#considerations}
-ClickHouse attempts to group your services to reuse the same published [service endpoint](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-overview) within the AWS region. However, this grouping is not guaranteed, especially if you spread your services across multiple ClickHouse organizations.
+ClickHouse attempts to group your services to reuse the same published [service endpoint](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-overview) within the AWS region. However, this grouping isn't guaranteed, especially if you spread your services across multiple ClickHouse organizations.
 If you already have PrivateLink configured for other services in your ClickHouse organization, you can often skip most of the steps because of that grouping and proceed directly to the final step: Add ClickHouse "Endpoint ID" to ClickHouse service allow list.
 
 ## Prerequisites for this process {#prerequisites}
@@ -138,7 +138,7 @@ Make a note of the `endpointServiceId` and `privateDnsHostname` [move onto next 
 :::important
 This section covers ClickHouse-specific details for configuring ClickHouse via AWS PrivateLink. AWS-specific steps are provided as a reference to guide you on where to look, but they may change over time without notice from the AWS cloud provider. Please consider AWS configuration based on your specific use case.  
 
-Please note that ClickHouse is not responsible for configuring the required AWS VPC endpoints, security group rules or DNS records.  
+Please note that ClickHouse isn't responsible for configuring the required AWS VPC endpoints, security group rules or DNS records.  
 
 If you previously enabled "private DNS names" while setting up PrivateLink and are experiencing difficulties configuring new services via PrivateLink, please contact ClickHouse support. For any other issues related to AWS configuration tasks, contact AWS Support directly.
 :::
@@ -153,7 +153,7 @@ Select **Endpoint services that use NLBs and GWLBs** and use `Service name`<sup>
 
 If you want to establish a cross-regional connection via PrivateLink, enable the "Cross region endpoint" checkbox and specify the service region. The service region is where the ClickHouse instance is running.
 
-If you get a "Service name could not be verified." error, please contact Customer Support to request adding new regions to the supported regions list.
+If you get a "Service name couldn't be verified." error, please contact Customer Support to request adding new regions to the supported regions list.
 
 Next, select your VPC and subnets:
 
@@ -353,7 +353,7 @@ Please refer [here](#considerations)
 
 ### Connection reset by peer {#connection-reset-by-peer}
 
-- Most likely Endpoint ID was not added to service allow list, please visit [step](#add-endpoint-id-to-services-allow-list)
+- Most likely Endpoint ID wasn't added to service allow list, please visit [step](#add-endpoint-id-to-services-allow-list)
 
 ### Checking endpoint filters {#checking-endpoint-filters}
 
@@ -377,7 +377,7 @@ jq .result.privateEndpointIds
 
 ### Connecting to a remote database {#connecting-to-a-remote-database}
 
-Let's say you are trying to use [MySQL](/sql-reference/table-functions/mysql) or [PostgreSQL](/sql-reference/table-functions/postgresql) table functions in ClickHouse Cloud and connect to your database hosted in an Amazon Web Services (AWS) VPC. AWS PrivateLink cannot be used to enable this connection securely. PrivateLink is a one-way, unidirectional connection. It allows your internal network or Amazon VPC to connect securely to ClickHouse Cloud, but it does not allow ClickHouse Cloud to connect to your internal network.
+Let's say you're trying to use [MySQL](/sql-reference/table-functions/mysql) or [PostgreSQL](/sql-reference/table-functions/postgresql) table functions in ClickHouse Cloud and connect to your database hosted in an Amazon Web Services (AWS) VPC. AWS PrivateLink can't be used to enable this connection securely. PrivateLink is a one-way, unidirectional connection. It allows your internal network or Amazon VPC to connect securely to ClickHouse Cloud, but it doesn't allow ClickHouse Cloud to connect to your internal network.
 
 According to the [AWS PrivateLink documentation](https://docs.aws.amazon.com/whitepapers/latest/building-scalable-secure-multi-vpc-network-infrastructure/aws-privatelink.html):
 

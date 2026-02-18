@@ -133,7 +133,7 @@ SELECT formatReadableQuantity(count())
 FROM amazon.amazon_reviews
 ```
 
-6. Let's see how much space our data is using:
+6. Let&#39;s see how much space our data is using:
 
 ```sql runnable
 SELECT
@@ -149,7 +149,8 @@ GROUP BY disk_name
 ORDER BY size DESC
 ```
 
-The original data was about 70G, but compressed in ClickHouse it takes up about 30G.
+原始数据大约为 70G，压缩存入 ClickHouse 后仅占用约 30G。
+
 
 ## Example queries \{#example-queries\}
 

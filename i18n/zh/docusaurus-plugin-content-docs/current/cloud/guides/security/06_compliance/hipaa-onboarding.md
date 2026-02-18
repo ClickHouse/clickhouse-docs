@@ -65,7 +65,7 @@ ClickHouse 提供符合 1996 年《健康保险携带与责任法案》（HIPAA�
 
 <br />
 
-### 将服务部署到符合 HIPAA 的区域 \{#deploy-hippa-services\}
+### 将服务部署到符合 HIPAA 的区域 \{#deploy-hipaa-services\}
 
 1. 在控制台主页左上角选择 **New service**。
 2. 将 **Region type** 更改为 **HIPAA compliant**。
@@ -81,8 +81,6 @@ ClickHouse 提供符合 1996 年《健康保险携带与责任法案》（HIPAA�
 有关符合 HIPAA 的云服务提供商和服务的完整列表，请查看我们的 [Supported cloud regions](/cloud/reference/supported-regions) 页面。
 
 </VerticalStepper>
-
-
 
 ## 迁移现有服务 \{#migrate-to-hipaa\}
 

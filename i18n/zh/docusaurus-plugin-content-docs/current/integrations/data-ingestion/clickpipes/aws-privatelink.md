@@ -69,11 +69,11 @@ ClickPipes 反向私有端点可以通过以下任一 AWS PrivateLink 方案进�
   Resource gateway 是在你的 VPC 中接收指定资源流量的入口。
 
   :::note
-  建议为附加到 resource gateway 的子网预留足够的可用 IP 地址。
-  推荐为每个子网至少使用 `/26` 子网掩码。
+  建议连接到资源网关的子网具有足够的可用 IP 地址。
+  建议为每个子网至少使用 `/26` 子网掩码。
 
-  对于每个 VPC endpoint（每个 Reverse Private Endpoint），AWS 要求每个子网中提供连续的 16 个 IP 地址块（`/28` 子网掩码）。
-  如果不满足该要求,Reverse Private Endpoint 会转为失败状态。
+  对于每个 VPC endpoint（每个 Reverse Private Endpoint），AWS 要求每个子网提供连续的 16 个 IP 地址（`/28` 子网掩码）。
+  如果不满足该要求，Reverse Private Endpoint 将变为失败状态。
   :::
 
   你可以通过 [AWS 控制台](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-gateway.html) 或使用以下命令创建 resource gateway:
@@ -86,9 +86,9 @@ ClickPipes 反向私有端点可以通过以下任一 AWS PrivateLink 方案进�
       --name <RESOURCE_GATEWAY_NAME>
   ```
 
-  输出中会包含一个 resource gateway ID,你在下一步中将需要用到它。
+  输出中会包含一个 resource gateway ID，你将在下一步中用到它。
 
-  在继续之前,你需要等待 resource gateway 进入 `Active` 状态。你可以通过运行以下命令检查其状态:
+  在继续之前，你需要等待 resource gateway 变为 `Active` 状态。可以通过运行以下命令检查其状态：
 
   ```bash
   aws vpc-lattice get-resource-gateway \
@@ -97,7 +97,7 @@ ClickPipes 反向私有端点可以通过以下任一 AWS PrivateLink 方案进�
 
   #### 创建 VPC Resource-Configuration
 
-  Resource-Configuration 与 resource gateway 关联,用于使你的资源可以被访问。
+  Resource-Configuration 与 resource gateway 关联，以便你的资源可以被访问。
 
   你可以通过 [AWS 控制台](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-configuration.html) 或使用以下命令创建 Resource-Configuration:
 
@@ -111,7 +111,7 @@ ClickPipes 反向私有端点可以通过以下任一 AWS PrivateLink 方案进�
 
   最简单的[资源配置类型](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types)是单个 Resource-Configuration。你可以直接使用 ARN 进行配置,或者共享一个 IP 地址或一个可被公网解析的域名。
 
-  例如,使用某个 RDS 集群的 ARN 进行配置:
+  例如，使用 RDS 集群的 ARN 进行配置：
 
   ```bash
   aws vpc-lattice create-resource-configuration \
@@ -122,9 +122,9 @@ ClickPipes 反向私有端点可以通过以下任一 AWS PrivateLink 方案进�
   ```
 
   :::note
-  你不能为一个可公网访问的集群创建资源配置。
-  如果你的集群可公网访问,你必须在创建资源配置前修改该集群,使其变为私有,
-  或者改用 [IP allow list](/integrations/clickpipes#list-of-static-ips)。
+  你不能为可公开访问的集群创建资源配置。
+  如果你的集群可公开访问，则必须在创建资源配置之前将集群修改为私有，
+  或者改为使用 [IP 允许列表](/integrations/clickpipes#list-of-static-ips)。
   更多信息请参见 [AWS 文档](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html#resource-definition)。
   :::
 
@@ -159,7 +159,7 @@ ClickPipes 反向私有端点可以通过以下任一 AWS PrivateLink 方案进�
   * 将 `Resource configuration ID` 设置为在步骤 2 中创建的 Resource-Configuration 的 ID。
   * 将 `Resource share ARN` 设置为步骤 3 中创建的 Resource-Share 的 ARN。
 
-  关于使用 VPC 资源的 PrivateLink 的更多详情,请参见 [AWS 文档](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html)。
+  如需了解有关使用 VPC 资源的 PrivateLink 的更多信息，请参阅 [AWS 文档](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html)。
 </VerticalStepper>
 
 ### MSK 多 VPC 连接 {#msk-multi-vpc}
@@ -300,3 +300,23 @@ VPC endpoint service 可以[配置私有 DNS](https://docs.aws.amazon.com/vpc/la
 私有终端节点绑定到特定的 ClickHouse 服务，无法在服务之间迁移。针对单个 ClickHouse 服务的多个 ClickPipes 可以复用同一个终端节点。
 
 AWS MSK 在每个 MSK 集群、每种认证类型（SASL_IAM 或 SASL_SCRAM）下仅支持一个 PrivateLink（VPC endpoint）。因此，多个 ClickHouse Cloud 服务或组织在使用相同认证类型时，无法为同一个 MSK 集群分别创建独立的 PrivateLink 连接。
+
+### 非活动终端节点的自动清理 {#automatic-cleanup}
+
+处于终止状态的反向私有终端节点会在指定的宽限期后自动删除。
+这可确保未使用或配置错误的终端节点不会被无限期保留。
+
+针对不同的终端节点状态，适用以下宽限期：
+
+| Status | Grace Period | Description |
+|---|---|---|
+| **Failed** | 7 天 | 终端节点在预配过程中遇到错误。 |
+| **Pending Acceptance** | 1 天 | 服务所有者尚未接受该终端节点连接。 |
+| **Rejected** | 1 天 | 终端节点连接被服务所有者拒绝。 |
+| **Expired** | 立即 | 终端节点已过期，会被立即移除。 |
+
+一旦宽限期结束，该终端节点及其所有关联资源会被自动删除。
+
+若要防止自动移除，请在宽限期结束前解决导致该状态的根本问题。
+例如，在 AWS 控制台中接受处于待接受状态的连接请求，
+或在终端节点进入失败状态后重新创建该终端节点。

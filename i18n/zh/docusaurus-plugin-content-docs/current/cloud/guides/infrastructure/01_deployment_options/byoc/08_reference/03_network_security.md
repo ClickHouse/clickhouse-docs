@@ -11,6 +11,19 @@ import Image from '@theme/IdealImage';
 import byoc_tailscale from '@site/static/images/cloud/reference/byoc-tailscale-1.png';
 
 
+## ClickHouse 控制平面与您的 BYOC VPC 之间的连接 \{#connection-between-clickhouse-and-byoc\}
+
+ClickHouse Cloud 控制平面维护多种类型的连接，以运维和支持您的 BYOC 部署：
+
+| 目的 | 连接类型 | 说明 |
+|---------|-----------------|-------|
+| **日常运维 — Kubernetes API server** | 通过 IP 过滤的公网（默认）或 Tailscale | 管理服务通过公网与 EKS API server 通信，并通过 IP 允许列表进行限制。在初始部署之后，您可以选择将其切换为使用 Tailscale 进行私有访问。 |
+| **日常运维 — AWS APIs** | ClickHouse VPC → AWS | 管理服务从 ClickHouse Cloud 自身的 VPC 调用 AWS APIs（例如 EKS、EC2）。这不涉及您的 VPC 或 Tailscale。 |
+| **故障排查 — ClickHouse service** | Tailscale | ClickHouse 工程师通过 Tailscale 访问 ClickHouse service（例如系统表）以进行诊断。 |
+| **故障排查 — Kubernetes API server** | Tailscale | ClickHouse 工程师通过 Tailscale 访问 EKS API server，以进行集群诊断。 |
+
+下一节将说明如何使用 **Tailscale** 私有网络进行故障排查以及可选的管理访问。
+
 ## Tailscale 私有网络 \{#tailscale-private-network\}
 
 Tailscale 在 ClickHouse Cloud 的管理服务与您的 BYOC 部署之间提供零信任的私有网络连接。通过这一安全通道，ClickHouse 工程师可以在无需访问公共互联网或配置复杂 VPN 的情况下执行故障排查和管理操作。

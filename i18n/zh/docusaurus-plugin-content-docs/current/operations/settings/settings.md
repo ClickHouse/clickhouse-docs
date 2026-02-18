@@ -437,16 +437,6 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 允许显式对 Iceberg 表使用 `OPTIMIZE`。
 
-## allow_experimental_insert_into_iceberg \{#allow_experimental_insert_into_iceberg\}
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
-
-允许执行向 Iceberg 插入数据的 `insert` 查询。
-
 ## allow_experimental_join_right_table_sorting \{#allow_experimental_join_right_table_sorting\}
 
 <ExperimentalBadge/>
@@ -636,6 +626,16 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 允许使用 Hyperscan 库的函数。禁用该设置可避免潜在的长时间编译以及过多的资源消耗。
+
+## allow_insert_into_iceberg \{#allow_insert_into_iceberg\}
+
+<BetaBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "向 Iceberg 插入数据的功能已移至 Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "新设置。"}]}]}/>
+
+允许执行向 Iceberg 插入数据的 `insert` 查询。
 
 ## allow_introspection_functions \{#allow_introspection_functions\}
 
@@ -1754,6 +1754,14 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 在将 String 转换为 Variant 时使用类型推断。
 
+## check_named_collection_dependencies \{#check_named_collection_dependencies\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "用于在删除命名集合前检查是否会破坏依赖它的表的新设置。"}]}]}/>
+
+用于检查执行 DROP NAMED COLLECTION 不会破坏依赖它的表
+
 ## check_query_single_value_result \{#check_query_single_value_result\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2246,7 +2254,9 @@ SETTINGS convert_query_to_cnf = true;
 
 ## deduplicate_blocks_in_dependent_materialized_views \{#deduplicate_blocks_in_dependent_materialized_views\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认启用对依赖 materialized view 的去重。"}]}]}/>
 
 启用或禁用对从 Replicated\* 表接收数据的 materialized view 进行去重检查。
 
@@ -2264,9 +2274,9 @@ SETTINGS convert_query_to_cnf = true;
 
 ## deduplicate_insert \{#deduplicate_insert\}
 
-<SettingsInfoBlock type="DeduplicateInsertMode" default_value="backward_compatible_choice" />
+<SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "用于控制 INSERT 查询去重行为的新设置。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "默认对所有同步和异步插入启用去重。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "用于控制 INSERT 查询去重的新设置。"}]}]}/>
 
 启用或禁用 `INSERT INTO` 的块级去重（适用于 Replicated\* 表）。
 该设置会覆盖 `insert_deduplicate` 和 `async_insert_deduplicate` 两个设置。
@@ -3019,7 +3029,7 @@ FORMAT PrettyCompactMonoBlock
 
 - [distributed_index_analysis_for_non_shared_merge_tree](#distributed_index_analysis_for_non_shared_merge_tree)
 - [distributed_index_analysis_min_parts_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_parts_to_activate)
-- [distributed_index_analysis_min_indexes_size_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_size_to_activate)
+- [distributed_index_analysis_min_indexes_bytes_to_activate](merge-tree-settings.md/#distributed_index_analysis_min_indexes_bytes_to_activate)
 
 ## distributed_index_analysis_for_non_shared_merge_tree \{#distributed_index_analysis_for_non_shared_merge_tree\}
 
@@ -3222,12 +3232,6 @@ FORMAT PrettyCompactMonoBlock
 
 启用后，在执行 SELECT FINAL 查询时，来自不同分区的分区片段将不会被合并在一起，合并只会在各自的分区内单独进行。在处理分区表时，这可以显著提升查询性能。
 
-如果未显式设置，当分区键表达式是确定性的，并且分区键表达式中使用的所有列都包含在主键中时，ClickHouse 会自动启用此优化。
-
-这种自动推导可以确保具有相同主键值的行始终属于同一分区，从而保证避免跨分区合并在语义上是安全的。
-
-**默认值：** `false`（但如果未显式设置，可能会根据表结构自动启用）
-
 ## empty_result_for_aggregation_by_constant_keys_on_empty_set \{#empty_result_for_aggregation_by_constant_keys_on_empty_set\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3258,6 +3262,15 @@ FORMAT PrettyCompactMonoBlock
 
 启用在 `IN` 子查询中使用 `DISTINCT`。这是一个权衡型设置：启用后可以大幅减少为分布式 IN 子查询传输的临时表大小，并通过确保只发送唯一值，显著加快分片之间的数据传输。
 但是，启用此设置会在每个节点上增加额外的合并开销，因为必须执行去重（DISTINCT）。当网络传输是瓶颈且可以接受额外的合并开销时再使用此设置。
+
+## enable_automatic_decision_for_merging_across_partitions_for_final \{#enable_automatic_decision_for_merging_across_partitions_for_final\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "新设置"}]}]}/>
+
+如果设置此选项，当分区键表达式是确定性的，并且分区键表达式中使用的所有列都包含在主键中时，ClickHouse 会自动启用此优化。
+这种自动推导可以确保具有相同主键值的行始终属于同一分区，从而保证避免跨分区合并在语义上是安全的。
 
 ## enable_blob_storage_log \{#enable_blob_storage_log\}
 
@@ -3336,9 +3349,9 @@ FORMAT PrettyCompactMonoBlock
 
 **别名**: `allow_experimental_full_text_index`
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "文本索引已移至 Beta 阶段。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "文本索引现已进入 GA 阶段。"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "文本索引已移至 Beta 阶段。"}]}]}/>
 
 如果设置为 true，则允许使用文本索引。
 
@@ -3619,7 +3632,7 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 如果禁用该设置，上级 `WITH` 子句中的声明将被视为在当前作用域中声明，从而与当前作用域具有相同的作用域。
 
-请注意，这是为新分析器提供的兼容性设置，用于允许运行一些在语义上无效但旧分析器仍能执行的查询。
+请注意，这是为分析器提供的兼容性设置，用于允许运行一些在语义上无效但旧分析器仍能执行的查询。
 
 ## enable_shared_storage_snapshot_in_query \{#enable_shared_storage_snapshot_in_query\}
 
@@ -8019,6 +8032,20 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 ```
 
 
+## opentelemetry_start_keeper_trace_probability \{#opentelemetry_start_keeper_trace_probability\}
+
+<SettingsInfoBlock type="FloatAuto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+为 ZooKeeper 请求启动 trace 的概率，与是否存在父 trace 无关。
+
+可能的取值：
+
+- 'auto' — 等同于 `opentelemetry_start_trace_probability` 设置
+- 0 — 禁用追踪
+- 0 到 1 — 概率（例如，1.0 = 始终启用）
+
 ## opentelemetry_start_trace_probability \{#opentelemetry_start_trace_probability\}
 
 <SettingsInfoBlock type="Float" default_value="0" />
@@ -9606,7 +9633,7 @@ a   Tuple(
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "允许在查询计划中合并过滤条件"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "允许在查询计划中合并过滤条件。在使用新分析器时，为了正确支持过滤下推，这是必需的。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "允许在查询计划中合并过滤条件"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "允许在查询计划中合并过滤条件。在使用分析器时，为了正确支持过滤下推，这是必需的。"}]}]}/>
 
 允许在查询计划中合并过滤条件。
 
@@ -11462,19 +11489,6 @@ Cloud 默认值：`1`
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置。"}]}]}/>
 
 对 Paimon 表函数使用 Paimon 分区裁剪
-
-## use_parquet_metadata_cache \{#use_parquet_metadata_cache\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "启用 Parquet 文件元数据缓存。"}]}]}/>
-
-如果启用，`parquet` 格式可以使用 Parquet 元数据缓存。
-
-可能的值：
-
-- 0 - 禁用
-- 1 - 启用
 
 ## use_primary_key \{#use_primary_key\}
 

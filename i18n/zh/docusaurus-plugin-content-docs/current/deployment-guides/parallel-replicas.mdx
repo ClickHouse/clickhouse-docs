@@ -277,7 +277,11 @@ Keeper 集群确保我们拥有元数据的唯一可信来源。各个副本可�
 
 ## 排查并行副本相关问题 \{#investigating-issues-with-parallel-replicas\}
 
-你可以在 [`system.query_log`](/docs/operations/system-tables/query_log) 表中检查每个查询实际使用的设置。你也可以查看 [`system.events`](/docs/operations/system-tables/events) 表，了解服务器上发生的所有事件，并使用 [`clusterAllReplicas`](/docs/sql-reference/table-functions/cluster) 表函数查看所有副本上的表（如果你是云用户，请将集群名设为 `default`）。
+你可以在
+[`system.query_log`](/docs/operations/system-tables/query_log) 表中检查每个查询实际使用的设置。你也可以查看 [`system.events`](/docs/operations/system-tables/events)
+表，了解服务器上发生的所有事件，并使用
+[`clusterAllReplicas`](/docs/sql-reference/table-functions/cluster) 表函数查看所有副本上的表
+（如果你是云用户，请将集群名设为 `default`）。
 
 ```sql title="Query"
 SELECT

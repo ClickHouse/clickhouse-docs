@@ -23,6 +23,14 @@ import connection_details_csharp from '@site/static/images/_snippets/connection-
 客户端源代码托管在 [GitHub 仓库](https://github.com/ClickHouse/clickhouse-cs) 中。
 最初由 [Oleg V. Kozlyuk](https://github.com/DarkWanderer) 开发。
 
+该库提供两个主要 API：
+
+- **`ClickHouseClient`**（推荐）：一个为单例使用设计的高级、线程安全客户端。提供用于查询和批量插入的简单异步 API。适用于大多数应用程序。
+
+- **ADO.NET**（`ClickHouseDataSource`、`ClickHouseConnection`、`ClickHouseCommand`）：标准 .NET 数据库抽象。用于 ORM 集成（Dapper、Linq2db）以及在需要与 ADO.NET 兼容的场景中。`ClickHouseBulkCopy` 是一个辅助类，用于通过 ADO.NET 连接高效插入数据。`ClickHouseBulkCopy` 已被弃用，并将在未来版本中移除；请改用 `ClickHouseClient.InsertBinaryAsync`。
+
+这两种 API 共享相同的底层 HTTP 连接池，并且可以在同一个应用程序中同时使用。
+
 ## 迁移指南 \{#migration-guide\}
 
 1. 在 `.csproj` 文件中将包名更新为 `ClickHouse.Driver`，并将版本更新为 [NuGet 上的最新版本](https://www.nuget.org/packages/ClickHouse.Driver)。
@@ -60,13 +68,14 @@ Install-Package ClickHouse.Driver
 ## 快速入门 \{#quick-start\}
 
 ```csharp
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
 
-using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=https;Port=8443;Username=user"))
-{
-    var version = await connection.ExecuteScalarAsync("SELECT version()");
-    Console.WriteLine(version);
-}
+// Create a client (typically as a singleton)
+using var client = new ClickHouseClient("Host=my.clickhouse;Protocol=https;Port=8443;Username=user");
+
+// Execute a query
+var version = await client.ExecuteScalarAsync("SELECT version()");
+Console.WriteLine(version);
 ```
 
 
@@ -98,7 +107,10 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 |----------|------|---------|----------------------|-------------|
 | UseCompression | `bool` | `true` | `Compression` | 为数据传输启用 gzip 压缩 |
 | UseCustomDecimals | `bool` | `true` | `UseCustomDecimals` | 使用 `ClickHouseDecimal` 处理任意精度小数；如果为 false，则使用 .NET `decimal`（128 位上限） |
+| ReadStringsAsByteArrays | `bool` | `false` | `ReadStringsAsByteArrays` | 将 `String` 和 `FixedString` 列读取为 `byte[]` 而不是 `string`；适用于二进制数据 |
 | UseFormDataParameters | `bool` | `false` | `UseFormDataParameters` | 将参数以表单数据的形式发送，而不是作为 URL 查询字符串 |
+| JsonReadMode | `JsonReadMode` | `Binary` | `JsonReadMode` | JSON 数据的返回方式：`Binary`（返回 `JsonObject`）或 `String`（返回原始 JSON 字符串） |
+| JsonWriteMode | `JsonWriteMode` | `String` | `JsonWriteMode` | JSON 数据的发送方式：`String`（通过 `JsonSerializer` 序列化，接受所有输入）或 `Binary`（仅支持带类型提示的已注册 POCO） |
 
 ### 会话管理 \{#session-management\}
 
@@ -164,12 +176,88 @@ Host=localhost;Port=8123;Username=default;Password=secret;Database=mydb
 Host=localhost;set_max_threads=4;set_readonly=1;set_max_memory_usage=10000000000
 ```
 
+***
 
-## 使用方法 \{#usage\}
 
-### 连接 \{#connecting\}
+### QueryOptions \{#query-options\}
 
-若要连接 ClickHouse，请通过连接字符串或 `ClickHouseClientSettings` 对象创建一个 `ClickHouseConnection`。有关可用选项，请参见 [Configuration](#configuration) 部分。
+`QueryOptions` 允许你在每个查询的基础上覆盖客户端级别的设置。所有属性都是可选的，只有在显式指定时才会覆盖客户端默认值。
+
+| Property         | Type                          | Description                                           |
+| ---------------- | ----------------------------- | ----------------------------------------------------- |
+| QueryId          | `string`                      | 用于在 `system.query_log` 中进行跟踪或取消操作的自定义查询标识符            |
+| Database         | `string`                      | 覆盖此查询的默认数据库                                           |
+| Roles            | `IReadOnlyList<string>`       | 覆盖此查询的客户端角色                                           |
+| CustomSettings   | `IDictionary<string, object>` | 此查询的 ClickHouse 服务器设置（例如 `max_threads`）               |
+| CustomHeaders    | `IDictionary<string, string>` | 此查询的附加 HTTP 头部                                        |
+| UseSession       | `bool?`                       | 覆盖此查询的会话行为                                            |
+| SessionId        | `string`                      | 此查询的会话 ID（需要 `UseSession = true`）                     |
+| BearerToken      | `string`                      | 覆盖此查询的身份验证令牌                                          |
+| MaxExecutionTime | `TimeSpan?`                   | 服务器端查询超时时间（作为 `max_execution_time` 设置传递）；若超时则由服务器取消查询 |
+
+**示例：**
+
+```csharp
+var options = new QueryOptions
+{
+    QueryId = "report-2024-001",
+    Database = "analytics",
+    CustomSettings = new Dictionary<string, object>
+    {
+        { "max_threads", 4 },
+        { "max_memory_usage", 10_000_000_000 }
+    },
+    MaxExecutionTime = TimeSpan.FromMinutes(5)
+};
+
+var reader = await client.ExecuteReaderAsync(
+    "SELECT * FROM large_table",
+    parameters: null,
+    options: options
+);
+```
+
+***
+
+
+### InsertOptions \{#insert-options\}
+
+`InsertOptions` 扩展了 `QueryOptions`，用于配置通过 `InsertBinaryAsync` 执行批量插入操作的特定设置。
+
+| Property               | Type              | Default     | Description                                 |
+| ---------------------- | ----------------- | ----------- | ------------------------------------------- |
+| BatchSize              | `int`             | 100,000     | 每个批次包含的行数                                   |
+| MaxDegreeOfParallelism | `int`             | 1           | 并行上传的批次数量                                   |
+| Format                 | `RowBinaryFormat` | `RowBinary` | 二进制格式：`RowBinary` 或 `RowBinaryWithDefaults` |
+
+所有 `QueryOptions` 的属性在 `InsertOptions` 中同样可用。
+
+**示例：**
+
+```csharp
+var insertOptions = new InsertOptions
+{
+    BatchSize = 50_000,
+    MaxDegreeOfParallelism = 4,
+    QueryId = "bulk-import-001"
+};
+
+long rowsInserted = await client.InsertBinaryAsync(
+    "my_table",
+    columns,
+    rows,
+    insertOptions
+);
+```
+
+
+## ClickHouseClient \{#clickhouse-client\}
+
+`ClickHouseClient` 是与 ClickHouse 交互的推荐 API。它是线程安全的，适合作为单例使用，并在内部管理 HTTP 连接池。
+
+### 创建客户端 \{#creating-a-client\}
+
+通过连接字符串或 `ClickHouseClientSettings` 对象创建一个 `ClickHouseClient` 实例。有关可用选项，请参见 [Configuration](#configuration) 部分。
 
 ClickHouse Cloud 服务的连接信息可以在 ClickHouse Cloud 控制台中获取。
 
@@ -186,52 +274,71 @@ ClickHouse Cloud 服务的连接信息可以在 ClickHouse Cloud 控制台中获
 使用连接字符串：
 
 ```csharp
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
 
-using var connection = new ClickHouseConnection("Host=localhost;Username=default;Password=secret");
-await connection.OpenAsync();
+using var client = new ClickHouseClient("Host=localhost;Username=default;Password=secret");
 ```
 
 也可以使用 `ClickHouseClientSettings`：
 
 ```csharp
+using ClickHouse.Driver;
+
 var settings = new ClickHouseClientSettings
 {
     Host = "localhost",
     Username = "default",
     Password = "secret"
 };
-using var connection2 = new ClickHouseConnection(settings);
-await connection2.OpenAsync();
+using var client = new ClickHouseClient(settings);
+```
+
+在依赖注入场景中，请使用 `IHttpClientFactory`：
+
+```csharp
+// In your DI configuration
+services.AddHttpClient("ClickHouse", client =>
+{
+    client.Timeout = TimeSpan.FromMinutes(5);
+}).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+{
+    AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+});
+
+// Create client with factory
+var factory = serviceProvider.GetRequiredService<IHttpClientFactory>();
+var client = new ClickHouseClient("Host=localhost", factory, "ClickHouse");
 ```
 
 :::note
-
-* 一个 `ClickHouseConnection` 表示与服务器的“会话”。它会通过查询服务器版本来探测可用特性（因此在打开连接时会有轻微的开销），但通常情况下，多次创建和销毁此类对象是安全的。
-* 推荐的连接生命周期是：针对一个跨越多个查询的大型“事务”，使用一个连接对象。`ClickHouseConnection` 对象可以长时间存在。由于连接建立时会有少量开销，因此不建议为每个查询都创建一个新的连接对象。
-* 如果应用程序处理大量事务，并且需要频繁创建/销毁 `ClickHouseConnection` 对象，建议使用 `IHttpClientFactory` 或静态的 `HttpClient` 实例来管理连接。
-  :::
+`ClickHouseClient` 被设计为拥有较长的生命周期，并在整个应用程序中共享使用。通常只需创建一次（通常作为单例），并在所有数据库操作中复用该实例。客户端在内部管理 HTTP 连接池。
+:::
 
 ***
 
 
-### 创建表 \{#creating-a-table\}
+### 执行查询 \{#executing-queries\}
 
-使用标准 SQL 语法创建表：
+使用 `ExecuteNonQueryAsync` 来执行不返回结果的语句：
 
 ```csharp
-using ClickHouse.Driver.ADO;
+// Create a table
+await client.ExecuteNonQueryAsync(
+    "CREATE TABLE IF NOT EXISTS default.my_table (id Int64, name String) ENGINE = Memory"
+);
 
-using (var connection = new ClickHouseConnection(connectionString))
-{
-    await connection.OpenAsync();
+// Drop a table
+await client.ExecuteNonQueryAsync("DROP TABLE IF EXISTS default.my_table");
+```
 
-    using (var command = connection.CreateCommand())
-    {
-        command.CommandText = "CREATE TABLE IF NOT EXISTS default.my_table (id Int64, name String) ENGINE = Memory";
-        await command.ExecuteNonQueryAsync();
-    }
-}
+使用 `ExecuteScalarAsync` 检索单个值：
+
+```csharp
+var count = await client.ExecuteScalarAsync("SELECT count() FROM default.my_table");
+Console.WriteLine($"Row count: {count}");
+
+var version = await client.ExecuteScalarAsync("SELECT version()");
+Console.WriteLine($"Server version: {version}");
 ```
 
 ***
@@ -239,97 +346,83 @@ using (var connection = new ClickHouseConnection(connectionString))
 
 ### 插入数据 \{#inserting-data\}
 
-使用参数化查询插入数据：
+#### 参数化插入 \{#parameterized-inserts\}
+
+通过 `ExecuteNonQueryAsync` 使用参数化查询插入数据。必须在 SQL 中使用 `{name:Type}` 语法指定参数类型：
 
 ```csharp
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
+using ClickHouse.Driver.ADO.Parameters;
 
-using (var connection = new ClickHouseConnection(connectionString))
-{
-    await connection.OpenAsync();
+var parameters = new ClickHouseParameterCollection();
+parameters.Add("id", 1L);
+parameters.Add("name", "Alice");
 
-    using (var command = connection.CreateCommand())
-    {
-        command.AddParameter("id", "Int64", 1);
-        command.AddParameter("name", "String", "test");
-        command.CommandText = "INSERT INTO default.my_table (id, name) VALUES ({id:Int64}, {name:String})";
-        await command.ExecuteNonQueryAsync();
-    }
-}
+await client.ExecuteNonQueryAsync(
+    "INSERT INTO default.my_table (id, name) VALUES ({id:Int64}, {name:String})",
+    parameters
+);
 ```
 
 ***
 
 
-### 批量插入 \{#bulk-insert\}
+#### 批量插入 \{#bulk-insert\}
 
-使用 `ClickHouseBulkCopy` 来插入大量数据行。它使用 ClickHouse 的原生行二进制格式高效地流式传输数据，支持并行插入，并且可以将数据拆分为批次。同时，它还可以避免由于参数集过大而导致的“URL too long”错误。
-
-使用 `ClickHouseBulkCopy` 时需要：
-
-* 目标连接（`ClickHouseConnection` 实例）
-* 目标表名（`DestinationTableName` 属性）
-* 数据源（`IDataReader` 或 `IEnumerable<object[]>`）
+使用 `InsertBinaryAsync` 可高效插入大量行。它使用 ClickHouse 的原生行二进制格式来流式传输数据，支持并行批量上传，并避免在使用参数化查询时可能出现的“URL too long”错误。
 
 ```csharp
-using ClickHouse.Driver.ADO;
-using ClickHouse.Driver.Copy;
+// Prepare data as IEnumerable<object[]>
+var rows = Enumerable.Range(0, 1_000_000)
+    .Select(i => new object[] { (long)i, $"value{i}" });
 
-using var connection = new ClickHouseConnection(connectionString);
-await connection.OpenAsync();
+var columns = new[] { "id", "name" };
 
-using var bulkCopy = new ClickHouseBulkCopy(connection)
+// Basic insert
+long rowsInserted = await client.InsertBinaryAsync("default.my_table", columns, rows);
+Console.WriteLine($"Rows inserted: {rowsInserted}");
+```
+
+对于大型数据集，可以通过 `InsertOptions` 配置批处理和并行度：
+
+```csharp
+var options = new InsertOptions
 {
-    DestinationTableName = "default.my_table",
-    BatchSize = 100000,
-    MaxDegreeOfParallelism = 2
+    BatchSize = 100_000,           // Rows per batch (default: 100,000)
+    MaxDegreeOfParallelism = 4     // Parallel batch uploads (default: 1)
 };
-
-await bulkCopy.InitAsync(); // Prepares ClickHouseBulkCopy instance by loading target column types
-
-var values = Enumerable.Range(0, 1000000)
-    .Select(i => new object[] { (long)i, "value" + i });
-
-await bulkCopy.WriteToServerAsync(values);
-Console.WriteLine($"Rows written: {bulkCopy.RowsWritten}");
 ```
 
 :::note
 
-* 为获得最佳性能，`ClickHouseBulkCopy` 使用 Task Parallel Library (TPL) 处理批量数据，最多可并行执行 4 个插入任务（此值可调）。
-* 如果源数据的列数少于目标表的列数，可以通过 `ColumnNames` 属性可选地指定列名。
-* 可配置参数：`Columns`、`BatchSize`、`MaxDegreeOfParallelism`。
-* 在复制之前，会执行 `SELECT * FROM <table> LIMIT 0` 查询以获取目标表结构信息。要写入的对象类型必须与目标表结构合理匹配。
-* 会话与并行插入不兼容。传递给 `ClickHouseBulkCopy` 的连接必须禁用会话，或者将 `MaxDegreeOfParallelism` 设置为 `1`。
+* 客户端在插入前会通过 `SELECT * FROM <table> WHERE 1=0` 自动获取表结构。提供的值必须与目标列类型匹配。
+* 当 `MaxDegreeOfParallelism > 1` 时，批量数据会被并行上传。Session 与并行插入不兼容；要么禁用 Session，要么将 `MaxDegreeOfParallelism = 1`。
+* 如果希望服务端为未提供的列应用 DEFAULT 默认值，请在 `InsertOptions.Format` 中使用 `RowBinaryFormat.RowBinaryWithDefaults`。
   :::
 
 ***
 
 
-### 执行 SELECT 查询 \{#performing-select-queries\}
+### 读取数据 \{#reading-data\}
 
-使用 `ExecuteReader()` 或 `ExecuteReaderAsync()` 执行 SELECT 查询。返回的 `DbDataReader` 通过 `GetInt64()`、`GetString()` 和 `GetFieldValue<T>()` 等方法，为结果列提供类型安全的访问。
+使用 `ExecuteReaderAsync` 执行 SELECT 查询。返回的 `ClickHouseDataReader` 通过 `GetInt64()`、`GetString()` 和 `GetFieldValue<T>()` 等方法，为结果列提供类型化访问。
 
 调用 `Read()` 以移动到下一行。当没有更多行时，它返回 `false`。可以通过索引（从 0 开始）或列名访问列。
 
 ```csharp
-using ClickHouse.Driver.ADO;
-using System.Data;
+using ClickHouse.Driver.ADO.Parameters;
 
-using (var connection = new ClickHouseConnection(connectionString))
+var parameters = new ClickHouseParameterCollection();
+parameters.Add("max_id", 100L);
+
+var reader = await client.ExecuteReaderAsync(
+    "SELECT * FROM default.my_table WHERE id < {max_id:Int64}",
+    parameters
+);
+
+while (reader.Read())
 {
-    await connection.OpenAsync();
-
-    using (var command = connection.CreateCommand())
-    {
-        command.AddParameter("id", "Int64", 10);
-        command.CommandText = "SELECT * FROM default.my_table WHERE id < {id:Int64}";
-        using var reader = await command.ExecuteReaderAsync();
-        while (reader.Read())
-        {
-            Console.WriteLine($"select: Id: {reader.GetInt64(0)}, Name: {reader.GetString(1)}");
-        }
-    }
+    Console.WriteLine($"Id: {reader.GetInt64(0)}, Name: {reader.GetString(1)}");
 }
 ```
 
@@ -355,7 +448,7 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
 ```
 
 :::note
-SQL `bind` 参数作为 HTTP URI 查询参数传递，因此如果使用过多，可能会触发 “URL too long” 异常。使用 ClickHouseBulkInsert 可以绕过此限制。
+SQL `bind` 参数作为 HTTP URI 查询参数传递，因此如果使用过多，可能会触发 “URL too long” 异常。使用 `InsertBinaryAsync` 进行批量数据插入可以避免此限制。
 :::
 
 ***
@@ -363,21 +456,23 @@ SQL `bind` 参数作为 HTTP URI 查询参数传递，因此如果使用过多�
 
 ### 查询 ID \{#query-id\}
 
-每个发起查询的方法都会在结果中包含一个 `query_id`。该唯一标识符由客户端为每个查询分配，可用于从 `system.query_log` 表中获取数据（如果已启用），或取消长时间运行的查询。如有需要，用户可以在 ClickHouseCommand 对象中自定义该查询 ID。
+每个查询都会被分配一个唯一的 `query_id`，可用于从 `system.query_log` 表中获取数据或取消长时间运行的查询。可以通过 `QueryOptions` 指定自定义的查询 ID：
 
 ```csharp
-var customQueryId = $"qid-{Guid.NewGuid()}";
+var options = new QueryOptions
+{
+    QueryId = $"report-{Guid.NewGuid()}"
+};
 
-using var command = connection.CreateCommand();
-command.CommandText = "SELECT version()";
-command.QueryId = customQueryId;
-
-var version = await command.ExecuteScalarAsync();
-Console.WriteLine($"QueryId: {command.QueryId}");
+var reader = await client.ExecuteReaderAsync(
+    "SELECT * FROM large_table",
+    parameters: null,
+    options: options
+);
 ```
 
 :::tip
-如果要覆盖 `QueryId` 参数，必须确保它在每次调用中都是唯一的。使用随机生成的 GUID 是一个不错的选择。
+如果你要指定自定义的 `QueryId`，请确保它在每次调用中都是唯一的。使用随机 GUID 是一个不错的选择。
 :::
 
 ***
@@ -385,34 +480,38 @@ Console.WriteLine($"QueryId: {command.QueryId}");
 
 ### 原始数据流 \{#raw-streaming\}
 
-可以直接以特定格式对数据进行流式传输，从而绕过数据读取器。这在您希望以特定格式将数据保存到文件时非常有用。例如：
+使用 `ExecuteRawResultAsync` 可以以特定格式直接对查询结果进行流式传输，从而绕过数据读取器。这对于将数据导出为文件或透传到其他系统非常有用：
 
 ```csharp
-using var command = connection.CreateCommand();
-command.CommandText = "SELECT * FROM default.my_table LIMIT 100 FORMAT JSONEachRow";
-using var result = await command.ExecuteRawResultAsync(CancellationToken.None);
-using var stream = await result.ReadAsStreamAsync();
+using var result = await client.ExecuteRawResultAsync(
+    "SELECT * FROM default.my_table LIMIT 100 FORMAT JSONEachRow"
+);
+
+await using var stream = await result.ReadAsStreamAsync();
 using var reader = new StreamReader(stream);
 var json = await reader.ReadToEndAsync();
 ```
+
+常见格式：`JSONEachRow`、`CSV`、`TSV`、`Parquet`、`Native`。有关所有可用选项，请参阅[格式文档](/docs/interfaces/formats)。
 
 ***
 
 
 ### 原始流插入 \{#raw-stream-insert\}
 
-使用 `InsertRawStreamAsync` 将数据直接从文件或内存流中插入，格式可以是 CSV、JSON，或任意[ClickHouse 支持的格式](/docs/interfaces/formats)。
+使用 `InsertRawStreamAsync` 将数据直接从文件或内存流中插入，格式可以是 CSV、JSON、Parquet，或任意[ClickHouse 支持的格式](/docs/interfaces/formats)。
 
 **从 CSV 文件插入：**
 
 ```csharp
 await using var fileStream = File.OpenRead("data.csv");
 
-using var response = await connection.InsertRawStreamAsync(
+using var response = await client.InsertRawStreamAsync(
     table: "my_table",
     stream: fileStream,
     format: "CSV",
-    columns: ["id", "product", "price"]); // Optional: specify columns
+    columns: ["id", "product", "price"] // Optional: specify columns
+);
 ```
 
 :::note
@@ -426,22 +525,151 @@ using var response = await connection.InsertRawStreamAsync(
 
 有关更多实用示例，请参阅 GitHub 仓库中的 [examples 目录](https://github.com/ClickHouse/clickhouse-cs/tree/main/examples)。
 
+## ADO.NET \{#ado-net\}
+
+该库通过 `ClickHouseConnection`、`ClickHouseCommand` 和 `ClickHouseDataReader` 提供完整的 ADO.NET 支持。此 API 适用于与 ORM（Dapper、Linq2db）集成，以及需要标准 .NET 数据库抽象的场景。
+
+### 使用 ClickHouseDataSource 进行生命周期管理 \{#ado-net-datasource\}
+
+**始终通过 `ClickHouseDataSource` 创建连接**，以确保正确的生命周期管理和连接池使用。该 DataSource 在内部管理单个 `ClickHouseClient`，所有连接共享其 HTTP 连接池。
+
+```csharp
+using ClickHouse.Driver.ADO;
+
+// Create DataSource once (register as singleton in DI)
+var dataSource = new ClickHouseDataSource("Host=localhost;Username=default;Password=secret");
+
+// Create lightweight connections as needed
+await using var connection = await dataSource.OpenConnectionAsync();
+
+// Use the connection
+await using var command = connection.CreateCommand("SELECT version()");
+var version = await command.ExecuteScalarAsync();
+```
+
+用于依赖注入：
+
+```csharp
+// In Startup.cs or Program.cs
+services.AddSingleton(sp =>
+{
+    var factory = sp.GetRequiredService<IHttpClientFactory>();
+    return new ClickHouseDataSource("Host=localhost", factory, "ClickHouse");
+});
+
+// In your service
+public class MyService
+{
+    private readonly ClickHouseDataSource _dataSource;
+
+    public MyService(ClickHouseDataSource dataSource)
+    {
+        _dataSource = dataSource;
+    }
+
+    public async Task DoWorkAsync()
+    {
+        await using var connection = await _dataSource.OpenConnectionAsync();
+        // Use connection...
+    }
+}
+```
+
+:::warning
+**在生产代码中不要直接创建 `ClickHouseConnection`**。每次直接实例化都会创建一个新的 HTTP 客户端和连接池，在高负载下可能导致套接字资源耗尽：
+
+```csharp
+// DON'T DO THIS - creates new connection pool each time
+using var conn = new ClickHouseConnection("Host=localhost");
+await conn.OpenAsync();
+```
+
+相反，而是应始终使用 `ClickHouseDataSource` 或共享单个 `ClickHouseClient` 实例。
+:::
+
+***
+
+
+### 使用 ClickHouseCommand \{#ado-net-command\}
+
+基于连接创建命令来执行 SQL：
+
+```csharp
+await using var connection = await dataSource.OpenConnectionAsync();
+
+// Create command with SQL
+await using var command = connection.CreateCommand("SELECT * FROM my_table WHERE id = {id:Int64}");
+command.AddParameter("id", 42L);
+
+// Execute and read results
+await using var reader = await command.ExecuteReaderAsync();
+while (reader.Read())
+{
+    Console.WriteLine($"Name: {reader.GetString("name")}");
+}
+```
+
+命令执行方法：
+
+* `ExecuteNonQueryAsync()` - 用于执行 INSERT、UPDATE、DELETE 以及 DDL 语句
+* `ExecuteScalarAsync()` - 返回第一行的第一列
+* `ExecuteReaderAsync()` - 返回一个用于遍历结果集的 `ClickHouseDataReader`
+
+***
+
+
+### 使用 ClickHouseDataReader \{#ado-net-reader\}
+
+`ClickHouseDataReader` 提供对查询结果的类型安全访问：
+
+```csharp
+await using var reader = await command.ExecuteReaderAsync();
+
+while (reader.Read())
+{
+    // Access by column index
+    var id = reader.GetInt64(0);
+    var name = reader.GetString(1);
+
+    // Access by column name
+    var email = reader.GetString("email");
+
+    // Generic access
+    var timestamp = reader.GetFieldValue<DateTime>("created_at");
+
+    // Check for null
+    if (!reader.IsDBNull("optional_field"))
+    {
+        var value = reader.GetString("optional_field");
+    }
+}
+```
+
+
 ## 最佳实践 \{#best-practices\}
 
 ### 连接生命周期与连接池 \{#best-practices-connection-lifetime\}
 
 `ClickHouse.Driver` 在底层使用 `System.Net.Http.HttpClient`。`HttpClient` 会针对每个端点维护一个连接池。因此：
 
-* 一个 `ClickHouseConnection` 对象并不是与 TCP 连接一一对应——多个数据库会话会通过每台服务器上的多个 TCP 连接复用。
-* `ClickHouseConnection` 对象本身可以是长生命周期的；其底层实际使用的 TCP 连接会由连接池自动回收与复用。
-* 让 `HttpClient` 在内部管理连接池。不要自行对 `ClickHouseConnection` 对象进行池化管理。
-* 即使 `ClickHouseConnection` 对象已被释放，连接依然可能保持存活。
-* 可以通过传入自定义的 `HttpClientFactory`，或带有自定义 `HttpClientHandler` 的 `HttpClient` 来调整此行为。
+* 数据库会话会通过由连接池管理的 HTTP 连接进行复用。
+* HTTP 连接会由连接池自动回收。
+* 即使 `ClickHouseClient` 或 `ClickHouseConnection` 对象已被释放，连接依然可能保持存活。
 
-对于依赖注入（DI）环境，提供了一个专用构造函数 `ClickHouseConnection(string connectionString, IHttpClientFactory httpClientFactory, string httpClientName = "")`，用于让 ClickHouseConnection 请求一个具名的 HTTP 客户端。
+**推荐模式：**
+
+| 场景 | 推荐方式 |
+|----------|---------------------|
+| 通用场景 | 使用单例 `ClickHouseClient` |
+| ADO.NET / ORM | 使用 `ClickHouseDataSource`（创建共享同一连接池的连接） |
+| DI 环境 | 将 `ClickHouseClient` 或 `ClickHouseDataSource` 作为单例，并结合 `IHttpClientFactory` 注册 |
 
 :::important
 在使用自定义 `HttpClient` 或 `HttpClientFactory` 时，确保将 `PooledConnectionIdleTimeout` 设置为小于服务器 `keep_alive_timeout` 的值，以避免由于半关闭的连接导致的错误。Cloud 部署的默认 `keep_alive_timeout` 是 10 秒。
+:::
+
+:::warning
+避免在没有共享 `HttpClient` 的情况下创建多个 `ClickHouseClient` 或独立的 `ClickHouseConnection` 实例。每个实例都会创建自己的连接池。
 :::
 
 ---
@@ -452,9 +680,15 @@ using var response = await connection.InsertRawStreamAsync(
 
 2. **使用 `DateTimeOffset` 进行显式时区处理。** 它始终表示一个确切的时间点，并包含偏移量信息。
 
-3. **在 HTTP 参数类型提示中指定时区。** 当向非 UTC 的列传递带有 `Unspecified` DateTime 值的参数时：
+3. **在 SQL 类型提示中指定时区。** 当向非 UTC 的列传递带有 `Unspecified` DateTime 值的参数时，在 SQL 中包含时区信息：
    ```csharp
-   command.AddParameter("dt", value, "DateTime('Europe/Amsterdam')");
+   var parameters = new ClickHouseParameterCollection();
+   parameters.Add("dt", myDateTime);
+
+   await client.ExecuteNonQueryAsync(
+       "INSERT INTO table (dt) VALUES ({dt:DateTime('Europe/Amsterdam')})",
+       parameters
+   );
    ```
 
 ---
@@ -515,8 +749,28 @@ var settings = new ClickHouseClientSettings
     SessionId = "my-session", // Optional -- will be auto-generated if not provided
 };
 
-await using var connection = new ClickHouseConnection(settings);
-await connection.OpenAsync();
+using var client = new ClickHouseClient(settings);
+
+await client.ExecuteNonQueryAsync("CREATE TEMPORARY TABLE temp_ids (id UInt64)");
+await client.ExecuteNonQueryAsync("INSERT INTO temp_ids VALUES (1), (2), (3)");
+
+var reader = await client.ExecuteReaderAsync(
+    "SELECT * FROM users WHERE id IN (SELECT id FROM temp_ids)"
+);
+```
+
+**使用 ADO.NET（用于兼容 ORM）：**
+
+```csharp
+var settings = new ClickHouseClientSettings
+{
+    Host = "localhost",
+    UseSession = true,
+    SessionId = "my-session",
+};
+
+var dataSource = new ClickHouseDataSource(settings);
+await using var connection = await dataSource.OpenConnectionAsync();
 
 await using var cmd1 = connection.CreateCommand("CREATE TEMPORARY TABLE temp_ids (id UInt64)");
 await cmd1.ExecuteNonQueryAsync();
@@ -593,7 +847,11 @@ Decimal 类型转换由 UseCustomDecimals 设置项控制。
 | ClickHouse 类型 | .NET 类型 |
 |-----------------|-----------|
 | String | `string` |
-| FixedString(N) | `byte[]` |
+| FixedString(N) | `string` |
+
+:::note
+默认情况下，`String` 和 `FixedString(N)` 列都会以 `string` 形式返回。请在连接字符串中设置 `ReadStringsAsByteArrays=true` 以将它们读取为 `byte[]`。当存储可能不是有效 UTF-8 的二进制数据时，这会非常有用。
+:::
 
 ---
 
@@ -640,6 +898,33 @@ var dto = reader.GetDateTimeOffset(0); // 2024-06-15 14:30:00 +02:00 (CEST)
 ***
 
 
+#### JSON 类型 \{#type-map-reading-json\}
+
+| ClickHouse Type | .NET Type    | Notes                     |
+| --------------- | ------------ | ------------------------- |
+| Json            | `JsonObject` | 默认（`JsonReadMode=Binary`） |
+| Json            | `string`     | 当 `JsonReadMode=String` 时 |
+
+JSON 列的返回类型由 `JsonReadMode` 设置控制：
+
+* **`Binary`（默认）**：返回 `System.Text.Json.Nodes.JsonObject`。提供对 JSON 数据的结构化访问，但 JSON 结构中的 ClickHouse 特殊类型（如 IP 地址、UUID、大十进制数值）会被转换为其字符串表示。
+
+* **`String`**：以 `string` 形式返回原始 JSON。保留来自 ClickHouse 的精确 JSON 表示，当你需要直接透传而不是解析 JSON，或希望自行处理反序列化时非常有用。
+
+```csharp
+// Configure string mode via settings
+var settings = new ClickHouseClientSettings("Host=localhost")
+{
+    JsonReadMode = JsonReadMode.String
+};
+
+// Or via connection string
+// "Host=localhost;JsonReadMode=String"
+```
+
+***
+
+
 #### 其他类型 \{#type-map-reading-other\}
 
 | ClickHouse 类型 | .NET 类型 |
@@ -649,7 +934,6 @@ var dto = reader.GetDateTimeOffset(0); // 2024-06-15 14:30:00 +02:00 (CEST)
 | IPv6 | `IPAddress` |
 | Nothing | `DBNull` |
 | Dynamic | 参见注释 |
-| Json | `JsonObject` |
 | Array(T) | `T[]` |
 | Tuple(T1, T2, ...) | `Tuple<T1, T2, ...>` / `LargeTuple` |
 | Map(K, V) | `Dictionary<K, V>` |
@@ -731,8 +1015,8 @@ Geometry 类型是一个 Variant 类型，可以包含任意几何类型。它�
 
 | ClickHouse 类型 | 可接受的 .NET 类型 | 说明 |
 |-----------------|---------------------|-------|
-| String | `string`，任何与 `Convert.ToString()` 兼容的类型 |  |
-| FixedString(N) | `string`，`byte[]` | 字符串以 UTF-8 编码，并会进行填充或截断；`byte[]` 的长度必须正好为 N 字节 |
+| String | `string`，`byte[]`，`ReadOnlyMemory<byte>`，`Stream` | 二进制类型将被直接写入；流可以是可查找（seekable）或不可查找（non-seekable） |
+| FixedString(N) | `string`，`byte[]`，`ReadOnlyMemory<byte>`，`Stream` | 字符串以 UTF-8 编码并进行填充；二进制类型的长度必须正好为 N 字节 |
 
 ---
 
@@ -750,11 +1034,11 @@ Geometry 类型是一个 Variant 类型，可以包含任意几何类型。它�
 
 在写入值时，驱动会遵循 `DateTime.Kind`：
 
-| `DateTime.Kind` | 行为                        |
-| --------------- | ------------------------- |
-| `Utc`           | 精确保留同一时间点                 |
-| `Local`         | 使用系统时区转换为 UTC，同时精确保留时间点   |
-| `Unspecified`   | 按目标列所在时区的本地墙上时间（本地时钟时间）处理 |
+| DateTime.Kind | HTTP 参数                         | 批量写入            |
+| ------------- | ------------------------------- | --------------- |
+| Utc           | 精确保留同一时间点                       | 精确保留同一时间点       |
+| Local         | 精确保留同一时间点                       | 精确保留同一时间点       |
+| Unspecified   | 按参数类型所在时区的本地墙上时间处理（默认使用 UTC 时区） | 按列所在时区的本地墙上时间处理 |
 
 `DateTimeOffset` 值始终精确保留时间点。
 
@@ -767,7 +1051,7 @@ var utcTime = new DateTime(2024, 1, 15, 12, 0, 0, DateTimeKind.Utc);
 // Read from DateTime('UTC') column: 12:00 UTC
 ```
 
-**示例：未指定 DateTime（墙上时钟时间）**
+**示例：未指定的 DateTime（墙上时钟时间）**
 
 ```csharp
 var wallClock = new DateTime(2024, 1, 15, 14, 30, 0, DateTimeKind.Unspecified);
@@ -784,16 +1068,16 @@ var wallClock = new DateTime(2024, 1, 15, 14, 30, 0, DateTimeKind.Unspecified);
 
 **Bulk Copy** 知道目标列的时区，并会在该时区中正确解释 `Unspecified` 值。
 
-**HTTP Parameters** 无法自动获知列的时区。你必须在参数类型提示中显式指定该时区：
+**HTTP Parameters** 无法自动获知列的时区。你必须在 SQL 类型提示中显式指定该时区：
 
 ```csharp
-// CORRECT: Timezone in type hint
-command.AddParameter("dt", myDateTime, "DateTime('Europe/Amsterdam')");
+// CORRECT: Timezone in SQL type hint - type is extracted automatically
 command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime('Europe/Amsterdam')})";
+command.AddParameter("dt", myDateTime);
 
 // INCORRECT: Without timezone hint, interpreted as UTC
-command.AddParameter("dt", myDateTime);
 command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
+command.AddParameter("dt", myDateTime);
 // String value "2024-01-15 14:30:00" interpreted as UTC, not Amsterdam time!
 ```
 
@@ -820,6 +1104,110 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 
 ---
 
+#### JSON 类型 \{#type-map-writing-json\}
+
+| ClickHouse Type | Accepted .NET Types                            | Notes                         |
+| --------------- | ---------------------------------------------- | ----------------------------- |
+| Json            | `string`, `JsonObject`, `JsonNode`, any object | 行为取决于 `JsonWriteMode` SETTING |
+
+写入 JSON 时的行为由 `JsonWriteMode` 设置控制：
+
+| Input Type                           | `JsonWriteMode.String` (default)    | `JsonWriteMode.Binary`                    |
+| ------------------------------------ | ----------------------------------- | ----------------------------------------- |
+| `string`                             | 原样传递                                | 抛出 `ArgumentException`                    |
+| `JsonObject`                         | 通过 `ToJsonString()` 序列化             | 抛出 `ArgumentException`                    |
+| `JsonNode`                           | 通过 `ToJsonString()` 序列化             | 抛出 `ArgumentException`                    |
+| Registered POCO                      | 通过 `JsonSerializer.Serialize()` 序列化 | 使用带类型提示的二进制编码，支持自定义路径特性                   |
+| Unregistered POCO / Anonymous object | 通过 `JsonSerializer.Serialize()` 序列化 | 抛出 `ClickHouseJsonSerializationException` |
+
+* **`String`（默认）**：接受 `string`、`JsonObject`、`JsonNode` 或任意对象。所有输入都会通过 `System.Text.Json.JsonSerializer` 序列化，并以 JSON 字符串形式发送到服务端进行解析。该模式最为灵活，无需进行类型注册。
+
+* **`Binary`**：仅接受已注册的 POCO 类型。数据会在客户端转换为 ClickHouse 的二进制 JSON 格式，并具备完整的类型提示支持。使用前需要调用 `connection.RegisterJsonSerializationType<T>()`。在该模式下写入 `string` 或 `JsonNode` 值会抛出 `ArgumentException`。
+
+```csharp
+// Default String mode works with any input
+await client.InsertBinaryAsync(
+    "my_table",
+    new[] { "id", "data" },
+    new[] { new object[] { 1u, new { name = "test", value = 42 } } }
+);
+
+// Binary mode requires explicit opt-in and type registration
+var settings = new ClickHouseClientSettings("Host=localhost")
+{
+    JsonWriteMode = JsonWriteMode.Binary
+};
+using var client = new ClickHouseClient(settings);
+client.RegisterJsonSerializationType<MyPocoType>();
+```
+
+
+##### 带类型的 JSON 列 \{#json-typed-columns\}
+
+当一个 JSON 列带有类型提示时（例如 `JSON(id UInt64, price Decimal128(2))`），驱动程序会利用这些提示，在序列化值时保留完整的类型信息。这样可以保持 `UInt64`、`Decimal`、`UUID` 和 `DateTime64` 等类型的精度，否则在序列化为通用 JSON 时会丢失精度。
+
+##### POCO 序列化 \{#json-poco-serialization\}
+
+根据 `JsonWriteMode` 的不同，POCO 可以通过两种方式写入 JSON 列：
+
+**字符串模式（默认）**：POCO 使用 `System.Text.Json.JsonSerializer` 进行序列化。无需进行类型注册。这是最简单的方式，并且适用于匿名对象。
+
+**二进制模式**：POCO 使用驱动的二进制 JSON 格式进行序列化，并提供完整的类型提示支持。在使用前，必须通过 `connection.RegisterJsonSerializationType<T>()` 注册类型。此模式通过特性（attribute）支持自定义 JSON 路径映射：
+
+* **`[ClickHouseJsonPath("path")]`**：将属性映射到自定义 JSON 路径。对于嵌套结构，或当属性名与期望的 JSON 键不同的情况非常有用。**仅在二进制模式下有效。**
+
+* **`[ClickHouseJsonIgnore]`**：在序列化中排除某个属性。**仅在二进制模式下有效。**
+
+```sql
+CREATE TABLE events (
+    id UInt32,
+    data JSON(`user.id` Int64, `user.name` String, Timestamp DateTime64(3))
+) ENGINE = MergeTree() ORDER BY id
+```
+
+```csharp
+using ClickHouse.Driver.Json;
+
+public class UserEvent
+{
+    [ClickHouseJsonPath("user.id")]
+    public long UserId { get; set; }
+
+    [ClickHouseJsonPath("user.name")]
+    public string UserName { get; set; }
+
+    public DateTime Timestamp { get; set; }
+
+    [ClickHouseJsonIgnore]
+    public string InternalData { get; set; }  // Not serialized
+}
+
+// For Binary mode: Register the type and enable Binary mode
+var settings = new ClickHouseClientSettings("Host=localhost") { JsonWriteMode = JsonWriteMode.Binary };
+using var client = new ClickHouseClient(settings);
+client.RegisterJsonSerializationType<UserEvent>();
+
+// Insert POCO - serialized to JSON with nested structure via custom path attributes
+await client.InsertBinaryAsync(
+    "events",
+    new[] { "id", "data" },
+    new[] { new object[] { 1u, new UserEvent { UserId = 123, UserName = "Alice", Timestamp = DateTime.UtcNow } } }
+);
+// Resulting JSON: {"user": {"id": 123, "name": "Alice"}, "Timestamp": "2024-01-15T..."}
+```
+
+属性名称与列类型提示的匹配是区分大小写的。属性 `UserId` 只会匹配定义为 `UserId` 的提示，而不会匹配 `userid`。这与 ClickHouse 的行为一致，它允许诸如 `userName` 和 `UserName` 这样的路径作为不同字段并存。
+
+**限制（仅 Binary 模式）：**
+
+* 在序列化之前，必须在连接上使用 `connection.RegisterJsonSerializationType<T>()` 先注册 POCO 类型。尝试序列化未注册的类型会抛出 `ClickHouseJsonSerializationException`。
+* 字典和数组/列表属性在列定义中需要提供类型提示，才能被正确序列化。如果没有类型提示，请改用 String 模式。
+* 只有当路径在列定义中具有 `Nullable(T)` 类型提示时，POCO 属性中的空值才会被写入。ClickHouse 不允许在动态 JSON 路径中使用 `Nullable` 类型，因此未提供类型提示的空属性会被跳过。
+* 在 String 模式下会忽略 `ClickHouseJsonPath` 和 `ClickHouseJsonIgnore` 特性（它们仅在 Binary 模式下生效）。
+
+***
+
+
 #### 其他类型 \{#type-map-writing-other\}
 
 | ClickHouse 类型 | 可接受的 .NET 类型 | 说明 |
@@ -829,7 +1217,6 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 | IPv6 | `IPAddress`, `string` | 必须为 IPv6；字符串通过 `IPAddress.Parse()` 解析 |
 | Nothing | 任意类型 | 不写入任何内容（no-op） |
 | Dynamic | — | **不支持**（抛出 `NotImplementedException`） |
-| Json | `string`, `JsonObject`, 任意对象 | 字符串将被解析为 JSON；对象通过 `JsonSerializer` 序列化 |
 | Array(T) | `IList`, `null` | 将 null 写为空数组 |
 | Tuple(T1, T2, ...) | `ITuple`, `IList` | 元素数量必须与元组的元数一致 |
 | Map(K, V) | `IDictionary` | |
@@ -879,28 +1266,25 @@ CREATE TABLE test.nested (
 ```
 
 ```csharp
-using var bulkCopy = new ClickHouseBulkCopy(connection)
-{
-    DestinationTableName = "test.nested"
-};
-
 var row1 = new object[] { 1, new[] { 1, 2, 3 }, new[] { "v1", "v2", "v3" } };
 var row2 = new object[] { 2, new[] { 4, 5, 6 }, new[] { "v4", "v5", "v6" } };
 
-await bulkCopy.WriteToServerAsync(new[] { row1, row2 });
+await client.InsertBinaryAsync(
+    "test.nested",
+    new[] { "id", "params.param_id", "params.param_val" },
+    new[] { row1, row2 }
+);
 ```
 
 
 ## 日志和诊断 \{#logging-and-diagnostics\}
 
-ClickHouse .NET 客户端与 `Microsoft.Extensions.Logging` 抽象层集成，提供轻量级、可选启用的日志记录功能。启用后，驱动程序会针对连接生命周期事件、命令执行、传输操作以及批量复制上传输出结构化消息。日志记录完全是可选的——未配置记录器的应用程序将继续正常运行，并且不会引入任何额外开销。
+ClickHouse .NET 客户端与 `Microsoft.Extensions.Logging` 抽象层集成，提供轻量级、可选启用的日志记录功能。启用后，驱动程序会针对连接生命周期事件、命令执行、传输操作以及批量插入操作输出结构化消息。日志记录完全是可选的——未配置记录器的应用程序将继续正常运行，并且不会引入任何额外开销。
 
 ### 快速开始 \{#logging-quick-start\}
 
-#### 使用 ClickHouseConnection \{#logging-clickhouseconnection\}
-
 ```csharp
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
 using Microsoft.Extensions.Logging;
 
 var loggerFactory = LoggerFactory.Create(builder =>
@@ -915,16 +1299,16 @@ var settings = new ClickHouseClientSettings("Host=localhost;Port=8123")
     LoggerFactory = loggerFactory
 };
 
-await using var connection = new ClickHouseConnection(settings);
-await connection.OpenAsync();
+using var client = new ClickHouseClient(settings);
 ```
+
 
 #### 使用 appsettings.json \{#logging-appsettings-config\}
 
 可以使用标准的 .NET 配置来配置日志级别：
 
 ```csharp
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -945,16 +1329,16 @@ var settings = new ClickHouseClientSettings("Host=localhost;Port=8123")
     LoggerFactory = loggerFactory
 };
 
-await using var connection = new ClickHouseConnection(settings);
-await connection.OpenAsync();
+using var client = new ClickHouseClient(settings);
 ```
+
 
 #### 使用内存配置 \{#logging-inmemory-config\}
 
 你也可以在代码中按类别配置日志的详细程度：
 
 ```csharp
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -981,9 +1365,9 @@ var settings = new ClickHouseClientSettings("Host=localhost;Port=8123")
     LoggerFactory = loggerFactory
 };
 
-await using var connection = new ClickHouseConnection(settings);
-await connection.OpenAsync();
+using var client = new ClickHouseClient(settings);
 ```
+
 
 ### 分类与发射源 \{#logging-categories\}
 
@@ -994,7 +1378,7 @@ await connection.OpenAsync();
 | `ClickHouse.Driver.Connection` | `ClickHouseConnection` | 连接生命周期、HTTP 客户端工厂的选择、连接打开/关闭、会话管理。 |
 | `ClickHouse.Driver.Command` | `ClickHouseCommand` | 查询执行开始/完成、计时、查询 ID、服务器统计信息和错误详情。 |
 | `ClickHouse.Driver.Transport` | `ClickHouseConnection` | 底层 HTTP 流式请求、压缩标志、响应状态码以及传输失败情况。 |
-| `ClickHouse.Driver.BulkCopy` | `ClickHouseBulkCopy` | 元数据加载、批量操作、行计数以及上传完成情况。 |
+| `ClickHouse.Driver.Client` | `ClickHouseClient` | 二进制插入、查询以及其他操作。 |
 | `ClickHouse.Driver.NetTrace` | `TraceHelper` | 网络跟踪，仅在启用调试模式时生效。 |
 
 #### 示例：排查连接问题 \{#logging-config-example\}
@@ -1115,7 +1499,7 @@ ClickHouseDiagnosticsOptions.StatementMaxLength = 500;
 ```csharp
 using System.Net;
 using System.Net.Security;
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
 
 var handler = new HttpClientHandler
 {
@@ -1146,8 +1530,7 @@ var settings = new ClickHouseClientSettings
     HttpClient = httpClient,
 };
 
-using var connection = new ClickHouseConnection(settings);
-await connection.OpenAsync();
+using var client = new ClickHouseClient(settings);
 ```
 
 :::note
@@ -1159,6 +1542,18 @@ await connection.OpenAsync();
 
 
 ## ORM 支持 \{#orm-support\}
+
+ORM 依赖 ADO.NET API（`ClickHouseConnection`）。为正确管理连接的生命周期，应从 `ClickHouseDataSource` 创建连接：
+
+```csharp
+// Register DataSource as singleton
+var dataSource = new ClickHouseDataSource("Host=localhost;Username=default");
+
+// Create connections for ORM use
+await using var connection = await dataSource.OpenConnectionAsync();
+// Pass connection to your ORM...
+```
+
 
 ### Dapper \{#orm-support-dapper\}
 

@@ -106,7 +106,7 @@ _Fig. 6 - Read-write and Read-only services in a warehouse_
 
 :::note
 1. Read-only services currently allow user management operations (create, drop, etc). This behavior may be changed in the future.
-2. Refreshable materialized views run **only** on read-write (RW) services in a warehouse. They are **not** executed on read-only (RO) services.
+2. Refreshable materialized views run **only** on read-write (RW) services in a warehouse. They're **not** executed on read-only (RO) services.
 
 :::
 
@@ -116,22 +116,22 @@ Each service in a warehouse can be adjusted to your workload in terms of:
 - Number of nodes (replicas). The primary service (the service that was created first in the warehouse) should have 2 or more nodes. Each secondary service can have 1 or more nodes.
 - Size of nodes (replicas)
 - If the service should scale automatically
-- If the service should be idled on inactivity (cannot be applied to the first service in the group - please see the **Limitations** section)
+- If the service should be idled on inactivity (can't be applied to the first service in the group - please see the **Limitations** section)
 
 ## Changes in behavior {#changes-in-behavior}
 Once compute-compute is enabled for a service (at least one secondary service was created), the `clusterAllReplicas()` function call with the `default` cluster name will utilize only replicas from the service where it was called. That means, if there are two services connected to the same dataset, and `clusterAllReplicas(default, system, processes)` is called from service 1, only processes running on service 1 will be shown. If needed, you can still call `clusterAllReplicas('all_groups.default', system, processes)` for example to reach all replicas.
 
 ## Limitations {#limitations}
 
-1. **Primary service should always be up and should not be idled (limitation will be removed some time after GA).** During the private preview and some time after GA, the primary service (usually the existing service that you want to extend by adding other services) will be always up and will have the idling setting disabled. You will not be able to stop or idle the primary service if there is at least one secondary service. Once all secondary services are removed, you can stop or idle the original service again.
+1. **Primary service should always be up and shouldn't be idled (limitation will be removed some time after GA).** During the private preview and some time after GA, the primary service (usually the existing service that you want to extend by adding other services) will be always up and will have the idling setting disabled. You won't be able to stop or idle the primary service if there is at least one secondary service. Once all secondary services are removed, you can stop or idle the original service again.
 
-2. **Sometimes workloads cannot be isolated.** Though the goal is to give you an option to isolate database workloads from each other, there can be corner cases where one workload in one service will affect another service sharing the same data. These are quite rare situations that are mostly connected to OLTP-like workloads.
+2. **Sometimes workloads can't be isolated.** Though the goal is to give you an option to isolate database workloads from each other, there can be corner cases where one workload in one service will affect another service sharing the same data. These are quite rare situations that are mostly connected to OLTP-like workloads.
 
-3. **All read-write services are doing background merge operations.** When inserting data to ClickHouse, the database at first inserts the data to some staging partitions, and then performs merges in the background. These merges can consume memory and CPU resources. When two read-write services share the same storage, they both are performing background operations. That means that there can be a situation where there is an `INSERT` query in Service 1, but the merge operation is completed by Service 2. Note that read-only services do not execute background merges, thus they don't spend their resources on this operation.
+3. **All read-write services are doing background merge operations.** When inserting data to ClickHouse, the database at first inserts the data to some staging partitions, and then performs merges in the background. These merges can consume memory and CPU resources. When two read-write services share the same storage, they both are performing background operations. That means that there can be a situation where there is an `INSERT` query in Service 1, but the merge operation is completed by Service 2. Note that read-only services don't execute background merges, thus they don't spend their resources on this operation.
 
 4. **All read-write services are performing S3Queue table engine insert operations.** When creating a S3Queue table on a RW service, all other RW services in the WH may perform reading data from S3 and writing data to the database.
 
-5. **Inserts in one read-write service can prevent another read-write service from idling if idling is enabled.** As a result, a second service performs background merge operations for the first service. These background operations can prevent the second service from going to sleep when idling. Once the background operations are finished, the service will be idled. Read-only services are not affected and will be idled without delay.
+5. **Inserts in one read-write service can prevent another read-write service from idling if idling is enabled.** As a result, a second service performs background merge operations for the first service. These background operations can prevent the second service from going to sleep when idling. Once the background operations are finished, the service will be idled. Read-only services aren't affected and will be idled without delay.
 
 6. **CREATE/RENAME/DROP DATABASE queries could be blocked by idled/stopped services by default.** These queries can hang. To bypass this, you  can run database management queries with `settings distributed_ddl_task_timeout=0` at the session or per query level. For example:
 
@@ -176,7 +176,7 @@ There are two ways to rename a warehouse:
 
 ### Deleting a warehouse {#deleting-a-warehouse}
 
-Deleting a warehouse means deleting all the compute services and the data (tables, views, users, etc.). This action cannot be undone.
+Deleting a warehouse means deleting all the compute services and the data (tables, views, users, etc.). This action can't be undone.
 You can only delete a warehouse by deleting the first service created. To do this:
 
 1. Delete all the services that were created in addition to the service that was created first;

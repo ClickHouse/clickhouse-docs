@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Guides'
 slug: /integrations/dbt/guides
-sidebar_position: 2
+sidebar_position: 4
 description: 'Guides for using dbt with ClickHouse'
 keywords: ['clickhouse', 'dbt', 'guides']
 title: 'Guides'
@@ -32,7 +32,7 @@ This section provides guides on setting up dbt and the ClickHouse adapter, as we
 5. Creating a snapshot model.
 6. Using materialized views.
 
-These guides are designed to be used in conjunction with the rest of the [documentation](/integrations/dbt) and the [features and configurations](/integrations/dbt/features-and-configurations).
+These guides are designed to be used in conjunction with the rest of the [documentation](/integrations/dbt), the [features and configurations](/integrations/dbt/features-and-configurations) and the [materializations reference](/integrations/dbt/materializations).
 
 <TOCInline toc={toc}  maxHeadingLevel={2} />
 
@@ -404,7 +404,7 @@ When using the view materialization, a model is rebuilt as a view on each run, v
 
 ## Creating a table materialization {#creating-a-table-materialization}
 
-In the previous example, our model was materialized as a view. While this might offer sufficient performance for some queries, more complex SELECTs or frequently executed queries may be better materialized as a table.  This materialization is useful for models that will be queried by BI tools to ensure users have a faster experience. This effectively causes the query results to be stored as a new table, with the associated storage overheads - effectively, an `INSERT TO SELECT` is executed. Note that this table will be reconstructed each time i.e., it is not incremental. Large result sets may therefore result in long execution times - see [dbt Limitations](/integrations/dbt#limitations).
+In the previous example, our model was materialized as a view. While this might offer sufficient performance for some queries, more complex SELECTs or frequently executed queries may be better materialized as a table.  This materialization is useful for models that will be queried by BI tools to ensure users have a faster experience. This effectively causes the query results to be stored as a new table, with the associated storage overheads - effectively, an `INSERT TO SELECT` is executed. Note that this table will be reconstructed each time i.e., it isn't incremental. Large result sets may therefore result in long execution times - see [dbt Limitations](/integrations/dbt#limitations).
 
 1. Modify the file `actors_summary.sql` such that the `materialized` parameter is set to `table`. Notice how `ORDER BY` is defined, and notice we use the `MergeTree` table engine:
 
@@ -667,7 +667,7 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 Adjust the above query to the period of execution. We leave result inspection to the user but highlight the general strategy used by the adapter to perform incremental updates:
 
 1. The adapter creates a temporary table `actor_sumary__dbt_tmp`. Rows that have changed are streamed into this table.
-2. A new table, `actor_summary_new,` is created. The rows from the old table are, in turn, streamed from the old to new, with a check to make sure row ids do not exist in the temporary table. This effectively handles updates and duplicates.
+2. A new table, `actor_summary_new,` is created. The rows from the old table are, in turn, streamed from the old to new, with a check to make sure row ids don't exist in the temporary table. This effectively handles updates and duplicates.
 3. The results from the temporary table are streamed into the new `actor_summary` table:
 4. Finally, the new table is exchanged atomically with the old version via an `EXCHANGE TABLES` statement. The old and temporary tables are in turn dropped.
 
@@ -814,7 +814,7 @@ Performs the following steps:
 This approach has the following advantages:
 
 * It is faster than the default strategy because it doesn't copy the entire table.
-* It is safer than other strategies because it doesn't modify the original table until the INSERT operation completes successfully: in case of intermediate failure, the original table is not modified.
+* It is safer than other strategies because it doesn't modify the original table until the INSERT operation completes successfully: in case of intermediate failure, the original table isn't modified.
 * It implements "partitions immutability" data engineering best practice. Which simplifies incremental and parallel data processing, rollbacks, etc.
 
 <Image img={dbt_07} size="lg" alt="insert overwrite incremental" />
@@ -890,7 +890,7 @@ This example assumes you have completed [Creating an Incremental Table Model](#c
 
 A few observations regarding this content:
 * The select query defines the results you wish to snapshot over time. The function ref is used to reference our previously created actor_summary model.
-* We require a timestamp column to indicate record changes. Our updated_at column (see [Creating an Incremental Table Model](#creating-an-incremental-materialization)) can be used here. The parameter strategy indicates our use of a timestamp to denote updates, with the parameter updated_at specifying the column to use. If this is not present in your model you can alternatively use the [check strategy](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy). This is significantly more inefficient and requires the user to specify a list of columns to compare.  dbt compares the current and historical values of these columns, recording any changes (or doing nothing if identical).
+* We require a timestamp column to indicate record changes. Our updated_at column (see [Creating an Incremental Table Model](#creating-an-incremental-materialization)) can be used here. The parameter strategy indicates our use of a timestamp to denote updates, with the parameter updated_at specifying the column to use. If this isn't present in your model you can alternatively use the [check strategy](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy). This is significantly more inefficient and requires the user to specify a list of columns to compare.  dbt compares the current and historical values of these columns, recording any changes (or doing nothing if identical).
 
 3. Run the command `dbt snapshot`.
 
@@ -996,7 +996,7 @@ For further details on dbt snapshots see [here](https://docs.getdbt.com/docs/bui
 
 ## Using seeds {#using-seeds}
 
-dbt provides the ability to load data from CSV files. This capability is not suited to loading large exports of a database and is more designed for small files typically used for code tables and [dictionaries](../../../../sql-reference/statements/create/dictionary/index.md), e.g. mapping country codes to country names. For a simple example, we generate and then upload a list of genre codes using the seed functionality.
+dbt provides the ability to load data from CSV files. This capability isn't suited to loading large exports of a database and is more designed for small files typically used for code tables and [dictionaries](../../../../sql-reference/dictionaries/index.md), e.g. mapping country codes to country names. For a simple example, we generate and then upload a list of genre codes using the seed functionality.
 
 1. We generate a list of genre codes from our existing dataset. From the dbt directory, use the `clickhouse-client` to create a file `seeds/genre_codes.csv`:
 

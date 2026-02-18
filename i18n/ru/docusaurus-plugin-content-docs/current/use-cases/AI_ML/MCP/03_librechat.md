@@ -46,7 +46,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
 
   ## Создайте и отредактируйте файл .env \{#create-and-edit-env-file\}
 
-  Скопируйте файл примера конфигурации из `.env.example` в `.env`:
+  Скопируйте пример файла конфигурации из `.env.example` в `.env`:
 
   ```bash
   cp .env.example .env
@@ -123,9 +123,9 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
       badgeState="default"
       badgeText=""
       description="
-Если у вас еще нет аккаунта в ClickHouse Cloud, начните работу уже сегодня и
-получите $300 в виде бонусных кредитов. По окончании 30-дневного бесплатного пробного периода вы можете продолжить использовать
-тариф с оплатой по мере использования или связаться с нами, чтобы узнать больше о наших скидках при больших объемах.
+Если у вас ещё нет аккаунта в ClickHouse Cloud, начните работу уже сегодня и
+получите $300 в виде бонусных кредитов. По окончании 30-дневного бесплатного пробного периода вы можете перейти на
+тариф с оплатой по мере использования или связаться с нами, чтобы узнать больше о наших скидках при больших объёмах.
 Подробности смотрите на нашей странице с тарифами.
 "
       icon="cloud"
@@ -155,7 +155,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
   socialLogins: ['github', 'google', 'discord', 'openid', 'facebook', 'apple', 'saml']
   ```
 
-  Для упрощения мы временно отключим необходимость аутентификации:
+  Для простоты мы временно отключим требование аутентификации:
 
   ```text title="librechat.yaml"
   socialLogins: []
@@ -167,7 +167,7 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
 
   Перейдите на [сайт Ollama](https://ollama.com/download) и установите Ollama для вашей системы.
 
-  После установки можно запустить модель следующим образом:
+  После установки вы можете запустить модель следующей командой:
 
   ```bash
   ollama run qwen3:32b
@@ -208,14 +208,14 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
   docker compose up
   ```
 
-  Дождитесь полного запуска всех сервисов.
+  Дождитесь, пока все сервисы полностью запустятся.
 
   ## Откройте LibreChat в браузере \{#open-librechat-in-browser\}
 
-  После того как все сервисы запущены и работают, откройте браузер и перейдите по адресу `http://localhost:3080/`
+  Когда все сервисы будут запущены и готовы к работе, откройте браузер и перейдите по адресу `http://localhost:3080/`
 
-  Создайте бесплатный аккаунт LibreChat, если у вас его еще нет, и войдите в систему. Теперь вы должны
-  увидеть интерфейс LibreChat, подключенный к серверу ClickHouse MCP и, при необходимости,
+  Создайте бесплатный аккаунт LibreChat, если у вас его ещё нет, и войдите в систему. Теперь вы должны
+  увидеть интерфейс LibreChat, подключённый к серверу ClickHouse MCP и, при необходимости,
   к вашей локальной LLM.
 
   В интерфейсе чата выберите `clickhouse-playground` в качестве MCP-сервера:

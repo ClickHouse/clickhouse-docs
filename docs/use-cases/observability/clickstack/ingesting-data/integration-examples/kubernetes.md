@@ -46,7 +46,7 @@ kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_
 
 ### Creating the DaemonSet configuration {#creating-the-daemonset-configuration}
 
-The DaemonSet will collect logs and metrics from each node in the cluster but will not collect Kubernetes events or cluster-wide metrics.
+The DaemonSet will collect logs and metrics from each node in the cluster but won't collect Kubernetes events or cluster-wide metrics.
 
 Download the DaemonSet manifest:
 

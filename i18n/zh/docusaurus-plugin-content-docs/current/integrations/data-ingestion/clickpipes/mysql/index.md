@@ -134,6 +134,6 @@ MySQL ClickPipe 提供了一种完全托管且具备高可用性和容错能力�
 
 ## 接下来做什么？ \{#whats-next\}
 
-[//]: # "TODO Write a MySQL-specific migration guide and best practices similar to the existing one for PostgreSQL. The current migration guide points to the MySQL table engine, which is not ideal."
+[//]: # "TODO Write a MySQL-specific migration guide and best practices similar to the existing one for PostgreSQL. The current migration guide points to the MySQL table engine, which isn't ideal."
 
 当你通过 ClickPipe 将数据从 MySQL 复制到 ClickHouse Cloud 之后，就可以将重点放在如何对数据进行查询和建模，以获得最佳性能。关于 MySQL CDC 及故障排查的常见问题，请参阅 [MySQL 常见问题页面](/integrations/data-ingestion/clickpipes/mysql/faq.md)。

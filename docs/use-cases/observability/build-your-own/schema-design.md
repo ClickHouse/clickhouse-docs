@@ -19,9 +19,9 @@ We recommend users always create their own schema for logs and traces for the fo
 
 - **Choosing a primary key** - The default schemas use an `ORDER BY` which is optimized for specific access patterns. It is unlikely your access patterns will align with this.
 - **Extracting structure** - You may wish to extract new columns from the existing columns e.g. the `Body` column. This can be done using materialized columns (and materialized views in more complex cases). This requires schema changes.
-- **Optimizing Maps** - The default schemas use the Map type for the storage of attributes. These columns allow the storage of arbitrary metadata. While an essential capability, as metadata from events is often not defined up front and therefore can't otherwise be stored in a strongly typed database like ClickHouse, access to the map keys and their values is not as efficient as access to a normal column. We address this by modifying the schema and ensuring the most commonly accessed map keys are top-level columns - see ["Extracting structure with SQL"](#extracting-structure-with-sql). This requires a schema change.
+- **Optimizing Maps** - The default schemas use the Map type for the storage of attributes. These columns allow the storage of arbitrary metadata. While an essential capability, as metadata from events is often not defined up front and therefore can't otherwise be stored in a strongly typed database like ClickHouse, access to the map keys and their values isn't as efficient as access to a normal column. We address this by modifying the schema and ensuring the most commonly accessed map keys are top-level columns - see ["Extracting structure with SQL"](#extracting-structure-with-sql). This requires a schema change.
 - **Simplify map key access** - Accessing keys in maps requires a more verbose syntax. You can mitigate this with aliases. See ["Using Aliases"](#using-aliases) to simplify queries.
-- **Secondary indices** - The default schema uses secondary indices for speeding up access to Maps and accelerating text queries. These are typically not required and incur additional disk space. They can be used but should be tested to ensure they are required. See ["Secondary / Data Skipping indices"](#secondarydata-skipping-indices).
+- **Secondary indices** - The default schema uses secondary indices for speeding up access to Maps and accelerating text queries. These are typically not required and incur additional disk space. They can be used but should be tested to ensure they're required. See ["Secondary / Data Skipping indices"](#secondarydata-skipping-indices).
 - **Using Codecs** - You may wish to customize codecs for columns if they understand the anticipated data and have evidence this improves compression.
 
 _We describe each of the above use cases in detail below._
@@ -75,10 +75,10 @@ Peak memory usage: 153.71 MiB.
 
 Note the use of the map syntax here e.g. `LogAttributes['request_path']`, and the [`path` function](/sql-reference/functions/url-functions#path) for stripping query parameters from the URL.
 
-If the user has not enabled JSON parsing in the collector, then `LogAttributes` will be empty, forcing us to use [JSON functions](/sql-reference/functions/json-functions) to extract the columns from the String `Body`.
+If the user hasn't enabled JSON parsing in the collector, then `LogAttributes` will be empty, forcing us to use [JSON functions](/sql-reference/functions/json-functions) to extract the columns from the String `Body`.
 
 :::note Prefer ClickHouse for parsing
-We generally recommend users perform JSON parsing in ClickHouse of structured logs. We are confident ClickHouse is the fastest JSON parsing implementation. However, we recognize you may wish to send logs to other sources and not have this logic reside in SQL.
+We generally recommend users perform JSON parsing in ClickHouse of structured logs. We're confident ClickHouse is the fastest JSON parsing implementation. However, we recognize you may wish to send logs to other sources and not have this logic reside in SQL.
 :::
 
 ```sql
@@ -156,7 +156,7 @@ You may also perform processing using OTel Collector processors and operators as
 
 ### Materialized columns {#materialized-columns}
 
-Materialized columns offer the simplest solution to extract structure from other columns. Values of such columns are always calculated at insert time and cannot be specified in INSERT queries.
+Materialized columns offer the simplest solution to extract structure from other columns. Values of such columns are always calculated at insert time and can't be specified in INSERT queries.
 
 :::note Overhead
 Materialized columns incur additional storage overhead as the values are extracted to new columns on disk at insert time.
@@ -164,7 +164,7 @@ Materialized columns incur additional storage overhead as the values are extract
 
 Materialized columns support any ClickHouse expression and can exploit any of the analytical functions for [processing strings](/sql-reference/functions/string-functions) (including [regex and searching](/sql-reference/functions/string-search-functions)) and [urls](/sql-reference/functions/url-functions), performing [type conversions](/sql-reference/functions/type-conversion-functions), [extracting values from JSON](/sql-reference/functions/json-functions) or [mathematical operations](/sql-reference/functions/math-functions).
 
-We recommend materialized columns for basic processing. They are especially useful for extracting values from maps, promoting them to root columns, and performing type conversions. They are often most useful when used in very basic schemas or in conjunction with materialized views. Consider the following schema for logs from which the JSON has been extracted to the `LogAttributes` column by the collector:
+We recommend materialized columns for basic processing. They're especially useful for extracting values from maps, promoting them to root columns, and performing type conversions. They're often most useful when used in very basic schemas or in conjunction with materialized views. Consider the following schema for logs from which the JSON has been extracted to the `LogAttributes` column by the collector:
 
 ```sql
 CREATE TABLE otel_logs
@@ -225,12 +225,12 @@ Materialized columns will, by default, not be returned in a `SELECT *`.  This is
 
 [Materialized views](/materialized-views) provide a more powerful means of applying SQL filtering and transformations to logs and traces.
 
-Materialized Views allow you to shift the cost of computation from query time to insert time. A ClickHouse materialized view is just a trigger that runs a query on blocks of data as they are inserted into a table. The results of this query are inserted into a second "target" table.
+Materialized Views allow you to shift the cost of computation from query time to insert time. A ClickHouse materialized view is just a trigger that runs a query on blocks of data as they're inserted into a table. The results of this query are inserted into a second "target" table.
 
 <Image img={observability_10} alt="Materialized view" size="md"/>
 
 :::note Real-time updates
-Materialized views in ClickHouse are updated in real time as data flows into the table they are based on, functioning more like continually updating indexes. In contrast, in other databases materialized views are typically static snapshots of a query that must be refreshed (similar to ClickHouse Refreshable Materialized Views).
+Materialized views in ClickHouse are updated in real time as data flows into the table they're based on, functioning more like continually updating indexes. In contrast, in other databases materialized views are typically static snapshots of a query that must be refreshed (similar to ClickHouse Refreshable Materialized Views).
 :::
 
 The query associated with the materialized view can theoretically be any query, including an aggregation although [limitations exist with Joins](https://clickhouse.com/blog/using-materialized-views-in-clickhouse#materialized-views-and-joins). For the transformations and filtering workloads required for logs and traces, you can consider any `SELECT` statement to be possible.
@@ -260,7 +260,7 @@ CREATE TABLE otel_logs
 ) ENGINE = Null
 ```
 
-The Null table engine is a powerful optimization - think of it as `/dev/null`. This table will not store any data, but any attached materialized views will still be executed over inserted rows before they are discarded.
+The Null table engine is a powerful optimization - think of it as `/dev/null`. This table won't store any data, but any attached materialized views will still be executed over inserted rows before they're discarded.
 
 Consider the following query. This transforms our rows into a format we wish to preserve, extracting all columns from `LogAttributes` (we assume this has been set by the collector using the `json_parser` operator), setting the `SeverityText` and `SeverityNumber` (based on some simple conditions and definition of [these columns](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-severitytext)). In this case we also only select the columns we know will be populated - ignoring columns such as the `TraceId`, `SpanId` and `TraceFlags`.
 
@@ -310,10 +310,10 @@ SeverityNumber:  9
 1 row in set. Elapsed: 0.027 sec.
 ```
 
-We also extract the `Body` column above - in case additional attributes are added later that are not extracted by our SQL. This column should compress well in ClickHouse and will be rarely accessed, thus not impacting query performance. Finally, we reduce the Timestamp to a DateTime (to save space - see ["Optimizing Types"](#optimizing-types)) with a cast.
+We also extract the `Body` column above - in case additional attributes are added later that aren't extracted by our SQL. This column should compress well in ClickHouse and will be rarely accessed, thus not impacting query performance. Finally, we reduce the Timestamp to a DateTime (to save space - see ["Optimizing Types"](#optimizing-types)) with a cast.
 
 :::note Conditionals
-Note the use of [conditionals](/sql-reference/functions/conditional-functions) above for extracting the `SeverityText` and `SeverityNumber`. These are extremely useful for formulating complex conditions and checking if values are set in maps - we naively assume all keys exist in `LogAttributes`. We recommend users become familiar with them - they are your friend in log parsing in addition to functions for handling [null values](/sql-reference/functions/functions-for-nulls)!
+Note the use of [conditionals](/sql-reference/functions/conditional-functions) above for extracting the `SeverityText` and `SeverityNumber`. These are extremely useful for formulating complex conditions and checking if values are set in maps - we naively assume all keys exist in `LogAttributes`. We recommend users become familiar with them - they're your friend in log parsing in addition to functions for handling [null values](/sql-reference/functions/functions-for-nulls)!
 :::
 
 We require a table to receive these results. The below target table matches the above query:
@@ -438,8 +438,8 @@ FROM otel_logs
 The above materialized views rely on implicit casting - especially in the case of using the `LogAttributes` map. ClickHouse will often transparently cast the extracted value to the target table type, reducing the syntax required. However, we recommend users always test their views by using the views `SELECT` statement with an [`INSERT INTO`](/sql-reference/statements/insert-into) statement with a target table using the same schema. This should confirm that types are correctly handled. Special attention should be given to the following cases:
 
 - If a key doesn't exist in a map, an empty string will be returned. In the case of numerics, you will need to map these to an appropriate value. This can be achieved with [conditionals](/sql-reference/functions/conditional-functions) e.g. `if(LogAttributes['status'] = ", 200, LogAttributes['status'])` or [cast functions](/sql-reference/functions/type-conversion-functions) if default values are acceptable e.g. `toUInt8OrDefault(LogAttributes['status'] )`
-- Some types will not always be cast e.g. string representations of numerics will not be cast to enum values.
-- JSON extract functions return default values for their type if a value is not found. Ensure these values make sense!
+- Some types won't always be cast e.g. string representations of numerics won't be cast to enum values.
+- JSON extract functions return default values for their type if a value isn't found. Ensure these values make sense!
 
 :::note Avoid Nullable
 Avoid using [Nullable](/sql-reference/data-types/nullable) in Clickhouse for Observability data. It is rarely required in logs and traces to be able to distinguish between empty and null. This feature incurs an additional storage overhead and will negatively impact query performance. See [here](/data-modeling/schema-design#optimizing-types) for further details.
@@ -461,7 +461,7 @@ Some simple rules can be applied to help choose an ordering key. The following c
 On identifying the subset of columns for the ordering key, they must be declared in a specific order. This order can significantly influence both the efficiency of the filtering on secondary key columns in queries and the compression ratio for the table's data files. In general, it is **best to order the keys in ascending order of cardinality**. This should be balanced against the fact that filtering on columns that appear later in the ordering key will be less efficient than filtering on those that appear earlier in the tuple. Balance these behaviors and consider your access patterns. Most importantly, test variants. For further understanding of ordering keys and how to optimize them, we recommend [this article](/guides/best-practices/sparse-primary-indexes).
 
 :::note Structure first
-We recommend deciding on your ordering keys once you have structured your logs. Do not use keys in attribute maps for the ordering key or JSON extraction expressions. Ensure you have your ordering keys as root columns in your table.
+We recommend deciding on your ordering keys once you have structured your logs. Don't use keys in attribute maps for the ordering key or JSON extraction expressions. Ensure you have your ordering keys as root columns in your table.
 :::
 
 ## Using maps {#using-maps}
@@ -491,7 +491,7 @@ We don't recommend using dots in Map column names and may deprecate its use. Use
 
 Querying map types is slower than querying normal columns - see ["Accelerating queries"](#accelerating-queries). In addition, it's more syntactically complicated and can be cumbersome for you to write. To address this latter issue we recommend using Alias columns.
 
-ALIAS columns are calculated at query time and are not stored in the table. Therefore, it is impossible to INSERT a value into a column of this type. Using aliases we can reference map keys and simplify syntax, transparently expose map entries as a normal column. Consider the following example:
+ALIAS columns are calculated at query time and aren't stored in the table. Therefore, it is impossible to INSERT a value into a column of this type. Using aliases we can reference map keys and simplify syntax, transparently expose map entries as a normal column. Consider the following example:
 
 ```sql
 CREATE TABLE otel_logs
@@ -593,7 +593,7 @@ Users interested in accelerating joins with dictionaries can find further detail
 
 Dictionaries can be used for enriching datasets at query time or insert time. Each of these approaches have their respective pros and cons. In summary:
 
-- **Insert time** - This is typically appropriate if the enrichment value does not change and exists in an external source which can be used to populate the dictionary. In this case, enriching the row at insert time avoids the query time lookup to the dictionary. This comes at the cost of insert performance as well as an additional storage overhead, as enriched values will be stored as columns.
+- **Insert time** - This is typically appropriate if the enrichment value doesn't change and exists in an external source which can be used to populate the dictionary. In this case, enriching the row at insert time avoids the query time lookup to the dictionary. This comes at the cost of insert performance as well as an additional storage overhead, as enriched values will be stored as columns.
 - **Query time** - If values in a dictionary change frequently, query time lookups are often more applicable. This avoids needing to update columns (and rewrite data) if mapped values change. This flexibility comes at the expense of a query time lookup cost. This query time cost is typically appreciable if a lookup is required for many rows, e.g. using a dictionary lookup in a filter clause. For result enrichment, i.e. in the `SELECT`, this overhead is typically not appreciable.
 
 We recommend that users familiarize themselves with the basics of dictionaries. Dictionaries provide an in-memory lookup table from which values can be retrieved using dedicated [specialist functions](/sql-reference/functions/ext-dict-functions#dictGetAll).
@@ -1228,7 +1228,7 @@ Note we use a `GROUP BY` here instead of using `FINAL`.
 
 ### Using Materialized views (incremental)  for fast lookups {#using-materialized-views-incremental--for-fast-lookups}
 
-You should consider their access patterns when choosing the ClickHouse ordering key with the columns that are frequently used in filter and aggregation clauses. This can be restrictive in Observability use cases, where users have more diverse access patterns that cannot be encapsulated in a single set of columns. This is best illustrated in an example built into the default OTel schemas. Consider the default schema for the traces:
+You should consider their access patterns when choosing the ClickHouse ordering key with the columns that are frequently used in filter and aggregation clauses. This can be restrictive in Observability use cases, where users have more diverse access patterns that can't be encapsulated in a single set of columns. This is best illustrated in an example built into the default OTel schemas. Consider the default schema for the traces:
 
 ```sql
 CREATE TABLE otel_traces
@@ -1267,7 +1267,7 @@ PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SpanName, toUnixTimestamp(Timestamp), TraceId)
 ```
 
-This schema is optimized for filtering by `ServiceName`, `SpanName`, and `Timestamp`. In tracing, users also need the ability to perform lookups by a specific `TraceId` and retrieving the associated trace's spans. While this is present in the ordering key, its position at the end means [filtering will not be as efficient](/guides/best-practices/sparse-primary-indexes#ordering-key-columns-efficiently) and likely means significant amounts of data will need to be scanned when retrieving a single trace.
+This schema is optimized for filtering by `ServiceName`, `SpanName`, and `Timestamp`. In tracing, users also need the ability to perform lookups by a specific `TraceId` and retrieving the associated trace's spans. While this is present in the ordering key, its position at the end means [filtering won't be as efficient](/guides/best-practices/sparse-primary-indexes#ordering-key-columns-efficiently) and likely means significant amounts of data will need to be scanned when retrieving a single trace.
 
 The OTel collector also installs a materialized view and associated table to address this challenge. The table and view are shown below:
 
@@ -1338,12 +1338,12 @@ In previous sections, we explore how materialized views can be used in ClickHous
 
 We provided an example where the materialized view sends rows to a target table with a different ordering key than the original table receiving inserts in order to optimize for lookups by trace id.
 
-Projections can be used to address the same problem, allowing the user to optimize for queries on a column that are not part of the primary key.
+Projections can be used to address the same problem, allowing the user to optimize for queries on a column that aren't part of the primary key.
 
 In theory, this capability can be used to provide multiple ordering keys for a table, with one distinct disadvantage: data duplication. Specifically, data will need to be written in the order of the main primary key in addition to the order specified for each projection. This will slow inserts and consume more disk space.
 
 :::note Projections vs Materialized Views
-Projections offer many of the same capabilities as materialized views, but should be used sparingly with the latter often preferred. You should understand the drawbacks and when they are appropriate. For example, while projections can be used for pre-computing aggregations we recommend users use Materialized views for this.
+Projections offer many of the same capabilities as materialized views, but should be used sparingly with the latter often preferred. You should understand the drawbacks and when they're appropriate. For example, while projections can be used for pre-computing aggregations we recommend users use Materialized views for this.
 :::
 
 <Image img={observability_13} alt="Observability and projections" size="md"/>
@@ -1441,13 +1441,13 @@ In the above example, we specify the columns used in the earlier query in the pr
 
 ### Secondary/data skipping indices {#secondarydata-skipping-indices}
 
-No matter how well the primary key is tuned in ClickHouse, some queries will inevitably require full table scans. While this can be mitigated using Materialized views (and projections for some queries), these require additional maintenance and users to be aware of their availability in order to ensure they are exploited.  While traditional relational databases solve this with secondary indexes, these are ineffective in column-oriented databases like ClickHouse. Instead, ClickHouse uses "Skip" indexes, which can significantly improve query performance by allowing the database to skip over large data chunks with no matching values.
+No matter how well the primary key is tuned in ClickHouse, some queries will inevitably require full table scans. While this can be mitigated using Materialized views (and projections for some queries), these require additional maintenance and users to be aware of their availability in order to ensure they're exploited.  While traditional relational databases solve this with secondary indexes, these are ineffective in column-oriented databases like ClickHouse. Instead, ClickHouse uses "Skip" indexes, which can significantly improve query performance by allowing the database to skip over large data chunks with no matching values.
 
-The default OTel schemas use secondary indices in an attempt to accelerate access to map access. While we find these to be generally ineffective and do not recommend copying them into your custom schema, skipping indices can still be useful.
+The default OTel schemas use secondary indices in an attempt to accelerate access to map access. While we find these to be generally ineffective and don't recommend copying them into your custom schema, skipping indices can still be useful.
 
 You should read and understand the [guide to secondary indices](/optimize/skipping-indexes) before attempting to apply them.
 
-**In general, they are effective when a strong correlation exists between the primary key and the targeted, non-primary column/expression and users are looking up rare values i.e. those which do not occur in many granules.**
+**In general, they're effective when a strong correlation exists between the primary key and the targeted, non-primary column/expression and users are looking up rare values i.e. those which don't occur in many granules.**
 
 ### Bloom filters for text search {#bloom-filters-for-text-search}
 
@@ -1478,7 +1478,7 @@ SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
 ```
 
 :::note Inverted indices
-ClickHouse also has experimental support for inverted indices as a secondary index. We do not currently recommend these for logging datasets but anticipate they will replace token-based bloom filters when they are production-ready.
+ClickHouse also has experimental support for inverted indices as a secondary index. We don't currently recommend these for logging datasets but anticipate they will replace token-based bloom filters when they're production-ready.
 :::
 
 For the purposes of this example we use the structured logs dataset. Suppose we wish to count logs where the `Referer` column contains `ultra`.
@@ -1523,7 +1523,7 @@ ENGINE = MergeTree
 ORDER BY (Timestamp)
 ```
 
-The index `ngrambf_v1(3, 10000, 3, 7)` here takes four parameters. The last of these (value 7) represents a seed. The others represent the ngram size (3), the value `m` (filter size), and the number of hash functions `k` (7). `k` and `m` require tuning and will be based on the number of unique ngrams/tokens and the probability the filter results in a true negative - thus confirming a value is not present in a granule. We recommend [these functions](/engines/table-engines/mergetree-family/mergetree#bloom-filter) to help establish these values.
+The index `ngrambf_v1(3, 10000, 3, 7)` here takes four parameters. The last of these (value 7) represents a seed. The others represent the ngram size (3), the value `m` (filter size), and the number of hash functions `k` (7). `k` and `m` require tuning and will be based on the number of unique ngrams/tokens and the probability the filter results in a true negative - thus confirming a value isn't present in a granule. We recommend [these functions](/engines/table-engines/mergetree-family/mergetree#bloom-filter) to help establish these values.
 
 If tuned correctly, the speedup here can be significant:
 

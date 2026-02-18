@@ -281,6 +281,7 @@ interface ClickHouseClient {
 Не указывайте клаузу FORMAT в `query`, вместо этого используйте параметр `format`.
 :::
 
+
 #### Абстракции набора результатов и строк \{#result-set-and-row-abstractions\}
 
 `ResultSet` предоставляет несколько вспомогательных методов для обработки данных в вашем приложении.
@@ -365,6 +366,7 @@ await new Promise((resolve, reject) => {
 **Пример:** (только Node.js) Потоковая выборка результата запроса в формате `CSV` с использованием классического подхода `on('data')`. Это эквивалентно использованию синтаксиса `for await const`.
 [Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_text_line_by_line.ts)
 
+
 ```ts
 const resultSet = await client.query({
   query: 'SELECT number FROM system.numbers_mt LIMIT 5',
@@ -444,6 +446,7 @@ interface ClickHouseClient {
 
 Если оператор INSERT был отправлен на сервер, флаг `executed` будет иметь значение `true`.
 
+
 #### Метод insert и потоковая передача данных в Node.js \{#insert-method-and-streaming-in-nodejs\}
 
 Он может работать как с `Stream.Readable`, так и с обычным `Array<T>`, в зависимости от [формата данных](./js.md#supported-data-formats), указанного для метода `insert`. См. также раздел о [потоковой передаче файлов](./js.md#streaming-files-nodejs-only).
@@ -494,7 +497,7 @@ await client.insert({
 })
 ```
 
-**Пример:** (только Node.js) Вставка потока из CSV‑файла.
+**Пример:** (только Node.js) Вставка данных из CSV‑файла потоком.
 [Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts). См. также: [потоковая передача файлов](./js.md#streaming-files-nodejs-only).
 
 ```ts
@@ -546,6 +549,7 @@ await client.insert({
 
 См. [исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_exclude_columns.ts) для получения дополнительных сведений.
 
+
 **Пример**: Вставка в другую базу данных, а не ту, что указана в экземпляре клиента. [Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_into_different_db.ts).
 
 ```ts
@@ -582,6 +586,7 @@ interface InsertParams<T> extends BaseQueryParams {
 ```
 
 В будущем это может измениться. См. также: [Базовые параметры для всех клиентских методов](./js.md#base-parameters-for-all-client-methods).
+
 
 ### Метод command \{#command-method\}
 
@@ -653,6 +658,7 @@ await client.command({
 Отмена запроса с помощью `abort_signal` не гарантирует, что соответствующий оператор не был выполнен сервером.
 :::
 
+
 ### Метод exec \{#exec-method\}
 
 Если у вас есть произвольный запрос, который не вписывается в `query`/`insert`,
@@ -692,6 +698,7 @@ export interface QueryResult {
   query_id: string
 }
 ```
+
 
 ### Ping \{#ping\}
 
@@ -748,7 +755,8 @@ if (!result.success) {
 const result = await client.ping({ select: true, /* query_id, abort_signal, http_headers, or any other query params */ });
 ```
 
-Метод ping может принимать большинство стандартных параметров метода `query` — см. определение типа `PingParamsWithSelectQuery`.
+Метод `ping` поддерживает большинство стандартных параметров метода `query` — см. определение типа `PingParamsWithSelectQuery`.
+
 
 ### Close (только Node.js) \{#close-nodejs-only\}
 
@@ -884,6 +892,7 @@ await client.insert({
 ```
 
 Однако, если вы используете столбцы с типом `DateTime` или `DateTime64`, вы можете использовать как строки, так и объекты JS Date. Объекты JS Date можно передавать в `insert` как есть, при значении параметра `date_time_input_format`, установленном в `best_effort`. Подробнее см. в этом [примере](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_js_dates.ts).
+
 
 ### Особенности типов Decimal* \{#decimal-types-caveats\}
 
@@ -1167,6 +1176,7 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
 
 В данном случае `keep_alive_timeout` равен 10 секундам, и вы можете попробовать увеличить `keep_alive.idle_socket_ttl` до 9000 или даже 9500 миллисекунд, чтобы неактивные сокеты оставались открытыми немного дольше, чем по умолчанию. Следите за возможными ошибками «Socket hang-up», которые будут указывать на то, что сервер закрывает соединения раньше клиента, и снижайте значение до тех пор, пока ошибки не исчезнут.
 
+
 #### Поиск и устранение неисправностей \{#troubleshooting\}
 
 Если вы сталкиваетесь с ошибками `socket hang up`, даже используя последнюю версию клиента, есть следующие варианты решения этой проблемы:
@@ -1225,6 +1235,7 @@ const client = createClient({
 ```
 
 См. [пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/read_only_user.ts), где подробнее показаны ограничения пользователя с readonly=1.
+
 
 ### Прокси с путем (pathname) \{#proxy-with-a-pathname\}
 

@@ -1,0 +1,54 @@
+---
+date: 2025-01-10
+title: 왜 ClickHouse는 기본적으로 로그를 이렇게 자세히 남기나요?
+description: "ClickHouse 개발자가 기본 로그 수준을 자세한(Verbose) 로그로 설정한 이유를 알아봅니다."
+tags: ['설정']
+keywords: ['기본 로깅']
+---
+
+{frontMatter.description}
+
+{/* 일부 생략 */}
+
+## 자세한 로깅 \{#verbose-logging\}
+
+새로 사용하는 사용자들이 자주 혼란을 겪는 점 중 하나는 가벼운 부하에서도 ClickHouse가 매우 많은 로그를 출력한다는 점입니다.
+
+이는 역사적인 이유로 기본 로그 레벨이 다른 데이터베이스에서 기본값이 되는 `warning`이 아니라 `trace`로 설정되어 있기 때문입니다.
+
+ClickHouse 개발자들은 `trace`가 문제가 발생했을 때 많은 통찰을 제공한다고 설명합니다.
+
+반면, 로그가 너무 많이 쌓이면 시스템 테이블 `system.text_log`가 빠르게 가득 차고, 백그라운드에서 병합 작업이 필요해집니다.
+
+데이터베이스가 안정적으로 동작한다면, 사용자는 아래에서 설명하는 방법으로 로그 레벨을 변경할 수 있습니다.
+
+## 로그 레벨 변경 \{#change-the-log-level\}
+
+사용 가능한 다양한 로그 레벨은 [여기](https://clickhouse.com/docs/operations/server-configuration-parameters/settings#logger)에 설명되어 있습니다.
+
+로그 레벨을 변경하려면 ClickHouse 서버 구성 파일(`/etc/clickhouse-server/config.xml`)을 수정해야 합니다.
+
+기본값은 `trace` 이지만 원하는 레벨로 변경할 수 있습니다. 아래 주석을 참고하십시오:
+
+```
+<clickhouse>
+    <logger>
+        <!-- Possible levels [1]:
+
+          - none (turns off logging)
+          - fatal
+          - critical
+          - error
+          - warning
+          - notice
+          - information
+          - debug
+          - trace
+          - test (not for production usage)
+
+            [1]: https://github.com/pocoproject/poco/blob/poco-1.9.4-release/Foundation/include/Poco/Logger.h#L105-L114
+        -->
+        <level>trace</level>
+... Rest of the configuration file
+</clickhouse>
+```

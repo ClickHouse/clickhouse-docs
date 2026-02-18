@@ -87,11 +87,11 @@ import TabItem from '@theme/TabItem';
 
     Обратите внимание на следующие особенности синтаксиса URL:
 
-    * В URL допускается **только** одна конечная точка
-    * протокол следует указывать, если используется не значение по умолчанию — &#39;HTTP&#39;
-    * порт следует указывать, если используется порт, отличный от порта по умолчанию &#39;8123&#39;
-    * драйвер не определяет протокол по номеру порта; его необходимо указывать явно
-    * Параметр `ssl` не требуется, если протокол указан.
+    * в URL может быть указана **только** одна конечная точка
+    * протокол следует указывать, если используется протокол, отличный от протокола по умолчанию — &#39;HTTP&#39;
+    * порт следует указывать, если используется не порт по умолчанию &#39;8123&#39;
+    * драйвер не пытается определять протокол по порту; его необходимо указывать явно
+    * Параметр `ssl` не нужен, если протокол указан.
 
     ### Свойства соединения \{#connection-properties\}
 
@@ -102,12 +102,12 @@ import TabItem from '@theme/TabItem';
 
     | Свойство                            | Значение по умолчанию | Описание                                                                                                                                                                                                                       |
     | ----------------------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | `disable_frameworks_detection`      | `true`                | Отключить определение фреймворков на основе заголовка User-Agent                                                                                                                                                               |
-    | `jdbc_ignore_unsupported_values`    | `false`               | Подавляет `SQLFeatureNotSupportedException`, если оно не влияет на работу драйвера                                                                                                                                             |
+    | `disable_frameworks_detection`      | `true`                | Отключить определение фреймворков по заголовку User-Agent                                                                                                                                                                      |
+    | `jdbc_ignore_unsupported_values`    | `false`               | Подавляет `SQLFeatureNotSupportedException`, если это не влияет на работу драйвера                                                                                                                                             |
     | `clickhouse.jdbc.v1`                | `false`               | Использовать старую реализацию JDBC вместо новой                                                                                                                                                                               |
-    | `default_query_settings`            | `null`                | Позволяет передавать настройки запроса по умолчанию при выполнении запросов                                                                                                                                                    |
+    | `default_query_settings`            | `null`                | Позволяет задавать настройки запроса по умолчанию для всех операций с запросами                                                                                                                                                |
     | `jdbc_resultset_auto_close`         | `true`                | Автоматически закрывает `ResultSet` при закрытии объекта `Statement`                                                                                                                                                           |
-    | `beta.row_binary_for_simple_insert` | `false`               | Использовать реализацию `PreparedStatement`, основанную на записи в формате `RowBinary`. Работает только для запросов вида `INSERT INTO ... VALUES`.                                                                           |
+    | `beta.row_binary_for_simple_insert` | `false`               | Использовать реализацию `PreparedStatement`, основанную на записи в формате `RowBinary`. Работает только с запросами `INSERT INTO ... VALUES`.                                                                                 |
     | `jdbc_resultset_auto_close`         | `true`                | Автоматически закрывает `ResultSet` при закрытии объекта `Statement`                                                                                                                                                           |
     | `jdbc_use_max_result_rows`          | `false`               | Включает использование серверного свойства `max_result_rows` для ограничения количества строк, возвращаемых запросом. При включении переопределяет режим переполнения, установленный пользователем. Подробности см. в JavaDoc. |
     | `jdbc_sql_parser`                   | `JAVACC`              | Определяет, какой SQL‑парсер будет использоваться. Доступные варианты: `ANTLR4`, `ANTLR4_PARAMS_PARSER`, `JAVACC`.                                                                                                             |
@@ -157,12 +157,12 @@ import TabItem from '@theme/TabItem';
 
     Следующее сопоставление применяется к:
 
-    * `ResultSet#getObject(columnIndex)` — этот метод вернёт объект соответствующего класса Java. (`Int8` -&gt; `java.lang.Byte`, `Int16` -&gt; `java.lang.Short` и т.д.)
-    * `ResultSetMetaData#getColumnType(columnIndex)` — этот метод возвращает соответствующий тип JDBC. (`Int8` -&gt; `java.lang.Byte`, `Int16` -&gt; `java.lang.Short` и т. д.)
+    * `ResultSet#getObject(columnIndex)` — этот метод вернёт объект соответствующего класса Java. (`Int8` -&gt; `java.lang.Byte`, `Int16` -&gt; `java.lang.Short` и т. д.)
+    * `ResultSetMetaData#getColumnType(columnIndex)` — этот метод вернёт соответствующий тип JDBC. (`Int8` -&gt; `java.lang.Byte`, `Int16` -&gt; `java.lang.Short` и т. д.)
 
     Существует несколько способов изменить сопоставление:
 
-    * Метод `ResultSet#getObject(columnIndex, class)` будет пытаться преобразовать значение к типу `class`. Для таких преобразований существуют некоторые ограничения. Подробности см. в соответствующих разделах.
+    * Метод `ResultSet#getObject(columnIndex, class)` попытается преобразовать значение к типу `class`. Для таких преобразований существуют некоторые ограничения. Подробности см. в соответствующих разделах.
 
     **Числовые типы**
 
@@ -188,13 +188,13 @@ import TabItem from '@theme/TabItem';
     | Decimal256     | DECIMAL  | java.math.BigDecimal |
     | Bool           | BOOLEAN  | java.lang.Boolean    |
 
-    * Числовые типы взаимно преобразуемы. Поэтому `Int8` можно получить как `Float64` и наоборот.:
+    * Числовые типы можно свободно преобразовывать друг в друга. Поэтому значение `Int8` можно получить как `Float64` и наоборот.:
       * `rs.getObject(1, Float64.class)` вернёт значение типа `Float64` из столбца `Int8`.
       * `rs.getLong(1)` вернёт значение типа `Long` из столбца `Int8`.
-      * `rs.getByte(1)` может вернуть значение типа `Byte` из столбца `Int16`, если оно умещается в диапазон `Byte`.
-    * Преобразование значений из более широкого типа данных в более узкий не рекомендуется из‑за риска повреждения данных.
-    * Тип `Bool` также интерпретируется как числовой тип.
-    * Все числовые типы могут быть прочитаны как `java.lang.String`.
+      * `rs.getByte(1)` может вернуть значение типа `Byte` из столбца `Int16`, если его значение укладывается в диапазон `Byte`.
+    * Преобразование из более широкого типа данных в более узкий не рекомендуется из‑за риска повреждения данных.
+    * Тип `Bool` также ведёт себя как числовой.
+    * Все числовые типы могут быть считаны как `java.lang.String`.
 
     **Строковые типы**
 
@@ -204,7 +204,7 @@ import TabItem from '@theme/TabItem';
     | FixedString    | VARCHAR  | java.lang.String |
 
     * `String` может быть прочитан только как `java.lang.String` или `byte[]`.
-    * `FixedString` считывается без изменений и дополняется нулевыми байтами до длины столбца. (Например, `FixedString(10)` для `'John'` будет прочитан как `'John\0\0\0\0\0\0\0\0\0'`.)
+    * `FixedString` считывается как есть и дополняется нулевыми байтами до длины столбца. (Например, `FixedString(10)` для `'John'` будет прочитан как `'John\0\0\0\0\0\0\0\0\0'`.)
 
     **Типы Enum**
 
@@ -214,8 +214,8 @@ import TabItem from '@theme/TabItem';
     | Enum16         | OTHER    | java.lang.String |
 
     * `Enum8` и `Enum16` по умолчанию сопоставляются с `java.lang.String`.
-    * Значения Enum могут быть прочитаны как числовые значения с помощью соответствующего метода-геттера или метода `getObject(columnIndex, Integer.class)`.
-    * `Enum16` внутренне сопоставляется с типом short, а Enum8 — с типом byte. Следует избегать чтения `Enum16` как byte из‑за риска повреждения данных.
+    * Значения Enum могут быть прочитаны как числовые с помощью соответствующего числового геттера или метода `getObject(columnIndex, Integer.class)`.
+    * `Enum16` внутренне сопоставляется с типом short, а `Enum8` — с типом byte. Следует избегать чтения значений `Enum16` как byte, так как это может привести к повреждению данных.
     * Значения Enum в `PreparedStatement` можно указывать как строковые или числовые значения.
 
     **Типы даты и времени**
@@ -229,15 +229,15 @@ import TabItem from '@theme/TabItem';
     | Time           | TIME      | java.sql.Time      |
     | Time64         | TIME      | java.sql.Time      |
 
-    * Типы Date / Time сопоставляются с типами `java.sql` для лучшей совместимости с JDBC. Однако получить объекты `java.time.LocalDate`, `java.time.LocalDateTime`, `java.time.LocalTime` можно, используя `ResultSet#getObject(columnIndex, Class<T>)` и передавая соответствующий класс в качестве второго аргумента.
+    * Типы Date / Time сопоставляются с типами `java.sql` для лучшей совместимости с JDBC. Однако можно получить объекты `java.time.LocalDate`, `java.time.LocalDateTime`, `java.time.LocalTime`, используя `ResultSet#getObject(columnIndex, Class<T>)` и передав соответствующий класс в качестве второго аргумента.
       * `rs.getObject(1, java.time.LocalDate.class)` вернёт значение типа `java.time.LocalDate` из столбца `Date`.
       * `rs.getObject(1, java.time.LocalDateTime.class)` вернёт значение типа `java.time.LocalDateTime` из столбца `DateTime`.
       * `rs.getObject(1, java.time.LocalTime.class)` вернёт значение типа `java.time.LocalTime` из столбца `Time`.
-    * Типы `Date`, `Date32`, `Time`, `Time64` не зависят от часового пояса сервера.
-    * `DateTime`, `DateTime64` зависят от часового пояса сервера или часового пояса сеанса.
+    * `Date`, `Date32`, `Time`, `Time64` не зависят от часового пояса сервера.
+    * `DateTime`, `DateTime64` зависят от часового пояса сервера или сеанса.
     * `DateTime` и `DateTime64` можно получить как `ZonedDateTime`, используя `getObject(colIndex, ZonedDateTime.class)`.
 
-    **Типы сбора данных**
+    **Типы коллекций**
 
     | Тип ClickHouse | Тип JDBC        | Класс Java     |
     | -------------- | --------------- | -------------- |
@@ -245,13 +245,13 @@ import TabItem from '@theme/TabItem';
     | Tuple          | OTHER           | Object[]       |
     | Map            | JAVA&#95;OBJECT | java.util.Map  |
 
-    * `Array` по умолчанию сопоставляется с `java.sql.Array` для совместимости с JDBC. Это также позволяет получить больше информации о возвращаемом значении массива. Это полезно для вывода типов.
+    * `Array` по умолчанию сопоставляется с `java.sql.Array` для совместимости с JDBC. Это также даёт больше информации о возвращаемом значении массива, что полезно для вывода типов.
     * `Array` реализует метод `getResultSet()`, возвращающий `java.sql.ResultSet` с тем же содержимым, что и исходный массив.
-    * Типы коллекций не следует читать как `java.lang.String`, поскольку это некорректный формат представления данных (например, в массиве строковые значения не заключаются в кавычки).
+    * Типы коллекций не следует читать как `java.lang.String`, поскольку это некорректный способ представления данных (например, в массиве строковые значения не заключаются в кавычки).
     * `Map` сопоставляется типу `JAVA_OBJECT`, так как значение можно прочитать только с помощью метода `getObject(columnIndex, Class<T>)`.
       * `Map` не является `java.sql.Struct`, потому что у него нет именованных столбцов.
-    * `Tuple` сопоставляется с `Object[]`, поскольку он может содержать элементы разных типов, а использование `List` здесь некорректно.
-    * `Tuple` может быть прочитан как `Array` с помощью метода `getObject(columnIndex, Array.class)`. В этом случае `Array#baseTypeName` вернёт определение столбца типа `Tuple`.
+    * `Tuple` сопоставляется с `Object[]`, поскольку он может содержать элементы разных типов, а использование `List` недопустимо.
+    * `Tuple` можно прочитать как `Array` с помощью метода `getObject(columnIndex, Array.class)`. В этом случае `Array#baseTypeName` вернёт определение столбца типа `Tuple`.
 
     **Геотипы**
 
@@ -265,21 +265,21 @@ import TabItem from '@theme/TabItem';
     **Типы Nullable и LowCardinality**
 
     * `Nullable` и `LowCardinality` — это специальные типы-обёртки для других типов.
-    * `Nullable` влияет на то, как имена типов возвращаются в `ResultSetMetaData`
+    * `Nullable` влияет на формат имён типов, возвращаемых в `ResultSetMetaData`
 
     **Специальные типы**
 
-    | Тип ClickHouse          | Тип JDBC        | Класс Java               |
-    | ----------------------- | --------------- | ------------------------ |
-    | UUID                    | OTHER           | java.util.UUID           |
-    | IPv4                    | OTHER           | java.net.Inet4Address    |
-    | IPv6                    | OTHER           | java.net.Inet6Address    |
-    | JSON                    | OTHER           | java.lang.String         |
-    | AggregateFunction       | OTHER           | (двоичное представление) |
-    | SimpleAggregateFunction | (обёрнутый тип) | (обёрнутый класс)        |
+    | Тип ClickHouse          | Тип JDBC      | Класс Java               |
+    | ----------------------- | ------------- | ------------------------ |
+    | UUID                    | OTHER         | java.util.UUID           |
+    | IPv4                    | OTHER         | java.net.Inet4Address    |
+    | IPv6                    | OTHER         | java.net.Inet6Address    |
+    | JSON                    | OTHER         | java.lang.String         |
+    | AggregateFunction       | OTHER         | (двоичное представление) |
+    | SimpleAggregateFunction | (тип-обёртка) | (класс-обёртка)          |
 
-    * `UUID` не является стандартным типом JDBC. Однако он входит в состав JDK. По умолчанию метод `getObject()` возвращает `java.util.UUID`.
-    * `UUID` можно считывать и записывать как `String` с помощью метода `getObject(columnIndex, String.class)`.
+    * `UUID` не является типом, определённым стандартом JDBC. Однако он является частью JDK. По умолчанию метод `getObject()` возвращает значение типа `java.util.UUID`.
+    * `UUID` можно читать и записывать как `String` с помощью метода `getObject(columnIndex, String.class)`.
     * `IPv4` и `IPv6` не относятся к стандартным типам JDBC. Однако они входят в состав JDK. По умолчанию при вызове метода `getObject()` возвращаются объекты типов `java.net.Inet4Address` и `java.net.Inet6Address`.
     * `IPv4` и `IPv6` можно читать и записывать в виде `String` с помощью метода `getObject(columnIndex, String.class)`.
 
@@ -417,9 +417,9 @@ import TabItem from '@theme/TabItem';
     * `net.inet.tcp.always_keepalive`: 1
     * `net.ipv4.tcp_keepalive_intvl`: 75
     * `net.ipv4.tcp_keepalive_probes`: 9
-    * `net.ipv4.tcp_keepalive_time`: 60 (можно рассмотреть возможность уменьшения этого значения по сравнению со значением по умолчанию — 300 секунд)
+    * `net.ipv4.tcp_keepalive_time`: 60 (можно рассмотреть уменьшение этого значения относительно значения по умолчанию (300 секунд))
 
-    2. После изменения параметров ядра примените изменения, выполнив следующую команду:
+    2. После изменения параметров ядра примените их, выполнив следующую команду:
 
     ```shell
     sudo sysctl -p
@@ -443,22 +443,22 @@ import TabItem from '@theme/TabItem';
     | Именованные параметры запроса                           | Поддерживается          | Не поддерживается (отсутствует в спецификации JDBC) |
     | Потоковая передача данных с помощью `PreparedStatement` | Поддерживается          | Не поддерживается                                   |
 
-    * JDBC V2 реализован как более легковесная версия, поэтому часть возможностей была удалена.
+    * JDBC V2 реализован в более лёгком варианте, поэтому из него были удалены некоторые возможности.
       * Потоковая передача данных не поддерживается в JDBC V2, так как она не входит ни в спецификацию JDBC, ни в стандарт Java.
-    * JDBC V2 требует явной конфигурации. Настройки отказоустойчивости по умолчанию отсутствуют.
-      * Протокол должен явно указываться в URL. Определение его по номеру порта не производится.
+    * JDBC V2 требует явной конфигурации. Он не имеет настроек отказоустойчивости по умолчанию.
+      * Протокол должен явно указываться в URL. Не выполняется неявное определение протокола по номеру порта.
 
     ### Изменения конфигурации \{#configuration-changes\}
 
     Доступны только два перечисления:
 
-    * `com.clickhouse.jdbc.DriverProperties` — собственные параметры конфигурации драйвера.
+    * `com.clickhouse.jdbc.DriverProperties` — параметры конфигурации самого драйвера.
     * `com.clickhouse.client.api.ClientConfigProperties` — свойства конфигурации клиента. Изменения конфигурации клиента
       описаны в [документации по Java‑клиенту](/integrations/language-clients/java/client/client.mdx#migration_from_v1_config).
 
     Свойства подключения разбираются следующим образом:
 
-    * Сначала свойства извлекаются из URL; они имеют приоритет над всеми остальными свойствами.
+    * Сначала из URL извлекаются свойства. Они имеют приоритет над всеми остальными свойствами.
     * Свойства драйвера не передаются клиенту.
     * Endpoints (host, port, protocol) извлекаются из URL.
 
@@ -482,39 +482,39 @@ import TabItem from '@theme/TabItem';
 
     **Числовые типы**
 
-    | Тип в ClickHouse | Совместимость с V1 | Тип JDBC (V2) | Класс Java (V2)      | Тип JDBC (V1) | Класс Java (V1)                           |
-    | ---------------- | ------------------ | ------------- | -------------------- | ------------- | ----------------------------------------- |
-    | Int8             | ✅                  | TINYINT       | java.lang.Byte       | TINYINT       | java.lang.Byte                            |
-    | Int16            | ✅                  | SMALLINT      | java.lang.Short      | SMALLINT      | java.lang.Short                           |
-    | Int32            | ✅                  | INTEGER       | java.lang.Integer    | INTEGER       | java.lang.Integer                         |
-    | Int64            | ✅                  | BIGINT        | java.lang.Long       | BIGINT        | java.lang.Long                            |
-    | Int128           | ✅                  | OTHER         | java.math.BigInteger | OTHER         | java.math.BigInteger                      |
-    | Int256           | ✅                  | OTHER         | java.math.BigInteger | OTHER         | java.math.BigInteger                      |
-    | UInt8            | ❌                  | OTHER         | java.lang.Short      | OTHER         | com.clickhouse.data.value.UnsignedByte    |
-    | UInt16           | ❌                  | OTHER         | java.lang.Integer    | OTHER         | com.clickhouse.data.value.UnsignedShort   |
-    | UInt32           | ❌                  | OTHER         | java.lang.Long       | OTHER         | com.clickhouse.data.value.UnsignedInteger |
-    | UInt64           | ❌                  | OTHER         | java.math.BigInteger | OTHER         | com.clickhouse.data.value.UnsignedLong    |
-    | UInt128          | ✅                  | OTHER         | java.math.BigInteger | OTHER         | java.math.BigInteger                      |
-    | UInt256          | ✅                  | OTHER         | java.math.BigInteger | OTHER         | java.math.BigInteger                      |
-    | Float32          | ✅                  | REAL          | java.lang.Float      | REAL          | java.lang.Float                           |
-    | Float64          | ✅                  | DOUBLE        | java.lang.Double     | DOUBLE        | java.lang.Double                          |
-    | Decimal32        | ✅                  | DECIMAL       | java.math.BigDecimal | DECIMAL       | java.math.BigDecimal                      |
-    | Decimal64        | ✅                  | DECIMAL       | java.math.BigDecimal | DECIMAL       | java.math.BigDecimal                      |
-    | Decimal128       | ✅                  | DECIMAL       | java.math.BigDecimal | DECIMAL       | java.math.BigDecimal                      |
-    | Decimal256       | ✅                  | DECIMAL       | java.math.BigDecimal | DECIMAL       | java.math.BigDecimal                      |
-    | Bool             | ✅                  | BOOLEAN       | java.lang.Boolean    | BOOLEAN       | java.lang.Boolean                         |
+    | Тип ClickHouse | Совместим с V1 | Тип JDBC (V2) | Класс Java (V2)      | Тип JDBC (V1) | Класс Java (V1)                           |
+    | -------------- | -------------- | ------------- | -------------------- | ------------- | ----------------------------------------- |
+    | Int8           | ✅              | TINYINT       | java.lang.Byte       | TINYINT       | java.lang.Byte                            |
+    | Int16          | ✅              | SMALLINT      | java.lang.Short      | SMALLINT      | java.lang.Short                           |
+    | Int32          | ✅              | INTEGER       | java.lang.Integer    | INTEGER       | java.lang.Integer                         |
+    | Int64          | ✅              | BIGINT        | java.lang.Long       | BIGINT        | java.lang.Long                            |
+    | Int128         | ✅              | OTHER         | java.math.BigInteger | OTHER         | java.math.BigInteger                      |
+    | Int256         | ✅              | OTHER         | java.math.BigInteger | OTHER         | java.math.BigInteger                      |
+    | UInt8          | ❌              | OTHER         | java.lang.Short      | OTHER         | com.clickhouse.data.value.UnsignedByte    |
+    | UInt16         | ❌              | OTHER         | java.lang.Integer    | OTHER         | com.clickhouse.data.value.UnsignedShort   |
+    | UInt32         | ❌              | OTHER         | java.lang.Long       | OTHER         | com.clickhouse.data.value.UnsignedInteger |
+    | UInt64         | ❌              | OTHER         | java.math.BigInteger | OTHER         | com.clickhouse.data.value.UnsignedLong    |
+    | UInt128        | ✅              | OTHER         | java.math.BigInteger | OTHER         | java.math.BigInteger                      |
+    | UInt256        | ✅              | OTHER         | java.math.BigInteger | OTHER         | java.math.BigInteger                      |
+    | Float32        | ✅              | REAL          | java.lang.Float      | REAL          | java.lang.Float                           |
+    | Float64        | ✅              | DOUBLE        | java.lang.Double     | DOUBLE        | java.lang.Double                          |
+    | Decimal32      | ✅              | DECIMAL       | java.math.BigDecimal | DECIMAL       | java.math.BigDecimal                      |
+    | Decimal64      | ✅              | DECIMAL       | java.math.BigDecimal | DECIMAL       | java.math.BigDecimal                      |
+    | Decimal128     | ✅              | DECIMAL       | java.math.BigDecimal | DECIMAL       | java.math.BigDecimal                      |
+    | Decimal256     | ✅              | DECIMAL       | java.math.BigDecimal | DECIMAL       | java.math.BigDecimal                      |
+    | Bool           | ✅              | BOOLEAN       | java.lang.Boolean    | BOOLEAN       | java.lang.Boolean                         |
 
-    * Ключевое отличие в том, что беззнаковые типы сопоставляются со стандартными типами Java для повышения переносимости.
+    * Основное отличие заключается в том, что беззнаковые типы сопоставляются со стандартными типами Java, что повышает переносимость.
 
     **Строковые типы**
 
-    | Тип ClickHouse | Совместимость с V1 | Тип JDBC (V2) | Класс Java (V2)  | Тип JDBC (V1) | Класс Java (V1)  |
-    | -------------- | ------------------ | ------------- | ---------------- | ------------- | ---------------- |
-    | String         | ✅                  | VARCHAR       | java.lang.String | VARCHAR       | java.lang.String |
-    | FixedString    | ✅                  | VARCHAR       | java.lang.String | VARCHAR       | java.lang.String |
+    | Тип в ClickHouse | Совместимость с V1 | Тип JDBC (V2) | Класс Java (V2)  | Тип JDBC (V1) | Класс Java (V1)  |
+    | ---------------- | ------------------ | ------------- | ---------------- | ------------- | ---------------- |
+    | String           | ✅                  | VARCHAR       | java.lang.String | VARCHAR       | java.lang.String |
+    | FixedString      | ✅                  | VARCHAR       | java.lang.String | VARCHAR       | java.lang.String |
 
     * `FixedString` читается «как есть» в обеих версиях. Например, `FixedString(10)` для `'John'` будет прочитан как `'John\0\0\0\0\0\0\0\0\0'`.
-    * Когда используется `PreparedStatement#setBytes`, значение будет преобразовано в `unhex('<hex_string>')`, а затем интерпретировано как `String`.
+    * Когда используется `PreparedStatement#setBytes`, значение будет преобразовано в `unhex('<hex_string>')`, а затем считано как `String`.
 
     **Типы даты и времени**
 
@@ -528,30 +528,30 @@ import TabItem from '@theme/TabItem';
     | Time64         | ✅                  | TIME          | java.sql.Time      | новый тип / не поддерживается | новый тип / не поддерживается |
 
     * `Time` и `Time64` поддерживаются в V2 только как новые типы данных.
-    * `DateTime` и `DateTime64` сопоставляются с `java.sql.Timestamp` для лучшей совместимости с JDBC.
+    * `DateTime` и `DateTime64` сопоставляются с `java.sql.Timestamp` для обеспечения лучшей совместимости с JDBC.
 
     **Типы Enum**
 
-    | Тип ClickHouse | Совместимость с V1 | Тип JDBC (V2) | Класс Java (V2)  | Тип JDBC (V1) | Класс Java (V1)  |
-    | -------------- | ------------------ | ------------- | ---------------- | ------------- | ---------------- |
-    | Enum           | ✅                  | VARCHAR       | java.lang.String | OTHER         | java.lang.String |
-    | Enum8          | ✅                  | VARCHAR       | java.lang.String | OTHER         | java.lang.String |
-    | Enum16         | ✅                  | VARCHAR       | java.lang.String | OTHER         | java.lang.String |
+    | Тип в ClickHouse | Совместимость с V1 | Тип JDBC (V2) | Класс Java (V2)  | Тип JDBC (V1) | Класс Java (V1)  |
+    | ---------------- | ------------------ | ------------- | ---------------- | ------------- | ---------------- |
+    | Enum             | ✅                  | VARCHAR       | java.lang.String | OTHER         | java.lang.String |
+    | Enum8            | ✅                  | VARCHAR       | java.lang.String | OTHER         | java.lang.String |
+    | Enum16           | ✅                  | VARCHAR       | java.lang.String | OTHER         | java.lang.String |
 
-    **Типы сбора данных**
+    **Типы коллекций**
 
-    | Тип ClickHouse | Совместимо с V1 | Тип JDBC (V2)   | Класс Java (V2) | Тип JDBC (V1) | Класс Java (V1)                       |
-    | -------------- | --------------- | --------------- | --------------- | ------------- | ------------------------------------- |
-    | Array          | ❌               | ARRAY           | java.sql.Array  | ARRAY         | Object[] или массив примитивных типов |
-    | Tuple          | ❌               | OTHER           | Object[]        | STRUCT        | java.sql.Struct                       |
-    | Map            | ❌               | JAVA&#95;OBJECT | java.util.Map   | STRUCT        | java.util.Map                         |
+    | Тип ClickHouse | Совместимость с V1 | Тип JDBC (V2)   | Класс Java (V2) | Тип JDBC (V1) | Класс Java (V1)                       |
+    | -------------- | ------------------ | --------------- | --------------- | ------------- | ------------------------------------- |
+    | Array          | ❌                  | ARRAY           | java.sql.Array  | ARRAY         | Object[] или массив примитивных типов |
+    | Tuple          | ❌                  | OTHER           | Object[]        | STRUCT        | java.sql.Struct                       |
+    | Map            | ❌                  | JAVA&#95;OBJECT | java.util.Map   | STRUCT        | java.util.Map                         |
 
-    * В V2 `Array` по умолчанию сопоставляется с `java.sql.Array` для совместимости с JDBC. Это также позволяет получить больше информации о возвращаемом значении массива. Это полезно для вывода типов.
-    * В версии V2 `Array` реализует метод `getResultSet()`, который возвращает `java.sql.ResultSet` с тем же содержимым, что и у исходного массива.
-    * V1 использует `STRUCT` для `Map`, но всегда возвращает объект `java.util.Map`. V2 исправляет это, сопоставляя `Map` с `JAVA_OBJECT`. Кроме того, `STRUCT` является некорректным типом для `Map`, так как `Map` не имеет именованных столбцов.
-    * V1 использует `STRUCT` для `Tuple`, но всегда возвращает объект типа `List<Object>`. V2 исправляет это, сопоставляя `Tuple` с `OTHER` и возвращает `Object[]`, поскольку использование `List` некорректно: в кортеже могут присутствовать элементы разных типов.
-    * Методы `PreparedStatement#setBytes` и `ResultSet#getBytes` нельзя использовать для работы с типами коллекций. Эти методы предназначены для работы с двоичными строками.
-    * Обычно для записи и чтения типов `Array` используется `java.sql.Array`. Драйвер JDBC полностью это поддерживает.
+    * В V2 `Array` по умолчанию сопоставляется с `java.sql.Array` для совместимости с JDBC. Это также позволяет получить больше информации о возвращаемом значении массива, что полезно для вывода типов.
+    * В V2 `Array` реализует метод `getResultSet()`, который возвращает объект `java.sql.ResultSet` с тем же содержимым, что и исходный массив.
+    * V1 использует `STRUCT` для `Map`, но всегда возвращает объект `java.util.Map`. V2 исправляет это, сопоставляя `Map` с `JAVA_OBJECT`. Кроме того, `STRUCT` является некорректным типом для `Map`, поскольку в `Map` нет именованных столбцов.
+    * V1 использует `STRUCT` для `Tuple`, но всегда возвращает объект `List<Object>`. V2 исправляет это, сопоставляя `Tuple` с `OTHER` и возвращает `Object[]`, поскольку использование `List` некорректно: в кортеже могут присутствовать значения разных типов.
+    * Методы `PreparedStatement#setBytes` и `ResultSet#getBytes` нельзя использовать с типами коллекций. Эти методы предназначены для работы с бинарными строками.
+    * Обычно для записи и чтения типов `Array` используют `java.sql.Array`. Драйвер JDBC полностью поддерживает такой способ работы.
 
     **Геотипы**
 
@@ -564,7 +564,7 @@ import TabItem from '@theme/TabItem';
 
     **Типы Nullable и LowCardinality**
 
-    * `Nullable` и `LowCardinality` — специальные типы-обёртки для других типов.
+    * `Nullable` и `LowCardinality` — это специальные типы-обёртки для других типов.
     * В V2 эти типы не изменялись.
 
     **Специальные типы**
@@ -577,19 +577,19 @@ import TabItem from '@theme/TabItem';
     | UUID                    | ✅                  | OTHER         | java.util.UUID           | VARCHAR           | java.util.UUID           |
     | IPv4                    | ✅                  | OTHER         | java.net.Inet4Address    | VARCHAR           | java.net.Inet4Address    |
     | IPv6                    | ✅                  | OTHER         | java.net.Inet6Address    | VARCHAR           | java.net.Inet6Address    |
-    | Dynamic                 | ❌                  | OTHER         | java.Object              | Не поддерживается | Не поддерживается        |
-    | Variant                 | ❌                  | OTHER         | java.Object              | Не поддерживается | Не поддерживается        |
+    | Dynamic                 | ❌                  | OTHER         | java.lang.Object         | не поддерживается | не поддерживается        |
+    | Variant                 | ❌                  | OTHER         | java.lang.Object         | не поддерживается | не поддерживается        |
 
-    * V1 использует `VARCHAR` для `UUID`, но всегда возвращает объект `java.util.UUID`. V2 исправляет это, сопоставляя `UUID` с `OTHER` и также возвращая объект `java.util.UUID`.
-    * V1 использует `VARCHAR` для `IPv4` и `IPv6`, но при этом всегда возвращает объекты `java.net.Inet4Address` и `java.net.Inet6Address`. V2 исправляет это, сопоставляя `IPv4` и `IPv6` с `OTHER` и возвращая `java.net.Inet4Address` и `java.net.Inet6Address`.
-    * `Dynamic` и `Variant` — новые типы в V2. В V1 не поддерживаются.
-    * `Тип `JSON`основан на типе`Dynamic`, поэтому поддерживается только в V2.`
-    * Значения IPv4 и IPv6 можно считывать как массив байт (`byte[]`), используя метод `getBytes(columnIndex)`. Однако рекомендуется использовать специальные классы, предназначенные для этих типов.
-    * V2 не поддерживает чтение IP‑адресов как чисел, так как преобразование лучше реализовано средствами классов InetAddress.
+    * V1 использует `VARCHAR` для `UUID`, но при этом всегда возвращает объект `java.util.UUID`. V2 исправляет это, сопоставляя `UUID` с `OTHER` и тоже возвращает объект `java.util.UUID`.
+    * V1 использует `VARCHAR` для `IPv4` и `IPv6`, но всегда возвращает объекты `java.net.Inet4Address` и `java.net.Inet6Address`. V2 исправляет это, сопоставляя `IPv4` и `IPv6` с `OTHER` и также возвращая объекты `java.net.Inet4Address` и `java.net.Inet6Address`.
+    * `Dynamic` и `Variant` — новые типы в V2. В V1 они не поддерживаются.
+    * Тип `JSON` основан на типе `Dynamic`. Поэтому он поддерживается только в V2.
+    * Значения IPv4 и IPv6 можно считывать в виде массива байт (`byte[]`), используя метод `getBytes(columnIndex)`. Однако рекомендуется использовать специализированные для этих типов классы.
+    * V2 не поддерживает чтение IP‑адресов как числовых значений, поскольку преобразование лучше реализовано в классах InetAddress.
 
     ### Изменения метаданных базы данных \{#database-metadata-changes\}
 
-    * V2 использует только термин `Schema` для именования баз данных. Термин `Catalog` зарезервирован для будущего использования.
+    * V2 использует только термин `Schema` для обозначения баз данных. Термин `Catalog` зарезервирован для будущего использования.
     * V2 возвращает `false` для `DatabaseMetaData.supportsTransactions()` и `DatabaseMetaData.supportsSavepoints()`. Это поведение будет изменено в последующих версиях.
   </Version>
 
@@ -680,16 +680,16 @@ import TabItem from '@theme/TabItem';
 
     **Свойства соединения**:
 
-    | Свойство                   | Значение по умолчанию | Описание                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-    | -------------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `continueBatchOnError`     | `false`               | Определяет, нужно ли продолжать обработку пакета при возникновении ошибки                                                                                                                                                                                                                                                                                                                                                                     |
-    | `createDatabaseIfNotExist` | `false`               | Определяет, нужно ли создавать базу данных, если она ещё не существует                                                                                                                                                                                                                                                                                                                                                                        |
-    | `custom_http_headers`      |                       | пользовательские HTTP-заголовки, перечисленные через запятую, например: `User-Agent=client1,X-Gateway-Id=123`                                                                                                                                                                                                                                                                                                                                 |
-    | `custom_http_params`       |                       | пользовательские параметры HTTP-запроса, разделённые запятыми, например: `extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                                                                     |
-    | `nullAsDefault`            | `0`                   | `0` - обрабатывать значение NULL как есть и возбуждать исключение при попытке вставить NULL в столбец без типа Nullable; `1` - обрабатывать значение NULL как есть и не выполнять проверку на NULL при вставке; `2` - заменять NULL на значение по умолчанию для соответствующего типа данных как при выполнении запроса, так и при вставке                                                                                                   |
-    | `jdbcCompliance`           | `true`                | Определяет, нужно ли поддерживать стандартные синхронные операции UPDATE/DELETE и псевдотранзакции                                                                                                                                                                                                                                                                                                                                            |
-    | `typeMappings`             |                       | Позволяет настроить сопоставление между типом данных ClickHouse и классом Java; это повлияет на результат как [`getColumnType()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSetMetaData.html#getColumnType-int-), так и [`getObject(Class<>?>`)](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-java.lang.String-java.lang.Class-). Например: `UInt128=java.lang.String,UInt256=java.lang.String` |
-    | `wrapperObject`            | `false`               | Определяет, должен ли [`getObject()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-int-) возвращать объекты java.sql.Array / java.sql.Struct для Array / Tuple.                                                                                                                                                                                                                                                |
+    | Свойство                   | Значение по умолчанию | Описание                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+    | -------------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `continueBatchOnError`     | `false`               | Определяет, следует ли продолжать обработку пакета при возникновении ошибки                                                                                                                                                                                                                                                                                                                                                                    |
+    | `createDatabaseIfNotExist` | `false`               | Определяет, следует ли создавать базу данных, если она ещё не существует                                                                                                                                                                                                                                                                                                                                                                       |
+    | `custom_http_headers`      |                       | пользовательские HTTP-заголовки, перечисленные через запятую, например: `User-Agent=client1,X-Gateway-Id=123`                                                                                                                                                                                                                                                                                                                                  |
+    | `custom_http_params`       |                       | пользовательские параметры HTTP-запроса, перечисленные через запятую, например: `extremes=0,max_result_rows=100`                                                                                                                                                                                                                                                                                                                               |
+    | `nullAsDefault`            | `0`                   | `0` - обрабатывать значение NULL как есть и возбуждать исключение при попытке вставить NULL в столбец без типа Nullable; `1` - обрабатывать значение NULL как есть и не выполнять проверку на NULL при вставке; `2` - заменять NULL на значение по умолчанию для соответствующего типа данных как при выполнении запроса, так и при вставке                                                                                                    |
+    | `jdbcCompliance`           | `true`                | Определяет, следует ли поддерживать стандартные синхронные операции UPDATE/DELETE и псевдотранзакции                                                                                                                                                                                                                                                                                                                                           |
+    | `typeMappings`             |                       | Позволяет настроить сопоставление между типом данных ClickHouse и классом Java; это повлияет на результаты как [`getColumnType()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSetMetaData.html#getColumnType-int-), так и [`getObject(Class<>?>`)](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-java.lang.String-java.lang.Class-). Например: `UInt128=java.lang.String,UInt256=java.lang.String` |
+    | `wrapperObject`            | `false`               | Определяет, должен ли [`getObject()`](https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html#getObject-int-) возвращать объекты java.sql.Array / java.sql.Struct для Array / Tuple.                                                                                                                                                                                                                                                 |
 
     Примечание: дополнительную информацию см. в разделе [конфигурация JDBC](https://github.com/ClickHouse/clickhouse-java/blob/main/clickhouse-jdbc/src/main/java/com/clickhouse/jdbc/JdbcConfig.java).
 
@@ -699,9 +699,9 @@ import TabItem from '@theme/TabItem';
 
     :::note
 
-    * AggregatedFunction — :warning: не поддерживает `SELECT * FROM table ...`
+    * AggregatedFunction — :warning: не поддерживает запросы вида `SELECT * FROM table ...`
     * Decimal — `SET output_format_decimal_trailing_zeros=1` в 21.9+ для единообразия вывода
-    * Enum — может рассматриваться как строка и как целое число
+    * Enum — может интерпретироваться и как строка, и как целое число
     * UInt64 — сопоставляется с `long` (в client-v1)
       :::
 
@@ -767,7 +767,7 @@ import TabItem from '@theme/TabItem';
     }
     ```
 
-    * [input function doc](/sql-reference/table-functions/input/) по возможности
+    * [input function doc](/sql-reference/table-functions/input/) когда это возможно
 
     ### Вставка с плейсхолдерами \{#insert-with-placeholders\}
 
@@ -877,16 +877,16 @@ import TabItem from '@theme/TabItem';
 
     ## Свойства SSL \{#ssl-properties\}
 
-    | Имя                  | Значение по умолчанию | Допустимые значения | Описание                                                                              |
-    | -------------------- | --------------------- | ------------------- | ------------------------------------------------------------------------------------- |
-    | `ssl`                | false                 | true, false         | Следует ли включать SSL/TLS для соединения                                            |
-    | `sslmode`            | strict                | strict, none        | Следует ли проверять сертификат SSL/TLS                                               |
-    | `sslrootcert`        |                       |                     | Путь к файлу корневых сертификатов SSL/TLS                                            |
-    | `sslcert`            |                       |                     | Путь к файлу сертификата SSL/TLS                                                      |
-    | `sslkey`             |                       |                     | RSA-ключ в формате PKCS#8                                                             |
-    | `key_store_type`     |                       | JKS, PKCS12         | Указывает тип или формат файла `KeyStore`/`TrustStore`                                |
-    | `trust_store`        |                       |                     | Путь к файлу `TrustStore`                                                             |
-    | `key_store_password` |                       |                     | Пароль для доступа к файлу `KeyStore`, указанному в параметре конфигурации `KeyStore` |
+    | Имя                  | Значение по умолчанию | Допустимые значения | Описание                                                                    |
+    | -------------------- | --------------------- | ------------------- | --------------------------------------------------------------------------- |
+    | `ssl`                | false                 | true, false         | Нужно ли включить SSL/TLS для соединения                                    |
+    | `sslmode`            | strict                | strict, none        | Нужно ли проверять сертификат SSL/TLS                                       |
+    | `sslrootcert`        |                       |                     | Путь к файлу корневых сертификатов SSL/TLS                                  |
+    | `sslcert`            |                       |                     | Путь к файлу сертификата SSL/TLS                                            |
+    | `sslkey`             |                       |                     | RSA-ключ в формате PKCS#8                                                   |
+    | `key_store_type`     |                       | JKS, PKCS12         | Указывает тип или формат файла `KeyStore`/`TrustStore`                      |
+    | `trust_store`        |                       |                     | Путь к файлу `TrustStore`                                                   |
+    | `key_store_password` |                       |                     | Пароль для доступа к файлу `KeyStore`, указанному в конфигурации `KeyStore` |
 
     Эти свойства обеспечивают обмен данными между вашим Java-приложением и сервером ClickHouse по зашифрованному соединению, повышая безопасность данных при передаче.
 
@@ -932,7 +932,7 @@ import TabItem from '@theme/TabItem';
 
     В Linux одних только эквивалентных настроек может быть недостаточно для решения проблемы. Необходимы дополнительные действия из-за особенностей обработки параметров keep-alive для сокетов в Linux. Выполните следующие действия:
 
-    1. Настройте следующие параметры ядра Linux в `/etc/sysctl.conf` или другом соответствующем конфигурационном файле:
+    1. Настройте следующие параметры ядра Linux в `/etc/sysctl.conf` или другом связанном конфигурационном файле:
 
     * `net.inet.tcp.keepidle`: 60000
     * `net.inet.tcp.keepintvl`: 45000
@@ -941,9 +941,9 @@ import TabItem from '@theme/TabItem';
     * `net.inet.tcp.always_keepalive`: 1
     * `net.ipv4.tcp_keepalive_intvl`: 75
     * `net.ipv4.tcp_keepalive_probes`: 9
-    * `net.ipv4.tcp_keepalive_time`: 60 (можно рассмотреть уменьшение этого значения по сравнению со значением по умолчанию — 300 секунд)
+    * `net.ipv4.tcp_keepalive_time`: 60 (можно рассмотреть возможность уменьшения этого значения относительно значения по умолчанию — 300 секунд)
 
-    2. После изменения параметров ядра примените их, выполнив следующую команду:
+    2. После изменения параметров ядра примените их с помощью следующей команды:
 
     ```shell
     sudo sysctl -p

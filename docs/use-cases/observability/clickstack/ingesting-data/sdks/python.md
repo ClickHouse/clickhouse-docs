@@ -74,7 +74,7 @@ Now you can run the application with the OpenTelemetry Python agent (`openteleme
 opentelemetry-instrument python app.py
 ```
 
-#### If you are using `Gunicorn`, `uWSGI` or `uvicorn` {#using-uvicorn-gunicorn-uwsgi}
+#### If you're using `Gunicorn`, `uWSGI` or `uvicorn` {#using-uvicorn-gunicorn-uwsgi}
 
 In this case, the OpenTelemetry Python agent will require additional changes to work. 
 
@@ -105,7 +105,7 @@ def init_tracing():
 
 <TabItem value="uvicorn" label="uvicorn" default>
 
-OpenTelemetry [currently does not work](https://github.com/open-telemetry/opentelemetry-python-contrib/issues/385) with `uvicorn` run using the `--reload` 
+OpenTelemetry [currently doesn't work](https://github.com/open-telemetry/opentelemetry-python-contrib/issues/385) with `uvicorn` run using the `--reload` 
 flag or with multi-workers (`--workers`). We recommend disabling those flags while testing, or using Gunicorn.
 
 </TabItem>
