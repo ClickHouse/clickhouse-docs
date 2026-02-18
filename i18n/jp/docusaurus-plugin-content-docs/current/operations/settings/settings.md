@@ -2278,7 +2278,7 @@ Replicated\* テーブルからデータを受け取る materialized view に対
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "すべての同期および非同期 INSERT に対して、デフォルトで重複排除を有効化します。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "INSERT クエリの重複排除を制御するための新しい設定です。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "INSERT クエリの重複排除を制御するための新しい設定です。"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "すべての同期および非同期 INSERT に対して、デフォルトで重複排除を有効化します。"}]}]}/>
 
 `INSERT INTO`（Replicated\* テーブル向け）のブロック単位の重複排除を有効または無効にします。
 この設定は `insert_deduplicate` および `async_insert_deduplicate` の設定を上書きします。
@@ -8053,7 +8053,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 <SettingsInfoBlock type="FloatAuto" default_value="auto" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "新しい設定"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "auto"},{"label": "新しい設定"}]}]}/>
 
 ZooKeeper リクエストに対してトレースを開始する確率（親トレースの有無にかかわらず）。
 
@@ -8778,6 +8778,16 @@ CAP_SYS_NICE ケーパビリティが必要で、それがない場合は何も�
 
 ハッシュベースの結合アルゴリズムが適用される場合、このしきい値は（右側テーブルのサイズの推定値が利用可能な場合にのみ）、`hash` と `parallel_hash` のどちらを使用するかを決定するために使用されます。
 右側テーブルのサイズがこのしきい値を下回ると分かっている場合は、前者が使用されます。
+
+## parallel_non_joined_rows_processing \{#parallel_non_joined_rows_processing\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "RIGHT/FULL `parallel_hash` 結合において、結合されなかった行を並列処理できる新しい設定。"}]}]}/>
+
+RIGHT および FULL JOIN の実行中に、右テーブルの結合されなかった行を複数スレッドで並列処理できるようにします。
+この設定により、大規模なテーブルで `parallel_hash` 結合アルゴリズムを使用する場合の非結合フェーズを高速化できます。
+無効化されている場合、結合されなかった行は単一スレッドで処理されます。
 
 ## parallel_replica_offset \{#parallel_replica_offset\}
 

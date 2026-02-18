@@ -2280,7 +2280,7 @@ SETTINGS convert_query_to_cnf = true;
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "Включает дедупликацию по умолчанию для всех синхронных и асинхронных вставок."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "Новая настройка для управления дедупликацией для запросов INSERT."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "Новая настройка для управления дедупликацией для запросов INSERT."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "Включает дедупликацию по умолчанию для всех синхронных и асинхронных вставок."}]}]}/>
 
 Включает или отключает блочную дедупликацию при выполнении `INSERT INTO` (для таблиц Replicated\*).
 Эта настройка переопределяет настройки `insert_deduplicate` и `async_insert_deduplicate`.
@@ -8072,7 +8072,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 <SettingsInfoBlock type="FloatAuto" default_value="auto" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "auto"},{"label": "New setting"}]}]}/>
 
 Вероятность начала трассировки для запроса ZooKeeper — вне зависимости от того, существует родительская трассировка или нет.
 
@@ -8799,6 +8799,16 @@ FROM default.fuse_tbl AS __table1
 
 При использовании алгоритма соединения по хэшу это пороговое значение помогает выбрать между `hash` и `parallel_hash` (только если доступна оценка размера правой таблицы).
 Вариант `hash` используется, когда известно, что размер правой таблицы меньше этого порогового значения.
+
+## parallel_non_joined_rows_processing \{#parallel_non_joined_rows_processing\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Новая настройка для включения параллельной обработки несоединённых строк в RIGHT/FULL JOIN с алгоритмом parallel_hash."}]}]}/>
+
+Разрешает нескольким потокам параллельно обрабатывать несоединённые строки из правой таблицы во время RIGHT и FULL JOIN с алгоритмом parallel_hash.
+Это может ускорить фазу обработки несоединённых строк при использовании алгоритма соединения `parallel_hash` с большими таблицами.
+При отключении несоединённые строки обрабатываются одним потоком.
 
 ## parallel_replica_offset \{#parallel_replica_offset\}
 

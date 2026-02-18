@@ -2280,7 +2280,7 @@ Replicated\* 테이블(복제된 테이블, Replicated Table)에서 데이터를
 
 <SettingsInfoBlock type="DeduplicateInsertMode" default_value="enable" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "enable"},{"label": "기본적으로 모든 동기 및 비동기 INSERT에 대해 중복 제거를 활성화합니다."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "INSERT 쿼리에 대한 중복 제거를 제어하기 위한 새로운 설정입니다."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "backward_compatible_choice"},{"label": "INSERT 쿼리에 대한 중복 제거를 제어하기 위한 새로운 설정입니다."}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "enable"},{"label": "기본적으로 모든 동기 및 비동기 INSERT에 대해 중복 제거를 활성화합니다."}]}]}/>
 
 `INSERT INTO`(Replicated\* 테이블 대상)에 대한 블록 단위 중복 제거를 활성화하거나 비활성화합니다.
 이 설정은 `insert_deduplicate` 및 `async_insert_deduplicate` 설정을 재정의합니다.
@@ -8046,7 +8046,7 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 
 <SettingsInfoBlock type="FloatAuto" default_value="auto" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "auto"},{"label": "New setting"}]}]}/>
 
 ZooKeeper 요청에 대해 트레이스를 시작할 확률입니다. 상위 트레이스 존재 여부와 관계없이 적용됩니다.
 
@@ -8771,6 +8771,16 @@ userspace 페이지 캐시에서 miss가 발생하면, 캐시에 없는 경우�
 
 해시 기반 조인 알고리즘이 적용될 때 이 임계값은 `hash`와 `parallel_hash` 중 어느 것을 사용할지 결정하는 데 사용됩니다(오른쪽 테이블 크기를 추정할 수 있는 경우에만 해당합니다).
 오른쪽 테이블 크기가 이 임계값 미만이라는 것을 알고 있는 경우에는 `hash`를 사용합니다.
+
+## parallel_non_joined_rows_processing \{#parallel_non_joined_rows_processing\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "RIGHT/FULL parallel_hash 조인에서 조인되지 않은 행을 병렬로 처리할 수 있도록 하는 새로운 설정입니다."}]}]}/>
+
+RIGHT 및 FULL JOIN에서 오른쪽 테이블의 조인되지 않은 행을 여러 스레드가 병렬로 처리하도록 허용합니다.
+이는 대용량 테이블에서 `parallel_hash` 조인 알고리즘을 사용할 때 비조인 단계의 처리를 가속할 수 있습니다.
+비활성화하면 조인되지 않은 행은 단일 스레드에서 처리됩니다.
 
 ## parallel_replica_offset \{#parallel_replica_offset\}
 

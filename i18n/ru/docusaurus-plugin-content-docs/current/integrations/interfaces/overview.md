@@ -33,6 +33,11 @@ ClickHouse также поддерживает два RPC-протокола:
 * Play UI: откройте `/play` в браузере;
 * Advanced Dashboard: откройте `/dashboard` в браузере;
 * Просмотрщик бинарных символов для инженеров ClickHouse: откройте `/binary` в браузере;
+* ClickStack UI для обсервабилити: откройте `/clickstack` в браузере;
+
+:::info[ClickStack]
+Эта версия ClickStack хорошо подходит для локальной отладки и быстрых расследований, но не предназначена для продакшен-сред. Для полнофункционального ClickStack, готового к использованию в продакшене, см. [Open Source ClickStack](/use-cases/observability/clickstack/getting-started/oss).
+:::
 
 Также существует широкий набор сторонних библиотек для работы с ClickHouse:
 
