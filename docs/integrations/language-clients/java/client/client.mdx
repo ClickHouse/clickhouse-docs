@@ -768,21 +768,22 @@ Complete examples code is stored in the repo in a 'example` [folder](https://git
 
 There are two common ways to read data:
 
-- `query()` method and using `ClickHouseBinaryFormatReader` for streaming reads. In this case only active record is loaded into memory. 
-This method requires fast read otherwise it may cause server write timeout. 
+- `query()` method that returns low-level `QueryResponse` object that contains `InputStream` with data. Usually combined with `ClickHouseBinaryFormatReader` for streaming reads but 
+can be used with any other custom reader implementation. `QueryResponse` also provides access to the result set metadata and metrics.
 - `queryAll()` method and using `GenericRecord` for convenient row access. In this case the whole result set is loaded into memory.
+- `queryRecords()` method that returns `com.clickhouse.client.api.query.Records` - an iterator for `GenericRecord` objects. This method uses streaming approach 
+(no data is loaded into memory) and utilises `GenericRecord` to access data.
+
+**Note:** streaming approach requires fast read otherwise it may cause server write timeout because data is read directly from the network stream.
 
 ### Reading Arrays {#reading-arrays}
 
 **`ClickHouseBinaryFormatReader` Methods**
 
-- `getList(...)` - reads any `Array(...)` as `List<T>`. Good default for flexible typed reads.
-- `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)`
-  - best for 1D arrays of primitive-compatible values.
-- `getStringArray(...)`
-  - for `Array(String)` (and enum values represented as names).
-- `getObjectArray(...)`
-  - generic option for any `Array(...)` element type, including nested arrays. Use to read arrays with nullable values and nested arrays.
+- `getList(...)` - reads any `Array(...)` as `List<T>`. Good default for flexible typed reads. Supports nested arrays.
+- `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)` - best for 1D arrays of primitive-compatible values.
+- `getStringArray(...)` - for `Array(String)` (and enum values represented as names).
+- `getObjectArray(...)` - generic option for any `Array(...)` element type, including nested arrays. Use to read arrays with nullable values and nested arrays.
 
 Index-based and name-based overloads are available for all methods. Index is 1-based. Index-based do dirrect access to a column. 
 Name-based methods require index lookup each time.
@@ -805,13 +806,10 @@ try (QueryResponse response = client.query("SELECT * FROM my_table").get()) {
 
 **`GenericRecord` Methods**
 
-- `getObjectArray(...)` - reads any `Array(...)` as `Object[]`. Good default for flexible typed reads.
-- `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)`
-  - best for 1D arrays of primitive-compatible values.
-- `getStringArray(...)`
-  - for `Array(String)` (and enum values represented as names).
-- `getObjectArray(...)`
-  - generic option for any `Array(...)` element type, including nested arrays. Use to read arrays with nullable values.
+- `getList(...)` - reads any `Array(...)` as `List<T>`. Good default for flexible typed reads. Supports nested arrays.
+- `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)` - best for 1D arrays of primitive-compatible values.
+- `getStringArray(...)` - for `Array(String)` (and enum values represented as names).
+- `getObjectArray(...)` - generic option for any `Array(...)` element type, including nested arrays. Use to read arrays with nullable values and nested arrays.
 
 Index-based and name-based overloads are available for all methods. Index is 1-based. Index-based do dirrect access to a column. 
 Name-based methods require index lookup each time.
