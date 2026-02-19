@@ -1584,7 +1584,7 @@ ClickHouse Cloud 现已达到生产级就绪状态，具备 SOC2 Type II 合规�
 
 ### 常规更改 \{#general-changes-5\}
 
-- 新增对基于本地 ClickHouse 表和 HTTP 源的 [dictionaries](/sql-reference/dictionaries/index.md) 的支持
+- 新增对基于本地 ClickHouse 表和 HTTP 源的 [dictionaries](/sql-reference/statements/create/dictionary) 的支持
 - 引入了对孟买 [region](/cloud/reference/supported-regions) 的支持
 
 ### 控制台更改 \{#console-changes-30\}

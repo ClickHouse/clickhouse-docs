@@ -375,7 +375,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 ```
 
 
-## dictionaries&#95;config \{#dictionaries_config\}
+## dictionaries_config \{#dictionaries_config\}
 
 字典配置文件的路径。
 
@@ -386,7 +386,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 
 另请参阅：
 
-* &quot;[Dictionaries](../../sql-reference/dictionaries/index.md)&quot;。
+* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)&quot;。
 
 **示例**
 

@@ -73,10 +73,10 @@ Code: 60. DB::Exception: Received from localhost:9000. DB::Exception: Table defa
 ```
 
 :::note
-В ClickHouse Cloud пользователям следует использовать ключевое слово `PERMANENTLY`, например: `DETACH TABLE <table> PERMANENTLY`. Если его не использовать, таблицы будут снова подключены при перезапуске кластера, например во время обновления.
+В ClickHouse Cloud пользователям следует использовать ключевое слово `PERMANENTLY`, например: `DETACH TABLE &lt;table&gt; PERMANENTLY`. Если его не использовать, таблицы будут снова подключены при перезапуске кластера, например во время обновления.
 :::
 
 **См. также**
 
 * [Материализованное представление](/sql-reference/statements/create/view#materialized-view)
-* [Словари](../../sql-reference/dictionaries/index.md)
+* [Словари](./create/dictionary/index.md)

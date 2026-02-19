@@ -170,7 +170,7 @@ SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
 
 위의 쿼리와 [MCC 목록](https://en.wikipedia.org/wiki/Mobile_country_code)을 기반으로 할 때, 기지국이 가장 많은 나라는 미국, 독일, 러시아입니다.
 
-이 값들을 해석하기 위해 ClickHouse에서 [딕셔너리](../../sql-reference/dictionaries/index.md)를 생성하는 것을 고려할 수 있습니다.
+이 값들을 해석하기 위해 ClickHouse에서 [딕셔너리](../../sql-reference/statements/create/dictionary/index.md)를 생성하는 것을 고려할 수 있습니다.
 
 
 ## 사용 사례: 지리 데이터 통합 \{#use-case\}

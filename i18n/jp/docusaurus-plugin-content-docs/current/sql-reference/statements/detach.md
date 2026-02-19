@@ -56,7 +56,7 @@ SELECT * FROM test;
 └────────┘
 ```
 
-テーブルの切り離し:
+テーブルのデタッチ:
 
 クエリ:
 
@@ -79,4 +79,4 @@ ClickHouse Cloud では、`PERMANENTLY` 句（例: `DETACH TABLE &lt;table&gt; P
 **関連項目**
 
 * [マテリアライズドビュー](/sql-reference/statements/create/view#materialized-view)
-* [Dictionaries](../../sql-reference/dictionaries/index.md)
+* [Dictionaries](./create/dictionary/index.md)

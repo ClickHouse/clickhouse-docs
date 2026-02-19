@@ -386,7 +386,7 @@ dictionaries에 대한 설정 파일의 경로입니다.
 
 함께 보기:
 
-* 「[Dictionaries](../../sql-reference/dictionaries/index.md)」.
+* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)&quot;.
 
 **예제**
 

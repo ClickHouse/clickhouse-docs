@@ -141,5 +141,5 @@ SELECT * FROM odbc_t
 
 ## Смотрите также \{#see-also\}
 
-- [Словари ODBC](/sql-reference/dictionaries#mysql)
+- [Словари ODBC](/sql-reference/statements/create/dictionary/sources#mysql)
 - [Табличная функция ODBC](../../../sql-reference/table-functions/odbc.md)

@@ -930,7 +930,7 @@ ClickHouse перезагружает встроенные словари каж
 
 См. также:
 
-* &quot;[Словари](../../sql-reference/dictionaries/index.md)&quot;.
+* &quot;[Словари](../../sql-reference/statements/create/dictionary/index.md)&quot;.
 
 **Пример**
 

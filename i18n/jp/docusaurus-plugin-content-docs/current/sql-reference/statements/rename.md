@@ -55,7 +55,7 @@ RENAME table_A TO table_A_bak, table_B TO table_B_bak;
 
 ## RENAME DICTIONARY \{#rename-dictionary\}
 
-1つまたは複数の辞書の名前を変更します。このクエリは、辞書を別のデータベースに移動するためにも使用できます。
+1つまたは複数のDictionaryの名前を変更します。このクエリは、Dictionaryを別のデータベースに移動するためにも使用できます。
 
 **構文**
 
@@ -65,4 +65,4 @@ RENAME DICTIONARY [db0.]dict_A TO [db1.]dict_B [,...] [ON CLUSTER cluster]
 
 **関連項目**
 
-* [辞書](../../sql-reference/dictionaries/index.md)
+* [Dictionary](./create/dictionary/index.md)

@@ -927,7 +927,7 @@ ZooKeeper 上のテーブルへのパス。
 
 関連項目:
 
-* &quot;[Dictionaries](../../sql-reference/dictionaries/index.md)&quot;。
+* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)&quot;。
 
 **例**
 
