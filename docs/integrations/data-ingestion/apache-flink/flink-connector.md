@@ -43,7 +43,7 @@ The connector is split into two artifacts to support both Flink 1.17+ and Flink 
 | 1.18.1        | flink-connector-clickhouse-1.17  | 0.9.5                          | Java 11+      |
 | 1.17.2        | flink-connector-clickhouse-1.17  | 0.9.5                          | Java 11+      |
 
-_Note: the connector has not been tested against Flink versions earlier than 1.17._
+_Note: the connector has not been tested against Flink versions earlier than 1.17.2
 
 ## Installation & Setup {#installation--setup}
 ### Import as a Dependency {#import-as-a-dependency}
@@ -205,7 +205,9 @@ For example:
 ```java
 Map<String, String> additionalProperties = Map.of(
     ClientConfigProperties.CA_CERTIFICATE.getKey(), "<my_CA_cert>",
-    ClientConfigProperties.SERVER_TIMEZONE.getKey(), "America/Los_Angeles"
+    ClientConfigProperties.SSL_CERTIFICATE.getKey(), "<my_SSL_cert>",
+    ClientConfigProperties.CLIENT_NETWORK_BUFFER_SIZE.getKey(), "30000",
+    ClientConfigProperties.HTTP_MAX_OPEN_CONNECTIONS.getKey(), "5"
 );
 
 ClickHouseClientConfig clickHouseClientConfig = new ClickHouseClientConfig(
@@ -226,14 +228,14 @@ ClickHouseClientConfig clickHouseClientConfig = new ClickHouseClientConfig(
 
 The following options come directly from Flink's `AsyncSinkBase`:
 
-| Parameters             | Description                                                                                                 | Default Value |
-|------------------------|-------------------------------------------------------------------------------------------------------------|---------------|
-| `maxBatchSize`         | Maximum number of records inserted in a single batch                                                        | N/A           |
-| `maxInFlightRequests`  | The maximum number of in flight requests allowed before the sink applies backpressure                       | N/A           |
-| `maxBufferedRequests`  | The maximum number of records that may be buffered in the sink before backpressure is applied               | N/A           |
-| `maxBatchSizeInBytes`  | The maximum size (in bytes) a batch may become. All batches sent will be smaller than or equal to this size | N/A           |
-| `maxTimeInBufferMS`    | The maximum time a record may stay in the sink before being flushed                                         | N/A           |
-| `maxRecordSizeInBytes` | The maximum record size that the sink will accept, records larger than this will be automatically rejected  | N/A           |
+| Parameters             | Description                                                                                                 | Default Value | Required |
+|------------------------|-------------------------------------------------------------------------------------------------------------|---------------|----------|
+| `maxBatchSize`         | Maximum number of records inserted in a single batch                                                        | N/A           | Yes      |
+| `maxInFlightRequests`  | The maximum number of in flight requests allowed before the sink applies backpressure                       | N/A           | Yes      |
+| `maxBufferedRequests`  | The maximum number of records that may be buffered in the sink before backpressure is applied               | N/A           | Yes      |
+| `maxBatchSizeInBytes`  | The maximum size (in bytes) a batch may become. All batches sent will be smaller than or equal to this size | N/A           | Yes      |
+| `maxTimeInBufferMS`    | The maximum time a record may stay in the sink before being flushed                                         | N/A           | Yes      |
+| `maxRecordSizeInBytes` | The maximum record size that the sink will accept, records larger than this will be automatically rejected  | N/A           | Yes      |
 
 ## Supported data types {#supported-data-types}
 
@@ -249,7 +251,7 @@ The table below provides a quick reference for converting data types when insert
 | `short`/`Short`     | `Int16`           | ✅         | `DataWriter.writeInt16`       |
 | `int`/`Integer`     | `Int32`           | ✅         | `DataWriter.writeInt32`       |
 | `long`/`Long`       | `Int64`           | ✅         | `DataWriter.writeInt64`       |
-| `BigInteger`        | `Int128`          | ✅         | `DataWriter.writeInt124`      |
+| `BigInteger`        | `Int128`          | ✅         | `DataWriter.writeInt128`      |
 | `BigInteger`        | `Int256`          | ✅         | `DataWriter.writeInt256`      |
 | `short`/`Short`     | `UInt8`           | ✅         | `DataWriter.writeUInt8`       |
 | `int`/`Integer`     | `UInt8`           | ✅         | `DataWriter.writeUInt8 `      |
@@ -315,13 +317,13 @@ The connector exposes the following additional metrics on top of Flink's existin
 
 ## Limitations {#limitations}
 
-* The sink does not support exactly-once delivery - it currently only provides an at-least-once guarantee. This feature is tracked [here](https://github.com/ClickHouse/flink-connector-clickhouse/issues/106).
-* The sink does not support a dead-letter queue (DLQ) to buffer unprocessed messages. Currently, the connector will fail at the first row it cannot process. This feature is tracked [here](https://github.com/ClickHouse/flink-connector-clickhouse/issues/105).
-* The sink does not support creation via Flink's Table API/Flink SQL. This feature is tracked [here](https://github.com/ClickHouse/flink-connector-clickhouse/issues/42).
+* The sink currently provides an at-least-once delivery guarantee. Work toward exactly-once semantics is being tracked [here](https://github.com/ClickHouse/flink-connector-clickhouse/issues/106).
+* The sink does not yet support a dead-letter queue (DLQ) for buffering unprocessable messages. In the meantime, the connector will stop processing at the first row it is unable to handle. This feature is being tracked [here](https://github.com/ClickHouse/flink-connector-clickhouse/issues/105).
+* The sink does not yet support creation via Flink's Table API or Flink SQL. This feature is being tracked [here](https://github.com/ClickHouse/flink-connector-clickhouse/issues/42).
 
 ## ClickHouse Version Compatibility and Security {#compatibility-and-security}
 
-- All artifacts and versions of the connector are tested with all [active and LTS versions](https://github.com/ClickHouse/ClickHouse/pulls?q=is%3Aopen+is%3Apr+label%3Arelease) of ClickHouse.
+- The connector is tested against a range of recent ClickHouse versions, including latest and head, via a daily CI workflow. The tested versions are updated periodically as new ClickHouse releases become active. See [here](https://github.com/ClickHouse/flink-connector-clickhouse/blob/main/.github/workflows/tests-nightly.yaml#L15) for the versions the connector is tested against daily.
 - See the [ClickHouse security policy](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md#security-change-log-and-support) for known security vulnerabilities and how to report a vulnerability.
 - We recommend upgrading the connector continuously to not miss security fixes and new improvements.
 - If you have an issue with migration, please create a GitHub [issue](https://github.com/ClickHouse/flink-connector-clickhouse/issues) and we will respond!
