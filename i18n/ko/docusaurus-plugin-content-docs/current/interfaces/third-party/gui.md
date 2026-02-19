@@ -349,6 +349,19 @@ ClickHouse 데이터 소스 플러그인은 ClickHouse를 백엔드 데이터베
 
 [ClickLens Source Code](https://github.com/ntk148v/clicklens)
 
+### CHouse UI \{#chouse-ui\}
+
+[CHouse UI](https://chouse-ui.com)는 **팀**과 **보안이 강화된 데이터 액세스**에 특화된 오픈 소스 ClickHouse 웹 인터페이스입니다. 데이터베이스 자격 증명을 직접 요구하는 기존 클라이언트와 달리, CHouse UI는 강력한 **역할 기반 접근 제어(Role-Based Access Control, RBAC)** 계층을 구현하여 관리자가 내부 시크릿 정보를 노출하지 않고도 세분화된 권한을 부여할 수 있도록 합니다.
+
+주요 차별점은 다음과 같습니다.
+
+- **엔터프라이즈급 보안** - 서버 측 자격 증명 암호화, 상세 감사 로깅, 액세스 규칙을 제공합니다.
+- **팀 협업** - 사용자 정의 역할(예: 애널리스트를 위한 특정 테이블 액세스)을 정의하고 쿼리를 안전하게 공유할 수 있습니다.
+- **AI 기반 인사이트** - 쿼리 최적화 및 시각적 설명을 위한 통합 LLM 지원을 제공합니다.
+- **포괄적인 툴킷** - 강력한 SQL 에디터, 모니터링 대시보드, 스키마 탐색기, 원활한 데이터 가져오기/내보내기 기능을 제공합니다.
+
+[CHouse UI Source Code](https://github.com/daun-gatal/chouse-ui)
+
 ## 상용 제품 \{#commercial\}
 
 ### DataGrip \{#datagrip\}

@@ -349,6 +349,19 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 
 [ClickLens 源码](https://github.com/ntk148v/clicklens)
 
+### CHouse UI \{#chouse-ui\}
+
+[CHouse UI](https://chouse-ui.com) 是一个专为 **团队** 和 **安全数据访问** 打造的开源 ClickHouse Web 界面。与需要直接数据库凭证的传统客户端不同，CHouse UI 提供强大的 **基于角色的访问控制（RBAC）** 层，使管理员可以在不暴露底层凭证的情况下授予细粒度权限。
+
+关键特性包括：
+
+- **企业级安全** - 服务器端凭证加密、详细审计日志和访问控制规则。
+- **团队协作** - 定义自定义角色（例如，为分析师配置特定表访问）并安全共享查询。
+- **AI 驱动洞察** - 集成 LLM 支持，用于查询优化和可视化解释。
+- **完整工具集** - 提供功能完善的 SQL 编辑器、监控仪表盘、模式（schema）浏览器以及无缝的数据导入/导出功能。
+
+[CHouse UI 源码](https://github.com/daun-gatal/chouse-ui)
+
 ## 商业版 \{#commercial\}
 
 ### DataGrip \{#datagrip\}
