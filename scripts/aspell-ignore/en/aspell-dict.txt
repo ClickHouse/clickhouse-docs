@@ -84,6 +84,7 @@ BSON
 BSONEachRow
 BUZZHOUSE
 BYOC
+BYTEA
 BZIP
 Backblaze
 BackgroundBufferFlushSchedulePool
@@ -149,6 +150,7 @@ Bugfix
 BuildID
 BuilderBinAarch
 BuilderBinAmd
+bytea
 Bytebase
 CCPA
 CCTOOLS
@@ -3015,6 +3017,7 @@ nullability
 nullable
 nullables
 nullptr
+nuls
 num
 numerics
 nypd
@@ -3690,6 +3693,7 @@ timeZoneOffset
 timeslot
 timeslots
 timespan
+timestamptz
 timezones
 tinylog
 tmp
