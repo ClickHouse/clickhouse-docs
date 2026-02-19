@@ -349,6 +349,19 @@ ClickHouse data source プラグインにより、ClickHouse をバックエン�
 
 [ClickLens ソースコード](https://github.com/ntk148v/clicklens)
 
+### CHouse UI \{#chouse-ui\}
+
+[CHouse UI](https://chouse-ui.com) は、**チーム** と **セキュアなデータアクセス** のために特化して構築された、オープンソースの ClickHouse Web インターフェイスです。データベースの認証情報への直接アクセスを必要とする従来型クライアントとは異なり、CHouse UI は強力な **Role-Based Access Control (RBAC)** レイヤーを実装しており、管理者は基盤となるシークレットを開示することなく、きめ細かい権限を付与できます。
+
+主な特長は次のとおりです:
+
+- **エンタープライズグレードのセキュリティ** - サーバーサイドでの認証情報の暗号化、詳細な監査ログ、アクセスルールを提供。
+- **チームコラボレーション** - カスタムロール（例: アナリスト向けの特定テーブルへのアクセス）を定義し、クエリを安全に共有可能。
+- **AI を活用したインサイト** - クエリ最適化や視覚的な説明のための LLM 統合サポート。
+- **フル機能のツールキット** - 堅牢な SQL エディタ、監視ダッシュボード、スキーマエクスプローラ、シームレスなデータインポート/エクスポート機能を備えています。
+
+[CHouse UI Source Code](https://github.com/daun-gatal/chouse-ui)
+
 ## 商用 \{#commercial\}
 
 ### DataGrip \{#datagrip\}
