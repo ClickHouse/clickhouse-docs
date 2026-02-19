@@ -166,7 +166,7 @@ SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
 
 Based on the above query and the [MCC list](https://en.wikipedia.org/wiki/Mobile_country_code), the countries with the most cell towers are: the USA, Germany, and Russia.
 
-You may want to create a [Dictionary](../../sql-reference/dictionaries/index.md) in ClickHouse to decode these values.
+You may want to create a [Dictionary](../../sql-reference/statements/create/dictionary/index.md) in ClickHouse to decode these values.
 
 ## Use case: incorporate geo data {#use-case}
 

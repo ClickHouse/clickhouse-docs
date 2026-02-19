@@ -368,57 +368,67 @@
     },
     {
       "source": "/docs/en/sql-reference/dictionaries/external-dictionaries",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary",
       "permanent": true
     },
     {
       "source": "/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary",
       "permanent": true
     },
     {
       "source": "/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary",
       "permanent": true
     },
     {
       "source": "/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-layout",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/layouts",
       "permanent": true
     },
     {
       "source": "/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-lifetime",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/lifetime",
       "permanent": true
     },
     {
       "source": "/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-sources",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/sources",
       "permanent": true
     },
     {
       "source": "/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-structure",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/attributes",
       "permanent": true
     },
     {
       "source": "/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-hierarchical",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/layouts/hierarchical",
       "permanent": true
     },
     {
       "source": "/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts-dict-polygon",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/layouts/polygon",
       "permanent": true
     },
     {
       "source": "/docs/en/sql-reference/dictionaries/external-dictionaries/regexp-tree",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/layouts/regexp-tree",
       "permanent": true
     },
     {
       "source": "/docs/en/sql-reference/dictionaries/internal-dicts",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/embedded",
+      "permanent": true
+    },
+    {
+      "source": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary",
+      "permanent": true
+    },
+    {
+      "source": "/docs/en/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary",
       "permanent": true
     },
     {
@@ -2068,97 +2078,97 @@
     },
     {
       "source": "/docs/en/query_language/dicts",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary",
       "permanent": true
     },
     {
       "source": "/docs/en/sql_reference/dictionaries",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary",
       "permanent": true
     },
     {
       "source": "/docs/en/sql_reference/dictionaries/external_dictionaries",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary",
       "permanent": true
     },
     {
       "source": "/docs/en/query_language/dicts/external_dicts",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary",
       "permanent": true
     },
     {
       "source": "/docs/en/sql_reference/dictionaries/external_dictionaries/external_dicts",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary",
       "permanent": true
     },
     {
       "source": "/docs/en/query_language/dicts/external_dicts_dict",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary",
       "permanent": true
     },
     {
       "source": "/docs/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary",
       "permanent": true
     },
     {
       "source": "/docs/en/query_language/dicts/external_dicts_dict_hierarchical",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/layouts/hierarchical",
       "permanent": true
     },
     {
       "source": "/docs/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_hierarchical",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/layouts/hierarchical",
       "permanent": true
     },
     {
       "source": "/docs/en/query_language/dicts/external_dicts_dict_layout",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/layouts",
       "permanent": true
     },
     {
       "source": "/docs/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_layout",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/layouts",
       "permanent": true
     },
     {
       "source": "/docs/en/query_language/dicts/external_dicts_dict_lifetime",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/lifetime",
       "permanent": true
     },
     {
       "source": "/docs/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_lifetime",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/lifetime",
       "permanent": true
     },
     {
       "source": "/docs/en/query_language/dicts/external_dicts_dict_sources",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/sources",
       "permanent": true
     },
     {
       "source": "/docs/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_sources",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/sources",
       "permanent": true
     },
     {
       "source": "/docs/en/query_language/dicts/external_dicts_dict_structure",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/attributes",
       "permanent": true
     },
     {
       "source": "/docs/en/sql_reference/dictionaries/external_dictionaries/external_dicts_dict_structure",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/attributes",
       "permanent": true
     },
     {
       "source": "/docs/en/query_language/dicts/internal_dicts",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/embedded",
       "permanent": true
     },
     {
       "source": "/docs/en/sql_reference/dictionaries/internal_dicts",
-      "destination": "/docs/sql-reference/dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/embedded",
       "permanent": true
     },
     {
@@ -2983,12 +2993,12 @@
     },
     {
       "source": "/docs/sql-reference/dictionaries/external-dictionaries/external-dict",
-      "destination": "/docs/sql-reference/dictionaries#embedded-dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/embedded",
       "permanent": true
     },
     {
       "source": "/docs/sql-reference/dictionaries/external-dictionaries/external-dict",
-      "destination": "/docs/sql-reference/dictionaries#embedded-dictionaries",
+      "destination": "/docs/sql-reference/statements/create/dictionary/embedded",
       "permanent": true
     },
     {

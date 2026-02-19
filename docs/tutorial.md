@@ -365,7 +365,7 @@ Run some queries to analyze the data. Explore the following examples or try your
 
 ## Create a dictionary {#create-a-dictionary}
 
-A dictionary is a mapping of key-value pairs stored in memory. For details, see [Dictionaries](/sql-reference/dictionaries/index.md) 
+A dictionary is a mapping of key-value pairs stored in memory. For details, see [Dictionaries](/sql-reference/statements/create/dictionary) 
 
 Create a dictionary associated with a table in your ClickHouse service.
 The table and dictionary are based on a CSV file that contains a row for each neighborhood in New York City. 
@@ -398,7 +398,7 @@ Here's an excerpt from the CSV file you're using in table format. The `LocationI
   ```
 
   :::note
-  Setting `LIFETIME` to 0 disables automatic updates to avoid unnecessary traffic to our S3 bucket. In other cases, you might configure it differently. For details, see [Refreshing dictionary data using LIFETIME](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
+  Setting `LIFETIME` to 0 disables automatic updates to avoid unnecessary traffic to our S3 bucket. In other cases, you might configure it differently. For details, see [Refreshing dictionary data using LIFETIME](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime).
   :::
 
 3. Verify it worked. The following should return 265 rows, or one row for each neighborhood:
