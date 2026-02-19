@@ -346,8 +346,8 @@ using ClickHouse.Driver;
 using ClickHouse.Driver.ADO.Parameters;
 
 var parameters = new ClickHouseParameterCollection();
-parameters.Add("id", 1L);
-parameters.Add("name", "Alice");
+parameters.AddParameter("id", 1L);
+parameters.AddParameter("name", "Alice");
 
 await client.ExecuteNonQueryAsync(
     "INSERT INTO default.my_table (id, name) VALUES ({id:Int64}, {name:String})",
@@ -401,7 +401,7 @@ Call `Read()` to advance to the next row. It returns `false` when there are no m
 using ClickHouse.Driver.ADO.Parameters;
 
 var parameters = new ClickHouseParameterCollection();
-parameters.Add("max_id", 100L);
+parameters.AddParameter("max_id", 100L);
 
 var reader = await client.ExecuteReaderAsync(
     "SELECT * FROM default.my_table WHERE id < {max_id:Int64}",
@@ -662,7 +662,7 @@ Avoid creating multiple `ClickHouseClient` or standalone `ClickHouseConnection` 
 3. **Specify timezone in SQL type hints.** When using parameters with `Unspecified` DateTime values targeting non-UTC columns, include the timezone in the SQL:
    ```csharp
    var parameters = new ClickHouseParameterCollection();
-   parameters.Add("dt", myDateTime);
+   parameters.AddParameter("dt", myDateTime);
 
    await client.ExecuteNonQueryAsync(
        "INSERT INTO table (dt) VALUES ({dt:DateTime('Europe/Amsterdam')})",
