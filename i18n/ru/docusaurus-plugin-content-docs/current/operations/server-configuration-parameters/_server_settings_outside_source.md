@@ -375,7 +375,7 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
-## dictionaries&#95;config \{#dictionaries_config\}
+## dictionaries_config \{#dictionaries_config\}
 
 Путь к конфигурационному файлу словарей.
 
@@ -386,7 +386,7 @@ ClickHouse перезагружает встроенные словари каж
 
 См. также:
 
-* &quot;[Словари](../../sql-reference/dictionaries/index.md)&quot;.
+* &quot;[Словари](../../sql-reference/statements/create/dictionary/index.md)&quot;.
 
 **Пример**
 

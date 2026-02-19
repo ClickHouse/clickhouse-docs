@@ -493,7 +493,7 @@ ClickHouse サービス内のテーブルに関連付けられた Dictionary を
     `LIFETIME` を 0 に設定すると、自動更新が無効になり、S3 バケットへの
     不要なトラフィックを避けることができます。別のケースでは、異なる値を
     設定することもあります。詳細については、[Refreshing dictionary data using
-    LIFETIME](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime) を参照してください。
+    LIFETIME](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime) を参照してください。
     :::
 
     2.  次に、これをインポートします:
@@ -631,7 +631,7 @@ ClickHouse サービス内のテーブルに関連付けられた Dictionary を
 [EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html
     "SQL コマンド: EXPLAIN"
 
-[dictionary]: /sql-reference/dictionaries/index.md
+[dictionary]: /sql-reference/statements/create/dictionary
 
 [PGXN]: https://pgxn.org/dist/pg_clickhouse "PGXN 上の pg_clickhouse"
 
@@ -644,5 +644,5 @@ ClickHouse サービス内のテーブルに関連付けられた Dictionary を
 [Postgres image]: https://hub.docker.com/_/postgres
     "Docker Hub 上の Postgres OCI イメージ"
 
-[Refreshing dictionary data using LIFETIME]: /sql-reference/dictionaries/index.md#refreshing-dictionary-data-using-lifetime
+[Refreshing dictionary data using LIFETIME]: /sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime
     "ClickHouse ドキュメント: LIFETIME を使用した Dictionary データの更新"

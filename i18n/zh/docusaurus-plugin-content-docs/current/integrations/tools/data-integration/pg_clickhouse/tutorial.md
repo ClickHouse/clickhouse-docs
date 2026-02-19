@@ -493,7 +493,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
     :::note
     将 `LIFETIME` 设置为 0 会禁用自动更新，以避免对我们的 S3 存储桶产生不必要的流量。在其他情况下，你可能会进行不同的配置。有关详细信息，请参阅
     [Refreshing dictionary data using
-    LIFETIME](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)。
+    LIFETIME](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime)。
     :::
 
     2.  现在将其导入：
@@ -627,7 +627,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 [EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html
     "SQL 命令：EXPLAIN"
 
-[dictionary]: /sql-reference/dictionaries/index.md
+[dictionary]: /sql-reference/statements/create/dictionary
 
 [PGXN]: https://pgxn.org/dist/pg_clickhouse "PGXN 上的 pg_clickhouse"
 
@@ -640,5 +640,5 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 [Postgres image]: https://hub.docker.com/_/postgres
     "Docker Hub 上的 Postgres OCI 镜像"
 
-[Refreshing dictionary data using LIFETIME]: /sql-reference/dictionaries/index.md#refreshing-dictionary-data-using-lifetime
+[Refreshing dictionary data using LIFETIME]: /sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime
     "ClickHouse 文档：使用 LIFETIME 刷新字典数据"

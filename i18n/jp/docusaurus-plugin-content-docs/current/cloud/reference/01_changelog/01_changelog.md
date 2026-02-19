@@ -1608,7 +1608,7 @@ ClickHouse Cloud は、SOC2 Type II 準拠、本番ワークロード向けの�
 
 ### 一般的な変更 \{#general-changes-5\}
 
-- ローカルの ClickHouse テーブルおよび HTTP ソースからの[辞書](/sql-reference/dictionaries/index.md)のサポートを追加
+- ローカルの ClickHouse テーブルおよび HTTP ソースからの[辞書](/sql-reference/statements/create/dictionary)のサポートを追加
 - ムンバイ[リージョン](/cloud/reference/supported-regions)のサポートを追加
 
 ### コンソールの変更 \{#console-changes-30\}

@@ -498,7 +498,7 @@ ClickHouse 서비스의 테이블과 연관된 딕셔너리를 생성합니다.
     `LIFETIME`을 0으로 설정하면 자동 업데이트가 비활성화되어
     S3 버킷으로의 불필요한 트래픽을 방지합니다.  
     다른 상황에서는 이 값을 다르게 구성할 수 있습니다. 자세한 내용은
-    [LIFETIME을 사용한 딕셔너리 데이터 새로 고침](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime)을
+    [LIFETIME을 사용한 딕셔너리 데이터 새로 고침](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime)을
     참고하십시오.
     :::
 
@@ -631,7 +631,7 @@ ClickHouse 서비스의 테이블과 연관된 딕셔너리를 생성합니다.
 [EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html
     "SQL 명령어: EXPLAIN"
 
-[dictionary]: /sql-reference/dictionaries/index.md
+[dictionary]: /sql-reference/statements/create/dictionary
 
 [PGXN]: https://pgxn.org/dist/pg_clickhouse "PGXN의 pg_clickhouse"
 
@@ -644,5 +644,5 @@ ClickHouse 서비스의 테이블과 연관된 딕셔너리를 생성합니다.
 [Postgres image]: https://hub.docker.com/_/postgres
     "Docker Hub의 Postgres OCI 이미지"
 
-[Refreshing dictionary data using LIFETIME]: /sql-reference/dictionaries/index.md#refreshing-dictionary-data-using-lifetime
+[Refreshing dictionary data using LIFETIME]: /sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime
     "ClickHouse 문서: LIFETIME을 사용한 딕셔너리 데이터 새로 고침"

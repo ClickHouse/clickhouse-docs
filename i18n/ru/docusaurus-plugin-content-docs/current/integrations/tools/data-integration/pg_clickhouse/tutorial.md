@@ -502,7 +502,7 @@ Manhattan, Queens и Staten Island), а также с Newark Airport (EWR).
     Установка `LIFETIME` в 0 отключает автоматическое обновление, чтобы
     избежать лишнего трафика к нашему бакету S3. В других случаях вы можете
     настроить это по‑другому. Подробности см. в разделе [Refreshing dictionary
-    data using LIFETIME](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
+    data using LIFETIME](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime).
     :::
 
     2.  Теперь импортируйте его:
@@ -643,7 +643,7 @@ Manhattan, Queens и Staten Island), а также с Newark Airport (EWR).
 [EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html
     "SQL-команды: EXPLAIN"
 
-[dictionary]: /sql-reference/dictionaries/index.md
+[dictionary]: /sql-reference/statements/create/dictionary
 
 [PGXN]: https://pgxn.org/dist/pg_clickhouse "pg_clickhouse на PGXN"
 
@@ -656,5 +656,5 @@ Manhattan, Queens и Staten Island), а также с Newark Airport (EWR).
 [Postgres image]: https://hub.docker.com/_/postgres
     "Postgres OCI‑образ на Docker Hub"
 
-[Refreshing dictionary data using LIFETIME]: /sql-reference/dictionaries/index.md#refreshing-dictionary-data-using-lifetime
+[Refreshing dictionary data using LIFETIME]: /sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime
     "Документация ClickHouse: обновление данных словаря с помощью LIFETIME"

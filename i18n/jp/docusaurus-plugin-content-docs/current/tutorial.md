@@ -144,7 +144,7 @@ doc_type: 'guide'
 
   2. `INSERT` が完了するまで待ちます。150 MB のデータをダウンロードするのに少し時間がかかることがあります。
 
-  3. 挿入が完了したら、成功していることを確認します:
+  3. 挿入が完了したら、正しく行われたか確認します:
 
      ```sql
      SELECT count() FROM trips
@@ -369,7 +369,7 @@ doc_type: 'guide'
 
   ## Dictionary を作成する
 
-  Dictionary はメモリに保存されたキーと値のペアのマッピングです。詳細については、[Dictionaries](/sql-reference/dictionaries/index.md) を参照してください
+  Dictionary はメモリに保存されたキーと値のペアのマッピングです。詳細については、[Dictionaries](/sql-reference/statements/create/dictionary) を参照してください
 
   ClickHouse サービス内のテーブルに関連付けられた Dictionary を作成します。
   このテーブルと Dictionary は、New York City の各地区ごとに 1 行が含まれている CSV ファイルに基づいています。
@@ -403,7 +403,7 @@ doc_type: 'guide'
   ```
 
   :::note
-  `LIFETIME` を 0 に設定すると、S3 バケットへの不要なトラフィックを回避するために自動更新が無効になります。その他の場合は、異なる設定を行うことができます。詳細については、[LIFETIME を使用した Dictionary データの更新](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime) を参照してください。
+  `LIFETIME` を 0 に設定すると、S3 バケットへの不要なトラフィックを回避するために自動更新が無効になります。その他の場合は、異なる設定を行うことができます。詳細については、[LIFETIME を使用した Dictionary データの更新](/sql-reference/statements/create/dictionary/lifetime#refreshing-dictionary-data-using-lifetime) を参照してください。
   :::
 
   3. 正しく動作していることを確認します。次のクエリでは 265 行、つまり各地区ごとに 1 行が返されるはずです:
@@ -429,17 +429,17 @@ doc_type: 'guide'
      1 rows in set. Elapsed: 0.004 sec.
      ```
 
-  5. `dictHas` 関数を使用して、キーが Dictionary に存在するかどうかを確認します。たとえば、次のクエリは `1`（ClickHouse では「true」とみなされます）を返します。
+  5. Dictionary にキーが存在するかどうかを確認するには `dictHas` 関数を使用します。たとえば、次のクエリは `1`（ClickHouse では「true」を表します）を返します。
      ```sql
      SELECT dictHas('taxi_zone_dictionary', 132)
      ```
 
-  6. 次のクエリは、4567 が Dictionary の `LocationID` に存在しない値であるため、0 を返します:
+  6. 次のクエリは、4567 が Dictionary 内の `LocationID` の値として存在しないため、0 を返します:
      ```sql
      SELECT dictHas('taxi_zone_dictionary', 4567)
      ```
 
-  7. `dictGet` 関数を使用して、クエリ内で行政区の名前を取得します。例:
+  7. Use the `dictGet` 関数を使用して、クエリ内で行政区の名前を取得します。例:
 
      ```sql
      SELECT
@@ -500,7 +500,7 @@ doc_type: 'guide'
      ```
 
      :::note
-     上記の `JOIN` クエリの出力は、直前の `dictGetOrDefault` を使用したクエリと同じです（ただし `Unknown` の値は含まれません）。内部的には、ClickHouse は `taxi_zone_dictionary` Dictionary に対して `dictGet` 関数を呼び出していますが、`JOIN` 構文の方が SQL 開発者にとってよりなじみがあります。
+     上記の `JOIN` クエリの出力は、直前の `dictGetOrDefault` を使用したクエリと同一です（ただし `Unknown` の値は含まれません）。内部的には、ClickHouse が `taxi_zone_dictionary` Dictionary に対して `dictGet` 関数を実際には呼び出していますが、`JOIN` 構文の方が SQL 開発者にはよりなじみがあります。
      :::
 
   2. このクエリは、チップ額が最も高い 1000 件の乗車に対応する行を返し、その後、それぞれの行を Dictionary と内部結合します。

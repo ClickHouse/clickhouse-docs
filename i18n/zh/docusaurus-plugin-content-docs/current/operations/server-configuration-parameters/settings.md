@@ -924,7 +924,7 @@ ZooKeeper 中的副本名称。
 
 另请参阅：
 
-* &quot;[Dictionaries](../../sql-reference/dictionaries/index.md)&quot;。
+* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)&quot;。
 
 **示例**
 

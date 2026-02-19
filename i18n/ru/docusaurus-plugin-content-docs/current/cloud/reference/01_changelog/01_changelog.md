@@ -1608,7 +1608,7 @@ ClickHouse Cloud теперь готов к использованию в про
 
 ### Общие изменения \{#general-changes-5\}
 
-- Добавлена поддержка [словарей](/sql-reference/dictionaries/index.md) на основе локальных таблиц ClickHouse и HTTP-источников
+- Добавлена поддержка [словарей](/sql-reference/statements/create/dictionary) на основе локальных таблиц ClickHouse и HTTP-источников
 - Введена поддержка региона [Мумбаи](/cloud/reference/supported-regions)
 
 ### Изменения в консоли \{#console-changes-30\}

@@ -926,7 +926,7 @@ ZooKeeper에 있는 테이블 경로입니다.
 
 참고:
 
-* &quot;[Dictionaries](../../sql-reference/dictionaries/index.md)&quot;.
+* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)&quot;.
 
 **예시**
 

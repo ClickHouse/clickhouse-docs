@@ -129,4 +129,4 @@ SELECT * FROM mongodb(
 ## См. также \{#related\}
 
 - [Движок таблицы `MongoDB`](engines/table-engines/integrations/mongodb.md)
-- [Использование MongoDB в качестве источника словаря](sql-reference/dictionaries/index.md#mongodb)
+- [Использование MongoDB в качестве источника словаря](../statements/create/dictionary/sources.md#mongodb)

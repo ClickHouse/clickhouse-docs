@@ -247,7 +247,7 @@ SHOW COLUMNS FROM 'orders' LIKE 'delivery_%'
 
 ## SHOW DICTIONARIES \{#show-dictionaries\}
 
-`SHOW DICTIONARIES` 语句用于显示 [字典（Dictionaries）](../../sql-reference/dictionaries/index.md) 的列表。
+`SHOW DICTIONARIES` 语句用于显示 [字典（Dictionaries）](./create/dictionary/index.md) 的列表。
 
 ### 语法 \{#syntax-4\}
 
