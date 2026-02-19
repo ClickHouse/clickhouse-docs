@@ -927,7 +927,7 @@ ZooKeeper 上のテーブルへのパス。
 
 関連項目:
 
-* &quot;[Dictionaries](../../sql-reference/dictionaries/index.md)&quot;。
+* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)&quot;。
 
 **例**
 
@@ -4957,6 +4957,10 @@ ClickHouse はサーバー上のすべてのテーブルに対してこの設定
 <users_config>users.xml</users_config>
 ```
 
+
+## users_to_ignore_early_memory_limit_check \{#users_to_ignore_early_memory_limit_check\}
+
+早期メモリ制限チェックを無視するUSERをカンマ区切りで指定するリストです。USERがこのリストに含まれていない場合、合計メモリ使用量が制限を超えるとクエリは拒否されます。
 
 ## validate_tcp_client_information \{#validate_tcp_client_information\}
 

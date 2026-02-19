@@ -375,7 +375,7 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 ```
 
 
-## dictionaries&#95;config \{#dictionaries_config\}
+## dictionaries_config \{#dictionaries_config\}
 
 辞書の設定ファイルへのパス。
 
@@ -386,7 +386,7 @@ ClickHouse を使い始めたばかりの場合は、この設定は変更しな
 
 参照:
 
-* 「[Dictionaries](../../sql-reference/dictionaries/index.md)」。
+* 「[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)」。
 
 **例**
 

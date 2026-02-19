@@ -930,7 +930,7 @@ ClickHouse перезагружает встроенные словари каж
 
 См. также:
 
-* &quot;[Словари](../../sql-reference/dictionaries/index.md)&quot;.
+* &quot;[Словари](../../sql-reference/statements/create/dictionary/index.md)&quot;.
 
 **Пример**
 
@@ -4963,6 +4963,10 @@ ClickHouse использует этот параметр для всех таб
 <users_config>users.xml</users_config>
 ```
 
+
+## users_to_ignore_early_memory_limit_check \{#users_to_ignore_early_memory_limit_check\}
+
+Список пользователей, разделённых запятыми, для которых игнорируется ранняя проверка ограничения по памяти. Если пользователь не входит в этот список, запрос будет отклонён, если общее использование памяти превышает лимит.
 
 ## validate_tcp_client_information \{#validate_tcp_client_information\}
 

@@ -7,13 +7,9 @@ title: 'MySQL 테이블 엔진'
 doc_type: 'reference'
 ---
 
-
-
 # MySQL 테이블 엔진 \{#mysql-table-engine\}
 
 MySQL 엔진을 사용하면 원격 MySQL 서버에 저장된 데이터에 대해 `SELECT` 및 `INSERT` 쿼리를 실행할 수 있습니다.
-
-
 
 ## 테이블 생성 \{#creating-a-table\}
 
@@ -92,7 +88,7 @@ mysql> select * from test;
 1 row in set (0,00 sec)
 ```
 
-일반 매개변수를 사용해 ClickHouse에서 테이블을 생성합니다:
+인수를 직접 지정하여 ClickHouse에서 테이블을 생성합니다:
 
 ```sql
 CREATE TABLE mysql_table
@@ -199,9 +195,7 @@ SELECT * FROM mysql_table
 
 기본값: `300`.
 
-
-
 ## 함께 보기 \{#see-also\}
 
 - [MySQL 테이블 함수](../../../sql-reference/table-functions/mysql.md)
-- [MySQL을 딕셔너리 소스로 사용하기](/sql-reference/dictionaries#mysql)
+- [MySQL을 딕셔너리 소스로 사용하기](/sql-reference/statements/create/dictionary/sources#mysql)

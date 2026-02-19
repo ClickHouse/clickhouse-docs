@@ -1069,9 +1069,9 @@ Join モードでパッチパーツを適用する際に使用する一時キャ
 
 ## apply_row_policy_after_final \{#apply_row_policy_after_final\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新しい設定で、*MergeTree テーブルに対して ROW POLICY と PREWHERE を FINAL 処理の後に適用するかどうかを制御します。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "apply_row_policy_after_final をデフォルトで有効化（#87303 以前の 25.8 と同様）"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "新しい設定で、*MergeTree テーブルに対して ROW POLICY と PREWHERE を FINAL 処理の後に適用するかどうかを制御します。"}]}]}/>
 
 有効にすると、*MergeTree テーブルに対して ROW POLICY と PREWHERE が FINAL 処理の後に適用されます（特に ReplacingMergeTree の場合に有用です）。
 無効にすると、ROW POLICY は FINAL の前に適用されます。この場合、ReplacingMergeTree などのエンジンで重複排除に使われるべき行を

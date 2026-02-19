@@ -924,7 +924,7 @@ ZooKeeper 中的副本名称。
 
 另请参阅：
 
-* &quot;[Dictionaries](../../sql-reference/dictionaries/index.md)&quot;。
+* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)&quot;。
 
 **示例**
 
@@ -4955,6 +4955,10 @@ ClickHouse 会对服务器上的所有表使用该设置。可以在任何时间
 <users_config>users.xml</users_config>
 ```
 
+
+## users_to_ignore_early_memory_limit_check \{#users_to_ignore_early_memory_limit_check\}
+
+在早期内存限制检查时要忽略的用户的逗号分隔列表。如果用户不在此列表中，当总内存使用量超过限制时，其查询将被拒绝。
 
 ## validate_tcp_client_information \{#validate_tcp_client_information\}
 

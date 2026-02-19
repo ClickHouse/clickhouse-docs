@@ -1068,9 +1068,9 @@ Cloud 默认值：`1`。
 
 ## apply_row_policy_after_final \{#apply_row_policy_after_final\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "用于控制是否在对 *MergeTree 表执行 FINAL 处理之后再应用 ROW POLICY 和 PREWHERE 的新设置（尤其适用于 ReplacingMergeTree）"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认启用 apply_row_policy_after_final，就像在 25.8（#87303 之前）中的行为一样"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "用于控制是否在对 *MergeTree 表执行 FINAL 处理之后再应用 ROW POLICY 和 PREWHERE 的新设置（尤其适用于 ReplacingMergeTree）"}]}]}/>
 
 启用时，会在对 *MergeTree 表执行 FINAL 处理之后再应用 ROW POLICY 和 PREWHERE（尤其适用于 ReplacingMergeTree）。
 禁用时，会在 FINAL 之前应用 ROW POLICY，这在策略过滤掉本应在 ReplacingMergeTree 或类似引擎中用于去重的行时，可能导致结果不同。

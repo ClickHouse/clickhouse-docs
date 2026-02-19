@@ -926,7 +926,7 @@ ZooKeeper에 있는 테이블 경로입니다.
 
 참고:
 
-* &quot;[Dictionaries](../../sql-reference/dictionaries/index.md)&quot;.
+* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/index.md)&quot;.
 
 **예시**
 
@@ -4951,6 +4951,10 @@ ClickHouse는 서버의 모든 테이블에 대해 이 설정을 사용합니다
 <users_config>users.xml</users_config>
 ```
 
+
+## users_to_ignore_early_memory_limit_check \{#users_to_ignore_early_memory_limit_check\}
+
+조기 메모리 제한 검사를 건너뛸 사용자 목록을 쉼표로 구분하여 지정합니다. 사용자가 이 목록에 포함되지 않은 경우, 총 메모리 사용량이 한도를 초과하면 쿼리가 거부됩니다.
 
 ## validate_tcp_client_information \{#validate_tcp_client_information\}
 

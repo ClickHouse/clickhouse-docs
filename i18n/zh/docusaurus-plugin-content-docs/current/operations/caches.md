@@ -27,10 +27,10 @@ doc_type: 'reference'
 * [向量相似度索引](../engines/table-engines/mergetree-family/annindexes.md)缓存。
 * [文本索引](../engines/table-engines/mergetree-family/textindexes.md#caching)缓存。
 * [Avro 格式](/interfaces/formats/Avro) Schema 缓存。
-* [字典](../sql-reference/dictionaries/index.md)数据缓存。
+* [字典](../sql-reference/statements/create/dictionary/index.md)数据缓存。
 * Schema 推断缓存。
 * 基于 S3、Azure、本地以及其他磁盘的[文件系统缓存](storing-data.md)。
-* [用户态页缓存](/operations/userspace-page-cache)。
+* [用户态页缓存](/operations/userspace-page-cache)
 * [查询缓存](query-cache.md)。
 * [查询条件缓存](query-condition-cache.md)。
 * 格式 Schema 缓存。

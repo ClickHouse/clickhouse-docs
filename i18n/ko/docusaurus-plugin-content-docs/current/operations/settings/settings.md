@@ -1071,9 +1071,9 @@ Join 모드에서 패치 파트를 적용할 때 사용하는 임시 캐시의 �
 
 ## apply_row_policy_after_final \{#apply_row_policy_after_final\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting to control if row policies and PREWHERE are applied after FINAL processing for *MergeTree tables"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "apply_row_policy_after_final을 기본값으로 활성화합니다. 25.8에서는 #87303 이전에 이미 이렇게 동작했습니다"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "row policy와 PREWHERE를 *MergeTree 테이블에 대한 FINAL 처리 이후에 적용할지 여부를 제어하는 새로운 설정입니다"}]}]}/>
 
 이 설정을 활성화하면 *MergeTree 테이블에 대해 FINAL 처리가 완료된 후에 ROW POLICY와 PREWHERE가 적용됩니다. (특히 ReplacingMergeTree에 해당합니다)
 비활성화하면 ROW POLICY는 FINAL 이전에 적용되며, 이 경우 ReplacingMergeTree 또는 유사한 엔진에서 중복 제거에 사용되어야 하는 행을

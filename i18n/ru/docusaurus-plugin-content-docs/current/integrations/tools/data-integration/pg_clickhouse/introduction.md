@@ -38,8 +38,6 @@ docker exec -it pg_clickhouse psql -U postgres -c 'CREATE EXTENSION pg_clickhous
 
 В этой таблице сравнивается производительность запросов [TPC-H] между обычными таблицами PostgreSQL и таблицами pg&#95;clickhouse, подключёнными к ClickHouse, при коэффициенте масштабирования 1; ✔︎ означает полное проталкивание вычислений (full pushdown), а дефис — отмену запроса по истечении 1 минуты. Все тесты запускались на MacBook Pro M4 Max с 36 ГБ ОЗУ.
 
-{/* cd dev/tpch && make ch && make pg && make run */ }
-
 |      Запрос | PostgreSQL | pg&#95;clickhouse | Pushdown |
 | ----------: | ---------: | ----------------: | :------: |
 |  [Запрос 1] |    4693 ms |            268 ms |    ✔︎    |
@@ -52,7 +50,7 @@ docker exec -it pg_clickhouse psql -U postgres -c 'CREATE EXTENSION pg_clickhous
 |  [Запрос 8] |     342 ms |            156 ms |    ✔︎    |
 |  [Запрос 9] |    3094 ms |            298 ms |    ✔︎    |
 | [Запрос 10] |     581 ms |            197 ms |    ✔︎    |
-| [Запрос 11] |     212 ms |             24 ms |    ✔︎    |
+| [Запрос 11] |     212 ms |             24 ms |          |
 | [Запрос 12] |    1116 ms |             84 ms |    ✔︎    |
 | [Запрос 13] |     958 ms |           1368 ms |          |
 | [Запрос 14] |     181 ms |             73 ms |    ✔︎    |
@@ -64,7 +62,6 @@ docker exec -it pg_clickhouse psql -U postgres -c 'CREATE EXTENSION pg_clickhous
 | [Запрос 20] |     421 ms |                 - |          |
 | [Запрос 21] |    1349 ms |           4434 ms |          |
 | [Запрос 22] |     258 ms |           1415 ms |          |
-
 
 ### Сборка из исходного кода \{#compile-from-source\}
 

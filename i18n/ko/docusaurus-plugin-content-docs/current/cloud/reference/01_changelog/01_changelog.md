@@ -1604,7 +1604,7 @@ ClickHouse Cloud는 이제 프로덕션 환경에서 사용할 수 있도록 준
 
 ### 일반 변경 사항 \{#general-changes-5\}
 
-- 로컬 ClickHouse 테이블 및 HTTP 소스를 사용하는 [dictionaries](/sql-reference/dictionaries/index.md)에 대한 지원이 추가되었습니다
+- 로컬 ClickHouse 테이블 및 HTTP 소스를 사용하는 [dictionaries](/sql-reference/statements/create/dictionary)에 대한 지원이 추가되었습니다
 - 뭄바이 [리전](/cloud/reference/supported-regions)에 대한 지원이 추가되었습니다
 
 ### Console 변경 사항 \{#console-changes-30\}

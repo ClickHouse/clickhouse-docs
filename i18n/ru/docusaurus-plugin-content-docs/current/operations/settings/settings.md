@@ -1071,9 +1071,9 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 ## apply_row_policy_after_final \{#apply_row_policy_after_final\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка, позволяющая управлять тем, будут ли политики строк (ROW POLICY) и PREWHERE применяться после обработки FINAL для таблиц семейства *MergeTree"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включение apply_row_policy_after_final по умолчанию, как это было в 25.8 до #87303"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка, позволяющая управлять тем, будут ли политики строк (ROW POLICY) и PREWHERE применяться после обработки FINAL для таблиц семейства *MergeTree"}]}]}/>
 
 Если параметр включён, политики строк (ROW POLICY) и PREWHERE применяются после обработки FINAL для таблиц семейства *MergeTree (особенно актуально для ReplacingMergeTree).
 Если параметр выключен, политики строк применяются до FINAL, что может приводить к отличающимся результатам, когда политика
