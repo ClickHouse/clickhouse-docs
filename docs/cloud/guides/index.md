@@ -35,6 +35,7 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Common access management queries](/cloud/security/common-access-management-queries) | This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns. |
 | [Configure backup schedules](/cloud/manage/backups/configurable-backups) | Guide showing how to configure backups |
 | [Connect to ClickHouse](/cloud/reference/byoc/connect) | Connect to your BYOC ClickHouse services via public, private, or PrivateLink endpoints |
+| [Connecting ClickHouse Cloud to Azure Blob Storage](/cloud/data-sources/secure-azure) | This article demonstrates how ClickHouse Cloud customers can access their Azure data securely |
 | [Console audit log](/cloud/security/audit-logging/console-audit-log) | This page describes how you can review the cloud audit log |
 | [Customized Setup](/cloud/reference/byoc/onboarding/customization) | Deploy ClickHouse on your own cloud infrastructure |
 | [Data encryption](/cloud/security/cmek) | Learn more about data encryption in ClickHouse Cloud |
