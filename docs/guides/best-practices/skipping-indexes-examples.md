@@ -18,12 +18,13 @@ This page consolidates ClickHouse data skipping index examples, showing how to d
 INDEX name expr TYPE type(...) [GRANULARITY N]
 ```
 
-ClickHouse supports five skip index types:
+ClickHouse supports six skip index types:
 
 | Index Type | Description |
 |------------|-------------|
 | **minmax** | Tracks minimum and maximum values in each granule |
 | **set(N)** | Stores up to N distinct values per granule |
+| **text** | Inverted index over tokenized string data for full text search |
 | **bloom_filter([false_positive_rate])** | Probabilistic filter for existence checks |
 | **ngrambf_v1** | N-gram bloom filter for substring searches |
 | **tokenbf_v1** | Token-based bloom filter for full-text searches |
@@ -75,6 +76,12 @@ SELECT * FROM events WHERE user_id IN (101, 202);
 ```
 
 A creation/materialization workflow and the before/after effect are shown in the [basic operation guide](/optimize/skipping-indexes#basic-operation).
+
+## Text index (text) for full text search {#textindex-for-full-text-search}
+
+The `text` index is an inverted index over tokenized text data. Designed specifically for full-text search use cases, it enables efficient token and term lookup.
+
+See the page [Full-text Search with Text Indexes](/engines/table-engines/mergetree-family/textindexes) for more details and multiple examples.
 
 ## Generic Bloom filter (scalar) {#generic-bloom-filter-scalar}
 
