@@ -970,6 +970,39 @@ SELECT modulo(5, 2)
 1
 ```
 
+## moduloLegacy \{#moduloLegacy\}
+
+Введена в версии: v1.1
+
+Вычисляет остаток от деления. Это устаревшая реализация операции modulo, которая использует оператор C++ `%`, из‑за чего для отрицательных аргументов могут получаться отрицательные результаты. Эта функция существует для обратной совместимости со старой логикой партиционирования таблиц. Для стандартного поведения используйте `modulo` или `positiveModulo`.
+
+**Синтаксис**
+
+```sql
+moduloLegacy(a, b)
+```
+
+**Аргументы**
+
+* `a` — делимое. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+* `b` — делитель. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+
+**Возвращаемое значение**
+
+Возвращает остаток от деления. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+
+**Примеры**
+
+**Базовое использование**
+
+```sql title=Query
+SELECT moduloLegacy(10, 3)
+```
+
+```response title=Response
+1
+```
+
 ## moduloOrNull \{#moduloOrNull\}
 
 Добавлена в версии: v25.5

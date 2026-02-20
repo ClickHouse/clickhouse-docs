@@ -14,7 +14,7 @@ doc_type: 'reference'
 因此，本节中展示的示例在 [ClickHouse Fiddle](https://fiddle.clickhouse.com/) 中，以及在快速发布版本和生产环境中的部署中，默认都会抛出异常，除非事先完成相应配置。
 :::
 
-关于如何创建参考列表的更多信息，请参见章节 [&quot;Dictionaries&quot;](../dictionaries#embedded-dictionaries)。
+关于如何创建参考列表的更多信息，请参见章节 [&quot;Dictionaries&quot;](../statements/create/dictionary/embedded#embedded-dictionaries)。
 
 ## 多个地理库（Geobase） \{#multiple-geobases\}
 
@@ -39,7 +39,8 @@ regionToCountry(RegionID, '') – Uses the default dictionary: /opt/geo/regions_
 regionToCountry(RegionID, 'ua') – Uses the dictionary for the 'ua' key: /opt/geo/regions_hierarchy_ua.txt
 ```
 
-### regionToName {#regiontoname}
+
+### regionToName
 
 接受一个区域 ID 和 geobase，并返回一个字符串，该字符串为对应语言中该区域的名称。如果具有指定 ID 的区域不存在，则返回空字符串。
 
@@ -79,7 +80,8 @@ SELECT regionToName(number::UInt32,'en') FROM numbers(0,5);
 └────────────────────────────────────────────┘
 ```
 
-### regionToCity {#regiontocity}
+
+### regionToCity
 
 从 geobase 接收一个区域 ID。如果该区域本身是城市或隶属于某个城市，则返回相应城市的区域 ID；否则返回 0。
 
@@ -127,7 +129,8 @@ SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, r
 └────────────────────────────────────────────┴────┴──────────────────────────────────────────────────────────┘
 ```
 
-### regionToArea {#regiontoarea}
+
+### regionToArea
 
 将区域转换为地区（在 geobase 中为类型 5）。在其他方面，该函数与 [&#39;regionToCity&#39;](#regiontocity) 完全相同。
 
@@ -139,13 +142,13 @@ regionToArea(id [, geobase])
 
 **参数**
 
-* `id` — 来自 geobase 的区域 ID。[UInt32](../data-types/int-uint)。
+* `id` — geobase 中的区域 ID。[UInt32](../data-types/int-uint)。
 * `geobase` — 字典键。参见 [Multiple Geobases](#multiple-geobases)。[String](../data-types/string)。可选。
 
 **返回值**
 
-* 如果存在，则为相应区域的区域 ID。[UInt32](../data-types/int-uint)。
-* 如果不存在，则为 0。
+* 对应联邦区的区域 ID（若存在）。[UInt32](../data-types/int-uint)。
+* 否则为 0。
 
 **示例**
 
@@ -162,24 +165,25 @@ LIMIT 15
 ```text
 ┌─regionToName(regionToArea(toUInt32(number), \'ua\'))─┐
 │                                                      │
-│ 莫斯科及莫斯科州                                        │
-│ 圣彼得堡及列宁格勒州                                    │
-│ 别尔哥罗德州                                           │
-│ 伊万诺沃州                                             │
-│ 卡卢加州                                               │
-│ 科斯特罗马州                                           │
-│ 库尔斯克州                                             │
-│ 利佩茨克州                                             │
-│ 奥廖尔州                                               │
-│ 梁赞州                                                 │
-│ 斯摩棱斯克州                                           │
-│ 坦波夫州                                               │
-│ 特维尔州                                               │
-│ 图拉州                                                 │
+│ Moscow and Moscow region                             │
+│ St. Petersburg and Leningrad region                  │
+│ Belgorod region                                      │
+│ Ivanovsk region                                      │
+│ Kaluga region                                        │
+│ Kostroma region                                      │
+│ Kursk region                                         │
+│ Lipetsk region                                       │
+│ Orlov region                                         │
+│ Ryazan region                                        │
+│ Smolensk region                                      │
+│ Tambov region                                        │
+│ Tver region                                          │
+│ Tula region                                          │
 └──────────────────────────────────────────────────────┘
 ```
 
-### regionToDistrict {#regiontodistrict}
+
+### regionToDistrict
 
 将区域转换为联邦区（在 geobase 中为类型 4）。在其他方面，该函数与 &#39;regionToCity&#39; 完全相同。
 
@@ -196,8 +200,8 @@ regionToDistrict(id [, geobase])
 
 **返回值**
 
-* 对应城市的区域 ID（若存在）。[UInt32](../data-types/int-uint)。
-* 否则为 0。
+* 如果存在，则为对应城市的区域 ID。[UInt32](../data-types/int-uint)。
+* 如果不存在，则为 0。
 
 **示例**
 
@@ -214,26 +218,27 @@ LIMIT 15
 ```text
 ┌─regionToName(regionToDistrict(toUInt32(number), \'ua\'))─┐
 │                                                          │
-│ 中央联邦区                                                 │
-│ 西北联邦区                                                 │
-│ 南部联邦区                                                 │
-│ 北高加索联邦区                                              │
-│ 伏尔加联邦区                                               │
-│ 乌拉尔联邦区                                               │
-│ 西伯利亚联邦区                                              │
-│ 远东联邦区                                                 │
-│ 苏格兰                                                    │
-│ 法罗群岛                                                   │
-│ 佛兰德大区                                                 │
-│ 布鲁塞尔首都大区                                            │
-│ 瓦隆大区                                                   │
-│ 波斯尼亚和黑塞哥维那联邦                                      │
+│ Central federal district                                 │
+│ Northwest federal district                               │
+│ South federal district                                   │
+│ North Caucases federal district                          │
+│ Privolga federal district                                │
+│ Ural federal district                                    │
+│ Siberian federal district                                │
+│ Far East federal district                                │
+│ Scotland                                                 │
+│ Faroe Islands                                            │
+│ Flemish region                                           │
+│ Brussels capital region                                  │
+│ Wallonia                                                 │
+│ Federation of Bosnia and Herzegovina                     │
 └──────────────────────────────────────────────────────────┘
 ```
 
-### regionToCountry {#regiontocountry}
 
-将区域转换为国家（geobase 中的类型 3）。在其他方面，该函数与 `regionToCity` 相同。
+### regionToCountry
+
+将区域转换为国家/地区（在 geobase 中类型为 3）。在其他方面，此函数与 `regionToCity` 完全相同。
 
 **语法**
 
@@ -243,12 +248,12 @@ regionToCountry(id [, geobase])
 
 **参数**
 
-* `id` — 来自地理库（geobase）的区域 ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 字典键。参见 [多个地理库](#multiple-geobases)。[String](../data-types/string)。可选。
+* `id` — 来自 geobase 的地域 ID。[UInt32](../data-types/int-uint)。
+* `geobase` — 字典键。参见 [Multiple Geobases](#multiple-geobases)。[String](../data-types/string)。可选。
 
 **返回值**
 
-* 对应国家/地区的区域 ID（如果存在）。[UInt32](../data-types/int-uint)。
+* 对应国家/地区的地域 ID（如果存在）。[UInt32](../data-types/int-uint)。
 * 如果不存在，则为 0。
 
 **示例**
@@ -279,7 +284,8 @@ SELECT regionToName(number::UInt32, 'en'), regionToCountry(number::UInt32) AS id
 └────────────────────────────────────────────┴────┴─────────────────────────────────────────────────────────────┘
 ```
 
-### regionToContinent {#regiontocontinent}
+
+### regionToContinent
 
 将区域转换为大洲（在 geobase 中类型为 1）。在其他方面，此函数与 `regionToCity` 完全相同。
 
@@ -291,12 +297,12 @@ regionToContinent(id [, geobase])
 
 **参数**
 
-* `id` — 来自 geobase 的地域 ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 字典键。参见 [Multiple Geobases](#multiple-geobases)。[String](../data-types/string)。可选。
+* `id` — 来自地理库（geobase）的区域 ID。[UInt32](../data-types/int-uint)。
+* `geobase` — 字典键。参见 [多个地理库](#multiple-geobases)。[String](../data-types/string)。可选。
 
 **返回值**
 
-* 对应大洲的地域 ID（如果存在）。[UInt32](../data-types/int-uint)。
+* 对应大洲的区域 ID（如果存在）。[UInt32](../data-types/int-uint)。
 * 如果不存在，则为 0。
 
 **示例**
@@ -312,22 +318,23 @@ SELECT regionToName(number::UInt32, 'en'), regionToContinent(number::UInt32) AS 
 ```text
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToContinent(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                               │
-│ 世界                                      │  0 │                                                               │
-│ 美国                                        │ 10 │ North 美洲                                                 │
-│ 科罗拉多州                                   │ 10 │ North 美洲                                                 │
-│ 博尔德县                             │ 10 │ North 美洲                                                 │
-│ 博尔德                                    │ 10 │ North 美洲                                                 │
-│ 中国                                      │ 12 │ 亚洲                                                          │
-│ 四川省                                    │ 12 │ 亚洲                                                          │
-│ 成都市                                    │ 12 │ 亚洲                                                          │
-│ 美洲                                    │  9 │ 美洲                                                       │
-│ North 美洲                              │ 10 │ North 美洲                                                 │
-│ 欧亚大陆                                    │ 11 │ 欧亚大陆                                                       │
-│ 亚洲                                       │ 12 │ 亚洲                                                          │
+│ World                                      │  0 │                                                               │
+│ USA                                        │ 10 │ North America                                                 │
+│ Colorado                                   │ 10 │ North America                                                 │
+│ Boulder County                             │ 10 │ North America                                                 │
+│ Boulder                                    │ 10 │ North America                                                 │
+│ China                                      │ 12 │ Asia                                                          │
+│ Sichuan                                    │ 12 │ Asia                                                          │
+│ Chengdu                                    │ 12 │ Asia                                                          │
+│ America                                    │  9 │ America                                                       │
+│ North America                              │ 10 │ North America                                                 │
+│ Eurasia                                    │ 11 │ Eurasia                                                       │
+│ Asia                                       │ 12 │ Asia                                                          │
 └────────────────────────────────────────────┴────┴───────────────────────────────────────────────────────────────┘
 ```
 
-### regionToTopContinent {#regiontotopcontinent}
+
+### regionToTopContinent
 
 查找指定区域在层级结构中的最上级洲。
 
@@ -360,24 +367,25 @@ SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) 
 ```text
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToTopContinent(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                                  │
-│ 世界                                      │  0 │                                                                  │
-│ 美国                                        │  9 │ 美洲                                                          │
-│ 科罗拉多州                                   │  9 │ 美洲                                                          │
-│ 博尔德县                             │  9 │ 美洲                                                          │
-│ 博尔德市                                    │  9 │ 美洲                                                          │
-│ 中国                                      │ 11 │ 欧亚大陆                                                          │
-│ 四川省                                    │ 11 │ 欧亚大陆                                                          │
-│ 成都市                                    │ 11 │ 欧亚大陆                                                          │
-│ 美洲                                    │  9 │ 美洲                                                          │
-│ North 美洲                              │  9 │ 美洲                                                          │
-│ 欧亚大陆                                    │ 11 │ 欧亚大陆                                                          │
-│ 亚洲                                       │ 11 │ 欧亚大陆                                                          │
+│ World                                      │  0 │                                                                  │
+│ USA                                        │  9 │ America                                                          │
+│ Colorado                                   │  9 │ America                                                          │
+│ Boulder County                             │  9 │ America                                                          │
+│ Boulder                                    │  9 │ America                                                          │
+│ China                                      │ 11 │ Eurasia                                                          │
+│ Sichuan                                    │ 11 │ Eurasia                                                          │
+│ Chengdu                                    │ 11 │ Eurasia                                                          │
+│ America                                    │  9 │ America                                                          │
+│ North America                              │  9 │ America                                                          │
+│ Eurasia                                    │ 11 │ Eurasia                                                          │
+│ Asia                                       │ 11 │ Eurasia                                                          │
 └────────────────────────────────────────────┴────┴──────────────────────────────────────────────────────────────────┘
 ```
 
-### regionToPopulation {#regiontopopulation}
 
-获取某个区域的人口数。人口数据可以记录在 `geobase` 文件中。参见 [&quot;Dictionaries&quot;](../dictionaries#embedded-dictionaries) 一节。若该区域未记录人口数，则返回 0。在 `geobase` 中，人口可能只记录在子区域，而未记录在父区域。
+### regionToPopulation
+
+获取某个区域的人口数。人口数据可以记录在 `geobase` 文件中。参见 [&quot;Dictionaries&quot;](../statements/create/dictionary/embedded#embedded-dictionaries) 一节。若该区域未记录人口数，则返回 0。在 `geobase` 中，人口可能只记录在子区域，而未记录在父区域。
 
 **语法**
 
@@ -408,22 +416,23 @@ SELECT regionToName(number::UInt32, 'en'), regionToPopulation(number::UInt32) AS
 ```text
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─population─┐
 │                                            │          0 │
-│ 世界                                        │ 4294967295 │
-│ 美国                                        │  330000000 │
-│ 科罗拉多州                                   │    5700000 │
-│ 博尔德县                                     │     330000 │
-│ 博尔德市                                     │     100000 │
-│ 中国                                        │ 1500000000 │
-│ 四川省                                       │   83000000 │
-│ 成都市                                       │   20000000 │
-│ 美洲                                        │ 1000000000 │
-│ 北美洲                                       │  600000000 │
-│ 欧亚大陆                                     │ 4294967295 │
-│ 亚洲                                        │ 4294967295 │
+│ World                                      │ 4294967295 │
+│ USA                                        │  330000000 │
+│ Colorado                                   │    5700000 │
+│ Boulder County                             │     330000 │
+│ Boulder                                    │     100000 │
+│ China                                      │ 1500000000 │
+│ Sichuan                                    │   83000000 │
+│ Chengdu                                    │   20000000 │
+│ America                                    │ 1000000000 │
+│ North America                              │  600000000 │
+│ Eurasia                                    │ 4294967295 │
+│ Asia                                       │ 4294967295 │
 └────────────────────────────────────────────┴────────────┘
 ```
 
-### regionIn {#regionin}
+
+### regionIn
 
 检查 `lhs` 区域是否包含于 `rhs` 区域中。如果包含则返回 UInt8 类型的数值 1，否则返回 0。
 
@@ -459,21 +468,22 @@ SELECT regionToName(n1.number::UInt32, 'en') || (regionIn(n1.number::UInt32, n2.
 结果：
 
 ```text
-World 包含在 World 中
-World 不包含在 USA 中
-World 不包含在 Colorado 中
-World 不包含在 Boulder County 中
-World 不包含在 Boulder 中
-USA 包含在 World 中
-USA 包含在 USA 中
-USA 不包含在 Colorado 中
-USA 不包含在 Boulder County 中
-USA 不包含在 Boulder 中    
+World is in World
+World is not in USA
+World is not in Colorado
+World is not in Boulder County
+World is not in Boulder
+USA is in World
+USA is in USA
+USA is not in Colorado
+USA is not in Boulder County
+USA is not in Boulder    
 ```
 
-### regionHierarchy {#regionhierarchy}
 
-接受一个 UInt32 类型的数值——来自 geobase 的区域 ID。返回一个由该区域及其所有上级区域 ID 组成的数组。
+### regionHierarchy
+
+接受一个 UInt32 类型的数值——来自 geobase 的区域 ID。返回一个由传入的区域及其所有上级区域组成的数组。
 
 **语法**
 
@@ -503,17 +513,17 @@ SELECT regionHierarchy(number::UInt32) AS arr, arrayMap(id -> regionToName(id, '
 ```text
 ┌─arr────────────┬─arrayMap(lambda(tuple(id), regionToName(id, 'en')), regionHierarchy(CAST(number, 'UInt32')))─┐
 │ []             │ []                                                                                           │
-│ [1]            │ ['世界']                                                                                    │
-│ [2,10,9,1]     │ ['美国','北美','美洲','世界']                                                    │
-│ [3,2,10,9,1]   │ ['科罗拉多州','美国','北美','美洲','世界']                                         │
-│ [4,3,2,10,9,1] │ ['博尔德县','科罗拉多州','美国','北美','美洲','世界']                        │
+│ [1]            │ ['World']                                                                                    │
+│ [2,10,9,1]     │ ['USA','North America','America','World']                                                    │
+│ [3,2,10,9,1]   │ ['Colorado','USA','North America','America','World']                                         │
+│ [4,3,2,10,9,1] │ ['Boulder County','Colorado','USA','North America','America','World']                        │
 └────────────────┴──────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 {/* 
-  下面标签的内部内容会在文档框架构建期间，
-  被替换为由 system.functions 生成的文档。请不要修改或移除这些标签。
-  参见：https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+    下方标签内的内容会在文档框架构建时，
+    被替换为由 system.functions 生成的文档。请不要修改或移除这些标签。
+    参见：https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
   */ }
 
 {/*AUTOGENERATED_START*/ }
