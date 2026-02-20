@@ -50,7 +50,7 @@ OpenTelemetry JMX Metric Gatherer 컨테이너를 실행하여 메트릭을 수�
 
   JMX Metric Gatherer는 ClickStack의 OTLP 엔드포인트로 데이터를 전송하며, 이 엔드포인트는 인증을 필요로 합니다.
 
-  1. ClickStack URL(예: http://localhost:8080)에서 HyperDX를 엽니다
+  1. ClickStack URL(예: `http://localhost:8080`)에서 HyperDX를 엽니다
   2. 계정이 없으면 새로 만들고, 있으면 로그인하십시오
   3. **Team Settings → API Keys**로 이동하십시오
   4. **수집 API key**를 복사하십시오
