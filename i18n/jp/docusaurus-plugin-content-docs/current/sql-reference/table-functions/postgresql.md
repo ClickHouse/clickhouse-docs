@@ -17,6 +17,7 @@ doc_type: 'reference'
 postgresql({host:port, database, table, user, password[, schema, [, on_conflict]] | named_collection[, option=value [,..]]})
 ```
 
+
 ## 引数 \{#arguments\}
 
 | 引数          | 説明                                                                          |
@@ -67,7 +68,8 @@ SELECT name FROM postgresql(`postgres{1|2|3}:5432`, 'postgres_database', 'postgr
 SELECT name FROM postgresql(`postgres1:5431|postgres2:5432`, 'postgres_database', 'postgres_table', 'user', 'password');
 ```
 
-PostgreSQL の辞書ソースで、レプリカの優先度指定をサポートします。マップ内の数値が大きいほど優先度は低くなります。最も高い優先度は `0` です。
+PostgreSQL の Dictionary ソースで、レプリカの優先度指定をサポートします。マップ内の数値が大きいほど優先度は低くなります。最も高い優先度は `0` です。
+
 
 ## 例 \{#examples\}
 
@@ -94,7 +96,7 @@ postgresql> SELECT * FROM test;
 (1 row)
 ```
 
-通常の引数を使って ClickHouse からデータを取得する：
+通常の引数指定で ClickHouse からデータを取得する：
 
 ```sql
 SELECT * FROM postgresql('localhost:5432', 'test', 'test', 'postgresql_user', 'password') WHERE str IN ('test');
@@ -132,7 +134,7 @@ SELECT * FROM postgresql('localhost:5432', 'test', 'test', 'postgresql_user', 'p
 └────────┴──────────────┴───────┴──────┴────────────────┘
 ```
 
-デフォルト以外のスキーマを使用する場合:
+デフォルト以外のスキーマの使用:
 
 ```text
 postgres=# CREATE SCHEMA "nice.schema";
@@ -147,10 +149,11 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
         ENGINE PostgreSQL('localhost:5432', 'clickhouse', 'nice.table', 'postgrsql_user', 'password', 'nice.schema');
 ```
 
+
 ## 関連 \{#related\}
 
 - [PostgreSQL テーブルエンジン](../../engines/table-engines/integrations/postgresql.md)
-- [PostgreSQL をディクショナリソースとして使用する](/sql-reference/dictionaries#postgresql)
+- [PostgreSQL をディクショナリソースとして使用する](/sql-reference/statements/create/dictionary/sources#postgresql)
 
 ### PeerDB を使用した Postgres データのレプリケーションまたは移行 \{#replicating-or-migrating-postgres-data-with-with-peerdb\}
 

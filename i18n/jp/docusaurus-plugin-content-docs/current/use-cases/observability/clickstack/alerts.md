@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/alerts
-title: 'ClickStack を使った検索'
+title: 'ClickStack によるアラート'
 sidebar_label: 'アラート'
 pagination_prev: null
 pagination_next: null
@@ -24,14 +24,12 @@ import remove_chart_alert from '@site/static/images/use-cases/observability/remo
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+ClickStack にはアラート機能が組み込まれており、ログ、メトリクス、トレース全体にわたってリアルタイムに問題を検知・対応できます。
 
-## ClickStack におけるアラート \{#alerting-in-clickstack\}
+アラートは HyperDX のインターフェースから直接作成でき、Slack や PagerDuty など、よく利用される通知システムと連携します。
 
-ClickStack にはアラート機能が組み込まれており、ログ・メトリクス・トレースを横断してリアルタイムに問題を検出し、対応できるようになります。
+アラート機能は ClickStack のデータ全体に対してシームレスに動作し、システムの健全性の把握、パフォーマンス劣化の検出、主要なビジネスイベントの監視に役立ちます。
 
-アラートは HyperDX のインターフェースから直接作成でき、Slack や PagerDuty などの一般的な通知サービスと連携します。
-
-アラート機能は ClickStack のあらゆるデータとシームレスに連携し、システムの健全性の把握、パフォーマンス劣化の検知、重要なビジネスイベントの監視を支援します。
 
 ## アラートの種類 \{#types-of-alerts\}
 

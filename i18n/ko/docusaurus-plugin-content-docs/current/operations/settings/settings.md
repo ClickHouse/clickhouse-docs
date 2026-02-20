@@ -632,9 +632,11 @@ Hyperscan 라이브러리를 사용하는 함수를 허용합니다. 잠재적�
 
 <BetaBadge/>
 
+**별칭**: `allow_experimental_insert_into_iceberg`
+
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "「INSERT INTO iceberg」 기능이 Beta 단계로 전환되었습니다."}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "새 설정입니다."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "「INSERT INTO iceberg」 기능이 Beta 단계로 전환되었습니다."}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "새 설정입니다."}]}]}/>
 
 Iceberg 테이블에 대한 `insert` 쿼리 실행을 허용합니다.
 
@@ -1071,9 +1073,9 @@ Join 모드에서 패치 파트를 적용할 때 사용하는 임시 캐시의 �
 
 ## apply_row_policy_after_final \{#apply_row_policy_after_final\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting to control if row policies and PREWHERE are applied after FINAL processing for *MergeTree tables"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "apply_row_policy_after_final을 기본값으로 활성화합니다. 25.8에서는 #87303 이전에 이미 이렇게 동작했습니다"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "row policy와 PREWHERE를 *MergeTree 테이블에 대한 FINAL 처리 이후에 적용할지 여부를 제어하는 새로운 설정입니다"}]}]}/>
 
 이 설정을 활성화하면 *MergeTree 테이블에 대해 FINAL 처리가 완료된 후에 ROW POLICY와 PREWHERE가 적용됩니다. (특히 ReplacingMergeTree에 해당합니다)
 비활성화하면 ROW POLICY는 FINAL 이전에 적용되며, 이 경우 ReplacingMergeTree 또는 유사한 엔진에서 중복 제거에 사용되어야 하는 행을
@@ -8193,6 +8195,14 @@ DISTINCT에 사용된 일부 컬럼이 정렬 순서의 접두사(앞부분)를 
 :::note
 현재 이 설정은 `optimize_skip_unused_shards`가 활성화되어 있어야 합니다. 이는 이 설정이 언젠가 기본적으로 활성화될 수 있으며, 그 경우 데이터가 Distributed 테이블(즉, 데이터가 sharding_key에 따라 분산됨)을 통해 입력된 경우에만 올바르게 동작하기 때문입니다.
 :::
+
+## optimize_dry_run_check_part \{#optimize_dry_run_check_part\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "새 설정입니다."}]}]}/>
+
+이 설정이 활성화되면 `OPTIMIZE ... DRY RUN`은 `checkDataPart`를 사용하여 병합 결과 파트를 검증합니다. 검증에 실패하면 예외가 발생합니다.
 
 ## optimize_empty_string_comparisons \{#optimize_empty_string_comparisons\}
 

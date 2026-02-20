@@ -50,9 +50,13 @@ ClickHouse поддерживает стандартную грамматику 
 ```text
 aggregate_function (column_name)
   OVER ([[PARTITION BY grouping_column] [ORDER BY sorting_column] 
-        [ROWS or RANGE expression_to_bound_rows_withing_the_group]] | [window_name])
+        [ROWS or RANGE expression_to_bound_rows_within_the_group]] | [window_name])
 FROM table_name
-WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]])
+WINDOW window_name as ([
+  [PARTITION BY grouping_column]
+  [ORDER BY sorting_column]
+  [ROWS or RANGE expression_to_bound_rows_within_the_group]
+])
 ```
 
 * `PARTITION BY` - задает, как разбить результирующий набор на группы.
@@ -89,6 +93,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 * [`dense_rank()`](./dense_rank.md) - Присваивает ранг текущей строке в её разделе без пропусков.
 * [`lagInFrame(x)`](./lagInFrame.md) - Возвращает значение, вычисленное для строки, которая находится на заданное количество строк раньше текущей строки в упорядоченном фрейме.
 * [`leadInFrame(x)`](./leadInFrame.md) - Возвращает значение, вычисленное для строки, которая находится на заданное количество строк позже текущей строки в упорядоченном фрейме.
+
 
 ## Примеры \{#examples\}
 

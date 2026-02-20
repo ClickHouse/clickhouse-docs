@@ -632,9 +632,11 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 <BetaBadge/>
 
+**Псевдонимы**: `allow_experimental_insert_into_iceberg`
+
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Вставка в Iceberg переведена в стадию Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Вставка в Iceberg переведена в стадию Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
 
 Разрешает выполнение запросов `insert` в Iceberg.
 
@@ -1071,9 +1073,9 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 ## apply_row_policy_after_final \{#apply_row_policy_after_final\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка, позволяющая управлять тем, будут ли политики строк (ROW POLICY) и PREWHERE применяться после обработки FINAL для таблиц семейства *MergeTree"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включение apply_row_policy_after_final по умолчанию, как это было в 25.8 до #87303"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка, позволяющая управлять тем, будут ли политики строк (ROW POLICY) и PREWHERE применяться после обработки FINAL для таблиц семейства *MergeTree"}]}]}/>
 
 Если параметр включён, политики строк (ROW POLICY) и PREWHERE применяются после обработки FINAL для таблиц семейства *MergeTree (особенно актуально для ReplacingMergeTree).
 Если параметр выключен, политики строк применяются до FINAL, что может приводить к отличающимся результатам, когда политика
@@ -8219,6 +8221,14 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 :::note
 В настоящий момент эта настройка требует `optimize_skip_unused_shards` (причина в том, что однажды она может быть включена по умолчанию, и корректная работа будет гарантирована только в том случае, если данные вставлялись через distributed таблицу, то есть распределены в соответствии с sharding_key).
 :::
+
+## optimize_dry_run_check_part \{#optimize_dry_run_check_part\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+Когда настройка включена, `OPTIMIZE ... DRY RUN` проверяет получившуюся объединённую часть с помощью `checkDataPart`. Если проверка не проходит, генерируется исключение.
 
 ## optimize_empty_string_comparisons \{#optimize_empty_string_comparisons\}
 

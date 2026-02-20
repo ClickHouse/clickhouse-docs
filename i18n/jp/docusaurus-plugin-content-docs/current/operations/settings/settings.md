@@ -630,9 +630,11 @@ Hyperscan ライブラリを使用する関数の利用を許可します。コ�
 
 <BetaBadge/>
 
+**別名**: `allow_experimental_insert_into_iceberg`
+
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Insert into iceberg was moved to Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Insert into iceberg was moved to Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "New setting."}]}]}/>
 
 Iceberg テーブルに対する `insert` クエリの実行を許可します。
 
@@ -1069,9 +1071,9 @@ Join モードでパッチパーツを適用する際に使用する一時キャ
 
 ## apply_row_policy_after_final \{#apply_row_policy_after_final\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新しい設定で、*MergeTree テーブルに対して ROW POLICY と PREWHERE を FINAL 処理の後に適用するかどうかを制御します。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "apply_row_policy_after_final をデフォルトで有効化（#87303 以前の 25.8 と同様）"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "新しい設定で、*MergeTree テーブルに対して ROW POLICY と PREWHERE を FINAL 処理の後に適用するかどうかを制御します。"}]}]}/>
 
 有効にすると、*MergeTree テーブルに対して ROW POLICY と PREWHERE が FINAL 処理の後に適用されます（特に ReplacingMergeTree の場合に有用です）。
 無効にすると、ROW POLICY は FINAL の前に適用されます。この場合、ReplacingMergeTree などのエンジンで重複排除に使われるべき行を
@@ -8200,6 +8202,14 @@ AND チェーン内で定数を用いた比較条件を補完し、フィルタ�
 :::note
 現在、この設定を有効にするには `optimize_skip_unused_shards` が必要です（その理由は、将来的にこの設定がデフォルトで有効になる可能性があり、その場合に正しく動作するのは、データが Distributed テーブル経由で挿入されている、つまりデータが sharding_key に従って分散されている場合に限られるためです）。
 :::
+
+## optimize_dry_run_check_part \{#optimize_dry_run_check_part\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+有効な場合は、`OPTIMIZE ... DRY RUN` は `checkDataPart` を使用してマージ後のデータパートを検証します。検証に失敗すると、例外がスローされます。
 
 ## optimize_empty_string_comparisons \{#optimize_empty_string_comparisons\}
 

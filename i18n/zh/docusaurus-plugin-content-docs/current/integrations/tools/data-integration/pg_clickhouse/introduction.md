@@ -32,12 +32,10 @@ docker exec -it pg_clickhouse psql -U postgres -c 'CREATE EXTENSION pg_clickhous
 ## 测试用例：TPC-H \{#test-case-tpc-h\}
 
 此表对比了在缩放因子为 1 时，[TPC-H] 查询在常规 PostgreSQL
-表与通过 pg&#95;clickhouse 连接到 ClickHouse 的表之间的性能；✔︎ 表示完全下推，而短横线（-）表示在 1 分钟后取消该查询。
+表与通过 pg\_clickhouse 连接到 ClickHouse 的表之间的性能；✔︎ 表示完全下推，而短横线（-）表示在 1 分钟后取消该查询。
 所有测试均在配备 36 GB 内存的 MacBook Pro M4 Max 上运行。
 
-{/* cd dev/tpch && make ch && make pg && make run */ }
-
-|      查询 | PostgreSQL | pg&#95;clickhouse |  下推 |
+|      查询 | PostgreSQL | pg\_clickhouse |  下推 |
 | ------: | ---------: | ----------------: | :-: |
 |  [查询 1] |    4693 ms |            268 ms |  ✔︎ |
 |  [查询 2] |     458 ms |           3446 ms |     |
@@ -49,7 +47,7 @@ docker exec -it pg_clickhouse psql -U postgres -c 'CREATE EXTENSION pg_clickhous
 |  [查询 8] |     342 ms |            156 ms |  ✔︎ |
 |  [查询 9] |    3094 ms |            298 ms |  ✔︎ |
 | [查询 10] |     581 ms |            197 ms |  ✔︎ |
-| [查询 11] |     212 ms |             24 ms |  ✔︎ |
+| [查询 11] |     212 ms |             24 ms |     |
 | [查询 12] |    1116 ms |             84 ms |  ✔︎ |
 | [查询 13] |     958 ms |           1368 ms |     |
 | [查询 14] |     181 ms |             73 ms |  ✔︎ |
@@ -61,7 +59,6 @@ docker exec -it pg_clickhouse psql -U postgres -c 'CREATE EXTENSION pg_clickhous
 | [查询 20] |     421 ms |                 - |     |
 | [查询 21] |    1349 ms |           4434 ms |     |
 | [查询 22] |     258 ms |           1415 ms |     |
-
 
 ### 从源代码编译 \{#compile-from-source\}
 

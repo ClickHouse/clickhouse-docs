@@ -631,9 +631,11 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 <BetaBadge/>
 
+**别名**: `allow_experimental_insert_into_iceberg`
+
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "向 Iceberg 插入数据的功能已移至 Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "新设置。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "向 Iceberg 插入数据的功能已移至 Beta"}]}, {"id": "row-2","items": [{"label": "25.7"},{"label": "0"},{"label": "新设置。"}]}]}/>
 
 允许执行向 Iceberg 插入数据的 `insert` 查询。
 
@@ -1068,9 +1070,9 @@ Cloud 默认值：`1`。
 
 ## apply_row_policy_after_final \{#apply_row_policy_after_final\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "用于控制是否在对 *MergeTree 表执行 FINAL 处理之后再应用 ROW POLICY 和 PREWHERE 的新设置（尤其适用于 ReplacingMergeTree）"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认启用 apply_row_policy_after_final，就像在 25.8（#87303 之前）中的行为一样"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "用于控制是否在对 *MergeTree 表执行 FINAL 处理之后再应用 ROW POLICY 和 PREWHERE 的新设置（尤其适用于 ReplacingMergeTree）"}]}]}/>
 
 启用时，会在对 *MergeTree 表执行 FINAL 处理之后再应用 ROW POLICY 和 PREWHERE（尤其适用于 ReplacingMergeTree）。
 禁用时，会在 FINAL 之前应用 ROW POLICY，这在策略过滤掉本应在 ReplacingMergeTree 或类似引擎中用于去重的行时，可能导致结果不同。
@@ -8183,6 +8185,14 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 :::note
 目前该设置依赖于 `optimize_skip_unused_shards`（原因在于：未来某个时候它可能会默认启用，而它只有在数据通过 Distributed 表插入、即数据按照 sharding_key 分布的情况下才能正确工作）。
 :::
+
+## optimize_dry_run_check_part \{#optimize_dry_run_check_part\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "新设置"}]}]}/>
+
+启用后，`OPTIMIZE ... DRY RUN` 会使用 `checkDataPart` 验证合并生成的 part。如果检查失败，将抛出异常。
 
 ## optimize_empty_string_comparisons \{#optimize_empty_string_comparisons\}
 

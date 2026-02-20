@@ -948,7 +948,7 @@ SELECT currentProfiles();
 
 ## currentQueryID \{#currentQueryID\}
 
-Начиная с версии: v
+Начиная с версии: v25.2
 
 Возвращает текущий идентификатор запроса.
 
@@ -1700,7 +1700,7 @@ SELECT flipCoordinates(readWkt('POLYGON((0 0, 5 0, 5 5, 0 5, 0 0))'));
 
 ## formatQuery \{#formatQuery\}
 
-Впервые появился в: v
+Впервые появился в: v23.10
 
 Возвращает отформатированную, при необходимости многострочную, версию указанного SQL‑запроса. Генерирует исключение в случае ошибки разбора.
 [example:multiline]
@@ -1737,7 +1737,7 @@ WHERE (a > 3) AND (b < 3)
 
 ## formatQueryOrNull \{#formatQueryOrNull\}
 
-Введено в: v
+Введено в: v23.11
 
 Возвращает отформатированный, возможно многострочный, вариант заданного SQL-запроса. В случае ошибки разбора возвращает NULL.
 [example:multiline]
@@ -1774,7 +1774,7 @@ WHERE (a > 3) AND (b < 3)
 
 ## formatQuerySingleLine \{#formatQuerySingleLine\}
 
-Появилась в версии: v
+Появилась в версии: v23.10
 
 Аналогична formatQuery(), но возвращаемая форматированная строка не содержит переводов строки. Генерирует исключение в случае ошибки разбора.
 [example:multiline]
@@ -1807,7 +1807,7 @@ SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 
 ## formatQuerySingleLineOrNull \{#formatQuerySingleLineOrNull\}
 
-Появилась в версии: v
+Появилась в версии: v23.11
 
 Аналогична formatQuery(), но возвращаемая отформатированная строка не содержит переводов строки. Возвращает NULL в случае ошибки парсинга.
 [example:multiline]
@@ -2248,7 +2248,7 @@ SELECT getMacro('test');
 
 ## getMaxTableNameLengthForDatabase \{#getMaxTableNameLengthForDatabase\}
 
-Впервые представлена в версии: v
+Впервые представлена в версии: v25.1
 
 Возвращает максимальную длину имени таблицы в указанной базе данных.
 
@@ -2528,7 +2528,7 @@ SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
 
 ## getSubcolumn \{#getSubcolumn\}
 
-Добавлена в: v
+Добавлена в: v23.3
 
 Принимает выражение или идентификатор и константную строку с именем подстолбца.
 
@@ -3629,7 +3629,7 @@ SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
 
 ## nested \{#nested\}
 
-Появилась в версии: v
+Появилась в версии: v23.2
 
 Эта функция используется внутри движка ClickHouse и не предназначена для прямого использования.
 
@@ -4724,7 +4724,7 @@ SELECT number, sleepEachRow(0.5) FROM system.numbers LIMIT 5;
 
 ## structureToCapnProtoSchema \{#structureToCapnProtoSchema\}
 
-Появилась в версии: v
+Появилась в версии: v23.8
 
 Функция преобразует структуру таблицы ClickHouse в схему формата CapnProto
 
